@@ -147,7 +147,8 @@
       "**Two distinct proof routes exist, with different Mathlib prerequisites.** (i) Burnside 1904 — character theory + algebraic integers in cyclotomic rings. Mathlib has character orthogonality (`char_orthonormal`) but lacks the algebraic-integer hypotheses for $|G|/\\chi(1) \\in \\bar{\\mathbb{Z}}_K$. (ii) Goldschmidt-Matsuyama 1970s — focal subgroup theorem + transfer. Mathlib has transfer (`Mathlib.GroupTheory.Transfer`) but the focal subgroup theorem may need extension. The character-free route is preferable for Mathlib since it avoids cyclotomic algebraic-integer machinery.",
       "**`Nat.card G = p^a · q^b` is the natural cardinality predicate.** Using `Nat.card` (rather than `Fintype.card`) is canonical for finite-group statements in modern Mathlib because it doesn't require an explicit `Fintype` instance, just `Finite`.",
       "**The axiom captures exactly the open Lean content.** The trivial-cases reduction means we don't 'over-axiomatize': only the genuinely-open Burnside content is assumed, with the remaining 75% of cases proved unconditionally. Replacing the axiom by a theorem would automatically close the entire result without further work.",
-      "**Sanity-checks via examples.** Three `example`s validate the API at the boundaries: trivial group ($|G| = 1$ as $2^0 \\cdot 3^0$), prime-order group ($|G| = p$ as $p^1 \\cdot 2^0$), and pure prime-power group ($|G| = p^a$ as $p^a \\cdot 2^0$) — each fed through the unified `burnside_pq` and proven axiom-free."
+      "**Sanity-checks via examples.** Three `example`s validate the API at the boundaries: trivial group ($|G| = 1$ as $2^0 \\cdot 3^0$), prime-order group ($|G| = p$ as $p^1 \\cdot 2^0$), and pure prime-power group ($|G| = p^a$ as $p^a \\cdot 2^0$) — each fed through the unified `burnside_pq` and proven axiom-free.",
+      "**Phase-2 axiomatization as iterative proof engineering.** The file's 14-iteration history (S1-S14, captured in the `originalContributions` field) demonstrates a *staged narrowing* of the residual axiom — each iteration peels off a previously-axiomatized sub-case and discharges it axiom-free, leaving the axiom statement unchanged but progressively tightening its required hypothesis. The trajectory: Iteration 4 narrows from `a, b \\geq 1` to `2 \\leq a \\vee 2 \\leq b` (squarefree case); Iteration 5 adds normal-Sylow reductions; Iterations 7, 9, 11 axiom-freely discharge the `(2, 1)` and `(1, 2)` shapes via Sylow analysis; Iteration 14 begins the element-counting closure for the exceptional `|G| = 12` sub-case (one sorry deferred). This **'axiomatize-then-discharge'** pattern is general: pick a theorem with a large open Lean content, axiomatize the whole, then iteratively peel off proved sub-cases. The axiom acts as a *forward declaration* of remaining work, and the file's evolution becomes a measurable research artifact (decreasing axiom-required hypothesis $\\equiv$ increasing formalized content). Pattern reusable for any theorem with a clean case-split structure (Fermat-style $n$-cases, Riemann-style large-zero exclusion, classification-style enumeration)."
     ],
     "prerequisites": [
       "Mathlib.GroupTheory.PGroup (IsPGroup, IsPGroup.iff_card)",
@@ -246,6 +247,21 @@
       "targetId": "abel-ruffini",
       "relationship": "depends-on",
       "description": "The original Abel-Ruffini theorem motivates studying solvability of finite groups arising as Galois groups; Burnside's theorem is a structural classification on the side of the Galois group."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "foundational",
+      "description": "Sylow's three theorems are the workhorse of this file's axiom-free discharges. Sylow I ($p$-subgroups exist for every prime divisor) makes the structure $|G| = p^a \\cdot q^b$ exploitable; Sylow II ($p$-subgroups are conjugate) underlies the normalizer machinery; Sylow III ($n_p \\equiv 1 \\pmod p$ and $n_p \\mid [G:P]$) is the central tool used in `burnside_p_squared_q_p_gt_q` (Iteration 7), `burnside_p_squared_q_twelve` (Iteration 9), and `burnside_p_q_squared_*` (Iteration 11) to force $n_p = 1$ or $n_q = 1$, exhibiting a normal Sylow subgroup that the normal-Sylow reductions (Iteration 5) then convert to solvability. The character-free route to the residual `burnside_pq_nontrivial` axiom (Goldschmidt-Matsuyama) likewise hinges on Sylow structure plus transfer."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "complementary",
+      "description": "Jordan-Hölder uniqueness theorem (sister sub-entry) provides the *uniqueness* counterpart to Burnside's *existence* statement: Burnside guarantees that groups of order $p^a q^b$ have a solvable composition series (with cyclic prime-order factors); Jordan-Hölder guarantees that this composition series is unique up to permutation of factors. Together they pin both the existence and the uniqueness of the cyclic decomposition for two-prime orders. Conversely, the failure of either at $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ — Burnside via the three-prime obstruction, Jordan-Hölder via the unique simple factor $A_5$ — makes the sharpness witness `burnside_pq_sharp` doubly forced: both *no abelian decomposition exists* (Burnside fails for three primes) and *the unique composition factor is $A_5$ itself* (Jordan-Hölder fixed)."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Finite groups of order $< 60$ are solvable — the *quantitative* sharpness companion to this file's *qualitative* Burnside sharpness. That entry proves the $\\text{IsPGroup} \\Rightarrow \\text{IsNilpotent} \\Rightarrow \\text{IsSolvable}$ chain for orders below 60, establishing that $|A_5| = 60$ is the minimal non-solvable order. This file generalizes the chain to two-prime products $p^a q^b$ (Burnside): every order $< 60$ falls under either the prime-power case (Mathlib chain) or the two-prime case (Burnside), so the boundary $|A_5| = 60$ is *exactly* where both this file's Burnside and that entry's order bound simultaneously become tight."
     }
   ],
   "conclusion": {
