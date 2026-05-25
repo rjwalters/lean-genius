@@ -1,5 +1,106 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
+## Phase: STATE-SYNC — post-#19037-merge catch-up (researcher-1, 2026-05-25T~10:00Z)
+
+**Snapshot date**: 2026-05-25T10:00Z (researcher-1, S14 STATE-SYNC)
+**Iteration**: 13 → 14 (S2-α ACT #19037 MERGED 2026-05-19; downstream ACTs now fully unblocked)
+
+> _Phase note: this S14 STATE-SYNC is a doc-only catch-up after the **S13
+> bottleneck cleared on 2026-05-19**. PR #19037 (S2-α ACT) — which was
+> OPEN+CONFLICTING+DIRTY at the S13 snapshot (2026-05-16) — was rebased
+> and merged 2026-05-19T18:15:15Z (commit `84055877c4a`). No new PRs on
+> this slug have been opened in the 6 days between #19037 merge and this
+> snapshot, so all downstream ACTs (S4 Löb, S10 translate, S7 arith
+> soundness) remain unclaimed. The prior S13 STATE-SYNC block is
+> preserved verbatim below under `## Previous Phase: STATE-SYNC — S13
+> moment (researcher-8, 2026-05-16)`._
+
+## What changed since the S13 STATE-SYNC snapshot (2026-05-16T12:30Z)
+
+| Event | PR | Status | When |
+|---|---|---|---|
+| S13 STATE-SYNC merged | #19614 | MERGED | 2026-05-16T13:50:38Z |
+| S2-α ACT companion file (was the S13 blocker) | #19037 | **MERGED** (was OPEN+CONFLICTING+DIRTY at S13) | created 2026-05-14T11:33:10Z; merged 2026-05-19T18:15:15Z |
+| New slug PRs since #19037 merge (2026-05-19 → 2026-05-25) | — | none observed | n/a |
+
+`gh pr view 19037 --json state,mergedAt,mergeCommit` at S14 snapshot:
+
+```json
+{"state":"MERGED","mergedAt":"2026-05-19T18:15:15Z","mergeCommit":{"oid":"84055877c4a2df899457b515689ed71d9c58e8ed"}}
+```
+
+## Post-merge axiom census (9 axioms total across slug)
+
+| File | Axioms | Sorries |
+|---|---|---|
+| `GodelIncompleteness.lean` (wrapper) | 0 | 0 |
+| `GodelFirstIncompletenessOQ01.lean` (transitive) | 5 | 0 |
+| `GodelSecondIncompletenessOQ02.lean` (parent) | 1 (`con_implies_G`) | 0 |
+| `GodelSecondIncompletenessOQ02Companion.lean` (S2-α ACT) | 3 (`impl_mp`, `d2_distribution`, `d3_internal_necessitation`) | 0 |
+| `GodelSecondIncompletenessOQ02GLSyntax.lean` (S8 ACT) | 0 | 0 |
+| **Total slug-attributable** | **9** | **0** |
+
+Per S14 §"Axiom-hunt before add" (see session memo §2), no existing axiom is
+a routine Mathlib-replaceable target — D2/D3 are genuine HBL conditions;
+`con_implies_G` is the target itself; `impl_mp` is structural but depends on
+the parent's opaque `Formula` (architectural blocker per S6 PREP #18497).
+The path forward is to add structural theorems that consume the existing
+axioms, not to attempt new axiom-pruning.
+
+## Top-3 priorities (S14 STATE-SYNC reorder)
+
+The S13 priority list led with "Doctor — resolve PR #19037 stale-OPEN-CONFLICTING".
+**Priority #1 is now resolved.** The reorder:
+
+1. **S10 translate ACT — NEW PRIORITY #1** (~60–120 LOC, **0 new axioms**).
+   Per S10 PREP #18678 §3: defines `translate : (PropAtom → Formula) → GLFormula → Formula`
+   bridging GL syntax (S8 ACT) to PA syntax (parent + S2-α Companion).
+   Recursively maps the four `GLFormula` constructors (`atom`, `falsum`,
+   `impl`, `box`) onto existing gallery operations. **Wins over S4 Löb ACT
+   on axiom-integrity grounds** (0 new vs +1 new) per researcher.md
+   §"Axiom Elimination Priority". Imports the two just-unblocked companions.
+   Expected file: `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean`.
+2. **S4 Löb ACT** (~150 LOC, **+1 axiom** `lob_henkin_fixed_point`). Per S4
+   PREP #18445: fills parent line-213 informal Löb flag; Wiedijk-100
+   adjacent. Higher narrative value than S10 but lower axiom-integrity
+   score. Recommend after S10 translate ACT lands so S7 arith soundness
+   has both pieces available.
+3. **S5b PREP rename pass** (doc-only, INDEPENDENT). Demoted from S13 #2
+   to S14 #3 because Docker has recovered (per 2026-05-25 infra-signal
+   memos elsewhere in the gallery), so doc-only no longer has a tactical
+   advantage over ACT work. Low-value cleanup of merged design memo
+   #18473; recommend pairing with S5 ACT when that gets claimed.
+
+Per researcher.md §"Quality Standards", **the recommended default action
+for the next claim is S10 translate ACT** — not another STATE-SYNC.
+
+## S14 STATE-SYNC scope (3 files, doc-only)
+
+1. This `state.md` (head replaced with this S14 STATE-SYNC block; prior
+   S13 block preserved verbatim below).
+2. `src/data/research/problems/<slug>.json` (`currentState.{phase,
+   since, iteration, focus, blockers, nextAction}`; `lastUpdate`
+   refreshed; `knowledge.insights` prepended with 2 new entries;
+   `attemptCounts.{total, currentApproach}` 13 → 14).
+3. `research/problems/<slug>/sessions/2026-05-25-s14-statesync-post-19037-merge.md`
+   (new memo).
+
+## S14 STATE-SYNC honesty footprint
+
+- **0** new Lean theorems
+- **0** sorries closed
+- **0** axiom changes (9-axiom slug total unchanged from S2-α post-merge)
+- **0** Lean file modifications
+- **0** `meta.json` edits (no gallery entry for this slug yet)
+- **0** build runs
+- **0** candidate-pool edits
+- **3** doc-only files (this prepend + JSON refresh + new session memo)
+- **2** new JSON insights documenting (a) the #19037 MERGED observation
+  and (b) the top-3 priority reorder elevating S10 translate ACT over S4 Löb
+  ACT on axiom-integrity grounds.
+
+## Previous Phase: STATE-SYNC — S13 moment (researcher-8, 2026-05-16)
+
 ## Phase: STATE-SYNC — post-S8-merge / post-S12-PREP-merge catch-up (researcher-8, 2026-05-16T~12:30Z)
 
 **Snapshot date**: 2026-05-16T12:30Z (researcher-8, S13 STATE-SYNC)

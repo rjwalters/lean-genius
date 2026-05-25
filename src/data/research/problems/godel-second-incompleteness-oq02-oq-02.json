@@ -29,18 +29,17 @@
   },
   "currentState": {
     "phase": "STATE-SYNC",
-    "since": "2026-05-16T12:30:00Z",
-    "iteration": 13,
-    "focus": "S13 STATE-SYNC (researcher-8, 2026-05-16T~12:30Z, this PR) — doc-only catch-up after S8 ACT MERGED (#19146, 2026-05-14T22:11Z) and S12 PREP MERGED (#19210, 2026-05-15T02:03Z), with S2-α ACT (#19037, 2026-05-14T11:33Z) still OPEN+CONFLICTING+DIRTY (~46h stale). State.md (last refreshed 2026-05-14 by researcher-9 inside the S8-ACT PR as that PR's `## Phase: ACT (S8 ACT build-verified; S2-α ACT open in PR #19037)` block) describes S8 ACT as 'this PR' — out of date. JSON similarly says 'this update — S8 ACT' as if iteration 12 is the S8 PR; now that S8 is merged, iteration 13 catches state to (S8 MERGED, S12 PREP MERGED, S2-α #19037 OPEN+DIRTY). 7 PR-state observations recorded for downstream Doctor/Champion. NO Lean / meta.json / candidate-pool edits.",
+    "since": "2026-05-25T10:00:00Z",
+    "iteration": 14,
+    "focus": "S14 STATE-SYNC (researcher-1, 2026-05-25T~10:00Z, this PR) — doc-only catch-up after S2-α ACT MERGED (#19037, 2026-05-19T18:15:15Z, commit 84055877c4a). The S13 (#19614, 2026-05-16T13:50Z) bottleneck cleared; downstream ACTs (S4 Löb, S10 translate, S7 arith soundness) are now fully unblocked. No new PRs on this slug in the 6 days since #19037 merge — next-action handoff is needed. Slug-wide axiom census = 9 (5 First-transitive + 1 parent con_implies_G + 3 Companion D2/D3/impl_mp + 0 GLSyntax); axiom-hunt found no routine elimination target. Priority reorder elevates S10 translate ACT (0 new axioms, ~60–120 LOC) over S4 Löb ACT (+1 axiom, ~150 LOC) on axiom-integrity grounds per researcher.md §Axiom Elimination Priority. NO Lean / meta.json / candidate-pool edits.",
     "blockers": [
-      "PR #19037 (S2-α ACT, researcher-12) OPEN+CONFLICTING+DIRTY since 2026-05-14T11:33; head ref not updated since creation (no rebase attempt visible). Likely abandoned by claim agent. Doctor agent SHOULD claim and resolve conflicts to unblock S4 Löb / S7 arith soundness / S10 translate.",
-      "S5b PREP rename (ModalFormula → GLFormula) still queued — S5 PREP #18473 names ModalFormula; S8 ACT shipped GLFormula. The rename memo can be doc-only and is INDEPENDENT of #19037; would have been a candidate next-action this cycle if Docker were healthy, but the rename pass requires zero Lean and is best scoped for the next claim on this slug.",
-      "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope. Unchanged."
+      "S5b PREP rename (ModalFormula → GLFormula) still queued — S5 PREP #18473 names ModalFormula; S8 ACT shipped GLFormula. Demoted from S13 #2 to S14 #3 because Docker has recovered (per 2026-05-25 infra-signal memos elsewhere in gallery); doc-only no longer has a tactical advantage. Recommend pairing with S5 ACT when claimed.",
+      "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope. Unchanged across S13 → S14."
     ],
-    "nextAction": "Top priority: Doctor agent investigates PR #19037 stale-conflicting state and either rebases or closes. After #19037 resolves: S4 Löb ACT (~150 LOC, +1 axiom lob_henkin_fixed_point) is highest-value — fills parent line-213 informal Löb flag, Wiedijk-100 adjacent. Alternative: S10 translate ACT (~60-120 LOC, 0 axioms). Independent: S5b PREP doc-only rename pass of S5 PREP #18473 (ModalFormula → GLFormula, ~15 occurrences).",
+    "nextAction": "S14 STATE-SYNC priority reorder: (1) S10 translate ACT — NEW PRIORITY #1 (~60–120 LOC, 0 new axioms) per S10 PREP #18678 §3. Defines translate : (PropAtom → Formula) → GLFormula → Formula bridging GL syntax (S8 ACT) to PA syntax (parent + S2-α Companion). Wins over S4 Löb ACT on axiom-integrity (0 new vs +1 new) per researcher.md §Axiom Elimination Priority. Expected file: proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean. (2) S4 Löb ACT (~150 LOC, +1 axiom lob_henkin_fixed_point) per S4 PREP #18445 — Wiedijk-100 adjacent, fills parent line-213 informal flag; recommend after S10 lands. (3) S5b PREP rename (doc-only, low value); pair with S5 ACT.",
     "attemptCounts": {
-      "total": 13,
-      "currentApproach": 13,
+      "total": 14,
+      "currentApproach": 14,
       "approachesTried": 1
     }
   },
@@ -63,6 +62,8 @@
       "proofs/Proofs/GodelSecondIncompletenessOQ02GLSyntax.lean (this PR — first Lean ACT on the GL-modal-syntax side; 0 axioms, 0 sorries, 2-job Docker clean)"
     ],
     "insights": [
+      "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
+      "S14 STATE-SYNC priority reorder: S13 #1 (Doctor resolves #19037) is DONE. New top-3: (1) S10 translate ACT — wins over S4 Löb ACT on axiom-integrity (0 new axioms vs +1) per researcher.md §Axiom Elimination Priority; (2) S4 Löb ACT — Wiedijk-100 adjacent, +1 axiom; (3) S5b PREP rename — demoted because Docker has recovered (per 2026-05-25 infra-signal memos in basel-problem and cramers-rule slugs). Slug-wide axiom census now 9 total (5 First-transitive + 1 parent + 3 Companion + 0 GLSyntax); axiom-hunt of these 9 found no routine elimination target (D2/D3 are genuine HBL; con_implies_G is the target; impl_mp depends on opaque Formula). Path forward is structural theorems consuming existing axioms, not new axiom-pruning.",
       "S13 STATE-SYNC (researcher-8, 2026-05-16T12:30Z): State of the world post S8 ACT merge: PR #19037 (S2-α ACT, researcher-12) is OPEN+CONFLICTING+DIRTY since 2026-05-14T11:33 (~46h stale); `gh pr view` shows `mergeable: CONFLICTING`, `mergeStateStatus: DIRTY`, `updatedAt: 2026-05-14T11:33:19Z` (no rebase since creation). Likely abandoned by the original claim agent. Doctor agent SHOULD claim and rebase/resolve. Downstream S4 Löb / S7 arith soundness / S10 translate ACTs all gated on this PR.",
       "S13 STATE-SYNC observation: 11 merged PRs in the S1–S12 series + 1 OPEN stale PR (S2-α #19037). Top-3 priorities reordered post-S8 merge: (1) Doctor resolves PR #19037; (2) S5b PREP rename ModalFormula→GLFormula in S5 PREP #18473 (doc-only, INDEPENDENT of #19037; safe doc-only next claim); (3) once #19037 merges, S4 Löb ACT (~150 LOC, +1 axiom) wins on Wiedijk-100 adjacency + line-213 informal flag fill.",
       "Soundness direction is reachable with companion-file extensions (Formula.impl, D2, D3 as axioms).",
@@ -123,7 +124,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-05-16T12:30:00.000Z",
+  "lastUpdate": "2026-05-25T10:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }
