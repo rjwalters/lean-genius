@@ -227,3 +227,48 @@ ACT picker.
 See `sessions/2026-05-15-s4-state-sync-post-drain.md` for the full §
 catalogue (drift items, conflict-free guarantee, bearer-spot-check
 delta).
+
+## S2-β-β ACT landed (researcher-1, 2026-05-24, +86 LOC Lean, build-verified)
+
+`§ Part IX` now ships cofinal-sequence head infrastructure for Solovay Step 2:
+
+- `cofHead : Ordinal → Ordinal` (noncomputable def, ~6 LOC): picks the 0-th
+  element of a chosen fundamental sequence (via `Classical.choose` on
+  `Ordinal.exists_fundamental_sequence`) when `0 < α.cof.ord`; falls back to
+  `0` otherwise. Junk fallback only fires at `α = 0` (per `cof_eq_zero ↔ a = 0`).
+- `cofHead_lt` (~10 LOC): regressivity on positive limits. Proof bridges
+  `IsSuccLimit α → 0 < α.cof.ord` via `aleph0_le_cof.mpr` + `Cardinal.ord_le_ord` +
+  `Cardinal.ord_aleph0` + `Ordinal.omega0_pos` (same idiom as S2-α's `hω_lt` at
+  line 390-392), then invokes `IsFundamentalSequence.lt` directly.
+- `exists_cofHead_constant_stationary` (~12 LOC): Fodor's first application via
+  `cofHead`. Three-hypothesis discharger for the explicit `fodor` signature
+  (`hS_pos` via `IsSuccLimit.bot_lt`; `h_lt_κord` via `cofHead_lt` + transitivity;
+  `h_reg` direct).
+- `exists_cofHead_constant_stationary_of_stationary` (~9 LOC): convenience form
+  absorbing `IsStationaryBelow.inter_isLimitOrdinals` (Part VIII) inside the
+  signature. The recommended entry point for the next ACT picker.
+
+FodorPressingDown.lean stats: **654 LOC** (was 568), **24 declarations**
+(was 20: +3 theorems +1 noncomputable def), **0 sorries**, **0 axioms**. Build
+verified via Docker `./proofs/scripts/docker-build.sh Proofs.FodorPressingDown`
+— **3062 jobs successful in 23s**, 0 new warnings (the 2 existing
+unused-variable warnings on lines 261 and 344 are pre-existing per #19052).
+
+**Next: S2-β-γ ACT picker** can append a new `§ Part X` with `fodor_anti_constant`
+(~60-80 LOC) using the same `Classical.choose`-on-`exists_fundamental_sequence`
+picker pattern at index 1, plus a second Fodor application on the
+stationary subset `S ∩ cofHead⁻¹{β}` produced by `exists_cofHead_constant_stationary`.
+The hypothesis structure is `IsStationaryBelow ({α ∈ S | g₀ α = β₀ ∧ g₁ α = β₁}) ∧
+IsStationaryBelow ({α ∈ S | g₀ α ≠ β₀ ∨ g₁ α ≠ β₁})` for some β₀, β₁; the
+technical heart is showing the second set is stationary (canonical Solovay
+index-of-first-disagreement argument).
+
+**S2-β-δ ACT picker** (after S2-β-γ) can then ship `stationary_splits_binary`
+(~50-80 LOC) by composing Part VIII + Part IX + Part X via Disjoint packaging.
+
+See `sessions/2026-05-24-s2b-beta-act-cofhead-infrastructure.md` for the full
+§ catalogue: bearer table (8 confirmed at SHA `2df2f015...`, no absences),
+refined LOC budget (~115-170 remaining for `fodor_anti_constant` +
+`stationary_splits_binary`), and the §4.2 outline mapping for Steps (b)+(d).
+
+Iteration 9 → 10.
