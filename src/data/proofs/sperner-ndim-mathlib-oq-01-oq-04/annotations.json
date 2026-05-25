@@ -1,5 +1,16 @@
 [
   {
+    "id": "ann-namespace-and-opens",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "context",
+    "title": "Namespace, Linter, and Big-Operator Notation",
+    "content": "Three small but load-bearing setup decisions before the structure definition. (1) `set_option linter.unusedVariables false` is needed because the dependent involution argument `g : ∀ a ∈ s, ι` passed to `Finset.sum_involution` has a per-call membership hypothesis `_hp` that is intentionally unused in the closure body — the linter would otherwise flag every case. (2) The nested `namespace SpernerAbstract.Signed` segregates this file's identifiers from the parent's `SpernerAbstract` namespace, so qualified names like `SpernerAbstract.Signed.SignedCellComplex.signedDoorCount` stay distinct from any future signed variants. (3) `open Finset BigOperators` brings `∑` notation and the `Finset.univ`, `Finset.filter`, `Finset.sum_involution` API into scope without per-call prefixing — essential for the readability of the `signedDoorCount` definition and the main-theorem proof body.",
+    "significance": "technical",
+    "relatedConcepts": ["set_option linter", "namespace hygiene", "BigOperators notation", "Finset API", "dependent involution argument"],
+    "prerequisites": ["Lean 4 namespacing", "Mathlib BigOperators", "linter options"]
+  },
+  {
     "id": "ann-zmod2-vacuity",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
     "range": { "startLine": 15, "endLine": 27 },
@@ -82,6 +93,18 @@
     "significance": "technical",
     "relatedConcepts": ["adj_symm", "involution", "generalize tactic", "dependent type elimination", "extracted lemma pattern"],
     "prerequisites": ["Option pattern matching", "adj_symm axiom", "Lean 4 tactic mode"]
+  },
+  {
+    "id": "ann-set-with-pattern",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 145, "endLine": 151 },
+    "type": "technique",
+    "title": "`set ... with hS_def` + `refine ... ?cancel ?fpf ?gmem ?invol`",
+    "content": "Two complementary tactic-mode patterns frame the entire proof. First, `set S : Finset (...) := Finset.univ.filter (...) with hS_def` introduces a *local definition* `S` with an associated equation lemma `hS_def : S = Finset.univ.filter ...`. This serves two purposes: it makes the goal display compact (`∑ p ∈ S, K.sign p.1 p.2 = 0` instead of the full filter expression) and gives a stable name to `unfold` back to the original predicate inside each case. Second, `refine Finset.sum_involution (...) ?cancel ?fpf ?gmem ?invol` consumes the lemma signature and leaves four *named* metavariable goals — readers can navigate the proof structurally via the four `case <name> =>` blocks below. Named cases are critical here because `Finset.sum_involution`'s argument order (cancel/fpf/gmem/invol) is not memorable; named blocks make the proof self-documenting.",
+    "mathContext": "$S := \\{p \\in \\mathrm{Simplex} \\times \\mathrm{Fin}(d{+}1) \\mid \\mathrm{isDoorAt}\\ c\\ K\\ p_1\\ p_2 \\wedge K.\\mathrm{adj}\\ p_1\\ p_2 \\neq \\mathrm{none}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["set tactic", "refine tactic", "named case blocks", "Finset.sum_involution signature", "metavariable goals"],
+    "prerequisites": ["Lean 4 tactic mode", "Finset.filter", "refine and case syntax"]
   },
   {
     "id": "ann-main-cancellation-theorem",
