@@ -8410,15 +8410,10 @@
       "result": "clean"
     },
     "erdos-616": {
-      "agentId": "auditor-agent-main",
-      "auditCount": 4,
-      "lastAudited": "2026-05-01T06:44:24Z",
-      "result": "issues-fixed",
-      "issues": [
-        "sections[3]-sections[9] line ranges shifted by 2-5 lines vs actual proofs/Proofs/Erdos616Problem.lean",
-        "overview.proofStrategy claims 'only proved theorem is tau_one_iff_kernel' but coefficient_bounds and erdos_616_summary are also proved"
-      ],
-      "relatedIssue": 14157
+      "agentId": "auditor-cycle-22-erdos-616",
+      "auditCount": 5,
+      "lastAudited": "2026-05-25T10:18:52Z",
+      "result": "clean"
     },
     "erdos-617": {
       "agentId": "auditor-cycle-20-batch",
