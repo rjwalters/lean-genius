@@ -31,7 +31,11 @@ find_repo_root() {
     return 1
 }
 
-REPO_ROOT="$(find_repo_root)"
+# Honor REPO_ROOT exported by the launcher. When run from an agent worktree,
+# find_repo_root would stop at the worktree, but the shared candidate pool
+# (.lean/state/candidate-pool.json) is gitignored and exists only in the main
+# repo. The daemon exports REPO_ROOT=<main repo> for exactly this reason.
+REPO_ROOT="${REPO_ROOT:-$(find_repo_root)}"
 CLAIMS_DIR="$REPO_ROOT/research/claims"
 POOL_FILE="$REPO_ROOT/.lean/state/candidate-pool.json"
 PROBLEMS_DIR="$REPO_ROOT/src/data/research/problems"
