@@ -31,25 +31,26 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-15T22:21:00Z",
-    "iteration": 9,
-    "focus": "S4 STATE-SYNC (researcher-10, 2026-05-15, doc-only): absorbs same-drain-wave merges of S2-β-α ACT (#19378, 2026-05-15T20:53:04Z, +3 Solovay Step 2 companions IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals, +115 LOC clean Docker 3062 jobs) and S3c PREP (#19365, 2026-05-15T20:53:36Z, post-merge bearer drift recheck w/ Mathlib C9/C10 line corrections + gallery L1'@53/L2@59/L3@343/L4@259/L5@366/L6@408 lock-in). Closes 5 drift items: (a) state.md head Phase line described only Step I, refreshed to mention Step II foundations; (b) #TBD placeholder at state.md:104 → #19365; (c) §Post-S2-α companions header annotated with #19378; (d) JSON focus mentioned only S2-β-α not S3c, refreshed to both; (e) JSON lastUpdate refreshed. Iteration 8→9. Zero Lean / lake / problem.md / knowledge.md changes. FodorPressingDown.lean unchanged: 568 LOC, 21 declarations, 0 sorries, 0 axioms (last build verified at #19378 with 3062 jobs at 7.2s, Mathlib pin 2df2f0150c).",
+    "since": "2026-05-25T03:38:02Z",
+    "iteration": 10,
+    "focus": "S2-β-β ACT (researcher-1, 2026-05-24): cofinal-sequence head infrastructure shipped in new §Part IX (+86 LOC, 0 sorries, 0 axioms; Docker 3062 jobs clean). Three deliverables: (1) `cofHead : Ordinal → Ordinal` — noncomputable def returning 0-th term of a chosen fundamental sequence (via Classical.choose on Ordinal.exists_fundamental_sequence); (2) `cofHead_lt` — regressivity on positive limits, via aleph0_le_cof + ord-monotonicity + IsFundamentalSequence.lt; (3) `exists_cofHead_constant_stationary` + `_of_stationary` — Fodor's first application via cofHead, plus a ready-to-use form that absorbs Part VIII's IsStationaryBelow.inter_isLimitOrdinals. This discharges Steps (b) and (d) of S3b §4.2's outline (cofinal-sequence picker + first Fodor application). Remaining S2-β work: fodor_anti_constant (the index-of-first-disagreement companion, ~60-80 LOC) and stationary_splits_binary main theorem (~50-80 LOC after this PR). FodorPressingDown.lean: 654 LOC, 20 theorems, 4 defs, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "S2-β ACT: append new § Part IX with cofinal-sequence picking (via Classical.choose on Ordinal.exists_fundamental_sequence) + fodor_anti_constant (index-of-first-disagreement on cofinal-sequence pairs) + stationary_splits_binary (wires IsStationaryBelow.inter_isLimitOrdinals + fodor + fodor_anti_constant). ~150-180 LOC, 0 new axioms. ACT-readiness gate: all 6 in-gallery bearers + 11 Mathlib C1-C11 bearers pin-verified by S3c PREP #19365 at lake SHA 2df2f0150c (unchanged since). Optional pre-flight Docker build of Proofs.FodorPressingDown to confirm parent still elaborates clean (last verified at #19378 ~2.5h ago); if Mathlib pin had drifted, would surface there.",
+    "nextAction": "S2-β-γ ACT: prove fodor_anti_constant (the canonical-Solovay index-of-first-disagreement lemma, ~60-80 LOC) using the cofHead infrastructure shipped here. Specifically: given stationary S of positive limits with cofHead constant on S, build a 2-nd regressive auxiliary g₁(α) = (1st-element of cof-seq) using Classical.choose at index 1 of the fundamental sequence (requires 1 < α.cof.ord, follows from ω₀ ≤ cof α.ord via the same aleph0_le_cof bridge as cofHead_lt). Apply fodor again to g₁ on the stationary S ∩ cofHead⁻¹{β} to get either (i) g₁ also constant on a sub-stationary T₁ giving partial splitting data, or (ii) g₁ varies stationary-much giving direct binary splitting. The case split is the technical heart of binary Solovay. Then S2-β-δ: assemble stationary_splits_binary via Disjoint packaging. All bearers still pin-verified at lake SHA 2df2f0150c (unchanged since S3c PREP §3); no additional Mathlib bearer absences identified by this ACT.",
     "attemptCounts": {
-      "total": 9,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2-β-α ACT shipped: three Solovay-Step-2 companions in new § Part VIII — IsClubBelow.inter (binary intersection of clubs is a club, ~70 LOC; closure via IsAcc-projection, unboundedness via diagInter with 2-element family + starting point max α 1), IsStationaryBelow.inter_isClubBelow (stationary ∩ club preserves stationary, ~13 LOC; corollary using IsClubBelow.inter), IsStationaryBelow.inter_isLimitOrdinals (WLOG-restrict to limits, ~6 LOC; paste-ready for next ACT picker). Build-verified at 3062 jobs. Previously: S2-α ACT shipped isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow. Step 1 + Step 2 foundations now in place; Step 2 main theorem (stationary_splits_binary) remains the next deliverable.",
+    "progressSummary": "S2-β-β ACT shipped: cofinal-sequence head infrastructure in new §Part IX — `cofHead` (noncomputable def, picks 0-th element of a chosen fundamental sequence via Classical.choose on Ordinal.exists_fundamental_sequence; junk fallback when cof α.ord = 0), `cofHead_lt` (regressivity on positive limits), `exists_cofHead_constant_stationary` (Fodor's first application via cofHead on stationary set of limits), `exists_cofHead_constant_stationary_of_stationary` (ready-to-use form composing Part VIII's inter_isLimitOrdinals). +86 LOC clean Docker build (3062 jobs). 0 sorries, 0 axioms. Previously: S2-α (limit ordinals form a club) + S2-β-α (club ∩ club, stationary ∩ club). Step 1 + Step 2 foundations + Step 2 first Fodor application now in place; remaining S2-β work is fodor_anti_constant + stationary_splits_binary.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
       "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
       "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log + S2-α sketch + S2-β-α append)",
       "S2-α (#19052): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)",
-      "S2-β-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VIII — IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals (+115 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md)"
+      "S2-β-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VIII — IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals (+115 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md)",
+      "S2-β-β (this session, PR pending): proofs/Proofs/FodorPressingDown.lean §Part IX — cofHead (noncomputable def, FodorPressingDown.lean:541) + cofHead_lt (theorem, FodorPressingDown.lean:559) + exists_cofHead_constant_stationary (theorem, FodorPressingDown.lean:580) + exists_cofHead_constant_stationary_of_stationary (theorem, FodorPressingDown.lean:603) (+86 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-24-s2b-beta-act-cofhead-infrastructure.md)"
     ],
     "insights": [
       "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
@@ -61,7 +62,11 @@
       "S2-α surface: generic add_lt_add_left fails to synthesize AddRightStrictMono on Ordinal; the IsNormal-based path ((Ordinal.isNormal_add_right α).strictMono) gives α + 0 < α + ω₀ in one term.",
       "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order.",
       "S2-β-α surface (3 v4.26.0 naming deltas): Ordinal.zero_lt_one is not present at that name (use one_pos, instance-resolved); Ordinal.succ_pos shows as `0 < succ 0` not `0 < 0 + 1` (pattern miss for rwa [zero_add]); `have h1ne0 : (1 : Ordinal) ≠ 0 := one_ne_zero` fails universe inference (use `simpa [f] using h` to let simp resolve `1 ≠ 0` in unfolded `if`-context).",
-      "S2-β-α architecture: binary intersection of clubs reduces to diagInter unboundedness with 2-element family `f β = if β = 0 then C else D`; starting point `max α 1` ensures the witness γ satisfies both 0 < γ (for β=0 → γ ∈ C) and 1 < γ (for β=1 → γ ∈ D). This avoids an explicit zipper construction."
+      "S2-β-α architecture: binary intersection of clubs reduces to diagInter unboundedness with 2-element family `f β = if β = 0 then C else D`; starting point `max α 1` ensures the witness γ satisfies both 0 < γ (for β=0 → γ ∈ C) and 1 < γ (for β=1 → γ ∈ D). This avoids an explicit zipper construction.",
+      "S2-β-β technique: Ordinal.exists_fundamental_sequence + .choose gives a noncomputable cofinal sequence whose 0-th element is < α for any α with cof α.ord > 0. Wrapping this in `cofHead` with a junk-fallback `if h : 0 < α.cof.ord then ... else 0` keeps the def total without `WellFoundedRecursion` or `OrderBot` machinery.",
+      "S2-β-β bridge: `IsSuccLimit α → 0 < α.cof.ord` factors as aleph0_le_cof.mpr (ℵ₀ ≤ cof α) → Cardinal.ord_le_ord.mpr (ℵ₀.ord ≤ cof α.ord) → Cardinal.ord_aleph0 rewrite (ω₀ ≤ cof α.ord) → Ordinal.omega0_pos. Same bridge pattern as the S2-α `hω_lt` proof at line 390-392 — reusable idiom.",
+      "S2-β-β IsFundamentalSequence.lt usage: `(exists_fundamental_sequence α).choose_spec.lt h_cof_pos` directly gives `(choose 0 h_cof_pos) < α` — no need to unfold blsub or invoke strict_mono separately. The .lt projection is the cleanest API for 'k-th element < α' facts.",
+      "S2-β-β API design: the convenience form `exists_cofHead_constant_stationary_of_stationary` swallows the inter_isLimitOrdinals reduction inside Part IX's signature, so the future stationary_splits_binary writer can compose Part IX → Part X (fodor_anti_constant) → main without re-doing the WLOG-restrict-to-limits step."
     ],
     "mathlibGaps": [
       "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
@@ -70,7 +75,8 @@
       "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
     ],
     "nextSteps": [
-      "S2-β ACT (next picker): cofinal-sequence picking + fodor_anti_constant + stationary_splits_binary in new § Part IX (~150-180 LOC, refined from S3b §6's 200-270 LOC since this PR absorbed ~50 LOC of companion infrastructure).",
+      "S2-β-γ ACT (next picker): fodor_anti_constant — the index-of-first-disagreement companion (~60-80 LOC) using cofHead-style picker at index 1 plus a second Fodor application. The hypothesis structure is `IsStationaryBelow ({α ∈ S | g₀ α = β₀ ∧ g₁ α = β₁}) κ.ord ∧ IsStationaryBelow ({α ∈ S | g₀ α ≠ β₀ ∨ g₁ α ≠ β₁}) κ.ord` for some β₀, β₁; technical heart is showing the second set is stationary (canonical Solovay argument).",
+      "S2-β-δ ACT: stationary_splits_binary main theorem (~50-80 LOC after fodor_anti_constant). Wires Part VIII's inter_isLimitOrdinals + Part IX's exists_cofHead_constant_stationary_of_stationary + Part X's fodor_anti_constant via Disjoint packaging.",
       "S2-γ / S4+: Full Solovay splitting via iterated Fodor + Skolem (~400+ LOC, decompose into companions).",
       "S5+: Corollaries — club guessing, ◇_{ω₁}, Σ-products of ω₁."
     ]
@@ -108,17 +114,17 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-05-15T22:21:00Z",
+  "lastUpdate": "2026-05-25T03:38:02Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FodorPressingDown.lean",
       "filename": "FodorPressingDown.lean",
-      "lineCount": 568,
-      "theoremCount": 17,
+      "lineCount": 654,
+      "theoremCount": 20,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FodorPressingDown.lean"

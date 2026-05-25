@@ -526,6 +526,88 @@ theorem IsStationaryBelow.inter_isLimitOrdinals {S : Set Ordinal} {κ : Cardinal
   hS.inter_isClubBelow hκ hκ_unc (isLimitOrdinals_isClubBelow hκ hκ_unc)
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part IX: Solovay Splitting — Cofinal-Sequence Head (S2-β)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **0-th element of some fundamental sequence for `α`.**
+
+    For positive limit ordinals `α`, picks (via `Classical.choose`) a
+    fundamental sequence from `Ordinal.exists_fundamental_sequence` and
+    returns its 0-th term. For ordinals with `α.cof.ord = 0` (i.e. `α = 0`),
+    or with `α.cof.ord = 1` (successor ordinals), the predicate
+    `0 < α.cof.ord` may fail to gate the sequence; here we fall back to `0`.
+
+    This is the simplest regressive function on the class of positive limit
+    ordinals: any limit `α` has `ℵ₀ ≤ cof α` (`Ordinal.aleph0_le_cof`), so
+    `ω₀ ≤ cof α.ord` and in particular `0 < cof α.ord`; the 0-th term of
+    any fundamental sequence is `< α` by `IsFundamentalSequence.lt`.
+
+    The eventual use is to invoke `fodor` on the regressive function
+    `cofHead` over a stationary set of limit ordinals — see
+    `exists_cofHead_constant_stationary` below. -/
+noncomputable def cofHead (α : Ordinal) : Ordinal :=
+  if h : (0 : Ordinal) < α.cof.ord then
+    (Ordinal.exists_fundamental_sequence α).choose 0 h
+  else 0
+
+/-- **`cofHead` is strictly below the input on positive limit ordinals.**
+
+    For any `IsSuccLimit α`, the cofinality `cof α.ord` is at least `ω₀`,
+    so `0 < α.cof.ord`. Then the 0-th term of any fundamental sequence
+    for `α` is strictly below `α` (`IsFundamentalSequence.lt`). -/
+theorem cofHead_lt {α : Ordinal} (hα : IsSuccLimit α) : cofHead α < α := by
+  have h_cof_pos : (0 : Ordinal) < α.cof.ord := by
+    have h_aleph0 : ℵ₀ ≤ α.cof := Ordinal.aleph0_le_cof.mpr hα
+    have h_ord_le : (ℵ₀ : Cardinal).ord ≤ α.cof.ord :=
+      Cardinal.ord_le_ord.mpr h_aleph0
+    rw [Cardinal.ord_aleph0] at h_ord_le
+    exact lt_of_lt_of_le Ordinal.omega0_pos h_ord_le
+  simp only [cofHead, dif_pos h_cof_pos]
+  exact (Ordinal.exists_fundamental_sequence α).choose_spec.lt h_cof_pos
+
+/-- **Fodor's first application via `cofHead`.**
+
+    For any stationary set `S` of positive-limit ordinals below `κ.ord`,
+    `cofHead` is constant on some stationary subset of `S`: there exist
+    `β < κ.ord` and `S ∩ cofHead ⁻¹' {β}` stationary below `κ.ord`.
+
+    This is **Step (d)** of the canonical binary-Solovay-splitting proof
+    sketched in `sessions/2026-05-15-s3b-prep-disjointness-drill.md` §4.2:
+    apply Fodor to the regressive `cofHead : Ordinal → Ordinal` on the
+    WLOG-limits stationary set.
+
+    The companion theorems `IsStationaryBelow.inter_isClubBelow` and
+    `IsStationaryBelow.inter_isLimitOrdinals` (Part VIII) supply the
+    "restrict to limits" reduction that produces the hypothesis
+    `h_lim : ∀ α ∈ S, α < κ.ord ∧ IsSuccLimit α` from any stationary `S`. -/
+theorem exists_cofHead_constant_stationary {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord)
+    (h_lim : ∀ α ∈ S, α < κ.ord ∧ IsSuccLimit α) :
+    ∃ β < κ.ord, IsStationaryBelow (S ∩ cofHead ⁻¹' {β}) κ.ord := by
+  have hS_pos : ∀ α ∈ S, 0 < α := fun α hα => (h_lim α hα).2.bot_lt
+  have h_reg : ∀ α ∈ S, cofHead α < α := fun α hα => cofHead_lt (h_lim α hα).2
+  have h_lt_κord : ∀ α ∈ S, cofHead α < κ.ord := fun α hα =>
+    lt_trans (cofHead_lt (h_lim α hα).2) (h_lim α hα).1
+  exact fodor hκ hκ_unc hS hS_pos h_lt_κord h_reg
+
+/-- **Convenience form**: any stationary `S ⊆ κ.ord` produces a stationary
+    sub-subset on which `cofHead` is constant, after restricting `S` to its
+    limit-ordinal part via `IsStationaryBelow.inter_isLimitOrdinals`.
+
+    Output: `∃ β < κ.ord`, `IsStationaryBelow` of the triple intersection
+    `S ∩ {limits below κ.ord} ∩ cofHead⁻¹{β}`. This is the ready-to-use
+    form for the S2-β ACT writer (composes Part VIII corollary + Part IX
+    Fodor application in one statement). -/
+theorem exists_cofHead_constant_stationary_of_stationary {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    {S : Set Ordinal} (hS : IsStationaryBelow S κ.ord) :
+    ∃ β < κ.ord, IsStationaryBelow
+      (S ∩ {α : Ordinal | α < κ.ord ∧ IsSuccLimit α} ∩ cofHead ⁻¹' {β}) κ.ord :=
+  exists_cofHead_constant_stationary hκ hκ_unc
+    (hS.inter_isLimitOrdinals hκ hκ_unc) (fun _ hα => hα.2)
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -549,6 +631,10 @@ Key results:
   ✓ `IsClubBelow.inter`: binary intersection of clubs is a club (Solovay Step 2 companion)
   ✓ `IsStationaryBelow.inter_isClubBelow`: stationary ∩ club is stationary (Solovay Step 2 companion)
   ✓ `IsStationaryBelow.inter_isLimitOrdinals`: WLOG-restrict stationary to limit ordinals
+  ✓ `cofHead`: 0-th element of a chosen fundamental sequence (Solovay Step 2 regressive)
+  ✓ `cofHead_lt`: `cofHead α < α` for `IsSuccLimit α` (regressivity)
+  ✓ `exists_cofHead_constant_stationary`: Fodor's first application via `cofHead`
+  ✓ `exists_cofHead_constant_stationary_of_stationary`: ready-to-use S2-β form
 
 Sorries remaining: 0
 
