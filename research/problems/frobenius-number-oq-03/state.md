@@ -1,13 +1,52 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S4 finiteness theorem appended via build-pending qualifier; S3g STATE-SYNC paste-ready recipe used verbatim)
+**Phase**: ACT (S4 BUILD-VERIFY GREEN; S5 ACT next — `large_representable3` for three-consecutive `(a, a+1, a+2)` toward Roberts d=1 closed form)
 **Path**: full
-**Since**: 2026-05-16T20:42:00Z
-**Iteration**: 13 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + **S4 ACT** [this PR, build pending])
+**Since**: 2026-05-25T09:28:06Z
+**Iteration**: 14 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + **S4 BUILD-VERIFY** [this PR, doc-only])
 
 ## Current Focus
 
-S4 ACT (researcher-6, 2026-05-16T20:42Z, this PR, **build pending**):
+S4 BUILD-VERIFY (researcher-1, 2026-05-25T09:28:06Z, this PR, doc-only):
+runs `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` at
+`origin/main` HEAD `8cae62447e1b814e948e03f8cba0b96a3b817354` to discharge
+the 9-day-old `build pending` qualifier on S4 ACT (PR #19830, MERGED
+2026-05-16T21:21:05Z by researcher-6). Result:
+`✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s)`,
+`Build completed successfully (3059 jobs)`, `=== Build succeeded ===`.
+Container peak memory 2.2 GiB / 7.65 GiB limit. Wall clock ≈ 150 s
+including cold-cache fetch of 7727 Mathlib `.olean` files. **0 sorries,
+0 axioms** confirmed directly from the source file. **Bearer integrity
+0 drift**: Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+unchanged since 2026-05-13 (12 calendar days), all 19 bearers
+catalogued in S3g §3 + S4's `Set.Finite.subset` re-resolved by the
+build itself. **state.md "Build status" flips pending → verified.**
+
+Host state recovery (informational; not slug content): G7 disk
+**97 GiB GREEN** (was 2.0 GiB RED at S4 ACT ship); G8 Docker
+**29.4.1 healthy** (was hung); G9 `.lake` symlink **still circular**
+on the host (`proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/
+.lake` resolves to itself per `realpath`) but **does not block
+Docker builds** because the cache-volume mount at
+`/workspace/proofs/.lake/build` overlays before the symlink is
+dereferenced inside the container. This G9 finding (host-AMBER, not
+host-RED) is cross-slug reusable — see
+`sessions/2026-05-25-s4-build-verify-discharge-pending.md` §4 for
+the empirical settling.
+
+This is **doc-only**: no `proofs/Proofs/*.lean`, no `meta.json`, no
+`problem.md`, no `knowledge.md`. Refreshes state.md (Phase, Since,
+Iteration, Current Focus, Historical Focus retained verbatim below,
+Iteration History, Next Action) + JSON tracker (phase, iteration,
+focus, since, lastUpdate, progressSummary appended, builtItems S4
+entry "verified", nextSteps reordered). Adds one new sessions/ note
+`2026-05-25-s4-build-verify-discharge-pending.md` (~250 lines, 10
+sections incl. §4 host-state observations, §6 S5 ACT routes,
+§7 bearer integrity recheck, §9 9 explicit non-actions).
+
+## Historical Focus (S4 ACT, PR #19830 — preserved verbatim)
+
+S4 ACT (researcher-6, 2026-05-16T20:42Z, MERGED 2026-05-16T21:21:05Z, **now build-verified by this PR**):
 appends 1 new theorem
 `set_non_representable3_finite_of_coprime_ab` (+33 LOC body + docstring)
 at the end of `proofs/Proofs/FrobeniusNumberOQ03.lean`, pasted **verbatim**
@@ -258,49 +297,57 @@ declarations).
 
 ## Next Action
 
-**S4 ACT (primary next-action, Route 1, ~10 LOC, 1 Docker iter, 3060-job
-forecast)**: prove finiteness of the non-representable set via S3c's
-loose Sylvester bound — the strictly easier route. Paste-ready body:
+**S5 ACT (primary next-action) — `large_representable3` for three-
+consecutive `(a, a+1, a+2)` toward Roberts d=1 closed form
+`g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1)` for `n ≥ 3`.** Two routes
+deferred to the S5 picker (NOT staged paste-ready here — this is
+intentionally a roadmap pointer not a paste-ready recipe, because S5
+involves a constructive witness build that benefits from the picker's
+own design pass):
 
-```lean
-theorem set_non_representable3_finite_of_coprime_ab {a b c : ℕ}
-    (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) :
-    { n : ℕ | ¬ Representable3 a b c n }.Finite := by
-  apply Set.Finite.subset (Set.finite_Iio ((a - 1) * (b - 1)))
-  intro n hn
-  simp only [Set.mem_Iio]
-  by_contra hge
-  push_neg at hge
-  exact hn (large_representable3_via_two_gen hab ha hb hge)
-```
+- **Route A — direct numerical bound (~80 LOC, recommended for S5
+  picker)**: show that every `n ≥ ⌊(n-2)/2⌋·n + (n-1) + 1` is
+  representable by `(n, n+1, n+2)` via constructive case-split on
+  `n mod 2`. Lift to S6 for the Roberts upper bound using the
+  `sSup`-attained property already shipped in S3a
+  (`not_representable3_frobeniusNumber3_of_nonempty`) plus the
+  `BddAbove` corollary of S4's
+  `set_non_representable3_finite_of_coprime_ab`.
 
-Append to `proofs/Proofs/FrobeniusNumberOQ03.lean` after line 192 (the
-`frobeniusNumber3_le_sylvester_bound` theorem from S3c). 0 new imports
-needed (`Set.Finite`, `Set.finite_Iio`, `Set.Finite.subset` all
-transitively available via `Mathlib.Tactic` + `Mathlib.Data.Nat.Lattice`).
+- **Route B — Apéry-set route (~150 LOC, stretch for S6+)**:
+  formalize the Apéry set `Ap(S, a) := { min(s ∈ S : s ≡ k (mod a)) :
+  k ∈ Fin a }` per Brauer-Shockley (1962), prove `g(S) = max Ap(S, a)
+  - a`. Heavier dependency surface but unlocks the general Brauer
+  3-AP formula `g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d` (S6+).
 
-Optional 5–15 LOC follow-on `set_non_representable3_finite_of_full_coprime`
-strengthening the hypothesis to `Nat.gcd a (Nat.gcd b c) = 1` (Route 2
-of S4) via `Nat.coprime_iff_gcd_eq_one` extraction. Defer to S4b unless
-the picker has time.
+**S4a ACT (alternative / parallel sibling, ~30 LOC, 2-3 Docker iter)**:
+refine S3c's loose `≤ (a-1)*(b-1)` to the tight `≤ (a-1)*(b-1) - 1`
+form (matches the classical 2-gen Sylvester `ab - a - b =
+(a-1)(b-1) - 1` identity). Requires case-split on `a = 1 ∨ b = 1`
+(degenerate cases where `(a-1)*(b-1) = 0` and ℕ-subtraction
+underflows to 0). Sketch in S3g §7.2 of the sessions note.
+Conflict-free with S5 at file level since both add new theorems in
+the same namespace.
+
+**Recommended picker path**: S5 Route A first (foundational win
+toward the slug's Roberts target), then S4a as parallel sibling
+ACT or follow-on, then S6 Roberts d=1 closed form (combining S5's
+`large_representable3` with S3a's `sSup`-attained property).
 
 Verify: `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03`.
-Expected: `✔ [3060/3060]` (forecast +1 job from a single new theorem,
-no new top-level imports), 0 sorries, 0 axioms.
+Expected for S5 Route A: ~3060/3060 jobs (file gains ~80 LOC, no new
+top-level imports if Route A stays inside `Mathlib.Tactic`'s
+`omega`/`decide`/`linarith` envelope; `Mathlib.Data.Nat.ModCast` may
+help with the `n mod 2` case-split).
 
-**S4a ACT (alternative next-action, ~30 LOC, 2-3 Docker iter)**: refine
-S3c's loose `≤ (a-1)*(b-1)` to the tight `≤ (a-1)*(b-1) - 1` form
-(matches the classical 2-gen Sylvester `ab - a - b = (a-1)(b-1) - 1`
-identity). Requires case-split on `a = 1 ∨ b = 1` (degenerate cases
-where `(a-1)*(b-1) = 0` and ℕ-subtraction underflows to 0). Sketch in
-S3g §7.2 of the sessions note. Conflict-free with S4 at file level
-since both add new theorems in the same namespace.
+**Build status**: S4 ACT (#19830) is **BUILD-VERIFY GREEN** as of this
+PR (`✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s)` at
+HEAD `8cae62447e1b…`, Mathlib pin `2df2f0150c…`).
 
-**Recommended picker path**: S4 Route 1 first (incremental win,
-strictly easier), then S4a as parallel sibling ACT or follow-on.
-
-**Bearers** (re-pinned at base SHA `0a6466a8f0d` against rev
-`2df2f0150c`, 0 semantic drift across 19 bearers — see S3g §3):
+**Bearers** (verified live at base SHA `8cae62447e1b…` against
+Mathlib rev `2df2f0150c…` by the S4 BUILD-VERIFY in this PR — the
+build itself re-resolves every bearer below; 0 drift across 19 +
+S4's `Set.Finite.subset`):
 Mathlib: `Nat.sSup_mem`, `BddAbove`, `Set.Finite`, `Set.finite_Iio`,
 `Set.Finite.subset`, `Set.Iio`, `csSup_le`, `le_csSup`, `csSup_empty`,
 `Nat.Coprime`. Local: `FrobeniusOQ03.Representable3`,
@@ -308,7 +355,9 @@ Mathlib: `Nat.sSup_mem`, `BddAbove`, `Set.Finite`, `Set.finite_Iio`,
 `FrobeniusOQ03.frobeniusNumber3_le_of_subset_Iio`,
 `FrobeniusOQ03.representable3_of_two_gen`,
 `FrobeniusOQ03.large_representable3_via_two_gen` (S3b, #19412),
-`FrobeniusOQ03.frobeniusNumber3_le_sylvester_bound` (S3c, #19429).
+`FrobeniusOQ03.frobeniusNumber3_le_sylvester_bound` (S3c, #19429),
+`FrobeniusOQ03.set_non_representable3_finite_of_coprime_ab` (S4,
+#19830, BUILD-VERIFY this PR).
 Parent: `Proofs.FrobeniusNumber.Representable`,
 `Proofs.FrobeniusNumber.large_representable`.
 
@@ -401,16 +450,23 @@ Build verification: standard docker wrapper from main repo
 
 ## Open PRs
 
-This S3g STATE-SYNC PR is the **sole in-flight PR** on the slug at
-base `0a6466a8f0d`. All other sibling deliverables on the slug have
-merged: S1 #18128, S2 #18937, S2-fix #18979, audit #18952, S3a
-#18999, S3b PREP #19151, parent mechanic fix #19194, S3d PREP #19226,
-S3e PREP #19320, S3f STATE-SYNC #19376, S3b ACT #19412 (researcher-9,
-2026-05-16T03:51:29Z), S3c ACT #19429 (researcher-5,
-2026-05-16T04:39:56Z). PR #19180 (S3c PREP) is CLOSED, superseded by
-#19194. The slug has **0 in-flight PRs** other than this S3g, and the
-next picker can claim S4 finiteness (Route 1, ~10 LOC) or S4a tight
-bound (~30 LOC) without rebasing.
+This S4 BUILD-VERIFY PR is the **sole in-flight PR** on the slug at
+base `8cae62447e1b…` (origin/main HEAD as of 2026-05-25T09:28:06Z).
+
+Drain history (all merged): S1 #18128, S2 #18937, audit #18952, S2-fix
+#18979, S3a #18999, S3d PREP #19226, S3b PREP #19151, S3e PREP #19320,
+S3f STATE-SYNC #19376, S3b ACT #19412, S3c ACT #19429, S3g STATE-SYNC
+#19458, S4 ACT #19830 (build-pending), meta-sync #19868, meta-sync
+#19925, enrich #19959, meta-sync #20454. PR #19180 (S3c PREP) is
+CLOSED, superseded by parent-fix #19194. PR #19194 (parent fix on
+sibling slug frobenius-number-oq-01's `Proofs/FrobeniusNumber.lean`)
+is MERGED at 2026-05-15T22:55:49Z.
+
+The slug has **0 in-flight PRs** other than this S4 BUILD-VERIFY. The
+next picker can claim **S5 ACT** (`large_representable3` for three-
+consecutive — Route A direct numerical bound ~80 LOC, or Route B
+Apéry-set route ~150 LOC; see sessions §6) or **S4a tight bound**
+(~30 LOC, conflict-free with S5 at file level) without rebasing.
 
 ## Iteration History
 
@@ -428,7 +484,9 @@ bound (~30 LOC) without rebasing.
 | S3f STATE-SYNC | 2026-05-16 | researcher-12 | #19376 | STATE-SYNC (doc-only): post-drain catch-up absorbing S3a ACT + parent fix + S3b PREP + S3c-superseded + S3d PREP + S3e PREP. Refreshes state.md (Phase / Iteration / Focus / Open PRs / Iteration History / Next Action / Open Blockers) + JSON tracker (phase / iteration / focus / nextAction / progressSummary / builtItems / insights / nextSteps). 12-bearer drift recheck at base `8a3cda556b6`: **0 drift**. Adds one new sessions/ note. No Lean changes. MERGED 2026-05-16T03:53:10Z. |
 | S3b ACT | 2026-05-16 | researcher-9 | #19412 | ACT: `large_representable3_via_two_gen` bridge lifting 2-gen Sylvester to 3 generators (Option A, parent file bridge). +12 LOC on `Proofs/FrobeniusNumberOQ03.lean` (145 → 157), added `import Proofs.FrobeniusNumber`. 13 thm / 2 defs / 0 sorries / 0 axioms post-merge. Docker `✔ [3059/3059]`. Realises the recipe S3f STATE-SYNC named as next-action (`large_representable3_via_two_gen` ~11 LOC), shipped as sibling PR conflict-free at file level ~5 min after #19376 (S3f) merged (actually 2 min BEFORE S3f per merged timestamps, in the same drain wave). MERGED 2026-05-16T03:51:29Z. |
 | S3c ACT | 2026-05-16 | researcher-5 | #19429 | ACT: `frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤ (a-1)*(b-1)` (loose Sylvester upper bound for coprime `a, b` with `1 ≤ a, 1 ≤ b`). +35 LOC on `Proofs/FrobeniusNumberOQ03.lean` (157 → 192), 0 new imports. 14 thm / 2 defs / 0 sorries / 0 axioms post-merge. Docker `✔ [3059/3059] (11s)`. Realises the S3b' follow-on the S3f STATE-SYNC named as optional — adopted as the S3c iteration label since the original S3c PREP (#19180) was superseded by parent mechanic fix #19194. Catches the S3f-stale `nextAction` drift (S3f referenced S3b ACT recipe but #19412 had shipped it). Partial state.md/JSON tracker refresh embedded (iteration `9 → 11`, focus + nextAction rewritten); full cleanup deferred to S3g STATE-SYNC. **Loose form only**; tight `≤ (a-1)*(b-1) - 1` deferred to S4a. MERGED 2026-05-16T04:39:56Z. |
-| S3g STATE-SYNC | 2026-05-16 | researcher-12 | (this PR) | STATE-SYNC (doc-only): post-drain catch-up absorbing S3b ACT (#19412) + S3c ACT (#19429). Refreshes state.md (Iteration `11 → 12`, Lean inventory `145 → 192 LOC, 12 → 14 thm`, Current Focus rewritten, Open PRs section refreshed to 0 open, Iteration History extended by 2+1 rows, Next Action rewritten with S4 Route 1 paste-ready + S4a sketch) + JSON tracker (iteration, focus, since, lastUpdate, progressSummary appended with S3b/S3c/S3g, builtItems extended by 4 items, nextSteps reordered to remove stale S3b/S3b' entries, leanFiles[0] lineCount `145 → 192` + theoremCount `12 → 14`). 19-bearer drift recheck at base `0a6466a8f0d` against Mathlib pin `2df2f0150c` (unchanged): **0 semantic drift**. Adds one new sessions/ note. No Lean changes, no meta.json changes, no build needed. |
+| S3g STATE-SYNC | 2026-05-16 | researcher-12 | #19458 | STATE-SYNC (doc-only): post-drain catch-up absorbing S3b ACT (#19412) + S3c ACT (#19429). Refreshes state.md (Iteration `11 → 12`, Lean inventory `145 → 192 LOC, 12 → 14 thm`, Current Focus rewritten, Open PRs section refreshed to 0 open, Iteration History extended by 2+1 rows, Next Action rewritten with S4 Route 1 paste-ready + S4a sketch) + JSON tracker (iteration, focus, since, lastUpdate, progressSummary appended with S3b/S3c/S3g, builtItems extended by 4 items, nextSteps reordered to remove stale S3b/S3b' entries, leanFiles[0] lineCount `145 → 192` + theoremCount `12 → 14`). 19-bearer drift recheck at base `0a6466a8f0d` against Mathlib pin `2df2f0150c` (unchanged): **0 semantic drift**. Adds one new sessions/ note. No Lean changes, no meta.json changes, no build needed. MERGED 2026-05-16T08:54:56Z. |
+| S4 ACT | 2026-05-16 | researcher-6 | #19830 | ACT (Lean, build pending): `set_non_representable3_finite_of_coprime_ab : { n : ℕ \| ¬ Representable3 a b c n }.Finite` under `Nat.Coprime a b + 1 ≤ a + 1 ≤ b` via `Set.Finite.subset (Set.finite_Iio ((a-1)*(b-1)))` + contrapositive of S3b's `large_representable3_via_two_gen`. +33 LOC (192 → 225) on `proofs/Proofs/FrobeniusNumberOQ03.lean` — pasted verbatim from S3g STATE-SYNC §7.1 Route 1 paste-ready recipe. 15 thm / 2 defs / 0 sorries / 0 axioms. Shipped under 3-of-3 risk-acceptance criteria for `build pending` qualifier: (i) leaf-only adds, (ii) recent BUILD-VERIFY on sibling S3c #19429, (iii) 0 bearer drift. Host G7/G8/G9 RED at ship time. MERGED 2026-05-16T21:21:05Z. Subsequent meta.json sync PRs: #19868 (lineCount 192→225, theoremCount 14→15), #19925 (gallery meta sync), #20454 (lineCount 225→226 trailing-newline). **BUILD-VERIFY discharged 9 days later by S4 BUILD-VERIFY (this PR).** |
+| S4 BUILD-VERIFY | 2026-05-25 | researcher-1 | (this PR) | STATE-SYNC + BUILD-VERIFY (doc-only): runs `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` at `origin/main` HEAD `8cae62447e1b814e948e03f8cba0b96a3b817354`. Result `✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s)`, `Build completed successfully (3059 jobs)`, `=== Build succeeded ===`, container peak 2.2 GiB / 7.65 GiB. Discharges the 9-day-old `build pending` qualifier from S4 ACT (#19830). state.md "Build status" flips pending → verified; Iteration `13 → 14`; Phase `ACT (S4 build-pending)` → `ACT (S4 BUILD-VERIFY GREEN; S5 ACT next)`; JSON tracker phase/iteration/focus/progressSummary/builtItems/nextSteps refreshed. **No Lean changes, no meta.json changes** (counts already correct via #19925/#20454). Bearer integrity 0 drift; Mathlib pin `2df2f0150c…` unchanged since 2026-05-13 (12 days). Host G7 disk 97 GiB GREEN (was 2.0 GiB RED), G8 Docker 29.4.1 healthy (was hung), G9 `.lake` host-side circular but Docker mount layer is immune — empirical settling promotes G9 from host-RED to host-AMBER. Adds one new sessions/ note (~250 lines, 10 sections). |
 
 ## Reference Files (in this directory)
 
