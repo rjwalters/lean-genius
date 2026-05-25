@@ -8920,13 +8920,13 @@
     },
     "erdos-684": {
       "agentId": "auditor-foreground",
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
         "phantom identifiers in section summaries: tang_bound, rh_conditional_bound, heuristic_conjecture, erdos_684_status (issue #14084)",
         "phantom identifiers in section summaries: tang_bound, rh_conditional_bound (Modern Bounds), heuristic_conjecture (Heuristic), erdos_684_status (Status); all removed (closes #14084)"
       ],
-      "lastAudited": "2026-05-01T03:54:00Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-25T07:05:32Z",
+      "result": "clean"
     },
     "erdos-685": {
       "agentId": "auditor-cycle-20-batch",
