@@ -57,6 +57,8 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Analysis.Asymptotics.Defs
+import Mathlib.Order.Filter.AtTopBot.Basic
 
 namespace Erdos101OQ01
 
@@ -202,6 +204,136 @@ theorem bounds_at_rate_quadratic_over_twelve :
       ≤ ((n * (n - 1) / 12 : ℕ) : ℝ) := by exact_mod_cast hN
     _ ≤ ((n * n / 12 : ℕ) : ℝ) := by exact_mod_cast hbound_nat
     _ ≤ (n : ℝ)^2 / 12 := hcast
+
+/- ## S11 ACT — IsBigO / IsLittleO bridge to Mathlib idiom
+
+The following three artifacts bridge the slug-local asymptotic vocabulary
+(`IsLittleOh_n_squared`, `BoundsAtRate`) to Mathlib's standard
+`Asymptotics.IsBigO` / `Asymptotics.IsLittleO` predicates on filter
+`Filter.atTop`. The bridge enables OQ-01 to be cited and consumed by
+downstream gallery work using the canonical Mathlib asymptotic idiom,
+without giving up the elementary slug-local forms.
+
+Artifact (i): aggregator `maxFourPointLines n := n*(n-1)/12` and its
+`IsBigO atTop (·^2)` certificate, plus the per-`P` `NoFiveCollinear`-gated
+corollary (the `NoFiveCollinear` hypothesis is load-bearing: without it,
+9 collinear points give `fourPointLineCount = C(9,4) = 126 > 6`).
+
+Artifact (ii): the bridge lemma `IsLittleOh_n_squared ↔ IsLittleO atTop`
+with the standard `c := ε/2` lift in the `←` direction.
+
+Artifact (iii): the Mathlib-idiom existential form of OQ-01 and its
+equivalence with the existing `erdos_101_oq_01_rate_form`; the main
+OPEN theorem is rephrased as `erdos_101_oq_01_isLittleO`.
+-/
+
+/-- Aggregator: an `n`-only upper bound on the maximum
+`fourPointLineCount` over no-five-collinear sets of size `n`, using the
+elementary `improved_upper_bound` surrogate `n*(n-1)/12`. -/
+noncomputable def maxFourPointLines (n : ℕ) : ℕ :=
+  n * (n - 1) / 12
+
+/-- The aggregator `maxFourPointLines` is `O(n²)` at infinity, in
+Mathlib's `Asymptotics.IsBigO` idiom on filter `Filter.atTop`. -/
+theorem maxFourPointLines_isBigO_n_squared :
+    Asymptotics.IsBigO Filter.atTop
+      (fun n : ℕ => (maxFourPointLines n : ℝ))
+      (fun n : ℕ => (n : ℝ)^2) := by
+  apply Asymptotics.IsBigO.of_norm_le
+  intro n
+  -- goal: ‖(maxFourPointLines n : ℝ)‖ ≤ (n : ℝ)^2  (single norm, RHS bare)
+  rw [Real.norm_of_nonneg (by positivity)]
+  unfold maxFourPointLines
+  have hbnd : n * (n - 1) / 12 ≤ n * n :=
+    (Nat.div_le_self _ 12).trans (Nat.mul_le_mul_left n (Nat.sub_le n 1))
+  have hcast : ((n * (n - 1) / 12 : ℕ) : ℝ) ≤ ((n * n : ℕ) : ℝ) :=
+    Nat.cast_le.mpr hbnd
+  have hsq : ((n * n : ℕ) : ℝ) = (n : ℝ)^2 := by push_cast; ring
+  linarith
+
+/-- Per-`P` corollary: for every no-five-collinear planar point set `P`,
+`fourPointLineCount P ≤ maxFourPointLines |P|`. The `NoFiveCollinear`
+hypothesis is load-bearing — without it, `P` could place 9 points on a
+line, giving `fourPointLineCount P = C(9,4) = 126 > 6 = maxFourPointLines 9`. -/
+theorem fourPointLineCount_le_max (P : PlanarPointSet)
+    (hP : NoFiveCollinear P) :
+    (fourPointLineCount P : ℝ) ≤ (maxFourPointLines P.points.card : ℝ) := by
+  have h₁ : fourPointLineCount P ≤
+      P.points.card * (P.points.card - 1) / 12 :=
+    improved_upper_bound P hP
+  exact_mod_cast h₁
+
+/-- Bridge: the slug-local strict-`<` predicate `IsLittleOh_n_squared g`
+is equivalent to Mathlib's `Asymptotics.IsLittleO Filter.atTop (↑g) (·^2)`
+non-strict form. The `→` direction is direct (`Real.norm_of_nonneg` for
+each side); the `←` direction uses the standard `c := ε/2` lift, with an
+`n ≥ 1` floor to ensure `(n : ℝ)^2 > 0` for the strict-gap step. -/
+lemma isLittleOh_n_squared_iff_isLittleO (g : ℕ → ℕ) :
+    IsLittleOh_n_squared g ↔
+      Asymptotics.IsLittleO Filter.atTop
+        (fun n : ℕ => (g n : ℝ))
+        (fun n : ℕ => (n : ℝ)^2) := by
+  unfold IsLittleOh_n_squared
+  rw [Asymptotics.isLittleO_iff]
+  constructor
+  · intro hslug c hc
+    rw [Filter.eventually_atTop]
+    obtain ⟨N, hN⟩ := hslug c hc
+    refine ⟨N, fun n hn => ?_⟩
+    have h := hN n hn
+    rw [Real.norm_of_nonneg (by positivity),
+        Real.norm_of_nonneg (by positivity)]
+    linarith
+  · intro hmathlib ε hε
+    have hhalf : (0 : ℝ) < ε / 2 := by linarith
+    have hev := hmathlib hhalf
+    rw [Filter.eventually_atTop] at hev
+    obtain ⟨N₀, hN₀⟩ := hev
+    refine ⟨max N₀ 1, fun n hn => ?_⟩
+    have hn₀ : N₀ ≤ n := (le_max_left _ _).trans hn
+    have hn₁ : 1 ≤ n := (le_max_right _ _).trans hn
+    have h := hN₀ n hn₀
+    rw [Real.norm_of_nonneg (by positivity),
+        Real.norm_of_nonneg (by positivity)] at h
+    have hn_sq_pos : (0 : ℝ) < (n : ℝ)^2 := by
+      have h1 : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn₁
+      positivity
+    nlinarith
+
+/-- **OQ-01, Mathlib-idiom existential form.** There exists `g : ℕ → ℕ`
+that is `o(n²)` (in `Asymptotics.IsLittleO Filter.atTop … (·^2)` sense)
+and bounds `fourPointLineCount P` for every no-five-collinear `P`. This
+is the Mathlib-idiom twin of `erdos_101_oq_01_rate_form` and is **OPEN**
+($100 Erdős prize). -/
+def erdos_101_oq_01_isLittleO_form : Prop :=
+  ∃ g : ℕ → ℕ,
+    Asymptotics.IsLittleO Filter.atTop
+      (fun n : ℕ => (g n : ℝ))
+      (fun n : ℕ => (n : ℝ)^2) ∧
+    BoundsAtRate (fun n : ℕ => (g n : ℝ))
+
+/-- The slug-local `erdos_101_oq_01_rate_form` and the Mathlib-idiom
+`erdos_101_oq_01_isLittleO_form` are equivalent, via the bridge lemma
+`isLittleOh_n_squared_iff_isLittleO`. -/
+theorem erdos_101_oq_01_rate_form_iff_isLittleO :
+    erdos_101_oq_01_rate_form ↔ erdos_101_oq_01_isLittleO_form := by
+  unfold erdos_101_oq_01_rate_form erdos_101_oq_01_isLittleO_form
+  constructor
+  · rintro ⟨g, h_olittle, h_bounds⟩
+    refine ⟨g, (isLittleOh_n_squared_iff_isLittleO g).mp h_olittle, ?_⟩
+    intro P hP
+    exact_mod_cast h_bounds P hP
+  · rintro ⟨g, h_olittle_mathlib, h_bounds⟩
+    refine ⟨g, (isLittleOh_n_squared_iff_isLittleO g).mpr h_olittle_mathlib, ?_⟩
+    intro P hP
+    exact_mod_cast h_bounds P hP
+
+/-- **OQ-01, Mathlib-idiom form (OPEN main theorem).** Equivalent to
+`erdos_101_oq_01` via the chain `erdos_101_oq_01_conjecture →
+erdos_101_oq_01_rate_form ↔ erdos_101_oq_01_isLittleO_form`. The proof
+is OPEN ($100 Erdős prize). -/
+theorem erdos_101_oq_01_isLittleO : erdos_101_oq_01_isLittleO_form := by
+  sorry
 
 /- ## The OPEN refinement and its consequences
 
