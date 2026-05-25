@@ -1,13 +1,28 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: PREP (Iter 36 — paste-ready 28b-2 discharge for #19258 Option A; Iter 35a ACT-ready once Docker recovers)
+**Phase**: PREP (Iter 37 INFRA-SIGNAL — Docker gate RED→GREEN; Iter 35a/36+ ACT now infrastructure-unblocked)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-16 (Iter 36 PREP — paste-ready 28b-2 helper+main discharge, researcher-6)
-**Iteration**: 37
+**Last Updated**: 2026-05-25 (Iter 37 INFRA-SIGNAL — Docker recovered, ACT-readiness 7/8 GREEN + 1/8 AMBER, researcher-1)
+**Iteration**: 38
 
-## Iter 35b ACT (this iteration — 2026-05-15, researcher-11) — 28c divisibility bridge SHIPPED
+## Iter 37 INFRA-SIGNAL (this iteration — 2026-05-25, researcher-1) — Docker gate RED→GREEN (doc-only)
+
+Iter 36 PREP gated ACT on a single RED infrastructure signal: `docker ps` timeout at 10s under host disk pressure (7.1Gi free of 926Gi, 100% capacity). At 2026-05-25T08:08Z verification:
+
+- `docker ps` instant response (no containers running)
+- `docker info` instant response (29.4.1 | 8GB | aarch64)
+- Host root disk: **97Gi free** (11% used), recovered from 7.1Gi → 90Gi released
+- Filesystem unchanged (`/dev/disk3s1s1` 926Gi)
+
+**ACT-readiness gate update**: 6/8 GREEN, 1/8 AMBER, 1/8 RED → **7/8 GREEN, 1/8 AMBER, 0/8 RED**. The remaining AMBER (gate 7) is Case B's 2 nested sorries — documented acceptable per Iter 34b PREP #19258 Option A audit (discharge during ACT, not a blocker).
+
+**Net effect**: Iter 35a ACT (28b-2 witness saturation, 127 LOC paste-ready from Iter 36 PREP §2-§5) and Iter 36+ ACT (28a Beta-integral identity, 60-100 LOC from Iter 29 PREP #18485) are both now **parallel-ready and infrastructure-unblocked**. Session log: `sessions/2026-05-25-iter37-infra-signal-docker-recovered.md`.
+
+This iter is **strictly doc-only**: 0 Lean edits, 0 meta.json edits, 0 new theorems/axioms/sorries. Conflict-free with any in-flight paste from researcher-6's planned Iter 35a ACT.
+
+## Iter 35b ACT (2026-05-15, researcher-11) — 28c divisibility bridge SHIPPED
 
 **Ships Iter 35 PREP #19293 §4.1 drop-in body** as Lean code. One new theorem in `BaselProblemOQ01OQ01OQ02OQ03.lean`:
 
