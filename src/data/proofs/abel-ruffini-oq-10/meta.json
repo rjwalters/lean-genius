@@ -24,7 +24,7 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 2,
     "assumptions": "chebotarev_density: For a Galois extension L/ℚ with group G and conjugacy class C ⊆ G, the natural density of primes with Frobenius in C is |C|/|G|. Chebotarev (1922). Proof requires Dedekind domain theory, Frobenius elements, and L-function analytic continuation — not in Mathlib. | dirichlet_density: For gcd(a,n)=1, primes p ≡ a (mod n) have density 1/φ(n). Dirichlet (1837). Provable from chebotarev_density via cyclotomic fields; stated separately for clarity.",
-    "lineCount": 370,
+    "lineCount": 369,
     "theoremCount": 23,
     "definitionCount": 1,
     "originalContributions": [
@@ -180,6 +180,31 @@
       "targetId": "abel-ruffini-oq-09",
       "relationship": "companion",
       "description": "Liouville's theorem on non-elementary integration — another analytic companion to Abel-Ruffini, showing that just as some polynomials have no radical solutions, some integrals have no elementary antiderivatives"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "generalizes",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions is exactly the cyclotomic special case of Chebotarev: applying chebotarev_density to L = ℚ(ζₙ)/ℚ (with Gal ≅ (ℤ/nℤ)ˣ abelian, so each conjugacy class is a singleton {a}) gives density 1/φ(n) for primes p ≡ a (mod n). This entry encodes that derivation directly as the dirichlet_density axiom and the primes_one_mod_n_density theorem."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The degree-2 case of the Frobenius/Chebotarev picture. For the quadratic field ℚ(√d), the Frobenius at an unramified prime p is determined by the Legendre symbol (d/p): p splits iff (d/p)=1. Chebotarev then says each of the two splitting behaviours occurs with density 1/2 — the analytic shadow of the reciprocity law that governs (d/p)."
+    },
+    {
+      "targetId": "prime-number-theorem",
+      "relationship": "related",
+      "description": "Chebotarev density generalizes the Prime Number Theorem: PNT is the trivial-extension case L = ℚ (group of order 1, density 1 for all primes), and the same L-function analytic-continuation machinery that yields PNT, applied to Artin/Hecke L-functions of L/ℚ, yields the prime densities used throughout this entry."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Concrete realization Gal(x⁵−4x+2/ℚ) ≅ S₅. Chebotarev density is the standard computational tool for verifying such a Galois group: factoring the polynomial mod many primes reveals Frobenius cycle types whose observed frequencies must match the S₅ conjugacy-class densities (1/120, 1/4, 1/3, …) tabulated here — so this entry supplies the statistical signature that pins down that quintic's group."
+    },
+    {
+      "targetId": "inverse-galois-a5",
+      "relationship": "related",
+      "description": "Realizes A₅ as a Galois group over ℚ. The A₅ conjugacy-class structure computed here (notably the 24 five-cycles splitting into TWO classes of 12, unlike the single class of 24 in S₅) is exactly the density signature that distinguishes an A₅ realization from an S₅ one via prime-splitting statistics."
     }
   ],
   "mainTheorems": [
@@ -289,7 +314,7 @@
     ],
     "opens": ["AbelRuffiniGaloisExtensions", "Finset"],
     "namespace": "AbelRuffiniOQ10",
-    "lineCount": 370,
+    "lineCount": 369,
     "axiomCount": 2,
     "theoremCount": 23,
     "definitionCount": 1,
