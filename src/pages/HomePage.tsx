@@ -10,7 +10,7 @@ import { BookOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, Ar
 import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
-type SortOption = 'newest' | 'oldest' | 'alphabetical'
+type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'updated'
 
 // Parse MM/DD/YY to Date object
 function parseDateAdded(dateStr?: string): Date {
@@ -38,7 +38,7 @@ export function HomePage() {
   const [sortBy, setSortBy] = useUrlState<SortOption>(
     'sort',
     'newest',
-    serializers.enum('newest', ['newest', 'oldest', 'alphabetical'])
+    serializers.enum('newest', ['newest', 'oldest', 'alphabetical', 'updated'])
   )
   const [showWiedijkOnly, setShowWiedijkOnly] = useUrlState('wiedijk', false, serializers.boolean)
   const [showHilbertOnly, setShowHilbertOnly] = useUrlState('hilbert', false, serializers.boolean)
@@ -107,6 +107,14 @@ export function HomePage() {
           return parseDateAdded(a.dateAdded).getTime() - parseDateAdded(b.dateAdded).getTime()
         case 'alphabetical':
           return a.title.localeCompare(b.title)
+        case 'updated': {
+          // Sort by git-derived updatedAt (ISO) descending. Fall back to
+          // dateAdded for any entry missing the field so the list stays
+          // stable on pre-rebuild data.
+          const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : parseDateAdded(a.dateAdded).getTime()
+          const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : parseDateAdded(b.dateAdded).getTime()
+          return bUpdated - aUpdated
+        }
         default:
           return 0
       }
@@ -238,6 +246,7 @@ export function HomePage() {
               >
                 <option value="newest">Newest</option>
                 <option value="oldest">Oldest</option>
+                <option value="updated">Recently updated</option>
                 <option value="alphabetical">A-Z</option>
               </select>
             </div>
