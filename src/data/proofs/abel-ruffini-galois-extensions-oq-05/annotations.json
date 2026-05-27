@@ -72,6 +72,18 @@
     "prerequisites": ["Subgroup in Lean 4", "Normal subgroup", "quotient group G ⧸ N"]
   },
   {
+    "id": "ann-implies-converse",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 169, "endLine": 177 },
+    "type": "theorem",
+    "title": "shafarevich_implies_converse: Naming the Sufficiency Direction",
+    "content": "This theorem restates `solvable_iff_shafarevich_realizable` under a name chosen to emphasize its logical role. The full Galois-theoretic characterization is a biconditional — *G is solvable iff G is the Galois group of a solvable extension over ℚ* — and this file is careful to label which half lives where. The *necessity* (⇒) half is Abel-Ruffini, proved in the parent file: if a radical (hence solvable) extension realizes G, then G must be solvable. The *sufficiency* (⇐) half is Shafarevich: every finite solvable group actually occurs. `shafarevich_implies_converse` is the sufficiency half, and its body is a one-line delegation (`:= solvable_iff_shafarevich_realizable`) — definitionally identical to the abstract theorem, so it adds no new mathematical content. Its value is documentary: it gives the converse direction its own citable name, foreshadowing a future bidirectional `Iff` bundle that would consume exactly these two halves once Mathlib carries both directions in one namespace. The deliberate redundancy keeps the file self-documenting about the necessity/sufficiency split that is the conceptual heart of the Abel-Ruffini ↔ Shafarevich duality.",
+    "mathContext": "Sufficiency: $G$ solvable $\\Rightarrow \\exists\\, L/\\mathbb{Q}$ Galois with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ (Shafarevich, this file). Necessity: $L/\\mathbb{Q}$ radical $\\Rightarrow \\mathrm{Gal}(L/\\mathbb{Q})$ solvable (Abel-Ruffini, parent file). Combined: $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$ for some radical $L/\\mathbb{Q}$ $\\iff$ $G$ solvable.",
+    "significance": "supporting",
+    "relatedConcepts": ["solvable_iff_shafarevich_realizable", "necessity vs sufficiency", "Abel-Ruffini converse", "definitional delegation"],
+    "prerequisites": ["solvable_iff_shafarevich_realizable", "logical structure of a biconditional", "IsSolvable"]
+  },
+  {
     "id": "ann-s5-obstruction",
     "proofId": "abel-ruffini-galois-extensions-oq-05",
     "range": { "startLine": 178, "endLine": 184 },
