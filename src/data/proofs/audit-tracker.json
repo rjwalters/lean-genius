@@ -7120,10 +7120,10 @@
       "result": "clean"
     },
     "erdos-451": {
-      "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T20:21:18Z",
-      "result": "issues-fixed",
+      "agentId": "auditor-agent",
+      "auditCount": 4,
+      "lastAudited": "2026-05-27T11:35:50Z",
+      "result": "clean",
       "issues": [
         "conclusion.summary says 3 sorries but file has 0 (3 axioms instead). Section line ranges drift. Tracked in #14377."
       ]
