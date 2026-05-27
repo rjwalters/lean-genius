@@ -161,19 +161,24 @@
     },
     "type": "concept",
     "title": "Non-Solvability of Large Symmetric Groups",
-    "content": "Part III introduces the group-theoretic core of Abel-Ruffini: for $n \\geq 5$, the symmetric group $S_n$ is not solvable. The theorem `symmetric_group_not_solvable` generalizes beyond degree 5 \u2014 it applies to all $n \\geq 5$. The proof delegates to Mathlib's `Equiv.Perm.not_solvable` after bridging from $\\mathbb{N}$ to Cardinal (see next annotation).\n\nThe key mathematical fact: the derived series of $S_n$ reaches $A_n$ and stalls because $A_n$ is perfect ($[A_n, A_n] = A_n$) for $n \\geq 5$, since $A_n$ is simple and non-abelian.",
-    "mathContext": "For $n \\geq 5$: $D^0(S_n) = S_n,\\; D^1(S_n) = [S_n, S_n] = A_n,\\; D^k(S_n) = A_n$ for all $k \\geq 1$. The derived series never reaches $\\{e\\}$, so $S_n$ is not solvable. Compare: for $n = 4$, $D^4(S_4) = \\{e\\}$ via the Klein four-group.",
+    "content": "Part III introduces the group-theoretic core of Abel-Ruffini: for $n \\geq 5$, the symmetric group $S_n$ is not solvable. The theorem `symmetric_group_not_solvable` generalizes beyond degree 5 \u2014 it applies to all $n \\geq 5$. The proof delegates to Mathlib's `Equiv.Perm.not_solvable` after bridging from $\\mathbb{N}$ to Cardinal (see next annotation).\n\nThe key mathematical fact: the derived series of $S_n$ reaches $A_n$ and stalls because $A_n$ is perfect ($[A_n, A_n] = A_n$) for $n \\geq 5$, since $A_n$ is simple and non-abelian.\n\n**Why $A_n$ is perfect for $n \\geq 5$ (the technical heart):** every 3-cycle $(a\\,b\\,c) \\in A_n$ is a commutator. Concretely, for distinct $a, b, c, d, e \\in \\{1, \\ldots, n\\}$ (using $n \\geq 5$ so five distinct letters exist), one checks $(a\\,b\\,c) = [(a\\,b\\,d), (a\\,c\\,e)]$ by direct computation: $(a\\,b\\,d)(a\\,c\\,e)(a\\,b\\,d)^{-1}(a\\,c\\,e)^{-1} = (a\\,b\\,c)$. Since 3-cycles generate $A_n$ (Jordan 1870, *Trait\u00e9 des substitutions*), this shows $[A_n, A_n] \\supseteq A_n$, hence $[A_n, A_n] = A_n$. The need for the *fifth* letter $e$ is *exactly* why the argument fails for $A_4$: there is no fifth letter available, the commutator identity above cannot be set up, and indeed $[A_4, A_4] = V_4 \\subsetneq A_4$ \u2014 the same Klein four-group whose normal-in-$S_4$ status makes $S_4$ solvable.\n\n**Architectural role in this file:** `symmetric_group_not_solvable` is the *negative* group-theoretic ingredient of `not_solvable_by_rad_of_not_solvable_gal`. Combined with the *positive* algebraic ingredient `galois_bridge` (radical tower \u21d2 solvable Galois group), the contrapositive synthesis yields Abel-Ruffini. The Cardinal coercion in the next annotation (`ann-cardinal-bridge`) is the technical glue bridging Mathlib's `Equiv.Perm.not_solvable` (which takes a `Cardinal.mk \u03b1 \u2265 5` hypothesis) to the natural-number formulation used here. See keyInsight #5 ('Mathlib Integration Pattern') for the broader composition strategy, keyInsight #10 ('Jordan-H\u00f6lder Guarantees Completeness') for why this derived-series analysis is canonical rather than ad hoc, and keyInsight #20 ('Derived Length Scales Linearly with Radical Nesting Depth') for how $\\text{dl}(S_n)$ controls radical-formula complexity at every $n$.",
+    "mathContext": "For $n \\geq 5$: $D^0(S_n) = S_n,\\; D^1(S_n) = [S_n, S_n] = A_n,\\; D^k(S_n) = A_n$ for all $k \\geq 1$. The derived series never reaches $\\{e\\}$, so $S_n$ is not solvable. Compare: for $n = 4$, $D^4(S_4) = \\{e\\}$ via the Klein four-group.\n\n**Commutator identity (witness for $A_n$ perfect, $n \\geq 5$):** $(a\\,b\\,c) = [(a\\,b\\,d),\\, (a\\,c\\,e)]$ for distinct $a, b, c, d, e$. Since $\\{\\text{3-cycles}\\}$ generates $A_n$ (Jordan 1870), $[A_n, A_n] = A_n$.\n\n**Contrast at $n = 4$:** $[A_4, A_4] = V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ \u2014 the Klein four-group, abelian. Then $[V_4, V_4] = \\{e\\}$. Derived series: $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$, length 3.\n\n**General form:** $S_n$ has derived length $\\text{dl}(S_n) = 0, 0, 1, 2, 3, \\infty, \\infty, \\ldots$ for $n = 0, 1, 2, 3, 4, 5, 6, \\ldots$ \u2014 matching the nesting depth of the corresponding radical formulas (cf. keyInsight #20).",
     "significance": "key",
     "relatedConcepts": [
       "derived series",
       "perfect group",
       "simple group",
-      "commutator subgroup"
+      "commutator subgroup",
+      "Klein four-group",
+      "Jordan 1870 Traite des substitutions",
+      "Cauchy permutation theory"
     ],
     "prerequisites": [
       "group theory",
       "Equiv.Perm.not_solvable",
-      "derived subgroup"
+      "derived subgroup",
+      "3-cycle generation of A_n",
+      "Cardinal.mk coercion"
     ]
   },
   {
