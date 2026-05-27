@@ -12,9 +12,23 @@ cannot both have bounded gaps (be syndetic)?
 This is a problem of Burr and Erdős. Erdős believed he could construct a
 basis answering Part 2 affirmatively but "could never quite finish the proof."
 
-**Status:** OPEN
+**Status (2026-05-21):** DeepMind AlphaProof Nexus produced Lean proofs that
+resolve both parts (arXiv:2605.22763v1). The companion files
+`Erdos741ProblemAPNPartI.lean` and `Erdos741ProblemAPNPartII.lean` port the
+AlphaProof Nexus output verbatim (modulo `import` and `answer(...)`
+substitutions) under the namespaces `Erdos741APN_I` and `Erdos741APN_II`.
 
-**Reference:** erdosproblems.com/741, Er94b
+- Part 1: answer is `False` — a non-splittable counterexample exists
+  (`Erdos741APN_I.target_theorem_0`, witnessed by `SandorA`).
+- Part 2: answer is `True` — a Cassels-style basis is non-splittable in
+  the syndetic sense (`Erdos741APN_II.target_theorem_0`, witnessed by
+  `cassels_set`).
+
+This file retains the original gallery scaffolding (definitions and proved
+structural lemmas around upperDensity / sumset / syndetic / basis), which
+remains useful but is now distinct from the AlphaProof Nexus development.
+
+**Reference:** erdosproblems.com/741, Er94b, arXiv:2605.22763v1
 -/
 
 import Mathlib.Data.Finset.Basic
