@@ -14,6 +14,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'url';
 import { resolveAnnotations, resolveSections, validateLineAnnotations } from './resolver.js';
 import type { SourceAnnotation, SourceSection, ResolvedAnnotation, ResolvedSection } from './types.js';
@@ -23,6 +24,29 @@ const __dirname = path.dirname(__filename);
 
 const PROOFS_DATA_DIR = path.join(__dirname, '../../src/data/proofs');
 const PROOFS_SOURCE_DIR = path.join(__dirname, '../../proofs/Proofs');
+const REPO_ROOT = path.join(__dirname, '../..');
+
+/**
+ * Return the most recent commit ISO timestamp touching any of the supplied
+ * repo-relative paths, or undefined if the lookup fails or returns nothing.
+ *
+ * Used to compute an "updatedAt" field for each proof listing so users can
+ * sort the gallery by recently-touched proofs (data + Lean source).
+ */
+function lastTouched(paths: string[]): string | undefined {
+  if (paths.length === 0) return undefined;
+  try {
+    const quoted = paths.map((p) => `'${p.replace(/'/g, "'\\''")}'`).join(' ');
+    const out = execSync(`git log -1 --format=%cI -- ${quoted}`, {
+      encoding: 'utf8',
+      cwd: REPO_ROOT,
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).trim();
+    return out || undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 interface ProofConfig {
   id: string;
@@ -175,6 +199,7 @@ function generateListings(proofs: ProofConfig[]): void {
     badge?: string;
     tags: string[];
     dateAdded?: string;
+    updatedAt?: string;
     wiedijkNumber?: number;
     hilbertNumber?: number;
     millenniumProblem?: string;
@@ -201,6 +226,18 @@ function generateListings(proofs: ProofConfig[]): void {
       annotationCount = Array.isArray(annotations) ? annotations.length : 0;
     }
 
+    // Compute updatedAt: most recent commit touching either the proof's
+    // data directory or its Lean source file. Both paths are repo-relative
+    // and passed in a single git log invocation. Falls back to undefined if
+    // git is unavailable or the proof was never committed.
+    const dataDirRel = path.relative(REPO_ROOT, proof.dataDir);
+    const trackedPaths: string[] = [dataDirRel];
+    const proofRepoPath: string | undefined = meta.meta?.proofRepoPath;
+    if (proofRepoPath) {
+      trackedPaths.push(`proofs/${proofRepoPath}`);
+    }
+    const updatedAt = lastTouched(trackedPaths);
+
     listings.push({
       id: meta.id || proof.id,
       title: meta.title || proof.id,
@@ -210,6 +247,7 @@ function generateListings(proofs: ProofConfig[]): void {
       badge: meta.meta?.badge,
       tags: meta.meta?.tags || [],
       dateAdded: meta.meta?.dateAdded,
+      updatedAt,
       wiedijkNumber: meta.meta?.wiedijkNumber,
       hilbertNumber: meta.meta?.hilbertNumber,
       millenniumProblem: meta.meta?.millenniumProblem,

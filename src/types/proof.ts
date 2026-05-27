@@ -441,6 +441,8 @@ export interface ProofListing {
   badge?: ProofBadge
   tags: string[]
   dateAdded?: string
+  /** ISO timestamp of the most recent git commit touching the proof's data dir or Lean source. */
+  updatedAt?: string
   wiedijkNumber?: number
   hilbertNumber?: number
   millenniumProblem?: MillenniumProblem

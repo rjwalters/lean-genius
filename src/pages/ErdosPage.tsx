@@ -10,7 +10,7 @@ import { ArrowRight, Clock, CheckCircle, AlertCircle, Plus, Filter, ArrowUpDown,
 import { useDebouncedUrlState, useUrlState, serializers } from '@/hooks'
 import type { ProofBadge as ProofBadgeType, ProofListing } from '@/types/proof'
 
-type SortOption = 'problem-number' | 'newest' | 'alphabetical'
+type SortOption = 'problem-number' | 'newest' | 'updated' | 'alphabetical'
 
 // Parse MM/DD/YY to Date object
 function parseDateAdded(dateStr?: string): Date {
@@ -50,7 +50,7 @@ export function ErdosPage() {
   const [sortBy, setSortBy] = useUrlState<SortOption>(
     'sort',
     'problem-number',
-    serializers.enum('problem-number', ['problem-number', 'newest', 'alphabetical'])
+    serializers.enum('problem-number', ['problem-number', 'newest', 'updated', 'alphabetical'])
   )
   const [showAiSolvedOnly, setShowAiSolvedOnly] = useUrlState('ai', false, serializers.boolean)
 
@@ -97,6 +97,14 @@ export function ErdosPage() {
           return parseDateAdded(b.dateAdded).getTime() - parseDateAdded(a.dateAdded).getTime()
         case 'alphabetical':
           return a.title.localeCompare(b.title)
+        case 'updated': {
+          // Sort by git-derived updatedAt (ISO) descending. Fall back to
+          // dateAdded for any entry missing the field so the list stays
+          // stable on pre-rebuild data.
+          const aUpdated = a.updatedAt ? new Date(a.updatedAt).getTime() : parseDateAdded(a.dateAdded).getTime()
+          const bUpdated = b.updatedAt ? new Date(b.updatedAt).getTime() : parseDateAdded(b.dateAdded).getTime()
+          return bUpdated - aUpdated
+        }
         default:
           return 0
       }
@@ -301,6 +309,7 @@ export function ErdosPage() {
               >
                 <option value="problem-number">By Number</option>
                 <option value="newest">Newest</option>
+                <option value="updated">Recently updated</option>
                 <option value="alphabetical">A-Z</option>
               </select>
             </div>
