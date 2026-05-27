@@ -141,6 +141,10 @@
       {
         "id": "algebraic-numbers-countable",
         "relationship": "Cantor's 1874 theorem that the algebraic closure ℚ̄ is countable (|ℚ̄| = ℵ₀) via degree-by-degree enumeration of ℚ[X], each polynomial having finitely many roots. Sits one tier above Abel-Ruffini in the algebraic-vs-radical-vs-transcendental hierarchy: ℚ̄ is countable, but the *radically expressible* sub-subset is a strict (still countable) subset, and Abel-Ruffini exhibits explicit elements of ℚ̄ (roots of x⁵ − 4x + 2) that escape it. Combined with |ℝ| = 2^ℵ₀, Cantor's countability gives the existence of transcendentals (cf. `liouville-theorem`); Abel-Ruffini delivers a parallel impossibility one tier down — algebraic non-radicals exist among the countable ℚ̄. The implications section's 'impossibility paradigm' (#7) and 'transcendence hierarchy' (#8) place both results on the same Galois-(1832)–Cantor-(1874)–Lindemann-(1882) lineage of cardinality- and expressibility-based barriers."
+      },
+      {
+        "id": "liouville-theorem",
+        "relationship": "Liouville's 1844 explicit construction of transcendental numbers (e.g. $\\sum_{k=1}^{\\infty} 10^{-k!}$) via the rational-approximation bound $|\\alpha - p/q| > C/q^n$ for algebraic $\\alpha$ of degree $n$. Sits one tier above Abel-Ruffini in the expressibility hierarchy this entry's implications section traces: the chain $\\mathbb{Q} \\subsetneq \\overline{\\mathbb{Q}}_{\\text{rad}} \\subsetneq \\overline{\\mathbb{Q}} \\subsetneq \\mathbb{C}$ has Abel-Ruffini blocking $\\overline{\\mathbb{Q}}_{\\text{rad}} \\subsetneq \\overline{\\mathbb{Q}}$ (algebraic numbers without radical expressions, via $S_5$ non-solvability) and Liouville blocking $\\overline{\\mathbb{Q}} \\subsetneq \\mathbb{C}$ (transcendentals beyond every polynomial equation, via Diophantine approximation). The two together with Hermite-Lindemann ($e, \\pi$ transcendental, 1873/1882) form the historical sequence Galois (1832) → Liouville (1844) → Cantor (1874) → Hermite-Lindemann (1882) of expressibility-and-cardinality barriers."
       }
     ],
     "lineCount": 187,
