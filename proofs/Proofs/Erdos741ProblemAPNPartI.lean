@@ -749,7 +749,7 @@ noncomputable def extract_binary (m : ℕ) : ℕ :=
 termination_by m
 
 lemma split1_eq_base2_to_base4 (m : ℕ) : split1 m = base2_to_base4 (extract_binary m) := by aesop( add safe forward True)
-                                                                                            delta Erdos741.base2_to_base4 Erdos741.extract_binary Erdos741.split1
+                                                                                            delta Erdos741APN_I.base2_to_base4 Erdos741APN_I.extract_binary Erdos741APN_I.split1
                                                                                             induction m using @Nat.strongRec
                                                                                             obtain ⟨a, rfl⟩|⟨b, rfl⟩:=‹ℕ›.even_or_odd
                                                                                             · obtain ⟨@c⟩ :=eq_or_ne a 0
@@ -1321,7 +1321,7 @@ lemma sandor_cross_sums (A₁ A₂ : Set ℕ) (h_union : SandorA = A₁ ∪ A₂
   have h_part : (A₁ ∩ Ico (S_x k) (S_y k)).ncard + (A₂ ∩ Ico (S_x k) (S_y k)).ncard = (Ico (S_x k) (S_y k)).ncard := by rwa [←Set.ncard_union_eq ↑(h_disj.mono ↑Set.inter_subset_left (↑Set.inter_subset_left)) (.of_fintype _) ↑(.of_fintype _),←Set.union_inter_distrib_right _,←h_union,Set.inter_eq_right.mpr]
   have h_part_real : ((A₁ ∩ Ico (S_x k) (S_y k)).ncard : ℝ) + ((A₂ ∩ Ico (S_x k) (S_y k)).ncard : ℝ) = ((Ico (S_x k) (S_y k)).ncard : ℝ) := by
     exact_mod_cast h_part
-  have h_C_size : ((Ico (S_x k) (S_y k)).ncard : ℝ) = (S_y k : ℝ) - (S_x k : ℝ) := by delta Erdos741.S_y Erdos741.S_x
+  have h_C_size : ((Ico (S_x k) (S_y k)).ncard : ℝ) = (S_y k : ℝ) - (S_x k : ℝ) := by delta Erdos741APN_I.S_y Erdos741APN_I.S_x
                                                                                       rw [←Nat.cast_sub (by valid),Set.ncard_eq_toFinset_card',Set.toFinset_Ico,Nat.card_Ico]
   have h_A1_add : (((A₁ ∩ Ico (S_x k) (S_y k)) + (A₁ ∩ Ico (S_x k) (S_y k))).ncard : ℝ) ≥ 2 * ((A₁ ∩ Ico (S_x k) (S_y k)).ncard : ℝ) - 1 := by lift A₁ ∩.Ico (S_x k) (S_y k) to Finset ℕ using↑(.of_fintype _) with and A
                                                                                                                                                norm_num
@@ -1406,7 +1406,7 @@ lemma SandorA_fluctuation_bounds (A₁ A₂ : Set ℕ) (h_union : SandorA = A₁
   have h_split1 : (((A₁ + A₁) ∩ Iio (2 * S_y k)).ncard : ℝ) = (((A₁ + A₁) ∩ Iio (2 * S_x k)).ncard : ℝ) + (((A₁ + A₁) ∩ Ico (2 * S_x k) (2 * S_y k)).ncard : ℝ) := by rw [←Nat.cast_add, ←Set.ncard_union_eq ↑(Set.disjoint_left.mpr fun and R L=> not_le.mpr R.2 L.right.1) (.of_fintype _) ↑(.of_fintype _),←Set.inter_union_distrib_left]
                                                                                                                                                                       rw[Set.Iio_union_Ico_eq_Iio (by apply mul_right_mono (by norm_num[S_x,S_y]))]
   have h_split2 : (((A₂ + A₂) ∩ Iio (2 * S_y k)).ncard : ℝ) = (((A₂ + A₂) ∩ Iio (2 * S_x k)).ncard : ℝ) + (((A₂ + A₂) ∩ Ico (2 * S_x k) (2 * S_y k)).ncard : ℝ) := by rw [←Nat.cast_add, ←Set.ncard_union_eq ↑(Set.disjoint_left.2 fun and R L=>not_lt_of_ge L.2.1 R.2) (.of_fintype _) ↑(.of_fintype _),←Set.inter_union_distrib_left _,Set.Iio_union_Ico_eq_Iio]
-                                                                                                                                                                      delta Erdos741.S_x Erdos741.S_y Erdos741.SandorA at*
+                                                                                                                                                                      delta Erdos741APN_I.S_x Erdos741APN_I.S_y Erdos741APN_I.SandorA at*
                                                                                                                                                                       bound
   have h_cross := sandor_cross_sums A₁ A₂ h_union h_disj k hk_10
   have h_Sx_pos : (S_x k : ℝ) > 0 := by nlinarith only [hc_pos,hK1 k (by valid)]
