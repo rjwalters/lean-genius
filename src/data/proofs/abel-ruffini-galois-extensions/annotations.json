@@ -138,21 +138,27 @@
     },
     "type": "insight",
     "title": "S₃ Solvability via Short Exact Sequence",
-    "content": "S₃ is proved solvable using the short exact sequence $1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. The Lean proof uses `solvable_of_ker_le_range`: if the kernel of a group homomorphism is solvable (here $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$, cyclic, proved solvable by commutativity) and the codomain is solvable ($\\mathbb{Z}^\\times \\cong \\mathbb{Z}/2\\mathbb{Z}$, commutative), then the domain is solvable. This is the solvability extension theorem for group extensions.",
-    "mathContext": "$1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic, abelian). $\\mathbb{Z}^\\times \\cong \\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ (abelian). Solvability extension: $H, G/H$ solvable $\\Rightarrow G$ solvable.",
+    "content": "S₃ is proved solvable using the short exact sequence $1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. The Lean proof uses `solvable_of_ker_le_range`: if the kernel of a group homomorphism is solvable (here $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$, cyclic, proved solvable by commutativity) and the codomain is solvable ($\\mathbb{Z}^\\times \\cong \\mathbb{Z}/2\\mathbb{Z}$, commutative), then the domain is solvable. This is the solvability extension theorem for group extensions.\n\n**Connection to the derived series**: The composition series $\\{e\\} \\trianglelefteq A_3 \\trianglelefteq S_3$ coincides with the derived (commutator) series of $S_3$: $S_3^{(1)} = [S_3, S_3] = A_3$ (the commutator subgroup of $S_3$ is exactly $A_3$), and $S_3^{(2)} = [A_3, A_3] = \\{e\\}$ since $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ is abelian. Hence $S_3$ has **derived length 2** — one step shorter than $S_4$'s derived length 3 (see the $V_4 \\trianglelefteq A_4$ annotation). This is the precise group-theoretic reason Cardano's cubic formula needs exactly **two** nested layers of root extraction, where Ferrari's quartic needs three.\n\n**Cardano's two-layer tower (the Lagrange-resolvent face)**: The two abelian quotients $S_3/A_3 \\cong \\mathbb{Z}/2\\mathbb{Z}$ and $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ correspond to the two radical layers in Cardano's formula. For a cubic $t^3 + pt + q$ with roots $\\alpha_1, \\alpha_2, \\alpha_3$, the discriminant square root $\\delta = (\\alpha_1 - \\alpha_2)(\\alpha_1 - \\alpha_3)(\\alpha_2 - \\alpha_3)$ satisfies $\\delta^2 = \\Delta = -4p^3 - 27q^2 \\in \\mathbb{Q}$; every odd permutation sends $\\delta \\mapsto -\\delta$ while $A_3$ fixes it, so $\\mathbb{Q}(\\delta) = \\mathbb{Q}(\\sqrt{\\Delta})$ is precisely the fixed field of $A_3$ — the **$\\mathbb{Z}/2$ layer (first square root)**. Over $\\mathbb{Q}(\\delta, \\omega)$ (adjoining a primitive cube root of unity $\\omega$), the residual $A_3 \\cong \\mathbb{Z}/3$ symmetry is resolved by the **Lagrange resolvent** $L = \\alpha_1 + \\omega\\alpha_2 + \\omega^2\\alpha_3$, whose cube $L^3$ is fixed by $A_3$ and hence rational over the base — taking its cube root is the **$\\mathbb{Z}/3$ layer (second, cube root)**. Inverting the linear system in $L$, $\\bar L = \\alpha_1 + \\omega^2\\alpha_2 + \\omega\\alpha_3$, and $\\alpha_1 + \\alpha_2 + \\alpha_3 = 0$ recovers the three roots. Thus the abstract sequence `solvable_of_ker_le_range` constructs here is the algorithmic skeleton of Cardano (1545) — cross-referenced to the gallery entry `solution-of-cubic`.",
+    "mathContext": "$1 \\to A_3 \\to S_3 \\xrightarrow{\\text{sign}} \\mathbb{Z}^\\times \\to 1$. $A_3 \\cong \\mathbb{Z}/3\\mathbb{Z}$ (cyclic, abelian). $\\mathbb{Z}^\\times \\cong \\{\\pm 1\\} \\cong \\mathbb{Z}/2\\mathbb{Z}$ (abelian). Solvability extension: $H, G/H$ solvable $\\Rightarrow G$ solvable. Derived series of $S_3$: $S_3 \\supset A_3 = [S_3, S_3] \\supset \\{e\\} = [A_3, A_3]$, derived length 2. Constructive correspondence: $S_3/A_3 \\cong \\mathbb{Z}/2$ is the discriminant square root $\\delta = \\sqrt{-4p^3 - 27q^2}$ (fixed field of $A_3$); $A_3 \\cong \\mathbb{Z}/3$ is the cube root of the Lagrange resolvent $L = \\alpha_1 + \\omega\\alpha_2 + \\omega^2\\alpha_3$.",
     "significance": "key",
     "relatedConcepts": [
       "short exact sequence",
       "sign homomorphism",
       "alternating group",
       "solvable group extension",
-      "solvable_of_ker_le_range"
+      "solvable_of_ker_le_range",
+      "derived length",
+      "Cardano cubic formula",
+      "Lagrange resolvent",
+      "discriminant"
     ],
     "prerequisites": [
       "group extensions",
       "sign homomorphism",
       "solvable groups",
-      "Mathlib group theory API"
+      "Mathlib group theory API",
+      "derived series",
+      "discriminant of a cubic"
     ]
   },
   {
