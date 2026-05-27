@@ -5,11 +5,34 @@ For any M ≥ 1, if A ⊂ ℕ is a sufficiently large finite Sidon set,
 then there exist at least M elements a ∈ A + A such that
 a - 1, a + 1 ∉ A + A. Conjectured to have ≫ |A|² such elements.
 
-## Status: OPEN
+## Status (updated 2026-05-21)
+
+The WEAK form (∀ M, eventually I(A) ≥ M; equivalently `Tendsto f atTop atTop`
+where `f n` is the minimum isolated-count over size-`n` Sidon sets) was
+RESOLVED by DeepMind AlphaProof Nexus on 2026-05-21. The formal Lean proof
+is in the companion file `Erdos152ProblemAPN.lean` (namespace `Erdos152APN`),
+which establishes
+  `16 * num_isolated A + 100 * n + 16 ≥ n * n`
+for any Sidon set `A` of size `n`, and concludes `Tendsto f atTop atTop`.
+
+The STRONG form (∃ c > 0, ∀ Sidon A, I(A) ≥ c|A|²) is NOT explicitly
+discharged by the DeepMind file (which stops at `Tendsto f atTop atTop`).
+The bound `num_isolated A ≥ (n² - 100n - 16) / 16` does imply asymptotic
+`f n ≫ n²`, but the universally quantified strong form (an absolute
+constant valid for all Sidon sets, including small ones) is not formalized.
+The infinite version also remains open.
+
+This file (kept for the gallery's verified supporting definitions and
+lemmas) restates `ErdosProblem152`, `ErdosProblem152Strong`, and
+`ErdosProblem152Infinite` and provides proofs of structural facts about
+Sidon sumsets that are independent of the APN port.
 
 ## References
 - Erdős–Sárközy–Sós (1994), "On Sum Sets of Sidon Sets, I",
   J. Number Theory, pp. 329–347
+- DeepMind AlphaProof Nexus (2026-05-21),
+  `APNOutputs/ErdosProblems/erdos_152.lean`
+- arXiv:2605.22763v1 (2026), "AlphaProof Nexus"
 -/
 
 import Mathlib.Combinatorics.Additive.Sidon
