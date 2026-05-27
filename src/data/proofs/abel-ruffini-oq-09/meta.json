@@ -23,7 +23,7 @@
     "theoremCount": 24,
     "assumptions": "5 assumptions: 3 opaque predicates (IsElementaryOver, IsLiouvilleForm, IsElementaryFn — declared opaque since formalizing elementary functions / Liouville logarithmic-sum forms requires differential field theory not yet in Mathlib) + 2 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis and extension from polynomial to rational case). The Gaussian non-elementarity (gaussian_not_elementary) is now fully proved as a theorem via the iterated Risch operator degree-raising argument.",
     "dateAdded": "2026-05-03",
-    "lineCount": 541,
+    "lineCount": 540,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "risch_ode_coeff_top: coefficient identity showing L[p] = p'-C(2)·X·p has coefficient -2·leadingCoeff(p) at degree natDeg(p)+1 — the key lemma driving the degree-raising argument",
@@ -86,6 +86,21 @@
       "targetId": "liouville-theorem",
       "relationship": "related",
       "description": "The OTHER Liouville theorem (approximation/transcendence, 1844). Both are by Liouville but in different mathematical areas: the approximation theorem bounds rational approximation to algebraic numbers; this entry concerns which functions have elementary antiderivatives (1835 result)"
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Sibling extension of the Abel-Ruffini circle. That entry develops the ALGEBRAIC Galois side (Sₙ solvable iff n ≤ 4, A₅ simple as the obstruction to radical solvability); this entry is the DIFFERENTIAL Galois analog (the degree-raising Risch operator as the obstruction to elementary integration). Both reduce a Galois-theoretic impossibility to a concrete polynomial-algebra fact."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related",
+      "description": "Transcendence of e — the function e^(−x²) whose integral is shown non-elementary here is built from the exponential. Transcendence theory and the theory of elementary functions are the two pillars Liouville founded (he produced the first explicit transcendental numbers in 1844 and the integration theorem in 1835): both ask whether a quantity escapes a prescribed class — algebraic numbers there, elementary antiderivatives here."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "related",
+      "description": "Hermite-Lindemann: e^α is transcendental for every nonzero algebraic α. Hermite is a recurring figure in this story — he proved e transcendental (1873) and earlier (1858) solved the general quintic via elliptic modular functions, the canonical example of stepping OUTSIDE radicals/elementary functions to express what Abel-Ruffini and Liouville show is otherwise inexpressible. The Gaussian e^(−x²) is the prototypical analytic function with a transcendental, non-elementary integral (the error function)."
     }
   ],
   "overview": {
@@ -128,55 +143,55 @@
     },
     {
       "id": "liouville-axiom",
-      "title": "Liouville Integration Theorem (Axiom)",
+      "title": "Liouville Integration Theorem and Risch Criterion (Axioms)",
       "startLine": 130,
-      "endLine": 183,
-      "summary": "Axiomatizes the structural Liouville theorem: if f ∈ F has an elementary antiderivative g, then g = v₀ + Σcᵢ·ln(vᵢ) with vᵢ ∈ F and cᵢ constants. Also axiomatizes the Risch criterion for ∫e^(-x²) and the Gaussian non-elementarity.",
+      "endLine": 184,
+      "summary": "Parts II–III. Declares three opaque predicates (IsElementaryOver, IsLiouvilleForm, IsElementaryFn) since elementary/Liouville-form functions need differential field theory absent from Mathlib, then axiomatizes the structural Liouville theorem (if f has an elementary antiderivative g, then g = v₀ + Σcᵢ·ln(vᵢ) with vᵢ ∈ F and cᵢ constants) and the Risch criterion for ∫e^(-x²) (elementary iff a rational Q satisfies Q' − 2xQ = 1). The Gaussian non-elementarity itself is NOT axiomatized here — it is proved as a theorem in the core-proof section.",
       "mathContext": "**Liouville (1835)**: If D(g) = f and g is elementary over F, then g = v₀ + Σcᵢ ln(vᵢ). Requires Picard-Vessiot theory (no Mathlib formalization). **Risch criterion**: ∫e^(-x²) is elementary iff ∃ rational Q/R with (Q/R)' - 2x(Q/R) = 1. **Gaussian non-elementarity**: ∫e^(-x²) is not a rational function."
     },
     {
       "id": "core-proof",
-      "title": "The Polynomial Risch Obstruction (Fully Proved)",
-      "startLine": 184,
-      "endLine": 295,
-      "summary": "The mathematical heart: proves no polynomial satisfies the Risch ODE. risch_ode_coeff_top: coefficient at natDeg+1 of L[p] equals -2·leadingCoeff(p). poly_one_coeff_pos: constant 1 has zero coefficient at position ≥1. no_poly_risch_soln: main result, by contradiction on leadingCoeff. no_poly_risch_constant: generalization to all nonzero constants. risch_ode_raises_degree: formal degree-raising statement.",
-      "mathContext": "Key identity: (p' - C(2)·X·p).coeff(natDeg p + 1) = -2·leadingCoeff(p). Proof: coeff(p', natDeg+1) = (natDeg+2)·coeff(p, natDeg+2) = 0 (above degree); coeff(C(2)·X·p, natDeg+1) = 2·coeff(p, natDeg) = 2·leadingCoeff(p). Net: 0 - 2·lc = -2·lc. If this equals 0 (as required for L[p] = 1), then lc = 0, contradicting p ≠ 0."
+      "title": "The Core Algebraic Proof — No Polynomial Risch Solution",
+      "startLine": 185,
+      "endLine": 377,
+      "summary": "Part IV, the mathematical heart. risch_ode_coeff_top: coefficient at natDeg+1 of L[p] equals -2·leadingCoeff(p). poly_one_coeff_pos: constant 1 has zero coefficient at position ≥1. no_poly_risch_soln: main polynomial obstruction, by contradiction on leadingCoeff. no_poly_risch_constant: generalization to all nonzero constants. risch_ode_raises_degree: formal degree-raising statement. The section then bootstraps the polynomial obstruction into a full analytic non-elementarity proof: rischOp (the operator L as a polynomial map), rischOp_iter_ne_zero (iterating L keeps polynomials nonzero), hasDerivAt_mul_gauss and risch_iterate_eq (the n-th derivative of h(x)·e^(−x²) equals Lⁿ(h)(x)·e^(−x²)), culminating in gaussian_not_elementary — a fully machine-checked theorem that ∫e^(−x²)dx has no rational-function antiderivative.",
+      "mathContext": "Key identity: (p' - C(2)·X·p).coeff(natDeg p + 1) = -2·leadingCoeff(p). Proof: coeff(p', natDeg+1) = (natDeg+2)·coeff(p, natDeg+2) = 0 (above degree); coeff(C(2)·X·p, natDeg+1) = 2·coeff(p, natDeg) = 2·leadingCoeff(p). Net: 0 - 2·lc = -2·lc. For gaussian_not_elementary: if d/dx[p/q] = e^(−x²) then p'q − pq' = q²·e^(−x²), i.e. f = g·e^(−x²) with g = q² ≠ 0; differentiating n = deg(f)+1 times gives 0 = Lⁿ(g)·e^(−x²), but e^(−x²) > 0 and L raises degree so Lⁿ(g) ≠ 0 — contradiction."
     },
     {
       "id": "pointwise",
       "title": "Pointwise Reformulation",
-      "startLine": 274,
-      "endLine": 296,
+      "startLine": 378,
+      "endLine": 401,
       "summary": "risch_pointwise_to_poly: converts pointwise equality (∀x, p'(x) - 2x·p(x) = 1) to polynomial identity using Polynomial.funext (density argument: two polynomials agreeing everywhere on ℝ are equal). no_poly_risch_pointwise: pointwise formulation of the main obstruction.",
       "mathContext": "**Polynomial.funext** (Mathlib): If f(x) = g(x) for all x : ℝ, then f = g as polynomials. This uses the fact that ℝ is infinite — a polynomial with infinitely many roots is identically zero."
     },
     {
       "id": "contrast",
       "title": "Elementary Contrast: The Linear Exponent Case",
-      "startLine": 297,
-      "endLine": 347,
+      "startLine": 402,
+      "endLine": 451,
       "summary": "Shows that for g = x (linear exponent), the Risch ODE Q' + Q = R IS solvable for every polynomial R: risch_g_linear_const (Q=1 solves for R=1), risch_g_linear_degree1 (Q=X-1 solves for R=X, the ∫xeˣ formula), risch_g_linear_constant_solvable (Q=C(c) solves for R=C(c)). gaussian_vs_linear_contrast packages the dichotomy as a conjunction.",
       "mathContext": "For L₁[Q] = Q' + Q: C(c)' + C(c) = 0 + C(c) = C(c) for any constant c. So L₁ maps constants to themselves — the degree-0 case is handled by Q being constant. This contrasts with L₂ where the -2xQ term forces degree to increase."
     },
     {
       "id": "surjectivity",
       "title": "L₁ is Surjective onto All Polynomials",
-      "startLine": 348,
-      "endLine": 403,
+      "startLine": 452,
+      "endLine": 508,
       "summary": "risch_linear_surjective_monomial: for each n, ∃Q with Q' + Q = X^n (induction via recurrence Q_{n+1} = X^{n+1} - C(n+1)·Q_n). risch_linear_surjective_all: L₁ is surjective onto ALL polynomials (by Polynomial.induction_on' linearity). This completes the contrast: L₁ maps onto every polynomial, while L₂ misses all nonzero constants.",
       "mathContext": "Recurrence Q_0=1; Q_{n+1}=X^{n+1}-C(n+1)·Q_n satisfies Q_{n+1}'+Q_{n+1}=X^{n+1} by induction. For the full polynomial case, linearity: L₁[C(a)·Q]=C(a)·L₁[Q] and L₁[P+Q]=L₁[P]+L₁[Q] allow reduction to monomials. Together: ∫p(x)eˣdx is elementary for EVERY polynomial p."
     },
     {
       "id": "analogy",
       "title": "Abel-Ruffini Analogy and Summary",
-      "startLine": 404,
-      "endLine": 448,
+      "startLine": 509,
+      "endLine": 540,
       "summary": "Documents the structural analogy between Abel-Ruffini (algebraic Galois theory) and Liouville (differential Galois theory). gaussian_risch_polynomial_obstruction_summary: final packaged theorem stating ¬∃p, p' - C(2)·X·p = 1.",
       "mathContext": "The pattern: Abel-Ruffini (A₅ simplicity → no radical formula for quintic) mirrors Liouville (degree-raising operator → no elementary integral for Gaussian). Both are Galois-theoretic impossibility results where the obstruction is witnessed by a polynomial algebra fact."
     }
   ],
   "conclusion": {
-    "summary": "Formalization of the polynomial obstruction to the Gaussian integral's elementarity. The main theorem (no_poly_risch_soln) is fully machine-checked: no polynomial p satisfies p' - 2xp = 1. The proof uses a clean degree-raising argument. New in this session: L₁[Q]=Q'+Q is proved surjective onto all polynomials (risch_linear_surjective_monomial + risch_linear_surjective_all), completing the contrast with L₂. Three axioms cover the full Liouville-Risch theory (structural form of elementary integrals, Risch criterion, Gaussian non-elementarity), documenting the gap requiring Picard-Vessiot theory not yet in Mathlib. Total: 24 theorems, 3 axioms, 0 sorries, 448 lines.",
+    "summary": "Formalization of the obstruction to the Gaussian integral's elementarity. The polynomial obstruction (no_poly_risch_soln) is fully machine-checked: no polynomial p satisfies p' - 2xp = 1, via a clean degree-raising argument. This is bootstrapped into gaussian_not_elementary — a fully proved theorem that ∫e^(−x²)dx has no rational-function antiderivative — by iterating the Risch operator on h(x)·e^(−x²) and using that L raises degree (so Lⁿ(g) ≠ 0 while the n-th derivative vanishes). The linear contrast is also complete: L₁[Q]=Q'+Q is proved surjective onto all polynomials (risch_linear_surjective_monomial + risch_linear_surjective_all), so ∫p(x)eˣdx is elementary for every polynomial p. Two axioms plus three opaque predicates (five assumptions total) cover the parts requiring differential Galois / Picard-Vessiot theory not yet in Mathlib: the structural Liouville form of elementary antiderivatives and the polynomial→rational extension of the Risch criterion. Total: 24 theorems/lemmas, 2 axioms + 3 opaque predicates, 0 sorries, 540 lines.",
     "implications": "**Theoretical Significance**: Liouville's integration theorem inaugurated differential algebra and the Risch decision procedure (1969), which underlies symbolic integration in all major computer algebra systems. The degree-raising operator argument is a model case of how algebraic structure (polynomial degree) witnesses transcendence. The structural analogy with Abel-Ruffini (both are Galois-theoretic impossibility results proved by polynomial algebra arguments) is formalized explicitly. The formalization also provides a clean pedagogical development of differential field basics and the Risch criterion framework.",
     "openQuestions": [
       "Reduce the axiom count: extend the polynomial obstruction to rational functions using partial fraction analysis. Key step: if Q = p/q (in lowest terms) satisfies Q' - 2xQ = 1, then poles of Q' must cancel with poles of 2xQ; analyzing the pole order at each root of q leads to a contradiction. This requires Mathlib's partial fraction decomposition.",
@@ -200,7 +215,7 @@
       "Real"
     ],
     "namespace": "AbelRuffiniOQ09",
-    "lineCount": 541,
+    "lineCount": 540,
     "axiomCount": 5,
     "theoremCount": 24,
     "definitionCount": 6,

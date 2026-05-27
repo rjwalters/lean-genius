@@ -70,11 +70,11 @@
     "proofId": "abel-ruffini-oq-09",
     "range": {
       "startLine": 134,
-      "endLine": 151
+      "endLine": 163
     },
     "type": "concept",
     "title": "Liouville's Structural Theorem (Axiom)",
-    "content": "**Liouville's Integration Theorem** (1835): If f ∈ F has an elementary antiderivative g (D(g) = f), then g has the **Liouville form**:\n\n  g = v₀ + c₁·ln(v₁) + ··· + cₙ·ln(vₙ)\n\nwhere v₀, vᵢ ∈ F and cᵢ are constants of F.\n\nThis structural theorem is axiomatized here because its proof requires **Picard-Vessiot theory** — the differential analog of Galois theory. A Picard-Vessiot extension of F is the differential field analogue of a splitting field. The key result is that if an ODE system has a solution in an elementary extension, then that solution must come from a tower of algebraic/logarithmic/exponential extensions of a specific form.\n\nMathlib currently has no formalization of Picard-Vessiot theory. The gap is estimated at >1000 lines of foundational Lean code.",
+    "content": "Three opaque predicates are declared first — IsElementaryOver, IsLiouvilleForm, and IsElementaryFn — standing in for notions (membership in an elementary extension, the logarithmic-sum form, elementarity of a real function) that cannot yet be defined without differential field theory absent from Mathlib. The axiom then states:\n\n**Liouville's Integration Theorem** (1835): If f ∈ F has an elementary antiderivative g (D(g) = f), then g has the **Liouville form**:\n\n  g = v₀ + c₁·ln(v₁) + ··· + cₙ·ln(vₙ)\n\nwhere v₀, vᵢ ∈ F and cᵢ are constants of F.\n\nThis structural theorem is axiomatized here because its proof requires **Picard-Vessiot theory** — the differential analog of Galois theory. A Picard-Vessiot extension of F is the differential field analogue of a splitting field. The key result is that if an ODE system has a solution in an elementary extension, then that solution must come from a tower of algebraic/logarithmic/exponential extensions of a specific form.\n\nMathlib currently has no formalization of Picard-Vessiot theory. The gap is estimated at >1000 lines of foundational Lean code.",
     "mathContext": "**Picard-Vessiot theory** (Picard 1887, Vessiot 1891): The differential Galois group of an ODE controls whether its solutions are elementary. An ODE is solvable by elementary functions iff its Picard-Vessiot group has solvable identity component.",
     "significance": "key",
     "relatedConcepts": [
@@ -92,12 +92,12 @@
     "id": "ann-risch-criterion-axiom",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 156,
+      "startLine": 169,
       "endLine": 183
     },
     "type": "concept",
-    "title": "Risch Criterion and Gaussian Non-Elementarity (Axioms)",
-    "content": "Two more axioms:\n\n**risch_exp_criterion_gaussian**: ∫e^(-x²)dx is elementary iff ∃ rational Q (with nowhere-zero denominator) satisfying Q' - 2xQ = 1 pointwise.\n\nThis is the Risch criterion applied to ∫e^g where g = -x², so g' = -2x and the ODE becomes Q' + Q·(-2x) = 1, i.e., Q' - 2xQ = 1.\n\n**gaussian_not_elementary**: The antiderivative of e^(-x²) is not a rational function. This axiomatizes the conclusion of the Risch criterion applied to the polynomial case result below — the polynomial obstruction shows no polynomial Q works, and the rational case is axiomatized here.\n\nThe gap from polynomial to rational: if Q = p/q (lowest terms, q ≠ 0), partial fractions show the poles of Q' and 2xQ must cancel perfectly. Analysis of pole orders shows this forces q = 1 (Q is actually polynomial), reducing to the proved case.",
+    "title": "Risch Criterion for the Gaussian (Axiom)",
+    "content": "**risch_exp_criterion_gaussian** (the single axiom in this part): ∫e^(-x²)dx is elementary iff ∃ rational Q = p/q (with nowhere-zero denominator) satisfying Q' - 2xQ = 1 pointwise.\n\nThis is the Risch criterion applied to ∫e^g where g = -x², so g' = -2x and the ODE becomes Q' + Q·(-2x) = 1, i.e., Q' - 2xQ = 1.\n\nNote what is and is not assumed here. Only the *equivalence* (elementarity ⟺ a rational Risch solution exists) is axiomatized — this is the part needing differential Galois machinery. The actual non-elementarity conclusion, gaussian_not_elementary, is NOT axiomatized: it is proved as a theorem in the core-proof section by ruling out rational solutions directly via the iterated degree-raising operator.\n\nThe gap from polynomial to rational: if Q = p/q (lowest terms, q ≠ 0), partial fractions show the poles of Q' and 2xQ must cancel perfectly. Analysis of pole orders shows this forces q = 1 (Q is actually polynomial), reducing to the proved polynomial case.",
     "mathContext": "**Risch criterion** (1969): $\\int R(x)e^{g(x)}dx$ is elementary iff $\\exists$ rational $Q$ with $Q' + Qg' = R$. For $g = -x^2$, $g' = -2x$, giving $Q' - 2xQ = 1$.",
     "significance": "key",
     "relatedConcepts": [
@@ -114,7 +114,7 @@
     "id": "ann-risch-ode-coeff-top",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 208,
+      "startLine": 189,
       "endLine": 219
     },
     "type": "concept",
@@ -137,13 +137,13 @@
     "id": "ann-no-poly-risch-soln",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 236,
-      "endLine": 244
+      "startLine": 222,
+      "endLine": 260
     },
     "type": "concept",
     "title": "Main Theorem: No Polynomial Risch Solution",
-    "content": "**no_poly_risch_soln**: ∀ p : Polynomial ℝ, p' - C(2)·X·p ≠ 1.\n\n**Proof by contradiction**:\n1. **p = 0 case**: L[0] = 0 - 0 = 0 ≠ 1. Handled by `simp [hp] at h`.\n2. **p ≠ 0 case**: `leadingCoeff(p) ≠ 0` by `Polynomial.leadingCoeff_ne_zero`.\n   - Extract coefficient at natDeg(p)+1 from both sides of the assumed equality L[p] = 1.\n   - LHS: -2·leadingCoeff(p) (by `risch_ode_coeff_top`)\n   - RHS: 0 (by `poly_one_coeff_pos`, since natDeg+1 ≥ 1)\n   - So -2·leadingCoeff(p) = 0, hence leadingCoeff(p) = 0 — contradicts p ≠ 0.\n\nThe proof uses `congr_arg` to extract the coefficient function applied to both sides, then rewrites with the two coefficient lemmas. The final contradiction is `mul_ne_zero (by norm_num : (-2:ℝ) ≠ 0) hlc`.",
-    "mathContext": "The degree-raising argument in one line: $\\deg(p' - 2xp) = \\deg(p) + 1 > \\deg(1) = 0$ for $p \\neq 0$, so they cannot be equal.",
+    "content": "**no_poly_risch_soln**: ∀ p : Polynomial ℝ, p' - C(2)·X·p ≠ 1.\n\n**Proof by contradiction**:\n1. **p = 0 case**: L[0] = 0 - 0 = 0 ≠ 1. Handled by `simp [hp] at h`.\n2. **p ≠ 0 case**: `leadingCoeff(p) ≠ 0` by `Polynomial.leadingCoeff_ne_zero`.\n   - Extract coefficient at natDeg(p)+1 from both sides of the assumed equality L[p] = 1.\n   - LHS: -2·leadingCoeff(p) (by `risch_ode_coeff_top`)\n   - RHS: 0 (by `poly_one_coeff_pos`, since natDeg+1 ≥ 1)\n   - So -2·leadingCoeff(p) = 0, hence leadingCoeff(p) = 0 — contradicts p ≠ 0.\n\nThe proof uses `congr_arg` to extract the coefficient function applied to both sides, then rewrites with the two coefficient lemmas. The final contradiction is `mul_ne_zero (by norm_num : (-2:ℝ) ≠ 0) hlc`.\n\nThe helper **poly_one_coeff_pos** supplies the RHS fact (the constant 1 has coefficient 0 at every position ≥ 1), and **no_poly_risch_constant** generalizes the whole result: the same coefficient argument shows L[p] ≠ C(c) for EVERY nonzero constant c, so the image of L₂ avoids all nonzero constants — not just the value 1.",
+    "mathContext": "The degree-raising argument in one line: $\\deg(p' - 2xp) = \\deg(p) + 1 > \\deg(1) = 0$ for $p \\neq 0$, so they cannot be equal. More generally $L[p] \\neq C(c)$ for all $c \\neq 0$ (no_poly_risch_constant).",
     "significance": "critical",
     "relatedConcepts": [
       "proof by contradiction",
@@ -179,11 +179,37 @@
     ]
   },
   {
+    "id": "ann-gaussian-not-elementary",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 275,
+      "endLine": 376
+    },
+    "type": "insight",
+    "title": "Gaussian Non-Elementarity, Fully Proved (No Rational Antiderivative)",
+    "content": "This is the headline analytic result: **gaussian_not_elementary** proves that ∫e^(−x²)dx has no rational-function antiderivative — promoting what earlier drafts assumed as an axiom to a fully machine-checked theorem. The argument bootstraps the polynomial obstruction into a statement about real functions:\n\n- **rischOp** packages L[h] = h' − C(2)·X·h as a polynomial-to-polynomial map, and **rischOp_iter_ne_zero** uses risch_ode_raises_degree to show iterating L never produces 0 from a nonzero start (each application strictly raises degree, so it can never collapse to the zero polynomial).\n- **hasDerivAt_mul_gauss** establishes the bridge between algebra and analysis: d/dx[h(x)·e^(−x²)] = L[h](x)·e^(−x²). The Leibniz/chain-rule computation turns the −2x from differentiating e^(−x²) into exactly the −2x·h term of L.\n- **risch_iterate_eq** iterates this: the n-th derivative of h(x)·e^(−x²) equals Lⁿ(h)(x)·e^(−x²), proved by induction using HasDerivAt.unique to pin down each derivative.\n- **gaussian_not_elementary** assembles the contradiction. Suppose d/dx[p/q] = e^(−x²) with q nowhere zero. The quotient rule gives f := p'q − pq' = q²·e^(−x²) = g·e^(−x²) with g = q² ≠ 0. Differentiating n = deg(f)+1 times kills the polynomial f (Polynomial.iterate_derivative_eq_zero), so 0 = Lⁿ(g)(x)·e^(−x²) for all x. Since e^(−x²) > 0 everywhere, Lⁿ(g) vanishes pointwise, hence as a polynomial (Polynomial.funext) — contradicting rischOp_iter_ne_zero.",
+    "mathContext": "If $\\frac{d}{dx}\\frac{p}{q} = e^{-x^2}$ then $p'q - pq' = q^2 e^{-x^2}$, i.e. $f = g\\,e^{-x^2}$ with $g = q^2$. Because $\\frac{d}{dx}\\!\\left(h\\,e^{-x^2}\\right) = (h' - 2xh)e^{-x^2} = L[h]\\,e^{-x^2}$, the $n$-th derivative is $L^n(g)\\,e^{-x^2}$. Taking $n = \\deg f + 1$ forces $L^n(g) \\equiv 0$, but $L$ raises degree so $L^n(g) \\neq 0$ — contradiction. This rules out even rational antiderivatives, not just polynomial ones.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "iterated derivative",
+      "quotient rule",
+      "HasDerivAt.unique",
+      "degree-raising operator",
+      "error function"
+    ],
+    "prerequisites": [
+      "risch_ode_raises_degree",
+      "Polynomial.iterate_derivative_eq_zero",
+      "HasDerivAt",
+      "Polynomial.funext"
+    ]
+  },
+  {
     "id": "ann-funext",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 282,
-      "endLine": 295
+      "startLine": 382,
+      "endLine": 401
     },
     "type": "concept",
     "title": "Polynomial.funext: Pointwise to Polynomial Equality",
@@ -204,8 +230,8 @@
     "id": "ann-linear-exponent-contrast",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 297,
-      "endLine": 346
+      "startLine": 402,
+      "endLine": 451
     },
     "type": "concept",
     "title": "The Degree-Preserving Contrast: ∫eˣ IS Elementary",
@@ -225,11 +251,35 @@
     ]
   },
   {
+    "id": "ann-linear-surjectivity",
+    "proofId": "abel-ruffini-oq-09",
+    "range": {
+      "startLine": 452,
+      "endLine": 508
+    },
+    "type": "technique",
+    "title": "L₁ is Surjective: Every Polynomial Integrand × eˣ is Elementary",
+    "content": "Part VIb sharpens the contrast from \"L₁ hits the constants\" to \"L₁ hits everything.\" The operator L₁[Q] = Q' + Q (the Risch ODE for ∫R(x)eˣdx) is proved surjective onto all of ℝ[X], so ∫p(x)eˣdx is elementary for EVERY polynomial p — the exact opposite of L₂, which misses every nonzero constant.\n\n- **risch_linear_surjective_monomial**: for each n there is a Q with Q' + Q = Xⁿ, built by the recurrence Q₀ = 1, Q_{n+1} = X^{n+1} − C(n+1)·Qₙ. The induction step verifies Q_{n+1}' + Q_{n+1} = X^{n+1} using the hypothesis Qₙ' + Qₙ = Xⁿ (closed via linear_combination).\n- **risch_linear_surjective_all**: extends from monomials to all polynomials by Polynomial.induction_on'. Linearity of L₁ (additivity, plus L₁[C(a)·Q] = C(a)·L₁[Q]) reduces every polynomial to a sum of scaled monomials.\n\nThe recurrence is exactly the finite integration-by-parts expansion: ∫p(x)eˣdx = (Σₖ (−1)ᵏ p^(k)(x))·eˣ. Degree-preservation of L₁ is what makes this terminating closed form possible — and its absence for L₂ is what makes the Gaussian non-elementary.",
+    "mathContext": "Surjectivity of $L_1[Q] = Q' + Q$: solve $Q' + Q = X^n$ by $Q_n = \\sum_{k=0}^{n} (-1)^k \\frac{n!}{(n-k)!} X^{n-k}$, equivalently the recurrence $Q_{n+1} = X^{n+1} - (n+1)Q_n$. By linearity this covers all $p \\in \\mathbb{R}[X]$, so $\\int p(x)e^x\\,dx = \\left(\\sum_k (-1)^k p^{(k)}(x)\\right)e^x$ is always elementary.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "surjectivity",
+      "degree-preserving operator",
+      "integration by parts",
+      "Polynomial.induction_on'"
+    ],
+    "prerequisites": [
+      "Polynomial.induction_on'",
+      "polynomial recurrence",
+      "linearity of derivations"
+    ]
+  },
+  {
     "id": "ann-abel-ruffini-analogy",
     "proofId": "abel-ruffini-oq-09",
     "range": {
-      "startLine": 348,
-      "endLine": 379
+      "startLine": 509,
+      "endLine": 540
     },
     "type": "concept",
     "title": "The Abel-Ruffini Analogy: Two Galois Theories",
