@@ -117,5 +117,29 @@
       "simp with reduceDIte to unfold conditional definitions",
       "All four GCD lemmas: gcd_sub_right, gcd_mul_two_left/right, gcd_two_mul, gcd_odd_sub_half/right"
     ]
+  },
+  {
+    "id": "ann-basic-properties",
+    "proofId": "binary-gcd",
+    "range": {
+      "startLine": 163,
+      "endLine": 173
+    },
+    "type": "insight",
+    "title": "Basic Properties: Inheriting Nat.gcd's API for Free via the Correctness Bridge",
+    "content": "Once `binaryGcd_eq_gcd` is proved, no structural property of `binaryGcd` needs a fresh inductive argument — each is a one-liner that rewrites `binaryGcd` to `Nat.gcd` and then invokes Mathlib's existing lemma. `binaryGcd_comm` proves `binaryGcd a b = binaryGcd b a` by `rw [binaryGcd_eq_gcd, binaryGcd_eq_gcd, Nat.gcd_comm]` — rewrite both sides to `Nat.gcd`, then commutativity is `Nat.gcd_comm`. The zero cases instead unfold the definition directly: `binaryGcd_zero_left` is `simp [binaryGcd]` (the first defining equation `0, b => b` fires immediately), but `binaryGcd_zero_right` needs `cases a <;> simp [binaryGcd]` — a case split on `a` is required because the equation `a, 0 => a` only matches *after* `0, b => b` is ruled out, so Lean cannot reduce `binaryGcd a 0` until it knows whether `a` is `0` or a successor. This illustrates the general formal-verification pattern: prove the implementation equals a trusted specification (`binaryGcd = Nat.gcd`), then inherit the entire specification's theory (associativity, idempotence, the Bézout certificate via `Nat.gcd_eq_gcd_ab`, etc.) without re-deriving anything.",
+    "mathContext": "The bridge lemma $\\text{binaryGcd}\\,a\\,b = \\gcd(a,b)$ lets every property of $\\gcd$ transfer mechanically. Commutativity: $\\text{binaryGcd}\\,a\\,b = \\gcd(a,b) = \\gcd(b,a) = \\text{binaryGcd}\\,b\\,a$. The zero identities $\\text{binaryGcd}\\,0\\,b = b$ and $\\text{binaryGcd}\\,a\\,0 = a$ follow from the base-case equations of the definition; the right-zero case requires a case split on $a$ because pattern matching tries $0, b$ before $a, 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "implementation-equals-specification refinement pattern",
+      "Nat.gcd_comm for commutativity transfer",
+      "definitional unfolding via simp [binaryGcd]",
+      "pattern-match order and the need for cases on the right-zero argument"
+    ],
+    "prerequisites": [
+      "binaryGcd_eq_gcd correctness theorem proved above",
+      "Nat.gcd API in Mathlib.Data.Nat.GCD.Basic",
+      "Lean 4 pattern-matching reduction semantics"
+    ]
   }
 ]
