@@ -11,10 +11,19 @@
 #   ./sync-and-deploy.sh --dry-run    Show what would be done
 #
 # Environment:
-#   SKIP_MERGE=1    Skip PR merging
-#   SKIP_SYNC=1     Skip data syncing
-#   SKIP_BUILD=1    Skip building
-#   SKIP_DEPLOY=1   Skip deployment
+#   SKIP_MERGE=1            Skip PR merging
+#   SKIP_SYNC=1             Skip data syncing
+#   SKIP_BUILD=1            Skip building
+#   SKIP_DEPLOY=1           Skip deployment
+#   BUILD_TIMEOUT=20m       Hard cap for `pnpm build` (timeout(1) duration syntax).
+#                           Default 20m. As of 2026-05-27 at HEAD a4f83c7b055 a
+#                           clean build measures ~35s wall-clock total
+#                           (annotations 3s, research:build 1s, research:enrich
+#                           3s, tsc 9s, vite 18s) -- ~34x headroom. Re-profile
+#                           with scripts/deploy/profile-build.sh before bumping.
+#   BUILD_NODE_OPTIONS=...  Extra Node options for the build. Defaults to
+#                           "--max-old-space-size=8192" so vite does not OOM on
+#                           the current bundle.
 
 set -euo pipefail
 
@@ -557,17 +566,23 @@ build_website() {
         return 0
     fi
 
-    print_info "Running pnpm build..."
+    # Cap node heap at 8 GB so OOMs surface as deterministic exits rather than
+    # thrashing the host, and bound the whole chain at BUILD_TIMEOUT so a hung
+    # step can't accumulate zombie pnpm/vite processes across cycles. The cap
+    # is configurable via env (BUILD_TIMEOUT, BUILD_NODE_OPTIONS) so future
+    # adjustments don't require code changes. A profiler is available at
+    # scripts/deploy/profile-build.sh -- re-run before tightening or loosening
+    # the default.
+    local build_timeout="${BUILD_TIMEOUT:-20m}"
+    local build_node_options="${BUILD_NODE_OPTIONS:---max-old-space-size=8192}"
+    print_info "Running pnpm build (cap ${build_timeout}, NODE_OPTIONS=${build_node_options})..."
     # Capture full log so failures aren't masked by `| tail -5` (which forces
-    # the pipe's exit status to tail's, always 0). Cap node heap at 8 GB so
-    # OOMs surface as deterministic exits rather than thrashing the host, and
-    # bound the whole chain at 20 minutes so a hung step can't accumulate
-    # zombie pnpm/vite processes across cycles.
+    # the pipe's exit status to tail's, always 0).
     local build_log
     build_log=$(mktemp)
     local build_status=0
-    NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=8192" \
-        timeout --kill-after=30 20m pnpm build > "$build_log" 2>&1 \
+    NODE_OPTIONS="${NODE_OPTIONS:-} ${build_node_options}" \
+        timeout --kill-after=30 "$build_timeout" pnpm build > "$build_log" 2>&1 \
         || build_status=$?
     tail -20 "$build_log"
     case $build_status in
@@ -576,7 +591,7 @@ build_website() {
             rm -f "$build_log"
             ;;
         124|137)
-            print_error "Build timed out after 20m (status $build_status); see full log at $build_log"
+            print_error "Build timed out after ${build_timeout} (status $build_status); see full log at $build_log"
             return 1
             ;;
         *)

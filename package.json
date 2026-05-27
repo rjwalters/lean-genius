@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm annotations:build && pnpm research:build && pnpm research:enrich && tsc -b && vite build",
+    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\" && pnpm annotations:build && pnpm research:build && pnpm research:enrich && tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "deploy": "pnpm build && wrangler pages deploy dist --project-name=lean-genius --commit-dirty=true",
