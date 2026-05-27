@@ -7,6 +7,20 @@ Must A be the union of finitely many sets, each with no three points collinear?
 
 This is a problem of Erdős, Nešetřil, and Rödl from [Er92b].
 
+**RESOLUTION (2026-05-21, AlphaProof Nexus, arXiv:2605.22763v1)**: NO.
+DeepMind's AlphaProof Nexus produced an explicit counterexample (the
+Elekes-style parametric construction `A_set` in `Proofs/Erdos846ProblemAPN.lean`)
+that is infinite, (1/2)-non-trilinear, but not weakly non-trilinear. The
+formal proof of the negation is `Erdos846APN.target_false`. Consequently,
+the open conjecture is now **disproved**.
+
+This gallery file retains the elementary definitions and proved easy
+directions (converse, finite case, ε bounds) using a cross-product
+characterisation of collinearity. The hard direction has been removed
+(it was previously stated as `axiom ErdosProblem846`; that axiom is
+mathematically false and is dropped). For the refutation, see
+`Proofs/Erdos846ProblemAPN.lean`.
+
 Related: Erdős Problem 774, 847.
 
 Reference: https://erdosproblems.com/846
@@ -246,25 +260,32 @@ theorem erdos846_finite (A : Set (Fin 2 → ℝ)) (hA : Set.Finite A)
     IsWeaklyNonTrilinear A :=
   finite_weaklyNonTrilinear A hA
 
--- ## The Erdős–Nešetřil–Rödl Conjecture (OPEN)
+-- ## The Erdős–Nešetřil–Rödl Conjecture (DISPROVED, 2026-05-21)
 
-/-- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, OPEN): Is every infinite
-    ε-non-trilinear subset of ℝ² weakly non-trilinear (a finite union of
-    sets with no three collinear)?
+/-- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, 1992; DISPROVED 2026-05-21):
+    Is every infinite ε-non-trilinear subset of ℝ² weakly non-trilinear (a
+    finite union of sets with no three collinear)?
+
+    **Answer**: NO. DeepMind's AlphaProof Nexus produced an explicit
+    counterexample on 2026-05-21 (arXiv:2605.22763v1). The Elekes-style
+    parametric construction `A_set q` (built from `q (i, j) = (t i + t j,
+    t i^2 + t i * t j + t j^2)` with `t_seq n = 100^(4^n)`) is:
+
+    * **infinite** (`Erdos846APN.A_set_infinite`),
+    * **(1/2)-non-trilinear** via a bipartite max-cut argument
+      (`Erdos846APN.A_set_nontrilinear`), and
+    * **not weakly non-trilinear** via a Ramsey-for-triangles argument
+      (`Erdos846APN.A_set_not_weakly`).
+
+    The formal refutation is `Erdos846APN.target_false`; see the companion
+    file `Proofs/Erdos846ProblemAPN.lean`. Note that the APN file uses
+    Mathlib's `Collinear ℝ {x, y, z}` predicate rather than the
+    `AreCollinear` cross-product characterisation used in this file
+    (they agree on `EuclideanSpace ℝ (Fin 2)`, but unifying the two
+    definitions is left as future work).
 
     The converse (weakly non-trilinear → ε-non-trilinear) is proved above
     as `weaklyNonTrilinear_implies_eps`. The finite case is proved as
     `erdos846_finite`. The valid range is ε ∈ (0, 1] by
     `isEpsNonTrilinear_eps_le_one`. -/
-axiom ErdosProblem846 :
-    ∀ A : Set (Fin 2 → ℝ), A.Infinite →
-      ∀ ε : ℝ, ε > 0 → IsEpsNonTrilinear A ε →
-        IsWeaklyNonTrilinear A
-
-/-- Contrapositive formulation: equivalent to the main conjecture by pure logic. -/
-theorem ErdosProblem846_contrapositive :
-    ∀ A : Set (Fin 2 → ℝ), A.Infinite →
-      ¬IsWeaklyNonTrilinear A →
-        ∀ ε : ℝ, ε > 0 → ¬IsEpsNonTrilinear A ε := by
-  intro A hA hnotW ε hε heps
-  exact hnotW (ErdosProblem846 A hA ε hε heps)
+example : True := trivial
