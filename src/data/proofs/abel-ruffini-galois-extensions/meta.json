@@ -452,6 +452,24 @@
       "year": "2014",
       "venue": "Springer Monographs in Mathematics, Springer-Verlag Berlin Heidelberg (xviii + 307 pp.)",
       "note": "Comprehensive monograph generalizing Arnold's topological proof of Abel-Ruffini into a *topological Galois theory* classifying which closed-form expressions in various function classes — radical, elementary, Liouvillian, Pfaffian — are admissible for solving algebraic and differential equations. Khovanskii's framework replaces the field-theoretic Galois group with the *monodromy group* of the resolvent covering and characterizes solvability by the structure (solvable, virtually solvable, abelian-by-finite) of this monodromy group. Major theorems: (1) Arnold's topological Abel-Ruffini ($A_5$ obstruction via braid monodromy) — the model case formalized via Alekseev (2004); (2) topological proof that the integral $\\int e^{-x^2} dx$ has no elementary antiderivative (Liouville's theorem); (3) Khovanskii's own theorem that fewnomial equations admit at most a bounded-by-monomial-count number of solutions, generalizing Bézout's theorem. Together with Alekseev (2004), provides the modern textbook reference for the topological/monodromic approach to solvability obstructions complementing the field-theoretic Galois-group approach formalized in this file. Cited in keyInsight #12."
+    },
+    {
+      "authors": [
+        "B. L. van der Waerden"
+      ],
+      "title": "Moderne Algebra",
+      "year": "1930",
+      "venue": "Springer, Berlin (Vol. I, xiii + 243 pp.); English translation *Algebra*, Ungar 1949, reprinted Springer GTM 1991",
+      "note": "The canonical textbook source for the theorem that the Galois group of the *generic* degree-$n$ polynomial $f(X) = X^n - e_1 X^{n-1} + \\cdots + (-1)^n e_n$ over the field of symmetric functions $K = k(e_1, \\ldots, e_n)$ is the full symmetric group $S_n$, acting by permuting the algebraically independent indeterminate roots $t_1, \\ldots, t_n$. Van der Waerden codified this fact — implicit in Galois's 1832 memoir — as the bridge that turns the *group-theoretic* solvability classification of this file ($S_n$ solvable $\\iff n \\leq 4$) into the *analytic* Abel-Ruffini statement (the general quintic is unsolvable by radicals). The 1930 first edition (Vol. I, §59 'Die allgemeine Gleichung n-ten Grades') is the modern algebra textbook that established the Galois-theoretic framework as the standard expository route to Abel-Ruffini, eclipsing the earlier Lagrange-resolvent presentations. Cited in keyInsight #12 ('The generic Galois group is $S_n$')."
+    },
+    {
+      "authors": [
+        "J.-P. Serre"
+      ],
+      "title": "Topics in Galois Theory",
+      "year": "1992",
+      "venue": "Research Notes in Mathematics, Vol. 1, Jones and Bartlett Publishers (xv + 117 pp.); 2nd edition A K Peters / CRC Press 2007",
+      "note": "Definitive modern treatment of **Hilbert's irreducibility theorem** (Chapter 3, 'Hilbert's irreducibility theorem'): for any irreducible $f(T, X) \\in \\mathbb{Q}(T)[X]$, the set of $t_0 \\in \\mathbb{Q}$ for which the specialization $f(t_0, X) \\in \\mathbb{Q}[X]$ remains irreducible is the complement of a *thin set* (Serre's terminology, formalized in §3.1) — thin sets have natural density $0$, so 'almost all' rational specializations preserve irreducibility, and in particular preserve the Galois group. Combined with the generic-Galois-group theorem (van der Waerden 1930), this descent makes Abel-Ruffini concrete: specializing the coefficients of the generic quintic $X^5 - e_1 X^4 + \\cdots - e_5 \\in \\mathbb{Q}(e_1, \\ldots, e_5)[X]$ to rational values preserves the Galois group $S_5$ outside a thin set, so a 'random' rational quintic — e.g. $X^5 - X - 1$ — has Galois group $S_5$ and is unsolvable by radicals. Cited in keyInsight #12 as the descent step from the generic to the rational case."
     }
   ],
   "sections": [
