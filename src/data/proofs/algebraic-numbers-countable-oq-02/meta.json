@@ -69,7 +69,45 @@
       }
     ],
     "theoremCount": 11,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Parent proof: algebraic numbers are countable (the other half of Cantor's 1874 paper). Together with this entry, $|\\overline{\\mathbb{Q}} \\cap \\mathbb{R}| = \\aleph_0$ (parent) and $|\\mathbb{R}| = \\mathfrak{c}$ (this entry) yield the punchline of the original Cantor paper: transcendental reals exist (and are uncountable) — a non-constructive existence proof that predated Hermite's $e$ (1873) by one year only on the constructive side."
+      },
+      {
+        "id": "cantor-diagonalization",
+        "relationship": "The concrete diagonal argument: no surjection $\\mathbb{N} \\to \\text{BinarySeq} = (\\mathbb{N} \\to \\text{Bool})$. This entry's §5 (`diagonal-connection`) bridges the abstract cardinal inequality $\\aleph_0 < 2^{\\aleph_0}$ (`Cardinal.cantor`) to the concrete combinatorial form $|\\mathbb{R}| = |\\text{BinarySeq}| = 2^{\\aleph_0}$, identifying the two as the same theorem in two logical frameworks."
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-02",
+        "relationship": "Cantor's original 1874 nested-intervals proof of $\\neg$Countable $\\mathbb{R}$ — the historical first form of the uncountability argument before the 1891 diagonal reformulation. This entry uses the modern cardinal-bounds proof via `Cardinal.mk_real`; oq-02-oq-02 gives the original constructive-flavored interval-shrinking argument from the same paper."
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-03",
+        "relationship": "Refines this entry's qualitative '$\\neg$Countable transcendentalReals' to the exact cardinality $\\#\\text{transcendentalReals} = \\mathfrak{c}$ via cardinal arithmetic $\\aleph_0 + \\mathfrak{c} = \\mathfrak{c}$. Closes the gap between 'uncountable' (this entry) and 'continuum-sized' (oq-02-oq-03)."
+      },
+      {
+        "id": "algebraic-numbers-countable-oq-02-oq-04",
+        "relationship": "Completes the computable-algebraic-real cardinality hierarchy: computable reals ($\\aleph_0$, by Turing-machine enumeration) $\\subset$ algebraic reals ($\\aleph_0$, parent entry) $\\subsetneq \\mathbb{R}$ ($\\mathfrak{c}$, this entry). All three are subsets of $\\mathbb{R}$ but the gap between countable definability and uncountable cardinality is precisely the transcendental-non-computable continuum."
+      },
+      {
+        "id": "cantors-theorem",
+        "relationship": "Abstract form of the diagonal argument: $|P(A)| > |A|$ for every set $A$. The key inequality $\\aleph_0 < \\mathfrak{c}$ this entry uses is the special case $A = \\mathbb{N}$ via the identification $\\mathbb{R} \\cong P(\\mathbb{N})$ (up to cardinality). The Lean realization `Cardinal.cantor` instantiated at $\\aleph_0$ is the technical engine."
+      },
+      {
+        "id": "liouville-theorem",
+        "relationship": "The dual approach to transcendence: Liouville's 1844 explicit construction via Diophantine approximation (numbers too well approximated by rationals cannot be algebraic). The pair Cantor-(1874, this entry, cardinality-based)/Liouville-(1844, constructive Diophantine) are the two founding strategies of transcendence theory — both predating Hermite's $e$ (1873) and Lindemann's $\\pi$ (1882)."
+      },
+      {
+        "id": "hermite-lindemann",
+        "relationship": "Specific witnesses to this entry's existential ground: Lindemann-Weierstrass (1882) constructs explicit transcendentals ($e, \\pi$, and $e^\\alpha$ for nonzero algebraic $\\alpha$). The complementary pair: this entry asserts transcendentals are uncountable (existential ground), Lindemann-Weierstrass produces specific certificates."
+      },
+      {
+        "id": "schroeder-bernstein",
+        "relationship": "Foundational cardinal-arithmetic engine: the Schröder-Bernstein theorem ($|A| \\leq |B|$ and $|B| \\leq |A|$ $\\Rightarrow$ $|A| = |B|$) underpins the proof that $\\#\\mathbb{R} = 2^{\\aleph_0}$ via mutual injections between $\\mathbb{R}$ and the Cantor set. Without Schröder-Bernstein, $\\#\\mathbb{R} \\leq \\mathfrak{c}$ and $\\mathfrak{c} \\leq \\#\\mathbb{R}$ would not directly yield equality."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Cantor's 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (On a Property of the Collection of All Real Algebraic Numbers) was the first paper to establish that not all infinite sets have the same size. Cantor proved two things: (1) the algebraic numbers are countable, and (2) the real numbers are uncountable. Together, these imply that most real numbers are transcendental — a striking conclusion reached without explicitly constructing any transcendental number. This predated his 1891 diagonal argument, using instead a nested interval construction, but the essence is the same: any enumeration of reals misses some real.",
