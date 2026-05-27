@@ -19,7 +19,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 193,
+    "lineCount": 192,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-04-04",
@@ -101,16 +101,16 @@
     {
       "id": "cardinal-facts",
       "title": "§1: Cardinality of ℝ",
-      "startLine": 60,
-      "endLine": 75,
+      "startLine": 67,
+      "endLine": 79,
       "summary": "card_real_eq_continuum: #ℝ = 𝔠. aleph0_lt_card_real: ℵ₀ < #ℝ. Uses Cardinal.mk_real and Cardinal.aleph0_lt_continuum.",
       "mathContext": "#ℝ = 𝔠 = 2^ℵ₀ > ℵ₀. The continuum 𝔠 is the cardinality of all binary sequences (ℕ → Bool), reflecting the diagonal argument."
     },
     {
       "id": "uncountability",
       "title": "§2: ℝ is Not Countable",
-      "startLine": 77,
-      "endLine": 100,
+      "startLine": 80,
+      "endLine": 101,
       "summary": "reals_not_countable: ¬ Countable ℝ. Proof by contradiction: Countable ℝ → #ℝ ≤ ℵ₀ (mk_le_aleph0), but ℵ₀ < #ℝ. Contradiction.",
       "mathContext": "Cardinal.mk_le_aleph0 with [Countable α] typeclass gives #α ≤ ℵ₀. Contradict with aleph0_lt_card_real."
     },
@@ -118,22 +118,22 @@
       "id": "no-surjection",
       "title": "§3: No Surjection ℕ → ℝ",
       "startLine": 102,
-      "endLine": 122,
+      "endLine": 126,
       "summary": "no_surjection_nat_to_real: ¬∃ f : ℕ → ℝ, Surjective f. exists_not_in_range: ∀ f : ℕ → ℝ, ∃ x ∉ range f. One-line proofs via reals_not_countable + Function.Surjective.countable.",
       "mathContext": "Equivalence: ∃ surjection ℕ → ℝ ↔ Countable ℝ. Since ℕ is countable, surjection ℕ → ℝ → Countable ℝ (Function.Surjective.countable)."
     },
     {
       "id": "transcendentals",
       "title": "§4: Transcendental Reals are Uncountable",
-      "startLine": 124,
-      "endLine": 152,
+      "startLine": 127,
+      "endLine": 157,
       "summary": "transcendentalReals: def {x : ℝ | ¬ IsAlgebraic ℚ x}. transcendentals_uncountable: ¬ Set.Countable transcendentalReals. Union argument: algebraic ∪ transcendental = univ, both countable → ℝ countable → contradiction.",
       "mathContext": "algebraic ∪ transcendental = Set.univ (Classical.em). Set.Countable.union + Set.countable_univ_iff.mp → Countable ℝ → contradiction."
     },
     {
       "id": "diagonal-connection",
       "title": "§5: Connection to Cantor's Diagonal Argument",
-      "startLine": 154,
+      "startLine": 158,
       "endLine": 192,
       "summary": "cantor_diagonal_binary: no surjection ℕ → BinarySeq (from CantorDiagonalization.lean). cantor_diagonal_gap: ℵ₀ < 2^ℵ₀ (Cardinal.cantor). diagonal_gap_equals_card_real: 𝔠 = #ℝ. reals_uncountable_summary: conjunction of all results.",
       "mathContext": "The abstract gap ℵ₀ < 2^ℵ₀ (Cardinal.cantor ℵ₀) = the concrete diagonal (no surjection ℕ → BinarySeq). Both express that #BinarySeq = 2^ℵ₀ = 𝔠 = #ℝ > ℵ₀."
@@ -354,7 +354,7 @@
       "Cardinal"
     ],
     "namespace": "AlgebraicNumbersCountableOQ02",
-    "lineCount": 193,
+    "lineCount": 192,
     "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 1,
