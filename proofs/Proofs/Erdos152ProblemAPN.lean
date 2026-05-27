@@ -304,7 +304,7 @@ lemma quad_upper_other_inj (A : Set ℕ) (k : ℕ) (_ : IsSidon A) :
 lemma quad_upper_other_im (A : Set ℕ) (k : ℕ) (_ : IsSidon A) :
   (fun q : ℕ × ℕ × ℕ × ℕ => (q.1 : ℤ) - q.2.2.1) '' {q ∈ quad_k_N A k | (q.1 : ℤ) - q.2.2.1 ≠ 0 ∧ (q.1 : ℤ) - q.2.2.1 ≠ -k} ⊆ {x ∈ D_set A | x + k ∈ D_set A} := by
   show _ ''{ a ∈{s |_}|_} ⊆_
-  simp_all (config := {singlePass:= true}) -contextual[ Erdos152.D_set, IsSidon]
+  simp_all (config := {singlePass:= true}) -contextual[ Erdos152APN.D_set, IsSidon]
   use fun and A B a s R L K V _ _=>⟨⟨ _,s,B,L, rfl⟩,a,K,A,R,by valid⟩
 
 lemma quad_upper_other (A : Set ℕ) (k : ℕ) (hSidon : IsSidon A) (_ : A.Finite) :
@@ -344,7 +344,7 @@ lemma quad_fiber_subset (A : Set ℕ) (hA : A.Finite) (s k : ℕ) :
 lemma quad_fiber_card (A : Set ℕ) (hA : A.Finite) (k : ℕ) (s : ℕ) (hs : s ∈ S_good A k) :
   4 ≤ (quad_fiber A s k).ncard := by change(4)≤ {s |_}.ncard
                                      obtain ⟨a, rfl⟩:= (hA).exists_finset_coe
-                                     simp_all-contextual[ Erdos152.S_good,Set.setOf_and,Set.ncard_eq_toFinset_card']
+                                     simp_all-contextual[ Erdos152APN.S_good,Set.setOf_and,Set.ncard_eq_toFinset_card']
                                      trans {S ∈a ×ˢa ×ˢa ×ˢa | S.1+S.2.1 = s∧S.2.2.1+S.2.2.2 = s+k}.card
                                      · use hs.1.1.elim fun and⟨i,A, B, _⟩=>hs.1.2.elim fun x⟨R, L, M, _⟩=> if I:and = A then(? _)else if I:x =L then(? _)else(? _)
                                        · rcases hs.2.1.2 A B (by (bound ) )
