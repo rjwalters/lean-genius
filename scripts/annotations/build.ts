@@ -27,25 +27,85 @@ const PROOFS_SOURCE_DIR = path.join(__dirname, '../../proofs/Proofs');
 const REPO_ROOT = path.join(__dirname, '../..');
 
 /**
- * Return the most recent commit ISO timestamp touching any of the supplied
- * repo-relative paths, or undefined if the lookup fails or returns nothing.
+ * Build a single-shot map of repo-relative path -> most-recent commit ISO
+ * timestamp by running ONE `git log` over the two interesting trees instead
+ * of one subprocess per listing.
  *
- * Used to compute an "updatedAt" field for each proof listing so users can
- * sort the gallery by recently-touched proofs (data + Lean source).
+ * The map is keyed by both:
+ *   1. Each touched file path (e.g. `src/data/proofs/erdos-12/meta.json`)
+ *   2. Each ancestor directory of every touched file. This lets callers
+ *      look up by directory (e.g. `src/data/proofs/erdos-12`) and get the
+ *      latest touch under that subtree — matching the original semantics of
+ *      `git log -- <dir>`.
+ *
+ * Returns undefined when git is unavailable; lookups then fall back to
+ * undefined for every listing (same behavior as the previous per-call try/catch).
+ *
+ * Performance: trades ~2435 subprocess fork/execs for a single git log call
+ * that returns in ~1-2 seconds on a warm git cache. See issue #20850.
  */
-function lastTouched(paths: string[]): string | undefined {
-  if (paths.length === 0) return undefined;
+function buildTouchedMap(): Map<string, string> | undefined {
   try {
-    const quoted = paths.map((p) => `'${p.replace(/'/g, "'\\''")}'`).join(' ');
-    const out = execSync(`git log -1 --format=%cI -- ${quoted}`, {
-      encoding: 'utf8',
-      cwd: REPO_ROOT,
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    return out || undefined;
+    const out = execSync(
+      `git log --pretty=format:'%cI%x09%H' --name-only -- 'src/data/proofs/' 'proofs/Proofs/'`,
+      {
+        encoding: 'utf8',
+        cwd: REPO_ROOT,
+        stdio: ['ignore', 'pipe', 'ignore'],
+        maxBuffer: 200 * 1024 * 1024,
+      }
+    );
+    // Parse the stream. Format per commit:
+    //   <iso>\t<sha>          <- header line
+    //   path/to/file           <- one path per following line
+    //   <blank>                <- separator before next commit
+    // git log is newest-first, so the first time we see a path it IS the latest.
+    const latest = new Map<string, string>();
+    let currentTs: string | undefined;
+    for (const line of out.split('\n')) {
+      if (!line) continue;
+      if (line.includes('\t')) {
+        // Header: capture timestamp; sha is ignored.
+        currentTs = line.split('\t', 1)[0];
+        continue;
+      }
+      if (!currentTs) continue;
+      // Record for the exact file path and every ancestor directory so that
+      // a lookup by directory (the original lastTouched call pattern) returns
+      // the latest touch anywhere under that subtree.
+      let p = line;
+      while (true) {
+        if (!latest.has(p)) latest.set(p, currentTs);
+        const slash = p.lastIndexOf('/');
+        if (slash <= 0) break;
+        p = p.slice(0, slash);
+      }
+    }
+    return latest;
   } catch {
     return undefined;
   }
+}
+
+/**
+ * Return the most recent commit ISO timestamp touching any of the supplied
+ * repo-relative paths (files or directories), or undefined if no lookup hits.
+ *
+ * Uses the pre-built map from `buildTouchedMap()` to avoid per-call subprocesses.
+ * Preserves the original semantics: when given a directory, returns the latest
+ * commit touching anything under that subtree.
+ */
+function lastTouched(
+  paths: string[],
+  touched: Map<string, string> | undefined
+): string | undefined {
+  if (!touched || paths.length === 0) return undefined;
+  let best: string | undefined;
+  for (const p of paths) {
+    const t = touched.get(p);
+    if (t && (!best || t > best)) best = t;
+  }
+  return best;
 }
 
 interface ProofConfig {
@@ -211,6 +271,19 @@ function generateListings(proofs: ProofConfig[]): void {
 
   const listings: ProofListing[] = [];
 
+  // Pre-build the map of repo-relative path -> latest commit timestamp once,
+  // up front. This is the critical perf fix: the previous implementation
+  // spawned one `git log` per listing (~2435 subprocesses), which pushed
+  // `pnpm build` past the 20-minute deploy cap. See issue #20850.
+  const buildTouchedStart = Date.now();
+  const touched = buildTouchedMap();
+  const buildTouchedMs = Date.now() - buildTouchedStart;
+  if (touched) {
+    console.log(`   Built git touch map: ${touched.size} paths in ${buildTouchedMs}ms`);
+  } else {
+    console.log(`   Skipping git touch map (git unavailable); listings will have no updatedAt`);
+  }
+
   for (const proof of proofs) {
     const metaPath = path.join(proof.dataDir, 'meta.json');
     const annotationsPath = path.join(proof.dataDir, 'annotations.json');
@@ -236,7 +309,7 @@ function generateListings(proofs: ProofConfig[]): void {
     if (proofRepoPath) {
       trackedPaths.push(`proofs/${proofRepoPath}`);
     }
-    const updatedAt = lastTouched(trackedPaths);
+    const updatedAt = lastTouched(trackedPaths, touched);
 
     listings.push({
       id: meta.id || proof.id,
