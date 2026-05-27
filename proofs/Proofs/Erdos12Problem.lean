@@ -2,7 +2,8 @@
   Erdős Problem #12: Divisibility-Free Sets
 
   Source: https://erdosproblems.com/12
-  Status: OPEN
+  Status: Parts (i) and (ii) RESOLVED by DeepMind AlphaProof Nexus (2026-05-21).
+          Part (iii) — convergence of Σ 1/n on a divisibility-free set — remains OPEN.
 
   Statement:
   Let A be an infinite set such that there are no distinct a,b,c ∈ A
@@ -10,10 +11,22 @@
 
   Questions:
   1. Is there such A with liminf |A ∩ {1,...,N}| / √N > 0?
-  2. Is there c > 0 with infinitely many N having |A ∩ {1,...,N}| < N^(1-c)?
+     **Answer (AlphaProof Nexus, 2026): YES.**
+     Lean proof in `Proofs/Erdos12ProblemAPNPartI.lean`.
+
+  2. Is there c > 0 such that |A ∩ {1,...,N}| < N^(1-c) for infinitely many N?
+     **Answer (AlphaProof Nexus, 2026): NO.**
+     Lean proof in `Proofs/Erdos12ProblemAPNPartII.lean`.
+
   3. Is Σ(1/n : n ∈ A) < ∞?
+     **OPEN.**
 
   Erdős-Sárközy (1970) proved such sets have density 0.
+
+  References:
+  - AlphaProof Nexus paper: https://arxiv.org/abs/2605.22763v1
+  - AlphaProof Nexus Lean outputs:
+    https://github.com/google-deepmind/alphaproof-nexus-results/tree/main/APNOutputs/ErdosProblems
 -/
 
 import Mathlib
