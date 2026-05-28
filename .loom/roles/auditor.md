@@ -443,6 +443,10 @@ Ask yourself:
 - Would this break CI/CD?
 - Is this a regression from known-working state?
 
+### Mathlib Style Scan for Mathlib-bound Files
+
+For any file under a Sperner split-PR branch (#7967, sibling work #7938, #8575, #8998) or any other branch targeted at upstream Mathlib submission, the `mathlib-contribution` skill at `.claude/skills/mathlib-contribution/` defines a style and naming checklist that is part of the audit surface. When reviewing such a branch, run the automatable section of `.claude/skills/mathlib-contribution/STYLE-SCAN.md` against each modified file in `proofs/Proofs/` and flag any violations in the audit report. Treat the LLM section as advisory; flag findings, do not fail the audit on style-only LLM observations. Tracking issue: #20854.
+
 ## Terminal Probe Protocol
 
 When you receive a probe command, respond with:

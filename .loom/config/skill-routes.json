@@ -8,6 +8,11 @@
       "description": "Full issue lifecycle orchestration"
     },
     {
+      "pattern": "mathlib.style|mathlib.bound|style.scan|mathlib4#|ready.for.mathlib",
+      "agent": "/skill mathlib-contribution",
+      "description": "Mathlib-bound Lean style scan and red-team pass"
+    },
+    {
       "pattern": "architect|design|proposal|system design|rfc",
       "agent": "/architect",
       "description": "System design and architecture"

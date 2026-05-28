@@ -306,3 +306,7 @@ export const camelCaseNameData: ProofData = {
 ## Axiom Integrity When Enriching
 
 When enriching a proof page, verify that `status`, `badge`, and `axiomCount` in meta.json accurately reflect the actual Lean file. Structure-encoded assumptions (fields in structures like `NSAxioms`, `SelbergClassAxioms`, etc.) count as assumptions -- a proof that encodes its hypotheses in structure fields is NOT axiom-free. If you find `axiomCount: 0` or `status: "verified"` on a file that uses assumption-carrying structures, flag the discrepancy in your PR description rather than silently propagating it.
+
+## Mathlib Style Does NOT Apply to Gallery-Only Proofs
+
+The `mathlib-contribution` skill at `.claude/skills/mathlib-contribution/` exists for files in `proofs/Proofs/` that are being prepared for upstream submission to Mathlib (e.g. the Sperner split-PR work in #7967). It deliberately uses stricter style and import rules than the gallery -- for example, it bans `import Mathlib` and `import Mathlib.Tactic`, both of which are routine in gallery proofs. Do not apply the skill to a gallery-only file just because it imports Mathlib. The skill is gated on the file being mathlib-bound; if you cannot identify a Mathlib PR (or a `mathlib-bound` marker) for the file, leave the gallery conventions in place. See #20854 for the skill's introduction and scoping rules.
