@@ -297,6 +297,18 @@ jq '.knowledge.builtItems += ["Created LemmaX in ProofY.lean:123"]' "$FILE" > tm
 jq '.knowledge.progressSummary = "PROGRESS: Description"' "$FILE" > tmp.json && mv tmp.json "$FILE"
 ```
 
+### Red-team Pass Before PR (Mathlib-bound files only)
+
+If the file you just edited is targeted at upstream Mathlib submission (e.g. one of the Sperner split-PR files in #7967, #7938, #8575, #8998, or anything you intend to PR to `leanprover-community/mathlib4`), run the `mathlib-contribution` skill before committing:
+
+```text
+apply mathlib-contribution skill to proofs/Proofs/YourFile.lean
+```
+
+The skill bundles a style/naming scan, a curated gotchas catalog, and trust-but-verify auto-edit rules adapted from Terence Tao's "AI with Lean" workflow. See `.claude/skills/mathlib-contribution/SKILL.md` for the workflow and `STYLE-SCAN.md` for the checklist. The skill is a red-team tool only -- use it after the proof compiles and the mathematics is settled. Tracking issue: #20854.
+
+This pass does **not** apply to research-only files or gallery proofs; gallery work follows looser conventions on purpose.
+
 ## Step 5: Commit and Push
 
 ```bash
