@@ -79,8 +79,8 @@
       "Symmetric groups $S_n = \\text{Equiv.Perm}(\\text{Fin } n)$: permutations, alternating groups $A_n = \\ker(\\text{sgn})$, and the sign homomorphism $\\text{sgn}: S_n \\to \\{\\pm 1\\}$",
       "Galois theory: Galois group, radical extensions, Kummer theory; specifically that $\\alpha$ is solvable by radicals iff $\\text{Gal}(f_\\alpha/F)$ is solvable",
       "Lean 4 / Mathlib typeclasses: `IsSolvable`, `IsSimpleGroup`, `IsGalois` — solvability and simplicity are typeclass predicates whose instances Lean derives automatically via `inferInstance`",
-      "Decision procedures in Lean 4: `decide` (kernel evaluator, suitable for groups with $\\leq 720$ elements) vs `native_decide` (compiles to OCaml, required for $|S_7| = 5040$ and $|S_8| = 40320$)",
-      "Klein four-group $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$: the unique normal subgroup of $A_4$ giving the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors"
+      "Decision procedures in Lean 4: `decide` (kernel evaluator, used here for groups up to $|S_5| = 120$ and $|A_5| = 60$) vs `native_decide` (compiles to native code, used from $|A_6| = 360$ and $|S_6| = 720$ upward, including $|S_7| = 5040$ and $|S_8| = 40320$)",
+      "Klein four-group $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$: the unique proper non-trivial normal subgroup of $A_4$ giving the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors"
     ]
   },
   "conclusion": {
