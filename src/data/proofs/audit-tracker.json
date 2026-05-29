@@ -6644,13 +6644,13 @@
     },
     "erdos-39": {
       "agentId": "auditor-2026-05-02-0128",
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [
         "phantom AKS/Ruzsa axiom claims in proofStrategy step 3 + originalContributions[2] (only erdos_sidon_upper_bound is an axiom; AKS/Ruzsa are docstrings on lines 90-98)",
         "section line drift: [3] 57-73 should extend to 86; [4] startLine 74 should be 88; [6] 134-149 misses line 141 marker and theorem at 165; [7] title 'Verified Examples' should be 'Verified Facts' (Lean line 168), startLine 170 should be 168"
       ],
-      "lastAudited": "2026-05-01T23:33:00Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-05-29T07:21:57Z",
+      "result": "clean",
       "issueRefs": [
         14434
       ]
