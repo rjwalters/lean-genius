@@ -419,3 +419,92 @@ Mathlib idiom directly.
 5. **Downstream integration**: search proofs/ for places where
    `Asymptotics.IsLittleO`-style consumption would benefit from the
    new bridge.
+
+## S13 (researcher-1, 2026-05-29) — BUILD-FIX + conjecture↔rate_form equivalence (VERIFIED GREEN)
+
+### Headline
+
+First **locally Docker-verified GREEN build** of `Erdos101OQ01.lean`
+since the S12 bridge landed. S12 was committed `[BUILD UNVERIFIED]` and
+**never compiled**: `erdos_101_oq_01_rate_form_iff_isLittleO` had two
+`exact_mod_cast h_bounds P hP` calls that could not see through the
+beta-redex `(fun n => ↑(g n)) P.points.card`. The file has been a
+build-blocker on `main` since S12 (2026-05-24).
+
+### S13 deliverable
+
+| Change | Effect |
+|---|---|
+| Fix `rate_form_iff_isLittleO` (both directions) | materialise the beta-reduced `(count P : ℝ) ≤ (g \|P\| : ℝ)` via a `have`, then `exact`/`exact_mod_cast`. Clears the build-blocker. |
+| `maxCountAtSize (n) := sSup {count Q \| \|Q\|=n, NoFiveCollinear Q}` | noncomputable def; the `o(n²)` witness for the `conjecture → rate_form` direction. |
+| `maxCountAtSize_bddAbove` | set bounded above by `n(n-1)/12` via `improved_upper_bound`. |
+| `le_maxCountAtSize` | `count P ≤ maxCountAtSize \|P\|` via `le_csSup`. |
+| `maxCountAtSize_lt_of_forall` | sup `< X` if every count `< X` (empty case via `csSup_empty`, nonempty via `Nat.sSup_mem`). |
+| `erdos_101_oq_01_conjecture_iff_rate_form` | **NEW equivalence** (the missing link). `←` direct; `→` via the sup witness. |
+| `erdos_101_oq_01_isLittleO` | now **DERIVED** from `erdos_101_oq_01` (was an independent `sorry`). |
+
+### Counter deltas (VERIFIED)
+
+| Metric | Pre-S13 | Post-S13 | Δ |
+|---|---|---|---|
+| Build | **RED (2 errors)** | **GREEN** | fixed |
+| Genuine sorries | 3 | 2 | −1 |
+| Axioms | 0 | 0 | 0 |
+| Defs | 6 | 7 | +1 (`maxCountAtSize`) |
+| Theorems/lemmas | 13+1 | +4 | `maxCountAtSize_bddAbove`, `le_maxCountAtSize`, `maxCountAtSize_lt_of_forall`, `conjecture_iff_rate_form` |
+| LOC | 603 | 712 | +109 |
+
+The two remaining sorries are both genuinely external: `erdos_101_oq_01`
+(the $100 OPEN conjecture, line 114) and `solymosi_stojakovic_lower_bound`
+(finite-field construction, deferred, line 542). The Mathlib-idiom twin
+`erdos_101_oq_01_isLittleO` is no longer a separate assumption — proving
+the primary conjecture now automatically yields the idiomatic form.
+
+### Why the `conjecture → rate_form` witness is the supremum (not `n(n-1)/12`)
+
+`rate_form` needs an `o(n²)` witness `g` with `count P ≤ g(|P|)`. The
+elementary bound `n(n-1)/12` bounds every count but is `Θ(n²)`, **not**
+`o(n²)` — so it cannot witness `rate_form`. The minimal valid witness is
+the exact supremum `maxCountAtSize n = sSup {count Q | |Q|=n, no5}`,
+which the conjecture forces below `ε·n²` for large `n`. `Nat.sSup_mem`
+(needs `Nonempty` + `BddAbove`) extracts a maximiser; the empty case
+(`csSup_empty`, value 0) is covered by `0 < ε·n²` for `n ≥ 1`.
+
+### Mathlib API gotcha (for next picker)
+
+- `Nat.sSup_empty` **does not exist**. Use `csSup_empty : sSup ∅ = ⊥`
+  (`⊥ = 0` in ℕ by defeq), ascribed as `: sSup (∅:Set ℕ) = 0`.
+- `Nat.sSup_mem`, `le_csSup`, `BddAbove` (via `⟨bound, fun k hk => …⟩`)
+  all work for `Set ℕ` (ℕ is `ConditionallyCompleteLinearOrderBot`).
+  Import: `Mathlib.Data.Nat.Lattice`.
+- `exact_mod_cast` does **not** beta-reduce `(fun n => ↑(g n)) x`;
+  materialise the reduced form via `have` first, then cast.
+
+### Build/infra notes (IMPORTANT for next picker)
+
+- `docker-build.sh` uses `-v REPO_ROOT:/workspace:delegated`. On macOS
+  this **reverted uncommitted edits to source `.lean` files** on container
+  teardown (the harness Edit cache and disk desynced). **Mitigation:
+  COMMIT source edits to git BEFORE running `docker-build.sh`**, and
+  re-apply via a direct disk write (Bash/Python) if the harness Edit tool
+  desyncs. Verified: a committed file survives the build flush.
+- The mathlib olean cache lives on the host worktree
+  (`proofs/.lake/packages/mathlib/.lake/build/lib`, ~7382 oleans) AND a
+  Docker volume `lean-mathlib-cache` at `/workspace/proofs/.lake/build`.
+  `lake exe cache get` re-downloads all 7727 files each run (~6 min, the
+  "repository has local changes" warning). Use `LEAN_SKIP_CACHE=true` to
+  skip `cache get` and just `lake build` (mathlib oleans are already on
+  host) — much faster for single-file iterations.
+
+### S14 next-action candidates
+
+1. **True-sup `maxFourPointLines`**: the older S12 surrogate
+   `maxFourPointLines n := n*(n-1)/12` is `Θ(n²)`, deliberately *not*
+   `o(n²)`. `maxCountAtSize` is the genuine sup. Consider unifying the two
+   (drop the surrogate, or relate them by `maxCountAtSize ≤ maxFourPointLines`).
+2. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound ≤ (n-1)/3`
+   for a `1 - o(1)` leading constant on the `n²/12` bound (still `Θ(n²)`).
+3. **Witness extraction at small `n`** via `decide`/`native_decide` for
+   certified gallery examples (no-five-collinear sets, `fourPointLineCount`).
+4. **Deferred (OPEN)**: `erdos_101_oq_01` ($100 prize, sub-quadratic upper
+   bound) and `solymosi_stojakovic_lower_bound` (finite-field construction).
