@@ -382,15 +382,14 @@ private lemma sylow_count_eq_one_of_lt_prime_pow_two
     rw [pow_zero] at hni; exact hni
   · -- n = p^1 = p. Then q ∣ p - 1, contradicting p < q.
     rw [pow_one] at hni
-    subst hni
+    subst n
     have hq_dvd : q ∣ p - 1 :=
       (Nat.modEq_iff_dvd' (by omega : 1 ≤ p)).mp hmod.symm
     have : q ≤ p - 1 := Nat.le_of_dvd (by omega : 0 < p - 1) hq_dvd
     omega
   · -- n = p^2. Then q ∣ p^2 - 1 = (p - 1) * (p + 1).
     subst hni
-    have hp2_one_le : 1 ≤ p ^ 2 := by
-      have := hp.pos; positivity
+    have hp2_one_le : 1 ≤ p ^ 2 := Nat.one_le_pow 2 p hp.pos
     have hq_dvd_diff : q ∣ p ^ 2 - 1 :=
       (Nat.modEq_iff_dvd' hp2_one_le).mp hmod.symm
     -- p^2 - 1 = (p - 1) * (p + 1) (Nat arithmetic; p ≥ 2 ensures no underflow).
@@ -461,7 +460,6 @@ theorem burnside_p_squared_q_p_lt_q
       rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
           Nat.factorization_eq_zero_of_not_dvd hq_not_dvd_p2,
           Nat.Prime.factorization_self hq.out]
-      simp
     rw [hfact, pow_one] at hmult
     exact hmult
   -- Step 2: index of Q is p^2 (Lagrange + cancellation).
@@ -482,7 +480,8 @@ theorem burnside_p_squared_q_p_lt_q
   haveI hQ_normal : (Q : Subgroup G).Normal := Sylow.normal_of_subsingleton Q
   -- Step 5: discharge via burnside_pq_with_normal_qSylow with a = 2, b = 1.
   have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [pow_one]; exact hcard
-  exact burnside_pq_with_normal_qSylow (a := 2) (b := 1) hcard' (Q : Subgroup G) hQ_card
+  have hQ_card' : Nat.card (Q : Subgroup G) = q ^ 1 := by rw [pow_one]; exact hQ_card
+  exact burnside_pq_with_normal_qSylow (a := 2) (b := 1) hcard' (Q : Subgroup G) hQ_card'
 
 /-! Iteration 9 (S9) — exceptional `(p, q) = (2, 3), |G| = 12` case.
 
@@ -573,12 +572,12 @@ private lemma sylow_prime_order_disjoint_of_ne
   have hint_le_Q' : (Q : Subgroup G) ⊓ (Q' : Subgroup G) ≤ (Q' : Subgroup G) := inf_le_right
   have hp_prime : Nat.Prime p := Fact.out
   have hdvd : Nat.card ((Q : Subgroup G) ⊓ (Q' : Subgroup G) : Subgroup G) ∣ p := by
-    rw [← hQ_card]
-    exact Subgroup.card_dvd_of_le hint_le_Q
+    have h := Subgroup.card_dvd_of_le hint_le_Q
+    rwa [hQ_card] at h
   rcases hp_prime.eq_one_or_self_of_dvd _ hdvd with h1 | hp_eq
-  · -- |inter| = 1 ⇒ inter = ⊥ via `Subgroup.eq_bot_of_card_le`
-    -- (`Mathlib.Algebra.Group.Subgroup.Finite`, line 126).
-    exact Subgroup.eq_bot_of_card_le (le_of_eq h1)
+  · -- |inter| = 1 ⇒ inter = ⊥ via `Subgroup.eq_bot_of_card_eq`
+    -- (`H` is an explicit argument in current Mathlib).
+    exact Subgroup.eq_bot_of_card_eq _ h1
   · -- |inter| = p = |Q| = |Q'|: forces Q = Q' as Sylow, contradicting hne.
     -- Use `subgroupOf` relativization to derive Q ≤ Q' and Q' ≤ Q.
     exfalso
@@ -648,13 +647,13 @@ private lemma sylow_three_card_eq_three_of_card_twelve
     Nat.card (Q : Subgroup G) = 3 := by
   -- |G| = 12 = 2² · 3¹
   have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
-  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
-  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 4 := by decide
+  have hcop : Nat.Coprime (2 ^ 2) (3 ^ 1) := by decide
+  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 2 ^ 2 := by decide
   have hp3 : Nat.Prime 3 := Fact.out
   have hmult := Sylow.card_eq_multiplicity Q
   have hfact : Nat.factorization (Nat.card G) 3 = 1 := by
-    rw [hcard']
-    rw [Nat.factorization_mul_apply_of_coprime hcop,
+    rw [hcard',
+        Nat.factorization_mul_apply_of_coprime hcop,
         Nat.factorization_eq_zero_of_not_dvd h3_not_dvd_4,
         Nat.Prime.factorization_pow hp3]
     simp
@@ -675,13 +674,13 @@ private lemma sylow_two_card_eq_four_of_card_twelve
     (hcard : Nat.card G = 12) (P : Sylow 2 G) :
     Nat.card (P : Subgroup G) = 4 := by
   have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
-  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
-  have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 := by decide
+  have hcop : Nat.Coprime (2 ^ 2) (3 ^ 1) := by decide
+  have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 ^ 1 := by decide
   have hp2 : Nat.Prime 2 := Fact.out
   have hmult := Sylow.card_eq_multiplicity P
   have hfact : Nat.factorization (Nat.card G) 2 = 2 := by
-    rw [hcard']
-    rw [Nat.factorization_mul_apply_of_coprime hcop,
+    rw [hcard',
+        Nat.factorization_mul_apply_of_coprime hcop,
         Nat.Prime.factorization_pow hp2,
         Nat.factorization_eq_zero_of_not_dvd h2_not_dvd_3]
     simp
@@ -1235,7 +1234,7 @@ private lemma cube_id_card_eq_nine_of_partition_ingredients
       ∀ Q : Sylow 3 G, ((Q : Set G) \ ({1} : Set G)).Finite :=
     fun _ => Set.toFinite _
   have hdisj_pairwise :
-      Pairwise (Disjoint on
+      Pairwise (Function.onFun Disjoint
                 fun Q : Sylow 3 G => (Q : Set G) \ ({1} : Set G)) := by
     intro Q Q' hne
     exact hdisj Q Q' hne
@@ -1291,13 +1290,11 @@ private lemma sylow_two_unique_when_n3_four
       sylow_three_card_eq_three_of_card_twelve hcard Q'
     have h_inter_bot : (Q : Subgroup G) ⊓ (Q' : Subgroup G) = ⊥ :=
       sylow_prime_order_disjoint_of_ne Q Q' hQ_card hQ'_card hne
-    have h_set_inter : (Q : Set G) ∩ (Q' : Set G) = ({1} : Set G) := by
-      rw [← Subgroup.coe_inf, h_inter_bot, Subgroup.coe_bot]
     refine Set.disjoint_left.mpr ?_
     rintro g ⟨hgQ, hg_ne_one⟩ ⟨hgQ', _⟩
-    have hg_inter : g ∈ (Q : Set G) ∩ (Q' : Set G) := ⟨hgQ, hgQ'⟩
-    rw [h_set_inter] at hg_inter
-    exact hg_ne_one hg_inter
+    have hg_mem : g ∈ (Q : Subgroup G) ⊓ (Q' : Subgroup G) := ⟨hgQ, hgQ'⟩
+    rw [h_inter_bot, Subgroup.mem_bot] at hg_mem
+    exact hg_ne_one (by rw [Set.mem_singleton_iff]; exact hg_mem)
   -- (b) hfiber: each punctured Sylow-3 subgroup has Set.ncard 2.
   have hfiber : ∀ Q : Sylow 3 G,
       Set.ncard ((Q : Set G) \ ({1} : Set G)) = 2 := by
@@ -1335,10 +1332,10 @@ theorem burnside_p_squared_q_twelve
   -- |G| = 12 = 2² · 3¹
   have hcard' : Nat.card G = 2 ^ 2 * 3 ^ 1 := by rw [hcard]; norm_num
   -- Coprimality witness
-  have hcop : Nat.Coprime (2 ^ 2) 3 := by decide
+  have hcop : Nat.Coprime (2 ^ 2) (3 ^ 1) := by decide
   -- Step 1: Sylow 3-subgroup Q has |Q| = 3
   obtain ⟨Q⟩ : Nonempty (Sylow 3 G) := inferInstance
-  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 4 := by decide
+  have h3_not_dvd_4 : ¬ (3 : ℕ) ∣ 2 ^ 2 := by decide
   have hQ_card : Nat.card (Q : Subgroup G) = 3 := by
     have hmult := Sylow.card_eq_multiplicity Q
     have hfact : Nat.factorization (Nat.card G) 3 = 1 := by
@@ -1350,11 +1347,10 @@ theorem burnside_p_squared_q_twelve
     rw [hfact, pow_one] at hmult
     exact hmult
   -- Step 2: Q.index = 4 (Lagrange + cancellation)
-  have h3_pos : 0 < (3 : ℕ) := by norm_num
   have hQ_index : (Q : Subgroup G).index = 4 := by
     have h := Subgroup.card_mul_index (Q : Subgroup G)
-    rw [hQ_card, hcard, mul_comm 3 4] at h
-    exact Nat.eq_of_mul_eq_mul_left h3_pos h
+    rw [hQ_card, hcard] at h
+    omega
   -- Step 3: n_3 ≡ 1 [MOD 3] and n_3 ∣ 4; helper forces n_3 ∈ {1, 4}.
   have hn3_mod : Nat.card (Sylow 3 G) ≡ 1 [MOD 3] := card_sylow_modEq_one 3 G
   have hn3_dvd : Nat.card (Sylow 3 G) ∣ 4 := hQ_index ▸ Sylow.card_dvd_index Q
@@ -1368,7 +1364,7 @@ theorem burnside_p_squared_q_twelve
   · -- Case n_3 = 4: derive Subsingleton (Sylow 2 G) via S10 lemma; discharge.
     haveI hSub2 : Subsingleton (Sylow 2 G) := sylow_two_unique_when_n3_four hcard hn3
     obtain ⟨P⟩ : Nonempty (Sylow 2 G) := inferInstance
-    have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 := by decide
+    have h2_not_dvd_3 : ¬ (2 : ℕ) ∣ 3 ^ 1 := by decide
     have hP_card : Nat.card (P : Subgroup G) = 2 ^ 2 := by
       have hmult := Sylow.card_eq_multiplicity P
       have hfact : Nat.factorization (Nat.card G) 2 = 2 := by
@@ -1497,7 +1493,6 @@ theorem burnside_p_q_squared_q_lt_p
       rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
           Nat.Prime.factorization_self hp.out,
           Nat.factorization_eq_zero_of_not_dvd hp_not_dvd_q2]
-      simp
     rw [hfact, pow_one] at hmult
     exact hmult
   -- Step 2: index of P is q² (Lagrange + cancellation).
@@ -1519,7 +1514,8 @@ theorem burnside_p_q_squared_q_lt_p
   haveI hP_normal : (P : Subgroup G).Normal := Sylow.normal_of_subsingleton P
   -- Step 5: discharge via burnside_pq_with_normal_pSylow with a = 1, b = 2.
   have hcard' : Nat.card G = p ^ 1 * q ^ 2 := by rw [pow_one]; exact hcard
-  exact burnside_pq_with_normal_pSylow (a := 1) (b := 2) hcard' (P : Subgroup G) hP_card
+  have hP_card' : Nat.card (P : Subgroup G) = p ^ 1 := by rw [pow_one]; exact hP_card
+  exact burnside_pq_with_normal_pSylow (a := 1) (b := 2) hcard' (P : Subgroup G) hP_card'
 
 /-- **Burnside `|G| = 12 = 3 · 2²`, mirror of S9** (axiom-free post-S24;
     inherits `burnside_p_squared_q_twelve`'s now-closed S10 status).
