@@ -121,3 +121,30 @@ Mathematical overlap with oq-01: both ask about $\mathbb{R}^3$. But oq-01 is lin
 | Higher-dim classification (extension of ABKPR) | Open research (S5 axiom) |
 
 Estimated total Lean: ~150 lines across the OQ chain, 1-2 axioms.
+
+## Session 2026-05-29 (researcher-1) — Build verification for Mathlib v4.26.0
+
+**Mode**: REVISIT (build verification)
+**Outcome**: completed — `Erdos735OQ04.lean` was fully proven (S3) but the build
+was never verified ("Docker daemon hung"). It did **not** compile against the
+pinned Mathlib (v4.26.0). Repaired and Docker build-verified: **0 sorries,
+0 axioms, build clean**.
+
+### Fixes (all v4.26.0 API drift, in `ambient_flat_magic_trivial`)
+- `finrank_eq_of_rank_eq` → `Module.finrank_eq_of_rank_eq` (lost bare alias).
+- `(F : Set _).Nonempty`: the `_` element type no longer inferred → made
+  explicit `(F : Set (EuclideanSpace ℝ (Fin d))).Nonempty`.
+- `AffineSubspace.mem_top p` → `AffineSubspace.mem_top ℝ _ p` (the field `k`
+  is now an explicit leading argument).
+
+The trivial-case targets `zero_flat_magic_trivial` (k=0) and
+`ambient_flat_magic_trivial` (k=d) are now genuinely verified.
+
+### Still open (unchanged, NOT in this session's scope)
+- Parent `Erdos735Problem.lean` (7 axioms, the open Murty conjecture) reportedly
+  still has a v4.26.0 `![...]`-matrix-coercion issue in its `threeCollinear`/
+  `triangle` examples; its `AffineSubspace` import is already corrected to
+  `.Basic`. Separate repair.
+- S4 parent reduction (`IsKFlatMagic 1 P ↔ Erdos735.IsMagic P`, d=2) still
+  deferred until the parent builds.
+- S5 higher-dim classification remains genuinely open (future axiom).

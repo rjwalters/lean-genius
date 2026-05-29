@@ -10,9 +10,10 @@
   positive weights such that every k-flat through at least k+1 points has the
   same weight-sum.
 
-  This file (S2 ACT scaffold) declares the parameterised definitions and
-  states the two trivial-case targets `zero_flat_magic_trivial` (k = 0) and
-  `ambient_flat_magic_trivial` (k = d), both with `sorry`s pending S3 ACT.
+  This file declares the parameterised definitions and proves the two
+  trivial-case targets `zero_flat_magic_trivial` (k = 0) and
+  `ambient_flat_magic_trivial` (k = d) in full — 0 sorries, 0 axioms,
+  Docker build-verified against Mathlib v4.26.0.
 
   The third trivial target — the parent reduction
   `IsKFlatMagic 1 P ↔ Erdos735.IsMagic P` for `d = 2` (S4 ACT) — is deferred
@@ -122,13 +123,13 @@ theorem ambient_flat_magic_trivial {d : ℕ} (P : PointConfigD d) :
     intro Fcfg
     obtain ⟨F, hrk, hcardF⟩ := Fcfg
     have hfr_F : Module.finrank ℝ F.direction = d := by
-      apply finrank_eq_of_rank_eq
+      apply Module.finrank_eq_of_rank_eq
       simpa using hrk
     have hfr_amb : Module.finrank ℝ (EuclideanSpace ℝ (Fin d)) = d :=
       finrank_euclideanSpace_fin
     have hdir_top : F.direction = ⊤ :=
       Submodule.eq_top_of_finrank_eq (hfr_F.trans hfr_amb.symm)
-    have hF_ne : (F : Set _).Nonempty := by
+    have hF_ne : (F : Set (EuclideanSpace ℝ (Fin d))).Nonempty := by
       have hpos : 0 < (P.filter (· ∈ F)).card := by omega
       obtain ⟨q, hq⟩ := Finset.card_pos.mp hpos
       exact ⟨q, (Finset.mem_filter.mp hq).2⟩
@@ -138,7 +139,7 @@ theorem ambient_flat_magic_trivial {d : ℕ} (P : PointConfigD d) :
       (fun p => if h : p ∈ P then (1 : ℝ) else 0) = (P.card : ℝ)
     have hfilter : P.filter (· ∈ F) = P := by
       rw [hF_top]
-      exact Finset.filter_true_of_mem (fun p _ => AffineSubspace.mem_top p)
+      exact Finset.filter_true_of_mem (fun p _ => AffineSubspace.mem_top ℝ _ p)
     rw [hfilter]
     rw [Finset.sum_congr rfl (fun p hp => dif_pos hp)]
     rw [Finset.sum_const, Nat.smul_one_eq_cast]
