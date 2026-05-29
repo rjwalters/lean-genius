@@ -89,9 +89,14 @@
       "description": "The Erdős-Rado theorem: 𝔠 → (ω+n, 4)₂³ — the known case that this entry extends"
     },
     {
-      "targetId": "ramsey-theorem",
+      "targetId": "ramseys-theorem",
       "relationship": "related",
-      "description": "Ramsey's theorem is the finite foundation of partition calculus"
+      "description": "Ramsey's theorem ω → (ω)ⁿₖ is the finite/countable foundation of partition calculus; the continuum partition relation 𝔠 → (ω², n)²₂ studied here is the uncountable analogue, where the arrow notation and the search for homogeneous sets are inherited directly from Ramsey's setting but the combinatorics become sensitive to cardinal arithmetic and CH."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem (|P(X)| > |X|) establishes that the continuum 𝔠 = 2^ℵ₀ is uncountable — the cardinal whose partition properties are at issue here. The difficulty of 𝔠 → (ω², n)²₂ relative to the countable Ramsey theorem is precisely a consequence of this uncountability and the independence (from ZFC) of 𝔠's exact value."
     }
   ],
   "sections": [
