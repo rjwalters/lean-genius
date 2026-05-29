@@ -1016,6 +1016,7 @@ import Proofs.Erdos122Problem
 import Proofs.Erdos123Problem
 import Proofs.Erdos124CompleteSequences
 import Proofs.Erdos124Problem
+import Proofs.Erdos125PositiveLowerDensityAristotle
 import Proofs.Erdos125Problem
 import Proofs.Erdos126Problem
 import Proofs.Erdos127Problem
