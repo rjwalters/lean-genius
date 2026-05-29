@@ -319,6 +319,36 @@
       "title": "Finite Group Theory",
       "year": "2008",
       "note": "AMS GSM 92, §3F. Modern textbook treatment of both routes."
+    },
+    {
+      "authors": "Frobenius, F. G.",
+      "title": "Über Gruppencharaktere",
+      "year": "1896",
+      "note": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin, 985–1021. The foundational paper introducing the theory of group characters that Burnside 1904 builds on directly. Frobenius developed the orthogonality relations, the regular representation decomposition, and the algebraic-integrality of $|G|/\\chi(1) \\cdot \\chi(g)$ for $\\chi$ an irreducible character — precisely the algebraic-integer hypothesis cited in keyInsight #2 as the Mathlib gap for Burnside's original route. Without Frobenius's character framework, Burnside's 1904 proof has no language; the modern Mathlib `Representation.character` and `char_orthogonality_*` lemmas formalize Frobenius's apparatus and form the foundation on which a Lean Burnside 1904 proof would build."
+    },
+    {
+      "authors": "Burnside, W.",
+      "title": "Theory of Groups of Finite Order (2nd edition)",
+      "year": "1911",
+      "note": "Cambridge University Press, xxiv + 512 pp. The textbook reformulation of Burnside's $p^a q^b$ theorem (Note J, pp. 323–325) and the canonical reference for character-theoretic finite group theory through the mid-20th century. Burnside's 1911 monograph also contains his famous footnote conjecturing that every finite group of *odd* order is solvable — the conjecture that became the Feit-Thompson theorem (1963, already referenced elsewhere in the gallery). The book's organization separates abstract group theory (Parts I-II) from representation theory (Parts III-V) cleanly, providing the historical model for Mathlib's modern division between `Mathlib.GroupTheory.*` and `Mathlib.RepresentationTheory.*` modules. Cited as the canonical source for Burnside's theorem statement and for its position in the historical development of character-theoretic group theory."
+    },
+    {
+      "authors": "Hall, M.",
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "note": "Macmillan, xiii + 434 pp. (reprinted by Chelsea/AMS 1976, 1999). The standard reference for the classical structure theory of finite groups, especially the $p$-group → nilpotent → solvable chain invoked in keyInsight #1 as the Mathlib trivial-case engine. Chapter 4 develops Sylow theory; Chapter 10 develops the theory of $p$-groups (including the upper and lower central series characterization of nilpotence); Chapter 9 contains Hall's own characterization of solvable groups via $\\pi$-subgroups (Hall's theorem: $G$ is solvable iff $G$ has a Hall $\\pi$-subgroup for every set of primes $\\pi$). Hall's chapter 16 contains a presentation of Burnside's $p^a q^b$ theorem via character theory, closely tracking Burnside 1911. The Mathlib chain `IsPGroup → IsNilpotent → IsSolvable` formalizes the inclusions Hall establishes; the `IsZGroup.of_squarefree` lemma in keyInsight #1 (squarefree-order case) follows Hall's treatment of cyclic Sylow subgroups."
+    },
+    {
+      "authors": "Brauer, R.",
+      "title": "On Artin's L-series with general group characters",
+      "year": "1947",
+      "note": "Annals of Mathematics, Second Series, 48(2): 502–514. The breakthrough paper introducing **Brauer's induction theorem**: every irreducible character of a finite group $G$ is an integer linear combination of characters induced from characters of *elementary* subgroups (Sylow-by-cyclic). Brauer's theorem dramatically simplifies character-theoretic proofs by reducing global statements to verification on elementary subgroups, and is one of the principal modern tools for proofs in the Burnside / Feit-Thompson lineage. Although not directly invoked by Burnside's 1904 original proof (which predates Brauer by 43 years), Brauer's induction is the conceptual unifier of the algebraic-integer arguments at the heart of Burnside's route — and one of the natural Mathlib infrastructure targets cited in openQuestion #1 (rephrased: a Lean Burnside proof through the character route would route through `Brauer.induction` once formalized)."
+    },
+    {
+      "authors": "Aschbacher, M.",
+      "title": "Finite Group Theory (2nd edition)",
+      "year": "2000",
+      "note": "Cambridge Studies in Advanced Mathematics 10, x + 304 pp. Modern reference for finite group theory and the classification of finite simple groups (CFSG). Chapter 24 contains Aschbacher's account of Burnside's $p^a q^b$ theorem via the transfer + focal subgroup route (Goldschmidt-Matsuyama; aligned with keyInsight #2 and openQuestion #0 as the character-free Mathlib-formalization target). Aschbacher's book is also the modern reference for the CFSG strategy and the role of $A_5$ as the smallest non-solvable simple group — directly relevant to keyInsight #0 (sharpness at $|A_5| = 60$). Together with Isaacs (already referenced) and Hall, forms the standard modern triad of finite-group references that a Lean Burnside formalization would draw on."
     }
   ],
   "mainTheorems": [
