@@ -79,7 +79,7 @@
     "historicalContext": "Erdős and Graham posed Problem #435 in their 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory', asking for the largest integer not representable as a non-negative integer linear combination of the binomial coefficients C(n,1), C(n,2), ..., C(n,n-1) when n is not a prime power. The problem belongs to the family of Frobenius problems (coin problems), which date back to Frobenius (1882) and Sylvester (1884) who solved the 2-generator case: g(a,b) = ab - a - b. The multi-generator case is NP-hard in general (Ramírez Alfonsín, 1996). In December 2024, Hwang and Song (arXiv:2412.17882) provided the first complete solution with an explicit closed-form formula depending only on the prime factorization of n. Independently, Peake and Cambie discovered the same result through the Erdős Problems website. The key insight is that the p-adic structure of binomial coefficients, governed by Kummer's theorem and Lucas' theorem, determines the semigroup structure of representable numbers. The sequence of Frobenius numbers is catalogued as OEIS A389479.",
     "problemStatement": "**Problem Statement (Solved)**\n\nLet $n \\in \\mathbb{N}$ with $n \\neq p^k$ for any prime $p$ and $k \\geq 0$ (n is not a prime power). What is the largest integer not of the form:\n$$\\sum_{1 \\leq i < n} c_i \\binom{n}{i}$$\nwhere the $c_i \\geq 0$ are non-negative integers?\n\n**Answer:** If $n = \\prod p_k^{a_k}$ is the prime factorization, then the largest non-representable integer is:\n$$\\sum_k \\left( \\sum_{1 \\leq d \\leq a_k} \\binom{n}{p_k^d} \\right) (p_k - 1) - n$$\n\n**Solved by:** Hwang and Song (2024)",
     "text": "For n not a prime power, the largest integer not representable as Σ c_i·C(n,i) with c_i≥0 equals Σ_k (Σ_{d≤a_k} C(n,p_k^d))·(p_k-1) - n. SOLVED by Hwang-Song (2024).",
-    "proofStrategy": "The formalization axiomatizes the Hwang-Song theorem and builds the supporting infrastructure. First, IsPrimePower and NotPrimePower predicates classify n. Then IsRepresentable captures the linear combination condition using Fin n → ℕ coefficient functions. The Frobenius number is defined as sSup of non-representable numbers. The formula is decomposed into primePowerContribution (per-prime-factor terms) and hwangSongFormula (their sum minus n). The main theorem, existence of gaps, and representability of large numbers are axiomatized. The semigroup structure (closure under addition, 0 ∈ S) and GCD coprimality condition are also axiomatized. Special cases n = 6 verify the formula concretely.",
+    "proofStrategy": "The formalization axiomatizes the Hwang-Song theorem and builds the supporting infrastructure. First, IsPrimePower and NotPrimePower predicates classify n. Then IsRepresentable captures the linear combination condition using Fin n → ℕ coefficient functions. The Frobenius number is defined as sSup of non-representable numbers. The formula is decomposed into primePowerContribution (per-prime-factor terms) and hwangSongFormula (their sum minus n). Two axioms encode the main results: the Hwang-Song formula (hwang_song_theorem) and representability of all sufficiently large numbers (large_numbers_representable). The semigroup structure (closure under addition, 0 ∈ S) and GCD coprimality condition are discussed in docstrings only, not formalized. The special case n = 6 proves ¬IsPrimePower 6 concretely.",
     "keyInsights": [
       "**Numerical semigroup structure**: The representable numbers $S_n = \\{\\sum c_i \\binom{n}{i} : c_i \\geq 0\\}$ form a numerical semigroup with finite complement when $\\gcd(\\binom{n}{1}, \\ldots, \\binom{n}{n-1}) = 1$, guaranteeing the Frobenius number exists",
       "**Prime power exclusion via Kummer's theorem**: When $n = p^k$, every $\\binom{n}{i}$ for $0 < i < n$ is divisible by $p$, so $S_n \\subseteq p\\mathbb{N}$ and the complement is infinite — no Frobenius number exists",
@@ -128,18 +128,18 @@
     {
       "id": "main-theorem",
       "title": "Main Theorem and Consequences",
-      "summary": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$).",
+      "summary": "Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$ and `large_numbers_representable` ($m > g \\implies m \\in S_n$). The 'Existence of Non-Representable Numbers' docstring carries no Lean declaration.",
       "startLine": 96,
       "endLine": 120,
-      "mathContext": "Verified: Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$, plus `non_representable_exist` (gaps exist) and `large_numbers_representable` ($m > g \\implies m \\in S_n$)."
+      "mathContext": "Axiomatized: Axiomatizes `hwang_song_theorem`: $g(S_n) = \\text{hwangSongFormula}(n)$ and `large_numbers_representable` ($m > g \\implies m \\in S_n$). The 'Existence of Non-Representable Numbers' docstring carries no Lean declaration."
     },
     {
       "id": "special-cases",
       "title": "Special Cases: $n = 6$ and $n = 10$",
-      "summary": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$.",
+      "summary": "Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. A docstring records the $n = 6$ computation $g(S_6) = \\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6 = 49$ and an $n = 10$ example, but neither is formalized in Lean.",
       "startLine": 121,
       "endLine": 145,
-      "mathContext": "Verified: Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. Axiomatizes $g(S_6) = 49$, computed as $\\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6$."
+      "mathContext": "Verified: Proves $\\neg\\text{IsPrimePower}(6)$ by `interval_cases`. A docstring records the $n = 6$ computation $g(S_6) = \\binom{6}{2}(2-1) + \\binom{6}{3}(3-1) - 6 = 15 + 40 - 6 = 49$ and an $n = 10$ example, but neither is formalized in Lean."
     },
     {
       "id": "prime-power-special",
@@ -160,10 +160,10 @@
     {
       "id": "related-results",
       "title": "Related Classical Results",
-      "summary": "Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479.",
+      "summary": "Documents the classical Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (docstring placeholder — not formalized), the Sylvester–Denumerant connection, and OEIS A389479.",
       "startLine": 188,
       "endLine": 211,
-      "mathContext": "Verified: Axiomatizes Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (placeholder). Documents Sylvester–Denumerant connection and OEIS A389479."
+      "mathContext": "Mathematical content: Documents the classical Sylvester–Frobenius theorem $g(a,b) = ab - a - b$ (docstring placeholder — not formalized), the Sylvester–Denumerant connection, and OEIS A389479."
     },
     {
       "id": "main-results",
