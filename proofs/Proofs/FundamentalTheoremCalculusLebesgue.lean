@@ -146,6 +146,41 @@ theorem ac_implies_uniformly_continuous {F : ℝ → ℝ} {a b : ℝ}
       (by simp [Fin.sum_univ_one]; exact lt_of_abs_lt hxy)
     simpa [Fin.sum_univ_one] using hres
 
+/-- Absolutely continuous functions are continuous on `[a, b]`.
+
+This packages `ac_implies_uniformly_continuous` into Mathlib's `ContinuousOn`
+predicate, which is the form required by downstream results (the Cantor
+counterexample below, for instance, asserts `ContinuousOn F (Icc 0 1)`). -/
+theorem ac_implies_continuousOn {F : ℝ → ℝ} {a b : ℝ}
+    (hF : AbsolutelyContinuousOn F a b) :
+    ContinuousOn F (Icc a b) := by
+  rw [Metric.continuousOn_iff]
+  intro x hx ε hε
+  obtain ⟨δ, hδ, huc⟩ := ac_implies_uniformly_continuous hF ε hε
+  refine ⟨δ, hδ, ?_⟩
+  intro y hy hyx
+  rw [Real.dist_eq] at hyx ⊢
+  exact huc y x hy hx hyx
+
+/-- Absolute continuity is inherited by subintervals: if `F` is AC on `[a, b]`
+and `[c, d] ⊆ [a, b]` (i.e. `a ≤ c` and `d ≤ b`), then `F` is AC on `[c, d]`.
+
+The same `δ` works: any finite family of pairwise-disjoint subintervals of
+`[c, d]` is also a finite family of pairwise-disjoint subintervals of `[a, b]`,
+so the AC bound on `[a, b]` applies verbatim. -/
+theorem ac_on_subinterval {F : ℝ → ℝ} {a b c d : ℝ}
+    (hac : a ≤ c) (hdb : d ≤ b)
+    (hF : AbsolutelyContinuousOn F a b) :
+    AbsolutelyContinuousOn F c d := by
+  intro ε hε
+  obtain ⟨δ, hδ, h⟩ := hF ε hε
+  refine ⟨δ, hδ, ?_⟩
+  intro n as bs hsub hdisj htot
+  refine h n as bs ?_ hdisj htot
+  intro k
+  obtain ⟨h1, h2, h3⟩ := hsub k
+  exact ⟨le_trans hac h1, h2, le_trans h3 hdb⟩
+
 -- ═══════════════════════════════════════════════════════════════
 -- PART IV: The Lebesgue FTC (AXIOM)
 -- ═══════════════════════════════════════════════════════════════
@@ -253,7 +288,9 @@ For a measurable set S: μ(S ∩ B(x,r)) / μ(B(x,r)) → 1_{S}(x) a.e. -/
 1. ✓ AbsolutelyContinuousOn definition (new, not in Mathlib)
 2. ✓ Lipschitz → AC (proved)
 3. ✓ AC → uniformly continuous (proved)
-4. ✓ Monotone → a.e. differentiable (from Mathlib)
+4. ✓ AC → ContinuousOn (proved, packages #3 as Mathlib `ContinuousOn`)
+5. ✓ AC inherited by subintervals (proved)
+6. ✓ Monotone → a.e. differentiable (from Mathlib)
 
 ## What's Axiomatized
 1. AC → a.e. differentiable (needs: AC → BV → monotone decomposition)
