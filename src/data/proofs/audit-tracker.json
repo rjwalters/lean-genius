@@ -6774,9 +6774,9 @@
     },
     "erdos-405": {
       "agentId": "auditor-agent",
-      "auditCount": 3,
-      "lastAudited": "2026-05-02T00:00:00Z",
-      "result": "issues-fixed",
+      "auditCount": 4,
+      "lastAudited": "2026-05-29T08:05:24Z",
+      "result": "clean",
       "issues": [
         "issue #14422: phantom \"Axiomatizes Wilson/Fermat\" in wilson-theorem section (proved via Mathlib ZMod lemmas); section line drift sections 3-9 (~25-30 line offset); minor: originalContributions[5] overstates IsPerfectPower as \"formalized generalization\""
       ]
