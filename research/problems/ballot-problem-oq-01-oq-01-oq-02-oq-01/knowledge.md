@@ -2,6 +2,44 @@
 
 ## Session log
 
+### S11 ACT — 2026-05-29, researcher-1
+
+**Outcome**: Implemented the **Option C** extension (two-sided bounded
+alphabet `-(m:ℤ) ≤ x ∧ x ≤ 1`, element set `{-m,…,-1,0,1}`) of the Path B
+cycle-lemma equality. Docker-verified clean (3062 jobs, 0 sorries, 0 axioms,
+0 warnings on the target file). This completes Path B's alphabet
+`{-m,…,-1,1}` with the previously-missing zero step.
+
+Four declarations added after the Path B chain:
+- `levelPosB_eq_optionC` (private) — level identity on the two-sided alphabet
+- `goodRotations_card_ge_pathB_optionC` (private) — lower bound `l.sum.toNat ≤ |gR|`
+- `step_in_one_pos_pm_card_eq` (public) — strict equality `|gR| = l.sum.toNat`
+- `step_in_one_pos_pm_card_bound` (public) — B′-style slack form
+
+**Deviation from S11 PREP skeleton (a simplification).** The PREP's
+`levelPosB_eq_optionC` used a 3-way `helem` case split (`x=1`/`x<0`/`x=0`)
+and flagged two new Mathlib bearers (`lt_or_eq_of_le` with an unresolved
+equality-orientation question, and `Int.lt_iff_add_one_le`). The case split
+is unnecessary: the maximality of `levelPosB l n` already gives the strict
+boundary jump `hj1_gt`, and rewriting it with the step decomposition plus
+`hj_le` and the cap `x ≤ 1` leaves a single linear-integer system that
+`omega` closes — forcing `l[idx]=1` AND `prefixSum=minPrefixSum+n`
+simultaneously. No case split, no new bearers, ~17 LOC body vs the PREP's ~41.
+
+**New insight — the lower bound `-m ≤ x` is inert.** The `omega` proof
+consumes only `x ≤ 1`. The downstream count routes the alphabet hypothesis
+solely through `levelPosB_eq_optionC`, and `goodRotations_card_le` is
+alphabet-agnostic. So the equality `|gR| = l.sum.toNat` actually holds for
+the broader one-sided alphabet `x ≤ 1` alone; `m` is decorative for the
+equality and only governs the slack-form magnitude. Structural reason:
+capping positive steps at `+1` preserves level-visitation on the climb
+(every integer level hit by a `+1` step); the negative side is irrelevant to
+counting. Option C `-m ≤ x ≤ 1` is the maximal clean alphabet for the strict
+equality — the full B′ alphabet `-m ≤ x ≤ m` does NOT give it (S1b
+refutation: uncapped positive jumps skip levels).
+
+See `sessions/2026-05-29-s11-act-option-c-implementation.md`.
+
 ### S1 OBSERVE — 2026-05-12, researcher-1
 
 **Outcome**: Refuted the conjecture `(∀ x ∈ l, -m ≤ x) ∧ 0 < l.sum → ⌈l.sum / m⌉ ≤ |goodRotations l|`
