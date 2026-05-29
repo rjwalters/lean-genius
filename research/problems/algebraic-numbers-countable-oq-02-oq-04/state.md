@@ -2,22 +2,22 @@
 
 ## Current Status
 
-**Phase**: S6 BUILD VERIFIED (post-mechanic PR #19054, doc tracker resynced via S6f STATE-SYNC)
-**Owner**: researcher-5 (S6f STATE-SYNC, 2026-05-16); prior S6 ACT owner: researcher-9 (2026-05-12)
-**Iteration**: 7 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC)
-**Last Updated**: 2026-05-16Z (S6f STATE-SYNC; catches doc tracker after 4-day freeze + mechanic build-blocker resolution)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s6f-statesync-postmechanic-<ts>`
+**Phase**: S7 ACT — topological structure (computable reals are dense), Docker build verified
+**Owner**: researcher-1 (S7 ACT, 2026-05-28); prior S6f STATE-SYNC owner: researcher-5 (2026-05-16)
+**Iteration**: 8 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7)
+**Last Updated**: 2026-05-28Z (S7 ACT; density + closure-form theorems, Docker `3067/3067` clean)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s7-dense`
 
-## Post-mechanic Lean file inventory (at base `78448f56d0a`)
+## Lean file inventory (at base `b97b863990d`, S7 verified)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       656 (was 110 at S1; +546 across S2-S6)
-Theorems:    31 (per S6 sessions log; pre-S6 was 21)
+Lines:       695 (was 110 at S1; +585 across S2-S7)
+Theorems:    33 (S7 adds computable_reals_dense + closure_computable_reals_eq_univ)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4/S5/S6 added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S7 added no new)
 Axioms:      0
-Build:       ✔ VERIFIED post-mechanic PR #19054 (3067 jobs clean)
+Build:       ✔ VERIFIED S7 (Docker 3067/3067 jobs clean, 2026-05-28)
 ```
 
 3 critical Mathlib bearers re-verified at SHA `2df2f015...`
@@ -26,12 +26,15 @@ Build:       ✔ VERIFIED post-mechanic PR #19054 (3067 jobs clean)
 - `le_aleph0_iff_set_countable` at `Mathlib/SetTheory/Cardinal/Basic.lean:430`
 - `Cardinal.aleph0_lt_continuum` at `Mathlib/SetTheory/Cardinal/Continuum.lean:65`
 
-**Next-picker priority (S7+)**: ship `IsComputable e` (or `π`) as
-the explicit computable transcendental witness sharpening the strict
-inclusion `algebraic ⊊ computable` beyond the pure-cardinality argument
-of S4. Path A (e via partial sums of `1/n!`) is the cleaner-skeleton
-candidate at v4.26.0; ~80-150 LOC estimate. See S6f §5 for the
-full S7-S10 priority tree.
+**Next-picker priority (S8+)**: S7 took the *topological* branch (density)
+rather than the computable-transcendental-witness branch, which remains
+open. Recommended next ACT: ship `IsComputable e` (or `π`) as the explicit
+computable transcendental witness sharpening the strict inclusion
+`algebraic ⊊ computable` beyond the pure-cardinality argument of S4.
+Path A (e via partial sums of `1/n!`) is the cleaner-skeleton candidate
+at v4.26.0; ~80-150 LOC estimate. See S6f §5 for the full priority tree
+(witness → algebraic⊆computable via Sturm/bisection → real-closed-subfield
+→ Chaitin Ω).
 
 ## What's Done
 
@@ -204,6 +207,25 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   `knowledge.md`, or `meta.json` changes. See
   `sessions/2026-05-16-s6f-statesync-postmechanic-buildverified.md`
   for the full memo (~360 LOC, 8 sections).
+- **2026-05-28 (S7 ACT, researcher-1)**: TOPOLOGICAL STRUCTURE —
+  computable reals are dense (Docker build verified, not "build pending").
+  Two new theorems, no new defs/axioms/sorries:
+  - `computable_reals_dense : Dense {r | IsComputable r}` — the rationals are
+    dense in ℝ (`Rat.denseRange_cast`) and every rational is computable
+    (`rat_isComputable`, S2), so the computable reals contain a dense subset
+    and `Dense.mono` lifts density to the superset.
+  - `closure_computable_reals_eq_univ : closure {r | IsComputable r} = Set.univ`
+    — closure-form restatement via `Dense.closure_eq`.
+  Mathematical content: complements the S2-S6 cardinality picture with the
+  *topological* coordinate. The computable reals are simultaneously "small"
+  (countable, ℵ₀, S3) and "large" (dense, S7) — exactly the combination that
+  realises ℝ's separability through computable points alone. New Mathlib
+  bearers used: `Rat.denseRange_cast`, `Dense.mono`, `Dense.closure_eq` (all
+  resolved cleanly at base SHA `b97b863990d`). Lean file 656 → 695 LOC,
+  0 sorries → 0 sorries, 0 axioms → 0 axioms, theorem count 31 → 33.
+  **Build: Docker `lake build Proofs.AlgebraicNumbersCountableOQ02OQ04`
+  → ✔ 3067/3067 jobs clean (8.1s file compile).** First S-iteration on this
+  slug shipped build-VERIFIED rather than build-pending.
 
 ## S3 — What This Buys
 
