@@ -156,6 +156,16 @@
       "targetId": "konigsberg",
       "relationship": "ancestor",
       "description": "Original Königsberg bridges problem — Euler 1736; the undirected Eulerian theorem whose directed analogue is formalized here."
+    },
+    {
+      "targetId": "konigsberg-oq-02-oq-01",
+      "relationship": "successor",
+      "description": "Hierholzer's Algorithm — Directed Eulerian Circuit (Corrected). This file leaves Hierholzer sufficiency as an axiom (directed_eulerian_iff); konigsberg-oq-02-oq-01 takes up the constructive discharge of that axiom by formalizing Hierholzer's splicing recursion on top of the maxTrail / circuit_exists infrastructure proved here."
+    },
+    {
+      "targetId": "konigsberg-oq-04",
+      "relationship": "extension",
+      "description": "Counting Eulerian Circuits: the BEST Theorem (van Aardenne-Ehrenfest, de Bruijn 1951; Smith, Tutte 1941–48). Once existence is established by directed_eulerian_iff (this file), the BEST theorem gives the exact count via arborescences and the Matrix-Tree theorem — the quantitative refinement of the qualitative result here."
     }
   ],
   "sorries": 1
