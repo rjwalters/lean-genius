@@ -55,7 +55,7 @@
     "implications": "This algebraic identity is the foundation of AM-GM for n variables and Newton's power sum method for symmetric polynomials. The Finset-based proof applies to sums over any finite index set, making it reusable for combinatorial applications.",
     "openQuestions": [
       "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
-      "Connect to the off-diagonal symmetry: show Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ"
+      "**[Addressed in `amgm-inequality-oq-02-oq-01-oq-02`]** Connect to the off-diagonal symmetry: show Σ_{i≠j} xᵢxⱼ = 2·Σ_{i<j} xᵢxⱼ. The companion sub-entry formalizes this via the Prod.swap bijection between lower and upper triangular pairs, requiring a LinearOrder on ι that the parent CommRing-only file deliberately avoids."
     ]
   },
   "leanFile": {
