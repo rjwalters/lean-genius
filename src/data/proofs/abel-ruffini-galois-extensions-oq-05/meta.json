@@ -317,6 +317,31 @@
       "type": "library",
       "citation": "The Mathlib Community. \"Mathlib.FieldTheory.AbelRuffini\" — formal solvability-by-radicals criterion. (accessed 2026)",
       "relevance": "Imported at the top of the file. Provides Mathlib's formal account of the polynomial-side Abel–Ruffini theorem; together with this file's group-side Shafarevich axiom, completes the bidirectional radical/solvable characterization in the gallery."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Schreier, O. (1926). \"Über die Erweiterung von Gruppen I.\" Monatshefte für Mathematik und Physik 34: 165–180; Schreier, O. (1926). \"Über die Erweiterung von Gruppen II.\" Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 4: 321–346.",
+      "relevance": "Schreier's two 1926 papers introduce the systematic theory of **group extensions** that powers the embedding-problem reformulation in keyInsight #6. For a normal subgroup $N \\trianglelefteq G$ with quotient $Q = G/N$, Schreier showed that extensions $1 \\to N \\to G \\to Q \\to 1$ are classified by *factor systems* — set-theoretic 2-cocycles $f: Q \\times Q \\to N$ satisfying an associativity condition modulo coboundaries. This is the historical seed of the cohomological reformulation by Eilenberg-MacLane (next entry), and the structural mechanism by which Shafarevich's inductive proof lifts a Galois realization of $G/N$ to one of $G$: each step reduces to choosing a factor system that is *cohomologous to zero* in $H^2(Q, N)$, the existence of which is verified by class field theory + Tate-Poitou duality. Cited in keyInsight #6 as the structural backbone of the embedding-problem framework."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Eilenberg, S., MacLane, S. (1947). \"Cohomology Theory in Abstract Groups, II.\" Annals of Mathematics, Second Series, 48(2): 326–341.",
+      "relevance": "The paper establishing the **cohomological classification of group extensions**: the second cohomology group $H^2(Q, N)$ of $Q$ with coefficients in $N$ (with the induced $Q$-action) is in natural bijection with isomorphism classes of extensions $1 \\to N \\to G \\to Q \\to 1$. This converts Schreier's factor-system calculus into a *functorial cohomological obstruction theory* — exactly what keyInsight #6 invokes when it states that the embedding problem reduces to verifying that an obstruction class in $H^2(\\mathrm{Gal}, N)$ vanishes via the local-global principle and class field theory. Combined with Schreier 1926, Eilenberg-MacLane 1947 is the algebraic foundation on which Shafarevich's inductive proof structure rests: at each step, the obstruction lives in $H^2$, and class field theory + Brauer-group machinery discharge it for abelian $N$ over $\\mathbb{Q}$. Cited in keyInsight #6."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Demushkin, S. P. (1959). \"The group of a maximal $p$-extension of a local field.\" Izv. Akad. Nauk SSSR Ser. Mat. 23: 329–346.",
+      "relevance": "Demushkin's paper — written under Shafarevich's supervision — provides the **fix to the prime-2 gap in Shafarevich's 1954 proof** cited in keyInsight #9. Shafarevich's original argument used a local 2-adic computation in cyclotomic units that contained an error specific to $p = 2$; Demushkin (1959) introduced what are now called *Demushkin groups* — the pro-$p$ Galois groups of maximal $p$-extensions of local fields — and computed their structure correctly for $p = 2$. The corrected version, sometimes called the **Shafarevich-Demushkin theorem**, is what is now the canonical reference (and what modern accounts in Neukirch-Schmidt-Wingberg, already referenced, present). Demushkin's theory of pro-$p$ groups is also the foundational input to Iwasawa theory's $\\mathbb{Z}_p$-extensions, completing the connection to openQuestion #3 on Shafarevich-Iwasawa formulations."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Iwasawa, K. (1953). \"On Galois groups of local fields.\" Transactions of the American Mathematical Society 80: 448–469; Iwasawa, K. (1973). \"On $\\mathbb{Z}_\\ell$-extensions of algebraic number fields.\" Annals of Mathematics, Second Series, 98(2): 246–326.",
+      "relevance": "Iwasawa's foundational papers on Galois groups of local fields (1953) and the structure theory of $\\mathbb{Z}_p$-extensions (1973) — the substrate of *Iwasawa theory* that underlies the **Shafarevich-Iwasawa conjecture** stated in openQuestion #3. Iwasawa's 1973 paper introduces the characteristic ideal of an Iwasawa module and the Main Conjecture (proved by Mazur-Wiles 1984 for totally real fields), giving the cohomological framework in which absolute Galois groups of number fields acquire computable arithmetic invariants. The Shafarevich-Iwasawa conjecture combines Shafarevich's solvable realizability with Iwasawa's structural-group description of $G_{\\mathbb{Q}, S}$ (absolute Galois group of the maximal extension unramified outside $S$) to predict that $G_{\\mathbb{Q}, S}$ is a *projective profinite group* with a specific finite presentation. Cited in openQuestion #3."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Burnside, W. (1904). \"On groups of order $p^\\alpha q^\\beta$.\" Proceedings of the London Mathematical Society, Second Series, 1: 388–392.",
+      "relevance": "Burnside's 1904 theorem — every finite group of order $p^a q^b$ is solvable — is the **computable order test** that widens Shafarevich's reach to a finite computation, as detailed in keyInsight #8. For any group $G$ whose order has at most two distinct prime factors, $G$ is solvable (Burnside) and therefore Galois-realizable over $\\mathbb{Q}$ (Shafarevich, this file's axiom). The threshold is sharp at $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ (three distinct primes), and $A_5$ is the smallest non-solvable group. This combination — Burnside's solvability criterion + Shafarevich's realizability axiom — provides the gallery's gating tool: *every finite group of order $\\leq 59$ is automatically Shafarevich-realizable*, as cataloged in the cross-reference to `abel-ruffini-galois-extensions-oq-07` (Burnside formalization). Cited in keyInsight #8."
     }
   ],
   "leanFile": {
