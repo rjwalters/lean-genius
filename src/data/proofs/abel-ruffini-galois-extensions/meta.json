@@ -261,6 +261,15 @@
   "references": [
     {
       "authors": [
+        "P. Ruffini"
+      ],
+      "title": "Teoria generale delle equazioni, in cui si dimostra impossibile la soluzione algebraica delle equazioni generali di grado superiore al quarto",
+      "year": "1799",
+      "venue": "Stamperia di S. Tommaso d'Aquino, Bologna (2 vols., 509 + 211 pp.)",
+      "note": "Ruffini's first attempted proof of the unsolvability of the general quintic by radicals — predating Abel's rigorous proof by 25 years. Ruffini introduced what would later be called *permutation group* arguments (he used the term 'permutazione') to analyze how the roots of a quintic transform under the substitutions appearing in any hypothetical radical formula. The 1799 *Teoria generale* contained a gap (Ruffini implicitly assumed any algebraic function of the roots, when expressed in radicals, is itself expressible using the same radicals — the so-called *Ruffini-Abel theorem on natural irrationalities*), which Ruffini partially closed in subsequent revisions (1802, 1806, 1813) responding to criticism from Malfatti and others. The complete and rigorous resolution came with Abel (1824, next reference), who supplied the missing natural-irrationalities lemma and produced the modern unsolvability proof. Cauchy (1815) credited Ruffini in his foundational paper on permutation groups, calling Ruffini's argument 'incontestable' for the most important cases. Cited in the historicalContext as the *namesake* of the Abel-Ruffini theorem — Ruffini's name in the modern theorem name acknowledges his priority in identifying the group-theoretic obstruction, even though the rigorous proof is Abel's. See L. Toti Rigatelli, *Evariste Galois* (Birkhäuser 1996, §1.3) and R. Ayoub, 'Paolo Ruffini's contributions to the quintic' (Archive for History of Exact Sciences 23(3): 253-277, 1980) for the historical reconstruction of Ruffini's argument and its gap."
+    },
+    {
+      "authors": [
         "N. H. Abel"
       ],
       "title": "Beweis der Unmöglichkeit algebraische Gleichungen von höheren als dem vierten Grade allgemein aufzulösen",
@@ -522,6 +531,15 @@
       "year": "1986",
       "venue": "Journal of Symbolic Computation 2(1): 3–43",
       "note": "Decision algorithm for the Picard-Vessiot solvability of second-order ODEs $y'' = r(x) y$ with $r \\in \\mathbb{Q}(x)$. Returns the explicit Liouvillian solution (algebraic + integration + exponentiation) if and only if the differential Galois group is solvable, by enumerating the four possible solvable cases: (1) cyclic, (2) dihedral, (3) tetrahedral $A_4$, (4) octahedral $S_4$. The fifth Platonic case — *icosahedral $A_5$* — is non-solvable and is exactly the obstruction proved here as this file's central lemma. Kovacic's algorithm is the *constructive computational counterpart* to this file's qualitative classification, implemented in Maple, Mathematica, Sage, and Magma; given any second-order linear ODE with rational coefficients, it decides solvability in polynomial time in the input size. Cited in keyInsight #13 as the algorithmic face of the differential Galois obstruction."
+    },
+    {
+      "authors": [
+        "H. A. Schwarz"
+      ],
+      "title": "Ueber diejenigen Fälle, in welchen die Gaussische hypergeometrische Reihe eine algebraische Function ihres vierten Elementes darstellt",
+      "year": "1873",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle) 75: 292–335",
+      "note": "Schwarz's complete classification of the cases in which Gauss's hypergeometric series $\\,_2F_1(a, b; c; z)$ is an *algebraic* function of $z$ — equivalently, the cases in which the Riemann hypergeometric differential equation $z(1-z) y'' + (c - (a+b+1)z) y' - ab\\, y = 0$ has *finite* differential Galois group. Schwarz exhibits 15 explicit parameter families $(a, b, c)$, organized by the underlying finite subgroup of $\\mathrm{PSL}_2(\\mathbb{C})$: cyclic, dihedral, tetrahedral ($A_4$), octahedral ($S_4$), and **icosahedral ($A_5$)** — the same five Platonic-symmetry groups that this file's solvability threshold $n \\leq 4$ singles out, with the icosahedral $A_5$ case being the *minimal non-solvable* hypergeometric instance. Schwarz's list (now called the *Schwarz list*) gives the explicit algebraic solutions in each case, deriving them from the *triangle-tessellation* picture: solutions correspond to conformal maps from the upper half-plane to spherical/Euclidean/hyperbolic triangles with vertex angles $\\pi/p, \\pi/q, \\pi/r$ where $(p, q, r)$ is a *Platonic triple* $(2, 2, n), (2, 3, 3), (2, 3, 4), (2, 3, 5)$. The icosahedral case $(2, 3, 5)$ — corresponding to $A_5$ — gives Klein's icosahedral solutions cited in keyInsight #6 and the icosahedral form of the quintic systematized in Klein's 1884 *Vorlesungen über das Ikosaeder*. Schwarz's 1873 classification is the *first complete decision* of an algebraic-solvability question via differential Galois theory (avant la lettre — Picard-Vessiot was 25 years later) and is the direct ancestor of Kovacic's algorithm (1986, next reference but one): Kovacic systematized Schwarz's enumeration into a decision procedure for second-order ODEs with rational coefficients. Cited in keyInsight #13 ('Riemann hypergeometric equation has solvability classified by Schwarz (1873) into 15 explicit cases')."
     },
     {
       "authors": [
