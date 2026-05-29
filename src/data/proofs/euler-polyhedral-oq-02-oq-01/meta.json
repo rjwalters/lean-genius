@@ -70,7 +70,7 @@
       "description": "Parent OQ-02 entry for Euler polyhedral formula; this OQ-02-OQ-01 develops the smooth Gauss-Bonnet extension"
     },
     {
-      "targetId": "euler-polyhedral",
+      "targetId": "euler-polyhedral-formula",
       "relationship": "context",
       "description": "Discrete Euler polyhedral formula V−E+F=2; the smooth Gauss-Bonnet ∫K dA = 2πχ is its differential-geometric refinement, recovering V−E+F as 2 - 2·genus when the polyhedron is interpreted as a piecewise-linear surface with curvature concentrated at vertices"
     },
@@ -78,6 +78,16 @@
       "targetId": "four-color-theorem",
       "relationship": "context",
       "description": "The Four Color Theorem rests on χ(S²)=2 (planar dual of a sphere); Gauss-Bonnet is the deepest statement of why the sphere has this Euler characteristic, distinguishing it topologically from the torus (where 7 colors suffice — Heawood's formula)"
+    },
+    {
+      "targetId": "triangle-angle-sum",
+      "relationship": "specializes",
+      "description": "The local Gauss-Bonnet theorem for a geodesic triangle states (α+β+γ) − π = ∫K dA (the angle excess equals total curvature). The Euclidean angle sum α+β+γ = π is exactly the flat case K ≡ 0; positive curvature forces excess (spherical triangles), negative curvature deficit (hyperbolic)."
+    },
+    {
+      "targetId": "spherical-law-of-cosines",
+      "relationship": "related",
+      "description": "Spherical trigonometry is the K > 0 regime of Gauss-Bonnet: on the unit sphere the area of a geodesic triangle equals its angle excess (Girard's theorem, ∫K dA = area), so the failure of the Euclidean laws of cosines/sines is a direct manifestation of nonzero curvature."
     }
   ],
   "references": [
