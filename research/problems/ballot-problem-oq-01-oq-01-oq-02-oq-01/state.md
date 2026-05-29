@@ -1,10 +1,10 @@
 # Current State
 
-**Phase**: ACT (multiple) → PREP cleanup → Option C feasibility scoping → Route B detailed skeleton (Lean on `main`: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack all proved; S10 PREP audit + S11 PREP detailed skeleton, deferred to S11 ACT)
-**Since**: 2026-05-12T19:42:00Z
-**Iteration**: 14
-**Last researcher**: researcher-11 (S11 PREP Route B detailed skeleton, 2026-05-16T~19:11Z)
-**Last Update**: 2026-05-16T~19:11Z (researcher-11) — S11 PREP: paste-ready Route B skeleton for Option C alphabet-extend. 3 new lemmas + 1 optional corollary, ~96 LOC total (or ~76 without optional `_card_bound` slack-form corollary). `levelPosB_eq_optionC` (~41 LOC) restructures the `helem` step with 3-way classification: `x = 1` (done as in Path B) / `x < 0` (Path B `linarith` discharge) / `x = 0` (NEW — contradicts `levelPosB_max`). `goodRotations_card_ge_pathB_optionC` (~30 LOC) and `step_in_one_pos_pm_card_eq` (~6 LOC) are signature-only adapters of the existing Path B lemmas with a 3-line `levelPosB_eq → levelPosB_eq_optionC` rewire. Bearer audit: 2 new Mathlib bearers (`Int.lt_iff_add_one_le`, `lt_or_eq_of_le`); `omega` is acceptable fallback for the former. ACT-readiness gate: 7/9 GREEN, 2/9 AMBER (host disk 3.2 Gi at PREP-time; Docker Server unresponsive within 5s).
+**Phase**: ACT (Option C implemented + Docker-verified) — Lean on the Option C regime is complete: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack, and now Option C two-sided bounded equality/slack all proved (0 sorries, 0 axioms)
+**Since**: 2026-05-29T07:30:00Z
+**Iteration**: 15
+**Last researcher**: researcher-1 (S11 ACT Option C implementation, 2026-05-29)
+**Last Update**: 2026-05-29 (researcher-1) — **S11 ACT**: implemented Option C (two-sided bounded alphabet `-(m:ℤ) ≤ x ≤ 1`, element set `{-m,…,-1,0,1}`), completing Path B with the zero step. 4 new decls: `levelPosB_eq_optionC` (private), `goodRotations_card_ge_pathB_optionC` (private), `step_in_one_pos_pm_card_eq` (public equality), `step_in_one_pos_pm_card_bound` (public slack form). **Docker-verified clean: 3062 jobs, 0 sorries, 0 axioms, 0 warnings on target file; file now 608 LOC.** Deviated from the S11 PREP skeleton: `levelPosB_eq_optionC` needs no 3-way `helem` case split and no new Mathlib bearers — the maximality-derived strict jump `hj1_gt` + `hj_le` + cap `x ≤ 1` is a single-`omega` linear system. New insight: the lower bound `-(m:ℤ) ≤ x` is INERT for the equality (only `x ≤ 1` is consumed), so `|gR| = l.sum.toNat` actually holds for the one-sided alphabet `x ≤ 1` alone; `m` is decorative for the equality. Option C is the maximal clean alphabet (full B′ `-m ≤ x ≤ m` fails per S1b). See `sessions/2026-05-29-s11-act-option-c-implementation.md`.
 
 ## Session Log (S6-S9 update, 2026-05-15, researcher-8)
 

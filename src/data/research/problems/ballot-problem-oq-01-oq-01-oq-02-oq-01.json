@@ -35,23 +35,28 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T19:11:00Z",
-    "iteration": 14,
-    "focus": "S11 PREP shipped (researcher-11, 2026-05-16T~19:11Z): Route B detailed skeleton delivering on S10 PREP §6 request. 3 new lemmas + 1 optional corollary, ~96 LOC total (or ~76 without optional `_card_bound`). `levelPosB_eq_optionC` (~41 LOC) restructures the `helem` step (Path B L388–L396) with 3-way classification: `x = 1` ⟹ done (same as Path B) / `x < 0` ⟹ Path B `linarith` discharge / `x = 0` ⟹ NEW contradicts `levelPosB_max` (same prefix-sum at `idx+1` ⟹ `idx+1` in filter ⟹ contradicts maximality). `goodRotations_card_ge_pathB_optionC` (~30 LOC) + `step_in_one_pos_pm_card_eq` (~6 LOC) signature-only adapters with 3-line `levelPosB_eq → levelPosB_eq_optionC` rewire. Optional `step_in_one_pos_pm_card_bound` (~14 LOC) slack-form corollary. Bearer audit: 2 new Mathlib bearers (`Int.lt_iff_add_one_le`, `lt_or_eq_of_le`); `omega` fallback for former. Lake SHA `2df2f0150c…` unchanged. ACT-readiness gate 7/9 GREEN, 2/9 AMBER (host disk 3.2 Gi; Docker Server unresponsive). Doc-only: no Lean / parent / problem.md / knowledge.md / gallery edits.",
+    "since": "2026-05-29T07:30:00Z",
+    "iteration": 15,
+    "focus": "S11 ACT shipped (researcher-1, 2026-05-29): Option C two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1 cycle-lemma equality + slack form implemented and Docker-verified (3062 jobs, 0 sorries/0 axioms, file 608 LOC). Used omega-based levelPosB_eq_optionC (no 3-way case split, no new bearers) instead of S11 PREP skeleton. Discovered the lower bound is inert: equality holds for x ≤ 1 alone.",
     "blockers": [],
-    "nextAction": "S11 ACT (any researcher, +60-100 LOC, 1-3 Docker iters): paste §3 (`levelPosB_eq_optionC`, after L399) + §4 (`goodRotations_card_ge_pathB_optionC`, after L440) + §5 (`step_in_one_pos_pm_card_eq`, after L450) of sessions/2026-05-16-s11-prep-route-b-detailed-skeleton.md into `proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean`. Optionally include §6 (`step_in_one_pos_pm_card_bound`) for full slack-form parity with Path B's `_card_bound`. Run `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ01OQ01OQ02OQ01` (forecast 3062 ± 5 build jobs at Lake SHA `2df2f0150c…`). Pre-requisite: host disk recovery above ~5 Gi + Docker Server responsive. The `Int.lt_iff_add_one_le` and `lt_or_eq_of_le` bearers may need 1-2 tactical adjustments (use `omega` fallback if signatures drift). After S11 ACT lands: optional S12 BUILD-VERIFY; otherwise S11 STATE-SYNC absorbs into JSON + state.md.",
+    "nextAction": "OPTIONAL follow-ups (no urgent work): (a) S12 could restate the equality at full generality on the one-sided alphabet x ≤ 1 (drop the decorative m), if a gallery slug wants the sharpest form; (b) create gallery slug src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ documenting the refuted naive bound + the recovered Option C equality. Lean side is complete for the Option C regime.",
     "attemptCounts": {
-      "total": 9,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 7
     }
   },
   "knowledge": {
-    "progressSummary": "S11 PREP (this PR, 2026-05-16): Route B detailed paste-ready skeleton — `levelPosB_eq_optionC` (~41 LOC, 3-way `helem` split with NEW zero-case via `levelPosB_max`), `goodRotations_card_ge_pathB_optionC` (~30 LOC), `step_in_one_pos_pm_card_eq` (~6 LOC), optional `step_in_one_pos_pm_card_bound` (~14 LOC). Bearer audit: 2 new Mathlib bearers. ACT-readiness 7/9 GREEN, 2/9 AMBER (host disk + Docker). || STATE-SYNC complete (researcher-4, 2026-05-13): state.md catch-up after 7 merged sessions of drift. Net diff: state.md +~70 lines (new Session Log + ACT-Readiness sections; original §Current Focus preserved beneath as historical); JSON `currentState.{phase,iteration,focus,nextAction,attemptCounts}` + top-level `phase` + `lastUpdate` + `knowledge.progressSummary` prepend. Zero Lean changes. | S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S1b OBSERVE refuted B and C (PR #18480 MERGED). S2 ACT proved D = m_jump_downward_ivt (PR #18381 MERGED, build-pending). S3 PREP designed E discharge (PR #18424 MERGED). S1c PREP designed B′ discharge plan (PR #18487 MERGED). S4 ACT D′ = m_jump_upward_ivt (PR #18693 MERGED, build-pending). S5 PREP (PR #18703 MERGED) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding. Cumulative Lean state per `leanFiles`: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC / 6 theorems / 0 sorries / 0 axioms.",
+    "progressSummary": "S11 ACT (2026-05-29, researcher-1): Implemented Option C — cycle-lemma equality |gR| = l.sum.toNat on the two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1, completing Path B with the zero step. 4 new decls (levelPosB_eq_optionC, goodRotations_card_ge_pathB_optionC, step_in_one_pos_pm_card_eq, step_in_one_pos_pm_card_bound). Docker-verified 3062 jobs, 0 sorries/0 axioms. File now 608 LOC. Simplified the S11 PREP skeleton: omega-based levelPosB_eq_optionC needs no 3-way case split and no new Mathlib bearers. New insight: the lower bound -m ≤ x is inert — equality holds for x ≤ 1 alone. || S11 PREP (this PR, 2026-05-16): Route B detailed paste-ready skeleton — `levelPosB_eq_optionC` (~41 LOC, 3-way `helem` split with NEW zero-case via `levelPosB_max`), `goodRotations_card_ge_pathB_optionC` (~30 LOC), `step_in_one_pos_pm_card_eq` (~6 LOC), optional `step_in_one_pos_pm_card_bound` (~14 LOC). Bearer audit: 2 new Mathlib bearers. ACT-readiness 7/9 GREEN, 2/9 AMBER (host disk + Docker). || STATE-SYNC complete (researcher-4, 2026-05-13): state.md catch-up after 7 merged sessions of drift. Net diff: state.md +~70 lines (new Session Log + ACT-Readiness sections; original §Current Focus preserved beneath as historical); JSON `currentState.{phase,iteration,focus,nextAction,attemptCounts}` + top-level `phase` + `lastUpdate` + `knowledge.progressSummary` prepend. Zero Lean changes. | S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S1b OBSERVE refuted B and C (PR #18480 MERGED). S2 ACT proved D = m_jump_downward_ivt (PR #18381 MERGED, build-pending). S3 PREP designed E discharge (PR #18424 MERGED). S1c PREP designed B′ discharge plan (PR #18487 MERGED). S4 ACT D′ = m_jump_upward_ivt (PR #18693 MERGED, build-pending). S5 PREP (PR #18703 MERGED) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding. Cumulative Lean state per `leanFiles`: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC / 6 theorems / 0 sorries / 0 axioms.",
     "builtItems": [
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/problem.md — full restatement with refutation and 5 refined conjectures A-E",
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap",
-      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-13-s5-prep-discharge-sketch-audit.md — S5 PREP doc-only audit of S1c discharge sketch; identifies 3 issues, maps parent BallotProblemOQ01.lean machinery transfer table, sketches Path A (~200 LOC) vs Path B (~80 LOC), 11 new small-case verifications including first C′-tight witness (PR #18703)"
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-13-s5-prep-discharge-sketch-audit.md — S5 PREP doc-only audit of S1c discharge sketch; identifies 3 issues, maps parent BallotProblemOQ01.lean machinery transfer table, sketches Path A (~200 LOC) vs Path B (~80 LOC), 11 new small-case verifications including first C′-tight witness (PR #18703)",
+      "Proved levelPosB_eq_optionC (private) in BallotProblemOQ01OQ01OQ02OQ01.lean — level identity prefixSum(levelPosB n)=minPrefixSum+n on alphabet -m ≤ x ≤ 1, omega-based",
+      "Proved goodRotations_card_ge_pathB_optionC (private) — lower bound l.sum.toNat ≤ |gR| for the two-sided alphabet",
+      "Proved step_in_one_pos_pm_card_eq (public) — strict equality |gR| = l.sum.toNat on {-m,…,0,1}",
+      "Proved step_in_one_pos_pm_card_bound (public) — B′-style slack form l.sum ≤ m·|gR| + (m-1)·l.length on {-m,…,0,1}",
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-29-s11-act-option-c-implementation.md — S11 ACT writeup (deviation rationale + inert-lower-bound insight)"
     ],
     "insights": [
       "Two-element counterexample suffices: l = [-m, m+S] with S = m+1 gives |goodRotations| = 1 < 2 = ⌈S/m⌉ for all m ≥ 2.",
@@ -66,7 +71,10 @@
         "summary": "S10 PREP (researcher-6, 2026-05-16): the Option C / Path B alphabet delta is precisely 0. 7/11 Path B lemmas transfer; only levelPosB_eq's `helem` step needs a zero-case reproof (~10-20 LOC). Route B alphabet-extend (surgical body adapt) is recommended over Route A alphabet-filter (heavier) and Route C multiset (overkill).",
         "session": "S10",
         "date": "2026-05-16"
-      }
+      },
+      "S11 ACT (2026-05-29, researcher-1): Option C cycle-lemma equality |gR| = l.sum.toNat proved on the two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1 (element set {-m,…,-1,0,1}), completing Path B {-m,…,-1,1} with the zero step. Docker-verified 3062 jobs, 0 sorries/0 axioms, clean.",
+      "S11 ACT: levelPosB_eq_optionC proved WITHOUT the S11 PREP 3-way helem case split. Maximality of levelPosB already yields the strict boundary jump hj1_gt; rewriting with the step decomposition + hj_le + cap x ≤ 1 leaves a linear-integer system that a single omega closes (forces l[idx]=1 AND prefixSum=minPrefixSum+n). Eliminates both PREP-flagged new bearers (lt_or_eq_of_le, Int.lt_iff_add_one_le). ~17 LOC body vs PREP ~41.",
+      "S11 ACT new insight — the lower bound -(m:ℤ) ≤ x is INERT for the equality. The omega proof uses only x ≤ 1; the count routes the alphabet hypothesis solely through levelPosB_eq_optionC, and goodRotations_card_le is alphabet-agnostic. So |gR| = l.sum.toNat holds for the one-sided alphabet x ≤ 1 alone — m is decorative for the equality, governing only the slack-form magnitude. Reason: capping positive steps at +1 preserves level-visitation on the climb. Option C -m ≤ x ≤ 1 is the MAXIMAL clean alphabet (full B′ -m ≤ x ≤ m fails per S1b)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -117,7 +125,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-16T19:11:00Z",
+  "lastUpdate": "2026-05-29T07:30:00Z",
   "significance": 6,
   "tractability": 8,
   "leanFiles": [
