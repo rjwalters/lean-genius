@@ -253,9 +253,16 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
   }
 
-  // Verified with sorries
-  if (target.meta.status === 'verified' && target.actual.sorryCount > 0) {
-    issues.push(`status "verified" but has ${target.actual.sorryCount} sorries`)
+  // Verified with sorries.
+  // "verified" status describes the gallery's main proof file. Aristotle-companion
+  // and additionalFiles scaffolds legitimately contain `sorry` (open proof-search
+  // targets) without negating a verified main proof, so flag on the main-file count
+  // (or a self-contradictory nonzero meta.sorries claim) rather than the chain-aggregate
+  // count. Using sorryCount here re-flagged verified+companion entries on every run,
+  // an oscillation mirroring the mismatch-check fix in Issue #18137.
+  const verifiedSorries = Math.max(target.actual.mainSorryCount, claimed)
+  if (target.meta.status === 'verified' && verifiedSorries > 0) {
+    issues.push(`status "verified" but has ${verifiedSorries} sorries`)
   }
 
   // Mathlib wrapper with "original" or "verified" badge
