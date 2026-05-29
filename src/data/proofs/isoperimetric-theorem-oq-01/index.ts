@@ -1,7 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/IsoperimetricTheoremOQ01.lean?raw'
 
 const meta = metaJson as {
   id: string
@@ -22,7 +21,7 @@ export const isoperimetricTheoremOq01Proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
+  source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,

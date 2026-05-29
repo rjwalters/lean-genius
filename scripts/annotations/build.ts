@@ -25,6 +25,11 @@ const __dirname = path.dirname(__filename);
 const PROOFS_DATA_DIR = path.join(__dirname, '../../src/data/proofs');
 const PROOFS_SOURCE_DIR = path.join(__dirname, '../../proofs/Proofs');
 const REPO_ROOT = path.join(__dirname, '../..');
+// Build-generated static asset tree (gitignored). Lean source is copied here so
+// it can be fetched by slug at runtime instead of being pulled into the
+// vite/Rollup module graph as a `?raw` import — the single biggest contributor
+// to the ~40min build stall. See issue #20992 (build-perf phase 1).
+const PUBLIC_PROOFS_DIR = path.join(__dirname, '../../public/data/proofs');
 
 /**
  * Build a single-shot map of repo-relative path -> most-recent commit ISO
@@ -247,6 +252,43 @@ function processLineBased(config: ProofConfig): { success: boolean; errors: stri
 }
 
 /**
+ * Emit each proof's Lean source to the build-generated public asset tree at
+ * `public/data/proofs/<slug>/source.lean`. At runtime the proof detail page
+ * fetches this file by slug instead of importing it through the vite/Rollup
+ * module graph (`*.lean?raw`). This removes ~1339 large raw-text modules from
+ * the graph and is the core of the build-perf phase-1 fix. See issue #20992.
+ *
+ * `discoverProofs()` has already resolved each proof's `leanPath` (via the same
+ * proofRepoPath -> naming-convention -> local source.lean fallback chain), so
+ * we just copy that resolved file. Proofs with no resolvable Lean source were
+ * already skipped/warned during discovery; here we additionally warn and skip
+ * (never fail the build) on any copy error.
+ */
+function emitStaticSource(proofs: ProofConfig[]): void {
+  let emitted = 0;
+  let failed = 0;
+
+  for (const proof of proofs) {
+    try {
+      if (!fs.existsSync(proof.leanPath)) {
+        console.warn(`   ⚠ Lean source missing for ${proof.id} (${proof.leanPath}); skipping source.lean emit`);
+        failed++;
+        continue;
+      }
+      const destDir = path.join(PUBLIC_PROOFS_DIR, proof.id);
+      fs.mkdirSync(destDir, { recursive: true });
+      fs.copyFileSync(proof.leanPath, path.join(destDir, 'source.lean'));
+      emitted++;
+    } catch (e) {
+      console.warn(`   ⚠ Failed to emit source.lean for ${proof.id}: ${e instanceof Error ? e.message : e}`);
+      failed++;
+    }
+  }
+
+  console.log(`\n📄 Emitted source.lean for ${emitted} proofs to public/data/proofs/ (${failed} skipped)`);
+}
+
+/**
  * Generate lightweight listings.json for HomePage
  */
 function generateListings(proofs: ProofConfig[]): void {
@@ -372,6 +414,10 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
 
   // Generate lightweight listings for HomePage
   generateListings(proofs);
+
+  // Emit Lean source to the build-generated public asset tree (fetched by slug
+  // at runtime instead of imported via `*.lean?raw`). See issue #20992.
+  emitStaticSource(proofs);
 
   console.log(`\n📊 Summary:`);
   console.log(`   Anchor-based: ${anchorProofs} proofs`);

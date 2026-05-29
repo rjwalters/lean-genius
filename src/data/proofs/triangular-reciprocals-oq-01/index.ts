@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/TriangularReciprocalsFigurate.lean?raw')
-
 export const triangularReciprocalsOq01Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const triangularReciprocalsOq01Annotations: Annotation[] = annotationsJso
 export const triangularReciprocalsOq01Data: ProofData = {
   proof: triangularReciprocalsOq01Proof,
   annotations: triangularReciprocalsOq01Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default triangularReciprocalsOq01Data

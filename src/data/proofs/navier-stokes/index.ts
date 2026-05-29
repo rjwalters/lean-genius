@@ -1,7 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, ProofVersionInfo, VersionHistoryEntry, VersionContent, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/NavierStokes.lean?raw'
 import v1Json from './versions/v1.json'
 import v2Json from './versions/v2.json'
 
@@ -49,7 +48,7 @@ export const navierStokesProof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
+  source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,

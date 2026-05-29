@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/LawsOfLargeNumbersOQ03.lean?raw')
-
 export const lawsOfLargeNumbersOq03Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const lawsOfLargeNumbersOq03Annotations: Annotation[] = annotationsJson a
 export const lawsOfLargeNumbersOq03Data: ProofData = {
   proof: lawsOfLargeNumbersOq03Proof,
   annotations: lawsOfLargeNumbersOq03Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default lawsOfLargeNumbersOq03Data

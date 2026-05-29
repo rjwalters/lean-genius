@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/LagrangeTheoremOQ05.lean?raw')
-
 export const lagrangeTheoremOq05Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const lagrangeTheoremOq05Annotations: Annotation[] = annotationsJson as u
 export const lagrangeTheoremOq05Data: ProofData = {
   proof: lagrangeTheoremOq05Proof,
   annotations: lagrangeTheoremOq05Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default lagrangeTheoremOq05Data

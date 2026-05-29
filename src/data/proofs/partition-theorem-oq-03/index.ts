@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/PartitionTheoremOQ03.lean?raw')
-
 export const partitionTheoremOq03Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const partitionTheoremOq03Annotations: Annotation[] = annotationsJson as 
 export const partitionTheoremOq03Data: ProofData = {
   proof: partitionTheoremOq03Proof,
   annotations: partitionTheoremOq03Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default partitionTheoremOq03Data

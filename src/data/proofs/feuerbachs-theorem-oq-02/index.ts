@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/FeuerbachsTheoremOQ02.lean?raw')
-
 export const feuerbachsTheoremOq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const feuerbachsTheoremOq02Annotations: Annotation[] = annotationsJson as
 export const feuerbachsTheoremOq02Data: ProofData = {
   proof: feuerbachsTheoremOq02Proof,
   annotations: feuerbachsTheoremOq02Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default feuerbachsTheoremOq02Data

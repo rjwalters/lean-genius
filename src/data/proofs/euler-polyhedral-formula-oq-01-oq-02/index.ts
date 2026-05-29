@@ -1,7 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string; title: string; slug: string; description: string; meta: ProofMeta
@@ -10,7 +9,7 @@ const meta = metaJson as unknown as {
 
 export const eulerPolyhedralFormulaOQ01OQ02Proof: Proof = {
   id: meta.id, title: meta.title, slug: meta.slug, description: meta.description,
-  meta: meta.meta, sections: meta.sections ?? [], source: sourceRaw,
+  meta: meta.meta, sections: meta.sections ?? [], source: '',
   overview: meta.overview, conclusion: meta.conclusion, crossReferences: meta.crossReferences,
 }
 
