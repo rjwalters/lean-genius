@@ -30,7 +30,8 @@ In particular:  HM ≤ GM ≤ AM  (taking r = -1, 0, 1).
 4. `geom_mean_le_power_mean_of_one_le` — GM ≤ M_p for p ≥ 1
 5. `harmonic_mean_le_geom_mean_direct` — HM ≤ GM (direct proof via AM-GM on inverses)
 6. `power_mean_monotone_pos` — M_r ≤ M_s for 0 < r ≤ s (proved via Jensen)
-7. General monotonicity (negative r case) stated as an axiom
+7. `power_mean_monotone_neg` — M_r ≤ M_s for r ≤ s < 0 (proved via duality M_r(z) = M_{-r}(z⁻¹)⁻¹)
+8. Mixed-sign case (r < 0 < s, crossing the geometric-mean limit at r = 0) — not formalized in this file
 
 ## Key Proof Ideas
 
@@ -369,5 +370,5 @@ Key proved relationships:
 - HM ≤ GM  (harmonic_mean_le_geom_mean_direct — proved here)
 - M_r ≤ M_s for 0 < r ≤ s  (power_mean_monotone_pos — proved here)
 - M_r ≤ M_s for r ≤ s < 0  (power_mean_monotone_neg — proved here via dual argument)
-- Mixed-sign case (r < 0 < s, crossing the geometric mean limit) is an axiom.
+- Mixed-sign case (r < 0 < s, crossing the geometric mean limit at r = 0) is not formalized in this file.
 -/
