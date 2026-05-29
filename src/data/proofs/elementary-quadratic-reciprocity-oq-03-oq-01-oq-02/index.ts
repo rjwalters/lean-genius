@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean?raw')
-
 export const elementaryQuadraticReciprocityOq03Oq01Oq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const elementaryQuadraticReciprocityOq03Oq01Oq02Annotations: Annotation[]
 export const elementaryQuadraticReciprocityOq03Oq01Oq02Data: ProofData = {
   proof: elementaryQuadraticReciprocityOq03Oq01Oq02Proof,
   annotations: elementaryQuadraticReciprocityOq03Oq01Oq02Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default elementaryQuadraticReciprocityOq03Oq01Oq02Data

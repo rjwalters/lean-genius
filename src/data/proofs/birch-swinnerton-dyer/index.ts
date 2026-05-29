@@ -2,7 +2,6 @@ import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOvervi
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
 import tacticStatesJson from './tacticStates.json'
-import sourceRaw from '../../../../proofs/Proofs/BirchSwinnertonDyer.lean?raw'
 
 const meta = metaJson as {
   id: string
@@ -23,7 +22,7 @@ export const birchSwinnertonDyerProof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
+  source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,

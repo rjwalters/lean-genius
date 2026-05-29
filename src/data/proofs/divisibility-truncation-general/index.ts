@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/DivisibilityTruncationGeneral.lean?raw')
-
 export const divisibilityTruncationGeneralProof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const divisibilityTruncationGeneralAnnotations: Annotation[] = annotation
 export const divisibilityTruncationGeneralData: ProofData = {
   proof: divisibilityTruncationGeneralProof,
   annotations: divisibilityTruncationGeneralAnnotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default divisibilityTruncationGeneralData

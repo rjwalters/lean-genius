@@ -13,8 +13,6 @@ const meta = metaJson as unknown as {
   conclusion?: ProofConclusion
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/Erdos1210Problem.lean?raw')
-
 export const proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,7 +32,3 @@ export const proofData: ProofData = {
   annotations,
 }
 
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
-}

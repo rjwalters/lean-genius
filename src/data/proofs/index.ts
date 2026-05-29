@@ -110,10 +110,20 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
       })
     }
 
-    // Load the source code if getProofSource is available
-    if (module.getProofSource && proofData?.proof) {
-      const source = await module.getProofSource()
-      proofData.proof.source = source
+    // Load the Lean source from the build-generated static asset tree instead
+    // of importing it through the module graph. The emit step in
+    // scripts/annotations/build.ts copies each proof's Lean file to
+    // public/data/proofs/<slug>/source.lean, which Vite/Cloudflare serve at the
+    // site root. This keeps the ~1339 large `?raw` modules out of the Rollup
+    // build graph (build-perf phase 1, issue #20992). On any fetch failure the
+    // source is left empty rather than failing the whole proof load.
+    if (proofData?.proof) {
+      try {
+        const res = await fetch(`/data/proofs/${slug}/source.lean`)
+        if (res.ok) proofData.proof.source = await res.text()
+      } catch {
+        /* leave source empty on failure */
+      }
     }
 
     return proofData

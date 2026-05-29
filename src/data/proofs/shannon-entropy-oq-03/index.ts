@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/ShannonEntropySSA.lean?raw')
-
 export const shannonEntropyOq03Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const shannonEntropyOq03Annotations: Annotation[] = annotationsJson as un
 export const shannonEntropyOq03Data: ProofData = {
   proof: shannonEntropyOq03Proof,
   annotations: shannonEntropyOq03Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default shannonEntropyOq03Data

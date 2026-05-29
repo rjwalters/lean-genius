@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/HarmonicDivergenceOQ02.lean?raw')
-
 export const harmonicDivergenceOq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const harmonicDivergenceOq02Annotations: Annotation[] = annotationsJson a
 export const harmonicDivergenceOq02Data: ProofData = {
   proof: harmonicDivergenceOq02Proof,
   annotations: harmonicDivergenceOq02Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default harmonicDivergenceOq02Data

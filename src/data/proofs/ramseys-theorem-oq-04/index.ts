@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/RamseysTheoremOQ04.lean?raw')
-
 export const ramseysTheoremOq04Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const ramseysTheoremOq04Annotations: Annotation[] = annotationsJson as un
 export const ramseysTheoremOq04Data: ProofData = {
   proof: ramseysTheoremOq04Proof,
   annotations: ramseysTheoremOq04Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default ramseysTheoremOq04Data

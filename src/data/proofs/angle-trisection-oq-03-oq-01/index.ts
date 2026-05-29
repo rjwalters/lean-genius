@@ -1,7 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/AngleTrisectionOQ03OQ01.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -22,7 +21,7 @@ export const angleTrisectionOq03Oq01Proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
+  source: '',
   overview: meta.overview,
   conclusion: meta.conclusion,
   crossReferences: meta.crossReferences,

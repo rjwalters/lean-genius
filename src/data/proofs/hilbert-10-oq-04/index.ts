@@ -7,8 +7,6 @@ const meta = metaJson as {
   sections: ProofSection[]; overview?: ProofOverview; conclusion?: ProofConclusion; crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/Hilbert10OQ04.lean?raw')
-
 export const proof: Proof = {
   id: meta.id, title: meta.title, slug: meta.slug, description: meta.description,
   meta: meta.meta, sections: meta.sections, source: '',
@@ -17,4 +15,3 @@ export const proof: Proof = {
 
 export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const proofData: ProofData = { proof, annotations }
-export async function getProofSource(): Promise<string> { const module = await leanSource(); return module.default }

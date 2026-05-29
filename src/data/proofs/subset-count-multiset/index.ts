@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/SubsetCountOQ02.lean?raw')
-
 export const subsetCountMultisetProof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const subsetCountMultisetAnnotations: Annotation[] = annotationsJson as u
 export const subsetCountMultisetData: ProofData = {
   proof: subsetCountMultisetProof,
   annotations: subsetCountMultisetAnnotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default subsetCountMultisetData

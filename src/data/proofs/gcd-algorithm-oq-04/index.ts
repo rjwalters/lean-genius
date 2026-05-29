@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/GcdAlgorithmOQ04.lean?raw')
-
 export const gcdAlgorithmOq04Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const gcdAlgorithmOq04Annotations: Annotation[] = annotationsJson as unkn
 export const gcdAlgorithmOq04Data: ProofData = {
   proof: gcdAlgorithmOq04Proof,
   annotations: gcdAlgorithmOq04Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default gcdAlgorithmOq04Data

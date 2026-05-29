@@ -14,8 +14,6 @@ const meta = metaJson as unknown as {
   crossReferences?: CrossReference[]
 }
 
-const leanSource = () => import('../../../../proofs/Proofs/CauchySchwarzOQ03OQ02.lean?raw')
-
 export const cauchySchwarzOq03Oq02Proof: Proof = {
   id: meta.id,
   title: meta.title,
@@ -34,11 +32,6 @@ export const cauchySchwarzOq03Oq02Annotations: Annotation[] = annotationsJson as
 export const cauchySchwarzOq03Oq02Data: ProofData = {
   proof: cauchySchwarzOq03Oq02Proof,
   annotations: cauchySchwarzOq03Oq02Annotations,
-}
-
-export async function getProofSource(): Promise<string> {
-  const module = await leanSource()
-  return module.default
 }
 
 export default cauchySchwarzOq03Oq02Data

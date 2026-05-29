@@ -1,7 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
-import sourceRaw from '../../../../proofs/Proofs/BurnsideCountingOQ03.lean?raw'
 
 const meta = metaJson as unknown as {
   id: string
@@ -21,7 +20,7 @@ export const burnsideCountingOQ03Proof: Proof = {
   description: meta.description,
   meta: meta.meta,
   sections: meta.sections,
-  source: sourceRaw,
+  source: '',
   overview: meta.overview,
   crossReferences: meta.crossReferences,
 }
