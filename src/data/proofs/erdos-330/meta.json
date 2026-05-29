@@ -79,7 +79,7 @@
       "The question strengthens 'infinitely many' to 'positive density' of unrepresentable integers",
       "This connects the structure of individual elements to the global density of the basis",
       "A positive answer would show each element of the basis is quantitatively critical",
-      "**Axiomatized density**: Upper density is axiomatized (not computed) because computing $\\limsup$ of counting functions is noncomputable. The axioms $0 \\leq \\bar{d}(S) \\leq 1$ capture the essential properties needed for the formalization.",
+      "**Axiomatized density**: Upper density is axiomatized (not computed) because computing $\\limsup$ of counting functions is noncomputable. The single axiom declares `upperDensity` as an abstract real-valued function $\\bar{d} : \\mathrm{Set}\\,\\mathbb{N} \\to \\mathbb{R}$; the natural bounds $0 \\leq \\bar{d}(S) \\leq 1$ are noted in source comments but not enforced as axioms (no theorem in this file requires them).",
       "**Order matters**: For $h = 1$, the only basis is $A = \\mathbb{N}$ (trivially minimal and dense). The problem is interesting for $h \\geq 2$, where bases can be sparse yet minimal"
     ],
     "prerequisites": [
