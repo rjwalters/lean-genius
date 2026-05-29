@@ -71,8 +71,12 @@
       "**Squared distances simplify formalization:** Using $\\|p - q\\|^2$ instead of $\\|p - q\\|$ keeps computations in $\\mathbb{R}$ without square roots, at no mathematical cost since the ordering of distances is preserved."
     ],
     "prerequisites": [
-      "Discrete and combinatorial geometry",
-      "Mathematical maturity and proof techniques"
+      "Combinatorial geometry of the plane: pairwise distance multisets, distinct distance problems, and the staircase identity $1 + 2 + \\cdots + (n-1) = \\binom{n}{2}$",
+      "General position constraints: the cross-product (determinant) criterion for collinearity of three points $P_i, P_j, P_k \\in \\mathbb{R}^2$, and the concyclicity test via the $4 \\times 4$ determinant on $(x, y, x^2 + y^2, 1)$",
+      "Squared Euclidean distance $\\|P_i - P_j\\|^2 = (x_i - x_j)^2 + (y_i - y_j)^2$ — order-preserving over non-negative reals, used here to avoid square roots in Lean computation",
+      "Multiset / multiplicity counting in finite combinatorics: `Finset.filter` and `Finset.card` over pairs $(i, j)$ with $i < j$",
+      "Familiarity with the Erdős distinct distances problem ($\\Omega(n / \\log n)$ Guth-Katz 2015 lower bound) and the role of multiplicity-constrained configurations as a *strict refinement* asking for exactly $n - 1$ distinct distances with prescribed multiplicities",
+      "Lean 4 `axiom` declarations as placeholders for asserted but unformalized existence results, and the distinction between axiomatized constructions (Pomerance $n = 5$, Palásti $n \\leq 8$) and open conjectures (eventual impossibility)"
     ]
   },
   "sections": [
@@ -160,6 +164,18 @@
       "key": "GK15",
       "citation": "Guth, L. and Katz, N.H., On the Erdős distinct distances problem in the plane, Annals of Mathematics 181 (2015), 155-190.",
       "type": "paper"
+    },
+    {
+      "key": "EP95",
+      "citation": "Erdős, P. and Purdy, G., Extremal problems in combinatorial geometry, in *Handbook of Combinatorics* (R. L. Graham, M. Grötschel, L. Lovász, eds.), Elsevier/MIT Press, 1995, Vol. 1, Chapter 17, pp. 809-874.",
+      "type": "book",
+      "note": "Definitive 65-page survey of the extremal-geometry problems Erdős initiated and championed for half a century, organized around four central themes: distinct distances, repeated distances, distance multiplicities, and incidence problems. §3 ('Repeated distances and multiplicities') is the canonical source for Problem #217 and its $n \\leq 8$ history — Erdős and Purdy review Pomerance's surprise $n = 5$ construction, Palásti's lattice-point method for $n \\leq 8$, and explicitly state the eventual-impossibility conjecture as Question 17 (p. 836). The survey also frames Problem #217 within the broader 'distance distribution' program: characterize all multisets $M = (m_1, m_2, \\ldots, m_k)$ with $\\sum m_i = \\binom{n}{2}$ that arise as the distance multiplicity vector of some $n$-point configuration in general position. The staircase vector $(1, 2, \\ldots, n-1)$ is the *minimum-entropy* element of this space — the most ordered possible distance distribution — making the existence question particularly stark. Subsumes earlier surveys: Erdős (1946) for the original distinct distances problem, Erdős (1975) 'On some problems of elementary and combinatorial geometry,' and Moser (1991) *Research Problems in Discrete Geometry*."
+    },
+    {
+      "key": "BMP05",
+      "citation": "Brass, P., Moser, W., and Pach, J., *Research Problems in Discrete Geometry*, Springer, 2005 (xii + 499 pp.).",
+      "type": "book",
+      "note": "The standard reference monograph for open problems in discrete and combinatorial geometry, updating and expanding William Moser's *50 Research Problems in Discrete Geometry* (1991, McGill University Lecture Notes) into a comprehensive ~500-page treatment with ~500 cited problems. §6 ('Distance problems') covers the entire family of Erdős-style distance questions including Problem #217 (listed as Problem 6.13, p. 218): Brass-Moser-Pach reproduce Pomerance's $n = 5$ construction explicitly with coordinates $(\\pm 1, 0), (\\pm 2, 0), (0, \\sqrt{3})$ (showing the asymmetric isosceles structure), tabulate Palásti's $n = 6, 7, 8$ examples in similar coordinate form, and frame the $n \\geq 9$ open question alongside the related *distinct distance* problem (§6.1), *repeated distance* problem (§6.2), and *Erdős unit distance* problem (§6.4). The book serves as the canonical *current status* reference for combinatorial geometry: each problem entry lists known partial results, open conjectures, and 'directions for progress.' Brass-Moser-Pach explicitly note that for Problem #217, the gap between *constructive feasibility* (proved up to $n = 8$ by ad-hoc lattice-point methods) and *general impossibility* (predicted by Erdős for large $n$) is one of the cleanest open dichotomies in the field — a candidate target for the polynomial-method techniques that resolved Guth-Katz 2015. Cited as the modern reference replacing Erdős-Purdy 1995 for *current* problem status."
     }
   ],
   "crossReferences": [
