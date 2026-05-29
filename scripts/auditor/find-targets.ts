@@ -76,6 +76,7 @@ interface AuditTarget {
   actual: {
     sorryCount: number
     mainSorryCount: number
+    companionSorryCount: number
     axiomCount: number
     trueStubCount: number
     hasMajorMathlibDep: boolean
@@ -253,9 +254,16 @@ function detectIssues(target: AuditTarget): string[] {
     issues.push(`axiom undercount: claims ${target.meta.claimedAxioms}, actual declarations ${target.actual.axiomCount}`)
   }
 
-  // Verified with sorries
-  if (target.meta.status === 'verified' && target.actual.sorryCount > 0) {
-    issues.push(`status "verified" but has ${target.actual.sorryCount} sorries`)
+  // Verified with sorries.
+  // Exclude *Aristotle.lean companion sorries: these are by-design sorry scaffolds
+  // exposed for proof search (see research/SORRY-CLASSIFICATION.md) and do NOT back
+  // the main proof's "verified" claim. Counting them re-flagged Aristotle-companion
+  // entries every cycle (false-clean oscillation, same root cause as Issue #18137,
+  // which fixed the sibling sorry-mismatch check). Sorries in genuine dependency
+  // files (non-Aristotle additionalFiles/submodules) are still counted.
+  const verifiedSorryCount = target.actual.sorryCount - target.actual.companionSorryCount
+  if (target.meta.status === 'verified' && verifiedSorryCount > 0) {
+    issues.push(`status "verified" but has ${verifiedSorryCount} sorries`)
   }
 
   // Mathlib wrapper with "original" or "verified" badge
@@ -287,6 +295,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
   // Actual counts from Lean file(s) — includes submodules and additionalFiles
   let sorryCount = 0
   let mainSorryCount = 0
+  let companionSorryCount = 0
   let axiomCount = 0
   let trueStubCount = 0
   let hasMajorMathlibDep = false
@@ -304,6 +313,11 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     // separately so meta.sorries claims using the main-file-only convention
     // (PR #18127) can validate alongside chain-aggregate claims (PR #18120).
     if (i === 0) mainSorryCount = fileSorryCount
+    // Track *Aristotle.lean companion sorries separately: they are intentional
+    // proof-search scaffolds and must not count against the main "verified" claim.
+    if (/Aristotle$/.test(path.basename(filePath, '.lean'))) {
+      companionSorryCount += fileSorryCount
+    }
     axiomCount += (content.match(/^(?:(?:private|noncomputable)\s+)*axiom /gm) || []).length
 
     // True stubs: only count theorem/lemma declarations, not example (Issue #6130)
@@ -344,6 +358,7 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
     actual: {
       sorryCount,
       mainSorryCount,
+      companionSorryCount,
       axiomCount,
       trueStubCount,
       hasMajorMathlibDep,
