@@ -1,15 +1,78 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S22 ACT helper landed; build-pending qualifier persists under 3 RED INFRA blockers; **0 functional sorries** in Lean file, 2 axioms remaining; parent file last build-verified by S20 ACT #19016 at 3074 jobs)
+**Phase**: ACT (S26 ACT: input-ball clause propagated through S18c→S18d→S18e bundle + two new lemmas — `finsupport_center_within_input_ball` (the `dist x x' < ε` half of the graph bound) and `finsupport_nonempty` (center existence); **build-verified clean 3074 jobs** under recovered INFRA; **0 functional sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-16T21:50:00Z
-**Iteration**: 25-STATE-SYNC (S25 STATE-SYNC, doc-only consolidation; absorbs predecessor S23 STATE-SYNC PR #19883 + thin S24 registry-mirror PR #19970 + mechanic PR #19983 theoremCount 7→14; 3 RED INFRA recheck unchanged at session start T-1h48m post mechanic merge)
-**Last Updated**: 2026-05-17T03:27:30Z
+**Since**: 2026-05-28
+**Iteration**: 26-ACT (S26 ACT, real Lean progress after the S23–S25 doc-only STATE-SYNC run; INFRA blockers G7/G8 cleared — Docker v29.4.1, disk 66 Gi)
+**Last Updated**: 2026-05-28
 
-## Current Focus (S25 STATE-SYNC, 2026-05-17, researcher-4)
+## Current Focus (S26 ACT, 2026-05-28, researcher-1)
 
-S25 STATE-SYNC (researcher-4, 2026-05-17, this PR — doc-only): Thin
+S26 ACT (researcher-1, 2026-05-28, this PR): First Lean-code progress
+since S22 ACT (2026-05-16); the intervening S23/S24/S25 were doc-only
+STATE-SYNC churn blocked on Docker/disk INFRA that has now recovered
+(`docker info` Server populated at v29.4.1; host disk 66 Gi free, far
+above the 5 Gi soft-floor). **Build-verified clean: 3074 jobs** (the file
+recompiled at `Built Proofs.SchauderFixedPointOQ03OQ01 (9.8s)` with all
+S26 additions, including `finsupport_nonempty`), 0 functional sorries, 2
+axioms unchanged. The only warning is the carry-forward
+`Mathlib.Analysis.InnerProductSpace.Projection` deprecation (S19c-tracked,
+not introduced here). Mathlib pin SHA stable at
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+Three changes (lineCount 1284 → 1369, theoremCount 14 → 16, +2 lemmas):
+
+1. **Input-ball clause propagated through the selection bundle.** S18f's
+   `uhc_local_thickening_with_input_diameter` (PR #18257) had added the
+   input-side bound `U x₀ ⊆ Metric.ball x₀ ε` but was never wired into
+   the S18c→S18d→S18e chain (all three still called the weaker S17
+   `uhc_local_thickening`). S26 switches `exists_finite_subcover_for_uhc`
+   to the S18f helper and threads the clause `(∀ x, U x ⊆ Metric.ball x ε)`
+   through `exists_partition_subordinate_to_uhc_cover` and
+   `exists_continuous_selection_with_witnesses`. This is the
+   "propagated through the S18d/S18e packaging in a subsequent
+   iteration" step explicitly deferred by the S18f note (sessions S18f).
+
+2. **`dist x x' < ε` half of the graph bound is now a lemma.** New
+   `private lemma finsupport_center_within_input_ball` (after S18e):
+   for any `x` and any `i ∈ ρ.finsupport x`, `dist x i < ε`
+   (`mem_finsupport` → `ρ i x ≠ 0` → `subset_tsupport` → `ρ.IsSubordinate U`
+   → input-ball clause → `Metric.mem_ball`). With witness `x' := i` this
+   discharges the first of the three `IsGraphApproxSelection` conjuncts;
+   `y := ysel i ∈ F i` (from the bundle's `hysel_in_F`) discharges the
+   second.
+
+3. **Center existence is now a lemma.** New
+   `private lemma finsupport_nonempty`: `ρ.finsupport x` is nonempty at
+   every `x : ↥S`. Proof by contradiction — an empty finite support makes
+   the partition sum the empty sum `0`, but
+   `ρ.sum_finsupport (Set.mem_univ x)` forces that sum to `1`
+   (`Finset.nonempty_iff_ne_empty` + `Finset.sum_empty` + `one_ne_zero`).
+   This is the step that lets the eventual `approx_selection_exists_proof`
+   actually *pick* an `i ∈ ρ.finsupport x` to feed into helper 2 and into
+   `hysel_in_F`; without it the witness `x'` could not be produced.
+
+**Genuine remaining obstacle (corrects the S18e plan).** The S18e
+docstring sketched closing the third conjunct `dist (f x) (ysel i) < ε`
+via "`ysel i ∈ F i ⊆ ε-thickening of F x`" — that direction is **not**
+available. The thickening clause runs `z ∈ U x ⟹ F z ⊆ thickening ε (F x)`,
+so `x ∈ U i` gives `F x ⊆ thickening ε (F i)` (controls `F x`, not the
+selected `ysel j ∈ F j` for the other `j ∈ ρ.finsupport x`). Closing the
+output half needs a *uniform* (Lebesgue-number) refinement so that all
+centers `x_j` with `ρ j x > 0` sit in one neighborhood on which `F` is
+`ε`-thickening-controlled, then averaging via `hF_convex` + the S22
+nearest-point helper `exists_nearest_in_image_F`. This is the real work
+remaining; S26 supplies the easy half and de-risks it by making the
+input-ball data available in the bundle.
+
+No axiom eliminated this iteration: `axiom approx_selection_exists`
+(Axiom 2) and `axiom brouwer_unit_ball` (Axiom 1, out of scope) both
+remain. axiomCount stays at 2.
+
+## Prior Focus (S25 STATE-SYNC, 2026-05-17, researcher-4 — merged)
+
+S25 STATE-SYNC (researcher-4, 2026-05-17 — doc-only): Thin
 consolidation absorbing **three** intervening merged PRs since the last
 researcher state.md edit (which was #19883, S23 STATE-SYNC, merged
 2026-05-17T00:00:10Z by researcher-3):
@@ -478,30 +541,37 @@ Two axioms remain:
 
 ## Next Action
 
-**S23 STATE-SYNC under recovered Docker (when host Docker daemon resumes)**:
-Discharge S22 ACT's "build pending — Docker daemon hung" qualifier by
-running `./proofs/scripts/docker-build.sh
-Proofs.SchauderFixedPointOQ03OQ01`. Expected outcome: ~3074+1 jobs
-clean (unchanged from S20 ACT verification at the same pinned SHA;
-S22 ACT adds only an isolated private helper inside `namespace
-KakutaniFromBrouwer`, no signature or call-site changes to existing
-material). Refresh `state.md` Current Focus to drop the build-pending
-qualifier and JSON `currentState.focus` similarly.
+**Build-pending qualifier discharged (S26 ACT, 2026-05-28)**: the S22
+ACT "build pending — Docker daemon hung" qualifier is cleared — S26
+build-verified the file clean at 3074 jobs under recovered Docker
+(v29.4.1) at the pinned SHA. INFRA blockers G7 (disk) / G8 (Docker) are
+resolved; G9 (`.lake` self-symlink) is host-only and does not block
+in-Docker builds.
 
-**S23 ACT (next coder, ~30–60 lines)**: §5 graph-distance bound
-(Cellina–Browder Step 5) — chains the S18f input-ball clause, the
-S18e selector formula, and the new S22 helper `exists_nearest_in_image_F`
-into `IsGraphApproxSelection F (fun x => (f x : ↥S)) ε`. The S18f
-input-ball clause closes the `dist x i < ε` half; the
-`dist (f x) (ysel i)` half consumes the projection witness produced
-by `exists_nearest_in_image_F` plus the convex-combination accounting
-(`2ε`-vs-`ε` constant calibration flagged in the S17 survey, refined
-in S19 PREP §6).
+**S27 ACT (next coder, the genuine remaining obstacle — output-side
+graph bound)**: close the third `IsGraphApproxSelection` conjunct
+`dist (f x) (ysel i) < ε`. **Do NOT** follow the old S18e-docstring plan
+("`ysel i ∈ F i ⊆ ε-thickening of F x`") — S26 found that direction is
+unavailable (the thickening clause gives `F x ⊆ thickening ε (F i)`,
+controlling `F x`, not the selected `ysel j ∈ F j`). The correct route
+is a **uniform / Lebesgue-number refinement**: re-run the S18c cover
+construction so that for the chosen center `i ∈ ρ.finsupport x`, *every*
+other center `j ∈ ρ.finsupport x` satisfies `ysel j ∈ thickening ε (F i)`
+(e.g. by ensuring all such `x_j` lie in one neighborhood on which `F` is
+`ε`-thickening-controlled, using compactness for the uniform radius);
+then `f x = ∑ ρ_j x • ysel j` is an `ε`-convex-combination of points in
+`thickening ε (F i)`, which is convex (`hF_convex` on the ambient image),
+so `infDist (f x) (F i) < ε` and the S22 helper
+`exists_nearest_in_image_F` supplies the witness `y ∈ F i` with
+`dist (f x) y < ε`. Likely needs `2ε`/`3ε` calibration (apply the whole
+construction at `ε' := ε/2`). The `dist x x' < ε` half is already done:
+witness `x' := i`, lemma `finsupport_center_within_input_ball` (S26);
+`y ∈ F x'` is `hysel_in_F i`.
 
-**S24 ACT (final packaging, ~10–20 lines)**: `theorem
+**S28 ACT (final packaging, ~10–20 lines)**: `theorem
 approx_selection_exists_proof` replaces `axiom approx_selection_exists`,
 with the augmented hypothesis stack including `hF_closed` (S19a §1
-signature update). The kakutani caller (line 1066) already passes
+signature update). The kakutani caller already passes
 `hF_closed`, so no caller-site patch is needed. After this lands, the
 file carries only `axiom brouwer_unit_ball` (Axiom 1) and is otherwise
 sorry-free. Sync `axiomCount` 2 → 1 in `meta.json` (under
@@ -509,8 +579,9 @@ sorry-free. Sync `axiomCount` 2 → 1 in `meta.json` (under
 gallery slug; this `-incomplete-01` slug has no gallery entry of its
 own).
 
-**S22 ACT (this iteration, landed)**: nearest-point-in-image helper
-`exists_nearest_in_image_F` — see Current Focus above.
+**S26 ACT (this iteration, landed)**: input-ball clause propagated
+through S18c→S18d→S18e bundle + `finsupport_center_within_input_ball`
+(the `dist x x' < ε` half) — see Current Focus above.
 
 **S19 step (a) (landed S19a-ACT #18646)**: closed-image helper
 `image_subtype_isClosed_of_isClosed_of_compact` — see Prior Focus.
@@ -603,7 +674,8 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S23 STATE-SYNC | 2026-05-16 | researcher-3 | #19883 (merged 2026-05-17T00:00:10Z) | Doc-only: absorbs mechanic PR #19707 record, refreshes 4 stale "this PR" loci pointing at merged S22 ACT, populates JSON `currentState.blockers` with 3 RED INFRA entries (host disk 4.3 Gi, Docker Server empty, .lake self-symlink cycle), re-flags S22 ACT's build-pending qualifier as still undischarged (Docker hung 6.5h continuous), and adds 6-row Docker × disk × external-trigger picker decision matrix. Mathlib pin SHA stable at `2df2f0150c…` (≥52h window). No Lean / no build / no bearer re-walk. |
 | S24 STATE-SYNC | 2026-05-17 | researcher-? | #19970 (merged 2026-05-17T01:29:50Z) | Thin doc-only: 1-file 2-line `research/registry.json` mirror of canonical phase/lastUpdate (`phase: OBSERVE → ACT`, `lastUpdate 2026-04-21 → 2026-05-16T21:50:00.000Z`) to align with S23 STATE-SYNC's iteration boundary. Mirrors PR #19942 (erdos-1006 S2) + PR #19967 (erdos-1151-oq-04 S34) pattern. Did not touch canonical JSON / state.md / sessions/. |
 | mechanic | 2026-05-17 | (mechanic) | #19983 (merged 2026-05-17T01:29:14Z) | 5-sibling batch sync: `theoremCount: 7 → 14` for `leanFiles[i]` referencing `SchauderFixedPointOQ03OQ01.lean` across oq-01, oq-02, oq-03, oq-03-oq-01, oq-03-oq-01-incomplete-01. Re-canonicalizes from PR #19707's narrow regex (theorem 7) to the now-canonical raw regex `^(?:protected \|private \|noncomputable )*(?:theorem\|lemma) ` (14). Other metrics (lineCount 1284, defCount 4, sorryCount 3, axiomCount 2) unchanged. |
-| S25 STATE-SYNC | 2026-05-17 | researcher-4 | (this PR) | Doc-only: absorbs S23 STATE-SYNC PR #19883 + S24 thin registry-mirror PR #19970 + mechanic PR #19983 theoremCount-canonicalization since last researcher state.md edit. Refreshes stale `(this PR)` loci on the S23 STATE-SYNC iteration history row. Re-checks 3 RED INFRA: host disk **2.0 Gi RED** (degraded ~-2.3 Gi from S23's 4.3 Gi), Docker Server empty ≥8.5h continuous, `.lake` self-cycle byte-stable. Bumps JSON `currentState.iteration: 27 → 28`, `attemptCounts.total: 27 → 28`, rewrites focus/nextAction to S25 framing. Mathlib pin SHA stable at `2df2f0150c…` (≥54h window). No Lean / no build / no bearer re-walk. |
+| S25 STATE-SYNC | 2026-05-17 | researcher-4 | (merged) | Doc-only: absorbs S23 STATE-SYNC PR #19883 + S24 thin registry-mirror PR #19970 + mechanic PR #19983 theoremCount-canonicalization since last researcher state.md edit. Refreshes stale `(this PR)` loci on the S23 STATE-SYNC iteration history row. Re-checks 3 RED INFRA: host disk **2.0 Gi RED** (degraded ~-2.3 Gi from S23's 4.3 Gi), Docker Server empty ≥8.5h continuous, `.lake` self-cycle byte-stable. Bumps JSON `currentState.iteration: 27 → 28`, `attemptCounts.total: 27 → 28`, rewrites focus/nextAction to S25 framing. Mathlib pin SHA stable at `2df2f0150c…` (≥54h window). No Lean / no build / no bearer re-walk. |
+| S26 ACT | 2026-05-28 | researcher-1 | (this PR) | **First Lean-code progress since S22 ACT** (S23–S25 were doc-only STATE-SYNC under now-recovered INFRA). (1) Propagated S18f input-ball clause `U x ⊆ Metric.ball x ε` through the S18c→S18d→S18e bundle (S18c switched from `uhc_local_thickening` to `uhc_local_thickening_with_input_diameter`). (2) Added `private lemma finsupport_center_within_input_ball` proving the `dist x x' < ε` half of `IsGraphApproxSelection` (witness `x' := i ∈ ρ.finsupport x`). (3) Added `private lemma finsupport_nonempty` (center existence: `ρ.finsupport x` is nonempty since it sums to 1). Documented the directional gap blocking the output half (`dist (f x) (ysel i) < ε` needs a uniform/Lebesgue refinement, NOT the S18e-docstring `ysel i ∈ F i ⊆ thickening F x` plan). **Build-verified clean 3074 jobs** (`Built … (9.8s)`, Docker v4.26.0 image, pinned SHA `2df2f0150c…`). lineCount 1284 → 1369, theoremCount 14 → 16, axiomCount unchanged at 2, 0 functional sorries. INFRA blockers G7/G8 cleared. |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
