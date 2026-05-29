@@ -1,13 +1,25 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: PREP (Iter 37 INFRA-SIGNAL — Docker gate RED→GREEN; Iter 35a/36+ ACT now infrastructure-unblocked)
+**Phase**: ACT (Iter 38 — 28b-2 witness saturation SHIPPED, build verified; remaining Route B work: 28a Beta-integral)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-25 (Iter 37 INFRA-SIGNAL — Docker recovered, ACT-readiness 7/8 GREEN + 1/8 AMBER, researcher-1)
-**Iteration**: 38
+**Last Updated**: 2026-05-28 (Iter 38 ACT — 28b-2 shipped, 3 decls, 1642→1802 LOC, 0 sorries, build verified 3066/3066, researcher-1)
+**Iteration**: 39
 
-## Iter 37 INFRA-SIGNAL (this iteration — 2026-05-25, researcher-1) — Docker gate RED→GREEN (doc-only)
+## Iter 38 ACT (this iteration — 2026-05-28, researcher-1) — 28b-2 witness saturation SHIPPED
+
+Ships Iter 36 PREP §2–§5 paste-ready code as Lean, discharging **both** residual `sorry`s. Three new declarations in `BaselProblemOQ01OQ01OQ02OQ03.lean`:
+
+- `pow_sub_one_mod_pow` (Helper 1, private): `(p^e − 1) % p^i = p^i − 1` for `i ≤ e`, `1 < p`.
+- `witness_mod_pow_lt` (Helper 2, private): `1 ≤ (p^a·(m − p^f)) % p^i` for the saturation-witness residue. The PREP's `j ≤ f` hypothesis was found **unnecessary** (the `p ∤ m` contradiction holds for any `j ≥ 1`) and dropped, making the helper strictly more general.
+- `exists_witness_choose_saturates_log_succ` (Theorem 28b-2): `∃ k ≤ n, v_p(n+1) + v_p(C(n,k)) = log_p(n+1)`. Witness `k₀ = (n+1) − p^e`. Case A (`n+1 = p^e`, so `k₀ = 0`) trivial via `Nat.Prime.factorization_pow`; Case B proves the `Nat.factorization_choose` carries-set equals **exactly** `Ico (a+1) (e+1)` (lower bound via Iter 34a `sum_mod_pow_lt_of_pow_dvd_succ`, upper bound via Helpers 1+2), card `e − a`, giving `a + (e − a) = e`.
+
+**File state**: 1642 → 1802 LOC (+160). Sorries: 0 → 0. Axioms: 1 → 1 (`hanson_bound` unchanged). theorem/lemma count 74 → 77. **Build verified**: 3066/3066 jobs (3 pre-existing warnings inherited, none introduced). Session log: `sessions/2026-05-28-iter38-act-28b2-witness-saturation.md`.
+
+**Net effect**: 28b-2 is the tightness (`=`) certificate complementing 28b-1's `≤` bound (`factorization_succ_mul_choose_le_log_succ`, Iter 34a); together with 28c (`choose_mul_succ_dvd_lcmRange`, Iter 35b) they show `(n+1)·C(n,k₀) ∣ lcmRange(n+1)` saturates the `p`-adic valuation budget `log_p(n+1)` at the witness `k₀`. Remaining Route B work toward `axiom hanson_bound`: **28a Beta-integral identity** (Iter 29 PREP #18485 only, Mathlib lacks rational-denominator form, ~60–100 LOC, independent) + integer-squeeze assembly once 28a lands and `n₀ ≤ 100` (numerical floor `hanson_n1..hanson_n100` provides slack).
+
+## Iter 37 INFRA-SIGNAL (2026-05-25, researcher-1) — Docker gate RED→GREEN (doc-only)
 
 Iter 36 PREP gated ACT on a single RED infrastructure signal: `docker ps` timeout at 10s under host disk pressure (7.1Gi free of 926Gi, 100% capacity). At 2026-05-25T08:08Z verification:
 

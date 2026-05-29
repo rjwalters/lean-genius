@@ -29,14 +29,13 @@
     "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
   },
   "currentState": {
-    "phase": "PREP (Iter 37 INFRA-SIGNAL — Docker gate RED→GREEN; Iter 35a ACT-ready paste from Iter 36 PREP §2-§5, parallel-ready with Iter 36+ ACT 28a Beta-integral)",
+    "phase": "ACT (Iter 38 — 28b-2 witness saturation SHIPPED build-verified; remaining Route B: 28a Beta-integral identity)",
     "since": "2026-05-16T05:00:00Z",
-    "iteration": 38,
-    "focus": "Iter 37 INFRA-SIGNAL (researcher-1, 2026-05-25, doc-only): flips the single RED ACT-readiness gate from Iter 36 PREP (Docker availability) to GREEN. Verification at 2026-05-25T08:08Z: `docker ps` returns instantly (vs 10s timeout at Iter 36); `docker info` returns 29.4.1 | 8GB | aarch64 instantly; host root disk 97Gi free (vs 7.1Gi at Iter 36, 90Gi released); filesystem unchanged (/dev/disk3s1s1 926Gi). ACT-readiness gate update: 6/8 GREEN, 1/8 AMBER, 1/8 RED → **7/8 GREEN, 1/8 AMBER, 0/8 RED**. Remaining AMBER (Case B 2 nested sorries) is documented acceptable per Iter 34b PREP #19258 Option A audit — discharge during ACT, not a blocker. Net effect: Iter 35a ACT (28b-2 witness saturation, 127 LOC paste-ready from Iter 36 PREP §2-§5) AND Iter 36+ ACT (28a Beta-integral identity, 60-100 LOC from Iter 29 PREP #18485) are both parallel-ready and infrastructure-unblocked. Insertion point for 28b-2: immediately before 28c docstring (now ~line 1589 post-Iter-35b shipping). Session log: `sessions/2026-05-25-iter37-infra-signal-docker-recovered.md`. Memory trap: `_infra_signal_doc_only_when_red_gate_lifts` (inverse of `_act_pivot_to_prep_when_host_docker_corrupt`). 0 Lean edits, 0 meta.json edits, 0 new theorems/axioms/sorries — strictly doc-only, conflict-free with any in-flight paste.",
+    "iteration": 39,
+    "focus": "Iter 38 ACT (researcher-1, 2026-05-28): shipped Iter 36 PREP §2-§5 paste-ready code as Lean, discharging BOTH residual sorries. Three new declarations: pow_sub_one_mod_pow (Helper 1, private; (p^e-1)%p^i = p^i-1 for i≤e), witness_mod_pow_lt (Helper 2, private; 1 ≤ (p^a·(m-p^f))%p^i — PREP's j≤f hypothesis found unnecessary and dropped), and exists_witness_choose_saturates_log_succ (Theorem 28b-2; ∃ k≤n, v_p(n+1)+v_p(C(n,k)) = log_p(n+1)). Witness k₀=(n+1)-p^e; Case A (n+1=p^e) trivial, Case B proves the factorization_choose carries-set equals exactly Ico(a+1)(e+1) via Iter 34a sum_mod_pow_lt_of_pow_dvd_succ (lower) + Helpers 1+2 (upper). File 1642→1802 LOC (+160), 0 sorries, 1 axiom unchanged (hanson_bound), theorem/lemma 74→77. Build verified 3066/3066 jobs (3 pre-existing warnings inherited, none introduced). ACT-time fallbacks vs PREP: Nat.pow_pos exponent implicit at v4.26.0 (4 sites); Helper 1 i=0 needs explicit Nat.mod_one; hmp via Nat.not_dvd_ordCompl (PREP Option B); Nat.mul_pos/Nat.dvd_of_mod_eq_zero sidestepped PREP risk points. Session log: sessions/2026-05-28-iter38-act-28b2-witness-saturation.md.",
     "blockers": [
-      "28a Beta-integral identity: Iter 29 PREP #18485 only — no Lean shipping yet; Mathlib lacks Beta-integral identity in rational-denominator form. Largest remaining standalone Lean LOC commitment in Route B chain (60-100 LOC per Iter 31 §4).",
-      "28b-2 witness saturation ACT pending: Iter 32 PREP §4 skeleton + Iter 34b PREP #19258 Option A audit corrections; ~50-57 LOC Lean (0 sorries reachable). Independent of 28c (now shipped).",
-      "Integer-squeeze closure of hanson_bound: needs 28a + 28b-2 landed (28c shipped Iter 35b) AND integer-squeeze threshold n_0 <= 100 (numerical floor hanson_n1..hanson_n100 provides slack budget).",
+      "28a Beta-integral identity: Iter 29 PREP #18485 only — no Lean shipping yet; Mathlib lacks Beta-integral identity in rational-denominator form. Largest remaining standalone Lean LOC commitment in Route B chain (60-100 LOC per Iter 31 §4). Now the SOLE remaining Lean-shipping blocker after 28b-2 shipped (Iter 38).",
+      "Integer-squeeze closure of hanson_bound: needs 28a landed (28b-1 shipped Iter 34a, 28b-2 shipped Iter 38, 28c shipped Iter 35b) AND integer-squeeze threshold n_0 <= 100 (numerical floor hanson_n1..hanson_n100 provides slack budget).",
       "Iter 25 envelope (4^n * (n/2)^sqrt(n)) is strictly weaker than Hanson 3^n target; closing requires Route B Beta-integral approach or primorial-vs-correction cancellation (PNT-equivalent)."
     ],
     "attemptCounts": {
@@ -44,10 +43,10 @@
       "currentApproach": 12,
       "approachesTried": 2
     },
-    "nextAction": "Iter 38 ACT (next researcher): pick up Iter 35a ACT (28b-2 witness saturation) from Iter 36 PREP §2-§5 paste-ready code (127 LOC). Insertion point: immediately before 28c docstring (~line 1589, re-pin post-Iter-35b). Estimated 3-5 Docker iters for Case B residual filter-equality 2-nested-sorry discharge. Parallel-ready with Iter 36+ ACT (28a Beta-integral identity, 60-100 LOC from Iter 29 PREP #18485, self-contained atop build-verified file)."
+    "nextAction": "Iter 39+ (next researcher): 28b-2 is now shipped (Iter 38), so the sole remaining Lean-shipping ACT in Route B is 28a Beta-integral identity (Iter 29 PREP #18485 only; Mathlib lacks rational-denominator form; ~60-100 LOC; self-contained atop the build-verified file). After 28a lands, the integer-squeeze assembly closes hanson_bound once n_0 ≤ 100 is established (numerical floor hanson_n1..hanson_n100 provides slack). Consider a PREP iteration first to pin the Beta-integral Mathlib bearers at the current SHA before attempting the 28a ACT."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (iter 36, 28b-1 + 28c shipped build-verified). Iter 34a (#19208 merged 2026-05-15T18:06Z): shipped 28b-1 bridge bound + Lemma A (122 LOC, build verified). Iter 35b (THIS ITER, researcher-11): shipped Theorem 28c choose_mul_succ_dvd_lcmRange (26 LOC, build verified). Lean file 1469 → 1642 LOC (+173 across 28b-1 + Lemma A + 28c). 1 axiom hanson_bound, 0 sorries throughout. Remaining ACTs in Route B chain: 28b-2 witness saturation (Iter 35a, ~50-57 LOC, audit-corrected #19258 Option A) + 28a Beta-integral identity (Iter 36+, 60-100 LOC, Iter 29 PREP #18485 only). Both independent and parallel-ready. Integer-squeeze closure of hanson_bound follows once both ship + n₀ ≤ 100 (existing numerical floor hanson_n1..hanson_n100 provides slack budget).",
+    "progressSummary": "PROGRESS (iter 38, 28b-1 + 28b-2 + 28c all shipped build-verified). Iter 34a (#19208): 28b-1 bridge bound + Lemma A. Iter 35b (#19372): Theorem 28c choose_mul_succ_dvd_lcmRange. Iter 38 (THIS ITER, researcher-1): shipped 28b-2 witness saturation — exists_witness_choose_saturates_log_succ + Helpers pow_sub_one_mod_pow, witness_mod_pow_lt (+160 LOC), build verified 3066/3066. Lean file 1469 → 1802 LOC. 1 axiom hanson_bound, 0 sorries throughout. The Route B divisibility/saturation numerator side is now COMPLETE: 28b-1 (≤) + 28b-2 (=) + 28c together certify (n+1)·C(n,k₀) ∣ lcmRange(n+1) is tight at the witness k₀. SOLE remaining Lean-shipping ACT: 28a Beta-integral identity (60-100 LOC, Iter 29 PREP #18485 only, Mathlib lacks rational-denominator form). Integer-squeeze closure of hanson_bound follows once 28a ships + n₀ ≤ 100 (existing numerical floor hanson_n1..hanson_n100 provides slack budget).",
     "builtItems": [
       "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:80",
       "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:87-98",
@@ -75,7 +74,10 @@
       "prod_prime_pow_pred_small_le_pow_sqrt (theorem, Iter 23): BaselProblemOQ01OQ01OQ02OQ03.lean:1103 — chained envelope, ∏_{p² ≤ n} p^(Nat.log p n - 1) ≤ (n/2)^√n under 2 ≤ n. LHS half of the Hanson bridge, orthogonal to PR #17619.",
       "Iter 24 (researcher-1, this PR): prod_prime_pow_pred_eq_small in BaselProblemOQ01OQ01OQ02OQ03.lean — support-reduction equality between the full prime filter and the small-prime filter (p² ≤ n) on the correction-factor product. Direct in-file analogue of #17619's lcmRange_correction_supported_on_small_primes.",
       "Iter 24 (researcher-1, this PR): prod_prime_pow_pred_le_pow_sqrt in BaselProblemOQ01OQ01OQ02OQ03.lean — FULL correction-factor envelope ∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n/2)^√n under 2 ≤ n. Combines Iter 24 support-reduction with Iter 23's small-prime envelope.",
-      "Iter 35b (this PR, researcher-11): choose_mul_succ_dvd_lcmRange in BaselProblemOQ01OQ01OQ02OQ03.lean:1586 — Theorem 28c divisibility bridge `(n + 1) * Nat.choose n k ∣ lcmRange (n + 1)` for k ≤ n. Tactic body chains Iter 34a 28b-1 (file line 1545) + Iter 5 prime_pow_dvd_lcmRange (file line 134) via Nat.factorization_prime_le_iff_dvd. ~12 LOC body, no sorry, no axiom. Build verified 3066/3066 jobs. Implements Iter 35 PREP #19293 §4.1 drop-in body verbatim."
+      "Iter 35b (this PR, researcher-11): choose_mul_succ_dvd_lcmRange in BaselProblemOQ01OQ01OQ02OQ03.lean:1586 — Theorem 28c divisibility bridge `(n + 1) * Nat.choose n k ∣ lcmRange (n + 1)` for k ≤ n. Tactic body chains Iter 34a 28b-1 (file line 1545) + Iter 5 prime_pow_dvd_lcmRange (file line 134) via Nat.factorization_prime_le_iff_dvd. ~12 LOC body, no sorry, no axiom. Build verified 3066/3066 jobs. Implements Iter 35 PREP #19293 §4.1 drop-in body verbatim.",
+      "Iter 38 (this PR, researcher-1): pow_sub_one_mod_pow (Helper 1, private) in BaselProblemOQ01OQ01OQ02OQ03.lean — `(p^e - 1) % p^i = p^i - 1` for `1 < p`, `i ≤ e`. Proof: i=0 by simp [Nat.mod_one]; i≥1 writes p^e = p^i·c, rearranges p^e-1 = (p^i-1) + p^i·(c-1) via omega, then Nat.add_mul_mod_self_left + Nat.mod_eq_of_lt. No sorry, no axiom.",
+      "Iter 38 (this PR, researcher-1): witness_mod_pow_lt (Helper 2, private) in BaselProblemOQ01OQ01OQ02OQ03.lean — `1 ≤ (p^a·(m-p^f)) % p^i` for prime p, i=a+j, 0<j, 0<f, p^f<m, ¬p∣m. Proof: p^i=p^a·p^j (pow_add) + Nat.mul_mod_mul_left factors p^a; p^j∤(m-p^f) (else p∣m, contra hmp), so residue ≥1, Nat.mul_pos closes. PREP's j≤f hypothesis dropped as unnecessary (contradiction holds for any j≥1) — strictly more general. No sorry, no axiom.",
+      "Iter 38 (this PR, researcher-1): exists_witness_choose_saturates_log_succ (Theorem 28b-2) in BaselProblemOQ01OQ01OQ02OQ03.lean — `∃ k ≤ n, (n+1).factorization p + (Nat.choose n k).factorization p = Nat.log p (n+1)`. The tightness (=) companion to 28b-1's ≤ bound. Witness k₀=(n+1)-p^e; Case A (n+1=p^e ⇒ k₀=0) via Nat.Prime.factorization_pow; Case B (p^e<n+1) writes n+1=p^a·m with p∤m (Nat.not_dvd_ordCompl), proves the Nat.factorization_choose carries-set equals EXACTLY Finset.Ico (a+1) (e+1) (lower bound via Iter 34a sum_mod_pow_lt_of_pow_dvd_succ, upper via Helpers 1+2), card e-a, giving a+(e-a)=e. ~75 LOC, no sorry, no axiom. Build verified 3066/3066 jobs."
     ],
     "insights": [
       "Apéry's proof of ζ(3) irrationality requires the exact constant 3 (threshold c ≈ 3.245); the easier 4^n is insufficient.",
@@ -151,15 +153,15 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-25T08:10:00.000Z",
+  "lastUpdate": "2026-05-28T00:00:00.000Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean",
       "filename": "BaselProblemOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 1642,
-      "theoremCount": 73,
+      "lineCount": 1802,
+      "theoremCount": 77,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
