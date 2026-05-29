@@ -71,14 +71,29 @@
       "description": "Companion irrationality result using a different technique (minimal polynomial / p-adic valuation for cube roots vs squaring trick for sum of square roots)."
     },
     {
-      "targetId": "irrational-sqrt-2",
-      "relationship": "parent",
-      "description": "Irrationality of √2 — the classical Pythagorean result that provides the foundation. The irrationality of √2+√3 requires √6 ∉ ℚ as an intermediate step, which uses the same non-perfect-square criterion."
+      "targetId": "sqrt2-irrational",
+      "relationship": "foundational",
+      "description": "Irrationality of square roots (√2, √3, √6, …) via the non-perfect-square criterion. This is the classical Pythagorean result that grounds the present proof: the contradiction step hinges on √6 ∉ ℚ, which is exactly an instance of `irrational_sqrt_natCast_iff` (Irrational √n ↔ ¬IsSquare n)."
     },
     {
-      "targetId": "algebraic-numbers",
+      "targetId": "algebraic-numbers-countable",
       "relationship": "related",
-      "description": "Algebraic numbers over ℚ: √2+√3 is algebraic of degree 4 with minimal polynomial x⁴-10x²+1. Irrationality is equivalent to this polynomial having degree > 1."
+      "description": "Countability of the algebraic numbers. √2+√3 is algebraic of degree 4 (root of x⁴-10x²+1), hence one of the countably many algebraic reals; its irrationality is the statement that this minimal polynomial has degree > 1."
+    },
+    {
+      "targetId": "sqrt2-plus-sqrt3-irrational-oq-03",
+      "relationship": "extension",
+      "description": "Minimal polynomial of √2+√3 over ℚ. Strengthens the present result from 'irrational' to '[ℚ(√2+√3):ℚ] = 4' by establishing that x⁴-10x²+1 is the minimal polynomial — the field-theoretic refinement noted in this entry's third open question."
+    },
+    {
+      "targetId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+      "relationship": "extension",
+      "description": "Three-radical generalization. Applying the squaring reduction once leaves cross terms √6, √10, √15, requiring a second squaring; this realizes the first open question of the present entry and is a stepping stone toward Besicovitch's independence theorem."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "Irrationality of nth roots of non-perfect-powers. The √6 ∉ ℚ step used here is the n=2 case: √k is irrational exactly when k is not a perfect square, the same number-theoretic criterion generalized to arbitrary roots."
     }
   ],
   "sections": [
@@ -108,14 +123,14 @@
       "title": "Main Theorem: √2+√3 is Irrational",
       "startLine": 36,
       "endLine": 44,
-      "summary": "irrational_sqrt2_plus_sqrt3: Irrational (sqrt 2 + sqrt 3). Proof by contradiction: intro ⟨r, hr⟩ gives r:ℚ with hr:(r:ℝ)=√2+√3. Squaring via sqrt2_plus_sqrt3_sq gives hsq:(r:ℝ)²=5+2√6. linarith gives h6:√6=(r²-5)/2. Constructs rational witness q=(r²-5)/2 with cast computation, then exact irrational_sqrt_six ⟨q, ...⟩."
+      "summary": "irrational_sqrt2_plus_sqrt3: Irrational (sqrt 2 + sqrt 3). Sets up the proof by contradiction: `intro ⟨r, hr⟩` unfolds Irrational (a negated existential) into a rational witness r:ℚ with hr:(r:ℝ)=√2+√3. Squaring both sides via sqrt2_plus_sqrt3_sq produces hsq:(r:ℝ)²=5+2√6, transporting the question to the rationality of √6. The contradiction is then closed in the following section."
     },
     {
-      "id": "section-45",
-      "title": "Main Theorem: √2+√3 is Irrational (continued)",
+      "id": "sec-contradiction",
+      "title": "Closing the Contradiction: √6 Forced Rational",
       "startLine": 45,
-      "endLine": 53,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "endLine": 54,
+      "summary": "The second half of irrational_sqrt2_plus_sqrt3. From hsq : (r:ℝ)² = 5 + 2√6, `linarith` isolates h6 : √6 = ((r:ℝ)² - 5)/2. The witness hrat : ∃ q : ℚ, (q:ℝ) = √6 is built with q = (r²-5)/2, using `simp only [Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_natCast]` to align ℚ→ℝ casts with h6.symm. Then `exact irrational_sqrt_six hrat` feeds the rational witness into the auxiliary lemma, contradicting Irrational (√6) and discharging the goal. Line 54 closes the namespace."
     }
   ],
   "sorries": 0
