@@ -387,7 +387,10 @@ theorem maxCountAtSize_lt_of_forall {n : ℕ} {X : ℝ} (hX : 0 < X)
   rcases Set.eq_empty_or_nonempty {k : ℕ | ∃ Q : PlanarPointSet,
       Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k}
       with he | hne
-  · rw [he, Nat.sSup_empty]; simpa using hX
+  · rw [he]
+    have hz : sSup (∅ : Set ℕ) = 0 := csSup_empty
+    rw [hz, Nat.cast_zero]
+    exact hX
   · obtain ⟨Q, hQcard, hQ5, hQeq⟩ :=
       Nat.sSup_mem hne (maxCountAtSize_bddAbove n)
     rw [← hQeq]
