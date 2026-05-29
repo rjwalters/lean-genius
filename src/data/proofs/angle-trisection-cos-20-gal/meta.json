@@ -41,7 +41,7 @@
       "Irreducibility transfers through the invertible substitution X ↦ (Y−2)/2 via composition with the inverse linear map",
       "The factored form 8a³−6a−1 = 8(a−α)(a−β)(a−γ) is a pure ring identity, holding in any commutative ring",
       "Since all roots of p lie in ℚ(α), the splitting field has degree exactly 3 over ℚ",
-      "From degree 3 splitting: |Gal| divides 3! = 6 (from permutation action on roots) and is divisible by 3 (since p is irreducible of prime degree), so |Gal| = 3. Moreover, a group of prime order 3 must be cyclic (ℤ/3ℤ), which means the extension ℚ ⊂ ℚ(cos 20°) has no proper intermediate fields — ruling out any step-by-step compass-and-straightedge construction that would require a tower of degree-2 extensions."
+      "From degree 3 splitting: by the Fundamental Theorem of Galois Theory, |Gal| = [SplittingField : ℚ] for a separable polynomial, and the previous bullet establishes [SplittingField : ℚ] = 3, so |Gal| = 3. (The complementary divisibility bounds 3 | |Gal| | 6 — from irreducibility of prime degree and the permutation action on 3 roots — give the corridor {3, 6}; the splitting-field degree pins it to 3.) Moreover, a group of prime order 3 must be cyclic (ℤ/3ℤ), which means the extension ℚ ⊂ ℚ(cos 20°) has no proper intermediate fields — ruling out any step-by-step compass-and-straightedge construction that would require a tower of degree-2 extensions."
     ],
     "prerequisites": [
       "Eisenstein's irreducibility criterion and Gauss's lemma",
