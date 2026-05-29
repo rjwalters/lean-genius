@@ -49,8 +49,8 @@
     "assumptions": "4 placeholder axioms defined as Prop := True: (1) KroneckerWeberTheorem — every abelian extension of ℚ is cyclotomic (requires local class field theory to prove), (2) CMSolution — CM theory for imaginary quadratic fields (deep result in arithmetic geometry), (3) ArtinReciprocity — Artin reciprocity map isomorphism (central theorem of class field theory), (4) StarkConjecture — Stark's conjectures on L-function values (open conjecture). One genuine proof: cyclotomic_galois_comm (Galois group of cyclotomic extensions is abelian, via Mathlib's autEquivPow). Two Mathlib applications: cyclotomic degree = totient, cyclotomic polynomial irreducibility.",
     "proofRepoPath": "Proofs/KroneckersJugendtraum.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 387,
-    "theoremCount": 6,
+    "lineCount": 371,
+    "theoremCount": 3,
     "definitionCount": 10
   },
   "overview": {
@@ -119,7 +119,7 @@
       "title": "Open Cases",
       "startLine": 255,
       "endLine": 300,
-      "summary": "States Hilberts12thProblem for general K. Proves hilbert12_solved_for_rationals and hilbert12_solved_for_imaginary_quadratic (both reduce to trivial via placeholders).",
+      "summary": "States Hilberts12thProblem for general K as a placeholder proposition (the deep statement is not formalizable without specifying \"explicit analytic function\").",
       "mathContext": "The general `Hilberts12thProblem` asks for a set of generators in $\\mathbb{C}$ that are special values of explicit analytic functions and generate all abelian extensions of any number field $K$. The file proves `hilbert12_solved_for_rationals` (reducing to `KroneckerWeberTheorem \\to \\mathrm{True}$) and `hilbert12_solved_for_imaginary_quadratic` (reducing via `CMSolution`). Both proofs are trivial since the deep content is in the axiomatized premises. For real quadratic fields $\\mathbb{Q}(\\sqrt{d})$, no analogue of CM exists; the Stark conjectures and the Langlands program represent the main avenues of current research."
     },
     {
@@ -143,7 +143,7 @@
       "title": "Summary",
       "startLine": 352,
       "endLine": 387,
-      "summary": "hilbert12_summary theorem. Recaps solved cases (ℚ, imaginary quadratic) vs open cases (real quadratic, general). Lists #check statements for key definitions.",
+      "summary": "Documentation block recapping solved cases (ℚ, imaginary quadratic) vs open cases (real quadratic, general). Lists #check statements for key definitions.",
       "mathContext": "The file's genuine Lean content comprises three machine-checked results: (1) `cyclotomic_galois_comm` proving $\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ is abelian via the `autEquivPow` isomorphism to $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, (2) `cyclotomic_degree` proving $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ via `IsCyclotomicExtension.finrank`, and (3) `cyclotomic_irreducible` proving $\\Phi_n$ is irreducible over $\\mathbb{Z}$. All other results -- Kronecker-Weber, CM theory, Artin reciprocity, Stark conjectures, and the general Hilbert 12th problem -- are formulated as `Prop := True` placeholders whose deep proofs lie beyond current Mathlib infrastructure."
     }
   ],
@@ -271,11 +271,11 @@
       "scoped"
     ],
     "namespace": "KroneckersJugendtraum",
-    "lineCount": 387,
+    "lineCount": 371,
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 10,
-    "theoremCount": 6
+    "theoremCount": 3
   },
   "mainTheorems": [
     {

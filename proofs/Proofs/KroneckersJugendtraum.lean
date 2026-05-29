@@ -284,25 +284,9 @@ def Hilberts12thProblem : Prop :=
       True -- Full statement is not formalizable without specifying
            -- what "explicit analytic function" means
 
-/-- The problem is solved for imaginary quadratic fields (by CM theory) -/
-theorem hilbert12_solved_for_imaginary_quadratic :
-    ∀ (K : Type*) [Field K] [Algebra ℚ K],
-      IsImaginaryQuadratic K → CMSolution K := by
-  intro K _ _ hK
-  intro _
-  intro L _ _ _ _
-  trivial
-
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: KNOWN PARTIAL RESULTS AND EXAMPLES
 ═══════════════════════════════════════════════════════════════════════════════ -/
-
-/-- Roots of unity generate cyclotomic extensions -/
-theorem root_of_unity_generates_cyclotomic (n : ℕ) (hn : n ≠ 0) (ζ : ℂ)
-    (hζ : ζ ^ n = 1) (hprim : ∀ m : ℕ, m < n → m ≠ 0 → ζ ^ m ≠ 1) :
-    -- ℚ(ζ) is a cyclotomic field
-    True := by
-  trivial
 
 /-- The n-th cyclotomic polynomial is irreducible over ℚ -/
 theorem cyclotomic_irreducible (n : ℕ+) :
@@ -348,7 +332,8 @@ def StarkConjecture : Prop :=
 PART VIII: SUMMARY
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- Summary of Hilbert's 12th Problem:
+/-!
+### Summary of Hilbert's 12th Problem
 
 1. **The Problem**: Find explicit generators for all abelian extensions of any number field K
 
@@ -376,7 +361,6 @@ PART VIII: SUMMARY
    - Foundation of modern arithmetic geometry
    - Deep relations to the Langlands program
 -/
-theorem hilbert12_summary : (1 : ℕ) + 1 = 2 := rfl
 
 #check KroneckerWeberTheorem
 #check cyclotomic_galois_abelian
