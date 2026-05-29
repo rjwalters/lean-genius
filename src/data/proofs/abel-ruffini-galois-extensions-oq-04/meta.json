@@ -270,6 +270,21 @@
       "description": "Alternating Groups: $A_n$ solvable $\\iff n \\leq 4$. Jordan-Hölder uniqueness sharpens this classification: the composition series of $A_n$ for $n \\geq 5$ is forced to be the single chain $\\{e\\} \\triangleleft A_n$ (since $A_n$ itself is simple for $n \\geq 5$). This uniqueness — that no decomposition can split $A_n$ into smaller pieces — is exactly what Jordan-Hölder guarantees, making the non-solvability boundary structurally absolute rather than a feature of one analysis."
     },
     {
+      "targetId": "abel-ruffini-oq-04-oq-03",
+      "relationship": "complementary",
+      "description": "**Galois's solvability criterion** — the bridge that turns Jordan-Hölder uniqueness into the Abel-Ruffini obstruction. A root of an irreducible polynomial is solvable by radicals iff its Galois group is solvable, equivalently iff every composition factor is cyclic of prime order. Jordan-Hölder (proved here) fixes the composition-factor multiset of the Galois group as an invariant independent of any chosen series; Galois's criterion then reads solvability directly off that multiset. For the quintic, the non-abelian simple factor $A_5$ — unavoidable by Jordan-Hölder uniqueness — is non-cyclic, so the criterion returns 'not solvable by radicals.' Without the uniqueness clause proved here, one could hope for an alternative decomposition with all-cyclic factors; Jordan-Hölder forecloses that hope, which is precisely why the criterion gives an absolute answer."
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02",
+      "relationship": "complementary",
+      "description": "Classifies $S_2, S_3, S_4$ as solvable — the degree-by-degree complement to $S_5$ non-solvability. Each has a composition series with only cyclic factors, and by Jordan-Hölder uniqueness (proved here) that factor multiset is an invariant, so solvability is a structural property of the group rather than an artifact of a chosen decomposition. The cross-references from this entry to `solution-of-cubic` (Cardano, $S_3$) and `general-quartic` (Ferrari, $S_4$) give the constructive radical formulas that realize these very composition series. This is the parent of the already-linked `abel-ruffini-oq-04-oq-02-oq-02` and `abel-ruffini-oq-04-oq-02-oq-03`."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-07",
+      "relationship": "related",
+      "description": "**Burnside's $p^a q^b$ theorem** (1904): every finite group whose order has at most two distinct prime divisors is solvable — i.e., all its composition factors are cyclic of prime order. This is exactly the 'next step' flagged in this entry's open questions on the Hölder program: where Jordan-Hölder guarantees the composition-factor multiset is a well-defined invariant, Burnside identifies a large class of groups for which that multiset contains only cyclic factors. Consistency check: the smallest non-solvable group $A_5$ has order $60 = 2^2 \\cdot 3 \\cdot 5$, which needs three distinct primes — two never suffice for non-solvability, exactly as Burnside requires."
+    },
+    {
       "targetId": "lagrange-theorem",
       "relationship": "foundational",
       "description": "Lagrange's theorem $|G| = |H| \\cdot [G:H]$ underlies the numerical content of Jordan-Hölder: the product of the orders of the composition factors equals $|G|$. For $S_5$: $|S_5| = |\\mathbb{Z}/2\\mathbb{Z}| \\cdot |A_5| = 2 \\cdot 60 = 120$, matching $5! = 120$. Jordan-Hölder uniqueness turns this multiplicative identity into a *unique factorization* statement — the analogue of the fundamental theorem of arithmetic, where the simple-group factors play the role of primes. Lagrange's theorem alone gives the divisibility constraints; Jordan-Hölder gives the uniqueness of the factor multiset."
