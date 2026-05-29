@@ -7,7 +7,7 @@
     "author": "Ferdinand Georg Frobenius (1878)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Frobenius_normal_form",
     "date": "1878",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonReductionOQ02OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -41,7 +41,7 @@
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 396,
-    "assumptions": "0 axioms, 0 sorries. All three key theorems fully proved: aeval_companionMatrix (orbit argument), charpoly_companionMatrix, and minpoly_companionMatrix. Uses Mathlib supporting lemmas.",
+    "assumptions": "Main file (CayleyHamiltonReductionOQ02OQ01.lean): 0 axioms, 0 sorries; all three key theorems fully proved (aeval_companionMatrix via orbit argument, charpoly_companionMatrix, minpoly_companionMatrix) using Mathlib supporting lemmas. Aristotle companion (CayleyHamiltonReductionOQ02OQ01Aristotle.lean) carries 12 routine helper-lemma stubs (minpoly_dvd_of_aeval_zero, dvd_antisymm_monic, orbit_basis_independent, etc.) staged for automated proof search; these are not imported by the main file.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 1,
