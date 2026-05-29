@@ -42,7 +42,7 @@ theorem derangements_rate_scaled (n : ℕ) :
   -- D(n) - n!/e = n! * (D(n)/n! - 1/e)
   have hrw : (numDerangements n : ℝ) - (n.factorial : ℝ) / rexp 1 =
              (n.factorial : ℝ) * ((numDerangements n : ℝ) / n.factorial - 1 / rexp 1) := by
-    field_simp; ring
+    field_simp
   rw [hrw, abs_mul, abs_of_pos hn_pos]
   -- n! * |D(n)/n! - 1/e| ≤ n! / (n+1)! = 1/(n+1)
   calc (n.factorial : ℝ) * |(numDerangements n : ℝ) / n.factorial - 1 / rexp 1|
@@ -74,12 +74,12 @@ theorem derangements_nearest_integer_n1 :
     |(numDerangements 1 : ℝ) - ((1 : ℕ).factorial : ℝ) / rexp 1| < 1 / 2 := by
   have hD1 : (numDerangements 1 : ℝ) = 0 := by
     norm_cast
-    decide
   have hf1 : ((1 : ℕ).factorial : ℝ) = 1 := by norm_num
   rw [hD1, hf1, zero_sub, abs_neg, abs_of_pos (by positivity)]
   -- Goal: 1 / rexp 1 < 1 / 2, i.e., 2 < rexp 1
-  rw [div_lt_div_iff (Real.exp_pos 1) two_pos]
-  linarith [Real.add_one_lt_exp (show (1 : ℝ) ≠ 0 from one_ne_zero)]
+  have he2 : (2 : ℝ) < rexp 1 := by
+    linarith [Real.add_one_lt_exp (show (1 : ℝ) ≠ 0 from one_ne_zero)]
+  exact one_div_lt_one_div_of_lt (by norm_num) he2
 
 /-- **All n ≥ 1**: D(n) is the nearest integer to n!/e. -/
 theorem derangements_nearest_all (n : ℕ) (hn : 1 ≤ n) :
@@ -107,7 +107,7 @@ theorem derangements_unique_nearest (n : ℕ) (hn : 1 ≤ n) (m : ℕ)
     rw [hrw]
     calc |(m : ℝ) - n.factorial / rexp 1 + (n.factorial / rexp 1 - numDerangements n)|
         ≤ |(m : ℝ) - n.factorial / rexp 1| + |n.factorial / rexp 1 - numDerangements n| :=
-          abs_add _ _
+          abs_add_le _ _
       _ < 1 / 2 + 1 / 2 := by
           have : |n.factorial / rexp 1 - (numDerangements n : ℝ)| < 1 / 2 := by
             rw [abs_sub_comm]; exact hd
@@ -180,10 +180,9 @@ theorem derangements_error_sign (n : ℕ) :
   set f : ℕ → ℝ := fun k => (-1 : ℝ) ^ k / ((n + 1 + k).factorial : ℝ) with hf_def
   -- Step A: f is summable. Bound |f k| ≤ 1/k! and 1/k! is summable.
   have hf_summable : Summable f := by
-    apply Summable.of_norm_bounded (fun k : ℕ => (1 : ℝ) / (k.factorial : ℝ))
+    apply Summable.of_norm_bounded (g := fun k : ℕ => (1 : ℝ) / (k.factorial : ℝ))
     · -- ∑ 1/k! is summable (special case of summable_pow_div_factorial 1).
-      have := summable_pow_div_factorial (1 : ℝ)
-      simpa [one_pow] using this
+      simpa only [one_pow] using summable_pow_div_factorial (1 : ℝ)
     · -- |f k| = 1/(n+1+k)! ≤ 1/k!.
       intro k
       simp only [hf_def, norm_eq_abs, abs_div, abs_pow, abs_neg, abs_one, one_pow]
@@ -220,7 +219,7 @@ theorem derangements_error_sign (n : ℕ) :
     have h_exp_full :
         rexp (-1) = altFactPartialSum n + (-1 : ℝ) ^ (n + 1) * ∑' k, f k := by
       rw [hexp, htail, h_tail_factored]
-    have h_exp_neg : rexp (-1) = 1 / rexp 1 := by rw [Real.exp_neg]
+    have h_exp_neg : rexp (-1) = 1 / rexp 1 := by rw [Real.exp_neg, one_div]
     -- D(n)/n! - rexp(-1) = -((-1)^(n+1) · ∑' f).
     have hkey : (numDerangements n : ℝ) / (n.factorial : ℝ) - rexp (-1) =
                 -((-1 : ℝ) ^ (n + 1) * ∑' k, f k) := by

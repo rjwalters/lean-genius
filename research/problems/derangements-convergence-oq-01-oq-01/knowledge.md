@@ -212,3 +212,59 @@ n!/e in the parity-determined direction).
 - **Axiom count**: 0 (unchanged)
 - **Sorry count**: 0 (unchanged)
 - **Phase**: COMPLETED + parity-sign theorem added
+
+## Session 2026-05-29 (Session 4) — Build repair for Mathlib v4.26.0 (researcher-1)
+
+**Mode**: REVISIT (build verification)
+**Outcome**: completed — the entire derangements-convergence family now compiles
+against the pinned Mathlib (v4.26.0). Both this file and its parent
+`DerangementsConvergence.lean` were marked `verified` but did **not** build:
+the S3 parity-sign addition was explicitly never build-verified, and a Mathlib
+bump (to v4.26.0) had broken the parent after it was last checked.
+
+### What I Did
+
+Docker-verified `Proofs.DerangementsConvergenceOQ01OQ01` (which imports the
+parent) and repaired all API-drift errors in both files. Build now clean
+(0 errors, 0 sorries, 0 axioms in both files).
+
+**Parent `DerangementsConvergence.lean` (15 error sites):**
+- `tsum_eq_partial_sum_add_tail`: replaced a manual `Finset.hasSum_compl_iff`
+  derivation (lemma gone) with `Summable.sum_add_tsum_nat_add`.
+- `exp_neg_one_eq_tsum_alt`: `congr 1; funext` → `tsum_congr`.
+- Internal alternating-series `hpair` proofs: the old
+  `simp [pow_succ, pow_mul, neg_one_sq, …]` no longer reduces `(-1)^(2k)`
+  (in v4.26.0 `pow_succ` decomposes `(-1)^2` before `neg_one_sq` can fire,
+  leaving `((-1)^0*-1*-1)^k`). Replaced with explicit
+  `rw [show (-1)^(2k) = 1 …, show (-1)^(2k+1) = -1 …, neg_div]` — the `neg_div`
+  is essential because `linarith` treats `-1/x` and `1/x` as *unrelated atoms*.
+- Factorial-ratio bounds: `div_le_div_of_nonneg_left … (one_pos)` → `gcongr; omega`
+  (gcongr peels `m+·` and factorial monotonicity down to a raw `2k ≤ 2k+1`).
+- `Even`-branch index mismatch: `Even N'` destructures to `k+k`, not `2*k`;
+  added `simp only [two_mul] at hpair` so the final `linarith` atoms align.
+- Odd-branch `2*k+1+1` vs `2*k+2` syntactic mismatch: aligned indices.
+- `numDerangements_eq_factorial_mul_altSum` n+2 arm: `ring` could not equate
+  inverses of *expanded* factorial polynomials; added `field_simp` before `ring`.
+
+**This file `DerangementsConvergenceOQ01OQ01.lean` (10 error sites):**
+- `div_lt_div_iff` (renamed/removed) → `one_div_lt_one_div_of_lt`.
+- `abs_add` → `abs_add_le`.
+- `Summable.of_norm_bounded`: bounding function `g` is now implicit — pass `(g := …)`.
+- `simpa [one_pow]` → `simpa only [one_pow]` (full simp rewrote `1/n!` to `(n!)⁻¹`).
+- `Real.exp_neg` rewrite left `(rexp 1)⁻¹ = 1/rexp 1`; added `one_div`.
+- Several `simp;tac` / `norm_cast;decide` where the first tactic now closes the goal.
+
+### Key Findings
+- **A `verified` gallery badge is only as good as the last build against the
+  current Mathlib pin.** Two entries in this family claimed `verified` but were
+  broken by a Mathlib bump + an unverified S3 addition. Build verification on
+  the pinned toolchain is the ground truth.
+- Recurring v4.26.0 drift patterns: `simp`/`norm_cast` got stronger (trailing
+  tactics hit "no goals"); `pow_succ` over-eagerly decomposes literal powers in
+  `simp`; `linarith` cannot relate `c/x` atoms with different numerators (use
+  `neg_div`); `gcongr` is far more robust than the renamed `div_le_div_*` lemmas.
+
+### Status
+- **Axiom count**: 0 (both files, unchanged)
+- **Sorry count**: 0 (both files, unchanged)
+- **Phase**: COMPLETED — Docker build-verified on Mathlib v4.26.0 (researcher-1)
