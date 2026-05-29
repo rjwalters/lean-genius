@@ -19,8 +19,8 @@ OEIS: A002858
 
 Reference: [ErGr80, p.53]
 
-Axioms: 1 (ulamSeq — opaque sequence function)
-Proved: 15 theorems including initial values verified by native_decide
+Axioms: 3 (ulamSeq, ulamSeq_initial, ulamSeq_strictMono)
+Proved: 20 theorems including initial values verified by native_decide
 Sorries: 0
 -/
 
@@ -212,7 +212,7 @@ KNOWN:
 FORMALIZATION:
 - Computable ulam function verified against OEIS for first 12 terms
 - Opaque ulamSeq for reasoning about the infinite sequence
-- 15 theorems, 5 axioms (ulamSeq, initial agreement, strict mono, unique rep, minimality)
+- 20 theorems, 3 axioms (ulamSeq, initial agreement, strict mono)
 -/
 theorem erdos_342_statement :
     ErdosConjecture342 ↔ Set.Infinite {n : ℕ | ulamSeq (n + 1) = ulamSeq n + 2} := by
