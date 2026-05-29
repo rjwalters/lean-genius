@@ -359,6 +359,41 @@
       "year": "2006",
       "venue": "Cambridge University Press, New Mathematical Monographs 4",
       "note": "Comprehensive modern reference on the theory of heights, the Northcott property, and applications to Diophantine geometry. Chapter 1 reviews the absolute (Weil/Mahler) height and proves the Northcott property in the form referenced in this entry's keyInsight on bounded-height-and-degree finiteness. Connects the elementary countability formalized here to the quantitative finiteness theorems that power Faltings' theorem, the Mordell–Lang conjecture, and effective transcendence bounds."
+    },
+    {
+      "authors": "Aleksandr Gel'fond",
+      "title": "Sur le septième Problème de Hilbert",
+      "year": "1934",
+      "venue": "Doklady Akademii Nauk SSSR 2: 1–6 (full version: Izvestiya Akademii Nauk SSSR, Seriya Matematicheskaya 7: 623–634, 1934)",
+      "note": "Gel'fond's independent proof — simultaneous with Schneider — of **Hilbert's 7th problem**: if $\\alpha$ is algebraic with $\\alpha \\neq 0, 1$ and $\\beta$ is irrational algebraic, then $\\alpha^\\beta$ is transcendental. In particular $2^{\\sqrt{2}}$ and $e^\\pi = (-1)^{-i}$ are transcendental, the latter being the *Gel'fond constant*. Gel'fond's method introduces interpolation determinants and algebraic-integer arithmetic in $\\mathbb{Z}[i]$, the technical seed of what becomes Baker's method (1966, addressed in companion entry `algebraic-numbers-countable-oq-04`). For this entry's countability framework, Gel'fond-Schneider sharpens the abstract uncountability of transcendentals (keyInsight #3) to *individual* transcendence verifications of explicit numbers — exhibiting concrete elements of the $2^{\\aleph_0}$-cardinality transcendental complement. Cited in openQuestion #2 (companion entry `gelfond-schneider`) and keyInsight #9 (Mahler's classification refinement)."
+    },
+    {
+      "authors": "Theodor Schneider",
+      "title": "Transzendenzuntersuchungen periodischer Funktionen I, II",
+      "year": "1934",
+      "venue": "Journal für die reine und angewandte Mathematik 172: 65–69 (Part I); 70–74 (Part II)",
+      "note": "Schneider's two 1934 papers, independent of Gel'fond's parallel work, give the second proof of **Hilbert's 7th problem** ($\\alpha^\\beta$ transcendental for $\\alpha$ algebraic $\\neq 0, 1$ and $\\beta$ irrational algebraic). Schneider's method is more general than Gel'fond's, using analytic auxiliary functions vanishing to high order at many algebraic points, and extends naturally to transcendence statements about elliptic functions, modular functions, and abelian integrals. Schneider 1937 proves transcendence of $j(\\tau)$ for $\\tau$ algebraic of positive imaginary part, the foundation of the modern transcendence theory of periods. Cited in openQuestion #2 alongside Gel'fond 1934; together they form the **Gel'fond-Schneider theorem**, settling one of the four explicitly-listed Hilbert problems concerning transcendence."
+    },
+    {
+      "authors": "Alan Baker",
+      "title": "Linear forms in the logarithms of algebraic numbers I, II, III, IV",
+      "year": "1966",
+      "venue": "Mathematika 13: 204–216 (Part I); 14: 102–107 (Part II); 14: 220–228 (Part III); 15: 204–216 (Part IV)",
+      "note": "Baker's quartet of 1966 papers proving the **Baker theorem on linear forms in logarithms**: if $\\alpha_1, \\ldots, \\alpha_n$ are non-zero algebraic numbers and $\\log \\alpha_1, \\ldots, \\log \\alpha_n$ are linearly independent over $\\mathbb{Q}$, then they are linearly independent over the algebraic closure $\\overline{\\mathbb{Q}}$. Baker won the 1970 Fields Medal for this work. The theorem dramatically generalizes Gel'fond-Schneider: setting $n = 2$ and rearranging gives $\\alpha^\\beta = \\exp(\\beta \\log \\alpha)$ transcendental. Baker's deeper innovation is **effective transcendence**: the theorem comes with explicit lower bounds $|b_1 \\log \\alpha_1 + \\cdots + b_n \\log \\alpha_n| > C / B^\\kappa$ for $b_i \\in \\mathbb{Z}$ with $\\max |b_i| \\leq B$, yielding effective solutions to Diophantine equations (Mordell's conjecture for elliptic curves, Catalan's conjecture in special cases). Cited in openQuestion #3 (companion entry `algebraic-numbers-countable-oq-04` formalizes Baker's theorem)."
+    },
+    {
+      "authors": "Klaus F. Roth",
+      "title": "Rational approximations to algebraic numbers",
+      "year": "1955",
+      "venue": "Mathematika 2: 1–20 (corrigendum 168)",
+      "note": "Roth's theorem: for any algebraic number $\\alpha$ of degree $\\geq 2$ and any $\\epsilon > 0$, the inequality $|\\alpha - p/q| < q^{-(2 + \\epsilon)}$ has only finitely many rational solutions $p/q$. This is the **best possible exponent** (since Dirichlet's theorem gives infinitely many with exponent 2), settling a chain of refinements from Liouville (1844, exponent equal to the degree $n$), through Thue (1909, exponent $n/2 + 1$), Siegel (1921, exponent $2\\sqrt{n}$), Dyson and Gel'fond (1947–1948, exponent $\\sqrt{2n}$) to Roth's optimal $2 + \\epsilon$. Roth won the 1958 Fields Medal. The theorem is non-effective: it proves *finitely* many solutions but cannot bound them. Connects to this entry's keyInsight #5 on the **Liouville-Cantor complementarity**: Liouville's 1844 construction exploits a wider Diophantine gap than algebraic numbers can achieve; Roth's theorem makes this gap precise (algebraic numbers admit *no* such super-quadratic approximations). Foundational for modern Diophantine geometry."
+    },
+    {
+      "authors": "Roger Apéry",
+      "title": "Irrationalité de $\\zeta(2)$ et $\\zeta(3)$",
+      "year": "1979",
+      "venue": "Journées Arithmétiques de Luminy, Astérisque 61: 11–13",
+      "note": "Apéry's celebrated 1979 announcement (with full proofs surfaced in van der Poorten's explanatory paper *A proof that Euler missed*, Mathematical Intelligencer 1: 195–203, 1979) that $\\zeta(3) = \\sum_{n \\geq 1} 1/n^3$ is **irrational** — the first non-trivial irrationality result for the values $\\zeta(2k+1)$ of the Riemann zeta function at odd integers. Apéry's proof uses fast-converging series $\\zeta(3) = \\frac{5}{2} \\sum_{n=1}^\\infty (-1)^{n-1}/(n^3 \\binom{2n}{n})$ and a Diophantine approximation argument requiring no advanced apparatus. Despite 47 years of intensive work, the irrationality of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ remains open — only Rivoal-Ball (2001) showed infinitely many odd $\\zeta(2k+1)$ are irrational, and Zudilin (2001) sharpened to 'at least one of $\\zeta(5), \\zeta(7), \\zeta(9), \\zeta(11)$ is irrational'. Concrete instance of the abstract transcendental/irrational complement this entry's countability argument identifies: $\\zeta(3) \\in \\mathbb{R} \\setminus \\mathbb{Q}$, and whether $\\zeta(3) \\in \\overline{\\mathbb{Q}}^c$ (transcendence) remains a major open question."
     }
   ],
   "leanFile": {
