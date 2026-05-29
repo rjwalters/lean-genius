@@ -653,4 +653,43 @@ theorem nonComputableReals_uncountable : ¬ nonComputableReals.Countable := by
 theorem nonComputableReals_infinite : nonComputableReals.Infinite := fun h =>
   nonComputableReals_uncountable h.countable
 
+/-! ## S7 — Topological structure: the computable reals are dense
+
+Despite being countable (S3) — hence both cardinality- and measure-negligible
+inside ℝ — the computable reals are *topologically dense*: every real number is a
+limit of computable reals. This is immediate from the density of ℚ in ℝ together
+with `rat_isComputable` (every rational is a computable real).
+
+Combined with `computable_reals_countable` (S3), it exhibits
+`{r | IsComputable r}` as a **countable dense subset** of ℝ — a constructive
+separability witness for ℝ using only computable points, and the topological
+counterpart of the cardinality results in S2-S6: the computable reals are
+"small" in cardinality (ℵ₀) yet "large" topologically (dense), the precise
+combination that makes ℝ separable.
+
+* `computable_reals_dense` — `Dense {r | IsComputable r}`.
+* `closure_computable_reals_eq_univ` — closure-form restatement,
+  `closure {r | IsComputable r} = Set.univ`.
+-/
+
+/-- **S7 — the computable reals are dense in ℝ**.
+
+    The rationals are dense in ℝ (`Rat.denseRange_cast`) and every rational is a
+    computable real (`rat_isComputable`), so the computable reals contain a dense
+    subset and are therefore dense. -/
+theorem computable_reals_dense : Dense {r : ℝ | IsComputable r} := by
+  have h_subset : Set.range ((↑) : ℚ → ℝ) ⊆ {r : ℝ | IsComputable r} := by
+    rintro x ⟨q, rfl⟩
+    exact rat_isComputable q
+  have hd : Dense (Set.range ((↑) : ℚ → ℝ)) := Rat.denseRange_cast
+  exact hd.mono h_subset
+
+/-- **S7 — closure form**: the topological closure of the computable reals is all
+    of `ℝ`. A direct restatement of `computable_reals_dense` via
+    `Dense.closure_eq`, convenient for downstream consumers that reason about
+    closures rather than the `Dense` predicate. -/
+theorem closure_computable_reals_eq_univ :
+    closure {r : ℝ | IsComputable r} = Set.univ :=
+  computable_reals_dense.closure_eq
+
 end AlgebraicNumbersCountableOQ02OQ04

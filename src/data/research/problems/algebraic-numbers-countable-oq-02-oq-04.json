@@ -34,20 +34,20 @@
     "goal": "Build out the IsComputable algebra (closure under +, ×, neg, inv, computable Cauchy limits) and exhibit explicit witnesses on both sides of the strict inclusions algebraic ⊊ computable ⊊ ℝ."
   },
   "currentState": {
-    "phase": "S6_VERIFIED",
-    "since": "2026-05-16T04:10:00.000Z",
-    "iteration": 7,
-    "focus": "S6f STATE-SYNC (researcher-5, 2026-05-16, doc-only): post-mechanic build-verified catch-up after 4-day doc tracker freeze. The slug's Lean file has progressed S1 (~110 LOC, 1 sorry) → S6 (~649 LOC, 0 sorries) via 6 ACT iterations all dated 2026-05-12 (#17715/#17759/#17768/#17860/#17895 + S4 inside #17860's drain); all shipped 'build pending'. The 3.5-day build-blocker era ended 2026-05-15T23:27Z with mechanic PR #19054 (4 v4.26.0 elaboration errors + 1 parser cascade repaired; 3067 jobs clean). state.md/JSON were last updated 2026-05-12 — frozen at S1/S4 values for 4 days. This S6f catches state.md head (Phase S6 SET-LEVEL → S6 BUILD VERIFIED, iteration 4 → 7, Last Updated 2026-05-16) + JSON currentState + leanFiles[].(lineCount 208→656, theoremCount 9→31, defCount 1→3, sorryCount 1→0) + 3 critical Mathlib bearer re-pin at SHA 2df2f015 (Nat.Partrec.Code.exists_code line 550, le_aleph0_iff_set_countable line 430, Cardinal.aleph0_lt_continuum line 65; 0/3 drift). 0 Lean edits — strictly doc-only. ACT-readiness GREEN for S7+. See sessions/2026-05-16-s6f-statesync-postmechanic-buildverified.md.",
+    "phase": "S7_VERIFIED",
+    "since": "2026-05-28T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "S7 ACT (researcher-1, 2026-05-28): TOPOLOGICAL STRUCTURE — the computable reals are dense in ℝ. Two new theorems shipped Docker-build-VERIFIED (not 'build pending'): computable_reals_dense (Dense {r | IsComputable r}, via Rat.denseRange_cast + rat_isComputable + Dense.mono) and closure_computable_reals_eq_univ (closure = Set.univ, via Dense.closure_eq). This complements the S2-S6 cardinality picture with the topological coordinate: the computable reals are simultaneously 'small' (countable, ℵ₀, S3) and 'large' (dense, S7), the precise combination realising ℝ's separability through computable points alone. Lean file 656 → 695 LOC, theoremCount 31 → 33, 0 sorries, 0 axioms. Docker `lake build Proofs.AlgebraicNumbersCountableOQ02OQ04` → ✔ 3067/3067 jobs clean at base SHA b97b863990d.",
     "blockers": [],
-    "nextAction": "S7 ACT (next picker): prove IsComputable e (or IsComputable π) as an explicit computable transcendental witness, sharpening the strict inclusion algebraic ⊊ computable beyond S4's pure-cardinality argument. Path A (e, ~100 LOC): define `eApprox : ℕ → ℚ` via partial sums of `1/n!`, prove Computable via Computable.const + recursion + rational arithmetic primitives, prove Tendsto (eApprox n : ℝ) → Real.exp 1. Path B (π, ~120-150 LOC): similar with Leibniz / Machin formula. Path A recommended first — cleaner skeleton at v4.26.0 (`Real.exp`'s Taylor-series convergence well-trodden in Mathlib). Bearer drift recheck via gh api at SHA 2df2f015 before claim. S8 (~150-300 LOC): algebraic ⊆ computable via Sturm-sequence/bisection root-finding. S9 (~250-400 LOC): computable reals form a real-closed subfield. S10 (~200-400 LOC, advanced): Chaitin Ω as named non-computable witness. Recommended order S7 → S8 → S9 → S10.",
+    "nextAction": "S8 ACT (next picker): the topological branch is now covered by S7; the explicit computable-transcendental-witness branch remains open. Recommended: prove IsComputable e (or IsComputable π) sharpening the strict inclusion algebraic ⊊ computable beyond S4's pure-cardinality argument. Path A (e, ~100 LOC): define `eApprox : ℕ → ℚ` via partial sums of `1/n!`, prove Computable via Computable.const + recursion + rational arithmetic primitives, prove Tendsto (eApprox n : ℝ) → Real.exp 1. Path B (π, ~120-150 LOC): Leibniz / Machin formula. Path A recommended first. Subsequent: algebraic ⊆ computable via Sturm/bisection (~150-300 LOC); computable reals form a real-closed subfield (~250-400 LOC); Chaitin Ω as named non-computable witness (~200-400 LOC).",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 SCAFFOLD (PR #17715, 2026-05-12): IsComputable predicate + computable_reals_countable (sorry, main) + cardinal corollary. ~110 LOC, 1 def + 2 thms, 1 sorry. S2 LOWER BOUND (PR #17759): 5 closure thms + aleph0_le_card_computable_reals + conditional card_computable_reals_eq_aleph0. 110 → 208 LOC. S3 UPPER BOUND (PR #17768): decodeReal noncomputable def + 2 helper lemmas + 2-line proof of computable_reals_countable via Set.countable_range + Set.Countable.mono — discharges the S1 sorry. 208 → 316 LOC, sorries 1 → 0. S4 STRICT INCLUSION + NON-COMPUTABLE CARDINALITY (within S5 drain): #(non-computable reals) = 𝔠 by partition + cardinal absorption (mirroring OQ02OQ03 transcendental argument). 8 new thms + nonComputableReals def. 316 → 497 LOC. S5 CROSS-CARDINAL CONSOLIDATION (PR #17860): 3 consolidation thms lifting AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0 alongside S2-S4. 497 → 570 LOC. S6 SET-LEVEL STRUCTURAL API (PR #17895): 5 Set-level thms (Nonempty/Infinite/Countable/Uncountable predicates for computable/non-computable partition). 570 → 649 LOC, theorem count synced to 31. All S1-S6 PRs shipped 'build pending' annotation. MECHANIC FIX (PR #19054, 2026-05-15T23:27Z): v4.26.0 elaboration repair — 4 errors + 1 parser cascade fixed by switching `Mathlib.Topology.Instances.Real` → `.Lemmas` import and 3 surgical fixes; 3067 jobs clean. Ends the 3.5-day build-blocker era. S6f STATE-SYNC (PR ____ / this PR, researcher-5, 2026-05-16, doc-only): post-mechanic doc tracker catch-up — state.md head replacement + JSON currentState reframe + leanFiles[] count sync (208/9/1/1 → 656/31/3/0) + 3 critical Mathlib bearer re-pin (0 drift at SHA 2df2f015). 0 Lean edits. Slug ACT-ready for S7+ (IsComputable e / π).",
+    "progressSummary": "S1 SCAFFOLD (PR #17715, 2026-05-12): IsComputable predicate + computable_reals_countable (sorry, main) + cardinal corollary. ~110 LOC, 1 def + 2 thms, 1 sorry. S2 LOWER BOUND (PR #17759): 5 closure thms + aleph0_le_card_computable_reals + conditional card_computable_reals_eq_aleph0. 110 → 208 LOC. S3 UPPER BOUND (PR #17768): decodeReal noncomputable def + 2 helper lemmas + 2-line proof of computable_reals_countable via Set.countable_range + Set.Countable.mono — discharges the S1 sorry. 208 → 316 LOC, sorries 1 → 0. S4 STRICT INCLUSION + NON-COMPUTABLE CARDINALITY (within S5 drain): #(non-computable reals) = 𝔠 by partition + cardinal absorption (mirroring OQ02OQ03 transcendental argument). 8 new thms + nonComputableReals def. 316 → 497 LOC. S5 CROSS-CARDINAL CONSOLIDATION (PR #17860): 3 consolidation thms lifting AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0 alongside S2-S4. 497 → 570 LOC. S6 SET-LEVEL STRUCTURAL API (PR #17895): 5 Set-level thms (Nonempty/Infinite/Countable/Uncountable predicates for computable/non-computable partition). 570 → 649 LOC, theorem count synced to 31. All S1-S6 PRs shipped 'build pending' annotation. MECHANIC FIX (PR #19054, 2026-05-15T23:27Z): v4.26.0 elaboration repair — 4 errors + 1 parser cascade fixed by switching `Mathlib.Topology.Instances.Real` → `.Lemmas` import and 3 surgical fixes; 3067 jobs clean. Ends the 3.5-day build-blocker era. S6f STATE-SYNC (PR ____ / this PR, researcher-5, 2026-05-16, doc-only): post-mechanic doc tracker catch-up — state.md head replacement + JSON currentState reframe + leanFiles[] count sync (208/9/1/1 → 656/31/3/0) + 3 critical Mathlib bearer re-pin (0 drift at SHA 2df2f015). 0 Lean edits. Slug ACT-ready for S7+ (IsComputable e / π). S7 TOPOLOGICAL STRUCTURE (researcher-1, 2026-05-28): the computable reals are dense in ℝ. 2 new thms — computable_reals_dense (Dense {r | IsComputable r} via Rat.denseRange_cast + rat_isComputable + Dense.mono) + closure_computable_reals_eq_univ (closure = univ via Dense.closure_eq). Complements the cardinality picture with the topological coordinate (countable yet dense = constructive separability of ℝ). 656 → 695 LOC, 31 → 33 thms, 0 sorries, 0 axioms. First S-iteration shipped Docker-build-VERIFIED (3067/3067 jobs clean at SHA b97b863990d) rather than build-pending.",
     "builtItems": [
       "AlgebraicNumbersCountableOQ02OQ04.lean: IsComputable (definition) — Mathlib-Computable rational sequence converging to r",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (sorry, main theorem) — Set.Countable {r | IsComputable r}",
@@ -70,7 +70,9 @@
       "AlgebraicNumbersCountableOQ02OQ04.lean: card_nonComputableReals_eq_continuum (theorem, S4 main) — exact equality #(non-computable) = 𝔠",
       "AlgebraicNumbersCountableOQ02OQ04.lean: exists_non_computable_real (theorem, S4) — Turing's negative observation by pure cardinality",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_strict_ssubset_univ (theorem, S4) — strict subset",
-      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable (theorems, S4) — strict cardinal gaps"
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable (theorems, S4) — strict cardinal gaps",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_dense (theorem, S7) — Dense {r | IsComputable r}; rationals dense (Rat.denseRange_cast) + rat_isComputable + Dense.mono. Docker build verified.",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: closure_computable_reals_eq_univ (theorem, S7) — closure {r | IsComputable r} = Set.univ via Dense.closure_eq"
     ],
     "insights": [
       "The countability of computable reals is a direct consequence of finite Turing-machine descriptions: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
@@ -83,18 +85,19 @@
       "Uniqueness of the chosen real (in computable_real_mem_range_decodeReal) follows from injectivity of Part.some (Part.some_injective) and Encodable.encode (Encodable.encode_injective): if two sequences have the same encoded eval at every n, they are pointwise equal, so their limits agree via tendsto_nhds_unique.",
       "The decodeReal map embeds the upper-bound argument in a single noncomputable function, side-stepping the Surjective/Image API in favor of plain Set.range. Classical.choose handles the partiality of eval cleanly without affecting the countability conclusion.",
       "S4 cardinality argument: the existence of non-computable reals (Turing's negative observation) is forced by the cardinality gap ℵ₀ < 𝔠 = #ℝ together with the S3 upper bound #(computable) ≤ ℵ₀. No explicit Cantor diagonal or Chaitin construction is needed — and in fact the partition + ℵ₀ absorption argument yields the strictly stronger #(non-computable) = 𝔠.",
-      "S4 absorption pattern (reusable): the helper aleph0_add_of_ge : ℵ₀ ≤ κ → ℵ₀ + κ = κ (via Cardinal.add_eq_self) lets one trade `#(computable) + #(non-computable)` for just `#(non-computable)` whenever the bootstrap ℵ₀ ≤ #(non-computable) is known. The bootstrap itself is pure contradiction with Cardinal.aleph0_lt_continuum — a templatable proof for any 'small subset of ℝ' situation."
+      "S4 absorption pattern (reusable): the helper aleph0_add_of_ge : ℵ₀ ≤ κ → ℵ₀ + κ = κ (via Cardinal.add_eq_self) lets one trade `#(computable) + #(non-computable)` for just `#(non-computable)` whenever the bootstrap ℵ₀ ≤ #(non-computable) is known. The bootstrap itself is pure contradiction with Cardinal.aleph0_lt_continuum — a templatable proof for any 'small subset of ℝ' situation.",
+      "S7 small/large duality: the computable reals are countable (ℵ₀, S3) yet topologically dense (S7). Density needs no computability machinery — it is inherited from ℚ ⊆ computable via Dense.mono, since any superset of a dense set is dense. Together (countable + dense) they constitute a constructive separability witness for ℝ: ℝ is separable using only computable points. This is the topological analogue of the measure-theoretic fact that the computable reals form a (dense) null set."
     ],
     "mathlibGaps": [
       "Potential gap: Mathlib does not (as of 4.26.0) provide an off-the-shelf 'IsComputable' predicate on ℝ. The Mathlib `Computable` predicate is for functions, not reals. This entry defines `IsComputable r` via the existence of a Computable approximating sequence.",
       "Mathlib `Primcodable ℚ` should be available via `Mathlib.Data.Rat.Denumerable` + `Mathlib.Logic.Denumerable`. If `Computable (f : ℕ → ℚ)` fails to elaborate, switch the approximation type to ℕ and decode."
     ],
     "nextSteps": [
-      "Verify the S3 + S4 build (Docker, ~45 min cold) — if green, bump badge wip → verified.",
-      "S5: prove IsComputable e and IsComputable π for explicit computable transcendental witnesses (strict inclusion algebraic ⊊ computable beyond cardinality alone).",
-      "S6: prove algebraic ⊆ computable via Sturm sequence / bisection root-finding; lifts the algebraic_reals_countable result.",
-      "S7 (advanced): construct Chaitin Ω as an explicit non-computable real, replacing the pure-cardinality witness exists_non_computable_real with a named one.",
-      "S8 (advanced): prove the computable reals form a real closed subfield of ℝ (closure under arithmetic)."
+      "S8: prove IsComputable e and IsComputable π for explicit computable transcendental witnesses (strict inclusion algebraic ⊊ computable beyond cardinality alone). Path A (e via partial sums of 1/n!) recommended first.",
+      "S9: prove algebraic ⊆ computable via Sturm sequence / bisection root-finding; lifts the algebraic_reals_countable result.",
+      "S10 (advanced): prove the computable reals form a real closed subfield of ℝ (closure under +, ×, neg, inv) — first establishing Computable rational arithmetic instances.",
+      "S11 (advanced): construct Chaitin Ω as an explicit non-computable real, replacing the pure-cardinality witness exists_non_computable_real with a named one.",
+      "Done in S7: computable_reals_dense + closure_computable_reals_eq_univ (topological structure, Docker verified)."
     ]
   },
   "tags": [
@@ -132,18 +135,18 @@
     ]
   },
   "started": "2026-05-12T00:30:00.000Z",
-  "lastUpdate": "2026-05-16T04:10:00.000Z",
+  "lastUpdate": "2026-05-28T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
-      "lineCount": 656,
-      "theoremCount": 31,
+      "lineCount": 695,
+      "theoremCount": 33,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
     }
