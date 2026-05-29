@@ -59,6 +59,7 @@ import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Order.Filter.AtTopBot.Basic
+import Mathlib.Data.Nat.Lattice
 
 namespace Erdos101OQ01
 
@@ -322,18 +323,125 @@ theorem erdos_101_oq_01_rate_form_iff_isLittleO :
   · rintro ⟨g, h_olittle, h_bounds⟩
     refine ⟨g, (isLittleOh_n_squared_iff_isLittleO g).mp h_olittle, ?_⟩
     intro P hP
-    exact_mod_cast h_bounds P hP
+    have hb : (fourPointLineCount P : ℝ) ≤ (g P.points.card : ℝ) := by
+      exact_mod_cast h_bounds P hP
+    exact hb
   · rintro ⟨g, h_olittle_mathlib, h_bounds⟩
     refine ⟨g, (isLittleOh_n_squared_iff_isLittleO g).mpr h_olittle_mathlib, ?_⟩
     intro P hP
-    exact_mod_cast h_bounds P hP
+    have hb : (fourPointLineCount P : ℝ) ≤ (g P.points.card : ℝ) := h_bounds P hP
+    exact_mod_cast hb
 
-/-- **OQ-01, Mathlib-idiom form (OPEN main theorem).** Equivalent to
-`erdos_101_oq_01` via the chain `erdos_101_oq_01_conjecture →
-erdos_101_oq_01_rate_form ↔ erdos_101_oq_01_isLittleO_form`. The proof
-is OPEN ($100 Erdős prize). -/
-theorem erdos_101_oq_01_isLittleO : erdos_101_oq_01_isLittleO_form := by
-  sorry
+/- ## conjecture ↔ rate_form: collapsing two open sorries into one
+
+OQ-01 is stated here in two open forms — the primary ε-N
+`erdos_101_oq_01_conjecture` and the Mathlib-idiom existential
+`erdos_101_oq_01_isLittleO_form` — and the file already certifies
+`rate_form ↔ isLittleO_form` (`erdos_101_oq_01_rate_form_iff_isLittleO`).
+The missing link was `conjecture ↔ rate_form`. We supply it below, which
+lets `erdos_101_oq_01_isLittleO` be *derived* from `erdos_101_oq_01`
+rather than carried as an independent `sorry`: the file's open content
+collapses to the single primary conjecture (plus the deferred
+Solymosi–Stojaković construction).
+
+The `conjecture → rate_form` direction needs an explicit `o(n²)` witness.
+We use the size-indexed supremum
+`maxCountAtSize n := sSup { fourPointLineCount Q | |Q| = n, NoFiveCollinear Q }`,
+a genuine natural number because `improved_upper_bound` bounds the
+underlying set above by `n(n-1)/12`.
+-/
+
+/-- The supremum of `fourPointLineCount` over all no-five-collinear
+planar point sets of cardinality `n`. Well-defined in ℕ because
+`improved_upper_bound` bounds the underlying set above by `n(n-1)/12`. -/
+noncomputable def maxCountAtSize (n : ℕ) : ℕ :=
+  sSup {k : ℕ | ∃ Q : PlanarPointSet,
+    Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k}
+
+/-- The set of four-point line counts over no-five-collinear sets of size
+`n` is bounded above by `n(n-1)/12` (`improved_upper_bound`). -/
+theorem maxCountAtSize_bddAbove (n : ℕ) :
+    BddAbove {k : ℕ | ∃ Q : PlanarPointSet,
+      Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k} := by
+  refine ⟨n * (n - 1) / 12, ?_⟩
+  rintro k ⟨Q, hQcard, hQ5, rfl⟩
+  rw [← hQcard]
+  exact improved_upper_bound Q hQ5
+
+/-- Every no-five-collinear set's four-point line count is at most the
+size-indexed supremum `maxCountAtSize |P|`. -/
+theorem le_maxCountAtSize (P : PlanarPointSet) (hP : NoFiveCollinear P) :
+    fourPointLineCount P ≤ maxCountAtSize P.points.card := by
+  unfold maxCountAtSize
+  exact le_csSup (maxCountAtSize_bddAbove P.points.card) ⟨P, rfl, hP, rfl⟩
+
+/-- If every no-five-collinear set of size `n` has four-point line count
+strictly below a positive real `X`, then so does the supremum
+`maxCountAtSize n`. Positivity of `X` covers the empty case (no such set
+exists at size `n`), where `maxCountAtSize n = 0`. -/
+theorem maxCountAtSize_lt_of_forall {n : ℕ} {X : ℝ} (hX : 0 < X)
+    (h : ∀ Q : PlanarPointSet, Q.points.card = n → NoFiveCollinear Q →
+      (fourPointLineCount Q : ℝ) < X) :
+    (maxCountAtSize n : ℝ) < X := by
+  unfold maxCountAtSize
+  rcases Set.eq_empty_or_nonempty {k : ℕ | ∃ Q : PlanarPointSet,
+      Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k}
+      with he | hne
+  · rw [he]
+    have hz : sSup (∅ : Set ℕ) = 0 := csSup_empty
+    rw [hz, Nat.cast_zero]
+    exact hX
+  · obtain ⟨Q, hQcard, hQ5, hQeq⟩ :=
+      Nat.sSup_mem hne (maxCountAtSize_bddAbove n)
+    rw [← hQeq]
+    exact h Q hQcard hQ5
+
+/-- **OQ-01 primary form ↔ rate form.** The ε-N statement
+`erdos_101_oq_01_conjecture` is equivalent to the existence of an
+`o(n²)` witness rate bounding every no-five-collinear count
+(`erdos_101_oq_01_rate_form`).
+
+`←` is direct from the definitions (the witness's `o(n²)` decay supplies
+the threshold `N`). `→` takes the witness `maxCountAtSize`: it bounds
+every count (`le_maxCountAtSize`), and it is `o(n²)` because the
+conjecture forces every count — hence their supremum — below `ε·n²` for
+large `n` (`maxCountAtSize_lt_of_forall`). -/
+theorem erdos_101_oq_01_conjecture_iff_rate_form :
+    erdos_101_oq_01_conjecture ↔ erdos_101_oq_01_rate_form := by
+  unfold erdos_101_oq_01_conjecture erdos_101_oq_01_rate_form
+  constructor
+  · intro hconj
+    refine ⟨maxCountAtSize, ?_, fun P hP => le_maxCountAtSize P hP⟩
+    intro ε hε
+    obtain ⟨N, hN⟩ := hconj ε hε
+    refine ⟨max N 1, fun n hn => ?_⟩
+    have hnN : N ≤ n := (le_max_left N 1).trans hn
+    have hn1 : 1 ≤ n := (le_max_right N 1).trans hn
+    have hX : (0 : ℝ) < ε * (n : ℝ) ^ 2 := by
+      have hnpos : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hn1
+      positivity
+    refine maxCountAtSize_lt_of_forall hX (fun Q hQcard hQ5 => ?_)
+    have hQN : N ≤ Q.points.card := by rw [hQcard]; exact hnN
+    have hconjQ := hN Q hQ5 hQN
+    rwa [hQcard] at hconjQ
+  · rintro ⟨g, hg_olittle, hg_bound⟩ ε hε
+    obtain ⟨N, hN⟩ := hg_olittle ε hε
+    refine ⟨N, fun P hP hcard => ?_⟩
+    have h1 : (fourPointLineCount P : ℝ) ≤ (g P.points.card : ℝ) := by
+      exact_mod_cast hg_bound P hP
+    have h2 := hN P.points.card hcard
+    linarith
+
+/-- **OQ-01, Mathlib-idiom form (OPEN main theorem).** Derived from the
+primary form `erdos_101_oq_01` via the equivalence chain
+`erdos_101_oq_01_conjecture ↔ erdos_101_oq_01_rate_form ↔
+erdos_101_oq_01_isLittleO_form`. This is no longer an independent
+`sorry`: it follows from `erdos_101_oq_01` alone, so the file's open
+content is the single primary conjecture (plus the deferred
+Solymosi–Stojaković construction). Still OPEN ($100 Erdős prize). -/
+theorem erdos_101_oq_01_isLittleO : erdos_101_oq_01_isLittleO_form :=
+  erdos_101_oq_01_rate_form_iff_isLittleO.mp
+    (erdos_101_oq_01_conjecture_iff_rate_form.mp erdos_101_oq_01)
 
 /- ## The OPEN refinement and its consequences
 
