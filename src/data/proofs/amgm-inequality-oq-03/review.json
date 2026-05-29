@@ -73,7 +73,8 @@
       "priority": "high",
       "target": "researcher",
       "description": "Update the Lean file header (lines 27-33) to accurately reflect that power_mean_monotone_neg is fully proved. Add it as a listed result and change item 7 from 'stated as an axiom' to describe the mixed-sign case specifically as the remaining open direction. NOTE: Lean file modifications are outside enricher scope; reassigned to researcher. The annotation for this section now flags the stale header.",
-      "status": "deferred"
+      "status": "resolved",
+      "resolution": "Lean header items 7-8 now list power_mean_monotone_neg (proved via duality) and the unformalized mixed-sign case (r < 0 < s) respectively. The trailing summary block was likewise corrected. The header annotation no longer flags staleness."
     },
     {
       "id": "ai-2",
