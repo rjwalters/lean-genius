@@ -268,6 +268,55 @@
       "year": "1997",
       "venue": "Springer Monographs in Mathematics",
       "description": "Foundational text on Galois cohomology, Hochschild–Serre, and the cohomological tools used in Shafarevich's proof."
+    },
+    {
+      "title": "Über die algebraisch auflösbaren Gleichungen, deren Wurzeln eine specielle Gestalt haben",
+      "author": "Leopold Kronecker",
+      "year": "1853",
+      "venue": "Monatsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin, pp. 365–374",
+      "description": "Kronecker's original announcement that every finite abelian extension of ℚ is cyclotomic — the **abelian case of Shafarevich** stated 101 years before Shafarevich's full theorem. Kronecker outlined the result but the complete proof of the Kronecker–Weber theorem awaited Weber (1886) and Hilbert (1896). For the file's purposes, Kronecker–Weber is the *mathematical* reason the cyclic and coprime-product cases can be realized inside cyclotomic fields: every finite abelian $G$ embeds into $(\\mathbb{Z}/N)^\\times = \\text{Gal}(\\mathbb{Q}(\\zeta_N)/\\mathbb{Q})$ for some $N$, hence is realized as the Galois group of a fixed field $\\mathbb{Q}(\\zeta_N)^H$. The axiom `galois_compositum_product` is precisely the Lean-level shadow of one consequence of Kronecker–Weber (compositum of abelian extensions at coprime conductors). See keyInsight #1 (coprime cyclic products), keyInsight #6 (conductor-discriminant duality), and the cross-reference to `kroneckers-jugendtraum`."
+    },
+    {
+      "title": "Theorie der abel'schen Zahlkörper",
+      "author": "Heinrich Weber",
+      "year": "1886",
+      "venue": "Acta Mathematica, vol. 8, pp. 193–263; vol. 9, pp. 105–130",
+      "description": "Weber's completion of the Kronecker–Weber theorem (Kronecker 1853 announced, Hilbert 1896 patched a gap): every finite abelian extension of ℚ is contained in some cyclotomic field $\\mathbb{Q}(\\zeta_n)$. The proof systematically uses **conductor theory** — the minimal $N$ such that $K \\subseteq \\mathbb{Q}(\\zeta_N)$ — which is exactly the missing Mathlib ingredient identified in keyInsight #2 and keyInsight #6 (~500 Lean lines of conductor theory to close the abelian case of Shafarevich). Weber's paper introduced the modern conductor formalism that the file's `galois_compositum_product` axiom would invoke once formalized: coprime conductors → coprime discriminants → linear disjointness → product Galois group on compositum."
+    },
+    {
+      "title": "Gleichungen mit vorgeschriebener Gruppe",
+      "author": "Emmy Noether",
+      "year": "1918",
+      "venue": "Mathematische Annalen, vol. 78, pp. 221–229",
+      "description": "Noether's program for the **inverse Galois problem via rationality of fixed fields**: given a finite group $G$ acting faithfully on $\\mathbb{Q}(x_1, \\ldots, x_n)$ by permuting variables, when is the fixed field $\\mathbb{Q}(x_1, \\ldots, x_n)^G$ purely transcendental over $\\mathbb{Q}$? If it is, **Hilbert's irreducibility theorem** specializes generic parameters to realize $G$ as a Galois group over $\\mathbb{Q}$. Swan (1969) gave the first counterexample ($G = \\mathbb{Z}/47$, despite cyclic groups being trivially Shafarevich-realizable — Noether's *method* fails even when realizability holds). Lenstra (1974) extended this to all $\\mathbb{Z}/p^n$ for $n \\geq 3$ at certain primes. The historical lesson, central to this file's status-report framing: **realization and constructive realization are different problems**. Shafarevich (1954) settles realization for solvable groups, but constructive Noetherian realization remains open for most groups. Cited in the historicalContext."
+    },
+    {
+      "title": "Beweis eines Hauptsatzes in der Theorie der Algebren",
+      "author": "Adrian Albert, Richard Brauer, Helmut Hasse, Emmy Noether",
+      "year": "1932",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 167, pp. 399–404 (Brauer–Hasse–Noether portion); see also Albert (1931) for independent discovery",
+      "description": "The **Albert–Brauer–Hasse–Noether theorem**: a central simple algebra over a number field $K$ is split by $K$ iff it is split at every completion $K_v$ — the local-global principle for the Brauer group, giving the exact sequence $0 \\to \\text{Br}(K) \\to \\bigoplus_v \\text{Br}(K_v) \\to \\mathbb{Q}/\\mathbb{Z} \\to 0$. This is the **engine of Shafarevich's solution to the non-abelian embedding problems**: discharging the $H^2$ obstruction to lifting a $G/N$-extension to a $G$-extension reduces, via Hochschild–Serre and the Brauer-group identification, to verifying local solvability everywhere — which is automatic when the obstruction class vanishes locally. Cited in openQuestion #2 as the foundational gap for non-abelian solvable Shafarevich in Mathlib. The 2013 IHÉS workshop and Roquette's 2005 monograph trace the simultaneous-discovery history."
+    },
+    {
+      "title": "Duality theorems in Galois cohomology over number fields",
+      "author": "John Tate",
+      "year": "1962",
+      "venue": "Proceedings of the International Congress of Mathematicians (Stockholm), Mittag-Leffler, pp. 288–295",
+      "description": "Tate's 1962 ICM announcement of the **Tate–Poitou duality theorem**: for a finite Galois module $M$ over a number field $K$, the global cohomology groups $H^i(K, M)$ fit into a nine-term exact sequence relating $H^i$, $H^{2-i}$ of the dual module, and local cohomology at all completions — the **culmination of the local-global framework for Galois cohomology**. Poitou independently developed the duality in 1967. Tate–Poitou is the deepest classical tool gating Shafarevich's solution of non-abelian solvable embedding problems: each embedding problem reduces to a $H^2$ obstruction, and Tate–Poitou provides the exact sequence that lets one discharge the obstruction by computing $H^1$ on the dual side. Cited in openQuestion #3 as a **foundational gap in Mathlib's number theory** — full Shafarevich requires Tate–Poitou, which itself is a multi-year formalization project."
+    },
+    {
+      "title": "Cohomology of group extensions",
+      "author": "Gerhard Hochschild, Jean-Pierre Serre",
+      "year": "1953",
+      "venue": "Transactions of the American Mathematical Society, vol. 74, no. 1, pp. 110–134",
+      "description": "The **Hochschild–Serre spectral sequence**: for a normal subgroup $N \\triangleleft G$ with quotient $Q = G/N$ and a $G$-module $M$, there is a spectral sequence $E_2^{p,q} = H^p(Q, H^q(N, M)) \\Rightarrow H^{p+q}(G, M)$ that organizes the cohomology of $G$ in terms of the cohomology of $N$ and $Q$. **The structural backbone of Shafarevich's embedding-problem strategy**: induct on a composition series $\\{e\\} = N_0 \\triangleleft N_1 \\triangleleft \\cdots \\triangleleft N_k = G$ with abelian quotients, lifting Galois extensions one composition factor at a time, using the spectral sequence to control obstructions to each lifting step. Cited in keyInsight #2 and openQuestion #2 as essential machinery for non-abelian solvable Shafarevich, currently absent from Mathlib. The 1953 paper is the foundational reference, with modern textbook treatments in Neukirch-Schmidt-Wingberg (Reference 5) and Serre's *Galois Cohomology* (Reference 6)."
+    },
+    {
+      "title": "Abhyankar's conjecture on Galois groups over curves",
+      "author": "David Harbater",
+      "year": "1994",
+      "venue": "Inventiones Mathematicae, vol. 117, no. 1, pp. 1–25",
+      "description": "Harbater's **patching theorem** for Galois extensions of function fields in positive characteristic, jointly with Raynaud's parallel proof (1994), settles Abhyankar's conjecture: a finite group $G$ is the Galois group of an unramified cover of $\\mathbb{A}^1_{\\overline{\\mathbb{F}_p}}$ iff $G$ is generated by its quasi-$p$ subgroups (i.e., subgroups whose order has no factor coprime to $p$). The patching technique — gluing local Galois covers via formal-geometric rigidity — gave a function-field analog of Shafarevich's number-field theorem and was extended by Harbater–Pop–Stevenson and later by Haran–Jarden to the *full inverse Galois problem over $\\overline{\\mathbb{F}_p}(t)$*. Cited in openQuestion #4 as the natural function-field generalization of the inverse Galois problem this file would extend to. Mathlib has no analytic-geometric machinery for patching, making this a long-term goal."
     }
   ],
   "leanFile": {
