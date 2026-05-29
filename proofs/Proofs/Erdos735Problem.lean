@@ -162,7 +162,19 @@ noncomputable def threeCollinear : PointConfig :=
    WithLp.toLp 2 ![(1 : ℝ), 0],
    WithLp.toLp 2 ![(2 : ℝ), 0]}
 
-axiom three_collinear_card : threeCollinear.card ≥ 2
+theorem three_collinear_card : threeCollinear.card ≥ 2 := by
+  have h : (1 : ℕ) < threeCollinear.card := by
+    apply Finset.one_lt_card.mpr
+    refine ⟨WithLp.toLp 2 ![(0 : ℝ), 0], ?_, WithLp.toLp 2 ![(1 : ℝ), 0], ?_, ?_⟩
+    · simp [threeCollinear]
+    · simp [threeCollinear]
+    · intro hEq
+      apply_fun WithLp.ofLp at hEq
+      have h0 := congrFun hEq 0
+      simp only [Matrix.cons_val_zero] at h0
+      norm_num at h0
+  omega
+
 axiom three_collinear_collinear : IsCollinear threeCollinear
 
 theorem three_collinear_is_magic : IsMagic threeCollinear :=
@@ -174,7 +186,19 @@ noncomputable def triangle : PointConfig :=
    WithLp.toLp 2 ![(1 : ℝ), 0],
    WithLp.toLp 2 ![(0 : ℝ), 1]}
 
-axiom triangle_card : triangle.card ≥ 2
+theorem triangle_card : triangle.card ≥ 2 := by
+  have h : (1 : ℕ) < triangle.card := by
+    apply Finset.one_lt_card.mpr
+    refine ⟨WithLp.toLp 2 ![(0 : ℝ), 0], ?_, WithLp.toLp 2 ![(1 : ℝ), 0], ?_, ?_⟩
+    · simp [triangle]
+    · simp [triangle]
+    · intro hEq
+      apply_fun WithLp.ofLp at hEq
+      have h0 := congrFun hEq 0
+      simp only [Matrix.cons_val_zero] at h0
+      norm_num at h0
+  omega
+
 axiom triangle_general_position : IsGeneralPosition triangle
 
 theorem triangle_is_magic : IsMagic triangle :=
