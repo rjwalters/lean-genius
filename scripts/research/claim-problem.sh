@@ -17,8 +17,23 @@
 set -euo pipefail
 shopt -s nullglob
 
-# Find repo root
+# Find repo root.
+#
+# Claims, locks, and the gitignored candidate pool are shared coordination
+# state: every agent must reference the SAME files. When this script runs from
+# a linked worktree, an upward ".git" search resolves to the worktree, where
+# .lean/state/candidate-pool.json (gitignored) does not exist — so claim-random
+# always reports "No available problems". Resolve to the MAIN worktree root via
+# the common git dir so all agents share one pool and one claims directory.
 find_repo_root() {
+    local common_dir
+    if common_dir="$(git rev-parse --git-common-dir 2>/dev/null)" \
+        && common_dir="$(cd "$common_dir" 2>/dev/null && pwd)"; then
+        dirname "$common_dir"
+        return 0
+    fi
+
+    # Fallback: walk up looking for .git (git unavailable / not a repo)
     local dir="$PWD"
     while [[ "$dir" != "/" ]]; do
         if [[ -d "$dir/.git" ]] || [[ -f "$dir/.git" ]]; then
