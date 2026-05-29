@@ -130,6 +130,14 @@
         {
             "proofId": "desargues-theorem-oq-04",
             "relationship": "sibling — formalizes the self-duality of Desargues's theorem: collinearity and concurrence are the same predicate in homogeneous coordinates, so the dual statement (triangles perspective from a line $\\Rightarrow$ perspective from a point) is identical to the primal. The Moulton counterexample in this entry refutes both the primal (perspectivity from a point $O$ but $P, Q, R$ not collinear) and, by duality, the dual statement in any Moulton-style non-Desarguesian plane — confirming that the failure is structural rather than direction-specific"
+        },
+        {
+            "proofId": "desargues-theorem-oq-02",
+            "relationship": "sibling — an independent formalization of the same Moulton plane counterexample. Both entries construct the bent-line affine plane over $\\mathbb{R}$ (positive-slope lines halved on the right half-plane) and exhibit explicit rational-coordinate triangles in perspective from a point whose corresponding-side intersections fail to be Moulton-collinear. The parallel developments cross-validate the counterexample, confirming that the failure of Desargues in the Moulton plane is robust to the specific choice of witness triangles and proof structure"
+        },
+        {
+            "proofId": "pappus-theorem-oq-02",
+            "relationship": "related — Pappus's hexagon theorem, proved in the gallery over any commutative ring via the same cross-product / homogeneous-coordinate framework used for Desargues. By Hessenberg's theorem (1905; see keyInsight #6), Pappus implies Desargues, so every Pappian plane is Desarguesian; the Moulton plane, being non-Desarguesian, is a fortiori non-Pappian. This entry and `pappus-theorem-oq-02` therefore sit at opposite poles of the Hilbert-Hall coordinatization hierarchy: pappus-theorem-oq-02 establishes the strongest classical incidence theorem (Pappian $\\Leftrightarrow$ coordinatization by a commutative field), while this Moulton counterexample refutes even the weaker Desargues property (Desarguesian $\\Leftrightarrow$ coordinatization by a skew field), exhibiting the strict containment Pappian $\\subsetneq$ Desarguesian $\\subsetneq$ all planes"
         }
     ],
     "references": [
