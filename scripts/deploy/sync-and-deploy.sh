@@ -15,6 +15,14 @@
 #   SKIP_SYNC=1             Skip data syncing
 #   SKIP_BUILD=1            Skip building
 #   SKIP_DEPLOY=1           Skip deployment
+#   SKIP_SYNC_BRANCH=1      Skip per-cycle fast-forward sync of the current
+#                           branch to origin/main. By default the pipeline
+#                           fetches origin/main and fast-forwards the current
+#                           branch before the merge phase so the deployer's
+#                           long-lived worktree (feature/deployer) does not
+#                           drift behind main across daemon cycles (see #21042).
+#                           Set to 1 for ad-hoc manual runs that need to deploy
+#                           a specific local state.
 #   BUILD_TIMEOUT=20m       Hard cap for `pnpm build` (timeout(1) duration syntax).
 #                           Default 20m. As of 2026-05-27 at HEAD a4f83c7b055 a
 #                           clean build measures ~35s wall-clock total
@@ -92,20 +100,82 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Determine what to run
+run_sync_branch=true
 run_merge=true
 run_sync=true
 run_build=true
 run_deploy=true
 
-if $ONLY_MERGE; then run_sync=false; run_build=false; run_deploy=false; fi
-if $ONLY_SYNC; then run_merge=false; run_build=false; run_deploy=false; fi
-if $ONLY_BUILD; then run_merge=false; run_sync=false; run_deploy=false; fi
-if $ONLY_DEPLOY; then run_merge=false; run_sync=false; run_build=false; fi
+if $ONLY_MERGE; then run_sync_branch=false; run_sync=false; run_build=false; run_deploy=false; fi
+if $ONLY_SYNC; then run_sync_branch=false; run_merge=false; run_build=false; run_deploy=false; fi
+if $ONLY_BUILD; then run_sync_branch=false; run_merge=false; run_sync=false; run_deploy=false; fi
+if $ONLY_DEPLOY; then run_sync_branch=false; run_merge=false; run_sync=false; run_build=false; fi
 
+[[ "${SKIP_SYNC_BRANCH:-}" == "1" ]] && run_sync_branch=false
 [[ "${SKIP_MERGE:-}" == "1" ]] && run_merge=false
 [[ "${SKIP_SYNC:-}" == "1" ]] && run_sync=false
 [[ "${SKIP_BUILD:-}" == "1" ]] && run_build=false
 [[ "${SKIP_DEPLOY:-}" == "1" ]] && run_deploy=false
+
+# ============================================================================
+# Step 0a: Sync current branch to origin/main (fast-forward only)
+# ============================================================================
+#
+# The deployer runs in a long-lived worktree on `feature/deployer` and loops
+# via `claude-wrapper.sh --daemon`. setup_or_refresh_worktree in
+# launch-agent.sh only syncs at LAUNCH, so without this per-cycle step the
+# local branch drifts behind main and the build runs against stale code.
+# See #21042 for the incident that motivated this.
+#
+# We use fast-forward only because the deployer must never carry local
+# commits that aren't already in main. Any divergence (local commits,
+# fetch failure, true conflict) is surfaced as a warning and the cycle
+# continues with the existing checkout — better stale-but-running than
+# auto-rebasing or hard-resetting work we didn't expect to see.
+sync_branch() {
+    print_header "Syncing Branch to origin/main"
+
+    local current_branch
+    current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "HEAD")
+
+    if [[ "$current_branch" == "HEAD" ]]; then
+        print_warning "Detached HEAD — skipping branch sync"
+        return 0
+    fi
+
+    if [[ "$current_branch" == "main" ]]; then
+        # merge_prs already handles main directly via reset --hard; nothing
+        # to do here. We still fetch so subsequent steps see fresh refs.
+        print_info "On main — fetching only (merge step will reset to origin/main)"
+        git fetch origin main --quiet || print_warning "git fetch origin main failed"
+        return 0
+    fi
+
+    if $DRY_RUN; then
+        echo "  Would fast-forward $current_branch to origin/main"
+        return 0
+    fi
+
+    print_info "Fast-forwarding $current_branch to origin/main..."
+    if ! git fetch origin main --quiet; then
+        print_warning "git fetch origin main failed — continuing with existing refs"
+        return 0
+    fi
+
+    # Fast-forward only. Any failure (not-ff, local commits, lock contention,
+    # conflict) leaves the working tree untouched and surfaces as a warning.
+    # We deliberately do NOT auto-rebase, reset --hard, or anything destructive
+    # — that's a human-judgement call.
+    if ! git merge --ff-only origin/main 2>/dev/null; then
+        print_warning "$current_branch is not fast-forwardable to origin/main"
+        print_warning "  (local commits or divergence — investigate before next cycle)"
+        print_warning "  Continuing with current checkout; build may run against stale code."
+    else
+        local head_short
+        head_short=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+        print_success "$current_branch fast-forwarded to $head_short"
+    fi
+}
 
 # ============================================================================
 # Step 0: Label unlabeled erdos/research PRs
@@ -784,12 +854,14 @@ EOF
 # ============================================================================
 main() {
     print_header "Deploy Pipeline"
-    echo "  Merge PRs: $run_merge"
-    echo "  Sync Data: $run_sync"
-    echo "  Build:     $run_build"
-    echo "  Deploy:    $run_deploy"
-    echo "  Dry Run:   $DRY_RUN"
+    echo "  Sync Branch: $run_sync_branch"
+    echo "  Merge PRs:   $run_merge"
+    echo "  Sync Data:   $run_sync"
+    echo "  Build:       $run_build"
+    echo "  Deploy:      $run_deploy"
+    echo "  Dry Run:     $DRY_RUN"
 
+    $run_sync_branch && sync_branch
     $run_merge && merge_prs
     $run_sync && sync_data
     $run_build && build_website
