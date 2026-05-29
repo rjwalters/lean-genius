@@ -121,3 +121,78 @@ This places the entry in the `axiomatized` tier from inception.
 | Solymosi–Vu lower bound | Published 2008 | Axiomatise |
 | Cartesian-lattice construction | Standard in metric combinatorics | Axiomatise |
 | Mathlib infrastructure | Sufficient for definitions, not bounds | Use what's there; axiomatise the rest |
+
+## S4 ACT (researcher-1, 2026-05-29) — DISCHARGE 3 axis-vs-plane sorries (VERIFIED GREEN)
+
+### Headline
+
+The three strategic sorries left by the S3 scaffold are **proved** and
+the file is **Docker-verified GREEN** (`Built Proofs.Erdos659OQ01OQ02`,
+0 sorries, 0 axioms). `safe_2_5_axis_vs_plane : SafePrimePair_AxisVsPlane 2 5`
+is now fully machine-checked: the axis-vs-plane half of the `L_{2,5}`
+sub-lattice safety story is complete.
+
+### What was proved
+
+| Theorem | Statement | Method |
+|---|---|---|
+| `safe_A_holds` | `5c² = a² + 2b² → a=b=c=0` | descent on `c.natAbs`, helper `−2` ∉ QR(5) |
+| `safe_B_holds` | `2b² = a² + 5c² → a=b=c=0` | descent on `b.natAbs`, helper `2` ∉ QR(5) |
+| `safe_C_holds` | `a² = 2b² + 5c² → a=b=c=0` | descent on `a.natAbs`, helper `2` ∉ QR(5) |
+
+### Proof structure (uniform across A/B/C)
+
+Infinite descent by strong induction on the natAbs of the *isolated*
+variable (the one with no coefficient on its side):
+
+1. **Base** (isolated var `= 0`): the equation collapses to a sum of two
+   nonneg squares `= 0`, so both vanish (`sq_eq_zero_iff` + `le_antisymm`
+   + `nlinarith [sq_nonneg _]`).
+2. **Step** (natAbs `> 0`): cast the ℤ-equation into `ZMod 5` (`5 ≡ 0`
+   kills the `5·`-term), apply the `decide`-checked mod-5 helper to get
+   `(a : ZMod 5) = (b : ZMod 5) = 0`, i.e. `5 ∣ a` and `5 ∣ b`
+   (`ZMod.intCast_zmod_eq_zero_iff_dvd`). Substitute `a = 5a'`, `b = 5b'`;
+   `linear_combination` + `mul_left_cancel₀ (5≠0)` gives `c² = 5·(…)`, so
+   `5 ∣ c` (`Prime.dvd_of_dvd_pow`). Substitute `c = 5c'`; the reduced
+   triple `(a',b',c')` satisfies the same equation with
+   `(isolated var)'.natAbs < n` (since `(5z).natAbs = 5·z.natAbs`), so the
+   IH applies.
+
+### Mathlib API used (all confirmed at v4.26.0)
+
+- `zmod_5_a_sq_plus_2_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_two_b_sq_iff`
+  (the file's own `decide`-checked helpers — load-bearing).
+- `ZMod.intCast_zmod_eq_zero_iff_dvd`, `Prime.dvd_of_dvd_pow`,
+  `mul_left_cancel₀`, `Int.natAbs_mul`, `Int.natAbs_eq_zero`,
+  `sq_eq_zero_iff`, `Nat.strong_induction_on`.
+- `push_cast`, `linear_combination`, `nlinarith`, `omega`, `decide`.
+
+### Counter deltas (VERIFIED)
+
+| Metric | Before | After |
+|---|---|---|
+| Build | not locally verified | GREEN |
+| Sorries | 3 | 0 |
+| Axioms | 0 | 0 |
+| Theorems proved | 2 helpers + 3 stubs | + safe_A/B/C_holds |
+
+### Scope note (honesty)
+
+This completes only the **axis-vs-plane** half of `L_{2,5}` safety. The
+**full-rank** safety (a 4-tuple equidistant via a genuinely 3-dimensional
+relation, not reducible to one axis vs. a coordinate plane) is a separate
+obligation that S2c PREP flagged as needing ternary Hasse-Minkowski
+infrastructure absent from Mathlib v4.26.0. It remains a future
+axiomatisation / proof obligation. The d≥3 distinct-distance OQ itself
+(the headline open question) is **not** claimed solved.
+
+### Next-action candidates
+
+1. **Full-rank safety for (2,5)**: either an elementary descent for the
+   remaining genuinely-ternary equidistant configurations, or an honest
+   axiomatisation with a documented justification.
+2. **Generalise to the other safe prime pairs** (S2a found 15 candidates,
+   R≤22); the descent template here applies whenever both `p` and `q·(±)`
+   are quadratic non-residues mod a common small prime.
+3. **Assemble the Θ(n^{2/3}) rate**: connect `SafePrimePair_*` to a
+   `fourPointProperty` lattice family and the distinct-distance count.
