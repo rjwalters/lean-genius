@@ -36,9 +36,12 @@
       "The definition `tower_implies_degree := id` is definitionally valid because `TowerCriterion` is defined as an alias for `DegreeCriterion` — a deliberate simplification that packages the non-trivial Tower ↔ Degree equivalence (which requires the primitive element theorem) as a deferred obligation, cleanly separating what's defined from what's proved"
     ],
     "prerequisites": [
-      "Group theory (p-groups, solvability)",
-      "Galois theory (Galois groups, extensions)",
-      "Field theory (intermediate fields, degree)"
+      "Group theory: $p$-groups (`IsPGroup p G`), solvability of $p$-groups (`IsPGroup.isSolvable`), subgroup closure (`IsPGroup.to_subgroup`), and the cardinality characterization (`IsPGroup.iff_card`) — all referenced via the `#check` commands at the end of the Lean file",
+      "Galois theory: Galois group of a polynomial (`Polynomial.Gal`), Galois correspondence between intermediate fields and subgroups (`fixingSubgroup`, `fixedField`), and the recognition that `Polynomial.Gal f` is built from `AlgEquiv` permutations of the roots",
+      "Field theory: intermediate fields (`IntermediateField`), finite-dimensional extensions (`FiniteDimensional`), the degree tower law `Module.finrank_mul_finrank` giving $[L : \\mathbb{Q}] = [L : K] \\cdot [K : \\mathbb{Q}]$, and the primitive element theorem (required for Tower ↔ Galois, deferred to ~500 lines of API glue)",
+      "Wantzel's 1837 algebraic translation: a real $\\alpha$ is compass-and-straightedge constructible iff it lies in a tower $\\mathbb{Q} = K_0 \\subset K_1 \\subset \\cdots \\subset K_n$ with $[K_{i+1} : K_i] = 2$ for all $i$; equivalently, $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}]$ is a power of 2 (necessary) and $\\mathrm{Gal}(\\mathrm{minpoly}(\\alpha))$ is a 2-group (necessary and sufficient)",
+      "Concrete $S_4$ counterexample: the polynomial $x^4 - x - 1 \\in \\mathbb{Q}[x]$ is irreducible (Eisenstein at $p$ after substitution, or direct rational-roots test) with discriminant $-283$ (squarefree), so $\\mathrm{Gal} = S_4$ — order $24 = 2^3 \\cdot 3$, *not* a 2-power — yet a root $\\alpha$ has $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = 4 = 2^2$, witnessing that the degree criterion is strictly weaker than the Galois 2-group criterion",
+      "Lean 4 fluency: `def` aliases (the `TowerCriterion := DegreeCriterion` simplification), `#check` for type queries without evaluation, `Prop`-valued definitions packaging deferred obligations, and the `id` function as a proof of definitional equality"
     ]
   },
   "sections": [
@@ -146,6 +149,24 @@
       "year": "1978",
       "venue": "Carus Mathematical Monographs #19, MAA",
       "note": "Develops the constructibility hierarchy from compass-and-straightedge through marked ruler (neusis), origami, and general algebraic constructions. Each level corresponds to a different class of field extensions."
+    },
+    {
+      "authors": [
+        "I. Stewart"
+      ],
+      "title": "Galois Theory",
+      "year": "2015",
+      "venue": "Chapman and Hall/CRC, 4th edition (xxiii + 343 pp.)",
+      "note": "The standard modern textbook on Galois theory and its applications to classical constructibility problems. Chapter 7 ('Algebraic Preliminaries') and Chapter 8 ('The Idea Behind Galois Theory') develop the field-theoretic setup; **Chapter 9 ('Normality and Separability') and Chapter 11 ('Solubility and Simplicity') give the complete Galois 2-group criterion for compass-and-straightedge constructibility** — proving the iff statement formalized in this entry as `GaloisCriterion`. Chapter 7 §7.4 ('Geometric Examples') applies the criterion to angle trisection, squaring the circle, doubling the cube, and constructibility of regular $n$-gons (the Gauss-Wantzel theorem: a regular $n$-gon is constructible iff $n = 2^k \\prod p_i$ for distinct Fermat primes $p_i$). The book also gives the explicit *S₄ counterexample* referenced in this file's `degree_strictly_weaker_than_galois` proof: §15.6 exhibits irreducible quartics like $x^4 - x - 1$ with Galois group $S_4$, showing degree 4 = $2^2$ alone does not suffice for constructibility — the precise gap between the Degree criterion (Level 1) and the Galois 2-group criterion (Level 2). Stewart's notation conventions (`Γ_F(L)` for the Galois group, $K_n / K_{n-1}$ for tower steps) closely mirror the Lean formalization here, making this the recommended companion text for readers cross-checking the formal proofs against a classical presentation."
+    },
+    {
+      "authors": [
+        "G. E. Martin"
+      ],
+      "title": "Geometric Constructions",
+      "year": "1998",
+      "venue": "Springer Undergraduate Texts in Mathematics, Springer-Verlag (xi + 203 pp.)",
+      "note": "The standard modern reference for the *full* hierarchy of geometric construction systems — directly addressing this entry's openQuestion on extending the constructibility hierarchy to origami (Level 4) and neusis (Level 4'). Martin develops six construction systems in parallel: (1) compass-and-straightedge (the classical Wantzel setting formalized here as `DegreeCriterion`/`GaloisCriterion`); (2) **straightedge alone** (Poncelet-Steiner 1822: every classical compass-and-straightedge construction reproducible with one fixed circle plus straightedge); (3) **compass alone** (Mohr-Mascheroni 1797: every classical construction reproducible with compass only, treating lines as defined by their two endpoints); (4) **marked ruler / neusis** (Archimedes, Newton): yields cube roots and angle trisections, corresponding to extensions in *characteristic-0 fields of transcendence degree extending the Wantzel tower by cube-root extractions* — sufficient for trisection and duplication of the cube but not for general quintic solution; (5) **paper-folding / origami** (Huzita-Hatori six-axiom system, formalized 1989-2003): equivalent to neusis in expressive power, gives constructibility iff $\\alpha$ lies in a tower of extensions of degree $\\leq 3$ (mixed $2$-power and $3$-power tower); (6) **conic-section constructions** (Apollonius, Descartes): equivalent to extracting roots of quadratic and cubic polynomials. **The unified hierarchy theorem** (Martin §10): a real $\\alpha$ is constructible by system $i$ iff $\\alpha$ lies in a tower of extensions whose successive degrees lie in the *allowed primes* of system $i$ — compass-and-straightedge restricts to $\\{2\\}$, neusis/origami extends to $\\{2, 3\\}$, conic-section also $\\{2, 3\\}$. The angle trisection of $60°$ that this Lean file proves impossible at Level 1-3 (compass-and-straightedge) becomes *possible* at Level 4 (origami) — the trisection axiom **O6 (Huzita-Justin axiom)** folds a line through two given points onto two given lines simultaneously, producing a cube-root extraction in a single fold. Cited as the canonical reference for extending this entry's hierarchy to Level 4+; provides the formal framework that openQuestion #3 ('Can origami and neusis constructions be added to the hierarchy?') would require for a Lean implementation. Companion paper: R. Geretschläger, 'Solving quartic equations in Galois fields,' *Bulletin of the Belgian Mathematical Society* 5(2-3): 219-243 (1998), gives the explicit origami construction for arbitrary quartic roots."
     }
   ],
   "sorries": 0
