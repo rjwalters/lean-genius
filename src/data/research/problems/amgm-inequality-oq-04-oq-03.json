@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-04-oq-03",
   "title": "Gauss AGM Theorem via Hypergeometric Elliptic Integral Identity",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -16,7 +16,8 @@
   "knownResults": {
     "proven": [
       "The problem statement records the intended hypergeometric route: K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
-      "The source context is amgm-inequality-oq-04, described as Gauss AGM iteration and elliptic integrals."
+      "The source context is amgm-inequality-oq-04, described as Gauss AGM iteration and elliptic integrals.",
+      "Lean (verified, this session): hypCoeff 0 = 1; hypCoeff 1 = 1/4; hypCoeff n > 0; hyp2F1 0 = 1; K(0) = (pi/2)*2F1(...;0) [ellipticK_hyp2F1_consistent_zero]."
     ],
     "open": [
       "No active approach is recorded for this subproblem.",
@@ -27,36 +28,52 @@
     "goal": "Formalize Gauss's AGM theorem M(a,b) = a*pi/(2K(k')) with k = b/a and k' = sqrt(1-k^2), using the hypergeometric identity for K(k)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-04T02:41:25-07:00",
-    "iteration": 1,
-    "focus": "OBSERVE-stage orientation on the Gauss AGM theorem statement, its source context, and the recorded fast-path first steps.",
-    "activeApproach": "None recorded yet.",
+    "phase": "ACT",
+    "since": "2026-05-29T04:28:09.000Z",
+    "iteration": 2,
+    "focus": "Built a verified hypergeometric-series scaffold for K(k) = (pi/2)*2F1(1/2,1/2;1;k^2), the standard route to Gauss AGM. Deep series identity axiomatized; structural facts and k=0 consistency proved.",
+    "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01.",
     "blockers": [],
-    "nextAction": "Check the existing AGM formalization from amgm-inequality-oq-04, search Mathlib for hypergeometric-series support, and try proving an AGM convergence-rate lemma first.",
+    "nextAction": "Prove the binomial-series expansion (1-u)^(-1/2) = sum centralBinom n /4^n * u^n and the Wallis integral int_0^(pi/2) sin^(2n) = (pi/2) centralBinom n /4^n; then attempt term-by-term integration to discharge the ellipticK_eq_hyp2F1 axiom.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Only orientation metadata is recorded. The problem is active in OBSERVE phase on the fast path with zero attempts, no active approach, no blockers, and no documented Lean proof work.",
-    "builtItems": [],
+    "progressSummary": "ACT: created verified Lean scaffold Proofs/AmgmInequalityOQ04OQ03.lean for the hypergeometric representation K(k)=(pi/2)*2F1(1/2,1/2;1;k^2). Builds clean (0 sorries, 1 axiom). Proved coefficient facts (c0=1, c1=1/4, c_n>0), 2F1(...;0)=1, and a k=0 consistency check against the verified ellipticK -- all independent of the axiom. The deep series identity is axiomatized with a documented proof route (binomial series + Wallis integrals + term-by-term integration) and explicit Mathlib gaps recorded.",
+    "builtItems": [
+      "Proofs/AmgmInequalityOQ04OQ03.lean (builds clean, 0 sorries, 1 axiom): defs hypCoeff, hyp2F1.",
+      "hypCoeff_zero : hypCoeff 0 = 1 (proved).",
+      "hypCoeff_one : hypCoeff 1 = 1/4 (proved; matches classical k^2 coefficient).",
+      "hypCoeff_nonneg / hypCoeff_pos : coefficient positivity (proved).",
+      "hyp2F1_zero : hyp2F1 0 = 1 (proved via tsum_eq_single).",
+      "ellipticK_hyp2F1_consistent_zero : K(0) = (pi/2)*2F1(...;0), proved independently of the axiom.",
+      "ellipticK_eq_hyp2F1 (axiom): K(k) = (pi/2)*2F1(1/2,1/2;1;k^2) for |k|<1 (deep term-by-term-integration identity)."
+    ],
     "insights": [
       "The target theorem is Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).",
       "The problem defines k = b/a and k' = sqrt(1-k^2).",
       "The proposed route is through the hypergeometric-series identity K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
-      "The context marks this as a challenging deep analysis extension requiring hypergeometric functions and AGM convergence."
+      "The context marks this as a challenging deep analysis extension requiring hypergeometric functions and AGM convergence.",
+      "The hypergeometric series coefficient is c_n = ((1/2)_n / n!)^2 = (centralBinom n / 4^n)^2, using the identity (1/2)_n/n! = (2n choose n)/4^n.",
+      "K(k) = (pi/2) * sum_{n>=0} c_n k^(2n); the k^0 coefficient is 1 and the k^2 coefficient is (1/2)^2 = 1/4 (verified: hypCoeff_zero, hypCoeff_one).",
+      "The identity is provable in principle via: binomial series (1-u)^(-1/2), substitution u = k^2 sin^2(theta), term-by-term integration over [0,pi/2], and the Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n.",
+      "k=0 consistency is verifiable WITHOUT the deep identity: K(0)=pi/2 (ellipticK_zero) and 2F1(...;0)=1 (hyp2F1_zero via tsum_eq_single), so both sides equal pi/2 (theorem ellipticK_hyp2F1_consistent_zero).",
+      "Mathlib has Nat.centralBinom (+centralBinom_zero/_pos) and integral_sin_pow recurrences but no general 2F1 and no packaged term-by-term integration lemma in the form needed; the interchange of sum and integral (delicate as k->1) is the genuine blocker."
     ],
     "mathlibGaps": [
-      "Mathlib support for hypergeometric series has not yet been checked."
+      "No general Gauss hypergeometric function 2F1 in Mathlib.",
+      "No packaged term-by-term integration lemma for power series against intervalIntegral suitable for K (dominated-convergence interchange needed, delicate near k=1).",
+      "Binomial series (1-u)^(-1/2) = sum centralBinom n /4^n u^n not located in usable form (needs verification).",
+      "Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n: Mathlib has integral_sin_pow recurrences; the closed form via central binomial coefficient needs to be assembled."
     ],
     "nextSteps": [
-      "Check the existing AGM formalization in amgm-inequality-oq-04.",
-      "Search Mathlib for hypergeometric-series support.",
-      "Try proving just the AGM convergence rate first.",
-      "Move to ACT only if the quick search reveals an obvious formal route."
+      "Prove (or locate) the binomial series for (1-u)^(-1/2) with central-binomial coefficients.",
+      "Assemble the Wallis integral closed form int_0^(pi/2) sin^(2n) = (pi/2) centralBinom n /4^n from integral_sin_pow.",
+      "Establish summability of the K integrand power series uniformly on compact k-subsets of (-1,1).",
+      "Combine to discharge ellipticK_eq_hyp2F1, then chain with the oq-04-oq-01 AGM-K connection toward M(a,b)=a*pi/(2K(k'))."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-03\n\n## Problem Understanding\n\n- Target: prove Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).\n- Parameters recorded in the problem statement: k = b/a and k' = sqrt(1-k^2).\n- Intended route: use K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).\n- Context: extension from amgm-inequality-oq-04, categorized as a challenging deep analysis problem involving hypergeometric functions and AGM convergence.\n\n## Current State\n\n- Phase: OBSERVE.\n- Path: fast.\n- Since: 2026-04-04T02:41:25-07:00.\n- Iteration: 1.\n- Active approach: none recorded yet.\n- Attempts: total 0, current approach 0, approaches tried 0.\n- Blockers: none recorded.\n\n## Known Work and Open Items\n\n- No Lean proof attempt or completion is recorded for this subproblem.\n- The existing AGM formalization in amgm-inequality-oq-04 still needs to be checked.\n- Mathlib hypergeometric-series support still needs to be searched.\n- A preliminary AGM convergence-rate lemma is the first suggested proof target.\n\n## Next Steps\n\n1. Check the existing AGM formalization in amgm-inequality-oq-04.\n2. Search Mathlib for hypergeometric-series support.\n3. Try proving just the AGM convergence rate first.\n4. Move to ACT only if the quick search reveals an obvious formal route.\n\n## Dead Ends\n\nNone recorded.\n"
   },
@@ -86,12 +103,21 @@
     "amgm-inequality-oq-04-oq-05"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Borwein & Borwein, Pi and the AGM (1987)"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Nat.centralBinom",
+      "Nat.centralBinom_zero",
+      "Nat.centralBinom_pos",
+      "tsum_eq_single",
+      "intervalIntegral",
+      "integral_sin_pow"
+    ]
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.024Z",
+  "lastUpdate": "2026-05-29T04:28:09.000Z",
   "leanFiles": [
     {
       "path": "Proofs/AmgmInequalityOQ02.lean",
@@ -313,5 +339,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
     }
-  ]
+  ],
+  "leanFile": "Proofs/AmgmInequalityOQ04OQ03.lean"
 }
