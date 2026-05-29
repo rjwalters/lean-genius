@@ -489,6 +489,15 @@
     },
     {
       "authors": [
+        "D. Hilbert"
+      ],
+      "title": "Über die Irreduzibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten",
+      "year": "1892",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle) 110: 104–129",
+      "note": "Hilbert's original **Irreduzibilitätssatz** (irreducibility theorem) — the foundational paper underlying the generic-to-rational descent that turns this file's classification of solvable $S_n$ into a statement about *concrete* rational polynomials. Hilbert proved: if $f(t, X) \\in \\mathbb{Z}[t, X]$ is irreducible in $\\mathbb{Q}(t)[X]$, then there exist *infinitely many* integers $t_0 \\in \\mathbb{Z}$ for which the specialization $f(t_0, X) \\in \\mathbb{Z}[X]$ remains irreducible — i.e., irreducibility is preserved under 'generic' rational specialization. The proof uses Hilbert's *box principle*: estimating the count of $(t_0, x_0)$ pairs satisfying $f(t_0, x_0) = 0$ via a pigeonhole-style bound on integer points on the affine variety $\\{f = 0\\}$, with the key inequality derived from the canonical heights of those points. Serre (1992) modernized this into the *thin-set* formulation: the exceptional set of $t_0 \\in \\mathbb{Q}$ where irreducibility fails is *thin* (of natural density $0$), so 'almost all' specializations preserve the Galois group. **Hilbert's motivation**: §III of the paper explicitly constructs polynomials with Galois group $S_n$ over $\\mathbb{Q}$ — the *first* unconditional realization of $S_n$ as a Galois group over $\\mathbb{Q}$ for all $n$, predating the inverse Galois program by 8 years. Hilbert's construction starts from the generic polynomial $X^n - e_1 X^{n-1} + \\cdots \\pm e_n$ over $\\mathbb{Q}(e_1, \\ldots, e_n)$, whose Galois group is $S_n$ by van der Waerden's theorem (then implicit, formalized in 1930), and specializes the coefficients $e_j$ to rational values via the Irreduzibilitätssatz. This is the *concrete realization* path complementing Shafarevich's theorem for solvable groups (1954, reference above): for $S_n$ specifically — including the non-solvable $S_5, S_6, \\ldots$ pinned as non-solvable in this file — Hilbert's 1892 paper already provided the realization over $\\mathbb{Q}$, sharpening Abel-Ruffini's negative impossibility to the *positive* concrete unsolvability of specific rational quintics. **Modern legacy**: Hilbert's 1892 paper is the foundational reference for the entire field of *arithmetic Galois theory*, including the inverse Galois problem (Hilbert's own problem 12 in his 1900 ICM lecture), the regular inverse Galois problem (Fried-Jarden 1986), and the constructive realization of finite simple groups via rigidity (Belyi, Matzat 1984). Cited as the original source behind keyInsight #13's generic-to-rational descent."
+    },
+    {
+      "authors": [
         "E. R. Kolchin"
       ],
       "title": "Algebraic matric groups and the Picard-Vessiot theory of homogeneous linear ordinary differential equations",
