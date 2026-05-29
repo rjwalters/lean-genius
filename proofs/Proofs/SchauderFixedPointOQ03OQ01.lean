@@ -925,6 +925,37 @@ private lemma finsupport_center_within_input_ball {n : ℕ}
     subset_tsupport (ρ i) (Function.mem_support.mpr hne)
   exact Metric.mem_ball.mp (hU_ball i (hρ_sub i hx_tsupp))
 
+/-- **S23 step (local finite support is nonempty):**
+
+    For a partition of unity `ρ` on `↥S` over `Set.univ`, the local finite
+    support `ρ.finsupport x` is nonempty at every `x : ↥S`.
+
+    This supplies the center-existence step the eventual
+    `approx_selection_exists_proof` needs: to discharge
+    `IsGraphApproxSelection F f ε` at a point `x` the construction must pick
+    some `i ∈ ρ.finsupport x` to serve as the witness `x'` (via
+    `finsupport_center_within_input_ball` for the `dist x x' < ε` conjunct
+    and `ysel i ∈ F i` for the membership conjunct). That choice is only
+    possible because the support is nonempty.
+
+    **Proof.** If `ρ.finsupport x` were empty, the partition-of-unity sum
+    `∑ i ∈ ρ.finsupport x, ρ i x` would be the empty sum `0`; but
+    `PartitionOfUnity.sum_finsupport` (using `x ∈ Set.univ`) forces that sum
+    to equal `1`, contradicting `0 ≠ 1`.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. -/
+private lemma finsupport_nonempty {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S))
+    (x : ↥S) :
+    (ρ.finsupport x).Nonempty := by
+  rw [Finset.nonempty_iff_ne_empty]
+  intro hempty
+  have hsum : ∑ i ∈ ρ.finsupport x, ρ i x = 1 := ρ.sum_finsupport (Set.mem_univ x)
+  rw [hempty, Finset.sum_empty] at hsum
+  exact one_ne_zero hsum.symm
+
 /-- **S19 scaffold (closed-image helper for the ambient-space projection):**
 
     Given a Hausdorff ambient space `α`, a compact subset `S ⊆ α`, and a

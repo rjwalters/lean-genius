@@ -273,6 +273,17 @@ With witness `x' := i`, this discharges the first of the three
 `IsGraphApproxSelection` conjuncts; `y := ysel i ∈ F i` discharges the
 second.
 
+**Center existence is now a lemma.** New `private lemma finsupport_nonempty`:
+`ρ.finsupport x` is nonempty at every `x : ↥S`. Proof by contradiction —
+`Finset.nonempty_iff_ne_empty`, then an empty support makes
+`∑ i ∈ ρ.finsupport x, ρ i x` the empty sum `0`, but
+`ρ.sum_finsupport (Set.mem_univ x)` forces it to `1`, so `one_ne_zero`
+closes it. This is the step that lets the witness `i ∈ ρ.finsupport x`
+above (and the eventual `approx_selection_exists_proof`) be *produced* at
+all — `finsupport_center_within_input_ball` and `hysel_in_F i` only apply
+once such an `i` exists. (API confirmed against the in-file use of
+`ρ.sum_finsupport` at `convex_combination_of_partition_in_S`.)
+
 **Directional gap in the output-side bound (corrects the S18e plan).**
 The S18e docstring sketched closing `dist (f x) (ysel i) < ε` via
 "`ysel i ∈ F i ⊆ ε-thickening of F x`". That direction is **not**
