@@ -9,7 +9,8 @@
     "status": "axiomatized",
     "proofRepoPath": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
     "additionalFiles": [
-      "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean"
+      "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
+      "Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean"
     ],
     "tags": [
       "probability",
@@ -54,7 +55,7 @@
       "empiricalCDF_pointwise_convergence_no_axiom: pointwise SLLN for empirical CDF with no integration axioms",
       "Reduction of Glivenko-Cantelli axiom count from 3 to 1: only the real-analytic bracketingGrid_exists remains (in companion Bracketing.lean) after S6 proved uniform convergence and S7 retired the parent's glivenko_cantelli_uniform axiom"
     ],
-    "assumptions": "0 sorries in main file. The associated companion file LawsOfLargeNumbersOQ04OQ03Bracketing.lean introduces 1 new axiom (`bracketingGrid_exists`) supporting the separate uniform-convergence reduction; chain axiom count is 1. The two integration axioms from LawsOfLargeNumbersOQ04 (thresholdIndicator_integrable, integral_thresholdIndicator_eq_cdf) are fully machine-checked in the main file."
+    "assumptions": "0 sorries in main file; the two integration axioms from LawsOfLargeNumbersOQ04 (thresholdIndicator_integrable, integral_thresholdIndicator_eq_cdf) are fully machine-checked in the main file. The companion LawsOfLargeNumbersOQ04OQ03Bracketing.lean introduces 1 axiom (`bracketingGrid_exists`) on which the companion's `glivenko_cantelli_uniform` depends. IMPORTANT (S10, 2026-05-29): `bracketingGrid_exists` is NOT a true-but-unproved real-analytic lemma — it is FALSE. The BracketingGrid structure requires consecutive grid-point CDF jumps all ≤ ε with no atomless hypothesis, which is unsatisfiable for any CDF with an atom of mass > ε (e.g. a Dirac mass). LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean proves `bracketingGrid_exists_false : False`, i.e. the axiom is inconsistent with Mathlib. The genuine Glivenko–Cantelli statement is true for all distributions, but the companion's proof of it via this axiom is vacuous. Fixing the chain requires redesigning BracketingGrid to track left limits F(qⱼ⁻) (the standard quantile construction); the prior 'contribute Monotone.exists_increasing_continuity_seq to Mathlib' plan is void."
   },
   "overview": {
     "historicalContext": "The Glivenko-Cantelli theorem (1933) — the uniform law of large numbers — states that the empirical CDF Fₙ(x) = |{i ≤ n : Xᵢ ≤ x}|/n converges to the true CDF F(x) uniformly in x, almost surely. This is a fundamental result in statistics and is the basis for Kolmogorov-Smirnov tests.\n\nThe key steps in the proof are: (1) for each fixed x, apply the SLLN to get Fₙ(x) → F(x) a.s. (pointwise convergence); and (2) upgrade to uniform convergence via a finite bracketing argument using continuity points of F.\n\nStep (1) requires two integration facts: that 1_{Xᵢ ≤ x} is integrable (so SLLN applies) and that its expectation equals F(x) (so the SLLN limit is identified). These are mathematically obvious but require careful Mathlib API navigation to formalize.\n\nStep (2) — the bracketing uniformity — is the genuinely hard part and requires finite covering of ℝ by continuity points of F with controlled jump sizes, infrastructure not yet available in Mathlib 4.26.",

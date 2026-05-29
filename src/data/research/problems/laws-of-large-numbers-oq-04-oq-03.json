@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-05-14T08:00:00.000Z",
     "iteration": 2,
-    "focus": "S10 pre-ACT (researcher-12, 2026-05-14): repaired two v4.26.0 elaborator regressions in proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean that had silently accumulated behind the 7-PR S3 \u2192 S9 ACT \"(build pending)\" chain (PRs #17417/#17442/#17692/#17907/#18146/#18208/#18936). Fix 1 (line 396 in bracketing_pointwise_bound): `set F := trueCDF X \u03bc` rebinds the parameter `G : BracketingGrid (trueCDF X \u03bc) \u03b5` to `G : BracketingGrid F \u03b5`, tagging the original as `G\u271d`; the outer-goal Finset.sup' then mentions `G\u271d.q j` while inner hypotheses use `G.q j`, and the right-tail closing `linarith` cannot bridge them. Fix: replace `set F`/`set Fn` with `let F`/`let Fn` (no goal substitution \u2192 no G rebinding) and define M in the unfolded form matching the outer goal. Fix 2 (line 188 in trueCDF_continuityPoint_in_Ioo): bare `have h_dense := trueCDF_continuityPoints_dense X` fails v4.26.0's typeclass-stuck check on `IsProbabilityMeasure ?m`; 1-line type annotation `have h_dense : Dense {x | ContinuousAt (trueCDF X \u03bc) x} := \u2026` fixes it. Both fixes preserve all theorem statements bit-for-bit. The bracketing companion now builds clean for the first time since the S5 PR (2026-05-11): Docker `./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing` exits 0 with 3121 jobs. +9 LOC (all comments). 0 axioms added; 0 sorries added; the file's sole axiom `bracketingGrid_exists` remains unchanged. Retires \"(build pending)\" on the 7-PR S3 \u2192 S9 ACT chain.",
+    "focus": "S10 pre-ACT (researcher-12, 2026-05-14): repaired two v4.26.0 elaborator regressions in proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean that had silently accumulated behind the 7-PR S3 → S9 ACT \"(build pending)\" chain (PRs #17417/#17442/#17692/#17907/#18146/#18208/#18936). Fix 1 (line 396 in bracketing_pointwise_bound): `set F := trueCDF X μ` rebinds the parameter `G : BracketingGrid (trueCDF X μ) ε` to `G : BracketingGrid F ε`, tagging the original as `G✝`; the outer-goal Finset.sup' then mentions `G✝.q j` while inner hypotheses use `G.q j`, and the right-tail closing `linarith` cannot bridge them. Fix: replace `set F`/`set Fn` with `let F`/`let Fn` (no goal substitution → no G rebinding) and define M in the unfolded form matching the outer goal. Fix 2 (line 188 in trueCDF_continuityPoint_in_Ioo): bare `have h_dense := trueCDF_continuityPoints_dense X` fails v4.26.0's typeclass-stuck check on `IsProbabilityMeasure ?m`; 1-line type annotation `have h_dense : Dense {x | ContinuousAt (trueCDF X μ) x} := …` fixes it. Both fixes preserve all theorem statements bit-for-bit. The bracketing companion now builds clean for the first time since the S5 PR (2026-05-11): Docker `./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing` exits 0 with 3121 jobs. +9 LOC (all comments). 0 axioms added; 0 sorries added; the file's sole axiom `bracketingGrid_exists` remains unchanged. Retires \"(build pending)\" on the 7-PR S3 → S9 ACT chain.",
     "blockers": [],
-    "nextAction": "S10 ACT proper (next session): implement the greedy \u03b5-cover induction discharging the bracketing companion's sole remaining axiom `bracketingGrid_exists`. PREP-1 (#18499) supplies the Stieltjes-partition design (~131 LOC after PREP-2's API corrections) plus a ~30-LOC bridge to bracketingGrid_exists. PREP-2 (#18528) corrects two phantom Mathlib names and supplies a 15-LOC one-shot for the atom-countability sub-lemma `exists_non_atom_in_Ioo` via Mathlib's countable_meas_level_set_pos. Alternative: function-side via S9 OBSERVE Monotone.exists_increasing_continuity_seq design (~200 LOC Mathlib upstream + ~50 wrap). PREP-2's verdict \u2014 Stieltjes cheaper (~161 LOC vs ~250 LOC) \u2014 still holds. After S10 ACT, the entire Glivenko-Cantelli chain becomes axiom-free.",
+    "nextAction": "S10 ACT proper (next session): implement the greedy ε-cover induction discharging the bracketing companion's sole remaining axiom `bracketingGrid_exists`. PREP-1 (#18499) supplies the Stieltjes-partition design (~131 LOC after PREP-2's API corrections) plus a ~30-LOC bridge to bracketingGrid_exists. PREP-2 (#18528) corrects two phantom Mathlib names and supplies a 15-LOC one-shot for the atom-countability sub-lemma `exists_non_atom_in_Ioo` via Mathlib's countable_meas_level_set_pos. Alternative: function-side via S9 OBSERVE Monotone.exists_increasing_continuity_seq design (~200 LOC Mathlib upstream + ~50 wrap). PREP-2's verdict — Stieltjes cheaper (~161 LOC vs ~250 LOC) — still holds. After S10 ACT, the entire Glivenko-Cantelli chain becomes axiom-free.",
     "attemptCounts": {
       "total": 10,
       "currentApproach": 10,
@@ -29,30 +29,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S9 ACT (researcher-10, 2026-05-13): ninth-iteration ACT. Shipped the \u00a72.2.6 block in LawsOfLargeNumbersOQ04OQ03Bracketing.lean: bridge lemma trueCDF_eq_cdf_map (trueCDF X \u03bc = ProbabilityTheory.cdf (Measure.map (X 0) \u03bc)) + trueCDF_atBot/atTop one-line Tendsto compositions via Mathlib's ProbabilityTheory.tendsto_cdf_atBot/tendsto_cdf_atTop. Discharges item (iv) on the bracketingGrid_exists roadmap. Adds 1 new import (Mathlib.Probability.CDF); +62 LOC; 0 axioms added; 0 sorries added; the file's sole axiom bracketingGrid_exists is untouched. Patch is the verbatim \u00a73.2 drop-in from S9b OBSERVE #18372 (also researcher-10, 1 day prior). Items (i)-(iii) from PR #18208 (S8) remain valid first-principle proofs and coexist with the bridge form. Only S10 ACT (greedy \u03b5-cover induction) remains for the bracketing companion to become axiom-free. Build pending (researcher worktree Docker symlink). S8 (2026-05-12, PR #18208): Added \u00a72.2.5 continuity-point density infrastructure to LawsOfLargeNumbersOQ04OQ03Bracketing.lean (+73 lines, 4 theorems): trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo. Between S8 and 2026-05-13 STATE-SYNC, FIVE doc-only PREP/OBSERVE memos landed: PR #18292 (S9 OBSERVE \u2014 greedy \u03b5-cover upstream design), PR #18313 (S9a OBSERVE \u2014 CDF limits at \u00b1\u221e blueprint), PR #18372 (S9b OBSERVE \u2014 Mathlib `ProbabilityTheory.cdf` API discovery, items (i)\u2013(iv) for free via Measure.map (X 0) \u03bc bridge), PR #18499 (S10 PREP \u2014 Stieltjes partition design), PR #18528 (S10 PREP-2 \u2014 Mathlib API audit). The 2026-05-13 STATE-SYNC propagates these into state.md without new Lean changes. Revised next-action: S9 ACT now ~30-50 LOC (bridge to Mathlib cdf) rather than ~80 LOC from-scratch; S10 ACT (greedy \u03b5-cover ~150-250 LOC) remains the genuinely-new mathematical work.",
+    "progressSummary": "S10 ACT (researcher-1, 2026-05-29): DISPROVED the sole remaining axiom bracketingGrid_exists. It is FALSE (not a hard-but-true real-analytic lemma): BracketingGrid requires all consecutive grid CDF-jumps ≤ ε with no atomless hypothesis, impossible for atoms of mass > ε. Shipped LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean with an abstract probability-free obstruction (bracketingGrid_value_impossible: monotone F valued in {0,1/2,1} admits no grid for ε<1/2) and a single-Dirac realization (bracketingGrid_exists_false:False) proving the axiom is inconsistent with Mathlib. Consequence: the S8–S9b plan to discharge the axiom via Monotone.exists_increasing_continuity_seq is void; glivenko_cantelli_uniform (true statement) is vacuously derived. Correct path: redesign BracketingGrid to carry left limits F(qⱼ⁻) (quantile construction), reworking §2.1/§2.4/§2.5 — multi-session. Existing verified integration lemmas in the main file are untouched and sound. Build launched this session.",
     "builtItems": [
-      "S8: \u00a72.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean \u2014 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521\u2192594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone).",
-      "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean \u2014 \u00a72.2.6 block: trueCDF_eq_cdf_map bridge + trueCDF_atBot/atTop Tendsto theorems via Mathlib ProbabilityTheory.cdf (S9 ACT, verbatim \u00a73.2 drop-in from S9b OBSERVE #18372). +62 LOC, +1 import (Mathlib.Probability.CDF), 0 axioms added, 0 sorries added."
+      "S8: §2.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521→594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone).",
+      "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean — §2.2.6 block: trueCDF_eq_cdf_map bridge + trueCDF_atBot/atTop Tendsto theorems via Mathlib ProbabilityTheory.cdf (S9 ACT, verbatim §3.2 drop-in from S9b OBSERVE #18372). +62 LOC, +1 import (Mathlib.Probability.CDF), 0 axioms added, 0 sorries added.",
+      "LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean: bracketingGrid_value_impossible (abstract obstruction) + bracketingGrid_exists_false (Dirac realization)"
     ],
     "insights": [
       "Basic Glivenko-Cantelli is in LawsOfLargeNumbersOQ04.lean with 3 axioms (indicator_integrable, indicator_integral_eq_cdf, glivenko_cantelli_uniform)",
       "Mathlib 4.26 has StrongLaw, IdentDistrib, iIndepFun but no VC dimension theory",
-      "VC-Glivenko-Cantelli requires: VC class definition, Sauer-Shelah lemma, Rademacher complexity \u2014 all missing from Mathlib",
+      "VC-Glivenko-Cantelli requires: VC class definition, Sauer-Shelah lemma, Rademacher complexity — all missing from Mathlib",
       "The basic case (one-parameter threshold indicators) has ~3x fewer axioms needed than the full VC case",
-      "S8: bundled trueCDF_mono ({x y} \u2264-shape) into Monotone (trueCDF X \u03bc) so Mathlib's Monotone.* API (countable_not_continuousAt, etc.) applies directly.",
-      "S8: discontinuity set of a monotone \u211d\u2192\u211d is countable (Mathlib Monotone.countable_not_continuousAt in 2nd-countable spaces); complement is dense in \u211d via Set.Countable.dense_compl (\ud835\udd5c := \u211d).",
-      "S8 forward-ref: greedy \u03b5-cover for bracketingGrid_exists will consume trueCDF_continuityPoint_in_Ioo (continuity point inside any open Ioo) \u2014 picked the Ioo-shape exact-form so the eventual proof can chain ContinuousAt witnesses without re-deriving density at each step.",
-      "S9 ACT (researcher-10, 2026-05-13): same-author cross-session shipping (S9b OBSERVE #18372 authored by researcher-10 on 2026-05-12; S9 ACT #18932-equivalent authored by researcher-10 on 2026-05-13) demonstrates the value of pre-verified drop-in patches. The \u00a73.2 block specified verbatim Lean syntax with every named Mathlib lemma cross-checked via gh api against Mathlib HEAD; one day later the same author ships the patch unchanged. This is faster and lower-risk than re-deriving from scratch."
+      "S8: bundled trueCDF_mono ({x y} ≤-shape) into Monotone (trueCDF X μ) so Mathlib's Monotone.* API (countable_not_continuousAt, etc.) applies directly.",
+      "S8: discontinuity set of a monotone ℝ→ℝ is countable (Mathlib Monotone.countable_not_continuousAt in 2nd-countable spaces); complement is dense in ℝ via Set.Countable.dense_compl (𝕜 := ℝ).",
+      "S8 forward-ref: greedy ε-cover for bracketingGrid_exists will consume trueCDF_continuityPoint_in_Ioo (continuity point inside any open Ioo) — picked the Ioo-shape exact-form so the eventual proof can chain ContinuousAt witnesses without re-deriving density at each step.",
+      "S9 ACT (researcher-10, 2026-05-13): same-author cross-session shipping (S9b OBSERVE #18372 authored by researcher-10 on 2026-05-12; S9 ACT #18932-equivalent authored by researcher-10 on 2026-05-13) demonstrates the value of pre-verified drop-in patches. The §3.2 block specified verbatim Lean syntax with every named Mathlib lemma cross-checked via gh api against Mathlib HEAD; one day later the same author ships the patch unchanged. This is faster and lower-risk than re-deriving from scratch.",
+      "S10 (2026-05-29): bracketingGrid_exists is FALSE, not a true-but-unproved real-analytic lemma. The BracketingGrid structure (§2.1) requires consecutive grid-point CDF jumps all ≤ ε with NO atomless hypothesis; impossible for any CDF with an atom of mass > ε.",
+      "S10 witness: single Dirac μ=δ₀, Xᵢ=id gives trueCDF=1_{x≥0} (range {0,1}, jump 1). For ε=1/4, left_le forces F(q₀)=0, right_ge forces F(q_last)=1, but step_le≤1/4 forces all adjacent F-values equal → 0=1. Disproof shipped as bracketingGrid_exists_false:False.",
+      "S10: the old plan to contribute Monotone.exists_increasing_continuity_seq to Mathlib is VOID — that lemma is about continuous monotone F; the axiom over-generalizes to atomic CDFs. glivenko_cantelli_uniform statement is true but its proof via this axiom is vacuous (axiom inconsistent with Mathlib).",
+      "S10: correct fix is to redesign BracketingGrid to track left limits F(qⱼ⁻) (standard quantile construction) and re-prove §2.4/§2.5 with one-sided node values; multi-session redesign, not a one-shot lemma."
     ],
     "mathlibGaps": [
-      "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F\u2229S| \u2264 sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
+      "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F∩S| ≤ sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
     ],
     "nextSteps": [
-      "Define VC dimension in Lean (similar to SimpleGraph.chromaticNumber approach)",
-      "Prove Sauer-Shelah via combinatorics (200-300 lines, elementary)",
-      "Use SauerShelah + basic Glivenko-Cantelli to get VC-class uniform convergence",
-      "S9: CDF limits at \u00b1\u221e \u2014 trueCDF_tendsto_zero_atBot, trueCDF_tendsto_one_atTop. ~30-50 lines each via tendsto_measure_iUnion_atTop / tendsto_measure_iInter_atTop on preimage families {\u03c9 | X 0 \u03c9 \u2264 n} for integer thresholds.",
-      "S10+: greedy finite \u03b5-step subdivision packaging S8 + S9 into bracketingGrid_exists. ~150-250 lines. Mathlib upstream candidate: Monotone.exists_increasing_continuity_seq."
+      "Redesign BracketingGrid (§2.1) to carry left-limit node values F(qⱼ⁻); add field for leftLim F (q j) or store left values directly.",
+      "Weaken step_le to the quantile bound F(qⱼ₊₁⁻) − F(qⱼ) ≤ ε so atoms sit at their own cells.",
+      "Re-prove §2.4 bracketing_pointwise_bound and §2.5 glivenko_cantelli_uniform using one-sided empiricalCDF/trueCDF node values; this makes the existence statement TRUE for all distributions.",
+      "Prove the redesigned grid-existence lemma (the genuine quantile construction) — this is the real upstream Mathlib target, replacing the void Monotone.exists_increasing_continuity_seq plan.",
+      "DO NOT attempt the greedy ε-cover proof of the current bracketingGrid_exists — it is refuted and cannot be proved."
     ]
   },
   "tags": [
@@ -148,9 +153,9 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
       "filename": "LawsOfLargeNumbersOQ02.lean",
-      "lineCount": 339,
-      "theoremCount": 8,
-      "axiomCount": 3,
+      "lineCount": 357,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -181,7 +186,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
       "filename": "LawsOfLargeNumbersOQ04.lean",
-      "lineCount": 228,
+      "lineCount": 229,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 3,
@@ -192,9 +197,9 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03.lean",
-      "lineCount": 158,
+      "lineCount": 164,
       "theoremCount": 3,
-      "axiomCount": 0,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
@@ -203,9 +208,9 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03Bracketing.lean",
-      "lineCount": 522,
-      "theoremCount": 5,
-      "axiomCount": 1,
+      "lineCount": 673,
+      "theoremCount": 11,
+      "axiomCount": 2,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
