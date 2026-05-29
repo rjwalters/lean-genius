@@ -1080,7 +1080,7 @@ lemma lowerDensity_le_of_seq (S : Set ℕ) (c : ℝ)
   S.lowerDensity ≤ c := by
   simp_rw [Set.lowerDensity, Finset.card_filter] at h⊢
   simp_all -contextual[Filter.liminf_eq,Set.partialDensity]
-  delta Erdos26.X_seq at h
+  delta X_seq at h
   use Real.sSup_le (@ fun and ⟨a, H⟩=>not_lt.mp fun and=>(((tendsto_natCast_atTop_atTop.atTop_mul_const ↑(sub_pos.mpr and)).eventually_gt_atTop (a+1)).frequently (@Filter.eventually_atTop.mpr ⟨a+2,? _,⟩))) @?_
   · use fun and μ=>match and with|n + 1=>(((mul_sub _ _ _).trans_le (sub_le_iff_le_add'.2 (((le_div_iff₀' (by bound)).1 (H (n + 1) (by valid))).trans (?_))))).not_gt
     use match n with|n + 1=>.trans (mod_cast(Nat.card_mono (Finset.finite_toSet _) fun and p=>?_).trans ((Nat.card_eq_finsetCard _)▸ Finset.card_insert_le 0 _)) (add_le_add ((h (n + 1)).trans (?_)) (le_add_of_nonneg_left a.cast_nonneg))
