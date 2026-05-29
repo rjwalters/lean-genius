@@ -454,6 +454,24 @@
     },
     {
       "authors": [
+        "E. S. Bring"
+      ],
+      "title": "Meletemata quaedam mathematica circa transformationem aequationum algebraicarum",
+      "year": "1786",
+      "venue": "Promotionsschrift, Lund University (Sweden)",
+      "note": "Erland Samuel Bring's 1786 doctoral dissertation establishing the **Bring reduction**: any general quintic $x^5 + a_4 x^4 + \\cdots + a_1 x + a_0 = 0$ can be transformed by a Tschirnhaus substitution of degree $\\leq 4$ into the *Bring normal form* $y^5 + py + q = 0$ — a one-parameter family (since $p$ can be absorbed by rescaling $y$, leaving a single essential parameter). The Tschirnhaus substitution $y = c_4 x^4 + c_3 x^3 + c_2 x^2 + c_1 x + c_0$ has 5 free coefficients $c_0, \\ldots, c_4$, and Bring showed that solving the auxiliary equations for these coefficients to eliminate the quartic, cubic, and quadratic terms in $y$ requires only operations of degree $\\leq 4$ — i.e. is itself solvable by radicals (since the auxiliary system has Galois group inside $S_4$). Bring's work was lost in the Lund archives until 1864 when Sylvester discovered and publicized it, by which time Jerrard (1859, below) had independently rediscovered the result. The Bring reduction is the *algebraic preprocessing* step that makes Hermite's 1858 modular-function solution of the quintic possible: Hermite solves the Bring form $y^5 - y + t = 0$ in theta constants, and the Bring reduction supplies the preprocessing from the general quintic to this one-parameter form. This places the depth-of-radical-tower for the *Tschirnhaus-reducible part* of the quintic squarely inside the solvable $S_4$-regime classified in this file — the irreducible non-solvable part is then exactly the one-parameter Bring quintic, which requires the escape to modular functions of keyInsight #11. The dual algorithm (Bring's algebraic reduction + Hermite's modular solution) gives a constructive proof that *every* quintic over $\\mathbb{Q}$ is solvable in Bring-Jerrard normal form by elliptic-modular functions — not by radicals, exactly as Abel-Ruffini proves here. Cited in keyInsight #11."
+    },
+    {
+      "authors": [
+        "G. B. Jerrard"
+      ],
+      "title": "An Essay on the Resolution of Equations",
+      "year": "1859",
+      "venue": "Taylor and Francis, London (xii + 110 pp.)",
+      "note": "George Birch Jerrard's independent rediscovery (1832 preliminary, 1859 final) of the Bring reduction (entry above), now standardly called the **Bring-Jerrard normal form**. Jerrard extended Bring's result by attempting to push the Tschirnhaus reduction beyond degree 5 to higher-degree equations, conjecturing (incorrectly) that every degree-$n$ equation could be reduced to a normal form with only $\\lfloor n/2 \\rfloor$ or fewer parameters. Hamilton (1836) showed Jerrard's general claim was wrong — only the quintic admits the one-parameter reduction — but the $n = 5$ case stands as the key algebraic preprocessing step in the Hermite-Brioschi-Kronecker solution of the quintic in modular functions (Hermite 1858, reference above). The historical name 'Bring-Jerrard' acknowledges both Bring's 1786 priority (lost in Swedish archives until 1864) and Jerrard's 1859 independent rediscovery and dissemination — the standard accepted convention since Sylvester (1864). Jerrard's *Essay* is the most widely-read primary source for the reduction method in 19th-century English-language algebra; the technique appears in modern textbooks (e.g., King 1996, *Beyond the Quartic Equation*) as the bridge between purely algebraic quintic theory and the modular-function escape. Cited together with Bring (1786) in keyInsight #11."
+    },
+    {
+      "authors": [
         "H. Umemura"
       ],
       "title": "Resolution of algebraic equations by theta constants",
