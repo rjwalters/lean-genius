@@ -1583,6 +1583,166 @@ theorem factorization_succ_mul_choose_le_log_succ
     (Finset.card_le_card hfilter_subset).trans hcard.le
   omega
 
+/-- **Helper 1** (Iter 36 PREP §2). For base `p > 1` and `i ≤ e`, the
+    residue of `p^e - 1` modulo `p^i` is exactly `p^i - 1`.
+
+    Used by the 28b-2 saturation witness to evaluate `(n - k₀) % p^i`. -/
+private lemma pow_sub_one_mod_pow {p e i : ℕ} (hp : 1 < p) (hie : i ≤ e) :
+    (p ^ e - 1) % p ^ i = p ^ i - 1 := by
+  rcases Nat.eq_zero_or_pos i with hi0 | hi_pos
+  · subst hi0; simp [Nat.mod_one]
+  have hp_two : 2 ≤ p := by omega
+  obtain ⟨c, hc⟩ : p ^ i ∣ p ^ e := Nat.pow_dvd_pow p hie
+  have hpi_pos : 0 < p ^ i := Nat.pow_pos (by omega)
+  have hpi_ge_two : 2 ≤ p ^ i := by
+    calc 2 = 2 ^ 1 := (pow_one 2).symm
+      _ ≤ p ^ 1 := Nat.pow_le_pow_left hp_two 1
+      _ ≤ p ^ i := Nat.pow_le_pow_right (by omega : 1 ≤ p) hi_pos
+  have h_pi_lt : p ^ i - 1 < p ^ i := by omega
+  have hc_pos : 1 ≤ c := by
+    have h_pe_pos : 0 < p ^ e := Nat.pow_pos (by omega)
+    rw [hc] at h_pe_pos
+    rcases Nat.eq_zero_or_pos c with hc0 | hcp
+    · simp [hc0] at h_pe_pos
+    · exact hcp
+  have hc1 : c - 1 + 1 = c := by omega
+  have h_pic_eq : p ^ i * c = p ^ i * (c - 1) + p ^ i := by
+    calc p ^ i * c = p ^ i * (c - 1 + 1) := by rw [hc1]
+      _ = p ^ i * (c - 1) + p ^ i := by rw [mul_add, mul_one]
+  have h_rearr : p ^ e - 1 = (p ^ i - 1) + p ^ i * (c - 1) := by
+    rw [hc]; omega
+  rw [h_rearr, Nat.add_mul_mod_self_left]
+  exact Nat.mod_eq_of_lt h_pi_lt
+
+/-- **Helper 2** (Iter 36 PREP §3). For prime `p`, `i = a + j` with
+    `1 ≤ j`, `0 < f`, `p^f < m` and `p ∤ m`, the residue of the witness
+    `p^a * (m - p^f)` modulo `p^i` is at least `1`. -/
+private lemma witness_mod_pow_lt
+    {p a m f i j : ℕ} (hp_prime : p.Prime)
+    (hia : i = a + j) (hj_pos : 0 < j)
+    (hf_pos : 0 < f) (hpf_lt : p ^ f < m) (hmp : ¬ p ∣ m) :
+    1 ≤ (p ^ a * (m - p ^ f)) % p ^ i := by
+  have hpi_eq : p ^ i = p ^ a * p ^ j := by rw [hia, pow_add]
+  rw [hpi_eq, Nat.mul_mod_mul_left]
+  have hpf_le : p ^ f ≤ m := hpf_lt.le
+  have h_not_dvd : ¬ p ^ j ∣ (m - p ^ f) := by
+    intro hdvd
+    have hp_dvd_pj : p ∣ p ^ j := dvd_pow_self p hj_pos.ne'
+    have hp_dvd_diff : p ∣ (m - p ^ f) := hp_dvd_pj.trans hdvd
+    have hp_dvd_pf : p ∣ p ^ f := dvd_pow_self p hf_pos.ne'
+    have h_sum : (m - p ^ f) + p ^ f = m := Nat.sub_add_cancel hpf_le
+    have hp_dvd_m : p ∣ m := by
+      have h_combined := hp_dvd_diff.add hp_dvd_pf
+      rwa [h_sum] at h_combined
+    exact hmp hp_dvd_m
+  have h_mod_pos : 1 ≤ (m - p ^ f) % p ^ j := by
+    rcases Nat.eq_zero_or_pos ((m - p ^ f) % p ^ j) with h_eq | h_pos
+    · exact absurd (Nat.dvd_of_mod_eq_zero h_eq) h_not_dvd
+    · exact h_pos
+  have hpa_pos : 0 < p ^ a := Nat.pow_pos hp_prime.pos
+  have hprod_pos : 0 < p ^ a * ((m - p ^ f) % p ^ j) :=
+    Nat.mul_pos hpa_pos h_mod_pos
+  omega
+
+/-- **Iter 38 ACT — 28b-2 witness saturation** (Iter 36 PREP §4–§5).
+
+    The witness `k₀ = (n+1) - p^e` (with `e = log_p (n+1)`) saturates the
+    28b-1 bound: `v_p(n+1) + v_p(C(n, k₀)) = log_p(n+1)`. Combined with
+    `factorization_succ_mul_choose_le_log_succ` (28b-1, the `≤` direction),
+    this certifies that the divisibility `(n+1) * C(n, k₀) ∣ lcmRange(n+1)`
+    from 28c is **tight** at `p` along the witness path.
+
+    Proof: split on whether `n+1 = p^e`. In the equality case `k₀ = 0` and
+    `C(n,0) = 1`, reducing the goal to `v_p(p^e) = e`. Otherwise `p^e < n+1`;
+    writing `n+1 = p^a * m` with `p ∤ m` and `f = e - a`, the carries-set of
+    `Nat.factorization_choose` is exactly `Ico (a+1) (e+1)` (lower bound by
+    `sum_mod_pow_lt_of_pow_dvd_succ`, upper bound by Helpers 1 and 2), of
+    cardinality `e - a`; adding back `a` gives `e`. -/
+theorem exists_witness_choose_saturates_log_succ
+    {p : ℕ} (hp : p.Prime) {n : ℕ} (hn : 1 ≤ n) :
+    ∃ k, k ≤ n ∧ (n + 1).factorization p + (Nat.choose n k).factorization p
+                  = Nat.log p (n + 1) := by
+  set e := Nat.log p (n + 1) with he_def
+  set a := (n + 1).factorization p with ha_def
+  refine ⟨(n + 1) - p ^ e, ?_, ?_⟩
+  · have hpe_pos : 1 ≤ p ^ e := Nat.one_le_pow _ _ hp.pos
+    omega
+  · set k := (n + 1) - p ^ e with hk_def
+    have hkn : k ≤ n := by
+      have hpe_pos : 1 ≤ p ^ e := Nat.one_le_pow _ _ hp.pos
+      omega
+    by_cases hCaseA : n + 1 = p ^ e
+    · -- Case A: n + 1 = p^e, so k = 0.
+      have hk_zero : k = 0 := by omega
+      rw [hk_zero, Nat.choose_zero_right, Nat.factorization_one]
+      simp only [Finsupp.coe_zero, Pi.zero_apply, Nat.add_zero]
+      rw [ha_def, hCaseA, Nat.Prime.factorization_pow hp, Finsupp.single_eq_same]
+    · -- Case B: p^e < n + 1.
+      have ha_le_e : a ≤ e := by
+        have h_dvd : p ^ a ∣ (n + 1) := Nat.ordProj_dvd (n + 1) p
+        have h_pa_le : p ^ a ≤ n + 1 := Nat.le_of_dvd (Nat.succ_pos n) h_dvd
+        exact Nat.le_log_of_pow_le hp.one_lt h_pa_le
+      set m := (n + 1) / p ^ a with hm_def
+      set f := e - a with hf_def
+      have hpa_dvd : p ^ a ∣ (n + 1) := Nat.ordProj_dvd (n + 1) p
+      have hn1_eq : n + 1 = p ^ a * m := (Nat.mul_div_cancel' hpa_dvd).symm
+      have hmp : ¬ p ∣ m := by
+        rw [hm_def]
+        exact Nat.not_dvd_ordCompl hp (Nat.succ_ne_zero n)
+      have hpe_le : p ^ e ≤ n + 1 := Nat.pow_log_le_self p (Nat.succ_ne_zero n)
+      have hCaseB : p ^ e < n + 1 := by omega
+      have h_pe_eq : p ^ e = p ^ a * p ^ f := by
+        rw [hf_def, ← pow_add]; congr 1; omega
+      have hpf_lt : p ^ f < m := by
+        by_contra hcon
+        push_neg at hcon
+        have hmul : p ^ a * m ≤ p ^ a * p ^ f := Nat.mul_le_mul (le_refl _) hcon
+        rw [← h_pe_eq, ← hn1_eq] at hmul
+        omega
+      have h_n_sub_k : n - k = p ^ e - 1 := by
+        have hpe_pos : 1 ≤ p ^ e := Nat.one_le_pow _ _ hp.pos
+        omega
+      have h_k_eq : k = p ^ a * (m - p ^ f) := by
+        have hle : p ^ f ≤ m := hpf_lt.le
+        have hm_split : m = (m - p ^ f) + p ^ f := (Nat.sub_add_cancel hle).symm
+        rw [hk_def, hn1_eq, h_pe_eq]
+        conv_lhs => rw [hm_split, mul_add]
+        rw [Nat.add_sub_cancel]
+      have hlog : Nat.log p n ≤ e := Nat.log_mono_right (Nat.le_succ n)
+      have hb : Nat.log p n < e + 1 := Nat.lt_succ_of_le hlog
+      have hfilter_eq :
+          ((Finset.Ico 1 (e + 1)).filter
+              (fun i => p ^ i ≤ k % p ^ i + (n - k) % p ^ i))
+            = Finset.Ico (a + 1) (e + 1) := by
+        apply Finset.ext
+        intro i
+        simp only [Finset.mem_filter, Finset.mem_Ico]
+        constructor
+        · rintro ⟨⟨hi1, hi_lt⟩, _hi_carry⟩
+          refine ⟨?_, hi_lt⟩
+          by_contra h_not
+          push_neg at h_not
+          have hi_le_a : i ≤ a := by omega
+          have hsum := sum_mod_pow_lt_of_pow_dvd_succ hp hkn hi1 hi_le_a
+          omega
+        · rintro ⟨hia1, hi_lt⟩
+          have hi1 : 1 ≤ i := by omega
+          refine ⟨⟨hi1, hi_lt⟩, ?_⟩
+          have hi_le_e : i ≤ e := by omega
+          have hpi_pos : 0 < p ^ i := Nat.pow_pos hp.pos
+          have h_nsubk_mod : (n - k) % p ^ i = p ^ i - 1 := by
+            rw [h_n_sub_k]; exact pow_sub_one_mod_pow hp.one_lt hi_le_e
+          have hj_pos : 0 < i - a := by omega
+          have hf_pos : 0 < f := by omega
+          have hia_eq : i = a + (i - a) := by omega
+          have h_kmod : 1 ≤ k % p ^ i := by
+            rw [h_k_eq]
+            exact witness_mod_pow_lt hp hia_eq hj_pos hf_pos hpf_lt hmp
+          rw [h_nsubk_mod]
+          omega
+      rw [Nat.factorization_choose hp hkn hb, hfilter_eq, Nat.card_Ico]
+      omega
+
 /-- **Theorem 28c** (divisibility bridge). Combining 28b-1
     (`factorization_succ_mul_choose_le_log_succ`) with the file-local
     Iter 5 lemma `prime_pow_dvd_lcmRange`, we obtain the load-bearing
