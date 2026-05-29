@@ -363,6 +363,24 @@
       "year": "1936",
       "venue": "Annals of Mathematics 37(2): 265–292",
       "note": "Establishes the Jordan-Hölder theorem for modular lattices in general — independently of (and just before) Birkhoff's *Lattice Theory*. Ore proved that in any modular lattice of finite length, all maximal chains have the same length and corresponding intervals are 'projective' (related by a chain of perspectivities). This is the result that justifies treating Jordan-Hölder as a theorem about lattices rather than about groups, modules, or rings specifically — and it underwrites the abstraction used in Mathlib's `JordanHolderLattice` framework."
+    },
+    {
+      "authors": [
+        "O. Schreier"
+      ],
+      "title": "Über den Jordan-Hölderschen Satz",
+      "year": "1928",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 6: 300–302",
+      "note": "Schreier's refinement theorem: any two normal series of a group have equivalent refinements. This sharpens Jordan-Hölder by replacing the hypothesis 'composition series' (maximal normal chain) with the weaker 'normal series' (arbitrary normal chain), then refining to recover the composition-series statement. Schreier's theorem implies Jordan-Hölder as a corollary — any two composition series, being already maximal, are equivalent to their common refinement and hence to each other. The lattice-theoretic content of Schreier's argument is exactly what `JordanHolderLattice`'s three axioms encode: `sup_eq_of_isMaximal` and `isMaximal_inf_left_of_isMaximal_sup` give the diamond closures used in the refinement, and `second_iso` gives the factor isomorphisms identified at the refinement step."
+    },
+    {
+      "authors": [
+        "H. Zassenhaus"
+      ],
+      "title": "Zum Satz von Jordan-Hölder-Schreier",
+      "year": "1934",
+      "venue": "Abhandlungen aus dem Mathematischen Seminar der Universität Hamburg 10: 106–108",
+      "note": "The *butterfly lemma* (Schmetterlingslemma): for subgroups $A_1 \\trianglelefteq A_2$ and $B_1 \\trianglelefteq B_2$ of a group, $(A_1(A_2 \\cap B_2))/(A_1(A_2 \\cap B_1)) \\simeq (B_1(A_2 \\cap B_2))/(B_1(A_1 \\cap B_2))$. This combinatorial identity gives a direct, elegant proof of Schreier's refinement theorem without requiring the chains to be composition series — the butterfly diagram is the visual mnemonic. The lemma is the technical heart of every modern proof of Jordan-Hölder via Schreier (e.g., Rotman §5.3, Lang Chapter I §3). Mathlib's `CompositionSeries.jordan_holder` proof traces this lineage: the underlying abstract argument in `JordanHolderLattice` is structurally a butterfly-style equivalence, with the `second_iso` axiom standing in for the central isomorphism step of the butterfly lemma."
     }
   ],
   "sorries": 0
