@@ -7,7 +7,7 @@
     "author": "Stirling (1730), de Moivre (1733)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Stirling%27s_approximation#Speed_of_convergence_and_error_estimates",
     "date": "1730",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/StirlingExpansion.lean",
     "tags": [
       "analysis",
@@ -17,7 +17,7 @@
       "bernoulli-numbers"
     ],
     "badge": "original",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. 0 axioms, 0 sorries. The full chain {log_one_plus_le_cubic, log_one_plus_ge_quartic, stirling_step_formula, stirling_step_upper, stirling_step_lower, telescoping helpers (inv_sq_le_telescope, inv_cube_le_telescope, inv_harmonic_le_sq, inv_cube_le_telescope2, inv_quad_le_telescope), partial-sum bounds (log_stirlingSeq_partial_upper/lower), stirling_first_correction, stirling_two_term_expansion, error_bound_from_correction} is fully proved. The final upper-half exp-Taylor bound is discharged via Real.exp_bound at degree n=2 (|L|≤1 → |exp L − (1+L)| ≤ 3·L²/4), combined with L² ≤ 1/n² (from 0 ≤ L ≤ 1/n) and the algebraic identity L − 1/(12n) ≤ 1/(2n²) (from L ≤ 1/(12(n−1)) + 1/(12(n−1)²)).",
     "dateAdded": "2026-03-29",
@@ -60,54 +60,105 @@
     "historicalContext": "James Stirling published 'Methodus Differentialis' in 1730, giving the asymptotic formula n! ~ \u221a(2\u03c0n)(n/e)^n and the full asymptotic series with Bernoulli number coefficients. Abraham de Moivre independently arrived at the same formula in 1733, and the constant \u221a(2\u03c0) was supplied by de Moivre (Stirling had initially left it implicit). The higher-order terms n! ~ \u221a(2\u03c0n)(n/e)^n \u00b7 (1 + 1/(12n) + 1/(288n\u00b2) \u2212 139/(51840n\u00b3) + ...) were known to both Stirling and de Moivre. The coefficients are given by the Euler-Maclaurin formula: applying the summation formula to \u03a3_{k=1}^n log(k) = log(n!) yields the asymptotic series, with the k-th correction coefficient a_k = B_{2k}/(2k(2k\u22121)n^k) involving Bernoulli numbers B_{2k}. Leonhard Euler's contributions to the Maclaurin-Euler formula (1730s) provided the systematic tool for deriving these coefficients. In the 20th century, the Stirling series was understood as the asymptotic expansion of the log-Gamma function: log \u0393(z) ~ (z\u22121/2)log(z) \u2212 z + (1/2)log(2\u03c0) + \u03a3 B_{2k}/[2k(2k\u22121)z^{2k-1}]. Mathlib's formalization uses the Wallis product as the entry point for Stirling's formula, making the connection to Bernoulli numbers indirect.",
     "problemStatement": "Formalize the higher-order terms in the Stirling expansion and use them to eliminate the error bound axiom in StirlingFormula.lean.",
     "text": "Formalizes the Stirling series coefficients and the first correction term 1/(12n), showing it implies the axiomatized error bound.",
-    "proofStrategy": "1. Define the Stirling series coefficients from Bernoulli numbers\n2. State the first correction: stirlingSeq(n)/\u221a\u03c0 = 1 + 1/(12n) + O(1/n\u00b2)\n3. Derive the error bound from the first correction\n4. The first correction proof requires Euler-Maclaurin or Wallis product analysis",
+    "proofStrategy": "Rather than invoke Euler-Maclaurin (which would require Bernoulli-number infrastructure absent from Mathlib), the file proves the first correction by a self-contained telescoping argument:\n1. Define the Stirling series coefficients and the truncated partial sums.\n2. Prove sharp polynomial bounds for log(1+x) (cubic upper, quartic lower, quintic upper) by the derivative-monotonicity method.\n3. Rewrite the consecutive difference d_k = log(stirlingSeq k) \u2212 log(stirlingSeq(k+1)) into the closed form (k+1/2)\u00b7log(1+1/k) \u2212 1, and sandwich it as 1/(12k\u00b2) \u00b1 lower-order using the log bounds.\n4. Telescope the per-step bounds (via elementary rational inequalities) and pass to the limit stirlingSeq(n+M) \u2192 \u221a\u03c0, sandwiching L = log(stirlingSeq n / \u221a\u03c0) between explicit rational functions of n.\n5. Since exp(L) = stirlingSeq(n)/\u221a\u03c0, finish with Real.exp_bound at degree 2 to convert the bound on L into the bound |stirlingSeq(n)/\u221a\u03c0 \u2212 (1 + 1/(12n))| \u2264 2/n\u00b2.\n6. Derive the two-term expansion of n! and the error bound (replacing an axiom in StirlingFormula.lean) as corollaries. The whole development is machine-checked: 0 sorries, 0 axioms.",
     "keyInsights": [
-      "The error bound proof (error_bound_from_correction) is fully proved without the first correction: assuming the correction as a hypothesis, it reduces to (11n \u2212 12)/(12n\u00b2) \u2265 0 for n \u2265 2, a purely algebraic fact closed by ring + nlinarith",
-      "The first correction proof (sorry) is hard because Mathlib defines stirlingSeq via the Wallis product, not via Euler-Maclaurin \u2014 connecting the Wallis convergence rate to Bernoulli number coefficients requires non-trivial analysis not currently in Mathlib",
-      "The Bernoulli number formula a_k = B_{2k}/(2k(2k\u22121)) gives a_1 = 1/12 from B_2 = 1/6 \u2014 this connection to Bernoulli numbers explains why the sign of the third term is negative (B_4 = \u22121/30) but a_2 is positive (higher-order polynomial in B_4 > 0)",
-      "The file splits into two tiers: the 'hard' theorems with sorry (stirling_first_correction, stirling_two_term_expansion) and the 'easy' theorem (error_bound_from_correction) that is fully proved given the correction as a hypothesis \u2014 a useful proof-by-assuming pattern",
-      "The practical accuracy of the 1/(12n) correction is remarkable: for n \u2265 2 the relative error is < 1/n\u00b2, and for n = 10 the correction gives 4 correct decimal digits of n!/[\u221a(2\u03c0n)(n/e)^n]"
+      "The first correction is proved without Euler-Maclaurin. Mathlib defines stirlingSeq via the Wallis product, so instead of connecting Wallis convergence to Bernoulli coefficients, the file telescopes the consecutive differences d_k = (k+1/2)\u00b7log(1+1/k) \u2212 1 directly \u2014 a fully elementary route that needs no Bernoulli-number infrastructure.",
+      "The derivative-monotonicity lemmas for log(1+x) are the reusable engine: each bound g(t) = (polynomial) \u2212 log(1+t) has g(0) = 0 and a derivative that simplifies to t^m/(1+t) \u2265 0, so g is monotone and nonnegative. The same three lines of reasoning give the cubic, quartic, and quintic bounds.",
+      "Reducing the global limit to a telescoping series is the structural pivot: log(stirlingSeq n / \u221a\u03c0) = \u03a3_{k\u2265n} d_k, so a sharp per-step estimate d_k \u2248 1/(12k\u00b2) sums (via 1/(12k\u00b2) telescoping against 1/(12(k\u22121)) \u2212 1/(12k)) to the leading 1/(12n) correction with an O(1/n\u00b2) remainder.",
+      "The final exp/log bridge is handled by Real.exp_bound at degree 2: because |L| \u2264 1/n \u2264 1, the Taylor remainder satisfies |exp L \u2212 (1+L)| \u2264 3L\u00b2/4 \u2264 3/(4n\u00b2), which combines with L \u2212 1/(12n) \u2264 1/(2n\u00b2) to yield the clean constant C = 2.",
+      "The Bernoulli formula a_k = B_{2k}/(2k(2k\u22121)) gives a_1 = 1/12 from B_2 = 1/6 and explains the sign pattern of the series (the negative third term reflects B_4 = \u22121/30), even though the proof itself never needs Bernoulli numbers.",
+      "The practical accuracy of the 1/(12n) correction is remarkable: for n \u2265 2 the relative error is < 1/n\u00b2, and at n = 10 the correction 1 + 1/120 \u2248 1.00833 already matches the true ratio 1.00834 to about four decimal digits.",
+      "The error bound that replaces the axiom stirling_error_bound_ge_2 collapses to a single algebraic inequality once the correction is in hand: (11n \u2212 12)/(12n\u00b2) \u2265 0 for n \u2265 2, closed by ring + nlinarith \u2014 illustrating how one quantitative theorem can retire a previously assumed bound."
     ]
   },
   "sections": [
     {
+      "id": "module-overview",
+      "title": "Module Overview",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Docstring, imports, and namespace. States the goal \u2014 formalize the first Stirling correction 1/(12n) and use it to eliminate an error-bound axiom \u2014 and notes the coefficients' Euler-Maclaurin origin.",
+      "mathContext": "$n! \\sim \\sqrt{2\\pi n}(n/e)^n\\left(1 + \\tfrac{1}{12n} + \\tfrac{1}{288n^2} - \\cdots\\right)$"
+    },
+    {
       "id": "coefficients",
       "title": "Part I: Stirling Series Coefficients",
-      "startLine": 1,
-      "endLine": 28,
-      "summary": "Defines stirlingCoeff with first 4 coefficients. Proves values match. 0 sorries.",
-      "mathContext": "$a_0 = 1,\\; a_1 = \\frac{1}{12},\\; a_2 = \\frac{1}{288},\\; a_3 = -\\frac{139}{51840}$"
+      "startLine": 32,
+      "endLine": 53,
+      "summary": "Defines stirlingCoeff with the first four coefficients (a_0=1, a_1=1/12, a_2=1/288, a_3=\u2212139/51840) and proves the values hold by rfl.",
+      "mathContext": "$a_k = \\frac{B_{2k}}{2k(2k-1)},\\quad a_1 = \\frac{1}{12},\\ a_2 = \\frac{1}{288}$"
     },
     {
-      "id": "section-29",
-      "title": "Part I: Stirling Series Coefficients (continued)",
-      "startLine": 29,
-      "endLine": 55,
-      "summary": "Continuation of Part I: Stirling Series Coefficients."
+      "id": "partial-series",
+      "title": "Part II: Truncated Stirling Series",
+      "startLine": 55,
+      "endLine": 75,
+      "summary": "Defines stirlingPartial k n = \u03a3_{i<k} a_i/n^i and proves S_1(n)=1 and S_2(n)=1+1/(12n).",
+      "mathContext": "$S_k(n) = \\sum_{i=0}^{k-1}\\frac{a_i}{n^i}$"
     },
     {
-      "id": "expansion",
-      "title": "Parts II-III: First Correction and Main Expansion",
-      "startLine": 56,
-      "endLine": 110,
-      "summary": "Defines stirlingPartial and states the first correction theorem. 2 sorries.",
-      "mathContext": "$\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O(n^{-2})$"
+      "id": "log-bounds",
+      "title": "Part IIIa: Sharp Polynomial Bounds for log(1+x)",
+      "startLine": 77,
+      "endLine": 300,
+      "summary": "Three sharp bounds \u2014 cubic upper, quartic lower, quintic upper \u2014 each proved by the derivative-monotonicity method: g(t)=(polynomial)\u2212log(1+t) has g(0)=0 and g'(t)=t^m/(1+t)\u22650.",
+      "mathContext": "$x - \\tfrac{x^2}{2} + \\tfrac{x^3}{3} - \\tfrac{x^4}{4} \\le \\log(1+x) \\le x - \\tfrac{x^2}{2} + \\tfrac{x^3}{3}$"
+    },
+    {
+      "id": "step-formula",
+      "title": "Part IIIa (cont.): The Stirling Step and Its Bounds",
+      "startLine": 301,
+      "endLine": 411,
+      "summary": "stirling_step_formula rewrites d_k = log(stirlingSeq k) \u2212 log(stirlingSeq(k+1)) as (k+1/2)\u00b7log(1+1/k)\u22121; stirling_step_upper/lower sandwich it as 1/(12k\u00b2) \u00b1 lower-order via the log bounds.",
+      "mathContext": "$d_k = (k+\\tfrac12)\\log(1+\\tfrac1k) - 1 \\in \\left[\\tfrac{1}{12k^2} - \\cdots,\\ \\tfrac{1}{12k^2} + \\tfrac{1}{6k^3}\\right]$"
+    },
+    {
+      "id": "telescoping",
+      "title": "Part IIIb: Telescoping Arithmetic Lemmas",
+      "startLine": 413,
+      "endLine": 494,
+      "summary": "Five elementary rational inequalities expressing each per-step bound as a difference of a potential function, so the partial sums telescope. Each reduces to nonnegativity of a polynomial numerator via field_simp + nlinarith.",
+      "mathContext": "$\\frac{1}{12k^2} \\le \\frac{1}{12(k-1)} - \\frac{1}{12k}$"
+    },
+    {
+      "id": "partial-sums",
+      "title": "Part IIIc: Closed-Form Partial Sum Bounds",
+      "startLine": 496,
+      "endLine": 555,
+      "summary": "By induction on L, log(stirlingSeq n) \u2212 log(stirlingSeq(n+L)) is bounded above and below by telescoping potentials evaluated at the endpoints n and n+L.",
+      "mathContext": "$\\log\\frac{\\mathrm{stirlingSeq}\\,n}{\\mathrm{stirlingSeq}(n+L)} \\le F(n) - F(n+L)$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "Part III: Main Theorem \u2014 Stirling's First Correction",
+      "startLine": 557,
+      "endLine": 802,
+      "summary": "stirling_first_correction proves |stirlingSeq(n)/\u221a\u03c0 \u2212 (1 + 1/(12n))| \u2264 2/n\u00b2 for n \u2265 2. Takes L = log(stirlingSeq n/\u221a\u03c0) = \u03a3_{k\u2265n} d_k, sandwiches L via the partial-sum bounds and the limit stirlingSeq(n+M)\u2192\u221a\u03c0, then converts to the ratio bound with Real.exp_bound. Fully proved, C = 2.",
+      "mathContext": "$\\left|\\frac{\\mathrm{stirlingSeq}(n)}{\\sqrt\\pi} - \\left(1 + \\tfrac{1}{12n}\\right)\\right| \\le \\frac{2}{n^2}$"
+    },
+    {
+      "id": "two-term",
+      "title": "Two-Term Expansion of n!",
+      "startLine": 804,
+      "endLine": 839,
+      "summary": "stirling_two_term_expansion restates the correction for n! itself, derived from the main theorem via the factorization \u221a(2\u03c0n) = \u221a(2n)\u00b7\u221a\u03c0.",
+      "mathContext": "$\\left|\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} - \\left(1 + \\tfrac{1}{12n}\\right)\\right| \\le \\frac{C}{n^2}$"
     },
     {
       "id": "error-bound",
-      "title": "Part IV: Error Bound (Axiom Replacement)",
-      "startLine": 111,
-      "endLine": 145,
-      "summary": "Shows first correction implies the axiomatized error bound. Fully proved (0 sorries). Key step: (11n \u2212 12)/(12n\u00b2) \u2265 0 for n \u2265 2.",
-      "mathContext": "$\\frac{\\text{stirlingSeq}(n)}{\\sqrt{\\pi}} - 1 \\leq \\frac{1}{n}$ for $n \\geq 2$ via $\\frac{1}{n} - \\frac{1}{n^2} - \\frac{1}{12n} = \\frac{11n-12}{12n^2} \\geq 0$"
+      "title": "Part IV: Error Bound (Replaces Axiom)",
+      "startLine": 841,
+      "endLine": 869,
+      "summary": "error_bound_from_correction derives stirlingSeq(n)/\u221a\u03c0 \u2212 1 \u2264 1/n for n \u2265 2 \u2014 the statement axiomatized in StirlingFormula.lean. Reduces to (11n \u2212 12)/(12n\u00b2) \u2265 0, closed by ring + nlinarith.",
+      "mathContext": "$\\frac{1}{n} - \\left(\\frac{1}{n^2} + \\frac{1}{12n}\\right) = \\frac{11n-12}{12n^2} \\ge 0$"
     },
     {
       "id": "numerical",
-      "title": "Part V: Numerical Examples and Summary",
-      "startLine": 144,
-      "endLine": 176,
-      "summary": "Two norm_num examples verify the first correction at n=10 (1 + 1/120) and n=100 (1 + 1/1200). Summary block explains the three paths to proving stirling_first_correction: Euler-Maclaurin, telescoping product analysis, or Gamma function asymptotics.",
-      "mathContext": "$n = 10: 1 + \\frac{1}{120} \\approx 1.00833$; error from true value $< 10^{-5}$"
+      "title": "Part V: Numerical Verification and Notes",
+      "startLine": 871,
+      "endLine": 915,
+      "summary": "Two norm_num checks anchor the correction at n=10 (1+1/120) and n=100 (1+1/1200), followed by development notes recording the path to 0 sorries and the iteration-5 addition of the quintic log bound.",
+      "mathContext": "$n = 10:\\ 1 + \\frac{1}{120} \\approx 1.00833;\\ \\text{true} \\approx 1.00834$"
     }
   ],
   "crossReferences": [
@@ -120,6 +171,16 @@
       "targetId": "stirling-formula-oq-02",
       "relationship": "related",
       "description": "The Gamma function extension also benefits from improved error bounds"
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "application",
+      "description": "The 1/(12n) correction sharpens the factorial estimates behind binomial-coefficient asymptotics, the analytic core of the de Moivre–Laplace local central limit theorem"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "The leading Stirling coefficient 1/12 comes from the Bernoulli number B_2 = 1/6 — the same constant that produces ζ(2) = π²/6 in the Basel problem"
     }
   ],
   "conclusion": {
@@ -154,5 +215,5 @@
       "Proofs/StirlingExpansionAristotle.lean"
     ]
   },
-  "sorries": 3
+  "sorries": 0
 }
