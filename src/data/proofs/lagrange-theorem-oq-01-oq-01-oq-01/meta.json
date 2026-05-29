@@ -38,7 +38,8 @@
       "Concrete corollaries for orders 6, 10, 14, 22 — each delivering a complete existence witness rather than only the divisibility check (the parent file's order_*_non_unique lemmas state only divisibility)",
       "Completes the non-cyclic side of the `p | (q-1)` branch for p = 2, complementing the parent's Sylow-classification of pq-groups",
       "Approach B preliminaries (S3a, S3b): `isCyclic_units_zmod` (instance) and `card_units_zmod` (theorem) supply the cyclic structure of (ℤ/q)ˣ at every prime q",
-      "Approach B order-extraction (S3b): `exists_unit_of_order_p` constructs, for each prime p ∣ q-1, an explicit unit g = g₀^((q-1)/p) ∈ (ℤ/q)ˣ with orderOf g = p — the seed of the non-trivial action φ : ℤ/p →* MulAut (ℤ/q) deferred to S3c"
+      "Approach B order-extraction (S3b): `exists_unit_of_order_p` constructs, for each prime p ∣ q-1, an explicit unit g = g₀^((q-1)/p) ∈ (ℤ/q)ˣ with orderOf g = p — the seed of the non-trivial action φ : ℤ/p →* MulAut (ℤ/q) deferred to S3c",
+      "Approach B general discharge (S3d-ii): `exists_noncyclic_of_pq_when_p_dvd_q_sub_one` — for EVERY pair of primes with p ∣ (q-1), the semidirect product Multiplicative (ZMod q) ⋊[actionHom] Multiplicative (ZMod p) is an explicit non-cyclic group of order pq. Sorry-free and 0 axioms; the non-triviality of the action (the subtle step the S10 PREP forecast as a `sorry`) is proved via `actionHom_ofAdd_one`, showing the cyclic generator acts as the order-p automorphism ψ ≠ 1. This completes the existence direction of the OQ for all p ∣ (q-1), generalizing Approach A's p = 2 dihedral family"
     ]
   },
   "overview": {
@@ -100,10 +101,10 @@
     "summary": "This file proves 6 theorems with 0 sorries and 0 axioms, supplying explicit non-cyclic witnesses of order 2q for every odd prime q. The main theorem exists_noncyclic_of_order_two_mul_odd_prime, the divisibility certificate two_dvd_sub_one_of_odd_prime, and four concrete corollaries (orders 6, 10, 14, 22) complete the p = 2 specialization of the OQ.",
     "implications": "Combined with the parent pq-classification (LagrangeTheoremOQ01OQ01), this gives a complete two-sided picture in the p = 2 regime: when 2 ∤ (q-1) — i.e., q = 2 — only the cyclic group ℤ/4 and Klein four exist (handled separately because p < q is required); when 2 | (q-1) — i.e., q odd prime — both ℤ/(2q) and DihedralGroup q exist, and they are non-isomorphic (cyclic vs not cyclic). The Approach B generalization to arbitrary p with p | (q-1) is deferred and requires the SemidirectProduct construction.",
     "openQuestions": [
-      "S3c (Approach B, deferred): Lift the order-p unit g ∈ (ZMod q)ˣ produced by `exists_unit_of_order_p` to a non-trivial group homomorphism φ : ZMod p →* AddAut (ZMod q) (equivalently MulAut of the additive cyclic group ZMod q). The natural candidate sends 1 : ZMod p to the multiplication-by-g additive automorphism on ZMod q; the universal property of cyclic groups (`zmodEquivZPowers` / `ZMod.lift`) bundles the resulting cyclic image into a homomorphism out of ZMod p",
-      "S3d (Approach B, deferred): Assemble `ZMod q ⋊[φ] ZMod p` via `SemidirectProduct`, verify Nat.card = p * q (factoring through `SemidirectProduct.card` = `Nat.card N * Nat.card H`), and prove `¬ IsCyclic` (non-trivial action ⇒ non-abelian ⇒ non-cyclic)",
+      "RESOLVED (S3c, Approach B): the order-p unit was lifted to `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` via the AddAut→MulAut transport (`exists_mulAut_mult_of_order_p`) and `ZMod.lift` / `zmultiplesHom` / `AddMonoidHom.toMultiplicativeLeft`.",
+      "RESOLVED (S3d, Approach B): `exists_noncyclic_of_pq_when_p_dvd_q_sub_one` assembles `Multiplicative (ZMod q) ⋊[actionHom] Multiplicative (ZMod p)`, proves `Nat.card = p * q` (via `SemidirectProduct.card`), and `¬ IsCyclic` (non-trivial action ⇒ non-abelian) — sorry-free, in `LagrangeTheoremOQ01OQ01OQ01ApproachB.lean`. Together with Approach A (p=2), this discharges the existence direction of the OQ for every p ∣ (q-1).",
       "Prove the iff version: there exists a non-cyclic group of order pq iff p | (q-1) (the converse direction is the parent's pq_unique_when_coprime)",
-      "Prove uniqueness: any two non-cyclic groups of order 2q (q odd prime) are isomorphic to each other (and to DihedralGroup q)"
+      "Prove uniqueness: any two non-cyclic groups of order pq (p | q-1) are isomorphic (to the semidirect product / DihedralGroup q for p=2)"
     ]
   },
   "crossReferences": [
@@ -138,12 +139,12 @@
     "additionalFiles": [
       {
         "path": "Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean",
-        "lineCount": 320,
-        "theorems": 6,
-        "definitions": 2,
+        "lineCount": 440,
+        "theorems": 11,
+        "definitions": 3,
         "axioms": 0,
         "sorries": 0,
-        "description": "Approach B full chain (S3a → S3d-i): S3a — cyclic structure of (ZMod q)ˣ (`isCyclic_units_zmod` instance + `card_units_zmod`). S3b — order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p)). S3c-i — lift via `unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` + `exists_addAut_of_order_p`. S3c-ii — transport `AddAut (ZMod q)` to `MulAut (Multiplicative (ZMod q))` via `exists_mulAut_mult_of_order_p`. S3d-i — final `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` (noncomputable, 1 sanity example). Sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3d-ii: full SemidirectProduct assembly + non-cyclic proof (paste-ready ~80-LOC skeleton in research/problems/lagrange-theorem-oq-01-oq-01-oq-01/notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md §3).\n"
+        "description": "Approach B complete chain (S3a → S3d-ii), discharging the general case of the OQ sorry-free. S3a — cyclic structure of (ZMod q)ˣ (`isCyclic_units_zmod` instance + `card_units_zmod`). S3b — order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p)). S3c-i — lift via `unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` + `exists_addAut_of_order_p`. S3c-ii — transport to `MulAut (Multiplicative (ZMod q))` via `exists_mulAut_mult_of_order_p`. S3d-i — action hom `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`. S3d-ii — assembly: `approachBGroup` = `Multiplicative (ZMod q) ⋊[actionHom] Multiplicative (ZMod p)`, with `approachBGroup_card` (Nat.card = p*q), `approachBGroup_not_isCyclic`, and the main theorem `exists_noncyclic_of_pq_when_p_dvd_q_sub_one`. The non-triviality witness `exists_actionHom_not_fixed` (forecast as a `sorry` in the S10 PREP) is proved via `actionHom_ofAdd_one` (`actionHom (ofAdd 1) = ψ`, the order-p automorphism). Order-21 sanity example. Now imports only Mathlib (decoupled from the Sylow-blocked Approach-A chain), so this file builds and is fully verified independently.\n"
       }
     ]
   },
