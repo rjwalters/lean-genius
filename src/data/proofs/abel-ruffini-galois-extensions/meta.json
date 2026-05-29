@@ -595,105 +595,232 @@
       "title": "Module Header: Imports and Proof Architecture",
       "startLine": 1,
       "endLine": 48,
-      "summary": "Five Mathlib imports form a dependency hierarchy: `AbelRuffini` (field theory + radical solvability), `Solvable` (IsSolvable predicate and solvable_of_ker_le_range), `Alternating` (alternating groups and A₅ simplicity), `Galois.Basic` (IsGalois and card_aut_eq_finrank), and `Perm.Sign` (sign homomorphism). The module docstring announces a 15-section structure proving S_n solvable ↔ n ≤ 4 from first principles, extending the simpler AbelRuffini.lean."
+      "summary": "Five Mathlib imports form a dependency hierarchy: `AbelRuffini` (field theory + radical solvability), `Solvable` (IsSolvable predicate and solvable_of_ker_le_range), `Alternating` (alternating groups and A₅ simplicity), `Galois.Basic` (IsGalois and card_aut_eq_finrank), and `Perm.Sign` (sign homomorphism). The module docstring announces a 15-section structure proving S_n solvable ↔ n ≤ 4 from first principles, extending the simpler AbelRuffini.lean.",
+      "mathContext": "The proof rests on five Mathlib pillars. `Mathlib.FieldTheory.AbelRuffini` supplies `solvableByRad.isSolvable'`: if $\\alpha$ is solvable by radicals over $F$ and is a root of an irreducible $q$, then $\\mathrm{Gal}(q)$ is solvable — the field-theoretic half of Galois's criterion. `Mathlib.GroupTheory.Solvable` provides the `IsSolvable G` typeclass (the derived series $G^{(k)}$ eventually reaches $1$) and the splicing lemma `solvable_of_ker_le_range`: from a short exact sequence $1 \\to N \\to G \\to Q \\to 1$ with $N$ and $Q$ solvable, conclude $G$ solvable. This file supplies the *group-theoretic* half — exactly which $S_n$ are solvable — which combines with the field-theoretic half to yield Abel–Ruffini.",
+      "relatedConcepts": [
+        "IsSolvable",
+        "solvable_of_ker_le_range",
+        "solvableByRad.isSolvable'",
+        "short exact sequence",
+        "derived series",
+        "Galois solvability criterion"
+      ]
     },
     {
       "id": "small-symmetric-groups",
       "title": "Small Symmetric Groups: S₀–S₄ Solvable",
       "startLine": 49,
       "endLine": 152,
-      "summary": "Proves $S_0, S_1$ solvable by subsingleton; $S_2$ by commutativity; $S_3$ via the exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$; $S_4$ via the Klein four-group $V_4 \\trianglelefteq A_4$ and the extension $1 \\to A_4 \\to S_4 \\to \\mathbb{Z}^\\times \\to 1$. Also proves $A_0$–$A_4$ solvable."
+      "summary": "Proves $S_0, S_1$ solvable by subsingleton; $S_2$ by commutativity; $S_3$ via the exact sequence $1 \\to A_3 \\to S_3 \\to \\mathbb{Z}^\\times \\to 1$; $S_4$ via the Klein four-group $V_4 \\trianglelefteq A_4$ and the extension $1 \\to A_4 \\to S_4 \\to \\mathbb{Z}^\\times \\to 1$. Also proves $A_0$–$A_4$ solvable.",
+      "mathContext": "Solvability is built up the chain $S_0,\\dots,S_4$ using the extension lemma `solvable_of_ker_le_range` applied to the sign sequence $1 \\to A_n \\to S_n \\xrightarrow{\\mathrm{sgn}} \\{\\pm 1\\} \\to 1$. $S_0, S_1$ are trivial (`Unique`, hence `isSolvable_of_subsingleton`); $S_2 \\cong \\mathbb{Z}/2$ and $A_3 \\cong \\mathbb{Z}/3$ are abelian (`isSolvable_of_comm`). The crux is $A_4$, which is *not* abelian: solvability comes from the tower $1 \\trianglelefteq V_4 \\trianglelefteq A_4$, where $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the Klein four-group (the normal Sylow-2 subgroup of $A_4$) with $A_4/V_4 \\cong \\mathbb{Z}/3$. Both $V_4$ and the quotient are abelian, so two applications of the extension lemma give $A_4$, then $S_4$, solvable. $V_4$ is built explicitly as the `Subgroup` $\\{x : x^2 = 1\\}$, with normality discharged by `native_decide`.",
+      "relatedConcepts": [
+        "Klein four-group",
+        "short exact sequence",
+        "sign homomorphism",
+        "isSolvable_of_comm",
+        "derived series",
+        "alternatingGroup",
+        "normal subgroup"
+      ]
     },
     {
       "id": "sharp-threshold",
       "title": "Sharp Threshold: S_n Solvable ↔ n ≤ 4",
       "startLine": 154,
       "endLine": 183,
-      "summary": "Proves the complete biconditional: $S_n$ solvable $\\iff n \\leq 4$. Uses `interval_cases n <;> infer_instance` for $n \\leq 4$ and Mathlib's `Equiv.Perm.not_solvable` for $n \\geq 5$."
+      "summary": "Proves the complete biconditional: $S_n$ solvable $\\iff n \\leq 4$. Uses `interval_cases n <;> infer_instance` for $n \\leq 4$ and Mathlib's `Equiv.Perm.not_solvable` for $n \\geq 5$.",
+      "mathContext": "The biconditional $\\mathrm{IsSolvable}(S_n) \\iff n \\le 4$. The $n \\ge 5$ direction reduces to Mathlib's `Equiv.Perm.not_solvable`, which needs the cardinality bound $5 \\le \\#(\\mathrm{Fin}\\,n)$ (recast through `Cardinal.mk_fintype`). The $n \\le 4$ direction is the finite case split `interval_cases n <;> infer_instance`, each instance having been registered in Part I. This is the sharp group-theoretic threshold underlying Abel–Ruffini: $n = 4$ is exactly the largest degree for which the symmetric group — and hence the generic Galois group of a degree-$n$ polynomial — is solvable.",
+      "relatedConcepts": [
+        "Equiv.Perm.not_solvable",
+        "interval_cases",
+        "solvability threshold",
+        "Cardinal.mk",
+        "biconditional"
+      ]
     },
     {
       "id": "a5-obstruction",
       "title": "A₅: The Minimal Obstruction and Galois Connection",
       "startLine": 185,
       "endLine": 235,
-      "summary": "Proves $A_5$ is simple (`alternatingGroup.isSimpleGroup_five`), verifies $|A_5| = 60$, and formalizes Galois's contrapositive: non-solvable Galois group implies the polynomial is not solvable by radicals. Also proves Galois group order = extension degree."
+      "summary": "Proves $A_5$ is simple (`alternatingGroup.isSimpleGroup_five`), verifies $|A_5| = 60$, and formalizes Galois's contrapositive: non-solvable Galois group implies the polynomial is not solvable by radicals. Also proves Galois group order = extension degree.",
+      "mathContext": "$A_5$ is the *minimal obstruction*: the smallest non-abelian simple group, of order $60$. Simplicity (`alternatingGroup.isSimpleGroup_five`) means its only normal subgroups are $\\{e\\}$ and $A_5$, so its derived series is constant at $A_5 \\ne 1$ — it is non-solvable, and it appears as a composition factor of every $S_n$ with $n \\ge 5$. The radical-solvability bridge `not_solvable_by_rad_of_not_solvable_galois` is the contrapositive of Galois's criterion: for irreducible $q$ with root $\\alpha$, if $\\mathrm{Gal}(q)$ is not solvable then $\\alpha$ is not solvable by radicals. Together with `galois_group_order` ($\\#\\mathrm{Aut}(E/F) = [E:F]$ for a finite Galois extension, i.e. `IsGalois.card_aut_eq_finrank`), this is the precise hinge translating group non-solvability into the impossibility of a radical formula.",
+      "relatedConcepts": [
+        "simple group",
+        "minimal non-solvable group",
+        "Galois solvability criterion",
+        "IsSolvableByRad",
+        "IsGalois.card_aut_eq_finrank",
+        "composition factor"
+      ]
     },
     {
       "id": "subgroup-solvability",
       "title": "Part VI: Subgroup Solvability",
       "startLine": 237,
       "endLine": 248,
-      "summary": "Proves that subgroups of solvable groups are solvable via `inferInstance` — a single-keyword proof demonstrating Lean's typeclass hierarchy: $H \\leq G$, $G$ solvable $\\Rightarrow H$ solvable (derived series of $H$ contained in that of $G$). Used implicitly throughout to conclude $A_n \\leq S_n$ solvable whenever $S_n$ is solvable."
+      "summary": "Proves that subgroups of solvable groups are solvable via `inferInstance` — a single-keyword proof demonstrating Lean's typeclass hierarchy: $H \\leq G$, $G$ solvable $\\Rightarrow H$ solvable (derived series of $H$ contained in that of $G$). Used implicitly throughout to conclude $A_n \\leq S_n$ solvable whenever $S_n$ is solvable.",
+      "mathContext": "If $G$ is solvable and $H \\le G$, then $H$ is solvable, because the derived series satisfies $H^{(k)} \\le G^{(k)}$ for all $k$, so $G^{(n)} = 1$ forces $H^{(n)} = 1$. In Lean this is a Mathlib instance found by `inferInstance` — the one-keyword proof witnessing that solvability is *hereditary* downward. This closure property is used silently wherever the file concludes that $A_n \\le S_n$ is solvable from $S_n$ solvable (e.g. `alternating_solvable_of_le_four`).",
+      "relatedConcepts": [
+        "derived series",
+        "hereditary property",
+        "subgroup",
+        "typeclass inference"
+      ]
     },
     {
       "id": "alternating-non-solvable",
       "title": "Part VII: Alternating Group Non-Solvability Classification",
       "startLine": 250,
       "endLine": 287,
-      "summary": "Proves $A_n$ not solvable for $n \\geq 5$ (by contradiction: $A_n$ solvable would imply $S_n$ solvable via `solvable_of_ker_le_range`, contradicting `symmetric_not_solvable_of_five_le`). Proves $A_n$ solvable for $n \\leq 4$ (subgroup of solvable $S_n$). Assembles the complete biconditional `alternating_solvable_iff`: $A_n$ solvable $\\iff n \\leq 4$."
+      "summary": "Proves $A_n$ not solvable for $n \\geq 5$ (by contradiction: $A_n$ solvable would imply $S_n$ solvable via `solvable_of_ker_le_range`, contradicting `symmetric_not_solvable_of_five_le`). Proves $A_n$ solvable for $n \\leq 4$ (subgroup of solvable $S_n$). Assembles the complete biconditional `alternating_solvable_iff`: $A_n$ solvable $\\iff n \\leq 4$.",
+      "mathContext": "The alternating analogue of the sharp threshold: $\\mathrm{IsSolvable}(A_n) \\iff n \\le 4$. Non-solvability for $n \\ge 5$ is by contradiction — were $A_n$ solvable, the sign sequence $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$ with `solvable_of_ker_le_range` would make $S_n$ solvable, contradicting `symmetric_not_solvable_of_five_le`. Solvability for $n \\le 4$ is downward heredity: $A_n \\le S_n$ and $S_n$ is solvable. Note the logical routing: rather than deriving non-solvability directly from $A_5 \\le A_n$, the proof goes through $S_n$, reusing the already-established symmetric threshold.",
+      "relatedConcepts": [
+        "short exact sequence",
+        "solvable_of_ker_le_range",
+        "proof by contradiction",
+        "sign homomorphism",
+        "biconditional"
+      ]
     },
     {
       "id": "group-cardinalities",
       "title": "Part VIII: Group Cardinalities — $|S_n| = n!$ and $|A_n| = n!/2$",
       "startLine": 289,
       "endLine": 328,
-      "summary": "Verifies $|S_2|=2, |S_3|=6, |S_4|=24, |S_5|=120, |S_6|=720$ and $|A_0|=|A_1|=|A_2|=1, |A_3|=3, |A_4|=12, |A_5|=60, |A_6|=360$ computationally. Uses `decide` for small groups and `native_decide` for $S_6$ and $A_6$ (720 and 360 elements exceed kernel evaluation budget). Anchors the $|S_n| = n!$ and $|A_n| = n!/2$ identities as verified facts."
+      "summary": "Verifies $|S_2|=2, |S_3|=6, |S_4|=24, |S_5|=120, |S_6|=720$ and $|A_0|=|A_1|=|A_2|=1, |A_3|=3, |A_4|=12, |A_5|=60, |A_6|=360$ computationally. Uses `decide` for small groups and `native_decide` for $S_6$ and $A_6$ (720 and 360 elements exceed kernel evaluation budget). Anchors the $|S_n| = n!$ and $|A_n| = n!/2$ identities as verified facts.",
+      "mathContext": "Order computations $|S_n| = n!$ and $|A_n| = n!/2$ verified by reflection. `decide` evaluates `Fintype.card` inside the Lean kernel for small $n$ (up to $|S_5| = 120$, $|A_5| = 60$); `native_decide` compiles to native code for $|S_6| = 720$ and $|A_6| = 360$, which exceed the kernel's reduction budget. These are not mere sanity checks: $|A_5| = 60$ is the order of the smallest non-abelian simple group, and the relation $|S_n| = 2|A_n|$ is exactly the index identity $[S_n : A_n] = 2$ — the statement that $A_n = \\ker(\\mathrm{sgn})$ has index $2$, the structural fact powering every sign-sequence argument.",
+      "relatedConcepts": [
+        "Fintype.card",
+        "decide",
+        "native_decide",
+        "factorial",
+        "index of a subgroup",
+        "proof by reflection"
+      ]
     },
     {
       "id": "solvability-preservation",
       "title": "Part IX: Solvability Preservation — Quotients and Isomorphisms",
       "startLine": 330,
       "endLine": 347,
-      "summary": "Proves solvability is preserved under quotient groups ($G/N$ solvable whenever $G$ solvable, via `inferInstance`) and isomorphic groups ($G \\cong H$, $G$ solvable $\\Rightarrow H$ solvable via `solvable_of_surjective`). Together with subgroup solvability (Part VI), these three closure properties — subgroups, quotients, isomorphisms — make solvability a robust hereditary invariant under the Galois correspondence."
+      "summary": "Proves solvability is preserved under quotient groups ($G/N$ solvable whenever $G$ solvable, via `inferInstance`) and isomorphic groups ($G \\cong H$, $G$ solvable $\\Rightarrow H$ solvable via `solvable_of_surjective`). Together with subgroup solvability (Part VI), these three closure properties — subgroups, quotients, isomorphisms — make solvability a robust hereditary invariant under the Galois correspondence.",
+      "mathContext": "Two further closure properties completing the trio (with subgroups, Part VI): quotients ($G$ solvable $\\Rightarrow G/N$ solvable, since $(G/N)^{(k)}$ is the image of $G^{(k)}$) and isomorphism-invariance ($G \\cong H$, $G$ solvable $\\Rightarrow H$ solvable via `solvable_of_surjective`, as surjections preserve solvability). Together $\\{$subgroup, quotient, surjective image$\\}$ make `IsSolvable` a *closed class* — closed under sub, quotient, and extension — which is the abstract characterization of solvable groups and the reason solvability transfers cleanly across the Galois correspondence between subfields and subgroups.",
+      "relatedConcepts": [
+        "quotient group",
+        "solvable_of_surjective",
+        "MulEquiv",
+        "closed class of groups",
+        "Galois correspondence",
+        "derived series"
+      ]
     },
     {
       "id": "index-theorems",
       "title": "Part X: Index and Structure Theorems",
       "startLine": 349,
       "endLine": 365,
-      "summary": "Verifies $|S_0|=1$ and $|S_1|=1$ via `decide`, and instantiates `a5_not_solvable` as a named corollary (`alternating_not_solvable_of_five_le le_rfl`) for direct citation by downstream proofs. These three results anchor the cardinality chain at its base cases and provide a canonically named reference to the $A_5$ obstruction."
+      "summary": "Verifies $|S_0|=1$ and $|S_1|=1$ via `decide`, and instantiates `a5_not_solvable` as a named corollary (`alternating_not_solvable_of_five_le le_rfl`) for direct citation by downstream proofs. These three results anchor the cardinality chain at its base cases and provide a canonically named reference to the $A_5$ obstruction.",
+      "mathContext": "Base-case anchors $|S_0| = |S_1| = 1$ (trivial permutation groups) and a canonically named corollary `a5_not_solvable := alternating_not_solvable_of_five_le le_rfl` exposing the $A_5$ obstruction for direct downstream citation. Naming the $n = 5$ instance separately turns the general $n \\ge 5$ theorem into a zero-argument lemma — the cleanest possible reference point for the keystone fact that $A_5$ is not solvable.",
+      "relatedConcepts": [
+        "trivial group",
+        "named corollary",
+        "A5 obstruction",
+        "le_rfl"
+      ]
     },
     {
       "id": "specific-non-solvable",
       "title": "Part XI: Specific Non-Solvability: S₅–S₈ and A₅–A₇",
       "startLine": 366,
       "endLine": 406,
-      "summary": "Concrete non-solvability witnesses for $S_5, S_6, S_7, S_8$ and $A_5, A_6, A_7$ — each a one-liner applying `symmetric_not_solvable_of_five_le` or `alternating_not_solvable_of_five_le` with `omega`-computed bounds. Includes `symmetric_not_solvable_of_alternating`: if $A_n$ is not solvable then $S_n$ is not solvable (contrapositive of subgroup solvability, proved immediately by `inferInstance`)."
+      "summary": "Concrete non-solvability witnesses for $S_5, S_6, S_7, S_8$ and $A_5, A_6, A_7$ — each a one-liner applying `symmetric_not_solvable_of_five_le` or `alternating_not_solvable_of_five_le` with `omega`-computed bounds. Includes `symmetric_not_solvable_of_alternating`: if $A_n$ is not solvable then $S_n$ is not solvable (contrapositive of subgroup solvability, proved immediately by `inferInstance`).",
+      "mathContext": "Explicit non-solvability instances for $S_5,\\dots,S_8$ and $A_5,\\dots,A_7$, each obtained by feeding an `omega`-discharged bound $n \\ge 5$ into the general thresholds. The structurally interesting result is `symmetric_not_solvable_of_alternating`: $\\neg\\,\\mathrm{IsSolvable}(A_n) \\Rightarrow \\neg\\,\\mathrm{IsSolvable}(S_n)$, the contrapositive of downward heredity ($A_n \\le S_n$, so $S_n$ solvable would force $A_n$ solvable). It encodes the principle that a non-solvable subgroup obstructs solvability of the whole group — the abstract reason $A_5 \\trianglelefteq S_5$ makes $S_5$ non-solvable.",
+      "relatedConcepts": [
+        "omega",
+        "contrapositive",
+        "subgroup obstruction",
+        "subgroup heredity",
+        "non-solvable group"
+      ]
     },
     {
       "id": "chain-properties",
       "title": "Part XII: Chain Properties and Sign Kernel Identity",
       "startLine": 407,
       "endLine": 429,
-      "summary": "Proves the commutator subgroup of a solvable group is solvable (`commutator_solvable`), establishes $\\ker(\\text{sign}) = A_n$ formally (`sign_kernel_is_alternating`), and packages joint solvability of $S_n$ and $A_n$ for $n \\leq 4$ (`solvable_small_has_abelian_factors`). The sign kernel identity is the keystone connecting all short exact sequence arguments in the file."
+      "summary": "Proves the commutator subgroup of a solvable group is solvable (`commutator_solvable`), establishes $\\ker(\\text{sign}) = A_n$ formally (`sign_kernel_is_alternating`), and packages joint solvability of $S_n$ and $A_n$ for $n \\leq 4$ (`solvable_small_has_abelian_factors`). The sign kernel identity is the keystone connecting all short exact sequence arguments in the file.",
+      "mathContext": "Three derived-series and structure facts. `commutator_solvable`: the commutator subgroup $[G,G] = G^{(1)}$ of a solvable group is solvable (its derived series is a tail of $G$'s). `sign_kernel_is_alternating`: $\\ker(\\mathrm{sgn} : S_n \\to \\{\\pm 1\\}) = A_n$, proved by `ext` plus `Equiv.Perm.mem_alternatingGroup` — this is the definitional link tying the alternating group to the sign homomorphism and is what makes every $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$ argument well-typed. `solvable_small_has_abelian_factors` bundles solvability of $S_n$ and $A_n$ for $n \\le 4$, recording that these groups admit composition series with abelian (indeed cyclic) factors.",
+      "relatedConcepts": [
+        "commutator subgroup",
+        "sign homomorphism",
+        "kernel",
+        "Equiv.Perm.mem_alternatingGroup",
+        "composition series",
+        "abelian factors"
+      ]
     },
     {
       "id": "non-commutativity",
       "title": "Part XIII: Non-Commutativity Witnesses",
       "startLine": 431,
       "endLine": 462,
-      "summary": "Proves $S_3, S_4, S_5, A_4, A_5$ non-abelian by exhibiting non-commuting element pairs via `push_neg` followed by `decide` (small groups) or `native_decide` (larger groups). Confirms that only $S_1$ and $S_2$ are abelian symmetric groups — a sharp boundary consistent with the solvability classification at $n = 4$."
+      "summary": "Proves $S_3, S_4, S_5, A_4, A_5$ non-abelian by exhibiting non-commuting element pairs via `push_neg` followed by `decide` (small groups) or `native_decide` (larger groups). Confirms that only $S_1$ and $S_2$ are abelian symmetric groups — a sharp boundary consistent with the solvability classification at $n = 4$.",
+      "mathContext": "Non-commutativity witnesses obtained by `push_neg` (turning $\\neg\\,\\forall a\\,b,\\ ab = ba$ into $\\exists a\\,b,\\ ab \\ne ba$) then `decide`/`native_decide` to exhibit a concrete non-commuting pair. The boundary is sharp: only $S_0, S_1, S_2$ (and $A_n$ for $n \\le 3$) are abelian. Non-commutativity is necessary but not sufficient for non-solvability — $S_3, S_4, A_4$ are non-abelian yet solvable — so these witnesses sit *below* the solvability threshold and illustrate that the genuine obstruction is a non-abelian *simple composition factor* ($A_5$), not mere non-commutativity.",
+      "relatedConcepts": [
+        "push_neg",
+        "decide",
+        "non-abelian group",
+        "solvability vs commutativity",
+        "A5 minimal simple group"
+      ]
     },
     {
       "id": "higher-cardinalities",
       "title": "Part XIV: Higher Cardinalities — S₇, S₈, A₇, A₈",
       "startLine": 464,
       "endLine": 494,
-      "summary": "Verifies $|S_7|=5040, |S_8|=40320, |A_7|=2520, |A_8|=20160$ via `native_decide` (required since $|S_8| = 40320$ elements exceed kernel evaluation budget). Adds explicit non-solvability for $A_6, A_7, A_8$ as one-liners. Notes the exceptional isomorphism $A_8 \\cong GL_4(\\mathbb{F}_2)$ (order 20160) — one of five exceptional isomorphisms between alternating and classical groups discovered during the CFSG."
+      "summary": "Verifies $|S_7|=5040, |S_8|=40320, |A_7|=2520, |A_8|=20160$ via `native_decide` (required since $|S_8| = 40320$ elements exceed kernel evaluation budget). Adds explicit non-solvability for $A_6, A_7, A_8$ as one-liners. Notes the exceptional isomorphism $A_8 \\cong GL_4(\\mathbb{F}_2)$ (order 20160) — one of five exceptional isomorphisms between alternating and classical groups discovered during the CFSG.",
+      "mathContext": "Large-order verifications $|S_7| = 5040$, $|S_8| = 40320$, $|A_7| = 2520$, $|A_8| = 20160$ by `native_decide` (kernel reduction is infeasible at these sizes). The remark $A_8 \\cong \\mathrm{GL}_4(\\mathbb{F}_2) = \\mathrm{PSL}_4(\\mathbb{F}_2)$ (both order $20160$) is one of the *exceptional isomorphisms* between alternating groups and finite groups of Lie type ($A_5 \\cong \\mathrm{PSL}_2(4) \\cong \\mathrm{PSL}_2(5)$, $A_6 \\cong \\mathrm{PSL}_2(9)$, $A_8 \\cong \\mathrm{PSL}_4(2)$) — coincidences that vanish for large $n$ and were catalogued during the classification of finite simple groups.",
+      "relatedConcepts": [
+        "native_decide",
+        "exceptional isomorphism",
+        "PSL",
+        "GL_4(F_2)",
+        "finite simple groups",
+        "classification of finite simple groups"
+      ]
     },
     {
       "id": "factorial-identities",
       "title": "Part XV: Factorial Identity Verification ($|S_n| = n!$, $|A_n| = n!/2$)",
       "startLine": 496,
       "endLine": 516,
-      "summary": "Proves $|S_n| = n!$ and $|A_n| = n!/2$ as named theorems for $n = 3, 4, 5$ via `decide`. Serves as simp lemmas bridging `Fintype.card` API to `Nat.factorial`, and as regression tests confirming Mathlib's fintype instance for $\\text{Equiv.Perm}(\\text{Fin } n)$ correctly evaluates to $n!$. The identity $|A_n| = n!/2$ follows from $[S_n : A_n] = 2$ (index of $\\ker(\\text{sign})$), an application of Lagrange's theorem."
+      "summary": "Proves $|S_n| = n!$ and $|A_n| = n!/2$ as named theorems for $n = 3, 4, 5$ via `decide`. Serves as simp lemmas bridging `Fintype.card` API to `Nat.factorial`, and as regression tests confirming Mathlib's fintype instance for $\\text{Equiv.Perm}(\\text{Fin } n)$ correctly evaluates to $n!$. The identity $|A_n| = n!/2$ follows from $[S_n : A_n] = 2$ (index of $\\ker(\\text{sign})$), an application of Lagrange's theorem.",
+      "mathContext": "The cardinalities recast against `Nat.factorial`: $|S_n| = n!$ and $|A_n| = n!/2$ for $n = 3, 4, 5$. Bridging `Fintype.card (Equiv.Perm (Fin n))` to `Nat.factorial n` makes these usable as `simp` lemmas and as regression tests on Mathlib's fintype instance for permutations. The half-factorial $|A_n| = n!/2$ is the index identity $[S_n : A_n] = 2$ via Lagrange's theorem — $A_n$ is the index-$2$ kernel of the sign map, the cleanest example of a subgroup whose order is forced by its index.",
+      "relatedConcepts": [
+        "Nat.factorial",
+        "Fintype.card",
+        "Lagrange's theorem",
+        "index of a subgroup",
+        "simp lemma",
+        "sign homomorphism"
+      ]
     },
     {
       "id": "module-summary",
       "title": "Module Summary and Theorem Inventory",
       "startLine": 517,
       "endLine": 534,
-      "summary": "Closing docstring inventories 55+ theorems across the 15 sections: solvable small groups ($S_0$–$S_4$, $A_3$–$A_4$), non-solvable large groups ($S_n$, $A_n$ for $n \\geq 5$), the two complete biconditionals ($S_n$ solvable $\\iff n \\leq 4$; $A_n$ solvable $\\iff n \\leq 4$), structural results ($A_5$ simple, $\\ker(\\text{sign}) = A_n$, cardinalities), non-commutativity witnesses, and preservation theorems. Closes the `AbelRuffiniGaloisExtensions` namespace at line 534, making all results accessible for import."
+      "summary": "Closing docstring inventories 55+ theorems across the 15 sections: solvable small groups ($S_0$–$S_4$, $A_3$–$A_4$), non-solvable large groups ($S_n$, $A_n$ for $n \\geq 5$), the two complete biconditionals ($S_n$ solvable $\\iff n \\leq 4$; $A_n$ solvable $\\iff n \\leq 4$), structural results ($A_5$ simple, $\\ker(\\text{sign}) = A_n$, cardinalities), non-commutativity witnesses, and preservation theorems. Closes the `AbelRuffiniGaloisExtensions` namespace at line 534, making all results accessible for import.",
+      "mathContext": "The closing inventory frames the file's contribution: a complete, machine-checked solvability classification of $S_n$ and $A_n$ pinned to the threshold $n = 4$. The two biconditionals $\\mathrm{IsSolvable}(S_n) \\iff n \\le 4$ and $\\mathrm{IsSolvable}(A_n) \\iff n \\le 4$ are the group-theoretic content that, paired with Galois's criterion, yields Abel–Ruffini: the generic polynomial of degree $\\ge 5$ has non-solvable Galois group $S_n$ and hence no solution in radicals.",
+      "relatedConcepts": [
+        "solvability classification",
+        "Abel-Ruffini theorem",
+        "Galois solvability criterion",
+        "namespace",
+        "theorem inventory"
+      ]
     }
   ],
   "sorries": 0
