@@ -213,7 +213,15 @@
       "startLine": 1,
       "endLine": 50,
       "summary": "Four Mathlib imports: `AbelRuffini` (`solvableByRad.isSolvable'`, `IsSolvableByRad`), `GroupTheory.Solvable` (`IsSolvable`, `Equiv.Perm.not_solvable`), `SpecificGroups.Alternating` (`alternatingGroup.isSimpleGroup_five`), `FieldTheory.Galois.Basic` (`Polynomial.Gal`). Module docstring, namespace declaration, Part I docstring on solvability by radicals, and universe-polymorphic field variables.",
-      "mathContext": "The four imports form the entire mathematical foundation: `AbelRuffini` provides the bridge between radical solvability and Galois group solvability; `GroupTheory.Solvable` supplies `IsSolvable` (the predicate for solvable groups) and the fact that $S_5$ fails it; `SpecificGroups.Alternating` furnishes the simplicity of $A_5$; `FieldTheory.Galois.Basic` provides `Polynomial.Gal` (the Galois group of a polynomial as a subgroup of $S_n$). Every theorem in the file is a direct composition of lemmas from these modules."
+      "mathContext": "The four imports form the entire mathematical foundation: `AbelRuffini` provides the bridge between radical solvability and Galois group solvability; `GroupTheory.Solvable` supplies `IsSolvable` (the predicate for solvable groups) and the fact that $S_5$ fails it; `SpecificGroups.Alternating` furnishes the simplicity of $A_5$; `FieldTheory.Galois.Basic` provides `Polynomial.Gal` (the Galois group of a polynomial as a subgroup of $S_n$). Every theorem in the file is a direct composition of lemmas from these modules.",
+      "relatedConcepts": [
+        "IsSolvableByRad",
+        "IsSolvable",
+        "solvableByRad.isSolvable'",
+        "Polynomial.Gal",
+        "Equiv.Perm.not_solvable",
+        "alternatingGroup.isSimpleGroup_five"
+      ]
     },
     {
       "id": "galois-bridge",
@@ -221,7 +229,15 @@
       "startLine": 51,
       "endLine": 68,
       "summary": "Part II docstring and `galois_bridge`: if $\\alpha$ is solvable by radicals over $F$ and $\\alpha$ is a root of irreducible $q$, then `IsSolvable q.Gal`. One-line proof: `solvableByRad.isSolvable' hq hroot hrad`. The key bridge between field theory and group theory.",
-      "mathContext": "This theorem captures the hard direction of Galois's fundamental theorem: an element expressible via field operations and $n$th roots forces its minimal polynomial's Galois group to be solvable (admit a composition series with abelian factors). The converse — solvable Galois group implies solvable by radicals — is also true but not needed for the impossibility result. The contrapositive used later is: if $\\text{Gal}(q)$ is not solvable, then no root of $q$ is expressible by radicals."
+      "mathContext": "This theorem captures the hard direction of Galois's fundamental theorem: an element expressible via field operations and $n$th roots forces its minimal polynomial's Galois group to be solvable (admit a composition series with abelian factors). The converse — solvable Galois group implies solvable by radicals — is also true but not needed for the impossibility result. The contrapositive used later is: if $\\text{Gal}(q)$ is not solvable, then no root of $q$ is expressible by radicals.",
+      "relatedConcepts": [
+        "Galois solvability criterion",
+        "solvableByRad.isSolvable'",
+        "radical extension",
+        "composition series",
+        "solvable group",
+        "minimal polynomial"
+      ]
     },
     {
       "id": "nonsolvable",
@@ -229,7 +245,15 @@
       "startLine": 69,
       "endLine": 99,
       "summary": "Part III: four theorems — `symmetric_group_not_solvable` ($n \\geq 5 \\Rightarrow S_n$ not solvable, via `Equiv.Perm.not_solvable` and `Cardinal.mk (Fin n) \\geq 5`), `s5_not_solvable` (n=5, using `le_rfl`), `s6_not_solvable` (n=6), `a5_is_simple` (`IsSimpleGroup (alternatingGroup (Fin 5))`).",
-      "mathContext": "The non-solvability of $S_n$ for $n \\geq 5$ is a pure group-theoretic fact: the derived series of $S_5$ is $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ because $A_5$ is perfect ($A_5 = [A_5, A_5]$). This contrasts with $S_4$, where the derived series reaches $\\{e\\}$ in exactly 3 steps: $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$ (since $[V_4,V_4] = \\{e\\}$ — the Klein four-group is abelian). A composition series of $S_4$ refines this to $S_4 \\supset A_4 \\supset V_4 \\supset \\langle(12)(34)\\rangle \\supset \\{e\\}$ with 4 simple quotients. The simplicity of $A_5$ (order 60, the smallest non-abelian simple group) is the critical obstruction: a simple non-abelian group has no proper normal subgroups, so the derived series cannot descend."
+      "mathContext": "The non-solvability of $S_n$ for $n \\geq 5$ is a pure group-theoretic fact: the derived series of $S_5$ is $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ because $A_5$ is perfect ($A_5 = [A_5, A_5]$). This contrasts with $S_4$, where the derived series reaches $\\{e\\}$ in exactly 3 steps: $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$ (since $[V_4,V_4] = \\{e\\}$ — the Klein four-group is abelian). A composition series of $S_4$ refines this to $S_4 \\supset A_4 \\supset V_4 \\supset \\langle(12)(34)\\rangle \\supset \\{e\\}$ with 4 simple quotients. The simplicity of $A_5$ (order 60, the smallest non-abelian simple group) is the critical obstruction: a simple non-abelian group has no proper normal subgroups, so the derived series cannot descend.",
+      "relatedConcepts": [
+        "Equiv.Perm.not_solvable",
+        "perfect group",
+        "derived series",
+        "simple group",
+        "alternatingGroup",
+        "Cardinal.mk"
+      ]
     },
     {
       "id": "small-solvable",
@@ -237,7 +261,15 @@
       "startLine": 100,
       "endLine": 119,
       "summary": "Part IV docstring and theorems: `s0_solvable` and `s1_solvable` via `inferInstance`. Documents the derived series for $S_2$ through $S_4$, showing why each is solvable, and contrasts with $S_n$ ($n \\geq 5$) which is not.",
-      "mathContext": "$S_0$ and $S_1$ are trivial groups (order 1), hence abelian and trivially solvable. The sharp boundary at $n = 5$ corresponds exactly to the existence of quadratic, cubic (Cardano, 1545), and quartic (Ferrari, 1545) formulas contrasted with the impossibility for degree 5."
+      "mathContext": "$S_0$ and $S_1$ are trivial groups (order 1), hence abelian and trivially solvable. The sharp boundary at $n = 5$ corresponds exactly to the existence of quadratic, cubic (Cardano, 1545), and quartic (Ferrari, 1545) formulas contrasted with the impossibility for degree 5.",
+      "relatedConcepts": [
+        "derived series",
+        "solvable group",
+        "Cardano formula",
+        "Ferrari formula",
+        "abelian group",
+        "typeclass inference"
+      ]
     },
     {
       "id": "abel-ruffini",
@@ -245,7 +277,15 @@
       "startLine": 120,
       "endLine": 150,
       "summary": "Part V: `exists_quintic` (trivially `X^5`) and `not_solvable_by_rad_of_not_solvable_gal` — the main theorem. If `¬ IsSolvable q.Gal` then `¬ IsSolvableByRad F α`. Proof: `intro hrad; exact hns (galois_bridge α q hq hroot hrad)`. The full Abel-Ruffini argument in 2 lines.",
-      "mathContext": "This 2-line proof is the logical heart of Abel-Ruffini: assume for contradiction that $\\alpha$ is solvable by radicals; apply `galois_bridge` to get `IsSolvable q.Gal`; this contradicts the hypothesis `hns : ¬ IsSolvable q.Gal`. The entire centuries-long story — from Cardano's cubic formula to Galois's group theory — reduces to one `intro`/`exact` in Lean."
+      "mathContext": "This 2-line proof is the logical heart of Abel-Ruffini: assume for contradiction that $\\alpha$ is solvable by radicals; apply `galois_bridge` to get `IsSolvable q.Gal`; this contradicts the hypothesis `hns : ¬ IsSolvable q.Gal`. The entire centuries-long story — from Cardano's cubic formula to Galois's group theory — reduces to one `intro`/`exact` in Lean.",
+      "relatedConcepts": [
+        "proof by contradiction",
+        "contrapositive",
+        "Galois group",
+        "IsSolvableByRad",
+        "Abel-Ruffini theorem",
+        "galois_bridge"
+      ]
     },
     {
       "id": "threshold",
@@ -253,7 +293,15 @@
       "startLine": 151,
       "endLine": 163,
       "summary": "Part VI: the derived series comparison — derived series of $S_4$ terminates in 3 steps: $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$ (derived length 3; composition series refines to $S_4 \\supset A_4 \\supset V_4 \\supset \\langle(12)(34)\\rangle \\supset \\{e\\}$) vs $S_5 \\supset A_5 \\supset A_5 \\supset \\cdots$ (stuck at simple $A_5 \\Rightarrow$ no formula). The threshold is sharp: $A_n$ transitions from solvable ($n \\leq 4$) to simple ($n \\geq 5$), an irreversible structural change.",
-      "mathContext": "The Klein four-group $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the key structural feature making $S_4$ solvable: it is a normal subgroup of $A_4$ with quotient $\\mathbb{Z}/3$, and $A_4/V_4 \\cong \\mathbb{Z}/3$ is abelian. No such subgroup exists in $A_5$: any non-trivial normal subgroup of $A_5$ would have to be a union of conjugacy classes of sizes 1, 15, 20, 12, 12 (summing to 60), but no such sub-sum (including 1) divides 60 and yields a normal subgroup."
+      "mathContext": "The Klein four-group $V_4 = \\{e,(12)(34),(13)(24),(14)(23)\\}$ is the key structural feature making $S_4$ solvable: it is a normal subgroup of $A_4$ with quotient $\\mathbb{Z}/3$, and $A_4/V_4 \\cong \\mathbb{Z}/3$ is abelian. No such subgroup exists in $A_5$: any non-trivial normal subgroup of $A_5$ would have to be a union of conjugacy classes of sizes 1, 15, 20, 12, 12 (summing to 60), but no such sub-sum (including 1) divides 60 and yields a normal subgroup.",
+      "relatedConcepts": [
+        "Klein four-group",
+        "derived series",
+        "derived length",
+        "composition series",
+        "simple group",
+        "solvability threshold"
+      ]
     },
     {
       "id": "historical-significance",
@@ -261,7 +309,15 @@
       "startLine": 165,
       "endLine": 187,
       "summary": "Part VII: five aspects of Abel-Ruffini's impact — (1) the conceptual shift from seeking a formula to proving impossibility, (2) the birth of group theory from Galois's framework, (3) the impossibility-proof methodology later used by Lindemann, Gödel, and Turing, (4) the distinction between existence of solutions (FTA) and their symbolic expressibility, (5) Galois's precise criterion characterizing solvable polynomials of any degree. Closes the `AbelRuffini` namespace.",
-      "mathContext": "Abel-Ruffini's impossibility sits in an expressibility hierarchy: irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini: roots of generic quintic $\\notin$ radical closure) $\\subset$ algebraic inexpressibility (Hermite-Lindemann: $e, \\pi \\notin \\overline{\\mathbb{Q}}$). Each level shows a broader class of 'closed-form' expressions fails to capture certain mathematical quantities. The impossibility is specific to the operations allowed: Hermite (1858) showed quintics ARE solvable via elliptic modular functions, bypassing the radical barrier."
+      "mathContext": "Abel-Ruffini's impossibility sits in an expressibility hierarchy: irrationality ($\\sqrt{2} \\notin \\mathbb{Q}$) $\\subset$ radical inexpressibility (Abel-Ruffini: roots of generic quintic $\\notin$ radical closure) $\\subset$ algebraic inexpressibility (Hermite-Lindemann: $e, \\pi \\notin \\overline{\\mathbb{Q}}$). Each level shows a broader class of 'closed-form' expressions fails to capture certain mathematical quantities. The impossibility is specific to the operations allowed: Hermite (1858) showed quintics ARE solvable via elliptic modular functions, bypassing the radical barrier.",
+      "relatedConcepts": [
+        "impossibility proof",
+        "birth of group theory",
+        "Galois theory",
+        "Lindemann-Weierstrass theorem",
+        "expressibility hierarchy",
+        "fundamental theorem of algebra"
+      ]
     }
   ],
   "conclusion": {
