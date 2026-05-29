@@ -89,19 +89,26 @@
     "type": "definition",
     "title": "Solvable by Radicals and Field Variables",
     "content": "An element \u03b1 is 'solvable by radicals' if it can be built from the base field using field operations and nth roots. The quadratic formula is an example: $x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$\n\nMathlib defines this inductively via `IsSolvableByRad`, with constructors for: base field elements, arithmetic operations (+, -, \u00d7, \u00f7), and radical extraction ($\\alpha \\mapsto \\alpha^{1/n}$). The intermediate field `solvableByRad F E` is the largest subfield of $E$ whose elements are all solvable by radicals over $F$.\n\nThe variable declarations introduce a universe-polymorphic framework: `F` is an arbitrary field and `E/F` is a field extension with `[Algebra F E]`. This generality means the development applies to any characteristic, though the classical Abel-Ruffini theorem is typically stated over $\\mathbb{Q}$.",
-    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$. Formally, $\\alpha \\in \\text{solvableByRad}(F, E)$ iff there exists a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $\\alpha \\in K_m$ and each $K_{i+1} = K_i(\\beta_i)$ where $\\beta_i^{n_i} \\in K_i$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by the tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt{2}, \\sqrt{1+\\sqrt{2}})$.",
+    "mathContext": "`solvableByRad F E` is the intermediate field of all elements solvable by radicals over $F$. Formally, $\\alpha \\in \\text{solvableByRad}(F, E)$ iff there exists a radical tower $F = K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $\\alpha \\in K_m$ and each $K_{i+1} = K_i(\\beta_i)$ where $\\beta_i^{n_i} \\in K_i$.\n\nExample: $\\sqrt{1 + \\sqrt{2}}$ is built by the tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt{2}, \\sqrt{1+\\sqrt{2}})$.\n\n**Characteristic-dependence of the radical–solvable equivalence.** The Galois bridge `solvableByRad.isSolvable'` and its converse hold cleanly in characteristic 0; in characteristic $p > 0$ the radical concept needs supplementation. The radical step $K \\subset K(\\sqrt[n]{a})$ yields a cyclic Galois group of order dividing $n$ only when $p \\nmid n$ (the Kummer regime). For $n = p$ the polynomial $X^p - a$ is purely inseparable: if $\\alpha^p = a$ then $X^p - a = (X - \\alpha)^p$ in characteristic $p$, so $K(\\alpha)/K$ is either trivial (if $a \\in K^p$) or a purely inseparable degree-$p$ extension with trivial Galois group. The Galois-theoretic analog is the **Artin–Schreier extension**: for $K$ of characteristic $p$ and $a \\in K$, adjoining a root of the polynomial $X^p - X - a$ produces a cyclic Galois extension of degree $p$ (when $X^p - X - a$ is irreducible) — the characteristic-$p$ surrogate for $X^n - a$ in characteristic 0. The companion Lang–Steinitz theorem (Lang 1959, generalizing Witt) bidirectionally classifies *all* cyclic extensions of characteristic-$p$ fields of $p$-power degree via Witt vectors, the characteristic-$p$ analog of Kummer's $K^* / (K^*)^n$. Mathlib's `IsSolvableByRad` is the characteristic-0 / coprime-degree notion; the Abhyankar conjecture (Raynaud 1994, Harbater 1994) — referenced in this entry's openQuestion #6 — classifies which Galois groups arise from *Artin–Schreier–Witt towers* over $\\mathbb{A}^1_{\\overline{\\mathbb{F}_p}}$ and reveals that the Abel–Ruffini-style impossibility is genuinely characteristic-dependent: in characteristic 5, the $A_5$ obstruction can be bypassed via Artin–Schreier-type radicals that the characteristic-0 definition does not capture.",
     "significance": "key",
     "relatedConcepts": [
       "radical extension",
       "intermediate field",
       "inductive definition",
-      "Kummer theory"
+      "Kummer theory",
+      "Artin–Schreier extension",
+      "Witt vectors",
+      "Abhyankar conjecture",
+      "openQuestion #6 (positive characteristic)",
+      "purely inseparable extension"
     ],
     "prerequisites": [
       "field extensions",
       "nth roots",
       "IsSolvableByRad",
-      "radical tower"
+      "radical tower",
+      "characteristic of a field",
+      "separability and purely inseparable extensions"
     ]
   },
   {
