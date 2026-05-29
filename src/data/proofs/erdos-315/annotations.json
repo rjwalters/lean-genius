@@ -335,28 +335,6 @@
     ]
   },
   {
-    "id": "ann-e315-greedy",
-    "proofId": "erdos-315",
-    "range": {
-      "startLine": 191,
-      "endLine": 195
-    },
-    "type": "definition",
-    "title": "Greedy Egyptian Property",
-    "content": "**greedyEgyptianProperty:**\n\nSylvester's sequence arises from the greedy algorithm for Egyptian fractions: at each step, take the largest unit fraction $1/m$ not exceeding the remainder $r_n$, giving $u_{n+1} = \\lceil 1/r_n \\rceil$.\n\nCurrently defined as `True` (placeholder) since formalizing the greedy property requires reasoning about real-valued remainders and ceiling functions.",
-    "mathContext": "The greedy algorithm sets $r_0 = 1$ and $r_{n+1} = r_n - 1/u_{n+1}$ where $u_{n+1} = \\lceil 1/r_n \\rceil$. For Sylvester's sequence, $r_n = 1/\\prod_{k=0}^{n-1}(u_k - 1)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Greedy algorithms",
-      "Egyptian fractions",
-      "Ceiling function"
-    ],
-    "prerequisites": [
-      "Real analysis",
-      "Egyptian fractions"
-    ]
-  },
-  {
     "id": "ann-e315-double-exp",
     "proofId": "erdos-315",
     "range": {

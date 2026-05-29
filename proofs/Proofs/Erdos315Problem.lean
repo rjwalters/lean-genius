@@ -184,12 +184,6 @@ theorem erdos_315_solved : erdosGrahamConjecture := kamio_li_tang_2025
 ## Part VI: Why Sylvester's Sequence Is Special
 -/
 
-/-- Sylvester's sequence arises from the greedy algorithm for Egyptian fractions.
-    At each step, take the largest unit fraction not exceeding the remainder. -/
-def greedyEgyptianProperty : Prop :=
-  -- For all n: 1/u_{n+1} is the largest unit fraction ≤ 1 - Σ_{k≤n} 1/u_k
-  True
-
 /-- The double exponential growth: u_n ~ c₀^{2^n}. -/
 theorem sylvester_double_exponential :
     ∀ ε > 0, ∃ N : ℕ, ∀ n ≥ N,
