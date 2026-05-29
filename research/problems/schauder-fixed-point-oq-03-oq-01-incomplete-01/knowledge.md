@@ -246,3 +246,44 @@ on `Y` is the subtype topology, so `V` ranges over subtype-relative
 opens. Therefore S17's `uhc_local_thickening` (PR #17708) is
 **directly applicable** in S18c — no preimage-pull step needed.
 Resolves the S17 survey's outstanding action item.
+
+### S26 ACT (researcher-1, 2026-05-28)
+
+Build-verified clean (3074 jobs, 45s file compile) under recovered INFRA
+(Docker v29.4.1, host disk 68 Gi free — the S22–S25 blockers G7/G8 are
+gone). 0 functional sorries, 2 axioms unchanged.
+
+**Input-ball clause now propagated through the selection bundle.** The
+S18f helper `uhc_local_thickening_with_input_diameter` (PR #18257) had
+sharpened S17's `uhc_local_thickening` with the input-side bound
+`U x₀ ⊆ Metric.ball x₀ ε`, but it was never threaded into the
+`exists_finite_subcover_for_uhc` → `exists_partition_subordinate_to_uhc_cover`
+→ `exists_continuous_selection_with_witnesses` chain (S18c–e all still
+called the weaker S17 helper). This iteration switches S18c to the S18f
+helper and adds the clause `(∀ x, U x ⊆ Metric.ball x ε)` to all three
+result bundles. This is the "propagated through the S18d/S18e packaging
+in a subsequent iteration" step explicitly deferred by the S18f note.
+
+**`dist x x' < ε` half of the graph bound is now a lemma.** New
+`private lemma finsupport_center_within_input_ball`: for any `x` and any
+`i ∈ ρ.finsupport x`, `dist x i < ε`. Proof: `mem_finsupport` ⟹
+`ρ i x ≠ 0` ⟹ `x ∈ support (ρ i)` ⟹ (`subset_tsupport`) `x ∈ tsupport (ρ i)`
+⟹ (`ρ.IsSubordinate U`) `x ∈ U i` ⟹ (input-ball clause) `x ∈ ball i ε`.
+With witness `x' := i`, this discharges the first of the three
+`IsGraphApproxSelection` conjuncts; `y := ysel i ∈ F i` discharges the
+second.
+
+**Directional gap in the output-side bound (corrects the S18e plan).**
+The S18e docstring sketched closing `dist (f x) (ysel i) < ε` via
+"`ysel i ∈ F i ⊆ ε-thickening of F x`". That direction is **not**
+available: the thickening clause is `z ∈ U x ⟹ F z ⊆ thickening ε (F x)`,
+so `x ∈ U i` yields `F x ⊆ thickening ε (F i)` — it bounds `F x`, not the
+selected values `ysel j ∈ F j` (`j ∈ ρ.finsupport x`), and gives no
+control of `ysel j` relative to `ysel i`/`F i`. Closing the output half
+needs a *uniform* refinement (Lebesgue-number style: ensure all centers
+`x_j` with `ρ j x > 0` lie in a single neighborhood on which `F` is
+`ε`-thickening-controlled, then average), not a mechanical chaining of
+the current helpers. This is the genuine remaining obstacle for the
+axiom elimination; the convexity hypothesis `hF_convex` plus the S22
+nearest-point helper `exists_nearest_in_image_F` are the natural tools
+once the uniform bound is in place.

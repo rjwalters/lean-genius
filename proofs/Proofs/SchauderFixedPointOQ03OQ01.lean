@@ -698,16 +698,20 @@ private lemma exists_finite_subcover_for_uhc {n : ℕ}
     ∃ U : ↥S → Set ↥S, ∃ s : Finset ↥S,
       (∀ x : ↥S, IsOpen (U x)) ∧
       (∀ x : ↥S, x ∈ U x) ∧
+      (∀ x : ↥S, U x ⊆ Metric.ball x ε) ∧
       (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
       (⋃ x ∈ s, U x = (⊤ : Set ↥S)) := by
   haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
-  -- Step 1: pointwise local thickening from UHC (S17 scaffold).
-  choose U hU_open hU_mem hU_sub using
-    fun x : ↥S => uhc_local_thickening hF_uhc x ε hε
+  -- Step 1: pointwise local thickening from UHC with the S18f input-ball
+  -- diameter bound `U x ⊆ ball x ε` (replaces the S17 `uhc_local_thickening`,
+  -- which lacked the input-side clause needed for the `dist x x' < ε` half of
+  -- the eventual `IsGraphApproxSelection` graph bound).
+  choose U hU_open hU_mem hU_ball hU_sub using
+    fun x : ↥S => uhc_local_thickening_with_input_diameter hF_uhc x ε hε
   -- Step 2: compactness extracts a finite subcover (CompactSpace API).
   obtain ⟨s, hs⟩ :=
     CompactSpace.elim_nhds_subcover U fun x => (hU_open x).mem_nhds (hU_mem x)
-  exact ⟨U, s, hU_open, hU_mem, hU_sub, hs⟩
+  exact ⟨U, s, hU_open, hU_mem, hU_ball, hU_sub, hs⟩
 
 /-- **S18d scaffold (Cellina–Browder Step 3, subordinate partition of unity):**
 
@@ -754,10 +758,11 @@ private lemma exists_partition_subordinate_to_uhc_cover {n : ℕ}
       ∃ ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S),
         (∀ x : ↥S, IsOpen (U x)) ∧
         (∀ x : ↥S, x ∈ U x) ∧
+        (∀ x : ↥S, U x ⊆ Metric.ball x ε) ∧
         (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
         ρ.IsSubordinate U := by
   haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
-  obtain ⟨U, _s, hU_open, hU_mem, hU_sub, _hs_cover⟩ :=
+  obtain ⟨U, _s, hU_open, hU_mem, hU_ball, hU_sub, _hs_cover⟩ :=
     exists_finite_subcover_for_uhc S hS_compact F hF_uhc ε hε
   have hU_cover : (Set.univ : Set ↥S) ⊆ ⋃ x : ↥S, U x := by
     intro x _
@@ -765,7 +770,7 @@ private lemma exists_partition_subordinate_to_uhc_cover {n : ℕ}
   obtain ⟨ρ, hρ_sub⟩ :=
     PartitionOfUnity.exists_isSubordinate (s := (Set.univ : Set ↥S))
       isClosed_univ U hU_open hU_cover
-  exact ⟨U, ρ, hU_open, hU_mem, hU_sub, hρ_sub⟩
+  exact ⟨U, ρ, hU_open, hU_mem, hU_ball, hU_sub, hρ_sub⟩
 
 /-- **S18e scaffold (Cellina–Browder Step 4, continuous selection from
     subordinate partition of unity):**
@@ -833,6 +838,7 @@ private lemma exists_continuous_selection_with_witnesses {n : ℕ}
       ∃ ysel : ↥S → ↥S,
         (∀ x : ↥S, IsOpen (U x)) ∧
         (∀ x : ↥S, x ∈ U x) ∧
+        (∀ x : ↥S, U x ⊆ Metric.ball x ε) ∧
         (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
         ρ.IsSubordinate U ∧
         (∀ x, ysel x ∈ F x) ∧
@@ -840,8 +846,9 @@ private lemma exists_continuous_selection_with_witnesses {n : ℕ}
             = ∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))) := by
   -- Step 4a: pointwise selector ysel : ↥S → ↥S with ysel x ∈ F x.
   choose ysel hysel_in_F using hF_ne
-  -- Step 4b: open cover U and subordinate partition ρ from S18d.
-  obtain ⟨U, ρ, hU_open, hU_mem, hU_sub, hρ_sub⟩ :=
+  -- Step 4b: open cover U (with the S18f input-ball clause) and subordinate
+  -- partition ρ from S18d.
+  obtain ⟨U, ρ, hU_open, hU_mem, hU_ball, hU_sub, hρ_sub⟩ :=
     exists_partition_subordinate_to_uhc_cover S hS_compact F hF_uhc ε hε
   -- Step 4c: candidate selection in EuclideanSpace ℝ (Fin n) and its continuity.
   let f0 : ↥S → EuclideanSpace ℝ (Fin n) :=
@@ -867,9 +874,56 @@ private lemma exists_continuous_selection_with_witnesses {n : ℕ}
     rw [← hsum_eq]; exact hsum_mem
   -- Step 4e: lift f0 to f : C(↥S, ↥S).
   refine ⟨⟨fun x => ⟨f0 x, hf0_in_S x⟩, hf0_cont.subtype_mk hf0_in_S⟩,
-          U, ρ, ysel, hU_open, hU_mem, hU_sub, hρ_sub, hysel_in_F, ?_⟩
+          U, ρ, ysel, hU_open, hU_mem, hU_ball, hU_sub, hρ_sub, hysel_in_F, ?_⟩
   intro _
   rfl
+
+/-- **S23 step (input-side graph-distance bound, `dist x x' < ε` half):**
+
+    Given the open cover `U` carrying the S18f input-ball clause
+    `U x ⊆ Metric.ball x ε` (now propagated through the S18c→S18d→S18e
+    bundle) and a partition of unity `ρ` subordinate to it, every center
+    `i` in the local finite support `ρ.finsupport x` lies within `ε` of `x`
+    (in the subtype metric of `↥S`).
+
+    This discharges the first of the three conjuncts of
+    `IsGraphApproxSelection F f ε` (`dist x x' < ε`, line 532 above) with
+    the witness `x' := i`: the eventual `approx_selection_exists_proof`
+    picks any `i ∈ ρ.finsupport x` (nonempty because `ρ` sums to `1` at
+    `x ∈ Set.univ`), supplies `y := ysel i ∈ F i` for the second conjunct,
+    and is left with only the harder output-side bound
+    `dist (f x) (ysel i) < ε` for the third.
+
+    **Proof.** `i ∈ ρ.finsupport x` unfolds (`PartitionOfUnity.mem_finsupport`)
+    to `ρ i x ≠ 0`, i.e. `x ∈ Function.support (ρ i)`. Then
+    `subset_tsupport` gives `x ∈ tsupport (ρ i)`, `ρ.IsSubordinate U` gives
+    `x ∈ U i`, and the input-ball clause `U i ⊆ Metric.ball i ε` gives
+    `x ∈ Metric.ball i ε`, i.e. `dist x i < ε`.
+
+    The statement takes `U`, `ρ` and their clauses as explicit hypotheses
+    (rather than the full S18e bundle) so it is reusable from any cover
+    satisfying the input-ball and subordinate-partition conditions.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. The output-side bound
+    `dist (f x) (ysel i) < ε` is **not** discharged here: the existing
+    thickening clause runs the wrong way (`x ∈ U i` gives
+    `F x ⊆ thickening ε (F i)`, controlling `F x`, not the selected values
+    `ysel j ∈ F j` for the other `j ∈ ρ.finsupport x`), so that half needs
+    a uniform refinement and is left to a subsequent iteration. -/
+private lemma finsupport_center_within_input_ball {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (ε : ℝ)
+    (U : ↥S → Set ↥S) (hU_ball : ∀ x : ↥S, U x ⊆ Metric.ball x ε)
+    (ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S))
+    (hρ_sub : ρ.IsSubordinate U)
+    {x i : ↥S} (hi : i ∈ ρ.finsupport x) :
+    dist x i < ε := by
+  have hne : ρ i x ≠ 0 := by
+    have h := (ρ.mem_finsupport x).mp hi
+    simpa using h
+  have hx_tsupp : x ∈ tsupport (ρ i) :=
+    subset_tsupport (ρ i) (Function.mem_support.mpr hne)
+  exact Metric.mem_ball.mp (hU_ball i (hρ_sub i hx_tsupp))
 
 /-- **S19 scaffold (closed-image helper for the ambient-space projection):**
 
