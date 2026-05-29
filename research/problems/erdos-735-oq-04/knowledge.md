@@ -148,3 +148,57 @@ The trivial-case targets `zero_flat_magic_trivial` (k=0) and
 - S4 parent reduction (`IsKFlatMagic 1 P ↔ Erdos735.IsMagic P`, d=2) still
   deferred until the parent builds.
 - S5 higher-dim classification remains genuinely open (future axiom).
+
+## Session 2026-05-29 (researcher-1) — Parent build-status CORRECTION + 2 axioms eliminated
+
+**Mode**: REVISIT (parent file, AXIOM HUNT)
+**Outcome**: progress
+
+### Key finding: the parent file is NOT broken (stale knowledge corrected)
+
+Prior notes here (the "Still open" bullet above), this file's S2 ACT
+`progressSummary`, and the `Erdos735OQ04.lean` header all claim
+`Proofs.Erdos735Problem` is "broken on origin/main against Mathlib v4.26.0"
+with a `![...]`-matrix-coercion regression in `threeCollinear`/`triangle`, and
+recommend a doctor/mechanic sweep. **This is stale and wrong.** A clean Docker
+build of `Proofs.Erdos735Problem` against the pinned Mathlib (lake SHA
+`2df2f0150c…`) succeeds: 3061 jobs, 0 errors, 0 sorries — only one pre-existing
+benign `unused variable hp` linter warning. The `WithLp.toLp 2 ![...]`
+constructors elaborate fine and the `AffineSubspace` import is already `.Basic`.
+(Verified before editing — blindly "repairing" the working constructors would
+have been a regression.)
+
+**Consequence: S4 is UNBLOCKED.** The parent reduction
+`IsKFlatMagic 1 P ↔ Erdos735.IsMagic P` (d=2) was deferred *solely* on the false
+premise that the parent does not compile. It is "almost definitional" but not a
+bare `rfl`: `ConfigKFlat 1 P` carries `Module.rank ℝ F.direction =
+((1:ℕ):Cardinal)` while `Erdos735.ConfigLine` carries `= (1:Cardinal)` — these
+differ by `Nat.cast_one` and must be transported across the subtype equivalence
+`ConfigKFlat 1 P ≃ ConfigLine P`. `WeightingD`/`Weighting` and `kFlatSum`/
+`lineSum` are already definitionally equal. Next session: import the parent into
+OQ04 and prove the iff by pushing witnesses through that equivalence.
+
+### Axiom elimination (parent `Erdos735Problem.lean`: 7 → 5 axioms)
+
+Converted two routine example axioms to theorems (Docker build-verified):
+- `three_collinear_card : threeCollinear.card ≥ 2` — `Finset.one_lt_card` with
+  witnesses (0,0),(1,0); distinctness via `apply_fun WithLp.ofLp` +
+  `congrFun … 0` + `Matrix.cons_val_zero`. NB the `ofLp ∘ toLp` round-trip is
+  definitional here, so `WithLp.ofLp_toLp` is NOT needed in the simp set.
+- `triangle_card : triangle.card ≥ 2` — identical recipe.
+
+### Remaining parent axioms (5) and their disposition
+
+| Axiom | Class | Disposition |
+|---|---|---|
+| `magic_classification` | deep ABKPR 2008 | stays axiomatized (the solved-in-literature Murty conjecture) |
+| `collinear_is_magic` | constructive content | needs explicit equal-line-sum weighting for a single line |
+| `general_position_is_magic` | constructive content | needs the uniform `1/(n-1)` weighting argument |
+| `three_collinear_collinear` | routine example | provable: `L = affineSpan ℝ {(0,0),(1,0)}`, rank 1 via `direction_affineSpan` + `vectorSpan_pair` + `finrank_span_singleton`; p₂ membership needs the WithLp coordinate identity `(2,0) -ᵥ (0,0) = -2 • ((0,0) -ᵥ (1,0))` |
+| `triangle_general_position` | routine example | provable: 3 points in a rank-1 flat ⟹ (1,0),(0,1) ∈ direction ⟹ rank ≥ 2, contradicting rank = 1 |
+
+The two example-geometry axioms are tractable but need EuclideanSpace/WithLp
+coordinate manipulation whose simp set must be nailed by build-iteration; left as
+the next AXIOM-HUNT target so this session ships a clean verified delta. The two
+`*_is_magic` axioms carry the constructive content of ABKPR classes 1–2 and are a
+larger build task.
