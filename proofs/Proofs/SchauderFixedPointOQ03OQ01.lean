@@ -956,6 +956,56 @@ private lemma finsupport_nonempty {n : ℕ}
   rw [hempty, Finset.sum_empty] at hsum
   exact one_ne_zero hsum.symm
 
+/-- **S27 step (output-side graph-distance reduction, `dist (f x) (ysel i) < ε`
+    half):**
+
+    For the candidate selection `f x = ∑ j ∈ ρ.finsupport x, ρ j x • ysel j`
+    (S18e), the output-side graph bound is controlled by how tightly the
+    selected values `ysel j` (for `j` in the local finite support at `x`)
+    cluster around a single chosen value `ysel i`: if every such `ysel j`
+    lies within `r` of `ysel i`, then so does the whole convex combination.
+
+    Concretely, `dist (∑ j, ρ j x • ysel j) (ysel i) ≤ r` whenever
+    `∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i) ≤ r`.
+
+    **Role in the axiom-elimination plan.** The eventual
+    `approx_selection_exists_proof` discharges
+    `IsGraphApproxSelection F f ε` (line 532) at a point `x` by picking a
+    center `i ∈ ρ.finsupport x` (`finsupport_nonempty`), using
+    `finsupport_center_within_input_ball` for the `dist x x' < ε` conjunct
+    (witness `x' := i`) and `ysel i ∈ F i` for the membership conjunct.
+    This lemma reduces the remaining third conjunct
+    `dist (f x) (ysel i) < ε` to the **selected-value clustering** hypothesis
+    `∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i) < ε` — converting the
+    convex-combination obstacle into a pure statement about the centers'
+    selected values. The clustering itself is the genuine remaining content
+    (it needs the uniform/Lebesgue refinement of the cover noted in S26:
+    a single `U i` thickening controls `F x`, not the values picked at the
+    *other* centers `j ∈ ρ.finsupport x`), and is left to a subsequent
+    iteration.
+
+    **Proof.** The closed ball `Metric.closedBall (ysel i) r` is convex
+    (`convex_closedBall`) and, by the clustering hypothesis
+    (`Metric.mem_closedBall`), contains every `ysel j` for
+    `j ∈ ρ.finsupport x`. Then `convex_combination_of_partition_in_S`
+    (S18a) places the partition-weighted sum inside the ball, i.e.
+    `dist (∑ j, ρ j x • ysel j) (ysel i) ≤ r`.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. -/
+private lemma finsupport_combination_within_output_ball {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S))
+    (x i : ↥S)
+    (ysel : ↥S → EuclideanSpace ℝ (Fin n)) (r : ℝ)
+    (hr : ∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i) ≤ r) :
+    dist (∑ j ∈ ρ.finsupport x, ρ j x • ysel j) (ysel i) ≤ r := by
+  have hmem :
+      (∑ j ∈ ρ.finsupport x, ρ j x • ysel j) ∈ Metric.closedBall (ysel i) r :=
+    convex_combination_of_partition_in_S ρ (convex_closedBall (ysel i) r)
+      (Set.mem_univ x) (fun j hj => Metric.mem_closedBall.mpr (hr j hj))
+  exact Metric.mem_closedBall.mp hmem
+
 /-- **S19 scaffold (closed-image helper for the ambient-space projection):**
 
     Given a Hausdorff ambient space `α`, a compact subset `S ⊆ α`, and a
