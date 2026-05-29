@@ -55,7 +55,6 @@
 -/
 
 import Mathlib
-import Proofs.LagrangeTheoremOQ01OQ01OQ01
 
 namespace LagrangeOQ01OQ01OQ01.ApproachB
 
@@ -316,5 +315,126 @@ noncomputable example :
     Multiplicative (ZMod 3) →* MulAut (Multiplicative (ZMod 7)) := by
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   exact actionHom (by norm_num : Nat.Prime 3) (by norm_num)
+
+/-! ## S3d-ii: assemble the semidirect product and discharge the open question
+
+For each prime `p ∣ q - 1`, package `actionHom hp hp_dvd` into the semidirect
+product
+
+  `Multiplicative (ZMod q) ⋊[actionHom hp hp_dvd] Multiplicative (ZMod p)`
+
+and discharge `openQuestions[0]` of the parent (general case; Approach A handled
+`p = 2`) by proving the witness group has order `p * q` and is non-cyclic.
+
+The non-triviality of the action — the genuinely subtle step (rated high-risk in
+the S10 PREP, which forecast a `sorry`) — is discharged here without any `sorry`
+via `actionHom_ofAdd_one`: the generator `ofAdd 1` acts as the order-`p`
+automorphism `ψ`, which is `≠ 1` since `p ≥ 2`, hence moves some element. -/
+
+open SemidirectProduct in
+/-- The Approach-B group: `ZMod q ⋊ ZMod p` (multiplicative wrappers) twisted
+by `actionHom hp hp_dvd`. -/
+abbrev approachBGroup {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) : Type :=
+  SemidirectProduct
+    (Multiplicative (ZMod q)) (Multiplicative (ZMod p))
+    (actionHom hp hp_dvd)
+
+/-- The generator `Multiplicative.ofAdd 1` acts via `actionHom` as exactly the
+chosen order-`p` automorphism `ψ`. This is the key bridge that makes
+non-triviality provable without a `sorry`: applying `actionHom` to the cyclic
+generator recovers `ψ`, whose order `p ≥ 2` forces it to move some element.
+
+Computation: `AddMonoidHom.toMultiplicativeLeft` evaluates `ofAdd 1` through
+`ZMod.lift` (via `ZMod.lift_coe` at the integer `1`) and `zmultiplesHom`
+(`1 • Additive.ofMul ψ = Additive.ofMul ψ`), then `Additive.toMul` recovers
+`ψ`. -/
+theorem actionHom_ofAdd_one {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    actionHom hp hp_dvd (Multiplicative.ofAdd (1 : ZMod p))
+      = (exists_mulAut_mult_of_order_p hp hp_dvd).choose := by
+  unfold actionHom
+  simp only [AddMonoidHom.coe_toMultiplicativeLeft, Function.comp_apply, toAdd_ofAdd]
+  first
+  | rw [ZMod.lift_coe]
+  | rw [show (1 : ZMod p) = ((1 : ℤ) : ZMod p) by simp, ZMod.lift_coe]
+  simp
+
+/-- Non-triviality of the order-`p` action: `actionHom hp hp_dvd (ofAdd 1)` does
+not fix every element. Proved (no `sorry`) via `actionHom_ofAdd_one`: the action
+is `ψ`, which has order `p ≥ 2`, hence `ψ ≠ 1`, hence moves some element. -/
+theorem exists_actionHom_not_fixed
+    {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    ∃ x : Multiplicative (ZMod q),
+      actionHom hp hp_dvd (Multiplicative.ofAdd (1 : ZMod p)) x ≠ x := by
+  have hψ_spec : orderOf (exists_mulAut_mult_of_order_p hp hp_dvd).choose = p :=
+    (exists_mulAut_mult_of_order_p hp hp_dvd).choose_spec
+  set ψ := (exists_mulAut_mult_of_order_p hp hp_dvd).choose with hψ_def
+  have hψ_ne_one : ψ ≠ 1 := by
+    intro h
+    rw [h, orderOf_one] at hψ_spec
+    have := hp.two_le
+    omega
+  have hmove : ∃ x, ψ x ≠ x := by
+    by_contra hcon
+    push_neg at hcon
+    apply hψ_ne_one
+    ext x
+    simp only [MulAut.one_apply]
+    exact hcon x
+  obtain ⟨x, hx⟩ := hmove
+  refine ⟨x, ?_⟩
+  rw [actionHom_ofAdd_one]
+  exact hx
+
+/-- S3d-ii.A — the Approach-B group has order `p * q`. -/
+theorem approachBGroup_card {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    Nat.card (approachBGroup hp hp_dvd) = p * q := by
+  haveI : NeZero q := ⟨hqfact.out.pos.ne'⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  unfold approachBGroup
+  rw [SemidirectProduct.card,
+      Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod q) ≃ ZMod q),
+      Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod p) ≃ ZMod p),
+      Nat.card_eq_fintype_card, Nat.card_eq_fintype_card,
+      ZMod.card q, ZMod.card p]
+  ring
+
+/-- S3d-ii.B — the Approach-B group is not cyclic. A cyclic group is
+commutative, but `inr g` and `inl x` fail to commute precisely because the
+action moves `x` (`exists_actionHom_not_fixed`). -/
+theorem approachBGroup_not_isCyclic
+    {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    ¬ IsCyclic (approachBGroup hp hp_dvd) := by
+  intro hcyc
+  haveI : IsCyclic (approachBGroup hp hp_dvd) := hcyc
+  obtain ⟨x, hx⟩ := exists_actionHom_not_fixed hp hp_dvd
+  set g : Multiplicative (ZMod p) := Multiplicative.ofAdd 1 with hg
+  have hcomm := (IsCyclic.commutative (α := approachBGroup hp hp_dvd)).comm
+      (SemidirectProduct.inr g) (SemidirectProduct.inl x)
+  have hL := congrArg SemidirectProduct.left hcomm
+  simp only [SemidirectProduct.mul_left, SemidirectProduct.left_inl,
+             SemidirectProduct.right_inl, SemidirectProduct.left_inr,
+             SemidirectProduct.right_inr, map_one,
+             one_mul, mul_one] at hL
+  exact hx hL
+
+/-- **S3d-ii main result.** For each pair of primes `p < q` with `p ∣ q - 1`, an
+explicit non-cyclic group of order `p * q`. Together with Approach A (`p = 2` via
+`DihedralGroup`), this discharges `openQuestions[0]` of
+`lagrange-theorem-oq-01-oq-01` for the general case: whenever `p ∣ q - 1`, a
+non-cyclic group of order `pq` exists. -/
+theorem exists_noncyclic_of_pq_when_p_dvd_q_sub_one
+    {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    ∃ (G : Type) (_ : Group G), Nat.card G = p * q ∧ ¬ IsCyclic G :=
+  ⟨approachBGroup hp hp_dvd, inferInstance,
+   approachBGroup_card hp hp_dvd, approachBGroup_not_isCyclic hp hp_dvd⟩
+
+/-- Sanity (S3d-ii): the order-21 non-cyclic group exists (`p = 3, q = 7`). This
+is the smallest case not covered by Approach A's `p = 2` family. -/
+example : ∃ (G : Type) (_ : Group G), Nat.card G = 21 ∧ ¬ IsCyclic G := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  obtain ⟨G, hG, hcard, hcyc⟩ :=
+    exists_noncyclic_of_pq_when_p_dvd_q_sub_one (q := 7)
+      (by norm_num : Nat.Prime 3) (by norm_num)
+  exact ⟨G, hG, by simp [hcard], hcyc⟩
 
 end LagrangeOQ01OQ01OQ01.ApproachB
