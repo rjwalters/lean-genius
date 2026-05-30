@@ -2,11 +2,55 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-16 (S8 STATE-SYNC absorbs S7 audit)
-**Iteration**: 7
-**Last Update**: 2026-05-16 (researcher-9) — S8 STATE-SYNC absorbs S7 audit-at-pick-time (PR #19411, researcher-12, MERGED 03:26:54Z); gate-4 AMBER→GREEN; all 6 ACT-readiness gates GREEN; S2e ACT fully unblocked at next iteration
+**Since**: 2026-05-29 (S9 ACT — cofinality bearer landed)
+**Iteration**: 8
+**Last Update**: 2026-05-29 (researcher-1) — **S9 ACT cofinality**: `latticeDisc_mem_eventually` + `latticeDisc_eventually_supset` landed as sorry-free / axiom-free public theorems (~85 LOC). Discharges step 3 of the S7 audit §4 recipe (cofinality bearer). The remaining S2e ACT scope shrinks to ~35-60 LOC (steps 1+2+4+5+6); the eLpNorm-form close is unblocked.
 
 ## Current Focus
+
+S9 ACT cofinality (researcher-1, 2026-05-29) — **ACT mini-task delivering
+the cofinality bearer** of the S7 audit §4 recipe (step 3, 15-25 LOC
+budgeted; actual ~85 LOC including the singleton helper). Adds two
+sorry-free, axiom-free, public theorems:
+
+- `latticeDisc_mem_eventually (k : Fin 2 → ℤ) : ∀ᶠ R in (atTop : Filter ℝ), k ∈ latticeDisc R`
+  — singleton-case cofinality. For `R ≥ (k 0)² + (k 1)² + 1`, the
+  cardinality condition `(k 0)² + (k 1)² ≤ R²` (via `R ≥ 1 ⇒ R ≤ R²`)
+  and the bounding-box condition `|k i| ≤ ⌈|R|⌉` (via `Real.sqrt_sq_eq_abs`
+  + `Int.le_ceil`) both hold.
+- `latticeDisc_eventually_supset (S : Finset (Fin 2 → ℤ)) : ∀ᶠ R in (atTop : Filter ℝ), S ⊆ latticeDisc R`
+  — the full cofinality lemma. By `Finset.induction_on` from
+  `latticeDisc_mem_eventually`, combining the per-point witnesses via
+  `Filter.filter_upwards`.
+
+The lemmas are **pure ℝ/ℤ arithmetic** — they use no measure-theoretic
+APIs, no `Lp`, no `volume`/`haarT2` disambiguation. Tactics: `linarith`,
+`nlinarith`, `Real.sqrt_le_sqrt`, `Real.sqrt_sq_eq_abs`, `Int.le_ceil`,
+`Finset.mem_filter`, `Finset.mem_Icc`, `Finset.induction_on`,
+`Filter.eventually_atTop`. No new sorries, no new axioms.
+
+**S2e ACT scope after this iteration**: step 3 (cofinality) ✅ done.
+Remaining recipe = steps 1 (Setup, 3-5 LOC) + 2 (drop-in `coeFn_finset_sum`
+helper, 8-10 LOC) + 4 (Bridge `sphPartialSum` → Lp finset-sum, 15-25 LOC) +
+5 (cite `hasSum_mFourier_series_L2`, 5-10 LOC) + 6 (close `eLpNorm`-form
+via `Lp.norm_def`, 5-10 LOC) = 36-60 LOC + 3-5 LOC haarT2/volume contingency.
+A future single-iteration close is now genuinely tractable.
+
+**Build status**: Docker-built and verified (researcher-1, 2026-05-29,
+7743 jobs, only the pre-existing `sphPartialSum_L2_norm_converge` sorry
+warning at line 148; no new warnings from the cofinality addition).
+Updated Lean file: `proofs/Proofs/FourierSeriesOQ04OQ01.lean` (279 → 366
+lines, 8 → 10 theorems; +2 sorry-free public theorems in a new
+"S2e-cofinality" section after `latticeDisc_card_le_real`). Gallery
+meta-json line/theorem counts synced; new `lattice-disc-cofinality`
+section added with `startLine: 277`, `endLine: 362`; `originalContributions`
+extended.
+
+Full forensics in `sessions/2026-05-29-s9-act-cofinality.md`.
+
+---
+
+## Previous Focus — S8 STATE-SYNC (2026-05-16, researcher-9, MERGED)
 
 S8 STATE-SYNC (researcher-9, 2026-05-16) — **doc-only absorption of
 the S7 audit-at-pick-time merge**. PR #19411 (researcher-12, MERGED

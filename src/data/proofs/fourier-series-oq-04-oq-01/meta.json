@@ -5,14 +5,21 @@
   "description": "Axiomatizes the 2D Carleson conjecture on T² = (R/Z)²: for f ∈ L²(T²), the spherical partial Fourier sum S_R^sph f converges to f for almost every x as R → ∞. This is the L²-endpoint of the Bochner-Riesz / spherical-summation family and the natural higher-dimensional analogue of the 1D Carleson theorem (1966). Open in mathematics; no improvement on Fefferman's 1971 ball-multiplier barrier. Companion unconditional theorem (L² norm convergence by Plancherel) stated with sorry pending the Plancherel-on-T² lemma (Mathlib gap).",
   "leanFile": {
     "path": "Proofs/FourierSeriesOQ04OQ01.lean",
-    "imports": ["Mathlib"],
-    "opens": ["MeasureTheory", "Complex", "Filter", "Topology"],
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Filter",
+      "Topology"
+    ],
     "namespace": "FourierSeriesOQ04OQ01",
-    "lineCount": 279,
+    "lineCount": 375,
     "axiomCount": 1,
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 8
+    "theoremCount": 10
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -33,8 +40,8 @@
     "sorries": 1,
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 279,
-    "theoremCount": 8,
+    "lineCount": 375,
+    "theoremCount": 10,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
     "mathlibDependencies": [
@@ -79,7 +86,9 @@
       "sphPartialSum_L2_norm_converge: unconditional L²-norm convergence statement (Plancherel-direct; sorried)",
       "multiFourierCoeff_zero, sphPartialSum_zero: sanity-check lemmas (zero function in / zero coefficient out)",
       "latticeDisc_subset_bbox, latticeDisc_card_le_bbox (S2c): trivial pre-Gauss bounding-box cardinality bound for the lattice disc",
-      "bbox_card, latticeDisc_card_le_explicit (S2d): explicit bounding-box cardinality (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc, yielding the closed-form O(R²) Gauss-circle upper bound for the lattice disc"
+      "bbox_card, latticeDisc_card_le_explicit (S2d): explicit bounding-box cardinality (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc, yielding the closed-form O(R²) Gauss-circle upper bound for the lattice disc",
+      "latticeDisc_card_le_real (S2-Gauss-real): Real-form qualitative Gauss-circle bound ((latticeDisc R).card : ℝ) ≤ (2|R|+3)² suitable for ℓ¹-majorisation of sphPartialSum",
+      "latticeDisc_mem_eventually, latticeDisc_eventually_supset (S2e-cofinality, iter 8): atTop cofinality of latticeDisc — every fixed finite set of lattice points is eventually contained in latticeDisc R as R → ∞; stepping-stone for the Plancherel-tail engine that closes sphPartialSum_L2_norm_converge"
     ]
   },
   "overview": {
@@ -149,6 +158,14 @@
       "endLine": 230,
       "summary": "`bbox_card` and `latticeDisc_card_le_explicit`: evaluate the integer bounding box cardinality as `(2⌈|R|⌉+1).toNat ^ 2`, then chain with the S2c subset bound to obtain a closed-form `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²`. Sorry-free, axiom-free, and uses only stable Mathlib API (`Pi.card_Icc` + `Int.card_Icc`).",
       "mathContext": "The integer interval `Icc (-⌈|R|⌉) ⌈|R|⌉ ⊂ ℤ` has cardinality `(⌈|R|⌉ + 1 - (-⌈|R|⌉)).toNat = (2⌈|R|⌉+1).toNat` by `Int.card_Icc`; the product over `Fin 2` raises this to the square (`Pi.card_Icc` + `Finset.prod_const` + `Fintype.card_fin`). Composing with S2c's `latticeDisc_card_le_bbox` yields the explicit Gauss-circle upper bound, bridging the qualitative subset bound to a numerical estimate usable for ℓ¹ majorisation of `sphPartialSum`. The sharp constant `π` (Gauss circle problem proper) requires boundary-lattice analysis and is deferred."
+    },
+    {
+      "id": "lattice-disc-cofinality",
+      "title": "S2e-cofinality — `latticeDisc R` eventually contains every finite lattice set",
+      "startLine": 277,
+      "endLine": 371,
+      "summary": "`latticeDisc_mem_eventually` and `latticeDisc_eventually_supset`: every fixed lattice point (resp. finite set of lattice points) is contained in `latticeDisc R` for all sufficiently large `R`. Sorry-free, axiom-free, pure ℝ/ℤ arithmetic — no measure-theoretic dependencies. The Plancherel-tail engine for the eventual S2e ACT close of `sphPartialSum_L2_norm_converge`.",
+      "mathContext": "For a single `k ∈ ℤ²`, taking `R ≥ (k 0)² + (k 1)² + 1` (which forces `R ≥ 1` and hence `R ≤ R²`) discharges both the disc condition `(k 0)² + (k 1)² ≤ R²` and the bounding-box condition `|k i| ≤ ⌈|R|⌉` (via `(k i)² ≤ R²` ⇒ `|k i| ≤ R` ⇒ `|k i| ≤ ⌈|R|⌉`). The finite-set case follows by `Finset.induction_on`, combining the singleton via `Filter.filter_upwards`. This is the cofinality bearer noted in the S2e PREP / S7 audit's §2.3, converting the Plancherel residual `‖S_R^{sph} f - f‖₂² = ∑_{k ∉ latticeDisc R} |fk|²` into a tail of the convergent series `∑_k |fk|² = ‖f‖₂²`."
     }
   ],
   "conclusion": {
