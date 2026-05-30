@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-05-07T17:15:00.000Z",
-    "iteration": 1,
-    "focus": "Resolved — Anning–Erdős finiteness theorem fully formalized; gallery entry merged in PR #15593 (2026-05-04).",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC pool catchup (this PR, researcher-1, 2026-05-30): doc-only PR re-closing the gitignored .lean/state/candidate-pool.json drift. S2 STATE-SYNC (2026-05-16) marked the pool entry completed, but the auto-regeneration from research/db/knowledge.db has since reverted it to status: \"in-progress\". S3 invokes ./scripts/research/claim-problem.sh update erdos-100-oq-01-wip-01 completed to re-sync the pool (gitignored) and drop a completion signal under .loom/signals/completions/ (gitignored). Tracked S3 deliverables: state.md head + lifecycle-status update + session pointer append, this research-JSON iteration bump (1→3, lastUpdate 2026-05-07→2026-05-30), and a new session memo sessions/2026-05-30-s3-state-sync-pool-catchup.md. Underlying Lean source unchanged. Gallery meta.status: verified, meta.badge: original. Re-verified at S3 write time: 274 LOC, 4 theorems, 0 axioms, 0 sorries — all match meta.json. Build inheritance from origin/main HEAD 11927e1a872 is unconditional. Note: this re-drift pattern is the same one observed for ehrhart-cube-proven-oq-04 (S14 PR #21133, 2026-05-30); root cause is in the DB-regen pipeline and is out of scope for this slug.",
     "blockers": [],
-    "nextAction": "None — closed.",
+    "nextAction": "Slug remains closed. Open follow-up questions Q1–Q3 documented in state.md and gallery meta.openQuestions are genuinely open but out of scope of this slug (Q1: parent-file piepmeyer_upper sorry discharge via 9-point witness; Q2: tighten 2d²+2 bound towards d + √(2d) + O(1); Q3: drop the non-collinearity hypothesis). The DB-regen pipeline bug that causes recurring pool drift is also out of scope — flagged for Hermit / infra pass.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -31,18 +31,18 @@
   "knowledge": {
     "progressSummary": "COMPLETE: Anning–Erdős finiteness theorem (1945) formalized in Lean 4. File: Erdos100OQ01WIP01.lean (274 lines, 4 theorems, 0 definitions, 0 sorries, 0 axioms). Gallery PR #15593 merged 2026-05-04 (status: verified, badge: original). Proves any non-collinear planar integer-distance set with all distances ≤ d has at most 2d²+2 points via fiber counting.",
     "builtItems": [
-      "quadratic_at_most_two_roots in Erdos100OQ01WIP01.lean:27 \u2014 nonzero quadratic has \u2264 2 roots, proved via ring arithmetic",
-      "three_pts_two_circles_contra in Erdos100OQ01WIP01.lean:59 \u2014 fully proved, no sorry",
-      "int_dist_card_le in Erdos100OQ01WIP01.lean:168 \u2014 statement + outline proved, 1 sorry for fiber counting",
-      "anning_erdos_finiteness in Erdos100OQ01WIP01.lean:185 \u2014 proved assuming int_dist_card_le",
-      "int_dist_card_le (Erdos100OQ01WIP01.lean:178) \u2014 fiber counting via Finset.card_biUnion_le + two_lt_card",
+      "quadratic_at_most_two_roots in Erdos100OQ01WIP01.lean:27 — nonzero quadratic has ≤ 2 roots, proved via ring arithmetic",
+      "three_pts_two_circles_contra in Erdos100OQ01WIP01.lean:59 — fully proved, no sorry",
+      "int_dist_card_le in Erdos100OQ01WIP01.lean:168 — statement + outline proved, 1 sorry for fiber counting",
+      "anning_erdos_finiteness in Erdos100OQ01WIP01.lean:185 — proved assuming int_dist_card_le",
+      "int_dist_card_le (Erdos100OQ01WIP01.lean:178) — fiber counting via Finset.card_biUnion_le + two_lt_card",
       "on-two-circles fiber bound: Finset.two_lt_card.mp + three_pts_two_circles_contra",
-      "anning_erdos_finiteness (Erdos100OQ01WIP01.lean:256) \u2014 full Anning-Erd\u0151s theorem, 0 sorries"
+      "anning_erdos_finiteness (Erdos100OQ01WIP01.lean:256) — full Anning-Erdős theorem, 0 sorries"
     ],
     "insights": [
-      "three_pts_two_circles_contra: subtract circle equations \u2192 radical axis (linear); case split on dx=0 vs dx\u22600; substitution into circle gives quadratic; 3 roots contradict quadratic_at_most_two_roots",
+      "three_pts_two_circles_contra: subtract circle equations → radical axis (linear); case split on dx=0 vs dx≠0; substitution into circle gives quadratic; 3 roots contradict quadratic_at_most_two_roots",
       "linear_combination tactic handles the key algebraic steps: multiplying circle equation by (2dx)^2 and substituting the radical axis expression is a ring identity",
-      "The fiber counting sorry in int_dist_card_le is the main remaining gap: need Finset.card partition argument with disjoint fibers of size \u2264 2",
+      "The fiber counting sorry in int_dist_card_le is the main remaining gap: need Finset.card partition argument with disjoint fibers of size ≤ 2",
       "quadratic_at_most_two_roots uses only (p-q)*(a*(p+q)+b) = difference of polynomial evaluations, avoiding Polynomial API entirely"
     ],
     "mathlibGaps": [],
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:21:07.632Z",
-  "lastUpdate": "2026-05-07T17:15:00.000Z",
+  "lastUpdate": "2026-05-30T07:35:00Z",
   "completed": "2026-05-04T10:20:38.000Z",
   "significance": 7,
   "tractability": 4
