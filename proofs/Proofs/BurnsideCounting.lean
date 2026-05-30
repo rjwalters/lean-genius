@@ -79,10 +79,125 @@ theorem rotatedIndex_zero (n : ℕ) [NeZero n] (i : Fin n) :
   rw [Nat.add_mod_right]
   exact Nat.mod_eq_of_lt hi
 
-/-- Rotation by r then s equals rotation by r+s.
-    This is the key modular arithmetic lemma (stated axiomatically). -/
-axiom rotatedIndex_add (n : ℕ) [NeZero n] (r s : ZMod n) (i : Fin n) :
-    rotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i
+/-- Auxiliary: for `0 ≤ a < 2n` and `n ≤ a`, the value `a % n` is `a - n`.
+    Reformulates a common omega-resistant identity via `Nat.add_mod_right`. -/
+private lemma mod_eq_sub (a n : ℕ) (h1 : n ≤ a) (h2 : a < 2 * n) :
+    a % n = a - n := by
+  conv_lhs =>
+    rw [show a = (a - n) + n from by omega]
+  rw [Nat.add_mod_right]
+  exact Nat.mod_eq_of_lt (by omega)
+
+/-- Auxiliary: rewrite `(a + n) % n` style expressions by absorbing the
+    leading `n`.  Used to peel off the outer `+ n` from `(i.val + n - r.val + n - s.val) % n`-shape arguments
+    when the underlying value is < `n`. -/
+private lemma mod_of_shift (a c n : ℕ) (h_eq : a = c + n) (h_lt : c < n) :
+    a % n = c := by
+  rw [h_eq, Nat.add_mod_right]
+  exact Nat.mod_eq_of_lt h_lt
+
+/-- Auxiliary: when the argument is < n, mod is identity, but expressed
+    with a Nat-`omega`-verifiable equal target rather than the literal arg. -/
+private lemma mod_of_eq (a b n : ℕ) (h_eq : a = b) (h_lt : a < n) :
+    a % n = b := by
+  rw [h_eq]
+  exact Nat.mod_eq_of_lt (h_eq ▸ h_lt)
+
+/-- Rotation by `r` then `s` equals rotation by `r + s`.
+    Proof: reduce to a `ℕ`-modular `Fin.val` identity, then enumerate the
+    8 sign-cases of `(i.val ⋚ r.val) × (r.val + s.val ⋚ n) × (i.val ⋚ r.val + s.val - n)`
+    where applicable.  Each leaf normalizes both sides to the same `ℕ`
+    value using the auxiliaries `mod_eq_sub` / `mod_of_shift` / `mod_of_eq`. -/
+theorem rotatedIndex_add (n : ℕ) [NeZero n] (r s : ZMod n) (i : Fin n) :
+    rotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i := by
+  have hn : 0 < n := NeZero.pos n
+  have hr : r.val < n := ZMod.val_lt r
+  have hs : s.val < n := ZMod.val_lt s
+  have hi : i.val < n := i.isLt
+  have hrs : (r + s).val = (r.val + s.val) % n := ZMod.val_add r s
+  apply Fin.ext
+  show ((i.val + n - r.val % n) % n + n - s.val % n) % n
+      = (i.val + n - (r + s).val % n) % n
+  rw [hrs, Nat.mod_mod, Nat.mod_eq_of_lt hr, Nat.mod_eq_of_lt hs]
+  -- Case A: `i.val ≥ r.val`.  Pull a single `n` out of the inner mod.
+  by_cases hir : r.val ≤ i.val
+  · have h_inner : (i.val + n - r.val) % n = i.val - r.val := by
+      apply mod_of_shift _ _ _ (by omega : i.val + n - r.val = (i.val - r.val) + n)
+      omega
+    rw [h_inner]
+    by_cases hi_rs : i.val < r.val + s.val
+    · -- Sub-case A1: `i.val - r.val < s.val`.  LHS is in range.
+      have hlhs : (i.val - r.val + n - s.val) % n
+          = i.val - r.val + n - s.val :=
+        Nat.mod_eq_of_lt (by omega)
+      by_cases hsum : r.val + s.val < n
+      · have h_sum : (r.val + s.val) % n = r.val + s.val :=
+          Nat.mod_eq_of_lt hsum
+        rw [h_sum]
+        have hrhs : (i.val + n - (r.val + s.val)) % n
+            = i.val + n - r.val - s.val :=
+          mod_of_eq _ _ _ (by omega) (by omega)
+        rw [hlhs, hrhs]
+        omega
+      · push_neg at hsum
+        have h_sum : (r.val + s.val) % n = r.val + s.val - n :=
+          mod_eq_sub _ _ (by omega) (by omega)
+        rw [h_sum]
+        have hrhs : (i.val + n - (r.val + s.val - n)) % n
+            = i.val - r.val + n - s.val :=
+          mod_of_shift _ _ _ (by omega) (by omega)
+        rw [hlhs, hrhs]
+    · -- Sub-case A2: `i.val ≥ r.val + s.val`.  Then `r.val + s.val < n`.
+      push_neg at hi_rs
+      have hsum : r.val + s.val < n := by omega
+      have h_sum : (r.val + s.val) % n = r.val + s.val :=
+        Nat.mod_eq_of_lt hsum
+      rw [h_sum]
+      have hlhs : (i.val - r.val + n - s.val) % n = i.val - r.val - s.val :=
+        mod_of_shift _ _ _ (by omega) (by omega)
+      have hrhs : (i.val + n - (r.val + s.val)) % n = i.val - r.val - s.val :=
+        mod_of_shift _ _ _ (by omega) (by omega)
+      rw [hlhs, hrhs]
+  · -- Case B: `i.val < r.val`.  Inner mod is identity.
+    push_neg at hir
+    have h_inner : (i.val + n - r.val) % n = i.val + n - r.val :=
+      Nat.mod_eq_of_lt (by omega)
+    rw [h_inner]
+    by_cases hsum : r.val + s.val < n
+    · -- Sub-case B1: `r.val + s.val < n`.
+      have h_sum : (r.val + s.val) % n = r.val + s.val :=
+        Nat.mod_eq_of_lt hsum
+      rw [h_sum]
+      have hlhs : (i.val + n - r.val + n - s.val) % n
+          = i.val + n - r.val - s.val :=
+        mod_of_shift _ _ _ (by omega) (by omega)
+      have hrhs : (i.val + n - (r.val + s.val)) % n
+          = i.val + n - r.val - s.val :=
+        mod_of_eq _ _ _ (by omega) (by omega)
+      rw [hlhs, hrhs]
+    · -- Sub-case B2: `r.val + s.val ≥ n`.  Further split.
+      push_neg at hsum
+      have h_sum : (r.val + s.val) % n = r.val + s.val - n :=
+        mod_eq_sub _ _ (by omega) (by omega)
+      rw [h_sum]
+      by_cases hi_rs_n : r.val + s.val - n ≤ i.val
+      · -- Sub-case B2a: both wrap.
+        have hlhs : (i.val + n - r.val + n - s.val) % n
+            = i.val + n - r.val - s.val :=
+          mod_of_shift _ _ _ (by omega) (by omega)
+        have hrhs : (i.val + n - (r.val + s.val - n)) % n
+            = i.val + n - r.val - s.val :=
+          mod_of_shift _ _ _ (by omega) (by omega)
+        rw [hlhs, hrhs]
+      · -- Sub-case B2b: `i.val < r.val + s.val - n`.  Both stay in range.
+        push_neg at hi_rs_n
+        have hlhs : (i.val + n - r.val + n - s.val) % n
+            = i.val + n - r.val + n - s.val :=
+          Nat.mod_eq_of_lt (by omega)
+        have hrhs : (i.val + n - (r.val + s.val - n)) % n
+            = i.val + n - r.val + n - s.val :=
+          mod_of_eq _ _ _ (by omega) (by omega)
+        rw [hlhs, hrhs]
 
 /-- The rotation action forms an additive group action of Z_n on colorings.
     The zero_vadd and add_vadd properties follow from index rotation lemmas. -/
