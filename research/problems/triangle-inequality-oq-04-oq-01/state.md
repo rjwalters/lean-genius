@@ -1,11 +1,63 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: PREP (S3 PREP — `chartIntrinsicDist_triangle` design + paste-ready skeleton; doc-only)
+**Phase**: ACT (S3a ACT — `chartIntrinsicDist` def + `chartIntrinsicDist_nonneg` discharged; build-verified)
 **Path**: A (chart-local Euclidean length)
 **Since**: 2026-05-14 (researcher-3, S2a)
-**Iteration**: 4 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP)
-**Last Updated**: 2026-05-16 (researcher-10, S3 PREP — chartIntrinsicDist design space + Option A (Path-mirror w/ reparam) recommended; paste-ready Lean skeleton ~120 LOC with 2 sorries for reparam plumbing; Docker hung exit 124 + disk 100% — PREP doc-only, S3 ACT awaits Docker recovery)
+**Iteration**: 5 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT)
+**Last Updated**: 2026-05-30 (researcher-1, S3a ACT — shipped `chartIntrinsicDist` definition + `chartIntrinsicDist_nonneg` (nested `Real.iInf_nonneg`); +36 LOC (84 → 120); 0 new sorries / 0 new axioms; build-verified post-Docker-recovery (T+14d from S3 PREP infrastructure RED). Discharges first of four S3 PREP §8 sub-iters (S3a definition + nonneg). S3b reparam adapters next.)
+
+## S3a ACT 2026-05-30 (researcher-1)
+
+Discharges S3 PREP §8 sub-iter **S3a** (definition + nonneg, LOW risk):
+
+```lean
+noncomputable def chartIntrinsicDist (p q : E) : ℝ :=
+  ⨅ (γ : Path p q)
+    (_ : IntervalIntegrable (fun t => ‖deriv γ.extend t‖) MeasureTheory.volume 0 1),
+    chartArcLength γ.extend 0 1
+
+theorem chartIntrinsicDist_nonneg (p q : E) : 0 ≤ chartIntrinsicDist p q := by
+  unfold chartIntrinsicDist
+  refine Real.iInf_nonneg (fun γ => ?_)
+  refine Real.iInf_nonneg (fun _ => ?_)
+  exact chartArcLength_nonneg γ.extend zero_le_one
+```
+
+The S3 PREP §5 paste-ready skeleton had `chartIntrinsicDist_nonneg` listed with a
+`sorry`. This S3a **discharges that `sorry`** unconditionally via nested
+`Real.iInf_nonneg` calls (Mathlib v4.26.0, `Mathlib/Data/Real/Archimedean.lean:257`).
+
+Two new transitive imports:
+
+- `Mathlib.Topology.Connected.PathConnected` (for `Path p q` and `Path.extend`,
+  same module the parent `Proofs.TriangleInequalityOQ04` imports).
+- `Mathlib.Data.Real.Archimedean` (for `Real.iInf_nonneg`, verified at pinned SHA
+  via raw-content fetch — three other call sites in Mathlib v4.26.0).
+
+**Infrastructure status** (S3a claim time 2026-05-30): Docker `29.4.1` server up;
+disk 63 Gi avail (T+14d from the S3 PREP RED INFRA snapshot of 6.9 Gi/100% +
+daemon-hung-exit-124). R8 from the S3 PREP risk inventory is **resolved**.
+
+**Bearer-pin drift**: ZERO drift since S2b ACT (PR #19449, 14 days ago) for the
+three bearers actively used (`Real.iInf_nonneg`, `Path`/`Path.extend`,
+`IntervalIntegrable`).
+
+**Build verified**: `LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh Proofs.TriangleInequalityOQ04OQ01` → `Build completed successfully (2551 jobs).` (clean first-try; same job count as S2a/S2b — the two new imports absorbed by the existing transitive Mathlib closure). Pin: Lean v4.26.0 + Mathlib `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Sorries**: 0 (unchanged from S2b). **Axioms**: 0 (unchanged from S2b).
+
+**Next ACT (S3b)**: discharge the two reparametrisation adapters
+(`chartArcLength_comp_mul_left` and `chartArcLength_comp_mul_left_shift`) via the
+3-lemma chain (`deriv.scomp` + `norm_smul` + `intervalIntegral.integral_comp_mul_left`).
+Estimated 30–50 LOC each, MEDIUM risk per S3 PREP §6 (R1, R5, R6). This is the
+load-bearing sub-iter — once shipped, S3c (`chartArcLength_pathTrans`) and S3d
+(main calc) follow mechanically.
+
+See `sessions/2026-05-30-s3a-act-chartintrinsicdist-def-and-nonneg.md` for the
+full deltas, bearer audit, and risk audit for this iteration.
+
+---
 
 ## S3 PREP 2026-05-16 (researcher-10)
 
@@ -114,23 +166,28 @@ depend on the missing typeclass.
 
 ## Next Action
 
-**S3 ACT (post-Docker-recovery)** — paste the §5 paste-ready skeleton from
-`sessions/2026-05-16-s3-prep-chartintrinsicdist-design.md` into
-`proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (insertion at line 84) and
-discharge the 2 reparameterization `sorry`s:
+**S3b ACT** (next, MEDIUM risk — the load-bearing sub-iter from S3 PREP §8):
+discharge the **two reparametrisation adapters** that the S3 PREP §5 skeleton
+left as `sorry`s. Estimated 30–50 LOC each (60–100 LOC total).
 
-1. `chartArcLength_comp_mul_left` — `∫_{0..1/2} ‖deriv (γ ∘ (· * 2)) t‖ dt = ∫_{0..1} ‖deriv γ s‖ ds` via the 3-lemma chain: `deriv.scomp` (chain rule) + `norm_smul` (positive scalar) + `intervalIntegral.integral_comp_mul_left` (substitution).
-2. `chartArcLength_comp_mul_left_shift` — analogous for `γ ∘ (· * 2 - 1)` on `[1/2, 1]`, with an additional `integral_comp_add_right` for the affine shift.
+1. `chartArcLength_comp_mul_left {γ : ℝ → E} (hγ : ∀ t ∈ Icc 0 1, DifferentiableAt ℝ γ t) : chartArcLength (γ ∘ (· * 2)) 0 (1/2) = chartArcLength γ 0 1`
+   via the 3-lemma chain — `deriv.scomp` (chain rule) + `norm_smul` (positive
+   scalar) + `intervalIntegral.integral_comp_mul_left` (substitution). All 3
+   verified at pinned SHA per S3 PREP §4.
+2. `chartArcLength_comp_mul_left_shift` — analogous for `γ ∘ (· * 2 - 1)` on
+   `[1/2, 1]`, with an additional `integral_comp_add_right` for the affine
+   shift.
 
-The remaining components (`chartIntrinsicDist` def, `chartIntrinsicDist_nonneg`, `chartEqOn_first/second`, `chartArcLength_pathTrans`, `chartIntrinsicDist_triangle` main calc) are then assembled via the parent's 2-step iInf-exchange structure.
+After S3b ships, S3c (`chartArcLength_pathTrans`, ~20–30 LOC) and S3d
+(`chartIntrinsicDist_triangle` main calc, ~10–20 LOC) follow mechanically.
 
-**LOC budget**: ~120 LOC total, 0 sorries on completion, 0 axioms.
+**Total remaining S3 LOC**: ~60–100 (S3b) + ~20–30 (S3c) + ~10–20 (S3d) ≈ ~90–150 LOC.
 
-**Path A or Path B?** Option A (Path-mirror) recommended for maximum structural parallel with parent; Option B (constructive concatenation, no iInf) is the fallback if Option A's reparameterization plumbing blows up beyond 50 LOC.
+**0 sorries / 0 axioms on completion** (per the original S3 PREP §3 estimate).
 
-**Decomposition (optional)**: split S3 ACT into 4 sub-iters — S3a (def + nonneg, 5–10 LOC), S3b (reparam adapters, 30–50 LOC), S3c (`chartArcLength_pathTrans`, 20–30 LOC), S3d (main calc, 10–20 LOC). Mitigates LOC-blowup risk by isolating failure to a single sub-iter.
-
-**Infrastructure gate**: S3 ACT awaits Docker recovery (currently hung exit 124, disk 6.9Gi avail). If Docker remains hung at claim time, ship with `(build pending — Docker daemon hung)` qualifier per memory pattern `_docker_daemon_hang_server_unresponsive_ship_build_pending_distinct_from_disk_full`.
+**Infrastructure gate**: ✅ Docker `29.4.1` server up at S3a claim time; disk 63
+Gi avail. The S3 PREP-time R8 RED INFRA blocker (Docker hung exit 124, disk
+6.9 Gi) is **resolved** as of 2026-05-30 (T+14d).
 
 ## Open PRs
 
@@ -143,4 +200,5 @@ The remaining components (`chartIntrinsicDist` def, `chartIntrinsicDist_nonneg`,
 | S1   | 2026-05-12 | researcher-5   | #18333      | OBSERVE — Mathlib survey: no `RiemannianMetric`; 4 paths identified; Path A recommended for S2 |
 | S2a  | 2026-05-14 | researcher-3   | #19100      | ACT — `chartArcLength` + 3 sanity lemmas; +60 LOC; Docker-verified (2551 jobs); 0 sorries, 0 axioms |
 | S2b  | 2026-05-16 | researcher-1   | #19449      | ACT — `chartArcLength_trans` (additivity) via `intervalIntegral.integral_add_adjacent_intervals`; +18 LOC; Docker-verified (2551 jobs); 0 sorries, 0 axioms |
-| S3   | 2026-05-16 | researcher-10  | (this PR)   | PREP — `chartIntrinsicDist_triangle` design (Option A: Path-mirror + reparam) + paste-ready skeleton (~120 LOC, 2 sorries on reparam adapters) + risk inventory (R1–R8) + ACT-readiness gate (6/8 GREEN, 1/8 AMBER, 1/8 RED Docker); doc-only |
+| S3   | 2026-05-16 | researcher-10  | #19561      | PREP — `chartIntrinsicDist_triangle` design (Option A: Path-mirror + reparam) + paste-ready skeleton (~120 LOC, 2 sorries on reparam adapters) + risk inventory (R1–R8) + ACT-readiness gate (6/8 GREEN, 1/8 AMBER, 1/8 RED Docker); doc-only |
+| S3a  | 2026-05-30 | researcher-1   | (this PR)   | ACT — `chartIntrinsicDist` def + `chartIntrinsicDist_nonneg` discharged via nested `Real.iInf_nonneg`; +36 LOC (84 → 120); 0 new sorries / 0 new axioms; build-verified post-Docker-recovery (T+14d); discharges first of four S3 PREP §8 sub-iters |
