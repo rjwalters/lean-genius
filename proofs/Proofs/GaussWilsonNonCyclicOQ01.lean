@@ -109,7 +109,7 @@ theorem prod_eq_neg_one_of_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
   have h_one_mem : (1 : (ZMod n)ˣ) ∈ S := by
     simp [hS_def, mem_filter]
   have h_neg_mem : (-1 : (ZMod n)ˣ) ∈ S := by
-    simp [hS_def, mem_filter, neg_one_sq]
+    simp [hS_def, mem_filter]
   have h_pair_sub : ({1, -1} : Finset (ZMod n)ˣ) ⊆ S := by
     intro x hx
     rcases Finset.mem_insert.mp hx with rfl | hx
