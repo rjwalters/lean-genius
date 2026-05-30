@@ -1,7 +1,7 @@
 {
   "slug": "konigsberg-oq-03-wip-01",
   "title": "Complete Eulerian Paths in Hypergraphs",
-  "phase": "OBSERVE",
+  "phase": "SURVEY",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -26,34 +26,50 @@
     "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-04T02:41:19-07:00",
-    "iteration": 1,
-    "focus": "Complete the konigsberg-oq-03 WIP proof obligations for hypergraph Eulerian paths.",
-    "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "phase": "SURVEY",
+    "since": "2026-05-30T19:00:00Z",
+    "iteration": 2,
+    "focus": "S2 SURVEY (this PR, doc-only) — honest gap assessment supersedes S1 OBSERVE init. KonigsbergOQ03.lean is a SCAFFOLD with 3 :=True placeholder propositions masquerading as completeness (0 sorries, 0 axioms, 0 theorems, 74 LOC, 5 defs). True-placeholder gaps: HasEulerTour (r=2 case, no SimpleGraph reduction), HasInfiniteEulerPath (infinite walk infrastructure missing), HasOneWayEulerPath (same infra gap). Mathlib v4.26.0 has SimpleGraph.Walk.IsEulerian but NO hypergraph type, NO infinite walk type, NO Erdos-Grunwald-Weiszfeld. Full completion needs ~700-1300 LOC of new infrastructure (multi-month). Smallest concrete forward step: r=2 case (~30 LOC) using SimpleGraph.Walk.IsEulerian — defer to a session that commits to definitional approach. The problem.md WIP framing is misleading; this is a stub, not a partial proof.",
+    "blockers": [
+      "Infrastructure-level: full completion needs ~700-1300 LOC of hypergraph walk + infinite walk + Erdos-Grunwald-Weiszfeld infrastructure not present in Mathlib v4.26.0. No session-level INFRA blocker — Docker GREEN, disk 61Gi GREEN; only proofs/.lake self-symlink RED but Docker bypasses."
+    ],
+    "nextAction": "S3 picker: (A, recommended) implement r=2 case ~30 LOC using SimpleGraph.Walk.IsEulerian; (B) convert 3 True placeholders to sorry-guarded honest stubs (~3 LOC); (C) pivot to different slug; (D) open child sub-OQs for the 4-step decomposition. Recommend A as smallest concrete win.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Initial notes identify this as a work-in-progress completion for Eulerian paths in hypergraphs and related infinite graph cases.",
+    "progressSummary": "S2 SURVEY (this PR, doc-only): honest gap assessment supersedes S1 OBSERVE init. KonigsbergOQ03.lean is a scaffold with 3 :=True placeholder propositions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath), 0 theorems, 74 LOC. Mathlib v4.26.0 has SimpleGraph.Walk.IsEulerian (used by parent Konigsberg.lean) but no hypergraph type, no infinite walk, no Erdos-Grunwald-Weiszfeld. Full completion ~700-1300 LOC multi-month. Smallest forward step: r=2 case ~30 LOC.",
     "builtItems": [],
     "insights": [
-      "The intended hypergraph theorem mirrors the classical Eulerian circuit degree condition.",
-      "The related infinite graph entries are konigsberg-oq-03-oq-01 and konigsberg-oq-03-oq-02."
+      "**True placeholders are dishonest formalisation**: KonigsbergOQ03.lean has 0 sorries and 0 axioms but 3 :=True propositions, which makes its 0-sorry count misleading. Per CLAUDE.md Aristotle rule #3 (No placeholder True theorems), the same principle applies broadly — True propositions are gaps masquerading as completeness.",
+      "**r=2 hypergraph IS a SimpleGraph** — the natural reduction is to convert RUniformHypergraph V 2 to SimpleGraph V via edges (each Finset V of size 2 becomes an unordered pair), then use Mathlib SimpleGraph.Walk.IsEulerian. This is the cleanest small-scope target (~30 LOC).",
+      "**r≥3 hypergraph Euler tours are NP-complete** (Lonc-Naroski 2010) — there is no simple degree condition characterising existence. The file docstring acknowledges this but offers no path forward.",
+      "**Infinite walk infrastructure does not exist in Mathlib v4.26.0** — there is no SimpleGraph.InfiniteWalk type. Building one would be a ~300-500 LOC mini-project before any Erdos-Grunwald-Weiszfeld work."
     ],
     "mathlibGaps": [
-      "Custom hypergraph definitions may be needed if Mathlib's graph APIs do not cover the target structure."
+      "r-uniform hypergraph type (Mathlib.Combinatorics has nothing).",
+      "Hypergraph walk / Euler trail for hypergraphs.",
+      "Infinite walk type (SimpleGraph.InfiniteWalk) and IsEulerian predicate.",
+      "Erdős-Grünwald-Weiszfeld (1936) theorem characterising countable-graph Euler paths."
     ],
     "nextSteps": [
-      "Inspect the parent konigsberg-oq-03 proof for existing sorries.",
-      "Check Mathlib.Combinatorics.SimpleGraph support and any local hypergraph definitions.",
-      "Clarify the hyperedge traversal predicate if the current structure is blocked."
+      "**S3 candidate A (recommended)**: implement r=2 hypergraph reduction. Define toSimpleGraph (H : RUniformHypergraph V 2) : SimpleGraph V (~10 LOC) and prove HasEulerTour H ↔ ∃ u v (w : (toSimpleGraph H).Walk u v), w.IsEulerian (~20 LOC). Replaces 1 of 3 True placeholders with real content.",
+      "S3 candidate B: convert 3 True placeholders to sorry-guarded honest stubs (~3 LOC). Lays foundation for sub-OQ scaffolding without committing to definitional shape.",
+      "S3 candidate C: pivot to a different slug.",
+      "S3 candidate D: open child sub-OQs (konigsberg-oq-03-wip-01-oq-01 for r=2, -oq-02 for hypergraph walk infra, -oq-03 for infinite walks, -oq-04 for EGW)."
     ],
-    "markdown": "# Knowledge Base: konigsberg-oq-03-wip-01\n\n## Problem Understanding\n\nThis task is to complete the work-in-progress proof `konigsberg-oq-03`, which extends the classical Eulerian-circuit/Konigsberg bridge theorem to hypergraphs and related infinite graph cases.\n\nThe intended formal target is an Eulerian circuit theorem for connected hypergraphs in which every vertex has even degree and every hyperedge is traversed exactly once.\n\n## Known Context\n\n- Parent proof: `konigsberg-oq-03`.\n- Related gallery entries named in the local notes: `konigsberg-oq-03-oq-01` for infinite graph Euler paths and `konigsberg-oq-03-oq-02` for infinite path formalization.\n- Local notes expect Mathlib graph APIs such as `Mathlib.Combinatorics.SimpleGraph`; custom hypergraph definitions may be needed if Mathlib support is limited.\n\n## Current State\n\nNo proof attempts have been recorded yet. The current phase is OBSERVE, with the next action to perform a quick Mathlib search before moving to implementation if an obvious path is found.\n\n## Open Work\n\n- Identify and close existing `sorry` statements in the parent proof if the structure is salvageable.\n- If the current structure is blocked, consider restructuring the proof.\n- Clarify or refine the hyperedge traversal definition if needed.\n"
+    "progressHistory": [
+      {
+        "iteration": 2,
+        "date": "2026-05-30",
+        "researcher": "researcher-1",
+        "mode": "SURVEY",
+        "summary": "Honest gap assessment: 3 True placeholders are the real gaps, not the 0-sorry count. r=2 case is the smallest concrete forward step. SURVEY-BLOCKED at infrastructure level for full completion."
+      }
+    ]
   },
   "tags": [
     "graph-theory",
@@ -72,5 +88,19 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.023Z"
+  "lastUpdate": "2026-05-30T19:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/KonigsbergOQ03.lean",
+      "filename": "KonigsbergOQ03.lean",
+      "lineCount": 74,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "truePlaceholderCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    }
+  ]
 }
