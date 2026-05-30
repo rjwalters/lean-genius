@@ -17,7 +17,10 @@ via `(Multiplicative.ofAdd r) • c = r +ᵥ c` (definitional equality).
 4. `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` gives Burnside identity
 5. `Fintype.card (Multiplicative (ZMod n)) = n` closes the sum
 
-**Axiom note**: Inherits `rotatedIndex_add` axiom from BurnsideCounting.lean.
+**Axiom note**: The companion `BurnsideCounting.lean` retains 4 axioms
+(`fixed_point_sum_binary_4`, `coloringSetoid`, `coloringQuotientFintype`,
+`binary_necklaces_4`). The earlier `rotatedIndex_add` was discharged to
+a proved theorem in the `burnside-counting-oq-01` S1 iteration.
 
 **Sorry count**: 0.
 -/

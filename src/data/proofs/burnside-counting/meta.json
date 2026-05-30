@@ -20,15 +20,16 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 5,
-    "assumptions": "5 axioms: rotatedIndex_add (modular arithmetic composition of rotations), fixed_point_sum_binary_4 (computed fixed-point sum = 24), coloringSetoid (orbit equivalence relation), coloringQuotientFintype (fintype instance for quotient), binary_necklaces_4 (6 distinct binary 4-necklaces).",
-    "lineCount": 255,
-    "theoremCount": 6,
+    "axiomCount": 4,
+    "assumptions": "4 axioms: fixed_point_sum_binary_4 (computed fixed-point sum = 24), coloringSetoid (orbit equivalence relation), coloringQuotientFintype (fintype instance for quotient), binary_necklaces_4 (6 distinct binary 4-necklaces). The earlier rotatedIndex_add axiom (modular-arithmetic composition law for rotations) was discharged to a fully-proved theorem in the burnside-counting-oq-01 S1 iteration (Docker 3058 jobs clean).",
+    "lineCount": 370,
+    "theoremCount": 7,
     "definitionCount": 7,
     "originalContributions": [
       "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
       "rotateColoring: ZMod n acts on colorings by cyclic rotation",
       "cyclicAddActionOnColorings: AddAction (ZMod n) (Coloring n k) instance",
+      "rotatedIndex_add: modular-arithmetic composition law for rotations, proved unconditionally via ZMod.val_add + an 8-leaf case enumeration over (i.val ⋚ r.val), (r.val + s.val ⋚ n), (i.val ⋚ r.val + s.val - n), with three private Nat-mod auxiliaries (mod_eq_sub, mod_of_shift, mod_of_eq) and omega-checked sign-region bounds (previously axiomatized)",
       "binary_4_colorings_count: Coloring 4 2 has 16 elements",
       "constant_coloring_count: exactly k constant colorings for n positions with k colors",
       "period2_count: 4 binary colorings of length 4 with period dividing 2",
@@ -57,19 +58,19 @@
   },
   "conclusion": {
     "summary": "Burnside's lemma is formalized from Mathlib and applied to the classic necklace counting problem. The key mathematical content — the orbit-counting formula — is proved. The application to binary 4-necklaces is axiomatized pending formal proof of modular arithmetic details.",
-    "implications": "This formalization demonstrates the two-layer structure of applying abstract Mathlib theorems to concrete problems: (1) the abstract `burnside_lemma` wraps `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` with zero proof effort; (2) the concrete application requires defining the specific action (cyclic rotation), verifying it satisfies the `AddAction` axioms, and computing fixed-point cardinalities for each group element. The fully verified lemmas (`binary_4_colorings_count`, `constant_coloring_count`, `period2_count`) show that fixed-point counting is elementarily decidable — the remaining axioms are a bridge-building problem between Mathlib's multiplicative and additive group-action APIs. Once that bridge is built (via a `MulAction` instance from the `AddAction` + `AddCommGroup (ZMod n)`), all 5 axioms collapse to `native_decide` or Mathlib lemmas. Burnside's lemma underlies Pólya enumeration (used in chemical isomer counting, OEIS necklace sequences), and this formalization provides the scaffolding for a full Pólya cycle index theorem in Lean 4.",
+    "implications": "This formalization demonstrates the two-layer structure of applying abstract Mathlib theorems to concrete problems: (1) the abstract `burnside_lemma` wraps `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` with zero proof effort; (2) the concrete application requires defining the specific action (cyclic rotation), verifying it satisfies the `AddAction` axioms, and computing fixed-point cardinalities for each group element. The fully verified lemmas (`rotatedIndex_zero`, `rotatedIndex_add`, `binary_4_colorings_count`, `constant_coloring_count`, `period2_count`) show that both the modular-arithmetic infrastructure and the fixed-point counting are elementarily decidable — the remaining 4 axioms are a bridge-building problem between Mathlib's multiplicative and additive group-action APIs. Once that bridge is built (via a `MulAction` instance from the `AddAction` + `AddCommGroup (ZMod n)`, e.g. through `Multiplicative (ZMod n)`), all remaining axioms collapse to `native_decide` or Mathlib lemmas. Burnside's lemma underlies Pólya enumeration (used in chemical isomer counting, OEIS necklace sequences), and this formalization provides the scaffolding for a full Pólya cycle index theorem in Lean 4.",
     "openQuestions": [
-      "Prove rotatedIndex_add: (a + n - b) % n composition law in Lean 4",
       "Prove fixed_point_sum_binary_4 via native_decide",
+      "Bridge AddAction (ZMod n) ↔ MulAction (Multiplicative (ZMod n)) so coloringSetoid and coloringQuotientFintype can be derived (not axiomatized) and binary_necklaces_4 follows from burnside_lemma",
       "Generalize to Polya enumeration: weighted counting by color frequency",
       "Extend to dihedral group D_n (necklaces with flip symmetry)"
     ]
   },
   "leanFile": {
     "namespace": "BurnsideCounting",
-    "lineCount": 255,
-    "axiomCount": 5,
-    "theoremCount": 6,
+    "lineCount": 370,
+    "axiomCount": 4,
+    "theoremCount": 7,
     "definitionCount": 7,
     "path": "Proofs/BurnsideCounting.lean",
     "sorries": 0
@@ -86,7 +87,7 @@
       "name": "cyclicAddActionOnColorings",
       "type": "definition",
       "statement": "`instance : AddAction (ZMod n) (Coloring n k)`",
-      "significance": "**The example action.** Defines $\\mathbb{Z}/n\\mathbb{Z}$ acting by cyclic rotation on functions `Fin n → Fin k`. The action sends a rotation $r$ and a coloring $c$ to the coloring $i \\mapsto c((i + n - r) \\bmod n)$, computed in `ℕ` to avoid `ZMod` underflow. The `zero_vadd` and `add_vadd` AddAction axioms are discharged using `rotatedIndex_zero` (verified) and `rotatedIndex_add` (axiom).",
+      "significance": "**The example action.** Defines $\\mathbb{Z}/n\\mathbb{Z}$ acting by cyclic rotation on functions `Fin n → Fin k`. The action sends a rotation $r$ and a coloring $c$ to the coloring $i \\mapsto c((i + n - r) \\bmod n)$, computed in `ℕ` to avoid `ZMod` underflow. The `zero_vadd` and `add_vadd` AddAction axioms are discharged using `rotatedIndex_zero` and `rotatedIndex_add` — both now fully verified theorems (as of the burnside-counting-oq-01 S1 iteration).",
       "description": "Built from the helper `rotateColoring` and `rotatedIndex` definitions. Uses `[NeZero n]` to guarantee the modulus is positive. Note that `burnside_lemma` consumes `MulAction`, not `AddAction`; bridging this gap requires the `coloringSetoid` axiom which postulates the orbit equivalence relation directly."
     },
     {
@@ -112,10 +113,10 @@
     },
     {
       "name": "rotatedIndex_add",
-      "type": "axiom",
+      "type": "supporting",
       "statement": "$\\mathrm{rotatedIndex}\\ n\\ s\\ (\\mathrm{rotatedIndex}\\ n\\ r\\ i) = \\mathrm{rotatedIndex}\\ n\\ (r + s)\\ i$",
-      "significance": "**The composition axiom.** States that successive rotations compose additively in `ZMod n`. This is the key modular-arithmetic identity needed for `add_vadd` in `cyclicAddActionOnColorings`. The mathematical content is elementary — $((i + n - r) \\bmod n + n - s) \\bmod n = (i + n - (r + s)) \\bmod n$ — but cleanly proving it in Lean requires careful `Nat.sub` / `Nat.mod` case analysis, hence the axiomatic stance.",
-      "description": "Stated as `axiom rotatedIndex_add (n : ℕ) [NeZero n] (r s : ZMod n) (i : Fin n) : rotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i`. Discharging it would convert this from `axiomatized` to `verified` for the rotation infrastructure (but four other axioms would remain)."
+      "significance": "**The composition law (now proved).** States that successive rotations compose additively in `ZMod n`. This is the key modular-arithmetic identity needed for `add_vadd` in `cyclicAddActionOnColorings`. The mathematical content is elementary — $((i + n - r) \\bmod n + n - s) \\bmod n = (i + n - (r + s)) \\bmod n$ — and the Lean proof discharges it via an 8-leaf enumeration of the `(i.val, r.val, s.val)` sign-cases combined with three private Nat-mod auxiliaries (`mod_eq_sub`, `mod_of_shift`, `mod_of_eq`), reducing the file's axiom count from 5 to 4.",
+      "description": "Proof reduces the `Fin n` equality to a `ℕ` equality on `.val` (via `Fin.ext` + `show`), uses `ZMod.val_lt` and `ZMod.val_add` to flatten the `(r + s).val` and `Nat.mod_mod` to clear nested mods, then case-splits 3 levels deep: (1) `i.val ⋚ r.val` (whether the inner `(i.val + n - r.val) % n` wraps), (2) `r.val + s.val ⋚ n` (whether the sum mod identity wraps), and (3) where applicable, `i.val ⋚ r.val + s.val - n` (whether the final outer sum wraps). The 8 leaves each invoke one of `mod_of_eq` (when both sides reduce to in-range expressions), `mod_of_shift` (when one side carries a `+ n` to absorb via `Nat.add_mod_right`), or `Nat.mod_eq_of_lt` directly. Previously stated as an axiom; discharged in the S1 ACT iteration of `burnside-counting-oq-01` (Docker 3058/3058 jobs clean)."
     },
     {
       "name": "fixed_point_sum_binary_4",
@@ -237,7 +238,7 @@
       "title": "Part II: Cyclic Group Action on Finite Colorings",
       "startLine": 54,
       "endLine": 109,
-      "summary": "Defines Coloring n k (Fin n → Fin k), rotateColoring and rotatedIndex. Proves rotatedIndex_zero (verified theorem). Axiomatizes rotatedIndex_add (composition law). Establishes cyclicAddActionOnColorings: AddAction (ZMod n) (Coloring n k) instance with verified zero_vadd and add_vadd (using the axiom)."
+      "summary": "Defines Coloring n k (Fin n → Fin k), rotateColoring and rotatedIndex. Proves rotatedIndex_zero and rotatedIndex_add (both fully verified theorems — composition law via ZMod.val_add + Nat.mod_mod + 8-leaf sign-case enumeration with three private Nat-mod auxiliaries: mod_eq_sub, mod_of_shift, mod_of_eq). Establishes cyclicAddActionOnColorings: AddAction (ZMod n) (Coloring n k) instance with verified zero_vadd and add_vadd."
     },
     {
       "id": "sec-burnside-concrete",
