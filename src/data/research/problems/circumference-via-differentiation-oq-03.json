@@ -1,7 +1,7 @@
 {
   "slug": "circumference-via-differentiation-oq-03",
   "title": "Riemannian area-circumference duality via the co-area formula",
-  "phase": "PREP",
+  "phase": "ACT-MERGED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -36,14 +36,14 @@
     "goal": "S2-S5 deliverable: verified Lean proof of the vector-space special case (Q1 restricted to M = E inner product space, R1 route). Use Mathlib's IsRiemannianManifold 𝓘(ℝ, E) E to state the identity intrinsically; bridge through the parent OQ-01 polynomial formulas to discharge it. Target ~500-700 Lean lines, 0 sorries, 0 axioms in S5 deliverable. The manifold version (R2) is explicitly deferred to Mathlib roadmap, not a gallery deliverable at v4.26.0."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-14T16:30:00.000Z",
-    "iteration": 7,
-    "focus": "S3 PREP (researcher-12, 2026-05-14): Workaround A (InnerProductSpace-polymorphic Bridge 1) Mathlib availability erratum. Audits and corrects PR #18985's (S2 ACT, open) claim that the polymorphic InnerProductSpace.volume_closedBall lemma is 'blocked on upstream Mathlib' — the lemma exists at Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, file MeasureTheory/Measure/Lebesgue/VolumeOfBalls.lean line 372, with full finrank-polymorphic signature under [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]. The polymorphic Bridge 1 (riemannianVolumeBall_eq_nBallVolumeFn) is a ~40-50 LOC tactic chain: (1) rw [InnerProductSpace.volume_closedBall p r]; (2) ENNReal.toReal_* chain to collapse to ℝ; (3) (√π)^n = π^((n:ℝ)/2) bridge via Real.sqrt_eq_rpow + Real.rpow_natCast + Real.rpow_mul (~5 LOC). The S2 PREP (#18458) §2 correctly identified the lemma at line 356 (drifted to 372, consistent +16-line drift per S2d audit); S2b PREP (#18575) §3.6 self-refuted Workaround A only for Bridge 2, not Bridge 1; the conflation got carried into S2 ACT state.md framing. This PR corrects the record with concrete S3 ACT skeleton (~50 LOC body+helpers). Bridge 2 (S4) remains genuinely blocked on Mathlib's absence of Hausdorff-measure-of-sphere identification; recommends Workaround C' (skip Bridge 2, state S5 main directly via nSphereSurfaceFn) to preserve axiomCount: 0. Doc-only; 3 files modified (this state.md; new sessions/2026-05-14-s3-prep-workaround-a-bridge1-mathlib-availability-erratum.md; this JSON cursor).",
+    "phase": "ACT-MERGED",
+    "since": "2026-05-30T12:15:00.000Z",
+    "iteration": 8,
+    "focus": "S5 STATE-SYNC (researcher-1, 2026-05-30): post-S2-ACT-landing reconciliation. The 4-theorem n=2,3 partial Lean deliverable landed on main via the #19454 bulk-merge commit ecb47b35601 (2026-05-16). PR #18985 was CLOSED (its code absorbed). Doc-side state and JSON cursor had been stuck at PREP iteration 7 for two weeks; this PR resyncs to ACT-MERGED iteration 8. Verified on main: proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean has 93 LOC, 4 theorems, 0 sorries, 0 axioms; Proofs.lean imports it; src/data/proofs/circumference-via-differentiation-oq-03/ does NOT exist yet (gallery wiring pending). Three independent ACT pipelines remain available: (a) gallery wiring ~80 LOC, (b) S3 ACT polymorphic Bridge 1 ~50 LOC, (c) S4 ACT Workaround C' polymorphic main ~60 LOC. Doc-only; 3 files modified (state.md, new sessions/2026-05-30-s5-state-sync-post-s2-act-landing.md, this JSON cursor).",
     "blockers": [],
-    "nextAction": "S3 ACT (next claim, ~50 LOC, status `verified` polymorphic Bridge 1): extend the OQ03 Lean file (in #18985) with theorem riemannianVolumeBall_eq_nBallVolumeFn (p : E) {r : ℝ} (hr : 0 ≤ r) : (volume (Metric.closedBall p r)).toReal = CircumferenceViaDifferentiationOQ01.nBallVolumeFn (Module.finrank ℝ E) r := by rw [InnerProductSpace.volume_closedBall p r]; ENNReal.toReal_* chain; (√π)^n = π^((n:ℝ)/2) bridge; ring. Requires #18985 to merge first. Variable block: {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]. Build verification: ./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03. Expected: 0 sorries, 0 axioms, [~2731-2733/~2731-2733] jobs. Alternatives running in parallel: (1) gallery wiring (S2-b ACT, ~80 LOC, depends on #18985); (2) S4 ACT Workaround C' (skip Bridge 2, state S5 main with nSphereSurfaceFn directly); (3) S5 ACT main polymorphic HasDerivAt — chains S3+S4 (or S3 alone, if Workaround C').",
+    "nextAction": "Three independent ACT pipelines, recommended order (a)→(b)→(c). (a) Gallery wiring — create src/data/proofs/circumference-via-differentiation-oq-03/{meta.json, index.ts} mirroring the OQ-01 pattern (~80 LOC, no Lean, no Docker; tests via pnpm build). (b) S3 ACT polymorphic Bridge 1 — extend OQ03 Lean file with theorem riemannianVolumeBall_eq_nBallVolumeFn under [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]; ~50 LOC body using InnerProductSpace.volume_closedBall + ENNReal.toReal chain + (√π)^n = π^((n:ℝ)/2) bridge (see S3 PREP #19136 §3.2). Pre-flight: re-verify the Mathlib lemma line citation at the current lake-pinned SHA (line drift expected after 2 weeks). Build: ./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03. (c) S4 ACT Workaround C' main — polymorphic dV/dr = nSphereSurfaceFn n r theorem stated directly without Bridge 2, depends on (b). Each is a single-researcher single-PR iteration; (a) ships independently of (b)/(c).",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 0
     }
@@ -105,10 +105,10 @@
     "bishop-gromov-deferred"
   ],
   "relatedProofs": [
-    "circumference-via-differentiation",
-    "circumference-via-differentiation-oq-01",
     "area-of-circle",
     "area-of-circle-oq-02",
+    "circumference-via-differentiation",
+    "circumference-via-differentiation-oq-01",
     "fundamental-theorem-calculus"
   ],
   "references": {
@@ -139,7 +139,7 @@
     ]
   },
   "started": "2026-05-12T22:55:00.000Z",
-  "lastUpdate": "2026-05-14T16:30:00.000Z",
+  "lastUpdate": "2026-05-30T12:15:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -164,6 +164,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
+      "filename": "CircumferenceViaDifferentiationOQ03.lean",
+      "lineCount": 94,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean"
     }
   ]
 }
