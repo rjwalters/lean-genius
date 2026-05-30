@@ -1,0 +1,82 @@
+{
+  "slug": "cube-root-2-irrational-oq-01",
+  "title": "General irrationality: n√m is irrational iff m is not a perfect n-th power",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "IN-PROGRESS: [Explain what we're trying to prove in accessible terms] | Focus: Initial problem understanding.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-29T19:14:09.158Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "irrationality",
+    "number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cube-root-2-irrational"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.158Z",
+  "lastUpdate": "2026-05-29T19:14:09.158Z",
+  "significance": 7,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot2Irrational.lean",
+      "filename": "CubeRoot2Irrational.lean",
+      "lineCount": 92,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2Irrational.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot2IrrationalOQ03.lean",
+      "filename": "CubeRoot2IrrationalOQ03.lean",
+      "lineCount": 205,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2IrrationalOQ03.lean"
+    }
+  ]
+}

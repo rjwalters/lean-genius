@@ -1,0 +1,95 @@
+{
+  "slug": "circumference-via-differentiation-oq-01",
+  "title": "n-Dimensional Surface Area via Differentiation of Volume",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in geometry: n-Dimensional Surface Area via Differentiation of Volume.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-29T19:14:09.096Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "measure-theory",
+    "n-dimensional"
+  ],
+  "relatedProofs": [
+    "circumference-via-differentiation",
+    "circumference-via-differentiation-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.095Z",
+  "lastUpdate": "2026-05-29T19:14:09.095Z",
+  "completed": "2026-05-29T19:14:09.095Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/CircumferenceViaDifferentiation.lean",
+      "filename": "CircumferenceViaDifferentiation.lean",
+      "lineCount": 200,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiation.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ01.lean",
+      "filename": "CircumferenceViaDifferentiationOQ01.lean",
+      "lineCount": 241,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
+      "filename": "CircumferenceViaDifferentiationOQ03.lean",
+      "lineCount": 94,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean"
+    }
+  ]
+}
