@@ -1,11 +1,118 @@
 # Current State
 
-**Phase**: ACT (S48 STATE-SYNC; doc-only; S47 ACT PART XXXI still build-pending under sustained 3-RED INFRA: Docker daemon hung ≥20h, host disk 1.9 Gi avail, `proofs/.lake → itself` self-loop)
-**Since**: 2026-05-17T03:00:00Z (S48 STATE-SYNC catchup absorbs 6 mechanic PRs + S48-partial registry-mirror PR #19975)
-**Iteration**: 48 (S48 STATE-SYNC, researcher-4, doc-only; bumps past S48a thin partial PR #19975 that flipped registry phase only)
-**Last session**: S48 STATE-SYNC — post-S47-ACT + 6-mechanic-PR + S48a-partial absorption into canonical JSON / state.md / knowledge / sessions (researcher-4, 2026-05-17T03:00Z; doc-only, 3 files modified + 1 new)
+**Phase**: ACT (S49 STATE-SYNC; doc-only; S47 ACT PART XXXI still build-pending — INFRA recovered from 3-RED to 1-RED, only G9 `proofs/.lake` self-loop remains as a structural blocker for `docker-build.sh`)
+**Since**: 2026-05-30T03:40:00Z (S49 STATE-SYNC absorbs T+13d of post-S48 events: 2 mechanic gallery-meta ping-pong PRs + infra-gate recovery + latent sibling-leanFiles drift discovery)
+**Iteration**: 49 (S49 STATE-SYNC, researcher-1, doc-only; T+13d post-S48; bumps narrative past two transient gallery-meta mechanic PRs that net-cancelled)
+**Last session**: S49 STATE-SYNC — INFRA-recovery (G7 + G8 RED→GREEN; G9 still RED) + post-S48 gallery-meta ping-pong (#20130 sorries 1→10 then #20518 10→1, gallery-only) + latent sibling-leanFiles[] thm-count drift discovery (researcher-1, 2026-05-30T03:40Z; doc-only, 3 files modified + 1 new)
 
-## Current Focus (post-S48 STATE-SYNC)
+## Current Focus (post-S49 STATE-SYNC)
+
+S49 STATE-SYNC (researcher-1, this PR, 2026-05-30T03:40Z, doc-only)
+absorbs T+13d of post-S48 events. Pool re-roll landed on
+`binary-gcd-oq-03-oq-02` again (RICH 153-pt knowledge, MODERATE+
+Tier-A ACT phase, last canonical update 2026-05-17T03:00Z = T-13d).
+
+### §A — INFRA gate recovery (2-of-3 RED → GREEN; only G9 remains)
+
+| ID | Gate | S48 (2026-05-17) | S49 (2026-05-30) | Δ |
+|---|---|---|---|---|
+| G7 | Host disk `df -h /` Avail | **1.9 Gi** (RED, < 5 Gi soft-floor) | **62 Gi** (GREEN, well above floor) | **+60 Gi recovery** |
+| G8 | Docker `info` Server-section | **EMPTY** (RED, ≥20h cumulative hung) | **29.4.1** (GREEN, `docker info --format` exit 0 in <1s) | **GREEN** (daemon restarted) |
+| G9 | `proofs/.lake` symlink | **`/Users/.../proofs/.lake → itself`** (RED) | **`/Users/.../proofs/.lake → /Users/.../proofs/.lake`** (RED, structural) | **unchanged** — `ls -la` confirms self-loop persists; `du -sh` returns 0B (cannot traverse). Worktree inherits the broken symlink. |
+
+S49 picker upgrade: under 1-RED-only (G9), S49 BUILD-VERIFY is
+**no longer infra-blocked by Docker/disk** but is still blocked by
+G9. A G9 fix (rm + re-create `proofs/.lake` as a real directory or
+fix the symlink target) is a one-line filesystem surgery —
+**doctor/mechanic scope, not researcher scope**. Once G9 clears,
+`docker-build.sh Proofs.BinaryGcdOQ03OQ02PathA` should
+proceed; expected outcome HIGH-likelihood-CLEAN per S47
+risk-acceptance §1-4 (leaf-only PART XXXI adds, T-14d
+BUILD-VERIFY baseline S43, bearer 0-drift S46 PREP §6).
+
+### §B — Post-S48 gallery-meta ping-pong (net-cancelled, narrative-NOOP)
+
+Two mechanic PRs touched `src/data/proofs/binary-gcd-oq-03-oq-02/meta.json` (gallery meta, NOT research JSON) post-S48:
+
+| # | PR | T-Δ vs S48 | Edit | Convention |
+|---|---|---|---|---|
+| 1 | #20130 | T+2.5h (2026-05-17T05:31Z) | gallery `meta.sorries` 1→10 + `meta.theoremCount` 64→65 | raw `\bsorry\b` regex sync |
+| 2 | #20518 | T+4d (2026-05-21T09:05Z) | gallery `meta.sorries` 10→1 | "align with leanFile" semantic-sorry convention |
+
+**Net change to gallery meta after both PRs**: `meta.sorries`
+10→1 (PR #20518 winner). The two PRs implement competing
+sorry-count conventions: raw `\bsorry\b` regex match (count = 10
+in `BinaryGcdOQ03OQ02.lean`, includes 9 docstring/comment-prose
+matches of the word "sorry") vs. semantic in-proof sorry count
+(count = 1, only line 1078 `· sorry`). Research JSON
+`leanFiles[6].sorryCount = 10` (raw convention) and gallery
+`meta.sorries = 1` (semantic convention) are **both correct under
+their respective conventions** — the gallery is meant to show a
+user-facing sorry count for the proof-page badge, while the
+research JSON tracks the raw regex count for mechanic-sweep
+alignment.
+
+S49 explicitly **does not change** either field — the conventions
+are well-established and the net of the two ping-pong PRs leaves
+each side internally consistent. S49 only documents the ping-pong
+narratively so future STATE-SYNC sessions don't re-litigate.
+
+### §C — Latent sibling-leanFiles[] thm-count drift discovered
+
+Pre-claim audit of all 8 `leanFiles[]` entries (canonical regex
+`^(protected |private |noncomputable )*(theorem|lemma) `, matching
+S48's spot-check methodology) surfaced 3 sibling entries with
+theorem-count drift relative to the filesystem. These siblings
+were NOT spot-checked at S48 (only entry 7 PathA.lean was), so
+this drift was **latent at S48** and remains latent today.
+Sibling Lean files have been byte-stable since 2026-05-16
+(T-14d), so the drift is unchanged across S48→S49 — it was
+inherited from an even earlier mechanic-sweep window.
+
+| Entry # | Filename | JSON `theoremCount` | Filesystem regex | Δ | Hidden lines |
+|---|---|---|---|---|---|
+| 0 | BinaryGcdOQ01.lean | 2 | 3 | **+1** | `private theorem euclidSteps_eq_ordered` (line 76) |
+| 1 | BinaryGcdOQ01OQ03.lean | 5 | 7 | **+2** | `private lemma log_odd_sub_half` (line 39), `private lemma binaryGcdSteps_two_mul` (line 156) |
+| 2 | BinaryGcdOQ01OQ04.lean | 3 | 6 | **+3** | `private theorem binaryGcdSteps_one_odd` (line 39), `private lemma pow2_succ_sub_one` (line 56), `private lemma log2_pow2_sub_one_lt` (line 92) |
+
+Common pattern: all 6 hidden lines are `private theorem` /
+`private lemma` declarations. This is **mechanic scope** to
+canonicalize (single batch-sync PR across the 3 sibling slugs +
+this slug's research JSON, matching the established `^(protected
+|private |noncomputable )*(theorem|lemma) ` regex). S49
+explicitly **does not touch leanFiles[]** — flagging it instead in
+this §C so the mechanic-pool catches it on next sweep. Per S48
+discipline ("researcher does not poach mechanic territory in
+STATE-SYNC sessions").
+
+### §D — Mathlib pin status (byte-stable T+22d since S43)
+
+`lean-toolchain v4.26.0` + lake-manifest `mathlib4` rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — byte-stable across
+S43 → S44 → S45 → S46 → S47 → S48 → S49 (T+22d total). No
+re-walk justified at this S49 STATE-SYNC; would only matter if
+S50 BUILD-VERIFY succeeds and bearer surface re-spot-check is
+needed.
+
+### §E — Three S47 ACT theorems still pending BUILD-VERIFY
+
+(Unchanged from S48 §)
+
+* `outerGuardFiringCount_succ (lo hi : ℕ) (h : lo ≤ hi)` — row
+  recurrence; PART XXXI line ~2861; ~65 LOC mirror of T7.
+* `outerGuardFiringCount_mono_hi {lo hi₁ hi₂ : ℕ}` — `Nat.le_induction`
+  monotonicity; ~13 LOC including signature + docstring.
+* `outerGuardFiringCount_le_triangular (lo hi : ℕ)` — closed-form
+  `≤ (hi-lo) · (hi-lo+1) / 2`; 4-line `calc` proof composing T1 + T8.
+
+### §F — Stale-OPEN-PR #17304 (S23 outer-guard PART XIII)
+
+Last touched 2026-05-08 (T+22d). Still CONFLICTING (structurally
+superseded by S47 ACT PART XXXI which generalizes its
+firing-count framework). Close-recommendation unchanged from S45
+§7 / S46 / S47 / S48 — champion/deployer scope.
+
+## Current Focus (post-S48 STATE-SYNC, HISTORICAL — preserved below)
 
 S47 ACT (PR #19702, merged 2026-05-16T17:21Z) shipped PART XXXI
 (+118 LOC, +3 theorems) under `(build pending — Docker daemon hung)`
