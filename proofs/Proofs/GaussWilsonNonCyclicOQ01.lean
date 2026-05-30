@@ -10,49 +10,49 @@ import Mathlib.NumberTheory.Wilson
 import Mathlib.Tactic
 
 /-!
-# Gauss–Wilson Non-Cyclic OQ-01 — Phase C: Main iff Theorem (scaffold)
+# Gauss–Wilson Non-Cyclic OQ-01 — Phase C: Main iff Theorem
 
-This file delivers the **scaffold** of `prod_univ_units_zmod_eq_neg_one_iff_isCyclic`
+This file delivers the main theorem `prod_univ_units_zmod_eq_neg_one_iff_isCyclic`
 for `gauss-wilson-non-cyclic-oq-01`, building on Phase A and Phase B.
 
 **Main theorem.** For `n ≥ 1`,
 
   ∏ x : (ZMod n)ˣ, x = -1   ↔   IsCyclic (ZMod n)ˣ.
 
-This scaffold ships the **structural case-split** following S5b PREP's
-corrected proof skeleton (3 bugs in S5 PREP's design memo: `interval_cases`
-without upper bound, `all_goals` after `decide`, `absurd h_cyc h_cyc` type
-mismatch). The two implication-direction sub-lemmas
-`prod_eq_neg_one_of_isCyclic_aux` and `prod_eq_one_of_not_isCyclic_aux`
-remain strategic sorries — their discharge is the natural S7/S8 work.
+Both implication-direction auxiliary lemmas
+(`prod_eq_neg_one_of_isCyclic_aux` for the cyclic direction and
+`prod_eq_one_of_not_isCyclic_aux` for the non-cyclic direction) are
+discharged in this file. Sorry-free, axiom-free, build-verified at
+Mathlib v4.26.0.
 
 ## Phase chain
 
 | Phase | File | Status |
 |---|---|---|
-| A | `GaussWilsonNonCyclicOQ01A.lean` | merged, build-verified (S2 PR #18147) |
-| B (partial) | `GaussWilsonNonCyclicOQ01B.lean` | merged, build-pending (S3 PR #18232), 1 strategic sorry |
-| C (scaffold, THIS FILE) | `GaussWilsonNonCyclicOQ01.lean` | proposed; 2 strategic sorries deferred to S7/S8 |
+| A | `GaussWilsonNonCyclicOQ01A.lean` | build-verified (S2 PR #18147) |
+| B | `GaussWilsonNonCyclicOQ01B.lean` | build-verified (S3 PR #18232 + S8 ACT PR #18957) |
+| C (THIS FILE) | `GaussWilsonNonCyclicOQ01.lean` | build-verified (S6 PR #18652 scaffold + S7 ACT PR #18743 cyclic direction + S9 ACT PR #19075 `[NeZero n]` + S12 ACT PR #19440 non-cyclic direction + S14 ACT PR #21156 L112 Hermit fix) |
 
 ## Mathlib citations consumed (verified at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
 
 - `IsCyclic.card_pow_eq_one_le` (`Mathlib/GroupTheory/SpecificGroups/Cyclic.lean:317`)
-- `ZMod.prod_univ_units_id_eq_neg_one`-style: see `Mathlib/NumberTheory/Wilson.lean`
-- `Finset.prod_filter`, `Finset.prod_mul_distrib` (umbrella `Mathlib.Tactic` pull-ins)
+- `IsPGroup.iff_card` (`Mathlib/GroupTheory/PGroup.lean:46`)
+- `SubmonoidClass.coe_finset_prod`, `Finset.prod_subtype`
+- `Finset.prod_filter`, `Finset.prod_pair`, `Finset.card_pair`
+  (umbrella `Mathlib.Tactic` pull-ins)
 
-## Why scaffold and not full Phase C?
+## Proof architecture
 
-Per S5b PREP §3.3, the cyclic direction admits a 1-line shortcut via
-`prod_univ_units_id_eq_neg_one` only when `n` is **prime** (so `ZMod n` is
-a field). For composite cyclic `n ∈ {4, p^k≥2, 2p^k}`, the manual
-"`G[2] = {1, -1}`" argument via `IsCyclic.card_pow_eq_one_le` is required.
-That argument is ~30-40 LOC and orthogonal to the case-split scaffold
-here. The non-cyclic direction additionally consumes the Phase B
-strategic sorry chain (S4 in flight) so its discharge depends on S4 ACT.
-
-Strategic-sorry isolation gives the next researcher a clearly-stated
-pair of sub-lemmas to close, while shipping the *outer* iff structure
-build-pending. Companion to S3 ACT's strategic-sorry isolation in Phase B.
+- **Cyclic direction** (`prod_eq_neg_one_of_isCyclic_aux`): apply Phase A
+  to reduce `∏ univ` to `∏ 2-torsion`, then use
+  `IsCyclic.card_pow_eq_one_le` to bound the 2-torsion at ≤ 2 elements;
+  combined with `{1, -1} ⊆ 2-torsion` (`-1 ≠ 1` for `n ≥ 3`), pin the
+  2-torsion to exactly `{1, -1}` and compute the product.
+- **Non-cyclic direction** (`prod_eq_one_of_not_isCyclic_aux`): apply
+  Phase A, lift the 2-torsion to a subgroup `T`, show `IsPGroup 2 T`,
+  use `IsPGroup.iff_card` to get `|T| = 2^k`, combine with the parent
+  file's `card_sq_eq_one_ge_three` to get `|T| ≥ 4`, then apply Phase B
+  `prod_univ_eq_one_of_elementary_card_ge_four`.
 
 ## Spec
 
@@ -122,8 +122,8 @@ theorem prod_eq_neg_one_of_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
       (h_pair_card.symm ▸ h_card_le)).symm
   rw [h_S_eq, Finset.prod_pair h_neq, one_mul]
 
-/-- **(STRATEGIC SORRY — non-cyclic direction)** For `n ≥ 3` with
-    `(ZMod n)ˣ` non-cyclic, the product of units equals `1`.
+/-- **Non-cyclic direction.** For `n ≥ 3` with `(ZMod n)ˣ` non-cyclic,
+    the product of units equals `1`.
 
     Mathematical content: by the parent file's
     `card_sq_eq_one_ge_three`, the 2-torsion subset of `(ZMod n)ˣ` has
@@ -132,19 +132,11 @@ theorem prod_eq_neg_one_of_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
     reduces `∏ univ` to `∏ (2-torsion)`. Phase B
     (`prod_univ_eq_one_of_elementary_card_ge_four`) gives `∏ (2-torsion) = 1`.
 
-    This direction consumes Phase B's strategic sorry chain transitively
-    (`prod_univ_eq_pow_card_div_two_of_elementary`, S4 in flight).
-    Deferred to S8 ACT (after S4 ACT closes the Phase B chain).
-
-    Subtleties for S8 implementer:
-    - The 2-torsion subset is `univ.filter (fun x => x ^ 2 = 1) : Finset (ZMod n)ˣ`.
-    - To apply Phase B, lift the filter to a subgroup `H ≤ (ZMod n)ˣ` and
-      invoke `Phase B.prod_univ_eq_one_of_elementary_card_ge_four` on
-      `H`. This requires either constructing the subgroup explicitly
-      or working in the subtype.
-    - Phase A is stated for `∏ x : G, x` where `G` is a finite commutative
-      group; the bridge is `Finset.prod_subtype_eq_prod_filter` or
-      `Finset.prod_attach`. -/
+    Discharged in S12 ACT (PR #19440) by lifting the 2-torsion filter to
+    an explicit subgroup `T : Subgroup (ZMod n)ˣ`, proving `IsPGroup 2 T`,
+    extracting `Nat.card T = 2^k` via `IsPGroup.iff_card`, and bridging to
+    the ambient `Finset` product via `SubmonoidClass.coe_finset_prod` +
+    `Finset.prod_subtype`. -/
 theorem prod_eq_one_of_not_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
     (hncyc : ¬IsCyclic (ZMod n)ˣ) :
     (∏ x : (ZMod n)ˣ, x) = 1 := by
