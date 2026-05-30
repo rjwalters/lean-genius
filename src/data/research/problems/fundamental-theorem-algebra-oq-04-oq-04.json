@@ -1,0 +1,105 @@
+{
+  "slug": "fundamental-theorem-algebra-oq-04-oq-04",
+  "title": "Formalize the p-adic contrast: [\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\inf...",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Formalize the p-adic contrast: [\\overline{\\mathbb{Q}_p}:\\mathbb{Q}_p] = \\inf....",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-05-29T19:14:09.115Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-04",
+    "fundamental-theorem-algebra-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.115Z",
+  "lastUpdate": "2026-05-29T19:14:09.115Z",
+  "completed": "2026-05-29T19:14:09.115Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremAlgebra.lean",
+      "filename": "FundamentalTheoremAlgebra.lean",
+      "lineCount": 215,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+      "filename": "FundamentalTheoremAlgebraOQ02.lean",
+      "lineCount": 126,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ02.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ04.lean",
+      "lineCount": 215,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean"
+    }
+  ]
+}

@@ -1,0 +1,130 @@
+{
+  "slug": "cube-root-3-irrational-oq-03",
+  "title": "Linear independence of {1, ∛3, (∛3)²} over Q: extending cube root irrationality",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "IN-PROGRESS: [Explain what we're trying to prove in accessible terms] | Focus: Initial problem understanding.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-29T19:14:09.158Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "algebra",
+    "irrationality",
+    "linear-independence",
+    "number-theory",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-02",
+    "cube-root-3-irrational-oq-02-oq-01",
+    "cube-root-3-irrational-oq-02-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-29T19:14:09.158Z",
+  "lastUpdate": "2026-05-29T19:14:09.158Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot3Irrational.lean",
+      "filename": "CubeRoot3Irrational.lean",
+      "lineCount": 84,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02.lean",
+      "lineCount": 124,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02OQ01.lean",
+      "filename": "CubeRoot3IrrationalOQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02OQ02.lean",
+      "lineCount": 105,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
+      "filename": "CubeRoot3IrrationalOQ04.lean",
+      "lineCount": 1290,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
+      "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
+      "lineCount": 473,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean"
+    }
+  ]
+}
