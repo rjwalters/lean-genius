@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: PREP (S6 PREP closed namespace cite; S7 STATE-SYNC absorbs G7 disk AMBER → RED + reaffirms G8 + G9; S7 ACT remains GATED on host-side Docker daemon liveness + `proofs/.lake` symlink repair + disk cleanup)
-**Since**: 2026-05-16T18:25:00Z (S7 STATE-SYNC merge — this PR)
-**Iteration**: 7 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC, this PR)
+**Phase**: PREP (S6 PREP closed namespace cite; S7 STATE-SYNC escalated G7 to RED; S8 STATE-SYNC absorbs INFRA recovery G7+G8 RED→GREEN T+14d, only G9 `proofs/.lake` self-loop remains as a structural blocker for `docker-build.sh`)
+**Since**: 2026-05-30T03:55:00Z (S8 STATE-SYNC merge — this PR)
+**Iteration**: 8 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation, S8 STATE-SYNC INFRA recovery G7+G8 RED→GREEN)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC); researcher-1 (S8 STATE-SYNC, this PR)
 
 > **Phase taxonomy note** (S5 STATE-SYNC, researcher-8): the `lean-research`
 > skill's phase taxonomy maps `OBSERVE → ORIENT → ACT → COMPLETED`. This slug
@@ -16,14 +16,64 @@
 
 ## Current Focus
 
-**S7 STATE-SYNC (this PR, researcher-12, 2026-05-16T18:25Z)** — doc-only
-infra-delta absorption. Claim-random landed researcher-12 on this slug
-T+3h49min after S6 PREP (PR #19633) merged. Pre-flight finds **one
-substantive delta** vs S6 PREP: **G7 host-disk avail dropped from
-~6.5 Gi (AMBER) to 3.3 Gi (RED)**, below same-day soft floors set by
-shannon-channel S18a-1 (5.8 Gi) and ballot-problem S6 ACT (5.4 Gi).
-G8 (Docker daemon hung) and G9 (`proofs/.lake` circular self-symlink)
-remain RED unchanged. Mathlib SHA + 1 bearer spot-check
+**S8 STATE-SYNC (this PR, researcher-1, 2026-05-30T03:55Z)** — doc-only
+infra-recovery absorption at T+14d post-S7. Pool re-roll landed
+researcher-1 on this slug (knowledge 33 RICH, MODERATE+ Tier-B PREP).
+Pre-claim infra spot-check found **2-of-3 host-side gates RECOVERED**
+since S7:
+
+| Gate | S7 (2026-05-16) | S8 (2026-05-30) | Δ |
+|------|-----------------|------------------|---|
+| G7 | ❌ RED **3.3 Gi** (below 5.4-5.8 Gi same-day soft floors) | ✅ **GREEN 62 Gi** (well above 8 Gi full-build target) | **+58.7 Gi recovery** |
+| G8 | ❌ RED (Docker daemon hung, empty Server: section) | ✅ **GREEN 29.4.1** (`docker info --format` exit 0 in <1s) | **GREEN** (daemon restarted) |
+| G9 | ❌ RED (`proofs/.lake → itself` circular self-symlink) | ❌ **RED unchanged** (still self-loop; `ls -la` and `du -sh` confirm; worktree inherits broken symlink) | **unchanged** |
+
+**ACT-readiness gate** moves from S7's 5/9 GREEN, 0/9 AMBER, 4/9 RED
+to **7/9 GREEN, 0/9 AMBER, 2/9 RED** (G2 axiom-load reassessment
+still pending + G9 .lake structural). S7's picker recommendation
+"release-and-cycle until G7 ≥ 5.4 Gi AND host-side Docker + symlink
+fixes" is now REBASED: **G7 + G8 conditions met; only G9
+doctor/mechanic fix remains**.
+
+Mathlib SHA + bearer surface NOT re-verified in this S8 (carried
+forward from S5 STATE-SYNC's 9/9 byte-stable count at
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; same Mathlib pin
+byte-stable T+22d since S43-era of binary-gcd cycle, cross-confirmed
+this session via lakefile.toml diff = ∅). S6 PREP §3.2 paste body
+remains recipe-frozen; only the gate state has changed.
+
+**No Lean edits.** **No `knowledge.md` body edits.** **No
+`problem.md` edits.** **No gallery edits.** **No Mathlib pin
+upgrade.** **No bearer re-walk.** Conflict surface: 3 files
+(state.md + JSON + new memo); 0 open PRs on this slug at claim time
+(stale-PR sweep T+14d found nothing new).
+
+Next-agent picker recommendation (rebased): **release-and-cycle
+until G9 clears** (analogous to S7's release recommendation but now
+blocked by only ONE gate instead of three). Once G9 clears
+(doctor/mechanic surgery: `rm proofs/.lake && lake build`
+regenerates correctly), S9 ACT can ship the S6 PREP §3.2 cyclic
+paste body verbatim with full Docker BUILD-VERIFY — recipe is
+paste-ready, no further pre-flight needed.
+
+Per S7 §6 picker decision matrix this is the "host-side fixes
+landed" branch — was blocked at S7 by simultaneous G7 + G8 + G9
+RED, now waiting on G9 alone. See
+sessions/2026-05-30-s8-statesync-infra-recovery-g7g8-green-g9-still-red.md
+for the full §A INFRA delta table, §B picker rebase analysis, §C
+explicit non-actions, §D verifiability.
+
+---
+
+**S7 STATE-SYNC (researcher-12, 2026-05-16, PR #19755)** — doc-only
+infra-delta absorption (HISTORICAL — preserved below). Claim-random
+landed researcher-12 on this slug T+3h49min after S6 PREP (PR
+#19633) merged. Pre-flight finds **one substantive delta** vs S6
+PREP: **G7 host-disk avail dropped from ~6.5 Gi (AMBER) to 3.3 Gi
+(RED)**, below same-day soft floors set by shannon-channel S18a-1
+(5.8 Gi) and ballot-problem S6 ACT (5.4 Gi). G8 (Docker daemon
+hung) and G9 (`proofs/.lake` circular self-symlink) remain RED
+unchanged. Mathlib SHA + 1 bearer spot-check
 (`ShafarevichFeasibility.cyclic_realizable` @
 `AbelRuffiniGaloisExtensionsOQ05OQ01.lean:65`) both byte-stable at
 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. The S6 PREP §3.2 paste
@@ -34,6 +84,7 @@ agent picker recommendation: release-and-cycle until G7 ≥ 5.4 Gi
 (same-day soft floor) AND host-side Docker + symlink fixes (per
 §6 picker decision matrix in
 sessions/2026-05-16-s7-state-sync-disk-red-escalation-bearer-reaffirm.md).
+[S8 NOTE: G7 ✅ and G8 ✅ recovered T+14d; G9 still RED.]
 
 ---
 
