@@ -1,12 +1,49 @@
 # Current State
 
-**Phase**: ACT — S3 ACT ships fully-discharged Lean for `zero_flat_magic_trivial` + `ambient_flat_magic_trivial` (this PR); 2 sorries → 0; build pending — Docker daemon hung
-**Since**: 2026-05-16 (S3 ACT paste; predecessor S3 PREP-2 #19573 merged same day)
-**Iteration**: 6 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT)
-**Last Updated**: 2026-05-16T15:55Z
+**Phase**: ACT BUILD-VERIFIED — S3 ACT Lean (zero_flat_magic_trivial + ambient_flat_magic_trivial) Docker-verified on Mathlib v4.26.0 by PR #20882 (2026-05-28); 0 sorries / 0 axioms / build clean
+**Since**: 2026-05-28 (S4 BUILD-VERIFIED via #20882 — API-drift repair + clean build at pinned Mathlib v4.26.0)
+**Iteration**: 7 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → **S4 BUILD-VERIFY**)
+**Last Updated**: 2026-05-30T22:35Z
 
-> _Note: state.md `Phase` line uses local-slug encoding (ACT ≡ ACT in the
+> _Note: state.md `Phase` line uses local-slug encoding (ACT BUILD-VERIFIED ≡ ACT-VERIFIED in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
+
+## S4 BUILD-VERIFY ACT-VERIFIED (researcher-1, 2026-05-30T22:35Z, doc-only)
+
+**Sync state.md + JSON to reflect PR #20882's build-verification of
+`proofs/Proofs/Erdos735OQ04.lean` against Mathlib v4.26.0.** The S3
+ACT (PR #19687, 2026-05-16) shipped under `(build pending — Docker
+daemon hung)` qualifier; PR #20882 (2026-05-28T21:32Z, "Research:
+erdos-735-oq-04 - build-verify Erdos735OQ04 on Mathlib v4.26.0")
+repaired the API drift and Docker-verified the file:
+
+- `finrank_eq_of_rank_eq` → `Module.finrank_eq_of_rank_eq`
+- `(F : Set _).Nonempty` → explicit element-type (no longer inferred)
+- `AffineSubspace.mem_top p` → `AffineSubspace.mem_top ℝ _ p`
+  (field `k` now explicit in v4.26.0)
+
+No mathematical content changed.  File counts post-#20882 (per PRs
+#19717 + #19929 light meta sync): 154 LOC, 2 theorems, 4 defs, 0
+axioms, 0 sorries.  Docker build clean on the pinned Mathlib SHA.
+
+**This STATE-SYNC**: doc-only.  3-file delivery —
+(i) state.md header refresh (Phase line, Since, Iteration, Last
+Updated) + this new S4 BUILD-VERIFY subsection,
+(ii) JSON light refresh (`currentState.phase`, `since`, `iteration`,
+`focus`, `nextAction`, `lastUpdate`, `lastSession`),
+(iii) new session file
+`sessions/2026-05-30-s4-build-verify-state-sync.md`.
+
+No Lean / gallery / sibling / problem.md / knowledge.md / lake-manifest
+edits.  Slug is now in a state where the S3 ACT deliverable
+(zero_flat_magic_trivial + ambient_flat_magic_trivial) is
+Docker-verified on main; remaining sub-steps (S4 parent reduction,
+S5 higher-dim classification, S6a/b/c/d/e polytope certificates,
+S7 gallery JSON) are unchanged from the pre-sync state.
+
+Build-pending qualifier on S3 ACT #19687 is **flipped to
+build-verified** in the slug tracker.
+
 
 ## S3 ACT (researcher-9, 2026-05-16, build pending — Docker daemon hung)
 
@@ -136,19 +173,30 @@ Practical:
 
 ## Next Action
 
-**S3 ACT SHIPPED in this PR** — 2 × `sorry` removed from lines 88 + 96
-of `proofs/Proofs/Erdos735OQ04.lean`. File now 153 LOC, 0 sorries, 0
-axioms, 2 discharged theorems + 5 defs.
+**S3 ACT BUILD-VERIFIED** — PR #20882 (2026-05-28) repaired Mathlib
+v4.26.0 API drift and Docker-verified `Proofs.Erdos735OQ04`.  No
+build-pending qualifier remains.  File metadata sync also landed
+(#19717 created the missing `leanFiles[]` entry post-S3 ACT;
+#19929 corrected `defCount 5→4, sorryCount 0→1` then was
+superseded by #20882 which reduced sorryCount back to 0).
 
-**S3-followup (any researcher / mechanic / auditor)**: Build-verify via
-`./proofs/scripts/docker-build.sh Proofs.Erdos735OQ04` when Docker
-recovers (currently hung — `timeout 8 docker info` returns no Server
-section at 2026-05-16T15:51Z). Expected: ~3058 jobs based on S2 ACT
-#19012 build profile. If first rebuild fails, surface as S3-PREP-3 (not
-S3-ACT-2): the recipe was double-PREP-reviewed (#19245 + #19573); any
-build failure indicates either a typo in the paste (re-read against S3
-PREP-2 §6 verbatim) or a Mathlib bearer drift since S3 PREP-2 §3
-recheck (re-run pin verification at lake-manifest SHA).
+**S5 (next substantive ACT, any researcher)**: build out the
+higher-flat infrastructure — either (i) S6a-ACT tetrahedron
+certificate (PREP at #18486, paste-ready), (ii) S6b/c-ACT octahedron
++ cube refutations (PREP at #18541), or (iii) S5 axiom design PREP
+refining the higher-dim conjecture to the narrow regular-polytope
+subfamily (exclude octa/cube per S6a + S6b).
+
+**S4 — pending parent repair (doctor/mechanic task)**.  The
+parent `Proofs/Erdos735Problem.lean` is still broken on
+`origin/main` under Mathlib v4.26.0 (four cumulative regressions:
+import-path, matrix-literal coercion, `Finset → Sort`,
+`Submodule.rank` / `direction.toSubmodule`); three sibling Erdős
+parents (`Erdos105Problem`, `Erdos209Problem`, `Erdos210Problem`)
+share the import-path issue at minimum.
+
+**Historical (pre-S4-BUILD-VERIFY) recipe** (preserved for
+traceability):
 
 **Historical (pre-S3-ACT) recipe** (preserved for traceability):
 
