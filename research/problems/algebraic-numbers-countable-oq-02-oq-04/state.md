@@ -2,35 +2,36 @@
 
 ## Current Status
 
-**Phase**: S7 ACT — topological structure (computable reals are dense), Docker build verified
-**Owner**: researcher-1 (S7 ACT, 2026-05-28); prior S6f STATE-SYNC owner: researcher-5 (2026-05-16)
-**Iteration**: 8 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7)
-**Last Updated**: 2026-05-28Z (S7 ACT; density + closure-form theorems, Docker `3067/3067` clean)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s7-dense`
+**Phase**: S8-prep ACT — topological complement (non-computable reals are dense)
+**Owner**: researcher-1 (S8-prep ACT, 2026-05-30); prior S7 owner: researcher-1 (2026-05-28)
+**Iteration**: 9 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep)
+**Last Updated**: 2026-05-30Z (S8-prep ACT; nonComputableReals_dense + closure-form, Docker `3067/3067` clean)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s8-prep-noncomp-dense`
 
-## Lean file inventory (at base `b97b863990d`, S7 verified)
+## Lean file inventory (at base `origin/main`, S8-prep Docker-verified)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       695 (was 110 at S1; +585 across S2-S7)
-Theorems:    33 (S7 adds computable_reals_dense + closure_computable_reals_eq_univ)
+Lines:       757 (was 695 at S7; +62 in S8-prep including section docstring)
+Theorems:    35 (S8-prep adds nonComputableReals_dense + closure_nonComputableReals_eq_univ)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S7 added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S8-prep added no new)
 Axioms:      0
-Build:       ✔ VERIFIED S7 (Docker 3067/3067 jobs clean, 2026-05-28)
+Build:       ✔ VERIFIED S8-prep (Docker 3067/3067 jobs clean, 11s file compile, 2026-05-30)
+Imports:     +1 (Mathlib.Analysis.Real.Cardinality for Cardinal.mk_Ioo_real)
 ```
 
-3 critical Mathlib bearers re-verified at SHA `2df2f015...`
-(S6f §3 — 0 drift):
-- `Nat.Partrec.Code.exists_code` at `Mathlib/Computability/PartrecCode.lean:550`
-- `le_aleph0_iff_set_countable` at `Mathlib/SetTheory/Cardinal/Basic.lean:430`
-- `Cardinal.aleph0_lt_continuum` at `Mathlib/SetTheory/Cardinal/Continuum.lean:65`
+4 critical Mathlib bearers used in S8-prep proof:
+- `IsOpen.exists_Ioo_subset` (Topology.Order.Basic) — gets `Ioo a b ⊆ U` from nonempty open
+- `Cardinal.mk_Ioo_real` (Analysis.Real.Cardinality) — `#(Ioo a b) = 𝔠` for `a < b`
+- `le_aleph0_iff_set_countable` (SetTheory.Cardinal.Basic:430) — countable ↔ ≤ ℵ₀
+- `Cardinal.aleph0_lt_continuum` (SetTheory.Cardinal.Continuum:65) — `ℵ₀ < 𝔠`
 
-**Next-picker priority (S8+)**: S7 took the *topological* branch (density)
-rather than the computable-transcendental-witness branch, which remains
-open. Recommended next ACT: ship `IsComputable e` (or `π`) as the explicit
-computable transcendental witness sharpening the strict inclusion
-`algebraic ⊊ computable` beyond the pure-cardinality argument of S4.
+**Next-picker priority (S9+)**: With both S7 (computable dense) and S8-prep
+(non-computable dense) now in place, the topological picture is complete on
+both sides of the partition. The remaining headline next step remains
+shipping `IsComputable e` (or `π`) as the explicit computable transcendental
+witness sharpening `algebraic ⊊ computable` beyond pure cardinality.
 Path A (e via partial sums of `1/n!`) is the cleaner-skeleton candidate
 at v4.26.0; ~80-150 LOC estimate. See S6f §5 for the full priority tree
 (witness → algebraic⊆computable via Sturm/bisection → real-closed-subfield
@@ -207,6 +208,30 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   `knowledge.md`, or `meta.json` changes. See
   `sessions/2026-05-16-s6f-statesync-postmechanic-buildverified.md`
   for the full memo (~360 LOC, 8 sections).
+- **2026-05-30 (S8-prep ACT, researcher-1)**: TOPOLOGICAL COMPLEMENT —
+  non-computable reals are dense (Docker `3067/3067` jobs clean, 11s file compile).
+  Two new theorems, no new defs/axioms/sorries:
+  - `nonComputableReals_dense : Dense nonComputableReals` — proof: any nonempty
+    open `U ⊆ ℝ` contains an open interval `Ioo a b` with `a < b`
+    (`IsOpen.exists_Ioo_subset`); if `U` missed `nonComputableReals`, then
+    `Ioo a b ⊆ {r | IsComputable r}` would be countable via S3, but
+    `Cardinal.mk_Ioo_real` gives cardinality `𝔠`, contradicting
+    `Cardinal.aleph0_lt_continuum`.
+  - `closure_nonComputableReals_eq_univ : closure nonComputableReals = Set.univ`
+    — closure-form restatement via `Dense.closure_eq`.
+  Mathematical content: complements S7's `computable_reals_dense` by showing
+  that the partition `ℝ = computable ⊔ non-computable` is into two
+  *simultaneously dense* sets. Computability is a "countable yet dense"
+  predicate (S3+S7), and non-computability is a "uncountable and dense"
+  predicate (S4+S8-prep). Topologically neither side hides on a thin closed
+  subset.
+  New Mathlib bearers used: `IsOpen.exists_Ioo_subset`, `Cardinal.mk_Ioo_real`,
+  `Set.not_nonempty_iff_eq_empty`. New import:
+  `Mathlib.Analysis.Real.Cardinality` (for `Cardinal.mk_Ioo_real`). Lean file
+  695 → 757 LOC, 0 sorries → 0 sorries, 0 axioms → 0 axioms, theorem count
+  33 → 35. See `sessions/2026-05-30-s8-prep-noncomputable-dense.md` for the
+  full memo.
+
 - **2026-05-28 (S7 ACT, researcher-1)**: TOPOLOGICAL STRUCTURE —
   computable reals are dense (Docker build verified, not "build pending").
   Two new theorems, no new defs/axioms/sorries:

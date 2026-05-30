@@ -1,5 +1,6 @@
 import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Continuum
+import Mathlib.Analysis.Real.Cardinality
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Countable
 import Mathlib.Data.Rat.Cardinal
@@ -691,5 +692,66 @@ theorem computable_reals_dense : Dense {r : ℝ | IsComputable r} := by
 theorem closure_computable_reals_eq_univ :
     closure {r : ℝ | IsComputable r} = Set.univ :=
   computable_reals_dense.closure_eq
+
+/-! ## S8-prep — Topological complement: the non-computable reals are also dense
+
+S7 showed `{r | IsComputable r}` is a countable dense subset of `ℝ`. Its complement
+`nonComputableReals` is uncountable (S4, `nonComputableReals_uncountable`), yet a
+priori one might still ask whether it is *topologically* visible — does it meet
+every nonempty open set, or could it sit on a thin closed subset of `ℝ`?
+
+The answer is that **the non-computable reals are dense too**. The argument is
+purely cardinality-vs-countability:
+
+* Every nonempty open `U ⊆ ℝ` contains an open interval `Ioo a b` with `a < b`
+  (`IsOpen.exists_Ioo_subset`).
+* `Ioo a b` has cardinality `𝔠` (`Cardinal.mk_Ioo_real`).
+* If `U` missed `nonComputableReals` entirely then `U ⊆ {r | IsComputable r}`, so
+  the interval `Ioo a b` would inherit countability from S3, forcing
+  `𝔠 ≤ ℵ₀` — a contradiction with `Cardinal.aleph0_lt_continuum`.
+
+Combined with S7, this exhibits `ℝ` as the disjoint union of two **simultaneously
+dense** sets: the countable dense set of computable reals and the uncountable
+dense set of non-computable reals. Topologically, computability is a
+"measure-zero/dense" predicate: countably many points, but everywhere.
+
+* `nonComputableReals_dense` — `Dense nonComputableReals`.
+* `closure_nonComputableReals_eq_univ` — closure-form restatement.
+-/
+
+/-- **S8-prep — the non-computable reals are dense in `ℝ`**.
+
+    Every nonempty open `U ⊆ ℝ` meets `nonComputableReals`. Proof by contradiction:
+    if `U ∩ nonComputableReals = ∅`, then `U ⊆ {r | IsComputable r}`. Pick an
+    open interval `Ioo a b ⊆ U` with `a < b` via `IsOpen.exists_Ioo_subset`. The
+    interval is then countable (subset of a countable set), but
+    `Cardinal.mk_Ioo_real` gives cardinality `𝔠 > ℵ₀`, contradiction. -/
+theorem nonComputableReals_dense : Dense nonComputableReals := by
+  rw [dense_iff_inter_open]
+  intro U hU_open hU_ne
+  obtain ⟨a, b, hab, hsub⟩ := hU_open.exists_Ioo_subset hU_ne
+  by_contra h
+  rw [Set.not_nonempty_iff_eq_empty] at h
+  have hU_sub : U ⊆ {r : ℝ | IsComputable r} := by
+    intro x hx
+    by_contra hxn
+    have hmem : x ∈ U ∩ nonComputableReals := ⟨hx, hxn⟩
+    rw [h] at hmem
+    exact hmem.elim
+  have hIoo_sub : Set.Ioo a b ⊆ {r : ℝ | IsComputable r} := hsub.trans hU_sub
+  have hIoo_count : (Set.Ioo a b).Countable := computable_reals_countable.mono hIoo_sub
+  have hIoo_card_le : (#(↑(Set.Ioo a b) : Set ℝ) : Cardinal) ≤ ℵ₀ :=
+    le_aleph0_iff_set_countable.mpr hIoo_count
+  rw [Cardinal.mk_Ioo_real hab] at hIoo_card_le
+  exact absurd hIoo_card_le (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **S8-prep — closure form**: the topological closure of the non-computable
+    reals is all of `ℝ`. Direct restatement of `nonComputableReals_dense` via
+    `Dense.closure_eq`. Together with S7's `closure_computable_reals_eq_univ`,
+    this says both sides of the computable/non-computable partition are
+    topologically maximal. -/
+theorem closure_nonComputableReals_eq_univ :
+    closure nonComputableReals = Set.univ :=
+  nonComputableReals_dense.closure_eq
 
 end AlgebraicNumbersCountableOQ02OQ04
