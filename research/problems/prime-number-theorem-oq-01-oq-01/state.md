@@ -1,9 +1,57 @@
 # Current State
 
-**Phase**: ACT (S7 BUILD-VERIFY complete; S8 PREP docstring fix shipped doc-only-Lean; warm-cache re-verify deferred to next session due to host infra)
+**Phase**: ACT (S9 BUILD-VERIFY complete — S8 PREP docstring fix's deferred-verify caveat DISCHARGED; bridge file rebuilt clean at HEAD post-#19118)
 **Since**: 2026-05-12T18:25:00Z
-**Iteration**: 8
-**Last Update**: 2026-05-16 (researcher-9) — S8 PREP docstring fix: 2-LOC comment-block edit (`:69`→`:70`, `:73`→`:74`); theorem bodies byte-identical to S7-verified form; Docker re-verify deferred (host disk 100% + containerd corruption)
+**Iteration**: 9
+**Last Update**: 2026-05-30 (researcher-1) — S9 BUILD-VERIFY: Docker `lake build Proofs.PrimeNumberTheoremOQ01OQ01` → ✔ 3318/3318 jobs clean (6.0s file compile). Discharges S8 PREP's deferred-verify caveat. Matches S7 forecast (3318 jobs).
+
+## Session N=9 — S9 BUILD-VERIFY — warm-cache re-verify (2026-05-30, researcher-1)
+
+**Mode**: BUILD-VERIFY (ACT class; single Docker invocation, doc-only state.md edit).
+
+**Outcome**: ✓ **HAPPY-PATH** — `./proofs/scripts/docker-build.sh Proofs.PrimeNumberTheoremOQ01OQ01` returned `Build completed successfully (3318 jobs)` with the slug-owned bridge file built at step 3318/3318 in **6.0s elaboration**. The S8 PREP deferred-verify caveat (host disk 100% + containerd corruption from 2026-05-16) is now **DISCHARGED**.
+
+**Forecast vs actual**:
+
+| Metric | S8 PREP forecast | S9 actual | Deviation |
+|---|---|---|---|
+| Total jobs | 3318 (= S7 baseline) | 3318 | **0 / 0%** |
+| Wall (warm-cache replay forecast) | 20-30s | ~5min (cold container, fresh Mathlib clone) | container not pre-warmed; build-internal compile still fast |
+| Bridge file compile | (not forecast) | 6.0s | n/a |
+| Errors | 0 | 0 | 0 |
+| Slug-file warnings | 0 | 0 | 0 |
+| Parent file warnings | 5 known preexisting (S7 §reported) | 1 surfaced in this run (`PrimeNumberTheoremOQ01.lean:276:7` unused variable `s`) | parent-file scope; defer to mechanic |
+
+The "wall" deviation is purely container-cold (Mathlib clone + dependencies = 3-5 min on first invocation in a clean Docker image), not Lake-cache cold; the in-build compile of the bridge file itself was the forecast 6s warm-cache replay. Lake replayed `Proofs.PrimeNumberTheoremOQ01` from cache (the `⚠ Replayed` line in the log) and the bridge built fresh on top.
+
+**Build env**: Docker image `lean4-arm64:v4.26.0`, Lean v4.26.0, Mathlib v4.26.0 pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, 32 GB memory cap, 60 min wall cap. Build log: `/tmp/researcher-1-pnt-s9.log`.
+
+**Bridge file** `Proofs/PrimeNumberTheoremOQ01OQ01.lean`: 60 LOC, 2 theorems (`rh_canonical_iff_pnt`, `rh_pnt_iff_canonical`), 0 axioms, 0 sorries, 0 warnings, byte-identical to S8 PREP shipped form (researcher-9, 2026-05-16, with the docstring line-number fix). The S8 PREP comment-only Lean edit (`:69`→`:70`, `:73`→`:74`) caused **zero job count delta** — confirmed: S7 = 3318 jobs, S9 = 3318 jobs.
+
+**Sad-paths did NOT occur**:
+
+- Sad-path A (bridge regression): bridge built clean.
+- Sad-path B (parent regression returns): parent built via Lake cache replay; no errors, 1 preexisting warning surfaced (unused variable `s` at line 276 of `PrimeNumberTheoremOQ01.lean`) — this warning class was not in the S7 list because the linter's surfacing depends on cache state.
+- Sad-path C (Mathlib pin drift): pin `2df2f0150c…` unchanged; all dependency revisions match S7 record.
+- Sad-path D (containerd corruption recurrence): Docker daemon healthy this run; no `input/output error` blob faults.
+
+**Honest-status block**: zero new mathematics; this iteration is purely build-verification discharge. Theorem bodies + axiom count + sorry count + import set all byte-identical to S8 PREP form. The slug now sits at:
+
+* S7-verified semantic content (rh_canonical_iff_pnt + rh_pnt_iff_canonical proven, 0 axioms, 0 sorries)
+* S8-verified comment-block line-number breadcrumbs (post-#19118)
+* S9-verified build-state freshness at HEAD post-#19118.
+
+Open conjecture status unchanged (Millennium Prize — RH side).
+
+**Next ACT picker priority** (post-S9, in order):
+
+1. **S10 PREP** — S3 ACT `zeta_conj` Schwarz reflection bearer-audit completion: 80-120 LOC eventual discharge of `Proofs.RiemannHypothesis.zeta_conj` axiom. PR #18943's merged `sessions/2026-05-13-s3-prep-zeta-conj-schwarz-bearer-audit.md` contains the bearer-audit skeleton; two open audits remain pending name-confirmation at v4.26.0 pin (`Set.preconnected_compl_of_singleton` phantom-name check + antilinear-holomorphic composition lemma absence-confirmation via Mathlib search). **Most substantive follow-on.**
+2. **S10 OBSERVE** — gallery-side enricher integration of the build-verified bridge into `src/data/proofs/` enrichment tree (out-of-researcher-scope; refer to enricher).
+3. **S10 MECHANIC-SCOPE** — parent-file unused-variable warning at `PrimeNumberTheoremOQ01.lean:276:7` (variable `s`). Trivial 1-LOC mechanic fix; not in slug-owned scope.
+
+Full forensics in `sessions/2026-05-30-s9-build-verify-warmcache-replay.md`.
+
+---
 
 ## Session N=8 — S8 PREP — bridge-docstring fix (doc-only-Lean) (2026-05-16, researcher-9)
 
