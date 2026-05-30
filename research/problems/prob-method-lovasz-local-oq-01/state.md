@@ -1,10 +1,71 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S9 STATE-SYNC (post-S8-PREP infra-blocker refresh + Mathlib pin byte-stability re-verify + iteration bump; doc-only; ACT still blocked on infra)
+**Phase**: S10 STATE-SYNC (13-day-gap absorb + G7+G8 INFRA recovery + G9 still-RED + Docker-mount-overrides-G9 hypothesis; doc-only; ACT path narrowed to G9-verify)
 **Path**: full
-**Since**: 2026-05-17
-**Iteration**: 11
+**Since**: 2026-05-30
+**Iteration**: 12
+
+## S10 STATE-SYNC (infra partial recovery + Docker-mount G9 hypothesis) — researcher-1, 2026-05-30 ~07:00 UTC
+
+**Mode**: STATE-SYNC (doc-only — this section + new session memo + JSON catchup; **no Lean / problem.md / knowledge.md / meta.json / leanFiles / Mathlib pin / sibling-slug edits**).
+
+**Outcome**: doc-only refresh closing the 13-day gap since S9 STATE-SYNC #20041 (researcher-4, merged 2026-05-17T02:00Z). Three deliverables:
+
+1. **Infra partial recovery snapshot** at S10 claim (2026-05-30T07:00Z, ~13 days post-S9):
+   - **G7 disk**: `/System/Volumes/Data` 94% capacity, **62 Gi free** (vs S9 2.9 Gi free) — **+59 Gi RECOVERED over ~13 days**, well above the 10 Gi ACT floor. GREEN.
+   - **G8 Docker**: `docker info --format '{{.ServerVersion}}'` → **`29.4.1`** (returns immediately, no 10s timeout) — **UP RECOVERED** since S9 snapshot. GREEN.
+   - **G9 lake self-loop**: `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referencing symlink) — **unchanged RED** since S9 / S8 / S5b feedback memo.
+   - All three are host-environmental, not slug-rooted. S10 STATE-SYNC refreshes the ACT-readiness gate (item 8) to "7/8 GREEN substantive + 1/8 PARTIAL INFRA (G9-only)", a substantial narrowing from S9's "RED-er".
+
+2. **New substantive finding: Docker `-v` mount likely overrides G9**.
+   `proofs/scripts/docker-build.sh:127` mounts the `lean-mathlib-cache` named volume directly onto `/workspace/proofs/.lake/build` inside the container, overriding the host's broken `.lake/build` symlink path. Inside the container, `/workspace/proofs/.lake` is a bind-mount of the host's self-loop symlink, but the link target `/Users/rwalters/GitHub/lean-genius/proofs/.lake` does not exist as a path inside the container, so the link is dead in the container namespace — and the `-v` volume mount at `.lake/build` provides a fresh writable directory. **Hypothesis**: G9 is not a hard ACT blocker for Docker builds; only G7+G8 ever were. **Status**: unverified empirically in S10; flagged for S11 to verify with `./proofs/scripts/docker-build.sh Proofs.MoserTardos` on origin/main MoserTardos.lean (zero new code).
+
+3. **Mathlib pin byte-stability re-verify + iteration bump 11 → 12 + `lastUpdate` refresh**.
+   `proofs/lake-manifest.json` confirms Mathlib4 `rev` still `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), byte-identical to S8 PREP + S9 STATE-SYNC. Lake-pinned **≥18 days**. No bearer re-walk justified (transitivity at byte-stable SHA covers entire S7/S8 PREP bearer table).
+
+### Files updated (S10 STATE-SYNC)
+
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this block (head update + new narrative section + Iteration History +1 row).
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-30-s10-statesync-infra-recovery.md` — new memo (~150 LOC, 10 sections).
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` — 10-field JSON catchup (no `leanFiles` edit — mechanic #19792 choice still authoritative; no `problem.md` / `knowledge.md` / `meta.json` edits per separate-mechanic-scope boundary).
+
+### Build-verification posture
+
+Doc-only STATE-SYNC; `MoserTardos.lean` unchanged on this branch (file SHA byte-identical to origin/main since #19792 mechanic merge). No build attempted in this session — the §4 G9-mount hypothesis is explicitly flagged for S11 to verify, not S10.
+
+### ACT-readiness gate (8-item, S10 STATE-SYNC refresh)
+
+| # | Item | Status | Δ since S9 STATE-SYNC |
+|---|---|---|---|
+| 1 | Mathlib pin stable | GREEN | unchanged (byte-identical, ≥18d) |
+| 2 | Bearers verified at pin | GREEN | unchanged (transitivity at stable SHA) |
+| 3 | Paste-ready substitute body (S8 §3.2) | GREEN | unchanged |
+| 4 | Parent file baseline stable (382 LOC, 0 sorries) | GREEN | unchanged (file SHA stable) |
+| 5 | No competing open PRs on slug | GREEN | re-verified (probe at 07:00Z: 0 open) |
+| 6 | JSON catchup planned | GREEN | this PR closes |
+| 7 | problem.md / knowledge.md unchanged | GREEN | unchanged |
+| 8 | Infra: Docker + disk + .lake | **PARTIAL INFRA** | G7 +59 Gi RECOVERED; G8 UP RECOVERED; G9 unchanged; net narrowing from RED-er to PARTIAL (G9-only) |
+
+7/8 GREEN substantive + 1/8 PARTIAL INFRA (G9-only). ACT remains blocked, but the surface has narrowed to a single worktree-level symlink — and the §4 hypothesis suggests even G9 may be inert for Docker builds.
+
+### Race-safety note (S10 STATE-SYNC)
+
+- Pre-claim probe (2026-05-30T07:00Z): `gh pr list --search "prob-method-lovasz-local-oq-01" --state open` → `[]` (0 open); most recent merge S9 STATE-SYNC (#20041) at 2026-05-17T02:00Z — **13-day lead time**, well outside any race window.
+- Pre-push probe will re-verify before push.
+
+### Next action (S11 — verify G9-mount hypothesis, then ACT or INFRA-FIX)
+
+**Path A (recommended)**: S11 INFRA-VERIFY (~30 min). Run `./proofs/scripts/docker-build.sh Proofs.MoserTardos` on origin/main MoserTardos.lean (zero new code). Three outcomes:
+- Build succeeds → G9 confirmed inert for Docker builds; gate flips to 8/8 GREEN; S12 immediately ACTs (~130 LOC OQ-01-A.3 paste per S8 §4 budget).
+- Build fails on G9 symlink resolution → G9 confirmed hard-blocker; S12 must fix `.lake` symlink before ACT.
+- Build fails on something else → orthogonal regression surfaces; doctor-style repair takes precedence.
+
+**Path B (riskier)**: S11 ACT outright. Paste S8 §4 / §3.2 recipe (~130 LOC) without verifying G9-mount hypothesis. If G9 doesn't block, delivers OQ-01-A.3 in one PR; if G9 blocks, ships "build pending" and next session backtracks.
+
+### Honesty (S10)
+
+This STATE-SYNC is the **third consecutive doc-only iteration** (S8 PREP + S9 STATE-SYNC + S10 STATE-SYNC). It is genuinely useful only because (a) the 13-day gap was overdue for absorption, and (b) the G9-mount hypothesis gives S11 a concrete testable claim. It is NOT a breakthrough or an advance toward the actual Moser–Tardos formalization. The marquee work (OQ-01-A.3 paste, OQ-01-B witness trees, OQ-01-C Galton–Watson sum) remains exactly where S8 PREP left it. If S11 also ships as STATE-SYNC, this is a sign of meta-issue stuck-ness; S11 should commit to verifying G9 or ACT-ing.
 
 ## S9 STATE-SYNC (infra escalation + Mathlib byte-stability + iteration bump) — researcher-4, 2026-05-17
 
@@ -787,4 +848,5 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | S7 PREP | 2026-05-14 | researcher-3 | #19111 (merged) | PREP — `LLLAdmissibleUniform` structure design + ~150-LOC paste-ready skeleton (doc-only) |
 | S8 PREP | 2026-05-16 | researcher-8 | #19628 (merged) | PREP — faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup (doc-only) |
 | (mechanic) | 2026-05-16 | (mechanic) | #19792 (merged) | meta — `leanFiles[1]` `MoserTardos.lean` drift sync post-S6 ACT (243/2/1 → 382/5/0; line/thm/sorry; no Lean edit) |
-| S9 STATE-SYNC | 2026-05-17 | researcher-4 | (this PR) | STATE-SYNC — 3 RED INFRA escalation (G7 disk 6.6→2.9 Gi soft-floor cross; G8/G9 unchanged) + Mathlib pin byte-stability re-verify + iteration bump (doc-only) |
+| S9 STATE-SYNC | 2026-05-17 | researcher-4 | #20041 (merged) | STATE-SYNC — 3 RED INFRA escalation (G7 disk 6.6→2.9 Gi soft-floor cross; G8/G9 unchanged) + Mathlib pin byte-stability re-verify + iteration bump (doc-only) |
+| S10 STATE-SYNC | 2026-05-30 | researcher-1 | (this PR) | STATE-SYNC — 13-day-gap absorb + G7+G8 INFRA recovery (62 Gi free + Docker 29.4.1 up) + G9 still-RED + new Docker-mount-overrides-G9 hypothesis flagged for S11 verify + iter 11→12 (doc-only) |
