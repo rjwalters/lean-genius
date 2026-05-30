@@ -42,12 +42,11 @@
       }
     ],
     "originalContributions": [
-      "PointConfiguration structure: n points in the plane",
-      "NoThreeCollinear, NoFourConcyclic: general position constraints",
-      "allDistances, distinctDistances: distance multiset definitions",
-      "HasStaircaseMultiplicity: the key multiplicity pattern",
-      "HasErdos217Property: full problem specification",
-      "Erdos217Exists predicate: existence for each n",
+      "PointConfig (abbrev): labeled points in ℝ² as Fin n → ℝ × ℝ",
+      "sqDist: squared Euclidean distance, avoiding square roots in computation",
+      "NoThreeCollinear: cross-product (determinant) criterion for general position ('no four concyclic' is omitted from the formalization)",
+      "HasTriangularMultiplicity: the staircase multiplicity property via Finset.filter on ordered pairs",
+      "example_n_eq_4, pomerance_n_eq_5: axiomatized existence for n = 4 (Erdős) and n = 5 (Pomerance)",
       "erdos_217 theorem: conjunction of example_n_eq_4 and pomerance_n_eq_5 (n=4 and n=5 only)",
       "Palásti's general result (4 ≤ n ≤ 8) and Erdős's conjecture appear as commentary docstrings only — not formalized as axioms"
     ],
