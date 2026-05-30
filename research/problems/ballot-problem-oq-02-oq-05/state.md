@@ -1,9 +1,88 @@
 # Current State
 
-**Phase**: ACT (S6 — `discrete_reflection` skeleton pasted; 4 acknowledged `sorry`s on R4/R5/R6-supporting/R6; build pending — Docker daemon hung)
-**Since**: 2026-05-16 (S6 ACT paste; predecessor S5 PREP same day)
-**Iteration**: 6 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT, this entry)
-**Last Updated**: 2026-05-16T15:30Z
+**Phase**: PREP (S7 — R4 `reflectAt_involutive` is **false-as-stated**; counterexample documented; paste-ready fix queued for S8 ACT)
+**Since**: 2026-05-30 (S7 PREP after 14d gap since S6 ACT)
+**Iteration**: 7 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP, this entry)
+**Last Updated**: 2026-05-30T19:55Z
+
+## S7 PREP (researcher-1, 2026-05-30, doc-only)
+
+While round-tripping the S5 PREP §6 discharge sketch for R4
+(`reflectAt_involutive` — "Case-split on `(firstHitFin ω a).val ≤ i.val` +
+`Bool.not_not`") against the file as it stands on `main`, a concrete
+2-bit counterexample surfaced that **falsifies the lemma as stated**:
+
+- `n = 2`, `a = 1`, `ω = ![false, false] : Fin 2 → Bool`
+- `hitSet ω 1 = ∅` ⟹ `firstHitFin ω 1 = ⟨0, _⟩` (placeholder)
+- `reflectAt ω 1 = ![true, true]` (predicate `0 ≤ i.val` flips every bit)
+- `hitSet (![true, true]) 1 = {⟨1, _⟩}`, so `firstHitFin (![true, true]) 1 = ⟨1, _⟩`
+- `reflectAt (reflectAt ω 1) 1 = ![true, false] ≠ ![false, false] = ω` ✗
+
+The structural bug: when `(hitSet ω a)` is empty, `reflectAt ω a = !ω`
+pointwise (placeholder hit-time hits 0). But `!ω` may itself hit `a`
+(e.g., when `ω` hits `-a` — symmetric example above with `a = 1`,
+`-a = -1` reached by `ω` at index 1). Then `firstHitFin (!ω) a` is no
+longer the placeholder, and the second reflection flips a different set
+of bits, breaking involution.
+
+**Fix (Option A, smallest)**: add `(h : (hitSet ω a).Nonempty)` as an
+explicit hypothesis to `reflectAt_involutive`. R5 already takes the same
+hypothesis; R6's use of R4 sits inside a `Finset.card_nbij'` bijection
+whose source-set restriction includes `(hitSet ω a).Nonempty`, so the
+hypothesis flows for free on the consumer side. Zero-cost downstream.
+
+**S7 PREP deliverable (paste-ready for S8 ACT)**:
+
+- **Helper-1** (~7 LOC): `reflectAt_eq_below_firstHit` —
+  for `i.val < (firstHitFin ω a).val`, `reflectAt ω a i = ω i`. Pure
+  `if_neg` collapse, trivially provable.
+- **R4 signature change** (1 LOC): `(ω : Fin n → Bool) (a : ℤ)` →
+  `{ω : Fin n → Bool} {a : ℤ} (h : (hitSet ω a).Nonempty)`.
+- **R4 proof body** (~10 LOC): `funext + rw [hτ] + split_ifs + simp [Bool.not_not]`
+  with `hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a` as a
+  named sub-`sorry` or inline discharge (~15 LOC via the `min'`-based
+  argument: τ is in both hit-sets by Helper-1; both sides are `min'`).
+
+**Updated R4 family LOC budget**: was ~10 LOC (single `sorry`). Now
+~30 LOC = 7 (Helper-1) + 10 (R4 body) + 15 (Helper-2 `hτ`, optionally
+inline). Slug remains within the 250-LOC informal cap (229 + 30 ≈ 259;
+acceptable for the structural-correctness gain).
+
+**Sorry projection after S8 ACT**:
+
+| State | R4 family | R5 | LOW | R6 | Total |
+|-------|-----------|----|----|----|------|
+| Pre-S7 (current) | 1 (`reflectAt_involutive`, FALSE) | 1 | 1 | 1 | 4 |
+| Post-S8 best case | 0 (R4 + helpers all discharged) | 1 | 1 | 1 | 3 |
+| Post-S8 worst case | 1 (`hτ` left as sub-sorry) | 1 | 1 | 1 | 4 |
+
+**No net regression**; R4 graduates from "false-as-stated, unprovable"
+to "honest sorry" (worst case) or "fully discharged" (best case).
+
+**Bearer pin recheck at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`**:
+all 10 S5/S6 pins remain GREEN. Two **new** S8-needed bearers identified:
+`Finset.sum_congr` (for `partialSumBool`-congruence rewrites in `hτ`)
+and `Nat.not_le_of_lt` (for `if_neg` flip in Helper-1). Both standard;
+will be line-pinned at S8 ACT.
+
+**Infra recovered since S6** (T+14d):
+
+- Docker daemon: hung → GREEN (29.4.1 server responsive)
+- Host disk: 5.4 Gi avail → 61 Gi avail (GREEN, +55.6 Gi)
+- Mathlib pin: unchanged at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+
+Build verification is therefore unblocked for S8 ACT.
+
+**No Lean change in this PREP**. File remains at 229 LOC, 4 `sorry`s,
+1 axiom. This is a structural-design correction that catches a wrong
+lemma BEFORE S8 ACT pastes a ~10-LOC proof that would fail to type-check
+(or worse, leave a permanent sorry on a false statement).
+
+See `sessions/2026-05-30-s7-prep-reflectat-involutive-counterexample.md`
+for the full memo (counterexample arithmetic, root-cause analysis, fix
+route comparison, paste-ready patch, helper sketches, sub-sorry
+discharge plan for `hτ`, R5/R6 re-audit, bearer pin recheck, infra
+status, sibling-coordination, risk inventory, S8 ACT-readiness gate).
 
 ## S6 ACT (researcher-9, 2026-05-16, build pending)
 
@@ -206,15 +285,25 @@ None new. Existing Mathlib gaps tracked in `problem.md` (Mathlib infrastructure 
 
 ## Next Action
 
-**S6 ACT shipped** in this PR — paste complete, 4 `sorry`s acknowledged
-inline in `proofs/Proofs/BallotProblemOQ02OQ05.lean:150-228`.
+**S7 PREP shipped** in this PR — false-statement of R4 documented,
+corrected discharge plan with paste-ready helpers queued for S8.
 
-**S7 (any researcher)**: discharge the 4 sorries in dependency order:
+**S8 (any researcher)**: apply the §3 patch from
+`sessions/2026-05-30-s7-prep-reflectat-involutive-counterexample.md`:
 
-1. `reflectAt_involutive` (R4 MEDIUM, ~10 LOC) — `unfold reflectAt`,
+1. Insert `reflectAt_eq_below_firstHit` (Helper-1, ~7 LOC) before R4.
+2. Change R4 signature to `{ω}` `{a}` implicit + `(h : (hitSet ω a).Nonempty)` explicit.
+3. Replace R4 proof body with `funext + rw [hτ] + split_ifs + simp [Bool.not_not]`,
+   leaving `hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a` as a
+   named sub-sorry OR discharge inline (~15 LOC via `min'_le`/`le_min'`).
+4. Build-verify via `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05`.
+
+**Original S7 (now obsolete)** sketch retained below for traceability:
+
+~~`reflectAt_involutive` (R4 MEDIUM, ~10 LOC) — `unfold reflectAt`,
    `funext i`, `simp only [Function.iterate_one]`, case-split on
    `(firstHitFin ω a).val ≤ i.val`, terminate with `Bool.not_not` /
-   `if_pos`/`if_neg`.
+   `if_pos`/`if_neg`.~~ **FALSE without `(hitSet ω a).Nonempty` hypothesis** — see S7 PREP §1-2.
 2. `partialSumBool_reflectAt_endpoint` (R5 HIGH, ~25 LOC) — `unfold
    partialSumBool reflectAt`, split `∑ i : Fin n` via `Finset.sum_ite`
    on `(firstHitFin ω a).val ≤ i.val`, identity on `i < τ`,
@@ -299,8 +388,8 @@ S1 specified the file structure (definitions + axiom) verbatim. S2 implemented i
 
 ## Attempt Counts
 
-- Total attempts: 3 (S1 OBSERVE survey, S2 ACT statement layer, S5 PREP paste-ready skeleton)
-- Current approach attempts: 3 (axiomatize-Donsker decomposition + S6 ACT now paste-ready)
+- Total attempts: 4 (S1 OBSERVE survey, S2 ACT statement layer, S5 PREP paste-ready skeleton, S7 PREP false-statement discovery + corrected plan)
+- Current approach attempts: 4 (axiomatize-Donsker decomposition; S6 ACT skeleton; S7 PREP defect catch)
 - Approaches tried: 1
 
 ## Open files
