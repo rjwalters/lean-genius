@@ -1,15 +1,17 @@
 # Current State
 
-**Phase**: PLAN (S3b PREP-3 absorbed — `Int.gcd_pos_iff` hedge resolved → substitute `Int.ne_zero_of_gcd` pin-verified at `Mathlib/Data/Int/GCD.lean:202`; sharpened paste-ready Variant A with 0 conjectural bearers + 2 PREP-2 file-path corrections)
-**Since**: 2026-05-16T~10:30:00Z (this PREP-3)
-**Iteration**: 9
-**Last researcher**: researcher-3 (S3b PREP-3 — resolve PREP-2 §5.4 `Int.gcd_pos_iff` hedge, supply `Int.ne_zero_of_gcd` substitute at L202, sharpen Variant A paste, correct 2 PREP-2 §4.1 file-path drifts; doc-only)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3b PREP-3 — `Int.gcd_pos_iff` hedge resolved + sharpened Variant A paste + bearer file-path corrections (this PR; doc-only)
-**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-plus ACT — `signedDelta` + `crossDelta` + `det_eq_signedDelta_factor` + 7 divisibility lemmas closing `primitive_pickInterior_zero` and `primitive_pick_agrees` (PR #19023, researcher-9, merged 2026-05-14T10:10Z; +144 LOC, 502 → 646; Docker-verified 3058 jobs)
+**Phase**: PLAN (S3b-act-1 ACT shipped — `latticeSegmentPoints` def + `parametrisation_injOn_range` helper + `card_latticeSegmentPoints` headline theorem; +75 LOC; Docker-verified 3058 jobs, 0 sorries, 0 axioms)
+**Since**: 2026-05-30 (this S3b-act-1 ACT)
+**Iteration**: 10
+**Last researcher**: researcher-1 (S3b-act-1 ACT — `card_latticeSegmentPoints` via Variant A from PREP-3 §2 with 2 paste-time deviations per PREP-3 §10 (3) + new §3.2: explicit-form helper statement + `Finset.mem_coe/range` rw substitute for `Finset.coe_range/Set.mem_Iio` simp)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — `card_latticeSegmentPoints` Variant A landed (this PR; Docker-verified)
+**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — +75 LOC (646 → 721), +1 noncomputable def `latticeSegmentPoints`, +1 private helper `parametrisation_injOn_range`, +1 theorem `card_latticeSegmentPoints`; 3058 jobs clean at v4.26.0 (this PR, researcher-1, 2026-05-30)
 **Predecessors (doc-only chain)**:
+* S3b PREP-3 — `Int.gcd_pos_iff` hedge resolved + sharpened Variant A paste (#19613, researcher-3, merged 2026-05-16T13:27Z)
 * S3b STATE-SYNC — absorb 2 doc-only PREPs + 6-bearer drift recheck (#19472, researcher-1, merged 2026-05-16T05:06Z)
 * S3b PREP-2 — ℤ-anchored edge-segment bridge full signature + bearer audit (#19304, researcher-4, merged 2026-05-15T18:14Z)
 * S3b PREP — geometric-decomposition audit + 3 corrected closure paths (#19267, researcher-9, merged 2026-05-15T06:48Z)
+* S3a-plus ACT — `primitive_pickInterior_zero` chain (#19023, researcher-9, merged 2026-05-14T10:10Z; +144 LOC, 502 → 646)
 * S3a-prep bearer audit (#18950, researcher-5, merged 2026-05-13)
 
 ## Current Focus
