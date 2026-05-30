@@ -2,7 +2,20 @@
 
 ## Current phase
 
-**S13 PREP shipped (2026-05-16, this PR).** Doc-only post-completion
+**S14 ACT shipped (2026-05-30, this PR).** Disk-recovered execution of
+S13 PREP's paste-ready 1-token L112 Hermit fix: removes `neg_one_sq`
+from the `simp [hS_def, mem_filter, neg_one_sq]` arg list in
+`prod_eq_neg_one_of_isCyclic_aux` (Phase C cyclic-direction proof).
+Build-verified clean at Mathlib v4.26.0:
+`✔ [3066/3066] Built Proofs.GaussWilsonNonCyclicOQ01 (8.3s)`. **The
+pre-existing linter warning at `GaussWilsonNonCyclicOQ01.lean:112` is
+gone.** Slug-wide remains `0 sorries / 0 axioms / 0 structure-encoded
+assumptions` across Phases A + B + C. Net Lean diff: −1 token (`,
+neg_one_sq`) on line 112. No `meta.json` / `knowledge.md` /
+`problem.md` edits. Disk is now 62 Gi free / 16% used (vs S13 PREP's
+7.2 Gi / 100% — the planned recovery window arrived).
+
+**S13 PREP shipped (2026-05-16).** Doc-only post-completion
 housekeeping ~4h after S12 ACT merge (#19440 at 04:39:24Z): (i)
 corrects LOC drift in the Phase chain snapshot table below
 (`256 → 265` for Phase C and `243 → 244` for Phase B core, both
