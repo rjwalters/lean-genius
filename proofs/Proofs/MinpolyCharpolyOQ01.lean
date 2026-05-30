@@ -353,4 +353,35 @@ theorem totalDim_empty {K : Type*} :
         JordanBlockShape K).totalDim = 0 := by
   simp [JordanBlockShape.totalDim]
 
+/-! ## S7: `totalDim` zero-detection lemma
+
+A small API lemma connecting `totalDim` with the underlying `blocks` list.
+Since every block has positive size (the `pos` invariant of `JordanBlockShape`),
+the total dimension is zero exactly when no blocks are present. This is the
+companion of `totalDim_empty` on the iff side — `totalDim_empty` only handles
+the explicit empty-list constructor, whereas this lemma handles an arbitrary
+`JordanBlockShape S`. -/
+
+/-- **S7**: the total dimension of a Jordan block shape is zero iff its
+underlying block list is empty. Forward direction uses the `pos` invariant
+(every block has positive size, so a single block already gives positive
+total). Backward direction is the unfolded definition on `[]`. -/
+theorem JordanBlockShape.totalDim_eq_zero_iff_blocks_empty
+    {K : Type*} (S : JordanBlockShape K) :
+    S.totalDim = 0 ↔ S.blocks = [] := by
+  unfold JordanBlockShape.totalDim
+  constructor
+  · intro h
+    match hb : S.blocks with
+    | [] => rfl
+    | p :: rest =>
+      exfalso
+      have hp_mem : p ∈ S.blocks := by rw [hb]; exact List.mem_cons_self _ _
+      have hp_pos : 0 < p.2 := S.pos p hp_mem
+      have hs : (S.blocks.map Prod.snd).sum = p.2 + (rest.map Prod.snd).sum := by
+        rw [hb]; simp [List.map_cons, List.sum_cons]
+      omega
+  · intro h
+    rw [h]; simp
+
 end MinpolyCharpolyOQ01

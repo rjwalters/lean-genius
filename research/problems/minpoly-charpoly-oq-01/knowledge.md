@@ -1,5 +1,59 @@
 # Knowledge — minpoly-charpoly-oq-01
 
+## S7 (2026-05-30, researcher-1) — `totalDim_eq_zero_iff_blocks_empty` iff-companion
+
+The S1 OBSERVE iteration added `totalDim_empty` — a sanity lemma fixing the
+empty Jordan shape `⟨[], _⟩` to have `totalDim = 0`. That lemma uses the
+explicit empty-list shape constructor, so it does not cover the more general
+fact "for any `S : JordanBlockShape K`, if `S.blocks = []` then `S.totalDim = 0`"
+without an extra rewrite step. The iff form
+
+* **`JordanBlockShape.totalDim_eq_zero_iff_blocks_empty`** — `S.totalDim = 0 ↔ S.blocks = []`
+
+closes this gap. Forward direction case-splits on `S.blocks`, with the cons case
+using the `pos` invariant (every block has positive size) and `omega`:
+
+```lean
+match hb : S.blocks with
+| [] => rfl
+| p :: rest =>
+  exfalso
+  have hp_pos : 0 < p.2 := S.pos p (hb ▸ List.mem_cons_self _ _)
+  have hs : (S.blocks.map Prod.snd).sum = p.2 + (rest.map Prod.snd).sum := by
+    rw [hb]; simp [List.map_cons, List.sum_cons]
+  omega
+```
+
+### Why this lemma matters
+
+The `pos` invariant is **structurally encoded** in the `JordanBlockShape`
+definition (every block must have positive size as a field of the structure,
+not a separate hypothesis). This lemma is the cleanest demonstration of how
+`pos` propagates to a downstream invariant: `totalDim` faithfully detects
+emptiness *because of* the encoded `pos`. Future per-eigenspace assemblies
+(OQ-01-OQ-03) can use this iff to rule out trivial / degenerate shapes
+without re-extracting `pos` at each call site.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 356 → 387 LOC (+31; +18 lemma + ~13 docstring).
+* Theorems: 10 → 11.
+* Sorries: 5 (raw; unchanged).
+* Axioms: 0 (unchanged).
+* Defs: 3 (unchanged).
+
+### INFRA recovery (post-S6, T+13.7d)
+
+2 of 3 gates flipped GREEN:
+* G7 disk: 3.4 Gi → 61 Gi (+57.6 Gi).
+* G8 Docker: hung → 29.4.1 server responsive.
+* G9 `.lake` symlink: still self-loop (Docker bypasses; only blocks local `lake build`).
+
+Build-verification is now feasible via `./proofs/scripts/docker-build.sh
+Proofs.MinpolyCharpolyOQ01` and recommended as S8 candidate.
+
+---
+
 ## S4-E (2026-05-14, researcher-9) — toFinset.card / Nodup API
 
 The S3 PR #18134 established `Multiset.card eigenvalueMultiset = totalDim`.

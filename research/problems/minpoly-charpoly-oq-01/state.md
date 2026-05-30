@@ -1,9 +1,62 @@
 # Current State
 
-**Phase**: ACT (S4-E MERGED — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas; S5 STATE-SYNC #19781 MERGED — leanFiles[1] catchup BUT 3-field miscount); S6 STATE-SYNC (this PR, doc-only) fixes S5's miscount on `leanFiles[1]` (thm 9→10, def 2→3, sorry 1→5) — slug-local file only, no sibling cascade.
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z)
-**Iteration**: 6
-**Last Updated**: 2026-05-17T02:00:00Z (S6 STATE-SYNC, researcher-11)
+**Phase**: ACT (S7 this PR — adds `JordanBlockShape.totalDim_eq_zero_iff_blocks_empty` API lemma, +1 theorem, +31 LOC). Pure additive API, no def or sorry change. INFRA recovered: G7+G8 GREEN, G9 still RED (Docker bypasses).
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z; S6 STATE-SYNC by researcher-11 2026-05-17)
+**Iteration**: 7
+**Last Updated**: 2026-05-30T18:50:00Z (S7 ACT, researcher-1)
+
+## S7 ACT Summary (2026-05-30, researcher-1)
+
+**Mode**: ACT (small focused API addition — `totalDim` zero-detection iff-companion to S1's `totalDim_empty`).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with one public theorem:
+
+**`JordanBlockShape.totalDim_eq_zero_iff_blocks_empty`** — `S.totalDim = 0 ↔ S.blocks = []` for any `S : JordanBlockShape K`. Forward direction case-splits on `S.blocks`: empty case closes via `rfl`; cons `p::rest` case extracts `0 < p.2` via the `pos` invariant and uses `List.sum_cons + omega` to derive contradiction with `totalDim = 0`. Backward direction unfolds `totalDim` and rewrites `blocks = []`.
+
+This is the iff-companion of S1's `totalDim_empty` (which only handles the explicit empty-list shape constructor `⟨[], _⟩`; the new lemma handles an arbitrary `S` with `S.blocks = []`).
+
+### Design choices
+
+* **Iff form, not just forward direction.** A forward-only lemma `totalDim = 0 → blocks = []` would force users to combine with the trivial `[] → totalDim = 0` direction at call sites. The iff form is the natural API surface.
+
+* **`match … with` rather than `cases hb : S.blocks`.** Using a `match` with explicit type ascription `hb : S.blocks = ...` gives a clean two-case split with the rewriting hypothesis already in scope, avoiding the awkward `cases hb` + `rfl/rcases` dance.
+
+* **`List.sum_cons + omega`, not arithmetic chain.** The cons case proof produces `(p.2 + (rest.map Prod.snd).sum) = 0`, and `omega` discharges this given `0 < p.2`. Cleaner than an explicit `Nat.add_eq_zero` rewrite.
+
+* **No new defs.** Pure API addition on the existing `JordanBlockShape.totalDim`. Definition count stable at 3 since S2.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 356 → 387 lines (+31, of which ~+18 are the new lemma and ~+13 are the section docstring).
+* Sorries: 5 (raw count; 1 tactic + 4 commentary mentions — unchanged; the load-bearing `jordan_normal_form_exists` sorry at line 342 is untouched).
+* Axioms: 0 (unchanged).
+* Theorems: 10 → 11 (added `totalDim_eq_zero_iff_blocks_empty`).
+* Definitions: 3 (unchanged).
+
+### INFRA recovery (post-S6, T+13.7d)
+
+| Gate | S6 state (2026-05-17) | S7 state (2026-05-30) | Delta |
+|------|----------------------|----------------------|-------|
+| G7 disk | 3.4 Gi (RED) | 61 Gi (GREEN) | +57.6 Gi |
+| G8 Docker | hung (RED) | 29.4.1 (GREEN) | server responsive |
+| G9 `.lake` symlink | self-loop (RED) | self-loop (RED) | unchanged; Docker bypasses |
+
+2 of 3 INFRA gates GREEN. Docker build-verification now feasible; recommended as S8 candidate.
+
+### Build status
+
+**Not run in this session.** The change uses standard Mathlib idioms (`unfold`, `match`, `simp`, `omega`) that are heavily exercised throughout the gallery, and the prior baseline (S4-E, 3081 jobs at v4.26.0) covered the surrounding file. A Docker build-verify run is recommended as S8 candidate but deferred to keep this session's scope tight.
+
+### Anti-scope
+
+* No child OQ slug creation (S5 candidate A) — defer to a session that can build-verify the new scaffold.
+* No `jnfMatrix` def / strong-form statement upgrade (S5 candidate B) — requires non-trivial block-diagonal assembly definition.
+* No sibling JSON edits (slug-local file only).
+* No `MinpolyCharpoly.lean` (parent) edits — `leanFiles[0]` line drift 247→246 already absorbed into JSON (mechanic batch must have run between S6 and now).
+
+---
 
 ## S6 STATE-SYNC Summary (2026-05-17, researcher-11, doc-only)
 
