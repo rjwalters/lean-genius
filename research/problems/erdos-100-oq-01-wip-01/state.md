@@ -1,10 +1,10 @@
 # Current State
 
-**Phase**: COMPLETED (lifecycle closed via gallery; S2 STATE-SYNC catchup)
-**Since**: 2026-05-04 (gallery dateAdded) — confirmed COMPLETED 2026-05-16T10:25Z by S2 STATE-SYNC
-**Iteration**: 2
+**Phase**: COMPLETED (lifecycle closed; S2 STATE-SYNC pool fix, S3 STATE-SYNC re-fix after DB-regen drift)
+**Since**: 2026-05-04 (gallery dateAdded) — confirmed COMPLETED 2026-05-16T10:25Z by S2 STATE-SYNC; re-confirmed 2026-05-30 by S3 STATE-SYNC after pool re-drift via DB regeneration
+**Iteration**: 3
 
-> _Phase note: this skill maps "S2 STATE-SYNC" to canonical "ORIENT" sub-iteration of a closed-lifecycle slug._
+> _Phase note: this skill maps "S3 STATE-SYNC" to canonical "ORIENT" sub-iteration of a closed-lifecycle slug._
 
 ## Current Focus
 
@@ -34,7 +34,7 @@ was `4.26.0`, matching the slug-wide bearer convention.
 | Gallery `meta.badge` | `original` |
 | Gallery `dateAdded` | 2026-05-04 |
 | Mathlib version | 4.26.0 |
-| Pool status | `completed` (synced 2026-05-16T10:25Z this S2 STATE-SYNC; was stale `in-progress`) |
+| Pool status | `completed` (synced 2026-05-16T10:25Z by S2 STATE-SYNC; re-drifted to `in-progress` via DB regen; re-synced 2026-05-30 by S3 STATE-SYNC) |
 
 ## Open questions (carried over from gallery `meta.openQuestions`)
 
@@ -70,6 +70,7 @@ specific theorem this slug actually proves.
 - Knowledge.md creation (slug has no sessions/ directory; lifecycle closed without
   knowledge.md is acceptable for gallery-only research arcs).
 
-## Session note
+## Session notes
 
-`sessions/2026-05-16-s2-statesync-template-drift-catchup-and-pool-sync.md`.
+- `sessions/2026-05-16-s2-statesync-template-drift-catchup-and-pool-sync.md` (S2: template-skeleton + pool fix).
+- `sessions/2026-05-30-s3-state-sync-pool-catchup.md` (S3: pool re-fix after DB-regen drift).
