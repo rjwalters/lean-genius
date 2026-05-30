@@ -37,18 +37,18 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-05-12T13:25:00Z",
-    "iteration": 18,
-    "focus": "Iter 18 S19 ACT (researcher-4, 2026-05-14): doc-only fix to research/problems/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/problem.md per S18 PREP §1.5 Option A. Drops the inconsistent closed-form decoration `= 2⌊d/2⌋ − 1` from the literal Formal Statement chain (provably refuted at every odd d ≥ 3 by Iter-14`s axiom-free symBUDim_lower_z2 + parent`s buDim_two). Adds explicit `Closed form (even d only)` qualifier paragraph + extends Status block with Iter-14/17 entries + Iter-18 ACT rationale. No Lean change, no axiom change, no sorry change. State.md header bumped 16 → 18 + Iter-18 ACT subsection appended (was 2 iterations stale: Iter-17 Part XXIV had landed mid-state.md without header refresh, S18 PREP added a session-file entry without touching state.md). JSON refresh: currentState.iteration 16 → 18, focus + nextAction rewritten, knowledge.progressSummary updated. CurrentState.phase remains ORIENT (S19 ACT is doc-only; no Lean change ⇒ no ACT advance). Lean file unchanged: 1788 LOC, 109 theorems (107 substantive), 2 defs, 1 axiom, 0 sorries.",
+    "iteration": 19,
+    "focus": "Iter 19 S20 ACT (researcher-1, 2026-05-30): adds a new PART XXV to proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean with 6 new substantive theorems closing a long-standing Iter-11-era docstring TODO. New axiom-free LPB values: `largestPrimeBelow_eight_eq_seven`, `_nine_eq_seven`, `_ten_eq_seven` (all = 7); witness lemma `no_prime_in_seven_to_ten`. New conditional plateau collapse `symBUDim_seven_eq_ten` + `_of` hypothesis-form: under `symBUDim_eq_largestPrime`, `symBUDim 7 d = symBUDim 10 d` for every d — the longest concrete `symBUDim` plateau (4-step S₇ → S₁₀) predicted by a dyadic prime gap below n = 11. No new axiom; sorries unchanged at 0; lineCount 1788 → 1885; theoremCount 109 → 115; defCount 2 (unchanged); axiomCount 1 (unchanged). State.md header bumped 18 → 19 + Iter-19 ACT subsection appended; JSON refresh: currentState.iteration 18 → 19, focus + nextAction rewritten, knowledge.progressSummary updated, leanFiles[BorsukUlamOQ02OQ01OQ03OQ02] lineCount + theoremCount refreshed. CurrentState.phase remains ORIENT (still adding axiom-free concrete-instance content around the open axiom).",
     "blockers": [],
-    "nextAction": "Path Forward post Iter-18 S19 ACT (ranked): (a) Iter 18 PR (2) — parent-side `buDim_prime_odd` axiom (Lefschetz motivation, ~15 LOC parent edit) + downstream PART XXV closure (`symBUDim_odd_formula_at_three_or_more`, `symBUDim_odd_formula`, `symBUDim_closed_form`; ~120 LOC) per S18 PREP §3. Yields unified closed form `symBUDim n d = d − 1` at all n ≥ 2, d ≥ 1; trivialises the conjecture`s largestPrimeBelow content. The content-collapse caveat must be flagged in PR docstrings. Requires fresh Docker build. (b) Re-verify Iter-17 + Iter-18 cumulative build — five `build pending` PRs since Iter-16`s `build verified` baseline; moderate silent-parent-regression risk. (c) symBUDim-side biconditional (still pending). (d) Concrete-pair monotonicity instances. (e) Stretch: n=3 case, n=4 V₄ case, falsification target buDim 3 3.",
+    "nextAction": "Path Forward post Iter-19 S20 ACT (ranked): (a) Iter 18 PR (2) — parent-side `buDim_prime_odd` axiom + PART XXVI closure (~135 LOC across two Lean files) per S18 PREP §3. Yields unified closed form `symBUDim n d = d − 1` at all n ≥ 2, d ≥ 1; trivialises the conjecture`s largestPrimeBelow content. Deferred due to content-collapse caveat and Docker build cost. (b) Re-verify Iter-17 — Iter-19 cumulative build — six `build pending` PRs since Iter-16's `build verified` baseline; moderate silent-parent-regression risk. (c) symBUDim-side biconditional (still pending). (d) Concrete-pair monotonicity instances continued — PART XXV first batch (S₇ → S₁₀) is delivered this session; natural extensions: lpb 4 = 3, lpb 6 = 5, lpb 12 = lpb 14 = lpb 15 = lpb 16 = 13. (e) Stretch: n=3 case, n=4 V₄ case, falsification target buDim 3 3.",
     "attemptCounts": {
-      "total": 16,
+      "total": 17,
       "currentApproach": 1,
       "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "ACT-DOC (Iter 18 S19, researcher-4, 2026-05-14): discharged S18 PREP §1.5 Option A. Fixed problem.md Formal Statement chain `symBUDim ≟ buDim = 2⌊d/2⌋ − 1` (provably inconsistent at every odd d ≥ 3 via Iter-14`s axiom-free symBUDim_lower_z2 + parent`s buDim_two) — replaced with the consistent two-level statement: (i) the genuine conjecture `symBUDim n d ?= buDim p* d`, plus (ii) a `Closed form (even d only)` qualifier paragraph. Status block extended to 2026-05-14 + Iter-14/17 entries + Iter-18 ACT rationale. Brings the published statement of the conjecture into consistency with axiom-free theorems that have been in the Lean file since Iter 14 (PR #18127 ff, ~6 iterations ago). No Lean change, no axiom change, no sorry change. State.md header refreshed 16 → 18 (was 2 iterations stale); state.md Iter-18 ACT section appended (~85 lines). JSON refresh: currentState.iteration 16 → 18, focus + nextAction rewritten to S19 ACT outcome + post-S19 Path Forward, knowledge.progressSummary updated. CurrentState.phase remains ORIENT — S19 ACT is doc-only, no Lean change ⇒ no ACT advance.",
+    "progressSummary": "ACT (Iter 19 S20, researcher-1, 2026-05-30): added a new PART XXV to proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean with 6 new substantive theorems. Axiom-free concrete LPB values closing a long-standing Iter-11-era docstring TODO: `largestPrimeBelow_eight_eq_seven`, `_nine_eq_seven`, `_ten_eq_seven` (all = 7), plus witness lemma `no_prime_in_seven_to_ten`. Conditional plateau collapse `symBUDim_seven_eq_ten` + `_of` hypothesis-form delivers the longest concrete `symBUDim` plateau predicted by a dyadic prime gap below n = 11 (4-step S₇ → S₁₀). Counts: file 1788 → 1885 LOC (+97); theoremCount 109 → 115 (+6); axiomCount 1 (unchanged); sorryCount 0 (unchanged); defCount 2 (unchanged). State.md header refreshed 18 → 19; Iter-19 section appended (~70 lines). JSON refresh: currentState.iteration 18 → 19, focus + nextAction rewritten to S20 ACT outcome + post-S20 Path Forward, knowledge.progressSummary updated, leanFiles entry refreshed. CurrentState.phase remains ORIENT — incremental axiom-free PART XXV addition does not advance the phase.\\n\\nACT-DOC (Iter 18 S19, researcher-4, 2026-05-14): discharged S18 PREP §1.5 Option A. Fixed problem.md Formal Statement chain `symBUDim ≟ buDim = 2⌊d/2⌋ − 1` (provably inconsistent at every odd d ≥ 3 via Iter-14`s axiom-free symBUDim_lower_z2 + parent`s buDim_two) — replaced with the consistent two-level statement: (i) the genuine conjecture `symBUDim n d ?= buDim p* d`, plus (ii) a `Closed form (even d only)` qualifier paragraph. Status block extended to 2026-05-14 + Iter-14/17 entries + Iter-18 ACT rationale. Brings the published statement of the conjecture into consistency with axiom-free theorems that have been in the Lean file since Iter 14 (PR #18127 ff, ~6 iterations ago). No Lean change, no axiom change, no sorry change. State.md header refreshed 16 → 18 (was 2 iterations stale); state.md Iter-18 ACT section appended (~85 lines). JSON refresh: currentState.iteration 16 → 18, focus + nextAction rewritten to S19 ACT outcome + post-S19 Path Forward, knowledge.progressSummary updated. CurrentState.phase remains ORIENT — S19 ACT is doc-only, no Lean change ⇒ no ACT advance.",
     "builtItems": [
       "proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean — Phase 2 scaffold with axiom symBUDim_eq_largestPrime + 18 theorems (substantive: 16); 333 lines",
       "Unconditional theorem symBUDim_even_lower : 2k-1 ≤ symBUDim n (2k) for n ≥ 2 (no new axioms beyond parent)",
@@ -86,7 +86,10 @@
       "PART XXIV `buDim_largestPrime_even_const`: axiom-free constancy of `buDim ∘ largestPrimeBelow` in `n` at every fixed even `d`",
       "PART XXIV `buDim_largestPrime_even_no_strict_mono`: axiom-free refutation of strict `<` for `buDim_largestPrime_mono` (PART XXIII) at every even `d` — closes Iter 16 Path Forward Item 3 in the negative",
       "PART XXIV `symBUDim_even_const_across_n` and `_of`: under file's axiom (or ConjectureLPB), `symBUDim n (2*k) = symBUDim m (2*k)` for n, m ≥ 2 and k ≥ 1 — conjecture predicts even-d constancy in n, not strict monotonicity",
-      "PART XXIV `symBUDim_even_no_strict_mono` and `_of`: symBUDim-side companion no-strict-mono result at even d"
+      "PART XXIV `symBUDim_even_no_strict_mono` and `_of`: symBUDim-side companion no-strict-mono result at even d",
+      "PART XXV `no_prime_in_seven_to_ten` (axiom-free, Iter 19): the three composites {8, 9, 10} are not prime. Witness for the dyadic prime gap (7, 11).",
+      "PART XXV `largestPrimeBelow_eight_eq_seven`, `_nine_eq_seven`, `_ten_eq_seven` (axiom-free, Iter 19): concrete LPB values `lpb 8 = lpb 9 = lpb 10 = 7`. Closes a long-standing Iter-11-era docstring TODO in `largestPrimeBelow_eight_eq_ten` which had flagged these as 'still-pending PART XII concrete-LPB computations'.",
+      "PART XXV `symBUDim_seven_eq_ten` and `_of` (conditional on `symBUDim_eq_largestPrime`, Iter 19): 4-step plateau collapse `symBUDim 7 d = symBUDim 10 d` for every d. Longest concrete `symBUDim` plateau predicted by a dyadic prime gap below n = 11; covers S₇ (simple-like), S₈ (V₄·A₄), S₉ (S₂×S₂ Sylow-2), and S₁₀ (A₅×A₅) — four symmetric groups with qualitatively distinct subgroup lattices, conjecturally sharing equivariant BU dimensions."
     ],
     "insights": [
       "S4 — `largestPrimeBelow_self_of_prime` (squeeze argument: `n ≤ findGreatest ≤ n` from `Nat.le_findGreatest le_rfl hn` + `Nat.findGreatest_le`) is the cleanest derivation of `largestPrimeBelow p = p` for prime p. Generic enough to handle ALL primes uniformly.",
@@ -149,10 +152,10 @@
     ],
     "lastSession": {
       "researcher": "researcher-1",
-      "iteration": 18,
-      "date": "2026-05-13",
-      "outcome": "prep",
-      "summary": "S18 PREP doc-only (435 LOC): audit of problem.md formal statement (provably inconsistent at odd d ≥ 3) + design of parent-side axiom `buDim_prime_odd` for odd-d Yang-Borsuk at odd primes + cost-benefit (Strategy α trivialises conjecture). Mathlib audit confirms 0 BU/equivariant infrastructure. Path-forward Item 1 (Iter 17 strict-mono at odd d) is brought into scope for Iter 18 ACT, with honest framing that the conjectures `largestPrimeBelow` content collapses under the natural parent-side completion."
+      "iteration": 19,
+      "date": "2026-05-30",
+      "outcome": "act",
+      "summary": "S20 ACT (PART XXV): 6 new substantive theorems in proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean. Axiom-free: `no_prime_in_seven_to_ten`, `largestPrimeBelow_eight_eq_seven` (= 7), `_nine_eq_seven` (= 7), `_ten_eq_seven` (= 7). Conditional on `symBUDim_eq_largestPrime`: `symBUDim_seven_eq_ten` (4-step plateau S₇ → S₁₀) and `_of` hypothesis-form. Closes a long-standing Iter-11-era docstring TODO. File 1788 → 1885 LOC; theoremCount 109 → 115; axiomCount 1 (unchanged); sorryCount 0 (unchanged)."
     }
   },
   "tags": [
@@ -210,7 +213,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-14T03:30:00Z",
+  "lastUpdate": "2026-05-30T22:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -327,8 +330,8 @@
     {
       "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
       "filename": "BorsukUlamOQ02OQ01OQ03OQ02.lean",
-      "lineCount": 1788,
-      "theoremCount": 109,
+      "lineCount": 1885,
+      "theoremCount": 115,
       "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
