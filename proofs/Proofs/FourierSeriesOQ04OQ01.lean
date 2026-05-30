@@ -274,6 +274,102 @@ theorem latticeDisc_card_le_real (R : ℝ) :
     pow_le_pow_left₀ h_nn_R h_lin 2
   linarith
 
+/-! ## S2e-cofinality — `latticeDisc R` eventually contains any fixed lattice-point set
+
+Stepping-stone for the S2e ACT discharge of `sphPartialSum_L2_norm_converge`:
+the cofinality lemma `latticeDisc_eventually_supset` says that for every
+finite set `S` of lattice points, `S ⊆ latticeDisc R` for all sufficiently
+large `R`. Combined with the eventual identification of `sphPartialSum` with
+a finset-sum projection onto the multi-Fourier basis, this turns the
+Plancherel residual `‖S_R^{sph} f - f‖₂² = ∑_{k ∉ latticeDisc R} |fk|²`
+into a tail of a convergent series — the engine of the unconditional
+L²-norm-convergence close.
+
+Pure ℝ/ℤ arithmetic — no measure-theoretic dependencies. -/
+
+/-- **Singleton-case cofinality**: every fixed lattice point `k ∈ ℤ²` is
+    eventually contained in `latticeDisc R` as `R → ∞`. Proof: for
+    `R ≥ (k 0)² + (k 1)² + 1`, both the disc condition
+    `(k 0)² + (k 1)² ≤ R²` and the bounding-box condition
+    `|k i| ≤ ⌈|R|⌉` hold. -/
+theorem latticeDisc_mem_eventually (k : Fin 2 → ℤ) :
+    ∀ᶠ R in (atTop : Filter ℝ), k ∈ latticeDisc R := by
+  refine Filter.eventually_atTop.mpr ?_
+  refine ⟨((k 0 : ℝ))^2 + ((k 1 : ℝ))^2 + 1, fun R hR => ?_⟩
+  -- Setup: nonneg facts, R ≥ 1, |R| = R, R² ≥ R
+  have h0 : (0 : ℝ) ≤ ((k 0 : ℝ))^2 := sq_nonneg _
+  have h1 : (0 : ℝ) ≤ ((k 1 : ℝ))^2 := sq_nonneg _
+  have hR1 : (1 : ℝ) ≤ R := by linarith
+  have hRnn : (0 : ℝ) ≤ R := by linarith
+  have hRabs : |R| = R := abs_of_nonneg hRnn
+  -- For R ≥ 1: R ≤ R²  (since R² - R = R(R-1) ≥ 0)
+  have hRR : R ≤ R^2 := by nlinarith
+  -- Disc condition: (k 0)² + (k 1)² ≤ R²
+  have hsum : ((k 0 : ℝ))^2 + ((k 1 : ℝ))^2 ≤ R^2 := by linarith
+  -- Component-wise squared bounds (explicit indices to avoid fin_cases atom mismatch)
+  have hbox0_sq : ((k 0 : ℝ))^2 ≤ R^2 := by linarith
+  have hbox1_sq : ((k 1 : ℝ))^2 ≤ R^2 := by linarith
+  -- Absolute-value bounds via sqrt monotonicity
+  have habs0 : |((k 0 : ℝ))| ≤ R := by
+    have := Real.sqrt_le_sqrt hbox0_sq
+    rwa [Real.sqrt_sq_eq_abs, Real.sqrt_sq hRnn] at this
+  have habs1 : |((k 1 : ℝ))| ≤ R := by
+    have := Real.sqrt_le_sqrt hbox1_sq
+    rwa [Real.sqrt_sq_eq_abs, Real.sqrt_sq hRnn] at this
+  -- ⌈|R|⌉ ≥ R: chain |R| = R with |R| ≤ ⌈|R|⌉
+  have hceil_ge : R ≤ (⌈|R|⌉ : ℝ) := by
+    have h : (|R| : ℝ) ≤ (⌈|R|⌉ : ℝ) := Int.le_ceil _
+    linarith
+  -- Per-index bounds combining |k i| ≤ R with R ≤ ⌈|R|⌉
+  have hki_le0 : (k 0 : ℝ) ≤ (⌈|R|⌉ : ℝ) :=
+    (le_abs_self _).trans habs0 |>.trans hceil_ge
+  have hki_le1 : (k 1 : ℝ) ≤ (⌈|R|⌉ : ℝ) :=
+    (le_abs_self _).trans habs1 |>.trans hceil_ge
+  have hki_ge0 : -(⌈|R|⌉ : ℝ) ≤ (k 0 : ℝ) := by
+    have : -((k 0 : ℝ)) ≤ R := (neg_le_abs _).trans habs0
+    linarith
+  have hki_ge1 : -(⌈|R|⌉ : ℝ) ≤ (k 1 : ℝ) := by
+    have : -((k 1 : ℝ)) ≤ R := (neg_le_abs _).trans habs1
+    linarith
+  -- Discharge latticeDisc membership
+  unfold latticeDisc
+  rw [Finset.mem_filter]
+  refine ⟨?_, hsum⟩
+  rw [Finset.mem_Icc]
+  refine ⟨fun i => ?_, fun i => ?_⟩
+  · -- Lower bound: -⌈|R|⌉ ≤ k i in ℤ
+    fin_cases i
+    · exact_mod_cast hki_ge0
+    · exact_mod_cast hki_ge1
+  · -- Upper bound: k i ≤ ⌈|R|⌉ in ℤ
+    fin_cases i
+    · exact_mod_cast hki_le0
+    · exact_mod_cast hki_le1
+
+/-- **Cofinality of `latticeDisc R`**: for any finite set `S ⊂ ℤ²` of lattice
+    points, `S ⊆ latticeDisc R` for all sufficiently large `R`. Direct
+    consequence of `latticeDisc_mem_eventually` by induction on `S`.
+
+    This is the cofinality bearer noted in the S2e PREP / S7 audit (`atTop`
+    cofinality of `latticeDisc`) used by the S2e ACT to discharge
+    `sphPartialSum_L2_norm_converge` via the standard Plancherel argument:
+    Bessel's inequality on the multi-Fourier basis gives
+    `‖S_R^{sph} f - f‖₂² = ∑_{k ∉ latticeDisc R} |fk|²`, and this cofinality
+    lemma converts the right-hand sum into a tail of the convergent
+    Plancherel series `∑_k |fk|² = ‖f‖₂²`. -/
+theorem latticeDisc_eventually_supset (S : Finset (Fin 2 → ℤ)) :
+    ∀ᶠ R in (atTop : Filter ℝ), S ⊆ latticeDisc R := by
+  classical
+  induction S using Finset.induction_on with
+  | empty =>
+    exact Filter.Eventually.of_forall (fun _ => Finset.empty_subset _)
+  | @insert k S _hkS ih =>
+    filter_upwards [ih, latticeDisc_mem_eventually k] with R hSR hkR
+    intro j hj
+    rcases Finset.mem_insert.mp hj with rfl | hjS
+    · exact hkR
+    · exact hSR hjS
+
 end
 
 end FourierSeriesOQ04OQ01
