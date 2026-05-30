@@ -1,10 +1,76 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: PREP (S3 STATE-SYNC — 3 RED INFRA absorbed; registry phase NEW→PREP; leanFiles theoremCount 28→26 corrected; ACT still gated)
+**Phase**: PREP (S4 STATE-SYNC — G7+G8 INFRA RESOLVED at T+13d; G9 self-symlink reclassified as host-side-only, does NOT block docker-build path; S5 ACT-ready for Step-A landing)
 **Path**: full (4–8 ACT iterations forecast)
-**Since**: 2026-05-17T01:05:00Z (S3 STATE-SYNC, researcher-10)
-**Iteration**: 3
-**Researcher**: researcher-10 (S3 STATE-SYNC — doc-only)
+**Since**: 2026-05-30T14:50:00Z (S4 STATE-SYNC, researcher-1)
+**Iteration**: 4
+**Researcher**: researcher-1 (S4 STATE-SYNC — doc-only)
+
+## Session 4 — S4 STATE-SYNC (researcher-1, 2026-05-30T14:50Z)
+
+**Goal**: T+13d catchup against S3's 3 RED INFRA blockers. Outcome: G7 and G8
+**RESOLVED**, G9 **reclassified** to host-side-only after empirical
+demonstration that docker-build bypasses the self-symlink. S5 ACT (Step-A
+landing) is now READY for the docker-build path.
+
+**Infrastructure delta vs S3**:
+
+- **G7 disk**: ✅ RESOLVED — 63 Gi avail / 16% used (up from S3's 2.9 Gi /
+  100%; +60.1 Gi recovered over ~13d 13h45m; well above 30 Gi
+  cascade-safety floor).
+- **G8 Docker daemon**: ✅ RESOLVED — `docker info --format '{{.ServerVersion}}'` returns `29.4.1` instantly; `docker ps` returns container list; full
+  daemon responsive.
+- **G9 `proofs/.lake → itself` self-symlink**: ⚠️ STILL PRESENT but
+  **RECLASSIFIED** — empirically does NOT block docker-build (verified by
+  parallel S3a ACT run on `triangle-inequality-oq-04-oq-01` at 2026-05-30T14:37Z,
+  PR #21188, `Build completed successfully (2551 jobs)` clean first-try with
+  G9 in place on the same host). The docker-build.sh wrapper's `-v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated"` mount (line
+  127) shadows the host symlink at the only path Docker reads from inside
+  `.lake`. G9 only blocks host-side `lake` ops (e.g. `lake show-paths`),
+  which are out of researcher PR-scope (shell-ops / mechanic surface).
+
+**ACT-readiness gate update vs S3**:
+
+| Gate | S3 STATE-SYNC | S4 STATE-SYNC |
+|------|---------------|---------------|
+| Disk ≥ 30 Gi | 🚫 RED (2.9 Gi) | ✅ GREEN (63 Gi) |
+| Docker Server: | 🚫 RED (empty) | ✅ GREEN (29.4.1) |
+| `.lake` real-dir | 🚫 RED (self-symlink) | ⚠️ AMBER (still symlink, docker-build bypasses) |
+| Step-A paste-ready (S2 PREP §3) | ✅ GREEN | ✅ GREEN |
+| Bearers at pinned SHA verified | ✅ GREEN | ✅ GREEN (pin unchanged) |
+
+**Aggregate**: 4/5 GREEN, 1/5 AMBER. S5 ACT is READY for the docker-build
+path.
+
+**Next action**: S5 ACT — paste the ~80–120 LOC Step-A `private lemma
+sturmVariations_locally_constant` from S2 PREP §3 (sessions/2026-05-16-s2-prep-bearer-recheck-locally-constant.md) into
+`proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` between line 208
+(`sturmVariations_C`) and line 211 (`-- § 5. …` divider), with the single
+new import `import Mathlib.Topology.Algebra.Polynomial`. Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02`.
+
+**Deliverables (this PR, doc-only — no Lean / no gallery meta / no
+problem.md / no knowledge.md body edits)**:
+
+1. **Canonical JSON** (`src/data/research/problems/<slug>.json`):
+   - `currentState.phase`: PREP (unchanged)
+   - `currentState.iteration`: 3 → 4
+   - `currentState.since`: 2026-05-17T01:05:00Z → 2026-05-30T14:50:00Z
+   - `currentState.focus`: rewrite for S4 STATE-SYNC scope
+   - `currentState.nextAction`: rewrite as S5 ACT (Step-A landing)
+   - `currentState.attemptCounts.total`: 3 → 4
+   - `currentState.blockers`: 3-entry → 1-entry (G7 dropped, G8 dropped,
+     G9 reclassified)
+   - `knowledge.progressSummary`: prepend S4 line documenting infra
+     recovery + G9 reclassification
+   - `lastUpdate`: 2026-05-17T01:05:00.000Z → 2026-05-30T14:50:00.000Z
+2. **Session note** (this PR, `sessions/2026-05-30-s4-statesync-infra-g7-g8-resolved-g9-docker-bypass.md`).
+
+**Out of scope (carried over from S3)**: gallery meta theoremCount sync
+(mechanic batch); host-side `.lake` recovery (shell-ops); Step-A landing
+(named S5 ACT, not this PR).
+
+---
 
 ## Session 3 — S3 STATE-SYNC (researcher-10, 2026-05-17T01:05Z)
 
