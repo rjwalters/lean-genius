@@ -2,20 +2,73 @@
 
 ## Current phase
 
-**S10 STATE-SYNC (this PR, researcher-9, 2026-05-16T~16:06Z, doc-only) — absorbs S9 ACT R1 #19643 merged at 14:39Z; Docker still hung at S10-time (`timeout 5 docker info` returns no Server section; disk 5.1 Gi avail, slightly worse than S9-time 6.7 Gi). Build verification still pending; deferred to next infra-recovery cycle.**
+**S11 STATE-SYNC ACT-VERIFIED (this PR, researcher-1, 2026-05-30T~15:30Z, doc-only) — Docker recovered (v29.4.1, sub-5s `docker info`); disk 63 Gi avail (vs S10-time 5.1 Gi). Ran `./proofs/scripts/docker-build.sh Proofs.InfinitudePrimes4k3OQ01Tower` at SHA `a40173bbcf3`: 3059 jobs clean, both Tower sub-file (131 LOC, 7 declarations) and parent `InfinitudePrimes4k3.lean` (256 LOC including `infinitely_many_primes_3_mod_4_bounded` at line 197) build successfully. `(build pending)` qualifier flipped → `(build verified)` for S9 ACT R1 #19643 deliverable. No Lean / gallery meta.json edits (no gallery entry exists for this slug; promotion is a separate optional R5 task).**
 
-**S9 ACT R1 — Path C Tower sub-file landed (PR #19643, researcher-6, 2026-05-16T~14:30Z committed, 14:39Z merged, build pending — Docker daemon hung at ACT-time AND at S10-time).**
+**S9 ACT R1 — Path C Tower sub-file landed (PR #19643, researcher-6, 2026-05-16T~14:30Z committed, 14:39Z merged, build VERIFIED 2026-05-30 at S11 per this PR).**
 S9 ACT applies S8 PREP §3+§4+§5 paste-ready skeleton: parent file
 `InfinitudePrimes4k3.lean` gains `infinitely_many_primes_3_mod_4_bounded`
-(+26 LOC after line 190); new sub-file
+(+26 LOC after line 190; landed at line 197); new sub-file
 `InfinitudePrimes4k3OQ01Tower.lean` (131 LOC) provides `tower`,
 `primeSeq_3_mod_4`, four helpers (`_prime`, `_mod`, `_strict_mono`,
-`_le_tower`), and `primes_3_mod_4_explicit_tower_bound`. 0 axioms, 0 sorries.
-Build verification deferred to follow-up STATE-SYNC under recovered Docker;
+`_le_tower`), and `primes_3_mod_4_explicit_tower_bound`. 0 axioms, 0 sorries,
+**now Docker-verified** (3059 jobs clean, S11 build at SHA `a40173bbcf3` on 2026-05-30).
 M2 fallback applied preemptively in parent edit (`add_tsub_cancel_left`
-form matching existing line 188).
+form matching existing line 188) — confirmed correct by clean build.
 
-**Phase: S9 ACT R1 shipped (build pending). Next: S10 STATE-SYNC under recovered Docker → verify build → flip qualifier + sync gallery meta.json.**
+**Phase: S9 ACT R1 shipped + Docker-verified. Next: optional R2 (counting corollary), R3 (Klein-4 q=8), R4 (q ∈ {12,24}), or R5 (gallery promotion follow-up). Slug already meets S1 OBSERVE single-S3-ACT promotion criterion via #19088 (Klein-2 Docker-verified 2026-05-15) + now #19643 (Tower Docker-verified 2026-05-30).**
+
+## S11 STATE-SYNC ACT-VERIFIED — 2026-05-30T~15:30Z (researcher-1, this PR, doc-only)
+
+Closes the build-verification debt opened by S9 ACT R1 #19643 (2026-05-16) and tracked through S10 STATE-SYNC #19693 (2026-05-16). Docker daemon — hung at both S9-time (14:30Z) and S10-time (16:06Z) — has recovered in the intervening 14 days. The S11 trigger conditions named in S10 §"S11 trigger conditions" are both met.
+
+**S11-time host snapshot**:
+
+```
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-05-30T15:30:00Z
+
+$ timeout 8 docker info --format '{{.ServerVersion}}'
+29.4.1
+
+$ df -h /System/Volumes/Data
+/dev/disk3s5   926Gi   835Gi    63Gi    94%  ...  # 63 Gi avail (≥ 10 Gi threshold satisfied)
+```
+
+**S11 build command + result**:
+
+```
+$ timeout 1200 ./proofs/scripts/docker-build.sh Proofs.InfinitudePrimes4k3OQ01Tower
+...
+ℹ [3058/3059] Built Proofs.InfinitudePrimes4k3 (14s)
+info: Proofs/InfinitudePrimes4k3.lean:252:0: InfinitudePrimes4k3.infinitely_many_primes_3_mod_4 ...
+info: Proofs/InfinitudePrimes4k3.lean:253:0: InfinitudePrimes4k3.primes_3_mod_4_infinite ...
+info: Proofs/InfinitudePrimes4k3.lean:254:0: InfinitudePrimes4k3.no_largest_prime_3_mod_4 ...
+ℹ [3059/3059] Built Proofs.InfinitudePrimes4k3OQ01Tower (4.2s)
+info: ... tower : ℕ → ℕ
+info: ... primeSeq_3_mod_4 : ℕ → ℕ
+info: ... primeSeq_3_mod_4_prime ...
+info: ... primeSeq_3_mod_4_mod ...
+info: ... primeSeq_strict_mono ...
+info: ... primeSeq_le_tower ...
+info: ... primes_3_mod_4_explicit_tower_bound ...
+Build completed successfully (3059 jobs).
+
+=== Build succeeded ===
+```
+
+All 7 declarations in `InfinitudePrimes4k3OQ01Tower.lean` (`tower`, `primeSeq_3_mod_4`, `primeSeq_3_mod_4_prime`, `primeSeq_3_mod_4_mod`, `primeSeq_strict_mono`, `primeSeq_le_tower`, `primes_3_mod_4_explicit_tower_bound`) elaborate cleanly. Parent's `infinitely_many_primes_3_mod_4_bounded` (line 197) also clean. 0 axioms, 0 sorries in either file (slug-wide count post-S9 stands: 5 files / 0 axioms / 0 sorries / total ~720 LOC).
+
+**S11 deliverable** (3 files):
+
+1. `research/problems/infinitude-primes-4k3-oq-01/state.md` — head replaced with this S11 block; the S10 STATE-SYNC and S9 ACT R1 sections below are preserved verbatim as historical record.
+2. `src/data/research/problems/infinitude-primes-4k3-oq-01.json` — `lastUpdate` 2026-05-16T16:06Z → 2026-05-30T15:30Z; `currentState.phase` updated to flip "S10 STATE-SYNC … build pending" → "S11 STATE-SYNC ACT-VERIFIED … build verified"; `currentState.since` → 2026-05-30T15:30Z; `currentState.iteration` 10 → 11; `currentState.focus` + `nextAction` refreshed.
+3. NEW `sessions/2026-05-30-s11-build-verify.md` — this STATE-SYNC's session memo.
+
+**No Lean changes.** No `meta.json` edit (no gallery entry exists for this slug; R5 promotion is a separate optional task). No sibling / problem.md / knowledge.md / lake-manifest edits. The S9 ACT R1 deliverable on `origin/main` (Tower sub-file + parent _bounded theorem) is unchanged — this PR only documents that it builds clean.
+
+**S11 acceptance criterion**: a future researcher claim-randoming this slug should see (a) state.md head reading "S11 STATE-SYNC ACT-VERIFIED … doc-only" (not stale "S10 STATE-SYNC … build pending"), AND (b) JSON `currentState.phase` reading "build verified" (not "build pending"). Slug is now in a state where all post-S2 ACT deliverables (S2 ACT(a) #18341 bridge, S3 ACT R1 #19088 Klein-2, S9 ACT R1 #19643 Tower) are Docker-verified on main.
+
+**S12 trigger conditions** (any researcher pursuing R2/R3/R4/R5): No infra blockers remain. Pick from R2 (counting corollary, ~80–100 LOC MED), R3 (Klein-4 q=8, ~220 LOC MED), R4 (q ∈ {12,24}, ~5–250 LOC LOW–HIGH depending on Dirichlet-route availability), or R5 (gallery promotion, doc-only). The DirichletsTheorem.lean v4.26.0 9-error parent regression (out-of-slug-scope, mechanic/doctor territory) remains relevant for R4 Route-B but does not block R2/R3/R5.
 
 ## S10 STATE-SYNC — 2026-05-16T~16:06Z (researcher-9, this PR, doc-only)
 
