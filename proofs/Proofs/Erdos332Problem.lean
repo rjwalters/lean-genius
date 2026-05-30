@@ -38,10 +38,6 @@ def HasBoundedGaps (S : Set ℤ) : Prop :=
     ∃ M : ℕ, 0 < M ∧
       ∀ z : ℤ, ∃ s ∈ S, z ≤ s ∧ s < z + (M : ℤ)
 
-/-- The empty set has empty difference set. -/
-theorem diffSet_empty : diffSet ∅ = ∅ :=
-  diffSet_finite_eq_empty ∅ Set.finite_empty
-
 /- ## Density conditions -/
 
 /-- The counting function: `|A ∩ {1,…,N}|`. -/
@@ -78,7 +74,6 @@ the known sufficient condition due to Prikry. -/
 axiom positive_density_bounded_gaps (A : Set ℕ) :
     HasPositiveUpperDensity A → HasBoundedGaps (diffSet A)
 
-/-- Positive upper density implies `D(A)` has positive density itself. -/
 /-- The difference set is symmetric: `d ∈ D(A)` iff `-d ∈ D(A)`.
     Proof: the swap map `(a₁, a₂) ↦ (a₂, a₁)` sends pairs with
     difference `d` to pairs with difference `-d`, preserving membership. -/
@@ -123,6 +118,10 @@ theorem diffSet_finite_eq_empty (A : Set ℕ) (hA : A.Finite) : diffSet A = ∅ 
   simp only [diffSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
   intro hinf
   exact hinf ((hA.prod hA).subset (fun ⟨a₁, a₂⟩ ⟨ha₁, ha₂, _⟩ => ⟨ha₁, ha₂⟩))
+
+/-- The empty set has empty difference set. -/
+theorem diffSet_empty : diffSet ∅ = ∅ :=
+  diffSet_finite_eq_empty ∅ Set.finite_empty
 
 /-- If `A` is infinite, `D(A)` is nonempty (it contains zero). -/
 theorem diffSet_nonempty_of_infinite (A : Set ℕ) (hA : Set.Infinite A) :
@@ -196,7 +195,8 @@ theorem countingFn_le (A : Set ℕ) (N : ℕ) : countingFn A N ≤ N := by
   unfold countingFn
   have h1 : (Finset.Icc 1 N |>.filter (· ∈ A)).card ≤ (Finset.Icc 1 N).card :=
     Finset.card_filter_le _ _
-  have h2 : (Finset.Icc 1 N).card ≤ N := by simp [Finset.card_Icc]; omega
+  have h2 : (Finset.Icc 1 N).card ≤ N := by
+    rw [Nat.card_Icc]; omega
   omega
 
 /-- Positive upper density implies A is infinite.
@@ -213,11 +213,12 @@ theorem positive_upper_density_infinite (A : Set ℕ)
     intro N
     unfold countingFn
     exact Finset.card_le_card
-      (fun hx => hfin.mem_toFinset.mpr ((Finset.mem_filter.mp hx).2))
+      (fun x hx => hfin.mem_toFinset.mpr (Finset.mem_filter.mp hx).2)
   obtain ⟨N₀, hN₀⟩ := exists_nat_gt ((C : ℚ) / δ)
   obtain ⟨N, hN, hδN⟩ := hdens N₀
   have h1 : (C : ℚ) / δ < (N : ℚ) := lt_of_lt_of_le hN₀ (by exact_mod_cast hN)
-  have h2 : (C : ℚ) < δ * (N : ℚ) := by rwa [div_lt_iff hδ] at h1
+  have h2 : (C : ℚ) < δ * (N : ℚ) := by
+    rw [div_lt_iff₀ hδ] at h1; linarith
   have h3 : δ * (N : ℚ) ≤ (C : ℚ) := le_trans hδN (by exact_mod_cast hcf_bound N)
   linarith
 
@@ -251,4 +252,5 @@ def ErdosProblem332 : Prop :=
 
 /- ## Related questions -/
 
-/-- Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density? -/
+/- Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density?
+   (Open question; not formalized here.) -/
