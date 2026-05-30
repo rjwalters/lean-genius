@@ -2,11 +2,70 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-29 (S9 ACT — cofinality bearer landed)
-**Iteration**: 8
-**Last Update**: 2026-05-29 (researcher-1) — **S9 ACT cofinality**: `latticeDisc_mem_eventually` + `latticeDisc_eventually_supset` landed as sorry-free / axiom-free public theorems (~85 LOC). Discharges step 3 of the S7 audit §4 recipe (cofinality bearer). The remaining S2e ACT scope shrinks to ~35-60 LOC (steps 1+2+4+5+6); the eLpNorm-form close is unblocked.
+**Since**: 2026-05-30 (S10 ACT — `coeFn_finset_sum_haarT2` helper landed)
+**Iteration**: 9
+**Last Update**: 2026-05-30 (researcher-1) — **S10 ACT step-2**: `coeFn_finset_sum_haarT2` private helper landed as a sorry-free / axiom-free theorem (~30 LOC including section docstring). Discharges step 2 of the S7 audit §4 recipe (the Mathlib-gap `Lp.coeFn_finset_sum` helper, specialised to `Lp ℂ 2 haarT2`). Combined with S9's cofinality bearer (step 3, MERGED PR #21131), 2 of 6 recipe steps are now done. The remaining S2e ACT scope shrinks to ~30-55 LOC (steps 1+4+5+6); the `eLpNorm`-form close is a tractable single-iteration target.
 
 ## Current Focus
+
+S10 ACT step-2 (researcher-1, 2026-05-30) — **ACT mini-task delivering
+the `Lp.coeFn_finset_sum` helper** of the S7 audit §4 recipe (step 2,
+8-10 LOC budgeted; actual ~30 LOC including section docstring). Adds one
+sorry-free, axiom-free **private** theorem:
+
+- `coeFn_finset_sum_haarT2 {ι : Type*} (s : Finset ι) (f : ι → Lp ℂ 2 haarT2) : ⇑(∑ k ∈ s, f k) =ᵐ[haarT2] fun x => ∑ k ∈ s, (f k : T2 → ℂ) x`
+  — the Mathlib-gap helper. By `Finset.induction_on`. **Empty case**:
+  `Finset.sum_empty` reduces both sides to `(0 : Lp ℂ 2 haarT2)` and
+  `(0 : T2 → ℂ)`; closed by `Lp.coeFn_zero ℂ 2 haarT2` directly via
+  `exact`. **Insert case**: `Finset.sum_insert hkS` splits both sides;
+  `Lp.coeFn_add (f k) _` distributes the LHS coercion through the binary
+  `+`; the inductive hypothesis + `Filter.EventuallyEq.refl _ ⇑(f k)` are
+  combined via `Filter.EventuallyEq.add` to close the goal.
+
+The lemma is **measure-disambiguation-free** — stated and proved entirely
+over `haarT2`; no `haarT2 = volume` step required. Tactics:
+`Finset.induction_on`, `simp only [Finset.sum_empty]`, `simp only
+[Finset.sum_insert hkS]`, `Lp.coeFn_zero`, `Lp.coeFn_add`,
+`Filter.EventuallyEq.refl`, `Filter.EventuallyEq.add`. No new sorries,
+no new axioms.
+
+**Fix-iteration note** (build-time learning): a first attempt used
+`filter_upwards [Lp.coeFn_zero ℂ 2 haarT2] with x hx; simp [hx]` for the
+empty case and `filter_upwards [ih] with x hx; simp [Finset.sum_insert
+hkS, hx, Pi.add_apply]` for the insert case. Both failed: the empty-case
+`simp` couldn't bridge `↑0 x = 0` (single-arrow goal post-`filter_upwards`)
+against `↑↑0 x = 0 x` (double-arrow `hx`), and the insert-case `simp`
+triggered an unintended `Lp.coe_finset_sum`-style distribution on the
+inductive LHS (`↑(∑ i ∈ s, ↑(f i)) x` instead of the expected `⇑(∑ j ∈ s,
+f j) x`). The fix: avoid `simp` heuristics entirely. Use
+`Lp.coeFn_zero ℂ 2 haarT2` directly via `exact` (Lean handles the
+`0 : T2 → ℂ` vs `fun x => 0` eta-bridge), and combine the two
+`EventuallyEq`s via `Filter.EventuallyEq.add` (which avoids touching the
+`Lp.coe_finset_sum` lemma altogether).
+
+**S2e ACT scope after this iteration**: step 2 (`coeFn_finset_sum`
+helper) ✅ done; step 3 (cofinality) ✅ done (S9, 2026-05-29). Remaining
+recipe = steps 1 (Setup, 3-5 LOC + 3-5 LOC haarT2/volume contingency) +
+4 (Bridge `sphPartialSum` → Lp finset-sum, 15-25 LOC) + 5 (cite
+`hasSum_mFourier_series_L2`, 5-10 LOC) + 6 (close `eLpNorm`-form via
+`Lp.norm_def`, 5-10 LOC) = 28-55 LOC. A future single-iteration close
+is now genuinely tractable.
+
+**Build status**: Docker-built and verified (researcher-1, 2026-05-30
+worktree HEAD `f19276d72c8`; cached cache-get + ~3 min elaboration; only
+the pre-existing `sphPartialSum_L2_norm_converge` sorry warning at line
+148; no new warnings from the helper addition). Updated Lean file:
+`proofs/Proofs/FourierSeriesOQ04OQ01.lean` (375 → 413 lines, 10 → 11
+theorems; +1 sorry-free private theorem in a new "S2e-step2" section
+after `latticeDisc_eventually_supset`). Gallery meta-json line/theorem
+counts synced; new `lp-coefn-finset-sum` section added with `startLine:
+373`, `endLine: 409`; `originalContributions` extended.
+
+Full forensics in `sessions/2026-05-30-s10-act-step2-coefn-finset-sum.md`.
+
+---
+
+## Previous Focus — S9 ACT cofinality (2026-05-29, researcher-1, MERGED PR #21131)
 
 S9 ACT cofinality (researcher-1, 2026-05-29) — **ACT mini-task delivering
 the cofinality bearer** of the S7 audit §4 recipe (step 3, 15-25 LOC

@@ -370,6 +370,44 @@ theorem latticeDisc_eventually_supset (S : Finset (Fin 2 → ℤ)) :
     · exact hkR
     · exact hSR hjS
 
+/-! ## S2e step 2 — `Lp.coeFn_finset_sum` helper on `haarT2`
+
+A pure measure-theoretic helper paste-recipe noted in the S7
+audit-at-pick-time review (`feedback_researcher_act_picker_must_recheck_prep_bearer_typeclasses_via_section_header.md`)
+as a documented Mathlib gap at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(`Lp.coeFn_finset_sum` is absent in `MeasureTheory.Function.LpSpace.Basic.lean`
+at line ~195 where `Lp.coeFn_add` sits).
+
+Specialised to `Lp ℂ 2 haarT2` to match the rest of this file. The
+generic statement (with `{E p μ}` parameters) is the obvious Mathlib-bound
+generalisation — straightforward consequence of `Lp.coeFn_add` and
+`Lp.coeFn_zero` via `Finset.induction_on`.
+
+This is step 2 of the S7 audit §4 ACT recipe for discharging
+`sphPartialSum_L2_norm_converge`. Steps 1 (haarT2/volume setup), 4 (bridge
+`sphPartialSum` → Lp finset-sum), 5 (cite `hasSum_mFourier_series_L2`), and
+6 (close `eLpNorm`-form via `Lp.norm_def`) remain. Independent of step 1.
+-/
+
+/-- **`Lp.coeFn_finset_sum` on `haarT2`** (Mathlib gap helper).
+
+    For a finite family of `Lp ℂ 2 haarT2` elements indexed by `s`, the
+    pointwise coercion of the finset-sum agrees almost everywhere with the
+    pointwise finset-sum of coercions. Proof: induction on `s`, using
+    `Lp.coeFn_zero` (empty case) and `Lp.coeFn_add` (insert case). -/
+private theorem coeFn_finset_sum_haarT2
+    {ι : Type*} (s : Finset ι) (f : ι → Lp ℂ 2 haarT2) :
+    ⇑(∑ k ∈ s, f k) =ᵐ[haarT2] fun x => ∑ k ∈ s, (f k : T2 → ℂ) x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty =>
+    simp only [Finset.sum_empty]
+    exact Lp.coeFn_zero ℂ 2 haarT2
+  | @insert k s hkS ih =>
+    simp only [Finset.sum_insert hkS]
+    refine (Lp.coeFn_add (f k) _).trans ?_
+    exact (Filter.EventuallyEq.refl _ (⇑(f k))).add ih
+
 end
 
 end FourierSeriesOQ04OQ01
