@@ -5493,9 +5493,12 @@
     },
     "erdos-24": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-02T05:10:38Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-05-30T08:03:13Z",
+      "result": "issues-found",
+      "issues": [
+        "Section line drift in 4 of 7 sections (main-theorem endLine +9, historical shift -9, generalization shift -16, summary shift -14). Filed #21137."
+      ]
     },
     "erdos-240": {
       "agentId": "auditor-cycle-20-batch",
