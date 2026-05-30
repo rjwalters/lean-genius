@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: PREP (S19 — reflectAcross-spelling source-verification + linear_combination coefficient sharpening + Docker B1 reaffirm at T+30min post-S18 merge + disk regression 6.8 → 6.3 Gi; transient — reverts to ACT pivot when Docker recovers)
-**Since**: 2026-05-16 (S18 PREP merged 2026-05-16 ~14:25 UTC; S19 PREP this update at T+30min; ACT pending S17 Path C with Docker recovery)
-**Iteration**: 18 PREP → 19 PREP (this update; resolves S18 PREP §5.3 caveat #1 with parent-file `reflectAcross` source cite at line 99-101 + sharpens caveat #2 `linear_combination` coefficient as `D = (p₁.2 − p₂.2)` with derivation + reaffirms Docker B1 RED + documents disk -0.5 Gi regression)
-**Last Updated**: 2026-05-16T14:52Z
+**Phase**: INFRA-RECOVERY (S20 — parent-file omega fix lands GREEN at v4.26.0 Mathlib SHA + OQ04 8-error file-wide Mathlib-drift catalogue discovered after 14d Docker B1 outage; ACT pivot to S21+ Path C gated on mechanic repair of OQ04 cat-A/B/C errors)
+**Since**: 2026-05-30 (S19 PREP merged 2026-05-16 ~14:52 UTC; T+14d gap before S20; Docker B1 recovered RED → GREEN during gap; host disk 6.3 → 62 Gi during gap)
+**Iteration**: 19 PREP → 20 INFRA-RECOVERY (this update; ships 1 contained Lean fix to parent file `AngleTrisectionOQ05.lean:425-428` validated at Docker GREEN + catalogues 8 newly-discovered OQ04 errors at lines 499, 502, 596, 597, 642, 772, 782, 1117 reproducing on `origin/main` HEAD)
+**Last Updated**: 2026-05-30T05:00Z
 
 ## Current Focus
 
@@ -49,6 +49,28 @@ gaps (HH-3 intersecting, HH-5 conditional, HH-6 both sub-cases) and the
 HH-7 sliver characterisation. **S16 PREP** then upgraded HH-6
 same-directrix from "PREP blueprint" to "paste-ready Lean + bearer pin
 at lake SHA" — the S17 ACT picker can paste-and-discharge.
+
+## Build State (S20 INFRA-RECOVERY discovery)
+
+At S20 pre-flight, the picker ran the first Docker build against this slug since the 14d Docker B1 outage. Results at `origin/main` HEAD `5300d2955f9` against pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| File | Status | Notes |
+|------|--------|-------|
+| `proofs/Proofs/AngleTrisectionOQ05.lean` | **GREEN** (with this PR) | Required omega fix at L425-428 — `Nat.Prime.two_le` no longer auto-derived; explicit `have h_ge : 2 ≤ p := hp.two_le` needed. Validated end-to-end (3058 jobs, 150s) |
+| `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` | **RED (8 errors)** | All pre-existing on `origin/main`; not introduced by this PR. Catalogue below. |
+
+OQ04 8-error catalogue (per S20 session note §3):
+
+| Line | Cat | Symptom | Theorem |
+|------|-----|---------|---------|
+| 499, 502 | A | `Function expected at sq_pos_of_ne_zero` | `perpBisector_dirSq_pos` (S5) |
+| 596, 597 | A | `Function expected at sq_pos_of_ne_zero` | `perpThroughPoint_normSq_pos` (S5) |
+| 642 | B | `linear_combination ... ring failed` | `reflectAcross_perpThroughPoint_to_ℓ` (HH-4, S5 ACT) |
+| 772 | B | `linear_combination ... ring failed` | `reflectAcross_hatoriFold_to_ℓ₂` (HH-7 nonparallel, S6 ACT) |
+| 782 (body) | C | `field_simp; ring — unsolved goals` | `reflectAcross_hatoriFold_to_ℓ₁` (HH-7 P-on-ℓ₁, S7 ACT) |
+| 1117 | B | `linear_combination ... ring failed` | `reflectAcross_parallelBisector_to_ℓ₂` (HH-3 parallel, S8 ACT) |
+
+**Implications**: the "build pending" badges on S3–S8 ACT merges are NOT verified-green at present Mathlib SHA — they regressed during a v4.26.0-line Mathlib bump shortly after S8 (2026-05-12). The 14-day Docker outage hid this. Mechanic-style repair of cat-A (4 mechanical name-renames) + cat-B/C (4 `linear_combination`/`ring` re-derivations) is required before S21+ ACT (Path C HH-6 paste) can land.
 
 ## Sorries & Axiom Inventory
 
@@ -208,9 +230,23 @@ the real culprit). S18 PREP corrects this.
 | S16 | #19364 | PREP | researcher-6 | HH-6 same-directrix bearer pin verification + paste-ready WLOG-frame Lean + isometry-transport gap manifest (doc-only) |
 | S17 | #19513 | STATE-SYNC | researcher-9 | post-S16 PREP merge absorption + bearer drift recheck at HEAD `cf1cfa085e4` + S17 ACT target Path C set (doc-only) |
 | S18 | #19623 | PREP | researcher-11 | post-S17-STATE-SYNC research-JSON catchup (iter 15→18) + Docker B1 INFRA RED at 13:51 UTC + Mathlib blob-SHA stability (5h) + sharpened paste-body case-split for the +1 sorry in S16 §5 + stranded-PR reaffirm (#19468 superseded, #18192 stale) (doc-only) |
-| S19 | this PR | PREP | researcher-8 | reflectAcross-spelling source-verification (caveat #1 CLOSED — parent file line 99-101 matches §5.1 byte-for-byte; no `Line.normSq` redirection) + linear_combination coefficient sharpening (caveat #2 — explicit `D = (p₁.2 − p₂.2)` derivation + 3 fallback candidates + `nlinarith` ultimate) + Docker B1 reaffirm RED at T+30min post-S18 merge (no recovery) + disk regression 6.8 → 6.3 Gi (−0.5 Gi/30min) (doc-only) |
+| S19 | #19653 | PREP | researcher-8 | reflectAcross-spelling source-verification (caveat #1 CLOSED — parent file line 99-101 matches §5.1 byte-for-byte; no `Line.normSq` redirection) + linear_combination coefficient sharpening (caveat #2 — explicit `D = (p₁.2 − p₂.2)` derivation + 3 fallback candidates + `nlinarith` ultimate) + Docker B1 reaffirm RED at T+30min post-S18 merge (no recovery) + disk regression 6.8 → 6.3 Gi (−0.5 Gi/30min) (doc-only) |
+| S20 | this PR | INFRA-RECOVERY | researcher-1 | parent-file omega fix at `AngleTrisectionOQ05.lean:425-428` (`Nat.Prime.two_le` no longer auto-derived; explicit `have h_ge` needed) validated at Docker GREEN (3058 jobs, 150s) + 8-error OQ04 file-wide Mathlib-drift catalogue discovered after 14d Docker B1 outage (cat-A 4× `sq_pos_of_ne_zero` + cat-B 3× `linear_combination` ring failures + cat-C 1× `field_simp; ring` unsolved goals); S17 Path C ACT attempted in 5 Docker iters then reverted per memory pattern guidance (HH-6 paste lines reached compile-correct via coefficient `-((p₁.2-p₂.2)^2)` — better than S19 §4's `(p₁.2-p₂.2)`; documented for S21 picker) |
 
 ## Honest Calibration
+
+This S20 INFRA-RECOVERY:
+
+- **Adds 3 lines to `proofs/Proofs/AngleTrisectionOQ05.lean`** (omega fix at L425-428). Validated end-to-end at Docker GREEN (3058 jobs, ~150s).
+- **Documents 8 newly-discovered OQ04 errors** (4 cat-A `sq_pos_of_ne_zero` + 3 cat-B `linear_combination` + 1 cat-C `field_simp; ring`).
+- Adds 0 Lean to `AngleTrisectionOQ05OQ04.lean` (HH-6 paste reverted after 5 Docker iters surfaced the file-wide regression catalog).
+- Closes 0 sorries (the 3 OQ targets remain).
+- Resolves 0 of the 3 open mathematical conjectures.
+- States 0 new theorems.
+- Records **0 new constructive HH-axiom ingredients** (HH-6 same-directrix paste-ready Lean is shippable verbatim at L1144 once cat-B/C errors clear; iter 5 of S20 derived the `linear_combination` coefficient as `-((p₁.2-p₂.2)^2)`, supersceding S19 §4's `(p₁.2-p₂.2)`).
+- **Bumps research JSON `currentState.iteration` 19 → 20**; phase `PREP` → `INFRA-RECOVERY`; nextAction set to S21+ mechanic repair of cat-A/B/C followed by Path C ACT.
+
+This is the **honest** read at S20 picker: a 5-Docker-iter session that surfaced (a) a contained parent-file fix and (b) a file-wide regression catalog the prior 11 doc-only PREP iterations could not have surfaced (because they did not Docker-build). The 14-day Docker outage masked the regressions; S20 is the first iteration to actually re-verify builds at v4.26.0 Mathlib SHA.
 
 This S19 PREP:
 

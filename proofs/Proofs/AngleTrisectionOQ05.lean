@@ -422,8 +422,9 @@ theorem prime_gt_three_not_two_three (p : ℕ) (hp : Nat.Prime p) (hp2 : p ≠ 2
   intro a b hpab
   have : p ∣ 2^a ∨ p ∣ 3^b := (Nat.Prime.dvd_mul hp).mp hpab
   rcases this with h | h
-  · have : p ∣ 2 := Nat.Prime.dvd_of_dvd_pow hp h
-    have : p ≤ 2 := Nat.le_of_dvd (by norm_num) this
+  · have h_dvd : p ∣ 2 := Nat.Prime.dvd_of_dvd_pow hp h
+    have h_le : p ≤ 2 := Nat.le_of_dvd (by norm_num) h_dvd
+    have h_ge : 2 ≤ p := hp.two_le
     omega
   · have : p ∣ 3 := Nat.Prime.dvd_of_dvd_pow hp h
     have hp3_le : p ≤ 3 := Nat.le_of_dvd (by norm_num) this
