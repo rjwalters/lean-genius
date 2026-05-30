@@ -29,6 +29,8 @@ Mathlib survey and the four-path roadmap.
 
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Topology.Connected.PathConnected
+import Mathlib.Data.Real.Archimedean
 
 open MeasureTheory
 
@@ -80,5 +82,39 @@ theorem chartArcLength_trans (γ : ℝ → E) {a b c : ℝ}
     chartArcLength γ a b + chartArcLength γ b c = chartArcLength γ a c := by
   simp only [chartArcLength]
   exact intervalIntegral.integral_add_adjacent_intervals hab hbc
+
+/-- The **chart-local intrinsic distance** between two points `p, q : E`: the
+infimum of chart-local arc lengths over all continuous paths `γ : Path p q`
+whose speed `‖deriv γ.extend (·)‖` is interval-integrable on `[0, 1]`.
+
+The `IntervalIntegrable` side-hypothesis is essential: without restricting to
+paths whose derivative is integrable, the value would collapse for pathological
+reparametrisations whose speed is non-integrable (Mathlib's integral convention
+returns `0` for non-strongly-measurable integrands). With it, every contributing
+length is the genuine chart-local Euclidean arc length — non-negative by
+`chartArcLength_nonneg` — and the infimum satisfies the triangle inequality
+proved in the subsequent `chartIntrinsicDist_triangle`.
+
+Mirrors `Proofs.TriangleInequalityOQ04.intrinsicDist`, but valued in `ℝ` (not
+`ℝ≥0∞`) because `chartArcLength` is a Bochner `intervalIntegral`. The result
+depends on the chart embedding and is **not** the Riemannian distance — see the
+file header for the honest-scope disclaimer. -/
+noncomputable def chartIntrinsicDist (p q : E) : ℝ :=
+  ⨅ (γ : Path p q)
+    (_ : IntervalIntegrable (fun t => ‖deriv γ.extend t‖) MeasureTheory.volume 0 1),
+    chartArcLength γ.extend 0 1
+
+/-- The chart-local intrinsic distance is non-negative: every contributing
+`chartArcLength γ.extend 0 1` is non-negative (by `chartArcLength_nonneg` at
+`0 ≤ 1`), and `Real.iInf_nonneg` lifts this through both layers of the
+conditional infimum. The lemma holds unconditionally — in particular, even
+when no `Path p q` satisfies the `IntervalIntegrable` side-hypothesis (in which
+case the relevant `iInf` collapses to `0` via Mathlib's real-valued `sInf` of
+the empty set). -/
+theorem chartIntrinsicDist_nonneg (p q : E) : 0 ≤ chartIntrinsicDist p q := by
+  unfold chartIntrinsicDist
+  refine Real.iInf_nonneg (fun γ => ?_)
+  refine Real.iInf_nonneg (fun _ => ?_)
+  exact chartArcLength_nonneg γ.extend zero_le_one
 
 end TriangleInequalityOQ04OQ01

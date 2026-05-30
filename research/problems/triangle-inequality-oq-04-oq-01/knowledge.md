@@ -282,6 +282,59 @@ adapters that form the load-bearing complexity of the iteration.
 
 ---
 
+## Insights (S3a ACT — 2026-05-30, researcher-1)
+
+### Insight 16 — `Real.iInf_nonneg` discharges nested conditional iInfs over `ℝ` unconditionally
+
+For `chartIntrinsicDist p q` defined as a 2-layer iInf
+`⨅ (γ : Path p q) (_ : IntervalIntegrable ...), chartArcLength γ.extend 0 1`,
+non-negativity holds **unconditionally** (in particular without needing
+`Path p q` to be non-empty or any path to satisfy the `IntervalIntegrable`
+filter). The discharge is:
+
+```lean
+theorem chartIntrinsicDist_nonneg (p q : E) : 0 ≤ chartIntrinsicDist p q := by
+  unfold chartIntrinsicDist
+  refine Real.iInf_nonneg (fun γ => ?_)
+  refine Real.iInf_nonneg (fun _ => ?_)
+  exact chartArcLength_nonneg γ.extend zero_le_one
+```
+
+The key bearer is `Real.iInf_nonneg : (∀ i, 0 ≤ f i) → 0 ≤ iInf f` at
+`Mathlib/Data/Real/Archimedean.lean:257` (v4.26.0). It is implemented as
+`Real.le_iInf hf le_rfl` and works because `Real.sInf` returns `0` for empty
+or unbounded-below sets — so the `0 ≤ ⨅` bound holds vacuously when the index
+type is empty, and via the pointwise non-negativity hypothesis otherwise. The
+same convention applies recursively to the inner `⨅ (_ : Prop)`: when the
+hypothesis-Prop is `False`, the inner iInf is `sInf ∅ = 0 ≥ 0`; when it is
+`True`, the inner iInf is `chartArcLength γ.extend 0 1 ≥ 0` (by
+`chartArcLength_nonneg γ.extend zero_le_one`).
+
+Other Mathlib v4.26.0 call sites at the same pinned SHA:
+
+- `Mathlib/Combinatorics/Schnirelmann.lean:61` — `schnirelmannDensity_nonneg`
+  (single-layer iInf, `Real.iInf_nonneg (fun _ => by positivity)`).
+- `Mathlib/Topology/MetricSpace/Gluing.lean:104` — gluing predistance nonneg
+  (`Real.iInf_nonneg fun _ => by positivity`).
+
+### Insight 17 — `Mathlib.Topology.Connected.PathConnected` + `Mathlib.Data.Real.Archimedean` integrate cleanly without job-count regression
+
+Adding the two new imports needed for `chartIntrinsicDist` (`Path p q`,
+`Path.extend`, `Real.iInf_nonneg`) kept the docker-build job count at **2551**
+(same as S2a, S2b). The two new modules were absorbed by the existing
+transitive Mathlib closure pulled in by
+`MeasureTheory.Integral.IntervalIntegral.Basic` and `Analysis.Calculus.Deriv.Basic`,
+with the `mathlib4` cache (Azure) supplying all 7727 cached files. Final leaf
+step `[2551/2551] Built Proofs.TriangleInequalityOQ04OQ01 (16s)`.
+
+This is a **good sign** for the upcoming S3b ACT (reparametrisation adapters)
+whose required bearers (`deriv.scomp`, `norm_smul`,
+`intervalIntegral.integral_comp_mul_left`) also live in the same transitive
+closure (`Mathlib/Analysis/Calculus/Deriv/Comp.lean` and `IntervalIntegral/Basic.lean`).
+Job count is unlikely to grow materially through S3d.
+
+---
+
 ## References
 
 - **Parent slug**: `triangle-inequality-oq-04` (`Proofs.TriangleInequalityOQ04`, 245 LOC,
