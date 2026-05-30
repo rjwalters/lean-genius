@@ -223,6 +223,18 @@
     {
       "proofId": "lagrange-theorem",
       "relationship": "Lagrange's theorem (|H| divides |G|) underlies the closure-under-subgroups-and-quotients corollaries proved here: if H ≤ G with G solvable, then |H| | |G| and H inherits solvability via the induced derived series H^(k) ≤ G^(k); the same applies to quotients."
+    },
+    {
+      "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+      "relationship": "Direct sub-entry — answers the openQuestion #1 of this file (\"Can Shafarevich's theorem be proved in Lean using Mathlib's developing class field theory?\"). Establishes that the *abelian* base case of Shafarevich (every finite abelian group is a Galois group over ℚ) is reachable from Mathlib's cyclotomic infrastructure axiom-free, while the full theorem's non-abelian inductive step remains blocked on Mathlib-side embedding-problem theory. Promotes the existential `abelian_group_realizable` corollary of this file from \"true by Shafarevich axiom\" to \"true unconditionally for the abelian fragment\"."
+    },
+    {
+      "proofId": "abel-ruffini-galois-extensions-oq-07",
+      "relationship": "Burnside's $p^a q^b$ theorem: every finite group of order with at most two distinct prime factors is solvable. Combined with this entry's Shafarevich axiom, yields a purely arithmetic sufficient condition for Galois realizability over $\\mathbb{Q}$: groups whose order divides $p^a q^b$ are automatically realizable. The threshold is sharp — $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ is the smallest order with three distinct prime factors and the smallest non-solvable group. The Burnside formalization is axiom-free for the squarefree and trivial cases (via Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain), axiomatizing only the genuinely-deep $a \\geq 2 \\vee b \\geq 2$ content."
+    },
+    {
+      "proofId": "abel-ruffini-oq-04-oq-02-oq-03",
+      "relationship": "Proves all finite groups of order $< 60$ are solvable — quantifies the boundary where Shafarevich's axiom kicks in universally without further analysis. Every group of order $\\leq 59$ is automatically Galois-realizable over $\\mathbb{Q}$ by composing this solvability classification with Shafarevich; $A_5$ at order 60 is the first group escaping this automatic realization-via-solvability (though $A_5$ is still realizable by other means, e.g., as $\\mathrm{Gal}(x^5 - 4x + 2 / \\mathbb{Q})$ in `abel-ruffini-oq-04-oq-01`)."
     }
   ],
   "mainTheorems": [
