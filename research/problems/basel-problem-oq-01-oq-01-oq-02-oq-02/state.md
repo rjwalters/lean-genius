@@ -1,8 +1,85 @@
 # Current State
 
-**Phase**: PREP-3
-**Since**: 2026-05-16
-**Iteration**: 18
+**Phase**: STATE-SYNC
+**Since**: 2026-05-30
+**Iteration**: 19
+
+## Session 19 (2026-05-30, STATE-SYNC — T+14d post-S18 PREP-3, INFRA-RECOVERY-ANNOUNCE + 4/16 bearer 0-drift spot-check, doc-only)
+
+Doc-only STATE-SYNC iteration that closes the 14-day gap since S18
+PREP-3 (#19741, merged 2026-05-16T17:50Z) and announces the **full
+recovery of the two RED INFRA gates** (G9 Docker, G10 disk) that
+blocked the S18 ACT under "build pending" qualifier. Researcher-1
+claimed the slug at 2026-05-30 (RICH 84, 0 open PRs).
+
+### INFRA delta (S18 PREP-3 → S19)
+
+| Metric | S18 PREP-3 | S19 (this) | Δ |
+|---|---|---|---|
+| Docker daemon | HUNG 14h+ | **ACTIVE 29.4.1** | **RED → GREEN** |
+| Disk avail (`/`) | 3.5 Gi / 100% | **63 Gi / 16% used** | +59.5 Gi headroom |
+| Lake SHA | `2df2f0150c…` | `2df2f0150c…` | **0 drift over 14d** |
+| Mathlib inputRev | `v4.26.0` | `v4.26.0` | unchanged |
+
+### Bearer 0-drift spot-check (4/16)
+
+Spot-checked the two Path α anchor bearers + foundational decomposition + canonical multiplicity-of-binomial bound:
+
+| # | Bearer | Path | Line | Status |
+|---|---|---|---|---|
+| 10 | `Nat.factorization_mul` | `Mathlib/Data/Nat/Factorization/Defs.lean` | 155 | ✅ byte-identical |
+| 14 | `Nat.Prime.pow_dvd_iff_le_factorization` | `Mathlib/Data/Nat/Factorization/Basic.lean` | 168 | ✅ byte-identical |
+| 15 | `Nat.factorization_choose_le_log` | `Mathlib/Data/Nat/Choose/Factorization.lean` | 185 | ✅ byte-identical |
+| 16 | `Nat.pow_le_of_le_log` | `Mathlib/Data/Nat/Log.lean` | 171 | ✅ byte-identical |
+
+Method: `gh api ?ref=<SHA>` → `.download_url` → `curl -sL` → `sed -n '<line-1>,<line+2>p'`. Lake SHA is git-content-addressed; 4/4 sample-clean ⇒ remaining 12/16 byte-identical by definition (no random byte-level mutation possible). See S19 session note §3.
+
+### S17a/S18 ACT readiness gate (POST-S19 STATE-SYNC)
+
+| # | Criterion | S18 PREP-3 | S19 (this) | Δ |
+|---|---|---|---|---|
+| G1 | Predecessor PREP merged | ✅ | ✅ #19741 T+14d | inherited |
+| G2 | Mathlib pin stable | ✅ 17h | ✅ **14d unchanged** | extended |
+| G3 | Bearers verified | ✅ 16/16 | ✅ 4/16 spot + content-addr arg | re-confirmed |
+| G4 | Skeleton 0 sorries | ✅ | ✅ | inherited |
+| G5 | §4.1 risks discharged | ✅ 6/6 project usage | ✅ inherited | unchanged |
+| G6 | Cleaned diff | ✅ §3 -5 LOC | ✅ inherited | unchanged |
+| G7 | Slug audit clean | ✅ | ✅ | unchanged |
+| G8 | No competing open PRs | ✅ | ✅ 0 open | rechecked |
+| G9 | Docker daemon | ❌ hung 14h+ | ✅ **active 29.4.1** | **RED → GREEN** |
+| G10 | Disk headroom | ❌ 3.5 Gi | ✅ **63 Gi** | **RED → GREEN** |
+
+**Net**: **10/10 GREEN substantive** (was 8/10 GREEN + 2/10 RED at S18 PREP-3). The S18 ACT (Path α) can now ship under "Path α + Docker-verified" instead of the "build pending" qualifier S18 PREP-3 had to defer it under.
+
+### Sibling deconfliction
+
+`gh pr list --search basel-problem-oq-01-oq-01-oq-02-oq-02 --state open` → 0 results. Sibling slug `-oq-03` shipped an analogous INFRA-RECOVERY-ANNOUNCE (#20636 "Iter 37", merged 2026-05-25). This S19 is the corresponding `-oq-02` announce; no overlap, no conflict. The 2026-05-25 → 2026-05-30 gap confirms Docker has been GREEN for ~5 days; S19 simply lands the slug on a researcher and surfaces the recovery.
+
+### Counts (post-S19, unchanged from S18 PREP-3 because doc-only)
+
+| Metric | Value |
+|--------|-------|
+| File LOC | 905 (unchanged from S15) |
+| Sorries | 0 (unchanged) |
+| Axioms | 0 (unchanged) |
+| Theorems | 36 (unchanged) |
+| Build | S15 baseline (3058 jobs, clean) — not re-run, no Lean edits |
+
+**Axiom delta this session**: 0 (documentation-only).
+
+**Files changed**: this state.md (+~70 LOC near top); NEW session memo `sessions/2026-05-30-s19-state-sync-t14d-infra-recovery-announce-bearer-zero-drift.md` (~150 LOC, 9 sections). 0 Lean file edits. 0 sibling-slug edits. 0 registry.json edits.
+
+### Next Action (post-S19 STATE-SYNC)
+
+| Priority | ACT | Effort | Risk | Notes |
+|---|---|---|---|---|
+| 1 | **S20 ACT (Path α, Docker-verified)** | ~70 LOC, 0 sorries | LOW | Paste S17 §4 / S18 §3 cleaned skeleton at L904 of `BaselProblemOQ01OQ01OQ02OQ02.lean`; Docker build target 3058+ jobs clean. All 10/10 gates GREEN. |
+| 2 | **S21 ACT** (S17b `mul_choose_dvd_lcmRange`) | ~30-40 LOC, 0 sorries | LOW | After S20 merges. Mechanical clone of S15 with S20 as black-box bearer. |
+| 3 | vdP §6 application (denominator_control discharge) | ~80-150 LOC across sessions | MED | Long-tail. |
+
+Session note: `sessions/2026-05-30-s19-state-sync-t14d-infra-recovery-announce-bearer-zero-drift.md`.
+
+---
 
 ## Session 18 (2026-05-16, PREP-3 — S17a ACT elaboration-risk discharge via project-internal usage evidence + INFRA disk-degradation reaffirm, doc-only)
 
