@@ -27,11 +27,11 @@
     "erdosUrl": "https://erdosproblems.com/846",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 1261,
+    "lineCount": 292,
     "assumptions": "0 axioms, 0 sorries across two Lean files. The prior `axiom ErdosProblem846` (which had asserted the conjecture) has been DROPPED: DeepMind's AlphaProof Nexus settled the conjecture NEGATIVELY on 2026-05-21 (arXiv:2605.22763v1). The refutation lives in the companion file `Proofs/Erdos846ProblemAPN.lean` (`Erdos846APN.target_false`), which constructs an explicit counterexample (the Elekes parametrisation `q(i,j) = (t i + t j, t i² + t i·t j + t j²)` with `t_seq n = 100^(4^n)`). The companion file uses Mathlib's `Collinear ℝ {x, y, z}` predicate; the gallery file uses an `AreCollinear` cross-product characterisation. Both definitions agree on `EuclideanSpace ℝ (Fin 2)` but unifying them is left as future work — for that reason, status is held at `axiomatized` rather than `verified` (no overclaim per the axiom-integrity policy), pending a successful local `docker-build.sh` run. The gallery file (`Erdos846Problem.lean`) retains all elementary proved results: converse direction (weaklyNonTrilinear_implies_eps), finite case (finite_weaklyNonTrilinear, erdos846_finite), ε bounds (isEpsNonTrilinear_eps_le_one, isEpsNonTrilinear_empty_of_eps_gt_one), collinearity symmetry, and pigeonhole principle.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 62,
-    "definitionCount": 12
+    "theoremCount": 15,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős, Nešetřil, and Rödl** posed this problem in [Er92b], asking whether a density condition on non-collinearity implies a structural decomposition. The question belongs to the broader programme of **density-to-structure implications** in combinatorics: when does a quantitative property (every large piece has a proportional substructure) force a qualitative partition (the whole set splits into finitely many well-structured pieces)? Analogous questions appear throughout Ramsey theory—for instance, Szemerédi's regularity lemma converts density conditions on graphs into structural partitions. In the geometric setting, **Sylvester–Gallai** (1893/1944) showed that any finite set of points not all collinear determines a line through exactly two points, constraining the collinearity hypergraph. The Hales–Jewett density theorem and the density Hales–Jewett theorem provide further parallels. Problem 846 is closely related to Erdős Problems 774 and 847, which concern similar density-vs-structure questions for collinearity in the plane.\n\n**2026-05-21 resolution (AlphaProof Nexus)**: DeepMind's AlphaProof Nexus system produced a Lean 4 proof (arXiv:2605.22763v1) settling Problem 846 **negatively**. The counterexample is an explicit Elekes-style parametric set: for the integer-valued sequence $t_n = 100^{4^n}$, the points $q(i,j) = (t_i + t_j,\\, t_i^2 + t_i t_j + t_j^2)$ indexed by pairs $i < j$ form an infinite subset $A$ of $\\mathbb{R}^2$. AlphaProof Nexus verifies (i) $A$ is **infinite** (injectivity of $q$), (ii) $A$ is **(1/2)-non-trilinear** via a bipartite max-cut argument that picks the cut surviving at least half the edges, and (iii) $A$ is **not weakly non-trilinear** — any finite colouring of $\\mathbb{R}^2$ that avoids monochromatic collinear triples must, by Ramsey's theorem applied to the implicit graph $\\binom{\\mathbb{N}}{2}$, contain a monochromatic triangle, yielding a collinear triple by the Elekes identity $(x_2-x_1)(y_3-y_1) = (x_3-x_1)(y_2-y_1)$. The construction is a geometric analogue of the Behrend-Behrend-Roth-type density obstructions to clean structural decomposition. The resolution closes the question Erdős, Nešetřil and Rödl posed in 1992: there are **density-good** planar sets that admit **no finite non-collinear partition**.",
@@ -180,10 +180,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 1261,
+    "lineCount": 292,
     "axiomCount": 0,
-    "theoremCount": 62,
-    "definitionCount": 12,
+    "theoremCount": 15,
+    "definitionCount": 4,
     "path": "Proofs/Erdos846Problem.lean",
     "companionPaths": [
       "Proofs/Erdos846ProblemAPN.lean"
