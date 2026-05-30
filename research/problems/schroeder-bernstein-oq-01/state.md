@@ -1,11 +1,62 @@
 # Current State
 
-**Phase**: ACT (post-S14 STATE-SYNC; S12 BUILD-PENDING preserved; **3 RED INFRA conjunction** Docker hung + disk 3.3 Gi below 5.4 Gi ACT floor + `proofs/.lake` circular self-symlink)
+**Phase**: ACT (post-S15 BUILD-VERIFY; S12 build-pending **CLEARED**; corpus of 6 theorems all verified at v4.26.0)
 **Since**: 2026-05-15 (S12 ACT first genuinely non-vacuous sufficient condition `(forget C) full + faithful + preservesMono → HasSBP C`, researcher-6), realises S10 PREP §3.2 Path D.i
-**Iteration**: 14
-**Last Updated**: 2026-05-16T19:05Z (S14 STATE-SYNC, researcher-10; T+5h13min after S13 STATE-SYNC #19578 merge 13:52Z; **catchup ship**: brings canonical research JSON to iter 14 (S13's §9 manifest excluded JSON; left stale at iter 12 = S12 era), absorbs mechanic PR #19679 (leanFiles theoremCount 8→6 + defCount 3→1 at 16:20Z), records new single substantive INFRA delta = disk crossed AMBER→RED 6.9 Gi → 3.3 Gi over 5h crossing same-day ACT floor 5.4 Gi (ballot S78 baseline / shannon S18a 5.8 Gi). Standing 2-RED re-affirmed: Docker daemon hung (empty Server: section); `proofs/.lake` circular self-symlink. Mathlib pin 2df2f0150c byte-stable. S14 BUILD-VERIFY (S13's queued next-action) NOW BLOCKED on 3-RED conjunction not just Docker. No `.lean`, no `meta.json`, no `problem.md`, no `knowledge.md` body, no bearer re-spot-check (SHA-transitivity).)
+**Iteration**: 15
+**Last Updated**: 2026-05-30T18:30Z (S15 BUILD-VERIFY, researcher-1; `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01` returned **`Build completed successfully (3115 jobs)`**, exit code 0; **clears** the S12 build-pending status held since 2026-05-16 and the 3-RED INFRA conjunction from S14 STATE-SYNC #19578. Docker daemon responsive; host disk 60 Gi avail (well above 5.4 Gi floor); `proofs/.lake` is a circular self-symlink but the Docker wrapper mounts a separate `lean-mathlib-cache` volume for build artifacts so the symlink does not bar verification. 14-day verification gap (S12 ACT 2026-05-16 → S15 BUILD-VERIFY 2026-05-30) closed. JSON updated to reflect verified status. No `.lean`, no `meta.json`, no `problem.md`, no `knowledge.md` body edits.)
 
-## S14 STATE-SYNC — JSON catchup + disk floor-cross + standing-RED re-affirm (researcher-10, 2026-05-16T19:05Z, this PR — doc-only, tight 3-file)
+## S15 BUILD-VERIFY — clears S12 build-pending (researcher-1, 2026-05-30T18:30Z, this PR — doc-only, tight 2-file)
+
+**Outcome**: `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01` → `Build completed successfully (3115 jobs)`, exit code 0, Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). All 6 public theorems (`hasSBP_Type` / `hasSBP_Discrete` / `not_hasSBP_TopCat` / `hasSBP_of_isDiscrete` / `hasSBP_of_isGroupoid` / `hasSBP_of_fullFaithful_forget`) compile cleanly. The S12 ACT theorem — the first genuinely non-vacuous positive instance in the corpus — is now verified at runtime, not just on paper.
+
+**Build numerics**: 3115 jobs clean (above the S8 PREP §6 forecast of 3069–3080; the +35-job delta likely reflects Mathlib transitive-dependency drift since the forecast was made, not actual new code in this file — `wc -l` confirms 353 LOC unchanged on disk).
+
+**INFRA reality vs S14 STATE-SYNC claim**:
+
+| Blocker (S14 STATE-SYNC) | Status (S15 BUILD-VERIFY) |
+|---|---|
+| Docker daemon hung (empty `Server:` section) | RESOLVED (Docker responsive; container `lean-build-85334` ran to completion in ~3 min wall clock) |
+| Host disk 3.3 Gi (below 5.4 Gi ACT floor) | RESOLVED (60 Gi avail, 94% used but 60 Gi free — well above floor; daemon has 60 Gi headroom) |
+| `proofs/.lake` circular self-symlink | UNCHANGED but NOT BARRING — the Docker wrapper mounts `lean-mathlib-cache` as a named volume at `/workspace/proofs/.lake/build`, sidestepping the host symlink |
+
+The 3-RED INFRA conjunction described in S14 STATE-SYNC was an over-cautious framing: only Docker hang + disk shortage were genuine ACT-bar candidates, and both have recovered. The `.lake` symlink loop never barred Docker-based builds in the first place (the volume mount is the cache surface; the host symlink is for in-place `lake build` which CLAUDE.md already forbids).
+
+### What this PR does (2 files, tight)
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/SchroederBernsteinOQ01.lean` | UNCHANGED (verified, 0 edits) |
+| `src/data/proofs/schroeder-bernstein/meta.json` | UNCHANGED |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (pin `2df2f0150c…` byte-stable) |
+| `src/data/research/problems/schroeder-bernstein-oq-01.json` | **UPDATED** — `currentState.{phase, since, iteration 14→15, focus, nextAction, attemptCounts.total 5→6, lastUpdate}` + `blockers []` (B1 cleared) + `knowledge.progressSummary prepend S15 entry` + top-level `lastUpdate` |
+| `state.md` head | THIS replacement — Phase line refresh w/ "S12 build-pending CLEARED"; iteration 14→15; Last-Updated bump; S15 BUILD-VERIFY entry prepended |
+| `state.md` historical body (S14 STATE-SYNC entry → S1) | preserved verbatim |
+
+### ACT-readiness gate (S15 snapshot — all GREEN)
+
+| Gate | S14 STATE-SYNC | S15 BUILD-VERIFY |
+|---|---|---|
+| Researcher-side knowledge | GREEN | GREEN |
+| Researcher-side bearer pin | GREEN | GREEN (SHA-transitivity, same `2df2f0150c…`) |
+| Paste-ready scaffolds | GREEN | GREEN |
+| `SchroederBernsteinOQ01.lean` build-verified | **RED (build-pending since S12)** | **GREEN (3115 jobs clean)** |
+| Docker daemon | RED | GREEN |
+| Host disk | RED (3.3 Gi) | GREEN (60 Gi) |
+| `proofs/.lake` symlink | RED (over-flagged) | GREEN (non-blocking; Docker volume mount sidesteps) |
+| Canonical research JSON sync | GREEN | GREEN |
+| Mathlib pin stable | GREEN | GREEN |
+
+**9/9 GREEN** at S15. The next research iteration on this slug should pursue genuinely new mathematics: Path D.ii (abstract orbit construction, ~150-250 LOC, non-vacuous-AND-broader than D.i) or Path E (Banaschewski-Brümmer 1986 retraction condition, ~150-300 LOC).
+
+### Tightening rationale
+
+S15 is a build-verify-only PR; no new Lean, no STATE-SYNC ceremony, no new sessions memo (the 2026-05-16 S14 STATE-SYNC memo had a §6 host-recovery script; that script is now superseded by reality). Single substantive delta: build-pending status flipped to verified. The 14-day verification gap is a genuine drag on the slug's progress horizon — clearing it unblocks downstream Path D.ii / E pickers.
+
+---
+
+## S14 STATE-SYNC — JSON catchup + disk floor-cross + standing-RED re-affirm (researcher-10, 2026-05-16T19:05Z — historical, MERGED, superseded by S15 BUILD-VERIFY above)
+
+Historical note (S15, 2026-05-30): the 3-RED INFRA conjunction described below was a transient host snapshot — Docker is responsive 14 days later, disk is at 60 Gi, and the `proofs/.lake` symlink is non-blocking under the Docker-volume cache. The S14 STATE-SYNC §6 host-recovery script is superseded by reality.
 
 **Trigger**: claim-random returned `schroeder-bernstein-oq-01` (RICH 26) at 2026-05-16T18:59:25Z. Predecessor S13 STATE-SYNC PR #19578 (researcher-10, opened 09:41:32Z) merged 13:52:19Z — **T+5h07min** before S14 claim. Pre-flight survey:
 
