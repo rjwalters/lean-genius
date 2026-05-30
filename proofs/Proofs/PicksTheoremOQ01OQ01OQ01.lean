@@ -643,4 +643,79 @@ theorem primitive_pick_agrees (T : LatticeTriangle) (h : T.twiceArea = 1) :
 example : (unitTriangle.realInteriorCount : ℚ) = unitTriangle.pickInterior :=
   primitive_pick_agrees unitTriangle unitTriangle_twiceArea
 
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VIII (S3b-act-1): ℤ-anchored Lattice Segment Points
+-- ════════════════════════════════════════════════════════════════
+
+namespace LatticeTriangle
+
+/-- Lattice points lying on the closed segment from `v` to `w` in `ℤ × ℤ`,
+    parametrised by `k · (Δ / g)` where `g = Int.gcd Δx Δy` and `Δ = w - v`.
+    Generalises `PicksTheoremOQ02.segmentPoints (a b : ℕ)` (origin-anchored
+    ℕ-coords) to arbitrary ℤ-coord, vertex-anchored segments. -/
+noncomputable def latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ) :=
+  let dx : ℤ := w.1 - v.1
+  let dy : ℤ := w.2 - v.2
+  let g  : ℕ := Int.gcd dx dy
+  (Finset.range (g + 1)).image
+    (fun k : ℕ => (v.1 + (k : ℤ) * (dx / (g : ℤ)),
+                   v.2 + (k : ℤ) * (dy / (g : ℤ))))
+
+end LatticeTriangle
+
+/-- Injectivity of the segment parametrisation on `Finset.range (g + 1)`.
+    Used by `card_latticeSegmentPoints` to count via `Finset.card_image_of_injOn`. -/
+private theorem parametrisation_injOn_range (v w : ℤ × ℤ) :
+    Set.InjOn
+      (fun k : ℕ => (v.1 + (k : ℤ) * ((w.1 - v.1) / ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) : ℤ)),
+                     v.2 + (k : ℤ) * ((w.2 - v.2) / ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) : ℤ))))
+      ↑(Finset.range ((Int.gcd (w.1 - v.1) (w.2 - v.2) : ℕ) + 1)) := by
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  intro k₁ hk₁ k₂ hk₂ heq
+  rw [Finset.mem_coe, Finset.mem_range] at hk₁ hk₂
+  by_cases hg : g = 0
+  · -- g = 0 ⟹ Finset.range 1 = {0} ⟹ k₁, k₂ < 1 ⟹ k₁ = k₂ = 0 by omega.
+    omega
+  · -- g ≠ 0. Pair-eq decomposition; cancel v.{1,2}; factor (k₁-k₂)·(d/g) = 0.
+    obtain ⟨hxeq, hyeq⟩ := Prod.mk.inj heq
+    have hk_dx : ((k₁ : ℤ) - k₂) * (dx / (g : ℤ)) = 0 := by linear_combination hxeq
+    have hk_dy : ((k₁ : ℤ) - k₂) * (dy / (g : ℤ)) = 0 := by linear_combination hyeq
+    -- `Int.ne_zero_of_gcd` : `Int.gcd x y ≠ 0 → x ≠ 0 ∨ y ≠ 0`
+    -- (Mathlib/Data/Int/GCD.lean:202).
+    rcases Int.ne_zero_of_gcd hg with hxne | hyne
+    · -- dx ≠ 0 ⟹ dx/g ≠ 0 (since g ∣ dx exactly and dx ≠ 0)
+      have hdx_g_ne : dx / (g : ℤ) ≠ 0 := by
+        intro hzero
+        have := Int.ediv_mul_cancel (Int.gcd_dvd_left dx dy : (g : ℤ) ∣ dx)
+        rw [hzero, zero_mul] at this
+        exact hxne this.symm
+      have hcast : (k₁ : ℤ) = (k₂ : ℤ) := by
+        rcases mul_eq_zero.mp hk_dx with h | h
+        · linarith
+        · exact absurd h hdx_g_ne
+      exact_mod_cast hcast
+    · -- symmetric: dy ≠ 0 ⟹ dy/g ≠ 0 ⟹ k₁ = k₂
+      have hdy_g_ne : dy / (g : ℤ) ≠ 0 := by
+        intro hzero
+        have := Int.ediv_mul_cancel (Int.gcd_dvd_right dx dy : (g : ℤ) ∣ dy)
+        rw [hzero, zero_mul] at this
+        exact hyne this.symm
+      have hcast : (k₁ : ℤ) = (k₂ : ℤ) := by
+        rcases mul_eq_zero.mp hk_dy with h | h
+        · linarith
+        · exact absurd h hdy_g_ne
+      exact_mod_cast hcast
+
+/-- Cardinality of `latticeSegmentPoints`: counts `Int.gcd Δx Δy + 1` lattice
+    points on the closed segment from `v` to `w`. Generalises
+    `PicksTheoremOQ02.card_segmentPoints` to ℤ-coords. -/
+theorem card_latticeSegmentPoints (v w : ℤ × ℤ) :
+    (LatticeTriangle.latticeSegmentPoints v w).card =
+    Int.gcd (w.1 - v.1) (w.2 - v.2) + 1 := by
+  unfold LatticeTriangle.latticeSegmentPoints
+  rw [Finset.card_image_of_injOn (parametrisation_injOn_range v w),
+      Finset.card_range]
+
 end PicksTheoremOQ01OQ01OQ01
