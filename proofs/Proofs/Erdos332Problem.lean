@@ -39,8 +39,11 @@ def HasBoundedGaps (S : Set ℤ) : Prop :=
       ∀ z : ℤ, ∃ s ∈ S, z ≤ s ∧ s < z + (M : ℤ)
 
 /-- The empty set has empty difference set. -/
-theorem diffSet_empty : diffSet ∅ = ∅ :=
-  diffSet_finite_eq_empty ∅ Set.finite_empty
+theorem diffSet_empty : diffSet ∅ = ∅ := by
+  ext d
+  simp only [diffSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  intro hinf
+  exact hinf (Set.finite_empty.subset (fun _ ⟨ha₁, _, _⟩ => ha₁))
 
 /- ## Density conditions -/
 
@@ -50,7 +53,7 @@ noncomputable def countingFn (A : Set ℕ) (N : ℕ) : ℕ :=
 
 /-- The counting function at zero is zero: `{1,...,0} = ∅`. -/
 theorem countingFn_zero (A : Set ℕ) : countingFn A 0 = 0 := by
-  simp [countingFn, Finset.Icc_eq_empty (by omega : ¬(1 ≤ 0))]
+  simp [countingFn]
 
 /-- The counting function is monotone: `N ≤ M → |A ∩ {1,...,N}| ≤ |A ∩ {1,...,M}|`. -/
 theorem countingFn_mono (A : Set ℕ) {N M : ℕ} (h : N ≤ M) :
@@ -78,7 +81,6 @@ the known sufficient condition due to Prikry. -/
 axiom positive_density_bounded_gaps (A : Set ℕ) :
     HasPositiveUpperDensity A → HasBoundedGaps (diffSet A)
 
-/-- Positive upper density implies `D(A)` has positive density itself. -/
 /-- The difference set is symmetric: `d ∈ D(A)` iff `-d ∈ D(A)`.
     Proof: the swap map `(a₁, a₂) ↦ (a₂, a₁)` sends pairs with
     difference `d` to pairs with difference `-d`, preserving membership. -/
@@ -137,7 +139,7 @@ theorem zero_mem_diffSet_iff (A : Set ℕ) :
   by_contra hfin
   rw [Set.not_infinite] at hfin
   rw [diffSet_finite_eq_empty A hfin] at h0
-  exact absurd h0 (Set.not_mem_empty 0)
+  exact absurd h0 (Set.notMem_empty 0)
 
 /-- `D(A)` is nonempty if and only if `A` is infinite. -/
 theorem diffSet_nonempty_iff (A : Set ℕ) :
@@ -147,7 +149,7 @@ theorem diffSet_nonempty_iff (A : Set ℕ) :
   by_contra hfin
   rw [Set.not_infinite] at hfin
   rw [diffSet_finite_eq_empty A hfin] at hd
-  exact absurd hd (Set.not_mem_empty d)
+  exact absurd hd (Set.notMem_empty d)
 
 /-- Positive lower density implies positive upper density. -/
 theorem lower_density_implies_upper (A : Set ℕ) :
@@ -196,7 +198,7 @@ theorem countingFn_le (A : Set ℕ) (N : ℕ) : countingFn A N ≤ N := by
   unfold countingFn
   have h1 : (Finset.Icc 1 N |>.filter (· ∈ A)).card ≤ (Finset.Icc 1 N).card :=
     Finset.card_filter_le _ _
-  have h2 : (Finset.Icc 1 N).card ≤ N := by simp [Finset.card_Icc]; omega
+  have h2 : (Finset.Icc 1 N).card ≤ N := by rw [Nat.card_Icc]; omega
   omega
 
 /-- Positive upper density implies A is infinite.
@@ -212,12 +214,15 @@ theorem positive_upper_density_infinite (A : Set ℕ)
   have hcf_bound : ∀ N, countingFn A N ≤ C := by
     intro N
     unfold countingFn
-    exact Finset.card_le_card
-      (fun hx => hfin.mem_toFinset.mpr ((Finset.mem_filter.mp hx).2))
+    refine Finset.card_le_card ?_
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    exact hfin.mem_toFinset.mpr hx.2
   obtain ⟨N₀, hN₀⟩ := exists_nat_gt ((C : ℚ) / δ)
   obtain ⟨N, hN, hδN⟩ := hdens N₀
   have h1 : (C : ℚ) / δ < (N : ℚ) := lt_of_lt_of_le hN₀ (by exact_mod_cast hN)
-  have h2 : (C : ℚ) < δ * (N : ℚ) := by rwa [div_lt_iff hδ] at h1
+  have h2 : (C : ℚ) < δ * (N : ℚ) := by
+    rw [div_lt_iff₀ hδ] at h1; linarith
   have h3 : δ * (N : ℚ) ≤ (C : ℚ) := le_trans hδN (by exact_mod_cast hcf_bound N)
   linarith
 
@@ -249,6 +254,7 @@ def ErdosProblem332 : Prop :=
       (∀ A : Set ℕ, P A → HasBoundedGaps (diffSet A)) →
         ∀ A : Set ℕ, HasPositiveUpperDensity A → P A
 
-/- ## Related questions -/
+/- ## Related questions
 
-/-- Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density? -/
+Does `∑_{d ∈ D(A)} 1/d = ∞` when `A` has positive upper density?
+This is an open follow-up question. -/
