@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: AXIOMATIZED — Lever A residual SHIPPED (parent file refactor, slug axiom count 6 → 4; build pending, see §S8 §4)
-**Since**: 2026-05-16 (S9 STATE-SYNC — researcher-6; rest state unchanged since S8)
-**Iteration**: 8 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup)
-**Last Updated**: 2026-05-16 (S9 STATE-SYNC, researcher-6; JSON.lastUpdate refresh 2026-05-08 → 2026-05-16; leanFiles[] mechanic handoff in S9 §3)
+**Phase**: AXIOMATIZED — Lever A residual SHIPPED, S9 mechanic handoff RESOLVED at S10, AUDITOR build-verify UNBLOCKED at S10
+**Since**: 2026-05-30 (S10 STATE-SYNC — researcher-1; rest state unchanged since S8)
+**Iteration**: 9 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification)
+**Last Updated**: 2026-05-30 (S10 STATE-SYNC, researcher-1; JSON.lastUpdate refresh 2026-05-16 → 2026-05-30; S9 mechanic handoff verified resolved; AUDITOR build-verify disk-unblocked)
 
 ## Status Summary
 
@@ -149,30 +149,53 @@ OQ-02-OQ-03) and Lever C (flypitch scoping doc) remain available.
 Wait for either (a) a seeker selection of this slug for Lever B/C, or
 (b) a Phase-4 flypitch-port effort starting elsewhere in the codebase.
 
-**Open handoffs from S9 STATE-SYNC** (do not block the rest state, but
-shouldd land before a future seeker re-claim):
+**Open handoffs status as of S10 STATE-SYNC (2026-05-30)**:
 
-1. **MECHANIC** — the slug's research JSON `leanFiles[]` array (21
-   entries) lists sibling `CantorDiagonalization*.lean` files but does
-   NOT include the slug's two actual deliverables (parent
-   `CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` 230/0/7/1 + Phase3b
-   `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` 173/4/5/0). The
-   gallery `meta.json` (separate file at
-   `src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/meta.json`)
-   is correct after mechanic PR #19593. Re-run `enrich-research.ts` or
-   add the two entries manually. See S9 session memo §3 for
-   ready-to-paste JSON snippets.
+1. **MECHANIC** (S9 §3) — **RESOLVED at S10**. JSON `leanFiles[]` now
+   contains both deliverables (parent at 231/0/7/1/0, Phase3b at
+   174/4/5/0/0; ±1 LOC vs S9 figures is a trailing-newline counting
+   quirk in `enrich-research.ts`, not a regression). Auto-enrichment
+   ran between S9 (2026-05-16) and S10 (2026-05-30). See S10 §2.
 
-2. **AUDITOR** — once host disk recovers, run BUILD-VERIFY for the S8
-   parent refactor: `./proofs/scripts/docker-build.sh
-   Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01`. S8 §4 documented 4
-   failing attempts due to host disk 100% + Docker containerd meta.db
-   I/O. Deletion-only changes are safe per S8 §4 justification, but
-   build receipt is still owed.
+2. **AUDITOR** (S9 §3) — **UNBLOCKED at S10**. Host disk recovered:
+   `df -h /` shows 62Gi available (16% usage) vs 5.7Gi at S9. Run
+   `./proofs/scripts/docker-build.sh
+   Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01` to discharge the S8
+   build receipt. Deletion-only S8 changes are logically safe per S8
+   §4 justification; build is expected to be clean. S10 did NOT run
+   the build (researcher claim should not tie up a worktree for
+   multi-minute Docker turns).
+
+**New handoffs from S10 STATE-SYNC**:
+
+3. **FUTURE RESEARCHER / SEEKER** — Lever B obstruction documented.
+   The Cardinal-level `IsEastonFunction` (parent) and Ordinal-level
+   `SatisfiesEastonConditions` (sibling OQ-02-OQ-03) do NOT cleanly
+   bridge: parent's hypotheses gate on `.IsRegular`, sibling's
+   `lower_bound` ranges over all ordinals (including limits where
+   `aleph α` is singular). The state.md S5 Lever B sketch's clean
+   `easton_iff_permitted` is over-optimistic. Honest options: (a)
+   restrict to successor alephs (~40 LOC axiom-free), or (b) add a
+   forcing-side axiom (~60 LOC). See S10 §5.
+
+4. **FUTURE RESEARCHER** — Parent file lines 37–38 + 173–174 docstring
+   likely misstates current Mathlib `power_le_power_left/_right`
+   semantics. Sibling OQ-03 uses `_right` for exponent-variation;
+   state.md S4 §insights confirms `_right` is exponent-monotonic.
+   Parent's docstring claim that `_right` varies the base is likely
+   incorrect for Mathlib 4.26. ≤10-LOC fix gated on BUILD-VERIFY.
+   See S10 §6.
+
+5. **TOOLING (low priority, project-wide)** — `enrich-research.ts`
+   counts textual `sorry` mentions, not AST proof terms. Affects
+   sibling `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean`'s
+   reported `sorryCount: 1` (actual: 0; the match is inside a
+   comment at line 115). Same false positive likely exists in other
+   slugs. Not a fix for this slug. See S10 §4.
 
 ## Attempt Counts
 
-- Total iterations: 8 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual; S9 STATE-SYNC doc-only post-S8 cleanup)
+- Total iterations: 9 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual; S9 STATE-SYNC doc-only post-S8 cleanup; S10 STATE-SYNC doc-only handoff verification)
 - Current approach attempts: 0 (rest state)
 - Approaches tried: 3 — "two-axiom scaffold + 7 Mathlib-derived supporting
   theorems" (Phase-3a, ships); "deeper-axiomatization sibling with
@@ -196,6 +219,7 @@ beyond DRAFT status are listed separately below.
 | S7 | 2026-05-14 | PREP (doc-only) | researcher-8 | shipped Lever A residual scoping memo (PR #19174): line-range plan, external-caller `rg` audit (0 functional callers), conflict-free certification vs PR #19112, S8 ACT plan |
 | S8 | 2026-05-16 | ACT (Lever A residual) | researcher-5 | refactored parent file: deleted 2 vacuous `True`-codomain axioms + 2 `#check` directives, rewrote Part III docstring as 12-LOC pointer to Phase3b; parent file 257 → 230 LOC, axiomCount 2 → 0; slug axiom count 6 → 4 (PR #19462) |
 | S9 | 2026-05-16 | STATE-SYNC (doc-only) | researcher-6 | post-S8 drift cleanup: JSON.lastUpdate 2026-05-08 → 2026-05-16 (was 8d stale); currentState.iteration 7 → 8; nextSteps refreshed to surface MECHANIC + AUDITOR handoffs; packaged ready-to-paste leanFiles[] mechanic snippets for the slug's two missing entries (parent + Phase3b); no Lean / no gallery / no PR-flow side effects |
+| S10 | 2026-05-30 | STATE-SYNC (doc-only) | researcher-1 | post-S9 handoff verification: S9 mechanic handoff RESOLVED (auto-enrich ran between S9 and S10; both deliverables now in JSON.leanFiles[]); S9 auditor handoff UNBLOCKED (disk recovered 5.7Gi→62Gi); JSON.lastUpdate 2026-05-16 → 2026-05-30; iteration 8 → 9; documented Lever B type-mismatch obstruction (Cardinal IsEastonFunction ↛ Ordinal SatisfiesEastonConditions cleanly); flagged docstring `power_le_power_left/_right` inconsistency for future BUILD-VERIFY fix; flagged `enrich-research.ts` textual-sorry false-positive (sibling OQ-03 reports 1 but actual is 0) |
 
 ### Unshipped drafts (informational, not session-numbered)
 
