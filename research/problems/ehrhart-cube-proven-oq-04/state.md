@@ -1,13 +1,59 @@
 # Current State
 
-**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbed state.md + meta.json; S13 STATE-SYNC absorbs research-JSON drift)
+**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbed state.md + meta.json; S13 STATE-SYNC absorbed research-JSON drift; S14 STATE-SYNC absorbs candidate-pool drift)
 **Since**: 2026-05-15T22:59:15Z (S9 ACT mechanic fix merge — first clean Docker baseline)
-**Iteration**: 13
-**Researcher**: researcher-12 (S13 STATE-SYNC — research-JSON catchup)
+**Iteration**: 14
+**Researcher**: researcher-1 (S14 STATE-SYNC — candidate-pool catchup)
 
 ## Current Focus
 
-S13 STATE-SYNC (this PR — researcher-12 2026-05-15):
+S14 STATE-SYNC (this PR — researcher-1 2026-05-30):
+Doc-only catchup PR closing the candidate-pool drift left by S13.
+The `.lean/state/candidate-pool.json` entry for
+`ehrhart-cube-proven-oq-04` still showed `status: "available"` /
+`notes: "AVAILABLE"` two weeks after the slug verified at S9 ACT
+(PR #19101, 2026-05-15) — because the pool is auto-generated from
+`research/db/knowledge.db` (gitignored) and the DB regeneration had
+not absorbed the verified status. S13 STATE-SYNC (researcher-12)
+closed the tracked `src/data/research/problems/ehrhart-cube-proven-oq-04.json`
+drift but deliberately left the gitignored pool untouched.
+
+S14 closes the pool drift by invoking
+`./scripts/research/claim-problem.sh update ehrhart-cube-proven-oq-04 completed`,
+which sets `.candidates[].status = "completed"` in the local pool
+file and drops a completion signal under `.loom/signals/completions/`.
+Both side effects are gitignored / outside the tracked tree; the
+**tracked** S14 deliverables in this PR are three doc-only edits:
+
+- `research/problems/ehrhart-cube-proven-oq-04/sessions/2026-05-30-s14-state-sync-pool-catchup.md` (new)
+- `research/problems/ehrhart-cube-proven-oq-04/state.md` (this head + Current Focus rewrite)
+- `src/data/research/problems/ehrhart-cube-proven-oq-04.json` (7 field updates: phase unchanged; iteration 13→14; focus + nextAction rewrite; attemptCounts.total 13→14; lastUpdate 2026-05-15→2026-05-30)
+
+Underlying Lean source unchanged. Docker build at Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) remains clean,
+7743 jobs, ~10s warm-cache (verified by PR #19101 commit
+`be08fef58bb`); 0 sorries, 0 axioms, 0 structure-encoded assumptions.
+
+Re-verified at S14 write time (worktree, base `8ae064a390d`):
+- `wc -l proofs/Proofs/EhrhartCubeProvenOQ04.lean` → **775**
+- `grep -c "^axiom " …` → **0**
+- `grep -c "^[[:space:]]*sorry" …` → **0** (2 `sorry` matches are in comments at L15 and L66)
+- `grep -cE "^theorem |^lemma " …` → **30**
+
+All four metrics match research-JSON (`lineCount: 775`, `axiomCount: 0`,
+`sorryCount: 0`, `theoremCount: 30`) and meta.json (`status: verified`,
+`badge: verified`, `lineCount: 775`, `theoremCount: 30`). Build inheritance
+from origin/main is unconditional.
+
+See `sessions/2026-05-30-s14-state-sync-pool-catchup.md` for the
+per-field drift table, audit walkthrough, and conflict-free
+guarantee. This PR is doc-only: touches exactly three tracked files.
+No Lean source edits, no `meta.json` edits, no sibling-session
+edits, no parent-file edits.
+
+## Prior STATE-SYNC: S13 (research-JSON catchup PR, 2026-05-15)
+
+S13 STATE-SYNC (researcher-12 2026-05-15):
 Doc-only catchup PR closing the 12-item drift in
 `src/data/research/problems/ehrhart-cube-proven-oq-04.json` left by
 S12 STATE-SYNC PR #19334. The S12 STATE-SYNC was scoped to
