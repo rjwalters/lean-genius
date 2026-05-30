@@ -1,0 +1,120 @@
+{
+  "slug": "bertrands-postulate-oq-02",
+  "title": "Legendre's Conjecture: Prime Between n² and (n+1)²",
+  "phase": "SURVEY",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "slow",
+  "problemStatement": {
+    "formal": "\\forall n \\geq 1: \\exists p \\text{ prime}: n^2 < p < (n+1)^2",
+    "plain": "Legendre's conjecture (1798) asserts there is always a prime between consecutive perfect squares. One of Landau's four problems; open. Verified computationally to n ≤ 1.5 × 10^18.",
+    "whyMatters": [
+      "Landau problem (1912) — one of four 'unattackable' problems",
+      "Equivalent to prime gap bound g(p_k) ≤ 2√p_k + 1",
+      "Not implied by RH (RH gives only g ≪ √p log p, one log too weak)",
+      "Connection to Cramér heuristic on prime gaps"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Verified computationally for n ≤ 1.5 × 10^18 (Nicely et al.)",
+      "In this repo, legendre-partial verified n = 1, …, 20 via native_decide",
+      "Baker–Harman–Pintz (2001): primes in [x, x + x^0.525] — does not reach Legendre"
+    ],
+    "open": [
+      "Full conjecture unsolved since 1798",
+      "Not implied by RH"
+    ],
+    "goal": "Initial survey; identify tractable sub-milestone for iteration 2 (recommended: equivalence with prime-gap bound)"
+  },
+  "currentState": {
+    "phase": "SURVEY",
+    "since": "2026-05-30T15:00:00Z",
+    "iteration": 1,
+    "focus": "Survey of unconditional and conditional partial results; menu of three sub-milestones identified",
+    "blockers": [],
+    "nextAction": "Iteration 2: DEEP DIVE on Sub-Milestone B (equivalence with prime gap bound)",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Surveyed literature: full conjecture infeasible (not even implied by RH). Identified three sub-milestones: (A) Cramér ⇒ Legendre eventually, (B) equivalence with prime-gap bound, (C) computational extension. Recommend B for iteration 2.",
+    "builtItems": [],
+    "insights": [
+      "Legendre is NOT implied by RH — Cramér's RH-based bound g ≪ √p log p has an extra logarithmic factor relative to what Legendre needs",
+      "Bertrand's postulate is too weak by a factor of ~n: it gives a prime in (n², 2n²) but Legendre needs the prime in (n², (n+1)²) — an interval of length 2n+1, vs Bertrand's interval of length n²",
+      "Best unconditional short-interval result (Baker–Harman–Pintz 2001) is θ = 0.525, still missing Legendre's θ = 0.5",
+      "The conjecture is equivalent to the prime-gap bound g(p_k) ≤ 2√p_k + 1 for all k — this gives a clean reformulation suitable for Lean",
+      "Mathlib lacks a primeGap definition; introducing one would benefit other gallery proofs"
+    ],
+    "mathlibGaps": [
+      "No primeGap definition",
+      "No Cramér's conjecture statement",
+      "No short-interval prime theorems (Hoheisel, Huxley, BHP)",
+      "No Legendre conjecture statement (only the partial version in legendre-partial)"
+    ],
+    "nextSteps": [
+      "Sub-Milestone B (recommended): formalize equivalence Legendre ↔ ∀k, p_(k+1) − p_k ≤ 2√p_k",
+      "Sub-Milestone A: formalize Cramér ⇒ Legendre eventually",
+      "Sub-Milestone C: extend native_decide verification to n ≤ 100 (low value)"
+    ]
+  },
+  "approaches": [
+    {
+      "id": "approach-01",
+      "name": "Initial survey",
+      "status": "completed",
+      "hypothesis": "Map literature and Mathlib gaps to identify a tractable sub-milestone",
+      "strategy": "Survey known unconditional (Hoheisel→BHP) and conditional (RH, Cramér) gap bounds; cross-reference Mathlib's prime infrastructure; enumerate sub-milestones",
+      "risks": [
+        "Picking a sub-milestone too close to legendre-partial — risk of redundancy"
+      ],
+      "attempts": [
+        {
+          "id": "attempt-01",
+          "session": 1,
+          "outcome": "success",
+          "notes": "Three sub-milestones identified with tractability scores 9/8/7. Sub-Milestone B (equivalence) selected as next iteration target."
+        }
+      ]
+    }
+  ],
+  "tags": [
+    "number-theory",
+    "primes",
+    "legendre-conjecture",
+    "open-problem",
+    "prime-gaps",
+    "landau-problems"
+  ],
+  "relatedProofs": [
+    "legendre-partial",
+    "bertrands-postulate",
+    "bertrands-postulate-oq-03",
+    "bertrands-postulate-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Granville, A. (1995). Harald Cramér and the distribution of prime numbers. Scand. Actuar. J.",
+      "Baker, Harman, Pintz (2001). The difference between consecutive primes, II. Proc. London Math. Soc. 83.",
+      "Heath-Brown, D. R. (1988). The number of primes in a short interval. J. Reine Angew. Math. 389."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Legendre%27s_conjecture",
+      "https://terrytao.wordpress.com/2007/05/22/",
+      "https://oeis.org/A014085"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.NumberTheory.LSeries.RiemannZeta"
+    ]
+  },
+  "started": "2026-05-30T15:00:00Z",
+  "lastUpdate": "2026-05-30T15:00:00Z",
+  "significance": 8,
+  "tractability": 2
+}

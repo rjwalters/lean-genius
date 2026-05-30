@@ -1846,12 +1846,8 @@ private theorem tailSwap_n_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellForme
   have hwfii := hwf (canonI cfg hwf t ht) (t.1 (canonI cfg hwf t ht))
   simp only [splitPosAt]; omega
 
-private lemma cast_PathMN_val {m n₁ n₂ : ℕ} (h : n₁ = n₂) (e : PathMN m n₁) :
+@[simp] private lemma cast_PathMN_val {m n₁ n₂ : ℕ} (h : n₁ = n₂) (e : PathMN m n₁) :
     (cast (congrArg (PathMN m) h) e).val = e.val := by
-  cases h; rfl
-
-@[simp] private lemma cast_PathMN_coe {m n₁ n₂ : ℕ} (h : n₁ = n₂) (e : PathMN m n₁) :
-    ((cast (congrArg (PathMN m) h) e) : List Bool) = (e : List Bool) := by
   cases h; rfl
 
 /-- The canonical GV involution: tail-swap at the lex-min crossing point.
@@ -1913,7 +1909,7 @@ private lemma gvCanonInv_val_ci {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFor
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht)) ++
     (t.2 (canonJ cfg hwf t ht)).val.drop
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonJ cfg hwf t ht)) := by
-  simp only [gvCanonInv, dite_true, tailSwapPath, cast_PathMN_coe, cast_PathMN_val,
+  simp only [gvCanonInv, dite_true, tailSwapPath, cast_PathMN_val,
     Subtype.coe_mk]
 
 private lemma gvCanonInv_val_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1924,7 +1920,7 @@ private lemma gvCanonInv_val_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFor
     (t.2 (canonI cfg hwf t ht)).val.drop
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht)) := by
   have hij := canonI_lt_canonJ cfg hwf t ht
-  simp only [gvCanonInv, dif_neg (Fin.ne_of_gt hij), dite_true, tailSwapPath, cast_PathMN_coe,
+  simp only [gvCanonInv, dif_neg (Fin.ne_of_gt hij), dite_true, tailSwapPath,
     cast_PathMN_val, Subtype.coe_mk]
 
 private lemma gvCanonInv_val_other {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
@@ -1932,7 +1928,7 @@ private lemma gvCanonInv_val_other {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.well
     (hk_ci : k ≠ canonI cfg hwf t ht) (hk_cj : k ≠ canonJ cfg hwf t ht) :
     ((gvCanonInv cfg hwf t ht).2 k).val = (t.2 k).val := by
   simp only [gvCanonInv, dif_neg hk_ci, dif_neg hk_cj]
-  exact cast_PathMN_coe _ _
+  exact cast_PathMN_val _ _
 
 /-- Sign reversal: canonNewPerm has opposite sign. -/
 private theorem gvCanon_sign_reversal {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
