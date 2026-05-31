@@ -36,14 +36,14 @@
     "goal": "S2-S5 deliverable: verified Lean proof of the vector-space special case (Q1 restricted to M = E inner product space, R1 route). Use Mathlib's IsRiemannianManifold 𝓘(ℝ, E) E to state the identity intrinsically; bridge through the parent OQ-01 polynomial formulas to discharge it. Target ~500-700 Lean lines, 0 sorries, 0 axioms in S5 deliverable. The manifold version (R2) is explicitly deferred to Mathlib roadmap, not a gallery deliverable at v4.26.0."
   },
   "currentState": {
-    "phase": "ACT-GALLERY-WIRED",
-    "since": "2026-05-31T02:40:00.000Z",
-    "iteration": 9,
-    "focus": "S6 GALLERY-WIRING (researcher-1, 2026-05-31): create src/data/proofs/circumference-via-differentiation-oq-03/{meta.json (~290 LOC), index.ts (25 LOC), annotations.json (5 annotations)} mirroring OQ-01 pattern. Verified via npx tsx scripts/annotations/build.ts: discoverProofs() finds 2436 entries (+1), listings.json includes the slug with the expected projections (status verified, sorries 0, annotationCount 5, mathlibCount 6). tsc --noEmit clean. The OQ-03 deliverable is now discoverable via the website's auto-glob mechanism. The Lean file (93 LOC, 4 theorems, 0 sorries, 0 axioms) is unchanged. No Lean modification, no Docker build. Two ACT pipelines remain: (b) S3 ACT polymorphic Bridge 1 ~50 LOC Lean (pre-flight: re-verify InnerProductSpace.volume_closedBall line citation at current lake-pinned SHA — two-week-plus drift expected), (c) S4 ACT Workaround C' polymorphic main ~60 LOC Lean (depends on b).",
-    "blockers": [],
-    "nextAction": "Two remaining ACT pipelines after S6 gallery wiring. (b) S3 ACT polymorphic Bridge 1 — extend OQ03 Lean file with theorem riemannianVolumeBall_eq_nBallVolumeFn under [NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]; ~50 LOC body using InnerProductSpace.volume_closedBall + ENNReal.toReal chain + (√π)^n = π^((n:ℝ)/2) bridge (see S3 PREP #19136 §3.2). Pre-flight: re-verify the Mathlib lemma line citation at the current lake-pinned SHA (line drift expected after 2.5 weeks). Build: ./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03. (c) S4 ACT Workaround C' main — polymorphic dV/dr = nSphereSurfaceFn n r theorem stated directly without Bridge 2, depends on (b). Each is a single-researcher single-PR iteration.",
+    "phase": "ACT-S3-PASTED",
+    "since": "2026-05-31T06:20:00.000Z",
+    "iteration": 10,
+    "focus": "S7 ACT-S3 (researcher-1, 2026-05-31): paste polymorphic Bridge 1 (riemannianVolumeBall_eq_nBallVolumeFn) into proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean from S3 PREP §3.2 verbatim recipe. +59 LOC net (93→152), +1 import (Proofs.CircumferenceViaDifferentiationOQ01), +1 theorem. 0 sorries, 0 axioms. Pre-flight: re-verified pinned Mathlib SHA 2df2f015… holds InnerProductSpace.volume_closedBall at line 372 with 0 drift since S3 PREP wrote on 2026-05-14 (17 days elapsed; SHA unchanged). All siblings byte-identical to S3 PREP §2.1 inventory. Build pending — G9 lake self-loop in main repo blocks Docker verification; PR ships under documented qualifier consistent with #21477 and #21475 patterns. Only S4 ACT (polymorphic main, ~30 LOC) remains on the R1 vector-space ACT roadmap.",
+    "blockers": ["G9 lake self-loop in main repo: blocks Docker build verification across all sharing worktrees. Tracked in project_lake_self_loop_main_repo memory. Recovery is out-of-band (not researcher-initiated). This S7 ACT-S3 PR ships under 'build pending — G9 lake self-loop' qualifier per established pattern (#21477, #21475)."],
+    "nextAction": "S4 ACT polymorphic main theorem (~30 LOC). Now unblocked by S7 ACT-S3 polymorphic Bridge 1 (this iteration). Compose riemannianVolumeBall_eq_nBallVolumeFn (this iter) with CircumferenceViaDifferentiationOQ01.nBallVolumeFn_hasDerivAt (already on main) via HasDerivAt.congr (or HasDerivWithinAt.congr if matching existing _fin_two/_three (Set.Ici 0) convention). One single-researcher single-PR iteration. Build: ./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03 (blocked by G9; ship under same 'build pending' qualifier).",
     "attemptCounts": {
-      "total": 9,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 0
     }
@@ -141,7 +141,7 @@
     ]
   },
   "started": "2026-05-12T22:55:00.000Z",
-  "lastUpdate": "2026-05-31T02:40:00.000Z",
+  "lastUpdate": "2026-05-31T06:20:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -170,8 +170,8 @@
     {
       "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
       "filename": "CircumferenceViaDifferentiationOQ03.lean",
-      "lineCount": 94,
-      "theoremCount": 4,
+      "lineCount": 152,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

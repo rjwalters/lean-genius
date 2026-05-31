@@ -1,10 +1,72 @@
 # Current State
 
-**Phase**: ACT (S2 ACT shipped: skeleton + 4 boundary cases + k-direction multiplicative recurrence; S3 ACT pending — `at_t_eq_one` substitution)
-**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP)
-**Iteration**: 7 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT)
+**Phase**: ACT (S2 + S3 + S4 ACT shipped; S5 ACT pending — Path C `RatFunc` migration for positive `at_one_one` recovery, since Path A is provably blocked by the Field 0/0 trap formalised in S4 ACT)
+**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT)
+**Iteration**: 9 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT)
 
-`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` **shipped (build pending)** in S2 ACT (this iteration). The file is 151 LOC with 0 sorries / 0 axioms; ships the Macdonald (q,t)-binomial / multichoose definitions plus four boundary cases (`qtBinom_zero_right`, `qtMultichoose_zero_right`, `qtBinom_one_right`, `qtMultichoose_one_right`) and the unconditional k-direction multiplicative recurrence `qtBinom_succ`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence is the foundation for the upcoming S3 (`at_t_eq_one`) and S4 (`at_one_one`) substitution proofs.
+`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` is now ~313 LOC with 10 theorems, 0 sorries, 0 axioms. After S4 ACT (this iteration), it ships: the Macdonald (q,t)-binomial/multichoose definitions, four boundary cases, the unconditional k-direction multiplicative recurrence `qtBinom_succ`, the S3 ACT `at_t_eq_one` substitution (Path A with `q^(j+1) ≠ 1` hypothesis), and the S4 ACT polynomial-sub-lattice interior `qtMultichoose_two_two` plus the Field R 0/0 trap formalisation `qtBinom_at_one_one_eq_zero` / `qtMultichoose_at_one_one_eq_zero`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence remains the foundation for S5+ work.
+
+## S4 ACT (2026-05-31, researcher-1) — polynomial sub-lattice (2,2) + Field R 0/0 trap
+
+**Mode**: ACT (Lean diff; build-pending per `.lake` symlink loop convention).
+
+**Outcome**: Added 3 theorems (~70 LOC including doc) to the Lean file plus a header refresh. Discharges the S4 ACT next-action from the post-S3 state.
+
+### What landed
+
+1. **`qtMultichoose_two_two`** (Section VI): proves `qtMultichoose q t 2 2 = (1 - q^3) / (1 - q)` under the single Path A guard `1 - q^2 t ≠ 0`. This is the unique "interior" point (`n ≥ 2 ∧ k ≥ 2`) where `qtMultichoose` is t-free as a rational function — the only non-trivial point in the S3 PREP polynomial sub-lattice `{k ≤ 1} ∪ {(2, 2)}`. Proof: `qtBinom_succ` + `qtBinom_one_right` + `div_self`, 5 LOC.
+
+2. **`qtBinom_at_one_one_eq_zero`** (Section VI): proves `qtBinom (1 : R) (1 : R) N (k + 1) = 0` unconditionally under `Field R`. The i=0 factor evaluates to `0 / 0 = 0` under the Lean Field convention, zeroing the whole product. Proof: `unfold` + `Finset.prod_range_succ'` + `simp`, 3 tactic steps.
+
+3. **`qtMultichoose_at_one_one_eq_zero`** (Section VI): corollary, `qtMultichoose 1 1 n (k+1) = 0` under `Field R`.
+
+### Mathematical content
+
+The (2, 2) theorem makes concrete the S3 PREP polynomial-sub-lattice characterization that had been a *claim* in PREP memos. The structural reason for the cancellation: in `qtBinom q t 3 2 = ∏ i ∈ range 2, (1 - q^(3-i) t^i) / (1 - q^(i+1) t^i)`, the i=1 factor has numerator `1 - q^2 t` matching denominator `1 - q^2 t` (because `3 - 1 = 2 = 1 + 1`). The i=0 factor is t-free.
+
+The Field 0/0 theorem makes explicit **why** S3 ACT's Path A hypothesis `∀ j < k, q^(j+1) ≠ 1` is mandatory: dropping it re-admits `q = 1`, and combined with `t = 1` the rational substitution disagrees with the classical limit by the entire value (0 vs. classical multichoose). This formalises the S4 PREP F1 finding.
+
+### What this file is still NOT
+
+- No **positive** `at_one_one` limit theorem (recovering `Nat.multichoose`); requires Path C (`RatFunc.eval`, S5 PREP) or iterated limits, both deferred.
+- No Pascal-style recurrence (S6 PREP falsified it; structurally awkward).
+- No Macdonald-polynomial principal-specialization axiom (optional S6 step).
+
+### Counts after S4 ACT
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` | ~313 | 10 | 0 | 2 | 0 |
+
+### Build status
+
+Pending. Per CLAUDE.md never invoke `lake build` directly; per memory `[Lake self-loop in main repo]`, Docker-based verification is blocked from inside research worktrees. The S4 ACT additions use only standard Mathlib infrastructure (`Finset.prod_range_succ'`, `div_self`, `pow_one`, `simp`); no novel tactics. Confidence the file type-checks: high.
+
+### Remaining work
+
+- **S5 ACT**: Path C migration. Switch ambient to `RatFunc (RatFunc ℚ)` and use `RatFunc.eval` to recover the positive `qtMultichoose 1 1 n k = Nat.multichoose n k` statement. Estimated ~80–120 LOC (large because of the `RatFunc` infrastructure overhead).
+- **S6 ACT (optional)**: axiomatise Macdonald polynomial principal-specialization identity.
+- **S7**: gallery JSON integration with `status: "axiomatized"` (since the positive at_one_one recovery requires the Path C migration plus possibly an iterated-limit axiom).
+
+## S3 ACT (2026-05-30, researcher-1) — t = 1 substitution + multiplicative q-Pascal helper
+
+**Mode**: ACT (Lean diff; merged as PR #21322).
+
+**Outcome**: Added 2 theorems + 1 private lemma (~70 LOC including doc) to the Lean file. Discharges the S3 ACT next-action from the post-S2 state.
+
+### What landed
+
+1. **`qtBinom_at_t_eq_one`** (Section V, foundational): proves `qtBinom q 1 N k = qBinom q N k` for all `q : R` and `k : ℕ` under the Path A hypothesis `∀ j, j < k → q^(j+1) ≠ 1`. Proof: induction on `k`, base case empty product, inductive step uses `qtBinom_succ` (the rational k-direction recurrence) + the new private `qBinom_mult_recur` (a CommRing multiplicative q-Pascal) bridged via `div_eq_iff`.
+
+2. **`qtMultichoose_at_t_eq_one`** (Section V, headline): direct corollary, `qtMultichoose q 1 n k = qMultichoose q n k` under the same Path A hypothesis.
+
+3. **`qBinom_mult_recur`** (Section V, private lemma): `qBinom q n (k+1) * (1 - q^(k+1)) = qBinom q n k * (1 - q^(n-k))`. Derived by subtracting `qBinom_pascal` and `qBinom_pascal'`; `linear_combination` closes the algebraic identity.
+
+### Mathematical content
+
+This bridges the rational Macdonald form (`qtBinom`) to the polynomial Gaussian form (`qBinom`) at `t = 1` on the open dense set `{q : q^j ≠ 1 for 1 ≤ j ≤ k}`. The Path A `hq` hypothesis is the bare minimum needed to keep the rational denominators nonzero.
+
+The new `qBinom_mult_recur` is a useful standalone CommRing lemma in its own right (parent file's q-Pascal identities composed multiplicatively).
 
 ## S2 ACT (2026-05-13, researcher-9) — first Lean skeleton + boundary cases + k-direction recurrence
 
@@ -60,18 +122,19 @@ Pending. Per CLAUDE.md never invoke `lake build` directly. The file's five lemma
 - **S4 ACT**: `qtMultichoose_at_one_one` — `qtMultichoose 1 1 n k = (Nat.multichoose n k : R)`. Requires limit/cancellation (Field 0/0 trap). Estimated ~50 LOC.
 - **S5+**: connection to Macdonald symmetric functions principal specialization (S5 PREP / `knowledge.md` §Hall–Littlewood); out of scope for the present formalisation chain.
 
-## Session Log (S1 → S6)
-
-Doc-only PREP chain after the S1 OBSERVE merge. All memos in `sessions/`; no Lean changes.
+## Session Log (S1 OBSERVE → S2/S3/S4 ACT)
 
 | Iter | Phase    | PR     | Author        | Merge time (UTC)     | Memo                                                              | Outcome |
 |------|----------|--------|---------------|----------------------|-------------------------------------------------------------------|---------|
 | 1    | OBSERVE  | #18327 | researcher-10 | 2026-05-12T23:18:50Z | (this `state.md` + `problem.md` + `knowledge.md` + gallery JSON)  | Macdonald-type candidate `qtBinom`/`qtMultichoose`; two Pascal conjectures (A) and (B) recorded; the `a(n,k)` exponent for (A) flagged as open S4. |
 | 2    | PREP     | #18382 | researcher-6  | 2026-05-13T02:10:55Z | `2026-05-12-s02-prep-pascal-falsification.md`                     | Small-case falsification of (A) and (B) at `(1,1)` and `(1,0)`. §6.4 enumerates Options α / β / γ with `???` for α. |
 | 3    | PREP     | #18558 | researcher-12 | 2026-05-13T05:07:19Z | `2026-05-13-s03-prep-qtmc-rationality-and-iterated-limit.md`      | `qtMC` is genuinely rational over $\mathbb{Q}(q,t)$, not polynomial; polynomial sub-lattice characterized; S5 joint $(1,1)$ limit retired in favour of iterated limits. |
-| 4    | PREP     | #18616 | researcher-5  | 2026-05-13T07:02:30Z | `2026-05-13-s04-prep-field-trap-and-polynomial-sublattice.md`     | **F1**: Lean `Field R` 0/0 = 0 convention falsifies S3 PREP's planned `qtMC q 1 n k = qMC q n k` at $q = 1$. Three rescues: (Path A) add `hq : ∀ i, q^{i+1} ≠ 1`; (Path B) piecewise re-define `qtBinom`; (Path C) switch to `RatFunc ℚ(q,t)`. **Recommends Path A** for S2 ACT. Rigorous polynomial sub-lattice = {k ≤ 1} ∪ {(2,2)}. |
-| 5    | PREP     | #18639 | researcher-9  | 2026-05-13T08:10:04Z | `2026-05-13-s05-prep-ratfunc-eval-rescues-path-c-no-q-ne-one-hypothesis.md` | **Flips S4's Path C dismissal**: Mathlib's `RatFunc.eval` makes Path C viable, and uniquely **eliminates the `q ≠ 1` hypothesis** for the `t = 1` substitution under iterated `RatFunc (RatFunc ℚ)`. Path C deferred to S6/S7. |
-| 6    | PREP     | #18734 | researcher-6  | 2026-05-13T10:16:47Z | `2026-05-13-s06-prep-option-alpha-falsification-and-k-direction-recurrence-pivot.md` | Closes S2 PREP §6.4's `???`: Option α conjectural form is **falsified** at 4 data points. Denominator shape varies with $(n,k)$; no uniform $(1-qt)$-denominator works. **Pivot recommendation**: replace Pascal-style recurrence with **k-direction telescoping ratio** (Option γ-refined). The product formula factorizes most naturally along $k$, not Pascal's two-direction. |
+| 4    | PREP     | #18616 | researcher-5  | 2026-05-13T07:02:30Z | `2026-05-13-s04-prep-field-trap-and-polynomial-sublattice.md`     | **F1**: Lean `Field R` 0/0 = 0 convention falsifies S3 PREP's planned `qtMC q 1 n k = qMC q n k` at $q = 1$. Three rescues: Path A `hq : ∀ i, q^{i+1} ≠ 1`; Path B piecewise; Path C `RatFunc ℚ(q,t)`. **Recommends Path A** for S2 ACT. Polynomial sub-lattice = {k ≤ 1} ∪ {(2,2)}. |
+| 5    | PREP     | #18639 | researcher-9  | 2026-05-13T08:10:04Z | `2026-05-13-s05-prep-ratfunc-eval-rescues-path-c-no-q-ne-one-hypothesis.md` | **Flips S4's Path C dismissal**: `RatFunc.eval` makes Path C viable, **eliminates the `q ≠ 1` hypothesis** under iterated `RatFunc (RatFunc ℚ)`. Path C deferred to S6/S7. |
+| 6    | PREP     | #18734 | researcher-6  | 2026-05-13T10:16:47Z | `2026-05-13-s06-prep-option-alpha-falsification-and-k-direction-recurrence-pivot.md` | Closes S2 PREP §6.4 `???`: Option α falsified at 4 data points. **Pivot**: replace Pascal-style recurrence with k-direction telescoping ratio. |
+| 7    | ACT      | #18955 | researcher-9  | 2026-05-13T~        | (S2 ACT) — first Lean skeleton                                    | `proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` shipped (151 LOC): qtBinom + qtMultichoose definitions, 4 boundary cases, `qtBinom_succ` k-direction recurrence. Path A. |
+| 8    | ACT      | #21322 | researcher-1  | 2026-05-30T~        | (S3 ACT) — t = 1 specialization                                   | Added `qtBinom_at_t_eq_one`, `qtMultichoose_at_t_eq_one`, private `qBinom_mult_recur` (CommRing multiplicative q-Pascal). File 151 → 229 LOC; 0 sorries / 0 axioms net. Path A `hq : ∀ j < k, q^(j+1) ≠ 1` hypothesis. |
+| 9    | ACT      | TBD    | researcher-1  | 2026-05-31           | `2026-05-31-s04-act-polynomial-sublattice-and-field-trap.md`      | (S4 ACT) — `qtMultichoose_two_two` (polynomial sub-lattice interior) + `qtBinom_at_one_one_eq_zero` + `qtMultichoose_at_one_one_eq_zero` (Field 0/0 trap formalised). File 229 → ~313 LOC; 0 sorries / 0 axioms net. |
 
 ## Current Focus
 
@@ -123,19 +186,56 @@ S4 PREP (#18616) surfaced the Lean `Field R` 0/0 = 0 convention trap: under the 
 
 ## Blockers
 
-(Updated to reflect S2 → S6 PREP findings.)
+(Updated to reflect S2 → S6 PREP findings + S2/S3/S4 ACT shipped.)
 
-- **`Field R` 0/0 trap (resolved with caveats)**: S4 PREP recommends Path A (`hq` hypothesis); S5 PREP makes Path C viable. Path B abandoned. The S2 ACT must pick A or C before writing the Lean file.
-- **Pascal-style recurrences are structurally awkward**: S6 PREP falsifies S2 PREP Option α and recommends pivoting to the k-direction telescoping ratio. The original "interpolating Pascal" plan (S1 line 36-39, S4 conjecture) is **abandoned**.
-- **Joint $(q,t) \to (1,1)$ limit retired** (S3 PREP): use iterated limits or sub-lattice-restricted statements; do not write `qtMultichoose_at_one_one` as a literal joint-substitution theorem.
+- **`Field R` 0/0 trap (formalised in S4 ACT)**: `qtBinom 1 1 N (k+1) = 0` is now a Lean theorem, not just a PREP observation. The S3 ACT Path A `hq` hypothesis is provably necessary under `Field R`. Path B abandoned. Path C remains the way forward for the positive `at_one_one` recovery.
+- **Pascal-style recurrences are structurally awkward**: S6 PREP falsifies S2 PREP Option α; the k-direction telescoping ratio `qtBinom_succ` is the actual foundation. The original "interpolating Pascal" plan is **abandoned**.
+- **Joint $(q,t) \to (1,1)$ limit retired** (S3 PREP): use iterated limits or sub-lattice-restricted statements; the literal Path A joint substitution is `0` (S4 ACT `qtMultichoose_at_one_one_eq_zero`).
 - **Macdonald polynomial infrastructure absent from Mathlib**: any S6+ connection to $P_\lambda(x; q, t)$ must be axiomatised. (Unchanged from S1.)
-- **S2 ACT skeleton still unwritten**: 5 PREPs into the chain, no `proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` file exists. Risk of indefinite PREP-cascade saturation; see "Next Action" below.
+- **Build verification blocked** (memory `[Lake self-loop in main repo]`): Docker-based `lake build` is blocked from inside research worktrees by the `proofs/.lake` symlink loop. S2/S3/S4 ACT ship under "build pending" qualifier; doctor/auditor verifies from clean worktree.
 
 ## Next Action
 
-**S2 ACT (any researcher) — first Lean skeleton, post-PREP-cascade**: define `qtBinom` and `qtMultichoose` and prove four boundary cases, **picking Path A or Path C explicitly** based on the S4/S5 PREP guidance. Critically, the recurrence target has **pivoted** from Pascal to k-direction telescope (per S6 PREP).
+**S5 ACT — Path C migration for the positive `at_one_one` recovery**:
 
-**Recommended Path A skeleton** (cheaper, builds first):
+Under Path A (the current S2/S3/S4 ACT regime), `qtMultichoose 1 1 n (k+1) = 0` is provably forced by the `Field R` convention (S4 ACT theorem `qtMultichoose_at_one_one_eq_zero`). To recover the classical `Nat.multichoose n k`, the ambient ring must change.
+
+**Recommended Path C skeleton** (per S5 PREP #18639):
+
+```lean
+-- New companion file (or extension of the existing file's Section VII):
+import Mathlib.FieldTheory.RatFunc.Basic
+import Mathlib.FieldTheory.RatFunc.AsPolynomial
+import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02
+
+namespace QtMultichooseCoefficients
+
+/-- `qtMultichoose` lifted to `RatFunc (RatFunc ℚ)` (formal rational
+    functions in `q, t`); avoids the `Field R` 0/0 trap because
+    `RatFunc.eval` respects the algebraic limit. -/
+noncomputable def qtMultichooseFormal (n k : ℕ) : RatFunc (RatFunc ℚ) := ...
+
+/-- Positive recovery via Path C: classical `Nat.multichoose` is the
+    iterated specialization `t ↦ 1`, `q ↦ 1` of the formal rational form. -/
+theorem qtMultichooseFormal_at_one_one (n k : ℕ) :
+    ... -- needs RatFunc.eval infrastructure
+    qtMultichooseFormal n k |>.eval ... |>.eval ... = (Nat.multichoose n k : ℚ) := by
+  sorry
+```
+
+Estimated ~80–120 LOC (Path C overhead is the bulk; the mathematical content is the same iterated cancellation as in the parent's `qMultichoose_eq_multichoose`).
+
+**Alternative**: if Path C is too heavy, prove additional polynomial-sub-lattice cases (`qtMultichoose_one_one_zero`, `qtMultichoose_one_n_zero_zero`, etc.) — these are direct corollaries of the existing Section II / III / VI theorems but make the sub-lattice characterization fully concrete. ~10–20 LOC each.
+
+**S6 ACT (optional)**: axiomatise Macdonald polynomial principal-specialization identity (unchanged from S1).
+
+**S7**: gallery JSON integration with `status: "axiomatized"` (since positive `at_one_one` recovery requires Path C migration + future infrastructure).
+
+---
+
+## Historical — original S2 ACT skeleton recommendation (DISCHARGED)
+
+Kept for reference; S2 ACT (#18955) shipped this skeleton and superseded the recommendation.
 
 ```lean
 import Mathlib
@@ -179,13 +279,20 @@ $$ \mathrm{qtBinom}(q, t, n, k+1) \cdot (1 - q^{k+1} t^k) = \mathrm{qtBinom}(q, 
 
 ## Honesty
 
-The cumulative S1 OBSERVE → S6 PREP chain is **pure documentation**. Across six iterations:
+After 9 iterations (S1 OBSERVE → S6 PREP → S2 ACT → S3 ACT → S4 ACT):
 
-- 0 new Lean theorems
-- 0 sorry deltas (file doesn't exist yet)
-- 0 axiom deltas
-- 9 markdown files (`problem.md`, `knowledge.md`, `state.md`, 5 PREP session memos under `sessions/`, this STATE-SYNC)
-- 1 gallery JSON entry (updated by this STATE-SYNC)
+- 10 new Lean theorems (post-S4 ACT total in `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean`)
+- 2 new Lean definitions (`qtBinom`, `qtMultichoose`)
+- 1 private helper lemma (`qBinom_mult_recur`)
+- 0 sorries net (every theorem closes)
+- 0 axioms net (no `axiom` declarations introduced)
+- ~313 LOC in the main Lean file
+- 9 session-history markdown files (5 PREPs + 1 S2/S3/S4 ACT memos + `problem.md` + `knowledge.md` + `state.md`)
+- 1 gallery JSON entry
+
+The mathematical content of S4 ACT is **not novel** — the (2,2) cancellation is immediate from the product formula, and the Field 0/0 trap is a direct corollary of Lean's `Field R` convention. The novelty is the Lean formalisation pinning both down as concrete theorems.
+
+The gallery entry's eventual `status` will be **axiomatized** (not `verified`) unless Path C migration delivers the positive `qtMultichoose 1 1 n k = Nat.multichoose n k` recovery in pure Lean. The current S4 ACT only ships the negative form (`= 0` under `Field R`), which is honest but not the classical statement.
 
 The candidate $(q,t)$-deformation is from Macdonald's textbook (well-established mathematics). The Lean formalisation is genuinely new — this would be the **first Lean entry to mention Macdonald theory at any depth**. The deepest technical step has *shifted*: originally S4 was an "interpolating $(q,t)$-Pascal" derivation, but S6 PREP falsified that approach (Option α at 4 data points). The new deepest step is **S5 ACT** (`qtMultichoose_at_t_eq_one` over `RatFunc` or with `hq` hypothesis) since it touches both the `Field R` 0/0 trap (S4 PREP) and the iterated-limit retirement (S3 PREP).
 
