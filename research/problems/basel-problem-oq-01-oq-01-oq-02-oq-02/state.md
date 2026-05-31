@@ -1,8 +1,94 @@
 # Current State
 
-**Phase**: STATE-SYNC
-**Since**: 2026-05-30
-**Iteration**: 19
+**Phase**: ACT (S20 — Path α paste-ready, S17 §4 + S18 §3 cleaned, 1 NEW theorem, 0 sorries, build pending — G9 lake self-loop)
+**Since**: 2026-05-31
+**Iteration**: 20
+
+## Session 20 (2026-05-31, ACT — `pow_factorization_mul_choose_le` Path α paste from S18 §3 cleaned skeleton, 1 NEW theorem / +67 LOC / 0 sorries / 0 axioms, build pending — G9 lake self-loop persists in main repo)
+
+S20 ACT pastes the S18 PREP-3 §3 **cleaned post-discharge skeleton** for
+`pow_factorization_mul_choose_le` verbatim into
+`proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` at the documented
+insertion point (between line 903 `exact dvd_lcmRange hpow_pos hpow_le`
+and `end BaselProblemOQ01OQ01OQ02OQ02`).
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` | `+1` theorem (`pow_factorization_mul_choose_le`) + Part 12 section header + docstring. | +67 LOC (905 → 972), +1 theorem |
+| `state.md` (this file) | `Phase: STATE-SYNC → ACT`, `Iteration 19 → 20`, S20 ACT block prepended. | header + new block |
+| `src/data/research/problems/.../json` | `currentState.{phase, iteration, focus, nextAction}` refreshed; `knowledge.{progressSummary, insights, builtItems, nextSteps}` updated. | ~8 fields |
+| `research/problems/.../sessions/2026-05-31-s20-act-pow-factorization-mul-choose-le-paste.md` | NEW session memo. | new file |
+
+### The theorem
+
+```lean
+/-- Per-prime upper bound on `(m * C(n, m)).factorization p`. -/
+theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
+    {p : ℕ} : p ^ ((m * Nat.choose n m).factorization p) ≤ n
+```
+
+Body: 5-stage proof using 16 bearer pins (S12+S13+S14+S15+S16 + S17 PREP §3's 3 new pins):
+
+1. `Nat.factorization_mul` decomposes `v_p(m · C(n, m)) = v_p(m) + v_p(C(n, m))`.
+2. Non-prime case: both `factorization_eq_zero_of_not_prime` summands = 0; goal `1 ≤ n`.
+3. Prime case: `pow_le_of_le_log` reduces to `v_p(m) + v_p(C(n, m)) ≤ log p n`.
+4. Expand `v_p(C(n, m))` via `Nat.factorization_choose` at bound `b = log p n + 1`.
+5. **Subset argument** (replaces S16 §7's `sorry`): bound filter cardinality by `Ico (a+1) (b+1)` cardinality. Positions `i ≤ m.factorization p` cannot satisfy `p^i ≤ m % p^i + (n-m) % p^i` (via `Nat.Prime.pow_dvd_iff_le_factorization` + `Nat.mod_eq_zero_of_dvd`). `omega` closes.
+
+### Discharges applied (all 6 from S18 PREP-3 §3)
+
+| § | Risk | Discharge |
+|---|------|-----------|
+| 2.1 | `Finsupp.add_apply` needs `Pi.add_apply` companion | `simp only [Finsupp.add_apply, Pi.add_apply]` (project-norm) |
+| 2.2 | `Nat.le_log_of_pow_le` name | `Nat.`-prefixed (sibling Aristotle file verified) |
+| 2.3 | `set` tactic | project-norm (20+ uses) |
+| 2.4 | `Nat.eq_zero_of_dvd_of_lt` pipe-style | `Nat.mod_eq_zero_of_dvd` (project-norm, 4 sites) |
+| 2.5 | `Nat.card_Ico` rewrite shape | `omega` closes |
+| 2.6 | `Nat.add_sub_of_le` | subsumed by `omega` |
+
+### Build status
+
+**Pending** — G9 lake self-loop in main repo persists. Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable; toolchain
+`leanprover/lean4:v4.26.0` unchanged. G7 disk 57 Gi GREEN, G8 Docker
+daemon GREEN (Server section non-empty). Once G9 repaired:
+`./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ02`
+expected to GREEN given:
+
+- 6/6 §4.1 elaboration risks discharged via project-internal usage evidence.
+- 16/16 bearer pins byte-identical at unchanged Mathlib SHA.
+- Path α theorem self-contained: 0 new imports.
+- 3 numerical validation cases (S17 §4.3): n=12 m=4 p=2; n=16 m=8 p=2 tight; n=8 m=2 p=2 tight.
+
+Build-pending qualifier precedent: S44 / S45 / S46 ballot-problem all
+merged under same qualifier (deployer-accepted), with G9 being shared
+host state and out of scope for individual research PRs.
+
+### Counts (post-S20)
+
+| Metric | S19 STATE-SYNC | S20 ACT (this) | Δ |
+|--------|----------------|-----------------|---|
+| File LOC | 905 | **972** | **+67** |
+| Sorries | 0 | **0** | unchanged |
+| Axioms | 0 | **0** | unchanged |
+| Theorems | 36 | **37** (one NEW: `pow_factorization_mul_choose_le`) | +1 |
+| Build | S15 baseline (3058 jobs clean) | not run (G9 RED) | pending |
+
+### Post-S20 candidate menu (S21+)
+
+| Priority | ACT | Effort | Risk | Notes |
+|---|---|---|---|---|
+| 1 | **S21 ACT** (`mul_choose_dvd_lcmRange`, S17b Path α follow-up) | ~30-40 LOC, 0 sorries | LOW | Mechanical clone of S15 with S20 as black-box bearer. After S20 build clears. |
+| 2 | INFRA: G9 lake self-loop repair (main repo) | ~1 cmd | LOW (shared-state) | out of scope per individual research PR |
+| 3 | vdP §6 application (denominator_control discharge) | ~80-150 LOC | MED | Long-tail. Wait for S21 merge. |
+
+### Mathlib pin verification
+
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since at
+least 2026-05-12T05:00Z per S19 STATE-SYNC. Toolchain
+`leanprover/lean4:v4.26.0` unchanged. No new imports introduced by S20.
 
 ## Session 19 (2026-05-30, STATE-SYNC — T+14d post-S18 PREP-3, INFRA-RECOVERY-ANNOUNCE + 4/16 bearer 0-drift spot-check, doc-only)
 
