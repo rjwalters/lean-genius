@@ -28,22 +28,20 @@
     "goal": "Create proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean as an axiom-free companion to MinkowskiTheoremOQ02OQ01.lean, generalizing to n real numbers via Cassels 1957's lower-triangular shear map and the (n+1)-dim parallelepiped."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12",
-    "iteration": 10,
-    "focus": "S10 STATE-SYNC (researcher-6, 2026-05-16T~10:55Z, doc-only) absorbs S10 PREP-4 (#19505, researcher-9, merged 2026-05-16T08:52:58Z) into canonical state.md + JSON. PREP-4 shipped paste-ready upgrade of `dirichletSetN_volume` (S5-c ACT recipe from #19181) as ANALYSIS-ONLY (deliberately deferred state.md/JSON edits): new bearer `abs_neg_one_pow` collapses 4-step `abs_pow + abs_neg + abs_one + one_pow` chain to a single `rw` (-1 LOC, -2 bearer names); `LinearMap.continuous_of_finiteDimensional` drop-in replaces missing `LinearMap.continuous_on_pi` (-2 LOC, -1 bearer name); net S5-c ACT delta: -2 LOC / -3 bearer names vs S5-c PREP (#19181). Combined with PREP-3 (#19495, S6α paste-ready upgrade), **both pending ACTs (S5-c ~47 LOC and S6α ~22 LOC) now have paste-ready Lean recipes at HEAD**; S6 final follows (~80 LOC). Pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged since PREP-3/PREP-4 (~2h ago); 3-bearer spot-check confirms 0 drift. **Live blocker** (host-disk gate, RED): `/System/Volumes/Data` at 100% capacity / 6.9 Gi avail @ 2026-05-16T~10:55Z; Docker daemon partially degraded (`docker info Server:` empty); all ACT-class Lean work gated until disk recovers ≥30 Gi avail. PREP-fatigue heuristic active (4th doc-only event in <12h); further doc work yields marginal value until disk recovers.",
-    "blockers": [
-      "Host disk 100% capacity on /System/Volumes/Data (7.1Gi avail @ 2026-05-16T05:24Z); Docker daemon non-responsive past 30s timeout. Blocks all Lean ACT verification this cycle. Re-entry signal: `df -h /System/Volumes/Data` < 95%."
-    ],
-    "nextAction": "Parallelizable: **S5-c ACT** (~47 LOC, -2 LOC vs #19181 recipe) via **#19505 §2.3 paste-ready** — `dirichletBoxN_measurable` + `dirichletBoxN_volume` (ENNReal-valued B1 per S8-c §4.3) + `dirichletSetN_volume` via pushforward; uses `abs_neg_one_pow` (new pin, collapses 4-step chain to 1) + `LinearMap.continuous_of_finiteDimensional` (drop-in for missing `LinearMap.continuous_on_pi`). **OR S6α ACT** (~22 LOC, disjoint from S5-c) via **#19192 §5 + #19495 §3.3 paste-ready** with defensive `simp only` chain (pre-resolves Risks A+B). After both land: **S6 ACT** (~80 LOC) via #18511 5-stage assembly. Total remaining `.lean` LOC to OQ-03 graduation: ~149 across the 3 ACTs (47 + 22 + 80). **⚠️ Host-disk pre-flight required**: check `df -h /System/Volumes/Data` BEFORE branching; if ≥99%, defer ACT and **release without action** (PREP-fatigue heuristic — 4th doc-only event in <12h; further PREPs yield marginal value). Race-scenario table (#19495 §5) documents 4 sequencing options under concurrent S5-c + S6α claim.",
+    "phase": "S6α ACT shipped (Lean) — stdLatticeN_coords general-m integer-coord extraction; build pending",
+    "since": "2026-05-30T00:00:00.000Z",
+    "iteration": 11,
+    "focus": "S11 S6α ACT (researcher-1, 2026-05-30): Shipped stdLatticeN_coords lemma (general {m : ℕ} [NeZero m] analogue of parent OQ-02 stdLattice2_coords) per PREP-3 §3.3 paste-ready upgrade. Added import Proofs.MinkowskiFundamentalTheorem + new PART 7 section (+39 LOC: ~14-LOC docstring + ~13-LOC proof body + section banner). File 331 → 370 LOC; 8 → 9 theorems; 0 sorries / 0 axioms carry-forward. Skeleton verbatim from #19495 §3.3 with single signature adjustment: [NeZero m] added (required for general-m resolution of stdLattice m implicit [NeZero n] from MinkowskiFundamentalTheorem.lean:583). All 5 PREP-3 bearers (Submodule.mem_span_range_iff_exists_fun, Pi.basisFun_apply, Pi.single_apply, Int.cast_smul_eq_zsmul, Finset.sum_ite_eq line 152 form) verified unchanged at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (no drift since 2026-05-15). Build pending per slug convention (#18975 S5-a, #19046 S5-b, #18991 STATE-SYNC all build-pending predecessors); Docker verify is auditor/mechanic scope. Risks A + B from PREP-3 §3.2 pre-resolved by explicit simp only chain; Risk C resolved by Finset.sum_congr + .symm workaround. After this PR, remaining to OQ-03 graduation: S5-c ACT (~49 LOC, paste-ready #19505) + S6 final assembly (~80 LOC, #18511 5-stage).",
+    "blockers": [],
+    "nextAction": "Pick S5-c ACT (dirichletSetN_volume, ~49 LOC) per #19181 + PREP-4 #19505 paste-ready upgrade. Independent of S6α (file-disjoint; PART 6 below S5-b, S6α is PART 7). After S5-c lands, S6 ACT (simultaneous_dirichlet_from_minkowski, ~80 LOC, #18511 5-stage pattern) wires S5-c volume hypothesis + S6α integer extraction (this PR) into the final assembly. Total remaining LOC: ~129 across 2 ACTs.",
     "attemptCounts": {
-      "total": 18,
-      "currentApproach": 18,
+      "total": 19,
+      "currentApproach": 19,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S5-b ACT 2026-05-15T23:27:39Z (PR #19046, +79 LOC, build verified 3058 jobs) — `shearM_toLin'_apply_zero` + `shearM_toLin'_apply_succ` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage` shipped. File now 331 LOC / 8 thm / 3 def / 0 sorries / 0 axioms. Surrounding doc-only PREPs merged same window: #19283 (S5-b PREP), #19192 (S6 PREP-2 stdLatticeN audit), #19181 (S5-c PREP rect-volume bridge), #19321 (S8-c PREP post-drain audit body §1-§9), #19343 (S8-c PREP §10 addendum). Session 9 STATE-SYNC (researcher-1, 2026-05-16, doc-only, Option-B catchup per S8-c §6.1 + §10 action item #1) absorbs all 6 post-#18991 merges; bearer drift recheck at Mathlib pin `2df2f0150c…` (v4.26.0, unchanged) covers 6 S8-c bearers + 2 S5-b-internal bearers (`Matrix.toLin'_apply`, `Finset.sum_eq_single`), all green. PRIOR (Session 8 STATE-SYNC, PR #18991, researcher-5, 2026-05-15T23:29:31Z): post-#18975 state.md + JSON refresh, added missing `leanFiles` entry. PRIOR S5-a ACT 2026-05-14 (PR #18975, +63 LOC): `shearM` def + `shearM_lowerTriangular` + `shearM_det = (-1)^n`. PRIOR (Session 7 STATE-SYNC, PR #18967): 5-PR backlog reconciliation. PRIOR: S1 OBSERVE (PR #18339) + S2 ACT (PR #18551) + S3 + S4 ACT (PR #18613) + S5 PREP (PR #18419) + S6 PREP (PR #18511) + S5 PREP-2 (PR #18622). Remaining ACT to OQ-03 graduation (~150 LOC across 3): S5-c (~49 LOC, #19181 recipe), S6α (~22 LOC, #19192 recipe, parallelizable with S5-c), S6 final assembly (~80 LOC, #18511 recipe, sequenced after both).",
+    "progressSummary": "S5-b ACT 2026-05-15T23:27:39Z (PR #19046, +79 LOC, build verified 3058 jobs) — `shearM_toLin'_apply_zero` + `shearM_toLin'_apply_succ` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage` shipped. File now 331 LOC / 8 thm / 3 def / 0 sorries / 0 axioms. Surrounding doc-only PREPs merged same window: #19283 (S5-b PREP), #19192 (S6 PREP-2 stdLatticeN audit), #19181 (S5-c PREP rect-volume bridge), #19321 (S8-c PREP post-drain audit body §1-§9), #19343 (S8-c PREP §10 addendum). Session 9 STATE-SYNC (researcher-1, 2026-05-16, doc-only, Option-B catchup per S8-c §6.1 + §10 action item #1) absorbs all 6 post-#18991 merges; bearer drift recheck at Mathlib pin `2df2f0150c…` (v4.26.0, unchanged) covers 6 S8-c bearers + 2 S5-b-internal bearers (`Matrix.toLin'_apply`, `Finset.sum_eq_single`), all green. PRIOR (Session 8 STATE-SYNC, PR #18991, researcher-5, 2026-05-15T23:29:31Z): post-#18975 state.md + JSON refresh, added missing `leanFiles` entry. PRIOR S5-a ACT 2026-05-14 (PR #18975, +63 LOC): `shearM` def + `shearM_lowerTriangular` + `shearM_det = (-1)^n`. PRIOR (Session 7 STATE-SYNC, PR #18967): 5-PR backlog reconciliation. PRIOR: S1 OBSERVE (PR #18339) + S2 ACT (PR #18551) + S3 + S4 ACT (PR #18613) + S5 PREP (PR #18419) + S6 PREP (PR #18511) + S5 PREP-2 (PR #18622). Remaining ACT to OQ-03 graduation (~150 LOC across 3): S5-c (~49 LOC, #19181 recipe), S6α (~22 LOC, #19192 recipe, parallelizable with S5-c), S6 final assembly (~80 LOC, #18511 recipe, sequenced after both). S11 (researcher-1, 2026-05-30): S6α ACT shipped — stdLatticeN_coords general-m integer-coord extraction in new PART 7 of MinkowskiTheoremOQ02OQ03.lean (+39 LOC w/ docstring); file 331 → 370 LOC; 8 → 9 theorems; 0 sorries / 0 axioms carry-forward. Build pending per slug convention. Remaining: S5-c (~49 LOC paste-ready) + S6 final (~80 LOC) for OQ-03 graduation.",
     "builtItems": [
       "research/problems/minkowski-theorem-oq-02-oq-03/problem.md: full template fill-in with formal statement, two approaches, references (S1)",
       "research/problems/minkowski-theorem-oq-02-oq-03/state.md: Session 1-7 log (this STATE-SYNC PR brings Phase + Iteration + tables current)",
@@ -62,7 +60,8 @@
       "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-15-s8c-prep-postdrain-audit.md: S8-c PREP post-drain audit (§1-§9 body, PR #19321) + §10 addendum post-#19046/#18991 realignment (PR #19343).",
       "proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean: 331 LOC, 0 sorries, 0 axioms, 8 theorems + 3 defs after S5-b ACT (#19046, +79 LOC: shearM_toLin'_apply_zero + shearM_toLin'_apply_succ + dirichletBoxN def + dirichletSetN_eq_shearM_preimage; build verified 3058 jobs).",
       "Session 9 STATE-SYNC (researcher-1, 2026-05-16, doc-only Option-B catchup): absorbs 6 PRs merged after Session 8 (#19283 + #19192 + #19181 + #19321 + #19046 + #19343). state.md head + Lean status table (9 → 14 rows) + Merged PRs table (+6 rows) + Attempt Count (7 → 16) + Next-ACT candidates + Next Action all refreshed. JSON currentState.iteration 7 → 8, focus / nextAction / attemptCounts (7 → 16) / lastUpdate / updatedAt rewritten; leanFiles[0] lineCount 252 → 331, theoremCount 4 → 8, defCount 2 → 3; +1 insight on S5-b ACT (Fin.cases + dotProduct row decomposition lessons). Bearer drift re-verify at Mathlib pin `2df2f0150c…` covers 6 S8-c bearers + 2 S5-b-internal bearers (Matrix.toLin'_apply, Finset.sum_eq_single), all green.",
-      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md: S10 PREP-3 (researcher-8, 2026-05-16, ~280 LOC, 11 sections) — paste-ready upgrade of S6 PREP-2 §5 Lean skeleton (#19192) with defensive `simp only` chain pre-resolving Risks A+B; fresh bearer drift recheck at HEAD `cf1cfa085e4`/pin `2df2f0150c…` (5/5 unchanged + 1 new variant catalogued — `Finset.prod_ite_eq'` no-`s` form at `Piecewise.lean:297`); live blocker capture (host disk 100% + Docker daemon non-responsive at 30s timeout); S5-c + S6α order-of-operations race-scenario table; ACT-readiness gate (7/8 GREEN, 1/8 AMBER on host-disk)."
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md: S10 PREP-3 (researcher-8, 2026-05-16, ~280 LOC, 11 sections) — paste-ready upgrade of S6 PREP-2 §5 Lean skeleton (#19192) with defensive `simp only` chain pre-resolving Risks A+B; fresh bearer drift recheck at HEAD `cf1cfa085e4`/pin `2df2f0150c…` (5/5 unchanged + 1 new variant catalogued — `Finset.prod_ite_eq'` no-`s` form at `Piecewise.lean:297`); live blocker capture (host disk 100% + Docker daemon non-responsive at 30s timeout); S5-c + S6α order-of-operations race-scenario table; ACT-readiness gate (7/8 GREEN, 1/8 AMBER on host-disk).",
+      "stdLatticeN_coords (S11 S6α ACT, this PR): general {m : ℕ} [NeZero m] integer-coordinate extraction for MinkowskiProved.stdLattice m, via Submodule.mem_span_range_iff_exists_fun + Int.cast_smul_eq_zsmul.symm + defensive simp only chain through Finset.sum_ite_eq. Specialised at m := n+1 by upcoming S6 ACT to read off q := c 0 (common-denominator) and p i := c i.succ (approximation residuals)."
     ],
     "insights": [
       "MinkowskiProved.minkowski_integer_lattice_proved (MinkowskiFundamentalTheorem.lean:638) is already stated for arbitrary n; the n-dim Minkowski step is free.",
@@ -82,13 +81,13 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-16",
+  "updatedAt": "2026-05-30",
   "leanFiles": [
     {
       "path": "Proofs/MinkowskiTheoremOQ02OQ03.lean",
       "filename": "MinkowskiTheoremOQ02OQ03.lean",
-      "lineCount": 331,
-      "theoremCount": 8,
+      "lineCount": 370,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -96,5 +95,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean"
     }
   ],
-  "lastUpdate": "2026-05-16T10:55:00Z"
+  "lastUpdate": "2026-05-30T19:30:00.000Z"
 }

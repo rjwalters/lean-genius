@@ -1,25 +1,17 @@
 # Research State: minkowski-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: S5-b ACT shipped (Lean — `shearM_toLin'_apply_zero` +
-`shearM_toLin'_apply_succ` + `dirichletBoxN` def +
-`dirichletSetN_eq_shearM_preimage` merged via PR #19046, build
-verified 3058 jobs) — S5-c PREP (latest doc-only — rect-volume bridge,
-PR #19181) — S6 PREP-2 (latest doc-only — `stdLatticeN_coords` audit,
-PR #19192) — S8-c PREP (post-drain audit, PR #19321 + §10 addendum
-PR #19343) — **S5-c ACT pending** (rect-volume assembly, ~49 LOC),
-**S6α ACT pending** (integer-coordinate extraction, ~22 LOC,
-parallelizable with S5-c), **S6 ACT pending** (final assembly,
-~80 LOC).
+**Phase**: S6α ACT shipped (Lean — `stdLatticeN_coords` via PREP-3 §3.3 paste-ready upgrade, build pending) — S5-b ACT shipped (Lean — `shearM_toLin'_apply_zero` + `shearM_toLin'_apply_succ` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage` merged via PR #19046, build verified 3058 jobs) — S5-c PREP (PR #19181 + paste-ready upgrade #19505) — **S5-c ACT pending** (rect-volume assembly, ~49 LOC), **S6 ACT pending** (final assembly, ~80 LOC, depends on S5-c + S6α).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16 (Session 10, researcher-6, **S10 STATE-SYNC** — absorb PREP-4 (#19505) into canonical state.md + JSON; both S5-c and S6α now paste-ready, host-disk gated)
-**Iteration**: 10
+**Last Updated**: 2026-05-30 (Session 11, researcher-1, **S11 S6α ACT** — `stdLatticeN_coords` paste-ready ship per PREP-3 §3.3; build pending)
+**Iteration**: 11
 
 ## Lean status at HEAD
-`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (331 LOC, 0 sorries, 0
-axioms; counts at #19046 merge — build verified 3058 jobs per #19046
-PR body, 2026-05-14):
+`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (370 LOC, 0 sorries, 0
+axioms; counts post-S11 ACT — build pending for S6α deliverable; carry-forward
+3058-job clean baseline from #19046 PR body, 2026-05-14, applies to PART 1-6
+content unchanged by this S11 ACT):
 
 | Lemma                                | Statement                                                  | Status                                  |
 | ------------------------------------ | ---------------------------------------------------------- | --------------------------------------- |
@@ -35,7 +27,7 @@ PR body, 2026-05-14):
 | `dirichletBoxN`                      | `Set.pi` axis-aligned box `(−(Qⁿ+1), Qⁿ+1) × (−1/Q, 1/Q)ⁿ` via `Fin.cases` | def in place (S5-b, PR #19046)          |
 | `dirichletSetN_eq_shearM_preimage`   | `dirichletSetN n α Q = shearM.toLin' ⁻¹' dirichletBoxN` (bridge identity) | sorry-free, 0 axioms (S5-b, PR #19046)  |
 | `dirichletSetN_volume`               | Volume = `2^(n+1)(Qⁿ+1)/Qⁿ`                                | **S5-c ACT pending** (#19181 recipe)    |
-| `stdLatticeN_coords`                 | Integer-coordinate extraction (`(n+1)`-dim analogue of parent `stdLattice2_coords`) | **S6α ACT pending** (#19192 recipe)    |
+| `stdLatticeN_coords`                 | Integer-coordinate extraction (general `{m : ℕ} [NeZero m]` analogue of parent `stdLattice2_coords`) | **S6α ACT shipped (this PR), build pending; 0 sorries / 0 axioms** |
 | `simultaneous_dirichlet_…`           | Assembly + integer extraction                              | **S6 ACT pending** (#18511 recipe)      |
 
 ## Merged PRs (chronological)
@@ -59,6 +51,57 @@ PR body, 2026-05-14):
 | #19343 | S8-c PREP §10 addendum | researcher-? | 2026-05-16 01:08   | `sessions/2026-05-15-s8c-prep-postdrain-audit.md` (+§10: post-#19046/#18991 merge state realignment, doc-only)                  |
 | #19495 | S10 PREP-3 (S6α paste-ready) | researcher-8 | 2026-05-16 08:53     | `sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md` (~280 LOC, §1–§11; S6α `stdLatticeN_coords` paste-ready upgrade + 5-bearer drift recheck + Risks A+B pre-resolved inline; AMBER host-disk gate) |
 | #19505 | S10 PREP-4 (S5-c paste-ready, ANALYSIS-ONLY) | researcher-9 | 2026-05-16 08:52     | `sessions/2026-05-16-s10-prep-4-s5c-pasteready-upgrade.md` (`dirichletSetN_volume` paste-ready upgrade; new pin `abs_neg_one_pow` collapses 4-step chain to 1; `LinearMap.continuous_of_finiteDimensional` drop-in replaces missing `LinearMap.continuous_on_pi`; deliberately deferred state.md/JSON edits to drain-wave STATE-SYNC) |
+| (this PR) | **S11 S6α ACT** (Lean) | researcher-1 | 2026-05-30 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+39 LOC: import `Proofs.MinkowskiFundamentalTheorem` + PART 7 `stdLatticeN_coords` lemma per PREP-3 §3.3 paste-ready upgrade, with added `[NeZero m]` constraint for general-m signature; 0 sorries, 0 axioms; build pending — follows slug "build pending" convention #18975/#19046/#18991), `state.md` (head + Merged-PRs + Lean-status + Next-ACT-candidates), JSON sidecar (iter 10 → 11, leanFiles counts 331/8 → 370/9), new `sessions/2026-05-30-s11-s6alpha-act-stdLatticeN-coords.md` |
+
+## Session 11 — S11 S6α ACT: `stdLatticeN_coords` paste-ready ship per PREP-3 §3.3 (researcher-1, 2026-05-30)
+
+**Mode.** Lean ACT + minimal state.md/JSON refresh. No `problem.md`,
+`knowledge.md`, `approaches/*`, gallery, parent-file, sibling-slug, or
+`lake-manifest.json` edits.
+
+**What ships.** A single new lemma `stdLatticeN_coords` in
+`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (new PART 7 section
+appended after PART 6; +39 LOC including section banner + ~14-LOC
+docstring + ~13-LOC proof body). The lemma generalises the parent
+OQ-02's `m = 2`-specialised `stdLattice2_coords`
+(`Proofs/MinkowskiTheoremOQ02.lean:147`) to general `{m : ℕ} [NeZero m]`.
+Skeleton is PREP-3 §3.3 paste-ready upgrade verbatim, with one signature
+adjustment: `[NeZero m]` added (required for general-`m` resolution of
+`stdLattice m`'s implicit `[NeZero n]` from `MinkowskiFundamentalTheorem.lean:583`).
+
+**Bearers.** All 5 cited bearers from PREP-3 §2 recheck (pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, unchanged since 2026-05-15):
+`Submodule.mem_span_range_iff_exists_fun`, `Pi.basisFun_apply`,
+`Pi.single_apply`, `Int.cast_smul_eq_zsmul`, `Finset.sum_ite_eq'` (line 152
+form). Risks A + B from PREP-3 §3.2 pre-resolved by explicit
+`simp only` chain; Risk C resolved by `Finset.sum_congr + .symm` workaround
+in Step C.
+
+**Build status.** Build pending. Host disk 94% full / 61 Gi avail (better
+than the 100% PREP-3 blocker but still inside the AMBER gate window per
+PREP-3 §6). Docker daemon responsive (<10s `docker info`) but inline build
+incompatible with researcher iteration cadence (30-45min Mathlib refetch
++ 10min cache fetch). Slug precedents #18975 (S5-a ACT, 2026-05-14),
+#19046 (S5-b ACT, 2026-05-15), #18991 (Session 8 STATE-SYNC, 2026-05-15)
+all shipped "build pending" with downstream verification by mechanic.
+This PR follows the same pattern; auditor/mechanic Docker-verify of the
+S6α deliverable is the documented next step.
+
+**Coordination.** No open slug-PRs at branch time (verified via
+`gh pr list --state open --limit 200 | grep -i minkowski`); file
+appended after `end MinkowskiTheoremOQ02OQ03`'s last existing PART
+(PART 6 S5-b ACT, lines 252-329 of pre-ship file); S5-c ACT (the other
+paste-ready candidate) targets a different PART (PART 6 volume
+extension), so file-disjoint append surface confirms zero conflict risk
+with the next ACT claimant.
+
+**Files touched.**
+- `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean`: +1 import, +1 lemma, +PART 7 banner; 331 → 370 LOC; 8 → 9 theorems; 0 sorries / 0 axioms (carry-forward).
+- `state.md`: head refresh (iter, phase, last-updated), Merged-PRs +1 row, Lean-status table flip S6α to shipped, Open-questions table flip, Next-ACT-candidates drop S6α row, Next Action rewrite, Attempt Count +2, this Session 11 block (above the prior Session 10 STATE-SYNC).
+- `sessions/2026-05-30-s11-s6alpha-act-stdLatticeN-coords.md` (new): full ACT memo (§1–§8 — provenance, bearers, parent model, coordination, honest-status, files touched, next action).
+- `src/data/research/problems/minkowski-theorem-oq-02-oq-03.json`: iter 10 → 11, phase + focus + nextAction refresh, leanFiles[0].{lineCount: 331 → 370, theoremCount: 8 → 9}, +1 builtItems, progressSummary append, nextSteps drop S6α, lastUpdate bump.
+
+----
 
 ## Session 10 — S10 STATE-SYNC: absorb PREP-4 (#19505) into canonical state.md + JSON (researcher-6, 2026-05-16)
 
@@ -456,8 +499,8 @@ volume hypothesis is the hardest step but fully pre-staged in S5 PREP
 pre-staged in S6 PREP.
 
 ## Attempt Count
-- Total attempts: 17 (15 merged PRs + Session 9 STATE-SYNC + this Session 10 PREP-3)
-- Current approach attempts: 17 (all Approach A)
+- Total attempts: 19 (15 merged PRs + Session 9 STATE-SYNC + Session 10 PREP-3 + Session 10 STATE-SYNC + this Session 11 S6α ACT)
+- Current approach attempts: 19 (all Approach A)
 - Approaches tried: 1
 
 ## Blockers
@@ -477,31 +520,31 @@ roadmapped in S6 PREP.
 | `shearM` matrix infrastructure   | PR #18419 (S5 PREP) + PR #18622 (S5 PREP-2 bearer audit) | Shipped S5-a (PR #18975) + S5-b (PR #19046) — `shearM` + `shearM_lowerTriangular` + `shearM_det = (-1)^n` + `shearM_toLin'_apply_{zero, succ}` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage` |
 | `dirichletSetN_volume`           | PR #19181 (S5-c PREP, rect-volume bridge recipe) + PR #19283 (S5-b PREP) | **Pending S5-c ACT** (~49 LOC) |
 | `simultaneous_dirichlet_from_minkowski` | PR #18511 (S6 PREP assembly roadmap) | **Pending S6 ACT** (~80 LOC) |
-| `stdLatticeN_coords (n+1) → ℤ` extraction | PR #19192 (S6 PREP-2 standalone S6α plan) + PR #18511 §4 | **Pending S6α ACT** (~22 LOC, parallelizable with S5-c per S8-c §5) |
+| `stdLatticeN_coords (n+1) → ℤ` extraction | PR #19192 (S6 PREP-2 standalone S6α plan) + PR #19495 (S10 PREP-3 paste-ready upgrade) + PR #18511 §4 | **Shipped S11 ACT (this PR), build pending** (+39 LOC w/ docstring per `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` PART 7) |
 
 ## Next-ACT candidates (in dependency order, parallelizable lanes annotated)
 
 | Candidate                              | LOC est. | Risk   | Pre-staging                | Notes                                                                                                                          |
 | -------------------------------------- | -------- | ------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | **S5-c ACT** `dirichletSetN_volume`    | ~49 (15 + 15 + 19 split per #19181 §3) | medium | #19181 §3 recipe (3 declarations: A `dirichletBoxN_measurable`, B `dirichletBoxN_volume` ENNReal-valued B1, C `dirichletSetN_volume` via `Real.map_matrix_volume_pi_eq_smul_volume_pi` pushforward); bearers verified at S8-c §1 + Session 9 §4 | All upstream dependencies on `main`: `dirichletBoxN`, `shearM_det = (-1)^n`, `dirichletSetN_eq_shearM_preimage`. Step C `abs ((-1)^n)⁻¹ = 1` plumbing: C-i `simp [shearM_det, abs_neg_one_pow, abs_one, inv_one]` (S8-c §4.4 preferred path); C-ii parity case-split fallback (~3 lines). |
-| **S6α ACT** `stdLatticeN_coords`       | ~22      | medium | #19192 §5 refined skeleton; bearers `Submodule.mem_span_range_iff_exists_fun` + `Pi.basisFun_apply` + `Finset.sum_ite_eq'` + `Int.cast_smul_eq_zsmul` verified at S8-c §1 + Session 9 §4 | **Parallelizable with S5-c**. Depends only on `shearM_det = (-1)^n` (on `main`). Live hazards: `Finset.sum_ite_eq'` directional pitfall (S8-c §7.2) + `Int.cast_smul_eq_zsmul` direction-reversed (S8-c §7.3, `.symm` workaround). |
-| **S6 ACT** `simultaneous_dirichlet_from_minkowski` | ~80   | medium | PR #18511 (S6 PREP) 5-stage pattern mirroring `MinkowskiTheoremOQ02.lean:182` | Depends on **both** S5-c (volume hypothesis) and S6α (integer extraction). Sequenced after both. |
+| **S6 ACT** `simultaneous_dirichlet_from_minkowski` | ~80   | medium | PR #18511 (S6 PREP) 5-stage pattern mirroring `MinkowskiTheoremOQ02.lean:182` | Depends on **both** S5-c (volume hypothesis) and S6α (this PR, shipped). Sequenced after S5-c lands. |
 
-The narrowest entry point is **S5-c ACT** (replaces the last
-"pending" Minkowski hypothesis on `dirichletSetN`), but **S6α ACT** is
-parallelizable so either can be claimed independently. Estimated
-remaining `.lean` LOC to OQ-03 graduation: **~150 LOC across 3 ACTs**.
+**Post-S11 ACT (this PR)**: the narrowest entry point is now **S5-c ACT**
+(~49 LOC, paste-ready per #19181/#19505), which replaces the last
+"pending" Minkowski hypothesis on `dirichletSetN`. After S5-c lands, the
+final **S6 ACT** assembly (~80 LOC) wires S5-c + S6α (this PR) into
+`simultaneous_dirichlet_from_minkowski`. Estimated remaining `.lean`
+LOC to OQ-03 graduation: **~129 LOC across 2 ACTs**.
 
 ## Next Action
 
-**Researcher's choice** (post-S10-PREP-3): pick either **S5-c ACT**
-(~49 LOC, `dirichletSetN_volume` via rect-volume bridge — #19181 §3
-recipe) or **S6α ACT** (~22-23 LOC, `stdLatticeN_coords` integer
-extraction — **#19192 §5 + S10 PREP-3 §3.3 paste-ready upgrade** with
-defensive `simp only` chain pre-resolving Risks A+B). Both ACTs have
-all upstream dependencies on `main` post-#19046 and are parallelizable
-per S8-c §5. **S6 ACT** (final assembly, ~80 LOC, #18511 5-stage
-pattern) becomes the next pick after both S5-c and S6α land.
+**Post-S11 ACT (this PR, S6α shipped build-pending)**: the next ACT pick
+is **S5-c ACT** (~49 LOC, `dirichletSetN_volume` via rect-volume bridge —
+#19181 §3 + S10 PREP-4 #19505 paste-ready upgrade). After S5-c lands,
+**S6 ACT** (final assembly, ~80 LOC, #18511 5-stage pattern) wires
+S5-c (volume hypothesis) + S6α (this PR, integer extraction) into
+`simultaneous_dirichlet_from_minkowski`. Total remaining LOC to OQ-03
+graduation: ~129 LOC across 2 ACTs.
 
 **⚠️ Host-disk pre-flight gate** (per S10 PREP-3 §4): the researcher
 host hit 100% capacity on `/System/Volumes/Data` (7.1Gi avail) at

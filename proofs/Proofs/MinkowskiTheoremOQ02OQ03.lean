@@ -80,6 +80,7 @@ import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Tactic
+import Proofs.MinkowskiFundamentalTheorem
 
 namespace MinkowskiTheoremOQ02OQ03
 
@@ -327,5 +328,43 @@ theorem dirichletSetN_eq_shearM_preimage (n : ℕ) (α : Fin n → ℝ) (Q : ℕ
       simp only [Fin.cases_succ, Set.mem_Ioo] at hk
       rw [shearM_toLin'_apply_succ] at hk
       exact abs_lt.mpr hk
+
+-- ============================================================
+-- PART 7: Integer-coordinate extraction (S6α ACT — this revision)
+-- ============================================================
+
+open MinkowskiProved in
+/-- **Integer coordinates for `stdLattice m`.** Any point in the standard
+integer lattice `ℤᵐ ⊆ ℝᵐ` has integer coordinates, packaged as a function
+`Fin m → ℤ`.
+
+This is the n-dim generalisation of the parent OQ-02's
+`stdLattice2_coords` (`Proofs/MinkowskiTheoremOQ02.lean:147`, stated for
+`m = 2`). The proof pattern is the same: membership in the ℤ-span of the
+standard basis gives integer coefficients via
+`Submodule.mem_span_range_iff_exists_fun`; rewriting `zsmul` as
+`ℤ-cast`-scaled `ℝ`-smul via `Int.cast_smul_eq_zsmul` (v4.26.0 modern
+form, replacing the older `zsmul_eq_smul_cast`); and coordinate-wise
+extraction collapses the sum via `Finset.sum_ite_eq'`.
+
+Specialised at `m := n + 1` in the upcoming
+`simultaneous_dirichlet_from_minkowski` (S6 ACT) to read off
+`q := c 0` (common-denominator coordinate, after Minkowski extracts a
+lattice point) and `p i := c i.succ` (the i-th approximation residual). -/
+lemma stdLatticeN_coords {m : ℕ} [NeZero m] (x : stdLattice m) :
+    ∃ c : Fin m → ℤ, ∀ i : Fin m, (x : Fin m → ℝ) i = (c i : ℝ) := by
+  have hmem : (x : Fin m → ℝ) ∈
+      Submodule.span ℤ (Set.range (Pi.basisFun ℝ (Fin m))) := x.2
+  rw [Submodule.mem_span_range_iff_exists_fun] at hmem
+  obtain ⟨c, hc⟩ := hmem
+  have hc_real : (x : Fin m → ℝ) = ∑ i : Fin m, (c i : ℝ) • Pi.basisFun ℝ (Fin m) i := by
+    rw [← hc]
+    refine Finset.sum_congr rfl (fun i _ ↦ ?_)
+    exact (Int.cast_smul_eq_zsmul (R := ℝ) (c i) (Pi.basisFun ℝ (Fin m) i)).symm
+  refine ⟨c, fun i ↦ ?_⟩
+  rw [hc_real]
+  simp only [Finset.sum_apply, Pi.smul_apply, Pi.basisFun_apply,
+             Pi.single_apply, smul_ite, smul_zero, smul_eq_mul, mul_one,
+             Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 end MinkowskiTheoremOQ02OQ03
