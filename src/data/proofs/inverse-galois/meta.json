@@ -267,6 +267,36 @@
       "targetId": "nth-root-irrational-oq-01",
       "relationship": "depends-on",
       "description": "Imports Eisenstein irreducibility and nth root irrationality infrastructure used for proving polynomial irreducibility in Galois group computations"
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "extends",
+      "description": "**Direct sub-entry: the non-solvable frontier classification.** Proves the complete bidirectional solvability classification $S_n$ solvable $\\iff n \\leq 4$ and $A_n$ solvable $\\iff n \\leq 4$, certifies $A_5$ as simple-perfect-non-solvable, develops Galois fixed-field degree formulas, and states the full Inverse Galois Conjecture as a `sorry`. The structural complement to this parent's Shafarevich axiomatization: this parent says *every solvable group is realizable* (existence by class field theory); the sub-entry says *the boundary of solvability is sharp at $n = 4$* (the structural classification that determines which finite groups Shafarevich's hypothesis covers). Together they give the parent entry's Wiedijk #71 problem its complete formal scaffold up to the open non-solvable cases."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-05",
+      "relationship": "complementary",
+      "description": "**Shafarevich's theorem axiomatized — the positive existence half of the Inverse Galois Problem on the solvable side.** Where this parent entry states the general IGP as a Wiedijk problem and axiomatizes the Shafarevich result in passing, `abel-ruffini-galois-extensions-oq-05` is the focused entry: axiomatizes `shafarevich_inverse_galois` (every finite solvable $G$ is $\\text{Gal}(L/\\mathbb{Q})$ for some Galois $L$), derives 7 corollaries (cyclic, abelian, $S_3$, $S_4$, subgroup-closed, quotient-closed, $S_5$ obstruction), and documents the 500+ pages of class field theory the axiom encapsulates. The sub-entry `abel-ruffini-galois-extensions-oq-05-oq-01` further refines this by proving the cyclic case unconditionally (Dirichlet + Galois fixed fields) and isolating a single conductor-disjointness axiom for the general abelian case. The three entries together give the IGP its positive Shafarevich half (this entry's hypothesis to those entries' construction)."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-04",
+      "relationship": "foundational",
+      "description": "**Jordan-Hölder uniqueness for groups — the structural prerequisite for the IGP's solvability hypothesis.** This entry's Wiedijk #71 problem asks 'which finite groups are Galois groups over $\\mathbb{Q}$?' Shafarevich's positive answer for solvable groups (axiomatized in the parent file) requires `IsSolvable G` to be a well-defined property *of $G$* — independent of any chosen normal series. Jordan-Hölder uniqueness, formalized in `abel-ruffini-galois-extensions-oq-04` via Mathlib's `JordanHolderLattice` typeclass (0 axioms, 0 sorries), guarantees exactly this: the composition-factor multiset of $G$ is an invariant of $G$. Without Jordan-Hölder, the predicate `IsSolvable G` would depend on the chosen series, and the Shafarevich classification would not be a statement about $G$ at all. The sub-entry also formalizes the Birkhoff-Ore lattice-theoretic foundation (1936, 1940) that motivates Mathlib's abstract typeclass design — the three `JordanHolderLattice` axioms are the normality-decorated analogues of the modular-lattice axioms needed to mimic Birkhoff's proof in the non-modular subgroup lattice."
+    },
+    {
+      "targetId": "inverse-galois-a5",
+      "relationship": "complementary",
+      "description": "**Concrete $A_5$ realization — the gallery's primary non-solvable witness.** Realizes $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via Vandermonde-discriminant analysis. Sits outside Shafarevich's territory ($A_5$ is non-solvable) — this is exactly the *positive ad-hoc construction* needed to extend the IGP beyond the solvable fragment Shafarevich settles axiomatically. Together with `abel-ruffini-oq-04-oq-01` ($S_5$ via $x^5 - 4x + 2$) and `inverse-galois-oq-06` (twin $A_5$ formalization via Sylow theory), gives the parent IGP entry its concrete non-solvable witnesses for the smallest interesting case."
+    },
+    {
+      "targetId": "inverse-galois-d4",
+      "relationship": "complementary",
+      "description": "**Concrete solvable realization — $D_4 \\cong \\text{Gal}(X^4 - 2/\\mathbb{Q})$ via Eisenstein + $\\mathbb{R}$-embedding obstruction (27 theorems, 0 axioms, 0 sorries).** Where Shafarevich's theorem (this entry's axiom) asserts $D_4$ is realizable abstractly, `inverse-galois-d4` exhibits the explicit polynomial witness and matches the radical tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}, i)$ to the composition series $D_4 \\triangleright \\langle r \\rangle \\triangleright \\langle r^2 \\rangle \\triangleright \\{e\\}$ step-for-step. This is the canonical solvable test case where the abstract/constructive gap (keyInsight #8 of `abel-ruffini-galois-extensions-oq-05`) is closed."
+    },
+    {
+      "targetId": "inverse-galois-oq-02",
+      "relationship": "extends",
+      "description": "**$M_{23}$ — the central remaining open case in the IGP.** Formalizes the Mathieu group $M_{23}$ ($|M_{23}| = 10{,}200{,}960 = 2^7 \\cdot 3^2 \\cdot 5 \\cdot 7 \\cdot 11 \\cdot 23$), proving it perfect, non-solvable, and beyond Shafarevich's reach. $M_{23}$ is the *only* of the 26 sporadic simple groups whose realizability over $\\mathbb{Q}$ remains open as of 2026 — all 25 others (including the Monster, via Borcherds 1989-92) have been realized via Belyi/rigidity techniques. $M_{23}$ resists realization because it has only one rational rigid generating triple in the standard Belyi sense, and the associated genus-0 Hurwitz space does not produce a $\\mathbb{Q}$-rational point. This sub-entry quantifies the open problem by formalizing $M_{23}$'s order factorization, perfection, and non-solvability — the structural certificates any realization must respect. The parent IGP entry's Wiedijk #71 problem statement gets its sharpest formal articulation here: 'modulo $M_{23}$, the sporadic-simple fragment of the IGP is settled.'"
     }
   ],
   "references": [
