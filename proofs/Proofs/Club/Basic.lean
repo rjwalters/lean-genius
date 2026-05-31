@@ -127,7 +127,7 @@ them directly once it imports `Proofs.Club.Basic`). -/
 /-- Every function is vacuously regressive on the empty set. -/
 theorem IsRegressive.empty {f : Ordinal → Ordinal} :
     IsRegressive f (∅ : Set Ordinal) :=
-  fun _ h _ => absurd h (Set.not_mem_empty _)
+  fun _ h _ => absurd h (Set.notMem_empty _)
 
 /-- Regressivity is anti-monotone under set inclusion: if `f` is regressive
 on `T` and `S ⊆ T`, then `f` is regressive on `S`. -/
