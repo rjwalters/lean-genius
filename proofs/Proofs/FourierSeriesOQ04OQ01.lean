@@ -408,6 +408,39 @@ private theorem coeFn_finset_sum_haarT2
     refine (Lp.coeFn_add (f k) _).trans ?_
     exact (Filter.EventuallyEq.refl _ (⇑(f k))).add ih
 
+/-! ## S2e step 1 (contingency) — `haarT2 = volume` bridge on `Fin 2 → AddCircle 1`
+
+The S2e ACT recipe's step 1 includes a "haarT2/volume contingency" (per
+`research/problems/fourier-series-oq-04-oq-01/state.md`): the Mathlib engine
+`hasSum_mFourier_series_L2` (in `Mathlib.Analysis.Fourier.AddCircleMulti`,
+verified at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` aka v4.26.0) is
+stated over `L²(UnitAddTorus d) = (d → UnitAddCircle) → ℂ`, where the L² space
+uses the **default `volume` measure** on `Fin 2 → AddCircle 1`. This file's
+`haarT2` is defined as the product of `haarAddCircle` (the normalised Haar
+measure). To invoke the Mathlib engine on our `haarT2`-stated theorems we
+need the measure-equality bridge.
+
+The arithmetic is trivial because `T = 1`: the scaling factor
+`ENNReal.ofReal 1 = 1` in `volume_eq_smul_haarAddCircle` collapses, so
+`volume = haarAddCircle` on `AddCircle 1`, and `volume_pi` (a `rfl` lemma)
+extends this to the product. -/
+
+/-- **`haarT2 = volume`** — the product Haar measure on `𝕋²` equals the
+    standard `volume` measure on `Fin 2 → AddCircle 1`.
+
+    Combines `AddCircle.volume_eq_smul_haarAddCircle` (1D scaling identity
+    `volume = ENNReal.ofReal T • haarAddCircle`) with `ENNReal.ofReal_one`,
+    `one_smul`, and `volume_pi` (a `rfl` lemma:
+    `volume = Measure.pi (fun _ => volume)` on a `Pi` type). At `T = 1`
+    the scaling is trivial. -/
+theorem haarT2_eq_volume : haarT2 = (volume : Measure T2) := by
+  have key : (AddCircle.haarAddCircle : Measure (AddCircle (1 : ℝ))) = volume := by
+    rw [AddCircle.volume_eq_smul_haarAddCircle, ENNReal.ofReal_one, one_smul]
+  show Measure.pi (fun _ : Fin 2 => (AddCircle.haarAddCircle : Measure (AddCircle (1 : ℝ))))
+       = (volume : Measure T2)
+  simp_rw [key]
+  rfl
+
 end
 
 end FourierSeriesOQ04OQ01

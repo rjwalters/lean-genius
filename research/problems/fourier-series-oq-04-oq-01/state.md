@@ -2,11 +2,67 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-30 (S10 ACT — `coeFn_finset_sum_haarT2` helper landed)
-**Iteration**: 9
-**Last Update**: 2026-05-30 (researcher-1) — **S10 ACT step-2**: `coeFn_finset_sum_haarT2` private helper landed as a sorry-free / axiom-free theorem (~30 LOC including section docstring). Discharges step 2 of the S7 audit §4 recipe (the Mathlib-gap `Lp.coeFn_finset_sum` helper, specialised to `Lp ℂ 2 haarT2`). Combined with S9's cofinality bearer (step 3, MERGED PR #21131), 2 of 6 recipe steps are now done. The remaining S2e ACT scope shrinks to ~30-55 LOC (steps 1+4+5+6); the `eLpNorm`-form close is a tractable single-iteration target.
+**Since**: 2026-05-31 (S11 ACT — `haarT2_eq_volume` bridge landed)
+**Iteration**: 10
+**Last Update**: 2026-05-31 (researcher-1) — **S11 ACT step-1-contingency**: `haarT2_eq_volume` measure-equality bridge landed as a sorry-free / axiom-free **public** theorem (~33 LOC including section docstring). Discharges **step 1 contingency** of the S7 audit §4 recipe (the haarT2/volume measure disambiguation). The Mathlib engine `hasSum_mFourier_series_L2` (in `Mathlib.Analysis.Fourier.AddCircleMulti` at pin v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with the **default `volume` measure** on `Fin 2 → AddCircle 1`. Our `haarT2` is `Measure.pi (fun _ => haarAddCircle)`. The bridge enables invoking the Mathlib engine on our `haarT2`-stated theorems. Combined with S9 (cofinality, step 3) and S10 (`Lp.coeFn_finset_sum` helper, step 2), **3 of 6 recipe steps are now landed**. Remaining S2e ACT scope shrinks to ~25-45 LOC (steps 1-setup + 4 + 5 + 6); the `eLpNorm`-form close remains a tractable single-iteration target.
 
 ## Current Focus
+
+S11 ACT step-1-contingency (researcher-1, 2026-05-31) — **ACT mini-task delivering
+the `haarT2 = volume` bridge** of the S7 audit §4 recipe (step 1 contingency,
+3-5 LOC budgeted; actual ~33 LOC including section docstring). Adds one
+sorry-free, axiom-free, **public** theorem:
+
+- `haarT2_eq_volume : haarT2 = (volume : Measure T2)`
+  — the measure-equality bridge on `Fin 2 → AddCircle 1`. Proof:
+  `AddCircle.volume_eq_smul_haarAddCircle` (AddCircle.lean:92, **rfl**)
+  states `volume = ENNReal.ofReal T • haarAddCircle`; at `T = 1`,
+  `ENNReal.ofReal 1 = 1` and `(1 : ℝ≥0∞) • μ = μ` via `one_smul`, so
+  `volume = haarAddCircle` on `AddCircle 1`. The product side: `volume_pi`
+  (Pi.lean:652, **also rfl**) gives `(volume : Measure (∀ i, α i)) =
+  Measure.pi (fun _ => volume)`. Combining: `Measure.pi (fun _ => haarAddCircle)
+  = Measure.pi (fun _ => volume) = volume` (the last step by `volume_pi.symm`,
+  rfl).
+
+  Tactics: `show Measure.pi (fun _ : Fin 2 => (haarAddCircle : Measure (AddCircle (1 : ℝ))))
+  = (volume : Measure T2)` (display goal explicitly to avoid namespace
+  shadowing on `Measure.pi`), then `simp_rw [key]` where `key :
+  haarAddCircle = volume` (rewrites under the `fun _ =>` binder), then
+  `rfl`. No new sorries, no new axioms.
+
+**Key Mathlib finding (this iter)**: the `volume = haarAddCircle` collapse
+at `T = 1` is *immediate* from a single `rfl` lemma (`volume_eq_smul_haarAddCircle`)
+plus the trivial scaling `ENNReal.ofReal 1 = 1` and `one_smul`. No
+`MeasureSpace` instance hijinks, no `withDensity`, no `pi_pi_eq` rewriting
+required. The S7 audit §2.5 had flagged this as the "haarT2/volume errata"
+that the S2f PREP (#18545) addressed at the spec level; this S11 ACT
+delivers the corresponding Lean lemma in 4 tactic lines.
+
+**S2e ACT scope after this iteration**: step 1 contingency ✅ done; step 2
+(`coeFn_finset_sum`) ✅ done (S10); step 3 (cofinality) ✅ done (S9).
+Remaining recipe = step 1 (Setup imports, 3-5 LOC — note: `import Mathlib`
+already pulls `AddCircleMulti` so this may be a no-op; verify at next ACT)
++ step 4 (Bridge `sphPartialSum` → Lp finset-sum, 15-25 LOC) + step 5 (cite
+`hasSum_mFourier_series_L2`, 5-10 LOC) + step 6 (close `eLpNorm`-form via
+`Lp.norm_def`, 5-10 LOC) = **25-45 LOC**. A future single-iteration close
+is now genuinely tractable, with three of the four trickiest bearer
+helpers already landed and verified.
+
+**Build status**: Docker-built and verified (researcher-1, 2026-05-31,
+worktree HEAD ~`e36a09a3` for this branch; cached cache-get + ~3 min
+elaboration; only the pre-existing `sphPartialSum_L2_norm_converge` sorry
+warning at line 148; no new warnings from the bridge addition). Updated
+Lean file: `proofs/Proofs/FourierSeriesOQ04OQ01.lean` (413 → 446 lines,
+11 → 12 theorems; +1 sorry-free public theorem in a new "S2e-step1-contingency"
+section after `coeFn_finset_sum_haarT2`). Gallery meta-json line/theorem
+counts synced; new `haart2-volume-bridge` section added with `startLine:
+411`, `endLine: 443`; `originalContributions` extended.
+
+Full forensics in `sessions/2026-05-31-s11-act-step1-contingency-haart2-volume.md`.
+
+---
+
+## Previous Focus — S10 ACT step-2 (2026-05-30, researcher-1, MERGED PR #21252)
 
 S10 ACT step-2 (researcher-1, 2026-05-30) — **ACT mini-task delivering
 the `Lp.coeFn_finset_sum` helper** of the S7 audit §4 recipe (step 2,
