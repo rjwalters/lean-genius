@@ -445,4 +445,171 @@ theorem d4Equiv_preserves_levelSet {t u : ClosedTour} {k : ℕ}
   rw [← d4Equiv_preserves_obliqueCount h]
   exact ht
 
+/-!
+## S8: D4 multiplication law and `d4Equiv` transitivity
+
+S7 gave reflexivity and symmetry of `d4Equiv`. **Transitivity** requires a
+multiplication law `d4Mul g₂ g₁ : Bool × Fin 4` satisfying
+`applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s)`. This lifts via
+`List.map_map` (parent's `map_applyD4_comp`) to `applyD4Tour_mul`, and then
+to `d4Equiv_trans` as an existential combinator.
+
+### Composition formula
+
+Recall `applyD4 (b, k) s = rotateSquareN k (if b then reflectSquare s else s)`.
+
+* **Outer non-reflecting** (`b₂ = false`): rotations compose,
+  `d4Mul (false, k₂) (b₁, k₁) = (b₁, (k₁ + k₂) % 4)`.
+* **Outer reflecting** (`b₂ = true`): the outer reflection conjugates the
+  inner rotation via `reflectSquare ∘ rotateSquareN k₁ = rotateSquareN
+  ((4 - k₁) % 4) ∘ reflectSquare`, and the reflection bits flip. So
+  `d4Mul (true, k₂) (b₁, k₁) = (!b₁, (k₂ + (4 - k₁)) % 4)`.
+
+### Proof strategy
+
+We first prove two pure-rotation/reflection helpers:
+
+* `rotateSquareN_add` — rotation composition.
+* `reflect_rotateN_conjugate` — conjugation of rotation by reflection.
+
+Each is a `fin_cases`-driven coordinate computation closed by `omega`.
+Then `applyD4_mul` is a 4-case split on `(b₂, b₁)` using these helpers,
+avoiding the full 4 × 4 × 2 × 2 = 64-case grid.
+
+`applyD4Tour_mul` lifts via the parent's `map_applyD4_comp` plus
+pointwise `applyD4_mul`. `d4Equiv_trans` then packages two existential
+witnesses with `d4Mul`. Finally `d4Equiv_equivalence` and the matching
+`Setoid ClosedTour` bundle the relation.
+
+This sets up S9: a `Group (Bool × Fin 4)` structure (with `d4Mul` and
+`d4Inv`) and a `MulAction (Bool × Fin 4) ClosedTour` via `applyD4Tour` —
+the bearer of Mathlib's `MulAction.card_orbit_dvd_card_group` for the
+mod-8 divisibility headline. The associativity proof for `Group` requires
+one more 8-case bash on the rotation triple, deferred to S9.
+-/
+
+/-- Composition of rotations: rotating by `m` after `n` equals rotating by
+    `(m.val + n.val) % 4`. The proof bashes 16 cases on `(m, n)`. -/
+theorem rotateSquareN_add (m n : Fin 4) (s : Square) :
+    rotateSquareN m (rotateSquareN n s) =
+    rotateSquareN ⟨(m.val + n.val) % 4, by omega⟩ s := by
+  fin_cases m <;> fin_cases n <;>
+    simp only [rotateSquareN, rotateSquare90, Fin.val_mk, Fin.isValue] <;>
+    ext <;> simp only [Fin.ext_iff] <;> omega
+
+/-- Reflection conjugates rotation: `reflectSquare ∘ rotateSquareN k =
+    rotateSquareN ((4 - k.val) % 4) ∘ reflectSquare`. The proof bashes 4
+    cases on `k`. -/
+theorem reflect_rotateN_conjugate (k : Fin 4) (s : Square) :
+    reflectSquare (rotateSquareN k s) =
+    rotateSquareN ⟨(4 - k.val) % 4, by omega⟩ (reflectSquare s) := by
+  fin_cases k <;>
+    simp only [rotateSquareN, rotateSquare90, reflectSquare,
+               Fin.val_mk, Fin.isValue] <;>
+    ext <;> simp only [Fin.ext_iff] <;> omega
+
+/-- D4 multiplication encoded on `Bool × Fin 4`. Defined by pattern
+    matching on the outer reflection bit to make `applyD4_mul`'s case
+    split reduce cleanly. -/
+def d4Mul : Bool × Fin 4 → Bool × Fin 4 → Bool × Fin 4
+  | (false, k₂), (b₁, k₁) => (b₁, ⟨(k₁.val + k₂.val) % 4, by omega⟩)
+  | (true,  k₂), (b₁, k₁) => (!b₁, ⟨(k₂.val + (4 - k₁.val)) % 4, by omega⟩)
+
+/-- Specialization of `applyD4` to the non-reflecting case. Reduces to a
+    pure rotation by `rfl` (the `if (false : Bool) then` branch is
+    definitionally the `else` branch). -/
+private lemma applyD4_false (k : Fin 4) (s : Square) :
+    applyD4 (false, k) s = rotateSquareN k s := rfl
+
+/-- Specialization of `applyD4` to the reflecting case. Reduces to
+    rotation after reflection by `rfl`. -/
+private lemma applyD4_true (k : Fin 4) (s : Square) :
+    applyD4 (true, k) s = rotateSquareN k (reflectSquare s) := rfl
+
+/-- **D4 composition law**: `applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s)`.
+    4-case split on `(b₂, b₁)`; the rotation arithmetic reduces via
+    `rotateSquareN_add` and `reflect_rotateN_conjugate`, with `congr` +
+    `omega` closing the residual Fin 4 equalities. -/
+theorem applyD4_mul (g₂ g₁ : Bool × Fin 4) (s : Square) :
+    applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s) := by
+  obtain ⟨b₂, k₂⟩ := g₂
+  obtain ⟨b₁, k₁⟩ := g₁
+  cases b₂ with
+  | false =>
+    cases b₁ with
+    | false =>
+      -- d4Mul (false, k₂) (false, k₁) = (false, ⟨(k₁+k₂)%4, _⟩)
+      simp only [d4Mul, applyD4_false]
+      rw [rotateSquareN_add k₂ k₁]
+      congr 1
+      apply Fin.ext
+      simp only [Fin.val_mk]
+      omega
+    | true =>
+      -- d4Mul (false, k₂) (true, k₁) = (true, ⟨(k₁+k₂)%4, _⟩)
+      simp only [d4Mul, applyD4_false, applyD4_true]
+      rw [rotateSquareN_add k₂ k₁]
+      congr 1
+      apply Fin.ext
+      simp only [Fin.val_mk]
+      omega
+  | true =>
+    cases b₁ with
+    | false =>
+      -- d4Mul (true, k₂) (false, k₁) = (true, ⟨(k₂+(4-k₁))%4, _⟩)  (since !false = true)
+      simp only [d4Mul, applyD4_false, applyD4_true, Bool.not_false]
+      rw [reflect_rotateN_conjugate k₁ s,
+          rotateSquareN_add k₂ ⟨(4 - k₁.val) % 4, by omega⟩]
+      congr 1
+      apply Fin.ext
+      simp only [Fin.val_mk]
+      omega
+    | true =>
+      -- d4Mul (true, k₂) (true, k₁) = (false, ⟨(k₂+(4-k₁))%4, _⟩)  (since !true = false)
+      simp only [d4Mul, applyD4_false, applyD4_true, Bool.not_true]
+      rw [reflect_rotateN_conjugate k₁ (reflectSquare s),
+          reflect_twice,
+          rotateSquareN_add k₂ ⟨(4 - k₁.val) % 4, by omega⟩]
+      congr 1
+      apply Fin.ext
+      simp only [Fin.val_mk]
+      omega
+
+/-- **D4 composition law on tours**: lifts `applyD4_mul` pointwise to the
+    `List.map (applyD4 _)` definition of `applyD4Tour`, via the parent's
+    `map_applyD4_comp`. -/
+theorem applyD4Tour_mul (g₂ g₁ : Bool × Fin 4) (t : ClosedTour) :
+    applyD4Tour (d4Mul g₂ g₁) t = applyD4Tour g₂ (applyD4Tour g₁ t) := by
+  apply (closedTour_eq_iff _ _).mpr
+  show t.squares.map (applyD4 (d4Mul g₂ g₁)) =
+       (t.squares.map (applyD4 g₁)).map (applyD4 g₂)
+  rw [map_applyD4_comp]
+  congr 1
+  funext s
+  -- goal after Function.comp reduction:
+  --   applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s)
+  exact applyD4_mul g₂ g₁ s
+
+/-- **Transitivity of `d4Equiv`**: completes the equivalence-relation
+    framework. Witness combinator `d4Mul g₂ g₁` from the two existentials,
+    closed by `applyD4Tour_mul`. -/
+theorem d4Equiv_trans {t u v : ClosedTour}
+    (h₁ : d4Equiv t u) (h₂ : d4Equiv u v) : d4Equiv t v := by
+  obtain ⟨g₁, hg₁⟩ := h₁
+  obtain ⟨g₂, hg₂⟩ := h₂
+  refine ⟨d4Mul g₂ g₁, ?_⟩
+  rw [applyD4Tour_mul, hg₁, hg₂]
+
+/-- `d4Equiv` is an equivalence relation. -/
+theorem d4Equiv_equivalence : Equivalence d4Equiv :=
+  ⟨d4Equiv_refl, d4Equiv_symm, d4Equiv_trans⟩
+
+/-- The D4 quotient setoid on `ClosedTour`. The orbits of `applyD4Tour`
+    correspond to the equivalence classes; this is the structural input
+    for the planned mod-8 divisibility argument
+    (`obliqueDistribution k = 8 · (#free orbits) + Σ (8 / stab)`). -/
+def d4Setoid : Setoid ClosedTour where
+  r := d4Equiv
+  iseqv := d4Equiv_equivalence
+
 end KnightsTourOblique
