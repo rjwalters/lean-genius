@@ -213,6 +213,26 @@
       "description": "Proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$, providing one of the two non-solvable entries in this file's census (Part VIII)"
     },
     {
+      "targetId": "inverse-galois-a5",
+      "relationship": "complementary",
+      "description": "**Concrete $A_5$ realization — fills the second non-solvable cell of this file's census (Part VIII).** Realizes $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via Vandermonde-discriminant analysis (the discriminant is a perfect square, so $\\text{Gal} \\subseteq A_5$) combined with a single axiom for the lower-bound order. Where this file proves the *abstract* structural classification $A_n$ solvable $\\iff n \\leq 4$ and certifies $A_5$ as the minimal non-solvable group (`a5_not_solvable`, `a5_commutator_eq_top`), `inverse-galois-a5` exhibits the concrete polynomial whose Galois group *is* the $A_5$ — turning this entry's qualitative obstruction into a constructive instance. The companion entry `inverse-galois-oq-06` formalizes the same realization via Sylow theory; together with `abel-ruffini-oq-04-oq-01` (already cross-referenced, $S_5$), these three entries comprise the gallery's complete non-solvable realization census."
+    },
+    {
+      "targetId": "inverse-galois-d4",
+      "relationship": "complementary",
+      "description": "**Concrete solvable realization — $D_4 \\cong \\text{Gal}(X^4 - 2/\\mathbb{Q})$.** This file proves $S_4$ solvable abstractly (Part I via `inferInstance`); `inverse-galois-d4` realizes the *solvable* dihedral subgroup $D_4 \\leq S_4$ concretely via Eisenstein at $p = 2$ + an $\\mathbb{R}$-embedding obstruction (axiom-free, 0 sorries, 27 theorems). Composition series $D_4 \\triangleright \\langle r \\rangle \\cong \\mathbb{Z}/4 \\triangleright \\langle r^2 \\rangle \\cong \\mathbb{Z}/2 \\triangleright \\{e\\}$ matches the radical tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}) \\subset \\mathbb{Q}(\\sqrt[4]{2}, i)$ step-for-step. Together with `inverse-galois-f20` ($F_{20} \\cong \\text{Gal}(X^5 - 2/\\mathbb{Q})$, the maximal solvable transitive subgroup of $S_5$), provides explicit *solvable* witnesses sitting just below the file's non-solvable boundary at $A_5$ — exhibiting the constructive content of this entry's $n \\leq 4$ classification."
+    },
+    {
+      "targetId": "inverse-galois-f20",
+      "relationship": "complementary",
+      "description": "**Concrete solvable degree-5 realization — $F_{20} = \\mathbb{Z}/5 \\rtimes \\mathbb{Z}/4 \\cong \\text{Gal}(X^5 - 2/\\mathbb{Q})$.** Frobenius group of order 20, the *maximal solvable transitive subgroup of $S_5$* (by Galois's prime-degree theorem). This file's Part VIII census lists $F_{20}$ as realized; `inverse-galois-f20` supplies the explicit polynomial witness ($X^5 - 2$ has Galois group $F_{20}$ via Eisenstein irreducibility + the cyclotomic compositum $\\mathbb{Q}(\\zeta_5, \\sqrt[5]{2})$). Structurally significant: $F_{20}$ sits exactly at the solvable/non-solvable threshold this file's classification establishes — it's the largest Galois group of a *quintic* polynomial reachable by radicals. The next degree-5 step (a single derived-length increment) would land at $A_5$ (this file's Part III obstruction) or $S_5$ (already cross-referenced via `abel-ruffini-oq-04-oq-01`), both non-radical."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions-oq-05",
+      "relationship": "complementary",
+      "description": "**The positive Shafarevich-axiomatic counterpart to this file's classification.** This file establishes the *structural classification* $S_n, A_n$ solvable $\\iff n \\leq 4$ (the *boundary* of solvability) and certifies $A_5$ as the minimal non-solvable obstruction. `abel-ruffini-galois-extensions-oq-05` axiomatizes the *positive realizability* theorem (Shafarevich 1954: every finite solvable group is realizable as $\\text{Gal}(L/\\mathbb{Q})$) — closing the existential side of the inverse Galois problem precisely on the solvable groups this file's classification identifies. Together the two entries map the inverse Galois landscape over $\\mathbb{Q}$ at the solvability boundary: this file establishes *which* finite groups (in the $S_n, A_n$ families) are solvable; the Shafarevich entry asserts *every* solvable finite group is realizable. The non-solvable companion `inverse-galois-oq-02` (Mathieu group $M_{23}$) marks the remaining open frontier — the last sporadic simple group whose realizability over $\\mathbb{Q}$ remains undecided."
+    },
+    {
       "targetId": "sylow-theorems",
       "relationship": "foundational",
       "description": "Sylow theorems provide structural constraints on finite groups that complement the solvability analysis — for instance, the Sylow subgroups of $A_5$ (of orders 4, 3, and 5) help establish that $A_5$ has no normal subgroups of intermediate order"
