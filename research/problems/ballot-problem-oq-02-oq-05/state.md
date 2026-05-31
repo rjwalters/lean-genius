@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S8 — R4 false-statement fix applied: Helper-1 added, R4 signature takes `(h : (hitSet ω a).Nonempty)`, proof skeleton in place with named sub-sorry `hτ`; build pending under G9 lake self-loop)
+**Phase**: ACT (S8 — R4 false-statement fix applied: Helper-1 added, R4 signature takes `(h : (hitSet ω a).Nonempty)`, proof skeleton in place with named sub-sorry `hτ`; **build VERIFIED via Docker, 7744 jobs successful, 4 declared sorries**)
 **Since**: 2026-05-31 (S8 ACT, T+1d after S7 PREP)
 **Iteration**: 8 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT, this entry)
-**Last Updated**: 2026-05-31T17:30Z
+**Last Updated**: 2026-05-31T18:30Z
 
 ## S8 ACT (researcher-1, 2026-05-31, build pending — G9 lake self-loop)
 
@@ -47,7 +47,15 @@ Applied the paste-ready patch from S7 PREP §3 verbatim:
 | LOW | `Int.le_iff_exists_eq_succ` on ±1 jumps | unchanged from S6 |
 | R6 | `Finset.card_nbij'` assembly using R4 + R5 | unchanged from S6 |
 
-**Build status**: NOT verified — G9 lake self-loop active in worktree (`proofs/.lake` symlinks to main-repo's `proofs/.lake` which symlinks back to itself). Per memory pattern, ships under `(build pending — G9 lake self-loop)` qualifier. Leaf-only file (0 importers), bearer pins 0-drift since S5/S6/S7, S6 ACT was Docker-verified 2026-05-15 with 7744 jobs successful at the base commit.
+**Build status**: **VERIFIED via Docker — 7744 jobs successful, single-file target `Proofs.BallotProblemOQ02OQ05`, 4 declared sorries (R4-sub `hτ` + R5 + LOW + R6), 0 errors**. The G9 lake self-loop is empirically inert for Docker builds (confirmed in a parallel S11 INFRA-VERIFY for `prob-method-lovasz-local-oq-01`, same session): Docker `-v` mount on `lean-mathlib-cache:/workspace/proofs/.lake/build` overrides the host's broken `.lake` symlink chain.
+
+**3 bugs caught at first build attempt** (2 preexisting from S6 ACT skeleton which was never actually built, 1 introduced in this S8 ACT). All three fixed:
+
+1. **partialSumBool** had `if h : i.val < k.val` with unused `h` (warning) → `if i.val < k.val` (S6 ACT bug)
+2. **reflectAt** depends on noncomputable `firstHitFin` but was itself `def` (compile error) → `noncomputable def reflectAt` (S6 ACT bug)
+3. **R4 proof body**: S7 PREP §3 tactic `unfold reflectAt; rw [hτ]` failed because `unfold` rewrites the inner `reflectAt` inside `firstHitFin (reflectAt ω a) a` too (S8 ACT paste error) → use `show` to expose only the outer `reflectAt`'s def via definitional equality, then `rw [hτ]`. Required explicit parens around `!`-expression in inner `show` due to `!` precedence interaction with `=`.
+
+Empirical R4 proof body now ~22 LOC (was estimated ~10 LOC pre-S7); slug file 269 LOC total. The "(build pending — G9 lake self-loop)" qualifier in this PR's initial commit is obsolete; the follow-up fix-and-verify commit corrects to VERIFIED status.
 
 **Bearer 0-drift**: lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since S5 PREP §4. Two new core bearers (`Nat.not_le_of_lt`, `Bool.not_not`) — both Lean core, no Mathlib pin needed.
 

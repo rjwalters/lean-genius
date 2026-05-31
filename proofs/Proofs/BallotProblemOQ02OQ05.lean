@@ -156,7 +156,7 @@ variable {n : ℕ}
 /-- Partial sum at index `k` of a `Fin n → Bool` lattice path (`true ↦ +1`,
     `false ↦ -1`). Indexed by `Fin (n+1)` so `k = ⟨n, _⟩` is the endpoint. -/
 def partialSumBool (ω : Fin n → Bool) (k : Fin (n+1)) : ℤ :=
-  ∑ i : Fin n, if h : i.val < k.val then (if ω i then (1 : ℤ) else -1) else 0
+  ∑ i : Fin n, if i.val < k.val then (if ω i then (1 : ℤ) else -1) else 0
 
 /-- The finset of hit-time indices `{k : Fin (n+1) | S_k(ω) = a}`. -/
 def hitSet (ω : Fin n → Bool) (a : ℤ) : Finset (Fin (n+1)) :=
@@ -172,8 +172,9 @@ noncomputable def firstHitFin (ω : Fin n → Bool) (a : ℤ) : Fin (n+1) :=
 /-- Reflection of `ω` past its first hit of level `a`: flip every bit at
     index `≥ τ_a(ω)`. Identity on paths that don't reach `a` (since
     `firstHitFin = ⟨0, _⟩` there and we don't care about those paths in
-    the bijection). -/
-def reflectAt (ω : Fin n → Bool) (a : ℤ) : Fin n → Bool :=
+    the bijection). Marked `noncomputable` because it depends on
+    `firstHitFin` (which uses `Finset.min'`). -/
+noncomputable def reflectAt (ω : Fin n → Bool) (a : ℤ) : Fin n → Bool :=
   fun i => if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i
 
 /-- **R4-helper.** Below the first hit time, reflection is the identity.
@@ -214,12 +215,28 @@ lemma reflectAt_involutive {ω : Fin n → Bool} {a : ℤ}
   have hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a := by
     sorry  -- R4-sub `hτ`: min'-of-hitSet argument; see S7 PREP §3 (6 bullets)
   -- Step 2: pointwise `!!b = b` collapse with first-hit alignment.
+  --
+  -- N.B. we cannot `unfold reflectAt; rw [hτ]` because `unfold` rewrites
+  -- the inner `reflectAt ω a` inside `firstHitFin (reflectAt ω a) a` too,
+  -- eliminating the `reflectAt`-shaped subterm `hτ` needs to match.
+  -- Instead we expose the outer `reflectAt` via `show` (using definitional
+  -- equality), apply `hτ`, then case-split.
   funext i
-  unfold reflectAt
+  show (if (firstHitFin (reflectAt ω a) a).val ≤ i.val
+         then !((reflectAt ω a) i)
+         else (reflectAt ω a) i) = ω i
   rw [hτ]
-  split_ifs with hi
-  · simp [Bool.not_not]
-  · rfl
+  by_cases hi : (firstHitFin ω a).val ≤ i.val
+  · -- ≤ case: outer-if then-branch + inner reflectAt also flips
+    rw [if_pos hi]
+    -- Outer parens needed: `!` notation precedence interacts with `=`
+    show (!(if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i)) = ω i
+    rw [if_pos hi]
+    exact Bool.not_not (ω i)
+  · -- > case: outer-if else-branch, inner reflectAt is identity
+    rw [if_neg hi]
+    show (if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i) = ω i
+    rw [if_neg hi]
 
 /-- **R5** Partial-sum-after-reflection identity at the endpoint.
     If `ω` hits `a` at some `τ ≤ n` (i.e., `(hitSet ω a).Nonempty`), then

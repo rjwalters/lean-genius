@@ -1,10 +1,28 @@
-# S8 ACT — Apply R4 false-statement fix (Helper-1 + revised R4 with sub-sorry)
+# S8 ACT — Apply R4 false-statement fix (Helper-1 + revised R4 with sub-sorry) — BUILD VERIFIED + 3 preexisting/new bugs found-and-fixed
 
 **Researcher**: researcher-1
 **Date**: 2026-05-31
-**Phase**: ACT (Lean change; build deferred under G9 lake self-loop qualifier)
+**Phase**: ACT (Lean change; **build VERIFIED via Docker — 7744 jobs successful, single-file Proofs.BallotProblemOQ02OQ05 target built clean modulo 4 declared sorries**)
 **Predecessor**: S7 PREP (researcher-1, 2026-05-30) — counterexample documented; paste-ready fix queued
 **Successor**: S9 — discharge `hτ` sub-sorry (~15 LOC), then R5 / LOW / R6 chain
+
+## **UPDATE 2026-05-31T18:30Z**: G9 lake self-loop hypothesis EMPIRICALLY DISPROVEN; build VERIFIED
+
+A parallel session memo for `prob-method-lovasz-local-oq-01` (S11 INFRA-VERIFY, this researcher, this session) ran `./proofs/scripts/docker-build.sh Proofs.MoserTardos` on origin/main MoserTardos.lean — **build succeeded (7743 jobs)** despite the worktree's `proofs/.lake` self-symlink. Mechanism: `docker-build.sh:127` mounts `lean-mathlib-cache` directly onto `/workspace/proofs/.lake/build` inside the container, providing a fresh writable directory regardless of host symlink state.
+
+After confirming G9 is inert for Docker builds, the S8 ACT Lean changes were also Docker-verified. The first build attempt revealed **3 bugs** (2 preexisting from S6 ACT skeleton which was never actually built, 1 introduced by this S8 ACT). All three fixed in this PR; re-build clean.
+
+**Bugs found and fixed during this S8 ACT session**:
+
+| # | Bug | Origin | Fix |
+|---|-----|--------|-----|
+| 1 | `partialSumBool` had `if h : i.val < k.val` with unused `h` binding (warning) | S6 ACT skeleton, never build-verified | Replace `if h :` with `if` (remove unused binding) |
+| 2 | `def reflectAt` uses noncomputable `firstHitFin` but was itself `def` (compile error) | S6 ACT skeleton, never build-verified | Mark `reflectAt` as `noncomputable def` |
+| 3 | My R4 proof body's `unfold reflectAt; rw [hτ]` failed — `unfold` eliminates `reflectAt` inside `firstHitFin (reflectAt ω a) a` too, so `rw [hτ]` can't match its pattern | This S8 ACT (paste-ready S7 PREP §3 sketch error) | Use `show` to expose only the outer `reflectAt`'s definition (via definitional equality), then `rw [hτ]`. Required explicit parens around `!`-expression in inner `show` due to `!` precedence interaction with `=` |
+
+The S7 PREP §3 paste-ready sketch's tactic `funext + unfold reflectAt + rw [hτ] + split_ifs + simp [Bool.not_not]` was incorrect because `unfold` is too aggressive. The empirically-verified working tactic skeleton (~22 LOC; see §5 below) uses `show + rw [hτ] + by_cases + rw [if_pos/neg] + show + rw + Bool.not_not`. The PASTE-READY discharge sketch in S7 PREP §3 should be updated; the actual proof body shipped is the empirically-verified one.
+
+The "(build pending — G9 lake self-loop)" qualifier used in the initial PR description and commit message is **OBSOLETE**. This PR is **build-verified** (Docker, 7744 jobs successful, single file target `Proofs.BallotProblemOQ02OQ05`, 4 declared sorries warnings, 0 errors).
 
 ## Executive summary
 
@@ -43,22 +61,41 @@ lemma reflectAt_eq_below_firstHit
   exact if_neg (Nat.not_le_of_lt hi)
 ```
 
-**Revised R4** (27 LOC including docstring + history block):
+**Revised R4** (empirically-verified body, ~35 LOC including docstring + history block + N.B. comment):
 ```lean
 lemma reflectAt_involutive {ω : Fin n → Bool} {a : ℤ}
     (h : (hitSet ω a).Nonempty) :
     reflectAt (reflectAt ω a) a = ω := by
   have hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a := by
     sorry  -- R4-sub `hτ`: min'-of-hitSet argument; see S7 PREP §3 (6 bullets)
+  -- N.B. we cannot `unfold reflectAt; rw [hτ]` because `unfold` rewrites
+  -- the inner `reflectAt ω a` inside `firstHitFin (reflectAt ω a) a` too,
+  -- eliminating the `reflectAt`-shaped subterm `hτ` needs to match.
+  -- Instead we expose the outer `reflectAt` via `show` (definitional eq),
+  -- apply `hτ`, then case-split.
   funext i
-  unfold reflectAt
+  show (if (firstHitFin (reflectAt ω a) a).val ≤ i.val
+         then !((reflectAt ω a) i)
+         else (reflectAt ω a) i) = ω i
   rw [hτ]
-  split_ifs with hi
-  · simp [Bool.not_not]
-  · rfl
+  by_cases hi : (firstHitFin ω a).val ≤ i.val
+  · rw [if_pos hi]
+    -- Outer parens needed: `!` notation precedence interacts with `=`
+    show (!(if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i)) = ω i
+    rw [if_pos hi]
+    exact Bool.not_not (ω i)
+  · rw [if_neg hi]
+    show (if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i) = ω i
+    rw [if_neg hi]
 ```
 
 R4's docstring carries the S7 PREP history block (counterexample, root cause, downstream-zero-cost justification) so a future reader doesn't need to chase the session memo.
+
+**N.B. on tactic choice** (~3 LOC of comments inside the proof):
+
+- The S7 PREP §3 sketch `funext + unfold reflectAt + rw [hτ] + split_ifs + simp [Bool.not_not]` is **incorrect**: `unfold reflectAt` rewrites BOTH occurrences (outer and inner-inside-`firstHitFin`), eliminating the `reflectAt`-shaped subterm that `hτ` would rewrite. Build failed on first attempt with `Tactic 'rewrite' failed: Did not find an occurrence of the pattern`.
+- Working alternative: `show` to expose the outer `reflectAt`'s definition via definitional equality (does NOT touch inner occurrences). Then `rw [hτ]` succeeds. Then `by_cases` on `hi`, and inside each branch, `rw [if_pos hi]` / `rw [if_neg hi]` followed by another `show` to expose the inner `reflectAt`.
+- The inner `show` requires **explicit outer parens** around the `!`-expression (`show (!(...)) = ω i` not `show !(...) = ω i`) — the `!` notation's precedence interacts with `=` such that the latter is parsed as `!((...) = ω i)` (Decidable.decide form), triggering a `show`-target mismatch with `(!reflectAt ω a i) = ω i`.
 
 ## 2. Sorry inventory after S8
 
@@ -75,15 +112,20 @@ Net sorry count unchanged. Qualitative gain: R4 is now mathematically truthful.
 
 ## 3. Build verification status
 
-**Not verified**: G9 lake self-loop active in worktree.
+**VERIFIED via Docker** (updated 2026-05-31T18:30Z; supersedes the initial "build pending" status in the early commit message):
 
-- `ls -la proofs/.lake` → symlink to `/Users/rwalters/GitHub/lean-genius/proofs/.lake`
-- `readlink -f proofs/.lake` exits non-zero (self-loop detected by `readlink`'s loop limit)
+```
+./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05
+=> Build completed successfully (7744 jobs).
+=> ⚠ [7744/7744] Built Proofs.BallotProblemOQ02OQ05 (18s)
+=> 4 declared sorry warnings (R4-sub hτ + R5 + LOW + R6); 0 errors.
+```
 
-This is the known main-repo `.lake` self-symlink condition (see project memory:
-[lake-self-loop-main-repo](../../../../.claude/memory/project_lake_self_loop_main_repo.md)).
-Ship under `(build pending — G9 lake self-loop)` qualifier per the standard
-memory pattern; do not fix from inside a research PR.
+G9 lake self-loop is empirically inert for Docker builds (verified via parallel session S11 INFRA-VERIFY for `prob-method-lovasz-local-oq-01`). The Docker `-v` mount on `lean-mathlib-cache:/workspace/proofs/.lake/build` overrides the host's broken `.lake` symlink chain.
+
+Previous "(build pending — G9 lake self-loop)" qualifier in the initial commit message is **obsolete** and superseded by this Docker-verified status. The early commit on this PR carries the obsolete qualifier; the follow-up fix-and-verify commit (this update) corrects it.
+
+Lake-pinned Mathlib SHA at verify-time: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0, byte-identical since S5 PREP § 4).
 
 **Risk-acceptance criteria**:
 
