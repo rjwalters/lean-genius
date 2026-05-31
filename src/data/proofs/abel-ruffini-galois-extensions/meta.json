@@ -89,7 +89,8 @@
       "Galois theory: Galois group, radical extensions, Kummer theory; specifically that $\\alpha$ is solvable by radicals iff $\\text{Gal}(f_\\alpha/F)$ is solvable",
       "Lean 4 / Mathlib typeclasses: `IsSolvable`, `IsSimpleGroup`, `IsGalois` — solvability and simplicity are typeclass predicates whose instances Lean derives automatically via `inferInstance`",
       "Decision procedures in Lean 4: `decide` (kernel evaluator, used here for groups up to $|S_5| = 120$ and $|A_5| = 60$) vs `native_decide` (compiles to native code, used from $|A_6| = 360$ and $|S_6| = 720$ upward, including $|S_7| = 5040$ and $|S_8| = 40320$)",
-      "Klein four-group $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$: the unique proper non-trivial normal subgroup of $A_4$ giving the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors"
+      "Klein four-group $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$: the unique proper non-trivial normal subgroup of $A_4$ giving the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ with abelian factors",
+      "Derived series and commutator subgroups: $G^{(0)} = G$, $G^{(k+1)} = [G^{(k)}, G^{(k)}]$ as the canonical solvability witness — Mathlib's `Group.derivedSeries` enumerates this iterated commutator chain via `commutator G`, and `IsSolvable` is precisely the predicate $\\exists n,\\, G^{(n)} = 1$. Every `inferInstance` proof in this file ultimately discharges against this derived-series termination."
     ]
   },
   "conclusion": {
