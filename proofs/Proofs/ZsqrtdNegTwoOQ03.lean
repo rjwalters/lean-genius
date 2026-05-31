@@ -48,11 +48,23 @@ S3 ACT — Euclidean structure (lines ≈ 209 onward):
 * `instEuclideanDomain` — assembled from the above via
   `EuclideanDomain.r = (norm ·).natAbs <`.
 
+S4 ACT (incremental — Step 1 + `mul_conj` projections):
+
+* `mul_conj_re`, `mul_conj_im` — `@[simp]` projection lemmas for
+  `z · conj z` (absorbed from the stranded
+  `research/zsqrtd-neg-two-oq03-s3-act-1778799640` branch per S8 PREP §1
+  and S12 PREP §6).
+* `legendreSym_neg_three` — Step 1 of the splitting argument:
+  `(-3/p) = (-1/p) · (3/p)` via `legendreSym.mul`.
+
 ## What is **not** in this file
 
-The splitting / extraction pipeline (`(-3/p) = (p/3)` via quadratic
-reciprocity, then `4p = (2a - b)² + 3 b²` parity case-split) is
-deferred to S4-S5.
+Steps 2 (`(-3/p) = 1 ↔ p ≡ 1 mod 3` via QR + `at_neg_one`) and 3
+(extract `α, β ∈ Eisenstein` with `p = α · β` and neither a unit) are
+deferred to a later iteration; the paste-ready skeleton lives in
+`research/problems/zsqrtd-neg-two-oq-03/sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md`
+§5 (with 1 acknowledged sorry on the `exists_sq_eq_neg_three_iff`
+derivation step).
 
 The Euclidean structure is the foundation for the splitting argument:
 once `Eisenstein` is a Euclidean domain it is automatically a UFD, so
@@ -240,6 +252,14 @@ theorem mul_conj (z : Eisenstein) : z * conj z = ⟨norm z, 0⟩ := by
   · simp only [mul_re, conj_re, conj_im, norm]; ring
   · simp only [mul_im, conj_re, conj_im]; ring
 
+/-- `re`-projection of `z · conj z`: the lattice-projection identity. -/
+@[simp] theorem mul_conj_re (z : Eisenstein) : (z * conj z).re = norm z := by
+  rw [mul_conj]
+
+/-- `im`-projection of `z · conj z`: the conjugate-product is real. -/
+@[simp] theorem mul_conj_im (z : Eisenstein) : (z * conj z).im = 0 := by
+  rw [mul_conj]
+
 /-- Division in `ℤ[ω]` by rounding the rational quotient
 `(x · conj y) / N(y)` componentwise to the nearest integer. -/
 noncomputable instance instDiv : Div Eisenstein :=
@@ -422,5 +442,24 @@ noncomputable instance instEuclideanDomain : EuclideanDomain Eisenstein :=
     mul_left_not_lt := fun a b hb0 => not_lt_of_ge (norm_le_norm_mul_left a hb0) }
 
 end Eisenstein
+
+/-! ## S4 splitting argument — Step 1: `(-3/p) = (-1/p) · (3/p)`
+
+This is the first ingredient of the splitting argument toward
+`sq_add_three_sq_of_prime_one_mod_three`: the Legendre-symbol identity
+`(-3/p) = (-1/p) · (3/p)`, derived from the multiplicativity of the
+Legendre symbol (`legendreSym.mul`). Steps 2 (`(-3/p) = 1 ↔ p ≡ 1 mod 3`)
+and 3 (extract `α, β ∈ Eisenstein` with `p = α · β` and neither a unit)
+are deferred to a later iteration; see
+`research/problems/zsqrtd-neg-two-oq-03/sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md`
+§5 for the full paste-ready S4 ACT skeleton. -/
+
+/-- Multiplicativity step: `(-3/p) = (-1/p) · (3/p)`. First lemma of the
+S4 splitting argument. The hypothesis `[Fact p.Prime]` is required by
+`legendreSym`; no other primality hypothesis (e.g. `p ≠ 2`, `p ≠ 3`) is
+needed at this step. -/
+lemma legendreSym_neg_three (p : ℕ) [Fact p.Prime] :
+    legendreSym p (-3) = legendreSym p (-1) * legendreSym p 3 := by
+  rw [show ((-3 : ℤ) = (-1) * 3) by norm_num, legendreSym.mul]
 
 end Proofs
