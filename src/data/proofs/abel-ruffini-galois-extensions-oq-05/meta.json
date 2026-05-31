@@ -57,6 +57,10 @@
         "relationship": "Concrete realization of the dihedral group D₄ ≅ Gal(X⁴-2/ℚ) over ℚ. D₄ is solvable (derived series D₄ ⊃ ⟨r⟩ ⊃ ⟨r²⟩ ⊃ 1 with cyclic quotients), so its realizability also follows from Shafarevich — but here the witness is given by Eisenstein irreducibility on X⁴-2, an explicit polynomial."
       },
       {
+        "id": "inverse-galois-d4-oq-03",
+        "relationship": "S2 scaffold for the general dihedral-Galois criterion (when is Gal(X^n - a / ℚ) ≅ D_n?): defines `IsDihedralGaloisOfXnMinusA n a` abstractly, states the (n,a)=(4,2) specialization recovering `inverse-galois-d4`, and the Schinzel-Vélez classification (sorry-guarded, awaiting Capelli's irreducibility theorem). Every D_n is solvable, so a complete classification would identify an infinite parametric family of polynomials with constructively solvable Galois groups — the explicit-witness extension of this entry's existential Shafarevich axiom (keyInsight #8 asymmetry; openQuestion #2 explicit S₃/S₄ realizations)."
+      },
+      {
         "id": "inverse-galois-f20",
         "relationship": "Concrete realization of the Frobenius group F₂₀ = ℤ/5 ⋊ ℤ/4 ≅ Gal(X⁵-2/ℚ) over ℚ. F₂₀ is solvable, so realizable via Shafarevich, but here the witness is the explicit polynomial X⁵-2 (whose roots are ζ₅^k·⁵√2 for k=0..4). Together with `inverse-galois-a5` exhibits the degree-5 solvable/non-solvable dichotomy."
       },
@@ -209,6 +213,10 @@
     {
       "proofId": "inverse-galois-d4",
       "relationship": "Concrete realization of the dihedral group D₄ ≅ Gal(X⁴-2/ℚ) over ℚ. D₄ is solvable (derived series D₄ ⊃ ⟨r⟩ ⊃ ⟨r²⟩ ⊃ 1 with cyclic quotients), so its realizability also follows from Shafarevich — but here the witness is given by Eisenstein irreducibility on X⁴-2, an explicit polynomial."
+    },
+    {
+      "proofId": "inverse-galois-d4-oq-03",
+      "relationship": "**Parametric extension of the constructive solvable-Galois track.** S2 scaffold for the general dihedral-Galois criterion: *for which $(n, a)$ is $\\mathrm{Gal}(X^n - a/\\mathbb{Q}) \\cong D_n$?* Defines `IsDihedralGaloisOfXnMinusA n a` abstractly via Mathlib's `Polynomial.SplittingField` and `DihedralGroup`, states the $(n, a) = (4, 2)$ specialization (the `inverse-galois-d4` order-8 result), and the Schinzel-Vélez characterization (1973). Status: 11 theorems, 1 sorry, 0 axioms, 235 lines, sorry-guarded pending Capelli's irreducibility theorem (absent from Mathlib v4.26.0). **Why this matters for Shafarevich.** Every dihedral group $D_n$ is solvable (derived series $D_n \\supset \\langle r \\rangle \\cong \\mathbb{Z}/n \\supset \\{e\\}$ with abelian quotients), so a *complete parametric* Schinzel-Vélez classification would identify an *infinite family* of polynomials $X^n - a$ whose Galois groups are *constructively* solvable — providing the explicit witnesses that this entry's `subgroup_of_solvable_realizable`/`quotient_of_solvable_realizable` corollaries assert abstractly via the Shafarevich axiom. **Sharpening keyInsight #8 (Asymmetry Shafarevich vs Cardano-Ferrari)**: this open question identifies the *next constructive frontier* beyond Cardano (1545) and Ferrari (1545). Where `solution-of-cubic` and `general-quartic` give *single-polynomial* explicit witnesses for $S_3$ and $S_4$, the Schinzel-Vélez criterion would give a *parametric family* of explicit witnesses for every $D_n$ — a strictly richer constructive achievement on the solvable side of the inverse Galois problem. Companion to openQuestion #2 of this file (explicit $S_3$ and $S_4$ realizations in Lean): D4 dihedral is the next degree-of-freedom up, with the Schinzel-Vélez axis classifying the $X^n - a$ slice rather than the $S_n$-vs-other slice."
     },
     {
       "proofId": "inverse-galois-f20",
