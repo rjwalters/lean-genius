@@ -2883,6 +2883,7 @@ import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
 import Proofs.TractatusOntology
+import Proofs.TractatusOntologyHorn
 import Proofs.TractatusQuantifiers
 import Proofs.TriangleAngleSum
 import Proofs.TriangleAngleSumOQ01

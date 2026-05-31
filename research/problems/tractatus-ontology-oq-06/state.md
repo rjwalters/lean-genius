@@ -1,6 +1,35 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S9 STATE-SYNC (this PR, doc-only) — S5/S7/S8 + parent-fix MERGED — S3/S4/S6 ACT UNBLOCKED
+## Phase: S10 ACT (this PR) — Generic `HornModel` constructor (T1a tier)
+
+**New file**: `proofs/Proofs/TractatusOntologyHorn.lean` (123 LOC, 4 defs,
+3 theorems, 0 sorries, 0 axioms). Implements S3 PREP #18417 §7 sequence:
+
+- `HornModel S (cs : List (S × S))` — generic Horn-clause subtype.
+- `HornModel.toWorld`, `HornModel.toWorldModel` — projections.
+- `hornModel_equiv_constrainedWorld` — single-clause case ↔ `ConstrainedWorld`.
+- `hornModel_independence_fails` — generic Horn-tier independence failure.
+- `weatherModel_equiv_hornModel`, `weatherModel_horn_independence_fails` —
+  `weatherModel` exhibited as a `HornModel` instance.
+
+**Resolves R2** (the only remaining unaddressed S1-OBSERVE deferred item
+for the T1a tier).
+
+**Manifest**: single new line `import Proofs.TractatusOntologyHorn` in
+`proofs/Proofs.lean`. No regeneration of unrelated drift.
+
+**Two remaining ACT candidates** (orthogonal, Docker-verifiable):
+
+1. **S4 ACT** — Refines lattice via image-profiles, ~40-80 LOC. PREP #18470.
+2. **S6 ACT** — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC.
+   PREP #18518. Can build on this S10 ACT's `HornModel` signature.
+
+See `sessions/2026-05-30-s10-act-horn-model.md` for full deliverable
+inventory, design rationale, and race-safety note.
+
+---
+
+## Phase: S9 STATE-SYNC (PR #19779, MERGED 2026-05-16) — S5/S7/S8 + parent-fix MERGED — S3/S4/S6 ACT UNBLOCKED
 
 **Lean realisation on `origin/main`** is at **S2-α + S7 ACT + S5 ACT** (`TractatusOntologySpectrum.lean`, **307 LOC, 19 theorems, 4 defs, 0 sorries, 0 axioms**).
 
