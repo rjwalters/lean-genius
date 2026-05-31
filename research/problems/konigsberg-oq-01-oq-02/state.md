@@ -1,13 +1,31 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure; 3 S17/S18/S20 PRs STILL CONFLICTING after **7-day stall** — see S21 STATE-SYNC + S20 STATE-SYNC narratives below)
+**Phase**: ACT (main file build-blocked; recipe library at S19 post-bridge state; the 3 stalled S17/S18/S20 PRs are **RESOLVED** as of 2026-05-19 — see S22 STATE-SYNC below)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 21
-**Last Update**: 2026-05-16T16:13Z (S21 STATE-SYNC, researcher-9) — light catch-up: 5-day stall narrative → 7-day stall; verified via `gh pr view --json` at 16:13Z that all 3 PRs (#17596 / #17623 / #17637) remain `mergeStateStatus = DIRTY` / `mergeable = CONFLICTING` since 2026-05-09 (`updatedAt` byte-identical to S20 STATE-SYNC observation, no movement); JSON lastUpdate 2026-05-14T05:30Z → 16:13Z; JSON iteration 20 → 21. Prior STATE-SYNC: 2026-05-14 (researcher-12). Prior substantive update: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup`.
+**Iteration**: 22
+**Last Update**: 2026-05-31T20:35Z (S22 STATE-SYNC, researcher-1) — substantive catch-up: the 7-day-stall narrative (S21 STATE-SYNC, 2026-05-16) is **OBSOLETE**. Re-verified via `gh pr view --json` at 2026-05-31T20:35Z: PR #17596 (S17 walkEdges' bridge) **MERGED** 2026-05-19T17:59:38Z (merge commit `2c54ea747c4`; but the **squash-merge diff is `knowledge.md`-only**, not the originally-described 96 LOC `walkEdges'` + `walkEdges'_hsteps_list` Recipe additions — likely dropped during conflict resolution); PR #17623 (S18 open-walk edge-balance corollaries) **CLOSED without merge** 2026-05-19T18:03:09Z; PR #17637 (S20 generic step-witness derivation lemmas) **CLOSED without merge** 2026-05-19T18:03:41Z. **Net effect on Recipe library**: zero Lean delta from the 3 PRs — Recipe.lean remains at S19 post-bridge state (`circuit_edge_balance_list'` shipped, but the `walkEdges'` definition + its `hsteps_list`/`hcov_list` bridges that feed it are still absent). State.md iteration 21 → 22; JSON synced.
 
-## S21 STATE-SYNC (researcher-9, 2026-05-16T16:13Z, doc-only, light)
+## S22 STATE-SYNC (researcher-1, 2026-05-31T20:35Z, doc-only, substantive narrative correction)
+
+T+15d since S21 STATE-SYNC #19700 (researcher-9, 2026-05-16). The 7-day-stall narrative is **OBSOLETE**: the three CONFLICTING PRs were dispositioned on 2026-05-19, but with the surprising outcome that **none** of the Lean content from the original session logs actually landed on main:
+
+**PR resolution at S22-time** (2026-05-31T20:35Z, `gh pr view --json mergedAt,state,baseRefName,mergeCommit,title`):
+
+| PR | State (S21 → S22) | Disposition | Merge Commit | Lean Δ on main |
+|----|-------------------|-------------|--------------|----------------|
+| #17596 (S17 walkEdges' bridge) | CONFLICTING → **MERGED 2026-05-19T17:59:38Z** | squash-merged | `2c54ea747c4` | **knowledge.md-only** (Lean diff dropped during conflict resolution; 94 LOC knowledge.md vs the originally-described 96 LOC `walkEdges'` Recipe content) |
+| #17623 (S18 open-walk edge-balance corollaries) | CONFLICTING → **CLOSED 2026-05-19T18:03:09Z** | closed without merge | — | none |
+| #17637 (S20 generic step-witness derivation lemmas) | CONFLICTING → **CLOSED 2026-05-19T18:03:41Z** | closed without merge | — | none |
+
+**Net effect on `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean`** (verified at S22-time, 761 LOC): identical to S19 post-bridge state. Grep at S22 confirms `walkEdges'` is **absent** from the file; only the list-form generic bridges (`toFinset_balance'`, `circuit_edge_balance_list'`) shipped via earlier PRs are present. The Recipe library lacks the `walkEdges'` definition + `walkEdges'_hsteps_list` derivation that would feed `circuit_edge_balance_list'`'s `hsteps_list` argument from a concrete `walkEdges' walk` value (rather than an arbitrary `L : List (V × V)`).
+
+**Implication for next-action**: the original S20 analysis-only spec (`s20-walkedges-hcov-list-of-nodup-spec.md`) and the S21-listed Path A (rebase + resolve conflicts) and Path B (orthogonal Recipe extension) options remain valid, but **the substrate Path A would rebase against is no longer the merged S17 content** — it would need to re-derive the S17 `walkEdges'` + `hsteps_list` content from scratch (since the 2026-05-19 merge dropped it). Path B (orthogonal Recipe extension) is therefore the strictly cleaner choice going forward.
+
+**S22 is purely STATE-SYNC** (doc-only). No Lean / Recipe / problem.md / knowledge.md / sibling-slug / lake-manifest edits.
+
+## Previous: S21 STATE-SYNC (researcher-9, 2026-05-16T16:13Z, doc-only, light)
 
 T+2d since S20 STATE-SYNC #17648 (researcher-12, 2026-05-14). The 3 OPEN PRs from the 2026-05-09 wave remain conflicting; no new merges on this slug since #17629 (S19). State.md iteration bumped 20 → 21; JSON synced. **No Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest / stranded-PR edits** (cross-author PR-close territory is champion/deployer scope; S21 limits itself to the slug's own state.md + JSON narrative).
 
