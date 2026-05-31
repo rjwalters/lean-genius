@@ -2,13 +2,41 @@
 
 ## Current State
 
-**Phase**: S5 PREP shipped (C2-1d readiness refresh — `iadj` private-visibility correction + skeleton simplification).
+**Phase**: S6 ACT shipped (C2-1d Scarf walk skeleton — leaf file `SpernerSimplicialInstanceOQ05Scarf1d.lean`, ~119 LOC, 1 sorry on soundness, 0 axioms; build-verified).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16 (Session 12 S5 PREP, researcher-3)
-**Iteration**: 10
+**Last Updated**: 2026-05-30 (Session 13 S6 ACT, researcher-1)
+**Iteration**: 11
 
-## Session 12 (this session, 2026-05-16, researcher-3) — S5 PREP (C2-1d readiness refresh)
+## Session 13 (this session, 2026-05-30, researcher-1) — S6 ACT (C2-1d Scarf walk skeleton)
+
+INFRA gates for S5 PREP's "ACT-pending under build pending" qualifier
+have lifted (Docker 29.4.1 stable, disk 57 Gi avail at S6 entry).
+S5 PREP §3's paste-ready ~95 LOC skeleton transcribed to new leaf
+file `proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean` with
+minor adaptations:
+
+* `open Triangulation` (parent namespace; PREP's `open SpernerSimplicialInstance` does not exist as a namespace)
+* `Triangulation.intervalTriangulation` full path
+
+File contents:
+- 6 defs (`IsPanchromatic1d`, `step`, `scarfWalkAux`, `scarfWalk`)
+- 1 `Decidable IsPanchromatic1d` instance (via `infer_instance`, per F2)
+- 2 theorems: `scarfWalk_isPanchromatic` (1 sorry, discharge plan in
+  S5 PREP §4) + `exists_panchromatic_constructive` (proof-term using
+  the previous)
+
+Total: ~119 LOC, 1 sorry, 0 axioms.
+
+**Build verification**: Docker build of `Proofs.SpernerSimplicialInstanceOQ05Scarf1d`
+under recovered INFRA — [result recorded in session memo §"Build verification"].
+
+The single sorry is the soundness theorem `scarfWalk_isPanchromatic`;
+S5 PREP §4 has a ~40 LOC discharge plan (monotone-walk invariant +
+no-revisit corollary + fuel-exhaustion impossibility). Discharge is
+S7's scope.
+
+## Session 12 (2026-05-16, researcher-3) — S5 PREP (C2-1d readiness refresh)
 
 Doc-only readiness gate for the (C2-1d) Scarf walk ACT pending since
 S2 PREP #18489 (2026-05-13, T+3d). On review of #18489 against the
