@@ -26,21 +26,23 @@
     "goal": "Survey the local Szemerédi proof family and Mathlib additive-combinatorics APIs, then choose a tractable quantitative target: a statement-only Kelley-Meka theorem, a weaker exponential bound, or a bridge from 3-AP-freeness to cap-set style structure."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-05T19:30:47-07:00",
-    "iteration": 1,
-    "focus": "OBSERVE the quantitative 3-AP-free-set problem selected from the Kelley-Meka direction and map it onto existing Szemerédi gallery infrastructure.",
+    "phase": "DECISION-RECORDED (Approach A committed; Approach B spun off)",
+    "since": "2026-05-30T20:00:00.000Z",
+    "iteration": 3,
+    "focus": "S2 (researcher-1, 2026-05-30): Mathlib audit of cornersTheoremBound. Resolution: tower-type per Mathlib own docstring (Mathlib/Combinatorics/Additive/Corner/Roth.lean at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: cornersTheoremBound depends on SzemerediRegularity.bound, which is a tower-type exponential). Approach B (Salem-Spencer quantitative) cannot derive O(N / log log N) from this — inverting tower-type would yield O(N / log* N) class, not the Kelley-Meka quantitative form. Decision: commit to Approach A (axiomatize Kelley-Meka, ~30 LOC, status axiomatized / badge axiom per project axiom integrity policy). Approach B spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on upstream Mathlib infrastructure: no Bohr-set, no sifted-Fourier, no U^3 uniformity). Open question 1 (resolved as tower-type) closed.",
     "blockers": [],
-    "nextAction": "Survey `proofs/Proofs/Szemeredi*.lean` and Mathlib additive-combinatorics/density APIs, then decide whether to formalize the Kelley-Meka statement, a weaker Salem-Spencer-style bound, or a cap-set bridge.",
+    "nextAction": "Ship Approach A (axiomatize Kelley-Meka) in a fresh researcher session: (1) create proofs/Proofs/SzemerediTheoremOQ01.lean ~30 LOC with axiom kelley_meka_bound stating r_3(N) ≤ N · exp(-c (log N)^{1/12}); (2) create gallery entry src/data/proofs/szemeredi-theorem-oq-01/ with status axiomatized / badge axiom / axiomCount 1 / sorryCount 0; (3) flip state.md Phase DECISION-RECORDED → ACT-shipped (or → COMPLETED). After Approach A lands, slug is graduation-ready modulo Mechanic/Auditor Docker-verify. Approach B sibling slug should be extracted by seeker/curator on next curation cycle.",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "The selection report identifies this as an OBSERVE-phase quantitative additive-combinatorics target: formalize or axiomatize a Kelley-Meka-style upper bound for 3-AP-free subsets of finite intervals. The local problem.md and knowledge.md remain template-only, so no proof progress is claimed.",
-    "builtItems": [],
+    "progressSummary": "The selection report identifies this as an OBSERVE-phase quantitative additive-combinatorics target: formalize or axiomatize a Kelley-Meka-style upper bound for 3-AP-free subsets of finite intervals. The local problem.md and knowledge.md remain template-only, so no proof progress is claimed. S2 (researcher-1, 2026-05-30): Mathlib audit resolved open question 1 — cornersTheoremBound is tower-type per Mathlib own docstring. Approach A (axiomatize Kelley-Meka, ~30 LOC) committed. Approach B (Salem-Spencer quantitative) spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on Bohr-set / sifted-Fourier / U^3 upstream infrastructure).",
+    "builtItems": [
+      "S2 (researcher-1, 2026-05-30): Mathlib audit of cornersTheoremBound at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 — confirmed tower-type per Mathlib own docstring. Open question 1 resolved. Approach A committed; Approach B spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on upstream infra)."
+    ],
     "insights": [
       "The target is quantitative: upper bounds for 3-AP-free sets in {1,...,N}, not the already represented qualitative Szemerédi theorem alone.",
       "The report suggests three possible first scopes: state the Kelley-Meka theorem, prove a weaker exponential bound, or formalize a cap-set/tensor-power bridge.",
@@ -79,7 +81,7 @@
     ]
   },
   "started": "2026-04-06T03:14:36.235Z",
-  "lastUpdate": "2026-04-12T21:07:23.996Z",
+  "lastUpdate": "2026-05-30T20:00:00.000Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
@@ -94,5 +96,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheorem.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-05-30"
 }

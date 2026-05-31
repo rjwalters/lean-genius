@@ -85,9 +85,10 @@ None this session — pure SURVEY, no proof attempts.
 
 ### Open Questions
 
-1. Does `Mathlib.Combinatorics.Additive.Corner.Roth` give a
-   tower-type bound or already a polynomial / quasi-polynomial bound?
-   (Mathlib audit needed before Approach B is committed to.)
+1. ~~Does `Mathlib.Combinatorics.Additive.Corner.Roth` give a
+   tower-type bound or already a polynomial / quasi-polynomial bound?~~
+   **RESOLVED (Session 2, researcher-1, 2026-05-30)**: tower-type.
+   See Session 2 entry below.
 2. Is there any partial Bohr-set work in Mathlib that I missed? The
    discrete-Fourier audit should include
    `Mathlib.Analysis.Fourier.AddCircle` and
@@ -95,3 +96,82 @@ None this session — pure SURVEY, no proof attempts.
 3. Is the existing `axiom`-encoded k≥4 piece in `SzemerediTheorem.lean`
    structurally compatible with adding a parallel `axiom`-encoded
    Kelley–Meka statement, or would they need to live in separate files?
+
+---
+
+## Session 2026-05-30 (Session 2) — Mathlib audit (ORIENT → DECISION)
+
+**Mode**: FRESH-on-existing-survey (Session 1 ORIENT survey + this audit)
+**Outcome**: Open question 1 resolved (tower-type); committed to Approach A; spin-off recommended for Approach B.
+
+### What I did
+
+Fetched `Mathlib/Combinatorics/Additive/Corner/Roth.lean` at pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0; same pin as the
+project's `proofs/lake-manifest.json`). Inspected the definition and
+docstring of `cornersTheoremBound`, the constant Mathlib uses to state
+its Roth-on-`ℕ` corollary `roth_3ap_theorem_nat`.
+
+### Key finding
+
+`cornersTheoremBound` is **explicitly tower-type** per Mathlib's own
+docstring (verbatim):
+
+> *An explicit form for the constant in the corners theorem.*
+>
+> *Note that this depends on `SzemerediRegularity.bound`, which is a
+> tower-type exponential. This means `cornersTheoremBound` is in practice
+> absolutely tiny.*
+
+Definition:
+
+```lean
+noncomputable def cornersTheoremBound (ε : ℝ) : ℕ :=
+  ⌊(triangleRemovalBound (ε / 9) * 27)⁻¹⌋₊ + 1
+```
+
+The downstream `roth_3ap_theorem` uses this constant directly:
+
+```lean
+theorem roth_3ap_theorem (ε : ℝ) (hε : 0 < ε) (hG : cornersTheoremBound ε ≤ card G)
+    (A : Finset G) (hAε : ε * card G ≤ #A) : ¬ ThreeAPFree (A : Set G) := ...
+```
+
+This is **density form**, not the **explicit-constant form** Approach
+B would need. Inverting the dependence to read off `r_3(N) ≤ N · f(N)`
+for some explicit `f` would propagate the tower-type structure
+*through* the inversion, yielding `O(N / log* N)`-class bounds at best
+— not the `O(N / log log N)` (Kelley-Meka) or `O(N / (log N)^{1+c})`
+(Bloom-Sisask) form Approach B targets.
+
+### Decision
+
+**Commit to Approach A** (axiomatize Kelley-Meka, ~30 LOC). Status will
+be `axiomatized`, badge `axiom`. This provides a citeable hook for the
+gallery's Szemeredi family with honest no-content-added framing per the
+project's axiom-integrity policy.
+
+**Approach B**: spin off into sibling `szemeredi-theorem-oq-01-incomplete-01`
+as a BLOCKED slug pending upstream Mathlib infrastructure (Bohr-set,
+sifted-Fourier, U^3 uniformity). Seeker should extract on the next
+curation cycle.
+
+### Recommended next action (researcher next)
+
+Ship Approach A axiomatize in a fresh session:
+
+1. Create `proofs/Proofs/SzemerediTheoremOQ01.lean` (~30 LOC):
+   - Standard Mathlib imports
+   - `axiom kelley_meka_bound : ∀ N : ℕ, 1 ≤ N → r_3 N ≤ N * Real.exp (-c * (Real.log N)^(1/12))` (or the appropriate Mathlib-compatible form)
+   - Comment block referencing Kelley-Meka 2023 and the spin-off sibling slug for Approach B
+2. Create gallery entry `src/data/proofs/szemeredi-theorem-oq-01/`:
+   - `meta.json`: status `axiomatized`, badge `axiom`, axiomCount 1
+   - `annotations.json`, `index.ts` (minimal)
+3. Update slug state.md: Phase DECISION-RECORDED → COMPLETED (or → ACT-shipped pending audit).
+
+### Files modified
+
+- `research/problems/szemeredi-theorem-oq-01/sessions/2026-05-30-s2-mathlib-audit-cornersTheoremBound.md` (new)
+- `research/problems/szemeredi-theorem-oq-01/knowledge.md` — this entry
+- `research/problems/szemeredi-theorem-oq-01/state.md` — Phase / Iteration / Active Approach / Next Action refresh
+- `src/data/research/problems/szemeredi-theorem-oq-01.json` — currentState refresh
