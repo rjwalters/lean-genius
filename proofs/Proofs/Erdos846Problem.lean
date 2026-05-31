@@ -262,7 +262,7 @@ theorem erdos846_finite (A : Set (Fin 2 → ℝ)) (hA : Set.Finite A)
 
 -- ## The Erdős–Nešetřil–Rödl Conjecture (DISPROVED, 2026-05-21)
 
-/-- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, 1992; DISPROVED 2026-05-21):
+/- **Erdős Problem 846** (Erdős–Nešetřil–Rödl, 1992; DISPROVED 2026-05-21):
     Is every infinite ε-non-trilinear subset of ℝ² weakly non-trilinear (a
     finite union of sets with no three collinear)?
 
@@ -288,4 +288,3 @@ theorem erdos846_finite (A : Set (Fin 2 → ℝ)) (hA : Set.Finite A)
     as `weaklyNonTrilinear_implies_eps`. The finite case is proved as
     `erdos846_finite`. The valid range is ε ∈ (0, 1] by
     `isEpsNonTrilinear_eps_le_one`. -/
-example : True := trivial

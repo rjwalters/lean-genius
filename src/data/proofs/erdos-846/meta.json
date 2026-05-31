@@ -27,7 +27,7 @@
     "erdosUrl": "https://erdosproblems.com/846",
     "erdosProblemStatus": "solved",
     "axiomCount": 0,
-    "lineCount": 292,
+    "lineCount": 290,
     "assumptions": "0 axioms, 0 sorries across two Lean files. The prior `axiom ErdosProblem846` (which had asserted the conjecture) has been DROPPED: DeepMind's AlphaProof Nexus settled the conjecture NEGATIVELY on 2026-05-21 (arXiv:2605.22763v1). The refutation lives in the companion file `Proofs/Erdos846ProblemAPN.lean` (`Erdos846APN.target_false`), which constructs an explicit counterexample (the Elekes parametrisation `q(i,j) = (t i + t j, t i² + t i·t j + t j²)` with `t_seq n = 100^(4^n)`). The companion file uses Mathlib's `Collinear ℝ {x, y, z}` predicate; the gallery file uses an `AreCollinear` cross-product characterisation. Both definitions agree on `EuclideanSpace ℝ (Fin 2)` but unifying them is left as future work — for that reason, status is held at `axiomatized` rather than `verified` (no overclaim per the axiom-integrity policy), pending a successful local `docker-build.sh` run. The gallery file (`Erdos846Problem.lean`) retains all elementary proved results: converse direction (weaklyNonTrilinear_implies_eps), finite case (finite_weaklyNonTrilinear, erdos846_finite), ε bounds (isEpsNonTrilinear_eps_le_one, isEpsNonTrilinear_empty_of_eps_gt_one), collinearity symmetry, and pigeonhole principle.",
     "mathlib_version": "4.26.0",
     "theoremCount": 15,
@@ -180,7 +180,7 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 292,
+    "lineCount": 290,
     "axiomCount": 0,
     "theoremCount": 15,
     "definitionCount": 4,
