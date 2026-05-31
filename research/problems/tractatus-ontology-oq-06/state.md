@@ -1,9 +1,49 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S10 ACT (this PR) — Generic `HornModel` constructor (T1a tier)
+## Phase: S11 ACT (this PR) — `EquivModel` / T1b via symmetric Horn closure
 
-**New file**: `proofs/Proofs/TractatusOntologyHorn.lean` (123 LOC, 4 defs,
-3 theorems, 0 sorries, 0 axioms). Implements S3 PREP #18417 §7 sequence:
+**New file**: `proofs/Proofs/TractatusOntologyEquiv.lean` (138 LOC, 3 defs +
+3 theorem-or-Equiv constructions, 0 sorries, 0 axioms, **Docker-verified
+3061 jobs clean**). Implements S6 PREP #18518 §8 sequence:
+
+- `EquivModel S (cs : List (S × S))` — biconditional-constrained subtype.
+- `EquivModel.toWorld`, `EquivModel.toWorldModel` — projections.
+- `equivModel_iso_hornModel_symm` — `EquivModel S cs ≃ HornModel S
+  (cs ++ cs.map Prod.swap)`; the structural iso witnessing T1b ⊆ T1a-symm.
+- `refines_equivModel_hornModel` — T1b refines into T1a sharing the
+  constraint list (strictly more constrained side embeds upward).
+- `equivModel_independence_fails` — biconditional-tier
+  `HasIndependentProfiles` failure under nonempty `cs` with distinct
+  head/tail.
+
+**Closes the last remaining T1-tier deferral** from S1 OBSERVE: the
+"(none yet)" entry in the T1b row of the spectrum table is now
+populated.
+
+**Architecture decision**: S6 PREP §6 Option C — keep both
+`HornModel` and `EquivModel` as named constructors, document the
+subsumption via `equivModel_iso_hornModel_symm`. Lean-side
+ergonomics justifies the named T1b constructor; the iso makes the
+structural subsumption explicit.
+
+**Manifest**: single new line `import Proofs.TractatusOntologyEquiv` in
+`proofs/Proofs.lean`. No regeneration of unrelated drift.
+
+**One remaining ACT candidate** (only):
+
+1. **S4 ACT** — Refines lattice via image-profiles, ~40-80 LOC,
+   PREP #18470. The higher-complexity remaining ACT (Boolean-profile
+   pullback infrastructure for meet/join on `(WorldModel S, Refines)`).
+
+See `sessions/2026-05-31-s11-act-equiv-model.md` for full deliverable
+inventory, design rationale, build verification, and race-safety note.
+
+---
+
+## Phase: S10 ACT — Generic `HornModel` constructor (T1a tier) — MERGED (PR #21272, 2026-05-30)
+
+**File**: `proofs/Proofs/TractatusOntologyHorn.lean` (130 LOC, 4 defs,
+3 theorems, 0 sorries, 0 axioms). Implemented S3 PREP #18417 §7 sequence:
 
 - `HornModel S (cs : List (S × S))` — generic Horn-clause subtype.
 - `HornModel.toWorld`, `HornModel.toWorldModel` — projections.
@@ -12,20 +52,10 @@
 - `weatherModel_equiv_hornModel`, `weatherModel_horn_independence_fails` —
   `weatherModel` exhibited as a `HornModel` instance.
 
-**Resolves R2** (the only remaining unaddressed S1-OBSERVE deferred item
-for the T1a tier).
+**Resolved R2** (the S1-OBSERVE deferred item for the T1a tier).
 
-**Manifest**: single new line `import Proofs.TractatusOntologyHorn` in
-`proofs/Proofs.lean`. No regeneration of unrelated drift.
-
-**Two remaining ACT candidates** (orthogonal, Docker-verifiable):
-
-1. **S4 ACT** — Refines lattice via image-profiles, ~40-80 LOC. PREP #18470.
-2. **S6 ACT** — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC.
-   PREP #18518. Can build on this S10 ACT's `HornModel` signature.
-
-See `sessions/2026-05-30-s10-act-horn-model.md` for full deliverable
-inventory, design rationale, and race-safety note.
+See `sessions/2026-05-30-s10-act-horn-model.md` for the deliverable
+inventory.
 
 ---
 

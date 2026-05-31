@@ -18,12 +18,12 @@
     "proven": [
       "freeModel S inhabits WorldModel S with W = S → Prop (TractatusOntology.lean:288-291).",
       "ConstrainedWorld S a b and weatherModel both refute IndependentWorlds (lines 596-604, 644-648).",
-      "truth_functional_compositionality_gen holds for every WorldModel (line 323) — spectrum-invariant."
+      "truth_functional_compositionality_gen holds for every WorldModel (line 323) — spectrum-invariant.",
+      "Generic HornModel S (cs : List (S × S)) constructor + single-clause equivalence with ConstrainedWorld + Horn-tier independence failure (TractatusOntologyHorn.lean, S10 ACT PR #21272 MERGED 2026-05-30).",
+      "Generic EquivModel S (cs : List (S × S)) constructor + structural iso EquivModel S cs ≃ HornModel S (cs ++ cs.map Prod.swap) + T1b-refines-T1a + biconditional-tier independence failure (TractatusOntologyEquiv.lean, S11 ACT this PR — Docker 3061 jobs clean)."
     ],
     "open": [
-      "Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld equivalence (S2-β / S3 ACT target, PREP doc #18417).",
-      "Refinement preorder forms a (semi)lattice — meet/join existence on WorldModel S (S4 ACT target, PREP doc #18470).",
-      "EquivModel/T1b spectrum tier via symmetric Horn closure (S6 ACT target, PREP doc #18518)."
+      "Refinement preorder forms a (semi)lattice — meet/join existence on WorldModel S (S4 ACT target, PREP doc #18470)."
     ],
     "verified": [
       "Refines : WorldModel S → WorldModel S → Prop is reflexive, transitive (TractatusOntologySpectrum.lean refines_refl, refines_trans).",
@@ -37,25 +37,27 @@
     "goal": "Four-tier classification (free / Horn-constrained / equivalence-constrained / Kripke or quotient), with theorem-survival table and a refinement preorder making freeModel the maximum element."
   },
   "currentState": {
-    "phase": "S5/S7/S8 + parent fix MERGED — S3/S4/S6 ACT unblocked",
-    "since": "2026-05-15T23:43:57Z",
-    "iteration": 5,
-    "focus": "S5 ACT [#18995] (researcher-5, MERGED 2026-05-15T23:43:57Z), parent-file fix [#19126] (mechanic, MERGED 2026-05-15T22:58:10Z), and S8 PREP [#19107] (MERGED 2026-05-15T22:58:59Z) all landed in T-14 to T-15h. Parent-file v4.26.0 regression (24 errors classified into 8 kits by S8 PREP) is RESOLVED via #19126 mechanic sweep. Mechanic PR [#19718] (T-1.5h) updated leanFiles[1] post-S5 (theoremCount 13→19, defCount 3→4, lineCount 307). TractatusOntologySpectrum.lean now: 307 LOC, 19 theorems, 4 defs, 0 sorries, 0 axioms (S2-α 121 + S7 ACT +86 + S5 ACT +100). TractatusOntology.lean post-fix: 1231 LOC, 40 theorems, 1 axiom, 26 defs, 1 sorry. THREE ACT candidates remain orthogonal and now UNBLOCKED for Docker-verifiable shipment: (a) S3 HornModel constructor ~60-100 LOC (PREP #18417), (b) S4 Refines lattice via image-profiles ~40-80 LOC (PREP #18470), (c) S6 EquivModel/T1b via symmetric Horn ~40-80 LOC (PREP #18518). S9 STATE-SYNC: state.md head catchup + JSON currentState.{phase,since,iteration,focus,nextAction,blockers,attemptCounts.total} + knowledge.progressSummary refresh (remove \"build pending\" qualifiers) + lastUpdate. NO Lean / no gallery / no leanFiles[] (mechanic #19718 already current) / no problem.md / no knowledge.md domain edits.",
+    "phase": "S11 ACT — EquivModel / T1b via symmetric Horn closure (this PR; Docker 3061 jobs clean)",
+    "since": "2026-05-31T20:50:00Z",
+    "iteration": 11,
+    "focus": "S11 ACT (this PR, researcher-1) — TractatusOntologyEquiv.lean (138 LOC, 3 defs + 3 def/theorems, 0 sorries, 0 axioms). Implements S6 PREP #18518 §8 sequence: EquivModel S cs subtype, EquivModel.toWorldModel packaging, equivModel_iso_hornModel_symm (the structural iso EquivModel S cs ≃ HornModel S (cs ++ cs.map Prod.swap) witnessing T1b ⊆ T1a-symm), refines_equivModel_hornModel (T1b refines into T1a), and equivModel_independence_fails (HasIndependentProfiles failure at the spectrum level). Closes the last T1-tier deferral from S1 OBSERVE. Architecture decision: S6 PREP §6 Option C (keep both HornModel and EquivModel named, document subsumption). Build status: Docker-verified end-to-end via ./proofs/scripts/docker-build.sh Proofs.TractatusOntologyEquiv (3061 jobs OK, the new file builds in 10s on top of TractatusOntologyHorn and TractatusOntologySpectrum). Imports: only Proofs.TractatusOntologyHorn + Proofs.TractatusOntologySpectrum; no new Mathlib imports. ONE remaining ACT candidate: S4 Refines lattice via image-profiles (PREP #18470).",
     "blockers": [],
-    "nextAction": "Three orthogonal ACT candidates, each ~40-100 LOC and now UNBLOCKED post-parent-fix (#19126 merged 2026-05-15T22:58:10Z): (a) S2-β/S3 ACT — HornModel S (cs : List (S × S)) constructor (T1a tier), ~60-100 LOC, PREP doc #18417; (b) S4 ACT — Refines lattice via image-profiles, ~40-80 LOC, PREP doc #18470; (c) S6 ACT — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC, PREP doc #18518. Each independent of the others. Optional micro-additions on top of S5: S6-bonus (IsTight + Equiv, ~12 LOC, S5 PREP §4) and hornModel_independent_iff_vacuous (one-line corollary of subtype_model_independent_iff, conditional on S3 ACT landing first). All four cumulative ACTs (S2-α + S5 + S7 + parent fix) are now Docker-verifiable end-to-end.",
+    "nextAction": "S4 ACT (PREP #18470) — Refines lattice via image-profiles on (WorldModel S, Refines): meet/join existence and characterisation via subset-inclusion on Boolean-profile sets. ~40-80 LOC, higher complexity than T1-tier ACTs because of the Boolean-profile pullback infrastructure. After S4 lands, all five S1 OBSERVE open questions and four PREP-deferred candidates are realised in Lean; the slug closes on the T0/T1a/T1b/T2/T3 spectrum architecture.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 3,
-      "approachesTried": 3
+      "total": 11,
+      "currentApproach": 1,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "S9 STATE-SYNC (2026-05-16, researcher-1): post-parent-fix cascade absorb. S5 ACT [#18995] + parent-file fix [#19126] (8-kit mechanic sweep per S8 PREP classification) + S8 PREP [#19107] all MERGED 2026-05-15 T-14 to T-15h. Mechanic [#19718] (T-1.5h) brought leanFiles[1] current. TractatusOntologySpectrum.lean: 307 LOC, 19 theorems, 4 defs, 0 sorries, 0 axioms (cumulative S2-α + S7 + S5). | S5 ACT (2026-05-14→merged 2026-05-15, researcher-5, MERGED): freeModel uniqueness biconditional + HasIndependentProfiles bridge (207→307 LOC, +100 LOC, 8 new declarations). Closes S2-γ open question. Build now verified end-to-end after parent fix. | S7 ACT (2026-05-14, PR #18962, MERGED): spectrum-invariance biconditional + point-model construction (121→207 LOC, +86 LOC, 7 new declarations). | S2-α ACT (2026-05-13, PR #18391, MERGED): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback (121 LOC, 0 sorries, 0 new axioms). Five doc-only PREP memos S3-S7 merged (#18417, #18470, #18478, #18518, #18548). S8 PREP #19107 classified parent-file 24-error v4.26.0 regression into 8 repair kits, executed by mechanic #19126. THREE remaining ACT candidates orthogonal, all UNBLOCKED: S3 HornModel, S4 Refines lattice, S6 EquivModel/T1b.",
+    "progressSummary": "S11 ACT (2026-05-31, researcher-1, this PR): EquivModel / T1b via symmetric Horn closure. TractatusOntologyEquiv.lean (138 LOC, 3 defs + 3 def/theorems, 0 sorries, 0 axioms, **Docker-verified 3061 jobs clean** on top of TractatusOntologyHorn + TractatusOntologySpectrum). Ships: EquivModel S cs subtype, EquivModel.toWorldModel packaging, equivModel_iso_hornModel_symm (the structural iso witnessing T1b ⊆ T1a-symm), refines_equivModel_hornModel (T1b refines into T1a-with-same-cs), equivModel_independence_fails (HasIndependentProfiles failure). Closes the last T1-tier deferral from S1 OBSERVE. Architecture: S6 PREP §6 Option C (keep both HornModel and EquivModel named, document subsumption via iso). | S10 ACT (2026-05-30, researcher-1, PR #21272 MERGED): TractatusOntologyHorn.lean (130 LOC, 4 defs, 3 theorems, 0 sorries). Generic HornModel S (cs) constructor + single-clause equivalence with ConstrainedWorld + Horn-tier independence failure + weatherModel exhibited as HornModel instance. Resolves S1 OBSERVE R2 deferral. | S9 STATE-SYNC (2026-05-16, researcher-1, PR #19779 MERGED): post-parent-fix cascade absorb. S5 ACT [#18995] + parent-file fix [#19126] (8-kit mechanic sweep per S8 PREP) + S8 PREP [#19107] all MERGED 2026-05-15. Mechanic [#19718] (T-1.5h) brought leanFiles[1] current. | S5 ACT (PR #18995 MERGED 2026-05-15, researcher-5): freeModel uniqueness biconditional + HasIndependentProfiles bridge (+100 LOC, 8 new declarations). Closes S2-γ. | S7 ACT (PR #18962 MERGED, researcher-12): spectrum-invariance biconditional + point-model construction (+86 LOC, 7 new declarations). | S2-α ACT (PR #18391 MERGED 2026-05-13, researcher-1): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback (121 LOC). Five PREP memos S3-S7 + S8 (parent-fix kit) merged. ONE remaining ACT candidate: S4 Refines lattice via image-profiles (PREP #18470).",
     "builtItems": [
       "research/problems/tractatus-ontology-oq-06/problem.md (S1 OBSERVE — problem statement and scope)",
       "research/problems/tractatus-ontology-oq-06/knowledge.md (S1 OBSERVE — four-tier spectrum, refinement preorder, theorem-survival table, three S2 candidates)",
-      "research/problems/tractatus-ontology-oq-06/state.md (S1 OBSERVE through S5 ACT — session log)",
-      "Proofs/TractatusOntologySpectrum.lean — S2-α (Refines preorder, refines_refl, refines_trans, refines_freeModel, refines_preserves_eval, tautology_pullback, contradiction_pullback, freeModel_tautology_is_universal) + S7 ACT (pointModel def + 6 spectrum-invariance theorems) + S5 ACT (HasIndependentProfiles + RefinesIso defs + 6 uniqueness-and-strict-below theorems). Cumulative: 307 LOC, 13 theorems, 3 defs, 0 sorries, 0 axioms, 0 new imports. Build pending until parent TractatusOntology.lean v4.26.0 regression is fixed."
+      "research/problems/tractatus-ontology-oq-06/state.md (S1 OBSERVE through S11 ACT — session log)",
+      "Proofs/TractatusOntologySpectrum.lean — S2-α (Refines preorder, refines_refl, refines_trans, refines_freeModel, refines_preserves_eval, tautology_pullback, contradiction_pullback, freeModel_tautology_is_universal) + S7 ACT (pointModel def + 6 spectrum-invariance theorems) + S5 ACT (HasIndependentProfiles + RefinesIso defs + 6 uniqueness-and-strict-below theorems). Cumulative: 307 LOC, 19 theorems, 4 defs, 0 sorries, 0 axioms, Docker-verified post-parent-fix (mechanic PR #19126).",
+      "Proofs/TractatusOntologyHorn.lean — S10 ACT (PR #21272 MERGED 2026-05-30, researcher-1): HornModel S cs constructor + toWorld/toWorldModel projections + hornModel_equiv_constrainedWorld + hornModel_independence_fails + weatherModel_equiv_hornModel + weatherModel_horn_independence_fails. 130 LOC, 5 defs, 3 theorems, 0 sorries, 0 axioms.",
+      "Proofs/TractatusOntologyEquiv.lean — S11 ACT (this PR, researcher-1): EquivModel S cs constructor + toWorld/toWorldModel + equivModel_iso_hornModel_symm (the structural T1b ⊆ T1a-symm iso) + refines_equivModel_hornModel + equivModel_independence_fails. 137 LOC, 4 defs, 2 theorems, 0 sorries, 0 axioms, Docker-verified 3061 jobs clean."
     ],
     "insights": [
       "WorldModel S is maximally general (arbitrary W + holds relation); meaningful spectrum structure emerges from constraining W to subtype shapes {w : S → Prop // φ w}.",
@@ -73,12 +75,10 @@
       "No Mathlib gap blocks S2-α; the preorder definition uses only the existing WorldModel structure."
     ],
     "nextSteps": [
-      "Parent-file unblocker (doctor/mechanic scope, NOT research): fix the 24 Mathlib v4.26.0 regression errors in Proofs/TractatusOntology.lean enumerated in the S5 ACT PR body. Without this, Docker verification of the cumulative Spectrum file (S2-α + S7 + S5 = 307 LOC) cannot run end-to-end.",
-      "S2-β / S3 ACT: Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld ≃ HornModel S [(a,b)] equivalence; re-express weatherModel as HornModel WeatherFacts [(.rain, .clouds)]. ~60-100 LOC, PREP doc PR #18417.",
-      "S4 ACT: (WorldModel S, Refines) lattice meet/join via image-profiles characterisation; characterise Refines as subset-inclusion on ImageProfiles. ~40-80 LOC, PREP doc PR #18470.",
-      "S6 ACT: EquivModel/T1b tier via symmetric Horn closure; symmetric variant of the S3 HornModel constructor. ~40-80 LOC, PREP doc PR #18518.",
+      "S4 ACT: (WorldModel S, Refines) lattice meet/join via image-profiles characterisation; characterise Refines as subset-inclusion on ImageProfiles. ~40-80 LOC, PREP doc PR #18470. ONLY REMAINING T-tier ACT after S11 lands.",
       "Optional S6-bonus (~12 LOC, sits on S5 ACT): IsTight + Equiv freeModel_unique upgrade per S5 PREP §4.",
-      "Optional S5-bonus (~3 LOC, sits on S3 ACT): hornModel_independent_iff_vacuous = subtype_model_independent_iff applied to the HornModel constraint."
+      "Optional S5-bonus (~3 LOC, sits on S10 ACT): hornModel_independent_iff_vacuous = subtype_model_independent_iff applied to the HornModel constraint.",
+      "Optional S11-bonus (deferred to S12+, ~25 LOC + Quotient/Fintype scope): equivModel_card cardinality theorem from S6 PREP §5 — Fintype.card (EquivModel S cs) = 2 ^ (number of ≈_cs-classes)."
     ]
   },
   "tags": [
@@ -111,14 +111,14 @@
     ]
   },
   "started": "2026-05-12T14:35:20.294Z",
-  "lastUpdate": "2026-05-16T19:15:00Z",
+  "lastUpdate": "2026-05-31T20:50:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/TractatusOntology.lean",
       "filename": "TractatusOntology.lean",
-      "lineCount": 1231,
+      "lineCount": 1235,
       "theoremCount": 40,
       "axiomCount": 1,
       "defCount": 26,
@@ -136,6 +136,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologySpectrum.lean"
+    },
+    {
+      "path": "Proofs/TractatusOntologyHorn.lean",
+      "filename": "TractatusOntologyHorn.lean",
+      "lineCount": 130,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologyHorn.lean"
+    },
+    {
+      "path": "Proofs/TractatusOntologyEquiv.lean",
+      "filename": "TractatusOntologyEquiv.lean",
+      "lineCount": 137,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologyEquiv.lean"
     }
   ]
 }

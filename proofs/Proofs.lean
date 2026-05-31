@@ -2917,6 +2917,7 @@ import Proofs.ThreePlaceIdentity
 import Proofs.ThreePlaceIdentityOQ02
 import Proofs.ThreeSquares
 import Proofs.TractatusOntology
+import Proofs.TractatusOntologyEquiv
 import Proofs.TractatusOntologyHorn
 import Proofs.TractatusOntologySpectrum
 import Proofs.TractatusQuantifiers
