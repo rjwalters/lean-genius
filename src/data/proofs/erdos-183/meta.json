@@ -52,6 +52,8 @@
     ],
     "axiomCount": 0,
     "lineCount": 770,
+    "theoremCount": 13,
+    "definitionCount": 13,
     "references": [
       {
         "title": "Some remarks on the theory of graphs",
@@ -76,9 +78,7 @@
         "description": "Establishes the lower bound R(3;k) ≥ 380^{k/5} − O(1), a major improvement over previous bounds"
       }
     ],
-    "assumptions": "0 axioms. R3k_exponential_lower PROVED via doubling construction (R3k k ≥ 2^k for k ≥ 1, witness c=2). R3k_factorial_upper PROVED from R3k_le_three_factorial (induction on pigeonhole recurrence). R3k_inductive_upper PROVED from extracted pigeonhole step. forcing_set_nonempty PROVED via pigeonhole induction. R3k_one (=3), R3k_two (=6), monotonicity PROVED. The limit lim R(3;k)^{1/k} as k→∞ remains the open question.",
-    "theoremCount": 26,
-    "definitionCount": 16
+    "assumptions": "0 axioms. R3k_exponential_lower PROVED via doubling construction (R3k k ≥ 2^k for k ≥ 1, witness c=2). R3k_factorial_upper PROVED from R3k_le_three_factorial (induction on pigeonhole recurrence). R3k_inductive_upper PROVED from extracted pigeonhole step. forcing_set_nonempty PROVED via pigeonhole induction. R3k_one (=3), R3k_two (=6), monotonicity PROVED. The limit lim R(3;k)^{1/k} as k→∞ remains the open question."
   },
   "overview": {
     "historicalContext": "This problem was posed by Paul Erdős in 1961 [Er61] and remains one of the fundamental open questions in Ramsey theory. The multicolor Ramsey number R(3;k) generalizes the classical two-color Ramsey number R(3,3) = 6, which asks for the minimum n such that any 2-coloring of K_n's edges contains a monochromatic triangle.\n\nThe problem connects to several areas of combinatorics. The upper bound R(3;k) ≤ ⌈e·k!⌉ follows from a clever pigeonhole argument, while lower bounds come from connections to Schur numbers. A major breakthrough came in 2021 when Ageron, Casteras, Pellerin, Portella, Rimmel, and Tomasik [ACPPRT21] improved the lower bound to R(3;k) ≥ 380^{k/5} - O(1).\n\nErdős offered $250 for solving this problem, with an additional $100 specifically for proving that the limit is finite. The gap between known bounds is enormous: R(3;k) lies between roughly 3.28^k and k!, making this one of the most intriguing open problems in Ramsey theory.",
@@ -102,15 +102,15 @@
   "sections": [
     {
       "title": "Basic Definitions",
-      "startLine": 38,
-      "endLine": 64,
+      "startLine": 37,
+      "endLine": 63,
       "summary": "Defines edge colorings, symmetry conditions, and monochromatic triangle predicates",
       "mathContext": "Formal definition: Defines edge colorings, symmetry conditions, and monochromatic triangle predicates",
       "id": "basic-definitions"
     },
     {
       "title": "Ramsey Number Definition",
-      "startLine": 65,
+      "startLine": 64,
       "endLine": 188,
       "summary": "Defines R(3;k) and proves forcing_set_nonempty (Ramsey's theorem for triangles) by induction on k via pigeonhole",
       "mathContext": "Formal definition: Defines R(3;k) as the minimum n forcing monochromatic triangles, with proof of existence via pigeonhole induction",
@@ -119,48 +119,48 @@
     {
       "title": "Known Small Values",
       "startLine": 189,
-      "endLine": 374,
+      "endLine": 391,
       "summary": "Proves R(3;1) = 3, R(3;2) = 6 (classical R(3,3) via pigeonhole + C₅ lower bound) and monotonicity R3k_mono",
       "mathContext": "Mathematical content: Proves R(3;1) = 3 and R(3;2) = 6 (classical Greenwood-Gleason result) plus monotonicity",
       "id": "known-small-values"
     },
     {
       "title": "Upper Bound",
-      "startLine": 375,
-      "endLine": 482,
+      "startLine": 392,
+      "endLine": 501,
       "summary": "The pigeonhole bound R(3;k) ≤ 3·k! via the inductive recurrence R(3;k) ≤ 2 + k·(R(3;k-1) - 1)",
       "mathContext": "The pigeonhole bound R(3;k) $\\leq$ 3·k!, proved from forcing_step + induction",
       "id": "upper-bound"
     },
     {
       "title": "Lower Bound",
-      "startLine": 483,
-      "endLine": 536,
-      "summary": "Schur number connection and the exponential lower bound R(3;k) ≥ 2^k proved via doubling (R3k_exponential_lower)",
+      "startLine": 502,
+      "endLine": 692,
+      "summary": "Schur number connection (SchurNumber stub) and the exponential lower bound R(3;k) ≥ 2^k proved via the doubling construction (Part 6b: doubleColoring + R3k_exponential_lower)",
       "mathContext": "Doubling construction yielding c = 2 in R3k_exponential_lower; stronger Ageron et al. 380^{k/5} bound only referenced in comments",
       "id": "lower-bound"
     },
     {
       "title": "Main Question",
-      "startLine": 537,
-      "endLine": 572,
-      "summary": "The limit lim R(3;k)^{1/k} and its possible values",
+      "startLine": 693,
+      "endLine": 728,
+      "summary": "kthRootR3k definition and the open question ErdosProblem183 (limit of R(3;k)^{1/k})",
       "mathContext": "Mathematical content: The limit lim R(3;k)^{1/k} and its possible values",
       "id": "main-question"
     },
     {
       "title": "Growth Rate Analysis",
-      "startLine": 573,
-      "endLine": 592,
-      "summary": "Summary of bounds and the enormous gap",
-      "mathContext": "Bound: Summary of bounds and the enormous gap",
+      "startLine": 729,
+      "endLine": 757,
+      "summary": "Summary of bounds (bounds_summary theorem) and the related problem pointer (#483)",
+      "mathContext": "Bound: Summary of bounds and the enormous gap between exponential lower and factorial upper",
       "id": "growth-rate-analysis"
     },
     {
       "title": "Formal Statement",
-      "startLine": 601,
-      "endLine": 613,
-      "summary": "Main theorem combining existence and bounds",
+      "startLine": 758,
+      "endLine": 770,
+      "summary": "erdos_183_main combining existence and bounds (R3k_ge_three + R3k_factorial_upper)",
       "mathContext": "Verified: Main theorem combining existence and bounds",
       "id": "formal-statement"
     }
@@ -188,8 +188,8 @@
     "namespace": "Erdos183",
     "lineCount": 770,
     "axiomCount": 0,
-    "theoremCount": 26,
-    "definitionCount": 16,
+    "theoremCount": 13,
+    "definitionCount": 13,
     "path": "Proofs/Erdos183Problem.lean",
     "sorries": 0
   },
