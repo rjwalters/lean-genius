@@ -1,0 +1,119 @@
+[
+  {
+    "id": "cvd03-ann-01",
+    "proofId": "circumference-via-differentiation-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Header, Scope, and Imports",
+    "content": "The opening docstring frames the file's role in the larger research question: Open Question 3 of `circumference-via-differentiation` asks whether the identity $\\frac{d}{dr}V(r) = A(r)$ generalizes to Riemannian manifolds via the co-area formula. The literal Riemannian-manifold version is gated by four independent Mathlib gaps (no `injectivityRadius`, `expMap`, geodesicBall/Sphere/Volume family, no n-dim coarea formula), each a substantial standalone Mathlib contribution in its own right. This file therefore restricts to the **R1 vector-space partial answer** at concrete dimensions $n = 2$ and $n = 3$, recovering the parent identity (circle circumference $2\\pi r$ at $n = 2$; sphere surface $4\\pi r^2$ at $n = 3$) from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` primitives. The three imports — `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` (the two volume primitives), `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` (for `π` and `pi_nonneg`), and `Mathlib.Analysis.Calculus.Deriv.Pow` (for `hasDerivAt_pow`) — open the namespaces `Real`, `MeasureTheory`, `ENNReal`, and `Metric` so the proofs can be terse.",
+    "mathContext": "OQ-03 sits in the family of research questions extending the parent's calculus identity $C(r) = dA/dr$ from the Euclidean disk to broader geometric settings. The R1 vector-space restriction is the only route currently tractable in Mathlib v4.26.0: it states the identity intrinsically via Mathlib's $\\operatorname{Metric.closedBall}$ rather than via the parent's polynomial $V_n(r) = \\omega_n r^n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Riemannian manifold formalization in Mathlib",
+      "co-area formula",
+      "EuclideanSpace.volume_closedBall_fin_n family"
+    ],
+    "prerequisites": [
+      "parent CircumferenceViaDifferentiation file",
+      "sibling CircumferenceViaDifferentiationOQ01 framework",
+      "Mathlib namespace conventions"
+    ]
+  },
+  {
+    "id": "cvd03-ann-02",
+    "proofId": "circumference-via-differentiation-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 55
+    },
+    "type": "technique",
+    "title": "Bridge 1 (n = 2): ENNReal-to-Real chain on Mathlib's volume primitive",
+    "content": "`riemannianVolumeBall_fin_two` is the bridge between Mathlib's `volume : Measure (EuclideanSpace ℝ (Fin 2))` (an ENNReal-valued measure) and the classical real-valued area formula $\\pi r^2$. The Mathlib primitive `EuclideanSpace.volume_closedBall_fin_two p r` rewrites `volume (Metric.closedBall p r)` to `ENNReal.ofReal r ^ 2 * ENNReal.ofReal π`. Pushing `.toReal` through this ENNReal product needs the chain `ENNReal.toReal_mul` (toReal of a product equals the product of toReals when both factors are finite) followed by `ENNReal.toReal_pow` (toReal commutes with `^ n` for `Nat` exponents) followed by `ENNReal.toReal_ofReal hr` (toReal cancels ofReal for nonneg reals) twice — once for `r` (via the hypothesis `hr : 0 ≤ r`) and once for `π` (via `pi_nonneg`). The closing `ring` reorders `(r ^ 2) * π` to `π * r ^ 2`.",
+    "mathContext": "$\\operatorname{vol}(\\overline{B}(p, r)) = \\pi r^2$ for the planar disk. The bridge is purely a typeclass-and-coercion identity in Lean; the geometric content (a disk has area $\\pi r^2$) is fully delegated to Mathlib's `EuclideanSpace.volume_closedBall_fin_two`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "EuclideanSpace.volume_closedBall_fin_two",
+      "ENNReal.toReal_mul",
+      "ENNReal.toReal_pow",
+      "ENNReal.toReal_ofReal"
+    ],
+    "prerequisites": [
+      "ENNReal arithmetic and coercion lemmas",
+      "Metric.closedBall in EuclideanSpace",
+      "Real.pi_nonneg"
+    ]
+  },
+  {
+    "id": "cvd03-ann-03",
+    "proofId": "circumference-via-differentiation-oq-03",
+    "range": {
+      "startLine": 57,
+      "endLine": 65
+    },
+    "type": "technique",
+    "title": "Bridge 1 (n = 3): same chain, slightly different constant",
+    "content": "`riemannianVolumeBall_fin_three` mirrors the n = 2 proof structure. The Mathlib primitive `EuclideanSpace.volume_closedBall_fin_three p r` rewrites `volume (Metric.closedBall p r)` to `ENNReal.ofReal r ^ 3 * ENNReal.ofReal (π * 4 / 3)`. The same three-step `.toReal` push (`ENNReal.toReal_mul` → `ENNReal.toReal_pow` → `ENNReal.toReal_ofReal` twice) discharges the bulk. The constant nonnegativity uses `positivity` — the tactic recognizes `π * 4 / 3 > 0` from `Real.pi_pos`. The closing `ring` rearranges to `(4 * π / 3) * r ^ 3`.",
+    "mathContext": "$\\operatorname{vol}(\\overline{B}(p, r)) = \\frac{4\\pi}{3} r^3$ for the 3D ball. The proof technique is identical to the n = 2 case modulo the constant; this demonstrates the `EuclideanSpace.volume_closedBall_fin_n` family of Mathlib primitives composes uniformly with the ENNReal toReal chain.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "EuclideanSpace.volume_closedBall_fin_three",
+      "positivity tactic",
+      "Mathlib n-ball volume formulas"
+    ],
+    "prerequisites": [
+      "n = 2 bridge (preceding annotation)",
+      "positivity for π-arithmetic"
+    ]
+  },
+  {
+    "id": "cvd03-ann-04",
+    "proofId": "circumference-via-differentiation-oq-03",
+    "range": {
+      "startLine": 67,
+      "endLine": 78
+    },
+    "type": "insight",
+    "title": "Main Theorem (n = 2): dV/dr = 2πr via HasDerivWithinAt.congr",
+    "content": "`riemannianVolumeBall_hasDerivWithinAt_fin_two` is the file's main result for the planar case. The challenge: the polynomial-side derivative `HasDerivAt (s ↦ π s²) (2 π r) r` follows immediately from `(hasDerivAt_pow 2 r).const_mul π` and a one-line `ring` reordering (the `convert` step). But the *Mathlib-volume-side* function `s ↦ (volume (closedBall p s)).toReal` is what we actually want the derivative of — and it only agrees with the polynomial on `Set.Ici 0` (because `closedBall p s = ∅` for `s < 0`). The bridge is `HasDerivWithinAt.congr`: given a polynomial-side `HasDerivAt`, upgrade to `HasDerivWithinAt _ _ (Set.Ici 0) r`, then `congr` along the pointwise equality `riemannianVolumeBall_fin_two p s hs` for `s ∈ Set.Ici 0` (`hs : 0 ≤ s` is the hypothesis the bridge expects) and at the specific point `r` (using `hr : 0 ≤ r`). The `Set.Ici 0` restriction is *essential* — without it the equality fails at negative `s` and the `congr` would not type-check.",
+    "mathContext": "$\\frac{d}{dr}(\\pi r^2) = 2\\pi r$ — the area of the disk has derivative equal to its circumference. The within-derivative formulation `HasDerivWithinAt _ _ (Set.Ici 0) r` captures the right-sided behavior at the boundary `r = 0` (where the closed ball collapses to a singleton and the volume is `0`, matching `2π · 0 = 0`) cleanly without polluting the statement with the meaningless `s < 0` extension.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasDerivWithinAt.congr",
+      "hasDerivAt_pow",
+      "HasDerivAt.const_mul",
+      "Set.Ici 0 (right-closed half-line)",
+      "boundary anomaly at r = 0"
+    ],
+    "prerequisites": [
+      "HasDerivAt vs HasDerivWithinAt",
+      "the bridge lemma (preceding annotation)",
+      "power rule + scalar multiplication"
+    ]
+  },
+  {
+    "id": "cvd03-ann-05",
+    "proofId": "circumference-via-differentiation-oq-03",
+    "range": {
+      "startLine": 80,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "Main Theorem (n = 3): dV/dr = 4πr² (sphere surface area)",
+    "content": "`riemannianVolumeBall_hasDerivWithinAt_fin_three` follows the same proof shape as n = 2 with the constant `4 * π / 3` and the exponent `3`. The polynomial-side derivative is `(hasDerivAt_pow 3 r).const_mul (4 * π / 3) : HasDerivAt (s ↦ (4π/3) s³) ((4π/3) * (3 * r²)) r`, with the `convert ... using 1; ring` step reordering `(4π/3) * 3 * r²` to `4 π r²`. The `HasDerivWithinAt.congr` discharge uses Bridge 1 for n = 3 (`riemannianVolumeBall_fin_three p s hs` pointwise on `Set.Ici 0` and at `r`). The result `dV/dr = 4π r²` recovers the classical Archimedean identity that the sphere's surface area equals the radial derivative of the ball's volume — the geometric content Archimedes exploited in *On the Sphere and Cylinder* (c. 250 BCE) via the onion-peel shell decomposition.",
+    "mathContext": "$\\frac{d}{dr}\\left(\\frac{4\\pi}{3} r^3\\right) = 4\\pi r^2$ — Archimedes' shell decomposition: a thin spherical shell at radius $r$ of thickness $dr$ has volume $4\\pi r^2 \\cdot dr$, so integrating from $0$ to $R$ gives $V(R) = \\frac{4}{3}\\pi R^3$. The identity is the calculus inversion of this geometric argument, and (per the file's framing) is the special case at $n = 3$ of the OQ-03 question of whether this generalizes to all Riemannian manifolds.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Archimedes onion-peel argument",
+      "sphere surface area 4πr²",
+      "Riemannian volume comparison",
+      "HasDerivWithinAt.congr"
+    ],
+    "prerequisites": [
+      "n = 2 main theorem (preceding annotation)",
+      "Bridge 1 for n = 3"
+    ]
+  }
+]
