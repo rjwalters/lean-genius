@@ -2,8 +2,104 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; S28 STATE-SYNC doc-only sync below)
-**Last Updated**: 2026-05-16 (researcher-1, S28 STATE-SYNC — knowledge subtree + leanFiles + meta drift absorption)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; S29 STATE-SYNC doc-only sync below — iter 27 has not yet fired over T+15d)
+**Last Updated**: 2026-05-31 (researcher-1, S29 STATE-SYNC — T+15d temporal drift refresh + bearer pin recheck + iter 27e null-content promotion to anti-candidate)
+
+## Session 29 — S29 STATE-SYNC (researcher-1, 2026-05-31, T+15d)
+
+**Goal**: doc-only refresh after a +15d window in which iter 27 has not fired.
+The slug's mathematical surface is in a stable holding pattern (iter 26a merged
+2026-05-15; no file edits since); the picker's task today is to verify that
+the bearer pin, the open-PR hygiene, and the candidate matrix remain valid at
+T+15d so future pickers don't inherit stale signals.
+
+**Findings**:
+
+| Surface | Pre-S29 | S29 verification | Δ |
+|---|---|---|---|
+| Mathlib pin (`proofs/lake-manifest.json`) | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) | UNCHANGED — direct file read | = |
+| Bearer 1: `Mathlib/Algebra/Order/Ring/Basic.lean` @ pin | size=9086 sha=aa9e6f80679196767a86ed41af66b7703aa57359 (S28 §2) | size=9086 sha=aa9e6f80679196767a86ed41af66b7703aa57359 | = (byte-stable; content-addressed) |
+| Bearer 2: `Mathlib/Data/Finset/Dedup.lean` @ pin | size=6020 sha=05133e2c8c5718337eeca546abf51a3d28822672 | size=6020 sha=05133e2c8c5718337eeca546abf51a3d28822672 | = |
+| `proofs/Proofs/Hilbert10OQ01OQ02.lean` LOC | 3082 | 3082 (`wc -l`) | = |
+| File git activity since 2026-05-16 | n/a | 0 commits | = |
+| Open PRs on slug | 0 (S28 §1.5) | 0 (`gh pr list` empty) | = |
+| ACT-readiness gate (10 items, S28 §5) | 10/10 GREEN | 10/10 GREEN | = |
+
+All seven surfaces unchanged over T+15d. **No regression, no drift.**
+
+**Iter 27e re-survey (formally null content)**:
+
+S28 §3.1 classified iter 27e as "low leverage" but kept it as a viable candidate.
+S29 sharpens the verdict: iter 27e is **formally NULL content**, not just low
+leverage. Argument:
+
+1. **Class-congruence theorems already exist**:
+   `existentialUniversalDefinition_iff_of_pred_iff` (Σ₂, line 437),
+   `universalExistentialDefinition_iff_of_pred_iff` (Π₂, line 379),
+   `diophantineDefinition_iff_of_pred_iff` (Σ₁, line 399),
+   `coDiophantineDefinition_iff_of_pred_iff` (Π₁, line 417). No
+   class-congruence "sharpening" is missing.
+
+2. **Trivial-set iff-form bundling is semantically vacuous**:
+   The four trivial-set Σ₂/Π₂ facts (Part VIII.6 lines 591-629) are
+   `empty_isUniversalExistentialDefinition`, `universe_isUniversalExistentialDefinition`,
+   `empty_isExistentialUniversalDefinition`, `universe_isExistentialUniversalDefinition`.
+   An iff-form like "`Σ₂(∅) ↔ Π₂(univ)`" between TWO DIFFERENT subsets where
+   both sides are provable is just `True ↔ True` — no content. The actual
+   useful iff form `Σ₂(S) ↔ Π₂(¬S)` for arbitrary `S` is iter 5's
+   `existentialUniversal_iff_universalExistential_complement` — already on file.
+
+3. **Verdict**: promote iter 27e from "low-leverage candidate" to **ANTI-CANDIDATE**
+   alongside 27b (level-2 separation cells, anti-axiom), 27c (close stale PRs,
+   NO-OP), 27d (Daans 2021 refinement, anti-axiom-policy).
+
+**Picker matrix (post-S29)**:
+
+| ID | Description | Status |
+|---|---|---|
+| 27a | Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against `IntegersAreExistentialUniversalOverQ` | ✅ **SOLE forward candidate** — high leverage, high risk, multi-cycle ACT budget |
+| 27b | Close any of the four un-closed level-2 cells (Σ₂ ¬, Π₂ ¬, Σ₂\\Π₂, Π₂\\Σ₂) | 🚫 anti-candidate (would settle the slug's central OPEN question or collapse Σ₂=Π₂) |
+| 27c | Close stale CONFLICTING stack PRs (#17602 + #17552 + #18997) | 🚫 anti-candidate (NO-OP — all already CLOSED) |
+| 27d | Daans 2021 10-quantifier reduction as a refinement axiom | 🚫 anti-candidate (anti-axiom-policy) |
+| 27e | Symmetric trivial-set iff dualities + class-congruence "sharpening" | 🚫 **anti-candidate (NEW at S29, formally null)** |
+
+**Honest implication for the next picker**: the only forward-motion candidate
+for this slug is iter 27a, a multi-cycle Σ₂(ℤ) attack on the central OPEN
+question. Doc-only STATE-SYNC iterations like S28/S29 are the only zero-risk
+available moves; they remain valuable for keeping the tracker fresh and the
+bearer pin spot-checked, but they do not advance the mathematical content.
+Future ACT pickers who pull iter 27 should either:
+
+- (a) commit to a multi-cycle 27a PREP+ACT pair (high leverage, requires
+  reading Koenigsmann 2016 in detail and identifying which sub-step admits a
+  Σ₂ upgrade); OR
+- (b) ship another doc-only STATE-SYNC if the +Nd window has accumulated drift;
+  OR
+- (c) release the claim and let a different problem absorb the cycle.
+
+**Deliverables (this PR, doc-only — no Lean / no gallery meta / no problem.md /
+no knowledge.md body edits)**:
+
+1. **Canonical JSON** (`src/data/research/problems/<slug>.json`):
+   `knowledge.progressSummary` prepend with S29 narrative; `lastUpdate`
+   2026-05-16T03:30:00Z → 2026-05-31T04:00:00Z. `currentState.*` carried
+   forward verbatim — no underlying condition has changed.
+2. **state.md head**: this Session 29 prepend.
+3. **NEW session memo**:
+   `sessions/2026-05-31-s29-statesync-t15d-bearer-recheck.md`.
+
+**Out of scope (deferred)**:
+
+- Gallery `meta.json` numerics — file unchanged, no drift.
+- `currentState.{phase, since, iteration, focus, blockers, nextAction,
+  attemptCounts}` — S28 already synced these correctly; carry-forward.
+- `.knowledge.{insights, builtItems, mathlibGaps, nextSteps}[]` — S28 already
+  refreshed these.
+- Iter 27a PREP draft — declined for this cycle; doc-only S29 is the
+  proportionate iteration today.
+- `pnpm build` — slug-targeted JSON edit.
+
+**Mathlib pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), unchanged.
 
 ## Current Focus
 
