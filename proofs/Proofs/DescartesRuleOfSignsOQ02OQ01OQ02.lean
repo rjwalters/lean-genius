@@ -70,6 +70,7 @@ import Mathlib.Algebra.Polynomial.Div
 import Mathlib.RingTheory.Squarefree.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
+import Mathlib.Topology.Algebra.Polynomial
 
 set_option maxHeartbeats 400000
 
@@ -206,6 +207,80 @@ theorem sturmVariations_C (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
     sturmVariations (C c) x = 0 := by
   simp [sturmVariations, sturmSeq, sturmSeqAux]
   simp [signVariations, countSignAlts, derivative_C]
+
+-- ============================================================================
+-- § 4a. Locally-Constant Lemma (Step A of Sturm exact-count proof)
+-- ============================================================================
+
+/-- **Step A** of Sturm's theorem. On any closed interval `[x, y]` on which
+    every member of the Sturm sequence avoids zero, the Sturm sign-variation
+    count is the same at the endpoints.
+
+    Argument: for each `q ∈ sturmSeq p`, `q.eval` is continuous (real
+    polynomial evaluation) and nonvanishing on `[x, y]`. By the intermediate
+    value theorem, a continuous nonvanishing real function cannot change
+    sign, so `q.eval x` and `q.eval y` have the same sign. The
+    sign-variation count of a list of fixed-sign reals is determined by the
+    signs alone, so `sturmVariations p x = sturmVariations p y`. -/
+private lemma sturmVariations_locally_constant
+    (p : ℝ[X]) {x y : ℝ} (hxy : x ≤ y)
+    (h_no_zero : ∀ q ∈ sturmSeq p, ∀ z ∈ Set.Icc x y, q.eval z ≠ 0) :
+    sturmVariations p x = sturmVariations p y := by
+  unfold sturmVariations signVariations
+  have h_same_sign :
+      ∀ q ∈ sturmSeq p, (q.eval x > 0 ↔ q.eval y > 0) := by
+    intro q hq
+    have hcx : q.eval x ≠ 0 := h_no_zero q hq x ⟨le_refl x, hxy⟩
+    have hcy : q.eval y ≠ 0 := h_no_zero q hq y ⟨hxy, le_refl y⟩
+    by_contra hne
+    push_neg at hne
+    rcases hne with ⟨hpx, hny⟩ | ⟨hnx, hpy⟩
+    · have hyneg : q.eval y < 0 := lt_of_le_of_ne (not_lt.mp hny) hcy
+      have hcont : ContinuousOn (fun z => q.eval z) (Set.Icc x y) :=
+        q.continuous.continuousOn
+      obtain ⟨z, hz, hez⟩ :=
+        intermediate_value_Icc hxy hcont
+          (show (0 : ℝ) ∈ Set.Icc (q.eval y) (q.eval x) from
+            ⟨le_of_lt hyneg, le_of_lt hpx⟩)
+      exact h_no_zero q hq z hz hez
+    · have hxneg : q.eval x < 0 := lt_of_le_of_ne (not_lt.mp hnx) hcx
+      have hcont : ContinuousOn (fun z => q.eval z) (Set.Icc x y) :=
+        q.continuous.continuousOn
+      obtain ⟨z, hz, hez⟩ :=
+        intermediate_value_Icc hxy hcont
+          (show (0 : ℝ) ∈ Set.Icc (q.eval x) (q.eval y) from
+            ⟨le_of_lt hxneg, le_of_lt hpy⟩)
+      exact h_no_zero q hq z hz hez
+  have h_lists_match :
+      ((sturmSeq p).map (fun q => q.eval x)).filter (· ≠ 0)
+        |>.map (fun r => if r > 0 then (1 : ℤ) else -1) =
+      ((sturmSeq p).map (fun q => q.eval y)).filter (· ≠ 0)
+        |>.map (fun r => if r > 0 then (1 : ℤ) else -1) := by
+    have hx_nz : ∀ q ∈ sturmSeq p, q.eval x ≠ 0 :=
+      fun q hq => h_no_zero q hq x ⟨le_refl x, hxy⟩
+    have hy_nz : ∀ q ∈ sturmSeq p, q.eval y ≠ 0 :=
+      fun q hq => h_no_zero q hq y ⟨hxy, le_refl y⟩
+    have hfx : ((sturmSeq p).map (fun q => q.eval x)).filter (· ≠ 0)
+                = (sturmSeq p).map (fun q => q.eval x) := by
+      apply List.filter_eq_self.mpr
+      intro r hr
+      obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hr
+      exact decide_eq_true (hx_nz q hq)
+    have hfy : ((sturmSeq p).map (fun q => q.eval y)).filter (· ≠ 0)
+                = (sturmSeq p).map (fun q => q.eval y) := by
+      apply List.filter_eq_self.mpr
+      intro r hr
+      obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hr
+      exact decide_eq_true (hy_nz q hq)
+    rw [hfx, hfy, List.map_map, List.map_map]
+    apply List.map_congr_left
+    intro q hq
+    by_cases hxp : q.eval x > 0
+    · have hyp : q.eval y > 0 := (h_same_sign q hq).mp hxp
+      simp [hxp, hyp]
+    · have hyp : ¬ q.eval y > 0 := fun h => hxp ((h_same_sign q hq).mpr h)
+      simp [hxp, hyp]
+  rw [h_lists_match]
 
 -- ============================================================================
 -- § 5. Key Structural Lemma: Mod at a Root
