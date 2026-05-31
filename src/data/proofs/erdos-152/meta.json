@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/152",
     "erdosProblemStatus": "partially-solved",
     "axiomCount": 0,
-    "lineCount": 1031,
+    "lineCount": 493,
     "assumptions": "Fully verified (0 axioms, 0 sorries) across two Lean files. The companion file `Erdos152ProblemAPN.lean` is a verbatim port of the DeepMind AlphaProof Nexus proof (517 source lines) establishing `16 * num_isolated A + 100*n + 16 ≥ n*n` for any Sidon set of size n, and concluding `Tendsto f atTop atTop` — the weak form of Erdős #152. The gallery file `Erdos152Problem.lean` retains the original verified definitions (`IsSidonFinset`, `sumsetFinset`, `IsIsolated`, `isolatedCount`) and supporting lemmas (`sidon_sumset_size`, `sidon_set_range_lower_bound`, `gap_existence_pigeonhole` for |A|≥5). The strong form `ErdosProblem152Strong` (universal constant c>0 with I(A) ≥ c|A|² for all Sidon A) and `ErdosProblem152Infinite` are stated but remain open as Lean propositions; the DeepMind bound implies asymptotic f(n) ≫ n² but does not directly furnish the universally-quantified constant for small Sidon sets.",
     "mathlib_version": "4.26.0",
     "theoremCount": 56,
@@ -136,7 +136,7 @@
       "Filter"
     ],
     "namespace": "Erdos152APN",
-    "lineCount": 1031,
+    "lineCount": 493,
     "axiomCount": 0,
     "theoremCount": 56,
     "definitionCount": 26,
