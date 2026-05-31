@@ -21,7 +21,7 @@
     "dateAdded": "2026-04-24",
     "axiomCount": 3,
     "assumptions": "Three independent axioms: (1) baker_homogeneous — Baker's qualitative theorem for linear forms in logarithms (Q-independent logs remain Q̄-independent); (2) baker_inhomogeneous — strengthening with algebraic constant β₀; (3) baker_wustholz_bound — Baker-Wüstholz 1993 optimal log(B) exponent. The previously-axiomatized baker_quantitative (effective lower bound |Λ| > B^{-C}) is now PROVED as a theorem from baker_homogeneous (Λ ≠ 0) plus baker_wustholz_bound (explicit log lower bound), reducing axiom count 4 → 3. All three remaining axioms encode the unformalized analytic content of Baker's proof (Siegel's lemma + auxiliary function + extrapolation).",
-    "lineCount": 759,
+    "lineCount": 758,
     "theoremCount": 13,
     "definitionCount": 0,
     "originalContributions": [
@@ -315,7 +315,7 @@
   "sorries": 0,
   "leanFile": {
     "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
-    "lineCount": 759,
+    "lineCount": 758,
     "theoremCount": 13,
     "definitionCount": 0,
     "axiomCount": 3,
