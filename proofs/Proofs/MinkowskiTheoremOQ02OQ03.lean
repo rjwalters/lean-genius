@@ -386,8 +386,8 @@ theorem dirichletSetN_volume (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
     exact pow_ne_zero _ (by norm_num : (-1 : ℝ) ≠ 0)
   have h_map : Measure.map ((shearM n α).toLin') volume = volume := by
     rw [Real.map_matrix_volume_pi_eq_smul_volume_pi hdet_ne, shearM_det,
-        show |((-1 : ℝ))^n|⁻¹ = 1 from by
-          rw [abs_pow, abs_neg, abs_one, one_pow, inv_one],
+        show |((-1 : ℝ)^n)⁻¹| = 1 from by
+          rw [abs_inv, abs_pow, abs_neg, abs_one, one_pow, inv_one],
         ENNReal.ofReal_one, one_smul]
   rw [dirichletSetN_eq_shearM_preimage,
       ← Measure.map_apply h_meas_T h_meas_box, h_map]
@@ -428,8 +428,8 @@ lemma stdLatticeN_coords {m : ℕ} [NeZero m] (x : stdLattice m) :
   refine ⟨c, fun i ↦ ?_⟩
   rw [hc_real]
   simp only [Finset.sum_apply, Pi.smul_apply, Pi.basisFun_apply,
-             Pi.single_apply, smul_ite, smul_zero, smul_eq_mul, mul_one,
-             Finset.sum_ite_eq', Finset.mem_univ, if_true]
+             Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero,
+             Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 -- ============================================================
 -- PART 8: Volume exceeds Minkowski threshold (S6 ACT — this revision)
@@ -456,12 +456,13 @@ theorem dirichletSetN_volume_gt_two_pow (n : ℕ) (α : Fin n → ℝ) (Q : ℕ)
       ← ENNReal.ofReal_pow h2Q_nn,
       ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ 2 * ((Q : ℝ) ^ n + 1))]
   rw [show ((2 : ENNReal) ^ (n + 1)) = ENNReal.ofReal ((2 : ℝ) ^ (n + 1)) from by
-    rw [← ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2)]; norm_num]
-  apply ENNReal.ofReal_lt_ofReal_of_nonneg (by positivity)
+    rw [show (2 : ENNReal) = ENNReal.ofReal 2 from by norm_num,
+        ← ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2)]]
+  apply (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (by positivity)).mpr
   have key : 2 * ((Q : ℝ) ^ n + 1) * (2 / (Q : ℝ)) ^ n
       = (2 : ℝ) ^ (n + 1) * ((Q : ℝ) ^ n + 1) / (Q : ℝ) ^ n := by
     rw [div_pow, pow_succ]; ring
-  rw [key, lt_div_iff hQn_pos]
+  rw [key, lt_div_iff₀ hQn_pos]
   have h2pow_pos : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
   nlinarith
 
@@ -540,10 +541,8 @@ theorem simultaneous_dirichlet_from_minkowski
     apply Subtype.ext
     funext i
     refine i.cases ?_ (fun k => ?_)
-    · simp only [Pi.zero_apply]
-      rw [hc 0, hc0]; simp
-    · simp only [Pi.zero_apply]
-      rw [hc k.succ, hci_zero k]; simp
+    · rw [hc 0, hc0]; simp
+    · rw [hc k.succ, hci_zero k]; simp
   -- Step 5: Output q := |c 0|, p := ±c.succ; discharge the three bounds.
   refine ⟨|c 0|, fun i => if 0 < c 0 then c i.succ else -c i.succ, ?_, ?_, ?_⟩
   · -- 1 ≤ |c 0|
@@ -557,10 +556,10 @@ theorem simultaneous_dirichlet_from_minkowski
     intro i
     split_ifs with hpos
     · -- c 0 > 0: |c 0| = c 0
-      rw [Int.abs_of_pos hpos]; exact h_approx i
+      rw [abs_of_pos hpos]; exact h_approx i
     · -- c 0 < 0: |c 0| = -c 0, and the sign on p i mirrors
-      have hneg : c 0 < 0 := lt_of_le_of_ne (le_of_not_lt hpos) hc0_ne
-      rw [Int.abs_of_neg hneg]
+      have hneg : c 0 < 0 := lt_of_le_of_ne (le_of_not_gt hpos) hc0_ne
+      rw [abs_of_neg hneg]
       push_cast
       rw [show α i * -(c 0 : ℝ) - -(c i.succ : ℝ)
             = -(α i * (c 0 : ℝ) - (c i.succ : ℝ)) by ring, abs_neg]

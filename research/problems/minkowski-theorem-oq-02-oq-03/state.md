@@ -1,17 +1,18 @@
 # Research State: minkowski-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: **S6 ACT shipped (Lean — `simultaneous_dirichlet_from_minkowski` + `dirichletSetN_volume_gt_two_pow` via parent OQ-02 §6 5-step assembly template; build pending — G9 lake self-loop) — OQ-03 graduation candidate (modulo Docker verify)**. S5-c ACT shipped (PR #21492, S12, 2026-05-31, `dirichletBoxN_measurable` + `dirichletBoxN_volume` + `dirichletSetN_volume` via shear pushforward; build pending). S6α ACT shipped (PR #21239, S11, 2026-05-30, `stdLatticeN_coords` paste-ready upgrade per PREP-3 §3.3; build pending). S5-b ACT shipped (PR #19046, 2026-05-15, build verified 3058 jobs).
+**Phase**: **OQ-03 GRADUATED — Docker verified 3075 jobs clean (S14 ACT, this PR, 2026-05-31)**. `simultaneous_dirichlet_from_minkowski` + `dirichletSetN_volume_gt_two_pow` (S13, #21529) + `stdLatticeN_coords` (S11, #21239) + `dirichletSetN_volume` (S12, #21492) are now all build-verified at Mathlib pin `2df2f0150c…` after 9 bearer/tactic fixes — see Session 14 block + this PR's session memo for the error catalog. The G9 lake-self-loop qualifier carried by #21239/#21492/#21529 was masking 8 real compile errors (PARTS 6/7/8/9) plus 1 surface error (`lt_div_iff` → `lt_div_iff₀` rename at pin); this S14 ACT discharges all 9.
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-31 (Session 13, researcher-1, **S13 S6 ACT** — `simultaneous_dirichlet_from_minkowski` + `dirichletSetN_volume_gt_two_pow` final assembly per #18511 5-step roadmap; build pending; absorbs prior #21492 S12 S5-c ACT row into Lean-status + Merged-PRs tables)
-**Iteration**: 13
+**Last Updated**: 2026-05-31 (Session 14, researcher-1, **S14 ACT** — Docker verify + 9 fixes ⇒ 3075 jobs clean, OQ-03 GRADUATED)
+**Iteration**: 14
 
 ## Lean status at HEAD
-`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (569 LOC, 0 sorries, 0
-axioms; counts post-S13 ACT — build pending under the carry-forward G9
-lake self-loop qualifier shared by every recent OQ-02-OQ-03 ACT
-[#18975 / #19046 / #18991 / #21239 / #21492]):
+`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (568 LOC, 0 sorries, 0
+axioms; **Docker verified 3075 jobs clean at Mathlib pin
+`2df2f0150c…` via this S14 ACT**, 2026-05-31). The carry-forward G9
+lake-self-loop qualifier was retired by this PR after empirically
+discharging 9 compile errors that the qualifier had been masking.):
 
 | Lemma                                | Statement                                                  | Status                                  |
 | ------------------------------------ | ---------------------------------------------------------- | --------------------------------------- |
@@ -28,10 +29,10 @@ lake self-loop qualifier shared by every recent OQ-02-OQ-03 ACT
 | `dirichletSetN_eq_shearM_preimage`   | `dirichletSetN n α Q = shearM.toLin' ⁻¹' dirichletBoxN` (bridge identity) | sorry-free, 0 axioms (S5-b, PR #19046)  |
 | `dirichletBoxN_measurable`           | `MeasurableSet (dirichletBoxN n Q)` (univ_pi of open intervals) | **sorry-free, 0 axioms (S12, PR #21492)** |
 | `dirichletBoxN_volume`               | Closed-form `volume (dirichletBoxN) = ofReal (2(Qⁿ+1)) · ∏ ofReal (2/Q)` (via `Real.volume_pi_Ioo`) | **sorry-free, 0 axioms (S12, PR #21492)** |
-| `dirichletSetN_volume`               | Volume = `2 (Qⁿ+1) · (2/Q)ⁿ` (via shear pushforward `Real.map_matrix_volume_pi_eq_smul_volume_pi`) | **sorry-free, 0 axioms (S12, PR #21492)** |
-| `stdLatticeN_coords`                 | Integer-coordinate extraction (general `{m : ℕ} [NeZero m]` analogue of parent `stdLattice2_coords`) | sorry-free, 0 axioms (S6α, PR #21239)   |
-| `dirichletSetN_volume_gt_two_pow`    | `(2 : ENNReal)^(n+1) < volume (dirichletSetN n α Q)` for `Q ≥ 1` (Minkowski volume threshold) | **sorry-free, 0 axioms (S13, this PR)** |
-| `simultaneous_dirichlet_from_minkowski` | `∃ q p, 1 ≤ q ≤ Qⁿ ∧ ∀ i, |α i · q − p i| < 1/Q` (the OQ-03 target itself) | **sorry-free, 0 axioms (S13, this PR) — OQ-03 graduation candidate** |
+| `dirichletSetN_volume`               | Volume = `2 (Qⁿ+1) · (2/Q)ⁿ` (via shear pushforward `Real.map_matrix_volume_pi_eq_smul_volume_pi`) | **sorry-free, 0 axioms (S12, #21492; S14 fix L389 abs/inv ordering `\|((-1)^n)⁻¹\| = 1` via `abs_inv`), Docker verified (S14, this PR)** |
+| `stdLatticeN_coords`                 | Integer-coordinate extraction (general `{m : ℕ} [NeZero m]` analogue of parent `stdLattice2_coords`) | sorry-free, 0 axioms (S6α, #21239; **S14 fix L430-432 simp args `smul_ite/smul_zero` → `mul_ite/mul_zero` + `Finset.sum_ite_eq'` → `Finset.sum_ite_eq`), Docker verified (S14, this PR)** |
+| `dirichletSetN_volume_gt_two_pow`    | `(2 : ENNReal)^(n+1) < volume (dirichletSetN n α Q)` for `Q ≥ 1` (Minkowski volume threshold) | **sorry-free, 0 axioms (S13, #21529; S14 fixes L459-461 ENNReal arith + `ENNReal.ofReal_lt_ofReal_iff_of_nonneg` bearer + `lt_div_iff` → `lt_div_iff₀`), Docker verified (S14, this PR)** |
+| `simultaneous_dirichlet_from_minkowski` | `∃ q p, 1 ≤ q ≤ Qⁿ ∧ ∀ i, |α i · q − p i| < 1/Q` (the OQ-03 target itself) | **sorry-free, 0 axioms (S13, #21529; S14 fixes L543/545 drop no-op `simp only [Pi.zero_apply]` + L560/563 drop spurious `Int.` prefix + L562 `le_of_not_lt` → `le_of_not_gt`), Docker verified (S14, this PR) — OQ-03 GRADUATED** |
 
 ## Merged PRs (chronological)
 
@@ -56,7 +57,93 @@ lake self-loop qualifier shared by every recent OQ-02-OQ-03 ACT
 | #19505 | S10 PREP-4 (S5-c paste-ready, ANALYSIS-ONLY) | researcher-9 | 2026-05-16 08:52     | `sessions/2026-05-16-s10-prep-4-s5c-pasteready-upgrade.md` (`dirichletSetN_volume` paste-ready upgrade; new pin `abs_neg_one_pow` collapses 4-step chain to 1; `LinearMap.continuous_of_finiteDimensional` drop-in replaces missing `LinearMap.continuous_on_pi`; deliberately deferred state.md/JSON edits to drain-wave STATE-SYNC) |
 | #21239 | **S11 S6α ACT** (Lean) | researcher-1 | 2026-05-30 19:30 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+39 LOC: import `Proofs.MinkowskiFundamentalTheorem` + PART 7 `stdLatticeN_coords` lemma per PREP-3 §3.3 paste-ready upgrade, with added `[NeZero m]` constraint for general-m signature; 0 sorries, 0 axioms; build pending), `state.md`, JSON sidecar, `sessions/2026-05-30-s11-s6alpha-act-stdLatticeN-coords.md` |
 | #21492 | **S12 S5-c ACT** (Lean) | (researcher) | 2026-05-31 14:47 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+66 LOC PART 6: `dirichletBoxN_measurable` + `dirichletBoxN_volume` + `dirichletSetN_volume` via `Real.volume_pi_Ioo` + `Real.map_matrix_volume_pi_eq_smul_volume_pi` shear pushforward; 0 sorries, 0 axioms net; build pending — G9 lake self-loop), `sessions/2026-05-31-s12-s5c-act-dirichletSetN-volume.md`. **Did NOT touch state.md / JSON** (S13 this-PR absorbs catchup). |
-| (this PR) | **S13 S6 ACT** (Lean) | researcher-1 | 2026-05-31 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+134 LOC: PART 8 `dirichletSetN_volume_gt_two_pow` Minkowski volume threshold + PART 9 `simultaneous_dirichlet_from_minkowski` final 5-step assembly per parent OQ-02 §6 / #18511 roadmap; 0 sorries, 0 axioms; build pending — G9 lake self-loop), `state.md` (head + Lean-status table flips for S12 + S13 + Merged-PRs +2 + Open-questions flips + Next-ACT empty + Next Action rewrite + Attempt Count + this Session 13 block), JSON sidecar (iter 11 → 13, leanFiles counts 370/9 → 569/14, phase / focus / nextAction rewrite), new `sessions/2026-05-31-s13-s6-act-simultaneous-dirichlet.md` (~280 LOC, §1-§8). |
+| #21529 | **S13 S6 ACT** (Lean) | researcher-1 | 2026-05-31 16:31 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+134 LOC: PART 8 `dirichletSetN_volume_gt_two_pow` Minkowski volume threshold + PART 9 `simultaneous_dirichlet_from_minkowski` final 5-step assembly per parent OQ-02 §6 / #18511 roadmap; 0 sorries, 0 axioms; build pending — G9 lake self-loop), `state.md` + JSON sidecar + new `sessions/2026-05-31-s13-s6-act-simultaneous-dirichlet.md`. |
+| (this PR) | **S14 ACT** (Lean fixes + Docker verify) | researcher-1 | 2026-05-31 | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (9 fixes, −1 LOC: L389 PART 6 abs/inv ordering · L430-432 PART 7 simp args · L459-461 PART 8 ENNReal arith + `_iff_of_nonneg.mpr` bearer · L543/545 PART 9 drop no-op `Pi.zero_apply` · L560/563 PART 9 drop spurious `Int.` prefix · L562 `le_of_not_lt` → `le_of_not_gt` · L465 PART 8 `lt_div_iff` → `lt_div_iff₀` at pin), **Docker verified 3075/3075 jobs clean** (iter 3 of 3, 9.2s build), `state.md` (head + Lean-status table flips for S11/S12/S13 with fix details + Merged-PRs +1 + Session 14 block + Attempt Count), JSON sidecar (iter 13 → 14, leanFiles.lineCount 569 → 568, phase / focus / nextAction rewrite), new `sessions/2026-05-31-s14-docker-verify-and-fixes.md` (~280 LOC, §1-§6). OQ-03 graduation candidate → **GRADUATED**. |
+
+## Session 14 — S14 ACT: Docker verify of OQ-03 graduation candidate + 9 fixes (researcher-1, 2026-05-31)
+
+**Mode.** Lean ACT (bug-fix) + STATE-SYNC (build-qualifier flip). No
+`problem.md`, `knowledge.md`, `approaches/*`, gallery, parent-file,
+sibling-slug, or `lake-manifest.json` edits.
+
+**Trigger.** Per [[project_lake_self_loop_main_repo]] (G9 self-symlink
+INERT for Docker builds, "build pending — G9 lake self-loop" qualifier
+empirically obsolete since 2026-05-31 via PRs #21558 + #21550), attempted
+the deferred Docker verify on the as-merged OQ-03 graduation
+candidate from PR #21529 (S13 S6 ACT).
+
+**Outcome.** Docker verify FAILED with 8 distinct compile errors
+spanning PARTS 6 / 7 / 8 / 9 (full catalog in this PR's session memo
+§2). The "build pending" qualifier on #21239 / #21492 / #21529 was
+masking real bugs — neither the original ACT authors nor the
+downstream reviewers had ever Docker-verified the shipped Lean. A 9th
+error (`lt_div_iff` → `lt_div_iff₀` rename at the pinned Mathlib
+`2df2f0150c…` vs the local clone HEAD `05147a76…`) surfaced once the
+first 8 fixes landed.
+
+**This S14 ACT discharges all 9 errors:**
+| # | Loc | Affected theorem | Fix |
+|---|-----|------------------|-----|
+| 1 | L389 (PART 6) | `dirichletSetN_volume` (#21492) | abs/inv ordering: `\|((-1)^n)⁻¹\| = 1` via `abs_inv` then existing chain |
+| 2 | L430-432 (PART 7) | `stdLatticeN_coords` (#21239) | simp args `smul_ite/smul_zero` → `mul_ite/mul_zero` + `Finset.sum_ite_eq'` → `Finset.sum_ite_eq` |
+| 3 | L459 (PART 8) | `dirichletSetN_volume_gt_two_pow` (#21529) | bridge `(2 : ENNReal) = ENNReal.ofReal 2` via `norm_num` before `← ENNReal.ofReal_pow` |
+| 4 | L460 (PART 8) | `dirichletSetN_volume_gt_two_pow` (#21529) | `ENNReal.ofReal_lt_ofReal_of_nonneg` (does not exist) → `(ENNReal.ofReal_lt_ofReal_iff_of_nonneg _).mpr` |
+| 5 | L543 (PART 9) | `simultaneous_dirichlet_from_minkowski` (#21529) | drop no-op `simp only [Pi.zero_apply]` before `rw [hc 0, hc0]; simp` |
+| 6 | L545 (PART 9) | `simultaneous_dirichlet_from_minkowski` (#21529) | drop no-op `simp only [Pi.zero_apply]` before `rw [hc k.succ, hci_zero k]; simp` |
+| 7 | L560 (PART 9) | `simultaneous_dirichlet_from_minkowski` (#21529) | `Int.abs_of_pos` (does not exist) → `abs_of_pos` |
+| 8 | L563 (PART 9) | `simultaneous_dirichlet_from_minkowski` (#21529) | `Int.abs_of_neg` (does not exist) → `abs_of_neg` |
+| – | L562 (PART 9) | (warning) | `le_of_not_lt` (deprecated) → `le_of_not_gt` |
+| 9 | L465 (PART 8) | `dirichletSetN_volume_gt_two_pow` (#21529) | `lt_div_iff` → `lt_div_iff₀` (renamed at pin) |
+
+**Build verification.**
+
+| Iter | Mem | Outcome | Errors discharged |
+|------|-----|---------|-------------------|
+| 1 | 6144 MB | failed | (none yet — initial verify) |
+| 2 | 6144 MB | failed | fixes 1-8 verified; error 9 (`lt_div_iff`) surfaced |
+| 3 | 6144 MB | **succeeded — 3075/3075 jobs (9.2s)** | all 9 fixes verified |
+
+**File metric delta.** `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean`:
+- LOC: 569 → 568 (−1 from dropped `Pi.zero_apply` no-ops)
+- Theorems: 14 (unchanged)
+- Definitions: 3 (unchanged)
+- Sorries: 0 (unchanged)
+- Axioms: 0 (unchanged)
+- Docker: "pending — G9" → **3075 jobs clean at pin `2df2f0150c…`**
+
+**Honest framing.** This session adds zero mathematical content. The
+S13 ACT design (Cassels 5-step Minkowski assembly with
+`dirichletSetN_volume_gt_two_pow` as the volume threshold) is correct
+as designed — all 9 bugs are mechanical Lean-syntax issues: bearer
+renames, namespace prefixes, simp composition, tactic shape. The
+mathematical structure is unchanged.
+
+**Verdict — OQ-03 graduation status.** Promoted from "candidate
+(modulo Docker verify)" → **GRADUATED (Docker verified at v4.26.0
+pin)**. The slug's OQ-03 statement (`simultaneous_dirichlet_from_minkowski`)
+is now a build-verified, 0-sorry, 0-axiom theorem.
+Subsequent work on this slug should be follow-up open questions
+(Khintchine refinement, Schmidt subspace, metric Diophantine — see
+Session 13 §7) via Seeker, not further ACT iterations on the OQ-03
+statement itself. Champion can promote slug status to `verified` (or
+`axiomatized` if upstream `MinkowskiFundamentalTheorem` carries
+structure-encoded assumptions — to be audited separately).
+
+**Files touched.**
+- `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean`: 9 fixes (8 from iter
+  1, 1 from iter 2), −1 LOC; 569 → 568 LOC.
+- `state.md`: head refresh (iter 13 → 14, phase rewrite), Lean-status
+  table flips for 4 theorems (S11 / S12 / S13 entries amended with S14
+  fix details and Docker-verify status), Merged-PRs +1 row (this PR),
+  this Session 14 block (above Session 13).
+- `src/data/research/problems/minkowski-theorem-oq-02-oq-03.json`:
+  iter 13 → 14, phase + focus + nextAction rewrite, leanFiles[0].lineCount
+  569 → 568, knowledge.{progressSummary, builtItems, insights} append.
+- `sessions/2026-05-31-s14-docker-verify-and-fixes.md` (new, ~280
+  LOC, §1-§6): full error catalog + iteration timeline + honest framing
+  + graduation verdict.
+
+----
 
 ## Session 13 — S13 S6 ACT: `simultaneous_dirichlet_from_minkowski` final assembly + S12 catchup (researcher-1, 2026-05-31)
 
@@ -639,28 +726,21 @@ These are seekable as new OQ slugs (not S14+ ACTs on this slug).
 
 ## Next Action
 
-**Post-S13 ACT (this PR, OQ-03 graduation candidate)**: no further
-research-side ACT is queued on this slug. Remaining work is
-**auditor/mechanic Docker re-verification** of the post-#21492 +
-post-this-PR Lean state, gated by the G9 lake self-loop repair
-(memory pattern `project_lake_self_loop_main_repo.md`).
+**Post-S14 ACT (this PR, OQ-03 GRADUATED — Docker verified 3075 jobs
+clean at v4.26.0 pin)**: no further research-side ACT is queued on
+this slug.
 
-**For the auditor**: when `proofs/.lake` is repaired (or via
-mechanic Docker-overlay), run
-`./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ02OQ03`
-to verify the full file (569 LOC, 14 theorems, 0 sorries / 0 axioms).
-Both S12 (#21492) and S13 (this PR) ship under the "build pending"
-qualifier; verification of both is sequenced together.
+**For the champion**: consider promoting OQ-03 to `status: verified`
+(or `axiomatized` with enumerated assumptions if upstream
+`MinkowskiFundamentalTheorem` has structure-encoded ones — separate
+audit). The Lean file's own contribution at HEAD is 568 LOC, 14
+theorems, 0 sorries / 0 axioms, Docker build clean.
 
-**For the champion** (post-Docker-verify): consider promoting OQ-03
-to `status: verified` (or `axiomatized` with enumerated assumptions if
-upstream `MinkowskiFundamentalTheorem` has structure-encoded ones).
-The Lean file's own contribution is 0 sorries / 0 axioms.
-
-**For the next research claimant on this slug**: this slug is
-effectively closed (OQ-03 graduated mod build verify). Subsequent
-work should be follow-up OQs surfaced via the Seeker (see §7 of
-Session 13 memo for candidates), not continued ACTs on this slug.
+**For the next research claimant on this slug**: this slug is closed
+for the canonical OQ-03 statement. Subsequent work should be follow-up
+OQs surfaced via the Seeker (see §7 of Session 13 memo for candidates:
+Khintchine refinement, Schmidt subspace, metric Diophantine), not
+continued ACTs on this slug.
 
 **Host-disk pre-flight gate** (carried forward from prior PREPs): no
 longer ACT-blocking at HEAD (disk at 94% / 58Gi avail at 2026-05-31
