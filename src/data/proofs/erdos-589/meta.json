@@ -28,7 +28,10 @@
     "assumptions": "4 axiom(s) and 2 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
-    "definitionCount": 10
+    "definitionCount": 10,
+    "additionalFiles": [
+      "Proofs/Erdos589Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "This problem asks about extracting subsets in general position (no 3 collinear) from sets in almost general position (no 4 collinear). Erdős originally believed linear growth was achievable, but this was disproved.\n\n**Timeline:**\n- **1991 (Füredi)**: Proved g(n) ≥ c·√n·log n and g(n) = o(n)\n- **1991 (Furstenberg-Katznelson)**: Density Hales-Jewett theorem implies o(n) upper bound\n- **2018 (Balogh-Solymosi)**: Proved g(n) ≤ n^(5/6+o(1)) using container method\n\nThe exact order of growth remains open, with a gap between exponents 1/2 and 5/6.",
@@ -158,7 +161,10 @@
     "theoremCount": 7,
     "definitionCount": 10,
     "path": "Proofs/Erdos589Problem.lean",
-    "sorries": 2
+    "sorries": 2,
+    "additionalFiles": [
+      "Proofs/Erdos589Aristotle.lean"
+    ]
   },
   "crossReferences": [
     {
