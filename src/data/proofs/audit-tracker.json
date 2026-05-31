@@ -5326,9 +5326,9 @@
     },
     "erdos-217": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 5,
-      "lastAudited": "2026-05-30T19:30:00Z",
-      "result": "issues-fixed",
+      "auditCount": 6,
+      "lastAudited": "2026-05-30T19:59:20Z",
+      "result": "clean",
       "issues": [
         "phantom axioms palasti_small_n + erdos_217_conjecture (only docstrings); phantom small_cases_exist/ErdosConjecture217 in originalContributions; proofStrategy overclaims Palásti axiomatization (#14603)",
         "originalContributions listed phantom identifiers: NoFourConcyclic, allDistances, distinctDistances, HasStaircaseMultiplicity, HasErdos217Property, Erdos217Exists. Also misnamed PointConfig as 'PointConfiguration structure' and omitted sqDist. Replaced with accurate list of actual Lean declarations."
