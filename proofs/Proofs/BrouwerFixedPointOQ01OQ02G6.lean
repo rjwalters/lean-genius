@@ -34,6 +34,7 @@
 -/
 
 import Mathlib.Algebra.Group.Hom.Basic
+import Mathlib.Algebra.Group.Int.Defs
 
 namespace BrouwerOQ01OQ02
 
