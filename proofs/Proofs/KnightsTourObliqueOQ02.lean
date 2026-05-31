@@ -337,4 +337,112 @@ theorem tour_mem_d4Orbit_self (t : ClosedTour) : t ∈ d4Orbit t := by
   simp only [Finset.mem_image, Finset.mem_univ, true_and]
   exact ⟨(false, 0), applyD4Tour_id t⟩
 
+/-!
+## D4 right-inverse and bijectivity (S4-prep)
+
+The parent file's `applyD4Tour_inv_left` exhibits `applyD4Tour (d4Inv g)`
+as a **left** inverse of `applyD4Tour g`. The matching **right** inverse
+follows from injectivity (which we already have from inv_left): applying
+`applyD4Tour (d4Inv g)` to both sides of the desired equality reduces it
+to a second instance of inv_left, completing the bijection picture
+without needing to prove `d4Inv (d4Inv g) = g` explicitly.
+
+This unlocks: (i) `applyD4Tour g` is a bijection of `ClosedTour` (with
+named inverse `applyD4Tour (d4Inv g)`); (ii) every tour `u` has a unique
+preimage `applyD4Tour (d4Inv g) u` under `applyD4Tour g` — useful for
+counting arguments and for the surjectivity direction of the symmetric
+law in the `d4Equiv` framework below.
+-/
+
+/-- D4 **right inverse**: `applyD4Tour (d4Inv g)` is also a right inverse
+    of `applyD4Tour g`. Apply the injective endomap `applyD4Tour (d4Inv g)`
+    to both sides and reduce the resulting goal by parent's
+    `applyD4Tour_inv_left g (applyD4Tour (d4Inv g) t)`. -/
+theorem applyD4Tour_inv_right (g : Bool × Fin 4) (t : ClosedTour) :
+    applyD4Tour g (applyD4Tour (d4Inv g) t) = t := by
+  apply applyD4Tour_injective (d4Inv g)
+  exact applyD4Tour_inv_left g (applyD4Tour (d4Inv g) t)
+
+/-- `applyD4Tour g` is bijective on `ClosedTour`: injectivity from
+    `applyD4Tour_injective` (S3), surjectivity from `applyD4Tour_inv_right`
+    with explicit preimage `applyD4Tour (d4Inv g) t`. -/
+theorem applyD4Tour_bijective (g : Bool × Fin 4) :
+    Function.Bijective (applyD4Tour g) :=
+  ⟨applyD4Tour_injective g,
+   fun t => ⟨applyD4Tour (d4Inv g) t, applyD4Tour_inv_right g t⟩⟩
+
+/-!
+## D4-equivalence relation (S4-prep)
+
+The D4 action partitions `ClosedTour` into orbits. We expose the
+underlying relation `d4Equiv t u := ∃ g, applyD4Tour g t = u` and prove
+**reflexivity** (witness `(false, 0)` via `applyD4Tour_id`) and
+**symmetry** (witness `d4Inv g` via `applyD4Tour_inv_left`). The
+oblique-count invariance lifts pointwise to the relation
+(`d4Equiv_preserves_obliqueCount`), and level-set membership is preserved
+(`d4Equiv_preserves_levelSet`).
+
+**Transitivity is deferred to S4** — constructing a witness `g₃` from
+`g₁, g₂` requires a multiplication law `d4Mul : (Bool × Fin 4) →
+(Bool × Fin 4) → (Bool × Fin 4)` with `applyD4Tour (d4Mul g₂ g₁) =
+applyD4Tour g₂ ∘ applyD4Tour g₁`. That composition lemma needs a 4-case
+split on `(g₁.1, g₂.1)` using parent's `rotate_reflect_conjugate`,
+`rotate90_four_times`, `reflect_twice` and is the planned S4-prep follow-up.
+
+What we *do* get this iteration: a `mem_d4Orbit_iff` / `d4Orbit_eq_filter_d4Equiv`
+bridge between the `Finset` orbit (S3) and the `Prop`-valued relation,
+plus the level-set preservation lemma — together enough to refactor the
+S3 closure arguments through the equivalence-relation lens.
+-/
+
+/-- Two tours are **D4-equivalent** iff one is obtained from the other
+    by a single D4 transformation. Reflexive and symmetric; transitivity
+    deferred to S4 (needs `d4Mul`). -/
+def d4Equiv (t u : ClosedTour) : Prop :=
+  ∃ g : Bool × Fin 4, applyD4Tour g t = u
+
+/-- Reflexivity of `d4Equiv`: identity witness `(false, 0)`. -/
+theorem d4Equiv_refl (t : ClosedTour) : d4Equiv t t :=
+  ⟨(false, 0), applyD4Tour_id t⟩
+
+/-- Symmetry of `d4Equiv`: if `applyD4Tour g t = u`, then
+    `applyD4Tour (d4Inv g) u = t` by parent's `applyD4Tour_inv_left`. -/
+theorem d4Equiv_symm {t u : ClosedTour} (h : d4Equiv t u) : d4Equiv u t := by
+  obtain ⟨g, hg⟩ := h
+  refine ⟨d4Inv g, ?_⟩
+  rw [← hg]
+  exact applyD4Tour_inv_left g t
+
+/-- D4-equivalent tours have the same oblique count: lifts parent's
+    `oblique_count_invariant` from elements to the relation. -/
+theorem d4Equiv_preserves_obliqueCount {t u : ClosedTour} (h : d4Equiv t u) :
+    obliqueCount t = obliqueCount u := by
+  obtain ⟨g, hg⟩ := h
+  rw [← hg, oblique_count_invariant]
+
+/-- Membership in the D4 orbit `Finset` is the same as D4-equivalence
+    — the `Finset.image` definition unwraps to the existential. -/
+theorem mem_d4Orbit_iff (t u : ClosedTour) :
+    u ∈ d4Orbit t ↔ d4Equiv t u := by
+  unfold d4Orbit d4Equiv
+  simp only [Finset.mem_image, Finset.mem_univ, true_and]
+
+/-- Bridge: the D4 orbit `Finset` is the filter of `Finset.univ` by the
+    equivalence relation `d4Equiv t ·`. -/
+theorem d4Orbit_eq_filter_d4Equiv (t : ClosedTour) :
+    d4Orbit t = Finset.univ.filter (d4Equiv t) := by
+  ext u
+  rw [Finset.mem_filter]
+  simp only [Finset.mem_univ, true_and]
+  exact mem_d4Orbit_iff t u
+
+/-- Level-set membership is preserved by D4-equivalence: a refinement of
+    the S3 closure result `levelSet_image_applyD4Tour_subset` routed
+    through the equivalence relation. -/
+theorem d4Equiv_preserves_levelSet {t u : ClosedTour} {k : ℕ}
+    (h : d4Equiv t u) (ht : t ∈ levelSet k) : u ∈ levelSet k := by
+  simp only [levelSet, Finset.mem_filter, Finset.mem_univ, true_and] at ht ⊢
+  rw [← d4Equiv_preserves_obliqueCount h]
+  exact ht
+
 end KnightsTourOblique

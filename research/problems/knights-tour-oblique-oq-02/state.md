@@ -1,9 +1,72 @@
 # Current State
 
-**Phase**: ACT (S4 mod-8 divisibility plan staged; parent UNBLOCKED post-mechanic-#19059; build-verify deferred to S7 when Docker recovers)
-**Since**: 2026-05-16T10:35:00Z
-**Last Updated**: 2026-05-16 (Iteration 6 S6 STATE-SYNC, researcher-4)
-**Iteration**: 6
+**Phase**: ACT (S7 done: D4 right-inverse + bijectivity + d4Equiv refl/symm equivalence-relation framework shipped; S8 d4Mul follow-up queued)
+**Since**: 2026-05-30T17:00:00Z
+**Last Updated**: 2026-05-30 (Iteration 7 S7 ACT, researcher-1)
+**Iteration**: 7
+
+## Iteration 7 (researcher-1, 2026-05-30) — S7 ACT, post-mechanic-#19059-unblock S4-prep PART A
+
+This S7 ACT picks up from researcher-4's S6 STATE-SYNC (iter 6, 2026-05-16) which confirmed the parent file was healthy after mechanic PR #19059. 16 days passed with no upstream churn on `Proofs/KnightsTourOblique.lean` or `Proofs/KnightsTourObliqueOQ02.lean` (verified via `git log a25b4768565..origin/main -- proofs/Proofs/KnightsTourOblique*.lean`). Cleared backlog by shipping the first half of the S4-prep plan as a Lean-content PR.
+
+### What I added
+
+**D4 right-inverse + bijectivity (~10 LOC, 2 theorems):**
+
+- `applyD4Tour_inv_right (g) (t) : applyD4Tour g (applyD4Tour (d4Inv g) t) = t` — via the **injection trick**: apply `applyD4Tour (d4Inv g)` (which is injective by `applyD4Tour_injective`, a fact already in S3 ACT) to both sides; the LHS reduces by `applyD4Tour_inv_left g (applyD4Tour (d4Inv g) t)`. No need to prove `d4Inv (d4Inv g) = g` as a separate lemma.
+- `applyD4Tour_bijective (g) : Function.Bijective (applyD4Tour g)` — packages injectivity (S3) + surjectivity (with explicit preimage `applyD4Tour (d4Inv g) t` from the right inverse).
+
+**d4Equiv equivalence-relation framework (~50 LOC, 1 def + 6 theorems):**
+
+- `def d4Equiv (t u : ClosedTour) : Prop := ∃ g : Bool × Fin 4, applyD4Tour g t = u` — the symmetric relation underlying the D4 orbit decomposition.
+- `theorem d4Equiv_refl (t) : d4Equiv t t` — identity witness `(false, 0)` via `applyD4Tour_id` (S3).
+- `theorem d4Equiv_symm (h) : d4Equiv t u → d4Equiv u t` — `d4Inv g` witness via parent's `applyD4Tour_inv_left`.
+- `theorem d4Equiv_preserves_obliqueCount (h) : d4Equiv t u → obliqueCount t = obliqueCount u` — lifts parent's `oblique_count_invariant` pointwise → relation.
+- `theorem mem_d4Orbit_iff (t u) : u ∈ d4Orbit t ↔ d4Equiv t u` — `Finset.image` unwrapping → existential.
+- `theorem d4Orbit_eq_filter_d4Equiv (t) : d4Orbit t = Finset.univ.filter (d4Equiv t)` — alternate Finset characterization.
+- `theorem d4Equiv_preserves_levelSet (h) (ht) : d4Equiv t u → t ∈ levelSet k → u ∈ levelSet k` — refines S3 closure via the relation.
+
+### What this does NOT do (deferred to S8)
+
+- **`d4Equiv_trans`** — transitivity requires constructing a witness `g₃` from `g₁, g₂`, which needs an explicit multiplication law `d4Mul`. Explicitly flagged in the file's docstrings.
+- **`d4Mul + applyD4_mul + applyD4Tour_mul`** — the planned ~70-100 LOC composition lemma with 4-case split on `(g₁.1, g₂.1)` using parent's `rotate_reflect_conjugate`, `rotate90_four_times`, `reflect_twice`.
+- **Group(Bool × Fin 4) + MulAction ClosedTour** — Mathlib instance setup for `MulAction.card_orbit_dvd_card_group` based mod-8 divisibility.
+
+### Why this iteration (vs. shipping the full d4Mul)
+
+Trade-off: the d4Mul + composition lemma triad is **the planned next step but algebraically intricate**. The 4-case split with motive-not-type-correct risk + `rotate_reflect_conjugate` chaining makes it a 1-2 hour debugging session in worst case. Splitting into S7 (low-risk: pure consequences of already-proven `applyD4Tour_inv_left` and `oblique_count_invariant`) + S8 (high-risk: 4-case composition algebra) shrinks the per-iteration risk and gives a clean intermediate target to land + verify.
+
+The S7 content is genuinely useful in its own right:
+1. **Bijectivity** is a more refined statement than injectivity alone — explicit inverse enables Mathlib `Equiv` constructions downstream.
+2. **d4Equiv** is the relational viewpoint that downstream code (orbit counting, palindromic-tour detection) will want regardless of whether we go through `MulAction` or hand-rolled orbit partitions.
+3. **mem_d4Orbit_iff** is the bridge needed to lift any `Prop`-level orbit reasoning to the `Finset` cardinality bookkeeping that drives `obliqueDistribution k`.
+
+### Counts (post-S7)
+
+| Metric | Value | Δ from S6 |
+|--------|------:|----:|
+| OQ02 slug LOC | 448 | +107 |
+| OQ02 sorries | 0 | 0 |
+| OQ02 axioms | 0 | 0 |
+| OQ02 theorem count | 24 | +8 |
+| OQ02 def count | 5 | +1 |
+| Parent LOC | 2463 | 0 |
+| Parent sorries | 0 | 0 |
+| Parent axioms | 1 (intentional) | 0 |
+
+**Axiom delta this session**: 0.
+
+**Build status**: **(build pending)** — parent `Proofs/KnightsTourOblique.lean` is **still broken** on origin/main. Docker build of `Proofs.KnightsTourObliqueOQ02` exited code 1 with 103 errors (maxErrors cap hit), all inside the parent file (`.loom/logs/researcher-1-oq02-baseline.log`, 2026-05-30T17:00Z). **This corrects iteration 6's stale "parent verified clean post-#19059" claim**: PR #19059 (merged 2026-05-14) landed Tier 1+2 mechanic fixes (8 Mathlib renames + 1 duplicate-decl) per researcher-12's inventory, but **Tiers 3–6 (motive-strictness ×10, index-bound, Application type mismatch ×5, simp/omega/rewrite cascade) remain unfixed**. Error line distribution matches researcher-12's iter-5 inventory: bands 455–786, 899–1349, 1487–1873, 2027–2197. Notably, **`oblique_count_invariant` at parent:2007 fails to elaborate** because of an error at parent:2027 inside its proof body (`error: Function expected at`) — meaning OQ02 cannot even import the parent's .olean. All four merged OQ02 PRs (#18101 S2, #18144 S3-prep, #18920 S3 ACT, plus this S7) have shipped or will ship under the standard knights-tour-oblique `(build pending)` precedent.
+
+**Verification by inspection** (parent break notwithstanding): every new S7 theorem proof reduces to either (a) parent's public surface — `applyD4Tour_inv_left` (parent:1724, **outside broken bands**), `closedTour_eq_iff` (parent:1715, **outside broken bands**), `oblique_count_invariant` (parent:2007, **in broken band — used by `d4Equiv_preserves_obliqueCount` and `d4Equiv_preserves_levelSet`; verification deferred to post-mechanic-rebuild**) — or (b) standard Mathlib (`Function.Injective`, `Function.Bijective`, `Finset.mem_image`, `Finset.mem_filter`, `Finset.ext`) or (c) prior S2/S3 OQ02 results (`applyD4Tour_injective`, `applyD4Tour_id`). No new tactic patterns beyond what S3 ACT already exercised. The right-inverse + bijectivity pair (lines ~362, ~370) and the d4Equiv refl/symm/mem_d4Orbit_iff/d4Orbit_eq_filter_d4Equiv block (lines ~398–434) are fully verifiable from the parent's stable surface alone; only `d4Equiv_preserves_obliqueCount` and `d4Equiv_preserves_levelSet` depend on the broken `oblique_count_invariant`.
+
+**Files changed**: `proofs/Proofs/KnightsTourObliqueOQ02.lean` (+107 LOC); `src/data/research/problems/knights-tour-oblique-oq-02.json` (lineCount 341→448, theoremCount 16→24, defCount 4→5, builtItems +8, knownResults.proven +4, focus/nextAction/progressSummary refreshed, lastUpdate 2026-05-14→2026-05-30); this state.md (+S7 entry).
+
+### Next action
+
+S8 ACT: ship `d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans` (~80-120 LOC, 0 sorries). Path A (Group instance): build the `Group (Bool × Fin 4)` instance directly with `mul := d4Mul`, then `MulAction (Bool × Fin 4) ClosedTour` via `applyD4Tour`, then apply Mathlib's `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` + `MulAction.card_orbit_dvd_card_group` for the mod-8 headline. Path B (instance-free): hand-roll the orbit partition `levelSet k = ⨆_{t ∈ reps} d4Orbit t` using the equivalence relation from S7 and Mathlib's `Finset.sum_partition` — avoids the Group(Bool × Fin 4) associativity proof. Recommended order: Path A; fallback to Path B if Mathlib v4.26.0 metavariable resolution on the Group associativity gets stuck.
+
+## Iteration 6 (researcher-4, 2026-05-16) — S6 STATE-SYNC, post-mechanic-#19059 UNBLOCKED + S4 PREP stale-blocker-assertion correction
 
 > _Phase note: this skill maps "S6 STATE-SYNC" to canonical "ORIENT" sub-iteration of an ongoing ACT phase. Previous BLOCKED status from Iteration 5 (S5 STATE-SYNC) is RESOLVED by mechanic PR #19059 (merged 2026-05-14 post-#19027)._
 
