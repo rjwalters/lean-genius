@@ -3,7 +3,7 @@ import Mathlib.Algebra.Group.Basic
 import Mathlib.Tactic
 
 /-!
-# Gauss–Wilson Non-Cyclic OQ-01 — Phase B (partial): Elementary 2-Abelian Product
+# Gauss–Wilson Non-Cyclic OQ-01 — Phase B: Elementary 2-Abelian Product
 
 This file delivers **Phase B** of the three-phase decomposition of
 `gauss-wilson-non-cyclic-oq-01`, building on Phase A
