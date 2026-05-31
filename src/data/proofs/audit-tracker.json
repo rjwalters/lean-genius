@@ -5203,12 +5203,12 @@
     },
     "erdos-200": {
       "agentId": "auditor-agent-2026-05-02",
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "meta.json: phantom axioms in proofStrategy (claims PNT/conjecture axiomatized — only green_tao is); 3 dangling /-- -/ docstrings (lines 48-55, 77-81, 100-102); section line drift in all sections after core-definitions (structural claims 112-125 but ap_difference_primorial is at 136-146). Issue #14625."
       ],
-      "lastAudited": "2026-05-02T06:56:42Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-05-30T22:35:16Z",
+      "result": "clean"
     },
     "erdos-201": {
       "agentId": "auditor-loop-1777705064",
