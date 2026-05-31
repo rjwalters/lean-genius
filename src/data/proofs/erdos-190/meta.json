@@ -123,8 +123,16 @@
       "title": "Part 10: Summary",
       "startLine": 299,
       "endLine": 348,
-      "summary": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} → ∞. Status: OPEN.",
-      "mathContext": "H_pos axiom, summary theorem combining H(k) > 0 and H(k)^{1/k} $\\to$ ∞. Status: OPEN."
+      "summary": "H_pos theorem (proved from H_spec on empty Fin 0 codomain), erdos_190_summary theorem combining H_pos, H_root_to_infinity, and W_le_H. Status: OPEN.",
+      "mathContext": "H_pos theorem (proved, not axiomatized) and erdos_190_summary theorem combining H(k) > 0, H(k)^{1/k} $\\to$ ∞, and W(k) $\\leq$ H(k). Status: OPEN."
+    },
+    {
+      "id": "subset-helpers",
+      "title": "Part 11: Subset Helpers and Conjecture Strength",
+      "startLine": 348,
+      "endLine": 398,
+      "summary": "isMonochromatic_subset and isRainbow_subset (color predicates preserved under subsets). erdos190Conjecture_implies_root_to_infinity (conjecture is strictly stronger than the known result).",
+      "mathContext": "Proved theorems: isMonochromatic_subset, isRainbow_subset (subset preservation), and erdos190Conjecture_implies_root_to_infinity (showing the open conjecture H(k)^{1/k}/k $\\to$ ∞ implies the known H(k)^{1/k} $\\to$ ∞)."
     }
   ],
   "conclusion": {
