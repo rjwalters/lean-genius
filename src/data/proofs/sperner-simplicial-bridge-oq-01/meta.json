@@ -12,9 +12,9 @@
     "status": "verified",
     "badge": "verified",
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 13,
     "definitionCount": 3,
-    "lineCount": 216,
+    "lineCount": 267,
     "sorries": 0,
     "imports": ["Proofs.SpernerSimplicialBridge"],
     "tags": [
@@ -33,15 +33,16 @@
       "`MixedPseudomanifold K`: stratum-wise pseudomanifold predicate — for every dimension `d` and every `d`-element face `f`, at most 2 cells of dimension `d` contain `f`. Strictly generalises the parent's pure pseudomanifold condition.",
       "`MixedPseudomanifold.of_pure`: a pure pseudomanifold lifts to the mixed predicate — the dimension-`d` stratum equals `K`, and strata at other dimensions are empty (so the bound `card ≤ 2` is vacuous). Sanity check that the generalisation subsumes the parent.",
       "`boundaryDoorCount K c`: a `noncomputable def` packaging the parent's `hbdry` filter expression for a chosen dimension `d`, structurally a one-for-one copy with `topCellsOfDim K d` substituted for the parent's `topCells`.",
-      "`sperner_mixed_panchromatic_at_dim`: per-stratum main theorem — for each dimension `d` such that `boundaryDoorCount K c` is odd, the dimension-`d` stratum of a mixed pseudomanifold `K` contains a panchromatic top cell. Proof body is a single application of the parent's `exists_panchromatic` after packaging `hcard`, `hpseudo`, and `hbdry` per stratum."
+      "`sperner_mixed_panchromatic_at_dim`: per-stratum main theorem — for each dimension `d` such that `boundaryDoorCount K c` is odd, the dimension-`d` stratum of a mixed pseudomanifold `K` contains a panchromatic top cell. Proof body is a single application of the parent's `exists_panchromatic` after packaging `hcard`, `hpseudo`, and `hbdry` per stratum.",
+      "`MixedPseudomanifold.mono`: any sub-complex of a mixed pseudomanifold is itself a mixed pseudomanifold. The proof transports the per-face filter cardinality bound through `Finset.filter_subset_filter`. Establishes that the framework's central predicate is structurally well-behaved under sub-complex restriction."
     ]
   },
   "leanFile": {
     "path": "Proofs/SpernerSimplicialBridgeOQ01.lean",
-    "lineCount": 216,
+    "lineCount": 267,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 8,
+    "theoremCount": 13,
     "definitionCount": 3,
     "imports": ["import Proofs.SpernerSimplicialBridge"],
     "opens": ["Finset"],
@@ -70,17 +71,24 @@
       "summary": "`MixedPseudomanifold.of_pure` (lines 97-109) combines the two stratum-level facts of the previous section into a predicate inclusion `Pure ⊆ Mixed`. The proof case-splits `by_cases hd : d' = d`: when `d' = d`, rewrite the stratum to `K` via `topCellsOfDim_eq_of_pure` and apply the parent's `hpseudo`; when `d' ≠ d`, rewrite the stratum to `∅` via `topCellsOfDim_eq_empty_of_pure`, simplify the door filter with `Finset.filter_empty`, and conclude `0 ≤ 2` via `Nat.zero_le _`. The vacuous behaviour at off-stratum dimensions is the structural payoff — it lets the mixed predicate's universal quantification over `d` faithfully subsume the parent without an explicit disjunction encoding the active stratum."
     },
     {
+      "id": "api-ergonomics",
+      "title": "API Ergonomics: Stratum Membership, Empty Complex, Monotonicity",
+      "startLine": 113,
+      "endLine": 162,
+      "summary": "Five small leaf-only API lemmas that make the `topCellsOfDim` / `MixedPseudomanifold` framework easier to use. `topCellsOfDim_subset` (lines 115-120): each stratum is a sub-`Finset` of the parent complex. `mem_topCellsOfDim_iff` (lines 122-128): clean iff form of stratum membership, replacing the unfold-then-`Finset.mem_filter` pattern. `topCellsOfDim_empty` (lines 130-135): every stratum of the empty complex is empty. `MixedPseudomanifold.empty` (lines 137-143): the empty complex is vacuously a mixed pseudomanifold — provides a structural base case for inductive constructions. `MixedPseudomanifold.mono` (lines 145-162): the key monotonicity lemma — any sub-complex of a mixed pseudomanifold is itself a mixed pseudomanifold, since dropping cells can only decrease the cardinality of `d`-cells containing any given face. All five lemmas are leaf-only (no new imports, no new definitions, no new axioms), and `MixedPseudomanifold.mono` in particular is a structural payoff: restricting attention to a sub-complex preserves the framework's central predicate."
+    },
+    {
       "id": "per-stratum-helpers",
       "title": "Per-Stratum Plumbing: Helpers + `boundaryDoorCount`",
-      "startLine": 111,
-      "endLine": 156,
+      "startLine": 162,
+      "endLine": 207,
       "summary": "Three helpers and a `noncomputable def` package the per-stratum hypotheses that the parent's `exists_panchromatic` expects. The section opens by adding `[LinearOrder E]` to the variable context (lines 123-125) because the parent's `vertexEnum` uses `Finset.sort (· ≤ ·)`. `card_of_mem_topCellsOfDim` (lines 128-131) projects `s.card = d + 1` out of `s ∈ topCellsOfDim K d` via `(Finset.mem_filter.mp hs).2`. `hpseudo_of_mixed` (lines 134-138) specialises `MixedPseudomanifold K` at the chosen dimension `d`, yielding the per-stratum pseudomanifold hypothesis. `boundaryDoorCount` (lines 148-156) is a `noncomputable def` whose body is, by definitional unfolding, the parent's `hbdry` filter expression with `topCellsOfDim K d` substituted for `topCells` — so `Odd (boundaryDoorCount K c)` reduces *for free* to the parent's `hbdry` shape without any explicit `unfold`, `change`, or `show`."
     },
     {
       "id": "main-theorem",
       "title": "Headline Theorem: `sperner_mixed_panchromatic_at_dim`",
-      "startLine": 158,
-      "endLine": 180,
+      "startLine": 209,
+      "endLine": 231,
       "summary": "The file's headline (lines 170-180) is a single term-mode application of the parent's `exists_panchromatic`. Hypothesis: `MixedPseudomanifold K` and `Odd (boundaryDoorCount (d := d) K c)`. Conclusion: a panchromatic top cell exists in `topCellsOfDim K d`. Proof body passes the parent five arguments — `topCellsOfDim K d` as `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` as `hcard`, `hpseudo_of_mixed hmixed` as `hpseudo`, `c`, and `hbdry` — and lets the elaborator unfold `boundaryDoorCount` to match the parent's expected shape. The proof is mechanical bookkeeping; all the mathematical content sits in the predicate definitions and lift lemmas of the previous four sections. The `section MixedSperner … end MixedSperner` block (lines 123, 182) scopes the `[LinearOrder E]` instance to this part of the file."
     }
   ],
