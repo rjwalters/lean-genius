@@ -18,9 +18,9 @@
     ],
     "proofRepoPath": "Proofs/TaylorSinCosConvergenceOQ02.lean",
     "badge": "mathlib",
-    "sorries": 2,
+    "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries via Mathlib bridge. The core step uses Mathlib's NormedSpace.expSeries_div_hasSum_exp for the exp series; all 16 theorems including the bonus bridge lemmas are proved with 0 sorries.",
+    "assumptions": "None for the main file: 0 axioms and 0 sorries via Mathlib bridge. The core step uses Mathlib's NormedSpace.expSeries_div_hasSum_exp for the exp series; all 16 main-file theorems including the bonus bridge lemmas are proved with 0 sorries. The companion file TaylorSinCosConvergenceOQ02Aristotle.lean carries 2 routine sorries (Aristotle proof-search targets).",
     "originalContributions": [
       "Explicit real-to-complex summability transfer for sin/cos Taylor series",
       "Complex tsum identification via I-cancellation (mul_right_cancel\u2080 Complex.I_ne_zero)",
@@ -148,5 +148,5 @@
       "Generalize: can this approach prove the power series identity for cosh/sinh (replacing ix with x), giving cosh x = \u2211 x^{2k}/(2k)! and sinh x = \u2211 x^{2k+1}/(2k+1)!?"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }
