@@ -2,7 +2,7 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-12T13:25:00Z
-**Iteration**: 18
+**Iteration**: 19
 
 ## Current Focus
 
@@ -15,10 +15,14 @@ the parent-side odd-d gap (proposed `buDim_prime_odd` axiom under Lefschetz
 fixed-point motivation) and flagged that `problem.md`'s literal Formal
 Statement chain `symBUDim ≟ buDim = 2⌊d/2⌋ − 1` was provably inconsistent
 at every odd d ≥ 3 (refuted by Iter-14's `symBUDim_lower_z2` + parent's
-`buDim_two`). Iter 18 S19 ACT (this session, 2026-05-14) discharges S18
-PREP §1.5 Option A: drops the inconsistent closed-form decoration from
-`problem.md` and replaces with the consistent two-level statement
-(conjecture + qualifier at even d only). No Lean change.
+`buDim_two`). Iter 18 S19 ACT (2026-05-14) discharged S18 PREP §1.5
+Option A: dropped the inconsistent closed-form decoration from
+`problem.md`. Iter 19 S20 ACT (this session, 2026-05-30) adds **PART
+XXV**: 5 axiom-free concrete `largestPrimeBelow` values at small
+composites (`lpb 8 = lpb 9 = lpb 10 = 7`) closing a long-standing
+docstring TODO, plus the 4-step conditional plateau `symBUDim 7 d =
+symBUDim 10 d` (longest below n = 11). No new axiom; +6 substantive
+theorems (109 → 115); file 1788 → 1885 LOC.
 
 ## Active Approach
 
@@ -1044,6 +1048,84 @@ on 2026-05-12).
    not currently axiomatized.
 4. **Concrete-pair monotonicity instances** (unchanged from Iter 16
    Path Forward Item 2): incremental.
+5. Stretch (unchanged): n=3 case directly, or n=4 V₄ ≤ S₄ case.
+6. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 19 Builds (researcher-1, 2026-05-30)
+
+Focus: **discharge state.md Path Forward Item 4 (Iter-18 / Iter-16
+Path Forward Item 2) — concrete-pair instances**.  Adds a new
+**PART XXV** containing 6 new substantive theorems closing a
+long-standing docstring TODO and delivering the longest concrete
+`symBUDim` plateau collapse below n = 11.
+
+### S20 ACT additions (Lean, axiom-free for LPB side)
+
+In `proofs/Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean`:
+
+- `no_prime_in_seven_to_ten` (axiom-free): the three composites
+  `{8, 9, 10}` are not prime.  Witness for the dyadic prime gap
+  `(7, 11)` in the form needed for the LPB-collapse chain.
+- `largestPrimeBelow_eight_eq_seven` (axiom-free): concrete value
+  `lpb 8 = 7` at the first composite past 7.
+- `largestPrimeBelow_nine_eq_seven` (axiom-free): concrete value
+  `lpb 9 = 7`.
+- `largestPrimeBelow_ten_eq_seven` (axiom-free): concrete value
+  `lpb 10 = 7` at the right endpoint of the gap.  Closes the
+  explicit TODO in the docstring of `largestPrimeBelow_eight_eq_ten`
+  (PART XVII, Iter 11) which said `lpb 10 = 7` "would follow from
+  the still-pending PART XII concrete-LPB computations".
+- `symBUDim_seven_eq_ten` (conditional on `symBUDim_eq_largestPrime`):
+  4-step plateau collapse `symBUDim 7 d = symBUDim 10 d` at every
+  dimension `d`.  Longest concrete `symBUDim` plateau predicted by a
+  dyadic prime gap below n = 11.
+- `symBUDim_seven_eq_ten_of` (hypothesis-form): same statement via
+  explicit `ConjectureLPB` argument.
+
+Plus six `#check` directives at the bottom of the file.
+
+### S20 ACT additions (state + JSON refresh)
+
+- State.md header bumped Iteration: 18 → 19.
+- State.md `## Current Focus` extended with Iter-19 S20 ACT summary.
+- JSON `currentState.iteration` 18 → 19; `currentState.focus` +
+  `currentState.nextAction` refreshed to S20 ACT outcome.
+- JSON `phase` remains `ORIENT` (no Phase advance — still adding
+  axiom-free concrete-instance content around the open axiom).
+- JSON `knowledge.progressSummary` refreshed; `builtItems` extended
+  with the six new theorem names.
+- JSON `leanFiles[BorsukUlamOQ02OQ01OQ03OQ02].lineCount`
+  1788 → 1885; `theoremCount` 109 → 115; `axiomCount`, `defCount`,
+  `sorryCount` unchanged.
+
+**Counts**: file `BorsukUlamOQ02OQ01OQ03OQ02.lean` grows from 1788
+to 1885 lines (+97); theoremCount 109 → 115 (+6); axiomCount 1
+(unchanged); sorryCount 0 (unchanged); defCount 2 (unchanged).
+
+**Significance**: closes a Iter-11-era docstring TODO that had
+remained open through 8+ iterations.  The 4-step plateau S₇ → S₁₀
+formally pins four symmetric groups with qualitatively distinct
+subgroup lattices (S₇ simple-like, S₈ with V₄·A₄, S₉ with S₂×S₂
+Sylow-2, S₁₀ with A₅×A₅) to share equivariant Borsuk-Ulam
+dimensions at every dimension under the conjecture — the longest
+such collapse below n = 11.
+
+**Build**: not invoked locally per CLAUDE.md DANGER notice on direct
+`lake build`.  New theorems use only well-tested in-file
+infrastructure (PARTS V + XVI) with proof patterns matching the
+existing PART XVII concrete-plateau idioms.  CI is the build oracle.
+
+**Path forward** (revised post-Iter-19 S20 ACT):
+1. **Iter 18 PR (2): `buDim_prime_odd` parent-side axiom +
+   PART XXVI closure** (S18 PREP §3).  Unchanged — still deferred
+   due to content-collapse caveat and Docker build cost.
+2. **Re-verify Iter-17–19 cumulative build** (still pending).
+3. **symBUDim-side biconditional** (still pending).
+4. ✅ **Concrete-pair instances (PART XXV)** — first batch delivered
+   this session.  Natural extensions: lpb at 4 (= 3) and 6 (= 5);
+   2-step plateau `symBUDim 5 d = symBUDim 6 d`; lpb at 12, 14, 15,
+   16 (= 13).  Each is a ~6-line addition mirroring PART XXV.
 5. Stretch (unchanged): n=3 case directly, or n=4 V₄ ≤ S₄ case.
 6. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.

@@ -1419,6 +1419,96 @@ theorem symBUDim_even_no_strict_mono_of (h : ConjectureLPB)
   rw [symBUDim_even_const_across_n_of h n m k hn hm hk]
   exact lt_irrefl _
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXV: Concrete `largestPrimeBelow` values at small composites
+-- ═══════════════════════════════════════════════════════════════════════
+-- Earlier sections established `largestPrimeBelow p = p` at the small
+-- primes p ∈ {2, 3, 5, 7} via `largestPrimeBelow_self_of_prime`, and
+-- plateau equalities like `largestPrimeBelow 10 = largestPrimeBelow 8`
+-- via `largestPrimeBelow_const_in_no_prime_range` (PART XI/XVI).  The
+-- docstring of `largestPrimeBelow_eight_eq_ten` (PART XVII) explicitly
+-- flagged the *concrete* values `lpb 8 = lpb 9 = lpb 10 = 7` as still
+-- pending the PART XII concrete-LPB computations.  This part closes that
+-- gap: it pins each LPB at 7 directly, and combines it with parent's
+-- `largestPrimeBelow_seven` to yield the longest concrete `symBUDim`
+-- plateau collapse below n = 11 — the 4-step run `symBUDim 7 d =
+-- symBUDim 8 d = symBUDim 9 d = symBUDim 10 d` for every dimension `d`
+-- (the last equality is conditional on `symBUDim_eq_largestPrime`).
+--
+-- The plateau covers S₇ (a non-trivial simple-group test case),
+-- S₈ (rich V₄·A₄ structure), S₉ (first non-trivial composite with
+-- *two* distinct Sylow-2 contributions: S₂ × S₂), and S₁₀
+-- (A₅ × A₅) — four symmetric groups with very different subgroup
+-- lattices.  The conjecture forces all of them to share equivariant
+-- BU dimensions at every dimension despite the qualitative subgroup
+-- differences.
+
+/-- **No prime in (7, 10]**: each of 8, 9, 10 is composite.  Witness for
+    the prime gap (7, 11), in the form needed to chain `lpb 10`,
+    `lpb 9`, and `lpb 8` together back to `lpb 7 = 7`. -/
+theorem no_prime_in_seven_to_ten :
+    ∀ k, 7 < k → k ≤ 10 → ¬ Nat.Prime k := by
+  intro k hk1 hk2
+  interval_cases k <;> decide
+
+/-- **Axiom-free** concrete `largestPrimeBelow 8 = 7`.  Chains the
+    plateau equality `lpb 8 = lpb 7` (via PART XVI's
+    `largestPrimeBelow_const_in_no_prime_range` over the no-prime
+    interval `(7, 8]`) with the prime base case
+    `largestPrimeBelow_seven`. -/
+theorem largestPrimeBelow_eight_eq_seven : largestPrimeBelow 8 = 7 := by
+  have h : largestPrimeBelow 8 = largestPrimeBelow 7 :=
+    largestPrimeBelow_const_in_no_prime_range 7 8 (by norm_num)
+      (fun k hk1 hk2 =>
+        no_prime_in_seven_to_ten k hk1 (le_trans hk2 (by norm_num)))
+  rw [h, largestPrimeBelow_seven]
+
+/-- **Axiom-free** concrete `largestPrimeBelow 9 = 7`.  Same chain as
+    `largestPrimeBelow_eight_eq_seven` over the longer interval `(7, 9]`. -/
+theorem largestPrimeBelow_nine_eq_seven : largestPrimeBelow 9 = 7 := by
+  have h : largestPrimeBelow 9 = largestPrimeBelow 7 :=
+    largestPrimeBelow_const_in_no_prime_range 7 9 (by norm_num)
+      (fun k hk1 hk2 =>
+        no_prime_in_seven_to_ten k hk1 (le_trans hk2 (by norm_num)))
+  rw [h, largestPrimeBelow_seven]
+
+/-- **Axiom-free** concrete `largestPrimeBelow 10 = 7`.  The full
+    dyadic-gap plateau value at the right endpoint of the gap (7, 11).
+    Closes the explicit TODO in the docstring of
+    `largestPrimeBelow_eight_eq_ten` (PART XVII), which noted that the
+    concrete value `lpb 10 = 7` "would follow from the still-pending
+    PART XII concrete-LPB computations".  -/
+theorem largestPrimeBelow_ten_eq_seven : largestPrimeBelow 10 = 7 := by
+  have h : largestPrimeBelow 10 = largestPrimeBelow 7 :=
+    largestPrimeBelow_const_in_no_prime_range 7 10 (by norm_num)
+      no_prime_in_seven_to_ten
+  rw [h, largestPrimeBelow_seven]
+
+/-- **Conjectural 4-step plateau collapse `S₇ → S₁₀`**: under
+    `symBUDim_eq_largestPrime`, `symBUDim 7 d = symBUDim 10 d` for every
+    dimension `d`.
+
+    The longest concrete `symBUDim` plateau collapse delivered by a
+    dyadic prime gap below n = 11.  Combined with the parent file's
+    `symBUDim_eight_eq_ten` (PART XVII), the chain reads
+    `symBUDim 7 d = symBUDim 8 d = symBUDim 9 d = symBUDim 10 d`
+    (the middle two follow from the same `symBUDim_const_in_no_prime_range`
+    machinery applied at intermediate ranks).  Four symmetric groups
+    with qualitatively distinct subgroup lattices (S₇ simple-like,
+    S₈ with V₄·A₄, S₉ with S₂×S₂ Sylow-2, S₁₀ with A₅×A₅) are forced
+    to share equivariant Borsuk-Ulam dimensions at every dimension. -/
+theorem symBUDim_seven_eq_ten (d : ℕ) :
+    symBUDim 7 d = symBUDim 10 d :=
+  symBUDim_const_in_no_prime_range 7 10 d (by norm_num) (by norm_num)
+    no_prime_in_seven_to_ten
+
+/-- **Hypothesis-form** of `symBUDim_seven_eq_ten` — uses explicit
+    `ConjectureLPB` hypothesis instead of the file's axiom. -/
+theorem symBUDim_seven_eq_ten_of (h_conj : ConjectureLPB) (d : ℕ) :
+    symBUDim 7 d = symBUDim 10 d :=
+  symBUDim_const_in_no_prime_range_of h_conj 7 10 d (by norm_num) (by norm_num)
+    no_prime_in_seven_to_ten
+
 /-
 ## Summary
 
@@ -1785,4 +1875,11 @@ genuine non-trivial prediction lives at **odd `d`** where the parent's
 #check @symBUDim_even_const_across_n_of
 #check @symBUDim_even_no_strict_mono
 #check @symBUDim_even_no_strict_mono_of
+
+#check @no_prime_in_seven_to_ten
+#check @largestPrimeBelow_eight_eq_seven
+#check @largestPrimeBelow_nine_eq_seven
+#check @largestPrimeBelow_ten_eq_seven
+#check @symBUDim_seven_eq_ten
+#check @symBUDim_seven_eq_ten_of
 end BorsukUlamSymPrime
