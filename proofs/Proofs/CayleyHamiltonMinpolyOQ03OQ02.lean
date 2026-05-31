@@ -153,6 +153,31 @@ theorem squareKrylovProd_two_pow (M : Matrix (Fin n) (Fin n) K) (k : ℕ) :
     squareKrylovProd M (2 ^ k) = squareKrylov M k := by
   rw [squareKrylovProd_eq_pow, squareKrylov_eq_pow_two]
 
+-- ============================================================
+-- Layer 2 vector form: Krylov vectors via squared-Krylov
+-- ============================================================
+
+/-- **Vector-level Layer 2.** Every Krylov vector `M^j · v` is the result of
+    applying the squared-Krylov product `squareKrylovProd M j` to `v`. This
+    is the operationally accurate form of Layer 2: the algorithm produces
+    each Krylov vector by applying a single matrix (the squared-Krylov
+    product, built from `popcount(j)` matrix multiplications of the squared
+    sequence) to `v`. -/
+theorem squareKrylovProd_mulVec (M : Matrix (Fin n) (Fin n) K)
+    (v : Fin n → K) (j : ℕ) :
+    (squareKrylovProd M j).mulVec v = (M ^ j).mulVec v := by
+  rw [squareKrylovProd_eq_pow]
+
+/-- **Krylov reachability.** Every Krylov vector `M^j · v` lies in the range
+    of `squareKrylovProd M j` viewed as a matrix-vector map. This is the
+    span-style restatement of the vector-level Layer 2 bridge: any vector
+    the naive Krylov ladder produces is reachable through the
+    `popcount(j)`-multiplication squared-Krylov product map. -/
+theorem krylov_in_squareKrylov_range (M : Matrix (Fin n) (Fin n) K)
+    (v : Fin n → K) (j : ℕ) :
+    ∃ w : Fin n → K, (squareKrylovProd M j).mulVec w = (M ^ j).mulVec v :=
+  ⟨v, squareKrylovProd_mulVec M v j⟩
+
 end MinpolyComplexity.SubcubicKrylov
 
 /-
@@ -163,21 +188,26 @@ end MinpolyComplexity.SubcubicKrylov
   prove the bridge to ordinary matrix exponentiation, and lift the bridge
   to a binary-expansion product formula recovering every Krylov power M^j.
 
-  **Status.** Complete formalization of Layers 1 + 2. 7 theorems
-  (3 Layer 1 + 4 Layer 2), 0 sorries, 0 axioms.
+  **Status.** Complete formalization of Layers 1 + 2 + vector-level
+  corollaries. 9 theorems (3 Layer 1 + 4 Layer 2 matrix-level + 2
+  Layer 2 vector-level), 0 sorries, 0 axioms.
 
   **Layer 1 (structural, 3 theorems).**
   - `squareKrylov_zero` — base case, definitional (rfl).
   - `squareKrylov_succ` — recurrence, definitional (rfl).
   - `squareKrylov_eq_pow_two` — bridge T_k = M^(2^k), one-line induction.
 
-  **Layer 2 (correctness, 4 theorems + 1 helper).**
+  **Layer 2 (correctness — matrix level, 4 theorems + 1 helper).**
   - `squareKrylovProd` — definition: product of T_i over set bits of j.
   - `prod_pow_of_list` — helper: `∏ M^(2^i) = M^(∑ 2^i)` over a list.
   - `squareKrylovProd_eq_pow` — bridge M^j = ∏_{i ∈ bitIndices j} T_i.
   - `squareKrylovProd_zero` — sanity check (empty product = 1).
   - `squareKrylovProd_one` — sanity check (single T_0 = M).
   - `squareKrylovProd_two_pow` — sanity check (T_k recovered from 2^k).
+
+  **Layer 2 vector form (S4 addition, 2 theorems).**
+  - `squareKrylovProd_mulVec` — vector corollary: `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`.
+  - `krylov_in_squareKrylov_range` — reachability: every Krylov vector lies in the image of the squared-Krylov product matrix-vector map.
 
   **Out of scope (see module docstring).**
   - Layer 3 (complexity): O(n^ω) operation count — Mathlib-blocked.
