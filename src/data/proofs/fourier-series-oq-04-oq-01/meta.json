@@ -15,11 +15,11 @@
       "Topology"
     ],
     "namespace": "FourierSeriesOQ04OQ01",
-    "lineCount": 375,
+    "lineCount": 413,
     "axiomCount": 1,
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 10
+    "theoremCount": 11
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -40,8 +40,8 @@
     "sorries": 1,
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 375,
-    "theoremCount": 10,
+    "lineCount": 413,
+    "theoremCount": 11,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
     "mathlibDependencies": [
@@ -88,7 +88,8 @@
       "latticeDisc_subset_bbox, latticeDisc_card_le_bbox (S2c): trivial pre-Gauss bounding-box cardinality bound for the lattice disc",
       "bbox_card, latticeDisc_card_le_explicit (S2d): explicit bounding-box cardinality (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc, yielding the closed-form O(R²) Gauss-circle upper bound for the lattice disc",
       "latticeDisc_card_le_real (S2-Gauss-real): Real-form qualitative Gauss-circle bound ((latticeDisc R).card : ℝ) ≤ (2|R|+3)² suitable for ℓ¹-majorisation of sphPartialSum",
-      "latticeDisc_mem_eventually, latticeDisc_eventually_supset (S2e-cofinality, iter 8): atTop cofinality of latticeDisc — every fixed finite set of lattice points is eventually contained in latticeDisc R as R → ∞; stepping-stone for the Plancherel-tail engine that closes sphPartialSum_L2_norm_converge"
+      "latticeDisc_mem_eventually, latticeDisc_eventually_supset (S2e-cofinality, iter 8): atTop cofinality of latticeDisc — every fixed finite set of lattice points is eventually contained in latticeDisc R as R → ∞; stepping-stone for the Plancherel-tail engine that closes sphPartialSum_L2_norm_converge",
+      "coeFn_finset_sum_haarT2 (S2e-step2, iter 9, private helper): inductive `Lp.coeFn_finset_sum`-style helper specialized to `Lp ℂ 2 haarT2` — closes the documented Mathlib gap (no named `Lp.coeFn_finset_sum` / `Finset.coeFn_sum` / `AEEqFun.coeFn_sum` at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) via `Finset.induction_on` + `Lp.coeFn_zero` + `Lp.coeFn_add`. Step 2 of the S7 audit §4 ACT recipe for discharging `sphPartialSum_L2_norm_converge`; independent of step 1 (haarT2/volume setup)"
     ]
   },
   "overview": {
@@ -166,6 +167,14 @@
       "endLine": 371,
       "summary": "`latticeDisc_mem_eventually` and `latticeDisc_eventually_supset`: every fixed lattice point (resp. finite set of lattice points) is contained in `latticeDisc R` for all sufficiently large `R`. Sorry-free, axiom-free, pure ℝ/ℤ arithmetic — no measure-theoretic dependencies. The Plancherel-tail engine for the eventual S2e ACT close of `sphPartialSum_L2_norm_converge`.",
       "mathContext": "For a single `k ∈ ℤ²`, taking `R ≥ (k 0)² + (k 1)² + 1` (which forces `R ≥ 1` and hence `R ≤ R²`) discharges both the disc condition `(k 0)² + (k 1)² ≤ R²` and the bounding-box condition `|k i| ≤ ⌈|R|⌉` (via `(k i)² ≤ R²` ⇒ `|k i| ≤ R` ⇒ `|k i| ≤ ⌈|R|⌉`). The finite-set case follows by `Finset.induction_on`, combining the singleton via `Filter.filter_upwards`. This is the cofinality bearer noted in the S2e PREP / S7 audit's §2.3, converting the Plancherel residual `‖S_R^{sph} f - f‖₂² = ∑_{k ∉ latticeDisc R} |fk|²` into a tail of the convergent series `∑_k |fk|² = ‖f‖₂²`."
+    },
+    {
+      "id": "lp-coefn-finset-sum",
+      "title": "S2e-step2 — `Lp.coeFn_finset_sum` helper on `haarT2` (Mathlib gap)",
+      "startLine": 373,
+      "endLine": 409,
+      "summary": "`coeFn_finset_sum_haarT2`: a private inductive helper closing the documented Mathlib gap noted in the S7 audit-at-pick-time review. For a finite family of `Lp ℂ 2 haarT2` elements, the pointwise coercion of the finset-sum agrees almost everywhere with the pointwise finset-sum of coercions. Sorry-free, axiom-free, build-verified. Step 2 of the S7 audit §4 ACT recipe for discharging `sphPartialSum_L2_norm_converge`; independent of step 1 (haarT2 = volume setup).",
+      "mathContext": "Proof by `Finset.induction_on`. Empty case: `Finset.sum_empty` reduces both sides to `(0 : Lp ℂ 2 haarT2)` and `fun _ => (0 : ℂ)`; closed by `Lp.coeFn_zero ℂ 2 haarT2`. Insert case: `Finset.sum_insert` rewrites the LHS as `f k + ∑ j ∈ s, f j` in Lp; `Lp.coeFn_add` (LpSpace/Basic.lean:195 at pin) gives the AE-equality with the Pi-add of coercions; the inductive hypothesis then closes via `filter_upwards` + Pi.add_apply + Finset.sum_insert on the RHS. The helper specialises the obvious Mathlib-bound generalisation (with `{E p μ}` parameters) to `Lp ℂ 2 haarT2`; the same proof works for any `{E p μ}` and would be a natural upstream contribution. Independent of the haarT2/volume disambiguation (step 1 of the recipe), so safe to ship standalone."
     }
   ],
   "conclusion": {
