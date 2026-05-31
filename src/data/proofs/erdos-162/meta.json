@@ -68,43 +68,43 @@
     {
       "id": "colouring",
       "title": "Edge Colouring and Balance",
-      "startLine": 32,
-      "endLine": 75,
+      "startLine": 34,
+      "endLine": 139,
       "summary": "Defines EdgeColouring (symmetric Bool on pairs), colourEdgeCount (filtered product count), colourEdgeCount_total, IsBalancedOn, IsKBalanced, and balanced_requires_le_half."
     },
     {
       "id": "function-f",
       "title": "The Function F(n, α)",
-      "startLine": 76,
-      "endLine": 103,
+      "startLine": 141,
+      "endLine": 156,
       "summary": "Axiomatizes discrepancyF with characterization spec, monotonicity in α, F(n,0)=n, and F(n,α) ≤ n."
     },
     {
       "id": "log-bounds",
       "title": "Logarithmic Bounds",
-      "startLine": 104,
-      "endLine": 129,
+      "startLine": 157,
+      "endLine": 179,
       "summary": "Axiomatizes lower and upper bounds c₁ log n < F < c₂ log n. Proves Θ(log n) sandwich theorem."
     },
     {
       "id": "derived",
       "title": "Derived Results",
-      "startLine": 130,
-      "endLine": 135,
+      "startLine": 181,
+      "endLine": 185,
       "summary": "Proves half_is_extremal: F(n,1/2) ≤ F(n,α) directly from monotonicity axiom."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 136,
-      "endLine": 149,
+      "startLine": 187,
+      "endLine": 199,
       "summary": "Defines ErdosProblem162: F(n,α)/log n → c_α via ε-δ convergence for every 0 < α ≤ 1/2."
     },
     {
       "id": "examples",
       "title": "Computational Examples",
-      "startLine": 150,
-      "endLine": 186,
+      "startLine": 201,
+      "endLine": 213,
       "summary": "Verifies C(1,2)=0, C(2,2)=1, C(4,2)=6, C(8,2)=28 via native_decide."
     }
   ],
