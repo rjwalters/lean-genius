@@ -1,7 +1,7 @@
 {
   "slug": "roth-theorem-k3-oq-03-incomplete-01",
   "title": "Density Increment via Gowers Norms",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,20 +29,23 @@
     "goal": "For this incomplete research problem, investigate whether more of the Gowers-norm density-increment framework can be proved, while treating the existing k=3 explicit density increment as already established by the parent Roth infrastructure."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T02:25:35-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
+    "phase": "ORIENT",
+    "since": "2026-05-31T07:50:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ORIENT (researcher-1, 2026-05-31, doc-only): surveyed parent proofs/Proofs/RothTheoremOQ03.lean and confirmed discharge target as axiom density_increment_kAP at line 251. Parent meta status axiomatized, badge axiom, 0 sorries + 1 axiom (correcting problem.md's stale '1 sorry + 2 axioms' claim). Two approaches surveyed: A (k=3 bridge from existing `density_increment_k3_explicit`, ~30-50 LOC, tractability 7); B (full k=3 Fourier discharge, ~150-300 LOC, tractability 4); C (general k via Gowers norms, ~500+ LOC — out of scope; Mathlib v4.26.0 has no top-level Gowers-norm machinery). Recommended: A first, B fallback.",
+    "blockers": [
+      "Mathlib v4.26.0 has no top-level Gowers-norm machinery (rules out Approach C; not blocking A/B).",
+      "S3 PREP verification pending: exact signature of `density_increment_k3_explicit` (parent line 274 referenced but not yet fully inspected)."
+    ],
+    "nextAction": "S3 PREP: (1) Inspect `density_increment_k3_explicit` in proofs/Proofs/RothTheoremOQ03.lean — full signature, proof shape, bearer cluster. (2) Draft companion file structure for Approach A: proofs/Proofs/RothTheoremK3OQ03Incomplete01.lean. (3) Estimate concrete LOC for k=3 bridge. (4) Confirm A vs B handoff based on signature match. Doc-only, ~30-60 min. Followed by S4 ACT writing the companion file.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Scaffold backfilled from local evidence. The parent proof roth-theorem-k3-oq-03 is status axiomatized: its Gowers norm and k-AP counting infrastructure are constructive, the k=3 explicit density increment is proved from RothTheorem.lean, and the general-k density-increment layer remains conservative because density_increment_kAP is declared as an axiom and szemeredi_k_ge_4 is inherited transitively.",
+    "progressSummary": "S2 ORIENT complete (2026-05-31, researcher-1, doc-only): surveyed parent file, confirmed discharge target as axiom density_increment_kAP at RothTheoremOQ03.lean:251. Three approaches surveyed (A: k=3 bridge from existing density_increment_k3_explicit, tract 7; B: full k=3 Fourier discharge, tract 4; C: general-k Gowers norms — out of scope due to Mathlib API gap). Recommended A first. Scaffold backfilled from local evidence. The parent proof roth-theorem-k3-oq-03 is status axiomatized: its Gowers norm and k-AP counting infrastructure are constructive, the k=3 explicit density increment is proved from RothTheorem.lean, and the general-k density-increment layer remains conservative because density_increment_kAP is declared as an axiom and szemeredi_k_ge_4 is inherited transitively.",
     "builtItems": [
       "IsKAPFreeZMod for k-term arithmetic-progression-free finsets in ZMod N.",
       "Bridge theorems apFree_of_isKAPFreeZMod_three and isKAPFreeZMod_three_of_apFree.",
