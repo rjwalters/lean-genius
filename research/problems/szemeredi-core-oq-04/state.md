@@ -1,9 +1,96 @@
 # Current State
 
-**Phase**: ACT-readiness gate 7/8 GREEN substantive + 1/8 RED INFRA (G8 Docker daemon hung) for S7 ACT-α step 4. **Iter 17 (this PREP, researcher-10) ships S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC; the larger restructuring half of §6 that Iter 16 absorption dropped), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton (~55 LOC declarations + 3 inner-by sorries + 1 Markov-corollary sorry), Docker B2 (daemon hung) superseding B1 (host disk full, now recovered to 70%/6.8 Gi avail).** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction (partially absorbed into Iter 16 narrative, fully surfaced in Iter 17 here).** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-05-16T10:30:00Z (Iter 17 PREP — Iter 15 §6 surfacing + bearer line-cite corrections + JSON catchup)
-**Last Updated**: 2026-05-16 (Iteration 17 PREP, researcher-10)
-**Iteration**: 17
+**Phase**: ACT-readiness **8/8 GREEN** (G8 Docker daemon CLEARED). **Iter 18 (this SYNC, researcher-1, 2026-05-31) ships S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18. Next iteration (Iter 19 ACT-α) is the load-bearing one: paste Iter 17 §6 paste-ready Part 9 first-moment skeleton (~55 LOC declarations + ~45 LOC structural comments, 4 new sorries transiently) under a clean Docker pre-flight.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-05-31T06:20:00Z (Iter 18 STATE-SYNC — 14-day quiescence audit + G8 Docker clear + JSON catchup iter 17→18)
+**Last Updated**: 2026-05-31 (Iteration 18 STATE-SYNC, researcher-1)
+**Iteration**: 18
+
+## Iteration 18 (researcher-1, 2026-05-31) — S11 STATE-SYNC (post-Iter-17 14-day quiescence audit + G8 Docker daemon clear + JSON catchup iter 17→18, doc-only)
+
+**Mode.** Doc-only STATE-SYNC (zero `*.lean` / `problem.md` / `knowledge.md` /
+`lake-manifest` / `lakefile` / `meta.json` edits). Three files:
+`sessions/2026-05-31-s11-state-sync-post-iter17-quiescence-audit.md`
+(this SYNC, ~190 LOC), `state.md` (head block + this entry; no
+narrative edits to prior iterations), `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration: 17 → 18, since, focus, nextAction}` + top-level
+`lastUpdate: 2026-05-16 → 2026-05-31`).
+
+**Why.** Iter 17 merged 2026-05-16T14:33Z with ACT-readiness 7/8 GREEN + 1
+RED INFRA (G8 Docker daemon hung); 14 days have elapsed with no slug
+touches. Need to confirm (a) Iter 17's bearer-byte-stability assertions
+survive 1421 commits of repo churn, (b) whether G8 has cleared,
+(c) JSON tracker stays in step with state.md narrative.
+
+**Outcome.**
+
+* **§2 Slug quiescence (load-bearing)**: `git log origin/main
+  --since="2026-05-16T15:00:00Z" --` across all slug paths returns **0
+  commits** for every path — slug Lean file, sibling Lean files
+  (`SzemerediCore.lean`, `SzemerediRegularity.lean`), `proofs/lake-manifest.json`,
+  `research/problems/szemeredi-core-oq-04/`, and slug JSON. Among **1421
+  origin/main commits** in the window, zero are slug-bearing.
+* **§3 Lake-manifest byte-stability**: most-recent main-touch on
+  `proofs/lake-manifest.json` is still `ecb47b35601` (Sperner PR #19454,
+  pre-Iter-17). Mathlib `rev = 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  (v4.26.0) unchanged. File SHA1 at audit: `272effadcde902c98bd16e2d88c457d02d99a5a6`.
+  By transitivity, all 11 Iter 14/15/17 Mathlib bearer SHAs are byte-stable;
+  Iter 17 §4 line-cite corrections carry forward verbatim. No per-file
+  recheck needed.
+* **§4 Slug Lean file byte-stability**: `proofs/Proofs/SzemerediCoreOQ04.lean`
+  SHA1 `a51ac94f3e2aaa9ccea77c2f2496719a75b6fa83`, 1054 LOC, unchanged from
+  Iter 13/14/15/16/17 records. Sorry inventory 2 (line 291 +
+  line 831), 0 axioms, 0 assumption-encoding structure fields — all
+  unchanged.
+* **§5 ACT-readiness 8 gates**: 7/8 → 8/8 GREEN. G1-G7 carry forward from
+  Iter 17 unchanged. **G8 CLEARED** — see §6.
+* **§6 Docker daemon recovered**: Iter 17 B2 (`docker info` blank
+  ServerVersion past 12 s timeout) cleared. Audit at 2026-05-31T06:20Z:
+  `timeout 30 docker info` returns in ~3 s with full Server block,
+  `Server Version: 29.4.1`, `Storage Driver: overlayfs`, `Kernel Version:
+  6.12.76-linuxkit`, 0 containers / 3 images. Disk 57 Gi free
+  (capacity 94 % — tight but above the ≥10 Gi pre-flight threshold).
+* **§7 JSON catchup**: `currentState.iteration` 17 → 18;
+  `since` → 2026-05-31T06:20:00.000Z; `focus` rewritten to absorb 14-day
+  quiescence + G8 clear (preserves Iter 17 menu of first-moment route
+  preferred / second-moment tight alt); `nextAction` re-prioritised — bullet
+  1 now reads "Iter 19 ACT-α paste Part 9 first-moment skeleton (Iter 17 PREP
+  §6 content, ~55 LOC declarations + ~45 LOC structural comments,
+  4 new sorries transiently) under clean Docker pre-flight". Top-level
+  `lastUpdate` 2026-05-16 → 2026-05-31. No edits to `knowledge.*`,
+  `knownResults`, `references`, `tier`, `tags`, `status`,
+  `attemptCounts`.
+* **§8 Race / saturation (PR creation time, ~2026-05-31T06:30Z)**:
+  `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`
+  empty pre-this-PR; active claim is researcher-22732 (this session,
+  expires 2026-05-31T07:35:37Z UTC); no overlap risk on doc-only paths.
+* **§9 Stranded branches (carry-forward)**: 2 reaffirmed orphans
+  (`research/szemeredi-energy-weighted`, `research/szemeredi-furstenberg-prokhorov-spec`),
+  both off-slug; no new orphans detected.
+
+**Files modified (Iter 18).**
+`research/problems/szemeredi-core-oq-04/sessions/2026-05-31-s11-state-sync-post-iter17-quiescence-audit.md`
+(~190 LOC, this SYNC); `state.md` (head block + this entry; no narrative
+edits to Iter 17 or earlier); `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration, since, focus, nextAction}` + top-level
+`lastUpdate`).
+
+**Race / saturation check (PR creation time, ~2026-05-31T06:30Z).**
+
+* `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`:
+  empty; this SYNC will be the sole open slug PR upon creation.
+* `git log origin/main --since "2026-05-16T15:00:00Z"` for slug
+  touchpoints: 0 commits; slug content strictly quiescent since Iter 17.
+* Active claims on slug: 1 (this session's, expires 2026-05-31T07:35:37Z UTC).
+* Most recent slug merge: Iter 17 PR #19619 at 2026-05-16T14:33:03Z UTC.
+
+**Build status (Iter 18).** N/A — doc-only.
+
+**Note on iteration numbering.** This Iter 18 entry continues the
+merge-order monotone convention from Iter 14/16/17. PRs are entered in
+merge-time order; this STATE-SYNC takes the next integer after the most
+recently merged slug PR (Iter 17 = PR #19619). No skipped numbers.
+
+---
 
 ## Iteration 17 (researcher-10, 2026-05-16) — S10 PREP (Iter 15 §6 first-moment correction surfaced + Iter 15 bearer line-cite recheck + JSON catchup iter 14→17 + paste-ready Part 9 first-moment skeleton + Docker B2 supersedes B1, doc-only)
 
