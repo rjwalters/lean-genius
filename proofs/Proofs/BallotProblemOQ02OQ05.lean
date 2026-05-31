@@ -176,13 +176,50 @@ noncomputable def firstHitFin (ω : Fin n → Bool) (a : ℤ) : Fin (n+1) :=
 def reflectAt (ω : Fin n → Bool) (a : ℤ) : Fin n → Bool :=
   fun i => if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i
 
-/-- **R4** Reflection is involutive. `reflectAt (reflectAt ω a) a = ω`
-    requires showing `firstHitFin (reflectAt ω a) a = firstHitFin ω a`
-    (first hit is preserved under reflection beyond it) and then the
-    pointwise `!!b = b` collapse. -/
-lemma reflectAt_involutive (ω : Fin n → Bool) (a : ℤ) :
+/-- **R4-helper.** Below the first hit time, reflection is the identity.
+
+    Used by R4 (`reflectAt_involutive`) to show
+    `firstHitFin (reflectAt ω a) a = firstHitFin ω a` on the
+    `(hitSet ω a).Nonempty` branch. Pure `if_neg` collapse. -/
+lemma reflectAt_eq_below_firstHit
+    {ω : Fin n → Bool} {a : ℤ} {i : Fin n}
+    (hi : i.val < (firstHitFin ω a).val) :
+    reflectAt ω a i = ω i := by
+  unfold reflectAt
+  exact if_neg (Nat.not_le_of_lt hi)
+
+/-- **R4** Reflection is involutive **on the non-empty-hit-set branch**.
+    `reflectAt (reflectAt ω a) a = ω` whenever `(hitSet ω a).Nonempty`.
+
+    **History (S7 PREP, researcher-1, 2026-05-30)**: a 2-bit counterexample
+    (`n = 2`, `a = 1`, `ω = ![false, false]`) showed the unconditional
+    statement is **false**: when `(hitSet ω a) = ∅`, `firstHitFin ω a`
+    defaults to `⟨0, _⟩` and `reflectAt ω a = !ω` pointwise; the
+    complemented path may itself hit `a` (e.g., when `ω` hits `-a`), so
+    a second reflection flips a different bit-set and breaks involution.
+    The `(hitSet ω a).Nonempty` hypothesis restricts to the well-defined
+    branch where first-hit-preservation holds. Downstream consumer R6
+    invokes R4 inside a `Finset.card_nbij'` bijection whose source-set
+    predicate includes `(hitSet ω a).Nonempty`, so the hypothesis is
+    in scope at the call site — zero-cost fix downstream. -/
+lemma reflectAt_involutive {ω : Fin n → Bool} {a : ℤ}
+    (h : (hitSet ω a).Nonempty) :
     reflectAt (reflectAt ω a) a = ω := by
-  sorry  -- R4: split on (firstHitFin ω a).val ≤ i.val, use Bool.not_not
+  -- Step 1: firstHitFin is preserved under reflection (uses h).
+  -- Discharge sketch (S7 PREP §3, 6 bullets):
+  --   τ := (hitSet ω a).min' h ∈ hitSet (reflectAt ω a) a via
+  --   `reflectAt_eq_below_firstHit` + `Finset.sum_congr`;
+  --   antisymmetry on `Fin (n+1)` via `min'_le` (both directions).
+  -- Left as a named sub-sorry for S9; ~15 LOC inline discharge planned.
+  have hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a := by
+    sorry  -- R4-sub `hτ`: min'-of-hitSet argument; see S7 PREP §3 (6 bullets)
+  -- Step 2: pointwise `!!b = b` collapse with first-hit alignment.
+  funext i
+  unfold reflectAt
+  rw [hτ]
+  split_ifs with hi
+  · simp [Bool.not_not]
+  · rfl
 
 /-- **R5** Partial-sum-after-reflection identity at the endpoint.
     If `ω` hits `a` at some `τ ≤ n` (i.e., `(hitSet ω a).Nonempty`), then
