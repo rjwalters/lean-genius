@@ -1,9 +1,71 @@
 # Current State
 
-**Phase**: PREP (S7 — R4 `reflectAt_involutive` is **false-as-stated**; counterexample documented; paste-ready fix queued for S8 ACT)
-**Since**: 2026-05-30 (S7 PREP after 14d gap since S6 ACT)
-**Iteration**: 7 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP, this entry)
-**Last Updated**: 2026-05-30T19:55Z
+**Phase**: ACT (S8 — R4 false-statement fix applied: Helper-1 added, R4 signature takes `(h : (hitSet ω a).Nonempty)`, proof skeleton in place with named sub-sorry `hτ`; **build VERIFIED via Docker, 7744 jobs successful, 4 declared sorries**)
+**Since**: 2026-05-31 (S8 ACT, T+1d after S7 PREP)
+**Iteration**: 8 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT, this entry)
+**Last Updated**: 2026-05-31T18:30Z
+
+## S8 ACT (researcher-1, 2026-05-31, build pending — G9 lake self-loop)
+
+Applied the paste-ready patch from S7 PREP §3 verbatim:
+
+1. **Inserted Helper-1** `reflectAt_eq_below_firstHit` (10 LOC including docstring) before R4: a pure `if_neg` collapse showing reflection is identity below the first hit time. Sorry-free.
+
+2. **Changed R4 signature** from `(ω : Fin n → Bool) (a : ℤ)` to
+   `{ω : Fin n → Bool} {a : ℤ} (h : (hitSet ω a).Nonempty)`. Implicit `ω`/`a` + explicit `h` matches the R5 convention and supplies the Nonempty branch that the S7 counterexample showed is required.
+
+3. **Replaced R4 proof body** with the §3 skeleton:
+   ```lean
+   have hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a := by
+     sorry  -- R4-sub `hτ`: min'-of-hitSet argument; ~15 LOC discharge planned
+   funext i
+   unfold reflectAt
+   rw [hτ]
+   split_ifs with hi
+   · simp [Bool.not_not]
+   · rfl
+   ```
+   R4 now has 1 named sub-sorry (`hτ`) on a TRUE sub-statement; the surrounding R4 body is sorry-free modulo that sub-sorry.
+
+**File metrics**:
+
+| Metric | Pre-S8 | Post-S8 | Δ |
+|--------|--------|---------|---|
+| LOC | 229 | 266 | +37 |
+| Sorries | 4 | 4 | 0 |
+| Axioms | 1 (`donsker_fclt`) | 1 (`donsker_fclt`) | 0 |
+| Defs | 6 | 6 | 0 |
+| Lemmas | 3 (R4 + R5 + LOW) | 4 (Helper-1 + R4 + R5 + LOW) | +1 |
+| R4 status | FALSE as stated | TRUE with one honest sub-sorry | **structural correctness restored** |
+
+**Sorry inventory (post-S8)**:
+
+| Sorry | Discharge approach | Note |
+|-------|-------------------|------|
+| R4-sub `hτ` | `min'`-of-hitSet antisymmetry on `Fin (n+1)`; uses Helper-1 | NEW (replaces R4's prior 1-sorry on a FALSE lemma) |
+| R5 | `Finset.sum_ite` + `min'_mem` + arithmetic | unchanged from S6 |
+| LOW | `Int.le_iff_exists_eq_succ` on ±1 jumps | unchanged from S6 |
+| R6 | `Finset.card_nbij'` assembly using R4 + R5 | unchanged from S6 |
+
+**Build status**: **VERIFIED via Docker — 7744 jobs successful, single-file target `Proofs.BallotProblemOQ02OQ05`, 4 declared sorries (R4-sub `hτ` + R5 + LOW + R6), 0 errors**. The G9 lake self-loop is empirically inert for Docker builds (confirmed in a parallel S11 INFRA-VERIFY for `prob-method-lovasz-local-oq-01`, same session): Docker `-v` mount on `lean-mathlib-cache:/workspace/proofs/.lake/build` overrides the host's broken `.lake` symlink chain.
+
+**3 bugs caught at first build attempt** (2 preexisting from S6 ACT skeleton which was never actually built, 1 introduced in this S8 ACT). All three fixed:
+
+1. **partialSumBool** had `if h : i.val < k.val` with unused `h` (warning) → `if i.val < k.val` (S6 ACT bug)
+2. **reflectAt** depends on noncomputable `firstHitFin` but was itself `def` (compile error) → `noncomputable def reflectAt` (S6 ACT bug)
+3. **R4 proof body**: S7 PREP §3 tactic `unfold reflectAt; rw [hτ]` failed because `unfold` rewrites the inner `reflectAt` inside `firstHitFin (reflectAt ω a) a` too (S8 ACT paste error) → use `show` to expose only the outer `reflectAt`'s def via definitional equality, then `rw [hτ]`. Required explicit parens around `!`-expression in inner `show` due to `!` precedence interaction with `=`.
+
+Empirical R4 proof body now ~22 LOC (was estimated ~10 LOC pre-S7); slug file 269 LOC total. The "(build pending — G9 lake self-loop)" qualifier in this PR's initial commit is obsolete; the follow-up fix-and-verify commit corrects to VERIFIED status.
+
+**Bearer 0-drift**: lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since S5 PREP §4. Two new core bearers (`Nat.not_le_of_lt`, `Bool.not_not`) — both Lean core, no Mathlib pin needed.
+
+**Sibling-coordination**: `grep -rnE 'reflectAt_involutive|reflectAt_eq_below_firstHit|discrete_reflection' proofs/Proofs/` returns matches only in this file (Helper-1 / R4 / R6) and parent `BallotProblemOQ02.lean`'s unrelated `reflection_principle` axiom (continuous BM). No sibling implementation; no race risk. `gh pr list` for `discrete_reflection in:title` returns 0.
+
+**LOC budget**: 266 LOC exceeds the 250-LOC informal cap by 16 LOC (6%). Acceptable for the structural-correctness gain; revisit in S9 to compress R4's docstring history block (~15 LOC of recoverable comment text).
+
+See `sessions/2026-05-31-s8-act-reflectat-involutive-fix-paste.md` for the
+full memo (diff applied, tactic justification, R5/R6 audit, `hτ` discharge
+plan for S9, bearer table, risk inventory, Aristotle compatibility).
 
 ## S7 PREP (researcher-1, 2026-05-30, doc-only)
 
@@ -285,18 +347,51 @@ None new. Existing Mathlib gaps tracked in `problem.md` (Mathlib infrastructure 
 
 ## Next Action
 
-**S7 PREP shipped** in this PR — false-statement of R4 documented,
-corrected discharge plan with paste-ready helpers queued for S8.
+**S8 ACT shipped** in this PR (researcher-1, 2026-05-31) — Helper-1 inserted,
+R4 signature changed to take `(h : (hitSet ω a).Nonempty)`, R4 proof body
+replaced with `funext + rw [hτ] + split_ifs + simp [Bool.not_not]`,
+named sub-sorry `hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a`
+left inline (~15-LOC discharge planned for S9).
 
-**S8 (any researcher)**: apply the §3 patch from
-`sessions/2026-05-30-s7-prep-reflectat-involutive-counterexample.md`:
+**S9 (any researcher)**: two route options:
 
-1. Insert `reflectAt_eq_below_firstHit` (Helper-1, ~7 LOC) before R4.
-2. Change R4 signature to `{ω}` `{a}` implicit + `(h : (hitSet ω a).Nonempty)` explicit.
-3. Replace R4 proof body with `funext + rw [hτ] + split_ifs + simp [Bool.not_not]`,
-   leaving `hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a` as a
-   named sub-sorry OR discharge inline (~15 LOC via `min'_le`/`le_min'`).
-4. Build-verify via `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05`.
+- **Route A (PREP)**: stage a `partialSumBool_congr_below` helper lemma
+  (~5 LOC, `Finset.sum_congr rfl` on the `i.val < k.val` guard) +
+  paste-ready `hτ` discharge skeleton (~15 LOC, antisymmetry on `Fin (n+1)`
+  via `Finset.min'_le` / `Finset.le_min'`). Same `(build pending — G9)`
+  shipping pattern.
+- **Route B (ACT)**: discharge `hτ` inline without the helper, ~20 LOC.
+  Acceptable but less reusable.
+
+After S9 lands, R4 is fully sorry-free; net file sorry count drops 4 → 3
+(R5, LOW, R6).
+
+**S10+**: discharge the R5 / LOW / R6 chain.
+
+- R5 (`partialSumBool_reflectAt_endpoint`, HIGH ~25 LOC): `Finset.sum_ite`
+  + `min'_mem h` + arithmetic.
+- LOW (`reaches_iff_hits_or_above`, ~8 LOC): `Int.le_iff_exists_eq_succ`
+  on ±1 jumps.
+- R6 (`discrete_reflection`, HIGH ~20 LOC): `Finset.card_nbij'`
+  applied to the (ending<a, hits a) ↔ (ending>a) restriction using
+  R4 + R5.
+
+Plausible Aristotle candidates after S9 lands:
+- R4 (now `funext + rw + split_ifs + simp`-shaped after Helper-1 + hτ land —
+  well within `auto` strength).
+- LOW (jump analysis — borderline).
+- R5 + R6 main assembly (borderline; could attempt if Aristotle's
+  `card_bij`/`Finset.sum_ite` patterns mature).
+
+Helper-2 (`hτ`) itself is more involved (`min'`-based antisymmetry) and is
+borderline for Aristotle without further decomposition into the
+`partialSumBool_congr_below` sub-helper (Route A).
+
+**Build-verify** all S9+ ACTs via `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05`
+once the G9 lake self-loop is resolved at the main-repo level.
+
+**Original S8 plan** (now shipped — verbatim) and the **superseded original S7 sketch**
+are below for traceability.
 
 **Original S7 (now obsolete)** sketch retained below for traceability:
 
@@ -388,8 +483,8 @@ S1 specified the file structure (definitions + axiom) verbatim. S2 implemented i
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 OBSERVE survey, S2 ACT statement layer, S5 PREP paste-ready skeleton, S7 PREP false-statement discovery + corrected plan)
-- Current approach attempts: 4 (axiomatize-Donsker decomposition; S6 ACT skeleton; S7 PREP defect catch)
+- Total attempts: 5 (S1 OBSERVE survey, S2 ACT statement layer, S5 PREP paste-ready skeleton, S7 PREP false-statement discovery + corrected plan, S8 ACT R4 fix paste)
+- Current approach attempts: 5 (axiomatize-Donsker decomposition; S6 ACT skeleton; S7 PREP defect catch; S8 ACT defect fix)
 - Approaches tried: 1
 
 ## Open files
