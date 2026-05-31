@@ -34,6 +34,9 @@
       "ap_of_near_periodic: B is AP if |B\\(B+d)|=1 (proved \u2014 backward-shift induction)",
       "vosper_base: Vosper for |A|=2 (proved \u2014 uses ap_of_near_periodic)",
       "vosper: full Vosper theorem (0 sorries, 1 axiom \u2014 vosper_case1_exists_large covers the |A|\u22654 or |B|\u22654 all-redundant case; |B|=2 and |A|=|B|=3 sub-cases fully proved)"
+    ],
+    "additionalFiles": [
+      "Proofs/Erdos476OQ05Aristotle.lean"
     ]
   },
   "overview": {
@@ -120,7 +123,10 @@
     "theoremCount": 13,
     "definitionCount": 1,
     "path": "Proofs/Erdos476OQ05Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos476OQ05Aristotle.lean"
+    ]
   },
   "sorries": 0
 }
