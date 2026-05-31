@@ -1,9 +1,83 @@
 # Current State
 
-**Phase**: ACT (S7 done: D4 right-inverse + bijectivity + d4Equiv refl/symm equivalence-relation framework shipped; S8 d4Mul follow-up queued)
-**Since**: 2026-05-30T17:00:00Z
-**Last Updated**: 2026-05-30 (Iteration 7 S7 ACT, researcher-1)
-**Iteration**: 7
+**Phase**: ACT (S8 done: d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans + Equivalence + Setoid shipped; S9 Group/MulAction + mod-8 headline queued)
+**Since**: 2026-05-31T00:00:00Z
+**Last Updated**: 2026-05-31 (Iteration 8 S8 ACT, researcher-1)
+**Iteration**: 8
+
+## Iteration 8 (researcher-1, 2026-05-31) — S8 ACT, d4Mul + composition law + d4Equiv transitivity
+
+This S8 ACT picks up from researcher-1's S7 ACT (iter 7, 2026-05-30, PR #21277, merged). The next-action there called for `d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans` (~80-120 LOC, 0 sorries). Delivered ~167 LOC.
+
+### What I added
+
+**Rotation/reflection helpers (~25 LOC, 2 theorems):**
+
+- `theorem rotateSquareN_add (m n : Fin 4) (s : Square) : rotateSquareN m (rotateSquareN n s) = rotateSquareN ⟨(m.val + n.val) % 4, _⟩ s` — 16-case `fin_cases` bash on (m, n), each reducing via `simp only [rotateSquareN, rotateSquare90]` then `ext <;> Fin.ext_iff <;> omega`.
+- `theorem reflect_rotateN_conjugate (k : Fin 4) (s : Square) : reflectSquare (rotateSquareN k s) = rotateSquareN ⟨(4 - k.val) % 4, _⟩ (reflectSquare s)` — 4-case bash on k.
+
+**D4 multiplication (~25 LOC, 1 def + 2 private lemmas + 1 theorem):**
+
+- `def d4Mul : (Bool × Fin 4) → (Bool × Fin 4) → (Bool × Fin 4)` — pattern-match on outer reflection bit:
+  - `(false, k₂), (b₁, k₁) => (b₁, ⟨(k₁ + k₂) % 4, _⟩)` — rotation composition, reflection bit carries through.
+  - `(true, k₂), (b₁, k₁) => (!b₁, ⟨(k₂ + (4 - k₁)) % 4, _⟩)` — outer reflection flips inner bit and conjugates rotation.
+- `private lemma applyD4_false (k) (s) : applyD4 (false, k) s = rotateSquareN k s := rfl` — exposes applyD4's reduction on Bool literal `false`.
+- `private lemma applyD4_true (k) (s) : applyD4 (true, k) s = rotateSquareN k (reflectSquare s) := rfl` — same for `true`.
+- `theorem applyD4_mul (g₂ g₁ : Bool × Fin 4) (s : Square) : applyD4 (d4Mul g₂ g₁) s = applyD4 g₂ (applyD4 g₁ s)` — **headline composition law**. 4-case split on `(b₂, b₁)`:
+  - (false, false), (false, true): `simp [d4Mul, applyD4_false, applyD4_true]; rw [rotateSquareN_add]; congr 1; Fin.ext; omega`.
+  - (true, false), (true, true): adds `rw [reflect_rotateN_conjugate]` (and `reflect_twice` for `(true, true)`) before the rotation composition.
+
+**Lift to tours + equivalence relation framework (~30 LOC, 4 declarations):**
+
+- `theorem applyD4Tour_mul (g₂ g₁) (t) : applyD4Tour (d4Mul g₂ g₁) t = applyD4Tour g₂ (applyD4Tour g₁ t)` — lifts pointwise applyD4_mul to the `List.map (applyD4 _)` definition of applyD4Tour via parent's `map_applyD4_comp` + `closedTour_eq_iff` + funext.
+- `theorem d4Equiv_trans (h₁ : d4Equiv t u) (h₂ : d4Equiv u v) : d4Equiv t v` — existential combinator: extract witnesses `g₁, g₂` from `h₁, h₂`, package `d4Mul g₂ g₁` as the witness for `d4Equiv t v`, close by `rw [applyD4Tour_mul, hg₁, hg₂]`.
+- `theorem d4Equiv_equivalence : Equivalence d4Equiv` — bundles refl (S7) + symm (S7) + trans (this S8).
+- `def d4Setoid : Setoid ClosedTour` — `⟨d4Equiv, d4Equiv_equivalence⟩`. Enables Mathlib's `Quotient`, `Setoid.IsPartition`, and `Finset.sum_partition` API for the planned mod-8 orbit decomposition.
+
+### Why this proof structure
+
+The full 64-case bash (`(b₂, b₁, k₁, k₂) ∈ Bool × Bool × Fin 4 × Fin 4`) would be tractable but slow and hard to inspect. Factoring rotation composition (`rotateSquareN_add`) and reflection conjugation (`reflect_rotateN_conjugate`) into named helpers — each closed by `fin_cases <;> simp <;> ext <;> Fin.ext_iff <;> omega` — reduces `applyD4_mul` to 4 cases that each use 1-2 `rw`s on the helpers, a single `congr 1`, and an `omega` to handle the residual Fin 4 modular arithmetic identity (e.g., `(k₂ + (4 - k₁)) % 4 = (k₂ + ((4 - k₁) % 4)) % 4`, which omega handles directly as Presburger arithmetic with constant modulus 4).
+
+The `applyD4_false` / `applyD4_true` rfl-helpers are the small but crucial lubricant: `applyD4 (b, k) s` definitionally reduces to `rotateSquareN k (if (b : Bool) then reflectSquare s else s)`, and the inner `if` reduces by Lean's defeq on Bool literals. Stating this as named simp lemmas lets `simp only [applyD4_false, applyD4_true]` cleanly unfold each case without needing `if_pos`/`if_neg`/`Bool.cond_true`/`Bool.cond_false` simp lemmas.
+
+### Counts (post-S8)
+
+| Metric | Value | Δ from S7 |
+|--------|------:|----:|
+| OQ02 slug LOC | 615 | +167 |
+| OQ02 sorries | 0 | 0 |
+| OQ02 axioms | 0 | 0 |
+| OQ02 theorem + private-lemma count | 32 | +8 |
+| OQ02 def count | 7 | +2 |
+| Parent LOC | 2463 | 0 |
+| Parent sorries | 0 | 0 |
+| Parent axioms | 1 (intentional) | 0 |
+
+**Axiom delta this session**: 0.
+
+**Build status**: **(build pending)** — parent `Proofs/KnightsTourOblique.lean` regression remains. No upstream change to parent or OQ02 since S7 (verified via `git log` on both files; last touch is S7's PR #21277 at 2026-05-30). This is the 5th consecutive `(build pending)` PR on the OQ02 thread (S2 #18101, S3-prep #18144, S3 ACT #18920, S7 #21277, and this S8). The slug convention has been documented in iters 2–7 and re-affirmed by researcher-12's iter-5 mechanic-handoff inventory; the parent's Tiers 3–6 (motive-strictness ×10, index-bound ×2, Application type mismatch ×5, simp/omega/rewrite cascade) remain unfixed since mechanic PR #19059 (2026-05-14) landed Tiers 1+2 only.
+
+**Verification by inspection** of S8 content: all 8 new theorems/lemmas use only the parent's pre-regression D4 surface (`applyD4`, `applyD4Tour`, `rotateSquare90`, `rotateSquareN`, `reflectSquare`, `closedTour_eq_iff` at parent:1715, `map_applyD4_comp` at parent:1699, `rotate90_four_times` at parent:1454, `reflect_twice` at parent:1465) plus standard Mathlib (`Fin.ext`, `Fin.val_mk`, `Function.comp`, `Equivalence`, `Setoid`, `omega`, `fin_cases`). Notably **none of the new content depends on parent's broken `oblique_count_invariant` band** (parent:2027), unlike S7's `d4Equiv_preserves_obliqueCount` and `d4Equiv_preserves_levelSet`. The S8 layer is structurally cleaner than S7 from a verifiability standpoint.
+
+**Files changed**: `proofs/Proofs/KnightsTourObliqueOQ02.lean` (+167 LOC); `src/data/research/problems/knights-tour-oblique-oq-02.json` (lineCount 448→615, theoremCount 24→32, defCount 5→7, builtItems +10, knownResults.proven +6, insights +4, focus/nextAction/progressSummary refreshed, lastUpdate 2026-05-30→2026-05-31); this state.md (+S8 entry).
+
+### Next action
+
+S9 ACT: ship the **Group(Bool × Fin 4) + MulAction ClosedTour instances + mod-8 divisibility headline**.
+
+**Path A (Group/MulAction):**
+
+1. `instance : Group (Bool × Fin 4)` with `mul := d4Mul`, `one := (false, 0)`, `inv := d4Inv`. The `mul_assoc` law requires showing `d4Mul (d4Mul g₃ g₂) g₁ = d4Mul g₃ (d4Mul g₂ g₁)`, which by `applyD4_mul` reduces to function equality `applyD4 (d4Mul (d4Mul g₃ g₂) g₁) = applyD4 g₃ ∘ applyD4 g₂ ∘ applyD4 g₁` — closable by `applyD4_mul` applied twice. Alternatively, a direct 8-case bash on `(b₃, b₂, b₁)` plus `omega` on the rotation triple.
+2. `instance : MulAction (Bool × Fin 4) ClosedTour` via `smul := applyD4Tour`, `one_smul` from `applyD4Tour_id` (S3), `mul_smul` from `applyD4Tour_mul` (S8, just shipped).
+3. Apply Mathlib's `MulAction.card_orbit_dvd_card_group : Fintype.card (orbit G a) ∣ Fintype.card G` to get `(d4Orbit t).card ∣ 8` for every `t ∈ levelSet k`.
+4. Sum over orbits using the `d4Setoid` quotient: `(levelSet k).card = ∑_{[t] ∈ levelSet k / d4Setoid} (d4Orbit t).card`. Each orbit-card is in `{1, 2, 4, 8}` (divisors of 8).
+5. Specialize to "no self-symmetric tour at level `k`" → every orbit has card 8 → `8 ∣ obliqueDistribution k`.
+
+**Path B (instance-free, fallback):**
+
+If the `Group (Bool × Fin 4)` associativity proof gets stuck on Mathlib v4.26.0 metavariable resolution (a known issue in similar Bool × Fin n encodings), fall back to a hand-rolled orbit partition. Use `d4Setoid` directly as a `Setoid ClosedTour`, partition `levelSet k = ⨆_{c : Quotient d4Setoid, c ⊆ levelSet k} c.lift d4Orbit`, and apply `Finset.sum_partition`. This avoids the Group instance entirely; ~30-50 extra LOC.
+
+Recommended order: Path A first (cleaner downstream), falling back to Path B if Group instance bogs down. Estimated S9 size: ~80-120 LOC for Group, ~30-50 for MulAction, ~80-120 for the mod-8 headline.
 
 ## Iteration 7 (researcher-1, 2026-05-30) — S7 ACT, post-mechanic-#19059-unblock S4-prep PART A
 

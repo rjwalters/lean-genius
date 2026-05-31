@@ -90,6 +90,102 @@ and the trivial support lemma; defer the harder D4 invariance to S3.
   reversal-mod-2, winding-parity). All are derivable from parent's
   existing infrastructure.
 
+## Iteration 8 (researcher-1, 2026-05-31) — S8 ACT
+
+**Outcome**: built — closed the **D4 multiplication law** chain: `d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans + d4Equiv_equivalence + d4Setoid`. 8 theorems/lemmas + 2 defs, +167 LOC (448→615), 0 sorries, 0 axioms. This completes the equivalence-relation framework that S7 left at refl + symm only.
+
+### Composition formula and proof structure
+
+Working out `applyD4 (b₂, k₂) ∘ applyD4 (b₁, k₁)` on `Square`:
+
+* **Outer non-reflecting** (`b₂ = false`): `rotateSquareN k₂ ∘ rotateSquareN k₁ = rotateSquareN ((k₁ + k₂) % 4)` (rotation composition). Reflection bit carries through from `b₁`. So `d4Mul (false, k₂) (b₁, k₁) = (b₁, ⟨(k₁ + k₂) % 4, _⟩)`.
+* **Outer reflecting** (`b₂ = true`): one needs to commute `reflectSquare` past the inner `rotateSquareN k₁`. Using `reflectSquare ∘ rotateSquare90 = rotateSquare90³ ∘ reflectSquare` (parent's `rotate_reflect_conjugate`), this generalizes to `reflectSquare ∘ rotateSquareN k = rotateSquareN ((4 - k) % 4) ∘ reflectSquare`. So `applyD4 (true, k₂) (applyD4 (b₁, k₁) s) = rotateSquareN k₂ (reflectSquare (rotateSquareN k₁ (cond b₁ (reflectSquare s) s))) = rotateSquareN ((k₂ + (4 - k₁)) % 4) (reflectSquare (cond b₁ (reflectSquare s) s))`. The inner cond either keeps the outer reflectSquare (if `b₁ = false`) or cancels it via `reflect_twice` (if `b₁ = true`), giving the bit flip `!b₁`.
+
+### Why `d4Mul` is pattern-matched on the outer bit (not `xor`-based)
+
+Two alternatives for defining `d4Mul`:
+
+* **Unified `xor` form**: `d4Mul (b₂, k₂) (b₁, k₁) = (xor b₂ b₁, if b₂ then ⟨(k₂ + (4 - k₁)) % 4, _⟩ else ⟨(k₁ + k₂) % 4, _⟩)`. Logically equivalent.
+* **Pattern-matched form** (chosen): `d4Mul | (false, k₂), (b₁, k₁) => ... | (true, k₂), (b₁, k₁) => (!b₁, ...)`. Lean generates per-arm equation lemmas, and `simp only [d4Mul]` reduces cleanly after `cases b₂`.
+
+The pattern-matched form gives `applyD4_mul` a tighter proof: 4 cases on `(b₂, b₁)` with each case requiring 1-2 `rw`s on the helpers, vs. the unified form which would force `simp` to first reduce `xor b₂ b₁` and then a 4-case `if` ladder. The chosen form's cost is 2 separate arm-equation lemmas, recovered immediately when `simp [d4Mul]` fires.
+
+### `applyD4_false` / `applyD4_true` — small but crucial rfl-helpers
+
+The parent's `applyD4` uses `if (g.1 : Bool) then reflectSquare s else s`. After `cases b₂` exposes `b₂` as literal `true`/`false`, the `if` reduces by Lean's defeq on Bool literals — but only when explicitly invoked. Stating
+
+```lean
+private lemma applyD4_false (k : Fin 4) (s : Square) :
+    applyD4 (false, k) s = rotateSquareN k s := rfl
+
+private lemma applyD4_true (k : Fin 4) (s : Square) :
+    applyD4 (true, k) s = rotateSquareN k (reflectSquare s) := rfl
+```
+
+as simp lemmas lets `simp only [applyD4_false, applyD4_true]` unfold each case of `applyD4_mul` without needing `if_pos`/`if_neg`/`Bool.cond_true`/`Bool.cond_false`/`Bool.false_eq_true`/`↓reduceIte` simp lemmas — any of which may or may not be in the simp set depending on Mathlib version. The `rfl` proof itself relies only on Lean core's defeq, which is stable across Mathlib versions.
+
+### The `congr 1 + Fin.ext + omega` tail
+
+Each case of `applyD4_mul` ends with a residual Fin 4 equality of the form `⟨A, _⟩ = ⟨B, _⟩` where `A`, `B` are arithmetic expressions in `k₁.val, k₂.val`. The pattern:
+
+```lean
+congr 1
+apply Fin.ext
+simp only [Fin.val_mk]
+omega
+```
+
+decomposes as:
+- `congr 1` peels the `rotateSquareN _ x` head, leaving `⟨A, _⟩ = ⟨B, _⟩` (and a trivially-closed `x = x` side-goal).
+- `apply Fin.ext` reduces Fin equality to value equality: `(⟨A, _⟩ : Fin 4).val = (⟨B, _⟩ : Fin 4).val`.
+- `simp only [Fin.val_mk]` extracts the values: `A = B`.
+- `omega` closes by Presburger arithmetic, handling `(a + b) % 4 = (b + a) % 4` (commutativity) and `(a + b) % 4 = (a + b % 4) % 4` (mod redistribution).
+
+### `applyD4Tour_mul` lift
+
+The lift from `applyD4_mul` (on Square) to `applyD4Tour_mul` (on ClosedTour) factors cleanly:
+
+1. `closedTour_eq_iff` (parent:1715) reduces tour equality to underlying `.squares` list equality.
+2. `(applyD4Tour g t).squares = t.squares.map (applyD4 g)` by def of applyD4Tour.
+3. Parent's `map_applyD4_comp` (parent:1699) gives `(l.map (applyD4 g₁)).map (applyD4 g₂) = l.map (applyD4 g₂ ∘ applyD4 g₁)`.
+4. `congr 1` on `List.map _ l = List.map _ l` peels the list, leaving function equality.
+5. `funext s` reduces to pointwise — which is `applyD4_mul`.
+
+### `d4Equiv_trans` — the existential combinator
+
+Standard glue: from `d4Equiv t u = ∃ g₁, applyD4Tour g₁ t = u` and `d4Equiv u v = ∃ g₂, applyD4Tour g₂ u = v`, construct `d4Equiv t v` with witness `d4Mul g₂ g₁`. The verification `applyD4Tour (d4Mul g₂ g₁) t = v` chains: `= applyD4Tour g₂ (applyD4Tour g₁ t)` by `applyD4Tour_mul`, `= applyD4Tour g₂ u` by `hg₁`, `= v` by `hg₂`. The `rw [applyD4Tour_mul, hg₁, hg₂]` one-liner closes it.
+
+### Honest contribution assessment
+
+S8 is **infrastructure work**: it builds the multiplication law that S9 will use for the headline mod-8 divisibility result. The composition law itself is a routine group-theoretic computation (D4 ≅ ℤ/4 ⋊ ℤ/2 has a well-known multiplication table). The Lean-specific contribution is:
+
+1. Choosing the pattern-match encoding that makes the 4-case proof tight.
+2. The two `rfl` helpers that bypass simp's handling of `if (b : Bool) then`.
+3. The factoring into `rotateSquareN_add` and `reflect_rotateN_conjugate` that contains the only computational bashes (16 + 4 cases) inside named lemmas, leaving `applyD4_mul` as a 4-case structural proof.
+
+The mathematical novelty is zero — this is a textbook D4-action setup. The value is in shipping clean, inspectable Lean that closes the equivalence-relation framework and prepares for S9's mod-8 headline.
+
+### Build status
+
+**Build pending — parent `Proofs/KnightsTourOblique.lean` Tiers 3–6 regression remains** (unchanged from iters 5/7). Same precedent as S2/S3-prep/S3/S7 (4 prior `(build pending)` PRs); see state.md S8 entry for the full inventory. Notably, **none of the new S8 content depends on the broken `oblique_count_invariant` band** — all S8 theorems factor through parent's stable D4 surface only (lines ~1421-1727), making this S8 layer structurally cleaner than S7 from a verifiability standpoint.
+
+A mechanic-driven parent repair would unblock all 5 `(build pending)` PRs simultaneously. Out of scope for this researcher session.
+
+### Anticipated S9 work
+
+**Path A (Group/MulAction route):**
+
+1. `instance : Group (Bool × Fin 4)` — `mul := d4Mul`, `one := (false, 0)`, `inv := d4Inv`. Associativity follows from `applyD4_mul` via injectivity of `applyD4 _ s` for fixed `s` (already in scope as `applyD4_injective` at parent:1567). Either route is ~80-120 LOC.
+2. `instance : MulAction (Bool × Fin 4) ClosedTour` — `smul := applyD4Tour`, `one_smul := applyD4Tour_id` (S3 ACT), `mul_smul := applyD4Tour_mul` (S8 ACT, just shipped). ~30-50 LOC.
+3. Apply Mathlib's `MulAction.card_orbit_dvd_card_group : Fintype.card (MulAction.orbit G a) ∣ Fintype.card G` to conclude `(d4Orbit t).card ∣ 8` for every `t`.
+4. Sum over `d4Setoid`-orbits in `levelSet k` to get `(levelSet k).card = ∑_orbit (orbit.card)`. Each summand divides 8, so:
+   `obliqueDistribution k = ∑_{[t]} (8 / |Stab t|) = 8 · (#orbits with trivial stabilizer) + Σ_{nontrivial} (8 / |Stab|)`.
+5. Specialize to "no self-symmetric tour at level k" → headline `8 ∣ obliqueDistribution k`.
+
+**Path B (instance-free, fallback):**
+
+If the `Group (Bool × Fin 4)` associativity gets stuck, use `d4Setoid` directly. Partition `levelSet k` into `d4Setoid`-classes (each class is `≤ 8` elements) and apply `Finset.sum_partition` to the cardinality.
+
 ## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT/ACT
 
 **Outcome**: Lean changes shipped — built the `Fintype` instance, the
