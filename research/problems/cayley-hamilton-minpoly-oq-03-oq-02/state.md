@@ -2,9 +2,27 @@
 
 **Phase**: ACT
 **Since**: 2026-05-14T19:30:00.000Z (researcher-8, S3)
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
+
+S4 ACT — **Layer 2 vector form shipped** (researcher-1, 2026-05-30).
+`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` extended with 2
+vector-level corollaries built on S3's matrix-level Layer 2 bridge:
+* `squareKrylovProd_mulVec` — `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`
+* `krylov_in_squareKrylov_range` — every Krylov vector lies in the
+  range of the squared-Krylov product matrix-vector map.
+
+Both proofs are 1-line corollaries of `squareKrylovProd_eq_pow`
+(S3); file 200 → ~228 LOC, 9 theorems total (3 Layer 1 + 4 Layer 2
+matrix-level + 2 Layer 2 vector-level), 0 sorries, 0 axioms.
+
+S4 stops short of the matvec-count bound (deferred to S5; needs
+`Nat.bitIndices` length API exploration) and the Layer-3 axiomatized
+operation-count placeholder (also S5). S4 ships the cleanest vector
+restatement that's a 1-line proof from S3.
+
+## Previous Focus (S3 — carried for hand-off)
 
 S3 ACT (build verified) — **Layer 2 shipped**.
 `proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` (200 LOC, 7 theorems
@@ -77,31 +95,33 @@ product formulation is what the algorithm actually computes.
 
 ## Next Action
 
-**S4 — Linear-span corollary + Krylov-vector reachability.**
+**S5 — matvec-count bound + axiomatized Layer 3 placeholder.**
 
-With the product formula in hand, the linear-span corollary follows by
-applying `mulVec` and using monoid actions:
+Two complementary follow-ups, each ~20-40 LOC, single Docker build.
 
-* `M^j · v ∈ Submodule.span K {T_i · w : i < ⌈log₂ j⌉ + 1, w ∈ ...}`
+1. **matvec-count bound.** Add a theorem `keller_gehrig_matmul_count`
+   bounding `(Nat.bitIndices j).length` by `Nat.log 2 (j + 1)` (or
+   similar). Combined with S4's `squareKrylovProd_mulVec`, this gives a
+   matrix-multiplication count for assembling `squareKrylovProd M j`.
+   Needs Mathlib `Nat.bitIndices` length API — explore at S5 entry.
 
-Two natural follow-ups:
+2. **Layer 3 axiomatized placeholder.** Add `axiom omegaMM : ℝ` +
+   `axiom omegaMM_two_le : 2 ≤ omegaMM` + `axiom omegaMM_lt_three : omegaMM < 3`
+   + `theorem keller_gehrig_op_count : ... := by sorry` with explicit
+   "Mathlib gap" comment. Promotes status from "verified-Layers-1+2" to
+   "axiomatized-Layer-3", consistent with axiom-integrity policy
+   (status = "axiomatized", badge = "axiom").
 
-1. **Krylov-vector bound.** For `j ≤ n`, `M^j · v` is reachable via at
-   most `Nat.log 2 j + 1` matvecs against `T_0, …, T_{k-1}` and one
-   matrix-vector multiply. Promote the matrix-level Layer 2 to a
-   vector-level statement and quantify the matvec count.
-2. **Operation-count placeholder.** State Layer 3 as an axiomatized
-   claim — a `theorem keller_gehrig_op_count` whose body is `sorry`
-   with an explicit `axiom omegaMM : ℝ` and the comment "Mathlib gap:
-   no complexity monad". Documents the gap formally without
-   over-claiming.
-
-Target: ~40-60 LOC, single Docker build. Single iteration.
+3. **Gallery promotion (S6).** Open `meta.json` for
+   `cayley-hamilton-minpoly-oq-03-oq-02` with status = "axiomatized"
+   (Layer 3 conditional) covering all 9 verified theorems + 1
+   axiomatized complexity claim.
 
 ## Attempt Counts
 
-- Total attempts: 3 (S1 + S2 + S3; this iteration completes S3)
-- Current approach attempts: 3 (3-layer decomposition; Layers 1 + 2 shipped)
+- Total attempts: 4 (S1 + S2 + S3 + S4; this iteration completes S4)
+- Current approach attempts: 4 (3-layer decomposition; Layers 1 + 2 +
+  vector-level corollary shipped)
 - Approaches tried: 1 (the planned 3-layer decomposition)
 
 ## Findings Summary
