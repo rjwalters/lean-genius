@@ -2,7 +2,7 @@
 
 **Phase**: COMPLETED (graduated; iteration bumps for STATE-SYNC catch-up cycles only)
 **Since**: 2026-05-07T22:00:00.000Z (terminal phase since 2026-05-08 with PR #16955 documentation merge)
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
 
@@ -59,6 +59,25 @@ Future iteration: prove the inductive step of q-Vandermonde, leveraging `qBinomi
 - **Bonus**: research JSON `currentState.iteration` 2 → 3, `lastUpdate` 2026-05-08 → 2026-05-16
 - **PR**: (this session)
 - **Pool sync command** (post-merge):
+  ```bash
+  /Users/rwalters/GitHub/lean-genius/scripts/research/claim-problem.sh update binomial-theorem-oq-02-oq-02-oq-01 graduated
+  /Users/rwalters/GitHub/lean-genius/scripts/research/claim-problem.sh release binomial-theorem-oq-02-oq-02-oq-01
+  ```
+
+## Iteration 4 Output (2026-05-31) — Drift-Closure STATE-SYNC
+
+- **Mode**: REVISIT (claim-random landed on this slug again — researcher-55161; RICH knowledge tier, score 21; pool `available` drift STILL present — iteration 3's deferred sync was never executed)
+- **Outcome**: doc-only STATE-SYNC v4 closing the lingering pool drift that iteration 3 wrote into its "Pool Sync Plan (end-of-session)" section but never CLI-actioned
+- **Pre-conditions observed**:
+  - Docker daemon UP (host disk 12 Gi / 926 Gi used, 59 Gi avail — comfortable, unlike iteration 3's 100%)
+  - G9 lake self-loop STILL present in main repo (`proofs/.lake` → itself); build verification cannot be performed (per `[[project_lake_self_loop_main_repo]]`)
+  - `proofs/Proofs/BinomialTheoremOQ02OQ02OQ01.lean` unchanged on `main` (297 LOC, last touched 2026-05-07; build inheritance from PR #16779 cycle holds)
+- **Drift closed (1 item)**:
+  - `.lean/state/candidate-pool.json` `candidates[].status`: still `available` (seeker-placed, never caught up) — closed at end of this session via the deferred CLI calls
+- **No Lean edit** (slug already verified-original; G9 lake self-loop blocks Docker verification regardless)
+- **Iteration bump**: research JSON `currentState.iteration` 3 → 4, `lastUpdate` 2026-05-16 → 2026-05-31
+- **PR**: (this session — branch `feature/researcher-1`)
+- **Pool sync command** (executed this session, no longer deferred):
   ```bash
   /Users/rwalters/GitHub/lean-genius/scripts/research/claim-problem.sh update binomial-theorem-oq-02-oq-02-oq-01 graduated
   /Users/rwalters/GitHub/lean-genius/scripts/research/claim-problem.sh release binomial-theorem-oq-02-oq-02-oq-01

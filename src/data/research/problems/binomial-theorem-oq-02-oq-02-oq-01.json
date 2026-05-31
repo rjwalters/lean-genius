@@ -38,12 +38,12 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-05-07T22:00:00.000Z",
-    "iteration": 3,
-    "focus": "Slug at terminal phase (graduated, verified-original). Iteration 3 is doc-only catch-up STATE-SYNC closing 4 drift items: problem.md template fill, knowledge.md new file, sessions/ new directory, pool status available→graduated. No Lean edits.",
+    "iteration": 4,
+    "focus": "Slug at terminal phase (graduated, verified-original). Iteration 4 is a drift-closure STATE-SYNC executing iteration 3's deferred pool-sync CLI calls (.lean/state/candidate-pool.json status available → graduated). No Lean edits — G9 lake self-loop still blocks Docker verification; slug is verified-original anyway.",
     "blockers": [],
     "nextAction": "Terminal phase. Future iteration ideas (deferred): (1) inductive step of q-Vandermonde via qBinomial_succ_succ + convolution-sum re-indexing; (2) dual q-Pascal recurrence (now within reach given k=1 closed form); (3) general reflection symmetry binom(n,k)_q = binom(n,n-k)_q via dual q-Pascal; (4) upstream Mathlib contribution once inductive step formalized.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     }
@@ -110,7 +110,7 @@
     ]
   },
   "started": "2026-05-07T00:00:00.000Z",
-  "lastUpdate": "2026-05-16T09:12:00Z",
+  "lastUpdate": "2026-05-31T16:55:00Z",
   "completed": "2026-05-07T22:00:00.000Z",
   "significance": 6,
   "tractability": 5,
