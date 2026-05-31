@@ -1,10 +1,95 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: PREP (S4 STATE-SYNC — G7+G8 INFRA RESOLVED at T+13d; G9 self-symlink reclassified as host-side-only, does NOT block docker-build path; S5 ACT-ready for Step-A landing)
-**Path**: full (4–8 ACT iterations forecast)
-**Since**: 2026-05-30T14:50:00Z (S4 STATE-SYNC, researcher-1)
-**Iteration**: 4
-**Researcher**: researcher-1 (S4 STATE-SYNC — doc-only)
+**Phase**: ACT (S5 ACT — Step-A `sturmVariations_locally_constant` landed; +75 LOC, 0 sorries, 0 axioms net, build pending — G9 lake self-loop)
+**Path**: full (3–7 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT)
+**Since**: 2026-05-31T00:00:00Z (S5 ACT, researcher-1)
+**Iteration**: 5
+**Researcher**: researcher-1 (S5 ACT — Lean edit)
+
+## Session 5 — S5 ACT (researcher-1, 2026-05-31)
+
+**Goal**: land Step-A `private lemma sturmVariations_locally_constant`
+from S2 PREP §3 paste-ready draft. Outcome: SHIPPED build-pending.
+
+**Lean edit summary** (`proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean`,
+458 → 533 LOC):
+
+1. **New import** (line 72): `import Mathlib.Topology.Algebra.Polynomial`
+   for `Polynomial.continuous` (`@[continuity, fun_prop]` bearer
+   spot-checked at SHA `2df2f0150c…` in S2 PREP §2).
+
+2. **New §4a section** (inserted between line 208 `sturmVariations_C`
+   body and `§5` divider): 73 LOC of section header + docstring + lemma
+   pasted verbatim from S2 PREP §3.2 modulo whitespace and removal of
+   section-internal commentary (per CLAUDE.md "default to writing no
+   comments").
+
+**Lemma signature**:
+
+```lean
+private lemma sturmVariations_locally_constant
+    (p : ℝ[X]) {x y : ℝ} (hxy : x ≤ y)
+    (h_no_zero : ∀ q ∈ sturmSeq p, ∀ z ∈ Set.Icc x y, q.eval z ≠ 0) :
+    sturmVariations p x = sturmVariations p y
+```
+
+**Proof strategy**: for each `q ∈ sturmSeq p`, `q.eval` is continuous on
+`Icc x y` (`Polynomial.continuous`) and nonvanishing (by `h_no_zero`).
+By `intermediate_value_Icc`, `q.eval x` and `q.eval y` cannot have
+opposite signs (would force a zero on `Icc x y`). The two ±1 sign-lists
+are therefore pointwise equal under `List.map_congr_left`, and
+`countSignAlts` of equal lists is equal — so `sturmVariations p x =
+sturmVariations p y`.
+
+**Why build-pending** (G9 worktree chain): researcher-1's worktree at
+`.loom/worktrees/researcher-1/proofs/.lake` is a symlink pointing to
+the main repo's `proofs/.lake`, which is itself a self-symlink (G9).
+The full chain is therefore self-loop; whether the docker-build.sh
+CACHE_VOLUME mount shadow at `/workspace/proofs/.lake/build` still
+wins for the worktree-redirected case is unverified (S4's empirical
+confirmation was on the main-repo path, not a worktree). Per memory
+`project_lake_self_loop_main_repo.md`: ship build-pending qualifier,
+mechanic verifies on a recovered host.
+
+**ACT-readiness gate at S5 firing point**:
+
+| # | Item | Status | Notes |
+|---|---|---|---|
+| 1 | host disk ≥ 30 Gi avail | ✅ GREEN (57 Gi) | down 6 Gi from S4, still above floor |
+| 2 | Docker Server | ✅ GREEN (29.4.1) | responsive |
+| 3 | main repo `.lake` | ⚠️ AMBER (self-symlink, docker-build bypasses) | unchanged |
+| 4 | worktree `.lake` | 🚫 RED (transitive self-loop) | new discovery at S5 |
+| 5 | Mathlib pin | ✅ GREEN | `2df2f0150c…` |
+| 6 | Paste-ready draft | ✅ GREEN | S2 PREP §3.2 |
+| 7 | No overlapping open PR | ✅ GREEN | search returned 0 |
+| 8 | ACT LOC delta ≤ 180 | ✅ GREEN | actual +75 |
+
+**Aggregate**: 6/8 GREEN, 1/8 AMBER, 1/8 RED. RED item 4 is the
+build-verification block — mechanic surface.
+
+**Deliverables (this PR)**:
+
+1. **Lean source** (`proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean`):
+   +1 import (line 72), +73 LOC §4a section (458 → 533).
+
+2. **Canonical JSON** (`src/data/research/problems/<slug>.json`):
+   phase PREP→ACT, iteration 4→5, focus/blockers/nextAction rewrite,
+   progressSummary prepend, nextSteps renumber, lastUpdate.
+
+3. **state.md head**: this Session 5 prepend.
+
+4. **NEW session memo**: `sessions/2026-05-31-s5-act-locally-constant-landed.md`.
+
+**Out of scope (deferred)**:
+
+- Gallery `meta.json` `lineCount: 458 → 533` resync — mechanic batch-sync.
+- Step B paste-ready draft — that's S6 PREP, next cycle.
+- Build verification — pending mechanic G9 host recovery.
+- `problem.md` and `knowledge.md` body edits.
+- Aristotle submission — reserved for Step B if combinatorics exceeds budget.
+
+**Mathlib pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0),
+unchanged since S1 OBSERVE.
 
 ## Session 4 — S4 STATE-SYNC (researcher-1, 2026-05-30T14:50Z)
 

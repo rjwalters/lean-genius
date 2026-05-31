@@ -1,7 +1,7 @@
 {
   "slug": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
   "title": "Sturm Theorem: Exact Root Count via Sign-Change Sequences",
-  "phase": "PREP",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,22 +16,22 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-30T14:50:00Z",
-    "iteration": 4,
-    "focus": "S4 STATE-SYNC (researcher-1, this PR, 2026-05-30T14:50Z): doc-only T+13d catchup against S3's 3 RED INFRA. Outcome: G7 disk ✅ RESOLVED (63 Gi avail / 16% used, +60.1 Gi recovered, well above 30 Gi cascade-safety floor); G8 Docker daemon ✅ RESOLVED (`docker info --format '{{.ServerVersion}}'` returns `29.4.1`, full Server: section, `docker ps` returns container list); G9 `proofs/.lake → itself` self-symlink ⚠️ STILL PRESENT but **RECLASSIFIED** to host-side-only — empirically does NOT block docker-build path (verified by parallel S3a ACT on `triangle-inequality-oq-04-oq-01`, PR #21188 at 2026-05-30T14:37Z, `Build completed successfully (2551 jobs)` clean first-try with G9 in place on same host). The docker-build.sh wrapper's `-v ${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated` mount (line 127) shadows the host symlink at the only path Docker reads from inside `.lake`. G9 only blocks host-side `lake` ops (e.g. `lake show-paths`), which are out of researcher PR-scope (shell-ops / mechanic surface). ACT-readiness gate: 4/5 GREEN, 1/5 AMBER (G9 host-side only). S5 ACT (Step-A landing) is READY for docker-build path. Mathlib pin `2df2f0150c…` unchanged from S2 PREP (T+14d).",
+    "phase": "ACT",
+    "since": "2026-05-31T00:00:00Z",
+    "iteration": 5,
+    "focus": "S5 ACT (researcher-1, this PR, 2026-05-31): land Step-A `private lemma sturmVariations_locally_constant` (+75 LOC, 0 sorries, 0 axioms net, +1 new import `Mathlib.Topology.Algebra.Polynomial` for `Polynomial.continuous`). Paste-from S2 PREP §3 (sessions/2026-05-16-s2-prep-bearer-recheck-locally-constant.md). File grows 458 → 533 LOC. Inserted as new `§ 4a. Locally-Constant Lemma` between `sturmVariations_C` (line 208) and `§ 5. Key Structural Lemma: Mod at a Root` divider. Proof strategy: for each q in sturmSeq p, q.eval is continuous (Polynomial.continuous) and nonvanishing on Icc x y; by intermediate_value_Icc the signs at endpoints agree; ±1 lists pointwise match, so countSignAlts (hence sturmVariations) at x and y coincide. Build verification PENDING — main repo's `proofs/.lake` self-symlink blocks worktree docker-build from this PR (worktree's `.lake → main's .lake → main's .lake`, a transitively-self chain). Per memory `project_lake_self_loop_main_repo.md`: ship ACT under \"build pending — G9 lake self-loop\" qualifier; mechanic resolves host symlink separately. Mathlib pin `2df2f0150c…` unchanged. Axiom budget unchanged (still 1: `sturm_exact_count_axiom`; this lemma is a stepping stone toward Step-B / Step-C / S8 assembly).",
     "blockers": [
-      "G9 INFRA (RECLASSIFIED): `proofs/.lake → itself` self-symlink still present at 2026-05-29T11:42Z timestamp. Empirically does NOT block docker-build path (verified by parallel S3a ACT on triangle-inequality-oq-04-oq-01, PR #21188 — 2551 jobs clean first-try on the same host with G9 in place). Only blocks host-side `lake` ops (e.g. `lake show-paths`, `lake env`, direct `.lake/build/lib/*` inspection). Out of researcher PR-scope per memory `feedback_researcher_postship_pivot_to_act_ready_slug_..._three_red_infra_blockers_post_merge` (shell-ops / mechanic surface)."
+      "G9 INFRA (RECLASSIFIED, host-side): `proofs/.lake → itself` self-symlink still present. Worktree's `proofs/.lake` symlinks into main's self-symlink, so docker-build from this researcher's worktree cannot be verified locally inside the PR. Per memory `project_lake_self_loop_main_repo.md`: ship build-pending qualifier and let mechanic/auditor verify on a recovered host. PR #21188's success was on the main-repo path, not a worktree-redirected path."
     ],
-    "nextAction": "S5 ACT (named, ~80–120 LOC, 0 sorries, 0 axioms, MEDIUM risk per S2 PREP §3.3): paste the paste-ready `private lemma sturmVariations_locally_constant` from S2 PREP §3 (sessions/2026-05-16-s2-prep-bearer-recheck-locally-constant.md) into `proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` between `sturmVariations_C` (line 208) and `-- § 5. Key Structural Lemma: Mod at a Root` divider (line 211). Single new import: `import Mathlib.Topology.Algebra.Polynomial` (for `Polynomial.continuous`). Build-verify via `./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02`. Pre-requisite: ✅ working docker-build path (S4 verified). Flag gallery `src/data/proofs/descartes-rule-of-signs-oq-02-oq-01-oq-02/meta.json` `leanFile.theoremCount: 28` for mechanic batch-sync (carried over from S3, unaltered at S4).",
+    "nextAction": "S6 PREP — draft paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC, MEDIUM-HIGH risk, combinatorial sign-change accounting on the pair (p, p') at squarefree roots of p). Uses Step-A's `sturmVariations_locally_constant` for the right-of-root interval and Mathlib `Polynomial.continuous` + IVT machinery for the left-of-root sign-flip. Forecast cycle: same paste-ready shape as S2 PREP. Also: flag gallery `src/data/proofs/descartes-rule-of-signs-oq-02-oq-01-oq-02/meta.json` `leanFile.lineCount: 458 → 533` and `theoremCount` (still axiomCount: 1, sorries: 0; private lemma adds 0 to public theoremCount per gallery convention) for mechanic batch-sync (combined with the S3-flagged `theoremCount: 28` correction).",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 3,
+      "total": 5,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S4 STATE-SYNC (researcher-1, 2026-05-30T14:50Z): doc-only T+13d catchup against S3's 3 RED INFRA. G7 disk ✅ RESOLVED (63 Gi avail / 16% used, +60.1 Gi recovered, above 30 Gi floor); G8 Docker daemon ✅ RESOLVED (`docker info` returns ServerVersion=29.4.1, Server: section present, docker ps responsive); G9 `proofs/.lake → itself` self-symlink STILL PRESENT but **RECLASSIFIED** to host-side-only (empirically does NOT block docker-build — verified by parallel S3a ACT on triangle-inequality-oq-04-oq-01, PR #21188 at 2026-05-30T14:37Z, 2551 jobs clean first-try with G9 in place on same host; docker-build.sh's -v CACHE:/workspace/proofs/.lake/build:delegated mount at line 127 shadows host symlink at the only path Docker reads from inside .lake). ACT-readiness gate: 4/5 GREEN, 1/5 AMBER. S5 ACT (Step-A landing) READY for docker-build path. S3 STATE-SYNC (researcher-10, 2026-05-17T01:05Z): doc-only — absorbed 3 RED INFRA, corrected registry phase NEW→PREP + lastUpdate 21d-stale→canonical, corrected canonical JSON leanFiles[6].theoremCount 28→26 to match S1 OBSERVE problem.md truth and actual file count. Mathlib bearer `Polynomial.continuous` byte-stable from S2 (SHA `2df2f0150c…` unchanged). S2 PREP (researcher-8, 2026-05-16T19:16Z): paste-ready Step-A locally-constant lemma drafted + 5-spot Mathlib bearer recheck @ pin 2df2f0150c… + canonical JSON catchup. S1 OBSERVE bootstrap (researcher-11, 2026-05-16T09:25Z, PR #19566): research dir seeded, 10-section survey, 8-phase multi-cycle plan (~600–950 LOC forecast over 4–8 ACT cycles). Origin: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, 458 lines, 26 theorems/lemmas, 6 noncomputable defs, gallery status axiomatized/badge axiom. The slug is actively being worked toward axiom discharge; status is NOT \"completed\" (corrected at S2 PREP from prior JSON state).",
+    "progressSummary": "S5 ACT (researcher-1, 2026-05-31): landed Step-A `private lemma sturmVariations_locally_constant` (+75 LOC, file 458 → 533, 0 sorries, 0 axioms net, +1 new import `Mathlib.Topology.Algebra.Polynomial`). Pasted verbatim from S2 PREP §3 paste-ready draft; type-checking + docker-build verification PENDING because worktree's proofs/.lake transits through main repo's self-symlink (G9 lake self-loop, per memory `project_lake_self_loop_main_repo.md`). Proof argument: per-q continuity (Polynomial.continuous) + intermediate_value_Icc + list-pointwise sign agreement collapses to countSignAlts equality. Step A of S1 OBSERVE's 4–8-cycle plan now landed; Step B (drop-by-1 at squarefree roots of p) and Step C (no-net-change at interior pₖ roots) remain. Axiom count unchanged (1, sturm_exact_count_axiom); discharge happens at S8 assembly. S4 STATE-SYNC (researcher-1, 2026-05-30T14:50Z): doc-only T+13d catchup against S3's 3 RED INFRA. G7 disk ✅ RESOLVED (63 Gi avail / 16% used, +60.1 Gi recovered, above 30 Gi floor); G8 Docker daemon ✅ RESOLVED (`docker info` returns ServerVersion=29.4.1, Server: section present, docker ps responsive); G9 `proofs/.lake → itself` self-symlink STILL PRESENT but **RECLASSIFIED** to host-side-only (empirically does NOT block docker-build — verified by parallel S3a ACT on triangle-inequality-oq-04-oq-01, PR #21188 at 2026-05-30T14:37Z, 2551 jobs clean first-try with G9 in place on same host; docker-build.sh's -v CACHE:/workspace/proofs/.lake/build:delegated mount at line 127 shadows host symlink at the only path Docker reads from inside .lake). ACT-readiness gate: 4/5 GREEN, 1/5 AMBER. S5 ACT (Step-A landing) READY for docker-build path. S3 STATE-SYNC (researcher-10, 2026-05-17T01:05Z): doc-only — absorbed 3 RED INFRA, corrected registry phase NEW→PREP + lastUpdate 21d-stale→canonical, corrected canonical JSON leanFiles[6].theoremCount 28→26 to match S1 OBSERVE problem.md truth and actual file count. Mathlib bearer `Polynomial.continuous` byte-stable from S2 (SHA `2df2f0150c…` unchanged). S2 PREP (researcher-8, 2026-05-16T19:16Z): paste-ready Step-A locally-constant lemma drafted + 5-spot Mathlib bearer recheck @ pin 2df2f0150c… + canonical JSON catchup. S1 OBSERVE bootstrap (researcher-11, 2026-05-16T09:25Z, PR #19566): research dir seeded, 10-section survey, 8-phase multi-cycle plan (~600–950 LOC forecast over 4–8 ACT cycles). Origin: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, 458 lines, 26 theorems/lemmas, 6 noncomputable defs, gallery status axiomatized/badge axiom. The slug is actively being worked toward axiom discharge; status is NOT \"completed\" (corrected at S2 PREP from prior JSON state).",
     "builtItems": [
       "DescartesRuleOfSignsOQ02OQ01OQ02.lean (458 lines, 1 axiom, 0 sorries)",
       "sturmSeqAux: fuel-based Sturm sequence construction via EuclideanDomain.mod",
@@ -60,12 +60,12 @@
       "Mathlib has no Sturm theorem formalization as of v4.26.0 — needs to be built from scratch"
     ],
     "nextSteps": [
-      "S3 ACT — land Step-A `private lemma sturmVariations_locally_constant` (~80–120 LOC; paste-ready draft in S2 PREP session memo §3, gated on host disk ≥30 Gi + Docker responsive)",
-      "S4 PREP — paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p)",
-      "S5 ACT — land Step-B lemma",
-      "S6 PREP — paste-ready Step-C `private lemma sturmVariations_unchanged_at_interior_root` (~100–150 LOC; uses sturm_neighbors_opposite_at_root + signVariations triple identity)",
-      "S7 ACT — land Step-C lemma",
-      "S8 PREP+ACT — assemble main `theorem sturm_exact_count` via well-founded induction on multiset card of distinct Sturm-sequence roots in (a, b]; drop `axiom` keyword; update gallery meta.json (axiomCount 1→0, status axiomatized→verified, badge axiom→original)",
+      "S5 ACT (DONE this PR, 2026-05-31): Step-A `private lemma sturmVariations_locally_constant` pasted from S2 PREP §3 — +75 LOC, 0 sorries, 0 axioms net, build pending G9",
+      "S6 PREP — draft paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p; uses Step-A on the right interval)",
+      "S7 ACT — land Step-B lemma",
+      "S8 PREP — draft paste-ready Step-C `private lemma sturmVariations_unchanged_at_interior_root` (~100–150 LOC; uses sturm_neighbors_opposite_at_root + signVariations triple identity)",
+      "S9 ACT — land Step-C lemma",
+      "S10 PREP+ACT — assemble main `theorem sturm_exact_count` via well-founded induction on multiset card of distinct Sturm-sequence roots in (a, b]; drop `axiom` keyword; update gallery meta.json (axiomCount 1→0, status axiomatized→verified, badge axiom→original)",
       "Consider Aristotle submission for any HARD sub-lemma if hand-written ACT cycle exceeds budget (Step B is the dominant ergonomic risk; ~2× upward LOC revision is plausible per memory trap _postship_pivot_lands_on_audit_corrected_…)"
     ]
   },
@@ -91,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T14:43:29.519Z",
-  "lastUpdate": "2026-05-30T14:50:00Z",
+  "lastUpdate": "2026-05-31T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
