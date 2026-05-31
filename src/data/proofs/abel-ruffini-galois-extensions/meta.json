@@ -173,6 +173,21 @@
       "description": "Sylow-Based Simplicity Proof for $A_5$ — provides the explicit Sylow counting argument that this file invokes as a black-box from Mathlib's `alternatingGroup.isSimpleGroup_five`. That entry computes $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, the Sylow numbers $n_2 = 5$, $n_3 = 10$, $n_5 = 6$, shows no Sylow subgroup is normal, and uses the conjugacy class arithmetic $\\{1, 12, 12, 15, 20\\} = 60$ to rule out intermediate normal subgroups. Together: this file uses A₅ simplicity as the engine of non-solvability; the Sylow entry exhibits the underlying counting proof. This is the canonical 'why is $A_5$ simple?' demonstration referenced by Rotman §3.7 and Dummit-Foote §6.2."
     },
     {
+      "targetId": "sylow-theorem",
+      "relationship": "foundational",
+      "description": "Wiedijk #72 — the complete formalization of Sylow's three theorems (existence, conjugacy, and the counting constraint $n_p \\equiv 1 \\pmod{p}$ with $n_p \\mid [G:P]$). Foundational for $A_5$ simplicity that drives this file's non-solvability classification: applied to $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$, Sylow counting forces $n_2 = 5$, $n_3 = 10$, $n_5 = 6$ — all exceeding 1, so no Sylow subgroup is normal. Combined with conjugacy-class arithmetic this yields $A_5$ simple, which Mathlib's `alternatingGroup.isSimpleGroup_five` (invoked at `a5_simple`, lines 191–193 here) ultimately rests upon."
+    },
+    {
+      "targetId": "sylow-theorem-oq-02",
+      "relationship": "foundational",
+      "description": "Orbit enumeration of Sylow $p$-subgroups: $n_p = [G : N_G(P)]$ via the orbit-stabilizer theorem. All Sylow $p$-subgroups form a single conjugation orbit $\\{gPg^{-1} \\mid g \\in G\\}$; the normality criterion $n_p = 1 \\Leftrightarrow P \\trianglelefteq G$ is the precise mechanism underlying $A_5$ simplicity. For $A_5$: $n_5 \\mid 12$ and $n_5 \\equiv 1 \\pmod 5$ give $n_5 \\in \\{1, 6\\}$; the criterion $n_5 = 1 \\Rightarrow P_5 \\trianglelefteq A_5$ contradicts simplicity, forcing $n_5 = 6$ — establishing the chain of reasoning that the `a5_simple` theorem black-boxes via Mathlib."
+    },
+    {
+      "targetId": "sylow-theorem-oq-04",
+      "relationship": "complementary",
+      "description": "Constructs from scratch the Sylow-theoretic proof that $A_5$ (order $60 = 2^2 \\cdot 3 \\cdot 5$) is simple: explicit computation of Sylow numbers $n_2 = 5$, $n_3 = 10$, $n_5 = 6$ by enumeration, demonstration that no Sylow subgroup is normal, and confirmation of simplicity via conjugacy-class analysis $\\{1, 12, 12, 15, 20\\} = 60$. This is the elementary first-principles version of the very black-box this file uses: `a5_simple` (lines 191–193) delegates to `alternatingGroup.isSimpleGroup_five`, while `sylow-theorem-oq-04` provides the standalone Sylow-counting verification — together exposing the same mathematical fact at both library and foundational levels."
+    },
+    {
       "targetId": "abel-ruffini-oq-04",
       "relationship": "sibling",
       "description": "Abel-Ruffini proof chain: $A_5$ simple → $S_n$ not solvable for $n \\geq 5$ — the step-by-step chain this file packages into the complete biconditional $S_n$ solvable $\\iff n \\leq 4$"
