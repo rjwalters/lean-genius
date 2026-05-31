@@ -1,7 +1,7 @@
 {
   "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02",
   "title": "(q,t)-deformation (Macdonald-type) of qMultichoose",
-  "phase": "PREP (S1 OBSERVE merged; S2/S3/S4/S5/S6 PREP chain complete; S2 ACT pending — no Lean file yet). After 5 doc-only PREP iterations the S2-ACT skeleton has pivoted from Pascal-style recurrence (S2 PREP Option α — falsified at 4 data points by S6) to k-direction telescoping (S6 Option γ-refined), plus the Path A vs Path C split (S4 PREP Field R 0/0 trap, S5 PREP RatFunc.eval rescue).",
+  "phase": "ACT (S2 ACT shipped by researcher-9 2026-05-13; S3 ACT shipped by researcher-1 2026-05-30 — qtBinom_at_t_eq_one + qtMultichoose_at_t_eq_one closed under Path A non-degeneracy hypothesis q^(j+1) ≠ 1 for j < k; 0 sorries, 0 axioms). Next action: S4 ACT (interpolating (q,t)-Pascal — the deepest item per S6 PREP) or S5 ACT (q = t = 1 specialization via RatFunc.eval or polynomial sub-lattice + L'Hôpital).",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -33,15 +33,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T23:55:00.000Z",
-    "iteration": 7,
-    "focus": "S2 ACT shipped (this PR, researcher-9, 2026-05-13): first Lean skeleton at proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean — 151 LOC, 0 sorries, 0 axioms. Defines qtBinom and qtMultichoose under [Field R] (Path A from S4 PREP), proves four boundary cases (qtBinom_zero_right + qtMultichoose_zero_right as @[simp]; qtBinom_one_right + qtMultichoose_one_right with explicit (1-q^N)/(1-q) value at k=1, t-independent because t^0=1), and ships the unconditional k-direction multiplicative recurrence qtBinom_succ: qtBinom q t N (k+1) = qtBinom q t N k * ((1 - q^(N-k) * t^k) / (1 - q^(k+1) * t^k)), a one-line Finset.prod_range_succ proof. Per S6 PREP no Pascal-style theorem; the k-direction telescoping ratio (qtBinom_succ divided by qtBinom q t N k when nonzero) is the foundation for the S3/S4 substitution proofs. Build pending per .lake symlink convention (doctor/auditor verifies from clean worktree). Discharges the doc-only-PREP-backlog anti-pattern flagged in state.md (5 PREPs without a Lean file). PRIOR: S1 OBSERVE #18327 + S2-S6 PREPs #18382/#18558/#18616/#18639/#18734.",
+    "since": "2026-05-30T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "S3 ACT shipped (this PR, researcher-1, 2026-05-30): closed qtBinom_at_t_eq_one (foundational) and qtMultichoose_at_t_eq_one (headline) under Path A hypothesis (∀ j < k, q^(j+1) ≠ 1). New private helper qBinom_mult_recur derives a CommRing multiplicative q-Pascal — qBinom q n (k+1) · (1 - q^(k+1)) = qBinom q n k · (1 - q^(n-k)) — unconditionally from subtracting qBinom_pascal and qBinom_pascal' via linear_combination, with an n < k branch using qBinom_eq_zero_of_lt. The substitution proof inducts on k: base case = empty product = 1; succ step uses qtBinom_succ + simp [one_pow, mul_one] + mul_div_assoc + div_eq_iff h_ne + qBinom_mult_recur.symm. ~60 LOC of S3 additions, 0 sorries, 0 axioms; total file 7 theorems + 1 private lemma. PRIOR: S2 ACT skeleton (researcher-9, 2026-05-13, iteration 7) + S1 OBSERVE #18327 + S2-S6 PREPs.",
     "blockers": [],
-    "nextAction": "S3 ACT (any researcher): qtMultichoose_at_t_eq_one — qtMultichoose q 1 n k = qMultichoose q n k. Path A (cheapest, per S4 PREP): with hypothesis hq : ∀ i ≤ k, q^(i+1) ≠ 1, induct on k using qtBinom_succ + the parent qBinom_product identity; ~40-60 LOC, expected 0 sorries. Path C (per S5 PREP): switch ambient ring to RatFunc (RatFunc Q) and use RatFunc.eval; no hq hypothesis but requires ring lift; estimated ~60-80 LOC. Then S4 ACT: qtMultichoose_at_one_one via cancellation/limit (Field 0/0 trap; ~50 LOC). S5+: Macdonald principal specialization (out of scope for the formalisation chain).",
+    "nextAction": "S4 ACT (the deepest, per S6 PREP): the interpolating (q,t)-Pascal recurrence — qtMultichoose q t (n+1) (k+1) = qtMultichoose q t (n+1) k + q^(k+1) t^a(n,k) · qtMultichoose q t n (k+1) for some explicit a(n,k) that recovers the parent's q-Pascal at t = 1. S6 PREP falsified Option α at 4 data points; the t-exponent a(n,k) is the unknown — try a(n,k) ∈ {n, n-k, k}. ALTERNATIVE S5 ACT: q = t = 1 specialization via either (a) RatFunc.eval lift to RatFunc ℚ (S5 PREP Path C, no q ≠ 1 needed), or (b) polynomial sub-lattice + L'Hôpital cancellation (S3 PREP). The S3 ACT shipped this PR removes the inductive blocker for both — qtMultichoose q 1 n k = qMultichoose q n k = (Nat.multichoose n k : R) on the open dense set, leaving only the q = 1 limit. ~40-80 LOC.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 1,
-      "S3_t_eq_1_specialization": 0,
+      "S3_t_eq_1_specialization": 1,
       "S4_qt_pascal_interpolating": 0,
       "S5_qt_eq_1_1_specialization": 0,
       "S6_macdonald_axiom": 0,
@@ -53,20 +53,21 @@
       "Macdonald §VI.6 (6.4) gives a (q,t)-Pascal recurrence with rational t-coefficient (1 - t^(k+1))/(1 - q^(n-k) t^k); this DOES NOT specialise cleanly to the parent's q-Pascal at t = 1 (the t-factor becomes 0). Finding the INTERPOLATING form is the deepest technical task.",
       "Small-case calculation: qtMultichoose(q, t, 2, 2) = (1 - q^3)/(1 - q) = 1 + q + q^2, INDEPENDENT of t. This shows the (q,t)-multichoose has structural t-cancellation that the binary (q,t)-binomial does not.",
       "The Field R constraint is real (rational expression with q, t in denominator); the parent's CommRing R generality is lost. Gallery integration may require clearing denominators or working in a localized ring.",
-      "Mathlib v4.26.0 has NO Macdonald polynomials, NO Hall-Littlewood functions, NO Cherednik DAHA, and only partial Schur functions. This OQ would catalyze infrastructure."
+      "Mathlib v4.26.0 has NO Macdonald polynomials, NO Hall-Littlewood functions, NO Cherednik DAHA, and only partial Schur functions. This OQ would catalyze infrastructure.",
+      "S3 ACT insight (researcher-1, 2026-05-30): the CommRing multiplicative q-Pascal qBinom q n (k+1) · (1 - q^(k+1)) = qBinom q n k · (1 - q^(n-k)) is the missing bridge between the rational Macdonald form and the polynomial Gaussian form. It is UNCONDITIONAL — derived by subtracting qBinom_pascal and qBinom_pascal' via linear_combination, with no nonvanishing hypothesis (out-of-range n < k is handled by qBinom_eq_zero_of_lt zeroing both sides). This avoids the parent's qBinom_product detour suggested by S4 PREP, cutting the S3 proof to ~30 LOC core. The two q-Pascals differ only in their q-weight (q^(k+1) vs q^(n-k)) on the same Pascal expansion — their difference factors cleanly."
     ],
     "builtItems": [
       "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/problem.md (formal targets + S2-S7 plan).",
       "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/knowledge.md (Macdonald historical + Pascal analysis + Mathlib gap).",
       "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/state.md (phase OBSERVE).",
-      "Created src/data/research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02.json (this file)."
+      "Created src/data/research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02.json (this file).",
+      "S2 ACT (researcher-9, 2026-05-13): created proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean with qtBinom, qtMultichoose, four boundary cases, and unconditional qtBinom_succ.",
+      "S3 ACT (researcher-1, 2026-05-30): extended the Lean file with private lemma qBinom_mult_recur (CommRing multiplicative q-Pascal), theorem qtBinom_at_t_eq_one (the t = 1 substitution under Path A hypothesis), and theorem qtMultichoose_at_t_eq_one (headline corollary)."
     ],
-    "progressSummary": "S2 ACT shipped (researcher-9, 2026-05-13): created proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean, 151 LOC, 0 sorries, 0 axioms. Defines qtBinom (Macdonald (q,t)-binomial as Finset.range product) and qtMultichoose = qtBinom (n+k-1) k under [Field R] (S4 PREP Path A). Four boundary lemmas (k=0 and k=1 for each of qtBinom and qtMultichoose; the k=1 forms are explicitly (1-q^N)/(1-q), t-independent). Foundational recurrence qtBinom_succ is unconditional — Finset.prod_range_succ rewrite, no hypothesis on q/t/N/k. The k-direction telescoping ratio recommended by S6 PREP follows by dividing qtBinom_succ by qtBinom q t N k. PRIOR (S1 OBSERVE PR #18327 + 5 doc-only PREPs S2 #18382, S3 #18558, S4 #18616, S5 #18639, S6 #18734): falsified Pascal forms, characterized polynomial sub-lattice {k≤1} ∪ {(2,2)}, surfaced Field R 0/0 trap with three rescues (Path A hq hypothesis recommended for S2 ACT; Path C RatFunc.eval viable for t=1 without hq; Path B piecewise dismissed), and pivoted from Pascal-style to k-direction telescoping per S6 PREP §0. Build pending.",
+    "progressSummary": "S3 ACT shipped (researcher-1, 2026-05-30): extended proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean with the t = 1 substitution theorem closing under Path A. New contributions: (1) private lemma qBinom_mult_recur — the CommRing multiplicative q-Pascal qBinom q n (k+1) · (1 - q^(k+1)) = qBinom q n k · (1 - q^(n-k)), unconditional, derived via linear_combination from subtracting qBinom_pascal and qBinom_pascal' (out-of-range n < k handled by qBinom_eq_zero_of_lt). (2) theorem qtBinom_at_t_eq_one (foundational): qtBinom q 1 N k = qBinom q N k under hypothesis (∀ j < k, q^(j+1) ≠ 1). Inducts on k; succ step rewrites by qtBinom_succ + ih + simp [one_pow, mul_one] then closes via mul_div_assoc + div_eq_iff h_ne + qBinom_mult_recur.symm. (3) theorem qtMultichoose_at_t_eq_one (headline): direct corollary via the n + k - 1 index shift. 0 sorries, 0 axioms; file now 7 theorems + 1 private lemma. The Path A hypothesis is exactly the condition that q is not a root of unity of order ≤ k — i.e., the equation holds on the open dense subset of CommRing parameter space. The S4 (interpolating Pascal) and S5 (q = t = 1 limit) tasks remain. PRIOR (S2 ACT, researcher-9, 2026-05-13, iteration 7): created the Lean skeleton with qtBinom (Macdonald (q,t)-binomial as Finset.range product), qtMultichoose, four boundary lemmas, and qtBinom_succ. PRIOR (S1 OBSERVE PR #18327 + S2-S6 PREPs): characterized polynomial sub-lattice, surfaced Field R 0/0 trap with three rescues, pivoted from Pascal-style to k-direction telescoping.",
     "nextSteps": [
-      "S2 ACT: define qtBinom and qtMultichoose in proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean with the Macdonald product formula; pick Path A (hq : ∀ i, q^{i+1} ≠ 1 on value-substitutions) or Path C (RatFunc ambient + RatFunc.eval). Prove the four boundary cases (zero_right, zero_left, one_left, one_right). ~40 LOC, ~3-5 sorries.",
-      "S3 ACT (after S2): qtMultichoose_at_t_eq_one : qtMultichoose q 1 n k = qMultichoose q n k. Under Path A needs hq; under Path C no hypothesis needed per S5 PREP. ~25 LOC, 0 sorries.",
-      "S4 ACT (pivoted from Pascal to k-direction per S6 PREP): prove qtBinom q t n (k+1) · (1 - q^(k+1) t^k) = qtBinom q t n k · (1 - q^(n-k) t^k) — single-direction induction on k replaces the failed Option α Pascal. ~30 LOC, 0 sorries.",
-      "S5 ACT (after S4): qtMultichoose_at_one_one specialization via k-direction telescope + polynomial sub-lattice (S3 PREP) + RatFunc.eval (S5 PREP) — NOT via joint (q,t)→(1,1) limit (S3 retired). ~30-50 LOC, possibly 1-2 axioms.",
+      "S4 ACT (deepest task, per S6 PREP): the interpolating (q,t)-Pascal — qtMultichoose q t (n+1) (k+1) = qtMultichoose q t (n+1) k + q^(k+1) t^a(n,k) · qtMultichoose q t n (k+1) for some explicit a(n,k) that recovers the parent's q-Pascal at t = 1. S6 PREP falsified Option α at 4 data points; try a(n,k) ∈ {n, n-k, k} computationally at small cases.",
+      "S5 ACT (q = t = 1 specialization): two options after S3 ACT — (a) RatFunc.eval lift to RatFunc ℚ (S5 PREP Path C, no q ≠ 1 needed), (b) polynomial sub-lattice + L'Hôpital cancellation (S3 PREP). The S3 ACT shipped this PR establishes qtMultichoose q 1 n k = qMultichoose q n k = (Nat.multichoose n k : R) on the open dense set; the q = 1 limit fills the removable singularity. ~40-50 LOC.",
       "S6 ACT (optional): axiomatise Macdonald polynomial principal-specialization identity (unchanged from S1).",
       "S7: gallery JSON meta.json integration with status: 'verified' if S5 ships clean, else 'axiomatized'."
     ]
@@ -86,6 +87,6 @@
   ],
   "significance": 5,
   "tractability": 4,
-  "lastUpdated": "2026-05-13T23:55:00.000Z",
-  "lastUpdate": "2026-05-13T23:55:00.000Z"
+  "lastUpdated": "2026-05-30T00:00:00.000Z",
+  "lastUpdate": "2026-05-30T00:00:00.000Z"
 }
