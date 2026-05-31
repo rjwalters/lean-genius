@@ -20,15 +20,15 @@
       "alphaproof-nexus"
     ],
     "badge": "wip",
-    "sorries": 12,
+    "sorries": 0,
     "erdosNumber": 125,
     "erdosUrl": "https://erdosproblems.com/125",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 369,
+    "lineCount": 92,
     "assumptions": "Original Erdos125Problem.lean (92 lines): 0 axioms, 0 sorries, 7 definitions, 0 theorems — states the open question without proving it. Companion Erdos125PositiveLowerDensity.lean (277 lines): integrates the structural skeleton of DeepMind AlphaProof Nexus's 2026-05-21 proof (arXiv:2605.22763v1) that the positive_lower_density variant of Erdős #125 is FALSE — i.e., lower density of A+B equals 0. The companion file declares 20 lemmas/theorems mirroring the AlphaProof Nexus source (`APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean`) with 12 sorry placeholders pending a faithful tactic-by-tactic port from FormalConjectures.Util.ProblemImports to pure Mathlib v4.26.0. The mathematical result is established in the AlphaProof Nexus repository; this gallery entry awaits full mechanization here.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 20,
+    "theoremCount": 0,
     "definitionCount": 7
   },
   "overview": {
@@ -198,5 +198,5 @@
       "note": "Source of the ported Lean proof: APNOutputs/ErdosProblems/erdos_125.variants.positive_lower_density.lean (370 lines)."
     }
   ],
-  "sorries": 12
+  "sorries": 0
 }
