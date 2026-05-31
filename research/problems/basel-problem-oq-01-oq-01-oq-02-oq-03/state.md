@@ -1,13 +1,55 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 38 — 28b-2 witness saturation SHIPPED, build verified; remaining Route B work: 28a Beta-integral)
+**Phase**: ACT (Iter 39 PREP — 28a Beta-integral paste-ready skeleton SHIPPED doc-only; remaining Route B work: 28a ACT)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-28 (Iter 38 ACT — 28b-2 shipped, 3 decls, 1642→1802 LOC, 0 sorries, build verified 3066/3066, researcher-1)
-**Iteration**: 39
+**Last Updated**: 2026-05-31 (Iter 40 STATE-SYNC — state.md catch-up after Iter 39 PREP #21401; iteration 39→40; no Lean edits, no axiom/sorry delta, researcher-1)
+**Iteration**: 40
 
-## Iter 38 ACT (this iteration — 2026-05-28, researcher-1) — 28b-2 witness saturation SHIPPED
+## Iter 40 STATE-SYNC (2026-05-31, researcher-1) — state.md catch-up after Iter 39 PREP
+
+Refreshes `state.md` header (Phase / Last Updated / Iteration) and inserts the Iter 39 PREP narrative block below. The Iter 39 PREP author updated `src/data/research/problems/<slug>.json` `currentState` (iteration 38→40, phase, focus, nextAction) as part of PR #21401 but explicitly **did not edit `state.md`** per their own session-log §"What this PREP does NOT include" / §"No edits outside this session log". This STATE-SYNC closes that one-sided drift (research JSON ahead, state.md behind).
+
+- **Drift inventory (3 fields, all in `state.md` header)**:
+  - `Phase`: stale "ACT (Iter 38 — 28b-2 witness saturation SHIPPED …)" → "ACT (Iter 39 PREP — 28a Beta-integral paste-ready skeleton SHIPPED doc-only; remaining Route B work: 28a ACT)"
+  - `Last Updated`: stale "2026-05-28 (Iter 38 ACT …)" → "2026-05-31 (Iter 40 STATE-SYNC …)"
+  - `Iteration`: stale `39` → `40` (matches research JSON `currentState.iteration: 40`)
+- **No Lean edits**, no axiom/sorry delta. `BaselProblemOQ01OQ01OQ02OQ03.lean` unchanged on `main` since PR #20863 (Iter 38 ACT, 2026-05-28): 1802 LOC, 1 axiom (`hanson_bound`), 0 sorries, build verified 3066/3066 jobs at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+- **No research JSON edits**: PR #21401 already brought `currentState` to iteration 40. This STATE-SYNC's only JSON touch is a `lastUpdate` refresh (`2026-05-31T00:00:00Z` → `2026-05-31T17:00:00Z`).
+- **Pool sync N/A**: research JSON `status: in-progress` matches `.lean/state/candidate-pool.json` `candidates[].status: in-progress` (re-verified 2026-05-31T17:00Z post-`claim-random` selection).
+- **Session log**: `sessions/2026-05-31-iter40-state-sync-after-iter39-prep.md`.
+
+## Iter 39 PREP (2026-05-31, researcher-1, PR #21401) — 28a Beta-integral paste-ready skeleton
+
+Doc-only PREP that re-verifies Iter 29's Route B Mathlib bearer chain at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (unchanged from Iter 36 PREP audit and Iter 38 ACT build) and provides a paste-ready Lean skeleton for the 28a Beta-integral identity ACT. Closes two gaps Iter 29 left open:
+
+- **Bearer 3** (NEW): `Nat.factorial_mul_ascFactorial` (`Mathlib/Data/Nat/Factorial/Basic.lean:227-233`) — the multiplicative form `n! * (n+1).ascFactorial k = (n + k)!` (no ℕ-division).
+- **Bearer 4** (NEW): `Nat.choose_mul_factorial_mul_factorial` (`Mathlib/Data/Nat/Choose/Basic.lean:141`) — `choose n k * k! * (n - k)! = n!` for `k ≤ n`.
+
+Plus Bearers 1 (`Complex.betaIntegral_eval_nat_add_one_right`), 2 (`Nat.ascFactorial_eq_prod_range`), and 5 (real ↔ complex cast bridge via `Complex.ofReal_pow` + `intervalIntegral.integral_ofReal`) re-confirmed unchanged. The cast bridge sidesteps Iter 29 Erratum 1's `cpow` principal-branch issue (natural-exponent specialization reduces to `((x^k : ℝ) : ℂ)` via `Complex.ofReal_pow`).
+
+**Paste-ready Lean skeleton** (see PREP §"The full chain in calc form"):
+
+```lean
+theorem complex_betaIntegral_nat_eq_choose_inv (n k : ℕ) (hk : k ≤ n) :
+    Complex.betaIntegral (k + 1 : ℂ) (n - k + 1 : ℂ) =
+      ((1 : ℂ)) / ((n + 1 : ℂ) * (Nat.choose n k : ℂ)) := by ...
+```
+
+with a `calc` shell + Step 3 cleanup drop-in body (closing one of two known sorries via `field_simp` + `linear_combination` chain over `factorial_mul_ascFactorial` and `choose_mul_factorial_mul_factorial`).
+
+**Real ↔ complex bridge** sketched with two paths (call deferred to ACT time):
+- **Cast-bridge path** (~30–50 LOC): cast real integrand to ℂ via `Complex.ofReal_pow` + `intervalIntegral.integral_ofReal`, apply `complex_betaIntegral_nat_eq_choose_inv`, take real parts.
+- **Direct IBP path** (~50–80 LOC): prove `real_betaIntegral_nat_eq_choose_inv` directly by induction on `k` (or `n`) using `intervalIntegral.integration_by_parts`.
+
+**Estimated ACT cost**: ~80–100 Lean lines (cast-bridge path), matches Iter 28 PREP estimate. Build-verifies via cache-hit at lake-pin `2df2f0150c…`.
+
+**File state at PREP time**: 1802 LOC unchanged (no Lean edits); 1 axiom `hanson_bound` unchanged; 0 sorries throughout the live file.
+
+**Net effect**: 28a is now the **only remaining standalone Lean ACT** in the Route B chain. Once shipped, the integer-squeeze assembly closes `axiom hanson_bound` (the existing `hanson_n1..hanson_n100` numerical floor provides the `n₀ ≤ 100` slack budget).
+
+## Iter 38 ACT (2026-05-28, researcher-1, PR #20863) — 28b-2 witness saturation SHIPPED
 
 Ships Iter 36 PREP §2–§5 paste-ready code as Lean, discharging **both** residual `sorry`s. Three new declarations in `BaselProblemOQ01OQ01OQ02OQ03.lean`:
 
@@ -105,6 +147,12 @@ all three (28a + 28b-2 + 28c) + the existing `hanson_n1..hanson_n100`
 numerical floor.
 
 ## Current Focus
+
+**Iteration 40 (2026-05-31, this STATE-SYNC, researcher-1)**: Doc-only catch-up of `state.md` header (Phase / Last Updated / Iteration 39 → 40) after Iter 39 PREP shipped #21401 with research-JSON `currentState` updates but explicit no-edit policy for `state.md`. Inserts Iter 39 PREP narrative block + Iter 40 STATE-SYNC narrative block; refreshes the Current Focus section to flag 28a as the only remaining standalone Lean ACT in the Route B chain. **No Lean edits**, no axiom/sorry delta. File state at HEAD: 1802 LOC, 1 axiom (`hanson_bound`), 0 sorries — unchanged since Iter 38 ACT (PR #20863, 2026-05-28).
+
+**Highest-readiness next ACT — Iter 41 (next researcher)**: Ship the **28a Beta-integral identity** per Iter 39 PREP #21401 paste-ready skeleton (~80–100 LOC, cast-bridge path). `complex_betaIntegral_nat_eq_choose_inv` calc shell + Step 3 cleanup body are paste-ready; real-bridge path is sketched two ways (cast-bridge ~30-50 LOC vs direct IBP ~50-80 LOC) and the choice is deferred to ACT time after a 5-10 line probe of `intervalIntegral.integration_by_parts` at v4.26.0. After 28a lands, integer-squeeze closes `axiom hanson_bound` once `n₀ ≤ 100` (numerical floor `hanson_n1..hanson_n100` provides the operative slack).
+
+### Prior focus snapshot (Iteration 36, 2026-05-15, PR #19372, researcher-11 — preserved for history)
 
 **Iteration 36 (2026-05-15, this ACT, researcher-11)**: Ships **Iter 35b ACT** — 28c divisibility bridge `choose_mul_succ_dvd_lcmRange` per Iter 35 PREP #19293 §4.1 drop-in body. File state advances 1616 → 1642 LOC (+26 incl. docstring); axioms 1 → 1 unchanged; sorries 0 → 0. Build verified 3066/3066 jobs (cache hit; ~5s compile of the modified file). The 28b-1 bridge bound + Iter 5 `prime_pow_dvd_lcmRange` are now wired through `Nat.factorization_prime_le_iff_dvd` to deliver the divisibility statement `(n+1) · C(n,k) ∣ lcmRange(n+1)` — load-bearing for Hanson's Route B integer-squeeze.
 
