@@ -76,6 +76,7 @@ merged) and S6 PREP
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 import Mathlib.LinearAlgebra.Matrix.Block
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.Algebra.BigOperators.Fin
@@ -84,7 +85,7 @@ import Proofs.MinkowskiFundamentalTheorem
 
 namespace MinkowskiTheoremOQ02OQ03
 
-open OrderDual
+open OrderDual MeasureTheory
 
 -- ============================================================
 -- PART 1: The n-dim Dirichlet Parallelepiped (Cassels 1957)
@@ -330,7 +331,70 @@ theorem dirichletSetN_eq_shearM_preimage (n : ℕ) (α : Fin n → ℝ) (Q : ℕ
       exact abs_lt.mpr hk
 
 -- ============================================================
--- PART 7: Integer-coordinate extraction (S6α ACT — this revision)
+-- PART 6: Volume via shear pushforward (S5-c ACT — this revision)
+-- ============================================================
+
+/-- The `dirichletBoxN` rectangle is measurable (it is a `Set.pi` of
+open intervals over the finite index type `Fin (n+1)`). Bearer for the
+`Real.map_matrix_volume_pi_eq_smul_volume_pi` pushforward step in
+`dirichletSetN_volume`. -/
+theorem dirichletBoxN_measurable (n : ℕ) (Q : ℕ) :
+    MeasurableSet (dirichletBoxN n Q) := by
+  unfold dirichletBoxN
+  exact MeasurableSet.univ_pi (fun _ => measurableSet_Ioo)
+
+/-- Closed-form Lebesgue volume of the dirichletBoxN rectangle as a
+product of `ENNReal.ofReal` factors over `Fin (n+1)`: the `0`
+coordinate contributes the width `2 (Qⁿ + 1)`, and each `i.succ`
+coordinate contributes the width `2/Q`. Computed directly from
+`Real.volume_pi_Ioo` + `Fin.prod_univ_succ`. -/
+theorem dirichletBoxN_volume (n : ℕ) (Q : ℕ) :
+    volume (dirichletBoxN n Q) =
+      ENNReal.ofReal (2 * ((Q : ℝ) ^ n + 1)) *
+        ∏ _ : Fin n, ENNReal.ofReal (2 / (Q : ℝ)) := by
+  unfold dirichletBoxN
+  rw [Real.volume_pi_Ioo, Fin.prod_univ_succ]
+  congr 1
+  · simp only [Fin.cases_zero]
+    congr 1; ring
+  · refine Finset.prod_congr rfl ?_
+    intro k _
+    simp only [Fin.cases_succ]
+    congr 1; ring
+
+/-- **Volume of the Dirichlet parallelepiped.** By the S5-b preimage
+identity `dirichletSetN n α Q = (shearM n α).toLin' ⁻¹' dirichletBoxN n Q`
+combined with `Real.map_matrix_volume_pi_eq_smul_volume_pi` (which
+expresses `Measure.map (toLin' M) volume = ENNReal.ofReal (|det M|⁻¹) • volume`)
+and the S5-a determinant `shearM_det : det (shearM n α) = (-1)^n`
+(so `|det| = 1` and the pushforward preserves volume), this equals the
+explicit closed form from `dirichletBoxN_volume`.
+
+Specialised at `n+1 ≥ 2` (with `1 ≤ Q`) by the upcoming S6 ACT
+`simultaneous_dirichlet_from_minkowski` to satisfy Minkowski's
+`(2 : ENNReal)^(n+1) < volume s` threshold (the volume here is
+`2^(n+1) * (Qⁿ + 1) / Qⁿ > 2^(n+1)`). -/
+theorem dirichletSetN_volume (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
+    volume (dirichletSetN n α Q) =
+      ENNReal.ofReal (2 * ((Q : ℝ) ^ n + 1)) *
+        ∏ _ : Fin n, ENNReal.ofReal (2 / (Q : ℝ)) := by
+  have h_meas_T : Measurable ((shearM n α).toLin') :=
+    Continuous.measurable (LinearMap.continuous_on_pi _)
+  have h_meas_box : MeasurableSet (dirichletBoxN n Q) := dirichletBoxN_measurable n Q
+  have hdet_ne : Matrix.det (shearM n α) ≠ 0 := by
+    rw [shearM_det]
+    exact pow_ne_zero _ (by norm_num : (-1 : ℝ) ≠ 0)
+  have h_map : Measure.map ((shearM n α).toLin') volume = volume := by
+    rw [Real.map_matrix_volume_pi_eq_smul_volume_pi hdet_ne, shearM_det,
+        show |((-1 : ℝ))^n|⁻¹ = 1 from by
+          rw [abs_pow, abs_neg, abs_one, one_pow, inv_one],
+        ENNReal.ofReal_one, one_smul]
+  rw [dirichletSetN_eq_shearM_preimage,
+      ← Measure.map_apply h_meas_T h_meas_box, h_map]
+  exact dirichletBoxN_volume n Q
+
+-- ============================================================
+-- PART 7: Integer-coordinate extraction (S6α ACT — prior revision)
 -- ============================================================
 
 open MinkowskiProved in
