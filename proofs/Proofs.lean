@@ -2767,6 +2767,7 @@ import Proofs.SpernerGrid
 import Proofs.SpernerGridAristotle
 import Proofs.SpernerMathlib
 import Proofs.SpernerMathlib4
+import Proofs.SpernerMathlibHyper
 import Proofs.SpernerNDim
 import Proofs.SpernerNDimMathlib
 import Proofs.SpernerNDimMathlibOQ01
@@ -2780,6 +2781,7 @@ import Proofs.SpernerSimplicialBridge
 import Proofs.SpernerSimplicialBridgeOQ01
 import Proofs.SpernerSimplicialInstance
 import Proofs.SpernerSimplicialInstanceOQ05
+import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
