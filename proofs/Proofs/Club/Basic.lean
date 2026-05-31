@@ -116,4 +116,39 @@ theorem diagInter_isClosedBelow {f : Ordinal → Set Ordinal} {o : Ordinal}
   have hβδ : β < δ := lt_of_le_of_lt (le_max_right p β) hδ_lo
   exact ⟨δ, hδ_mem2 β hβδ, lt_of_le_of_lt (le_max_left p β) hδ_lo, hδ_hi⟩
 
+/-! ### IsRegressive companion lemmas
+
+Library-style helpers for `IsRegressive` that the Fodor pressing-down proof
+(currently in `Proofs/FodorPressingDown.lean`) uses inline. Lifting these to
+the library prepares the post-S4-ACT re-statement of `fodor` in terms of
+`Ordinal.IsRegressive` (sister-slug `fodor-pressing-down-oq-04` will consume
+them directly once it imports `Proofs.Club.Basic`). -/
+
+/-- Every function is vacuously regressive on the empty set. -/
+theorem IsRegressive.empty {f : Ordinal → Ordinal} :
+    IsRegressive f (∅ : Set Ordinal) :=
+  fun _ h _ => absurd h (Set.not_mem_empty _)
+
+/-- Regressivity is anti-monotone under set inclusion: if `f` is regressive
+on `T` and `S ⊆ T`, then `f` is regressive on `S`. -/
+theorem IsRegressive.mono {f : Ordinal → Ordinal} {S T : Set Ordinal}
+    (hST : S ⊆ T) (hT : IsRegressive f T) : IsRegressive f S :=
+  fun _ hα hα0 => hT (hST hα) hα0
+
+/-- Restricting to a preimage fiber preserves regressivity. Used in Fodor's
+contradiction step: if `f` is regressive on `S`, it is regressive on every
+constancy class `S ∩ f ⁻¹' {c}`. -/
+theorem IsRegressive.inter_preimage {f : Ordinal → Ordinal} {S : Set Ordinal}
+    {c : Ordinal} (hS : IsRegressive f S) :
+    IsRegressive f (S ∩ f ⁻¹' {c}) :=
+  hS.mono Set.inter_subset_left
+
+/-- Bridge to the bare `∀ α ∈ S, f α < α` hypothesis form used by the
+existing Fodor statement: under the standing assumption that `S` contains
+no zero, `IsRegressive f S` is equivalent to `∀ α ∈ S, f α < α`. -/
+theorem IsRegressive.iff_forall_lt {f : Ordinal → Ordinal} {S : Set Ordinal}
+    (hS_pos : ∀ α ∈ S, 0 < α) :
+    IsRegressive f S ↔ ∀ α ∈ S, f α < α :=
+  ⟨fun h α hα => h hα (hS_pos α hα).ne', fun h _ hα _ => h _ hα⟩
+
 end Ordinal

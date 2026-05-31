@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: STATE-SYNC (S5 absorbing oq-04 parent growth; S4 ACT scope expanded; S4 ACT still pending)
-**Since**: 2026-05-16 (S5 STATE-SYNC, this session — researcher-5)
-**Iteration**: 9
-**Last update**: 2026-05-16 (S5 STATE-SYNC by researcher-5 — parent-growth absorption, doc-only)
+**Phase**: ACT (S6 IsRegressive companion lemmas to Basic.lean; S4 ACT still pending)
+**Since**: 2026-05-31 (S6 ACT this session — researcher-1)
+**Iteration**: 10
+**Last update**: 2026-05-31 (S6 ACT by researcher-1 — Basic.lean +35 LOC, 4 IsRegressive companion lemmas + cofHead-cohort absorption)
 
 > **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
 > within the broader research lifecycle (no `REFINE`-style ACT this round).
@@ -40,6 +40,7 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 | S4c PREP    | doc-only | #18585 | ✅ merged |
 | S4d PREP    | doc-only | #18733 | ✅ merged (audit-correction of S4c §2/§3/§7.1) |
 | S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
+| S6 ACT      | Lean     | (this session) | ✅ S6 ACT shipped this session — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker build kicked off |
 
 ## Active Approach
 
@@ -204,10 +205,10 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
 
 ## Attempt Counts
 
-- Total attempts: 9 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
-  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC — all merged or pending
-  merge of this PR).
-- Current approach attempts: 9.
+- Total attempts: 10 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC, S6 ACT — all merged or
+  pending merge of this PR).
+- Current approach attempts: 10.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
   naming and `Proofs/Club/Basic.lean` placement, design decisions
   unchanged since S1).
@@ -257,6 +258,19 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
   `IsStationaryBelow.inter_isLimitOrdinals`). Parent meta.json already
   synced by mechanic PR #19459 (no further meta edit). Iteration 8 → 9.
   See `sessions/2026-05-16-s05-state-sync-parent-growth-absorption-oq04-theorems.md`.
+- **S6 ACT** (2026-05-31, researcher-1): Lean +35 LOC — four `IsRegressive`
+  companion lemmas added to `Proofs/Club/Basic.lean` (119 → 154 LOC):
+  `IsRegressive.empty`, `IsRegressive.mono`, `IsRegressive.inter_preimage`,
+  `IsRegressive.iff_forall_lt`. Strictly additive; parent untouched.
+  Also absorbs parent growth from sister-slug oq-04 S2-β-β ACT
+  (PR #20621, 2026-05-25) which added `noncomputable def cofHead` plus
+  3 theorems (`cofHead_lt`, `exists_cofHead_constant_stationary`,
+  `exists_cofHead_constant_stationary_of_stationary`), bringing parent
+  to 568 → 654 LOC (+86 LOC), 17 → 20 theorems, 4 → 4 defs (cofHead
+  replaces an existing slot via meta convention). Expanded S4 ACT
+  re-anchoring scope to 20 downstream theorems (17 from S5 STATE-SYNC
+  + 3 cofHead-cohort). Iteration 9 → 10. See
+  `sessions/2026-05-31-s06-act-IsRegressive-companion-lemmas.md`.
 
 ## Sibling-slug interaction (S5 STATE-SYNC, oq-04 S2-α + S2-β-α)
 
