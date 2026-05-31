@@ -902,4 +902,71 @@ theorem choose_dvd_lcmRange {n k : ℕ} (hn : 0 < n) (hk : k ≤ n) :
       Nat.pow_factorization_choose_le hn
     exact dvd_lcmRange hpow_pos hpow_le
 
+section Part12
+/-! ## Part 12 (Session 20 ACT) — `pow_factorization_mul_choose_le`
+
+Per-prime upper bound for the prime-power factorization of `m * C(n, m)`.
+Generalizes `Nat.pow_factorization_choose_le` (S15 framework) to the
+m-prefactored case. Consumed by Part 13 (S21 ACT, `mul_choose_dvd_lcmRange`)
+via prime-power decomposition.
+
+The naive bound `v_p(m) + ⌊log_p (n-1)⌋ ≤ ⌊log_p n⌋` FAILS in general
+(e.g. n=12, m=4, p=2: v_2(4) + log_2(11) = 2 + 3 = 5 > log_2(12) = 3).
+The sharp argument observes: when `v_p(m) = a`, the bottom `a` base-p
+digits of m are 0, so the carry positions in m + (n-m) = n (which by
+Kummer count `v_p(C(n, m))`) can only land in positions > a. Hence
+`v_p(C(n, m)) ≤ log_p n - v_p(m)`, giving the SHARP `v_p(m·C(n,m)) ≤ log_p n`.
+
+Bypasses the `multiplicity`/`emultiplicity` API by working directly with
+`Nat.factorization_choose`'s carry formula and bounding the filter
+cardinality by Ico cardinality via a subset argument anchored on
+`Nat.Prime.pow_dvd_iff_le_factorization`. Validated on 3 cases (S17 §4.3:
+n=12 m=4 p=2, n=16 m=8 p=2 tight, n=8 m=2 p=2 tight).
+-/
+
+/-- Per-prime upper bound on `(m * C(n, m)).factorization p`. -/
+theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
+    {p : ℕ} : p ^ ((m * Nat.choose n m).factorization p) ≤ n := by
+  have hn : 0 < n := hm.trans_le hmn
+  have hC_pos : 0 < Nat.choose n m := Nat.choose_pos hmn
+  rw [Nat.factorization_mul hm.ne' hC_pos.ne']
+  simp only [Finsupp.add_apply, Pi.add_apply]
+  by_cases hp : p.Prime
+  · apply Nat.pow_le_of_le_log hn.ne'
+    set a : ℕ := m.factorization p with ha
+    have ha_le_log : a ≤ Nat.log p n := by
+      have h_pa_dvd_m : p ^ a ∣ m :=
+        (hp.pow_dvd_iff_le_factorization hm.ne').mpr le_rfl
+      have h_pa_le_m : p ^ a ≤ m := Nat.le_of_dvd hm h_pa_dvd_m
+      have h_pa_le_n : p ^ a ≤ n := h_pa_le_m.trans hmn
+      exact Nat.le_log_of_pow_le hp.one_lt h_pa_le_n
+    rw [Nat.factorization_choose hp hmn (Nat.lt_add_one _)]
+    set b : ℕ := Nat.log p n with hb
+    have h_subset :
+        {i ∈ Finset.Ico 1 (b + 1) | p^i ≤ m % p^i + (n - m) % p^i}
+          ⊆ Finset.Ico (a + 1) (b + 1) := by
+      intro i hi
+      simp only [Finset.mem_filter, Finset.mem_Ico] at hi
+      obtain ⟨⟨hi_one, hi_hi⟩, hi_cond⟩ := hi
+      refine Finset.mem_Ico.mpr ⟨?_, hi_hi⟩
+      by_contra h_lt
+      push_neg at h_lt
+      have hi_le_a : i ≤ a := Nat.lt_succ_iff.mp h_lt
+      have h_pi_dvd_m : p ^ i ∣ m :=
+        (hp.pow_dvd_iff_le_factorization hm.ne').mpr (hi_le_a.trans (le_of_eq ha.symm))
+      have h_m_mod : m % p ^ i = 0 := Nat.mod_eq_zero_of_dvd h_pi_dvd_m
+      rw [h_m_mod, Nat.zero_add] at hi_cond
+      exact absurd hi_cond (not_le.mpr (Nat.mod_lt _ (Nat.pow_pos hp.pos i)))
+    have h_card_le : ({i ∈ Finset.Ico 1 (b + 1) | p^i ≤ m % p^i + (n - m) % p^i}).card
+        ≤ (Finset.Ico (a + 1) (b + 1)).card :=
+      Finset.card_le_card h_subset
+    rw [Nat.card_Ico] at h_card_le
+    omega
+  · rw [Nat.factorization_eq_zero_of_not_prime _ hp,
+        Nat.factorization_eq_zero_of_not_prime _ hp]
+    simp
+    exact hn
+
+end Part12
+
 end BaselProblemOQ01OQ01OQ02OQ02
