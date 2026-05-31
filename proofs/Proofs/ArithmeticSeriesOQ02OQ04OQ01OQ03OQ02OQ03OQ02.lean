@@ -1,5 +1,5 @@
 /-
-# (q,t)-Multichoose: S2 Skeleton + S3 ACT (t = 1 specialization)
+# (q,t)-Multichoose: S2 Skeleton + S3 ACT (t = 1) + S4 ACT (polynomial sub-lattice + Field 0/0 trap)
 (arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02)
 
 ## OQ Statement
@@ -15,13 +15,27 @@ at `t = 1` and integer multichoose at `q = t = 1`.
 `qtMultichoose`, four boundary cases, and the unconditional k-direction
 multiplicative recurrence `qtBinom_succ`.
 
-**S3 ACT (researcher-1, 2026-05-30, this iteration)**: the t = 1 substitution
-theorem `qtBinom_at_t_eq_one` and its `qtMultichoose` corollary. Both work
+**S3 ACT (researcher-1, 2026-05-30)**: the t = 1 substitution theorem
+`qtBinom_at_t_eq_one` and its `qtMultichoose` corollary. Both work
 under Path A (S4 PREP) — hypothesis `q^(j+1) ≠ 1` for `j < k`, which keeps
 the Macdonald denominators nonzero on the open dense set of non-roots-of-
 unity. The proof uses a new private helper `qBinom_mult_recur` (a CommRing
 multiplicative q-Pascal derived by subtracting `qBinom_pascal` and
 `qBinom_pascal'`), bridged to the rational `qtBinom_succ` via `div_eq_iff`.
+
+**S4 ACT (researcher-1, 2026-05-31, this iteration)**: two complementary
+formal facts about the polynomial sub-lattice and the `Field R` 0/0 trap:
+* `qtMultichoose_two_two` — the unique "interior" t-cancellation at
+  `(n, k) = (2, 2)`: `qtMultichoose q t 2 2 = (1 - q^3) / (1 - q)`,
+  under the Path A guard `1 - q^2 t ≠ 0`. This is the only point in the
+  S3 PREP polynomial sub-lattice (`{k ≤ 1} ∪ {(2,2)}`) that is genuinely
+  interior; it falls out of `qtBinom_succ` after a single cancellation.
+* `qtBinom_at_one_one_eq_zero` + `qtMultichoose_at_one_one_eq_zero` —
+  the Lean `Field R` convention `(0 : R) / 0 = 0` collapses the joint
+  `(q, t) = (1, 1)` substitution to **0** for any `k ≥ 1`, not the
+  classical `Nat.multichoose n k`. Formalising the trap pins down why
+  Path A's `q^(j+1) ≠ 1` hypothesis is mandatory and motivates the
+  Path C (`RatFunc`) migration for future S5+ work.
 
 The k-direction recurrence
   `qtBinom q t N (k+1) = qtBinom q t N k · (1 - q^(N-k) t^k) / (1 - q^(k+1) t^k)`
@@ -30,9 +44,10 @@ CommRing multiplicative q-Pascal closes the gap to the parent's q-binomial.
 
 ## What this file still does NOT contain
 
-* No `at_one_one` limit theorem (S4/S5 ACT target; requires either L'Hôpital
-  cancellation or `RatFunc.eval` per S5 PREP — the (q,t) → (1,1) limit hits
-  the removable 0/0 singularity that Path A side-steps).
+* No **positive** `at_one_one` limit theorem (i.e., recovering the classical
+  `Nat.multichoose`). The S4 ACT here records the **negative** statement
+  (= 0) under `Field R`; the positive form requires `RatFunc.eval` per
+  S5 PREP — out of scope for this iteration.
 * No Pascal-style recurrence (S6 PREP falsified it; the product formula
   factorises along `k`, not Pascal's two-direction).
 * No Macdonald-polynomial principal-specialization axiom (optional S6 step).
@@ -41,24 +56,25 @@ CommRing multiplicative q-Pascal closes the gap to the parent's q-binomial.
 
 After S1 OBSERVE (PR #18327, 2026-05-12), five doc-only PREPs landed
 without a Lean file (S2 PREP #18382, S3 PREP #18558, S4 PREP #18616,
-S5 PREP #18639, S6 PREP #18734), then S2 ACT shipped the skeleton.
-This iteration discharges the S3 ACT next-action listed in
-`src/data/research/problems/arithmetic-series-oq-02-...-oq-02.json`.
+S5 PREP #18639, S6 PREP #18734), then S2 ACT shipped the skeleton
+(#18955), S3-α partial (commit d86b78e5646), and S3 ACT (PR #21322).
+This iteration discharges S4 ACT.
 
 ## Status
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 7 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 10 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
-  specialization theorems)
+  specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
+  theorems)
 * Lemmas (private): 1 (`qBinom_mult_recur`, CommRing multiplicative q-Pascal)
 
 ## Build status
 
 Build pending (Docker daemon required per project convention; per CLAUDE.md
-never invoke `lake build` directly). The S3 ACT additions use only standard
-Mathlib tactics: `linear_combination`, `mul_div_assoc`, `div_eq_iff`, `omega`
+never invoke `lake build` directly). The S4 ACT additions use only standard
+Mathlib tactics: `Finset.prod_range_succ'`, `div_self`, `pow_one`, `simp`
 — no novel proof machinery.
 -/
 
@@ -225,5 +241,73 @@ theorem qtMultichoose_at_t_eq_one (q : R) (n k : ℕ)
     qtMultichoose q 1 n k = qMultichoose q n k := by
   unfold qtMultichoose qMultichoose
   exact qtBinom_at_t_eq_one q (n + k - 1) k hq
+
+-- ============================================================
+-- SECTION VI: S4 ACT — Polynomial sub-lattice + Field 0/0 trap
+-- ============================================================
+
+/-- **Polynomial sub-lattice (S3 PREP characterization)**: the case
+    `(n, k) = (2, 2)` is the unique "interior" point (both `n ≥ 2` and
+    `k ≥ 2`) at which `qtMultichoose q t n k` is independent of `t` as a
+    rational function in `ℚ(q, t)`.
+
+    Concretely: `qtMultichoose q t 2 2 = (1 - q^3) / (1 - q)`, which equals
+    `1 + q + q^2 = qNumber q 3` whenever `1 - q ≠ 0` (the latter not
+    required for the equality of the rational expressions stated here).
+    The Path A guard `1 - q^2 t ≠ 0` keeps the cancelling factor's
+    denominator nonzero.
+
+    Mechanism: in the product
+      `qtBinom q t 3 2 = ∏ i ∈ range 2, (1 - q^(3 - i) t^i) / (1 - q^(i + 1) t^i)`,
+    the `i = 1` factor has numerator `1 - q^2 t` and denominator `1 - q^2 t`
+    (because `3 - 1 = 2 = 1 + 1`), so it cancels to `1`. The `i = 0`
+    factor is `(1 - q^3) / (1 - q)` (t-free since `t^0 = 1`).
+
+    For `(n, k)` outside `{k ≤ 1} ∪ {(2, 2)}`, no such cancellation occurs;
+    the S3 PREP rationality analysis proves this is the full polynomial
+    sub-lattice of `qtBinom` over `ℚ(q, t)`. -/
+theorem qtMultichoose_two_two (q t : R) (htq : (1 : R) - q ^ 2 * t ≠ 0) :
+    qtMultichoose q t 2 2 = (1 - q ^ 3) / (1 - q) := by
+  have h_unfold : qtMultichoose q t 2 2 = qtBinom q t 3 (1 + 1) := rfl
+  rw [h_unfold, qtBinom_succ, qtBinom_one_right]
+  simp only [show (3 - 1 : ℕ) = 2 from rfl, show (1 + 1 : ℕ) = 2 from rfl, pow_one]
+  rw [div_self htq, mul_one]
+
+/-- **Field R 0/0 trap (S4 PREP F1), formalised**: under Lean's `Field R`
+    convention `(0 : R) / 0 = 0`, the joint specialization `q = t = 1` of
+    the Macdonald (q,t)-binomial collapses to **zero** for every positive
+    column-count `k + 1`:
+      `qtBinom (1 : R) (1 : R) N (k + 1) = 0`.
+
+    Mechanism: the `i = 0` factor `(1 - 1^(N - 0) * 1^0) / (1 - 1^(0 + 1) * 1^0)`
+    is exactly `0 / 0 = 0` (every `1^_` is `1`, every `1 - 1` is `0`).
+    A single zero factor zeros the whole product (`Finset.prod_range_succ'`
+    extracts that factor and `simp` closes via `zero_div` and `mul_zero`).
+
+    This formalises **why** the Path A non-degeneracy hypothesis
+    `q^(j + 1) ≠ 1` is *mandatory* in `qtBinom_at_t_eq_one`: dropping it
+    re-admits `q = 1`, and combined with `t = 1` the rational substitution
+    is no longer the classical limit but the `Field R` 0/0 collapse. The
+    classical recovery `qtMultichoose 1 1 n k = Nat.multichoose n k`
+    requires either Path C (`RatFunc.eval`, S5 PREP) or an iterated-limit
+    construction — both out of scope for this ACT. -/
+theorem qtBinom_at_one_one_eq_zero (N k : ℕ) :
+    qtBinom (1 : R) (1 : R) N (k + 1) = 0 := by
+  unfold qtBinom
+  rw [Finset.prod_range_succ']
+  simp
+
+/-- **Corollary of `qtBinom_at_one_one_eq_zero`**: at `q = t = 1`, the
+    (q,t)-multichoose coefficient is zero for every `k + 1 ≥ 1` under
+    Path A `Field R` semantics.
+
+    `qtMultichoose 1 1 n (k + 1) = qtBinom 1 1 (n + (k + 1) - 1) (k + 1)
+                                 = 0`
+    by the parent theorem. This is the "negative S4/S5" statement that
+    formalises the Field 0/0 trap at the `qtMultichoose` level. -/
+theorem qtMultichoose_at_one_one_eq_zero (n k : ℕ) :
+    qtMultichoose (1 : R) (1 : R) n (k + 1) = 0 := by
+  unfold qtMultichoose
+  exact qtBinom_at_one_one_eq_zero (n + (k + 1) - 1) k
 
 end QtMultichooseCoefficients
