@@ -1,10 +1,84 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S10 STATE-SYNC (13-day-gap absorb + G7+G8 INFRA recovery + G9 still-RED + Docker-mount-overrides-G9 hypothesis; doc-only; ACT path narrowed to G9-verify)
+**Phase**: S11 INFRA-VERIFY (G9-mount hypothesis EMPIRICALLY CONFIRMED via Docker build of Proofs.MoserTardos on origin/main unchanged; 7743 jobs successful; ACT-readiness gate flips from 7/8 GREEN + 1/8 PARTIAL to **8/8 GREEN**)
 **Path**: full
-**Since**: 2026-05-30
-**Iteration**: 12
+**Since**: 2026-05-31
+**Iteration**: 13
+
+## S11 INFRA-VERIFY (G9-mount confirmed inert for Docker builds) — researcher-1, 2026-05-31 ~17:50 UTC
+
+**Mode**: INFRA-VERIFY (empirical Docker build executed on origin/main unchanged file; doc-only state.md + new session memo; **no Lean / problem.md / knowledge.md / meta.json / leanFiles / Mathlib pin / sibling-slug edits**).
+
+**Outcome**: The S10 §4 hypothesis ("Docker `-v` mount overrides G9 lake self-loop") is **CONFIRMED EMPIRICALLY**. Test command (executed in this worktree, on origin/main MoserTardos.lean — zero new code):
+
+```
+cd /Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-1
+LEAN_BUILD_TIMEOUT=15m ./proofs/scripts/docker-build.sh Proofs.MoserTardos
+=> Build completed successfully (7743 jobs).
+=> ~150s wall-clock; 7727 files fetched from Mathlib cache.
+```
+
+Mechanism: `docker-build.sh:127` mounts `lean-mathlib-cache` directly onto `/workspace/proofs/.lake/build` inside the container, providing a fresh writable directory regardless of host symlink state. The outer `-v "${REPO_ROOT}:/workspace:delegated"` bind mount makes the worktree available; the broken `proofs/.lake` symlink's target (`/Users/rwalters/GitHub/lean-genius/proofs/.lake`) does not exist as a path inside the container, but the nested volume mount supersedes the broken parent path.
+
+### Files updated (S11 INFRA-VERIFY)
+
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this block (head update + new narrative section + Iteration History +1 row).
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-31-s11-infra-verify-g9-mount-confirmed-inert.md` — new memo (~150 LOC, 9 sections).
+- No JSON catchup needed (S10 catchup still authoritative; substantive ACT deliverable not yet shipped).
+
+### Snapshot at S11 verify (host)
+
+- **G7 disk**: `/System/Volumes/Data` 94% capacity, **59 Gi free** (vs S10 62 Gi, vs S9 2.9 Gi free — slight decrement vs S10 but well above ACT floor). GREEN.
+- **G8 Docker**: `docker info --format '{{.ServerVersion}}'` → `29.4.1` (immediate, no timeout). GREEN.
+- **G9 lake self-loop**: `ls -la proofs/.lake` → `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referencing on host; `readlink -f` errors). **STILL RED ON HOST**, but **CONFIRMED INERT FOR DOCKER BUILDS** (this finding).
+
+### ACT-readiness gate (8-item, S11 INFRA-VERIFY refresh)
+
+| # | Item | Status pre-S11 (S10) | Status post-S11 |
+|---|------|----------------------|-----------------|
+| 1 | Mathlib pin stable | GREEN | GREEN (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` ≥19d) |
+| 2 | Bearers verified at pin | GREEN | GREEN (transitivity) |
+| 3 | Paste-ready substitute body (S8 §3.2) | GREEN | GREEN |
+| 4 | Parent file baseline stable (382 LOC, 0 sorries) | GREEN | GREEN |
+| 5 | No competing open PRs on slug | GREEN | re-verified (`gh pr list --search "prob-method-lovasz-local-oq-01" --state open` → 0) |
+| 6 | JSON catchup planned | GREEN | DONE (S9 + S10 catchup merged) |
+| 7 | problem.md / knowledge.md unchanged | GREEN | GREEN |
+| 8 | Infra: Docker + disk + .lake | **PARTIAL INFRA (G9-only)** | **GREEN (G9 confirmed inert via Docker -v override)** |
+
+**Gate flips from 7/8 GREEN + 1/8 PARTIAL → 8/8 GREEN**. S12 ACT can proceed without infra qualifier.
+
+### Cross-slug implication
+
+The G9-inert finding is **slug-agnostic**: every research worktree using `proofs/scripts/docker-build.sh` is unaffected by the lake self-loop. The blanket "build pending — G9 lake self-loop" qualifier pattern, used in many recent research PRs across the gallery (including PR #21550 — ballot-problem-oq-02-oq-05 S8 ACT, this researcher's own work shipped earlier this session), is now obsolete.
+
+**Within this session**: PR #21550 was Docker-verified after this S11 finding; 3 bugs were caught at first build attempt (2 preexisting from S6 ACT skeleton which was never actually built, 1 in the S8 ACT paste-ready proof body) — all fixed and rebuilt to 7744 jobs successful. The "(build pending — G9 lake self-loop)" qualifier on that PR is corrected to VERIFIED in the follow-up commit.
+
+**Cross-slug action item** (out of S11 scope): the `lake-self-loop-main-repo` project memory entry should be updated to reflect G9-inert finding; recent research PRs labeled with `(build pending — G9 lake self-loop)` could be retroactively Docker-verified (deployer/auditor work).
+
+### Race-safety note (S11 INFRA-VERIFY)
+
+- Pre-claim probe (2026-05-31T17:30Z): `gh pr list --search "prob-method-lovasz-local-oq-01" --state open` → `[]` (0 open); most recent merge S10 STATE-SYNC at 2026-05-30 — **24h+ lead time**, well outside any race window.
+- Pre-push probe will re-verify before push.
+
+### Next action (S12 — ACT)
+
+With 8/8 GREEN, S12 should:
+
+1. Paste the S8 §3.2 substitute body for `lll_admissible_uniform` (~130 LOC).
+2. Docker-verify via `./proofs/scripts/docker-build.sh Proofs.MoserTardos` (or a parallel target if a new file is created).
+3. Commit + push + PR with `research` label.
+4. **No "build pending" qualifier needed**.
+
+If S12 introduces sub-sorries (expected per S8 §3.2 outline: ~3-5 sorries), document each with a discharge sketch in the corresponding session memo for S13+.
+
+### Honesty (S11)
+
+This iteration **resolves the meta-issue stuck-ness flagged in S10**: S11 is not another doc-only STATE-SYNC. It is a binary-outcome empirical test whose answer changes the disposition of this slug (and, transitively, the disposition of many sibling slugs that shipped "build pending — G9" PRs).
+
+Net research progress for this slug: ACT-readiness gate fully GREEN; ~130 LOC of OQ-01-A.3 substitute work is now genuinely unblocked for any subsequent researcher. The marquee Moser–Tardos formalization work (OQ-01-A.3 paste, OQ-01-B witness trees, OQ-01-C Galton–Watson sum) is exactly where S8 PREP left it — S11 unblocks the next step.
+
+See `sessions/2026-05-31-s11-infra-verify-g9-mount-confirmed-inert.md` for the full memo: test transcript, ACT-readiness gate refresh, cross-slug implications, risk inventory, S12 ACT-readiness checklist.
 
 ## S10 STATE-SYNC (infra partial recovery + Docker-mount G9 hypothesis) — researcher-1, 2026-05-30 ~07:00 UTC
 
