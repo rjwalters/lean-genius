@@ -1,45 +1,51 @@
 {
   "slug": "bezout-identity-oq-04-oq-01-incomplete-01",
-  "title": "Bezout identity follow-up with missing statement",
-  "phase": "OBSERVE",
+  "title": "Constructive discharge of snf_exists in BezoutIdentityOQ04OQ01.lean",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{No formal statement is recorded in the available problem notes.}",
-    "plain": "The local evidence identifies this as an active, incomplete Bezout-identity-related problem, but it does not specify the theorem, definitions, hypotheses, or Lean target.",
+    "formal": "Replace `axiom snf_exists (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) : ∃ snf : SmithNormalForm m n, snf.isDecompOf A` at `proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146` with a `theorem snf_exists … := by …` that constructs a Smith Normal Form via Euclidean reduction (Approach A, ~500 LOC) or the Mathlib PID structure theorem bridge (Approach B, ~150-200 LOC).",
+    "plain": "Every integer matrix A admits a decomposition A = U·D·V with U, V unimodular (det ±1) and D diagonal with divisibility chain d₁|d₂|…. The parent gallery entry currently asserts this existence as an axiom; we want to prove it constructively in Lean 4, using either a direct Euclidean-reduction algorithm or a bridge to Mathlib's PID structure theorem.",
     "whyMatters": [
-      "The problem cannot be evaluated or attempted until the missing statement is recovered or rewritten.",
-      "Backfilling the metadata prevents this scaffold record from being mistaken for a concrete Lean goal."
+      "Discharges an axiom in the verified-with-axioms gallery entry bezout-identity-oq-04-oq-01 (badge `axiom`, status `axiomatized`).",
+      "Mathlib v4.26.0 has NO direct Matrix.SmithNormalForm API; a successful discharge is an upstream Mathlib contribution candidate.",
+      "Unlocks downstream discharge of snf_solvability_criterion (separate slug)."
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [
-      "The formal and plain-language statements are absent from the available evidence.",
-      "The local notes do not identify acceptance criteria, relevant lemmas, Mathlib imports, or a proof strategy.",
-      "No research attempts have been recorded; state.md reports zero total attempts and no active approach."
+    "proven": [
+      "IsUnimodular, IsUnimodular.mul, IsUnimodular.transpose, IsUnimodular.det_ne_zero, isUnimodular_iff_abs_det, isUnimodular_one (parent file lines 49-90).",
+      "SmithNormalForm structure (parent file lines 103-120), SmithNormalForm.isDecompOf (line 122).",
+      "snf_exists_zero (parent file lines 153-167) — zero matrix base case, fully constructive, ~14 LOC.",
+      "SmithNormalForm.invariantFactor, SmithNormalForm.rank (parent file lines 173-183).",
+      "bezout_from_snf (classical 1×2 reduction to gcd) — discharged from snf_exists + Mathlib's Int.gcd_eq_gcd_ab."
     ],
-    "goal": "Recover or author the missing Bezout-identity problem statement before moving beyond the OBSERVE phase."
+    "open": [
+      "axiom snf_exists (parent file line 146) — main goal of this slug.",
+      "axiom snf_solvability_criterion (parent file line 196) — out of scope this slug; possible follow-on incomplete-02."
+    ],
+    "goal": "Discharge axiom snf_exists at proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146 with a constructive Lean 4 proof. ~500 LOC for direct Euclidean reduction (Approach A) or ~150-200 LOC if Mathlib's PID structure theorem bridge (Approach B) succeeds."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T01:04:41-07:00",
-    "iteration": 1,
-    "focus": "Metadata backfill found that the available problem statement, knowledge base, and literature notes are still scaffolds; the immediate focus remains recovering the actual statement and context.",
+    "phase": "ORIENT",
+    "since": "2026-05-31T06:50:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ORIENT complete (researcher-1, 2026-05-31, doc-only): recovered the missing problem statement that the 2026-04-03 scaffold left blank. The slug's `incomplete-01` suffix and the parent gallery entry's `axiom snf_exists` (line 146) together identify the intended scope: discharge the Smith Normal Form existence axiom with a constructive Lean 4 proof. April blocker resolved; new blocker: Mathlib v4.26.0 has no direct Matrix.SmithNormalForm API.",
     "blockers": [
-      "The source notes do not contain a theorem statement, Lean declaration target, relevant Mathlib module, or cited reference.",
-      "The literature directory only contains a scaffold README, so it does not add usable mathematical evidence."
+      "Mathlib v4.26.0 has no direct Matrix.SmithNormalForm API (per parent file's mathlibDependencies list); the discharge is genuinely original Lean 4 content.",
+      "Approach B viability (PID structure theorem bridge) depends on whether Mathlib's Module.equiv_directSum_of_pid (or analogous theorem) is constructive enough to extract U, D, V matrices — needs S3 PREP confirmation."
     ],
-    "nextAction": "Recover the missing statement from the originating request or related gallery lineage, then record concrete hypotheses, goal, references, and first proof strategy before attempting Lean work.",
+    "nextAction": "S3 PREP: grep Mathlib for Module.equiv_directSum_of_pid and adjacent PID-structure theorems at lake-manifest pin 2df2f0150c; estimate LOC concretely for Approach B's bridge code; pick A vs B; if B ≤ 200 LOC commit and draft S4 ACT scaffold, otherwise commit to A and start with elementary-row-operations API (~100 LOC budget for swap_rows/swap_cols/add_row_mult as IsUnimodular left/right multiplications). Doc-only, ~30-60 min.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "Backfill confirmed that this record is an active OBSERVE-phase Bezout-identity-related problem with no concrete statement or attempts recorded in the local evidence.",
+    "progressSummary": "S2 ORIENT complete (2026-05-31, researcher-1, doc-only): recovered the missing problem statement via a parent-file survey of Proofs/BezoutIdentityOQ04OQ01.lean. The 2026-04-03 scaffold's blockers (missing statement, no Lean target, no reference) are resolved by mapping `incomplete-01` to the parent's `axiom snf_exists` at line 146. Three approaches surveyed: A (constructive Euclidean reduction, ~500 LOC, low math risk but heavy plumbing), B (PID structure theorem bridge, ~150-200 LOC, moderate risk pending Mathlib confirmation), C (upstream Mathlib SNF dep, ~50 LOC bridge — **not viable** at v4.26.0; no Matrix.SmithNormalForm). Recommended: B first, A fallback. Tractability re-calibrated 6 → 4. No Lean edits. Backfill confirmed that this record is an active OBSERVE-phase Bezout-identity-related problem with no concrete statement or attempts recorded in the local evidence.",
     "builtItems": [
       "Replaced scaffold title, problem statement, known-results, tags, and knowledge notes with evidence-bounded metadata.",
       "Captured the missing-statement blocker and preserved zero attempt counts from state.md."
@@ -62,9 +68,10 @@
   },
   "tags": [
     "bezout-identity",
-    "incomplete-statement",
-    "observe-phase",
-    "needs-curation"
+    "axiom-discharge",
+    "smith-normal-form",
+    "linear-algebra",
+    "constructive"
   ],
   "relatedProofs": [],
   "references": {
@@ -75,5 +82,6 @@
   "started": "2026-04-03T07:56:24.930Z",
   "lastUpdate": "2026-04-03T01:04:41-07:00",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdated": "2026-05-31"
 }
