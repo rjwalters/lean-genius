@@ -1,12 +1,38 @@
 # Current State: angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01
 
-**Phase**: ORIENT (S6 STATE-SYNC — JSON catchup + state.md bottom-section repair + Pattern E line 219 confirmation; ACT still deferred)
-**Path**: full (BLOCKED on parent-repair)
-**Since**: 2026-05-16T14:00:00Z (S6 STATE-SYNC, researcher-5)
-**Iteration**: 6
-**Researcher**: researcher-5 (S6 STATE-SYNC — JSON+state.md bottom repair + line 219 Pattern E confirm, doc-only)
+**Phase**: ORIENT (S7 STATE-SYNC — 14-day quiescence audit, G8 Docker clear, G4 parent-repair still RED; ACT blocked on mechanic-queue, not infra)
+**Path**: full (BLOCKED on parent-repair — sole remaining blocker post-G8-clear)
+**Since**: 2026-05-31T07:40:00Z (S7 STATE-SYNC, researcher-1)
+**Iteration**: 7
+**Researcher**: researcher-1 (S7 STATE-SYNC — 14-day quiescence audit + G8 Docker clear + JSON catchup iter 6→7, doc-only)
 
-## S6 STATE-SYNC (this iteration) — quick summary
+## S7 STATE-SYNC (this iteration) — quick summary
+
+- **What**: Doc-only STATE-SYNC. 14-day quiescence audit on slug (parent
+  Lean file, companion Aristotle file, slug docs, slug JSON) confirms
+  zero touches since S6 merge. **G8 Docker daemon CLEARED** (cross-slug
+  confirmation via kepler-conjecture-oq-04 S7 ACT Docker build at
+  2026-05-31T07:30Z — `[7744/7744] Built` in 69 s cold cache; daemon
+  fully operational, server v29.4.1, 57 Gi disk free above ≥10 Gi
+  pre-flight threshold). Parent file (`AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`)
+  byte-stable at SHA1 `1aee338be54a…`; companion byte-stable at
+  `907e6403c9f3…`. Lake-manifest Mathlib pin `2df2f015…` byte-stable
+  by cross-slug confirmation. 8 drift patterns from S3 BUILD-BLOCKER
+  PREP remain unrepaired.
+- **ACT-readiness gate refresh**: 7/8 → 7/8 GREEN, but the RED gate
+  shifts: G8 (Docker daemon, infra) → G4 (mechanic-queue, parent-repair)
+  becomes the sole remaining blocker. **The Docker infra block is no
+  longer the bottleneck**; the mechanic-repair queue is.
+- **JSON catchup**: iter 6 → 7; `since` → 2026-05-31T07:40Z; `focus` +
+  `nextAction` rewritten with S7 paragraph (bullet 1: Iter 8 mechanic
+  picks up parent-repair queue with S3 BUILD-BLOCKER PREP §2 paste-ready
+  fixes); top-level `lastUpdate` 2026-05-16 → 2026-05-31.
+- **Session memo**: `sessions/2026-05-31-s7-state-sync-post-s6-quiescence-audit.md` (~155 LOC, 11 §)
+- **Next picker**: (1) Mechanic agent — apply paste-ready A (10) + D (3) + E (3 incl. line 219) + H (1) + C-Approach-A (8 named-arg sites), iterate investigative B (5+ sites). (2) Post-mechanic-repair, Researcher claims Iter 8 ACT-α (S2c PREP §3 OPT-1 draft + §5 Steps 1-3 draft + §4 sub-sorry resolution plan all valid).
+
+---
+
+## S6 STATE-SYNC (researcher-5, 2026-05-16) — quick summary
 
 - **What**: JSON catchup (iter 4 → 6; 14h stale `lastUpdate` refreshed; focus, nextAction, insights[+4], builtItems[+3], mathlibGaps[+3], nextSteps[+3], progressSummary all rewritten); state.md bottom sections repaired (Iteration History 4 rows → 7, Reference Files 5 entries → 7, Open PRs 4 rows → 7, Attempt Counts 4 → 6); **Pattern E line 219 confirmed** as 3rd site (same `adjoin_eq_top_of_adjoin_eq_top` call shape as line 429) with paste-ready fix mirroring S4 PREP §4.2 Site 2.
 - **Coverage delta after line 219 confirmation**: Paste-ready **17/31 (55%, S5) → 25/30 (83%, S6)**. Investigative narrowed from {B, C} (S5) → **{B}** only (5+ sites). F/G remain auto-resolve cascades from B/H.
