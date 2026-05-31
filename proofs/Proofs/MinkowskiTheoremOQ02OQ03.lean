@@ -431,4 +431,139 @@ lemma stdLatticeN_coords {m : ℕ} [NeZero m] (x : stdLattice m) :
              Pi.single_apply, smul_ite, smul_zero, smul_eq_mul, mul_one,
              Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
+-- ============================================================
+-- PART 8: Volume exceeds Minkowski threshold (S6 ACT — this revision)
+-- ============================================================
+
+/-- **Volume exceeds the Minkowski threshold.** For `Q ≥ 1`, the volume of
+`dirichletSetN n α Q` strictly exceeds the `(2 : ENNReal)^(n+1)` lower bound
+required by `MinkowskiProved.minkowski_integer_lattice_proved (n+1)`.
+
+Computation: by `dirichletSetN_volume`,
+`volume = 2 (Qⁿ + 1) · (2/Q)ⁿ = 2^(n+1) · (Qⁿ + 1) / Qⁿ`,
+and `(Qⁿ + 1) / Qⁿ > 1` for `Q ≥ 1`. The proof folds the `∏ _ : Fin n,
+ENNReal.ofReal (2/Q)` factor into `ENNReal.ofReal ((2/Q)^n)` via
+`ENNReal.ofReal_pow`, merges the two `ofReal` factors, and discharges the
+ℝ-side inequality via `lt_div_iff` + `nlinarith`. -/
+theorem dirichletSetN_volume_gt_two_pow (n : ℕ) (α : Fin n → ℝ) (Q : ℕ)
+    (hQ : 0 < Q) :
+    (2 : ENNReal) ^ (n + 1) < volume (dirichletSetN n α Q) := by
+  rw [dirichletSetN_volume]
+  have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
+  have h2Q_nn : (0 : ℝ) ≤ 2 / (Q : ℝ) := by positivity
+  have hQn_pos : (0 : ℝ) < (Q : ℝ) ^ n := by positivity
+  rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin,
+      ← ENNReal.ofReal_pow h2Q_nn,
+      ← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ 2 * ((Q : ℝ) ^ n + 1))]
+  rw [show ((2 : ENNReal) ^ (n + 1)) = ENNReal.ofReal ((2 : ℝ) ^ (n + 1)) from by
+    rw [← ENNReal.ofReal_pow (by norm_num : (0 : ℝ) ≤ 2)]; norm_num]
+  apply ENNReal.ofReal_lt_ofReal_of_nonneg (by positivity)
+  have key : 2 * ((Q : ℝ) ^ n + 1) * (2 / (Q : ℝ)) ^ n
+      = (2 : ℝ) ^ (n + 1) * ((Q : ℝ) ^ n + 1) / (Q : ℝ) ^ n := by
+    rw [div_pow, pow_succ]; ring
+  rw [key, lt_div_iff hQn_pos]
+  have h2pow_pos : (0 : ℝ) < (2 : ℝ) ^ (n + 1) := by positivity
+  nlinarith
+
+-- ============================================================
+-- PART 9: Simultaneous Dirichlet from Minkowski (S6 ACT — this revision)
+-- ============================================================
+
+/-- **Simultaneous Dirichlet Approximation Theorem** (Cassels 1957,
+Theorem I.II.A).
+
+For any `n` real numbers `α : Fin n → ℝ` and any positive integer `Q`, there
+exist a common integer denominator `q` with `1 ≤ q ≤ Qⁿ` and integer
+numerators `p : Fin n → ℤ` such that
+
+    |α i · q − p i| < 1/Q   for every i : Fin n.
+
+This is the n-dim generalisation of the parent OQ-02's 1D
+`dirichlet_approximation_from_minkowski`
+(`Proofs/MinkowskiTheoremOQ02.lean:182`); setting `n = 1` recovers the 1D
+theorem modulo `Fin 1` currying.
+
+**Proof** — the Cassels 5-step Minkowski assembly (S6 PREP §3 roadmap,
+mirroring parent §6 lines 182–242):
+
+1. Apply `MinkowskiProved.minkowski_integer_lattice_proved (n+1)` to
+   `dirichletSetN n α Q`, supplying the symmetric / convex / volume-threshold
+   hypotheses (PARTS 2 / 4 / 8). Yields a nonzero
+   `x ∈ stdLattice (n+1)` with `x ∈ dirichletSetN n α Q`.
+2. Use `stdLatticeN_coords` (PART 7) to extract integer coordinates
+   `c : Fin (n+1) → ℤ` with `(x : Fin (n+1) → ℝ) i = (c i : ℝ)`.
+3. Parse the parallelepiped membership: `|c 0| < Qⁿ + 1` and
+   `∀ i, |α i · c 0 − c i.succ| < 1/Q`.
+4. Show `c 0 ≠ 0`: if `c 0 = 0`, then each `|c i.succ| < 1/Q ≤ 1` forces
+   `c i.succ = 0`, hence `x = 0`, contradicting nonzero.
+5. Output `q := |c 0|`, `p i := c i.succ` (if `c 0 > 0`) or `-c i.succ`
+   (if `c 0 < 0`); discharge the three conclusion bounds via
+   `Int.one_le_abs`, `Int.lt_add_one_iff`, and a `split_ifs` over the sign
+   of `c 0`. -/
+theorem simultaneous_dirichlet_from_minkowski
+    (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) (hQ : 0 < Q) :
+    ∃ (q : ℤ) (p : Fin n → ℤ),
+        1 ≤ q ∧ q ≤ (Q : ℤ) ^ n ∧
+        ∀ i : Fin n, |α i * (q : ℝ) - (p i : ℝ)| < 1 / (Q : ℝ) := by
+  -- Step 1: Apply n-dim Minkowski.
+  obtain ⟨x, hx_ne, hx_S⟩ :=
+    MinkowskiProved.minkowski_integer_lattice_proved (n + 1) (dirichletSetN n α Q)
+      (dirichletSetN_symmetric n α Q)
+      (dirichletSetN_convex n α Q)
+      (dirichletSetN_volume_gt_two_pow n α Q hQ)
+  -- Step 2: Extract integer coordinates from x ∈ stdLattice (n+1).
+  obtain ⟨c, hc⟩ := stdLatticeN_coords x
+  -- Step 3: Parse parallelepiped membership and rewrite x via hc.
+  simp only [dirichletSetN, Set.mem_setOf_eq] at hx_S
+  obtain ⟨hq_bound_raw, h_approx_raw⟩ := hx_S
+  have hq_bound : |(c 0 : ℝ)| < (Q : ℝ) ^ n + 1 := by
+    rw [← hc 0]; exact hq_bound_raw
+  have h_approx : ∀ i : Fin n, |α i * (c 0 : ℝ) - (c i.succ : ℝ)| < 1 / (Q : ℝ) := by
+    intro i; rw [← hc 0, ← hc i.succ]; exact h_approx_raw i
+  have hQpos : (0 : ℝ) < (Q : ℝ) := Nat.cast_pos.mpr hQ
+  have hQge1 : (1 : ℝ) ≤ (Q : ℝ) :=
+    by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.pos_iff_ne_zero.mp hQ)
+  -- Step 4: c 0 ≠ 0.
+  have hc0_ne : c 0 ≠ 0 := by
+    intro hc0
+    have hci_zero : ∀ i : Fin n, c i.succ = 0 := by
+      intro i
+      have hi := h_approx i
+      rw [hc0] at hi
+      simp only [Int.cast_zero, mul_zero, zero_sub, abs_neg] at hi
+      have hbound_lt1 : |(c i.succ : ℝ)| < 1 :=
+        hi.trans_le ((div_le_one hQpos).mpr hQge1)
+      have hlt : c i.succ < (1 : ℤ) := by exact_mod_cast (abs_lt.mp hbound_lt1).2
+      have hgt : -(1 : ℤ) < c i.succ := by exact_mod_cast (abs_lt.mp hbound_lt1).1
+      omega
+    apply hx_ne
+    apply Subtype.ext
+    funext i
+    refine i.cases ?_ (fun k => ?_)
+    · simp only [Pi.zero_apply]
+      rw [hc 0, hc0]; simp
+    · simp only [Pi.zero_apply]
+      rw [hc k.succ, hci_zero k]; simp
+  -- Step 5: Output q := |c 0|, p := ±c.succ; discharge the three bounds.
+  refine ⟨|c 0|, fun i => if 0 < c 0 then c i.succ else -c i.succ, ?_, ?_, ?_⟩
+  · -- 1 ≤ |c 0|
+    exact Int.one_le_abs hc0_ne
+  · -- |c 0| ≤ Q^n
+    have hcast : |(c 0 : ℝ)| < (Q : ℝ) ^ n + 1 := hq_bound
+    rw [← Int.cast_abs] at hcast
+    have h' : |c 0| < (Q : ℤ) ^ n + 1 := by exact_mod_cast hcast
+    exact Int.lt_add_one_iff.mp h'
+  · -- |α i * |c 0| − p i| < 1/Q
+    intro i
+    split_ifs with hpos
+    · -- c 0 > 0: |c 0| = c 0
+      rw [Int.abs_of_pos hpos]; exact h_approx i
+    · -- c 0 < 0: |c 0| = -c 0, and the sign on p i mirrors
+      have hneg : c 0 < 0 := lt_of_le_of_ne (le_of_not_lt hpos) hc0_ne
+      rw [Int.abs_of_neg hneg]
+      push_cast
+      rw [show α i * -(c 0 : ℝ) - -(c i.succ : ℝ)
+            = -(α i * (c 0 : ℝ) - (c i.succ : ℝ)) by ring, abs_neg]
+      exact h_approx i
+
 end MinkowskiTheoremOQ02OQ03
