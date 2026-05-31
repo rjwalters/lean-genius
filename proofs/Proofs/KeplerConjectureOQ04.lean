@@ -71,15 +71,24 @@
   `ulam_le_fccPacking_density` (no new axiom). Closes the
   non-lattice / open-conjecture arm of the OQ-04 hierarchy.
 
+  **S7 ACT — Final hierarchy aggregation.** Combine the three
+  shape-dependent benchmarks proved across S3+S4 (tetrahedral non-lattice
+  strictly exceeds FCC), S5 (ellipsoid lattice bounded above by FCC),
+  and S6 (centrally symmetric convex bodies conjecturally bounded below
+  by FCC) into the single quantified theorem `density_hierarchy_3d`
+  via direct `And.intro` over the three named facts. No new axioms.
+  This is the OQ-04 closing statement.
+
   **Status of this file.**
   - 0 sorries, 2 axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
     `ulam_conjecture`).
   - Four definitions (`tetrahedronDimerDensity`,
     `tetrahedronDimerPacking`, `EllipsoidLatticePacking`,
     `SymmetricConvexBody3DPacking`).
-  - Seven theorems: positivity, less-than-one, rational anchor
+  - Eight theorems: positivity, less-than-one, rational anchor
     (`> 0.8563`), inequality vs. `fccDensity`, existential
-    corollary, ellipsoid-lattice ≤ FCC, and Ulam ≥ FCC.
+    corollary, ellipsoid-lattice ≤ FCC, Ulam ≥ FCC, and the S7
+    final aggregation `density_hierarchy_3d`.
 -/
 
 import Mathlib
@@ -395,5 +404,53 @@ theorem ulam_le_fccPacking_density
     (p : SymmetricConvexBody3DPacking) :
     fccPacking.density ≤ p.density :=
   ulam_conjecture p
+
+/-!
+## S7 — Final hierarchy aggregation
+
+Combine the three shape-dependent benchmarks proved across S3+S4
+(tetrahedral non-lattice strictly exceeds FCC), S5 (ellipsoid lattice
+bounded above by FCC), and S6 (centrally symmetric convex bodies
+conjecturally bounded below by FCC) into a single quantified statement.
+This is the bottom-line OQ-04 deliverable: the FCC sphere bound is
+**neither universal nor optimal** across shape classes, in both
+directions.
+
+No new axioms — pure `And.intro` over `ellipsoid_lattice_le_fccPacking`,
+`tetrahedronDimerDensity_gt_fccDensity`, and `ulam_le_fccPacking_density`.
+-/
+
+/--
+**Final hierarchy: the FCC bound is shape-dependent in three directions.**
+
+For every ellipsoid lattice packing `e` and every centrally symmetric
+convex body packing `p` in ℝ³, the FCC sphere density `fccPacking.density`
+satisfies the sandwich
+
+```
+                  e.density ≤ fccPacking.density ≤ p.density
+                                     ∧
+                fccDensity < tetrahedronDimerDensity
+```
+
+i.e. the parent's abstract `PackingDensity` admits values both *strictly
+above* `fccDensity` (witnessed by the tetrahedral dimer, S3) and lattice-
+constrained values *at or below* `fccDensity` (Bezdek–Kuperberg, S5), and
+the lower bound `fccDensity ≤ ·` survives only for centrally symmetric
+convex bodies under the conjectural Ulam axiom (S6).
+
+This is the **OQ-04 closing statement**. No new axioms; aggregates the
+S3+S4 axiom-free inequality with the S5 (`bezdek_kuperberg_…`) and S6
+(`ulam_conjecture`) statement axioms via direct application.
+-/
+theorem density_hierarchy_3d
+    (e : EllipsoidLatticePacking)
+    (p : SymmetricConvexBody3DPacking) :
+    e.density ≤ fccPacking.density ∧
+    fccDensity < tetrahedronDimerDensity ∧
+    fccPacking.density ≤ p.density :=
+  ⟨ellipsoid_lattice_le_fccPacking e,
+   tetrahedronDimerDensity_gt_fccDensity,
+   ulam_le_fccPacking_density p⟩
 
 end KeplerConjectureOQ04

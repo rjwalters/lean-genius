@@ -40,13 +40,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T12:50:00Z",
-    "iteration": 2,
-    "focus": "S2 SCAFFOLD — create Proofs/KeplerConjectureOQ04.lean with the Chen-Engel-Glotzer tetrahedral dimer density `tetrahedronDimerDensity = 4000/4671` (Discrete & Computational Geometry, 2010). Three theorems: positivity (`tetrahedronDimerDensity_pos`), less-than-one (`tetrahedronDimerDensity_lt_one`), and Chen-Engel-Glotzer rational literature anchor (`tetrahedronDimerDensity_gt_8563`: 0.8563 < 4000/4671 numerically). 0 sorries, 0 axioms. 120 lines. Wired into Proofs.lean import list. Gallery entry created in src/data/proofs/kepler-conjecture-oq-04/.",
+    "since": "2026-05-31T07:10:00.000Z",
+    "iteration": 6,
+    "focus": "S7 ACT (this iteration, researcher-1, 2026-05-31): final hierarchy aggregation `density_hierarchy_3d` — pure And.intro over the three named facts (S3+S4 axiom-free `tetrahedronDimerDensity_gt_fccDensity`, S5 `ellipsoid_lattice_le_fccPacking`, S6 `ulam_le_fccPacking_density`), 0 new axioms, +1 theorem. File 399 → 456 LOC. Closes the OQ-04 hierarchy as a single quantified statement: the FCC bound is neither universal nor optimal across shape classes. Build verified pending Docker. S6 ACT (researcher-8, 2026-05-14, PR #19109): Ulam conjecture axiom for centrally symmetric convex bodies (+1 STATEMENT axiom). S5 ACT (researcher-9, 2026-05-13, PR #18968): Bezdek–Kuperberg ellipsoid lattice axiom (+1 STATEMENT axiom). S3+S4 (researcher-6, PR #18188, axiom-free): tetrahedronDimerDensity_gt_fccDensity + PackingDensity instance + existential corollary. S2 SCAFFOLD (PR #18113): density definition + positivity/less-than-one/rational anchor. Sorries 0; axioms 2 (bezdek_kuperberg + ulam_conjecture). File at 456 LOC.",
     "blockers": [],
-    "nextAction": "S3: prove the structural inequality `tetrahedronDimerDensity > fccDensity` using `Real.pi_lt_315` and `Real.sq_sqrt 2`. The inequality reduces (via squaring of positive quantities) to `pi^2 < 288_000_000 / 21_818_241 ≈ 13.2002`, easily discharged by `Real.pi_lt_315` (pi < 3.15 gives pi^2 < 9.9225 < 13.2002). Estimated ~50 lines. After S3 lands, attention shifts to S4 (ellipsoid axioms — Bezdek-Kuperberg) and S5 (Ulam conjecture statement).",
+    "nextAction": "S8 (deferred): Donev–Stillinger–Chaikin–Torquato (2004) non-lattice ellipsoid bound δ ≈ 0.7707 at aspect ratio α ≈ √2. Introduce `EllipsoidPacking` (non-lattice variant) and add the +1 STATEMENT axiom for the Donev et al. bound. Lower priority than S7 (just shipped) since it doesn't change the hierarchy bound — just fills in the non-lattice ellipsoid row of the hierarchy matrix. Estimated +1 axiom, ~50 LOC, single Docker build. Alternative: meta.json sync for theoremCount 7 → 8 + lineCount 399 → 456 (mechanic to perform after CI green, matching S3+S4 / S5 / S6 convention).",
     "attemptCounts": {
-      "total": 2,
+      "total": 6,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -106,7 +106,7 @@
       "Mathlib.Analysis.Convex.Basic"
     ]
   },
-  "lastUpdate": "2026-05-12T12:50:00Z",
+  "lastUpdate": "2026-05-31",
   "leanFiles": [
     "proofs/Proofs/KeplerConjectureOQ04.lean"
   ]

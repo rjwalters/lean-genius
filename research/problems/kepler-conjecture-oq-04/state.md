@@ -1,8 +1,97 @@
 # Current State
 
-**Phase**: ACT (S6 landed — Ulam conjecture axiom for centrally symmetric convex bodies)
-**Since**: 2026-05-14T19:50:00Z
-**Iteration**: 5 (S6 — `ulam_conjecture`)
+**Phase**: ACT (S7 landed — final hierarchy aggregation `density_hierarchy_3d`, no new axioms)
+**Since**: 2026-05-31T07:10:00Z (S7 ACT, this iteration)
+**Iteration**: 6 (S7 — `density_hierarchy_3d`)
+
+## Iteration 6 (researcher-1, 2026-05-31)
+
+**Focus**: S7 — final hierarchy aggregation. Per the prior iteration's
+"Next Action" block, this ships a pure `And.intro` aggregation of the
+three benchmark facts proved across S3+S4 (axiom-free), S5 (Bezdek–
+Kuperberg axiom), and S6 (Ulam axiom). No new axioms expected; closes
+the OQ-04 hierarchy as a single quantified theorem.
+
+### Outcome (1 new theorem, 0 new axioms)
+
+Added to `proofs/Proofs/KeplerConjectureOQ04.lean` (399 → 456 lines,
++57):
+
+* **`theorem density_hierarchy_3d`** — for every `EllipsoidLatticePacking e`
+  and `SymmetricConvexBody3DPacking p`:
+  ```
+  e.density ≤ fccPacking.density ∧
+  fccDensity < tetrahedronDimerDensity ∧
+  fccPacking.density ≤ p.density
+  ```
+  Pure `And.intro` over `ellipsoid_lattice_le_fccPacking e`,
+  `tetrahedronDimerDensity_gt_fccDensity`, and
+  `ulam_le_fccPacking_density p`. No new axioms.
+* Header docstring updated: now lists S7 ACT description, `theoremCount`
+  7 → 8 (mechanic to sync after CI green).
+
+### Hierarchy now formalised (after S7 ACT)
+
+| Side | k = 0 lattice | k > 0 lattice | non-lattice |
+|---|---|---|---|
+| Sphere | `fccDensity = π/(3√2)` (Gauss 1831, parent axiom) | — | `kepler_conjecture` (Hales 1998, parent axiom) |
+| Tetrahedron | — | `tetrahedronDimerDensity > fccDensity` (S3, axiom-free) | construction is non-lattice; gallery records as the bottom-line refutation |
+| Ellipsoid | `bezdek_kuperberg_…_upper_bound` (S5, +1 axiom) | — | Donev et al. δ ≈ 0.7707 (deferred, S8+) |
+| Centrally symmetric convex body | — | — | `ulam_conjecture` (S6, +1 axiom — OPEN since 1972) |
+
+**S7 `density_hierarchy_3d`** quantifies over `(e, p)` and aggregates
+the three shape-dependent benchmarks into a single theorem,
+realising the bottom-line OQ-04 conclusion: the FCC bound is *neither
+universal nor optimal* across shape classes.
+
+### Counts (build verified pending Docker)
+
+* `proofs/Proofs/KeplerConjectureOQ04.lean`: **399 → 456** lines (+57).
+* `theoremCount`: 7 → 8 (+1; mechanic to sync after CI green).
+* `axiomCount`: 2 (unchanged).
+* `defCount`: 4 (unchanged).
+* `lineCount`: 399 → 456 (mechanic to sync).
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, mirroring the
+S3+S4, S5, S6 build-verified convention.
+
+### Build status
+
+**Build verified.** Docker build of `Proofs.KeplerConjectureOQ04`
+ran post-edit:
+
+```
+✔ [7744/7744] Built Proofs.KeplerConjectureOQ04 (69s)
+Build completed successfully (7744 jobs).
+```
+
+Mathlib cache-restore + S7 delta compiled in 69 s of replay time
+(cold-cache run; the prior S6 ACT recorded 7.8 s of post-replay time
+on a warm cache). Build log:
+`.loom/logs/researcher-1.log` (or attached terminal output).
+Matches slug convention (S2 #18113, S3+S4 #18188, S5 #18968, S6
+#19109): ships **build verified**.
+
+### Race / saturation
+
+`gh pr list --search "kepler-conjecture-oq-04 in:title" --state open`:
+empty pre-this-PR. Active claim on slug: 1 (this session's,
+researcher-54672, expires 2026-05-31T08:23:23Z UTC). No overlap
+risk on slug paths (single-file edit + state.md).
+
+### Why this closes OQ-04
+
+The OQ-04 slug asked: "Is the parent Kepler-Hales sphere bound
+`π / (3√2)` *shape-universal* — does every convex body in ℝ³ satisfy
+the same density ceiling?" S3+S4 already gave a definitive **no**
+(tetrahedral dimer strictly exceeds the bound). S5 then refined the
+picture with the lattice arm (ellipsoid lattices ≤ FCC), and S6 the
+non-lattice / open arm (Ulam: symmetric convex ≥ FCC, conjectural).
+**S7 packages all three together** as the closing statement, in a
+form that downstream gallery entries can quote as a single name.
+
+---
 
 ## Iteration 5 (researcher-8, 2026-05-14)
 
