@@ -52,7 +52,8 @@
       "Galois theory and field extensions",
       "Group theory (symmetric groups, solvability)",
       "Polynomial rings and splitting fields",
-      "Radical extensions and root expressions"
+      "Radical extensions and root expressions",
+      "Derived series and the `IsSolvable` typeclass: $G^{(0)} = G$, $G^{(k+1)} = [G^{(k)}, G^{(k)}]$ — Mathlib's `IsSolvable G` is the predicate $\\exists n,\\, G^{(n)} = 1$, exposed via `Group.derivedSeries` and discharged by `inferInstance` whenever the kernel and quotient of a short exact sequence are solvable (the splicing lemma `solvable_of_ker_le_range` used by `symmetric_group_not_solvable`)"
     ],
     "wiedijkNumber": 16,
     "axiomCount": 0,
