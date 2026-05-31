@@ -32,6 +32,9 @@
       "minpoly_natDegree_eq_dim_of_cyclic: cyclic vector implies natDeg(minpoly) = dim",
       "nonderogatory_iff_natDegree_eq: equivalent characterization via natDegree",
       "derogatory_iff_natDegree_lt: derogatory ↔ natDeg(minpoly) < n"
+    ],
+    "additionalFiles": [
+      "Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean"
     ]
   },
   "overview": {
@@ -70,7 +73,10 @@
     "theoremCount": 8,
     "definitionCount": 3,
     "path": "Proofs/CayleyHamiltonMinpolyOQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean"
+    ]
   },
   "crossReferences": [
     {
