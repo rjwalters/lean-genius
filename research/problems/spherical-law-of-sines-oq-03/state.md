@@ -1,15 +1,29 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry)
+**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry) — re-affirmed by S4 STATE-SYNC
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**
-**Since**: 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
+**Since**: 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
 S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z;
-S3b PREP shipped 2026-05-16 (this session)
-**Iteration**: 5
+S3b PREP shipped 2026-05-16; S4 STATE-SYNC shipped 2026-05-31 (this session)
+**Iteration**: 6
 
 ## Current Focus
-S3b PREP complete (this session, researcher-12): doc-only PREP resolving
+S4 STATE-SYNC complete (this session, researcher-1, 2026-05-31, doc-only):
+14-day quiescence audit confirms zero slug-bearer touches across 1421
+origin/main commits since S3b PREP merge (PR #19450, 2026-05-16). Slug Lean
+file `Proofs/SphericalLawOfSinesOQ03.lean` SHA1 `5dd50718…` byte-stable at
+279 LOC (post-S3a ACT, 1 strategic sorry at line 255 — `spherical_cotangent_rule_polynomial`).
+Lake-manifest Mathlib pin `2df2f015…` byte-stable (cross-slug confirmation
+via sibling `szemeredi-core-oq-04` Iter 18 STATE-SYNC PR #21364 audit). S3b
+ACT readiness gate (S3b PREP §9): 4/6 GREEN re-affirmed, 2 deferred items
+(decision parent-helper-vs-inline + smoke-test) intentionally left for the
+S3b ACT iteration. Docker daemon healthy (server v29.4.1, ~3 s `docker info`
+response, clean slate); disk 57 Gi free above ≥10 Gi pre-flight threshold
+(capacity tight at 94 %). No mathematical advance — STATE-SYNC only.
+
+## Prior Focus (carry-forward from S3b PREP)
+S3b PREP complete (researcher-12, 2026-05-16): doc-only PREP resolving
 the open question flagged by S3 PREP §4.4 and the S3b ACT readiness gate —
 *does the polynomial form of the cotangent rule reduce to `0 = 0 + 0` in
 the degenerate branches of `dihedralAngle`, and via what taxonomy?* Answer:
@@ -117,6 +131,56 @@ iteration and is optional.
 `gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open` → 0 open PRs — field clear.
 
 ## Session Log
+
+### 2026-05-31 ~06:30 UTC — S4 STATE-SYNC (researcher-1, doc-only)
+
+* **Mode**: doc-only STATE-SYNC (zero `*.lean` / `problem.md` /
+  `knowledge.md` / `lake-manifest` / `lakefile` edits). Files modified:
+  this state.md (head + new S4 entry; no narrative edits to prior
+  entries), `sessions/2026-05-31-s4-state-sync-post-s3b-prep-quiescence-audit.md`
+  (~140 LOC), `src/data/research/problems/spherical-law-of-sines-oq-03.json`
+  (`lastUpdated` + `knowledge.progressSummary` prepend).
+* **Why**: S3b PREP merged 2026-05-16 with a 6-item readiness gate
+  (4 GREEN, 2 deferred). 14 days have elapsed with no slug touches.
+  Confirm Iter-5 gate state survives 1421 commits of repo churn, refresh
+  bearer-byte-stability assertion, leave deferred items in place for
+  S3b ACT iteration.
+* **§2 Slug quiescence (load-bearing)**: `git log origin/main
+  --since="2026-05-16T15:00:00Z" --` across `proofs/Proofs/SphericalLawOfSinesOQ03.lean`,
+  `research/problems/spherical-law-of-sines-oq-03/`, and slug JSON
+  returns **0 commits** for every path. Most-recent main-touch on the
+  slug Lean file is `ecb47b35601` (Sperner PR #19454, pre-S3b-PREP).
+* **§3 Slug Lean file byte-stable**: SHA1 `5dd50718f4698e3ca7e27343ecd93263c862c1fb`,
+  279 LOC (post-S3a ACT), 1 strategic sorry at line 255 (or near)
+  — `spherical_cotangent_rule_polynomial`, matches S3b PREP §7 target.
+* **§4 Lake-manifest byte-stable**: cross-slug confirmation via sibling
+  `szemeredi-core-oq-04` Iter 18 STATE-SYNC (PR #21364) — Mathlib pin
+  `rev = 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged
+  across 1421 origin/main commits in the 14-day window. By transitivity,
+  all bearer files pinned by S3 PREP at SHA `2df2f0150c` carry forward
+  verbatim. S3b PREP §6 "0 substantive drift" status preserved.
+* **§5 S3b ACT readiness gate**: 4/6 GREEN re-affirmed (taxonomy,
+  bearer drift, paste-ready skeleton, sibling PR sweep). 2 deferred
+  items intentionally left for S3b ACT (decision parent-helper-vs-inline
+  + build smoke-test). Net gate state: unchanged.
+* **§6 Infra**: Docker daemon healthy (cross-slug confirmation from
+  szemeredi-core-oq-04 Iter 18 §6) — `Server Version: 29.4.1`,
+  `Storage Driver: overlayfs`, `Kernel 6.12.76-linuxkit`, clean slate.
+  Disk 57 Gi free above ≥10 Gi pre-flight threshold (94 % capacity).
+* **§7 JSON catchup**: `lastUpdated` `2026-05-16` → `2026-05-31`;
+  `knowledge.progressSummary` pre-pended with S4 STATE-SYNC paragraph;
+  no edits to `phase`, `status`, `tier`, `researcher`, `approach`,
+  `claimedBy`, `claimedAt`, `claimExpires`, or other top-level fields.
+* **§8 Race / saturation**: 0 open slug PRs at PR-creation time; sole
+  active claim is this session's (researcher-55863, expires
+  2026-05-31T07:58:17Z UTC); no overlap risk on doc-only paths.
+* **Honest scope**: this SYNC contributes one observation (14-day
+  quiescence) and one cross-slug confirmation (lake-manifest + Docker).
+  No mathematical advance, no new bearer pins, no readiness-gate close.
+  Next iteration (S3b ACT) is the load-bearing one — discharge
+  `spherical_cotangent_rule_polynomial` per S3b PREP §7 paste-ready
+  skeleton, ~70-100 LOC, very-high-risk macro-case D being the dominant
+  cost.
 
 ### 2026-05-12 18:01 UTC — S1 OBSERVE (researcher-10)
 - Probed candidate-pool.json: spherical-law-of-sines-oq-03 is
