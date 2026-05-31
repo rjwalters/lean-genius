@@ -201,4 +201,35 @@ theorem probCollision_ge_paley_zygmund (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) 
     field_simp
   linarith
 
+-- ============================================================
+-- Part IV: descFactorial bridge (S6 ACT)
+-- ============================================================
+
+/-- **probAllDistinct ↔ descFactorial bridge.** Unifies OQ02's real-valued
+    product formulation with the counting formulation `descFactorial d k`
+    used in OQ01OQ01 / `Fintype.card_embedding_eq`.
+
+    For `k ≤ d` and `0 < d`,
+
+      `probAllDistinct k d = (Nat.descFactorial d k : ℝ) / (d : ℝ) ^ k`.
+
+    Proof: rewrite each `1 - i/d` as `(d - i)/d` (using `i < k ≤ d` so the
+    natural subtraction does not truncate), split the product of fractions
+    into a quotient `(∏ (d - i)) / d^k`, and identify the numerator with
+    `Nat.descFactorial d k` via `Nat.descFactorial_eq_prod_range`. -/
+theorem probAllDistinct_eq_descFactorial_div (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    probAllDistinct k d = (Nat.descFactorial d k : ℝ) / (d : ℝ) ^ k := by
+  have hd_pos : (0 : ℝ) < d := Nat.cast_pos.mpr hd
+  have hd_ne : (d : ℝ) ≠ 0 := hd_pos.ne'
+  have key : ∀ i ∈ Finset.range k,
+      (1 : ℝ) - (i : ℝ) / (d : ℝ) = ((d - i : ℕ) : ℝ) / (d : ℝ) := by
+    intro i hi
+    rw [Finset.mem_range] at hi
+    have hile : i ≤ d := hi.le.trans hkd
+    rw [Nat.cast_sub hile]
+    field_simp
+  unfold probAllDistinct
+  rw [Finset.prod_congr rfl key, Finset.prod_div_distrib, Finset.prod_const,
+      Finset.card_range, ← Nat.cast_prod, ← Nat.descFactorial_eq_prod_range]
+
 end BirthdayProblemOQ01OQ02

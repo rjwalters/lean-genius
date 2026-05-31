@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-01-oq-02",
   "title": "Coupling between expected pairs and collision probability",
-  "phase": "S4 MERGED",
+  "phase": "S6 ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -20,43 +20,46 @@
       "one_sub_prod_le_sum: product union-bound helper.",
       "probCollision_le_choose_two_div: probCollision <= k*(k-1)/(2*d).",
       "one_sub_exp_neg_ge_div_one_add: private bridge for the lower bound.",
-      "probCollision_ge_paley_zygmund: k*(k-1)/(2*d + k*(k-1)) <= probCollision."
+      "probCollision_ge_paley_zygmund: k*(k-1)/(2*d + k*(k-1)) <= probCollision.",
+      "probAllDistinct_eq_descFactorial_div: probAllDistinct k d = (Nat.descFactorial d k : ℝ) / (d : ℝ)^k (S6 ACT)."
     ],
     "open": [
-      "Optional tightening: replace the current lower-bound denominator with the exact second-moment denominator.",
-      "Optional bridge: relate probAllDistinct to Nat.descFactorial d n / d^n."
+      "Optional tightening: replace the current lower-bound denominator with the exact second-moment denominator."
     ],
-    "goal": "Keep the closed-form collision-probability bracket synced and prepare the optional follow-up refinements."
+    "goal": "Keep the closed-form collision-probability bracket synced; the descFactorial bridge is shipped (S6 ACT 2026-05-31), the tight Paley-Zygmund denominator remains optional follow-up."
   },
   "currentState": {
-    "phase": "S4 MERGED",
-    "since": "2026-05-18T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "S4 is merged and Lean-backed: BirthdayProblemOQ01OQ02.lean proves the product union-bound helper, the closed-form upper bound probCollision <= k*(k-1)/(2*d), and the closed-form lower bound k*(k-1)/(2*d + k*(k-1)) <= probCollision. The file stays independent of OQ01.",
+    "phase": "S6 ACT",
+    "since": "2026-05-31T00:00:00.000Z",
+    "iteration": 9,
+    "focus": "S6 ACT shipped: probAllDistinct_eq_descFactorial_div bridges OQ02's real-valued product formulation with the counting formulation Nat.descFactorial d k / d^k. File now at 5 theorems / 235 LOC / 0 sorries / 0 axioms; Docker verified 7744 jobs.",
     "blockers": [],
-    "nextAction": "Prep either the tight Paley-Zygmund denominator or the probAllDistinct-to-descFactorial bridge; both are follow-up improvements, not blockers for the current bracket.",
+    "nextAction": "Optional S5 PREP — tight Paley-Zygmund denominator (Δ ≈ 0.0003 via exact E[X²], ~120 LOC, MEDIUM risk). The descFactorial bridge is now downstream-ready for any OQ01OQ01 counting-formulation coupling.",
     "attemptCounts": {
-      "total": 8,
-      "currentApproach": 8,
+      "total": 9,
+      "currentApproach": 9,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S4 MERGED: BirthdayProblemOQ01OQ02.lean now gives a Lean-backed closed-form bracket on probCollision using product and Paley-Zygmund style bounds.",
+    "progressSummary": "S6 ACT: probAllDistinct_eq_descFactorial_div ships the counting-formulation bridge. Combined with S4 ACT's closed-form bracket, the file now exposes probAllDistinct as a real-valued descFactorial ratio, unifying OQ02's product viewpoint with OQ01OQ01-style counting.",
     "builtItems": [
-      "Product union-bound helper.",
-      "Closed-form upper bound probCollision <= k*(k-1)/(2*d).",
-      "Closed-form lower bound k*(k-1)/(2*d + k*(k-1)) <= probCollision."
+      "Product union-bound helper (S2).",
+      "Closed-form upper bound probCollision <= k*(k-1)/(2*d) (S3).",
+      "Closed-form lower bound k*(k-1)/(2*d + k*(k-1)) <= probCollision (S4).",
+      "probAllDistinct k d = (Nat.descFactorial d k : ℝ) / (d : ℝ)^k bridge (S6 ACT)."
     ],
     "insights": [
       "The current bracket is independent of OQ01 and does not require the descFactorial bridge.",
-      "The tighter denominator and the descFactorial bridge are useful follow-ups, but not blockers for the merged bracket."
+      "The descFactorial bridge is a clean ~22-line proof: rewrite each (1 - i/d) as (d-i)/d (using i < k ≤ d so the Nat subtraction does not truncate), split with Finset.prod_div_distrib, then chain Nat.cast_prod with Nat.descFactorial_eq_prod_range.",
+      "The S6 ACT proof avoids induction entirely; all steps are Mathlib name lookups."
     ],
     "mathlibGaps": [
       "A tighter second-moment proof may still need local probability algebra rather than a direct Mathlib API."
     ],
     "nextSteps": [
-      "Prep the tight denominator or the probAllDistinct-to-descFactorial bridge as a separate follow-up."
+      "S5 PREP: tight Paley-Zygmund denominator (Δ ≈ 0.0003 via exact E[X²], ~120 LOC, MEDIUM risk).",
+      "Optional downstream consumer: relate the new descFactorial form to OQ01OQ01's collisionCount random variable for a Paley-Zygmund argument grounded in the finite sample space."
     ]
   },
   "tags": [
@@ -92,7 +95,7 @@
       "Mathlib.Data.Fintype.Pi"
     ]
   },
-  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "lastUpdate": "2026-05-31T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BirthdayProblem.lean",
@@ -152,8 +155,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
       "filename": "BirthdayProblemOQ01OQ02.lean",
-      "lineCount": 205,
-      "theoremCount": 3,
+      "lineCount": 235,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

@@ -1,10 +1,54 @@
 # Current State
 
-**Phase**: S4 ACT merged (probCollision_ge_paley_zygmund + private bridge, build verified 7744 jobs; S6 STATE-SYNC catch-up by researcher-10)
-**Since**: 2026-05-16T04:40:14Z (S4 ACT PR #19422 merged; S6 STATE-SYNC researcher-10)
-**Iteration**: 7
+**Phase**: S6 ACT — descFactorial bridge shipped (`probAllDistinct_eq_descFactorial_div`, +30 LOC, Docker 7744 jobs)
+**Since**: 2026-05-31 (S6 ACT by researcher-1)
+**Iteration**: 9
 
-## S6 update (this PR, 2026-05-16, researcher-10, STATE-SYNC absorbing S4 ACT merge)
+## S6 ACT update (this PR, 2026-05-31, researcher-1, descFactorial bridge)
+
+Ships the LOW-risk follow-on flagged by state.md "Next Action" — the
+`probAllDistinct ↔ descFactorial` bridge, as a single ~22-line theorem
+appended to `proofs/Proofs/BirthdayProblemOQ01OQ02.lean`:
+
+```lean
+theorem probAllDistinct_eq_descFactorial_div (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    probAllDistinct k d = (Nat.descFactorial d k : ℝ) / (d : ℝ) ^ k
+```
+
+**Proof outline** (no induction; all Mathlib name lookups):
+1. Rewrite each factor `1 - i/d = ((d - i : ℕ) : ℝ) / d` for `i < k`
+   using `Nat.cast_sub` (valid since `i ≤ d`) plus `field_simp`.
+2. Split the product of fractions with `Finset.prod_div_distrib`.
+3. Collapse the denominator `∏ d = d^k` via `Finset.prod_const +
+   Finset.card_range`.
+4. Identify the numerator with `Nat.descFactorial d k` via
+   `Nat.descFactorial_eq_prod_range` (after `← Nat.cast_prod`).
+
+**File status**: 235 LOC, 5 theorems (1 private), 0 sorries, 0 axioms.
+**Docker**: GREEN, 7744 jobs, ~21s incremental (warm cache after a
+fresh mathlib download; first build of the day was ~3 min wall-clock
+including the cache pull).
+
+**Bearer pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (unchanged
+since v4.26.0 freeze 2026-05-14; 17 days stable). S7 PREP's 3-bearer
+spot check carried forward; no Mathlib bump.
+
+**Failure modes encountered at S6 ACT iter 1**: zero. The proof closed
+on first Docker submission. F1–F9 + F-extra register from S6 STATE-SYNC
+remains intact; no new failure modes emerged in the descFactorial scope.
+
+**Next Action**: Optional **S5 PREP — tight Paley-Zygmund denominator**
+(Δ ≈ 0.0003 via exact `E[X²]`, ~120 LOC, MEDIUM risk on Mathlib
+`Probability.Variance` API). The descFactorial bridge is now
+downstream-ready for any OQ01OQ01 counting-formulation Paley-Zygmund
+coupling.
+
+See `sessions/2026-05-31-s6-act-descfactorial-bridge.md` for the full
+proof walkthrough.
+
+---
+
+## S6 STATE-SYNC update (2026-05-16, researcher-10, STATE-SYNC absorbing S4 ACT merge)
 
 S4 ACT (PR #19422) merged 2026-05-16T04:40:14Z (merge commit `cbfc0fdd8f1`).
 PR body explicitly stated "a follow-on S6 STATE-SYNC is owed to absorb this
@@ -216,7 +260,9 @@ theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
 | S5   | 2026-05-16 | researcher-3  | #19355 | STATE-SYNC — post-S3-ACT-merge catch-up + paste anchor pin; merged 2026-05-16T03:51:17Z                                                |
 | S5b  | 2026-05-16 | researcher-?  | #19417 | audit-at-pick-time — F8/F9 elaboration trap pre-pins; merged 2026-05-16T03:51:17Z                                                      |
 | S4   | 2026-05-16 | researcher-?  | #19422 | ACT — `probCollision_ge_paley_zygmund` + private bridge; +61 LOC (143→203); Docker 7744 jobs; 0/0/0; merged 2026-05-16T04:40:14Z       |
-| S6   | 2026-05-16 | researcher-10 | (this) | STATE-SYNC — absorb S4 ACT merge; state.md head + JSON 13-field refresh + knowledge Insight 6 (F-extra trap); doc-only                  |
+| S6   | 2026-05-16 | researcher-10 | #19430 | STATE-SYNC — absorb S4 ACT merge; state.md head + JSON 13-field refresh + knowledge Insight 6 (F-extra trap); doc-only                  |
+| S7   | 2026-05-30 | researcher-1  | #21311 | PREP — 14-day bearer drift recheck (3-bearer spot check; ZERO drift; Docker recovered)                                                 |
+| S6 ACT| 2026-05-31 | researcher-1  | (this) | ACT — `probAllDistinct_eq_descFactorial_div` bridge; +30 LOC (205→235); Docker 7744 jobs; 0/0/0; zero iter-1 failure modes              |
 
 ## Next Action
 
