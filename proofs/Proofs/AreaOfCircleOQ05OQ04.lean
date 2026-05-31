@@ -80,6 +80,7 @@ Parent: `AreaOfCircleOQ05OQ02.lean` (multivariate Gaussian, all proved).
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
+import Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Integral.Pi
@@ -88,6 +89,7 @@ import Proofs.AreaOfCircleOQ05
 namespace ComplexGaussianCircle
 
 open MeasureTheory MeasureTheory.Measure Real Complex
+open scoped FourierTransform
 
 /-- The scalar π-weighted Gaussian integral: ∫ exp(-(π · x²)) dx = 1.
 
@@ -601,6 +603,114 @@ theorem complex_gaussian_density_pow_shifted
     field_simp
   rw [h, one_pow]
 
+/-! ## Part 6: Complex Fourier-Gaussian eigenfunction (S6b ACT)
+
+This part proves the **archimedean analogue of (C2)** from `problem.md`:
+the standard complex Gaussian `exp(-π · ‖z‖²)` is a fixed point
+(eigenfunction, eigenvalue 1) of the Fourier transform on `ℂ`. It is the
+"dual-domain" counterpart of the integral-side identities proved earlier
+in Parts 1–5 — instead of integrating the Gaussian against Lebesgue
+measure, we apply the Fourier integral and recover the same Gaussian.
+
+The parametric statement `complex_fourier_gaussian` is a direct
+specialization of Mathlib's `_root_.fourier_gaussian_innerProductSpace`
+at `V := ℂ`. The dimensional exponent `(Module.finrank ℝ V / 2 : ℂ)`
+collapses to `1` via `Complex.finrank_real_complex` (`finrank ℝ ℂ = 2`),
+and `Complex.cpow_one` reduces `(π / b) ^ (1 : ℂ)` to `π / b`.
+
+The eigenfunction corollary `complex_fourier_gaussian_pi` (at `b = π`)
+is the load-bearing archimedean (C2): the factor `π / π = 1` by
+`div_self`, and the exponent `-π² · ‖w‖² / π` simplifies to `-π · ‖w‖²`
+by `field_simp`, leaving `cexp (-π · ‖w‖²)` — the same Gaussian on the
+"Fourier side".
+
+The `normSq` companion exposes the same statement with the algebraic
+`Complex.normSq` in place of the analytic `‖·‖²`, paralleling the
+S3 ↔ `normSq` companion `complex_gaussian_integral_scaled` ↔
+`complex_gaussian_integral_scaled_norm` pattern.
+
+See `research/problems/area-of-circle-oq-05-oq-04/sessions/2026-05-16-s11-prep-s6b-sharpened.md`
+for the pre-ACT plan and Mathlib bearer audit (verified at
+`lake-manifest.json` SHA `2df2f0150c…`, Mathlib v4.26.0).
+
+The Fourier integral notation `𝓕` resolves through
+`Real.instFourierTransform : FourierTransform (V → ℂ) (V → ℂ)` (for
+`V = ℂ`, the required `InnerProductSpace ℝ ℂ` instance is
+`RCLike.toInnerProductSpaceReal`). -/
+
+/-- **Parametric complex Fourier-Gaussian**: for any `b : ℂ` with
+`0 < b.re` and any `w : ℂ`,
+
+    𝓕 (z ↦ exp(-b · ‖z‖²)) w = (π / b) · exp(-π² · ‖w‖² / b).
+
+This is a direct specialization of `_root_.fourier_gaussian_innerProductSpace`
+at the 2-dimensional real inner product space `V := ℂ`. The dimensional
+exponent `(finrank ℝ ℂ / 2 : ℂ) = (2 / 2 : ℂ) = 1` collapses via
+`Complex.finrank_real_complex`, and `Complex.cpow_one` reduces the base
+`(π/b) ^ (1 : ℂ)` to `π / b`. -/
+theorem complex_fourier_gaussian (b : ℂ) (hb : 0 < b.re) (w : ℂ) :
+    𝓕 (fun (z : ℂ) ↦ Complex.exp (-b * ‖z‖ ^ 2)) w
+      = (Real.pi / b) * Complex.exp (-(Real.pi : ℂ) ^ 2 * ‖w‖ ^ 2 / b) := by
+  have h := fourier_gaussian_innerProductSpace (V := ℂ) hb w
+  -- Collapse the dimensional exponent `(finrank ℝ ℂ / 2 : ℂ)` to `1`.
+  have hfr : ((Module.finrank ℝ ℂ : ℂ) / 2) = (1 : ℂ) := by
+    rw [Complex.finrank_real_complex]; norm_num
+  rw [hfr, Complex.cpow_one] at h
+  exact h
+
+/-- **Complex Gaussian self-Fourier identity** (the archimedean analogue
+of (C2)): the standard complex Gaussian `exp(-π · ‖z‖²)` is a fixed point
+of `𝓕`:
+
+    𝓕 (z ↦ exp(-π · ‖z‖²)) w = exp(-π · ‖w‖²).
+
+This is the complex-side analogue of Mathlib's `_root_.fourier_gaussian_pi`
+at the unit scale, and the archimedean analogue of the conjectural p-adic
+self-Fourier statement `(F 𝟙_{ℤ_p})(ξ) = 𝟙_{ℤ_p}(ξ)` from problem.md (C2);
+see the deferred discussion at the end of this file.
+
+Proof: specialize `complex_fourier_gaussian` at `b = (π : ℂ)`. The
+prefactor `π / π = 1` by `div_self` (using `(π : ℂ) ≠ 0`), and the
+exponent `-π² · ‖w‖² / π` simplifies to `-π · ‖w‖²` by `field_simp`. -/
+theorem complex_fourier_gaussian_pi (w : ℂ) :
+    𝓕 (fun (z : ℂ) ↦ Complex.exp (-(Real.pi : ℂ) * ‖z‖ ^ 2)) w
+      = Complex.exp (-(Real.pi : ℂ) * ‖w‖ ^ 2) := by
+  -- The required positivity hypothesis for the parametric form: `(π : ℂ).re = π > 0`.
+  have hbre : (0 : ℝ) < ((Real.pi : ℂ)).re := by
+    rw [Complex.ofReal_re]; exact Real.pi_pos
+  have h := complex_fourier_gaussian (Real.pi : ℂ) hbre w
+  -- Collapse the constant factor `π / π = 1`.
+  have hπne : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_ne_zero
+  rw [div_self hπne, one_mul] at h
+  -- Simplify the exponent `-π² · ‖w‖² / π = -π · ‖w‖²`.
+  have hexp : -(Real.pi : ℂ) ^ 2 * ‖w‖ ^ 2 / (Real.pi : ℂ) =
+              -(Real.pi : ℂ) * ‖w‖ ^ 2 := by
+    field_simp
+  rw [hexp] at h
+  exact h
+
+/-- `Complex.normSq` companion of the parametric complex Fourier-Gaussian:
+
+    𝓕 (z ↦ exp(-b · normSq z)) w = (π / b) · exp(-π² · normSq w / b).
+
+The algebraic `Complex.normSq` is `‖·‖²` reduced to a real-valued
+polynomial in the real and imaginary parts: `normSq z = z.re² + z.im²`.
+The bridge is `Complex.normSq_eq_norm_sq : normSq z = ‖z‖²` (as reals),
+applied pointwise and then cast through to ℂ.
+
+This is the Fourier-domain analogue of the `complex_gaussian_integral_scaled`
+↔ `complex_gaussian_integral_scaled_norm` pairing (lines 226 ↔ 261). -/
+theorem complex_fourier_gaussian_normSq (b : ℂ) (hb : 0 < b.re) (w : ℂ) :
+    𝓕 (fun (z : ℂ) ↦ Complex.exp (-b * (Complex.normSq z : ℂ))) w
+      = (Real.pi / b) * Complex.exp (-(Real.pi : ℂ) ^ 2 *
+          (Complex.normSq w : ℂ) / b) := by
+  -- Pointwise cast: `(normSq z : ℂ) = (‖z‖ : ℂ)^2 = ‖z‖^2` (the last
+  -- form is how Lean elaborates `‖z‖^2` when expected to be ℂ).
+  have key : ∀ z : ℂ, ((Complex.normSq z : ℝ) : ℂ) = (‖z‖ : ℂ) ^ 2 := fun z => by
+    rw [Complex.normSq_eq_norm_sq]; push_cast; ring
+  simp_rw [key]
+  exact complex_fourier_gaussian b hb w
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -623,6 +733,9 @@ theorem complex_gaussian_density_pow_shifted
 - `complex_gaussian_integral_scaled_pow_shifted_normSq` : proved (`normSq` form of n-dim shifted).
 - `complex_gaussian_integral_pow_unit_shifted_norm` : proved (n-dim unit-weight shifted).
 - `complex_gaussian_density_pow_shifted` : proved (canonical n-dim `(c, b)` density).
+- `complex_fourier_gaussian` : proved (parametric Fourier-Gaussian, S6b).
+- `complex_fourier_gaussian_pi` : proved (self-Fourier eigenfunction at `b = π`, load-bearing archimedean (C2)).
+- `complex_fourier_gaussian_normSq` : proved (`Complex.normSq` form of the parametric Fourier-Gaussian).
 
 All theorems above are sorry-free and axiom-free.
 

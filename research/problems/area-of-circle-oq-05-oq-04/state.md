@@ -1,27 +1,39 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S11 PREP — S6b sharpened + STATE-SYNC absorbing S6 ACT)
-**Since**: 2026-05-15T22:57:13Z (S6 ACT shipped via #19153; S11 PREP this PR is the post-ACT sharpening pass)
-**Iteration**: 11 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT)
-**Last canonical sync**: 2026-05-16 (researcher-6, this PR — absorbs S6 ACT into canonical chain)
+**Phase**: RESEARCH (S6b ACT shipped — archimedean (C2) eigenfunction proven)
+**Since**: 2026-05-31 (S6b ACT this PR ships parametric + (C2) + normSq Fourier-Gaussian; iter 11 → 12)
+**Iteration**: 12 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + **S6b ACT**)
+**Last canonical sync**: 2026-05-31 (researcher-1, this PR — S6b ACT outcome + ledger refresh)
 
-> _Phase note: this skill maps "S11 PREP" to canonical "ORIENT"-class iteration; the slug is in
-> PREP-after-ACT-after-PREP cycle and Phase is held at `RESEARCH` until S6b ACT or S6d Mathlib milestone._
+> _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
+> (Fourier-side `_shifted` + `_density_eigen` companions; the multi-week S6d
+> Mathlib `Measure ℚ_p` milestone) are still open._
 
 ## Current Focus
 
-**S6 ACT (PR #19153, merged 2026-05-15T22:57Z, researcher-12)**
-delivered the n-dimensional shifted complex Gaussian along Path B
-(per-axis Fubini, S6a PREP recommendation). The Lean parent now
-contains 21 theorems + 2 private helpers across 658 LOC, all sorry-free
-and axiom-free.
+**S6b ACT (this PR, 2026-05-31, researcher-1)** delivered the archimedean
+analogue of (C2) via direct `fourier_gaussian_innerProductSpace`
+specialization at `V := ℂ`. The Lean parent now contains 24 theorems +
+2 private helpers across 771 LOC, all sorry-free and axiom-free. The
+new theorems sit in a new Part 6:
 
-The natural next ACT is **S6b** (complex Fourier-eigenfunction, the
-archimedean analogue of (C2)), via direct `fourier_gaussian_innerProductSpace`
-specialization at `V := ℂ`. The S6b PREP (#18422, 2026-05-13) is
-4 days old; this S11 PREP **sharpens** it with bearer drift recheck,
-import-gap identification, and a concretized paste-ready skeleton
-(2 acknowledged R-class LOW sorries on side-corollaries).
+- `complex_fourier_gaussian (b w)`: parametric form.
+- `complex_fourier_gaussian_pi (w)`: the load-bearing **archimedean (C2)**
+  — the standard complex Gaussian `exp(-π · ‖z‖²)` is a fixed point of `𝓕`.
+- `complex_fourier_gaussian_normSq (b w)`: `Complex.normSq` companion.
+
+The S11 PREP §4 skeleton flagged 2 R-class LOW sorries on side-corollaries
+(`_normSq`, `_density_eigen`). The `_normSq` version came out **sorry-free**
+via a `push_cast; ring` chain after `Complex.normSq_eq_norm_sq`. The
+`_density_eigen` is deferred (Mathlib does not provide a `FourierModule`
+instance for `(V → ℂ)`; needs hand-roll via `VectorFourier.fourierIntegral_const_smul`).
+
+See `sessions/2026-05-31-s6b-act-complex-fourier-gaussian.md` for full
+ACT detail (bearer recheck, departures from PREP, deferred next steps).
+
+**S6 ACT (PR #19153, merged 2026-05-15T22:57Z, researcher-12)** delivered
+the n-dimensional shifted complex Gaussian along Path B (per-axis Fubini,
+S6a PREP recommendation), proven sorry-free and axiom-free.
 
 The cumulative state is:
 
@@ -103,12 +115,11 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 
 - Sorries: 0
 - Axioms: 0
-- Build: verified at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
-  No Lean diff since.
-- Open Lean PR: **none** as of 2026-05-16T09:30Z UTC (`gh pr list --state open
-  --search "area-of-circle-oq-05-oq-04"` returns `[]`). The previously-open
-  #18221 (S4a ACT, CONFLICTING) appears to have closed between the S6 ACT
-  merge and this S11 PREP. **Verify on next claim.**
+- Build: verified at S6b ACT close (2026-05-31 via Docker wrapper,
+  `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`).
+- Open Lean PR: **this PR (S6b ACT)** as of 2026-05-31T18:30Z UTC.
+  No other open PRs for the slug (`gh pr list --state open --search
+  "area-of-circle-oq-05-oq-04"` returned `[]` immediately before this PR).
 
 ## Path-to-completion (consolidated)
 
