@@ -91,6 +91,14 @@
       {
         "id": "abel-ruffini-oq-04-oq-02-oq-03",
         "relationship": "Proves all finite groups of order $< 60$ are solvable — quantifies the boundary where Shafarevich's axiom kicks in universally without further analysis. Every group of order $\\leq 59$ is automatically Galois-realizable over $\\mathbb{Q}$ by composing this solvability classification with Shafarevich; $A_5$ at order 60 is the first group escaping this automatic realization-via-solvability (though $A_5$ is still realizable by other means, e.g., as $\\mathrm{Gal}(x^5 - 4x + 2 / \\mathbb{Q})$ in `abel-ruffini-oq-04-oq-01`)."
+      },
+      {
+        "id": "solution-of-cubic",
+        "relationship": "Constructive companion to the abstract `s3_realizable` corollary — explicitly named in keyInsight #8 and openQuestion #2. Cardano's depressed-cubic formula (1545, Wiedijk #37) exhibits the *concrete* splitting field $L = \\mathbb{Q}(\\sqrt{\\Delta}, \\sqrt[3]{-q/2 + \\sqrt{q^2/4 + p^3/27}})$ for which $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong S_3$ when the discriminant $\\Delta = -4p^3 - 27q^2$ is non-square. The two-step radical tower matches the composition series $\\{e\\} \\trianglelefteq A_3 \\trianglelefteq S_3$ step-for-step — the constructive witness to the existence statement Shafarevich asserts non-constructively. Together with `general-quartic`, fills the constructive/existential gap that this entry's keyInsight #8 identifies as the structural asymmetry between Cardano-Ferrari (explicit polynomials and formulas) and Shafarevich (existence without algorithm)."
+      },
+      {
+        "id": "general-quartic",
+        "relationship": "Constructive companion to the abstract `s4_realizable` corollary — explicitly named in keyInsight #8 and openQuestion #2. Ferrari's resolvent-cubic method (1545) exhibits the *concrete* splitting field for a generic irreducible quartic with non-square discriminant and irreducible resolvent cubic, with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong S_4$. The three-step radical tower $\\mathbb{Q} \\subset \\mathbb{Q}(\\sqrt{\\Delta}) \\subset \\mathbb{Q}(\\sqrt{\\Delta}, \\sqrt[3]{R}) \\subset L$ matches the composition series $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4$ step-for-step — Ferrari's $S_4 \\twoheadrightarrow S_3$ map on the three Lagrange resolvents $(\\alpha_a + \\alpha_b)(\\alpha_c + \\alpha_d)$ has kernel exactly the Klein four-group $V_4$, which is the *crucial normal subgroup* whose absence at degree 5 forces Abel-Ruffini. Together with `solution-of-cubic`, provides the constructive Cardano-Ferrari witnesses underlying the solvable side of the inverse-Galois problem for $n \\leq 4$."
       }
     ]
   },
