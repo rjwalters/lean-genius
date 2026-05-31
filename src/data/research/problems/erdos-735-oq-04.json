@@ -1,7 +1,7 @@
 {
   "slug": "erdos-735-oq-04",
   "title": "Magic configurations on k-flats in ℝ^d (Erdős #735 extension)",
-  "phase": "ACT",
+  "phase": "ACT BUILD-VERIFIED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,15 +30,15 @@
     "goal": "Formalize in Lean: (1) PointConfigD / WeightingD / ConfigKFlat / IsKFlatMagic definitions parameterised on (d, k). (2) Trivial cases k = 0, k = d. (3) Definitional reduction IsKFlatMagic 1 = parent's IsMagic for d = 2. (4) Axiomatise higher-dim classification (conjectural). (5) native_decide certificates for tetrahedron / octahedron / cube. (6) Gallery JSON with status: axiomatized."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-16T15:55:00.000Z",
-    "iteration": 6,
-    "focus": "S3 ACT (researcher-9, 2026-05-16, build pending — Docker daemon hung): pasted S3 PREP-2 §6 fully-discharged theorem bodies verbatim into proofs/Proofs/Erdos735OQ04.lean, replacing the 2 × sorry on lines 88 + 96 of the pre-ACT file. File 98 → 153 LOC (+55); 2 sorries → 0; 0 new axioms; 2 theorems (zero_flat_magic_trivial + ambient_flat_magic_trivial) both discharged. 10 bearers (B1-B4 + N1-N5 + supporting finrank_euclideanSpace_fin/Submodule.eq_top_of_finrank_eq/Finset.filter_true_of_mem/Nat.smul_one_eq_cast/Finset.card_filter_le) all pin-verified by S3 PREP-2 §3 at lake-pinned Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (T-6h). Ships under (build pending — Docker daemon hung) qualifier per memory feedback pattern. Risk-acceptance criteria all GREEN: leaf-only file (0 downstream importers), recent build-verify on S2 ACT base #19012 Docker-clean 3058 jobs 2026-05-14 (T-2d), bearer 0-drift at lake-pinned SHA, sibling-coordination clean. PREP-correcting-PREP shape (S3 PREP #19245 → S3 PREP-2 #19573) gives risk-acceptance HIGHER than first-PREP ACT per memory pattern _postship_pivot_to_act_phase_slug_whose_predecessor_prep_is_correction_of_prior_prep_ship_act_under_build_pending. Host: Docker daemon hung (timeout 5 docker info no Server section; CLI v29.4.1 responds); disk 100% / 5.3 Gi avail (slightly worse than S3 PREP-2-time 6.9 Gi).",
+    "phase": "ACT BUILD-VERIFIED",
+    "since": "2026-05-28T21:32:00.000Z",
+    "iteration": 7,
+    "focus": "S4 BUILD-VERIFY STATE-SYNC (researcher-1, 2026-05-30T22:35Z, doc-only): flips the `(build pending — Docker daemon hung)` qualifier on S3 ACT #19687 to `build-verified`. PR #20882 (2026-05-28T21:32Z, 'Research: erdos-735-oq-04 - build-verify Erdos735OQ04 on Mathlib v4.26.0') repaired three Mathlib v4.26.0 API drifts (finrank_eq_of_rank_eq → Module.finrank_eq_of_rank_eq; explicit element type on Set.Nonempty F; AffineSubspace.mem_top now requires explicit field k) and Docker-verified Proofs.Erdos735OQ04 at the pinned Mathlib SHA. No mathematical content changed. Final post-build file counts (per PRs #19717 + #19929 light meta sync + #20882): 154 LOC, 2 theorems, 4 defs, 0 axioms, 0 sorries. Subsequent parent-side AXIOM HUNT (#20896, researcher-1, 2026-05-29) corrected the long-standing stale claim that Erdos735Problem.lean was broken on origin/main — it builds clean against Mathlib v4.26.0 (3061 jobs); two example axioms (three_collinear_card, triangle_card) were eliminated (parent axiomCount 7→5). This STATE-SYNC is doc-only: state.md header refresh, Iter 6 → 7 bump, new S4 BUILD-VERIFY subsection, JSON light refresh, new session file 2026-05-30-s4-build-verify-state-sync.md.",
     "blockers": [
-      "S4 ACT (parent reduction oneflat_eq_parent): blocked on Proofs/Erdos735Problem.lean repair against Mathlib v4.26.0 (4 cumulative regressions documented in sessions/2026-05-13-s2-act-scaffold.md §'Parent-file regression'). Doctor/mechanic task — out of scope for OQ04 research PRs.",
-      "S5 axiom: genuinely open in the literature (Mathlib has no published k-flat classification beyond ABKPR's ℝ² case). Future iteration must axiomatise."
+      "S5 axiom: genuinely open in the literature (Mathlib has no published k-flat classification beyond ABKPR's ℝ² case). Future iteration must axiomatise.",
+      "S4 ACT (parent reduction oneflat_eq_parent): no longer blocked — parent Erdos735Problem.lean builds clean per #20896 AXIOM HUNT (2026-05-29). The almost-definitional reduction across the Nat.cast_one rank coercion is unblocked."
     ],
-    "nextAction": "S3-followup (mechanic / auditor / any researcher with Docker available): build-verify via `./proofs/scripts/docker-build.sh Proofs.Erdos735OQ04` once Docker recovers (currently hung at S3 ACT-time 2026-05-16T15:51Z) AND disk recovers (currently 100%/5.3Gi avail). Expected ~3058 jobs based on S2 ACT #19012 build profile. If first rebuild fails, surface as S3-PREP-3 (not S3-ACT-2): the recipe was double-PREP-reviewed (#19245 + #19573); any build failure indicates either a typo in the paste (re-read against S3 PREP-2 §6 verbatim) or a Mathlib bearer drift since the T-6h §3 recheck (re-run pin verification at lake-manifest SHA). S4 ACT (parent reduction d=2,k=1) still BLOCKED on parent file Erdos735Problem.lean repair under Mathlib v4.26.0 (4 cumulative regressions per S2 ACT session log) — Mechanic/Doctor scope; out-of-scope for OQ04 research PRs. S5 design PREP refining the higher-dim conjecture to narrow the regular-polytope class (per S6a + S6b corrections — exclude octa/cube) deferred; S6a-c ACTs (tetrahedron magic certificate + octa/cube refutations) already PREP-designed (#18486, #18541); Lean witnesses pending.",
+    "nextAction": "S5 (next substantive ACT, any researcher): build out higher-flat infrastructure — choose among (a) S6a-ACT tetrahedron certificate via PREP at #18486, (b) S6b/c-ACT octa+cube refutations via PREP at #18541, (c) S4-ACT parent reduction oneflat_eq_parent now that the parent is unblocked per #20896 AXIOM HUNT, or (d) S5 axiom design PREP refining the higher-dim conjecture (narrow regular-polytope subfamily — exclude octa/cube per S6b). Pre-flight: Docker is recovered (v29.4.1, sub-5s docker info; disk 61 Gi avail at 2026-05-30T22:35Z) so any Lean ACT can be Docker-verified at PR time. Path-cancellation: none — all four sub-options are independently shippable.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 1,
@@ -87,17 +87,17 @@
   ],
   "significance": 6,
   "tractability": 5,
-  "lastUpdated": "2026-05-29",
-  "lastUpdate": "2026-05-29",
+  "lastUpdated": "2026-05-30",
+  "lastUpdate": "2026-05-30T22:35:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos735OQ04.lean",
       "filename": "Erdos735OQ04.lean",
-      "lineCount": 153,
+      "lineCount": 154,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos735OQ04.lean"
     }
