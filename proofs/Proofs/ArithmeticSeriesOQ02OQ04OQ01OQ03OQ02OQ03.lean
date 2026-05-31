@@ -128,10 +128,12 @@ theorem qMultichoose_eq_multichoose (n k : ℕ) :
     induction k with
     | zero => simp [Nat.multichoose_zero_right]
     | succ k ihk =>
-      rw [qMultichoose_pascal, ihn (k + 1), ihk, one_pow, one_mul]
-      norm_cast
-      have h := Nat.multichoose_succ_succ n k
-      omega
+      rw [qMultichoose_pascal, ihn (k + 1), ihk, one_pow, one_mul,
+          show (n + 1).multichoose (k + 1) =
+               n.multichoose (k + 1) + (n + 1).multichoose k
+            from Nat.multichoose_succ_succ n k]
+      push_cast
+      ring
 
 -- ============================================================
 -- SECTION V: Specialization at q = 1

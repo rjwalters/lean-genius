@@ -25,32 +25,46 @@
     "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-22T12:51:58.076Z",
-    "iteration": 1,
-    "focus": "Open conjecture linked to the six-file Bertrand proof family and no longer a blank exploration record.",
+    "iteration": 2,
+    "focus": "DEEP DIVE Sub-Milestone B complete: equivalent gap/distance/half-open forms proved, all 0-axiom, build verified.",
     "blockers": [],
-    "nextAction": "Future proof work would replace the Legendre axiom with a formal derivation.",
+    "nextAction": "Sub-Milestone B+: prove equivalence with prime-gap function (nth_prime k+1 - nth_prime k vs 2 * Nat.sqrt)",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Metadata refreshed against the Bertrand proof-family match set. Legendre remains open, while the surrounding Lean files document Bertrand, BHP, PNT-density, and Cramer-conditional context.",
+    "progressSummary": "Sub-Milestone B complete (2026-05-30): LegendreGapEquivalence.lean proves LegendreConjecture is equivalent to three reformulations (gap, distance, half-open) via pointwise lemmas. 0 new axioms; build verified end-to-end.",
     "builtItems": [
       "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
       "prime-gap hierarchy rows shared with the Bertrand short-interval development",
-      "six Lean metadata rows now attached through the broad Bertrand prefix match"
+      "six Lean metadata rows now attached through the broad Bertrand prefix match",
+      "LegendreGapAt n / LegendreDistanceAt n / LegendreHalfOpenAt n (proofs/Proofs/LegendreGapEquivalence.lean)",
+      "legendreAt_iff_gap, legendreAt_iff_distance, legendreAt_iff_halfOpen (pointwise equivalences)",
+      "legendre_iff_gap_form, legendre_iff_distance_form, legendre_iff_halfOpen_form (global equivalences)",
+      "Sample transferrals: legendre_gap_1, legendre_gap_5, legendre_gap_20, legendre_distance_10, legendre_halfOpen_15"
     ],
     "insights": [
       "Legendre is an existence statement, not a density asymptotic",
       "BHP and Cramer occupy different points in the same short-interval landscape",
-      "The Lean record correctly treats Legendre as conjectural"
+      "The Lean record correctly treats Legendre as conjectural",
+      "All three pointwise forms reduce to (n+1)^2 = n^2 + 2n + 1 plus omega; the equivalence is structural, not arithmetic-deep",
+      "The gap form makes the short-interval comparison (Hoheisel/Huxley/BHP) immediate: h = 2n at x = n^2",
+      "The distance form lines up directly with Cramer s conjectured bound g(p_k) = O((log p_k)^2)",
+      "Translating LegendrePartials 20 verified cases is one .mp application per case — no new computation"
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "No prime-gap function primeGap n := nth Prime (n+1) - nth Prime n in Mathlib (defined locally in Erdos6Problem.lean, Erdos233Problem.lean)"
+    ],
+    "nextSteps": [
+      "Sub-Milestone B+: prove LegendreConjecture ↔ ∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1 (harder: requires consecutive-prime reasoning)",
+      "Sub-Milestone A: state Cramer-implies-Legendre eventually (needs Cramer conjecture statement)",
+      "Optional polish: connect to LegendrePartials computational cases via primeCounting"
+    ]
   },
   "tags": [
     "number-theory",
@@ -76,7 +90,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "lastUpdate": "2026-05-30T00:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
@@ -145,6 +159,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/LegendreGapEquivalence.lean",
+      "filename": "LegendreGapEquivalence.lean",
+      "lineCount": 212,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LegendreGapEquivalence.lean"
     }
   ]
 }

@@ -167,6 +167,88 @@ C. Prove both directions (no open math content; pure unwinding).
 
 ## Files
 
-No Lean source produced this iteration (SURVEY only). Next iteration will
-create `proofs/Proofs/LegendreGapEquivalence.lean` if Sub-Milestone B is
-selected.
+**Iteration 1 (SURVEY)**: No Lean source produced.
+
+**Iteration 2 (DEEP DIVE — Sub-Milestone B, 2026-05-30)**: Created
+`proofs/Proofs/LegendreGapEquivalence.lean` (212 lines, 15 theorems, 6 defs,
+0 axioms, 0 sorries, build verified).
+
+## Iteration 2 Log: Sub-Milestone B Complete
+
+**Date**: 2026-05-30
+**Researcher**: researcher-1 (Session 2)
+**Phase**: ACT — DEEP DIVE
+**Result**: Equivalence-form lemmas for Legendre's Conjecture, 0 new axioms.
+
+### Deliverable
+
+`proofs/Proofs/LegendreGapEquivalence.lean` proves that Legendre's Conjecture
+is equivalent to three structural reformulations:
+
+| Form | Statement (for each $n \geq 1$) |
+|------|-------------------------------|
+| Original | $\exists p$ prime, $n^2 < p < (n+1)^2$ |
+| Gap | $\exists p$ prime, $n^2 < p \leq n^2 + 2n$ |
+| Distance | $\exists p$ prime, $p > n^2 \land p - n^2 \leq 2n$ |
+| Half-open | $\exists p$ prime, $n^2 + 1 \leq p \leq n^2 + 2n$ |
+
+All three equivalences are proved via the identity $(n+1)^2 = n^2 + 2n + 1$
+combined with `omega`. The proofs are structural, not arithmetic-deep, and
+they bridge from the original formulation to the form used in the prime-gap
+literature.
+
+### Key Theorems
+
+- `legendreAt_iff_gap (n : ℕ) : LegendreAt n ↔ LegendreGapAt n`
+- `legendreAt_iff_distance (n : ℕ) : LegendreAt n ↔ LegendreDistanceAt n`
+- `legendreAt_iff_halfOpen (n : ℕ) : LegendreAt n ↔ LegendreHalfOpenAt n`
+- `legendre_iff_gap_form : LegendreConjecture ↔ LegendreGapForm`
+- `legendre_iff_distance_form : LegendreConjecture ↔ LegendreDistanceForm`
+- `legendre_iff_halfOpen_form : LegendreConjecture ↔ LegendreHalfOpenForm`
+
+Plus five sample transferrals (`legendre_gap_1`, `legendre_gap_5`,
+`legendre_gap_20`, `legendre_distance_10`, `legendre_halfOpen_15`) confirming
+that `LegendrePartial`'s computational base cases hold in each equivalent form
+via one `.mp` step.
+
+### Why This Matters
+
+1. The gap form aligns with short-interval prime theory: at $x = n^2$, Legendre
+   asserts a prime in $[x, x + 2\sqrt{x}]$. This is exactly the
+   $\theta = 1/2$ short-interval problem, allowing direct comparison with
+   Hoheisel ($\theta = 1 - 1/33000$), Huxley ($7/12$), and BHP ($0.525$).
+2. The distance form is the form used to compare with Cramér's gap conjecture
+   $g(p_k) = O((\log p_k)^2)$.
+3. The half-open form makes `Finset.Ico` reasoning immediate for any future
+   computational verification work.
+
+### Honest Status
+
+This iteration produced equivalence lemmas, **not** any progress on the open
+conjecture itself. The mathematical content is purely structural; the value
+lies in providing the gallery with a clean Lean record of "Legendre
+equivalently says: gap above $n^2$ is at most $2n$" — a fact often stated
+informally in the literature but not previously formalized in this gallery.
+
+### Axiom Delta
+
+| Before iteration 2 | After iteration 2 |
+|--------------------|-------------------|
+| 1 axiom (`legendre_conjecture` in `LegendrePartial.lean`) | 1 axiom (unchanged) |
+
+The new file adds **0 new axioms** and **0 new sorries**.
+
+### Next Steps
+
+**Sub-Milestone B+ (Iteration 3)**: Prove the equivalence with the prime-gap
+function:
+
+  $\mathrm{LegendreConjecture} \iff \forall k,\ p_{k+1} - p_k \leq 2\sqrt{p_k} + 1$
+
+This requires reasoning about consecutive primes (the `nth Nat.Prime`
+function) and is strictly harder. Build on the
+`nth_prime_succ_le_of_prime_gt` lemma already in `Proofs.PrimeGapBounds`.
+
+**Sub-Milestone A (Iteration 4+)**: State and prove "Cramér's conjecture
+implies Legendre's conjecture for sufficiently large $n$." Requires first
+stating Cramér's conjecture (not in Mathlib).
