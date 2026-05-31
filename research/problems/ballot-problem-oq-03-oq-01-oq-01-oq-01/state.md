@@ -1,11 +1,109 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: PREP (S47 — doc-only validation; next: S48 D' ACT)
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-17 (S46 — researcher-4, ACT: `rotateSortedListPrefixSym_{zero,self}_val` `@[simp]` boundary mirrors per S43 candidate C, +2 lemmas / +60 LOC / 0 axioms / 17 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
-**Iteration**: 46
+**Last Updated**: 2026-05-31 (S47 — researcher-1, PREP: small-case validation for `firstDescentRotation` Defs I + III on recon doc §1 Cases 1+2, completing S43 §2.3 deferred data; recommends commit to Def I for S48 D'; 0 Lean LOC / 0 axioms / sorries unchanged at 2 proof-level / 17 textual)
+**Iteration**: 47
+
+## S47 PREP Summary (2026-05-31, researcher-1)
+
+**Mode**: PREP (doc-only). Completes S43 §2.3 deferred small-case validation
+for the three candidate definitions of `firstDescentRotation` on recon doc §1
+Cases 1 + 2 (Case 3 already verified in S43). Refines the S46+ menu item D
+(`firstDescentRotation` def, MEDIUM risk) into a S48 D' ACT (~15-20 LOC, LOW
+risk) with explicit existence-hypothesis parameterisation.
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `research/problems/.../sessions/2026-05-31-s47-prep-firstdescent-validation.md` | NEW session memo with full validation tables for Cases 1+2 + recommendation | new file |
+| `state.md` (this file) | `Last Updated` + `Iteration` header bump 46 → 47 + Phase shift ACT → PREP; S47 PREP Summary block inserted before S46. | header + new block |
+| `src/data/research/problems/.../json` | `currentState.{phase, iteration, focus, nextAction}` refreshed for S47 PREP + S48 D'; `knowledge.{progressSummary, insights, builtItems, nextSteps}` updated; `lastUpdate` bumped. | 8 fields |
+
+### Validation summary
+
+Across all three recon doc §1 cases:
+
+| Case | `M` | Defs I and III agree? | Existence (Def I)? |
+|------|------|------------------------|--------------------|
+| 1 | `{0, 0, 1, 1}` | ✓ (both `firstDescentRotation = 0` for `{0,0,1}`, `= 1` for `{0,1,1}`) | ✓ |
+| 2 | `{0, 0, 0, 1}` | ✓ (both `= 0` for `{0,0,0}`, `= 1` for `{0,0,1}`) | ✓ |
+| 3 (S43) | `{0, 1, 2, 3}` | ✓ (trivial — each `P'` has unique `k`) | ✓ |
+
+Plus 4 spot-check cases outside the recon doc (`{0,0,2,3}`, `{0,1,1,2}`,
+`{0,0,3,3}`, `{0,0,0,1,1,1}` with `a=b=3`) — all show existence holds for
+every `P' ≤ M` of size `a + 1`. No counter-example found across 7 total
+cases. See session memo §3-§5 for full tables.
+
+### Recommendation for S48 D'
+
+Commit to **Definition I** (`Nat.find` smallest k with take-(a+1) prefix
+multiset = P'.1):
+
+```lean
+private noncomputable def firstDescentRotation {n : ℕ} {a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1))
+    (h_exists : ∃ k : ℕ, ((rotateSortedList M k).take (a + 1) : Multiset (Fin n)) = P'.1)
+    (hab : 0 < a + b) : Fin (a + b) :=
+  ⟨Nat.find h_exists % (a + b), Nat.mod_lt _ hab⟩
+```
+
+Defer the existence lemma `firstDescentRotation_exists` (= multiset-prefix
+cycle lemma, ~50-100 LOC, HIGH risk) to S49+ as obligation E. The `h_exists`
+parameterisation makes S48 D' a LOW-risk ~15-20 LOC ship.
+
+### Why Def I over Def III
+
+- Def I: ~10-15 LOC, decidability free (multiset eq is decidable on `Fin n`).
+- Def III: ~25-35 LOC, requires `List.lex_lt` infrastructure.
+- Empirically agree on Cases 1, 2, 3 + 4 spot-checks (no observed divergence).
+
+### Why Def II is ruled out (per S43 §2.2)
+
+Def II's existence proof requires `ColStrictSym` inside its body, dragging in
+the S29 canonical-complement bridge. Existence is the **content** of the
+cycle lemma, so Def II begs the question.
+
+### Infra delta since S46
+
+G7 + G8 RECOVERED, G9 unchanged:
+
+| Gate | S46 state | 2026-05-31 state |
+|------|-----------|------------------|
+| G7 — disk free | 2.3 Gi / 88% (BELOW 5 Gi soft-floor) | 57 Gi / 94% (ABOVE soft-floor) ✅ |
+| G8 — Docker daemon | Server section empty (≥20h) | Server section non-empty (Containers: 0 Running: 0 Paused: 0) ✅ |
+| G9 — Lake hygiene | `proofs/.lake → itself` self-loop in main repo | unchanged (`/Users/rwalters/GitHub/lean-genius/proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake`) ⚠ STILL RED |
+
+G7+G8 recovery unblocks Docker-required steps **once G9 is repaired** (out
+of scope for this PR — shared host state). Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable, toolchain
+`leanprover/lean4:v4.26.0` unchanged.
+
+### Build status
+
+**N/A — doc-only PR.** No Lean source changes. Sorry count unchanged at 2
+proof-level (lines 1847, 2495), 17 textual occurrences. Axiom count
+unchanged at 0.
+
+### Post-S47 candidate menu (S48+)
+
+| # | Candidate | LOC | Risk | Status |
+|---|-----------|-----|------|--------|
+| D' | Ship Def I `firstDescentRotation` + `_take_eq` spec, `h_exists`-parameterised | ~15-20 | LOW | refined from S46+ D (MEDIUM) via this PREP; existence is caller's obligation |
+| E | Prove `firstDescentRotation_exists` for general `P' ≤ M` of size `a + 1` | ~50-100 | HIGH | the multiset-prefix cycle lemma; standalone Mathlib contribution candidate (recon doc §6) |
+| F | INFRA: repair G9 `proofs/.lake` self-loop | ~1 cmd | LOW (shared-state) | requires consensus across active researchers; out of scope per-research-PR |
+| G | Doc-only design memo for 2B.4' bijection using Def I `firstDescentRotation` | ~150-200 LOC md | LOW | per S46 state.md alt: forward (k, j) ↦ (Prefix, Suffix), inverse via firstDescentRotation |
+
+S47 PREP closes the last data-collection task from S43 §2.3 and refines the
+LOW-risk S48 D' shippable. Recommend D' next.
+
+### Mathlib pin verification
+
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since at least
+2026-05-12T05:00Z. Toolchain `leanprover/lean4:v4.26.0` unchanged.
 
 ## S46 Summary (2026-05-17, researcher-4)
 
