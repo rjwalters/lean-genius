@@ -1,12 +1,49 @@
 # Current State
 
-**Phase**: REFINEMENT (gallery `verified`/`verified` preserved; S14 S6 ACT merged #19634 14:32Z — +2 aggregator theorems shipped under "build pending" qualifier; **3-RED INFRA standing — Docker daemon hung + host disk 100% (3.9 Gi avail) + `proofs/.lake` circular self-symlink**)
-**Since**: 2026-05-16T19:08:00Z
-**Iteration**: 15 (S5 → S5b PREP → S6b PREP → S6 PREP → S7 STATE-SYNC → S14 S6 ACT → **S15 STATE-SYNC (this PR)**)
+**Phase**: REFINEMENT (gallery `verified`/`verified` preserved; S16 ACT — +5 leaf-only API ergonomics theorems incl. `MixedPseudomanifold.mono` shipped under "build pending" qualifier; infra status carried forward from S15)
+**Since**: 2026-05-30 (S16); was 2026-05-16T19:08:00Z (S15)
+**Iteration**: 16 (S5 → S5b PREP → S6b PREP → S6 PREP → S7 STATE-SYNC → S14 S6 ACT → S15 STATE-SYNC → **S16 ACT (this PR)**)
 
-## Current Focus
+## Current Focus (S16 ACT, 2026-05-30, researcher-1)
 
-S15 STATE-SYNC (researcher-10, 2026-05-16T~19:08Z, **doc-only post-S14 ACT pivot — mechanic flip-flop absorb + 3-RED INFRA re-affirm**): absorbs the post-S14 ACT (#19634, researcher-4, merged 14:32Z) drift wave into `state.md` + JSON. Two mechanic PRs landed between S14 and now: #19715 (T+2h48m post-S14, **wrong**: `theoremCount: 8→9, defCount: 3→2` — counted `noncomputable def boundaryDoorCount` as theorem) then #19738 (T+1h post-#19715, **corrective**: reverted to `8/3` matching ground truth). Net mechanic effect: JSON `leanFiles[0]` byte-stable at S14-shipped values (`216/8/3/0/0`), but 2 PRs occupy slug history un-absorbed in state.md `Sibling PR ledger`. State.md head was 5+ spots positionally stale (still labelled S14 ACT as `(this PR)`; Open PRs referenced S7 STATE-SYNC researcher-8; Attempt Counts at 9 vs reality 14; Path-to-Verification table marked S7 as `🚧 PR (this session)`). 3-RED INFRA persists vs S14 ACT measurements: B1 disk **worsened −2.8 Gi over ~5h08m** (6.7 Gi → 3.9 Gi; **below same-day ACT floor 5.4 Gi**); B2 Docker still hung; B3 `proofs/.lake → /Users/rwalters/.../proofs/.lake` circular self-symlink (escalated from AMBER to explicit RED in JSON `blockers`).
+S16 ACT (researcher-1, 2026-05-30) — adds five leaf-only API ergonomics
+theorems to `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean`, totaling +51
+LOC (216 → 267) and +5 theorems (8 → 13). The substantive addition is
+`MixedPseudomanifold.mono` (line 150): any sub-complex of a mixed
+pseudomanifold is itself a mixed pseudomanifold. The four supporting
+lemmas — `topCellsOfDim_subset`, `mem_topCellsOfDim_iff`,
+`topCellsOfDim_empty`, `MixedPseudomanifold.empty` — fill in the
+basic membership / empty-complex API surface that was missing.
+
+**Risk profile**: all five lemmas are leaf-only (no new imports, no new
+definitions, no new structures, no sorries, no axioms). Bodies exercise
+only stock Mathlib (`Finset.filter_subset`, `Finset.mem_filter`,
+`Finset.filter_empty`, `Finset.filter_subset_filter`, `Finset.card_le_card`,
+`le_trans`) at the same SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(Mathlib v4.26.0) verified in S6b PREP / S15 STATE-SYNC. `omit [DecidableEq E] in`
+matches the existing pattern on `topCellsOfDim_eq_of_pure` (line 74).
+
+**Build qualifier**: 🚧 **build pending** — inherits S14 ACT / S15
+STATE-SYNC infra status. Per researcher-1 memo, no fresh Docker
+invocation was attempted; pre-S6 surface last verified at S5 (#19010,
+7745 jobs, 2026-05-15).
+
+**Files modified**:
+
+1. `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (+51 LOC)
+2. `src/data/proofs/sperner-simplicial-bridge-oq-01/meta.json` (theoremCount
+   8→13, lineCount 216→267, new `api-ergonomics` section entry, +1
+   `originalContributions` bullet)
+3. NEW session memo `2026-05-30-s16-api-ergonomics-monotonicity.md`
+4. This `state.md` head refresh
+
+## Prior Focus (S15 STATE-SYNC, 2026-05-16, researcher-10)
+
+S15 STATE-SYNC (researcher-10, 2026-05-16T~19:08Z, **doc-only post-S14 ACT pivot — mechanic flip-flop absorb + 3-RED INFRA re-affirm**):
+
+(Original S15 content carried forward below.)
+
+Original S15 narrative: absorbs the post-S14 ACT (#19634, researcher-4, merged 14:32Z) drift wave into `state.md` + JSON. Two mechanic PRs landed between S14 and now: #19715 (T+2h48m post-S14, **wrong**: `theoremCount: 8→9, defCount: 3→2` — counted `noncomputable def boundaryDoorCount` as theorem) then #19738 (T+1h post-#19715, **corrective**: reverted to `8/3` matching ground truth). Net mechanic effect: JSON `leanFiles[0]` byte-stable at S14-shipped values (`216/8/3/0/0`), but 2 PRs occupy slug history un-absorbed in state.md `Sibling PR ledger`. State.md head was 5+ spots positionally stale (still labelled S14 ACT as `(this PR)`; Open PRs referenced S7 STATE-SYNC researcher-8; Attempt Counts at 9 vs reality 14; Path-to-Verification table marked S7 as `🚧 PR (this session)`). 3-RED INFRA persists vs S14 ACT measurements: B1 disk **worsened −2.8 Gi over ~5h08m** (6.7 Gi → 3.9 Gi; **below same-day ACT floor 5.4 Gi**); B2 Docker still hung; B3 `proofs/.lake → /Users/rwalters/.../proofs/.lake` circular self-symlink (escalated from AMBER to explicit RED in JSON `blockers`).
 
 **S15 deliverables (3-file doc-only)**:
 
@@ -65,7 +102,8 @@ S15 STATE-SYNC (researcher-10, 2026-05-16T~19:08Z, **doc-only post-S14 ACT pivot
 | Session 14 (S6 ACT) | 2026-05-16 | researcher-4 | #19634 (merged 14:32Z) | ACT bundled: applies S5b PREP §3 (4 `omit` directives) + S6 PREP §7 (Variant A alias + Variant B global existential, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (184 → 216 LOC, 6 → 8 theorems, 0 sorries / 0 axioms preserved). Meta.json counts bumped (theoremCount 7→8 also absorbs the +1 drift). **Build pending — Docker daemon hung + host disk 100% (6.7 Gi avail at ship time)**. Risk profile minimal: leaf-only additions, no new imports/structures/sorries/axioms; `omit` directives are metadata-only. |
 | (mechanic) | 2026-05-16 | mechanic | #19715 (merged 17:20Z) | **WRONG**: leanFiles[0] reclassified `theoremCount: 8 → 9`, `definitionCount: 3 → 2` — likely counted `noncomputable def boundaryDoorCount` (L152) as a theorem. JSON only; reverted by #19738 1h later. Re-flag mechanic heuristic for downstream review. |
 | (mechanic) | 2026-05-16 | mechanic | #19738 (merged 18:20Z) | **CORRECTIVE**: leanFiles[0] reverted `theoremCount: 9 → 8`, `definitionCount: 2 → 3` — restores S14-shipped values matching ground-truth (8 theorems + 3 defs incl. noncomputable). JSON only. Net mechanic pair effect: byte-stable, but 2 PRs in slug history un-absorbed in ledger. |
-| Session 15 (S15 STATE-SYNC) | 2026-05-16 | researcher-10 | (this PR) | STATE-SYNC doc-only: absorbs S14 S6 ACT + mechanic flip-flop pair (#19715 wrong → #19738 corrective) + 3-RED INFRA escalation (B1 disk worsened −2.8 Gi → 3.9 Gi RED; B2 Docker still hung; B3 `proofs/.lake` circular RED). 3 files (state.md + JSON 9-field + new session memo ~280 LOC). 1-bearer spot-check (sperner_mixed_panchromatic_at_dim L174, 0 drift). 0 Lean / 0 gallery meta / 0 leanFiles[] modifications. |
+| Session 15 (S15 STATE-SYNC) | 2026-05-16 | researcher-10 | (merged) | STATE-SYNC doc-only: absorbs S14 S6 ACT + mechanic flip-flop pair (#19715 wrong → #19738 corrective) + 3-RED INFRA escalation (B1 disk worsened −2.8 Gi → 3.9 Gi RED; B2 Docker still hung; B3 `proofs/.lake` circular RED). 3 files (state.md + JSON 9-field + new session memo ~280 LOC). 1-bearer spot-check (sperner_mixed_panchromatic_at_dim L174, 0 drift). 0 Lean / 0 gallery meta / 0 leanFiles[] modifications. |
+| Session 16 (S16 ACT) | 2026-05-30 | researcher-1 | (this PR) | ACT: adds 5 leaf-only API ergonomics theorems (`topCellsOfDim_subset`, `mem_topCellsOfDim_iff`, `topCellsOfDim_empty`, `MixedPseudomanifold.empty`, `MixedPseudomanifold.mono`) in new `API ergonomics` section between `MixedPseudomanifold.of_pure` and the `Per-stratum Sperner` section. File: 216 → 267 LOC (+51), 8 → 13 theorems (+5). 0 sorries / 0 axioms preserved. Substantive content: `MixedPseudomanifold.mono` — sub-complexes of mixed pseudomanifolds are mixed pseudomanifolds, via `Finset.filter_subset_filter` + `Finset.card_le_card` + `le_trans`. `mem_topCellsOfDim_iff` consumed inside `.mono`'s body. **Build pending** — inherits S14 / S15 infra status. |
 
 ## Lean File Snapshot
 

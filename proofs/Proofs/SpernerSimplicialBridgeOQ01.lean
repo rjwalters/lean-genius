@@ -110,6 +110,57 @@ theorem MixedPseudomanifold.of_pure {d : Nat}
   · rw [topCellsOfDim_eq_empty_of_pure K hcard hd, Finset.filter_empty]
     exact Nat.zero_le _
 
+/-! ## API ergonomics: stratum membership, empty complex, and monotonicity -/
+
+/-- `topCellsOfDim K d` is a sub-`Finset` of `K`. -/
+omit [DecidableEq E] in
+theorem topCellsOfDim_subset (K : Finset (Finset E)) (d : Nat) :
+    topCellsOfDim K d ⊆ K := by
+  unfold topCellsOfDim
+  exact Finset.filter_subset _ _
+
+/-- Clean iff form of stratum membership: `s` lies in the dimension-`d`
+stratum iff `s ∈ K` and `s` has exactly `d + 1` vertices. -/
+omit [DecidableEq E] in
+theorem mem_topCellsOfDim_iff {d : Nat} {K : Finset (Finset E)} {s : Finset E} :
+    s ∈ topCellsOfDim K d ↔ s ∈ K ∧ s.card = d + 1 := by
+  unfold topCellsOfDim
+  exact Finset.mem_filter
+
+/-- Every dimension stratum of the empty complex is empty. -/
+omit [DecidableEq E] in
+theorem topCellsOfDim_empty (d : Nat) :
+    topCellsOfDim (∅ : Finset (Finset E)) d = ∅ := by
+  unfold topCellsOfDim
+  exact Finset.filter_empty _
+
+/-- The empty complex is (vacuously) a mixed pseudomanifold. -/
+omit [DecidableEq E] in
+theorem MixedPseudomanifold.empty :
+    MixedPseudomanifold (∅ : Finset (Finset E)) := by
+  intro d f _
+  rw [topCellsOfDim_empty, Finset.filter_empty]
+  exact Nat.zero_le _
+
+/-- **Mixed pseudomanifold is preserved under sub-complexes.** Dropping
+cells from a mixed pseudomanifold can only decrease the count of
+dimension-`d` cells containing any given face, so the `≤ 2` upper bound
+carries through. Useful when restricting attention to a sub-complex. -/
+omit [DecidableEq E] in
+theorem MixedPseudomanifold.mono {K K' : Finset (Finset E)}
+    (hsub : K' ⊆ K) (h : MixedPseudomanifold K) :
+    MixedPseudomanifold K' := by
+  intro d f hf
+  have h_stratum_sub : topCellsOfDim K' d ⊆ topCellsOfDim K d := by
+    intro s hs
+    rw [mem_topCellsOfDim_iff] at hs ⊢
+    exact ⟨hsub hs.1, hs.2⟩
+  have h_filter_sub :
+      (topCellsOfDim K' d).filter (fun s => f ⊆ s)
+        ⊆ (topCellsOfDim K d).filter (fun s => f ⊆ s) :=
+    Finset.filter_subset_filter _ h_stratum_sub
+  exact le_trans (Finset.card_le_card h_filter_sub) (h d f hf)
+
 /-! ## Per-stratum Sperner via the parent's `exists_panchromatic`
 
 The Sperner-mixed theorem decomposes stratum by stratum: fixing a
