@@ -11,6 +11,7 @@
   Builds on RothTheorem.lean which proves the qualitative r₃(N) = o(N).
 -/
 import Mathlib
+import Proofs.RothTheorem
 
 namespace Szemeredi.Roth.Quantitative
 
@@ -131,6 +132,57 @@ theorem rothNumber_three : rothNumber 3 = 2 := by
   intro a d hd ha had hadd
   simp only [Finset.mem_insert, Finset.mem_singleton] at ha had hadd
   fin_cases a <;> fin_cases d <;> simp_all
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART I.B: QUALITATIVE ROTH ASYMPTOTIC
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- The two `APFree` definitions (here in `Szemeredi.Roth.Quantitative` and
+    in the parent `Szemeredi.Roth`) have identical bodies. -/
+private lemma apFree_to_parent {N : ℕ} {A : Finset (ZMod N)} (h : APFree A) :
+    Szemeredi.Roth.APFree A :=
+  fun a d hd ha had => h a d hd ha had
+
+/-- **Qualitative Roth asymptotic** over `ZMod N`: `r₃(N)/N → 0` as `N → ∞`.
+
+    This is the qualitative content of Roth's theorem for the cyclic-group
+    setting: the maximum density of an AP-free subset of `ZMod N` tends to
+    zero. The quantitative theorems in Part III (all sorried) sharpen this
+    to explicit decay rates from Roth (1953) through Kelley–Meka (2023).
+
+    The proof reduces to `Szemeredi.Roth.roth_density_bound`, which routes
+    through Mathlib's `roth_3ap_theorem_nat` via the corners-theorem chain
+    (Regularity Lemma → Triangle Removal → Corners → Roth). -/
+theorem rothNumber_div_tendsto_zero :
+    Filter.Tendsto (fun N : ℕ => (rothNumber N : ℝ) / N) Filter.atTop (nhds 0) := by
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  -- Reduce to `δ = min ε 1 ∈ (0, 1]` so we can invoke `roth_density_bound`.
+  set δ := min ε 1 with hδ_def
+  have hδ_pos : 0 < δ := lt_min hε one_pos
+  have hδ_le_one : δ ≤ 1 := min_le_right _ _
+  have hδ_le_ε : δ ≤ ε := min_le_left _ _
+  obtain ⟨N₀, hN₀⟩ := Szemeredi.Roth.roth_density_bound δ hδ_pos hδ_le_one
+  refine ⟨max N₀ 1, ?_⟩
+  intro N hN
+  have hN₀_le : N₀ ≤ N := (le_max_left _ _).trans hN
+  have hN1_le : 1 ≤ N := (le_max_right _ _).trans hN
+  haveI : NeZero N := ⟨by omega⟩
+  have hN_pos : (0 : ℝ) < N := by exact_mod_cast hN1_le
+  -- `|rothNumber N / N - 0| = rothNumber N / N` (both numerator and denominator nonneg).
+  rw [Real.dist_eq, sub_zero, abs_div, abs_of_nonneg (Nat.cast_nonneg _),
+      abs_of_pos hN_pos, div_lt_iff hN_pos]
+  -- Suffices to show `rothNumber N < δ * N`, since `δ ≤ ε` and `N ≥ 0`.
+  suffices h : (rothNumber N : ℝ) < δ * N by
+    calc (rothNumber N : ℝ) < δ * N := h
+      _ ≤ ε * N := by
+          have hN_nn : (0 : ℝ) ≤ N := le_of_lt hN_pos
+          exact mul_le_mul_of_nonneg_right hδ_le_ε hN_nn
+  by_contra hge
+  push_neg at hge  -- `(rothNumber N : ℝ) ≥ δ * N`
+  obtain ⟨A, hA_free, hA_card⟩ := rothNumber_achieved (N := N)
+  have hA_dens : (A.card : ℝ) ≥ δ * N := by rw [hA_card]; exact hge
+  exact hN₀ N hN₀_le A hA_dens (apFree_to_parent hA_free)
 
 -- ═══════════════════════════════════════════════════════════════════
 -- PART II: ITERATION BOUND FROM DENSITY INCREMENT
