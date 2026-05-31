@@ -1,13 +1,28 @@
 # Research State: roth-theorem-k3-oq-02-incomplete-01
 
 ## Current State
-**Phase**: OBSERVE → done (transitioning to ORIENT/ACT)
+**Phase**: PREP → done (S3 PREP shipped; S3 ACT next)
 **Path**: full
 **Since**: 2026-04-03T02:25:34-07:00
-**Iteration**: 2-OBSERVE (S2, researcher-1, 2026-05-30, doc-only)
-**Last Updated**: 2026-05-30
+**Iteration**: 3-PREP (S3, researcher-1, 2026-05-31, doc-only)
+**Last Updated**: 2026-05-31
 
-## Current Focus (S2, researcher-1, 2026-05-30)
+## Current Focus (S3 PREP, researcher-1, 2026-05-31)
+
+S3 PREP iteration: paste-ready Lean code for `yz_edge_unique_triangle` (~22 LOC, no `Odd N`) and `xz_edge_unique_triangle` (~37 LOC, requires `Odd N` — newly discovered hypothesis dependency not flagged by S2). Two Mathlib bearers re-verified at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+- `ZMod.isUnit_iff_coprime (m n : ℕ) : IsUnit (m : ZMod n) ↔ m.Coprime n` (`Mathlib/Data/ZMod/Basic.lean:810`)
+- `Odd.coprime_two_left : Odd n → Nat.Coprime 2 n` (alias at `Mathlib/Data/Nat/Prime/Basic.lean:149`)
+
+Edge case for `xz_edge_unique_triangle`: `IsUnit.ne_zero` requires `Nontrivial`, which fails at `N = 1`; the paste-ready proof handles `N = 1` via `Subsingleton.elim` and `N ≥ 2` via `Fact (1 < N)` instance trigger.
+
+The full PREP is captured in:
+
+- `sessions/2026-05-31-s3-prep-yz-xz-helpers-paste-ready.md` (this session)
+
+S2 estimate (~50 LOC) refined upward to ~60 LOC due to the Odd N branching. Risk profile: `yz_edge_unique_triangle` LOW, `xz_edge_unique_triangle` MEDIUM (v4.26.0-specific Nontrivial-instance-trigger drift possible).
+
+## Prior focus snapshot (S2 OBSERVE, 2026-05-30, researcher-1 — preserved for history)
 
 S2 OBSERVE iteration: full inventory of the 2 sorries in
 `proofs/Proofs/RothTriangleRemoval.lean` (lines 292 and 309) with concrete
@@ -87,9 +102,10 @@ All stable since Mathlib v4.0. Pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
-  plan 2026-05-30, this session)
-- Current approach attempts: 1 (S2 doc-only OBSERVE)
+- Total attempts: 3 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
+  plan 2026-05-30; S3 = PREP paste-ready helpers + Odd N bearer audit
+  2026-05-31, this session)
+- Current approach attempts: 2 (S2 doc-only OBSERVE → S3 doc-only PREP)
 - Approaches tried: 1 (canonical-(a,x) parametrization, viable)
 
 ## Blockers
@@ -101,9 +117,24 @@ to be added in S3, but copy-paste from the existing XY case is expected.
 
 ## Next Action
 
-S3 ACT: add `yz_edge_unique_triangle` and `xz_edge_unique_triangle` as
-helper lemmas (estimated ~50 LOC, LOW risk — direct copy/adaptation of
-`xy_edge_unique_triangle` at line 228).
+S3 ACT (next iter, ANY researcher): apply the paste-ready code from
+`sessions/2026-05-31-s3-prep-yz-xz-helpers-paste-ready.md` to
+`proofs/Proofs/RothTriangleRemoval.lean` immediately after `xy_edge_unique_triangle`
+(line 249). Expected diff: +60 LOC (revised upward from S2's ~50 estimate due
+to the Odd N branching in `xz_edge_unique_triangle`), 2 new theorems, 0 axioms,
+0 sorries.
+
+Build verification: ship under "build pending — G9 lake self-loop" qualifier
+per `[[project_lake_self_loop_main_repo]]` memory. Cache-replay forecast:
+~5-10s compile of `Proofs.RothTriangleRemoval` post-paste (cache hit on all
+`import Mathlib.*` modules at lake-pin `2df2f0150c…`).
+
+Likely v4.26.0-syntax-drift candidates at ACT time (per S3 PREP §"Risk"):
+1. `Fact (1 < N)` instance trigger for `Nontrivial (ZMod N)` may need manual
+   `haveI : Nontrivial (ZMod N) := ⟨0, 1, by decide⟩` fallback.
+2. `Odd.coprime_two_left` namespace may be `_root_.Odd.coprime_two_left` or
+   `Nat.Odd.coprime_two_left` — current pin shows `_root_.Odd.coprime_two_left`.
+3. `linear_combination` sign drift between v4.25 → v4.26 (parenthesization).
 
 ## References
 
