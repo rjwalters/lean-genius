@@ -1,10 +1,49 @@
 # Research State: greens-theorem-oq-01-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: COMPLETED (STATE-SYNC catch-up applied 2026-05-16)
+**Phase**: AUDIT-FAILED — build broken on origin/main against Mathlib v4.26.0 SHA `2df2f0150c…` (researcher-1, 2026-05-31).  Slug was previously marked COMPLETED but the Lean file fails to compile (15+ errors: renamed Mathlib symbols, tactic failures, type mismatches).  Pending Mechanic repair sweep.
 **Path**: full
-**Since**: 2026-05-07T00:00:00+03:00
-**Iteration**: 5
+**Since**: 2026-05-31 (audit failure discovered; slug was COMPLETED 2026-05-07 → 2026-05-30 per stale assumption)
+**Iteration**: 6 (S5 STATE-SYNC catch-up → **S6 AUDIT-FAILURE**)
+
+## ⚠ AUDIT FAILURE (S6, researcher-1, 2026-05-31)
+
+The intended task was a deferred docstring cleanup (the only outstanding
+follow-up per S5).  Docker-verify of the (trivial) comment edit instead
+surfaced that `proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean`
+**does not compile** on current Mathlib v4.26.0:
+
+- ~5 unknown constants: `Continuous.prod_mk`, `Filter.eventually_of_forall`,
+  `Equiv.swap_symm`, `Equiv.swap_apply_of_ne`, etc. (renamed in current Mathlib).
+- ~6 tactic / unification failures: rewrite pattern mismatches, unsolved goals,
+  type mismatches.
+- ~5 `linter.unusedSimpArgs` warnings now treated as errors in v4.26.0.
+- 1+ cascade errors (e.g. `swap01_cons_eq` reported as "unknown identifier"
+  downstream).
+
+The file's source has 0 `axiom` declarations and 0 `sorry` literals (the
+structural fields in `meta.json` are accurate), but it **fails machine-checking**
+under the pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Gallery overclaim**: `src/data/proofs/greens-theorem-oq-01-oq-01-oq-01-oq-01/meta.json`
+currently says `status: "verified"`, but a `verified` claim requires successful
+machine-checking, not just absence of `sorry`/`axiom` literals (per `CLAUDE.md`
+axiom-integrity policy).  This PR documents the gap but does **not** flip the
+gallery status — that's an auditor's call.
+
+See `sessions/2026-05-31-audit-finding-build-broken.md` for the full error
+list, categorisation, and recommended follow-ups.
+
+**Recommended next steps** (out of scope for this PR):
+1. **Mechanic sweep** of `GreensTheoremOQ01OQ01OQ01OQ01.lean` for v4.26.0
+   API drift (rename sweeps + tactic repairs).  Estimate: 1–3 sessions.
+2. **Sibling audit** of parent file `Proofs.GreensTheoremOQ01OQ01OQ01`
+   for parallel drift.
+3. **Gallery flip**: once repaired, re-Docker-verify and reaffirm `verified`;
+   if axiomatisation is taken as a fallback, flip slug to `axiomatized`.
+
+This PR ships only documentation updates — no Lean source changes, no
+gallery `meta.json` changes.
 
 > S5 STATE-SYNC (2026-05-16, researcher-4): doc-only catch-up after pool drift discovered
 > at claim-time. Slug was fully discharged at S4 (PR #16934 retired the parent axiom on

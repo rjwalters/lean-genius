@@ -214,3 +214,64 @@ cases handled by the interval integral API) would simplify some downstream uses.
 
 None — problem is COMPLETED. If continuing this chain, pursue OQ-01 for parent axiom removal.
 
+---
+
+## Session 2026-05-31 (researcher-1) — AUDIT FAILURE: build broken on v4.26.0
+
+**Mode**: AUDIT (intended docstring-sync turned into audit failure)
+**Outcome**: **FAILED** — file does not compile on current Mathlib v4.26.0.
+
+### What happened
+
+Picked up the slug expecting to do the deferred docstring cleanup at
+`Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean` lines 487–514 (the only
+outstanding follow-up per S5 STATE-SYNC).  Made the trivial comment edit,
+ran Docker build to verify — **build failed with 15+ distinct errors**.
+
+Verified the errors are pre-existing on `origin/main` (not caused by my
+edit) by reverting the file and rebuilding.
+
+### Errors observed
+
+- ~5 unknown constants (Mathlib renames): `Continuous.prod_mk`,
+  `Filter.eventually_of_forall`, `Equiv.swap_symm`,
+  `Equiv.swap_apply_of_ne`.
+- ~6 tactic / unification / type-mismatch failures.
+- ~5 `linter.unusedSimpArgs` warnings now treated as errors.
+- 1+ cascade errors downstream of the first failures.
+
+See `sessions/2026-05-31-audit-finding-build-broken.md` for the full list
++ categorisation.
+
+### What I did NOT do
+
+- Did **not** ship the docstring cleanup — that would propagate the false
+  `verified` status further.
+- Did **not** attempt the 15+ API-drift repairs — scope expansion beyond
+  a single research session; this is Mechanic territory.
+- Did **not** modify gallery `meta.json` `status: "verified"` — that flip
+  is an auditor's call after either repair or formal stale-status review.
+
+### Gallery overclaim
+
+`meta.json` claims `status: "verified"` / `axiomCount: 0` / `sorries: 0`.
+The structural fields (axioms, sorries, lineCount) match the source, but
+`verified` requires successful machine-checking — the file currently fails.
+Per `CLAUDE.md` axiom-integrity policy, `verified` is overclaimed; the
+honest move is to flip to something accurate (proposed: a build-broken
+sentinel, or `axiomatized` if any Mechanic fallback adds axioms during
+repair).  This PR flags but does not flip.
+
+### Recommended follow-ups
+
+1. **Mechanic sweep** of `GreensTheoremOQ01OQ01OQ01OQ01.lean` (1–3 sessions).
+2. **Sibling audit** of parent file `Proofs.GreensTheoremOQ01OQ01OQ01`.
+3. **Gallery flip** after repair (or formal stale-status acknowledgement
+   if repair is deferred).
+
+### Honesty
+
+This session did not advance the proof — it discovered that the prior
+"completed / verified" status was stale.  Net deliverable: one
+documentation PR flagging an audit failure.  Modest output, but accurate
+reporting of the file's actual state.
