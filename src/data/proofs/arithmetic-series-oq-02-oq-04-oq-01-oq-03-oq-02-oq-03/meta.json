@@ -169,7 +169,10 @@
   "leanFile": {
     "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
     "namespace": "QMultichooseCoefficients",
-    "imports": ["Mathlib", "Proofs.CombinationsFormulaOQ03"],
+    "imports": [
+      "Mathlib",
+      "Proofs.CombinationsFormulaOQ03"
+    ],
     "axiomCount": 0,
     "lineCount": 228,
     "theoremCount": 12,
