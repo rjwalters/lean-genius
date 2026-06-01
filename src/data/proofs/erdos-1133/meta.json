@@ -28,12 +28,17 @@
       {
         "theorem": "Polynomial",
         "description": "Polynomial definitions and evaluation",
-        "module": "Mathlib.Data.Polynomial.Basic"
+        "module": "Mathlib.Algebra.Polynomial.Basic"
       },
       {
         "theorem": "Polynomial.eval",
         "description": "Polynomial evaluation at a point",
-        "module": "Mathlib.Data.Polynomial.Eval"
+        "module": "Mathlib.Algebra.Polynomial.Eval.Defs"
+      },
+      {
+        "theorem": "Polynomial.natDegree",
+        "description": "Natural-number degree of a polynomial",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
       },
       {
         "theorem": "Real.cos",
@@ -89,7 +94,7 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 195,
+    "lineCount": 194,
     "assumptions": "1 axiom: lagrange_interpolation (existence and uniqueness of degree-<n polynomial through n distinct points). All other results proved as theorems (0 sorries).",
     "theoremCount": 2,
     "definitionCount": 8
@@ -117,50 +122,50 @@
       "id": "definitions",
       "title": "Basic Definitions",
       "summary": "Defines polyEval (P.eval x wrapper), maxNormOnInterval (sSup of |P(x)| on [-1,1] — the Chebyshev/L∞ norm), SamplePoints n (functions Fin n → [-1,1] for sample locations), and TargetValues n (functions Fin n → [-1,1] for chosen values). These are the building blocks for the interpolation game.",
-      "startLine": 46,
-      "endLine": 74
+      "startLine": 48,
+      "endLine": 76
     },
     {
       "id": "interpolation",
       "title": "Interpolation Conditions",
       "summary": "Defines ApproximatelyInterpolates: ∃ S ⊆ Fin n with |S| ≥ n - ⌊εn⌋ and P(x_i) = y_i on S — the polynomial matches at least (1-ε)n points exactly. Defines HasBoundedDegree: natDegree P < ⌊(1+ε)n⌋. For ε = 0, these reduce to exact Lagrange interpolation of degree < n through all n points.",
-      "startLine": 75,
-      "endLine": 94
+      "startLine": 77,
+      "endLine": 95
     },
     {
       "id": "conjecture",
       "title": "The Erdős Conjecture",
       "summary": "ErdosConjecture1133 as a five-quantifier Lean Prop: ∀ C > 0, ∃ ε > 0, ∃ N, ∀ n ≥ N, ∀ x ∈ [-1,1]^n, ∃ y ∈ [-1,1]^n, ∀ P with bounded degree and approximate interpolation: ‖P‖_∞ > C. The adversarial ∃y∀P structure makes this a minimax problem. Status: OPEN since 1967.",
-      "startLine": 95,
-      "endLine": 116
+      "startLine": 96,
+      "endLine": 117
     },
     {
       "id": "related",
       "title": "Related Result (Known by Erdős)",
       "summary": "Documents Erdős's weaker existence theorem in a docstring (Part IV): for any C > 0, ∃ ε > 0 such that for large n and m = ⌊(1+ε)n⌋ sample points, ∃ P of degree ≤ n with |P(x_i)| ≤ 1 for all i yet ‖P‖_∞ > C. The key difference: this quantifies ∃P (finds one bad polynomial) while the conjecture quantifies ∀P (all polynomials matching y are bad). No Lean declaration is made here — background context only.",
-      "startLine": 117,
-      "endLine": 128
+      "startLine": 119,
+      "endLine": 130
     },
     {
       "id": "lagrange",
       "title": "Lagrange Interpolation Theory",
       "summary": "One axiom: lagrange_interpolation (∃! P of degree < n through n distinct points — the classical existence-uniqueness theorem). The divergence of Lagrange interpolation on uniform nodes (Runge's phenomenon) is documented in a surrounding docstring as background only — no `axiom lagrange_divergence` is declared. The Lebesgue constant Λ_n → ∞ for ANY node sequence (Faber 1914).",
-      "startLine": 129,
-      "endLine": 146
+      "startLine": 131,
+      "endLine": 149
     },
     {
       "id": "chebyshev",
       "title": "Chebyshev Connection",
       "summary": "Defines `chebyshevNodes(n, k) = cos(π(2k+1)/(2n))` — the roots of the Chebyshev polynomial T_n. Notes in a docstring that Chebyshev nodes minimize the Lebesgue constant (optimality property), but no `axiom chebyshev_optimal` is declared — only the definition and background context. These nodes don't resolve the conjecture since the adversary chooses arbitrary nodes.",
-      "startLine": 147,
-      "endLine": 161
+      "startLine": 150,
+      "endLine": 163
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "summary": "exact_interpolation_case: for ε = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via Classical.choose_spec). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
-      "startLine": 162,
-      "endLine": 195
+      "summary": "exact_interpolation_case: for ε = 0, Lagrange gives the unique polynomial through all n points (proved from lagrange_interpolation via ExistsUnique.exists). erdos_1133_summary wraps this as the main result. ErdosConjecture1133 remains OPEN — formalized as a Lean Prop but with no proof or disproof.",
+      "startLine": 164,
+      "endLine": 194
     }
   ],
   "crossReferences": [
@@ -267,10 +272,12 @@
   },
   "leanFile": {
     "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Polynomial.Basic",
-      "Mathlib.Data.Polynomial.Eval",
       "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Analysis.Normed.Field.Basic"
     ],
@@ -278,7 +285,7 @@
       "Polynomial"
     ],
     "namespace": "Erdos1133",
-    "lineCount": 195,
+    "lineCount": 194,
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 8,
