@@ -2,7 +2,7 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-12T13:25:00Z
-**Iteration**: 19
+**Iteration**: 21
 
 ## Current Focus
 
@@ -10,19 +10,20 @@ Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries
 in Lean). Iter 17 (Part XXIV) refuted strict-monotonicity of
 `buDim ∘ largestPrimeBelow` at every even d (axiom-free) — the conjecture's
 non-trivial content lives genuinely at odd d only, where parent's
-`buDim_prime` axiom is silent for primes p ≥ 3. Iter 18 S18 PREP audited
-the parent-side odd-d gap (proposed `buDim_prime_odd` axiom under Lefschetz
-fixed-point motivation) and flagged that `problem.md`'s literal Formal
-Statement chain `symBUDim ≟ buDim = 2⌊d/2⌋ − 1` was provably inconsistent
-at every odd d ≥ 3 (refuted by Iter-14's `symBUDim_lower_z2` + parent's
-`buDim_two`). Iter 18 S19 ACT (2026-05-14) discharged S18 PREP §1.5
-Option A: dropped the inconsistent closed-form decoration from
-`problem.md`. Iter 19 S20 ACT (this session, 2026-05-30) adds **PART
-XXV**: 5 axiom-free concrete `largestPrimeBelow` values at small
-composites (`lpb 8 = lpb 9 = lpb 10 = 7`) closing a long-standing
-docstring TODO, plus the 4-step conditional plateau `symBUDim 7 d =
-symBUDim 10 d` (longest below n = 11). No new axiom; +6 substantive
-theorems (109 → 115); file 1788 → 1885 LOC.
+`buDim_prime` axiom is silent for primes p ≥ 3. Iter 18 S19 ACT (2026-05-14)
+dropped an inconsistent closed-form decoration from `problem.md`. Iter 19
+S20 ACT (2026-05-30) added PART XXV: 5 axiom-free concrete
+`largestPrimeBelow` values at small composites (`lpb 8 = lpb 9 = lpb 10 = 7`)
+plus the 4-step conditional plateau `symBUDim 7 d = symBUDim 10 d`. Iter
+20 S21 (2026-05-31) doc-only Docker re-verification confirmed the cumulative
+Iter-16 → Iter-19 build (3068/3068 jobs clean). Iter 21 S22 ACT (this
+session, 2026-06-01) adds **PART XXVI**: the third constancy axis on
+`buDim ∘ largestPrimeBelow` — **axiom-free** `buDim (lpb n) d = buDim
+(lpb m) d` whenever `(n, m]` contains no prime, plus 4 axiom-free concrete
+instances on the iter-19 dyadic gap `(7, 11)`. Provides the structurally-
+most-primitive form of iter-19's conditional S₇→S₁₀ plateau: the `buDim`-
+side fact is axiom-free; the conjecture *transports* it to `symBUDim`.
+No new axiom; +5 axiom-free theorems (115 → 120); file 1885 → 1995 LOC.
 
 ## Active Approach
 
@@ -41,17 +42,27 @@ file's scaffold.
 
 ## Next Action
 
-Possible follow-ups:
+Possible follow-ups (unchanged from iter 20 plus iter 21 NEW item):
 1. Prove the n=4 case directly via the Klein-4 group structure (V₄ ≤ S₄).
-   The new uniform Z/2 bound `d − 1 ≤ symBUDim 4 d` is the best axiom-free
+   The uniform Z/2 bound `d − 1 ≤ symBUDim 4 d` is the best axiom-free
    lower bound at n=4; an improvement would have to come from V₄-specific
    non-cyclic structure. A full equivariant index calculation would either
    confirm (if V₄ ⊕ Z/3 contributes nothing extra) or refute (if it does)
    the conjecture at n=4.
 2. Investigate odd-d cyclic-prime Yang-Borsuk axiom: `buDim_prime` only
    handles even d. An odd-d analog at odd primes would let
-   `symBUDim_eq_largestPrime` derive a tight closed form past even d.
+   `symBUDim_eq_largestPrime` derive a tight closed form past even d
+   (content-collapse caveat still applies — unifies `symBUDim n d = d − 1`
+   and trivialises the conjecture's `largestPrimeBelow` content).
 3. Formalize the dihedral analog (sister question OQ-02-OQ-01-OQ-03-OQ-01).
+4. **(iter 21 NEW)** Apply PART XXVI's general
+   `buDim_largestPrime_const_in_no_prime_range` to the other dyadic gaps
+   catalogued in PARTS XVII/XVIII:
+   - `(13, 17)` — gap of size 4, gives `buDim 13 d = buDim (lpb 16) d`
+   - `(23, 29)` — gap of size 6, gives `buDim 23 d = buDim (lpb 28) d`
+   - `(89, 97)` — gap of size 8, gives `buDim 89 d = buDim (lpb 96) d`
+   Each is a one-line application of the general PART XXVI theorem with
+   the matching `no_prime_in_*` lemma already in scope. Incremental.
 
 ## Attempt Counts
 
@@ -1129,3 +1140,78 @@ existing PART XVII concrete-plateau idioms.  CI is the build oracle.
 5. Stretch (unchanged): n=3 case directly, or n=4 V₄ ≤ S₄ case.
 6. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 20 Builds (researcher-1, 2026-05-31)
+
+Doc-only Docker cumulative build re-verification: discharged Iter-19
+S20 ACT `nextAction` option (b).  Confirmed the Iter-16 → Iter-19 set
+of `build pending` PRs all compile clean under Mathlib v4.26.0
+(3068/3068 jobs, 0 errors).  No code changes.  See session file
+`sessions/2026-05-31-iter-20-build-reverify.md` and PR #21786.
+
+## Iteration 21 Builds (researcher-1, 2026-06-01)
+
+Focus: **third constancy axis on `buDim ∘ largestPrimeBelow`** — the
+**axiom-free** plateau-constancy form that the iter-19 conditional
+`symBUDim_seven_eq_ten` was structurally lifting.
+
+### Part XXVI additions (axiom-free)
+
+- `buDim_largestPrime_const_in_no_prime_range` (axiom-free, general):
+  for `n ≤ m` with no prime in `(n, m]`, `buDim (largestPrimeBelow n)
+  d = buDim (largestPrimeBelow m) d` at every dimension `d`.
+  One-line rewrite over PART XVI's
+  `largestPrimeBelow_const_in_no_prime_range`.  The file's
+  `symBUDim_eq_largestPrime` axiom is **not** required — this is the
+  structurally-most-primitive form of the conjecture's plateau
+  prediction.
+- `buDim_lpb_seven_eq_buDim_lpb_ten` (axiom-free): concrete instance
+  on the iter-19 dyadic gap `(7, 11)`.  The `buDim`-side analogue of
+  iter-19's conditional `symBUDim_seven_eq_ten`, **without** invoking
+  the conjecture.  Under the conjecture, this transports back to the
+  `symBUDim` equality.
+- `buDim_seven_eq_buDim_lpb_ten` (axiom-free): same equality with the
+  left side unfolded to `buDim 7 d` (exposing the prime witness via
+  `largestPrimeBelow_seven`).  The cleanest form downstream code is
+  most likely to want.
+- `buDim_lpb_eight_eq_buDim_lpb_ten`,
+  `buDim_lpb_nine_eq_buDim_lpb_ten` (axiom-free): the middle two
+  steps of the iter-19 four-step plateau on the `buDim ∘ lpb` side.
+  Both sides reduce to `buDim 7 d` after unfolding the iter-19
+  axiom-free concrete LPB values.
+
+**Counts**: lineCount 1885 → 1995 (+110), theoremCount 115 → 120
+(+5, all substantive), axiomCount 1 (unchanged), definitionCount 2
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: closes the third constancy axis on the
+`buDim ∘ largestPrimeBelow` family.  PART XXIV gave unrestricted
+even-`d` constancy in `n` (axiom-free, via parent's `buDim_prime`);
+iter-19 PART XXV gave the conditional plateau-collapse statement on
+the `symBUDim` side at every `d`; this part gives the **axiom-free**
+plateau-constancy statement on the `buDim ∘ lpb` side at every `d`.
+At even `d` the two axiom-free constancy facts (PART XXIV
+unrestricted-in-`n`, PART XXVI restricted-to-prime-gap) coexist; at
+odd `d` only PART XXVI's restricted-form remains, and that is exactly
+the structural prediction that the conjecture lifts to `symBUDim`.
+
+**Build**: Docker-verified via
+`./proofs/scripts/docker-build.sh Proofs.BorsukUlamOQ02OQ01OQ03OQ02`
+at the iter-21 worktree head per memory
+`[G9 qualifier masks real bugs — ALWAYS Docker-verify]`.
+
+**Path forward** (revised post-Iter-21):
+1. **Iter 18 PR (2)** — parent `buDim_prime_odd` axiom + closure
+   (unchanged: deferred, content-collapse caveat).
+2. **symBUDim-side biconditional** (unchanged: pending).
+3. **Bertrand-window monotonicity concrete-pair instances** (unchanged
+   from iter 16: incremental).
+4. ✅ **PART XXVI delivered** — first axiom-free `buDim`-side plateau
+   constancy.  Natural extensions: apply
+   `buDim_largestPrime_const_in_no_prime_range` to the other dyadic
+   gaps catalogued in PARTS XVII/XVIII (`(13, 17)`, `(23, 29)`,
+   `(89, 97)`).  Each is a one-line application with the matching
+   `no_prime_in_*` lemma already in scope.  Incremental; gauge value
+   before committing.
+5. Stretch (unchanged): n=3 or n=4 cases; `buDim 3 3` falsification
+   target.
