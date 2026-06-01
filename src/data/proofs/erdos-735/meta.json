@@ -21,11 +21,11 @@
     "erdosNumber": 735,
     "erdosUrl": "https://erdosproblems.com/735",
     "erdosProblemStatus": "solved",
-    "axiomCount": 7,
+    "axiomCount": 5,
     "lineCount": 247,
-    "assumptions": "7 axioms: collinear_is_magic, general_position_is_magic, magic_classification, three_collinear_card, three_collinear_collinear, triangle_card, triangle_general_position. 0 sorries.",
+    "assumptions": "5 axioms: collinear_is_magic, general_position_is_magic, magic_classification, three_collinear_collinear, triangle_general_position. 0 sorries. (three_collinear_card and triangle_card are proved as theorems, not axioms.)",
     "mathlib_version": "4.26.0",
-    "theoremCount": 3,
+    "theoremCount": 5,
     "definitionCount": 16
   },
   "overview": {
@@ -148,8 +148,8 @@
     "opens": ["Classical"],
     "namespace": "Erdos735",
     "lineCount": 247,
-    "axiomCount": 7,
-    "theoremCount": 3,
+    "axiomCount": 5,
+    "theoremCount": 5,
     "definitionCount": 16,
     "path": "Proofs/Erdos735Problem.lean",
     "sorries": 0
