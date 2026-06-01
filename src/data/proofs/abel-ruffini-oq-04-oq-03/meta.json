@@ -53,7 +53,61 @@
       }
     ],
     "theoremCount": 8,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini",
+        "relationship": "**Root entry — the negative direction in contrapositive form.** Proves `not_solvable_by_rad_of_not_solvable_gal`: if $\\text{Gal}(q)$ is not solvable, then no root of $q$ is solvable by radicals. This is precisely the contrapositive of *this* entry's forward direction (radically solvable ⟹ solvable Galois group). The root entry uses only the forward direction (axiom-free via Mathlib's `solvableByRad.isSolvable'`); this entry adds the *reverse* direction `solvableGal_implies_solvableByRad` as a single Kummer-theory axiom, completing the bidirectional Galois criterion that Galois himself stated in 1832. Where `abel-ruffini` proves impossibility for non-solvable groups (S₅, A₅), this entry's bidirectional form additionally explains *positively* why all polynomials with solvable Galois groups *are* radically solvable."
+      },
+      {
+        "id": "abel-ruffini-oq-04",
+        "relationship": "**Parent sub-entry — exposes the complete proof chain from A₅-simplicity through S₅-non-solvability to Abel-Ruffini.** This sub-entry (-oq-03) is the *bidirectional Galois criterion* that the parent uses contrapositively at the S₅ end. The parent shows $A_5$ simple ⟹ $S_5$ not solvable ⟹ Abel-Ruffini (via the forward direction alone); this entry adds the reverse direction so that the *converse* statement — solvable Galois group ⟹ radically solvable — is also captured, modulo the single Kummer-theory axiom for cyclic extensions."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-01",
+        "relationship": "**Concrete S₅ witness — first concrete application of this entry's criterion to a specific polynomial.** Proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein-at-$p = 2$ and `galActionHom` bijectivity (0 axioms, 0 sorries). Combined with `S_5` not solvable (from `abel-ruffini`'s `symmetric_group_not_solvable`), this entry's *forward direction* (radically solvable ⟹ solvable Galois group) immediately gives by contrapositive that $x^5 - 4x + 2$ is *not* solvable by radicals — the concrete Abel-Ruffini conclusion that Galois's general criterion delivers when applied to a specific irreducible quintic."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-02",
+        "relationship": "**Filling Mathlib's $S_2, S_3, S_4$ gap — converse of the solvability classification.** Proves the bidirectional statement $S_n$ solvable $\\iff n \\leq 4$, supplying the *positive* instances (filling Mathlib's missing $S_2, S_3, S_4$ solvability instances) that this entry's bidirectional criterion converts directly into radical-solvability statements: by the reverse direction (axiomatized here via `solvableGal_implies_solvableByRad`), all $S_n$-Galois polynomials for $n \\leq 4$ have roots expressible by radicals. The known formulas (Cardano $n = 3$, Ferrari $n = 4$, plus the quadratic formula $n = 2$) are precisely the Kummer-theoretic witnesses to this implication — matching the derived-length bound of keyInsight #9 ($\\text{dl}(S_4) = 3$, exactly the number of nested radicals in Ferrari's quartic formula)."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-07",
+        "relationship": "**Bring-Jerrard reduction and the beyond-radicals quintic solution.** Reduces every quintic to the Bring-Jerrard form $x^5 + ax + b = 0$ via Tschirnhaus transformations, then solves it using the *Bring radical* $\\text{BR}(t)$ — a non-radical algebraic function defined by $\\text{BR}(t)^5 + \\text{BR}(t) + t = 0$. The strict converse to this entry's criterion: every quintic *is* solvable in a generalized sense (using $\\text{BR}$), but not by radicals when $\\text{Gal} \\cong S_5$ — *radical* solvability is exactly what this entry's biconditional pins down. The Bring radical extends the toolkit beyond Kummer's $\\sqrt[n]{\\cdot}$ to include $\\text{BR}$, and the gallery's openQuestion #4 of this entry on differential Galois theory connects to the same expansion of expressibility."
+      },
+      {
+        "id": "inverse-galois-f20",
+        "relationship": "**Solvable-side concrete witness at degree 5 — converse instance of this entry's criterion.** Realizes $F_{20} = \\mathbb{Z}/5 \\rtimes \\mathbb{Z}/4 \\cong \\text{Gal}(X^5 - 2/\\mathbb{Q})$ (27 theorems, 0 axioms, 0 sorries). $F_{20}$ is solvable (derived series $F_{20} \\supset \\mathbb{Z}/5 \\supset \\{e\\}$, derived length 2), so by this entry's *reverse direction* (`solvableGal_implies_solvableByRad`) the root $\\sqrt[5]{2}$ *is* solvable by radicals — and indeed it is, trivially, the explicit single radical $\\sqrt[5]{2}$ itself. The sharp degree-5 contrast: same degree as the Abel-Ruffini polynomial $x^5 - 4x + 2$, but solvable Galois group ⟹ solvable by radicals (this entry's reverse) while $S_5$-Galois ⟹ not solvable by radicals (this entry's forward contrapositive)."
+      },
+      {
+        "id": "inverse-galois-d4",
+        "relationship": "**Solvable-side concrete witness at degree 4 — converse instance of this entry's criterion at the historical quartic boundary.** Realizes $D_4 \\cong \\text{Gal}(X^4 - 2/\\mathbb{Q})$ with $|\\text{Gal}| = 8$ (27 theorems, 0 axioms, 0 sorries). $D_4$ is solvable (derived series $D_4 \\supset \\langle r \\rangle \\cong \\mathbb{Z}/4 \\supset \\langle r^2 \\rangle \\cong \\mathbb{Z}/2 \\supset \\{e\\}$, derived length 3 — matching the keyInsight #9 bound), so by this entry's reverse direction the roots $\\sqrt[4]{2}, i\\sqrt[4]{2}, -\\sqrt[4]{2}, -i\\sqrt[4]{2}$ are radically expressible. The radical formula is itself explicit ($\\sqrt[4]{2}$ alone generates the real subfield), but the criterion guarantees radical solvability *in principle* from the abstract solvability of $D_4$."
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "**Master inverse Galois entry — the realization side of this entry's criterion.** This entry's biconditional is interesting only when both Galois groups and radical extensions can be exhibited concretely. `inverse-galois` (1882 lines, 5 axioms, 0 sorries) provides the systematic catalog of Galois group realizations over $\\mathbb{Q}$: all groups of order $\\leq 8$ via cyclotomic fields, $D_4$ via $X^4 - 2$, $F_{20}$ via $X^5 - 2$, $A_5$ via $x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. For each realization, this entry's criterion gives an immediate verdict: solvable Galois group ⟹ radically expressible roots (the converse Kummer-theoretic construction); non-solvable Galois group ⟹ no radical formula. The pair `inverse-galois` (catalog of realizations) + `abel-ruffini-oq-04-oq-03` (radical-solvability criterion) is the gallery's principal application engine."
+      },
+      {
+        "id": "solution-of-cubic",
+        "relationship": "**Cardano's 1545 cubic formula — the degree-3 case of this entry's reverse direction.** The cubic Galois group is a subgroup of $S_3$, which is solvable (derived series $S_3 \\supset A_3 \\supset \\{e\\}$, derived length 2). By this entry's reverse direction, every cubic root is radically expressible — and Cardano supplies the explicit formula $\\sqrt[3]{-\\frac{q}{2} + \\sqrt{\\frac{q^2}{4} + \\frac{p^3}{27}}} + \\sqrt[3]{-\\frac{q}{2} - \\sqrt{\\frac{q^2}{4} + \\frac{p^3}{27}}}$ with two nested radical layers, matching keyInsight #9's tight bound $\\text{dl}(S_3) = 2$. The Mathlib formalization of this formula is the constructive witness for the reverse direction at $n = 3$ — what the axiomatized `solvableGal_implies_solvableByRad` produces in the abstract, Cardano's formula instantiates concretely."
+      },
+      {
+        "id": "general-quartic",
+        "relationship": "**Ferrari's 1545 quartic formula — the degree-4 case of this entry's reverse direction.** $S_4$ admits the composition series $S_4 \\supset A_4 \\supset V_4 \\supset \\langle (12)(34) \\rangle \\supset \\{e\\}$ with derived length 3. By this entry's reverse direction, every quartic root is radically expressible — and Ferrari's formula has exactly three nested radical layers (one square, one cube via the resolvent cubic, two squares), matching keyInsight #9's bound $\\text{dl}(S_4) = 3$ exactly. The Klein four-group $V_4 \\trianglelefteq S_4$ is the *crucial* normal subgroup whose absence at degree 5 (since $A_5$ is simple non-abelian) forces Abel-Ruffini — making `general-quartic` the immediate classical predecessor whose Galois-theoretic success ends at the exact threshold where this entry's forward contrapositive begins delivering impossibility results."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05-oq-01",
+        "relationship": "**Sibling — Shafarevich feasibility status report.** Documents the precise Mathlib gap for the *positive* (realization) side of Galois's program: which solvable groups are realizable as Galois groups over $\\mathbb{Q}$? Cyclic groups are proved (via Dirichlet + Galois fixed fields); coprime abelian products are proved via CRT; general abelian is 1 axiom away (linear disjointness of cyclotomic subfields); full solvable awaits embedding-problem theory (~5000+ lines). This entry's reverse direction (`solvableGal_implies_solvableByRad`, also axiomatized) and the Shafarevich sibling's `galois_compositum_product` axiom together identify the two complementary Mathlib gaps for the full positive side of Galois theory: the realization step (Shafarevich) plus the radical-expressibility step (Kummer). Both axioms are deaxiomatizable; the file pair charts the joint formalization roadmap for the converse-of-Abel-Ruffini direction."
+      },
+      {
+        "id": "kroneckers-jugendtraum",
+        "relationship": "**Hilbert's 12th Problem (Kronecker's Jugendtraum, 1880) — the explicit-radicals analogue at the abelian extreme.** Kronecker-Weber (1853/1886/1896): every finite abelian extension of $\\mathbb{Q}$ is contained in some $\\mathbb{Q}(\\zeta_n)$. Combined with this entry's reverse direction, Kronecker-Weber gives an *explicit* converse-to-Abel-Ruffini at the abelian end of the solvable spectrum: abelian Galois groups ⟹ extension lies in some cyclotomic field ⟹ roots are explicit polynomials in $\\zeta_n = e^{2\\pi i/n}$, which are themselves radicals. Hilbert's 12th asks the same explicit-realization question over arbitrary number fields, completed only for imaginary quadratic fields via $j$-invariant and Weber functions. The Kronecker-Weber-derived explicit Kummer construction is what `solvableGal_implies_solvableByRad` produces in the abstract for *all* solvable cases — abelian + cyclotomy at the most explicit end, embedding problems and Brauer cohomology at the most general."
+      },
+      {
+        "id": "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+        "relationship": "**Cyclotomic Galois closed-form $|\\text{Gal}(\\text{minpoly}_{\\mathbb{Q}}(\\cos(\\pi/n)))| = \\varphi(2n)/2$ — uniform abelian instance of this entry's reverse direction.** Proves the uniform formula via Mathlib's `IsCyclotomicExtension` infrastructure (0 axioms, 0 sorries). The Galois groups $(\\mathbb{Z}/2n\\mathbb{Z})^\\times / \\{\\pm 1\\}$ are *always abelian* (hence solvable, trivially — abelian groups have derived length 1 for non-trivial, 0 for trivial). By this entry's reverse direction, every $\\cos(\\pi/n)$ is radically expressible — and indeed Gauss's 1801 *Disquisitiones* §VII gave the explicit radical formulas for the constructible cases. The contrast with the quintic case: $\\cos(\\pi/n)$ Galois groups are uniformly abelian (radically solvable, derived length $\\leq 1$), while $\\text{Gal}(\\text{quintic}) = S_5$ has derived length 1 *stuck* at $A_5$ (non-solvable). The infinite $\\cos(\\pi/n)$ family is therefore the gallery's primary explicit illustration of this entry's reverse-direction guarantee at the abelian end."
+      }
+    ]
   },
   "leanFile": {
     "imports": [
