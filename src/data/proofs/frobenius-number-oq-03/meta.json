@@ -2,7 +2,7 @@
   "id": "frobenius-number-oq-03",
   "title": "Frobenius Number — Three Generators (Foundation)",
   "slug": "frobenius-number-oq-03",
-  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. Foundation for Roberts-1956 closed forms on three consecutive integers and 3-AP families (S5+). 15 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. Foundation for Roberts-1956 closed forms on three consecutive integers and 3-AP families (S5+). 16 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "formalized",
@@ -19,10 +19,10 @@
     "badge": "research",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 226,
-    "theoremCount": 15,
+    "lineCount": 253,
+    "theoremCount": 16,
     "definitionCount": 2,
-    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), and finiteness of the non-representable set under the same coprimality (S4). The exact Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers and the general Roberts 3-AP formula are deferred to S5+.",
+    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), finiteness of the non-representable set under the same coprimality (S4), and the tight Sylvester upper bound (a-1)(b-1) - 1 (S4a, matching the classical 2-generator identity g(a,b) = ab - a - b). The exact Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers and the general Roberts 3-AP formula are deferred to S5+.",
     "dateAdded": "2026-05-13",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -105,8 +105,15 @@
       "id": "s4-finiteness",
       "title": "S4 — Finiteness of the Non-Representable Set",
       "startLine": 192,
-      "endLine": 225,
-      "summary": "Proves `set_non_representable3_finite_of_coprime_ab`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, the set `{ n | ¬ Representable3 a b c n }` is finite. Same contrapositive of S3b as in S3c, but applied directly to `Set.Finite.subset Set.finite_Iio ((a-1)*(b-1))`. Combined with `not_representable3_frobeniusNumber3_of_nonempty` (S3a, requires `Set.Nonempty`) and `Set.Finite.bddAbove`, this establishes that `frobeniusNumber3 a b c` is sSup-attained whenever the non-representable set is nonempty. Closes the namespace."
+      "endLine": 223,
+      "summary": "Proves `set_non_representable3_finite_of_coprime_ab`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, the set `{ n | ¬ Representable3 a b c n }` is finite. Same contrapositive of S3b as in S3c, but applied directly to `Set.Finite.subset Set.finite_Iio ((a-1)*(b-1))`. Combined with `not_representable3_frobeniusNumber3_of_nonempty` (S3a, requires `Set.Nonempty`) and `Set.Finite.bddAbove`, this establishes that `frobeniusNumber3 a b c` is sSup-attained whenever the non-representable set is nonempty."
+    },
+    {
+      "id": "s4a-tight-sylvester-upper-bound",
+      "title": "S4a — Tight Sylvester Upper Bound",
+      "startLine": 225,
+      "endLine": 253,
+      "summary": "Proves `frobeniusNumber3_le_sylvester_bound_tight`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, `frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1`. Refines S3c's loose bound to the tight `- 1` form, matching the classical 2-generator Sylvester identity g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1. The proof reuses the same contrapositive of S3b's bridge as S3c but tightens the containment to a strict inequality `n < (a - 1) * (b - 1)` on every element of the non-representable set; in ℕ, this implies `n ≤ (a - 1) * (b - 1) - 1` via omega (including the degenerate `a = 1 ∨ b = 1` case where the non-representable set is empty, `csSup_empty = ⊥ = 0`, and the RHS ℕ-subtraction underflows to 0). Single `by_cases` on `Set.Nonempty`, mirroring the S3a structural API pattern. Closes the namespace."
     }
   ],
   "conclusion": {
