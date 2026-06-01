@@ -20,7 +20,7 @@
     4. summable_one_div_n_mul_n_add_k:   1/(n(n+k)) ≤ 1/n^2  ⇒  Summable
     Main: combine 2 + 3 + 4 to pass partial sums to HasSum.
 
-  Status: S4 SCAFFOLD — all proofs are `sorry`. ACT phases S5+ will close them.
+  Status: S7/S8 COMPLETE — all lemmas closed; main `HasSum` proved.
 
   Sibling reuse:
     `Proofs/TriangularReciprocalGeneralized.lean` (slug `triangular-reciprocals-oq-03`,
@@ -62,7 +62,74 @@ theorem partial_fraction {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
 theorem partial_sum_closed_form (N k : ℕ) (hk : 0 < k) :
     ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) =
       (1 / (k : ℝ)) * ((harmonic k : ℝ) - ((harmonic (N + k) : ℝ) - (harmonic N : ℝ))) := by
-  sorry
+  have hk_ne_nat : k ≠ 0 := Nat.pos_iff_ne_zero.mp hk
+  -- (harmonic m : ℝ) viewed as a sum in ℝ.
+  have harm_R : ∀ m : ℕ,
+      (harmonic m : ℝ) = ∑ i ∈ Finset.Icc 1 m, (1 : ℝ) / (i : ℝ) := by
+    intro m
+    have h := harmonic_eq_sum_Icc (n := m)
+    have hR : ((harmonic m : ℚ) : ℝ) = (((∑ i ∈ Finset.Icc 1 m, (↑i)⁻¹ : ℚ) : ℝ)) := by
+      exact_mod_cast congrArg (Rat.cast : ℚ → ℝ) h
+    rw [hR]
+    push_cast
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [one_div]
+  -- Telescoped diff identity.
+  have h_diff_NK_k : (harmonic (N + k) : ℝ) - (harmonic k : ℝ) =
+      ∑ i ∈ Finset.Icc (k + 1) (N + k), (1 : ℝ) / (i : ℝ) := by
+    rw [harm_R (N + k), harm_R k]
+    rw [show (Finset.Icc 1 (N + k)) = Finset.Ico 1 (N + k + 1) from
+          (Nat.Ico_succ_right (a := 1) (b := N + k)).symm,
+        show (Finset.Icc 1 k) = Finset.Ico 1 (k + 1) from
+          (Nat.Ico_succ_right (a := 1) (b := k)).symm,
+        show Finset.Icc (k + 1) (N + k) = Finset.Ico (k + 1) (N + k + 1) from
+          (Nat.Ico_succ_right (a := k + 1) (b := N + k)).symm]
+    have h_cons :
+        (∑ i ∈ Finset.Ico 1 (k + 1), (1 : ℝ) / (i : ℝ)) +
+          (∑ i ∈ Finset.Ico (k + 1) (N + k + 1), (1 : ℝ) / (i : ℝ)) =
+            ∑ i ∈ Finset.Ico 1 (N + k + 1), (1 : ℝ) / (i : ℝ) :=
+      Finset.sum_Ico_consecutive _ (by omega) (by omega)
+    linarith [h_cons]
+  -- Apply partial_fraction termwise.
+  have h_partial :
+      ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) =
+        (1 / (k : ℝ)) * ∑ n ∈ Finset.Icc 1 N,
+          ((1 : ℝ) / (n : ℝ) - (1 : ℝ) / ((n : ℝ) + ↑k)) := by
+    rw [Finset.mul_sum]
+    apply Finset.sum_congr rfl
+    intro n hn
+    rw [Finset.mem_Icc] at hn
+    have hn_ne : n ≠ 0 := Nat.pos_iff_ne_zero.mp hn.1
+    exact partial_fraction hn_ne hk_ne_nat
+  rw [h_partial, Finset.sum_sub_distrib]
+  -- Identify the first sum as harmonic N.
+  have h_sum1 :
+      ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / (n : ℝ) = (harmonic N : ℝ) :=
+    (harm_R N).symm
+  -- Reindex the second sum.
+  have h_sum2 :
+      ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) + ↑k) =
+        ∑ m ∈ Finset.Icc (k + 1) (N + k), (1 : ℝ) / (m : ℝ) := by
+    rw [show (Finset.Icc 1 N) = Finset.Ico 1 (N + 1) from
+          (Nat.Ico_succ_right (a := 1) (b := N)).symm,
+        show Finset.Icc (k + 1) (N + k) = Finset.Ico (k + 1) (N + k + 1) from
+          (Nat.Ico_succ_right (a := k + 1) (b := N + k)).symm]
+    -- Rewrite summand so the shift is on a ℕ cast.
+    have summand_eq : ∀ n ∈ Finset.Ico 1 (N + 1),
+        (1 : ℝ) / ((n : ℝ) + ↑k) = (1 : ℝ) / ((↑(n + k) : ℝ)) := by
+      intro n _; push_cast; ring
+    rw [Finset.sum_congr rfl summand_eq]
+    -- Apply sum_Ico_add' (additive version of prod_Ico_add').
+    have key := Finset.sum_Ico_add'
+      (fun i : ℕ => (1 : ℝ) / (i : ℝ)) 1 (N + 1) (c := k)
+    -- key : ∑ x ∈ Ico 1 (N+1), 1 / ((x+k : ℕ) : ℝ)
+    --        = ∑ x ∈ Ico (1+k) (N+1+k), 1 / ((x : ℕ) : ℝ)
+    rw [show (k + 1) = (1 + k) from by ring,
+        show (N + k + 1) = (N + 1 + k) from by ring]
+    exact key
+  rw [h_sum1, h_sum2, ← h_diff_NK_k]
+  ring
 
 -- ═══════════════════════════════════════════════════
 -- Lemma 3: Harmonic Tail Difference Tends to Zero
@@ -157,7 +224,58 @@ theorem summable_one_div_n_mul_n_add_k (k : ℕ) :
 theorem generalized_triangular_reciprocals (k : ℕ) (hk : 0 < k) :
     HasSum (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ↑k)))
       ((harmonic k : ℝ) / (k : ℝ)) := by
-  sorry
+  -- The summand is nonneg, so HasSum ↔ Tendsto of partial sums.
+  have h_nonneg : ∀ n : ℕ,
+      0 ≤ (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ↑k)) := by
+    intro n
+    have h1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos n
+    have h2 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    positivity
+  rw [hasSum_iff_tendsto_nat_of_nonneg h_nonneg]
+  -- Identify the partial sum over `range N` with the Icc-form `∑ n ∈ Icc 1 N, 1/(n(n+k))`.
+  have h_range_to_Icc : ∀ N : ℕ,
+      ∑ i ∈ Finset.range N,
+          (1 : ℝ) / (((i + 1 : ℕ) : ℝ) * (((i + 1 : ℕ) : ℝ) + ↑k)) =
+        ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) := by
+    intro N
+    rw [show (Finset.Icc 1 N) = Finset.Ico 1 (N + 1) from
+          (Nat.Ico_succ_right (a := 1) (b := N)).symm,
+        ← Nat.Ico_zero_eq_range]
+    have key := Finset.sum_Ico_add'
+      (fun m : ℕ => (1 : ℝ) / ((m : ℝ) * ((m : ℝ) + ↑k))) 0 N (c := 1)
+    -- key : ∑ x ∈ Ico 0 N, (fun m => 1/(m*(m+k))) (x + 1)
+    --       = ∑ x ∈ Ico (0+1) (N+1), 1/(x*(x+k))
+    simp only [zero_add] at key
+    -- `rw [← key]` closes the goal: after the index shift, summands β-reduce to match.
+    rw [← key]
+  -- Apply Lemma 2 pointwise.
+  have h_closed_form : ∀ N : ℕ,
+      ∑ i ∈ Finset.range N,
+          (1 : ℝ) / (((i + 1 : ℕ) : ℝ) * (((i + 1 : ℕ) : ℝ) + ↑k)) =
+        (1 / (k : ℝ)) *
+          ((harmonic k : ℝ) - ((harmonic (N + k) : ℝ) - (harmonic N : ℝ))) := by
+    intro N
+    rw [h_range_to_Icc N, partial_sum_closed_form N k hk]
+  rw [show (fun N : ℕ => ∑ i ∈ Finset.range N, (1 : ℝ) /
+              (((i + 1 : ℕ) : ℝ) * (((i + 1 : ℕ) : ℝ) + ↑k))) =
+          fun N : ℕ => (1 / (k : ℝ)) *
+            ((harmonic k : ℝ) - ((harmonic (N + k) : ℝ) - (harmonic N : ℝ))) from
+        funext h_closed_form]
+  -- (1/k) * (H_k - (H_{N+k} - H_N)) → (1/k) * (H_k - 0) = H_k/k.
+  have h_tail : Tendsto (fun N : ℕ => (harmonic (N + k) : ℝ) - (harmonic N : ℝ))
+      atTop (𝓝 (0 : ℝ)) := tail_to_zero k
+  have h_paren : Tendsto (fun N : ℕ =>
+      (harmonic k : ℝ) - ((harmonic (N + k) : ℝ) - (harmonic N : ℝ)))
+      atTop (𝓝 ((harmonic k : ℝ) - 0)) :=
+    tendsto_const_nhds.sub h_tail
+  have h_mul : Tendsto (fun N : ℕ => (1 / (k : ℝ)) *
+      ((harmonic k : ℝ) - ((harmonic (N + k) : ℝ) - (harmonic N : ℝ))))
+      atTop (𝓝 ((1 / (k : ℝ)) * ((harmonic k : ℝ) - 0))) :=
+    h_paren.const_mul (1 / (k : ℝ))
+  have h_simp : (1 / (k : ℝ)) * ((harmonic k : ℝ) - 0) =
+      (harmonic k : ℝ) / (k : ℝ) := by ring
+  rw [← h_simp]
+  exact h_mul
 
 /-- tsum version of the main result. -/
 theorem generalized_triangular_reciprocals_tsum (k : ℕ) (hk : 0 < k) :

@@ -1,29 +1,38 @@
 # Research State: triangular-reciprocals-oq-02
 
 ## Current State
-**Phase**: ACT (S6 tail-limit close shipped — companion fully closed)
+**Phase**: COMPLETE (S7+S8 — main `HasSum` proved; both files sorry-free)
 **Path**: full
-**Since**: 2026-06-01 (S6 — researcher-1 ACT close tail_to_zero + Aristotle mirror)
-**Iteration**: 6
-**Prior**: S5 ACT mechanical-close (2026-06-01, researcher-1 — 5/8 + 2/3 sorries)
+**Since**: 2026-06-01 (S7/S8 — researcher-1 ACT close Lemma 2 + main theorem)
+**Iteration**: 7 (S7) + 8 (S8) — bundled in one session
+**Prior**: S6 ACT close tail_to_zero (2026-06-01, researcher-1 — main + Aristotle)
+         S5 ACT mechanical-close (2026-06-01, researcher-1 — 5/8 + 2/3 sorries)
          S4 ACT SCAFFOLD (2026-06-01, researcher-1 — both files build clean with sorries)
          S3 ORIENT→DECIDE (2026-06-01, researcher-1 — approach lock + signatures)
          S2 OBSERVE→ORIENT (2026-06-01, researcher-1 — problem.md + Mathlib scout)
 
 ## Current Focus
-S6 closed `tail_to_zero` (Lemma 3) and its Aristotle mirror via induction on `k`
-plus `tendsto_one_div_add_atTop_nhds_zero_nat ∘ tendsto_add_atTop_nat k`. The
-Aristotle companion is now sorry-free; the main file is down to two sorries
-(Lemma 2 reindex + main `HasSum` assembly).
+S7 closed `partial_sum_closed_form` (Lemma 2) by applying `partial_fraction`
+term-wise, splitting via `Finset.sum_sub_distrib`, and reindexing the
+`∑ 1/(n+k)` piece via `Finset.sum_Ico_add'` (c := k). The harmonic differences
+are identified through `harmonic_eq_sum_Icc` + `Finset.sum_Ico_consecutive`.
 
-| # | Lemma | File / line | Status (S6) |
+S8 closed `generalized_triangular_reciprocals` (the main `HasSum`) via
+`hasSum_iff_tendsto_nat_of_nonneg`, identifying the `range N` partial sum with
+the `Icc 1 N` form (again `Finset.sum_Ico_add'`), then applying Lemma 2's
+closed form and Lemma 3's tail limit through
+`(tendsto_const_nhds.sub tail).const_mul (1/k)`.
+
+Result: **main file is 0 sorries / 0 axioms; companion is 0 sorries / 0 axioms.**
+
+| # | Lemma | File / line | Status (S8) |
 |---|-------|-------------|-------------|
 | 1 | `partial_fraction`                      | main:~42  | **closed (S5)** — `field_simp; ring` lifted verbatim from `TriangularReciprocalGeneralized.lean:133` |
-| 2 | `partial_sum_closed_form`               | main:~62  | sorry (S7+) — reindex via `Finset.sum_Ico_add'` |
+| 2 | `partial_sum_closed_form`               | main:~62  | **closed (S7)** — `partial_fraction` termwise + `Finset.sum_sub_distrib` + `Finset.sum_Ico_add'` reindex + `Finset.sum_Ico_consecutive` decomp |
 | 3 | `tail_to_zero`                          | main:~78  | **closed (S6)** — induction on k; succ step uses `tendsto_one_div_add_atTop_nhds_zero_nat.comp (tendsto_add_atTop_nat k)` and `harmonic_succ` |
 | 4 | `summable_one_div_n_mul_n_add_k`        | main:~117 | **closed (S5)** — `Summable.of_nonneg_of_le` against `1/(n+1)^2`, p-series at p=2 + `summable_nat_add_iff 1` shift |
-|   | `generalized_triangular_reciprocals`    | main:~153 | sorry (S7) — combine 2+3+4 to lift partial sums to `HasSum` |
-|   | `special_case_k1` / `_k2` / `_k3`       | main:~169+| **closed (S5)** — unfold `harmonic_succ` then `push_cast; norm_num` |
+|   | `generalized_triangular_reciprocals`    | main:~225 | **closed (S8)** — `hasSum_iff_tendsto_nat_of_nonneg` + `range→Icc` reindex + Lemma 2 + Lemma 3 + `const_mul` |
+|   | `special_case_k1` / `_k2` / `_k3`       | main:~250+| **closed (S5)** — unfold `harmonic_succ` then `push_cast; norm_num` |
 
 Aristotle companion (`TriangularReciprocalsOQ02Aristotle.lean`) — **fully sorry-free**:
 - `partial_fraction_aristotle`              — **closed (S5)**
@@ -59,43 +68,30 @@ Approach 2 (digamma) remains parked. May surface as a one-line corollary using
 `Real.deriv_Gamma_nat` after the main result is in place.
 
 ## Attempt Count
-- Total attempts: 2 (S5 mechanical pass; S6 tail-limit close — both succeeded on Docker)
-- Current approach attempts: 2
+- Total attempts: 4 (S5 mechanical; S6 tail-limit; S7 Lemma 2; S8 main `HasSum`)
+- Current approach attempts: 4
 - Approaches tried: 1
 - Approaches considered & parked: 1 (digamma series)
 
 ## Blockers
-None. The remaining two sorries (Lemma 2 reindex, main `HasSum`) are mathematical,
-not API-blocked.
+None — problem fully closed.
 
 ## Next Action
 
-**S7** — close `partial_sum_closed_form` (Lemma 2).
+**Problem complete.** Update gallery meta.json to reflect 0 sorries + verified
+status (was previously RECOVERING / surveyed). Consider Mathlib upstream
+contribution after the deprecation warnings for `Nat.Ico_succ_right` are
+addressed (replacement `Finset.Ico_succ_right_eq_Icc` not yet available in
+v4.26.0; will land in a future Mathlib bump).
 
-Strategy: apply `partial_fraction` term-wise to split `∑ n ∈ Icc 1 N, 1/(n(n+k))`
-into `(1/k) * (∑ 1/n − ∑ 1/(n+k))`. The first sum is `harmonic N` via
-`harmonic_eq_sum_Icc`. For the second, reindex via `Finset.sum_Ico_add'`
-(treating `Icc 1 N = Ico 1 (N+1)`): substitution `m = n + k` gives
-`∑ m ∈ Icc (1+k) (N+k), 1/m = harmonic (N+k) − harmonic k`
-(via `Finset.sum_Ico_consecutive` splitting `Icc 1 (N+k)` at `k`). Combine to
-`(1/k) * (H_k - (H_{N+k} - H_N))`.
+## S4–S8 Build Artifacts (researcher-1, 2026-06-01)
 
-**S8** — close the main `generalized_triangular_reciprocals` (`HasSum`).
-
-Strategy: use `HasSum.tendsto_sum_nat`-style conversion. Show
-`Tendsto (partial sum over Icc 1 N) atTop (𝓝 (H_k / k))` via Lemma 2 + Lemma 3,
-then convert to `HasSum (fun n : ℕ => 1/((n+1)((n+1)+k))) (H_k/k)` via
-`hasSum_iff_tendsto_nat_of_summable_norm` or the
-`(hasSum_nat_add_iff 1)` trick used at `TriangularReciprocalGeneralized.lean:124`.
-The summability witness is `summable_one_div_n_mul_n_add_k` (Lemma 4).
-
-## S4–S6 Build Artifacts (researcher-1, 2026-06-01)
-
-- `proofs/Proofs/TriangularReciprocalsOQ02.lean` — 197 lines, 8 sorries (S4) → 3 (S5) → 2 (S6).
-- `proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean` — 78 lines, 3 sorries (S4) → 1 (S5) → 0 (S6).
+- `proofs/Proofs/TriangularReciprocalsOQ02.lean` — 287 lines, 8 sorries (S4) → 3 (S5) → 2 (S6) → 1 (S7) → 0 (S8).
+- `proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean` — 97 lines, 3 sorries (S4) → 1 (S5) → 0 (S6).
 - Docker build (Mathlib v4.26.0, 7743/7743 jobs):
   * Main file S6: ✓ (only Lemma 2 + main HasSum sorries remain)
   * Companion S6: ✓ (sorry-free)
+  * Main file S8: ✓ (sorry-free, 0 axioms; deprecation warnings only — see Mathlib API notes)
 
 ## Key Decisions from S3 (researcher-1, 2026-06-01)
 
