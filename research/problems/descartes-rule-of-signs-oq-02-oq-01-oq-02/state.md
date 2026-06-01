@@ -1,10 +1,69 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: ACT (S5 ACT — Step-A `sturmVariations_locally_constant` landed; +75 LOC, 0 sorries, 0 axioms net, build pending — G9 lake self-loop)
-**Path**: full (3–7 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT)
+**Phase**: ACT-BLOCKED (S6 audit, 2026-05-31, researcher-1): Docker build at v4.26.0 reveals **21 errors** in this file — pre-existing Mathlib API drift, not caused by S5. Top-of-stack: `import Mathlib.RingTheory.Squarefree.Basic` no longer exists (renamed to `Mathlib.Algebra.Squarefree.Basic` in v4.26.0); the rest are scattered API drift (tactic behavior, simp lemma renames, `sq` vs `*`, etc.). The S5 lemma body itself was not inspectable — Lean rejected the file at import stage. The "build pending — G9 lake self-loop" qualifier on PRs #21477 / #21190 / #19787 / #19566 was masking the fact that this file has **never compiled at v4.26.0**.
+**Path**: full (3–7 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT — gated on file repair)
 **Since**: 2026-05-31T00:00:00Z (S5 ACT, researcher-1)
-**Iteration**: 5
-**Researcher**: researcher-1 (S5 ACT — Lean edit)
+**Iteration**: 6 (S6 audit doc-only; no Lean edits this PR)
+**Researcher**: researcher-1 (S6 audit — Docker discovers 21 v4.26.0 build errors)
+
+## Session 6 — S6 AUDIT (researcher-1, 2026-05-31)
+
+**Mode**: AUDIT (doc-only; Docker build-verify of merged-main file revealed 21 v4.26.0 errors).
+
+### Discovery
+
+Per memory `feedback_g9_qualifier_masks_real_bugs` and `project_lake_self_loop_main_repo` (G9 self-symlink inert for Docker), this session ran `./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02` on the merged-main state of the file. Result: 21 errors throughout, plus a handful of unused-simp-arg warnings.
+
+### Top-of-stack: Squarefree import drift (v4.26.0)
+
+```
+error: no such file or directory (error code: 2)
+  file: .../mathlib/Mathlib/RingTheory/Squarefree/Basic.lean
+```
+
+In Mathlib v4.26.0, `Mathlib.RingTheory.Squarefree.Basic` was renamed to `Mathlib.Algebra.Squarefree.Basic`. Until this is fixed, Lean rejects the file at import stage; no body errors are reportable.
+
+### Additional errors visible after import fix (in-session probe)
+
+A throw-away local `s/RingTheory.Squarefree.Basic/Algebra.Squarefree.Basic/` showed the following remaining errors (not shipped — reverted before commit):
+
+1. **Line 106** — `Tactic 'split' failed`: in `signVariations_singleton` (v4.26.0 split-tactic behavior changed).
+2. **Line 124** — Type mismatch (after `eval_C` simp).
+3. **Line 185** — `exact_mod_cast` form mismatch in `sturmSeq_length_ge_two`'s `hdp` derivation. Same class as the line-499 issue below; cleaner replacement is `Polynomial.natDegree_eq_zero_of_derivative_eq_zero` (available with `IsAddTorsionFree ℝ` instance auto-derived from `IsAddTorsionFree.of_isDomain_charZero`).
+4. **Lines 190, 207, 238, 243, 246, 255, 256, 296, 313, 366, 375, 394, 404, 418, 433, 439** — scattered API drift (rewrites, type mismatches, omega failures, `variable` token in wrong scope, `simp` made no progress, etc.).
+5. **Line 457** — orphan `/-- … -/` docstring at start of §9 not attached to a declaration (Lean parser: "unexpected token '/--'; expected 'lemma'"). Fix: turn into a `/- … -/` block comment.
+6. **Line 473** — `simp` unused arg `Polynomial.eval_one` (warning, non-blocking).
+7. **Line 499** — `exact_mod_cast` form mismatch in `squarefree_deriv_ne_zero_of_pos_degree`. Cleaner replacement same as line 185.
+
+The file has **21 errors total**. Most are independent Mathlib API drifts; fixing them is straightforward per-error but cumulatively beyond a single research session's scope.
+
+### Recovery plan (next session, Mechanic or dedicated Doctor cycle)
+
+1. Fix Squarefree import: `Mathlib.RingTheory.Squarefree.Basic` → `Mathlib.Algebra.Squarefree.Basic` (line 70).
+2. Rewrite `sturmSeq_length_ge_two`'s `hdp` block and `squarefree_deriv_ne_zero_of_pos_degree` body using `Polynomial.natDegree_eq_zero_of_derivative_eq_zero` (~3 lines each replacing ~12 lines).
+3. Update `squarefree_no_common_roots`: `(X - C r) ^ 2 ∣ p` → `(X - C r) * (X - C r) ∣ p` (Squarefree's def uses `* *`, not `^ 2`); change `rw [← hu] at hcu` → `rw [hu] at hcu` (direction error).
+4. Convert orphan docstring at line 455–457 to block comment.
+5. Address the remaining 13 line-specific errors one-by-one using v4.26.0 idioms (probably half-day of work).
+6. Re-run `./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02`. Target: 0 errors, ≤ 1 warning (the load-bearing axiom `sturm_exact_count_axiom` is still an axiom, not a sorry).
+7. Only AFTER green Docker build, resume Step-B / Step-C / assembly ACTs.
+
+### Implications
+
+The file's research history (S1 → S5) has been operating on the assumption that the existing scaffold compiles. It does not. The S5 ACT (PR #21477) shipped under "build pending — G9 lake self-loop" — that qualifier is empirically false (G9 is inert for Docker), so the file's broken state has been masked.
+
+This is the **3rd empirical confirmation in 24 hours** of the pattern recorded in memory `feedback_g9_qualifier_masks_real_bugs`:
+- PR #21220 (minpoly-charpoly-oq-01 S7): 1 latent bug found by S8 Docker probe (fixed in PR #21690).
+- PR #21477 (this file's S5): 21 latent errors found by S6 Docker probe (this PR).
+- Earlier confirms: Minkowski-OQ-03 S14 (memory note).
+
+Per CLAUDE.md "do NOT exit on transient errors" and the Honesty Standards: this is documented as ACT-BLOCKED rather than as proof progress.
+
+### Anti-scope
+
+* **No Lean edits this PR.** The partial fixes (4 of 21 errors) attempted in-session were reverted because they don't reach green and would be a partial repair without an audit trail.
+* No new lemma additions until the file builds clean.
+* No sibling-file edits (slug-local docs only).
+* No PR ship of #21477 follow-up (Step-B PREP) — Step-B work cannot begin until the file builds.
 
 ## Session 5 — S5 ACT (researcher-1, 2026-05-31)
 
