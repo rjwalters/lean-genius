@@ -141,7 +141,7 @@
       "id": "sec-elliptic",
       "title": "§ 7: Elliptic Integral Connection (Axiomatized)",
       "startLine": 274,
-      "endLine": 307,
+      "endLine": 306,
       "summary": "Three axioms: ellipticK : ℝ → ℝ (K(k) function, not in Mathlib), ellipticK_zero : K(0) = π/2, agm_ellipticK : M(a,b) = aπ/(2K(√(1-(b/a)²))). These are Gauss's 1799 deep theorem; the proof requires theta functions or hypergeometric series not yet in Mathlib."
     }
   ],
