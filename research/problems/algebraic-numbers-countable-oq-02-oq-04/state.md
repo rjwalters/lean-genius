@@ -2,40 +2,47 @@
 
 ## Current Status
 
-**Phase**: S8-prep ACT — topological complement (non-computable reals are dense)
-**Owner**: researcher-1 (S8-prep ACT, 2026-05-30); prior S7 owner: researcher-1 (2026-05-28)
-**Iteration**: 9 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep)
-**Last Updated**: 2026-05-30Z (S8-prep ACT; nonComputableReals_dense + closure-form, Docker `3067/3067` clean)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s8-prep-noncomp-dense`
+**Phase**: S8 ACT — Baire-category sharpening (computable meagre / non-computable residual)
+**Owner**: researcher-1 (S8 ACT, 2026-05-31); prior S8-prep owner: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
+**Iteration**: 10 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8)
+**Last Updated**: 2026-05-31Z (S8 ACT; Baire-category 5 thms, Docker `3067/3067` clean, 12s file compile)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s8-baire-meagre`
 
-## Lean file inventory (at base `origin/main`, S8-prep Docker-verified)
+## Lean file inventory (at base `origin/main`, S8 Docker-verified)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       757 (was 695 at S7; +62 in S8-prep including section docstring)
-Theorems:    35 (S8-prep adds nonComputableReals_dense + closure_nonComputableReals_eq_univ)
+Lines:       869 (was 757 at S8-prep; +112 in S8 including section docstring)
+Theorems:    40 (S8 adds nonComputableReals_isGδ + nonComputableReals_residual
+                  + computable_reals_meagre + interior_eq_empty on both partition halves)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S8-prep added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S8 added no new)
 Axioms:      0
-Build:       ✔ VERIFIED S8-prep (Docker 3067/3067 jobs clean, 11s file compile, 2026-05-30)
-Imports:     +1 (Mathlib.Analysis.Real.Cardinality for Cardinal.mk_Ioo_real)
+Build:       ✔ VERIFIED S8 (Docker 3067/3067 jobs clean, 12s file compile, 2026-05-31)
+Imports:     no new (Set.Countable.isGδ_compl / residual_of_dense_Gδ / IsMeagre /
+              interior_eq_empty_iff_dense_compl all transitively available via
+              Topology.Instances.Real.Lemmas + Mathlib.Tactic chain)
 ```
 
-4 critical Mathlib bearers used in S8-prep proof:
-- `IsOpen.exists_Ioo_subset` (Topology.Order.Basic) — gets `Ioo a b ⊆ U` from nonempty open
-- `Cardinal.mk_Ioo_real` (Analysis.Real.Cardinality) — `#(Ioo a b) = 𝔠` for `a < b`
-- `le_aleph0_iff_set_countable` (SetTheory.Cardinal.Basic:430) — countable ↔ ≤ ℵ₀
-- `Cardinal.aleph0_lt_continuum` (SetTheory.Cardinal.Continuum:65) — `ℵ₀ < 𝔠`
+4 critical Mathlib bearers used in S8 proof:
+- `Set.Countable.isGδ_compl` (Topology.Separation:912) — complement of countable in T1 is Gδ
+- `residual_of_dense_Gδ` (Topology.GDelta:201) — Gδ ∧ Dense → residual
+- `IsMeagre` (Topology.GDelta:249) — `s` meagre iff `sᶜ ∈ residual X`
+- `interior_eq_empty_iff_dense_compl` — empty interior ↔ complement dense
 
-**Next-picker priority (S9+)**: With both S7 (computable dense) and S8-prep
-(non-computable dense) now in place, the topological picture is complete on
-both sides of the partition. The remaining headline next step remains
+**Next-picker priority (S9+)**: With S7 (computable dense), S8-prep (non-computable
+dense), and S8 (Baire-category: computable meagre / non-computable Gδ-residual)
+now in place, the topological picture is complete: computable reals show the
+same topological profile as `ℚ` (countable + dense + meagre), and non-computable
+reals are dense + Gδ + residual. The remaining headline next step remains
 shipping `IsComputable e` (or `π`) as the explicit computable transcendental
-witness sharpening `algebraic ⊊ computable` beyond pure cardinality.
-Path A (e via partial sums of `1/n!`) is the cleaner-skeleton candidate
-at v4.26.0; ~80-150 LOC estimate. See S6f §5 for the full priority tree
-(witness → algebraic⊆computable via Sturm/bisection → real-closed-subfield
-→ Chaitin Ω).
+witness sharpening `algebraic ⊊ computable` beyond pure cardinality + topology.
+Path A (e via partial sums of `1/n!`) is the cleaner-skeleton candidate at
+v4.26.0; ~80-150 LOC estimate but **blocked on Mathlib gap**: there is no
+`Computable.add` / `Computable.neg` for `ℚ` in current Mathlib v4.26.0
+(verified by grep: only `Computable.const`, `Computable.encode`, `Computable.comp`
+on `ℚ`; `Primrec ℚ` arithmetic operations not yet provided). Building this
+machinery is itself a sizeable subgoal (S10 prereq) — see S6f §5 for full priority tree.
 
 ## What's Done
 
