@@ -1,6 +1,74 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
-## Phase: STATE-SYNC — post-#19037-merge catch-up (researcher-1, 2026-05-25T~10:00Z)
+## Phase: ACT — S15 translate ACT shipped (researcher-1, 2026-06-01T16:00Z)
+
+**Snapshot date**: 2026-06-01T16:00Z (researcher-1, S15 ACT)
+**Iteration**: 14 → 15 (S10 translate ACT shipped per S14 priority #1; Docker-verified 3062 jobs)
+
+> _Phase note: S14 STATE-SYNC's recommended priority #1 (S10 translate ACT, 0 new axioms, ~60–120 LOC) is **executed** this session. New companion file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (132 LOC, including docstring) defines the realization function `translate : (PropAtom → Formula) → GLFormula → Formula` per S10 PREP #18678 §3.3, with 4 recursive cases (`atom`/`falsum`/`impl`/`box`), 4 simp equation lemmas, and 1 derived sanity theorem (`translate_not`). All `rfl`-discharged. **0 new axioms.** Build verified at HEAD (Docker 3062 jobs, target `Proofs.GodelSecondIncompletenessOQ02Translate` built in 9.0s on cached Mathlib pin)._ The S15 ACT consumes the just-unblocked Companion (`impl_formula`, S2-α #19037) and GLSyntax (`GLFormula`, S8 #19146) without introducing fresh assumptions — pure axiom-integrity win._
+
+## What changed since the S14 STATE-SYNC snapshot (2026-05-25T10:00Z)
+
+| Event | PR | Status | When |
+|---|---|---|---|
+| S14 STATE-SYNC merged | #20656 | MERGED | 2026-05-25T10:06:25Z |
+| New slug PRs since #20656 merge (2026-05-25 → 2026-06-01) | — | none observed | n/a |
+| S15 ACT translate (this session) | TBD | OPEN | 2026-06-01T16:00Z |
+
+7-day gap between S14 STATE-SYNC merge and S15 claim reflects that no other agent attempted the recommended S10 ACT in the interval. The S14 priority #1 framing remained accurate and load-bearing.
+
+## Iteration 15 (researcher-1, 2026-06-01) — S15 ACT translate (~132 LOC, 0 new axioms, Docker 3062 jobs clean)
+
+### What I did
+
+- Pre-flight: lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged from S14; disk 54Gi avail; Docker daemon responsive.
+- Race check: 0 open PRs on slug; 0 open PRs touching any `GodelSecondIncompletenessOQ02*.lean` file.
+- Read S10 PREP #18678 §3.3 (proposed design); confirmed the 4-case recursive structure (`atom n → ρ n`, `.falsum → GodelSecond.falsum`, `.impl φ ψ → impl_formula …`, `.box φ → Prov (godelNum …)`).
+- Inspected the API surface in `GodelSecondIncompletenessOQ02Companion.lean:108` (`impl_formula : Formula → Formula → Formula` def, infix `→ᶠ`) and `GodelSecondIncompletenessOQ02GLSyntax.lean:53` (`inductive GLFormula : Type` with `atom/falsum/impl/box`). Both files merged and stable at HEAD.
+- Created new file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` with `namespace GodelSecondTranslate`, opening `GodelFirst GodelSecond GodelSecondGLSyntax`. Imported the two companions.
+- Defined `translate (ρ : PropAtom → Formula) : GLFormula → Formula` with 4 pattern-match cases.
+- Added 4 `@[simp] theorem translate_*` equation lemmas (`translate_atom`, `translate_falsum`, `translate_impl`, `translate_box`), each discharged by `rfl`.
+- Added 1 derived `@[simp] theorem translate_not` (sanity check that simp normal form composes through `GLFormula.not = .impl _ .falsum`), also `rfl`.
+- Added import to `proofs/Proofs.lean` registry (line 2354 after `GodelSecondIncompletenessOQ02GLSyntax`).
+- Ran `LEAN_BUILD_TIMEOUT=20m ./proofs/scripts/docker-build.sh Proofs.GodelSecondIncompletenessOQ02Translate`. **Result: 3062 jobs clean**, target built in 9.0s on cached Mathlib pin. 2 pre-existing linter warnings on `GodelFirstIncompletenessOQ01.lean` (unused `h` variable, lines 193/260) — not introduced by S15.
+
+### Files Modified
+
+- `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (NEW — 132 LOC including ~70 LOC docstring + 18 LOC function body + 14 LOC equation lemmas)
+- `proofs/Proofs.lean` (+1 line — registry import)
+- `research/problems/godel-second-incompleteness-oq02-oq-02/sessions/2026-06-01-s15-act-translate.md` (NEW — session memo)
+- `research/problems/godel-second-incompleteness-oq02-oq-02/state.md` (this entry + Current State header refresh)
+- `src/data/research/problems/godel-second-incompleteness-oq02-oq-02.json` (top-level + currentState sync; insight + builtItem; nextSteps reordered to put S7 ACT ahead of S5/S5b)
+
+### Knowledge Added
+
+- **Insights**: 2
+  1. **S10 PREP #18678 §3.3 design implements verbatim without API surprise at v4.26.0.** The four recursive cases compose existing gallery operations (`impl_formula`, `Prov`, `godelNum`, `GodelSecond.falsum`) and require no auxiliary lemmas. All 5 simp-theorems discharge by `rfl`. The S10 PREP's encoding-disjointness analysis (§3.6) is unused at this iteration but remains load-bearing for S7 ACT's `k`/`mp` cases that need to reason about `impl_formula`-codes.
+  2. **Axiom-integrity win: 0 new axioms across the 132-LOC ship.** Slug axiomCount remains at 9 (5 from First + 1 parent `con_implies_G` + 3 Companion HBL). The `translate` function consumes the S2-α Companion's `impl_formula` def without introducing any fresh assumption. Per CLAUDE.md §"Axiom Integrity Policy", this is a clean structural-theorem-add, not a hidden assumption-shift.
+
+- **Built items**: 5 (1 def + 4 simp-equations + 1 derived sanity theorem; all `rfl`)
+  - `GodelSecondTranslate.translate : (PropAtom → Formula) → GLFormula → Formula`
+  - `translate_atom`, `translate_falsum`, `translate_impl`, `translate_box` (4 @[simp] equation lemmas)
+  - `translate_not` (1 derived sanity theorem)
+
+- **Risks retired**: 1 — the S14 STATE-SYNC priority #1 "S10 translate ACT pending". S15 ACT discharges it.
+
+- **Next steps**:
+  - **S16 ACT — S7 arithmetical soundness** (~150-250 LOC, +0 or +1 axiom). Now fully unblocked: with `translate` available, the five-case induction `GL_proves φ → ∀ ρ, ⊢ translate ρ φ` can be opened. Cases: `nec` discharged by `d1_representability` + `translate_box` rewrite; `mp` by `impl_mp` + `translate_impl`; `k` by `internal_K` (Companion's derived theorem) + `translate_impl`/`translate_box`; `taut` by Łukasiewicz CPL completeness (NEW work, ~80-120 LOC); `lob` blocked by S4 ACT.
+  - **S4 ACT — Löb's theorem** (~150 LOC, +1 axiom `lob_henkin_fixed_point`). Independent of S15; can proceed in parallel.
+  - **S5 ACT — Kripke semantics** (~80 LOC, +0 axioms). Orthogonal to S15/S16. S5b PREP rename pass remains demoted; recommend pairing with S5 ACT when claimed.
+
+## Race Notes (S15)
+
+Pre-action race check at 2026-06-01T16:00Z:
+- 0 open PRs with `godel-second-incompleteness-oq02-oq-02 in:title`
+- 0 open PRs touching `GodelSecondIncompletenessOQ02*.lean` family
+- 0 open PRs touching `GodelSecondTranslate` (name confirmed unique across `gh pr list --search`)
+- `feature/researcher-1` shared branch carries unrelated open PR #21933 (roth-theorem-k3); session ships on session-specific branch `research/godel-2nd-oq02oq02-s15-act-translate-1780376000` per `feedback_researcher_shared_branch_bundle_trap.md`.
+
+This PR is **substantive**: 1 new Lean file (Docker-verified) + 1 Proofs.lean registry edit + session memo + state.md + JSON refresh. **NOT STATE-SYNC**; does **not** count against the 2-STATE-SYNC-PR-per-session cap.
+
+## Iteration 14 (researcher-1, 2026-05-25) — S14 STATE-SYNC (post-#19037-merge catch-up)
 
 **Snapshot date**: 2026-05-25T10:00Z (researcher-1, S14 STATE-SYNC)
 **Iteration**: 13 → 14 (S2-α ACT #19037 MERGED 2026-05-19; downstream ACTs now fully unblocked)

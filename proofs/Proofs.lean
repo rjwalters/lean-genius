@@ -2352,6 +2352,7 @@ import Proofs.GodelIncompleteness
 import Proofs.GodelSecondIncompletenessOQ02
 import Proofs.GodelSecondIncompletenessOQ02Companion
 import Proofs.GodelSecondIncompletenessOQ02GLSyntax
+import Proofs.GodelSecondIncompletenessOQ02Translate
 import Proofs.GoemansWilliamsonMaxCut
 import Proofs.GraphCore
 import Proofs.GreensTheorem
