@@ -18,7 +18,7 @@
     "sourceUrl": "https://erdosproblems.com/28",
     "erdosUrl": "https://erdosproblems.com/28",
     "proofRepoPath": "Proofs/Erdos28AdditiveBases.lean",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "assumptions": "2 axioms: grekos_lower_bound (Grekos et al. 2003: r_A(n) ≥ 6 infinitely often), borwein_lower_bound (Borwein et al.: r_A(n) ≥ 8 infinitely often). sidon_not_basis PROVED as theorem (PR #6840). sidon_density_bound PROVED via bridge lemma importing Erdos340.sidon_upper_bound_weak. 14 theorems proved including isAsymptoticBasis_iff, sidon_repFunc_bounded, erdos_turan_holds_for_nat, basis_element_count_sq, sidon_density_bound.",
     "badge": "axiom",
     "prerequisites": [
@@ -54,7 +54,10 @@
       "Three-tier conjecture formalization: weak (unbounded), strong (logarithmic growth), and density version"
     ],
     "theoremCount": 19,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "additionalFiles": [
+      "Proofs/Erdos28Problem.lean"
+    ]
   },
   "sections": [
     {
@@ -351,7 +354,10 @@
     "theoremCount": 19,
     "definitionCount": 11,
     "path": "Proofs/Erdos28AdditiveBases.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Erdos28Problem.lean"
+    ]
   },
   "sorries": 0
 }
