@@ -1,126 +1,131 @@
 [
   {
-    "id": "ann-mvt02oq04-header-background",
+    "id": "ann-mvt02oq04-imports",
     "proofId": "mean-value-theorem-oq-02-oq-04",
     "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "title": "Mathlib + Parent File Imports for Retraction Stub",
+    "content": "Two import lines preserved unchanged from the S1 file. `import Mathlib` is retained so the file participates in the gallery build closure and remains syntactically valid even though no Mathlib lemmas are now invoked. `import Proofs.MeanValueTheoremOQ02` preserves the structural link to the parent OQ-02 entry (Taylor's theorem with Lagrange remainder), which contributed the original `taylorPolynomial` definition and `taylorPolynomial_zero` lemma to the S1 axiom and its derived corollary. After the S2 retraction the file contains no top-level declarations that use the parent's symbols, but keeping the import documents the historical dependency and makes the namespace layout consistent with the parent slug.",
+    "mathContext": "The Lean import graph is preserved (`import Proofs.MeanValueTheoremOQ02`) even though the file's only remaining content is a docstring + empty namespace. This is a deliberate retraction-stub convention: the import declares the *intent* of structural kinship with the parent, while the absence of declarations declares the *absence* of mathematical content.",
+    "significance": "context",
+    "relatedConcepts": [
+      "import resolution",
+      "build closure",
+      "retraction stub convention",
+      "parent-child slug linking",
+      "MeanValueTheoremOQ02 namespace"
+    ],
+    "prerequisites": [
+      "Lean 4 import declarations",
+      "Gallery slug parent-child structure"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-retraction-header",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "context",
     "range": {
       "startLine": 4,
-      "endLine": 88
+      "endLine": 39
     },
-    "title": "Mathematical Background: Cauchy's Estimates and the Geometric Tail",
-    "content": "The file's module docstring records the standard derivation of the OQ-04 bound from Cauchy's integral formula. For f analytic on the complex disk D(a, R) with sup bound M, Cauchy's coefficient estimate |f^(k)(a)/k!| ≤ M / R^k controls each Taylor coefficient; summing the geometric tail Σ_{k>n} (M / R^k) · r^k = M · (r/R)^(n+1) / (1 - r/R) = M · r^(n+1) / (R^n (R-r)) yields the uniform remainder bound. OQ-04 absorbs the R^n into the constant M, presenting the dominant geometric factor M·r^(n+1)/(R-r). The docstring also enumerates the Mathlib hooks that S2 will use to discharge the axiom: HasFPowerSeriesOnBall.hasSum (qualitative convergence), the FormalMultilinearSeries Cauchy-coefficient bound, and tsum_geometric_of_lt_one (closed-form geometric tail).",
-    "mathContext": "Cauchy's estimates: $\\bigl|\\tfrac{f^{(k)}(a)}{k!}\\bigr| \\le \\dfrac{M}{R^k}$ for $f$ analytic on $D(a, R)$ with $|f| \\le M$. Geometric tail: $\\displaystyle\\sum_{k > n} \\left(\\dfrac{r}{R}\\right)^k = \\dfrac{(r/R)^{n+1}}{1 - r/R} = \\dfrac{r^{n+1}}{R^n (R - r)}$. Combined: $|R_n(x)| \\le M \\cdot r^{n+1} / (R^n (R - r))$, which OQ-04 simplifies to $M \\cdot r^{n+1} / (R - r)$ (the dominant factor; the $R^{-n}$ is absorbed into the bound constant).",
-    "significance": "supporting",
+    "title": "OQ-04 Question + S1 Axiom Statement + Runge Counterexample",
+    "content": "The opening docstring records the OQ-04 question verbatim (uniform error bound for analytic Taylor remainder on a real interval), the S1 (2026-05-11, PR #17705) axiomatization as `analytic_taylor_remainder_uniform_bound`, the S1 derived `n = 0` corollary `analytic_remainder_zero_bound`, and the child slug's (`mean-value-theorem-oq-02-oq-04-oq-01`, S1 2026-05-12 PR #17837) constructive refutation via the Runge counterexample. The specific witness — $f(x) = 1/(1+x^2)$ at $(a, R, M, r, n, x) = (0, 100, 1, 1, 0, 1)$ — is small enough to evaluate by hand: $|f(1) - f(0)| = |1/2 - 1| = 1/2$, while the axiom claims $1 \\cdot 1^1 / (100 - 1) = 1/99$, and $1/2 > 1/99$. The mathematical root cause is identified as the **Runge phenomenon**: real-analyticity plus a real sup bound on $(a-R, a+R) \\subset \\mathbb{R}$ does *not* control the Cauchy coefficient bounds, because real-analytic functions can have complex-disk radii of convergence strictly smaller than their real-line analyticity ranges (Runge's $1/(1+x^2)$ has poles at $\\pm i$, so complex radius is $1$ even though it is real-analytic on all of $\\mathbb{R}$).",
+    "mathContext": "Witness data: $(f, a, R, M, r, n, x) = (\\text{runge}, 0, 100, 1, 1, 0, 1)$ where $\\text{runge}(x) = 1/(1+x^2)$. Numerical refutation: $|f(1) - f(0)| = 1/2 > 1/99 = M \\cdot r^{n+1} / (R - r)$. Root cause (Runge phenomenon): $\\sup_{\\mathbb{R}}|f|$ does not control $\\bigl|f^{(k)}(a)/k!\\bigr|$, because the Cauchy coefficient estimates $\\bigl|f^{(k)}(a)/k!\\bigr| \\le M/R^k$ require $M$ to bound $f$ on the *complex* disk $D(a, R) \\subset \\mathbb{C}$, not merely on the real interval $(a-R, a+R)$.",
+    "significance": "key",
     "relatedConcepts": [
-      "Cauchy's integral formula",
-      "Cauchy's coefficient estimates",
-      "geometric series",
+      "Runge phenomenon",
+      "Cauchy coefficient estimates",
+      "real-analyticity vs complex-analyticity",
+      "AnalyticOn ℝ",
       "HasFPowerSeriesOnBall",
-      "FormalMultilinearSeries",
-      "tsum_geometric_of_lt_one"
+      "analytic continuation",
+      "complex disk of convergence"
     ],
     "prerequisites": [
-      "complex analysis",
-      "analytic functions",
-      "power series",
-      "Mathlib.Analysis.Analytic.Basic"
+      "Real-analytic functions",
+      "Complex disk of convergence",
+      "Cauchy's integral formula",
+      "Taylor remainder",
+      "Constructive counterexample methodology"
     ]
   },
   {
-    "id": "ann-mvt02oq04-namespace-setup",
+    "id": "ann-mvt02oq04-retraction-action",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "context",
+    "range": {
+      "startLine": 41,
+      "endLine": 67
+    },
+    "title": "S2 Retraction Action and the Build-Closure Soundness Argument",
+    "content": "The 'Action taken (S2, researcher-8, 2026-05-14)' section explains *why* the false axiom was removed rather than merely commented out: leaving `axiom analytic_taylor_remainder_uniform_bound` in the build closure together with the child slug's `oq04_axiom_is_false` would let any downstream consumer derive `False` by applying the refutation to the axiom — the explicit formula `oq04_axiom_is_false (fun _ _ _ _ _ _ _ _ _ _ _ _ _ _ => analytic_taylor_remainder_uniform_bound _ _ _ _ _ _ _ _ _ _ _ _ _ _)` typechecks to `False`. Removing the axiom eliminates this hidden inconsistency. The file's current state — '128 lines (mostly retraction docstring), 0 axioms, 0 theorems, 0 definitions, 0 sorries' — is the result. The 1-axiom count in `meta.axiomCount` comes from `taylor_lagrange_remainder` in the parent file `MeanValueTheoremOQ02.lean`, declared via `additionalFiles`.",
+    "mathContext": "Build-closure soundness obligation: any axiom $A$ in the closure together with a derivation of $\\neg A$ allows a downstream proof of `False`. Therefore the gallery enforces: if `child-slug` proves $\\neg A$ where `parent-slug` declares `axiom A`, then `parent-slug` *must* remove the axiom (or the gallery loses logical consistency for any consumer importing both). The S2 retraction discharges this obligation for the OQ-04 slug pair.",
+    "significance": "key",
+    "relatedConcepts": [
+      "build-closure soundness",
+      "axiom retraction",
+      "downstream False derivation",
+      "additionalFiles axiom inheritance",
+      "taylor_lagrange_remainder",
+      "gallery logical consistency"
+    ],
+    "prerequisites": [
+      "Lean 4 axiom declarations",
+      "Soundness of axiom systems",
+      "Parent-child slug additionalFiles inheritance"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-sibling-references",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "context",
+    "range": {
+      "startLine": 69,
+      "endLine": 102
+    },
+    "title": "Connection to Sibling Gallery Entries + Path Forward",
+    "content": "Three sibling references make the slug's position in the gallery explicit:\n\n1. **Parent `mean-value-theorem-oq-02`** (Taylor's theorem with Lagrange remainder): unchanged by this retraction. It supplies `taylorPolynomial`, `taylorPolynomial_zero`, and the *true* axiom `taylor_lagrange_remainder` (qualitative pointwise Lagrange remainder, which IS mathematically correct because it does not over-claim the kind of uniformity that fails for Runge).\n\n2. **Child `mean-value-theorem-oq-02-oq-04-oq-01`**: refutes this slug's S1 axiom AND supplies the corrected complex-disk statement `analytic_taylor_remainder_uniform_bound_complex` (fully proven modulo `cauchy_diag_norm_bound_at_radius` at v4.26.0). The mathematical content the OQ-04 question was seeking lives here, with the hypothesis strengthened from a real sup bound to a complex-disk sup bound (`HasFPowerSeriesOnBall f p a R`).\n\n3. **Cousin `taylor-theorem-oq-02`** (qualitative `taylor_remainder_tendsto_zero`): unchanged. Convergence $R_n(x) \\to 0$ for analytic $f$ survives Runge because it does not require a real sup bound — only the existence of *some* radius on which the formal power series converges, which Runge's $1/(1+x^2)$ has (radius $1$).\n\nThe Path Forward block flags the slug for closure/deletion in favor of the child, with option (a) — preserve as retraction record — chosen for pedagogical/audit value.",
+    "mathContext": "Sibling hierarchy: `mean-value-theorem` (root MVT) $\\supset$ `mean-value-theorem-oq-02` (Taylor + Lagrange remainder, qualitative pointwise) $\\supset$ `mean-value-theorem-oq-02-oq-04` (THIS, retracted real-line uniform attempt) $\\supset$ `mean-value-theorem-oq-02-oq-04-oq-01` (child, refutation + corrected complex-disk form). Cousin: `taylor-theorem-oq-02` (qualitative $R_n \\to 0$, Runge-robust).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "mean-value-theorem-oq-02 (parent)",
+      "mean-value-theorem-oq-02-oq-04-oq-01 (child)",
+      "taylor-theorem-oq-02 (cousin)",
+      "Lagrange remainder",
+      "complex-disk Cauchy bound",
+      "qualitative R_n → 0 convergence"
+    ],
+    "prerequisites": [
+      "Parent-child-cousin slug topology",
+      "Gallery navigation conventions"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-empty-namespace",
     "proofId": "mean-value-theorem-oq-02-oq-04",
     "type": "concept",
     "range": {
-      "startLine": 90,
-      "endLine": 94
+      "startLine": 104,
+      "endLine": 128
     },
-    "title": "Noncomputable Section, Open Namespaces, File Namespace",
-    "content": "Three quick housekeeping declarations frame all subsequent content:\n\n1. **`noncomputable section`** — required because Taylor polynomials of real-analytic functions involve `iteratedDeriv`, which Mathlib treats classically (no `Decidable` instance, no canonical computation). The parent file `MeanValueTheoremOQ02` makes the same choice; reusing its `taylorPolynomial` means we inherit the noncomputability anyway.\n\n2. **`open Real Set`** — pulls `|·|` (from `Real`) and `Set.Ioo` / `Set.Icc` (from `Set`) into scope without prefixes. The Cauchy bound's hypothesis `∀ y ∈ Ioo (a - R) (a + R), |f y| ≤ M` and conclusion's domain `x ∈ Icc (a - r) (a + r)` rely on both.\n\n3. **`namespace MeanValueTheoremOQ02OQ04`** — encapsulates the file's two declarations so downstream consumers reference them as `MeanValueTheoremOQ02OQ04.analytic_taylor_remainder_uniform_bound` / `analytic_remainder_zero_bound`. This mirrors the parent's `MeanValueTheoremOQ02` namespace, keeping the OQ-tree's API uniform.",
-    "mathContext": "The noncomputable qualifier reflects Mathlib's *classical* treatment of iterated differentiation: $f^{(k)}$ is defined via `iteratedDeriv k f`, which is constructively undecidable in general. The namespace scoping ensures that the file's two top-level declarations live alongside, not in conflict with, the parent's analogous Lagrange-remainder axiom and Taylor polynomial definition.",
+    "title": "References + Empty Namespace with Inline S2 Retraction Comment",
+    "content": "The References block points to (i) the constructive refutation in `Proofs/MeanValueTheoremOQ02OQ04OQ01.lean §2` (theorem `oq04_axiom_is_false`), (ii) the corrected complex-disk Cauchy bound in §3 of the same file (`analytic_taylor_remainder_uniform_bound_complex`), and (iii) Runge's original 1901 paper (Z. Math. Phys. 46:224–243) introducing the Runge phenomenon as an obstruction to polynomial interpolation on equispaced nodes — the same obstruction that defeats the real-line OQ-04 axiomatization here.\n\nThe `namespace MeanValueTheoremOQ02OQ04` ... `end MeanValueTheoremOQ02OQ04` block (lines 114-128) is **intentionally empty**: the only content inside is a 9-line comment summarizing the S1→S2 retraction history and directing consumers to `Proofs.MeanValueTheoremOQ02OQ04OQ01` for the corrected complex-disk form. No axioms, no theorems, no definitions, no sorries — the empty namespace preserves the file's identity as a gallery slug and an import target for any code that still references `MeanValueTheoremOQ02OQ04` (none in the current closure) without exposing a mathematical claim that has been excluded.",
+    "mathContext": "Empty-namespace convention: `namespace X ... end X` with no declarations between them is a valid Lean construct that preserves the slug's reachability in the import graph without committing to any propositions. Combined with the inline retraction comment, it documents the historical claim (S1 axiom + corollary) and the constructive reason for its exclusion (Runge counterexample) at the point in the source where a reader following an `import` chain would land.",
     "significance": "supporting",
     "relatedConcepts": [
-      "noncomputable section",
-      "iteratedDeriv",
-      "namespace scoping",
-      "Real.abs",
-      "Set.Ioo / Set.Icc"
+      "empty namespace block",
+      "retraction comment convention",
+      "Runge 1901",
+      "oq04_axiom_is_false",
+      "analytic_taylor_remainder_uniform_bound_complex",
+      "import graph reachability"
     ],
     "prerequisites": [
-      "Lean 4 noncomputable definitions",
-      "Lean 4 namespaces and `open` directives",
-      "Real-analysis vocabulary"
-    ]
-  },
-  {
-    "id": "ann-mvt02oq04-uniform-axiom",
-    "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "theorem",
-    "range": {
-      "startLine": 95,
-      "endLine": 134
-    },
-    "title": "Cauchy Uniform Bound on the Analytic Taylor Remainder (Axiom)",
-    "content": "The axiom `analytic_taylor_remainder_uniform_bound` states: for f real-analytic on the open interval (a-R, a+R) with uniform sup bound |f y| ≤ M on that interval, and any 0 < r < R, the Taylor remainder at order n satisfies |f(x) - taylorPolynomial f a n x| ≤ M·r^(n+1) / (R-r) for every x ∈ [a-r, a+r] and any n ∈ ℕ. The hypothesis uses `AnalyticOn ℝ f (Set.Ioo (a-R) (a+R))` (Mathlib's analytic-functions predicate) combined with the uniform sup bound. The Taylor polynomial is the same `MeanValueTheoremOQ02.taylorPolynomial` from the parent file (no duplication). This axiomatizes the OQ-04 question verbatim; discharge via Cauchy's coefficient estimates is deferred to S2.",
-    "mathContext": "$|f(x) - T_n f(a)(x)| \\le M \\cdot r^{n+1} / (R - r)$ for all $x \\in [a-r, a+r]$ and all $n \\in \\mathbb{N}$, when $f$ is analytic on $(a-R, a+R)$ with $|f| \\le M$ uniformly and $0 < r < R$. The standard proof uses Cauchy's integral formula or, in Mathlib, the coefficient bound `‖p k‖ \\le M / R^k` combined with the geometric tail $\\sum_{k > n} (r/R)^k = (r/R)^{n+1} / (1 - r/R)$.",
-    "significance": "key",
-    "relatedConcepts": [
-      "AnalyticOn",
-      "HasFPowerSeriesOnBall",
-      "Cauchy's estimates",
-      "Taylor remainder",
-      "geometric series"
-    ],
-    "prerequisites": [
-      "Mathlib.Analysis.Analytic.Basic",
-      "Proofs.MeanValueTheoremOQ02",
-      "MeanValueTheoremOQ02.taylorPolynomial"
-    ]
-  },
-  {
-    "id": "ann-mvt02oq04-zero-corollary",
-    "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "theorem",
-    "range": {
-      "startLine": 136,
-      "endLine": 167
-    },
-    "title": "n=0 Specialization: Cauchy Tangent-Line Bound",
-    "content": "The theorem `analytic_remainder_zero_bound` derives the n=0 specialization of the OQ-04 axiom: for f real-analytic on (a-R, a+R) with sup bound M and 0 < r < R, |f(x) - f(a)| ≤ M·r / (R-r) for x ∈ [a-r, a+r]. The proof is a three-line one-shot: instantiate the axiom at n=0, rewrite using `MeanValueTheoremOQ02.taylorPolynomial_zero` (which says T_0 = f(a)), and apply `simpa` to clear r^(0+1) = r.",
-    "mathContext": "At $n = 0$: $T_0 f(a)(x) = f(a)$, so the OQ-04 bound becomes $|f(x) - f(a)| \\le M \\cdot r / (R - r)$. This is the analytic-function strengthening of the ordinary MVT Lipschitz bound $|f(x) - f(a)| \\le \\sup |f'| \\cdot |x - a|$: the right-hand side now depends only on the sup bound $M$ of $f$ itself (not its derivative) and the geometric shrinkage factor $r / (R - r)$.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "taylorPolynomial_zero",
-      "MVT",
-      "Lipschitz bound",
-      "Cauchy bound",
-      "tangent-line approximation"
-    ],
-    "prerequisites": [
-      "MeanValueTheoremOQ02.taylorPolynomial_zero",
-      "analytic_taylor_remainder_uniform_bound"
-    ]
-  },
-  {
-    "id": "ann-mvt02oq04-verification",
-    "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "tactic",
-    "range": {
-      "startLine": 168,
-      "endLine": 173
-    },
-    "title": "Verification Block: Sanity-Check #check Commands",
-    "content": "Two `#check` commands certify that the two top-level declarations have the expected types after elaboration: `@analytic_taylor_remainder_uniform_bound` (the axiom signature with all explicit arguments) and `@analytic_remainder_zero_bound` (the corollary). This is a lightweight regression guard: any drift in the parent file's `taylorPolynomial` type or in Mathlib's `AnalyticOn` / `Set.Ioo` / `Set.Icc` signatures would surface as an elaboration error here long before downstream consumers notice. The `end MeanValueTheoremOQ02OQ04` closes the namespace opened on line 94.",
-    "mathContext": "No new mathematical content; the verification block confirms the elaborated types of the two declarations match the file docstring's stated signatures.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "#check command",
-      "Lean elaboration",
-      "namespace scoping",
-      "regression testing"
-    ],
-    "prerequisites": [
-      "Lean 4 syntax",
-      "namespaces"
+      "Lean 4 namespace blocks",
+      "Gallery retraction documentation conventions"
     ]
   }
 ]
