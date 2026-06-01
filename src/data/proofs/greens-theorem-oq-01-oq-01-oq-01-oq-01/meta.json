@@ -59,7 +59,7 @@
       "Inductive proof structure: decomposition into inner-permutation + adjacent-swap building blocks",
       "Eliminates the axiom iteratedIntervalIntegral_order_independent from greens-theorem-oq-01-oq-01-oq-01"
     ],
-    "lineCount": 516,
+    "lineCount": 537,
     "theoremCount": 10,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
@@ -77,7 +77,7 @@
       "Topology"
     ],
     "namespace": "GreensTheoremOQ01OQ01OQ01OQ01",
-    "lineCount": 516,
+    "lineCount": 537,
     "axiomCount": 0,
     "theoremCount": 10,
     "definitionCount": 0,
@@ -138,7 +138,7 @@
       "id": "main-and-verified",
       "title": "Main Theorem and Small-Dimension Verifications",
       "startLine": 423,
-      "endLine": 516,
+      "endLine": 537,
       "summary": "`iteratedIntervalIntegral_order_independent` is proved by `Equiv.Perm.swap_induction_on σ`: the identity case is immediate, and the transposition case is supplied by `iter_integral_swap_any` (B3). The verified small cases `order_independent_2d` (enumerating $\\text{Equiv.Perm}(\\text{Fin}\\,2) = \\{\\text{id}, \\text{swap}\\,0\\,1\\}$) and `order_independent_3d_swap01` provide pedagogical entry points and direct proofs that bypass the full induction for the most physically common dimensions $n = 2, 3$."
     }
   ],
