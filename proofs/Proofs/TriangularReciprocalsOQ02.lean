@@ -70,13 +70,46 @@ theorem partial_sum_closed_form (N k : ℕ) (hk : 0 < k) :
 
 /-- For fixed k, the harmonic difference H_{N+k} - H_N tends to 0 as N → ∞.
 
-    Quantitative bound: 0 ≤ H_{N+k} - H_N ≤ k/(N+1), so the squeeze theorem applies.
-    The numeric content is purely the k consecutive terms 1/(N+1), …, 1/(N+k), each
-    of which is ≤ 1/(N+1). -/
+    Proof by induction on k:
+      * k = 0: the difference is identically 0.
+      * k → k+1: H_{N+(k+1)} - H_N = (H_{N+k} - H_N) + 1/(N+k+1). The first summand
+        tends to 0 by the IH; the second is a constant-shift of 1/(N+1), hence → 0
+        via `tendsto_one_div_add_atTop_nhds_zero_nat`. -/
 theorem tail_to_zero (k : ℕ) :
     Tendsto (fun N : ℕ => (harmonic (N + k) : ℝ) - (harmonic N : ℝ))
       atTop (𝓝 0) := by
-  sorry
+  induction k with
+  | zero =>
+    have hfun : (fun N : ℕ => (harmonic (N + 0) : ℝ) - (harmonic N : ℝ)) =
+        fun _ : ℕ => (0 : ℝ) := by
+      funext N; simp
+    rw [hfun]
+    exact tendsto_const_nhds
+  | succ k ih =>
+    -- Reciprocal-of-shift limit: 1/(N + (k+1)) → 0.
+    have h_base : Tendsto (fun N : ℕ => (1 : ℝ) / ((N : ℝ) + 1)) atTop (𝓝 (0 : ℝ)) :=
+      tendsto_one_div_add_atTop_nhds_zero_nat
+    have h_shift : Tendsto (fun N : ℕ => N + k) atTop atTop :=
+      tendsto_add_atTop_nat k
+    have h_term : Tendsto (fun N : ℕ => (1 : ℝ) / ((N : ℝ) + (k : ℝ) + 1))
+        atTop (𝓝 (0 : ℝ)) := by
+      refine (h_base.comp h_shift).congr ?_
+      intro N
+      simp only [Function.comp_apply]
+      push_cast
+      ring
+    -- Rewrite the target into the form (H_{N+k} - H_N) + 1/(N+k+1), then sum two zero limits.
+    have hgoal :
+        (fun N : ℕ => (harmonic (N + (k + 1)) : ℝ) - (harmonic N : ℝ)) =
+          fun N : ℕ => ((harmonic (N + k) : ℝ) - (harmonic N : ℝ)) +
+            (1 : ℝ) / ((N : ℝ) + (k : ℝ) + 1) := by
+      funext N
+      have h1 : N + (k + 1) = (N + k) + 1 := rfl
+      rw [h1, harmonic_succ]
+      push_cast
+      ring
+    rw [hgoal]
+    simpa using ih.add h_term
 
 -- ═══════════════════════════════════════════════════
 -- Lemma 4: Summability via p-Series Comparison

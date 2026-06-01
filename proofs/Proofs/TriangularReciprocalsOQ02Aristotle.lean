@@ -31,12 +31,42 @@ theorem partial_fraction_aristotle {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
 
 /-- Lemma 3 (companion form): the harmonic tail difference tends to 0.
 
-    For fixed k, H_{N+k} - H_N → 0 as N → ∞. Aristotle target: combine the
-    quantitative bound H_{N+k} - H_N ≤ k/(N+1) with `tendsto_const_div_atTop_nhds_zero_nat`. -/
+    For fixed k, H_{N+k} - H_N → 0 as N → ∞. Proof by induction on k, using
+    `tendsto_one_div_add_atTop_nhds_zero_nat` for the per-term limit
+    1/(N+k+1) → 0 in the successor step. -/
 theorem tail_to_zero_aristotle (k : ℕ) :
     Tendsto (fun N : ℕ => (harmonic (N + k) : ℝ) - (harmonic N : ℝ))
       atTop (𝓝 0) := by
-  sorry
+  induction k with
+  | zero =>
+    have hfun : (fun N : ℕ => (harmonic (N + 0) : ℝ) - (harmonic N : ℝ)) =
+        fun _ : ℕ => (0 : ℝ) := by
+      funext N; simp
+    rw [hfun]
+    exact tendsto_const_nhds
+  | succ k ih =>
+    have h_base : Tendsto (fun N : ℕ => (1 : ℝ) / ((N : ℝ) + 1)) atTop (𝓝 (0 : ℝ)) :=
+      tendsto_one_div_add_atTop_nhds_zero_nat
+    have h_shift : Tendsto (fun N : ℕ => N + k) atTop atTop :=
+      tendsto_add_atTop_nat k
+    have h_term : Tendsto (fun N : ℕ => (1 : ℝ) / ((N : ℝ) + (k : ℝ) + 1))
+        atTop (𝓝 (0 : ℝ)) := by
+      refine (h_base.comp h_shift).congr ?_
+      intro N
+      simp only [Function.comp_apply]
+      push_cast
+      ring
+    have hgoal :
+        (fun N : ℕ => (harmonic (N + (k + 1)) : ℝ) - (harmonic N : ℝ)) =
+          fun N : ℕ => ((harmonic (N + k) : ℝ) - (harmonic N : ℝ)) +
+            (1 : ℝ) / ((N : ℝ) + (k : ℝ) + 1) := by
+      funext N
+      have h1 : N + (k + 1) = (N + k) + 1 := rfl
+      rw [h1, harmonic_succ]
+      push_cast
+      ring
+    rw [hgoal]
+    simpa using ih.add h_term
 
 /-- Lemma 4 (companion form): the series ∑ 1/((n+1)((n+1)+k)) is summable.
 
