@@ -62,7 +62,12 @@
     "lineCount": 48,
     "mathlib_version": "4.26.0",
     "theoremCount": 0,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/YangMills/Classical.lean",
+      "Proofs/YangMills/Quantum.lean",
+      "Proofs/OSBridge.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Chen-Ning Yang and Robert Mills introduced non-abelian gauge theory in 1954, generalizing Maxwell's electromagnetism from the abelian group $U(1)$ to arbitrary compact Lie groups. Their paper was initially seen as physically unrealistic (massless gauge bosons were not observed), but the discovery of asymptotic freedom by David Gross, Frank Wilczek, and David Politzer in 1973 (Nobel Prize 2004) showed that non-abelian gauge coupling weakens at high energies, making perturbative QCD reliable there. Kenneth Wilson introduced lattice gauge theory in 1974, providing a non-perturbative definition via discrete spacetime, and showed evidence for quark confinement through the area law for Wilson loops. Arthur Wightman and others developed axiomatic quantum field theory in the 1950s-60s, formulating precise mathematical criteria (Wightman axioms) for a rigorous QFT. The Clay Mathematics Institute selected the Yang-Mills Existence and Mass Gap as one of seven Millennium Prize Problems in 2000, offering $1,000,000 for a proof that quantum Yang-Mills theory on $\\mathbb{R}^4$ exists rigorously and has a positive mass gap $\\Delta > 0$. Despite overwhelming numerical evidence from lattice QCD and physical confirmation of confinement, no rigorous 4D interacting quantum field theory has ever been constructed.",
@@ -209,7 +214,12 @@
     "theoremCount": 0,
     "definitionCount": 0,
     "path": "Proofs/YangMillsMassGap.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/YangMills/Classical.lean",
+      "Proofs/YangMills/Quantum.lean",
+      "Proofs/OSBridge.lean"
+    ]
   },
   "references": [
     {
