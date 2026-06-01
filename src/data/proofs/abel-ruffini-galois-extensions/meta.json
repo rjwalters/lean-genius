@@ -195,6 +195,12 @@
         "type": "key",
         "description": "The order of a finite Galois group equals the extension degree: $|\\mathrm{Gal}(E/F)| = [E : F]$. Direct invocation of Mathlib's `IsGalois.card_aut_eq_finrank` under the standard hypotheses `[FiniteDimensional F E] [IsGalois F E]`. Establishes the numerical shadow of the Galois correspondence — the bijection between intermediate fields and subgroups in cardinality form — and provides the file's interface to extension degrees from downstream proofs that need to read off $|\\mathrm{Gal}|$ from $[E:F]$.",
         "leanType": "[FiniteDimensional F E] [IsGalois F E] : Nat.card (E ≃ₐ[F] E) = Module.finrank F E"
+      },
+      {
+        "name": "solvable_small_has_abelian_factors",
+        "type": "supporting",
+        "description": "Joint solvability packaging for $n \\leq 4$: simultaneously certifies $\\mathrm{IsSolvable}(S_n)$ AND $\\mathrm{IsSolvable}(A_n)$ as a single anonymous-constructor proof $\\langle \\text{symmetric\\_solvable\\_of\\_le\\_four } hn,\\ \\text{alternating\\_solvable\\_of\\_le\\_four } hn\\rangle$. While `symmetric_solvable_iff` and `alternating_solvable_iff` give the full biconditional classifications, this paired conjunction is the form most directly consumed by downstream proofs that need *both* solvability witnesses to construct composition series with abelian factors (the canonical $\\{e\\} \\trianglelefteq A_n \\trianglelefteq S_n$ tower for $n \\leq 4$, refined by $V_4$ at $n = 4$). Flagged as an original contribution in `meta.originalContributions[3]`: bundles two Mathlib instance inferences into a single ergonomic API surface without requiring re-derivation at the call site.",
+        "leanType": "(n : ℕ) (hn : n ≤ 4) : IsSolvable (Equiv.Perm (Fin n)) ∧ IsSolvable (alternatingGroup (Fin n))"
       }
     ]
   },
@@ -1144,6 +1150,12 @@
       "type": "key",
       "description": "The order of a finite Galois group equals the extension degree: $|\\mathrm{Gal}(E/F)| = [E : F]$. Direct invocation of Mathlib's `IsGalois.card_aut_eq_finrank` under the standard hypotheses `[FiniteDimensional F E] [IsGalois F E]`. Establishes the numerical shadow of the Galois correspondence — the bijection between intermediate fields and subgroups in cardinality form — and provides the file's interface to extension degrees from downstream proofs that need to read off $|\\mathrm{Gal}|$ from $[E:F]$.",
       "leanType": "[FiniteDimensional F E] [IsGalois F E] : Nat.card (E ≃ₐ[F] E) = Module.finrank F E"
+    },
+    {
+      "name": "solvable_small_has_abelian_factors",
+      "type": "supporting",
+      "description": "Joint solvability packaging for $n \\leq 4$: simultaneously certifies $\\mathrm{IsSolvable}(S_n)$ AND $\\mathrm{IsSolvable}(A_n)$ as a single anonymous-constructor proof $\\langle \\text{symmetric\\_solvable\\_of\\_le\\_four } hn,\\ \\text{alternating\\_solvable\\_of\\_le\\_four } hn\\rangle$. While `symmetric_solvable_iff` and `alternating_solvable_iff` give the full biconditional classifications, this paired conjunction is the form most directly consumed by downstream proofs that need *both* solvability witnesses to construct composition series with abelian factors (the canonical $\\{e\\} \\trianglelefteq A_n \\trianglelefteq S_n$ tower for $n \\leq 4$, refined by $V_4$ at $n = 4$). Flagged as an original contribution in `meta.originalContributions[3]`: bundles two Mathlib instance inferences into a single ergonomic API surface without requiring re-derivation at the call site.",
+      "leanType": "(n : ℕ) (hn : n ≤ 4) : IsSolvable (Equiv.Perm (Fin n)) ∧ IsSolvable (alternatingGroup (Fin n))"
     }
   ],
   "sorries": 0
