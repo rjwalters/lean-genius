@@ -67,6 +67,56 @@
         "description": "Cyclotomic polynomial machinery; exposes Gal(ℚ(ζ_n)/ℚ) ≅ (ℤ/n)ˣ",
         "module": "Mathlib.NumberTheory.Cyclotomic.Gal"
       }
+    ],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05",
+        "relationship": "**Parent entry — the axiomatized Shafarevich theorem.** States Shafarevich's 1954 theorem (every finite solvable group $G$ is realizable as $\\text{Gal}(L/\\mathbb{Q})$) with 7 derived corollaries including $S_3, S_4$ realizability and the threshold observation that $S_5$ is the first non-realizable-by-Shafarevich case. This sub-entry (-OQ-01) is the *feasibility study* for that parent: which fragments of Shafarevich are actually provable in Mathlib 2026? Cyclic groups: yes (proved). Coprime abelian products: yes (proved here via CRT). General abelian: 1 axiom away (`galois_compositum_product`, ~500 lines of conductor theory). Full solvable: ~5000+ lines (Brauer groups, Tate-Poitou, embedding problems — major missing infrastructure). The parent axiomatizes; this entry charts the de-axiomatization path."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "**Grandparent — complete solvability classification $S_n$ solvable $\\iff n \\leq 4$.** Proves the bidirectional Galois criterion at the symmetric-group level, filling Mathlib's missing $S_2, S_3, S_4$ solvability instances. The Shafarevich line (this sub-entry's branch) extends the positive direction: not only are $S_2, S_3, S_4$ solvable, they are *realizable* as Galois groups over $\\mathbb{Q}$ — and Shafarevich asserts the same for *every* finite solvable group. Together they bracket the solvable side: classification (which groups are solvable) plus realizability (which solvable groups appear as Galois groups)."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "**Root entry — Abel-Ruffini theorem.** Proves the contrapositive bridge `not_solvable_by_rad_of_not_solvable_gal`: non-solvable Galois group ⟹ not solvable by radicals. Shafarevich is the *positive complement* at the solvable end of the Galois-group spectrum: Abel-Ruffini blocks radical solvability for non-solvable Galois groups ($S_5, A_5$), while Shafarevich asserts every solvable group *does* appear as a Galois group. The two together carve the Galois-group landscape into (a) realized-and-radically-solvable (solvable groups, Shafarevich's domain) and (b) blocked-from-radical-solvability (non-solvable groups, Abel-Ruffini's domain). This sub-entry's CRT-based abelian realizations populate region (a) constructively."
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "**Master Inverse Galois Problem entry (1882 lines, 5 axioms, 0 sorries).** Houses the existing `cyclic_group_realizable` (used here as a black box via `cyclic_realizable`) that proves cyclic groups $\\mathbb{Z}/n$ are realizable over $\\mathbb{Q}$ via Dirichlet primes + Galois fixed fields of $\\mathbb{Q}(\\zeta_p)$ for $p \\equiv 1 \\pmod n$. This sub-entry extends `inverse-galois` along the *systematic* axis: the CRT reduction `coprime_product_cyclic_realizable` shows that *finite products of cyclic groups with coprime orders* are realizable from the single cyclic case — the first lemma in any systematic abelian Shafarevich proof. The parent `inverse-galois` houses ad-hoc constructions (D₄ via $X^4 - 2$, F₂₀ via $X^5 - 2$, A₅ via $x^5 - 5x^4 + \\cdots$); this entry pursues the uniform Shafarevich strategy starting from cyclic + CRT."
+      },
+      {
+        "id": "inverse-galois-d4",
+        "relationship": "Concrete realization of $D_4 = \\text{Gal}(X^4 - 2/\\mathbb{Q})$ with $|\\text{Gal}| = 8$ (27 theorems, 0 sorries, 0 axioms). Cited in keyInsight #4 as a *solvable-side ad-hoc realization* — $D_4$ is solvable (derived series $D_4 \\supset \\langle r \\rangle \\cong \\mathbb{Z}/4 \\supset \\langle r^2 \\rangle \\cong \\mathbb{Z}/2 \\supset \\{e\\}$), hence Shafarevich asserts it is realizable, and `inverse-galois-d4` exhibits an explicit polynomial witness. The contrast with this entry's CRT approach is structural: `inverse-galois-d4` uses an $\\mathbb{R}$-embedding obstruction tailored to $X^4 - 2$, while Shafarevich would prove $D_4$-realizability *uniformly* alongside every other solvable group. The Mathlib gap (`galois_compositum_product`) blocks the uniform proof; the ad-hoc construction sidesteps it."
+      },
+      {
+        "id": "inverse-galois-f20",
+        "relationship": "Concrete realization of $F_{20} = \\mathbb{Z}/5 \\rtimes \\mathbb{Z}/4 = \\text{Gal}(X^5 - 2/\\mathbb{Q})$ via cyclotomic + Eisenstein (27 theorems, 0 sorries, 0 axioms). Cited in keyInsight #4 as the *second solvable-side ad-hoc realization*: $F_{20}$ is solvable (derived series $F_{20} \\supset \\mathbb{Z}/5 \\supset \\{e\\}$), so Shafarevich predicts its realizability, and `inverse-galois-f20` exhibits the witness. Crucial degree-5 contrast: same degree as the Abel-Ruffini polynomial $x^5 - 4x + 2$ (Gal = $S_5$, non-solvable), but $F_{20}$'s solvability places $X^5 - 2$ on the *radically solvable* side — the explicit root $\\sqrt[5]{2}$ is itself a radical. Abel-Ruffini's impossibility is not about degree alone; it is precisely about which Galois groups are non-solvable."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-01",
+        "relationship": "Concrete $S_5$-witness: proves $\\text{Gal}(x^5 - 4x + 2/\\mathbb{Q}) \\cong S_5$ via Eisenstein-at-$p = 2$ + `galActionHom` bijectivity (0 axioms, 0 sorries). Cited in keyInsight #4 as the *non-solvable-side ad-hoc realization* — sits outside Shafarevich's domain (Shafarevich only addresses solvable groups). Forms the complementary pole to this entry's solvable-side CRT realizations: Shafarevich predicts every solvable abelian group is realizable (this entry's domain); the inverse Galois problem more broadly asks the same for non-solvable groups, which Shafarevich does *not* address — $S_5$, $A_5$, and the Mathieu $M_{23}$ are realized only by ad-hoc constructions when realized at all."
+      },
+      {
+        "id": "inverse-galois-oq-06",
+        "relationship": "Concrete $A_5$-witness: proves $A_5 \\cong \\text{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ via Eisenstein at $p = 5$ + Sylow + Vandermonde discriminant + Sophie Germain identity. Cited in keyInsight #4 alongside `inverse-galois-a5` (twin formalization) as the *minimal non-solvable concrete realization* — $A_5$ is the smallest non-abelian simple group ($|A_5| = 60$), the structural reason Abel-Ruffini's obstruction begins exactly at degree 5. Like `abel-ruffini-oq-04-oq-01`, this realization is outside Shafarevich's scope (non-solvable) and constitutes part of the gallery's frontier of the inverse Galois problem proper."
+      },
+      {
+        "id": "inverse-galois-a5",
+        "relationship": "Twin $A_5$-realization formalizing the same polynomial $x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$ as `inverse-galois-oq-06`, via an independent argument using a single Dedekind-derived axiom (`three_dvd_gal_card`) forcing $|\\text{Gal}| = 60$. The pair (`inverse-galois-oq-06`, `inverse-galois-a5`) exhibits two distinct Lean proofs of the same realization — a feature of the gallery's degree-5 inventory. Cited in keyInsight #4 as the *fifth degree-5 transitive subgroup* completing the picture: $C_5$ (solvable, Shafarevich), $D_5$ (solvable, Shafarevich), $F_{20}$ (solvable, Shafarevich), $A_5$ (non-solvable, ad-hoc only), $S_5$ (non-solvable, ad-hoc only). The three solvable members fall under this entry's Shafarevich-feasibility scope; the two non-solvable members remain the open frontier."
+      },
+      {
+        "id": "inverse-galois-oq-02",
+        "relationship": "Mathieu group $M_{23}$ — the unique sporadic simple group whose realizability as $\\text{Gal}(L/\\mathbb{Q})$ remains open in 2026. Cited in keyInsight #4 as the *current frontier of the inverse Galois problem*: Shafarevich resolves the solvable case (this entry's domain) and the remaining open question targets the non-solvable case via Belyi covers, rigidity, and Thompson triples — none of which establish $M_{23}$ realizability. The structural distance from this entry: Shafarevich-feasibility for *solvable* groups (proved here for cyclic, open for general abelian, open for solvable) versus open *non-solvable* realizability ($M_{23}$). The Mathlib gaps on the non-solvable side (Belyi theory, rigidity criteria, Thompson groups) are even larger than the abelian-Shafarevich gap this entry identifies."
+      },
+      {
+        "id": "kroneckers-jugendtraum",
+        "relationship": "**Hilbert's 12th Problem (Kronecker's Jugendtraum, 1880)**: extend the Kronecker–Weber theorem (1853/1886/1896 — every finite abelian extension of $\\mathbb{Q}$ is contained in some cyclotomic field $\\mathbb{Q}(\\zeta_n)$) to arbitrary number fields via *explicit transcendental functions*. Kronecker–Weber is the direct foundation for this entry's cyclic realization strategy: the inverse Galois problem for abelian groups is *solved* over $\\mathbb{Q}$ precisely because every abelian group embeds as a quotient of some $(\\mathbb{Z}/n)^\\times$. The Shafarevich-feasibility status report this entry produces is therefore Kronecker–Weber-derived for the abelian case (cyclic via $\\mathbb{Q}(\\zeta_p)$ + Dirichlet, coprime products via CRT inside $\\mathbb{Q}(\\zeta_{mn})$). Hilbert's 12th asks the same explicit-realization question one base-field shift up (over arbitrary number fields), resolved only for imaginary quadratic fields via $j$-invariants and Weber functions. The axiom `galois_compositum_product` is, in essence, the Lean-side gap in Kronecker–Weber's compositum theory."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-07",
+        "relationship": "**Burnside's $p^a q^b$ theorem (1904)**: every finite group of order $p^a q^b$ is solvable. Provides the structural complement to this entry's Shafarevich-feasibility map: the *solvable groups Shafarevich would cover* include all $p^a q^b$-order groups by Burnside. The Phase-2 axiomatization in `abel-ruffini-galois-extensions-oq-07` handles trivial cases ($a = 0$, $b = 0$, $p = q$) via Mathlib's `IsPGroup → IsNilpotent → IsSolvable` chain, the squarefree case via `IsZGroup.of_squarefree`, and axiomatizes the genuinely-open Lean content ($a \\geq 2 \\vee b \\geq 2$) as `burnside_pq_nontrivial`. Combined with this entry's coprime-product-cyclic realizations, Burnside + Shafarevich-feasibility together identify *which groups* (solvable by Burnside, realizable by Shafarevich) are theoretically in scope for a uniform Mathlib realization program — and *which Mathlib infrastructure gaps* (conductor theory here; nilpotent series + commutator calculus in `oq-07`) gate progress."
+      }
     ]
   },
   "overview": {
