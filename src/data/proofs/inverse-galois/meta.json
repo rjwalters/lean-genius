@@ -217,7 +217,7 @@
       "id": "sharp-threshold",
       "title": "Sharp Threshold: S_n Solvable iff n ≤ 4",
       "startLine": 158,
-      "endLine": 1881,
+      "endLine": 534,
       "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved.",
       "file": "Proofs/AbelRuffiniGaloisExtensions.lean",
       "mathContext": "Sharp solvability threshold: $S_n$ is solvable $\\iff n \\leq 4$. For $n \\geq 5$, the commutator series $S_n \\supset A_n \\supset \\{e\\}$ fails since $A_n$ is simple and non-abelian. This is the group-theoretic core of Abel-Ruffini."
