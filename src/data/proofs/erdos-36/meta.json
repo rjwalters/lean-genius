@@ -65,7 +65,7 @@
       "Asymptotic analysis: limit of M(N)/N"
     ],
     "assumptions": "3 axiom declarations: erdos_36_limit_exists (the limit c = lim M(N)/N exists), white_lower (White's 0.379 lower bound), upper_bound (Haugland's 0.381 upper bound). small_values is now a theorem proved computationally via native_decide on a computable mirror function MC.",
-    "lineCount": 381,
+    "lineCount": 380,
     "relatedProblems": [
       {
         "id": "erdos-335",
@@ -80,7 +80,7 @@
     "definitionCount": 9
   },
   "leanFile": {
-    "lineCount": 381,
+    "lineCount": 380,
     "axiomCount": 3,
     "theoremCount": 15,
     "definitionCount": 9,
