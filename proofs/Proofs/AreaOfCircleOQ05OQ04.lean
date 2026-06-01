@@ -89,7 +89,7 @@ import Proofs.AreaOfCircleOQ05
 namespace ComplexGaussianCircle
 
 open MeasureTheory MeasureTheory.Measure Real Complex
-open scoped FourierTransform
+open scoped FourierTransform RealInnerProductSpace
 
 /-- The scalar π-weighted Gaussian integral: ∫ exp(-(π · x²)) dx = 1.
 
@@ -711,6 +711,87 @@ theorem complex_fourier_gaussian_normSq (b : ℂ) (hb : 0 < b.re) (w : ℂ) :
   simp_rw [key]
   exact complex_fourier_gaussian b hb w
 
+/-! ## Part 7 — S6b ACT-2: shifted Fourier-Gaussian + density-eigenfunction companion
+
+The two companions deferred from S6b (sessions/2026-05-31-s6b-act-complex-fourier-gaussian.md):
+
+1. `complex_fourier_gaussian_shifted` — direct specialization of
+   `_root_.fourier_gaussian_innerProductSpace'` at `V := ℂ`. This is the
+   modulation companion of `complex_fourier_gaussian`: a `2πi · ⟪x, z⟫`
+   phase in the input becomes an additive `-w ↦ x - w` shift in the
+   Fourier-domain Gaussian peak.
+
+2. `complex_fourier_gaussian_density_eigen` — Fourier-eigenfunction
+   identity for the normalised complex Gaussian density
+   `(1/π) · exp(-π · ‖z‖²)`. This follows from
+   `complex_fourier_gaussian_pi` by pulling the constant `(1/π)` out of
+   the Fourier integral via linearity (`integral_const_mul`). It is the
+   density-form companion of `complex_fourier_gaussian_pi`, exhibiting
+   that the normalised Gaussian density on ℂ is a fixed point of `𝓕`
+   with eigenvalue `1`.
+
+Both are sorry-free and axiom-free. -/
+
+/-- **Shifted complex Fourier-Gaussian**: for any `b : ℂ` with
+`0 < b.re` and `x w : ℂ`,
+
+    𝓕 (z ↦ exp(-b · ‖z‖² + 2π i · ⟪x, z⟫)) w
+      = (π / b) · exp(-π² · ‖x - w‖² / b).
+
+This is a direct specialization of
+`_root_.fourier_gaussian_innerProductSpace'` at the 2-dimensional real
+inner product space `V := ℂ`. The dimensional exponent
+`(finrank ℝ ℂ / 2 : ℂ) = (2 / 2 : ℂ) = 1` collapses via
+`Complex.finrank_real_complex`, and `Complex.cpow_one` reduces the base
+`(π/b) ^ (1 : ℂ)` to `π / b`. -/
+theorem complex_fourier_gaussian_shifted (b : ℂ) (hb : 0 < b.re) (x w : ℂ) :
+    𝓕 (fun (z : ℂ) ↦ Complex.exp (-b * ‖z‖ ^ 2
+        + 2 * (Real.pi : ℂ) * Complex.I * ((⟪x, z⟫ : ℝ) : ℂ))) w
+      = (Real.pi / b) *
+          Complex.exp (-(Real.pi : ℂ) ^ 2 * ‖x - w‖ ^ 2 / b) := by
+  have h := _root_.fourier_gaussian_innerProductSpace' (V := ℂ) hb x w
+  -- Collapse the dimensional exponent `(finrank ℝ ℂ / 2 : ℂ)` to `1`.
+  have hfr : ((Module.finrank ℝ ℂ : ℂ) / 2) = (1 : ℂ) := by
+    rw [Complex.finrank_real_complex]; norm_num
+  rw [hfr, Complex.cpow_one] at h
+  exact h
+
+/-- **Normalised complex Gaussian density is a Fourier eigenfunction**
+(eigenvalue 1): for any `w : ℂ`,
+
+    𝓕 (z ↦ (1/π) · exp(-π · ‖z‖²)) w = (1/π) · exp(-π · ‖w‖²).
+
+This is the density-form companion of `complex_fourier_gaussian_pi`:
+the normalised Gaussian density `(1/π) · exp(-π · ‖z‖²)` on ℂ — which
+integrates to 1 by `complex_gaussian_integral_normalised` — is a fixed
+point of `𝓕` with eigenvalue `1`.
+
+Proof: pull the constant `(1/π)` out of the Fourier integral via
+`integral_const_mul` (linearity of the Lebesgue integral), then apply
+`complex_fourier_gaussian_pi`. -/
+theorem complex_fourier_gaussian_density_eigen (w : ℂ) :
+    𝓕 (fun (z : ℂ) ↦ (1 / (Real.pi : ℂ)) *
+        Complex.exp (-(Real.pi : ℂ) * ‖z‖ ^ 2)) w
+      = (1 / (Real.pi : ℂ)) * Complex.exp (-(Real.pi : ℂ) * ‖w‖ ^ 2) := by
+  have h := complex_fourier_gaussian_pi w
+  rw [fourier_eq] at h
+  rw [fourier_eq]
+  -- The integrand `𝐞(-⟪z,w⟫) • ((1/π) * exp(...))` decomposes as
+  -- `(1/π) * (𝐞(-⟪z,w⟫) • exp(...))` after unfolding both Circle smuls to
+  -- multiplications; we then pull `(1/π)` out via `integral_const_mul`.
+  have ptw : ∀ z : ℂ,
+      (𝐞 (-(⟪z, w⟫ : ℝ))) •
+        ((1 / (Real.pi : ℂ)) *
+          Complex.exp (-(Real.pi : ℂ) * ‖z‖ ^ 2))
+      = (1 / (Real.pi : ℂ)) *
+          ((𝐞 (-(⟪z, w⟫ : ℝ))) •
+            Complex.exp (-(Real.pi : ℂ) * ‖z‖ ^ 2)) := by
+    intro z
+    simp only [Circle.smul_def, smul_eq_mul]
+    ring
+  simp_rw [ptw]
+  rw [integral_const_mul, h]
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -736,6 +817,8 @@ theorem complex_fourier_gaussian_normSq (b : ℂ) (hb : 0 < b.re) (w : ℂ) :
 - `complex_fourier_gaussian` : proved (parametric Fourier-Gaussian, S6b).
 - `complex_fourier_gaussian_pi` : proved (self-Fourier eigenfunction at `b = π`, load-bearing archimedean (C2)).
 - `complex_fourier_gaussian_normSq` : proved (`Complex.normSq` form of the parametric Fourier-Gaussian).
+- `complex_fourier_gaussian_shifted` : proved (modulation companion, direct `_root_.fourier_gaussian_innerProductSpace'` specialization at `V := ℂ`, S6b ACT-2).
+- `complex_fourier_gaussian_density_eigen` : proved (the normalised density `(1/π) · exp(-π · ‖z‖²)` is a Fourier eigenfunction with eigenvalue `1`, via `integral_const_mul` + `complex_fourier_gaussian_pi`, S6b ACT-2).
 
 All theorems above are sorry-free and axiom-free.
 
