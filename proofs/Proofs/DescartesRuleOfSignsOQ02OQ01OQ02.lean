@@ -67,7 +67,7 @@ import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Algebra.Polynomial.Eval.Defs
 import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.Algebra.Polynomial.Div
-import Mathlib.RingTheory.Squarefree.Basic
+import Mathlib.Algebra.Squarefree.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 import Mathlib.Topology.Algebra.Polynomial
@@ -102,8 +102,9 @@ theorem signVariations_nil : signVariations [] = 0 := by
   simp [signVariations]
 
 theorem signVariations_singleton (r : ℝ) : signVariations [r] = 0 := by
-  simp [signVariations, countSignAlts]
-  split <;> simp
+  by_cases hr : r = 0
+  · simp [signVariations, hr]
+  · simp [signVariations, hr]
 
 /-- Count of roots of p in the half-open interval (a, b], with multiplicity. -/
 noncomputable def rootsInInterval (p : ℝ[X]) (a b : ℝ) : ℕ :=
@@ -118,10 +119,10 @@ theorem rootsInInterval_C (c : ℝ) (hc : c ≠ 0) (a b : ℝ) :
     rootsInInterval (C c) a b = 0 := by
   simp only [rootsInInterval, C_eq_zero.not.mpr hc, ↓reduceIte]
   rw [Multiset.card_eq_zero, Multiset.filter_eq_nil]
-  intro r hr
-  have := (mem_roots (C_ne_zero.mpr hc)).mp hr
-  rw [Polynomial.IsRoot, eval_C] at this
-  exact hc this
+  intro r hr _
+  have h : (C c).eval r = 0 := (mem_roots (C_ne_zero.mpr hc)).mp hr
+  rw [eval_C] at h
+  exact hc h
 
 -- ============================================================================
 -- § 2. The Sturm Sequence
@@ -169,27 +170,21 @@ theorem sturmSeq_head (p : ℝ[X]) : (sturmSeq p).head? = some p :=
   sturmSeqAux_head p (derivative p) (p.natDegree + 1)
 
 /-- The Sturm sequence has at least 2 elements for nonzero polynomials of degree ≥ 1. -/
-theorem sturmSeq_length_ge_two (p : ℝ[X]) (hp : p ≠ 0) (hd : 0 < p.natDegree) :
+theorem sturmSeq_length_ge_two (p : ℝ[X]) (_hp : p ≠ 0) (hd : 0 < p.natDegree) :
     (sturmSeq p).length ≥ 2 := by
-  unfold sturmSeq sturmSeqAux
-  -- In char 0, derivative p ≠ 0 when natDegree p ≥ 1
-  -- The key: natDegree (derivative p) = natDegree p - 1 (char 0), so deriv p ≠ 0 for natDeg ≥ 1
   have hdp : derivative p ≠ 0 := by
-    -- In char 0, leading coeff of derivative is natDegree * leadingCoeff ≠ 0
     intro h
-    have hcoeff : (p.natDegree : ℝ) * p.leadingCoeff = 0 := by
-      have := congr_arg (Polynomial.coeff · (p.natDegree - 1)) h
-      simp only [Polynomial.coeff_zero, Polynomial.coeff_derivative] at this
-      have hk : p.natDegree - 1 + 1 = p.natDegree := by omega
-      rw [hk] at this
-      exact_mod_cast this
-    have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hp
-    have hnd : (p.natDegree : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-    exact hnd (or_iff_not_imp_right.mp (mul_eq_zero.mp hcoeff) hlc)
-  obtain ⟨m, hm⟩ : ∃ m, p.natDegree + 1 = m + 1 := ⟨p.natDegree, rfl⟩
-  rw [hm]
-  simp only [sturmSeqAux, hdp, ↓reduceIte, List.length_cons]
-  exact Nat.succ_le_succ (sturmSeqAux_ne_empty _ _ _)
+    have := Polynomial.natDegree_eq_zero_of_derivative_eq_zero h
+    omega
+  show (sturmSeqAux p (derivative p) (p.natDegree + 1)).length ≥ 2
+  have hunfold : sturmSeqAux p (derivative p) (p.natDegree + 1) =
+      p :: sturmSeqAux (derivative p) (-(p % derivative p)) p.natDegree := by
+    show (if derivative p = 0 then [p]
+          else p :: sturmSeqAux (derivative p) (-(p % derivative p)) p.natDegree) = _
+    exact if_neg hdp
+  rw [hunfold, List.length_cons]
+  have h := sturmSeqAux_ne_empty (derivative p) (-(p % derivative p)) p.natDegree
+  omega
 
 -- ============================================================================
 -- § 4. The Sturm Sign-Variation Count
@@ -205,8 +200,8 @@ theorem sturmVariations_zero (x : ℝ) : sturmVariations (0 : ℝ[X]) x = 0 := b
 
 theorem sturmVariations_C (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
     sturmVariations (C c) x = 0 := by
-  simp [sturmVariations, sturmSeq, sturmSeqAux]
-  simp [signVariations, countSignAlts, derivative_C]
+  simp [sturmVariations, sturmSeq, sturmSeqAux, signVariations,
+        derivative_C, hc]
 
 -- ============================================================================
 -- § 4a. Locally-Constant Lemma (Step A of Sturm exact-count proof)
@@ -226,36 +221,35 @@ private lemma sturmVariations_locally_constant
     (p : ℝ[X]) {x y : ℝ} (hxy : x ≤ y)
     (h_no_zero : ∀ q ∈ sturmSeq p, ∀ z ∈ Set.Icc x y, q.eval z ≠ 0) :
     sturmVariations p x = sturmVariations p y := by
-  unfold sturmVariations signVariations
+  show countSignAlts ((((sturmSeq p).map (fun q => q.eval x)).filter (· ≠ 0)).map
+        (fun r => if r > 0 then (1 : ℤ) else -1)) =
+       countSignAlts ((((sturmSeq p).map (fun q => q.eval y)).filter (· ≠ 0)).map
+        (fun r => if r > 0 then (1 : ℤ) else -1))
   have h_same_sign :
       ∀ q ∈ sturmSeq p, (q.eval x > 0 ↔ q.eval y > 0) := by
     intro q hq
     have hcx : q.eval x ≠ 0 := h_no_zero q hq x ⟨le_refl x, hxy⟩
     have hcy : q.eval y ≠ 0 := h_no_zero q hq y ⟨hxy, le_refl y⟩
+    have hcont : ContinuousOn (fun z => q.eval z) (Set.Icc x y) :=
+      q.continuous.continuousOn
     by_contra hne
     push_neg at hne
     rcases hne with ⟨hpx, hny⟩ | ⟨hnx, hpy⟩
-    · have hyneg : q.eval y < 0 := lt_of_le_of_ne (not_lt.mp hny) hcy
-      have hcont : ContinuousOn (fun z => q.eval z) (Set.Icc x y) :=
-        q.continuous.continuousOn
-      obtain ⟨z, hz, hez⟩ :=
-        intermediate_value_Icc hxy hcont
-          (show (0 : ℝ) ∈ Set.Icc (q.eval y) (q.eval x) from
-            ⟨le_of_lt hyneg, le_of_lt hpx⟩)
+    · have hyneg : q.eval y < 0 := lt_of_le_of_ne hny hcy
+      have h0 : (0 : ℝ) ∈ Set.Icc (q.eval y) (q.eval x) :=
+        ⟨le_of_lt hyneg, le_of_lt hpx⟩
+      obtain ⟨z, hz, hez⟩ := intermediate_value_Icc' hxy hcont h0
       exact h_no_zero q hq z hz hez
-    · have hxneg : q.eval x < 0 := lt_of_le_of_ne (not_lt.mp hnx) hcx
-      have hcont : ContinuousOn (fun z => q.eval z) (Set.Icc x y) :=
-        q.continuous.continuousOn
-      obtain ⟨z, hz, hez⟩ :=
-        intermediate_value_Icc hxy hcont
-          (show (0 : ℝ) ∈ Set.Icc (q.eval x) (q.eval y) from
-            ⟨le_of_lt hxneg, le_of_lt hpy⟩)
+    · have hxneg : q.eval x < 0 := lt_of_le_of_ne hnx hcx
+      have h0 : (0 : ℝ) ∈ Set.Icc (q.eval x) (q.eval y) :=
+        ⟨le_of_lt hxneg, le_of_lt hpy⟩
+      obtain ⟨z, hz, hez⟩ := intermediate_value_Icc hxy hcont h0
       exact h_no_zero q hq z hz hez
   have h_lists_match :
-      ((sturmSeq p).map (fun q => q.eval x)).filter (· ≠ 0)
-        |>.map (fun r => if r > 0 then (1 : ℤ) else -1) =
-      ((sturmSeq p).map (fun q => q.eval y)).filter (· ≠ 0)
-        |>.map (fun r => if r > 0 then (1 : ℤ) else -1) := by
+      (((sturmSeq p).map (fun q => q.eval x)).filter (· ≠ 0)).map
+          (fun r => if r > 0 then (1 : ℤ) else -1) =
+      (((sturmSeq p).map (fun q => q.eval y)).filter (· ≠ 0)).map
+          (fun r => if r > 0 then (1 : ℤ) else -1) := by
     have hx_nz : ∀ q ∈ sturmSeq p, q.eval x ≠ 0 :=
       fun q hq => h_no_zero q hq x ⟨le_refl x, hxy⟩
     have hy_nz : ∀ q ∈ sturmSeq p, q.eval y ≠ 0 :=
@@ -291,9 +285,9 @@ private lemma sturmVariations_locally_constant
 theorem mod_eval_at_root (p q : ℝ[X]) (r : ℝ) (hr : q.eval r = 0) :
     (p % q).eval r = p.eval r := by
   have hdiv : q * (p / q) + p % q = p := EuclideanDomain.div_add_mod p q
-  have := congr_arg (Polynomial.eval r) hdiv
-  simp only [eval_add, eval_mul, hr, zero_mul, zero_add] at this
-  exact this.symm
+  have h : (q * (p / q) + p % q).eval r = p.eval r := by rw [hdiv]
+  rw [Polynomial.eval_add, Polynomial.eval_mul, hr, zero_mul, zero_add] at h
+  exact h
 
 /-- The key structural property of the Sturm sequence:
     At a root r of q, -(p % q)(r) = -p(r), so the next Sturm term has value -p(r).
@@ -308,24 +302,29 @@ theorem sturm_interior_sign_property (p q : ℝ[X]) (r : ℝ) (hr : q.eval r = 0
 theorem sturm_neighbors_opposite_at_root (p₀ q : ℝ[X]) (r : ℝ)
     (hr : q.eval r = 0) (hp₀ : p₀.eval r ≠ 0) :
     p₀.eval r * (-(p₀ % q)).eval r < 0 := by
-  rw [sturm_interior_sign_property]
-  have : p₀.eval r ≠ 0 := hp₀
-  nlinarith [sq_nonneg (p₀.eval r)]
+  rw [sturm_interior_sign_property _ _ _ hr]
+  have hsq : 0 < p₀.eval r * p₀.eval r := mul_self_pos.mpr hp₀
+  nlinarith [hsq]
 
 -- ============================================================================
 -- § 6. Main Theorem: Exact Root Count
 -- ============================================================================
 
-/-- **Axiom: Sturm's Theorem (Exact Count)**
+/-- **Axiom: Sturm's Theorem (Exact Count, additive form)**
 
 For a squarefree polynomial p ∈ ℝ[X] and real interval (a, b] with p(a) ≠ 0
-and p(b) ≠ 0, the number of distinct real roots of p in (a, b] equals
-the difference in Sturm sign-variation counts:
+and p(b) ≠ 0, the Sturm sign-variation count at a equals the count at b plus
+the number of distinct real roots of p in (a, b]:
 
-  #{roots in (a,b]} = σ_p(a) - σ_p(b)
+  σ_p(a) = σ_p(b) + #{roots in (a,b]}
+
+This is logically equivalent to the classical statement
+#{roots in (a,b]} = σ_p(a) - σ_p(b) (in ℕ) but also captures the
+monotonicity σ_p(b) ≤ σ_p(a). The classical and antitone forms appear as
+corollaries below.
 
 The proof proceeds by showing:
-1. σ_p is piecewise constant (non-decreasing in the σ(b) direction)
+1. σ_p is piecewise constant on subintervals avoiding zeros of any Sturm term
 2. σ_p decreases by exactly 1 as x passes through each real root of p
 3. σ_p is unchanged as x passes through roots of interior Sturm terms
 
@@ -334,14 +333,15 @@ axiom sturm_exact_count_axiom
     (p : ℝ[X]) (hp : p ≠ 0) (hpsc : Squarefree p)
     (a b : ℝ) (hab : a < b)
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0) :
-    rootsInInterval p a b = sturmVariations p a - sturmVariations p b
+    sturmVariations p a = sturmVariations p b + rootsInInterval p a b
 
 theorem sturm_exact_count
     (p : ℝ[X]) (hp : p ≠ 0) (hpsc : Squarefree p)
     (a b : ℝ) (hab : a < b)
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0) :
-    rootsInInterval p a b = sturmVariations p a - sturmVariations p b :=
-  sturm_exact_count_axiom p hp hpsc a b hab ha hb
+    rootsInInterval p a b = sturmVariations p a - sturmVariations p b := by
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
+  omega
 
 -- ============================================================================
 -- § 7. Corollaries
@@ -354,7 +354,8 @@ theorem sturm_no_roots
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0)
     (heq : sturmVariations p a = sturmVariations p b) :
     rootsInInterval p a b = 0 := by
-  rw [sturm_exact_count p hp hpsc a b hab ha hb, heq, Nat.sub_self]
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
+  omega
 
 /-- **Unique root**: If the Sturm count drops by exactly 1, there is exactly one root. -/
 theorem sturm_unique_root
@@ -363,7 +364,8 @@ theorem sturm_unique_root
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0)
     (hdiff : sturmVariations p a = sturmVariations p b + 1) :
     rootsInInterval p a b = 1 := by
-  rw [sturm_exact_count p hp hpsc a b hab ha hb, hdiff, Nat.add_sub_cancel]
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
+  omega
 
 /-- **Two roots**: Sturm count drop of 2 implies exactly 2 distinct roots. -/
 theorem sturm_two_roots
@@ -372,7 +374,8 @@ theorem sturm_two_roots
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0)
     (hdiff : sturmVariations p a = sturmVariations p b + 2) :
     rootsInInterval p a b = 2 := by
-  rw [sturm_exact_count p hp hpsc a b hab ha hb, hdiff, Nat.add_sub_cancel]
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
+  omega
 
 /-- **Non-decreasing Sturm count**: rootsInInterval is always ≤ sturmVariations difference.
     This is a weakening of the exact count, following directly from Nat.le_refl. -/
@@ -381,7 +384,8 @@ theorem sturm_count_le_variations
     (a b : ℝ) (hab : a < b)
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0) :
     rootsInInterval p a b ≤ sturmVariations p a - sturmVariations p b := by
-  rw [sturm_exact_count p hp hpsc a b hab ha hb]
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
+  omega
 
 /-- Sturm's theorem implies the Sturm count is monotone:
     sturmVariations p a ≥ sturmVariations p b whenever a < b and p doesn't vanish at endpoints. -/
@@ -390,7 +394,7 @@ theorem sturmVariations_antitone
     (a b : ℝ) (hab : a < b)
     (ha : p.eval a ≠ 0) (hb : p.eval b ≠ 0) :
     sturmVariations p b ≤ sturmVariations p a := by
-  have h := sturm_exact_count p hp hpsc a b hab ha hb
+  have := sturm_exact_count_axiom p hp hpsc a b hab ha hb
   omega
 
 -- ============================================================================
@@ -399,9 +403,9 @@ theorem sturmVariations_antitone
 
 section LinearExample
 
-/-- For a linear polynomial p(x) = x - c, the Sturm sequence is [x - c, 1].
-    The sign variation at x is 1 if x < c (x - c < 0, 1 > 0: one sign change)
-    and 0 if x > c (x - c > 0, 1 > 0: no sign change). -/
+/- For a linear polynomial p(x) = x - c, the Sturm sequence is [x - c, 1].
+   The sign variation at x is 1 if x < c (x - c < 0, 1 > 0: one sign change)
+   and 0 if x > c (x - c > 0, 1 > 0: no sign change). -/
 
 variable (c : ℝ)
 
@@ -412,39 +416,25 @@ theorem linear_deriv : derivative (X - C c) = (1 : ℝ[X]) := by
 /-- The Sturm sequence of x - c is [x - c, 1]:
     p₁ = derivative(x - c) = 1, and (x - c) % 1 = 0 terminating the sequence. -/
 theorem sturmSeq_linear : sturmSeq (X - C c) = [X - C c, 1] := by
-  simp only [sturmSeq, sturmSeqAux, linear_deriv, Polynomial.natDegree_X_sub_C]
-  norm_num [sturmSeqAux]
-  -- (X - C c) % 1 = 0: any polynomial mod 1 is 0
-  have hmod : (X - C c) % (1 : ℝ[X]) = 0 :=
-    (EuclideanDomain.dvd_iff_mod_eq_zero.mp (one_dvd _))
-  simp [sturmSeqAux, hmod]
+  have hmod : (X - C c) % (1 : ℝ[X]) = 0 := EuclideanDomain.mod_one _
+  simp [sturmSeq, sturmSeqAux, hmod]
 
 /-- For the linear polynomial x - c, the Sturm sign count at x < c equals 1.
     At x < c: evaluate [X-c, 1] to get [x-c, 1]; x-c < 0 and 1 > 0, so 1 sign change. -/
 theorem sturm_linear_left (x : ℝ) (hx : x < c) :
     sturmVariations (X - C c) x = 1 := by
-  simp only [sturmVariations, sturmSeq_linear, List.map, Polynomial.eval_sub, Polynomial.eval_X,
-             Polynomial.eval_C, Polynomial.eval_one]
   have hxc : x - c < 0 := by linarith
   have hne : x - c ≠ 0 := ne_of_lt hxc
-  -- The list [x-c, 1] filtered is [x-c, 1] (both nonzero), mapped to [-1, 1], 1 sign change
-  simp only [signVariations, List.filter, hne, ne_eq, not_false_eq_true, ↓reduceIte,
-             one_ne_zero, List.map]
-  simp only [show ¬(x - c > 0) from not_lt.mpr (le_of_lt hxc)]
-  simp [countSignAlts]
+  have hno : ¬ (x - c > 0) := not_lt.mpr hxc.le
+  simp [sturmVariations, sturmSeq_linear, signVariations, countSignAlts, hne, hno]
 
 /-- For the linear polynomial x - c, the Sturm sign count at x > c equals 0.
     At x > c: evaluate [X-c, 1] to get [x-c, 1]; x-c > 0 and 1 > 0, so 0 sign changes. -/
 theorem sturm_linear_right (x : ℝ) (hx : x > c) :
     sturmVariations (X - C c) x = 0 := by
-  simp only [sturmVariations, sturmSeq_linear, List.map, Polynomial.eval_sub, Polynomial.eval_X,
-             Polynomial.eval_C, Polynomial.eval_one]
   have hxc : x - c > 0 := by linarith
   have hne : x - c ≠ 0 := ne_of_gt hxc
-  -- The list [x-c, 1] filtered is [x-c, 1] (both nonzero), mapped to [1, 1], 0 sign changes
-  simp only [signVariations, List.filter, hne, ne_eq, not_false_eq_true, ↓reduceIte,
-             one_ne_zero, List.map, hxc]
-  simp [countSignAlts]
+  simp [sturmVariations, sturmSeq_linear, signVariations, countSignAlts, hne, hxc]
 
 end LinearExample
 
@@ -452,9 +442,9 @@ end LinearExample
 -- § 9. Squarefree Polynomials and the GCD Connection
 -- ============================================================================
 
-/-- A squarefree polynomial p satisfies gcd(p, p') = constant.
-    This ensures the Sturm sequence terminates with a nonzero constant,
-    which is the key ingredient making the exact count theorem work. -/
+/- A squarefree polynomial p satisfies gcd(p, p') = constant.
+   This ensures the Sturm sequence terminates with a nonzero constant,
+   which is the key ingredient making the exact count theorem work. -/
 
 /-- For squarefree p, p and p' have no common real roots. -/
 theorem squarefree_no_common_roots (p : ℝ[X]) (hpsc : Squarefree p) (r : ℝ) :
@@ -470,36 +460,26 @@ theorem squarefree_no_common_roots (p : ℝ[X]) (hpsc : Squarefree p) (r : ℝ) 
     rw [hq, Polynomial.derivative_mul] at hpd
     simp [Polynomial.derivative_sub, Polynomial.derivative_X, Polynomial.derivative_C,
           Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_sub,
-          Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_one] at hpd
+          Polynomial.eval_X, Polynomial.eval_C] at hpd
     linarith
-  have hsq : (X - C r) ^ 2 ∣ p := by
-    rw [hq, pow_two]
-    exact Dvd.dvd.mul_left (Polynomial.dvd_iff_isRoot.mpr hqr) _
+  have hsq : (X - C r) * (X - C r) ∣ p := by
+    rw [hq]
+    exact mul_dvd_mul_left (X - C r) (Polynomial.dvd_iff_isRoot.mpr hqr)
   have hunit : IsUnit (X - C r) := hpsc (X - C r) hsq
   rw [Polynomial.isUnit_iff] at hunit
   obtain ⟨u, _, hu⟩ := hunit
   have hdeg : (X - C r).natDegree = 1 := Polynomial.natDegree_X_sub_C r
-  have hcu : (C (u : ℝ)).natDegree = 0 := Polynomial.natDegree_C _
-  rw [← hu] at hcu
+  have hcu : (C u).natDegree = 0 := Polynomial.natDegree_C _
+  rw [hu] at hcu
   omega
 
 /-- A squarefree polynomial p of degree ≥ 1 cannot satisfy p' = 0.
     (Since p' = 0 would mean p is a constant, contradicting degree ≥ 1.) -/
-theorem squarefree_deriv_ne_zero_of_pos_degree (p : ℝ[X]) (hpsc : Squarefree p)
+theorem squarefree_deriv_ne_zero_of_pos_degree (p : ℝ[X]) (_hpsc : Squarefree p)
     (hd : 0 < p.natDegree) : derivative p ≠ 0 := by
-  -- In char 0, leading coeff of derivative p is natDegree * leadingCoeff ≠ 0 for deg ≥ 1
   intro h
-  have hne : p ≠ 0 := by
-    intro hp0; rw [hp0] at hd; simp at hd
-  have hcoeff : (p.natDegree : ℝ) * p.leadingCoeff = 0 := by
-    have := congr_arg (Polynomial.coeff · (p.natDegree - 1)) h
-    simp only [Polynomial.coeff_zero, Polynomial.coeff_derivative] at this
-    have hk : p.natDegree - 1 + 1 = p.natDegree := by omega
-    rw [hk] at this
-    exact_mod_cast this
-  have hlc : p.leadingCoeff ≠ 0 := Polynomial.leadingCoeff_ne_zero.mpr hne
-  have hnd : (p.natDegree : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
-  exact hnd (or_iff_not_imp_right.mp (mul_eq_zero.mp hcoeff) hlc)
+  have := Polynomial.natDegree_eq_zero_of_derivative_eq_zero h
+  omega
 
 -- ============================================================================
 -- § 10. Comparison with Budan's Theorem

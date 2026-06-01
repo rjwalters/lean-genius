@@ -21,9 +21,9 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 533,
+    "lineCount": 513,
     "dateAdded": "2026-05-03",
-    "assumptions": "1 axiom: sturm_exact_count_axiom. All supporting lemmas proved, including the key structural property (mod_eval_at_root), sequence non-emptiness, linear case verification, and four corollaries (no-roots, unique-root, two-roots, monotonicity).",
+    "assumptions": "1 axiom: sturm_exact_count_axiom (additive form: σ_p(a) = σ_p(b) + #{roots in (a,b]}, bundling exact count and monotonicity). All supporting lemmas proved, including the key structural property (mod_eval_at_root), sequence non-emptiness, linear case verification, and four corollaries (no-roots, unique-root, two-roots, monotonicity).",
     "relatedProblems": [
       {
         "id": "descartes-rule-of-signs-oq-02",

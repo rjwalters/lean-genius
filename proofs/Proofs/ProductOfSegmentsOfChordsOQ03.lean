@@ -108,4 +108,77 @@ theorem concyclicityDet_eq_zero_iff_concyclic
         ‖P₁ - O‖ = r ∧ ‖P₂ - O‖ = r ∧ ‖P₃ - O‖ = r ∧ ‖P₄ - O‖ = r := by
   sorry
 
+/-! ## Part 5: Coordinate-form norm-squared helper (S15 ACT) -/
+
+/-- For `Vec2 = EuclideanSpace ℝ (Fin 2)`, the squared norm of a difference
+expands to the sum of squared coordinate differences.
+
+This is the bridge between the abstract `‖A - P‖` notation and the explicit
+coordinate-polynomial form needed by the concyclicity determinant. Used by
+`signed_inner_product_to_scalar_coord` below to translate the signed
+inner-product hypothesis to coordinate form. -/
+lemma norm_sub_sq_coord (X Y : Vec2) :
+    ‖X - Y‖ ^ 2 = (X 0 - Y 0) ^ 2 + (X 1 - Y 1) ^ 2 := by
+  rw [← real_inner_self_eq_norm_sq, PiLp.inner_apply, Fin.sum_univ_two]
+  simp [pow_two]
+
+/-! ## Part 6: Signed-product → scalar bridge (S15 ACT)
+
+S9 PREP §2 established that the parent axiom is FALSE under the unsigned
+hypothesis `‖P-A‖·‖P-B‖ = ‖P-C‖·‖P-D‖` (counterexample
+`P=(0,0), A=(1,0), B=(-2,0), C=(0,1), D=(0,2) ⇒ Δ=12 ≠ 0`).
+
+S9 §5 / S10 §3.3 recommend Option A: replace the hypothesis by the signed
+inner-product equality `⟪A-P, B-P⟫_ℝ = ⟪C-P, D-P⟫_ℝ`, which under
+chord-collinearity through P collapses to the single scalar equation
+`t·‖A-P‖² = s·‖C-P‖²` (no `False.elim` case-split).
+
+S15 ACT delivers two lemmas establishing this scalar bridge:
+
+- `signed_inner_product_to_scalar` — abstract form.
+- `signed_inner_product_to_scalar_coord` — coordinate form.
+
+The full discharge of `concyclicityDet A B C D = 0` requires combining
+these with the closed-form cofactor expansion
+`Δ = (t−1)(s−1)(t‖A-P‖² − s‖C-P‖²)·(cross product)`
+(S12 §3.2 / S14 §2.4) via `linear_combination`. That step is deferred to
+S16 ACT, which needs only to:
+
+1. Substitute `B i = P i + t·(A i - P i)` in the goal (S14 §4.1 substitution fix).
+2. Apply `Matrix.det_succ_row_zero` + `Matrix.det_fin_three` cofactor expansion.
+3. Call `linear_combination` with the closed-form witness
+   `(t − 1)(s − 1)(cross_AC) * h_signed_coords`
+   using `signed_inner_product_to_scalar_coord` for `h_signed_coords`. -/
+
+/-- Under chord-collinearity through P, the signed inner-product
+hypothesis collapses to a single scalar equation in the squared norms. -/
+theorem signed_inner_product_to_scalar
+    (P A B C D : Vec2)
+    (t s : ℝ)
+    (ht : B - P = t • (A - P))
+    (hs : D - P = s • (C - P))
+    (hSignedProduct : ⟪A - P, B - P⟫ = ⟪C - P, D - P⟫) :
+    t * ‖A - P‖ ^ 2 = s * ‖C - P‖ ^ 2 := by
+  have h_AP : ⟪A - P, B - P⟫ = t * ‖A - P‖ ^ 2 := by
+    rw [ht, inner_smul_right, real_inner_self_eq_norm_sq]
+  have h_CP : ⟪C - P, D - P⟫ = s * ‖C - P‖ ^ 2 := by
+    rw [hs, inner_smul_right, real_inner_self_eq_norm_sq]
+  linarith [h_AP, h_CP, hSignedProduct]
+
+/-- Coordinate form of the scalar bridge:
+`t · ‖A-P‖² = s · ‖C-P‖²` translates to the polynomial identity
+`t · ((A 0 - P 0)² + (A 1 - P 1)²) = s · ((C 0 - P 0)² + (C 1 - P 1)²)`. -/
+theorem signed_inner_product_to_scalar_coord
+    (P A B C D : Vec2)
+    (t s : ℝ)
+    (ht : B - P = t • (A - P))
+    (hs : D - P = s • (C - P))
+    (hSignedProduct : ⟪A - P, B - P⟫ = ⟪C - P, D - P⟫) :
+    t * ((A 0 - P 0) ^ 2 + (A 1 - P 1) ^ 2)
+      = s * ((C 0 - P 0) ^ 2 + (C 1 - P 1) ^ 2) := by
+  have h_scalar :=
+    signed_inner_product_to_scalar P A B C D t s ht hs hSignedProduct
+  rw [← norm_sub_sq_coord A P, ← norm_sub_sq_coord C P]
+  exact h_scalar
+
 end ProductOfSegmentsOfChordsOQ03
