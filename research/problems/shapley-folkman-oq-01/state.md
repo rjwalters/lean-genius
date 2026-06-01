@@ -1,15 +1,52 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-A ACT-2 build-verified at lake SHA
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — both surviving sorries in
-`proofs/Proofs/ShapleyFolkmanOQ01.lean` discharged via S5 PREP §3 +
-S7 PREP §5 recipes with three ACT-time elaboration fixes. File now
-204 LOC, 0 sorries, 5 inherited axioms.)
+**Phase**: ACT (S2-A ACT-3 build-verified at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — sharpness corollary
+`tight_excess_eq_finrank` added to `proofs/Proofs/ShapleyFolkmanOQ01.lean`,
+relating the OQ01 `tight_excess_count` to the parent's `Module.finrank ℝ E`
+language. File now 228 LOC, 4 theorems, 0 sorries, 0 local axioms, 5
+inherited axioms.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16T05:05:00Z (S14 STATE-SYNC, researcher-12 — housekeeping after #19361 + #19399 race resolved)
-**Iteration**: 14
+**Last Updated**: 2026-05-31 (S2-A ACT-3, researcher-1)
+**Iteration**: 15
+
+## Session 15 — S2-A ACT-3: sharpness corollary `tight_excess_eq_finrank` (researcher-1, 2026-05-31)
+
+**Mode.** Lean ACT (build verified).
+
+**Outcome.** `proofs/Proofs/ShapleyFolkmanOQ01.lean` now declares
+`tight_excess_eq_finrank`, the long-flagged S2-A ACT-3 corollary from
+S5 PREP §10 / state.md Iter 14 Next-Action: given any decomposition of
+the tightness example, its excess count equals
+`Module.finrank ℝ (EuclideanSpace ℝ (Fin N))`. Two-line proof: rewrite
+via `tight_excess_count` (`card = N`) and `finrank_euclideanSpace_fin`
+(`N = Module.finrank ℝ (EuclideanSpace ℝ (Fin N))`).
+
+**File delta**: 204 → 228 LOC (+24); theorems 3 → 4 (+1); axioms 0 → 0;
+sorries 0 → 0.
+
+**Docker build verified**: `✔ [7744/7744] Built Proofs.ShapleyFolkmanOQ01 (23s)`
+on warm cache.  Pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Mathematical significance.** The corollary translates S2-A ACT-2's
+`tight_excess_count = N` into the parent's `Module.finrank ℝ E` vocabulary,
+making the sharpness claim directly comparable to the parent
+`shapley_folkman` upper bound `card ≤ Module.finrank ℝ E`. Existence of
+such a decomposition (via the natural midpoint construction
+`point i = (1/2) • e_i`) is **not** established here — left as S2-A ACT-4
+follow-up. The parameterised form is mathematically meaningful in its own
+right (any decomposition achieves the dimension count).
+
+See `sessions/2026-05-31-s2a-act-3-sharpness-corollary.md` for the recipe,
+bearer pins, build log, and follow-up register.
+
+**Next action**: S2-A ACT-4 (existence form, ~15-25 LOC, midpoint
+decomposition construction via `Convex.midpoint_mem` or `convexHull_pair`).
+Or pivot to gallery entry creation (enricher scope:
+`src/data/proofs/shapley-folkman-oq-01/meta.json` with `status: axiomatized`,
+5 inherited axioms, `theoremCount: 4`).
 
 ## Session 13 — S2-A ACT-2: discharge both `ShapleyFolkmanOQ01.lean` sorries (researcher-8, 2026-05-16)
 
