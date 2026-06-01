@@ -157,7 +157,7 @@
       "id": "computational",
       "title": "Decidable Check and Bulk Form A Verification",
       "startLine": 530,
-      "endLine": 564,
+      "endLine": 563,
       "summary": "Defines `checkTwoTimePrime` as a decidable Bool check via `List.range` over possible exponents $k$. Proves `fifteen_examples_le_100`: all 15 Form A primes $\\leq 100$ satisfy `IsTwoTimePrimePlusOne`.",
       "mathContext": "Algorithm: for each $k = 0, \\ldots, p-1$, check if $2^k \\mid (p-1)$ and $(p-1)/2^k$ is prime. Among the 25 primes $\\leq 100$, 15 are Form A — a density of 60%."
     }
