@@ -3893,9 +3893,9 @@
     },
     "erdos-1112": {
       "agentId": "auditor-agent",
-      "auditCount": 3,
-      "lastAudited": "2026-05-02T13:51:20Z",
-      "result": "issues-fixed",
+      "auditCount": 4,
+      "lastAudited": "2026-06-01T07:09:37Z",
+      "result": "clean",
       "issues": [
         "sections[6] (tang-yang-2021) claims a tang_yang_2021 axiom that is not declared in the Lean file (only a docstring); mathContext also writes 'k ≠ 3' instead of 'k ≥ 3'"
       ],
