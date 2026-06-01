@@ -754,4 +754,116 @@ theorem closure_nonComputableReals_eq_univ :
     closure nonComputableReals = Set.univ :=
   nonComputableReals_dense.closure_eq
 
+/-! ## S8 — Baire-category sharpening: meagre vs residual
+
+S3 showed `{r | IsComputable r}` is countable (an `ℵ₀`/measure-theoretic
+"smallness" statement). S7 and S8-prep showed that, despite countability, both
+sides of the partition are topologically *dense*. S8 sharpens the smallness
+side into the strongest classical sense of "topologically negligible":
+
+* **Computable reals are meagre** in `ℝ` (first Baire category): they sit inside
+  a countable union of nowhere-dense closed sets — explicitly, their singletons.
+  This is a strictly stronger statement than countability for `ℝ`: it pins the
+  category-theoretic size, not just the cardinality.
+* **Non-computable reals are residual** in `ℝ`: they contain a dense `Gδ` set
+  (themselves), i.e. they are "topologically generic" in Baire's sense — the
+  category-theoretic counterpart of `card_nonComputableReals_eq_continuum`.
+
+Combined with the existing density results, the topological profile is fixed:
+the computable reals are **countable, dense, meagre** in `ℝ` — exactly the
+profile of `ℚ` itself (cf. `IsGδ.setOf_irrational` /
+`eventually_residual_irrational` for the analogous `Irrational` story in
+Mathlib). The non-computable reals are then `Gδ`, dense, and comeagre.
+
+Empty-interior corollaries on both sides are recorded for downstream use.
+
+* `nonComputableReals_isGδ` — `IsGδ nonComputableReals`.
+* `nonComputableReals_residual` — `nonComputableReals ∈ residual ℝ`.
+* `computable_reals_meagre` — `IsMeagre {r : ℝ | IsComputable r}`.
+* `interior_computable_reals_eq_empty` — `interior {r | IsComputable r} = ∅`.
+* `interior_nonComputableReals_eq_empty` — `interior nonComputableReals = ∅`.
+-/
+
+/-- **S8 — the non-computable reals form a `Gδ` set in `ℝ`.**
+
+    Direct from `computable_reals_countable` (S3): the complement of a countable
+    set in a `T1` space is `Gδ` (`Set.Countable.isGδ_compl`). Modulo the trivial
+    rewrite `nonComputableReals = {r | IsComputable r}ᶜ`, this is immediate.
+
+    Mirror of `IsGδ.setOf_irrational` in `Mathlib.Topology.Instances.Irrational`,
+    which is the same construction applied to `ℚ` instead of the computable
+    reals. -/
+theorem nonComputableReals_isGδ : IsGδ nonComputableReals := by
+  have h_compl : nonComputableReals = ({r : ℝ | IsComputable r} : Set ℝ)ᶜ := by
+    ext r; rfl
+  rw [h_compl]
+  exact computable_reals_countable.isGδ_compl
+
+/-- **S8 — the non-computable reals are residual in `ℝ`.**
+
+    Combining the `Gδ` structure (`nonComputableReals_isGδ`) with the density
+    result (`nonComputableReals_dense`, S8-prep) via
+    `residual_of_dense_Gδ`. Topologically, the non-computable reals are
+    "generic" in Baire's sense — every comeagre property of a real holds for
+    *some* non-computable real, and in fact for "most" of them.
+
+    This is the Baire-category counterpart of
+    `card_nonComputableReals_eq_continuum`: the non-computable reals are not
+    only of full cardinality `𝔠` but also of full Baire category — a sharper
+    "almost all reals are non-computable" statement than the cardinality result
+    alone. -/
+theorem nonComputableReals_residual : nonComputableReals ∈ residual ℝ :=
+  residual_of_dense_Gδ nonComputableReals_isGδ nonComputableReals_dense
+
+/-- **S8 — the computable reals are meagre in `ℝ`.**
+
+    Immediate from `nonComputableReals_residual` together with the
+    definitional unfolding `IsMeagre s ↔ sᶜ ∈ residual X` and
+    `({r | IsComputable r})ᶜ = nonComputableReals`.
+
+    This is strictly stronger than `computable_reals_countable` for spaces like
+    `ℝ` that have no isolated points: meagre is a topological-category
+    statement, countable is a cardinality statement, and the gap matters for
+    downstream Baire-category arguments (e.g. "a generic real is not
+    computable"). -/
+theorem computable_reals_meagre : IsMeagre {r : ℝ | IsComputable r} := by
+  have h_compl : ({r : ℝ | IsComputable r} : Set ℝ)ᶜ = nonComputableReals := by
+    ext r; rfl
+  unfold IsMeagre
+  rw [h_compl]
+  exact nonComputableReals_residual
+
+/-- **S8 corollary — the computable reals have empty interior in `ℝ`.**
+
+    From `nonComputableReals_dense` (S8-prep): the complement of the computable
+    reals is dense, hence the interior of the computable reals is empty.
+
+    This is the precise form of "the computable reals contain no open ball":
+    every nonempty open subset of `ℝ` meets the non-computable reals. -/
+theorem interior_computable_reals_eq_empty :
+    interior {r : ℝ | IsComputable r} = ∅ := by
+  rw [interior_eq_empty_iff_dense_compl]
+  have h_compl : ({r : ℝ | IsComputable r} : Set ℝ)ᶜ = nonComputableReals := by
+    ext r; rfl
+  rw [h_compl]
+  exact nonComputableReals_dense
+
+/-- **S8 corollary — the non-computable reals have empty interior in `ℝ`.**
+
+    From `computable_reals_dense` (S7): the complement of the non-computable
+    reals is dense, hence the interior of the non-computable reals is empty.
+
+    Symmetric counterpart of `interior_computable_reals_eq_empty`: every
+    nonempty open subset of `ℝ` meets the computable reals as well. The two
+    together say the partition `{computable} ⊔ {non-computable}` has both sides
+    with empty interior — neither half contains any open interval. -/
+theorem interior_nonComputableReals_eq_empty :
+    interior nonComputableReals = ∅ := by
+  rw [interior_eq_empty_iff_dense_compl]
+  have h_compl : (nonComputableReals : Set ℝ)ᶜ = {r : ℝ | IsComputable r} := by
+    ext r
+    simp [nonComputableReals]
+  rw [h_compl]
+  exact computable_reals_dense
+
 end AlgebraicNumbersCountableOQ02OQ04
