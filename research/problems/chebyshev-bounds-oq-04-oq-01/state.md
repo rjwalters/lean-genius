@@ -2,23 +2,64 @@
 
 ## Current phase
 
-**Phase**: PREP (Iter 5a planning — Iter 4 MERGED; S6 PREP bearer manifest staged; S7 absorbs 3 RED INFRA blockers — host-side, ACT foreclosed pending recovery)
-**Iteration**: 5 (Iter 5a split into 5a-α / 5a-β / 5a-γ per S6 PREP recommendation, unchanged by S7; see Iter log)
-**Since**: 2026-05-16T20:15:00Z
+**Phase**: ACT (Iter 5a-β-1 — Mertens partial sum M(N) and trivial linear bound |M(N)| ≤ N, Docker-verified 7744 jobs at SHA 91e6cc5396a)
+**Iteration**: 6 (Iter 5a-β-1 lands the first foundational ingredient toward Iter 5a-β; 5a-α remains independent and claimable in parallel)
+**Since**: 2026-06-01T00:00:00Z
 
-## Lean snapshot (post-Iter 4 merge, S6 PREP + S7 STATE-SYNC doc-only)
+## Lean snapshot (post-Iter 5a-β-1)
 
 | File | LOC | Thm | Defs | Sorries | Axioms | Status |
 |---|---:|---:|---:|---:|---:|---|
-| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 (frozen by S6 PREP + S7 STATE-SYNC — doc-only) |
+| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 374 | 18 | 4 noncomputable | 0 | 0 | Docker-verified 7744 jobs at Iter 5a-β-1 (23s clean) |
 | `proofs/Proofs/ChebyshevBoundsOQ04.lean` | 386 | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
 
 OQ-04-OQ-01 is the **elementary Selberg–Erdős 1949 PNT** approach to
 discharging that parent axiom (no complex analysis).
 
-## Iteration log
+## Iteration log (most recent first)
 
-### S7 STATE-SYNC — 2026-05-16T20:15Z (this session, doc-only, PR pending)
+### Iter 5a-β-1 — 2026-06-01 (researcher-1, this PR)
+
+**Scope**: ACT, Lean-content iteration. Adds the foundational `|M(N)| ≤ N`
+trivial bound for the Mertens partial sum, the first ingredient toward
+the Iter 5a-β weak Mertens M1 estimate `|Σ μ(d)/d| ≤ 1 + log N`.
+
+**Added** (`proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean`, +49 LOC, +2 thm, +1 def):
+
+- `noncomputable def mertensM (N : ℕ) : ℝ := Σ_{d ∈ Finset.Icc 1 N} (μ d : ℝ)`
+- `theorem mertensM_zero : mertensM 0 = 0` (via `Finset.Icc_eq_empty_of_lt`)
+- `theorem mertensM_abs_le (N : ℕ) : |mertensM N| ≤ (N : ℝ)`
+
+The bound uses a 4-step `calc` chain:
+
+1. `Finset.abs_sum_le_sum_abs` (triangle inequality)
+2. Pointwise `|(μ d : ℝ)| ≤ 1` via `Int.cast_abs` + `exact_mod_cast`
+   of `ArithmeticFunction.abs_moebius_le_one` (which lives in ℤ)
+3. `Finset.sum_const` (simp-tagged) closes `Σ_{d ∈ s} 1 = s.card • 1`
+4. `Nat.card_Icc` + `Nat.add_sub_cancel` yields `(Icc 1 N).card = N`
+
+**Build verification**: `./proofs/scripts/docker-build.sh
+Proofs.ChebyshevBoundsOQ04OQ01` reports `[7744/7744] Built
+Proofs.ChebyshevBoundsOQ04OQ01 (23s)` clean on first iteration at base
+SHA `91e6cc5396a` against Mathlib v4.26.0 pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Honest scope**: this is a *trivial* triangle-inequality bound, far from
+optimal — the Riemann hypothesis is equivalent to
+`|M(N)| = O(N^{1/2+ε})`. But the linear bound is exactly what
+summation-by-parts will need in Iter 5a-β. Estimate was ≤25 LOC body;
+actual is ~12 LOC of proof code + ~37 LOC of module-level docstrings,
+def signatures, and Future-Work text updates.
+
+**INFRA recovery** (vs S7 2026-05-16): G7 disk 56 Gi (was 3.2 Gi RED) ✅,
+G8 Docker Server up 29.4.1 (was hung with empty Server section) ✅,
+G9 `proofs/.lake` self-symlink persists in main repo but confirmed inert
+per memory `feedback_g9_qualifier_masks_real_bugs` (Docker bind-mount
+overrides). Mathlib pin unchanged for 16 days; Iter 4's bearer
+(`Moebius.lean:240`) and Iter 5a-α target bearer
+(`AbelSummation.lean:229`) remain byte-stable.
+
+### S7 STATE-SYNC — 2026-05-16T20:15Z (researcher-6, MERGED as PR #19820)
 
 **Researcher**: researcher-6. **Scope**: 0 Lean changes; absorb 3 RED
 INFRA blockers on host + fix 3 stale "this PR" leftovers from S6 PREP's
