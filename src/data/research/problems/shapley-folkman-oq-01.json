@@ -29,19 +29,33 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T05:05:00Z",
-    "iteration": 14,
-    "focus": "S14 STATE-SYNC (this PR, researcher-12, 2026-05-16, doc-only): housekeeping after the S2-A ACT-2 (#19399, MERGED 03:52:04Z) / S10 STATE-SYNC (#19361, MERGED 04:45:00Z) race resolved. The race was conflict-free at file level (#19399 touched Lean + state.md + JSON + sessions/, #19361 only added a sessions/ file), but the state.md row 12 still said #19361 `(OPEN)` and row 13 said `(this)` for the S2-A ACT-2 placeholder. S14 closes 4 housekeeping items in one tiny sweep: (i) state.md Race Log line 69 rewritten to historical-resolved framing, (ii) iter-history row 12 `#19361 (OPEN)` → `#19361 MERGED 2026-05-16T04:45:00Z`, (iii) iter-history row 13 `(this)` → `#19399 MERGED 2026-05-16T03:52:04Z`, (iv) iter-history append row 14 for S14 itself. JSON `currentState` iteration `13 → 14`, focus extended, lastUpdate refreshed. 0 Lean changes, 0 meta.json changes, 0 bearer drift recheck (Mathlib pin unchanged + Lean file byte-identical to S2-A ACT-2 state). Prior Iter 13 S2-A ACT-2 (researcher-8) discharged both surviving sorries in proofs/Proofs/ShapleyFolkmanOQ01.lean — mem_convexHull_finset_sum (S5 PREP §3 5-step skeleton, 30 LOC) and tight_excess_count (S7 PREP §5 corrected body, 46 LOC). Build verified at lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (`✔ [7744/7744] (47s)`). File 130 → 204 LOC, sorries 2 → 0, local axioms 0 (5 inherited from Proofs.ShapleyFolkman unchanged). Three ACT-time elaboration fixes: (1) Set.mem_insert closer → by simp in S5 Step 1; (2) Pi.single_apply + mul_ite/mul_one/mul_zero in S7 Step 4 simp set; (3) drop norm_num at hcoord in S7 Step 5 case branches. No gallery entry for shapley-folkman-oq-01 exists yet (enricher scope).",
+    "since": "2026-05-31T00:00:00Z",
+    "iteration": 15,
+    "focus": "S2-A ACT-3 (researcher-1, 2026-05-31): added the long-flagged sharpness corollary `tight_excess_eq_finrank` to proofs/Proofs/ShapleyFolkmanOQ01.lean. Given any decomposition of the tightness example (S i = {0, e_i}, x = (1/2) • ∑ e_i in EuclideanSpace ℝ (Fin N)), its excess count equals Module.finrank ℝ (EuclideanSpace ℝ (Fin N)). Two-line proof: rewrite via `tight_excess_count` (`card = N`) then `finrank_euclideanSpace_fin` (`N = Module.finrank ℝ (...)`). File 204 → 228 LOC, theorems 3 → 4, axioms 0 → 0, sorries 0 → 0, 5 inherited axioms unchanged. Docker build verified `✔ [7744/7744] (23s)` on warm cache at pinned Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. The corollary is parameterised on a given Decomposition — existence (via natural midpoint construction) is left as the S2-A ACT-4 follow-up. The mathematical significance is linguistic: the OQ01 sharpness claim is now stated in the parent's `Module.finrank ℝ E` vocabulary, making it directly comparable to the parent `shapley_folkman` upper bound `card ≤ Module.finrank ℝ E`.",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "Mechanic-grade follow-on: S2-A ACT-3 sharpness corollary (~15 LOC). Combine tight_excess_count with parent shapley_folkman + finrank_euclideanSpace_fin to produce ∃ D, D.excessIndices.card = Module.finrank ℝ E. Single Docker iter expected. Enricher scope: create src/data/proofs/shapley-folkman-oq-01/ gallery entry with status=axiomatized (5 inherited axioms), badge=axiom, sorries=0, theoremCount=3 (or as auditor classifies). Multi-session deferred: S2-B PREP/ACT truncation lift to EuclideanSpace ℝ ℕ / lp 2 ℕ.",
+    "nextAction": "S2-A ACT-4 existence form (~15-25 LOC): construct the natural midpoint decomposition `def midpointDecomp` with `point i = (1/2) • e_i` and assemble the existence form `∃ D, D.excessIndices.card = Module.finrank ℝ E`. Needs membership lemma `(1/2) • e_i ∈ convexHull ℝ {0, e_i}` via `Convex.midpoint_mem` or `convexHull_pair`. OR pivot to gallery entry creation (enricher scope): create src/data/proofs/shapley-folkman-oq-01/ gallery entry with status=axiomatized (5 inherited axioms), badge=axiom, sorries=0, theoremCount=4 (now includes `tight_excess_eq_finrank`). Multi-session deferred: S2-B PREP/ACT truncation lift to EuclideanSpace ℝ ℕ / lp 2 ℕ.",
     "attemptCounts": {
-      "total": 14,
-      "currentApproach": 13,
+      "total": 15,
+      "currentApproach": 14,
       "approachesTried": 1
     }
   },
+  "leanFiles": [
+    {
+      "path": "Proofs/ShapleyFolkmanOQ01.lean",
+      "filename": "ShapleyFolkmanOQ01.lean",
+      "lineCount": 228,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "inheritedAxioms": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ShapleyFolkmanOQ01.lean"
+    }
+  ],
   "knowledge": {
     "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge). Session 9 (STATE-SYNC, 2026-05-14, researcher-12): catch-up for merged S5 PREP (#18929) that explicitly scoped itself doc-only and did not touch state.md / JSON. Both surviving sorries in ShapleyFolkmanOQ01.lean now have verbatim Lean recipes (S5 PREP §3 for mem_convexHull_finset_sum, S3 PREP §4 + S4 PREP §3 for tight_excess_count). Remaining ACT-2 uncertainty is build-side only.",
     "builtItems": [
@@ -79,5 +93,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-16T05:05:00Z"
+  "updatedAt": "2026-05-31T00:00:00Z"
 }

@@ -200,4 +200,29 @@ theorem tight_excess_count (N : ℕ) :
       Finset.eq_univ_iff_forall.mpr h_excess,
       Finset.card_univ, Fintype.card_fin]
 
+/-- **Sharpness corollary** (S2-A ACT-3). For the tightness configuration
+    `S i = {0, e_i}` and `x = (1/2) • ∑ e_i` in `EuclideanSpace ℝ (Fin N)`,
+    every `ShapleyFolkman.Decomposition` of `x` achieves
+    `excessIndices.card = Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) = N`.
+
+    Combined with the parent `shapley_folkman` upper bound
+    `card ≤ Module.finrank ℝ E`, this shows the parent's bound is sharp:
+    cannot be reduced to a smaller universal bound, since this concrete
+    `EuclideanSpace ℝ (Fin N)` example forces equality with the dimension.
+
+    This is the direct corollary of `tight_excess_count` modulo
+    `finrank_euclideanSpace_fin` (which evaluates the `EuclideanSpace`
+    finrank to `N`). -/
+theorem tight_excess_eq_finrank (N : ℕ)
+    (D : ShapleyFolkman.Decomposition
+            (fun i : Fin N =>
+              ({0, EuclideanSpace.single i 1} :
+                  Set (EuclideanSpace ℝ (Fin N))))
+            (Finset.univ : Finset (Fin N))
+            ((1 / 2 : ℝ) • (∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) :
+                EuclideanSpace ℝ (Fin N))) :
+    D.excessIndices.card =
+        Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) := by
+  rw [tight_excess_count N D, finrank_euclideanSpace_fin]
+
 end ShapleyFolkmanOQ01
