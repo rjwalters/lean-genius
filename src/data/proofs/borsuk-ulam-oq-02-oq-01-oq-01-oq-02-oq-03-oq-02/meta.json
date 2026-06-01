@@ -2,7 +2,7 @@
   "id": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
   "title": "Borsuk-Ulam CRT for Squarefree Numbers: Generalization to k Primes",
   "slug": "borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02",
-  "description": "Proves that the CRT compatibility for BU dimensions (buDim(pq,d) = max(buDim(p,d), buDim(q,d)) for distinct primes p,q) generalizes to squarefree n = p₁·p₂·…·pₖ. The main result is that buDim(n,d) = sup_{p ∈ primeFactors(n)} buDim(p,d) for ALL n ≥ 2, not just squarefree numbers. This follows immediately from buDim_eq_formula and the definition of buDimFormula. Concrete cases buDim(30,d) = buDim 2 d ⊔ buDim 3 d ⊔ buDim 5 d and buDim(210,d) = buDim 2 d ⊔ … ⊔ buDim 7 d are verified. The general k-prime formula is proved by induction on a Finset of distinct primes.",
+  "description": "Proves that the CRT compatibility for BU dimensions (buDim(pq,d) = max(buDim(p,d), buDim(q,d)) for distinct primes p,q) generalizes to squarefree n = p₁·p₂·…·pₖ. The main result is that buDim(n,d) = sup_{p ∈ primeFactors(n)} buDim(p,d) for ALL n ≥ 2, not just squarefree numbers. This follows immediately from buDim_eq_formula and the definition of buDimFormula. Concrete cases buDim(30,d) = buDim 2 d ⊔ buDim 3 d ⊔ buDim 5 d and buDim(210,d) = buDim 2 d ⊔ … ⊔ buDim 7 d are verified. The general k-prime formula is proved by induction on a Finset of distinct primes. Part 6 closes the first open question listed in the conclusion: radical-invariance (buDim_eq_of_primeFactors_eq) + Nat.primeFactors_prime_pow give prime-power independence buDim(p^k, d) = buDim(p, d) for k ≥ 1, exercised on 8 = 2³, 27 = 3³, 1024 = 2¹⁰. The non-squarefree composite 12 = 2²·3 is also computed, confirming that multiplicities are invisible to buDim.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-06",
@@ -21,8 +21,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 5,
-    "lineCount": 247,
-    "theoremCount": 13,
+    "lineCount": 303,
+    "theoremCount": 19,
     "definitionCount": 0,
     "dateAdded": "2026-05-06",
     "mathlibDependencies": [
@@ -50,15 +50,34 @@
         "theorem": "Finset.singleton_union",
         "description": "{a} ∪ s = insert a s",
         "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.primeFactors_prime_pow",
+        "description": "(p^k).primeFactors = {p} for k ≠ 0 and prime p",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.Prime.primeFactors",
+        "description": "p.primeFactors = {p} for prime p (simp lemma)",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Nat.le_self_pow",
+        "description": "a ≤ a^k for k ≠ 0 — used for 2 ≤ p^k from 2 ≤ p",
+        "module": "Mathlib.Data.Nat.Defs"
       }
     ],
     "originalContributions": [
       "buDim_eq_sup_primeFactors: main theorem proving buDim(n,d) = n.primeFactors.sup(buDim · d) for all n ≥ 2",
       "primeFactors_prod_primes: inductive proof that primeFactors(∏ S) = S for a Finset of primes",
       "buDim_prod_primes_eq: CRT formula for k distinct primes — buDim(∏ S) d = S.sup(buDim · d)",
-      "Concrete cases: buDim(30,d), buDim(210,d), buDim(2310,d) via native_decide for primeFactors computation"
+      "Concrete cases: buDim(30,d), buDim(210,d), buDim(2310,d) via native_decide for primeFactors computation",
+      "buDim_eq_of_primeFactors_eq: radical-invariance — m, n ≥ 2 with the same prime factor set have equal buDim",
+      "buDim_prime_pow_eq: prime-power independence buDim(p^k, d) = buDim(p, d) for prime p and k ≥ 1 — closes the first open question listed in the conclusion",
+      "Concrete prime-power cases: buDim_eight (2³), buDim_twentyseven (3³), buDim_oneoh24 (2¹⁰) via buDim_prime_pow_eq",
+      "buDim_twelve: first non-squarefree composite — buDim(12,d) = buDim(2,d) ⊔ buDim(3,d) (12 = 2²·3), confirming multiplicities are invisible"
     ],
-    "assumptions": "0 sorries. 0 new axiom declarations in this file. All 13 theorems fully machine-checked relative to 5 imported axioms from parent files: buDim (function axiom), buDim_two, buDim_prime, buDim_mono (monotonicity axiom) from BorsukUlamOQ02OQ01, and buDim_le_formula (formula conjecture axiom) from BorsukUlamOQ02OQ01OQ01.",
+    "assumptions": "0 sorries. 0 new axiom declarations in this file. All 19 theorems fully machine-checked relative to 5 imported axioms from parent files: buDim (function axiom), buDim_two, buDim_prime, buDim_mono (monotonicity axiom) from BorsukUlamOQ02OQ01, and buDim_le_formula (formula conjecture axiom) from BorsukUlamOQ02OQ01OQ01.",
     "additionalFiles": []
   },
   "overview": {
@@ -88,10 +107,10 @@
       "BorsukUlamOQ02OQ01",
       "BorsukUlamCompositeFormula"
     ],
-    "lineCount": 247,
+    "lineCount": 303,
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 19,
     "definitionCount": 0
   },
   "openQuestions": [],
@@ -153,11 +172,19 @@
       "mathContext": "**Semiprime corollary**: setting $S = \\{p, q\\}$ in `buDim_prod_primes_eq` gives $\\text{buDim}(p \\cdot q, d) = \\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$. The Lean proof unfolds the Finset operations: `Finset.prod_insert hpq` (with $p \\notin \\{q\\}$ from $p \\ne q$) gives $p \\cdot q$ on the LHS; `Finset.sup_insert` + `Finset.sup_singleton` give $\\text{buDim}(p, d) \\sqcup \\text{buDim}(q, d)$ on the RHS.\n\n**Axiom-elimination**: the parent file `borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03` had a dedicated `buDim_crt_semiprime` axiom. This file shows that axiom was *redundant* — the semiprime case follows from the more general `buDim_le_formula` axiom of `BorsukUlamOQ02OQ01OQ01`."
     },
     {
+      "id": "prime-power-independence",
+      "title": "Part 6: Prime-Power Independence (Multiplicities Don't Matter)",
+      "startLine": 223,
+      "endLine": 274,
+      "summary": "Closes the first open question listed in the conclusion. Six new theorems: (1) `buDim_eq_of_primeFactors_eq` — *radical-invariance*: any two $m, n \\geq 2$ with the same `primeFactors` Finset have the same `buDim`, proved as a 1-line rewrite using `buDim_eq_sup_primeFactors` on both sides; (2) `buDim_prime_pow_eq` — *prime-power independence* $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ for prime $p$ and $k \\ne 0$, proved via radical-invariance + `Nat.primeFactors_prime_pow` + `Nat.Prime.primeFactors`; (3-5) three concrete prime powers `buDim_eight` ($8 = 2^3$), `buDim_twentyseven` ($27 = 3^3$), `buDim_oneoh24` ($1024 = 2^{10}$) showing the collapse; (6) `buDim_twelve` — the first non-squarefree composite example, computing $\\text{buDim}(12, d) = \\text{buDim}(2, d) \\sqcup \\text{buDim}(3, d)$ via `native_decide` on `(12 : ℕ).primeFactors = {2, 3}`, confirming the surprise from Part 1 that squarefreeness is irrelevant.",
+      "mathContext": "**Radical invariance.** Define the *radical* of $n \\geq 2$ as $\\operatorname{rad}(n) = \\prod_{p \\in \\operatorname{primeFactors}(n)} p$. The theorem `buDim_eq_of_primeFactors_eq` says: $\\text{buDim}(n, d)$ depends only on $\\operatorname{primeFactors}(n)$ (equivalently, only on $\\operatorname{rad}(n)$). Concretely, $\\text{buDim}(12, d) = \\text{buDim}(6, d) = \\text{buDim}(18, d) = \\text{buDim}(2, d) \\sqcup \\text{buDim}(3, d)$ since all four share the prime support $\\{2, 3\\}$.\n\n**Prime-power case.** Specializing to $n = p^k$ uses Mathlib's `Nat.primeFactors_prime_pow : k \\ne 0 \\to \\operatorname{Prime} p \\to (p^k).\\operatorname{primeFactors} = \\{p\\}$, matched against `Nat.Prime.primeFactors : p.\\operatorname{Prime} \\to p.\\operatorname{primeFactors} = \\{p\\}`. The $2 \\le p^k$ side condition is discharged by chaining `hp.two_le` with `Nat.le_self_pow hk p : p \\le p^k`.\n\n**Why this completes the qualitative picture.** Combined with the k-prime CRT formula (Part 4), prime-power independence shows: $\\text{buDim}(n, d)$ as a function of $n$ factors through $n \\mapsto \\operatorname{primeFactors}(n)$. The entire 'numerical' content of BU complexity for $\\mathbb{Z}/n\\mathbb{Z}$-actions reduces to a Finset-valued function of the prime support. Quantitative refinements (e.g. expressing $\\text{buDim}$ as a sum or product of prime contributions, rather than just a $\\sqcup$) remain open."
+    },
+    {
       "id": "summary-table",
       "title": "Closing Summary Table and Namespace End",
-      "startLine": 223,
-      "endLine": 247,
-      "summary": "Closing module-level docstring (223-245) summarizes the OQ and answer, lists all 8 theorems with their statements and verification status (5 fully proved, 3 via native_decide), and confirms the file's bookkeeping: 0 sorries, 0 axioms (only consumes the upstream `buDim_le_formula` axiom from `BorsukUlamOQ02OQ01OQ01` — itself the residue of the entire BorsukUlam composite-formula chain). Closes with `end BorsukUlamCRTSquarefree`.",
+      "startLine": 275,
+      "endLine": 303,
+      "summary": "Closing module-level docstring (275-301) summarizes the OQ and answer, lists all 13+ theorems with their statements and verification status (most fully proved, several via native_decide), and confirms the file's bookkeeping: 0 sorries, 0 axioms (only consumes the upstream `buDim_le_formula` axiom from `BorsukUlamOQ02OQ01OQ01` — itself the residue of the entire BorsukUlam composite-formula chain). Closes with `end BorsukUlamCRTSquarefree`.",
       "mathContext": "**Provenance accounting**: this file is `axiomatized` only via inheritance — every theorem in the file is `Proved`, but the chain consumes one upstream axiom (`buDim_le_formula : buDim n d ≤ buDimFormula n d` for $n \\ge 2$) from the `BorsukUlamOQ02OQ01OQ01` parent. The companion `buDimFormula_le` is *proved* in that parent, so the composite-formula reduction `buDim = buDimFormula` is half-axiomatized. Eliminating `buDim_le_formula` is the next research milestone in the BorsukUlam chain — it would render every downstream file (including this one) fully verified with no axiom inheritance."
     }
   ],
@@ -216,12 +243,12 @@
     }
   ],
   "conclusion": {
-    "summary": "The CRT compatibility $\\text{buDim}(n, d) = \\sup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$ holds for *all* $n \\ge 2$, not just squarefree numbers. For squarefree $n = p_1 \\cdots p_k$, this specializes to $\\text{buDim}(n, d) = \\bigsqcup_i \\text{buDim}(p_i, d)$. The proof adds 0 new axioms beyond the parent framework (`buDim`, `buDim_mono`, `buDim_le_formula`). The squarefree-to-arbitrary-$k$ generalization is proved by Finset induction on the set of prime factors, with concrete $k = 3, 4, 5$ instances via `native_decide` on primorials $30, 210, 2310$.",
-    "implications": "**Axiom reduction by generalization**: the semiprime CRT statement was promoted to an axiom (`buDim_crt_semiprime`) in OQ-03; its derivation from the formula in OQ-03/OQ-01 used only the semiprime structure. Here, generalizing to $k$ primes makes the argument *simpler*, not harder — the entire CRT compatibility is structural, encoded in the *definition* of `buDimFormula` as `primeFactors.sup`. This is a recurring pattern in formalization: the right level of generality often eliminates assumptions rather than requiring more. **Borsuk-Ulam content**: the result says that BU complexity for $\\mathbb{Z}/n\\mathbb{Z}$-actions sees only the *prime support* of $n$, not its multiplicities — $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ would follow from this combined with the formula axiom. **Connection to representation theory**: the CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_p \\mathbb{Z}/p^{v_p(n)}\\mathbb{Z}$ at the level of group rings induces a tensor decomposition of representations, and the BU dimension's prime-factor support is the topological shadow of this tensor structure. **Pattern for future entries**: the OQ-03 → OQ-03/OQ-01 → OQ-03/OQ-02 chain is a model for axiom-elimination via generalization, applicable to other CRT-style results in the gallery (Erdős-style multiplicative bounds, Möbius-function-related identities).",
+    "summary": "The CRT compatibility $\\text{buDim}(n, d) = \\sup_{p \\in \\text{primeFactors}(n)} \\text{buDim}(p, d)$ holds for *all* $n \\ge 2$, not just squarefree numbers. For squarefree $n = p_1 \\cdots p_k$, this specializes to $\\text{buDim}(n, d) = \\bigsqcup_i \\text{buDim}(p_i, d)$. Part 6 closes the first listed open question: BU dimension is invariant under prime-power inflation — $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ for $k \\ge 1$, and more generally any two $m, n \\ge 2$ with the same `primeFactors` Finset have the same `buDim` (radical-invariance). The proof adds 0 new axioms beyond the parent framework (`buDim`, `buDim_mono`, `buDim_le_formula`). The squarefree-to-arbitrary-$k$ generalization is proved by Finset induction on the set of prime factors, with concrete $k = 3, 4, 5$ instances via `native_decide` on primorials $30, 210, 2310$; concrete prime powers $8 = 2^3$, $27 = 3^3$, $1024 = 2^{10}$ and the non-squarefree composite $12 = 2^2 \\cdot 3$ exercise the radical-invariance.",
+    "implications": "**Axiom reduction by generalization**: the semiprime CRT statement was promoted to an axiom (`buDim_crt_semiprime`) in OQ-03; its derivation from the formula in OQ-03/OQ-01 used only the semiprime structure. Here, generalizing to $k$ primes makes the argument *simpler*, not harder — the entire CRT compatibility is structural, encoded in the *definition* of `buDimFormula` as `primeFactors.sup`. This is a recurring pattern in formalization: the right level of generality often eliminates assumptions rather than requiring more. **Borsuk-Ulam content (now confirmed)**: the result says that BU complexity for $\\mathbb{Z}/n\\mathbb{Z}$-actions sees only the *prime support* of $n$, not its multiplicities. The conjecture $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ that the original entry flagged as an open question is now *proved* in Part 6 as `buDim_prime_pow_eq`, derived in three lines from the radical-invariance lemma `buDim_eq_of_primeFactors_eq` + `Nat.primeFactors_prime_pow`. Radical-invariance is the cleanest statement of CRT compatibility: $\\text{buDim}$ factors through the radical $\\operatorname{rad}(n) = \\prod_{p \\mid n} p$. **Connection to representation theory**: the CRT decomposition $\\mathbb{Z}/n\\mathbb{Z} \\cong \\prod_p \\mathbb{Z}/p^{v_p(n)}\\mathbb{Z}$ at the level of group rings induces a tensor decomposition of representations, and the BU dimension's prime-factor support is the topological shadow of this tensor structure. Prime-power independence corresponds to the fact that the equivariant cohomology index of $\\mathbb{Z}/p^k\\mathbb{Z}$-representations is bounded by that of the largest cyclic $p$-quotient $\\mathbb{Z}/p\\mathbb{Z}$ (Volovikov 1996). **Pattern for future entries**: the OQ-03 → OQ-03/OQ-01 → OQ-03/OQ-02 chain is a model for axiom-elimination via generalization, applicable to other CRT-style results in the gallery (Erdős-style multiplicative bounds, Möbius-function-related identities). The Part-6 extension shows that *internal* open questions listed in a file's conclusion can also be closed by the same kind of radical-invariance argument.",
     "openQuestions": [
-      "**Higher-prime-power independence**: Does $\\text{buDim}(p^k, d) = \\text{buDim}(p, d)$ for $k \\ge 2$? This would be the analog of the squarefree result for prime-power factors. It follows from the formula axiom + an additional fact that $\\text{primeFactors}(p^k) = \\{p\\}$ (already in Mathlib); the only barrier is composing the rewrites in Lean.",
       "**Quantitative refinement**: The current statement is an order-theoretic equality. Is there a quantitative version giving the BU dimension as a *sum* (rather than supremum) of prime-factor contributions when the action splits cleanly? Such a refinement would correspond to an additivity property of equivariant cohomology under product decompositions.",
-      "**Eliminate `buDim_le_formula` axiom**: The remaining axiom in the chain is the parent's `buDim_le_formula` (the upper-bound half of the formula). Proving this from a more elementary characterization of $\\text{buDim}$ in equivariant terms is the natural next step in axiom reduction for the BU project."
+      "**Eliminate `buDim_le_formula` axiom**: The remaining axiom in the chain is the parent's `buDim_le_formula` (the upper-bound half of the formula). Proving this from a more elementary characterization of $\\text{buDim}$ in equivariant terms is the natural next step in axiom reduction for the BU project.",
+      "**Function-through-radical**: Part 6 shows that $n \\mapsto \\text{buDim}(n, d)$ factors through $n \\mapsto \\text{primeFactors}(n)$. Is there a clean characterization of the induced function $\\text{Finset}(\\text{Primes}) \\to \\mathbb{N}$? For example, is it bounded by a polynomial in $|\\text{primeFactors}(n)|$ and $d$, or does it grow only with the *largest* prime factor?"
     ]
   },
   "sorries": 0

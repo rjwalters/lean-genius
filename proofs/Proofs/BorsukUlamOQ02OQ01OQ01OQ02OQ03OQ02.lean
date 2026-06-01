@@ -220,6 +220,58 @@ theorem crt_recovers_semiprime (p q d : ℕ)
   rw [Finset.prod_insert (by simp [hpq]), Finset.prod_singleton] at hS
   rw [hS, Finset.sup_insert, Finset.sup_singleton]
 
+-- ============================================================
+-- PART 6: Prime-Power Independence (Multiplicities Don't Matter)
+-- ============================================================
+
+/-- **Radical equivalence**: if `m` and `n` (both ≥ 2) share the same prime factor set,
+    they have the same BU dimension.
+
+    This is the most general form of the CRT compatibility: `buDim n d` depends only on the
+    *prime support* (radical) of `n`, not on the multiplicities or arithmetic structure. -/
+theorem buDim_eq_of_primeFactors_eq (m n d : ℕ) (hm : 2 ≤ m) (hn : 2 ≤ n)
+    (h : m.primeFactors = n.primeFactors) :
+    buDim m d = buDim n d := by
+  rw [buDim_eq_sup_primeFactors m d hm, buDim_eq_sup_primeFactors n d hn, h]
+
+/-- **Prime-power independence**: for any prime `p` and `k ≥ 1`, `buDim(p^k, d) = buDim(p, d)`.
+
+    Closes the first open question of the file: BU complexity of a prime power equals that
+    of the base prime, because `primeFactors(p^k) = {p}` regardless of `k ≥ 1`. -/
+theorem buDim_prime_pow_eq (p k d : ℕ) (hp : Nat.Prime p) (hk : k ≠ 0) :
+    buDim (p ^ k) d = buDim p d := by
+  have hpk : 2 ≤ p ^ k := hp.two_le.trans (Nat.le_self_pow hk p)
+  refine buDim_eq_of_primeFactors_eq (p ^ k) p d hpk hp.two_le ?_
+  rw [Nat.primeFactors_prime_pow hk hp, hp.primeFactors]
+
+/-- **buDim(8, d) = buDim(2, d)** since 8 = 2³ — only the prime support matters. -/
+theorem buDim_eight (d : ℕ) : buDim 8 d = buDim 2 d := by
+  have h : (8 : ℕ) = 2 ^ 3 := by norm_num
+  rw [h]
+  exact buDim_prime_pow_eq 2 3 d Nat.prime_two (by decide)
+
+/-- **buDim(27, d) = buDim(3, d)** since 27 = 3³. -/
+theorem buDim_twentyseven (d : ℕ) : buDim 27 d = buDim 3 d := by
+  have h : (27 : ℕ) = 3 ^ 3 := by norm_num
+  rw [h]
+  exact buDim_prime_pow_eq 3 3 d Nat.prime_three (by decide)
+
+/-- **buDim(1024, d) = buDim(2, d)** since 1024 = 2¹⁰. -/
+theorem buDim_oneoh24 (d : ℕ) : buDim 1024 d = buDim 2 d := by
+  have h : (1024 : ℕ) = 2 ^ 10 := by norm_num
+  rw [h]
+  exact buDim_prime_pow_eq 2 10 d Nat.prime_two (by decide)
+
+/-- **Non-squarefree composite**: `buDim(12, d) = buDim(2, d) ⊔ buDim(3, d)`.
+
+    Since `12 = 2² · 3` is not squarefree, this demonstrates that the CRT compatibility
+    extends beyond squarefree numbers — confirming the surprise observation that only the
+    prime support matters. By `buDim_eq_of_primeFactors_eq`, `buDim 12 d = buDim 6 d`. -/
+theorem buDim_twelve (d : ℕ) : buDim 12 d = buDim 2 d ⊔ buDim 3 d := by
+  have hpf : (12 : ℕ).primeFactors = {2, 3} := by native_decide
+  have hn : 2 ≤ (12 : ℕ) := by norm_num
+  rw [buDim_eq_sup_primeFactors 12 d hn, hpf, Finset.sup_insert, Finset.sup_singleton]
+
 /-
 ## Summary
 
@@ -240,6 +292,10 @@ is an immediate consequence of `buDim_eq_formula` and the definition of `buDimFo
 | `primeFactors_prod_primes` | primeFactors(∏ S) = S for prime Finset | Proved (induction) |
 | `buDim_prod_primes_eq` | buDim(∏ S) d = S.sup (buDim · d) | Proved |
 | `crt_recovers_semiprime` | Recovers the k=2 case | Proved |
+| `buDim_eq_of_primeFactors_eq` | Same prime factor set ⇒ same buDim (radical-invariance) | Proved |
+| `buDim_prime_pow_eq` | buDim(p^k, d) = buDim(p, d) for k ≥ 1 (first open question) | Proved |
+| `buDim_eight`, `buDim_twentyseven`, `buDim_oneoh24` | 2³, 3³, 2¹⁰ collapse to prime base | Proved |
+| `buDim_twelve` | buDim(12,d) = buDim(2,d) ⊔ buDim(3,d) — non-squarefree composite | Proved (native_decide) |
 
 **Sorries**: 0  **Axioms**: 0 (uses only buDim, buDim_mono, buDim_le_formula from the chain)
 -/
