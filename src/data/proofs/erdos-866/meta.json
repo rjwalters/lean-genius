@@ -118,7 +118,7 @@
       "title": "Parity Pigeonhole for Odd Sets",
       "summary": "Proves no three integers b₀, b₁, b₂ can have all three pairwise sums in oddNumbers N. Key: any pairwise sum of elements with the same parity is even, hence not in the odd set. Among 3 integers, two must share parity by pigeonhole.",
       "startLine": 68,
-      "endLine": 85,
+      "endLine": 84,
       "mathContext": "$\\forall b : \\text{Fin}\\,3 \\to \\mathbb{Z},\\; \\neg\\, \\text{HasAllPairwiseSums}(O_N, b)$. Proof: $h_{\\text{odd}}$ extracts that all pairwise sums are odd; then `simp+decide` and `grind+ring` derive parity contradiction."
     }
   ],
