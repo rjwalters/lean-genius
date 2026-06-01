@@ -7,7 +7,7 @@
     "author": "Researcher-6 (2026)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Fubini%27s_theorem",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
     "tags": [
       "analysis",
@@ -18,10 +18,10 @@
       "axiom-elimination",
       "greens-theorem"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. 0 sorries, 0 axiom declarations. All theorems follow from Mathlib's Fubini theorem (MeasureTheory.integral_integral_swap) and standard measure theory. The parent module Proofs.GreensTheoremOQ01OQ01OQ01 previously declared iteratedIntervalIntegral_order_independent as an axiom; that declaration has now been retired (it was unused in the parent), since this file proves the same statement as a real theorem from first principles.",
+    "assumptions": "Build pending repair. The file has 0 sorries and 0 axiom declarations and was originally machine-checked against an earlier Mathlib release, but does not currently compile against Mathlib v4.26.0 (11 errors after partial API-drift cleanup; see follow-up issue). Until those errors are repaired, the gallery treats the proof as axiomatized — the stated theorems function as assumptions rather than fully machine-verified results. The mathematical content (Fubini-based decomposition of permuted iterated interval integrals) is unchanged from the original write-up.",
     "dateAdded": "2026-05-06",
     "openQuestions": [
       {

@@ -58,7 +58,7 @@ private lemma continuous_param :
   | zero =>
     intro α _ _ _ _ a b F hF
     simp only [iteratedIntervalIntegral_zero]
-    exact hF.comp (continuous_id.prod_mk continuous_const)
+    exact hF.comp (continuous_id.prodMk continuous_const)
   | succ n ih =>
     intro α _ _ _ _ a b F hF
     simp only [iteratedIntervalIntegral_succ]
@@ -69,7 +69,7 @@ private lemma continuous_param :
           (fun rest => F (q.1, Fin.cons q.2 rest))) := by
       apply @ih (α × ℝ) _ _ _ _ (Fin.tail a) (Fin.tail b)
           (fun q : (α × ℝ) × (Fin n → ℝ) => F (q.1.1, Fin.cons q.1.2 q.2))
-      exact hF.comp ((continuous_fst.comp continuous_fst).prod_mk
+      exact hF.comp ((continuous_fst.comp continuous_fst).prodMk
         ((continuous_snd.comp continuous_fst).finCons continuous_snd))
     -- Now: Continuous (fun x => ∫ t₀ in a₀..b₀, H(x, t₀) dt₀)
     -- Use continuousAt_of_dominated_interval at each x₀
@@ -78,24 +78,24 @@ private lemma continuous_param :
     obtain ⟨K, hK_compact, hK_nhd⟩ := exists_compact_mem_nhds x₀
     -- H is bounded on K × uIcc a₀ b₀ (compact set, image under continuous ‖H‖)
     obtain ⟨M, hM⟩ := ((hK_compact.prod isCompact_uIcc).image
-      H_cont.norm.continuousOn).bddAbove
+      H_cont.norm).bddAbove
     apply intervalIntegral.continuousAt_of_dominated_interval (bound := fun _ => M)
     · -- AEStronglyMeasurable (H(x, ·)) (vol.restrict Ι) eventually near x₀
-      apply Filter.eventually_of_forall; intro x
-      exact (H_cont.comp (continuous_const.prod_mk continuous_id)).measurable
+      apply Filter.Eventually.of_forall; intro x
+      exact (H_cont.comp (continuous_const.prodMk continuous_id)).measurable
           |>.aestronglyMeasurable
     · -- |H(x, t₀)| ≤ M for x near x₀ and t₀ ∈ Ι a₀ b₀
       -- Use compact K containing x₀ (from hK_nhd): H bounded on K × uIcc by hM
       filter_upwards [hK_nhd] with x hx
-      apply Filter.eventually_of_forall; intro t₀ ht₀
+      apply Filter.Eventually.of_forall; intro t₀ ht₀
       apply hM
       exact Set.mem_image_of_mem _
-        (Set.mk_mem_prod hx (Set.uIoc_subset_uIcc _ _ ht₀))
+        (Set.mk_mem_prod hx (Set.uIoc_subset_uIcc ht₀))
     · -- Bound is interval-integrable (constant function)
       exact intervalIntegrable_const
     · -- H(·, t₀) is continuous at x₀ for all t₀
-      apply Filter.eventually_of_forall; intro t₀ _
-      exact (H_cont.comp (continuous_id.prod_mk continuous_const)).continuousAt
+      apply Filter.Eventually.of_forall; intro t₀ _
+      exact (H_cont.comp (continuous_id.prodMk continuous_const)).continuousAt
 
 -- ═══════════════════════════════════════════════════
 -- Section 1: Integrability for the Fubini Swap
@@ -159,7 +159,7 @@ private lemma swap01_cons_eq {n : ℕ} {f : (Fin (n + 2) → ℝ) → ℝ}
     · have hne0 : k.succ.succ ≠ (0 : Fin (n + 2)) := Fin.succ_ne_zero _
       have hne1 : k.succ.succ ≠ (1 : Fin (n + 2)) := by
         intro h; have hv := congr_arg Fin.val h; simp [Fin.val_succ] at hv; omega
-      simp [Equiv.swap_apply_of_ne hne0 hne1, Fin.cons_zero, Fin.cons_succ]
+      simp [Equiv.swap_apply_of_ne_of_ne hne0 hne1, Fin.cons_zero, Fin.cons_succ]
 
 -- ═══════════════════════════════════════════════════
 -- Section 3: Swapping Positions 0 and 1
@@ -333,7 +333,7 @@ private lemma iter_integral_swap_zero {n : ℕ}
       have step1 := ihm hm0 hab hf
       -- Step 2: apply perm_tail for swap(k₀,k) (fixes 0)
       have hfixes0 : Equiv.swap k₀ k (0 : Fin (n+1)) = 0 :=
-        Equiv.swap_apply_of_ne (Ne.symm hk₀_ne_0) (Ne.symm hk_ne_0)
+        Equiv.swap_apply_of_ne_of_ne (Ne.symm hk₀_ne_0) (Ne.symm hk_ne_0)
       have hab₁ : ∀ i, (a ∘ Equiv.swap 0 k₀) i ≤ (b ∘ Equiv.swap 0 k₀) i :=
         fun i => hab _
       have hf₁ : Continuous (fun v : Fin (n+1) → ℝ =>
@@ -405,7 +405,7 @@ private lemma iter_integral_swap_any {n : ℕ}
         exact iter_integral_swap_zero ih x.val x.isLt hab hf
       · -- x ≠ 0, y ≠ 0: swap(x,y) fixes 0, use perm_tail
         have hfixes0 : (Equiv.swap x y) 0 = 0 := by
-          rw [Equiv.swap_apply_of_ne hx0.symm hy0.symm]
+          rw [Equiv.swap_apply_of_ne_of_ne hx0.symm hy0.symm]
         exact iteratedIntervalIntegral_perm_tail hab hf (Equiv.swap x y) hfixes0 ih
 
 -- ═══════════════════════════════════════════════════
