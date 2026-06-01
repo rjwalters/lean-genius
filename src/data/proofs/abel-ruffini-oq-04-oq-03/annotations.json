@@ -133,19 +133,24 @@
     },
     "type": "concept",
     "title": "Why Kummer Theory Is the Missing Ingredient",
-    "content": "This inline comment explains the mathematical gap preventing full formalization. The reverse direction requires constructing an explicit radical tower from the composition series of a solvable group. The key step is: given a cyclic Galois extension $L/K$ of prime degree $p$ where $K$ contains a primitive $p$-th root of unity $\\zeta_p$, Kummer theory guarantees $L = K(\\sqrt[p]{\\beta})$ for some $\\beta \\in K$. Iterating this over the composition series produces the radical tower. The characteristic 0 assumption ensures $\\zeta_p$ can always be adjoined without blowing up the Galois group structure.",
-    "mathContext": "Kummer's theorem: if $\\operatorname{char}(K) \\nmid n$ and $K$ contains all $n$-th roots of unity, then cyclic extensions of $K$ of degree $n$ are exactly the extensions $K(\\sqrt[n]{a})$ for $a \\in K$. For the reverse direction, one adjoin $\\zeta_p$ (a finite cyclic extension) then $\\sqrt[p]{\\beta}$ at each step, composing these into $K = F(\\zeta_{p_1})(\\sqrt[p_1]{\\beta_1})(\\zeta_{p_2})(\\sqrt[p_2]{\\beta_2}) \\cdots \\ni \\alpha$.",
+    "content": "This inline comment explains the mathematical gap preventing full formalization. The reverse direction requires constructing an explicit radical tower from the composition series of a solvable group. The key step is: given a cyclic Galois extension $L/K$ of prime degree $p$ where $K$ contains a primitive $p$-th root of unity $\\zeta_p$, Kummer theory guarantees $L = K(\\sqrt[p]{\\beta})$ for some $\\beta \\in K$. Iterating this over the composition series produces the radical tower. The characteristic 0 assumption ensures $\\zeta_p$ can always be adjoined without blowing up the Galois group structure.\n\n**The precise Mathlib gap: Hilbert 90 for $\\mathbb{Z}/n\\mathbb{Z}$.** Mathlib 4.26 already has the cyclotomic infrastructure (`IsCyclotomicExtension` exposes $\\zeta_n$ and $\\text{Gal}(F(\\zeta_n)/F) \\cong (\\mathbb{Z}/n)^\\times$) and the cyclic-Galois-group typeclass (`IsCyclic`), but is missing the bijection $F^\\times/(F^\\times)^n \\cong \\{\\text{cyclic degree-}n\\text{ extensions of }F\\}$ — equivalently, Hilbert's Theorem 90 in the $\\mathbb{Z}/n\\mathbb{Z}$-cohomology form $H^1(\\text{Gal}(L/K), L^\\times) = 0$ specialized to cyclic Galois groups. Hilbert 90 itself (over a single cyclic extension) is essentially the statement that every $K$-automorphism of $L$ fixing the norm map is an inner automorphism of $L^\\times$ — proved by Hilbert in his *Zahlbericht* (1897, §54) as the cohomological cleanup of Kummer's original calculation. Once Hilbert 90 is formalized in Mathlib, the reverse direction `solvableGal_implies_solvableByRad` follows by induction on the length of the composition series of $\\text{Gal}(q)$: at each step, the cyclic quotient $G_{i-1}/G_i \\cong \\mathbb{Z}/p_i$ produces (via Hilbert 90 ⟺ Kummer's bijection) a radical step $K_i = K_{i-1}(\\sqrt[p_i]{\\beta_i})$. **Formalization estimate**: ~500–1000 Lean lines, leveraging Mathlib's existing `GroupCohomology` infrastructure for the cohomological statement and `IsCyclotomicExtension` for the $\\zeta_n$-adjunction step.",
+    "mathContext": "Kummer's theorem: if $\\operatorname{char}(K) \\nmid n$ and $K$ contains all $n$-th roots of unity, then cyclic extensions of $K$ of degree $n$ are exactly the extensions $K(\\sqrt[n]{a})$ for $a \\in K$. For the reverse direction, one adjoin $\\zeta_p$ (a finite cyclic extension) then $\\sqrt[p]{\\beta}$ at each step, composing these into $K = F(\\zeta_{p_1})(\\sqrt[p_1]{\\beta_1})(\\zeta_{p_2})(\\sqrt[p_2]{\\beta_2}) \\cdots \\ni \\alpha$.\n\n**Cohomological reformulation.** Kummer's bijection $F^\\times/(F^\\times)^n \\cong \\text{Hom}(\\text{Gal}(F^{\\text{sep}}/F), \\mathbb{Z}/n)$ when $\\zeta_n \\in F$ is the degree-1 case of Hilbert's Theorem 90: $H^1(\\text{Gal}(L/K), L^\\times) = 0$ for any finite Galois $L/K$. The connecting homomorphism from the short exact sequence $1 \\to \\mu_n \\to L^\\times \\xrightarrow{x \\mapsto x^n} L^\\times \\to 1$ (with $\\mu_n \\subset K$ by hypothesis) gives $K^\\times/(K^\\times)^n \\hookrightarrow H^1(\\text{Gal}(L/K), \\mu_n) \\cong \\text{Hom}(\\text{Gal}(L/K), \\mathbb{Z}/n)$, and Hilbert 90 plus surjectivity onto $\\text{Hom}(\\text{Gal}(L/K), \\mu_n)$ closes the bijection. This is the form most readily formalizable in Mathlib's developing `GroupCohomology` namespace.",
     "significance": "supporting",
     "relatedConcepts": [
       "Kummer theory",
+      "Hilbert 90 (cohomological Kummer)",
       "cyclic extension",
       "composition series",
-      "roots of unity"
+      "roots of unity",
+      "GroupCohomology (Mathlib)",
+      "IsCyclotomicExtension (Mathlib)"
     ],
     "prerequisites": [
       "solvable group composition series",
       "cyclotomic extensions",
-      "Galois correspondence"
+      "Galois correspondence",
+      "Hilbert's Theorem 90",
+      "group cohomology in degree 1"
     ]
   },
   {
