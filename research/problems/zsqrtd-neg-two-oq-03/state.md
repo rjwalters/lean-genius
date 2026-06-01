@@ -1,10 +1,10 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: ACT (S3 ACT shipped via PR #19008 build-verified 3058 jobs; S4 PREP r2 + S8 PREP + S11 STATE-SYNC merged; **S4 ACT next** — splitting argument from `(-3/p) = 1`, paste-ready ~60-LOC skeleton in S12 PREP §5; **B1 INFRA**: Docker daemon hung under host disk pressure, ACT picker should wait OR ship `build pending` per S5 ACT precedent)
+**Phase**: ACT (S4 ACT Step 1 shipped via PR #21226 — `legendreSym_neg_three` + 2 stranded `@[simp]` projection lemmas `mul_conj_re`/`mul_conj_im`; gallery `lineCount` mirror via PR #21522; **Step 2 ready** — full 4-cell `p mod 12` tableau in S14 PREP §4 with paste-ready ~50-LOC Lean skeleton in §5; Step 3 outline refreshed ~30 LOC in §6; `meta.json` `theoremCount` 24→32 drift acknowledged for mechanic-pickup, §7)
 **Path**: full
-**Since**: 2026-05-16T10:00Z (S12 PREP — JSON drift fix + bearer re-spot-check + S4 ACT paste-ready; was 2026-05-15T23:28:55Z post-#19008 merge)
-**Iteration**: 11 (S11 STATE-SYNC was iter 10, merged via #19494; this S12 PREP is iter 11)
-**Researcher**: researcher-9 (Session 12 PREP, 2026-05-16)
+**Since**: 2026-06-01T00:00Z (S14 PREP — Step 2 derivation tableau + state-sync post-#21226/#21522; was 2026-05-16T10:00Z post-#19600 merge)
+**Iteration**: 13 (S12 PREP was iter 11 via #19600; S13 S4 ACT incremental was iter 12 via #21226; this S14 PREP is iter 13)
+**Researcher**: researcher-1 (Session 14 PREP, 2026-06-01)
 
 ## Current Focus
 
@@ -138,8 +138,12 @@ scaffold). 0 sorries, 0 axioms in the Lean file.
 | S8 PREP | PR coord audit + stranded-branch follow-up + S4 PREP line-erratum | — | ✅ PR #19186 (MERGED 2026-05-15T22:56:14Z, doc-only) |
 | S4 PREP r2 | Post-#19008 line-shift refresh + Mathlib SHA re-pin | — | ✅ PR #19189 (MERGED 2026-05-15T22:56:04Z, doc-only) |
 | Session 11 STATE-SYNC | Catch up 3-PR merge wave | — | ✅ PR #19494 (MERGED 2026-05-16, doc-only) |
-| Session 12 PREP | JSON drift fix + bearer re-spot-check + S4 ACT paste-ready (this PR) | — | 🚧 PR (this session, doc-only) |
-| S4 ACT | Splitting via `(-3/p) = (p/3)` and QR; paste S12 PREP §5 skeleton | ~60 | TODO (use `legendreSym.mul` + `at_neg_one` Basic.lean:L272; `quadratic_reciprocity_one_mod_four` QR.lean:L134, NOT L133; `PrincipalIdealRing.to_uniqueFactorizationMonoid` PID.lean:L345, NOT L366; SORRY-1 on `exists_sq_eq_neg_three_iff` per S12 PREP §5) |
+| Session 12 PREP | JSON drift fix + bearer re-spot-check + S4 ACT paste-ready | — | ✅ PR #19600 (MERGED 2026-05-16, doc-only) |
+| S4 ACT Step 1 | `legendreSym_neg_three` + 2 stranded `@[simp]` projection lemmas (`mul_conj_re`, `mul_conj_im`) | +39 LOC | ✅ PR #21226 (MERGED 2026-05-30) |
+| mechanic lineCount sync | Gallery `meta.json` `lineCount` 426→465 | — | ✅ PR #21522 (MERGED 2026-05-31, gallery-meta) |
+| Session 14 PREP | Step 2 derivation tableau + state-sync (this PR) | — | 🚧 PR (this session, doc-only) |
+| S4 ACT Step 2 | `legendreSym_neg_three_eq_one_iff (p ≠ 2) (p ≠ 3) : (-3/p) = 1 ↔ p % 3 = 1`; paste S14 PREP §5 skeleton | ~50 | TODO (`χ₄_nat_one_mod_four` ZModChar.lean:L89; `χ₄_nat_three_mod_four` ZModChar.lean:L94; `legendreSym.at_neg_one` Basic.lean:L272; `quadratic_reciprocity_one_mod_four` QR.lean:L134; `quadratic_reciprocity_three_mod_four` QR.lean:L142; 2 `decide`-able sub-sorries on `legendreSym 3 p = 1 ↔ p % 3 = 1`) |
+| S4 ACT Step 3 | Extract `α : Eisenstein` with `norm α = p` from `IsSquare (-3 : ZMod p)`; parity case-split on `x_int` | ~30 | TODO (per S14 PREP §6; `legendreSym.eq_one_iff` Basic.lean:L178 + `PrincipalIdealRing.to_uniqueFactorizationMonoid` PID.lean:L345 + `irreducible_iff_prime`) |
 | S5 ACT | `sq_add_three_sq_of_prime_one_mod_three` (main) | ~100 | TODO |
 
 Stretch (S6+, optional): port to `n = 7, 11` (each ~400 lines).
@@ -221,7 +225,10 @@ the current file).
 | #19186 | Session 8 PREP — coord + stranded follow-up + S4 PREP line-erratum | MERGED 2026-05-15T22:56:14Z (doc-only) |
 | #19189 | Session 8 S4 PREP r2 — post-#19008 line-shift refresh + Mathlib SHA re-pin | MERGED 2026-05-15T22:56:04Z (doc-only) |
 | #19494 | Session 11 STATE-SYNC — catch up 3-PR merge wave | MERGED 2026-05-16 (doc-only) |
-| (this PR) | Session 12 PREP — JSON drift fix + bearer re-spot-check + S4 ACT paste-ready (doc-only) | TO BE OPENED |
+| #19600 | Session 12 PREP — JSON drift fix + bearer re-spot-check + S4 ACT paste-ready | MERGED 2026-05-16 (doc-only) |
+| #21226 | Session 13 S4 ACT incremental — Step 1 `legendreSym_neg_three` + 2 stranded `@[simp]` lemmas | MERGED 2026-05-30 (Lean +39 LOC, 426→465 LOC, 29→32 theorems, 0 sorries, 0 axioms) |
+| #21522 | mechanic lineCount mirror 426→465 | MERGED 2026-05-31 (gallery-meta) |
+| (this PR) | Session 14 PREP — Step 2 derivation tableau + state-sync (doc-only) | TO BE OPENED |
 
 ## Iteration History
 
@@ -239,7 +246,10 @@ the current file).
 | Session 8 PREP | 2026-05-15 author / 2026-05-15 merged | researcher-1 | #19186 | S8 PREP coordination audit: 1 file (sessions/2026-05-14-s8-prep-coordination-and-stranded-followup.md, 223 LOC), no Lean changes. Flagged PR #19008 as mergeable-but-stalled (would later merge ~32 min later in the same drain wave) and identified the stranded branch `origin/research/zsqrtd-neg-two-oq03-s3-act-1778799640` (commit `af4b879f30e`) carrying 2 extra `@[simp]` projection lemmas (`mul_conj_re`, `mul_conj_im`). |
 | Session 8 S4 PREP r2 | 2026-05-15 author / 2026-05-15 merged | researcher-11 | #19189 | S4 PREP r2: 1 file (sessions/2026-05-14-s4-prep-r2-post-s3act-line-shift-refresh.md, 364 LOC), no Lean changes. Refreshed S4 PREP §2 line tables for post-#19008 line shifts; re-pinned Mathlib bearer SHAs against pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; surfaced the **S4 PREP §2.1 erratum**: `legendreSym.at_neg` does NOT exist in Mathlib v4.26.0 — only `at_neg_one`/`at_neg_two` exist. Operational impact zero (S4 PREP §3 sketch already decomposes via `legendreSym.mul` + `at_neg_one`). |
 | Session 11 STATE-SYNC | 2026-05-16 | researcher-3 | #19494 | STATE-SYNC: catches up the 3-PR merge wave (#19008 + #19186 + #19189), bumps iteration counter 7 → 10, refreshes Lean inventory block (29 theorems / 2 defs / 12 instances / 0 sorries / 0 axioms / 426 LOC; note: on-disk `definitionCount` is `3` not `2`, see S12 PREP §10), reaffirms 3 Mathlib bearer SHAs at the v4.26.0 pin, retires "(this PR) | Session 7 S3 ACT | TO BE OPENED" row, updates Path to Verification + Open PRs + Iteration History tables, propagates S4 PREP r2 erratum into Next Action, and records the stranded-branch absorption decision (deferred pencilwork for next ACT-touching iter). 0 Lean / knowledge.md / problem.md / JSON edits. |
-| Session 12 PREP | 2026-05-16 | researcher-9 | (this PR) | PREP: 1 NEW session memo (`sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md`, ~450 LOC), state.md head + Open PRs + Path-to-Verification + Iteration History edits (~±60 LOC), and JSON `currentState.{phase,since,iteration,focus,nextAction,lastUpdate}` + `leanFiles[0].theoremCount` + top-level `lastUpdate` updates (~±10 LOC). Closes JSON drift left by S11 STATE-SYNC (#19494), re-spot-checks 4-file bearer table at HEAD `ecb47b35601` against Mathlib pin `2df2f0150c…` (IDENTICAL), surfaces 4 NEW line-citation drift findings (QR `quadratic_reciprocity` L107 not L123; QR `_one_mod_four` L134 not L133; PID `to_uniqueFactorizationMonoid` L345 not L366; Basic `eq_one_iff` L178 not L180), and lands a paste-ready ~60-LOC S4 ACT skeleton with 1 acknowledged sorry on `exists_sq_eq_neg_three_iff` (R3, ~15 LOC). Reaffirms stranded-branch absorption (#19186 §1 — 2 `@[simp]` lemmas folded into S4 ACT). Docker B1 INFRA blocker noted (daemon hung under host disk pressure). 0 Lean / 0 meta.json / 0 problem.md / 0 knowledge.md edits. |
+| Session 12 PREP | 2026-05-16 | researcher-9 | #19600 | PREP: 1 NEW session memo (`sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md`, ~450 LOC), state.md head + Open PRs + Path-to-Verification + Iteration History edits (~±60 LOC), and JSON `currentState.{phase,since,iteration,focus,nextAction,lastUpdate}` + `leanFiles[0].theoremCount` + top-level `lastUpdate` updates (~±10 LOC). Closes JSON drift left by S11 STATE-SYNC (#19494), re-spot-checks 4-file bearer table at HEAD `ecb47b35601` against Mathlib pin `2df2f0150c…` (IDENTICAL), surfaces 4 NEW line-citation drift findings (QR `quadratic_reciprocity` L107 not L123; QR `_one_mod_four` L134 not L133; PID `to_uniqueFactorizationMonoid` L345 not L366; Basic `eq_one_iff` L178 not L180), and lands a paste-ready ~60-LOC S4 ACT skeleton with 1 acknowledged sorry on `exists_sq_eq_neg_three_iff` (R3, ~15 LOC). Reaffirms stranded-branch absorption (#19186 §1 — 2 `@[simp]` lemmas folded into S4 ACT). Docker B1 INFRA blocker noted (daemon hung under host disk pressure). 0 Lean / 0 meta.json / 0 problem.md / 0 knowledge.md edits. |
+| Session 13 S4 ACT incremental | 2026-05-30 | researcher-1 | #21226 | ACT: 3 declarations to `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (426→465 LOC, +39 LOC). (1) `@[simp] mul_conj_re : (z * conj z).re = norm z` and (2) `@[simp] mul_conj_im : (z * conj z).im = 0` — stranded-branch `@[simp]` projection lemmas absorbed per S8 PREP §1 + S12 PREP §6 (each one-line `rw [mul_conj]`). (3) `legendreSym_neg_three (p : ℕ) [Fact p.Prime] : legendreSym p (-3) = legendreSym p (-1) * legendreSym p 3` — Step 1 of the S4 splitting argument (3-LOC body via `rw [show ((-3 : ℤ) = (-1) * 3) by norm_num, legendreSym.mul]`). Net delta: +3 theorems (29→32), 0 new sorries, 0 new axioms. Build-verified per PR description. |
+| mechanic lineCount sync | 2026-05-31 | (mechanic) | #21522 | Gallery `meta.json` `lineCount` mirror 426→465 (1-character mechanic fix matching PR #21226's on-disk delta). Note: `theoremCount` 24→32 mirror still pending (S14 PREP §7 records the drift; future-mechanic pickup, NOT in S14 PREP scope). |
+| Session 14 PREP | 2026-06-01 | researcher-1 | (this PR) | PREP: 1 NEW session memo (`sessions/2026-06-01-s14-prep-step2-derivation-tableau-state-sync.md`, ~350 LOC), state.md state-sync (~±50 LOC catching up #21226/#21522 + adding S4 ACT Step 2 + Step 3 rows to Path to Verification), and slug JSON `currentState.{phase,since,iteration,focus,nextAction,lastUpdate}` + top-level `lastUpdate` (~±15 LOC). Closes state.md drift left by 3-PR gap (#19600 + #21226 + #21522 unrecorded in state.md head). Re-confirms Mathlib pin `2df2f0150c…` at current HEAD `8bf8a7b3552`. Re-spot-checks bearer table at `~/GitHub/mathlib4@2df2f0150c…` — all S12 PREP §4 citations confirmed correct; adds 6 new rows for the χ₄ family (ZModChar.lean L89/L94/L99/L104), `ZMod.exists_sq_eq_neg_one_iff` (Basic.lean L279), and the QR helper `exists_sq_eq_neg_two_iff` (parent-template hook, QR.lean L80). Lands a fully tableau'd Step 2 derivation: 4-cell `p mod 12` case-split showing `(-3/p) = 1 ↔ p % 3 = 1` (S14 PREP §4) — the `p mod 4` dependence cancels between `(-1/p)` and `(3/p)` because QR for `3` (with `3 % 4 = 3`) introduces the matching sign flip. Paste-ready ~50-LOC Lean skeleton with risk class R1–R4 inventory (§5) factoring out the sub-lemma `legendreSym_three_eq_one_iff_p_mod_three_eq_one`. Step 3 outline refreshed (~30 LOC, parity case-split on `x_int` via the `x_int² + 3 = 4(y² + y + 1)` for `x_int = 2y + 1` route, §6). 8-item ACT-readiness gate all GREEN (§8). 0 Lean / 0 gallery meta.json / 0 problem.md / 0 knowledge.md edits; acknowledges gallery meta.json `theoremCount` 24→32 drift as mechanic-pickup. |
 
 ## Reference Files (in this directory)
 
@@ -270,18 +280,74 @@ the current file).
 - `sessions/2026-05-16-s11-state-sync-post-19008-19186-19189-merge-wave.md` —
   Session 11 STATE-SYNC post-drain catch-up (researcher-3, PR #19494).
 - `sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md` —
-  **Session 12 PREP** (this PR; researcher-9): JSON drift fix +
+  Session 12 PREP (researcher-9, PR #19600): JSON drift fix +
   4-file bearer re-spot-check + S4 ACT paste-ready ~60-LOC skeleton
   with 1 acknowledged sorry + 4 NEW line-citation drift findings +
   Docker B1 blocker note + 8-item ACT-readiness gate (7 GREEN + 1
   RED-INFRA).
+- `sessions/2026-06-01-s14-prep-step2-derivation-tableau-state-sync.md` —
+  **Session 14 PREP** (this PR; researcher-1): state-sync post-#21226/#21522
+  + bearer table refresh (all S12 PREP citations confirmed at pin
+  `2df2f0150c…`; +6 χ₄ family rows) + fully tableau'd Step 2 derivation
+  (4-cell `p mod 12` case-split showing `(-3/p) = 1 ↔ p % 3 = 1`,
+  `p mod 4` dependence cancels via matching QR sign flip) + ~50-LOC
+  paste-ready Lean skeleton (R1–R4 inventory, 2 `decide`-able sub-sorries
+  factored into `legendreSym_three_eq_one_iff_p_mod_three_eq_one`)
+  + Step 3 outline refresh (~30 LOC, parity case-split on `x_int`
+  via `x_int² + 3 = 4(y² + y + 1)` for odd `x_int`) + 8-item
+  ACT-readiness gate (8/8 GREEN) + acknowledged gallery `meta.json`
+  `theoremCount` 24→32 drift (mechanic-pickup territory).
 
 ## Next Action
 
-The previous-session "Next Action" block (above, after "Far-future")
-remains valid for the **mathematical content** of S4 ACT. **Use the
-S12 PREP §5 paste-ready skeleton + S12 PREP §4 corrected line
-citations** for the actual paste — the previous block's line numbers
-(QR.lean:L123/L133/L141 + PID.lean:L366 + Basic.lean:L180) are stale
-by Δ∈{−16, +1, +1, −21, −2} lines and would cost ~5-10 LOC of
-needless `rcases p=q` if used as-is.
+**S4 ACT Step 2 (next claim, ~50 LOC)**: paste the S14 PREP §5
+skeleton into `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` after the existing
+`legendreSym_neg_three` lemma (currently L461-L463). The lemma to
+land is
+
+```
+lemma legendreSym_neg_three_eq_one_iff
+    (p : ℕ) [Fact p.Prime] (hp_ne_two : p ≠ 2) (hp_ne_three : p ≠ 3) :
+    legendreSym p (-3) = 1 ↔ p % 3 = 1
+```
+
+(NB: the S12 PREP §5 hypothesis `(hp1 : p % 4 = 1)` is **strictly
+stronger than needed** — the `p mod 4` dependence cancels across the
+`(-1/p) · (3/p)` decomposition because QR for `3` (which has
+`3 % 4 = 3`) introduces the matching sign flip; see S14 PREP §4
+tableau for the 4-cell derivation.)
+
+Bearers (all at Mathlib pin `2df2f0150c…`):
+
+- `legendreSym.at_neg_one` Basic.lean:L272 — `(hp : p ≠ 2) : legendreSym p (-1) = χ₄ p`
+- `χ₄_nat_one_mod_four` ZModChar.lean:L89 — `{n : ℕ} (hn : n % 4 = 1) : χ₄ n = 1`
+- `χ₄_nat_three_mod_four` ZModChar.lean:L94 — `{n : ℕ} (hn : n % 4 = 3) : χ₄ n = -1`
+- `legendreSym.quadratic_reciprocity_one_mod_four` QR.lean:L134 — `(hp : p % 4 = 1) (hq : q ≠ 2) : legendreSym q p = legendreSym p q`
+- `legendreSym.quadratic_reciprocity_three_mod_four` QR.lean:L142 — `(hp : p % 4 = 3) (hq : q % 4 = 3) : legendreSym q p = -legendreSym p q`
+
+The two `decide`-able sub-sorries in §5 reduce to the sub-lemma
+`legendreSym 3 p = 1 ↔ p % 3 = 1` (factor out as
+`legendreSym_three_eq_one_iff_p_mod_three_eq_one`; squares in
+`ZMod 3 = {0, 1}` are `{0, 1}` and `p ≠ 3` rules out `p % 3 = 0`).
+
+**Build-verify**: `./proofs/scripts/docker-build.sh Proofs.ZsqrtdNegTwoOQ03`
+(G9 self-loop is INERT for Docker builds per memory note; the daemon
+recovery question from S12 PREP §7 is from 2026-05-16 and may not
+apply now — the next picker should attempt the build directly).
+
+**S4 ACT Step 3 (after Step 2, ~30 LOC)**: per S14 PREP §6, parity
+case-split on `x_int` extracted from `IsSquare (-3 : ZMod p)`:
+canonicalize `x_int` to odd via `p - x_int` if even (p odd ⇒ parity
+flip), write `x_int = 2y + 1`, get `x_int² + 3 = 4(y² + y + 1) =
+4 · norm(⟨y + 1, 1⟩)`, combine with `gcd(p, 4) = 1` to get
+`p ∣ norm(α)` for `α := ⟨y + 1, 1⟩`, then use UFD non-irreducibility
+(`PrincipalIdealRing.to_uniqueFactorizationMonoid` PID.lean:L345 +
+`UniqueFactorizationMonoid.irreducible_iff_prime`) to extract
+`p = α · β` with neither a unit, forcing `norm(α) = p` via
+`1 < norm(α), norm(β) < p²`.
+
+**S5 ACT (after S4 ACT, ~100 LOC)**: the main theorem
+`sq_add_three_sq_of_prime_one_mod_three`. Conversion step uses
+`4p = (2a - b)² + 3 b²` (already proven inside S2 as the witness for
+`norm_nonneg`); the parity case-split between `a, b` same-parity and
+opposite-parity reduces to `omega + interval_cases`.
