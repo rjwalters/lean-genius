@@ -546,6 +546,32 @@
     ]
   },
   {
+    "id": "arg-symmetric-from-alternating",
+    "proofId": "abel-ruffini-galois-extensions",
+    "range": {
+      "startLine": 397,
+      "endLine": 405
+    },
+    "type": "insight",
+    "title": "Structural Reverse-Direction: A_n Non-Solvable ⟹ S_n Non-Solvable",
+    "content": "Theorem `symmetric_not_solvable_of_alternating` (lines 397–403) isolates the *structural* one-directional implication: from `¬ IsSolvable (alternatingGroup (Fin n))` we conclude `¬ IsSolvable (Equiv.Perm (Fin n))`. The proof is striking in its brevity — `intro hsol; exact h inferInstance` — three tokens that compress a substantial mathematical fact: **subgroups of solvable groups are solvable**. The `inferInstance` call wakes up Mathlib's typeclass resolution to discharge `IsSolvable (alternatingGroup (Fin n))` *given* `IsSolvable (Equiv.Perm (Fin n))`, using the universal lemma `Subgroup.isSolvable`. The hypothesis `h` then contradicts this derived instance. Pedagogically this isolates *which* direction of the iff requires structural group theory: the forward (`S_n` solvable ⟹ `A_n` solvable) is structural and free; the reverse (`A_n` solvable ⟹ `S_n` solvable) requires the genuine work in Parts I–IV of this file, because $S_n / A_n \\cong \\mathbb{Z}/2\\mathbb{Z}$ must independently be solvable (it is — trivially abelian — but proving it composes correctly with the kernel is the content of `solvable_of_ker_le_range`).",
+    "mathContext": "Subgroup-of-solvable-is-solvable: if $G$ is solvable with derived series $G^{(0)} \\supseteq G^{(1)} \\supseteq \\cdots \\supseteq \\{e\\}$ terminating at length $k$, and $H \\leq G$, then $H^{(i)} \\leq G^{(i)}$ for all $i$, so $H^{(k)} = \\{e\\}$ and $H$ is solvable. Applied to $A_n \\leq S_n$: $S_n$ solvable ⟹ $A_n$ solvable (free). The contrapositive: $A_n$ not solvable ⟹ $S_n$ not solvable. Notation: $G^{(k+1)} = [G^{(k)}, G^{(k)}]$ is the iterated commutator subgroup.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Subgroup.isSolvable (Mathlib)",
+      "derived series and commutator subgroups",
+      "contrapositive reasoning in group theory",
+      "typeclass inference (inferInstance) in Lean 4",
+      "exact sequences of solvable groups"
+    ],
+    "prerequisites": [
+      "Definition of solvable group via derived series",
+      "Subgroup inheritance of solvability (Mathlib's IsSolvable typeclass)",
+      "Lean 4 tactic vocabulary: intro, exact, inferInstance",
+      "Logical structure of contrapositive proofs"
+    ]
+  },
+  {
     "id": "arg-higher-cardinalities",
     "proofId": "abel-ruffini-galois-extensions",
     "range": {
