@@ -1,9 +1,54 @@
 # Current State
 
-**Phase**: ACT (S8 this PR — adds `jordanBlock_eq_lam_smul_one_add_zero_block` API lemma, +1 theorem, ~+34 LOC; ALSO fixes S7 PR #21220 v4.26.0 build break — `List.mem_cons_self _ _` → `List.mem_cons_self`). Pure additive API + 1-line S7 fix, no def or sorry change. Exposes the entry-wise Jordan-Chevalley split `λ • 1 + jordanBlock R 0 d` of a Jordan block. **Docker build-verified: 3081/3081 jobs**.
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z; S6 STATE-SYNC by researcher-11 MERGED [#20027](https://github.com/rjwalters/lean-genius/pull/20027) 2026-05-17T02:23:09Z; S7 ACT by researcher-1 MERGED [#21220](https://github.com/rjwalters/lean-genius/pull/21220) 2026-05-31T00:36:40Z)
-**Iteration**: 8
-**Last Updated**: 2026-05-31T22:10:00Z (S8 ACT, researcher-1)
+**Phase**: ACT (S9 this PR — adds `trace_jordanBlock` and `trace_jordanBlock_zero` API lemmas, +2 theorems, ~+32 LOC). Pure additive API, no def / sorry / axiom change. Exposes `(jordanBlock R lam d).trace = d • lam`, the entry-wise content of `Matrix.trace` applied to a Jordan block — the trace is a class function on Jordan blocks, depending only on `lam` and `d`. **Docker build-verified at v4.26.0: 3081/3081 jobs, 14s for `Proofs.MinpolyCharpolyOQ01`. Only warning is the pre-existing `declaration uses 'sorry'` on `jordan_normal_form_exists` (line 398, now-shifted by 32 from S8's line 366).**
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z; S6 STATE-SYNC by researcher-11 MERGED [#20027](https://github.com/rjwalters/lean-genius/pull/20027) 2026-05-17T02:23:09Z; S7 ACT by researcher-1 MERGED [#21220](https://github.com/rjwalters/lean-genius/pull/21220) 2026-05-31T00:36:40Z; S8 ACT by researcher-1 2026-05-31T22:10:00Z)
+**Iteration**: 9
+**Last Updated**: 2026-05-31T23:30:00Z (S9 ACT, researcher-1)
+
+## S9 ACT Summary (2026-05-31, researcher-1)
+
+**Mode**: ACT (small focused API addition — entry-wise trace of a Jordan block).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with two new public theorems:
+
+**`trace_jordanBlock`** — `(jordanBlock R lam d).trace = d • lam` for any commutative ring `R`, scalar `lam`, and dimension `d`. All `d` diagonal entries of the block equal `lam` by S1's `jordanBlock_diag_eq`, so the trace sum `∑ i, A i i` collapses to `d • lam` via `Finset.sum_const + Finset.card_univ + Fintype.card_fin`.
+
+**`trace_jordanBlock_zero`** — `(jordanBlock R 0 d).trace = 0`. Direct specialisation of `trace_jordanBlock` at `lam = 0`, using `smul_zero`.
+
+### Why this matters
+
+Companion to S8's Jordan-Chevalley split. The trace is invariant under the decomposition `jordanBlock R lam d = lam • 1 + jordanBlock R 0 d` because the nilpotent shift has trace `0` (S9 corollary) and the scalar part contributes `lam • d = d • lam`. This illustrates that trace is a *class function* on Jordan blocks: it depends only on `(lam, d)`, not on the basis or any further structure. Such API surface is useful for any future characteristic-polynomial-side argument that wants to read off `lam`-multiplicities from trace identities.
+
+### Design choices
+
+* **`d • lam`, not `d * lam`.** The `SMul ℕ R` scalar multiplication is more general (works over any `AddCommMonoid`, no `Mul` needed). `nsmul_eq_mul` converts to multiplicative form on demand.
+* **`Matrix.trace` unfolded via `simp only`, not `unfold`.** The `simp only [Matrix.trace, Matrix.diag_apply, ...]` chain is more controlled and survives Mathlib API drift better than `unfold`.
+* **Single chain, no `Matrix.trace_smul` / `Matrix.trace_add` invocation.** The proof goes direct to the sum-of-constant collapse rather than splitting via the Jordan-Chevalley decomposition. Both approaches are valid; the direct route is shorter (~3 LOC vs. ~6 LOC) and doesn't depend on naming conventions for `trace_smul` (which varies across Mathlib refactors).
+* **No new defs.** Pure API addition. Definition count stable at 3 since S2.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 421 → 453 lines (+32; ~+10 are the two new lemmas and ~+22 are the section docstring).
+* Sorries: 5 (raw count — unchanged from S8).
+* Axioms: 0 (unchanged).
+* Theorems: 12 → 14 (added `trace_jordanBlock` + `trace_jordanBlock_zero`).
+* Definitions: 3 (unchanged).
+
+### Build status
+
+**Docker build-VERIFIED**: `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01` → `Built Proofs.MinpolyCharpolyOQ01 (14s)`, total 3081/3081 jobs (matches S8 baseline, no new transitive dependencies). Only warning: pre-existing `declaration uses 'sorry'` on the load-bearing `jordan_normal_form_exists` at line 398 (was line 366 pre-S9; +32 line shift from the new section docstring + two theorems). Both `trace_jordanBlock` and `trace_jordanBlock_zero` elaborated cleanly with the planned `simp only` chains; no API drift surfaced. Per memory `feedback_g9_qualifier_masks_real_bugs`, this is a true verification, not the "build pending" qualifier.
+
+### Anti-scope
+
+* No child OQ slug creation (S5 candidate A) — defer.
+* No `jnfMatrix` def / strong-form statement upgrade (S5 candidate B) — defer.
+* No nilpotent canonical form discharge (the OQ-01-OQ-02 target) — out-of-session-scope.
+* No sibling JSON edits (slug-local file only).
+* No `MinpolyCharpoly.lean` (parent) edits.
+
+---
 
 ## S8 ACT Summary (2026-05-31, researcher-1)
 

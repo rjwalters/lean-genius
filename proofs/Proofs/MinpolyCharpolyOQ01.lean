@@ -267,6 +267,38 @@ theorem jordanBlock_eq_lam_smul_one_add_zero_block (R : Type*) [CommRing R]
     · simp [hij, hs]
     · simp [hij, hs]
 
+/-! ## S9: trace of a Jordan block
+
+The trace of `jordanBlock R lam d` is `d • lam`. This is the entry-wise content
+of `Matrix.trace` applied to a Jordan block: all `d` diagonal entries equal
+`lam` (by `jordanBlock_diag_eq`), so the trace collapses to `d • lam`.
+
+Companion to S8's Jordan-Chevalley split: the trace is invariant under the
+decomposition `jordanBlock R lam d = lam • 1 + jordanBlock R 0 d` because the
+nilpotent shift `jordanBlock R 0 d` has trace `0` (its diagonal is `0`), so
+trace adds `lam • d` from the scalar part to `0` from the nilpotent part. This
+also illustrates that trace is a class function on Jordan blocks (it depends
+only on `lam` and `d`, not on the basis).
+
+Pure API; no new definitions. -/
+
+/-- **S9**: the trace of `jordanBlock R λ d` is `d • λ`.
+
+    All `d` diagonal entries of `jordanBlock R λ d` equal `λ` by
+    `jordanBlock_diag_eq`, so the trace sum `∑ i, A i i` collapses to
+    `d • λ` via `Finset.sum_const`. -/
+theorem trace_jordanBlock (R : Type*) [CommRing R] (lam : R) (d : Nat) :
+    (jordanBlock R lam d).trace = d • lam := by
+  simp only [Matrix.trace, Matrix.diag_apply, jordanBlock_diag_eq,
+             Finset.sum_const, Finset.card_univ, Fintype.card_fin]
+
+/-- **S9 corollary**: the nilpotent shift `jordanBlock R 0 d` has trace `0`.
+
+    Direct specialisation of `trace_jordanBlock` at `lam = 0`: `d • (0 : R) = 0`. -/
+theorem trace_jordanBlock_zero (R : Type*) [CommRing R] (d : Nat) :
+    (jordanBlock R 0 d).trace = (0 : R) := by
+  rw [trace_jordanBlock]; exact smul_zero d
+
 /-! ## S3 candidate D: cardinality of `eigenvalueMultiset` equals `totalDim`
 
 A small but useful API lemma about `JordanBlockShape`: the cardinality of the
