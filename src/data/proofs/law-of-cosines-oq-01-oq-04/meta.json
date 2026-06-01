@@ -98,7 +98,7 @@
       "id": "scaled-version",
       "title": "Scaled Version and Special Cases",
       "startLine": 169,
-      "endLine": 191,
+      "endLine": 190,
       "summary": "spherical_to_euclidean_limit and concrete verifications for right and equilateral triangles.",
       "mathContext": "The scaled version multiplies by 2: $\\lim_{t \\to 0} \\frac{2(1 - \\cos(t\\alpha)\\cos(t\\beta) - \\sin(t\\alpha)\\sin(t\\beta)\\cos C)}{t^2} = \\alpha^2 + \\beta^2 - 2\\alpha\\beta\\cos C$. Special cases: (1) Right triangle ($\\cos C = 0$, $\\alpha=3$, $\\beta=4$): limit = $(9+16)/2 = 25/2$, recovering Pythagorean theorem. (2) Equilateral ($\\alpha=\\beta$, $\\cos C = 1/2$): limit = $(\\alpha^2 + \\alpha^2 - 2\\alpha^2/2)/2 = \\alpha^2/2$."
     }

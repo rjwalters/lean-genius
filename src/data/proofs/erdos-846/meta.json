@@ -153,7 +153,7 @@
       "id": "conjecture",
       "title": "The Erdős–Nešetřil–Rödl Conjecture (DISPROVED 2026-05-21)",
       "startLine": 263,
-      "endLine": 291,
+      "endLine": 290,
       "summary": "Documents the 2026-05-21 AlphaProof Nexus refutation. The prior `axiom ErdosProblem846` has been dropped; the formal counterexample lives in `Proofs/Erdos846ProblemAPN.lean`.",
       "mathContext": "The conjecture is FALSE: DeepMind's AlphaProof Nexus exhibits an infinite (1/2)-non-trilinear subset of ℝ² that is not weakly non-trilinear (`Erdos846APN.target_false`). Construction via the Elekes parametrisation $q(i,j) = (t_i + t_j,\\, t_i^2 + t_i t_j + t_j^2)$ with $t_n = 100^{4^n}$, combined with Ramsey-for-triangles to rule out finite non-collinear partitions."
     }
