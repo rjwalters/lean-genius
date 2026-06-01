@@ -281,37 +281,37 @@
       {
         "name": "isoperimetric_inequality_smooth",
         "statement": "For any SmoothClosedCurve γ, 4π · area(γ) ≤ circumference(γ)²",
-        "line": 1113
+        "line": 1572
       },
       {
         "name": "wirtinger_inequality",
         "statement": "For smooth mean-zero 2π-periodic f: ∫₀²π f² ≤ ∫₀²π (f')²",
-        "line": 643
+        "line": 645
       },
       {
         "name": "equality_implies_circle",
         "statement": "If 4πA = C² then the curve is a circle (C = 2πr, A = πr² for r = C/(2π))",
-        "line": 1253
+        "line": 1713
       },
       {
         "name": "circle_isoperimetric_equality",
         "statement": "For a circle: (2πr)² = 4π · πr²",
-        "line": 102
+        "line": 109
       },
       {
         "name": "ngon_limit_tendsto_circle",
         "statement": "Regular n-gon isoperimetric ratio π/(n·tan(π/n)) → 1 as n → ∞",
-        "line": 219
+        "line": 226
       },
       {
         "name": "parseval_periodic_real",
         "statement": "Parseval's identity: ∫₀²π f² = 2π · Σ ‖ĉₙ‖² for periodic C¹ functions",
-        "line": 350
+        "line": 358
       },
       {
         "name": "fourier_decomposition",
         "statement": "Fourier decomposition with Parseval + derivative identity for periodic C¹ functions",
-        "line": 526
+        "line": 528
       }
     ],
     "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
