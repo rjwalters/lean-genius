@@ -50,21 +50,28 @@
     "range": { "startLine": 81, "endLine": 88 },
     "type": "definition",
     "title": "zmod_coprime_crt: The Algebraic Heart of the Reduction",
-    "content": "**`zmod_coprime_crt`**: when $\\gcd(m, n) = 1$, Mathlib's `ZMod.chineseRemainder` gives a *ring* isomorphism $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$, and `.toAddEquiv` extracts the additive-group isomorphism. The reduction $\\text{coprime cyclic product} \\to \\text{cyclic}$ relies entirely on this one Mathlib lemma — the structural-engineering rest of the file is just plumbing.",
-    "mathContext": "**Chinese Remainder Theorem** (Sun Zi Suan Jing, ~5th century CE): for coprime $m, n$, the natural map $\\mathbb{Z}/(mn) \\to \\mathbb{Z}/m \\times \\mathbb{Z}/n$ is an isomorphism. The **inverse map** is non-trivial — it's the explicit residue-reconstruction $x \\mapsto u m \\cdot x_n + v n \\cdot x_m$ where $um + vn = 1$ (Bézout). Mathlib's `ZMod.chineseRemainder` is constructed via Bézout coefficients and verified by direct computation. **Key consequence for Galois theory**: the additive structure of a coprime cyclic product is itself cyclic, so its realizability comes for free from the cyclic case — no new field constructions needed.",
+    "content": "**`zmod_coprime_crt`**: when $\\gcd(m, n) = 1$, Mathlib's `ZMod.chineseRemainder` gives a *ring* isomorphism $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$, and `.toAddEquiv` extracts the additive-group isomorphism. The reduction $\\text{coprime cyclic product} \\to \\text{cyclic}$ relies entirely on this one Mathlib lemma — see `ann-shafarevich-coprime-prod` for how `cyclic_realizable (m*n)` immediately consumes the additive iso.\n\n**Why only `.toAddEquiv` is used.** For inverse-Galois purposes the *group* $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is what we need to realize as $\\text{Gal}(K/\\mathbb{Q})$. Galois groups carry no native ring structure — composition of automorphisms is the group operation, and there is no second commutative multiplication on $\\text{Aut}_\\mathbb{Q}(K)$. So discarding the ring multiplication via `.toAddEquiv` is not a loss of information; it's a type-correctness step ensuring the iso has the same algebraic shape (abelian-group / `AddCommGroup` ≃+ → `CommGroup` via the cyclic-generator isomorphism) as the target Galois group.\n\n**Bridge to conductor-coprimality.** The CRT-based reduction is *tight*: it succeeds precisely when the conductors of the two cyclotomic fixed-field realizations are coprime (which guarantees linear disjointness via the discriminant criterion — see `ann-shafarevich-axiom`). The ZMod CRT and the field-theoretic linear disjointness are the same Bézout argument viewed at two different layers: arithmetic ($\\mathbb{Z}/(mn)$) vs. algebraic-number-theoretic (compositum of cyclotomic subfields). Where conductors share a prime ($p_1 = p_2$), CRT fails — which is exactly the $(\\mathbb{Z}/p)^k$ gap formalized in `ann-shafarevich-part3-pp-gap`.",
+    "mathContext": "**Chinese Remainder Theorem** (Sun Zi Suan Jing, ~5th century CE): for coprime $m, n$, the natural map $\\pi : \\mathbb{Z}/(mn) \\to \\mathbb{Z}/m \\times \\mathbb{Z}/n$ defined by $\\pi(x) = (x \\bmod m, x \\bmod n)$ is a *ring* isomorphism. Surjectivity is the substantive content (injectivity is immediate by counting: both sides have $mn$ elements).\n\n**Inverse map (Bézout).** Given $um + vn = 1$ from the extended Euclidean algorithm, $\\pi^{-1}(a, b) = a \\cdot vn + b \\cdot um \\pmod{mn}$. Verification: this is $\\equiv a \\cdot vn \\equiv a \\cdot (1 - um) \\equiv a \\pmod{m}$, and similarly $\\equiv b \\pmod n$. Mathlib's `ZMod.chineseRemainder` is constructed exactly this way via `Nat.xgcd` (extended Euclidean algorithm in `Nat`).\n\n**Sun Zi's worked example** (3rd–5th century CE, *Sunzi Suanjing*, Problem 26): 'There is a number such that when divided by 3 the remainder is 2, when divided by 5 the remainder is 3, and when divided by 7 the remainder is 2. What is the number?' By CRT over $3 \\cdot 5 \\cdot 7 = 105$: answer $x \\equiv 23 \\pmod{105}$. Sun Zi's prose recipe ($70 \\cdot 2 + 21 \\cdot 3 + 15 \\cdot 2 = 233 \\equiv 23 \\pmod{105}$) implicitly uses the Bézout coefficients $70 = 2 \\cdot 35 \\equiv 1 \\pmod 3$, $21 = 3 \\cdot 7 \\equiv 1 \\pmod 5$, $15 \\equiv 1 \\pmod 7$.\n\n**Key consequence for Galois theory.** $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ as an *additive group* is cyclic when $\\gcd(m, n) = 1$ (generator: $(1, 1)$, with order $\\text{lcm}(m, n) = mn$). So its inverse-Galois realizability comes for free from the cyclic case — no new field constructions needed, no compositum, no linear disjointness theorem. This is the *only* product subcase where the inverse-Galois problem trivializes; for $(\\mathbb{Z}/p)^k$ ($k \\geq 2$) the product is not cyclic and a true compositum is required.\n\n**Failure outside `Nat.Coprime`.** When $\\gcd(m, n) = d > 1$, $\\mathbb{Z}/(mn) \\not\\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$: the LHS is cyclic of order $mn$ but the RHS has every element of order dividing $\\text{lcm}(m, n) = mn/d < mn$, so no element generates. Explicitly, $\\mathbb{Z}/4 \\not\\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2$ (the former has an element of order 4; the latter has every non-identity element of order 2). This is why the hypothesis `h : m.Coprime n` is *load-bearing* in Mathlib's `ZMod.chineseRemainder` signature.",
     "significance": "key",
     "relatedConcepts": [
       "Chinese Remainder Theorem",
       "ZMod.chineseRemainder",
       "ring iso → additive iso (.toAddEquiv)",
       "Bézout coefficients in ZMod CRT",
-      "Sun Zi Suan Jing"
+      "Sun Zi Suan Jing",
+      "extended Euclidean algorithm (Nat.xgcd)",
+      "additive vs multiplicative cyclic group structure",
+      "linear disjointness of cyclotomic fields with coprime conductors",
+      "structure theorem for finite abelian groups (reduction to prime-power factors)"
     ],
     "prerequisites": [
       "Mathlib.Data.ZMod.Basic",
       "ZMod.chineseRemainder",
       "Coprime in Nat",
-      "AddEquiv vs RingEquiv"
+      "AddEquiv vs RingEquiv",
+      "Nat.xgcd / extended Euclidean algorithm",
+      "order of an element in a finite abelian group",
+      "cyclic group generator order = lcm vs product"
     ]
   },
   {
