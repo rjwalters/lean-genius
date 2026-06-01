@@ -65,6 +65,9 @@
     "mathlib_version": "4.26.0",
     "theoremCount": 14,
     "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean"
+    ],
     "relatedProblems": [
       {
         "id": "abel-ruffini",
@@ -251,7 +254,18 @@
       }
     ],
     "path": "Proofs/AbelRuffiniOQ04OQ02OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean",
+        "lineCount": 244,
+        "theorems": 11,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 1,
+        "description": "OQ-04-OQ-02-OQ-02-OQ-06: Derived series length gap — A₄ has derived length exactly 2 (a4_derived1_ne_bot + a4_derived2_eq_bot) while A₅ is perfect and never reaches ⊥ (a5_perfect + a5_derived_never_bot). Quantifies the phase transition at n = 5 of the parent's solvability classification. Namespace AbelRuffiniOQ04OQ02OQ02OQ06; imports parent Proofs.AbelRuffiniOQ04OQ02OQ02. 1 remaining sorry in a4_derived2_eq_bot (commutator A4 is abelian)."
+      }
+    ]
   },
   "crossReferences": [
     {
