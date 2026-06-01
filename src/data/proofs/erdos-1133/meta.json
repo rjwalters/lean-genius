@@ -28,12 +28,17 @@
       {
         "theorem": "Polynomial",
         "description": "Polynomial definitions and evaluation",
-        "module": "Mathlib.Data.Polynomial.Basic"
+        "module": "Mathlib.Algebra.Polynomial.Basic"
       },
       {
         "theorem": "Polynomial.eval",
         "description": "Polynomial evaluation at a point",
-        "module": "Mathlib.Data.Polynomial.Eval"
+        "module": "Mathlib.Algebra.Polynomial.Eval.Defs"
+      },
+      {
+        "theorem": "Polynomial.natDegree",
+        "description": "Natural-number degree of a polynomial",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
       },
       {
         "theorem": "Real.cos",
@@ -89,7 +94,7 @@
       }
     ],
     "axiomCount": 1,
-    "lineCount": 195,
+    "lineCount": 194,
     "assumptions": "1 axiom: lagrange_interpolation (existence and uniqueness of degree-<n polynomial through n distinct points). All other results proved as theorems (0 sorries).",
     "theoremCount": 2,
     "definitionCount": 8
@@ -267,10 +272,12 @@
   },
   "leanFile": {
     "imports": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Eval.Defs",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
       "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Polynomial.Basic",
-      "Mathlib.Data.Polynomial.Eval",
       "Mathlib.Data.Finset.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
       "Mathlib.Topology.MetricSpace.Basic",
       "Mathlib.Analysis.Normed.Field.Basic"
     ],
@@ -278,7 +285,7 @@
       "Polynomial"
     ],
     "namespace": "Erdos1133",
-    "lineCount": 195,
+    "lineCount": 194,
     "axiomCount": 1,
     "theoremCount": 2,
     "definitionCount": 8,
