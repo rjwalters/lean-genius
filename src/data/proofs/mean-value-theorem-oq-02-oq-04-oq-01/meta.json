@@ -80,14 +80,8 @@
       }
     ],
     "additionalFiles": [
-      {
-        "path": "Proofs/MeanValueTheoremOQ02.lean",
-        "purpose": "Grandparent file providing taylorPolynomial definition and taylorPolynomial_zero lemma."
-      },
-      {
-        "path": "Proofs/MeanValueTheoremOQ02OQ04.lean",
-        "purpose": "Parent file containing the OQ-04 axiom that this OQ-01 file refutes. The parent file is unchanged by this PR."
-      }
+      "Proofs/MeanValueTheoremOQ02.lean",
+      "Proofs/MeanValueTheoremOQ02OQ04.lean"
     ],
     "originalContributions": [
       "Constructive refutation of the parent OQ-04 axiom analytic_taylor_remainder_uniform_bound via the Runge function f(x)=1/(1+x²) at (a,R,M,r,n,x) = (0, 100, 1, 1, 0, 1). The refutation does not invoke the parent axiom (it refutes the *statement*), so it stands even if the parent axiom is later removed.",
