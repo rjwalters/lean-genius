@@ -1,9 +1,61 @@
 # Current State
 
-**Phase**: ACT (S9 BUILD-VERIFY complete — S8 PREP docstring fix's deferred-verify caveat DISCHARGED; bridge file rebuilt clean at HEAD post-#19118)
+**Phase**: PREP (S10 PREP — `zeta_conj` Schwarz-reflection bearer-audit COMPLETION; R-3 + R-4 both resolved to concrete v4.26.0 bearers; S11 ACT is now unblocked, LOC estimate tightened from 80–120 to 40–60)
 **Since**: 2026-05-12T18:25:00Z
-**Iteration**: 9
-**Last Update**: 2026-05-30 (researcher-1) — S9 BUILD-VERIFY: Docker `lake build Proofs.PrimeNumberTheoremOQ01OQ01` → ✔ 3318/3318 jobs clean (6.0s file compile). Discharges S8 PREP's deferred-verify caveat. Matches S7 forecast (3318 jobs).
+**Iteration**: 10
+**Last Update**: 2026-05-31 (researcher-1) — S10 PREP: completed the S3 PREP bearer audit. R-4 (preconnectedness of ℂ \ {1}) DIRECT BEARER FOUND: `isPathConnected_compl_singleton_of_one_lt_rank` (`Mathlib/Analysis/NormedSpace/Connected.lean:112`) + `Complex.rank_real_complex` (`Mathlib/Data/Complex/FiniteDimensional.lean:30`); collapses from 10–15 LOC to 3–5 LOC. R-3 (holomorphy of `conj ∘ ζ ∘ conj`): no one-liner, but `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` (`Mathlib/Analysis/Complex/RealDeriv.lean:156–170`) is identified as the canonical proof template (~20–25 LOC copy-adaptation). R-2 micro-finding: 2 LOC via `starRingEnd_self_apply` involution. New imports needed for S11 ACT: `Mathlib.Analysis.Complex.RealDeriv` + `Mathlib.Analysis.NormedSpace.Connected` + `Mathlib.Analysis.Analytic.Uniqueness`. Full forensics in `sessions/2026-05-31-s10-prep-zeta-conj-bearer-audit-completion.md`.
+
+## Session N=10 — S10 PREP — `zeta_conj` Schwarz-reflection bearer-audit completion (2026-05-31, researcher-1)
+
+**Mode**: PREP (doc-only Mathlib API completion of S3 PREP; no Lean file edits, no docker build).
+
+**Outcome**: ✓ **HAPPY-PATH** — both open bearer audits flagged at the end of S3 PREP (R-3 holomorphy + R-4 preconnectedness) are now closed with concrete v4.26.0 bearer names.
+
+**R-4 resolution (the bigger win)**:
+
+- S3 PREP candidate `Set.preconnected_compl_of_singleton`: **confirmed phantom** at v4.26.0.
+- S3 PREP candidate `IsPreconnected.compl_singleton`: **confirmed phantom** at v4.26.0.
+- **Direct bearer found**: `isPathConnected_compl_singleton_of_one_lt_rank` at `Mathlib/Analysis/NormedSpace/Connected.lean:112`. Signature: `(h : 1 < Module.rank ℝ E) (x : E) : IsPathConnected ({x}ᶜ : Set E)`.
+- **Rank-2 premise**: `Complex.rank_real_complex : Module.rank ℝ ℂ = 2` at `Mathlib/Data/Complex/FiniteDimensional.lean:30`. Already transitively imported via `Mathlib.Analysis.Complex.Basic` ⊃ `Mathlib.NumberTheory.LSeries.RiemannZeta`.
+- **Chain to preconnectedness**: `(...).isConnected.isPreconnected` via `IsPathConnected.isConnected` at `Mathlib/Topology/Connected/PathConnected.lean:1092`.
+- **Total LOC**: 3–5 (down from S3 PREP's "hand-rolled 10–15 LOC" estimate).
+
+**R-3 resolution (template identified, no one-liner)**:
+
+- Search-confirmed absences at v4.26.0: `differentiable_conj`, `differentiableAt_starRingEnd`, `Differentiable.comp_conj`, `AnalyticAt.compStar`, `Complex.starRingEnd.compRight.differentiableAt` — all zero hits.
+- **Canonical template**: the 14-line proof of `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` at `Mathlib/Analysis/Complex/RealDeriv.lean:156–170` is the Mathlib-blessed pattern for `f ∘ conj` differentiability. Its structure (`differentiableAt_iff_restrictScalars ℝ (... .comp _ conjCLE.differentiableAt)` applied twice with `fderiv.comp` for the chain rule) is copy-adaptable to our `conj ∘ ζ ∘ conj`. **~20–25 LOC**, matching S3 PREP's upper-bound estimate.
+
+**R-2 micro-finding**: no dedicated lemma needed; the 2-LOC proof via `starRingEnd_self_apply` involution (an `RingEquiv` is bijective) discharges `s ≠ 1 → starRingEnd ℂ s ≠ 1` cleanly. The S3 PREP guess "probably `Complex.conj_ne_one`" was unnecessary — the involution argument bypasses the search.
+
+**Revised total LOC estimate for S11 ACT discharge**: **40–60 LOC** (was S3 PREP's 80–120 LOC). Major savings on R-4 (3–5 vs. 10–15) plus R-2 micro-improvement (2 vs. 3–5).
+
+**Build verification**: not applicable (doc-only PREP; no `.lean` edits).
+
+**S11 ACT readiness gate** (all preconditions met):
+
+- (a) All four bearer classes (R-2, R-3, R-4, R-5) have concrete v4.26.0 names — verified.
+- (b) Required new imports identified: 3 modules (RealDeriv, Connected, Uniqueness); transitive surface < 50 modules, cached on lean-mathlib-cache volume.
+- (c) Proof skeleton (§2 of S10 sessions/) is concrete enough that S11 ACT can paste-and-adapt rather than design from scratch.
+- (d) No open PRs on slug — verified via `gh pr list --search "prime-number-theorem-oq-01-oq-01 in:title" --state open` → `[]`.
+
+**Sad-paths did NOT occur**:
+
+- Sad-path A (R-3 has a one-liner we missed): five grep variants returned zero hits across `Mathlib/`; the manual chain-rule construction is genuinely the canonical approach.
+- Sad-path B (R-4 bearer requires a non-`ℂ` premise): `isPathConnected_compl_singleton_of_one_lt_rank` works at any rank-≥2 ℝ-module; `ℂ` qualifies trivially via `Complex.rank_real_complex`.
+- Sad-path C (`Mathlib.Analysis.NormedSpace.Connected` not in v4.26.0): grep confirmed the file exists and contains the bearer at line 112.
+
+**Honest-status block**: zero new mathematics; this iteration is purely PREP (Mathlib API resolution of S3 PREP's open name-confirmation audits). No `.lean` files modified. The `zeta_conj` axiom at `RiemannHypothesis.lean:779` remains. Open conjecture status unchanged (Millennium Prize).
+
+**Next ACT picker priority** (post-S10, in order):
+
+1. **S11 ACT — `zeta_conj` discharge** in a new child file `proofs/Proofs/PrimeNumberTheoremOQ01OQ01OQ01.lean` (recommended; keeps the cross-slug discharge in this slug's downstream chain rather than editing the `riemann-hypothesis`-owned parent). 40–60 LOC, follows §2 outline from S10 sessions/. **Most substantive follow-on, now unblocked.**
+2. **S11 ACT (alternate)** — direct edit of `RiemannHypothesis.lean:779` to replace the axiom with a theorem. Cross-slug per the parent-regression-isolation pattern (`feedback_researcher_parent_regression_isolation_via_new_file_split`); only do this if explicitly authorised. Same 40–60 LOC content.
+3. **S11 OBSERVE** — gallery-side enricher integration of the build-verified bridge into `src/data/proofs/` enrichment tree (out-of-researcher-scope; refer to enricher).
+4. **S11 MECHANIC-SCOPE** — parent-file unused-variable warning at `PrimeNumberTheoremOQ01.lean:276:7` (variable `s`). Trivial 1-LOC mechanic fix; not in slug-owned scope.
+
+Full forensics in `sessions/2026-05-31-s10-prep-zeta-conj-bearer-audit-completion.md`.
+
+---
 
 ## Session N=9 — S9 BUILD-VERIFY — warm-cache re-verify (2026-05-30, researcher-1)
 
