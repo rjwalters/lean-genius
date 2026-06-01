@@ -32,10 +32,12 @@ Mathematica (Cluj) (1967), 65-73.
 Tags: analysis, polynomials, interpolation, approximation-theory
 -/
 
+import Mathlib.Algebra.Polynomial.Basic
+import Mathlib.Algebra.Polynomial.Eval.Defs
+import Mathlib.Algebra.Polynomial.Degree.Definitions
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Polynomial.Basic
-import Mathlib.Data.Polynomial.Eval
 import Mathlib.Data.Finset.Basic
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Analysis.Normed.Field.Basic
 
@@ -58,7 +60,7 @@ def polyEval (P : Polynomial ℝ) (x : ℝ) : ℝ := P.eval x
 max_{x ∈ [-1,1]} |P(x)|
 -/
 noncomputable def maxNormOnInterval (P : Polynomial ℝ) : ℝ :=
-  sSup { |P.eval x| | x : ℝ, -1 ≤ x ∧ x ≤ 1 }
+  sSup {y : ℝ | ∃ x : ℝ, -1 ≤ x ∧ x ≤ 1 ∧ y = |P.eval x|}
 
 /--
 **Sample Points:**
@@ -118,7 +120,7 @@ def ErdosConjecture1133 : Prop :=
 ## Part IV: Related Result (Known by Erdős)
 -/
 
-/--
+/-
 **Erdős's Related Result:**
 For any C > 0, there exists ε > 0 such that for large n and m = ⌊(1+ε)n⌋:
 For any x₁,...,xₘ ∈ [-1,1], there EXISTS a polynomial P of degree n with
@@ -126,6 +128,7 @@ For any x₁,...,xₘ ∈ [-1,1], there EXISTS a polynomial P of degree n with
 
 This is weaker: it asks for existence of P, not choice of yᵢ values.
 -/
+
 /-
 ## Part V: Connection to Lagrange Interpolation
 -/
@@ -139,11 +142,12 @@ axiom lagrange_interpolation (n : ℕ) (x y : Fin n → ℝ)
     (hdistinct : Function.Injective x) :
     ∃! P : Polynomial ℝ, P.natDegree < n ∧ ∀ i, P.eval (x i) = y i
 
-/--
+/-
 **Divergence of Lagrange Interpolation:**
 There exist continuous functions for which Lagrange interpolation
 on uniformly spaced nodes diverges.
 -/
+
 /-
 ## Part VI: The Chebyshev Connection
 -/
@@ -152,13 +156,14 @@ on uniformly spaced nodes diverges.
 **Chebyshev Nodes:**
 Points xₖ = cos(π(2k+1)/(2n)) minimize Lagrange interpolation error.
 -/
-def chebyshevNodes (n : ℕ) (k : Fin n) : ℝ :=
+noncomputable def chebyshevNodes (n : ℕ) (k : Fin n) : ℝ :=
   Real.cos (Real.pi * (2 * k + 1) / (2 * n))
 
-/--
+/-
 **Optimal Node Distribution:**
 Chebyshev nodes give the best possible bound for polynomial interpolation.
 -/
+
 /-
 ## Part VII: Summary
 -/
@@ -174,7 +179,7 @@ theorem exact_interpolation_case :
     ∀ y : Fin n → ℝ,
     ∃ P : Polynomial ℝ, P.natDegree < n ∧ ∀ i, P.eval (x i) = y i := by
   intro n hn x hx y
-  exact Classical.choose_spec (ExistsUnique.exists (lagrange_interpolation n x y hx))
+  exact ⟨_, Classical.choose_spec (ExistsUnique.exists (lagrange_interpolation n x y hx))⟩
 
 /--
 **Erdős Problem #1133: Summary**
