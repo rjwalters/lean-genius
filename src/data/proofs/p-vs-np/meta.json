@@ -9,7 +9,11 @@
     "status": "axiomatized",
     "proofRepoPath": "Proofs/PNPBarriersUnified.lean",
     "additionalFiles": [
-      "Proofs/ComplexityCore.lean"
+      "Proofs/ComplexityCore.lean",
+      "Proofs/PNPBarriersLegacy.lean",
+      "Proofs/PNPBarriersOQ01.lean",
+      "Proofs/PNPBarriersSound.lean",
+      "Proofs/PvsNP.lean"
     ],
     "tags": [
       "computability",
@@ -135,7 +139,11 @@
     "definitionCount": 154,
     "theoremCount": 302,
     "additionalFiles": [
-      "Proofs/ComplexityCore.lean"
+      "Proofs/ComplexityCore.lean",
+      "Proofs/PNPBarriersLegacy.lean",
+      "Proofs/PNPBarriersOQ01.lean",
+      "Proofs/PNPBarriersSound.lean",
+      "Proofs/PvsNP.lean"
     ]
   },
   "overview": {
