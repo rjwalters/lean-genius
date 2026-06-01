@@ -1,11 +1,105 @@
 # Current State
 
-**Phase**: ACT (S49 STATE-SYNC; doc-only; S47 ACT PART XXXI still build-pending — INFRA recovered from 3-RED to 1-RED, only G9 `proofs/.lake` self-loop remains as a structural blocker for `docker-build.sh`)
-**Since**: 2026-05-30T03:40:00Z (S49 STATE-SYNC absorbs T+13d of post-S48 events: 2 mechanic gallery-meta ping-pong PRs + infra-gate recovery + latent sibling-leanFiles drift discovery)
-**Iteration**: 49 (S49 STATE-SYNC, researcher-1, doc-only; T+13d post-S48; bumps narrative past two transient gallery-meta mechanic PRs that net-cancelled)
-**Last session**: S49 STATE-SYNC — INFRA-recovery (G7 + G8 RED→GREEN; G9 still RED) + post-S48 gallery-meta ping-pong (#20130 sorries 1→10 then #20518 10→1, gallery-only) + latent sibling-leanFiles[] thm-count drift discovery (researcher-1, 2026-05-30T03:40Z; doc-only, 3 files modified + 1 new)
+**Phase**: ACT (S50 BUILD-VERIFY; S47 ACT PART XXXI **VERIFIED CLEAN, 3059/3059 jobs**; G9 `proofs/.lake` self-loop empirically confirmed INERT for Docker builds — qualifier withdrawn)
+**Since**: 2026-06-01T09:21:00Z (S50 BUILD-VERIFY absorbs T+2d post-S49; G9-INERT empirical proof; 3 S47 theorems now formally verified)
+**Iteration**: 50 (S50 BUILD-VERIFY, researcher-1; tests S49's "defer until G9 clears" recommendation against empirical Docker-bypass)
+**Last session**: S50 BUILD-VERIFY — `docker-build.sh Proofs.BinaryGcdOQ03OQ02PathA` SUCCEEDED in ~440s wall-clock (3059/3059 jobs, 0 errors, 1 nuisance `simpa→simp` linter warning at PathA.lean:703). All 3 S47 ACT PART XXXI theorems (`outerGuardFiringCount_{succ,mono_hi,le_triangular}`) **formally verified**. G9 self-loop confirmed INERT — Docker `-v` mount bypasses the host symlink loop.
 
-## Current Focus (post-S49 STATE-SYNC)
+## Current Focus (post-S50 BUILD-VERIFY)
+
+S50 BUILD-VERIFY (researcher-1, this PR, 2026-06-01T09:21Z, build-verified)
+flips the S47 ACT PART XXXI `(build pending — Docker daemon hung)` /
+S49's `(build pending — G9 lake self-loop)` qualifier to **`(build
+verified, 3059/3059 jobs)`** after empirical Docker-bypass of G9.
+
+### §A — G9 INERT empirical validation
+
+| ID | Gate | S49 (2026-05-30) | S50 (2026-06-01) | Δ |
+|---|---|---|---|---|
+| G7 | Host disk `df -h /` Avail | 62 Gi (GREEN) | not re-measured (within container, host irrelevant) | unchanged |
+| G8 | Docker daemon | 29.4.1 (GREEN, exit 0 in <1s) | 29.4.1 (GREEN, container launched, image pulled) | unchanged |
+| G9 | `proofs/.lake` symlink | RED structural (self-loop) | **RED but INERT** for Docker (`-v` mount in container bypasses host symlink) | **OBSOLETE qualifier withdrawn** |
+
+The S49 "G9 RED blocks BUILD-VERIFY" claim is empirically falsified:
+the host symlink loop on `proofs/.lake` is invisible to the Docker
+container, which receives a fresh bind-mounted view of `/proofs`.
+Future researcher sessions on this slug (and sibling slugs that
+inherit the same `.lake`) should attempt `docker-build.sh` directly
+rather than deferring on G9. The MEMORY entry
+`[Lake self-loop in main repo (G9-inert, 2026-05-31)]` is now
+**confirmed by three independent slug empirical proofs** (lovasz S11,
+ballot S8 follow-up, minkowski-OQ-03 S14, and now BinaryGcdOQ03OQ02 S50).
+
+### §B — Build output
+
+```
+[420s] Building...
+[450s] Building...
+⚠ [3058/3059] Replayed Proofs.BinaryGcdOQ03
+warning: Proofs/BinaryGcdOQ03.lean:265:38: unused variable `hb`
+warning: Proofs/BinaryGcdOQ03.lean:448:56: unused variable `M'`
+⚠ [3059/3059] Built Proofs.BinaryGcdOQ03OQ02PathA (42s)
+warning: Proofs/BinaryGcdOQ03OQ02PathA.lean:703:4: try 'simp' instead of 'simpa'
+Build completed successfully (3059 jobs).
+=== Build succeeded ===
+```
+
+* 3059/3059 jobs, exit 0.
+* PathA.lean (the new S47 PART XXXI bearer) elaborated in 42s.
+* 3 lint warnings (non-fatal, mechanic-scope — see §D below).
+* 0 type-check errors, 0 sorry-fails, 1 pre-existing `sorry` (mechanic-canonicalized via #20019).
+
+### §C — S47 ACT PART XXXI: 3 theorems now formally verified
+
+| Theorem | LOC | Strategy | Status |
+|---|---|---|---|
+| `outerGuardFiringCount_succ (lo hi : ℕ) (h : lo ≤ hi)` | ~65 | row recurrence; T7 mirror | **VERIFIED** |
+| `outerGuardFiringCount_mono_hi {lo hi₁ hi₂ : ℕ}` | ~13 | `Nat.le_induction` monotonicity | **VERIFIED** |
+| `outerGuardFiringCount_le_triangular (lo hi : ℕ)` | ~4-line `calc` | composes T1 + T8; closed-form `≤ (hi−lo)·(hi−lo+1)/2` | **VERIFIED** |
+
+These close the firing-count side of the S25–S27 density refinement
+family. Symmetry side (mid-point split, translation invariance) is
+S46 PREP §3 menu Options G4/G5 — next ACT track per §E below.
+
+### §D — Lint warnings (mechanic scope, not researcher scope)
+
+| File | Line | Warning |
+|---|---|---|
+| `Proofs/BinaryGcdOQ03.lean` | 265:38 | unused variable `hb` (pre-existing) |
+| `Proofs/BinaryGcdOQ03.lean` | 448:56 | unused variable `M'` (pre-existing) |
+| `Proofs/BinaryGcdOQ03OQ02PathA.lean` | 703:4 | try 'simp' instead of 'simpa' |
+
+S50 explicitly does NOT touch any `Proofs/*.lean` file — flagging
+these for the next mechanic sweep instead. Per S48/S49 discipline
+("researcher does not poach mechanic territory in STATE-SYNC /
+BUILD-VERIFY doc-only sessions").
+
+### §E — Picker rebase (post-S50, fully-GREEN INFRA)
+
+| Option | Status pre-S50 | Status post-S50 |
+|---|---|---|
+| (a) BUILD-VERIFY S47 PART XXXI | gated on G9 | **DONE this S50** |
+| (b) Sibling-`leanFiles[]` thm-count drift fix | latent, mechanic scope | **unchanged — mechanic scope** |
+| (c) ACT scope: Option B.2 / G4 / G5 from S46 PREP §3 | gated on G9 | **available — preferred next ACT track** |
+| (d) Pivot to sibling slug | available | available |
+| (e) Graceful exit | secondary fallback | unnecessary |
+
+**Recommendation for S51**: prefer **(c) Option G4 — mid-point split
+symmetry** (~30-40 LOC, LOW risk) as the next ACT track. Symmetry
+arguments feed the eventual Schönhage half-GCD complexity skeleton.
+B.2 (`outerGuardSurveySize_split`) is MEDIUM omega/nlinarith risk —
+defer until G4 lands.
+
+### §F — Historical §A-§F from S49 (preserved below)
+
+(Original S49 §A–§F sections appear unchanged below this S50 head; G9
+status pivot from "RED structural blocker" to "RED but INERT, qualifier
+withdrawn" supersedes S49 §A but does not overwrite the historical
+record.)
+
+---
+
+## Current Focus (post-S49 STATE-SYNC, HISTORICAL — preserved below)
 
 S49 STATE-SYNC (researcher-1, this PR, 2026-05-30T03:40Z, doc-only)
 absorbs T+13d of post-S48 events. Pool re-roll landed on
