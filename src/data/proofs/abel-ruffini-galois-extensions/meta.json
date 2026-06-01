@@ -158,7 +158,45 @@
     "theoremCount": 59,
     "definitionCount": 1,
     "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
-    "sorries": 0
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "symmetric_solvable_iff",
+        "type": "core",
+        "description": "Complete classification: the symmetric group $S_n$ is solvable if and only if $n \\leq 4$. The forward direction discharges five cases by `interval_cases n <;> infer_instance` (delegating to the small-$n$ instances built in Part I); the reverse direction packages `symmetric_not_solvable_of_five_le` via `by_contra; push_neg; omega`. This is the file's principal contribution to the gallery — the qualitative classification that, paired with Galois's solvability theorem (Mathlib `solvableByRad.isSolvable'`), yields Abel-Ruffini for the generic quintic.",
+        "leanType": "(n : ℕ) : IsSolvable (Equiv.Perm (Fin n)) ↔ n ≤ 4"
+      },
+      {
+        "name": "alternating_solvable_iff",
+        "type": "core",
+        "description": "The alternating-group analogue: $A_n$ is solvable if and only if $n \\leq 4$. The reverse direction follows by subgroup heredity from `symmetric_solvable_iff` ($A_n \\leq S_n$); the forward direction goes through the sign-kernel exact sequence — were $A_n$ solvable for $n \\geq 5$, then `solvable_of_ker_le_range` applied to the sign exact sequence would make $S_n$ solvable, contradicting the symmetric threshold. Combined with `symmetric_solvable_iff`, this pins the solvability boundary at $n = 4$ from both sides.",
+        "leanType": "(n : ℕ) : IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4"
+      },
+      {
+        "name": "a5_simple",
+        "type": "key",
+        "description": "$A_5$ is a simple group (no non-trivial normal subgroups). The central obstruction underlying every non-solvability result in the file: $A_5$ simple and non-abelian forces it to appear as a non-cyclic composition factor in $S_n$ for all $n \\geq 5$, blocking any abelian-factored composition series. Delegates to Mathlib's `alternatingGroup.isSimpleGroup_five`, which internally runs the Sylow-counting argument detailed in keyInsight #8 ($n_2 = 5$, $n_3 = 10$, $n_5 = 6$, all $\\neq 1$).",
+        "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+      },
+      {
+        "name": "not_solvable_by_rad_of_not_solvable_galois",
+        "type": "key",
+        "description": "Contrapositive of Galois's solvability theorem: if the Galois group of a polynomial is not solvable, then no root is expressible by radicals. Composes Mathlib's `solvableByRad.isSolvable'` (forward direction of Galois's theorem) with negation via `intro hsol; exact hns (... hsol)` — a three-line proof bridging this file's group-theoretic classification (`symmetric_solvable_iff`, `a5_simple`) to the analytic statement of Abel-Ruffini. The named theorem makes the contrapositive directly citable in downstream proofs without unfolding the implication.",
+        "leanType": "{F E : Type*} [Field F] [Field E] [Algebra F E] {α : E} {q : F[X]} (hirr : Irreducible q) (hα : aeval α q = 0) (hns : ¬ IsSolvable (q.Gal)) : ¬ IsSolvableByRad F α"
+      },
+      {
+        "name": "sign_kernel_is_alternating",
+        "type": "key",
+        "description": "The keystone identity $\\ker(\\mathrm{sgn} : S_n \\to \\{\\pm 1\\}) = A_n$ as a formal equality between subgroups. Proved by `ext` + `Equiv.Perm.mem_alternatingGroup`, this two-line theorem translates the abstract kernel of the sign homomorphism into the concrete alternating subtype and is the linchpin on which every short-exact-sequence argument in Part I pivots — used three times to lift solvability across $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ (for $n = 3, 4$) and $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$.",
+        "leanType": "(n : ℕ) : (Equiv.Perm.sign : Equiv.Perm (Fin n) →* ℤˣ).ker = alternatingGroup (Fin n)"
+      },
+      {
+        "name": "galois_group_order",
+        "type": "key",
+        "description": "The order of a finite Galois group equals the extension degree: $|\\mathrm{Gal}(E/F)| = [E : F]$. Direct invocation of Mathlib's `IsGalois.card_aut_eq_finrank` under the standard hypotheses `[FiniteDimensional F E] [IsGalois F E]`. Establishes the numerical shadow of the Galois correspondence — the bijection between intermediate fields and subgroups in cardinality form — and provides the file's interface to extension degrees from downstream proofs that need to read off $|\\mathrm{Gal}|$ from $[E:F]$.",
+        "leanType": "[FiniteDimensional F E] [IsGalois F E] : Nat.card (E ≃ₐ[F] E) = Module.finrank F E"
+      }
+    ]
   },
   "crossReferences": [
     {
@@ -1068,6 +1106,44 @@
         "namespace",
         "theorem inventory"
       ]
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "symmetric_solvable_iff",
+      "type": "core",
+      "description": "Complete classification: the symmetric group $S_n$ is solvable if and only if $n \\leq 4$. The forward direction discharges five cases by `interval_cases n <;> infer_instance` (delegating to the small-$n$ instances built in Part I); the reverse direction packages `symmetric_not_solvable_of_five_le` via `by_contra; push_neg; omega`. This is the file's principal contribution to the gallery — the qualitative classification that, paired with Galois's solvability theorem (Mathlib `solvableByRad.isSolvable'`), yields Abel-Ruffini for the generic quintic.",
+      "leanType": "(n : ℕ) : IsSolvable (Equiv.Perm (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "alternating_solvable_iff",
+      "type": "core",
+      "description": "The alternating-group analogue: $A_n$ is solvable if and only if $n \\leq 4$. The reverse direction follows by subgroup heredity from `symmetric_solvable_iff` ($A_n \\leq S_n$); the forward direction goes through the sign-kernel exact sequence — were $A_n$ solvable for $n \\geq 5$, then `solvable_of_ker_le_range` applied to the sign exact sequence would make $S_n$ solvable, contradicting the symmetric threshold. Combined with `symmetric_solvable_iff`, this pins the solvability boundary at $n = 4$ from both sides.",
+      "leanType": "(n : ℕ) : IsSolvable (alternatingGroup (Fin n)) ↔ n ≤ 4"
+    },
+    {
+      "name": "a5_simple",
+      "type": "key",
+      "description": "$A_5$ is a simple group (no non-trivial normal subgroups). The central obstruction underlying every non-solvability result in the file: $A_5$ simple and non-abelian forces it to appear as a non-cyclic composition factor in $S_n$ for all $n \\geq 5$, blocking any abelian-factored composition series. Delegates to Mathlib's `alternatingGroup.isSimpleGroup_five`, which internally runs the Sylow-counting argument detailed in keyInsight #8 ($n_2 = 5$, $n_3 = 10$, $n_5 = 6$, all $\\neq 1$).",
+      "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+    },
+    {
+      "name": "not_solvable_by_rad_of_not_solvable_galois",
+      "type": "key",
+      "description": "Contrapositive of Galois's solvability theorem: if the Galois group of a polynomial is not solvable, then no root is expressible by radicals. Composes Mathlib's `solvableByRad.isSolvable'` (forward direction of Galois's theorem) with negation via `intro hsol; exact hns (... hsol)` — a three-line proof bridging this file's group-theoretic classification (`symmetric_solvable_iff`, `a5_simple`) to the analytic statement of Abel-Ruffini. The named theorem makes the contrapositive directly citable in downstream proofs without unfolding the implication.",
+      "leanType": "{F E : Type*} [Field F] [Field E] [Algebra F E] {α : E} {q : F[X]} (hirr : Irreducible q) (hα : aeval α q = 0) (hns : ¬ IsSolvable (q.Gal)) : ¬ IsSolvableByRad F α"
+    },
+    {
+      "name": "sign_kernel_is_alternating",
+      "type": "key",
+      "description": "The keystone identity $\\ker(\\mathrm{sgn} : S_n \\to \\{\\pm 1\\}) = A_n$ as a formal equality between subgroups. Proved by `ext` + `Equiv.Perm.mem_alternatingGroup`, this two-line theorem translates the abstract kernel of the sign homomorphism into the concrete alternating subtype and is the linchpin on which every short-exact-sequence argument in Part I pivots — used three times to lift solvability across $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ (for $n = 3, 4$) and $1 \\to V_4 \\to A_4 \\to A_4/V_4 \\to 1$.",
+      "leanType": "(n : ℕ) : (Equiv.Perm.sign : Equiv.Perm (Fin n) →* ℤˣ).ker = alternatingGroup (Fin n)"
+    },
+    {
+      "name": "galois_group_order",
+      "type": "key",
+      "description": "The order of a finite Galois group equals the extension degree: $|\\mathrm{Gal}(E/F)| = [E : F]$. Direct invocation of Mathlib's `IsGalois.card_aut_eq_finrank` under the standard hypotheses `[FiniteDimensional F E] [IsGalois F E]`. Establishes the numerical shadow of the Galois correspondence — the bijection between intermediate fields and subgroups in cardinality form — and provides the file's interface to extension degrees from downstream proofs that need to read off $|\\mathrm{Gal}|$ from $[E:F]$.",
+      "leanType": "[FiniteDimensional F E] [IsGalois F E] : Nat.card (E ≃ₐ[F] E) = Module.finrank F E"
     }
   ],
   "sorries": 0
