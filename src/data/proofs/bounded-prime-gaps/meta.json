@@ -9,6 +9,10 @@
     "date": "2026",
     "status": "axiomatized",
     "proofRepoPath": "Proofs/BoundedPrimeGaps.lean",
+    "additionalFiles": [
+      "Proofs/BoundedPrimeGapsSieve.lean",
+      "Proofs/BoundedPrimeGapsTPC.lean"
+    ],
     "tags": [
       "number-theory",
       "primes",
@@ -317,7 +321,11 @@
     "theoremCount": 128,
     "definitionCount": 17,
     "path": "Proofs/BoundedPrimeGaps.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/BoundedPrimeGapsSieve.lean",
+      "Proofs/BoundedPrimeGapsTPC.lean"
+    ]
   },
   "references": [
     {
