@@ -169,19 +169,19 @@
       "name": "card_powerSet_powerSet_real_eq_beth_three",
       "statement": "#(Set (Set ℝ)) = Cardinal.beth 3",
       "description": "The doubly-iterated power set of ℝ has cardinality ℶ₃",
-      "line": 75
+      "line": 72
     },
     {
       "name": "card_iteratedPowerSet_eq_beth",
       "statement": "∀ n : ℕ, #(iteratedPowerSet n) = Cardinal.beth (↑(n + 1) : Ordinal)",
       "description": "The n-th iterated power set of ℝ has cardinality ℶ_{n+1}",
-      "line": 117
+      "line": 124
     },
     {
       "name": "iteratedPowerSet_strict_mono",
       "statement": "∀ n : ℕ, #(iteratedPowerSet n) < #(iteratedPowerSet (n + 1))",
       "description": "The iterated power set hierarchy is strictly increasing",
-      "line": 153
+      "line": 145
     }
   ],
   "sorries": 0,
