@@ -2,7 +2,7 @@
   "id": "circumference-via-differentiation-oq-03",
   "title": "Riemannian dV/dr = A — Euclidean Witnesses (n = 2, 3)",
   "slug": "circumference-via-differentiation-oq-03",
-  "description": "Open Question 3 of `circumference-via-differentiation` asks whether the identity dV/dr = A (volume's derivative equals surface area) generalizes to Riemannian manifolds via the co-area formula. The literal Riemannian-manifold version is gated by four Mathlib gaps (no `injectivityRadius`, `expMap`, `geodesicBall`/`Sphere`/`Volume` family, no n-dim coarea). This file delivers the **R1 vector-space partial answer** at concrete Euclidean dimensions n = 2 and n = 3, recovering the parent theorem (circle circumference 2π r) and the n = 3 case (sphere surface 4π r²) intrinsically from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` primitives via the `HasDerivWithinAt.congr` discharge. 4 theorems, 0 sorries, 0 axioms.",
+  "description": "Open Question 3 of `circumference-via-differentiation` asks whether the identity dV/dr = A (volume's derivative equals surface area) generalizes to Riemannian manifolds via the co-area formula. The literal Riemannian-manifold version is gated by four Mathlib gaps (no `injectivityRadius`, `expMap`, `geodesicBall`/`Sphere`/`Volume` family, no n-dim coarea). This file delivers the **R1 vector-space partial answer** at concrete Euclidean dimensions n = 2 and n = 3, recovering the parent theorem (circle circumference 2π r) and the n = 3 case (sphere surface 4π r²) intrinsically from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` primitives via the `HasDerivWithinAt.congr` discharge. 5 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -22,9 +22,9 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 152,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 0,
-    "assumptions": "None. All four theorems proved from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three`, `hasDerivAt_pow`, and `HasDerivWithinAt.congr` infrastructure.",
+    "assumptions": "None. All five theorems proved from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three`, `InnerProductSpace.volume_closedBall`, `hasDerivAt_pow`, and `HasDerivWithinAt.congr` infrastructure.",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace.volume_closedBall_fin_two",
@@ -91,7 +91,7 @@
       "title": "Header, Imports, and File-Level Documentation",
       "startLine": 1,
       "endLine": 45,
-      "summary": "Docstring framing the Open Question (literal Riemannian-manifold version is gated by four Mathlib gaps), declares the R1 vector-space partial deliverable scope (n = 2, 3 only), lists the four theorems with one-line summaries, three imports (VolumeOfBalls, Trigonometric.Basic, Deriv.Pow), and opens the namespaces `Real`, `MeasureTheory`, `ENNReal`, `Metric`.",
+      "summary": "Docstring framing the Open Question (literal Riemannian-manifold version is gated by four Mathlib gaps), declares the R1 vector-space partial deliverable scope (n = 2, 3 only), lists the five theorems with one-line summaries, three imports (VolumeOfBalls, Trigonometric.Basic, Deriv.Pow), and opens the namespaces `Real`, `MeasureTheory`, `ENNReal`, `Metric`.",
       "mathContext": "File-level setup. Declares the namespace `CircumferenceViaDifferentiationOQ03`. The Mathlib bearer `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` lives in `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls`."
     },
     {
@@ -128,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file delivers the R1 vector-space partial answer to Open Question 3 of `circumference-via-differentiation` at concrete Euclidean dimensions n = 2 and n = 3. Each dimension is discharged in a two-stage reduction: a bridge lemma identifying Mathlib's Lebesgue volume of `Metric.closedBall p r` with the classical polynomial-in-r area/volume formula (using the `EuclideanSpace.volume_closedBall_fin_n` primitive plus the ENNReal `.toReal` chain), followed by the main derivative-within-`Set.Ici 0` theorem (using the parent OQ-01 polynomial derivative plus `HasDerivWithinAt.congr` to transfer along the bridge). The 4-theorem 93-LOC deliverable has 0 sorries and 0 axioms.",
+    "summary": "This file delivers the R1 vector-space partial answer to Open Question 3 of `circumference-via-differentiation` at concrete Euclidean dimensions n = 2 and n = 3. Each dimension is discharged in a two-stage reduction: a bridge lemma identifying Mathlib's Lebesgue volume of `Metric.closedBall p r` with the classical polynomial-in-r area/volume formula (using the `EuclideanSpace.volume_closedBall_fin_n` primitive plus the ENNReal `.toReal` chain), followed by the main derivative-within-`Set.Ici 0` theorem (using the parent OQ-01 polynomial derivative plus `HasDerivWithinAt.congr` to transfer along the bridge). The 5-theorem 93-LOC deliverable has 0 sorries and 0 axioms.",
     "implications": "The OQ-03 question — does the dV/dr = A identity generalize to Riemannian manifolds via the co-area formula — has a clear mathematical YES (Federer 1959, Chavel 1984, do Carmo 1992), but Mathlib v4.26.0 lacks the four foundational primitives needed to state it on a general Riemannian manifold (no `expMap`, no `injectivityRadius`, no geodesicBall/Sphere/Volume family, no n-dimensional coarea formula). This file shows that the identity *can* be stated and proved intrinsically within Mathlib's Riemannian framework at the Riemannian-manifold instances Mathlib *does* support — inner-product spaces, via Gouëzel's `IsRiemannianManifold 𝓘(ℝ, E) E` typeclass (2025) — for concrete `EuclideanSpace ℝ (Fin n)` at n = 2 and n = 3. The next deliverables on the roadmap are: (i) the polymorphic `[InnerProductSpace ℝ E]` version using `InnerProductSpace.volume_closedBall` (S3 ACT, ~50 LOC); (ii) the polymorphic main theorem stated directly via the parent's `nSphereSurfaceFn` (S4 ACT, ~60 LOC); and (iii) the four-step Mathlib infrastructure roadmap (R2) that would unlock the full Riemannian-manifold statement.",
     "openQuestions": [
       "**Polymorphic Bridge 1**: extend `riemannianVolumeBall_fin_n` to `riemannianVolumeBall_eq_nBallVolumeFn` under `[NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]`. The `InnerProductSpace.volume_closedBall` lemma in `Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` is the key bearer; the proof chains it with the (√π)^n = π^((n:ℝ)/2) rewrite to land on the parent OQ-01's `nBallVolumeFn`. ~50 LOC, documented as S3 ACT in the problem's `state.md`.",
@@ -154,7 +154,7 @@
     "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
     "filename": "CircumferenceViaDifferentiationOQ03.lean",
     "lineCount": 152,
-    "theoremCount": 4,
+    "theoremCount": 5,
     "axiomCount": 0,
     "definitionCount": 0,
     "sorries": 0,
