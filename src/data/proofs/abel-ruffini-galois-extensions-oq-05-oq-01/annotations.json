@@ -148,17 +148,22 @@
     "type": "insight",
     "title": "S₃ Realizable: A Non-Shafarevich Direct Construction",
     "content": "**`s3_realizable_via_cubic`** wraps `InverseGaloisProblem.s3_realizable`, which proves $S_3 \\cong \\text{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\omega)/\\mathbb{Q})$ via the splitting field of $X^3 - 2$. **The lesson**: individual non-abelian solvable groups can be realized **ad-hoc** by clever polynomial choices — but a *uniform* proof for all solvable groups requires Shafarevich's machinery. **`s3_is_solvable`**: $S_3$ has the derived series $S_3 \\rhd A_3 \\rhd \\{1\\}$ with abelian quotients $S_3/A_3 \\cong \\mathbb{Z}/2$, $A_3/\\{1\\} \\cong \\mathbb{Z}/3$, closed by `AbelRuffiniGaloisExtensions.symmetric_solvable_of_le_four`.",
-    "mathContext": "**$S_3$ via $X^3 - 2$**: the splitting field over $\\mathbb{Q}$ is $\\mathbb{Q}(\\alpha, \\omega)$ where $\\alpha = \\sqrt[3]{2}$ and $\\omega = e^{2\\pi i / 3}$. The degree is $6 = 3 \\cdot 2$ (degree 3 for $\\alpha$, degree 2 for $\\omega$ over $\\mathbb{Q}(\\alpha)$). The Galois group permutes the three cube roots $\\alpha, \\omega \\alpha, \\omega^2 \\alpha$, giving $S_3 \\subseteq \\text{Gal}(\\mathbb{Q}(\\alpha, \\omega)/\\mathbb{Q})$, with equality by the order count. **Why this isn't Shafarevich**: the proof uses *algebraic* construction (a specific polynomial), not the *cohomological* embedding-problem machinery. Shafarevich's beauty is its **uniformity**: a single proof handles every solvable $G$ at once.",
+    "mathContext": "**$S_3$ via $X^3 - 2$**: the splitting field over $\\mathbb{Q}$ is $\\mathbb{Q}(\\alpha, \\omega)$ where $\\alpha = \\sqrt[3]{2}$ and $\\omega = e^{2\\pi i / 3}$. The degree is $6 = 3 \\cdot 2$: **(a)** $X^3 - 2$ is Eisenstein at $p = 2$ (all non-leading coefficients divisible by 2, constant term $-2$ not divisible by $4$), hence irreducible over $\\mathbb{Q}$, giving $[\\mathbb{Q}(\\alpha) : \\mathbb{Q}] = 3$; **(b)** $\\omega$ is a root of the cyclotomic polynomial $\\Phi_3(X) = X^2 + X + 1$, which remains irreducible over $\\mathbb{Q}(\\alpha) \\subseteq \\mathbb{R}$ because $\\omega \\notin \\mathbb{R}$, giving $[\\mathbb{Q}(\\alpha, \\omega) : \\mathbb{Q}(\\alpha)] = 2$ and $[\\mathbb{Q}(\\alpha, \\omega) : \\mathbb{Q}] = 6$ by the tower law. The Galois group permutes the three cube roots $\\alpha, \\omega \\alpha, \\omega^2 \\alpha$, giving $S_3 \\hookrightarrow \\text{Gal}(\\mathbb{Q}(\\alpha, \\omega)/\\mathbb{Q})$ as a subgroup; since $|\\text{Gal}| = [\\mathbb{Q}(\\alpha, \\omega) : \\mathbb{Q}] = 6 = |S_3|$ (the splitting field is Galois, normality from including all conjugates), equality holds and $\\text{Gal}(\\mathbb{Q}(\\alpha, \\omega)/\\mathbb{Q}) \\cong S_3$. The realization is **canonical**: $X^3 - 2$ is the simplest irreducible cubic over $\\mathbb{Q}$ with one real root and a complex-conjugate pair, exhibiting both the $A_3$-rotation (cyclic permutation of cube roots) and the $S_3 \\setminus A_3$-transposition (complex conjugation swapping $\\omega \\alpha \\leftrightarrow \\omega^2 \\alpha$). **Why this isn't Shafarevich**: the proof uses *algebraic* construction (a specific polynomial with checkable Eisenstein irreducibility), not the *cohomological* embedding-problem machinery. Shafarevich's beauty is its **uniformity**: a single proof handles every solvable $G$ at once.",
     "significance": "supporting",
     "relatedConcepts": [
       "S₃ as Gal(ℚ(∛2, ω)/ℚ)",
       "splitting field of X³ - 2",
+      "Eisenstein criterion at p = 2",
+      "cyclotomic polynomial Φ₃",
+      "tower law for field degrees",
       "derived series and solvability",
       "ad-hoc vs uniform realization"
     ],
     "prerequisites": [
       "InverseGaloisProblem.s3_realizable",
       "AbelRuffiniGaloisExtensions.symmetric_solvable_of_le_four",
+      "Eisenstein irreducibility criterion",
+      "cyclotomic polynomial Φ₃(X) = X² + X + 1",
       "splitting fields and Galois groups of polynomials"
     ]
   },
