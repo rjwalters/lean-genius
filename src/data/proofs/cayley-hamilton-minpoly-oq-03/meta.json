@@ -85,7 +85,8 @@
     "theoremCount": 13,
     "definitionCount": 1,
     "additionalFiles": [
-      "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean"
+      "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      "Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean"
     ]
   },
   "leanFile": {
@@ -96,7 +97,16 @@
     "sorries": 0,
     "definitionCount": 1,
     "additionalFiles": [
-      "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean"
+      "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      {
+        "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean",
+        "lineCount": 230,
+        "theorems": 9,
+        "definitions": 2,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Companion file for the sibling open question cayley-hamilton-minpoly-oq-03-oq-02 (Keller-Gehrig O(n^ω) characteristic polynomial). Formalizes Layers 1 + 2 of the three-layer decomposition: structural squared-Krylov sequence T_k := M^(2^k) via repeated squaring with bridge T_k = M^(2^k); correctness bridge M^j = ∏_{i ∈ bitIndices j} T_i via Mathlib's Nat.twoPowSum_bitIndices; vector-level corollaries (squareKrylovProd_mulVec, krylov_in_squareKrylov_range). Layer 3 (complexity) out of scope — Mathlib has no complexity monad and no fast matmul. Namespace MinpolyComplexity.SubcubicKrylov."
+      }
     ]
   },
   "sections": [
