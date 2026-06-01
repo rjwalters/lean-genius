@@ -124,40 +124,17 @@
   "sections": [
     {
       "id": "header-and-imports",
-      "title": "File Header: Imports and Mathematical Background",
+      "title": "File Header: Imports and Retraction Docstring",
       "startLine": 1,
-      "endLine": 88,
-      "summary": "Imports Mathlib (for AnalyticOn, Set.Ioo, Set.Icc) and the parent file Proofs.MeanValueTheoremOQ02 (for taylorPolynomial and taylorPolynomial_zero). The module docstring records the OQ-04 question verbatim, the iteration's contributions (axiomatization + n=0 corollary), the standard Cauchy-estimates derivation that S2 will formalize, and the Mathlib hooks (HasFPowerSeriesOnBall, FormalMultilinearSeries, tsum_geometric_of_lt_one) that will discharge the axiom."
+      "endLine": 112,
+      "summary": "Imports Mathlib (for AnalyticOn, Set.Ioo, Set.Icc) and the parent file Proofs.MeanValueTheoremOQ02 (for taylorPolynomial and taylorPolynomial_zero). The module docstring records the OQ-04 question verbatim, the S1 axiomatization, the S1-child Runge counterexample refutation, and the S2 retraction action (axiom and false-by-inheritance n=0 corollary removed). Cross-references the corrected complex-disk Cauchy bound in mean-value-theorem-oq-02-oq-04-oq-01."
     },
     {
       "id": "namespace-setup",
-      "title": "Noncomputable Section and Namespace",
-      "startLine": 90,
-      "endLine": 94,
-      "summary": "Opens `noncomputable section`, the `Real` and `Set` namespaces (for `|·|` and `Set.Ioo`/`Set.Icc` without prefix), and declares the file's `MeanValueTheoremOQ02OQ04` namespace. The noncomputable qualifier is required because Taylor polynomials of real-analytic functions involve iterated derivatives, which Mathlib treats as classically-defined."
-    },
-    {
-      "id": "axiom",
-      "title": "The Uniform Cauchy Bound (Axiom)",
-      "startLine": 95,
-      "endLine": 134,
-      "summary": "Axiomatizes `analytic_taylor_remainder_uniform_bound`: for f real-analytic on (a-R, a+R) with uniform sup bound M on that interval, and any 0 < r < R, the Taylor remainder at order n satisfies |f(x) - T_n f(a)(x)| ≤ M·r^(n+1) / (R-r) for x ∈ [a-r, a+r] and any n ∈ ℕ. Uses MeanValueTheoremOQ02.taylorPolynomial (no duplication).",
-      "mathContext": "The Cauchy bound states $|f(x) - T_n(x)| \\le M \\cdot r^{n+1} / (R - r)$ uniformly in $x \\in [a-r, a+r]$. This is the central result of OQ-04, axiomatized verbatim from the seeker's question. The standard proof (deferred to S2) uses Cauchy's integral formula or, in Mathlib, `HasFPowerSeriesOnBall.norm_le_of_lt_radius` + geometric tail."
-    },
-    {
-      "id": "zero-order-corollary",
-      "title": "n=0 Specialization: Tangent-Line Cauchy Bound",
-      "startLine": 136,
-      "endLine": 167,
-      "summary": "Proves `analytic_remainder_zero_bound`: for f real-analytic on (a-R, a+R) with sup bound M and 0 < r < R, |f(x) - f(a)| ≤ M·r / (R-r) for x ∈ [a-r, a+r]. Proof is a one-shot `rw [taylorPolynomial_zero] at h; simpa using h` of the axiom: the Taylor polynomial at order 0 is the constant f(a) (parent file lemma), and r^(0+1) = r simplifies.",
-      "mathContext": "The n=0 case $|f(x) - f(a)| \\le M r / (R - r)$ is the analytic-function strengthening of the ordinary MVT Lipschitz bound $|f(x) - f(a)| \\le \\sup |f'| \\cdot |x - a|$: the right-hand side depends only on the uniform sup bound $M$ of $f$ itself (not its derivative) and the geometric shrinkage factor $r / (R - r)$. As $r \\downarrow 0$, the bound vanishes; as $r \\uparrow R$, it blows up."
-    },
-    {
-      "id": "verification",
-      "title": "Verification: #check Sanity Block",
-      "startLine": 168,
-      "endLine": 173,
-      "summary": "Two `#check` commands confirm the elaborated types of `@analytic_taylor_remainder_uniform_bound` and `@analytic_remainder_zero_bound`, serving as a lightweight regression guard against drift in the parent file's `taylorPolynomial` signature or in Mathlib's `AnalyticOn` / `Set.Ioo` / `Set.Icc` API. The block closes the `MeanValueTheoremOQ02OQ04` namespace."
+      "title": "Intentionally Empty Namespace (S2 Retraction)",
+      "startLine": 114,
+      "endLine": 128,
+      "summary": "Declares the `MeanValueTheoremOQ02OQ04` namespace with an inline comment explaining the S2 retraction. No axioms, theorems, definitions, or sorries: the S1 axiom `analytic_taylor_remainder_uniform_bound` and the derived theorem `analytic_remainder_zero_bound` were removed after the child slug constructively refuted the axiom (Runge counterexample). Consumers should import `Proofs.MeanValueTheoremOQ02OQ04OQ01` directly for the corrected complex-disk form."
     }
   ],
   "conclusion": {
