@@ -310,4 +310,38 @@ theorem qtMultichoose_at_one_one_eq_zero (n k : ℕ) :
   unfold qtMultichoose
   exact qtBinom_at_one_one_eq_zero (n + (k + 1) - 1) k
 
+-- ============================================================
+-- SECTION VII: S6 PREP §0 ratio identity — explicit corollary
+-- ============================================================
+
+/-- **k-direction telescoping ratio identity** (S6 PREP §0, recommendation 5):
+
+    When `qtBinom q t N k ≠ 0`, the ratio of consecutive `k`-values is the
+    clean rational function
+
+        `qtBinom q t N (k+1) / qtBinom q t N k = (1 - q^(N-k) t^k) / (1 - q^(k+1) t^k)`.
+
+    S6 PREP §0 highlighted this ratio as **the** clean rational identity
+    distinguishing the k-direction recurrence from the (n, k)-shape-varying
+    Pascal-style coefficients (S6 PREP §3 falsified the conjectured Pascal
+    `C(q,t,n,k)` at 4 of 4 non-degenerate test points, with denominator
+    depending on `(n,k)` in a non-uniform way).
+
+    This is an immediate corollary of `qtBinom_succ` via division by
+    `qtBinom q t N k`; the hypothesis `h` is the standard Path A
+    non-degeneracy condition (the denominator on the LHS is nonzero).
+
+    Together with `qtBinom_succ` (the multiplicative form), this gives the
+    two natural Lean-side handles on the foundational k-direction
+    recurrence — the multiplicative form for substitution proofs (used in
+    S3 ACT `qtBinom_at_t_eq_one`), and the ratio form for telescoping /
+    chain proofs (recommended foundation for any future S4/S5 work
+    where the multiplicative form's residual `qtBinom q t N k` factor
+    needs to be eliminated). -/
+theorem qtBinom_succ_div (q t : R) (N k : ℕ)
+    (h : qtBinom q t N k ≠ 0) :
+    qtBinom q t N (k + 1) / qtBinom q t N k =
+      (1 - q ^ (N - k) * t ^ k) / (1 - q ^ (k + 1) * t ^ k) := by
+  rw [qtBinom_succ, mul_div_cancel_left₀ _ h]
+
 end QtMultichooseCoefficients

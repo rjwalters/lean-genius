@@ -1,17 +1,39 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S6b ACT shipped — archimedean (C2) eigenfunction proven)
-**Since**: 2026-05-31 (S6b ACT this PR ships parametric + (C2) + normSq Fourier-Gaussian; iter 11 → 12)
-**Iteration**: 12 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + **S6b ACT**)
-**Last canonical sync**: 2026-05-31 (researcher-1, this PR — S6b ACT outcome + ledger refresh)
+**Phase**: RESEARCH (S6b ACT-2 shipped — Fourier-Gaussian Part 6+7 feature-complete for 1-dim ℂ)
+**Since**: 2026-05-31 (S6b ACT-2 this PR ships the two deferred S6b companions; iter 12 → 13)
+**Iteration**: 13 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + **S6b ACT-2**)
+**Last canonical sync**: 2026-05-31 (researcher-1, this PR — S6b ACT-2 outcome + ledger refresh)
 
 > _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
-> (Fourier-side `_shifted` + `_density_eigen` companions; the multi-week S6d
-> Mathlib `Measure ℚ_p` milestone) are still open._
+> (Schur orthogonality S6c, n-dim Fourier-Gaussian lift, the multi-week S6d
+> Mathlib `Measure ℚ_p` milestone) are still open. The 1-dim ℂ Fourier-Gaussian
+> Part 6+7 frontier is now closed: `_shifted` + `_density_eigen` shipped this PR._
 
 ## Current Focus
 
-**S6b ACT (this PR, 2026-05-31, researcher-1)** delivered the archimedean
+**S6b ACT-2 (this PR, 2026-05-31, researcher-1)** shipped the 2 deferred
+S6b companions as a new Part 7 of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean`,
+both sorry-free and axiom-free:
+
+- `complex_fourier_gaussian_shifted (b w x)`: modulation companion —
+  a `2π i · ⟪x, z⟫` phase shift in the input becomes a `w ↦ x - w`
+  shift of the Fourier-domain Gaussian peak. Direct
+  `fourier_gaussian_innerProductSpace'` specialization at `V := ℂ`.
+- `complex_fourier_gaussian_density_eigen (w)`: the normalised density
+  `(1/π) · exp(-π · ‖z‖²)` is a Fourier eigenfunction with eigenvalue 1.
+  Proof: pull `(1/π)` out via `integral_const_mul`, reduce to
+  `complex_fourier_gaussian_pi`. Tactic gotcha discovered:
+  `Circle.smul_def` rewrites `Circle • a → (↑Circle : ℂ) • a` (still SMul),
+  must follow with `smul_eq_mul` before `ring`.
+
+Cumulative Lean state: 854 LOC / 26 theorems + 2 private helpers / 0
+sorries / 0 axioms. Docker-verified 3129/3129 jobs at v4.26.0.
+
+See `sessions/2026-05-31-s6b-act-2-deferred-companions.md` for full ACT
+detail (tactic-engineering notes, delta breakdown, next-step roster).
+
+**S6b ACT (PR prior, 2026-05-31, researcher-1)** delivered the archimedean
 analogue of (C2) via direct `fourier_gaussian_innerProductSpace`
 specialization at `V := ℂ`. The Lean parent now contains 24 theorems +
 2 private helpers across 771 LOC, all sorry-free and axiom-free. The
