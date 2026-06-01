@@ -20,8 +20,10 @@
   `Finset.min'`), with `-1` replaced by `-(m : ℤ)`.
 
   Later parts add: conjecture E (alphabet `{+1, -m}`), Path B (alphabet
-  `{-m, …, -1, 1}`), and Option C (S11 ACT — the two-sided bounded alphabet
-  `{-m, …, 0, 1}`, completing Path B with the zero step).
+  `{-m, …, -1, 1}`), Option C (S11 ACT — the two-sided bounded alphabet
+  `{-m, …, 0, 1}`, completing Path B with the zero step), and the sharpest
+  one-sided form (S12 — alphabet `x ≤ 1` with no lower bound; subsumes the
+  Path B and Option C variants as immediate corollaries).
 
   Status: 0 axioms, 0 sorries, build pending
 -/
@@ -473,52 +475,56 @@ theorem step_in_one_pos_mixed_neg_card_bound (l : List ℤ) (m : ℕ) (hm : 1 �
   have hlen : (0 : ℤ) ≤ (l.length : ℤ) := by exact_mod_cast l.length.zero_le
   nlinarith [hS, hmZ, hlen, h_card_eq]
 
-/-! ## Part: Option C (S11 ACT) — two-sided bounded alphabet `-m ≤ x ≤ 1`
+/-! ## Part: S12 — Sharpest one-sided alphabet `x ≤ 1`
 
 S7 ACT's Path B (`step_in_one_pos_mixed_neg_card_eq`, above) handles the
-alphabet `x = 1 ∨ x = -k` for `1 ≤ k ≤ m`, i.e. the element set
-`{-m, …, -1, 1}` — strictly **missing the zero step**. S8 PREP §4.3
-identifies the natural completion as **Option C**, the two-sided bounded
-alphabet
+alphabet `x = 1 ∨ x = -k` for `1 ≤ k ≤ m`, element set `{-m, …, -1, 1}` —
+missing the zero step. S11 ACT (Option C) added the zero step via the
+two-sided bounded alphabet
 
 ```
 ∀ x ∈ l, -(m : ℤ) ≤ x ∧ x ≤ 1
 ```
 
-with element set `{-m, …, -1, 0, 1}`. The single delta from Path B is the
-admission of `x = 0`.
+and noted that the lower bound `-(m : ℤ) ≤ x` is **inert** — the `omega`
+proof of the level identity consumes only `x ≤ 1`, the downstream count
+routes the alphabet hypothesis solely through that lemma, and the upper
+bound `goodRotations_card_le` is alphabet-agnostic.
 
-The cycle-lemma equality `(goodRotations l).card = l.sum.toNat` survives
-this extension. The intuition: the alphabet caps positive steps at `+1`, so
-the prefix sum still climbs by exactly one per up-step and visits every
-integer level on the way up — the level-visitation guarantee that powers the
-unit-decrement cycle lemma. Steps `≤ 0` (including the new `0`) only ever
-*delay* the climb; they never skip a level upward. (Contrast S1's refutation,
-which used an *uncapped* positive jump `+(2m+1)` to skip levels.)
+This Part acts on that observation: the cycle-lemma equality
+`(goodRotations l).card = l.sum.toNat` holds for the broader one-sided
+alphabet `∀ x ∈ l, x ≤ 1` *with no lower bound on negative steps at all*.
+The level-visitation guarantee that powers the unit-decrement cycle lemma
+needs only the upward cap: capping positive steps at `+1` makes the prefix
+sum climb by exactly one per up-step, hitting every integer level on the
+way up; steps `≤ 0` of any magnitude merely delay the climb.
 
-**Inert lower bound.** The proof of `levelPosB_eq_optionC` below uses only
-the upper bound `x ≤ 1`; the lower bound `-(m : ℤ) ≤ x` is carried purely to
-tie the statement to the `step ≥ -m` problem family and is never consumed.
-The downstream count (`goodRotations_card_ge_pathB_optionC`) likewise routes
-the alphabet hypothesis solely through `levelPosB_eq_optionC`, and the upper
-bound `goodRotations_card_le` is alphabet-agnostic. Consequently the equality
-in fact holds for the broader one-sided alphabet `x ≤ 1` alone; the `m`
-parameter is decorative for this equality and only governs the slack-form
-restatement below.
+S1's refutation (the `[-m, m + S]` family) used an *uncapped* positive jump
+`+(m + S)` to skip levels — once the cap `x ≤ 1` is in place, no analogous
+counterexample survives. So `x ≤ 1` is the maximal clean alphabet for the
+strict equality.
+
+The earlier Option C variants `step_in_one_pos_pm_card_eq` and
+`step_in_one_pos_pm_card_bound` are preserved as public API and become thin
+corollaries: drop the `.2` of the conjunctive hypothesis and forward to
+`step_le_one_card_eq`. The previously private Option C helpers
+(`levelPosB_eq_optionC`, `goodRotations_card_ge_pathB_optionC`) are
+replaced by their unconstrained `_capOne` counterparts; their bodies are
+identical except for the dropped, never-consumed lower-bound assumption.
 -/
 
-/-- **Path B `levelPos_eq`, Option C variant** — extends `levelPosB_eq`'s
-    mixed-down alphabet `x = 1 ∨ x = -k` to the two-sided bounded alphabet
-    `-(m : ℤ) ≤ x ∧ x ≤ 1` (admitting the zero step).
+/-- Sharpest level identity — strengthening of the now-removed
+    `levelPosB_eq_optionC` (Path B Option C variant) with the inert
+    lower-bound assumption dropped. For sequences with all steps `≤ 1`, the
+    maximal position landing at or below level `minPrefixSum + n` lands
+    *exactly* at it (when `n < l.sum`).
 
-    The proof is shorter than `levelPosB_eq`: rather than a per-letter case
-    split, it observes that the maximality of `levelPosB l n` already forces
-    a strict upward jump at the boundary (`hj1_gt`), and combining that strict
-    jump with `prefixSum ≤ minPrefixSum + n` (`hj_le`) and the cap `x ≤ 1`
-    pins the step to exactly `+1` and the prefix sum to exactly
-    `minPrefixSum + n`. The lower bound `-(m : ℤ) ≤ x` is not used. -/
-private theorem levelPosB_eq_optionC (l : List ℤ) (m : ℕ)
-    (hmem : ∀ x ∈ l, -(m : ℤ) ≤ x ∧ x ≤ 1)
+    Proof: maximality of `levelPosB l n` forces a strict upward jump at the
+    boundary (`hj1_gt`); combined with `prefixSum ≤ minPrefixSum + n`
+    (`hj_le`) and the cap `x ≤ 1`, `omega` pins both `l[idx] = 1` and
+    `prefixSum = minPrefixSum + n`. -/
+private theorem levelPosB_eq_capOne (l : List ℤ)
+    (hmem : ∀ x ∈ l, x ≤ 1)
     (n : ℕ) (hn : (n : ℤ) < l.sum) :
     prefixSum l (levelPosB l n) = minPrefixSum l + n := by
   have hj_lt : levelPosB l n < l.length := levelPosB_lt l n hn
@@ -531,19 +537,16 @@ private theorem levelPosB_eq_optionC (l : List ℤ) (m : ℕ)
       = prefixSum l (levelPosB l n) + l[levelPosB l n] := by
     simp only [prefixSum]; exact List.sum_take_succ l (levelPosB l n) hj_lt
   have hxle : l[levelPosB l n] ≤ 1 :=
-    (hmem l[levelPosB l n] (List.getElem_mem hj_lt)).2
-  -- `hj1_gt` (after `hstep_eq`): minPrefixSum + n < prefixSum + l[idx].
-  -- With `hj_le`: prefixSum ≤ minPrefixSum + n, and `hxle`: l[idx] ≤ 1, the
-  -- only integer solution forces l[idx] = 1 and prefixSum = minPrefixSum + n.
+    hmem l[levelPosB l n] (List.getElem_mem hj_lt)
   rw [hstep_eq] at hj1_gt
   omega
 
-/-- **Path B lower bound, Option C variant** — analog of
-    `goodRotations_card_ge_pathB` for the two-sided bounded alphabet.
-    Differs only in the alphabet hypothesis and in routing the level
-    identity through `levelPosB_eq_optionC`. -/
-private theorem goodRotations_card_ge_pathB_optionC (l : List ℤ) (m : ℕ)
-    (hmem : ∀ x ∈ l, -(m : ℤ) ≤ x ∧ x ≤ 1)
+/-- Sharpest lower bound — strengthening of the now-removed
+    `goodRotations_card_ge_pathB_optionC` with the inert lower-bound
+    hypothesis dropped. Routes the level identity through
+    `levelPosB_eq_capOne`. -/
+private theorem goodRotations_card_ge_capOne (l : List ℤ)
+    (hmem : ∀ x ∈ l, x ≤ 1)
     (hS : 0 < l.sum) :
     l.sum.toNat ≤ (goodRotations l).card := by
   have hToNat : (l.sum.toNat : ℤ) = l.sum := Int.toNat_of_nonneg hS.le
@@ -560,7 +563,7 @@ private theorem goodRotations_card_ge_pathB_optionC (l : List ℤ) (m : ℕ)
           (by linarith [show (0 : ℤ) ≤ (n : ℤ) from Int.natCast_nonneg n])
           (by linarith)
           (levelPosB l n) (levelPosB_lt l n hn')
-          (levelPosB_eq_optionC l m hmem n hn')
+          (levelPosB_eq_capOne l hmem n hn')
           (fun p hp hpl => levelPosB_right l n p hp hpl)⟩)
   · intro n₁ hn₁ n₂ hn₂ heq
     simp only [Finset.mem_coe, Finset.mem_range] at hn₁ hn₂
@@ -570,33 +573,48 @@ private theorem goodRotations_card_ge_pathB_optionC (l : List ℤ) (m : ℕ)
     have hn₂' : (n₂ : ℤ) < l.sum := by
       have : (n₂ : ℤ) < (l.sum.toNat : ℤ) := by exact_mod_cast hn₂
       omega
-    have h₁ := levelPosB_eq_optionC l m hmem n₁ hn₁'
-    have h₂ := levelPosB_eq_optionC l m hmem n₂ hn₂'
+    have h₁ := levelPosB_eq_capOne l hmem n₁ hn₁'
+    have h₂ := levelPosB_eq_capOne l hmem n₂ hn₂'
     rw [heq] at h₁
     have : (n₁ : ℤ) = n₂ := by linarith
     exact_mod_cast this
 
-/-- **Option C equality** — for sequences with every step in `{-m, …, 0, 1}`
-    and positive total sum, the count of good rotations is exactly
-    `l.sum.toNat`. Strict-equality strengthening of Path B's
-    `step_in_one_pos_mixed_neg_card_eq` to the alphabet that additionally
-    admits the zero step. -/
+/-- **Sharpest cycle-lemma equality** — for any list `l : List ℤ` with all
+    steps `≤ 1` and positive total sum, the count of good rotations is
+    exactly `l.sum.toNat`. This is the maximal clean alphabet on which the
+    strict equality survives: S1's refutation (the `[-m, m + S]` family)
+    shows it fails as soon as the cap `x ≤ 1` is relaxed to any wider
+    upward alphabet. Subsumes Option C and the earlier Path B variants —
+    each of those adds an inert lower bound for parameterisation, not
+    necessity. -/
+theorem step_le_one_card_eq (l : List ℤ)
+    (hmem : ∀ x ∈ l, x ≤ 1)
+    (hS : 0 < l.sum) :
+    (goodRotations l).card = l.sum.toNat :=
+  le_antisymm (goodRotations_card_le hS) (goodRotations_card_ge_capOne l hmem hS)
+
+/-- **Option C equality** (S11 ACT public API, preserved) — for sequences
+    with every step in `{-m, …, 0, 1}` and positive total sum, the count of
+    good rotations is exactly `l.sum.toNat`. Now a thin corollary of
+    `step_le_one_card_eq`: drop the inert lower bound and forward to the
+    sharper theorem. -/
 theorem step_in_one_pos_pm_card_eq (l : List ℤ) (m : ℕ)
     (hmem : ∀ x ∈ l, -(m : ℤ) ≤ x ∧ x ≤ 1)
     (hS : 0 < l.sum) :
     (goodRotations l).card = l.sum.toNat :=
-  le_antisymm (goodRotations_card_le hS)
-              (goodRotations_card_ge_pathB_optionC l m hmem hS)
+  step_le_one_card_eq l (fun x hx => (hmem x hx).2) hS
 
-/-- **Option C slack-form** — recovers the B′-style bound
-    `l.sum ≤ m·|gR| + (m − 1)·l.length` from the strict equality. The slack
-    term `(m − 1)·l.length` is non-negative when `m ≥ 1`; equality holds at
-    `m = 1`, where the alphabet collapses to `{-1, 0, 1}`. -/
+/-- **Option C slack-form** (S11 ACT public API, preserved) — recovers the
+    B′-style bound `l.sum ≤ m·|gR| + (m − 1)·l.length` from the strict
+    equality. The `m` parameter governs only the slack magnitude; the
+    underlying equality is the alphabet-free `step_le_one_card_eq`. The
+    slack term `(m − 1)·l.length` is non-negative when `m ≥ 1`; equality
+    holds at `m = 1`. -/
 theorem step_in_one_pos_pm_card_bound (l : List ℤ) (m : ℕ) (hm : 1 ≤ m)
     (hmem : ∀ x ∈ l, -(m : ℤ) ≤ x ∧ x ≤ 1)
     (hS : 0 < l.sum) :
     l.sum ≤ (m : ℤ) * (goodRotations l).card + ((m : ℤ) - 1) * l.length := by
-  have heq := step_in_one_pos_pm_card_eq l m hmem hS
+  have heq := step_le_one_card_eq l (fun x hx => (hmem x hx).2) hS
   have hToNat : (l.sum.toNat : ℤ) = l.sum := Int.toNat_of_nonneg hS.le
   have h_card_eq : ((goodRotations l).card : ℤ) = l.sum := by
     have : ((goodRotations l).card : ℤ) = (l.sum.toNat : ℤ) := by exact_mod_cast heq

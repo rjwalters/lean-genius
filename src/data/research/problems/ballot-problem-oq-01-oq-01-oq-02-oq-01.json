@@ -18,7 +18,8 @@
     "proven": [
       "goodRotations_nonempty (BallotProblemOQ01.lean:494): 0 < l.sum → 0 < |goodRotations l|, for arbitrary l.",
       "|goodRotations l| = l.sum when steps ∈ {+1, -k} (parent strong cycle lemma).",
-      "|goodRotations l| = l.length when all steps > 0 (parent all-positive case)."
+      "|goodRotations l| = l.length when all steps > 0 (parent all-positive case).",
+      "step_le_one_card_eq (BallotProblemOQ01OQ01OQ02OQ01.lean:S12): for l : List ℤ with ∀ x ∈ l, x ≤ 1 and 0 < l.sum, (goodRotations l).card = l.sum.toNat. Sharpest alphabet for the strict equality."
     ],
     "open": [
       "Conjecture D — m-jump downward IVT: prefixSum landing window [v-m+1, v] when crossing v downward.",
@@ -35,19 +36,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-29T07:30:00Z",
-    "iteration": 15,
-    "focus": "S11 ACT shipped (researcher-1, 2026-05-29): Option C two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1 cycle-lemma equality + slack form implemented and Docker-verified (3062 jobs, 0 sorries/0 axioms, file 608 LOC). Used omega-based levelPosB_eq_optionC (no 3-way case split, no new bearers) instead of S11 PREP skeleton. Discovered the lower bound is inert: equality holds for x ≤ 1 alone.",
+    "since": "2026-06-01T00:00:00Z",
+    "iteration": 16,
+    "focus": "S12 ACT shipped (researcher-1, 2026-06-01): acted on the S11-noted inert-lower-bound observation by introducing step_le_one_card_eq — the cycle-lemma equality on the one-sided alphabet x ≤ 1 alone, dropping the decorative m. Option C theorems preserved as public API but now thin corollaries (one-liners forwarding to the sharper theorem). Private helpers levelPosB_eq_optionC and goodRotations_card_ge_pathB_optionC replaced by their _capOne counterparts (identical bodies sans the never-consumed lower bound). Docker-verified clean (3062 jobs, 0 sorries/0 axioms, file 626 LOC, +18 vs S11).",
     "blockers": [],
-    "nextAction": "OPTIONAL follow-ups (no urgent work): (a) S12 could restate the equality at full generality on the one-sided alphabet x ≤ 1 (drop the decorative m), if a gallery slug wants the sharpest form; (b) create gallery slug src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ documenting the refuted naive bound + the recovered Option C equality. Lean side is complete for the Option C regime.",
+    "nextAction": "OPTIONAL: (a) create gallery slug src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ documenting the refuted naive ⌈S/m⌉ bound + the recovered cycle-lemma equality on x ≤ 1; (b) consider promoting the m-jump downward/upward IVTs (D, D′) into the parent ballot-problem-oq-01-oq-01-oq-02 gallery openQuestions resolution section. Lean side is now complete: x ≤ 1 is the maximal clean alphabet for the strict equality, and any further sharpening would be cosmetic.",
     "attemptCounts": {
-      "total": 10,
+      "total": 11,
       "currentApproach": 1,
       "approachesTried": 7
     }
   },
   "knowledge": {
-    "progressSummary": "S11 ACT (2026-05-29, researcher-1): Implemented Option C — cycle-lemma equality |gR| = l.sum.toNat on the two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1, completing Path B with the zero step. 4 new decls (levelPosB_eq_optionC, goodRotations_card_ge_pathB_optionC, step_in_one_pos_pm_card_eq, step_in_one_pos_pm_card_bound). Docker-verified 3062 jobs, 0 sorries/0 axioms. File now 608 LOC. Simplified the S11 PREP skeleton: omega-based levelPosB_eq_optionC needs no 3-way case split and no new Mathlib bearers. New insight: the lower bound -m ≤ x is inert — equality holds for x ≤ 1 alone. || S11 PREP (this PR, 2026-05-16): Route B detailed paste-ready skeleton — `levelPosB_eq_optionC` (~41 LOC, 3-way `helem` split with NEW zero-case via `levelPosB_max`), `goodRotations_card_ge_pathB_optionC` (~30 LOC), `step_in_one_pos_pm_card_eq` (~6 LOC), optional `step_in_one_pos_pm_card_bound` (~14 LOC). Bearer audit: 2 new Mathlib bearers. ACT-readiness 7/9 GREEN, 2/9 AMBER (host disk + Docker). || STATE-SYNC complete (researcher-4, 2026-05-13): state.md catch-up after 7 merged sessions of drift. Net diff: state.md +~70 lines (new Session Log + ACT-Readiness sections; original §Current Focus preserved beneath as historical); JSON `currentState.{phase,iteration,focus,nextAction,attemptCounts}` + top-level `phase` + `lastUpdate` + `knowledge.progressSummary` prepend. Zero Lean changes. | S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S1b OBSERVE refuted B and C (PR #18480 MERGED). S2 ACT proved D = m_jump_downward_ivt (PR #18381 MERGED, build-pending). S3 PREP designed E discharge (PR #18424 MERGED). S1c PREP designed B′ discharge plan (PR #18487 MERGED). S4 ACT D′ = m_jump_upward_ivt (PR #18693 MERGED, build-pending). S5 PREP (PR #18703 MERGED) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding. Cumulative Lean state per `leanFiles`: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC / 6 theorems / 0 sorries / 0 axioms.",
+    "progressSummary": "S12 ACT (2026-06-01, researcher-1): Sharpest one-sided alphabet equality. Acted on the S11-noted inert-lower-bound observation. Added step_le_one_card_eq (4 LOC public theorem): for any l : List ℤ with all steps ≤ 1 and 0 < l.sum, |gR| = l.sum.toNat — with no lower bound on negative steps. Refactored S11 Option C internals: private levelPosB_eq_optionC and goodRotations_card_ge_pathB_optionC replaced by _capOne counterparts (same bodies, weaker hypotheses). Public Option C theorems step_in_one_pos_pm_card_eq and step_in_one_pos_pm_card_bound preserved verbatim but now one-liners forwarding to the sharper theorem (drop .2, call step_le_one_card_eq). Docker-verified 3062 jobs, 0 sorries/0 axioms, file 626 LOC. Insight already documented in S11; this session puts it in code. || S11 ACT (2026-05-29, researcher-1): Implemented Option C — cycle-lemma equality |gR| = l.sum.toNat on the two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1, completing Path B with the zero step. 4 new decls (levelPosB_eq_optionC, goodRotations_card_ge_pathB_optionC, step_in_one_pos_pm_card_eq, step_in_one_pos_pm_card_bound). Docker-verified 3062 jobs, 0 sorries/0 axioms. File now 608 LOC. Simplified the S11 PREP skeleton: omega-based levelPosB_eq_optionC needs no 3-way case split and no new Mathlib bearers. New insight: the lower bound -m ≤ x is inert — equality holds for x ≤ 1 alone. || S11 PREP (this PR, 2026-05-16): Route B detailed paste-ready skeleton — `levelPosB_eq_optionC` (~41 LOC, 3-way `helem` split with NEW zero-case via `levelPosB_max`), `goodRotations_card_ge_pathB_optionC` (~30 LOC), `step_in_one_pos_pm_card_eq` (~6 LOC), optional `step_in_one_pos_pm_card_bound` (~14 LOC). Bearer audit: 2 new Mathlib bearers. ACT-readiness 7/9 GREEN, 2/9 AMBER (host disk + Docker). || STATE-SYNC complete (researcher-4, 2026-05-13): state.md catch-up after 7 merged sessions of drift. Net diff: state.md +~70 lines (new Session Log + ACT-Readiness sections; original §Current Focus preserved beneath as historical); JSON `currentState.{phase,iteration,focus,nextAction,attemptCounts}` + top-level `phase` + `lastUpdate` + `knowledge.progressSummary` prepend. Zero Lean changes. | S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S1b OBSERVE refuted B and C (PR #18480 MERGED). S2 ACT proved D = m_jump_downward_ivt (PR #18381 MERGED, build-pending). S3 PREP designed E discharge (PR #18424 MERGED). S1c PREP designed B′ discharge plan (PR #18487 MERGED). S4 ACT D′ = m_jump_upward_ivt (PR #18693 MERGED, build-pending). S5 PREP (PR #18703 MERGED) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding. Cumulative Lean state per `leanFiles`: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC / 6 theorems / 0 sorries / 0 axioms.",
     "builtItems": [
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/problem.md — full restatement with refutation and 5 refined conjectures A-E",
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap",
@@ -56,7 +57,13 @@
       "Proved goodRotations_card_ge_pathB_optionC (private) — lower bound l.sum.toNat ≤ |gR| for the two-sided alphabet",
       "Proved step_in_one_pos_pm_card_eq (public) — strict equality |gR| = l.sum.toNat on {-m,…,0,1}",
       "Proved step_in_one_pos_pm_card_bound (public) — B′-style slack form l.sum ≤ m·|gR| + (m-1)·l.length on {-m,…,0,1}",
-      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-29-s11-act-option-c-implementation.md — S11 ACT writeup (deviation rationale + inert-lower-bound insight)"
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-29-s11-act-option-c-implementation.md — S11 ACT writeup (deviation rationale + inert-lower-bound insight)",
+      "Proved step_le_one_card_eq (public) in BallotProblemOQ01OQ01OQ02OQ01.lean — sharpest cycle-lemma equality |gR| = l.sum.toNat on the one-sided alphabet ∀ x ∈ l, x ≤ 1 (no lower bound on negative steps)",
+      "Refactored levelPosB_eq_optionC → levelPosB_eq_capOne (private) — same body, weaker hypothesis (∀ x ∈ l, x ≤ 1)",
+      "Refactored goodRotations_card_ge_pathB_optionC → goodRotations_card_ge_capOne (private) — same body, weaker hypothesis",
+      "Refactored step_in_one_pos_pm_card_eq (public Option C API) to a one-line corollary of step_le_one_card_eq",
+      "Refactored step_in_one_pos_pm_card_bound (public Option C slack-form API) to route through step_le_one_card_eq",
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-31-s12-act-sharpest-onesided-alphabet.md — S12 ACT writeup"
     ],
     "insights": [
       "Two-element counterexample suffices: l = [-m, m+S] with S = m+1 gives |goodRotations| = 1 < 2 = ⌈S/m⌉ for all m ≥ 2.",
@@ -74,7 +81,9 @@
       },
       "S11 ACT (2026-05-29, researcher-1): Option C cycle-lemma equality |gR| = l.sum.toNat proved on the two-sided bounded alphabet -(m:ℤ) ≤ x ≤ 1 (element set {-m,…,-1,0,1}), completing Path B {-m,…,-1,1} with the zero step. Docker-verified 3062 jobs, 0 sorries/0 axioms, clean.",
       "S11 ACT: levelPosB_eq_optionC proved WITHOUT the S11 PREP 3-way helem case split. Maximality of levelPosB already yields the strict boundary jump hj1_gt; rewriting with the step decomposition + hj_le + cap x ≤ 1 leaves a linear-integer system that a single omega closes (forces l[idx]=1 AND prefixSum=minPrefixSum+n). Eliminates both PREP-flagged new bearers (lt_or_eq_of_le, Int.lt_iff_add_one_le). ~17 LOC body vs PREP ~41.",
-      "S11 ACT new insight — the lower bound -(m:ℤ) ≤ x is INERT for the equality. The omega proof uses only x ≤ 1; the count routes the alphabet hypothesis solely through levelPosB_eq_optionC, and goodRotations_card_le is alphabet-agnostic. So |gR| = l.sum.toNat holds for the one-sided alphabet x ≤ 1 alone — m is decorative for the equality, governing only the slack-form magnitude. Reason: capping positive steps at +1 preserves level-visitation on the climb. Option C -m ≤ x ≤ 1 is the MAXIMAL clean alphabet (full B′ -m ≤ x ≤ m fails per S1b)."
+      "S11 ACT new insight — the lower bound -(m:ℤ) ≤ x is INERT for the equality. The omega proof uses only x ≤ 1; the count routes the alphabet hypothesis solely through levelPosB_eq_optionC, and goodRotations_card_le is alphabet-agnostic. So |gR| = l.sum.toNat holds for the one-sided alphabet x ≤ 1 alone — m is decorative for the equality, governing only the slack-form magnitude. Reason: capping positive steps at +1 preserves level-visitation on the climb. Option C -m ≤ x ≤ 1 is the MAXIMAL clean alphabet (full B′ -m ≤ x ≤ m fails per S1b).",
+      "S12 ACT (2026-06-01, researcher-1): The sharpest cycle-lemma equality lives at one-sided alphabet x ≤ 1 — no lower bound on negative steps is required for |gR| = l.sum.toNat. Mechanism: capping positive steps at +1 preserves level-visitation on the climb (every integer level hit by a +1 step); negative steps of any magnitude only delay the climb and do not affect the count. S1 refutation pinpointed exactly the failure mode for upward relaxation; x ≤ 1 is therefore the *maximal* clean alphabet, not a midpoint.",
+      "S12 ACT refactor pattern: when an alphabet hypothesis has both an upper and lower bound but only the upper bound is consumed in the proof, the lower bound can be dropped to yield a strictly stronger public theorem. The original public API is preserved by routing it through the sharper version via (fun x hx => (hmem x hx).2) — zero-cost adapter. Useful template for similar level-identity proofs."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -125,7 +134,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-29T07:30:00Z",
+  "lastUpdate": "2026-06-01",
   "significance": 6,
   "tractability": 8,
   "leanFiles": [
