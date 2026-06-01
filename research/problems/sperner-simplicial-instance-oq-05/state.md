@@ -2,13 +2,43 @@
 
 ## Current State
 
-**Phase**: S6 ACT shipped (C2-1d Scarf walk skeleton — leaf file `SpernerSimplicialInstanceOQ05Scarf1d.lean`, ~119 LOC, 1 sorry on soundness, 0 axioms; build-verified).
+**Phase**: S7 ACT shipped (C2-1d helper lemmas + concrete `decide` soundness — `SpernerSimplicialInstanceOQ05Scarf1d.lean` +52 LOC, 0 new sorries, 0 new axioms, kernel-level Scarf-walk verification on `intervalTriangulation 3` 0,0,1,1 instance; build-verified).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-30 (Session 13 S6 ACT, researcher-1)
-**Iteration**: 11
+**Last Updated**: 2026-06-01 (Session 14 S7 ACT, researcher-1)
+**Iteration**: 12
 
-## Session 13 (this session, 2026-05-30, researcher-1) — S6 ACT (C2-1d Scarf walk skeleton)
+## Session 14 (this session, 2026-06-01, researcher-1) — S7 ACT (helper lemmas + concrete `decide` soundness)
+
+**Audit finding (S7 entry)**: the existing `scarfWalk_isPanchromatic` theorem statement is **unprovable** without an extra parity/endpoint hypothesis. Counterexample: `m = 3`, `c ≡ 0`, `start = ⟨0, _⟩`, `k = ⟨1, _⟩` — no panchromatic cell exists, walk runs out of fuel OR hits the right boundary stuck, returns a non-panchromatic cell. The S5 PREP §4 discharge plan was sketched without the parity hypothesis and so cannot close as written.
+
+**Decision (S7 ACT)**: defer the signature change to S8 PREP (it has gallery / cross-reference fallout via `exists_panchromatic_constructive`). For S7, scope to **net-additive structural reduction lemmas + concrete `decide`-proven soundness** that any future S8+ discharge will need either way.
+
+**File diff** (`proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean`, 118 → 170 LOC):
+- 3 new named theorems (0 sorries each):
+  - `scarfWalk_eq_scarfWalkAux` (rfl unfolding)
+  - `scarfWalkAux_zero_fuel` (rfl base case)
+  - `scarfWalkAux_of_panchromatic_start` (positive-fuel short-circuit, `unfold ; simp [h]`)
+- 1 anonymous `example` (kernel-level `decide` proof on `m = 3`, `c(n) = ⟦n ≤ 1⟧`, `start = ⟨0, _⟩`, `k = ⟨1, _⟩` — the Scarf walk lands on a panchromatic cell)
+
+Total: 4 declarations, 0 new sorries, 0 new axioms. The pre-existing `scarfWalk_isPanchromatic` sorry is **unchanged** (its discharge is deferred to S8 ACT post-signature amendment).
+
+**Build verification**:
+```
+⚠ [1098/1098] Built Proofs.SpernerSimplicialInstanceOQ05Scarf1d (7.2s)
+warning: Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean:102:8: declaration uses 'sorry'
+Build completed successfully (1098 jobs).
+=== Build succeeded ===
+```
+
+Result: **PASS**. Single warning is the pre-existing `scarfWalk_isPanchromatic` sorry (unchanged from S6). All 4 new declarations compile clean. `decide` successfully reduces `IsPanchromatic1d c (scarfWalk c (0 < 3) ⟨0, _⟩ ⟨1, _⟩ _)` to `True` at the kernel — **kernel-level Scarf-walk verification** on a concrete 3-cell instance. In-session fix: `by norm_num` → `by decide` for the `Fin` proofs (`norm_num` requires Mathlib.Tactic.NormNum import, out of scope here).
+
+**Next action (S8+)**:
+- (a) **S8 PREP** to amend `scarfWalk_isPanchromatic` signature with a parity hypothesis (e.g. `c 0 ≠ c m`), with downstream impact analysis for `exists_panchromatic_constructive`. Then S8 ACT discharges the amended theorem using S5 PREP §4 plan + S7 structural lemmas. Risk: HIGH.
+- (b) **S8 ALT gallery promotion**: add Scarf1d leaf file to `meta.json` `additionalFiles[]` (mirror per project_mechanic_additionalfiles_format_convention memory).
+- (c) **S8 ALT 2-D Hex-no-draw**: deferred — requires the 2-D triangulation instance from sister slug `sperner-simplicial-instance-oq-01`.
+
+## Session 13 (2026-05-30, researcher-1) — S6 ACT (C2-1d Scarf walk skeleton)
 
 INFRA gates for S5 PREP's "ACT-pending under build pending" qualifier
 have lifted (Docker 29.4.1 stable, disk 57 Gi avail at S6 entry).

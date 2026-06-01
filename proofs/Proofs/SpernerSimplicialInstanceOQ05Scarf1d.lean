@@ -115,4 +115,56 @@ theorem exists_panchromatic_constructive (hm : 0 < m)
   ⟨scarfWalk c hm boundary_door.1 boundary_door.2 h_door,
    scarfWalk_isPanchromatic c hm _ _ _⟩
 
+/-! ## S7 ACT — Structural Reduction Lemmas
+
+Three reduction-by-definition lemmas that future S8+ discharge of
+`scarfWalk_isPanchromatic` will need. Plus a kernel-level `decide`
+verification on a concrete 3-cell instance.
+
+These do not close the existing sorry but each is a syntactic
+fact about `scarfWalk` / `scarfWalkAux` that the discharge will
+unfold over. Recording them as named lemmas avoids re-proving the
+same `rfl` / `split_ifs` micro-steps inside the larger discharge. -/
+
+/-- Unfolding lemma: `scarfWalk` is `scarfWalkAux` at fuel `m`. -/
+theorem scarfWalk_eq_scarfWalkAux (hm : 0 < m) (start : Fin m) (k : Fin 2)
+    (h_start : ¬ IsPanchromatic1d c start) :
+    scarfWalk c hm start k h_start = scarfWalkAux c hm start k m := rfl
+
+/-- Fuel base case: `scarfWalkAux` at zero fuel returns `start`
+unchanged (regardless of the entry face `k`). -/
+theorem scarfWalkAux_zero_fuel (hm : 0 < m) (start : Fin m) (k : Fin 2) :
+    scarfWalkAux c hm start k 0 = start := rfl
+
+/-- Panchromatic-start short-circuit: if `start` is already
+panchromatic, `scarfWalkAux` at positive fuel returns it immediately
+without consulting `step`.
+
+This lemma is what lets the discharge ignore the panchromatic
+branch of `scarfWalkAux` after the initial entry: the walk only
+makes a real `step` call when `start` is non-panchromatic. -/
+theorem scarfWalkAux_of_panchromatic_start (hm : 0 < m) (start : Fin m)
+    (k : Fin 2) (n : ℕ) (h : IsPanchromatic1d c start) :
+    scarfWalkAux c hm start k (n + 1) = start := by
+  unfold scarfWalkAux
+  simp [h]
+
+/-- **Smoke test (m = 3 / colouring 0,0,1,1)**: starting at the
+left boundary door `(0, 1)` of `intervalTriangulation 3` with the
+colouring `c(n) = if n ≤ 1 then 0 else 1`, the Scarf walk lands
+on a panchromatic cell. Kernel-level proof by `decide`.
+
+This is the strongest possible *concrete* soundness statement: a
+kernel-checked equation that `scarfWalk` returns a panchromatic
+cell on this specific instance. Sister to the `findPanchromaticBrute`
+demo in `SpernerSimplicialInstanceOQ05.lean` (the C1 brute-force
+finder). -/
+example :
+    let c : ℕ → Fin 2 := fun n => if n ≤ 1 then 0 else 1
+    let start : Fin 3 := ⟨0, by decide⟩
+    let k : Fin 2 := ⟨1, by decide⟩
+    have h_start : ¬ IsPanchromatic1d c start := by decide
+    IsPanchromatic1d c (scarfWalk c (by decide : 0 < 3) start k h_start) := by
+  decide
+
 end SpernerSimplicialInstanceOQ05Scarf1d
