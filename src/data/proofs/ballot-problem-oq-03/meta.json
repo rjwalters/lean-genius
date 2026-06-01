@@ -324,7 +324,7 @@
     "mainTheorems": [
       {
         "name": "lgv_lemma_2x2",
-        "line": 2834,
+        "line": 2878,
         "statement": "The 2x2 LGV Lemma: niPairCount equals lgvDet under proper source/target ordering (a1 <= a2, b1 <= b2)",
         "description": "Core result. The count of non-intersecting lattice path pairs equals the 2x2 determinant of binomial path counts. Proved via complement counting and the Lindstrom involution bijection."
       },
@@ -342,7 +342,7 @@
       },
       {
         "name": "lindstrom_involution",
-        "line": 2803,
+        "line": 2847,
         "statement": "Dual injections between intersecting identity pairs and crossing pairs yield equal cardinalities",
         "description": "The Lindstrom sign-reversing involution: swapping suffixes at the canonical shared point bijects intersecting identity pairs with all crossing pairs."
       },
@@ -378,7 +378,7 @@
       },
       {
         "name": "lgvDet_nonneg",
-        "line": 2872,
+        "line": 2916,
         "statement": "0 <= lgvDet(m, a1, b1, a2, b2) under proper ordering",
         "description": "Non-negativity of the LGV determinant follows from the LGV lemma since it counts non-intersecting path pairs."
       }
