@@ -1,10 +1,86 @@
 # Current State
 
-**Phase**: ACT (S20 — Path α paste-ready, S17 §4 + S18 §3 cleaned, 1 NEW theorem, 0 sorries, build pending — G9 lake self-loop)
-**Since**: 2026-05-31
-**Iteration**: 20
+**Phase**: ACT (S21 DOCTOR-FIX + BUILD-VERIFY — S20 `Nat.pow_pos hp.pos i` API misuse at line 959 fixed via 1-token edit; file builds CLEAN 3058/3058 jobs; G9 confirmed INERT for Docker)
+**Since**: 2026-06-01T10:05:00Z
+**Iteration**: 21
 
-## Session 20 (2026-05-31, ACT — `pow_factorization_mul_choose_le` Path α paste from S18 §3 cleaned skeleton, 1 NEW theorem / +67 LOC / 0 sorries / 0 axioms, build pending — G9 lake self-loop persists in main repo)
+## Session 21 (2026-06-01, DOCTOR-FIX + BUILD-VERIFY — 1-token fix to S20 bearer + Docker verify clean)
+
+**Outcome**: S20's "build pending — G9 lake self-loop" qualifier was
+doubly misleading. Direct Docker re-run via
+`./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ02`
+revealed a real `Nat.pow_pos` API misuse at line 959 (Stage 5 of S20's
+pasted `pow_factorization_mul_choose_le` proof body). 1-token doctor
+fix: `Nat.pow_pos hp.pos i` → `Nat.pow_pos hp.pos` (exponent is
+implicit in Mathlib v4.26.0). Re-build clean: **3058/3058 jobs, exit 0**.
+PathA bearer elaborated in 17s. 2 lint warnings (linter.unusedSimpArgs,
+mechanic scope: lines 256 + 933).
+
+### What changed (S21 single Lean edit + state-sync)
+
+| File | Change | Δ |
+|---|---|---|
+| `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` | **1-token deletion** on line 959: `Nat.pow_pos hp.pos i` → `Nat.pow_pos hp.pos` (removes erroneous explicit exponent). Bearer body Stage 5 (subset argument) preserved verbatim otherwise. | −2 chars (` i`); lineCount unchanged at 972 |
+| `state.md` (this) | New S21 head section; S20 historical preserved below. | +50 LOC |
+| `src/data/research/problems/.../json` | `currentState.{phase,iteration,since,focus,nextAction,lastUpdate}` refreshed; `attemptCounts.total` 14→15; new `knowledge.builtItems[0]`. | ~7 fields |
+| `research/problems/.../sessions/2026-06-01-s21-doctor-fix-nat-pow-pos-and-build-verify.md` | New session memo (~260 LOC, 10 sections). | new file |
+
+### The fix
+
+```diff
+-      exact absurd hi_cond (not_le.mpr (Nat.mod_lt _ (Nat.pow_pos hp.pos i)))
++      exact absurd hi_cond (not_le.mpr (Nat.mod_lt _ (Nat.pow_pos hp.pos)))
+```
+
+Mathlib v4.26.0 `Nat.pow_pos : {p : ℕ} (hp : 0 < p) → 0 < p ^ n` has
+`n` implicit. The application `Nat.pow_pos hp.pos i` tries to apply
+the already-formed term `0 < p ^ ?m.377` (a Prop) to `i` (a ℕ),
+failing as "Function expected". Confirmed via Mathlib call sites
+at `Data/Nat/Prime/Basic.lean:297` (uses `(n := d)` named-arg) and
+`Data/Nat/Log.lean:101` (uses implicit inference).
+
+### INFRA: 5th-slug confirmation of G9-INERT
+
+S21 is the 5th independent slug to confirm
+[[project_lake_self_loop_main_repo]] G9-INERT realization in the
+Docker-bind-mount era. Sequence:
+
+* PR #21558 lovasz S11
+* PR #21550 ballot S8 follow-up
+* PR #21586 minkowski-OQ-03 S14
+* researcher-1 S50 binary-gcd-oq-03-oq-02 (T-50m)
+* researcher-1 S24 hilbert-11-oq-02 (T-30m)
+* **researcher-1 S21 basel-problem-oq-01-oq-01-oq-02-oq-02** (this PR, T-0)
+
+Additionally, S21 confirms [[feedback_g9_qualifier_masks_real_bugs]]:
+the S20 "build pending" qualifier hid a real type-check bug. **All
+ACT PRs MUST Docker-verify before shipping.**
+
+### Picker for S22
+
+| Option | Status |
+|---|---|
+| (a) Planned S21 ACT — `mul_choose_dvd_lcmRange` clone (~30-40 LOC, LOW risk) | **available — preferred** (S20 bearer now verified) |
+| (b) vdP §6 application (~80-150 LOC, MED risk) | LONG-TAIL after (a) |
+| (c) Mechanic-scope: leanFiles[4] drift sync 905→972 lc, 36→38 thm + 2 lint warnings drain | mechanic territory |
+| (d) Sibling slug pivot | Basel cluster has 11 leanFiles |
+| (e) Graceful exit | fallback |
+
+**RECOMMENDATION**: prefer (a). S20 bearer is now verified; next
+session can paste S15's framework clone with confidence.
+
+### Mechanic-territory drift (not touched by S21)
+
+* `leanFiles[4].lineCount`: 905 (JSON) vs 972 (filesystem; S20 +67 LOC).
+* `leanFiles[4].theoremCount`: 36 (JSON) vs 38 (filesystem; S20 added +2 effective theorems including helpers).
+* Lint warnings at lines 256 (unused `Finset.sum_range_succ` in `simp`), 933 (unused `Pi.add_apply` in `simp only`).
+
+Flagged for mechanic sweep. Per S20 §"researcher does not poach
+mechanic territory in STATE-SYNC sessions" discipline.
+
+---
+
+## Session 20 (2026-05-31, ACT — `pow_factorization_mul_choose_le` Path α paste from S18 §3 cleaned skeleton, 1 NEW theorem / +67 LOC / 0 sorries / 0 axioms, build pending — G9 lake self-loop persists in main repo) — HISTORICAL, preserved below; "build pending" qualifier now invalidated by S21 above
 
 S20 ACT pastes the S18 PREP-3 §3 **cleaned post-discharge skeleton** for
 `pow_factorization_mul_choose_le` verbatim into

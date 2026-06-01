@@ -956,7 +956,7 @@ theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n)
         (hp.pow_dvd_iff_le_factorization hm.ne').mpr (hi_le_a.trans (le_of_eq ha.symm))
       have h_m_mod : m % p ^ i = 0 := Nat.mod_eq_zero_of_dvd h_pi_dvd_m
       rw [h_m_mod, Nat.zero_add] at hi_cond
-      exact absurd hi_cond (not_le.mpr (Nat.mod_lt _ (Nat.pow_pos hp.pos i)))
+      exact absurd hi_cond (not_le.mpr (Nat.mod_lt _ (Nat.pow_pos hp.pos)))
     have h_card_le : ({i ∈ Finset.Ico 1 (b + 1) | p^i ≤ m % p^i + (n - m) % p^i}).card
         ≤ (Finset.Ico (a + 1) (b + 1)).card :=
       Finset.card_le_card h_subset
