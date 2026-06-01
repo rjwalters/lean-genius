@@ -58,6 +58,9 @@
     ],
     "assumptions": "Fully verified. 0 axioms, 0 sorries.",
     "mathlib_version": "4.26.0",
+    "additionalFiles": [
+      "Proofs/CevasTheoremOQ04OQ01.lean"
+    ],
     "theoremCount": 22,
     "definitionCount": 4
   },
@@ -153,7 +156,18 @@
     "theoremCount": 22,
     "definitionCount": 4,
     "path": "Proofs/CevasTheoremOQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/CevasTheoremOQ04OQ01.lean",
+        "lineCount": 215,
+        "theorems": 11,
+        "definitions": 4,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "N-dimensional mass-point Ceva scaffold (OQ01 child research direction, namespace NDimMassPoint): lifts the parent's triangle MassPoint structure to a Fin (n+1)-indexed family. Defines MassPoint (structure), MassPoint.total, MassPoint.ratio (= 1 - mass i / total), and uniform (centroid example). Headline identity sum_ratio_eq: ∑ ratio i = n. Auxiliary lemmas: total_pos, total_ne_zero, sum_erase_eq_total_sub, ratio_eq_one_sub, ratio_lt_one, ratio_pos, sum_mass_div_total, uniform_total, uniform_ratio."
+      }
+    ]
   },
   "crossReferences": [
     {
