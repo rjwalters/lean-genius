@@ -9,6 +9,9 @@
     "date": "2026",
     "status": "verified",
     "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03OQ01.lean",
+    "additionalFiles": [
+      "Proofs/AngleTrisectionEmbedding.lean"
+    ],
     "tags": [
       "algebra",
       "number-theory",
@@ -231,6 +234,9 @@
     "axiomCount": 0,
     "theoremCount": 32,
     "definitionCount": 9,
+    "additionalFiles": [
+      "Proofs/AngleTrisectionEmbedding.lean"
+    ],
     "mainTheorems": [
       {
         "name": "maximal_real_subfield_degree",
