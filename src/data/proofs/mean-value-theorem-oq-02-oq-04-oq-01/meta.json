@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius researchers (refutation by Runge counterexample, formalized 2026)",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
     "tags": [
       "calculus",
@@ -20,11 +20,11 @@
       "analysis",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 758,
-    "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in section 2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in section 3a via constant-1 witness on Complex, S3 contribution). After S7, zero sorries remain. The finite-radius form cauchy_diag_norm_bound_at_radius (the per-degree Cauchy coefficient estimate at a strict intermediate radius r prime in (0, R)) was discharged in S7 via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le. The boundary form cauchy_diag_norm_bound (with norm of w over R) is PROVEN by limit-extraction (ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto, S5 contribution). The section 3b main theorem analytic_taylor_remainder_uniform_bound_complex is fully proven.",
+    "assumptions": "1 axiom (inherited from additionalFiles only; 0 new axioms in this file): taylor_lagrange_remainder in the grandparent file MeanValueTheoremOQ02.lean (qualitative pointwise Lagrange remainder, listed in additionalFiles below). The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in section 2) and was REMOVED by S2 from MeanValueTheoremOQ02OQ04.lean. The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in section 3a via constant-1 witness on Complex, S3 contribution). After S7, zero sorries remain. The finite-radius form cauchy_diag_norm_bound_at_radius (the per-degree Cauchy coefficient estimate at a strict intermediate radius r prime in (0, R)) was discharged in S7 via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le. The boundary form cauchy_diag_norm_bound (with norm of w over R) is PROVEN by limit-extraction (ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto, S5 contribution). The section 3b main theorem analytic_taylor_remainder_uniform_bound_complex is fully proven.",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
