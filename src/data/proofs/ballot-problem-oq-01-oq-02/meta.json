@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-02",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/BallotProblemOQ01OQ02.lean",
     "tags": [
       "combinatorics",
@@ -16,14 +16,17 @@
       "projection-principle",
       "counting"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. All axioms eliminated: fiber_card_uniform proved via fiberSwap bijection, uniformOn_fiber_transfer proved via cross-multiplication bijection showing |(MCS ∩ MSP)| · |CS| = |(CS ∩ SP)| · |MCS|.",
+    "axiomCount": 2,
+    "assumptions": "0 axioms in the parent file BallotProblemOQ01OQ02.lean (all axioms eliminated: fiber_card_uniform proved via fiberSwap bijection, uniformOn_fiber_transfer proved via cross-multiplication bijection showing |(MCS ∩ MSP)| · |CS| = |(CS ∩ SP)| · |MCS|). 2 axioms in the registered companion BallotProblemOQ01OQ02OQ02.lean (LGV path-ordering extension): three_candidate_ordering_formula and three_ordering_product_conjecture, both stating the 3-candidate ordering probability as the product of pairwise ballot ratios via the Lindström-Gessel-Viennot lemma (non-intersecting lattice path theory not in Mathlib). Chain axiom total: 2.",
     "lineCount": 1047,
     "theoremCount": 40,
     "definitionCount": 19,
+    "additionalFiles": [
+      "Proofs/BallotProblemOQ01OQ02OQ02.lean"
+    ],
     "originalContributions": [
       "projectToSign: projection from multi-candidate sequences to ±1 sequences",
       "prefixSumPreservation: prefix sums are preserved under projection (leadsAllCombined ↔ positive prefix sums)",
@@ -80,7 +83,18 @@
     "theoremCount": 40,
     "definitionCount": 19,
     "path": "Proofs/BallotProblemOQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+        "lineCount": 260,
+        "theorems": 15,
+        "definitions": 2,
+        "axioms": 2,
+        "sorries": 0,
+        "description": "LGV Determinant for Path Orderings (sub-OQ-02 of OQ-01-OQ-02, namespace inferred from imports of Archive.Wiedijk100Theorems.BallotProblem). Defines ballotRatio a b := (a-b)/(a+b) (the classical 2-candidate ballot ratio) and ballotMatrix2 a b (the 2×2 LGV matrix). Proves antisymmetry, positivity, upper bound, monotonicity (ballotRatio_antisymm, ballotRatio_pos, ballotRatio_le_one, ballotRatio_mono); concrete numerical verifications (example_3_1, example_4_2, example_5_1, example_4_2_1, example_5_3_1, example_6_4_2); the 2-candidate reduction orderingProbability_two (from Mathlib's Ballot.ballot_problem); 2×2 determinant identities (det_ballotMatrix2, ballotMatrix2_entry_01); and the 3-candidate ordering verifications ordering_4_2_1, ordering_5_3_1. Axiomatized (LGV non-intersecting lattice path theory not in Mathlib): three_candidate_ordering_formula (3-candidate ordering probability = product of pairwise ballot ratios) and three_ordering_product_conjecture (product factorization in (a-b)(b-c)(a-c) / (a+b)(b+c)(a+c) form)."
+      }
+    ]
   },
   "crossReferences": [
     {
