@@ -123,7 +123,7 @@
       "id": "example",
       "title": "Example: Exponential Gaps and Application",
       "startLine": 151,
-      "endLine": 176,
+      "endLine": 175,
       "summary": "Verifies nₖ = 2^k has Fejér gaps (geometric series ∑1/2^k converges), then applies Biernacki's theorem to conclude any entire function f(z) = ∑ aₖz^{2^k} assumes every value infinitely often.",
       "mathContext": "$n_k = 2^k$: strictly increasing (powers of 2), and $\\sum 2^{-k} = 1 < \\infty$ (geometric series). By Biernacki: $\\forall w \\in \\mathbb{C},\\; |\\{z : f(z) = w\\}| = \\infty$ for any entire $f(z) = \\sum a_k z^{2^k}$."
     }

@@ -124,7 +124,7 @@
       "id": "sec-small-cases",
       "title": "Parts V-VI: Composite Criterion and Known Values",
       "startLine": 201,
-      "endLine": 260,
+      "endLine": 259,
       "summary": "Proves composite_exp_implies_composite (converse: n composite, n≥2 → M(n) composite via mersenne_dvd_of_dvd), mersenne_equiv (M(n) prime ↔ n prime ∧ M(n) prime), first_four_mersenne_prime_exponents (exponents 2,3,5,7), first_four_mersenne_primes (3,7,31,127 all prime), M_eleven_composite (2047=23×89 not prime via decide).",
       "mathContext": "$M(11) = 2047 = 23 \\times 89$; the factor $23 \\equiv 1 \\pmod{11}$ confirms the Lucas congruence."
     }

@@ -129,7 +129,7 @@
       "id": "main-theorem",
       "title": "Channel Coding Converse (Asymptotic)",
       "startLine": 131,
-      "endLine": 163,
+      "endLine": 162,
       "description": "The main theorem: for R > C, the gap δ = (R-C)/(2R) is positive and any code with rate ≥ R and block length n ≥ ⌈2/(R-C)⌉ has error probability ≥ δ.",
       "summary": "Main result: P_e ≥ (R-C)/(2R) for sufficiently long codes at rates above capacity.",
       "mathContext": "$\\forall n \\geq \\lceil 2/(R-C) \\rceil,\\; \\text{rate} \\geq R \\implies P_e \\geq \\frac{R-C}{2R}$"
