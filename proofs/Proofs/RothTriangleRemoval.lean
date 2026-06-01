@@ -248,6 +248,75 @@ theorem xy_edge_unique_triangle {N : ℕ} [NeZero N]
     linear_combination this
   linear_combination hz₁ - hz₂
 
+/-- When A is AP-free, each YZ-edge determines a unique triangle.
+
+    Edge (1,y)-(2,z) has b = z-y. AP-freeness forces a = b in any triangle
+    on this edge, so x = y - a = y - (z-y) = 2y - z is uniquely determined. -/
+theorem yz_edge_unique_triangle {N : ℕ} [NeZero N]
+    (A : Finset (ZMod N)) (hAP : APFree A) (y z : ZMod N)
+    (hyz : (ruzsaSzemerediGraph A).Adj (yVert y) (zVert z))
+    (x₁ x₂ : ZMod N)
+    (h₁ : (ruzsaSzemerediGraph A).Adj (xVert x₁) (yVert y) ∧
+           (ruzsaSzemerediGraph A).Adj (xVert x₁) (zVert z))
+    (h₂ : (ruzsaSzemerediGraph A).Adj (xVert x₂) (yVert y) ∧
+           (ruzsaSzemerediGraph A).Adj (xVert x₂) (zVert z)) :
+    x₁ = x₂ := by
+  obtain ⟨t₁, ht₁a, ht₁b⟩ := triangle_yields_ap_triple A x₁ y z h₁.1 hyz h₁.2
+  obtain ⟨t₂, ht₂a, ht₂b⟩ := triangle_yields_ap_triple A x₂ y z h₂.1 hyz h₂.2
+  have ⟨hab₁, _⟩ := ap_free_forces_equal A hAP t₁
+  have ⟨hab₂, _⟩ := ap_free_forces_equal A hAP t₂
+  -- y - x_i = a_i = b_i = z - y, so x_i = 2y - z (no Odd N needed)
+  have hx₁ : x₁ = 2 * y - z := by
+    have : y - x₁ = z - y := by rw [← ht₁a, ← ht₁b]; exact hab₁
+    linear_combination -this
+  have hx₂ : x₂ = 2 * y - z := by
+    have : y - x₂ = z - y := by rw [← ht₂a, ← ht₂b]; exact hab₂
+    linear_combination -this
+  linear_combination hx₁ - hx₂
+
+/-- When A is AP-free and N is odd, each XZ-edge determines a unique triangle.
+
+    Edge (0,x)-(2,z) has some witness c ∈ A with z - x = 2c. AP-freeness
+    forces a = b = c in any triangle on this edge, so y - x = (z-x)/2 = c,
+    i.e. y = x + c is uniquely determined (since 2 is invertible in ZMod N
+    when N is odd). -/
+theorem xz_edge_unique_triangle {N : ℕ} [NeZero N]
+    (A : Finset (ZMod N)) (hAP : APFree A) (hOdd : Odd N) (x z : ZMod N)
+    (hxz : (ruzsaSzemerediGraph A).Adj (xVert x) (zVert z))
+    (y₁ y₂ : ZMod N)
+    (h₁ : (ruzsaSzemerediGraph A).Adj (xVert x) (yVert y₁) ∧
+           (ruzsaSzemerediGraph A).Adj (yVert y₁) (zVert z))
+    (h₂ : (ruzsaSzemerediGraph A).Adj (xVert x) (yVert y₂) ∧
+           (ruzsaSzemerediGraph A).Adj (yVert y₂) (zVert z)) :
+    y₁ = y₂ := by
+  obtain ⟨t₁, ht₁a, ht₁b⟩ := triangle_yields_ap_triple A x y₁ z h₁.1 h₁.2 hxz
+  obtain ⟨t₂, ht₂a, ht₂b⟩ := triangle_yields_ap_triple A x y₂ z h₂.1 h₂.2 hxz
+  have ⟨hab₁, _⟩ := ap_free_forces_equal A hAP t₁
+  have ⟨hab₂, _⟩ := ap_free_forces_equal A hAP t₂
+  -- y_i - x = a_i = b_i = z - y_i, so 2 y_i = x + z
+  have hy₁ : 2 * y₁ = x + z := by
+    have : y₁ - x = z - y₁ := by rw [← ht₁a, ← ht₁b]; exact hab₁
+    linear_combination this
+  have hy₂ : 2 * y₂ = x + z := by
+    have : y₂ - x = z - y₂ := by rw [← ht₂a, ← ht₂b]; exact hab₂
+    linear_combination this
+  -- 2 * (y₁ - y₂) = 0; use Odd N to cancel
+  have h_diff : (2 : ZMod N) * y₁ = (2 : ZMod N) * y₂ := by
+    linear_combination hy₁ - hy₂
+  -- N = 1 case is trivial (ZMod 1 is subsingleton); N ≥ 2 case uses IsUnit 2
+  by_cases hN1 : N = 1
+  · subst hN1; exact Subsingleton.elim y₁ y₂
+  · have hN2 : 2 ≤ N := by
+      have : N ≠ 0 := NeZero.ne N
+      omega
+    haveI : Fact (1 < N) := ⟨hN2⟩
+    have h2unit : IsUnit ((2 : ℕ) : ZMod N) :=
+      (ZMod.isUnit_iff_coprime 2 N).mpr (Odd.coprime_two_left hOdd)
+    have h2cast : ((2 : ℕ) : ZMod N) = (2 : ZMod N) := by norm_cast
+    rw [h2cast] at h2unit
+    have h2ne : (2 : ZMod N) ≠ 0 := h2unit.ne_zero
+    exact mul_left_cancel₀ h2ne h_diff
+
 /-- When A is AP-free, for each a ∈ A and x ∈ Z/NZ, the triple
     (0,x), (1,x+a), (2,x+2a) forms a triangle in the RS graph. -/
 theorem ap_free_triangle_exists {N : ℕ} [NeZero N]

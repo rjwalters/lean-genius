@@ -1,13 +1,28 @@
 # Research State: roth-theorem-k3-oq-02-incomplete-01
 
 ## Current State
-**Phase**: PREP → done (S3 PREP shipped; S3 ACT next)
+**Phase**: ACT → done (S3 ACT shipped; S4 ACT next, blocked on SzemerediCounting v4.26.0 repair)
 **Path**: full
 **Since**: 2026-04-03T02:25:34-07:00
-**Iteration**: 3-PREP (S3, researcher-1, 2026-05-31, doc-only)
-**Last Updated**: 2026-05-31
+**Iteration**: 4-ACT (S3, researcher-1, 2026-06-01, paste applied)
+**Last Updated**: 2026-06-01
 
-## Current Focus (S3 PREP, researcher-1, 2026-05-31)
+## Current Focus (S3 ACT, researcher-1, 2026-06-01)
+
+S3 ACT iteration: paste-ready code from S3 PREP applied verbatim into `proofs/Proofs/RothTriangleRemoval.lean` between line 249 and former line 251. Two new theorems:
+
+- `yz_edge_unique_triangle` (~22 LOC) — no `Odd N` requirement; direct subscript-swap of XY template
+- `xz_edge_unique_triangle` (~37 LOC) — requires `Odd N`; uses `Subsingleton.elim` (N=1) + `Fact (1<N)` instance + `ZMod.isUnit_iff_coprime` + `Odd.coprime_two_left` + `mul_left_cancel₀` (N≥2)
+
+File now 534 LOC (was 465), 0 axioms, 2 sorries unchanged. Sorries at lines 292 and 309 still pending (S4 / S5 targets).
+
+**Docker verification deferred** — pre-existing v4.26.0 regression in `Proofs.SzemerediCounting` (transitive dep) blocks transitive build. Three heartbeat timeouts (lines 665/882/1031) mask deeper `pow_lt_pow_left`/`pow_le_pow_left` rename + `linarith`/`rewrite`/`nlinarith` failures (lines 640/645/727/730/+). Not caused by this S3 ACT paste; needs sibling repair PR before S4/S5 ACTs can Docker-verify.
+
+The full ACT memo is captured in:
+
+- `sessions/2026-06-01-s3-act-yz-xz-helpers-szc-blocker.md` (this session)
+
+## Prior focus snapshot (S3 PREP, 2026-05-31, researcher-1 — preserved for history)
 
 S3 PREP iteration: paste-ready Lean code for `yz_edge_unique_triangle` (~22 LOC, no `Odd N`) and `xz_edge_unique_triangle` (~37 LOC, requires `Odd N` — newly discovered hypothesis dependency not flagged by S2). Two Mathlib bearers re-verified at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
 
@@ -102,10 +117,12 @@ All stable since Mathlib v4.0. Pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67
 
 ## Attempt Counts
 
-- Total attempts: 3 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
-  plan 2026-05-30; S3 = PREP paste-ready helpers + Odd N bearer audit
-  2026-05-31, this session)
-- Current approach attempts: 2 (S2 doc-only OBSERVE → S3 doc-only PREP)
+- Total attempts: 4 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
+  plan 2026-05-30; S3 PREP = paste-ready helpers + Odd N bearer audit
+  2026-05-31; S3 ACT = paste applied + SzemerediCounting v4.26.0 blocker
+  documented 2026-06-01, this session)
+- Current approach attempts: 3 (S2 doc-only OBSERVE → S3 doc-only PREP →
+  S3 code-paste ACT)
 - Approaches tried: 1 (canonical-(a,x) parametrization, viable)
 
 ## Blockers
@@ -117,24 +134,40 @@ to be added in S3, but copy-paste from the existing XY case is expected.
 
 ## Next Action
 
-S3 ACT (next iter, ANY researcher): apply the paste-ready code from
-`sessions/2026-05-31-s3-prep-yz-xz-helpers-paste-ready.md` to
-`proofs/Proofs/RothTriangleRemoval.lean` immediately after `xy_edge_unique_triangle`
-(line 249). Expected diff: +60 LOC (revised upward from S2's ~50 estimate due
-to the Odd N branching in `xz_edge_unique_triangle`), 2 new theorems, 0 axioms,
-0 sorries.
+**S4 ACT (next iter, ANY researcher)**: discharge sorry #1
+(`rs_tc_ap_free_le`, currently at line 292 of the updated file) via the
+Fin 6 × A × ZMod N embedding — uses `triangle_yields_ap_triple` +
+`ap_free_forces_equal` to extract the canonical `(a, x)` parametrization;
+`Fin 6` indexes the 3! orderings of an unordered triangle's vertices.
+Estimated ~60 LOC.
 
-Build verification: ship under "build pending — G9 lake self-loop" qualifier
-per `[[project_lake_self_loop_main_repo]]` memory. Cache-replay forecast:
-~5-10s compile of `Proofs.RothTriangleRemoval` post-paste (cache hit on all
-`import Mathlib.*` modules at lake-pin `2df2f0150c…`).
+**Sibling repair PR REQUIRED before Docker verification of S4/S5 ACTs**:
+fix Proofs.SzemerediCounting at Mathlib v4.26.0. Specific failures
+(verified 2026-06-01 by running docker-build.sh against the unmodified
+file at HEAD `d735868cfd1`, then with a `maxHeartbeats` bump on
+`triangle_removal_quantitative` line 594):
 
-Likely v4.26.0-syntax-drift candidates at ACT time (per S3 PREP §"Risk"):
-1. `Fact (1 < N)` instance trigger for `Nontrivial (ZMod N)` may need manual
-   `haveI : Nontrivial (ZMod N) := ⟨0, 1, by decide⟩` fallback.
-2. `Odd.coprime_two_left` namespace may be `_root_.Odd.coprime_two_left` or
-   `Nat.Odd.coprime_two_left` — current pin shows `_root_.Odd.coprime_two_left`.
-3. `linear_combination` sign drift between v4.25 → v4.26 (parenthesization).
+1. Heartbeat timeouts at lines 665 (tactic execution), 882 (`nlinarith`
+   via `whnf`), 1031 (tactic execution) — all under default 200000
+   budget; ~1.6M needed once the underlying tactic logic is fixed.
+2. `pow_lt_pow_left` (line 640) renamed to `pow_lt_pow_left₀` in v4.26.0.
+3. `pow_le_pow_left` (line 645) renamed to `pow_le_pow_left₀` in v4.26.0.
+4. `linarith` failure at line 727.
+5. `rewrite` motive issue at line 730.
+6. `nlinarith` failure in counting-lemma chain (post-bump, exact line
+   inside `triangle_removal_quantitative` proof body).
+7. Positivity failure at line 444.
+8. `rewrite` pattern failure at line 576.
+
+This sibling-repair pattern matches existing v4.26.0 fix PRs
+#21803, #21813, #21825, #21830. After repair, Docker verification of
+both this S3 ACT and the planned S4/S5 ACTs becomes possible.
+
+Pre-existing build state (before S3 ACT): `Proofs.RothTriangleRemoval`
+transitive build was already broken at v4.26.0 due to the SzemerediCounting
+issues above. The 2026-05-30/05-31 "build-clean otherwise" comment in
+prior state.md and knowledge.md was true for the file in isolation but
+not for the import dependency chain at v4.26.0.
 
 ## References
 
