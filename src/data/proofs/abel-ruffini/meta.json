@@ -455,6 +455,42 @@
         "type": "synthesis",
         "description": "Contrapositive of galois_bridge: non-solvable Gal(q) implies α not solvable by radicals",
         "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α"
+      },
+      {
+        "name": "s5_not_solvable",
+        "type": "specialization",
+        "description": "S₅ specialization of symmetric_group_not_solvable at n = 5 via le_rfl",
+        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))"
+      },
+      {
+        "name": "s6_not_solvable",
+        "type": "specialization",
+        "description": "S₆ specialization of symmetric_group_not_solvable at n = 6 via omega",
+        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))"
+      },
+      {
+        "name": "a5_is_simple",
+        "type": "wrapper",
+        "description": "One-line wrapper of Mathlib's alternatingGroup.isSimpleGroup_five — the structural reason the derived series of S₅ stalls at A₅",
+        "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+      },
+      {
+        "name": "s0_solvable",
+        "type": "instance",
+        "description": "S₀ (permutations of empty type) is solvable — discharged by inferInstance",
+        "leanType": "IsSolvable (Equiv.Perm (Fin 0))"
+      },
+      {
+        "name": "s1_solvable",
+        "type": "instance",
+        "description": "S₁ (permutations of one element) is solvable — discharged by inferInstance",
+        "leanType": "IsSolvable (Equiv.Perm (Fin 1))"
+      },
+      {
+        "name": "exists_quintic",
+        "type": "witness",
+        "description": "Trivial existence: ∃ degree-5 polynomial over ℚ (witness X⁵); the substantive analogue ∃ irreducible q with Gal(q) ≅ S₅ is proved in abel-ruffini-oq-04-oq-01",
+        "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5"
       }
     ],
     "path": "Proofs/AbelRuffini.lean",
