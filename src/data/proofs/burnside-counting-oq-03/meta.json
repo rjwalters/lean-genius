@@ -29,7 +29,8 @@
     "theoremCount": 18,
     "definitionCount": 1,
     "additionalFiles": [
-      "Proofs/BurnsideCountingOQ03Aristotle.lean"
+      "Proofs/BurnsideCountingOQ03Aristotle.lean",
+      "Proofs/BurnsideCountingOQ03OQ03.lean"
     ],
     "mathlibDependencies": [
       {
@@ -182,7 +183,16 @@
     "definitionCount": 1,
     "theoremCount": 18,
     "additionalFiles": [
-      "Proofs/BurnsideCountingOQ03Aristotle.lean"
+      "Proofs/BurnsideCountingOQ03Aristotle.lean",
+      {
+        "path": "Proofs/BurnsideCountingOQ03OQ03.lean",
+        "lineCount": 152,
+        "theorems": 6,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "OQ-03 (MulAction bridge): connects the cyclic rotation AddAction (ZMod n) on Coloring n k to Mathlib's MulAction framework via the canonical Multiplicative type alias, then derives Burnside's orbit-counting identity for cyclic necklaces. Key bridge: `(Multiplicative.ofAdd r) • c = r +ᵥ c` definitionally. Proves burnside_necklace_count (sum of |fixedBy g| over Multiplicative (ZMod n) = #orbits · n), burnside_necklace_count_zmod (restated over ZMod n with IsFixedByRotation), necklace_count_burnside (necklace count corollary), and orbitRel_iff_coloringEquiv (Mathlib orbit relation coincides with the parent file's ColoringEquiv). Companion to the parent Pólya enumeration file BurnsideCountingOQ03.lean."
+      }
     ]
   },
   "sorries": 0
