@@ -59,7 +59,10 @@
     "theoremCount": 14,
     "definitionCount": 3,
     "additionalFiles": [
-      "Proofs/BrouwerFixedPointOQ01OQ02G6.lean"
+      "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
     ]
   },
   "overview": {
@@ -165,6 +168,33 @@
         "axioms": 0,
         "sorries": 0,
         "description": "S13 ACT G6 algebraic Unit-bridge generalization (extracted from open PR #18011 Part VI). Generalizes the three Part-V Unit-specific lemmas (unique_hom_to_unit, unique_hom_from_unit_is_zero, comp_through_unit_is_zero) to arbitrary subsingleton AddCommGroup and consolidates the algebraic obstruction in no_split_through_subsingleton. Namespace BrouwerOQ01OQ02. Parallels G7/G8/G10 companion files."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+        "lineCount": 94,
+        "theorems": 2,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S8 ACT-D-2 EXEC G7 algebraic bridge (PR #18951, build-verified PR #19013). Exposes `AddCommGrpCat.not_isZero_iff_nontrivial` (iff form) and `AddCommGrpCat.exists_ne_zero_of_not_isZero` (existential corollary), bridging the `¬ IsZero (...)` shape produced by the B2 surrogate `sphere_singularHomology_nonzero` to the `∃ x : X, x ≠ 0` shape needed by the S9 ACT-D-3 substantive derivation. Universe-monomorphic at Type 0 to match main-file call sites."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
+        "lineCount": 134,
+        "theorems": 2,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S9 ACT-D-3 PREP G8 functoriality bridge + G9 retract-of-zero bridge. Exposes `map_section_of_section` (any functor sends a section to a section) and `isZero_of_section_into_isZero` (retract of a zero object is zero). Pure category theory — no topology, no singular homology — depends only on `CategoryTheory.Functor.Basic` and `Limits.Shapes.ZeroObjects`. Net axiom delta: 0."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
+        "lineCount": 83,
+        "theorems": 1,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S16 ACT-A G10 retraction-to-TopCat bridge (PR #21922). Exposes `Retraction.toTopCatHom` (noncomputable def converting custom Retraction structure into a `𝔻 n ⟶ ∂𝔻 n` TopCat morphism via ULift + Continuous.codRestrict) and `Retraction.section_identity` (categorical section identity from `r.fixes_sphere`). Enables G8 + G9 to fire on the inclusion-retraction pair. Net axiom delta: 0."
       }
     ]
   },
