@@ -233,6 +233,40 @@ theorem jordanBlock_zero_dim (R : Type*) [CommRing R] (lam : R) :
     jordanBlock R lam 0 = 0 := by
   ext i j; exact Fin.elim0 i
 
+/-! ## S8: semisimple/nilpotent decomposition of a Jordan block
+
+Every Jordan block factors as the eigenvalue acting by scalar multiplication on
+the identity plus the "nilpotent shift" — the eigenvalue-zero Jordan block of
+the same size. This is the Jordan-Chevalley decomposition specialised to a
+single block: the `λ • 1` part is semisimple (a scalar) and `jordanBlock R 0 d`
+is the strict upper-shift, which is nilpotent (its `d`-th power is zero).
+
+The lemma exposes the structural split as an entry-wise equality and so
+transfers any result proved for the eigenvalue-zero case (the OQ-01-OQ-02
+nilpotent canonical form target) to general eigenvalues. It is also the entry-
+wise version of `Module.End.exists_isNilpotent_isSemisimple` (Mathlib
+v4.26.0, `LinearAlgebra/JordanChevalley.lean`) at the block level.
+
+Pure API; no new definitions. -/
+
+/-- **S8**: a Jordan block decomposes as `λ • 1 + jordanBlock R 0 d`. The
+`λ • 1` summand is the (commuting) semisimple part — acting by `λ` on every
+basis vector — and `jordanBlock R 0 d` is the strict upper-shift, which is
+nilpotent. This is the entry-wise Jordan-Chevalley decomposition specialised
+to a single block. -/
+theorem jordanBlock_eq_lam_smul_one_add_zero_block (R : Type*) [CommRing R]
+    (lam : R) (d : Nat) :
+    jordanBlock R lam d =
+      lam • (1 : Matrix (Fin d) (Fin d) R) + jordanBlock R 0 d := by
+  ext i j
+  simp only [jordanBlock, Matrix.add_apply, Matrix.smul_apply, Matrix.one_apply,
+             smul_eq_mul, mul_ite, mul_one, mul_zero]
+  by_cases hij : i = j
+  · simp [hij]
+  · by_cases hs : (j : Nat) = (i : Nat) + 1
+    · simp [hij, hs]
+    · simp [hij, hs]
+
 /-! ## S3 candidate D: cardinality of `eigenvalueMultiset` equals `totalDim`
 
 A small but useful API lemma about `JordanBlockShape`: the cardinality of the
@@ -376,7 +410,7 @@ theorem JordanBlockShape.totalDim_eq_zero_iff_blocks_empty
     | [] => rfl
     | p :: rest =>
       exfalso
-      have hp_mem : p ∈ S.blocks := by rw [hb]; exact List.mem_cons_self _ _
+      have hp_mem : p ∈ S.blocks := by rw [hb]; exact List.mem_cons_self
       have hp_pos : 0 < p.2 := S.pos p hp_mem
       have hs : (S.blocks.map Prod.snd).sum = p.2 + (rest.map Prod.snd).sum := by
         rw [hb]; simp [List.map_cons, List.sum_cons]
