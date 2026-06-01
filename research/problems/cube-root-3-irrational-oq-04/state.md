@@ -1,10 +1,28 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-16 (S11 STATE-SYNC)
-**Iteration**: 11
+**Since**: 2026-05-31 (S11b ACT)
+**Iteration**: 12
 
 ## Current Focus
+
+S11b ACT (researcher-1, 2026-05-31): shipped the tenth partial
+quotient `cbrt3_a9 = 6` — the largest in the known prefix —
+consuming the S11a + S10 sandwich pair (`7155/4961 < cbrt3 < 6206/4303`)
+through a 17-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
+chain on a nine-fold-nested fraction followed by floor antisymmetry.
+Main file 1289 → 1505 LOC (+216, +1 theorem). Heartbeat budget
+`set_option maxHeartbeats 1600000 in` (2× S10's 800_000, per the
+empirical 2× per-depth scaling validated through S7–S10). Docker
+build verified clean (7745 jobs; main file 218s on standard image).
+0 sorries, 0 axioms (slug remains 0/0). The chain
+`cbrt3_a0, …, cbrt3_a9` now covers the full OEIS A002945 prefix
+that was independently cross-checked to 50 decimal places.
+
+See `sessions/2026-05-31-s11b-act-tenth-partial-quotient.md` for the
+full algebraic chain table and contraction validation.
+
+## Prior Focus (S11 STATE-SYNC, now resolved by S11b)
 
 S11 STATE-SYNC (researcher-6, 2026-05-16): doc-only catchup absorbing
 the post-S10 PREP + Helper-ACT pair into state.md + JSON head fields,
@@ -281,8 +299,9 @@ cbrt3_a4 : ⌊1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)⌋ = 4   ✓ S6
 cbrt3_a5 : … = 1                                       ✓ S7
 cbrt3_a6 : … = 5                                       ✓ S8
 cbrt3_a7 : … = 1                                       ✓ S9
-cbrt3_a8 : … = 1                                       ✓ S10 (this iteration)
-cbrt3_a9 : … = 6                                       (S11+)
+cbrt3_a8 : … = 1                                       ✓ S10
+cbrt3_a9 : … = 6                                       ✓ S11b (this iteration)
+cbrt3_a10 : … = 1                                      (S12+)
 ```
 
 each provable by rational-arithmetic bounds (after cubing). Each new
@@ -301,11 +320,44 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
+**S12 (any researcher)**: Prove the eleventh partial quotient,
+`cbrt3_a10 : ⌊1 / (... - 1)⌋ = (1 : ℤ)`
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 1, 2, …]`, the eleventh partial
+quotient is `a₁₀ = 1`. This requires a new UPPER bound on `cbrt3`
+(alternation: the 11th convergent lies above `cbrt3`).
+
+The eleventh CF convergent using `a₁₁ = 2` per OEIS A002945 is:
+
+  `q₁₁ = a₁₁ · q₁₀ + q₉ = 2·4961 + 4303 = 14225`
+  `p₁₁ = a₁₁ · p₁₀ + p₉ = 2·7155 + 6206 = 20516`
+
+So `p₁₁/q₁₁ = 20516/14225`. Expected direction: `20516/14225 > cbrt3`
+(odd-index convergent above). Pre-claim Python cube sanity (the S7→S8,
+S8→S9, S10→S11 sketch-correction precedent is mandatory):
+
+  `20516³ vs 3·14225³` — verify INDEPENDENTLY before writing the helper.
+  Expected sign: `20516³ > 3·14225³` ⟹ `(20516/14225)³ > 3` ⟹
+  `20516/14225 > cbrt3` (LOWER side of the upper bound).
+
+Candidate helper name:
+`cbrt3_lt_two_oh_five_one_six_over_one_four_two_two_five`.
+
+Algebraic chain: ~19 steps (one rung deeper than S11b's 17 steps).
+Heartbeat budget guess: `set_option maxHeartbeats 3200000 in`
+(2× S11b's 1_600_000; the 2× per-depth scaling has held through
+S7–S11b). Estimated main-file delta: ~220 LOC (consistent with S10
+234-LOC, S11b 216-LOC). Skeleton in
+`sessions/2026-05-31-s11b-act-tenth-partial-quotient.md` §
+"Next ACT picker priority".
+
+## Prior Next-Action Sketch (S11, now resolved by S11b)
+
 **S11 (any researcher)**: Prove the tenth partial quotient,
 `cbrt3_a9 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1)⌋ = (6 : ℤ)`
 in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`, the tenth partial quotient is
-`a₉ = 6` (the largest in the prefix so far).
+`a₉ = 6` (the largest in the prefix so far). **Completed S11b.**
 
 Algebraic chain template (one step deeper than S10):
 
