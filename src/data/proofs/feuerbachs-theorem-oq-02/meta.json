@@ -29,7 +29,7 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 1,
-    "lineCount": 770,
+    "lineCount": 769,
     "assumptions": "1 axiom: feuerbach_3d_fails_general (existence of a non-orthocentric tetrahedron for which the (N₂₄, R/3)-sphere is not tangent to the insphere). Note: per the 2026-05-02 refutation, tangency also fails for many orthocentric tetrahedra, so the orthocentric hypothesis does not save the conjecture as originally stated. Two former axioms REMOVED as mathematically false (edge_midpoints_on_sphere, face_centroids_on_sphere). Five tangency theorems (feuerbach_3d_insphere, feuerbach_3d_exsphere_{A,B,C,D}) and the bundled feuerbach_3d_theorem REMOVED on 2026-05-02 after a closed-form counterexample at T₀ = ((2,0,0),(0,3,0),(0,0,6),(0,0,0)) showed dist(N₂₄, I)² = 3r² ≠ (R/3 − r)². Net delta: 5 sorries → 0.",
     "originalContributions": [
       "Complete 3D coordinate geometry infrastructure for tetrahedra in Lean 4",
@@ -166,7 +166,7 @@
       "Real"
     ],
     "namespace": "FeuerbachsTheoremOQ02",
-    "lineCount": 770,
+    "lineCount": 769,
     "axiomCount": 1,
     "theoremCount": 17,
     "substantiveTheoremCount": 8,
