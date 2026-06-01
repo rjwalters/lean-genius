@@ -510,6 +510,24 @@
       "type": "key",
       "description": "Algebraic reals decompose as countable union of degree strata",
       "leanType": "{x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfDegree d"
+    },
+    {
+      "name": "algebraic_reals_countable_via_strata",
+      "type": "key",
+      "description": "Alternative countability proof: countability re-derived from the degree-stratification decomposition (countable union of countable sets is countable)",
+      "leanType": "Set.Countable {x : \u211d | IsAlgebraic \u211a x}"
+    },
+    {
+      "name": "card_algebraic_eq_card_rat",
+      "type": "key",
+      "description": "Cardinality equality: the algebraic reals and the rationals are equinumerous despite the algebraic reals being a strict superset (the 'paradox' of countable infinity)",
+      "leanType": "Cardinal.mk {x : \u211d // IsAlgebraic \u211a x} = Cardinal.mk \u211a"
+    },
+    {
+      "name": "algebraic_reals_eq_iUnion_bounded",
+      "type": "key",
+      "description": "Exhaustive bounded-degree filtration: every algebraic real lies in some algebraicRealsOfBoundedDegree d, witnessing the algebraic reals as the colimit of an ascending chain of countable layers",
+      "leanType": "{x : \u211d | IsAlgebraic \u211a x} = \u22c3 d : \u2115, algebraicRealsOfBoundedDegree d"
     }
   ],
   "sorries": 0
