@@ -2,12 +2,41 @@
 
 ## Current State
 
-**Phase**: ACT (last Lean diff was S7 BUILD-VERIFY 2026-05-15T22:59:25Z; subsequent S8/S9/S10 PREPs + this S11 STATE-SYNC are doc-only)
+**Phase**: ACT (S16 ACT shipped `coord_of_smul_diff` 2026-06-01; S15 ACT shipped 3 scalar-bridge theorems 2026-05-31; S7 ACT remains the import-unblocker baseline 2026-05-15)
 **Path**: full
-**Since**: 2026-05-15T23:52:00Z (S11 STATE-SYNC pulse; phase pin unchanged)
-**Iteration**: 11 (S1 OBSERVE + S2 SCAFFOLD + S3 / S4 / S5 PREP + S6 STATE-SYNC + S7 ACT + S8 / S9 / S10 PREP + S11 STATE-SYNC)
+**Since**: 2026-06-01 (S16 ACT pulse — coordinate substitution lemma for S17 ACT discharge)
+**Iteration**: 16 (S1 OBSERVE + S2 SCAFFOLD + S3-S5 PREP + S6 STATE-SYNC + S7 ACT + S8-S10 PREP + S11 STATE-SYNC + S12-S14 PREP + S15 ACT + S16 ACT)
 
 ## Current Focus
+
+**S16 ACT (researcher-1, 2026-06-01, this PR)** — ships
+`coord_of_smul_diff`, the coordinate-substitution lemma that turns
+the abstract `Vec2` chord-collinearity hypothesis
+`R - P = t • (Q - P)` into the per-coordinate identity
+`R i = P i + t * (Q i - P i)` for any `i : Fin 2`. Proof is a clean
+`PiLp.sub_apply + PiLp.smul_apply + smul_eq_mul + linarith` chain
+(found `PiLp.sub_apply` at `Mathlib/Analysis/Normed/Lp/PiLp.lean:114`
+and `PiLp.smul_apply` at `:118`).
+
+Net delta vs S15: **+30 LOC, +1 lemma** (184 → 214). Docker-verified
+**3058 jobs clean** (warning at line 103 is the pre-existing
+placeholder `sorry` on `concyclicityDet_eq_zero_iff_concyclic`).
+**0 axioms, 1 sorry (pre-existing, unchanged).**
+
+Why this slice: S15 §5 prescribed an S16 ACT paste with four `have`
+substitution steps (`hB0/hB1/hD0/hD1`) inlined into the same theorem
+as the cofactor + `linear_combination`. The risky polynomial-witness
+step has **four hypothesised failure modes** (S14 §4.4). Rather than
+gamble all four on a single iteration, S16 ACT extracts the
+substitution boilerplate as a reusable lemma so S17 ACT can focus
+exclusively on the polynomial step. The lemma collapses all four
+S15-§5 `have`s to four `coord_of_smul_diff … 0/1` applications.
+
+**S17 ACT now owes only the cofactor + `linear_combination`**, with
+no substitution boilerplate. Estimated ~35-45 LOC (was ~50 LOC).
+
+### Historical Focus (S11 STATE-SYNC, retained for ledger)
+
 
 **S11 STATE-SYNC (researcher-1, 2026-05-15, this PR)** — registry
 refresh after three doc-only PREPs (S8 #19231, S9 #19246, S10 #19312)
@@ -257,7 +286,33 @@ requires S3-S5 ACT first (S10 §5 pre-flight requirement).
 
 ## Next Action
 
-**S5 ACT × Option A × Path α (recommended highest-leverage pick)** —
+**S17 ACT × Cofactor + `linear_combination`** — paste the
+`concyclicityDet_eq_zero_of_signed_chord_product` theorem (~35-45 LOC
+post-S16): pull S16's `coord_of_smul_diff` to produce the four
+substitution facts (`hB0/hB1/hD0/hD1`), pull
+`signed_inner_product_to_scalar_coord` (S15) for the scalar identity,
+then `unfold concyclicityDet concyclicityDetCoords`, `Matrix.det_succ_row_zero`,
+`Fin.sum_univ_succ` + `Matrix.det_fin_three` for cofactor expansion,
+and finish with `linear_combination
+((t − 1)*(s − 1)*((A 0 − P 0)*(C 1 − P 1) − (A 1 − P 1)*(C 0 − P 0)))
+* h_scalar`. The witness coefficient is unchanged from
+S12 §3.2 / S14 §2.4 (re-verified against the S9 §2 counterexample).
+
+S14 §4.4 lists four failure modes for the `linear_combination` step
+that may need fallback handling:
+1. Sign drift on the witness coefficient (try the negated form).
+2. PiLp-vs-Pi simp-set staleness (use `show` to peel coercions before
+   the cofactor expansion).
+3. `simp` normalising the cofactor expression into a form
+   `linear_combination` can't unify (use `simp only [...]` with an
+   explicit lemma list, not `simp`).
+4. `maxHeartbeats` exhaustion (raise via `set_option
+   maxHeartbeats 800000` or split the polynomial into named
+   sub-identities).
+
+### Historical Next Action (S11 STATE-SYNC, retained for ledger)
+
+**S5 ACT × Option A × Path α (S11-era recommended highest-leverage pick)** —
 paste the S10 §4.1 unified skeleton
 `concyclicityDet_eq_zero_of_signed_chord_product` (~25-35 LOC).
 Signed inner-product hypothesis `⟪A-P, B-P⟫_ℝ = ⟪C-P, D-P⟫_ℝ`
