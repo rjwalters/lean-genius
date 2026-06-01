@@ -69,7 +69,6 @@
       }
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 54,
     "definitionCount": 3
   },
   "sections": [
@@ -259,7 +258,10 @@
     "namespace": null,
     "path": "Proofs/Erdos1065Problem.lean",
     "sorries": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/Erdos1065CunninghamChains.lean"
+    ]
   },
   "mainTheorems": [
     {
