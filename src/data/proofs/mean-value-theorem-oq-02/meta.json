@@ -83,7 +83,7 @@
       "id": "second-order",
       "title": "Second-Order Taylor Expansion",
       "startLine": 129,
-      "endLine": 154,
+      "endLine": 153,
       "summary": "Proves `taylor_second_order`: for ContDiff ℝ 2 f and a < b, ∃ c ∈ (a,b) with f(b) = f(a) + f'(a)(b-a) + iteratedDeriv 2 f c / 2 · (b-a)². Derived from taylor_lagrange_remainder at n=1, using taylorPolynomial_one and simplifying 2! = 2.",
       "mathContext": "At $n=1$: $f(b) = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2}(b-a)^2$. This is the quadratic approximation with exact remainder. Applications: the second-order Taylor expansion is used in Newton's method analysis (quadratic convergence), optimization (second-order conditions), and numerical ODEs (Runge-Kutta order conditions)."
     },
@@ -91,7 +91,7 @@
       "id": "error-bounds",
       "title": "Taylor Error Bounds and Approximation Quality",
       "startLine": 129,
-      "endLine": 154,
+      "endLine": 153,
       "summary": "The Lagrange remainder gives sharp error bounds: |f(b) - T_n(b)| ≤ M|b-a|^(n+1)/(n+1)! where M bounds the (n+1)-th derivative. MVT (n=0) and second-order Taylor (n=1) are special cases with explicit error control.",
       "mathContext": "The second-order Taylor theorem (taylor_second_order) yields: $|f(b) - f(a) - f'(a)(b-a)| \\leq \\frac{\\sup_{c \\in (a,b)} |f''(c)|}{2} \\cdot (b-a)^2$. This $O((b-a)^2)$ bound improves on MVT's $O(b-a)$ and is the foundation for second-order numerical methods (Heun's method, midpoint rule)."
     }
