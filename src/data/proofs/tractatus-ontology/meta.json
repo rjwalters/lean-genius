@@ -14,7 +14,9 @@
     ],
     "proofRepoPath": "Proofs/TractatusOntology.lean",
     "additionalFiles": [
-      "Proofs/TractatusQuantifiers.lean"
+      "Proofs/TractatusQuantifiers.lean",
+      "Proofs/TractatusOntologyHorn.lean",
+      "Proofs/TractatusOntologyEquiv.lean"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -282,6 +284,24 @@
         "axioms": 0,
         "sorries": 0,
         "description": "First-order extension: FOProp type with HOAS quantifiers, evaluation, compositionality, duality, and distribution theorems (TLP 5.52, 5.521, 5.526)"
+      },
+      {
+        "path": "Proofs/TractatusOntologyHorn.lean",
+        "lineCount": 130,
+        "theorems": 2,
+        "definitions": 5,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "T1a tier (tractatus-ontology-oq-06): generic HornModel constructor over a list of Horn clauses, single-clause Equiv with ConstrainedWorld, generic Horn-tier independence-failure theorem, and weatherModel as a single-clause HornModel instance."
+      },
+      {
+        "path": "Proofs/TractatusOntologyEquiv.lean",
+        "lineCount": 137,
+        "theorems": 2,
+        "definitions": 4,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "T1b tier (tractatus-ontology-oq-06): EquivModel constructor for biconditional-constrained worlds, structural iso witnessing T1b ⊆ T1a-symmetric (cs ++ cs.map Prod.swap), refinement into T1a sharing the constraint list, and biconditional-tier independence-failure theorem."
       }
     ]
   },
