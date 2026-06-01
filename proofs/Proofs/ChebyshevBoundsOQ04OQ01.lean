@@ -301,6 +301,51 @@ theorem selbergLambda2_eq_moebius_log_sq {n : ℕ} (hn : 0 < n) :
       (fun a b => (ArithmeticFunction.moebius a : ℝ) * (Real.log b) ^ 2)
   exact hinv.symm.trans hbridge
 
+/-! ## Mertens partial sum M(N) and its trivial linear bound (Iter 5a-β-1)
+
+Toward the weak Mertens M1 estimate
+
+    |Σ_{d ∈ Icc 1 N} (μ(d) : ℝ) / d| ≤ 1 + Real.log N    (Iter 5a-β target),
+
+the foundational ingredient is the trivial triangle bound
+
+    |M(N)| ≤ N,    M(N) := Σ_{d ∈ Icc 1 N} (μ(d) : ℝ).
+
+This follows from `|μ(d)| ≤ 1` (Mathlib `ArithmeticFunction.abs_moebius_le_one`,
+in ℤ) and the triangle inequality `|Σ| ≤ Σ |·|`. The linear bound is
+far from optimal — the Riemann hypothesis is equivalent to
+`|M(N)| = O(N^{1/2+ε})` — but the trivial form is exactly what
+summation-by-parts will need in 5a-β. -/
+
+/-- The Mertens partial sum `M(N) := Σ_{1 ≤ d ≤ N} μ(d)`, cast to `ℝ`. -/
+noncomputable def mertensM (N : ℕ) : ℝ :=
+  ∑ d ∈ Finset.Icc 1 N, (ArithmeticFunction.moebius d : ℝ)
+
+/-- `M(0) = 0` since `Icc 1 0 = ∅`. -/
+theorem mertensM_zero : mertensM 0 = 0 := by
+  unfold mertensM
+  rw [Finset.Icc_eq_empty_of_lt (by decide : (0 : ℕ) < 1)]
+  simp
+
+/-- **Trivial linear bound** for the Mertens partial sum: `|M(N)| ≤ N`.
+    Proof: triangle inequality `|Σ| ≤ Σ |·|`, then
+    `|(μ d : ℝ)| = ((|μ d| : ℤ) : ℝ) ≤ 1` via
+    `ArithmeticFunction.abs_moebius_le_one`, then count
+    `(Finset.Icc 1 N).card = N`. -/
+theorem mertensM_abs_le (N : ℕ) : |mertensM N| ≤ (N : ℝ) := by
+  unfold mertensM
+  calc |∑ d ∈ Finset.Icc 1 N, ((ArithmeticFunction.moebius d : ℤ) : ℝ)|
+      ≤ ∑ d ∈ Finset.Icc 1 N, |((ArithmeticFunction.moebius d : ℤ) : ℝ)| :=
+        Finset.abs_sum_le_sum_abs _ _
+    _ ≤ ∑ _d ∈ Finset.Icc 1 N, (1 : ℝ) := by
+        apply Finset.sum_le_sum
+        intro d _
+        rw [← Int.cast_abs]
+        exact_mod_cast ArithmeticFunction.abs_moebius_le_one
+    _ = ((Finset.Icc 1 N).card : ℝ) := by simp
+    _ = (N : ℝ) := by
+        rw [Nat.card_Icc, Nat.add_sub_cancel]
+
 /-! ## Future Work
 
 The remaining next-iteration deliverables are, in order of increasing
@@ -310,7 +355,9 @@ difficulty:
         S₂(N) = 2 N · log N + O(N).
    The error-term step requires summation by parts and quantitative
    control of Σ_{d ≤ x} μ(d) — but only its `O(x)` form, which is well
-   within elementary bounds.
+   within elementary bounds. Iter 5a-β-1 (this iteration) lands the
+   foundational `|M(N)| ≤ N` bound; Iter 5a-β assembles it with Abel
+   summation against `1/d` to deliver the weak Mertens M1 estimate.
 
 2. **Tauberian step → PNT** (Iter 7+): Erdős–Selberg's combinatorial
    finishing argument, the longest part of the elementary proof.
@@ -320,6 +367,8 @@ the Selberg–Erdős elementary PNT proof: Iter 3's dual form
 Σ_{d ∣ n} Λ₂(d) = (log n)² and Iter 4's Möbius-inverse literal form
 Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d), together with the bridge lemma
 `vonMangoldtConv_eq_mul` that connects this file's explicit divisor-sum
-definition to Mathlib's `ArithmeticFunction` convolution. -/
+definition to Mathlib's `ArithmeticFunction` convolution. Iter 5a-β-1
+(this iteration) adds the Mertens partial sum `mertensM` and its
+trivial linear bound `mertensM_abs_le`. -/
 
 end ChebyshevBoundsOQ04OQ01

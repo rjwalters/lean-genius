@@ -1,7 +1,7 @@
 {
   "slug": "chebyshev-bounds-oq-04-oq-01",
   "title": "Elementary Proof of Full PNT from Chebyshev Bounds",
-  "phase": "PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)",
+  "phase": "ACT (Iter 5a-β-1 — Mertens partial sum M(N) and |M(N)| ≤ N bound, Docker-verified 7744 jobs)",
   "status": "in-progress",
   "tier": "S",
   "path": "full",
@@ -33,24 +33,20 @@
     "goal": "Replace the axiom ChebyshevBoundsOQ04.chebyshevPsi_asymptotic with a Lean 4 proof following Selberg-Erdős 1949 elementary methods (no complex analysis)."
   },
   "currentState": {
-    "phase": "PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)",
-    "since": "2026-05-16T20:15:00.000Z",
-    "iteration": 5,
-    "focus": "S7 STATE-SYNC (researcher-6, 2026-05-16T20:15Z, doc-only, this PR) absorbs 3 RED INFRA blockers on host (G7 disk 3.2 Gi 100% capacity below same-day soft floors; G8 Docker daemon hung Server: section empty; G9 proofs/.lake circular self-symlink) + fixes 3 stale \"this PR\" leftovers from S6 PREP's JSON write (focus/progressSummary/insights[11] all rewritten to \"MERGED as PR #N at TIMESTAMP\") + reaffirms S6 PREP's split-ACT plan unchanged (5a-α / 5a-β / 5a-γ, 150-230 LOC honest budget). S6 PREP (researcher-9, 2026-05-16T04:37Z, MERGED as PR #19455 at 08:55:05Z) absorbed the Iter 4 ACT merge (PR #19400 at 2026-05-16T03:52:02Z) and staged Iter 5a (Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N)) with a Mathlib bearer manifest at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (pin unchanged at T-0). 0 Lean changes by this S7. 2-bearer SHA-stability spot-check GREEN: Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:240 sum_eq_iff_sum_mul_moebius_eq (Iter 4 in-use) + Mathlib/NumberTheory/AbelSummation.lean:229 sum_mul_eq_sub_integral_mul₀' (5a-α staged target). Remaining bearers carry-forward valid by SHA-pin transitivity per _SHA_stable_busywork memory. Picker for S{8}: ACT 5a-α or 5a-β only if G7 ≥6.0 Gi + G8 up + G9 OK + Mathlib SHA unchanged (R1/R2); else doc-only or release-without-PR per matrix R3-R6 in session memo §6.",
-    "blockers": [
-      "G7 disk RED: 3.2 Gi avail on /dev/disk3s5 (100% capacity), below same-day soft floors 5.4-5.8 Gi; forecloses Docker Lean build at 7744-job size",
-      "G8 Docker hung: docker info returns Client block, Server: section empty (repeatable cross-slug pattern in abel-ruffini S7 #19755, sqrt2-minpoly S6 #19760, binomial S18 #19740)",
-      "G9 proofs/.lake circular self-symlink: target equals link path (/Users/rwalters/GitHub/lean-genius/proofs/.lake -> itself)"
-    ],
-    "nextAction": "HOST RECOVERY required first (G7+G8+G9 all RED at S7 ship-time). Once host G7 ≥6.0 Gi + G8 Docker up + G9 .lake non-circular + Mathlib SHA still 2df2f0150c…: Pick Iter 5a-α or Iter 5a-β (independent, can be parallelised). Iter 5a-α: prove ∃ C, ∀ N ≥ 2, |Σ_{m ∈ Icc 1 N} (Real.log m)² − (N · (Real.log N)² − 2N · Real.log N + 2N)| ≤ C · (Real.log N)² via Abel summation against f(t) = (log t)² (bearer: sum_mul_eq_sub_integral_mul₀' at Mathlib/NumberTheory/AbelSummation.lean:229, pin 2df2f0150c, byte-stable spot-checked S7). Estimated 60-90 LOC, 2-4 Docker iters. Iter 5a-β: prove ∀ N ≥ 1, |Σ_{d ∈ Icc 1 N} (ArithmeticFunction.moebius d : ℝ) / d| ≤ 1 + Real.log N via summation by parts on M(N) := Σ μ(d) (using |M(N)| ≤ N from abs_sum_le_sum_abs + Int.abs_moebius_le_one). Estimated 50-80 LOC, 2-3 Docker iters. Iter 5a-γ assembles both into the symmetry formula, requires 5a-α + 5a-β merged. Full per-sub-iter acceptance criteria in research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s6-prep-iter5a-symmetry-formula.md §6-§8. Picker decision matrix R1-R6 covering all G7/G8/G9/Mathlib-SHA combinations in research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s7-statesync-infra-red-postship-pivot.md §6.",
+    "phase": "ACT (Iter 5a-β-1 — Mertens partial sum M(N) and |M(N)| ≤ N bound, Docker-verified 7744 jobs)",
+    "since": "2026-06-01T00:00:00.000Z",
+    "iteration": 6,
+    "focus": "Iter 5a-β-1 ACT (researcher-1, 2026-06-01, this PR) lands the foundational |M(N)| ≤ N bound toward the weak Mertens M1 estimate (Iter 5a-β). Adds noncomputable def mertensM : ℕ → ℝ := Σ_{d ∈ Finset.Icc 1 N} (μ d : ℝ) + theorem mertensM_zero : mertensM 0 = 0 + theorem mertensM_abs_le : ∀ N, |mertensM N| ≤ N. Proof of |M(N)| ≤ N uses ArithmeticFunction.abs_moebius_le_one (|μ| ≤ 1 in ℤ), Finset.abs_sum_le_sum_abs (triangle), Int.cast_abs (cast lift), Finset.sum_const (simp-tagged), Nat.card_Icc + Nat.add_sub_cancel ((Icc 1 N).card = N + 1 - 1 = N). File grows 325 → 374 LOC (+49), theorems 16 → 18 (+2), defs 3 → 4 (+1), 0 sorries, 0 axioms maintained. Docker-verified clean [7744/7744] in 23s on first iteration at base SHA 91e6cc5396a against Mathlib v4.26.0 pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
+    "blockers": [],
+    "nextAction": "Iter 5a-β-2 (next): assemble |Σ_{d ∈ Icc 1 N} (μ d : ℝ)/d| ≤ 1 + Real.log N from this iteration via summation by parts. Bearer for partial summation — identify Mathlib discrete partial-summation lemma or build a short Abel rearrangement locally using mertensM_abs_le. Estimate 40-60 LOC, 2-3 Docker iters. Iter 5a-α (Σ (log m)² asymptotic via Abel summation against (log t)²) remains independent and claimable in parallel.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 5,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S7 STATE-SYNC (2026-05-16T20:15Z, researcher-6, this PR) absorbs 3 RED INFRA blockers (G7 disk 3.2 Gi RED, G8 Docker daemon hung, G9 proofs/.lake circular self-symlink — all repeatable cross-slug at T-0) + fixes 3 stale \"this PR\" loci in JSON (focus/progressSummary/insights[11]) + reaffirms S6 PREP's split-ACT plan unchanged + 2-bearer SHA-stability spot-check (Moebius.lean:240 + AbelSummation.lean:229, both byte-stable at pin 2df2f0150c…). Iter 4 (2026-05-16, build verified 7744 jobs, MERGED as PR #19400 at 03:52:02Z) closes the literal Möbius-inversion form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0, deferred from Iter 3. One new theorem selbergLambda2_eq_moebius_log_sq applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:240, v4.26.0) to Iter 3's sum_divisors_selbergLambda2_eq_log_sq, then re-indexes the resulting divisorsAntidiagonal sum back to a divisors sum via Nat.sum_divisorsAntidiagonal (Mathlib/NumberTheory/Divisors.lean:543). Proof body ~8 LOC (lift hypothesis + .mp + Nat.sum_divisorsAntidiagonal + symm.trans). File grows 312 → 325 LOC, 15 → 16 theorems, 0 sorries, 0 axioms maintained. Iter 3 (2026-05-14, PR #19092 merged 2026-05-15T22:59:33Z) closed the dual identity Σ_{d|n} Λ₂(d) = (log n)². Iter 2 (2026-05-12, PR #17690 merged) closed the prime-value lemmas. Iter 1 (2026-05-09, PR #17658 merged) scaffolded the Selberg-Erdős 1949 elementary PNT strategy.",
+    "progressSummary": "Iter 5a-β-1 ACT (2026-06-01, researcher-1, this PR) Docker-verified 7744 jobs clean (23s, single iteration): adds the foundational |M(N)| ≤ N trivial bound for the Mertens partial sum M(N) = Σ_{1 ≤ d ≤ N} μ(d). New artifacts: noncomputable def mertensM : ℕ → ℝ + theorem mertensM_zero + theorem mertensM_abs_le. Proof structure: triangle inequality (Finset.abs_sum_le_sum_abs) + |μ(d)| ≤ 1 in ℤ (ArithmeticFunction.abs_moebius_le_one) lifted to ℝ via Int.cast_abs + exact_mod_cast + Finset.sum_const + Nat.card_Icc/Nat.add_sub_cancel for the cardinality count. File grows 325 → 374 LOC (+49), theorems 16 → 18 (+2), defs 3 → 4 (+1), 0 sorries, 0 axioms maintained. This is the first foundational ingredient toward Iter 5a-β (weak Mertens M1 |Σ μ(d)/d| ≤ 1 + log N), which combined with Iter 5a-α (Σ (log m)² asymptotic) feeds Iter 5a-γ (Selberg symmetry formula assembly). S7 STATE-SYNC (2026-05-16, researcher-6, MERGED as PR #19820 at 21:21:31Z) absorbed 3 RED INFRA blockers (G7 disk + G8 Docker + G9 .lake) which have since recovered: G7 disk 56 Gi avail (was 3.2), G8 Docker daemon Server up Version 29.4.1 (was hung), G9 .lake circular self-symlink confirmed inert for Docker builds per memory feedback_g9_qualifier_masks_real_bugs (Docker -v mount overrides host symlink). Mathlib pin 2df2f0150c… unchanged since S6 PREP. Iter 4 (2026-05-16, MERGED as PR #19400) closed the literal Möbius-inversion form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0.",
     "builtItems": [
       "Proofs/ChebyshevBoundsOQ04OQ01.lean — Iter 1 (PR #17658) + Iter 2 (PR #17690): 230 lines, 12 theorems, 3 noncomputable defs, 0 sorries, 0 axioms",
       "vonMangoldtConv : ℕ → ℝ — Dirichlet convolution Λ ∗ Λ as explicit divisor sum (Iter 1)",
@@ -66,7 +62,10 @@
       "Iter 3 lemma (this PR): sum_divisors_selbergLambda2_eq_log_sq — Σ_{d|n} selbergLambda2 d = (Real.log n)² for n > 0 (the central Selberg dual identity; combines the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs, ~20 LOC).",
       "Iter 3 incidental fix (this PR): ChebyshevBoundsOQ04.lean:298 `by ring` → `by rw [pow_mul]; rfl` to close `4^m = 2^(2*m)` (Mathlib v4.26.0 ring regression; ring treats 4 and 2 as distinct atoms).",
       "Iter 3 incidental fix (this PR): ChebyshevBoundsOQ04OQ01.lean:191 `Nat.divisors_prime hp` → `Nat.Prime.divisors hp` (Mathlib v4.26.0 renamed to dot-method form).",
-      "Iter 4 lemma (this PR): selbergLambda2_eq_moebius_log_sq — Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0. Proof: lift Iter 3 to ∀ m : ℕ, 0 < m → Σ ... = (Real.log m)², apply .mp of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, bridge antidiagonal→divisors via Nat.sum_divisorsAntidiagonal, then symm.trans (~8 LOC body)."
+      "Iter 4 lemma (this PR): selbergLambda2_eq_moebius_log_sq — Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0. Proof: lift Iter 3 to ∀ m : ℕ, 0 < m → Σ ... = (Real.log m)², apply .mp of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, bridge antidiagonal→divisors via Nat.sum_divisorsAntidiagonal, then symm.trans (~8 LOC body).",
+      "Iter 5a-β-1 (this PR): noncomputable def mertensM (N : ℕ) : ℝ := Σ_{d ∈ Finset.Icc 1 N} (ArithmeticFunction.moebius d : ℝ) — the Mertens partial sum M(N) cast to ℝ, foundational for the Iter 5a-β weak Mertens M1 estimate and downstream Tauberian work.",
+      "Iter 5a-β-1 (this PR): theorem mertensM_zero : mertensM 0 = 0 — empty Icc 1 0 base case via Finset.Icc_eq_empty_of_lt + simp.",
+      "Iter 5a-β-1 (this PR): theorem mertensM_abs_le (N : ℕ) : |mertensM N| ≤ (N : ℝ) — the trivial linear bound. 4-step calc chain: Finset.abs_sum_le_sum_abs (triangle) → pointwise |(μ d : ℝ)| ≤ 1 via Int.cast_abs + ArithmeticFunction.abs_moebius_le_one (lifted from ℤ via exact_mod_cast) → Finset.sum_const (simp closure to card · 1) → Nat.card_Icc + Nat.add_sub_cancel ((Icc 1 N).card = N + 1 - 1 = N)."
     ],
     "insights": [
       "Selberg's Λ₂ identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution and μ is Möbius) reduces the elementary PNT proof to Möbius-function manipulations of log² — this is the dimensional reduction that bypasses complex analysis entirely.",
@@ -81,7 +80,9 @@
       "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `ring` no longer closes `4^m = 2^(2*m)` even with `ring_nf` suggestion — the elaborator treats `4` and `2^2` as distinct atoms in ring-normalization. Surgical fix: `rw [pow_mul]; rfl` (pow_mul : a^(m*n) = (a^m)^n unfolds the RHS to (2^2)^m = 4^m by definitional reduction). The pattern is generic for any `c^k = b^(j*k)` where c = b^j is definitionally true in ℕ. Applies to many Chebyshev/central-binomial proofs that bound via `4^m ≤ choose(2m+1, m)` style estimates.",
       "Iter 4 trap (Möbius-inversion lift requires explicit ℕ annotation): the iff-form hypothesis ∀ m > 0, Σ i ∈ m.divisors, ... = (Real.log m)² must be written as ∀ m : ℕ, 0 < m → ... — without the explicit ℕ annotation Lean's elaborator infers m : ℝ from Real.log m (which accepts ℝ directly), then fails on m.divisors (\"Real.divisors\" not found) and rejects the lift fun m hm => sum_divisors_selbergLambda2_eq_log_sq hm. The fix is a 1-token addition. General pattern: any iff-form Möbius-inversion lift in this file should type-annotate the bound ℕ variable when the consequent coerces through Real.log.",
       "S6 PREP scope-honesty finding (MERGED as PR #19455 at 2026-05-16T08:55:05Z, researcher-9): Iter 4 session memo estimated Iter 5a at 80-120 LOC. Post bearer survey, the honest budget is 150-230 LOC because two prerequisite Mathlib gaps (Σ (log m)² asymptotic and Mertens M1 |Σ μ(d)/d| = O(1)) must be built locally. Recommendation: split Iter 5a into three sub-iters (5a-α log² asymptotic, 5a-β weak Mertens M1, 5a-γ assembly) to limit per-PR Docker churn and enable parallel claims on the independent sub-iters. Side discovery: Mathlib has Chebyshev.psi/theta natively (Mathlib/NumberTheory/Chebyshev.lean, 272 LOC, upstreamed from PrimeNumberTheoremAnd), with psi_le_const_mul_self : ψ x ≤ (log 4 + 4) * x — an upper bound, not the asymptotic — so the Selberg-Erdős elementary route remains the right strategy for the parent's chebyshevPsi_asymptotic axiom. A 2-LOC bridge from parent.chebyshevPsi to Mathlib's Chebyshev.psi may be useful at the Iter 7+ Tauberian step. S7 STATE-SYNC (researcher-6, 2026-05-16T20:15Z, this PR) reaffirms this plan unchanged; 2-bearer spot-check at pin 2df2f0150c… GREEN (Moebius.lean:240 + AbelSummation.lean:229).",
-      "S7 STATE-SYNC INFRA-RED escalation (researcher-6, 2026-05-16T20:15Z, this PR): host G7 disk 3.2 Gi avail (100% capacity, below same-day soft floors 5.4-5.8 Gi set by ballot S5 PREP + shannon S18a-1 ACT), G8 Docker daemon hung (Server: section empty, repeatable cross-slug — same pattern in abel-ruffini S7 #19755, sqrt2-minpoly S6 #19760, binomial S18 #19740 within T-2h), G9 proofs/.lake circular self-symlink (target equals link path). ACT 5a-α / 5a-β structurally foreclosed at S7 ship-time. Mathlib pin 2df2f0150c… unchanged from S6 PREP, 2-bearer SHA-stability spot-check GREEN (Moebius.lean:240 sum_eq_iff_sum_mul_moebius_eq Iter 4 in-use + AbelSummation.lean:229 sum_mul_eq_sub_integral_mul₀' 5a-α target). Recovery prescriptions for G7/G8/G9 in session memo §2.1-§2.3 (host-side, not slug-content; mechanic PR cannot fix Docker hang or disk floor — needs researcher-side or host-maintenance hand-off). Picker matrix R1-R6 for S{8} in session memo §6: doc-only iteration or release-without-PR if G7 still <4.0 Gi after recovery attempts; otherwise ACT 5a-α or 5a-β with build-pending qualifier permissible per leaf-only + recent-build-verify + bearer-0-drift acceptance criteria."
+      "S7 STATE-SYNC INFRA-RED escalation (researcher-6, 2026-05-16T20:15Z, this PR): host G7 disk 3.2 Gi avail (100% capacity, below same-day soft floors 5.4-5.8 Gi set by ballot S5 PREP + shannon S18a-1 ACT), G8 Docker daemon hung (Server: section empty, repeatable cross-slug — same pattern in abel-ruffini S7 #19755, sqrt2-minpoly S6 #19760, binomial S18 #19740 within T-2h), G9 proofs/.lake circular self-symlink (target equals link path). ACT 5a-α / 5a-β structurally foreclosed at S7 ship-time. Mathlib pin 2df2f0150c… unchanged from S6 PREP, 2-bearer SHA-stability spot-check GREEN (Moebius.lean:240 sum_eq_iff_sum_mul_moebius_eq Iter 4 in-use + AbelSummation.lean:229 sum_mul_eq_sub_integral_mul₀' 5a-α target). Recovery prescriptions for G7/G8/G9 in session memo §2.1-§2.3 (host-side, not slug-content; mechanic PR cannot fix Docker hang or disk floor — needs researcher-side or host-maintenance hand-off). Picker matrix R1-R6 for S{8} in session memo §6: doc-only iteration or release-without-PR if G7 still <4.0 Gi after recovery attempts; otherwise ACT 5a-α or 5a-β with build-pending qualifier permissible per leaf-only + recent-build-verify + bearer-0-drift acceptance criteria.",
+      "Iter 5a-β-1 design note: defining the Mertens partial sum directly cast to ℝ (mertensM : ℕ → ℝ via the Σ over Finset.Icc 1 N) — rather than keeping it in ℤ and casting at use sites — keeps downstream summation-by-parts manipulations clean. The ℤ form |M(N) : ℤ| ≤ N is accessible via the abs_moebius_le_one chain but introduces extra Int.cast_abs juggling; staying in ℝ from the definition cuts ~5 LOC at each use site. Verified by the 4-step calc chain in mertensM_abs_le: Int.cast_abs + exact_mod_cast suffices to lift |μ(d)| ≤ 1 from ℤ to ℝ pointwise, and the cardinality step closes via Nat.card_Icc + Nat.add_sub_cancel without push_cast manipulation.",
+      "Iter 5a-β-1 INFRA snapshot (2026-06-01, researcher-1, this PR): all 3 RED blockers from S7 (2026-05-16) have recovered. G7 disk 56 Gi avail (was 3.2 Gi). G8 Docker daemon Server up, Version 29.4.1, Containers: 0 (was hung with empty Server section). G9 proofs/.lake circular self-symlink in main repo persists (link → itself) but per memory project_lake_self_loop_main_repo + feedback_g9_qualifier_masks_real_bugs, the self-loop is INERT for Docker builds because the docker-build.sh -v bind-mount overrides it. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 unchanged since S6 PREP (16-day stability). Empirical Docker run [7744/7744] in 23s clean confirms G9 inertness once more."
     ],
     "mathlibGaps": [
       "No formalization of Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). (Iter 5–6 target.)",
@@ -98,7 +99,9 @@
       "Iter 5a-γ (40-60 LOC, requires 5a-α + 5a-β merged): assemble Selberg's symmetry formula |selbergSum2 N − 2N·log N| ≤ C·N via Möbius hyperbola sum swap on Iter 4's selbergLambda2_eq_moebius_log_sq. May require Iter 5a-δ for Mertens M2 (Σ (μ(d)/d)·log d = O(1), ~30-50 LOC) depending on sign-cancellation handling.",
       "Iter 5b (optional, ~80 LOC): O(N) error-term sharpening if downstream Iter 6 requires a witnessed constant smaller than 5a-γ produces.",
       "Iter 6+: Tauberian inequality V(x)·log x ≤ (2/x)·Σ_{n ≤ x} V(x/n)·Λ(n) + O(1) where V(x) = |ψ(x) − x|/x.",
-      "Iter 7+: Erdős combinatorial finishing lim sup V(x) = 0 from the Tauberian inequality; discharges parent's chebyshevPsi_asymptotic axiom (slug's terminal goal)."
+      "Iter 7+: Erdős combinatorial finishing lim sup V(x) = 0 from the Tauberian inequality; discharges parent's chebyshevPsi_asymptotic axiom (slug's terminal goal).",
+      "Iter 5a-β-1 — DONE (this PR, 2026-06-01, researcher-1): mertensM definition + mertensM_zero + |mertensM N| ≤ N, Docker-verified 7744 jobs in 23s.",
+      "Iter 5a-β-2 (next, 40-60 LOC): assemble |Σ_{d ∈ Icc 1 N} (μ d : ℝ)/d| ≤ 1 + Real.log N via summation by parts using Iter 5a-β-1 mertensM_abs_le as the M(N) input. Survey Mathlib bearers: AbelSummation.lean and Finset.sum_Ioc_consecutive are candidates; if no discrete partial-summation lemma in Mathlib, build a short Abel rearrangement locally."
     ]
   },
   "tags": [
@@ -158,7 +161,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.340Z",
-  "lastUpdate": "2026-05-16T20:15:00.000Z",
+  "lastUpdate": "2026-06-01T00:00:00.000Z",
   "significance": 9,
   "tractability": 3,
   "leanFiles": [
@@ -198,10 +201,10 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
       "filename": "ChebyshevBoundsOQ04OQ01.lean",
-      "lineCount": 326,
-      "theoremCount": 16,
+      "lineCount": 374,
+      "theoremCount": 18,
       "axiomCount": 0,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean"
