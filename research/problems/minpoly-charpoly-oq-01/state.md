@@ -1,9 +1,71 @@
 # Current State
 
-**Phase**: ACT (S7 this PR — adds `JordanBlockShape.totalDim_eq_zero_iff_blocks_empty` API lemma, +1 theorem, +31 LOC). Pure additive API, no def or sorry change. INFRA recovered: G7+G8 GREEN, G9 still RED (Docker bypasses).
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z; S6 STATE-SYNC by researcher-11 2026-05-17)
-**Iteration**: 7
-**Last Updated**: 2026-05-30T18:50:00Z (S7 ACT, researcher-1)
+**Phase**: ACT (S8 this PR — adds `jordanBlock_eq_lam_smul_one_add_zero_block` API lemma, +1 theorem, ~+34 LOC; ALSO fixes S7 PR #21220 v4.26.0 build break — `List.mem_cons_self _ _` → `List.mem_cons_self`). Pure additive API + 1-line S7 fix, no def or sorry change. Exposes the entry-wise Jordan-Chevalley split `λ • 1 + jordanBlock R 0 d` of a Jordan block. **Docker build-verified: 3081/3081 jobs**.
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z; S6 STATE-SYNC by researcher-11 MERGED [#20027](https://github.com/rjwalters/lean-genius/pull/20027) 2026-05-17T02:23:09Z; S7 ACT by researcher-1 MERGED [#21220](https://github.com/rjwalters/lean-genius/pull/21220) 2026-05-31T00:36:40Z)
+**Iteration**: 8
+**Last Updated**: 2026-05-31T22:10:00Z (S8 ACT, researcher-1)
+
+## S8 ACT Summary (2026-05-31, researcher-1)
+
+**Mode**: ACT (small focused API addition — entry-wise Jordan-Chevalley decomposition of a single block).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with one public theorem:
+
+**`jordanBlock_eq_lam_smul_one_add_zero_block`** — `jordanBlock R λ d = λ • 1 + jordanBlock R 0 d` for any commutative ring `R`, scalar `λ`, and dimension `d`. The `λ • 1` summand is the semisimple part (a scalar acting on the identity); `jordanBlock R 0 d` is the strict upper-shift, which is nilpotent (its `d`-th power vanishes). This is the entry-wise version of Mathlib's `Module.End.exists_isNilpotent_isSemisimple` (`LinearAlgebra/JordanChevalley.lean`) specialised to a single Jordan block.
+
+### Why this matters
+
+Any future eigenvalue-zero result (the OQ-01-OQ-02 nilpotent canonical form target) lifts to general eigenvalues by adding `λ • 1`. The lemma is the structural API surface for that transfer, and removes the need to repeat eigenvalue-shifting arguments at each downstream use site.
+
+### Design choices
+
+* **`λ • 1 + jordanBlock R 0 d`, not `jordanBlock R λ d - λ • 1 = jordanBlock R 0 d`.** Both forms are equivalent, but the additive form is more natural for downstream `rw` users who want to *replace* `jordanBlock R λ d` with its decomposition.
+* **`Matrix.add_apply`/`Matrix.smul_apply`/`Matrix.one_apply` + `smul_eq_mul`/`mul_ite`.** The proof uses an `ext` reduction followed by entry-wise case-analysis on `i = j` and `(j : Nat) = (i : Nat) + 1`, identical structure to the S1/S2 entry-wise lemmas. The `simp only` set keeps the proof inspectable rather than collapsing to a black-box `simp`.
+* **No new defs.** Pure API addition on the existing `jordanBlock`. Definition count stable at 3 since S2.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 387 → 421 lines (+34, of which ~+15 are the new lemma and ~+19 are the section docstring).
+* Sorries: 5 (raw count; 1 tactic at line 342 + 4 commentary mentions — unchanged).
+* Axioms: 0 (unchanged).
+* Theorems: 11 → 12 (added `jordanBlock_eq_lam_smul_one_add_zero_block`).
+* Definitions: 3 (unchanged).
+
+### Build status
+
+**Docker build-verified: 3081/3081 jobs, 7.1s for the target file.** Build log: `/tmp/research-builds/minpoly-charpoly-oq-01-s8-retry.log`. The only warning is the expected `declaration uses 'sorry'` on the load-bearing `jordan_normal_form_exists` at line 366 (now-shifted from line 342 due to S8 additions). Per memory `project_lake_self_loop_main_repo` (G9 self-symlink inert for Docker), the Docker `-v` mount overrides the symlink; build path was unaffected.
+
+### S7 build-bug discovered and fixed (this PR)
+
+PR [#21220](https://github.com/rjwalters/lean-genius/pull/21220) (S7 ACT, researcher-1, merged 2026-05-31T00:36:40Z) shipped with "Not run in this session" build status. The S8 Docker build of the post-merge file revealed a Mathlib v4.26.0 API drift in the S7 proof body at the (then) line 413:
+
+```
+error: Proofs/MinpolyCharpolyOQ01.lean:413:54: Function expected at
+  List.mem_cons_self
+but this term has type
+  ?m.48 ∈ ?m.48 :: ?m.49
+```
+
+In Lean core v4.26.0 (`~/.elan/toolchains/leanprover--lean4---v4.26.0/src/lean/Init/Data/List/Lemmas.lean:350`), `List.mem_cons_self` is `{a : α} {l : List α} : a ∈ a :: l := .head ..` — implicit args, not a function with explicit args. The S7 proof used the older form `exact List.mem_cons_self _ _`, which Lean parses as "apply the term to two values", producing the function-expected error.
+
+**Fix (this PR)**: replace `exact List.mem_cons_self _ _` with `exact List.mem_cons_self`. The post-fix file builds cleanly (verified above).
+
+This is the **same class of regression** as S2's `List.not_mem_nil` drift-fix (the S1 author shipped with "build pending" and S2 discovered the breakage). Confirms the memory note `feedback_g9_qualifier_masks_real_bugs`: "G9 qualifier masks real bugs — ALWAYS Docker-verify". The S7 PR should not have been merged without a Docker build.
+
+### S7 absorbed (post-merge fact-check)
+
+PR #21220 added `JordanBlockShape.totalDim_eq_zero_iff_blocks_empty` (+1 theorem, +31 LOC, file 356 → 387, theorem count 10 → 11). The S8 Docker build implicitly re-verifies the (now-fixed) S7 lemma as a side effect of compiling the file.
+
+### Anti-scope
+
+* No child OQ slug creation (S5 candidate A) — defer to a session that opens that scaffold deliberately.
+* No `jnfMatrix` def / strong-form statement upgrade (S5 candidate B) — block-diagonal assembly is non-trivial; needs its own ACT slot.
+* No sibling JSON edits (slug-local file only).
+* No `MinpolyCharpoly.lean` (parent) edits.
+
+---
 
 ## S7 ACT Summary (2026-05-30, researcher-1)
 

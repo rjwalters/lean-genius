@@ -32,20 +32,20 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-30T18:50:00Z",
-    "iteration": 7,
-    "focus": "S7 ACT (this PR) — adds JordanBlockShape.totalDim_eq_zero_iff_blocks_empty API lemma (+1 theorem, +31 LOC). Connects totalDim with the underlying blocks list using the structures pos invariant. Companion of S1 totalDim_empty on the iff side (handles arbitrary JordanBlockShape S, not just the explicit empty-list constructor). Pure additive API, no def or sorry change. INFRA improved since S6: G7 GREEN (disk 61Gi up from 3.4Gi, +57.6Gi), G8 GREEN (Docker 29.4.1 running, was hung), G9 still RED (.lake self-symlink — Docker bypasses). Build-verification recommended (Docker available); deferred this session for scope. Mathlib pin 2df2f0150c... (v4.26.0) unchanged. leanFiles[0] line drift 247→246 already absorbed in current JSON (mechanic batch must have run since S6).",
+    "since": "2026-05-31T22:10:00.000Z",
+    "iteration": 8,
+    "focus": "S8 ACT — adds jordanBlock_eq_lam_smul_one_add_zero_block API lemma (+1 theorem, +34 LOC) AND fixes v4.26.0 build break in S7 lemma (List.mem_cons_self _ _ → List.mem_cons_self). Docker build-verified 3081/3081 jobs.",
     "blockers": [],
     "nextAction": "S8 picker matrix: (a) build-verify this S7 PR via ./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01 (Docker GREEN; ~45min cold). (b) S5 candidate A — open child OQ minpoly-charpoly-oq-01-oq-01 + scaffold MinpolyCharpolyOQ01OQ01.lean with jordanBlock.charpoly = (X - C λ)^d identity (~80 LOC, fully dischargable; INFRA now permits NEW slug creation). (c) S5 candidate B — upgrade jordan_normal_form_exists to strong form (∃ invertible P), requires jnfMatrix : JordanBlockShape K → Matrix def first. (d) S5 candidate C — begin OQ-01-OQ-02 (nilpotent canonical form, ~400 LOC, load-bearing). (e) Mathlib gap re-audit at current pin.",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 3,
-      "approachesTried": 1,
+      "approachesTried": 2,
       "S4": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S7 ACT (this PR) — adds JordanBlockShape.totalDim_eq_zero_iff_blocks_empty API lemma (+1 theorem, +31 LOC, file 356→387 LOC, theorems 10→11). Uses the structures pos invariant for forward direction; backward is the unfolded def on []. S1 OBSERVE (PR #18045) + S2 ACT (PR #18106, entry-wise jordanBlock API + drift-fix) + S3 ACT (PR #18134, eigenvalueMultiset_card_eq_totalDim) + S4-E ACT (PR #19123, toFinset.card ≤ totalDim + iff-Nodup) + S5 STATE-SYNC (PR #19781) + S6 STATE-SYNC. Build-verified at v4.26.0 (3081 jobs) per S4-E baseline; S7 addition is pure additive standard-Mathlib tactics (unfold/match/simp/omega). 11 theorems, 0 axioms, 1 tactic sorry (jordan_normal_form_exists, load-bearing, deferred to OQ-01-OQ-04). Defs stable at 3 since S2. INFRA recovered: G7 GREEN (disk 61Gi), G8 GREEN (Docker 29.4.1), G9 still RED (.lake self-loop, Docker bypasses).",
+    "progressSummary": "S8 ACT (this PR) — adds jordanBlock_eq_lam_smul_one_add_zero_block API lemma (+1 theorem, +34 LOC, file 387→421 LOC, theorems 11→12), the entry-wise Jordan-Chevalley decomposition λ • 1 + jordanBlock R 0 d. Also fixes a v4.26.0 build break in the merged S7 lemma (PR #21220): exact List.mem_cons_self _ _ → exact List.mem_cons_self (Lean core API has implicit args, not explicit). Docker build-verified: 3081/3081 jobs, only expected sorry warning on jordan_normal_form_exists. Same regression class as S2's List.not_mem_nil drift-fix; confirms feedback_g9_qualifier_masks_real_bugs.",
     "builtItems": [
       "JordanBlockShape K (structure): bundles `blocks : List (K × Nat)` and positivity-of-block-sizes proof as a first-class JNF descriptor.",
       "JordanBlockShape.totalDim (def): the sum of all block sizes — the total dimension of the Jordan-form matrix.",
@@ -69,13 +69,16 @@
       "**Structure-encoded shape**: bundling the multiset of (eigenvalue, block size) pairs as a single `JordanBlockShape` structure makes downstream statements concise (the strong-form statement is one line of similarity, not one line per eigenvalue).",
       "**Weak vs strong JNF**: S1 asserts only existence of a `JordanBlockShape` of the correct total dimension. The strong form (existence of an invertible similarity transform P) is the target of OQ-01-OQ-04 and is a ~5-line statement edit on top of S1's weak form.",
       "S4-E API closes the JNF cardinality/distinctness surface: `Multiset.card eigenvalueMultiset = totalDim` (S3) + `toFinset.card ≤ totalDim` (S4-E bound) + `toFinset.card = totalDim ↔ Nodup` (S4-E equality). The equality case characterises the diagonalisable simple-spectrum boundary (every block size 1 AND all eigenvalues distinct), which is the natural shape predicate the OQ-01-OQ-03 per-eigenspace assembly will consume.",
-      "The JordanBlockShape pos invariant (every block has positive size) is what makes totalDim = 0 detect emptiness. Without pos, a zero-size block would give a non-empty list with totalDim = 0. This is a small but important point — the structure encoding (forcing pos at construction time, not as a separate hypothesis) is what makes downstream API clean."
+      "The JordanBlockShape pos invariant (every block has positive size) is what makes totalDim = 0 detect emptiness. Without pos, a zero-size block would give a non-empty list with totalDim = 0. This is a small but important point — the structure encoding (forcing pos at construction time, not as a separate hypothesis) is what makes downstream API clean.",
+      "S8 (2026-05-31, researcher-1): jordanBlock_eq_lam_smul_one_add_zero_block exposes the entry-wise λ • 1 + jordanBlock R 0 d decomposition as a public API lemma. Foundational for OQ-01-OQ-02 (nilpotent canonical form): any eigenvalue-zero result transfers to general eigenvalues by adding λ • 1, without per-call-site eigenvalue-shifting boilerplate. Docker build-verified before ship.",
+      "S8 (2026-05-31, researcher-1) — Docker build of post-S7-merge file revealed Mathlib v4.26.0 API drift: Lean core's List.mem_cons_self has implicit args ({a : α} {l : List α} : a ∈ a :: l := .head ..). S7 used the older List.mem_cons_self _ _ form. Fix: drop the _ _. Same pattern as the S2 drift-fix of List.not_mem_nil. Build-verified 3081 jobs after fix."
     ],
     "mathlibGaps": [
       "Nilpotent canonical form (Jordan basis for nilpotent operators) — no `jordanBlock` definition and no nilpotent-shift-basis theorem in Mathlib v4.26.0. This is the load-bearing OQ-01-OQ-02 (~400 lines). Standard textbook construction (Axler §8.D) — cyclic-vector chains + linear-independence + dimension count.",
       "(Optional / further work) Uniqueness of the JordanBlockShape up to permutation. Follows from existence + dimension count of generalized-kernel filtrations."
     ],
     "nextSteps": [
+      "S9 candidates: (A) jordanBlock charpoly identity (charpoly = (X - C λ)^d) — uses S8 decomposition; ~25 LOC. (B) open child slug minpoly-charpoly-oq-01-oq-01 with the jordanBlock charpoly/minpoly identities as the scaffold target. (C) define jnfMatrix : JordanBlockShape K → Matrix (Fin S.totalDim) ... (block-diagonal assembly, the S5-B candidate). Recommend (A) or (B); (C) is larger scope and benefits from a dedicated session.",
       "**S8 candidate (recommended next)**: build-verify this S7 PR via ./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01 now that Docker is GREEN (~45 min cold). Retires the (build-verified) claim from S4-E with a current-pin baseline.",
       "S8 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry). INFRA permits NEW slug creation.",
       "S8 candidate B: upgrade S1 weak-form jordan_normal_form_exists to the strong form with similarity transform P. Requires jnfMatrix : JordanBlockShape K → Matrix def first (block-diagonal assembly). ~30-50 LOC for the def + ~5 LOC statement edit.",
@@ -124,7 +127,7 @@
     ]
   },
   "started": "2026-05-12T10:00:00Z",
-  "lastUpdate": "2026-05-17T02:00:00Z",
+  "lastUpdate": "2026-05-31T22:10:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -142,8 +145,8 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ01.lean",
       "filename": "MinpolyCharpolyOQ01.lean",
-      "lineCount": 387,
-      "theoremCount": 11,
+      "lineCount": 421,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 5,
