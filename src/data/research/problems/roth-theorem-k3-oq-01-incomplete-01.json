@@ -26,16 +26,16 @@
     "goal": "Import from RothTheorem.lean, which uses Mathlib's corners theorem, and complete the 5 remaining sorries."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-03T02:25:35-07:00",
-    "iteration": 2,
-    "focus": "Added qualitative asymptotic rothNumber_div_tendsto_zero; documented 4-sorry landmark inventory.",
-    "blockers": [],
-    "nextAction": "Pursue rothNumber → rothNumberNat bridge to transfer Mathlib quantitative results.",
+    "phase": "ACT",
+    "since": "2026-06-01T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT REPAIR-DISCOVERY (researcher-1, 2026-06-01): STATE-SYNC plus a fresh-build Docker audit of proofs/Proofs/RothTheoremQuantitative.lean. Session began as small-N enumeration ACT (target: r₃(4) ∈ [2, 3]). When I Docker-built to verify, the build surfaced SIX distinct compile failures in the file *as it sits on main* — independent of my additions. After investigation, all six trace back to four root causes: (1) Mathlib v4.26.0 API drift: div_lt_iff (line 174) and div_le_iff (line 218) renamed to div_lt_iff₀ / div_le_iff₀ (drop-in rename, same signature); (2) Math bug in max_iterations_bound (line 195): statement δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊ is FALSE for δ > 1 (counterexample δ=2, k=0: 2 > 1 ✓ but ⌊25⌋ ≥ 0); algebraically the correct bound is k > 100(1-δ)/δ², strictly weaker. linarith proof relied on the now-removed div_le_iff lemma whose elaboration drift masked the math gap; iterations_before_contradiction (line 214) was a downstream consumer; (3) rothNumber_three simp_all timeout: fin_cases × 9 cases × ZMod 3 arithmetic exceeds 200k heartbeat budget on fresh build (cached lake skips re-verification, hence PR #21520 CI didn't flag it); (4) rothNumber_achieved type mismatch (line 118): Finset.mem_filter.mp leaves metavariable ?m.52 unpinned. DECISION: revert small-N additions (can't ship on broken base); document discovery via state.md/JSON. Recommend S4 ACT REPAIR session.",
+    "blockers": ["RothTheoremQuantitative.lean fails fresh Docker build (4 root causes / 6 surfaced errors): div_lt_iff/div_le_iff rename, max_iterations_bound math bug, rothNumber_three simp_all heartbeat overshoot, rothNumber_achieved type-inference issue. All masked by Lake cache."],
+    "nextAction": "S4 ACT REPAIR (recommended): (1) Rename div_lt_iff → div_lt_iff₀ at line 174 and div_le_iff → div_le_iff₀ at line 218 (drop-in, same args, same statement). (2) Remove max_iterations_bound + iterations_before_contradiction as mathematically incorrect dead code (no callers) OR restate with hδ : δ ≤ 1 and corrected bound k > 100(1-δ)/δ². (3) Add `set_option maxHeartbeats 400000 in` for rothNumber_three (or hoist membership simp to a separate helper). (4) Fix rothNumber_achieved: add Finset (Finset (ZMod N)) annotation on the `set S := ...` line, or refactor Finset.exists_max_image with explicit type args so mem_filter.mp hAS resolves filter APFree cleanly. (5) Docker-verify fresh build clean. Once S4 REPAIR ships, S5 ACT SMALL-N can resume the planned r₃(4) ∈ [2, 3] additions (proofs drafted in this session, ≤ 30 LOC: apFree_zero_one_zmod_four, two_le_rothNumber_four, rothNumber_four_le_three). The 4 landmark sorries (Roth 1953, Behrend 1946, Bloom–Sisask 2020, Kelley–Meka 2023) remain multi-PR research efforts.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
@@ -62,7 +62,8 @@
       "Once bridge exists, derive Behrend lower bound and Mathlib s qualitative o(N) as immediate corollaries for the gallery rothNumber.",
       "Defer the four landmark sorries until per-bound formalization projects are funded — each is multi-thousand-line work."
     ],
-    "markdown": "# Knowledge Base: roth-theorem-k3-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis task targets the main k=3 formalization of Roth's theorem. The statement in the local notes is: for every density `delta > 0`, sufficiently large cyclic groups have the property that every subset of size at least `delta N` contains a three-term arithmetic progression.\n\n## Known Local Context\n\nThe parent gallery proof `roth-theorem-k3-oq-01` provides the foundation. The notes say the Lean file has 5 remaining sorries and that Mathlib's corners theorem chain, especially `Finset.addCornerFree`, is the key building block.\n\n## Current Focus\n\nThe current phase is OBSERVE. The next local action is to read `problem.md` thoroughly, then move to ORIENT by inspecting literature and the related parent proof.\n"
+    "markdown": "# Knowledge Base: roth-theorem-k3-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis task targets the main k=3 formalization of Roth's theorem. The statement in the local notes is: for every density `delta > 0`, sufficiently large cyclic groups have the property that every subset of size at least `delta N` contains a three-term arithmetic progression.\n\n## Known Local Context\n\nThe parent gallery proof `roth-theorem-k3-oq-01` provides the foundation. The notes say the Lean file has 5 remaining sorries and that Mathlib's corners theorem chain, especially `Finset.addCornerFree`, is the key building block.\n\n## Current Focus\n\nThe current phase is OBSERVE. The next local action is to read `problem.md` thoroughly, then move to ORIENT by inspecting literature and the related parent proof.\n",
+    "lastUpdated": "2026-06-01T00:00:00.000Z"
   },
   "tags": [
     "combinatorics",
@@ -81,5 +82,20 @@
   },
   "started": "2026-04-03T02:25:35-07:00",
   "significance": 8,
-  "tractability": 4
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/RothTheoremQuantitative.lean",
+      "filename": "RothTheoremQuantitative.lean",
+      "lineCount": 286,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
+    }
+  ],
+  "lastUpdate": "2026-06-01T00:00:00.000Z",
+  "lastUpdated": "2026-06-01T00:00:00.000Z"
 }
