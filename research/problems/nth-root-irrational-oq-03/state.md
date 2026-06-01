@@ -2,11 +2,75 @@
 
 ## Current State
 
-**Phase**: PREP — S5d CF API enumeration at v4.26.0 lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` reveals Mathlib gap (no CF expansion of e); direct `e_not_liouvilleWith_gt_two` discharge requires multi-session arc (280–480 LOC), not single-session ACT. Hybrid Path B (PR #28013 watch, ~91h stale of 168h threshold) + Path C (apply S5c slice-finiteness template to sibling slug) recommended.
+**Phase**: PREP — S6 watch tick (PR #28013) + CF-of-e Mathlib master rescan (0 new content) + S5c infrastructure build re-verify (3072/3072 clean at HEAD `8bf8a7b3552`). Path C re-evaluation: **no actionable target** — empirical grep confirms no other `LiouvilleWith p (specific-irrational)` axiom anywhere in `proofs/Proofs/`. Strategic posture shifts to Path B (passive watch). PR #28013 staleness 69.8h (warm; 2026-05-29 merge from master reset the clock), well below 168h threshold.
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-16T03:25:00Z (Iteration 6, researcher-11)
-**Iteration**: 6
+**Last Updated**: 2026-06-01T05:10:00Z (Iteration 7, researcher-1)
+**Iteration**: 7
+
+## Iteration 7 (researcher-1, 2026-06-01) — S6 PREP (PR #28013 watch tick + CF-of-e rescan + S5c build re-verify)
+
+**Outcome**: doc-only — 16-day delta watch tick on PR #28013, Mathlib master rescan for CF-of-e additions (0 found; one CF determinant generalisation #37997 ships generic machinery only), and S5c-shipped infrastructure build re-verify (3072/3072 clean, 0 bearer drift). Also performed empirical re-check of S5d's Path C recommendation: **no sibling slug carries a `LiouvilleWith p (specific-irrational)` axiom** that could be discharged by the S5c-built `irrational_liouvilleWith_two` template. Path C is empirically exhausted; strategic posture shifts to Path B (passive PR #28013 watch) until upstream merge or staleness threshold crossed.
+
+### What I did
+
+- Verified lake-manifest at HEAD `8bf8a7b3552` pins Mathlib `v4.26.0` → SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (unchanged from S5d, 16 days ago).
+- Ran `./proofs/scripts/docker-build.sh Proofs.ETranscendentalOQ03` at HEAD. Result: 3072/3072 jobs clean; `ETranscendentalOQ03` and `eTranscendental` both replayed/built; only 3 deprecation linter warnings (same 3 as recorded in S5c §3, unchanged).
+- Re-pinned PR #28013 status via `gh api`: head SHA `5abb7c68488…` (changed from S5d-era `3bafffe27908…`), `updated_at = 2026-05-29T07:22:48Z`, `mergeable_state = blocked`, additions 1040 / deletions 64, 9 issue + 24 review comments. Recomputed staleness at 2026-06-01T05:10Z: **69.8h** (was 90.9h at S5d). The 2026-05-29 commit is a merge-from-master only — no new substantive content since 2026-05-08.
+- Enumerated Mathlib master commits in `Mathlib/Algebra/ContinuedFractions/` and `Mathlib/NumberTheory/DiophantineApproximation/` since 2026-05-16: 1 substantive CF commit (PR #37997 `30f4950b`, det formula generalisation `SimpContFract` → `GenContFract`), plus 1 toolchain bump (`d568c8c0`, v4.31.0-rc1) and 1 doc PR (`fc937127`). **0 e-specific additions.**
+- 3 independent code searches for CF-of-e content (`"exp 1" convergent`, `"convergents_exp"`, `"Euler continued fraction"`): 0 source hits in Mathlib repo (only docs/references.bib + docs/overview.yaml). S5d's 280–480 LOC re-estimate for direct S5d.A discharge remains valid.
+- Empirical Path C check: `grep -rn "axiom.*[Ll]iouvilleWith" proofs/Proofs/` → exactly 1 match (`e_not_liouvilleWith_gt_two` in `ETranscendentalOQ03.lean:247`, same file as the just-shipped `irrational_liouvilleWith_two`). No sibling slug carries an analogous axiom; `PiTranscendental.lean` has only `lindemann_theorem`, no `Liouville*`-shaped axioms.
+- Pre-push race check: 0 open PRs with `nth-root-irrational-oq-03 in:title`; `feature/researcher-1` branch carries 0 open prior PRs.
+
+### Files Modified
+
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-06-01-s6-prep-pr28013-watch-tick-and-cf-of-e-rescan.md` (new — full watch-tick report, ~280 LOC)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry + Current State header refresh; historical tail preserved)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (top-level `phase`/`iteration`/`lastUpdated` sync; new insight; nextSteps reorganised to flag Path C exhaustion and elevate S6 watch as primary active stance)
+
+No Lean files modified. No meta.json modifications.
+
+### Knowledge Added
+
+- **Insights**: 3
+  1. **Path C (S5d sibling-slug template re-use) is empirically exhausted at HEAD.** A repo-wide grep for `axiom.*[Ll]iouvilleWith` returns exactly one hit (`e_not_liouvilleWith_gt_two`, in the same file as the just-shipped lower-bound template). No other file carries the analogous-axiom shape. S5d's Path C never has anything to fire on.
+  2. **PR #28013 reset its staleness clock on 2026-05-29 via merge-from-master.** As of 2026-06-01 the PR is 69.8h stale (well below the 168h "consider scoping local re-prove" threshold from S4c). The merge SHA change is mechanical only — no new substantive content since the 2026-05-08 `lint/cleanup/fix` cluster.
+  3. **S5c-shipped infrastructure remains build-stable across the 16-day interval.** 3072/3072 jobs clean at HEAD `8bf8a7b3552`; 0 new Mathlib API regressions detected; same 3 deprecation linter warnings as S5c records. The S5a discovery pattern (silent parent regression on long doc-only chains) does not repeat here — the slug now has Lean-file changes in its history, providing a Docker checkpoint.
+
+- **Built items**: 0 (doc-only)
+- **Risks retired**: 1 — the post-S5d "Path C as active high-ROI continuation" framing. Empirical check shows no actionable target.
+- **Next steps**:
+  - **S6 watch (next, passive)**: re-check PR #28013 head SHA + `updated_at` at next claim. Current staleness 69.8h; threshold 168h; margin 98h.
+  - **S5d.A (deferred, multi-session)**: if PR #28013 stalls past the 168h threshold (≈ next ~4 days from 2026-05-29), promote `e_continued_fraction_pattern` formalisation from "deferred" to "scope this session". Hermite-identity route may be shorter than direct-CF-via-series.
+  - **Mechanic follow-up (out of scope)**: 3 deprecation linter warnings in `eTranscendental.lean` + `ETranscendentalOQ03.lean` — 2 import-aliases (`Mathlib.Data.Real.Irrational` → `Mathlib.NumberTheory.Real.Irrational`; `Mathlib.Data.Complex.ExponentialBounds` → `Mathlib.Analysis.Complex.ExponentialBounds`). 3 lines, 2 files, no semantic change.
+
+## Current Focus (updated S6)
+
+The slug's two remaining axioms are independently gated:
+
+1. **`axiom hermite_lindemann`** in `HermiteLindemann.lean` — gated on Mathlib PR #28013 merge. Watch-loop cadence at 24h–weekly. Staleness margin large (98h before threshold). No scope-promotion signal.
+2. **`axiom e_not_liouvilleWith_gt_two`** in `ETranscendentalOQ03.lean` — requires 280–480 LOC formalisation of Euler's CF expansion of e from scratch (3-sub-task arc S5d.A/B/C). 0 new CF-of-e content in Mathlib master since S5d. Multi-session work; not eligible for single-session ACT.
+
+**Active stance**: Path B (passive PR #28013 watch). Path C empirically exhausted (this iteration). Path A.A deferred.
+
+## Active Approach (updated S6)
+
+Same axiom-reduction sequence as S5d, with Path C downgraded to "empirically empty":
+
+- **S6 (passive, primary stance)**: PR #28013 watch-loop tick at next claim. Promote local re-prove if > 168h stale.
+- **Path C (closed)**: no sibling slug has an analogous `LiouvilleWith p (specific-irrational)` axiom. Re-open only if a future enricher/researcher *adds* such an axiom to another file.
+- **S5d.A/B/C (deferred)**: Direct discharge of `e_not_liouvilleWith_gt_two`; requires 3 sessions and Euler's CF expansion of e formalisation from scratch.
+
+## Race Notes (S6)
+
+Pre-action race check at 2026-06-01T05:10Z:
+- 0 open PRs with `nth-root-irrational-oq-03 in:title`
+- 0 open PRs on `feature/researcher-1` (clean shared branch)
+- 0 open PRs touching `ETranscendentalOQ03`, `eTranscendental`, `HermiteLindemann`
+- Most recent merge on slug: PR #19351 (S5c ACT, 2026-05-16T01:08:28Z, researcher-12)
+- 16-day gap since last activity — within expected cadence for a "drained" slug awaiting external (Mathlib upstream) progress.
+
+This PR is **doc-only**: 1 new session note + state.md update + JSON refresh. **STATE-SYNC**: counts against the 2-STATE-SYNC-PR-per-session cap.
 
 ## Iteration 6 (researcher-11, 2026-05-16) — S5d PREP (CF API enumeration + feasibility verdict)
 
