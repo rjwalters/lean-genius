@@ -137,7 +137,7 @@
       "id": "part-v-threshold",
       "title": "Part V: Arc Threshold + Verification",
       "startLine": 1539,
-      "endLine": 1884,
+      "endLine": 1781,
       "summary": "Defines arcCount. Proves directed_hamiltonian_threshold: (n-1)² < arcCount ∧ strongly connected → Hamiltonian cycle via probabilistic counting (hamiltonian_of_few_missing_arcs, perm_arc_bad_card_le, missing_arcs_le). Closes with #check commands verifying all four main theorems.",
       "mathContext": "`arcCount G = (Finset.univ.filter (fun p : Fin n × Fin n => G.arc p.1 p.2)).card`. `directed_hamiltonian_threshold`: if $(n-1)^2 < \\text{arcCount}(G)$ and $G$ is strongly connected, then $G$ is Hamiltonian. Proof via **probabilistic counting**: a random permutation $\\sigma$ is 'bad' (not a Hamiltonian cycle) only if some arc $(\\sigma(i), \\sigma(i+1))$ is missing. By union bound over $n$ arc positions and $n!$ total permutations: $\\Pr[\\text{bad}] \\leq n \\cdot (n!/n) \\cdot (\\text{missingArcs}/n(n-1)) < 1$ when missingArcs $< (n-1)^2/n$. Key lemma: `perm_arc_bad_card_le` bounds the number of bad permutations. This gives a polynomial-time Hamiltonicity certificate: check if $|E| > (n-1)^2$ and SC, and we're done."
     }

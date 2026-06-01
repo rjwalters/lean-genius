@@ -142,7 +142,7 @@
       "id": "summary",
       "title": "Summary",
       "startLine": 352,
-      "endLine": 387,
+      "endLine": 371,
       "summary": "Documentation block recapping solved cases (ℚ, imaginary quadratic) vs open cases (real quadratic, general). Lists #check statements for key definitions.",
       "mathContext": "The file's genuine Lean content comprises three machine-checked results: (1) `cyclotomic_galois_comm` proving $\\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ is abelian via the `autEquivPow` isomorphism to $(\\mathbb{Z}/n\\mathbb{Z})^\\times$, (2) `cyclotomic_degree` proving $[\\mathbb{Q}(\\zeta_n):\\mathbb{Q}] = \\varphi(n)$ via `IsCyclotomicExtension.finrank`, and (3) `cyclotomic_irreducible` proving $\\Phi_n$ is irreducible over $\\mathbb{Z}$. All other results -- Kronecker-Weber, CM theory, Artin reciprocity, Stark conjectures, and the general Hilbert 12th problem -- are formulated as `Prop := True` placeholders whose deep proofs lie beyond current Mathlib infrastructure."
     }

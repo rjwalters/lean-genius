@@ -89,7 +89,7 @@
       "id": "main-results",
       "title": "Main Convergence Theorems",
       "startLine": 244,
-      "endLine": 283,
+      "endLine": 272,
       "summary": "Proves derangements_convergence_rate: |D(n)/n! - e^{-1}| ≤ 1/(n+1)! by combining the identity, series representation, tail splitting, and alternating tail bound in a 3-line proof. Proves derangements_tendsto_inv_e: D(n)/n! → e^{-1} using Metric.tendsto_atTop — finds N such that 1/(N+1)! < ε via the summand tendsto_atTop_zero, then uses convergence_rate and factorial monotonicity"
     }
   ],
