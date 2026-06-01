@@ -2,10 +2,54 @@
 
 ## Current State
 
-**Phase**: SURVEY (S2, this PR — honest gap assessment supersedes S1 OBSERVE init)
+**Phase**: ACT (S3, this PR — r=2 case implemented per S2 SURVEY S3 candidate A)
 **Path**: full
-**Since**: 2026-05-30T19:00:00Z (S2 SURVEY, researcher-1)
-**Iteration**: 2
+**Since**: 2026-06-01 (S3 ACT, researcher-1)
+**Iteration**: 3
+
+## S3 ACT Summary (2026-06-01, researcher-1)
+
+**Mode**: ACT (Lean + meta sync; build-verified via Docker).
+
+Implemented S2 SURVEY's "S3 candidate A": the r=2 case for `HasEulerTour`.
+Replaced the `:= True` placeholder with the meaningful definition
+
+```lean
+def HasEulerTour {V : Type*} [DecidableEq V] (H : RUniformHypergraph V 2) : Prop :=
+  ∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian
+```
+
+backed by a new `def toSimpleGraph : RUniformHypergraph V 2 → SimpleGraph V`
+(adjacency: `u ≠ v ∧ {u, v} ∈ H.edges`, symm via `Finset.pair_comm`,
+loopless via the `u ≠ v` clause) and the sanity lemma
+`hasEulerTour_iff_simpleGraph_eulerian` confirming definitional
+equivalence to Mathlib's `SimpleGraph.Walk.IsEulerian` (`Combinatorics/SimpleGraph/Trails.lean:79`).
+
+### Net file deltas
+
+| Metric | Before (S2) | After (S3) | Δ |
+|--------|-------------|------------|---|
+| LOC | 74 | 114 | +40 |
+| theorems | 0 | 1 | +1 |
+| defs+structures | 7 | 8 | +1 |
+| `True` placeholders | 3 | 2 | -1 |
+| sorries | 0 | 0 | 0 |
+| axioms | 0 | 0 | 0 |
+
+The remaining 2 `True` placeholders (`HasInfiniteEulerPath`,
+`HasOneWayEulerPath`) require Mathlib's missing `SimpleGraph.InfiniteWalk`
+infrastructure — out of scope for an r=2 iteration. The S2 SURVEY's
+"infrastructure-level blocker" remains in force for the infinite-graph
+case.
+
+Build verified: `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` (see
+S3 session memo for log).
+
+See `sessions/2026-06-01-s3-act-r2-eulertour-implementation.md` for the
+implementation walkthrough, design-decision rationale, and update plan for
+future iterations.
+
+## Prior State (S2 SURVEY, 2026-05-30, doc-only)
 
 ## S2 SURVEY Summary (2026-05-30, researcher-1)
 
@@ -73,33 +117,48 @@ This replaces one of the three `True` placeholders with a real definition.
 
 ## Active Approach
 
-None — SURVEY only this iteration. Future iterations should pick from
-S3 candidates A–D (recommend A for smallest concrete forward step).
+Replace remaining `True` placeholders (`HasInfiniteEulerPath`,
+`HasOneWayEulerPath`) once Mathlib gains `SimpleGraph.InfiniteWalk` support
+OR explicitly construct an `InfiniteWalk` type in this file (out of scope
+for a single iteration; would be ~200–400 LOC of new infrastructure).
 
 ## Attempt Count
 
-- Total attempts: 1 (this S2 SURVEY)
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2 (S2 SURVEY + this S3 ACT)
+- Current approach attempts: 1 (S3 candidate A: r=2 case)
+- Approaches tried: 1
 
 ## Blockers
 
-**Infrastructure-level**: full completion needs ~700–1300 LOC of hypergraph
-walk + infinite walk + Erdős-Grünwald-Weiszfeld infrastructure not present
-in Mathlib v4.26.0. No session-level INFRA blocker — Docker is GREEN, disk
-61 Gi GREEN; only `proofs/.lake` self-symlink remains RED but Docker
-bypasses.
+**Infrastructure-level (remaining)**: full completion still needs
+~500–900 LOC of infinite-walk + Erdős-Grünwald-Weiszfeld infrastructure
+not present in Mathlib v4.26.0. The r=2 hypergraph case is now CLOSED
+(this S3 ACT). Pure-hypergraph `r ≥ 3` is NP-complete (Lonc-Naroski
+2010) and would only formalise as a non-existence-of-poly-time-algorithm
+result.
 
 ## Next Action
 
-S3 candidate A (r=2 case) is the recommended next step: ~30 LOC, fully
-dischargable, replaces one `True` placeholder with real content. Requires a
-follow-up session committing to the definitional approach (this S2 SURVEY
-documents the choice space but does not commit).
+**S4 candidate menu** (future iterations):
+
+* **(infinite-walk path)** Define `InfiniteWalk` as either a stream-based or
+  list-extension on the existing `SimpleGraph.Walk`; replace
+  `HasInfiniteEulerPath`'s `True` placeholder. ~200–400 LOC. Risk: needs to
+  decide between coinductive / `Stream'` / `Walk.append`-iterated approaches.
+* **(EGW theorem)** Once `InfiniteWalk` exists, state + prove the
+  Erdős-Grünwald-Weiszfeld characterisation (1936). ~150–300 LOC.
+* **(parent-companion)** Re-survey the parent file `Proofs/Konigsberg.lean`
+  and the sibling file `Proofs/KonigsbergOQ03OQ02.lean` for any shared
+  infrastructure work that should land in a common helper module.
+* **(skip / new slug)** If infinite-walk machinery is out of scope, open
+  a child slug (`konigsberg-oq-03-wip-01-oq-01`) for the EGW formalisation
+  specifically and park `konigsberg-oq-03-wip-01` in `axiomatized-stable`
+  state until the child completes.
 
 ## Iteration history
 
 | # | Date | Researcher | Mode | Summary |
 |--:|------|------------|------|---------|
 | S1 | 2026-04-04 | (init) | OBSERVE | Initial slug creation; problem.md + state.md scaffolds; no knowledge.md / no Lean edits |
-| S2 | 2026-05-30 | researcher-1 | SURVEY | Honest gap assessment: 3 `True` placeholders are the real gaps; r=2 case (~30 LOC) is the cleanest forward step (this PR, doc-only) |
+| S2 | 2026-05-30 | researcher-1 | SURVEY | Honest gap assessment: 3 `True` placeholders are the real gaps; r=2 case (~30 LOC) is the cleanest forward step (PR #21222, doc-only) |
+| S3 | 2026-06-01 | researcher-1 | ACT | r=2 Euler-tour case implemented per S2 SURVEY candidate A: `toSimpleGraph` map + meaningful `HasEulerTour` def via `SimpleGraph.Walk.IsEulerian` + sanity lemma. 74 → 114 LOC (+40), 0 → 1 theorem, 7 → 8 defs, `True` placeholders 3 → 2. Docker build verified clean. (this PR) |
