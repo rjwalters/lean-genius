@@ -1,17 +1,29 @@
 # Research State: triangular-reciprocals-oq-02
 
 ## Current State
-**Phase**: DECIDE
+**Phase**: ACT (scaffold landed; closures pending)
 **Path**: full
-**Since**: 2026-06-01 (S3 — researcher-1 ORIENT→DECIDE pass)
-**Iteration**: 3
-**Prior**: S2 OBSERVE→ORIENT (2026-06-01, researcher-1 — problem.md + Mathlib scout)
+**Since**: 2026-06-01 (S4 — researcher-1 ACT SCAFFOLD)
+**Iteration**: 4
+**Prior**: S3 ORIENT→DECIDE (2026-06-01, researcher-1 — approach lock + signatures)
+         S2 OBSERVE→ORIENT (2026-06-01, researcher-1 — problem.md + Mathlib scout)
 
 ## Current Focus
-S3 locks in Approach 1 (direct partial fractions + harmonic telescoping), commits to
-the file name `Proofs/TriangularReciprocalsOQ02.lean`, and records the concrete Lean
-signatures + reindex strategy. The next pass (S4, ACT) will scaffold the file with
-the four lemmas and main theorem as `by sorry`.
+S4 scaffolds the Lean files with all proofs as `sorry`. Both files Docker-build
+clean on Mathlib v4.26.0:
+
+- `proofs/Proofs/TriangularReciprocalsOQ02.lean` (8 sorries: 4 lemmas, main HasSum
+  + tsum corollary, 3 special-case sanity checks for k=1,2,3).
+- `proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean` (3 sorries: companion
+  forms of Lemmas 1, 3, 4 exposed to Aristotle).
+
+Lemma 2 (`partial_sum_closed_form`) is intentionally NOT exposed to the companion —
+the reindex argument is the substantive content of this proof and is kept in the
+main file per gallery convention.
+
+The next pass (S5, ACT) will close Lemmas 1 + 4 (mechanical) plus the three
+special-case sanity checks; S6 attacks Lemma 3 (tail bound); S7+ attacks Lemma 2
+(the reindex) and the main theorem closure.
 
 ## Active Approach
 **Approach 1 — Direct partial fractions + harmonic telescoping (LOCKED).**
@@ -28,11 +40,11 @@ the four lemmas and main theorem as `by sorry`.
 - Main: `HasSum (fun n : ℕ => 1/((n+1:ℝ)*((n+1)+k))) ((harmonic k : ℝ)/k)`.
 
 Approach 2 (digamma) remains parked. May surface as a one-line corollary using
-`Real.deriv_Gamma_nat` after the main result is in place, but is not part of S4.
+`Real.deriv_Gamma_nat` after the main result is in place.
 
 ## Attempt Count
-- Total attempts: 0 (S3 is still planning; no Lean code yet)
-- Current approach attempts: 0
+- Total attempts: 0 (S4 ships scaffolds only; no proof bodies yet)
+- Current approach attempts: 0 (closures begin in S5)
 - Approaches tried: 0
 - Approaches considered & parked: 1 (digamma series)
 
@@ -41,22 +53,38 @@ None.
 
 ## Next Action
 
-ACT phase (S4) — scaffold the Lean file:
+ACT phase (S5) — close the easy lemmas:
 
-1. Create `proofs/Proofs/TriangularReciprocalsOQ02.lean` with namespace
-   `TriangularReciprocalsHarmonic` (or `TriangularReciprocals.Harmonic`), `import Mathlib`,
-   and the four lemmas + main theorem as `by sorry`. Keep all numeric statements ℝ-valued
-   except harmonic numbers (cast at use sites via the `Rat.cast_sum + cast_inv + cast_natCast`
-   chain documented in `NumberTheory/Harmonic/Bounds.lean:24`).
-2. Add `proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean` companion exposing only
-   Lemmas 1, 3, 4 as theorem sorries (Lemma 2 carries the substantive index work, gallery
-   convention is to keep it in the main file; Aristotle may close Lemmas 1/3/4 trivially).
-3. Do NOT create the gallery dir yet — wait until the main theorem closes (S5+) so we
-   don't ship a broken gallery entry.
-4. Docker-build the scaffold so we know baseline imports compile, then push.
+1. **Lemma 1 (`partial_fraction`)**: lift from `TriangularReciprocalGeneralized.lean:133`
+   (`field_simp; ring` after `Nat.cast_ne_zero` derived hypotheses). Mirror to the
+   Aristotle companion.
+2. **Lemma 4 (`summable_one_div_n_mul_n_add_k`)**: `Summable.of_nonneg_of_le` (or
+   `Summable.comparison`) against `Real.summable_one_div_nat_pow` at p=2. Bound
+   `1/((n+1)((n+1)+k)) ≤ 1/((n+1)^2)` since `(n+1)+k ≥ (n+1)`. Mirror to companion.
+3. **Special cases k=1,2,3**: `simp only [harmonic_succ, harmonic_zero]; norm_num`
+   should close all three in one tactic each (rational arithmetic).
+4. Docker-build, commit, push, refresh PR description.
 
-S5 will be the first ACT closure pass on Lemmas 1, 4 (easy) and then 3 (tail bound).
-S6+ will tackle Lemma 2 (the reindex) and the main theorem.
+S6 attacks Lemma 3 (the tail bound `H_{N+k} - H_N ≤ k/(N+1)` + squeeze to 0).
+S7+ attacks Lemma 2 (the reindex via `Finset.sum_Ico_add'`).
+S8+ assembles the main theorem from Lemmas 2 + 3 + 4 + partial_sum_closed_form.
+
+## S4 Scaffold Artifacts (researcher-1, 2026-06-01)
+
+- `proofs/Proofs/TriangularReciprocalsOQ02.lean` — 125 lines, 8 sorries:
+  - `partial_fraction` (line 42)
+  - `partial_sum_closed_form` (line 58)
+  - `tail_to_zero` (line 72)
+  - `summable_one_div_n_mul_n_add_k` (line 85)
+  - `generalized_triangular_reciprocals` (line 101, main HasSum)
+  - `generalized_triangular_reciprocals_tsum` (line 117, tsum corollary — closed via
+    `.tsum_eq` once main lands, but currently uses the main as a sorry)
+  - `special_case_k1` / `_k2` / `_k3` (lines 121, 125, 129)
+- `proofs/Proofs/TriangularReciprocalsOQ02Aristotle.lean` — 45 lines, 3 sorries:
+  - `partial_fraction_aristotle` (line 23)
+  - `tail_to_zero_aristotle` (line 32)
+  - `summable_one_div_n_mul_n_add_k_aristotle` (line 41)
+- Docker build: both files compile clean (Mathlib v4.26.0, 7743/7743 jobs).
 
 ## Key Decisions from S3 (researcher-1, 2026-06-01)
 
