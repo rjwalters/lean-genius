@@ -4,10 +4,11 @@
 **Phase**: SURVEY
 **Path**: fast
 **Since**: 2026-05-30
-**Iteration**: 2
+**Iteration**: 3
+**Last re-verified**: 2026-05-31 against Mathlib master commit `40f05009d0` (2026-05-31T20:29:36Z).
 
 ## Current Focus
-Refined Mathlib-gap analysis. Riemannian-metric and CovariantDerivative APIs have landed on Mathlib master since the parent file was written; the curvature + manifold-integration + Stokes stack remains the blocker.
+Refined Mathlib-gap analysis. Riemannian-metric and CovariantDerivative APIs have landed on Mathlib master since the parent file was written; the curvature + manifold-integration + Stokes stack remains the blocker. Re-verified 2026-05-31: no new curvature/Stokes/Gauss-Bonnet primitives in master in the 24h since the prior survey — assessment unchanged.
 
 ## Active Approach
 None. Awaiting upstream Mathlib infrastructure or a deliberate decomposition (S² intermediate milestone) before any first-principles proof attempt is warranted.

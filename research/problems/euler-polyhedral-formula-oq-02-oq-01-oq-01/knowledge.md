@@ -74,6 +74,39 @@ Even the new Riemannian/CovariantDerivative material lands on `master` after the
 
 ---
 
+## Mathlib Re-Verification (2026-05-31)
+
+Re-checked Mathlib `master` at commit **`40f05009d0`** (`2026-05-31T20:29:36Z`) — 24h after the prior survey. Exact `git ls-tree origin/master` and `git grep origin/master` results in `~/GitHub/mathlib4` (a clone tracking upstream):
+
+**Confirmed present** (matches prior survey, no regression):
+- `Mathlib/Geometry/Manifold/Riemannian/Basic.lean`
+- `Mathlib/Geometry/Manifold/Riemannian/PathELength.lean`
+- `Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Basic.lean`
+- `Mathlib/Geometry/Manifold/VectorBundle/CovariantDerivative/Torsion.lean`
+- `Mathlib/Geometry/Manifold/VectorBundle/LocalFrame.lean`
+- `Mathlib/Geometry/Manifold/VectorBundle/Tensoriality.lean`
+- `Mathlib/Geometry/Manifold/Bordism.lean`
+
+**Confirmed absent** (no progress on the blocker since 2026-05-30):
+- No symbol `GaussianCurvature`, `gaussianCurvature`, `GaussBonnet`, `gaussBonnet`, or `gauss_bonnet` anywhere under `Mathlib/Geometry/`.
+- No file matching `Stokes` or `stokes` under `Mathlib/Geometry/Manifold/`.
+- No Riemann curvature tensor `R(X,Y)Z` exposed as a definition with standard symmetries (CovariantDerivative API only).
+- No Riemannian volume / area form derived from the metric, no `∫_M ω` for differential forms on a manifold.
+
+**Conclusion**: BLOCKED status unchanged. The bottleneck remains the curvature + manifold-integration + Stokes stack. The local pin (`proofs/lakefile.toml` → `v4.26.0`) still predates even the Riemannian-metric layer.
+
+To repeat this check in a future session (Mathlib state changes daily):
+```bash
+git -C ~/GitHub/mathlib4 fetch origin master
+git -C ~/GitHub/mathlib4 ls-tree -r origin/master --name-only \
+  | grep -iE 'Manifold.*(Curvature|Stokes|deRham)'
+git -C ~/GitHub/mathlib4 grep -l \
+  'GaussianCurvature\|gaussianCurvature\|GaussBonnet\|gaussBonnet\|gauss_bonnet' \
+  origin/master -- 'Mathlib/Geometry/**'
+```
+
+---
+
 ## Current Status
 
 **Phase**: SURVEY (advancing OBSERVE → SURVEY this session; no proof attempt warranted yet).
