@@ -21,6 +21,9 @@
     "lineCount": 211,
     "theoremCount": 9,
     "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean"
+    ],
     "dateAdded": "2026-05-04",
     "assumptions": "None. All 9 theorems are fully proved (0 axioms, 0 sorries).",
     "mathlibDependencies": [
@@ -134,7 +137,18 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
+        "lineCount": 626,
+        "theorems": 12,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "m-jump downward IVT (OQ01 child research direction, namespace BallotMJumpCycleLemma): m-jump step bounds (m_jump_step_bound, m_jump_step_bound_upward), downward/upward IVT with conclusion window [v - m + 1, v] (m_jump_downward_ivt, m_jump_upward_ivt), unit recovery at m=1 (m_jump_downward_ivt_unit_recovery, m_jump_upward_ivt_unit_recovery), and step-alphabet cardinality lemmas for {-m, ..., -1, +1} and Option C two-sided variants (step_in_one_neg_m_count, step_in_one_pos_mixed_neg_card_eq/_bound, step_le_one_card_eq, step_in_one_pos_pm_card_eq/_bound). Generalizes the parent's unit-decrement IVT to arbitrary m ≥ 1."
+      }
+    ]
   },
   "crossReferences": [
     {
