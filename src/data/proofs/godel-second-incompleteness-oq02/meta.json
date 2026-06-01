@@ -46,6 +46,10 @@
     ],
     "lineCount": 258,
     "proofRepoPath": "Proofs/GodelSecondIncompletenessOQ02.lean",
+    "additionalFiles": [
+      "Proofs/GodelSecondIncompletenessOQ02GLSyntax.lean",
+      "Proofs/GodelSecondIncompletenessOQ02Companion.lean"
+    ],
     "mathlib_version": "4.26.0",
     "relatedProofs": [
       {
@@ -167,6 +171,26 @@
     "sorries": 0,
     "path": "Proofs/GodelSecondIncompletenessOQ02.lean",
     "definitionCount": 2,
-    "theoremCount": 3
+    "theoremCount": 3,
+    "additionalFiles": [
+      {
+        "path": "Proofs/GodelSecondIncompletenessOQ02GLSyntax.lean",
+        "lineCount": 104,
+        "theorems": 0,
+        "definitions": 4,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "GL syntax foundation (S8 ACT): inductive GLFormula (modal language with falsum/atom/impl/box), PropAxiom (Hilbert-style propositional + K + 4 + GL axioms), and GL_proves derivability predicate. Independent of the parent file — provides the modal logic backbone for the OQ02-OQ-02 Solovay arithmetical-completeness research direction."
+      },
+      {
+        "path": "Proofs/GodelSecondIncompletenessOQ02Companion.lean",
+        "lineCount": 227,
+        "theorems": 4,
+        "definitions": 1,
+        "axioms": 3,
+        "sorries": 0,
+        "description": "S2-α companion (OQ02-OQ-02): object-level implication impl_formula and HBL D2/D3 axiomatization. Defines impl_formula and proves Gödel-code distinctness lemmas (impl_formula_code/_ne_falsum/_ne_Prov). Axiomatizes impl_mp (modus ponens internalization), d2_distribution (□(φ→ψ) → □φ → □ψ), and d3_internal_necessitation (□φ → □□φ). Derives internal_K as the prototypical Hilbert-Bernays-Löb K-axiom."
+      }
+    ]
   }
 }
