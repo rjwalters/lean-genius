@@ -459,55 +459,64 @@
         "name": "galois_bridge",
         "type": "wrapper",
         "description": "If α is solvable by radicals and root of irreducible q, then Gal(q) is solvable",
-        "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal"
+        "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal",
+        "line": 64
       },
       {
         "name": "symmetric_group_not_solvable",
         "type": "bridge",
         "description": "Sₙ is not solvable for n ≥ 5 (ℕ-to-Cardinal type coercion bridge)",
-        "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
+        "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))",
+        "line": 79
       },
       {
         "name": "not_solvable_by_rad_of_not_solvable_gal",
         "type": "synthesis",
         "description": "Contrapositive of galois_bridge: non-solvable Gal(q) implies α not solvable by radicals",
-        "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α"
+        "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α",
+        "line": 145
       },
       {
         "name": "s5_not_solvable",
         "type": "specialization",
         "description": "S₅ specialization of symmetric_group_not_solvable at n = 5 via le_rfl",
-        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))"
+        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))",
+        "line": 87
       },
       {
         "name": "s6_not_solvable",
         "type": "specialization",
         "description": "S₆ specialization of symmetric_group_not_solvable at n = 6 via omega",
-        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))"
+        "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))",
+        "line": 91
       },
       {
         "name": "a5_is_simple",
         "type": "wrapper",
         "description": "One-line wrapper of Mathlib's alternatingGroup.isSimpleGroup_five — the structural reason the derived series of S₅ stalls at A₅",
-        "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+        "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))",
+        "line": 97
       },
       {
         "name": "s0_solvable",
         "type": "instance",
         "description": "S₀ (permutations of empty type) is solvable — discharged by inferInstance",
-        "leanType": "IsSolvable (Equiv.Perm (Fin 0))"
+        "leanType": "IsSolvable (Equiv.Perm (Fin 0))",
+        "line": 115
       },
       {
         "name": "s1_solvable",
         "type": "instance",
         "description": "S₁ (permutations of one element) is solvable — discharged by inferInstance",
-        "leanType": "IsSolvable (Equiv.Perm (Fin 1))"
+        "leanType": "IsSolvable (Equiv.Perm (Fin 1))",
+        "line": 118
       },
       {
         "name": "exists_quintic",
         "type": "witness",
         "description": "Trivial existence: ∃ degree-5 polynomial over ℚ (witness X⁵); the substantive analogue ∃ irreducible q with Gal(q) ≅ S₅ is proved in abel-ruffini-oq-04-oq-01",
-        "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5"
+        "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5",
+        "line": 132
       }
     ],
     "path": "Proofs/AbelRuffini.lean",
@@ -1408,55 +1417,64 @@
       "name": "not_solvable_by_rad_of_not_solvable_gal",
       "type": "core",
       "description": "Abel-Ruffini contrapositive: if the Galois group of an irreducible polynomial is not solvable, then its roots are not solvable by radicals",
-      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α"
+      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → ¬ IsSolvable q.Gal → ¬ IsSolvableByRad F α",
+      "line": 145
     },
     {
       "name": "galois_bridge",
       "type": "key",
       "description": "Solvability by radicals implies solvable Galois group (Galois's fundamental theorem, from Mathlib)",
-      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal"
+      "leanType": "(α : E) → (q : Polynomial F) → Irreducible q → aeval α q = 0 → IsSolvableByRad F α → IsSolvable q.Gal",
+      "line": 64
     },
     {
       "name": "symmetric_group_not_solvable",
       "type": "key",
       "description": "The symmetric group Sₙ is not solvable for n ≥ 5",
-      "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))"
+      "leanType": "(n : ℕ) → 5 ≤ n → ¬ IsSolvable (Equiv.Perm (Fin n))",
+      "line": 79
     },
     {
       "name": "s5_not_solvable",
       "type": "supporting",
       "description": "S₅ is not solvable. Specialization of `symmetric_group_not_solvable` at n = 5 via `le_rfl`",
-      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))"
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 5))",
+      "line": 87
     },
     {
       "name": "s6_not_solvable",
       "type": "supporting",
       "description": "S₆ is not solvable. Specialization of `symmetric_group_not_solvable` at n = 6 via `omega`",
-      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))"
+      "leanType": "¬ IsSolvable (Equiv.Perm (Fin 6))",
+      "line": 91
     },
     {
       "name": "a5_is_simple",
       "type": "key",
       "description": "A₅ is a simple group: the structural reason the derived series of S₅ stalls at A₅. Wraps `alternatingGroup.isSimpleGroup_five`",
-      "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))"
+      "leanType": "IsSimpleGroup (alternatingGroup (Fin 5))",
+      "line": 97
     },
     {
       "name": "s0_solvable",
       "type": "supporting",
       "description": "S₀ (permutations of the empty type) is solvable — trivial group, found by `inferInstance`",
-      "leanType": "IsSolvable (Equiv.Perm (Fin 0))"
+      "leanType": "IsSolvable (Equiv.Perm (Fin 0))",
+      "line": 115
     },
     {
       "name": "s1_solvable",
       "type": "supporting",
       "description": "S₁ (permutations of a single element) is solvable — trivial group, found by `inferInstance`",
-      "leanType": "IsSolvable (Equiv.Perm (Fin 1))"
+      "leanType": "IsSolvable (Equiv.Perm (Fin 1))",
+      "line": 118
     },
     {
       "name": "exists_quintic",
       "type": "supporting",
       "description": "There exists a degree-5 polynomial over ℚ (witness: X⁵). A trivial existence statement; the substantive analogue (∃ irreducible q with Gal(q) ≅ S₅) is proved in `abel-ruffini-oq-04-oq-01` for x⁵ − 4x + 2",
-      "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5"
+      "leanType": "∃ p : Polynomial ℚ, p.natDegree = 5",
+      "line": 132
     }
   ],
   "sorries": 0
