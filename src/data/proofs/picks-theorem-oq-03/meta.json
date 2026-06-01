@@ -64,15 +64,7 @@
     ],
     "dateAdded": "2026-03-06",
     "additionalFiles": [
-      {
-        "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
-        "lineCount": 695,
-        "theorems": 69,
-        "definitions": 12,
-        "axioms": 0,
-        "sorries": 0,
-        "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
-      }
+      "Proofs/PicksTheoremOQ03CrossPoly.lean"
     ],
     "axiomCount": 2,
     "lineCount": 710,
@@ -240,7 +232,15 @@
     "definitionCount": 23,
     "theoremCount": 45,
     "additionalFiles": [
-      "Proofs/PicksTheoremOQ03CrossPoly.lean"
+      {
+        "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+        "lineCount": 695,
+        "theorems": 69,
+        "definitions": 12,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
+      }
     ]
   }
 }
