@@ -23,47 +23,49 @@
   },
   "currentState": {
     "phase": "SURVEY",
-    "since": "2026-05-30T18:30:00.000Z",
-    "iteration": 2,
-    "focus": "Refined Mathlib gap analysis. Riemannian metric and CovariantDerivative APIs landed on master; curvature, manifold integration, area form, Stokes on manifolds with boundary remain absent.",
+    "since": "2026-05-31T22:00:00.000Z",
+    "iteration": 3,
+    "focus": "Re-verified BLOCKED 2026-05-31 against Mathlib master commit 40f05009d0; no curvature/Stokes/Gauss-Bonnet primitives have landed. Assessment unchanged.",
     "blockers": [
       "Local Mathlib pin is v4.26.0; even the new Riemannian metric typeclass is not available locally without a pin bump.",
-      "Mathlib master still lacks Gaussian curvature, geodesic curvature, manifold integration, area form, de Rham forms, Stokes on \u2202M, and smooth Euler characteristic.",
+      "Mathlib master still lacks Gaussian curvature, geodesic curvature, manifold integration, area form, de Rham forms, Stokes on ∂M, and smooth Euler characteristic.",
       "Each missing piece is upstream-scale work (multi-month Mathlib contribution); building locally would diverge from Mathlib's eventual API."
     ],
-    "nextAction": "Re-survey when Gaussian curvature, a Riemannian area form, or Stokes for manifolds-with-boundary land in Mathlib. Until then, the productive intermediate target is a round-S\u00b2 only Gauss-Bonnet milestone (K \u2261 1, area 4\u03c0).",
+    "nextAction": "Re-survey when Gaussian curvature, a Riemannian area form, or Stokes for manifolds-with-boundary land in Mathlib. Until then, the productive intermediate target is a round-S² only Gauss-Bonnet milestone (K ≡ 1, area 4π).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Re-ran the Mathlib infrastructure check (2026-05-30). Mathlib master now has Mathlib.Geometry.Manifold.Riemannian.Basic (IsRiemannianManifold, riemannianMetricVectorSpace), Riemannian.PathELength (pathELength, riemannianEDist), and VectorBundle/CovariantDerivative (Basic + Torsion). Still missing: Gaussian curvature, geodesic curvature, Riemann curvature tensor, manifold integration / area form, de Rham forms, Stokes on \u2202M, smooth Euler characteristic, and Gauss-Bonnet itself. The parent file's claim that 'Mathlib lacks Riemannian metrics' is now out of date at the metric layer but still correct at the curvature/integration layer. Problem remains BLOCKED on >1000-line upstream infrastructure; no proof attempt warranted this session.",
+    "progressSummary": "SURVEY: 2026-05-31 re-verification against Mathlib master commit 40f05009d0 (2026-05-31T20:29:36Z). No new curvature, Riemannian volume/area form, Stokes-on-boundary, or Gauss-Bonnet primitives have landed since the 2026-05-30 survey. Confirmed-present: Riemannian/{Basic,PathELength}, VectorBundle/{CovariantDerivative/Basic,CovariantDerivative/Torsion,LocalFrame,Tensoriality}, Bordism. Confirmed-absent: GaussianCurvature, GaussBonnet, Stokes under Geometry/Manifold/, Riemann curvature tensor R(X,Y)Z as a named definition with symmetries, manifold integration of differential forms. BLOCKED status unchanged. Local pin still v4.26.0.",
     "builtItems": [],
     "insights": [
       "This target is stronger than the parent compact closed-surface model because problem.md includes the boundary term int_boundary kappa_g ds.",
       "The related smooth proof file encodes Gauss-Bonnet as fields such as gauss_bonnet and gauss_bonnet_boundary, then proves consequences from those assumptions.",
       "The local state is OBSERVE with zero attempts, so there is no evidence of Lean progress on this first-principles subproblem.",
       "2026-05-30 Mathlib survey: master adds Riemannian/Basic (IsRiemannianManifold), Riemannian/PathELength (pathELength, riemannianEDist), VectorBundle/Riemannian, VectorBundle/CovariantDerivative/{Basic,Torsion}. The Riemannian-metric layer of the gap is closed; the curvature/integration/Stokes layer is not.",
-      "Productive intermediate milestone: first-principles Gauss-Bonnet for the round 2-sphere only (K \u2261 1, area 4\u03c0, no boundary). This bypasses the curvature tensor and only needs a Riemannian area form on S\u00b2 plus the existing stereographic-chart infrastructure in Mathlib.Geometry.Manifold.Instances.Sphere.",
+      "Productive intermediate milestone: first-principles Gauss-Bonnet for the round 2-sphere only (K ≡ 1, area 4π, no boundary). This bypasses the curvature tensor and only needs a Riemannian area form on S² plus the existing stereographic-chart infrastructure in Mathlib.Geometry.Manifold.Instances.Sphere.",
       "Axiomatizing the boundary Gauss-Bonnet equation as a structure field is explicitly counter to the research goal ('without assuming the Gauss-Bonnet equation as a field or axiom'); the parent file already does the closed-case version of that, and replicating it for the boundary case would add an assumption rather than removing one.",
       "Aristotle is not applicable: the blocking sorries here are definition-level (curvature, area form, manifold integral), not theorem/lemma sorries with complete upstream definitions.",
-      "The local Mathlib pin is v4.26.0 (proofs/lakefile.toml); even consuming the new Riemannian metric typeclass requires a pin bump, which is a project-wide decision and out of scope for a per-problem research session."
+      "The local Mathlib pin is v4.26.0 (proofs/lakefile.toml); even consuming the new Riemannian metric typeclass requires a pin bump, which is a project-wide decision and out of scope for a per-problem research session.",
+      "2026-05-31 re-verification: Mathlib master commit 40f05009d0 (today) still lacks GaussianCurvature, GaussBonnet, Stokes-on-boundary, Riemann curvature tensor R(X,Y)Z, and manifold integration of differential forms. The 2026-05-30 survey is current — no upstream movement in 24h."
     ],
     "mathlibGaps": [
       "Gaussian curvature K: no GaussianCurvature definition in Mathlib master.",
-      "Geodesic curvature \u03ba_g of a C\u00b2 boundary curve: not defined.",
+      "Geodesic curvature κ_g of a C² boundary curve: not defined.",
       "Riemann curvature tensor: CovariantDerivative API is present but the tensor R(X,Y)Z with standard symmetries is not exposed as a definition.",
       "Manifold integration / area form: no Riemannian volume form or oriented 2-form integration in master.",
-      "de Rham forms / Stokes on manifolds with boundary: no \u222b_\u2202M = \u222b_M d\u03c9 API.",
+      "de Rham forms / Stokes on manifolds with boundary: no ∫_∂M = ∫_M dω API.",
       "Smooth Euler characteristic: no intrinsic definition (triangulation, Morse, or de Rham) matching the topological one.",
       "Gauss-Bonnet: no Gauss-Bonnet theorem in any form in Mathlib."
     ],
     "nextSteps": [
+      "Re-run the same grep/ls-tree probe in ~/GitHub/mathlib4 (origin/master) on the next session; record the new commit hash. Specifically watch for the first appearance of any of: GaussianCurvature, Riemannian volume form, ∫ on a manifold, or any Stokes theorem under Geometry/Manifold/.",
       "Watch Mathlib master for: a Riemann curvature tensor built on CovariantDerivative, a Riemannian volume/area form, and any Stokes' theorem on manifolds with boundary. Any of those would change the assessment.",
       "If the local Mathlib pin bumps past v4.26.0, port the parent file's structure-field model to (optionally) consume IsRiemannianManifold so the assumptions are at least stated against real Mathlib types instead of a bespoke structure.",
-      "Open a smaller subproblem for the round 2-sphere only (K \u2261 1, area 4\u03c0, no boundary); that is the smallest first-principles Gauss-Bonnet instance achievable without a full curvature tensor.",
+      "Open a smaller subproblem for the round 2-sphere only (K ≡ 1, area 4π, no boundary); that is the smallest first-principles Gauss-Bonnet instance achievable without a full curvature tensor.",
       "Do NOT add new boundary-form structure-field variants to the parent file; that would only inflate the assumption count without progress and contradicts the explicit research goal."
     ],
     "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-oq-01\n\nUpdated 2026-05-30 with a refreshed Mathlib infrastructure survey. See `research/problems/euler-polyhedral-formula-oq-02-oq-01-oq-01/knowledge.md` for the full write-up.\n\n## Headline\n\nMathlib master has gained a Riemannian-metric typeclass and a path-length API since the parent file was written, but still lacks Gaussian curvature, geodesic curvature, manifold integration / area forms, de Rham forms, Stokes on manifolds with boundary, and a smooth Euler characteristic. The problem remains BLOCKED on >1000 lines of upstream Mathlib infrastructure.\n\n## Current Status\n\nSURVEY phase. No proof attempt warranted. Productive intermediate milestone: Gauss-Bonnet on the round 2-sphere only.\n"
@@ -89,7 +91,7 @@
     ]
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-05-30T18:30:00.000Z",
+  "lastUpdate": "2026-05-31T22:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/EulerPolyhedralFormula.lean",
