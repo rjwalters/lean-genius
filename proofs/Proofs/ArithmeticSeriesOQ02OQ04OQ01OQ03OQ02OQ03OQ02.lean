@@ -1,5 +1,5 @@
 /-
-# (q,t)-Multichoose: S2 Skeleton + S3 ACT (t = 1) + S4 ACT (polynomial sub-lattice + Field 0/0 trap)
+# (q,t)-Multichoose: S2 Skeleton + S3/S4/S5 ACT (polynomial sub-lattice qNumber bridges)
 (arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02)
 
 ## OQ Statement
@@ -23,7 +23,7 @@ unity. The proof uses a new private helper `qBinom_mult_recur` (a CommRing
 multiplicative q-Pascal derived by subtracting `qBinom_pascal` and
 `qBinom_pascal'`), bridged to the rational `qtBinom_succ` via `div_eq_iff`.
 
-**S4 ACT (researcher-1, 2026-05-31, this iteration)**: two complementary
+**S4 ACT (researcher-1, 2026-05-31)**: two complementary
 formal facts about the polynomial sub-lattice and the `Field R` 0/0 trap:
 * `qtMultichoose_two_two` — the unique "interior" t-cancellation at
   `(n, k) = (2, 2)`: `qtMultichoose q t 2 2 = (1 - q^3) / (1 - q)`,
@@ -36,6 +36,26 @@ formal facts about the polynomial sub-lattice and the `Field R` 0/0 trap:
   classical `Nat.multichoose n k`. Formalising the trap pins down why
   Path A's `q^(j+1) ≠ 1` hypothesis is mandatory and motivates the
   Path C (`RatFunc`) migration for future S5+ work.
+
+**S5 ACT (researcher-1, 2026-06-01, this iteration)**: three polynomial-form
+bridge lemmas that connect the rational Macdonald presentation of the
+polynomial sub-lattice `{k ≤ 1} ∪ {(2, 2)}` (S4 ACT) to the parent's
+polynomial `qNumber` presentation:
+* `qtBinom_one_right_eq_qNumber` — at `k = 1`, the rational form
+  `(1 - q^N) / (1 - q)` equals the polynomial `qNumber q N` provided
+  `1 - q ≠ 0`. Proved by combining `qtBinom_one_right` with the parent's
+  `qNumber_geometric`.
+* `qtMultichoose_one_right_eq_qNumber` — corollary at `qtMultichoose` level.
+* `qtMultichoose_two_two_eq_qNumber` — the unique "interior" polynomial
+  sub-lattice point equals `qNumber q 3 = 1 + q + q²` provided
+  `1 - q² t ≠ 0` and `1 - q ≠ 0`. Proved analogously via
+  `qtMultichoose_two_two` + `qNumber_geometric` for `n = 3`.
+
+Together, these make the polynomial sub-lattice characterisation **fully
+polynomial**: every point in `{k ≤ 1} ∪ {(2, 2)}` is now formally
+equated to a `qNumber` expression from the parent (which is itself a
+visible polynomial in `q`), so that the polynomial-form bridge to the
+parent gallery entry is no longer left implicit.
 
 The k-direction recurrence
   `qtBinom q t N (k+1) = qtBinom q t N k · (1 - q^(N-k) t^k) / (1 - q^(k+1) t^k)`
@@ -64,10 +84,10 @@ This iteration discharges S4 ACT.
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 10 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 14 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
   specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
-  theorems)
+  theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form bridges)
 * Lemmas (private): 1 (`qBinom_mult_recur`, CommRing multiplicative q-Pascal)
 
 ## Build status
@@ -343,5 +363,66 @@ theorem qtBinom_succ_div (q t : R) (N k : ℕ)
     qtBinom q t N (k + 1) / qtBinom q t N k =
       (1 - q ^ (N - k) * t ^ k) / (1 - q ^ (k + 1) * t ^ k) := by
   rw [qtBinom_succ, mul_div_cancel_left₀ _ h]
+
+-- ============================================================
+-- SECTION VIII: S5 ACT — Polynomial-form bridges to the parent's qNumber
+-- ============================================================
+
+/-- **Polynomial form of `qtBinom_one_right`**: the rational Macdonald
+    expression `(1 - q^N) / (1 - q)` at `k = 1` equals the parent's
+    polynomial `qNumber q N = 1 + q + q² + ⋯ + q^(N-1)`, on the open
+    dense set `1 - q ≠ 0` (the only Path A non-degeneracy at `k = 1`).
+
+    This is the polynomial-form bridge for the `k = 1` slice of the S3
+    PREP polynomial sub-lattice `{k ≤ 1} ∪ {(2, 2)}`: the rational form
+    `(1 - q^N) / (1 - q)` (S2 ACT `qtBinom_one_right`) is the rational
+    presentation, and `qNumber q N` is the polynomial presentation —
+    they agree off `q = 1`.
+
+    Proof: rewrite by `qtBinom_one_right`, then use the parent's
+    `qNumber_geometric` identity `(q - 1) · qNumber q N = q^N - 1`
+    (which gives `(1 - q) · qNumber q N = 1 - q^N`) and cancel. -/
+theorem qtBinom_one_right_eq_qNumber (q t : R) (N : ℕ)
+    (hq : (1 - q : R) ≠ 0) :
+    qtBinom q t N 1 = qNumber q N := by
+  rw [qtBinom_one_right]
+  have h_geom : (1 - q ^ N : R) = (1 - q) * qNumber q N := by
+    have hg := qNumber_geometric q N
+    linear_combination hg
+  rw [h_geom, mul_div_cancel_left₀ _ hq]
+
+/-- **Polynomial form of `qtMultichoose_one_right`**: at `k = 1`, the
+    (q,t)-multichoose coefficient equals the parent's `qNumber q n`
+    provided `1 - q ≠ 0`. Direct corollary of
+    `qtBinom_one_right_eq_qNumber` via the `n + 1 - 1 = n` index shift. -/
+theorem qtMultichoose_one_right_eq_qNumber (q t : R) (n : ℕ)
+    (hq : (1 - q : R) ≠ 0) :
+    qtMultichoose q t n 1 = qNumber q n := by
+  simp only [qtMultichoose, show n + 1 - 1 = n from by omega]
+  exact qtBinom_one_right_eq_qNumber q t n hq
+
+/-- **Polynomial form of `qtMultichoose_two_two`**: the unique non-trivial
+    polynomial-sub-lattice point `(n, k) = (2, 2)` evaluates to the
+    parent's `qNumber q 3 = 1 + q + q²` under the two Path A guards
+    `1 - q² t ≠ 0` (cancels the `i = 1` Macdonald factor) and
+    `1 - q ≠ 0` (cancels the `i = 0` denominator).
+
+    This completes the polynomial-form bridge for the S3 PREP polynomial
+    sub-lattice `{k ≤ 1} ∪ {(2, 2)}`: every point is now formally equated
+    to a `qNumber` expression from the parent, making the rational
+    Macdonald presentation transparently polynomial on its sub-lattice.
+
+    Proof: rewrite by `qtMultichoose_two_two`, then use
+    `qNumber_geometric` at `n = 3` to convert `(1 - q^3) / (1 - q)`
+    to `qNumber q 3` via the same cancellation pattern as
+    `qtBinom_one_right_eq_qNumber`. -/
+theorem qtMultichoose_two_two_eq_qNumber (q t : R)
+    (htq : (1 : R) - q ^ 2 * t ≠ 0) (hq : (1 - q : R) ≠ 0) :
+    qtMultichoose q t 2 2 = qNumber q 3 := by
+  rw [qtMultichoose_two_two q t htq]
+  have h_geom : (1 - q ^ 3 : R) = (1 - q) * qNumber q 3 := by
+    have hg := qNumber_geometric q 3
+    linear_combination hg
+  rw [h_geom, mul_div_cancel_left₀ _ hq]
 
 end QtMultichooseCoefficients

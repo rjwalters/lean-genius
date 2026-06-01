@@ -1,10 +1,52 @@
 # Current State
 
-**Phase**: ACT (S2 + S3 + S4 ACT shipped; S5 ACT pending — Path C `RatFunc` migration for positive `at_one_one` recovery, since Path A is provably blocked by the Field 0/0 trap formalised in S4 ACT)
-**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT)
-**Iteration**: 9 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT)
+**Phase**: ACT (S2/S3/S4/S6/S5 ACT shipped; polynomial-form bridges to `qNumber` shipped in S5 ACT this iteration. Path C `RatFunc` migration for the positive `at_one_one` recovery remains the next major milestone.)
+**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT) → 2026-05-31 (S6 ACT) → 2026-06-01 (S5 ACT)
+**Iteration**: 11 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT + S6 ACT + S5 ACT)
 
-`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` is now ~313 LOC with 10 theorems, 0 sorries, 0 axioms. After S4 ACT (this iteration), it ships: the Macdonald (q,t)-binomial/multichoose definitions, four boundary cases, the unconditional k-direction multiplicative recurrence `qtBinom_succ`, the S3 ACT `at_t_eq_one` substitution (Path A with `q^(j+1) ≠ 1` hypothesis), and the S4 ACT polynomial-sub-lattice interior `qtMultichoose_two_two` plus the Field R 0/0 trap formalisation `qtBinom_at_one_one_eq_zero` / `qtMultichoose_at_one_one_eq_zero`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence remains the foundation for S5+ work.
+`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` is now **428 LOC** with **13 theorems**, 0 sorries, 0 axioms. After S5 ACT (this iteration), it ships: the Macdonald (q,t)-binomial/multichoose definitions, four boundary cases, the unconditional k-direction multiplicative recurrence `qtBinom_succ`, the S3 ACT `at_t_eq_one` substitution (Path A with `q^(j+1) ≠ 1` hypothesis), the S4 ACT polynomial-sub-lattice interior `qtMultichoose_two_two` plus the Field R 0/0 trap formalisation, the S6 ACT ratio-form corollary `qtBinom_succ_div`, and the S5 ACT polynomial-form bridges `qtBinom_one_right_eq_qNumber` / `qtMultichoose_one_right_eq_qNumber` / `qtMultichoose_two_two_eq_qNumber` to the parent's `qNumber`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence remains the foundation for the open S5+ Path C work.
+
+## S5 ACT (2026-06-01, researcher-1) — polynomial-form bridges to qNumber
+
+**Mode**: ACT (Lean diff; **Docker-verified 7745/7745 jobs**).
+
+**Outcome**: Added 3 theorems (~80 LOC including doc) to the Lean file plus a header refresh. Discharges the **scope-narrowed S5 ACT alternative** flagged in the prior state.md ("if Path C is too heavy, prove additional polynomial-sub-lattice cases").
+
+### What landed
+
+1. **`qtBinom_one_right_eq_qNumber`** (Section VIII): proves `qtBinom q t N 1 = qNumber q N` provided `1 - q ≠ 0`. Bridges the rational form `(1 - q^N) / (1 - q)` (S2 ACT) to the parent's polynomial `qNumber q N = 1 + q + ⋯ + q^(N-1)`. Proof: `qtBinom_one_right` + `qNumber_geometric` (linear_combination) + `mul_div_cancel_left₀`, ~6 LOC.
+
+2. **`qtMultichoose_one_right_eq_qNumber`** (Section VIII): direct corollary at the `qtMultichoose` level via `n + 1 - 1 = n` index shift.
+
+3. **`qtMultichoose_two_two_eq_qNumber`** (Section VIII): proves the unique non-trivial polynomial-sub-lattice point evaluates to `qNumber q 3 = 1 + q + q²` under the two Path A guards `1 - q² t ≠ 0` and `1 - q ≠ 0`. Proof: `qtMultichoose_two_two` + `qNumber_geometric` at `n = 3` + `mul_div_cancel_left₀`, ~6 LOC.
+
+### Mathematical content
+
+Every point in the polynomial sub-lattice `{k ≤ 1} ∪ {(2, 2)}` is now formally equated to a `qNumber` expression from the parent. The bridges use only the parent's `qNumber_geometric` identity `(q - 1) · qNumber q n = q^n - 1`. This closes the rational-vs-polynomial gap that was implicit in S4 ACT: the rational form `(1 - q^N)/(1 - q)` was never explicitly equated to `qNumber q N`, even though the equality is obvious by `qNumber_geometric`.
+
+The bridges hold under either Path A or Path C ambient — they make no commitment to the eventual S5 positive-form recovery strategy. They simply complete the polynomial-form description of the sub-lattice, which is the natural foundation for gallery integration (S7) whose `meta.json` will reference `qNumber` for legibility.
+
+### Counts after S5 ACT
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` | **428** | **13** | 0 | 2 | 0 |
+
+(Up from 348 LOC / 10 theorems at end of S6 ACT.)
+
+### Build status
+
+**Docker-verified clean**: `./proofs/scripts/docker-build.sh Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02` → `✔ [7745/7745] Built ... (9.5s) === Build succeeded ===`. Mathlib v4.26.0.
+
+### Remaining work
+
+- **Path C (`RatFunc`) migration** (formerly S5 ACT, now S8 ACT in new numbering): still the canonical route to the positive `qtMultichoose 1 1 n k = Nat.multichoose n k` recovery. Estimated 80–120 LOC of `RatFunc.eval` infrastructure. Multi-session.
+- **S6 ACT (axiomatised, optional)**: Macdonald polynomial principal-specialization identity.
+- **S7**: gallery JSON integration with `status: "axiomatized"` (the polynomial-form bridges make the gallery `meta.json` presentation simpler — quotes `qNumber q n` rather than rational forms).
+
+## S6 ACT (2026-05-31, researcher-1) — k-direction telescoping ratio identity corollary
+
+See `sessions/2026-05-31-s06-act-ratio-identity-corollary.md`. Added 1 theorem `qtBinom_succ_div` (~35 LOC including doc) exposing the explicit ratio form of the S2 ACT `qtBinom_succ` recurrence. Docker-verified 7745/7745 jobs. State.md was not updated in that iteration; the entry is reconstructed here for completeness.
 
 ## S4 ACT (2026-05-31, researcher-1) — polynomial sub-lattice (2,2) + Field R 0/0 trap
 
@@ -134,7 +176,9 @@ Pending. Per CLAUDE.md never invoke `lake build` directly. The file's five lemma
 | 6    | PREP     | #18734 | researcher-6  | 2026-05-13T10:16:47Z | `2026-05-13-s06-prep-option-alpha-falsification-and-k-direction-recurrence-pivot.md` | Closes S2 PREP §6.4 `???`: Option α falsified at 4 data points. **Pivot**: replace Pascal-style recurrence with k-direction telescoping ratio. |
 | 7    | ACT      | #18955 | researcher-9  | 2026-05-13T~        | (S2 ACT) — first Lean skeleton                                    | `proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` shipped (151 LOC): qtBinom + qtMultichoose definitions, 4 boundary cases, `qtBinom_succ` k-direction recurrence. Path A. |
 | 8    | ACT      | #21322 | researcher-1  | 2026-05-30T~        | (S3 ACT) — t = 1 specialization                                   | Added `qtBinom_at_t_eq_one`, `qtMultichoose_at_t_eq_one`, private `qBinom_mult_recur` (CommRing multiplicative q-Pascal). File 151 → 229 LOC; 0 sorries / 0 axioms net. Path A `hq : ∀ j < k, q^(j+1) ≠ 1` hypothesis. |
-| 9    | ACT      | TBD    | researcher-1  | 2026-05-31           | `2026-05-31-s04-act-polynomial-sublattice-and-field-trap.md`      | (S4 ACT) — `qtMultichoose_two_two` (polynomial sub-lattice interior) + `qtBinom_at_one_one_eq_zero` + `qtMultichoose_at_one_one_eq_zero` (Field 0/0 trap formalised). File 229 → ~313 LOC; 0 sorries / 0 axioms net. |
+| 9    | ACT      | merged | researcher-1  | 2026-05-31           | `2026-05-31-s04-act-polynomial-sublattice-and-field-trap.md`      | (S4 ACT) — `qtMultichoose_two_two` (polynomial sub-lattice interior) + `qtBinom_at_one_one_eq_zero` + `qtMultichoose_at_one_one_eq_zero` (Field 0/0 trap formalised). File 229 → ~313 LOC; 0 sorries / 0 axioms net. |
+| 10   | ACT      | merged | researcher-1  | 2026-05-31           | `2026-05-31-s06-act-ratio-identity-corollary.md`                  | (S6 ACT) — `qtBinom_succ_div` (k-direction telescoping ratio identity corollary of `qtBinom_succ`). File ~313 → 348 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
+| 11   | ACT      | TBD    | researcher-1  | 2026-06-01           | `2026-06-01-s05-act-polynomial-form-bridges.md`                   | (S5 ACT) — `qtBinom_one_right_eq_qNumber` + `qtMultichoose_one_right_eq_qNumber` + `qtMultichoose_two_two_eq_qNumber` (polynomial-form bridges of S4 ACT polynomial sub-lattice to parent's `qNumber`). File 348 → 428 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
 
 ## Current Focus
 
@@ -196,7 +240,13 @@ S4 PREP (#18616) surfaced the Lean `Field R` 0/0 = 0 convention trap: under the 
 
 ## Next Action
 
-**S5 ACT — Path C migration for the positive `at_one_one` recovery**:
+**S7 PREP — gallery JSON scoping, OR Path C (`RatFunc`) migration for the positive `at_one_one` recovery**:
+
+With the S5 ACT polynomial-form bridges in place, the natural next step is either:
+
+1. **S7 PREP (lighter)**: scope the gallery `meta.json` entry, leveraging the new `qNumber`-form bridges. Quote `qNumber q n` and `qNumber q 3` in the public-facing description rather than rational forms, aligning the entry's presentation with the parent gallery entry's polynomial style. Estimated 1 session; doc-only.
+
+2. **Path C migration (heavier, the original next-action)**:
 
 Under Path A (the current S2/S3/S4 ACT regime), `qtMultichoose 1 1 n (k+1) = 0` is provably forced by the `Field R` convention (S4 ACT theorem `qtMultichoose_at_one_one_eq_zero`). To recover the classical `Nat.multichoose n k`, the ambient ring must change.
 
