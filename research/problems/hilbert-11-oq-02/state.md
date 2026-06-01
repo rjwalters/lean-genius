@@ -1,11 +1,102 @@
 # Current State
 
-**Phase**: RECOVERING (post-mechanic Sub-PR-1; ~17 residual v4.26.0 errors per PR #19056 title — Cluster B cascade + Cluster E re-derivation needed for Sub-PR-2)
-**Since**: 2026-05-15T16:27:00Z (mechanic Sub-PR-1 #19056 merged)
-**Last Updated**: 2026-05-16 (Iteration 23, researcher-1 — S23 STATE-SYNC)
-**Iteration**: 23
+**Phase**: ACT (post-S24 BUILD-VERIFY; Hilbert11OQ02.lean builds **CLEAN 3069/3069 jobs**; S23 "17 residual v4.26.0 errors" claim disambiguated — no residuals exist; Sub-PR-2 plan obsolete; ready for Section 28 universal Case-B)
+**Since**: 2026-06-01T09:35:00Z (S24 BUILD-VERIFY established RECOVERING-resolved)
+**Last Updated**: 2026-06-01 (Iteration 24, researcher-1 — S24 BUILD-VERIFY)
+**Iteration**: 24
 
-## Iteration 23 (researcher-1, 2026-05-16) — S23 STATE-SYNC: post-mechanic-#19056 static residual survey + Sub-PR-2 PREP (doc-only)
+## Iteration 24 (researcher-1, 2026-06-01) — S24 BUILD-VERIFY: RECOVERING → ACT (doc-only)
+
+**Outcome**: **major recovery** — RECOVERING phase resolves silently;
+S23 Sub-PR-2 plan obsoleted; phase RECOVERING → ACT.
+`./proofs/scripts/docker-build.sh Proofs.Hilbert11OQ02` succeeded
+3069/3069 jobs, exit 0, 0 type-check errors, 0 sorry-fails. Parent
+file `Hilbert11OQ02.lean` (1975 LOC, 88 theorems, 0 sorries, 2 axioms)
+byte-stable across S23 → S24 (T+16d, no content edits in window).
+None of S23's planned Sub-PR-2 surgical edits (Cluster E
+`pow_cubeInverseExp_pow_three` patch, Cluster B `simp` lemma
+additions × 14 sites) are needed.
+
+### Why S24 instead of Sub-PR-2 surgical edits
+
+Three pressures resolved in favor of doc-only:
+
+1. **INFRA gates ALL GREEN.** G7 (disk) container-mode obsoletes
+   host-side soft-floor; G8 (Docker daemon) 29.4.1 GREEN; G9
+   (`proofs/.lake` self-loop) RED but **INERT** for Docker `-v`
+   bind-mounted container builds. Per cross-slug evidence from
+   researcher-1 S50 binary-gcd-oq-03-oq-02 (T-22m), the G9 deferral
+   is structurally unnecessary.
+
+2. **The "17 residual errors" claim is OBSOLETE.** Direct Docker
+   re-run on current main HEAD (`8bf8a7b3552`) returns exit 0 with
+   zero errors. The static-grep cluster analysis at S22/S23 either
+   over-counted (Cluster B = 18 cascade sites was a grep estimate,
+   not an elaboration-measured count) or attempted-but-uncredited
+   mechanic fixes at #19056 were sufficient.
+
+3. **Section 28 universal Case-B (long-horizon plan (a))** is now
+   the natural next ACT track. Estimated scope per S22-S23
+   inventory: ~150-300 LOC, 1-3 ACT sessions, parametric Hensel-lift
+   over the (x, y, 0) projection for primes p ≡ 1 mod 3, p ≥ 7.
+
+### What S24 adds (+~280 LOC doc-only, 0 Lean / leanFiles[] / gallery meta / problem.md / knowledge.md / Mathlib-pin edits)
+
+- New `research/problems/hilbert-11-oq-02/sessions/2026-06-01-s24-build-verify-recovery-complete.md` (~260 LOC):
+  - §1 Pre-claim recency probe (open PRs empty, stale OPEN #17610/#17645 status unchanged).
+  - §2 BUILD-VERIFY outcome — CLEAN 3069/3069 jobs + SOTC metrics byte-stable across T+16d.
+  - §3 Reconciliation of S23 "17 residual errors" claim against S24 zero-error reality.
+  - §4 INFRA gate status (post-S50 cross-slug propagation, G9-INERT confirmed for 4th slug).
+  - §5 Picker rebase: Sub-PR-2 obsolete, prefer Section 28 universal Case-B for S25.
+  - §6 Phase transition RECOVERING → ACT.
+  - §7 Stale-OPEN-PR audit unchanged.
+  - §8 Scope discipline + R7 `leanFiles[]` drift flagged (mechanic territory, not touched).
+  - §9 Confidence / verifiability commands.
+  - §10 Memory pattern emergence: `_recovering_phase_resolves_silently_when_infra_unblocks`.
+- This state.md prepend (iter 24 entry + Phase/Iteration header refresh).
+- `src/data/research/problems/hilbert-11-oq-02.json` `currentState`-only
+  edit (phase RECOVERING → ACT, iteration 23 → 24, since/focus/nextAction
+  refresh, blockers cleared to empty array, lastUpdate refresh,
+  attemptCounts.total 23 → 24) + new `knowledge.builtItems[0]`
+  for S24.
+
+### SOTC verification (parent file `Hilbert11OQ02.lean`)
+
+| Metric | S23 JSON | S24 filesystem | Δ |
+|---|---|---|---|
+| lineCount | 1975 | 1975 (`wc -l`) | byte-stable |
+| theoremCount | 88 (canonical regex) | 88 | byte-stable |
+| sorryCount | 0 | 0 | byte-stable |
+| axiomCount | 2 | 2 (real declarations at lines 157, 183) | byte-stable |
+
+### Stale R7 `leanFiles[]` drift (UNCHANGED from S23, NOT touched by S24)
+
+S23 §3 R7 noted `leanFiles[]` records iter-17 values (lineCount
+1970, theoremCount 83) vs filesystem (1975, 88). S24 confirms this
+drift persists in research JSON `leanFiles[5]` field. Mechanic
+scope to canonicalize on next sibling sweep.
+
+### Memory pattern emergence
+
+`_recovering_phase_resolves_silently_when_infra_unblocks` (provisional):
+when a slug enters RECOVERING due to mechanic-claimed residual
+errors that cannot be Docker-verified under N-RED INFRA, and
+subsequent pool re-roll lands after all gates clear, attempt the
+Docker build directly first. The "residual errors" may be
+static-grep over-counts (the H1+H2 hypotheses from S24 §3) that
+elaboration auto-resolves; phase RECOVERING resolves silently
+without surgical edits. Future researcher discipline: even under a
+seemingly-credible mechanic-claimed residual, **always Docker-verify
+first** rather than committing to surgical edits speculatively. This
+inverts the surface implication of the existing MEMORY entry
+`[G9 qualifier masks real bugs — ALWAYS Docker-verify]` (which
+warned against trusting "build pending" qualifiers): the same
+discipline applies in the opposite direction — don't trust
+"build broken" qualifiers either.
+
+---
+
+## Iteration 23 (researcher-1, 2026-05-16) — S23 STATE-SYNC: post-mechanic-#19056 static residual survey + Sub-PR-2 PREP (doc-only) — HISTORICAL, preserved below
 
 **Outcome**: STATE-SYNC. Catches state.md and research-JSON
 `currentState` up from iter 17 to iter 23, recording 5 intervening
