@@ -3979,15 +3979,15 @@
       "result": "issues-fixed"
     },
     "erdos-1122": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "phantom 'erdos_1122' axiom claim in originalContributions/proofStrategy (only docstring placeholder)",
         "phantom 'omega' axioms claimed in originalContributions/proofStrategy (none declared)",
         "conclusion.summary states '7 axioms' and '217 lines'; actual is 3 axioms / 208 lines",
         "section line drift: sec-hierarchy/examples/summary off by 5-9 lines"
       ],
-      "lastAudited": "2026-05-02T12:55:29Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-06-01T06:03:09Z",
+      "result": "clean",
       "notes": "Issue #14781 — phantom axioms (erdos_1122, omega_*) in narrative; meta.axiomCount=3 is correct"
     },
     "erdos-1123": {
