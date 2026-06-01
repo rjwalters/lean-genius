@@ -1,12 +1,56 @@
 # Current State
 
-**Phase**: ACT BUILD-VERIFIED — S3 ACT Lean (zero_flat_magic_trivial + ambient_flat_magic_trivial) Docker-verified on Mathlib v4.26.0 by PR #20882 (2026-05-28); 0 sorries / 0 axioms / build clean
-**Since**: 2026-05-28 (S4 BUILD-VERIFIED via #20882 — API-drift repair + clean build at pinned Mathlib v4.26.0)
-**Iteration**: 7 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → **S4 BUILD-VERIFY**)
-**Last Updated**: 2026-05-30T22:35Z
+**Phase**: ACT BUILD-VERIFIED — S4 ACT (`oneflat_eq_parent`) shipped + Docker-verified on Mathlib v4.26.0 (researcher-1, 2026-05-31); cumulative 3 theorems / 4 defs / 0 axioms / 0 sorries
+**Since**: 2026-05-31 (S4 ACT shipped + build-verified — third trivial-case target discharged)
+**Iteration**: 8 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → **S4 ACT**)
+**Last Updated**: 2026-05-31T(this session)Z
 
 > _Note: state.md `Phase` line uses local-slug encoding (ACT BUILD-VERIFIED ≡ ACT-VERIFIED in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
+
+## S4 ACT — parent reduction `oneflat_eq_parent` (researcher-1, 2026-05-31)
+
+Discharges the long-deferred S4 ACT target on
+`proofs/Proofs/Erdos735OQ04.lean`.  After #20896 (parent-side AXIOM HUNT,
+2026-05-29) corrected the stale "parent is broken" claim, S4 was unblocked
+and the reduction proved trivial enough to ship in one short ACT pass.
+
+**Theorem added**:
+
+```lean
+theorem oneflat_eq_parent (P : PointConfigD 2) :
+    IsKFlatMagic 1 P ↔ Erdos735.IsMagic P
+```
+
+The proof is ~14 LOC, via destructure-and-rebuild of the weighting subtype
+plus two `simpa`-discharged `Nat.cast_one` rewrites on the rank field of
+`ConfigKFlat 1 P` vs `Erdos735.ConfigLine P`.  `WeightingD P` and
+`Erdos735.Weighting P` are definitionally equal; `kFlatSum` and
+`Erdos735.lineSum` have identical bodies modulo namespace; the card
+condition `1 + 1 = 2` is definitional.
+
+**Docker build-verify**: 3062 jobs, 0 errors, 1 pre-existing benign linter
+warning on `Erdos735Problem.lean:142` (not introduced by this session).
+Pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**File delta** (post-S4 ACT, current main):
+
+```
+Proofs/Erdos735OQ04.lean
+- lineCount:    180 (was 154; +26)
+- theoremCount: 3   (was 2;   +1)
+- defCount:     4   (unchanged)
+- axiomCount:   0   (unchanged)
+- sorryCount:   0   (unchanged)
+- imports:      5   (was 4;   +Proofs.Erdos735Problem)
+- Docker:       build-verified on Mathlib v4.26.0
+```
+
+This also removes the stale "parent is broken / out of scope for this S2
+ACT scaffold" language from the file header docstring.
+
+See `sessions/2026-05-31-s4-act-parent-reduction.md` for full recipe and
+bearer pin verification.
 
 ## S4 BUILD-VERIFY ACT-VERIFIED (researcher-1, 2026-05-30T22:35Z, doc-only)
 
@@ -136,9 +180,9 @@ For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular pol
 
 | Sub-step | Topic | Status | PR |
 |---|---|---|---|
-| S2 | Lean definitions + 2 sorry-theorems (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `kFlatSum`, `IsKFlatMagic`, `zero_flat_magic_trivial` [sorry], `ambient_flat_magic_trivial` [sorry]) | **scaffold shipped** | **(this PR)** |
-| S3 | Discharge `zero_flat_magic_trivial` (k = 0) + `ambient_flat_magic_trivial` (k = d) | not shipped | — |
-| S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **BLOCKED on parent repair** | — |
+| S2 | Lean definitions + 2 sorry-theorems (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `kFlatSum`, `IsKFlatMagic`, `zero_flat_magic_trivial` [sorry], `ambient_flat_magic_trivial` [sorry]) | scaffold shipped | #19012 |
+| S3 | Discharge `zero_flat_magic_trivial` (k = 0) + `ambient_flat_magic_trivial` (k = d) | **shipped + build-verified** | #19687 (paste), #20882 (build-verify) |
+| S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **shipped + build-verified** | **(this PR)** |
 | S5 | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
 | S6a | Tetrahedron certificate (PREP) | PREP shipped | #18486 |
 | S6a-ACT | Tetrahedron certificate (Lean) | not shipped | — |
@@ -150,14 +194,12 @@ For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular pol
 
 ## Blockers
 
-**S4 ACT is blocked.** Per the S2 ACT session log
-`sessions/2026-05-13-s2-act-scaffold.md` §"Parent-file regression",
-`proofs/Proofs/Erdos735Problem.lean` is broken on `origin/main` under Mathlib
-v4.26.0 (four cumulative regressions: import-path, matrix-literal coercion,
-`Finset → Sort`, `Submodule.rank` / `direction.toSubmodule`). Three sibling
-Erdős parent files (`Erdos105Problem`, `Erdos209Problem`, `Erdos210Problem`)
-share the import-path issue at minimum. Doctor/mechanic sweep recommended;
-out of scope for OQ04 research PRs.
+**S4 ACT was previously blocked**, but as of 2026-05-29 (PR #20896) it has
+been confirmed that `proofs/Proofs/Erdos735Problem.lean` actually **builds
+clean** on `origin/main` against Mathlib v4.26.0 (3061 jobs, 0 errors,
+0 sorries — only one pre-existing benign `unused variable hp` linter
+warning).  The prior "broken parent" claim was stale.  S4 ACT was then
+shipped + Docker build-verified in this PR (2026-05-31).
 
 S5 axiom remains genuinely open in the literature (Mathlib has no published
 k-flat classification beyond ABKPR's ℝ² case). Not overcoming-able by this OQ.
@@ -173,27 +215,19 @@ Practical:
 
 ## Next Action
 
-**S3 ACT BUILD-VERIFIED** — PR #20882 (2026-05-28) repaired Mathlib
-v4.26.0 API drift and Docker-verified `Proofs.Erdos735OQ04`.  No
-build-pending qualifier remains.  File metadata sync also landed
-(#19717 created the missing `leanFiles[]` entry post-S3 ACT;
-#19929 corrected `defCount 5→4, sorryCount 0→1` then was
-superseded by #20882 which reduced sorryCount back to 0).
+**S4 ACT shipped + build-verified** — `oneflat_eq_parent` discharged on
+`proofs/Proofs/Erdos735OQ04.lean` (researcher-1, 2026-05-31, this PR);
+180 LOC / 3 theorems / 4 defs / 0 axioms / 0 sorries; Docker-clean
+3062 jobs at pinned Mathlib v4.26.0.  Trivial-case targets (k = 0,
+k = d, d = 2 ∧ k = 1 reduction) are all closed.
 
-**S5 (next substantive ACT, any researcher)**: build out the
-higher-flat infrastructure — either (i) S6a-ACT tetrahedron
-certificate (PREP at #18486, paste-ready), (ii) S6b/c-ACT octahedron
-+ cube refutations (PREP at #18541), or (iii) S5 axiom design PREP
-refining the higher-dim conjecture to the narrow regular-polytope
-subfamily (exclude octa/cube per S6a + S6b).
-
-**S4 — pending parent repair (doctor/mechanic task)**.  The
-parent `Proofs/Erdos735Problem.lean` is still broken on
-`origin/main` under Mathlib v4.26.0 (four cumulative regressions:
-import-path, matrix-literal coercion, `Finset → Sort`,
-`Submodule.rank` / `direction.toSubmodule`); three sibling Erdős
-parents (`Erdos105Problem`, `Erdos209Problem`, `Erdos210Problem`)
-share the import-path issue at minimum.
+**Next substantive ACT (any researcher)**: build out the higher-flat
+infrastructure — either (a) S6a-ACT tetrahedron certificate (PREP at
+#18486, paste-ready), (b) S6b/c-ACT octa+cube refutations (PREP at
+#18541, paste-ready), (c) S5 axiom-design PREP refining the higher-dim
+conjecture to the narrow regular-polytope subfamily (exclude octa/cube
+per S6b), or (d) S6e general-position uniform-weight theorem for
+`1 ≤ k ≤ d - 1` in `ℝ^d`.  All four are independently shippable.
 
 **Historical (pre-S4-BUILD-VERIFY) recipe** (preserved for
 traceability):

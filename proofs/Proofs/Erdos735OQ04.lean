@@ -10,20 +10,21 @@
   positive weights such that every k-flat through at least k+1 points has the
   same weight-sum.
 
-  This file declares the parameterised definitions and proves the two
-  trivial-case targets `zero_flat_magic_trivial` (k = 0) and
-  `ambient_flat_magic_trivial` (k = d) in full — 0 sorries, 0 axioms,
-  Docker build-verified against Mathlib v4.26.0.
+  This file declares the parameterised definitions and proves three trivial-case
+  targets in full — 0 sorries, 0 axioms, Docker build-verified against Mathlib
+  v4.26.0:
+    * `zero_flat_magic_trivial`     (k = 0)
+    * `ambient_flat_magic_trivial`  (k = d)
+    * `oneflat_eq_parent`           (d = 2, k = 1, reduction to parent's IsMagic)
 
-  The third trivial target — the parent reduction
-  `IsKFlatMagic 1 P ↔ Erdos735.IsMagic P` for `d = 2` (S4 ACT) — is deferred
-  until the parent file `Proofs.Erdos735Problem` is repaired against Mathlib
-  v4.26.0. The parent's `import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace`
-  is broken on `origin/main` (Mathlib v4.26.0 split this module into
-  `AffineSubspace/Basic.lean` + `AffineSubspace/Defs.lean`), and the parent's
-  `def threeCollinear`/`def triangle` examples fail elaboration (matrix `![...]`
-  notation no longer auto-coerces to `EuclideanSpace`). Tracking these as a
-  separate doctor/mechanic task; out of scope for this S2 ACT scaffold.
+  The parent reduction `oneflat_eq_parent` (S4 ACT) was unblocked after the
+  stale "parent is broken" claim was corrected (parent builds clean against
+  Mathlib v4.26.0 per #20896). The proof is short and almost-definitional:
+  `WeightingD P` and `Erdos735.Weighting P` unfold to the same body; the
+  `ConfigKFlat 1 P` / `Erdos735.ConfigLine P` rank conditions differ only by
+  `Nat.cast_one` (`((1 : ℕ) : Cardinal) = (1 : Cardinal)`), and the card
+  condition `1 + 1 = 2` is also definitional; `kFlatSum` and `Erdos735.lineSum`
+  have identical bodies modulo namespace.
 
   The polytope witnesses already designed but not Lean-realised:
     * Tetrahedron at alternate-cube-vertices (d=3, k=2, magic constant 3) —
@@ -40,6 +41,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
+import Proofs.Erdos735Problem
 
 namespace Erdos735OQ04
 
@@ -150,5 +152,29 @@ theorem ambient_flat_magic_trivial {d : ℕ} (P : PointConfigD d) :
     have hle : d + 1 ≤ P.card :=
       le_trans hcardF (Finset.card_filter_le _ _)
     omega
+
+/-- **S4 ACT — parent reduction.** For `d = 2, k = 1`, the k-flat-magic property
+    is definitionally the parent's `Erdos735.IsMagic` property. The weighting
+    types `WeightingD P` and `Erdos735.Weighting P` unfold to the same body, and
+    `ConfigKFlat 1 P` differs from `Erdos735.ConfigLine P` only by the
+    `Nat.cast_one` rewrite on the rank condition (and a `1 + 1 = 2` card rewrite
+    that omega/simp dispatches automatically). The `kFlatSum` / `Erdos735.lineSum`
+    bodies are identical modulo namespace, so subsumption-of-witnesses through
+    the AffineSubspace `.val` is by `rfl`. -/
+theorem oneflat_eq_parent (P : PointConfigD 2) :
+    IsKFlatMagic 1 P ↔ Erdos735.IsMagic P := by
+  refine ⟨?_, ?_⟩
+  · rintro ⟨⟨w, hw⟩, c, hc, hmagic⟩
+    refine ⟨⟨w, hw⟩, c, hc, ?_⟩
+    rintro ⟨L, hrkL, hcardL⟩
+    have hrk' : Module.rank ℝ L.direction = ((1 : ℕ) : Cardinal) := by
+      simpa using hrkL
+    exact hmagic ⟨L, hrk', hcardL⟩
+  · rintro ⟨⟨w, hw⟩, c, hc, hmagic⟩
+    refine ⟨⟨w, hw⟩, c, hc, ?_⟩
+    rintro ⟨F, hrkF, hcardF⟩
+    have hrk' : Module.rank ℝ F.direction = 1 := by
+      simpa using hrkF
+    exact hmagic ⟨F, hrk', hcardF⟩
 
 end Erdos735OQ04
