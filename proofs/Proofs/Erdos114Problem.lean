@@ -23,7 +23,6 @@ when p(z) = z^n - 1?
 
 import Mathlib.Analysis.Complex.Basic
 import Mathlib.Data.Real.Basic
-import Mathlib.Data.Polynomial.Basic
 import Mathlib.Tactic
 
 /- ## Core Definitions -/
@@ -33,9 +32,9 @@ structure MonicPoly (n : ℕ) where
   coeffs : Fin n → ℂ
   -- The polynomial is z^n + a_{n-1}z^{n-1} + ... + a_0
 
-/-- The lemniscate of a monic degree-n polynomial:
+/- The lemniscate of a monic degree-n polynomial:
     L(p) = {z ∈ ℂ : |p(z)| = 1}. This is a real algebraic curve. -/
-/-- f(n): maximum lemniscate length over all monic degree-n polynomials. -/
+/- f(n): maximum lemniscate length over all monic degree-n polynomials. -/
 /-- The extremal polynomial z^n - 1 (coefficients: a_0 = -1, rest 0). -/
 def znMinus1 (n : ℕ) (hn : n ≥ 1) : MonicPoly n where
   coeffs := fun i => if i.val = 0 then -1 else 0
