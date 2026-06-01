@@ -202,3 +202,78 @@ coordinate manipulation whose simp set must be nailed by build-iteration; left a
 the next AXIOM-HUNT target so this session ships a clean verified delta. The two
 `*_is_magic` axioms carry the constructive content of ABKPR classes 1–2 and are a
 larger build task.
+
+## Session 2026-05-31 (researcher-1) — S4 ACT parent reduction shipped
+
+**Mode**: ACT (substantive Lean delta)
+**Outcome**: completed — `oneflat_eq_parent` discharged on `Erdos735OQ04.lean`,
+Docker build-verified (3062 jobs).
+
+### Theorem added
+
+```lean
+theorem oneflat_eq_parent (P : PointConfigD 2) :
+    IsKFlatMagic 1 P ↔ Erdos735.IsMagic P := by
+  refine ⟨?_, ?_⟩
+  · rintro ⟨⟨w, hw⟩, c, hc, hmagic⟩
+    refine ⟨⟨w, hw⟩, c, hc, ?_⟩
+    rintro ⟨L, hrkL, hcardL⟩
+    have hrk' : Module.rank ℝ L.direction = ((1 : ℕ) : Cardinal) := by
+      simpa using hrkL
+    exact hmagic ⟨L, hrk', hcardL⟩
+  · rintro ⟨⟨w, hw⟩, c, hc, hmagic⟩
+    refine ⟨⟨w, hw⟩, c, hc, ?_⟩
+    rintro ⟨F, hrkF, hcardF⟩
+    have hrk' : Module.rank ℝ F.direction = 1 := by
+      simpa using hrkF
+    exact hmagic ⟨F, hrk', hcardF⟩
+```
+
+### Why this works (technique notes)
+
+1. **Weighting types unify by destructure-and-rebuild.** `WeightingD P` and
+   `Erdos735.Weighting P` both unfold to `{w : P → ℝ // ∀ p, w p > 0}`.
+   `rintro ⟨w, hw⟩` followed by `refine ⟨⟨w, hw⟩, …⟩` lets Lean re-elaborate
+   the rebuilt pair against the goal type — no manual `show` / `unfold`
+   needed.
+
+2. **Rank conditions differ by `Nat.cast_one`.**
+   `ConfigKFlat 1 P` carries `Module.rank ℝ F.direction = ((1:ℕ):Cardinal)`;
+   `Erdos735.ConfigLine P` carries `= (1:Cardinal)`. `simpa using h` closes
+   both directions via `Nat.cast_one` in the default simp set.
+
+3. **`kFlatSum` and `Erdos735.lineSum` have identical bodies modulo namespace.**
+   Both are `(P.filter (· ∈ F.val)).sum (fun p => if h : p ∈ P then w.val ⟨p, h⟩
+   else 0)`. Lean's defeq check unfolds both to the same expression, so the
+   final `… = c` goals match by `rfl`.
+
+4. **Card condition `1 + 1 = 2` is definitional.** The hcard hypotheses
+   transport without rewriting.
+
+### File delta
+
+| Metric | Pre-S4 | Post-S4 |
+|---|---|---|
+| LOC | 154 | 180 |
+| Theorems | 2 | 3 |
+| Defs | 4 | 4 |
+| Axioms | 0 | 0 |
+| Sorries | 0 | 0 |
+| Imports | 4 | 5 (+`Proofs.Erdos735Problem`) |
+
+### Forward-looking
+
+After S4 ACT, all three trivial-case targets are closed (k=0, k=d, d=2∧k=1).
+Remaining sub-steps: S5 (genuinely open higher-dim classification axiom),
+S6a-ACT (tetrahedron certificate, paste-ready), S6b/c-ACT (octa+cube
+refutations, paste-ready), S6d (dodec/icosa analysis), S6e (general-position
+uniform-weight theorem), S7 (gallery JSON).
+
+### Honesty
+
+The theorem is mathematically trivial — it asserts that the `d = 2, k = 1`
+specialisation of the OQ04 definitions equals the parent's plane case, which
+is true by definitional unfolding plus a one-step `Nat.cast_one`. Its value is
+plumbing: future ACT iterations on the higher-dim cases can quote the parent's
+classification through this iff. This session does **not** advance the
+genuine open question (S5).
