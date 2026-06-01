@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PREP (S15 PREP shipped doc-only TopCat-bridge audit; S16 ACT EXEC will execute the G6/G7/G8/G10 + Disk-IsZero integration)",
-    "since": "2026-06-01T07:00:00Z",
-    "iteration": 16,
-    "focus": "S15 PREP (researcher-1, 2026-06-01, doc-only) — TopCat-morphism bridge audit for the S9 ACT-D-3 EXEC integration. Surfaces TWO infrastructure gaps that earlier PREPs (S10, S12) missed and that a literal 'add 3 imports + paste proof' would have hit at Docker time: Gap-1 — Retraction.toTopCatHom (the categorical retraction 𝔻 n ⟶ ∂𝔻 n from a Retraction n structure) is not in Mathlib and needs a new ~45-LOC companion file BrouwerFixedPointOQ01OQ02G10.lean; Gap-2 — H_n_minus_1_ball_zero_substantive returns IsZero on the non-ULift TopCat.of ↥(closedBall …) while H_n_minus_1_sphere_nonzero_substantive returns ¬IsZero on the ULift-wrapped TopCat.diskBoundary n, requiring a ~12-LOC ULift-reconciliation theorem H_n_minus_1_disk_zero_substantive via TopCat.uliftFunctor / TopCat.isoOfHomeo / Homeomorph.ulift.symm. Bearer audit at pinned rev 2df2f0150c… confirms all required Mathlib decls present. Risk inventory: 4 LOW + 3 MEDIUM + 1 OPEN (n=1 branch — Retraction 1 uninhabited but not formally proved). Honest axiom-count expectation revised 4→3 to 4→4 (replace mock composite with thin IVT). S16 ACT recommended split: G10 PR first (~400–500 jobs), then main-file integration (~3300–3400 jobs). No Lean / meta.json / problem.md / state.md / knowledge.md body edits.",
+    "phase": "ACT-A (S16 ACT-A shipped G10 companion file Docker-verified at 3309 jobs; S16 ACT-B will execute Gap-2 + mock-axiom removal in main file)",
+    "since": "2026-06-01T13:00:00Z",
+    "iteration": 17,
+    "focus": "S16 ACT-A (researcher-1, 2026-06-01) — ships proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean (78 LOC, 1 def + 1 theorem in namespace BrouwerOQ01OQ02), closing Gap-1 of S15 PREP. Two declarations: (a) Retraction.toTopCatHom (noncomputable def) — the TopCat morphism 𝔻 n ⟶ ∂𝔻 n built from r.toFun via ULift wrap/unwrap + Subtype.codRestrict + r.maps_to_sphere; continuity via continuous_uliftUp.comp (Continuous.codRestrict ... continuous_uliftDown). (b) Retraction.section_identity (theorem) — diskBoundaryInclusion n ≫ r.toTopCatHom = 𝟙 (∂𝔻 n) closed via ext ⟨⟨p,hp⟩⟩ + ULift.ext + Subtype.ext + r.fixes_sphere. Docker-verified: 3309 jobs / 64s warm cache (S15 PREP §7 estimated ~400–500 — gap because TopCat.Sphere import closure dominates, not the G10 delta itself). Took 3 attempts to close section_identity: (1) PREP §3.1 verbatim → ⟨...⟩ elaboration failure; (2) simp on Retraction.toTopCatHom + diskBoundaryInclusion + r.fixes_sphere → r.fixes_sphere flagged unused (simp couldn't match it); (3) ULift.ext + Subtype.ext chain → green. PREP names continuous_uLift_{up,down} corrected to v4.26.0 spelling continuous_uliftUp / continuous_uliftDown. Net delta: +78 LOC, +1 theorem, +1 definition, +0 axioms, +0 sorries. Main file unchanged. No meta.json edits (slug has no gallery directory).",
     "activeApproach": "S9 ACT-D-3 decomposes into four categorical/algebraic bridges G6 + G7 + G8 + G9 — ALL NOW ON MAIN as of S13 ACT 2026-05-16T14:32:50Z. Status: G6 on main (`BrouwerFixedPointOQ01OQ02G6.lean` 87 LOC / 4 thm + 1 local lemma / 0 ax / 0 sorry, S13 ACT PR #19624 companion-file pivot), G7 on main (`BrouwerFixedPointOQ01OQ02G7.lean`, PR #18951), G8 on main (`BrouwerFixedPointOQ01OQ02G8.lean:96`, PR #19114), G9 on main (`BrouwerFixedPointOQ01OQ02G8.lean:117`, same PR). PR #18011 (original G6 path via main-file expansion) SUPERSEDED by the companion-file pivot. The substantive replacement of mock axiom `H_n_minus_1_sphere_nonzero` chains them as before: (1) `H_n_minus_1_ball_zero_substantive` (main:~310) → IsZero (H_{n-1}(B^n)). (2) G8 applied to TopCat inclusion/retraction → section on H_{n-1}. (3) G9 → IsZero (H_{n-1}(𝕊^{n-1})). (4) Contradicts `H_n_minus_1_sphere_nonzero_substantive` (main:~375). (5) G7 + G6 (now from companion file) extract the `∃ ψ, ψ.comp φ = id` shape consumed by `singular_homology_retraction_split`. S9 ACT-D-3 EXEC integration step (add 3 import lines + main-file delta) is Lean-unblocked but Docker-blocked on B3. Net Lean delta this STATE-SYNC: 0 (doc-only).",
     "blockers": [
       "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge. Encoded as thin local axiom contractible_singularHomology_zero (S5 ACT-B exec).",
@@ -27,11 +27,11 @@
       "B3 (INFRA) — RESOLVED (S13b 2026-05-30: Docker 29.4.1 up, 56 Gi free at S15 PREP time; Docker-verify capable).",
       "PR #18011 — SUPERSEDED by the S13 ACT G6 companion-file pivot (PR #19624 merged 2026-05-16). Disposition is mechanic/champion scope."
     ],
-    "nextAction": "S16 ACT EXEC integration, in two PRs: (1) ship proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean (~45 LOC, ~400–500 jobs) implementing Retraction.toTopCatHom + Retraction.section_identity per S15 PREP §3.1 paste-ready skeleton; Docker-verify alone. (2) In main file: add 4 imports (G6/G7/G8/G10), add H_n_minus_1_disk_zero_substantive per S15 PREP §4.1 (~12 LOC), replace mock axiom H_n_minus_1_sphere_nonzero (line 261) with the substantive theorem per S15 PREP §5 paste-ready body. Address n=1 branch by adding a thin local axiom Retraction_one_uninhabited (axiom net 4→4) OR a 5-line IVT proof (axiom net 4→3). Docker-verify full main-file build (~3300–3400 jobs). Update meta.json axiom counts.",
+    "nextAction": "S16 ACT-B integration (main file): (1) add 4 imports — Proofs.BrouwerFixedPointOQ01OQ02G6/G7/G8/G10. (2) Spot-check TopCat.isoOfHomeo (or fallback Iso.ofHom over ofHom Homeomorph.toContinuousMap) per S15 PREP §4 risk F3. (3) Add H_n_minus_1_disk_zero_substantive per S15 PREP §4.1 (~12 LOC) using TopCat.uliftFunctor / uliftFunctorObjHomeo (Mathlib v4.26.0 names confirmed at pin 2df2f0150c…). (4) Replace mock axiom H_n_minus_1_sphere_nonzero (main:261) with the substantive theorem chaining BrouwerOQ01OQ02.Retraction.toTopCatHom + Retraction.section_identity (from this PR's G10) + G8.map_section_of_section + G9.isZero_of_section_into_isZero + H_n_minus_1_disk_zero_substantive + H_n_minus_1_sphere_nonzero_substantive per S15 PREP §5 paste-ready body. (5) Resolve n=1 branch: ship thin local axiom Retraction_one_uninhabited (axiom net 4→4 — replace mock composite with thin IVT) OR a 5-line IVT proof (axiom net 4→3). (6) Docker-verify full main-file build (~3300–3400 jobs per S15 PREP §7).",
     "attemptCounts": {
-      "total": 14,
+      "total": 15,
       "currentApproach": 1,
-      "approachesTried": 13
+      "approachesTried": 14
     }
   },
   "knowledge": {
@@ -80,7 +80,17 @@
         "description": "S14 STATE-SYNC (this PR, researcher-11, doc-only): research-JSON `currentState.*` + `knowledge.builtItems` + top-level `lastUpdate` catchup absorbing S12 PREP + S13 ACT. JSON drift items closed (8): iteration 11→13, phase, focus, blockers (+B3 INFRA, blockers[2] PR #18011 re-framed as SUPERSEDED), nextAction, activeApproach, builtItems append, lastUpdate. State.md cosmetic fix on S13 inaccuracy 'this slug has no research-json'.",
         "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
       },
-      "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s15-prep-topcat-bridge-audit.md — S15 PREP doc-only audit (10 sections: PREP rationale, bearer audit, Gap-1 closure, Gap-2 closure, paste-ready integration body, risk inventory, build cost estimate, S16 execution order, anti-targets, honesty notes)"
+      "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s15-prep-topcat-bridge-audit.md — S15 PREP doc-only audit (10 sections: PREP rationale, bearer audit, Gap-1 closure, Gap-2 closure, paste-ready integration body, risk inventory, build cost estimate, S16 execution order, anti-targets, honesty notes)",
+      {
+        "name": "BrouwerOQ01OQ02.Retraction.toTopCatHom (def) + Retraction.section_identity (theorem) — G10",
+        "description": "G10 retraction-to-TopCat bridge: from a Retraction n structure, build the TopCat morphism ρ : 𝔻 n ⟶ ∂𝔻 n (toTopCatHom, noncomputable def) and prove the section identity diskBoundaryInclusion n ≫ ρ = 𝟙 (∂𝔻 n) (section_identity, theorem). Closes Gap-1 of S15 PREP. Function: ULift wrap/unwrap + Subtype.codRestrict + r.maps_to_sphere for membership + continuous_uliftUp.comp (Continuous.codRestrict _ _ continuous_uliftDown.comp ...) for continuity. Section identity: ext ⟨⟨p,hp⟩⟩ + ULift.ext + Subtype.ext + r.fixes_sphere. Docker-verified at 3309 jobs / 64s warm cache. Net delta: +83 LOC, +1 theorem, +1 definition, +0 axioms, +0 sorries. Companion-file pattern parallels G6/G7/G8 (build-risk isolation + review parallelism).",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean:43, 71"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s16-act-a-g10-companion-file.md (session memo, S16 ACT-A)",
+        "description": "S16 ACT-A (this PR, researcher-1, 2026-06-01): G10 companion file. Documents three-iteration close on section_identity, corrections to S15 PREP §3.1 (continuous_uliftUp/Down spelling; ULift.ext + Subtype.ext chain), and the 7× build-cost gap vs PREP §7 estimate (3309 actual vs ~400–500 projected — gap is TopCat.Sphere import closure, not the G10 delta). S16 ACT-B (next) handles Gap-2 + mock-axiom removal in main file.",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      }
     ],
     "insights": [
       "B1 (the topological-homotopy → chain-homotopy bridge) factors cleanly into three layers via Mathlib's existing simplicial framework: (i) simplicial-homotopy → chain-homotopy via the alternating-face-map functor, (ii) topological-homotopy → simplicial-homotopy via TopCat.toSSet, (iii) composition gives the singular-chain version. Only layer (i) requires genuinely new Lean code; the other two are routine bridges. (Section H3 of knowledge.md.)",
@@ -181,7 +191,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-06-01",
+  "lastUpdate": "2026-06-01T13:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -250,6 +260,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G10.lean",
+      "lineCount": 83,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
