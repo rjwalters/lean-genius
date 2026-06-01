@@ -138,18 +138,60 @@
   ],
   "sections": [
     {
-      "id": "header-and-imports",
-      "title": "File Header: Imports and Retraction Docstring",
+      "id": "imports",
+      "title": "Imports: Mathlib and the Parent OQ-02 File",
       "startLine": 1,
-      "endLine": 112,
-      "summary": "Imports Mathlib (for AnalyticOn, Set.Ioo, Set.Icc) and the parent file Proofs.MeanValueTheoremOQ02 (for taylorPolynomial and taylorPolynomial_zero). The module docstring records the OQ-04 question verbatim, the S1 axiomatization, the S1-child Runge counterexample refutation, and the S2 retraction action (axiom and false-by-inheritance n=0 corollary removed). Cross-references the corrected complex-disk Cauchy bound in mean-value-theorem-oq-02-oq-04-oq-01."
+      "endLine": 2,
+      "summary": "Two imports survive the S2 retraction. `import Mathlib` provides the analytic-function infrastructure (`AnalyticOn ℝ`, `HasFPowerSeriesOnBall`, `Set.Ioo`, `Set.Icc`) that the (now-removed) S1 axiom used. `import Proofs.MeanValueTheoremOQ02` exposes `taylorPolynomial` and `taylorPolynomial_zero` from the parent slug; the S1 iteration reused these without duplicating definitions, and the imports are kept after retraction so that any future S≥3 restoration starts from a stable surface."
+    },
+    {
+      "id": "docstring-oq04-question",
+      "title": "Docstring §1: The OQ-04 Question (as originally posed)",
+      "startLine": 4,
+      "endLine": 12,
+      "summary": "Records OQ-04 verbatim from the parent slug: is there a uniform error bound `|f(x) − T_n f(a)(x)| ≤ M · r^(n+1) / (R − r)` for `f` analytic on \"the disk of radius `R > r`\" with sup bound `M`? The pedagogical motivation is to upgrade the Lagrange remainder (pointwise existential) to a *uniform* bound on `[a-r, a+r]` with a right-hand side independent of any intermediate `c` — the form needed for series convergence and uniform polynomial approximation."
+    },
+    {
+      "id": "docstring-runge-refutation",
+      "title": "Docstring §2: Runge Counterexample and Refutation",
+      "startLine": 14,
+      "endLine": 39,
+      "summary": "Records the constructive refutation by the child slug `mean-value-theorem-oq-02-oq-04-oq-01`. Witness `(f, a, R, M, r, n, x) = (1/(1+x²), 0, 100, 1, 1, 0, 1)`: `|f(1) - f(0)| = 1/2` violates the claimed bound `1/99` by ~50×. The root cause named in the docstring is the **Runge phenomenon** — a real sup bound on a real interval does not control complex Cauchy coefficients when the *complex* radius of convergence is smaller than the real interval radius (here ρ=1 ≪ R=100 because `1/(1+x²)` has complex poles at ±i)."
+    },
+    {
+      "id": "docstring-s2-action",
+      "title": "Docstring §3: S2 Action and False-Witness Elimination",
+      "startLine": 41,
+      "endLine": 67,
+      "summary": "Records the S2 (researcher-8, 2026-05-14) removal of both the S1 axiom `analytic_taylor_remainder_uniform_bound` and its false-by-inheritance n=0 corollary `analytic_remainder_zero_bound`. The deletion eliminates a gallery-integrity hazard: while both this file's axiom and the child slug's `oq04_axiom_is_false` were importable together, any downstream consumer could derive `False`. Cross-references the corrected complex-disk form `analytic_taylor_remainder_uniform_bound_complex` (in the child file), which strengthens the hypothesis to `HasFPowerSeriesOnBall f p a R` on a complex disk and is fully proven modulo `cauchy_diag_norm_bound_at_radius`."
+    },
+    {
+      "id": "docstring-bookkeeping",
+      "title": "Docstring §4: Gallery Integrity Bookkeeping",
+      "startLine": 69,
+      "endLine": 75,
+      "summary": "Itemizes the numeric deltas: `axiomCount: 1 → 0` (false S1 axiom removed; the meta.json still reports `axiomCount: 1` because the parent file's true `taylor_lagrange_remainder` axiom is inherited via `additionalFiles`), `theoremCount: 1 → 0` (n=0 corollary removed), `sorries: 0` (unchanged), `definitionCount: 0` (unchanged), `lineCount: 173 → ~90` (estimate; actual current line count is 128 — the docstring grew slightly past the initial S2 estimate)."
+    },
+    {
+      "id": "docstring-siblings-and-path",
+      "title": "Docstring §5: Sibling Connections and Path Forward",
+      "startLine": 77,
+      "endLine": 102,
+      "summary": "Locates this slug in the OQ-tree. Parent `mean-value-theorem-oq-02` (Lagrange remainder, unchanged) provides `taylorPolynomial` and the true qualitative Lagrange-remainder axiom. Child `mean-value-theorem-oq-02-oq-04-oq-01` carries both the refutation and the corrected complex-disk Cauchy bound. Cousin `taylor-theorem-oq-02` proves the qualitative `R_n(x) → 0` for analytic `f`, which does *not* depend on a real sup bound and is therefore unaffected by Runge. The closing \"path forward\" picks option (a): keep this file as a doc-only retraction record for permanent pedagogical/audit value."
+    },
+    {
+      "id": "docstring-references",
+      "title": "Docstring §6: References (Runge 1901 and Cross-File Pointers)",
+      "startLine": 104,
+      "endLine": 111,
+      "summary": "Two intra-repository pointers (child file §2 for the refutation theorem `oq04_axiom_is_false`, §3 for the corrected statement) plus Runge's 1901 paper (\"Über empirische Funktionen und die Interpolation zwischen äquidistanten Ordinaten,\" Z. Math. Phys. 46, 224-243). Runge's original motivation was numerical interpolation divergence on equidistant nodes — the same complex-vs-real gap that breaks the S1 axiom."
     },
     {
       "id": "namespace-setup",
       "title": "Intentionally Empty Namespace (S2 Retraction)",
       "startLine": 114,
       "endLine": 128,
-      "summary": "Declares the `MeanValueTheoremOQ02OQ04` namespace with an inline comment explaining the S2 retraction. No axioms, theorems, definitions, or sorries: the S1 axiom `analytic_taylor_remainder_uniform_bound` and the derived theorem `analytic_remainder_zero_bound` were removed after the child slug constructively refuted the axiom (Runge counterexample). Consumers should import `Proofs.MeanValueTheoremOQ02OQ04OQ01` directly for the corrected complex-disk form."
+      "summary": "Declares the `MeanValueTheoremOQ02OQ04` namespace with an inline comment repeating the retraction record next to the code. No axioms, theorems, definitions, or sorries. The namespace is kept (rather than deleted with the file) for three reasons: (1) import stability — `import Proofs.MeanValueTheoremOQ02OQ04` continues to compile; (2) identifier reservation — `MeanValueTheoremOQ02OQ04.analytic_taylor_remainder_uniform_bound` now elaborates to `unknown identifier`, surfacing any accidental dependence; (3) gallery slug stability — the audit trail of the refutation is preserved at this slug. Consumers should `import Proofs.MeanValueTheoremOQ02OQ04OQ01` for the corrected complex-disk form."
     }
   ],
   "conclusion": {
