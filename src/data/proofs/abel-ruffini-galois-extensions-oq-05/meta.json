@@ -314,6 +314,11 @@
       "description": "**$S_4$ is realizable.** Analogous to $S_3$: `symmetric_solvable_of_le_four` at $n = 4$ gives solvability. Concretely, the splitting field of a generic irreducible quartic with generic resolvent cubic has Galois group $S_4$ over $\\mathbb{Q}$ (Hilbert's irreducibility)."
     },
     {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.solvable_iff_shafarevich_realizable",
+      "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G], ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Solvable-realizable repackaging.** Strips the explicit existential boilerplate from Shafarevich's axiom by directly returning the realizability conclusion under the `[IsSolvable G]` typeclass — the form most directly consumable by downstream uses that already carry an `IsSolvable G` instance and don't need to drop the spurious `Nonempty (L ≃ₐ[ℚ] L)` non-triviality conjunct. Becomes the routing API used by `shafarevich_implies_converse` and provides the canonical $\\Leftarrow$ direction of the `IsSolvable G ↔ realizable G` biconditional whose $\\Rightarrow$ direction (every Galois group over $\\mathbb{Q}$ is solvable) would require the *full* inverse Galois solution and is false in general (the Monster is realizable but not solvable)."
+    },
+    {
       "name": "AbelRuffiniGaloisExtensionsOQ05.subgroup_of_solvable_realizable",
       "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G] (H : Subgroup G), ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (H ≃* (L ≃ₐ[ℚ] L))",
       "description": "**Subgroup closure.** Any subgroup $H$ of a finite solvable group $G$ is itself realizable. Proof: `subgroup_solvable_of_solvable` from the parent file gives `IsSolvable H`; apply Shafarevich to $H$ (using `Fintype H` from finite ambient). Note: the Galois correspondence makes subgroups of $\\mathrm{Gal}(L/\\mathbb{Q})$ correspond to intermediate fields, but the Lean statement asserts only an abstract realization, not necessarily a sub-extension of $L$."
@@ -322,6 +327,11 @@
       "name": "AbelRuffiniGaloisExtensionsOQ05.quotient_of_solvable_realizable",
       "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G] (N : Subgroup G) [N.Normal], ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ⧸ N ≃* (L ≃ₐ[ℚ] L))",
       "description": "**Quotient closure.** For any normal subgroup $N \\trianglelefteq G$ with $G$ solvable, the quotient $G/N$ is realizable. Proof: `quotient_solvable_of_solvable` gives `IsSolvable (G ⧸ N)`; apply Shafarevich. Galois-theoretically: quotients of a Galois group correspond to normal sub-extensions, but again the Lean result asserts abstract realization."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.shafarevich_implies_converse",
+      "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G], ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Galois-side $\\Leftarrow$ direction.** Definitionally an alias of `solvable_iff_shafarevich_realizable` (proof: `solvable_iff_shafarevich_realizable`), but its docstring frames the result as one half of the would-be biconditional *$G$ is solvable $\\iff$ $G$ arises as the Galois group of a solvable extension* — making explicit that this file only proves $\\Leftarrow$ (solvability $\\Rightarrow$ realizability via Shafarevich) and that the $\\Rightarrow$ direction (every realizable group is solvable) is *false* in the full inverse Galois problem (cf. `s5_not_solvable_obstruction` and the $S_5/A_5/\\mathrm{Monster}$ counterexamples). The naming separation gives downstream consumers two stable hooks: the corollary-style `solvable_iff_…_realizable` and the conceptually-framed `shafarevich_implies_converse`."
     },
     {
       "name": "AbelRuffiniGaloisExtensionsOQ05.s5_not_solvable_obstruction",
