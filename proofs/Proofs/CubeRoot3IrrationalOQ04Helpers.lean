@@ -525,4 +525,62 @@ theorem one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 :
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S12b prep: new upper bound for the eleventh partial quotient (the twelfth convergent)
+
+The twelfth CF convergent of `∛3` (using `a₁₁ = 5` per OEIS A002945
+prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, …]`, 0-indexed) is
+
+  `p₁₁/q₁₁ = (a₁₁·p₁₀ + p₉) / (a₁₁·q₁₀ + q₉)`
+  `       = (5 · 13361 + 6206) / (5 · 9264 + 4303)`
+  `       = 73011 / 50623`.
+
+This convergent is odd-index (11), so it lies on the UPPER side of
+`∛3` (alternating with the lower-side eleventh convergent `13361/9264`
+from S12a).
+
+Convergent recursion (with `a₁₁ = 5`):
+
+  `q₁₁ = 5 · q₁₀ + q₉ = 5 · 9264 + 4303 = 50623`
+  `p₁₁ = 5 · p₁₀ + p₉ = 5 · 13361 + 6206 = 73011`
+
+After cubing,
+
+  `(73011/50623)³ = 389_192_883_500_331 / 129_730_961_154_367`
+  `3              = 389_192_883_463_101 / 129_730_961_154_367`
+
+so `73011³ = 389_192_883_500_331 > 389_192_883_463_101 = 3 · 50623³`
+(strict, diff `+37_230`). The new upper cube gap
+`37_230 / 129_730_961_154_367 ≈ 2.87·10⁻¹⁰` is roughly two orders
+of magnitude tighter than S10's upper-side gap of
+`11_435 / 79_673_526_127 ≈ 1.44·10⁻⁷` — consistent with `73011/50623`
+being the next true upper convergent two rungs beyond `6206/4303`.
+
+(Pre-claim Python sanity check (this S12b session):
+`73011³ = 389_192_883_500_331`, `3 · 50623³ = 389_192_883_463_101`,
+diff `+37_230 > 0` confirming `(73011/50623)³ > 3`, hence
+`73011/50623 > cbrt3` as required for an upper bound. **Math-correction
+precedent #FIVE** for this slug: the post-S12a `nextAction` sketch
+in `state.md` and JSON `currentState.nextAction` claimed
+`73011³ - 3·50623³ = +64_599_490`. The actual value is `+37_230`
+(off by a factor of ~1734×). The DIRECTION of the bound
+(`73011/50623 > cbrt3`, valid upper bound for proving
+`cbrt3_a10 = 2`) is unchanged. Cross-checked against OEIS A002945
+via Decimal-arithmetic CF expansion of `∛3` to 200 digits; first
+20 partial quotients
+`[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4]`
+match independently.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 73011/50623`. Cube target: `(73011/50623)³ =
+389_192_883_500_331 / 129_730_961_154_367 > 389_192_883_463_101 /
+129_730_961_154_367 = 3` (strict: `73011³ = 389_192_883_500_331 >
+389_192_883_463_101 = 3 · 50623³`, gap `+37_230`). The twelfth
+convergent of the simple CF of `∛3` (using `a₁₁ = 5` per OEIS
+A002945). -/
+theorem cbrt3_lt_seven_three_oh_one_one_over_five_oh_six_two_three :
+    cbrt3 < (73011 / 50623 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
