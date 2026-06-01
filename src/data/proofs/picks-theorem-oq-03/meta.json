@@ -64,11 +64,12 @@
     ],
     "dateAdded": "2026-03-06",
     "additionalFiles": [
-      "Proofs/PicksTheoremOQ03CrossPoly.lean"
+      "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "Proofs/PicksTheoremOQ03.lean"
     ],
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 710,
-    "assumptions": "2 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change).",
+    "assumptions": "3 axioms: ehrhart_is_polynomial (Ehrhart counting function is polynomial), ehrhart_macdonald_reciprocity (interior count via sign-change), and ehrhart_fn (Ehrhart counting function as a typed primitive, declared in PicksTheoremOQ03.lean for the d=2 Pick's-theorem specialization).",
     "mathlib_version": "4.26.0",
     "theoremCount": 45,
     "definitionCount": 23
@@ -240,6 +241,15 @@
         "axioms": 0,
         "sorries": 0,
         "description": "Cross-polytope (hyperoctahedron) Ehrhart theory: polynomials, reciprocity, h*-vectors, duality"
+      },
+      {
+        "path": "Proofs/PicksTheoremOQ03.lean",
+        "lineCount": 437,
+        "theorems": 19,
+        "definitions": 6,
+        "axioms": 1,
+        "sorries": 0,
+        "description": "d=2 Pick's-theorem specialization of Ehrhart theory: ehrhart_fn primitive, polygon_2d / unit-simplex / unit-cube / reeve-tetrahedra concrete instances, and reciprocity-recovers-Picks check"
       }
     ]
   }
