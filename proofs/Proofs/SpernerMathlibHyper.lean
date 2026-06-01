@@ -132,8 +132,61 @@ theorem door_count_parity_hyper
     (Finset.univ.filter (fun k : ι_one =>
       ∀ p : P, p ≠ top → ∃ i : ι_one, i ≠ k ∧ f i = p)).card % 2
     = if Function.Surjective f then 1 else 0 := by
-  -- Strategic sorry — see S2c PREP for the cardinality-dichotomy recipe.
-  sorry
+  classical
+  by_cases hcard : Fintype.card ι_one < Fintype.card P
+  · -- Strict case (S3 ACT): pigeonhole rules out doors and rules out
+    -- surjectivity, so both sides are 0.
+    have hnotsurj : ¬ Function.Surjective f := fun hsurj =>
+      absurd (Fintype.card_le_of_surjective f hsurj) (not_le.mpr hcard)
+    have hP_pos : 0 < Fintype.card P := Fintype.card_pos_iff.mpr ⟨top⟩
+    have hempty : (Finset.univ.filter (fun k : ι_one =>
+        ∀ p : P, p ≠ top → ∃ i : ι_one, i ≠ k ∧ f i = p)) = ∅ := by
+      rw [Finset.eq_empty_iff_forall_notMem]
+      intro k hk
+      rw [Finset.mem_filter] at hk
+      obtain ⟨_, hdoor⟩ := hk
+      -- The "door" hypothesis says every non-`top` palette element appears in
+      -- the image of `Finset.univ.erase k` under `f`. Chain through
+      -- `card_le_card` + `card_image_le` to deduce card P ≤ card ι_one,
+      -- contradicting the strict-case hypothesis.
+      have hsub : (Finset.univ.erase top : Finset P)
+          ⊆ ((Finset.univ.erase k : Finset ι_one).image f) := by
+        intro p hp
+        rw [Finset.mem_erase] at hp
+        obtain ⟨hp_ne, _⟩ := hp
+        obtain ⟨i, hi_ne, hi_eq⟩ := hdoor p hp_ne
+        exact Finset.mem_image.mpr
+          ⟨i, Finset.mem_erase.mpr ⟨hi_ne, Finset.mem_univ i⟩, hi_eq⟩
+      have hcardP : (Finset.univ.erase top : Finset P).card =
+          Fintype.card P - 1 := by
+        rw [Finset.card_erase_of_mem (Finset.mem_univ top), Finset.card_univ]
+      have hcardι : (Finset.univ.erase k : Finset ι_one).card =
+          Fintype.card ι_one - 1 := by
+        rw [Finset.card_erase_of_mem (Finset.mem_univ k), Finset.card_univ]
+      have h1 : (Finset.univ.erase top : Finset P).card ≤
+          ((Finset.univ.erase k : Finset ι_one).image f).card :=
+        Finset.card_le_card hsub
+      have h2 : ((Finset.univ.erase k : Finset ι_one).image f).card ≤
+          (Finset.univ.erase k : Finset ι_one).card := Finset.card_image_le
+      have h12 : Fintype.card P - 1 ≤ Fintype.card ι_one - 1 := by
+        rw [← hcardP, ← hcardι]; exact le_trans h1 h2
+      -- `k : ι_one` exhibits inhabitation; combined with `hP_pos`, this lets
+      -- us cancel both `- 1`s.
+      have hι_pos : 0 < Fintype.card ι_one := Fintype.card_pos_iff.mpr ⟨k⟩
+      have hP_le : Fintype.card P ≤ Fintype.card ι_one := by
+        calc Fintype.card P
+            = Fintype.card P - 1 + 1 := (Nat.sub_add_cancel hP_pos).symm
+          _ ≤ Fintype.card ι_one - 1 + 1 := Nat.add_le_add_right h12 1
+          _ = Fintype.card ι_one := Nat.sub_add_cancel hι_pos
+      exact absurd hP_le (not_le.mpr hcard)
+    rw [hempty]
+    simp [hnotsurj]
+  · -- Equality case (deferred to S4): `card ι_one = card P` via
+    -- `le_antisymm hι_size (not_lt.mp hcard)`; transport `f` to the parent's
+    -- `Fin (d+1)` shape via `Fintype.equivOfCardEq` + a `top`-permutation
+    -- normalisation, then invoke `SpernerMathlib.door_count_parity`. See
+    -- S2c PREP cardinality dichotomy and S2d PREP bearer chains.
+    sorry
 
 end PerCellParity
 

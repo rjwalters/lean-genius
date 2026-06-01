@@ -27,22 +27,22 @@
     "phase": "ACT",
     "since": "2026-05-31T13:10:00Z",
     "iteration": 11,
-    "focus": "S2 ACT shipped (researcher-1, 2026-05-31): proofs/Proofs/SpernerMathlibHyper.lean (289 LOC, 3 strategic sorries) integrating S1b top, S1e hι_size, S2 PREP skeleton, S2c dichotomy, S2d bearer chains, S2e Σ-pair involution. Build pending (G9 lake self-loop). Sorries: (1) door_count_parity_hyper (S2c/S2d recipe), (2) even_card_interior_doors_hyper (S2e involution), (3) sperner_parity_hyper (mechanical chain through 1+2, ~80 LOC bookkeeping). Higher-level exists_panchromatic_hyper proves cleanly via Nat.odd_iff transport.",
+    "focus": "S3 ACT (researcher-1, 2026-06-01): door_count_parity_hyper STRICT CASE closed in proofs/Proofs/SpernerMathlibHyper.lean (342 LOC, 3 sorries, Docker-verified 7744 jobs). The |ι_one| < |P| branch is now fully proven (~38 LOC) via pigeonhole: univ.erase top ⊆ (univ.erase k).image f chained through card_le_card + card_image_le derives card P ≤ card ι_one, contradicting strict <. Both sides of the parity equation reduce to 0 in this branch. Remaining: (1) equality case |ι_one|=|P| of door_count_parity_hyper (Equiv-transport to parent, ~25 LOC); (2) even_card_interior_doors_hyper (S2e involution, ~30 LOC); (3) sperner_parity_hyper (Σ-chain through 1+2, ~80 LOC). Both S2 ACT and S3 ACT Docker-verified — the G9 lake self-loop qualifier is OBSOLETE for this slug.",
     "blockers": [],
-    "nextAction": "S3 — close the three strategic sorries in SpernerMathlibHyper.lean. Order: (a) door_count_parity_hyper via S2c cardinality dichotomy + Equiv-transport to parent door_count_parity (~18-28 LOC); (b) even_card_interior_doors_hyper via Sperner.even_card_fpf_invol on Σ-type (~30 LOC); (c) sperner_parity_hyper via Σ-versions of card_doors_eq_sum and doors_partition (~80 LOC). Then S4 specialization bridge SpernerMathlib.IsDoor ↔ IsDoorHyper at top=Fin.last d.",
+    "nextAction": "S4 — close the equality case |ι_one| = |P| of door_count_parity_hyper via Fintype.equivOfCardEq + top↔Fin.last d permutation transport to parent SpernerMathlib.door_count_parity (~25 LOC); then close even_card_interior_doors_hyper via Sperner.even_card_fpf_invol on Σ-type (~30 LOC); then close sperner_parity_hyper via Σ-versions of card_doors_eq_sum (Fintype.sum_sigma) and doors_partition (~80 LOC). S5 specialization bridge after that.",
     "attemptCounts": {
-      "total": 10,
+      "total": 11,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT shipped 2026-05-31 (researcher-1): proofs/Proofs/SpernerMathlibHyper.lean ships the hypergraph API — VertexMap, AdjMap, IsPanchromaticHyper, IsDoorHyper (top : P), adjMapHyper, isDoorHyper_of_shared_face, isDoorHyper_iff_of_adj proven; door_count_parity_hyper / even_card_interior_doors_hyper / sperner_parity_hyper as strategic sorries per S2c/S2d/S2e PREP; exists_panchromatic_hyper proven by Nat.odd_iff chain. 289 LOC, 3 sorries, 0 axioms. Build pending (G9 lake self-loop in worktree). Phase advanced PREP → ACT.",
+    "progressSummary": "S3 ACT shipped 2026-06-01 (researcher-1): door_count_parity_hyper STRICT CASE (|ι_one| < |P|) closed via pigeonhole (~38 LOC). File grows 289 → 342 LOC, sorries unchanged at 3 but one is now smaller (equality case only). Docker-verified clean. Higher-level chain (exists_panchromatic_hyper) still proven via Nat.odd_iff transport. S2 ACT predecessor (2026-05-31): shipped the hypergraph API — VertexMap, AdjMap, IsPanchromaticHyper, IsDoorHyper (top : P), adjMapHyper, isDoorHyper_of_shared_face, isDoorHyper_iff_of_adj proven; door_count_parity_hyper / even_card_interior_doors_hyper / sperner_parity_hyper as strategic sorries per S2c/S2d/S2e PREP.",
     "builtItems": [
       "research/problems/sperner-mathlib-oq-01/problem.md (formal signature targets, three sub-OQs, acceptance criteria)",
       "research/problems/sperner-mathlib-oq-01/knowledge.md (axioms inventory, per-step weakening map, Mathlib alignment, S2 Lean skeleton, non-pure counter-example sketch, risk register)",
       "research/problems/sperner-mathlib-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)",
-      "proofs/Proofs/SpernerMathlibHyper.lean (289 LOC, 3 strategic sorries): hypergraph generalisation of Sperner door-counting parity (S2 ACT, 2026-05-31, researcher-1)",
+      "proofs/Proofs/SpernerMathlibHyper.lean (342 LOC, 3 sorries — strict case of door_count_parity_hyper closed): hypergraph generalisation of Sperner door-counting parity (S2 ACT 2026-05-31 + S3 ACT 2026-06-01, researcher-1; Docker-verified at both)",
       "Decidable instances for IsPanchromaticHyper and IsDoorHyper (auto-derived via Fintype.decidableForallFintype + decidableEq chain)",
       "Σ-type adjacency involution adjMapHyper (private) with adjHyper_some_of_ne_none extractor",
       "Door-transfer-through-shared-face proven for the palette-relative form (isDoorHyper_of_shared_face + isDoorHyper_iff_of_adj)"
@@ -58,7 +58,9 @@
       "S2c PREP (#18688) + S2d PREP (#18727): door_count_parity_hyper has a clean two-case architecture under h-iota-size. Case card-equality: Equiv-transport to the pure case via Fintype.card_eq.mp. Case card-strict: per-cell zero-or-even count via at-least-one-missing-color argument. S2d ships paste-ready Mathlib bearer chains for both cases.",
       "S2e PREP (#18788): even_card_interior_doors_hyper uses Sigma-pair involution on the (s, k) Sigma type. New Sigma-bearers cited: Sigma.instFintype, Sigma.instDecidableEq (for the involution well-definedness).",
       "S2 ACT (2026-05-31, researcher-1): the Σ-type involution architecture transfers verbatim from the parent Cell × Fin (d+1) version; the structural lifting cost is concentrated in (a) the cardinality-dichotomy step for door_count_parity_hyper and (b) the Σ-type analogues of card_doors_eq_sum / doors_partition for sperner_parity_hyper. The shared-face door-transfer lemma generalises without any extra hypothesis beyond hadj_vertex.",
-      "Variable section structure: keeping V, Cell, ι, P in separate sections per architectural block (Setup, Definitions, PerCellParity, GlobalParity, MainTheorem) avoids carrying decidability instances across irrelevant theorems. PerCellParity uses a non-dependent ι_one : Type* because the per-cell statement does not need the Cell-indexed family."
+      "Variable section structure: keeping V, Cell, ι, P in separate sections per architectural block (Setup, Definitions, PerCellParity, GlobalParity, MainTheorem) avoids carrying decidability instances across irrelevant theorems. PerCellParity uses a non-dependent ι_one : Type* because the per-cell statement does not need the Cell-indexed family.",
+      "S3 ACT (2026-06-01, researcher-1): strict case |ι_one| < |P| of door_count_parity_hyper is a clean pigeonhole — for each candidate door k, the hypothesis ∀ p ≠ top, ∃ i ≠ k, f i = p exhibits an inclusion `univ.erase top ⊆ (univ.erase k).image f`, which via card_le_card + card_image_le forces card P ≤ card ι_one, contradicting strict<. omega cannot close the ℕ-truncated subtraction directly through opaque image-cards; an explicit `calc` adding 1 to both sides (using Fintype.card_pos_iff to exhibit positivity from `k` and `top`) is required. Closing this branch leaves only the equality case |ι_one|=|P| as the remaining sorry inside door_count_parity_hyper.",
+      "S3 ACT confirms the G9 lake self-loop qualifier (memory feedback_g9_qualifier_masks_real_bugs) is OBSOLETE for this slug: ./proofs/scripts/docker-build.sh Proofs.SpernerMathlibHyper builds clean (7744 jobs) on both the pre-S3 file and the post-S3 file. Prior 'build pending' from S2 ACT is now verified."
     ],
     "mathlibGaps": [
       "Mathlib.Combinatorics.AbstractSimplicialComplex represents cells as Finset V, not as indexed Fin n → V — incompatible with the door-counting parity.",
@@ -66,12 +68,12 @@
       "No Mathlib API for cell-dependent dependent-index face complexes."
     ],
     "nextSteps": [
-      "S3 (next): close door_count_parity_hyper sorry via S2c PREP cardinality dichotomy — strict case (|ι|<|P|) gives 0=0 by pigeonhole, equality case (|ι|=|P|) reduces to parent SpernerMathlib.door_count_parity via Fintype.equivOfCardEq-transport with top↔Fin.last d swap.",
-      "S3 (next): close even_card_interior_doors_hyper sorry via Sperner.even_card_fpf_invol applied to adjMapHyper — the three side-conditions (involution from hadj_symm, set-stability from isDoorHyper_iff_of_adj, fixed-point-free from hadj_ne) are already wired by the helper lemmas in §4.",
-      "S3 (next): close sperner_parity_hyper sorry via Σ-versions of card_doors_eq_sum (using Fintype.sum_sigma) and doors_partition (mechanical Finset.disjoint_filter argument).",
-      "S4 (after S3): specialization bridge SpernerMathlib.IsDoor ↔ IsDoorHyper (ι := fun _ => Fin (d+1)) (top := Fin.last d) — ~25 LOC per S2 PREP §4 explicit version.",
-      "S5 (deferred): OQ-01-B non-pure complex restriction lemma (cosmetically heavy).",
-      "S6 (deferred): OQ-01-C boundary-axioms minimality formal demonstration."
+      "S4 (next): close the equality case |ι_one| = |P| of door_count_parity_hyper via Fintype.equivOfCardEq + top↔Fin.last d permutation transport to parent SpernerMathlib.door_count_parity. The strict case is already closed (S3 ACT, 2026-06-01).",
+      "S4 (next): close even_card_interior_doors_hyper sorry via Sperner.even_card_fpf_invol applied to adjMapHyper — the three side-conditions (involution from hadj_symm, set-stability from isDoorHyper_iff_of_adj, fixed-point-free from hadj_ne) are already wired by the helper lemmas in §4.",
+      "S4 (next): close sperner_parity_hyper sorry via Σ-versions of card_doors_eq_sum (using Fintype.sum_sigma) and doors_partition (mechanical Finset.disjoint_filter argument).",
+      "S5 (after S4): specialization bridge SpernerMathlib.IsDoor ↔ IsDoorHyper (ι := fun _ => Fin (d+1)) (top := Fin.last d) — ~25 LOC per S2 PREP §4 explicit version.",
+      "S6 (deferred): OQ-01-B non-pure complex restriction lemma (cosmetically heavy).",
+      "S7 (deferred): OQ-01-C boundary-axioms minimality formal demonstration."
     ]
   },
   "tags": [
@@ -121,7 +123,7 @@
     ]
   },
   "started": "2026-05-12T20:45:00Z",
-  "lastUpdate": "2026-05-14T10:55:00.000Z",
+  "lastUpdate": "2026-06-01T20:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": []
