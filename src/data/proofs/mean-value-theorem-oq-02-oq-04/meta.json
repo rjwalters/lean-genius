@@ -43,10 +43,7 @@
       }
     ],
     "additionalFiles": [
-      {
-        "path": "Proofs/MeanValueTheoremOQ02.lean",
-        "purpose": "Parent file providing taylorPolynomial definition and taylorPolynomial_zero lemma, plus the Lagrange remainder axiom (qualitative, pointwise existential)."
-      }
+      "Proofs/MeanValueTheoremOQ02.lean"
     ],
     "originalContributions": [
       "Verbatim Lean axiomatization of Cauchy's uniform bound on the analytic Taylor remainder (OQ-04 of mean-value-theorem-oq-02), using AnalyticOn ℝ and the parent file's taylorPolynomial.",
