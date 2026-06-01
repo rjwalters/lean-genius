@@ -222,4 +222,32 @@ theorem set_non_representable3_finite_of_coprime_ab {a b c : ℕ}
   push_neg at hge
   exact hn (large_representable3_via_two_gen hab ha hb hge)
 
+/-! ### S4a — tight Sylvester upper bound on the 3-generator Frobenius number -/
+
+/-- **S4a tight bound**: refines S3c's loose
+    `frobeniusNumber3 a b c ≤ (a - 1) * (b - 1)` to the tight
+    `≤ (a - 1) * (b - 1) - 1`, matching the classical 2-generator Sylvester
+    identity `g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1` for coprime
+    `a, b ≥ 1`. The proof reuses the same contrapositive of S3b's
+    `large_representable3_via_two_gen` bridge as S3c, but tightens the
+    `Iio K` containment to a strict inequality `n < (a - 1) * (b - 1)`
+    on every element of the non-representable set; in `ℕ`, this implies
+    `n ≤ (a - 1) * (b - 1) - 1` (including the degenerate case
+    `(a - 1) * (b - 1) = 0` where `ℕ`-subtraction underflows to `0` and
+    the non-representable set is empty so `sSup` is `0`). -/
+theorem frobeniusNumber3_le_sylvester_bound_tight {a b c : ℕ}
+    (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1 := by
+  unfold frobeniusNumber3
+  by_cases hne : ({ n : ℕ | ¬ Representable3 a b c n }).Nonempty
+  · refine csSup_le hne ?_
+    intro n hn
+    by_contra hge
+    push_neg at hge
+    have hlt : (a - 1) * (b - 1) ≤ n := by omega
+    exact hn (large_representable3_via_two_gen hab ha hb hlt)
+  · rw [Set.not_nonempty_iff_eq_empty] at hne
+    rw [hne, csSup_empty]
+    exact bot_le
+
 end FrobeniusOQ03

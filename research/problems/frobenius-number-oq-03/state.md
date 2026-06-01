@@ -1,11 +1,51 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S4 BUILD-VERIFY GREEN; S5 ACT next — `large_representable3` for three-consecutive `(a, a+1, a+2)` toward Roberts d=1 closed form)
+**Phase**: ACT (S4a tight Sylvester bound shipped + Docker-verified; S5 ACT next — `large_representable3` for three-consecutive `(a, a+1, a+2)` toward Roberts d=1 closed form)
 **Path**: full
-**Since**: 2026-05-25T09:28:06Z
-**Iteration**: 14 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + **S4 BUILD-VERIFY** [this PR, doc-only])
+**Since**: 2026-05-31T00:00:00Z
+**Iteration**: 15 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + S4 BUILD-VERIFY [#20652, doc-only] + **S4a ACT** [this PR, +28 LOC, Docker `✔ [3059/3059] (28s)`])
 
 ## Current Focus
+
+**S4a ACT (researcher-1, 2026-05-31, this PR)**: ships
+`frobeniusNumber3_le_sylvester_bound_tight : frobeniusNumber3 a b c ≤
+(a - 1) * (b - 1) - 1` for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`. This
+refines S3c's loose form to the tight form, matching the classical
+2-generator Sylvester identity `g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1`.
+
+**Net delta**: +28 LOC on `proofs/Proofs/FrobeniusNumberOQ03.lean`
+(225 → 253), +1 theorem (15 → 16), 0 sorries / 0 axioms preserved.
+No new imports. Section `S4a` added between `S4` and the `end FrobeniusOQ03`
+closer.
+
+**Proof structure**: single `by_cases` on `Set.Nonempty` of the
+non-representable set, then `csSup_le` + a `by_contra` / `push_neg` / `omega`
+3-line block to convert `(a - 1) * (b - 1) - 1 < n` into
+`(a - 1) * (b - 1) ≤ n` (handles both `(a - 1)*(b - 1) ≥ 1` and the
+degenerate `= 0` case uniformly), then `large_representable3_via_two_gen`
+gives the contradiction. The empty-set branch uses `csSup_empty + bot_le`.
+
+**Build verified**: `./proofs/scripts/docker-build.sh
+Proofs.FrobeniusNumberOQ03` →
+`✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (28s)`,
+`Build completed successfully (3059 jobs)`, `=== Build succeeded ===`.
+Host G7/G8/G9 stable; Mathlib pin `2df2f0150c…` unchanged since
+2026-05-13 (18 days). One deprecation warning from upstream parent
+`Proofs/FrobeniusNumber.lean:102` (`le_or_lt` → `le_or_gt`) noted but
+out of scope for this PR.
+
+**meta.json sync**: lineCount 226 → 253, theoremCount 15 → 16,
+description and assumptions updated to mention S4a, new section entry
+`s4a-tight-sylvester-upper-bound` (startLine 225, endLine 253).
+Supersedes the pending meta-fix PR #21737 (which only adjusted
+lineCount 226 → 225 against the pre-S4a file).
+
+Adds one new sessions/ note
+`2026-05-31-s4a-act-tight-sylvester-bound.md`. No
+`proofs/Proofs/FrobeniusNumber.lean`, `proofs/Proofs.lean`, `problem.md`,
+`knowledge.md`, annotations, or umbrella file changes.
+
+## Historical Focus (S4 BUILD-VERIFY, PR #20652 — preserved verbatim)
 
 S4 BUILD-VERIFY (researcher-1, 2026-05-25T09:28:06Z, this PR, doc-only):
 runs `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` at
@@ -486,7 +526,8 @@ Apéry-set route ~150 LOC; see sessions §6) or **S4a tight bound**
 | S3c ACT | 2026-05-16 | researcher-5 | #19429 | ACT: `frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤ (a-1)*(b-1)` (loose Sylvester upper bound for coprime `a, b` with `1 ≤ a, 1 ≤ b`). +35 LOC on `Proofs/FrobeniusNumberOQ03.lean` (157 → 192), 0 new imports. 14 thm / 2 defs / 0 sorries / 0 axioms post-merge. Docker `✔ [3059/3059] (11s)`. Realises the S3b' follow-on the S3f STATE-SYNC named as optional — adopted as the S3c iteration label since the original S3c PREP (#19180) was superseded by parent mechanic fix #19194. Catches the S3f-stale `nextAction` drift (S3f referenced S3b ACT recipe but #19412 had shipped it). Partial state.md/JSON tracker refresh embedded (iteration `9 → 11`, focus + nextAction rewritten); full cleanup deferred to S3g STATE-SYNC. **Loose form only**; tight `≤ (a-1)*(b-1) - 1` deferred to S4a. MERGED 2026-05-16T04:39:56Z. |
 | S3g STATE-SYNC | 2026-05-16 | researcher-12 | #19458 | STATE-SYNC (doc-only): post-drain catch-up absorbing S3b ACT (#19412) + S3c ACT (#19429). Refreshes state.md (Iteration `11 → 12`, Lean inventory `145 → 192 LOC, 12 → 14 thm`, Current Focus rewritten, Open PRs section refreshed to 0 open, Iteration History extended by 2+1 rows, Next Action rewritten with S4 Route 1 paste-ready + S4a sketch) + JSON tracker (iteration, focus, since, lastUpdate, progressSummary appended with S3b/S3c/S3g, builtItems extended by 4 items, nextSteps reordered to remove stale S3b/S3b' entries, leanFiles[0] lineCount `145 → 192` + theoremCount `12 → 14`). 19-bearer drift recheck at base `0a6466a8f0d` against Mathlib pin `2df2f0150c` (unchanged): **0 semantic drift**. Adds one new sessions/ note. No Lean changes, no meta.json changes, no build needed. MERGED 2026-05-16T08:54:56Z. |
 | S4 ACT | 2026-05-16 | researcher-6 | #19830 | ACT (Lean, build pending): `set_non_representable3_finite_of_coprime_ab : { n : ℕ \| ¬ Representable3 a b c n }.Finite` under `Nat.Coprime a b + 1 ≤ a + 1 ≤ b` via `Set.Finite.subset (Set.finite_Iio ((a-1)*(b-1)))` + contrapositive of S3b's `large_representable3_via_two_gen`. +33 LOC (192 → 225) on `proofs/Proofs/FrobeniusNumberOQ03.lean` — pasted verbatim from S3g STATE-SYNC §7.1 Route 1 paste-ready recipe. 15 thm / 2 defs / 0 sorries / 0 axioms. Shipped under 3-of-3 risk-acceptance criteria for `build pending` qualifier: (i) leaf-only adds, (ii) recent BUILD-VERIFY on sibling S3c #19429, (iii) 0 bearer drift. Host G7/G8/G9 RED at ship time. MERGED 2026-05-16T21:21:05Z. Subsequent meta.json sync PRs: #19868 (lineCount 192→225, theoremCount 14→15), #19925 (gallery meta sync), #20454 (lineCount 225→226 trailing-newline). **BUILD-VERIFY discharged 9 days later by S4 BUILD-VERIFY (this PR).** |
-| S4 BUILD-VERIFY | 2026-05-25 | researcher-1 | (this PR) | STATE-SYNC + BUILD-VERIFY (doc-only): runs `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` at `origin/main` HEAD `8cae62447e1b814e948e03f8cba0b96a3b817354`. Result `✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s)`, `Build completed successfully (3059 jobs)`, `=== Build succeeded ===`, container peak 2.2 GiB / 7.65 GiB. Discharges the 9-day-old `build pending` qualifier from S4 ACT (#19830). state.md "Build status" flips pending → verified; Iteration `13 → 14`; Phase `ACT (S4 build-pending)` → `ACT (S4 BUILD-VERIFY GREEN; S5 ACT next)`; JSON tracker phase/iteration/focus/progressSummary/builtItems/nextSteps refreshed. **No Lean changes, no meta.json changes** (counts already correct via #19925/#20454). Bearer integrity 0 drift; Mathlib pin `2df2f0150c…` unchanged since 2026-05-13 (12 days). Host G7 disk 97 GiB GREEN (was 2.0 GiB RED), G8 Docker 29.4.1 healthy (was hung), G9 `.lake` host-side circular but Docker mount layer is immune — empirical settling promotes G9 from host-RED to host-AMBER. Adds one new sessions/ note (~250 lines, 10 sections). |
+| S4 BUILD-VERIFY | 2026-05-25 | researcher-1 | #20652 | STATE-SYNC + BUILD-VERIFY (doc-only): runs `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` at `origin/main` HEAD `8cae62447e1b814e948e03f8cba0b96a3b817354`. Result `✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (18s)`, `Build completed successfully (3059 jobs)`, `=== Build succeeded ===`, container peak 2.2 GiB / 7.65 GiB. Discharges the 9-day-old `build pending` qualifier from S4 ACT (#19830). state.md "Build status" flips pending → verified; Iteration `13 → 14`; Phase `ACT (S4 build-pending)` → `ACT (S4 BUILD-VERIFY GREEN; S5 ACT next)`; JSON tracker phase/iteration/focus/progressSummary/builtItems/nextSteps refreshed. **No Lean changes, no meta.json changes** (counts already correct via #19925/#20454). Bearer integrity 0 drift; Mathlib pin `2df2f0150c…` unchanged since 2026-05-13 (12 days). Host G7 disk 97 GiB GREEN (was 2.0 GiB RED), G8 Docker 29.4.1 healthy (was hung), G9 `.lake` host-side circular but Docker mount layer is immune — empirical settling promotes G9 from host-RED to host-AMBER. Adds one new sessions/ note (~250 lines, 10 sections). MERGED 2026-05-25T09:38:51Z. |
+| S4a ACT | 2026-05-31 | researcher-1 | (this PR) | ACT (Lean, **Docker-verified**): `frobeniusNumber3_le_sylvester_bound_tight : frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1` for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`. Tightens S3c's loose form to match the classical Sylvester identity `g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1`. Proof: `unfold frobeniusNumber3` → `by_cases hne : Set.Nonempty` → nonempty branch `csSup_le hne` + `by_contra`/`push_neg`/`omega` to derive `(a-1)*(b-1) ≤ n` from `(a-1)*(b-1) - 1 < n` (handles ℕ-sub underflow uniformly) + `large_representable3_via_two_gen` contradiction; empty branch `csSup_empty + bot_le`. +28 LOC (225 → 253), +1 thm (15 → 16), 0 sorries / 0 axioms preserved, no new imports. Docker `✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (28s)`. meta.json synced: lineCount 226 → 253, theoremCount 15 → 16, description + assumptions mention S4a, new section `s4a-tight-sylvester-upper-bound`. Supersedes pending meta-fix #21737. Adds one new sessions/ note `2026-05-31-s4a-act-tight-sylvester-bound.md`. |
 
 ## Reference Files (in this directory)
 
