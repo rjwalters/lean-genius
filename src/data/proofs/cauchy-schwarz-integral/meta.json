@@ -107,7 +107,7 @@
       "title": "Equality Characterization",
       "summary": "Proves equality holds iff $f$ and $g$ are linearly dependent in $L^2$: $|\\langle f, g \\rangle| = \\|f\\|\\|g\\| \\iff \\exists c: f = c \\cdot g$, using `norm_inner_eq_norm_iff`.",
       "startLine": 95,
-      "endLine": 118,
+      "endLine": 117,
       "mathContext": "Equality $|\\langle f, g \\rangle| = \\|f\\| \\cdot \\|g\\|$ holds iff $f = cg$ a.e. for some $c \\in \\mathbb{R}$. Geometrically, this means the 'angle' between $f$ and $g$ in $L^2$ is $0$ or $\\pi$ — they point in the same or opposite directions. The proof uses the standard Hilbert space fact: $\\|u - tv\\|^2 = 0$ for some $t$ iff $u$ and $v$ are proportional. In probability, equality means $Y = aX + b$ a.s. (perfect linear correlation $|\\rho| = 1$)."
     }
   ],
