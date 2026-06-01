@@ -114,7 +114,7 @@
       "id": "irrationality",
       "title": "Irrationality and Main Theorem",
       "startLine": 165,
-      "endLine": 189,
+      "endLine": 188,
       "summary": "`primeSum_irrational : Irrational primeSum` is the deep analytic result (sorry — Tao-Teräväinen 2025, beyond current Mathlib). `erdos_69 : Irrational omegaSum` combines `tao_identity` and `primeSum_irrational` in a two-line proof: rewrite via the identity, then apply irrationality.",
       "mathContext": "The final proof: `rw [tao_identity]; exact primeSum_irrational`. This two-line argument is the entire reduction of Problem 69 to Problem 257 — the combinatorial identity does all the work, and the deep analytic number theory is encapsulated in the single sorry."
     }
