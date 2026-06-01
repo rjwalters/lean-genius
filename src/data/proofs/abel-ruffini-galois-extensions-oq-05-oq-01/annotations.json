@@ -89,6 +89,30 @@
     ]
   },
   {
+    "id": "ann-shafarevich-part3-pp-gap",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 113, "endLine": 131 },
+    "type": "insight",
+    "title": "Why CRT Fails for $(\\mathbb{Z}/p)^2$: The Motivating Example for Linear Disjointness",
+    "content": "**Part III's docstring marks the precise boundary between what `coprime_product_cyclic_realizable` covers and what `galois_compositum_product` is needed for**: the *coprime* case collapses onto the cyclic case (via CRT, line 81–87's `zmod_coprime_crt`), but the *non-coprime* abelian case — exemplified by $G = \\mathbb{Z}/p \\times \\mathbb{Z}/p$ — does not. CRT requires $\\gcd(m, n) = 1$, and $\\gcd(p, p) = p \\neq 1$, so $\\mathbb{Z}/p \\times \\mathbb{Z}/p \\not\\cong \\mathbb{Z}/p^2$ (the latter is cyclic, the former is not); a *single* cyclotomic fixed field cannot realize $(\\mathbb{Z}/p)^2$ because every cyclic-Galois fixed field has cyclic Galois group. **The strategy that does work**: pick **two distinct primes** $p_1 \\neq p_2$, both with $p_1, p_2 \\equiv 1 \\pmod p$ (Dirichlet guarantees infinitely many of each), giving two independent index-$p$ fixed fields $K_1 \\subseteq \\mathbb{Q}(\\zeta_{p_1})$ and $K_2 \\subseteq \\mathbb{Q}(\\zeta_{p_2})$. Their **compositum** $K_1 K_2$ has Galois group $\\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q}) \\cong \\mathbb{Z}/p \\times \\mathbb{Z}/p$ — *provided* $K_1$ and $K_2$ are linearly disjoint over $\\mathbb{Q}$, which is the exact role of `galois_compositum_product` (annotated at lines 132–148). The Part III docstring therefore identifies the **minimal example** that drives the entire conductor-theory wishlist: $(\\mathbb{Z}/p)^2$ — the smallest non-cyclic abelian $p$-group — already requires the full disjointness machinery.",
+    "mathContext": "**Why the same-prime construction fails**: if $K_1 = K_2 \\subseteq \\mathbb{Q}(\\zeta_{p_1})$ (both from the *same* cyclotomic), then $K_1 K_2 = K_1$ and $\\text{Gal}(K_1 K_2 / \\mathbb{Q}) \\cong \\mathbb{Z}/p$ (a single copy, not two). Even taking two *different* index-$p$ fixed fields *within the same* $\\mathbb{Q}(\\zeta_{p_1})$ fails, because $\\text{Gal}(\\mathbb{Q}(\\zeta_{p_1})/\\mathbb{Q}) \\cong \\mathbb{Z}/(p_1 - 1)$ is cyclic — its subgroups form a chain, not a lattice with independent generators; the *only* way to get genuinely independent $\\mathbb{Z}/p$-factors is to draw from cyclotomic fields at *distinct* primes. **Why distinct primes give disjointness**: by the **conductor-discriminant formula** (Hasse–Arf 1925, refining Dedekind 1882), the discriminant of $K_i \\subseteq \\mathbb{Q}(\\zeta_{p_i})$ is supported only at $p_i$ (no ramification at primes other than $p_i$). When $p_1 \\neq p_2$, the discriminants are coprime, and the *discriminant criterion* (a special case of Néron–Ogg–Shafarevich) certifies linear disjointness over $\\mathbb{Q}$ — equivalently, $[K_1 K_2 : \\mathbb{Q}] = [K_1 : \\mathbb{Q}] \\cdot [K_2 : \\mathbb{Q}] = p^2$, which forces $\\text{Gal}(K_1 K_2 / \\mathbb{Q})$ to be the *full* product $(\\mathbb{Z}/p)^2$ rather than a proper subgroup. **Generalization to arbitrary finite abelian $G$**: by the structure theorem, $G \\cong \\prod_i \\mathbb{Z}/p_i^{a_i}$; group like-prime factors via CRT (the *coprime* assembly in `coprime_product_cyclic_realizable`), then assemble the resulting prime-power blocks via linear disjointness at distinct conductor primes (the *non-coprime* assembly axiomatized in `galois_compositum_product`). This two-stage decomposition — *coprime CRT* + *coprime-conductor disjointness* — is the **classical proof of the abelian case of Shafarevich** before any reference to embedding problems.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chinese Remainder Theorem failure for non-coprime moduli",
+      "structure theorem for finite abelian groups",
+      "conductor of a subfield (Hasse–Arf 1925)",
+      "discriminant-criterion for linear disjointness",
+      "Néron–Ogg–Shafarevich criterion",
+      "compositum of Galois extensions"
+    ],
+    "prerequisites": [
+      "coprime_product_cyclic_realizable (lines 89–112)",
+      "galois_compositum_product (lines 132–148)",
+      "structure theorem for finitely generated abelian groups",
+      "ramification theory in cyclotomic fields"
+    ]
+  },
+  {
     "id": "ann-shafarevich-axiom",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
     "range": { "startLine": 132, "endLine": 148 },
