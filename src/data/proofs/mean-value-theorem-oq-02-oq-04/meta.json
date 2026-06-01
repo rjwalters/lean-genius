@@ -54,7 +54,25 @@
       "n=0 specialization derived as a three-line simpa corollary, demonstrating the axiom's utility immediately."
     ],
     "theoremCount": 0,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "mean-value-theorem-oq-02",
+        "relationship": "The parent gallery entry: Taylor's theorem with Lagrange remainder (classical, pointwise existence of c). This OQ-04 entry resolves the parent's OQ-04 (4th open question in the parent's openQuestions array) by axiomatizing the uniform Cauchy bound. Reuses the parent's `taylorPolynomial` definition and `taylorPolynomial_zero` lemma."
+      },
+      {
+        "id": "taylor-theorem-oq-02",
+        "relationship": "Sibling gallery entry: analytic Taylor remainder vanishes (qualitative, R_n(x) → 0). This OQ-04 entry provides the *quantitative* rate: R_n(x) = O(r^(n+1)). The sibling's bridge lemmas (fps_coeff_eq_taylor_coeff, fps_eval_eq_taylor_term) will be the main tool for discharging this OQ-04's axiom in S2."
+      },
+      {
+        "id": "mean-value-theorem",
+        "relationship": "The grandparent: the ordinary Mean Value Theorem. The n=0 specialization of this OQ-04 is the analytic-function strengthening of MVT's Lipschitz bound, with `sup|f'|` replaced by `M / (R-r)` and the gap $|x - a|$ replaced by the inner radius $r$."
+      },
+      {
+        "id": "taylor-sincos-convergence",
+        "relationship": "Concrete instance of the geometric-tail bound: for $f = \\sin$ or $\\cos$, all iterated derivatives are bounded by 1, so the Lagrange remainder gives the (even tighter) factorial bound $|R_n(x)| \\le |x|^{n+1} / (n+1)!$. The OQ-04 Cauchy bound applies to *every* real-analytic function with finite radius of convergence — including those whose derivatives are not uniformly bounded — at the cost of only geometric (not factorial) decay."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "Cauchy's uniform bound on the analytic Taylor remainder is the classical quantitative refinement of the Mean Value Theorem (Lagrange, 1797) and Taylor's theorem (Taylor 1715; Lagrange 1797 for the remainder; Cauchy 1823 for the integral form). For analytic functions—those representable by convergent power series in a neighborhood—Cauchy's integral formula gives sharp uniform estimates on the Taylor coefficients (Cauchy's estimates: $|a_k| \\le M / R^k$ where $M$ bounds $|f|$ on the disk of radius $R$). The resulting geometric-tail bound on the remainder, $|R_n(x)| \\le M r^{n+1} / (R^n (R - r))$ for $|x - a| \\le r < R$, is the foundation of complex analytic approximation theory, Padé approximants, and quantitative aspects of analytic continuation. The bound is *uniform* in $x$ over $[a-r, a+r]$—a strictly stronger statement than the pointwise Lagrange remainder, and one that does not require explicit knowledge of intermediate $c$-values.",
@@ -168,5 +186,20 @@
       "relationship": "related",
       "description": "Concrete instance of the geometric-tail bound: for $f = \\sin$ or $\\cos$, all iterated derivatives are bounded by 1, so the Lagrange remainder gives the (even tighter) factorial bound $|R_n(x)| \\le |x|^{n+1} / (n+1)!$. The OQ-04 Cauchy bound applies to *every* real-analytic function with finite radius of convergence — including those whose derivatives are not uniformly bounded — at the cost of only geometric (not factorial) decay."
     }
-  ]
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MeanValueTheoremOQ02"
+    ],
+    "opens": [],
+    "namespace": "MeanValueTheoremOQ02OQ04",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 0,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ02OQ04.lean",
+    "sorries": 0,
+    "mainTheorems": []
+  }
 }
