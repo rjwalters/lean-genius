@@ -42,7 +42,11 @@ open Finset BigOperators Filter Topology Real
 theorem partial_fraction {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
     (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) =
       (1 / ↑k) * (1 / (n : ℝ) - 1 / ((n : ℝ) + ↑k)) := by
-  sorry
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn
+  have hk' : (↑k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hk
+  have hnk : (n : ℝ) + ↑k ≠ 0 := by positivity
+  field_simp
+  ring
 
 -- ═══════════════════════════════════════════════════
 -- Lemma 2: Closed Form for the Partial Sum
@@ -84,7 +88,26 @@ theorem tail_to_zero (k : ℕ) :
     compare with `Real.summable_one_div_nat_pow` at p = 2. -/
 theorem summable_one_div_n_mul_n_add_k (k : ℕ) :
     Summable (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ↑k))) := by
-  sorry
+  -- Dominate by the p-series ∑ 1/(n+1)^2, summable via `summable_one_div_nat_pow` at p=2.
+  have h_p : Summable (fun n : ℕ => (1 : ℝ) / ((n : ℝ)) ^ 2) :=
+    summable_one_div_nat_pow.mpr one_lt_two
+  have h_shift : Summable (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ) : ℝ)) ^ 2) := by
+    have := (summable_nat_add_iff (f := fun n : ℕ => (1 : ℝ) / ((n : ℝ)) ^ 2) 1).mpr h_p
+    simpa using this
+  refine Summable.of_nonneg_of_le ?_ ?_ h_shift
+  · intro n
+    have h1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos n
+    have h2 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    positivity
+  · intro n
+    have h1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos n
+    have h2 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    have hprod : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + (k : ℝ)) := by positivity
+    have hsq : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) ^ 2 := by positivity
+    rw [div_le_div_iff₀ hprod hsq]
+    have : ((n + 1 : ℕ) : ℝ) ^ 2 = ((n + 1 : ℕ) : ℝ) * ((n + 1 : ℕ) : ℝ) := by ring
+    rw [this]
+    nlinarith [Nat.cast_nonneg (α := ℝ) k]
 
 -- ═══════════════════════════════════════════════════
 -- Main Theorem
@@ -115,14 +138,30 @@ theorem generalized_triangular_reciprocals_tsum (k : ℕ) (hk : 0 < k) :
 
 /-- k = 1: H_1 / 1 = 1, recovering the classical Leibniz identity. -/
 theorem special_case_k1 : ((harmonic 1 : ℝ) / (1 : ℝ)) = 1 := by
-  sorry
+  have h : harmonic 1 = 1 := by
+    rw [show (1 : ℕ) = 0 + 1 from rfl, harmonic_succ, harmonic_zero]
+    norm_num
+  rw [h]; norm_num
 
 /-- k = 2: H_2 / 2 = 3/4. -/
 theorem special_case_k2 : ((harmonic 2 : ℝ) / (2 : ℝ)) = 3 / 4 := by
-  sorry
+  have h : harmonic 2 = 3 / 2 := by
+    rw [show (2 : ℕ) = 1 + 1 from rfl, harmonic_succ,
+        show (1 : ℕ) = 0 + 1 from rfl, harmonic_succ, harmonic_zero]
+    norm_num
+  rw [h]
+  push_cast
+  norm_num
 
 /-- k = 3: H_3 / 3 = 11/18. -/
 theorem special_case_k3 : ((harmonic 3 : ℝ) / (3 : ℝ)) = 11 / 18 := by
-  sorry
+  have h : harmonic 3 = 11 / 6 := by
+    rw [show (3 : ℕ) = 2 + 1 from rfl, harmonic_succ,
+        show (2 : ℕ) = 1 + 1 from rfl, harmonic_succ,
+        show (1 : ℕ) = 0 + 1 from rfl, harmonic_succ, harmonic_zero]
+    norm_num
+  rw [h]
+  push_cast
+  norm_num
 
 end TriangularReciprocalsHarmonic

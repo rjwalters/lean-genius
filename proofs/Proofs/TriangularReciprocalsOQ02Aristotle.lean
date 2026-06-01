@@ -23,7 +23,11 @@ open Finset BigOperators Filter Topology Real
 theorem partial_fraction_aristotle {n k : ℕ} (hn : n ≠ 0) (hk : k ≠ 0) :
     (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) =
       (1 / ↑k) * (1 / (n : ℝ) - 1 / ((n : ℝ) + ↑k)) := by
-  sorry
+  have hn' : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn
+  have hk' : (↑k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hk
+  have hnk : (n : ℝ) + ↑k ≠ 0 := by positivity
+  field_simp
+  ring
 
 /-- Lemma 3 (companion form): the harmonic tail difference tends to 0.
 
@@ -40,6 +44,24 @@ theorem tail_to_zero_aristotle (k : ℕ) :
     `Real.summable_one_div_nat_pow` at p = 2. -/
 theorem summable_one_div_n_mul_n_add_k_aristotle (k : ℕ) :
     Summable (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ↑k))) := by
-  sorry
+  have h_p : Summable (fun n : ℕ => (1 : ℝ) / ((n : ℝ)) ^ 2) :=
+    summable_one_div_nat_pow.mpr one_lt_two
+  have h_shift : Summable (fun n : ℕ => (1 : ℝ) / (((n + 1 : ℕ) : ℝ)) ^ 2) := by
+    have := (summable_nat_add_iff (f := fun n : ℕ => (1 : ℝ) / ((n : ℝ)) ^ 2) 1).mpr h_p
+    simpa using this
+  refine Summable.of_nonneg_of_le ?_ ?_ h_shift
+  · intro n
+    have h1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos n
+    have h2 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    positivity
+  · intro n
+    have h1 : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.succ_pos n
+    have h2 : (0 : ℝ) ≤ (k : ℝ) := Nat.cast_nonneg k
+    have hprod : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + (k : ℝ)) := by positivity
+    have hsq : (0 : ℝ) < ((n + 1 : ℕ) : ℝ) ^ 2 := by positivity
+    rw [div_le_div_iff₀ hprod hsq]
+    have : ((n + 1 : ℕ) : ℝ) ^ 2 = ((n + 1 : ℕ) : ℝ) * ((n + 1 : ℕ) : ℝ) := by ring
+    rw [this]
+    nlinarith [Nat.cast_nonneg (α := ℝ) k]
 
 end TriangularReciprocalsHarmonic.Aristotle
