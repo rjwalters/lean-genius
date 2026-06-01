@@ -28,6 +28,9 @@
       "divisor_sum_totient_div: n = Σ_{d|n} φ(n/d) proved by partition argument",
       "partition_of_unity: Σ_{d|n} φ(n/d)/n = 1 over ℚ (probabilistic interpretation)",
       "Explicit GCD class partition: S_d covers {0,...,n-1} with pairwise disjoint classes"
+    ],
+    "additionalFiles": [
+      "Proofs/EulerTotientOQ04OQ01.lean"
     ]
   },
   "overview": {
@@ -64,7 +67,10 @@
     "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/EulerTotientOQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/EulerTotientOQ04OQ01.lean"
+    ]
   },
   "crossReferences": [
     {
