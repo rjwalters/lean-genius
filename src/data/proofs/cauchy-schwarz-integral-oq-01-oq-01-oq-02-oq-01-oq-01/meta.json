@@ -77,7 +77,7 @@
       "id": "main-theorem",
       "title": "Main Theorem: Sigma-Finite Riesz Representation (HARD sorry)",
       "startLine": 167,
-      "endLine": 218,
+      "endLine": 208,
       "summary": "HARD sorry (~50 lines): assembles localization + density extension to prove riesz_lp_surjective_sigma_finite. Density extension ports the parent's integral_representation.",
       "mathContext": "$(L^p(\\mu))^* \\cong L^q(\\mu)$ for sigma-finite $\\mu$, $1 < p < \\infty$, $1/p + 1/q = 1$. Proof: indicator agreement (Step A) + Lp.induction over simple functions (Step C). Removes IsFiniteMeasure from parent result."
     }
