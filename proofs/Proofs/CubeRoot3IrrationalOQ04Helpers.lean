@@ -469,4 +469,60 @@ theorem seven_one_five_five_over_four_nine_six_one_lt_cbrt3 :
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S12a prep: new lower bound for `a₁₀ = 2` (the eleventh partial quotient)
+
+The eleventh CF convergent of `∛3` (using `a₁₀ = 2` per OEIS A002945
+prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, …]`, 0-indexed) is
+
+  `p₁₀/q₁₀ = (a₁₀·p₉ + p₈) / (a₁₀·q₉ + q₈)`
+  `       = (2 · 6206 + 949) / (2 · 4303 + 658)`
+  `       = 13361 / 9264`.
+
+This convergent is even-index (10), so it lies on the LOWER side of
+`∛3` (alternating with the upper-side ninth convergent `6206/4303`
+from S10).
+
+Convergent recursion (with `a₁₀ = 2`):
+
+  `q₁₀ = 2 · q₉ + q₈ = 2 · 4303 + 658 = 9264`
+  `p₁₀ = 2 · p₉ + p₈ = 2 · 6206 + 949 = 13361`
+
+After cubing,
+
+  `(13361/9264)³ = 2_385_156_564_881 / 795_052_191_744`
+  `3              = 2_385_156_575_232 / 795_052_191_744`
+
+so `13361³ = 2_385_156_564_881 < 2_385_156_575_232 = 3 · 9264³`
+(strict, diff `10_351`). The new lower cube gap
+`10_351 / 795_052_191_744 ≈ 1.30·10⁻⁸` (relative-to-`3·q³`:
+`≈ 4.34·10⁻⁹`) is roughly an order of magnitude tighter than S11a's
+lower-side gap of `18_168 / 122_097_755_681 ≈ 1.49·10⁻⁷` — consistent
+with `13361/9264` being the true 11th convergent (one rung beyond
+S11a's semi-convergent `7155/4961`, which the S11a comment
+incorrectly framed as the 10th convergent with `a₁₀ = 1`; the actual
+`a₁₀ = 2` per OEIS A002945 entry 11 = 2). The S11a proof
+`(7155/4961 : ℝ) < cbrt3` is numerically true regardless — it lands
+between the 9th and 11th true convergents — and provided a valid
+lower bound for the S11b ACT sandwich proving `cbrt3_a9 = 6`.
+
+(Pre-claim Python sanity check:
+`13361³ = 2_385_156_564_881`, `3 · 9264³ = 2_385_156_575_232`,
+diff `-10_351 < 0` confirming `(13361/9264)³ < 3`, hence
+`13361/9264 < cbrt3` as required for a lower bound. Cross-checked
+against OEIS A002945 via Decimal-arithmetic CF expansion of `∛3` to
+80 digits; first 15 partial quotients
+`[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3]` match independently.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `13361/9264 < ∛3`. Cube target: `(13361/9264)³ =
+2_385_156_564_881 / 795_052_191_744 < 2_385_156_575_232 / 795_052_191_744
+= 3` (strict: `13361³ = 2_385_156_564_881 < 2_385_156_575_232 =
+3 · 9264³`, gap `10_351`). The eleventh convergent of the simple CF
+of `∛3` (using `a₁₀ = 2` per OEIS A002945). -/
+theorem one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 :
+    (13361 / 9264 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

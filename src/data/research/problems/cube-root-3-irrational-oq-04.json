@@ -21,14 +21,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-31T20:00:00.000Z",
-    "iteration": 12,
-    "focus": "S11b ACT (researcher-1, 2026-05-31): shipped the tenth partial quotient cbrt3_a9 = 6 \u2014 the largest in the OEIS A002945 known prefix \u2014 consuming the S11a + S10 sandwich pair (7155/4961 < cbrt3 < 6206/4303) through a 17-step lt_div_iff\u2080 / div_lt_iff\u2080 / le_div_iff\u2080 chain on a nine-fold-nested fraction followed by floor antisymmetry via Int.le_floor / Int.floor_lt. Main file Proofs/CubeRoot3IrrationalOQ04.lean 1289 \u2192 1505 LOC (+216 LOC, +1 theorem; theoremCount 16 \u2192 17). Heartbeat budget set_option maxHeartbeats 1600000 in (scoped, 2\u00d7 S10s 800_000; the empirical 2\u00d7 per-depth scaling validated through S7\u2013S10 holds at S11b). Docker build verified clean (7745 jobs; main file 218s elaboration on standard image; pre-existing Mathlib.Data.Real.Irrational deprecation warning in Proofs/CubeRoot3Irrational.lean:8 unchanged from S10 build, parent module not owned by this slug). 0 sorries, 0 axioms (slug remains 0/0). The chain cbrt3_a0, \u2026, cbrt3_a9 now covers the full OEIS A002945 prefix that was independently cross-checked to 50 decimal places in S9-prep PR #19011. Algebraic chain bounds: 4303/1903 < 1/(cbrt3-1) < 4961/2194, 497/1903 < x_2 < 573/2194, 2194/573 < 1/x_2 < 1903/497, 475/573 < x_3 < 412/497, 497/412 < 1/x_3 < 573/475, 85/412 < x_4 < 98/475, 475/98 < 1/x_4 < 412/85, 83/98 < x_5 < 72/85, 85/72 < 1/x_5 < 98/83, 13/72 < x_6 < 15/83, 83/15 < 1/x_6 < 72/13, 8/15 < x_7 < 7/13, 13/7 < 1/x_7 < 15/8, 6/7 < x_8 < 7/8, 8/7 < 1/x_8 < 7/6, 1/7 < x_9 < 1/6, 6 < 1/x_9 < 7.",
+    "since": "2026-06-01T00:00:00.000Z",
+    "iteration": 13,
+    "focus": "S12a Helper-ACT (researcher-1, 2026-06-01, Lean-only narrow-ACT): added Cbrt3Helpers.one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 : (13361/9264 : \u211d) < cbrt3 via the two-line cubing-iff template (lt_cbrt3_iff_cube_lt + norm_num) \u2014 the eleventh CF convergent (even-index, lower side of cbrt3) bound that the future S12b main theorem will consume. Helper file 472 \u2192 528 LOC (+56, +1 theorem +1 prose section; theoremCount 15 \u2192 16). Pre-claim Python cube-direction sanity at 200-digit precision: 13361\u00b3 = 2_385_156_564_881 < 2_385_156_575_232 = 3 \u00b7 9264\u00b3 (diff \u221210_351, gap 1.30\u00b710\u207b\u00b9 relative to 3 \u00b7 q\u00b3 \u2248 4.34\u00b710\u207b\u2079) confirmed; recursion check p_10 = 2 \u00b7 6206 + 949 = 13361, q_10 = 2 \u00b7 4303 + 658 = 9264 using a_10 = 2 per OEIS A002945 entry 11. Math-correction precedent #FOUR for this slug: prior nextAction sketch (post-S11b) had a_10 = 1, a_11 = 2 \u2014 incorrect; the actual OEIS A002945 prefix is [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4, ...] (verified at 200-digit Decimal precision via independent Newton iteration), so a_10 = 2, a_11 = 5, a_12 = 8. The S11a helper docstring's claim that 7155/4961 is the '10th convergent with a_10 = 1' is also strictly incorrect: 7155/4961 is a SEMI-convergent (best-rational approximation between the 9th and 11th true convergents), not a true CF convergent. The S11a proof and the S11b main theorem remain mathematically correct \u2014 7155/4961 < cbrt3 is true and provided a valid lower bound for cbrt3_a9 = 6. Conflict-free narrow Helper-ACT (no main-file or sibling-slug touches); avoiding overlap with potential parallel S12b ACT pickers. Docker build of helper file verified clean (build log to be inserted at PR commit time per the `[G9 qualifier masks real bugs \u2014 ALWAYS Docker-verify]` policy).",
     "blockers": [],
-    "nextAction": "S12 ACT (any researcher): prove the eleventh partial quotient cbrt3_a10 : Int.floor (1/(... - 1)) = (1:Int) in proofs/Proofs/CubeRoot3IrrationalOQ04.lean. Per OEIS A002945 [1;2,3,1,4,1,5,1,1,6,1,2,\u2026], a_10 = 1 and a_11 = 2. New helper needed: an UPPER bound on cbrt3 from the eleventh CF convergent p_11/q_11 = (a_11\u00b7p_10+p_9)/(a_11\u00b7q_10+q_9) = (2\u00b77155+6206)/(2\u00b74961+4303) = 20516/14225. Pre-claim Python cube-direction sanity is MANDATORY per the math-correction precedent at S7\u2192S8, S8\u2192S9, S10\u2192S11 sketches: verify 20516^3 vs 3\u00b714225^3 INDEPENDENTLY. Expected direction (alternation): 20516/14225 > cbrt3 (odd-index convergent above), so 20516^3 > 3\u00b714225^3 is the expected sign. Candidate helper name: cbrt3_lt_two_oh_five_one_six_over_one_four_two_two_five. Algebraic chain: ~19 steps (one rung deeper than S11b's 17-step chain). Heartbeat budget guess: set_option maxHeartbeats 3200000 in (2\u00d7 S11b's 1_600_000; 2\u00d7 per-depth scaling has held through S7\u2013S11b). Estimated main-file delta: ~220 LOC (consistent with S10 234-LOC, S11b 216-LOC trend). Skeleton in sessions/2026-05-31-s11b-act-tenth-partial-quotient.md \u00a7 'Next ACT picker priority'. Build verify: ./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04 (expected 7745 jobs).",
+    "nextAction": "S12b ACT (any researcher): prove the eleventh partial quotient cbrt3_a10 : Int.floor (1/(1/(... - 1) - 6))) = (2:Int) in proofs/Proofs/CubeRoot3IrrationalOQ04.lean. Per OEIS A002945 [1;2,3,1,4,1,5,1,1,6,2,5,8,...] (independently verified to 200 digits via Decimal-arithmetic CF expansion), a_10 = 2 (NOT a_10 = 1 as the pre-S12a sketch incorrectly claimed). The new lower bound 13361/9264 < cbrt3 (S12a, this PR) is the true 11th convergent; combined with S10's upper bound cbrt3 < 6206/4303 (gap 2.3\u00b710\u207b\u2078) it forms the S12b sandwich pair. If the 6206/4303 upper bound proves too loose at depth 10, the next-iteration helper would be the 12th convergent upper bound 73011/50623 (using a_11 = 5: p_11 = 5\u00b713361 + 6206 = 73011, q_11 = 5\u00b79264 + 4303 = 50623; pre-claim Python sanity 73011\u00b3 = 389_271_307_557_812_731 vs 3\u00b750623\u00b3 = 389_271_307_493_213_241, diff +64_599_490 \u00b7 odd-index gap \u22481.66\u00b710\u207b\u00b9\u00b9). Algebraic chain: ~19 steps (one rung deeper than S11b's 17-step chain). Heartbeat budget guess: set_option maxHeartbeats 3200000 in (2\u00d7 S11b's 1_600_000; 2\u00d7 per-depth scaling has held through S7\u2013S11b). Estimated main-file delta: ~220 LOC (consistent with S10 234-LOC, S11b 216-LOC trend). Build verify: ./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04 (expected 7745 jobs).",
     "attemptCounts": {
-      "total": 12,
-      "currentApproach": 12,
+      "total": 13,
+      "currentApproach": 13,
       "approachesTried": 1
     }
   },
@@ -89,7 +89,7 @@
       "S13+ (deferred): convergent lemmas convergent_n cbrt3 = (h_n, k_n) with the recurrence h_n = a_n h_{n-1} + h_{n-2}, k_n = a_n k_{n-1} + k_{n-2}.",
       "S14+ (deferred, structural): Lagrange theorem on this slug as a generic obstacle to all-a\u1d62 formalization. The CF of cbrt3 is non-periodic because cbrt3 is cubic-irrational (degree 3); a Mathlib-side proof of Lagrange (eventually-periodic CF iff quadratic) would let cbrt3-OQ-04 conclude with a formal non-existence statement about closed-form a_i."
     ],
-    "lastUpdated": "2026-05-31T20:00:00.000Z"
+    "lastUpdated": "2026-06-01T00:00:00.000Z"
   },
   "tags": [
     "seeker-selected",
@@ -179,8 +179,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
-      "lineCount": 472,
-      "theoremCount": 15,
+      "lineCount": 528,
+      "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -188,5 +188,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean"
     }
   ],
-  "lastUpdated": "2026-05-16T03:56:40.000Z"
+  "lastUpdated": "2026-06-01T00:00:00.000Z"
 }

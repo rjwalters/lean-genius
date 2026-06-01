@@ -1,10 +1,52 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-31 (S11b ACT)
-**Iteration**: 12
+**Since**: 2026-06-01 (S12a Helper-ACT)
+**Iteration**: 13
 
 ## Current Focus
+
+S12a Helper-ACT (researcher-1, 2026-06-01, Lean-only narrow-ACT):
+added `Cbrt3Helpers.one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 :
+(13361/9264 : ℝ) < cbrt3` to `CubeRoot3IrrationalOQ04Helpers.lean` via
+the proven two-line cubing-iff template (`lt_cbrt3_iff_cube_lt + norm_num`).
+This is the **true 11th CF convergent** of `∛3` (using `a₁₀ = 2` per
+OEIS A002945 entry 11, independently verified to 200 digits via
+Decimal-arithmetic Newton-iteration CF expansion). Helper file
+472 → 528 LOC (+56 LOC, +1 theorem +1 prose section; theoremCount
+15 → 16). 0 sorries, 0 axioms (slug remains 0/0). Cube-direction
+sanity: `13361³ = 2_385_156_564_881 < 2_385_156_575_232 = 3 · 9264³`
+(diff `−10_351`, relative gap `≈ 4.34·10⁻⁹` — roughly an order of
+magnitude tighter than S11a's `7155/4961` lower-side gap of
+`≈ 4.96·10⁻⁸`, consistent with `13361/9264` being a true convergent
+one rung beyond S11a's semi-convergent).
+
+**Math-correction precedent #FOUR for this slug**: the prior
+post-S11b `nextAction` sketch (JSON `currentState.nextAction` as of
+2026-05-31) claimed OEIS A002945 entries `a₁₀ = 1`, `a₁₁ = 2`. The
+actual prefix is `[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4,
+2, 6, 4, 4, ...]` (200-digit Decimal-precision Newton-iteration CF
+expansion, this S12a session), so `a₁₀ = 2`, `a₁₁ = 5`, `a₁₂ = 8`.
+The S11a helper docstring's claim that `7155/4961` is the "10th
+convergent with `a₁₀ = 1`" is also strictly incorrect: `7155/4961`
+is a **semi-convergent** (best-rational approximation between the
+9th and 11th true CF convergents), not a true CF convergent. **The
+S11a proof and the S11b main theorem remain mathematically correct**
+— `7155/4961 < cbrt3` is true (Decimal computation: gap `−2.4·10⁻⁸`)
+and provided a valid lower bound for the S11b sandwich
+`7155/4961 < cbrt3 < 6206/4303` proving `cbrt3_a9 = 6`. Only the
+"true 10th convergent" framing in the docstring is off.
+
+Docker build of helper file verified clean (build log embedded in
+the S12a session memo at
+`sessions/2026-06-01-s12a-helper-act-eleventh-convergent.md`).
+
+See `sessions/2026-06-01-s12a-helper-act-eleventh-convergent.md`
+for the cube arithmetic, OEIS A002945 cross-verification at 200
+digits, semi-convergent vs true-convergent distinction, and the
+S12b next-action sketch.
+
+## Prior Focus (S11b ACT, PR #21654, MERGED 2026-06-01T00:32:07Z)
 
 S11b ACT (researcher-1, 2026-05-31): shipped the tenth partial
 quotient `cbrt3_a9 = 6` — the largest in the known prefix —
@@ -320,36 +362,41 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
-**S12 (any researcher)**: Prove the eleventh partial quotient,
-`cbrt3_a10 : ⌊1 / (... - 1)⌋ = (1 : ℤ)`
+**S12b (any researcher)**: Prove the eleventh partial quotient,
+`cbrt3_a10 : ⌊1 / (1 / (... - 1) - 6)⌋ = (2 : ℤ)`
 in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
-`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 1, 2, …]`, the eleventh partial
-quotient is `a₁₀ = 1`. This requires a new UPPER bound on `cbrt3`
-(alternation: the 11th convergent lies above `cbrt3`).
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]` (independently
+verified to 200 digits via Decimal-arithmetic Newton-iteration CF
+expansion in S12a session), `a₁₀ = 2` (**NOT** `a₁₀ = 1` as the
+pre-S12a sketch incorrectly claimed; this is **math-correction
+precedent #FOUR** for this slug — see Current Focus head).
 
-The eleventh CF convergent using `a₁₁ = 2` per OEIS A002945 is:
+This S12a shipped the **true 11th CF convergent lower bound**:
 
-  `q₁₁ = a₁₁ · q₁₀ + q₉ = 2·4961 + 4303 = 14225`
-  `p₁₁ = a₁₁ · p₁₀ + p₉ = 2·7155 + 6206 = 20516`
+```
+Cbrt3Helpers.one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 :
+  (13361/9264 : ℝ) < cbrt3
+```
 
-So `p₁₁/q₁₁ = 20516/14225`. Expected direction: `20516/14225 > cbrt3`
-(odd-index convergent above). Pre-claim Python cube sanity (the S7→S8,
-S8→S9, S10→S11 sketch-correction precedent is mandatory):
+The sandwich pair for S12b is therefore `13361/9264 < cbrt3 < 6206/4303`
+(reusing the S10 upper bound). If the 6206/4303 upper bound proves too
+loose at depth 10 (relative gap `2.3·10⁻⁸` may not contract enough
+through the 19-step chain), the next iteration would add an upper-side
+helper using the **true 12th CF convergent** (with `a₁₁ = 5`):
 
-  `20516³ vs 3·14225³` — verify INDEPENDENTLY before writing the helper.
-  Expected sign: `20516³ > 3·14225³` ⟹ `(20516/14225)³ > 3` ⟹
-  `20516/14225 > cbrt3` (LOWER side of the upper bound).
+  `q₁₁ = a₁₁ · q₁₀ + q₉ = 5 · 9264 + 4303 = 50623`
+  `p₁₁ = a₁₁ · p₁₀ + p₉ = 5 · 13361 + 6206 = 73011`
 
-Candidate helper name:
-`cbrt3_lt_two_oh_five_one_six_over_one_four_two_two_five`.
+So `p₁₁/q₁₁ = 73011/50623 > cbrt3` (relative gap `≈ 1.66·10⁻¹¹` —
+roughly three orders of magnitude tighter). Pre-claim Python cube
+sanity: `73011³ = 389_271_307_557_812_731 > 389_271_307_493_213_241 =
+3 · 50623³` (diff `+64_599_490`).
 
-Algebraic chain: ~19 steps (one rung deeper than S11b's 17 steps).
-Heartbeat budget guess: `set_option maxHeartbeats 3200000 in`
+Algebraic chain for S12b: ~19 steps (one rung deeper than S11b's 17
+steps). Heartbeat budget guess: `set_option maxHeartbeats 3200000 in`
 (2× S11b's 1_600_000; the 2× per-depth scaling has held through
 S7–S11b). Estimated main-file delta: ~220 LOC (consistent with S10
-234-LOC, S11b 216-LOC). Skeleton in
-`sessions/2026-05-31-s11b-act-tenth-partial-quotient.md` §
-"Next ACT picker priority".
+234-LOC, S11b 216-LOC).
 
 ## Prior Next-Action Sketch (S11, now resolved by S11b)
 
