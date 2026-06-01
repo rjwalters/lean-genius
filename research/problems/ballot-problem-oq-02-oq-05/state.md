@@ -1,9 +1,84 @@
 # Current State
 
-**Phase**: ACT (S8 — R4 false-statement fix applied: Helper-1 added, R4 signature takes `(h : (hitSet ω a).Nonempty)`, proof skeleton in place with named sub-sorry `hτ`; **build VERIFIED via Docker, 7744 jobs successful, 4 declared sorries**)
-**Since**: 2026-05-31 (S8 ACT, T+1d after S7 PREP)
-**Iteration**: 8 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT, this entry)
-**Last Updated**: 2026-05-31T18:30Z
+**Phase**: ACT (S9 — R4-sub `hτ` discharged inline; `partialSumBool_congr_below` helper added; **build VERIFIED via Docker, 7744 jobs successful, 3 declared sorries**)
+**Since**: 2026-06-01 (S9 ACT, T+1d after S8 ACT)
+**Iteration**: 9 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT, this entry)
+**Last Updated**: 2026-06-01
+
+## S9 ACT (researcher-1, 2026-06-01, Docker-verified)
+
+Discharged the R4-sub `hτ` sorry inline (Route B from S8 ACT's Next Action),
+plus added the supporting helper `partialSumBool_congr_below` referenced in
+Route A. Both ship in one PR since the helper is small (~7 LOC) and the
+inline discharge naturally consumes it.
+
+**Patch (42 LOC added, 1 sorry removed)**:
+
+1. **New helper** `partialSumBool_congr_below` (~12 LOC w/ docstring) inserted
+   between `reflectAt_eq_below_firstHit` and `reflectAt_involutive`:
+   for `k.val ≤ (firstHitFin ω a).val`, `partialSumBool (reflectAt ω a) k
+   = partialSumBool ω k`. Proof is `Finset.sum_congr rfl` + per-summand
+   `by_cases hi : i.val < k.val`, then `reflectAt_eq_below_firstHit` on the
+   `if_pos` branch and `rfl` on the `if_neg` branch.
+
+2. **R4-sub `hτ` discharge** (~28 LOC, replacing 1 sorry + ~6 LOC of comments):
+   `firstHitFin (reflectAt ω a) a = firstHitFin ω a` via `le_antisymm`:
+   - **≤ direction**: `firstHitFin ω a ∈ hitSet (reflectAt ω a) a` (using
+     `partialSumBool_congr_below (le_refl _)`), then `Finset.min'_le`.
+   - **≥ direction**: for any `k ∈ hitSet (reflectAt ω a) a`, by contradiction
+     assume `k < firstHitFin ω a`; then `partialSumBool_congr_below
+     (Nat.le_of_lt hk_val)` gives `partialSumBool ω k = a`, so `k ∈ hitSet ω a`,
+     so `firstHitFin ω a ≤ k` by `Finset.min'_le` — contradicting `k <
+     firstHitFin ω a`.
+
+**File metrics**:
+
+| Metric | Pre-S9 | Post-S9 | Δ |
+|--------|--------|---------|---|
+| LOC | 283 | 325 | +42 |
+| Sorries | 4 | 3 | −1 |
+| Axioms | 1 (`donsker_fclt`) | 1 (`donsker_fclt`) | 0 |
+| Defs | 6 | 6 | 0 |
+| Lemmas | 4 (Helper-1 + R4 + R5 + LOW) | 5 (+`partialSumBool_congr_below`) | +1 |
+| R4 status | TRUE with `hτ` sub-sorry | TRUE, fully discharged | **sorry-free** |
+
+**Sorry inventory (post-S9)**:
+
+| Sorry | Discharge approach | Note |
+|-------|-------------------|------|
+| ~~R4-sub `hτ`~~ | — | **DISCHARGED in S9 ACT** |
+| R5 (`partialSumBool_reflectAt_endpoint`) | `Finset.sum_ite` + `min'_mem h` + arithmetic | unchanged from S6 |
+| LOW (`reaches_iff_hits_or_above`) | `Int.le_iff_exists_eq_succ` on ±1 jumps | unchanged from S6 |
+| R6 (`discrete_reflection`) | `Finset.card_nbij'` assembly using R4 + R5 | unchanged from S6 |
+
+**Build status**: **VERIFIED via Docker — 7744 jobs successful, single-file
+target `Proofs.BallotProblemOQ02OQ05`, 3 declared sorries (R5 line 288, LOW
+line 298, R6 line 313), 0 errors**. Bearer pins all unchanged (lake-pinned
+Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+
+**LOC budget**: 325 LOC exceeds the 250-LOC informal cap by 75 LOC (30%).
+Comparable to S8's 6% overage; acceptable for the structural-correctness
++ sorry-count improvement (4 → 3). Compression candidates for future
+S-cycles: the multi-paragraph history docstring on `reflectAt_involutive`
+(~20 LOC) can be condensed once S10+ R5/R6 are also discharged.
+
+**Bearer 0-drift**: lake-pinned Mathlib SHA unchanged since S5 PREP §4. No
+new bearers needed (the discharge uses only previously-pinned APIs:
+`Finset.min'`, `Finset.min'_mem`, `Finset.min'_le`, `Finset.le_min'`,
+`Finset.sum_congr`, `Finset.mem_filter`, all line-verified in
+`~/GitHub/mathlib4` at SHA `2df2f0150c`).
+
+**Sibling-coordination**: no new sibling slug references (`grep -rnE
+'partialSumBool_congr_below|reflectAt_involutive' proofs/Proofs/` returns
+matches only in this file). No race risk.
+
+**Sorry projection** (unchanged from S8): post-S9 = 3 (R5 + LOW + R6).
+Each is independently discharge-able via the discharge sketches in S5 PREP
+§6 / S6 ACT inventory.
+
+See `sessions/2026-06-01-s9-act-htau-discharge-inline.md` for the
+full memo (patch detail, helper proof, two-direction antisymmetry, bearer
+table, sorry projection for S10+).
 
 ## S8 ACT (researcher-1, 2026-05-31, build pending — G9 lake self-loop)
 
@@ -347,24 +422,10 @@ None new. Existing Mathlib gaps tracked in `problem.md` (Mathlib infrastructure 
 
 ## Next Action
 
-**S8 ACT shipped** in this PR (researcher-1, 2026-05-31) — Helper-1 inserted,
-R4 signature changed to take `(h : (hitSet ω a).Nonempty)`, R4 proof body
-replaced with `funext + rw [hτ] + split_ifs + simp [Bool.not_not]`,
-named sub-sorry `hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a`
-left inline (~15-LOC discharge planned for S9).
-
-**S9 (any researcher)**: two route options:
-
-- **Route A (PREP)**: stage a `partialSumBool_congr_below` helper lemma
-  (~5 LOC, `Finset.sum_congr rfl` on the `i.val < k.val` guard) +
-  paste-ready `hτ` discharge skeleton (~15 LOC, antisymmetry on `Fin (n+1)`
-  via `Finset.min'_le` / `Finset.le_min'`). Same `(build pending — G9)`
-  shipping pattern.
-- **Route B (ACT)**: discharge `hτ` inline without the helper, ~20 LOC.
-  Acceptable but less reusable.
-
-After S9 lands, R4 is fully sorry-free; net file sorry count drops 4 → 3
-(R5, LOW, R6).
+**S9 ACT shipped** in this PR (researcher-1, 2026-06-01, Docker-verified) —
+`partialSumBool_congr_below` helper added; R4-sub `hτ` discharged inline via
+`le_antisymm` on `Fin (n+1)` with `Finset.min'_le` / `Finset.le_min'`.
+R4 is now fully sorry-free; file count drops 4 → 3 (R5, LOW, R6).
 
 **S10+**: discharge the R5 / LOW / R6 chain.
 
