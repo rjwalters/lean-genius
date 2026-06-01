@@ -1,9 +1,96 @@
 # Current State
 
-**Phase**: PREP (S6 PREP closed namespace cite; S7 STATE-SYNC escalated G7 to RED; S8 STATE-SYNC absorbs INFRA recovery G7+G8 RED→GREEN T+14d, only G9 `proofs/.lake` self-loop remains as a structural blocker for `docker-build.sh`)
-**Since**: 2026-05-30T03:55:00Z (S8 STATE-SYNC merge — this PR)
-**Iteration**: 8 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation, S8 STATE-SYNC INFRA recovery G7+G8 RED→GREEN)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC); researcher-1 (S8 STATE-SYNC, this PR)
+**Phase**: ACT (S9 ACT lands cyclic-row wrapper + parent `lemma → noncomputable def` repair; G9 .lake self-loop confirmed INERT for Docker builds per memory `[Lake self-loop in main repo (G9-inert)]`)
+**Since**: 2026-06-01T00:00:00Z (S9 ACT merge — this PR)
+**Iteration**: 9 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation, S8 STATE-SYNC INFRA recovery G7+G8 RED→GREEN, **S9 ACT cyclic-row wrapper + parent prop-fix**)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC); researcher-1 (S8 STATE-SYNC; **S9 ACT, this PR**)
+
+## Current Focus
+
+**S9 ACT (this PR, researcher-1, 2026-06-01)** — combined parent-repair
++ cyclic-row ship. Shipped the **cyclic row** of the `n ≤ 4` Shafarevich
+slice as a one-line specialisation of `ShafarevichFeasibility.cyclic_realizable`
+per the S6 PREP §3.2 paste body:
+
+```lean
+theorem AbelRuffiniOQ04OQ09.cyclic_realizable_le_four
+    (n : ℕ) (hn : 0 < n) (_hn4 : n ≤ 4) :
+    ∃ (L : Type) (_ : Field L) (_ : Algebra ℚ L)
+      (_ : FiniteDimensional ℚ L) (_ : IsGalois ℚ L),
+      IsCyclic (L ≃ₐ[ℚ] L) ∧ Fintype.card (L ≃ₐ[ℚ] L) = n :=
+  ShafarevichFeasibility.cyclic_realizable n hn
+```
+
+New file `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` (46 LOC,
+1 theorem, 0 axioms, 0 sorries).
+
+### Required prerequisite: parent `lemma → noncomputable def` repair
+
+Compiling the wrapper required first repairing
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean:85`:
+
+```diff
+-lemma zmod_coprime_crt {m n : ℕ} [NeZero m] [NeZero n] (h : m.Coprime n) :
++noncomputable def zmod_coprime_crt {m n : ℕ} [NeZero m] [NeZero n] (h : m.Coprime n) :
+    ZMod (m * n) ≃+ ZMod m × ZMod n :=
+  (ZMod.chineseRemainder h).toAddEquiv
+```
+
+This is the REAL cause of the slug's 14-day stall — state.md had
+attributed the block to G9 (`proofs/.lake` self-symlink) since S7
+STATE-SYNC, but per memory `[Lake self-loop in main repo (G9-inert)]`,
+G9 is INERT for Docker builds (the `-v` mount overrides the
+self-loop). The actual blocker was Lean v4.26.0's stricter check that
+`lemma`/`theorem` declarations must return a `Prop`, but
+`zmod_coprime_crt` returns `≃+` (an `AddEquiv`, a `Type`).
+
+Usage check (`grep -rn zmod_coprime_crt proofs/Proofs/`): the lemma
+is referenced only at its declaration site — no downstream consumers,
+so the keyword swap is safe. The repair adds `defCount` 0 → 1 and
+drops `theoremCount` 8 → 7 in the OQ05OQ01 file; no math content
+changes.
+
+### Files modified
+
+1. `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean` (parent
+   file, sibling slug): line 85 `lemma` → `noncomputable def`.
+   LOC unchanged (202); theoremCount 8 → 7; defCount 0 → 1.
+2. NEW `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` (46 LOC).
+3. `proofs/Proofs.lean`: manually inserted
+   `import Proofs.AbelRuffiniOQ04OQ09Cyclic` in alphabetical position
+   (between `AbelRuffiniOQ04OQ07` and `AbelRuffiniOQ09`).
+4. `src/data/research/problems/abel-ruffini-oq-04-oq-09.json`:
+   bumped `currentState.iteration` 8 → 9, refreshed
+   `currentState.focus` / `currentState.nextAction`, added
+   `leanFiles[]` entry for `AbelRuffiniOQ04OQ09Cyclic.lean`,
+   updated OQ05OQ01 entry theoremCount 8 → 7 / defCount 0 → 1,
+   bumped timestamps.
+5. THIS state.md: head + Current Focus refreshed; prior S8 STATE-SYNC
+   block preserved under "## Prior Focus".
+6. NEW `sessions/2026-06-01-s9-act-cyclic-row-wrapper-and-parent-prop-fix.md`.
+
+### Axiom audit
+
+- The cyclic wrapper introduces **0 new axioms** (only
+  `Classical.choice`, inherited via `IsCyclic` / `FiniteDimensional`).
+- The OQ05OQ01 file still has `axiomCount: 1` (the IGP axiom for the
+  general arbitrary-finite-G case, inherited from OQ-05). Unchanged
+  by my repair.
+- S3 PREP axiom chain trace re-verified: `cyclic_realizable` →
+  `cyclic_group_realizable` → `exists_prime_dvd_pred` →
+  `Nat.forall_exists_prime_gt_and_modEq`
+  (`Mathlib/NumberTheory/LSeries/PrimesInAP.lean`, **proved**).
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.AbelRuffiniOQ04OQ09Cyclic`
+
+Result: (embedded in PR description after build completion).
+
+See `sessions/2026-06-01-s9-act-cyclic-row-wrapper-and-parent-prop-fix.md`
+for the full trace + S10 V₄-row picker recommendation.
+
+## Prior Focus (S8 STATE-SYNC, PR #21162, MERGED 2026-05-30T11:00:09Z)
 
 > **Phase taxonomy note** (S5 STATE-SYNC, researcher-8): the `lean-research`
 > skill's phase taxonomy maps `OBSERVE → ORIENT → ACT → COMPLETED`. This slug

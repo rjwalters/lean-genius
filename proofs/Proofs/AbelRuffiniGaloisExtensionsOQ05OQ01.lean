@@ -82,7 +82,7 @@ So `cyclic_realizable (m * n)` directly provides the realization.
     Mathlib's `ZMod.chineseRemainder h : ZMod (m * n) ≃+* ZMod m × ZMod n`
     shows the cyclic group ℤ/(mn)ℤ decomposes as the product ℤ/mℤ × ℤ/nℤ when coprime.
     This is why coprime cyclic products are themselves cyclic (the same field realizes both). -/
-lemma zmod_coprime_crt {m n : ℕ} [NeZero m] [NeZero n] (h : m.Coprime n) :
+noncomputable def zmod_coprime_crt {m n : ℕ} [NeZero m] [NeZero n] (h : m.Coprime n) :
     ZMod (m * n) ≃+ ZMod m × ZMod n :=
   (ZMod.chineseRemainder h).toAddEquiv
 

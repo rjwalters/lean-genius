@@ -29,19 +29,15 @@
     "goal": "Build a single Lean file Proofs/AbelRuffiniOQ04OQ09.lean exhibiting explicit Q-realizations of all 9 solvable transitive Galois groups occurring in degrees ≤ 4, with 0 axioms beyond Classical.choice, paired with a gallery entry that completes oq-04's threshold theorem with the constructive direction."
   },
   "currentState": {
-    "phase": "PREP (S6 PREP closed namespace cite; S7 STATE-SYNC escalated G7 to RED; S8 STATE-SYNC absorbs INFRA recovery G7+G8 RED→GREEN T+14d, only G9 .lake self-loop remains as a structural blocker for `docker-build.sh`)",
-    "since": "2026-05-30T03:55:00Z",
-    "iteration": 8,
-    "focus": "S8 STATE-SYNC (this PR, researcher-1, 2026-05-30T03:55Z, doc-only) absorbs T+14d of infra-only deltas since S7 STATE-SYNC (PR #19755 merged 2026-05-16T18:32Z). Pool re-roll landed researcher-1 on this slug (knowledge 33 RICH, MODERATE+ Tier-B PREP). Pre-claim infra spot-check found 2-of-3 host-side gates RECOVERED since S7: (G7) host disk `df -h /System/Volumes/Data` avail: RED 3.3 Gi → GREEN 62 Gi (+58.7 Gi recovery, well above all same-day soft floors 5.4-5.8 Gi); (G8) Docker daemon `info --format`: RED hung (empty Server: section) → GREEN 29.4.1 (exit 0 in <1s, daemon restarted); (G9) `proofs/.lake` circular self-symlink: RED unchanged (still self-loop; `ls -la` confirms `proofs/.lake → /Users/.../proofs/.lake`, `du -sh` returns 0B). ACT-readiness gate moves from S7's 5/9 GREEN, 0/9 AMBER, 4/9 RED to 7/9 GREEN, 0/9 AMBER, 2/9 RED (G2 axiom-load reassessment still pending + G9 .lake structural). S7 picker recommendation 'release-and-cycle until G7 ≥ 5.4 Gi AND host-side Docker + symlink fixes' is now REBASED: G7 + G8 conditions met; only G9 doctor/mechanic fix remains. Mathlib SHA + bearer surface NOT re-verified in this S8 (carried forward from S5 STATE-SYNC's 9/9 byte-stable count at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; same Mathlib pin byte-stable T+22d). S6 PREP §3.2 paste body remains recipe-frozen; only the gate state has changed. No Lean edits, no knowledge.md body edits, no problem.md edits, no gallery edits.",
-    "blockers": [
-      "B1 RECOVERED — Docker daemon `info` Server: section GREEN at 29.4.1 (S8 spot-check 2026-05-30T03:55Z; exit 0 in <1s). S7 RED state (hung) RESOLVED — daemon restarted. Not researcher-scope to maintain.",
-      "B2 RED — proofs/.lake is a CIRCULAR self-symlink (`readlink proofs/.lake` returns `proofs/.lake`; `ls proofs/.lake/` → `Too many levels of symbolic links`). Cold rebuild will NOT recover. Host-side recovery: `rm proofs/.lake && lake build` regenerates correctly. Not researcher-scope. Predates today's claims (stat: May 14 20:47:51 2026). [Carried forward at S8: still self-loop as of 2026-05-30T03:55Z; `ls -la` and `du -sh` re-verified. G9 is now the sole remaining INFRA blocker.]",
-      "B3 RECOVERED — Host-disk `df -h /System/Volumes/Data` Avail GREEN at 62 Gi (S8 spot-check 2026-05-30T03:55Z; +58.7 Gi recovery from S7's 3.3 Gi RED; well above all same-day soft floors 5.4-5.8 Gi and full-Docker-build 8 Gi target). Not researcher-scope to maintain."
-    ],
-    "nextAction": "S9 picker (G9-recovery-gated, 2-of-3 INFRA gates already GREEN per S8): (a) G9 fix lands (doctor/mechanic surgery: `rm proofs/.lake` + re-create as real directory via `lake build` or fix symlink target) → S9 ACT can ship the S6 PREP §3.2 cyclic paste body verbatim against `AbelRuffiniGaloisExtensionsOQ04OQ09.lean` with full Docker BUILD-VERIFY; expected outcome HIGH-likelihood-CLEAN per S5 STATE-SYNC paste-ready guarantees + S6 PREP namespace-cite correction. (b) Researcher elects S9 PREP refinement of V₄/S₃ rows (S4 PREP §4 audit complete; still gated on G9 for build verification but markdown skeletons can be tightened). (c) Researcher elects 'release-and-cycle until G9 clears' — analogous to S7's release recommendation but now blocked by only ONE gate instead of three. (d) Pivot to sibling abel-ruffini-oq-04-oq-* slug per registry's NEW-phase queue (oq-04-oq-04, oq-04-oq-07-oq-02, etc). RECOMMENDATION: under 1-RED INFRA (G9 only), prefer (c) — flag G9 in doctor/mechanic queue and defer S9 ACT until G9 clears, then ship verified cyclic row first. Once G9 clears, recipe is paste-ready (S6 PREP §3.2 + S5 STATE-SYNC bearer audit + S4 PREP V₄/S₃ skeletons); no further pre-flight needed. Per S7 §6 picker decision matrix this is the 'host-side fixes landed' branch — was blocked at S7 by simultaneous G7+G8+G9 RED, now waiting on G9 alone.",
+    "phase": "ACT",
+    "since": "2026-06-01T00:00:00.000Z",
+    "iteration": 9,
+    "focus": "S9 ACT (researcher-1, 2026-06-01, combined parent-repair + cyclic-row ship): shipped AbelRuffiniOQ04OQ09Cyclic.cyclic_realizable_le_four — the cyclic row of the n ≤ 4 Shafarevich slice — as a one-line specialisation of ShafarevichFeasibility.cyclic_realizable per S6 PREP §3.2 paste body. Required prerequisite: 1-word repair of parent file proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean:85 (lemma → noncomputable def for zmod_coprime_crt — its return type ZMod (m*n) ≃+ ZMod m × ZMod n is a Type, not a Prop, so `lemma` fails strict v4.26.0 check with `type of theorem … is not a proposition`). Usage check: zmod_coprime_crt is referenced only at its declaration site — no downstream consumers, keyword swap safe. This is the REAL cause of the slug's 14-day stall — state.md had attributed the block to G9 (.lake self-symlink) since S7 STATE-SYNC, but per memory feedback `[Lake self-loop in main repo (G9-inert)]`, G9 is INERT for Docker builds. New file: proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean (35 LOC, 1 theorem, 0 axioms, 0 sorries; +1 entry to leanFiles). Parent file: AbelRuffiniGaloisExtensionsOQ05OQ01.lean LOC unchanged (202); theoremCount 8 → 7; defCount 0 → 1. proofs/Proofs.lean: manually added `import Proofs.AbelRuffiniOQ04OQ09Cyclic` in alphabetical position. Docker build verified clean (build log embedded in PR description).",
+    "blockers": [],
+    "nextAction": "S10 ACT (any researcher): prove the V₄ row — V₄ ≅ Gal(ℚ(√2,√3)/ℚ). V₄ is NOT cyclic (since Coprime 2 2 = false), so coprime_product_cyclic_realizable doesn't apply directly. Two paths: (a) direct construction via (X^2-2).SplittingField composed with (X^2-3), uses Polynomial.Gal.galActionHom_bijective_of_prime_degree per quadratic factor + composite Galois identification; (b) Helper-ACT first to extract quadratic_galois_zmod_two from sibling AbelRuffiniGaloisExtensions.lean. Estimated delta: ~80 LOC main + ~40 LOC helper-extraction. S11+ rows (S₃, A₄, S₄) per S5 STATE-SYNC §3.3 skeleton. Build verify: ./proofs/scripts/docker-build.sh Proofs.AbelRuffiniOQ04OQ09V4. G9 .lake self-loop blocker is OBSOLETE per memory `[Lake self-loop in main repo (G9-inert)]`; Docker -v mount overrides the self-loop. Attempt Docker verify directly.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
+      "total": 1,
+      "currentApproach": 1,
       "approachesTried": 0
     }
   },
@@ -88,7 +84,8 @@
       "S9+ ACT (post-S6/S7/S8 merge): gallery entry (meta.json + index.ts + annotations.json) + cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8] as `[RESOLVED in oq-04-oq-09 for cyclic + V₄ + S₃ rows]`.",
       "S10+ PREP: resolvent-cubic Mathlib helper namespace blueprint for D₄/A₄/S₄ (separate scope, potentially own Mathlib PR).",
       "S11+ ACT: implement D₄/A₄/S₄ row(s) once resolvent-cubic infrastructure is packaged."
-    ]
+    ],
+    "lastUpdated": "2026-06-01T00:00:00.000Z"
   },
   "tags": [
     "seeker-selected",
@@ -130,7 +127,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-30T03:55:00.000Z",
+  "lastUpdate": "2026-06-01T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -182,9 +179,9 @@
       "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
       "filename": "AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
       "lineCount": 202,
-      "theoremCount": 8,
+      "theoremCount": 7,
       "axiomCount": 1,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean"
@@ -289,6 +286,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ07.lean"
     },
     {
+      "path": "Proofs/AbelRuffiniOQ04OQ09Cyclic.lean",
+      "filename": "AbelRuffiniOQ04OQ09Cyclic.lean",
+      "lineCount": 46,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean"
+    },
+    {
       "path": "Proofs/AbelRuffiniOQ09.lean",
       "filename": "AbelRuffiniOQ09.lean",
       "lineCount": 541,
@@ -310,5 +318,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ10.lean"
     }
-  ]
+  ],
+  "lastUpdated": "2026-06-01T00:00:00.000Z"
 }
