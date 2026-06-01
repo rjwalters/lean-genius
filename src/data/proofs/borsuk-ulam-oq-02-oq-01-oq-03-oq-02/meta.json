@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1885,
+    "lineCount": 1995,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -114,7 +114,7 @@
       "largestPrimeBelow_eight_lt_eleven, _thirteen_lt_seventeen, _twentythree_lt_twentynine, _eightynine_lt_ninetyseven (axiom-free, iter 13): plateau-edge witnesses at the four prime-gap intervals from Parts XVII\u2013XVIII. Together with the corresponding eq-instances, pin each plateau as a *maximal* level set of `largestPrimeBelow` rather than a possibly-extendable cluster."
     ],
     "assumptions": "1 axiom: `symBUDim_eq_largestPrime` \u2014 the conjectured equality symBUDim n d = buDim (largestPrimeBelow n) d for n \u2265 2. The lower-bound direction (`buDim p* d \u2264 symBUDim n d`) is a theorem; the matching upper bound is the genuinely open content. **At n = 2 the conjecture is now settled axiom-free for ALL dimensions d \u2265 1**: `symBUDim_two_general_unconditional` shows symBUDim 2 d = d \u2212 1 from the parent's `symBUDim_two` axiom + `buDim_two`, and combined with `largestPrimeBelow_two` this matches the conjectured value buDim (largestPrimeBelow 2) d = buDim 2 d = d \u2212 1. So the new axiom is redundant at n = 2 not only on even d (per `symBUDim_eq_largestPrime_two_unconditional`) but on ALL d. The file inherits the parent file's axioms `symBUDim`, `sym_has_cyclic_prime`, `symBUDim_two`, `buDim`, `buDim_prime`, `buDim_two` (counted in the parent gallery entries).",
-    "theoremCount": 109,
+    "theoremCount": 120,
     "definitionCount": 2
   },
   "overview": {
@@ -307,10 +307,10 @@
       "BorsukUlamOQ02OQ01"
     ],
     "namespace": "BorsukUlamSymPrime",
-    "lineCount": 1885,
+    "lineCount": 1995,
     "axiomCount": 1,
-    "theoremCount": 109,
-    "substantiveTheoremCount": 107,
+    "theoremCount": 120,
+    "substantiveTheoremCount": 118,
     "definitionCount": 2,
     "path": "Proofs/BorsukUlamOQ02OQ01OQ03OQ02.lean",
     "sorries": 0

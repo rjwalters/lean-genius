@@ -1509,6 +1509,90 @@ theorem symBUDim_seven_eq_ten_of (h_conj : ConjectureLPB) (d : ℕ) :
   symBUDim_const_in_no_prime_range_of h_conj 7 10 d (by norm_num) (by norm_num)
     no_prime_in_seven_to_ten
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXVI: `buDim ∘ largestPrimeBelow` constancy on prime-gap plateaus
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XVI gave the *axiom-free* `largestPrimeBelow_const_in_no_prime_range`
+-- — `lpb` is constant on intervals `(n, m]` that contain no prime — and
+-- transferred this through the file's `symBUDim_eq_largestPrime` axiom to
+-- the conditional `symBUDim_const_in_no_prime_range`.  PART XXIV documented
+-- the orthogonal even-`d` constancy `buDim_largestPrime_even_const`: at
+-- every even `d` and every `n, m ≥ 2`, `buDim (lpb n) (2k) = buDim (lpb m)
+-- (2k)`, axiom-free via parent's `buDim_prime`.
+--
+-- This part fills in the *third* constancy axis: at every `d` (including
+-- odd `d`, where parent's `buDim_prime` is silent for primes p ≥ 3),
+-- whenever `(n, m]` contains no prime, `buDim (lpb n) d = buDim (lpb m) d`
+-- *axiom-free* — by the trivial congruence `lpb n = lpb m ⇒ buDim (lpb n)
+-- d = buDim (lpb m) d`.  This is the structurally-most-primitive form of
+-- the iter-19 conditional `symBUDim_seven_eq_ten`: it pins the `buDim`
+-- side of the conjecture's plateau prediction without invoking the
+-- conjecture.
+--
+-- The combination is sharp: at every even `d`, PART XXIV's
+-- `buDim_largestPrime_even_const` gives constancy across *all* `n, m ≥ 2`
+-- (no prime-gap condition needed) because the parent's `buDim_prime` pins
+-- the value.  At odd `d`, no such pinning is available, but this part's
+-- `buDim_largestPrime_const_in_no_prime_range` still delivers constancy
+-- *restricted* to no-prime-in-gap pairs.  Hence:
+--   • even `d`:  unrestricted constancy in `n` (PART XXIV).
+--   • odd `d`:   constancy restricted to prime-gap plateaus (this part).
+-- Under the conjecture, the odd-`d` constancy lifts to `symBUDim` via
+-- iter-19's `symBUDim_seven_eq_ten`.  The axiom-free `buDim`-side form
+-- here is the more primitive structural fact that the conjecture
+-- transports.
+
+/-- **Axiom-free `buDim ∘ largestPrimeBelow` constancy on prime-gap
+    plateaus**.  If no prime exists in `(n, m]` (with `n ≤ m`), then for
+    every dimension `d`,
+    `buDim (largestPrimeBelow n) d = buDim (largestPrimeBelow m) d`.
+
+    Trivial congruence: PART XVI's `largestPrimeBelow_const_in_no_prime_range`
+    pins `largestPrimeBelow m = largestPrimeBelow n` on the no-prime
+    interval, and `buDim · d` respects equality on its prime argument.
+    Notable: the file's `symBUDim_eq_largestPrime` axiom is **not**
+    required — this is the structurally-most-primitive constancy form
+    that the iter-19 conditional `symBUDim_seven_eq_ten` transports
+    through. -/
+theorem buDim_largestPrime_const_in_no_prime_range (n m : ℕ) (hnm : n ≤ m)
+    (h_no_prime : ∀ k, n < k → k ≤ m → ¬ Nat.Prime k) (d : ℕ) :
+    buDim (largestPrimeBelow n) d = buDim (largestPrimeBelow m) d := by
+  rw [largestPrimeBelow_const_in_no_prime_range n m hnm h_no_prime]
+
+/-- **Axiom-free concrete instance**: `buDim (lpb 7) d = buDim (lpb 10) d`
+    for every dimension `d`.  The `buDim`-side companion of iter-19's
+    conditional `symBUDim_seven_eq_ten`: the equality on `buDim ∘ lpb`
+    holds **without** invoking `symBUDim_eq_largestPrime` (because both
+    sides definitionally agree once `lpb 7 = lpb 10 = 7` is established).
+    Under the conjecture, this transports back to `symBUDim 7 d = symBUDim
+    10 d`. -/
+theorem buDim_lpb_seven_eq_buDim_lpb_ten (d : ℕ) :
+    buDim (largestPrimeBelow 7) d = buDim (largestPrimeBelow 10) d :=
+  buDim_largestPrime_const_in_no_prime_range 7 10 (by norm_num)
+    no_prime_in_seven_to_ten d
+
+/-- **Axiom-free concrete `buDim 7 d = buDim (lpb 10) d`**.  Unfolds
+    `lpb 7 = 7` (via `largestPrimeBelow_seven`) to expose the prime
+    witness on the left side. -/
+theorem buDim_seven_eq_buDim_lpb_ten (d : ℕ) :
+    buDim 7 d = buDim (largestPrimeBelow 10) d := by
+  rw [← largestPrimeBelow_seven]
+  exact buDim_lpb_seven_eq_buDim_lpb_ten d
+
+/-- **Axiom-free concrete `buDim (lpb 8) d = buDim (lpb 10) d`**.  The
+    middle two steps of the iter-19 four-step plateau `S₇→S₁₀` on the
+    `buDim ∘ lpb` side.  Both sides equal `buDim 7 d` after unfolding
+    `lpb 8 = lpb 10 = 7`. -/
+theorem buDim_lpb_eight_eq_buDim_lpb_ten (d : ℕ) :
+    buDim (largestPrimeBelow 8) d = buDim (largestPrimeBelow 10) d := by
+  rw [largestPrimeBelow_eight_eq_seven, largestPrimeBelow_ten_eq_seven]
+
+/-- **Axiom-free concrete `buDim (lpb 9) d = buDim (lpb 10) d`**.  Same
+    pattern as `buDim_lpb_eight_eq_buDim_lpb_ten` for the n = 9 step. -/
+theorem buDim_lpb_nine_eq_buDim_lpb_ten (d : ℕ) :
+    buDim (largestPrimeBelow 9) d = buDim (largestPrimeBelow 10) d := by
+  rw [largestPrimeBelow_nine_eq_seven, largestPrimeBelow_ten_eq_seven]
+
 /-
 ## Summary
 
@@ -1781,6 +1865,26 @@ independent of `n` (parent's `buDim_prime` does all the work), so the
 genuine non-trivial prediction lives at **odd `d`** where the parent's
 `buDim p (·)` axiom is silent for primes `p ≥ 3`.
 
+### Iteration 21 additions (`buDim ∘ lpb` plateau constancy — Part XXVI)
+- `buDim_largestPrime_const_in_no_prime_range` — **axiom-free**: for
+  `n ≤ m` and no prime in `(n, m]`, `buDim (largestPrimeBelow n) d =
+  buDim (largestPrimeBelow m) d` at every dimension `d`.  Trivial
+  congruence over PART XVI's `largestPrimeBelow_const_in_no_prime_range`;
+  the structurally-most-primitive form of the iter-19 conditional
+  `symBUDim_seven_eq_ten`.  Notable: the file's `symBUDim_eq_largestPrime`
+  axiom is **not** required.
+- `buDim_lpb_seven_eq_buDim_lpb_ten`, `buDim_seven_eq_buDim_lpb_ten`,
+  `buDim_lpb_eight_eq_buDim_lpb_ten`, `buDim_lpb_nine_eq_buDim_lpb_ten`
+  — **axiom-free** concrete instances on the iter-19 dyadic gap
+  `(7, 11)`.  The `buDim`-side analogue of iter-19's conditional
+  S₇→S₁₀ four-step plateau, providing the structural facts that
+  the conjecture transports into the `symBUDim` statement.
+- Fills in the third constancy axis: PART XXIV gave unrestricted
+  even-`d` constancy in `n`; iter-19 gave conditional plateau
+  constancy at *every* `d` on the `symBUDim` side; this part gives
+  *axiom-free* plateau constancy at every `d` on the `buDim ∘ lpb`
+  side — the primitive structural fact that the conjecture lifts.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1882,4 +1986,10 @@ genuine non-trivial prediction lives at **odd `d`** where the parent's
 #check @largestPrimeBelow_ten_eq_seven
 #check @symBUDim_seven_eq_ten
 #check @symBUDim_seven_eq_ten_of
+
+#check @buDim_largestPrime_const_in_no_prime_range
+#check @buDim_lpb_seven_eq_buDim_lpb_ten
+#check @buDim_seven_eq_buDim_lpb_ten
+#check @buDim_lpb_eight_eq_buDim_lpb_ten
+#check @buDim_lpb_nine_eq_buDim_lpb_ten
 end BorsukUlamSymPrime
