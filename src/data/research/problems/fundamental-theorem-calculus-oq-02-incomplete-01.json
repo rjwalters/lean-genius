@@ -30,20 +30,22 @@
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-04-03T02:25:34-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "since": "2026-06-01T09:50:00Z",
+    "iteration": 2,
+    "focus": "Iteration 2 (researcher-1, 2026-06-01, S2 OBSERVE substantive, doc-only PR pending): first substantive iteration after T+59d template-stub iter 1. Mathlib v4.26.0 surveyed via grep on `~/Projects/lean-genius-proofs/.lake/packages/mathlib/` per MEMORY `[Mathlib source paths outside G9 loop]`. Parent slug `fundamental-theorem-calculus-oq-02` covered (1D Stokes-as-FTC + 2D rectangles via Green's + 2D `d²=0` via Schwarz; 395 LOC / 13 thm / 0 sorry / 0 axiom; badge `original`). n-dimensional Stokes gap precisely identified: problem.md target symbol `ContDiff.isSymmetric_iteratedFDeriv` DOES NOT EXIST in Mathlib v4.26.0 — this is a Mathlib gap, not a re-statement task. Decomposition into 6 fragments shipped: F1 `iteratedFDeriv_symmetric` (30-60 LOC, Mathlib upstream-prep candidate, smallest), F2 `DifferentialForm M k` (100-200 LOC), F3 exterior derivative `d` (80-150 LOC), F4 manifold integration `∫_M ω` (150-300 LOC, HIGH risk), F5 boundary `∫_{∂M} ω` (100-200 LOC, HIGH risk), F6 Stokes proper (300-600 LOC, VERY HIGH risk). Total ~800-1500 LOC across 15-30 sessions — comparable to Mathlib split-PR `mathlib4#7967`. Multi-month track; single-monolithic-PR infeasible at v4.26.0. Mathlib HAS: `ModelWithCorners` + `IsInteriorPoint`/`IsBoundaryPoint` (`Geometry/Manifold/InteriorBoundary.lean`), `ContMDiff`/`MFDeriv` (`Geometry/Manifold/MFDeriv/*`), `AlternatingMap` (algebraic + topological), `ExteriorAlgebra`, 2D Schwarz `second_derivative_symmetric` (`Analysis/Calculus/FDeriv/Symmetric.lean`:303/315), `iteratedFDeriv` API. Mathlib LACKS: n-dim Schwarz, `DifferentialForm M k`, exterior derivative on manifolds, manifold integration, boundary integration, Stokes statement. Tractability 5/10 endorsed with decomposition caveat. INFRA fully GREEN (post-S50 cross-slug propagation). S2 is doc-only: 0 Lean edits, 0 leanFiles[] edits (still empty array), 0 gallery meta.json edits. Phase remains OBSERVE this S2; recommended S3 flip to ORIENT on Fragment 1.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "S3 ORIENT (researcher, optional pivot at researcher discretion): (a) **Fragment 1 ORIENT — iteratedFDeriv_symmetric** — read existing 2D `second_derivative_symmetric` proof at `~/Projects/lean-genius-proofs/.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Symmetric.lean`:303/315, sketch induction-on-n argument, estimate LOC, identify Mathlib peer reviewers. Smallest-shippable scope (30-60 LOC) with independent upstream value (Mathlib upstream-prep candidate via [[mathlib-contribution]] skill). **Preferred S3 track.** (b) Literature scout: `gh pr list --repo leanprover-community/mathlib4 --search 'differential form|smooth manifold integration'` to check for in-flight Mathlib work on Fragments 2-5. Avoid duplicating effort. (c) Gallery sibling discovery: search for any slug that has formalized Lee's `Smooth Manifolds` exterior-derivative chapter — would jumpstart Fragment 2/3 if reusable. (d) Pivot to a different slug (sibling `fundamental-theorem-calculus-*` or unrelated MODERATE-tier slug) if the multi-month track is judged infeasible for current researcher pool throughput. (e) Graceful exit / release back to pool — fallback. **RECOMMENDATION**: prefer (a) Fragment 1 ORIENT. Mathlib-shippable in 1-2 sessions and independent of the broader manifold-integration track.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
-    }
+    },
+    "lastUpdate": "2026-06-01T09:50:00.000Z"
   },
   "knowledge": {
     "progressSummary": "Local evidence shows this slug was created for the generalized Stokes gallery gap around the concrete Clairaut/mixed-partial bridge. The current parent proof metadata and `Proofs/FundamentalTheoremCalculusStokes.lean` indicate the main concrete bridge is now proved with 0 axioms and 0 sorries, while the fully abstract manifold Stokes theorem remains documented future work.",
     "builtItems": [
+      "S2 OBSERVE substantive (researcher-1 PR, 2026-06-01, doc-only): first substantive iteration on this slug after T+59d template-stub iter 1. Mathlib v4.26.0 surveyed; parent slug coverage mapped; n-dim Stokes gap identified; 6-fragment decomposition with total ~800-1500 LOC across 15-30 sessions estimated. Key finding: problem.md target `ContDiff.isSymmetric_iteratedFDeriv` does NOT exist in Mathlib v4.26.0 — this is a Mathlib gap, not a re-statement task. Fragment 1 (iteratedFDeriv_symmetric, 30-60 LOC) recommended for S3 ORIENT as Mathlib upstream-prep candidate. INFRA fully GREEN per S50 cross-slug propagation.",
       "`Proofs/FundamentalTheoremCalculusStokes.lean`: concrete 1D and 2D Stokes framework.",
       "`dd_eq_zero_2D`: proves d_1(d_0 f)=0 for C^2 functions on R x R using second Frechet-derivative symmetry.",
       "`stokes_2d_rectangle`: Green's theorem in Stokes form via `GreensTheoremOQ01.greens_theorem_concrete`.",
