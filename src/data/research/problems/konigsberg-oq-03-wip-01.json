@@ -1,7 +1,7 @@
 {
   "slug": "konigsberg-oq-03-wip-01",
   "title": "Complete Eulerian Paths in Hypergraphs",
-  "phase": "SURVEY",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -26,18 +26,18 @@
     "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2026-05-30T19:00:00Z",
-    "iteration": 2,
-    "focus": "S2 SURVEY (this PR, doc-only) — honest gap assessment supersedes S1 OBSERVE init. KonigsbergOQ03.lean is a SCAFFOLD with 3 :=True placeholder propositions masquerading as completeness (0 sorries, 0 axioms, 0 theorems, 74 LOC, 5 defs). True-placeholder gaps: HasEulerTour (r=2 case, no SimpleGraph reduction), HasInfiniteEulerPath (infinite walk infrastructure missing), HasOneWayEulerPath (same infra gap). Mathlib v4.26.0 has SimpleGraph.Walk.IsEulerian but NO hypergraph type, NO infinite walk type, NO Erdos-Grunwald-Weiszfeld. Full completion needs ~700-1300 LOC of new infrastructure (multi-month). Smallest concrete forward step: r=2 case (~30 LOC) using SimpleGraph.Walk.IsEulerian — defer to a session that commits to definitional approach. The problem.md WIP framing is misleading; this is a stub, not a partial proof.",
+    "phase": "ACT",
+    "since": "2026-06-01T00:00:00Z",
+    "iteration": 3,
+    "focus": "S3 ACT (this PR, researcher-1, 2026-06-01): implemented S2 SURVEY S3 candidate A — the r=2 hypergraph Euler-tour reduction. Added def `toSimpleGraph (H : RUniformHypergraph V 2) : SimpleGraph V` (adjacency: `u ≠ v ∧ {u, v} ∈ H.edges`, symm via `Finset.pair_comm`, loopless via the `u ≠ v` clause). Replaced `def HasEulerTour ... := True` with the meaningful definition `∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian` backed by Mathlib's `SimpleGraph.Walk.IsEulerian` (Combinatorics/SimpleGraph/Trails.lean:79). Added sanity theorem `hasEulerTour_iff_simpleGraph_eulerian` (definitional Iff.rfl) confirming the equivalence. Net file delta: 74 → 114 LOC (+40), 0 → 1 theorem, 7 → 8 defs+structures; sorries / axioms unchanged at 0 / 0. The 3 True placeholders identified by S2 SURVEY are now 2 (HasInfiniteEulerPath + HasOneWayEulerPath remain, requiring missing Mathlib `SimpleGraph.InfiniteWalk` infrastructure — out of scope for an r=2 iteration). Docker build verified clean via ./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03.",
     "blockers": [
-      "Infrastructure-level: full completion needs ~700-1300 LOC of hypergraph walk + infinite walk + Erdos-Grunwald-Weiszfeld infrastructure not present in Mathlib v4.26.0. No session-level INFRA blocker — Docker GREEN, disk 61Gi GREEN; only proofs/.lake self-symlink RED but Docker bypasses."
+      "Infrastructure-level (remaining): full completion still needs ~500-900 LOC of infinite-walk + Erdős-Grünwald-Weiszfeld infrastructure not present in Mathlib v4.26.0. The r=2 hypergraph case is now CLOSED (this S3 ACT). Pure-hypergraph r≥3 is NP-complete (Lonc-Naroski 2010) and would only formalise as a non-existence-of-poly-time-algorithm result."
     ],
-    "nextAction": "S3 picker: (A, recommended) implement r=2 case ~30 LOC using SimpleGraph.Walk.IsEulerian; (B) convert 3 True placeholders to sorry-guarded honest stubs (~3 LOC); (C) pivot to different slug; (D) open child sub-OQs for the 4-step decomposition. Recommend A as smallest concrete win.",
+    "nextAction": "S4 candidate menu: (infinite-walk path) define `InfiniteWalk` as stream-based or list-extension over `SimpleGraph.Walk`, then replace `HasInfiniteEulerPath`'s True placeholder (~200-400 LOC); (EGW theorem) state + prove Erdős-Grünwald-Weiszfeld (1936) once InfiniteWalk exists (~150-300 LOC); (parent-companion) re-survey parent Konigsberg.lean + sibling KonigsbergOQ03OQ02.lean for shared helper-module opportunities; (skip / new slug) open konigsberg-oq-03-wip-01-oq-01 child slug for EGW specifically and park this slug in axiomatized-stable. Recommend the parent-companion survey as the next low-risk discovery step before committing to one of the heavier infinite-walk paths.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -88,17 +88,17 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-05-30T19:00:00Z",
+  "lastUpdate": "2026-06-01T00:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/KonigsbergOQ03.lean",
       "filename": "KonigsbergOQ03.lean",
-      "lineCount": 74,
-      "theoremCount": 0,
+      "lineCount": 114,
+      "theoremCount": 1,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
-      "truePlaceholderCount": 3,
+      "truePlaceholderCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
     }
