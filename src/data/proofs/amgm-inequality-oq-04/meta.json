@@ -25,6 +25,9 @@
     "lineCount": 306,
     "theoremCount": 22,
     "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/AmgmInequalityOQ04OQ01.lean"
+    ],
     "assumptions": "0 axioms in this parent file (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the child file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). The Gauss AGM-elliptic-integral identity remains axiomatized in the child slug oq-04-oq-01 as agm_ellipticK_connection (200+ page classical proof, requires Landen/theta-function theory not in Mathlib).",
     "mathlib_version": "4.26.0"
   },
@@ -160,7 +163,18 @@
     "theoremCount": 22,
     "definitionCount": 5,
     "path": "Proofs/AmgmInequalityOQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/AmgmInequalityOQ04OQ01.lean",
+        "lineCount": 187,
+        "theorems": 10,
+        "definitions": 2,
+        "axioms": 1,
+        "sorries": 0,
+        "description": "OQ-04-OQ-01: Rigorous K(k) elliptic integral definition via Mathlib intervalIntegral. Defines ellipticK as ∫₀^{π/2} dθ/√(1-k²sin²θ), proves ellipticK_zero (K(0)=π/2), positivity for |k|<1, and axiomatizes the deep Gauss AGM-K identity M(a,b)=aπ/(2K(k')) (1 axiom: agm_ellipticK_connection)"
+      }
+    ]
   },
   "references": [
     {
