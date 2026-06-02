@@ -41,7 +41,7 @@
     ],
     "dateAdded": "2025-12-22",
     "lineCount": 267,
-    "axiomCount": 1,
+    "axiomCount": 3,
     "additionalFiles": [
       "Proofs/BorsukUlamOQ01.lean"
     ],
@@ -53,7 +53,9 @@
       "Basic topology: compactness and connectedness"
     ],
     "assumptions": [
-      "no_continuous_odd_nonzero_on_sphere: For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage."
+      "no_continuous_odd_nonzero_on_sphere (BorsukUlam.lean): For n ≥ 1, there is no continuous odd function h: ℝ^(n+1) → ℝ^n that is nonzero on the n-sphere. This requires covering space theory and fundamental groups beyond Mathlib's current algebraic topology coverage.",
+      "borsuk_ulam_exact (BorsukUlamOQ01.lean): The original existence statement of an antipodal point f(x) = f(-x) for any continuous f: Sⁿ → ℝⁿ — axiomatized to bridge to OQ01 sharpness questions.",
+      "tuckers_lemma (BorsukUlamOQ01.lean): Tucker's combinatorial lemma on antipodally-labelled triangulations, used in OQ01 to study sharpness of antipodal collapse maps."
     ],
     "relatedProblems": [
       {
