@@ -56,8 +56,8 @@
         "relationship": "Size Ramsey numbers generalize classical Ramsey numbers by minimizing edge count rather than vertex count. The formalization explicitly connects via `size_ramsey_generalizes`."
       }
     ],
-    "axiomCount": 4,
-    "assumptions": "4 axiom declarations: pikhurko_lower_bound (size Ramsey lower bound), pikhurko_upper_bound (size Ramsey upper bound), tao_counterexample_n5 (Lean-verified n=5 counterexample), faudree_partial (holds when |V|=2n+1)",
+    "axiomCount": 8,
+    "assumptions": "8 axiom declarations total (chain count). Main file Proofs/Erdos613Problem.lean (4): pikhurko_lower_bound (size Ramsey lower bound), pikhurko_upper_bound (size Ramsey upper bound), tao_counterexample_n5 (Lean-verified n=5 counterexample), faudree_partial (holds when |V|=2n+1). Stubs/Erdos613Problem.lean (4, same axiom names redeclared): pikhurko_lower_bound, pikhurko_upper_bound, tao_counterexample_n5, faudree_partial.",
     "lineCount": 260,
     "theoremCount": 11,
     "definitionCount": 14,
