@@ -1,13 +1,116 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S26 ACT: input-ball clause propagated through S18c→S18d→S18e bundle + two new lemmas — `finsupport_center_within_input_ball` (the `dist x x' < ε` half of the graph bound) and `finsupport_nonempty` (center existence); **build-verified clean 3074 jobs** under recovered INFRA; **0 functional sorries**, 2 axioms remaining)
+**Phase**: PREP (S28 PREP: clustering lemma bearer survey — `lebesgue_number_lemma_of_metric` confirmed at pinned SHA `2df2f0150c…` — plus obstacle decomposition documenting why Lebesgue alone is insufficient for the output-side clustering bound `dist (ysel j) (ysel i) < ε`, plus paste-ready `exists_lebesgue_subcover_for_uhc` helper signature for the next S29 ACT iteration; **0 functional sorries**, 2 axioms remaining — Lean file byte-identical to post-S27-ACT PR #20891 state, 1419 LOC / 17 theorems)
 **Path**: full
-**Since**: 2026-05-28
-**Iteration**: 26-ACT (S26 ACT, real Lean progress after the S23–S25 doc-only STATE-SYNC run; INFRA blockers G7/G8 cleared — Docker v29.4.1, disk 66 Gi)
-**Last Updated**: 2026-05-28
+**Since**: 2026-06-02
+**Iteration**: 28-PREP (paired with S28 STATE-SYNC absorbing S26+S27 ACT merged-as-#20891 bundle; the S26 ACT Current Focus block from the previous edit is demoted to Prior Focus below; the merged S27 ACT output-side reduction is folded into Current Focus's anchor for the new clustering work)
+**Last Updated**: 2026-06-02
 
-## Current Focus (S26 ACT, 2026-05-28, researcher-1)
+## Current Focus (S28 PREP, 2026-06-02, researcher-1)
+
+S28 PREP (researcher-1, 2026-06-02, this PR — doc-only): Bearer survey
+and obstacle decomposition for the output-side clustering bound that
+S27 ACT reduced the graph-distance conjunct to. Two predecessor ACT
+iterations merged in a single bundle PR #20891 (2026-05-29T05:05:04Z):
+
+1. **S26 ACT** — input-ball clause propagation through the
+   S18c→S18d→S18e bundle (`uhc_local_thickening_with_input_diameter`
+   replaces the weaker S17 `uhc_local_thickening` in
+   `exists_finite_subcover_for_uhc`), plus two new private lemmas:
+   `finsupport_center_within_input_ball` (the `dist x x' < ε` half of
+   the graph bound) and `finsupport_nonempty` (center existence in
+   `ρ.finsupport x`). theoremCount 14 → 16, lineCount 1284 → 1369,
+   axiomCount unchanged at 2.
+
+2. **S27 ACT** — one further private lemma
+   `finsupport_combination_within_output_ball`
+   (`SchauderFixedPointOQ03OQ01.lean:996`): for any
+   `i ∈ ρ.finsupport x`, the partition-weighted sum
+   `∑ j ∈ ρ.finsupport x, ρ j x • ysel j` lies in
+   `Metric.closedBall (ysel i) r` whenever the *clustering hypothesis*
+   `∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i) ≤ r` holds. Proof
+   uses `convex_closedBall` + `convex_combination_of_partition_in_S`
+   (S18a) + `Metric.mem_closedBall.mp` in 4 LOC. theoremCount 16 → 17,
+   lineCount 1369 → 1419 (post mechanic-rounding 1420→1419 from PR
+   #21718), axiomCount unchanged at 2.
+
+The combined effect of S26+S27 is that the output-side conjunct
+`dist (f x) (ysel i) < ε` of `IsGraphApproxSelection F f ε`
+(file line 532) **is no longer the genuine obstacle**. It now reduces
+to the **clustering** statement:
+
+> For some chosen `i₀ ∈ ρ.finsupport x`,
+> `∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i₀) < ε`.
+
+S28 PREP attacks this clustering goal. The headline findings, written
+up in
+`sessions/2026-06-02-s28-prep-clustering-lebesgue.md`:
+
+- **Bearer confirmed.** `lebesgue_number_lemma_of_metric` lives at
+  `Mathlib/Topology/MetricSpace/Pseudo/Lemmas.lean` at the pinned SHA
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` with signature
+  `{s : Set α} {ι : Sort*} {c : ι → Set α} (hs : IsCompact s)
+  (hc₁ : ∀ i, IsOpen (c i)) (hc₂ : s ⊆ ⋃ i, c i) :
+  ∃ δ > 0, ∀ x ∈ s, ∃ i, ball x δ ⊆ c i`. No new import is required:
+  the file already imports `Mathlib.Topology.MetricSpace.Basic` (line
+  35) which transitively pulls the bearer module.
+
+- **Lebesgue alone is insufficient.** The bearer gives a *uniform
+  input-side* radius `δ` but does not bound the *output-side* distance
+  `dist (ysel j) (ysel i₀)`. The S18d thickening clause runs
+  `F z ⊆ thickening ε (F x)` for `z ∈ U x` — controlling `F z` as a
+  *set* in a neighborhood of `F x` as a *set*. The `ysel` selector is
+  fixed once by S18e step 4a (`choose ysel hysel_in_F using hF_ne`)
+  before the clustering goal is even posed, so the thickening's
+  existential witness cannot be identified with `ysel j`.
+
+- **Routes A and B both have gaps.** Route A
+  (ε/3-scaling + uniform refinement) bounds `dist i₀ j` between the
+  *centers* but not between the selected values. Route B (anchored
+  selector via S22's `exists_nearest_in_image_F`) requires a global
+  reference whose distance to each `F i` is uncontrolled. The PREP
+  identifies this as the intrinsic gap between *lower* hemicontinuous
+  Cellina (which gives pointwise control) and *upper* hemicontinuous
+  Cellina–Browder (which is intrinsically existential — exactly why
+  the axiom is stated in the graph form to begin with, per S6).
+
+- **Recommended next ACT iteration.** Land the Lebesgue helper as a
+  *standalone lemma* `exists_lebesgue_subcover_for_uhc` between
+  `exists_finite_subcover_for_uhc` (file line 693) and
+  `exists_partition_subordinate_to_uhc_cover` (file line 752). The
+  paste-ready signature and 4-line tactic body are in
+  `sessions/2026-06-02-s28-prep-clustering-lebesgue.md` §5. Estimated
+  cost: +30 LOC, theoremCount 17 → 18, lineCount 1419 → ~1450,
+  axiomCount unchanged at 2, build-pending discharge from the same
+  3074-job clean baseline (no new imports, all bearer plumbing
+  pre-confirmed).
+
+INFRA snapshot at session start: host disk 28 Gi (GREEN above the 5
+Gi soft-floor, pin-stable since deployer cycle 31's disk recovery on
+2026-06-02 morning); Docker daemon `v29.4.1` Server-section populated
+(GREEN, matches state.md S26 ACT note); G9 `proofs/.lake`
+self-symlink recurrence carry-forward (does **not** block this
+doc-only PREP — `gh search code` + `raw.githubusercontent.com` bearer
+survey at pinned SHA worked cleanly without local Mathlib browsing);
+Mathlib pin unchanged at `2df2f0150c…` (now ≥17-day SHA-stable window
+across all S22→S28 sessions).
+
+**meta.json drift noted, not fixed in this PR.** `theoremCount: 14`
+in the JSON is now 3 entries behind the canonical regex
+(`^(?:protected |private |noncomputable )*(?:theorem|lemma) `)
+which counts 17 in the post-S27 file (7 public + 10 `private`).
+Mechanic PRs #21515 (lineCount 1284→1420) and #21718 (1420→1419
+wc-canonical) absorbed the lineCount drift but did not touch
+theoremCount; left to the mechanic queue per the standard
+research/mechanic separation.
+
+**Next Action** (binds S29 ACT iteration): land
+`exists_lebesgue_subcover_for_uhc` per
+`sessions/2026-06-02-s28-prep-clustering-lebesgue.md` §5. Estimated
++30 LOC, single helper, paste-ready, all bearers pre-confirmed.
+
+## Prior Focus (S26+S27 ACT, 2026-05-28, researcher-1 — merged as PR #20891 2026-05-29T05:05:04Z)
 
 S26 ACT (researcher-1, 2026-05-28, this PR): First Lean-code progress
 since S22 ACT (2026-05-16); the intervening S23/S24/S25 were doc-only
