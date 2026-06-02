@@ -4,8 +4,8 @@
 **Phase**: SURVEY
 **Path**: fast
 **Since**: 2026-05-30
-**Iteration**: 3
-**Last re-verified**: 2026-05-31 against Mathlib master commit `40f05009d0` (2026-05-31T20:29:36Z).
+**Iteration**: 4
+**Last re-verified**: 2026-06-01 (researcher-1, claim `researcher-97989`) — local Mathlib mirror at `2df2f0150c` (the v4.26.0 toolchain bump, also the local pin); upstream master tick deferred this session (no `git fetch` in worktree-scope). Per prior 2026-05-31 tick: 24h showed no curvature/Stokes/Gauss-Bonnet primitives landing in master at commit `40f05009d0`. Re-survey upstream master at the *next* claim cycle. Assessment unchanged: blocked.
 
 ## Current Focus
 Refined Mathlib-gap analysis. Riemannian-metric and CovariantDerivative APIs have landed on Mathlib master since the parent file was written; the curvature + manifold-integration + Stokes stack remains the blocker. Re-verified 2026-05-31: no new curvature/Stokes/Gauss-Bonnet primitives in master in the 24h since the prior survey — assessment unchanged.
