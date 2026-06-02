@@ -194,5 +194,34 @@
       "Polynomial.natDegree",
       "minpoly"
     ]
+  },
+  {
+    "id": "ann-baker-quantitative-derived",
+    "proofId": "algebraic-numbers-countable-oq-04",
+    "range": {
+      "startLine": 641,
+      "endLine": 754
+    },
+    "type": "insight",
+    "title": "Part VI: Baker's Quantitative Theorem as a Derived Consequence (Axiom Count Drops 4 → 3)",
+    "content": "**Part VI is the load-bearing deaxiomatization step of the file**: `baker_quantitative` is *not* a separate axiom — it is *proved* as a theorem from `baker_homogeneous` and `baker_wustholz_bound`. This drops the total axiom count from 4 to 3 (`baker_homogeneous`, `baker_inhomogeneous`, `baker_wustholz_bound`), exactly matching the `axiomCount: 3` declared in meta.json.\n\n**Eight-step proof structure** (lines 680–752):\n1. **Λ ≠ 0**: `baker_homogeneous` applied to integer coefficients (which are algebraic via `isAlgebraic_int`) gives $\\sum_i b_i \\log \\alpha_i \\neq 0$.\n2. **Degree witness** $d := (\\sum_i \\deg(\\text{minpoly}\\,\\alpha_i)) + 1 > 0$ — uniformly bounds individual minimal-polynomial degrees via `Finset.single_le_sum`.\n3. **Height witnesses** $A_i := \\alpha_i + 1 > 1 > 0$ with $\\log|\\alpha_i| \\leq \\log A_i$ via `Real.log_le_log`.\n4. **Baker–Wüstholz constant** $C_0 := 18 \\cdot (n+1)! \\cdot n^{n+1} \\cdot (32d)^{n+2} \\cdot \\log(2nd) > 0$.\n5. **Final constant** $C := C_0 \\cdot \\prod_i \\log A_i > 0$ via `Finset.prod_pos` (each $\\log A_i > 0$ since $A_i > 1$).\n6. **Cast** $|b_i| \\leq B$ from $\\mathbb{Z}$ to $\\mathbb{R}$ via `exact_mod_cast`.\n7. **Apply Baker–Wüstholz** to obtain $\\log|\\Lambda| > -C_0 \\cdot (\\prod_i \\log A_i) \\cdot \\log B$, rewritten as $-C \\cdot \\log B$ via `ring`.\n8. **Convert log to rpow** via `Real.log_rpow` and strict monotonicity `Real.log_lt_log_iff`, yielding $B^{-C} < |\\Lambda|$.\n\nThe theorem returns an *existence* statement: $\\exists C > 0$ depending only on the $\\alpha_i$ (not on $B$), uniformly bounding the linear form below by $B^{-C}$ for all integer-coefficient combinations of bounded height. This is the explicit *effective* form needed for Diophantine applications (Thue, Mordell, S-unit equations).",
+    "mathContext": "**The reduction's logical structure**: the qualitative axiom (`baker_homogeneous`, lines 310–328) and the quantitative axiom (`baker_wustholz_bound`, lines 596–616) together imply the quantitative theorem `baker_quantitative` — so listing `baker_quantitative` as a separate axiom would be *redundant*. This is the file's main *philosophical* contribution: separating the irreducible axiomatic core (qualitative non-vanishing + quantitative lower bound) from the derivable corollaries. **Why the qualitative axiom is needed for the quantitative statement**: `baker_wustholz_bound` provides the lower bound $\\log|\\Lambda| > -C_0 \\cdot (\\prod \\log A_i) \\cdot \\log B$ assuming $\\Lambda \\neq 0$; without `baker_homogeneous` we cannot conclude $\\Lambda \\neq 0$ from the linear-independence and non-triviality hypotheses, and the bound becomes vacuous (since $|\\Lambda| = 0$ would force $\\log|\\Lambda| = -\\infty$). The two axioms are *complementary*: qualitative non-vanishing + quantitative non-degeneracy = effective Diophantine bound. **The rpow conversion** in step 8 is non-trivial: `Real.log_rpow hBpos (-C)` requires $B > 0$, and `Real.log_lt_log_iff` requires both arguments positive, so the proof carries positivity hypotheses for $B$, $B^{-C}$, and $|\\Lambda|$ throughout. The final inequality $B^{-C} < |\\Lambda|$ is in $\\mathbb{R}$ (not $\\mathbb{Q}$), reflecting that the effective constant $C$ is generally irrational.",
+    "significance": "key",
+    "relatedConcepts": [
+      "axiom-count reduction by derivation",
+      "qualitative ⊕ quantitative axiomatic decomposition",
+      "isAlgebraic_int (ℤ ↪ algebraic reals)",
+      "Real.log_rpow / Real.log_lt_log_iff conversion",
+      "Finset.single_le_sum (uniform-bound from sum-bound)",
+      "Finset.prod_pos (positivity of finite product)",
+      "effective Diophantine bounds (Thue, Mordell, S-unit)"
+    ],
+    "prerequisites": [
+      "baker_homogeneous (qualitative non-vanishing axiom)",
+      "baker_wustholz_bound (Baker-Wüstholz quantitative axiom)",
+      "isAlgebraic_int : ∀ n : ℤ, IsAlgebraic ℚ (n : ℝ)",
+      "Real.log_rpow, Real.log_lt_log_iff",
+      "Finset.single_le_sum, Finset.prod_pos"
+    ]
   }
 ]
