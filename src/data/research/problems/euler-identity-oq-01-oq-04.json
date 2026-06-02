@@ -27,12 +27,15 @@
     "goal": "Formalize a clean theorem or wrapper showing R/(2*pi Z) is group-isomorphic to S^1 via Euler's exponential map, without claiming proof completion before Mathlib API exploration."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "DECIDE (Iter 1 ORIENT/PREP — Mathlib bearer audit + paste-ready isomorphism wrapper sketch SHIPPED doc-only; ready for Iter 2 ACT)",
     "since": "2026-04-05T19:03:34-07:00",
-    "iteration": 1,
-    "focus": "Initial understanding of the selected complex-analysis/Lie-group target; no proof attempt has started.",
-    "blockers": [],
-    "nextAction": "Move to ORIENT by reading the related Euler identity Lean files and searching Mathlib for expMapCircle, AddCircle.homeomorphCircle, exp_periodic, and quotient-kernel isomorphism lemmas.",
+    "iteration": 2,
+    "focus": "Iter 1 ORIENT/PREP (researcher-1, 2026-06-01): first substantive iteration after 57 idle days. Maps v4.26.0 Mathlib API at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Selection-report drift detected: Complex.expMapCircle was refactored to Circle.exp (continuous map, not MonoidHom); Circle.expHom provides the ℝ →+ Additive Circle hom. Decisive Mathlib bearer AddCircle.homeomorphCircle' at SpecialFunctions/Complex/Circle.lean:168 gives AddCircle (2 * π) ≃ₜ Circle — a Homeomorph, NOT a AddEquiv. Additive structure available separately (toCircle_add line 144, toCircle_zero line 152, injective_toCircle line 158). Sibling EulerIdentityOQ01OQ01OQ01.lean already proves all underlying lemmas axiom-free (circleMap_add, norm_circleMap, circleHom : Multiplicative ℝ →* ℂˣ, continuous_circleMap, circleMap_eq_one_iff, circleMap_surjective_unit_circle) but stops short of the packaged isomorphism. Two ACT paths sketched: Path A wraps homeomorphCircle' as AddCircle (2 * π) ≃+ Additive Circle (~15-25 LOC, recommended); Path B applies first isomorphism theorem to sibling's circleHom (~40-60 LOC, de-recommended for cost). No Lean changes, no axiom/sorry delta. Session log: sessions/2026-06-01-iter1-orient-prep-mathlib-bearer-audit.md.",
+    "blockers": [
+      "None — all Mathlib bearers pinned to verbatim source at SHA 2df2f0150c; sibling file EulerIdentityOQ01OQ01OQ01.lean proves all underlying lemmas axiom-free; ACT is a packaging exercise (~15-25 LOC), not a mathematical-content gap.",
+      "Soft open question: gallery-owner preference between Path A (≃+ packaging, default) and Path B (≃* / first-isomorphism-theorem packaging, more abstract)."
+    ],
+    "nextAction": "Iter 3 (next researcher) ACT — Path A wrapper. Create proofs/Proofs/EulerIdentityOQ01OQ04.lean with addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle. Discharge three sorries (left_inv, right_inv, map_add') with simp chains over AddCircle.homeomorphCircle', AddCircle.toCircle_add, AddCircle.toCircle_zero, and Additive.ofMul/toMul reductions. Build-verify under ./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04. Expected ACT cost: ~15-25 LOC. Alternative: a follow-up PREP if gallery owner prefers Path B (educational quotient-theorem route).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -76,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-04-06T00:14:41.516Z",
-  "lastUpdate": "2026-04-12T21:07:23.994Z",
+  "lastUpdate": "2026-06-01T19:00:00Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
