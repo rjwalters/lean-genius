@@ -29,14 +29,15 @@
     "goal": "State and prove a clean Lean theorem for Fermat's two-squares characterization of odd primes, reusing Mathlib's SumTwoSquares infrastructure rather than rebuilding the classical proof."
   },
   "currentState": {
-    "phase": "ACT (S2 SCAFFOLD — proofs/Proofs/InfinitudePrimes4k1OQ01.lean SHIPPED build-verified; 0 axioms, 0 sorries)",
+    "phase": "COMPLETE at Lean-file level (S2 SCAFFOLD shipped + build-verified); awaiting enricher gallery-entry creation",
     "since": "2026-05-30T00:00:00Z",
-    "iteration": 2,
-    "focus": "S2 SCAFFOLD ACT (researcher-1, 2026-06-01): Shipped proofs/Proofs/InfinitudePrimes4k1OQ01.lean (74 LOC, 0 axioms, 0 sorries) implementing S1 PR #21168 paste-ready blueprint verbatim with two ≤2-LOC omega-hypothesis-enrichment refinements (sq_mod_four pre-pow_mod hypothesis; backward direction a % 2 < 2 + b % 2 < 2 in scope). Two declarations: sq_mod_four (lemma: n^2 % 4 ∈ {0, 1}) and fermat_two_squares (theorem: p odd prime → (p % 4 = 1 ↔ ∃ a b, p = a^2 + b^2); forward via Nat.Prime.sq_add_sq, backward via mod-4 case analysis). Build-verified 3062/3062 jobs in Docker at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (9.1s compile via Mathlib cache hit). Proofs.lean aggregator updated with one new import line. Slug substantively complete at Lean-file level. Session log: sessions/2026-06-01-s2-scaffold-act-fermat-two-squares-shipped.md.",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC (researcher-1, 2026-06-02): Doc-only. Confirms no Lean drift since S2 merge (PR #21983, 2026-06-02T07:23Z UTC, ~12h prior to iter-3 claim); 0 subsequent commits on proofs/Proofs/InfinitudePrimes4k1OQ01.lean. Corrects S2's own 10-LOC tracking drift — both state.md and this JSON had claimed file at 74 LOC, wc -l reports 84 (drift baked in at S2 write-time, not introduced by later edits). Confirms enricher gallery entry src/data/proofs/infinitude-primes-4k1-oq-01/ still absent at HEAD 6b26c5ba081. Bearer SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 drift = 0. No further researcher ACT warranted per S2 §Next Action (which explicitly anticipated this STATE-SYNC path). S2 historical record preserved with LOC correction.",
     "blockers": [],
-    "nextAction": "Gallery entry creation (enricher task, NOT researcher): create src/data/proofs/infinitude-primes-4k1-oq-01/ with meta.json, annotations.source.json, index.ts. Once gallery entry is created post-merge, slug can move from in-progress to completed. No further researcher ACT iteration warranted.",
+    "nextAction": "Gallery entry creation (enricher task, NOT researcher): create src/data/proofs/infinitude-primes-4k1-oq-01/ with meta.json, annotations.source.json, index.ts. Once gallery entry is created post-merge, slug can move from in-progress to completed via claim-problem.sh update <slug> completed. No further researcher iteration warranted; if a researcher re-claims before the enricher acts, only another doc-only STATE-SYNC is appropriate (and only if material new state has arrived — per memory feedback _back_to_back_statesyncs_at_unchanged_state_is_busywork).",
+    "lastUpdate": "2026-06-02T19:45:00Z",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
