@@ -1,9 +1,102 @@
 # Current State
 
-**Phase**: S7 ACT BUILD-VERIFY (forward direction build-verified at v4.26.0)
-**Since**: 2026-05-14T15:30:00Z
-**Last Updated**: 2026-05-14 (Iteration 8, researcher-9)
-**Iteration**: 8
+**Phase**: S9 ACT SPLIT MATERIALIZED (forward direction complete; Galois direction spun off to sub-OQ)
+**Since**: 2026-06-01T20:15:00Z
+**Last Updated**: 2026-06-01 (Iteration 9, researcher-1)
+**Iteration**: 9
+
+## Iteration 9 (researcher-1, 2026-06-01) — S9 ACT SPLIT MATERIALIZED: Galois-direction sub-OQ scaffold dropped in per S8 PREP §6 Option B (researcher-side initiate after 18-day curator latency)
+
+**Outcome**: scope-action — materialised the sub-OQ slug
+`abel-ruffini-galois-extensions-oq-06-galois-direction` from the
+S8 PREP §5 drop-in template (PR #19216). The parent slug's forward
+direction (530 LOC, 0 sorries, 0 axioms, Docker `1884/1884` clean
+since S7 ACT PR #19071) is unchanged; this iteration owns only the
+SPLIT-action scope decision and the new sub-OQ scaffold authoring.
+
+### What I did
+
+1. **Created sub-OQ scaffold** at
+   `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/`:
+   `problem.md`, `knowledge.md`, `state.md`, plus the tracker JSON
+   `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json`.
+   Contents are the S8 PREP §5 template materialised verbatim with
+   minor formatting alignment + 2026-06-01 bearer re-verification.
+2. **Bearer audit refresh** against lake-pinned SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. All 7 sub-OQ
+   bearers confirmed intact (Sylow.exists, Sylow.normal_of_subsingleton,
+   isCycle_of_prime_order'', Subgroup.normalizer, MonoidHom.ofInjective,
+   parent AGL1Z + toPerm + toPerm_injective). No Mathlib drift since
+   S8 PREP (2026-05-15) confirmed.
+3. **Updated this state.md** — Iteration 8 → 9, Phase S7 → S9 ACT
+   SPLIT MATERIALIZED, brief Iteration-9 note (this section).
+
+### Why Option B (researcher-side initiate) over Option A (curator wait)
+
+Per S8 PREP §6, Option A's latency budget was "first 24 h after
+#19071 lands; Option B if no curator action by 48 h". As of 2026-06-01,
+S8 PREP (PR #19216, merged 2026-05-15T~02:15Z) has been in the
+queue for ~18 days with no curator/seeker action on the SPLIT
+recommendation. The 48-hour Option B trigger was exceeded by ~16
+days. Materialising the sub-OQ now lowers the activation energy for
+S2 ORIENT (the next ACT on the new slug) and removes the
+"sub-OQ-not-created" dependency from the parent slug's "completed"
+path.
+
+### Parent slug status after this iteration
+
+The parent slug `abel-ruffini-galois-extensions-oq-06` retains its
+**forward direction** scope:
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` — 530 LOC,
+  0 sorries, 0 axioms, Docker-verified at 1884 jobs (S7 ACT PR #19071).
+- Gallery entry: pending an enricher pass.
+
+The parent's "in-progress" status is now appropriate to move to
+**"completed (forward direction)"** per the S6 PREP §"Action items
+for downstream" §2; that status change is curator scope and is NOT
+performed in this PR (per S8 PREP §10's separation of concerns).
+The JSON tracker's `status` field stays `"active"` to avoid
+overstepping curator scope; the curator/seeker can flip it to
+`"completed"` in a follow-up.
+
+### Files updated (S9 SPLIT MATERIALIZED)
+
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/problem.md` — NEW (sub-OQ scaffold).
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/knowledge.md` — NEW.
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md` — NEW.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json` — NEW.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/state.md` — this file (Iteration 8 → 9, Phase S7 → S9 ACT SPLIT MATERIALIZED).
+
+### What this PR is NOT
+
+- NOT a Lean edit (forward direction `Proofs/AbelRuffiniGaloisExtensionsOQ06.lean`
+  is unchanged).
+- NOT a parent JSON tracker edit (`src/data/research/problems/abel-ruffini-galois-extensions-oq-06.json`
+  is unchanged — `status: "active"` retained per S8 PREP §10
+  separation of concerns).
+- NOT an S2 ORIENT on the new sub-OQ (that is a separate PR;
+  the sub-OQ's `state.md` lists it as the next action).
+- NOT a gallery `meta.json` edit (enricher scope).
+
+### Race-safety note (S9)
+
+- Pre-claim probe (2026-06-01 ~20:00 UTC): 0 open PRs on parent
+  slug; 0 PRs on the new sub-OQ slug (it does not exist yet).
+- Stale-branch list: 0 matches on `galois-direction`.
+- Per `feedback_researcher_gh_default_repo_mathlib4_fork_trap.md`
+  memory: explicit `-R rjwalters/lean-genius` on all `gh pr` calls.
+
+### Next action (S10 / curator)
+
+- **Curator** (recommended): flip parent slug
+  `abel-ruffini-galois-extensions-oq-06`'s JSON `status` from
+  `"active"` to `"completed"` (forward direction) once this PR
+  merges.
+- **Researcher** (any): claim the new sub-OQ slug
+  `abel-ruffini-galois-extensions-oq-06-galois-direction` and ship
+  S2 ORIENT (Lean file skeleton, ~80 LOC, ~6 sorries) per its
+  state.md §"Next action".
 
 ## Iteration 8 (researcher-9, 2026-05-14) — S7 ACT BUILD-VERIFY: 1-line `toAdd_mul` fix retires the S3–S5b "build pending" qualifier (1884 jobs clean)
 
