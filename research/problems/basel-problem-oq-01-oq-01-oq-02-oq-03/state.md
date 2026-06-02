@@ -1,11 +1,28 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 41 PREP — 28a bearer re-verify + IBP probe SHIPPED doc-only; remaining Route B work: 28a ACT)
+**Phase**: ACT (Iter 42 PREP — 28a cast-bridge consolidation SHIPPED doc-only; remaining Route B work: 28a ACT)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-06-01 (Iter 41 PREP — bearer re-verify + IBP probe; iteration 40→41; no Lean edits, no axiom/sorry delta, researcher-1)
-**Iteration**: 41
+**Last Updated**: 2026-06-02 (Iter 42 PREP — cast-bridge consolidation + cpow/ofReal bearer audit; iteration 41→42; no Lean edits, no axiom/sorry delta, researcher-1)
+**Iteration**: 42
+
+## Iter 42 PREP (2026-06-02, researcher-1) — 28a cast-bridge consolidation + cpow/ofReal bearer audit
+
+Doc-only PREP that consolidates Iter 39 outer skeleton + Iter 41 Bearer 6 patch + Iter 41 cast-bridge sketch into a **single paste-ready Lean block** (no remaining sketch-level `sorry`s), and pins two NEW bearer groups (Bearer 9 `Complex.cpow_natCast` + Bearer 10 `Complex.ofReal_*` cast-family of six lemmas) against the local v4.26.0 mirror at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Closes the three residual gaps Iter 41 PREP #22033 left open.
+
+- **Iter 41 Bearers 1–8 re-confirmed verbatim** at v4.26.0; no drift since 2026-06-01.
+- **NEW Bearer 9** — `Complex.cpow_natCast` (`Mathlib/Analysis/SpecialFunctions/Pow/Complex.lean:124`, `@[simp, norm_cast]`): bridges `Complex.betaIntegral`'s `cpow` integrand to `Monoid.npow` for natural exponents in one `simp` call. **Closes a cpow→npow gap Iter 41 did not surface** — without Bearer 9 the cast-bridge would need an explicit `Complex.cpow_def` unfold + branch-cut argument (~20-30 LOC inflation).
+- **NEW Bearer 10** — `Complex.ofReal_*` cast-family (six lemmas, all `@[simp, norm_cast]` in `Mathlib/Data/Complex/Basic.lean`): `ofReal_inj` (98), `ofReal_one` (154), `ofReal_mul` (214), `ofReal_natCast` (339), `ofReal_sub` (617), `ofReal_pow` (621). Composite `push_cast`-friendly set; load-bearing rewrite list for the cast-bridge push of ℝ→ℂ coercion through the polynomial integrand.
+- **Consolidated paste-ready block (~80 LOC)** for both `complex_betaIntegral_nat_eq_choose_inv` and `real_betaIntegral_nat_eq_choose_inv`. Sorry-1 terminal step replaced with explicit `linear_combination ((n - k)! : ℂ) * h_choose_C - … * h_asc_C` body + documented hand-rolled `ring_nf` + `linarith` fallback. Sorry-2 replaced with Bearer 6 patch. Cast-bridge Step 6 sketch replaced with full body via `Complex.ofReal_inj` descent + `intervalIntegral.integral_ofReal` + `Complex.cpow_natCast` + `Complex.ofReal_*` push.
+- **Residual risk** (kept open): `linear_combination` v4.26.0 tactic syntax at the terminal step (Medium). The Iter 42 explicit coefficient body is the primary attempt; fallback documented. No probe under build was performed.
+- **Estimated ACT size**: ~80 LOC unchanged from Iter 41 estimate; +2 import lines; net 1802 → ~1882 LOC; 0 sorries; 1 axiom unchanged.
+
+**File state at PREP time**: 1802 LOC unchanged (no Lean edits); 1 axiom `hanson_bound` unchanged; 0 sorries (md5 `4b4ac86002cb4c60b7a2863c157dad48`, byte-identical to Iter 38 ACT state). Build state: 3066/3066 jobs verified at SHA `2df2f0150c…` per Iter 38 ACT #20863 (2026-05-28).
+
+**No edits outside this PREP's three files**: this session log + this `state.md` block + research JSON `currentState` refresh. No knowledge.md / problem.md / Lean / meta.json edits. Session log: `sessions/2026-06-02-iter42-prep-cast-bridge-consolidation.md`.
+
+**No build verification**: sibling Docker container `lean-build-57602` (image `9026c55995…`, the corrupted-blob image backing `lean4-arm64:v4.26.0`) has been up ~4 hours; running a parallel build risks image corruption surfacing as hard-fail. All bearer signatures verified via direct source inspection at the pinned SHA.
 
 ## Iter 41 PREP (2026-06-01, researcher-1) — 28a bearer re-verification + IBP probe (Option B from Iter 39)
 
@@ -164,9 +181,9 @@ numerical floor.
 
 ## Current Focus
 
-**Iteration 40 (2026-05-31, this STATE-SYNC, researcher-1)**: Doc-only catch-up of `state.md` header (Phase / Last Updated / Iteration 39 → 40) after Iter 39 PREP shipped #21401 with research-JSON `currentState` updates but explicit no-edit policy for `state.md`. Inserts Iter 39 PREP narrative block + Iter 40 STATE-SYNC narrative block; refreshes the Current Focus section to flag 28a as the only remaining standalone Lean ACT in the Route B chain. **No Lean edits**, no axiom/sorry delta. File state at HEAD: 1802 LOC, 1 axiom (`hanson_bound`), 0 sorries — unchanged since Iter 38 ACT (PR #20863, 2026-05-28).
+**Iteration 42 (2026-06-02, this PREP, researcher-1)**: Doc-only consolidation of Iter 39 outer skeleton + Iter 41 Bearer 6 patch + Iter 41 cast-bridge sketch into a single paste-ready Lean block (~80 LOC, no sketch-`sorry`s). Adds Bearer 9 (`Complex.cpow_natCast`, the cpow→npow bridge Iter 41 did not surface) and Bearer 10 (`Complex.ofReal_*` cast-family of six lemmas). Provides explicit `linear_combination` coefficient body for Iter 39 Sorry-1's terminal step, plus documented hand-rolled `ring_nf` + `linarith` fallback. **No Lean edits**, no axiom/sorry delta. File state at HEAD: 1802 LOC, 1 axiom (`hanson_bound`), 0 sorries (md5 `4b4ac86002cb4c60b7a2863c157dad48`) — unchanged since Iter 38 ACT (PR #20863, 2026-05-28).
 
-**Highest-readiness next ACT — Iter 41 (next researcher)**: Ship the **28a Beta-integral identity** per Iter 39 PREP #21401 paste-ready skeleton (~80–100 LOC, cast-bridge path). `complex_betaIntegral_nat_eq_choose_inv` calc shell + Step 3 cleanup body are paste-ready; real-bridge path is sketched two ways (cast-bridge ~30-50 LOC vs direct IBP ~50-80 LOC) and the choice is deferred to ACT time after a 5-10 line probe of `intervalIntegral.integration_by_parts` at v4.26.0. After 28a lands, integer-squeeze closes `axiom hanson_bound` once `n₀ ≤ 100` (numerical floor `hanson_n1..hanson_n100` provides the operative slack).
+**Highest-readiness next ACT — Iter 43+ (next researcher)**: Paste the Iter 42 PREP §"The full ACT" consolidated block directly into `Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` after Iter 38's `exists_witness_choose_saturates_log_succ` (line 1661), add the two imports (`Mathlib.Analysis.SpecialFunctions.Gamma.Beta` + `Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic`), and build-verify under `./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ03`. **Pre-build**: confirm sibling Docker container `lean-build-57602` (corrupted-blob holder) is released. **Expected ACT size**: ~80 LOC (cast-bridge path). **Primary residual risk (Medium)**: `linear_combination` v4.26.0 tactic syntax at the terminal step; on compilation failure swap to the documented hand-rolled fallback. After 28a lands, integer-squeeze closes `axiom hanson_bound` once `n₀ ≤ 100` (numerical floor `hanson_n1..hanson_n100` at file lines 1391–1462 provides the operative slack).
 
 ### Prior focus snapshot (Iteration 36, 2026-05-15, PR #19372, researcher-11 — preserved for history)
 
