@@ -1,12 +1,56 @@
 # Current State
 
-**Phase**: ACT (S4 statement landed; submatrix_chain plan locked by S12 PREP but **σ(q) sign factor CORRECTED in this S15 PREP** — recipe was `(-1)^(q+p)` distributed; correct is `(-1)^(j+(j.succAbove q : ℕ)+1)` constant in p; 3 numerical witnesses verify; outer §2.9 skeleton closes with corrected σ(q); Block IV `h_sign` sub-sorry now removed; only Docker-dependent steps remain — Docker still hung 7.5+ h cumulative)
-**Since**: 2026-05-16T15:30:00Z
-**Iteration**: 15
-**Last session**: S15 PREP — `submatrix_chain` sign correction (latent gap caught before S15+1 ACT) (researcher-6, 2026-05-16, doc-only)
-**Last Updated**: 2026-05-16T15:30:00Z
+**Phase**: S17 PREP (post-S16 STATE-SYNC with ACT-readiness gate degradation to 8/9 GREEN + 1/9 AMBER: host disk regressed from S16 PREP's 97 Gi avail to 7.8 Gi avail at 100% capacity; Docker remains RESPONSIVE; ACT plan unchanged — S16+1 ACT picker follows S15 PREP §6.2 7-step checklist)
+**Since**: 2026-06-02T04:34:00Z (S17 PREP, researcher-1)
+**Iteration**: 17
+**Last session**: S17 PREP — post-S16 STATE-SYNC + degraded gate refresh (researcher-1, 2026-06-02, doc-only)
+**Last Updated**: 2026-06-02T04:34:00Z
 
-> _Phase note: this skill maps "S15 PREP" to canonical "ORIENT" sub-iteration of the ongoing ACT phase._
+> _Phase note: state.md previously stayed at iter 15 because S16 PREP (researcher-1, 2026-05-25) did not propagate iteration counter to state.md — only updated the JSON. This S17 PREP brings state.md back in sync (15 → 17, skipping the unmemorialised 16)._
+
+## Session 17 — S17 PREP, post-S16 STATE-SYNC + degraded gate refresh (researcher-1, 2026-06-02, doc-only)
+
+Doc-only quiescence sync 8 days after S16 PREP (researcher-1,
+2026-05-25T08:43:15Z, "9/9 GREEN" snapshot). Re-probes the ACT-readiness
+gate items 7 (Docker) and 8 (disk) per S16 PREP §1:
+
+- **Docker daemon**: GREEN — `timeout 10 docker info` returns the Server
+  section cleanly in ~3 s. Client v29.4.1, Context `desktop-linux`.
+  Matches S16 PREP's GREEN reading.
+- **Host disk**: **DEGRADED to AMBER** — `df -h /Users/rwalters` shows
+  **7.8 Gi avail at 100% capacity**. Same neighbourhood as S15 PREP's
+  5.4 Gi AMBER reading; far below the 97 Gi declared GREEN at S16 PREP.
+
+**Net gate refresh**: S16 PREP 9/9 GREEN → S17 PREP **8/9 GREEN + 1/9 AMBER**
+(item 8: host disk).
+
+The disk AMBER does NOT block the S16+1 ACT picker outright; the S15 PREP
+disk-pressure mitigations remain applicable. The S16+1 ACT picker should:
+
+- Re-probe `df -h /Users/rwalters` at branch creation; abort if avail < 5 Gi.
+- Run `docker system prune --volumes -f` before build if avail < 10 Gi
+  (frees ~10-30 Gi typically; safe but may interrupt parallel agents).
+- Apply S15 PREP §5.2 "ship with build-pending qualifier" fallback if
+  the build attempt fails on disk exhaustion.
+
+The ACT plan and target file (`CramersRuleOQ01OQ02OQ01OQ01.lean`, 293 LOC,
+9 thm, 0 ax, **1 sorry**) are unchanged from S16 PREP. The `qdetN_step_eq_qdetF`
+discharge follows the corrected Form 1 statement from S15 PREP §4.1:
+`det(A.sub) = (-1)^((j : ℕ) + (j.succAbove q : ℕ) + 1) * ∑ p, A(i.succAbove p) j * adjugate M q p`.
+
+Full memo at `sessions/2026-06-02-s17-prep-statesync-degraded-gate.md` (~110 LOC).
+
+### Files touched (3 — doc-only)
+
+- `state.md` (this file): S17 PREP block prepended; iteration 15 → 17
+  (catching up the unmemorialised S16 jump).
+- `sessions/2026-06-02-s17-prep-statesync-degraded-gate.md`: NEW
+  (~110 LOC, gate refresh + ACT picker guidance).
+- `src/data/research/problems/<slug>.json`: `currentState.{phase, since,
+  iteration, focus}` refresh; `lastUpdate` bump; 1 new `knowledge.insights`
+  entry (S17 PREP gate-refresh result, disk regression).
+
+**Zero Lean / meta.json / gallery / candidate-pool edits.**
 
 ## Session 15 — S15 PREP, `submatrix_chain` sign correction (latent correctness gap surfaced before S15+1 ACT) (researcher-6, 2026-05-16, doc-only)
 
