@@ -7,7 +7,7 @@
     "author": "Erdős, Rényi, and Sós (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Friendship_theorem",
     "date": "1966",
-    "status": "verified",
+    "status": "axiomatized",
     "tags": [
       "graph-theory",
       "combinatorics",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/FriendshipTheorem.lean",
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,8 +43,8 @@
     ],
     "dateAdded": "2025-12-27",
     "wiedijkNumber": 83,
-    "axiomCount": 0,
-    "assumptions": "Fully verified: 0 axioms, 0 sorries. FriendshipTheorem.lean imports FriendshipTheoremOQ01.lean which provides both key results: (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). Both former axioms eliminated.",
+    "axiomCount": 1,
+    "assumptions": "1 axiom in the FriendshipTheoremOQ02.lean chain companion (a directed-graph extension to the classical undirected theorem): `directed_friendship_mod4` (in a directed friendship tournament, the vertex count satisfies n ≡ 3 (mod 4) — the Longyear–Parsons regularity + tournament out-degree counting argument is out of scope and axiomatized). The main FriendshipTheorem.lean (Wiedijk #83) is itself axiom-free and sorry-free: it imports FriendshipTheoremOQ01.lean which provides both key results — (1) regularity of friendship graphs without universal vertex (via A³ commutativity + complement-connectivity), and (2) k-regular friendship implies k=2 (via characteristic polynomial analysis). No sorries anywhere in the chain.",
     "lineCount": 373,
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
