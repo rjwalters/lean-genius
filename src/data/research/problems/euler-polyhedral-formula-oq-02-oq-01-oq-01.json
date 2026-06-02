@@ -24,8 +24,8 @@
   "currentState": {
     "phase": "SURVEY",
     "since": "2026-05-31T22:00:00.000Z",
-    "iteration": 3,
-    "focus": "Re-verified BLOCKED 2026-05-31 against Mathlib master commit 40f05009d0; no curvature/Stokes/Gauss-Bonnet primitives have landed. Assessment unchanged.",
+    "iteration": 4,
+    "focus": "Re-verified BLOCKED 2026-06-01 (researcher-1, claim researcher-97989). Local Mathlib mirror is on v4.26.0 pin (2df2f0150c), not master, so upstream re-tick deferred this session. Per prior 2026-05-31 tick at master commit 40f05009d0: no curvature/Stokes/Gauss-Bonnet primitives have landed and the multi-month-scale absence is unlikely to flip in 24h. Round-S² intermediate (K≡1, area=4π) remains the productive subproblem; not pursued in this slot.",
     "blockers": [
       "Local Mathlib pin is v4.26.0; even the new Riemannian metric typeclass is not available locally without a pin bump.",
       "Mathlib master still lacks Gaussian curvature, geodesic curvature, manifold integration, area form, de Rham forms, Stokes on ∂M, and smooth Euler characteristic.",
@@ -33,7 +33,7 @@
     ],
     "nextAction": "Re-survey when Gaussian curvature, a Riemannian area form, or Stokes for manifolds-with-boundary land in Mathlib. Until then, the productive intermediate target is a round-S² only Gauss-Bonnet milestone (K ≡ 1, area 4π).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 0,
       "approachesTried": 1
     }
@@ -91,7 +91,7 @@
     ]
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-05-31T22:00:00.000Z",
+  "lastUpdate": "2026-06-01T19:50:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/EulerPolyhedralFormula.lean",
