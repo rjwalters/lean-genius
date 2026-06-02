@@ -59,7 +59,10 @@
     "assumptions": "8 axiom(s) and 1 sorry(s). Axioms: W_is_nonempty (van der Waerden's theorem — pinned-Mathlib v4.26.0 lacks Combinatorics.exists_mono_homothetic_copy, so this is a foundational assumption); berlekamp_lower_bound, gowers_upper_bound, kozik_shabanov_lower_bound (literature bounds); W_three=9, W_four=35, W_five=178, W_six=1132 (exact small values from exhaustive search / SAT). The lone sorry is the main_conjecture_implies_exponential filter-limit implication. The bound W(k+1) − W(k) ≥ k underlying the difference-variant result is proven from W_is_nonempty without further assumptions, via the AlphaProof Nexus coloring-extension argument.",
     "mathlib_version": "4.26.0",
     "theoremCount": 21,
-    "definitionCount": 13
+    "definitionCount": 13,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos138Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Van der Waerden proved his theorem in 1927, answering a conjecture of Baudet. The original proof gave Ackermann-type bounds on W(k). Berlekamp (1968) gave the first strong lower bounds using finite field constructions: coloring integers by discrete logarithm mod p avoids long APs. Shelah (1988) obtained the first primitive recursive upper bound, and Gowers (2001) dramatically improved it to tower-of-height-5 using his uniformity norms, winning a Fields Medal partly for this work. Kozik and Shabanov (2016) established the current best general lower bound W(k) ≫ 2^k via the Lovász Local Lemma. Erdős posed this problem in 1980 with a $500 prize, asking whether W(k) grows faster than any exponential — the vast gap between known bounds remains one of the central open problems in Ramsey theory. On 2026-05-21, DeepMind's AlphaProof Nexus system announced (arXiv:2605.22763v1) a Lean proof for the **difference variant**, W(k+1) − W(k) → ∞: a short coloring-extension argument shows W(k+1) − W(k) ≥ k unconditionally, given van der Waerden's theorem. The proof file in this entry ports that AlphaProof Nexus output to our Mathlib-only setup; the main k-th root conjecture remains OPEN.",
@@ -157,7 +160,10 @@
     "theoremCount": 21,
     "definitionCount": 13,
     "path": "Proofs/Erdos138Problem.lean",
-    "sorries": 1
+    "sorries": 1,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos138Aristotle.lean"
+    ]
   },
   "references": [
     {

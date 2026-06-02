@@ -42,7 +42,10 @@
     "assumptions": "2 axioms: erdos_761_question1 (OPEN), erdos_761_question2 (OPEN). Eliminated complete_dichrom (incorrect formula). Fixed IsAcyclicColoring definition from 'no monochromatic directed edge' to correct 'no monochromatic directed cycle' (Neumann-Lara 1982). Wrapped all declarations in `namespace Erdos761` to resolve the `Orientation` name collision with `Mathlib.LinearAlgebra.Orientation` (which had become transitively in scope and blocked iterations since 2026-04-27). Proved: isAcyclicColoring_of_no_mono_edge, dichrom_le_chrom, cochrom_le_chrom, bipartite_dichrom_le_two, odd_cycle_dichrom, dichrom_mono, acyclic_orientation_exists.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
-    "definitionCount": 7
+    "definitionCount": 7,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos761Aristotle.lean"
+    ]
   },
   "sections": [
     {
@@ -131,7 +134,10 @@
     "theoremCount": 7,
     "definitionCount": 7,
     "path": "Proofs/Erdos761Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos761Aristotle.lean"
+    ]
   },
   "references": [
     {

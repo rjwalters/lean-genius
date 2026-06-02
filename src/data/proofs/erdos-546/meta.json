@@ -25,7 +25,10 @@
     "assumptions": "10 axiom(s) and 0 sorry(s). See the Lean source for details.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
-    "definitionCount": 11
+    "definitionCount": 11,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos546Aristotle.lean"
+    ]
   },
   "sections": [
     {
@@ -155,7 +158,10 @@
     "theoremCount": 2,
     "definitionCount": 11,
     "path": "Proofs/Erdos546Problem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Stubs/Erdos546Aristotle.lean"
+    ]
   },
   "references": [
     "Erdős (1984): Original problem on Ramsey numbers and edge count",
