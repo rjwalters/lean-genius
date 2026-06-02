@@ -41,6 +41,9 @@
         "id": "abel-ruffini",
         "relationship": "∛2 is a degree-3 algebraic number whose minimal polynomial X³ − 2 is Eisenstein-irreducible. Galois theory of such cubic radicals underlies the Abel–Ruffini impossibility of solving the general quintic by radicals."
       }
+    ],
+    "additionalFiles": [
+      "Proofs/CubeRoot2IrrationalOQ03.lean"
     ]
   },
   "overview": {
@@ -80,7 +83,10 @@
     "theoremCount": 5,
     "definitionCount": 1,
     "path": "Proofs/CubeRoot2Irrational.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CubeRoot2IrrationalOQ03.lean"
+    ]
   },
   "crossReferences": [
     {
