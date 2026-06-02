@@ -438,6 +438,144 @@ theorem blichfeldt_general {n : ℕ} [NeZero n]
     _ = (k : ENNReal) * 1 := by rw [stdLattice_covolume]
     _ = (k : ENNReal) := mul_one _
 
+/-- **Blichfeldt's General Theorem for an arbitrary full-rank `ℤ`-lattice**.
+
+For any basis `b : Module.Basis (Fin n) ℝ (Fin n → ℝ)` and any
+measurable set `s ⊆ ℝⁿ` with
+`volume s > k · volume(ZSpan.fundamentalDomain b)`,
+there exist `k + 1` distinct points in `s` whose pairwise differences
+lie in the `ℤ`-submodule `Submodule.span ℤ (Set.range b)`.
+
+Specialises to `blichfeldt_general` at `b := stdBasis n` (covolume 1).
+
+S23 PR-B (researcher-1, 2026-06-02). Mechanical substitution of
+`stdLattice n → Submodule.span ℤ (Set.range b)`, `stdFundDomain n →
+ZSpan.fundamentalDomain b`, and `volume_eq_setLIntegral_indicator_tsum
+→ volume_eq_setLIntegral_indicator_tsum_lattice b` per S23 §4. The
+volume identity `volume F = 1` (the only `stdLattice`-specific step)
+is abstracted by quoting `volume (ZSpan.fundamentalDomain b)` directly
+in the hypothesis. -/
+theorem blichfeldt_general_lattice {n : ℕ} [NeZero n]
+    (b : Module.Basis (Fin n) ℝ (Fin n → ℝ))
+    (k : ℕ) (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
+    (h_vol : (k : ENNReal) * volume (ZSpan.fundamentalDomain b) < volume s) :
+    ∃ pts : Fin (k+1) → Fin n → ℝ,
+      Function.Injective pts ∧ (∀ i, pts i ∈ s) ∧
+      ∀ i j, pts i - pts j ∈
+        (Submodule.span ℤ (Set.range b) : Set (Fin n → ℝ)) := by
+  haveI : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range b))
+    infer_instance
+  -- Container reformulation: factor out the lattice translation z.
+  suffices h : ∃ z : Fin n → ℝ,
+      ∃ vs : Fin (k+1) → (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+        Function.Injective vs ∧ ∀ i, z + (vs i : Fin n → ℝ) ∈ s by
+    obtain ⟨z, vs, hvs_inj, hvs_in⟩ := h
+    refine ⟨fun i => z + (vs i : Fin n → ℝ), ?_, hvs_in, ?_⟩
+    · intro i j hij
+      have h_coe : (vs i : Fin n → ℝ) = (vs j : Fin n → ℝ) := add_left_cancel hij
+      exact hvs_inj (Subtype.ext h_coe)
+    · intro i j
+      show (z + (vs i : Fin n → ℝ)) - (z + (vs j : Fin n → ℝ))
+        ∈ (Submodule.span ℤ (Set.range b) : Set (Fin n → ℝ))
+      have h_sub : (z + (vs i : Fin n → ℝ)) - (z + (vs j : Fin n → ℝ))
+                = (vs i : Fin n → ℝ) - (vs j : Fin n → ℝ) := by ring
+      rw [h_sub, ← AddSubgroupClass.coe_sub]
+      exact (vs i - vs j).2
+  -- Contrapose to a volume bound.
+  by_contra h_neg
+  push_neg at h_neg
+  -- h_neg : ∀ z, ∀ vs, Injective vs → ∃ i, z + (vs i : ℝⁿ) ∉ s
+  apply absurd h_vol (not_lt.mpr ?_)
+  -- Move A: ∫⁻ z in F, c z ∂volume = volume s
+  rw [← volume_eq_setLIntegral_indicator_tsum_lattice b h_meas]
+  -- Move B: pointwise c z ≤ (k : ℝ≥0∞)
+  have h_pointwise : ∀ z : Fin n → ℝ,
+      (∑' v : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+          s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z))
+        ≤ (k : ENNReal) := by
+    intro z
+    set T : Set (Submodule.span ℤ (Set.range b)).toAddSubgroup :=
+      {v | (v : Fin n → ℝ) + z ∈ s} with hT_def
+    -- Bridge: tsum-of-indicators on L = T.encard.
+    have h_summand_eq : ∀ v : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+        s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
+          = T.indicator (fun _ => (1 : ENNReal)) v := by
+      intro v
+      by_cases hv : (v : Fin n → ℝ) + z ∈ s
+      · simp [Set.indicator, hv, hT_def, Set.mem_setOf_eq]
+      · simp [Set.indicator, hv, hT_def, Set.mem_setOf_eq]
+    have h_bridge :
+        ∑' v : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+            s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)
+          = (T.encard : ENNReal) := by
+      rw [tsum_congr h_summand_eq, ← tsum_subtype, ENNReal.tsum_set_one]
+    rw [h_bridge]
+    -- Bound encard ≤ k via contrapositive of h_neg.
+    by_contra h_too_many
+    push_neg at h_too_many
+    -- h_too_many : (k : ℝ≥0∞) < (T.encard : ℝ≥0∞)
+    have h_le_encard : ((k + 1 : ℕ) : ℕ∞) ≤ T.encard := by
+      have h_lt_enat : (k : ℕ∞) < T.encard := by
+        have h_cast : ((k : ℕ∞) : ENNReal) < ((T.encard : ENNReal)) := by
+          exact_mod_cast h_too_many
+        exact_mod_cast h_cast
+      have h_succ : (k : ℕ∞) + 1 ≤ T.encard :=
+        (ENat.add_one_le_iff (ENat.coe_ne_top k)).mpr h_lt_enat
+      exact_mod_cast h_succ
+    obtain ⟨T₀, hT₀_sub, hT₀_card⟩ :=
+      Set.exists_subset_encard_eq h_le_encard
+    have hT₀_finite : T₀.Finite := by
+      rw [← Set.encard_lt_top_iff, hT₀_card]
+      exact ENat.coe_lt_top _
+    set F₀ : Finset _ := hT₀_finite.toFinset with hF₀_def
+    have hF₀_card : F₀.card = k + 1 := by
+      have h_eq : T₀.encard = (F₀.card : ℕ∞) := by
+        show T₀.encard = (hT₀_finite.toFinset.card : ℕ∞)
+        exact hT₀_finite.encard_eq_coe_toFinset_card
+      rw [hT₀_card] at h_eq
+      exact_mod_cast h_eq.symm
+    obtain ⟨vs, hvs_inj, hvs_range⟩ :
+        ∃ vs : Fin (k+1) → (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+          Function.Injective vs ∧ Set.range vs = ↑F₀ := by
+      have h_card :
+          Fintype.card (↑F₀ : Set ↥(Submodule.span ℤ (Set.range b)).toAddSubgroup)
+            = k + 1 := by
+        rw [← Set.toFinset_card]
+        simp [hF₀_card]
+      let e : (↑F₀ : Set ↥(Submodule.span ℤ (Set.range b)).toAddSubgroup) ≃ Fin (k+1) :=
+        Fintype.equivFinOfCardEq h_card
+      refine ⟨fun i => (e.symm i).1, ?_, ?_⟩
+      · intro i j hij; exact e.symm.injective (Subtype.ext hij)
+      · ext x
+        simp only [Set.mem_range, Finset.mem_coe]
+        constructor
+        · rintro ⟨i, rfl⟩; exact (e.symm i).2
+        · intro hx; exact ⟨e ⟨x, hx⟩, by simp⟩
+    -- Each vs i ∈ T (via T₀ ⊆ T), i.e., (vs i : ℝⁿ) + z ∈ s.
+    have h_all_in : ∀ i, z + (vs i : Fin n → ℝ) ∈ s := by
+      intro i
+      have h_in_F₀ : vs i ∈ F₀ := by
+        have : vs i ∈ Set.range vs := ⟨i, rfl⟩
+        rwa [hvs_range, Finset.mem_coe] at this
+      have h_in_T₀ : vs i ∈ T₀ := by
+        rw [hF₀_def, Set.Finite.mem_toFinset] at h_in_F₀
+        exact h_in_F₀
+      have h_in_T : vs i ∈ T := hT₀_sub h_in_T₀
+      have h_swap : (vs i : Fin n → ℝ) + z = z + (vs i : Fin n → ℝ) := by ring
+      rwa [Set.mem_setOf_eq, h_swap] at h_in_T
+    obtain ⟨i, h_not_in⟩ := h_neg z vs hvs_inj
+    exact h_not_in (h_all_in i)
+  -- Move C: integrate the pointwise bound.
+  calc ∫⁻ z in ZSpan.fundamentalDomain b,
+          (∑' v : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+              s.indicator (fun _ => (1 : ENNReal)) ((v : Fin n → ℝ) + z)) ∂volume
+      ≤ ∫⁻ _ in ZSpan.fundamentalDomain b, (k : ENNReal) ∂volume := by
+        apply MeasureTheory.setLIntegral_mono_ae measurable_const.aemeasurable
+        exact MeasureTheory.ae_of_all _ (fun z _ => h_pointwise z)
+    _ = (k : ENNReal) * volume (ZSpan.fundamentalDomain b) := by
+        rw [MeasureTheory.setLIntegral_const]
+
 /-- The k=1 case follows from the general theorem. -/
 theorem blichfeldt_basic_from_general {n : ℕ} [NeZero n]
     (s : Set (Fin n → ℝ)) (h_meas : MeasurableSet s)
@@ -976,6 +1114,7 @@ end BlichfeldtTheorem
 
 #check BlichfeldtTheorem.blichfeldt_basic
 #check BlichfeldtTheorem.blichfeldt_general
+#check BlichfeldtTheorem.blichfeldt_general_lattice
 #check BlichfeldtTheorem.blichfeldt_three_points
 #check BlichfeldtTheorem.blichfeldt_four_points
 #check BlichfeldtTheorem.blichfeldt_general_pairwise
