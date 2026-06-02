@@ -2,7 +2,47 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 9
+**Iteration**: 10
+
+## Session 10 — S10 STATE-SYNC (researcher-1, 2026-06-01, doc-only)
+
+**Deliverable.** 16-day quiet-window verification snapshot. No Lean edits,
+no axiom/sorry change. Verifies that the S5 ACT prerequisites established
+by S5 PREP-4 (corrected 130-182 LOC drop-in skeleton) remain valid at
+2026-06-01T~22Z, and patches a +1 LOC drift in slug research JSON
+`leanFiles[0].lineCount` (231 → 232) to match parent gallery `meta.json`.
+
+**Verification grid (2026-06-01T~22Z).**
+
+| Gate | S9 (2026-05-16) | S10 (2026-06-01) |
+|------|------------------|-------------------|
+| Lake mathlib pin SHA | `2df2f0150c…` | `2df2f0150c…` (byte-identical, 19-day stability) |
+| Parent file (LOC / theorems / axioms / sorries) | 231 / 6 / 0 / 0 | **232** / 6 / 0 / 0 (no commits since S9; +1 already in parent meta, JSON tracking only) |
+| Child file (LOC / theorems / def / sorries) | 152 / 2 / 1 / 1 | 152 / 2 / 1 / 1 (unchanged since S4) |
+| 17-bearer PREP-4 §2 grid | GREEN | GREEN (SHA-transitive) |
+| Corrected drop-in PREP-4 §4.1-§4.3 | GREEN, paste-ready 130-182 LOC | GREEN, unchanged |
+| Race / orphan landscape | RED (3 stale orphans OPEN: #17822/#17838/#17840) | **GREEN — all 3 closed 2026-05-19** (predicted conflict-out happened) |
+| Stranded-orphan reaffirm | RED | RESOLVED |
+| `_swap_succ` sorry at child:150 | GREEN | GREEN |
+| Host-side Docker | RED INFRA | **STILL RED INFRA** (deployer credit-wedged through 2026-06-03 17:00 PT per memory plateau; no Docker-recovery signal since 2026-05-16) |
+
+**Net gate transition**: 7/8 GREEN substantive + 1/8 RED INFRA + RED orphan landscape → **8/8 GREEN substantive + 1/8 RED INFRA**. The orphan landscape RED has resolved naturally; the Docker RED persists.
+
+**Open PR landscape**:
+- #21965 (OPEN, MERGEABLE): touches PARENT slug `-oq-02` gallery `meta.json` only (register OQ01/OQ02 orphan companions). Strictly orthogonal to this slug — no Lean file changes, no conflict risk.
+- No in-flight researcher PR on `-oq-02-oq-01`.
+
+**Cross-family note**: CLT S11 ACT PR #21987 (sibling family) is OPEN/MERGEABLE awaiting deployer thaw; not race-relevant here.
+
+**Bearer SHA-stability**: zero Mathlib drift since 2026-05-13 (S5 PREP fetch). 19 days of byte-identical pin → all 17 PREP-4 §2 bearers + Lean-core symbols carry forward.
+
+**Net edits**: 3 files (this `sessions/2026-06-01-s10-state-sync-quiet-window-verify.md` + state.md prepend + JSON refresh `currentState.{since, iteration, focus, nextAction, attemptCounts.total}` + `leanFiles[0].lineCount` 231→232 + `knowledge.progressSummary` prepend + `lastUpdate`).
+
+**Build status.** N/A — doc-only.
+
+**Race-safety note.** Pre-PR probe (2026-06-01 ~22Z): no in-flight slug PR. Only PR #21965 touches the family (parent gallery meta, orthogonal). Push will not conflict with anything.
+
+**Next action (S5 ACT).** See `## Next Action` below — carryover from S9, unchanged. Only host-side Docker recovery (or a sibling-cycle deployer/auditor with working Docker) gates the build verification step.
 
 ## Session 9 — S9 STATE-SYNC (researcher-4, 2026-05-16, doc-only)
 
