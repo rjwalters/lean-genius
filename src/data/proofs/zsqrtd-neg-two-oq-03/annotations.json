@@ -178,5 +178,89 @@
     "significance": "supporting",
     "relatedConcepts": ["lt_or_eq_of_le", "contrapositive", "EuclideanDomain prerequisite"],
     "prerequisites": ["norm_nonneg", "norm_eq_zero_iff"]
+  },
+  {
+    "id": "ann-conj-and-mul-conj",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 249, "endLine": 274 },
+    "type": "definition",
+    "title": "S3 conj: $\\bar\\omega = \\omega^2 = -1 - \\omega$",
+    "content": "The Eisenstein conjugate `conj (a + bω) = (a - b) + (-b)·ω` derives from complex conjugation acting on $\\omega$ as $\\bar\\omega = \\omega^2 = -1 - \\omega$ (since $\\omega^3 = 1$ and $\\omega \\ne 1$). Three algebraic identities follow:\n- `norm_conj : N(conj z) = N(z)` — the conjugate preserves the norm (by direct `ring` after expanding `conj_re`, `conj_im` and `norm`).\n- `mul_conj : z · conj z = ⟨N(z), 0⟩` — the **lattice-projection identity**: multiplying by the conjugate collapses to an integer (no `ω` part). This is the algebraic spine of the rounding-division construction: it lets us write $x/y = (x \\cdot \\bar y)/N(y)$ where the denominator is now a plain integer.\n- `mul_conj_re : (z · conj z).re = N(z)` and `mul_conj_im : (z · conj z).im = 0` — `@[simp]` projection lemmas that close `simp`-driven goals downstream. Absorbed from the stranded S3 branch per S8 PREP §1.",
+    "mathContext": "$\\overline{a + b\\omega} = (a - b) + (-b)\\omega$, derived from $\\bar\\omega = -1 - \\omega$. Algebraically: $z \\bar z = (a + b\\omega)((a-b) + (-b)\\omega) = (a^2 - ab + b^2) + 0 \\cdot \\omega = N(z)$. This is exactly $\\Vert z \\Vert^2$ in the standard quadratic form on $\\mathbb{Z}[\\omega]$, and it makes the rounded division well-defined because $z/y \\in \\mathbb{Q}[\\omega]$ has coefficients $(z \\bar y)_{\\mathrm{re}}/N(y)$ and $(z \\bar y)_{\\mathrm{im}}/N(y)$ that can be rounded to integers.",
+    "significance": "key",
+    "relatedConcepts": ["complex conjugate", "lattice-projection identity", "cyclotomic relation $\\omega^2 + \\omega + 1 = 0$", "primitive cube root of unity"],
+    "prerequisites": ["norm_def", "ring axioms"]
+  },
+  {
+    "id": "ann-div-mod-instances",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 276, "endLine": 288 },
+    "type": "definition",
+    "title": "S3 instDiv/instMod: division by rounding the rational quotient",
+    "content": "`instDiv` defines division in $\\mathbb{Z}[\\omega]$ by **rounding the rational quotient componentwise** to the nearest lattice point. Concretely: `x / y := ⟨round((x · conj y).re / N(y)), round((x · conj y).im / N(y))⟩`. The choice to round on $(x \\cdot \\bar y)/N(y)$ rather than $x/y$ directly relies on the lattice-projection identity `mul_conj` to get a rational with integer denominator $N(y)$. Module-derived: `instMod ⟨fun x y => x - y * (x / y)⟩` — modulo as the remainder after subtracting the closest lattice multiple. The companion `mod_def` is the obvious `rfl`-style unfolding lemma used pervasively in the EuclideanDomain instance. Both are `noncomputable` because `round` on $\\mathbb{Q}$ is not computable in Lean (no decidable algorithm for arbitrary rationals). This is the standard pattern from `Mathlib.NumberTheory.Zsqrtd.GaussianInt`, adapted from the Gaussian-integer base $i$ to the Eisenstein base $\\omega$.",
+    "mathContext": "For $y \\ne 0$, the rational quotient $x/y = (x \\bar y)/(y \\bar y) = (x \\bar y)/N(y) \\in \\mathbb{Q}[\\omega]$. Rounding both components to the nearest integer gives a lattice point at distance $\\le \\sqrt{3}/2$ from $x/y$ in the Eisenstein metric (the geometric core proved as `sq_rounding_error_lt_one`). The hexagonal lattice $\\mathbb{Z}[\\omega]$ has packing radius $\\sqrt{3}/2 \\approx 0.866 < 1$, which is the precise reason ${\\mathbb Z}[\\omega]$ is Euclidean.",
+    "significance": "key",
+    "relatedConcepts": ["round on $\\mathbb{Q}$", "nearest-lattice-point division", "Gaussian-integer template", "hexagonal lattice packing"],
+    "prerequisites": ["mul_conj lattice projection", "Mathlib.Int.round"]
+  },
+  {
+    "id": "ann-sq-rounding-error",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 290, "endLine": 313 },
+    "type": "theorem",
+    "title": "S3 sq_rounding_error_lt_one: the geometric core ($\\le 3/4 < 1$)",
+    "content": "`sq_rounding_error_lt_one` proves the **geometric core** of the Euclidean property: for any two rationals $r_1, r_2$, the Eisenstein quadratic form on the rounding errors $\\epsilon_i := r_i - \\mathrm{round}(r_i)$ satisfies\n\n$$\\epsilon_1^2 - \\epsilon_1 \\epsilon_2 + \\epsilon_2^2 < 1.$$\n\nProof strategy: combine `abs_sub_round r_i : |\\epsilon_i| \\le 1/2` with the algebraic identity $4(a^2 - ab + b^2) = (2a - b)^2 + 3b^2$ (from the polarization of the Eisenstein form). Then $(2\\epsilon_1 - \\epsilon_2)^2 \\le 9/4$ (corners $(\\pm 1/2, \\mp 1/2)$ achieve $|2 \\cdot 1/2 - (-1/2)| = 3/2$) and $3\\epsilon_2^2 \\le 3/4$, summing to $\\le 3$ on the RHS, so the LHS is $\\le 3/4 < 1$. Two `nlinarith` corner-witness calls and a final `linarith` close it. This is the lattice-geometric ingredient that makes $\\mathbb{Z}[\\omega]$ Euclidean (and equivalently a UFD).",
+    "mathContext": "The Eisenstein form $a^2 - ab + b^2$ is the norm form of $\\mathbb{Z}[\\omega]$, equivalent to the standard quadratic form for the hexagonal lattice. The bound $3/4$ is the squared **covering radius** $\\rho^2 = 1/3$ scaled by — wait, more precisely: $\\max_{\\epsilon \\in [-1/2, 1/2]^2} (\\epsilon_1^2 - \\epsilon_1 \\epsilon_2 + \\epsilon_2^2) = 3/4$, achieved at $\\epsilon = (\\pm 1/2, \\mp 1/2)$. The strict inequality $< 1$ is what `norm_mod_lt` will lift to the Euclidean decreasing-norm condition.",
+    "significance": "key",
+    "relatedConcepts": ["covering radius", "polarization identity", "abs_sub_round", "hexagonal lattice geometry", "Eisenstein quadratic form"],
+    "prerequisites": ["abs_sub_round", "nlinarith with sq_nonneg witnesses"]
+  },
+  {
+    "id": "ann-norm-mod-lt",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 315, "endLine": 402 },
+    "type": "theorem",
+    "title": "S3 norm_mod_lt: central decreasing-norm Euclidean inequality",
+    "content": "`norm_mod_lt` is the **central Euclidean inequality** $N(x \\bmod y) < N(y)$ for $y \\ne 0$, the heart of the EuclideanDomain instance. The 88-line proof has three structural moves:\n\n1. **Setup** (lines 320-349): introduce $n := N(y)$, $A := x \\cdot \\bar y$, $q := x / y$, $r := x \\bmod y$, and rounding errors $\\epsilon_{\\rm re}, \\epsilon_{\\rm im} \\in \\mathbb{Q}$. Use the lattice-projection `mul_conj : y \\bar y = ⟨n, 0⟩` to derive component-wise identities $(r \\bar y).\\mathrm{re} = A.\\mathrm{re} - n \\cdot q.\\mathrm{re}$ and similarly for `.im`.\n2. **Rational cast** (lines 351-361): cast both component identities to $\\mathbb{Q}$ and field-simp to land at $((r \\bar y).\\mathrm{re} : \\mathbb{Q}) = n \\cdot \\epsilon_{\\rm re}$, $((r \\bar y).\\mathrm{im} : \\mathbb{Q}) = n \\cdot \\epsilon_{\\rm im}$.\n3. **Conclude** (lines 363-402): apply `sq_rounding_error_lt_one` to get $\\epsilon_{\\rm re}^2 - \\epsilon_{\\rm re}\\epsilon_{\\rm im} + \\epsilon_{\\rm im}^2 < 1$; expand $N(r \\bar y) = N(r) \\cdot N(\\bar y) = N(r) \\cdot n$ via `norm_mul`/`norm_conj`; equate to $n^2 \\cdot (\\epsilon^2 - \\epsilon\\epsilon + \\epsilon^2)$ via the polarization identity; cross-multiply (using $n > 0$) to conclude $N(r) < n$ in $\\mathbb{Q}$, then cast back to $\\mathbb{Z}$.\n\nThis is the longest theorem in the file (88 LOC) and the technical crown jewel of S3.",
+    "mathContext": "$N(x \\bmod y) < N(y)$ for $y \\ne 0$. The proof factors through the lattice-projection identity $y \\bar y = N(y)$ and the rounding bound $\\sum \\epsilon_i^2 \\text{-form} < 1$. In Euclidean-domain language: division by rounding is a valid Euclidean algorithm because the remainder lives in the open ball of radius $\\sqrt{N(y)}$ around 0, hence has strictly smaller norm.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanDomain.remainder_lt", "polarization identity", "ℤ→ℚ→ℤ cast pattern", "lattice-projection identity"],
+    "prerequisites": ["sq_rounding_error_lt_one", "mul_conj", "norm_mul", "norm_conj", "norm_pos_of_ne_zero"]
+  },
+  {
+    "id": "ann-euclidean-domain",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 404, "endLine": 455 },
+    "type": "definition",
+    "title": "S3 instEuclideanDomain: assembly via natAbs of the norm",
+    "content": "The `EuclideanDomain` instance is assembled from the S3 infrastructure with Euclidean function `(norm ·).natAbs : Eisenstein → ℕ`. Five field-instances:\n- `quotient`/`remainder` = `instDiv`/`instMod` (defined above).\n- `quotient_zero` — when dividing by zero, the round-of-zero is zero. Proved by computing `(norm 0 : ℚ)⁻¹ = 0` then `mul_zero` and `round_zero`.\n- `quotient_mul_add_remainder_eq` — the Bezout identity $x = y \\cdot q + r$. Trivial by `ring` after unfolding `mod_def`.\n- `r := (· < ·)` via `instLT` — strict ordering via natAbs of the norm; `r_wellFounded` from `measure ... .wf`.\n- `remainder_lt` = `natAbs_norm_mod_lt`, the natAbs-packaging of `norm_mod_lt`.\n- `mul_left_not_lt` = `not_lt_of_ge norm_le_norm_mul_left` — multiplying by a non-zero element does not decrease the norm.\n\n**Instance chain**: Once Eisenstein is `EuclideanDomain`, Mathlib auto-derives `IsDomain`, `IsPrincipalIdealRing`, `UniqueFactorizationMonoid`, `Nontrivial`, and `CommGroupWithZero` (on the units). These are the foundational prerequisites for the S4 splitting argument: $(p)$ is non-irreducible in a UFD $\\implies$ it factors as a product of irreducibles, each with norm in $\\{p, p^2\\}$, and conjugate-pairing forces $N(\\alpha) = N(\\beta) = p$.",
+    "mathContext": "$\\mathbb{Z}[\\omega]$ is a Euclidean domain with Euclidean function $|N(\\cdot)|$. Standard result: every Euclidean domain is a PID is a UFD. The Eisenstein integers have class number 1 (this is the meaning of being one of the nine Heegner-class-number-one rings); the Euclidean instance is the stronger statement that we have an explicit division algorithm, not just unique factorisation.",
+    "significance": "key",
+    "relatedConcepts": ["EuclideanDomain", "Heegner class-number-one rings", "Mathlib instance auto-derivation chain", "natAbs Euclidean function"],
+    "prerequisites": ["norm_mod_lt", "Mathlib.Algebra.EuclideanDomain.Defs"]
+  },
+  {
+    "id": "ann-legendresym-neg-three",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 459, "endLine": 476 },
+    "type": "theorem",
+    "title": "S4 Step 1: $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$",
+    "content": "`legendreSym_neg_three` is the **first** ingredient of the S4 splitting argument toward $p = x^2 + 3y^2$. It is the trivial multiplicativity step using `legendreSym.mul` from Mathlib's Legendre-symbol API: $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{(-1) \\cdot 3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$. Hypothesis: only `[Fact p.Prime]` is required (no $p \\ne 2$ or $p \\ne 3$), since `legendreSym` is defined for all primes and the multiplicativity holds unconditionally on the codomain $\\{-1, 0, 1\\}$. This is the lightest possible API call in the splitting argument, but it sets up the **classical Heegner-3 factorization template** $\\bigl(\\tfrac{-3}{p}\\bigr) = \\chi_4(p) \\cdot \\bigl(\\tfrac{p}{3}\\bigr) \\cdot (\\mathrm{QR sign})$ that S15 Step 2 will continue.",
+    "mathContext": "$\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\bigl(\\tfrac{3}{p}\\bigr)$ for any odd prime $p$. Combined with $\\bigl(\\tfrac{-1}{p}\\bigr) = \\chi_4(p)$ (legendreSym.at_neg_one) and quadratic reciprocity $\\bigl(\\tfrac{3}{p}\\bigr) \\bigl(\\tfrac{p}{3}\\bigr) = (-1)^{(p-1)(3-1)/4} = \\chi_4(p)$, we get $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{p}{3}\\bigr)$ — which equals 1 iff $p \\equiv 1 \\pmod 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["legendreSym.mul", "multiplicativity of Legendre symbol", "Heegner-3 splitting template"],
+    "prerequisites": ["Legendre symbol API", "Fact p.Prime instance"]
+  },
+  {
+    "id": "ann-legendresym-neg-three-iff",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 516, "endLine": 557 },
+    "type": "theorem",
+    "title": "S15 Step 2: $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$",
+    "content": "`legendreSym_neg_three_eq_one_iff` is the **main S15 ACT deliverable** and the Heegner-3 characterization: for odd primes $p \\ne 3$, $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$. This is the classical Heegner-number criterion for the primes representable as $x^2 + 3y^2$. Proof strategy:\n\n1. Decompose via `legendreSym_neg_three` (S4 Step 1): $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr) \\cdot \\bigl(\\tfrac{3}{p}\\bigr)$.\n2. Compute $\\bigl(\\tfrac{-1}{p}\\bigr) = \\chi_4(p)$ via `legendreSym.at_neg_one`.\n3. Case-split on $p \\bmod 4 \\in \\{1, 3\\}$:\n   - $p \\equiv 1 \\pmod 4$: $\\chi_4(p) = 1$, QR gives $\\bigl(\\tfrac{3}{p}\\bigr) = \\bigl(\\tfrac{p}{3}\\bigr)$.\n   - $p \\equiv 3 \\pmod 4$: $\\chi_4(p) = -1$, QR for $(3 \\bmod 4, p \\bmod 4) = (3, 3)$ gives $\\bigl(\\tfrac{3}{p}\\bigr) = -\\bigl(\\tfrac{p}{3}\\bigr)$; the two $-1$ signs cancel.\n4. Both branches reduce to $\\bigl(\\tfrac{p}{3}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$ via the private helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one` (decides on the finite codomain $\\mathbb{Z}/3$).\n\nThe helper handles the $p \\bmod 3 \\in \\{1, 2\\}$ split (forced by $p \\ne 3$ so $p \\bmod 3 \\ne 0$): branch 1 has $\\bigl(\\tfrac{1}{3}\\bigr) = 1 \\checkmark$; branch 2 has $\\bigl(\\tfrac{2}{3}\\bigr) = -1$ since 2 is not a square mod 3 (closed `decide` helper `not_isSquare_two_zmod_three`).",
+    "mathContext": "Classical Heegner result: $p = x^2 + 3y^2$ has a solution iff $p \\equiv 1 \\pmod 3$ (for $p$ an odd prime, $p \\ne 3$). The Legendre-symbol equivalence $\\bigl(\\tfrac{-3}{p}\\bigr) = 1 \\iff -3 \\text{ is QR mod } p$ then closes via $p = x^2 + 3y^2 \\iff (-3)$ is a square mod $p$ via Eisenstein factorization. S16+ will use this to extract the explicit factorization $p = \\alpha \\beta$ in $\\mathbb{Z}[\\omega]$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic reciprocity", "chi_4 character", "Heegner-3 criterion", "ZMod.χ₄_nat_one_mod_four", "ZMod.χ₄_nat_three_mod_four", "legendreSym.quadratic_reciprocity_one_mod_four", "legendreSym.quadratic_reciprocity_three_mod_four"],
+    "prerequisites": ["legendreSym_neg_three (S4 Step 1)", "legendreSym.at_neg_one", "Mathlib QR API", "private helpers two_ne_zero_zmod_three / not_isSquare_two_zmod_three"]
   }
 ]
