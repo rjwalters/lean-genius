@@ -2,11 +2,11 @@
 
 ## Current Status
 
-**Phase**: S9 ACT — Boundary characterization (frontier = univ on both partition halves)
-**Owner**: researcher-1 (S9 ACT, 2026-06-01); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
-**Iteration**: 11 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9)
-**Last Updated**: 2026-06-01Z (S9 ACT; frontier characterization 2 thms, Docker `3067/3067` clean, 10s file compile)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s1-2026-06-01`
+**Phase**: S10 PREP — post-S9-merged STATE-SYNC + S10 ACT direction scaffold (doc-only)
+**Owner**: researcher-1 (S10 PREP, 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
+**Iteration**: 12 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP)
+**Last Updated**: 2026-06-02Z (S10 PREP doc-only; STATE-SYNC post-S9-merge + S10 ACT direction scaffold + meta.json originalContributions backfill S7→S9)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq02-oq04-s10`
 
 ## Lean file inventory (at base `origin/main`, S9 Docker-verified)
 
@@ -236,6 +236,33 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   refined here to the strictly finer computable/non-computable split.
   No new defs / sorries / axioms / imports. Lean file 869 → 928 LOC, theorem
   count 40 → 42. See `sessions/2026-06-01-s9-act-frontier-characterization.md`.
+
+- **2026-06-02 (S10 PREP STATE-SYNC, researcher-1, doc-only)**: POST-S9-MERGED
+  doc tracker catch-up + S10 ACT direction scaffold. PR #22030 (S9 ACT) merged
+  into `origin/main` at SHA `a6cab71` 2026-06-02. This S10 PREP iteration:
+  (i) header refresh: Phase / Owner / Iteration / Last Updated + S9 merger
+  attribution + new branch name;
+  (ii) meta.json originalContributions backfill: appends the S7 (dense),
+  S8-prep (non-computable dense), S8 (Baire-category 5 thms), and S9
+  (frontier 2 thms) contributions — the originalContributions array was
+  frozen at S6 (17 entries) for 21 days while the Lean file silently
+  advanced from 649 → 928 LOC. After backfill: 21 entries covering S1-S9
+  (lineCount metadata field already current at 928, axiom/sorry counts
+  also current);
+  (iii) S10 ACT direction scaffold memo
+  (`sessions/2026-06-02-s10-prep-postmerged-isfsigma-scaffold.md`): three
+  concrete proposals for next ACT iteration with paste-ready proof skeletons
+  and API risk assessment. Key Mathlib-gap finding from research: there
+  is no `IsFσ` predicate in Mathlib (only `IsGδ`), so the dual of
+  `nonComputableReals_isGδ` would need to be expressed as an explicit
+  `∃ s : ℕ → Set ℝ, (∀ n, IsClosed (s n)) ∧ {r | IsComputable r} = ⋃ n, s n`
+  (countable union of singletons, T1 closed) — feasible in the existing
+  topology import scope, no new imports needed. The `IsComputable e ∨ π`
+  path remains blocked by the absence of `Primrec/Computable` arithmetic on `ℚ`.
+  ACT-readiness GREEN for S10 with the IsFσ-style explicit-witness proposal.
+  0 Lean edits; 0 `proofs/Proofs/*.lean`, `proofs/Proofs.lean`, `problem.md`,
+  or `knowledge.md` changes. See `sessions/2026-06-02-s10-prep-postmerged-isfsigma-scaffold.md`
+  for the full memo (paste-ready Lean scaffolds + API verification checklist).
 
 - **2026-05-30 (S8-prep ACT, researcher-1)**: TOPOLOGICAL COMPLEMENT —
   non-computable reals are dense (Docker `3067/3067` jobs clean, 11s file compile).
