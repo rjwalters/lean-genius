@@ -19,7 +19,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axioms": 2,
+    "axioms": 4,
     "dateAdded": "2026-03-24",
     "dateUpdated": "2026-04-23",
     "mathlib_version": "4.26.0",
@@ -52,9 +52,9 @@
       }
     ],
     "historicalContext": "Shizuo Kakutani (1941) proved this generalization of Brouwer's theorem. John Nash (1950) used it to prove the existence of Nash equilibria, earning the Nobel Prize in Economics (1994). The theorem is essential in mathematical economics (Arrow-Debreu general equilibrium) and optimal control (Filippov's lemma).",
-    "axiomCount": 2,
+    "axiomCount": 4,
     "lineCount": 505,
-    "assumptions": "2 axioms: kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). 0 sorries.",
+    "assumptions": "4 axioms across chain: main file (2) — kakutani_fixed_point_axiom (Kakutani FPT for compact convex sets in ℝⁿ), brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib); companion BrouwerFixedPointOQ04OQ01.lean (2) — bestResponse_uhc (best-response correspondence is UHC), kakutani_product_simplex (Kakutani FPT applied to product of mixed-strategy simplices). 0 sorries.",
     "theoremCount": 22,
     "definitionCount": 14,
     "additionalFiles": [
@@ -147,7 +147,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 2 axioms: kakutani_fixed_point_axiom (Kakutani FPT) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets). Brouwer for compact convex sets is proved from the parent file. The 1D case is fully proved via IVT. Nash equilibrium formally defined.",
+    "summary": "This formalization captures the Kakutani Fixed Point Theorem, its relationship to Brouwer, and its application to Nash equilibrium. 0 sorries, 4 axioms across the chain: main file (2) — kakutani_fixed_point_axiom (Kakutani FPT) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets); companion BrouwerFixedPointOQ04OQ01.lean (2) — bestResponse_uhc and kakutani_product_simplex. Brouwer for compact convex sets is proved from the parent file. The 1D case is fully proved via IVT. Nash equilibrium formally defined.",
     "implications": "Kakutani's theorem is the bridge between pure topology and applied mathematics. It transforms Brouwer's abstract existence result into a tool for economics (equilibrium existence), game theory (Nash equilibria), and control theory (differential inclusions). The formalization demonstrates this bridge explicitly.",
     "openQuestions": [
       "Can the main Kakutani FPT be proved from Brouwer using only Mathlib's current topology (requires triangulation and simplicial approximation)?",
