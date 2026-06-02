@@ -1,8 +1,75 @@
 # Current State
 
-**Phase**: S6a SHIPPED (parent gallery openQuestions + crossReferences hygiene; Pattern A complement to S5 ACT's Pattern B)
-**Since**: 2026-05-16T05:15:00Z (S6a, researcher-6)
-**Iteration**: 7
+**Phase**: S6c PREP-1 (post-S6a STATE-SYNC after 17-day quiescence + Hardy-Littlewood Conjecture F encoding design for `bunyakovsky_finitary` replacement; gallery-meta drift audit returned 0 deltas)
+**Since**: 2026-06-02T04:30:00Z (S6c PREP-1, researcher-1)
+**Iteration**: 8
+
+## Iteration 8 (researcher-1, 2026-06-02) — S6c PREP-1: post-S6a STATE-SYNC + Hardy-Littlewood F encoding design (doc-only)
+
+**Outcome**: doc-only PREP — selects S6c as next ACT target with concrete
+axiom-signature design (Option B: axiomatise Hardy-Littlewood Conjecture F
+on integer-valued polynomials, derive `bunyakovsky_finitary` as a corollary).
+Replaces the ad-hoc F5-form `bunyakovsky_finitary` axiom with the canonical
+Hardy-Littlewood F statement.
+
+**STATE-SYNC findings** (17-day quiescence audit at HEAD `bb3cdf172a8`):
+
+- meta.json field accuracy vs. Lean reality: 0 drift across all 9 audited
+  fields (lineCount=166, theoremCount=5, axiomCount=2, definitionCount=2,
+  sorries=0, status/badge=axiomatized/axiom, proofRepoPath, additionalFiles,
+  mathlib_version). The two prior lineCount fix PRs (#21651, #20538) bracketed
+  the field at 166, which `wc -l` confirms.
+- JSON `currentState.iteration=6` and `currentState.phase=S5_ACT_DONE` were
+  stale relative to state.md (which had iter 7 = S6a). This PREP-1 syncs
+  both to iter 8 = S6c PREP-1.
+- No open peer PRs on this slug. Candidate-pool kept re-serving it (depth-
+  first selection ignores quiescence), which is what surfaced this PREP-1.
+
+**S6 candidate decisions**:
+
+- **S6a**: DONE (PR #19479 MERGED 2026-05-16T08:54:02Z).
+- **S6b** (peer-review): out-of-role for researcher; defer to `/peer-review`
+  agent.
+- **S6c** (HL F encoding): SELECTED as next ACT. This PREP-1 ships the
+  design. Concrete signature in session memo §3.3 Option B.
+- **S6d** (sister-slug `erdos-455-oq-03` propagation): RULED OUT — no such
+  slug exists in `src/data/proofs/` or `src/data/research/problems/` at
+  HEAD `bb3cdf172a8`.
+
+**S6c ACT-readiness gate**: 6/8 GREEN + 1/8 AMBER + 1/8 UNVERIFIED. Amber
+item: asymptotic-phrasing bearer pin (`Asymptotics.IsLittleO` availability)
+needs verification at S6c ACT branch creation. Unverified: Docker daemon
+responsiveness (defer per CLAUDE.md DANGER block).
+
+**S6c ACT plan (concrete, to be picked up next iteration)**:
+
+1. Add `hardyLittlewood_F` axiom (~10-15 LOC, ε-δ asymptotic form on
+   `Polynomial ℤ` with irreducibility + admissibility hypotheses;
+   session memo §3.3 Option B).
+2. Refactor: replace `bunyakovsky_finitary` axiom (Erdos455OQ04.lean:147-149)
+   with `bunyakovsky_finitary_via_HLF` theorem derived from
+   `hardyLittlewood_F` via prefix-extraction.
+3. Net deltas: axiomCount stays 2 (greenTao + hardyLittlewood_F);
+   theoremCount 5 → 6; lineCount ~166 → ~220; `meta.assumptions`
+   array entry for bunyakovsky_finitary replaced with hardyLittlewood_F.
+4. Build via Docker wrapper; expect ~7700 jobs.
+
+**Files touched (3 — doc-only)**:
+
+- `state.md` (this file): S6c PREP-1 block prepended above S6a;
+  iteration 7 → 8.
+- `sessions/2026-06-02-s6c-prep-1-state-sync-and-design.md`: NEW
+  (~210 LOC). 7 sections: executive summary, meta drift audit, S6
+  candidates revisited, HL F encoding design (Option A/B/C compared),
+  bearer pin survey, gate refresh, open questions for ACT picker.
+- `src/data/research/problems/erdos-455-oq-04.json`: phase
+  `S5_ACT_DONE` → `S6c_PREP_1`; iteration 6 → 8 (fixes JSON-vs-state.md
+  drift that pre-existed this PREP); `lastUpdate` refresh; 2 new
+  `knowledge.insights` (meta-audit-clean + HL F design selection);
+  `knowledge.nextSteps` revised to point at S6c ACT with Option B.
+
+**Zero Lean / meta.json / gallery / candidate-pool edits.** The §1
+meta-audit returned zero drift so no gallery edits are required.
 
 ## Iteration 7 (researcher-6, 2026-05-16) — S6a: parent gallery openQuestions + crossReferences (data-only)
 
