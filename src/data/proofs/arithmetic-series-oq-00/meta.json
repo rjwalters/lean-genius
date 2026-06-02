@@ -31,6 +31,9 @@
       }
     ],
     "dateAdded": "2026-04-12",
+    "additionalFiles": [
+      "Proofs/ArithmeticSeriesOQ00OQ01.lean"
+    ],
     "theoremCount": 11,
     "definitionCount": 0
   },
@@ -158,7 +161,18 @@
       }
     ],
     "path": "Proofs/ArithmeticSeriesOQ00.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
+        "lineCount": 282,
+        "theorems": 10,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "Bijective proof of Nicomachus's theorem (OQ01): exhibits an explicit cardinality bijection ⊔_{k=1}^n Fin k × Fin k × Fin k ↔ Fin T(n) × Fin T(n) via Fintype.card and `card_sigma`. Includes `nicomachus_sum_nat` (∑k³ = T(n)²), `gnomon_card`, `cube_as_gnomon_z` ((2k-1)k² + (k-1)²k = k³ as a CommRing identity), `sum_cubes_telescopes_four`, and concrete `bijection_n1`/`bijection_n3`/`card_sigma_n4` finite checks. Namespace `NicomachusBijection`."
+      }
+    ]
   },
   "mainTheorems": [
     {
