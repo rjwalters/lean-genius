@@ -60,9 +60,9 @@
       "oeisA263647: set of n with gcd(2^n-1, 3^n-1)=1",
       "Connection to Problem #770 (h(n) function)"
     ],
-    "axiomCount": 3,
+    "axiomCount": 6,
     "lineCount": 284,
-    "assumptions": "3 axiom(s) and 6 sorries. See the Lean source for details.",
+    "assumptions": "6 axioms across the chain (main 3 + Stubs/Erdos820Problem.lean 3 byte-identical duplicate): main file declares erdos_1974_lower_bound (Erdős's 1974 weaker bound on H(n)), van_doorn_lower_bound (van Doorn's improved infinitely-often lower bound), and erdos_820_open (formal marker that the three main conjectures remain open). Proofs/Stubs/Erdos820Problem.lean is byte-identical to the main file (md5 match) and is exposed for Aristotle proof search; per the raw-count heuristic (no name-deduplication, consistent with #22064 erdos-179, #22072 erdos-898), it contributes the same 3 axiom declarations to the chain tally. 6 sorries remain in the main file; see the Lean source for details.",
     "theoremCount": 5,
     "definitionCount": 12,
     "additionalFiles": [
