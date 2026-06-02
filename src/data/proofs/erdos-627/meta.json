@@ -63,9 +63,9 @@
       "Mycielski and Kneser graph constructions with chromatic properties",
       "Strong Perfect Graph Theorem statement (Chudnovsky et al. 2006)"
     ],
-    "axiomCount": 8,
+    "axiomCount": 16,
     "lineCount": 236,
-    "assumptions": "8 axiom(s) and 18 sorries.",
+    "assumptions": "16 axioms total (chain count) and 18 sorries. Main file Proofs/Erdos627Problem.lean (8): tutte_zykov_construction, erdos_lower_bound, erdos_asymptotic, limit_if_exists_bounded, strong_perfect_graph_theorem, ramsey_upper_bound, mycielski_properties, lovasz_kneser. Stubs/Erdos627Problem.lean (8, byte-identical duplicate of main file): same 8 axioms redeclared.",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
     "definitionCount": 10
