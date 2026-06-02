@@ -52,7 +52,7 @@
       "schurNumber_nondecreasing: proved monotonicity via color embedding",
       "erdos_483_conjecture: formal statement of the open problem"
     ],
-    "axiomCount": 5,
+    "axiomCount": 9,
     "prerequisites": [
       "Schur's theorem (finiteness of Schur numbers)",
       "Ramsey theory fundamentals (colorings, monochromatic solutions)",
@@ -61,7 +61,7 @@
       "Basic additive combinatorics"
     ],
     "lineCount": 343,
-    "assumptions": "5 axioms: schurNumber_4, schurNumber_5, schur_lower_bound, schur_upper_bound, erdos_483_conjecture. Proved: schurNumber_3=14 via native_decide.",
+    "assumptions": "9 axioms across chain: 5 in main (schurNumber_4, schurNumber_5, schur_lower_bound, schur_upper_bound, erdos_483_conjecture) + 4 in Proofs/SchursTheorem.lean (schur_from_ramsey_helper, schur_5, rado_theorem, schur_fermat_application). Proved: schurNumber_3=14 via native_decide.",
     "theoremCount": 19,
     "definitionCount": 3,
     "additionalFiles": [
