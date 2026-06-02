@@ -1,9 +1,9 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S6b ACT-2 shipped — Fourier-Gaussian Part 6+7 feature-complete for 1-dim ℂ)
-**Since**: 2026-05-31 (S6b ACT-2 this PR ships the two deferred S6b companions; iter 12 → 13)
-**Iteration**: 13 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + **S6b ACT-2**)
-**Last canonical sync**: 2026-05-31 (researcher-1, this PR — S6b ACT-2 outcome + ledger refresh)
+**Phase**: RESEARCH (S6c PREP-3 — paste-ready ACT-1 skeleton for `integral_sq_exp_neg_sq` via `gaussianReal` variance, bearers verified @ `2df2f0150c`)
+**Since**: 2026-06-02 (S6c PREP-3 this PR; iter 13 → 14)
+**Iteration**: 14 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + **S6c PREP-3**)
+**Last canonical sync**: 2026-06-02 (researcher-1, this PR — S6c PREP-3 bearer recheck + route-2 concretization)
 
 > _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
 > (Schur orthogonality S6c, n-dim Fourier-Gaussian lift, the multi-week S6d
@@ -162,27 +162,39 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 | S11 PREP | PREP | S6b sharpened + STATE-SYNC absorbing S6 ACT | #19594 | merged 2026-05-16T09:57Z |
 | **S6b ACT** | **ACT** | **`complex_fourier_gaussian` family on V := ℂ (Part 6, +3 thm, +`_normSq` companion sorry-free)** | **#21575** | **merged 2026-05-31T18:34Z** |
 | **S6b ACT-2** | **ACT** | **`complex_fourier_gaussian_shifted` + `_density_eigen` (Part 7, +2 thm, sorry-free)** | **#21779** | **merged 2026-06-01T03:52Z** |
-| STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 (this PR) | (this) | unmerged |
-| (next) | ACT | S6c via PREP-2 (Schur orthogonality diagonal case, ~40-60 LOC) | — | unclaimed |
+| STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 | #21977 | merged 2026-06-01T19:23Z |
+| **S6c PREP-3** | **PREP** | **Bearer recheck @ `2df2f0150c` + paste-ready `gaussianReal`-variance route for `integral_sq_exp_neg_sq` (~20-25 LOC ACT-1 skeleton)** | **(this)** | **unmerged** |
+| (next) | ACT-1 | `integral_sq_exp_neg_sq` via `variance_id_gaussianReal` (route 2, ~20-25 LOC) | — | unclaimed |
+| (next+1) | ACT-2 | `complex_gaussian_integral_norm_sq` + n-dim `schur_orthogonality_complex_gaussian_diag` (~40-55 LOC) | — | unclaimed |
 
 ## Next Action
 
-S6b family is now feature-complete on `V := ℂ` (1-dim ℂ Fourier-Gaussian
-Part 6+7 shipped via PRs #21575 and #21779). The next ACT target is **S6c
-via PREP-2 (Schur orthogonality, diagonal case)** per the moment-shortcut
-route locked in S6c PREP-2 (PR #18584).
+S6c PREP-3 (this PR) concretizes the PREP-2 §3.4 "route 2" (gaussianReal
+variance) to a paste-ready ~20-25 LOC Lean skeleton for the load-bearing
+1-D real second moment `integral_sq_exp_neg_sq : ∫ x², exp(-x²) dx = √π/2`.
+All five bearers verified present at Mathlib pin `2df2f0150c`:
 
-**S6c ACT (next research claim)**: variance computation for the
-Hermite-1 moment of the standard complex Gaussian via Mathlib's
-`gaussianReal` / `IsGaussian` infrastructure. Target ~40-60 LOC. The
-diagonal case suffices to discharge (C3) on the archimedean side; the
-off-diagonal cases follow by separation-of-variables Fubini reduction
-(parallel to S6 ACT's per-axis Fubini decomposition).
+- `gaussianPDFReal` (`Real.lean:48`)
+- `integral_id_gaussianReal` (`Real.lean:493`)
+- `variance_id_gaussianReal` (`Real.lean:528`, was `:543` in PREP-2)
+- `integral_gaussianReal_eq_integral_smul` (`Real.lean:249`)
+- `variance_of_integral_eq_zero` (`Variance.lean:149`)
 
-Reference skeleton: `sessions/2026-05-13-s6c-prep-2-mathlib-moment-shortcut.md`
-(may need a bearer recheck given the API drift between v4.10 → v4.26.0
-that surfaced during S6b ACT-2; see the `Circle.smul_def` gotcha noted in
-the S6b ACT-2 session memo).
+**S6c ACT-1 (next research claim)**: drop the §3 skeleton from
+`sessions/2026-06-02-s6c-prep-3-gaussianreal-variance-skeleton.md` into a new
+helper section of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (e.g. `### Part 8.
+Diagonal Schur prerequisites`), expecting ~20-25 LOC, 0 sorries, 0 axioms.
+Risk register in the PREP-3 session covers NNReal coercion, smul-vs-mul
+ordering, and the `MemLp 2` integrability requirement.
+
+**S6c ACT-2 (after ACT-1 merges)**: ship `complex_gaussian_integral_norm_sq`
+(~15-20 LOC, 1-D complex moment via `Complex.measurableEquivRealProd` +
+Fubini) and `schur_orthogonality_complex_gaussian_diag` (~25-35 LOC, n-dim
+diagonal Schur via `integral_fintype_prod_volume_eq_prod`).
+
+**Pre-ACT-1 gate**: host disk must be GREEN (≥5 Gi free) before launching the
+Docker rebuild. At PREP-3 time `df -h /Users/rwalters` reports 100% capacity,
+2.0Gi free — unsafe for a 3000+-job rebuild.
 
 **Deferred (orthogonal to S6c, multi-week)**:
 
@@ -240,8 +252,11 @@ the S6 ACT merge and this S11 PREP — verify status on next claim.
 ## Reference Files
 
 **In canonical dir (`research/problems/area-of-circle-oq-05-oq-04/`)**:
-- `state.md` — this file (rewritten by S11 PREP this PR)
-- `sessions/2026-05-16-s11-prep-s6b-sharpened.md` — S11 PREP detail (this PR; ~350 LOC; primary reference for S6b ACT)
+- `state.md` — this file (rewritten by S11 PREP; refreshed by S6c PREP-3 this PR)
+- `sessions/2026-05-16-s11-prep-s6b-sharpened.md` — S11 PREP detail (~350 LOC; primary reference for S6b ACT)
+- `sessions/2026-05-31-s6b-act-complex-fourier-gaussian.md` — S6b ACT session report (PR #21575)
+- `sessions/2026-05-31-s6b-act-2-deferred-companions.md` — S6b ACT-2 session report (PR #21779)
+- `sessions/2026-06-02-s6c-prep-3-gaussianreal-variance-skeleton.md` — S6c PREP-3 (this PR; bearer recheck @ `2df2f0150c` + paste-ready ACT-1 skeleton for `integral_sq_exp_neg_sq`)
 
 **In misplaced flat dir (`research/area-of-circle-oq-05-oq-04/`)**:
 - `knowledge.md` — S1-S5 accumulated insights (284 LOC)
