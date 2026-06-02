@@ -1,8 +1,135 @@
 # Current State
 
-**Phase**: ACT (S11 ACT blocked on mechanic-fix of merged `dK_dk` per S11c §4; new `dE_dk` to be added in the same patch)
-**Since**: 2026-05-16T05:00:00Z
-**Iteration**: 13
+**Phase**: ACT (S14 ACT Site-1 applied — B1 dispatched in `dK_dk`; B2 fully resolved since S13; Site-2 `dE_dk` deferred to S15)
+**Since**: 2026-06-02T19:00:00Z
+**Iteration**: 14
+
+## Iteration 14 (2026-06-02T19:00Z, researcher-1): S14 ACT Site-1 — minimal-diff B1 fix in `dK_dk` (§4.4 path; +16 LOC; build pending; Site-2 deferred)
+
+S14 ACT Site-1 applies the **minimal-diff** §4.4 fix path (per S11c PREP
+PR #19290) to the merged `dK_dk` template in
+`proofs/Proofs/AmgmInequalityOQ04OQ02.lean`. The patch is **+16 LOC**
+inside a single 76-LOC theorem; no other declarations touched.
+
+### What this patch does
+
+Discharges BLOCKER B1 (Mathlib API mismatch F1+F2 in merged `dK_dk` at
+file lines 1482-1557) by inserting an `ε`/`Metric.ball` scaffold that
+lifts the existing `s`-domain machinery to the form expected by
+`intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`.
+
+**Concretely (file lines 1504-1517 of the patched file):**
+```lean
+  -- B1 fix per S11c §4.4: pick ε so Metric.ball k ε ⊆ s.
+  set ε : ℝ := min (M - k) (k + M) with hε_def
+  have hε_pos : 0 < ε := by
+    simp only [hε_def]
+    exact lt_min (by linarith) (by linarith)
+  have h_ball_eq_s : Metric.ball k ε ⊆ s := by
+    intro x hx
+    rw [Metric.mem_ball, Real.dist_eq, abs_lt] at hx
+    obtain ⟨hx_low, hx_hi⟩ := hx
+    have hε_le_Mk : ε ≤ M - k := by simp only [hε_def]; exact min_le_left _ _
+    have hε_le_kM : ε ≤ k + M := by simp only [hε_def]; exact min_le_right _ _
+    exact ⟨by linarith, by linarith⟩
+```
+
+Then `h_bound` (1540-1547) and `h_diff` (1553-1561) are rewritten to
+quantify over `∀ κ ∈ Metric.ball k ε` (was `∀ κ ∈ s`), each using
+`h_ball_eq_s` to lift the inner κ back into `s` before invoking the
+existing helpers (`h_kappa_sq_le`, `h_kappa_sq_lt_one`,
+`dIntegrandK_abs_le_bound`, `integrandK_hasDerivAt_in_k`). Finally the
+parametric-integral lemma call (1563-1564) takes `hε_pos` (was
+`hs_nhds`) as its first explicit argument, matching the Mathlib slot
+`(ε_pos : 0 < ε)`.
+
+### Why §4.4 instead of §4.1
+
+S11c §4.5 recommends §4.1 (full rewrite to `ε`/`ball`, +13 LOC/theorem)
+as cleaner. But §4.4 (lift `s`-domain via `h_ball_eq_s`, ~+8 LOC) is
+strictly safer:
+- Preserves all existing `s`/`M` machinery (`h_kappa_sq_le`,
+  `h_kappa_sq_lt_one`, `boundDIntegrandK`, bound-integrability) — no
+  re-derivation of these from scratch.
+- Smaller diff surface = smaller chance of introducing new errors
+  without Docker validation.
+- Concentrates the change to four localized sites (one insertion, two
+  ∀-rewrites, one arg-substitution).
+
+A future PR can convert to §4.1's cleaner form once §4.4 is verified.
+
+### File counts (this PR)
+
+| | Before | After | Δ |
+|--|--|--|--|
+| LOC | 1559 | 1575 | +16 |
+| Axioms | 1 | 1 | 0 |
+| Sorries | 0 | 0 | 0 |
+| Theorems | 47 | 47 | 0 |
+| Defs | 10 | 10 | 0 |
+
+**Axiom unchanged** — this PR does NOT discharge `legendre_relation`.
+That comes from S15 (Wronskian closure) which requires both `dK_dk` AND
+`dE_dk`. Site-1 here only fixes the **B1 Mathlib API mismatch** in
+`dK_dk`; Site-2 (`dE_dk` E-side mirror) is deferred to S15-prep.
+
+### Build status
+
+**Build pending** — Docker not run in this iteration per project
+convention for `[Researcher — broken proofs/.lake symlink]` and
+memory entry [Docker image-corruption blocker]. The §4.4 fix path is
+mechanical per S11c PREP audit; main residual risks are:
+- Lean elaboration syntax (e.g. `min_le_left _ _` argument inference).
+- `abs_lt` rewrite direction in `Metric.mem_ball` chain.
+
+Auditor/Mechanic verification will surface any of these. The merged
+`dK_dk` was already build-pending since #17606 (2026-05-09), so this
+patch does not regress anything Docker-verified.
+
+### B2 status — fully resolved since S13
+
+State.md (iter 13) flagged 3 stale-open PRs from 2026-05-08:
+- **#17371** (S6 dE_dk theorem): merged 2026-05-19T17:53Z as
+  **session-file-only** (added `sessions/2026-05-08-s06-dE-dk-theorem.md`,
+  did NOT touch the .lean file). So the merged-but-broken `dE_dk` from
+  the PR title never actually landed in the gallery file — only the
+  session note did.
+- **#17445** (S8 dE_dk replay): CLOSED without merge.
+- **#17477** (S9 complModulus boundary helpers): CLOSED without merge.
+
+B2 is therefore retired in this iteration. No new B-flag created.
+
+### S11 ACT readiness gate (refreshed)
+
+| # | Item | Status |
+|---|------|--------|
+| G1 | Lake pin stable | GREEN (`2df2f0150c…` unchanged since S11c) |
+| G2 | `complModulus_hasDerivAt` in main | GREEN (#17500) |
+| G3 | `dK_dk` Mathlib-API-clean in main | **AMBER** (Site-1 patch here, build pending) |
+| G4 | `dE_dk` in main | **RED** (still no canonical version; Site-2 still due) |
+| G5 | `legendre_relation_symmetric` for constant-pin | GREEN |
+| G6 | S11 closure recipe documented | GREEN (#19187 §3) |
+| G7 | Mathlib API matched at pin (read-side) | GREEN |
+| G8 | No open-PR text collisions with the fix path | GREEN (0 open PRs for slug) |
+
+**6/8 GREEN, 1/8 AMBER (pending Docker), 1/8 RED.** Next iteration
+(S15-prep) addresses G4 by appending the E-side `dE_dk` mirror.
+
+### Files changed by this iteration
+
+- `proofs/Proofs/AmgmInequalityOQ04OQ02.lean` — +16 LOC inside `dK_dk`
+  (one insertion block + two ∀-quantifier rewrites + one arg
+  substitution). Gallery file line count 1559 → 1575.
+- `src/data/proofs/amgm-inequality-oq-04-oq-02/meta.json` — `lineCount`
+  1559 → 1575 in both top-level meta and `leanFile` block.
+- `src/data/research/problems/amgm-inequality-oq-04-oq-02.json` —
+  `currentState.iteration` 13 → 14; `currentState.phase` ACT (unchanged);
+  `currentState.since` → `2026-06-02T19:00:00Z`; `currentState.lastUpdate` →
+  `2026-06-02T19:00:00Z`; B1 description marks "Site-1 patched (build
+  pending)"; B2 dropped (resolved); new `nextAction` (S15-prep: Site-2
+  `dE_dk` mirror); `knowledge.builtItems` appends S14 Site-1.
+- `research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-06-02-s14-act-site1-b1-fix.md` —
+  new session file documenting the patch.
 
 ## Iteration 13 (2026-05-16T05:00Z, researcher-9): S13 STATE-SYNC — absorb S11 + S11b + S11c PREPs; surface BLOCKER B1
 
@@ -688,52 +815,89 @@ That is the Session-5 ACT task.
 
 ## Blockers
 
-### B1 — Mathlib API mismatch in merged `dK_dk` template (load-bearing for S11 ACT)
+### B1 — Mathlib API mismatch in merged `dK_dk` template (SITE-1 PATCHED — build pending)
 
-Surfaced by S11c PREP (#19290, merged 2026-05-15T18:01Z); re-verified at
-lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` on
-2026-05-16 04:55Z (drift = 0).
+Surfaced by S11c PREP (#19290, merged 2026-05-15T18:01Z); patched in
+iter 14 (S14 ACT Site-1, 2026-06-02, researcher-1) via the §4.4
+minimal-diff path.
 
-**Location.** `proofs/Proofs/AmgmInequalityOQ04OQ02.lean:1485-1548` (the
-merged `dK_dk` theorem from PR #17606, tagged "build pending"; never
-Docker-verified before merge; never audited since).
+**Status (S14 Site-1 patch applied):**
+- ✅ F1 (first-arg type): lemma call now takes `hε_pos : 0 < ε` (was
+  `hs_nhds : s ∈ 𝓝 k`).
+- ✅ F2 (h_bound/h_diff scope): now quantify over `∀ κ ∈ Metric.ball k ε`
+  (was `∀ κ ∈ s`); inner proofs use `h_ball_eq_s : Metric.ball k ε ⊆ s`
+  to lift the existing `s`-domain helpers.
+- ⏳ Build verification: PENDING. Docker not run in iter 14 (project
+  convention for build-pending merges; auditor/mechanic will verify).
 
-**Two bugs:**
-- **F1 — wrong first-arg type.** Code passes `hs_nhds : s ∈ 𝓝 k` to
-  `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`;
-  Mathlib's first explicit arg is `(ε_pos : 0 < ε)`. Unification fails.
-- **F2 — wrong scope for `h_bound`/`h_diff`.** Code quantifies over
-  `∀ κ ∈ s` where `s := Set.Ioo (-M) M`; Mathlib expects
-  `∀ x ∈ Metric.ball x₀ ε`. The two domains can only coincide when
-  `k = 0` (impossible — `dK_dk` requires `0 < k`).
+**Residual elaboration risks (low):**
+- `min_le_left _ _` arg inference inside `hε_le_Mk`/`hε_le_kM`.
+- `abs_lt` rewrite direction in the `Metric.mem_ball` chain.
+- Either is a one-line fix if it surfaces.
 
-**Mechanic-fix path.** S11c §4.1 (recommended, full rewrite to `ε`/`ball`,
-~+13 LOC per theorem) or S11c §4.4 (minimal-diff, `h_ball_eq_s` lift, ~+8
-LOC per theorem). Apply to in-place `dK_dk` patch AND append `dE_dk`
-(E-side mirror; helper inventory verified in #19222 §2) in the same PR.
+**Forbidden until B1 build-verified.** Do NOT cherry-pick the §4.4
+scaffold into other `dE_dk` attempts before iter-14's Docker build
+returns clean. Once GREEN, the §4.4 scaffold is the canonical template
+for Site-2 (`dE_dk`) in S15-prep.
 
-**Total LOC delta.** ~+26 LOC (§4.1, both theorems) or ~+16 LOC (§4.4).
+### ~~B2 — Three stale-open `dE_dk`-track PRs from 2026-05-08~~ (RESOLVED in iter 14)
 
-**Risk.** LOW. Fix path is precisely specified; F1/F2 are mechanical
-substitutions; E-side helper inventory (E1-E14, #19222 §2) verified
-line-accurate at the live origin/main file SHA.
+All three are now retired:
+- #17371 (S6 dE_dk): merged 2026-05-19 as session-file-only (no .lean
+  change).
+- #17445 (S8 dE_dk replay): CLOSED.
+- #17477 (S9 complModulus boundary helpers): CLOSED.
 
-**Forbidden until B1 is dispatched.** Do NOT rebase #17371 or #17445 —
-both inherit F1/F2 and would land broken again. Do NOT paste the literal
-#19222 §3 fallback skeleton — it also inherits F1/F2.
-
-### B2 — Three stale-open `dE_dk`-track PRs from 2026-05-08
-
-Subsidiary to B1; see §3 of the iter 13 sessions file. PRs #17371, #17445,
-#17477 are all `mergeable_state="dirty"` and have been since 2026-05-08
-(8+ days). Once B1 is dispatched, these three need to be either rebased
-(with the F1/F2 fix applied) or closed as superseded by the canonical
-mechanic-patch PR.
+No follow-up needed.
 
 ## Next Action
 
-**Mechanic patch — S14 ACT (~+26 LOC, doc-only-fix path).** Apply S11c
-PREP §4 fix to dispatch BLOCKER B1. The patch covers two locations:
+**S15-prep — Site-2 `dE_dk` E-side mirror (~+76 LOC, contingent on
+S14 Site-1 Docker GREEN).**
+
+Once the iter-14 PR clears auditor/mechanic Docker verification, append
+the E-side mirror `dE_dk` immediately after the patched `dK_dk` (i.e.
+between line 1573 and `end AmgmInequalityOQ04OQ02`). Use the same §4.4
+`ε`/`Metric.ball`/`h_ball_eq_s` scaffold proven in Site-1; substitute
+the E-side helper inventory from #19222 §2:
+
+| Item | K-side | E-side |
+|------|--------|--------|
+| Integrand | `ellipticIntegrand` | `ellipticIntegrandE` |
+| Partial derivative | `dIntegrandK` | `dIntegrandE` |
+| Uniform bound | `boundDIntegrandK` | `boundDIntegrandE` |
+| Continuity | `integrand_continuous (hk² < 1)` | `integrandE_continuous` (no hk hypothesis) |
+| Integrability | `ellipticK_integrable (hk² < 1)` | `ellipticE_integrable` (no hk hypothesis) |
+| Chain rule | `integrandK_hasDerivAt_in_k` | `integrandE_hasDerivAt_in_k` |
+| Integral identity | `integral_dIntegrandK_eq` | `integral_dIntegrandE_eq` |
+
+The two E-side simplifications (`integrandE_continuous` and
+`ellipticE_integrable` take no `k² < 1` hypothesis) **shorten** the
+E-side derivation slightly. Net delta still ~+76 LOC because Site-2 is
+a brand-new theorem (not a patch).
+
+Target:
+```lean
+theorem dE_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k := by
+  -- mirror of S14-Site-1 dK_dk; use E-side helpers per #19222 §2 table.
+```
+
+### Then S15-ACT (Wronskian closure) — once `dE_dk` lands
+
+(Plan unchanged from S13; ~+50 LOC; discharges `legendre_relation`
+axiom 1 → 0.)
+
+### (Original S14 plan — superseded by Site-1 above)
+
+The pre-iter-14 plan was to do **Site-1 AND Site-2 in one PR**. This
+iteration ships only Site-1 (16 LOC) to keep the verification surface
+small. Site-2 follows once Site-1 is GREEN. Background detail kept
+below for context.
+
+**Site-1 (DONE in iter 14, build pending)** — in-place fix of merged
+`dK_dk` at `AmgmInequalityOQ04OQ02.lean:1482-1573` via S11c §4.4
+minimal-diff path:
 
 ### Site 1 — in-place fix of merged `dK_dk` (`AmgmInequalityOQ04OQ02.lean:1485-1548`)
 

@@ -1501,6 +1501,20 @@ theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
     exact le_of_lt (sq_lt_sq' hκ_low hκ_hi)
   have h_kappa_sq_lt_one : ∀ κ ∈ s, κ ^ 2 < 1 := fun κ hκ =>
     lt_of_le_of_lt (h_kappa_sq_le κ hκ) hM_sq_lt_one
+  -- B1 fix per S11c §4.4: pick ε so Metric.ball k ε ⊆ s. Then the
+  -- parametric-integral lemma's first arg `0 < ε` is matched, and the
+  -- ∀-over-ball hypotheses are lifted from the existing ∀-over-s ones.
+  set ε : ℝ := min (M - k) (k + M) with hε_def
+  have hε_pos : 0 < ε := by
+    simp only [hε_def]
+    exact lt_min (by linarith) (by linarith)
+  have h_ball_eq_s : Metric.ball k ε ⊆ s := by
+    intro x hx
+    rw [Metric.mem_ball, Real.dist_eq, abs_lt] at hx
+    obtain ⟨hx_low, hx_hi⟩ := hx
+    have hε_le_Mk : ε ≤ M - k := by simp only [hε_def]; exact min_le_left _ _
+    have hε_le_kM : ε ≤ k + M := by simp only [hε_def]; exact min_le_right _ _
+    exact ⟨by linarith, by linarith⟩
   -- Hypothesis: F is ae-strongly-measurable in a neighborhood of k.
   -- (We use `s` as the neighborhood — every κ ∈ s has κ² < 1, so the
   -- K-integrand is continuous and hence ae-measurable.)
@@ -1522,30 +1536,32 @@ theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
       (fun θ => dIntegrandK k θ)
       (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) :=
     (dIntegrandK_continuous hk_sq_lt_one).aestronglyMeasurable
-  -- Hypothesis: pointwise majorization on the band.
+  -- Hypothesis: pointwise majorization on Metric.ball k ε (lifted from s).
   have h_bound : ∀ᵐ θ ∂MeasureTheory.volume,
       θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
-      ∀ κ ∈ s, ‖dIntegrandK κ θ‖ ≤ boundDIntegrandK M θ := by
+      ∀ κ ∈ Metric.ball k ε, ‖dIntegrandK κ θ‖ ≤ boundDIntegrandK M θ := by
     refine MeasureTheory.ae_of_all _ ?_
     intro θ _ κ hκ
     rw [Real.norm_eq_abs]
-    exact dIntegrandK_abs_le_bound hM_sq_lt_one hM_nn κ θ (h_kappa_sq_le κ hκ)
+    have hκs : κ ∈ s := h_ball_eq_s hκ
+    exact dIntegrandK_abs_le_bound hM_sq_lt_one hM_nn κ θ (h_kappa_sq_le κ hκs)
   -- Hypothesis: bound is interval-integrable.
   have h_bound_int : IntervalIntegrable (boundDIntegrandK M)
       MeasureTheory.volume 0 (π / 2) :=
     boundDIntegrandK_integrable hM_sq_lt_one
-  -- Hypothesis: pointwise differentiability on the band.
+  -- Hypothesis: pointwise differentiability on Metric.ball k ε (lifted from s).
   have h_diff : ∀ᵐ θ ∂MeasureTheory.volume,
       θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
-      ∀ κ ∈ s, HasDerivAt
+      ∀ κ ∈ Metric.ball k ε, HasDerivAt
         (fun x => AmgmInequalityOQ04OQ01.ellipticIntegrand x θ)
         (dIntegrandK κ θ) κ := by
     refine MeasureTheory.ae_of_all _ ?_
     intro θ _ κ hκ
-    exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκ) θ
+    have hκs : κ ∈ s := h_ball_eq_s hκ
+    exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκs) θ
   -- Apply the parametric integral derivative lemma and extract the deriv.
   have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
-    hs_nhds hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+    hε_pos hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
   have h_deriv :
       HasDerivAt
         (fun κ => ∫ θ in (0 : ℝ)..π / 2,
