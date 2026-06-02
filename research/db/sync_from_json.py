@@ -168,8 +168,16 @@ def sync_problem(cursor: sqlite3.Cursor, data: dict, verbose: bool = False) -> d
     db_status = map_status(data)
 
     # Extract fields
-    current_state = data.get("currentState") or {}
-    knowledge = data.get("knowledge") or {}
+    # Tolerate currentState/knowledge being absent, null, OR a stray string
+    # (some legacy entries write a free-form status sentence or a JSON-encoded
+    # blob there instead of an object). Strings get coerced to {} so the
+    # .get() calls below don't crash — phase/focus/etc. fall through to None.
+    current_state = data.get("currentState")
+    if not isinstance(current_state, dict):
+        current_state = {}
+    knowledge = data.get("knowledge")
+    if not isinstance(knowledge, dict):
+        knowledge = {}
     phase = data.get("phase") or current_state.get("phase")
     focus = current_state.get("focus")
     blockers = current_state.get("blockers", [])
