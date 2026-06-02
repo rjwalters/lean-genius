@@ -2,10 +2,69 @@
 
 ## Current State
 
-**Phase**: OBSERVE (S2 substantive — Mathlib survey + parent coverage + gap analysis shipped; ORIENT next)
+**Phase**: ORIENT (S3 Fragment-1 design — induction skeleton + bearer audit + LOC re-estimate; S4 PREP / S5 ACT next)
 **Path**: full
-**Since**: 2026-06-01T09:50:00Z (S2 OBSERVE substantive iteration)
-**Iteration**: 2
+**Since**: 2026-06-02T00:30:00Z (S3 ORIENT Fragment-1 design iteration)
+**Iteration**: 3
+
+## Iteration 3 (researcher-1, 2026-06-02) — S3 ORIENT: Fragment 1 design (iteratedFDeriv n-dim Schwarz, doc-only)
+
+**Outcome**: ORIENT complete. Fragment 1 design memo written; LOC estimate revised
+**30-60 LOC → 120-200 LOC** based on currying / adjacent-swap-perm-plumbing audit;
+supporting bearer chain (B1-B10) identified across `Mathlib/Analysis/Calculus/FDeriv/Symmetric.lean`,
+`Mathlib/Analysis/Calculus/ContDiff/Defs.lean`, `Mathlib/GroupTheory/Perm/ClosureSwap.lean`.
+
+Full memo at `sessions/2026-06-02-s3-orient-frag1-iteratedfderiv-symmetric.md`.
+
+### Bearer chain (Mathlib v4.26.0 at pin SHA `2df2f0150c…`, unchanged since S2)
+
+| # | Symbol | File | Line | Role |
+|---|---|---|---|---|
+| B1 | `second_derivative_symmetric` | `FDeriv/Symmetric.lean` | 315 | Base case (n=2) |
+| B3 | `Convex.second_derivative_within_at_symmetric` | `FDeriv/Symmetric.lean` | 254 | Proof engine |
+| B4 | `iteratedFDeriv_succ_apply_left` | `ContDiff/Defs.lean` | 1427 | Recursive structure |
+| B5 | `iteratedFDeriv_succ_eq_comp_left` | `ContDiff/Defs.lean` | 1434 | Currying form of B4 |
+| B6 | `iteratedFDeriv_succ_apply_right` | `ContDiff/Defs.lean` | 1507 | Dual (init m) form |
+| B7 | `fderiv_iteratedFDeriv` | `ContDiff/Defs.lean` | 1442 | Inverse currying |
+| B8 | `mem_closure_isSwap'` | `Perm/ClosureSwap.lean` | 119 | Sₙ from all swaps |
+| B9 | `closure_of_isSwap_of_isPretransitive` | `Perm/ClosureSwap.lean` | 129 | Sₙ from adjacent swaps |
+| B10 | (hand-rolled) | — | — | Adjacency-pretransitivity bridge |
+
+### Induction structure
+
+Base n ∈ {0, 1, 2}, inductive step splits adjacent-swap τᵢ into two cases by i:
+- **i ≥ 1**: τᵢ doesn't touch position 0, so IH on `f^n` applied through `Fin.tail` discharges.
+- **i = 0**: requires currying through B4/B6/B7 to expose two derivatives swappable via B1.
+
+The case-i=0 currying is the LOC-dominant sub-proof (50-80 LOC). S4 PREP will write the
+paste-ready ~150 LOC skeleton.
+
+### Next Action (S4 PREP)
+
+Write paste-ready Lean skeleton for `iteratedFDeriv_symmetric_of_contDiff` with all
+bearer arguments concretely named. Four sub-cases each get their own block: (a) n=0/1
+trivial, (b) n=2 base, (c) inductive i≥1, (d) inductive i=0 with currying. Followed by
+S5 ACT (Docker-verify ~12 min cold start) and S6 PR-prep (upstream contribution).
+
+### Anti-scope (S3)
+
+- No Lean diff (ORIENT is doc-only).
+- No `meta.json` edit (slug has no gallery entry; deferred to post-Fragment-1 ACT).
+- No bearer re-spot-check (SHA `2df2f0150c…` unchanged since S2; T+1d).
+- No multi-fragment planning (Fragments 2-6 stay at S2 OBSERVE scope estimates).
+
+### Files modified (S3 doc-only)
+
+- `research/problems/fundamental-theorem-calculus-oq-02-incomplete-01/sessions/2026-06-02-s3-orient-frag1-iteratedfderiv-symmetric.md` (new, ~160 LOC, 8 sections).
+- `research/problems/fundamental-theorem-calculus-oq-02-incomplete-01/state.md` — this file, head + Iteration-3 entry.
+- `src/data/research/problems/fundamental-theorem-calculus-oq-02-incomplete-01.json` — `currentState.{since, iteration, focus, nextAction}` + `lastUpdate` + `attemptCounts.total`.
+
+### Counts (no Lean file authored yet)
+
+- Parent slug `FundamentalTheoremCalculusStokes.lean`: 395 LOC, 13 thm, 0 sorries, 0 axioms (unchanged).
+- This slug: no own Lean file yet (creation deferred to S5 ACT).
+
+## Iteration 2 (researcher-1, 2026-06-01) — S2 OBSERVE: Mathlib v4.26.0 survey + parent-slug coverage + n-dim Stokes gap analysis (doc-only)
 
 ## Iteration 2 (researcher-1, 2026-06-01) — S2 OBSERVE: Mathlib v4.26.0 survey + parent-slug coverage + n-dim Stokes gap analysis (doc-only)
 
