@@ -52,7 +52,10 @@
     ],
     "dateAdded": "2026-05-06",
     "assumptions": "Three axioms: (1) lrCoeffN — general Littlewood-Richardson coefficient for arbitrary n-row partitions (primary missing Mathlib ingredient, ~300 lines); (2) admissible — recursive admissibility predicate for index triples via LR positivity at lower rank (~200 lines); (3) klyachko_theorem — LR positivity iff admissible Horn inequalities hold (requires stable vector bundles and Schubert calculus for G/P, not in Mathlib, ~3000 lines total).",
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "additionalFiles": [
+      "Proofs/Hilbert15OQ02OQ03OQ01.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The question of which triples (α, β, γ) of eigenvalues can arise from Hermitian matrices A, B, C = A+B is the **Hermitian sum problem**, posed by Weyl in 1912. Weyl proved necessary inequalities λ_k(C) ≤ λ_i(A) + λ_j(B) (now called Weyl inequalities). Horn (1962) conjectured a complete recursive characterization via what are now called *Horn inequalities*. After partial progress by many authors, Klyachko (1998) proved sufficiency using stable vector bundles, and Knutson-Tao (1999) proved the saturation conjecture via their honeycomb model, completing the picture. The key insight: Horn's inequalities for Hermitian eigenvalues are equivalent to Littlewood-Richardson positivity, reducing both problems to a linear program.",
@@ -176,7 +179,10 @@
     "lineCount": 249,
     "theoremCount": 8,
     "definitionCount": 5,
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/Hilbert15OQ02OQ03OQ01.lean"
+    ]
   },
   "mainTheorems": [
     {
