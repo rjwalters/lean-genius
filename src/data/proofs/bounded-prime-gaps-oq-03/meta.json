@@ -58,7 +58,11 @@
     "assumptions": "1 axiom: engelsma_lower_bound (Engelsma's lower bound on diameter of optimal 50-tuple). 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 21,
-    "definitionCount": 1
+    "definitionCount": 1,
+    "additionalFiles": [
+      "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "Proofs/BoundedPrimeGapsOQ03OQ03.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Zhang (2013) proved the first bounded prime gaps result: liminf(p_{n+1} - p_n) ≤ 70,000,000. The Polymath 8 project (2013-2014) systematically reduced this bound. Polymath 8b, led by Maynard and Tao, achieved liminf ≤ 246 using the 'admissible k-tuple sieve.'\n\nThe key insight: if we can find an admissible k-tuple with small diameter, we get a prime gap bound equal to that diameter. A set H = {h₁,...,hₖ} is admissible if for every prime p, not all residues mod p are represented in H.\n\nEngelsma (2013) conducted an exhaustive computer search showing that the minimum diameter among all admissible 50-tuples is exactly 246, achieved by the tuple {0,4,6,...,244,246}. This makes 246 the exact optimal bound for the 50-tuple Maynard-Tao approach.\n\nThe 'open question' aspect: while 246 is optimal for the 50-tuple approach, the true value of liminf(p_{n+1} - p_n) may be 2 (Twin Prime Conjecture) — this is still open. Larger k-tuples could improve the unconditional bound further.",
@@ -235,7 +239,27 @@
     "theoremCount": 21,
     "definitionCount": 1,
     "path": "Proofs/BoundedPrimeGapsOQ03.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+        "lineCount": 953,
+        "theorems": 29,
+        "definitions": 7,
+        "axioms": 0,
+        "sorries": 1,
+        "description": "OQ-02 (Decidability infrastructure for IsAdmissible): bounded reformulation IsAdmissibleBdd restricts the prime quantifier to p ∈ Finset.range (H.card + 1), yielding Decidable (IsAdmissible H) via decidable_of_iff (key fact: |H.image (· % p)| ≤ H.card < p for p > H.card by Finset.card_image_le). Includes small-case admissibility witnesses (twin/triple/quadruple), Engelsma 'D(k) ≥ d' analogue lemmas for (k,d) ∈ {(6,16),(8,22),(3,7),(4,9),(5,13),(6,17)}, and a finitary engelsma_lower_bound bridge: engelsmaSearch and engelsmaSearchPruned search procedures whose `eq_false` outcome implies the unbounded lower bound (1 sorry: pruned-search soundness modulo the unbounded axiom). Hard prerequisite for the Path-B verified-backtracking work targeting elimination of the engelsma_lower_bound axiom in BoundedPrimeGapsOQ03.lean."
+      },
+      {
+        "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
+        "lineCount": 174,
+        "theorems": 13,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "OQ-03 (Elliott-Halberstam conditional bound): under the EH conjecture (axiomatized as maynard_tao_sieve_eh in BoundedPrimeGaps.lean), the Maynard-Tao sieve works with k ≥ 5 instead of k ≥ 50, improving the prime gap bound from 246 to 12. Establishes upper bounds D(3) ≤ 6, D(4) ≤ 8, D(5) ≤ 12 via explicit admissible tuples ({0,2,6}, {0,2,6,8}, {0,2,6,8,12}) and lower bounds D(4) ≥ 3, D(5) ≥ 4 via the general diameter_lower_bound. Main theorem eh_conditional_prime_gap_theorem: EH → ∀ N, ∃ n ≥ N, primeGap n ≤ 12. Comparison theorems show 12 < 246 and the EH improvement factor (246/12 = 20×). 0 sorries; inherits maynard_tao_sieve_eh axiom from parent BoundedPrimeGaps.lean."
+      }
+    ]
   },
   "sorries": 0
 }
