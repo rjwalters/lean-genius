@@ -296,7 +296,10 @@
       }
     ],
     "path": "Proofs/MinkowskiFundamentalTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/MinkowskiTheoremOQ02OQ03.lean"
+    ]
   },
   "references": [
     {
@@ -363,5 +366,8 @@
       "leanType": "forall (p : Nat), Nat.Prime p -> p % 4 = 1 -> exists a b : Nat, a^2 + b^2 = p"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/MinkowskiTheoremOQ02OQ03.lean"
+  ]
 }

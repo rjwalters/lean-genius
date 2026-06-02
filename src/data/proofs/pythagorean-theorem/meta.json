@@ -305,7 +305,10 @@
       }
     ],
     "path": "Proofs/PythagoreanTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/PythagoreanTheoremOQ05.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -327,5 +330,8 @@
       "leanType": "{s : Finset i} -> {v : i -> Vec2} -> pairwise_perp -> norm(sum v)^2 = sum(norm(v i)^2)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/PythagoreanTheoremOQ05.lean"
+  ]
 }

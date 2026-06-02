@@ -175,7 +175,10 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/ElementaryQuadraticReciprocity.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean"
+    ]
   },
   "crossReferences": [
     {
@@ -248,5 +251,8 @@
       "leanType": "odd_prime p -> odd_prime q -> p != q -> legendreSym p q * legendreSym q p = (-1)^((p-1)/2 * (q-1)/2)"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean"
+  ]
 }

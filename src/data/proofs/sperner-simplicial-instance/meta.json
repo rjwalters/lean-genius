@@ -103,7 +103,8 @@
     "path": "Proofs/SpernerSimplicialInstance.lean",
     "sorries": 0,
     "additionalFiles": [
-      "Proofs/SpernerMathlib4.lean"
+      "Proofs/SpernerMathlib4.lean",
+      "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
     ]
   },
   "sections": [
@@ -160,5 +161,8 @@
       "Connect to David Gale's 1979 Hex theorem: prove that the Hex no-draw property follows from `Triangulation.sperner` applied to the standard 2-d triangulation of the Hex board, and derive 2-d Brouwer as a corollary. Gale's elementary derivation is short and combinatorial — a natural target for a Lean port that exercises the bridge end-to-end."
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+  ]
 }

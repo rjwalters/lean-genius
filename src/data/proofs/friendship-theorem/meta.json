@@ -202,7 +202,10 @@
     "theoremCount": 10,
     "definitionCount": 6,
     "path": "Proofs/FriendshipTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FriendshipTheoremOQ02.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -212,5 +215,8 @@
       "leanType": "(forall u v, u != v -> exists! w, adj u w and adj v w) -> exists v, forall u, u != v -> adj u v"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/FriendshipTheoremOQ02.lean"
+  ]
 }

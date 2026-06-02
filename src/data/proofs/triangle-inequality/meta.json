@@ -203,7 +203,11 @@
     "theoremCount": 17,
     "definitionCount": 0,
     "path": "Proofs/TriangleInequality.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/TriangleInequalityOQ02.lean",
+      "Proofs/TriangleInequalityOQ04OQ01.lean"
+    ]
   },
   "references": [
     {
@@ -250,5 +254,9 @@
       "leanType": "(x y : ℝ) → |x + y| ≤ |x| + |y|"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/TriangleInequalityOQ02.lean",
+    "Proofs/TriangleInequalityOQ04OQ01.lean"
+  ]
 }

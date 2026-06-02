@@ -225,7 +225,8 @@
     ],
     "namespace": "ShapleyFolkman",
     "additionalFiles": [
-      "Proofs/ShapleyFolkmanAristotle.lean"
+      "Proofs/ShapleyFolkmanAristotle.lean",
+      "Proofs/ShapleyFolkmanOQ01.lean"
     ]
   },
   "mainTheorems": [
@@ -236,5 +237,8 @@
       "leanType": "Decomposition S t x -> d.excessIndices.card <= Module.finrank R E"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/ShapleyFolkmanOQ01.lean"
+  ]
 }

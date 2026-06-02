@@ -308,7 +308,10 @@
       }
     ],
     "path": "Proofs/FundamentalTheoremAlgebra.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FundamentalTheoremAlgebraOQ02.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -330,5 +333,8 @@
       "leanType": "{p : ℂ[X]} → p ≠ 0 → Multiset.card p.roots = p.natDegree"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/FundamentalTheoremAlgebraOQ02.lean"
+  ]
 }
