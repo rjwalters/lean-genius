@@ -151,4 +151,33 @@ theorem IsRegressive.iff_forall_lt {f : Ordinal → Ordinal} {S : Set Ordinal}
     IsRegressive f S ↔ ∀ α ∈ S, f α < α :=
   ⟨fun h α hα => h hα (hS_pos α hα).ne', fun h _ hα _ => h _ hα⟩
 
+/-! ### IsStationaryBelow companion lemmas
+
+Library-style helpers for `IsStationaryBelow` lifted from
+`Proofs/FodorPressingDown.lean` (the parent file's Part VI). Both
+operate on a bare `o : Ordinal` (not `Cardinal.{0}.ord`); they fit the
+universe / pinning policy of Basic.lean unchanged. After S4 ACT cuts
+the parent duplicates, sister slug `fodor-pressing-down-oq-04`
+(Solovay splitting) consumes them via `import Proofs.Club.Basic`. -/
+
+/-- Every stationary set below a successor-limit ordinal is nonempty.
+Witness: the club `Iio o` (from `isClubBelow_Iio_of_isSuccLimit`) meets
+`S` by stationarity. -/
+theorem IsStationaryBelow.nonempty {S : Set Ordinal} {o : Ordinal}
+    (hS : IsStationaryBelow S o) (ho : IsSuccLimit o) : S.Nonempty := by
+  have hC : IsClubBelow (Iio o) o := isClubBelow_Iio_of_isSuccLimit ho
+  obtain ⟨γ, hγS, _⟩ := hS (Iio o) hC
+  exact ⟨γ, hγS⟩
+
+/-- Stationarity descends along inclusions that meet every club: if
+`T ⊆ S`, `S` is stationary below `o`, and every club below `o` meeting
+`S` also meets `T`, then `T` is stationary below `o`. -/
+theorem IsStationaryBelow.of_subset {S T : Set Ordinal} {o : Ordinal}
+    (hS : IsStationaryBelow S o) (_hTS : T ⊆ S)
+    (hMeet : ∀ C : Set Ordinal, IsClubBelow C o → (S ∩ C).Nonempty →
+        (T ∩ C).Nonempty) :
+    IsStationaryBelow T o := by
+  intro C hC
+  exact hMeet C hC (hS C hC)
+
 end Ordinal

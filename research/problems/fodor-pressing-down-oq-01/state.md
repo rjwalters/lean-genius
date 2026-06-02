@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S6 IsRegressive companion lemmas to Basic.lean; S4 ACT still pending)
-**Since**: 2026-05-31 (S6 ACT this session — researcher-1)
-**Iteration**: 10
-**Last update**: 2026-05-31 (S6 ACT by researcher-1 — Basic.lean +35 LOC, 4 IsRegressive companion lemmas + cofHead-cohort absorption)
+**Phase**: ACT (S7 IsStationaryBelow companion lemmas lifted to Basic.lean; S4 ACT still pending)
+**Since**: 2026-06-01 (S7 ACT this session — researcher-1)
+**Iteration**: 11
+**Last update**: 2026-06-01 (S7 ACT by researcher-1 — Basic.lean +29 LOC, 2 IsStationaryBelow companion lemmas lifted from parent §Part VI)
 
 > **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
 > within the broader research lifecycle (no `REFINE`-style ACT this round).
@@ -40,7 +40,8 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 | S4c PREP    | doc-only | #18585 | ✅ merged |
 | S4d PREP    | doc-only | #18733 | ✅ merged (audit-correction of S4c §2/§3/§7.1) |
 | S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
-| S6 ACT      | Lean     | (this session) | ✅ S6 ACT shipped this session — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker build kicked off |
+| S6 ACT      | Lean     | #21421 | ✅ merged — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker-verified 3060 jobs |
+| S7 ACT      | Lean     | (this session) | ✅ S7 ACT shipped this session — Basic.lean 154 → 183 LOC (+29), 2 `IsStationaryBelow` companion lemmas (`nonempty`, `of_subset`) **lifted** from parent §Part VI (lines 334–348), Docker-verified 3060 jobs |
 
 ## Active Approach
 
@@ -205,10 +206,10 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
 
 ## Attempt Counts
 
-- Total attempts: 10 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
-  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC, S6 ACT — all merged or
-  pending merge of this PR).
-- Current approach attempts: 10.
+- Total attempts: 11 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC, S6 ACT, S7 ACT — all
+  merged or pending merge of this PR).
+- Current approach attempts: 11.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
   naming and `Proofs/Club/Basic.lean` placement, design decisions
   unchanged since S1).
@@ -270,7 +271,21 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
   replaces an existing slot via meta convention). Expanded S4 ACT
   re-anchoring scope to 20 downstream theorems (17 from S5 STATE-SYNC
   + 3 cofHead-cohort). Iteration 9 → 10. See
-  `sessions/2026-05-31-s06-act-IsRegressive-companion-lemmas.md`.
+  `sessions/2026-05-31-s06-act-IsRegressive-companion-lemmas.md`. PR #21421.
+- **S7 ACT** (2026-06-01, researcher-1): Lean +29 LOC — two
+  `IsStationaryBelow` companion lemmas **lifted** from parent §Part VI
+  (`Proofs/FodorPressingDown.lean` lines 334–348) into
+  `Proofs/Club/Basic.lean` under the `Ordinal` namespace
+  (154 → 183 LOC): `IsStationaryBelow.nonempty` (witness:
+  `isClubBelow_Iio_of_isSuccLimit`) and `IsStationaryBelow.of_subset`
+  (stationarity descends along club-meet-preserving inclusions). Both
+  signatures take bare `o : Ordinal` (not `Cardinal.{0}.ord`); proof
+  bodies byte-identical to parent. Strictly additive; parent untouched.
+  Docker-verified 3060/3060 jobs green. Expanded S4 ACT cut scope by
+  15 LOC (parent lines 334–348 also delete-eligible now). Cohort A
+  (universe-not-pinned) of parent's library lemmas now **exhausted**.
+  Iteration 10 → 11. See
+  `sessions/2026-06-01-s07-act-stationary-helpers.md`.
 
 ## Sibling-slug interaction (S5 STATE-SYNC, oq-04 S2-α + S2-β-α)
 
@@ -305,14 +320,18 @@ blocking S4 ACT; deferred decision.
 - `knowledge.md` — Mathlib alignment survey and migration plan
   (S1 OBSERVE, supplemented by S3 PREP's migration detail).
 - `state.md` (this file).
-- `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT,
-  extended at S3 ACT (now 119 LOC; gained `Ordinal.diagInter_isClosedBelow`).
+- `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT (98 LOC),
+  extended at S3 ACT (+21 LOC = 119, gained `Ordinal.diagInter_isClosedBelow`),
+  extended at S6 ACT (+35 LOC = 154, gained 4 `IsRegressive.*` lemmas),
+  extended at S7 ACT (+29 LOC = **183 LOC**, gained
+  `Ordinal.IsStationaryBelow.nonempty` + `Ordinal.IsStationaryBelow.of_subset`).
 - `proofs/Proofs/FodorPressingDown.lean` — parent file; **not yet
-  touched by oq-01** by any ACT after S2 (but oq-04 has shipped 2 ACTs
-  appending §Part VII + §Part VIII, growing parent 385 → 568 LOC).
-  Awaits oq-01 S4 ACT (lose 4 duplicate defs + 1 duplicate theorem
-  `diagInter_isClosedBelow` body; re-anchor 12 downstream theorems
-  including 5 new oq-04 additions).
+  touched by oq-01** by any ACT after S2 (but oq-04 has shipped 3 ACTs
+  appending §Part VII + §Part VIII + §Part IX, growing parent 385 → 654 LOC).
+  Awaits oq-01 S4 ACT (lose 4 duplicate defs + 3 duplicate body-bearing
+  theorems: `diagInter_isClosedBelow`, `IsStationaryBelow.nonempty`,
+  `IsStationaryBelow.of_subset`; re-anchor 20 downstream theorems
+  including 5 oq-04 S2-α/β-α additions + 3 cofHead-cohort additions).
 
 ## Drift / parent state (updated S5 2026-05-16)
 
@@ -344,10 +363,10 @@ blocking S4 ACT; deferred decision.
 
 ## Race awareness
 
-OQ-01 has six merged PRs (S1 OBSERVE through S4d PREP) and zero
-open PRs at this STATE-SYNC's push time. The sister slug
-`fodor-pressing-down-oq-04` was NEW at S1 OBSERVE and is expected
-to enter ACT once S4 ACT lands. Re-entry risk for this STATE-SYNC
-is low: any parallel researcher would observe the JSON OBSERVE/iter-1
-drift before this PR merges, but the new branch off `origin/main`
-ensures no PR scope contamination.
+OQ-01 has eleven merged PRs (S1 OBSERVE through S6 ACT, including
+S5 STATE-SYNC and the STATE-SYNC iter resync) and **zero open PRs**
+at this S7 ACT's push time. Sister slug `fodor-pressing-down-oq-04`
+likewise has zero open PRs (last activity S2-β-β ACT PR #20621
+merged 2026-05-25). The S7 ACT branch is freshly cut from
+`origin/main` at `f486a19e2e0`; rebase risk is minimal for the
+30-minute Docker build window.
