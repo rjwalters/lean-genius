@@ -197,43 +197,50 @@
       "name": "two_pow_ne_three_pow",
       "type": "supporting",
       "description": "Elementary prime-factorization lemma: $2^p \\neq 3^q$ for any positive naturals $p, q$. Proved from `Nat.Prime.dvd_of_dvd_pow`: if $2^p = 3^q$ then $2 \\mid 2^p = 3^q$, so $2 \\mid 3$ by primality, contradiction. This is the entire elementary prerequisite for the irrationality of $\\log_2 3$.",
-      "leanType": "∀ (p q : ℕ), 0 < p → 0 < q → (2 : ℕ)^p ≠ 3^q"
+      "leanType": "∀ (p q : ℕ), 0 < p → 0 < q → (2 : ℕ)^p ≠ 3^q",
+      "line": 154
     },
     {
       "name": "log2_3_irrational",
       "type": "core",
       "description": "Irrationality of $\\log_2 3 = \\log 3 / \\log 2$, proved elementarily *without* transcendence theory. Strategy: if $\\log_2 3 = m/n$ in lowest terms then $3^n = 2^m$, contradicting `two_pow_ne_three_pow`. Shows that a classical transcendence fact has an elementary kernel — Baker's theorem upgrades irrationality to transcendence.",
-      "leanType": "Irrational (Real.log 3 / Real.log 2)"
+      "leanType": "Irrational (Real.log 3 / Real.log 2)",
+      "line": 192
     },
     {
       "name": "log2_log3_rat_indep",
       "type": "core",
       "description": "$\\mathbb{Q}$-linear independence of $\\{\\log 2, \\log 3\\}$ as a Mathlib `LinearIndependent` statement on the indexed family `![Real.log 2, Real.log 3]`. Directly derived from `log2_3_irrational`: any nontrivial rational dependence $c_0 \\log 2 + c_1 \\log 3 = 0$ would give $\\log_2 3 \\in \\mathbb{Q}$, contradicting irrationality. The hypothesis of Baker's homogeneous form for the $n = 2$ case.",
-      "leanType": "LinearIndependent ℚ (![Real.log 2, Real.log 3])"
+      "leanType": "LinearIndependent ℚ (![Real.log 2, Real.log 3])",
+      "line": 246
     },
     {
       "name": "log2_3_transcendental",
       "type": "core",
       "description": "Transcendence of $\\log_2 3 = \\log 3 / \\log 2$ over $\\mathbb{Z}$ (hence over $\\mathbb{Q}$), derived from `baker_homogeneous`. If $\\beta := \\log_2 3$ were algebraic, the linear form $\\beta \\log 2 - \\log 3 = 0$ would have all-algebraic coefficients $(\\beta, -1)$ with $\\mathbb{Q}$-independent logs $(\\log 2, \\log 3)$, contradicting Baker. A flagship application of Baker beyond the classical Gelfond-Schneider $n = 2$ case.",
-      "leanType": "Transcendental ℤ (Real.log 3 / Real.log 2)"
+      "leanType": "Transcendental ℤ (Real.log 3 / Real.log 2)",
+      "line": 421
     },
     {
       "name": "log2_log3_alg_indep",
       "type": "core",
       "description": "$\\overline{\\mathbb{Q}}$-linear independence of $\\{\\log 2, \\log 3\\}$: for any algebraic $\\beta_1, \\beta_2$ not both zero, $\\beta_1 \\log 2 + \\beta_2 \\log 3 \\neq 0$. Direct $n = 2$ application of `baker_homogeneous` to the family $\\alpha = (2, 3)$ with `log2_log3_rat_indep` providing the $\\mathbb{Q}$-independence hypothesis. The 'lift from $\\mathbb{Q}$-independence to $\\overline{\\mathbb{Q}}$-independence' that defines Baker's theorem.",
-      "leanType": "∀ (β₁ β₂ : ℝ), IsAlgebraic ℚ β₁ → IsAlgebraic ℚ β₂ → (β₁ ≠ 0 ∨ β₂ ≠ 0) → β₁ * Real.log 2 + β₂ * Real.log 3 ≠ 0"
+      "leanType": "∀ (β₁ β₂ : ℝ), IsAlgebraic ℚ β₁ → IsAlgebraic ℚ β₂ → (β₁ ≠ 0 ∨ β₂ ≠ 0) → β₁ * Real.log 2 + β₂ * Real.log 3 ≠ 0",
+      "line": 468
     },
     {
       "name": "baker_n1_log_independence",
       "type": "supporting",
       "description": "The $n = 1$ case of Baker's theorem in clean form: if $\\alpha > 0$ is algebraic with $\\alpha \\neq 1$ and $\\beta \\neq 0$ is algebraic, then $\\beta \\log \\alpha \\neq 0$. Proved from `baker_homogeneous` applied to a singleton family. Connects Baker to Hermite-Lindemann ($n = 1$ case for the exponential): together they say that the multiplicative span of $\\log \\alpha$ over $\\overline{\\mathbb{Q}}$ is all of $\\mathbb{R}$ for non-trivial algebraic $\\alpha$.",
-      "leanType": "∀ (α : ℝ), 0 < α → IsAlgebraic ℚ α → α ≠ 1 → ∀ (β : ℝ), IsAlgebraic ℚ β → β ≠ 0 → β * Real.log α ≠ 0"
+      "leanType": "∀ (α : ℝ), 0 < α → IsAlgebraic ℚ α → α ≠ 1 → ∀ (β : ℝ), IsAlgebraic ℚ β → β ≠ 0 → β * Real.log α ≠ 0",
+      "line": 513
     },
     {
       "name": "baker_quantitative",
       "type": "core",
       "description": "**The PART VI deaxiomatization.** Effective lower bound $|\\Lambda| > B^{-C}$ for the linear form $\\Lambda = \\sum_i b_i \\log \\alpha_i$ with integer $b_i$ bounded by $B$, derived (not axiomatized) from the combination of `baker_homogeneous` (gives $\\Lambda \\neq 0$ via algebraicity of integer coefficients) and `baker_wustholz_bound` (gives the explicit $\\log$ lower bound). This is the load-bearing reduction from 4 axioms to 3: previously `baker_quantitative` was its own axiom; the bridge `baker_homogeneous` + `baker_wustholz_bound` $\\Rightarrow$ `baker_quantitative` is now a proper theorem.",
-      "leanType": "∀ (n : ℕ), 0 < n → ∀ (α : Fin n → ℝ), (∀ i, 0 < α i) → (∀ i, IsAlgebraic ℚ (α i)) → ∀ (b : Fin n → ℤ), (∃ i, b i ≠ 0) → LinearIndependent ℚ (fun i => Real.log (α i)) → ∃ C : ℝ, 0 < C ∧ ∀ B : ℕ, 1 < B → (∀ i, |b i| ≤ B) → B^(-C) < |∑ i, (b i : ℝ) * Real.log (α i)|"
+      "leanType": "∀ (n : ℕ), 0 < n → ∀ (α : Fin n → ℝ), (∀ i, 0 < α i) → (∀ i, IsAlgebraic ℚ (α i)) → ∀ (b : Fin n → ℤ), (∃ i, b i ≠ 0) → LinearIndependent ℚ (fun i => Real.log (α i)) → ∃ C : ℝ, 0 < C ∧ ∀ B : ℕ, 1 < B → (∀ i, |b i| ≤ B) → B^(-C) < |∑ i, (b i : ℝ) * Real.log (α i)|",
+      "line": 669
     }
   ],
   "references": [
