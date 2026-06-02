@@ -324,3 +324,45 @@ S6 ACT (when Docker daemon recovers + disk ≥ 8 Gi):
 4. If green: open S6 ACT PR with new theorems `aGen_ne_zero`, `aGen_not_isSquare` (+ private helper). meta.json `lineCount` 285 → ~345; `theoremCount` 19 → 21.
 
 Steps 1b, 1c, 2, 3, 4 remain as documented in `nextSteps[2..6]`.
+
+---
+
+## Session 6 — 2026-06-01 (researcher-1, ACT)
+
+### What I Did
+
+- **Discharged S5 PREP's Step 1a sketch in full**: shipped `aGen_not_isSquare` plus two supporting lemmas (`aGen_ne_zero`, private `R_sq_eq_X_mul_sq_imp_false`). The SORRY-1 bridge from S5 PREP closed in 8 LOC via `IsLocalization.surj` + `IsFractionRing.injective` + ring rewriting + `omega` for the natDegree-parity refutation.
+- **Repaired 8 latent Mathlib v4.26.0 API drifts** surfaced when Docker build ran fresh (the G9 lake self-loop had masked all 8 since 2026-05-08): parent-file `omega` regression at line 148; `base` `def → abbrev`; `AlgEquiv.refl F K` arity (×2); `AlgEquiv.refl_apply` removal; `IsPurelyInseparable.pow_mem` signature change; `Polynomial.gcd_zero_right` removal; `g_factor_monic` simp missing `coeff_X`; `f_derivative_zero` `ring` failure in char 2 (char-blind).
+- **Docker build clean at 7746 jobs**, 0 errors, 0 sorries. Some warnings on pre-existing unused `Polynomial.coeff_C` simp args — left alone (not in scope).
+- Updated `meta.json` (lineCount 285→380, theoremCount 19→22), `state.md` (S6 row + Repair Inventory), `knowledge.md` (this entry), research JSON (`iteration` 5→6, `focus`, `nextAction`, `lastUpdate`, `progressSummary`, `builtItems`, `nextSteps`), and added `sessions/2026-06-01-s06.md` (NEW, ~210 LOC).
+
+### Key Findings
+
+- **The S5 PREP sketch was solid**: the bridge plan was correct, the bearer table covered the right lemmas, and the only meaningful refinement during ACT was using `set qP := (q : Polynomial (ZMod 2))` to dodge a `HMul` instance-synth ambiguity when `↑q : Polynomial _` and `↑q : R⁰` both fit.
+- **The G9 latent-bug pattern is robust**: 8 latent bugs at once when Docker had been blocked for 24 days. Memory entry "G9 qualifier masks real bugs — ALWAYS Docker-verify" continues to be confirmed; this is the largest repair cascade I've seen in one slug.
+- **No new sorries, no new axioms.** Step 1a is fully proved — `aGen_not_isSquare` is downstream-ready as a hypothesis for any Capelli-style or Eisenstein-style irreducibility argument that consumes "Artin-Schreier parameter is not a square".
+- **`omega` is the right closer for `2 · a = 1 + 2 · b`** even-vs-odd contradictions; no `Even` / `Odd` predicate API needed, despite S5 PREP's bearer table including `Nat.not_odd_iff_even`.
+
+### Files Modified
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (UPDATE, 285 → 380 LOC, +95)
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01.lean` (UPDATE, 1-line `omega` regression fix)
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01/meta.json` (UPDATE, metrics + 2 new originalContributions entries)
+- `src/data/research/problems/angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01.json` (UPDATE, currentState + knowledge + nextSteps refresh)
+- `research/problems/.../state.md` (UPDATE, Iteration History row 6 + Repair Inventory section)
+- `research/problems/.../sessions/2026-06-01-s06.md` (NEW, ~210 LOC)
+- `research/problems/.../knowledge.md` (this entry, ~50 LOC)
+
+### What I Did NOT Do
+
+- Did not discharge `counterexample_gal_card` (still axiom — multi-session Artin-Schreier chain).
+- Did not run Aristotle (manual repair was tractable).
+- Did not modify `proofs/lake-manifest.json` (Mathlib pin unchanged).
+- Did not modify any other proof file outside this slug + its parent.
+- Did not change public API of any prior-session theorem (only repaired their internal proofs).
+
+### Next Steps
+
+S7 ACT (Step 1b): prove `Irreducible g_factor` over `base` where `g_factor = X² + X + aGen`. Standard Artin-Schreier criterion in char 2: irreducible iff `aGen ≠ t² + t ∀t ∈ base`. Expected 120-200 LOC. Mathlib v4.26.0 bearer search for Artin-Schreier degree-2 helpers required.
+
+Steps 1c (Capelli irreducibility of `f_target = g_factor.comp (X²)`), 2 (splitting field), 3 (σ of order 2), 4 (|Gal| ≤ 2) remain queued.

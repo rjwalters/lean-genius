@@ -144,7 +144,8 @@ theorem natDeg_notDvd_gal_of_insep {F : Type*} [Field F] {p : ℕ} [CharP F p]
     (hf_deg : 1 < f.natDegree) :
     ¬(f.natDegree ∣ Nat.card f.Gal) := by
   rw [insep_gal_trivial hf_irr hf_insep]
-  intro ⟨k, hk⟩
+  intro h
+  have : f.natDegree ≤ 1 := Nat.le_of_dvd Nat.one_pos h
   omega
 
 /-!

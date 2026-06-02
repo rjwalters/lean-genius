@@ -64,9 +64,12 @@ namespace AngleTrisectionInsepGalCorrect
 -- Part I: The Counterexample Framework
 -- ============================================================================
 
-noncomputable def base : Type := FractionRing (Polynomial (ZMod 2))
-
-noncomputable instance base_field : Field base := FractionRing.instField _
+/-- `base = F₂(a)`. Declared as `abbrev` (reducible) so instance synthesis
+    can unfold it to `FractionRing (Polynomial (ZMod 2))` and pick up the
+    `Field`, `Algebra (Polynomial (ZMod 2)) ·`, and `IsFractionRing` instances
+    automatically (a non-reducible `def` would block synthesis in tactic
+    contexts even when the term-mode body of `aGen` succeeded). -/
+noncomputable abbrev base : Type := FractionRing (Polynomial (ZMod 2))
 
 noncomputable def aGen : base :=
   algebraMap (Polynomial (ZMod 2)) base Polynomial.X
@@ -85,9 +88,16 @@ lemma f_is_g_composed_sq : f_target = g_factor.comp (Polynomial.X ^ 2) := by
 
 /-- f is inseparable: all exponents in f are even, so f' = 0 in char 2. -/
 lemma f_derivative_zero : f_target.derivative = 0 := by
-  simp [f_target, Polynomial.derivative_add, Polynomial.derivative_pow,
-        Polynomial.derivative_C, Polynomial.derivative_X_pow]
-  ring
+  have h2 : (2 : base) = 0 := CharP.cast_eq_zero base 2
+  have h4 : (4 : base) = 0 := by
+    have e : (4 : base) = 2 * 2 := by norm_num
+    rw [e, h2, zero_mul]
+  unfold f_target
+  rw [Polynomial.derivative_add, Polynomial.derivative_add,
+      Polynomial.derivative_C, add_zero,
+      Polynomial.derivative_X_pow, Polynomial.derivative_X_pow,
+      show ((4 : ℕ) : base) = 0 from h4, show ((2 : ℕ) : base) = 0 from h2,
+      Polynomial.C_0, zero_mul, zero_mul, add_zero]
 
 /-- f_target = X⁴ + X² + aGen has natDegree 4 (the leading X⁴ term dominates). -/
 lemma f_target_natDegree : f_target.natDegree = 4 := by
@@ -129,7 +139,8 @@ lemma g_factor_ne_zero : g_factor ≠ 0 := by
 lemma g_factor_monic : g_factor.Monic := by
   rw [Polynomial.Monic, Polynomial.leadingCoeff, g_factor_natDegree]
   unfold g_factor
-  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
+  simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_X,
+        Polynomial.coeff_C]
 
 /-- Coefficient of X⁰ in f_target = X⁴ + X² + aGen is aGen. -/
 lemma f_target_coeff_zero : f_target.coeff 0 = aGen := by
@@ -157,6 +168,87 @@ lemma f_target_coeff_three : f_target.coeff 3 = 0 := by
   simp [Polynomial.coeff_add, Polynomial.coeff_X_pow, Polynomial.coeff_C]
 
 -- ============================================================================
+-- Part I.5: Step 1a — aGen is not a square in base
+--
+-- Closest concrete next step in the multi-session plan to discharge
+-- `counterexample_gal_card`. Consumed by Capelli-style irreducibility of
+-- `g_factor.comp (X^2)` (Step 1c).
+--
+-- Proof: a putative square `y² = aGen` rewrites (via `IsLocalization.surj`
+-- onto `mk' p q` and clearing denominators) to `p² = X · q²` in
+-- `Polynomial (ZMod 2)`. Taking `natDegree` gives an even number = odd
+-- number, contradiction (closed by `omega`).
+-- ============================================================================
+
+/-- `aGen ≠ 0` in `base`: `algebraMap` from a domain to its FractionRing is
+    injective, and `Polynomial.X ≠ 0`. -/
+lemma aGen_ne_zero : aGen ≠ 0 := by
+  intro h
+  have h' : algebraMap (Polynomial (ZMod 2)) base Polynomial.X =
+            algebraMap (Polynomial (ZMod 2)) base 0 := by
+    rw [map_zero]; exact h
+  exact Polynomial.X_ne_zero
+    (IsFractionRing.injective (Polynomial (ZMod 2)) base h')
+
+/-- Internal helper: in `Polynomial (ZMod 2)`, the equation `p² = X · q²`
+    with `q ≠ 0` is impossible by `natDegree` parity (`2 · deg p = 1 + 2 · deg q`,
+    even = odd). -/
+private lemma R_sq_eq_X_mul_sq_imp_false
+    {p q : Polynomial (ZMod 2)} (hq : q ≠ 0)
+    (hpq : p * p = Polynomial.X * (q * q)) : False := by
+  have hX : (Polynomial.X : Polynomial (ZMod 2)) ≠ 0 := Polynomial.X_ne_zero
+  have hpp_ne : p * p ≠ 0 := by
+    rw [hpq]; exact mul_ne_zero hX (mul_ne_zero hq hq)
+  have hp : p ≠ 0 := fun h => hpp_ne (by rw [h, zero_mul])
+  have hLHS : (p * p).natDegree = 2 * p.natDegree := by
+    rw [Polynomial.natDegree_mul hp hp]; ring
+  have hRHS : (Polynomial.X * (q * q)).natDegree = 1 + 2 * q.natDegree := by
+    rw [Polynomial.natDegree_mul hX (mul_ne_zero hq hq),
+        Polynomial.natDegree_X, Polynomial.natDegree_mul hq hq]
+    ring
+  have hEq : 2 * p.natDegree = 1 + 2 * q.natDegree := by
+    have := congrArg Polynomial.natDegree hpq
+    rw [hLHS, hRHS] at this; exact this
+  omega
+
+/-- **Step 1a**: `aGen` is not a square in `base = FractionRing (Polynomial (ZMod 2))`.
+
+    Proof: a putative square `aGen = y · y` rewrites (via `IsLocalization.surj`
+    onto a representative `(p, q)` with `q ∈ R⁰`) to `p² = X · q²` in
+    `Polynomial (ZMod 2)` — which is impossible by `natDegree` parity.
+
+    Consumed by Capelli-style irreducibility of `f_target = g_factor.comp (X^2)`
+    (Step 1c in the chain that discharges `counterexample_gal_card`). -/
+lemma aGen_not_isSquare : ¬ IsSquare aGen := by
+  rintro ⟨y, hy⟩
+  -- hy : aGen = y * y
+  obtain ⟨⟨p, q⟩, hyq⟩ :=
+    IsLocalization.surj (M := nonZeroDivisors (Polynomial (ZMod 2)))
+      (S := base) y
+  -- hyq : y * (algebraMap _ _) ↑q = (algebraMap _ _) p
+  set qP : Polynomial (ZMod 2) := (q : Polynomial (ZMod 2)) with hqP
+  have hqv_ne : qP ≠ 0 := nonZeroDivisors.coe_ne_zero q
+  -- Bridge: clear denominators to obtain p² = X · q² in Polynomial (ZMod 2).
+  have hpq : p * p = Polynomial.X * (qP * qP) := by
+    -- Square hyq:
+    have h_sq_eq :
+        (y * algebraMap (Polynomial (ZMod 2)) base qP) *
+          (y * algebraMap (Polynomial (ZMod 2)) base qP) =
+        algebraMap (Polynomial (ZMod 2)) base p *
+          algebraMap (Polynomial (ZMod 2)) base p := by
+      rw [hyq]
+    -- Translate to a single algebraMap equation, then use injectivity.
+    have h_alg :
+        algebraMap (Polynomial (ZMod 2)) base (p * p) =
+        algebraMap (Polynomial (ZMod 2)) base
+          (Polynomial.X * (qP * qP)) := by
+      have hy' : algebraMap (Polynomial (ZMod 2)) base Polynomial.X = y * y := hy
+      rw [map_mul, map_mul, map_mul, ← h_sq_eq, hy']
+      ring
+    exact IsFractionRing.injective (Polynomial (ZMod 2)) base h_alg
+  exact R_sq_eq_X_mul_sq_imp_false hqv_ne hpq
+
+-- ============================================================================
 -- Part II: The Correct Theorem — Purely Inseparable ⟹ Trivial Galois Group
 -- ============================================================================
 
@@ -178,23 +270,22 @@ lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : F
     - σ(x) = x since K has no nonzero nilpotents -/
 theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K]
     [Algebra F K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
-    [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) : σ = AlgEquiv.refl F K := by
+    [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) :
+    σ = (AlgEquiv.refl : K ≃ₐ[F] K) := by
   ext x
-  simp only [AlgEquiv.refl_apply]
-  -- Get n with x^(p^n) in the image of algebraMap F K
-  have hchar : CharP K (ringChar K) := ringChar.charP K
-  obtain ⟨n, hn⟩ : ∃ n : ℕ, x ^ (ringChar K) ^ n ∈ (algebraMap F K).range :=
-    IsPurelyInseparable.pow_mem x
-  obtain ⟨c, hc⟩ := hn
-  -- σ fixes elements in the image of F
-  have hfixed : σ (x ^ (ringChar K) ^ n) = x ^ (ringChar K) ^ n := by
+  show σ x = x
+  -- Lift `CharP K p → CharP F p` (Algebra.charP_iff); the `expChar_prime` instance
+  -- then gives `ExpChar F p`, which `IsPurelyInseparable.pow_mem` consumes.
+  haveI hF_p : CharP F p := (Algebra.charP_iff F K p).mpr inferInstance
+  obtain ⟨n, c, hc⟩ : ∃ n : ℕ, ∃ c : F, algebraMap F K c = x ^ p ^ n := by
+    obtain ⟨n, hn⟩ := IsPurelyInseparable.pow_mem F p x
+    obtain ⟨c, hc⟩ := hn
+    exact ⟨n, c, hc⟩
+  -- σ fixes algebraMap F K c
+  have hfixed : σ (x ^ p ^ n) = x ^ p ^ n := by
     rw [← hc]; exact σ.commutes c
   -- σ(x)^(p^n) = x^(p^n) via map_pow
-  have hpow : σ x ^ (ringChar K) ^ n = x ^ (ringChar K) ^ n := by
-    rw [← map_pow σ x, hfixed]
-  -- Align ringChar K with p (they should both be the characteristic)
-  have hchar_eq : ringChar K = p := ringChar.eq K p
-  rw [hchar_eq] at hpow
+  have hpow : σ x ^ p ^ n = x ^ p ^ n := by rw [← map_pow σ x, hfixed]
   -- (σ(x) - x)^(p^n) = 0 using char-p subtraction
   have hzero : (σ x - x) ^ p ^ n = 0 := by
     rw [sub_pow_char_pow_eq (σ x) x n, hpow, sub_self]
@@ -209,10 +300,13 @@ theorem gal_card_one_of_purelyInseparable_splitting {F : Type*} [Field F]
     {p : ℕ} [CharP F p] [hp : Fact p.Prime]
     (f : F[X]) [hK : IsPurelyInseparable F f.SplittingField] :
     Nat.card f.Gal = 1 := by
+  -- Push CharP F p down to CharP f.SplittingField p.
+  haveI : CharP f.SplittingField p :=
+    (Algebra.charP_iff F f.SplittingField p).mp inferInstance
   rw [Nat.card_eq_one_iff_unique]
-  exact ⟨⟨algEquiv_eq_refl_of_isPurelyInseparable (AlgEquiv.refl F f.SplittingField)⟩,
-         fun σ τ => (algEquiv_eq_refl_of_isPurelyInseparable σ).trans
-                    (algEquiv_eq_refl_of_isPurelyInseparable τ).symm⟩
+  refine ⟨⟨fun σ τ => (algEquiv_eq_refl_of_isPurelyInseparable σ).trans
+                      (algEquiv_eq_refl_of_isPurelyInseparable τ).symm⟩,
+          ⟨(AlgEquiv.refl : f.SplittingField ≃ₐ[F] f.SplittingField)⟩⟩
 
 -- ============================================================================
 -- Part III: The Counterexample — |Gal(f_target)| = 2
@@ -229,15 +323,16 @@ axiom counterexample_gal_card : Nat.card f_target.Gal = 2
 theorem insep_gal_trivial_refuted :
     ∃ (f : base[X]), ¬ f.Separable ∧ Nat.card f.Gal ≠ 1 := by
   refine ⟨f_target, ?_, ?_⟩
-  · -- f_target is inseparable: f' = 0, so gcd(f, f') = f ≠ 1
+  · -- f_target is inseparable: f' = 0, so Separable f_target ⟺ IsCoprime f_target 0
+    --                                                       ⟺ IsUnit f_target, contradicting natDegree = 4.
     intro h_sep
-    simp [Polynomial.Separable] at h_sep
-    -- A separable polynomial has gcd(f, f') = 1, but f' = 0 means gcd(f,0) = f ≠ 1
-    rw [f_derivative_zero] at h_sep
-    simp [Polynomial.gcd_zero_right] at h_sep
-    have : f_target.natDegree > 0 := by simp [f_target]; norm_num
-    simp [Polynomial.isUnit_iff] at h_sep
-    exact absurd (h_sep.natDegree_eq.symm) (by simp [f_target]; norm_num)
+    have h_coprime : IsCoprime f_target f_target.derivative := h_sep
+    rw [f_derivative_zero, isCoprime_zero_right] at h_coprime
+    -- h_coprime : IsUnit f_target
+    have hd : f_target.natDegree = 4 := f_target_natDegree
+    have hz : f_target.natDegree = 0 :=
+      Polynomial.natDegree_eq_zero_of_isUnit h_coprime
+    omega
   · -- |Gal(f_target)| = 2 ≠ 1
     rw [counterexample_gal_card]; norm_num
 
