@@ -21,7 +21,7 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 306,
     "theoremCount": 22,
     "definitionCount": 5,
@@ -29,7 +29,7 @@
       "Proofs/AmgmInequalityOQ04OQ01.lean",
       "Proofs/AmgmInequalityOQ04OQ03.lean"
     ],
-    "assumptions": "0 axioms in the parent file AmgmInequalityOQ04.lean (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the companion file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). 1 axiom in the registered companion AmgmInequalityOQ04OQ01.lean: agm_ellipticK_connection — Gauss's AGM-elliptic-integral identity M(a,b) = aπ/(2K(k')), a 200+ page classical proof requiring Landen/theta-function theory not in Mathlib. Chain axiom total: 1.",
+    "assumptions": "0 axioms in the parent file AmgmInequalityOQ04.lean (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the companion file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). 1 axiom in the registered companion AmgmInequalityOQ04OQ01.lean: agm_ellipticK_connection — Gauss's AGM-elliptic-integral identity M(a,b) = aπ/(2K(k')), a 200+ page classical proof requiring Landen/theta-function theory not in Mathlib. 1 axiom in the registered companion AmgmInequalityOQ04OQ03.lean: ellipticK_eq_hyp2F1 — the hypergeometric series representation K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) for |k|<1, whose proof requires Wallis integrals + term-by-term integration of the binomial series (sum/integral interchange via dominated convergence); summability is independently established in §6 of the file (S2 ACT, 2026-06-01) and the k=0 instance is independently verified by ellipticK_hyp2F1_consistent_zero. Chain axiom total: 2.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
