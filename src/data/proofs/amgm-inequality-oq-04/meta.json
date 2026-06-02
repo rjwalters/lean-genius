@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/AmgmInequalityOQ04.lean",
     "tags": [
       "analysis",
@@ -19,16 +19,16 @@
       "arithmetic-geometric-mean",
       "research"
     ],
-    "badge": "verified",
+    "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 1,
     "lineCount": 306,
     "theoremCount": 22,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/AmgmInequalityOQ04OQ01.lean"
     ],
-    "assumptions": "0 axioms in this parent file (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the child file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). The Gauss AGM-elliptic-integral identity remains axiomatized in the child slug oq-04-oq-01 as agm_ellipticK_connection (200+ page classical proof, requires Landen/theta-function theory not in Mathlib).",
+    "assumptions": "0 axioms in the parent file AmgmInequalityOQ04.lean (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the companion file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). 1 axiom in the registered companion AmgmInequalityOQ04OQ01.lean: agm_ellipticK_connection — Gauss's AGM-elliptic-integral identity M(a,b) = aπ/(2K(k')), a 200+ page classical proof requiring Landen/theta-function theory not in Mathlib. Chain axiom total: 1.",
     "mathlib_version": "4.26.0"
   },
   "overview": {
