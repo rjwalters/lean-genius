@@ -17,10 +17,12 @@
     "proofRepoPath": "Proofs/LagrangeFourSquaresOQ04.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "1 axiom (not_obstructed_is_three_squares): the backward direction — every number NOT of the form 4^a(8b+7) IS a sum of three squares. This requires genus theory for ternary quadratic forms. The forward direction is fully proved.",
+    "axiomCount": 3,
+    "assumptions": "3 axioms across the chain. (1) not_obstructed_is_three_squares (main file, LagrangeFourSquaresOQ04.lean): backward direction — every number NOT of the form 4^a(8b+7) IS a sum of three squares (requires genus theory). (2) dirichlet_key_lemma (ThreeSquares.lean): Dirichlet/Minkowski lattice key lemma yielding a three-square representation from a Legendre-symbol hypothesis. (3) not_excluded_form_is_sum_three_sq (ThreeSquares.lean): a redeclaration of the backward direction under the IsExcludedForm predicate framework used by the infrastructure file. The forward direction (Legendre's mod-8 obstruction) is fully proved.",
     "axioms": [
-      "not_obstructed_is_three_squares: ¬IsObstructed n → IsSumOfThreeSquares n (backward direction, requires genus theory)"
+      "not_obstructed_is_three_squares: ¬IsObstructed n → IsSumOfThreeSquares n (backward direction, requires genus theory)",
+      "dirichlet_key_lemma (ThreeSquares.lean): Minkowski/Dirichlet key lemma — produces a three-square representation of n from a Legendre-symbol hypothesis (n > 1, d > 0, p = d·n − 1 prime, legendreSym p (−d) = 1)",
+      "not_excluded_form_is_sum_three_sq (ThreeSquares.lean): ¬IsExcludedForm n → ∃ a b c, a² + b² + c² = n (backward direction under the IsExcludedForm framework)"
     ],
     "originalContributions": [
       "Forward direction proved from first principles: obstructed_not_three_squares",
