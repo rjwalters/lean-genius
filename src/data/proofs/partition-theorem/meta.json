@@ -48,7 +48,11 @@
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/PartitionTheoremOQ04.lean",
+      "Proofs/PartitionTheoremOQ04Aristotle.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Euler discovered this theorem around 1748 while developing his groundbreaking theory of generating functions for integer partitions. Working in the tradition of Leibniz's formal power series, Euler showed that the generating function for partitions into distinct parts, ∏(1+xᵏ), equals the generating function for partitions into odd parts, ∏1/(1-x^{2k+1}), by the algebraic identity 1+xᵏ = (1-x^{2k})/(1-xᵏ).\n\nThe theorem is one of the earliest results in partition theory and appears in Euler's 'Introductio in analysin infinitorum' (1748). It sparked centuries of work: Glaisher (1883) found a direct bijective proof using binary representation of multiplicities; Ramanujan (1919) discovered his famous congruences p(5n+4) ≡ 0 (mod 5), p(7n+5) ≡ 0 (mod 7), and p(11n+6) ≡ 0 (mod 11) while studying partition functions; Hardy and Ramanujan (1918) developed the circle method to find the asymptotic formula for p(n).\n\nThe theorem is #45 on Wiedijk's list of '100 Theorems' that benchmark formal verification systems. The Lean formalization uses Mathlib's archive proof, which implements Euler's generating function approach within the formal power series framework. Notably, this is a FULLY PROVED result with no axioms — the proof chain from Mathlib is complete.",
@@ -83,7 +87,27 @@
     "theoremCount": 3,
     "definitionCount": 0,
     "path": "Proofs/PartitionTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/PartitionTheoremOQ04.lean",
+        "description": "Glaisher bijection as a computable function (OQ-04): formalizes the constructive bijection between distinct-part and odd-part partitions. Defines glaisherFwdPart, glaisherFwd, glaisherBwdStep, glaisherBwd via 2-adic valuation and binary expansion of multiplicities. Proves weight preservation (glaisherFwdPart_sum, glaisherFwd_sum, glaisherBwdStep_sum, glaisherBwdStep_pow_two) and the parts-odd property (glaisherFwdPart_parts_odd). Companion to PartitionTheorem.lean. 4 definitions, 0 own axioms, 1 sorry on the inverse property pending count-based completion.",
+        "lineCount": 545,
+        "axiomCount": 0,
+        "sorries": 1,
+        "theoremCount": 10,
+        "definitionCount": 4
+      },
+      {
+        "path": "Proofs/PartitionTheoremOQ04Aristotle.lean",
+        "description": "Aristotle target for the Glaisher inverse property: glaisherBwd_glaisherFwd_ari states that backward ∘ forward = identity on distinct positive multisets. Imports PartitionTheoremOQ04 infrastructure (glaisherBwdStep_count_pow, testBit_sum_distinct_pow) for a count-characterization proof. Exposes the single routine target; no open conjecture (Euler's partition theorem is classical, 1748). 0 own axioms, 1 sorry as the Aristotle proof-search target.",
+        "lineCount": 46,
+        "axiomCount": 0,
+        "sorries": 1,
+        "theoremCount": 1,
+        "definitionCount": 0
+      }
+    ]
   },
   "crossReferences": [
     {
