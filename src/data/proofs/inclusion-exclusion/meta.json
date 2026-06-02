@@ -7,7 +7,7 @@
     "author": "Abraham de Moivre (1718), formalized via Mathlib",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Finset/Card.html",
     "date": "1718",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/InclusionExclusion.lean",
     "tags": [
       "combinatorics",
@@ -16,7 +16,7 @@
       "wiedijk-100",
       "classic"
     ],
-    "badge": "mathlib",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -45,9 +45,9 @@
       "Finset.card_union_add_card_inter identity"
     ],
     "wiedijkNumber": 96,
-    "axiomCount": 0,
+    "axiomCount": 2,
     "lineCount": 218,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "assumptions": "2 axiom(s), both in the MobiusInversionIE.lean chain companion (a Möbius-inversion extension that lifts inclusion-exclusion to the divisor lattice): derangement_formula (the inclusion-exclusion derangement count D(n) = Σ (-1)^k C(n,k) (n-k)!, axiomatized because the underlying permutation infrastructure is out of scope) and totient_mobius_inversion (φ(n) = Σ_{d|n} μ(d)·(n/d), Möbius inversion on the divisor lattice). The main InclusionExclusion.lean (Wiedijk #96) is itself axiom-free: the two-set, three-set, disjoint, Bonferroni, and symmetric-difference theorems are derived from Mathlib's `Finset.card_union_add_card_inter` and `Finset.card_union_of_disjoint` via `omega` and distributivity. No sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 0,
