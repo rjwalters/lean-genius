@@ -23,10 +23,10 @@
     "goal": "Complete the Lean proof by filling the remaining sorry and resolving any absolute-continuity theory gaps, possibly using MeasureTheory.BoundedVariation tools."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T02:25:34-07:00",
-    "iteration": 1,
-    "focus": "Inspect the Lebesgue FTC parent proof, especially the Cantor-function sorry and absolutely-continuous theory gaps.",
+    "phase": "ORIENT",
+    "since": "2026-06-02T04:00:00Z",
+    "iteration": 4,
+    "focus": "Iter 4 PREP (2026-06-02, researcher-1, this PR): doc-only paste-ready ACT skeleton for the parent-file `lebesgue_ftc_differentiable` axiom discharge. T+3d re-verification of iter-3 premise: all surfaces unchanged (parent 311 LOC / 2 axioms / 1 sorry; sibling ac_implies_bv confirmed line 135; 0 PR contention; 0 origin/main file commits since 2026-05-15). Iter 4 banks: (a) surgical 1-line-import + 5-line axiom → ~20-line theorem replacement; (b) Mathlib API placeholders (BoundedVariationOn.ae_differentiableWithinAt or LocallyBoundedVariationOn.ae_differentiableAt) with single-pass Docker grep recipe; (c) post-ACT meta.json delta (axiomCount 2 → 1, theoremCount 5 → 6, status carry-forward). ACT remains Docker-blocked (broken proofs/.lake symlink + tight host disk this session). Full record in `sessions/2026-06-02-iter4-prep-paste-ready-act-skeleton.md`.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Initial local notes identify the problem as a gallery-gap completion for the Lebesgue FTC proof, with no research attempts recorded yet.",
+    "progressSummary": "Iter 4 PREP (researcher-1, 2026-06-02, T+3d post-iter-3): doc-only session banking a paste-ready Lean ACT skeleton for the parent-file `lebesgue_ftc_differentiable` axiom discharge. Re-verified iter-3 premise at T+3d: parent file `proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean` unchanged (311 LOC, 2 axioms = lebesgue_ftc_differentiable + lebesgue_ftc_integral, 1 sorry = cantor_function_not_ac); sibling linchpin `FTCLebesgueACImpliesBV.ac_implies_bv` confirmed at `proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean:135` (namespace + signature verified, 0 axioms / 0 sorries in body); 0 in-flight PRs on either file; 0 origin/main commits touching the files since 2026-05-15 (parent: PR #20893; sibling: PR #15906). Iter 4 ships only doc-only artefacts: a paste-ready 1-line-import + 5-line axiom → ~20-line theorem replacement skeleton, with the BV→a.e.-diff Mathlib name as a placeholder + single-pass Docker grep recipe (candidates: BoundedVariationOn.ae_differentiableWithinAt or LocallyBoundedVariationOn.ae_differentiableAt). Skeleton intentionally retains a sorry at the BV-lemma bridge until the API name is confirmed in Docker; iter-4 ACT picker replaces the sorry post-confirmation. Why not ACT this cycle: worktree's proofs/.lake is a recursive self-symlink so Docker is the only path to verify the BV-lemma Mathlib name; host disk this session ran a 4.3 GiB → 194 MiB → 4.3 GiB excursion (parallel hilbert-10-oq-01-oq-02 Mathlib bearer survey clone caused the dip, since reclaimed), re-cloning Mathlib for FTC purposes is plausible but fragile in this window. Post-ACT delta: parent axiomCount 2 → 1; theoremCount 5 → 6; status carry-forward (axiomatized; lebesgue_ftc_integral axiom + Cantor sorry remain). Full record in `sessions/2026-06-02-iter4-prep-paste-ready-act-skeleton.md` (§§1-6). | Initial local notes identify the problem as a gallery-gap completion for the Lebesgue FTC proof, with no research attempts recorded yet.",
     "builtItems": [],
     "insights": [
       "The target theorem is the Lebesgue FTC for absolutely continuous functions.",
@@ -47,8 +47,10 @@
       "Source notes mention two axioms for absolutely continuous function theory."
     ],
     "nextSteps": [
-      "Inspect the parent proof fundamental-theorem-calculus-oq-01 for the line 224 Cantor function sorry.",
-      "Explore whether MeasureTheory.BoundedVariation tools can support the completion."
+      "Apply iter-4 paste-ready skeleton (sessions/2026-06-02-iter4-prep-paste-ready-act-skeleton.md §2.1-§2.2): import sibling file + replace lebesgue_ftc_differentiable axiom with a theorem body chaining FTCLebesgueACImpliesBV.ac_implies_bv → Mathlib BV→a.e.-diff.",
+      "Run iter-4 §3 single-pass Docker grep to disambiguate BV→a.e.-diff Mathlib name (BoundedVariationOn.ae_differentiableWithinAt vs LocallyBoundedVariationOn.ae_differentiableAt).",
+      "If `…ae_differentiableWithinAt` is the name: add elementary DifferentiableWithinAt.differentiableAt + Ioo_mem_nhds upgrade step (~10-20 LOC).",
+      "Post-ACT meta.json delta: axiomCount 2 → 1, theoremCount 5 → 6, status carry-forward."
     ],
     "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis is a targeted completion of the gallery proof `fundamental-theorem-calculus-oq-01`. The goal is the Lebesgue fundamental theorem of calculus for absolutely continuous functions: an absolutely continuous function is differentiable almost everywhere and its derivative integrates to the endpoint difference.\n\n## Insights\n\n- Parent proof `fundamental-theorem-calculus-oq-01` provides the foundation.\n- Source notes identify one remaining sorry, with line 224 tied to a Cantor function construction.\n- The notes flag absolutely continuous function theory as the likely Mathlib gap and suggest checking `MeasureTheory.BoundedVariation` tools.\n\n## Dead Ends\n\nNo failed approaches are recorded in the local notes.\n"
   },
@@ -68,5 +70,6 @@
   },
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 8,
-  "tractability": 6
+  "tractability": 6,
+  "lastUpdate": "2026-06-02T04:00:00Z"
 }
