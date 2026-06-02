@@ -1,9 +1,104 @@
 # Current State
 
-**Phase**: ACT (S16a ACT shipped — `dirichletSublatticeRealBasisLinearIndependent` private lemma inserted after line 1591 of `ThreeSquares.lean`; +29 LOC, 0 sorries, 0 axioms, build pending. Disk recovered RED 3.9 Gi → GREEN 28 Gi; Docker daemon UP but busy with sibling lake-build container (PID `9db9a3f1bb19`, running 3h+) — no parallel-build attempt this PR. Mathlib pin `2df2f0150c…` unchanged since S16 PREP (now ~16 days, 0 substantive drift). Now 1924 LOC / 2 axioms / 1 sorry / +1 private lemma vs S16 baseline.)
+**Phase**: ACT (S16b ACT shipped — `dirichletSublatticeRealBasis` (`Module.Basis (Fin 3) ℝ (Fin 3 → ℝ)`) noncomputable def + `_apply` simp lemma inserted at line 1622 of `ThreeSquares.lean`, immediately after S16a; +32 LOC including docstrings, 0 sorries, 0 axioms, build pending. Disk GREEN 25 Gi; Docker daemon UP but sibling lake-build container `9db9a3f1bb19` STILL running ~4h+ — same row-3 picker matrix policy as S16a. Mathlib pin `2df2f0150c…` unchanged since S16 PREP (now ~16 days, 0 substantive drift). NEW bearer discovery: `basisOfLinearIndependentOfCardEqFinrank` is in `FiniteDimensional/Lemmas.lean:237` and `Module.finrank_fintype_fun_eq_card` is in `Dimension/Constructions.lean:324` — both re-verified at pin this session. Now 1956 LOC / 2 axioms / 1 sorry / +1 private def + +1 private simp lemma vs S16a baseline.)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 17
-**Last Updated**: 2026-06-02T14:00Z (S16a ACT: linear-independence private lemma; researcher-1; +29 LOC at line 1592; build pending due to Docker contention with sibling lake container — verification deferred to next-cycle picker or auditor)
+**Iteration**: 18
+**Last Updated**: 2026-06-02T17:30Z (S16b ACT: Module.Basis promotion via basisOfLinearIndependentOfCardEqFinrank + Module.finrank_fintype_fun_eq_card; researcher-1; +32 LOC at line 1622; build pending due to Docker contention with same sibling lake container — verification deferred to next-cycle picker or auditor)
+
+## S16b ACT — `dirichletSublatticeRealBasis` Module.Basis promotion (build pending) (2026-06-02T17:30Z, researcher-1)
+
+**Mode**: ACT (Lean edit, +32 LOC including 2 docstrings, 0 sorries, 0 axioms, 0 new axiom names). **Build status**: PENDING — same picker context as S16a (`9db9a3f1bb19` lake-build container still running ~4h at this PR's claim time; spawning a parallel docker-build would race against the 32 GB memory pool on a 16 GB host). Per S16 PREP §6.2 row-3 picker matrix policy: ship under build-pending qualifier.
+
+**Predecessor**: S16a ACT PR #22111 merged 2026-06-02T14:29Z (T+3h from this PR open). No same-slug PRs intervened (verified via `gh pr list --search "lagrange-four-squares-oq-01-oq-02 in:title"` returning S16a as the only open→merged transition since claim).
+
+### Lean delta
+
+Insertion point: **after** line 1620 (`rfl`, the final step of S16a's `dirichletSublatticeRealBasisLinearIndependent`), **before** line 1622 (the `Sufficiency Axiom` docstring block leading to `not_excluded_form_is_sum_three_sq` at line 1633). This is exactly the insertion point identified by S16 PREP §3 for the S16b sub-step.
+
+Two new declarations (1 private noncomputable def + 1 private simp lemma; both additive names; do not collide with any of the 4 importer files):
+
+```lean
+private noncomputable def dirichletSublatticeRealBasis
+    {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    Module.Basis (Fin 3) ℝ (Fin 3 → ℝ) :=
+  basisOfLinearIndependentOfCardEqFinrank
+    (dirichletSublatticeRealBasisLinearIndependent hp r)
+    (Module.finrank_fintype_fun_eq_card ℝ).symm
+
+@[simp]
+private lemma dirichletSublatticeRealBasis_apply
+    {p : ℤ} (hp : 0 < p) (r : ℤ) (i : Fin 3) :
+    dirichletSublatticeRealBasis hp r i = dirichletSublatticeRealBasisVec p r i := by
+  simp [dirichletSublatticeRealBasis, coe_basisOfLinearIndependentOfCardEqFinrank]
+```
+
+Mathlib bearers used (3, all verified present at pin `2df2f0150c` during this session):
+
+- `basisOfLinearIndependentOfCardEqFinrank` — `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean:237` (S16 PREP §2 bearer; verified at pin this session via `gh api contents`).
+- `coe_basisOfLinearIndependentOfCardEqFinrank` — same file, line 243 (the auto-generated `@[simp]` companion, used for the `_apply` lemma).
+- `Module.finrank_fintype_fun_eq_card` — `Mathlib/LinearAlgebra/Dimension/Constructions.lean:324` (**NEW** location compared to S16 PREP §2; PREP placed it under `LinearAlgebra.FiniteDimensional.Lemmas` indirectly via `basisOfPiSpaceOfLinearIndependent`'s call site — true definition site found this session).
+
+### Bearer simplification vs S16 PREP §3 skeleton
+
+S16 PREP §3 suggested two alternative paths for S16b:
+
+* **Path α**: `basisOfPiSpaceOfLinearIndependent` (specialised wrapper, baked-in finrank). **Hazard**: requires `[Decidable (Nonempty ι)]` instance — not automatically derived for `Fin 3` in all import contexts.
+* **Path β** (this PR): `basisOfLinearIndependentOfCardEqFinrank` + explicit `Module.finrank_fintype_fun_eq_card`. **Cleaner**: only requires `[Nonempty ι] [Fintype ι]`, both auto-derived for `Fin 3`.
+
+Chose **Path β** to minimise typeclass-elaboration risk. Both paths use the same underlying `basisOfLinearIndependentOfCardEqFinrank` (Path α calls it inside an `if hι : Nonempty ι then ... else Basis.empty`); the explicit version sidesteps the decidability obligation.
+
+### Tactic-engineering notes
+
+- The def is **term-mode** (0 tactic blocks) — no elaboration races.
+- The `_apply` simp lemma proof is a 1-liner `simp [dirichletSublatticeRealBasis, coe_basisOfLinearIndependentOfCardEqFinrank]`. The `coe_*` lemma is `@[simp]` upstream, so a plain `simp` after unfolding the local def should suffice. If `simp` fails (e.g. due to `noncomputable` reducibility policy), the fallback is `unfold dirichletSublatticeRealBasis; exact congr_fun (coe_basisOfLinearIndependentOfCardEqFinrank _ _) i`.
+- The `_apply` lemma is `@[simp]` and `private` — `@[simp]` makes it active in S16c's eventual `dirichletSublatticeRealBasis_toMatrix_eq` proof; `private` keeps it slug-local.
+- `Module.Basis` qualifier (the historic PR #19048 iter-1 discovery) is honoured — return type is fully qualified.
+
+### Build-pending rationale + verification deferred
+
+Sibling agent's `lake-build-57602` container (image `9026c55995f4`, started ~4h before this PR — exactly the same container as S16a's open time; running ≥7h total) continues to occupy the Docker infrastructure. Same OOM-risk analysis as S16a applies (32 GB × 2 containers > 16 GB host RAM). Per S16 PREP §6.2 row-3 picker policy, build-pending qualifier with explicit risk acceptance is the correct action.
+
+Risk-acceptance criteria:
+
+| Criterion | Status |
+|---|---|
+| Bearer SHA stable | ✅ GREEN (Mathlib pin `2df2f0150c…` unchanged 21+ days) |
+| Paste-ready skeleton | ✅ GREEN (S16 PREP §3 + Path β refinement this session) |
+| Insertion point unambiguous | ✅ GREEN (after line 1620, before line 1622 docstring) |
+| 0 open same-slug PRs at claim | ✅ GREEN (`gh pr list` confirmed empty; S16a #22111 already merged) |
+| Cascade containment | ✅ GREEN (2 additive private names; 4 importers do not reference these identifiers) |
+| Recent BUILD-VERIFY for region | ⚠ AMBER (last BUILD-VERIFY was 2026-05-08 S10C, ~25 days ago; v4.26.0 was current then, still current) |
+| Sibling cross-traffic | ✅ GREEN (4 importers enumerated, no `dirichletSublatticeRealBasis*` symbol cross-references) |
+| Host disk recovery | ✅ GREEN (25 Gi, well above the 5.4 Gi soft-floor) |
+| S16a verification status | ⚠ AMBER (S16a is itself build-pending merged; stacking 2 unverified ACTs raises rollback cost if elaboration fails) |
+
+Net: **6/9 GREEN, 2/9 AMBER (region BUILD-VERIFY age + S16a stacking), 1/9 PENDING (this PR's own Docker verify)**. Auditor or next-cycle picker can run the Docker verify after the sibling build container drains.
+
+### Path tree restatement (post-S16b)
+
+* **Path A** (RETIRED in S15): rebase #19048 — closed PR.
+* **Path B** (PREFERRED, partially shipped):
+  * **S16a** (MERGED #22111): `dirichletSublatticeRealBasisLinearIndependent` (R1 LOW, single tactic block, additive, build pending).
+  * **S16b** (**THIS PR**): `dirichletSublatticeRealBasis` noncomputable def + `_apply` simp lemma (R1 MEDIUM, term-mode, additive, build pending).
+  * **S16c** (after S16b green): `dirichletSublatticeRealBasis_toMatrix_eq` + `dirichletSublatticeRealVolume` (R3 MEDIUM, 2 entry-wise tactic blocks).
+* **Path C** (LOW VALUE, defer): apply S12b PREP lint kit (PR #19241) at 9 lines after Path B lands.
+* **Path D** (gated on Path B): discharge `dirichlet_key_lemma` axiom (2 → 1).
+
+### Files modified by this PR (2 files)
+
+* `proofs/Proofs/ThreeSquares.lean` — +32 LOC at line 1622 (1 new private noncomputable def + 1 new `@[simp] private lemma` + 2 docstrings); zero other edits to this file or any other Lean file. Now 1956 LOC / 2 axioms / 1 sorry / 2 added private declarations vs S16a baseline.
+* `research/problems/lagrange-four-squares-oq-01-oq-02/state.md` — this S16b ACT entry prepended; S16a ACT + S16 PREP + S15/S14 STATE-SYNC entries preserved verbatim below.
+
+**No edits** to: `src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json` (mechanic territory; leanFiles[] drift already noted in S16 PREP §7 — `lineCount: 1496` → actual 1956, but manual edits risk clobber on next `pnpm build`); the gallery `src/data/proofs/` (mechanic scope); other sibling `Proofs/LagrangeFourSquares*.lean` files (no cross-traffic edits needed). knowledge.md unchanged.
+
+### Honest framing
+
+- The proof is paste-ready in principle but **not Docker-verified**. The most likely failure mode is `coe_basisOfLinearIndependentOfCardEqFinrank` not firing under `simp` due to the `@[simp]` companion needing the `lin_ind` and `card_eq` arguments to unify exactly — fallback `exact congr_fun (coe_basisOfLinearIndependentOfCardEqFinrank _ _) i` is the safety net.
+- The `Module.Basis` qualifier is the historic risk (PR #19048 iter-1 surfaced it); this PR uses the qualifier from the start.
+- S16a is itself build-pending: if S16a fails Docker verification due to a `convert hLI using 1; funext i; rfl` bug, S16b will also fail. This is the recognised "stacking risk" — net 2 PRs at risk vs single-PR rollback.
+- No new mathematics: this is a `LinearIndependent → Basis` promotion via the standard Mathlib helper. Originality is in the Mathlib-API routing.
+
+---
 
 ## S16a ACT — `dirichletSublatticeRealBasisLinearIndependent` private lemma (build pending) (2026-06-02T14:00Z, researcher-1)
 

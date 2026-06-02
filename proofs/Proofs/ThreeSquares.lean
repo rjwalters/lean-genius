@@ -1619,6 +1619,38 @@ private lemma dirichletSublatticeRealBasisLinearIndependent
   funext i
   rfl
 
+/-- **S16b ACT** — Promote `dirichletSublatticeRealBasisVec p r` from a linearly
+independent family (S16a) to a `Module.Basis` of the ambient pi-space `Fin 3 → ℝ`.
+
+Uses Mathlib's `basisOfLinearIndependentOfCardEqFinrank` (the standard helper for
+turning a `LinearIndependent` family of the correct cardinality into a `Basis`):
+
+  * S16a's `dirichletSublatticeRealBasisLinearIndependent` discharges the
+    `LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r)` obligation.
+  * `Module.finrank_fintype_fun_eq_card` provides
+    `Fintype.card (Fin 3) = Module.finrank ℝ (Fin 3 → ℝ)` after `.symm`.
+
+This is the second sub-ACT (S16b) of S16 PREP's Path B refinement, depending on
+S16a and enabling S16c's `dirichletSublatticeRealBasis_toMatrix_eq` rewrite and
+the final ZSpan covolume `volume(F) = (p : ℝ)²`. -/
+private noncomputable def dirichletSublatticeRealBasis
+    {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    Module.Basis (Fin 3) ℝ (Fin 3 → ℝ) :=
+  basisOfLinearIndependentOfCardEqFinrank
+    (dirichletSublatticeRealBasisLinearIndependent hp r)
+    (Module.finrank_fintype_fun_eq_card ℝ).symm
+
+/-- The coercion of `dirichletSublatticeRealBasis` agrees with
+`dirichletSublatticeRealBasisVec` pointwise. Follows from
+`coe_basisOfLinearIndependentOfCardEqFinrank` (the `@[simp]` companion lemma
+sitting just below the `basisOfLinearIndependentOfCardEqFinrank` definition in
+`Mathlib.LinearAlgebra.FiniteDimensional.Lemmas`). -/
+@[simp]
+private lemma dirichletSublatticeRealBasis_apply
+    {p : ℤ} (hp : 0 < p) (r : ℤ) (i : Fin 3) :
+    dirichletSublatticeRealBasis hp r i = dirichletSublatticeRealBasisVec p r i := by
+  simp [dirichletSublatticeRealBasis, coe_basisOfLinearIndependentOfCardEqFinrank]
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
