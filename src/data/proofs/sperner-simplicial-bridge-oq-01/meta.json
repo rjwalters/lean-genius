@@ -14,7 +14,7 @@
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 3,
-    "lineCount": 267,
+    "lineCount": 270,
     "sorries": 0,
     "imports": ["Proofs.SpernerSimplicialBridge"],
     "tags": [
@@ -26,7 +26,7 @@
       "stratified",
       "open-question"
     ],
-    "assumptions": "0 sorries, 0 axioms — the formalisation is mathematically complete and machine-verified. Build confirmed against Mathlib v4.26.0 via `./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01` (7745 jobs, no errors) — see `research/problems/sperner-simplicial-bridge-oq-01/sessions/2026-05-14-s5-build-verification-and-status-promotion.md`. No mathematical assumptions beyond what the parent `sperner-simplicial-bridge` already carries (`LinearOrder E` for the per-stratum stratum; `DecidableEq E` for `Finset.filter`). The `MixedPseudomanifold.of_pure` sanity check verifies that pure pseudomanifolds lift to the mixed predicate (vacuously at strata of other dimensions), so the new framework genuinely subsumes the parent.",
+    "assumptions": "0 sorries, 0 axioms — the formalisation is mathematically complete and machine-verified. Build re-confirmed against Mathlib v4.26.0 via `./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01` (7745 jobs, no errors, 9.5s file compile) — see `research/problems/sperner-simplicial-bridge-oq-01/sessions/2026-06-01-s17-build-verify-repair.md` (S17 BUILD-VERIFY REPAIR retires the S14 + S16 ACT 'build pending' qualifier by removing latent broken `omit ... in` directives and fixing a `∃ d (c : ...)` binder-syntax error). No mathematical assumptions beyond what the parent `sperner-simplicial-bridge` already carries (`LinearOrder E` for the per-stratum stratum; `DecidableEq E` for `Finset.filter`). The `MixedPseudomanifold.of_pure` sanity check verifies that pure pseudomanifolds lift to the mixed predicate (vacuously at strata of other dimensions), so the new framework genuinely subsumes the parent.",
     "proofRepoPath": "Proofs/SpernerSimplicialBridgeOQ01.lean",
     "originalContributions": [
       "`topCellsOfDim K d`: dimension-graded stratification of a finite simplicial complex `K : Finset (Finset E)` — the cells with exactly `d + 1` vertices, defined via `Finset.filter`.",
@@ -39,7 +39,7 @@
   },
   "leanFile": {
     "path": "Proofs/SpernerSimplicialBridgeOQ01.lean",
-    "lineCount": 267,
+    "lineCount": 270,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 13,

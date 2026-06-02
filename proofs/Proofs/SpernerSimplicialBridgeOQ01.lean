@@ -5,6 +5,16 @@ Authors: RJ Walters
 -/
 import Proofs.SpernerSimplicialBridge
 
+-- The mixed-pseudomanifold API ergonomics theorems (S16) and the
+-- mixed-aggregator (S14) are stated under the same `variable [DecidableEq E]
+-- [LinearOrder E]` block as the parent's `exists_panchromatic`, but a few of
+-- them genuinely don't reference both instances. Suppress the
+-- `unusedSectionVars` linter here rather than scatter `omit ... in` directives
+-- across every leaf lemma — the per-section variable scope is intentional and
+-- the unused warnings are noise, not real findings (cf. S17 BUILD-VERIFY
+-- repair, 2026-06-01).
+set_option linter.unusedSectionVars false
+
 /-!
 # Sperner's Lemma for Mixed-Dimension Simplicial Complexes (OQ-01)
 
@@ -71,7 +81,6 @@ def MixedPseudomanifold (K : Finset (Finset E)) : Prop :=
 
 /-- When every cell in `K` has cardinality `d + 1`, the dimension-`d`
 stratum is `K` itself. -/
-omit [DecidableEq E] in
 theorem topCellsOfDim_eq_of_pure {d : Nat}
     (K : Finset (Finset E))
     (hcard : ∀ s ∈ K, s.card = d + 1) :
@@ -81,7 +90,6 @@ theorem topCellsOfDim_eq_of_pure {d : Nat}
 
 /-- When every cell in `K` has cardinality `d + 1`, strata at other
 dimensions `d' ≠ d` are empty. -/
-omit [DecidableEq E] in
 theorem topCellsOfDim_eq_empty_of_pure {d d' : Nat}
     (K : Finset (Finset E))
     (hcard : ∀ s ∈ K, s.card = d + 1) (hne : d' ≠ d) :
@@ -113,7 +121,6 @@ theorem MixedPseudomanifold.of_pure {d : Nat}
 /-! ## API ergonomics: stratum membership, empty complex, and monotonicity -/
 
 /-- `topCellsOfDim K d` is a sub-`Finset` of `K`. -/
-omit [DecidableEq E] in
 theorem topCellsOfDim_subset (K : Finset (Finset E)) (d : Nat) :
     topCellsOfDim K d ⊆ K := by
   unfold topCellsOfDim
@@ -121,21 +128,18 @@ theorem topCellsOfDim_subset (K : Finset (Finset E)) (d : Nat) :
 
 /-- Clean iff form of stratum membership: `s` lies in the dimension-`d`
 stratum iff `s ∈ K` and `s` has exactly `d + 1` vertices. -/
-omit [DecidableEq E] in
 theorem mem_topCellsOfDim_iff {d : Nat} {K : Finset (Finset E)} {s : Finset E} :
     s ∈ topCellsOfDim K d ↔ s ∈ K ∧ s.card = d + 1 := by
   unfold topCellsOfDim
   exact Finset.mem_filter
 
 /-- Every dimension stratum of the empty complex is empty. -/
-omit [DecidableEq E] in
 theorem topCellsOfDim_empty (d : Nat) :
     topCellsOfDim (∅ : Finset (Finset E)) d = ∅ := by
   unfold topCellsOfDim
   exact Finset.filter_empty _
 
 /-- The empty complex is (vacuously) a mixed pseudomanifold. -/
-omit [DecidableEq E] in
 theorem MixedPseudomanifold.empty :
     MixedPseudomanifold (∅ : Finset (Finset E)) := by
   intro d f _
@@ -146,7 +150,6 @@ theorem MixedPseudomanifold.empty :
 cells from a mixed pseudomanifold can only decrease the count of
 dimension-`d` cells containing any given face, so the `≤ 2` upper bound
 carries through. Useful when restricting attention to a sub-complex. -/
-omit [DecidableEq E] in
 theorem MixedPseudomanifold.mono {K K' : Finset (Finset E)}
     (hsub : K' ⊆ K) (h : MixedPseudomanifold K) :
     MixedPseudomanifold K' := by
@@ -178,14 +181,12 @@ section MixedSperner
 variable [LinearOrder E]
 
 /-- Every cell in the dimension-`d` stratum has cardinality `d + 1`. -/
-omit [DecidableEq E] [LinearOrder E] in
 theorem card_of_mem_topCellsOfDim {d : Nat}
     {K : Finset (Finset E)} {s : Finset E}
     (hs : s ∈ topCellsOfDim K d) : s.card = d + 1 :=
   (Finset.mem_filter.mp hs).2
 
 /-- Per-dimension specialisation of the mixed-pseudomanifold predicate. -/
-omit [LinearOrder E] in
 theorem hpseudo_of_mixed {d : Nat}
     {K : Finset (Finset E)} (hmixed : MixedPseudomanifold K) :
     ∀ f : Finset E, f.card = d →
@@ -254,8 +255,10 @@ If the mixed pseudomanifold `K` admits any dimension `d` and coloring
 panchromatic top cell at that dimension. -/
 theorem sperner_mixed_panchromatic_global
     (K : Finset (Finset E)) (hmixed : MixedPseudomanifold K)
-    (hd : ∃ d (c : E → Fin (d + 1)), Odd (boundaryDoorCount (d := d) K c)) :
-    ∃ d (c : E → Fin (d + 1)) (s : { s : Finset E // s ∈ topCellsOfDim K d }),
+    (hd : ∃ (d : Nat) (c : E → Fin (d + 1)),
+        Odd (boundaryDoorCount (d := d) K c)) :
+    ∃ (d : Nat) (c : E → Fin (d + 1))
+      (s : { s : Finset E // s ∈ topCellsOfDim K d }),
       Sperner.IsPanchromatic
         (fun (σ : { s // s ∈ topCellsOfDim K d }) =>
           vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s := by
