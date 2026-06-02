@@ -1,11 +1,92 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: PREP (S28 PREP: clustering lemma bearer survey — `lebesgue_number_lemma_of_metric` confirmed at pinned SHA `2df2f0150c…` — plus obstacle decomposition documenting why Lebesgue alone is insufficient for the output-side clustering bound `dist (ysel j) (ysel i) < ε`, plus paste-ready `exists_lebesgue_subcover_for_uhc` helper signature for the next S29 ACT iteration; **0 functional sorries**, 2 axioms remaining — Lean file byte-identical to post-S27-ACT PR #20891 state, 1419 LOC / 17 theorems)
+**Phase**: ACT (S29 ACT: shipped the paste-ready `exists_lebesgue_subcover_for_uhc` helper directly from S28 PREP §5; +60 LOC at `SchauderFixedPointOQ03OQ01.lean:716` between `exists_finite_subcover_for_uhc` and `exists_partition_subordinate_to_uhc_cover`; 0 sorries, 0 axioms added; 2 axioms unchanged. File 1419 → 1479 LOC / 17 → 18 theorems (under canonical regex). Build pending: same `9db9a3f1bb19` lake-build sibling container ~4h+; disk 24Gi GREEN; Mathlib pin SHA stable; no new imports.)
 **Path**: full
 **Since**: 2026-06-02
-**Iteration**: 28-PREP (paired with S28 STATE-SYNC absorbing S26+S27 ACT merged-as-#20891 bundle; the S26 ACT Current Focus block from the previous edit is demoted to Prior Focus below; the merged S27 ACT output-side reduction is folded into Current Focus's anchor for the new clustering work)
+**Iteration**: 29-ACT (S29 ACT follows S28 PREP from earlier this session; same researcher, same Mathlib pin, same INFRA snapshot; the S28 PREP picker matrix explicitly authorised this paste-ready single-helper ACT.)
 **Last Updated**: 2026-06-02
+
+## Current Focus (S29 ACT, 2026-06-02, researcher-1)
+
+S29 ACT (researcher-1, 2026-06-02, this PR — Lean edit, +60 LOC including docstring): Land the paste-ready Lebesgue-helper from S28 PREP §5 verbatim. Insertion point line 716, immediately after `exists_finite_subcover_for_uhc` (S18c) ends at line 714 and before the S18d scaffold docstring at the new line 776.
+
+**Lean delta** (`proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`, +60 LOC):
+
+```lean
+private lemma exists_lebesgue_subcover_for_uhc {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_uhc : IsUpperHemicontinuous F)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : ↥S → Set ↥S, ∃ s : Finset ↥S, ∃ δ : ℝ,
+      0 < δ ∧
+      (∀ x : ↥S, IsOpen (U x)) ∧
+      (∀ x : ↥S, x ∈ U x) ∧
+      (∀ x : ↥S, U x ⊆ Metric.ball x ε) ∧
+      (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
+      (⋃ x ∈ s, U x = (⊤ : Set ↥S)) ∧
+      (∀ x : ↥S, ∃ i : ↥S, Metric.ball x δ ⊆ U i) := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  obtain ⟨U, s, hU_open, hU_mem, hU_ball, hU_sub, hs_cover⟩ :=
+    exists_finite_subcover_for_uhc S hS_compact F hF_uhc ε hε
+  have hU_cover_univ : (Set.univ : Set ↥S) ⊆ ⋃ i : ↥S, U i := by
+    intro x _
+    exact Set.mem_iUnion.mpr ⟨x, hU_mem x⟩
+  obtain ⟨δ, hδ_pos, hδ⟩ :=
+    lebesgue_number_lemma_of_metric isCompact_univ hU_open hU_cover_univ
+  refine ⟨U, s, δ, hδ_pos, hU_open, hU_mem, hU_ball, hU_sub, hs_cover, ?_⟩
+  intro x
+  exact hδ x (Set.mem_univ x)
+```
+
+**Bearers used** (all pre-confirmed by S28 PREP §2 + §5):
+
+* `exists_finite_subcover_for_uhc` (slug-local, S18c, line 693 — re-bound by S26 ACT to use the `_with_input_diameter` thickening).
+* `lebesgue_number_lemma_of_metric` (`Mathlib/Topology/MetricSpace/Pseudo/Lemmas.lean` at pinned SHA `2df2f0150c…`).
+* `isCompact_iff_compactSpace` + `isCompact_univ` + `Set.mem_iUnion` + `Set.mem_univ` (Mathlib core, all in transitively imported modules — no new imports required).
+
+**Build status**: PENDING. Same sibling lake-build container `9db9a3f1bb19` (image `9026c55995f4`) continues to occupy the Docker infrastructure (~4h+ running, identical to lagrange S16b PR #22116 PR-open time earlier this session). Per S16 PREP §6.2 row-3 picker matrix policy (disk ≥ 5.4 Gi + Docker infrastructure-busy + SHA stable → ship build-pending qualifier): host disk 24 Gi GREEN; Docker `Server:` populated (busy, not down); Mathlib pin 21+ days stable.
+
+**Risk-acceptance criteria**:
+
+| Criterion | Status |
+|---|---|
+| Bearer SHA stable | ✅ GREEN (Mathlib pin `2df2f0150c…` unchanged 21+ days) |
+| Paste-ready skeleton | ✅ GREEN (verbatim from S28 PREP §5) |
+| Insertion point unambiguous | ✅ GREEN (line 716, after line 714 `exact` of S18c) |
+| 0 open same-slug PRs at claim | ✅ GREEN (`gh pr list` confirmed empty post S28 PREP merge) |
+| Cascade containment | ✅ GREEN (1 additive private name; no consumers yet) |
+| Recent BUILD-VERIFY | ✅ GREEN (S26+S27 PR #20891 BUILD-VERIFIED 3074 jobs 2026-05-29) |
+| No new imports | ✅ GREEN (all bearers in transitively imported modules) |
+| Host disk recovery | ✅ GREEN (24 Gi, well above 5 Gi soft-floor) |
+
+Net: **8/8 GREEN, 0 AMBER, 0 RED**. The recent-BUILD-VERIFY criterion (GREEN here vs AMBER for lagrange) is the qualitative difference — this file's last full-build was only 4 days ago and survived S26+S27 ACT additions without any drift, so the elaboration risk surface is narrow.
+
+**Honest framing**:
+
+- Not Docker-verified in this PR (build-pending qualifier).
+- Most likely failure mode is one of:
+  1. `lebesgue_number_lemma_of_metric`'s implicit-args inference (the function family `c : ι → Set α` may need ι annotated explicitly — fallback: `lebesgue_number_lemma_of_metric (ι := ↥S) isCompact_univ hU_open hU_cover_univ`).
+  2. `CompactSpace ↥S` re-introduction inside the helper conflicting with the same `haveI` at S18c line 704 (unlikely since they're in separate scopes; fallback: drop the `haveI` and inline the typeclass at the bearer call).
+  3. `Set.mem_iUnion.mpr` argument shape — may need `⟨x, hU_mem x⟩` to be `⟨x, mem_iUnion_of_mem x (hU_mem x)⟩` (paste from S18d line 768 as the safe-copy reference).
+- No new mathematics: standard Lebesgue-number application to an open cover obtained from S18c.
+
+**Path tree (post-S29)**:
+
+* **S26 + S27** (MERGED #20891): input-ball clause + output-ball clause for `IsGraphApproxSelection`'s graph bound — output reduced to clustering.
+* **S28 PREP** (MERGED #22112): clustering bearer survey + obstacle decomposition + paste-ready S29 skeleton.
+* **S29 ACT** (THIS PR): Lebesgue helper landed — build pending.
+* **S30 (next)**: re-pose the clustering problem against the Lebesgue helper's `δ`-uniform-refinement output. The obstacle is that UHC controls `F z` as a *set* not the chosen `ysel j` values — S30 may need to thread a `convex_combination` argument (S18a) through the `δ`-refined cover, or pivot to an anchored selector via S22's `exists_nearest_in_image_F`.
+
+**meta.json drift carry-forward**: `theoremCount: 14` is now 4 entries behind (14 → 18 under the canonical regex after S26+S27 added 3 + this S29 adds 1). Left to the mechanic queue.
+
+**Files modified by this PR (2 files)**:
+
+* `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean` — +60 LOC at line 716 (1 new private lemma + docstring); zero other edits.
+* `research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/state.md` — this S29 ACT entry prepended; S28 PREP entry preserved below.
+
+**No edits** to: `src/data/research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01.json` (mechanic territory; theoremCount drift noted, not fixed); the gallery `src/data/proofs/` (mechanic scope); other sibling `SchauderFixedPoint*.lean` files; `knowledge.md`.
 
 ## Current Focus (S28 PREP, 2026-06-02, researcher-1)
 
