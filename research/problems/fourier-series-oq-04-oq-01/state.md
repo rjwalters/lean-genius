@@ -1,10 +1,14 @@
 # Research State: fourier-series-oq-04-oq-01
 
 ## Current State
-**Phase**: ACT
-**Since**: 2026-05-31 (S11 ACT — `haarT2_eq_volume` bridge landed)
-**Iteration**: 10
-**Last Update**: 2026-05-31 (researcher-1) — **S11 ACT step-1-contingency**: `haarT2_eq_volume` measure-equality bridge landed as a sorry-free / axiom-free **public** theorem (~33 LOC including section docstring). Discharges **step 1 contingency** of the S7 audit §4 recipe (the haarT2/volume measure disambiguation). The Mathlib engine `hasSum_mFourier_series_L2` (in `Mathlib.Analysis.Fourier.AddCircleMulti` at pin v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with the **default `volume` measure** on `Fin 2 → AddCircle 1`. Our `haarT2` is `Measure.pi (fun _ => haarAddCircle)`. The bridge enables invoking the Mathlib engine on our `haarT2`-stated theorems. Combined with S9 (cofinality, step 3) and S10 (`Lp.coeFn_finset_sum` helper, step 2), **3 of 6 recipe steps are now landed**. Remaining S2e ACT scope shrinks to ~25-45 LOC (steps 1-setup + 4 + 5 + 6); the `eLpNorm`-form close remains a tractable single-iteration target.
+**Phase**: PREP (S12 doc-only Mathlib v4.26.0 API audit + tactic skeleton)
+**Since**: 2026-06-01 (S12 PREP — researcher-1)
+**Iteration**: 11
+**Last Update**: 2026-06-01 (researcher-1) — **S12 PREP Mathlib API audit**: doc-only PREP cataloging v4.26.0 signatures for `mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2` (all confirmed via `~/GitHub/mathlib4` at pinned commit `2df2f0150c`). Identifies the **measure-cast obstacle** between `Lp ℂ 2 volume` (Mathlib engine output type) and `Lp ℂ 2 haarT2` (our stated machinery) and proposes the workaround: **option (c) `eLpNorm` swap** — rewrite `haarT2 → volume` directly in the goal's `eLpNorm` arguments using `haarT2_eq_volume` (S11 ACT), avoiding any `Lp`-element transport. Mathlib does NOT expose `Lp.congr_measure` / `Lp.cast_of_eq_measure`. With option (c), the S13 ACT budget shrinks from 25-45 LOC to **18-35 LOC**. Step 1 setup confirmed no-op (`import Mathlib` already pulls `AddCircleMulti`). Full tactic skeleton with `sorry` holes drafted in S12 memo §5. See `sessions/2026-06-01-s12-prep-mathlib-api-audit.md`.
+
+## Previous Status — S11 ACT step-1-contingency (2026-05-31, researcher-1, MERGED PR #21611)
+
+**S11 ACT step-1-contingency**: `haarT2_eq_volume` measure-equality bridge landed as a sorry-free / axiom-free **public** theorem (~33 LOC including section docstring). Discharges **step 1 contingency** of the S7 audit §4 recipe (the haarT2/volume measure disambiguation). The Mathlib engine `hasSum_mFourier_series_L2` (in `Mathlib.Analysis.Fourier.AddCircleMulti` at pin v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with the **default `volume` measure** on `Fin 2 → AddCircle 1`. Our `haarT2` is `Measure.pi (fun _ => haarAddCircle)`. The bridge enables invoking the Mathlib engine on our `haarT2`-stated theorems. Combined with S9 (cofinality, step 3) and S10 (`Lp.coeFn_finset_sum` helper, step 2), **3 of 6 recipe steps were landed at S11**. Remaining S2e ACT scope at S11 close was ~25-45 LOC (steps 1-setup + 4 + 5 + 6); S12 PREP further shrinks to **18-35 LOC** via the `eLpNorm` swap workaround.
 
 ## Current Focus
 
