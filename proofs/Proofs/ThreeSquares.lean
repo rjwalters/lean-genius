@@ -1590,6 +1590,35 @@ private lemma cast_int_mem_dirichletSublatticeReal
   rw [hkey]
   exact hsum
 
+/-- **S16a (real basis linear independence)**: The three real-valued
+Dirichlet sublattice basis vectors `(p, 0, 0), (r, 1, 0), (0, 0, p)` are
+linearly independent over `ℝ` whenever `p > 0`. Proof: their determinant
+(via S10C's `dirichletSublatticeRealBasisMatrix_det`) is `(p : ℝ)^2 ≠ 0`,
+so the matrix is a unit (`Matrix.isUnit_iff_isUnit_det`), and its rows
+are therefore linearly independent (`Matrix.linearIndependent_rows_of_isUnit`).
+
+This is the first sub-ACT (S16a) of S16 PREP's Path B refinement; it is
+the prerequisite for S16b's `dirichletSublatticeRealBasis : Module.Basis`
+construction, which in turn enables S16c's ZSpan covolume calculation
+`volume(F) = (p : ℝ)²`. -/
+private lemma dirichletSublatticeRealBasisLinearIndependent
+    {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r) := by
+  have hp_real : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hp
+  have hdet : (dirichletSublatticeRealBasisMatrix p r).det ≠ 0 := by
+    rw [dirichletSublatticeRealBasisMatrix_det]
+    positivity
+  have hunit : IsUnit (dirichletSublatticeRealBasisMatrix p r) :=
+    (Matrix.isUnit_iff_isUnit_det _).mpr hdet.isUnit
+  have hLI : LinearIndependent ℝ (dirichletSublatticeRealBasisMatrix p r).row :=
+    Matrix.linearIndependent_rows_of_isUnit hunit
+  -- `dirichletSublatticeRealBasisVec p r i = dirichletSublatticeRealBasisMatrix p r i`
+  -- by definition; `Matrix.row` is the identity coercion, so the two functions agree
+  -- pointwise and we can convert.
+  convert hLI using 1
+  funext i
+  rfl
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
