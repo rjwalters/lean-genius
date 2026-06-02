@@ -37,7 +37,10 @@
     ],
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "theoremCount": 9,
-    "definitionCount": 5
+    "definitionCount": 5,
+    "additionalFiles": [
+      "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean"
+    ]
   },
   "leanFile": {
     "lineCount": 164,
@@ -45,7 +48,10 @@
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 5,
-    "theoremCount": 9
+    "theoremCount": 9,
+    "additionalFiles": [
+      "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The theory of quadratic residues was systematized by Adrien-Marie Legendre (1748–1833), who introduced the Legendre symbol $(a/p) \\in \\{0, \\pm 1\\}$ for odd primes $p$. Carl Friedrich Gauss proved quadratic reciprocity — the fundamental symmetry $(p/q)(q/p) = (-1)^{(p-1)(q-1)/4}$ — in his Disquisitiones Arithmeticae (1801), and provided eight different proofs over his lifetime. Carl Gustav Jacob Jacobi (1804–1851) extended the Legendre symbol to the Jacobi symbol $(a/n)$ for all odd positive $n$ (not just primes), enabling cleaner proofs via multiplicativity. Leopold Kronecker (1823–1891) completed the generalization: the Kronecker symbol extends the Jacobi symbol to ALL integer moduli, including even numbers and negative values. This extension is not merely a technical convenience — it is essential for the theory of quadratic forms (the Kronecker symbol $(D/n)$ is a Dirichlet character for discriminant $D$), class field theory, and the theory of L-functions.",

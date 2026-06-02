@@ -10,12 +10,17 @@
       "Mathlib",
       "Proofs.LawOfCosinesOQ04"
     ],
-    "opens": ["StewartsTheorem"],
+    "opens": [
+      "StewartsTheorem"
+    ],
     "axiomCount": 0,
     "sorries": 0,
     "lineCount": 173,
     "theoremCount": 9,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "additionalFiles": [
+      "Proofs/LawOfCosinesOQ04OQ02OQ01.lean"
+    ]
   },
   "openQuestion": {
     "id": "law-of-cosines-oq-04-oq-02",
@@ -256,28 +261,41 @@
         "content": "Three lemmas establish the algebraic consequences of the angle bisector ratio m·b = n·c combined with m + n = a: (1) m·(b+c) = a·c, (2) n·(b+c) = a·b, (3) m·n·(b+c)² = a²·bc. Each proved via linear_combination.",
         "startLine": 39,
         "endLine": 76,
-        "theorems": ["bisector_ratio_m", "bisector_ratio_n", "bisector_product"]
+        "theorems": [
+          "bisector_ratio_m",
+          "bisector_ratio_n",
+          "bisector_product"
+        ]
       },
       {
         "title": "Main Theorem (Cleared-Denominator Form)",
         "content": "The central result: t²·(b+c)² = bc·((b+c)²-a²). Proved by constructing a·(goal) via linear_combination, then canceling a using mul_left_cancel₀. The divided form t² = bc·((b+c)²-a²)/(b+c)² follows immediately.",
         "startLine": 79,
         "endLine": 124,
-        "theorems": ["angle_bisector_squared", "angle_bisector_ratio"]
+        "theorems": [
+          "angle_bisector_squared",
+          "angle_bisector_ratio"
+        ]
       },
       {
         "title": "Full Geometric Version",
         "content": "Combines Stewart's theorem from LawOfCosinesOQ04.lean with the algebraic angle bisector result to give the full geometric theorem under law-of-cosines sub-triangle hypotheses.",
         "startLine": 127,
         "endLine": 146,
-        "theorems": ["angle_bisector_length"]
+        "theorems": [
+          "angle_bisector_length"
+        ]
       },
       {
         "title": "Special Cases",
         "content": "Verifies the formula for equilateral triangles (t² = 3s²/4), 3-4-5 right triangles (t² = 288/49), and isoceles triangles (t² = b²-a²/4).",
         "startLine": 149,
         "endLine": 163,
-        "theorems": ["angle_bisector_equilateral", "angle_bisector_3_4_5", "angle_bisector_isoceles"]
+        "theorems": [
+          "angle_bisector_equilateral",
+          "angle_bisector_3_4_5",
+          "angle_bisector_isoceles"
+        ]
       }
     ],
     "mathContext": {
@@ -285,7 +303,10 @@
       "keyTheorem": "Angle bisector length formula: t² = bc·((b+c)²-a²)/(b+c)² where a, b, c are the triangle's sides and t is the bisector from A.",
       "historicalBackground": "The angle bisector length formula is a classical result in triangle geometry, typically proved via Stewart's Theorem (1746). The angle bisector theorem BD/DC = AB/AC was known to ancient Greek geometers. This formalization makes the algebraic derivation explicit via polynomial witnesses.",
       "significance": "Demonstrates how polynomial linear_combination witnesses can systematically derive non-trivial geometric identities from simpler algebraic hypotheses, providing a model for similar derivations."
-    }
+    },
+    "additionalFiles": [
+      "Proofs/LawOfCosinesOQ04OQ02OQ01.lean"
+    ]
   },
   "sorries": 0
 }
