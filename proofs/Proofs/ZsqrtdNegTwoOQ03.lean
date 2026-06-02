@@ -76,6 +76,19 @@ quadratic reciprocity) yields a non-trivial factorisation
 This file has 0 axioms, 0 sorries.
 -/
 
+/-- Closed `decide` helper hoisted outside `namespace Proofs`: `(2 : ZMod 3) ≠ 0`.
+    Used inside `legendreSym_three_eq_one_iff_p_mod_three_eq_one`; the in-namespace
+    `by decide` failed with a "free variables" error due to the surrounding
+    universe-polymorphic context. -/
+private lemma two_ne_zero_zmod_three : (2 : ZMod 3) ≠ 0 := by decide
+
+/-- Closed `decide` helper hoisted outside `namespace Proofs`: `2` is not a square
+    in `ZMod 3`. Used inside `legendreSym_three_eq_one_iff_p_mod_three_eq_one`. -/
+private lemma not_isSquare_two_zmod_three : ¬ IsSquare (2 : ZMod 3) := by
+  rintro ⟨r, hr⟩
+  have : ∀ x : ZMod 3, x * x ≠ 2 := by decide
+  exact this r hr.symm
+
 namespace Proofs
 
 /-- The Eisenstein integers `ℤ[ω]`, where `ω = exp(2πi/3)` is a
@@ -461,5 +474,86 @@ needed at this step. -/
 lemma legendreSym_neg_three (p : ℕ) [Fact p.Prime] :
     legendreSym p (-3) = legendreSym p (-1) * legendreSym p 3 := by
   rw [show ((-3 : ℤ) = (-1) * 3) by norm_num, legendreSym.mul]
+
+/-- Helper: `(p/3) = 1 ↔ p ≡ 1 mod 3` for primes `p ≠ 3`.
+
+    Reduces to `IsSquare ((p : ℕ) : ZMod 3)` via `legendreSym.eq_one_iff'`,
+    then case-splits on `p % 3 ∈ {1, 2}` (forced by `p ≠ 3` so `p % 3 ≠ 0`).
+    Branch `p % 3 = 1`: `(1 : ZMod 3)` is a square (`1 = 1 * 1`).
+    Branch `p % 3 = 2`: `(2 : ZMod 3)` is not a square (`decide` on
+    the finite codomain). -/
+private lemma legendreSym_three_eq_one_iff_p_mod_three_eq_one
+    (p : ℕ) [hp_fact : Fact p.Prime] (hp_ne_three : p ≠ 3) :
+    legendreSym 3 p = 1 ↔ p % 3 = 1 := by
+  haveI : Fact (3 : ℕ).Prime := ⟨by decide⟩
+  have hp_prime := hp_fact.out
+  have hp_mod_3 : p % 3 = 1 ∨ p % 3 = 2 := by
+    have h0 : p % 3 ≠ 0 := by
+      intro h
+      have hdvd : 3 ∣ p := Nat.dvd_of_mod_eq_zero h
+      rcases hp_prime.eq_one_or_self_of_dvd 3 hdvd with h1 | h3
+      · exact absurd h1 (by decide)
+      · exact hp_ne_three h3.symm
+    have := Nat.mod_lt p (by norm_num : 0 < 3)
+    omega
+  have hp_cast : (p : ZMod 3) = ((p % 3 : ℕ) : ZMod 3) := (ZMod.natCast_mod p 3).symm
+  rcases hp_mod_3 with hmod | hmod
+  · -- p % 3 = 1: both sides true.
+    have hpZ : (p : ZMod 3) = 1 := by rw [hp_cast, hmod]; rfl
+    have ha0 : (p : ZMod 3) ≠ 0 := by rw [hpZ]; exact one_ne_zero
+    refine ⟨fun _ => hmod, fun _ => ?_⟩
+    rw [legendreSym.eq_one_iff' (3 : ℕ) ha0, hpZ]
+    exact ⟨1, by ring⟩
+  · -- p % 3 = 2: both sides false.
+    have hpZ : (p : ZMod 3) = 2 := by rw [hp_cast, hmod]; rfl
+    have ha0 : (p : ZMod 3) ≠ 0 := by
+      rw [hpZ]; exact two_ne_zero_zmod_three
+    refine ⟨fun hLS => ?_, fun h => ?_⟩
+    · rw [legendreSym.eq_one_iff' (3 : ℕ) ha0, hpZ] at hLS
+      exact (not_isSquare_two_zmod_three hLS).elim
+    · exact absurd (h.symm.trans hmod) (by decide)
+
+/-- Step 2 of the splitting argument: for an odd prime `p ≠ 3`,
+    `(-3/p) = 1 ↔ p ≡ 1 mod 3`. The classical Heegner-number
+    characterization of the primes representable as `x² + 3y²`.
+
+    Proof strategy:
+    1. Decompose via `legendreSym_neg_three`: `(-3/p) = (-1/p) · (3/p)`.
+    2. Compute `(-1/p) = χ₄ p` via `legendreSym.at_neg_one`.
+    3. Case-split on `p % 4 ∈ {1, 3}`:
+       - `p % 4 = 1`: `χ₄ p = 1`; QR_one_mod_four gives `(3/p) = (p/3)`.
+       - `p % 4 = 3`: `χ₄ p = -1`; QR_three_mod_four gives
+         `(3/p) = -(p/3)`. The two `-1`s cancel.
+    4. Both branches reduce to `(p/3) = 1 ↔ p ≡ 1 mod 3`
+       via `legendreSym_three_eq_one_iff_p_mod_three_eq_one`. -/
+lemma legendreSym_neg_three_eq_one_iff
+    (p : ℕ) [hp_fact : Fact p.Prime]
+    (hp_ne_two : p ≠ 2) (hp_ne_three : p ≠ 3) :
+    legendreSym p (-3) = 1 ↔ p % 3 = 1 := by
+  rw [legendreSym_neg_three p, legendreSym.at_neg_one (p := p) hp_ne_two]
+  haveI : Fact (3 : ℕ).Prime := ⟨by decide⟩
+  have hp_prime := hp_fact.out
+  have hp_mod_4 : p % 4 = 1 ∨ p % 4 = 3 := by
+    have hp_odd : p % 2 = 1 := (Nat.Prime.mod_two_eq_one_iff_ne_two hp_prime).mpr hp_ne_two
+    have := Nat.mod_lt p (by norm_num : 0 < 4)
+    omega
+  -- Normalize `(3 : ℤ)` to `((3 : ℕ) : ℤ)` so QR's RHS pattern matches.
+  have h3cast : (3 : ℤ) = ((3 : ℕ) : ℤ) := by norm_cast
+  rcases hp_mod_4 with hp4 | hp4
+  · -- p % 4 = 1: χ₄ p = 1; QR gives (3/p) = (p/3).
+    rw [ZMod.χ₄_nat_one_mod_four hp4, one_mul, h3cast,
+        ← legendreSym.quadratic_reciprocity_one_mod_four hp4
+          (by decide : (3 : ℕ) ≠ 2)]
+    exact legendreSym_three_eq_one_iff_p_mod_three_eq_one p hp_ne_three
+  · -- p % 4 = 3: χ₄ p = -1; QR gives (3/p) = -(p/3).
+    rw [ZMod.χ₄_nat_three_mod_four hp4]
+    have hQR : legendreSym 3 p = -legendreSym p ((3 : ℕ) : ℤ) :=
+      legendreSym.quadratic_reciprocity_three_mod_four hp4
+        (by decide : (3 : ℕ) % 4 = 3)
+    -- From hQR: legendreSym p 3 = -legendreSym 3 p.
+    have hQR' : legendreSym p ((3 : ℕ) : ℤ) = -legendreSym 3 p := by linarith [hQR]
+    rw [h3cast, hQR']
+    rw [show ((-1 : ℤ) * -legendreSym 3 p = legendreSym 3 p) from by ring]
+    exact legendreSym_three_eq_one_iff_p_mod_three_eq_one p hp_ne_three
 
 end Proofs

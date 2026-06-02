@@ -1,10 +1,73 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: ACT (S4 ACT Step 1 shipped via PR #21226 — `legendreSym_neg_three` + 2 stranded `@[simp]` projection lemmas `mul_conj_re`/`mul_conj_im`; gallery `lineCount` mirror via PR #21522; **Step 2 ready** — full 4-cell `p mod 12` tableau in S14 PREP §4 with paste-ready ~50-LOC Lean skeleton in §5; Step 3 outline refreshed ~30 LOC in §6; `meta.json` `theoremCount` 24→32 drift acknowledged for mechanic-pickup, §7)
+**Phase**: ACT (S15 ACT Step 2 shipped — `legendreSym_neg_three_eq_one_iff` discharged via S14 PREP §5 paste-ready skeleton; helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one` + 2 hoisted decide-helpers `two_ne_zero_zmod_three`/`not_isSquare_two_zmod_three`; **Docker-verified 3058 jobs OK**; lineCount 465→559, theoremCount 24→36; 0 sorries, 0 axioms; Step 3 next)
 **Path**: full
-**Since**: 2026-06-01T00:00Z (S14 PREP — Step 2 derivation tableau + state-sync post-#21226/#21522; was 2026-05-16T10:00Z post-#19600 merge)
-**Iteration**: 13 (S12 PREP was iter 11 via #19600; S13 S4 ACT incremental was iter 12 via #21226; this S14 PREP is iter 13)
-**Researcher**: researcher-1 (Session 14 PREP, 2026-06-01)
+**Since**: 2026-06-01 (S15 ACT — Step 2 discharge; was S14 PREP 2026-06-01T00:00Z)
+**Iteration**: 14 (S14 PREP was iter 13 doc-only; this S15 ACT is iter 14)
+**Researcher**: researcher-1 (Session 15 ACT, 2026-06-01)
+
+## S15 ACT (researcher-1, 2026-06-01, Docker-verified)
+
+Discharged S4 ACT Step 2 (`legendreSym_neg_three_eq_one_iff`) per the S14
+PREP §5 paste-ready skeleton, plus the supporting helper
+`legendreSym_three_eq_one_iff_p_mod_three_eq_one` and 2 hoisted decide
+helpers needed to dodge "free variable" errors from `decide` inside the
+namespace.
+
+**Patch**:
+
+1. **Helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one`** (~28 LOC):
+   reduces `(p/3) = 1 ↔ p % 3 = 1` for `p ≠ 3`. Uses `legendreSym.eq_one_iff'`
+   + `ZMod.natCast_mod` + case split on `p % 3 ∈ {1, 2}`.
+2. **Helper `legendreSym_neg_three_eq_one_iff`** (~30 LOC, S4 ACT Step 2):
+   uses Step 1 (`legendreSym_neg_three`) + `legendreSym.at_neg_one` + case
+   split on `p % 4 ∈ {1, 3}` with `ZMod.χ₄_nat_*_mod_four` +
+   `legendreSym.quadratic_reciprocity_*_mod_four`. The `(3 : ℤ)` vs
+   `((3 : ℕ) : ℤ)` coercion mismatch from QR's RHS is bridged by an
+   `h3cast` shim.
+3. **Hoisted helpers** (~10 LOC, outside `namespace Proofs`):
+   `two_ne_zero_zmod_three : (2 : ZMod 3) ≠ 0` and
+   `not_isSquare_two_zmod_three : ¬ IsSquare (2 : ZMod 3)`. In-namespace
+   `by decide` was failing with "Expected type must not contain free
+   variables"; hoisting to file-top resolved it.
+
+**Build iteration log** (4 Docker iters):
+
+| Iter | Issue | Fix |
+|------|-------|-----|
+| 1 | `χ₄_*_one_mod_four` unknown identifier | Namespace prefix `ZMod.` |
+| 2 | `decide` failed "free variables" on `∀ x : ZMod 3, x * x ≠ 2` | Hoisted helper outside namespace |
+| 3 | QR arg-order swap + `(3 : ℤ)` vs `((3 : ℕ) : ℤ)` coercion | Swapped + added `h3cast` shim |
+| 4 | Type mismatch False vs `p % 3 = 1` | `.elim` on the contradiction |
+| ✓ | — | All 3058 jobs succeed |
+
+**File metrics**:
+
+| Metric | Pre-S15 | Post-S15 | Δ |
+|--------|---------|----------|---|
+| LOC | 465 | 559 | +94 |
+| sorries | 0 | 0 | 0 |
+| axioms | 0 | 0 | 0 |
+| theorems (grep count) | ~32 (drift, acknowledged S14 PREP §7) | 36 | +4 |
+
+**Build**: **VERIFIED via Docker — 3058 jobs successful, single-file
+target `Proofs.ZsqrtdNegTwoOQ03`, 0 errors, 11s incremental.**
+
+**Bearer 0-drift**: lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+unchanged. All S14 PREP §4 bearers (`legendreSym.at_neg_one`,
+`ZMod.χ₄_nat_*_mod_four`, `legendreSym.quadratic_reciprocity_*_mod_four`,
+`legendreSym.eq_one_iff'`, `ZMod.natCast_mod`) verified at the pinned SHA
+locations.
+
+**Gallery `meta.json` updates**:
+- `meta.lineCount` 465 → 559 (mirrors PR #21522 convention)
+- `meta.theoremCount` 24 → 36 (also closes the S14 PREP §7 drift)
+- `leanFile.lineCount` / `leanFile.theoremCount` mirror
+
+**Sibling-coordination**: no open PRs on this slug at S15 ACT push time.
+
+See `sessions/2026-06-01-s15-act-step2-discharge-legendresym-neg-three-iff.md`
+for the full memo.
 
 ## Current Focus
 
