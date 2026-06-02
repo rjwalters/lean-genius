@@ -21,10 +21,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "theoremCount": 5,
+    "lineCount": 194,
+    "theoremCount": 6,
     "definitionCount": 0,
-    "assumptions": "None. All five theorems proved from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three`, `InnerProductSpace.volume_closedBall`, `hasDerivAt_pow`, and `HasDerivWithinAt.congr` infrastructure.",
+    "assumptions": "None. All six theorems proved from Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three`, `InnerProductSpace.volume_closedBall`, `hasDerivAt_pow`, `HasDerivWithinAt.congr`, `ENNReal.toReal_*`, `Real.sqrt_eq_rpow`/`Real.rpow_natCast`/`Real.rpow_mul`, and `Real.Gamma_pos_of_pos` infrastructure, plus the in-repo sibling `CircumferenceViaDifferentiationOQ01.nBallVolumeFn_hasDerivAt` (verified, 0 sorries, 0 axioms).",
     "mathlibDependencies": [
       {
         "theorem": "EuclideanSpace.volume_closedBall_fin_two",
@@ -61,7 +61,8 @@
       "Intrinsic statement of the parent identity dV/dr = A via Mathlib's `EuclideanSpace.volume_closedBall` primitive, rather than via the parent's polynomial definitions — exhibits the Lebesgue volume of `Metric.closedBall p r` as the bearer of the identity",
       "ENNReal toReal-chain technique for bridging Mathlib's `volume : Measure E` (ENNReal-valued) to the parent's real-valued polynomial `nBallVolumeFn`, generalizable to higher dimensions where the `EuclideanSpace.volume_closedBall_fin_n` family is available",
       "Workaround C statement form: `HasDerivWithinAt _ _ (Set.Ici 0) r` directly, sidestepping the unprovable two-sided `HasDerivAt` for r = 0 (where `Metric.closedBall p 0 = {p}` collapses, breaking differentiability at the endpoint)",
-      "First gallery entry to use Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` lemmas in derivative form, demonstrating they are usable for downstream calculus identities"
+      "First gallery entry to use Mathlib's `EuclideanSpace.volume_closedBall_fin_two`/`_fin_three` lemmas in derivative form, demonstrating they are usable for downstream calculus identities",
+      "Polymorphic main theorem `riemannianVolumeBall_hasDerivWithinAt` (S8 ACT) — extends the concrete `_fin_two`/`_fin_three` cases to every finite-dimensional real inner-product space `E` with `[Nontrivial E]`, by composing the S7 ACT-S3 polymorphic Bridge 1 (`riemannianVolumeBall_eq_nBallVolumeFn`) with the parent OQ-01 polynomial derivative (`nBallVolumeFn_hasDerivAt`) via `HasDerivWithinAt.congr`. Closes the R1 vector-space ACT roadmap."
     ],
     "dateAdded": "2026-05-31",
     "mathlib_version": "4.26.0"
