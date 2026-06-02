@@ -189,6 +189,21 @@ lemma reflectAt_eq_below_firstHit
   unfold reflectAt
   exact if_neg (Nat.not_le_of_lt hi)
 
+/-- **R4-sub helper (S9 ACT).** Partial sums up to a position not exceeding
+    the first hit time are unchanged by reflection. The sum's `i.val < k.val`
+    guard restricts each summand index `i` to satisfy `i.val < k.val ≤ τ.val`,
+    so `reflectAt_eq_below_firstHit` collapses every summand pointwise. -/
+lemma partialSumBool_congr_below
+    {ω : Fin n → Bool} {a : ℤ} {k : Fin (n+1)}
+    (hk : k.val ≤ (firstHitFin ω a).val) :
+    partialSumBool (reflectAt ω a) k = partialSumBool ω k := by
+  unfold partialSumBool
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  by_cases hi : i.val < k.val
+  · rw [if_pos hi, if_pos hi,
+        reflectAt_eq_below_firstHit (Nat.lt_of_lt_of_le hi hk)]
+  · rw [if_neg hi, if_neg hi]
+
 /-- **R4** Reflection is involutive **on the non-empty-hit-set branch**.
     `reflectAt (reflectAt ω a) a = ω` whenever `(hitSet ω a).Nonempty`.
 
@@ -207,13 +222,40 @@ lemma reflectAt_involutive {ω : Fin n → Bool} {a : ℤ}
     (h : (hitSet ω a).Nonempty) :
     reflectAt (reflectAt ω a) a = ω := by
   -- Step 1: firstHitFin is preserved under reflection (uses h).
-  -- Discharge sketch (S7 PREP §3, 6 bullets):
-  --   τ := (hitSet ω a).min' h ∈ hitSet (reflectAt ω a) a via
-  --   `reflectAt_eq_below_firstHit` + `Finset.sum_congr`;
-  --   antisymmetry on `Fin (n+1)` via `min'_le` (both directions).
-  -- Left as a named sub-sorry for S9; ~15 LOC inline discharge planned.
+  -- Discharged inline (S9 ACT): the partial-sum equality below τ
+  -- (`partialSumBool_congr_below`) shows τ ∈ hitSet (reflectAt ω a) a and
+  -- that the reflected path has no earlier hit; min'-antisymmetry closes.
   have hτ : firstHitFin (reflectAt ω a) a = firstHitFin ω a := by
-    sorry  -- R4-sub `hτ`: min'-of-hitSet argument; see S7 PREP §3 (6 bullets)
+    have hτ_eq : firstHitFin ω a = (hitSet ω a).min' h := by
+      simp [firstHitFin, dif_pos h]
+    have hτ_mem : firstHitFin ω a ∈ hitSet ω a := by
+      rw [hτ_eq]; exact (hitSet ω a).min'_mem h
+    have hτ_ps : partialSumBool ω (firstHitFin ω a) = a :=
+      (Finset.mem_filter.mp hτ_mem).2
+    have hτ_mem' : firstHitFin ω a ∈ hitSet (reflectAt ω a) a := by
+      refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
+      rw [partialSumBool_congr_below (le_refl _)]
+      exact hτ_ps
+    have h' : (hitSet (reflectAt ω a) a).Nonempty := ⟨_, hτ_mem'⟩
+    have hfh' : firstHitFin (reflectAt ω a) a = (hitSet (reflectAt ω a) a).min' h' := by
+      simp [firstHitFin, dif_pos h']
+    apply le_antisymm
+    · rw [hfh']
+      exact Finset.min'_le _ _ hτ_mem'
+    · rw [hfh']
+      refine Finset.le_min' _ _ _ (fun k hk => ?_)
+      by_contra hlt
+      push_neg at hlt
+      have hk_val : k.val < (firstHitFin ω a).val := hlt
+      have hk_ps : partialSumBool (reflectAt ω a) k = a :=
+        (Finset.mem_filter.mp hk).2
+      have hk_ω : partialSumBool ω k = a := by
+        rw [← partialSumBool_congr_below (Nat.le_of_lt hk_val)]
+        exact hk_ps
+      have hk_mem : k ∈ hitSet ω a :=
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, hk_ω⟩
+      rw [hτ_eq] at hk_val
+      exact absurd ((hitSet ω a).min'_le _ hk_mem) (not_le.mpr hk_val)
   -- Step 2: pointwise `!!b = b` collapse with first-hit alignment.
   --
   -- N.B. we cannot `unfold reflectAt; rw [hτ]` because `unfold` rewrites
