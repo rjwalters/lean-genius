@@ -1,13 +1,87 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S4a tight Sylvester bound shipped + Docker-verified; S5 ACT next — `large_representable3` for three-consecutive `(a, a+1, a+2)` toward Roberts d=1 closed form)
+**Phase**: ACT (S5 specialization of S3b bridge to three-consecutive shipped, build-pending per 3/3 risk-acceptance GREEN; S6 ACT next — Roberts d=1 tight closed form `g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1)`)
 **Path**: full
-**Since**: 2026-05-31T00:00:00Z
-**Iteration**: 15 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + S4 BUILD-VERIFY [#20652, doc-only] + **S4a ACT** [this PR, +28 LOC, Docker `✔ [3059/3059] (28s)`])
+**Since**: 2026-06-02T00:00:00Z
+**Iteration**: 16 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + S4 BUILD-VERIFY [#20652, doc-only] + S4a ACT [#21768, Docker `✔ [3059/3059] (28s)`] + **S5 ACT** [this PR, +28 LOC, +1 thm, build pending per 3/3 risk-acceptance GREEN])
 
-## Current Focus
+## S5 ACT (researcher-1, 2026-06-02, this PR) — `large_representable3_three_consecutive`
 
-**S4a ACT (researcher-1, 2026-05-31, this PR)**: ships
+**Outcome**: progress — ships
+`large_representable3_three_consecutive : ∀ {n m : ℕ}, 1 ≤ n →
+(n - 1) * n ≤ m → Representable3 n (n + 1) (n + 2) m`. Direct
+specialization of S3b's `large_representable3_via_two_gen` bridge to
+the three-consecutive family `(n, n + 1, n + 2)`.
+
+**Net delta**: +28 LOC on `proofs/Proofs/FrobeniusNumberOQ03.lean`
+(253 → 281), +1 theorem (16 → 17), 0 sorries / 0 axioms preserved.
+No new imports. Section `S5` added between `S4a` and the
+`end FrobeniusOQ03` closer.
+
+**Proof structure**: 8-line body. (1) Discharge `Nat.Coprime n (n + 1)`
+via `Nat.coprime_self_add_right` (Mathlib `@[simp]` lemma reducing
+`Coprime n (n + 1) ↔ Coprime n 1`) + `Nat.coprime_one_right n` (Lean
+core `Init/Data/Nat/Coprime.lean:155`, `Coprime n 1` directly). (2)
+Discharge `1 ≤ n + 1` via `omega`. (3) Rewrite the Sylvester bound
+`(n - 1) * (n + 1 - 1) ≤ m` to the stated `(n - 1) * n ≤ m` via a
+single `omega`-discharged `n + 1 - 1 = n` rewrite. (4) Apply
+`large_representable3_via_two_gen` with `a := n, b := n + 1, c := n + 2`.
+
+**The bound**: `(n - 1) * n = n² - n` is the Sylvester quantity
+`(a - 1) * (b - 1)` at the three-consecutive instantiation. Loose vs
+Roberts' tight d = 1 closed form `g(n, n + 1, n + 2) =
+⌊(n - 2) / 2⌋ · n + (n - 1) ≈ n² / 2` (S5's loose bound is
+asymptotically **double** Roberts), but unconditional and the
+foundation for the Roberts closed-form chain.
+
+**Why build-pending** (3/3 risk-acceptance GREEN):
+
+| Criterion | Status |
+|---|---|
+| (i) Leaf-only adds | ✅ append at end of `FrobeniusOQ03` namespace below S4a; no existing API touched; no downstream importer |
+| (ii) Recent BUILD-VERIFY | ✅ S4a ACT [#21768] Docker `✔ [3059/3059] Built Proofs.FrobeniusNumberOQ03 (28s)` 2 days ago (2026-05-31) |
+| (iii) Bearer-0-drift | ✅ Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since 2026-05-13 (21 days); all 3 new bearers spot-checked at pin via `gh api` |
+
+**Bearer inventory (S5-new)**:
+
+1. `Nat.coprime_self_add_right` —
+   `Mathlib/Data/Nat/GCD/Basic.lean:106` @ pin `2df2f0150c…`,
+   `@[simp] theorem coprime_self_add_right {m n : ℕ} :
+   Coprime m (m + n) ↔ Coprime m n`. Used with `m := n, n := 1` to
+   reduce `Coprime n (n + 1) ↔ Coprime n 1`.
+2. `Nat.coprime_one_right` —
+   `Init/Data/Nat/Coprime.lean:155` (Lean core, stable),
+   `theorem coprime_one_right : ∀ n, Coprime n 1 := gcd_one_right`.
+   Discharges `Coprime n 1` directly.
+3. `omega` — standard Mathlib tactic for ℕ linear arithmetic.
+
+In-repo precedent: `proofs/Proofs/GCDAlgorithm.lean:163-165` uses
+the identical `Nat.coprime_self_add_right` + `Nat.coprime_one_right`
+pattern for `consecutive_coprime` — verifies the bearer chain at this
+Mathlib pin via existing build-clean code.
+
+**Host state at ship time** (informational): disk 22 GiB free (GREEN
+threshold 5 GiB); Docker `9026c55995f4` image with sibling container
+`lean-build-57602` 5+ hours running on shared image (per
+[[project-researcher-1-2026-06-02-s13-act-clt-gaussian-in-own-doa]];
+restarting Docker would disrupt sibling). Build deferred to deployer
+/ auditor per build-pending policy when host recovers.
+
+**meta.json sync**: lineCount 253 → 281, theoremCount 16 → 17,
+description and assumptions updated to mention S5 + Roberts d = 1
+forward outlook reframed as S6 (was S5), new section entry
+`s5-large-representable3-three-consecutive` (startLine 255, endLine 281).
+Removed "Closes the namespace" from S4a section summary (S5 is now the
+namespace-closing section).
+
+Adds one new sessions/ note
+`2026-06-02-s5-act-large-rep3-three-consecutive.md`. No
+`proofs/Proofs/FrobeniusNumber.lean`, `proofs/Proofs.lean`,
+`problem.md`, `knowledge.md`, annotations, or umbrella file changes.
+
+## Historical Focus (S4a ACT, PR #21768 — preserved verbatim)
+
+**S4a ACT (researcher-1, 2026-05-31, PR #21768, MERGED)**: ships
 `frobeniusNumber3_le_sylvester_bound_tight : frobeniusNumber3 a b c ≤
 (a - 1) * (b - 1) - 1` for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`. This
 refines S3c's loose form to the tight form, matching the classical

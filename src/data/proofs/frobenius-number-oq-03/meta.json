@@ -2,7 +2,7 @@
   "id": "frobenius-number-oq-03",
   "title": "Frobenius Number — Three Generators (Foundation)",
   "slug": "frobenius-number-oq-03",
-  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. Foundation for Roberts-1956 closed forms on three consecutive integers and 3-AP families (S5+). 16 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "description": "Three-generator Frobenius number foundation: defines $\\text{Representable3}\\;a\\;b\\;c\\;n := \\exists x, y, z \\in \\mathbb{N}.\\; n = ax + by + cz$ and develops a layered structural API. S2 establishes seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c). S3a defines $\\text{frobeniusNumber3}\\;a\\;b\\;c := \\sup\\{n \\mid \\neg\\,\\text{Representable3}\\;a\\;b\\;c\\;n\\}$ with structural API (bounded-above suprema, abstract upper bound from $\\subseteq \\text{Iio}\\,K$, sSup-attainment). S3b lifts the 2-generator Sylvester bound to 3 generators via the bridge `large_representable3_via_two_gen` (witness with $z = 0$). S3c combines S3a + S3b to give the concrete loose Sylvester bound $\\text{frobeniusNumber3}\\,a\\,b\\,c \\le (a-1)(b-1)$ for coprime $a, b$. S4 derives finiteness of the non-representable set. S4a tightens S3c to $\\le (a-1)(b-1) - 1$, matching the classical Sylvester identity $g(a, b) = ab - a - b$. S5 specializes the S3b bridge to the three-consecutive family $(n, n+1, n+2)$ via `Nat.coprime_self_add_right`: every $m \\ge (n-1)\\cdot n$ is `Representable3 n (n+1) (n+2) m` (loose vs Roberts' tight $\\approx n^2/2$). Foundation for Roberts-1956 closed forms (S6+). 17 theorems, 2 definitions, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "status": "formalized",
@@ -19,10 +19,10 @@
     "badge": "research",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 253,
-    "theoremCount": 16,
+    "lineCount": 281,
+    "theoremCount": 17,
     "definitionCount": 2,
-    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), finiteness of the non-representable set under the same coprimality (S4), and the tight Sylvester upper bound (a-1)(b-1) - 1 (S4a, matching the classical 2-generator identity g(a,b) = ab - a - b). The exact Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers and the general Roberts 3-AP formula are deferred to S5+.",
+    "assumptions": "None at this stage. The file establishes the Representable3 predicate, the frobeniusNumber3 definition (as sSup of the non-representable set), seven closure lemmas (S2), structural API for the supremum (S3a), the 2→3 generator bridge under Nat.Coprime a b with 1 ≤ a, 1 ≤ b (S3b), the loose Sylvester upper bound (a-1)(b-1) (S3c), finiteness of the non-representable set under the same coprimality (S4), the tight Sylvester upper bound (a-1)(b-1) - 1 (S4a, matching the classical 2-generator identity g(a,b) = ab - a - b), and the three-consecutive specialization large_representable3_three_consecutive: every m ≥ (n-1)·n is Representable3 n (n+1) (n+2) m for 1 ≤ n (S5, via consecutive coprimality from Nat.coprime_self_add_right + Nat.coprime_one_right). The exact Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers (Roberts d=1 tight form, ≈ n²/2, asymptotically half this loose bound) and the general Roberts 3-AP formula are deferred to S6+.",
     "dateAdded": "2026-05-13",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -113,7 +113,14 @@
       "title": "S4a — Tight Sylvester Upper Bound",
       "startLine": 225,
       "endLine": 253,
-      "summary": "Proves `frobeniusNumber3_le_sylvester_bound_tight`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, `frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1`. Refines S3c's loose bound to the tight `- 1` form, matching the classical 2-generator Sylvester identity g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1. The proof reuses the same contrapositive of S3b's bridge as S3c but tightens the containment to a strict inequality `n < (a - 1) * (b - 1)` on every element of the non-representable set; in ℕ, this implies `n ≤ (a - 1) * (b - 1) - 1` via omega (including the degenerate `a = 1 ∨ b = 1` case where the non-representable set is empty, `csSup_empty = ⊥ = 0`, and the RHS ℕ-subtraction underflows to 0). Single `by_cases` on `Set.Nonempty`, mirroring the S3a structural API pattern. Closes the namespace."
+      "summary": "Proves `frobeniusNumber3_le_sylvester_bound_tight`: for `Nat.Coprime a b` with `1 ≤ a, 1 ≤ b`, `frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) - 1`. Refines S3c's loose bound to the tight `- 1` form, matching the classical 2-generator Sylvester identity g(a, b) = a*b - a - b = (a - 1)*(b - 1) - 1. The proof reuses the same contrapositive of S3b's bridge as S3c but tightens the containment to a strict inequality `n < (a - 1) * (b - 1)` on every element of the non-representable set; in ℕ, this implies `n ≤ (a - 1) * (b - 1) - 1` via omega (including the degenerate `a = 1 ∨ b = 1` case where the non-representable set is empty, `csSup_empty = ⊥ = 0`, and the RHS ℕ-subtraction underflows to 0). Single `by_cases` on `Set.Nonempty`, mirroring the S3a structural API pattern."
+    },
+    {
+      "id": "s5-large-representable3-three-consecutive",
+      "title": "S5 — large_representable3 for Three Consecutive Integers",
+      "startLine": 255,
+      "endLine": 281,
+      "summary": "Proves `large_representable3_three_consecutive`: for `1 ≤ n`, every `m ≥ (n - 1) * n` is `Representable3 n (n + 1) (n + 2) m`. Direct specialization of S3b's `large_representable3_via_two_gen` bridge to the three-consecutive family — `a := n`, `b := n + 1` (consecutive integers are coprime via `Nat.coprime_self_add_right` reducing to `Nat.coprime_one_right`), `c := n + 2`. The bound `(n - 1) * n = n² - n` is the Sylvester quantity instantiated at `(a - 1) * (b - 1) = (n - 1) * (n + 1 - 1)` after a single `omega`-discharged `n + 1 - 1 = n` rewrite. Loose compared to Roberts' tight d = 1 closed form `g(n, n+1, n+2) = ⌊(n - 2) / 2⌋ · n + (n - 1) ≈ n²/2` (asymptotically half this bound) but unconditional and the foundation for the Roberts closed-form chain (S6 = Roberts 3-AP, S6+ = Fibonacci / Mersenne triples). Closes the namespace."
     }
   ],
   "conclusion": {
