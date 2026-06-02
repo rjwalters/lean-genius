@@ -45,6 +45,27 @@
     ]
   },
   {
+    "id": "ann-shafarevich-part2-strategy",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
+    "range": { "startLine": 71, "endLine": 80 },
+    "type": "insight",
+    "title": "Part II: Why Coprime Products Reduce to Cyclic (Strategic Preamble)",
+    "content": "**The Part II docstring (lines 71–80)** frames the central new contribution of the file in one sentence: *when $\\gcd(m, n) = 1$, $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is itself cyclic (isomorphic to $\\mathbb{Z}/(mn)$ by CRT), so its inverse-Galois realization is **just** `cyclic_realizable (m*n)`*. This collapses what looks like a *new* compositum construction into a *recapitulation* of the cyclic case — no fresh field-theoretic work needed. The preamble identifies the precise hypothesis that triggers the collapse (coprimality) and motivates the two lemmas that follow: `zmod_coprime_crt` (lines 81–88, the algebraic identity) and `coprime_product_cyclic_realizable` (lines 89–112, the one-line application).",
+    "mathContext": "**The reduction in one chain of isomorphisms**: $\\mathbb{Z}/m \\times \\mathbb{Z}/n \\stackrel{\\text{CRT}}{\\cong} \\mathbb{Z}/(mn) \\stackrel{\\text{cyclic_realizable}}{\\cong} \\text{Gal}(K/\\mathbb{Q})$ for some Galois $K/\\mathbb{Q}$. **Why this is the *easy* abelian case**: by the structure theorem for finitely generated abelian groups, every finite abelian $G$ is a product of cyclic groups of prime-power order, $G \\cong \\prod_i \\mathbb{Z}/p_i^{a_i}$. Group factors with *distinct* primes are pairwise coprime, so any number of them assemble — via iterated CRT — into a *single* cyclic group whose realization is one call to `cyclic_realizable`. The *hard* abelian case is the leftover: products like $(\\mathbb{Z}/p)^k$ or $\\mathbb{Z}/p^a \\times \\mathbb{Z}/p^b$ with the same prime $p$ repeated. These are *not* cyclic and CRT does not apply — the genuine compositum theorem (`galois_compositum_product`, Part III) is then required.",
+    "significance": "key",
+    "relatedConcepts": [
+      "structure theorem for finite abelian groups",
+      "prime-power decomposition of cyclic groups",
+      "CRT iterated over coprime moduli",
+      "cyclic vs non-cyclic abelian products"
+    ],
+    "prerequisites": [
+      "cyclic_realizable (Part I)",
+      "Chinese Remainder Theorem for ZMod",
+      "structure theorem for finite abelian groups"
+    ]
+  },
+  {
     "id": "ann-shafarevich-crt-iso",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
     "range": { "startLine": 81, "endLine": 88 },

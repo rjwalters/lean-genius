@@ -446,24 +446,58 @@
   },
   "mainTheorems": [
     {
-      "name": "coprime_product_cyclic_realizable",
-      "statement": "When gcd(m,n)=1: ∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = m*n",
-      "significance": "Key new result: coprime abelian product reduced to cyclic via CRT"
+      "name": "cyclic_realizable",
+      "statement": "∀ n > 0: ∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = n",
+      "significance": "Recap wrapper around InverseGaloisProblem.cyclic_group_realizable (Dirichlet + Galois fixed fields)",
+      "line": 65
     },
     {
       "name": "zmod_coprime_crt",
-      "statement": "ZMod m × ZMod n ≃+ ZMod (m*n) when Coprime m n",
-      "significance": "The algebraic tool making the coprime reduction work"
+      "statement": "Coprime m n → (ZMod (m*n) ≃+ ZMod m × ZMod n)",
+      "significance": "The algebraic tool making the coprime reduction work (extracts the additive iso from ZMod.chineseRemainder)",
+      "line": 85
+    },
+    {
+      "name": "coprime_product_cyclic_realizable",
+      "statement": "When gcd(m,n)=1: ∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = m*n",
+      "significance": "Key new result: coprime abelian product reduced to cyclic via CRT",
+      "line": 91
+    },
+    {
+      "name": "z2z3_realizable",
+      "statement": "∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = 6",
+      "significance": "Concrete instance: ℤ/2 × ℤ/3 ≅ ℤ/6 realizable (gcd(2,3) = 1)",
+      "line": 101
+    },
+    {
+      "name": "z5z7_realizable",
+      "statement": "∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = 35",
+      "significance": "Concrete instance: ℤ/5 × ℤ/7 ≅ ℤ/35 realizable (gcd(5,7) = 1)",
+      "line": 108
     },
     {
       "name": "galois_compositum_product",
       "statement": "Axiom: Galois extensions with coprime group orders → product Galois group on compositum",
-      "significance": "Single axiom precisely identifying the Mathlib gap for the abelian case"
+      "significance": "Single axiom precisely identifying the Mathlib gap for the abelian case",
+      "line": 141
     },
     {
       "name": "s3_realizable_via_cubic",
       "statement": "∃ K Galois/ℚ, Sym(Fin 3) ≃* Gal(K/ℚ)",
-      "significance": "S₃ realizable by direct cubic construction (non-Shafarevich)"
+      "significance": "S₃ realizable by direct cubic construction (non-Shafarevich)",
+      "line": 165
+    },
+    {
+      "name": "s3_is_solvable",
+      "statement": "IsSolvable (Equiv.Perm (Fin 3))",
+      "significance": "S₃ solvable via derived series S₃ ⊃ A₃ ⊃ {1} (delegates to symmetric_solvable_of_le_four)",
+      "line": 173
+    },
+    {
+      "name": "shafarevich_cyclic_case_proved",
+      "statement": "∀ n > 0: ∃ K Galois/ℚ, IsCyclic Gal(K/ℚ) ∧ |Gal(K/ℚ)| = n",
+      "significance": "Summary theorem restating the cyclic case as the formal status report's main result",
+      "line": 195
     }
   ],
   "sorries": 0
