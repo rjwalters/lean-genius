@@ -42,7 +42,7 @@
       "binomialCDF_tendsto_one_atTop (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atTop (nhds 1) under 0 ≤ p ≤ 1 — eventually-constant wrapper around `binomialCDF_eq_one` via `Filter.eventually_ge_atTop (n : ℝ)` and `Tendsto.congr'`. Binomial-side companion to the Φ tail-limit lemmas added in parallel S8 PR #17233",
       "binomialCDF_tendsto_zero_atBot (Session 8): Filter.Tendsto (binomialCDF n p) Filter.atBot (nhds 0) — eventually-constant wrapper around `binomialCDF_neg` via `Filter.eventually_lt_atBot (0 : ℝ)`. Left-tail saturation; no constraint on p needed since `binomialCDF_neg` holds for arbitrary p"
     ],
-    "theoremCount": 18,
+    "theoremCount": 16,
     "substantiveTheoremCount": 12,
     "definitionCount": 3
   },
@@ -66,7 +66,7 @@
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
     "lineCount": 712,
     "axiomCount": 1,
-    "theoremCount": 18,
+    "theoremCount": 16,
     "substantiveTheoremCount": 12,
     "duplicateTheorems": 0,
     "definitionCount": 3,
