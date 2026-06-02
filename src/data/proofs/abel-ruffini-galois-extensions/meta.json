@@ -8,6 +8,9 @@
     "date": "2026-02-15",
     "status": "verified",
     "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensions.lean",
+    "additionalFiles": [
+      "Proofs/AbelRuffiniGaloisExtensionsOQ06.lean"
+    ],
     "tags": [
       "group-theory",
       "galois-theory",
@@ -164,6 +167,17 @@
     "instanceCount": 12,
     "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
     "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/AbelRuffiniGaloisExtensionsOQ06.lean",
+        "lineCount": 530,
+        "theorems": 16,
+        "definitions": 5,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "OQ-06 (S2): Primitive solvable permutation groups of prime degree p — Galois (1832) classification. Constructs the concrete affine group AGL(1, p) = ℤ/pℤ ⋊ (ℤ/pℤ)ˣ on (ZMod p) × (ZMod p)ˣ with the semidirect-product law `(a, u) * (b, v) = (a + u·b, u·v)`, supplies the manual `Group (AGL1Z p)` instance (associativity, identity, inverses), and proves the order calculation `Nat.card (AGL1Z p) = p · (p - 1)` via a bijection with the cartesian product (using `ZMod.card` and `ZMod.card_units_eq_totient` + `Nat.totient_prime`). Deferred to S3+: `IsSolvable (AGL1Z p)`, the natural permutation action `AGL1Z p →* Equiv.Perm (ZMod p)` and its primitivity, and the Galois direction embedding every primitive solvable subgroup of S_p into AGL(1, p)."
+      }
+    ],
     "mainTheorems": [
       {
         "name": "symmetric_solvable_iff",
