@@ -108,6 +108,9 @@
     "opens": [
       "Finset"
     ],
-    "namespace": "Sperner"
+    "namespace": "Sperner",
+    "additionalFiles": [
+      "Proofs/SpernerMathlibHyper.lean"
+    ]
   }
 }
