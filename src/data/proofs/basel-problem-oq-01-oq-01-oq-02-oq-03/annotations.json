@@ -178,5 +178,65 @@
     "significance": "context",
     "relatedConcepts": ["Nat.pow_lt_pow_left", "Apéry threshold (17-12√2)^{-1/3}", "explicit vs asymptotic bounds", "constant tightness"],
     "prerequisites": ["monotone power inequality", "Apéry's irrationality threshold"]
+  },
+  {
+    "id": "ann-iter17-small-prime-focus",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 637, "endLine": 673 },
+    "type": "theorem",
+    "title": "Iter 17: Small-prime focus — large primes contribute trivially",
+    "content": "`log_le_one_of_sq_lt`: for any base $p > 1$ with $p^2 > n$, $\\text{Nat.log}\\,p\\,n \\le 1$ (proof: if $\\text{log}\\,p\\,n \\ge 2$ then $p^2 \\le n$ by `Nat.pow_le_of_le_log`, contradiction). `prime_pow_pred_eq_one_of_sq_lt`: for primes $p$ with $p^2 > n$, the correction-factor exponent $\\text{Nat.log}\\,p\\,n - 1 = 0$, so $p^{\\text{Nat.log}\\,p\\,n - 1} = 1$. **Strategic content**: this is the key arithmetic observation underpinning the Chebyshev \"correction is small\" Route B toward Hanson's bound: only primes with $p^2 \\le n$ (equivalently $p \\le \\sqrt{n}$) contribute non-trivially to the Iter-16 correction factor. Primes $p > \\sqrt{n}$ enter the correction product with exponent zero, contributing the multiplicative identity 1. This sets up the small-prime cardinality bound (Iter 20) and the resulting $\\sqrt{n}$-sized product structure.",
+    "mathContext": "For $p > 1$ and $n < p^2$: $\\log_p n \\le 1$. For primes $p$ with $p^2 > n$: $p^{\\lfloor \\log_p n \\rfloor - 1} = p^0 = 1$. This isolates the small-prime support $\\{p \\text{ prime} : p^2 \\le n\\} = \\{p \\text{ prime} : p \\le \\sqrt{n}\\}$ as the only non-trivial contributors to the correction factor.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.pow_le_of_le_log", "small-prime support", "Chebyshev correction factor", "Route B strategy"],
+    "prerequisites": ["Nat.log API", "Iter 16 primorial-correction decomposition"]
+  },
+  {
+    "id": "ann-iter18-per-prime-bounds",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 675, "endLine": 792 },
+    "type": "theorem",
+    "title": "Iter 18: Per-prime correction-factor bounds (3 forms)",
+    "content": "Three forms of the per-prime bound on the correction-factor term $p^{\\text{Nat.log}\\,p\\,n - 1}$:\n\n- `prime_pow_pred_mul_eq_pow` (line 698): **exponent recurrence** $p^{\\text{Nat.log}\\,p\\,n - 1} \\cdot p = p^{\\text{Nat.log}\\,p\\,n}$. Algebraic identity extracted from Iter 16; uses `Nat.log_pos` ($p \\ge 2$, $p \\le n$ gives $\\log \\ge 1$) and `Nat.sub_add_cancel` to unfold.\n\n- `prime_pow_pred_le_self` (line 714): **coarse bound** $p^{\\text{Nat.log}\\,p\\,n - 1} \\le n$. Trivial chain via `Nat.pow_le_pow_right` (monotone exponent) and `Nat.pow_log_le_self` (maximal-power inequality).\n\n- `prime_pow_pred_le_div` (line 746): **sharp bound** $p^{\\text{Nat.log}\\,p\\,n - 1} \\le n / p$. The downstream-useful form for the product-bound argument; uses the recurrence and divisibility chain.\n\nBase-agnostic about Iter 17's small-prime filter — each prime $p \\le n$ satisfies these regardless of whether $p^2 \\le n$ or not. The sharp `≤ n/p` bound is what enables the Chebyshev-style $\\prod_{p \\le \\sqrt n} (n/p) \\le 2^{c\\sqrt n}$ estimate in Route B.",
+    "mathContext": "For prime $p \\le n$: $p^{\\lfloor \\log_p n \\rfloor - 1} \\le n/p$. Direct consequence of $p^{\\lfloor \\log_p n \\rfloor} \\le n$ (maximality) and the exponent recurrence $p^{e-1} \\cdot p = p^e$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.pow_log_le_self", "Nat.pow_le_pow_right", "correction-factor bound hierarchy", "sharp ≤ n/p"],
+    "prerequisites": ["Iter 17 small-prime focus", "Nat.log API"]
+  },
+  {
+    "id": "ann-iter19-structural-decomposition",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 794, "endLine": 831 },
+    "type": "theorem",
+    "title": "Iter 19: Structural decomposition lcmRange ≤ primorial · ∏(n/p)",
+    "content": "Two-step lift of Iter 18's per-prime bound to a product-level structural decomposition.\n\n- `prod_prime_pow_pred_le_prod_div_prime` (line 794): `∏_{p ≤ n prime} p^(log_p n - 1) ≤ ∏_{p ≤ n prime} (n/p)`. Pointwise application of `prime_pow_pred_le_div` (Iter 18) under `Finset.prod_le_prod`.\n\n- `lcmRange_le_primorial_mul_prod_div_prime` (line 827): **the main Iter 19 deliverable** — `lcmRange n ≤ primorial n · ∏_{p ≤ n prime} (n/p)`. Combines the Iter 16 equality `lcmRange n = primorial n · ∏ p^(log_p n - 1)` with the product bound above.\n\nThis is the structural envelope on which all subsequent bounds depend. The path forward (per the inline docstring): combine `Nat.primorial_le_4_pow` (a standard Mathlib bound) with a Chebyshev-style estimate `∏_{p ≤ √n} (n/p) ≤ 2^{c\\sqrt n}` to get `lcmRange n ≤ 4^n · 2^{c\\sqrt n} = (4 + ε)^n`. Numerical sanity at n=10: primorial(10) · 30 = 6300 ≥ lcmRange(10) = 2520. ✓",
+    "mathContext": "$\\mathrm{lcmRange}(n) \\le \\mathrm{primorial}(n) \\cdot \\prod_{p \\le n,\\, p \\text{ prime}} \\lfloor n/p \\rfloor$. Derived by combining the Chebyshev decomposition $\\mathrm{lcm}(1..n) = \\prod_{p \\le n} p^{\\lfloor \\log_p n \\rfloor}$ with the per-prime bound $p^{\\lfloor \\log_p n \\rfloor - 1} \\le n/p$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_le_prod", "Nat.primorial_le_4_pow", "primorial × correction split", "Chebyshev θ-density"],
+    "prerequisites": ["Iter 18 per-prime bounds", "Iter 16 primorial-correction equality"]
+  },
+  {
+    "id": "ann-iter20-22-small-prime-bounds",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 833, "endLine": 1217 },
+    "type": "theorem",
+    "title": "Iter 20–22: Small-prime cardinality bound and √n-sized product",
+    "content": "Restrict the product to small primes ($p^2 \\le n$, equivalently $p \\le \\sqrt{n}$) using Iter 17's `prime_pow_pred_eq_one_of_sq_lt` and chain to a $\\sqrt{n}$-sized power bound.\n\n- `small_prime_card_le_sqrt` (line 865): the set $\\{p \\text{ prime} : p^2 \\le n\\}$ has at most $\\sqrt{n}$ elements (containment in `Finset.Ico 2 (Nat.sqrt n + 1)` plus cardinality of the Ico).\n- `div_prime_le_div_two` (line 912): for any prime $p$, $n/p \\le n/2$ (consequence of `p ≥ 2`).\n- `prod_div_small_prime_le_pow_card` (line 942): $\\prod_{p^2 \\le n} (n/p) \\le (n/2)^{|\\{p^2 \\le n\\}|}$ (uniform-bound application).\n- `prod_div_small_prime_le_pow_sqrt` (line 1002): $\\prod_{p^2 \\le n} (n/p) \\le (n/2)^{\\sqrt n}$ (combines the cardinality and uniform-bound lemmas).\n- `prod_prime_pow_pred_le_prod_div_prime_small` (line 1065) + `prod_prime_pow_pred_small_le_pow_sqrt` (line 1112) + `prod_prime_pow_pred_eq_small` (line 1166) + `prod_prime_pow_pred_le_pow_sqrt` (line 1217): the **product-level reduction** to small primes only — large primes contribute 1 each (Iter 17), so the full correction product equals its small-prime restriction and inherits the $(n/2)^{\\sqrt n}$ bound.\n\nThis closes the small-prime sub-route: combining with Iter 19 yields the Iter-25 envelope.",
+    "mathContext": "$\\prod_{p \\le n,\\, p \\text{ prime}} p^{\\lfloor \\log_p n \\rfloor - 1} = \\prod_{p \\le \\sqrt n,\\, p \\text{ prime}} p^{\\lfloor \\log_p n \\rfloor - 1} \\le (n/2)^{\\sqrt n}$. Pure cardinality + uniform-bound estimate; no number-theoretic deep estimate beyond Iter 17.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.le_sqrt", "Finset.Ico cardinality", "uniform-bound product", "small-prime restriction", "Chebyshev-style envelope"],
+    "prerequisites": ["Iter 17 small-prime focus", "Iter 19 structural decomposition", "primorial_le_4_pow"]
+  },
+  {
+    "id": "ann-iter25-26-4pow-sqrt-envelope",
+    "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-03",
+    "range": { "startLine": 1220, "endLine": 1321 },
+    "type": "theorem",
+    "title": "Iter 25–26: The 4ⁿ·(n/2)^√n envelope and Hanson sharpness obstruction",
+    "content": "The structural envelope and its strict insufficiency.\n\n- `lcmRange_le_4_pow_mul_pow_sqrt` (line 1265): **the Iter 25 main result** — for $n \\ge 2$, $\\mathrm{lcmRange}(n) \\le 4^n \\cdot (n/2)^{\\sqrt n}$. Combines `Nat.primorial_le_4_pow` (standard Mathlib) with Iter 22's `prod_prime_pow_pred_le_pow_sqrt` via the Iter 16 product equality. Asymptotically $\\sim 4^n \\cdot 2^{O(\\sqrt n \\log n)}$, the right $O(4^n)$ leading factor for any prime-power-based proof.\n\n- `four_pow_mul_pow_sqrt_gt_three_pow` (line 1302): **Iter 26 sharpness obstruction** — for every $n \\ge 2$, $3^n < 4^n \\cdot (n/2)^{\\sqrt n}$. Records the formal fact that this envelope **cannot close Hanson's bound**: the gap $(4/3)^n \\cdot (n/2)^{\\sqrt n}$ grows unboundedly, so no \"find $n_0$ where envelope $\\le 3^n$\" route exists. Concrete witness at $n=10$: envelope $= 4^{10} \\cdot 5^3 \\approx 1.31 \\cdot 10^8$ vs Hanson $3^{10} = 59049$.\n\nThe path forward must strengthen either the primorial factor (e.g. Chebyshev $\\theta(n) = (1 + o(1))n$ giving $\\mathrm{primorial}(n) \\le c^n$ for $c < 3$, not in Mathlib v4.26.0) OR avoid the primorial-correction split entirely (exploit Iter 14/16's Chebyshev identity directly to avoid losing the $(4/3)^n$ factor). The S29+ work in this slug continues from this strategic split point.",
+    "mathContext": "Iter 25: $\\mathrm{lcmRange}(n) \\le 4^n \\cdot (n/2)^{\\sqrt n}$. Iter 26: $3^n < 4^n \\cdot (n/2)^{\\sqrt n}$ for all $n \\ge 2$ — proved via $(n/2)^{\\sqrt n} \\ge 1$ and $3^n < 4^n$, in three calc-mode steps. The envelope is *always* strictly larger than Hanson's target, formally recording the asymptotic insufficiency of the prime-power-based Route B.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.primorial_le_4_pow", "Chebyshev θ-function", "Apéry-threshold (17 − 12√2)^{-1/3} ≈ 3.245", "PNT-asymptotic e ≈ 2.718", "strategic obstruction recording"],
+    "prerequisites": ["Iter 22 product bound", "Iter 19 structural decomposition", "primorial bound"]
   }
 ]
