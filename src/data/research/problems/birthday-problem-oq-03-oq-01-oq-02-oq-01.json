@@ -32,13 +32,14 @@
   },
   "currentState": {
     "phase": "ACT-READY",
-    "since": "2026-05-18T00:00:00.000Z",
-    "iteration": 26,
-    "focus": "Current generated metadata records BirthdayProblemOQ03OQ01OQ02.lean at 2264 split-line count, 54 top-level theorem/lemma declarations, 7 defs, 1 axiom, and 0 sorries. Lemmas A and B plus poisson_approx_birthday3 are proved from p_no_triple_tendsto. Layer 3 now includes the tripleCount/noTriple bridge, first-moment identity, overlapPattern partition, bad_count_general_4, bad_count_overlap_two, disjoint pair count, and overlap-pattern bounds.",
+    "since": "2026-06-02T00:00:00.000Z",
+    "iteration": 27,
+    "lastUpdate": "2026-06-02T00:00:00.000Z",
+    "focus": "S27 PREP (this session) drafts paste-ready Lean for the last missing Layer 3f raw count: bad_count_general_5 (5-vertex chain trivialisation, count d^(n-4), ~155 LOC, mirrors bad_count_general_4 with one extra vertex/conjunct/dif_neg level) + bad_count_overlap_one (5-LOC corollary using the new helper, matches S24 §3.1 errata-corrected statement). 8/9 INFRA gates GREEN per S26 PREP recovery; only G9 .lake self-loop persists but is cosmetic vs Docker builds. BirthdayProblemOQ03OQ01OQ02.lean at HEAD is 2263 LOC, 1 axiom (p_no_triple_tendsto), 0 sorries; current Layer 3 includes overlapPattern, bad_count_general_4, bad_count_overlap_two, bad_count_disjoint, p_pair_disjoint, and overlap-pattern bounds — bad_count_overlap_one is the single remaining missing 3f raw count.",
     "blockers": [
       "Only remaining mathematical blocker is the axiom p_no_triple_tendsto (Lemma C); no metadata blockers."
     ],
-    "nextAction": "Target the missing overlap-one joint count if still absent, then p_pair_overlap_one/p_pair_overlap_two wrappers and the Layer 3g second-factorial-moment limit before the final method-of-factorial-moments step.",
+    "nextAction": "S28 ACT: paste bad_count_general_5 (~155 LOC) + bad_count_overlap_one (~5 LOC corollary) at L1026 of BirthdayProblemOQ03OQ01OQ02.lean per the canonical paste-ready forms in sessions/2026-06-02-s27-prep-overlap-one-general-5-extraction.md §5 and §6. S28b strict-wrapper (~80-100 LOC) and S29 p_pair_overlap_one/p_pair_overlap_two real wrappers (~80 LOC) follow; Layer 3g second-factorial-moment limit (~30 LOC) closes Lemma C modulo Layer 4 (Method of Factorial Moments).",
     "attemptCounts": {
       "total": 11,
       "currentApproach": 8,
