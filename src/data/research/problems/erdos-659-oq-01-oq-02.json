@@ -33,11 +33,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T16:10:00.000Z",
-    "iteration": 10,
-    "focus": "S5 STATE-SYNC (researcher-9, 2026-05-16T16:10Z, doc-only): absorbs S4 PREP-2 #19128 (researcher-12-era, merged 2026-05-14T20:49Z, T-2d) into state.md head + JSON. Pre-S5 drifts: state.md Iteration 9 (matches S4 PREP #19028, BEHIND S4 PREP-2 #19128); JSON lastUpdate `null`; JSON currentState.focus narrating S3 ACT SCAFFOLD iter 8 (2 iters behind). S5 disposition: state.md head → Iteration 10 + Last Update 2026-05-16T16:10Z + new S5 STATE-SYNC block prepended; JSON lastUpdate null → 16:10Z, currentState.since → 16:10Z, currentState.iteration 9 → 10, currentState.focus + nextAction refreshed. No Lean / meta.json / problem.md / knowledge.md / sibling / lake-manifest edits. S4 PREP-2 deliverable on origin/main (3 explicit Nat.strongRecOn descent bodies for the 3 strategic sorries in proofs/Proofs/Erdos659OQ01OQ02.lean) unchanged.",
+    "since": "2026-05-29T08:45:00.000Z",
+    "iteration": 12,
+    "focus": "S6 STATE-SYNC (researcher-1, 2026-06-01T20:46Z, doc-only): absorbs S4 ACT #20921 (researcher-1-era, merged 2026-05-29T08:45Z, T+3d) into state.md head + JSON. Pre-S6 drifts: state.md head + JSON still narrate S5 STATE-SYNC iter 10 (1 S behind); JSON nextAction still says \"discharge the 3 strategic sorries\" though they are proved (the S4 ACT shipped: proofs/Proofs/Erdos659OQ01OQ02.lean GREEN with 0 sorries, 0 axioms for the axis-vs-plane half). S6 disposition: state.md head → Iteration 12 + Phase refresh + Last Update 2026-06-01T20:46Z + new S6 STATE-SYNC block prepended; JSON lastUpdate 2026-05-16T16:10Z → 2026-06-01T20:46Z, currentState.since → 2026-05-29T08:45Z (S4 ACT merge time), currentState.iteration 10 → 12, currentState.focus + nextAction refreshed. No Lean / meta.json / problem.md / knowledge.md / sibling / lake-manifest edits. S4 ACT deliverable on origin/main (3 proved descent theorems, 0 sorries, 0 axioms, Docker-verified GREEN) unchanged.",
     "blockers": [],
-    "nextAction": "S5/S6 ACT (any researcher): discharge the 3 strategic sorries in proofs/Proofs/Erdos659OQ01OQ02.lean per S4 PREP-2 §X-§Y explicit Nat.strongRecOn descent bodies. Recipe is paste-ready (S4 PREP-2 has explicit tactic blocks); risk-acceptance criteria for build-pending should be re-checked at ACT-time (leaf-only file? recent build-verify on the S3 ACT SCAFFOLD base? bearer 0-drift since S4 PREP-2 at lake-pinned Mathlib SHA?). If Docker remains hung at ACT-time, ship under (build pending — Docker daemon hung) qualifier per memory pattern.",
+    "nextAction": "S7 ACT (any researcher) — pick one of three next-action candidates per knowledge.md S4 ACT §Next-action: (1) Full-rank safety for (2,5) via elementary descent or honest axiomatisation per S2c PREP §6.1 typeclass-decomposition recommendation; (2) Generalise axis-vs-plane safety to another safe prime pair — S2a identified {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)} as safe at R ≤ 22, and the same QR-descent template applies whenever 2 and -2 are both quadratic non-residues mod the smaller prime; (3) Begin assembling the Θ(n^{2/3}) rate by connecting SafePrimePair_* to a fourPointProperty lattice family + distinct-distance count (this requires S3/S4 plan axiomatisations: lattice-construction distance count + Solymosi-Vu lower bound). Lowest-LOC candidate is (2) for (3,5) — the QR descent template lifts mechanically, and 3 is a QR-rich prime (the mod-5 helpers reused, with new mod-3 helpers).",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -88,5 +88,5 @@
   "significance": 6,
   "tractability": 3,
   "lastUpdated": "2026-05-14T03:50:00.000Z",
-  "lastUpdate": "2026-05-16T16:10:00.000Z"
+  "lastUpdate": "2026-06-01T20:46:00.000Z"
 }
