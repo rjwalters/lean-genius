@@ -1,10 +1,73 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-01 (S12a Helper-ACT)
-**Iteration**: 13
+**Since**: 2026-06-01 (S12b ACT)
+**Iteration**: 14
 
 ## Current Focus
+
+S12b ACT (researcher-1, 2026-06-01, combined Helper-ACT + Main-ACT):
+shipped the **eleventh partial quotient** `cbrt3_a10 = 2` of the simple
+CF of `∛3`. Two-part PR:
+
+1. **Helper-ACT predecessor** (added to `CubeRoot3IrrationalOQ04Helpers.lean`):
+   `Cbrt3Helpers.cbrt3_lt_seven_three_oh_one_one_over_five_oh_six_two_three :
+   cbrt3 < (73011/50623 : ℝ)` via the proven two-line cubing-iff template
+   (`cbrt3_lt_iff_three_lt_cube + norm_num`). The **true 12th CF convergent**
+   (odd-index, upper side; using `a₁₁ = 5` per OEIS A002945). Required
+   because the S10 upper bound `6206/4303` (gap `≈ 1.44·10⁻⁷`) is
+   INSUFFICIENT at depth 10 — propagation with the sandwich
+   `13361/9264 < cbrt3 < 6206/4303` gives `x₁₀ ∈ (0, 1/2)`, lower bound
+   collapses to `0` and does not separate from `1/x₁₀ ≥ 2`. The S12b
+   upper bound `73011/50623` (gap `≈ 9.57·10⁻¹¹`, three orders of
+   magnitude tighter) gives `x₁₀ ∈ (5/11, 1/2)` ⟹ `1/x₁₀ ∈ (2, 11/5)`
+   ⟹ floor = 2 ✓.
+
+2. **Main-ACT** (added to `CubeRoot3IrrationalOQ04.lean`): the
+   21-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain on a
+   ten-fold-nested fraction consuming the sandwich
+   `13361/9264 < cbrt3 < 73011/50623` followed by floor antisymmetry.
+   Heartbeat budget `set_option maxHeartbeats 3200000 in` (2× S11b's
+   1.6M, per empirical 2× per-depth scaling validated through S7–S11b).
+
+Helper file 528 → 586 LOC (+58 LOC, +1 theorem +1 prose section;
+theoremCount 16 → 17). Main file 1505 → 1747 LOC (+242 LOC,
++1 theorem; theoremCount 17 → 18). 0 sorries, 0 axioms (slug remains 0/0).
+The chain `cbrt3_a0,…,cbrt3_a10` now covers the OEIS A002945 prefix
+one step beyond S11b — verifying `a₁₀ = 2` (the actually-correct
+value, per math-correction #FOUR from S12a).
+
+Cube-direction sanity for the new helper: `73011³ = 389_192_883_500_331 >
+389_192_883_463_101 = 3 · 50623³` (diff `+37_230`, relative gap
+`≈ 9.57·10⁻¹¹`).
+
+**Math-correction precedent #FIVE for this slug**: the post-S12a
+`nextAction` sketch (JSON `currentState.nextAction` and state.md
+`Next Action` as of 2026-06-01 immediately after PR #21873 merged)
+claimed `73011³ = 389_271_307_557_812_731` and
+`3·50623³ = 389_271_307_493_213_241` with diff `+64_599_490`. The
+actual values are `73011³ = 389_192_883_500_331` and
+`3·50623³ = 389_192_883_463_101` with diff `+37_230` — both
+magnitudes off by ~1000× (sketch was working in `10¹⁸` while
+actual is `10¹⁴`). Direction unchanged (upper bound). Math-correction
+precedent count for this slug now stands at FIVE; the slug continues
+to be the gallery's record holder for pre-claim Python sanity
+caught errors.
+
+Docker build of main+helper files verified clean (7745 jobs;
+helper file 10s, main file 43s on standard image). Pre-existing
+`Mathlib.Data.Real.Irrational` deprecation warning in
+`Proofs/CubeRoot3Irrational.lean:8` unchanged (parent module not
+owned by this slug). 0 new sorries, 0 new axioms.
+
+See `sessions/2026-06-01-s12b-act-eleventh-partial-quotient.md`
+for the full algebraic chain table, propagated rational bounds at
+each of the 21 steps, OEIS A002945 cross-verification, and the
+S13 next-action sketch (`cbrt3_a11 = 5` via 13th convergent
+lower bound `597449/414248` — all recursion arithmetic to be
+re-verified pre-claim in S13).
+
+## Prior Focus (S12a Helper-ACT, PR #21873, MERGED 2026-06-01T08:15:18Z)
 
 S12a Helper-ACT (researcher-1, 2026-06-01, Lean-only narrow-ACT):
 added `Cbrt3Helpers.one_three_three_six_one_over_nine_two_six_four_lt_cbrt3 :
