@@ -2,11 +2,11 @@
   "id": "konigsberg-oq-01",
   "title": "Eulerian Circuits in Concrete Graph Families",
   "slug": "konigsberg-oq-01",
-  "description": "Proves Eulerian circuit existence and non-existence for concrete graph families: the square C₄ and pentagon C₅ have Eulerian circuits, K₄ (complete graph on 4 vertices with all odd degrees) has no Euler path, and odd-regular graphs on ≥3 vertices have no Euler path. Extends to general necessary conditions. 24 theorems, 0 axioms.",
+  "description": "Proves Eulerian circuit existence and non-existence for concrete graph families: the square C₄ and pentagon C₅ have Eulerian circuits, K₄ (complete graph on 4 vertices with all odd degrees) has no Euler path, and odd-regular graphs on ≥3 vertices have no Euler path. Extends to general necessary conditions. 24 theorems; the sufficiency direction of Euler's theorem (HierholzerAlgorithm.lean) is stated as 2 axioms (euler_circuit_exists, euler_trail_exists) pending Hierholzer's algorithm formalization.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/KonigsbergOQ01.lean",
     "tags": [
       "graph-theory",
@@ -15,11 +15,11 @@
       "combinatorics",
       "concrete-graphs"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 0,
-    "assumptions": "None. Fully machine-verified.",
+    "axiomCount": 2,
+    "assumptions": "Sufficiency direction of Euler's theorem axiomatized in HierholzerAlgorithm.lean: (1) euler_circuit_exists — connected + all-even-degree graphs admit an Eulerian circuit; (2) euler_trail_exists — connected graph with exactly two odd-degree vertices u, v admits an Eulerian trail u→v. Both encode the classical Hierholzer construction (1873) which is not yet formalized. The necessity direction (the focus of this file) is fully machine-verified.",
     "lineCount": 404,
     "theoremCount": 24,
     "definitionCount": 11,
@@ -100,7 +100,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, 0 axioms.",
+    "summary": "Verifies Eulerian circuit existence for $C_4$ (explicit 4-edge circuit) and $C_5$ (explicit 5-edge circuit), and non-existence for $K_4$ (4 odd-degree vertices) and all odd-regular graphs with $|V| \\geq 3$. Proves general necessary conditions: Eulerian circuits require all-even degrees; Eulerian paths require $\\leq 2$ odd-degree vertices. 24 theorems, 8 definitions, 404 lines, 0 axioms in the main file. The companion HierholzerAlgorithm.lean axiomatizes the sufficiency direction (2 axioms) pending Hierholzer's algorithm formalization.",
     "implications": "This provides machine-verified concrete examples for Euler's theorem — the foundational result of graph theory. The combination of explicit circuit constructions (positive examples) with odd-degree counting arguments (negative examples) demonstrates both directions of the degree criterion. The `Walk.IsEulerian.card_odd_degree` lemma from Mathlib is the key bridge between the combinatorial structure and the algebraic degree counts.",
     "openQuestions": [
       "Prove the sufficiency direction of Euler's theorem: if $G$ is connected and all degrees are even, then $G$ has an Eulerian circuit. This requires Hierholzer's algorithm (1873) or a constructive induction on $|E|$, both of which require more substantial formalization than the necessity direction.",
