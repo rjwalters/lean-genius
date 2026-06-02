@@ -29,20 +29,20 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-29T04:28:09.000Z",
-    "iteration": 2,
-    "focus": "Built a verified hypergeometric-series scaffold for K(k) = (pi/2)*2F1(1/2,1/2;1;k^2), the standard route to Gauss AGM. Deep series identity axiomatized; structural facts and k=0 consistency proved.",
-    "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01.",
+    "since": "2026-06-02T00:55:00Z",
+    "iteration": 3,
+    "focus": "S2 ACT (this session, researcher-1, Lean +64 LOC). Added section Summability of the Hypergeometric Series to Proofs/AmgmInequalityOQ04OQ03.lean (158 -> 222 LOC, 0 new axioms, 0 sorries). Three lemmas: centralBinom_le_four_pow (Mathlib v4.26.0 has only the lower bound four_pow_lt_mul_centralBinom; this fills the upper-bound gap via Nat.sum_range_choose), hypCoeff_le_one (direct corollary), summable_hyp2F1 (the headline: Summable (fun n => hypCoeff n * x^n) for |x| < 1, by absolute comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg ellipticK_eq_hyp2F1 discharge plan; structural prerequisite for the DCT-style sum/integral interchange step.",
+    "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01. S2 ACT adds the summability infrastructure via central-binomial upper bound + geometric comparison.",
     "blockers": [],
-    "nextAction": "Prove the binomial-series expansion (1-u)^(-1/2) = sum centralBinom n /4^n * u^n and the Wallis integral int_0^(pi/2) sin^(2n) = (pi/2) centralBinom n /4^n; then attempt term-by-term integration to discharge the ellipticK_eq_hyp2F1 axiom.",
+    "nextAction": "S3 ACT - pick one discharge leg. Recommended (easiest first): (1) Wallis closed form int_0^(pi/2) sin^(2n) = (pi/2) * centralBinom n / 4^n via Mathlib.integral_sin_pow recurrence (~50-100 LOC); (2) binomial series (1-u)^(-1/2) = sum centralBinom n / 4^n u^n for |u|<1 (~80-150 LOC); (3) uniform summability of hyp2F1 on compact k-subsets via TendstoUniformlyOn (~30 LOC). S2 ACT's summable_hyp2F1 is input to all three. S6 final discharge composes Wallis + binomial series + uniform summability via DCT.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: created verified Lean scaffold Proofs/AmgmInequalityOQ04OQ03.lean for the hypergeometric representation K(k)=(pi/2)*2F1(1/2,1/2;1;k^2). Builds clean (0 sorries, 1 axiom). Proved coefficient facts (c0=1, c1=1/4, c_n>0), 2F1(...;0)=1, and a k=0 consistency check against the verified ellipticK -- all independent of the axiom. The deep series identity is axiomatized with a documented proof route (binomial series + Wallis integrals + term-by-term integration) and explicit Mathlib gaps recorded.",
+    "progressSummary": "S1 ACT (PR #20885) shipped the scaffold Proofs/AmgmInequalityOQ04OQ03.lean (158 LOC, 1 axiom, 0 sorries): defs hypCoeff, hyp2F1; proved c0=1, c1=1/4, c_n>0, 2F1(...;0)=1, k=0 consistency. Axiomatized ellipticK_eq_hyp2F1. S2 ACT (this session) added section 6 Summability of the Hypergeometric Series (+64 LOC -> 222 LOC, 0 new axioms, 0 sorries): centralBinom_le_four_pow (Mathlib gap-filler), hypCoeff_le_one, summable_hyp2F1 for |x| < 1 (via absolute-summability comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg axiom-discharge plan; the remaining four legs are: Wallis closed form, binomial series for (1-u)^(-1/2), uniform summability on compacta, DCT interchange + final discharge.",
     "builtItems": [
       "Proofs/AmgmInequalityOQ04OQ03.lean (builds clean, 0 sorries, 1 axiom): defs hypCoeff, hyp2F1.",
       "hypCoeff_zero : hypCoeff 0 = 1 (proved).",
@@ -50,7 +50,10 @@
       "hypCoeff_nonneg / hypCoeff_pos : coefficient positivity (proved).",
       "hyp2F1_zero : hyp2F1 0 = 1 (proved via tsum_eq_single).",
       "ellipticK_hyp2F1_consistent_zero : K(0) = (pi/2)*2F1(...;0), proved independently of the axiom.",
-      "ellipticK_eq_hyp2F1 (axiom): K(k) = (pi/2)*2F1(1/2,1/2;1;k^2) for |k|<1 (deep term-by-term-integration identity)."
+      "ellipticK_eq_hyp2F1 (axiom): K(k) = (pi/2)*2F1(1/2,1/2;1;k^2) for |k|<1 (deep term-by-term-integration identity).",
+      "centralBinom_le_four_pow : Nat.centralBinom n <= 4^n (S2 ACT; Mathlib v4.26.0 gap-filler -- has only the lower bound).",
+      "hypCoeff_le_one : hypCoeff n <= 1 (S2 ACT corollary).",
+      "summable_hyp2F1 (x) (hx : |x| < 1) : Summable (fun n => hypCoeff n * x^n) (S2 ACT headline; prerequisite for DCT sum/integral interchange)."
     ],
     "insights": [
       "The target theorem is Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).",
@@ -61,7 +64,9 @@
       "K(k) = (pi/2) * sum_{n>=0} c_n k^(2n); the k^0 coefficient is 1 and the k^2 coefficient is (1/2)^2 = 1/4 (verified: hypCoeff_zero, hypCoeff_one).",
       "The identity is provable in principle via: binomial series (1-u)^(-1/2), substitution u = k^2 sin^2(theta), term-by-term integration over [0,pi/2], and the Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n.",
       "k=0 consistency is verifiable WITHOUT the deep identity: K(0)=pi/2 (ellipticK_zero) and 2F1(...;0)=1 (hyp2F1_zero via tsum_eq_single), so both sides equal pi/2 (theorem ellipticK_hyp2F1_consistent_zero).",
-      "Mathlib has Nat.centralBinom (+centralBinom_zero/_pos) and integral_sin_pow recurrences but no general 2F1 and no packaged term-by-term integration lemma in the form needed; the interchange of sum and integral (delicate as k->1) is the genuine blocker."
+      "Mathlib has Nat.centralBinom (+centralBinom_zero/_pos) and integral_sin_pow recurrences but no general 2F1 and no packaged term-by-term integration lemma in the form needed; the interchange of sum and integral (delicate as k->1) is the genuine blocker.",
+      "Mathlib v4.26.0 has Nat.four_pow_lt_mul_centralBinom (LOWER bound: 4^n < n * centralBinom n for n>=4) but NO upper bound centralBinom n <= 4^n. The upper bound is a one-liner via Nat.sum_range_choose applied to 2n + Finset.single_le_sum; S2 ACT proves it inline.",
+      "S2 ACT closes the *summability* leg of the five-leg ellipticK_eq_hyp2F1 discharge plan. Specifically, summable_hyp2F1 (x) (hx : |x| < 1) is the structural input the term-by-term integration step consumes (DCT-style sum/integral interchange on [0, pi/2]). Without this, the subsequent steps cannot even be stated. With it, S3-S5 can be tackled independently (Wallis, binomial series, uniform summability)."
     ],
     "mathlibGaps": [
       "No general Gauss hypergeometric function 2F1 in Mathlib.",
@@ -70,10 +75,11 @@
       "Wallis integral int_0^(pi/2) sin^(2n) = (pi/2)(2n choose n)/4^n: Mathlib has integral_sin_pow recurrences; the closed form via central binomial coefficient needs to be assembled."
     ],
     "nextSteps": [
-      "Prove (or locate) the binomial series for (1-u)^(-1/2) with central-binomial coefficients.",
-      "Assemble the Wallis integral closed form int_0^(pi/2) sin^(2n) = (pi/2) centralBinom n /4^n from integral_sin_pow.",
-      "Establish summability of the K integrand power series uniformly on compact k-subsets of (-1,1).",
-      "Combine to discharge ellipticK_eq_hyp2F1, then chain with the oq-04-oq-01 AGM-K connection toward M(a,b)=a*pi/(2K(k'))."
+      "S3 ACT (Wallis): prove int_0^(pi/2) sin^(2n) = (pi/2) * centralBinom n / 4^n via integral_sin_pow recurrence (~50-100 LOC).",
+      "S4 ACT (binomial series): (1-u)^(-1/2) = sum centralBinom n / 4^n u^n for |u|<1 (~80-150 LOC).",
+      "S5 ACT (uniform summability): extend summable_hyp2F1 to TendstoUniformlyOn compacta in (-1,1) (~30 LOC).",
+      "S6 ACT (DCT discharge): compose Wallis + binomial series + uniform summability to discharge ellipticK_eq_hyp2F1 (deep, ~150-300 LOC).",
+      "S7 ACT (AGM-K chain): combine with oq-04-oq-01 connection to reach M(a,b) = a*pi/(2*K(k'))."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-03\n\n## Problem Understanding\n\n- Target: prove Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).\n- Parameters recorded in the problem statement: k = b/a and k' = sqrt(1-k^2).\n- Intended route: use K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).\n- Context: extension from amgm-inequality-oq-04, categorized as a challenging deep analysis problem involving hypergeometric functions and AGM convergence.\n\n## Current State\n\n- Phase: OBSERVE.\n- Path: fast.\n- Since: 2026-04-04T02:41:25-07:00.\n- Iteration: 1.\n- Active approach: none recorded yet.\n- Attempts: total 0, current approach 0, approaches tried 0.\n- Blockers: none recorded.\n\n## Known Work and Open Items\n\n- No Lean proof attempt or completion is recorded for this subproblem.\n- The existing AGM formalization in amgm-inequality-oq-04 still needs to be checked.\n- Mathlib hypergeometric-series support still needs to be searched.\n- A preliminary AGM convergence-rate lemma is the first suggested proof target.\n\n## Next Steps\n\n1. Check the existing AGM formalization in amgm-inequality-oq-04.\n2. Search Mathlib for hypergeometric-series support.\n3. Try proving just the AGM convergence rate first.\n4. Move to ACT only if the quick search reveals an obvious formal route.\n\n## Dead Ends\n\nNone recorded.\n"
   },
@@ -117,7 +123,7 @@
     ]
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-05-29T04:28:09.000Z",
+  "lastUpdate": "2026-06-02T00:55:00Z",
   "leanFiles": [
     {
       "path": "Proofs/AmgmInequalityOQ02.lean",
@@ -338,6 +344,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityPowerMeanLimits.lean"
+    },
+    {
+      "path": "Proofs/AmgmInequalityOQ04OQ03.lean",
+      "filename": "AmgmInequalityOQ04OQ03.lean",
+      "lineCount": 222,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AmgmInequalityOQ04OQ03.lean"
     }
   ],
   "leanFile": "Proofs/AmgmInequalityOQ04OQ03.lean"
