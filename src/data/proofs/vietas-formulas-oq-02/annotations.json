@@ -86,6 +86,34 @@
     ]
   },
   {
+    "id": "ann-vieta-newton-bridge",
+    "proofId": "vietas-formulas-oq-02",
+    "range": {
+      "startLine": 173,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "The Vieta-Newton Bridge: Power Sums from Coefficients",
+    "content": "Theorem `vieta_newton_bridge` proves $p_2(r_1, r_2, r_3) = e_1(r_1, r_2, r_3)^2 - 2 \\, e_2(r_1, r_2, r_3)$ — a *closed-form* shortcut bypassing the Newton recursion. The mathematical content: for a monic cubic $f(x) = (x - r_1)(x - r_2)(x - r_3) = x^3 - e_1 x^2 + e_2 x - e_3$, *knowing only the coefficients* determines the sum-of-squares $r_1^2 + r_2^2 + r_3^2 = e_1^2 - 2 e_2$, even when the individual roots are inaccessible (irrational, complex, or computationally expensive to extract). This is the *constructive content* of Newton II — the same algebraic identity proved by `newton_identity_2_3`, but here packaged as a single substitution from $(e_1, e_2, e_3)$-space to power-sum space rather than as a recursion. The summary docstring (lines 187–201) frames the bigger picture: Vieta gives coefficients from roots; Newton gives power sums from coefficients; the bridge composes them to give power sums *directly* from coefficients, completing the round-trip $\\text{roots} \\to e_k \\to p_k$ without re-finding roots.\n\n**Why this matters for downstream algorithms**: this single identity is the *base case* of the *Faddeev–LeVerrier algorithm* — a polynomial-time method for computing characteristic-polynomial coefficients from matrix traces. For an $n \\times n$ matrix $A$ with eigenvalues $\\lambda_1, \\ldots, \\lambda_n$, the trace $\\text{tr}(A^k) = \\sum_i \\lambda_i^k = p_k(\\lambda)$, so the algorithm extracts $p_1, \\ldots, p_n$ in $O(n^4)$ time via matrix products, then *inverts* the Newton-Vieta direction (via Waring's formulas, the partner theorem to this bridge) to recover the characteristic-polynomial coefficients $e_k(\\lambda)$. The 3-variable case proved here is *exactly* the algorithm's correctness witness for $3 \\times 3$ matrices: given $\\text{tr}(A) = p_1$, $\\text{tr}(A^2) = p_2$, the bridge yields $e_2 = (p_1^2 - p_2)/2$ — the middle coefficient of $\\chi_A$.\n\n**Why the file proves both `newton_identity_2_3` and `vieta_newton_bridge`**: They are *mathematically equivalent* (both state $p_2 = e_1^2 - 2 e_2$ for 3 variables), but *semantically distinct* in the Lean API: `newton_identity_2_3` is stated in the canonical $p_2 = e_1 \\cdot p_1 - 2 e_2$ form (the Newton recursion shape, useful for general-$k$ induction), while `vieta_newton_bridge` substitutes $p_1 = e_1$ to give the *closed* form $p_2 = e_1^2 - 2 e_2$ (useful as a direct substitution rule in expressions that already eliminate $p_1$ via Newton I). Having both as named theorems lets downstream users pick the version matching their proof context — the Lean-style equivalent of providing both `add_comm` and `add_left_comm` for commutativity in different syntactic positions.",
+    "mathContext": "$p_2(r_1, r_2, r_3) = e_1(r_1, r_2, r_3)^2 - 2 \\, e_2(r_1, r_2, r_3)$, expanding to $r_1^2 + r_2^2 + r_3^2 = (r_1 + r_2 + r_3)^2 - 2(r_1 r_2 + r_1 r_3 + r_2 r_3)$. Equivalently, for the monic cubic $f(x) = x^3 - e_1 x^2 + e_2 x - e_3$ with roots $r_1, r_2, r_3$: $\\sum r_i^2 = e_1^2 - 2 e_2$, derivable from coefficients alone.\n\n**Faddeev–LeVerrier base case** ($n = 3$): given $p_1 = \\text{tr}(A)$, $p_2 = \\text{tr}(A^2)$, $p_3 = \\text{tr}(A^3)$ for a $3 \\times 3$ matrix $A$: $e_1 = p_1$ (Newton I), $e_2 = (p_1^2 - p_2)/2 = (e_1^2 - p_2)/2$ (rearranging this bridge), $e_3 = (p_1^3 - 3 p_1 p_2 + 2 p_3)/6$ (Waring's formula for $e_3$). The characteristic polynomial is then $\\chi_A(\\lambda) = \\lambda^3 - e_1 \\lambda^2 + e_2 \\lambda - e_3$ — recovered without any eigenvalue computation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "Faddeev–LeVerrier algorithm",
+      "Waring's formulas",
+      "characteristic polynomial",
+      "trace formula",
+      "symmetric function basis change",
+      "closed-form vs recursive identity"
+    ],
+    "prerequisites": [
+      "elementary symmetric polynomial",
+      "power sum",
+      "ring tactic",
+      "Vieta's formulas for monic polynomials"
+    ]
+  },
+  {
     "id": "ann-numerical-examples",
     "proofId": "vietas-formulas-oq-02",
     "range": {
