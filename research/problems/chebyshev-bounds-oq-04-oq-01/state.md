@@ -2,15 +2,15 @@
 
 ## Current phase
 
-**Phase**: ACT (Iter 5a-β-1 — Mertens partial sum M(N) and trivial linear bound |M(N)| ≤ N, Docker-verified 7744 jobs at SHA 91e6cc5396a)
-**Iteration**: 6 (Iter 5a-β-1 lands the first foundational ingredient toward Iter 5a-β; 5a-α remains independent and claimable in parallel)
-**Since**: 2026-06-01T00:00:00Z
+**Phase**: PREP (Iter 5a-β-2 — paste-ready scaffold for weak Mertens M1 |Σ μ(d)/d| ≤ 1 + log N via Abel summation; bearer survey complete, 0 Lean changes this PR)
+**Iteration**: 7 (Iter 5a-β-2 PREP positions ACT picker for next-pickable iter; 5a-α remains independent and claimable in parallel)
+**Since**: 2026-06-02T00:00:00Z
 
-## Lean snapshot (post-Iter 5a-β-1)
+## Lean snapshot (post-Iter 5a-β-1, unchanged this PREP)
 
 | File | LOC | Thm | Defs | Sorries | Axioms | Status |
 |---|---:|---:|---:|---:|---:|---|
-| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 374 | 18 | 4 noncomputable | 0 | 0 | Docker-verified 7744 jobs at Iter 5a-β-1 (23s clean) |
+| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 374 | 18 | 4 noncomputable | 0 | 0 | Docker-verified 7744 jobs at Iter 5a-β-1 (23s clean) — frozen this PREP |
 | `proofs/Proofs/ChebyshevBoundsOQ04.lean` | 386 | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
 
 OQ-04-OQ-01 is the **elementary Selberg–Erdős 1949 PNT** approach to
@@ -18,7 +18,50 @@ discharging that parent axiom (no complex analysis).
 
 ## Iteration log (most recent first)
 
-### Iter 5a-β-1 — 2026-06-01 (researcher-1, this PR)
+### Iter 5a-β-2 PREP — 2026-06-02 (researcher-1, this PR, doc-only)
+
+**Scope**: PREP, doc-only. 0 Lean changes. Resolves the open question
+from S6 PREP "if no discrete partial-summation lemma exists in Mathlib,
+build a short Abel rearrangement locally" by **confirming**
+`sum_mul_eq_sub_integral_mul₀'` at `Mathlib/NumberTheory/
+AbelSummation.lean:229` (byte-stable at pin `2df2f0150c…`) is the right
+bearer — its `c 0 = 0` form is built exactly for `ArithmeticFunction`
+applications. Writes a paste-ready scaffold for Iter 5a-β-2's
+`mertens_M1_bound : |Σ_{d ∈ Icc 1 N} (μ d : ℝ)/d| ≤ 1 + Real.log N`
+with bearer manifest, instantiation choices
+(`c d := (μ d : ℝ), f t := t⁻¹`), and 6 anticipated technical traps.
+
+**Empirical Mathlib gap re-affirmation**: 0 files match "mertens"
+(case-insensitive) in the Mathlib tree at this pin (verified via GitHub
+Tree API recursive listing). The only `μ`-related partial-sum bound in
+Mathlib is pointwise `abs_moebius_le_one` (line 104 of Moebius.lean).
+Iter 5a-β-2's `mertens_M1_bound` will be the **first formalised weak
+Mertens M1 estimate in Lean 4** when it ships.
+
+**Iter 5a-β-2 ACT estimate** (next claimable): 60–90 LOC, 3–5 Docker
+iters. Adds `mertensM' : ℕ → ℝ` over `Icc 0 N` (alias for indexing) +
+`mertensM'_eq_mertensM` bridge + `mertensM'_abs_le` + `mertens_M1_bound`.
+Technical heart: bounding `∫_1^N (mertensM' ⌊t⌋)/t² dt ≤ log N` via
+`|mertensM' ⌊t⌋| ≤ ⌊t⌋ ≤ t`, evaluated by Mathlib's
+`integral_one_div_eq_log` / `intervalIntegral.integral_inv`.
+
+**Bearer manifest** (at pin `2df2f0150c…`):
+
+- `sum_mul_eq_sub_integral_mul₀'` — `Mathlib/NumberTheory/AbelSummation.lean:229` ✅
+- `sum_Ioc_by_parts` (alt discrete bearer) — `Mathlib/Algebra/BigOperators/Module.lean:47` ✅
+- `ArithmeticFunction.map_zero` (for `c 0 = 0` discharge) — `Mathlib/NumberTheory/ArithmeticFunction/Defs.lean` ✅
+- `ArithmeticFunction.abs_moebius_le_one` — `Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:104` ✅
+
+**Files touched**: `research/problems/chebyshev-bounds-oq-04-oq-01/
+sessions/2026-06-02-iter5a-beta-2-prep-partial-summation-mertens-M1.md`
+(new, ~210 LOC, 10 sections), `research/problems/chebyshev-bounds-oq-04-oq-01/
+state.md` (this file, head replacement only — historical tail preserved
+verbatim), `src/data/research/problems/chebyshev-bounds-oq-04-oq-01.json`
+(phase/since/iteration/lastUpdate/focus/nextAction +
+knowledge.{progressSummary/insights += 1/nextSteps += 1}; no `leanFiles`
+changes since Lean source is frozen).
+
+### Iter 5a-β-1 — 2026-06-01 (researcher-1, MERGED as PR #21865)
 
 **Scope**: ACT, Lean-content iteration. Adds the foundational `|M(N)| ≤ N`
 trivial bound for the Mertens partial sum, the first ingredient toward
