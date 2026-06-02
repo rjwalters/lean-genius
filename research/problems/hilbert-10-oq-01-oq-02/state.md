@@ -2,8 +2,101 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; S29 STATE-SYNC doc-only sync below — iter 27 has not yet fired over T+15d)
-**Last Updated**: 2026-05-31 (researcher-1, S29 STATE-SYNC — T+15d temporal drift refresh + bearer pin recheck + iter 27e null-content promotion to anti-candidate)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 below — iter 27 ACT still has not fired)
+**Last Updated**: 2026-06-02 (researcher-1, **iter 27a PREP-1** — Mathlib v4.26.0 bearer survey for the Σ₂(ℤ) attack; iter 27a verdict revised: **upstream-blocked** under current pin + anti-axiom policy)
+
+## Session 30 — Iter 27a PREP-1 (researcher-1, 2026-06-02, T+17d post-iter 26a merge)
+
+**Goal**: convert the S27/S28/S29 "iter 27a = sole forward candidate"
+recommendation into an actionable **upstream-readiness assessment**, by
+enumerating the Mathlib v4.26.0 bearer surface that a Σ₂(ℤ) attack via
+the Koenigsmann Hilbert-symbol architecture would depend on. Decide
+whether iter 27a-ACT is upstream-ready, upstream-partial, or
+upstream-blocked, and propose the next-cycle PREP-2 target.
+
+**Method** (full record: `sessions/2026-06-02-iter27a-prep-1-mathlib-bearer-survey.md`):
+
+Shallow clone of `leanprover-community/mathlib4` at branch `v4.26.0`,
+verified `git rev-parse HEAD = 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(matches the slug's pinned SHA). Full-tree `find` + targeted `grep` for
+the relevant API surface. Clone removed after survey for disk hygiene.
+
+**Findings — Mathlib bearer surface at the pin**:
+
+| Layer | Status | What's there |
+|-------|--------|--------------|
+| LegendreSymbol / JacobiSymbol | **PRESENT** | over `ZMod p`, NOT `ℚ` |
+| p-adic infrastructure | **PRESENT** | `ℚ_p`, `ℤ_p`, norm, valuation, Hensel |
+| QuadraticForm (abstract + ℝ + ℂ) | **PRESENT** | NO ℚ specialization |
+| BrauerGroup | **SKELETON ONLY** | 98 LOC, only `CSA` def + Brauer setoid; abelian-group structure, functoriality, ℚ-specialization all on TODO list |
+| MRDP / Matiyasevic | **PRESENT (over ℕ)** | `Mathlib.NumberTheory.Dioph` — `Dioph`, `pell_dioph`, `pow_dioph`; H10/ℤ undecidability theorem NOT yet stated |
+| **HilbertSymbol** | **ABSENT** | grep across full Mathlib tree returns 0 matches |
+| **HasseMinkowski** | **ABSENT** | 0 matches |
+| **BrauerGroup over ℚ** | **ABSENT** | 0 matches |
+| **PoonenNonSquaresDiophantine** | **ABSENT** | 0 matches (only `papers` ref in slug's iter 0 docstring) |
+| **Hilbert10Rational** | **ABSENT** | 0 matches |
+
+**5/5 of the bearers a naive iter 27a Σ₂(ℤ) ACT would need are ABSENT
+from Mathlib v4.26.0 at the pin.**
+
+**Verdict**: iter 27a is **UPSTREAM-BLOCKED** under current pin + slug's
+anti-axiom policy.
+
+- Building any of the 5 missing bearers from scratch is itself a multi-PR
+  Mathlib contribution (estimated 500-2000 LOC each by comparison to
+  `LegendreSymbol/` and `Padics/` directory sizes).
+- Axiomatizing a Σ₂(ℤ) witness without bearer provenance is anti-axiom-policy
+  blocked — same constraint that defers iter 27d (Daans 2021 10-quantifier
+  reduction).
+
+**Iter 27a refined sub-paths** (S30 picker matrix):
+
+| ID | Description | Status |
+|---|---|---|
+| 27a-α | Rational-square cone Σ₁ via Poonen 2009 lift | 🚫 anti-candidate (anti-axiom-policy — same as 27d) |
+| 27a-β | LegendreSymbol-keyed Σ₂ test fragment (primes ≡ 1 mod 4) | ⚠️ low-leverage (Σ₁ subset, lives in Σ₁∩Σ₂ trivially — expository at best) |
+| 27a-γ | Mathlib upstream contribution of HilbertSymbol + HasseMinkowski over ℚ | ⏳ multi-quarter deferred |
+| 27a-δ | Sharpen the existing H10/ℚ implication chain via re-export theorems | ✅ low-leverage but axiom-free, ~50 LOC, 2-5 theorems |
+
+**Honest single-cycle ACT availability** (post-S30):
+
+- A substantive iter 27a-ACT against `IntegersAreExistentialUniversalOverQ`
+  is **NOT achievable** under current constraints.
+- 27a-δ is the only axiom-free, single-cycle Lean delta available.
+- All other productive moves remain doc-only PREP or +Nd STATE-SYNC.
+
+**PREP-2 proposal** (for the next picker):
+
+> Catalog any in-flight Mathlib PRs / RFCs targeting the 5 missing bearers
+> (HilbertSymbol, HasseMinkowski, Brauer(ℚ), PoonenNonSquaresDiophantine,
+> Hilbert10Rational). Resolves into:
+>
+> - "upstream-blocked, no in-flight motion" → claim release, slug rests;
+> - "in-flight motion at PR # X" → track and re-PREP on its merge;
+> - "partial bearer landed at SHA Y" → PREP-3 = Lean draft against the new bearer.
+
+**ACT-readiness gate (S30)**: 8/10 GREEN, 1/10 NEW INFORMATION (gate 9 —
+bearer-gap now explicit), 1/10 DOWNGRADED (gate 10 — only 27a-δ is feasible
+single-cycle, and it is low-leverage). Full table in the session memo §8.
+
+**Deliverables (this PR, doc-only — no Lean / no gallery meta / no problem.md /
+no knowledge.md body edits)**:
+
+1. **NEW session memo**: `sessions/2026-06-02-iter27a-prep-1-mathlib-bearer-survey.md` (this PREP-1's full record).
+2. **state.md head**: this Session 30 prepend.
+3. **Canonical JSON** (`src/data/research/problems/hilbert-10-oq-01-oq-02.json`):
+   `knowledge.progressSummary` prepend with S30 narrative; `lastUpdate`
+   2026-05-31T04:00:00Z → 2026-06-02T03:00:00Z. `currentState.*` carried
+   forward verbatim except `currentState.focus` (pointer update only).
+
+**Out of scope (deferred)**:
+
+- Gallery `meta.json` numerics — file unchanged, no drift.
+- `pnpm build` — slug-targeted JSON edit only.
+- Lean file edits — none required for an upstream-readiness assessment.
+- Bearer drift recheck against any Mathlib SHA other than the pin — pin is unchanged.
+
+**Mathlib pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`), unchanged.
 
 ## Session 29 — S29 STATE-SYNC (researcher-1, 2026-05-31, T+15d)
 
