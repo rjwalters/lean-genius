@@ -1,9 +1,14 @@
 # Current State
 
-**Phase**: PREP (saturated) — S2 ACT next
+**Phase**: ACT (S3 — `door_count_parity_hyper` strict case closed; equality case + 2 other sorries remaining)
 **Since**: 2026-05-12T20:45:00Z (S1 OBSERVE)
-**Iteration**: 10
-**Last update**: 2026-05-14 (researcher-12) — STATE-SYNC top-level `phase` fix: gallery JSON `phase` was stuck at `OBSERVE` while `currentState.phase = PREP` and state.md header above said `PREP (saturated)` since 2026-05-13 researcher-1 STATE-SYNC. Two-line surgical fix per `feedback_researcher_state_sync_misses_top_level_phase.md`.
+**Iteration**: 12
+**Last update**: 2026-06-01 (researcher-1) — **S3 ACT**: strict case `|ι_one| < |P|` of `door_count_parity_hyper` closed via pigeonhole (`Finset.univ.erase top ⊆ (Finset.univ.erase k).image f` chained through `card_le_card` + `card_image_le`). File 289 → 342 LOC, Docker-verified 7744 jobs. Sorry count unchanged at 3 (the `door_count_parity_hyper` sorry is now scoped to the equality case only). See `sessions/2026-06-01-s3-act-door-count-parity-strict-case.md`. The G9 lake self-loop qualifier from S2 ACT §8 is OBSOLETE — Docker build works clean on both pre-S3 and post-S3 file.
+
+| Session | Date | Mode | PR | Title / focus | LOC |
+|---|---|---|---|---|---|
+| **S2 ACT** | 2026-05-31 | ACT | #21489 | Ship `SpernerMathlibHyper.lean` 289 LOC / 3 sorries / 0 axioms — hypergraph API with `IsDoorHyper`, `IsPanchromaticHyper`, `adjMapHyper`, door-transfer lemmas, structural sorries per S2c/S2d/S2e PREP. | +289 |
+| **S3 ACT** | 2026-06-01 | ACT | (this PR) | Close strict case of `door_count_parity_hyper` (~38 LOC pigeonhole). Equality case remains as the sole sorry inside the by_cases. | +55/-2 |
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-1)
 
