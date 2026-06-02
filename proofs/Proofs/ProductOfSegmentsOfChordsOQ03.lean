@@ -181,4 +181,34 @@ theorem signed_inner_product_to_scalar_coord
   rw [← norm_sub_sq_coord A P, ← norm_sub_sq_coord C P]
   exact h_scalar
 
+/-! ## Part 7: Chord-collinearity coordinate substitution (S16 ACT)
+
+The signed-product bridge above (`signed_inner_product_to_scalar_coord`)
+takes the chord-collinearity hypotheses `B - P = t • (A - P)` and
+`D - P = s • (C - P)` as abstract `Vec2` equations. The final
+cofactor-expansion + `linear_combination` discharge (S17 ACT) needs the
+same hypotheses re-expressed coordinate-wise:
+
+  `B 0 = P 0 + t * (A 0 - P 0)`, `B 1 = P 1 + t * (A 1 - P 1)`,
+  `D 0 = P 0 + s * (C 0 - P 0)`, `D 1 = P 1 + s * (C 1 - P 1)`.
+
+These are mechanical (`PiLp.sub_apply` + `PiLp.smul_apply` at indices
+`0` and `1`) but packaging them as a single lemma keeps the S17 ACT
+discharge focused on the polynomial witness step. The lemma is stated
+generically (any two indices, any names) so it applies to all four
+substitutions in S17 ACT.
+-/
+
+/-- Coordinate form of chord-collinearity:
+`R - P = t • (Q - P)` evaluated at index `i` gives `R i = P i + t * (Q i - P i)`.
+
+Used by S17 ACT to substitute `B i` and `D i` in the concyclicity determinant
+before cofactor expansion. -/
+lemma coord_of_smul_diff
+    (P Q R : Vec2) (t : ℝ) (h : R - P = t • (Q - P)) (i : Fin 2) :
+    R i = P i + t * (Q i - P i) := by
+  have hi : (R - P) i = (t • (Q - P)) i := by rw [h]
+  simp only [PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul] at hi
+  linarith
+
 end ProductOfSegmentsOfChordsOQ03
