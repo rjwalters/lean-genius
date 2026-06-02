@@ -41,9 +41,9 @@
       "Gaussian stability under normalized convolution powers"
     ],
     "historicalContext": "The algebraic structure of probability distributions under convolution has been studied since Lévy (1925). Cramér's theorem (1936) revealed that the Gaussian is 'indecomposable' in this structure, and the CLT can be interpreted as a convergence statement in the convolution monoid.",
-    "axiomCount": 14,
+    "axiomCount": 25,
     "lineCount": 241,
-    "assumptions": "14 axioms: convolution, convolution_assoc, convolution_dirac_left, and 11 more. See Lean source for complete statements.",
+    "assumptions": "25 axiom declarations across the chain: 14 in main file CentralLimitTheoremOQ03.lean (convolution, convolution_assoc, convolution_dirac_left, convolution_dirac_right, convolution_comm, charFun, charFun_convolution, charFun_dirac_zero, mean, variance, standardGaussian, gaussian_variance, normalizedConvPow, clt_convergence) and 11 in companion CentralLimitTheoremOQ03OQ02.lean (convolution, convolution_assoc, convolution_comm, convolution_dirac_right, charFun, charFun_convolution, charFun_dirac_zero, standardGaussian, standardGaussian_infDivisible, levyKhintchineExponent, levy_khintchine). Eight names are duplicated across main and OQ02 — they are independent declarations per module. Companions OQ01 and OQ01Aristotle declare no axioms (OQ01 carries 2 sorries; OQ01Aristotle carries 4 sorries — Aristotle scaffolding). See Lean sources for complete statements.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
     "definitionCount": 5,
