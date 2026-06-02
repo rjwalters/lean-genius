@@ -713,6 +713,66 @@ private lemma exists_finite_subcover_for_uhc {n : ℕ}
     CompactSpace.elim_nhds_subcover U fun x => (hU_open x).mem_nhds (hU_mem x)
   exact ⟨U, s, hU_open, hU_mem, hU_ball, hU_sub, hs⟩
 
+/-- **S29 scaffold (Lebesgue number for the UHC cover):**
+
+    Augments `exists_finite_subcover_for_uhc` with a uniform Lebesgue
+    radius `δ > 0` such that every `δ`-ball in `↥S` is contained in
+    some single cover element `U i`. The pointwise containment
+    `Metric.ball x δ ⊆ U (i x)` (for `i x` depending on `x`) is the
+    uniform refinement needed to bound distances between centers in
+    `ρ.finsupport x` from above by a calibrated multiple of `ε`.
+
+    This lemma does **not** close the output-side clustering bound
+    `dist (ysel j) (ysel i) < ε` directly — see
+    `sessions/2026-06-02-s28-prep-clustering-lebesgue.md` §3 for the
+    underlying obstacle that UHC controls `F z` as a *set* and the
+    `ysel` selector is fixed globally before clustering is even posed.
+    It is intended as input to a subsequent S30+ uniform-thickening
+    step.
+
+    **Proof.** `↥S` is compact (`isCompact_iff_compactSpace.mp
+    hS_compact` materialises `[CompactSpace ↥S]`, the same one-line
+    construction used by S18c at line 704). The `U` family from
+    `exists_finite_subcover_for_uhc` is an open cover of
+    `Set.univ : Set ↥S` (`hU_open` + `hU_mem` give
+    `Set.univ ⊆ ⋃ i, U i` by the same one-liner as S18d line 767).
+    Apply `lebesgue_number_lemma_of_metric`
+    (`Mathlib/Topology/MetricSpace/Pseudo/Lemmas.lean` at pinned rev
+    `2df2f0150c…`) to obtain the uniform `δ > 0` and the per-`x`
+    cover-element witness.
+
+    No new axiom is introduced; `axiom approx_selection_exists`
+    (Axiom 2 above) remains unchanged. -/
+private lemma exists_lebesgue_subcover_for_uhc {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_uhc : IsUpperHemicontinuous F)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : ↥S → Set ↥S, ∃ s : Finset ↥S, ∃ δ : ℝ,
+      0 < δ ∧
+      (∀ x : ↥S, IsOpen (U x)) ∧
+      (∀ x : ↥S, x ∈ U x) ∧
+      (∀ x : ↥S, U x ⊆ Metric.ball x ε) ∧
+      (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
+      (⋃ x ∈ s, U x = (⊤ : Set ↥S)) ∧
+      (∀ x : ↥S, ∃ i : ↥S, Metric.ball x δ ⊆ U i) := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  -- Step 1: invoke S18c to obtain the open cover with input-ball + thickening
+  -- + finite-subcover clauses.
+  obtain ⟨U, s, hU_open, hU_mem, hU_ball, hU_sub, hs_cover⟩ :=
+    exists_finite_subcover_for_uhc S hS_compact F hF_uhc ε hε
+  -- Step 2: derive Set.univ ⊆ ⋃ i, U i (same one-liner as S18d).
+  have hU_cover_univ : (Set.univ : Set ↥S) ⊆ ⋃ i : ↥S, U i := by
+    intro x _
+    exact Set.mem_iUnion.mpr ⟨x, hU_mem x⟩
+  -- Step 3: apply `lebesgue_number_lemma_of_metric` to obtain the uniform δ.
+  obtain ⟨δ, hδ_pos, hδ⟩ :=
+    lebesgue_number_lemma_of_metric isCompact_univ hU_open hU_cover_univ
+  -- Step 4: package the Lebesgue witness restricted to ↥S (via mem_univ).
+  refine ⟨U, s, δ, hδ_pos, hU_open, hU_mem, hU_ball, hU_sub, hs_cover, ?_⟩
+  intro x
+  exact hδ x (Set.mem_univ x)
+
 /-- **S18d scaffold (Cellina–Browder Step 3, subordinate partition of unity):**
 
     Given an upper-hemicontinuous set-valued map `F : ↥S → 2^↥S` on a

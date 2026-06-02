@@ -30,12 +30,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-28",
-    "iteration": 30,
-    "focus": "S27 ACT (researcher-1, 2026-05-28, this PR): added private lemma finsupport_combination_within_output_ball (lean:996) reducing the output-side conjunct dist(f x, ysel i) < ε of IsGraphApproxSelection to selected-value clustering (closedBall(ysel i, r) convex + contains every ysel j ⟹ the partition-weighted sum f x lands in it; convex_combination_of_partition_in_S + convex_closedBall). Simpler endgame: witness y := ysel i ∈ F i, no exists_nearest_in_image_F. Build-verified clean 3074 jobs (Built in 7.2s) at pinned SHA 2df2f0150c. 0 functional sorries, 2 axioms unchanged.",
+    "iteration": 31,
+    "focus": "S29 ACT (researcher-1, 2026-06-02): land paste-ready Lebesgue helper from S28 PREP §5 verbatim. +60 LOC at SchauderFixedPointOQ03OQ01.lean:716 between exists_finite_subcover_for_uhc (S18c) and the S18d scaffold docstring. New private lemma exists_lebesgue_subcover_for_uhc augments S18c's open cover with a uniform Lebesgue radius δ>0 via lebesgue_number_lemma_of_metric (Mathlib/Topology/MetricSpace/Pseudo/Lemmas.lean at pinned SHA 2df2f0150c). Proof: 4 logical steps — materialise CompactSpace ↥S via isCompact_iff_compactSpace.mp; obtain S18c's open cover; derive Set.univ ⊆ ⋃ i, U i (S18d one-liner); apply lebesgue_number_lemma_of_metric isCompact_univ hU_open hU_cover_univ. Build pending: same sibling lake-build container 9db9a3f1bb19 ~4h+; disk 24Gi GREEN; SHA stable 21+ days; no new imports (all bearers in transitively imported modules). Risk-acceptance 8/8 GREEN per S28 PREP §7 picker matrix — recent BUILD-VERIFY 4 days ago (PR #20891 3074 jobs clean) is the qualitative difference vs the older 25-day-old lagrange S16 region BUILD-VERIFY. theoremCount 17→18 under canonical regex; lineCount 1419→1479; axiomCount unchanged at 2; sorries unchanged at 0 functional.",
     "blockers": [],
-    "nextAction": "S27 ACT: prove the selected-value clustering dist(ysel j, ysel i) < ε for j, i ∈ ρ.finsupport x via a uniform/Lebesgue-number refinement of the S18c cover; feed it to finsupport_combination_within_output_ball (lean:996) to close dist(f x, ysel i) < ε with witness y := ysel i. Then S28 ACT packages theorem approx_selection_exists_proof to replace the axiom and sync axiomCount 2→1.",
+    "nextAction": "S30 (next ACT): re-pose the output-side clustering problem against the Lebesgue helper's δ-uniform-refinement output. The genuine obstacle (per S28 PREP §3) is that UHC controls F z as a set not the chosen ysel j values; S30 candidate paths are (a) thread convex_combination (S18a) through the δ-refined cover to bound dist (ysel j) (ysel i) via center-distance + thickening-radius decomposition, or (b) pivot to anchored selector via S22's exists_nearest_in_image_F + global reference whose distance to each F i is bounded. PREREQUISITE: S29 ACT Docker verify (currently build-pending due to sibling container contention). Auditor or next-cycle picker can run Docker verify after sibling drains.",
     "attemptCounts": {
-      "total": 30,
+      "total": 31,
       "currentApproach": 5,
       "approachesTried": 3
     }
