@@ -1,11 +1,68 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT (S24 PR-A landed Docker-clean; PR-B / PR-C still Docker-blocked — B1 hung 19.9h, Path C window EXPIRED 7.9h ago; B2 disk RED 3.4 Gi)
+**Phase**: ACT (S30 PR-B landed Docker-clean; PR-C is the only remaining S24 ACT — bearers and helpers all in scope; infra GREEN since 2026-06-02)
 **Path**: full
-**Since**: 2026-05-17T01:55:00Z (S29 STATE-SYNC — post-S28-PREP catchup, doc-only)
-**Last Updated**: 2026-05-17 (S29 STATE-SYNC — 4 drift items: focus stale "this PR" loci, B1 age, NEW B2 disk RED, leanFiles[2] post-S27 numerics)
-**Iteration**: 29 (S29 STATE-SYNC — doc-only JSON+state catchup; researcher-4)
+**Since**: 2026-06-02T00:25:00Z (S30 ACT PR-B — `blichfeldt_general_lattice` shipped; Docker 3075 jobs clean)
+**Last Updated**: 2026-06-02 (S30 ACT PR-B — Lean +139 LOC, 1126 lines, 17 theorems, build-verified; B1/B2 CLEARED)
+**Iteration**: 30 (S30 ACT PR-B — researcher-1)
+
+## S30 — S30 ACT PR-B 2026-06-02 (researcher-1)
+
+**Focus**: ship S24 PR-B per S23 spec §2.1 / §4 — `blichfeldt_general_lattice` (lattice-side k+1
+covering-count averaging). Builds on S27 PR-A `volume_eq_setLIntegral_indicator_tsum_lattice`.
+T+16d since S29 STATE-SYNC. Pre-flight at S30: B1 (Docker hung 19.9h at S29) CLEARED — `timeout 10 docker info` returns full Server: section (Containers: 0, Images: 3); B2 (disk RED 3.4 Gi at S29) CLEARED — `df -h /System/Volumes/Data` reports 55 Gi avail / 94% used. Both gates of S29 nextAction §(c) GREEN, unblocking option (c) "paste S23 spec §2.1 and ship".
+
+### Deliverables (S30 PR-B)
+
+| Field | Value |
+| --- | --- |
+| New theorem | `BlichfeldtTheorem.blichfeldt_general_lattice` (basis-parametric, k+1 covering form) |
+| Insertion site | `proofs/Proofs/MinkowskiTheoremOQ04.lean:441` (immediately after `blichfeldt_general` at :324; before `blichfeldt_basic_from_general` at :442 in pre-edit numbering) |
+| Body size | ~110 LOC body + ~17 LOC docstring (+1 `#check` line in Export section); total +139 LOC |
+| Proof strategy | Mechanical bearer-substitution per S23 §4: `stdLattice n → Submodule.span ℤ (Set.range b)`, `stdFundDomain n → ZSpan.fundamentalDomain b`, `volume_eq_setLIntegral_indicator_tsum → volume_eq_setLIntegral_indicator_tsum_lattice b` (the S27 PR-A helper). The covolume-= 1 step (`stdLattice_covolume`) is the only `stdLattice`-specific step; abstracted by quoting `volume (ZSpan.fundamentalDomain b)` directly in the hypothesis (per S23 §5 normalisation). Otherwise structurally identical to `blichfeldt_general`. |
+| Docker build | **3075 jobs / first-try clean** at Lean 4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` |
+| Source file growth | 987 → **1126** lines (+139) |
+| Theorem count | 16 → **17** |
+| Axioms | **0** textually / **0** structure-encoded (unchanged) |
+| Sorries | **0** (unchanged) |
+| New `#check` entries | 1 (`BlichfeldtTheorem.blichfeldt_general_lattice` at Export check :1117) |
+
+### Bearer drift recheck at this commit (B1-B4 from S25 manifest, lake-SHA `2df2f0150c`)
+
+| # | Symbol | Bearer file | S25 line | S30 status |
+|---|---|---|---|---|
+| B1 | `ZSpan.isAddFundamentalDomain'` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 359 | ✅ used via `volume_eq_setLIntegral_indicator_tsum_lattice` (S27); no direct call in PR-B |
+| B2 | `ZSpan.volume_fundamentalDomain` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 386 | ✅ not needed in PR-B (covolume term left abstract per S23 §5) |
+| B3 | `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` | `Mathlib/MeasureTheory/Group/GeometryOfNumbers.lean` | 65 | ✅ deferred to PR-C |
+| B4 | `Module.finrank_fin_fun` | `Mathlib/LinearAlgebra/FreeModule/Finite/Matrix.lean` | 328 | ✅ deferred to PR-C |
+
+### S24 sequencing — post-PR-B state
+
+| PR | Theorem | Status | Insertion site |
+|---|---|---|---|
+| **PR-A** | `volume_eq_setLIntegral_indicator_tsum_lattice` | ✅ **shipped (S27)** | `MinkowskiTheoremOQ04.lean:264` |
+| **PR-B** | `blichfeldt_general_lattice` (~110 LOC body + docstring) | ✅ **shipped (S30, this iteration)** | `MinkowskiTheoremOQ04.lean:441` (post-edit) |
+| PR-C | `minkowski_general_k_lattice` (~50 LOC) | ⏳ unblocked (PR-B shipped + Docker GREEN) | after `minkowski_general_k` at :719 |
+
+### Pre-flight
+
+- `gh pr list -R rjwalters/lean-genius --search "minkowski-theorem-oq-04 in:title" --state open` → 0 results. No concurrent researcher PR; #17599 (Iter 21 DIRTY 8-day-stale) merged or closed between S29 and S30 (T+16d).
+- `timeout 10 docker info 2>&1 | grep -A 5 "^Server:"` → Containers: 0 + Images: 3 visible (B1 CLEARED).
+- `df -h /System/Volumes/Data | tail -1` → 55 Gi avail / 94% used (B2 CLEARED, well above 5 Gi soft-floor).
+- Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged from S25/S26/S27/S28/S29 — bearer manifest carries forward (no full re-spot-check; only the helper `volume_eq_setLIntegral_indicator_tsum_lattice` is directly invoked).
+- Concurrent researcher slugs (`elementary-quadratic-reciprocity-oq-01-oq-02` S8 STATE-SYNC PR #22012 just shipped by this same researcher-1 session at T-20min) — no cross-slug conflict.
+
+### Honest calibration
+
+Adds +139 Lean LOC (1 new theorem `blichfeldt_general_lattice` + 1 `#check`), closes 0 sorries (already 0), retires 0 axioms (already 0). Build-verified 3075 jobs clean on first try via Docker. Mechanic territory deferred per S27 precedent: `meta.json.lineCount: 987 → 1126`, `meta.json.theoremCount: 16 → 17`, `mainTheorems[]` append for `blichfeldt_general_lattice` (rich object with significance/mathContext). Sibling-slug `leanFiles[0/1]` drift NOT touched.
+
+### Next picker (S31)
+
+- Verify Docker still GREEN: `timeout 10 docker info 2>&1 | grep -E "^Server:" -A 5`.
+- Verify host disk ≥ 5 Gi: `df -h /System/Volumes/Data | tail -1`.
+- IF BOTH GREEN: paste S23 spec §2.2 and ship `minkowski_general_k_lattice` via `./proofs/scripts/docker-build.sh Proofs.MinkowskiTheoremOQ04`. Estimated ~50 LOC body, parameter-lifted from `minkowski_general_k` at :719, calling PR-B's `blichfeldt_general_lattice` after the half-scaling step. Bearers B3 + B4 enter scope here.
+- IF EITHER RED: ship a doc-only S31 STATE-SYNC absorbing any new mechanic / sibling drift.
 
 ## S29 — S29 STATE-SYNC 2026-05-17 (researcher-4)
 
