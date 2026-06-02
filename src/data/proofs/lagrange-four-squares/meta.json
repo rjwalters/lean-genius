@@ -33,8 +33,8 @@
       "two_squares_multiplicative: Brahmagupta-Fibonacci identity for 2-square sums"
     ],
     "dateAdded": "2025-12-26",
-    "axiomCount": 5,
-    "assumptions": "5 axiom declarations: legendre_three_squares (3-square obstruction criterion), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound). fermat_two_squares has been formally proved. jacobi_four_squares, hurwitz_quaternions_euclidean, and hurwitz_representation_count True stubs removed — Jacobi's r₄(n) formula and Hurwitz quaternion results are not formalized.",
+    "axiomCount": 7,
+    "assumptions": "7 axioms across the chain (main 5 + FourSquareRepresentations.lean 2): main file declares legendre_three_squares (3-square obstruction criterion), hilbert_waring (g(k) exists for all k), wieferich_nine_cubes (g(3)=9), waring_general_formula (g(k) general formula), vinogradov_waring_bound (G(k) upper bound); FourSquareRepresentations.lean declares jacobi_four_square (r₄(n) = 8·σ*(n)) and r₄_zero (r₄ 0 = 1). fermat_two_squares has been formally proved. hurwitz_quaternions_euclidean and hurwitz_representation_count True stubs removed — Hurwitz quaternion results are not formalized.",
     "lineCount": 392,
     "prerequisites": [
       "Quaternion algebra and norm multiplicativity",
