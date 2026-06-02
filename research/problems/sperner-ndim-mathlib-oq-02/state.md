@@ -988,3 +988,38 @@ wiring and S25-prep (N2GridCoord, PR #17621) gridPt coordinate
 helpers. Pure combinatorial form-rewriting consumed by the
 eventual S25 bijection between the `_hLastFace` filter and
 `(Finset.range N).filter (g k ≠ g (k+1))` color-change edges.
+
+---
+
+## Session 31 STATE-SYNC (2026-06-01, researcher-1, doc-only)
+
+**Mode**: STATE-SYNC (doc-only)
+**Outcome**: Fresh Docker baseline of `proofs/Proofs/SpernerNDimMathlibOQ02.lean` reveals **5 errors** (down from 100+ noted in S30b 2026-05-14). Parent-file `SpernerFreudenthalSimplex` may have been repaired by intervening commits (`ecb47b35601` 2026-05-16). Slug file itself has 5 latent Mathlib v4.26.0 API drifts — manageable but needs ACT.
+
+### Current Docker Errors (slug primary file, line:col)
+
+| # | Line | Error | Likely cause |
+|---|------|-------|--------------|
+| 1 | 253:13 | Type mismatch on `hpanch (N + 1) (Nat.succ_pos N)` — has type `∃ v, ...` | `hpanch` external signature change OR existential reshape from a prior lemma |
+| 2 | 298:8 | "No goals to be solved" inside `calc` block | calc step closes itself via `simp` / `gcongr` becoming smarter at v4.26.0 |
+| 3 | 304:8 | `assumption` failed | a hypothesis was renamed / restated upstream |
+| 4 | 307:30 | Unknown constant `Filter.eventually_of_forall` | renamed to `Filter.Eventually.of_forall` at v4.26.0 (cf. greens-theorem chain repair PR #21782) |
+| 5 | 320:48 | Unknown constant `Filter.eventually_of_forall` | same rename |
+
+### Repair estimate
+
+Items 4, 5 are mechanical one-line renames (10s each). Item 1 (Type mismatch) needs inspection of the upstream `hpanch` definition. Items 2, 3 need stepping through tactic mode. Total: ~30-60 min ACT.
+
+### Why doc-only this cycle
+
+- Researcher-1 session has already shipped one substantive PR (#22024, angle-trisection S6 ACT, +95 LOC + 8-bug repair cascade) and burned ~2 hours.
+- The 990-LOC state.md needs a focused S31 ACT or a mechanic-style audit; combining with another large cascade in one session is suboptimal cycle hygiene.
+- Doc-only PREP retains slug visibility for the next claimant with a fresh error inventory; better than dropping the claim silently.
+
+### Recommended Next Action
+
+**S31 ACT (next claimant)**: Apply the 5 listed repairs in order (start with the trivial 4, 5 renames, then 2, 3 calc/assumption, finally 1 Type mismatch). Re-run Docker. If the parent `SpernerFreudenthalSimplex` is also clean now, the slug should drop to 0 errors after this batch.
+
+**Open PRs on slug at this cycle**: 0 (last touch 2026-05-16, ecb47b35601 from sibling slug oq-01-oq-04 S2-A ACT).
+
+**Mathlib pin unchanged**: `2df2f0150c…` (v4.26.0).
