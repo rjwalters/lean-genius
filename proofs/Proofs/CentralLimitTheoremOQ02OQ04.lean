@@ -70,7 +70,8 @@ S4 deliverables (this session):
 
 Carried forward from S3 (unchanged math, mild signature/identifier tweaks):
 - `Stationary`, `PolynomialMixingRate`, `MomentBound2δ` predicates.
-- `IbragimovHypotheses` structure (14 fields).
+- `IbragimovHypotheses` structure (16 fields — S6 ACT adds `past_le` and
+  `future_le` per Finding E from PR #19289).
 - `polynomial_summable_of_exponent_gt_one`, `ibragimov_threshold_summable`.
 - `stationary_eLpNorm_eq`, `polynomial_mixing_summable`.
 - `longrun_variance_absolutely_convergent` (proven modulo Davydov sorry;
@@ -178,6 +179,18 @@ structure IbragimovHypotheses
   past_measurable : ∀ k, Measurable[pastSigma k] (X k)
   /-- `X k` is measurable with respect to the future at time `k`. -/
   future_measurable : ∀ k, Measurable[futureSigma k] (X k)
+  /-- The past σ-algebra at time `k` is a sub-σ-algebra of the ambient measurable
+      structure on `Ω`. This is true by construction in any standard filtration; it
+      is made explicit here because `indicator_covariance_le_alpha` (S5c-prep, line
+      443) needs both sub-σ measurability AND ambient `MeasurableSet` at its call
+      site (in particular for level sets `{ω | X ω > t}` arising from the
+      level-set decomposition in `davydov_covariance_inequality`'s L^p density
+      step, S5c target). -/
+  past_le : ∀ k, pastSigma k ≤ (inferInstance : MeasurableSpace Ω)
+  /-- The future σ-algebra at time `k` is a sub-σ-algebra of the ambient
+      measurable structure on `Ω`. Companion to `past_le`; see that field's
+      docstring for motivation. -/
+  future_le : ∀ k, futureSigma k ≤ (inferInstance : MeasurableSpace Ω)
   /-- `alpha n` bounds the abstract α-mixing coefficient at lag `n`. -/
   alpha_bound : ∀ k n,
     CentralLimitTheoremOQ02.alphaMixingCoeff μ (pastSigma k) (futureSigma (k + n))

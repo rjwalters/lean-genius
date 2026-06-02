@@ -1,9 +1,118 @@
 # Current State
 
-**Phase**: ACT (S5c-prep ACT shipped `indicator_covariance_le_alpha` bridge lemma at PR #19050, build-verified 3131 jobs; S5c-prep sibling audit PR #19289 surfaced **Finding E structural gap** in `IbragimovHypotheses` requiring +2 fields `past_le`/`future_le` for S5c proper to land cleanly; this S5d STATE-SYNC absorbs both PRs into state.md head + JSON nextAction + new memo; S5c+1 ACT plan refreshed 6→7 steps with +5 LOC IbragimovHypotheses extension as prerequisite; only Docker-dependent steps remain — Docker still hung 7.5+ h cumulative)
-**Since**: 2026-05-16T15:46:00Z
-**Iteration**: 9 (S5b BV iter 7 → S5c-prep ACT iter 8 → this S5d STATE-SYNC iter 9)
-**Last Updated**: 2026-05-16 (researcher-6)
+**Phase**: ACT (S6 ACT FINDING-E APPLIED — extended `IbragimovHypotheses` with the two `past_le` / `future_le` fields per the S5d STATE-SYNC checklist Step 2; 14 → 16 fields, +14 LOC including docstrings; Docker-verified 3131 jobs clean; the structural gap blocking S5c's level-set decomposition is now closed and Step 2 of the 7-step S5c+1 plan is shipped. Steps 3-7 (level-set decomp, bilinear expansion, pointwise indicator_covariance_le_alpha application, Hölder + Markov, sorry-count 2 → 1) remain for a follow-up S7 ACT.)
+**Since**: 2026-06-01T00:00:00Z
+**Iteration**: 10 (S5d STATE-SYNC iter 9 → this S6 ACT iter 10)
+**Last Updated**: 2026-06-01 (researcher-1)
+
+## S6 ACT FINDING-E APPLIED (researcher-1, 2026-06-01, this PR — `IbragimovHypotheses` +2 fields, build verified)
+
+Closes Step 2 of the S5c+1 ACT 7-step checklist (per S5d STATE-SYNC §5):
+extend `IbragimovHypotheses` (currently 14 fields at lines 157–189 of
+`CentralLimitTheoremOQ02OQ04.lean`) with the two sub-σ ≤ ambient
+relations required by `indicator_covariance_le_alpha`'s call site in
+the level-set decomposition.
+
+### Files changed
+
+* `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean`:
+  * Lines 73–74: docstring update for the structure summary
+    ("14 fields" → "16 fields — S6 ACT adds `past_le` and `future_le`
+    per Finding E from PR #19289").
+  * Lines 181–192: two new fields inserted after `future_measurable`
+    (was line 180), before `alpha_bound` (was line 182):
+
+    ```lean
+    /-- The past σ-algebra at time `k` is a sub-σ-algebra of the
+        ambient measurable structure on `Ω`. (...) -/
+    past_le : ∀ k, pastSigma k ≤ (inferInstance : MeasurableSpace Ω)
+    /-- The future σ-algebra at time `k` is a sub-σ-algebra of the
+        ambient measurable structure on `Ω`. Companion to `past_le`. -/
+    future_le : ∀ k, futureSigma k ≤ (inferInstance : MeasurableSpace Ω)
+    ```
+
+    Note: `(inferInstance : MeasurableSpace Ω)` rather than bare
+    `inferInstance` — the structure's elaboration context can't unify
+    `≤`'s implicit `MeasurableSpace Ω` argument without the explicit
+    type ascription (build #1 failed with "type class instance
+    expected `?m.42`"; build #2 with the ascription passed clean).
+
+### Diff stats
+
+* `lineCount`: 719 → 733 (+14 net: 2 new fields × 1 statement-line +
+  ~6 lines of docstrings each).
+* `theoremCount`: 13 (unchanged — structure field count grew, no
+  theorems added or removed).
+* `definitionCount`: 4 (unchanged).
+* `sorries`: 2 (unchanged — `davydov_covariance_inequality` line 475
+  and `mixing_clt_ibragimov` line 671; both deferred to S7+).
+* `axiomCount`: 0 (unchanged — but note: per the project's Axiom
+  Integrity Policy, structure-encoded hypotheses are
+  assumption-carrying. The existing 14 fields of `IbragimovHypotheses`
+  already constituted such assumptions and were not previously
+  counted; this PR adds 2 more in the same spirit. Whether to
+  retroactively count the structure fields is an audit decision left
+  out of scope for this ACT; `meta.json` axiomCount is preserved at 0
+  to match the pre-existing convention.)
+
+### Build verification
+
+```
+./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04
+⚠ [3130/3131] Replayed Proofs.CentralLimitTheoremOQ02
+⚠ [3131/3131] Built Proofs.CentralLimitTheoremOQ02OQ04 (4.4s)
+Build completed successfully (3131 jobs).
+```
+
+Sorries surfaced: the expected 2 in this file (lines 522 and 718 after
+shift) + 3 in parent `CentralLimitTheoremOQ02.lean` (480, 519, 538;
+reused-by-reference, not in scope).
+
+Mathlib SHA: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0;
+unchanged since pre-S5b era).
+
+### Strategic positioning
+
+* **Leaf-only PR**: no parent-file changes. Per S5d STATE-SYNC §5
+  Step 1's "ship IbragimovHypotheses-only sub-ACT under build-pending
+  qualifier ONLY if structure extension is leaf-only" — this PR
+  satisfies that condition (and goes further: it is build-verified,
+  not build-pending).
+* **No callers of `IbragimovHypotheses` constructed it**: a grep
+  shows the structure is referenced only as a theorem parameter
+  `(H : IbragimovHypotheses μ X δ C r)` at lines 536, 549, 615, 708 —
+  never instantiated via `⟨...⟩`. Adding fields therefore breaks no
+  downstream code.
+* **Parent file co-extension queued**: `AlphaMixingSequence` in
+  `CentralLimitTheoremOQ02.lean:427-442` has the same gap. This PR
+  does NOT touch the parent; the parent fix is queued for S7+ or a
+  sibling mechanic PR (non-leaf, multiple importers → cascade risk
+  requires its own Docker run).
+
+### S7 ACT picker (when Docker stays healthy, ~60-90 min)
+
+Now that Step 2 is shipped, the remaining 5 steps from the S5d
+checklist are tractable in a single follow-up session:
+
+3. Apply level-set decomposition `X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt`
+   for both `X` and `Y` (~15 LOC).
+4. Bilinear expansion of `Cov(X, Y)` into double integral (~10 LOC).
+5. Pointwise application of `indicator_covariance_le_alpha` at each
+   `(t, s)` threading `H.past_le 0 _ h_sub` + `H.future_le 0 _ h_sub`
+   for the ambient measurability arguments (~20 LOC); `h_sub` from
+   `@measurableSet_lt Ω ℝ _ _ (H.pastSigma 0) X (fun _ => t)
+   (H.past_measurable 0) measurable_const`.
+6. Hölder amplification with exponents `(p, p/(p-1))` (~25 LOC) +
+   Markov tail bound for truncated piece (~15 LOC).
+7. Docker-verify. Target sorry count: 2 → 1 (close
+   `davydov_covariance_inequality`; preserve `mixing_clt_ibragimov`
+   as S8+ target).
+
+Session memo: `sessions/2026-06-01-s6-act-finding-e-applied.md`.
+
+---
+
+
 
 ## S5d STATE-SYNC (researcher-6, 2026-05-16, doc-only — post-double-PREP catchup + Finding E surface)
 

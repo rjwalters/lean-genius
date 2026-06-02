@@ -1,11 +1,58 @@
 # Current State
 
-**Phase**: ACT-IN-PROGRESS (S18a-1 def shipped; S18a-2 lemma + S18b + S18c deferred per Docker daemon hung + host disk 5.8Gi/926Gi)
+**Phase**: PREP — S19 cascade-discovery on `OQ02OQ01.lean` (7-error elaboration break under v4.26.0, latent since 2026-05-16 ecb47b35601 Sperner-bundle commit). S18a-1's `def DMChannel.IsWeaklySymmetric` paste ships intact in `ShannonChannelCoding.lean:484` (host file builds locally — verified clean at line 555 LOC), but the import chain `ShannonChannelCoding.lean:22 → ShannonChannelCodingOQ02OQ01.lean` blocks Docker-verify of the primary target. Per S5a precedent (nth-root-irrational-oq-03 researcher-12 2026-05-13), this iteration ships **doc-only** with comprehensive 7-error inventory + per-error repair recipe (§5 of S19 session note) handed off to mechanic/doctor. Slug's axiom-reduction work (S20 = S18a-2 lemma paste) is unblock-gated on the OQ02OQ01 repair.
 **Since**: 2026-05-16T14:31:00Z
-**Iteration**: 18 (S18a-1 ACT — `def DMChannel.IsWeaklySymmetric` scoped paste from S17 PREP §6.2; **build pending — host disk pressure** per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`)
-**Last Updated**: 2026-05-16T14:31:00Z
+**Iteration**: 19 (S19 PREP — OQ02OQ01 cascade-discovery; 4 affected slugs, 10-18 LOC estimated repair scope)
+**Last Updated**: 2026-06-01T15:30Z
 
-## Current Focus
+## Iteration 19 (researcher-1, 2026-06-01) — S19 PREP (OQ02OQ01 cascade-discovery)
+
+**Outcome**: doc-only on filesystem; **substantive discovery** that the slug's primary file `proofs/Proofs/ShannonChannelCoding.lean` cannot Docker-build at HEAD `7b483e7a2fb` because its line-22 import `Proofs.ShannonChannelCodingOQ02OQ01` fails to elaborate at 7 sites under Mathlib v4.26.0 SHA `2df2f0150c`. The cascade has been latent since 2026-05-16 (16 days), masked by S18a-1's `(build pending — host disk pressure)` qualifier + 14 days of meta-only mechanic touches that did not exercise Docker. RECOVERING-phase recheck per memory `feedback_recovering_phase_resolves_silently_under_docker.md` returns a **NEGATIVE** result for this slug — the file is genuinely broken, not silently resolved.
+
+### What I did
+
+- Pre-flight: verified lake-pin unchanged (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), disk 54Gi/926Gi (well above 30Gi build-pending threshold), Docker daemon responsive (`Server Version: 29.4.1`).
+- Race check: 0 open PRs on slug (`gh pr list --search "shannon-channel-coding-oq-02-oq-01-oq-01 in:title"` → `[]`). `feature/researcher-1` shared branch carries unrelated PR #21933 (roth-theorem-k3); session ships on a session-specific branch per `feedback_researcher_shared_branch_bundle_trap.md`.
+- Ran `LEAN_BUILD_TIMEOUT=20m ./proofs/scripts/docker-build.sh Proofs.ShannonChannelCoding`. **Result: build failed (exit code 1)** with 5 errors + 2 follow-on goal mismatches all localised to `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean` (the line-22 transitive import).
+- Inventoried the 7 errors (§3.1 of S19 session note): lines 170, 178, 231, 232, 233, 299, 301 — grouped logically into 4 root-causes (A/B/C/D in §3.2).
+- Root-cause analysis: errors are **not** Mathlib API regressions (all cited bearers — `Finset.sum_product'`, `Finset.univ_product_univ`, `Finset.sum_eq_single`, `Finset.univ_eq_empty`, `Finset.sum_empty` — present and signature-unchanged at SHA `2df2f0150c`). They are *proof-state* mismatches + 1 plain type-malformed `pXY x` (Group D, lines 299-301).
+- Proximate cause: commit `ecb47b35601` (Sperner-NDim S2-A ACT, 2026-05-16) bundled the creation of 5 Shannon files (~1200 LOC) along with the verified Sperner target; the Shannon files rode along without standalone Docker verify. S18a-1's `(build pending — host disk pressure)` (2026-05-16T14:31Z, ~13h after `ecb47b35601`) could not have caught the cascade either.
+- Published per-error repair recipe (§5 of S19 session note): Group D 1-LOC type-fix (`∑ x : α, pXY x` → `∑ x : α × β, pXY x` with `inferInstance` for `IsEmpty (α × β)`); Group C 4-LOC `rw` → `refine` switch to bypass `Finset.sum_eq_single`'s v4.26.0 auto-rfl-closure behaviour; Group A 4-LOC `← sum_product'`-replacement using `Fintype.sum_prod_type`; Group B 3-LOC `div_self` no-progress fix via explicit `rcases eq_or_ne`. Total estimated repair: **10-18 LOC** in one file.
+- Affected slugs (transitively blocked): 4 — `shannon-channel-coding-oq-02-oq-01-oq-01` (this slug), `shannon-channel-coding-oq-02`, `shannon-channel-coding-oq-02-oq-03`, `shannon-channel-coding-oq-02-oq-04` (per `grep -l "import Proofs.ShannonChannelCoding\b" proofs/Proofs/*.lean`).
+
+### Files Modified
+
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/sessions/2026-06-01-s19-prep-oq02oq01-cascade-discovery.md` (new — full 7-error inventory + per-error repair recipe + root-cause analysis)
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/state.md` (this entry + Current State header refresh; historical tail preserved)
+- `src/data/research/problems/shannon-channel-coding-oq-02-oq-01-oq-01.json` (top-level `phase`/`iteration`/`lastUpdated` sync; new insight; nextSteps reordered to put OQ02OQ01-cascade-repair handoff ahead of S18a-2/S18b/S18c paste work)
+
+**No Lean files modified.** No meta.json modifications.
+
+### Knowledge Added
+
+- **Insights**: 3
+  1. **S18a-1 ACT's `(build pending — host disk pressure)` qualifier masked a 7-error cascade** in `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean` (lines 170, 178, 231-233, 299, 301) for 16 days. The cascade was introduced by the Sperner-bundling commit `ecb47b35601` (2026-05-16), which Docker-verified only the Sperner targets; bundled Shannon files (~1200 LOC across 5 files) shipped unverified. Same anti-pattern as `feedback_g9_qualifier_masks_real_bugs.md` records.
+  2. **Errors are proof-state mismatches, not Mathlib API regressions.** All 5 cited bearers (`Finset.sum_product'`, `Finset.univ_product_univ`, `Finset.sum_eq_single`, `Finset.univ_eq_empty`, `Finset.sum_empty`) are signature-stable at SHA `2df2f0150c`. The fixes are tactic-level: 4 logical groups, 10-18 LOC total. This is mechanic/doctor scope; researcher S5a-precedent ship is discovery-only.
+  3. **Group D (lines 299-301) is a plain type-malformedness `pXY x` where `x : α` but `pXY : α × β → ℝ`.** v4.26.0's stricter elaborator now rejects what an earlier compiler may have type-coerced. The fix (1 LOC) changes the sum binder from `∑ x : α, pXY x = 0` to `∑ x : α × β, pXY x = 0` and uses `inferInstance` to propagate `IsEmpty α → IsEmpty (α × β)`.
+
+- **Built items**: 0 (S19 PREP is doc-only)
+- **Risks retired**: 1 — the post-S18a-1 "ACT-IN-PROGRESS, S18a-2 paste-ready" framing. The slug's host file does not Docker-build; no further paste work can land until the OQ02OQ01 cascade is repaired.
+- **Next steps**:
+  - **S19-mechanic** (next, doctor/mechanic scope, NOT researcher): apply §5 repair recipe in 1-2 Docker-verified sub-PRs. Estimated 10-18 LOC across 4 functions in one file.
+  - **S20 ACT** (post-mechanic-fix, researcher scope): apply S17 PREP §6.2 paste-ready S18a-2 lemma `output_marginal_uniform_of_uniform_input_and_column_sum_const` (~25-35 LOC). Then S18b, S18c per the original stagger.
+  - **Cross-cutting follow-up**: audit the other 4 files added in `ecb47b35601` (Sperner-bundle commit) for the same latent-build-break pattern. Flag any with `(build pending)` history + no subsequent Docker contact.
+
+## Race Notes (S19)
+
+Pre-action race check at 2026-06-01T15:30Z:
+- 0 open PRs with `shannon-channel-coding-oq-02-oq-01-oq-01 in:title`
+- 0 open PRs touching `ShannonChannelCoding.lean`, `ShannonChannelCodingOQ02OQ01.lean`, or any sibling slug parent file
+- Most recent merge on slug: PR #21236 (mechanic meta, 2026-05-30, parent slug `oq-02-oq-01`, no Lean touches)
+- Open queue at write-time: variable; deployer active
+
+This PR is **doc-only**: 1 new session note + state.md update + JSON refresh. **STATE-SYNC**: counts against the 2-STATE-SYNC-PR-per-session cap.
+
+## Current Focus (post-S19, pre-handoff)
 
 S18a-1 ACT (researcher-11, 2026-05-16) — **Scoped paste of
 `def DMChannel.IsWeaklySymmetric` (Cover-Thomas §7.2: row-permutation
