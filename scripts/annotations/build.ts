@@ -18,6 +18,7 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'url';
 import { resolveAnnotations, resolveSections, validateLineAnnotations } from './resolver.js';
 import type { SourceAnnotation, SourceSection, ResolvedAnnotation, ResolvedSection } from './types.js';
+import { cacheDisabled, inputHashOf, recordRun, shouldSkip } from '../lib/build-cache.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -379,9 +380,43 @@ function generateListings(proofs: ProofConfig[]): void {
 }
 
 /**
+ * Compute a deterministic input-fingerprint for the annotation build.
+ *
+ * Inputs (per issue #22149 Strategy B):
+ *   - Every meta.json and annotations.json under src/data/proofs/
+ *   - Every Lean source under proofs/Proofs/
+ *   - This script's own source (so logic changes invalidate the cache)
+ *
+ * Skipping is safe because the outputs (annotations.json files, listings.json,
+ * public/data/proofs/<slug>/source.lean) are deterministic functions of these
+ * inputs. The first run after `rm -rf .build-cache/` always executes fully.
+ */
+function computeInputHash(): string {
+  return inputHashOf(
+    {
+      dirs: [
+        { dir: PROOFS_DATA_DIR, suffixes: ['.json', '.lean'] },
+        { dir: PROOFS_SOURCE_DIR, suffixes: ['.lean'] },
+      ],
+      files: [__filename],
+    },
+    REPO_ROOT
+  );
+}
+
+/**
  * Main build function
  */
 function build(options: { strict: boolean; verbose: boolean }): boolean {
+  // Strategy B skip-gate: bail out fast when inputs are byte-for-byte
+  // identical to the last successful run. This is the common case in the
+  // deployer's persistent worktree, where most cycles change no proof data.
+  const inputHash = cacheDisabled() ? '' : computeInputHash();
+  if (!cacheDisabled() && shouldSkip('annotations-build', inputHash, REPO_ROOT)) {
+    console.log('🔍 annotations:build — Cached — inputs unchanged since last run');
+    return true;
+  }
+
   console.log('🔍 Discovering proofs...');
   const proofs = discoverProofs();
   console.log(`   Found ${proofs.length} proofs\n`);
@@ -439,6 +474,13 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
     }
   } else {
     console.log(`\n✅ All annotations validated successfully!`);
+  }
+
+  // Record successful completion so the next identical-inputs invocation
+  // can skip. Failed runs (return false above) are intentionally NOT cached
+  // so the next run retries from scratch.
+  if (!cacheDisabled() && inputHash) {
+    recordRun('annotations-build', inputHash, REPO_ROOT);
   }
 
   return true;

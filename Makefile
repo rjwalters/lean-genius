@@ -92,6 +92,7 @@ clean:
 	./scripts/erdos/clean-enhancers.sh --dry-run
 	./scripts/research/clean-research.sh --dry-run
 	./.loom/scripts/clean.sh --dry-run
+	@echo "Would remove: .build-cache/ (per-script build-cache hashes)"
 
 clean-all:
 	@echo "=== Deep Cleanup (all agents) ==="
@@ -99,6 +100,7 @@ clean-all:
 	./scripts/research/clean-research.sh --deep --force
 	./.loom/scripts/clean.sh --deep --force
 	./scripts/clean-branches.sh --force
+	rm -rf .build-cache
 
 clean-enhancers:
 	./scripts/erdos/clean-enhancers.sh $(CLEAN_FLAGS)

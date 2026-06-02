@@ -15,6 +15,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import { cacheDisabled, inputHashOf, recordRun, shouldSkip } from '../lib/build-cache.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -371,8 +372,46 @@ Options:
   --help, -h      Show this help message`)
 }
 
+/**
+ * Compute a deterministic input-fingerprint for the enrichment step.
+ *
+ * Inputs (per issue #22149 Strategy B):
+ *   - Every Lean file under proofs/Proofs/ (scanned for metadata + matched
+ *     to research slugs)
+ *   - Every problem JSON under src/data/research/problems/ (the inputs and
+ *     in-place outputs — enrichment is idempotent on identical input)
+ *   - Every gallery meta.json under src/data/proofs/ (for related-proof
+ *     auto-detection)
+ *   - This script's own source
+ *
+ * The skip-gate is bypassed automatically when --dry-run is set, since dry
+ * runs are diagnostic and may want to see the full report.
+ */
+function computeInputHash(): string {
+  return inputHashOf(
+    {
+      dirs: [
+        { dir: PROOFS_DIR, suffixes: ['.lean'] },
+        { dir: PROBLEMS_DIR, suffixes: ['.json'] },
+        { dir: GALLERY_DIR, suffixes: ['meta.json'] },
+      ],
+      files: [__filename],
+    },
+    PROJECT_ROOT
+  )
+}
+
 function main(options: { dryRun?: boolean } = {}): void {
   const { dryRun = false } = options
+
+  // Strategy B skip-gate: bail out fast when inputs are byte-for-byte
+  // identical to the last successful run. Dry-run intentionally bypasses
+  // the cache (diagnostic). See issue #22149.
+  const inputHash = (!dryRun && !cacheDisabled()) ? computeInputHash() : ''
+  if (!dryRun && !cacheDisabled() && shouldSkip('research-enrich', inputHash, PROJECT_ROOT)) {
+    console.log('research:enrich — Cached — inputs unchanged since last run')
+    return
+  }
 
   console.log(
     dryRun
@@ -432,6 +471,12 @@ function main(options: { dryRun?: boolean } = {}): void {
   console.log(`  Total related proofs linked: ${totalRelatedProofs}`)
   if (dryRun) {
     console.log('  No files written')
+  }
+
+  // Record successful completion so the next identical-inputs invocation can
+  // skip. Dry-runs are not cached (their semantics differ from a real run).
+  if (!dryRun && !cacheDisabled() && inputHash) {
+    recordRun('research-enrich', inputHash, PROJECT_ROOT)
   }
 }
 

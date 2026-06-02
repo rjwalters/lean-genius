@@ -32,6 +32,17 @@
 #   BUILD_NODE_OPTIONS=...  Extra Node options for the build. Defaults to
 #                           "--max-old-space-size=8192" so vite does not OOM on
 #                           the current bundle.
+#   SKIP_NOOP_BUILD_DETECTION=1
+#                           Disable Strategy F (issue #22149): skipping the
+#                           whole `pnpm build` invocation when no app-relevant
+#                           paths changed since the last successful deploy.
+#                           Set this if the heuristic ever produces a stale
+#                           dist/ (would re-deploy stale artifacts).
+#   DISABLE_BUILD_CACHE=1   Disable Strategy B (issue #22149): per-script
+#                           input-hash skip-gates in annotations:build,
+#                           research:build, and research:enrich. Set this for
+#                           a forced full rebuild without removing the cache
+#                           directory.
 
 set -euo pipefail
 
@@ -636,6 +647,45 @@ build_website() {
         return 0
     fi
 
+    # Strategy F (issue #22149): skip the entire `pnpm build` invocation when
+    # no app-relevant paths have changed since the last successful deploy.
+    # The deployer cycle commonly merges only docs/issue-comment/research-state
+    # tweaks — in those cycles dist/ is byte-for-byte the same as last cycle's
+    # output. Wrangler's content-hash uploader will already short-circuit on
+    # unchanged blobs, but it still re-uploads the manifest and burns ~3min on
+    # `pnpm build`. Skipping the build entirely turns the no-op cycle into a
+    # ~10s deploy.
+    #
+    # The set of "app-relevant" paths must include everything the bundle is
+    # derived from: src/, public/, the Lean proofs, the data scripts, and
+    # build-tool config. Adding a path here is safe (we just do an extra build
+    # if it changes); omitting a path is unsafe (we'd ship stale dist/).
+    SKIP_BUILD_AS_NO_OP=false
+    if [[ "${SKIP_NOOP_BUILD_DETECTION:-}" != "1" ]] && [[ -d "$REPO_ROOT/dist" ]]; then
+        local last_deployed_commit
+        last_deployed_commit=$(cat "$REPO_ROOT/.build-cache/last-deployed-commit" 2>/dev/null || echo "")
+        local current_head
+        current_head=$(git rev-parse HEAD 2>/dev/null || echo "")
+        if [[ -n "$last_deployed_commit" ]] \
+           && [[ -n "$current_head" ]] \
+           && [[ "$last_deployed_commit" != "$current_head" ]] \
+           && git cat-file -e "${last_deployed_commit}^{commit}" 2>/dev/null; then
+            if git diff --quiet "$last_deployed_commit" "$current_head" -- \
+                 src/ public/ proofs/Proofs/ \
+                 scripts/annotations/ scripts/research/ scripts/lib/ \
+                 package.json pnpm-lock.yaml tsconfig.json tsconfig.app.json tsconfig.node.json \
+                 vite.config.ts 2>/dev/null; then
+                print_info "No app-relevant changes since ${last_deployed_commit:0:8} — skipping pnpm build, reusing dist/"
+                SKIP_BUILD_AS_NO_OP=true
+            fi
+        fi
+    fi
+
+    if $SKIP_BUILD_AS_NO_OP; then
+        print_success "Build skipped (no-op cycle); existing dist/ will be redeployed"
+        return 0
+    fi
+
     # Cap node heap at 8 GB so OOMs surface as deterministic exits rather than
     # thrashing the host, and bound the whole chain at BUILD_TIMEOUT so a hung
     # step can't accumulate zombie pnpm/vite processes across cycles. The cap
@@ -772,6 +822,14 @@ deploy_website() {
     # parallel bulk uploads on macOS with Node 25 + wrangler 4.x
     if UV_THREADPOOL_SIZE=32 wrangler pages deploy dist --project-name=lean-genius --branch=main --commit-dirty=true --commit-hash="$commit_hash" --commit-message="$safe_commit_msg" 2>&1 | tail -10; then
         print_success "Deployment completed"
+
+        # Strategy F (issue #22149): record the full commit hash of this
+        # successful deploy so the next cycle can compare HEAD against it and
+        # skip pnpm build when no app-relevant paths changed. Only updated
+        # AFTER a successful wrangler upload — failed deploys leave the prior
+        # value intact so we re-attempt the build next cycle.
+        mkdir -p "$REPO_ROOT/.build-cache"
+        git rev-parse HEAD > "$REPO_ROOT/.build-cache/last-deployed-commit" 2>/dev/null || true
 
         # Prune old deployments, keeping only the latest N
         prune_old_deployments

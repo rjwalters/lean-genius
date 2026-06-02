@@ -17,10 +17,12 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
+import { cacheDisabled, inputHashOf, recordRun, shouldSkip } from '../lib/build-cache.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const REPO_ROOT = path.join(__dirname, '../..')
 const RESEARCH_DIR = path.join(__dirname, '../../research')
 const PROBLEMS_DIR = path.join(RESEARCH_DIR, 'problems')
 const OUTPUT_DIR = path.join(__dirname, '../../src/data/research')
@@ -632,9 +634,44 @@ function updateRegistryFields(problem: ResearchProblem, entry: RegistryEntry): R
 }
 
 /**
+ * Compute a deterministic input-fingerprint for the research build.
+ *
+ * Inputs (per issue #22149 Strategy B):
+ *   - research/registry.json (defines which problems to build)
+ *   - All markdown + JSON under research/problems/ (problem.md, state.md,
+ *     knowledge.md, sessions/*.md, etc.)
+ *   - All committed problem JSON in src/data/research/problems/ (source of
+ *     truth for already-built problems — registry-field merge keys off them)
+ *   - This script's own source
+ *
+ * Skipping is safe because the outputs (research-listings.json + newly
+ * generated problem JSONs) are deterministic functions of these inputs.
+ */
+function computeInputHash(): string {
+  return inputHashOf(
+    {
+      dirs: [
+        { dir: PROBLEMS_DIR, suffixes: ['.md', '.json'] },
+        { dir: PROBLEMS_OUTPUT_DIR, suffixes: ['.json'] },
+      ],
+      files: [path.join(RESEARCH_DIR, 'registry.json'), __filename],
+    },
+    REPO_ROOT
+  )
+}
+
+/**
  * Main build function
  */
 function build(): void {
+  // Strategy B skip-gate: bail out fast when inputs are byte-for-byte
+  // identical to the last successful run. See issue #22149.
+  const inputHash = cacheDisabled() ? '' : computeInputHash()
+  if (!cacheDisabled() && shouldSkip('research-build', inputHash, REPO_ROOT)) {
+    console.log('research:build — Cached — inputs unchanged since last run')
+    return
+  }
+
   console.log('Building research data...\n')
 
   // Read registry
@@ -731,6 +768,12 @@ function build(): void {
 
   console.log(`\nGenerated research-listings.json (${Math.round(fs.statSync(listingsPath).size / 1024)}KB)`)
   console.log(`   ${listings.length} problems in listings index`)
+
+  // Record successful completion so the next identical-inputs invocation can
+  // skip. See issue #22149.
+  if (!cacheDisabled() && inputHash) {
+    recordRun('research-build', inputHash, REPO_ROOT)
+  }
 }
 
 // Run
