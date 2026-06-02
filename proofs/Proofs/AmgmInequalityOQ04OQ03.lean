@@ -155,4 +155,70 @@ theorem ellipticK_eq_hyp2F1_zero :
     ellipticK 0 = (π / 2) * hyp2F1 ((0 : ℝ) ^ 2) :=
   ellipticK_eq_hyp2F1 0 (by norm_num)
 
+-- ============================================================================
+-- § 6. Summability of the Hypergeometric Series  (S2 ACT, 2026-06-01)
+-- ============================================================================
+--
+-- Real progress toward discharging the §5 axiom: term-by-term integration of
+-- the binomial series requires *summability* of `∑ hypCoeff n · k^(2n)` as a
+-- prerequisite (sum/integral interchange via dominated convergence).
+-- This section establishes that summability for |x| < 1 via direct comparison
+-- with the geometric series, using the standard central-binomial bound
+-- `C(2n, n) ≤ 4^n` (which Mathlib v4.26.0 has only as a lower bound
+-- `Nat.four_pow_lt_mul_centralBinom`).
+
+/-- The central binomial coefficient is bounded above by `4^n`.
+    Proof: `C(2n, n)` is one entry in the binomial row of `(1+1)^(2n) = 2^(2n)
+    = 4^n`; since every entry is nonnegative, the single entry is ≤ the row
+    sum. -/
+lemma centralBinom_le_four_pow (n : ℕ) : Nat.centralBinom n ≤ 4 ^ n := by
+  have hmem : n ∈ Finset.range (2 * n + 1) := Finset.mem_range.mpr (by omega)
+  have hsum : Nat.choose (2 * n) n
+      ≤ ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m :=
+    Finset.single_le_sum (f := fun m => Nat.choose (2 * n) m)
+      (fun _ _ => Nat.zero_le _) hmem
+  have hpow : 2 ^ (2 * n) = 4 ^ n := by
+    rw [pow_mul]; norm_num
+  calc Nat.centralBinom n
+      = Nat.choose (2 * n) n := Nat.centralBinom_eq_two_mul_choose n
+    _ ≤ ∑ m ∈ Finset.range (2 * n + 1), Nat.choose (2 * n) m := hsum
+    _ = 2 ^ (2 * n) := Nat.sum_range_choose (2 * n)
+    _ = 4 ^ n := hpow
+
+/-- Each hypergeometric coefficient is bounded above by `1`:
+    `cₙ = (C(2n,n) / 4ⁿ)² ≤ 1`, using `centralBinom_le_four_pow` and
+    `pow_le_one₀` (Mathlib v4.26.0 name; `pow_le_one` from earlier
+    snapshots was renamed). -/
+lemma hypCoeff_le_one (n : ℕ) : hypCoeff n ≤ 1 := by
+  have hb : ((Nat.centralBinom n : ℝ) / 4 ^ n) ≤ 1 := by
+    rw [div_le_one (by positivity)]
+    have h := centralBinom_le_four_pow n
+    have hcast : (4 ^ n : ℝ) = ((4 ^ n : ℕ) : ℝ) := by push_cast; ring
+    rw [hcast]
+    exact_mod_cast h
+  have h0 : (0 : ℝ) ≤ (Nat.centralBinom n : ℝ) / 4 ^ n :=
+    div_nonneg (by exact_mod_cast Nat.zero_le _) (by positivity)
+  show ((Nat.centralBinom n : ℝ) / 4 ^ n) ^ 2 ≤ 1
+  exact pow_le_one₀ h0 hb
+
+/-- **Summability of the hypergeometric series** for `|x| < 1`.
+    Proof: `|hypCoeff n · xⁿ| = hypCoeff n · |x|ⁿ ≤ |x|ⁿ` (using
+    `hypCoeff_le_one` + `hypCoeff_nonneg`), and `∑ |x|ⁿ` is the convergent
+    geometric series. Then absolute-summability implies summability in `ℝ`.
+
+    This is the structural input that the term-by-term integration step of the
+    discharge of `ellipticK_eq_hyp2F1` will consume (dominated-convergence-style
+    sum/integral interchange on `[0, π/2]`). -/
+theorem summable_hyp2F1 (x : ℝ) (hx : |x| < 1) :
+    Summable (fun n : ℕ => hypCoeff n * x ^ n) := by
+  refine Summable.of_norm ?_
+  refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_)
+    (summable_geometric_of_lt_one (abs_nonneg _) hx)
+  rw [Real.norm_eq_abs, abs_mul, abs_pow, abs_of_nonneg (hypCoeff_nonneg n)]
+  have hc : hypCoeff n ≤ 1 := hypCoeff_le_one n
+  have hxn : (0 : ℝ) ≤ |x| ^ n := pow_nonneg (abs_nonneg _) n
+  calc hypCoeff n * |x| ^ n
+      ≤ 1 * |x| ^ n := mul_le_mul_of_nonneg_right hc hxn
+    _ = |x| ^ n := one_mul _
+
 end AmgmInequalityOQ04OQ03
