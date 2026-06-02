@@ -1,0 +1,96 @@
+{
+  "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
+  "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
+  "phase": "S1_OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "galois-direction",
+  "parent": "abel-ruffini-galois-extensions-oq-06",
+  "significance": 7,
+  "tractability": 3,
+  "tags": [
+    "seeker-selected",
+    "group-theory",
+    "permutation-groups",
+    "Sylow",
+    "primitive-permutation-groups",
+    "Galois",
+    "structure-theorem"
+  ],
+  "problemStatement": {
+    "formal": "For prime $p$, every primitive solvable subgroup $H \\le S_p$ embeds into the affine group $\\mathrm{AGL}(1, p) = \\mathbb{Z}/p\\mathbb{Z} \\rtimes (\\mathbb{Z}/p\\mathbb{Z})^\\times$: $\\exists \\varphi : H \\to \\mathrm{AGL}(1, p)$ injective. The proof uses Sylow's theorem to extract a unique normal Sylow-$p$ subgroup $P \\le H$, identifies $P$ as a $p$-cycle in $S_p$, computes the normaliser $N_{S_p}(P) \\cong \\mathrm{AGL}(1, p)$, and concludes $H \\le N_{S_p}(P) \\cong \\mathrm{AGL}(1, p)$.",
+    "plain": "Galois's 1832 classification of primitive solvable permutation groups of prime degree: every such group sits inside the affine group AGL(1, p) of order p(p-1). This sub-OQ formalises the structure-theorem half of the parent slug's open question; the forward direction (AGL(1, p) is itself solvable, primitive, faithful) was discharged in the parent slug.",
+    "whyMatters": [
+      "Quantitative complement to the parent slug's qualitative threshold theorem 'S_n solvable iff n ≤ 4': identifies the largest solvable transitive subgroup of S_p as AGL(1, p) of order p(p-1) for prime p.",
+      "First Lean formalization of the Galois-direction structure theorem for primitive solvable permutation groups of prime degree. Foundation for any future Frobenius-group infrastructure in Mathlib.",
+      "Galois-theoretic completion of the parent OQ-06 forward direction (PR #19071, Docker-verified 1884 jobs): the combined forward + Galois directions yield the full Galois classification of primitive solvable permutation groups of prime degree."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical mathematical result (Galois 1832, letter to Chevalier; modern reference Rotman 1995 Theorem 9.11). Standard in every group theory textbook.",
+      "Mathlib v4.26.0 provides Sylow theory (`Mathlib.GroupTheory.Sylow`), `Equiv.Perm.isCycle_of_prime_order''` (`Mathlib/GroupTheory/Perm/Cycle/Type.lean:412`), `Subgroup.normalizer`, `MonoidHom.ofInjective`, and the parent slug's `AGL1Z`, `AGL1Z.toPerm`, `AGL1Z.toPerm_injective`.",
+      "Parent slug `abel-ruffini-galois-extensions-oq-06` provides the forward direction (530 LOC, 0 sorries, 0 axioms, Docker-verified at 1884 jobs by S7 ACT PR #19071).",
+      "Sibling slug `abel-ruffini-galois-extensions-oq-07` provides Sylow-uniqueness pattern via `burnside_pq_with_normal_pSylow` (reusable at `|H| = p · m, m < p`)."
+    ],
+    "open": [
+      "5-step structure-theorem proof (Sylow uniqueness on H → P normal → P is a p-cycle → N_{S_p}(P) ≅ AGL(1, p) → H ≤ N_{S_p}(P)) — ~250-450 LOC.",
+      "Step 4's conjugation-action wiring (Risk R1 in knowledge.md): may need `MulEquiv.ofBijective` rather than direct `AGL1Z.toPerm` reuse.",
+      "Step 5's `H ≤ N_{S_p}(P)` (Risk R2 in knowledge.md): `Subgroup.le_normalizer_of_normal` may not exist verbatim — ad-hoc 5-LOC may be required."
+    ],
+    "completedThisIter": [],
+    "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
+  },
+  "currentState": {
+    "phase": "S1_OBSERVE",
+    "since": "2026-06-01T20:15:00Z",
+    "iteration": 1,
+    "focus": "Scaffold sub-OQ slug from parent S6 PREP SPLIT recommendation and S8 PREP drop-in template, with bearer-audit refresh against lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
+    "nextAction": "S2 ORIENT: author proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean with imports, file-level theorem stub, and 5-step proof skeleton. ~80 LOC, ~6 sorries.",
+    "blockers": [],
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 },
+    "lastUpdate": "2026-06-01T20:15:00Z"
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
+    "insights": [
+      "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
+      "Curator/seeker SPLIT-action latency budget (24-48h per S8 PREP §6) exceeded by ~16 days as of 2026-06-01; researcher-side Option B materialisation appropriate.",
+      "`Equiv.Perm.isCycle_of_prime_order''` (Mathlib v4.26.0) is a 1-LOC bearer for step 3, reducing the parent S6 PREP's 300-500 LOC estimate to 250-450.",
+      "Bearer ecosystem (Sylow, isCycle, normalizer, MonoidHom.ofInjective, parent AGL1Z*) confirmed intact at lake-pinned SHA on 2026-06-01."
+    ],
+    "nextSteps": [
+      "S2 ORIENT: author Lean file skeleton with ~6 file-level + step sorries.",
+      "S3-S5 ACT: discharge the 5 step sorries individually (Sylow → P-normal → P-is-p-cycle → N_{S_p}(P) ≅ AGL → H ≤ N).",
+      "S6/S7 BUILD-VERIFY: Docker build, target ~3000 jobs (parent forward direction targets 1884)."
+    ],
+    "builtItems": [
+      "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/problem.md",
+      "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/knowledge.md",
+      "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md",
+      "src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json"
+    ]
+  },
+  "references": [
+    {
+      "type": "primary",
+      "citation": "Galois, É. (1832). Letter to Auguste Chevalier, May 29 1832. Posthumous publication 1846, Journal de Mathématiques Pures et Appliquées."
+    },
+    {
+      "type": "textbook",
+      "citation": "Rotman, J. (1995). An Introduction to the Theory of Groups (4th ed.), Springer GTM 148. Theorem 9.11."
+    },
+    {
+      "type": "textbook",
+      "citation": "Cameron, P. J. (1999). Permutation Groups. London Math. Soc. Student Texts 45. §4.7."
+    },
+    {
+      "type": "textbook",
+      "citation": "Wielandt, H. (1964). Finite Permutation Groups. Academic Press. ch. 11."
+    },
+    {
+      "type": "parent-slug",
+      "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
+    }
+  ]
+}
