@@ -198,7 +198,35 @@ theorem pomerance_1979 :
   exact convexity_implies_product_bound n (by omega) hv
 
 /-
-## Part IV: Summary of Axiom Elimination
+## Part IV: Consecutive Primes Corollary (i = 1 specialization)
+
+The i = 1 case of `pomerance_1979` gives a clean statement about consecutive
+primes: infinitely many `n` satisfy `p_n² > p_{n-1} · p_{n+1}`. This is the
+smallest non-trivial specialization and is often the headline form quoted
+from Pomerance's 1979 paper.
+-/
+
+/--
+**Consecutive Primes Corollary (i = 1 of Pomerance 1979):**
+There are infinitely many `n ≥ 2` such that `p_n² > p_{n-1} · p_{n+1}`.
+
+Equivalently: the sequence of consecutive prime ratios `p_{n+1} / p_n` is
+infinitely often strictly less than the previous ratio `p_n / p_{n-1}`.
+
+Derived purely from `pomerance_1979` by specializing the universally
+quantified `i` to `1` and requiring `n ≥ 2` (so that `0 < 1 < n`).
+-/
+theorem pomerance_consecutive_primes :
+    ∀ N : ℕ, ∃ n ≥ max N 2,
+      (nthPrime n : ℤ) ^ 2 > (nthPrime (n + 1) : ℤ) * (nthPrime (n - 1) : ℤ) := by
+  intro N
+  obtain ⟨n, hn_ge, hn_main⟩ := pomerance_1979 (max N 2)
+  refine ⟨n, hn_ge, ?_⟩
+  have hn2 : n ≥ 2 := le_trans (le_max_right N 2) hn_ge
+  exact hn_main 1 (by omega) (by omega)
+
+/-
+## Part V: Summary of Axiom Elimination
 -/
 
 /--

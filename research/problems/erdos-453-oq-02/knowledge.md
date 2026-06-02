@@ -57,6 +57,41 @@ axiom pomerance_convex_hull_lemma (a : ℕ → ℝ)
 
 2. **Connection to Erdős #455**: The related problem #455 asks whether p_{n+1}² ≥ p_n · p_{n+2} infinitely often (a special case of Pomerance with i=1). A short corollary `pomerance_1979 → erdos_455` would bridge the two gallery entries.
 
+## Session 2 (2026-06-02) — ACT (i=1 corollary, build-pending)
+
+**Mode**: FRESH (claimed MODERATE, score 12, tier MODERATE+ depth-first, 538 in tier)
+**Outcome**: ACT — added `pomerance_consecutive_primes` (i=1 specialization of `pomerance_1979`)
+
+### What I Did
+- Added theorem `pomerance_consecutive_primes` (+14 LOC) — clean i=1 specialization deriving `p_n² > p_{n-1} · p_{n+1}` infinitely often from `pomerance_1979` with `i := 1`, `n ≥ 2`.
+- Pure derivation from the existing `pomerance_1979` chain — no new axioms, no new imports, no Mathlib calls beyond `le_trans`, `le_max_right`, and `omega`.
+
+### Why This Choice (Session 1 next-step priority #2)
+- Priority #1 (inverse PNT for `logPrime_ratio_tendsto_zero` axiom elimination): would require a Docker build to validate any Mathlib-search results and disk is at 503Mi free (RED, sibling container 6h-occupied — see [[project_researcher_1_2026_06_02_s13_act_clt_gaussian_in_own_doa]] for the same Docker INFRA constraint).
+- Priority #2 (this corollary): pure in-file derivation, no Mathlib search, ~14 LOC, single risk-acceptance bearer (`pomerance_1979` theorem already exists and is referenced 1 line above) → risk-acceptance 3/3 GREEN.
+
+### Cross-Reference Correction
+Session 1 claimed: "The related problem #455 asks whether p_{n+1}² ≥ p_n · p_{n+2} infinitely often (a special case of Pomerance with i=1). A short corollary `pomerance_1979 → erdos_455` would bridge the two gallery entries."
+
+**This is INCORRECT.** The gallery `erdos-455` entry (`Erdos455Problem.lean`) is about *monotone-gap prime sequences*: "If primes q₁ < q₂ < ... have non-decreasing gaps, must q_n grow faster than n²?" (Richter 1976 partial). The i=1 Pomerance corollary is a *different* statement and should not be cross-linked to gallery #455. The Session 2 corollary is therefore framed solely as the headline form of Pomerance 1979, with no #455 cross-reference.
+
+### Build Status
+**Build-pending.** Docker INFRA RED (disk 503Mi / 96% full, sibling `lean-build-57602` Up 6h occupying the only daemon, corrupted blob `9026c55995…` backing `lean4-arm64:v4.26.0` per cohort memory). Risk-acceptance 3/3 GREEN:
+1. No new imports — file imports unchanged from line 28-32.
+2. No new Mathlib lemmas — `le_trans` + `le_max_right` + `omega` only (all in Mathlib.Init).
+3. Pure specialization of in-file theorem `pomerance_1979` (line 191) — bearer is local and stable.
+
+### Files Modified
+- `proofs/Proofs/Erdos453OQ02.lean` — added `pomerance_consecutive_primes` theorem and new section header `Part IV: Consecutive Primes Corollary (i = 1 specialization)`; bumped existing summary to Part V.
+- `research/problems/erdos-453-oq-02/knowledge.md` — this Session 2 entry.
+- `src/data/research/problems/erdos-453-oq-02.json` — iteration bump, Session 2 insight, axiomCount unchanged at 2.
+
+### Next Steps (priority order, unchanged from Session 1 except #2 done)
+1. **Search Mathlib for inverse PNT** — `Nat.tendsto_nth_prime_div_id_log` or similar. If present, attempt `logPrime_ratio_tendsto_zero` (~200-300 lines). Requires Docker for any non-trivial Mathlib lookup.
+2. ~~Add `erdos_455_corollary` (i=1 specialization)~~ — done this session as `pomerance_consecutive_primes` (no #455 cross-link due to scope mismatch above).
+3. State and axiomatize the quantitative Pomerance density (≥ c·log log N vertices) — sharper companion result, ~axiom-only doc work.
+4. (Long-term) Build discrete convex hull theory in Mathlib — out-of-scope here but the right place is `Mathlib.Analysis.Convex.SpecificFunctions` or a new file under `Mathlib.Combinatorics`.
+
 ## Session 1 (2026-04-27) — SURVEY
 
 **Mode**: FRESH (claimed MODERATE, score 7)
