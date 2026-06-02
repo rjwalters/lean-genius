@@ -32,6 +32,9 @@
       "no_eulerian_path_three_or_more_odd: ≥3 odd-degree vertices implies no Eulerian path",
       "euler_circuit_implies_all_even: circuit → all even (formal direction)",
       "euler_trail_non_endpoint_even: non-endpoint vertices in an Euler trail have even degree"
+    ],
+    "additionalFiles": [
+      "Proofs/HierholzerAlgorithm.lean"
     ]
   },
   "overview": {
@@ -112,7 +115,10 @@
     "theoremCount": 24,
     "definitionCount": 11,
     "path": "Proofs/KonigsbergOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/HierholzerAlgorithm.lean"
+    ]
   },
   "crossReferences": [
     {

@@ -34,7 +34,10 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "mathlibDependencies": [],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "additionalFiles": [
+      "Proofs/ThreeSquares.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The problem of representing integers as sums of squares has ancient roots. Fermat (c. 1640) conjectured that every prime p ≡ 1 mod 4 is a sum of two squares, proved by Euler (1749). Lagrange (1770) proved the four-square theorem: every positive integer is a sum of at most four squares. The precise characterization of integers needing exactly four squares — those of the form 4^a(8b+7) — was stated by Legendre (1798) but without a complete proof. Gauss (1801) gave the first complete proof in his *Disquisitiones Arithmeticae*, §291, using his new theory of ternary quadratic forms.\n\nGauss's approach introduced 'genus theory': quadratic forms are partitioned into genera based on their local properties (behavior mod powers of 2 and odd primes). The form x²+y²+z² belongs to a single genus, and the key theorem is that every genus locally represents an integer iff it globally does — a precursor to the Hasse-Minkowski theorem (1923). The forward direction (Legendre's obstruction) is elementary modular arithmetic: squares mod 8 are {0,1,4}, so three squares can never sum to 7 mod 8. The backward direction requires the full force of quadratic form theory.\n\nThe three-square theorem has a striking connection to quaternion algebra. Lagrange's four-square theorem is equivalent to the universality of the quaternion norm form N(a+bi+cj+dk) = a²+b²+c²+d². The ternary form a²+b²+c² is NOT universal because there is no 3-dimensional normed division algebra over ℝ (the norm-form structure only exists in dimensions 1, 2, 4, 8 — real numbers, complex numbers, quaternions, octonions). The mod-8 obstruction for three squares (values ≡ 7 mod 8) thus has an algebraic explanation in the dimensional gap between ℝ³ and quaternions ℍ.",
@@ -151,7 +154,10 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/LagrangeFourSquaresOQ04.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ThreeSquares.lean"
+    ]
   },
   "mainTheorems": [
     {
