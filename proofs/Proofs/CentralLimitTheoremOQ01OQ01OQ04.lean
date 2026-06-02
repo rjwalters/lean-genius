@@ -350,16 +350,48 @@ axiom meerschaert_scheffler (d : ℕ)
 -- PART VII: Recovering Classical Results
 -- ============================================================
 
-/-- **AXIOM**: The Gaussian N(0, Sg) is in its own domain of attraction.
+/-- The Gaussian N(0, Sg) is in its own operator domain of attraction.
 
-    Axiomatized at Mathlib v4.26.0: the original proof invoked
-    `Filter.tendsto_const_nhds` (renamed to top-level `tendsto_const_nhds` in
-    v4.26.0) on a sequence-of-functions that is only POINTWISE constant — not
-    constant as a function-valued sequence. v4.26.0's stricter elaborator no
-    longer accepts the leak. Mathematical content is the multivariate CLT
-    self-similarity: ∑Xᵢ/√n →ᵈ N(0,Σ) for Gaussian Xᵢ. -/
-axiom gaussian_in_own_doa (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
-    InOperatorDomainOfAttraction d (gaussCharFun d Sg) (gaussCharFun d Sg)
+    Discharges the v4.26.0 axiomatized version (whose original proof leaked
+    a pointwise-vs-function-valued `tendsto_const_nhds` confusion) by:
+    1. Witnessing the matrix scaling `A_n = n^(-1/2) • I` and zero drift `b_n = 0`.
+    2. Reducing tendsto in the function space `(Fin d → ℝ) → ℂ` to pointwise
+       via `tendsto_pi_nhds`.
+    3. For each fixed ξ, observing that for n ≥ 1 the n-th term equals
+       `gaussCharFun d Sg ξ` exactly (eventually constant — NOT pointwise
+       constant on a non-constant function sequence, avoiding the v4.26.0
+       elaborator block).
+    4. Applying `tendsto_atTop_of_eventually_const` (Mathlib v4.26.0 surgical
+       successor of the broken `tendsto_const_nhds` invocation).
+
+    The matrix-product reduction `(A_n^T ξ) i = ξ i / √n` reuses the verified
+    simp set from S11 ACT (PR #21987). Mathematical content: multivariate CLT
+    self-similarity for the Gaussian. -/
+theorem gaussian_in_own_doa (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
+    InOperatorDomainOfAttraction d (gaussCharFun d Sg) (gaussCharFun d Sg) := by
+  refine ⟨gaussian_is_operator_stable d Sg, ?_⟩
+  refine ⟨fun n => (n : ℝ) ^ (-(1 / 2 : ℝ)) • (1 : Matrix (Fin d) (Fin d) ℝ),
+          fun _ => 0, ?_⟩
+  rw [tendsto_pi_nhds]
+  intro ξ
+  apply tendsto_atTop_of_eventually_const (i₀ := 1)
+  intro n hn
+  have hn0 : n ≠ 0 := Nat.one_le_iff_ne_zero.mp hn
+  have hnn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+  -- Reduce the matrix product (A_n^T ξ) i = ξ i / √n
+  have h_arg : (fun i => ∑ j, ((n : ℝ) ^ (-(1 / 2 : ℝ)) •
+                  (1 : Matrix (Fin d) (Fin d) ℝ)) i j * ξ j)
+             = (fun i => ξ i / Real.sqrt n) := by
+    funext i
+    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite,
+               mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq,
+               Finset.mem_univ, if_true]
+    rw [mul_comm, Real.rpow_neg hnn, ← Real.sqrt_eq_rpow, ← div_eq_mul_inv]
+  rw [h_arg]
+  -- vecInner d 0 ξ = 0 → exp factor collapses to 1
+  have h_inner : vecInner d (0 : Fin d → ℝ) ξ = 0 := by simp [vecInner]
+  rw [h_inner, show ((0 : ℝ) : ℂ) = 0 from rfl, mul_zero, Complex.exp_zero, mul_one]
+  exact gaussian_operator_stable d Sg ξ n hn0
 
 /-- **AXIOM**: D-dimensional extension of the DoA for finite-covariance laws.
 
