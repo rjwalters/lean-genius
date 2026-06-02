@@ -57,7 +57,13 @@
     "lineCount": 462,
     "assumptions": "3 axioms. (1) H_n_minus_1_sphere_nonzero (n ≥ 1, r : Retraction n, φ : ℤ →+ Unit) ⇒ ∃ ψ : Unit →+ ℤ, ψ.comp φ = id ℤ — mock-form B2 surrogate composing the deep singular-homology facts H_{n-1}(S^{n-1}) ≅ ℤ (Mathlib gap B2: no Mayer–Vietoris, no excision, no sphere homology) with retraction-functoriality. (2) contractible_singularHomology_zero (n ≥ 1, X : Type, [TopologicalSpace X] [ContractibleSpace X]) ⇒ singularHomology n X is zero — a thin classical-fact surrogate for Mathlib gap B1 (the prism operator bridging topological homotopy and chain homotopy). (3) sphere_singularHomology_nonzero (n ≥ 1) ⇒ singularHomology n (UnitSphere (n+1)) is non-zero — strictly weaker substantive B2 surrogate landed in S7 ACT-D-1 (only asserts non-vanishing, not the full H_n(𝕊 n) ≅ ℤ), driving H_n_minus_1_sphere_nonzero_substantive while leaving the algebraic Section G7 bridge for S8. The mock-form lemma H_n_minus_1_ball_zero is preserved as a trivial theorem (existential witness ⟨0, trivial⟩); alongside it H_n_minus_1_ball_zero_substantive is proved using contractible_singularHomology_zero. The composite singular_homology_retraction_split is preserved as a derived theorem combining the mock form with sphere-nonzero. no_retraction_axiom appears only in a block-comment example, not as an actual axiom. The algebraic argument (Part II) is fully proved with 0 axioms.",
     "theoremCount": 14,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
+      "Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The **No-Retraction Theorem** was proved by Karol Borsuk in 1931, predating Brouwer's 1912 fixed-point theorem (which came first chronologically, with various proofs following). The two results are equivalent: a retraction $r: B^n \\to S^{n-1}$ would yield a continuous map $f = i \\circ r: B^n \\to B^n$ with no fixed point (since $f(x) \\in S^{n-1}$ but $f(x) \\neq x$ for interior points), contradicting Brouwer.\n\nThe **singular homology proof** was developed in the 1920s-1940s following the emergence of algebraic topology. The key steps were laid out by Lefschetz (1930) and formalized in Eilenberg-Steenrod axioms (1945). The crucial computations are: $H_{n-1}(S^{n-1}) \\cong \\mathbb{Z}$ (proved via Mayer-Vietoris by covering $S^{n-1}$ with two hemispheres) and $H_{n-1}(B^n) = 0$ (since $B^n$ is contractible and contractible spaces have trivial reduced homology).\n\nThis file implements the **refined axiomatization** of the homological proof, cleanly separating the algebraic component (provable with 0 axioms) from the analytic component (2 axioms encoding Mathlib gaps B1 and B2). The algebraic fact — that $\\mathrm{id}: \\mathbb{Z} \\to \\mathbb{Z}$ cannot factor through the trivial group — is the categorical heart of the entire argument.",
@@ -152,7 +158,45 @@
     "axiomCount": 3,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 14
+    "theoremCount": 14,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
+        "lineCount": 88,
+        "theorems": 5,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S13 ACT G6 algebraic Unit-bridge generalization (extracted from open PR #18011 Part VI). Generalizes the three Part-V Unit-specific lemmas (unique_hom_to_unit, unique_hom_from_unit_is_zero, comp_through_unit_is_zero) to arbitrary subsingleton AddCommGroup and consolidates the algebraic obstruction in no_split_through_subsingleton. Namespace BrouwerOQ01OQ02. Parallels G7/G8/G10 companion files."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+        "lineCount": 94,
+        "theorems": 2,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S8 ACT-D-2 EXEC G7 algebraic bridge (PR #18951, build-verified PR #19013). Exposes `AddCommGrpCat.not_isZero_iff_nontrivial` (iff form) and `AddCommGrpCat.exists_ne_zero_of_not_isZero` (existential corollary), bridging the `¬ IsZero (...)` shape produced by the B2 surrogate `sphere_singularHomology_nonzero` to the `∃ x : X, x ≠ 0` shape needed by the S9 ACT-D-3 substantive derivation. Universe-monomorphic at Type 0 to match main-file call sites."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
+        "lineCount": 134,
+        "theorems": 2,
+        "definitions": 0,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S9 ACT-D-3 PREP G8 functoriality bridge + G9 retract-of-zero bridge. Exposes `map_section_of_section` (any functor sends a section to a section) and `isZero_of_section_into_isZero` (retract of a zero object is zero). Pure category theory — no topology, no singular homology — depends only on `CategoryTheory.Functor.Basic` and `Limits.Shapes.ZeroObjects`. Net axiom delta: 0."
+      },
+      {
+        "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
+        "lineCount": 83,
+        "theorems": 1,
+        "definitions": 1,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "S16 ACT-A G10 retraction-to-TopCat bridge (PR #21922). Exposes `Retraction.toTopCatHom` (noncomputable def converting custom Retraction structure into a `𝔻 n ⟶ ∂𝔻 n` TopCat morphism via ULift + Continuous.codRestrict) and `Retraction.section_identity` (categorical section identity from `r.fixes_sphere`). Enables G8 + G9 to fire on the inclusion-retraction pair. Net axiom delta: 0."
+      }
+    ]
   },
   "sorries": 0
 }
