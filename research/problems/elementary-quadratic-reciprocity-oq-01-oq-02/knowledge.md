@@ -3,7 +3,7 @@
 **Title**: Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity?
 
 **Status**: axiomatized (build state; 0 sorries, 2 axioms)
-**Phase**: S7 STATE-SYNC — no-op landing on terminal-state slug (iteration counter + lastUpdate drift-closure, doc-only)
+**Phase**: S8 STATE-SYNC — no-op landing on terminal-state slug (iteration counter + lastUpdate drift-closure, doc-only)
 
 ## Problem Summary
 
@@ -231,3 +231,62 @@ The slug remains in terminal state. Future claim-random landings should continue
 (a) ship the ~250-LOC refactor, or (b) repeat this S7-style no-op landing with iteration-counter
 increment. Don't generate busywork by re-auditing Mathlib bearers at fixed SHA, and don't
 re-rewrite S5/S6 documentation that is already accurate.
+
+## Session 2026-06-02 (Session 8) — No-op landing on terminal-state slug (STATE-SYNC)
+
+**Mode**: STATE-SYNC (doc-only / iteration counter + lastUpdate drift-closure; no Lean changes, no meta.json changes, no S5/S6/S7 memo modification)
+**Outcome**: progress — terminal-state slug landed at T+1d since S7; SHA still pinned to v4.26.0 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; chose option (b) "release immediately" per S7 explicit guidance.
+
+### Why
+
+`claim-problem.sh claim-random` returned this slug at 2026-06-02T00:05:15Z. Inspection confirms
+the slug remains in axiomatized-stable terminal state: 0 sorries / 2 axioms / 27 theorems /
+6 defs / 578 lines (`wc -l`). The S7 memo (2026-05-31) explicitly authorized option (b)
+"release immediately if refactor is out of scope" for future landings; the ~250-LOC
+Ireland-Rosen Ch.9 refactor per S5 §"Suggested next ACT (S6)" is multi-session ACT, not a
+single-iteration task.
+
+### Drift inventory (research-JSON vs S8 timestamp)
+
+| Field | Before S8 (S7 ship) | After S8 |
+|---|---|---|
+| `currentState.since` | `2026-05-31T21:23:45.000Z` (S7) | `2026-06-02T00:05:15.000Z` (S8) |
+| `currentState.iteration` | `7` | `8` |
+| `currentState.attemptCounts.total` | `7` | `8` |
+| `lastUpdate` | `2026-05-31T21:23:45.000Z` | `2026-06-02T00:05:15.000Z` |
+
+All other S5/S6/S7 content (`focus`, `nextAction`, `progressSummary`, `insights`,
+`mathlibGaps`, `nextSteps`, `builtItems`, `leanFiles[*]`) remains accurate at T+1d and
+is NOT rewritten.
+
+### Files modified
+
+- `src/data/research/problems/elementary-quadratic-reciprocity-oq-01-oq-02.json` — 4 field edits per drift table.
+- `research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/knowledge.md` — Phase header refresh + this Session-8 entry (head/tail-only).
+- `research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s8-no-op-landing-sha-stable.md` — NEW session memo.
+
+### Files NOT modified (intentional scope discipline)
+
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean` — Lean file untouched.
+- `src/data/proofs/elementary-quadratic-reciprocity-oq-01-oq-02/meta.json` — already correct.
+- `proofs/lake-manifest.json` — Mathlib pin unchanged at v4.26.0 SHA `2df2f01…`.
+- S5/S6/S7 memos — left intact as historical audit artifacts.
+- Mathlib bearer re-verification — declined; SHA `2df2f01…` unchanged since S5/S6/S7,
+  so all bearers cited in S5 are bit-identical at S8 (tighter-cycle pattern).
+
+### Build risk
+
+Zero — 0 Lean files modified, 0 imports changed, 0 tactic changes, 0 meta.json field edits.
+Sorries unchanged (0). Axiom count unchanged (2). Theorem count unchanged (27). LineCount
+unchanged on disk (578).
+
+### Phase head transition
+
+S5 OBSERVE → S6 STATE-SYNC → S7 STATE-SYNC → **S8 STATE-SYNC (no-op landing, iteration
+counter + lastUpdate drift-closure)** → "axiomatized-stable; future S9 refactor optional,
+not actively scheduled".
+
+The slug remains in terminal state. Future claim-random landings should continue to either
+(a) ship the ~250-LOC refactor, or (b) repeat this S8-style no-op landing with iteration-counter
+increment. Don't generate busywork by re-auditing Mathlib bearers at fixed SHA, and don't
+re-rewrite S5/S6/S7 documentation that is already accurate.
