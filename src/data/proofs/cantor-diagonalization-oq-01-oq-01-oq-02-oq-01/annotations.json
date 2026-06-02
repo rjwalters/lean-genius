@@ -192,19 +192,19 @@
     "id": "ann-easton-continuum-witness",
     "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
     "range": {
-      "startLine": 161,
-      "endLine": 185
+      "startLine": 168,
+      "endLine": 191
     },
     "type": "theorem",
     "title": "isEastonFunction_continuum: 2^· is the Canonical Witness",
-    "content": "The actual continuum function κ ↦ 2^κ satisfies all three Easton constraints, so the constraint set is non-vacuous. `succ_le` is `Order.succ_le_of_lt (Cardinal.cantor κ)` — Cantor's strict inequality 2^κ > κ becomes succ(κ) ≤ 2^κ. `konig_pointwise` is `Cardinal.lt_cof_power` applied with base 2 — directly König's theorem cf(2^κ) > κ. The `monotone` field is currently a sorry: in Mathlib 4.26.0, the lemma `Cardinal.power_le_power_right` now varies the BASE (not the exponent), so the exponent-monotone direction needs a different lemma name. This is the second of the file's two sorries — both are API-naming issues, not mathematical gaps. The witness theorem is structurally important: it confirms the constraint set is the right one (forced by the actual continuum function), making the realizability axiom non-vacuous.",
-    "mathContext": "Witness: $F(\\kappa) = 2^\\kappa$. Cantor: $\\kappa < 2^\\kappa \\Rightarrow \\mathrm{succ}(\\kappa) \\leq 2^\\kappa$. König: $\\mathrm{cf}(2^\\kappa) > \\kappa$. Monotonicity of $\\kappa \\mapsto 2^\\kappa$ requires the exponent-monotone lemma whose Mathlib spelling has drifted.",
+    "content": "The actual continuum function κ ↦ 2^κ satisfies all three Easton constraints axiom-free, so the constraint set is non-vacuous. `succ_le` is `Order.succ_le_of_lt (Cardinal.cantor κ)` — Cantor's strict inequality 2^κ > κ becomes succ(κ) ≤ 2^κ. `konig_pointwise` is `Cardinal.lt_cof_power` applied with base 2 — directly König's theorem cf(2^κ) > κ. The `monotone` field is `Cardinal.power_le_power_left` (note the Mathlib naming convention: `power_le_power_left` varies the EXPONENT, while `power_le_power_right` varies the BASE — the opposite of what the names suggest), with the base-nonzero side condition `(2 : Cardinal) ≠ 0` discharged by `norm_num`. The witness theorem is structurally important: it confirms the constraint set is the right one (forced by the actual continuum function), making the realizability axioms in Phase3b non-vacuous. Companion theorem `isEastonFunction_nonempty` packages this as ∃ F, IsEastonFunction F.",
+    "mathContext": "Witness: $F(\\kappa) = 2^\\kappa$. Cantor: $\\kappa < 2^\\kappa \\Rightarrow \\mathrm{succ}(\\kappa) \\leq 2^\\kappa$. König: $\\mathrm{cf}(2^\\kappa) > \\kappa$. Monotonicity: $\\kappa \\leq \\nu \\Rightarrow 2^\\kappa \\leq 2^\\nu$ via `power_le_power_left`. All three constraints discharged from Mathlib without forcing infrastructure.",
     "significance": "key",
     "relatedConcepts": [
       "Cardinal.cantor",
       "Cardinal.lt_cof_power",
-      "Cardinal.power_le_power_right",
-      "API drift",
+      "Cardinal.power_le_power_left",
+      "Mathlib naming convention",
       "non-vacuity"
     ],
     "prerequisites": [
@@ -217,27 +217,106 @@
     "id": "ann-easton-axioms",
     "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
     "range": {
-      "startLine": 187,
-      "endLine": 232
+      "startLine": 193,
+      "endLine": 213
     },
     "type": "context",
-    "title": "Realizability Axioms: Why Class Forcing Is Needed",
-    "content": "The two axioms `easton_permitted_realizable` (pointwise) and `easton_consistency` (function-level) state Easton's 1970 realizability claim. They cannot currently be proved in Lean because the proof technique — class-sized forcing — requires three pieces of meta-mathematical infrastructure that Mathlib does not yet have: (1) class-sized partial orders as forcing notions; (2) generic filter constructions on proper classes; (3) forcing-language semantics for ZFC's class-comprehension schema. The closest existing work is the `flypitch` project (Han, Van Doorn 2020), which formalized Cohen's *set* forcing for CH-independence in Lean 3 — but Easton's result requires *class* forcing, a strictly stronger construction (Easton's original poset is a proper class). The codomain `True` is a temporary placeholder. A future Phase-3b file will introduce a `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate (via Gödel-encoded ZFC formulas) and replace the placeholder with the genuine consistency claim. The honest framing: 'mathematically what is being claimed' is cleanly separated from 'how to express it formally once the meta-theoretic infrastructure exists'.",
-    "mathContext": "$\\mathsf{Easton}\\,(1970)$: assuming $\\mathrm{Con}(\\mathsf{ZFC})$, for every Easton function $F$, $\\mathrm{Con}(\\mathsf{ZFC} + \\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa))$. The proof constructs an Easton-product forcing extension $V[G]$ where the continuum function on regulars is exactly $F$. Class-sized: the forcing notion is itself a proper class, requiring the class-comprehension schema to even state.",
+    "title": "Part III: Pointer to Phase3b Companion (Post-S8 State)",
+    "content": "Part III of the parent file is now pointer-only narrative. In S8 Lever A residual, the two vacuous `True`-codomain axioms (`easton_permitted_realizable`, `easton_consistency`) that previously lived here were RETIRED — they had no mathematical content beyond what their Phase3b `_strong` siblings now carry with non-trivial codomain. The genuine Easton 1970 realizability claim has migrated to the companion file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`, which axiomatizes (a) two abstract consistency predicates `ConsistencyOfContinuumValue : Cardinal → Prop` and `ConsistencyOfContinuumFunction : (Cardinal → Cardinal) → Prop` (2 axioms) and (b) two strong realizability claims `easton_permitted_realizable_strong` (pointwise) and `easton_consistency_strong` (function-level) with those predicates as codomains (2 axioms) — total slug-level axiom count: 4, all in Phase3b. Class-sized forcing (Easton 1970) remains the obstruction; the closest existing work is `flypitch` (Han, Van Doorn 2020) — Cohen *set* forcing for CH-independence in Lean 3. A future Phase-4 effort would port flypitch to Lean 4 and extend it to *class* forcing to discharge the strong axioms as theorems.",
+    "mathContext": "$\\mathsf{Easton}\\,(1970)$: assuming $\\mathrm{Con}(\\mathsf{ZFC})$, for every Easton function $F$, $\\mathrm{Con}(\\mathsf{ZFC} + \\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa))$. The Phase3b strong-axiom encoding: $\\mathsf{IsEastonFunction}\\,F \\Rightarrow \\mathsf{ConsistencyOfContinuumFunction}\\,F$, and pointwise $\\mathsf{IsPermittedValue}\\,\\kappa \\Rightarrow \\mathsf{ConsistencyOfContinuumValue}\\,\\kappa$. Class-sized: the Easton-product forcing notion is itself a proper class, requiring the class-comprehension schema to even state.",
     "significance": "context",
     "relatedConcepts": [
       "class forcing",
       "Easton product",
       "Cohen forcing",
       "flypitch",
-      "Gödel encoding",
-      "Consistency predicate"
+      "Phase3b companion file",
+      "S8 Lever A residual",
+      "non-trivial codomain"
     ],
     "prerequisites": [
       "Forcing (informal)",
       "Set vs class distinction",
       "Cohen 1963 independence proof",
-      "ZFC schema"
+      "ZFC schema",
+      "Phase3b file structure"
+    ]
+  },
+  {
+    "id": "ann-phase3b-consistencyof-predicates",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 80
+    },
+    "type": "definition",
+    "title": "Phase3b: Abstract ConsistencyOf Predicates",
+    "content": "The Phase3b companion introduces two abstract consistency predicates as axioms: `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` (pointwise, read as 'ZFC ∪ {2^ℵ₀ = κ} is consistent assuming Con(ZFC)') and `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` (function-level, read as 'ZFC ∪ {∀ regular κ ≥ ℵ₀: 2^κ = F κ} is consistent assuming Con(ZFC)'). Both are axiomatized rather than defined because expressing them in Lean would require Gödel-encoding ZFC formulas — infrastructure not in Mathlib. The function-level form is the one Easton 1970 actually proved via class forcing; the pointwise form is its restriction to κ = ℵ₀. A future Phase-4 port of flypitch would provide a concrete `Consistent : Set Formula → Prop` predicate against which these could be discharged. NOTE: this annotation references the Phase3b companion file (lines 53-80), not the parent file.",
+    "mathContext": "Abstract predicates: $\\mathsf{ConsistencyOfContinuumValue} : \\mathrm{Cardinal}_0 \\to \\mathrm{Prop}$ and $\\mathsf{ConsistencyOfContinuumFunction} : (\\mathrm{Cardinal}_0 \\to \\mathrm{Cardinal}_0) \\to \\mathrm{Prop}$. Intended semantics: $\\mathsf{ConsistencyOfContinuumValue}(\\kappa) \\sim \\mathrm{Con}(\\mathsf{ZFC} + 2^{\\aleph_0} = \\kappa)$ relative to Con(ZFC). The pointwise predicate is the restriction $F \\mapsto F(\\aleph_0)$ image of the function-level predicate, conceptually.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ConsistencyOfContinuumValue",
+      "ConsistencyOfContinuumFunction",
+      "abstract predicate",
+      "Gödel encoding",
+      "Phase3b companion file",
+      "deeper axiomatization not reduction"
+    ],
+    "prerequisites": [
+      "Phase3b file structure",
+      "Abstract predicates as axioms",
+      "Forcing-consistency semantics"
+    ]
+  },
+  {
+    "id": "ann-phase3b-strong-easton-axioms",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 108
+    },
+    "type": "context",
+    "title": "Phase3b: Strong Easton Axioms (Non-Trivial Codomain)",
+    "content": "Two strong Easton axioms replace the parent's retired vacuous `True`-codomain placeholders with non-trivial codomains: `easton_permitted_realizable_strong : ∀ κ, IsPermittedValue κ → ConsistencyOfContinuumValue κ` (pointwise) and `easton_consistency_strong : ∀ F, IsEastonFunction F → ConsistencyOfContinuumFunction F` (function-level). Unlike the retired versions, these cannot be trivially discharged — producing a term of type `ConsistencyOfContinuumValue κ` requires the flypitch-port infrastructure plus Easton's forcing construction. The Phase3b file's docstring is explicit that this is 'deeper axiomatization, not axiom reduction': the trade is that callers built on the strong axioms produce non-trivial terms (e.g. `ConsistencyOfContinuumValue (Cardinal.aleph 1)` rather than `True`), and a future flypitch-style discharge has a clear target type to instantiate. NOTE: this annotation references the Phase3b companion file (lines 86-108).",
+    "mathContext": "Strong axioms: $\\forall \\kappa : \\mathrm{Cardinal}_0,\\, \\mathsf{IsPermittedValue}\\,\\kappa \\Rightarrow \\mathsf{ConsistencyOfContinuumValue}\\,\\kappa$ and $\\forall F : \\mathrm{Cardinal}_0 \\to \\mathrm{Cardinal}_0,\\, \\mathsf{IsEastonFunction}\\,F \\Rightarrow \\mathsf{ConsistencyOfContinuumFunction}\\,F$. Discharge of either would require the flypitch-port Lean 4 forcing machinery extended to class-sized partial orders.",
+    "significance": "key",
+    "relatedConcepts": [
+      "easton_permitted_realizable_strong",
+      "easton_consistency_strong",
+      "non-trivial codomain",
+      "flypitch port roadmap",
+      "Phase3b companion file"
+    ],
+    "prerequisites": [
+      "ConsistencyOf predicates",
+      "IsPermittedValue / IsEastonFunction from parent file",
+      "Class forcing (informal)"
+    ]
+  },
+  {
+    "id": "ann-phase3b-derived-theorems",
+    "proofId": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 157
+    },
+    "type": "theorem",
+    "title": "Phase3b: Five Callable Derived Consistency Theorems",
+    "content": "The Phase3b file derives 5 callable theorems demonstrating the strong axioms have non-trivial output: `consistencyOfContinuumFunction_continuum` (the actual 2^· continuum function is consistent — trivial ground-model witness), `consistencyOfContinuumValue_aleph_one` (CH model, Cohen 1963), `consistencyOfContinuumValue_aleph_two` (PFA-compatible value), `consistencyOfContinuumValue_aleph_succ α` (every successor aleph), and `consistencyOfContinuumValue_unbounded` (the consistent continuum values form a proper class). Each chains a parent-file lemma (e.g. `aleph_one_permitted`, `isEastonFunction_continuum`) into the Phase3b strong axiom. Contrast with the retired parent axioms applied to the same inputs: those produced only `trivial : True`; the Phase3b derivations produce terms with non-trivial types that downstream callers can cite. NOTE: this annotation references the Phase3b companion file (lines 109-157).",
+    "mathContext": "Five callable consequences: (1) $\\mathsf{ConsistencyOfContinuumFunction}\\,(\\kappa \\mapsto 2^\\kappa)$; (2) $\\mathsf{ConsistencyOfContinuumValue}\\,\\aleph_1$ (Cohen 1963 / CH); (3) $\\mathsf{ConsistencyOfContinuumValue}\\,\\aleph_2$ (PFA-compatible); (4) $\\forall \\alpha,\\, \\mathsf{ConsistencyOfContinuumValue}\\,\\aleph_{\\alpha+1}$ (every successor aleph); (5) $\\forall \\alpha,\\, \\exists \\kappa,\\, \\aleph_\\alpha < \\kappa \\land \\mathsf{ConsistencyOfContinuumValue}\\,\\kappa$ (unbounded proper class).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "consistencyOfContinuumFunction_continuum",
+      "consistencyOfContinuumValue_aleph_one",
+      "consistencyOfContinuumValue_aleph_two",
+      "consistencyOfContinuumValue_aleph_succ",
+      "consistencyOfContinuumValue_unbounded",
+      "Phase3b companion file"
+    ],
+    "prerequisites": [
+      "Strong Easton axioms",
+      "Parent-file permitted-value theorems",
+      "ConsistencyOf predicates"
     ]
   }
 ]
