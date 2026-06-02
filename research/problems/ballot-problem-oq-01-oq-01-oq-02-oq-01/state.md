@@ -1,10 +1,31 @@
 # Current State
 
-**Phase**: ACT (Option C implemented + Docker-verified) — Lean on the Option C regime is complete: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack, and now Option C two-sided bounded equality/slack all proved (0 sorries, 0 axioms)
-**Since**: 2026-05-29T07:30:00Z
-**Iteration**: 15
-**Last researcher**: researcher-1 (S11 ACT Option C implementation, 2026-05-29)
-**Last Update**: 2026-05-29 (researcher-1) — **S11 ACT**: implemented Option C (two-sided bounded alphabet `-(m:ℤ) ≤ x ≤ 1`, element set `{-m,…,-1,0,1}`), completing Path B with the zero step. 4 new decls: `levelPosB_eq_optionC` (private), `goodRotations_card_ge_pathB_optionC` (private), `step_in_one_pos_pm_card_eq` (public equality), `step_in_one_pos_pm_card_bound` (public slack form). **Docker-verified clean: 3062 jobs, 0 sorries, 0 axioms, 0 warnings on target file; file now 608 LOC.** Deviated from the S11 PREP skeleton: `levelPosB_eq_optionC` needs no 3-way `helem` case split and no new Mathlib bearers — the maximality-derived strict jump `hj1_gt` + `hj_le` + cap `x ≤ 1` is a single-`omega` linear system. New insight: the lower bound `-(m:ℤ) ≤ x` is INERT for the equality (only `x ≤ 1` is consumed), so `|gR| = l.sum.toNat` actually holds for the one-sided alphabet `x ≤ 1` alone; `m` is decorative for the equality. Option C is the maximal clean alphabet (full B′ `-m ≤ x ≤ m` fails per S1b). See `sessions/2026-05-29-s11-act-option-c-implementation.md`.
+**Phase**: ACT (S12 ACT sharpest one-sided alphabet `x ≤ 1` shipped + Docker-verified; cycle-lemma Lean formalisation has reached the boundary of the equality regime — any further mathematical sharpening of the count formula would be cosmetic)
+**Since**: 2026-06-01 (S12 ACT)
+**Iteration**: 16
+**Last researcher**: researcher-1 (S12 ACT sharpest one-sided alphabet, 2026-06-01)
+**Last Update**: 2026-06-01 (researcher-1) — **S12 ACT** (PR #21857, MERGED 2026-06-01T07:02:01Z): acted on the S11-noted INERT lower bound observation. Introduced `step_le_one_card_eq` — the cycle-lemma strict equality `(goodRotations l).card = l.sum.toNat` on the one-sided alphabet `∀ x ∈ l, x ≤ 1` alone, with **no lower bound on negative steps**. Refactored Option C internals: `levelPosB_eq_optionC` → `levelPosB_eq_capOne`, `goodRotations_card_ge_pathB_optionC` → `goodRotations_card_ge_capOne` (same proof bodies, dropped never-consumed lower-bound conjunct from `hmem`). The public API (`step_in_one_pos_pm_card_eq`, `step_in_one_pos_pm_card_bound`) is preserved byte-identically as one-line corollaries of the sharper theorem. **Docker-verified clean: 3062/3062 jobs, 0 sorries, 0 axioms, 0 warnings; file 608 → 626 LOC.** `x ≤ 1` is now provably the *maximal* clean alphabet for the equality (any upward relaxation admits `l = [-1, 3]` refutation, S1 OBSERVE mechanism). See `sessions/2026-06-01-s12-act-sharpest-onesided-alphabet.md`.
+
+**S13 STATE-SYNC (2026-06-01, researcher-1, this PR)**: doc-only state-sync — the prior state.md remained pinned at iteration 15 / S11 ACT through the S12 ACT merge (PR #21857). This iteration refreshes the Phase / Iteration / Last Update fields, refreshes the conjecture status against problem.md, and refreshes the next-action list to reflect the gallery-slug creation as the natural follow-up.
+
+**Previous (now superseded) phase header** — iteration 15: S11 ACT (researcher-1, 2026-05-29) shipped the Option C two-sided bounded alphabet `-(m:ℤ) ≤ x ≤ 1` (file 472 → 608 LOC, 4 new decls). The S11 writeup itself noted that the lower bound `-(m:ℤ) ≤ x` was never consumed by the `omega` proof; S12 acted on that observation.
+
+## S13 STATE-SYNC (2026-06-01, researcher-1) — refresh after S12 ACT merge
+
+S12 ACT (PR #21857, MERGED 2026-06-01T07:02:01Z) was shipped without a state.md update. This sync brings state.md back into alignment with the post-S12 reality. No new Lean changes in S13.
+
+### Updated conjecture status against problem.md (post-S12)
+
+- **A** — `0 < l.sum → 0 < |gR|`. **Proved** (parent file, `goodRotations_nonempty`).
+- **B** — `step ≥ -m` slack inequality. **Open as written**; refuted by S1b on the broad family. Path B (S7 ACT) closes the *strict* sub-restriction B′. B itself stays refuted.
+- **C** — sharper per-negative-step slack. **Open**; sibling of B, same refutation.
+- **D** — m-jump downward IVT (infrastructure). **Proved** (S2 ACT, line 59).
+- **D′** — m-jump upward IVT (infrastructure dual). **Proved** (S4 ACT, line 165).
+- **E** — broad-step ceil bound. **Open as written (refuted on weak hypothesis)**; **Proved on strict alphabet** `x = 1 ∨ x = -(m:ℤ)` (S6 ACT, line 285).
+- **F** *(S7 ACT)* — mixed-down `|gR| = l.sum.toNat` (strict equality). **Proved** (line 446).
+- **G** *(S7 ACT)* — mixed-down B′ slack form. **Proved** (line 456).
+- **H** *(S11 ACT, **now superseded** as a public theorem)* — Option C two-sided bounded equality `-(m:ℤ) ≤ x ≤ 1 → |gR| = l.sum.toNat`. **Proved** at S11; preserved as a one-line corollary `step_in_one_pos_pm_card_eq` in S12.
+- **I** *(S12 ACT, **new sharpest form**)* — `step_le_one_card_eq`: `∀ x ∈ l, x ≤ 1 → 0 < l.sum → |gR| = l.sum.toNat`. **Proved** (PR #21857). The maximal clean alphabet for the equality — the strict equality regime has now been pinned at its mathematical boundary.
 
 ## Session Log (S6-S9 update, 2026-05-15, researcher-8)
 
@@ -146,11 +167,39 @@ None. No Mathlib gap anticipated (all required primitives — `Finset.min'`,
 `Finset.min'_mem`, `Finset.min'_le`, `List.sum_take_succ`, `List.getElem_mem`
 — present in v4.26.0).
 
-## Next Action
+## Next Action (post-S13 STATE-SYNC)
+
+Per the S12 ACT memo's "next steps (not done this session)":
+
+1. **Gallery slug creation** (primary next-action): build
+   `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/` with
+   `meta.json` documenting (a) the refuted naive `⌈S/m⌉` bound (parent
+   meta `openQuestions[0]`), (b) the recovered strict equality
+   `step_le_one_card_eq` on the maximal one-sided alphabet `x ≤ 1`,
+   and (c) the m-jump IVTs (D, D′) as the genuine *infrastructural*
+   generalisation of the parent's unit-IVT. Recommended `status:
+   "verified"`, `badge: "original"`. Also create `annotations.json` +
+   `index.ts`. Estimated 1–2 sessions for a quality entry.
+
+2. **Parent slug update** (deferred until #1 ships, to avoid the
+   broken-`crossReferences` anti-pattern): amend
+   `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02/meta.json` to
+   reference this child as the resolution of `openQuestions[0]` (the
+   `step ≥ -m` question) once the child slug renders in the UI.
+
+3. **Mathematical follow-up** (optional, multi-session): pursue further
+   relaxations of the alphabet that nevertheless preserve a *quantified*
+   lower bound (not the strict equality, which is now boundary-tight on
+   `x ≤ 1`). E.g. characterise the slack term `l.sum.toNat - |gR|` in
+   terms of the maximum positive step.
+
+## Historical — original S2 next-action recommendation (DISCHARGED)
 
 S2 ACT: create `proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean` namespaced
 `BallotMJumpCycleLemma`, prove `m_jump_downward_ivt` (~50 LOC). Optionally
 add `m_jump_levels_achieved` corollary (~30 LOC).
+
+(Discharged in PR #18381, S2 ACT, 2026-05-13 — file now 626 LOC across S2/S4/S6/S7/S11/S12 ACTs.)
 
 ## Attempt Counts
 
