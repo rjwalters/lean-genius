@@ -1,11 +1,60 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT-READY — Layer 3a–3f complete on main; Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) have **paste-ready statements** locked in (S23 PREP §4.4 / §4.5 + S24 errata §3.1 / §3.2); S25 absorbs 2 mechanic batch syncs (PR #19681 parent slug + PR #19701 11 siblings) and surgically fixes this slug's `leanFiles[10]` 2086/52/5 → 2102/57/8 (the entry mechanic explicitly excluded as "separate scope"); S26 ACT operationally blocked on Docker daemon hung + host disk **3.0 Gi** free (−3.5 Gi vs S24)
+**Phase**: ACT-READY — Layer 3a–3f complete on main; **S25 ACT-1 (PR #19997)** shipped `bad_count_general_4` (~140 LOC reusable helper) + `bad_count_overlap_two` (5-LOC corollary), file 2102 → 2263 LOC, 1 axiom unchanged, 0 sorries unchanged; **S26 PREP (PR #21312)** confirmed INFRA recovery (G7 disk 3.0→61 GiB, G8 Docker 29.4.1 server up; G9 `.lake` self-loop persists but cosmetic vs Docker builds); 8/9 gates GREEN substantively. **S27 PREP (this session)** drafts paste-ready Lean for the last missing Layer 3f raw count: `bad_count_general_5` (~160 LOC helper, mirrors `bad_count_general_4` with one extra vertex/conjunct/`dif_neg` level) + `bad_count_overlap_one` (5-LOC corollary) — see `sessions/2026-06-02-s27-prep-overlap-one-general-5-extraction.md`.
 **Path**: full
-**Since**: 2026-05-17T01:16Z (S25 STATE-SYNC absorbing mechanic batch #19681 + #19701 + 1 surgical leanFiles fix + INFRA delta + registry catchup + sessions/ bootstrap)
-**Iteration**: 25 (S25 STATE-SYNC; predecessor S24 STATE-SYNC race PR #19630/#19631 merged 2026-05-16T14:32/15:21Z)
-**Last Update**: 2026-05-17 (Session 25, researcher-12) — see `sessions/2026-05-17-s25-statesync-post-mechanic-batch.md`
+**Since**: 2026-06-02T... (S27 PREP — paste-ready `bad_count_general_5` + `bad_count_overlap_one` extraction draft + drift remediation absorbing S25 ACT-1 + S26 PREP)
+**Iteration**: 27 (S27 PREP; predecessors S25 ACT-1 PR #19997 + S26 PREP PR #21312 both merged 2026-05-17 / 2026-05-31)
+**Last Update**: 2026-06-02 (Session 27, researcher-1) — see `sessions/2026-06-02-s27-prep-overlap-one-general-5-extraction.md`
+
+## Session 27 Summary (2026-06-02, researcher-1) — paste-ready `bad_count_general_5` extraction + drift remediation
+
+**Mode**: PREP (doc-only; zero Lean / `meta.json` / `lake-manifest.json` edits). Closes the last raw-counting gap in Layer 3f by drafting the next ACT.
+
+**Outcome**: phase **ACT-READY (unchanged)**; iteration bumped 25 → 27 (skipping a never-numbered "S26 ACT" since S26 was actually a PREP-only INFRA recheck). The new session file `sessions/2026-06-02-s27-prep-overlap-one-general-5-extraction.md` contains:
+
+1. **9-gate INFRA snapshot** at this PR's authoring time (8/9 GREEN substantively; G1 + G5 upgraded since S26 due to PR #19997 + #20009 + #20010 + #21792 absorption).
+2. **Drift table** of 5 merges since S25 STATE-SYNC (S25 ACT-1 #19997, sibling leanFiles batch syncs #20009/#20010 LOC 2102→2263, S26 PREP INFRA #21312, parent slug defCount fix #21792).
+3. **Layer 3 status table** showing 3f-count-2 (`bad_count_overlap_two`) now present on main and identifying `bad_count_overlap_one` as the single remaining missing 3f raw count.
+4. **Paste-ready `bad_count_general_5`** (~155 LOC) — 5-vertex generalisation of `bad_count_general_4` with explicit bijection to `{m' : Fin n // m' ≠ j ∧ m' ≠ k ∧ m' ≠ l ∧ m' ≠ m} → Fin d`; one extra `if/dif_neg` layer per ladder block (membership, left_inv, right_inv) vs the 4-vertex template. Same bearer set as `bad_count_general_4` (no new Mathlib bearers required).
+5. **Paste-ready `bad_count_overlap_one`** (~5 LOC) — direct corollary using `bad_count_general_5` with `(i, j, k, l, m) = (a₁, b₁, c₁, b₂, c₂)`; statement matches S24 §3.1 errata-corrected form (count `d^(n − 4)`, NOT S23 §3.1's typo `d^(n − 5)`); 10 pairwise-distinctness hypotheses with explicit slot↔name↔semantic mapping table.
+6. **S28b strict-wrapper sketch** for the downstream `bad_count_overlap_one_strict` consumer of `tripleCount_descFact_2_eq_overlap_sum`'s k=1 summand (~80–100 LOC, shorter than S16b's 98 LOC because only 10 vs 15 distinctness hyps).
+7. **Insertion-point preview** at L1026 of `BirthdayProblemOQ03OQ01OQ02.lean` (between `bad_count_overlap_two` close and the §5 §FIRST-MOMENT-IDENTITY divider), preserving the established helper-then-corollary read order.
+8. **LOC forecast** for the remaining work to close Lemma C: ~160 (S28 ACT) + ~80–100 (S28b strict) + ~80 (S29 real wrappers) + ~30 (S30 3g) + 150–500 (S31+ Layer 4) ≈ 500 Lean LOC over ~5 sessions.
+
+**Net change**: 4 files (1 NEW sessions/ + state.md head + research JSON + registry); ~460 lines added / ~10 lines deleted. Phase **ACT-READY (unchanged)**; iteration bumped 25 → 27. File `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` at `origin/main` is **2263 LOC, 1 axiom, 0 sorries — unchanged since PR #19997**.
+
+**3 RED INFRA persist as 1 (G9 only)**: G7 disk + G8 Docker both recovered per S26 PREP; G9 `.lake` self-symlink unchanged but cosmetic relative to Docker-based builds. **8/9 gates GREEN substantively**.
+
+See `sessions/2026-06-02-s27-prep-overlap-one-general-5-extraction.md` for the full delta — INFRA 9-gate snapshot with deltas, drift table, paste-ready Lean for `bad_count_general_5` + `bad_count_overlap_one`, hypothesis-derivation strategy for the S28b strict wrapper, LOC budget + insertion preview, anti-pattern checklist, references, PR delta forecast, honesty calibration, and predicted S28 absorption.
+
+## Session 26 Summary (2026-05-30, researcher-1) — INFRA recovery (G7 + G8 flipped GREEN; G9 unchanged)
+
+**Mode**: PREP (doc-only; per PR #21312 merged 2026-05-31T04:13:44Z). Re-snapshots all 3 RED INFRA gates from S25 STATE-SYNC 13 days later:
+
+- **G7 RED → GREEN**: disk free **3.0 GiB → 61 GiB** (+58 GiB recovery over 13 days).
+- **G8 RED → GREEN**: Docker daemon **29.4.1 server up** (no hang).
+- **G9 RED unchanged**: `proofs/.lake` symlink still self-loops; cosmetic vs Docker builds (Docker image carries its own toolchain + cache; host-side `.lake` irrelevant).
+
+**Net**: **6/9 → 8/9 GREEN substantively**. The S26 ACT picker matrix from S25 §picker-matrix is superseded (61 GiB disk no longer constraining; the 5 options become essentially equivalent on resources).
+
+See `sessions/2026-05-30-s26-prep-infra-recovery-2-of-3-gates-flipped.md` for the full delta (9-gate snapshot, picker-matrix supersession, reasons G9 deferred to mechanic, no Lean/state.md/JSON edits).
+
+## Session 25 ACT-1 Summary (2026-05-17, researcher-?, PR #19997) — `bad_count_general_4` + `bad_count_overlap_two` (option (b) extraction)
+
+**Mode**: ACT (Lean diff; build pending per PR title: "Docker daemon hung + host disk 2.8 Gi RED"; commit + push, doctor / auditor verifies from clean worktree).
+
+**Outcome**: implemented Layer 3f raw count for the overlap=2 stratum via the recommended option (b) extraction from S24 §3.3:
+
+1. **`bad_count_general_4` (~140 LOC, reusable helper)** at L881 of `BirthdayProblemOQ03OQ01OQ02.lean` — 4-vertex chain trivialisation count: with pairwise-distinct `i, j, k, l ∈ Fin n`, `(Finset.univ.filter (fun f => f i = f j ∧ f j = f k ∧ f k = f l)).card = d^(n − 3)`. Strategy mirrors S11's `bad_count_general` (one extra vertex): explicit bijection to `({m // m ≠ j ∧ m ≠ k ∧ m ≠ l} → Fin d)` via restriction to the `(n − 3)`-element complement; inverse extends by `f m = g i` for `m ∈ {j, k, l}`, `f m = g m` otherwise. Same `dif_neg` ladder pattern as S11 with one extra level.
+
+2. **`bad_count_overlap_two` (5-LOC corollary)** at L1019 — direct application of `bad_count_general_4` with `(i, j, k, l) = (a₁, b₁, c₁, c₂)` consuming exactly 6 pairwise-distinctness hypotheses (3 within-T₁ + 3 cross to c₂). Count `d^(n − 3)` matches S24 §3.2 errata-corrected form.
+
+**Net file delta**: 2102 → 2263 LOC (+161); 57 → 59 theorems (verified by sibling `meta.json` batch syncs PR #20009 + #20010 on the same day); 8 defs unchanged. 1 axiom (`p_no_triple_tendsto`) unchanged. 0 sorries unchanged.
+
+**Build status at merge**: pending (Docker daemon hung at PR-creation time; cleared by S26 PREP confirmation). Standard project convention — see Sessions 10–16d which all shipped build-pending PRs against this slug.
+
+## Session 25 Summary (2026-05-17, researcher-12) — mechanic-batch absorption + 1 surgical leanFiles fix + INFRA delta + registry catchup + sessions/ bootstrap
 
 ## Session 25 Summary (2026-05-17, researcher-12) — mechanic-batch absorption + 1 surgical leanFiles fix + INFRA delta + registry catchup + sessions/ bootstrap
 
