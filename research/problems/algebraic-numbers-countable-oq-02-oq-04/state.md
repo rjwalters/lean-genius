@@ -2,26 +2,25 @@
 
 ## Current Status
 
-**Phase**: S8 ACT — Baire-category sharpening (computable meagre / non-computable residual)
-**Owner**: researcher-1 (S8 ACT, 2026-05-31); prior S8-prep owner: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
-**Iteration**: 10 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8)
-**Last Updated**: 2026-05-31Z (S8 ACT; Baire-category 5 thms, Docker `3067/3067` clean, 12s file compile)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s8-baire-meagre`
+**Phase**: S9 ACT — Boundary characterization (frontier = univ on both partition halves)
+**Owner**: researcher-1 (S9 ACT, 2026-06-01); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
+**Iteration**: 11 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9)
+**Last Updated**: 2026-06-01Z (S9 ACT; frontier characterization 2 thms, Docker `3067/3067` clean, 10s file compile)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s1-2026-06-01`
 
-## Lean file inventory (at base `origin/main`, S8 Docker-verified)
+## Lean file inventory (at base `origin/main`, S9 Docker-verified)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       869 (was 757 at S8-prep; +112 in S8 including section docstring)
-Theorems:    40 (S8 adds nonComputableReals_isGδ + nonComputableReals_residual
-                  + computable_reals_meagre + interior_eq_empty on both partition halves)
+Lines:       928 (was 869 at S8; +59 in S9 including section docstring)
+Theorems:    42 (S9 adds frontier_computable_reals_eq_univ +
+                  frontier_nonComputableReals_eq_univ)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S8 added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S9 added no new)
 Axioms:      0
-Build:       ✔ VERIFIED S8 (Docker 3067/3067 jobs clean, 12s file compile, 2026-05-31)
-Imports:     no new (Set.Countable.isGδ_compl / residual_of_dense_Gδ / IsMeagre /
-              interior_eq_empty_iff_dense_compl all transitively available via
-              Topology.Instances.Real.Lemmas + Mathlib.Tactic chain)
+Build:       ✔ VERIFIED S9 (Docker 3067/3067 jobs clean, 10s file compile, 2026-06-01)
+Imports:     no new (frontier / Set.diff_empty already transitively available
+              via the existing Topology.Instances.Real.Lemmas + Mathlib.Tactic chain)
 ```
 
 4 critical Mathlib bearers used in S8 proof:
@@ -30,19 +29,25 @@ Imports:     no new (Set.Countable.isGδ_compl / residual_of_dense_Gδ / IsMeagr
 - `IsMeagre` (Topology.GDelta:249) — `s` meagre iff `sᶜ ∈ residual X`
 - `interior_eq_empty_iff_dense_compl` — empty interior ↔ complement dense
 
-**Next-picker priority (S9+)**: With S7 (computable dense), S8-prep (non-computable
-dense), and S8 (Baire-category: computable meagre / non-computable Gδ-residual)
-now in place, the topological picture is complete: computable reals show the
-same topological profile as `ℚ` (countable + dense + meagre), and non-computable
-reals are dense + Gδ + residual. The remaining headline next step remains
-shipping `IsComputable e` (or `π`) as the explicit computable transcendental
-witness sharpening `algebraic ⊊ computable` beyond pure cardinality + topology.
-Path A (e via partial sums of `1/n!`) is the cleaner-skeleton candidate at
-v4.26.0; ~80-150 LOC estimate but **blocked on Mathlib gap**: there is no
-`Computable.add` / `Computable.neg` for `ℚ` in current Mathlib v4.26.0
-(verified by grep: only `Computable.const`, `Computable.encode`, `Computable.comp`
-on `ℚ`; `Primrec ℚ` arithmetic operations not yet provided). Building this
-machinery is itself a sizeable subgoal (S10 prereq) — see S6f §5 for full priority tree.
+2 critical Mathlib bearers used in S9 proof:
+- `frontier` (Topology.Basic) — `frontier s := closure s \ interior s` (definition unfolded)
+- `Set.diff_empty` — `s \ ∅ = s`
+
+**Next-picker priority (S10+)**: With S7 (computable dense), S8-prep (non-computable
+dense), S8 (Baire-category: computable meagre / non-computable Gδ-residual), and
+S9 (frontier = univ on both partition halves) now in place, the topological
+picture is complete on both sides: computable reals show the same topological
+profile as `ℚ` (countable + dense + meagre + frontier-everywhere), and
+non-computable reals are dense + Gδ + residual + frontier-everywhere. The
+remaining headline next step remains shipping `IsComputable e` (or `π`) as the
+explicit computable transcendental witness sharpening `algebraic ⊊ computable`
+beyond pure cardinality + topology. Path A (e via partial sums of `1/n!`) is
+the cleaner-skeleton candidate at v4.26.0; ~80-150 LOC estimate but **blocked
+on Mathlib gap**: there is no `Computable.add` / `Computable.neg` for `ℚ` in
+current Mathlib v4.26.0 (verified by grep: only `Computable.const`,
+`Computable.encode`, `Computable.comp` on `ℚ`; `Primrec ℚ` arithmetic operations
+not yet provided). Building this machinery is itself a sizeable subgoal (S10
+prereq) — see S6f §5 for full priority tree.
 
 ## What's Done
 
@@ -215,6 +220,23 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   `knowledge.md`, or `meta.json` changes. See
   `sessions/2026-05-16-s6f-statesync-postmechanic-buildverified.md`
   for the full memo (~360 LOC, 8 sections).
+- **2026-06-01 (S9 ACT, researcher-1)**: BOUNDARY CHARACTERIZATION
+  (Docker `3067/3067` clean, 10s file compile). Two new one-line theorems
+  closing the topological track on the partition:
+  - `frontier_computable_reals_eq_univ : frontier {r | IsComputable r} = Set.univ`
+    — from `closure_computable_reals_eq_univ` (S7) and
+    `interior_computable_reals_eq_empty` (S8 cor) via
+    `frontier := closure \ interior` and `Set.diff_empty`.
+  - `frontier_nonComputableReals_eq_univ : frontier nonComputableReals = Set.univ`
+    — symmetric counterpart from `closure_nonComputableReals_eq_univ` (S8-prep)
+    and `interior_nonComputableReals_eq_empty` (S8 cor).
+  Mathematical content: every real is a boundary point of *both* sides of the
+  computable/non-computable partition simultaneously. The two-sided
+  accumulation profile matches the rational/irrational partition of `ℝ`,
+  refined here to the strictly finer computable/non-computable split.
+  No new defs / sorries / axioms / imports. Lean file 869 → 928 LOC, theorem
+  count 40 → 42. See `sessions/2026-06-01-s9-act-frontier-characterization.md`.
+
 - **2026-05-30 (S8-prep ACT, researcher-1)**: TOPOLOGICAL COMPLEMENT —
   non-computable reals are dense (Docker `3067/3067` jobs clean, 11s file compile).
   Two new theorems, no new defs/axioms/sorries:
