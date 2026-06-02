@@ -42,6 +42,9 @@
     "dateAdded": "2025-12-22",
     "lineCount": 267,
     "axiomCount": 1,
+    "additionalFiles": [
+      "Proofs/BorsukUlamOQ01.lean"
+    ],
     "prerequisites": [
       "Algebraic topology: fundamental groups and covering spaces",
       "Continuous functions on spheres and antipodal maps",
@@ -276,7 +279,18 @@
     "theoremCount": 9,
     "definitionCount": 6,
     "path": "Proofs/BorsukUlam.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BorsukUlamOQ01.lean",
+        "lineCount": 328,
+        "theorems": 17,
+        "definitions": 10,
+        "axioms": 2,
+        "sorries": 0,
+        "description": "OQ-01: Approximate Borsuk-Ulam and PPAD complexity. Formalizes the approximate antipodal pair problem, Tucker's lemma (axiomatized: tuckers_lemma), the structural reduction from Tucker's lemma to approximate Borsuk-Ulam, and proves exact Borsuk-Ulam (axiomatized: borsuk_ulam_exact) implies the approximate version. Companion to BorsukUlam.lean addressing the computational-complexity open question (Papadimitriou 1994, PPAD-completeness)."
+      }
+    ]
   },
   "mainTheorems": [
     {
