@@ -264,35 +264,97 @@ function processLineBased(config: ProofConfig): { success: boolean; errors: stri
  * we just copy that resolved file. Proofs with no resolvable Lean source were
  * already skipped/warned during discovery; here we additionally warn and skip
  * (never fail the build) on any copy error.
+ *
+ * Per-proof incremental caching (issue #22150): when the destination already
+ * exists and its mtime is at least the git-commit timestamp of the Lean
+ * source, the copy is skipped. We pin the destination's mtime to the git
+ * commit time (not wall-clock) on every emit so the comparison is meaningful
+ * across `git checkout` and fresh-worktree creation — both of which produce
+ * arbitrary disk mtimes that do not reflect content changes. Note: when the
+ * whole-script input-hash cache (issue #22149) short-circuits the build, this
+ * function isn't called at all; the incremental skip below kicks in on cache
+ * MISSES where only a subset of proofs actually changed (e.g. 5 of 2435).
+ *
+ * Fallback policy: if `touchedMap` lookup misses (e.g. brand-new uncommitted
+ * Lean file not yet in `git log`), or if no touchedMap is available, we
+ * unconditionally copy. Over-copying is safer than under-emitting.
  */
-function emitStaticSource(proofs: ProofConfig[]): void {
-  let emitted = 0;
-  let failed = 0;
+function emitStaticSource(
+  proofs: ProofConfig[],
+  touchedMap: Map<string, string> | undefined
+): void {
+  let updated = 0;
+  let cached = 0;
+  let skipped = 0;
 
   for (const proof of proofs) {
     try {
       if (!fs.existsSync(proof.leanPath)) {
         console.warn(`   ⚠ Lean source missing for ${proof.id} (${proof.leanPath}); skipping source.lean emit`);
-        failed++;
+        skipped++;
         continue;
       }
       const destDir = path.join(PUBLIC_PROOFS_DIR, proof.id);
+      const destPath = path.join(destDir, 'source.lean');
+
+      // Look up the git commit timestamp for the Lean source path. The map
+      // is keyed by repo-relative paths, so we convert the absolute leanPath
+      // here. A miss returns undefined (brand-new file, git unavailable,
+      // etc.) which is handled below as "always copy".
+      const leanRel = path.relative(REPO_ROOT, proof.leanPath);
+      const sourceTouchedAt = touchedMap?.get(leanRel);
+
+      // Skip-when-fresh check: destination exists AND its mtime is at least
+      // the source's git commit timestamp. We use throwIfNoEntry:false so a
+      // missing destination cleanly falls through to the copy path.
+      const destStat = fs.statSync(destPath, { throwIfNoEntry: false });
+      if (destStat && sourceTouchedAt) {
+        const destMtimeIso = new Date(destStat.mtime).toISOString();
+        if (destMtimeIso >= sourceTouchedAt) {
+          cached++;
+          continue;
+        }
+      }
+
       fs.mkdirSync(destDir, { recursive: true });
-      fs.copyFileSync(proof.leanPath, path.join(destDir, 'source.lean'));
-      emitted++;
+      fs.copyFileSync(proof.leanPath, destPath);
+
+      // Pin the destination's mtime to the source's git commit timestamp so
+      // the next run can make a meaningful skip decision. Without this pin,
+      // the destination's mtime would be the wall-clock time of THIS copy,
+      // which always exceeds the source's commit timestamp — making the
+      // skip path correct by accident. The pin makes it correct by design,
+      // and also makes the file robust to `git checkout` (which would
+      // otherwise reset the SOURCE's disk mtime and break comparisons).
+      if (sourceTouchedAt) {
+        const touchedDate = new Date(sourceTouchedAt);
+        if (!Number.isNaN(touchedDate.getTime())) {
+          try {
+            fs.utimesSync(destPath, new Date(), touchedDate);
+          } catch {
+            // Non-fatal: missing utimes support shouldn't break the build.
+          }
+        }
+      }
+      updated++;
     } catch (e) {
       console.warn(`   ⚠ Failed to emit source.lean for ${proof.id}: ${e instanceof Error ? e.message : e}`);
-      failed++;
+      skipped++;
     }
   }
 
-  console.log(`\n📄 Emitted source.lean for ${emitted} proofs to public/data/proofs/ (${failed} skipped)`);
+  console.log(`\n📄 Emitted source.lean: ${updated} updated, ${cached} cached, ${skipped} skipped`);
 }
 
 /**
- * Generate lightweight listings.json for HomePage
+ * Generate lightweight listings.json for HomePage. Accepts a pre-built
+ * touchedMap so callers can share it with `emitStaticSource()` rather than
+ * paying for two passes over the (large) `git log` output. See issue #22150.
  */
-function generateListings(proofs: ProofConfig[]): void {
+function generateListings(
+  proofs: ProofConfig[],
+  touched: Map<string, string> | undefined
+): void {
   interface ProofListing {
     id: string;
     title: string;
@@ -313,19 +375,6 @@ function generateListings(proofs: ProofConfig[]): void {
   }
 
   const listings: ProofListing[] = [];
-
-  // Pre-build the map of repo-relative path -> latest commit timestamp once,
-  // up front. This is the critical perf fix: the previous implementation
-  // spawned one `git log` per listing (~2435 subprocesses), which pushed
-  // `pnpm build` past the 20-minute deploy cap. See issue #20850.
-  const buildTouchedStart = Date.now();
-  const touched = buildTouchedMap();
-  const buildTouchedMs = Date.now() - buildTouchedStart;
-  if (touched) {
-    console.log(`   Built git touch map: ${touched.size} paths in ${buildTouchedMs}ms`);
-  } else {
-    console.log(`   Skipping git touch map (git unavailable); listings will have no updatedAt`);
-  }
 
   for (const proof of proofs) {
     const metaPath = path.join(proof.dataDir, 'meta.json');
@@ -447,12 +496,29 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
     }
   }
 
+  // Pre-build the map of repo-relative path -> latest commit timestamp once,
+  // up front. This is the critical perf fix: the previous implementation
+  // spawned one `git log` per listing (~2435 subprocesses), which pushed
+  // `pnpm build` past the 20-minute deploy cap. See issue #20850. The same
+  // map drives the incremental skip in `emitStaticSource()` (issue #22150),
+  // so we share it across both consumers rather than building it twice.
+  const buildTouchedStart = Date.now();
+  const touched = buildTouchedMap();
+  const buildTouchedMs = Date.now() - buildTouchedStart;
+  if (touched) {
+    console.log(`   Built git touch map: ${touched.size} paths in ${buildTouchedMs}ms`);
+  } else {
+    console.log(`   Skipping git touch map (git unavailable); listings will have no updatedAt and source.lean will always re-emit`);
+  }
+
   // Generate lightweight listings for HomePage
-  generateListings(proofs);
+  generateListings(proofs, touched);
 
   // Emit Lean source to the build-generated public asset tree (fetched by slug
-  // at runtime instead of imported via `*.lean?raw`). See issue #20992.
-  emitStaticSource(proofs);
+  // at runtime instead of imported via `*.lean?raw`). See issue #20992. With
+  // touchedMap, this is now incremental — unchanged proofs are skipped via
+  // mtime comparison. See issue #22150.
+  emitStaticSource(proofs, touched);
 
   console.log(`\n📊 Summary:`);
   console.log(`   Anchor-based: ${anchorProofs} proofs`);
