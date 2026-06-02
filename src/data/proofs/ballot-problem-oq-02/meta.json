@@ -41,7 +41,7 @@
       "Main continuous ballot theorem combining all components (0 sorries)"
     ],
     "dateAdded": "2026-02-24",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "prerequisites": [
       "Brownian motion and stochastic processes",
       "Reflection principle for random walks",
@@ -50,7 +50,7 @@
       "Lévy's arcsine law and occupation times"
     ],
     "lineCount": 339,
-    "assumptions": "2 axioms: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property). Arcsine law is discussed but not formally axiomatized.",
+    "assumptions": "3 axioms across the chain: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property), (3) donsker_fclt in BallotProblemOQ02OQ05.lean — functional CLT for iid mean-zero unit-variance increments (Wiedijk #45, beyond Mathlib v4.26.0). Arcsine law is discussed but not formally axiomatized.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
     "definitionCount": 4,
