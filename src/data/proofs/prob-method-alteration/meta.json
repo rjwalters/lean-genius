@@ -7,7 +7,7 @@
     "author": "Paul Erdos, formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Probabilistic_method",
     "date": "1960",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/ProbMethodAlteration.lean",
     "tags": [
       "probabilistic-method",
@@ -15,7 +15,7 @@
       "graph-theory",
       "intermediate"
     ],
-    "badge": "original",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,7 +40,7 @@
       "property_b_bound: removed as block comment (needs hypergraph type for full formalization)"
     ],
     "dateAdded": "2026-03-21",
-    "axiomCount": 0,
+    "axiomCount": 2,
     "lineCount": 59,
     "prerequisites": [
       "Probabilistic method and first moment principle",
@@ -49,7 +49,7 @@
       "Property B and hypergraph 2-colorability",
       "Optimization of probability parameters"
     ],
-    "assumptions": "0 axioms, 0 sorries. 2 theorems fully proved: alteration_principle and independent_set_bound. property_b_bound was converted to a block comment (needs hypergraph type for full formalization). All remaining theorems are machine-verified.",
+    "assumptions": "Main file ProbMethodAlteration.lean: 0 axioms, 0 sorries; alteration_principle and independent_set_bound are machine-verified. Companion file ProbMethodAlterationOQ02.lean adds 2 named axioms used in the triangle-free α(G) improvement chain: (1) caro_wei — the Caro–Wei bound α(G) ≥ n²/(2m+n); (2) aks_triangle_free — the Ajtai–Komlós–Szemerédi 1980 logarithmic bound α(G) ≥ c·n·log(d)/d for triangle-free graphs of avg degree d. Total chain assumption count: 2 axioms.",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
     "definitionCount": 0,
