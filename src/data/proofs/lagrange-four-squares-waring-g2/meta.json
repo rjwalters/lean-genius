@@ -35,7 +35,13 @@
     ],
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
-    "definitionCount": 8
+    "definitionCount": 8,
+    "additionalFiles": [
+      "Proofs/LagrangeFourSquaresWaringG2OQ01.lean",
+      "Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean",
+      "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG4.lean",
+      "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG5.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Waring's problem (1770) asks: for each positive integer $k$, what is the smallest $g(k)$ such that every positive integer is a sum of at most $g(k)$ perfect $k$-th powers? For $k=2$ (squares), the answer is $g(2) = 4$.\n\n**Upper bound** ($g(2) \\leq 4$): Lagrange proved in 1770 that every positive integer is a sum of at most 4 squares. This was a major advance over Bachet's 1621 conjecture and Fermat's partial results.\n\n**Lower bound** ($g(2) \\geq 4$): Legendre proved in 1798 that $n$ is NOT a sum of 3 squares if and only if $n = 4^a(8b+7)$ for non-negative integers $a, b$. In particular, $7 = 4^0(8 \\cdot 0 + 7)$ requires exactly 4 squares: $4 + 1 + 1 + 1$.\n\n**Big-G and little-g**: Hilbert (1909) proved $g(k)$ exists for all $k$ (Waring's conjecture). For squares, $G(2) = g(2) = 4$: not only does every number need at most 4 squares, but infinitely many need exactly 4.",
@@ -117,7 +123,45 @@
     "theoremCount": 69,
     "definitionCount": 8,
     "path": "Proofs/LagrangeFourSquaresWaringG2.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01.lean",
+        "description": "Waring's Problem OQ-01, k=3 lower bound: defines IsSumOfCubes and proves twenty_three_needs_nine_cubes (23 is not a sum of 8 cubes; hence g(3) ≥ 9) via finite search over Fin 3 ^ 8 = 6561 tuples (native_decide). Imports the parent LagrangeFourSquaresWaringG2.",
+        "lineCount": 118,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 2,
+        "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean",
+        "description": "Waring's Problem OQ-01, k=3 axiom-elimination sibling: re-proves g(3) ≥ 9 via the counting+omega template (no native_decide, no ofReduceBool axiom). Validates the parametric route that scales to k ≥ 4.",
+        "lineCount": 141,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 0
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG4.lean",
+        "description": "Waring's Problem OQ-01, k=4 lower bound: sorry-free, axiom-free proof of g(4) ≥ 19 via counting+omega (search space 3^18 ≈ 4·10^8 exceeds native_decide's evaluator budget; omega closes the 2-equation linear system in milliseconds).",
+        "lineCount": 155,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG5.lean",
+        "description": "Waring's Problem OQ-01, k=5 lower bound: sorry-free, axiom-free proof of g(5) ≥ 37 via counting+omega (parallel to G4 ACT, applied to the 2-equation system n0+n1+n2=36 ∧ n1+32·n2=223).",
+        "lineCount": 150,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
+      }
+    ]
   },
   "crossReferences": [
     {
