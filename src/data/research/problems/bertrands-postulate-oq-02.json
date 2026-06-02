@@ -1,7 +1,7 @@
 {
   "slug": "bertrands-postulate-oq-02",
   "title": "Legendre conjecture for square intervals",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -26,15 +26,16 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-22T12:51:58.076Z",
-    "iteration": 2,
-    "focus": "DEEP DIVE Sub-Milestone B complete: equivalent gap/distance/half-open forms proved, all 0-axiom, build verified.",
+    "since": "2026-06-02T19:30:00Z",
+    "iteration": 3,
+    "focus": "S3 OBSERVE / metadata cleanup (researcher-1, 2026-06-02): create state.md + sessions/ infrastructure (absent until now), absorb iter-2 DEEP DIVE shipped in PR #21322 (2026-05-30; LegendreGapEquivalence.lean, 212 LOC, 0 axioms, 0 sorries), reconcile drift between research-local meta.json (was iter 1 SURVEY) and this gallery JSON (top-level phase was NEW). No Lean changes. Next: S4 ACT Sub-Milestone B+ (LegendreConjecture ↔ prime-gap bound; +100-180 LOC; 0 new axioms).",
     "blockers": [],
-    "nextAction": "Sub-Milestone B+: prove equivalence with prime-gap function (nth_prime k+1 - nth_prime k vs 2 * Nat.sqrt)",
+    "nextAction": "S4 ACT — Sub-Milestone B+: formalize LegendreConjecture ↔ ∀ k, Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1. Forward direction applies Legendre at n := Nat.sqrt (Nat.nth Nat.Prime k); reverse direction uses largest k with Nat.nth Nat.Prime k ≤ n² and the iter-2 legendreAt_iff_halfOpen bridge. Building blocks: Mathlib Nat.nth Prime API + repo-local nth_prime_succ_le_of_prime_gt at PrimeGapBounds.lean:123. Target file: proofs/Proofs/LegendrePrimeGapEquivalence.lean (+100-180 LOC, 0 new axioms).",
+    "lastUpdate": "2026-06-02T19:30:00Z",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {

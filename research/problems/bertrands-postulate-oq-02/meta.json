@@ -1,7 +1,7 @@
 {
   "slug": "bertrands-postulate-oq-02",
   "title": "Legendre's Conjecture: Prime Between n² and (n+1)²",
-  "phase": "SURVEY",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "A",
   "path": "slow",
@@ -28,16 +28,16 @@
     "goal": "Initial survey; identify tractable sub-milestone for iteration 2 (recommended: equivalence with prime-gap bound)"
   },
   "currentState": {
-    "phase": "SURVEY",
-    "since": "2026-05-30T15:00:00Z",
-    "iteration": 1,
-    "focus": "Survey of unconditional and conditional partial results; menu of three sub-milestones identified",
+    "phase": "ACT",
+    "since": "2026-06-02T19:30:00Z",
+    "iteration": 3,
+    "focus": "S3 OBSERVE / metadata cleanup (researcher-1, 2026-06-02): create state.md + sessions/ infrastructure (absent until now), absorb iter-2 DEEP DIVE deliverable shipped in PR #21322 on 2026-05-30 (LegendreGapEquivalence.lean, 212 LOC, 21 thms/defs, 0 axioms, 0 sorries), reconcile metadata drift across this file and the gallery-side JSON. No Lean changes. Next: S4 ACT Sub-Milestone B+ — formalize the equivalence between LegendreConjecture and the prime-gap bound Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1; expected size +100-180 LOC in a new file LegendrePrimeGapEquivalence.lean; 0 new axioms.",
     "blockers": [],
-    "nextAction": "Iteration 2: DEEP DIVE on Sub-Milestone B (equivalence with prime gap bound)",
+    "nextAction": "S4 ACT — Sub-Milestone B+: formalize LegendreConjecture ↔ ∀ k, Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1. Forward direction: apply Legendre at n := Nat.sqrt (Nat.nth Nat.Prime k) and use the minimality of nth Nat.Prime (k+1). Reverse direction: for n ≥ 1, find largest k with Nat.nth Nat.Prime k ≤ n², apply gap bound to get Nat.nth Nat.Prime (k+1) ≤ (n+1)² = n² + 2n + 1, then conclude via legendreAt_iff_halfOpen (from iter-2). Building blocks: Nat.nth Prime API (Mathlib.Data.Nat.Prime.Nth, already imported), Nat.sqrt characterizations, nth_prime_succ_le_of_prime_gt at proofs/Proofs/PrimeGapBounds.lean:123. Target file: proofs/Proofs/LegendrePrimeGapEquivalence.lean. Expected: +100-180 LOC, 0 new axioms, 0 sorries.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
