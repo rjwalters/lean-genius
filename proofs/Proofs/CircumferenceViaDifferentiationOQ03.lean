@@ -28,6 +28,8 @@
     * `riemannianVolumeBall_hasDerivWithinAt_fin_two` — main: dV/dr = 2π r
     * `riemannianVolumeBall_hasDerivWithinAt_fin_three` — main: dV/dr = 4π r²
     * `riemannianVolumeBall_eq_nBallVolumeFn` — Bridge 1 (polymorphic)
+    * `riemannianVolumeBall_hasDerivWithinAt` — polymorphic main: dV/dr = A
+      at every `finrank ℝ E ≥ 1`
 
   Status: 0 sorries, 0 axioms.
 
@@ -148,5 +150,45 @@ theorem riemannianVolumeBall_eq_nBallVolumeFn
     congr 1; ring
   rw [h_sqrt_pow]
   ring
+
+/-- **Polymorphic main theorem (S8 ACT, Workaround C')**: in any
+finite-dimensional real inner-product space `E` (with the canonical
+`MeasureSpace` / `BorelSpace` instances), the closed-ball volume
+`s ↦ vol(closedBall p s).toReal` admits a one-sided derivative on
+`Set.Ici 0` at every `r ≥ 0`, equal to the parent OQ-01 polynomial
+`nSphereSurfaceFn (finrank ℝ E) r`.
+
+This is the polymorphic counterpart of `riemannianVolumeBall_hasDerivWithinAt_fin_two`
+and `_fin_three` — instantiating at `E = EuclideanSpace ℝ (Fin 2)` (resp.
+`Fin 3`) recovers `dV/dr = 2π r` (resp. `4π r²`) up to the OQ-01 polynomial
+unfolding (`nSphereSurfaceFn 2 r = 2π · r`, `nSphereSurfaceFn 3 r = 4π · r²`).
+
+Together with `riemannianVolumeBall_eq_nBallVolumeFn` (S7 ACT-S3 polymorphic
+Bridge 1), this completes the **R1 vector-space ACT roadmap** for OQ-03; the
+remaining gap is the genuinely Riemannian R2 path (gated on Mathlib's missing
+co-area formula and `injectivityRadius` infrastructure — see `problem.md`
+§"Three Routes").
+
+Proof: compose the parent two-sided derivative on the polynomial
+(`CircumferenceViaDifferentiationOQ01.nBallVolumeFn_hasDerivAt`) with the
+polymorphic Bridge 1 equation via `HasDerivWithinAt.congr`, exactly as in
+the `_fin_two`/`_fin_three` cases but at the abstract `finrank ℝ E`. The
+one-sided `Set.Ici 0` form is the correct domain because the Bridge 1
+equation `vol.toReal = nBallVolumeFn (finrank ℝ E) s` is only known for
+`s ≥ 0` (off the half-line `Metric.closedBall p s = ∅` and the polynomial
+identity breaks). -/
+theorem riemannianVolumeBall_hasDerivWithinAt
+    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]
+    (p : E) {r : ℝ} (hr : 0 ≤ r) :
+    HasDerivWithinAt (fun s => (volume (Metric.closedBall p s)).toReal)
+      (CircumferenceViaDifferentiationOQ01.nSphereSurfaceFn
+        (Module.finrank ℝ E) r) (Set.Ici 0) r := by
+  have h_poly :=
+    CircumferenceViaDifferentiationOQ01.nBallVolumeFn_hasDerivAt
+      (Module.finrank ℝ E) r
+  refine h_poly.hasDerivWithinAt.congr (fun s hs => ?_) ?_
+  · exact riemannianVolumeBall_eq_nBallVolumeFn p hs
+  · exact riemannianVolumeBall_eq_nBallVolumeFn p hr
 
 end CircumferenceViaDifferentiationOQ03
