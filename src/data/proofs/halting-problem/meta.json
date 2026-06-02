@@ -32,6 +32,10 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
     "proofRepoPath": "Proofs/HaltingProblem.lean",
+    "additionalFiles": [
+      "Proofs/RelativizedHalting.lean",
+      "Proofs/RelativizedHaltingBridge.lean"
+    ],
     "mathlib_version": "4.26.0",
     "lineCount": 172,
     "theoremCount": 5,
@@ -239,7 +243,11 @@
     "opens": [],
     "path": "Proofs/HaltingProblem.lean",
     "sorries": 0,
-    "definitionCount": 3
+    "definitionCount": 3,
+    "additionalFiles": [
+      "Proofs/RelativizedHalting.lean",
+      "Proofs/RelativizedHaltingBridge.lean"
+    ]
   },
   "mainTheorems": [
     {
