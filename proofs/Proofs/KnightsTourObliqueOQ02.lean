@@ -612,4 +612,95 @@ def d4Setoid : Setoid ClosedTour where
   r := d4Equiv
   iseqv := d4Equiv_equivalence
 
+/-!
+## S9: Algebraic laws for `d4Mul` (`Group (Bool × Fin 4)` bearer)
+
+The next milestone is the mod-8 divisibility headline via Mathlib's
+`MulAction.card_orbit_dvd_card_group`. That requires a
+`Group (Bool × Fin 4)` instance with `mul := d4Mul`, `one := (false, 0)`,
+`inv := d4Inv`, plus a `MulAction (Bool × Fin 4) ClosedTour` via
+`applyD4Tour` (`one_smul` from `applyD4Tour_id` (S3); `mul_smul` from
+`applyD4Tour_mul` (S8)).
+
+This S9 ACT ships the five algebraic laws on the `d4Mul`/`d4Inv` carrier
+needed for the `Group` instance: associativity, left/right identity, and
+left/right inverse. The actual `instance : Group (Bool × Fin 4)`
+packaging and the `MulAction` instance are deferred to S10 to keep this
+PR atomic and to isolate any Mathlib v4.26.0 instance-resolution risk
+that the S8 next-action plan flagged.
+
+All five proofs are pure case-bashes on the `Bool` components followed
+by `simp only [d4Mul, ...]` to reduce both sides to `Prod.mk` form,
+`Prod.mk.injEq.mpr ⟨rfl, ?_⟩` to dispatch the bit equality (`rfl` after
+`Bool.not_*` normalization), and `Fin.ext + omega` on the residual
+modular Fin 4 identity.
+-/
+
+/-- **D4 multiplication is associative**. 8-case bash on
+    `(b₃, b₂, b₁) ∈ Bool³`; each case reduces by `simp only [d4Mul,
+    Bool.not_*]` to a modular Fin 4 identity discharged by `omega`. -/
+theorem d4Mul_assoc (g₃ g₂ g₁ : Bool × Fin 4) :
+    d4Mul (d4Mul g₃ g₂) g₁ = d4Mul g₃ (d4Mul g₂ g₁) := by
+  obtain ⟨b₃, k₃⟩ := g₃
+  obtain ⟨b₂, k₂⟩ := g₂
+  obtain ⟨b₁, k₁⟩ := g₁
+  cases b₃ <;> cases b₂ <;> cases b₁ <;>
+    (simp only [d4Mul, Bool.not_false, Bool.not_true]
+     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
+     apply Fin.ext
+     simp only [Fin.val_mk]
+     omega)
+
+/-- **Left identity**: `(false, 0)` is a left unit for `d4Mul`. Single
+    pattern match on the second argument; `(k.val + 0) % 4 = k.val`
+    closes by `omega` using `k.isLt`. -/
+theorem d4Mul_one_left (g : Bool × Fin 4) :
+    d4Mul (false, 0) g = g := by
+  obtain ⟨b, k⟩ := g
+  simp only [d4Mul]
+  refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
+  apply Fin.ext
+  simp only [Fin.val_mk]
+  omega
+
+/-- **Right identity**: `(false, 0)` is a right unit for `d4Mul`.
+    Case-split on the first argument's reflection bit. -/
+theorem d4Mul_one_right (g : Bool × Fin 4) :
+    d4Mul g (false, 0) = g := by
+  obtain ⟨b, k⟩ := g
+  cases b <;>
+    (simp only [d4Mul, Bool.not_false]
+     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
+     apply Fin.ext
+     simp only [Fin.val_mk]
+     omega)
+
+/-- **Left inverse**: `d4Inv g` is a left inverse of `g` under `d4Mul`.
+    Case-split on the reflection bit. For pure rotations
+    (`b = false`): `(k + (4-k) % 4) % 4 = 0`. For reflections
+    (`b = true`): `d4Inv` is the identity (reflections are self-inverse),
+    so the goal reduces to `(k + (4-k)) % 4 = 0`. Both branches close
+    by `omega`. -/
+theorem d4Mul_inv_left (g : Bool × Fin 4) :
+    d4Mul (d4Inv g) g = (false, 0) := by
+  obtain ⟨b, k⟩ := g
+  cases b <;>
+    (simp only [d4Inv, d4Mul, Bool.not_true, ↓reduceIte]
+     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
+     apply Fin.ext
+     simp only [Fin.val_mk]
+     omega)
+
+/-- **Right inverse**: `d4Inv g` is a right inverse of `g` under
+    `d4Mul`. Symmetric to `d4Mul_inv_left`. -/
+theorem d4Mul_inv_right (g : Bool × Fin 4) :
+    d4Mul g (d4Inv g) = (false, 0) := by
+  obtain ⟨b, k⟩ := g
+  cases b <;>
+    (simp only [d4Inv, d4Mul, Bool.not_true, ↓reduceIte]
+     refine Prod.mk.injEq.mpr ⟨rfl, ?_⟩
+     apply Fin.ext
+     simp only [Fin.val_mk]
+     omega)
+
 end KnightsTourOblique

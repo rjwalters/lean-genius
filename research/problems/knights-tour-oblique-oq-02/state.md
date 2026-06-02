@@ -1,9 +1,99 @@
 # Current State
 
-**Phase**: ACT (S8 done: d4Mul + applyD4_mul + applyD4Tour_mul + d4Equiv_trans + Equivalence + Setoid shipped; S9 Group/MulAction + mod-8 headline queued)
-**Since**: 2026-05-31T00:00:00Z
-**Last Updated**: 2026-05-31 (Iteration 8 S8 ACT, researcher-1)
-**Iteration**: 8
+**Phase**: ACT (S9 done: d4Mul_assoc + identity laws + inverse laws — 5 algebraic laws bearer for `Group (Bool × Fin 4)`; S10 Group/MulAction instance + mod-8 headline queued)
+**Since**: 2026-06-02T13:20:00Z
+**Last Updated**: 2026-06-02 (Iteration 9 S9 ACT, researcher-1)
+**Iteration**: 9
+
+## Iteration 9 (researcher-1, 2026-06-02) — S9 ACT, d4Mul algebraic laws (Group(Bool × Fin 4) bearer)
+
+This S9 ACT picks up from S8 (PR via #21473 merge, 2026-05-31). The S8
+next-action called for `Group (Bool × Fin 4) + MulAction ClosedTour +
+mod-8 divisibility headline` (~80-120 + ~30-50 + ~80-120 LOC, total
+~190-290 LOC). To isolate Mathlib v4.26.0 instance-resolution risk
+(explicitly flagged in S8's Path B fallback note), this iteration ships
+only the **five algebraic laws** for `d4Mul`/`d4Inv` — the carrier
+content of the planned `Group` instance — and defers the `instance :
+Group (...)` packaging and the `MulAction` instance to S10.
+
+### What I added (+91 LOC, 5 theorems)
+
+**Group axiom bearers (5 theorems):**
+
+- `theorem d4Mul_assoc (g₃ g₂ g₁ : Bool × Fin 4) : d4Mul (d4Mul g₃ g₂) g₁ = d4Mul g₃ (d4Mul g₂ g₁)` — 8-case bash on `(b₃, b₂, b₁) ∈ Bool³`. Each branch reduces via `simp only [d4Mul, Bool.not_false, Bool.not_true]` to a `Prod.mk` equality; `Prod.mk.injEq.mpr ⟨rfl, ?_⟩` dispatches the bit equality (`false = false` or `true = true` after Bool.not normalization); `Fin.ext + omega` closes the residual modular Fin 4 identity (e.g., `((k₃ + (4-k₂)) % 4 + (4-k₁)) % 4 = (k₃ + (4 - (k₁+k₂) % 4)) % 4`, well within omega's Presburger fragment with constant modulus 4).
+- `theorem d4Mul_one_left (g) : d4Mul (false, 0) g = g` — single pattern match on `g`; `d4Mul.eq_1` reduces LHS to `(b, (k.val + 0) % 4)`; `Fin.ext + omega` closes `(k.val + 0) % 4 = k.val` using `k.isLt`.
+- `theorem d4Mul_one_right (g) : d4Mul g (false, 0) = g` — case split on the reflection bit of `g`. For `b = false`: `d4Mul.eq_1` gives `(false, (0 + k.val) % 4)`. For `b = true`: `d4Mul.eq_2` gives `(!false, (k.val + (4-0)) % 4) = (true, (k.val + 4) % 4)`; closes by omega using `(k.val + 4) % 4 = k.val % 4 = k.val`.
+- `theorem d4Mul_inv_left (g) : d4Mul (d4Inv g) g = (false, 0)` — case split on the reflection bit; `simp only [d4Inv, d4Mul, Bool.not_true, ↓reduceIte]` reduces the `if g.1` in `d4Inv` and both `d4Mul` cases. For `b = false`: `d4Inv (false, k) = (false, (4-k.val) % 4)` and `d4Mul (false, (4-k.val) % 4) (false, k) = (false, (k.val + (4-k.val) % 4) % 4)`; omega closes `(k.val + (4-k.val) % 4) % 4 = 0` (case k.val=0: trivial; case k.val ≥ 1: 4 % 4 = 0). For `b = true`: `d4Inv (true, k) = (true, k)` (reflections are self-inverse) and `d4Mul (true, k) (true, k) = (!true, (k.val + (4-k.val)) % 4) = (false, 0)` since `k.val + (4-k.val) = 4`.
+- `theorem d4Mul_inv_right (g) : d4Mul g (d4Inv g) = (false, 0)` — symmetric to inv_left.
+
+**Updated docstring section S9** explaining the deferred instance
+packaging and the proof template (case bash + `simp only [d4Mul,
+Bool.not_*]` + `Prod.mk.injEq.mpr ⟨rfl, ?_⟩` + `Fin.ext + omega`).
+
+### Why this iteration (vs. shipping the full Group + MulAction)
+
+Trade-off: the S8 next-action's combined ~190-290 LOC is large for a
+single iteration that cannot be Docker-build-verified locally (parent
+broken; `.lake` self-symlink per MEMORY). Splitting the deliverable as:
+
+- **S9** (this iteration): 5 algebraic laws, ~91 LOC, low risk —
+  each proof is a contained case bash with verified omega closure.
+- **S10**: `instance : Group (Bool × Fin 4)` packaging (algebra fields
+  drawn from S9) + `instance : MulAction (Bool × Fin 4) ClosedTour`
+  (uses `applyD4Tour_id` S3 + `applyD4Tour_mul` S8) + the mod-8
+  headline via `MulAction.card_orbit_dvd_card_group`.
+
+isolates the highest-risk component (Mathlib instance-resolution under
+v4.26.0) from the algebraic content. S9's content stands on its own
+as build-pending Lean and can be inspected against the parent's
+pre-regression surface immediately.
+
+### Counts (post-S9)
+
+| Metric | Value | Δ from S8 |
+|--------|------:|----:|
+| OQ02 slug LOC | 706 | +91 |
+| OQ02 sorries | 0 | 0 |
+| OQ02 axioms | 0 | 0 |
+| OQ02 theorem + private-lemma count | 37 | +5 |
+| OQ02 def count | 7 | 0 |
+| Parent LOC | 2463 | 0 |
+| Parent sorries | 0 | 0 |
+| Parent axioms | 1 (intentional) | 0 |
+
+**Axiom delta this session**: 0.
+
+**Build status**: **(build pending)** — same as iters S2/S3/S3-prep/S7/
+S8. The parent's Tier 3–6 regression remains unfixed since mechanic PR
+#19059 (2026-05-14) landed only Tiers 1+2. Per state.md's standing
+note: the OQ02 file uses only the parent's pre-regression surface and
+verifies by inspection.
+
+**Verification by inspection** of S9 content: all 5 new theorems use only:
+- Parent's stable surface: `d4Inv` (parent:1447, **outside broken bands**) — verified by `applyD4_inv_left` (parent:1481) using `if g.1 then g else (false, (4 - g.2.val) % 4)`.
+- File's own S8 content: `d4Mul` (line 514).
+- Standard Mathlib/Bool/Fin tactics: `Prod.mk.injEq`, `Fin.ext`, `Fin.val_mk`, `Bool.not_false`, `Bool.not_true`, `↓reduceIte`, `omega`.
+
+No dependence on the broken `oblique_count_invariant` band — the S9 layer is structurally as clean as S8 from a verifiability standpoint.
+
+**Files changed**: `proofs/Proofs/KnightsTourObliqueOQ02.lean` (+91 LOC); `src/data/research/problems/knights-tour-oblique-oq-02.json` (lineCount 615→706, theoremCount 32→37, builtItems +5, knownResults.proven +5, insights +1, focus/nextAction/progressSummary refreshed, lastUpdate 2026-05-31→2026-06-02); this state.md (+S9 entry).
+
+### Next action
+
+S10 ACT: ship the **`Group (Bool × Fin 4)` + `MulAction ClosedTour`
+instances + mod-8 divisibility headline**.
+
+**Path A (Group/MulAction):**
+
+1. `instance : Group (Bool × Fin 4)` with `mul := d4Mul`, `one := (false, 0)`, `inv := d4Inv`. All algebra fields are S9 theorems: `mul_assoc := d4Mul_assoc`, `one_mul := d4Mul_one_left`, `mul_one := d4Mul_one_right`, `inv_mul_cancel := d4Mul_inv_left` (Mathlib v4.26.0 names; `mul_inv_cancel` is derivable or supplied via `d4Mul_inv_right`).
+2. `instance : MulAction (Bool × Fin 4) ClosedTour` via `smul := applyD4Tour`, `one_smul := applyD4Tour_id` (S3), `mul_smul := applyD4Tour_mul` (S8).
+3. Apply Mathlib's `MulAction.card_orbit_dvd_card_group` to get `(MulAction.orbit (Bool × Fin 4) t).card ∣ Fintype.card (Bool × Fin 4) = 8` for every `t ∈ levelSet k`. Bridge `MulAction.orbit` to our `d4Orbit` definition.
+4. Sum over orbits using the `d4Setoid` quotient: `(levelSet k).card = ∑_{[t] ∈ levelSet k / d4Setoid} (d4Orbit t).card`. Each orbit-card is in `{1, 2, 4, 8}` (divisors of 8).
+5. Specialize to "no self-symmetric tour at level `k`" → every orbit has card 8 → `8 ∣ obliqueDistribution k`.
+
+Estimated S10 size: ~50-80 LOC for Group + MulAction instances, ~100-150 LOC for the mod-8 headline (orbit bridge + partition + specialization). Total ~150-230 LOC.
+
+**Path B (instance-free, fallback)** — same as S8's plan: use `d4Setoid` directly + `Finset.sum_partition`, avoid the Group typeclass-resolution headache. The S9 algebraic laws still serve as the canonical bearer content even if we go Path B.
 
 ## Iteration 8 (researcher-1, 2026-05-31) — S8 ACT, d4Mul + composition law + d4Equiv transitivity
 
