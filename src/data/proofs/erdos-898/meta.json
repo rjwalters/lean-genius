@@ -47,9 +47,9 @@
       "Formalized generalizations to tetrahedra and regular n-gons",
       "Axiomatized Viviani's theorem and Weitzenbock inequality as related results"
     ],
-    "axiomCount": 11,
+    "axiomCount": 22,
     "lineCount": 251,
-    "assumptions": "11 axiom(s) and 8 sorries(s). See the Lean source for details.",
+    "assumptions": "22 axiom(s) chain-aggregate across the registered chain (`Proofs/Erdos898Problem.lean` main + `Proofs/Stubs/Erdos898Problem.lean` is a byte-identical duplicate exposed for Aristotle proof search; raw axiom-declaration count without name-deduplication per the auditor's heuristic). Main file contributes 11 axioms: erdos_mordell_inequality (the main inequality PA + PB + PC ≥ 2(PX + PY + PZ)), equilateral_centers_coincide, erdos_mordell_equality, weighted_erdos_mordell, mordell_proof, barrow_proof, kazarinoff_proof, bankoff_proof (four independent classical proofs), erdos_mordell_polygon (n-gon generalization), viviani_theorem, weitzenbock_inequality. The `Proofs/Erdos898Aristotle.lean` and `Proofs/Stubs/Erdos898Aristotle.lean` companion files contribute 0 axioms (only routine distance-fact sorries for proof search). Plus 8 sorries in the main file (definition sorries for perpendicularFoot, isInteriorPoint, etc.).",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
     "definitionCount": 17,
