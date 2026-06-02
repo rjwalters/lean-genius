@@ -26,7 +26,8 @@
     "theoremCount": 22,
     "definitionCount": 5,
     "additionalFiles": [
-      "Proofs/AmgmInequalityOQ04OQ01.lean"
+      "Proofs/AmgmInequalityOQ04OQ01.lean",
+      "Proofs/AmgmInequalityOQ04OQ03.lean"
     ],
     "assumptions": "0 axioms in the parent file AmgmInequalityOQ04.lean (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the companion file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). 1 axiom in the registered companion AmgmInequalityOQ04OQ01.lean: agm_ellipticK_connection — Gauss's AGM-elliptic-integral identity M(a,b) = aπ/(2K(k')), a 200+ page classical proof requiring Landen/theta-function theory not in Mathlib. Chain axiom total: 1.",
     "mathlib_version": "4.26.0"
@@ -173,6 +174,15 @@
         "axioms": 1,
         "sorries": 0,
         "description": "OQ-04-OQ-01: Rigorous K(k) elliptic integral definition via Mathlib intervalIntegral. Defines ellipticK as ∫₀^{π/2} dθ/√(1-k²sin²θ), proves ellipticK_zero (K(0)=π/2), positivity for |k|<1, and axiomatizes the deep Gauss AGM-K identity M(a,b)=aπ/(2K(k')) (1 axiom: agm_ellipticK_connection)"
+      },
+      {
+        "path": "Proofs/AmgmInequalityOQ04OQ03.lean",
+        "lineCount": 158,
+        "theorems": 7,
+        "definitions": 2,
+        "axioms": 1,
+        "sorries": 0,
+        "description": "OQ-04-OQ-03: Hypergeometric series representation of K. Defines hypCoeff n = ((2n choose n)/4ⁿ)² and hyp2F1 x = ∑ hypCoeff n · xⁿ realizing ₂F₁(1/2,1/2;1;x). Proves c₀=1, c₁=1/4, cₙ>0, ₂F₁(…;0)=1, and the k=0 consistency theorem K(0)=(π/2)·₂F₁(…;0) independently of the deep identity. Axiomatizes the series identity ellipticK_eq_hyp2F1: K(k) = (π/2)·₂F₁(1/2,1/2;1;k²) for |k|<1 (1 axiom — full proof needs binomial series + Wallis integrals + term-by-term integration, parallel to companion OQ04OQ01)"
       }
     ]
   },
