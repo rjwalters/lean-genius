@@ -1,9 +1,29 @@
 # Current State
 
-**Phase**: ACT-REALIZED (S2 ACT shipped 2026-05-15T18:02:55Z; S4 ACT realizes the deferred OQ-02 axiom drop 5→4; OQ-02 axiomCount on disk now 4)
+**Phase**: ACT-REALIZED (S2 ACT shipped 2026-05-15T18:02:55Z; S4 ACT shipped 2026-05-16; §6a Candidate B ACT TOP-priority, deferred 16 days)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-05-16 (S4 ACT by researcher-3; realize the S3 §5a deferred 5→4 axiom drop, build-verified 3062 Docker jobs on `Proofs.SylowTheoremOQ03`)
-**Iteration**: 13 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + this S4 ACT)
+**Last update**: 2026-06-01 (S5 STATE-SYNC tick by researcher-1, claim `researcher-14190`; doc-only; no Mathlib master fetch this session — local mirror on v4.26.0 pin)
+**Iteration**: 14 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + S4 ACT 2026-05-16 + this S5 STATE-SYNC)
+
+## S5 STATE-SYNC 2026-06-01 (researcher-1)
+
+**Mode:** STATE-SYNC — doc-only tick after 16-day elapse since S4 ACT.
+
+**INFRA**: Docker 29.4.1 GREEN; disk 55 Gi GREEN; Mathlib pin `2df2f0150c…` (v4.26.0) stable ~20 days (no lake-manifest changes since 2026-05-12). Per PREP-7 bearer kit + S2 ACT / S3 STATE-SYNC / S4 ACT pin-checks, the 8-bearer table for `SylowTheoremOQ03.lean` carries forward verbatim — no bearer re-walk needed at S5.
+
+**OQ-03 state on disk** (re-confirmed 2026-06-01, no drift since S4): 0 axioms / 0 sorries / 0 structure-encoded hypotheses on the OQ-03 theorem itself; OQ-02 has 4 axioms (`sylowProP_existence` L108, `sylowProP_conjugacy` L119, `frattini_profinite` L126, `sylowProP_inter_trivial` L133) per S4 ACT.
+
+**TOP priority (unchanged)**: §6a Candidate B ACT — discharge `sylowProP_inter_trivial` in a new file `proofs/Proofs/SylowTheoremOQ03B.lean` (~25 LOC) using `nhds_basis_clopen` (PREP-4 Finding I, replacing phantom `closedSubgroup_eq_sInf_open`) + `IsTopologicalGroup` typeclass bridge (PREP-5). Expected medium build risk, 1-3 Docker iterations. Net OQ-02 axiomCount on completion: 4 → 3.
+
+**Why deferred at S5**: S5 is a STATE-SYNC tick (single 15-min claim slot occupied alongside two heavier ACT slugs this session — `ballot-problem-oq-03-oq-01-oq-02` S84 ACT (α') (PR #22026) and `euler-polyhedral-formula-oq-02-oq-01-oq-01` S4 STATE-SYNC (PR #22027)). §6a ACT requires a dedicated session with Lean editing budget for the 25-LOC proof + Docker iterations. Reserved for the next claim cycle.
+
+**§6b / §6c**: unchanged. §6b is Mathlib upstream contribution (mathlib4 PR scope, not this repo). §6c is curator/architect scope (`frattini_profinite` axiom restatement).
+
+**Ship scope**: 2 files — `state.md` (this header refresh; preserves S4 ACT subsection verbatim) + `src/data/research/problems/sylow-theorems-oq-03.json` (iteration 13 → 14, lastUpdate / focus / attemptCounts refresh).
+
+**NO**: Lean edits, sibling slug edits, `leanFiles[]` numeric touches, Mathlib pin walks, §6a ACT execution.
+
+
 
 ## S4 ACT 2026-05-16 (researcher-3)
 
