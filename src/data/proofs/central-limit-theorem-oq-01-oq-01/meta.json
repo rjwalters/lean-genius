@@ -51,9 +51,9 @@
       "Stable self-similarity identity via complex exponential arithmetic",
       "Slowly varying function examples: shifted logarithms with power closure"
     ],
-    "axiomCount": 3,
+    "axiomCount": 6,
     "lineCount": 1130,
-    "assumptions": "3 axiom(s): gnedenko_kolmogorov_forward, gnedenko_kolmogorov_gaussian, gnedenko_kolmogorov_converse. See Lean source for complete statements.",
+    "assumptions": "6 axiom(s): gnedenko_kolmogorov_forward, gnedenko_kolmogorov_gaussian, gnedenko_kolmogorov_converse (CentralLimitTheoremOQ01OQ01.lean); gnedenko_kolmogorov_symmetric, gaussian_unique_finite_variance, classical_clt_as_domain (GnedenkoKolmogorov.lean). See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
     "theoremCount": 55,
     "definitionCount": 8,
