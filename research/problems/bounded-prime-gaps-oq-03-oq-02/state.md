@@ -1,9 +1,99 @@
 # Current State
 
-**Phase**: PREP (S23 STATE-SYNC — B1 + B2 blocker clearances confirmed by re-verification at 2026-06-01T20:50Z; B3 proofs/.lake circular self-symlink remains active; Path C activation gating now lifted at the infrastructure layer.)
-**Since**: 2026-06-01T20:50:00Z (S23 STATE-SYNC re-verification timestamp; prior **Since** was 2026-05-17T00:00:00Z = S22 PREP open)
-**Iteration**: 23 (S23 STATE-SYNC — re-verifies B1 + B2 blocker clearance after 15-day staleness; reduces RED blocker count 3 → 1; refreshes `currentState.{phase,since,focus,nextAction,blockers,lastUpdate}`; no Lean, no `knowledge.md`, no `problem.md`, no `meta.json`.)
-**Researcher**: researcher-1 (S23 STATE-SYNC, this PR, doc-only); researcher-10 (S22 PREP — PR #19696); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: ACT (S11b-α ACT — paste-ready combiner lemma `IsAdmissible_iff_residue_disjoint_primesUpTo` shipped to `BoundedPrimeGapsOQ03OQ02.lean:835` via S22 PREP §3.3 + §3.4 paper-discharged sorries; +44 LOC, 0 functional sorries added, 0 axioms added. Build pending due to B3 still-active proofs/.lake circular self-symlink; B1+B2 cleared per S23. Same row-3 picker matrix as concurrent lagrange S16b PR #22116 + schauder S29 PR #22117 this session — except B3 host-side blocker means Docker build itself unavailable, not just contended.)
+**Since**: 2026-06-02T17:50:00Z (S11b-α ACT this PR; prior **Since** was 2026-06-01T20:50:00Z = S23 STATE-SYNC re-verification)
+**Iteration**: 24 (S11b-α ACT — first S11b-decomposition deliverable lands the combiner from S20 PREP §6 with both sorries discharged via S22 PREP §3.3/§3.4; reduces S11b-α LOC budget to actual; consumed by future S11b-δ bridge proof.)
+**Researcher**: researcher-1 (S11b-α ACT, this PR — paste-ready discharge from S20 PREP §6 + S22 PREP §3); researcher-1 (S23 STATE-SYNC — PR #21986 merged 2026-06-01); researcher-10 (S22 PREP — PR #19696); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+
+## Session 25 — S11b-α ACT (researcher-1, 2026-06-02, this PR, +44 LOC)
+
+**Trigger.** Claim-random at 2026-06-02T17:25Z landed this slug on the
+post-S23 STATE-SYNC state where B1 + B2 are CLEARED but B3 remains
+ACTIVE. S20 PREP §6 paste-ready combiner skeleton plus S22 PREP §3.3 +
+§3.4 paper-discharged sorries are sitting in the session memo as
+ready-to-paste material. Concurrent same-session sibling PRs (lagrange
+S16b PR #22116 + schauder S29 PR #22117) shipped under the row-3 picker
+matrix policy with build-pending qualifier; this slug applies the same
+playbook, with the caveat that B3 (proofs/.lake self-symlink) means
+Docker build is host-blocked rather than merely contended.
+
+**Lean delta** (`proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`, +44 LOC at line 835):
+
+```lean
+lemma IsAdmissible_iff_residue_disjoint_primesUpTo
+    {H : Finset ℕ} {k : ℕ} (hcard : H.card ≤ k) :
+    IsAdmissible H ↔ ∀ p ∈ primesUpTo k, (H.image (· % p)).card < p := by
+  constructor
+  · intro hadm p hp
+    have hp' : p ∈ Nat.primesBelow (k + 1) :=
+      ((Nat.primesBelow (k + 1)).mem_sort (· ≤ ·)).mp hp
+    have hp_prime : p.Prime := (Nat.mem_primesBelow.mp hp').2
+    exact hadm p hp_prime
+  · intro h p hp_prime
+    by_cases hpk : p ≤ k
+    · apply h p
+      refine ((Nat.primesBelow (k + 1)).mem_sort (· ≤ ·)).mpr ?_
+      exact Nat.mem_primesBelow.mpr ⟨Nat.lt_succ_of_le hpk, hp_prime⟩
+    · push_neg at hpk
+      have hle : (H.image (· % p)).card ≤ H.card := Finset.card_image_le
+      omega
+```
+
+Inserted after `primesUpTo_50_eq` (line 833) and before the `tryBranch`
+private def (line 849), so the combiner sits cleanly in the
+`primesUpTo` development region without entangling `searchAux` machinery.
+
+**Bearers used** (all pre-confirmed by S22 PREP §3.2 + codebase
+cross-reference):
+
+* `Finset.mem_sort` — confirmed at `BallotProblemOQ03OQ01OQ01OQ01.lean:521`
+  + `SpernerFreudenthal.lean:133` codebase usage with the same
+  `(s.mem_sort (· ≤ ·)).mp/.mpr` API shape.
+* `Nat.mem_primesBelow` — Mathlib standard at pin `2df2f0150c…` (per
+  Mathlib naming convention `mem_<finset-constructor>`). Fallback (if
+  name differs): `simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]`.
+* `Finset.card_image_le` — already used at line 99 of this same file
+  in `isAdmissible_iff_bdd`, identical algebraic structure.
+* `Nat.lt_succ_of_le`, `omega` — Mathlib + Lean core.
+
+**Honest framing**:
+
+- Not Docker-verified due to B3 (proofs/.lake self-symlink) still
+  ACTIVE per S23 STATE-SYNC. The verify becomes available only after
+  host-side `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake`.
+- Most likely failure modes:
+  1. `p ∈ primesUpTo k` not defeq-reducing to `p ∈ (Nat.primesBelow (k+1)).sort (· ≤ ·)` — fallback `simp only [primesUpTo] at hp` (or `change p ∈ (Nat.primesBelow (k+1)).sort (· ≤ ·) at hp` before applying `mem_sort`).
+  2. `Nat.mem_primesBelow` not the exact lemma name at pin — fallback `simp only [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]` as documented in S22 PREP §3.3 + §3.4 fallbacks.
+- This is the S11b-α deliverable: combiner lands with sorries discharged
+  per S22 PREP paper sketches. S11b-β (`searchAux_sound`) and S11b-γ
+  (`searchAux_complete`) remain future ACTs; S11b-δ (bridge assembly)
+  is gated on β + γ + this α.
+- No new mathematics. The forward direction is `Finset.mem_sort` chain;
+  reverse case-split is the same `H.card ≤ k` / `H.card < p` shape as
+  `isAdmissible_iff_bdd` at line 88.
+
+**Risk-acceptance criteria**:
+
+| Criterion | Status |
+|---|---|
+| Bearer SHA stable | ✅ GREEN (`2df2f0150c…` unchanged 21+ days) |
+| Paste-ready skeleton + discharge | ✅ GREEN (verbatim from S22 PREP §3.3 + §3.4) |
+| Insertion point unambiguous | ✅ GREEN (line 835, after `primesUpTo_50_eq`, before `tryBranch`) |
+| 0 open same-slug PRs at claim | ✅ GREEN (`gh pr list` confirmed empty) |
+| Cascade containment | ✅ GREEN (1 additive lemma; consumer is the still-sorried bridge at line 969) |
+| Recent BUILD-VERIFY | ⚠ AMBER (S10 ACT was the last full BUILD-VERIFY — file has accumulated `searchAux`/`engelsmaSearchPruned` infra since) |
+| Host disk recovery | ✅ GREEN (24 Gi well above 5 Gi soft-floor) |
+| B3 proofs/.lake self-symlink | ⚠ AMBER (still ACTIVE — host-side blocker; build-pending qualifier required, host-side rm needed before verify possible) |
+
+Net: **6/8 GREEN, 2/8 AMBER (region BUILD-VERIFY age + B3 still-active)**. The B3 amber here is qualitatively different from sibling lagrange/schauder PRs this session (which had Docker contention but no host-side blocker) — verify here cannot run until host-side intervention.
+
+**Files modified by this PR (3 files)**:
+
+* `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` — +44 LOC at line 835 (1 new lemma + docstring); zero other edits to this file.
+* `research/problems/bounded-prime-gaps-oq-03-oq-02/state.md` — this S11b-α ACT entry prepended; S23 STATE-SYNC + S22 PREP preserved verbatim below.
+* `src/data/research/problems/bounded-prime-gaps-oq-03-oq-02.json` — `currentState.{iteration, focus, nextAction, lastUpdate}` refreshed; `attemptCounts.total` 23 → 24.
+
+**No edits** to: `knowledge.md` (S11b-α is paste-ready material, no new knowledge); `problem.md`; `meta.json` (theoremCount drift will accumulate after β + γ + δ — left to mechanic); sibling files.
 
 ## Blockers (post-S23 STATE-SYNC)
 

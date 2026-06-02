@@ -832,6 +832,50 @@ theorem primesUpTo_50_eq :
       [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] := by
   native_decide
 
+/-- **S11b-α combiner (residue-pruned admissibility equivalence):**
+
+    Translates `IsAdmissible H` for `H.card ≤ k` into a finite check over
+    the prime list `primesUpTo k = (Nat.primesBelow (k + 1)).sort (· ≤ ·)`.
+
+    The forward direction is restriction: an admissible `H` satisfies the
+    image-cardinality bound at every prime, so in particular at every
+    `p ∈ primesUpTo k`. The reverse direction splits on `p ≤ k` vs `p > k`;
+    the `p ≤ k` case appeals to the hypothesis after re-asserting
+    `p ∈ primesUpTo k`, and the `p > k` case forces the bound via
+    `H.card ≤ k < p` plus `Finset.card_image_le`.
+
+    Forward extracts `p.Prime` from `primesUpTo` membership via
+    `Finset.mem_sort` + `Nat.mem_primesBelow`; reverse constructs membership
+    symmetrically. This is the S11b-α deliverable of the S11b decomposition
+    (S20 PREP §6 + S22 PREP §3.3 + §3.4 paper discharge). It is consumed by
+    the bridge proof `engelsmaSearchPruned_eq_false_iff` below at line 922
+    (S11b-δ ACT, currently sorry-stub). -/
+lemma IsAdmissible_iff_residue_disjoint_primesUpTo
+    {H : Finset ℕ} {k : ℕ} (hcard : H.card ≤ k) :
+    IsAdmissible H ↔ ∀ p ∈ primesUpTo k, (H.image (· % p)).card < p := by
+  constructor
+  · -- Forward: restrict the admissibility ∀-quantifier to `primesUpTo k`.
+    intro hadm p hp
+    -- Extract `p.Prime` from `p ∈ primesUpTo k` via the
+    -- `Finset.mem_sort` + `Nat.mem_primesBelow` chain (S22 PREP §3.3).
+    have hp' : p ∈ Nat.primesBelow (k + 1) :=
+      ((Nat.primesBelow (k + 1)).mem_sort (· ≤ ·)).mp hp
+    have hp_prime : p.Prime := (Nat.mem_primesBelow.mp hp').2
+    exact hadm p hp_prime
+  · -- Reverse: case-split on whether `p ≤ k` or `p > k`.
+    intro h p hp_prime
+    by_cases hpk : p ≤ k
+    · -- `p ≤ k` case: re-assert `p ∈ primesUpTo k` and apply the hypothesis
+      -- (S22 PREP §3.4).
+      apply h p
+      refine ((Nat.primesBelow (k + 1)).mem_sort (· ≤ ·)).mpr ?_
+      exact Nat.mem_primesBelow.mpr ⟨Nat.lt_succ_of_le hpk, hp_prime⟩
+    · -- `p > k` case: cardinality forces the bound via H.card ≤ k < p
+      -- + Finset.card_image_le.
+      push_neg at hpk
+      have hle : (H.image (· % p)).card ≤ H.card := Finset.card_image_le
+      omega
+
 /-- Single-branch step for the pruned admissibility search.
 
 Given a prime `p`, a candidate residue `r ∈ [0, p)`, the remaining
