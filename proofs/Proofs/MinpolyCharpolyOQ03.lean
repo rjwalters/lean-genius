@@ -481,4 +481,144 @@ theorem prodFactors_natDegree_le_lastFactor_natDegree_mul
   -- (3) rewrite map.length = original length.
   rwa [List.length_map] at h_sum
 
+
+/-! ## Part 7: S13 `firstFactor`-side mirror — membership, monicness,
+       degree minimality, and length×first lower bound on
+       `prodFactors.natDegree`.
+
+This is the symmetric counterpart to Parts 5 and 6: the four
+`lastFactor`-side helpers established the natDegree-maximum direction
+on `InvariantFactorChain F`; this Part 7 adds the natDegree-minimum
+direction. The divisibility chain `p₁ ∣ p₂ ∣ ⋯ ∣ pₖ` is
+bi-directional in terms of natDegree (via `chain_natDegree_le`), so
+both endpoints' structural facts are accessible without further
+mathematical input.
+
+Together with Part 6's
+`prodFactors_natDegree_le_lastFactor_natDegree_mul`, the new
+`prodFactors_natDegree_ge_firstFactor_natDegree_mul` bookend yields
+the matrix-level sandwich
+
+    k · deg(firstFactor M) ≤ deg(prodFactors) ≤ k · deg(lastFactor M)
+
+once the chain is instantiated by a matrix `M` (so that
+`prodFactors = charpoly M`, `lastFactor = minpoly M`).
+
+Design memo: `sessions/2026-05-12-s06-prep-firstfactor-mirror-design.md`
+(PR #18425). All four mirror lemmas follow the §3 sketches verbatim;
+the `firstFactor_eq_getElem_zero` bridging lemma uses the design's
+Plan-B `rcases` form (§4) to remain independent of any pinned Mathlib
+`List.head?`/`List.head` API names. -/
+
+/-- The **first factor** `p₁` of the chain — the structural counterpart
+    of the divisibility-chain *minimum* (`p₁ ∣ p_i` for every later
+    factor, so `deg p₁ ≤ deg p_i`). Falls back to `1` for the empty
+    chain, exactly mirroring the `lastFactor` `getD 1` convention so
+    that `Monic`/`natDegree`-style facts remain hypothesis-free on the
+    empty-chain edge case. -/
+noncomputable def InvariantFactorChain.firstFactor
+    (c : InvariantFactorChain F) : F[X] :=
+  c.factors.head?.getD 1
+
+/-- The `firstFactor` of a nonempty chain coincides with the indexed
+    access at position 0. Internal-use lemma bridging the
+    `head?.getD 1` definition with the `Fin`-indexed access used by
+    `chain_natDegree_le`. Mirror of `lastFactor_eq_getElem_pred`.
+
+    Uses the design memo's Plan-B `rcases` form to avoid depending on
+    pinned Mathlib `List.head?_eq_head` / `List.head_eq_getElem` API
+    names (which may drift). The `firstFactor`-side cons-case reduces
+    to `rfl` since `(a :: t).head?.getD 1 = a` and `(a :: t)[0] = a`
+    are both definitional. -/
+private theorem firstFactor_eq_getElem_zero
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.firstFactor = c.factors[0]'(length_pos_of_ne_nil h) := by
+  rcases hl : c.factors with _ | ⟨a, t⟩
+  · exact absurd hl h
+  · rfl
+
+/-- The first factor of a nonempty invariant-factor chain is a member
+    of the chain. Mirror of `lastFactor_mem`. -/
+theorem firstFactor_mem (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.firstFactor ∈ c.factors := by
+  rw [firstFactor_eq_getElem_zero c h]
+  exact List.getElem_mem _
+
+/-- The first factor of a nonempty invariant-factor chain is monic.
+    Mirror of `lastFactor_monic`. -/
+theorem firstFactor_monic
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.firstFactor.Monic :=
+  c.monic _ (firstFactor_mem c h)
+
+/-- Every invariant factor has natDegree at least that of the first
+    factor. This is the abstract counterpart of the RCF fact that the
+    first invariant factor `p₁` (a divisor of every later factor) has
+    the minimal degree among the invariant factors. One-line
+    application of `chain_natDegree_le` with `i = 0`. Mirror of
+    `lastFactor_natDegree_maximal`. -/
+theorem firstFactor_natDegree_minimal
+    (c : InvariantFactorChain F) (h : c.factors ≠ [])
+    {p : F[X]} (hp : p ∈ c.factors) :
+    c.firstFactor.natDegree ≤ p.natDegree := by
+  rw [List.mem_iff_getElem] at hp
+  obtain ⟨j, hj, hjp⟩ := hp
+  have hpos : 0 < c.factors.length := length_pos_of_ne_nil h
+  let i  : Fin c.factors.length := ⟨0, hpos⟩
+  let j' : Fin c.factors.length := ⟨j, hj⟩
+  have hij : i.val ≤ j'.val := Nat.zero_le _
+  have hdeg : c.factors[i].natDegree ≤ c.factors[j'].natDegree :=
+    chain_natDegree_le c hij
+  rw [firstFactor_eq_getElem_zero c h, ← hjp]
+  exact hdeg
+
+/-- Auxiliary `Nat`-arithmetic helper: a sum over a list of naturals
+    is at least the length times any common lower bound. Pure `Nat`
+    induction; no `Polynomial` content. Mirror of
+    `nat_list_sum_le_length_mul_of_all_le`. -/
+private theorem nat_list_sum_ge_length_mul_of_all_ge
+    (l : List ℕ) (m : ℕ) (h : ∀ d ∈ l, m ≤ d) :
+    l.length * m ≤ l.sum := by
+  induction l with
+  | nil => simp
+  | cons a tail ih =>
+    have h_a : m ≤ a := h a List.mem_cons_self
+    have h_tail : ∀ d ∈ tail, m ≤ d :=
+      fun d hd => h d (List.mem_cons_of_mem _ hd)
+    have h_ih : tail.length * m ≤ tail.sum := ih h_tail
+    -- Goal: (a :: tail).length * m ≤ (a :: tail).sum
+    --     = (tail.length + 1) * m ≤ a + tail.sum
+    simp only [List.sum_cons, List.length_cons]
+    calc (tail.length + 1) * m
+        = m + tail.length * m := by ring
+      _ ≤ a + tail.sum := Nat.add_le_add h_a h_ih
+
+/-- The natDegree of `prodFactors` is at least `factors.length` times
+    the natDegree of `firstFactor`. Composes S3's `prodFactors_natDegree`
+    (sum-of-degrees identity) with S13's `firstFactor_natDegree_minimal`
+    (degree minimality among factors).
+
+    Abstract counterpart of the matrix-level bound
+    `k · deg(firstFactor M) ≤ deg(charpoly M)` (where `k` is the number
+    of invariant factors and `firstFactor M` is the leading invariant
+    divisor), the dual of S5's
+    `prodFactors_natDegree_le_lastFactor_natDegree_mul`. Together with
+    S5 gives a two-sided sandwich on `prodFactors.natDegree`. -/
+theorem prodFactors_natDegree_ge_firstFactor_natDegree_mul
+    (c : InvariantFactorChain F) (h : c.factors ≠ []) :
+    c.factors.length * c.firstFactor.natDegree ≤ c.prodFactors.natDegree := by
+  rw [prodFactors_natDegree]
+  -- Goal: factors.length * firstFactor.natDegree ≤ (factors.map natDegree).sum
+  have h_bound : ∀ d ∈ c.factors.map (·.natDegree),
+      c.firstFactor.natDegree ≤ d := by
+    intro d hd
+    rw [List.mem_map] at hd
+    obtain ⟨p, hp, rfl⟩ := hd
+    exact firstFactor_natDegree_minimal c h hp
+  have h_sum :
+      (c.factors.map (·.natDegree)).length * c.firstFactor.natDegree
+        ≤ (c.factors.map (·.natDegree)).sum :=
+    nat_list_sum_ge_length_mul_of_all_ge _ _ h_bound
+  rwa [List.length_map] at h_sum
+
 end MinpolyCharpolyOQ03

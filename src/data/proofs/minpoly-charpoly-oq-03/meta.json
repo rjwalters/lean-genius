@@ -22,17 +22,18 @@
     "badge": "research",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 484,
-    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT). The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`.",
+    "lineCount": 624,
+    "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT). The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`. S13 (this iteration) adds Part 7 — the firstFactor-side mirror to Parts 5–6 — yielding the structural sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 16,
-    "definitionCount": 3,
+    "theoremCount": 22,
+    "definitionCount": 4,
     "originalContributions": [
       "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
       "InvariantFactorChain.prodFactors and .lastFactor: the two target values (charpoly, minpoly) packaged with the data",
       "rational_canonical_form_exists: statement of Frobenius's RCF existence theorem (sorry-guarded; weak form omitting similarity and minpoly equality)",
-      "Sub-OQ decomposition (OQ-03-OQ-01 ... OQ-03-OQ-04): four-step roadmap totaling ~900 lines for the full RCF formalization, routed via Mathlib's `Module.equiv_directSum_of_isTorsion`"
+      "Sub-OQ decomposition (OQ-03-OQ-01 ... OQ-03-OQ-04): four-step roadmap totaling ~900 lines for the full RCF formalization, routed via Mathlib's `Module.equiv_directSum_of_isTorsion`",
+      "InvariantFactorChain.firstFactor + firstFactor-side mirror lemmas (membership, monicness, natDegree-minimality, length-times-first lower bound on prodFactors.natDegree) — the symmetric counterpart to the lastFactor-side helpers, yielding a two-sided sandwich on prodFactors.natDegree"
     ],
     "mathlibDependencies": [
       {

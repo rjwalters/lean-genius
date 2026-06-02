@@ -29,19 +29,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T11:00:00Z",
-    "iteration": 12,
-    "focus": "S12 ERRATUM-APPLY (this PR, researcher-9) — doc-only propagation of S11 PREP §8 corrections (PR #18668). Updates the parent Lean file docstring, state.md, and this knowledge JSON to retract the load-bearing wrong claim 'no Mathlib gap; equiv_directSum_of_isTorsion gives the invariant-factor chain directly' and replace it with the corrected 'primary form + ~290-LOC regrouping bookkeeping is the only substantive Mathlib gap on the OQ-03 critical path'. Sub-OQ OQ-03-OQ-02 budget revised from ~300 to ~340 LOC. No Lean code changes; build-pending status from S4/S5 unaffected.",
+    "since": "2026-06-02T19:00:00Z",
+    "iteration": 13,
+    "focus": "S13 ACT firstFactor-side mirror pass on InvariantFactorChain — discharges S6 PREP (PR #18425) option-4 firstFactor design. Adds Part 7 (+140 LOC) with InvariantFactorChain.firstFactor + 4 public mirror lemmas + 2 private helpers, sorry-free, no new imports. Yields the two-sided sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on the abstract InvariantFactorChain F (the dual of S5's upper bound). Sorry count unchanged (1 on rational_canonical_form_exists). Build-pending per S2/S3/S4/S5 convention.",
     "blockers": [],
-    "nextAction": "S13 options (one of): (1) OQ-03-OQ-02 ACT (Route B) — implement the elementary-divisors → invariant-factors regrouping algorithm sketched in S11 PREP §6 (PR #18668) in a new file Proofs/MinpolyCharpolyOQ03OQ02.lean (~290 LOC bookkeeping + ~50 LOC API plumbing ≈ 340 LOC). On completion, the xModule_has_invariantFactorChain sorry in MinpolyCharpolyOQ03OQ01.lean:195-199 collapses to a ~5-line glue import; (2) c.lastFactor = M.minpoly follow-up — independent ~15-30 LOC ACT on MinpolyCharpolyOQ03.lean per S11 PREP §7 (uses annihilator_top_eq_ker_aeval + monic-uniqueness; does NOT require the regrouping infrastructure of §6); (3) Strong-form statement upgrade — extend rational_canonical_form_exists to assert c.lastFactor = M.minpoly, sorry-preserved (~5 lines); sets up the deliverable surface for option 2; (4) Further structural helpers on InvariantFactorChain (S6 PREP #18425 already covered the firstFactor-side design; lower priority post-S6). **Recommended ordering**: option 1 → option 3 → option 2, keeping each PR diff bounded and ensuring the regrouping is sorry-free before consumers.",
+    "nextAction": "S14 options (one of, recommended order unchanged from S12): (1) OQ-03-OQ-02 ACT (Route B) — implement elementary-divisors → invariant-factors regrouping algorithm sketched in S11 PREP §6 (PR #18668), ~340 LOC in a new file Proofs/MinpolyCharpolyOQ03OQ02.lean; (2) c.lastFactor = M.minpoly follow-up — independent ~15-30 LOC ACT on MinpolyCharpolyOQ03.lean (S11 PREP §7); (3) Strong-form statement upgrade — extend rational_canonical_form_exists to assert c.lastFactor = M.minpoly, sorry-preserved (~5 lines); (4) prodFactors_natDegree_sandwich named corollary — pair the S5 upper bound and S13 lower bound into a single public theorem, but only if a caller actually needs it (S6 PREP §6 deferred this as anti-target until justified by a consumer).",
     "attemptCounts": {
-      "total": 12,
-      "currentApproach": 12,
+      "total": 13,
+      "currentApproach": 13,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS S12 (ERRATUM-APPLY, doc-only): propagated S11 PREP §8 corrections to parent Lean docstring, state.md, and this knowledge JSON. Replaces the load-bearing wrong claim 'no Mathlib gap; equiv_directSum_of_isTorsion gives the invariant-factor chain directly' with the correct 'primary form + ~290-LOC regrouping bookkeeping is the only substantive Mathlib gap on the OQ-03 critical path'. Sub-OQ OQ-03-OQ-02 budget revised from ~300 to ~340 LOC. No Lean code changes; build-pending status from S4/S5 unaffected.",
+    "progressSummary": "S13 ACT firstFactor-side mirror: +140 LOC (1 noncomputable def + 4 public theorems + 2 private helpers) discharging S6 PREP (PR #18425) option-4 firstFactor design verbatim. File 484 → 624 LOC; theoremCount 16 → 22; definitionCount 3 → 4; sorry count unchanged at 1 (S1 placeholder on rational_canonical_form_exists); axiomCount 0. Sandwich corollary intentionally omitted per S6 PREP §6 anti-target. Build-pending per S2/S3/S4/S5 convention (proofs/.lake self-symlink trap).",
     "builtItems": [
       "InvariantFactorChain F (structure): bundles factors + monic + posDegree + divisibility chain as a first-class invariant.",
       "InvariantFactorChain.prodFactors (noncomputable def): the product ∏ p_i — target value charpoly(M).",
@@ -57,7 +57,13 @@
       "lastFactor_eq_getElem_pred (private theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor = c.factors[c.factors.length - 1]'(_). Bridges the getLast?.getD 1 definition to Fin-indexed access used by chain_natDegree_le.",
       "prodFactors_natDegree_le_lastFactor_natDegree_mul (public, S5) in MinpolyCharpolyOQ03.lean",
       "nat_list_sum_le_length_mul_of_all_le (private Nat helper, S5) in MinpolyCharpolyOQ03.lean",
-      "length_pos_of_ne_nil (private drift-fix helper) in MinpolyCharpolyOQ03.lean — replaces List.length_pos.mpr at Mathlib v4.26.0"
+      "length_pos_of_ne_nil (private drift-fix helper) in MinpolyCharpolyOQ03.lean — replaces List.length_pos.mpr at Mathlib v4.26.0",
+      "S13 ACT: InvariantFactorChain.firstFactor (noncomputable def, head?.getD 1)",
+      "S13 ACT: firstFactor_eq_getElem_zero (private bridging lemma, Plan-B rcases form)",
+      "S13 ACT: firstFactor_mem, firstFactor_monic (membership + monicness on nonempty chain)",
+      "S13 ACT: firstFactor_natDegree_minimal (degree-minimum among factors)",
+      "S13 ACT: nat_list_sum_ge_length_mul_of_all_ge (private Nat lower-bound helper, mirror of S5)",
+      "S13 ACT: prodFactors_natDegree_ge_firstFactor_natDegree_mul (length × first lower bound)"
     ],
     "insights": [
       "**Three-ingredient resolution**: companion matrices in-tree + Mathlib `Module.equiv_directSum_of_isTorsion` (yields the **primary** decomposition `⊕ᵢ F[X] / (pᵢ^{eᵢ})` with each `pᵢ` irreducible — NOT a divisibility chain) + ~290-LOC regrouping bookkeeping (elementary divisors → invariant factors) + cyclic-summand-to-companion correspondence. **One substantive Mathlib gap** (the regrouping algorithm; potentially upstreamable as a Mathlib contribution); the rest is integrative work (~340 lines for OQ-03-OQ-02 alone; total roadmap ~940 lines across the four sub-OQs, revised from the earlier ~900-line estimate after S11 PREP audit).",
@@ -69,7 +75,8 @@
       "**Divisibility chain bounds last-factor degree**: chain_natDegree_le packages the structure's divisibility chain into a natDegree-monotone form. Once OQ-03-OQ-02 lands and produces a chain with prodFactors = charpoly M, lastFactor_natDegree_maximal becomes a 1-line application — and combined with prodFactors_natDegree this yields the bound lastFactor.natDegree ≤ n (matrix dimension) for free.",
       "**lastFactor identification trick**: bridging `getLast?.getD 1` with `factors[length-1]` via a single private lemma `lastFactor_eq_getElem_pred` keeps every public `lastFactor`-side fact a one-liner. The trick: rewrite `getLast?` to `some (getLast h)` using `List.getLast?_eq_getLast`, then `Option.getD some` reduces by rfl, and `List.getLast_eq_getElem` finishes the indexed identification.",
       "**Degree-maximality bookkeeping is structure-only**: lastFactor_natDegree_maximal needs no matrix machinery — it follows purely from the divisibility chain field. Combined with prodFactors_natDegree (S3) this gives `prodFactors.natDegree ≤ factors.length · lastFactor.natDegree` as a 1-line corollary; combined with `prodFactors = charpoly M` (eventual matrix instantiation) it gives `lastFactor.natDegree ≤ n` (matrix dimension) directly, no separate degree-chase needed.",
-      "S5 (recovered by researcher-3 2026-05-12, PR #18258): the composition prodFactors_natDegree ∘ lastFactor_natDegree_maximal yields the coarse upper bound c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree in 6 tactic lines plus a 10-line pure-Nat helper (nat_list_sum_le_length_mul_of_all_le)."
+      "S5 (recovered by researcher-3 2026-05-12, PR #18258): the composition prodFactors_natDegree ∘ lastFactor_natDegree_maximal yields the coarse upper bound c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree in 6 tactic lines plus a 10-line pure-Nat helper (nat_list_sum_le_length_mul_of_all_le).",
+      "S13 (firstFactor mirror): the divisibility chain p_1 | ... | p_k is bi-directional in natDegree, so both endpoints (firstFactor, lastFactor) yield symmetric structural facts. The Part 7 mirror lemmas (firstFactor_mem, _monic, _natDegree_minimal, prodFactors_natDegree_ge_firstFactor_natDegree_mul) compose with Part 6 to give a two-sided sandwich k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor) on InvariantFactorChain F. Sorry-free, no new mathematical insight required — pure structural completeness pass."
     ],
     "mathlibGaps": [
       "Module.equiv_directSum_of_isTorsion — confirmed at Mathlib v4.26.0 `Mathlib/Algebra/Module/PID.lean:233` (S11 PREP §4.1). The witness `p : ι → R` satisfies `Irreducible (p i)` and the summands are `R ⧸ R ∙ p i ^ e i` (prime powers, NOT a divisibility chain). API in active use; no signature drift risk.",
