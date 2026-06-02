@@ -20,15 +20,15 @@
     "goal": "Sorry-free proof of convexity → product bound"
   },
   "currentState": {
-    "phase": "SURVEYED",
+    "phase": "ACT",
     "since": "2026-03-30T05:40:00Z",
-    "iteration": 1,
-    "focus": "SOLVED-with-deep-axioms; survey complete",
-    "blockers": [],
+    "iteration": 2,
+    "focus": "Session 2 (2026-06-02): added pomerance_consecutive_primes (i=1 corollary, +14 LOC, build-pending Docker INFRA RED)",
+    "blockers": ["Docker INFRA RED (disk 503Mi/96%, sibling container 6h-occupied, corrupted lean4-arm64:v4.26.0 blob)"],
     "nextAction": "Search Mathlib for inverse PNT to attempt logPrime_ratio_tendsto_zero elimination",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
@@ -44,7 +44,8 @@
       "Proof reduces to three Mathlib lemmas: log_mul, log_pow, log_lt_log_iff",
       "Parent file had forward reference: log_to_product defined after its caller",
       "Transfer from ℝ to ℤ requires exact_mod_cast and careful Nat.cast handling",
-      "Session 1 (2026-04-27): SURVEY — documented axiom-elimination proof paths (logPrime_ratio_tendsto_zero ~ 200-300 lines via inverse PNT, pomerance_convex_hull_lemma ~ 800+ lines requires new Mathlib convex-hull-on-ℕ infrastructure) and 2 tractable follow-up questions (quantitative Pomerance density, erdos-455 corollary)."
+      "Session 1 (2026-04-27): SURVEY — documented axiom-elimination proof paths (logPrime_ratio_tendsto_zero ~ 200-300 lines via inverse PNT, pomerance_convex_hull_lemma ~ 800+ lines requires new Mathlib convex-hull-on-ℕ infrastructure) and 2 tractable follow-up questions (quantitative Pomerance density, erdos-455 corollary).",
+      "Session 2 (2026-06-02): ACT — added pomerance_consecutive_primes (+14 LOC) as i=1 specialization of pomerance_1979 via max-N-2 + omega; pure in-file derivation, no new imports/axioms/Mathlib lemmas (build-pending Docker INFRA RED). Corrected Session 1 cross-reference: gallery erdos-455 is about monotone-gap prime sequences (Richter 1976), NOT the p_{n+1}² ≥ p_n·p_{n+2} statement — Session 1's bridge plan was a misidentification, so this corollary stands alone as Pomerance i=1 with no #455 cross-link."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -77,13 +78,13 @@
     ]
   },
   "started": "2026-03-30T05:40:00Z",
-  "lastUpdate": "2026-04-27T13:05:00Z",
+  "lastUpdate": "2026-06-02T17:50:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos453OQ02.lean",
       "filename": "Erdos453OQ02.lean",
-      "lineCount": 227,
-      "theoremCount": 6,
+      "lineCount": 248,
+      "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 4,
