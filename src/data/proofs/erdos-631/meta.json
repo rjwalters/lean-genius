@@ -73,9 +73,9 @@
       "alon_tarsi_theorem, outerplanar_3_choosable, planar_girth_5_choosable: restricted bounds",
       "erdos_631_status: complete resolution ⟨Thomassen, Voigt⟩ (proved from axioms)"
     ],
-    "axiomCount": 16,
+    "axiomCount": 32,
     "lineCount": 269,
-    "assumptions": "16 axioms: euler_formula, planar_edge_bound, four_color_theorem, five_color_theorem, thomassen_five_list_theorem, thomassen_proof_technique, and 10 more. 10 sorries.",
+    "assumptions": "32 axioms: 16 in main file (euler_formula, planar_edge_bound, four_color_theorem, five_color_theorem, thomassen_five_list_theorem, thomassen_proof_technique, and 10 more) + 16 byte-identical duplicates in Proofs/Stubs/Erdos631Problem.lean. 10 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 7
