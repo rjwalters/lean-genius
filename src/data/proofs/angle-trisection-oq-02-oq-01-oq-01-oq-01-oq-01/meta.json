@@ -50,20 +50,22 @@
       "Key proof: (σ(x) - x)^(p^n) = 0 in field implies σ(x) = x via char-p Frobenius + no nilpotents",
       "Replaced parity-case-split sub_pow_char_pow_eq with a one-liner via iterateFrobenius (a ring hom) and map_sub",
       "Added counterexample-side structural scaffolding: f_target_natDegree (=4), f_target_degree, f_target_ne_zero, f_target_monic — prerequisites for any Artin-Schreier irreducibility or |Gal|=2 argument that wishes to discharge counterexample_gal_card",
-      "Session 4: extended structural library to g_factor (g_factor_natDegree=2, g_factor_degree=2, g_factor_ne_zero, g_factor_monic) — prerequisites for Capelli-style irreducibility of f_target=g_factor(X^2) — and added five f_target coefficient lemmas (coeffs at 0, 1, 2, 3, 4) needed for any Eisenstein-style or quadratic-factorisation argument"
+      "Session 4: extended structural library to g_factor (g_factor_natDegree=2, g_factor_degree=2, g_factor_ne_zero, g_factor_monic) — prerequisites for Capelli-style irreducibility of f_target=g_factor(X^2) — and added five f_target coefficient lemmas (coeffs at 0, 1, 2, 3, 4) needed for any Eisenstein-style or quadratic-factorisation argument",
+      "Session 6 (Step 1a): proved aGen_not_isSquare — the Artin-Schreier parameter aGen ∈ F₂(a) is not a square in F₂(a). Bridge proof: a putative square aGen = y·y rewrites via IsLocalization.surj onto numerator/denominator (p, q ∈ F₂[X]) and clears denominators (algebraMap injectivity) to p² = X · q² in F₂[X], which is impossible by natDegree parity (2·deg p = 1 + 2·deg q, even = odd, closed by omega). Discharges the first concrete sub-goal in the 6-step chain toward counterexample_gal_card; consumed by Capelli-style irreducibility of f_target = g_factor.comp(X²) (Step 1c). 79 LOC added: aGen_ne_zero, R_sq_eq_X_mul_sq_imp_false (private helper), aGen_not_isSquare.",
+      "Session 6 (repair): patched 8 latent Mathlib v4.26.0 API drifts surfaced during S6 ACT (G9 self-loop had masked them since 2026-05-08): (1) parent file omega over (¬ a∣1) at AngleTrisectionOQ02OQ01OQ01OQ01.lean line 148; (2) base from def to abbrev so instance synthesis unfolds it (Algebra, IsFractionRing, Field auto-synthesize); (3) two AlgEquiv.refl F K calls (refl has no explicit args in v4.26.0) → (AlgEquiv.refl : K ≃ₐ[F] K); (4) AlgEquiv.refl_apply simp lemma removed → replaced by show σ x = x; (5) IsPurelyInseparable.pow_mem x now takes (F, p, x) explicitly under [ExpChar F p] (CharP F p derived via Algebra.charP_iff); (6) Polynomial.gcd_zero_right replaced by isCoprime_zero_right + Polynomial.natDegree_eq_zero_of_isUnit; (7) g_factor_monic simp missing Polynomial.coeff_X for bare-X term — added; (8) f_derivative_zero ring (which is characteristic-blind) replaced by explicit (2 : base) = 0 + (4 : base) = 0 via CharP.cast_eq_zero. Sister-file fix on parent (1) makes downstream natDeg_notDvd_gal_of_insep build again."
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries). Counterexample-side scaffolding (f_target_{natDegree, degree, ne_zero, Monic}, g_factor_{natDegree, degree, ne_zero, Monic}, and five f_target coefficient lemmas) is proved in this file; these are downstream prerequisites for any future irreducibility / Galois-group computation.",
-    "lineCount": 285,
-    "theoremCount": 19,
+    "assumptions": "One axiom: counterexample_gal_card (|Gal(f_target)| = 2 for the char-2 counterexample, pending Artin-Schreier formalization over F₂(a)). Main theorem algEquiv_eq_refl_of_isPurelyInseparable is fully proved (no sorries). Counterexample-side scaffolding (f_target_{natDegree, degree, ne_zero, Monic}, g_factor_{natDegree, degree, ne_zero, Monic}, and five f_target coefficient lemmas, plus Session-6 aGen_{ne_zero, not_isSquare}) is proved in this file; these are downstream prerequisites for any future irreducibility / Galois-group computation.",
+    "lineCount": 380,
+    "theoremCount": 22,
     "definitionCount": 4
   },
   "leanFile": {
     "path": "Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean",
     "axiomCount": 1,
-    "theoremCount": 19,
+    "theoremCount": 22,
     "definitionCount": 4,
-    "lineCount": 285,
+    "lineCount": 380,
     "sorries": 0
   },
   "overview": {
