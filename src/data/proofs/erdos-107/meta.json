@@ -62,9 +62,9 @@
       "HappyEndingConjecture as Prop (correctly open)"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 6,
+    "axiomCount": 12,
     "lineCount": 255,
-    "assumptions": "6 axioms (deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds). All theorems proved (0 sorries). f_finite proved from ersz_lower_bound by contradiction.",
+    "assumptions": "12 axiom declarations (6 in Erdos107Problem.lean + 6 duplicates in Stubs/Erdos107Problem.lean): deep combinatorial bounds: f(4)=5, f(5)=9, Erdos-Szekeres bounds, Suk/HMPT bounds. All theorems proved (0 sorries). f_finite proved from ersz_lower_bound by contradiction.",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
     "definitionCount": 6,
