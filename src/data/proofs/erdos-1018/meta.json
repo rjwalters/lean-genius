@@ -25,9 +25,9 @@
       "erdos-52",
       "erdos-945"
     ],
-    "axiomCount": 7,
+    "axiomCount": 14,
     "lineCount": 260,
-    "assumptions": "7 axioms: K5_nonplanar (K₅ is non-planar), K33_nonplanar (K₃,₃ is non-planar), kuratowski_theorem (non-planar iff contains K₅ or K₃,₃ subdivision), kostochka_pyber (ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices, 1988), constant_grows (C(ε) → ∞ as ε → 0), planar_linear_bound (planar graphs have ≤ 3n−6 edges), kostochka_pyber_explicit (polynomial bound in 1/ε). 7 sorries (incomplete topological and density definitions).",
+    "assumptions": "14 axioms across the chain: the main file `Proofs/Erdos1018Problem.lean` declares 7 (K5_nonplanar, K33_nonplanar, kuratowski_theorem, kostochka_pyber, constant_grows, planar_linear_bound, kostochka_pyber_explicit), and `Proofs/Stubs/Erdos1018Problem.lean` re-declares the same 7 (byte-identical duplicate); the Lean kernel treats each declaration site as a distinct assumption. K5_nonplanar: K₅ is non-planar. K33_nonplanar: K₃,₃ is non-planar. kuratowski_theorem: non-planar iff contains K₅ or K₃,₃ subdivision. kostochka_pyber: ε-dense graphs contain K₅ subdivisions on ≤ C(ε) vertices (1988). constant_grows: C(ε) → ∞ as ε → 0. planar_linear_bound: planar graphs have ≤ 3n−6 edges. kostochka_pyber_explicit: polynomial bound in 1/ε. 7 sorries in the main file (incomplete topological and density definitions).",
     "mathlib_version": "4.26.0",
     "theoremCount": 4,
     "definitionCount": 15,
