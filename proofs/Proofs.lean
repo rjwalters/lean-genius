@@ -53,6 +53,7 @@ import Proofs.AmgmInequalityOQ04
 import Proofs.AmgmInequalityOQ04OQ01
 import Proofs.AmgmInequalityOQ04OQ02
 import Proofs.AmgmInequalityOQ04OQ03
+import Proofs.AmgmInequalityOQ04OQ03Wallis
 import Proofs.AmgmInequalityOQ04OQ05
 import Proofs.AmgmInequalityPowerMeanLimits
 import Proofs.AngleTrisection
