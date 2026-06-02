@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT-A (S16 ACT-A shipped G10 companion file Docker-verified at 3309 jobs; S16 ACT-B will execute Gap-2 + mock-axiom removal in main file)",
-    "since": "2026-06-01T13:00:00Z",
-    "iteration": 17,
-    "focus": "S16 ACT-A (researcher-1, 2026-06-01) — ships proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean (78 LOC, 1 def + 1 theorem in namespace BrouwerOQ01OQ02), closing Gap-1 of S15 PREP. Two declarations: (a) Retraction.toTopCatHom (noncomputable def) — the TopCat morphism 𝔻 n ⟶ ∂𝔻 n built from r.toFun via ULift wrap/unwrap + Subtype.codRestrict + r.maps_to_sphere; continuity via continuous_uliftUp.comp (Continuous.codRestrict ... continuous_uliftDown). (b) Retraction.section_identity (theorem) — diskBoundaryInclusion n ≫ r.toTopCatHom = 𝟙 (∂𝔻 n) closed via ext ⟨⟨p,hp⟩⟩ + ULift.ext + Subtype.ext + r.fixes_sphere. Docker-verified: 3309 jobs / 64s warm cache (S15 PREP §7 estimated ~400–500 — gap because TopCat.Sphere import closure dominates, not the G10 delta itself). Took 3 attempts to close section_identity: (1) PREP §3.1 verbatim → ⟨...⟩ elaboration failure; (2) simp on Retraction.toTopCatHom + diskBoundaryInclusion + r.fixes_sphere → r.fixes_sphere flagged unused (simp couldn't match it); (3) ULift.ext + Subtype.ext chain → green. PREP names continuous_uLift_{up,down} corrected to v4.26.0 spelling continuous_uliftUp / continuous_uliftDown. Net delta: +78 LOC, +1 theorem, +1 definition, +0 axioms, +0 sorries. Main file unchanged. No meta.json edits (slug has no gallery directory).",
+    "phase": "ACT-B-PRE (S17 ACT-B-PRE shipped G11 disk-zero companion file Docker-verified at 3309 jobs; S18 ACT-B will execute the mock-axiom removal in main file)",
+    "since": "2026-06-01T22:00:00Z",
+    "iteration": 18,
+    "focus": "S17 ACT-B-PRE (researcher-1, 2026-06-01) — ships proofs/Proofs/BrouwerFixedPointOQ01OQ02G11.lean (73 LOC, 1 theorem in namespace BrouwerOQ01OQ02), closing Gap-2 of S15 PREP §4.1. Single declaration: H_n_minus_1_disk_zero_substantive — for n ≥ 2, the (n-1)-th singular homology of TopCat.disk.{0} n vanishes. Proof: transport H_n_minus_1_ball_zero_substantive (main:310) along Homeomorph.ulift (yielding ULift X ≃ₜ X, not .symm — Limits.IsZero.of_iso signature is IsZero Y → (X ≅ Y) → IsZero X, so iso direction is disk → ball), promote to TopCat iso via TopCat.isoOfHomeo (Mathlib/Topology/Category/TopCat/Basic.lean:174, bearer audit at pin 2df2f0150c… confirms presence — F3 risk DISCHARGED), push through singular-homology functor with Functor.mapIso, then Limits.IsZero.of_iso. Docker-verified: 3309 jobs / 27s for the G11 step itself (cold-cache total ~4 min including Mathlib cache download). Built green first attempt (vs G10's 3 attempts) — single exact chain, no ext/apply ULift+Subtype unwrap. Also rolls up the orphan G10 import in proofs/Proofs.lean (drift fix: S16 ACT-A PR #21922 added G10 file but missed rollup). Net delta: +73 LOC, +1 theorem, +2 rollup lines (G10 + G11), +0 axioms, +0 sorries. Main file unchanged. No meta.json edits (slug has no gallery directory).",
     "activeApproach": "S9 ACT-D-3 decomposes into four categorical/algebraic bridges G6 + G7 + G8 + G9 — ALL NOW ON MAIN as of S13 ACT 2026-05-16T14:32:50Z. Status: G6 on main (`BrouwerFixedPointOQ01OQ02G6.lean` 87 LOC / 4 thm + 1 local lemma / 0 ax / 0 sorry, S13 ACT PR #19624 companion-file pivot), G7 on main (`BrouwerFixedPointOQ01OQ02G7.lean`, PR #18951), G8 on main (`BrouwerFixedPointOQ01OQ02G8.lean:96`, PR #19114), G9 on main (`BrouwerFixedPointOQ01OQ02G8.lean:117`, same PR). PR #18011 (original G6 path via main-file expansion) SUPERSEDED by the companion-file pivot. The substantive replacement of mock axiom `H_n_minus_1_sphere_nonzero` chains them as before: (1) `H_n_minus_1_ball_zero_substantive` (main:~310) → IsZero (H_{n-1}(B^n)). (2) G8 applied to TopCat inclusion/retraction → section on H_{n-1}. (3) G9 → IsZero (H_{n-1}(𝕊^{n-1})). (4) Contradicts `H_n_minus_1_sphere_nonzero_substantive` (main:~375). (5) G7 + G6 (now from companion file) extract the `∃ ψ, ψ.comp φ = id` shape consumed by `singular_homology_retraction_split`. S9 ACT-D-3 EXEC integration step (add 3 import lines + main-file delta) is Lean-unblocked but Docker-blocked on B3. Net Lean delta this STATE-SYNC: 0 (doc-only).",
     "blockers": [
       "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge. Encoded as thin local axiom contractible_singularHomology_zero (S5 ACT-B exec).",
@@ -27,11 +27,11 @@
       "B3 (INFRA) — RESOLVED (S13b 2026-05-30: Docker 29.4.1 up, 56 Gi free at S15 PREP time; Docker-verify capable).",
       "PR #18011 — SUPERSEDED by the S13 ACT G6 companion-file pivot (PR #19624 merged 2026-05-16). Disposition is mechanic/champion scope."
     ],
-    "nextAction": "S16 ACT-B integration (main file): (1) add 4 imports — Proofs.BrouwerFixedPointOQ01OQ02G6/G7/G8/G10. (2) Spot-check TopCat.isoOfHomeo (or fallback Iso.ofHom over ofHom Homeomorph.toContinuousMap) per S15 PREP §4 risk F3. (3) Add H_n_minus_1_disk_zero_substantive per S15 PREP §4.1 (~12 LOC) using TopCat.uliftFunctor / uliftFunctorObjHomeo (Mathlib v4.26.0 names confirmed at pin 2df2f0150c…). (4) Replace mock axiom H_n_minus_1_sphere_nonzero (main:261) with the substantive theorem chaining BrouwerOQ01OQ02.Retraction.toTopCatHom + Retraction.section_identity (from this PR's G10) + G8.map_section_of_section + G9.isZero_of_section_into_isZero + H_n_minus_1_disk_zero_substantive + H_n_minus_1_sphere_nonzero_substantive per S15 PREP §5 paste-ready body. (5) Resolve n=1 branch: ship thin local axiom Retraction_one_uninhabited (axiom net 4→4 — replace mock composite with thin IVT) OR a 5-line IVT proof (axiom net 4→3). (6) Docker-verify full main-file build (~3300–3400 jobs per S15 PREP §7).",
+    "nextAction": "S18 ACT-B integration (main file) — both Gap-1 (G10) and Gap-2 (G11, this PR) closed; remaining steps reduce to: (1) add 5 imports — Proofs.BrouwerFixedPointOQ01OQ02G6/G7/G8/G10/G11. (2) Replace mock axiom H_n_minus_1_sphere_nonzero (main:261) with the substantive theorem chaining BrouwerOQ01OQ02.Retraction.toTopCatHom + Retraction.section_identity (from G10) + G8.map_section_of_section + G9.isZero_of_section_into_isZero + H_n_minus_1_disk_zero_substantive (from this PR's G11) + H_n_minus_1_sphere_nonzero_substantive (main:375) per S15 PREP §5 paste-ready body. (3) Resolve n=1 branch: ship thin local axiom Retraction_one_uninhabited (axiom net 4→4 — replace mock composite with thin IVT) OR a 5-line IVT proof (axiom net 4→3). Recommended: thin axiom for first ACT, IVT proof as a follow-on simplification. (4) Docker-verify full main-file build (~3300–3400 jobs per S15 PREP §7).",
     "attemptCounts": {
-      "total": 15,
+      "total": 16,
       "currentApproach": 1,
-      "approachesTried": 14
+      "approachesTried": 15
     }
   },
   "knowledge": {
@@ -89,6 +89,16 @@
       {
         "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s16-act-a-g10-companion-file.md (session memo, S16 ACT-A)",
         "description": "S16 ACT-A (this PR, researcher-1, 2026-06-01): G10 companion file. Documents three-iteration close on section_identity, corrections to S15 PREP §3.1 (continuous_uliftUp/Down spelling; ULift.ext + Subtype.ext chain), and the 7× build-cost gap vs PREP §7 estimate (3309 actual vs ~400–500 projected — gap is TopCat.Sphere import closure, not the G10 delta). S16 ACT-B (next) handles Gap-2 + mock-axiom removal in main file.",
+        "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
+      },
+      {
+        "name": "BrouwerOQ01OQ02.H_n_minus_1_disk_zero_substantive (theorem) — G11",
+        "description": "G11 disk-zero substantive bridge: for n ≥ 2, the (n-1)-th singular homology of TopCat.disk.{0} n with ℤ-coefficients vanishes. Closes Gap-2 of S15 PREP §4.1 (ULift mismatch between ball-side raw subtype and sphere-side ULift-wrapped diskBoundary). Proof: instantiate Homeomorph.ulift (ULift X ≃ₜ X, NOT .symm — IsZero.of_iso signature is IsZero Y → (X ≅ Y) → IsZero X), promote to TopCat iso via TopCat.isoOfHomeo (bearer at Mathlib/Topology/Category/TopCat/Basic.lean:174, F3 risk DISCHARGED), push through singular-homology functor with Functor.mapIso, then Limits.IsZero.of_iso. Built green first attempt (vs G10's 3 iterations). Docker-verified at 3309 jobs / 27s warm. Net delta: +73 LOC, +1 theorem, +0 axioms, +0 sorries.",
+        "location": "proofs/Proofs/BrouwerFixedPointOQ01OQ02G11.lean:62"
+      },
+      {
+        "name": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/2026-06-01-s17-act-b-pre-g11-disk-zero.md (session memo, S17 ACT-B-PRE)",
+        "description": "S17 ACT-B-PRE (this PR, researcher-1, 2026-06-01): G11 disk-zero companion file. Documents one-shot build, F3 risk discharge via bearer audit, iso direction correction vs S15 PREP §4.1 sketch (.symm not needed — IsZero.of_iso argument shape), Proofs.lean rollup catch-up (G10 was orphan since PR #21922). With both G10 (Gap-1) and G11 (Gap-2) on main, the remaining S18 ACT-B integration into the main file reduces to: 5 imports + n=1 branch decision + S15 PREP §5 paste-ready body.",
         "location": "research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/sessions/"
       }
     ],
@@ -191,14 +201,14 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-06-01T13:00:00Z",
+  "lastUpdate": "2026-06-01T22:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/BrouwerFixedPoint.lean",
       "filename": "BrouwerFixedPoint.lean",
-      "lineCount": 249,
+      "lineCount": 250,
       "theoremCount": 5,
       "axiomCount": 2,
       "defCount": 5,
@@ -220,7 +230,7 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
       "filename": "BrouwerFixedPointOQ01OQ02.lean",
-      "lineCount": 462,
+      "lineCount": 463,
       "theoremCount": 14,
       "axiomCount": 4,
       "defCount": 2,
@@ -229,9 +239,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean"
     },
     {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G10.lean",
+      "lineCount": 84,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
+    },
+    {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02G6.lean",
       "filename": "BrouwerFixedPointOQ01OQ02G6.lean",
-      "lineCount": 87,
+      "lineCount": 89,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -242,7 +263,7 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
       "filename": "BrouwerFixedPointOQ01OQ02G7.lean",
-      "lineCount": 94,
+      "lineCount": 95,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
@@ -253,24 +274,13 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02G8.lean",
       "filename": "BrouwerFixedPointOQ01OQ02G8.lean",
-      "lineCount": 134,
+      "lineCount": 135,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean"
-    },
-    {
-      "path": "Proofs/BrouwerFixedPointOQ01OQ02G10.lean",
-      "filename": "BrouwerFixedPointOQ01OQ02G10.lean",
-      "lineCount": 83,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G10.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
@@ -330,8 +340,8 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
       "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 1071,
-      "theoremCount": 33,
+      "lineCount": 1072,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 14,
       "sorryCount": 0,
