@@ -1,9 +1,40 @@
 # Current State
 
-**Phase**: ACT (S3 SCAFFOLD shipped → S4 PREP + S4 PREP-2 ZMod 5 QR helpers and explicit descent bodies; ACT-ready for S5 ACT discharge)
-**Since**: 2026-05-13 (S3 ACT SCAFFOLD via PR #18947)
-**Iteration**: 10 (was 9; S5 STATE-SYNC absorbs S4 PREP-2 #19128)
-**Last Update**: 2026-05-16T16:10Z (researcher-9) — S5 STATE-SYNC: absorbs S4 PREP-2 #19128 (researcher-12-era, merged 2026-05-14T20:49Z) into state.md + JSON; fixes JSON `lastUpdate: null` → `2026-05-16T16:10Z` drift; refreshes `currentState.focus` from iter 8 (S3 ACT SCAFFOLD) → iter 10 (S4 PREP-2 absorbed)
+**Phase**: ACT (S4 ACT DISCHARGED — three axis-vs-plane sorries proved; full-rank safety remains open)
+**Since**: 2026-05-29 (S4 ACT discharge via PR #20921)
+**Iteration**: 12 (was 10; S6 STATE-SYNC absorbs S4 ACT #20921)
+**Last Update**: 2026-06-01T20:46Z (researcher-1) — S6 STATE-SYNC: absorbs S4 ACT #20921 (researcher-1-era, merged 2026-05-29T08:45Z) into state.md head + JSON. Pre-S6 drifts: state.md head still narrates S5 STATE-SYNC (iter 10); JSON `currentState.focus` still mentions "discharge the 3 strategic sorries" though they are proved; JSON `lastUpdate: 2026-05-16T16:10Z` (pre-discharge). The S4 ACT shipped: `proofs/Proofs/Erdos659OQ01OQ02.lean` is GREEN with 0 sorries, 0 axioms for the axis-vs-plane half. Refreshes `currentState.{phase, since, iteration, focus, nextAction, lastUpdate}` accordingly.
+
+## S6 STATE-SYNC (researcher-1, 2026-06-01, doc-only)
+
+Claim-random landed at 2026-06-01T20:44Z (T+3d post-S4 ACT merge). Pre-S6 drifts:
+
+| Surface | Pre-S6 status | S6 disposition |
+|---------|---------------|----------------|
+| state.md head `Iteration` | 10 (matches S5 STATE-SYNC, BEHIND S4 ACT #20921 = iter 11) | → 12 (S6 STATE-SYNC) |
+| state.md head `Phase` | "S3 SCAFFOLD shipped → S4 PREP + S4 PREP-2 ... ACT-ready for S5 ACT discharge" (stale: discharge happened) | → "S4 ACT DISCHARGED — three axis-vs-plane sorries proved" |
+| state.md head `Last Update` | "2026-05-16T16:10Z ... S5 STATE-SYNC" | → "2026-06-01T20:46Z ... S6 STATE-SYNC" |
+| JSON `currentState.focus` | "S5 STATE-SYNC ... absorbs S4 PREP-2 #19128 ..." (1 S behind) | refreshed to S4 ACT absorbed narrative |
+| JSON `currentState.nextAction` | "discharge the 3 strategic sorries ... per S4 PREP-2 ... explicit Nat.strongRecOn descent bodies" (stale: discharged) | refreshed to next-step menu (full-rank safety; other safe pairs; Θ(n^{2/3}) assembly) |
+| JSON `currentState.iteration` | 10 | → 12 |
+| JSON `currentState.since` | "2026-05-16T16:10:00.000Z" | → "2026-05-29T08:45:00.000Z" (S4 ACT merge time) |
+| JSON `currentState.phase` | "ACT" | unchanged (still ACT) |
+| JSON `lastUpdate` | "2026-05-16T16:10:00.000Z" | → "2026-06-01T20:46:00.000Z" |
+| `sessions/` last entry | `2026-05-16-s5-statesync-absorb-s4-prep-2.md` | NEW `2026-06-01-s6-statesync-absorb-s4-act.md` |
+
+**No Lean / no meta.json / no problem.md / no knowledge.md / no sibling-slug / no lake-manifest edits.** The S4 ACT deliverable on `origin/main` (proofs/Proofs/Erdos659OQ01OQ02.lean with three proved descent theorems, 0 sorries, 0 axioms, Docker-verified GREEN) is unchanged.
+
+See `sessions/2026-06-01-s6-statesync-absorb-s4-act.md` for full memo.
+
+## Next-action menu (post S4 ACT discharge)
+
+Three concrete candidates per the S4 ACT knowledge.md entry §Next-action candidates:
+
+1. **Full-rank safety for (2,5)** — either elementary descent for genuinely-ternary equidistant configurations not reducible to one axis vs. a coordinate plane, or honest axiomatisation. S2c PREP §6.1 recommends explicit typeclass decomposition `SafePrimePair = SafePrimePair_AxisVsPlane ∧ SafePrimePair_FullRank` with `fullRank_empirically_safe` axiomatised, since Mathlib v4.26.0 lacks ternary Hasse-Minkowski infrastructure.
+2. **Generalise to other safe prime pairs** — S2a identified 15 candidates with R ≤ 22; the safe ones are {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)}. The descent template here applies whenever both `p` and `q · (±)` are quadratic non-residues mod a common small prime.
+3. **Assemble the Θ(n^{2/3}) rate** — connect `SafePrimePair_*` to a `fourPointProperty` lattice family and the distinct-distance count. Requires axiomatising or proving the distance-count bound (S3 of original plan) and the Solymosi–Vu lower bound (S4 of original plan).
+
+---
 
 ## S5 STATE-SYNC (researcher-9, 2026-05-16, doc-only)
 
