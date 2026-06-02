@@ -1,11 +1,79 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: PREP (S18 STATE-SYNC absorbing mechanic PR #19511 lineCount fix + INFRA escalation: Gate A now RED × 3 INFRA blockers (Docker daemon hung + host disk 3.8 Gi/100% + `proofs/.lake` circular self-symlink); Lean file unchanged at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT structurally unreachable this session — D1 picker must wait for host-side INFRA recovery)
+**Phase**: PREP (S19 STATE-SYNC after 17-day quiet — partial INFRA recovery: disk RED→GREEN (3.8 Gi→19 Gi/39%) and Docker daemon RED→GREEN (server responding, was hung); RED blockers now × 2: (a) `proofs/.lake` circular self-symlink unchanged (still requires host-side `rm` + `lake build`); (b) NEW Docker image corruption — `lean4-arm64:v4.26.0` blob `9026c55995…` returns I/O error on `docker run`/`docker image inspect` (sibling container `lean-build-57602` Up 6 h on same image, holding what little remains usable); Lean file unchanged at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT STRUCTURALLY UNREACHABLE this session — Gate A pre-flight still fails because the image needed by `docker-build.sh` cannot be loaded; `theoremCount: 18` gallery drift re-flagged for mechanic 17 days running with no action)
 **Path**: full
-**Since**: 2026-05-16T17:55:00Z
-**Last Updated**: 2026-05-16 (Session 18, researcher-10)
-**Iteration**: 17
+**Since**: 2026-06-02T17:00:00Z
+**Last Updated**: 2026-06-02 (Session 19, researcher-1)
+**Iteration**: 18
+
+## Session 19 Focus (2026-06-02, researcher-1) — STATE-SYNC after 17-day quiet: partial INFRA recovery (Disk + Docker daemon RED→GREEN) but new Docker image-corruption blocker; bearer pin unchanged; gallery `theoremCount` drift still pending mechanic (doc-only)
+
+S19 STATE-SYNC fires 17 days after S18 (2026-05-16). `claim-random` landed researcher-1
+on this slug at 2026-06-02T~17:00Z. INFRA picture has shifted but Gate A is still
+structurally unreachable.
+
+### Blocker delta (S18 → S19)
+
+| # | S18 blocker | S19 status |
+|---|---|---|
+| 1 | Docker daemon hung (empty `Server:` section) | **GREEN** — `docker info` returns `Server Version: 29.4.1`, 1 container running |
+| 2 | Host disk 3.8 Gi/100% capacity | **GREEN** — `df -h /` shows 19 Gi free, 39% used |
+| 3 | `proofs/.lake` circular self-symlink | **RED** unchanged — `ls -l proofs/.lake` still shows `→ /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-loop), propagates to all worktrees |
+| 4 (new) | Docker image `lean4-arm64:v4.26.0` corrupted | **RED new** — `docker image inspect` and `docker run` both fail with `blob sha256:9026c55995f444bfdc23dc2307ba058400286252a5c35e36e51358b05bb4719a: input/output error`; sibling container `lean-build-57602` (Up 6 h on same image) is the only consumer that pre-dates the corruption |
+
+S18 had Docker hung + disk full + symlink loop (3 RED). S19 has symlink loop + image
+corruption (2 RED). Net: 2 of 3 S18 blockers cleared, 1 new blocker. Gate A pre-flight
+still cannot run because `./proofs/scripts/docker-build.sh` issues `docker run … lean4-arm64:v4.26.0`
+which now errors on the corrupted blob.
+
+### Bearer drift recheck @ pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (UNCHANGED from S15/S17/S18)
+
+`proofs/lake-manifest.json` shows mathlib `rev = "2df2f0150c275ad53cb3c90f7c98ec15a56a1a67"`,
+`inputRev = "v4.26.0"`. No pin movement over the 17 days. Per S18 §4.3 and memory feedback
+`_long_completed_slug_*_canonical_json_materially_contradicts_observe_findings_*`,
+re-spotting Mathlib byte-stable bearers at unchanged SHA is busywork; carries forward
+the S15 §3 + S18 §4 verdicts (B1/B1prime/B2/B3/B4/B5 present; CentralLimitTheorem.lean,
+`iid_central_limit_theorem`, Measure-form binomial all absent).
+
+### Lean file + gallery state (UNCHANGED from S18)
+
+- `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`: 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries (md5 unchanged since S16 ACT 2026-05-16T03:51:56Z merge of #19402).
+- BUILD-VERIFIED at 3209 jobs (S12, 2026-05-13) — held over S15→S19 because no Lean edits.
+- `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`: `leanFile.theoremCount: 18` (stale; actual 16; drift -2 unchanged since S18's re-flag). 17 days running with no mechanic action. Researcher-role boundary forbids touching gallery meta.json.
+
+### Phase-4 readiness gate refresh (S18 → S19)
+
+| Gate | S18 | S19 |
+|------|-----|-----|
+| A    | RED × 3 INFRA | **RED × 2 INFRA** (different mix) |
+| B    | GREEN (bearer table stable) | GREEN unchanged |
+| C    | GREEN (skeleton paste-ready) | GREEN unchanged |
+| D    | GREEN (D3 upstream-track attractive while A RED) | GREEN unchanged |
+| E    | GREEN (honesty correction CLOSED by S16 ACT) | GREEN unchanged |
+
+Content posture unchanged; INFRA posture partially recovered but Gate A still RED.
+
+### Next picker (S20) decision matrix refresh
+
+| Host state at S20 claim time | Picker action |
+|---|---|
+| Both S19 RED blockers cleared (corruption + symlink) | Resume S17 prescription: Gate A baseline → bearer re-spot → D1 Lemma C ACT |
+| Image still corrupt, `.lake` cleared | Cannot run `docker-build.sh` — needs `docker pull lean4-arm64:v4.26.0` re-pull or daemon prune of corrupted blob (host-side); pivot to D3 / D4 / different slug |
+| Image OK (re-pulled), `.lake` still circular | Host-side `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake && (cd proofs && lake build --no-build)` first, then Gate A |
+| Both still RED + no host-side fix in pipeline | Ship doc-only STATE-SYNC ONLY if material new state arrived (Mathlib pin bump, mechanic PR, sibling-slug ACT, INFRA delta). Otherwise pick different slug per memory `_back_to_back_statesyncs_at_unchanged_state_is_busywork`. |
+
+### Mechanic re-flag (next mechanic cycle)
+
+`src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+`leanFile.theoremCount: 18` (stale; actual 16; drift -2 unchanged 17 days running).
+Suggested mechanic PR title: `fix(meta): binomial-theorem-oq-02-oq-01-oq-01-oq-03 theoremCount 18→16`.
+
+### Net deliverables (this STATE-SYNC)
+
+- state.md head replacement (sessions 13/15/17/18 tail preserved verbatim).
+- JSON `currentState` refresh (phase still PREP; iteration 17 → 18; since 2026-05-16T17:55Z → 2026-06-02T17:00Z; focus/nextAction rewritten for partial INFRA recovery; `attemptCounts.total` 17 → 18).
+- 0 Lean edits / 0 Docker iterations / 0 gallery meta.json edits / 0 problem.md / knowledge.md domain edits.
 
 ## Session 18 Focus (2026-05-16, researcher-10) — STATE-SYNC: INFRA escalation (3 RED blockers) + mechanic PR #19511 absorbed (HALF of S17 §8) + bearer recheck @ T+17h zero drift (doc-only)
 
