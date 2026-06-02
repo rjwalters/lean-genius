@@ -2,12 +2,13 @@
 
 **Slug**: `angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01`
 **Title**: Inseparable Galois Groups: Counterexample and Correct Statement
-**Phase**: COMPLETED (axiomatized) → S6 ACT (Step 1a closed + Mathlib v4.26.0 latent-bug repair, Lean changes)
-**Iteration**: 6
+**Phase**: COMPLETED (axiomatized) → S7 PREP (Step 1b Artin-Schreier degree-2 no-root irreducibility scaffold, doc-only)
+**Iteration**: 7
 **Gallery status**: `axiomatized`, badge `axiom`
-**Lean file**: `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (380 LOC, 22 theorems, 1 axiom, 0 sorries)
-**Last substantive ACT**: PR --TBD-- (Session 6, this cycle — 2026-06-01)
-**Open PRs on slug**: 0 (post-S6 ACT this cycle will be the first since 2026-05-08; first Lean-touching ACT since #17217)
+**Lean file**: `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` (380 LOC, 22 theorems, 1 axiom, 0 sorries — unchanged since S6 ACT merge 2026-06-01)
+**Last substantive ACT**: Session 6 (researcher-1, merged into `origin/main` 2026-06-01) — Step 1a `aGen_not_isSquare` + 9 Mathlib v4.26.0 API-drift repairs
+**Last update**: 2026-06-02 (this S7 PREP doc-only iteration)
+**Open PRs on slug**: 0 (S6 ACT merged into `origin/main`; this S7 PREP will be the first PR since)
 
 ---
 
@@ -55,7 +56,8 @@ Each step is independently useful. Step 1a is **CLOSED in S6 ACT** (this cycle).
 | 3 | 2026-05-08 | #16967 | researcher-1 | ACT: counterexample structural scaffolding (`f_target_{natDegree, degree, ne_zero, Monic}`) | Lean + meta + knowledge.md + JSON | +25 (Lean) |
 | 4 | 2026-05-08 | #17217 | researcher-1 | ACT: g_factor structural lemmas + 5 f_target coefficient values | Lean + meta + knowledge.md + JSON | +55 (Lean) |
 | 5 | 2026-05-16 | #19403 (S5 PREP doc-only) | researcher-12 | PREP: state.md bootstrap + Step 1a (aGen-not-square) pre-stage | state.md + session memo + knowledge.md + JSON | 0 (Lean) |
-| 6 | **2026-06-01** | **(this cycle)** | researcher-1 | **ACT: Step 1a closed (aGen_not_isSquare + helpers) + 8 latent Mathlib v4.26.0 API-drift repairs + parent omega fix** | Lean (×2) + meta + state.md + session memo + knowledge.md + JSON | **+95 (primary) + 1-line parent fix** |
+| 6 | 2026-06-01 | #21964 | researcher-1 | ACT: Step 1a closed (aGen_not_isSquare + helpers) + 9 latent Mathlib v4.26.0 API-drift repairs + parent omega fix | Lean (×2) + meta + state.md + session memo + knowledge.md + JSON | +95 (primary) + 1-line parent fix |
+| 7 | **2026-06-02** | **(this cycle)** | researcher-1 | **PREP: Step 1b Artin-Schreier degree-2 no-root irreducibility scaffold — confirmed Mathlib v4.26.0 has 0 `ArtinSchreier` hits via GH code search; paste-ready Lean skeleton + API verification checklist + 4-sorry helper + 3 wiring sorries** | state.md + session memo | 0 (Lean) |
 
 Enrichment PRs (#16998, #17044, #17085, #17139, #17293, #17339) interleaved in 2026-05-08 expanded `meta.json` sections, references, prerequisites, and the 5th key insight (Artin-Schreier). The Lean file was **stable on origin/main from 2026-05-08 to 2026-06-01** (24 days); S6 ACT is the first Lean-touching change since.
 
@@ -82,7 +84,7 @@ The slug is **closed at gallery level** (status `axiomatized`, badge `axiom`, pr
 
 ## Next Action
 
-**S7 ACT**: Step 1b — `g_factor = X² + X + aGen` is irreducible over `base` (Artin-Schreier criterion in char 2). Standard mathematical argument: irreducible iff `aGen ≠ t² + t ∀t ∈ base` (the Artin-Schreier trace criterion). Mathlib v4.26.0 has degree-2 irreducibility helpers but no Artin-Schreier-degree-2 named lemma; expect ~120-200 LOC. May reuse `aGen_not_isSquare` (Step 1a, just landed) for some routing.
+**S8 ACT** (post-S7 PREP this cycle): Step 1b — `g_factor = X² + X + aGen` is irreducible over `base` (Artin-Schreier criterion in char 2). Paste-ready Lean skeleton with 4 sorries + API verification checklist now available in `sessions/2026-06-02-s07-prep-step1b-artin-schreier-degree2-noroot.md` (this cycle). Strategy formalised: `g_factor` has degree 2 over a field, so irreducible iff no root; suppose `t² + t + aGen = 0`, lift via `IsLocalization.surj` to `p² + p·q = X · q²` in `Polynomial (ZMod 2)`, factor as `p · (p + q) = X · q²`, apply UFD case analysis on `X | p` vs `X | (p+q)` + `natDegree` parity (helper `R_sq_add_R_mul_eq_X_mul_sq_imp_false`, ~80-150 LOC). Confirmed via GH code search 2026-06-02: Mathlib v4.26.0 has 0 `ArtinSchreier` hits — no named criterion to lift; helper must be built. May reuse `aGen_not_isSquare` (Step 1a, S6 ACT) `IsLocalization.surj`/`IsFractionRing.injective` template verbatim.
 
 ---
 
