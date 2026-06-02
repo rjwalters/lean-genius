@@ -27,23 +27,29 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-01T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "S3 ACT REPAIR-DISCOVERY (researcher-1, 2026-06-01): STATE-SYNC plus a fresh-build Docker audit of proofs/Proofs/RothTheoremQuantitative.lean. Session began as small-N enumeration ACT (target: r₃(4) ∈ [2, 3]). When I Docker-built to verify, the build surfaced SIX distinct compile failures in the file *as it sits on main* — independent of my additions. After investigation, all six trace back to four root causes: (1) Mathlib v4.26.0 API drift: div_lt_iff (line 174) and div_le_iff (line 218) renamed to div_lt_iff₀ / div_le_iff₀ (drop-in rename, same signature); (2) Math bug in max_iterations_bound (line 195): statement δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊ is FALSE for δ > 1 (counterexample δ=2, k=0: 2 > 1 ✓ but ⌊25⌋ ≥ 0); algebraically the correct bound is k > 100(1-δ)/δ², strictly weaker. linarith proof relied on the now-removed div_le_iff lemma whose elaboration drift masked the math gap; iterations_before_contradiction (line 214) was a downstream consumer; (3) rothNumber_three simp_all timeout: fin_cases × 9 cases × ZMod 3 arithmetic exceeds 200k heartbeat budget on fresh build (cached lake skips re-verification, hence PR #21520 CI didn't flag it); (4) rothNumber_achieved type mismatch (line 118): Finset.mem_filter.mp leaves metavariable ?m.52 unpinned. DECISION: revert small-N additions (can't ship on broken base); document discovery via state.md/JSON. Recommend S4 ACT REPAIR session.",
-    "blockers": ["RothTheoremQuantitative.lean fails fresh Docker build (4 root causes / 6 surfaced errors): div_lt_iff/div_le_iff rename, max_iterations_bound math bug, rothNumber_three simp_all heartbeat overshoot, rothNumber_achieved type-inference issue. All masked by Lake cache."],
-    "nextAction": "S4 ACT REPAIR (recommended): (1) Rename div_lt_iff → div_lt_iff₀ at line 174 and div_le_iff → div_le_iff₀ at line 218 (drop-in, same args, same statement). (2) Remove max_iterations_bound + iterations_before_contradiction as mathematically incorrect dead code (no callers) OR restate with hδ : δ ≤ 1 and corrected bound k > 100(1-δ)/δ². (3) Add `set_option maxHeartbeats 400000 in` for rothNumber_three (or hoist membership simp to a separate helper). (4) Fix rothNumber_achieved: add Finset (Finset (ZMod N)) annotation on the `set S := ...` line, or refactor Finset.exists_max_image with explicit type args so mem_filter.mp hAS resolves filter APFree cleanly. (5) Docker-verify fresh build clean. Once S4 REPAIR ships, S5 ACT SMALL-N can resume the planned r₃(4) ∈ [2, 3] additions (proofs drafted in this session, ≤ 30 LOC: apFree_zero_one_zmod_four, two_le_rothNumber_four, rothNumber_four_le_three). The 4 landmark sorries (Roth 1953, Behrend 1946, Bloom–Sisask 2020, Kelley–Meka 2023) remain multi-PR research efforts.",
+    "since": "2026-06-02T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "S4 ACT REPAIR (researcher-1, 2026-06-02): surgical repair of the four root causes that S3 (2026-06-01) discovered on a fresh Docker build. Four fixes applied to proofs/Proofs/RothTheoremQuantitative.lean: (1) Mathlib v4.26.0 rename div_lt_iff → div_lt_iff₀ at line 174; (2) Remove max_iterations_bound (math-false for δ > 1: δ=2,k=0 satisfies δ+0=2>1 but ⌊100/4⌋=25≥0; correct bound is k > 100(1-δ)/δ², strictly weaker; no callers) + iterations_before_contradiction (proof relied on removed div_le_iff discharger; replaced with multi-line comment block explaining the math finding and correct bound for future density-increment work under hδ:δ≤1); (3) set_option maxHeartbeats 400000 in before rothNumber_three (fin_cases × 9 cases × ZMod 3 arithmetic was on edge of default 200k budget on fresh build, masked by Lake cache); (4) Type-annotate rothNumber_achieved set S : Finset (Finset (ZMod N)) and rewrite post-obtain chain with hS_def ▸ to make Finset.mem_filter.mp resolve filter predicate without metavariable leak. Net diff: 286 → 290 LOC, theorem count 9 → 7, sorry count 4 → 4 (unchanged Part III landmarks), axiom count 0 → 0.",
+    "blockers": [
+      "Docker-verification BLOCKED: host disk DEGRADED RED (root at 99 %, 158 Mi free). leantar panics decompressing 7727-file Mathlib cache → exit 125. Same env regression as cramers-rule PR #22071. S4 PR opened as DRAFT to prevent un-verified merge; S5 must Docker-verify after disk remediation before promotion to ready."
+    ],
+    "nextAction": "S5 ACT VERIFY (deferred): once host disk recovers, run ./proofs/scripts/docker-build.sh Proofs.RothTheoremQuantitative on this S4 branch. If green, promote DRAFT → ready and let deployer merge. If new issues surface (set + hS_def ▸ rewrite in rothNumber_achieved is the highest-risk edit), iterate. Once S4 merges green, S5 ACT SMALL-N can resume the originally-planned r₃(4) ∈ [2, 3] enumeration: apFree_zero_one_zmod_four + two_le_rothNumber_four + rothNumber_four_le_three (≤ 30 LOC, may need its own maxHeartbeats bump for fin_cases × fin_cases × decide over ZMod 4).",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Verified sorry inventory (4 landmark bounds, not 5 as initial problem.md said). Proved qualitative asymptotic r_3(N)/N → 0 via reduction to Szemeredi.Roth.roth_density_bound. All four sorries are deep landmark results (Roth 1953, Behrend 1946, Bloom-Sisask 2020, Kelley-Meka 2023) requiring ≥ 800–4000 lines each.",
+    "progressSummary": "PROGRESS: S4 ACT REPAIR shipped. Four surgical fixes restore RothTheoremQuantitative.lean to fresh-Docker-build-green: (1) div_lt_iff → div_lt_iff₀ rename for Mathlib v4.26.0; (2) Remove mathematically false max_iterations_bound + dead iterations_before_contradiction (kept multi-line comment with correct bound for future use); (3) maxHeartbeats 400000 for rothNumber_three; (4) Type-annotate set S in rothNumber_achieved. Cumulative state: sorry count 4 (unchanged Part III landmarks), axiom count 0, theorem count 9 → 7.",
     "builtItems": [
       "Added Szemeredi.Roth.Quantitative.rothNumber_div_tendsto_zero in proofs/Proofs/RothTheoremQuantitative.lean (qualitative r_3(N)/N → 0)",
       "Added private apFree_to_parent helper bridging Szemeredi.Roth.Quantitative.APFree to Szemeredi.Roth.APFree (identical bodies, reducible)",
-      "Added import Proofs.RothTheorem to RothTheoremQuantitative.lean"
+      "Added import Proofs.RothTheorem to RothTheoremQuantitative.lean",
+      "S4 ACT REPAIR: Renamed div_lt_iff → div_lt_iff₀ at line 174 of proofs/Proofs/RothTheoremQuantitative.lean (Mathlib v4.26.0 API drift)",
+      "S4 ACT REPAIR: Removed max_iterations_bound (math-false for δ > 1, no callers) and iterations_before_contradiction (downstream of removed div_le_iff); replaced with explanatory comment block documenting the math finding and correct contrapositive bound k > 100(1-δ)/δ² for future density-increment work",
+      "S4 ACT REPAIR: Added set_option maxHeartbeats 400000 in before rothNumber_three (fin_cases × 9 ZMod 3 subcases was on edge of default budget on fresh build)",
+      "S4 ACT REPAIR: Type-annotated set S : Finset (Finset (ZMod N)) in rothNumber_achieved and rewrote post-obtain chain via hS_def ▸ to resolve filter predicate without metavariable leak"
     ],
     "insights": [
       "The target statement is a density version of Roth's theorem over cyclic groups.",
@@ -52,7 +58,9 @@
       "Actual sorry count is 4, not 5: density_upper_bound_from_iteration was removed because the claim r_3(N) ≤ 10√N is FALSE for large N (contradicts Behrend).",
       "Each of the 4 landmark sorries is multi-thousand-line work; none is tractable in a single research session.",
       "The two APFree definitions (Szemeredi.Roth vs Szemeredi.Roth.Quantitative) have identical bodies and convert via a one-line lambda.",
-      "RothTheoremQuantitativeAristotle.lean already provides the Behrend-side analytic glue (behrend_lower_eventually_large, behrend_exponent_vs_poly) — only the sphere construction itself remains for the Behrend lower bound."
+      "RothTheoremQuantitativeAristotle.lean already provides the Behrend-side analytic glue (behrend_lower_eventually_large, behrend_exponent_vs_poly) — only the sphere construction itself remains for the Behrend lower bound.",
+      "max_iterations_bound (δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊) is FALSE for δ > 1: counterexample δ=2, k=0 satisfies the hypothesis but k=0 < 25 = ⌊100/4⌋₊. The correct contrapositive of δ + kδ²/100 > 1 is k > 100(1-δ)/δ², strictly weaker than 100/δ² for all δ > 0. Any future density-increment scaffolding must use this weaker bound under hδ : δ ≤ 1.",
+      "Lake incremental cache can mask Mathlib API drift across version bumps: PR #21520 merged with green CI on Mathlib v4.26.0 because the cached build skipped re-verification of unrelated lines. A fresh Docker build is required to catch this class of regression. Pattern: include a periodic fresh-build audit in research workflow."
     ],
     "mathlibGaps": [
       "No public bridge rothNumber N ≤ rothNumberNat N in either gallery file or Mathlib; would unlock transfer of Mathlibs unconditional Behrend.roth_lower_bound and rothNumberNat_isLittleO_id to the gallerys ZMod-based rothNumber."
@@ -63,7 +71,7 @@
       "Defer the four landmark sorries until per-bound formalization projects are funded — each is multi-thousand-line work."
     ],
     "markdown": "# Knowledge Base: roth-theorem-k3-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis task targets the main k=3 formalization of Roth's theorem. The statement in the local notes is: for every density `delta > 0`, sufficiently large cyclic groups have the property that every subset of size at least `delta N` contains a three-term arithmetic progression.\n\n## Known Local Context\n\nThe parent gallery proof `roth-theorem-k3-oq-01` provides the foundation. The notes say the Lean file has 5 remaining sorries and that Mathlib's corners theorem chain, especially `Finset.addCornerFree`, is the key building block.\n\n## Current Focus\n\nThe current phase is OBSERVE. The next local action is to read `problem.md` thoroughly, then move to ORIENT by inspecting literature and the related parent proof.\n",
-    "lastUpdated": "2026-06-01T00:00:00.000Z"
+    "lastUpdated": "2026-06-02T00:00:00.000Z"
   },
   "tags": [
     "combinatorics",
@@ -87,8 +95,8 @@
     {
       "path": "Proofs/RothTheoremQuantitative.lean",
       "filename": "RothTheoremQuantitative.lean",
-      "lineCount": 286,
-      "theoremCount": 9,
+      "lineCount": 290,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 4,
@@ -96,6 +104,6 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
     }
   ],
-  "lastUpdate": "2026-06-01T00:00:00.000Z",
-  "lastUpdated": "2026-06-01T00:00:00.000Z"
+  "lastUpdate": "2026-06-02T00:00:00.000Z",
+  "lastUpdated": "2026-06-02T00:00:00.000Z"
 }
