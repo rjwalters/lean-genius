@@ -1,10 +1,115 @@
 # Current State
 
-**Phase**: PREP-2 (S3 ACT skeleton bearer-pin sharpening + `Matrix.charpoly_fin_two` discharge for `charpoly_eq_X_sq` + negative finding `Matrix.mul_fin_two` non-existent; S3 ACT picker can paste discharged `charpoly_eq_X_sq` body and still has 2 paste-ready-with-sorry skeletons for `minpoly_eq_X_sq` / `no_cyclic_vector`)
-**Since**: 2026-05-16T~12:00Z (S3 PREP-2 doc-only)
-**Iteration**: 5 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2)
+**Phase**: PREP-3 (S3 PREP-2 HAZARD-1 RESOLVED via direct Mathlib `minpoly` source inspection; deeper HAZARD-2 DISCOVERED: `minpoly (ZMod 4) M` for `M = !![0,2;0,0]` is `Classical.choose`-ambiguous between `X^2` and `X^2 + 2*X`. S3 PREP-2's planned `minpoly_eq_X_sq` is **Lean-unprovable**; revised plan uses `minpoly_natDegree_eq_two` instead — paste-ready discharges drafted)
+**Since**: 2026-06-02T~04:00Z (S3 PREP-3 doc-only, 17-day gap after S3 PREP-2)
+**Iteration**: 6 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3)
 
-## Latest Iteration: S3 PREP-2 (researcher-8, 2026-05-16T~12:00Z) — bearer-pin sharpening + 1-of-3 sorry discharge (doc-only)
+## Latest Iteration: S3 PREP-3 (researcher-1, 2026-06-02T~04:00Z) — minpoly HAZARD resolution + S3 ACT plan revision (doc-only)
+
+Doc-only refinement of S3 PREP-2's HAZARD flag (§2.2 of PR #19612). Reads
+Mathlib's actual `minpoly` definition at the unchanged pin
+(`2df2f0150c…`); resolves HAZARD-1 (monic-vs-non-monic generator dichotomy
+was false — `minpoly` is monic-only by definition), and **discovers a
+deeper HAZARD-2**: `minpoly (ZMod 4) M` for `M = !![0,2;0,0]` is
+non-uniquely determined among `{X^2, X^2 + 2*X}` (both monic deg-2
+annihilators) and resolved by `Classical.choose`, hence the planned
+theorem `minpoly_eq_X_sq` is **Lean-unprovable**. The full session memo
+is at `sessions/2026-06-02-s3-prep-3-minpoly-hazard-resolution.md`.
+
+### S3 PREP-3 key findings
+
+1. **HAZARD-1 resolved** (the S3 PREP-2 stated hazard, `gh api`-verified):
+   `Mathlib/FieldTheory/Minpoly/Basic.lean@2df2f0150c…:39-42` defines
+   `minpoly` over `[CommRing A] [Ring B] [Algebra A B]` as
+   `degree_lt_wf.min` of the set `{p | p.Monic ∧ aeval x p = 0}`. The
+   underlying set restricts to **monic** polynomials, so the candidate
+   `2*X` is NOT in the set. The S3 PREP-2 monic-vs-non-monic dichotomy
+   was a false dichotomy.
+
+2. **HAZARD-2 discovered** (new, the actual blocker):
+   Over `ZMod 4`, the set of monic deg-2 annihilators of `M = !![0,2;0,0]`
+   contains **two distinct elements**: `X^2` and `X^2 + 2*X` (both
+   monic, both annihilate, both have `natDegree = 2`). `degree_lt_wf.min`
+   breaks ties via `Classical.choose` (Mathlib `WellFounded.min` reduces
+   to `Classical.choose` of `not_acc_iff_min`), so the resulting
+   polynomial is **not predictable from `M` alone**. Therefore the
+   propositional equality `minpoly (ZMod 4) M = X^2` is **Lean-unprovable**
+   without committing to a `Classical.choose` realisation.
+
+3. **`minpoly.unique'` fails** (which forecloses the S3 PREP-2 §2.3
+   discharge plan): the hypothesis `∀ q, degree q < degree X² → q = 0 ∨ aeval M q ≠ 0`
+   is falsified by `q = 2*X` (nonzero, degree 1 < 2, but
+   `aeval M (2*X) = 2·M = 0` because `2·2 ≡ 0 (mod 4)`).
+
+### S3 PREP-3 recommended plan revision
+
+Replace the unprovable `minpoly_eq_X_sq` with the degree-form theorem:
+
+```lean
+theorem minpoly_natDegree_eq_two : (minpoly (ZMod 4) M).natDegree = 2
+```
+
+This is well-defined regardless of `Classical.choose` outcome since
+**both** ambiguity candidates (`X^2` and `X^2 + 2*X`) have `natDegree = 2`.
+The session memo §4.1 sketches a ~10-LOC discharge using `minpoly.min`
+(upper bound) + degree-0/1 monic-annihilator exclusion (lower bound).
+
+Cleanest counterexample statement uses a **degree-form predicate**:
+
+```lean
+def IsNonderogatoryDeg (M : Matrix (Fin n) (Fin n) R) : Prop :=
+  (minpoly R M).natDegree = M.charpoly.natDegree
+```
+
+(localised in the new ZMod 4 counterexample file rather than edited into
+the previously-merged S2 ACT file, for blast-radius minimisation).
+
+`charpoly_eq_X_sq` (S3 PREP-2 §1's 4-line discharge) is **unchanged**.
+`no_cyclic_vector` is fully discharged in session memo §4.3 (~25 LOC,
+case-split-free; uses `q = 2*X` as the falsifying annihilator under
+`IsCyclicVector`).
+
+### S3 PREP-3 ACT-readiness gate refresh
+
+| # | Item | Status | Notes |
+|---|------|--------|-------|
+| 1 | Mathlib pin unchanged | GREEN | `lake-manifest.json` rev `2df2f0150c…` (no change since S3 PREP-2) |
+| 2 | S2 ACT namespace importable | GREEN | `Proofs.CayleyHamiltonCyclicVectorCommRingOQ01` unchanged since 2026-05-16 |
+| 3 | `IsCyclicVector` API stable | GREEN | S2 ACT L56-57; no S3-era edits |
+| 4 | No open peer PRs | GREEN | `gh pr list --search "<slug>" --state open` empty |
+| 5 | Counterexample math worked out | **GREEN-revised** | Replaces S3 PREP-2 §2.2 plan with §4 of this memo |
+| 6 | No `meta.json` edits needed | GREEN | No gallery entry; deployer skips gallery sync |
+| 7 | No pre-existing Lean file edits | GREEN | S3 ACT = one new file `…ZMod4Counterexample.lean` |
+| 8 | Docker daemon responsive | UNVERIFIED | Doc-only PREP-3; S3 ACT picker re-checks at branch creation |
+
+Net: 7/8 GREEN (math + infra-prereqs ready) + 1/8 UNVERIFIED INFRA.
+The S3 ACT picker can paste:
+- §4.1 `minpoly_natDegree_eq_two` (~10 LOC modulo bearer-pin gaps for
+  `Polynomial.natDegree_le_natDegree_of_degree_le` and
+  `Polynomial.natDegree_eq_zero_iff`)
+- §4.2 `charpoly_eq_X_sq` (4 LOC, **sorry-free**, from S3 PREP-2)
+- §4.3 `no_cyclic_vector` (~25 LOC, **sorry-free**, derived in this PREP-3)
+- §4.4 (optional) `IsNonderogatoryDeg` + final counterexample composition
+
+Estimated total LOC for S3 ACT file: ~50-70 (depending on §4.4 inclusion).
+
+### Files touched (3 — doc-only)
+
+- `state.md` (this file): S3 PREP-3 block prepended; iteration counter
+  5 → 6; phase PREP-2 → PREP-3.
+- `sessions/2026-06-02-s3-prep-3-minpoly-hazard-resolution.md`: NEW
+  ~310 LOC session memo. Sections: executive summary, Mathlib pin, annihilator
+  enumeration, unprovability argument, revised plan, gate refresh,
+  files list, verification log, open questions.
+- `src/data/research/problems/<slug>.json`: phase/since/iteration/focus
+  refresh; `lastUpdate` bump; 3 new `knowledge.insights` entries
+  (HAZARD-1 resolution, HAZARD-2 discovery, `minpoly.unique'` failure);
+  `knowledge.nextSteps` revised to point at `minpoly_natDegree_eq_two`.
+
+**Zero Lean edits, zero gallery edits, zero `meta.json` edits, zero
+candidate-pool edits.**
+
+## Previous Iteration: S3 PREP-2 (researcher-8, 2026-05-16T~12:00Z) — bearer-pin sharpening + 1-of-3 sorry discharge (doc-only)
 
 Doc-only refinement of S3 STATE-SYNC's paste-ready skeleton (§3.1) using bearer
 content-SHA queries at the pinned Mathlib SHA. Docker daemon hung at branch-creation
