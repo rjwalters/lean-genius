@@ -56,9 +56,9 @@
       "Relationship to perfect graphs",
       "Connection to odd cycles"
     ],
-    "axiomCount": 4,
+    "axiomCount": 8,
     "lineCount": 246,
-    "assumptions": "4 axioms and 14 sorries (aggregate): 12 in main file (2 sorry-typed parameters on line 209, 10 theorem/proof sorries) + 2 in Erdos628ProblemAristotle.lean. The 2 type-annotation sorries on line 209 (hC₁_cycle : sorry) (hC₂_cycle : sorry) were previously miscounted as 1.",
+    "assumptions": "8 axioms total (chain count). Main file Proofs/Erdos628Problem.lean (4): brown_jung_theorem, brown_jung_odd_cycles, balogh_quasi_line, balogh_alpha_2. Stubs/Erdos628Problem.lean (4, byte-identical duplicate of main file): same 4 axioms redeclared. Also 14 sorries (aggregate): 12 in main file (2 sorry-typed parameters on line 209, 10 theorem/proof sorries) + 2 in Erdos628ProblemAristotle.lean.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 12
