@@ -1,17 +1,47 @@
 # Current State
 
-**Phase**: PREP (S22 PREP — Path C activation: paper discharge of S11b-α-1 + S11b-α-2 sorries from S20 PREP §6 skeleton + 3-RED INFRA escalation (B1 Docker 18h still hung, +9h past 12h Path C threshold; new B2 disk 4.2 Gi RED below 5 Gi soft-floor; new B3 proofs/.lake circular self-symlink RED); 1-bearer spot-check (`Finset.mem_sort` confirmed via codebase usage); §6 6-row picker decision matrix; doc-only.)
-**Since**: 2026-05-17T00:00:00Z
-**Iteration**: 22 (S22 PREP — `currentState.{focus,nextAction,blockers 1→3-entry,attemptCounts}` + `knowledge.{progressSummary,builtItems[+1],nextSteps[0]}` + `lastUpdate` refresh; new ~480-LOC session memo with §3 paper discharge of S11b-α-1 + S11b-α-2 + §6 6-row picker matrix; no Lean, no `knowledge.md` body, no `problem.md`, no `meta.json`)
-**Researcher**: researcher-10 (S22 PREP, this PR, doc-only); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: PREP (S23 STATE-SYNC — B1 + B2 blocker clearances confirmed by re-verification at 2026-06-01T20:50Z; B3 proofs/.lake circular self-symlink remains active; Path C activation gating now lifted at the infrastructure layer.)
+**Since**: 2026-06-01T20:50:00Z (S23 STATE-SYNC re-verification timestamp; prior **Since** was 2026-05-17T00:00:00Z = S22 PREP open)
+**Iteration**: 23 (S23 STATE-SYNC — re-verifies B1 + B2 blocker clearance after 15-day staleness; reduces RED blocker count 3 → 1; refreshes `currentState.{phase,since,focus,nextAction,blockers,lastUpdate}`; no Lean, no `knowledge.md`, no `problem.md`, no `meta.json`.)
+**Researcher**: researcher-1 (S23 STATE-SYNC, this PR, doc-only); researcher-10 (S22 PREP — PR #19696); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
-## Blockers
+## Blockers (post-S23 STATE-SYNC)
 
-| ID | Description | Since | Mitigation |
-|----|-------------|-------|------------|
-| B1 | **Docker daemon hung** — `docker info` exit 124 / Server section blank (Client section completes normally). Blocks all `./proofs/scripts/docker-build.sh` invocations. **18h since hang** at S22 PREP open — **+6h PAST 12h Path C cancellation threshold** (triggered at 2026-05-16T18:01Z). | 2026-05-16T06:01Z | Wait for host disk recovery (B2 prerequisite); run `docker system prune -f` when daemon responsive; re-attempt Docker S11a-VERIFY. Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
-| B2 | **Host disk RED below 5 Gi soft-floor** — `/System/Volumes/Data` at 4.2 Gi free (100% capacity). DEGRADED from 6.7 Gi at S21 STATE-SYNC (−2.5 Gi over 9.5h). Same-day 5 Gi soft-floor established by ballot-problem-oq-02-oq-05 S6 ACT PR #19675 (5.4 Gi) + shannon-channel-coding-oq-02-oq-01-oq-01 S18a-1 ACT PR #19655 (5.8 Gi). | 2026-05-17T00:00Z | Host-side cleanup script (`docker system prune` + lake cache audit + worktree audit); wait for natural recovery; re-run `df -h` before S22b ACT to confirm ≥5 Gi. |
-| B3 | **proofs/.lake circular self-symlink** — `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Will cause `lake build` to fail before reaching Mathlib. ESCALATED from implicit AMBER (mentioned passingly in S21 STATE-SYNC §1) to explicit RED to align with same-day precedent across sperner-simplicial-bridge-oq-01 / schroeder-bernstein-oq-01 / CLT-oq-01 STATE-SYNCs. | 2026-05-16T09:04Z | `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; lake build will recreate). |
+| ID | Status | Description | Since | Mitigation |
+|----|--------|-------------|-------|------------|
+| B1 | **CLEARED 2026-06-01T20:50Z** | Docker daemon was hung at S22 PREP open. Re-verified at S23 STATE-SYNC: `docker info` returns normally with full Server section (responsive). 15+ days have passed since S22 PREP recorded the hang; daemon has recovered. | 2026-05-16T06:01Z (hung) → 2026-06-01T20:50Z (cleared) | Cleared by natural recovery (host-side restart or daemon resync; not attributable to a specific Loom PR). |
+| B2 | **CLEARED 2026-06-01T20:50Z** | Host disk was RED at 4.2 Gi free / 100% capacity at S22 PREP open. Re-verified at S23 STATE-SYNC: `/System/Volumes/Data` now at **41 Gi free** / 96% capacity (926 Gi total, 858 Gi used). Recovery of +37 Gi over 15 days, well above 5 Gi soft-floor and well above the lake-build working set. | 2026-05-17T00:00Z (RED) → 2026-06-01T20:50Z (cleared) | Cleared by natural recovery + likely host-side cleanup (docker prune, lake cache eviction). Not attributable to a specific Loom PR. |
+| B3 | **ACTIVE (unchanged)** | proofs/.lake circular self-symlink — `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S23 STATE-SYNC: symlink still present, target unchanged (created 2026-05-29 per ls -la timestamp). Will cause `lake build` to fail before reaching Mathlib. | 2026-05-16T09:04Z | `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; lake build will recreate). **One-line host-side fix** — not removable by a research PR (touches main repo's `proofs/.lake`, not a tracked file). |
+
+## Session 24 — S23 STATE-SYNC (researcher-1, 2026-06-01, this PR, doc-only)
+
+**Trigger.** Claim-random at 2026-06-01T20:44Z landed this slug 15 days after S22 PREP opened with 3 RED infrastructure blockers (B1 Docker hung, B2 disk 4.2 Gi RED, B3 proofs/.lake circular self-symlink). S22 PREP's `nextAction` is gated on B1 + B2 clearance ("State #1: G7≥5Gi + G8 RESPONSIVE + G9 recoverable, RECOMMENDED if any"). Stale infra blockers are the canonical case for STATE-SYNC re-verification.
+
+**Re-verification at 2026-06-01T20:50Z.**
+
+| Blocker | S22 PREP claim | S23 STATE-SYNC re-verification | Disposition |
+|---------|----------------|--------------------------------|-------------|
+| B1 Docker daemon hung | `docker info` exit 124 / Server section blank | `docker info` returns normally with full Server section (Debug Mode, Plugins, ...) | **CLEARED** |
+| B2 host disk 4.2 Gi free | `/System/Volumes/Data` at 4.2 Gi free (100% capacity) | `/System/Volumes/Data` at **41 Gi free** / 96% capacity (926 Gi total, 858 Gi used) — well above 5 Gi soft-floor and well above lake working set | **CLEARED** |
+| B3 proofs/.lake circular self-symlink | `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` self-referential | symlink still present at the same path (ls timestamp: 2026-05-29 11:42, target unchanged) | **ACTIVE (unchanged)** |
+
+**Why this STATE-SYNC, not S22b ACT.** S22 PREP's `nextAction` describes a 6-row picker decision matrix; State #1 (RECOMMENDED) requires G7 (disk ≥ 5 Gi) AND G8 (Docker responsive) AND G9 (.lake recoverable). G7 + G8 are now PASS; G9 (B3) remains FAIL. **B3 is host-side**: removing the symlink at `/Users/rwalters/GitHub/lean-genius/proofs/.lake` is a one-line `rm` operation on the main repo path, not a tracked file. A research PR from a worktree cannot remove a non-tracked symlink in the main repo. The clearance of B3 is owed to a host-side maintenance step, not a research session.
+
+**Disposition.** This S23 STATE-SYNC ships:
+
+- Re-verified B1 + B2 clearance with timestamped evidence (15-day-old claims now stale).
+- Updates `state.md` head Phase/Since/Iteration/Researcher.
+- Refreshes the **Blockers** table: 3 RED → 1 RED (B3 only), with B1 + B2 marked CLEARED with re-verification timestamp.
+- Refreshes JSON `currentState.{phase, since, iteration, focus, nextAction, blockers}` + `lastUpdate` to reflect the post-clearance picture.
+- This new session memo.
+
+**No Lean / no `problem.md` / no `knowledge.md` / no `meta.json` / no sibling-slug edits.** The S11a ACT deliverable (PR #19519, build pending per S20 record) remains unchanged; the S22 PREP §3 paper-discharge of S11b-α-1 + S11b-α-2 remains in the session memo as a paste-ready record for S23b/S24 ACT.
+
+**Updated `nextAction` direction.** With B1 + B2 cleared, the recommended next iteration is **S23b host-side maintenance** — `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (one-line, by the human) — followed by **S24 ACT**: pasting the S20 PREP §6 + S22 PREP §3 combiner skeleton + paper-discharge replacements into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` and running `./proofs/scripts/docker-build.sh`. Until B3 is host-cleared, a research PR cannot land the S22b ACT deliverable.
+
+**Honesty.** This iteration adds zero Lean code, zero mathematical content. It is **navigation hygiene** — an infrastructure re-verification that prevents the next researcher from acting on stale 15-day-old RED claims. The headline OQ (refining the bounded-prime-gaps upper bound) remains as open as it was before this STATE-SYNC.
+
+---
 
 ## Session 23 — S22 PREP (researcher-10, 2026-05-17, this PR, doc-only)
 
