@@ -48,7 +48,12 @@
       "card_computable_reals_lt_card_reals, card_computable_lt_card_nonComputable — S4 strict cardinal inequalities ℵ₀ < 𝔠 specialised to the computable/non-computable split",
       "card_computable_reals_eq_card_algebraic_reals, card_nonComputableReals_eq_card_reals, cardinality_trichotomy — S5 cross-cardinal consolidation lifting the cardinal coordinates of the hierarchy from the imported sibling AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0",
       "computable_reals_nonempty, computable_reals_infinite — S6 Set-level structural API for the computable side (0 ∈ S; infinite via ℚ ↪ S and Set.infinite_range_of_injective + Rat.cast_injective)",
-      "nonComputableReals_nonempty, nonComputableReals_uncountable, nonComputableReals_infinite — S6 Set-level structural API for the non-computable side (uncountable from card = 𝔠 > ℵ₀; infinite from Set.Finite.countable contradiction)"
+      "nonComputableReals_nonempty, nonComputableReals_uncountable, nonComputableReals_infinite — S6 Set-level structural API for the non-computable side (uncountable from card = 𝔠 > ℵ₀; infinite from Set.Finite.countable contradiction)",
+      "computable_reals_dense, closure_computable_reals_eq_univ — S7 topological structure: computable reals are dense in ℝ (Rat.denseRange_cast + rat_isComputable + Dense.mono), closure = univ via Dense.closure_eq",
+      "nonComputableReals_dense, closure_nonComputableReals_eq_univ — S8-prep topological complement: non-computable reals also dense (Ioo a b argument via IsOpen.exists_Ioo_subset + Cardinal.mk_Ioo_real / aleph0_lt_continuum contradiction); closure = univ",
+      "nonComputableReals_isGδ, nonComputableReals_residual, computable_reals_meagre — S8 Baire-category sharpening: complement of countable in T1 is Gδ (Set.Countable.isGδ_compl), Gδ ∩ dense is residual, meagre dual via IsMeagre definitional unfolding",
+      "interior_computable_reals_eq_empty, interior_nonComputableReals_eq_empty — S8 corollary: both sides of the partition have empty interior (interior_eq_empty_iff_dense_compl applied to the dual density results)",
+      "frontier_computable_reals_eq_univ, frontier_nonComputableReals_eq_univ — S9 boundary characterization: every real is a boundary point of both partition halves simultaneously (frontier := closure \\ interior, combining S7/S8-prep closure = univ with S8 interior = ∅, then Set.diff_empty)"
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable: algebraic_reals_countable — the next layer up in the hierarchy",
