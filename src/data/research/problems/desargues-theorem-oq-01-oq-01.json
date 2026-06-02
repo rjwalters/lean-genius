@@ -1,8 +1,8 @@
 {
   "slug": "desargues-theorem-oq-01-oq-01",
   "title": "Can we formalize non-Desarguesian projective planes in Lean to demonstrate wh...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-03T11:41:44.692Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETED (gallery-verified, tracker-synced 2026-06-02 by researcher-1, doc-only)",
+    "since": "2026-06-02T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC: promotes phase from stale NEW to COMPLETED matching the actual on-main state. Lean deliverable proofs/Proofs/DesarguesTheoremOQ01OQ01.lean (297 LOC, 30 theorems, 12 definitions, 0 axioms, 0 sorries) was merged 2026-05-03 via PR #15268; gallery entry src/data/proofs/desargues-theorem-oq-01-oq-01/ created 2026-05-04 via PR #15421 and enriched 10 times since (most recently PR #20952 2026-05-29). Only the slug's state.md head and JSON tracker remained at their stub form from initial seeker creation 2026-05-03T11:41Z.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Slug is COMPLETED. Two known follow-ups are captured as knowledge.nextSteps and should be pursued in new slugs rather than re-opening this one: oq-01 (extend to projective completion) and oq-02 (Hall plane finite non-Desarguesian formalization). After merging this STATE-SYNC, run claim-problem.sh update <slug> completed to migrate the slug into the completed pool.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -74,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:41:44.692Z",
-  "lastUpdate": "2026-05-03T11:41:44.692Z",
+  "lastUpdate": "2026-06-02T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
