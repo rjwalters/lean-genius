@@ -1,11 +1,27 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 39 PREP — 28a Beta-integral paste-ready skeleton SHIPPED doc-only; remaining Route B work: 28a ACT)
+**Phase**: ACT (Iter 41 PREP — 28a bearer re-verify + IBP probe SHIPPED doc-only; remaining Route B work: 28a ACT)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-31 (Iter 40 STATE-SYNC — state.md catch-up after Iter 39 PREP #21401; iteration 39→40; no Lean edits, no axiom/sorry delta, researcher-1)
-**Iteration**: 40
+**Last Updated**: 2026-06-01 (Iter 41 PREP — bearer re-verify + IBP probe; iteration 40→41; no Lean edits, no axiom/sorry delta, researcher-1)
+**Iteration**: 41
+
+## Iter 41 PREP (2026-06-01, researcher-1) — 28a bearer re-verification + IBP probe (Option B from Iter 39)
+
+Doc-only PREP that executes Iter 39 §"What the next researcher should do" **Option B** (5–10 line probe of IBP / integral_ofReal at v4.26.0 to front-load uncertainty before 28a ACT). Re-verifies Iter 39's Bearers 1–5 against the local v4.26.0 mirror at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, adds three NEW bearers, and corrects two Iter 39 prediction errors.
+
+- **Bearers 1–5 re-confirmed verbatim** at v4.26.0: `Complex.betaIntegral_eval_nat_add_one_right` (Beta.lean:202), `Nat.ascFactorial_eq_prod_range` (BigOperators.lean:49), `Nat.factorial_mul_ascFactorial` (Factorial/Basic.lean:227), `Nat.choose_mul_factorial_mul_factorial` (Choose/Basic.lean:141), `Complex.ofReal_pow` (Complex/Basic.lean:621). No drift since Iter 39 PREP (2026-05-31).
+- **NEW Bearer 6** — `Nat.ascFactorial_pos` (Factorial/Basic.lean:301): signature `(n k : ℕ) : 0 < (n + 1).ascFactorial k` (no hypothesis; structural positivity). **Resolves Iter 39 sorry-2** in ~1 LOC via `Nat.ascFactorial_pos k (n - k + 1)`. Iter 39's predicted signature `0 < n → 0 < n.ascFactorial k` was wrong (the +1 is syntactic, not hypothetical) — strictly more convenient.
+- **NEW Bearer 7** — `intervalIntegral.integral_ofReal` (IntervalIntegral/Basic.lean:810): `(∫ x in a..b, (f x : ℂ) ∂μ) = ↑(∫ x in a..b, f x ∂μ)`. **IntervalIntegral.lean is now a DIRECTORY at v4.26.0** (11 submodules under `Mathlib/MeasureTheory/Integral/IntervalIntegral/`), using the new module system (`module` keyword + `public import`). ACT will need targeted imports: `Mathlib.Analysis.SpecialFunctions.Gamma.Beta` + `Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic` (~2 lines).
+- **NEW Bearer 8** — `intervalIntegral.integral_mul_deriv_eq_deriv_mul` (IntegrationByParts.lean:142): the actual v4.26.0 IBP lemma. **`intervalIntegral.integration_by_parts` as named in Iter 29 / Iter 39 prose does NOT exist** — correct API is the `integral_mul_deriv_eq_deriv_mul` family (5 variants).
+- **Recommendation locked**: cast-bridge path (~80 LOC total) supersedes Iter 39's "choose at ACT time" hedge. Four reasons documented (smaller LOC, reuses Iter 39 skeleton, avoids re-deriving Mathlib's `betaIntegral_recurrence`, lower API-drift risk).
+- **Residual risk** (kept open): `linear_combination` + `field_simp` over ℂ tactic-syntax drift v4.25→v4.26 (Iter 39 Medium risks; this PREP did NOT probe — Iter 42 ACT author falls back to hand-rolled `ring` + `Nat.cast_*` if needed).
+- **Estimated ACT size**: ~80 LOC (Iter 39 lower bound; upper bound was for direct-IBP path which is now de-recommended).
+
+**File state at PREP time**: 1802 LOC unchanged (no Lean edits); 1 axiom `hanson_bound` unchanged; 0 sorries throughout the live file. Build state: 3066/3066 jobs verified at SHA `2df2f0150c…` per Iter 38 ACT #20863 (2026-05-28).
+
+**No edits outside this PREP's three files**: this session log + this `state.md` block + research JSON `currentState` refresh. No knowledge.md / problem.md / Lean / meta.json edits. Session log: `sessions/2026-06-01-iter41-prep-28a-bearer-reverify-and-ibp-probe.md`.
 
 ## Iter 40 STATE-SYNC (2026-05-31, researcher-1) — state.md catch-up after Iter 39 PREP
 

@@ -29,10 +29,10 @@
     "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
   },
   "currentState": {
-    "phase": "ACT (Iter 39 — 28a Beta-integral identity paste-ready skeleton SHIPPED doc-only; remaining Route B: 28a ACT)",
+    "phase": "ACT (Iter 41 PREP — 28a bearer re-verify + IBP probe SHIPPED doc-only; remaining Route B: 28a ACT)",
     "since": "2026-05-16T05:00:00Z",
-    "iteration": 40,
-    "focus": "Iter 39 PREP (researcher-1, 2026-05-31): doc-only re-verification of Iter 29 PREP Mathlib bearers at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Two NEW bearers identified beyond Iter 29 — Nat.factorial_mul_ascFactorial (Factorial/Basic.lean:227-233) and Nat.choose_mul_factorial_mul_factorial (Choose/Basic.lean:141) — closing the chain outline gap. Real ↔ complex bridge sketched with two paths (cast-bridge ~30-50 LOC vs direct IBP ~50-80 LOC). Paste-ready 28a Lean skeleton with each step drop-in body provided. No Lean changes, 1 axiom hanson_bound unchanged, 0 sorries throughout in the live file. Session log: sessions/2026-05-31-iter39-prep-28a-paste-ready-skeleton.md.",
+    "iteration": 41,
+    "focus": "Iter 41 PREP (researcher-1, 2026-06-01): Option B from Iter 39 — 5-10 line probe of IBP / integral_ofReal at v4.26.0. Re-confirms Iter 39 Bearers 1-5 verbatim at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Adds Bearer 6 (Nat.ascFactorial_pos Factorial/Basic.lean:301; resolves Iter 39 sorry-2 in ~1 LOC; corrects Iter 39's predicted signature error). Adds Bearer 7 (intervalIntegral.integral_ofReal at IntervalIntegral/Basic.lean:810; IntervalIntegral file is now a directory of 11 submodules at v4.26.0, using new module system; ACT needs targeted imports). Adds Bearer 8 (intervalIntegral.integral_mul_deriv_eq_deriv_mul at IntegrationByParts.lean:142; corrects Iter 39 IBP naming error — integration_by_parts as named does NOT exist). Locks cast-bridge recommendation (~80 LOC total); de-recommends direct-IBP path. Medium-risk linear_combination / field_simp tactic drift kept open for Iter 42 ACT. No Lean changes, 1 axiom hanson_bound unchanged, 0 sorries. Session log: sessions/2026-06-01-iter41-prep-28a-bearer-reverify-and-ibp-probe.md.",
     "blockers": [
       "28a Beta-integral identity: Iter 29 PREP #18485 only — no Lean shipping yet; Mathlib lacks Beta-integral identity in rational-denominator form. Largest remaining standalone Lean LOC commitment in Route B chain (60-100 LOC per Iter 31 §4). Now the SOLE remaining Lean-shipping blocker after 28b-2 shipped (Iter 38).",
       "Integer-squeeze closure of hanson_bound: needs 28a landed (28b-1 shipped Iter 34a, 28b-2 shipped Iter 38, 28c shipped Iter 35b) AND integer-squeeze threshold n_0 <= 100 (numerical floor hanson_n1..hanson_n100 provides slack budget).",
@@ -43,7 +43,7 @@
       "currentApproach": 12,
       "approachesTried": 2
     },
-    "nextAction": "Iter 40+ (next researcher): ship 28a Beta-integral identity per Iter 39 PREP paste-ready skeleton (~80-100 LOC). complex_betaIntegral_nat_eq_choose_inv calc shell + Step 3 cleanup body provided verbatim. Real bridge: choose cast-bridge OR direct IBP after a 5-10 line probe of intervalIntegral.integration_by_parts at v4.26.0. After 28a lands, integer-squeeze closes hanson_bound once n_0 ≤ 100 (numerical floor hanson_n1..hanson_n100 slack budget)."
+    "nextAction": "Iter 42+ (next researcher): ship 28a Beta-integral identity per Iter 39 PREP §'The full chain in calc form' + Iter 41 §'Cast-bridge sketch' + Iter 41 §'Bearer 6' sorry-2 replacement. Cast-bridge path RECOMMENDED (~80 LOC; supersedes Iter 39's choose-at-ACT hedge — direct-IBP de-recommended). Targeted imports: Mathlib.Analysis.SpecialFunctions.Gamma.Beta + Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic. Apply complex_betaIntegral_nat_eq_choose_inv after Iter 38's exists_witness_choose_saturates_log_succ; resolve sorry-2 with Nat.ascFactorial_pos k (n-k+1) (~1 LOC); resolve sorry-1 with Iter 39 drop-in body (fall back to hand-rolled ring + Nat.cast_* if linear_combination/field_simp drift bites). Build-verify under ./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ03. After 28a lands, integer-squeeze closes hanson_bound once n_0 ≤ 100 (numerical floor hanson_n1..hanson_n100 slack budget)."
   },
   "knowledge": {
     "progressSummary": "PROGRESS (iter 39 PREP, doc-only). Iter 38 (2026-05-28, shipped): 28b-1 + 28b-2 + 28c all build-verified at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Route B divisibility/saturation numerator side COMPLETE. THIS ITER (Iter 39, researcher-1, 2026-05-31): doc-only PREP re-verifying Beta-integral bearers at pinned SHA + paste-ready 28a skeleton. Two new bearers identified beyond Iter 29 PREP (factorial_mul_ascFactorial, choose_mul_factorial_mul_factorial). Real ↔ complex bridge sketched with two alternative paths. ACT estimate: 80-100 LOC. SOLE remaining Lean-shipping ACT: 28a Beta-integral identity (skeleton now paste-ready). Integer-squeeze closure of hanson_bound follows once 28a ships + n_0 ≤ 100 (existing numerical floor hanson_n1..hanson_n100 provides slack budget).",
@@ -156,7 +156,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-31T17:00:00Z",
+  "lastUpdate": "2026-06-01T18:00:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
