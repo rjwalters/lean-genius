@@ -20,7 +20,7 @@
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ02.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axioms": 2,
+    "axioms": 3,
     "mathlibDependencies": [
       {
         "theorem": "ENNReal.lintegral_mul_le_Lp_mul_Lq",
@@ -61,9 +61,9 @@
       "Complete documentation of Hölder → Riesz-Thorin proof hierarchy"
     ],
     "dateAdded": "2026-03-06",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "lineCount": 600,
-    "assumptions": "2 axiom(s): hadamard_three_lines, riesz_thorin. See Lean source for complete statements.",
+    "assumptions": "3 axiom(s) across the chain: 2 in main file CauchySchwarzIntegralOQ01OQ02.lean (hadamard_three_lines, riesz_thorin) and 1 in companion HadamardThreeLines.lean (maximum_modulus_strip). See Lean sources for complete statements.",
     "mathlib_version": "4.26.0",
     "theoremCount": 28,
     "definitionCount": 8,
@@ -188,7 +188,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This file partially answers OQ-01-OQ-02: Hölder's inequality provides the endpoint operator norm bounds and Lp space structure that Riesz-Thorin interpolation requires, but the full proof additionally needs the Hadamard three-lines lemma (complex analysis). The formalization includes 0 sorries, 2 axioms (hadamard_three_lines, riesz_thorin), and 28 proved theorems covering interpolation infrastructure, log-convexity, Hausdorff-Young exponents, Young's convolution, and space inclusions.",
+    "summary": "This file partially answers OQ-01-OQ-02: Hölder's inequality provides the endpoint operator norm bounds and Lp space structure that Riesz-Thorin interpolation requires, but the full proof additionally needs the Hadamard three-lines lemma (complex analysis). The formalization includes 0 sorries, 3 axioms across the chain (hadamard_three_lines, riesz_thorin in main; maximum_modulus_strip in companion HadamardThreeLines.lean), and 28 proved theorems covering interpolation infrastructure, log-convexity, Hausdorff-Young exponents, Young's convolution, and space inclusions.",
     "implications": "**Theoretical Significance**: **Implications**\n\n1. **Partial derivation**: Hölder → endpoint bounds → Riesz-Thorin (with three-lines lemma) → Hausdorff-Young. Hölder is necessary but not sufficient alone.\n\n**2. Missing piece**: The Hadamard three-lines lemma for analytic functions on a strip is the key gap. Adding this to Mathlib would enable a complete Riesz-Thorin proof.\n\n3. **Proof hierarchy**: Young → Hölder → Minkowski → Lp structure → Riesz-Thorin endpoints + three-lines → interpolation → Hausdorff-Young.\n\n4. **Applications**: Riesz-Thorin yields Young's convolution inequality, Hausdorff-Young, and boundedness of Hilbert/Riesz transforms on intermediate Lp spaces.",
     "openQuestions": [
       "Can the Hadamard three-lines lemma be formalized in Lean 4 using Mathlib's complex analysis?",
