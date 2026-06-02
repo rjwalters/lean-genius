@@ -1,9 +1,64 @@
 # Current State
 
-**Phase**: ORIENT (S4 ACT-readiness — all 6 gates GREEN; S4g BUILD-VERIFY discharged)
+**Phase**: ORIENT (S4 ACT-readiness — sub-step (a) paste-ready; gate 5 BUILD-VERIFY stale 17 days)
 **Since**: 2026-05-13 (S4 PREP chain — Strategy B choreography + phantom-API audit)
-**Last Updated**: 2026-05-16 (S4g BUILD-VERIFY baseline — `Proofs.InverseGaloisA5Dedekind` Docker-green at 7744 jobs)
-**Iteration**: 6 (S4g BUILD-VERIFY baseline discharge; researcher-1)
+**Last Updated**: 2026-06-02 (S4h PREP — 7th bearer attestation @ pin `2df2f0150c` + paste-ready sub-step (a) Lean draft ~32 LOC)
+**Iteration**: 7 (S4h PREP sub-step (a) paste-ready; researcher-1)
+
+## S4h PREP 2026-06-02 (researcher-1)
+
+**Focus**: deliver paste-ready sub-step (a) typeclass-plumbing Lean
+draft (~32 LOC) + 7th bearer pin-verification across the 17-day
+window since S4g, **without** triggering Docker under host disk RED
+(2.3 Gi free / 100% capacity) + Docker daemon I/O errors. Full memo
+at `sessions/2026-06-02-s4h-prep-substep-a-paste-ready.md`.
+
+### Result
+
+* **Bearer drift across 17-day window: 0.** All 16 bearers re-verified
+  via `gh api repos/leanprover-community/mathlib4/contents/...?ref=2df2f0150c…`
+  (Frobenius.lean lines 54/184/216/256/260/264, Invariant/Basic.lean
+  lines 53/65/85/376/385, RamificationInertia/Galois.lean lines
+  67/182/236/298/323). 7th independent attestation; pin unchanged.
+* **Paste-ready sub-step (a)**: 32-LOC Lean block (`section
+  TypeclassPlumbing`) that wires `IsIntegralClosure.MulSemiringAction`
+  + `isInvariant_of_isGalois` + `Finite.of_fintype` for `q.Gal` on
+  `𝓞 q.SplittingField`. Drops in between lines 65 and 77 of
+  `InverseGaloisA5Dedekind.lean`.
+* **Hazard map** H-A1–H-A7 cataloging definitional diamonds
+  (`isInvariant_of_isGalois`'s `letI`-in-conclusion, H-A3 Medium),
+  global-instance bleed (H-A7 Medium), and 5 Low-likelihood items
+  for the next ACT picker.
+
+### S4 ACT-readiness gate refresh (S4g → S4h)
+
+| # | Precondition | S4g (2026-05-16) | S4h (this) |
+|---|---|---|---|
+| 1 | All S4 PREP chain merged | ✅ | ✅ unchanged (17 days, 0 new PREPs on slug) |
+| 2 | S4f STATE-SYNC #19081 merged | ✅ | ✅ unchanged |
+| 3 | Mathlib pin still `2df2f0150c` | ✅ | ✅ re-verified `lake-manifest.json` |
+| 4 | Bearer 16-set drift = 0 across last window | ✅ 6 attestations / 60h | ✅ **+1 (7th) attestation; window extended to 17 days** |
+| 5 | Pre-ACT Docker baseline green | ✅ 7744 jobs / cold cache | ⚠️ **stale (17 days old); next ACT picker MUST re-run `./proofs/scripts/docker-build.sh Proofs.InverseGaloisA5Dedekind` before paste** |
+| 6 | No competing in-flight ACT | ✅ | ✅ `gh pr list --search` returned 0 open |
+| 7 (NEW) | Paste-ready sub-step (a) Lean draft | — | ✅ published in session note |
+
+**Gate 5 is the only gate that has degraded** (from staleness, not
+evidence of regression). All other gates including the new gate 7
+are GREEN.
+
+### Honest-status block (S4h)
+
+- **Mathematical progress**: zero. Doc-only PREP iteration.
+- **Sorry / axiom delta**: zero on both files.
+- **Build status**: not exercised this cycle (host disk RED + Docker
+  daemon I/O-errored; gate 5 caveat documented).
+- **Lean lines added/changed**: 0 in tracked Lean files; 32 LOC
+  proposed in session-note markdown for the next ACT picker.
+- **Gallery status**: unchanged (`axiomatized`, badge `axiom`,
+  axiomCount 1).
+- **OQ status**: unchanged (`exists_gal_order_three` still open).
+
+---
 
 ## S4g BUILD-VERIFY 2026-05-16 (researcher-1)
 
@@ -357,7 +412,9 @@ migration applied alongside. Lean diff ~+250 LOC (new main file)
 | S4d PREP-sibling | researcher-8 sibling-after-PREP audit of S4c §3/§4 workarounds — sharper Option B by cancellation (~10–14 LOC vs 22–28); verified `smul_eq_self` drop-in (~8–12 LOC, no sorries) | PR #19265 merged 2026-05-15T18:02:36Z |
 | S4d PREP-splitpoint | researcher-9 Strategy B split-point forward-ref audit (zero forward-refs in lines 329..1896) + workaround bearer pin-verification (19 bearers, 0 drift) + 5 ACT-hazard observations (§2.3–§2.6, §4) | PR #19266 merged 2026-05-15T18:02:32Z |
 | S4e PREP | researcher-12 post-batch boundary inventory (11 merged + 1 open PR on slug) + S4d integration audit + obsolescence map for #19081 + drop-in §4 appendix + consolidated S4 ACT-readiness onesheet (§5) | PR #19307 merged 2026-05-15T19:00:19Z |
-| S4f STATE-SYNC | researcher-9 absorbs S4d-×2 + S4e facts (M1–M9) into state.md + JSON `currentState` post-#19081 merge; 6th independent bearer spot-check at lake-pinned SHA (0 drift across 60h window) | this PR |
+| S4f STATE-SYNC | researcher-9 absorbs S4d-×2 + S4e facts (M1–M9) into state.md + JSON `currentState` post-#19081 merge; 6th independent bearer spot-check at lake-pinned SHA (0 drift across 60h window) | merged 2026-05-16 |
+| S4g BUILD-VERIFY | researcher-1 discharged pre-ACT Docker baseline (`Proofs.InverseGaloisA5Dedekind`, 7744 jobs / ~4 min wall, cold cache); parent + companion compile clean at pin; 3 non-breaking warnings inventoried (W1 deprecation, W2 linter, W3 expected sorry) | merged 2026-05-16 |
+| S4h PREP | researcher-1 7th bearer pin-verification (16-set, 0 drift across 17-day window since S4g) + paste-ready sub-step (a) Lean draft (~32 LOC) + hazard map H-A1–H-A7; host disk RED + Docker daemon I/O-errored, gate 5 BUILD-VERIFY left stale with caveat | this PR |
 
 ## Honest Calibration
 
