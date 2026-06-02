@@ -1,9 +1,63 @@
 # Current State
 
-**Phase**: ACT (S3 SCAFFOLD + S4 PREP merged; capstone discharge skeleton paste-ready against `main` — but ACT structurally GATED by 3 host-side RED INFRA blockers as of S6 STATE-SYNC)
+**Phase**: ACT (S3 SCAFFOLD + S4 PREP merged; capstone discharge skeleton paste-ready against `main` — but ACT structurally GATED by 2 host-side RED INFRA blockers as of S7 STATE-SYNC; B2 Docker cleared this session)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
-**Last Updated**: 2026-05-16T18:36Z (Iteration 14, researcher-12)
-**Iteration**: 14
+**Last Updated**: 2026-06-02T13:00Z (Iteration 15, researcher-1)
+**Iteration**: 15
+
+## Iteration 15 (researcher-1, 2026-06-02) — S7 STATE-SYNC
+
+**Outcome**: STATE-SYNC (doc-only) — post-S6-STATE-SYNC-merge follow-up T+~17 days absorbing one substantive host-side delta (B2 Docker RED→GREEN, `docker info` now returns `29.4.1` server version vs S6's hung empty Server: section). B1 disk RED carry-forward (~2.0 Gi free / 100% used `/dev/disk3s5`, slightly worse than S6's 3.0 Gi; still below 5.4 Gi same-day ACT soft floor). B3 `proofs/.lake` circular self-symlink RED carry-forward (`readlink -f` resolves to own path; `ls` reports "Too many levels of symbolic links"). 2-bearer spot-check via `gh api` at unchanged Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `classNumber_eq_one_iff` ClassNumber.lean:74 + `isPrincipalIdealRing_of_abs_discr_lt` ClassNumber.lean:198 both byte-stable verbatim. ACT-readiness gate flips 5/9 → 6/9 GREEN. S4 PREP §4 ~75-LOC paste-ready skeleton recipe-frozen. Orphan-stash flag from S6 cleared (stash IDs rotated; no longer present in `git stash list`).
+
+### What I added
+
+- `sessions/2026-06-02-s7-state-sync-docker-cleared-17day-quiescence.md` (NEW, ~245 LOC) — TL;DR + 17-day quiescence absorb (§2), INFRA gate state table 9-row (§3), why-STATE-SYNC justification (§4), 2-bearer verbatim spot-check (§5), iteration ledger through Iter 15 (§6), next-action priority routes (§7), files-modified manifest (§8), honest calibration with 5 explicit non-actions (§9).
+- This `state.md` head: phase header refresh (3 RED blockers → 2 RED blockers; B2 Docker GREEN), Last Updated → 2026-06-02T13:00Z, Iteration 14 → 15, Iteration 15 block inserted above preserved Iteration 14 block. Blockers subsection refreshed (3 entries → 2 entries; B2 removed).
+- `src/data/research/problems/sqrt2-minpoly-oq-03.json`: `currentState.{lastUpdated, iteration 14→15, focus rewrite, nextAction rewrite, attemptCounts.total 14→15}` + `currentState.blockers` 3→2 entries (B2 cleared) + `knowledge.progressSummary` tail append + `knowledge.nextSteps[0]` rewrite.
+
+### Why a STATE-SYNC now (single delta + 17-day quiescence)
+
+S6 STATE-SYNC (PR #19760, researcher-12, merged 2026-05-16T19:ish) pinned the ACT-readiness gate at 5/9 GREEN with 3 host-side INFRA REDs. 17 days later, ONE substantive delta has accumulated:
+
+- **B2 Docker daemon cleared**: `timeout 5 docker info --format '{{.ServerVersion}}'` now returns `29.4.1` (was empty Server: section at S6). This is the one delta worth absorbing — without this STATE-SYNC, the next ACT picker would re-discover B2 has cleared and spend an iteration re-verifying.
+
+Two infrastructure REDs from S6 carry forward unchanged from this host:
+
+- **B1 disk avail**: ~2.0 Gi free / 100% used (slightly worse than S6's 3.0 Gi); below 5.4 Gi same-day ACT soft floor (PR #19675 ballot-problem S6 ACT). Same condition flagged today across multiple researcher-1 cycles (memory `project_researcher_1_2026_06_02_iter4_ftc_lebesgue`).
+- **B3 `proofs/.lake` circular self-symlink**: main repo's `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (points at itself). `readlink -f` resolves to own path; `ls` reports "Too many levels of symbolic links". Same condition as S6 STATE-SYNC §3.
+
+The 17-day quiescence by itself would not warrant a STATE-SYNC; the B2 delta is what makes this PR non-vacuous. Mathlib pin **unchanged** at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (lake v4.26.0); SHA-pin transitivity carries the 12-row bearer pin grid byte-stable. This session spot-checks 2 bearers (different rotation from S6's 1-bearer check) — both verbatim match.
+
+S7 ACT remains GATED on B1 + B3 host-side fixes. Recommendation: if host operator fixes B1 (free ≥5.4 Gi) + B3 (repoint `.lake` to actual cache) within 24-48 hours, proceed directly with S4 PREP §4 paste. Otherwise: release-and-cycle silently; do NOT ship another STATE-SYNC for ≥48 hours.
+
+### Next action (post-S7 STATE-SYNC)
+
+Two routes for next claim on this slug, in priority order:
+
+1. **Host operator (out-of-agent action)**: (a) repoint `proofs/.lake` symlink to actual lake working directory (not self-referential); (b) free disk ≥5.4 Gi. With B2 (Docker) already GREEN this session, both fixes → full 9/9 GREEN gate; S4 PREP §4 ~75-LOC paste-ready skeleton at `proofs/Proofs/Sqrt2MinpolyOQ03.lean` L72↔L73 (replacing L71 `  sorry` body) becomes immediately viable — expected `[7745/7745]` warm build ~12s.
+2. **Next-claim researcher**: if host conditions still RED on next claim, **release-and-cycle silently** (do not ship another STATE-SYNC for ≥48 hours absent a substantive delta — Docker GREEN was this session's delta and is now logged).
+
+### Files modified
+
+- `research/problems/sqrt2-minpoly-oq-03/state.md` (this file head)
+- `src/data/research/problems/sqrt2-minpoly-oq-03.json`
+- `research/problems/sqrt2-minpoly-oq-03/sessions/2026-06-02-s7-state-sync-docker-cleared-17day-quiescence.md` (NEW)
+
+### Blockers (S7 STATE-SYNC)
+
+- **B1 (RED)** — Host-disk avail ~2.0 Gi (`/dev/disk3s5` 100% used per `df -g /Users/rwalters` at 2026-06-02T13:00Z). Below same-day ACT soft floor 5.4 Gi (PR #19675 ballot-problem S6 ACT). Slightly worse than S6's 3.0 Gi. Resolution: free ≥5.4 Gi.
+- **B3 (RED)** — `proofs/.lake` circular self-symlink (`/Users/rwalters/GitHub/lean-genius/proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake`). `readlink -f` returns own path; `ls` reports "Too many levels of symbolic links". Carry-forward standing INFRA RED from S6. Resolution: host operator repoint to actual lake working directory.
+
+(B2 Docker daemon: **CLEARED this session** — `docker info` returns `29.4.1` server version; no longer a blocker.)
+
+### Honest Calibration (S7 STATE-SYNC)
+
+- 0 Lean changes, 0 bearer re-walks (only 2-bearer spot-check), 0 gallery edits, 0 problem.md edits, 0 knowledge.md body edits. Pure JSON+state.md+session-note tri-edit per memory's thin-STATE-SYNC pattern.
+- 1 substantive delta (B2 Docker RED→GREEN) — the load-bearing reason this PR is non-vacuous.
+- 2-bearer spot-check via `gh api` (no local Mathlib clone, no Docker dependency). SHA-pin transitivity carries the remaining 10/12 bearers per `feedback_sha_stable_busywork`.
+- No `.lake` symlink repair attempted — the broken symlink is on the **main** repo path, not the worktree; touching it from a research-session worktree risks cross-agent interference per `feedback_edit_absolute_paths_worktree_gotcha`.
+- 17-day quiescence absorbed as a "longest dormancy" observation, but with positive confirmation: 0 commits to `Sqrt2Minpoly*.lean` or `sqrt2-minpoly-oq-03/` since S6 STATE-SYNC; no parent regression.
+- Orphan-stash flag from S6 cleared (stash IDs rotated; ephemeral local stash did not survive across rebases).
 
 ## Iteration 14 (researcher-12, 2026-05-16) — S6 STATE-SYNC
 
