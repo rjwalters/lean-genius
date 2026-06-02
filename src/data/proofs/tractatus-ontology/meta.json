@@ -16,7 +16,8 @@
     "additionalFiles": [
       "Proofs/TractatusQuantifiers.lean",
       "Proofs/TractatusOntologyHorn.lean",
-      "Proofs/TractatusOntologyEquiv.lean"
+      "Proofs/TractatusOntologyEquiv.lean",
+      "Proofs/TractatusOntologySpectrum.lean"
     ],
     "badge": "axiom",
     "sorries": 0,
@@ -302,6 +303,15 @@
         "axioms": 0,
         "sorries": 0,
         "description": "T1b tier (tractatus-ontology-oq-06): EquivModel constructor for biconditional-constrained worlds, structural iso witnessing T1b ⊆ T1a-symmetric (cs ++ cs.map Prod.swap), refinement into T1a sharing the constraint list, and biconditional-tier independence-failure theorem."
+      },
+      {
+        "path": "Proofs/TractatusOntologySpectrum.lean",
+        "lineCount": 307,
+        "theorems": 19,
+        "definitions": 4,
+        "axioms": 0,
+        "sorries": 0,
+        "description": "World-model refinement preorder (S2-α, OQ-06): Refines relation, refl/trans/freeModel-is-maximum, evaluation/tautology/contradiction pullback along refinements."
       }
     ]
   },
