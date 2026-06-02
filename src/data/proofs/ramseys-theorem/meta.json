@@ -58,7 +58,10 @@
     "assumptions": "1 axiom: multicolor_ramsey_exists. See Lean source for the complete statement.",
     "mathlib_version": "4.26.0",
     "theoremCount": 24,
-    "definitionCount": 14
+    "definitionCount": 14,
+    "additionalFiles": [
+      "Proofs/RamseysTheoremOQ02.lean"
+    ]
   },
   "overview": {
     "historicalContext": "Ramsey's theorem was proved by Frank Plumpton Ramsey in 1930, just before his untimely death at age 26. The theorem appeared in his paper 'On a Problem of Formal Logic' where he was investigating decision procedures for first-order logic.\n\nThe result spawned an entire branch of combinatorics now called Ramsey theory, which studies the emergence of order in sufficiently large structures. The guiding principle is that complete disorder is impossible—given enough elements, some regular pattern must appear.\n\nThe most famous special case is the 'party problem': at any party of 6 people, either 3 mutually know each other or 3 are mutual strangers. This corresponds to R(3,3) = 6.",
@@ -218,7 +221,18 @@
     "theoremCount": 24,
     "definitionCount": 14,
     "path": "Proofs/RamseysTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/RamseysTheoremOQ02.lean",
+        "description": "R(3,3) = 6 exact (OQ-02): upper bound that every 2-coloring of K_6 contains a monochromatic triangle (pigeonhole on the 5 neighbors of any vertex, then case-split on whether the three matching neighbors form a same-color triangle or complete a triangle with v), combined with the K_5 pentagon lower bound from RamseysTheorem.lean. 0 own axioms, 0 sorries. Namespace RamseyNumber33.",
+        "lineCount": 186,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 4,
+        "definitionCount": 0
+      }
+    ]
   },
   "references": [
     {
