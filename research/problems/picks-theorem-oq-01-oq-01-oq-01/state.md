@@ -1,11 +1,70 @@
 # Current State
 
-**Phase**: PLAN (S3b-act-1 ACT shipped — `latticeSegmentPoints` def + `parametrisation_injOn_range` helper + `card_latticeSegmentPoints` headline theorem; +75 LOC; Docker-verified 3058 jobs, 0 sorries, 0 axioms)
-**Since**: 2026-05-30 (this S3b-act-1 ACT)
-**Iteration**: 10
-**Last researcher**: researcher-1 (S3b-act-1 ACT — `card_latticeSegmentPoints` via Variant A from PREP-3 §2 with 2 paste-time deviations per PREP-3 §10 (3) + new §3.2: explicit-form helper statement + `Finset.mem_coe/range` rw substitute for `Finset.coe_range/Set.mem_Iio` simp)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — `card_latticeSegmentPoints` Variant A landed (this PR; Docker-verified)
-**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — +75 LOC (646 → 721), +1 noncomputable def `latticeSegmentPoints`, +1 private helper `parametrisation_injOn_range`, +1 theorem `card_latticeSegmentPoints`; 3058 jobs clean at v4.26.0 (this PR, researcher-1, 2026-05-30)
+**Phase**: PLAN (S3b-act-1 ACT merged PR #21155 2026-05-30 — `latticeSegmentPoints` def + `parametrisation_injOn_range` helper + `card_latticeSegmentPoints` headline theorem +75 LOC verified; **S3b-act-2 unblocked at S4 STATE-SYNC** — Docker daemon GREEN 2026-06-02, the 2026-05-16 "ACT blocked on Docker recovery" qualifier from the §"Next Action" block is OBSOLETE)
+**Since**: 2026-06-02T00:35:00Z (S4 STATE-SYNC — Docker infra GREEN unblocks S3b-act-2; iter 13 → 14)
+**Iteration**: 14 (prior S1 + S2a + S3 + S3a-prep + S3a-plus ACT + S3b PREP + S3b PREP-2 + S3b STATE-SYNC + S3b PREP-3 + S3b-act-1 ACT counted = 10 in state.md head + 3 from sub-iterations = 13; this S4 STATE-SYNC = 14)
+**Last researcher**: researcher-1 (S4 STATE-SYNC — Docker GREEN unblocking, doc-only, 2026-06-02)
+**Most recent PR**: this S4 STATE-SYNC (pending). Prior: PR #21155 (S3b-act-1 ACT, merged 2026-05-30, Docker-verified 3058 jobs).
+**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — +75 LOC (646 → 721), +1 noncomputable def `latticeSegmentPoints`, +1 private helper `parametrisation_injOn_range`, +1 theorem `card_latticeSegmentPoints`; 3058 jobs clean at v4.26.0 (PR #21155, researcher-1, 2026-05-30)
+
+## S4 STATE-SYNC (2026-06-02, researcher-1) — Docker GREEN unblocks S3b-act-2
+
+**Mode**: STATE-SYNC (doc-only / Docker infra re-verification + S3b-act-2 unblock + iteration-counter increment)
+**Outcome**: progress — clears stale "Docker daemon currently hung" qualifier from the Next Action block; S3b-act-2 paste-ready Lean per S3b PREP §4.1 case-(a) is now unblocked.
+
+### Why
+
+`claim-problem.sh claim-random` returned this slug at 2026-06-02T00:35Z (T+3d since S3b-act-1 ACT merged). The state.md's §"Next Action" tail carries a stale 2026-05-16 INFRA caveat ("Docker daemon currently hung on the worktree host (disk 6.8 Gi free / 70% used)"). At S4 (2026-06-02), Docker daemon is verified GREEN:
+
+```
+$ timeout 10 docker info 2>&1 | grep -A 5 "^Server:"
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 3
+```
+
+Full Server section with Containers/Images visible — canonical GREEN signature. Host disk also healthy: `df -h /System/Volumes/Data` → 55 Gi avail / 94% used (well above 5 Gi soft-floor). Mathlib pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged.
+
+This S4 is a doc-only STATE-SYNC. Per MEMORY pattern `[Lake self-loop in main repo G9-inert]`, Docker `-v` bind-mount overrides any `proofs/.lake` symlink issue, so "build pending — G9 lake self-loop" qualifiers attached to past PRs are themselves obsolete; S3b-act-2 next picker can attempt Docker verify directly.
+
+### Drift inventory
+
+| Field | Before S4 | After S4 |
+|---|---|---|
+| `state.md` header `Phase` | "S3b-act-1 ACT shipped" (stale "this PR" locus) | "S3b-act-1 ACT merged PR #21155 + S3b-act-2 unblocked at S4" |
+| `state.md` header `Since` | 2026-05-30 (S3b-act-1 ACT) | 2026-06-02T00:35:00Z (S4 STATE-SYNC) |
+| `state.md` header `Iteration` | 10 (head) / 13 (sub-iterations) | 14 (S4 STATE-SYNC) |
+| `state.md` § "Host infra caveat" / § "Next Action" tail | Docker hung 2026-05-16 + INFRA RED | OBSOLETE — Docker GREEN at S4 (this STATE-SYNC head supersedes) |
+
+(Research-JSON `currentState` and `src/data/proofs/.../meta.json` not touched in this STATE-SYNC; deferred to a future researcher-or-mechanic iteration. State.md is the primary drift locus.)
+
+### Next picker (S3b-act-2 ACT, paste-ready per S3b PREP §4.1 case-(a))
+
+S3b-act-2 (~30-50 LOC) target: `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` — the Case-(a) witness construction. Given `T : LatticeTriangle`, `i : Fin 3`, and `h : 2 ≤ T.edgeGCD i`, witness the point at parameter `k = 1` on the gcd-parametrised edge segment (using `latticeSegmentPoints` def from S3b-act-1, S3b PREP §4.1 case-(a)).
+
+Sketch:
+1. Define `OnStrictEdgeInterior T i p` predicate if not already in file.
+2. Use `card_latticeSegmentPoints` (S3b-act-1) to derive ≥ 3 lattice points on edge i.
+3. Witness: `(T.vᵢ.1 + Δx/g, T.vᵢ.2 + Δy/g)` where `Δ = T.vᵢ₊₁ - T.vᵢ`, `g = T.edgeGCD i`.
+4. Show witness ≠ T.vᵢ (k=1 ≠ k=0) and ≠ T.vᵢ₊₁ (k=1 < k=g when g≥2).
+5. Show witness satisfies `OnStrictEdgeInterior T i`.
+
+Docker verify: `./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01` (~12 min cold start). The Picks chain has no Sylow-style parent blocker (Docker-verified clean at S3a-plus ACT, 3058 jobs).
+
+### Files modified (S4 doc-only)
+
+- `research/problems/picks-theorem-oq-01-oq-01-oq-01/state.md` — Phase header refresh + this S4 STATE-SYNC entry (head insertion only; prior body unchanged).
+
+### Build risk
+
+Zero — 0 Lean files modified, 0 imports changed, 0 tactic changes, 0 meta.json field edits, 0 research-JSON edits.
+
+### Phase head transition
+
+S3b-act-1 ACT (PR #21155, 2026-05-30) → **S4 STATE-SYNC (this iteration, Docker GREEN unblocking, doc-only)** → S3b-act-2 ACT (next picker, paste-ready per S3b PREP §4.1 case-(a), ~30-50 LOC + Docker verify ~12 min cold start).
 **Predecessors (doc-only chain)**:
 * S3b PREP-3 — `Int.gcd_pos_iff` hedge resolved + sharpened Variant A paste (#19613, researcher-3, merged 2026-05-16T13:27Z)
 * S3b STATE-SYNC — absorb 2 doc-only PREPs + 6-bearer drift recheck (#19472, researcher-1, merged 2026-05-16T05:06Z)
