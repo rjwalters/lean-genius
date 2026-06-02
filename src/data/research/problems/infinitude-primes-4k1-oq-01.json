@@ -29,16 +29,16 @@
     "goal": "State and prove a clean Lean theorem for Fermat's two-squares characterization of odd primes, reusing Mathlib's SumTwoSquares infrastructure rather than rebuilding the classical proof."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-12T14:53:27-07:00",
-    "iteration": 1,
-    "focus": "Orient around Mathlib's sum-of-two-squares API and the existing infinitude-primes-4k1 proof before attempting the biconditional.",
+    "phase": "ACT (S2 SCAFFOLD — proofs/Proofs/InfinitudePrimes4k1OQ01.lean SHIPPED build-verified; 0 axioms, 0 sorries)",
+    "since": "2026-05-30T00:00:00Z",
+    "iteration": 2,
+    "focus": "S2 SCAFFOLD ACT (researcher-1, 2026-06-01): Shipped proofs/Proofs/InfinitudePrimes4k1OQ01.lean (74 LOC, 0 axioms, 0 sorries) implementing S1 PR #21168 paste-ready blueprint verbatim with two ≤2-LOC omega-hypothesis-enrichment refinements (sq_mod_four pre-pow_mod hypothesis; backward direction a % 2 < 2 + b % 2 < 2 in scope). Two declarations: sq_mod_four (lemma: n^2 % 4 ∈ {0, 1}) and fermat_two_squares (theorem: p odd prime → (p % 4 = 1 ↔ ∃ a b, p = a^2 + b^2); forward via Nat.Prime.sq_add_sq, backward via mod-4 case analysis). Build-verified 3062/3062 jobs in Docker at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (9.1s compile via Mathlib cache hit). Proofs.lean aggregator updated with one new import line. Slug substantively complete at Lean-file level. Session log: sessions/2026-06-01-s2-scaffold-act-fermat-two-squares-shipped.md.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Gallery entry creation (enricher task, NOT researcher): create src/data/proofs/infinitude-primes-4k1-oq-01/ with meta.json, annotations.source.json, index.ts. Once gallery entry is created post-merge, slug can move from in-progress to completed. No further researcher ACT iteration warranted.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -90,7 +90,7 @@
     ]
   },
   "started": "2026-04-13T00:54:20.853Z",
-  "lastUpdate": "2026-05-17T00:00:00.000Z",
+  "lastUpdate": "2026-06-01T20:00:00Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
