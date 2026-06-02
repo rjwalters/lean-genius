@@ -137,11 +137,11 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 
 - Sorries: 0
 - Axioms: 0
-- Build: verified at S6b ACT close (2026-05-31 via Docker wrapper,
-  `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`).
-- Open Lean PR: **this PR (S6b ACT)** as of 2026-05-31T18:30Z UTC.
-  No other open PRs for the slug (`gh pr list --state open --search
-  "area-of-circle-oq-05-oq-04"` returned `[]` immediately before this PR).
+- Build: verified at S6b ACT-2 close (2026-05-31 via Docker wrapper,
+  `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`),
+  3129/3129 jobs at v4.26.0.
+- Open Lean PR: none for the slug as of this STATE-SYNC (2026-06-01;
+  S6b ACT-2 PR #21779 merged 2026-06-01T03:52Z).
 
 ## Path-to-completion (consolidated)
 
@@ -159,37 +159,40 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 | S6c PREP-2 | PREP | Moment-shortcut obsoletes `hasDerivAt_integral_of_dominated_loc` | #18584 | merged |
 | **S6 ACT** | **ACT** | **n-dim shifted complex Gaussian + 3 corollaries (Path B per S6a)** | **#19153** | **merged 2026-05-15T22:57Z** |
 | STATE-SYNC | DOC | Canonical state.md + JSON refresh after 10-session arc | #19043 | merged 2026-05-15T23:27Z (predates S6 ACT content) |
-| **S11 PREP** | **PREP** | **S6b sharpened + STATE-SYNC absorbing S6 ACT (this PR)** | **(this)** | **unmerged** |
-| (next) | ACT | S6b ACT: `complex_fourier_gaussian` family on `V := ℂ` | — | unclaimed |
+| S11 PREP | PREP | S6b sharpened + STATE-SYNC absorbing S6 ACT | #19594 | merged 2026-05-16T09:57Z |
+| **S6b ACT** | **ACT** | **`complex_fourier_gaussian` family on V := ℂ (Part 6, +3 thm, +`_normSq` companion sorry-free)** | **#21575** | **merged 2026-05-31T18:34Z** |
+| **S6b ACT-2** | **ACT** | **`complex_fourier_gaussian_shifted` + `_density_eigen` (Part 7, +2 thm, sorry-free)** | **#21779** | **merged 2026-06-01T03:52Z** |
+| STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 (this PR) | (this) | unmerged |
+| (next) | ACT | S6c via PREP-2 (Schur orthogonality diagonal case, ~40-60 LOC) | — | unclaimed |
 
 ## Next Action
 
-**S6b ACT (next research claim)**: direct
-`fourier_gaussian_innerProductSpace` specialization at `V := ℂ`, per the
-sharpened paste-ready skeleton in
-`sessions/2026-05-16-s11-prep-s6b-sharpened.md` §4. ~80 LOC. Adds 1 new
-import (`Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform`).
+S6b family is now feature-complete on `V := ℂ` (1-dim ℂ Fourier-Gaussian
+Part 6+7 shipped via PRs #21575 and #21779). The next ACT target is **S6c
+via PREP-2 (Schur orthogonality, diagonal case)** per the moment-shortcut
+route locked in S6c PREP-2 (PR #18584).
 
-The skeleton fully discharges the two main theorems (`complex_fourier_gaussian`
-parametric, `complex_fourier_gaussian_pi` the load-bearing archimedean (C2))
-and the with-shift companion. It has **2 acknowledged R-class LOW sorries**
-on side-corollaries (`_normSq` and `_density_eigen`), each ≤5 LOC discharge
-with named-lemma reduction sketches.
+**S6c ACT (next research claim)**: variance computation for the
+Hermite-1 moment of the standard complex Gaussian via Mathlib's
+`gaussianReal` / `IsGaussian` infrastructure. Target ~40-60 LOC. The
+diagonal case suffices to discharge (C3) on the archimedean side; the
+off-diagonal cases follow by separation-of-variables Fubini reduction
+(parallel to S6 ACT's per-axis Fubini decomposition).
 
-**ACT-readiness gate: 7/8 GREEN substantive + 1/8 RED INFRA** (the RED is
-host disk pressure precluding Docker build; not a math gate). If host disk
-recovers before next claim, S6b ACT can run a full build verify. If disk
-pressure persists, ship S6b ACT with `(build pending — disk-full)`
-qualifier per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`.
+Reference skeleton: `sessions/2026-05-13-s6c-prep-2-mathlib-moment-shortcut.md`
+(may need a bearer recheck given the API drift between v4.10 → v4.26.0
+that surfaced during S6b ACT-2; see the `Circle.smul_def` gotcha noted in
+the S6b ACT-2 session memo).
 
-**Deferred (orthogonal, not blocking S6b)**:
+**Deferred (orthogonal to S6c, multi-week)**:
 
-- **S6c via PREP-2 (Schur orthogonality, diagonal case)**: ~40-60 LOC
-  variance computation via `gaussianReal`/`IsGaussian` moment shortcut.
-  Independent of S6b; both can ship in either order.
 - **S6d (Mathlib milestone — `Measure ℚ_p` with `μ(ℤ_p) = 1`)**: multi-week
   upstream Mathlib PR. Tracked in S4b survey #18269. The standard
-  `ψ_p : ℚ_p → ℂ` contribution is heavier still.
+  `ψ_p : ℚ_p → ℂ` additive character contribution is heavier still.
+- **n-dim ℂ Fourier-Gaussian lift**: the n-dim version of
+  `complex_fourier_gaussian_pi` (current proof is 1-dim only).
+  Independent of S6c; Path B (per-axis Fubini) likely carries
+  through directly given the S6 ACT precedent.
 
 ## Open Blockers
 
@@ -201,10 +204,11 @@ qualifier per `feedback_researcher_docker_build_disk_full_ship_build_pending_per
   standard additive character `ψ_p : ℚ_p → ℂ` and explicit Haar
   measure on `ℚ_p` with `μ(ℤ_p) = 1`. Neither lands in this slug
   directly — they are S6d upstream Mathlib milestones.
-- **Host disk infra (INFRA-only, not math)**: `/System/Volumes/Data`
-  at 100% used / 6.9 Gi avail; Docker unsafe per
-  `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`.
-  ACT cycle requires either disk recovery or `(build pending)` qualifier.
+- **Host disk infra (INFRA-only, not math)**: was a concern at S11 PREP
+  time; S6b ACT-2 (2026-05-31) successfully ran a full Docker rebuild
+  (3129/3129 jobs). This blocker is currently RESOLVED but worth
+  re-checking before any S6c ACT cycle that may need a fresh
+  3000+-job rebuild.
 
 ## Repository housekeeping (out of scope for this S11 PREP)
 
