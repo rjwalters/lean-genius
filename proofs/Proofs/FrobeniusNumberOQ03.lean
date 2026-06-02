@@ -250,4 +250,32 @@ theorem frobeniusNumber3_le_sylvester_bound_tight {a b c : ℕ}
     rw [hne, csSup_empty]
     exact bot_le
 
+/-! ### S5 — `large_representable3` for three-consecutive integers -/
+
+/-- **S5 (researcher-1, 2026-06-02)**: specialization of S3b's
+    `large_representable3_via_two_gen` to the three-consecutive family
+    `(n, n + 1, n + 2)`. For `1 ≤ n`, every `m ≥ (n - 1) * n` is
+    `Representable3 n (n + 1) (n + 2) m` (witnessed with the third
+    coefficient `z = 0`, lifted by `representable3_of_two_gen`).
+
+    The bound `(n - 1) * n = n² - n` is the Sylvester quantity
+    `(a - 1) * (b - 1)` instantiated at `a := n, b := n + 1` (consecutive
+    integers are coprime via `Nat.coprime_self_add_right` reducing to
+    `Nat.coprime_one_right`). This is loose compared to Roberts' tight
+    d = 1 closed form `g(n, n+1, n+2) = ⌊(n - 2) / 2⌋ · n + (n - 1) ≈ n²/2`
+    (asymptotically half this bound) but is unconditional and serves as
+    the foundation for the Roberts closed-form chain (S6 = Roberts 3-AP,
+    S6+ = Fibonacci / Mersenne triples per `state.md` §"Forward outlook"). -/
+theorem large_representable3_three_consecutive {n m : ℕ} (hn : 1 ≤ n)
+    (hm : (n - 1) * n ≤ m) : Representable3 n (n + 1) (n + 2) m := by
+  have hcop : Nat.Coprime n (n + 1) := by
+    rw [Nat.coprime_self_add_right]
+    exact Nat.coprime_one_right n
+  have hb : 1 ≤ n + 1 := by omega
+  have hbound : (n - 1) * (n + 1 - 1) ≤ m := by
+    have heq : n + 1 - 1 = n := by omega
+    rw [heq]
+    exact hm
+  exact large_representable3_via_two_gen hcop hn hb hbound
+
 end FrobeniusOQ03
