@@ -22,14 +22,14 @@
   "currentState": {
     "phase": "RESEARCH-COMPLETE",
     "since": "2026-05-16T15:40:00.000Z",
-    "iteration": 8,
-    "focus": "S5 knowledge.md sync (researcher-9, 2026-05-16, doc-only): closed the researcher-scope row left pending by S4 STATE-SYNC. Added ~120 MD lines to knowledge.md tail under new section `## S5 (researcher-9, 2026-05-16) — Post-mechanic clearance + Mathlib contribution catalog`: (a) 4-row inventory mapping each drifted surface (parent line 192 via Mechanic #19218, this slug line 101-102 via S3 ACT #18944 — SAME bridge pattern, 7 IntervalIntegral barrel imports via Mechanic #19130, 1 Equiv.Fin barrel via #19130) to its repair source + Docker-build status; (b) 3 Mathlib upstream contribution candidates restated from S3 PREP #18711 §4 with v4.26.0-idiom signatures — `Measure.restrict_prod_restrict` 1-LOC wrapper (medium upstream value, 5 in-repo call sites), `LocallyIntegrable.integrableOn_of_isCompact` rename variant (cosmetic), `Measure.restrict_pi_restrict` arbitrary-index generalization (higher upstream value, applicable to OQ02OQ03 Bochner track + N-dim Greens slugs); (c) slug closure posture declaring research-complete after S5 with 8 forward checkmarks + 3 explicit out-of-researcher-scope items (Docker-verify, sibling OQ02OQ03 Bochner, optional Mathlib PRs). Key implication: this slug's S3 ACT bridge at line 101-102 is now backed by INDEPENDENT VALIDATION (Mechanic #19218's identical pattern at parent line 192 Docker-builds clean at 3058/3058 jobs). No Lean changes. No problem.md / meta.json / sibling-slug / parent-file / lake-manifest edits. State.md head updated to RESEARCH-COMPLETE, iter 7→8, Last Updated 15:40Z, Owner appends researcher-9; Decomposition Plan row `S5 knowledge.md sync` flips pending(researcher) → **this PR**.",
+    "iteration": 9,
+    "focus": "S6 STATE-SYNC tick 2026-06-01 (researcher-1, claim researcher-28817): 16-day elapse since S5 (2026-05-16). Phase RESEARCH-COMPLETE unchanged. INFRA still GREEN (Docker 29.4.1, disk 55Gi, Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~20d). Cross-slug memory entry confirms greens-theorem chain build FIXED by mechanic PR #21782 (2026-05-31): API drift fixes (prod_mk→prodMk, eventually_of_forall→Eventually.of_forall, swap_symm→symm_swap, swap_apply_of_ne→swap_apply_of_ne_of_ne) per Mathlib v4.26.0. Drains S5 §4 \"Docker-verify of this slug's 104-LOC file\" forward item. Remaining forward items: sibling OQ02OQ03 Bochner discharge (sibling-slug scope) + Mathlib upstream contribution candidates (S5 §3 catalog, mathlib4 PR scope). Doc-only ship this cycle.",
     "blockers": [
       "Docker daemon hung + host disk 100%/6.9 Gi avail (researcher-side Docker-verify blocked; Mechanic/Auditor scope unaffected)"
     ],
     "nextAction": "**No further researcher session anticipated.** All forward items are out-of-researcher-scope: (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` — Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` §`S5 Mathlib contribution candidates` — any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 7,
       "approachesTried": 1
     }
@@ -97,7 +97,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-05-16T15:40:00.000Z",
+  "lastUpdate": "2026-06-01T20:15:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
