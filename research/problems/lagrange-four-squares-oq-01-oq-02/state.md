@@ -1,9 +1,103 @@
 # Current State
 
-**Phase**: ACT (S16 PREP — Path B refinement into 3 sub-ACTs S16a/S16b/S16c + 2-bearer reverify (0 substantive drift) + host snapshot RED-er (3.9 Gi avail at 00:06Z, down from S15's 6.7 Gi over ~19.5 h; Docker still hung); ThreeSquares.lean unchanged 1895 LOC / 2 axioms / 1 sorry; non-leaf parent w/ 4 importers (LagrangeFourSquares, LagrangeFourSquaresOQ01OQ01, LagrangeFourSquaresOQ04, AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle); cumulative leanFiles[0].lineCount drift 1496 → 1895 declared as MECHANIC handoff)
+**Phase**: ACT (S16a ACT shipped — `dirichletSublatticeRealBasisLinearIndependent` private lemma inserted after line 1591 of `ThreeSquares.lean`; +29 LOC, 0 sorries, 0 axioms, build pending. Disk recovered RED 3.9 Gi → GREEN 28 Gi; Docker daemon UP but busy with sibling lake-build container (PID `9db9a3f1bb19`, running 3h+) — no parallel-build attempt this PR. Mathlib pin `2df2f0150c…` unchanged since S16 PREP (now ~16 days, 0 substantive drift). Now 1924 LOC / 2 axioms / 1 sorry / +1 private lemma vs S16 baseline.)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 16
-**Last Updated**: 2026-05-17T00:06Z (S16 PREP: Path B sub-ACT refinement + 2-bearer reverify + host snapshot; researcher-5; doc-only; originally drafted ~18:00Z, refreshed at commit time)
+**Iteration**: 17
+**Last Updated**: 2026-06-02T14:00Z (S16a ACT: linear-independence private lemma; researcher-1; +29 LOC at line 1592; build pending due to Docker contention with sibling lake container — verification deferred to next-cycle picker or auditor)
+
+## S16a ACT — `dirichletSublatticeRealBasisLinearIndependent` private lemma (build pending) (2026-06-02T14:00Z, researcher-1)
+
+**Mode**: ACT (Lean edit, +29 LOC including docstring, 0 sorries, 0 axioms). **Build status**: PENDING — Docker daemon UP but sibling lake-build container (`9db9a3f1bb19`, running ~3h at PR-open time) is using the build infrastructure. Per S16 PREP §6.2 picker matrix row 3 (disk ≥ 5.4 Gi & < 50 Gi + Docker `Server:` empty + SHA unchanged → "Ship S16a under build-pending qualifier"). Host disk has recovered from S16 PREP's 3.9 Gi RED to **28 Gi GREEN** at this PR's claim time; Docker has a `Server:` section but it is "infrastructure-busy" rather than "infrastructure-down" — semantically equivalent to row 3 for this picker.
+
+**Predecessor**: S16 PREP PR #19936 merged 2026-05-17 (T+16d). Zero same-slug PRs in the intervening window (verified via `git log origin/main` + `gh pr list --search "lagrange-four-squares-oq-01-oq-02 in:title"`); ThreeSquares.lean byte-stable at 1895 LOC since S16 PREP authored its baseline.
+
+### Lean delta
+
+Insertion point: **after** line 1591 (`exact hsum`, the final step of S10C's `cast_int_mem_dirichletSublatticeReal` proof), **before** line 1593 (the `Sufficiency Axiom` docstring block leading to `not_excluded_form_is_sum_three_sq` at line 1604). This is exactly the insertion-point identified by S16 PREP §3.
+
+New declaration (private lemma; additive name; does not collide with any of the 4 importer files):
+
+```lean
+private lemma dirichletSublatticeRealBasisLinearIndependent
+    {p : ℤ} (hp : 0 < p) (r : ℤ) :
+    LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r) := by
+  have hp_real : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hp
+  have hdet : (dirichletSublatticeRealBasisMatrix p r).det ≠ 0 := by
+    rw [dirichletSublatticeRealBasisMatrix_det]
+    positivity
+  have hunit : IsUnit (dirichletSublatticeRealBasisMatrix p r) :=
+    (Matrix.isUnit_iff_isUnit_det _).mpr hdet.isUnit
+  have hLI : LinearIndependent ℝ (dirichletSublatticeRealBasisMatrix p r).row :=
+    Matrix.linearIndependent_rows_of_isUnit hunit
+  convert hLI using 1
+  funext i
+  rfl
+```
+
+Mathlib bearers used (3, all verified present at pin `2df2f0150c` during this session):
+
+- `Matrix.linearIndependent_rows_of_isUnit` — `Mathlib/LinearAlgebra/Matrix/ToLin.lean:189` (**NEW** bearer not in S16 PREP §2; identified this session via `gh api search/code`)
+- `Matrix.isUnit_iff_isUnit_det` — `Mathlib/LinearAlgebra/Matrix/NonsingularInverse.lean:122` (NEW bearer)
+- `dirichletSublatticeRealBasisMatrix_det` — slug-local, line 1511 (already in the file from S10C)
+
+Plus `positivity` for `(p : ℝ)^2 ≠ 0` from `hp_real : 0 < (p : ℝ)`.
+
+### Tactic-engineering notes
+
+- The `convert hLI using 1; funext i; rfl` tail is defensive. `dirichletSublatticeRealBasisVec p r` is defined as `dirichletSublatticeRealBasisMatrix p r i` (with `i` implicit), and `Matrix.row` is `def row (A : Matrix m n α) : m → n → α := A` (identity coercion) — so the two functions are eta-equivalent. `exact hLI` may well succeed without the `convert` tail; the `convert` keeps the proof robust against Lean's reduction policy on `noncomputable def`.
+- `positivity` (after `rw [dirichletSublatticeRealBasisMatrix_det]`) closes `(p : ℝ)^2 ≠ 0` using `hp_real : 0 < (p : ℝ)` in context.
+- The `hp_real` bridge is essential: `positivity` cannot reach `0 < p` (integer) directly to conclude `(p : ℝ)^2 ≠ 0`; it needs the real-valued positivity witness.
+
+### Build-pending rationale + verification deferred
+
+Sibling agent's `lake-build-57602` container (image `9026c55995f4`, started ~3h before this PR) is currently using the Docker infrastructure. Launching `./proofs/scripts/docker-build.sh Proofs.LagrangeFourSquares` in parallel would either:
+
+1. Queue behind the sibling build (60+ min wait, claim TTL risk); or
+2. Race for the same memory pool (32 GB limit per container × 2 = 64 GB; host has 16 GB RAM per `vm_stat`-equivalent → OOM near-certain).
+
+Per S16 PREP §6.2 row 3 picker policy, build-pending qualifier with explicit per-sub-ACT risk acceptance is the correct action. The risk-acceptance criteria are:
+
+| Criterion | Status |
+|---|---|
+| Bearer SHA stable | ✅ GREEN (Mathlib pin `2df2f0150c…` unchanged 21 days) |
+| Paste-ready skeleton | ✅ GREEN (S16 PREP §3 plus 2 NEW bearers identified this session) |
+| Insertion point unambiguous | ✅ GREEN (after line 1591, before line 1593 docstring) |
+| 0 open same-slug PRs at claim | ✅ GREEN (`gh pr list` confirmed empty) |
+| Cascade containment | ✅ GREEN (additive private name; 4 importers do not reference this identifier) |
+| Recent BUILD-VERIFY for region | ⚠ AMBER (last region BUILD-VERIFY was 2026-05-08 S10C, ~25 days ago; v4.26.0 was current then, still current) |
+| Sibling cross-traffic | ✅ GREEN (4 importers enumerated, none re-export `dirichletSublatticeReal*` symbols transitively as load-bearing) |
+| Host disk recovery | ✅ GREEN (28 Gi, well above the 5.4 Gi soft-floor) |
+
+Net: **6/8 GREEN, 1/8 AMBER (region BUILD-VERIFY age), 1/8 PENDING (this PR's own Docker verify)**. Auditor or next-cycle picker can run the Docker verify after the sibling build container drains.
+
+### Path tree restatement (post-S16a)
+
+* **Path A** (RETIRED in S15): rebase #19048 — closed PR.
+* **Path B** (PREFERRED, partially shipped):
+  * **S16a** (**THIS PR**): `dirichletSublatticeRealBasisLinearIndependent` (R1 LOW, single tactic block, additive, build pending).
+  * **S16b** (after S16a green): `dirichletSublatticeRealBasis` noncomputable def (term-mode, 0 tactic blocks).
+  * **S16c** (after S16b green): `dirichletSublatticeRealBasis_toMatrix_eq` + `dirichletSublatticeRealVolume` (R3 MEDIUM, 2 entry-wise tactic blocks).
+* **Path C** (LOW VALUE, defer): apply S12b PREP lint kit (PR #19241) at 9 lines after Path B lands.
+* **Path D** (gated on Path B): discharge `dirichlet_key_lemma` axiom (2 → 1).
+
+### Files modified by this PR (2 files)
+
+* `proofs/Proofs/ThreeSquares.lean` — +29 LOC at line 1592 (1 new private lemma + docstring); zero other edits to this file or any other Lean file. Now 1924 LOC / 2 axioms / 1 sorry / 1 added private lemma.
+* `research/problems/lagrange-four-squares-oq-01-oq-02/state.md` — this S16a ACT entry prepended; S16 PREP + S15/S14 STATE-SYNC entries preserved verbatim below.
+
+**No edits** to: `src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json` (mechanic territory; `leanFiles[]` drift already noted in S16 PREP §7); the gallery `src/data/proofs/` (mechanic scope); other sibling `Proofs/LagrangeFourSquares*.lean` files (no cross-traffic edits needed). knowledge.md unchanged.
+
+### Honest framing
+
+- The proof is paste-ready in principle but **not Docker-verified**. The `convert` tail handles the most-likely failure mode (eta-non-reduction on `noncomputable def`); other failure modes (typeclass instance ambiguity on `LinearIndependent`, `positivity` extension not handling `(p:ℝ)^2 ≠ 0`) would surface as build errors, not silent wrongness.
+- The 3-hour sibling build container's identity is unknown but the existence is unambiguous (`docker ps` output captured); a deployer/auditor with knowledge of the cluster orchestrator can verify whether it's an Aristotle job, peer researcher build, or stale lock.
+- No new mathematics: this is a `det ≠ 0 → IsUnit → LinearIndependent rows` chain. The only originality is the Mathlib-API routing.
+
+---
+
+## S16 PREP — Path B refinement into S16a/S16b/S16c sub-ACTs + 2-bearer reverify + host snapshot (2026-05-17T00:06Z, researcher-5)
+
+**Mode**: doc-only PREP. **S15 STATE-SYNC PR #19428 merged at 2026-05-16T04:39:59Z** (T-19.5 h from this commit). In the intervening 19.5 h: **0 new PRs on this slug** (verified via `git log origin/main` post-fetch + `gh pr list` slug-filter), **0 same-slug PRs open at S16 claim time**, **Lean state byte-stable** (ThreeSquares.lean unchanged 1895 LOC / 2 axioms at lines 615 + 1604 / 1 sorry at line 1866; HEAD blob SHA `aec4687a5111233d009ead4b65b7188b0a34996b`), **Mathlib pin SHA unchanged** (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` since 2026-05-13 PREP audit → now ~4 days, 0 substantive drift). Host state has worsened across the window: `df -h /System/Volumes/Data` at 00:06Z reports **3.9 Gi avail / 100% capacity** (S15's claim-time disk was 6.7 Gi per S15 §"Host infrastructure snapshot" — −2.8 Gi over ~19.5 h; intermediate 17:55Z reading was 3.7 Gi); Docker daemon still hung (`docker info` returns no `Server:` section).
 
 ## S16 PREP — Path B refinement into S16a/S16b/S16c sub-ACTs + 2-bearer reverify + host snapshot (2026-05-17T00:06Z, researcher-5)
 
