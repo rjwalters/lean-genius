@@ -202,15 +202,35 @@ theorem gaussian_has_scalar_exponent (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
   rw [h_arg]
   exact gaussian_operator_stable d Sg ξ n hn
 
-/-- **AXIOM**: Gaussian φ_Sg is operator-stable (general form with matrix witness).
+/-- The Gaussian is operator-stable (general form with matrix witness).
 
-    Axiomatized at Mathlib v4.26.0: the original proof used a deep `conv_lhs`
-    block with `ext ξ; arg 1; ext i; rw [Finset.sum_ite_eq']` that v4.26.0's
-    stricter `conv` tactic no longer accepts (`invalid 'ext' conv tactic`).
-    Mathematical content follows from `gaussian_has_scalar_exponent` with
-    witness A_n = n^{-1/2}·I. -/
-axiom gaussian_is_operator_stable (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
-    IsOperatorStable d (gaussCharFun d Sg)
+    Discharges the v4.26.0 axiomatized version (S11 ACT, 2026-06-01) by
+    composing `gaussian_has_scalar_exponent` with the matrix-witness shape:
+    pick `A_n = n^{-1/2}·I` (diagonal scalar matrix), then
+    `∑ j, A_n i j * ξ j = n^{-1/2} * ξ i = ξ i * n^{-1/2}` collapses via
+    `Matrix.smul_apply` + `Matrix.one_apply` + `Finset.sum_ite_eq`, reducing
+    the goal to the scalar-exponent form discharged by
+    `gaussian_has_scalar_exponent`. Drift witness `b n` reuses the one
+    obtained from `gaussian_has_scalar_exponent` (zero drift). -/
+theorem gaussian_is_operator_stable (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
+    IsOperatorStable d (gaussCharFun d Sg) := by
+  obtain ⟨b, hb⟩ := gaussian_has_scalar_exponent d Sg
+  refine ⟨fun n => (n : ℝ) ^ (-(1 / 2 : ℝ)) • (1 : Matrix (Fin d) (Fin d) ℝ),
+          b, ?_⟩
+  intro n hn ξ
+  -- The diagonal scalar matrix collapses the sum:
+  -- ∑ j, ((n^{-1/2}) • 1) i j * ξ j = ξ i * n^{-1/2}.
+  have h_arg :
+      (fun i => ∑ j, ((n : ℝ) ^ (-(1 / 2 : ℝ)) •
+        (1 : Matrix (Fin d) (Fin d) ℝ)) i j * ξ j)
+        = (fun i => ξ i * (n : ℝ) ^ (-(1 / 2 : ℝ))) := by
+    funext i
+    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul,
+               mul_ite, mul_one, mul_zero, ite_mul, zero_mul,
+               Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    ring
+  rw [h_arg]
+  exact hb n hn ξ
 
 -- ============================================================
 -- PART IV: Scalar Specialization and 1D Connection
