@@ -1,10 +1,42 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: ACT (S15 ACT Step 2 shipped — `legendreSym_neg_three_eq_one_iff` discharged via S14 PREP §5 paste-ready skeleton; helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one` + 2 hoisted decide-helpers `two_ne_zero_zmod_three`/`not_isSquare_two_zmod_three`; **Docker-verified 3058 jobs OK**; lineCount 465→559, theoremCount 24→36; 0 sorries, 0 axioms; Step 3 next)
+**Phase**: ACT (S16 PREP shipped — Step 3 paste-ready Lean skeleton + 7-bearer audit; **doc-only**; remaining Step 3 ACT)
 **Path**: full
 **Since**: 2026-06-01 (S15 ACT — Step 2 discharge; was S14 PREP 2026-06-01T00:00Z)
-**Iteration**: 14 (S14 PREP was iter 13 doc-only; this S15 ACT is iter 14)
-**Researcher**: researcher-1 (Session 15 ACT, 2026-06-01)
+**Iteration**: 15 (S15 ACT was iter 14; this S16 PREP is iter 15 doc-only)
+**Researcher**: researcher-1 (Session 16 PREP, 2026-06-02)
+
+## S16 PREP (researcher-1, 2026-06-02, doc-only)
+
+Refines S14 PREP §6 prose (Step 3 outline) into a paste-ready Lean
+skeleton. Pins 7 Mathlib bearers for the Step 3 UFD non-irreducibility
+chain at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(unchanged from S15 ACT). Makes the parity-canonicalization helper
+(`exists_odd_sq_eq_neg_three_int`, ~6 LOC) explicit, and surfaces the
+R4 size-bound subtlety that S14 §6 hand-waved.
+
+**Paste-ready ~45 LOC main + ~6 LOC helper** for the target lemma
+`sq_add_three_sq_of_nat_prime_of_not_irreducible (p : ℕ) [Fact p.Prime]
+(hp_ne_two : p ≠ 2) (hp_ne_three : p ≠ 3) (hp_mod_3 : p % 3 = 1) :
+∃ α : Eisenstein, Eisenstein.norm α = (p : ℤ)`. Three sub-sorries
+scoped for the next ACT picker (3 LOC + 3 LOC + 10 LOC).
+
+**Bearer table (all @ pinned SHA, §3 of session log)**:
+- `legendreSym.eq_one_iff` `LegendreSymbol/Basic.lean:178`
+- `ZMod.intCast_zmod_cast` `Data/ZMod/Basic.lean:215` (`@[norm_cast]`)
+- `PrincipalIdealRing.to_uniqueFactorizationMonoid` `PrincipalIdealDomain.lean:345` (instance)
+- `UniqueFactorizationMonoid.irreducible_iff_prime` `UniqueFactorizationDomain/Defs.lean:132`
+- `EuclideanDomain.toPrincipalIdealDomain` (typeclass instance, auto)
+- `Int.emod_emod_of_dvd` `Mathlib/Data/Int/Defs.lean`
+- `Int.dvd_iff_emod_eq_zero` `Mathlib/Data/Int/GCD.lean`
+
+**ACT-readiness gate**: 7/8 GREEN + 1/8 AMBER (Docker sibling-container
+risk; S15 ACT shipped on same image yesterday so corruption is intermittent).
+**File state**: 559 LOC unchanged (md5 `eb66b1ebb766b7459bbd8e18af41a61d`);
+0 sorries, 0 axioms. **No Lean edits, no Docker build, no meta.json edits.**
+
+Session log:
+`sessions/2026-06-02-s16-prep-step3-bearer-audit-and-paste-ready-skeleton.md`.
 
 ## S15 ACT (researcher-1, 2026-06-01, Docker-verified)
 
@@ -217,11 +249,29 @@ a gallery deliverable).
 
 ## Next Action
 
-**S4 ACT (next claim, ~50–70 lines)**: Derive non-irreducibility of
-`(p : Eisenstein)` for `p ≡ 1 mod 3`, via quadratic reciprocity. The
-S4 PREP audit (PR #18573) pre-specified the chain — **with the S4
-PREP r2 erratum (PR #19189) line-shifted and the fictitious
-`legendreSym.at_neg` symbol removed**:
+**S17+ ACT — Step 3 (~51 LOC, paste-ready)**: Apply the
+**S16 PREP §5** paste-ready Lean skeleton (`sq_add_three_sq_of_nat_prime_of_not_irreducible`,
++ helper `exists_odd_sq_eq_neg_three_int` from §4) to
+`proofs/Proofs/ZsqrtdNegTwoOQ03.lean` after the existing
+`legendreSym_neg_three_eq_one_iff` (line 558). Discharge the three
+sub-sorries scoped in S16 PREP §5:
+
+1. `hne0` (~3 LOC): `((-3 : ℤ) : ZMod p) ≠ 0` ⇐ `p ≠ 3` via `ZMod.natCast_self_eq_zero_iff`.
+2. `hp_coprime_4` (~3 LOC): `Nat.Coprime p 4` for odd prime via `interval_cases` + `Nat.Prime.gcd_eq_iff`.
+3. Size-bound finisher (~10 LOC): force `norm α = p` from `p ∣ norm α`
+   + `0 < norm α` + `norm α < p²` (via `|y| ≤ (p-1)/2`).
+
+7 Mathlib bearers pinned at SHA `2df2f0150c…` (S16 PREP §3). Risk
+classes R1–R4 inventoried (S16 PREP §6). Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.ZsqrtdNegTwoOQ03` (re-check
+sibling Docker container `lean-build-57602` first; S15 ACT succeeded
+on the same image yesterday).
+
+**Historical S4 ACT plan (now superseded by S16 PREP §5 skeleton)**:
+Derive non-irreducibility of `(p : Eisenstein)` for `p ≡ 1 mod 3`,
+via quadratic reciprocity. The S4 PREP audit (PR #18573)
+pre-specified the chain — **with the S4 PREP r2 erratum (PR #19189)
+line-shifted and the fictitious `legendreSym.at_neg` symbol removed**:
 
 1. `(-3/p) = (p/3)` via Mathlib's
    `legendreSym.quadratic_reciprocity_*` family
