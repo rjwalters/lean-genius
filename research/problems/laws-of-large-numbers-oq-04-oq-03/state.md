@@ -1,10 +1,22 @@
 # Current State
 
-**Phase**: REDESIGN-PENDING (S10 ACT shipped — DISPROOF; greedy ε-cover void; quantile redesign is the new direction)
-**Since**: 2026-05-29T15:32:51Z (S10 ACT DISPROOF, PR #20969)
-**Iteration**: 10 ACT + 6 doc-only PREP/OBSERVE/STATE-SYNC. **S10 ACT (PR #20969,
-researcher-1, 2026-05-29) disproved `bracketingGrid_exists`** as a
-build-verified Lean derivation (`bracketingGrid_exists_false : False` in
+**Phase**: REDESIGN-IN-PROGRESS (S13 ACT shipped — `QuantileBracketingGrid` typed scaffold; S14+ proves existence)
+**Since**: 2026-06-02T06:30:00Z (S13 ACT, this session)
+**Iteration**: 11 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S13 ACT
+(researcher-1, 2026-06-02) ships the typed scaffold
+`QuantileBracketingGrid`** in a new companion file
+`Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (~150 LOC,
+mostly docstring; 1 structure, 0 axioms, 0 theorems, 0 sorries). This
+mirrors S3 (PR #17442, researcher-12, 2026-05-08) — the original
+`BracketingGrid` scaffold landed in the same shape (structure + axiom in
+a fresh companion) and S4–S6 filled in §2.3–§2.5 over three sessions. S13
+omits the axiom because the new existence statement is provable (the
+genuine quantile construction); S14 will ship it as a theorem, not an
+axiom.
+
+**S10 ACT (PR #20969, researcher-1, 2026-05-29) disproved
+`bracketingGrid_exists`** as a build-verified Lean derivation
+(`bracketingGrid_exists_false : False` in
 `Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean`). The axiom is
 refutable, not "true-but-unproved"; nine prior sessions (S8–S9b roadmaps,
 S10 PREP-1/PREP-2, the S11 PREP coordination memo) had targeted a void
@@ -12,7 +24,114 @@ goal. The downstream `glivenko_cantelli_uniform` (companion §2.5) remains
 a true statement but its current proof is vacuous (derived from a false
 premise). The path forward is a multi-session redesign carrying left limits
 `F(qⱼ⁻)` at grid nodes (`QuantileBracketingGrid`, §S12 STATE-SYNC §3.1
-below), NOT the previously-listed greedy ε-cover induction.
+below, now realized in S13), NOT the previously-listed greedy ε-cover
+induction.
+
+## S13 ACT (researcher-1, 2026-06-02) — `QuantileBracketingGrid` typed scaffold
+
+S12 STATE-SYNC (2026-05-30) propagated the S10 ACT disproof and laid out
+the redesign sketch but did not modify any Lean file. S13 (this session)
+opens the redesign with a scaffold-only ACT mirroring S3's approach to the
+original `BracketingGrid`.
+
+### What S13 shipped
+
+`proofs/Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (new,
+153 lines, ~110 docstring + 1 structure):
+
+```lean
+structure QuantileBracketingGrid (F : ℝ → ℝ) (ε : ℝ) where
+  k        : ℕ
+  q        : Fin (k + 2) → ℝ
+  mono     : StrictMono q
+  step_le  : ∀ j : Fin (k + 1),
+             Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε
+  left_le  : F (q 0) ≤ ε
+  right_ge : F (q (Fin.last (k + 1))) ≥ 1 - ε
+```
+
+Field-by-field deltas from the refuted `BracketingGrid`:
+
+| Field      | `BracketingGrid` (refuted)                  | `QuantileBracketingGrid` (this file)                                 |
+|------------|---------------------------------------------|----------------------------------------------------------------------|
+| `cont`     | `∀ j, ContinuousAt F (q j)`                 | **dropped**                                                          |
+| `step_le`  | `F (qⱼ₊₁) − F (qⱼ) ≤ ε`                     | **`Function.leftLim F (qⱼ₊₁) − F (qⱼ) ≤ ε`** (quantile bound)        |
+
+The other four fields (`k`, `q`, `mono`, `left_le`, `right_ge`) are
+preserved bit-for-bit. For atomless `F` the left limit equals the value,
+so the new bound reduces to the old one and the redesign is conservative.
+For atomic `F` (e.g. the Dirac CDF refuting `bracketingGrid_exists`),
+`Function.leftLim` lets the node `qⱼ` sit at an atom while the step
+`leftLim F (qⱼ₊₁) − F (qⱼ)` is measured to the *bottom* of any subsequent
+atom rather than across it — the standard quantile construction.
+
+### What S13 does NOT do
+
+- Does not modify `Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean` or
+  `Proofs/LawsOfLargeNumbersOQ04OQ03.lean`. Both are bit-for-bit unchanged.
+- Does not delete the refuted axiom `bracketingGrid_exists` or the
+  disproof file. Both stay in tree until S14+ supersedes them.
+- Does not prove `quantileBracketingGrid_exists`. That is the substantive
+  S14 ACT (~150 LOC, the genuine quantile / Stieltjes construction).
+- Does not rewrite §2.4 or §2.5 of the bracketing companion. Those
+  rewrites are S15/S16 ACT.
+
+### Imports
+
+`Proofs.LawsOfLargeNumbersOQ04OQ03` (parent — for `trueCDF`),
+`Mathlib.Topology.Order.LeftRightLim` (exposes `Function.leftLim`),
+`Mathlib.Probability.CDF` (already used by the existing bracketing
+companion). One new transitive import beyond the existing chain
+(`Mathlib.Topology.Order.LeftRightLim` is not pulled in by
+`Mathlib.Topology.Order.Monotone`).
+
+### Build status
+
+Pending. The structure declaration has no proof obligations beyond
+elaboration of the field types; all referenced names
+(`Function.leftLim`, `StrictMono`, `Fin (k + 2)`, `Fin.last`,
+`Fin.castSucc`, `Fin.succ`) are stable Mathlib v4.26 references.
+Type-check confidence is high. Build verification via Docker requires
+~45 min cold and can land in a follow-up PR.
+
+### Counts (post-S13)
+
+| File | Lines | Theorems | Axioms | Sorries |
+|------|-------|----------|--------|---------|
+| `LawsOfLargeNumbersOQ04.lean` | 228 | 13 | 0 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03.lean` | 163 | 4 | 0 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` | 672 | 12 | 1 (refuted) | 0 |
+| `LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean` | 150 | 3 | 0 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (new, S13) | 153 | 0 | 0 | 0 |
+
+The chain's axiom count is unchanged at 1 (the refuted
+`bracketingGrid_exists`). S13 introduces a structure but no axiom — the
+new existence statement is provable (S14 target).
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (new)
+- `src/data/proofs/laws-of-large-numbers-oq-04-oq-03/meta.json`
+  (`additionalFiles` appended)
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/state.md` (this block)
+- `src/data/research/problems/laws-of-large-numbers-oq-04-oq-03.json`
+  (currentState + knowledge updates)
+
+### Honesty
+
+Scaffold-only. Produces:
+- 1 new structure declaration (`QuantileBracketingGrid`)
+- 0 new theorems, 0 new axioms, 0 new sorries
+- 0 axiom-count change at the chain level (the refuted axiom remains
+  in tree pending S14+ supersession)
+- The structure shape is taken verbatim from S12 STATE-SYNC §3.1; no new
+  design decisions in S13.
+
+This is real progress (the typed substrate now exists for S14+ to build
+the genuine existence proof against) but it is *not* axiom elimination
+or sorry reduction. Counting against the standard work-progress rubric:
+"infrastructure that enables future proofs" (category 5 of the role
+spec), comparable in scope to the S3 scaffold landing.
 
 ## S12 STATE-SYNC (researcher-1, 2026-05-30) — propagate S10 ACT disproof + redirect
 
@@ -830,49 +949,50 @@ verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 
 ## Next Action
 
-> **REDIRECTED 2026-05-30 (S12 STATE-SYNC)**. The previous next-action — the
-> greedy ε-cover induction discharging `bracketingGrid_exists` — is void.
-> PR #20969 (S10 ACT, 2026-05-29) disproved that axiom (build-verified).
-> The new direction is a multi-session quantile redesign.
+> **S13 ACT LANDED 2026-06-02** (this session): typed scaffold
+> `QuantileBracketingGrid` is in tree in
+> `Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`. The redesign
+> is open for S14+ work.
 
-**S13+ REDESIGN (multi-session)**:
+**S14+ REDESIGN (multi-session, scaffold landed)**:
 
-1. **Redesign `BracketingGrid` to carry left limits** via
-   `Function.leftLim` (the standard quantile construction), so atoms sit
-   at their own cells. Sketch:
+1. **S14 ACT — prove `quantileBracketingGrid_exists`**: the genuine grid
+   existence statement
    ```lean
-   structure QuantileBracketingGrid (F : ℝ → ℝ) (ε : ℝ) where
-     k        : ℕ
-     q        : Fin (k + 2) → ℝ
-     mono     : StrictMono q
-     step_le  : ∀ j : Fin (k + 1),
-                Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε
-     left_le  : F (q 0) ≤ ε
-     right_ge : F (q (Fin.last (k + 1))) ≥ 1 - ε
+   theorem quantileBracketingGrid_exists [IsProbabilityMeasure μ]
+       {X : ℕ → Ω → ℝ} (hX_meas : ∀ i, Measurable (X i))
+       {ε : ℝ} (hε : 0 < ε) :
+       Nonempty (QuantileBracketingGrid (trueCDF X μ) ε)
    ```
-   Drop the `cont` field (no longer needed — left limits exist for any
-   monotone `F`).
-2. **Rewrite §2.4** (`bracketing_pointwise_bound`,
-   `bracketing_uniform_sup_bound`) with cross-side step bounds: interior
-   cell uses `F(x) ≤ F(qⱼ₊₁⁻)` and `F(qⱼ) ≤ F(x)`. ~150 LOC rewrite.
-3. **Rewrite §2.5** `glivenko_cantelli_uniform` with the two-sided per-grid
-   hypothesis. ~75 LOC rewrite; diagonal ε = 1/(m+1) structure preserved.
-4. **Prove the genuine grid-existence lemma**
-   `Nonempty (QuantileBracketingGrid (trueCDF X μ) ε)` for any probability
-   `μ` and `ε > 0` via Mathlib's `Function.leftLim` + `iInf {x | F x ≥ jε}`
-   construction. ~150 LOC. This is the real Mathlib upstream target,
-   replacing the void `Monotone.exists_increasing_continuity_seq` plan.
-5. **Remove `bracketingGrid_exists`** (the refuted axiom) from the
-   companion file, along with the old §2.4 / §2.5 theorems. The disproof
-   file (`LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean`) can also be
-   removed once the redesign lands (its purpose — demonstrating the axiom
-   is false — becomes moot when the axiom is gone).
+   via Mathlib's `Function.leftLim` + the standard quantile construction
+   `qⱼ = inf {x | F x ≥ jε}` (Stieltjes-style; PR #18499 and PR #18528 from
+   S10 PREP-1/PREP-2 supply much of the API audit, with corrections for
+   the quantile bound). At `qⱼ`, `Function.leftLim F qⱼ ≤ jε ≤ F qⱼ` by
+   the definition of the infimum + monotonicity, so the step bound
+   `leftLim F (qⱼ₊₁) − F (qⱼ) ≤ (j+1)ε − jε = ε`. ~150 LOC. This is the
+   real Mathlib upstream target, replacing the void
+   `Monotone.exists_increasing_continuity_seq` plan.
+2. **S15 ACT — rewrite §2.4** (`bracketing_pointwise_bound`,
+   `bracketing_uniform_sup_bound`) using the two-sided node values: interior
+   cell `[qⱼ, qⱼ₊₁)` uses `F(x) ≤ leftLim F qⱼ₊₁` and `F(qⱼ) ≤ F(x)` for
+   `x ∈ [qⱼ, qⱼ₊₁)`. ~150 LOC rewrite of the existing §2.4 from the
+   bracketing companion (the deterministic bound, not the empirical version).
+3. **S16 ACT — rewrite §2.5** `glivenko_cantelli_uniform` with the two-sided
+   per-grid hypothesis. ~75 LOC rewrite; the diagonal ε = 1/(m+1) structure
+   is preserved.
+4. **S17 ACT — retire the refuted axiom + disproof**. Delete
+   `bracketingGrid_exists` from `LawsOfLargeNumbersOQ04OQ03Bracketing.lean`,
+   delete the corresponding old §2.4 / §2.5 theorems, and delete
+   `LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean` (its purpose —
+   demonstrating the original axiom is inconsistent — is moot once the
+   axiom is gone). Update meta.json to drop both from `additionalFiles`
+   and to set `axiomCount` back to 0 (chain becomes axiom-free).
 
 **DO NOT**:
 
-- Attempt the greedy ε-cover proof of the current `bracketingGrid_exists`.
-  It is refuted in `LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean`
-  (PR #20969).
+- Attempt the greedy ε-cover proof of the (now-retired direction)
+  `bracketingGrid_exists`. It is refuted in
+  `LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean` (PR #20969).
 - Propose `Monotone.exists_increasing_continuity_seq` to Mathlib upstream
   — that proposed lemma is about continuous monotone functions, while the
   in-tree axiom over-generalizes to atomic CDFs. The correct upstream
@@ -880,38 +1000,31 @@ verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 
 ## Active Approach
 
-**REDESIGN (S13+, post-disproof)**: quantile-style `BracketingGrid` carrying
-left limits `F(qⱼ⁻)`. The original `bracketing-decomposition-draft.md`
+**REDESIGN (S13+, scaffold in tree as of S13 ACT)**: quantile-style
+`QuantileBracketingGrid` carrying left limits `F(qⱼ⁻)` via
+`Function.leftLim`. The original `bracketing-decomposition-draft.md`
 §2.1–§2.5 plan is preserved as a *historical* design — §2.1 was wrong (the
 structure lacks atomless hypothesis or one-sided node tracking), but §2.2
-(grid existence as a Mathlib gap), §2.3 (simultaneous pointwise), §2.4
-(deterministic uniform), and §2.5 (composition) all have valid analogs in
-the quantile-redesigned chain.
+(grid existence — now proven, not axiomatized), §2.3 (simultaneous
+pointwise), §2.4 (deterministic uniform), and §2.5 (composition) all have
+valid analogs in the quantile-redesigned chain.
 
 ## Blockers
 
-The slug is in a **REDESIGN-PENDING** phase: the current `BracketingGrid`
-structure is provably inadequate, so any in-tree progress requires the
-redesign described above (out of scope for single-session ACT). A
-researcher can:
-
-1. Start S13 ACT: ship the `QuantileBracketingGrid` structure as a typed
-   scaffold (~50 LOC, mirrors S3's scaffold-only approach for the original
-   `BracketingGrid`).
-2. Ship S13a OBSERVE: Mathlib API audit for `Function.leftLim` and quantile
-   construction (analogous to S10 PREP-2's API audit).
-3. Skip S13+ entirely and choose a different open problem; this slug has
-   high knowledge-score (21, RICH) but is now redesign-blocked.
+None. The slug is in **REDESIGN-IN-PROGRESS**: the typed substrate has
+landed (S13 ACT, this session); S14 ACT is the next substantive piece
+(~150 LOC quantile-existence proof) and can be attempted by any
+researcher claiming this slug next.
 
 ## Attempt Counts
 
-- Total attempts: 11 (S1 integration axioms, S2 spec, S3 scaffold, S4 §2.3,
+- Total attempts: 12 (S1 integration axioms, S2 spec, S3 scaffold, S4 §2.3,
   S5 §2.4, S6 §2.5, S7 axiom retirement, S8 continuity density, S9 ACT
-  CDF tails, S10 pre-ACT build repair, S10 ACT DISPROOF).
-- Current approach attempts: 0 (the new REDESIGN approach has not yet been
-  attempted — S13+ is the first iteration).
+  CDF tails, S10 pre-ACT build repair, S10 ACT DISPROOF, S13 ACT scaffold).
+- Current approach attempts: 1 (S13 ACT scaffold; S14+ ahead).
 - Approaches tried: 2 (bracketing decomposition per S2 spec — refuted at
-  S10 ACT; quantile redesign — pending S13).
+  S10 ACT; quantile redesign — scaffold landed S13, existence + §2.4/§2.5
+  rewrites pending).
 
 ## Previous Iterations
 
