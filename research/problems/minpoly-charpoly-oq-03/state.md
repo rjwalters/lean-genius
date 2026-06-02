@@ -1,10 +1,50 @@
 # Current State
 
-**Phase**: ACT (S10 OQ-03-OQ-01 `xModule_isTorsion` discharge; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ; S11 PREP audit + S12 ERRATUM-APPLY now propagated)
-**Since**: 2026-05-13 (S12 doc-only erratum-apply, researcher-9; applies §8 corrections from S11 PREP PR #18668)
-**Iteration**: 12
+**Phase**: ACT (S13 firstFactor-side mirror landed; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ)
+**Since**: 2026-06-02 (S13 ACT firstFactor mirror, researcher-1; discharges S6 PREP PR #18425)
+**Iteration**: 13
 
 ## Current Focus
+
+S13 ACT discharges the S6 PREP (PR #18425) `firstFactor`-side mirror
+design verbatim. Adds Part 7 to `MinpolyCharpolyOQ03.lean` with:
+
+* `InvariantFactorChain.firstFactor` (new noncomputable def, `head?.getD 1`)
+* `firstFactor_eq_getElem_zero` (private bridging lemma, Plan-B `rcases`
+  form per S6 PREP §4 to avoid Mathlib `List.head?_eq_head` API drift)
+* `firstFactor_mem`, `firstFactor_monic` (membership + monicness on
+  nonempty chain)
+* `firstFactor_natDegree_minimal` (degree-minimum, one-line application
+  of `chain_natDegree_le` with `i = 0`; mirror of
+  `lastFactor_natDegree_maximal`)
+* `nat_list_sum_ge_length_mul_of_all_ge` (private `Nat` lower-bound
+  helper, mirror of S5's `_le_` variant)
+* `prodFactors_natDegree_ge_firstFactor_natDegree_mul` (length × first
+  lower bound on `prodFactors.natDegree`, dual of S5's upper bound)
+
+Together with Part 6 this yields the two-sided sandwich
+
+    k · deg(firstFactor) ≤ deg(prodFactors) ≤ k · deg(lastFactor)
+
+on the abstract `InvariantFactorChain F`. Once the chain is
+instantiated by a matrix M (so `prodFactors = charpoly M`,
+`lastFactor = minpoly M`) this becomes a matrix-level sandwich with no
+further `Polynomial`-level induction at the matrix-level instantiation
+step.
+
+Net file change: lineCount 484 → 624 (+140 LOC); theoremCount 16 → 22
+(+4 public mirror lemmas + 2 private helpers); definitionCount 3 → 4
+(+1 noncomputable def); sorry count unchanged at 1 (S1 placeholder on
+`rational_canonical_form_exists`); axiomCount 0. No new imports. Build
+pending (Docker cold-build ~45 min per `proofs/.lake` self-symlink
+trap; matches S2/S3/S4/S5 build-pending precedent).
+
+**Anti-target compliance** (S6 PREP §7): zero edits to the existing S5
+statements; no `prodFactors_natDegree_sandwich` corollary added
+(deferred to a future PR with explicit consumer justification);
+`rational_canonical_form_exists` statement unchanged.
+
+## S5 (prior iteration) detail
 
 S5 composes S3 `prodFactors_natDegree` (sum-of-degrees identity) with
 S4 `lastFactor_natDegree_maximal` (degree maximality) to add the
@@ -179,8 +219,8 @@ its output in stronger lemmas.
 
 ## Attempt Counts
 
-- Total attempts: 12 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound, S6 PREP firstFactor design, S7 PREP isTorsionBy cheatsheet, S8 ACT isTorsionBy discharge, S9 PREP isTorsion cheatsheet, S10 ACT isTorsion discharge, S11 PREP elementary-divisors erratum + Route B design, S12 ERRATUM-APPLY)
-- Current approach attempts: 12
+- Total attempts: 13 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound, S6 PREP firstFactor design, S7 PREP isTorsionBy cheatsheet, S8 ACT isTorsionBy discharge, S9 PREP isTorsion cheatsheet, S10 ACT isTorsion discharge, S11 PREP elementary-divisors erratum + Route B design, S12 ERRATUM-APPLY, S13 ACT firstFactor mirror)
+- Current approach attempts: 13
 - Approaches tried: 1 (three-ingredient plan via Mathlib's PID structure theorem, with S11 PREP refining OQ-03-OQ-02 from "direct invariant-factor decomposition" to "primary form + ~290-LOC regrouping bookkeeping")
 
 ## Session Log
@@ -327,3 +367,20 @@ its output in stronger lemmas.
   axiom changes; no theorem additions.** Build-pending status of the
   S4/S5 work is unaffected (no Lean tactics touched). Iteration
   counter bumped 5 → 12.
+
+* **S13 ACT (researcher-1, 2026-06-02)** — discharged S6 PREP
+  (PR #18425) `firstFactor`-side mirror design verbatim. Adds Part 7
+  to `MinpolyCharpolyOQ03.lean` (+140 LOC) with: `InvariantFactorChain.firstFactor`
+  (new noncomputable def, `head?.getD 1` mirroring `lastFactor`),
+  `firstFactor_eq_getElem_zero` (private bridging lemma, Plan-B `rcases`
+  form per §4 anti-drift), `firstFactor_mem`, `firstFactor_monic`,
+  `firstFactor_natDegree_minimal` (4 public mirror lemmas),
+  `nat_list_sum_ge_length_mul_of_all_ge` (private `Nat` lower-bound
+  helper, mirror of S5's `_le_` variant), and
+  `prodFactors_natDegree_ge_firstFactor_natDegree_mul` (length × first
+  lower bound). File 484 → 624 LOC; theoremCount 16 → 22; definitionCount
+  3 → 4; sorry count unchanged at 1 (S1 placeholder on
+  `rational_canonical_form_exists`); axiomCount 0. No new imports.
+  Build-pending per S2/S3/S4/S5 convention. Anti-target compliance
+  per S6 PREP §7: no `sandwich` corollary added, no S5 statement
+  edits, `rational_canonical_form_exists` unchanged.
