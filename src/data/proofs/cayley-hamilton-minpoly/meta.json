@@ -227,7 +227,10 @@
     "theoremCount": 30,
     "definitionCount": 0,
     "path": "Proofs/CayleyHamiltonOQ01.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean"
+    ]
   },
   "crossReferences": [
     {
@@ -289,5 +292,8 @@
       "leanType": "aeval A p = 0 -> Monic p -> minpoly.natDegree <= p.natDegree"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean"
+  ]
 }

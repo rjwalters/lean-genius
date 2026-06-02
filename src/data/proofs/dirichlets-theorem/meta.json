@@ -208,7 +208,10 @@
     "theoremCount": 10,
     "definitionCount": 7,
     "path": "Proofs/DirichletsTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/DirichletsTheoremOQ03Incomplete01.lean"
+    ]
   },
   "references": [
     {
@@ -255,5 +258,8 @@
       "leanType": "Nat.Coprime a d -> Set.Infinite {p | Nat.Prime p and p % d = a % d}"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/DirichletsTheoremOQ03Incomplete01.lean"
+  ]
 }

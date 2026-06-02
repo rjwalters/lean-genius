@@ -79,7 +79,10 @@
     "definitionCount": 6,
     "path": "Proofs/RothTheorem.lean",
     "sorries": 0,
-    "additionalFiles": ["Proofs/RothTheoremAristotle.lean"]
+    "additionalFiles": [
+      "Proofs/RothTheoremAristotle.lean",
+      "Proofs/RothTheoremOQ02.lean"
+    ]
   },
   "sections": [
     {
@@ -140,5 +143,8 @@
       "Prove Szemerédi's theorem (k=4 case) using the regularity lemma approach"
     ]
   },
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/RothTheoremOQ02.lean"
+  ]
 }

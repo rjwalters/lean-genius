@@ -213,7 +213,10 @@
     "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/CramersRule.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/CramersRuleOQ03OQ03.lean"
+    ]
   },
   "references": [
     {
@@ -253,5 +256,8 @@
       "leanType": "det A != 0 -> A.mulVec x = b -> x i = det (A.updateColumn i b) / det A"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/CramersRuleOQ03OQ03.lean"
+  ]
 }

@@ -188,7 +188,8 @@
     "path": "Proofs/MotivicFlagMaps.lean",
     "sorries": 0,
     "additionalFiles": [
-      "Proofs/MotivicFlagMapsProvable.lean"
+      "Proofs/MotivicFlagMapsProvable.lean",
+      "Proofs/MotivicFlagMapsOQ03.lean"
     ]
   },
   "crossReferences": [
@@ -225,5 +226,8 @@
       "leanType": "FlagVariety G B -> MotivicMap -> K_theory_class"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/MotivicFlagMapsOQ03.lean"
+  ]
 }

@@ -155,7 +155,10 @@
     "theoremCount": 11,
     "definitionCount": 0,
     "path": "Proofs/MathematicalInduction.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/MathematicalInductionOQ03.lean"
+    ]
   },
   "references": [
     {
@@ -243,5 +246,8 @@
       "leanType": "P 0 -> (forall n, P n -> P (n+1)) -> forall n, P n"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/MathematicalInductionOQ03.lean"
+  ]
 }

@@ -176,7 +176,10 @@
     "theoremCount": 2,
     "definitionCount": 0,
     "path": "Proofs/ProbMethodAlteration.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/ProbMethodAlterationOQ02.lean"
+    ]
   },
   "references": [
     {
@@ -223,5 +226,8 @@
       "leanType": "random_object X -> E[violations] < k -> exists x, violations x = 0"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/ProbMethodAlterationOQ02.lean"
+  ]
 }

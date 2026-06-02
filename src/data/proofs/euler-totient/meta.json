@@ -203,7 +203,10 @@
     "theoremCount": 5,
     "definitionCount": 0,
     "path": "Proofs/EulerTotient.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/EulerTotientOQ04OQ01.lean"
+    ]
   },
   "references": [
     {
@@ -248,5 +251,8 @@
       "leanType": "Nat.Coprime a n -> a ^ Nat.totient n % n = 1"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/EulerTotientOQ04OQ01.lean"
+  ]
 }

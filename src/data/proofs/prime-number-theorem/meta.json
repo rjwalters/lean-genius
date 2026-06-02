@@ -360,7 +360,10 @@
       }
     ],
     "path": "Proofs/PrimeNumberTheorem.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/PrimeNumberTheoremOQ01OQ01.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -382,5 +385,8 @@
       "leanType": "RiemannHypothesis -> |primePi x - logIntegral x| = O(sqrt(x) * ln(x))"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/PrimeNumberTheoremOQ01OQ01.lean"
+  ]
 }

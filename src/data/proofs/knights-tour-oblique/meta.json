@@ -157,7 +157,10 @@
     "opens": [],
     "path": "Proofs/KnightsTourOblique.lean",
     "sorries": 0,
-    "definitionCount": 42
+    "definitionCount": 42,
+    "additionalFiles": [
+      "Proofs/KnightsTourObliqueOQ02.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -167,5 +170,8 @@
       "leanType": "board_size >= threshold -> exists tour, is_hamiltonian_path tour"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/KnightsTourObliqueOQ02.lean"
+  ]
 }

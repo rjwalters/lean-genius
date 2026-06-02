@@ -266,7 +266,10 @@
     "theoremCount": 11,
     "definitionCount": 3,
     "path": "Proofs/LawsOfLargeNumbers.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/LawsOfLargeNumbersOQ02.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -282,5 +285,8 @@
       "leanType": "[IID X] -> E[X] = mu -> ae (fun omega => Tendsto (fun n => sum X_i(omega) / n) atTop (nhds mu))"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/LawsOfLargeNumbersOQ02.lean"
+  ]
 }

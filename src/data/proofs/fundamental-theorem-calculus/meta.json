@@ -258,7 +258,10 @@
     "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/FundamentalTheoremCalculus.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FundamentalTheoremCalculusOQ04.lean"
+    ]
   },
   "mainTheorems": [
     {
@@ -274,5 +277,8 @@
       "leanType": "a <= b -> ContinuousOn F (Icc a b) -> (forall x in Ioo a b, HasDerivAt F (f x) x) -> integral x in a..b, f x = F b - F a"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "additionalFiles": [
+    "Proofs/FundamentalTheoremCalculusOQ04.lean"
+  ]
 }
