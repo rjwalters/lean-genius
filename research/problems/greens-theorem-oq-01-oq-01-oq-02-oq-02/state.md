@@ -1,9 +1,48 @@
 # Current State
 
-**Phase**: RESEARCH-COMPLETE — S5 knowledge.md sync shipped; all forward items now Mechanic/Auditor/Doctor scope (Docker-verify of this slug's 104-LOC file + sibling OQ02OQ03 Bochner discharge + optional Mathlib upstream contributions)
+**Phase**: RESEARCH-COMPLETE — S6 STATE-SYNC tick 2026-06-01 (16-day elapse since S5); all forward items remain Mechanic/Auditor/Doctor scope; mechanic PR #21782 (2026-05-31, per memory) discharged the chain-build API drift; no researcher-side action required
 **Since**: 2026-05-16T15:40Z (S5 ship time)
-**Last Updated**: 2026-05-16T15:40Z (S5 knowledge.md sync by researcher-9; post-mechanic clearance narrative + Mathlib contribution candidate catalog, doc-only)
-**Iteration**: 8 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+**Last Updated**: 2026-06-01 (S6 STATE-SYNC tick by researcher-1, claim `researcher-28817`; doc-only; INFRA still GREEN: Docker 29.4.1, disk 55Gi, Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~20d; greens-theorem chain build FIXED by mechanic PR #21782 per cross-slug memory; no new researcher work this cycle)
+**Iteration**: 9 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync, this S6 STATE-SYNC tick; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+
+## S6 STATE-SYNC tick 2026-06-01 (researcher-1)
+
+**Mode:** STATE-SYNC tick — doc-only.
+
+16-day elapse since S5 (2026-05-16T15:40Z). Phase RESEARCH-COMPLETE
+remains in force; all forward items are Mechanic/Auditor/Doctor
+scope.
+
+**Independent cross-slug confirmation** (from
+`/Users/rwalters/.claude/projects/-Users-rwalters-GitHub-lean-genius/memory`
+entry `project_greens_theorem_chain_audit_failure_2026_05_31`): the
+greens-theorem chain build was FIXED by mechanic PR #21782 on
+2026-05-31, addressing Mathlib v4.26.0 API drift (`prod_mk` →
+`prodMk`, `eventually_of_forall` → `Eventually.of_forall`,
+`swap_symm` → `symm_swap`, `swap_apply_of_ne` →
+`swap_apply_of_ne_of_ne`). This drains the S5 §4 "Docker-verify of
+this slug's 104-LOC file" forward item.
+
+**INFRA at S6 entry**: Docker 29.4.1, disk 55 Gi, Mathlib pin
+`2df2f0150c…` (v4.26.0) stable ~20d. No bearer re-walk needed —
+PREP-7 bearer kit carry-forward valid.
+
+**Forward items remaining at S6**:
+
+- Sibling OQ02OQ03 Bochner discharge — out-of-scope for this slug
+  (sibling slug's tracker is authoritative).
+- Mathlib upstream contributions (S5 §3 catalog: 3 candidates,
+  out-of-band mathlib4 PR scope).
+
+**S6 ship scope**: 2 files — `state.md` (this prepended block;
+S5 narrative preserved verbatim below) + `src/data/research/problems/
+greens-theorem-oq-01-oq-01-oq-02-oq-02.json` (iteration 8 → 9,
+lastUpdate / focus / attemptCounts refresh).
+
+**NO**: Lean edits, sibling slug edits, `leanFiles[]` numeric
+touches, Mathlib pin walks.
+
+
 **Owner**: distributed — researcher-10 (S3 ACT), researcher-8 (S1),
 researcher-? (S2 + S2d), researcher-1 (S3 PREP + S4 STATE-SYNC),
 researcher-5 (S3 PREP-2), researcher-4 (prior STATE-SYNC #18993),
