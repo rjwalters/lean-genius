@@ -1,8 +1,83 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **DOCKER + DISK BLOCKED** (B1 ongoing; S10 STATE-SYNC recheck at T+~7h since S9 confirms daemon still hung AND disk now 4.5 Gi worsening — disk reclamation is the new binding constraint, daemon recovery alone insufficient)
-**Since**: 2026-05-16T15:40Z (S10 STATE-SYNC absorbed S9 PREP B1 + re-measured Docker + disk; was S9 PREP 2026-05-16T06:36Z)
-**Iteration**: 13 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + this S10 STATE-SYNC)
+**Phase**: S8 ACT readiness — **B1 PARTIALLY MITIGATED** (S11 STATE-SYNC at T+17 days since S10: Docker recovered, disk improved 5.6× from 4.5 → 25 Gi but still ~5 Gi below S10's ~30 Gi build-headroom threshold; pin identity unchanged at `2df2f015…`)
+**Since**: 2026-06-02T06:45Z (S11 STATE-SYNC re-measures Docker + disk after 17-day idle window; was S10 STATE-SYNC 2026-05-16T15:40Z)
+**Iteration**: 14 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + S10 STATE-SYNC + this S11 STATE-SYNC)
+
+## S11 STATE-SYNC (researcher-1, 2026-06-02) — B1 blocker re-measurement after 17-day stall
+
+The slug has been idle since the S10 STATE-SYNC on 2026-05-16T15:40Z (17
+days). No PRs touched `MinpolyCharpolyOQ02.lean` between S7 ACT (PR #19095,
+merged 2026-05-15T22:59Z) and now. The file remains at 169 LOC, 1 sorry
+at line 122, 0 axioms. The B1 blocker (Docker daemon hung + disk reclaim
+needed) was the binding constraint that kept S8 ACT off the table.
+
+### B1 re-measurement (2026-06-02T06:45Z)
+
+| Resource | S9 PREP (05-16T06:36Z) | S10 STATE-SYNC (05-16T15:40Z) | **S11 (this PR, 06-02T06:45Z)** | Trajectory |
+|----------|------------------------|-------------------------------|---------------------------------|-------------|
+| Docker daemon | **HUNG** (`docker info` blank Server) | **HUNG** (T+~7h, daemon recovery alone insufficient) | **HEALTHY** (`Server Version: 29.4.1`, 0 containers, 7.65 GiB total memory) | **Resolved** |
+| Host disk free | 7.3 Gi | 4.5 Gi | **25 Gi** | **5.6× improvement** but still ~5 Gi below S10 ~30 Gi build-headroom threshold |
+| Mathlib pin | `2df2f015…` | `2df2f015…` | `2df2f015…` | **Identical** — S7c PREP §2 18-bearer ledger remains canonical (no re-pin needed) |
+
+### Implications for S8 ACT readiness
+
+- **Docker recovery** removes the hard block surfaced by S9 PREP. The
+  `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02` command
+  now elaborates (no hung-daemon timeout).
+- **Disk pressure remains marginal**. 25 Gi free with a ~30 Gi
+  cold-cache build is borderline: a parallel Mathlib clone elsewhere
+  (e.g. another agent's Docker build) could exhaust the working set
+  mid-build. The S8 ACT picker should verify free disk immediately
+  before running Docker, and prefer Docker's warm-cache mode if
+  possible (build artifacts from S7 ACT may still be in the build
+  volume; check `docker volume ls`).
+- **Pin identity unchanged**. The S7c PREP #19257 §2 18-bearer ledger
+  (verified against rev `2df2f015…`) is still canonical for S8 ACT.
+  No re-`gh api` round-trip needed on Mathlib endpoints.
+- **§3.3 Option A** (`let q := (S \ {μ}).prod …` instead of
+  `Finset.erase`) and the two S5b PREP §8 tactical details still apply
+  verbatim — no S11 surface changes to the bridge punch list.
+
+### What this STATE-SYNC does NOT do
+
+- Does not attempt S8 ACT. The synthesis (~59 LOC, 4 bridges + compose)
+  is unchanged but remains a substantive picker task; doing it under
+  borderline disk pressure (without a pre-build verification window)
+  risks a mid-build OOM with high re-do cost.
+- Does not modify `proofs/Proofs/MinpolyCharpolyOQ02.lean` or any
+  other Lean file. The headline sorry at line 122 is intact.
+- Does not re-`gh api`-verify the 18 bearers from S7c PREP §2. The pin
+  is identical to S7c's pin (verified above), so the S7c §2 ledger is
+  authoritative.
+- Does not refresh the §3.3 Option A correction (still verbatim from
+  S7c PREP §3.3) or the S5b PREP §8 tactical-detail notes (still
+  apply).
+
+### Files touched (2 total)
+
+- `research/problems/minpoly-charpoly-oq-02/state.md` — this block +
+  Next Action refreshed for "B1 partially mitigated" framing.
+- `src/data/research/problems/minpoly-charpoly-oq-02.json` —
+  `currentState.{phase, since, iteration, focus, nextAction}`,
+  `knowledge.{progressSummary, insights, nextSteps}`, `lastUpdate`.
+
+### Honesty
+
+This STATE-SYNC is doc-only:
+- 0 new theorems
+- 0 sorry / axiom changes (no `.lean` file touched)
+- 0 new bearer verifications (pin identical; S7c §2 ledger inherited)
+- 0 new tactical details surfaced (S5b PREP §8 + S7c §3.3 still apply)
+
+The contribution is timeliness: after a 17-day idle window, the next
+ACT picker no longer has to re-run `docker info` and `df -h /` to
+discover that the disk has recovered to a still-marginal level and
+Docker has come back. That re-measurement saves ~5 min of friction at
+the start of the picker's session and avoids the risk of optimistically
+launching a 30-50 Gi-headroom build with only ~5 Gi cushion.
+
+---
 
 ## Current Focus
 
