@@ -866,4 +866,63 @@ theorem interior_nonComputableReals_eq_empty :
   rw [h_compl]
   exact computable_reals_dense
 
+/-! ## S9 — Boundary characterization: every real is a boundary point
+
+S7 (closure = univ) and S8 (interior = ∅) together pin down the topological
+boundary of the computable/non-computable partition exactly: every real is a
+boundary point of *both* sides.
+
+`frontier s := closure s \ interior s`, so the two facts combine directly:
+
+* From `closure_computable_reals_eq_univ` (S7) and
+  `interior_computable_reals_eq_empty` (S8 corollary),
+  `frontier {r | IsComputable r} = univ \ ∅ = univ`.
+* Symmetrically for `nonComputableReals` using
+  `closure_nonComputableReals_eq_univ` (S8-prep) and
+  `interior_nonComputableReals_eq_empty` (S8 corollary).
+
+The topological profile is now complete: the partition has empty interior on
+both sides, dense closure on both sides, and full frontier on both sides. No
+real "sits cleanly" on either side — every real is approached from both the
+computable and the non-computable side simultaneously. This is the same
+profile carried by the rational/irrational partition (`frontier {q : ℝ | q ∈
+Set.range ((↑) : ℚ → ℝ)} = univ`), refined here to the strictly finer
+computable/non-computable split.
+
+* `frontier_computable_reals_eq_univ` — `frontier {r | IsComputable r} = Set.univ`.
+* `frontier_nonComputableReals_eq_univ` — `frontier nonComputableReals = Set.univ`.
+-/
+
+/-- **S9 — every real is a boundary point of the computable reals.**
+
+    `frontier s := closure s \ interior s`. S7's `closure_computable_reals_eq_univ`
+    gives `closure {r | IsComputable r} = univ`, and S8's
+    `interior_computable_reals_eq_empty` gives `interior {r | IsComputable r} = ∅`.
+    The difference `univ \ ∅ = univ` finishes the proof.
+
+    Topologically this says no real lies in the "interior" of the computable
+    reals: every real has non-computable reals arbitrarily close to it (S8-prep
+    density) and is itself a limit of computable reals (S7 density). The two
+    facts together force the frontier to be everywhere. -/
+theorem frontier_computable_reals_eq_univ :
+    frontier {r : ℝ | IsComputable r} = Set.univ := by
+  rw [frontier, closure_computable_reals_eq_univ,
+      interior_computable_reals_eq_empty, Set.diff_empty]
+
+/-- **S9 — every real is a boundary point of the non-computable reals.**
+
+    Symmetric counterpart of `frontier_computable_reals_eq_univ`. By S8-prep
+    `closure_nonComputableReals_eq_univ` the closure is `univ`, by the S8
+    corollary `interior_nonComputableReals_eq_empty` the interior is `∅`,
+    and `univ \ ∅ = univ` closes the goal.
+
+    Together with `frontier_computable_reals_eq_univ`, this captures the
+    "topological symmetry" of the partition: neither half hides on a thin
+    subset, and every real is a two-sided accumulation point of both halves
+    of the computable/non-computable split. -/
+theorem frontier_nonComputableReals_eq_univ :
+    frontier nonComputableReals = Set.univ := by
+  rw [frontier, closure_nonComputableReals_eq_univ,
+      interior_nonComputableReals_eq_empty, Set.diff_empty]
+
 end AlgebraicNumbersCountableOQ02OQ04
