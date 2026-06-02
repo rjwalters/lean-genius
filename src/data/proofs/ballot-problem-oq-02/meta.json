@@ -53,7 +53,10 @@
     "assumptions": "2 axioms: (1) firstPassageTime_eq_maxEvent — {τ_a ≤ T} = maxEvent (requires path continuity + csInf theory), (2) reflection_principle — P(max W ≥ a) = 2·P(W_T ≥ a) (requires strong Markov property). Arcsine law is discussed but not formally axiomatized.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
-    "definitionCount": 4
+    "definitionCount": 4,
+    "additionalFiles": [
+      "Proofs/BallotProblemOQ02OQ05.lean"
+    ]
   },
   "overview": {
     "historicalContext": "The classical ballot problem was posed by Joseph Bertrand in 1887 in the *Comptes Rendus*: if candidate A receives $p$ votes and B receives $q$ votes with $p > q$, the probability A leads throughout counting is $(p-q)/(p+q)$. Désiré André gave the first proof using the reflection principle for lattice paths. The continuous-time version emerged from Louis Bachelier's 1900 thesis on stock price fluctuations — the first mathematical treatment of Brownian motion, predating Einstein's 1905 paper. Paul Lévy (1939) rigorously developed the reflection principle for Brownian motion, proving $P(\\max_{s \\leq T} W_s \\geq a) = 2P(W_T \\geq a)$, and discovered the arcsine law for the fraction of time BM spends positive. Monroe Donsker's 1951 invariance principle (functional CLT) formally connected discrete and continuous ballot theorems: the rescaled random walk converges in distribution to Brownian motion, making the discrete formula $(p-q)/(p+q)$ a finite approximation of the continuous reflection principle.",
@@ -272,7 +275,18 @@
     "theoremCount": 8,
     "definitionCount": 4,
     "path": "Proofs/BallotProblemOQ02.lean",
-    "sorries": 0
+    "sorries": 0,
+    "additionalFiles": [
+      {
+        "path": "Proofs/BallotProblemOQ02OQ05.lean",
+        "lineCount": 283,
+        "theorems": 5,
+        "definitions": 7,
+        "axioms": 1,
+        "sorries": 4,
+        "description": "OQ-05: Donsker's functional CLT statement layer connecting the discrete ballot problem to its continuous-time Brownian-motion shadow. Defines the interpolated rescaled random walk S_n*(t), an ad hoc weak-convergence predicate WeakConvergesInC01 (Mathlib v4.26.0 lacks Polish structure on C([0,1],ℝ)), and axiomatizes donsker_fclt (Wiedijk #45). Discrete reflection identity + first-passage / Sparre-Andersen / arcsine pipeline is staged across S3-S7 (4 acknowledged sorries scaffolding R4-sub/R5/LOW/R6)."
+      }
+    ]
   },
   "sorries": 0
 }
