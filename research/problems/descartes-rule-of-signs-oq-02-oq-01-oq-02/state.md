@@ -1,10 +1,70 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: ACT-BLOCKED (S6 audit, 2026-05-31, researcher-1): Docker build at v4.26.0 reveals **21 errors** in this file — pre-existing Mathlib API drift, not caused by S5. Top-of-stack: `import Mathlib.RingTheory.Squarefree.Basic` no longer exists (renamed to `Mathlib.Algebra.Squarefree.Basic` in v4.26.0); the rest are scattered API drift (tactic behavior, simp lemma renames, `sq` vs `*`, etc.). The S5 lemma body itself was not inspectable — Lean rejected the file at import stage. The "build pending — G9 lake self-loop" qualifier on PRs #21477 / #21190 / #19787 / #19566 was masking the fact that this file has **never compiled at v4.26.0**.
-**Path**: full (3–7 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT — gated on file repair)
-**Since**: 2026-05-31T00:00:00Z (S5 ACT, researcher-1)
-**Iteration**: 6 (S6 audit doc-only; no Lean edits this PR)
-**Researcher**: researcher-1 (S6 audit — Docker discovers 21 v4.26.0 build errors)
+**Phase**: ACT (Step-B / Step-C / assembly open; file build-clean at v4.26.0 after S7 ACT)
+**Path**: full (3–6 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT)
+**Since**: 2026-06-01T06:49Z (S7 ACT build-repair merged, PR #21825)
+**Iteration**: 8 (S8 STATE-SYNC, doc-only — this session)
+**Researcher**: researcher-1 (S8 STATE-SYNC absorbing S7 ACT)
+
+## S8 STATE-SYNC (researcher-1, 2026-06-01)
+
+Doc-only STATE-SYNC absorbing **S7 ACT** (PR #21825, merged 2026-06-01T06:49Z)
+into state.md. The file is now build-clean at v4.26.0:
+
+- 513 LOC (was 533 LOC at S6 audit baseline; -20 from idiom cleanup).
+- **0 sorries** (unchanged from S5).
+- **1 axiom** (`sturm_exact_count_axiom`; strengthened to additive form,
+  count unchanged).
+- Docker `./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02`
+  → **3058/3058 jobs green**, 0 errors, 0 warnings.
+
+### Per-stage status
+
+| Stage | Type | Anchor PR | Status |
+|---|---|---|---|
+| S1 OBSERVE | doc-only | (early) | ✅ merged |
+| S2-S4 PREP | doc-only | (various) | ✅ merged |
+| S5 ACT (Step-A locally-constant) | Lean | #21477 | ✅ merged (now build-clean post S7) |
+| S6 AUDIT (21 v4.26.0 errors) | doc-only | #21705 | ✅ merged |
+| S7 ACT (full build-repair, 21 → 0) | Lean | #21825 | ✅ merged (Docker 3058 jobs clean) |
+| S8 STATE-SYNC (this session) | doc-only | (this PR) | ⏳ open |
+| S9 PREP/ACT (Step-B) | Lean/doc | — | ⏳ open (unblocked) |
+| Step-C, assembly, final close | Lean | — | ⏳ deferred |
+
+## Blockers
+
+**None** (the S6-flagged "ACT-BLOCKED on 21 v4.26.0 build errors" was
+fully discharged by S7 ACT). The file is build-clean and ready for
+Step-B PREP/ACT.
+
+## Next Action
+
+**S9 PREP (recommended)**: Read the S5 ACT (Step-A locally-constant
+lemma, PR #21477) in its post-S7 form (line numbers may have shifted),
+then draft a Step-B PREP cataloging the bearers needed for the next
+lemma in the Sturm exact-count proof chain.
+
+**S9 ACT alternative**: dive directly into Step-B implementation. The
+file is build-clean; the locally-constant scaffold is in place; the
+next theorem in the chain is well-defined per the file's outline
+section.
+
+See `sessions/2026-06-01-s8-statesync-absorb-s7.md` for full memo.
+
+---
+
+## Historical: S6 AUDIT (researcher-1, 2026-05-31, PR #21705) — superseded by S7
+
+The S6 audit discovered 21 v4.26.0 errors at the lake-pinned SHA;
+top-of-stack was the `Mathlib.RingTheory.Squarefree.Basic` →
+`Mathlib.Algebra.Squarefree.Basic` import drift, plus scattered API
+drifts (tactic behavior, simp lemma renames, `sq` vs `*`, etc.). The
+S5 lemma body itself was not inspectable until the import was fixed.
+The "build pending — G9 lake self-loop" qualifier on PRs #21477 /
+#21190 / #19787 / #19566 was masking the fact that the file had never
+compiled at v4.26.0. **All 21 errors discharged by S7 ACT (PR #21825).**
+This is the **3rd empirical confirmation in 24 hours** of the pattern
+recorded in memory [[feedback_g9_qualifier_masks_real_bugs]].
 
 ## Session 6 — S6 AUDIT (researcher-1, 2026-05-31)
 

@@ -17,14 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-31T00:00:00.000Z",
-    "iteration": 7,
-    "focus": "S7 ACT — Full v4.26.0 build-repair pass complete (21 errors → 0). File 533→513 LOC, 1 axiom (additive form), 0 sorries, Docker 3058/3058 jobs verified. Axiom restructured to additive form bundles antitone with exact count. ACT-UNBLOCKED — Step-B can resume from verified-green baseline.",
-    "blockers": [
-      "G9 INFRA (host-side, inert for Docker per memory): proofs/.lake self-symlink in main repo. Docker -v mount bypasses it; this PR was verified directly with docker-build.sh.",
-      "ACT-RESUMED: S7 cleared all 21 v4.26.0 build errors found by S6 audit. Step-B sturmVariations_drop_at_root remains pending PREP (next session)."
-    ],
-    "nextAction": "S8 PREP — draft paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p; uses Step-A on the right interval). Build baseline is now Docker-green so future PREP/ACT cycles will catch latent bugs immediately rather than accumulate.",
+    "since": "2026-06-02T01:10:00Z",
+    "iteration": 8,
+    "focus": "S8 STATE-SYNC (this session, researcher-1, doc-only) absorbing S7 ACT (PR #21825, merged 2026-06-01T06:49Z) into state.md. File is now build-clean at v4.26.0: 513 LOC, 0 sorries, 1 axiom (sturm_exact_count_axiom), Docker-verified 3058/3058 jobs green. State.md had been stuck at iter 6 ACT-BLOCKED with the stale 21-errors-from-S6 status; this STATE-SYNC flips the phase to ACT and clears the Blockers section so the next claimant sees the ACT-UNBLOCKED reality and proceeds to Step-B PREP/ACT.",
+    "blockers": [],
+    "nextAction": "S9 PREP (recommended) \u2014 read the S5 ACT (Step-A locally-constant lemma, PR #21477) in its post-S7 form (line numbers may have shifted), then draft a Step-B PREP cataloging the bearers needed for the next lemma in the Sturm exact-count proof chain. S9 ACT alternative: dive directly into Step-B implementation - the file is build-clean; the locally-constant scaffold is in place; the next theorem is well-defined per the file outline.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 4,
@@ -32,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S7 ACT (researcher-1, 2026-05-31): v4.26.0 build-repair pass complete. All 21 audited errors fixed in single session; Docker 3058/3058 jobs verified clean. File: 533 → 513 LOC (-20 from cleanup using Polynomial.natDegree_eq_zero_of_derivative_eq_zero in place of two ~12-line mod_cast blocks). Axiom strengthened to additive form: sturm_exact_count_axiom : σ_p(a) = σ_p(b) + rootsInInterval p a b, which bundles antitone monotonicity with the exact-count formula and lets all 6 corollaries discharge via `have ...; omega`. Status: ACT-UNBLOCKED. Step-B PREP (sturmVariations_drop_at_root) can now resume from a verified-green baseline. 4th empirical confirmation in 24h that G9 qualifier masks real Mathlib API drift — but also first demonstration that the half-day estimate from S6 collapses to a single session when the audit lays out a precise per-error recovery plan.",
+    "progressSummary": "S7 ACT (researcher-1, 2026-05-31): v4.26.0 build-repair pass complete. All 21 audited errors fixed in single session; Docker 3058/3058 jobs verified clean. File: 533 \u2192 513 LOC (-20 from cleanup using Polynomial.natDegree_eq_zero_of_derivative_eq_zero in place of two ~12-line mod_cast blocks). Axiom strengthened to additive form: sturm_exact_count_axiom : \u03c3_p(a) = \u03c3_p(b) + rootsInInterval p a b, which bundles antitone monotonicity with the exact-count formula and lets all 6 corollaries discharge via `have ...; omega`. Status: ACT-UNBLOCKED. Step-B PREP (sturmVariations_drop_at_root) can now resume from a verified-green baseline. 4th empirical confirmation in 24h that G9 qualifier masks real Mathlib API drift \u2014 but also first demonstration that the half-day estimate from S6 collapses to a single session when the audit lays out a precise per-error recovery plan.",
     "builtItems": [
       "DescartesRuleOfSignsOQ02OQ01OQ02.lean (458 lines, 1 axiom, 0 sorries)",
       "sturmSeqAux: fuel-based Sturm sequence construction via EuclideanDomain.mod",
@@ -48,28 +45,28 @@
       "sturm_linear_left/right (proved): explicit computation for linear polynomials"
     ],
     "insights": [
-      "Sturm sequence uses GCD-based construction: p₀=p, p₁=p', pₖ₊₁=-(pₖ₋₁%pₖ), terminating when remainder=0",
-      "Key algebraic identity (proved): at a root r of q, (p%q)(r) = p(r) — from Euclidean division b·(a/b)+(a%b)=a",
-      "Interior sign property (proved): at any root r of pₖ (k≥1), pₖ₊₁(r) = -pₖ₋₁(r), so neighbors have opposite signs",
-      "Squarefree condition is essential: ensures p'(r) ≠ 0 at every real root r of p, so sign count drops by exactly 1 at each root",
+      "Sturm sequence uses GCD-based construction: p\u2080=p, p\u2081=p', p\u2096\u208a\u2081=-(p\u2096\u208b\u2081%p\u2096), terminating when remainder=0",
+      "Key algebraic identity (proved): at a root r of q, (p%q)(r) = p(r) \u2014 from Euclidean division b\u00b7(a/b)+(a%b)=a",
+      "Interior sign property (proved): at any root r of p\u2096 (k\u22651), p\u2096\u208a\u2081(r) = -p\u2096\u208b\u2081(r), so neighbors have opposite signs",
+      "Squarefree condition is essential: ensures p'(r) \u2260 0 at every real root r of p, so sign count drops by exactly 1 at each root",
       "Sturm is strictly tighter than Budan for squarefree polynomials: exact count vs upper bound",
-      "Linear polynomial verified directly: sturmSeq(X-c) = [X-c, 1], giving σ=1 for x<c and σ=0 for x>c",
+      "Linear polynomial verified directly: sturmSeq(X-c) = [X-c, 1], giving \u03c3=1 for x<c and \u03c3=0 for x>c",
       "Fuel-based recursion with fuel n=natDegree+1 suffices because each GCD step strictly reduces degree",
-      "S6 (2026-05-31, researcher-1) AUDIT — Docker build-verify of merged-main DescartesRuleOfSignsOQ02OQ01OQ02.lean reveals 21 v4.26.0 errors. Top is Squarefree import drift (RingTheory → Algebra in v4.26.0). The file has never compiled at v4.26.0; the 'build pending — G9' qualifier on all 4 prior PRs was empirically false. Recovery: fix import, replace 2 mod_cast blocks with Polynomial.natDegree_eq_zero_of_derivative_eq_zero, fix pow_two → mul_mul in squarefree_no_common_roots, convert orphan docstring at line 457 to block comment, address 13 other scattered drifts. Estimated half-day repair.",
-      "S7 (2026-05-31, researcher-1) ACT — Full v4.26.0 repair pass: 21 build errors fixed in single session (vs S6 audit estimate of half-day). Key fixes: (1) Squarefree import Algebra not RingTheory; (2) Polynomial.natDegree_eq_zero_of_derivative_eq_zero replaces 2 mod_cast blocks (sturmSeq_length_ge_two, squarefree_deriv_ne_zero_of_pos_degree); (3) intermediate_value_Icc vs Icc' branch alignment; (4) push_neg already produces ≤, drop not_lt.mp; (5) Squarefree def uses * not ^2; (6) Polynomial.IsRoot is reducible (drop rw); (7) EuclideanDomain.mod_one for X-C % 1; (8) orphan docstrings to block comments at lines 402-404 and 455-457; (9) `|>.` pipe inside type annotation fails — use explicit parens; (10) show vs unfold to force zeta-reduction of signVariations let-bindings; (11) axiom strengthened to additive form σ_p(a) = σ_p(b) + roots to bundle antitone with exact count (omega-derivable, all 6 corollaries use have+omega). File: 533 → 513 LOC, 1 axiom (unchanged count, richer formulation), 0 sorries, Docker 3058/3058 verified."
+      "S6 (2026-05-31, researcher-1) AUDIT \u2014 Docker build-verify of merged-main DescartesRuleOfSignsOQ02OQ01OQ02.lean reveals 21 v4.26.0 errors. Top is Squarefree import drift (RingTheory \u2192 Algebra in v4.26.0). The file has never compiled at v4.26.0; the 'build pending \u2014 G9' qualifier on all 4 prior PRs was empirically false. Recovery: fix import, replace 2 mod_cast blocks with Polynomial.natDegree_eq_zero_of_derivative_eq_zero, fix pow_two \u2192 mul_mul in squarefree_no_common_roots, convert orphan docstring at line 457 to block comment, address 13 other scattered drifts. Estimated half-day repair.",
+      "S7 (2026-05-31, researcher-1) ACT \u2014 Full v4.26.0 repair pass: 21 build errors fixed in single session (vs S6 audit estimate of half-day). Key fixes: (1) Squarefree import Algebra not RingTheory; (2) Polynomial.natDegree_eq_zero_of_derivative_eq_zero replaces 2 mod_cast blocks (sturmSeq_length_ge_two, squarefree_deriv_ne_zero_of_pos_degree); (3) intermediate_value_Icc vs Icc' branch alignment; (4) push_neg already produces \u2264, drop not_lt.mp; (5) Squarefree def uses * not ^2; (6) Polynomial.IsRoot is reducible (drop rw); (7) EuclideanDomain.mod_one for X-C % 1; (8) orphan docstrings to block comments at lines 402-404 and 455-457; (9) `|>.` pipe inside type annotation fails \u2014 use explicit parens; (10) show vs unfold to force zeta-reduction of signVariations let-bindings; (11) axiom strengthened to additive form \u03c3_p(a) = \u03c3_p(b) + roots to bundle antitone with exact count (omega-derivable, all 6 corollaries use have+omega). File: 533 \u2192 513 LOC, 1 axiom (unchanged count, richer formulation), 0 sorries, Docker 3058/3058 verified."
     ],
     "mathlibGaps": [
       "sturm_exact_count_axiom: the main theorem (axiomatized, proof requires sign-count decrease analysis at each root type)",
-      "Mathlib has no Sturm theorem formalization as of v4.26.0 — needs to be built from scratch"
+      "Mathlib has no Sturm theorem formalization as of v4.26.0 \u2014 needs to be built from scratch"
     ],
     "nextSteps": [
-      "S5 ACT (DONE this PR, 2026-05-31): Step-A `private lemma sturmVariations_locally_constant` pasted from S2 PREP §3 — +75 LOC, 0 sorries, 0 axioms net, build pending G9",
-      "S6 PREP — draft paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p; uses Step-A on the right interval)",
-      "S7 ACT — land Step-B lemma",
-      "S8 PREP — draft paste-ready Step-C `private lemma sturmVariations_unchanged_at_interior_root` (~100–150 LOC; uses sturm_neighbors_opposite_at_root + signVariations triple identity)",
-      "S9 ACT — land Step-C lemma",
-      "S10 PREP+ACT — assemble main `theorem sturm_exact_count` via well-founded induction on multiset card of distinct Sturm-sequence roots in (a, b]; drop `axiom` keyword; update gallery meta.json (axiomCount 1→0, status axiomatized→verified, badge axiom→original)",
-      "Consider Aristotle submission for any HARD sub-lemma if hand-written ACT cycle exceeds budget (Step B is the dominant ergonomic risk; ~2× upward LOC revision is plausible per memory trap _postship_pivot_lands_on_audit_corrected_…)"
+      "S5 ACT (DONE this PR, 2026-05-31): Step-A `private lemma sturmVariations_locally_constant` pasted from S2 PREP \u00a73 \u2014 +75 LOC, 0 sorries, 0 axioms net, build pending G9",
+      "S6 PREP \u2014 draft paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120\u2013180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p; uses Step-A on the right interval)",
+      "S7 ACT \u2014 land Step-B lemma",
+      "S8 PREP \u2014 draft paste-ready Step-C `private lemma sturmVariations_unchanged_at_interior_root` (~100\u2013150 LOC; uses sturm_neighbors_opposite_at_root + signVariations triple identity)",
+      "S9 ACT \u2014 land Step-C lemma",
+      "S10 PREP+ACT \u2014 assemble main `theorem sturm_exact_count` via well-founded induction on multiset card of distinct Sturm-sequence roots in (a, b]; drop `axiom` keyword; update gallery meta.json (axiomCount 1\u21920, status axiomatized\u2192verified, badge axiom\u2192original)",
+      "Consider Aristotle submission for any HARD sub-lemma if hand-written ACT cycle exceeds budget (Step B is the dominant ergonomic risk; ~2\u00d7 upward LOC revision is plausible per memory trap _postship_pivot_lands_on_audit_corrected_\u2026)"
     ]
   },
   "tags": [
@@ -94,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T14:43:29.519Z",
-  "lastUpdate": "2026-05-31T22:30:00.000Z",
+  "lastUpdate": "2026-06-02T01:10:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
