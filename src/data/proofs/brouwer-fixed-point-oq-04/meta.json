@@ -52,9 +52,9 @@
       }
     ],
     "historicalContext": "Shizuo Kakutani (1941) proved this generalization of Brouwer's theorem. John Nash (1950) used it to prove the existence of Nash equilibria, earning the Nobel Prize in Economics (1994). The theorem is essential in mathematical economics (Arrow-Debreu general equilibrium) and optimal control (Filippov's lemma).",
-    "axiomCount": 2,
+    "axiomCount": 4,
     "lineCount": 505,
-    "assumptions": "2 axioms: kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ) and brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). 0 sorries.",
+    "assumptions": "4 axioms across the chain. Main file Proofs/BrouwerFixedPointOQ04.lean (2): kakutani_fixed_point_axiom (Kakutani fixed-point theorem for compact convex sets in ℝⁿ), brouwer_pi_compact_convex (Brouwer FPT for products of compact convex sets — requires Schoenflies-type theorem not yet in Mathlib). Companion Proofs/BrouwerFixedPointOQ04OQ01.lean (2): bestResponse_uhc (upper hemicontinuity of the best-response correspondence for finite games), kakutani_product_simplex (Kakutani FPT applied to the product simplex of mixed strategies). 0 sorries.",
     "theoremCount": 22,
     "definitionCount": 14,
     "additionalFiles": [
