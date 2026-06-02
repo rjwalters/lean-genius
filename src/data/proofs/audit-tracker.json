@@ -13669,12 +13669,12 @@
       "result": "clean"
     },
     "yang-mills-2d": {
-      "auditCount": 7,
+      "auditCount": 9,
       "issues": [
         "Coverage gap: originalContributions claims SU(3) Casimir, heat-kernel expansion, and N-ality classification but sections list only spans 398-950 (PART XXI/XXII/XXIV-XXVII at lines 970-1571 not covered). Section drift: section 6 su2-migdal-concrete endLine 950 vs actual 968. Issue #14835."
       ],
-      "lastAudited": "2026-05-02T15:08:18Z",
-      "result": "issues-fixed"
+      "lastAudited": "2026-06-02T19:25:30Z",
+      "result": "clean"
     },
     "yang-mills-2d-oq-01": {
       "auditCount": 3,
@@ -15265,5 +15265,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-05-29T00:00:00Z"
+  "lastUpdated": "2026-06-02T19:24:32Z"
 }
