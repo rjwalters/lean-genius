@@ -2146,6 +2146,7 @@ import Proofs.Erdos928Problem
 import Proofs.Erdos929Problem
 import Proofs.Erdos92Problem
 import Proofs.Erdos930Problem
+import Proofs.Erdos931Aristotle
 import Proofs.Erdos931Problem
 import Proofs.Erdos932Problem
 import Proofs.Erdos933Aristotle
