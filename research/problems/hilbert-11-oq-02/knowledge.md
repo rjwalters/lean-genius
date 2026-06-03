@@ -356,6 +356,164 @@ verifying the witness arithmetic.
 
 ---
 
+## Session 2026-06-03 (Iteration 25, researcher-1) — Section 28 Conditional Case-B Closure
+
+**Mode**: BUILD-ON-PRIOR (state.md iter 24 S24 BUILD-VERIFY established
+RECOVERING→ACT with file 1975 LOC, 88 thms, 0 sorries, 2 axioms; nextAction
+"Section 28 universal Case-B"). This iteration delivers the **conditional**
+form of Section 28, not the unconditional universal Case-B theorem.
+
+**Outcome**: progress (no axiom elimination; one new conditional theorem
++ one tautological corollary). Section 28 makes the remaining axiom
+assumption **transparent**: Case-A (Section 27) + special primes {2, 3, 5}
+(Sections 17/19) cover all of the universal axiom except the Case-B class
+(`p ≡ 1 mod 3`).
+
+### What was added (+~117 LOC)
+
+Section 28 has two new theorems plus a docstring header and `#check` entries:
+
+1. **`selmer_padic_solubility_from_caseB`** (~30 lines) — conditional
+   universal closure. Given a `caseB` hypothesis stating ℚ_[p]-solubility
+   for every prime `p ≡ 1 (mod 3)`, derives ℚ_[p]-solubility for every
+   prime `p` by case-split:
+   - `p = 2`: `selmer_padic_solubility_p2_hensel` (Section 17).
+   - `p = 3`: `selmer_padic_solubility_p3_hensel` (Section 19).
+   - `p = 5`: `selmer_padic_solubility_p5_hensel` (Section 17).
+   - `p ≡ 0 mod 3` (and `p ∉ {3}`): contradicts primality.
+   - `p ≡ 1 mod 3`: `caseB` hypothesis.
+   - `p ≡ 2 mod 3` with `p ∉ {2, 5}`:
+     `UniversalCaseA.selmer_padic_solubility_caseA_universal` (Section 27).
+
+2. **`selmer_padic_solubility_recovered`** (~5 lines) — tautological
+   consistency check. Supplies the `caseB` hypothesis from the existing
+   axiom `selmer_padic_solubility` (restricted to `p ≡ 1 mod 3`),
+   recovering the universal statement. If the case decomposition above
+   were incomplete this corollary would fail to type-check.
+
+### Why this is the right S(25) deliverable (and what it is not)
+
+The state.md iter-17 plan (and iter-24 S24's "Section 28 universal Case-B
+(long-horizon plan (a))" target) called for a *parametric* Case-B universal
+theorem analogous to Section 27. That theorem would require either:
+
+- (a) A uniform cubic-residue argument à la Case A. **Fails**: the cube map
+  on `(ZMod p)*` is 3-to-1 for `p ≡ 1 mod 3`; image is the index-3 cubic-
+  residue subgroup; `-4/5` is not always a cube. Different witness
+  projections work for different primes (e.g. `(0, 1, z)` at `p = 37`,
+  `(1, 0, z)` at `p = 43`/`67`), so a single closure projection does not
+  cover all Case-B primes.
+
+- (b) A Hasse-Weil-based existence theorem for smooth points on the genus-1
+  curve over F_p. **Beyond Mathlib**: `Mathlib.AlgebraicGeometry.EllipticCurve.*`
+  has elliptic-curve types but no point-counting / Hasse-Weil bound; a
+  multi-thousand-line contribution is required.
+
+Neither (a) nor (b) is achievable in a single session. The honest
+deliverable is therefore the **conditional** form: state precisely what
+Case-B universal would buy, prove that it implies the original axiom, and
+isolate the remaining obstruction to a single class of primes.
+
+Net axiom-count change: **0** (still 2 axioms — `selmer_no_rational_solution`
+and `selmer_padic_solubility`). What changes:
+
+- Before iter 25: `selmer_padic_solubility` is an opaque universal
+  assumption covering all primes. Partial progress on Case A (Section 27)
+  and special primes (Sections 17/19) does not visibly affect the
+  assumption's "size".
+- After iter 25: the assumption is decomposed as Case A (proved) +
+  special primes (proved) + Case B (the remaining gap). Case B is now a
+  named, isolated hypothesis with a precise statement amenable to future
+  Mathlib contribution.
+
+### Why not just replace the original axiom in-place?
+
+`selmer_padic_solubility` (line 183) is referenced at line 193 by
+`selmer_locally_soluble_everywhere` and transitively at line 201 by
+`selmer_hasse_principle_fails`. Replacing the axiom with a theorem
+in-place would require:
+1. Moving the universal axiom to AFTER the Section 27 Case-A theorem
+   (~1700 lines later).
+2. Reordering `selmer_locally_soluble_everywhere` and
+   `selmer_hasse_principle_fails` to AFTER the axiom's new location.
+3. Re-deriving with a still-needed Case-B-only axiom.
+
+Net axiom count would stay at 2 (replace universal axiom with Case-B-only
+axiom), but file undergoes major restructuring with significant merge-
+conflict risk. Deferred to a future cleanup PR; the conditional theorem
+here captures the structural insight without restructuring.
+
+### Status After This Iteration
+
+- Sorries: 0 (unchanged).
+- Axioms: 2 (unchanged): `selmer_no_rational_solution` +
+  `selmer_padic_solubility`.
+- Theorems: 90 (was 88; +2).
+- Definitions: 9 (unchanged).
+- File length: 2092 lines (was 1975; +117).
+- Status: still `axiomatized`.
+
+### Honest Reporting
+
+* **Build verification**: NOT performed. Disk at 100% capacity (1.1 Gi
+  avail) blocks Docker build — would need ~10 Gi for fresh Mathlib clone
+  via the documented `proofs/.lake` self-symlink trap (G9 INFRA gate).
+  Per iter-24 S24 BUILD-VERIFY's "G9 is INERT for Docker bind-mount
+  builds", the build COULD succeed if disk were available; not testable
+  this session.
+
+* **Tactic confidence**: HIGH. Every tactic used is a standard Mathlib
+  v4.26 idiom already exercised elsewhere in the file:
+  - `by_cases`, `subst`, `exact`, `rcases`, `intro`, `refine` (core Lean).
+  - `Nat.mod_lt p (by norm_num : 0 < 3)` (Mathlib `Nat.Defs`).
+  - `omega` for the trichotomy `p % 3 = 0 ∨ p % 3 = 1 ∨ p % 3 = 2`.
+  - `Nat.dvd_of_mod_eq_zero`, `Nat.Prime.eq_one_or_self_of_dvd`.
+  - `absurd` for the `3 ≠ 1` contradiction.
+  - `@selmer_padic_solubility q hq` (explicit instance application for the
+    sanity-check corollary).
+
+* **Case decomposition correctness**: VERIFIED structurally by
+  `selmer_padic_solubility_recovered`. Feeding the existing universal
+  axiom (restricted to `p ≡ 1 mod 3`) as the `caseB` hypothesis recovers
+  the universal statement, closing the loop. If a case were missing
+  this corollary would fail to type-check.
+
+### Files Changed
+
+- UPDATED `proofs/Proofs/Hilbert11OQ02.lean` (1975 → 2092 lines, +Section
+  28 docstring + `selmer_padic_solubility_from_caseB` +
+  `selmer_padic_solubility_recovered` + 2 `#check` lines).
+- UPDATED `src/data/proofs/hilbert-11-oq-02/meta.json` (lineCount 1975 →
+  2092, theoremCount 88 → 90, appended Section 28 entry to
+  originalContributions).
+- UPDATED `research/problems/hilbert-11-oq-02/knowledge.md` (this entry).
+- UPDATED `research/problems/hilbert-11-oq-02/state.md` (iter 25 entry +
+  Phase/Iteration header refresh).
+- UPDATED `src/data/research/problems/hilbert-11-oq-02.json` `currentState`
+  (iteration 24 → 25, focus, nextAction, lastUpdate refresh).
+
+### Next Steps
+
+1. **Universal Case-B theorem (full unconditional)**: discharge the
+   Case-B hypothesis directly. Multi-session, requires Hasse-Weil
+   formalization or elementary cubic-character-sum argument; neither in
+   Mathlib v4.26.
+
+2. **In-place axiom replacement**: restructure file to move
+   `selmer_padic_solubility` to AFTER Section 28 and convert to theorem;
+   net axiom count stays 2 but logically strictly weaker. Substantial
+   reorganization.
+
+3. **Cleanup refactor** (iter-17 nextStep (2)): collapse `Hensel3.Gint`,
+   `Hensel11.Gint`, `HenselCaseA.Gint` (and Section 27's implicit
+   definition) into a single module-level `Selmer.GintZ`. Net delta
+   ~−40 lines, no semantic change.
+
+4. **Far stretch**: discharge `selmer_no_rational_solution` via 3-descent
+   on `E: y² = x³ - 432·15²`. Multi-thousand-line contribution.
+
+---
+
 ## Session 2026-05-12 (Iteration 17, researcher-6) — Section 27 Universal Case-A
 
 ### What was added

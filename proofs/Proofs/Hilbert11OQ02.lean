@@ -1927,6 +1927,121 @@ theorem selmer_padic_solubility_p41_universal :
 
 end UniversalCaseA
 
+/-! ## Section 28: Conditional Universal ℚ_[p]-Solubility — Case-B is the
+     Only Remaining Obstruction
+
+Section 27 established the **Case-A universal theorem**
+`UniversalCaseA.selmer_padic_solubility_caseA_universal`, proving ℚ_[p]-
+solubility for every prime `p ≡ 2 (mod 3)` with `p ≠ 2` and `p ≠ 5`,
+axiom-free. The **special primes** `p ∈ {2, 3, 5}` are handled axiom-free by
+`selmer_padic_solubility_p2_hensel`, `_p3_hensel`, `_p5_hensel`
+(Sections 17, 19). The remaining ℚ_[p]-solubility content lies entirely in
+the **Case-B class** `p ≡ 1 (mod 3)`.
+
+This section makes that decomposition explicit by proving a *conditional*
+universal derivation: given a Case-B universal hypothesis (an analog of
+Section 27 for primes `p ≡ 1 (mod 3)`), the universal axiom
+`selmer_padic_solubility` follows for every prime by case-split.
+
+> **Theorem (conditional universal closure).** Assume Case-B universal
+> ℚ_[p]-solubility for primes `p ≡ 1 (mod 3)`. Then the Selmer cubic
+> `3x³ + 4y³ + 5z³ = 0` is ℚ_[p]-soluble at every prime `p`, axiom-free.
+
+### Why this is real progress (and what it is not)
+
+This section does **not** reduce the file's axiom count: the original
+universal axiom `selmer_padic_solubility` (line 183) remains in force as a
+forward-reference dependency for `selmer_locally_soluble_everywhere`
+(line 189) and `selmer_hasse_principle_fails` (line 201), both of which
+predate Section 27's discovery and were stated against the universal axiom.
+Replacing the axiom in-place would require reordering ~1000 lines of the
+file (moving all per-prime Hensel-lifted theorems above line 183) and is
+deferred.
+
+What this section **does** is make the axiom assumption transparent: every
+component of the universal axiom is now either *proved* (Case A via
+Section 27 + special primes via Sections 17/19) or isolated to a single
+class (Case B, `p ≡ 1 mod 3`). The Case-B fragment is the *only* genuine
+remaining ℚ_[p]-solubility hypothesis in this file. A future Lean
+formalization of Hasse–Weil for smooth genus-1 curves over finite fields
+would discharge the Case-B hypothesis as a theorem; combined with the
+conditional derivation below, this would eliminate `selmer_padic_solubility`
+from the axiom set entirely.
+
+### Mathematical content
+
+The case-split is exhaustive over primes `p`:
+
+| `p`                          | Source                                              |
+|------------------------------|-----------------------------------------------------|
+| `p = 2`                      | `selmer_padic_solubility_p2_hensel` (Section 17)    |
+| `p = 3`                      | `selmer_padic_solubility_p3_hensel` (Section 19)    |
+| `p = 5`                      | `selmer_padic_solubility_p5_hensel` (Section 17)    |
+| `p ≡ 2 (mod 3)`, `p ∉ {2,5}` | `selmer_padic_solubility_caseA_universal` (S27)     |
+| `p ≡ 1 (mod 3)`              | Case-B hypothesis (this section)                    |
+| `p ≡ 0 (mod 3)`              | only `p = 3`, dispatched above                      |
+-/
+
+/-- **Conditional universal ℚ_[p]-solubility for the Selmer cubic.**
+
+    Assume that for every prime `p ≡ 1 (mod 3)` the Selmer cubic
+    `3x³ + 4y³ + 5z³ = 0` is ℚ_[p]-soluble (a Case-B universal hypothesis).
+    Then it is ℚ_[p]-soluble at **every** prime `p`, axiom-free modulo this
+    hypothesis. The proof case-splits `p` into:
+
+    1. The special primes `p ∈ {2, 3, 5}`, each dispatched by an existing
+       axiom-free Hensel-lifted theorem (Sections 17, 19).
+    2. The Case-A class `p ≡ 2 (mod 3)` with `p ∉ {2, 5}` (equivalently
+       `p ≥ 7`), dispatched by Section 27's universal Case-A theorem.
+    3. The Case-B class `p ≡ 1 (mod 3)`, dispatched by the hypothesis.
+    4. `p ≡ 0 (mod 3)`, which forces `p = 3` by primality, already
+       dispatched in step 1.
+
+    This identifies Case-B universal ℚ_[p]-solubility as the *only*
+    remaining ℚ_[p]-solubility obstruction in the Selmer-cubic
+    Hasse-failure proof; a future Hasse–Weil-based discharge of the
+    hypothesis would eliminate `selmer_padic_solubility` from the axiom
+    set entirely. -/
+theorem selmer_padic_solubility_from_caseB
+    (caseB : ∀ (p : ℕ) [Fact (Nat.Prime p)], p % 3 = 1 →
+             ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0)
+    (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  have hp_prime : Nat.Prime p := hp.out
+  by_cases h2 : p = 2
+  · subst h2; exact selmer_padic_solubility_p2_hensel
+  by_cases h3 : p = 3
+  · subst h3; exact selmer_padic_solubility_p3_hensel
+  by_cases h5 : p = 5
+  · subst h5; exact selmer_padic_solubility_p5_hensel
+  -- p ∉ {2, 3, 5}; case on p mod 3
+  have hp_mod3_lt : p % 3 < 3 := Nat.mod_lt p (by norm_num)
+  have hp_mod3_cases : p % 3 = 0 ∨ p % 3 = 1 ∨ p % 3 = 2 := by omega
+  rcases hp_mod3_cases with h0 | h1 | h2'
+  · -- p % 3 = 0 → 3 ∣ p → p = 3, contradicting h3
+    exfalso
+    have hdvd : (3 : ℕ) ∣ p := Nat.dvd_of_mod_eq_zero h0
+    rcases hp_prime.eq_one_or_self_of_dvd 3 hdvd with h31 | h33
+    · exact absurd h31 (by decide)
+    · exact h3 h33.symm
+  · -- p ≡ 1 mod 3: Case B
+    exact caseB p h1
+  · -- p ≡ 2 mod 3 and p ∉ {2, 5}: Case A universal
+    exact UniversalCaseA.selmer_padic_solubility_caseA_universal h2' h2 h5
+
+/-- **Sanity-check corollary.** The original universal axiom
+    `selmer_padic_solubility` (line 183), restricted to its Case-B class
+    `p % 3 = 1`, supplies the Case-B hypothesis of
+    `selmer_padic_solubility_from_caseB`; the conditional derivation
+    therefore recovers the universal axiom unconditionally. This is a
+    tautological consistency check — it verifies that the Section-28 case
+    decomposition is exhaustive without inflating any claim. -/
+theorem selmer_padic_solubility_recovered (p : ℕ) [hp : Fact (Nat.Prime p)] :
+    ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  refine selmer_padic_solubility_from_caseB ?_ p
+  intro q hq _
+  exact @selmer_padic_solubility q hq
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1971,5 +2086,7 @@ end UniversalCaseA
 #check @UniversalCaseA.selmer_padic_solubility_caseA_universal
 #check @UniversalCaseA.selmer_padic_solubility_p11_universal
 #check @UniversalCaseA.selmer_padic_solubility_p41_universal
+#check @selmer_padic_solubility_from_caseB
+#check @selmer_padic_solubility_recovered
 
 end Hilbert11OQ02
