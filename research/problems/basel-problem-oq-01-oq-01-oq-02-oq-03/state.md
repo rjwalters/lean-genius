@@ -1,11 +1,27 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 42 PREP — 28a cast-bridge consolidation SHIPPED doc-only; remaining Route B work: 28a ACT)
+**Phase**: ACT (Iter 43 PREP — 28a `linear_combination` algebraic gap FIXED via ℕ-descent; remaining Route B work: 28a ACT after Docker remediation)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-06-02 (Iter 42 PREP — cast-bridge consolidation + cpow/ofReal bearer audit; iteration 41→42; no Lean edits, no axiom/sorry delta, researcher-1)
-**Iteration**: 42
+**Last Updated**: 2026-06-03 (Iter 43 PREP — linear_combination gap analysis + ℕ-descent discharge + Docker infra-red flag; iteration 42→43; no Lean edits, no axiom/sorry delta, researcher-1)
+**Iteration**: 43
+
+## Iter 43 PREP (2026-06-03, researcher-1) — 28a `linear_combination` algebraic gap + corrected ℕ-descent discharge
+
+Doc-only PREP that audits Iter 42's paste-ready block and finds a **load-bearing algebraic gap** in the terminal `linear_combination` discharge of `complex_betaIntegral_nat_eq_choose_inv`. The gap is **mathematical**, not the Medium-risk tactic-syntax drift Iter 42 hedged for: closing the goal requires cancelling a `k!` factor, and that is not a linear operation over the three cast hypotheses (`h_asc_C`, `h_choose_C`, `h_succ_C`), so no linear combination over them closes the goal at any `linear_combination` version. The documented fallback (`ring_nf` + `linarith`) suffers the same gap.
+
+- **The gap**: After Iter 42's `field_simp` (Step 5), the goal reduces to the polynomial identity `(n-k)! · (n+1) · Nat.choose n k = (k+1).ascFactorial (n-k+1)` in ℂ. The "correct" coefficient combination Iter 42's mid-proof comment describes (`(n+1) · h_choose_C - h_succ_C - h_asc_C`) actually closes the **k!-augmented** goal `(n+1) · choose · k! · (n-k)! = k! · ascFact`, off the target by a factor of `k!`. Cancelling `k!` is non-linear; `ring`/`linarith` cannot do it. (The literal Iter 42 call `((n-k)! : ℂ) * h_choose_C - ((n-k)! : ℂ) * h_asc_C` is additionally wrong via a `(n-k)!²` monomial introduction.)
+- **The fix**: Prove the load-bearing identity at the **ℕ level** via `Nat.eq_of_mul_eq_mul_right` (with `Nat.factorial_pos k`), then cast a single `h_key_C` to ℂ and discharge the division with one `linear_combination`. Five-step `calc` chain using `Nat.choose_mul_factorial_mul_factorial`, `Nat.factorial_succ`, and `Nat.factorial_mul_ascFactorial` (existing Bearers 3+4). Eliminates `field_simp` entirely from the core.
+- **NEW Bearers 11–13** (all Mathlib core): `Nat.eq_of_mul_eq_mul_right`, `Nat.factorial_pos`, `Nat.factorial_succ`. Entry-level lemmas; no expected v4.26.0 drift.
+- **Corrected paste-ready block** (~85 LOC, +5 vs. Iter 42 due to explicit `calc`). Bearer 1-10 outer structure preserved; only the terminal discharge changes. Cast-bridge body for `real_betaIntegral_nat_eq_choose_inv` carries forward unchanged save one cosmetic `push_cast`-tweak (associativity-robust).
+- **NEW infrastructure red flag**: Docker host state inconsistent (`docker ps` Up vs. `docker exec`/`inspect` dead vs. corrupted-blob I/O error on `lean4-arm64:v4.26.0` backing image `9026c55995f4`); 11 GiB free disk insufficient for image rebuild slack. **ACT is blocked at the infra layer** until: (a) `docker rm -f lean-build-57602`, (b) `docker system prune -a --volumes`, (c) re-pull / rebuild the lean4 image, (d) confirm `docker exec` works on a fresh container.
+- **Residual risk** (downgraded Medium → Low): cast-syntax friction at the ℂ↔ℕ boundary (`((n+1 : ℕ) : ℂ)` vs. `((n : ℂ) + 1)`). Fallback: swap `linear_combination h_key_C` for `ring_nf; exact h_key_C` or `linarith [h_key_C]`.
+- **Estimated ACT size**: ~85 LOC (+5 vs. Iter 42); +2 import lines; net 1802 → ~1887 LOC; 0 sorries; 1 axiom unchanged.
+
+**File state at PREP time**: 1802 LOC unchanged (no Lean edits); 1 axiom `hanson_bound` unchanged; 0 sorries (md5 `4b4ac86002cb4c60b7a2863c157dad48`, byte-identical to Iter 38 ACT state). Build state: 3066/3066 jobs verified at SHA `2df2f0150c…` per Iter 38 ACT #20863 (2026-05-28). Build NOT attempted this iter (Docker host degraded; see above).
+
+**No edits outside this PREP's three files**: this session log + this `state.md` block + research JSON `currentState` refresh. No knowledge.md / problem.md / Lean / meta.json edits. Session log: `sessions/2026-06-03-iter43-prep-linear-combination-gap-and-corrected-discharge.md`.
 
 ## Iter 42 PREP (2026-06-02, researcher-1) — 28a cast-bridge consolidation + cpow/ofReal bearer audit
 
