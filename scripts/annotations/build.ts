@@ -14,6 +14,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import { createHash } from 'node:crypto';
 import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'url';
 import { resolveAnnotations, resolveSections, validateLineAnnotations } from './resolver.js';
@@ -347,6 +348,194 @@ function emitStaticSource(
 }
 
 /**
+ * Compute the first 8 hex chars of sha256 over a file's contents. Used as the
+ * `?v=<hash>` cache-buster in the runtime data manifest so that any edit to a
+ * proof's meta/annotations/source busts CDN + browser caches on the next
+ * deploy. 8 chars = 32 bits of entropy — comfortably more than enough for the
+ * <3000 proof × 3 files = <10K unique values at stake.
+ */
+function sha8(filePath: string): string {
+  const h = createHash('sha256');
+  h.update(fs.readFileSync(filePath));
+  return h.digest('hex').slice(0, 8);
+}
+
+/**
+ * Emit each proof's meta.json + annotations.json to the build-generated public
+ * asset tree at `public/data/proofs/<slug>/`. The runtime loader in
+ * `src/data/proofs/index.ts` fetches these by slug instead of importing them
+ * through the vite/Rollup module graph. This collapses ~7300 per-proof data
+ * modules (2435 index.ts shims + 2435 meta.json + 2435 annotations.json)
+ * down to a handful of app modules, restoring the build toward its documented
+ * ~5–10s vite stage baseline and making it O(1) in gallery size. See issue
+ * #20993 (build-perf phase 2).
+ *
+ * Per-proof incremental caching: same touchedMap pattern as `emitStaticSource()`.
+ * When the destination already exists and its mtime is at least the git-commit
+ * timestamp of the source data dir, the copy is skipped. We pin the destination's
+ * mtime to the git commit time so the comparison stays meaningful across
+ * `git checkout` and fresh-worktree creation. Note: when the whole-script
+ * input-hash cache (issue #22149) short-circuits the build, this function is
+ * not called at all; the incremental skip below kicks in on cache MISSES
+ * where only a subset of proofs actually changed.
+ *
+ * Fallback policy: if `touchedMap` lookup misses (e.g. brand-new uncommitted
+ * file not yet in `git log`), or if no touchedMap is available, we
+ * unconditionally copy. Over-copying is safer than under-emitting.
+ *
+ * Returns nothing; the manifest emit step reads the destination files
+ * directly to compute hashes.
+ */
+function emitStaticData(
+  proofs: ProofConfig[],
+  touchedMap: Map<string, string> | undefined
+): void {
+  let updated = 0;
+  let cached = 0;
+  let skipped = 0;
+
+  for (const proof of proofs) {
+    try {
+      const srcMeta = path.join(proof.dataDir, 'meta.json');
+      const srcAnn = path.join(proof.dataDir, 'annotations.json');
+      const destDir = path.join(PUBLIC_PROOFS_DIR, proof.id);
+      const destMeta = path.join(destDir, 'meta.json');
+      const destAnn = path.join(destDir, 'annotations.json');
+
+      // Look up the git commit timestamp for the proof's data dir. The map
+      // is keyed by repo-relative paths.
+      const dataDirRel = path.relative(REPO_ROOT, proof.dataDir);
+      const dataTouchedAt = touchedMap?.get(dataDirRel);
+
+      // Skip-when-fresh check: for each source file, the destination exists
+      // AND its mtime is at least max(git-commit-ts-of-dir, source-disk-mtime).
+      // Including the source's disk mtime catches uncommitted local edits to
+      // a tracked file (e.g. an enricher run that hasn't committed yet, or a
+      // cache-bust verification edit). Without it, the skip would wrongly
+      // pass through on local edits that haven't reached git yet.
+      const metaSrcStat = fs.existsSync(srcMeta) ? fs.statSync(srcMeta) : undefined;
+      const annSrcStat = fs.existsSync(srcAnn) ? fs.statSync(srcAnn) : undefined;
+      const metaDestStat = metaSrcStat ? fs.statSync(destMeta, { throwIfNoEntry: false }) : undefined;
+      const annDestStat = annSrcStat ? fs.statSync(destAnn, { throwIfNoEntry: false }) : undefined;
+
+      const metaFresh = !metaSrcStat || (
+        metaDestStat &&
+        metaDestStat.mtime.getTime() >= metaSrcStat.mtime.getTime() &&
+        (!dataTouchedAt || metaDestStat.mtime.toISOString() >= dataTouchedAt)
+      );
+      const annFresh = !annSrcStat || (
+        annDestStat &&
+        annDestStat.mtime.getTime() >= annSrcStat.mtime.getTime() &&
+        (!dataTouchedAt || annDestStat.mtime.toISOString() >= dataTouchedAt)
+      );
+
+      if (metaFresh && annFresh) {
+        cached++;
+        continue;
+      }
+
+      fs.mkdirSync(destDir, { recursive: true });
+
+      // Copy meta.json
+      if (fs.existsSync(srcMeta)) {
+        fs.copyFileSync(srcMeta, destMeta);
+        if (dataTouchedAt) {
+          const touchedDate = new Date(dataTouchedAt);
+          if (!Number.isNaN(touchedDate.getTime())) {
+            try {
+              fs.utimesSync(destMeta, new Date(), touchedDate);
+            } catch {
+              // Non-fatal: missing utimes support shouldn't break the build.
+            }
+          }
+        }
+      }
+
+      // Copy annotations.json (it's optional — some proofs have no annotations)
+      if (fs.existsSync(srcAnn)) {
+        fs.copyFileSync(srcAnn, destAnn);
+        if (dataTouchedAt) {
+          const touchedDate = new Date(dataTouchedAt);
+          if (!Number.isNaN(touchedDate.getTime())) {
+            try {
+              fs.utimesSync(destAnn, new Date(), touchedDate);
+            } catch {
+              // Non-fatal.
+            }
+          }
+        }
+      }
+
+      updated++;
+    } catch (e) {
+      console.warn(`   ⚠ Failed to emit static data for ${proof.id}: ${e instanceof Error ? e.message : e}`);
+      skipped++;
+    }
+  }
+
+  console.log(`📦 Emitted meta+annotations: ${updated} updated, ${cached} cached, ${skipped} skipped`);
+}
+
+/**
+ * Emit `src/data/proofs/data-manifest.json` — a small JSON map of
+ * `{ slug: { meta: <sha8>, ann: <sha8>, src: <sha8> } }` consumed by the
+ * runtime loader to generate `?v=<hash>` query params on each fetch.
+ *
+ * This is the ONLY per-proof data still imported into the vite/Rollup module
+ * graph after phase 2. It's a single module (~2435 short entries; under
+ * ~200KB), bundled with normal content-hashing, so a deploy that changes any
+ * proof busts the importing chunk hash automatically.
+ *
+ * The manifest is computed AFTER emissions complete (so it reflects the
+ * latest state). Hashes are read from the destinations under `public/data/`
+ * because those are the bytes the runtime will actually serve.
+ *
+ * If the on-disk manifest matches what we'd write byte-for-byte, we skip the
+ * write to avoid pointlessly invalidating the manifest chunk's content hash
+ * on no-op builds.
+ *
+ * Sort order: keys are sorted lexicographically for cross-platform determinism.
+ */
+function emitDataManifest(proofs: ProofConfig[]): boolean {
+  type ManifestEntry = { meta: string; ann: string; src: string };
+  const manifest: Record<string, ManifestEntry> = {};
+
+  // Sort proof IDs for deterministic output
+  const sorted = [...proofs].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+
+  for (const proof of sorted) {
+    const destDir = path.join(PUBLIC_PROOFS_DIR, proof.id);
+    const destMeta = path.join(destDir, 'meta.json');
+    const destAnn = path.join(destDir, 'annotations.json');
+    const destSrc = path.join(destDir, 'source.lean');
+
+    const entry: ManifestEntry = {
+      meta: fs.existsSync(destMeta) ? sha8(destMeta) : '',
+      ann: fs.existsSync(destAnn) ? sha8(destAnn) : '',
+      src: fs.existsSync(destSrc) ? sha8(destSrc) : '',
+    };
+    manifest[proof.id] = entry;
+  }
+
+  const manifestPath = path.join(PROOFS_DATA_DIR, 'data-manifest.json');
+  const next = JSON.stringify(manifest, null, 2) + '\n';
+
+  // No-op write avoidance: keeps the manifest's chunk content hash stable
+  // across builds that genuinely changed nothing.
+  if (fs.existsSync(manifestPath)) {
+    const prior = fs.readFileSync(manifestPath, 'utf-8');
+    if (prior === next) {
+      console.log(`🗂  data-manifest.json unchanged (${sorted.length} proofs)`);
+      return false;
+    }
+  }
+
+  fs.writeFileSync(manifestPath, next);
+  console.log(`🗂  data-manifest.json written (${sorted.length} proofs, ${Math.round(fs.statSync(manifestPath).size / 1024)}KB)`);
+  return true;
+}
+
+/**
  * Generate lightweight listings.json for HomePage. Accepts a pre-built
  * touchedMap so callers can share it with `emitStaticSource()` rather than
  * paying for two passes over the (large) `git log` output. See issue #22150.
@@ -519,6 +708,16 @@ function build(options: { strict: boolean; verbose: boolean }): boolean {
   // touchedMap, this is now incremental — unchanged proofs are skipped via
   // mtime comparison. See issue #22150.
   emitStaticSource(proofs, touched);
+
+  // Emit each proof's meta.json + annotations.json to public/data/proofs/<slug>/
+  // (phase-2 sibling of source.lean). The runtime loader fetches them by slug
+  // instead of importing through `import.meta.glob`. See issue #20993.
+  emitStaticData(proofs, touched);
+
+  // Emit the hashed manifest that the runtime loader imports. This is the
+  // ONLY per-proof data still in the vite module graph after phase 2 (one
+  // small module, ~2435 short entries). See issue #20993.
+  emitDataManifest(proofs);
 
   console.log(`\n📊 Summary:`);
   console.log(`   Anchor-based: ${anchorProofs} proofs`);
