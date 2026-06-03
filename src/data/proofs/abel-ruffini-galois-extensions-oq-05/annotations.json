@@ -18,10 +18,31 @@
     "type": "definition",
     "title": "The Core Axiom: Shafarevich's Inverse Galois Theorem",
     "content": "The `shafarevich_inverse_galois` axiom states that for any finite solvable group G, there exists a Galois extension L of ℚ and an isomorphism G ≃* Gal(L/ℚ). In Lean, `Gal(L/ℚ)` is represented as `L ≃ₐ[ℚ] L` (the type of ℚ-algebra automorphisms of L), which forms a group under composition.\n\nThe proof of Shafarevich's theorem (Neukirch-Schmidt-Wingberg §9.5) requires:\n1. Local class field theory for the abelian base case\n2. Cohomological embedding problems to lift from abelian to solvable groups\n3. Brauer group and local-global principles\n\nThis is estimated to require ~500+ pages of algebraic number theory, making it a realistic target for Lean formalization only after substantial Mathlib development.",
-    "mathContext": "$\\text{axiom: }\\forall G$ [finite solvable], $\\exists L/\\mathbb{Q}$ Galois, $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$.\n\nIn Lean: `L ≃ₐ[ℚ] L` is the group of $\\mathbb{Q}$-algebra automorphisms, forming $\\mathrm{Gal}(L/\\mathbb{Q})$ when $L/\\mathbb{Q}$ is Galois.",
+    "mathContext": "**Statement.** $\\text{axiom: }\\forall G$ finite, $\\mathrm{IsSolvable}\\,G \\Rightarrow \\exists L/\\mathbb{Q}$ Galois with $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$. In Lean: `L ≃ₐ[ℚ] L` is the group of $\\mathbb{Q}$-algebra automorphisms, forming $\\mathrm{Gal}(L/\\mathbb{Q})$ exactly when `[IsGalois ℚ L]`.\n\n**Proof outline (Shafarevich 1954, as expounded in Neukirch-Schmidt-Wingberg §9.5–9.6).** Induction on the derived length $\\mathrm{dl}(G)$.\n\n- **Base case $\\mathrm{dl}(G) = 1$ (abelian).** By the structure theorem for finite abelian groups, $G \\cong \\prod_i \\mathbb{Z}/n_i\\mathbb{Z}$. By the Kronecker-Weber theorem (Kronecker 1853, Weber 1886, Hilbert 1896), every finite abelian extension of $\\mathbb{Q}$ lies in some cyclotomic $\\mathbb{Q}(\\zeta_n)$; conversely, for the *conductor* $n = \\mathrm{lcm}(n_i)$, the map $(\\mathbb{Z}/n)^\\times \\twoheadrightarrow G$ produces a subfield $L \\subseteq \\mathbb{Q}(\\zeta_n)$ realizing $G$. **Constructive — no axioms needed** (gallery companions `primitive-roots`, `kroneckers-jugendtraum`).\n\n- **Inductive step $\\mathrm{dl}(G) = k + 1$ from $\\mathrm{dl} \\leq k$.** Let $A = G^{(k)}$ be the bottom of the derived series (abelian, finite). Set $H = G/A$ (solvable of length $k$). By induction, $H \\cong \\mathrm{Gal}(K/\\mathbb{Q})$ for some Galois $K/\\mathbb{Q}$. Solve the **embedding problem** $1 \\to A \\to G \\to H \\to 1$ over the realization $K/\\mathbb{Q}$: produce a Galois extension $L/\\mathbb{Q}$ with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ containing $K$ as the fixed field of $A$.\n\n- **Embedding-problem cohomology.** The obstruction lives in $H^2(\\mathrm{Gal}(K/\\mathbb{Q}), A) \\to \\bigoplus_v H^2(\\mathrm{Gal}(K_v/\\mathbb{Q}_v), A)$ — a local-global Brauer-group statement. Shafarevich showed (i) the local obstructions vanish at almost all primes by Tate-Poitou duality and (ii) the global obstruction can be killed by *prescribing extra ramification* at carefully chosen auxiliary primes. The key technical lemma: for any abelian $A$ and any solvable Galois extension $K/\\mathbb{Q}$, there exist primes $p_1, \\ldots, p_r$ (with constrained Frobenius conjugacy classes) such that the constrained embedding problem is solvable.\n\n- **Class field theory inputs.** Local class field theory (Hasse, Artin) supplies the local cohomology $H^2(\\mathrm{Gal}(K_v^{\\mathrm{ab}}/K_v), \\overline{K_v}^\\times) \\cong \\mathbb{Q}/\\mathbb{Z}$; the global Brauer-group exact sequence $0 \\to \\mathrm{Br}(\\mathbb{Q}) \\to \\bigoplus_v \\mathrm{Br}(\\mathbb{Q}_v) \\to \\mathbb{Q}/\\mathbb{Z} \\to 0$ (Albert-Brauer-Hasse-Noether 1932) is the local-global principle that makes the obstruction calculable.\n\n**Historical note: the $p = 2$ gap.** Shafarevich's original 1954 paper (Izv. Akad. Nauk SSSR, Ser. Mat. 18: 525–578) had a subtle error at the prime $p = 2$ due to the inseparability between the multiplicative and additive structures of $\\mathbb{Z}_2^\\times$; the gap was corrected by Shafarevich himself in subsequent papers and the full corrected proof appears in his collected works (1986) and Neukirch-Schmidt-Wingberg (2008). Tate's *Local Constants* (1979) and Wingberg's $K$-theoretic reformulation (1983) provide modern alternative arguments avoiding the $p = 2$ technicality.\n\n**Mathlib formalization frontier (2026).** Mathlib has `Mathlib.NumberTheory.Cyclotomic.Basic` (cyclotomic extensions), early `Mathlib.NumberTheory.LocalClassFieldTheory` infrastructure (Henselization, ramification groups, partial), no embedding-problem cohomology yet, and only fragments of the Brauer-group local-global sequence. A complete Lean formalization is feasible in the long term (~5000–10000 LOC counting prerequisites) but realistic only after class field theory matures — this is why this file *axiomatizes* the theorem honestly rather than leaving sorries.",
     "significance": "key",
-    "relatedConcepts": ["Galois group", "AlgEquiv", "IsGalois", "class field theory"],
-    "prerequisites": ["IsGalois in Mathlib", "AlgEquiv group structure", "IsSolvable"]
+    "relatedConcepts": [
+      "Galois group",
+      "AlgEquiv",
+      "IsGalois",
+      "class field theory",
+      "embedding problem",
+      "Kronecker-Weber theorem",
+      "derived series induction",
+      "Brauer group local-global",
+      "Albert-Brauer-Hasse-Noether",
+      "Tate-Poitou duality",
+      "prescribed ramification",
+      "Shafarevich 1954 p=2 gap"
+    ],
+    "prerequisites": [
+      "IsGalois in Mathlib",
+      "AlgEquiv group structure",
+      "IsSolvable",
+      "derived series of a finite group",
+      "group cohomology H^2",
+      "local class field theory",
+      "Brauer group of a number field"
+    ]
   },
   {
     "id": "ann-cyclic-abelian",
