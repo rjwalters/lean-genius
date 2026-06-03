@@ -1,11 +1,24 @@
 # Research State: euler-identity-oq-01-oq-04
 
 ## Current State
-**Phase**: DECIDE (Iter 1 ORIENT/PREP — Mathlib bearer audit + paste-ready isomorphism wrapper sketch SHIPPED doc-only; ready for Iter 2 ACT)
+**Phase**: ACT (Iter 2 ACT-1 — Path A wrapper scaffold SHIPPED with three named sorries; build-verification + sorry-discharge pending Iter 3 ACT-2)
 **Path**: full
-**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01)
-**Last Updated**: 2026-06-01 (Iter 1 ORIENT/PREP — bearer audit; iteration 1→2; no Lean edits, no axiom/sorry delta, researcher-1)
-**Iteration**: 2
+**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01; first Lean edit 2026-06-03)
+**Last Updated**: 2026-06-03 (Iter 2 ACT-1 — scaffold shipped; iteration 2→3; +1 Lean file (~125 LOC, 0 axioms, 3 sorries), researcher-1)
+**Iteration**: 3
+
+## Iter 2 ACT-1 (2026-06-03, researcher-1) — Path A wrapper scaffold shipped
+
+First Lean edit on this slug. Ships `proofs/Proofs/EulerIdentityOQ01OQ04.lean` (~125 LOC) implementing the paste-ready Path A skeleton from the 2026-06-01 Iter 1 ORIENT/PREP session log. The file is **scaffold-only**: three named sorries (`left_inv`, `right_inv`, `map_add'`) inside the `AddEquiv` record, each annotated with the Mathlib lemma it should chain through. No build verification this iteration (host Docker image missing + corrupted blob; build deferred to Iter 3 ACT-2 next researcher).
+
+- **Definition shipped**: `addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle` with `toFun x := Additive.ofMul (AddCircle.toCircle x)` and `invFun y := AddCircle.homeomorphCircle'.symm (Additive.toMul y)`. The forward map is `AddCircle.toCircle`; the inverse is the `symm` of Mathlib's `homeomorphCircle'`.
+- **API lemmas shipped (both `@[simp]`, both `rfl`-provable)**: `addCircleEquivAdditiveCircle_apply` and `addCircleEquivAdditiveCircle_symm_apply`. These should compile out-of-the-box; they document the forward and inverse maps as `Additive.ofMul ∘ AddCircle.toCircle` and `AddCircle.homeomorphCircle'.symm ∘ Additive.toMul` respectively.
+- **Three sorries with discharge strategies**: each labeled in file comments with the Mathlib lemma it should chain through (`homeomorphCircle'.left_inv`, `homeomorphCircle'.right_inv`, `AddCircle.toCircle_add` + `Additive.ofMul_mul`). Expected discharge cost: 3-8 lines total across the three sorries.
+- **Build verification deferred**: local Docker image `lean4-arm64:v4.26.0` missing + host has a corrupted blob; rebuilding would dominate iteration budget. The `proofs/.lake` symlink in the worktree is self-referential, so direct `lake build` is also not wired (and CLAUDE.md blocks it). Build verification + tactic polish moves to Iter 3 ACT-2.
+- **File state**: `proofs/Proofs/EulerIdentityOQ01OQ04.lean` (~125 LOC, 0 axioms, 3 sorries), `proofs/Proofs/EulerIdentityOQ01OQ01OQ01.lean` and the other three sibling files unchanged. No gallery-side (`src/data/proofs/euler-identity-*/`) edits; those are downstream of a sorry-clean build.
+- **No edits to** `problem.md` or `knowledge.md` (still the template-placeholder state flagged by Iter 1 PREP). Documentation pass deferred.
+
+Session log: `sessions/2026-06-03-iter2-act1-pathA-scaffold-shipped.md`.
 
 ## Iter 1 ORIENT/PREP (2026-06-01, researcher-1) — Mathlib bearer audit + paste-ready wrapper sketch
 
@@ -26,9 +39,9 @@ First substantive iteration on this slug after 57 idle days. Doc-only PREP advan
 
 ## Current Focus
 
-**Iteration 2 (Iter 1 ORIENT/PREP, this iter, researcher-1, 2026-06-01)**: Doc-only ORIENT-to-DECIDE advance. Maps Mathlib v4.26.0 API drift since 2026-04-05 selection, reads sibling Lean files, identifies the precise packaging gap (Mathlib has `≃ₜ`, not `≃+`), and provides a paste-ready ~20-LOC wrapper sketch (Path A) plus an alternative ~50-LOC quotient-theorem route (Path B). No Lean changes; sibling file `EulerIdentityOQ01OQ01OQ01.lean` already proves all underlying lemmas axiom-free.
+**Iteration 3 (Iter 2 ACT-1, this iter, researcher-1, 2026-06-03)**: First Lean edit on the slug. Ships the Path A wrapper scaffold (~125 LOC including ~65 LOC of docstring/strategy comments) per the 2026-06-01 PREP's paste-ready skeleton. Three named sorries inside the `AddEquiv` record; two `@[simp]` API lemmas (`apply`/`symm_apply`) which are `rfl`-provable. Build verification deferred — host Docker image missing + corrupted blob.
 
-**Highest-readiness next ACT — Iter 3 (next researcher)**: Apply the Path A paste-ready skeleton to a new file `proofs/Proofs/EulerIdentityOQ01OQ04.lean` (or extend `EulerIdentityOQ01OQ01OQ01.lean` if the gallery prefers in-file expansion). Discharge three sorries (`left_inv`, `right_inv`, `map_add'`) via `simp` chains over existing Mathlib + sibling lemmas. Build-verify under `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`. Expected ACT cost: ~15-25 LOC.
+**Highest-readiness next ACT — Iter 3 ACT-2 (next researcher)**: Run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`, then discharge the three sorries per the per-sorry strategy table in the 2026-06-03 session log. Expected discharge: 3-8 lines total across the three sorries; 5-15 min of tactic polish.
 
 ## Active Approach
 
@@ -38,16 +51,16 @@ First substantive iteration on this slug after 57 idle days. Doc-only PREP advan
 
 ## Attempt Count
 
-- Total attempts: 0 (no Lean writes yet; PREP-only)
-- Current approach attempts: 0
-- Approaches tried: 0 (Path A and Path B sketched but no ACT)
+- Total attempts: 1 (Iter 2 ACT-1 scaffold ship 2026-06-03)
+- Current approach attempts: 1 (Path A scaffold-only ship)
+- Approaches tried: 1 (Path A; Path B still de-recommended, available as alternate follow-up)
 
 ## Blockers
 
-None. All Mathlib bearers pinned to verbatim source at SHA `2df2f0150c…`. Sibling file `EulerIdentityOQ01OQ01OQ01.lean` proves all underlying lemmas axiom-free. The ACT is a packaging exercise (~15-25 LOC), not a mathematical-content gap.
+None on the math side. The ACT-2 sorry discharge is a 5-15 min tactic-polish job per the per-sorry strategy table in the 2026-06-03 session log.
 
-**Soft open question**: gallery-owner preference between Path A (≃+ packaging, default) and Path B (≃* / first-isomorphism-theorem packaging, more abstract). Default recommendation: Path A.
+**Soft transient blocker**: host Docker environment (image missing + corrupted blob) at this researcher's worktree was unable to build-verify the scaffold this iteration. Iter 3 ACT-2 should restore Docker access (image rebuild or operator intervention) before running `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`.
 
 ## Next Action
 
-Iter 3 ACT: Path A wrapper. Create `proofs/Proofs/EulerIdentityOQ01OQ04.lean` with `addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle`. Discharge three sorries with `simp` chains over `AddCircle.homeomorphCircle'`, `AddCircle.toCircle_add`, `AddCircle.toCircle_zero`, and `Additive.ofMul/toMul` reductions. Build-verify under Docker.
+Iter 3 ACT-2 (next researcher): (1) Restore Docker / run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`; (2) discharge the three sorries in the `addCircleEquivAdditiveCircle` `AddEquiv` record per the per-sorry strategy table in `sessions/2026-06-03-iter2-act1-pathA-scaffold-shipped.md`; (3) update this `state.md` + the registry JSON's `leanFiles[]` entry for the new file once the build is clean.

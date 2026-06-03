@@ -27,19 +27,19 @@
     "goal": "Formalize a clean theorem or wrapper showing R/(2*pi Z) is group-isomorphic to S^1 via Euler's exponential map, without claiming proof completion before Mathlib API exploration."
   },
   "currentState": {
-    "phase": "DECIDE (Iter 1 ORIENT/PREP — Mathlib bearer audit + paste-ready isomorphism wrapper sketch SHIPPED doc-only; ready for Iter 2 ACT)",
+    "phase": "ACT (Iter 2 ACT-1 — Path A wrapper scaffold SHIPPED with three named sorries; build-verification + sorry-discharge pending Iter 3 ACT-2)",
     "since": "2026-04-05T19:03:34-07:00",
-    "iteration": 2,
-    "focus": "Iter 1 ORIENT/PREP (researcher-1, 2026-06-01): first substantive iteration after 57 idle days. Maps v4.26.0 Mathlib API at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Selection-report drift detected: Complex.expMapCircle was refactored to Circle.exp (continuous map, not MonoidHom); Circle.expHom provides the ℝ →+ Additive Circle hom. Decisive Mathlib bearer AddCircle.homeomorphCircle' at SpecialFunctions/Complex/Circle.lean:168 gives AddCircle (2 * π) ≃ₜ Circle — a Homeomorph, NOT a AddEquiv. Additive structure available separately (toCircle_add line 144, toCircle_zero line 152, injective_toCircle line 158). Sibling EulerIdentityOQ01OQ01OQ01.lean already proves all underlying lemmas axiom-free (circleMap_add, norm_circleMap, circleHom : Multiplicative ℝ →* ℂˣ, continuous_circleMap, circleMap_eq_one_iff, circleMap_surjective_unit_circle) but stops short of the packaged isomorphism. Two ACT paths sketched: Path A wraps homeomorphCircle' as AddCircle (2 * π) ≃+ Additive Circle (~15-25 LOC, recommended); Path B applies first isomorphism theorem to sibling's circleHom (~40-60 LOC, de-recommended for cost). No Lean changes, no axiom/sorry delta. Session log: sessions/2026-06-01-iter1-orient-prep-mathlib-bearer-audit.md.",
+    "iteration": 3,
+    "focus": "Iter 2 ACT-1 (researcher-1, 2026-06-03): first Lean edit on the slug. Ships proofs/Proofs/EulerIdentityOQ01OQ04.lean (~125 LOC including ~65 LOC docstring/strategy comments) implementing the Path A paste-ready skeleton from the 2026-06-01 Iter 1 ORIENT/PREP session log. Definition: addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle with toFun x := Additive.ofMul (AddCircle.toCircle x) and invFun y := AddCircle.homeomorphCircle'.symm (Additive.toMul y). Three named sorries inside the AddEquiv record (left_inv, right_inv, map_add'), each annotated with the Mathlib lemma it should chain through (homeomorphCircle'.left_inv, homeomorphCircle'.right_inv, AddCircle.toCircle_add + Additive.ofMul_mul). Two @[simp] API lemmas shipped, both rfl-provable. Build verification deferred — host Docker image lean4-arm64:v4.26.0 missing + corrupted blob; rebuilding would dominate iteration budget. Worktree .lake symlink self-referential. Iter 3 ACT-2 next researcher: restore Docker, run docker-build.sh, discharge sorries per the per-sorry strategy table in the session log (expected 3-8 lines total, 5-15 min tactic polish). Session log: sessions/2026-06-03-iter2-act1-pathA-scaffold-shipped.md.",
     "blockers": [
-      "None — all Mathlib bearers pinned to verbatim source at SHA 2df2f0150c; sibling file EulerIdentityOQ01OQ01OQ01.lean proves all underlying lemmas axiom-free; ACT is a packaging exercise (~15-25 LOC), not a mathematical-content gap.",
-      "Soft open question: gallery-owner preference between Path A (≃+ packaging, default) and Path B (≃* / first-isomorphism-theorem packaging, more abstract)."
+      "None on the math side — Path A scaffold is structurally complete; sorry discharge is a 3-8 line tactic-polish job per the 2026-06-03 session log's per-sorry strategy table.",
+      "Soft transient blocker: host Docker environment (image lean4-arm64:v4.26.0 missing + corrupted blob) at researcher-1's worktree was unable to build-verify the scaffold this iteration. Iter 3 ACT-2 must restore Docker access before running ./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04."
     ],
-    "nextAction": "Iter 3 (next researcher) ACT — Path A wrapper. Create proofs/Proofs/EulerIdentityOQ01OQ04.lean with addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle. Discharge three sorries (left_inv, right_inv, map_add') with simp chains over AddCircle.homeomorphCircle', AddCircle.toCircle_add, AddCircle.toCircle_zero, and Additive.ofMul/toMul reductions. Build-verify under ./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04. Expected ACT cost: ~15-25 LOC. Alternative: a follow-up PREP if gallery owner prefers Path B (educational quotient-theorem route).",
+    "nextAction": "Iter 3 ACT-2 (next researcher): (1) Restore Docker (image rebuild or operator intervention) and run ./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04. (2) Discharge the three sorries in the addCircleEquivAdditiveCircle AddEquiv record per the per-sorry strategy table in sessions/2026-06-03-iter2-act1-pathA-scaffold-shipped.md (left_inv via homeomorphCircle'.left_inv + toFun identification; right_inv dually; map_add' via rw [AddCircle.toCircle_add] + rfl over Additive.ofMul_mul). (3) Update state.md and registry JSON leanFiles[] once the build is clean (target: 0 axioms, 0 sorries).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -79,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-04-06T00:14:41.516Z",
-  "lastUpdate": "2026-06-01T19:00:00Z",
+  "lastUpdate": "2026-06-03T17:30:00Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
@@ -115,6 +115,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentityOQ01OQ04.lean",
+      "filename": "EulerIdentityOQ01OQ04.lean",
+      "lineCount": 148,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ04.lean"
     }
   ]
 }
