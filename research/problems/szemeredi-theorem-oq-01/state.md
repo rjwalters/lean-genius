@@ -1,61 +1,50 @@
 # Research State: szemeredi-theorem-oq-01
 
 ## Current State
-**Phase**: DECISION-RECORDED (Approach A committed; Approach B spun off — pending sibling-slug extraction by seeker/curator)
+**Phase**: ACT-shipped (Approach A landed)
 **Path**: full
-**Since**: 2026-05-30 (was OBSERVE since 2026-04-05, ORIENT since 2026-05-30 earlier today)
-**Iteration**: 3
-**Last Updated**: 2026-05-30 (Session 2, researcher-1, **S2 Mathlib audit** — `cornersTheoremBound` confirmed tower-type per Mathlib docstring; Approach A committed; Approach B spin-off recommended)
+**Since**: 2026-06-03 (was DECISION-RECORDED since 2026-05-30)
+**Iteration**: 4
+**Last Updated**: 2026-06-03 (Session 3, researcher-1, **ACT** — `SzemerediTheoremOQ01.lean` + gallery entry shipped)
 
 ## Current Focus
-Approach A committed: axiomatize the Kelley-Meka statement
-`r_3(N) ≤ N · exp(-c (log N)^{1/12})` in a new
-`proofs/Proofs/SzemerediTheoremOQ01.lean` (~30 LOC). Status will be
-`axiomatized`, badge `axiom`. This is the right call given the Mathlib
-gap inventory in `knowledge.md` Session 1 (no Bohr-set, no sifted-Fourier,
-no `U^3` uniformity) and the audit finding in Session 2.
+Approach A landed. New artifacts:
+
+- `proofs/Proofs/SzemerediTheoremOQ01.lean` (~88 lines, 1 axiom, 1 theorem, 0 sorries) — axiomatizes the Kelley–Meka 2023 bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})` against Mathlib's `rothNumberNat` and derives the density form `r_3(N)/N ≤ exp(-c (log N)^{1/12})` as a non-axiomatic corollary.
+- `src/data/proofs/szemeredi-theorem-oq-01/{meta.json, annotations.json}` — gallery entry with `status: axiomatized`, `badge: axiom`, `axiomCount: 1`, `sorries: 0`. Three section annotations (docstring, axiom, density corollary).
+- `proofs/Proofs.lean` — registered `import Proofs.SzemerediTheoremOQ01`.
+
+Pending: post-merge Mechanic / Auditor Docker-verify. The local Docker daemon is currently in I/O-error state (metadata DB corrupt at `/var/lib/desktop-containerd/...`) so this session could not run the build locally. The file is written in the same idioms as `SzemerediFullOQ02.lean` (proven working) and the `div_le_iff₀ … ; mul_comm ; exact hb` finish should be safe.
 
 ## Active Approach
-**A (committed)** — axiomatize Kelley-Meka. Single `axiom` declaration
-in a new file; minimal scaffolding; gallery entry marks status
-`axiomatized` / badge `axiom` per project policy.
+**A (shipped)** — axiomatize Kelley–Meka. Single `axiom kelley_meka_bound`
+with non-axiomatic density-form corollary
+`rothNumberNat_density_le_kelley_meka`. Gallery entry marks status
+`axiomatized` / badge `axiom` per project axiom integrity policy.
 
-**B (spun off)** — Salem-Spencer quantitative Roth: cannot derive
-`O(N / log log N)` from Mathlib's tower-type `cornersTheoremBound` (per
-S2 audit, Mathlib's own docstring: "depends on `SzemerediRegularity.bound`,
-which is a tower-type exponential"). Recommended spin-off slug:
-`szemeredi-theorem-oq-01-incomplete-01`, BLOCKED on upstream Mathlib
-infrastructure (Bohr-set, sifted-Fourier, `U^3`). See Session 2 memo §6.
+**B (spun off)** — Salem–Spencer quantitative Roth. Recommended sibling
+slug `szemeredi-theorem-oq-01-incomplete-01` (BLOCKED on upstream
+Mathlib infrastructure: no Bohr-set, no sifted-Fourier, no `U^3`). See
+Session 2 audit memo in `knowledge.md`.
 
 ## Attempt Count
-- Total attempts: 2 (S1 OBSERVE → ORIENT survey + this S2 audit)
-- Current approach attempts: 0 Lean ACTs (Approach A axiomatize is the next session's deliverable)
-- Approaches tried: 1 (Approach A committed; Approach B audited and ruled out for this slug)
+- Total attempts: 3 (S1 OBSERVE → ORIENT survey, S2 Mathlib audit, S3 ACT-ship)
+- Current approach attempts: 1 Lean ACT (Approach A shipped)
+- Approaches tried: 1 (Approach A shipped; Approach B audited and ruled out for this slug)
 
 ## Blockers
-None. The next researcher session can ship Approach A (~30 LOC
-axiomatize + gallery entry) directly.
+None for this slug. Approach B (sibling slug, BLOCKED on upstream
+infrastructure) is tracked separately.
 
 ## Next Action
 
-Ship **Approach A** (axiomatize Kelley-Meka) in a fresh researcher
-session:
+Post-merge:
 
-1. Create `proofs/Proofs/SzemerediTheoremOQ01.lean` (~30 LOC):
-   - Standard Mathlib imports.
-   - `axiom kelley_meka_bound : ...` stating
-     `r_3(N) ≤ N · exp(-c (log N)^{1/12})` in the Mathlib-compatible
-     form (likely against `rothNumberNat` from
-     `Mathlib.Combinatorics.Additive.SalemSpencer`).
-   - Comment block citing Kelley-Meka 2023 (Annals of Math), with
-     pointer to spin-off sibling for Approach B.
-2. Create gallery entry `src/data/proofs/szemeredi-theorem-oq-01/`:
-   - `meta.json`: `status: "axiomatized"`, `badge: "axiom"`, `axiomCount: 1`, `sorryCount: 0`.
-   - `annotations.json`, `index.ts` (minimal).
-3. Update this state.md: Phase DECISION-RECORDED → ACT-shipped (or COMPLETED if no further work planned).
+1. Mechanic / Auditor: run Docker build of `Proofs.SzemerediTheoremOQ01`
+   and verify `axiomCount: 1`, `sorries: 0`.
+2. Curator / Seeker: extract the recommended sibling slug
+   `szemeredi-theorem-oq-01-incomplete-01` for the BLOCKED Salem–Spencer
+   quantitative direction.
+3. This slug is graduation-ready once Mechanic/Auditor pass.
 
-After Approach A lands, the slug is **graduation-ready** modulo any
-Aristotle / Mechanic Docker-verify. The Approach B spin-off (sibling
-slug) is independent and tracked separately.
-
-See knowledge.md for the full survey (Session 1) and audit (Session 2).
+See `knowledge.md` Session 3 (this session) for the ACT log.
