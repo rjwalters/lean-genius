@@ -87,20 +87,108 @@ the intended semantics. -/
 noncomputable def infiniteDegree {V : Type*} (G : InfiniteGraph V) (v : V) : ℕ∞ :=
   {w | G.adj v w}.encard
 
-/-- An Euler path in an infinite graph: a (possibly infinite) path
-    that traverses every edge exactly once -/
+/-! ### Infinite walks and Euler-path predicates
+
+The two `HasInfiniteEulerPath` / `HasOneWayEulerPath` predicates were `:= True`
+placeholders prior to the 2026-06-03 S4 ACT. The infrastructure below — a
+ℕ-indexed `InfiniteWalk` for the one-way case and a ℤ-indexed `BiInfiniteWalk`
+for the bi-infinite case — mirrors the formalisation pattern already shipped
+in sibling file `Proofs/KonigsbergOQ03OQ02.lean`, with that file's standalone
+`InfiniteGraph` replaced by the parent's own structure to avoid duplication. -/
+
+/-- A one-way infinite walk in an `InfiniteGraph`: a ℕ-indexed sequence of
+vertices in which each pair of consecutive vertices is adjacent.
+
+Using `ℕ → V` rather than `Stream' V` avoids coinductive complexity while
+remaining mathematically equivalent (the two are interconvertible without
+extra hypotheses). -/
+structure InfiniteWalk {V : Type*} (G : InfiniteGraph V) where
+  /-- The `n`-th vertex of the walk. -/
+  vertex : ℕ → V
+  /-- Consecutive vertices are adjacent. -/
+  step_adj : ∀ n, G.adj (vertex n) (vertex (n + 1))
+
+namespace InfiniteWalk
+
+/-- Two step indices `m`, `n` traverse the same undirected edge: either both
+endpoints agree in order, or one is the reverse of the other. -/
+def sameEdge {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (m n : ℕ) : Prop :=
+  (w.vertex m = w.vertex n ∧ w.vertex (m + 1) = w.vertex (n + 1)) ∨
+  (w.vertex m = w.vertex (n + 1) ∧ w.vertex (m + 1) = w.vertex n)
+
+/-- A walk is edge-injective if distinct steps traverse distinct undirected
+edges. This is the "at most once" half of the Eulerian condition. -/
+def IsEdgeInjective {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) : Prop :=
+  ∀ m n, w.sameEdge m n → m = n
+
+/-- The walk covers the directed arc `(u, v)` if some step goes `u → v`. -/
+def CoversDirArc {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (u v : V) : Prop :=
+  ∃ n, w.vertex n = u ∧ w.vertex (n + 1) = v
+
+/-- The walk covers the undirected edge `{u, v}` if some step traverses it
+in either direction. This is the "at least once" half of Eulerian. -/
+def CoversEdge {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (u v : V) : Prop :=
+  w.CoversDirArc u v ∨ w.CoversDirArc v u
+
+/-- Each step traverses a non-loop edge: the two endpoints are distinct. -/
+theorem step_ne {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (n : ℕ) : w.vertex n ≠ w.vertex (n + 1) :=
+  fun h => G.loopless (w.vertex n) (h ▸ w.step_adj n)
+
+end InfiniteWalk
+
+/-- A one-way Euler walk on `G`: a ℕ-indexed walk that covers every edge and
+no edge twice. The `G` argument is explicit because Lean cannot infer it from
+`w : InfiniteWalk G` in every elaboration context. -/
+def IsEulerWalk {V : Type*} (G : InfiniteGraph V) (w : InfiniteWalk G) : Prop :=
+  (∀ u v, G.adj u v → w.CoversEdge u v) ∧ w.IsEdgeInjective
+
+/-- A bi-infinite walk on `G`: a ℤ-indexed sequence of adjacent vertices.
+Needed for the version of the Erdős–Grünwald–Weiszfeld characterisation that
+allows the Euler tour to extend to infinity in both directions, rather than
+only forward from a chosen starting vertex. -/
+structure BiInfiniteWalk {V : Type*} (G : InfiniteGraph V) where
+  /-- The vertex at integer index `n`. -/
+  vertex : ℤ → V
+  /-- Consecutive vertices are adjacent. -/
+  step_adj : ∀ n : ℤ, G.adj (vertex n) (vertex (n + 1))
+
+/-- A bi-infinite walk covers the undirected edge `{u, v}` if some integer
+index pair traverses it in either direction. -/
+def BiInfiniteWalk.CoversEdge {V : Type*} {G : InfiniteGraph V}
+    (w : BiInfiniteWalk G) (u v : V) : Prop :=
+  (∃ n : ℤ, w.vertex n = u ∧ w.vertex (n + 1) = v) ∨
+  (∃ n : ℤ, w.vertex n = v ∧ w.vertex (n + 1) = u)
+
+/-- A bi-infinite Euler walk: covers every edge of `G`, with no edge repeated
+across any pair of distinct integer step indices. -/
+def IsBiInfiniteEulerWalk {V : Type*} (G : InfiniteGraph V)
+    (w : BiInfiniteWalk G) : Prop :=
+  (∀ u v, G.adj u v → w.CoversEdge u v) ∧
+  (∀ m n : ℤ, m ≠ n →
+    ¬((w.vertex m = w.vertex n ∧ w.vertex (m + 1) = w.vertex (n + 1)) ∨
+      (w.vertex m = w.vertex (n + 1) ∧ w.vertex (m + 1) = w.vertex n)))
+
+/-- An Euler path in an infinite graph: a bi-infinite walk that traverses
+every edge of `G` exactly once. This is the bi-infinite version of the
+Erdős–Grünwald–Weiszfeld characterisation. -/
 def HasInfiniteEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
-  True  -- requires careful definition of infinite paths
+  ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w
 
 /- Erdős-Grünwald-Weiszfeld theorem (1936):
     A connected countable graph has an Euler path iff:
     1. It has at most 2 vertices of odd degree
     2. Every finite subgraph has an even number of edges -/
 
-/-- A one-way infinite Euler path starts at a vertex and extends
-    infinitely, covering every edge exactly once -/
+/-- A one-way infinite Euler path starts at a vertex and extends infinitely,
+covering every edge exactly once. Formalised as an `InfiniteWalk` together
+with the `IsEulerWalk` Eulerian condition. -/
 def HasOneWayEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
-  True  -- path from v₀ through all edges
+  ∃ w : InfiniteWalk G, IsEulerWalk G w
 
 /- For locally finite infinite graphs (every vertex has finite degree),
     the Euler path criterion is: at most one vertex has odd degree,

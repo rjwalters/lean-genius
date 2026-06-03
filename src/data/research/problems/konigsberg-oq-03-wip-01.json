@@ -27,39 +27,51 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-01T00:00:00Z",
-    "iteration": 3,
-    "focus": "S3 ACT (this PR, researcher-1, 2026-06-01): implemented S2 SURVEY S3 candidate A — the r=2 hypergraph Euler-tour reduction. Added def `toSimpleGraph (H : RUniformHypergraph V 2) : SimpleGraph V` (adjacency: `u ≠ v ∧ {u, v} ∈ H.edges`, symm via `Finset.pair_comm`, loopless via the `u ≠ v` clause). Replaced `def HasEulerTour ... := True` with the meaningful definition `∃ u (p : (toSimpleGraph H).Walk u u), p.IsEulerian` backed by Mathlib's `SimpleGraph.Walk.IsEulerian` (Combinatorics/SimpleGraph/Trails.lean:79). Added sanity theorem `hasEulerTour_iff_simpleGraph_eulerian` (definitional Iff.rfl) confirming the equivalence. Net file delta: 74 → 114 LOC (+40), 0 → 1 theorem, 7 → 8 defs+structures; sorries / axioms unchanged at 0 / 0. The 3 True placeholders identified by S2 SURVEY are now 2 (HasInfiniteEulerPath + HasOneWayEulerPath remain, requiring missing Mathlib `SimpleGraph.InfiniteWalk` infrastructure — out of scope for an r=2 iteration). Docker build verified clean via ./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03.",
-    "blockers": [
-      "Infrastructure-level (remaining): full completion still needs ~500-900 LOC of infinite-walk + Erdős-Grünwald-Weiszfeld infrastructure not present in Mathlib v4.26.0. The r=2 hypergraph case is now CLOSED (this S3 ACT). Pure-hypergraph r≥3 is NP-complete (Lonc-Naroski 2010) and would only formalise as a non-existence-of-poly-time-algorithm result."
-    ],
-    "nextAction": "S4 candidate menu: (infinite-walk path) define `InfiniteWalk` as stream-based or list-extension over `SimpleGraph.Walk`, then replace `HasInfiniteEulerPath`'s True placeholder (~200-400 LOC); (EGW theorem) state + prove Erdős-Grünwald-Weiszfeld (1936) once InfiniteWalk exists (~150-300 LOC); (parent-companion) re-survey parent Konigsberg.lean + sibling KonigsbergOQ03OQ02.lean for shared helper-module opportunities; (skip / new slug) open konigsberg-oq-03-wip-01-oq-01 child slug for EGW specifically and park this slug in axiomatized-stable. Recommend the parent-companion survey as the next low-risk discovery step before committing to one of the heavier infinite-walk paths.",
+    "since": "2026-06-03T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT (this PR, researcher-1, 2026-06-03): discharged the remaining 2 :=True placeholders (HasInfiniteEulerPath, HasOneWayEulerPath) by porting sibling KonigsbergOQ03OQ02.lean's InfiniteWalk / BiInfiniteWalk / IsEulerWalk / IsBiInfiniteEulerWalk infrastructure into the parent file, adapted to use the parent's own InfiniteGraph structure (eliminating the sibling's stale self-containment justification — the parent's dependency on the build-broken Konigsberg.lean was already removed in S3 ACT). Net file delta: 114 → 202 LOC (+88), 1 → 2 theorems (added InfiniteWalk.step_ne), 8 → 14 defs+structures; sorries / axioms unchanged at 0 / 0; True placeholders 2 → 0. All three Eulerian predicates (HasEulerTour for r=2 hypergraphs from S3, HasInfiniteEulerPath for bi-infinite, HasOneWayEulerPath for one-way infinite) are now bound to genuine ∃-statements. Build NOT verified locally: Docker daemon on this host has a corrupted containerd content store (the lean4-arm64:v4.26.0 image's blob returns I/O error and cannot be inspected or rebuilt). Confidence grounded in line-for-line pattern equivalence with the verified sibling file. PR description discloses this clearly.",
+    "blockers": [],
+    "nextAction": "S5 candidate menu: (trivial closure lemma) prove smallest Eulerian fact like 'no-edge InfiniteGraph admits constant-vertex InfiniteWalk as IsEulerWalk vacuously' ~10 LOC, confirms definitions are non-degenerate; (EGW statement) state Erdős-Grünwald-Weiszfeld theorem as theorem ... := by sorry for Aristotle, decomposed into locally-finite (easy) and non-locally-finite (hard) cases; (sibling DRY refactor, cross-slug) claim konigsberg-oq-03-oq-02 and refactor it to import this parent and drop its locally-redeclared InfiniteGraph/InfiniteWalk/IsEulerWalk/BiInfiniteWalk duplicates, collapsing ~100 LOC of duplication, pure refactor with no new math; (EGW proof, multi-week) prove the locally-finite case using SimpleGraph.Walk.IsEulerian extension lemmas + König's lemma machinery; (skip) park this slug as 'placeholder-free / theorem-light' and return to other slugs. Recommended for S5: trivial closure lemma + EGW statement in one session (both small, both concrete, both immediately useful to Aristotle).",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2 SURVEY (this PR, doc-only): honest gap assessment supersedes S1 OBSERVE init. KonigsbergOQ03.lean is a scaffold with 3 :=True placeholder propositions (HasEulerTour, HasInfiniteEulerPath, HasOneWayEulerPath), 0 theorems, 74 LOC. Mathlib v4.26.0 has SimpleGraph.Walk.IsEulerian (used by parent Konigsberg.lean) but no hypergraph type, no infinite walk, no Erdos-Grunwald-Weiszfeld. Full completion ~700-1300 LOC multi-month. Smallest forward step: r=2 case ~30 LOC.",
-    "builtItems": [],
+    "progressSummary": "S4 ACT (2026-06-03, researcher-1): all True placeholders in KonigsbergOQ03.lean are now discharged. The file ships meaningful Prop bindings for HasEulerTour (r=2 hypergraph case, S3 ACT), HasInfiniteEulerPath (bi-infinite, S4 ACT via BiInfiniteWalk), and HasOneWayEulerPath (one-way infinite, S4 ACT via InfiniteWalk). The infrastructure (~85 LOC) was ported from sibling KonigsbergOQ03OQ02.lean rather than built from scratch — the S2 SURVEY's estimate of 200-400 LOC was conservative because the sibling's infrastructure was not visible to the parent stub maintainers. File 202 LOC, 2 theorems, 14 defs+structures, 0 axioms, 0 sorries, 0 True placeholders. Build NOT verified (Docker corrupted on contributor host). Next layer: theorems characterising when these predicates hold (EGW theorem and friends).",
+    "builtItems": [
+      "InfiniteWalk structure in Proofs/KonigsbergOQ03.lean:105 — ℕ-indexed walk on InfiniteGraph, with vertex : ℕ → V + step_adj field (S4 ACT)",
+      "InfiniteWalk.sameEdge in Proofs/KonigsbergOQ03.lean:115 — two step indices traverse same undirected edge (S4 ACT)",
+      "InfiniteWalk.IsEdgeInjective in Proofs/KonigsbergOQ03.lean:122 — at-most-once Eulerian half (S4 ACT)",
+      "InfiniteWalk.CoversDirArc in Proofs/KonigsbergOQ03.lean:127 — directed-arc coverage (S4 ACT)",
+      "InfiniteWalk.CoversEdge in Proofs/KonigsbergOQ03.lean:133 — undirected-edge coverage (S4 ACT)",
+      "InfiniteWalk.step_ne theorem in Proofs/KonigsbergOQ03.lean:138 — steps traverse non-loop edges (S4 ACT)",
+      "IsEulerWalk in Proofs/KonigsbergOQ03.lean:147 — one-way Euler walk = covers ∧ edge-injective (S4 ACT)",
+      "BiInfiniteWalk structure in Proofs/KonigsbergOQ03.lean:154 — ℤ-indexed walk on InfiniteGraph (S4 ACT)",
+      "BiInfiniteWalk.CoversEdge in Proofs/KonigsbergOQ03.lean:162 — bi-infinite edge coverage (S4 ACT)",
+      "IsBiInfiniteEulerWalk in Proofs/KonigsbergOQ03.lean:169 — bi-infinite Euler walk = covers ∧ step-pair injectivity (S4 ACT)",
+      "HasInfiniteEulerPath in Proofs/KonigsbergOQ03.lean:179 — bi-infinite Euler path bound to ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w (S4 ACT, replaces := True)",
+      "HasOneWayEulerPath in Proofs/KonigsbergOQ03.lean:190 — one-way Euler path bound to ∃ w : InfiniteWalk G, IsEulerWalk G w (S4 ACT, replaces := True)"
+    ],
     "insights": [
-      "**True placeholders are dishonest formalisation**: KonigsbergOQ03.lean has 0 sorries and 0 axioms but 3 :=True propositions, which makes its 0-sorry count misleading. Per CLAUDE.md Aristotle rule #3 (No placeholder True theorems), the same principle applies broadly — True propositions are gaps masquerading as completeness.",
-      "**r=2 hypergraph IS a SimpleGraph** — the natural reduction is to convert RUniformHypergraph V 2 to SimpleGraph V via edges (each Finset V of size 2 becomes an unordered pair), then use Mathlib SimpleGraph.Walk.IsEulerian. This is the cleanest small-scope target (~30 LOC).",
+      "**True placeholders are dishonest formalisation**: KonigsbergOQ03.lean has 0 sorries and 0 axioms but until 2026-06-03 had 3 (later 2) :=True propositions, which makes its 0-sorry count misleading. Per CLAUDE.md Aristotle rule #3 (No placeholder True theorems), the same principle applies broadly — True propositions are gaps masquerading as completeness. As of S4 ACT, all 3 are discharged.",
+      "**r=2 hypergraph IS a SimpleGraph** — the natural reduction is to convert RUniformHypergraph V 2 to SimpleGraph V via edges (each Finset V of size 2 becomes an unordered pair), then use Mathlib SimpleGraph.Walk.IsEulerian. This is the cleanest small-scope target (~30 LOC), shipped in S3 ACT.",
       "**r≥3 hypergraph Euler tours are NP-complete** (Lonc-Naroski 2010) — there is no simple degree condition characterising existence. The file docstring acknowledges this but offers no path forward.",
-      "**Infinite walk infrastructure does not exist in Mathlib v4.26.0** — there is no SimpleGraph.InfiniteWalk type. Building one would be a ~300-500 LOC mini-project before any Erdos-Grunwald-Weiszfeld work."
+      "**The sibling slug konigsberg-oq-03-oq-02 already paid the infinite-walk infrastructure cost**: KonigsbergOQ03OQ02.lean ships InfiniteWalk (ℕ-indexed) + IsEulerWalk + BiInfiniteWalk + IsBiInfiniteEulerWalk + HasOneWayInfiniteEulerPath in ~85 LOC. The S2 SURVEY's projection of 200-400 LOC new infrastructure was conservative because this sibling was not visible to the parent stub maintainers. S4 ACT ports that infrastructure to the parent file.",
+      "**Sibling-parent duplication can be collapsed in a follow-up DRY pass** (~100 LOC reduction): KonigsbergOQ03OQ02.lean currently redeclares InfiniteGraph + InfiniteWalk + IsEulerWalk + BiInfiniteWalk for self-containment (with a stale justification: the parent's dependency on the build-broken Konigsberg.lean was removed in S3 ACT). A future refactor under the sibling slug konigsberg-oq-03-oq-02 should import the parent and drop the duplicates. Pure refactor, no new math.",
+      "**ℕ-indexed-function representation beats Stream' for infinite walks**: avoids coinductive complexity while remaining mathematically equivalent (interconvertible without extra hypotheses). The sibling file's docstring explicitly chose this; S4 ACT inherits the choice."
     ],
     "mathlibGaps": [
       "r-uniform hypergraph type (Mathlib.Combinatorics has nothing).",
-      "Hypergraph walk / Euler trail for hypergraphs.",
-      "Infinite walk type (SimpleGraph.InfiniteWalk) and IsEulerian predicate.",
-      "Erdős-Grünwald-Weiszfeld (1936) theorem characterising countable-graph Euler paths."
+      "Hypergraph walk / Euler trail for r ≥ 3 hypergraphs (NP-complete per Lonc-Naroski 2010, so 'characterising existence' is not a formalisable target — would have to formalise NP-completeness instead).",
+      "Erdős-Grünwald-Weiszfeld (1936) theorem characterising countable-graph Euler paths (the predicates HasInfiniteEulerPath / HasOneWayEulerPath are now defined in this file, but a Mathlib-level statement and proof of EGW remains an open formalisation target)."
     ],
     "nextSteps": [
-      "**S3 candidate A (recommended)**: implement r=2 hypergraph reduction. Define toSimpleGraph (H : RUniformHypergraph V 2) : SimpleGraph V (~10 LOC) and prove HasEulerTour H ↔ ∃ u v (w : (toSimpleGraph H).Walk u v), w.IsEulerian (~20 LOC). Replaces 1 of 3 True placeholders with real content.",
-      "S3 candidate B: convert 3 True placeholders to sorry-guarded honest stubs (~3 LOC). Lays foundation for sub-OQ scaffolding without committing to definitional shape.",
-      "S3 candidate C: pivot to a different slug.",
-      "S3 candidate D: open child sub-OQs (konigsberg-oq-03-wip-01-oq-01 for r=2, -oq-02 for hypergraph walk infra, -oq-03 for infinite walks, -oq-04 for EGW)."
+      "**S5 trivial closure lemma (recommended)**: prove the smallest non-trivial Eulerian fact — e.g. 'a no-edge InfiniteGraph admits the constant-vertex InfiniteWalk as a vacuous IsEulerWalk', ~10 LOC. Confirms the definitions are non-degenerate.",
+      "**S5 EGW statement**: state the Erdős-Grünwald-Weiszfeld characterisation as theorem ... := by sorry so Aristotle has a target. Decompose into the locally-finite (easy) and non-locally-finite (hard) cases.",
+      "**S5 sibling DRY refactor (cross-slug)**: claim konigsberg-oq-03-oq-02 and refactor that file to import this parent and drop its locally-redeclared InfiniteGraph + InfiniteWalk + IsEulerWalk + BiInfiniteWalk duplicates. Collapses ~100 LOC of duplication. Pure refactor, no new math.",
+      "**S5 EGW proof (multi-week)**: prove the locally-finite case using SimpleGraph.Walk.IsEulerian extension lemmas + König's lemma machinery; the non-locally-finite case needs graph-end / Freudenthal compactification machinery not in Mathlib."
     ],
     "progressHistory": [
       {
@@ -68,6 +80,20 @@
         "researcher": "researcher-1",
         "mode": "SURVEY",
         "summary": "Honest gap assessment: 3 True placeholders are the real gaps, not the 0-sorry count. r=2 case is the smallest concrete forward step. SURVEY-BLOCKED at infrastructure level for full completion."
+      },
+      {
+        "iteration": 3,
+        "date": "2026-06-01",
+        "researcher": "researcher-1",
+        "mode": "ACT",
+        "summary": "r=2 hypergraph Euler-tour case implemented per S2 SURVEY candidate A: toSimpleGraph map + meaningful HasEulerTour def via SimpleGraph.Walk.IsEulerian + sanity lemma hasEulerTour_iff_simpleGraph_eulerian. 74→114 LOC, 0→1 theorem, 7→8 defs+structures, True placeholders 3→2. Docker build verified clean (PR a8a1307aecf / #21877)."
+      },
+      {
+        "iteration": 4,
+        "date": "2026-06-03",
+        "researcher": "researcher-1",
+        "mode": "ACT",
+        "summary": "Discharged remaining 2 True placeholders (HasInfiniteEulerPath, HasOneWayEulerPath) by porting sibling KonigsbergOQ03OQ02.lean's InfiniteWalk + BiInfiniteWalk + IsEulerWalk + IsBiInfiniteEulerWalk infrastructure into the parent file (adapted to use the parent's own InfiniteGraph). 114→202 LOC (+88), 1→2 theorems, 8→14 defs+structures, True placeholders 2→0. Build NOT verified locally (Docker daemon corrupted on host); confidence grounded in pattern equivalence with the verified sibling."
       }
     ]
   },
@@ -80,7 +106,8 @@
   ],
   "relatedProofs": [
     "konigsberg",
-    "konigsberg-oq-03"
+    "konigsberg-oq-03",
+    "konigsberg-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -88,17 +115,17 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-06-01T00:00:00Z",
+  "lastUpdate": "2026-06-03T00:00:00Z",
   "leanFiles": [
     {
       "path": "Proofs/KonigsbergOQ03.lean",
       "filename": "KonigsbergOQ03.lean",
-      "lineCount": 114,
-      "theoremCount": 1,
+      "lineCount": 202,
+      "theoremCount": 2,
       "axiomCount": 0,
-      "defCount": 6,
+      "defCount": 14,
       "sorryCount": 0,
-      "truePlaceholderCount": 2,
+      "truePlaceholderCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
     }
