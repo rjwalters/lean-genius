@@ -2,128 +2,150 @@
  * Proof Data Index
  *
  * Exports:
- * - listings: Lightweight metadata for HomePage gallery (small bundle)
- * - getProofAsync: Dynamic import for full proof data (lazy loaded)
- * - getProof/getAllProofs: Synchronous access (pulls in full bundle - use sparingly)
+ * - listings: Lightweight metadata for HomePage gallery (small bundle, in-graph)
+ * - getProofAsync: Fetch full proof data by slug from the static asset tree
+ *
+ * Phase 2 of the build-perf durable fix (issue #20993, follow-up to phase 1
+ * issue #20992). Previously this module used `import.meta.glob` to discover
+ * ~2435 per-proof shim modules, each of which statically imported
+ * a meta.json + annotations.json — for ~7300 data modules in the vite/Rollup
+ * graph. That O(N) blowup pushed the build past the 20-minute deploy cap and
+ * stalled at the transform stage near the 8 GB Node heap. Phase 2 collapses
+ * all of that to:
+ *   - this file (a thin fetch-by-slug loader)
+ *   - listings.json (single ~1.8MB module, eagerly needed by HomePage —
+ *     architect classified it as not part of the O(N) blowup)
+ *   - data-manifest.json (single small module mapping slug -> sha8 hashes for
+ *     cache-busting; the manifest IS bundled with content hashing so any
+ *     proof change busts the importing chunk)
+ * All per-proof meta/annotations/source now live under public/data/proofs/<slug>/
+ * (gitignored, build-generated) and are fetched at runtime.
  */
 
 import listingsData from './listings.json'
-import type { Annotation, ProofData, ProofListing } from '@/types/proof'
+import dataManifest from './data-manifest.json'
+import type {
+  Annotation,
+  CrossReference,
+  ProofData,
+  ProofListing,
+  ProofMeta,
+  ProofOverview,
+  ProofConclusion,
+  ProofReference,
+  ProofSection,
+} from '@/types/proof'
 
-// Lightweight listings for HomePage - does not pull in proof data
+// Lightweight listings for HomePage — does not pull in proof data
 export const listings: ProofListing[] = listingsData as ProofListing[]
 
-// Auto-discover all proof modules using Vite's glob import
-// This automatically finds all index.ts files in subdirectories
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const proofModuleGlobs = import.meta.glob<any>('./**/index.ts')
+interface ManifestEntry {
+  meta: string
+  ann: string
+  src: string
+}
 
-// Build the proofModules map from glob results
-// Convert paths like './erdos-105/index.ts' to slugs like 'erdos-105'
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const proofModules: Record<string, () => Promise<any>> = {}
+const DATA_MANIFEST: Record<string, ManifestEntry> = dataManifest as Record<
+  string,
+  ManifestEntry
+>
 
-for (const path in proofModuleGlobs) {
-  // Extract slug from path: './some-proof/index.ts' -> 'some-proof'
-  const match = path.match(/^\.\/([^/]+)\/index\.ts$/)
-  if (match) {
-    const slug = match[1]
-    proofModules[slug] = proofModuleGlobs[path]
-  }
+/**
+ * Shape of meta.json as written by the gallery. Fields are duplicated from
+ * the per-proof `meta` plus a few top-level fields the shim files used to
+ * project onto a `Proof` object.
+ */
+interface RawMeta {
+  id: string
+  title: string
+  slug: string
+  description: string
+  meta: ProofMeta
+  sections?: ProofSection[]
+  overview?: ProofOverview
+  conclusion?: ProofConclusion
+  crossReferences?: CrossReference[]
+  references?: ProofReference[]
 }
 
 /**
- * Convert kebab-case slug to camelCase export name
- * e.g., "navier-stokes" -> "navierStokesData"
+ * Normalize annotations: convert legacy {lineNumber} format to {range}, drop
+ * annotations with no positional info. Ported from the previous getProofAsync
+ * implementation (lines ~99-111 of the pre-phase-2 file).
  */
-function slugToExportName(slug: string): string {
-  const camel = slug.replace(/-([a-z0-9])/g, (_, c) => c.toUpperCase())
-  return camel + 'Data'
+function normalizeAnnotations(annotations: Annotation[]): Annotation[] {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (annotations as any[]).filter((ann: any) => {
+    if (ann.range) return true
+    const line = ann.lineNumber ?? ann.line
+    if (line != null) {
+      ann.range = { startLine: line, endLine: line }
+      return true
+    }
+    return false
+  }) as Annotation[]
 }
 
 /**
  * Asynchronously load proof data for a given slug.
- * This enables per-proof code splitting - only loads the requested proof.
+ *
+ * Public signature preserved from phase 1: `(slug) => Promise<ProofData | undefined>`.
+ * The only real consumer is `src/pages/ProofPage.tsx`; no change needed there.
+ *
+ * The loader uses the in-graph data-manifest to know (a) which slugs exist and
+ * (b) the sha8 cache-buster hashes for each file. Fetches are issued in
+ * parallel and any failure (network, 404) returns undefined rather than
+ * throwing, matching the previous contract.
  */
 export async function getProofAsync(slug: string): Promise<ProofData | undefined> {
-  const loader = proofModules[slug]
-  if (!loader) return undefined
+  const v = DATA_MANIFEST[slug]
+  if (!v) return undefined
 
   try {
-    const module = await loader()
-    // Try default export first, then named export, then fallback to first *Data export
-    // (fallback handles casing mismatches like OQ vs Oq in export names)
-    const exportName = slugToExportName(slug)
-    let proofData: ProofData | undefined = module.default || module[exportName] ||
-      Object.keys(module).filter(k => k.endsWith('Data')).map(k => module[k]).find(v => v?.proof)
+    const [metaResp, annResp] = await Promise.all([
+      fetch(`/data/proofs/${slug}/meta.json?v=${v.meta}`),
+      fetch(`/data/proofs/${slug}/annotations.json?v=${v.ann}`),
+    ])
+    if (!metaResp.ok) return undefined
 
-    // Fallback: construct ProofData from legacy { meta, annotations } exports
-    if (!proofData && module.meta) {
-      const m = module.meta.default || module.meta
-      proofData = {
-        proof: {
-          id: m.id,
-          title: m.title,
-          slug: m.slug,
-          description: m.description,
-          meta: m.meta,
-          sections: m.sections || [],
-          overview: m.overview,
-          conclusion: m.conclusion,
-          crossReferences: m.crossReferences,
-          references: m.references,
-          source: '',
-        },
-        annotations: (module.annotations?.default || module.annotations || []) as Annotation[],
-      }
-    }
-
-    // Inject crossReferences from raw meta.json if the proof object doesn't have them
-    if (proofData?.proof && !proofData.proof.crossReferences) {
-      const rawMeta = module.meta?.default || module.meta || module.default?.proof
-      const crossRefs = rawMeta?.crossReferences
-      if (crossRefs && Array.isArray(crossRefs)) {
-        proofData.proof.crossReferences = crossRefs
-      }
-    }
-
-    // Inject references from raw meta.json if the proof object doesn't have them
-    if (proofData?.proof && !proofData.proof.references) {
-      const rawMeta = module.meta?.default || module.meta || module.default?.proof
-      const refs = rawMeta?.references
-      if (refs && Array.isArray(refs)) {
-        proofData.proof.references = refs
-      }
-    }
-
-    // Normalize annotations: convert legacy {lineNumber} format to {range}
-    if (proofData?.annotations) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      proofData.annotations = proofData.annotations.filter((ann: any) => {
-        if (ann.range) return true
-        const line = ann.lineNumber ?? ann.line
-        if (line != null) {
-          ann.range = { startLine: line, endLine: line }
-          return true
-        }
-        return false // drop annotations with no range, lineNumber, or line
-      })
-    }
-
-    // Load the Lean source from the build-generated static asset tree instead
-    // of importing it through the module graph. The emit step in
-    // scripts/annotations/build.ts copies each proof's Lean file to
-    // public/data/proofs/<slug>/source.lean, which Vite/Cloudflare serve at the
-    // site root. This keeps the ~1339 large `?raw` modules out of the Rollup
-    // build graph (build-perf phase 1, issue #20992). On any fetch failure the
-    // source is left empty rather than failing the whole proof load.
-    if (proofData?.proof) {
+    const meta = (await metaResp.json()) as RawMeta
+    // annotations.json is optional — some proofs have none; treat a missing or
+    // failed fetch as an empty list rather than failing the whole load.
+    let rawAnnotations: Annotation[] = []
+    if (annResp.ok) {
       try {
-        const res = await fetch(`/data/proofs/${slug}/source.lean`)
-        if (res.ok) proofData.proof.source = await res.text()
+        rawAnnotations = (await annResp.json()) as Annotation[]
       } catch {
-        /* leave source empty on failure */
+        rawAnnotations = []
       }
+    }
+
+    const proofData: ProofData = {
+      proof: {
+        id: meta.id,
+        title: meta.title,
+        slug: meta.slug,
+        description: meta.description,
+        meta: meta.meta,
+        sections: meta.sections ?? [],
+        overview: meta.overview,
+        conclusion: meta.conclusion,
+        crossReferences: meta.crossReferences,
+        references: meta.references,
+        source: '',
+      },
+      annotations: normalizeAnnotations(rawAnnotations),
+    }
+
+    // Fetch the Lean source. The previous (phase-1) implementation pre-fetched
+    // this inside getProofAsync so ProofPage didn't need to change — we
+    // preserve that contract here. Failures leave `source` empty rather than
+    // failing the whole proof load.
+    try {
+      const srcResp = await fetch(`/data/proofs/${slug}/source.lean?v=${v.src}`)
+      if (srcResp.ok) proofData.proof.source = await srcResp.text()
+    } catch {
+      /* leave source empty on failure */
     }
 
     return proofData
@@ -131,32 +153,4 @@ export async function getProofAsync(slug: string): Promise<ProofData | undefined
     console.error(`Failed to load proof: ${slug}`, e)
     return undefined
   }
-}
-
-// Cache for synchronous access (populated on first use)
-let proofsCache: Record<string, ProofData> | null = null
-
-/**
- * Synchronously get a proof by slug.
- * WARNING: This pulls in ALL proof data into the bundle.
- * Prefer getProofAsync for better code splitting.
- */
-export function getProof(slug: string): ProofData | undefined {
-  if (!proofsCache) {
-    proofsCache = {}
-    // This will be tree-shaken if only getProofAsync is used
-  }
-  return proofsCache[slug]
-}
-
-/**
- * Get all proofs synchronously.
- * WARNING: This pulls in ALL proof data into the bundle.
- * Prefer using `listings` for HomePage gallery.
- */
-export function getAllProofs(): ProofData[] {
-  if (!proofsCache) {
-    return []
-  }
-  return Object.values(proofsCache)
 }
