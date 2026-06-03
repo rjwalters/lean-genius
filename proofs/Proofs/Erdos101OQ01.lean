@@ -396,6 +396,57 @@ theorem maxCountAtSize_lt_of_forall {n : ℕ} {X : ℝ} (hX : 0 < X)
     rw [← hQeq]
     exact h Q hQcard hQ5
 
+/-! ### S14 ACT: surrogate ↔ true-sup unification
+
+The S12 surrogate `maxFourPointLines n := n*(n-1)/12` and the S13 true sup
+`maxCountAtSize n := sSup {fourPointLineCount Q | …}` are related by an
+elementary pointwise inequality: `maxCountAtSize n ≤ maxFourPointLines n`.
+This is `improved_upper_bound` lifted uniformly over all candidates.
+
+The surrogate is `Θ(n²)` (its rate is `1/12` away from `(n : ℝ)^2`); the
+genuine sup is the precise extremal quantity OQ-01 asks about. Bridging
+them lets `maxCountAtSize` inherit the surrogate's `O(n²)` certificate
+without duplicating the cast bookkeeping.
+-/
+
+/-- The genuine size-indexed supremum `maxCountAtSize` is bounded above by
+the elementary surrogate `maxFourPointLines = n*(n-1)/12`. Uniform lift of
+`improved_upper_bound`: every candidate `Q` of size `n` is bounded by the
+same surrogate value, hence so is their supremum (the empty case is
+covered by `sSup ∅ = 0`). -/
+theorem maxCountAtSize_le_maxFourPointLines (n : ℕ) :
+    maxCountAtSize n ≤ maxFourPointLines n := by
+  unfold maxCountAtSize maxFourPointLines
+  rcases Set.eq_empty_or_nonempty {k : ℕ | ∃ Q : PlanarPointSet,
+      Q.points.card = n ∧ NoFiveCollinear Q ∧ fourPointLineCount Q = k}
+      with he | hne
+  · rw [he]
+    have hz : sSup (∅ : Set ℕ) = 0 := csSup_empty
+    rw [hz]
+    exact Nat.zero_le _
+  · refine csSup_le hne ?_
+    rintro k ⟨Q, hQcard, hQ5, rfl⟩
+    rw [← hQcard]
+    exact improved_upper_bound Q hQ5
+
+/-- The genuine supremum `maxCountAtSize` inherits the `O(n²)` certificate
+from the surrogate `maxFourPointLines` via
+`maxCountAtSize_le_maxFourPointLines` and
+`maxFourPointLines_isBigO_n_squared`. -/
+theorem maxCountAtSize_isBigO_n_squared :
+    Asymptotics.IsBigO Filter.atTop
+      (fun n : ℕ => (maxCountAtSize n : ℝ))
+      (fun n : ℕ => (n : ℝ)^2) := by
+  have h_le :
+      Asymptotics.IsBigO Filter.atTop
+        (fun n : ℕ => (maxCountAtSize n : ℝ))
+        (fun n : ℕ => (maxFourPointLines n : ℝ)) := by
+    apply Asymptotics.IsBigO.of_norm_le
+    intro n
+    rw [Real.norm_of_nonneg (by positivity)]
+    exact_mod_cast maxCountAtSize_le_maxFourPointLines n
+  exact h_le.trans maxFourPointLines_isBigO_n_squared
+
 /-- **OQ-01 primary form ↔ rate form.** The ε-N statement
 `erdos_101_oq_01_conjecture` is equivalent to the existence of an
 `o(n²)` witness rate bounding every no-five-collinear count

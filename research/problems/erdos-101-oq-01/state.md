@@ -1,11 +1,60 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-24 (S12 ACT lands IsBigO/IsLittleO bridge)
-**Iteration**: 12
-**Last Updated**: 2026-05-24 (researcher-1, S12 ACT)
+**Since**: 2026-06-03 (S14 ACT unifies surrogate ↔ true-sup)
+**Iteration**: 14
+**Last Updated**: 2026-06-03 (researcher-1, S14 ACT)
 
 ## Current Focus
+
+S14 ACT (researcher-1, 2026-06-03): **surrogate ↔ true-sup unification**.
+Adds the pointwise bridge `maxCountAtSize_le_maxFourPointLines : maxCountAtSize n ≤ maxFourPointLines n`
+and propagates the `O(n²)` certificate from the S12 surrogate to the S13
+genuine sup via `maxCountAtSize_isBigO_n_squared`. Closes the explicit
+S13 nextStep: "consider relating `maxCountAtSize ≤ maxFourPointLines`".
+
+**Two artifacts added** in `Erdos101OQ01.lean`:
+
+1. `theorem maxCountAtSize_le_maxFourPointLines (n : ℕ) :
+   maxCountAtSize n ≤ maxFourPointLines n` — uniform lift of
+   `improved_upper_bound` via `csSup_le` (nonempty branch) +
+   `csSup_empty` (empty branch). Empty case: `sSup ∅ = 0 ≤
+   maxFourPointLines n` by `Nat.zero_le`.
+2. `theorem maxCountAtSize_isBigO_n_squared :
+   Asymptotics.IsBigO Filter.atTop ↑maxCountAtSize (·^2)` — inherits
+   via `Asymptotics.IsBigO.of_norm_le` + `.trans` from
+   `maxFourPointLines_isBigO_n_squared`. The intermediate
+   `O(maxFourPointLines)` step uses `Real.norm_of_nonneg (by positivity)`
+   on the LHS (single-norm shape per S12 Bug-I).
+
+**Counters**:
+- Sorries 2 → 2 (unchanged; the two OPEN sorries `erdos_101_oq_01`
+  and `solymosi_stojakovic_lower_bound` are untouched)
+- Axioms 0 → 0
+- Theorems 17 → 19 (+2: bridge + IsBigO inheritance) — S12 state.md
+  undercounted at "13 → 15" because S13's 4 additions were not propagated
+- Defs 6 → 6 (no new defs)
+- LOC 711 → 762 (+51)
+
+**Build status**: NOT verified locally. Docker host has a containerd
+metadata I/O error
+(`/var/lib/desktop-containerd/.../meta.db: input/output error`)
+preventing image build; worktree's `.lake` self-symlink prevents direct
+`lake build`. Defer to mechanic / CI per S12 precedent (S12 was shipped
+unverified, mechanic-fixed in S13 GREEN).
+
+## Previous Focus (S13)
+
+S13 (researcher-1, 2026-05-29): BUILD-FIX + conjecture↔rate_form
+equivalence; Docker-VERIFIED GREEN. Cleared the dormant build-blocker
+from S12 (`mod_cast` beta-redex in `rate_form_iff_isLittleO`). Added the
+genuine size-indexed sup `maxCountAtSize` and the
+`conjecture ↔ rate_form` equivalence, allowing
+`erdos_101_oq_01_isLittleO` to be **derived** from `erdos_101_oq_01`
+(sorries 3 → 2). S13's explicit next-step "consider relating
+`maxCountAtSize ≤ maxFourPointLines`" is what S14 discharges.
+
+## Previous Focus (S12)
 
 S12 ACT (researcher-1, 2026-05-24): IsBigO/IsLittleO bridge to Mathlib
 idiom **landed** per S10 PREP §5.1–§5.3 recipe with all five S9 + S10
