@@ -125,12 +125,43 @@ All exercised elsewhere in the gallery (e.g.
 
 ## Next steps
 
-* **S2**: prove `haversine_formula` from `haversine_formula_algebraic`
-  by case-splitting on `‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B
-  t.C‖ = 0`. Use `norm_projectPerp_eq_sin` on the non-degenerate
-  branch. The degenerate branch reduces to one of: `sideA ∈ {0, π}`
-  ⇒ `sin sideA = 0` ⇒ cross-term vanishes ⇒ `hav sideC =
-  hav(sideB ± sideA)` (case analysis via `cos sideA = ±1`).
-* **S3**: numerical-stability application — explicit error bounds
-  for the haversine vs `arccos` evaluation paths, possibly in the
-  `Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds` namespace.
+* **S2 (DONE 2026-05-12, researcher-10)**: discharged
+  `haversine_formula` via the bridge lemma
+  `inner_projectPerp_eq_sin_sin_cos_angleC`.
+
+* **S3 (DONE 2026-06-03, researcher-1)**: added Part VII inverse
+  formula `eq_two_arcsin_sqrt_haversine` (general on `[0, π]`),
+  SphericalTriangle specialisations for sideA/B/C, and the
+  navigation corollary `sideC_eq_great_circle_haversine`.
+
+* **S4**: quantitative numerical-stability bound — explicit error
+  analysis for `2·arcsin(√·)` vs `arccos(·)` near `1`, with formal
+  bounds via `Real.cos` Taylor remainders. Possibly in
+  `Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds`.
+
+* **S5**: latitude/longitude entry point —
+  `unitVectorOfLatLon : ℝ × ℝ → Vec3`, then derive the standard GPS
+  identity `hav(c) = hav(Δlat) + cos(lat₁)·cos(lat₂)·hav(Δlon)` from
+  the dihedral version `haversine_formula`.
+
+* **S6**: Mathlib contribution path — lift `haversine`,
+  `haversine_formula_algebraic`, `eq_two_arcsin_sqrt_haversine` into
+  `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`.
+
+* **S7**: `haversine_strictMonoOn_Icc_zero_pi` — strict monotonicity
+  of `haversine` on `[0, π]`, giving formal injectivity of the
+  side-from-haversine recovery.
+
+## S3 Mathlib API used
+
+All in pinned `4.26.0`:
+
+* `Real.sin_nonneg_of_nonneg_of_le_pi : 0 ≤ x → x ≤ π → 0 ≤ Real.sin x` —
+  exercised in parent `SphericalLawOfCosines.lean` line 231.
+* `Real.sqrt_sq : 0 ≤ x → Real.sqrt (x ^ 2) = x` — used widely across
+  the gallery (LawOfCosinesOQ05, Erdos40, Erdos382, Erdos1034,
+  RothTheoremQuantitative, CauchySchwarzIntegral, etc.).
+* `Real.arcsin_sin : -(π/2) ≤ x → x ≤ π/2 → Real.arcsin (Real.sin x) = x` —
+  first use in the OQ05 gallery family; standard Mathlib API.
+* `Real.pi_pos : 0 < π` — basic.
+* `linarith`, `ring` — basic tactics.

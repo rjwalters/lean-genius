@@ -157,5 +157,32 @@
       "axiom-integrity policy (CLAUDE.md)",
       "meta.json status/badge/axiomCount conventions"
     ]
+  },
+  {
+    "id": "ann-inverse-haversine-s3",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 385,
+      "endLine": 479
+    },
+    "type": "theorem",
+    "title": "Inverse haversine formula and great-circle distance (S3)",
+    "content": "Part VII closes the navigation pipeline by inverting `haversine` on the principal arc-length range `[0, π]`. Two facts justify the inversion: (i) on `[0, π]` we have `θ/2 ∈ [0, π/2]`, where `sin(θ/2) ≥ 0`, so `√(haversine θ) = √(sin²(θ/2)) = sin(θ/2)` via `Real.sqrt_sq`; (ii) on `[-π/2, π/2]`, `Real.arcsin_sin` gives `arcsin(sin x) = x`, so applying it at `x = θ/2` yields `θ = 2·arcsin(√(haversine θ))`. The parent's `arcLength_nonneg` and `arcLength_le_pi` lift this general identity to each side of a `SphericalTriangle` (`sideA`, `sideB`, `sideC`), and composing with the S2 forward `haversine_formula` produces the canonical navigation identity `sideC_eq_great_circle_haversine`: `c = 2·arcsin(√(hav(a−b) + sin(a)·sin(b)·hav(C)))`. This is the form actually computed in GPS / navigation libraries, and the formal proof now exists end-to-end (forward S2 + inverse S3) without ever invoking `Real.arccos` near 1.",
+    "mathContext": "**General:** $\\theta \\in [0, \\pi] \\implies \\theta = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}\\theta}\\bigr)$.\\\\ **Triangle (sideC):** $t.\\text{sideC} = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}(t.\\text{sideC})}\\bigr)$.\\\\ **Navigation identity:** $t.\\text{sideC} = 2\\arcsin\\!\\bigl(\\sqrt{\\operatorname{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB})\\sin(t.\\text{sideA})\\operatorname{hav}(t.\\text{angleC})}\\bigr)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arcsin range and bijection on [-π/2, π/2]",
+      "square root of a square = absolute value",
+      "great-circle distance computation",
+      "navigation/GPS pipelines",
+      "principal arc-length range [0, π]"
+    ],
+    "prerequisites": [
+      "Real.sin_nonneg_of_nonneg_of_le_pi",
+      "Real.sqrt_sq",
+      "Real.arcsin_sin",
+      "Parent arcLength_nonneg, arcLength_le_pi",
+      "S2 haversine_formula"
+    ]
   }
 ]
