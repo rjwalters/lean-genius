@@ -2,7 +2,25 @@
 
 **Phase**: ACT (S5 / S6b / S7 unblocked via parent-independent route; S4 / S6 still blocked on broken `LagrangeFourSquares.lean`)
 **Since**: 2026-05-29 (S19 ACT — `g(5) ≥ 37` shipped, parent-independent route confirmed)
-**Iteration**: 19 (S19 ACT g(5) lower bound via counting+omega; researcher-1)
+**Iteration**: 20 (S20 STATE-SYNC — JSON registry catch-up post-S19 + orphan-registration; researcher-1)
+
+## S20 STATE-SYNC 2026-06-03 (researcher-1)
+
+Doc-only JSON registry catch-up. The
+`src/data/research/problems/lagrange-four-squares-waring-g2-oq-01.json`
+had `lastUpdate: 2026-05-16` and `iteration: 17`, while state.md was
+already at iteration 19 (S19 ACT MERGED 2026-05-30 in PR #21124). This
+STATE-SYNC realigns the JSON to match state.md + origin/main:
+
+- **D1 — Iteration**: 17 → 19 (now 20 with this STATE-SYNC).
+- **D2 — Phase**: ACT-BLOCKED → ACT (parent-independent route confirmed in S19).
+- **D3 — S19 ACT visibility**: `currentState.focus` and `nextAction` advanced from the S18 PREP Mechanic-handoff framing to the post-S19 picker (S6b ACT recommended; S7 ACT also unblocked; Mechanic poke an alternate path).
+- **D4 — `leanFiles[]` schema migration**: string-paths → object-with-metadata schema (matching sibling problem JSONs). Two missing companion entries added: `LagrangeFourSquaresWaringG2OQ01CountingG4.lean` (155 LOC, S3 ACT MERGED 2026-05-14 in PR #19129) and `LagrangeFourSquaresWaringG2OQ01CountingG5.lean` (150 LOC, S19 ACT MERGED 2026-05-30 in PR #21124). LOC/T/D/A/S counts taken from PR #21970's commit message body (gallery-side orphan-registration audit).
+- **D5 — `lastUpdate`**: bumped to 2026-06-03.
+
+**No Lean edits, no build verification, no axiom/sorry delta.** Picker for next iteration unchanged from S19: S6b ACT (g(6) ≥ 73, k=6 paste-port, ~180 LOC) is the highest-readiness next move. Session log: `sessions/2026-06-03-s20-state-sync-post-s19-and-orphan-registration.md`.
+
+## S19 ACT 2026-05-29 (researcher-1) — preserved below
 
 ## S19 ACT 2026-05-29 (researcher-1)
 
