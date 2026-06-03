@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-theorem-oq-01",
   "title": "Kelley-Meka bounds for 3-AP-free sets",
-  "phase": "OBSERVE",
+  "phase": "ACT-shipped",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -26,21 +26,22 @@
     "goal": "Survey the local Szemerédi proof family and Mathlib additive-combinatorics APIs, then choose a tractable quantitative target: a statement-only Kelley-Meka theorem, a weaker exponential bound, or a bridge from 3-AP-freeness to cap-set style structure."
   },
   "currentState": {
-    "phase": "DECISION-RECORDED (Approach A committed; Approach B spun off)",
-    "since": "2026-05-30T20:00:00.000Z",
-    "iteration": 3,
-    "focus": "S2 (researcher-1, 2026-05-30): Mathlib audit of cornersTheoremBound. Resolution: tower-type per Mathlib own docstring (Mathlib/Combinatorics/Additive/Corner/Roth.lean at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: cornersTheoremBound depends on SzemerediRegularity.bound, which is a tower-type exponential). Approach B (Salem-Spencer quantitative) cannot derive O(N / log log N) from this — inverting tower-type would yield O(N / log* N) class, not the Kelley-Meka quantitative form. Decision: commit to Approach A (axiomatize Kelley-Meka, ~30 LOC, status axiomatized / badge axiom per project axiom integrity policy). Approach B spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on upstream Mathlib infrastructure: no Bohr-set, no sifted-Fourier, no U^3 uniformity). Open question 1 (resolved as tower-type) closed.",
+    "phase": "ACT-shipped (Approach A landed)",
+    "since": "2026-06-03T20:14:03.000Z",
+    "iteration": 4,
+    "focus": "S3 (researcher-1, 2026-06-03): ACT. Shipped Approach A: created proofs/Proofs/SzemerediTheoremOQ01.lean (88 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries), gallery entry src/data/proofs/szemeredi-theorem-oq-01/{meta.json,annotations.json} with status axiomatized / badge axiom / axiomCount 1 / sorries 0, and registered the module in proofs/Proofs.lean. Axiom statement is calibrated to Mathlib's rothNumberNat for direct composability. Density-form corollary is non-axiomatic. Local Docker daemon in I/O-error state so build could not be verified locally; Mechanic/Auditor will verify post-merge.",
     "blockers": [],
-    "nextAction": "Ship Approach A (axiomatize Kelley-Meka) in a fresh researcher session: (1) create proofs/Proofs/SzemerediTheoremOQ01.lean ~30 LOC with axiom kelley_meka_bound stating r_3(N) ≤ N · exp(-c (log N)^{1/12}); (2) create gallery entry src/data/proofs/szemeredi-theorem-oq-01/ with status axiomatized / badge axiom / axiomCount 1 / sorryCount 0; (3) flip state.md Phase DECISION-RECORDED → ACT-shipped (or → COMPLETED). After Approach A lands, slug is graduation-ready modulo Mechanic/Auditor Docker-verify. Approach B sibling slug should be extracted by seeker/curator on next curation cycle.",
+    "nextAction": "Post-merge: (1) Mechanic / Auditor Docker-build Proofs.SzemerediTheoremOQ01 and verify axiomCount:1, sorries:0, theoremCount:1; (2) Curator / Seeker extract sibling slug szemeredi-theorem-oq-01-incomplete-01 for the BLOCKED Salem–Spencer quantitative direction; (3) once Mechanic/Auditor pass, mark slug COMPLETED in tracking JSON. Slug is graduation-ready.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "The selection report identifies this as an OBSERVE-phase quantitative additive-combinatorics target: formalize or axiomatize a Kelley-Meka-style upper bound for 3-AP-free subsets of finite intervals. The local problem.md and knowledge.md remain template-only, so no proof progress is claimed. S2 (researcher-1, 2026-05-30): Mathlib audit resolved open question 1 — cornersTheoremBound is tower-type per Mathlib own docstring. Approach A (axiomatize Kelley-Meka, ~30 LOC) committed. Approach B (Salem-Spencer quantitative) spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on Bohr-set / sifted-Fourier / U^3 upstream infrastructure).",
+    "progressSummary": "S3 (researcher-1, 2026-06-03): ACT-shipped. Created proofs/Proofs/SzemerediTheoremOQ01.lean (89 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries) axiomatizing the Kelley–Meka 2023 bound r_3(N) ≤ N · exp(-c (log N)^{1/12}) against Mathlib's rothNumberNat, with a non-axiomatic density-form corollary. Created gallery entry src/data/proofs/szemeredi-theorem-oq-01/ with status axiomatized / badge axiom / axiomCount 1 / sorries 0. Registered module in proofs/Proofs.lean. Slug is graduation-ready pending Mechanic/Auditor Docker-verify (local Docker is in I/O-error state and could not run the build). Prior sessions: S1 (2026-05-30) survey, S2 (2026-05-30) Mathlib audit ruling out the existing chain as a source of the Kelley–Meka rate.",
     "builtItems": [
+      "S3 (researcher-1, 2026-06-03): ACT — created proofs/Proofs/SzemerediTheoremOQ01.lean (89 lines, 1 axiom kelley_meka_bound, 1 theorem rothNumberNat_density_le_kelley_meka, 0 sorries) + gallery entry src/data/proofs/szemeredi-theorem-oq-01/{meta.json,annotations.json} + Proofs.lean module registration.",
       "S2 (researcher-1, 2026-05-30): Mathlib audit of cornersTheoremBound at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 — confirmed tower-type per Mathlib own docstring. Open question 1 resolved. Approach A committed; Approach B spun off into recommended sibling slug szemeredi-theorem-oq-01-incomplete-01 (BLOCKED on upstream infra)."
     ],
     "insights": [
@@ -68,7 +69,8 @@
   ],
   "relatedProofs": [
     "szemeredi-full",
-    "szemeredi-theorem"
+    "szemeredi-theorem",
+    "szemeredi-theorem-oq-01"
   ],
   "references": {
     "papers": [
@@ -81,7 +83,7 @@
     ]
   },
   "started": "2026-04-06T03:14:36.235Z",
-  "lastUpdate": "2026-05-30T20:00:00.000Z",
+  "lastUpdate": "2026-06-03T20:14:03.000Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
@@ -95,7 +97,18 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheorem.lean"
+    },
+    {
+      "path": "Proofs/SzemerediTheoremOQ01.lean",
+      "filename": "SzemerediTheoremOQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediTheoremOQ01.lean"
     }
   ],
-  "updatedAt": "2026-05-30"
+  "updatedAt": "2026-06-03"
 }

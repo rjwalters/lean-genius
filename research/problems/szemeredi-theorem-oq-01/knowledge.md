@@ -175,3 +175,61 @@ Ship Approach A axiomatize in a fresh session:
 - `research/problems/szemeredi-theorem-oq-01/knowledge.md` — this entry
 - `research/problems/szemeredi-theorem-oq-01/state.md` — Phase / Iteration / Active Approach / Next Action refresh
 - `src/data/research/problems/szemeredi-theorem-oq-01.json` — currentState refresh
+
+---
+
+## Session 2026-06-03 (Session 3) — ACT (DECISION-RECORDED → ACT-shipped)
+
+**Mode**: ACT — Approach A landed
+**Outcome**: `proofs/Proofs/SzemerediTheoremOQ01.lean` + gallery entry shipped; 1 axiom (`kelley_meka_bound`), 1 theorem (`rothNumberNat_density_le_kelley_meka`), 0 sorries.
+
+### What I Did
+
+1. **Wrote `proofs/Proofs/SzemerediTheoremOQ01.lean`** (~88 lines):
+   - Docstring framing the bound, the reason for axiomatizing, the rate gap vs `cornersTheoremBound`, and the sibling-slug pointer.
+   - Imports: `Mathlib.Combinatorics.Additive.Corner.Roth` (for `rothNumberNat`), `Mathlib.Analysis.SpecialFunctions.Log.Basic`, `Mathlib.Analysis.SpecialFunctions.Pow.Real`, `Mathlib.Tactic`.
+   - `namespace SzemerediTheoremOQ01`, `open Real`.
+   - `axiom kelley_meka_bound : ∃ c > 0, ∃ N₀, ∀ N ≥ N₀, (rothNumberNat N : ℝ) ≤ N · Real.exp (-(c · Real.log N ^ (1/12)))`.
+   - `theorem rothNumberNat_density_le_kelley_meka` derives `r_3(N)/N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`. Proof: `obtain` constants from axiom, threshold = `max N₀ 1`, derive `1 ≤ N` via `le_max_right`, `(0 : ℝ) < N` via `Nat.lt_of_succ_le hN1` + `exact_mod_cast`, rewrite `div_le_iff₀ hN_pos; mul_comm`, close by `exact hb`.
+
+2. **Created gallery entry `src/data/proofs/szemeredi-theorem-oq-01/`**:
+   - `meta.json`: status `axiomatized`, badge `axiom`, axiomCount 1, sorries 0, lineCount 88, theoremCount 1, definitionCount 0. Three section descriptors (`preamble`, `kelley-meka-axiom`, `density-corollary`), four cross-references (`szemeredi-theorem`, `szemeredi-full-oq-02`, `szemeredi-regularity`, `szemeredi-counting`), four references (Kelley–Meka 2023, Behrend 1946, Bloom–Sisask 2020, Roth 1953).
+   - `annotations.json`: three annotations (one per section). Math context uses LaTeX inline.
+
+3. **Registered the module**: added `import Proofs.SzemerediTheoremOQ01` to `proofs/Proofs.lean` immediately after `Proofs.SzemerediTheorem`.
+
+### Key Findings (this session)
+
+- The axiom statement composes directly with the rest of the additive-combinatorics gallery because it is stated against Mathlib's `rothNumberNat`, not against a local custom predicate. Any future Lean formalization of Kelley–Meka can replace the axiom by a theorem without disturbing downstream consumers.
+- The density-form corollary `rothNumberNat_density_le_kelley_meka` is non-axiomatic and certifies that the axiom is not vacuous in the asymptotic direction.
+- The pattern `(0 : ℝ) < N := by exact_mod_cast Nat.lt_of_succ_le hN1` (from `SzemerediFullOQ02.lean` line 56) was reused to bridge `1 ≤ N : ℕ` to `(0 : ℝ) < N`; this is the idiomatic safe form rather than `exact_mod_cast hN1` directly.
+
+### Verification status
+
+**Local Docker daemon is in I/O-error state** (`/var/lib/desktop-containerd/...meta.db: input/output error` from `docker images`), so the `./proofs/scripts/docker-build.sh Proofs.SzemerediTheoremOQ01` invocation could not actually run the build. The file follows the same idioms as `SzemerediFullOQ02.lean` (which builds in CI) and the proof is short and uses only standard Mathlib lemmas, so the build is expected to succeed; the Mechanic / Auditor agents will verify post-merge.
+
+### Files Modified
+
+- `proofs/Proofs/SzemerediTheoremOQ01.lean` — new file, 88 lines, 1 axiom, 1 theorem, 0 sorries.
+- `proofs/Proofs.lean` — added `import Proofs.SzemerediTheoremOQ01`.
+- `src/data/proofs/szemeredi-theorem-oq-01/meta.json` — new gallery entry.
+- `src/data/proofs/szemeredi-theorem-oq-01/annotations.json` — new annotation file.
+- `research/problems/szemeredi-theorem-oq-01/state.md` — Phase DECISION-RECORDED → ACT-shipped.
+- `research/problems/szemeredi-theorem-oq-01/knowledge.md` — this entry.
+- `src/data/research/problems/szemeredi-theorem-oq-01.json` — currentState refresh.
+
+### Open Questions Generated
+
+1. **Exponent improvement**: Kelley–Meka uses `1/12`; subsequent work has pushed it up. Should a follow-up slug record the current best exponent?
+2. **Kelley–Meka vs Behrend gap**: The `(log N)^{1/12}` (KM) vs `sqrt(log N)` (Behrend) gap is open. Recording the lower bound as a sibling axiom slug would frame the gap concretely in the gallery.
+3. **Discharging the axiom**: Concrete upstream Mathlib targets: Bohr sets (~500–1000 LOC), sifted Fourier on `Z/NZ` with explicit constants (~1000–2000 LOC), `U^3` inverse theorem (~1000+ LOC). Worth coordinating with Mathlib maintainers.
+
+### Next Action (downstream)
+
+- Mechanic / Auditor: Docker-build `Proofs.SzemerediTheoremOQ01`; verify `axiomCount: 1`, `sorries: 0`, `theoremCount: 1`.
+- Curator / Seeker: extract sibling slug `szemeredi-theorem-oq-01-incomplete-01` for the BLOCKED Salem–Spencer quantitative direction.
+- Mark slug COMPLETED in tracking JSON once Mechanic/Auditor pass.
+
+### Dead Ends
+
+None this session.

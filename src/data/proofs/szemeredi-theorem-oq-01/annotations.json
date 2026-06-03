@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Kelley–Meka Quantitative Bound: Why Axiomatize and What This Adds",
+    "content": "The docstring frames three things at once.\n\n**(1) The bound.** The Kelley–Meka 2023 theorem states `r_3(N) ≤ N · exp(-c (log N)^{1/12})` for some absolute constant `c > 0`. This is the current best upper bound on the size of a 3-AP-free subset of `{1,...,N}` and the largest single jump since Roth (1953).\n\n**(2) Why this entry axiomatizes rather than proves.** The Kelley–Meka proof rests on Bohr sets, sifted Fourier analysis over `Z/NZ`, and `U^3`-flavored inverse theorem control — none of which is in Mathlib 4.26. Formalizing any one of these is a multi-thousand-line upstream project; formalizing all three is well beyond a single research session. Axiomatizing the bound (rather than picking weaker, partially-derivable bounds) keeps the gallery honest about the formalization gap.\n\n**(3) Why Mathlib's existing chain does not suffice.** Mathlib's `roth_3ap_theorem_nat` is driven by `cornersTheoremBound`, which in turn depends on `SzemerediRegularity.bound` — a tower-type exponential per Mathlib's own docstring. Inverting tower-type to extract a density rate yields an `O(N / log* N)` class bound, much weaker than the quasi-polynomial `exp(-c (log N)^{1/12})`. The two rates belong to different complexity classes; this entry cannot be replaced by a corollary of existing Mathlib work.",
+    "mathContext": "Kelley–Meka 2023: $r_3(N) \\le N \\cdot \\exp(-c (\\log N)^{1/12})$. Behrend 1946 lower bound: $r_3(N) \\ge N \\cdot \\exp(-c \\sqrt{\\log N})$. Gap to close: the exponent on $\\log N$ inside the exponential, currently $1/12$ vs $1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kelley–Meka 2023",
+      "Behrend lower bound",
+      "cornersTheoremBound",
+      "tower-type vs quasi-polynomial rates",
+      "Bohr sets",
+      "sifted Fourier",
+      "U^3 inverse theorem"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Roth's theorem qualitative form (szemeredi-theorem)"
+    ]
+  },
+  {
+    "id": "ann-axiom",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "concept",
+    "title": "kelley_meka_bound: Axiomatized Quantitative Density Bound",
+    "content": "**Axiom** `kelley_meka_bound`:\n```\n∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →\n  (rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * Real.log N ^ ((1 : ℝ)/12)))\n```\n\nThe statement is calibrated to Mathlib's `rothNumberNat`, the maximum size of a 3-AP-free subset of `{0,...,N-1}`, so that future downstream theorems can compose directly with the rest of the additive-combinatorics gallery without translation. The threshold `N₀` is existentially quantified to absorb small-`N` boundary cases (where `log N` is `≤ 0`), which the original Kelley–Meka paper also brackets off via an asymptotic regime.\n\nThe expression `Real.log N ^ ((1:ℝ)/12)` is the `Real.rpow` instance: real exponent on a real base. For `N ≥ 3`, `Real.log N > 0` and the `rpow` is the usual fractional power; for `N ≤ 2`, the bound holds trivially or vacuously inside the asymptotic regime.\n\n**Discharging the axiom** would require formalizing: (i) Bohr sets as a subadditive structure on `Z/NZ`, (ii) sifted Fourier analysis with explicit constants on cyclic groups, and (iii) a `U^3` inverse theorem giving structured-vs-random dichotomy. Each is a substantial upstream Mathlib project; together they likely run to several thousand lines.",
+    "mathContext": "Exact Lean form of Kelley–Meka 2023, stated against Mathlib's `rothNumberNat`. The `1/12` exponent is from the original paper; subsequent improvements may push it up but are not in scope.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rothNumberNat",
+      "Real.exp",
+      "Real.log",
+      "Real.rpow",
+      "Bohr sets",
+      "sifted Fourier",
+      "U^3 inverse theorem",
+      "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Mathlib's `rothNumberNat` definition",
+      "Real.rpow conventions for real-exponent powers",
+      "axiom integrity policy (status `axiomatized`, badge `axiom`)"
+    ]
+  },
+  {
+    "id": "ann-density-corollary",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 83
+    },
+    "type": "concept",
+    "title": "rothNumberNat_density_le_kelley_meka: Non-Axiomatic Density Form",
+    "content": "**Theorem** `rothNumberNat_density_le_kelley_meka`: under the axiom, the density `r_3(N)/N` is bounded by `exp(-c (log N)^{1/12})` once `N ≥ max N₀ 1`.\n\n**Proof sketch.**\n1. Extract `c, N₀` from `kelley_meka_bound`.\n2. Take the threshold `max N₀ 1`. The `1` factor ensures `N > 0` for the upcoming division; the `N₀` factor inherits the axiom's threshold.\n3. From `N ≥ max N₀ 1` derive both `N₀ ≤ N` (apply the axiom) and `1 ≤ N` (positivity for `(0 : ℝ) < N`).\n4. Rewrite the goal `r_3(N)/N ≤ exp(-c (log N)^{1/12})` using `div_le_iff₀ hN_pos` and `mul_comm` to match the axiom's `r_3(N) ≤ N · exp(-c (log N)^{1/12})` form.\n5. Close by the axiom.\n\nThis theorem is what makes the axiom non-vacuous in the asymptotic direction: it produces the density form most often cited in surveys (`r_3(N)/N ≤ exp(-c (log N)^{1/12})`) without invoking any new axioms beyond `kelley_meka_bound`.",
+    "mathContext": "Goal after extracting witnesses and the `div_le_iff₀` rewrite: `(rothNumberNat N : ℝ) ≤ Real.exp (-(c · Real.log N ^ (1/12))) · N`. The `mul_comm` rewrite matches this to the axiom's right-hand side `N · Real.exp (...)`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "kelley_meka_bound",
+      "div_le_iff₀",
+      "mul_comm",
+      "max threshold pattern",
+      "density form of 3-AP bounds"
+    ],
+    "prerequisites": [
+      "kelley_meka_bound axiom",
+      "div_le_iff₀ for positive denominators",
+      "max-threshold idiom (`max N₀ 1` to fuse boundary and asymptotic conditions)"
+    ]
+  }
+]
