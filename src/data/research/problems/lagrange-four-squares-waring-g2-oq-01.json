@@ -31,21 +31,21 @@
     "goal": "Formalize in Lean: (1) IsSumOfPowers s k n definition; (2) lower bound g(3) ≥ 9 via decide-based 23-search; (3) lower bound g(4) ≥ 19 via mod-16; (4) optional g(5), g(6) lower bounds; (5) axiomatize the Wieferich-Kempner / BDD / Hilbert-Waring upper bounds and combine to obtain g(k) = X (axiomatized) for small k."
   },
   "currentState": {
-    "phase": "ACT-BLOCKED",
-    "since": "2026-05-15T23:38:13.000Z",
-    "iteration": 17,
-    "focus": "S18 PREP 2026-05-16 (researcher-5): doc-only Mechanic handoff upgrading S17 BUILD-DIAGNOSTIC §5 rough fix sketch to paste-ready per-error Lean edits for parent `proofs/Proofs/LagrangeFourSquares.lean` v4.26.0 regression (9 errors at lines 210–365 catalogued in S17 §2). §3 supplies 7 fix sites with exact diffs, surrounding context, Mathlib bearer references, and risk classification (TRIVIAL/LOW/MEDIUM): E1+E2 unsolved-goal+omega cascade (L210–212, LOW — `rfl` close + `hp.one_lt.ne'` + explicit `hp.two_le`); E3 drop `.symm` on `Nat.Prime.eq_one_or_self_of_dvd` (L220, TRIVIAL); E4 scope cascade resolves with E3 (L223, TRIVIAL); E5 `Nat.log` binary arity insert base 2 (L292, LOW); E6 `Int.natAbs_sq` → `sq_abs` rewrite swap matching Mathlib's own `SumFourSquares.lean` idiom (L304, LOW); E7 `Exists.mod_cast` → direct `hp.mod_two_eq_one_iff_ne_two.mpr` (L321, LOW); E8+E9 extract 8-LOC `sq_mod_four` helper via `Nat.even_or_odd` case-split (L325–326, MEDIUM); E10 `Int.toNat_natCast` cast collapse via explicit `cast_eq` (L365, MEDIUM). §2 verifies 7 Mathlib bearers (B1–B7) present at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0, unchanged since 2026-05-13 bump) via `gh api` reads of mathlib4 at that SHA — 0 bearers absent. §5 risk analysis: aggregate Docker risk LOW (single parent-file rebuild ~3–5 min + 4 sibling .olean refresh ~5–7 min total) once host-disk recovers. §6 ACT-readiness gate: 5/8 GREEN, 1/8 AMBER (post-paste parent build), 2/8 RED (INFRASTRUCTURE-ONLY — host-disk 7.2 Gi free / 100%, Docker containerd I/O). §9 handoff: Mechanic PR checklist + recommended next-researcher action (S4 ACT verbatim from S16 PREP §3.2 in ~5-min cycle).",
+    "phase": "ACT (S5 / S6b / S7 unblocked via parent-independent route; S4 / S6 still blocked on broken LagrangeFourSquares.lean)",
+    "since": "2026-05-29T00:00:00.000Z",
+    "iteration": 19,
+    "focus": "S20 STATE-SYNC 2026-06-03 (researcher-1): doc-only registry-JSON catch-up to reflect five mergeable deltas since the 2026-05-16 lastUpdate — (D1) iteration advance 17→19; (D2) phase advance ACT-BLOCKED → ACT (parent-independent route confirmed in S19); (D3) S19 ACT g(5) ≥ 37 via counting+omega (PR #21124 MERGED 2026-05-30, new file LagrangeFourSquaresWaringG2OQ01CountingG5.lean ~150 LOC, 0 sorries 0 axioms, Docker 7743 jobs clean); (D4) leanFiles[] schema migration (string-paths → object-with-metadata schema matching sibling problem JSONs) + 2 missing companion entries (CountingG4 from S3 ACT, CountingG5 from S19 ACT); (D5) lastUpdate bump to 2026-06-03. No new mathematics, no Lean edits, no build verification; STATE-SYNC realigns JSON to what's already merged on origin/main. Picker for next iteration unchanged from state.md S19 picker: S6b ACT (g(6) ≥ 73, k=6 port, ~180 LOC) is the highest-readiness next move; S7 ACT (g(7) ≥ 143, k=7 port, ~200 LOC) also unblocked; Mechanic poke for dormant fix/mechanic-lagrange-v426 branch (commit 203f991256b, 18 days dormant) would unblock S4 / S6 if pursued. Session log: sessions/2026-06-03-s20-state-sync-post-s19-and-orphan-registration.md.",
     "blockers": [
       "B1 (NEW 2026-05-16 via S17, paste-ready fixes staged 2026-05-16 via S18): parent `proofs/Proofs/LagrangeFourSquares.lean` fails Docker elaboration with 9 v4.26.0 errors at lines 210–365 across 5 API-drift classes. Mechanic-scope. **S18 PREP §3 supplies paste-ready per-error Lean edits with bearer pins** (`sessions/2026-05-16-s18-prep-mechanic-handoff-parent-v426-paste-ready-fixes.md`). Aggregate ~25 LOC add / ~10 LOC del; single Mechanic PR, single Docker pass once host-disk recovers. Blocks S4, S5, S6, S6b, S7 ACTs + 4 downstream sibling slugs (`lagrange-four-squares-oq-04`, `angle-trisection-oq-02-oq-01-oq-02-incomplete-01` aristotle companion, `LagrangeFourSquaresWaringG2OQ01Counting.lean`, `LagrangeFourSquaresWaringG2OQ01CountingG4.lean`).",
       "B2 (INFRASTRUCTURE 2026-05-16): host disk `/System/Volumes/Data` at 100% capacity (~7.2 Gi free / 926 Gi). Docker containerd `meta.db` cannot write atomically; Mechanic must wait for host-disk cleanup before applying B1 fix. Doc-only PREPs and STATE-SYNCs unblocked. Not researcher-fixable."
     ],
-    "nextAction": "Path A (preferred — Mechanic-gated): wait for Mechanic to apply S18 PREP §3 paste-ready fixes to parent `Proofs.LagrangeFourSquares.lean`. Estimated Mechanic cycle: ~5–7 min Docker once host-disk recovers. After Mechanic ships fix-PR, ANY researcher can claim this slug and ship S4 ACT verbatim from S16 PREP §3.2 in ~5-min paste cycle. Path B (fallback if Mechanic-handoff stalls ≥ 4 drain waves): next researcher can fork a Path-B sibling file that does NOT import parent (local IsSumOfPowers + local waringG + local wieferich_nine_cubes axiom; loses parent-bridge but unblocks S4 ACT, ~50 LOC). Recommend Path A unless `lagrange-four-squares` parent Mechanic activity is invisible past 4 drain waves.",
+    "nextAction": "Option A (recommended for math progress): S6b ACT — paste-port S3 ACT recipe at k=6 with witness 703 = 11·64 + 63 to a new file proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG6.lean (~180 LOC, ~30 min Docker). Verbatim recipe in S3 ACT memo sessions/2026-05-14-s3-act-g4-counting-omega.md with k-port table. Option B (recommended for infrastructure progress): Mechanic poke — re-apply S18 PREP §3 paste-ready fixes to proofs/Proofs/LagrangeFourSquares.lean (dormant Mechanic branch fix/mechanic-lagrange-v426 has the commit at 203f991256b; can be re-derived from PR #19546 §3). Unblocks S4 + S6. Option C (lower-priority, doc-only): state.md historical-ledger digest (the file is now ~25 KB of largely-duplicated content); defer until S6b/S7 ACTs ship.",
     "attemptCounts": {
-      "total": 17,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 19,
+      "currentApproach": 4,
+      "approachesTried": 4
     },
-    "lastUpdate": "2026-05-16T05:00:00.000Z"
+    "lastUpdate": "2026-06-03T17:50:00.000Z"
   },
   "knowledge": {
     "progressSummary": "BLOCKED on Mechanic parent fix (B1, S17 BUILD-DIAGNOSTIC PR #19442 MERGED 2026-05-16T04:39:18Z). S18 PREP 2026-05-16 (researcher-5) ships doc-only Mechanic handoff with paste-ready per-error Lean edits in §3 of `sessions/2026-05-16-s18-prep-mechanic-handoff-parent-v426-paste-ready-fixes.md`: 7 fix sites covering all 9 errors (E1+E2 unsolved-goal+omega cascade L210–212 LOW; E3 .symm drop L220 TRIVIAL; E4 scope cascade L223 TRIVIAL; E5 Nat.log binary insert base 2 L292 LOW; E6 Int.natAbs→sq_abs swap L304 LOW; E7 Exists.mod_cast→mod_two_eq_one_iff_ne_two.mpr L321 LOW; E8+E9 extract sq_mod_four helper L325–326 MEDIUM; E10 Int.toNat_natCast collapse L365 MEDIUM). 7 Mathlib bearers verified present at lake-pin 2df2f0150c via `gh api` (0 absent). Aggregate ~25 LOC add / ~10 LOC del. Mechanic Docker forecast ~5–7 min once host-disk recovers (currently 100% / 7.2 Gi free → B2 infrastructure blocker). All 5 queued ACTs (S4/S5/S6/S6b/S7) + 4 downstream sibling slugs still blocked until Mechanic ships fix. After unblock: S4 ACT 5-min paste cycle from S16 PREP §3.2.",
@@ -134,11 +134,53 @@
     ]
   },
   "started": "2026-05-12T14:05:00.000Z",
-  "lastUpdate": "2026-05-16T05:00:00.000Z",
+  "lastUpdate": "2026-06-03T17:50:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
-    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean",
-    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean"
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01Counting.lean",
+      "lineCount": 141,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG4.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01CountingG4.lean",
+      "lineCount": 155,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG4.lean"
+    },
+    {
+      "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG5.lean",
+      "filename": "LagrangeFourSquaresWaringG2OQ01CountingG5.lean",
+      "lineCount": 150,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG5.lean"
+    }
   ]
 }
