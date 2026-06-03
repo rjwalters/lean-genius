@@ -8,7 +8,7 @@
   "significance": 6,
   "tractability": 7,
   "started": "2026-05-12T04:50:00Z",
-  "lastUpdate": "2026-05-12T05:30:00Z",
+  "lastUpdate": "2026-06-03T13:30:00Z",
   "problemStatement": {
     "formal": "\\forall t : \\text{SphericalTriangle},\\ \\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})",
     "plain": "Formalise the haversine formula $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\text{hav}(C)$, where $\\text{hav}(\\theta) = \\sin^2(\\theta/2)$, which is the numerically stable version of the spherical law of cosines for computing great-circle distances. Applications to navigation and GPS coordinate systems make this a practically important variant to formalize.",
@@ -35,19 +35,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T05:55:00Z",
-    "iteration": 2,
-    "focus": "S2 CLOSED. haversine_formula proved via bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC + cos_sideC_trig_form + haversine_formula_algebraic. File is sorry-free, axiom-free, 0 sorries / 15 theorems / 1 definition / 412 lines.",
+    "since": "2026-06-03T13:30:00Z",
+    "iteration": 3,
+    "focus": "S3 CLOSED. Added Part VII: inverse haversine formula eq_two_arcsin_sqrt_haversine (general for θ ∈ [0, π]) + sideA/B/C specialisations + sideC_eq_great_circle_haversine corollary composing the forward (S2) and inverse (S3) into the canonical navigation identity. File is sorry-free, axiom-free, 0 sorries / 22 theorems / 1 definition / 515 lines.",
     "blockers": [],
-    "nextAction": "S3 candidate: inverse formula sideC = 2·arcsin(√(hav sideC)) for short-distance numerical stability. Alternative S3: navigation/GPS great-circle distance application + numerical error bound for haversine vs arccos paths. Optional S4: Mathlib contribution of haversine + haversine_formula_algebraic to Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic.",
+    "nextAction": "S4 candidate: quantitative numerical stability bound — explicit error analysis for 2·arcsin(√·) vs arccos near 1, using Real.cos Taylor remainders. S5 candidate: latitude/longitude → unit vector conversion + derivation of the standard GPS form hav(c) = hav(Δlat) + cos(lat₁)·cos(lat₂)·hav(Δlon) from the dihedral version. Optional S6: Mathlib contribution of haversine + haversine_formula_algebraic + eq_two_arcsin_sqrt_haversine to Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-10, 2026-05-12) — ACT: closed the S1 sorry on haversine_formula. Added two theorems: (1) inner_projectPerp_eq_sin_sin_cos_angleC — the bridge converting the parent's projection-inner-product form ⟨projectPerp A C, projectPerp B C⟩ into sin(sideB)·sin(sideA)·cos(angleC) via case-split on the degenerate-projection branch of t.angleC's dependent-if definition; (2) cos_sideC_trig_form — combines the parent's spherical_law_of_cosines_trig with the bridge to give the textbook trigonometric form. haversine_formula then follows immediately from haversine_formula_algebraic. Final: 412 lines, 15 theorems, 1 definition, 0 sorries, 0 axioms. Gallery meta updated status axiomatized→verified, badge wip→original. [Prior S1 summary] S1 (researcher-5, 2026-05-12) — OBSERVE: scaffold for OQ-05 of `spherical-law-of-cosines`. New file `proofs/Proofs/SphericalLawOfCosinesOQ05.lean` (297 lines, 12 proved theorems + 1 sorry on `haversine_formula`, 1 definition, 0 axioms). The pure algebraic haversine formula is proved unconditionally; the `SphericalTriangle` version is recorded as the open sorry pending projection-to-trigonometric-angle conversion.",
+    "progressSummary": "S3 (researcher-1, 2026-06-03) — ACT: added Part VII (Inverse haversine formula) to SphericalLawOfCosinesOQ05.lean. Seven new theorems: (1) sin_half_nonneg — sin(θ/2) ≥ 0 on θ ∈ [0, π]; (2) sqrt_haversine_eq_sin_half — √(haversine θ) = sin(θ/2) on [0, π] via Real.sqrt_sq; (3) eq_two_arcsin_sqrt_haversine — the general inverse θ = 2·arcsin(√(haversine θ)) on [0, π] via Real.arcsin_sin; (4-6) sideA/B/C_eq_two_arcsin_sqrt_haversine — SphericalTriangle specialisations via the parent's arcLength_nonneg/arcLength_le_pi; (7) sideC_eq_great_circle_haversine — the navigation identity composing forward (S2) and inverse (S3). Final: 515 lines, 22 theorems, 1 definition, 0 sorries, 0 axioms. [Prior S2 summary] S2 (researcher-10, 2026-05-12) — ACT: closed the S1 sorry on haversine_formula. Added two theorems: (1) inner_projectPerp_eq_sin_sin_cos_angleC — the bridge converting the parent's projection-inner-product form ⟨projectPerp A C, projectPerp B C⟩ into sin(sideB)·sin(sideA)·cos(angleC) via case-split on the degenerate-projection branch of t.angleC's dependent-if definition; (2) cos_sideC_trig_form — combines the parent's spherical_law_of_cosines_trig with the bridge to give the textbook trigonometric form. haversine_formula then follows immediately from haversine_formula_algebraic. [Prior S1 summary] S1 (researcher-5, 2026-05-12) — OBSERVE: scaffold for OQ-05 of `spherical-law-of-cosines`. New file `proofs/Proofs/SphericalLawOfCosinesOQ05.lean` (297 lines, 12 proved theorems + 1 sorry on `haversine_formula`, 1 definition, 0 axioms). The pure algebraic haversine formula is proved unconditionally; the `SphericalTriangle` version is recorded as the open sorry pending projection-to-trigonometric-angle conversion.",
     "builtItems": [
       "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine (def)",
       "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_eq_one_sub_cos_div_two (half-angle identity)",
@@ -62,7 +62,10 @@
       "S2: proofs/Proofs/SphericalLawOfCosinesOQ05.lean lines 273+ — inner_projectPerp_eq_sin_sin_cos_angleC (bridge lemma).",
       "S2: proofs/Proofs/SphericalLawOfCosinesOQ05.lean lines 334+ — cos_sideC_trig_form.",
       "S2: proofs/Proofs/SphericalLawOfCosinesOQ05.lean lines 350+ — haversine_formula (was S1 sorry, now proved).",
-      "S2: src/data/proofs/spherical-law-of-cosines-oq-05/meta.json — status verified, badge original, sorries 0, theoremCount 15, lineCount 412."
+      "S2: src/data/proofs/spherical-law-of-cosines-oq-05/meta.json — status verified, badge original, sorries 0, theoremCount 15, lineCount 412.",
+      "S3: proofs/Proofs/SphericalLawOfCosinesOQ05.lean Part VII (lines 385–479) — sin_half_nonneg, sqrt_haversine_eq_sin_half, eq_two_arcsin_sqrt_haversine (general inverse), sideA/B/C_eq_two_arcsin_sqrt_haversine (triangle specialisations), sideC_eq_great_circle_haversine (navigation identity composing forward + inverse).",
+      "S3: src/data/proofs/spherical-law-of-cosines-oq-05/meta.json — theoremCount 22, lineCount 515; new sections inverse-haversine + summary-final; conclusion + openQuestions updated.",
+      "S3: src/data/proofs/spherical-law-of-cosines-oq-05/annotations.json — added ann-inverse-haversine-s3."
     ],
     "insights": [
       "The haversine formula is algebraically equivalent to the spherical law of cosines via the half-angle identity; the conversion is pure linear arithmetic.",
@@ -72,17 +75,19 @@
       "Numerical-stability advantage of the haversine form is content-free symbolically but crucial for floating-point geodesy.",
       "The dependent-if discriminator in SphericalTriangle.angleC (‖projectPerp A C‖ = 0 ∨ ‖projectPerp B C‖ = 0) matches exactly the locus where the cross-term sin(sideB)·sin(sideA)·cos(angleC) reduces to 0 — because ‖projectPerp A C‖ = sin sideB (by norm_projectPerp_eq_sin), so the if-branch fallback to 0 for angleC is consistent: cos 0 = 1, but one of sin sideB or sin sideA is 0.",
       "split_ifs after unfold SphericalTriangle.angleC handles the dependent-if case split cleanly. No need for manual dif_pos/dif_neg invocations.",
-      "field_simp; ring closes the non-degenerate case after Real.cos_arccos and the two ‖projectPerp ...‖ = sin ... rewrites — the algebraic identity reduces to ⟨projA, projB⟩ * (‖projA‖ * ‖projB‖) = ‖projA‖ * ‖projB‖ * ⟨projA, projB⟩."
+      "field_simp; ring closes the non-degenerate case after Real.cos_arccos and the two ‖projectPerp ...‖ = sin ... rewrites — the algebraic identity reduces to ⟨projA, projB⟩ * (‖projA‖ * ‖projB‖) = ‖projA‖ * ‖projB‖ * ⟨projA, projB⟩.",
+      "S3 insight: the principal arc-length range [0, π] (witnessed by the parent's arcLength_nonneg/arcLength_le_pi) is exactly the range where (i) sin(θ/2) ≥ 0 makes the square root collapse cleanly via Real.sqrt_sq, and (ii) θ/2 ∈ [-π/2, π/2] makes Real.arcsin_sin apply at θ/2. No additional case analysis is needed — both conditions follow from the same linarith chain.",
+      "S3 insight: composing the forward haversine_formula (S2) with the inverse eq_two_arcsin_sqrt_haversine (S3) gives the navigation identity sideC = 2·arcsin(√(hav(a−b) + sin(a)·sin(b)·hav(C))) as a one-line `rw [← haversine_formula t]; exact sideC_eq_two_arcsin_sqrt_haversine t` proof. The formal closure of the navigation pipeline is essentially free once both halves exist."
     ],
     "mathlibGaps": [
       "No `Real.haversine` function or `Real.sin_sq_half` lemma at v4.26.0. The half-angle identity must be derived from `Real.cos_two_mul` + Pythagoras.",
       "No general projection-inner-product-to-trigonometric-angle conversion lemma; the parent's `norm_projectPerp_eq_sin` is the closest available primitive."
     ],
     "nextSteps": [
-      "S3: derive the inverse formula sideC = 2·arcsin(√(haversine sideC)) — extracts a usable distance computation from haversine_formula. Estimated ~50-80 lines.",
-      "S3-alt: explicit error bound comparison haversine vs arccos paths for short distances. Numerical-analysis flavor.",
-      "S4: Mathlib contribution path — lift haversine + haversine_formula_algebraic + haversine_eq_one_sub_cos_div_two etc. into Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic. Discusses with maintainers.",
-      "S5: navigation / GPS application — great-circle distance from latitude / longitude via haversine. Cross-link to gallery's geodesic-related entries."
+      "S4: explicit error bound comparison haversine vs arccos paths for short distances — quantify catastrophic cancellation in arccos near 1 vs preserved precision of arcsin near 0, with formal bounds via Real.cos Taylor remainders. Numerical-analysis flavor.",
+      "S5: latitude/longitude → unit-vector conversion `unitVectorOfLatLon : ℝ × ℝ → Vec3`, then derive the standard hav(c) = hav(Δlat) + cos(lat₁)·cos(lat₂)·hav(Δlon) form from the dihedral version (haversine_formula). Closes the GPS-distance pipeline as a usable verified routine.",
+      "S6: Mathlib contribution path — lift haversine + haversine_formula_algebraic + eq_two_arcsin_sqrt_haversine + haversine_eq_one_sub_cos_div_two etc. into Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic. Discuss with maintainers.",
+      "S7: strict monotonicity of haversine on [0, π] (haversine_strictMonoOn_Icc_zero_pi), giving injectivity of the side-from-haversine recovery."
     ]
   }
 }

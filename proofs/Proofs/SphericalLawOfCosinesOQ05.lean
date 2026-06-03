@@ -382,7 +382,103 @@ theorem haversine_sub_comm (a b : ℝ) :
   have : a - b = -(b - a) := by ring
   rw [this, haversine_neg]
 
-/- ## Part VI: Summary
+/- ## Part VII: Inverse haversine formula (S3)
+
+The forward haversine formula proved above is half of the navigation
+pipeline: it computes `hav(c)` from `a, b, C`. The other half is the
+inverse — recovering the great-circle distance `c` from `hav(c)`.
+
+On the principal range `[0, π]` (which is exactly where arc-lengths
+on the sphere live), the inverse is
+
+  c = 2 · arcsin(√(hav c)).
+
+Two facts justify this:
+
+* `sin(c/2) ≥ 0` for `c/2 ∈ [0, π/2]`, so `√(sin²(c/2)) = sin(c/2)`,
+  i.e. `√(hav c) = sin(c/2)`.
+* `arcsin(sin x) = x` on `[-π/2, π/2]`, and `c/2 ∈ [0, π/2]` since
+  `c ∈ [0, π]`. So `2 · arcsin(sin(c/2)) = c`.
+
+Composed with the forward `haversine_formula`, this gives the
+standard navigation identity
+
+  c = 2 · arcsin(√(hav(a − b) + sin(a) · sin(b) · hav(C))).
+
+The parent gallery's `arcLength_nonneg` and `arcLength_le_pi` show
+that the sides of a `SphericalTriangle` always satisfy `0 ≤ side ≤ π`,
+so the inverse applies unconditionally. -/
+
+/-- `sin(θ/2) ≥ 0` for `θ ∈ [0, π]`. -/
+theorem sin_half_nonneg {θ : ℝ} (h0 : 0 ≤ θ) (hπ : θ ≤ π) :
+    0 ≤ Real.sin (θ / 2) := by
+  apply Real.sin_nonneg_of_nonneg_of_le_pi
+  · linarith
+  · linarith [Real.pi_pos]
+
+/-- `√(haversine θ) = sin(θ/2)` for `θ ∈ [0, π]`. The square root
+collapses because `sin(θ/2)` is nonnegative on this range. -/
+theorem sqrt_haversine_eq_sin_half {θ : ℝ} (h0 : 0 ≤ θ) (hπ : θ ≤ π) :
+    Real.sqrt (haversine θ) = Real.sin (θ / 2) := by
+  unfold haversine
+  exact Real.sqrt_sq (sin_half_nonneg h0 hπ)
+
+/-- **Inverse haversine formula (general form).** On the principal
+range `[0, π]` of arc-lengths, the haversine is invertible:
+
+  θ = 2 · arcsin(√(hav θ)).
+
+This is the formula used in navigation pipelines to recover the
+great-circle distance from the haversine. -/
+theorem eq_two_arcsin_sqrt_haversine {θ : ℝ} (h0 : 0 ≤ θ) (hπ : θ ≤ π) :
+    θ = 2 * Real.arcsin (Real.sqrt (haversine θ)) := by
+  rw [sqrt_haversine_eq_sin_half h0 hπ]
+  have h1 : -(π / 2) ≤ θ / 2 := by linarith [Real.pi_pos]
+  have h2 : θ / 2 ≤ π / 2 := by linarith
+  rw [Real.arcsin_sin h1 h2]
+  ring
+
+/-- **Inverse haversine for `sideC`.** Recovers `t.sideC` from
+`haversine t.sideC`. -/
+theorem sideC_eq_two_arcsin_sqrt_haversine (t : SphericalTriangle) :
+    t.sideC = 2 * Real.arcsin (Real.sqrt (haversine t.sideC)) :=
+  eq_two_arcsin_sqrt_haversine
+    (arcLength_nonneg t.A t.B t.hA t.hB)
+    (arcLength_le_pi t.A t.B t.hA t.hB)
+
+/-- **Inverse haversine for `sideA`.** -/
+theorem sideA_eq_two_arcsin_sqrt_haversine (t : SphericalTriangle) :
+    t.sideA = 2 * Real.arcsin (Real.sqrt (haversine t.sideA)) :=
+  eq_two_arcsin_sqrt_haversine
+    (arcLength_nonneg t.B t.C t.hB t.hC)
+    (arcLength_le_pi t.B t.C t.hB t.hC)
+
+/-- **Inverse haversine for `sideB`.** -/
+theorem sideB_eq_two_arcsin_sqrt_haversine (t : SphericalTriangle) :
+    t.sideB = 2 * Real.arcsin (Real.sqrt (haversine t.sideB)) :=
+  eq_two_arcsin_sqrt_haversine
+    (arcLength_nonneg t.A t.C t.hA t.hC)
+    (arcLength_le_pi t.A t.C t.hA t.hC)
+
+/-- **Great-circle distance via haversine (the navigation identity).**
+
+Combines the forward `haversine_formula` with the inverse formula to
+give the canonical end-to-end great-circle distance computation:
+
+  c = 2 · arcsin(√(hav(a − b) + sin(a) · sin(b) · hav(C))).
+
+In navigation/GPS pipelines, the arguments `a, b, C` come from
+latitudes and the longitude difference; the RHS is evaluated in
+floating point and produces `c` directly without ever touching
+`arccos` near `1`. -/
+theorem sideC_eq_great_circle_haversine (t : SphericalTriangle) :
+    t.sideC = 2 * Real.arcsin (Real.sqrt
+      (haversine (t.sideB - t.sideA) +
+        Real.sin t.sideB * Real.sin t.sideA * haversine t.angleC)) := by
+  rw [← haversine_formula t]
+  exact sideC_eq_two_arcsin_sqrt_haversine t
+
+/- ## Part VIII: Summary
 
 | Result                                | Status   |
 |---------------------------------------|----------|
@@ -402,10 +498,17 @@ theorem haversine_sub_comm (a b : ℝ) :
 | `inner_projectPerp_eq_sin_sin_cos_angleC` | PROVED (S2 bridge) |
 | `cos_sideC_trig_form`                 | PROVED (S2) |
 | `haversine_formula` (`SphericalTriangle`) | PROVED (S2) |
+| `sin_half_nonneg`                     | PROVED (S3) |
+| `sqrt_haversine_eq_sin_half`          | PROVED (S3) |
+| `eq_two_arcsin_sqrt_haversine`        | PROVED (S3) |
+| `sideC_eq_two_arcsin_sqrt_haversine`  | PROVED (S3) |
+| `sideA_eq_two_arcsin_sqrt_haversine`  | PROVED (S3) |
+| `sideB_eq_two_arcsin_sqrt_haversine`  | PROVED (S3) |
+| `sideC_eq_great_circle_haversine`     | PROVED (S3) |
 
 Axioms: 0
 Sorries: 0
-Proved theorems: 15
+Proved theorems: 22
 Definitions: 1
 -/
 
