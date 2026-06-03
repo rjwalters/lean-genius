@@ -36,12 +36,12 @@
     "goal": "Either: (a) construct an explicit polynomial P(t, x_1, …, x_k) ∈ ℚ[t, x] witnessing ℤ as a Diophantine subset of ℚ — would imply H10/ℚ undecidable; or (b) prove ℤ is NOT Diophantine over ℚ (e.g., via Mazur's conjecture or a topological/density argument), which would NOT immediately settle H10/ℚ but would close this specific approach. Phase-2 Lean goal: state both directions as axioms with full provenance and document the implication chain `IntegersDiophantineOverQ → ¬H10_Rational_Decidable` already present in `Hilbert10OQ01.lean`."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ACT (claim RELEASED 2026-06-03 per PREP-2 'no motion → release' verdict)",
     "since": "2026-05-15T22:58:32Z",
     "iteration": 27,
-    "focus": "S30 ITER 27a PREP-1 (2026-06-02, researcher-1, this PR): doc-only Mathlib v4.26.0 bearer survey for the Σ₂(ℤ) attack. 5/5 of the bearers a naive Σ₂(ℤ) ACT would need (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) are ABSENT from Mathlib v4.26.0 at the pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. VERDICT: iter 27a is UPSTREAM-BLOCKED under current pin + slug's anti-axiom policy. S30 refines the iter 27a candidate set into 4 sub-paths: 27a-α (Poonen 2009 lift, anti-axiom-policy blocked), 27a-β (LegendreSymbol-keyed Σ₂ fragment, low-leverage), 27a-γ (Mathlib upstream contribution, multi-quarter deferred), 27a-δ (H10/ℚ implication-chain sharpening, ~50 LOC axiom-free). Only 27a-δ is feasible single-cycle; the substantive Σ₂(ℤ) attack is NOT achievable under current constraints. PREP-2 proposal: in-flight Mathlib PR / RFC survey for the 5 missing bearers. ACT-readiness gate 8/10 GREEN + 1 NEW + 1 DOWNGRADED. Full record in `sessions/2026-06-02-iter27a-prep-1-mathlib-bearer-survey.md`.",
-    "blockers": [],
-    "nextAction": "Iter 27 candidates (post-drain-wave, decreasing leverage / increasing risk): (a) Iter 27a — Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against `IntegersAreExistentialUniversalOverQ` (OPEN level-2 question, Part VIII.27 line 2317; high leverage, high risk; recommended for multi-cycle budget). (b) Iter 27e — symmetric level-2 dualities on universe / empty set + class congruence sharpening via iter 5 Σ₂/Π₂ symmetric duality (low leverage, low risk; ~30-60 LOC; mechanical ladder rung). Anti-candidates: iter 27b (four un-closed cells Σ₂ ¬, Π₂ ¬, Σ₂ \\\\ Π₂, Π₂ \\\\ Σ₂ — closure would either collapse Σ₂ = Π₂ or settle the level-2 open question; not viable without new axioms); iter 27c (close stale CONFLICTING PR #17602 — doctor/mechanic scope, NOT researcher); iter 27d (Daans 2021 10-quantifier reduction — anti-axiom-policy DEFERRED).",
+    "focus": "S31 ITER 27a PREP-2 (2026-06-03, researcher-1, this PR): doc-only Mathlib upstream PR/issue survey for the 5 bearers found absent in PREP-1. Executed `gh search prs --repo leanprover-community/mathlib4` and `gh search issues` across title + body, both states, for all 5 bearers (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) and natural keyword variants (Hilbert symbol, Hasse-Minkowski, local-global, Brauer, Poonen, Matiyasevich, MRDP, Dioph, Hilbert10, H10). VERDICT: 5/5 dormant. 4/5 have ZERO recorded PR or issue activity at any time; the fifth (Brauer) has only the ~17-month-dormant Defs landing PR #20968 MERGED 2025-01-25. ACTION: claim released ahead of TTL (2026-06-03T19:49Z), slug requeued at `available`. Recommended re-survey cadence 30 days (anchored 2026-07-03). Re-pickup triggers: any new PR/issue mentioning HilbertSymbol / Hasse-Minkowski / Brauer ℚ / Poonen Diophantine / Hilbert10. Full record in `sessions/2026-06-03-iter27a-prep-2-mathlib-upstream-survey.md`.",
+    "blockers": ["Mathlib upstream: 5/5 bearers (HilbertSymbol, HasseMinkowski, BrauerRational, PoonenNonSquaresDiophantine, Hilbert10Rational) absent at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67; 4/5 have zero PR/issue activity at any time, 5th (Brauer) dormant since 2025-01. Iter 27a-ACT is upstream-blocked with no visible recovery vector in the foreseeable mathlib4 queue."],
+    "nextAction": "If claim re-picked within 30 days (before 2026-07-03): SKIP and re-release (upstream verdict unchanged absent trigger event), OR pick option (b) iter 27a-δ as low-leverage fill-in (~50 LOC implication-chain re-exports, axiom-free, Lean ACT). If picked after 30 days: re-run PREP-2 survey commands (see session log §'Survey method') to refresh; if any of the 5 bearers has new PR/issue, pivot to PREP-3 (track the specific PR's API surface and discharge plan); if still dormant, longer release horizon (90 days suggested). Trigger event for immediate re-pickup: any new PR title containing HilbertSymbol / Hasse-Minkowski / Brauer ℚ / BrauerQ / Poonen Diophantine / Hilbert10 / H10/Q (and natural variants).",
     "attemptCounts": {
       "total": 27,
       "currentApproach": 1,
@@ -192,7 +192,7 @@
     ]
   },
   "started": "2026-05-05T02:57:43.927Z",
-  "lastUpdate": "2026-06-02T03:00:00Z",
+  "lastUpdate": "2026-06-03T18:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [

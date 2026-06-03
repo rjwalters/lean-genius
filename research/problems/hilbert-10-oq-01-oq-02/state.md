@@ -2,8 +2,51 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 below — iter 27 ACT still has not fired)
-**Last Updated**: 2026-06-02 (researcher-1, **iter 27a PREP-1** — Mathlib v4.26.0 bearer survey for the Σ₂(ℤ) attack; iter 27a verdict revised: **upstream-blocked** under current pin + anti-axiom policy)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 + PREP-2 below — iter 27 ACT still has not fired; claim RELEASED 2026-06-03 per PREP-2 §"Implication for Iter 27 picker's slot")
+**Last Updated**: 2026-06-03 (researcher-1, **iter 27a PREP-2** — Mathlib upstream PR/issue survey for the 5 missing bearers; verdict: 0 PRs + 0 issues across the surface; "no motion → release" branch fired; claim released ahead of TTL)
+
+## Session 31 — Iter 27a PREP-2 (researcher-1, 2026-06-03, T+18d post-iter 26a merge, T+1d post-PREP-1)
+
+**Goal**: execute the PREP-1 §11 PREP-2 proposal — catalog in-flight
+Mathlib PRs/RFCs targeting the 5 bearers found absent in PREP-1
+(`HilbertSymbol`, `HasseMinkowski`, `BrauerRational`,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`). Resolve into "no
+motion → release", "PR # X → track", or "partial landed at SHA Y → PREP-3".
+
+**Method**: `gh search prs` and `gh search issues` against
+`leanprover-community/mathlib4`, both `--match title` and full-text body
+searches, both `--state=open` and `--state=closed`, for each of the 5
+bearers and their natural keyword variants (Hilbert symbol, Hasse-Minkowski,
+local-global, Brauer, Poonen, Matiyasevich, MRDP, Dioph, Hilbert10, H10).
+
+**Findings — net motion across the 5 bearers**:
+
+| # | Bearer | PRs (open) | PRs (closed) | Issues | Net motion |
+|---|--------|-----------:|-------------:|-------:|------------|
+| 1 | `HilbertSymbol`              | 0 | 0 | 0 | **none** |
+| 2 | `HasseMinkowski`             | 0 | 0 | 0 | **none** (Hasse hits are SimpleGraph / LaurentSeries / MvPolynomial, all unrelated) |
+| 3 | `BrauerRational`             | 0 | 1 (PR #20968 Defs only, MERGED 2025-01-25, ~17 months dormant since) | 0 | **dormant since 2025-01** |
+| 4 | `PoonenNonSquaresDiophantine` | 0 | 0 | 0 | **none** |
+| 5 | `Hilbert10Rational`          | 0 | 0 | 0 | **none** |
+
+**Net**: 5/5 dormant. 4/5 have zero recorded mathlib4 activity at any
+time; the fifth (Brauer) has only the ~17-month-dormant Defs landing.
+The "no motion → release" branch from PREP-1 §11 fires unambiguously.
+
+**Action taken**: Claim **released** 2026-06-03, ahead of TTL expiry
+2026-06-03T19:49Z. Slug requeued at `available` status. Recommended
+re-survey cadence: **30 days** (anchored to 2026-07-03). Re-pickup triggers:
+any new PR/issue mentioning `HilbertSymbol`, `Hasse-Minkowski`, `Brauer ℚ` /
+`BrauerQ`, `Poonen Diophantine`, or `Hilbert10` / `H10/Q`.
+
+**File state at PREP time**: 3082 LOC unchanged (no Lean edits); 1 axiom
+`koenigsmann_2016_universal` unchanged; 0 sorries throughout. Build state:
+unchanged since iter 26a (PR #19117).
+
+**No edits outside this PREP-2's three files**: this session log + this
+`state.md` block + research JSON `currentState` + `knowledge.progressSummary`
+prepend. No knowledge.md / problem.md / Lean / meta.json edits. Session log:
+`sessions/2026-06-03-iter27a-prep-2-mathlib-upstream-survey.md`.
 
 ## Session 30 — Iter 27a PREP-1 (researcher-1, 2026-06-02, T+17d post-iter 26a merge)
 
