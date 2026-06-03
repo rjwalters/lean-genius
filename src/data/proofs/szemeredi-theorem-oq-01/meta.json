@@ -52,7 +52,45 @@
     "assumptions": "1 axiom (`kelley_meka_bound`) encoding the Kelley–Meka 2023 quantitative density bound. Discharging it would require formalizing Bohr sets, sifted Fourier analysis on Z/NZ, and the U^3 inverse-theorem control used in the original proof — none of which is in Mathlib 4.26.",
     "mathlib_version": "4.26.0",
     "theoremCount": 1,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "relatedProblems": [
+      {
+        "id": "szemeredi-theorem",
+        "relationship": "Qualitative ancestor — Szemerédi's 1975 theorem that any positive-density subset of ℕ contains arbitrarily long APs. The Kelley–Meka bound is a sharp k=3 quantitative refinement."
+      },
+      {
+        "id": "roth-theorem",
+        "relationship": "Roth's 1953 theorem — the original o(N) qualitative statement that this bound quantitatively refines, via a 70-year sequence of incremental improvements culminating in Kelley–Meka's quasi-polynomial rate."
+      },
+      {
+        "id": "roth-theorem-k3",
+        "relationship": "Mathlib's `roth_3ap_theorem_nat` companion in the gallery — the existing Mathlib chain whose tower-type rate this entry's axiomatic bound surpasses by an exponential-class margin."
+      },
+      {
+        "id": "roth-theorem-k3-oq-01",
+        "relationship": "Open question on density bounds for 3-AP-free sets — within the same problem family this entry's bound answers (with the strongest known upper bound)."
+      },
+      {
+        "id": "szemeredi-regularity",
+        "relationship": "Szemerédi regularity lemma — the structural tool whose tower-type bounds (`SzemerediRegularity.bound`) drive Mathlib's existing `cornersTheoremBound` chain, illustrating exactly why Kelley–Meka's quasi-polynomial rate cannot be derived from Mathlib's current machinery."
+      },
+      {
+        "id": "szemeredi-core",
+        "relationship": "Core combinatorial extraction of Szemerédi-style arguments — provides the qualitative scaffolding against which the Kelley–Meka quantitative refinement is measured."
+      },
+      {
+        "id": "szemeredi-counting",
+        "relationship": "Counting-lemma formalization in the gallery — complementary structural ingredient that, like Szemerédi regularity, would need quasi-polynomial-strength refinements to combine with sifted-Fourier methods for an unconditional Kelley–Meka."
+      },
+      {
+        "id": "szemeredi-hypergraph-core",
+        "relationship": "Hypergraph-regularity route to Szemerédi-type theorems — an alternative proof strategy whose own tower-type rates the Kelley–Meka method circumvents at the k=3 case by switching to sifted Fourier."
+      },
+      {
+        "id": "erdos-28-additive-bases",
+        "relationship": "Erdős additive-bases problem — sits in the same Erdős-density family of additive-combinatorics questions, sharing the structure-vs-randomness theme that powers the Kelley–Meka argument."
+      }
+    ]
   },
   "overview": {
     "historicalContext": "The size r_3(N) of the largest 3-AP-free subset of {1,...,N} has been studied since Roth's 1953 Fourier-analytic proof that r_3(N) = o(N), via a CN/log log N upper bound. The progression of best upper bounds:\n\n- 1953: Roth, r_3(N) ≪ N / log log N (Fourier).\n- 1987: Heath-Brown, r_3(N) ≪ N (log N)^{-c}.\n- 1999: Bourgain, r_3(N) ≪ N (log N)^{-1/2+o(1)}, then 2008 to ≪ N (log log N)^2 / (log N)^{2/3}.\n- 2017: Schoen, r_3(N) ≪ N (log log N)^4 / log N.\n- 2020: Bloom and Sisask, r_3(N) ≪ N (log N)^{-1-c}, the first bound below 1/log N.\n- 2023: Kelley and Meka, r_3(N) ≤ N · exp(-c (log N)^{1/12}), a quasi-polynomial rate, by far the largest jump since Roth.\n\nThe matching lower bound is Behrend (1946): r_3(N) ≥ N · exp(-c sqrt(log N)). Closing the gap between Kelley–Meka and Behrend is one of the central open problems in additive combinatorics.",
@@ -65,7 +103,9 @@
       "The Kelley–Meka proof rests on three ingredients absent from Mathlib 4.26: Bohr sets (additive structures used to localize Fourier analysis), sifted Fourier methods on Z/NZ (a sieve-theory-flavored refinement of the Hardy–Littlewood circle method on cyclic groups), and U^3 inverse-theorem control (a quadratic-Fourier statement). Each is a substantial upstream project.",
       "Stating the Kelley–Meka bound against Mathlib's `rothNumberNat` makes the axiom directly composable with the rest of the additive-combinatorics gallery: any future formalization of Kelley–Meka can replace the axiom by a `theorem` without disturbing downstream consumers.",
       "The non-axiomatic density corollary `rothNumberNat_density_le_kelley_meka` certifies that the axiom is non-vacuous in the asymptotic direction: it directly produces the form `r_3(N)/N ≤ exp(-c (log N)^{1/12})` that is most often cited in surveys.",
-      "The exponent 1/12 in Kelley–Meka is not the best possible; subsequent work has improved it (e.g., Bloom–Sisask follow-ups). This entry intentionally fixes 1/12 to match the original paper, leaving exponent-improvement as a separate follow-up question."
+      "The exponent 1/12 in Kelley–Meka is not the best possible; subsequent work has improved it (e.g., Bloom–Sisask follow-ups). This entry intentionally fixes 1/12 to match the original paper, leaving exponent-improvement as a separate follow-up question.",
+      "The gap between Kelley–Meka (exp(-c (log N)^{1/12})) and Behrend (exp(-c sqrt(log N))) leaves an open exponent question: what is the right exponent θ such that r_3(N) = N · exp(-(log N)^θ + o(1))? Kelley–Meka give θ ≥ 1/12 (i.e., the upper bound holds with exponent ≥ 1/12), Behrend gives θ ≤ 1/2. Closing this gap is a central open problem; even Behrend's exponent 1/2 is conjectured to be sharp for the lower bound side, so the question reduces to whether the upper bound can be pushed to exponent 1/2.",
+      "Once Bohr sets and sifted Fourier are formalized (per the prerequisites laid out in this entry), the Kelley–Meka axiom can be discharged *without* changing this file's downstream API: every consumer continues to import `kelley_meka_bound` and the density corollary `rothNumberNat_density_le_kelley_meka` as before. This is the gallery's `axiomatized → verified` upgrade pathway in action: an axiom whose statement is calibrated to Mathlib's existing combinator (`rothNumberNat`) can later be replaced by a `theorem` with no consumer-side breakage. Compare with the `abel-ruffini` chain, where the upgrade analogue replaced axioms about `Gal(x^5 − 4x + 2)` with a full bijectivity proof — same pattern, different domain."
     ],
     "prerequisites": [
       "Roth's theorem in its qualitative form (covered by `szemeredi-theorem`)",

@@ -12,19 +12,29 @@
     "mathContext": "Kelley–Meka 2023: $r_3(N) \\le N \\cdot \\exp(-c (\\log N)^{1/12})$. Behrend 1946 lower bound: $r_3(N) \\ge N \\cdot \\exp(-c \\sqrt{\\log N})$. Gap to close: the exponent on $\\log N$ inside the exponential, currently $1/12$ vs $1/2$.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Kelley–Meka 2023",
+      "Behrend 1946 lower-bound construction",
       "Behrend lower bound",
-      "cornersTheoremBound",
-      "tower-type vs quasi-polynomial rates",
+      "Bloom–Sisask 2020",
       "Bohr sets",
+      "Bourgain Fourier analysis on cyclic groups",
+      "Heath-Brown 1987 logarithmic-power savings",
+      "Kelley–Meka 2023",
+      "Schoen 2017",
+      "U^3 inverse theorem",
+      "cornersTheoremBound",
+      "density-increment vs energy-increment strategies",
+      "exponent-improvement program for r_3(N)",
       "sifted Fourier",
-      "U^3 inverse theorem"
+      "tower-type vs quasi-polynomial rates"
     ],
     "prerequisites": [
-      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Fourier analysis on Z/NZ",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
       "Mathlib.Analysis.SpecialFunctions.Pow.Real",
-      "Roth's theorem qualitative form (szemeredi-theorem)"
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Roth's theorem qualitative form (szemeredi-theorem)",
+      "asymptotic notation for density bounds (poly-log, quasi-poly)",
+      "density-increment method"
     ]
   },
   {
@@ -37,22 +47,33 @@
     "type": "concept",
     "title": "kelley_meka_bound: Axiomatized Quantitative Density Bound",
     "content": "**Axiom** `kelley_meka_bound`:\n```\n∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N →\n  (rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * Real.log N ^ ((1 : ℝ)/12)))\n```\n\nThe statement is calibrated to Mathlib's `rothNumberNat`, the maximum size of a 3-AP-free subset of `{0,...,N-1}`, so that future downstream theorems can compose directly with the rest of the additive-combinatorics gallery without translation. The threshold `N₀` is existentially quantified to absorb small-`N` boundary cases (where `log N` is `≤ 0`), which the original Kelley–Meka paper also brackets off via an asymptotic regime.\n\nThe expression `Real.log N ^ ((1:ℝ)/12)` is the `Real.rpow` instance: real exponent on a real base. For `N ≥ 3`, `Real.log N > 0` and the `rpow` is the usual fractional power; for `N ≤ 2`, the bound holds trivially or vacuously inside the asymptotic regime.\n\n**Discharging the axiom** would require formalizing: (i) Bohr sets as a subadditive structure on `Z/NZ`, (ii) sifted Fourier analysis with explicit constants on cyclic groups, and (iii) a `U^3` inverse theorem giving structured-vs-random dichotomy. Each is a substantial upstream Mathlib project; together they likely run to several thousand lines.",
-    "mathContext": "Exact Lean form of Kelley–Meka 2023, stated against Mathlib's `rothNumberNat`. The `1/12` exponent is from the original paper; subsequent improvements may push it up but are not in scope.",
+    "mathContext": "Exact Lean form of Kelley–Meka 2023, stated against Mathlib's `rothNumberNat`. The `1/12` exponent is from the original paper; subsequent improvements may push it up but are not in scope.\n\n**Reading the bound rate.** The function $f(N) = N \\cdot \\exp(-c (\\log N)^{1/12})$ grows *almost linearly* but with a sub-polynomial savings factor. For comparison:\n- *Polynomial* savings: $N^{1-\\delta}$ — strictly faster decay than Kelley–Meka.\n- *Kelley–Meka*: $N \\cdot \\exp(-c (\\log N)^{1/12})$ — *quasi-polynomial* (any negative power of $\\log N$ inside the exponential).\n- *Behrend lower bound*: $N \\cdot \\exp(-c (\\log N)^{1/2})$ — currently the conjectured sharp exponent inside the exponential.\n- *Pre-Kelley–Meka best* (Bloom–Sisask 2020): $N (\\log N)^{-1-c}$ — *poly-logarithmic* density savings, an entirely different (slower) decay regime.\n\nThe jump from poly-log to quasi-polynomial in 2023 is the structural significance of this entry: it shifts $r_3$ across the *threshold* where logarithmic-class bounds end and exponential-of-logarithm bounds begin. No combinator built on Szemerédi regularity (tower-type) can cross this threshold, which is why the axiom is unavoidable for the gallery to record the current state of the art.\n\n**Why exponent $1/12$ specifically?** Kelley–Meka's 12 arises from the chain: a U^3 inverse theorem produces approximately-cubic structure (exponent ~ 1/3 step), composed with a sifted-Fourier increment lemma (exponent ~ 1/2 step), then with a Bohr-set density-increment loop (exponent ~ 1/2 step). The product of these three exponents gives $1/3 \\cdot 1/2 \\cdot 1/2 \\cdot 1/2 = 1/24$, but the actual paper extracts a slightly better $1/12$ via careful constant-tracking across the increment loop. Subsequent work (Heath-Brown's reduction strategy applied to Kelley–Meka) has pushed the exponent higher, but $1/12$ remains the canonical \"Kelley–Meka original\" rate cited in surveys.\n\n**The `Real.rpow` choice.** Lean's `Real.rpow` (used here as `Real.log N ^ ((1 : ℝ)/12)`) is the standard real-exponent power, defined as $a^b = \\exp(b \\log a)$ for $a > 0$ and extended to $a = 0$ by convention. For $N \\geq 3$ (where $\\log N > 0$), this is the usual fractional power $(\\log N)^{1/12}$; for $N \\leq 2$, the bound is absorbed into the $N \\geq N_0$ asymptotic regime.",
     "significance": "key",
     "relatedConcepts": [
-      "rothNumberNat",
+      "Bloom–Sisask 2020 (pre-Kelley–Meka best bound)",
+      "Bohr sets",
+      "Heath-Brown reduction",
       "Real.exp",
       "Real.log",
       "Real.rpow",
-      "Bohr sets",
-      "sifted Fourier",
+      "Real.rpow convention for fractional powers",
       "U^3 inverse theorem",
-      "axiom integrity policy"
+      "axiom integrity policy",
+      "density-increment argument",
+      "exponent-tracking in increment loops",
+      "quasi-polynomial vs poly-logarithmic vs polynomial density savings",
+      "rothNumberNat",
+      "sifted Fourier"
     ],
     "prerequisites": [
+      "Bohr sets on Z/NZ",
       "Mathlib's `rothNumberNat` definition",
+      "Real.rpow (real-exponent powers)",
       "Real.rpow conventions for real-exponent powers",
-      "axiom integrity policy (status `axiomatized`, badge `axiom`)"
+      "U^3 inverse theorem (qualitative form)",
+      "asymptotic density classes (polynomial vs quasi-polynomial vs poly-log)",
+      "axiom integrity policy (status `axiomatized`, badge `axiom`)",
+      "structure-vs-randomness dichotomy in additive combinatorics"
     ]
   },
   {
