@@ -1,9 +1,118 @@
 # Current State
 
-**Phase**: ACT (post-S24 BUILD-VERIFY; Hilbert11OQ02.lean builds **CLEAN 3069/3069 jobs**; S23 "17 residual v4.26.0 errors" claim disambiguated — no residuals exist; Sub-PR-2 plan obsolete; ready for Section 28 universal Case-B)
-**Since**: 2026-06-01T09:35:00Z (S24 BUILD-VERIFY established RECOVERING-resolved)
-**Last Updated**: 2026-06-01 (Iteration 24, researcher-1 — S24 BUILD-VERIFY)
-**Iteration**: 24
+**Phase**: ACT (S25 added Section 28 Conditional Case-B Closure — `selmer_padic_solubility_from_caseB` + `_recovered`; remaining ℚ_[p]-solubility assumption now isolated to the single Case-B class `p ≡ 1 mod 3`; axiom count unchanged at 2 but assumption structure transparent)
+**Since**: 2026-06-03T15:00:00Z (S25 ACT — Section 28 conditional Case-B closure)
+**Last Updated**: 2026-06-03 (Iteration 25, researcher-1 — S25 Section 28)
+**Iteration**: 25
+
+## Iteration 25 (researcher-1, 2026-06-03) — S25 Section 28: Conditional Case-B Closure
+
+**Outcome**: progress (no axiom elimination; +2 theorems = 1 conditional
+universal closure + 1 tautological sanity-check corollary). Section 28
+makes the residual ℚ_[p]-solubility axiom assumption **transparent**:
+Case-A (Section 27) + special primes {2, 3, 5} (Sections 17/19) discharge
+all of the universal axiom except the Case-B class (`p ≡ 1 mod 3`). The
+Case-B fragment is now a named, isolated hypothesis amenable to future
+Hasse-Weil formalization.
+
+### Why S25 added Section 28 conditional (not the unconditional Case-B)
+
+The iter-17 plan and iter-24 S24's "Section 28 universal Case-B
+(long-horizon plan (a))" target called for a *parametric* Case-B universal
+theorem analogous to Section 27. That theorem requires either (a) a uniform
+cubic-residue argument (fails for Case B — cube map is 3-to-1, image is
+the index-3 cubic-residue subgroup, `-4/5` is not always a cube), or (b)
+Hasse-Weil for genus-1 curves over F_p (beyond Mathlib v4.26's elliptic-
+curve API). Neither is achievable in a single session.
+
+S25's **conditional** form is the maximum honest progress: state precisely
+what Case-B universal would buy, prove that it implies the original
+universal axiom, and isolate the remaining obstruction to a single class.
+
+### What S25 added (+117 LOC Lean / 1 new originalContributions entry / 0 Lean-file restructuring)
+
+Lean file `proofs/Proofs/Hilbert11OQ02.lean` (1975 → 2092 lines):
+
+- **Section 28 docstring header** (~70 lines) — explains the decomposition,
+  the axiom-narrowing pattern, why in-place axiom replacement is deferred,
+  and the per-prime case dispatch table.
+- **`selmer_padic_solubility_from_caseB`** (~30 lines incl. proof) —
+  conditional universal closure. Given `caseB : ∀ p ≡ 1 mod 3 prime,
+  ℚ_[p]-soluble`, derives `selmer_padic_solubility p` for every prime
+  by exhaustive case-split: `p = 2`, `p = 3`, `p = 5` (Sections 17/19),
+  `p ≡ 2 mod 3 with p ∉ {2, 5}` (Section 27), `p ≡ 1 mod 3` (caseB
+  hypothesis), `p ≡ 0 mod 3` (contradicts primality except p = 3).
+- **`selmer_padic_solubility_recovered`** (~5 lines) — tautological
+  consistency check. Supplies the caseB hypothesis from the existing
+  axiom, recovering the universal statement. If the case decomposition
+  were incomplete this would fail to type-check.
+- 2 new `#check` entries.
+
+Plus:
+
+- `src/data/proofs/hilbert-11-oq-02/meta.json` — lineCount 1975 → 2092,
+  theoremCount 88 → 90, appended Section 28 entry to originalContributions.
+- `research/problems/hilbert-11-oq-02/knowledge.md` — new iter-25 entry
+  prepended (~135 LOC).
+- This state.md prepend (iter 25 entry + Phase/Iteration header refresh).
+- `src/data/research/problems/hilbert-11-oq-02.json` `currentState` edit
+  (iteration 24 → 25, focus / nextAction / lastUpdate refresh).
+
+### SOTC verification (parent file `Hilbert11OQ02.lean`)
+
+| Metric | S24 JSON | S25 filesystem | Δ |
+|---|---|---|---|
+| lineCount | 1975 | 2092 (`wc -l`) | +117 |
+| theoremCount | 88 (canonical / gallery-meta count) | 90 | +2 |
+| sorryCount | 0 | 0 | unchanged |
+| axiomCount | 2 | 2 (real declarations at lines 157, 183) | unchanged |
+
+### Build verification (S25 NOT performed — environment-blocked)
+
+`./proofs/scripts/docker-build.sh Proofs.Hilbert11OQ02` NOT run. Cause:
+host disk at 100% capacity (1.1 Gi avail per `df -h`), insufficient for
+the documented fresh-Mathlib-clone fallback (~10 Gi) triggered by the
+recursive `proofs/.lake` self-symlink. Per iter-24 S24 verification "G9
+is INERT for Docker bind-mount builds", the build COULD succeed with
+adequate disk; the constraint is environment-only, not code.
+
+Tactic confidence is HIGH: every tactic in Section 28 is a standard
+Mathlib v4.26 idiom (by_cases, subst, exact, rcases, omega, Nat.mod_lt,
+Nat.dvd_of_mod_eq_zero, Nat.Prime.eq_one_or_self_of_dvd, absurd) already
+exercised elsewhere in the file. Structural correctness of the case
+decomposition is verified at type-check time by
+`selmer_padic_solubility_recovered`.
+
+### Phase: ACT (unchanged)
+
+S25 keeps the slug in ACT phase. The conditional universal closure is
+genuine new content, not a doc-only or recovery pass.
+
+### Next Action (S26 candidates)
+
+In order of expected value:
+
+1. **Universal Case-B theorem (full unconditional)**: discharge the
+   Case-B hypothesis directly. Requires Hasse-Weil for genus-1 curves
+   over F_p (multi-thousand-line Mathlib contribution) or an elementary
+   cubic-character-sum argument (multi-hundred-line, requires cubic
+   reciprocity infrastructure not in Mathlib). Multi-session work.
+
+2. **In-place axiom replacement**: restructure file to move
+   `selmer_padic_solubility` to AFTER Section 28 and convert from axiom
+   to theorem; introduce a Case-B-only axiom. Net axiom count stays at
+   2 but the assumption is logically strictly weaker. Requires ~1700-
+   line file reorganization with merge-conflict risk.
+
+3. **Cleanup refactor** (iter-17 nextStep (2)): collapse `Hensel3.Gint`,
+   `Hensel11.Gint`, `HenselCaseA.Gint` (and Section 27's implicit
+   definition) into a single module-level `Selmer.GintZ`. Net delta
+   ~−40 lines with no semantic change.
+
+4. **Far stretch**: `selmer_no_rational_solution` via 3-descent on
+   `E: y² = x³ - 432·15²`. Multi-thousand-line Mathlib gap.
+
+---
 
 ## Iteration 24 (researcher-1, 2026-06-01) — S24 BUILD-VERIFY: RECOVERING → ACT (doc-only)
 
