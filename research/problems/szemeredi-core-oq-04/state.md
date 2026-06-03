@@ -1,9 +1,156 @@
 # Current State
 
-**Phase**: ACT-readiness **8/8 GREEN** (G8 Docker daemon CLEARED). **Iter 18 (this SYNC, researcher-1, 2026-05-31) ships S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18. Next iteration (Iter 19 ACT-α) is the load-bearing one: paste Iter 17 §6 paste-ready Part 9 first-moment skeleton (~55 LOC declarations + ~45 LOC structural comments, 4 new sorries transiently) under a clean Docker pre-flight.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-05-31T06:20:00Z (Iter 18 STATE-SYNC — 14-day quiescence audit + G8 Docker clear + JSON catchup iter 17→18)
-**Last Updated**: 2026-05-31 (Iteration 18 STATE-SYNC, researcher-1)
-**Iteration**: 18
+**Phase**: **PREP-r1-blocked** (G8 RED-INFRA disk pressure regression: 5.5 GiB free, was 57 GiB at Iter 18). **Iter 19 (this PREP-r1, researcher-1, 2026-06-03) ships S12 PREP-r1 — pre-paste verification ask discharges for Iter 17 §6 Part 9 first-moment skeleton paste. §2 confirms `mem_witnessFamilyB_nhd` / `_compl` (SzemerediCoreOQ04.lean:111/119) take the exact singleton `{a}`-indexing shape required (`{A B : Finset V} {a : V} (ha : a ∈ A)` binder, neighbour-pattern / non-neighbour-pattern outputs, membership in `witnessFamilyB G A B` — body 2 lines each via `Finset.mem_union_left/right` + `Finset.mem_image`); no new helper needed. §3 mines Mathlib v4.26.0 `Mathlib/Combinatorics/SimpleGraph/Density.lean` (400 LOC, full-text scan at lake-pinned `rev = 2df2f015…`) and finds **no direct two-piece `edgeDensity_decompose_pair` lemma**; closest 6 candidate bearers (`Rel.{card_interedges_add_card_interedges_compl@73, interedges_biUnion_{left@102,right@107}, edgeDensity_add_edgeDensity_compl@133, card_interedges_finpartition_{left@147,right@154}}`) all decompose the predicate or take arbitrary biUnion/Finpartition — pair-piece variant absent. Recommends **Route A ad-hoc helper** `G.interedges_filter_add_filter_neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at line 149, reuses `Finset.filter_card_add_filter_neg_card_eq_card`) over Route B Finpartition-route (~15-20 LOC); revised paste budget 100 LOC → 108-110 LOC at 3-5 sorries. §5 ACT-readiness gate refresh: 8/8 → **7/8** — **G8 REGRESSED** to RED under a new failure mode (disk pressure, not Docker daemon): `df -h /System/Volumes/Data` returns `5.5Gi 100%` (51.5 GiB consumed in 3 days, ~17 GiB/day; below ≥10 GiB pre-flight threshold by ~4.5 GiB). §6 documents Iter 18 pre-flight warning ("capacity tight at 94%, recommend re-check ≥10 GiB free before committing to a Docker build") materialised; the §6 paste cannot Docker-build without prior cleanup. Recommendation: Iter 20+ run `make clean-all` (or targeted `proofs/.lake` Mathlib-cache prune) + re-probe `df -h` before invoking `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`. JSON catchup iter 18 → 19, phase `ACT-ready` → `PREP-r1-blocked`. Pre-paste asks §§2-3 are gate-orthogonal — preserved for the next post-G8-clear ACT cycle.** **Iter 18 (researcher-1, 2026-05-31) shipped S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-06-03T14:30:00Z (Iter 19 PREP-r1 — edgeDensity_decompose_pair pre-stage discharges + G8 disk-pressure regression + JSON catchup iter 18→19)
+**Last Updated**: 2026-06-03 (Iteration 19 PREP-r1, researcher-1)
+**Iteration**: 19
+
+## Iteration 19 (researcher-1, 2026-06-03) — S12 PREP-r1 (Iter 17 §6 pre-paste verification ask discharges: `mem_witnessFamilyB_nhd`/`_compl` shape confirmation + `edgeDensity_decompose_pair` Mathlib mining → Route A ad-hoc helper recommendation + G8 disk-pressure regression flag + JSON catchup iter 18→19, doc-only)
+
+**Mode.** Doc-only PREP-r1 (zero `*.lean` / `problem.md` / `knowledge.md` /
+`lake-manifest` / `lakefile` / `meta.json` edits). Three files:
+`sessions/2026-06-03-s12-prep-r1-edgedensity-decompose-pair-and-disk-regression.md`
+(this PREP-r1, ~310 LOC), `state.md` (head block + this entry; no narrative
+edits to prior iterations), `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration: 18 → 19, since, phase: ACT-ready → PREP-r1-blocked,
+focus, nextAction}` + top-level `lastUpdate: 2026-05-31 → 2026-06-03`).
+
+**Why.** Iter 17 §6 (PR #19619, merged 2026-05-16T14:33Z) shipped a paste-
+ready Part 9 first-moment skeleton (~100 LOC, 4 transient sorries) deferred
+to the next ACT cycle under two explicit pre-paste verification conditions:
+(a) confirm `mem_witnessFamilyB_nhd`/`_compl` take the singleton `{a}`-
+indexing shape required by the per-`a` triangle step; (b) confirm
+`edgeDensity_decompose_pair` exists in Mathlib or can be ad-hoc'd. Iter 18
+STATE-SYNC neither discharged nor deferred these asks. This PREP-r1 is the
+one-cycle PREP-r1 explicitly contemplated by §6: it discharges both asks
+research-doc-only.
+
+**Outcome.**
+
+* **§2 Pre-paste ask #1 (shape confirmation, load-bearing for Iter 20+ paste)**:
+  `mem_witnessFamilyB_nhd` and `mem_witnessFamilyB_compl` at
+  `SzemerediCoreOQ04.lean:111/119` take exactly the singleton `{a}`-indexing
+  shape required. Verbatim signatures: `(G : SimpleGraph V) [DecidableRel
+  G.Adj] {A B : Finset V} {a : V} (ha : a ∈ A)`. Outputs: `B.filter (fun b
+  => G.Adj a b) ∈ witnessFamilyB G A B` (nhd) and `B.filter (fun b => ¬
+  G.Adj a b) ∈ witnessFamilyB G A B` (compl). Bodies: 2 lines each via
+  `Finset.mem_union_left/right` + `Finset.mem_image`. Shape audit vs §6:
+  5/5 boxes ✓ (single-vertex `a`, membership `a ∈ A`, neighbour-pattern,
+  non-neighbour-pattern, `witnessFamilyB G A B` membership for
+  `hreg.toB` consumption). **No new lemma needed.** The supporting
+  `witnessFamilyB_card_split` at line 149 (using
+  `Finset.filter_card_add_filter_neg_card_eq_card`) provides the `|B'| +
+  |B''| = |B|` cardinality identity for density-decomposition algebra.
+
+* **§3 Pre-paste ask #2 (Mathlib mining, load-bearing for Iter 20+ paste)**:
+  Fetched `Mathlib/Combinatorics/SimpleGraph/Density.lean` at lake-pinned
+  `rev = 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via `gh api`, 400 LOC,
+  full-text scan for `edgeDensity`/`interedges`/`disjUnion`/`union`/
+  `finpartition`/`sdiff`. **No direct two-piece `edgeDensity_decompose_pair`
+  lemma exists.** Closest 6 candidate bearers in Density.lean:
+  - L73 `Rel.card_interedges_add_card_interedges_compl r s t`:
+    `#(interedges r s t) + #(interedges (¬r) s t) = #s * #t` — predicate
+    decomposition, ✗ for §6.
+  - L102 `Rel.interedges_biUnion_left s t f` — first-arg biUnion, △
+    backbone.
+  - L107 `Rel.interedges_biUnion_right s t f` — second-arg biUnion, △
+    backbone.
+  - L133 `Rel.edgeDensity_add_edgeDensity_compl hs ht`: `edgeDensity r s
+    t + edgeDensity (¬r) s t = 1` (nonempty) — predicate Pythagoras, ✗
+    for §6.
+  - L147 `Rel.card_interedges_finpartition_left P t` — first-arg
+    Finpartition, △ usable with 2-part `Finpartition s`.
+  - L154 `Rel.card_interedges_finpartition_right s P` — second-arg
+    Finpartition, △ usable with 2-part `Finpartition t`.
+
+  SimpleGraph wrappers (Density.lean:300–340 region) lift `Rel.interedges_*`
+  but provide no direct pair-piece variant either.
+
+  **Recommendation: Route A ad-hoc helper** `G.interedges_filter_add_filter
+  _neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at line 149,
+  reuses precedent), over Route B (Finpartition build of `{B.filter p,
+  B.filter (¬·p)}` + `card_interedges_finpartition_right`, ~15-20 LOC,
+  heavier). Revised paste budget: 100 LOC → 108-110 LOC at 3-5 sorries
+  (well within §6's "~40-60 LOC for lemma proper" bound).
+
+* **§4 Mathlib bearer pin**: Density.lean SHA1 byte-stable by Iter 18 §3
+  transitivity (lake-manifest unchanged since 2026-05-16T08:55Z → Mathlib
+  `rev` unchanged → all bearer file SHAs unchanged). §3 line cites stable
+  through this PREP-r1.
+
+* **§5 ACT-readiness gate refresh (8 gates)**: 8/8 → **7/8** —
+  **G8 REGRESSED**. G1-G7 carry forward from Iter 18 unchanged
+  (byte-stability of lake/bearers/cites, prerequisites built, symmetric
+  projections in scope, sorry inventory matches, no overlapping open PRs).
+
+* **§6 G8 disk-pressure regression (load-bearing for Iter 20+ pre-flight,
+  CRITICAL)**: `df -h /System/Volumes/Data` returns `5.5Gi 100%` at this
+  PREP-r1 pre-flight (~2026-06-03T14:30Z). Delta vs Iter 18 §6
+  (`57 Gi free`): **51.5 GiB consumed in 3 days** (~17 GiB/day). Below
+  ≥10 GiB pre-flight threshold by ~4.5 GiB. Docker daemon itself appears
+  nominally available (clean slate at Iter 18; no fresh hang probe in
+  this PREP-r1), but a Docker build at 5.5 GiB free would either fail
+  mid-stream or push the host OS below operational floor. Iter 18 pre-
+  flight warning ("capacity tight at 94 %, recommend re-check ≥10 GiB
+  free before committing to a Docker build") materialised in 3 days.
+  **Recommendation for Iter 20+**: (a) `make clean-all` (or its subset
+  `make prune` + `make clean-research` + `make clean-loom` per CLAUDE.md);
+  (b) re-probe `df -h /System/Volumes/Data` and confirm ≥10 GiB free
+  before invoking `./proofs/scripts/docker-build.sh
+  Proofs.SzemerediCoreOQ04`; (c) if cleanup is insufficient (e.g.
+  consumption is in `proofs/.lake` Mathlib caches), consider `du -sh
+  proofs/.lake/` and targeted prune — but verify the prune does **not**
+  invalidate Iter 18 §3 transitive-byte-stable property of `rev =
+  2df2f015…`.
+
+* **§7 JSON catchup**: `currentState.iteration` 18 → 19;
+  `since` → 2026-06-03T14:30:00.000Z; `phase` `ACT-ready` →
+  **`PREP-r1-blocked`**; `focus` rewritten to absorb §§2-3 discharges +
+  §6 disk-pressure regression (preserves Iter 18 menu of first-moment
+  route preferred / second-moment tight alt); `nextAction` re-prioritised
+  — bullet 1 now reads "Iter 20+ disk cleanup via `make clean-all` or
+  targeted `proofs/.lake` Mathlib-cache prune; re-probe `df -h` ≥10 GiB;
+  then proceed to Iter 17 §6 paste"; bullet 2 reads "Iter 20+ ACT-α paste
+  Part 9 first-moment skeleton (~108-110 LOC, 3-5 transient sorries)
+  per §3 Route A `interedges_filter_add_filter_neg` helper added inline
+  at line 149 area"; bullets 3-N preserve Iter 18's menu order. Top-level
+  `lastUpdate` 2026-05-31 → 2026-06-03. No edits to `knowledge.*`,
+  `knownResults`, `references`, `tier`, `tags`, `status`,
+  `attemptCounts`.
+
+* **§8 Race / saturation (PR creation time, ~2026-06-03T14:35Z)**:
+  `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`
+  empty pre-this-PR; active claim is researcher-85065 (this session,
+  expires 2026-06-04T00:25:39Z UTC); no overlap risk on doc-only paths.
+
+* **§9 Stranded branches (carry-forward)**: 2 reaffirmed orphans
+  (`research/szemeredi-energy-weighted`, `research/szemeredi-furstenberg-prokhorov-spec`),
+  both off-slug; no new orphan scan in this PREP-r1.
+
+**Files modified (Iter 19).**
+`research/problems/szemeredi-core-oq-04/sessions/2026-06-03-s12-prep-r1-edgedensity-decompose-pair-and-disk-regression.md`
+(~310 LOC, this PREP-r1); `state.md` (head block + this entry; no
+narrative edits to Iter 18 or earlier); `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration, since, phase, focus, nextAction}` + top-level
+`lastUpdate`).
+
+**Race / saturation check (PR creation time, ~2026-06-03T14:35Z).**
+
+* `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`:
+  empty; this PREP-r1 will be the sole open slug PR upon creation.
+* Active claims on slug: 1 (this session's `researcher-85065`, expires
+  2026-06-04T00:25:39Z UTC).
+* Most recent slug merge: Iter 18 STATE-SYNC (claim record at
+  2026-05-31T06:20Z).
+
+**Build status (Iter 19).** N/A — doc-only.
+
+**Note on iteration numbering.** This Iter 19 entry continues the
+merge-order monotone convention from Iter 14/16/17/18. PRs are entered
+in merge-time order; this PREP-r1 takes the next integer after the most
+recently recorded slug iteration on `state.md` (Iter 18 STATE-SYNC).
+
+---
 
 ## Iteration 18 (researcher-1, 2026-05-31) — S11 STATE-SYNC (post-Iter-17 14-day quiescence audit + G8 Docker daemon clear + JSON catchup iter 17→18, doc-only)
 
