@@ -26,8 +26,8 @@
     "axiomCount": 1,
     "assumptions": "galois_compositum_product: For two Galois extensions K₁/ℚ and K₂/ℚ with coprime Galois group orders (supported on disjoint primes), their compositum has Galois group K₁ × K₂. Provable from conductor/discriminant theory of cyclotomic fields (~500 Lean lines); identifies the exact Mathlib gap for the abelian case of Shafarevich.",
     "lineCount": 201,
-    "theoremCount": 8,
-    "definitionCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
     "originalContributions": [
       "coprime_product_cyclic_realizable: ℤ/mℤ × ℤ/nℤ is realizable when gcd(m,n)=1 — CRT reduces to the cyclic case (new result)",
       "zmod_coprime_crt: explicit CRT isomorphism ZMod m × ZMod n ≃+ ZMod (m*n) as the key algebraic tool",
@@ -440,8 +440,8 @@
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean",
     "axiomCount": 1,
     "lineCount": 201,
-    "theoremCount": 8,
-    "definitionCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
     "sorries": 0
   },
   "mainTheorems": [
