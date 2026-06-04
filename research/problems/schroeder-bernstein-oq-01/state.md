@@ -1,9 +1,75 @@
 # Current State
 
-**Phase**: ACT (post-S15 BUILD-VERIFY; S12 build-pending **CLEARED**; corpus of 6 theorems all verified at v4.26.0)
+**Phase**: ACT (post-S15 BUILD-VERIFY; S12 build-pending **CLEARED**; corpus of 6 theorems all verified at v4.26.0; S16 STATE-SYNC re-affirms 9/9 GREEN with one downgrade-but-still-GREEN signal on host disk)
 **Since**: 2026-05-15 (S12 ACT first genuinely non-vacuous sufficient condition `(forget C) full + faithful + preservesMono → HasSBP C`, researcher-6), realises S10 PREP §3.2 Path D.i
-**Iteration**: 15
-**Last Updated**: 2026-05-30T18:30Z (S15 BUILD-VERIFY, researcher-1; `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01` returned **`Build completed successfully (3115 jobs)`**, exit code 0; **clears** the S12 build-pending status held since 2026-05-16 and the 3-RED INFRA conjunction from S14 STATE-SYNC #19578. Docker daemon responsive; host disk 60 Gi avail (well above 5.4 Gi floor); `proofs/.lake` is a circular self-symlink but the Docker wrapper mounts a separate `lean-mathlib-cache` volume for build artifacts so the symlink does not bar verification. 14-day verification gap (S12 ACT 2026-05-16 → S15 BUILD-VERIFY 2026-05-30) closed. JSON updated to reflect verified status. No `.lean`, no `meta.json`, no `problem.md`, no `knowledge.md` body edits.)
+**Iteration**: 16
+**Last Updated**: 2026-06-04T17:30Z (S16 STATE-SYNC, researcher-1, doc-only tight 2-file: state.md head + JSON cursor + session doc. Re-verifies 5-day Mathlib pin stability — v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since S15 BUILD-VERIFY 2026-05-30; host disk 33 Gi avail [downgrade from S15's 60 Gi but still well above 5.4 Gi ACT floor]; no INFRA regression; no open PRs on the slug. **Next action unchanged**: S17 ACT — Path D.ii abstract orbit construction (~150-250 LOC) OR Path E Banaschewski-Brümmer 1986 retract (~150-300 LOC). Also flags the OQ-01 gallery gap as a potential focused alternative: `src/data/proofs/schroeder-bernstein-oq-01/` is the only slug among schroeder-bernstein, OQ-02, OQ-03, OQ-04 without a gallery entry; the Lean file's build-verified status (3115 jobs) makes a `status: verified` gallery entry honest under the Axiom Integrity Policy.)
+
+## S16 STATE-SYNC — 5-day stability re-affirm (researcher-1, 2026-06-04T17:30Z, this PR — doc-only, tight 2-file)
+
+**Outcome**: 5-day stability re-affirm post-S15 BUILD-VERIFY. No Mathlib drift; no INFRA regression. The slug remains at 9/9 GREEN ACT-readiness. The 5-day gap between S15 BUILD-VERIFY (2026-05-30) and this S16 STATE-SYNC (2026-06-04) closed with no observable signal change at the Lean file, the bearer surface, or the gallery wiring.
+
+### What I re-verified
+
+| Aspect | S15 (2026-05-30) | S16 (2026-06-04) |
+|---|---|---|
+| Mathlib pin SHA | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (byte-stable; verified via `git clone --depth 1 --branch v4.26.0 https://github.com/leanprover-community/mathlib4` → `git rev-parse HEAD`) |
+| Lean file LOC | 353 | 353 (`wc -l`) |
+| Lean file sorries | 0 | 0 (`grep -c "sorry"`) |
+| Lean file axioms | 0 | 0 (`grep -c "^axiom "`) |
+| Lean file theorems | 6 | 6 (`grep -c "^theorem \|^lemma "`) |
+| Docker daemon | RESPONSIVE | not re-tested this iteration (no .lean edit; SHA-pin transitivity carries S15's 3115-job verification per `feedback_sha_stable_busywork`) |
+| Host disk avail | 60 Gi | 33 Gi (downgrade by 27 Gi; still well above 5.4 Gi ACT floor) |
+| `proofs/.lake` symlink | non-blocking (Docker volume mount sidesteps) | non-blocking (unchanged) |
+| Open PRs on slug | 0 | 0 (`gh pr list --search "schroeder-bernstein-oq-01" --state open`) |
+
+### Honest framing of "what changed"
+
+- **Mathlib SHA unchanged**: confirmed via fresh `git clone --depth 1 --branch v4.26.0` of `leanprover-community/mathlib4` + `git rev-parse HEAD` returning the byte-identical SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Per project memory `[[feedback_sha_stable_busywork]]`, SHA-pin transitivity carries all S15 BUILD-VERIFY bearer rows and build-verified status; the S15 3115-job Docker pass remains the verification of record without re-running.
+- **Host disk downgrade 60 → 33 Gi**: notable trend (5 days), but still well above the 5.4 Gi ACT floor (and well above the 8 Gi P95 BUILD-VERIFY target the S15 entry implicitly held). Not actionable at this iteration; flagged for the next ACT claim to re-check before invoking the Docker wrapper.
+- **No INFRA regression at any layer**: Docker daemon was responsive at S15 and there's no evidence of a daemon hang (no Docker invocations in this iteration; no need to test because no Lean edit). The `.lake` self-symlink is a known non-blocker.
+
+### OQ-01 gallery gap (flagged as alternative S17 scope)
+
+Re-confirmed during this iteration: `src/data/proofs/` directory contains gallery entries for:
+
+- `schroeder-bernstein/` (parent, 198 LOC / 5 thms / `status: verified` / `badge: mathlib`)
+- `schroeder-bernstein-oq-02/`
+- `schroeder-bernstein-oq-03/`
+- `schroeder-bernstein-oq-04/`
+
+But **NOT** for `schroeder-bernstein-oq-01/`. The OQ-01 file is build-verified (3115 jobs at S15) and structurally eligible for a `status: verified` gallery entry per the Axiom Integrity Policy (6 theorems, 0 sorries, 0 axioms, no structure-encoded assumptions in the Lean file). A focused S17 GALLERY-WIRING (analogous to the precedent S6 GALLERY-WIRING on `circumference-via-differentiation-oq-03`) would deliver a ~3-file gallery entry with `meta.json` describing the 6 theorems, `index.ts` re-export, and `annotations.json` for the 6 theorems. Estimated ~250-400 LOC of TS/JSON.
+
+This is an honest alternative to the Path D.ii / Path E mathematical work and may be more tractable for a single research iteration without the substantial category-theoretic exploration those paths require.
+
+### What this S16 PR does (2 files + 1 session doc, tight)
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/SchroederBernsteinOQ01.lean` | UNCHANGED (353 LOC verified) |
+| `src/data/proofs/schroeder-bernstein/meta.json` | UNCHANGED |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (`rev = "v4.26.0"` → SHA `2df2f0150c…` byte-stable) |
+| `src/data/research/problems/schroeder-bernstein-oq-01.json` | **UPDATED** — `currentState.{phase remains ACT, since, iteration 15→16, focus, nextAction, attemptCounts.total 6→7, lastUpdate}` + `knowledge.progressSummary prepend S16 entry` + top-level `lastUpdate` |
+| `state.md` head | THIS replacement — Phase line refresh w/ "S16 STATE-SYNC re-affirms 9/9 GREEN"; iteration 15→16; Last-Updated bump; S16 STATE-SYNC entry prepended |
+| `state.md` historical body (S15 BUILD-VERIFY entry → S1) | preserved verbatim |
+| `research/problems/schroeder-bernstein-oq-01/sessions/2026-06-04-s16-state-sync.md` | NEW session doc |
+
+### ACT-readiness gate (S16 snapshot — still 9/9 GREEN)
+
+| Gate | S15 BUILD-VERIFY | S16 STATE-SYNC |
+|---|---|---|
+| Researcher-side knowledge | GREEN | GREEN |
+| Researcher-side bearer pin | GREEN | GREEN (SHA byte-stable via fresh clone verification) |
+| Paste-ready scaffolds | GREEN | GREEN |
+| `SchroederBernsteinOQ01.lean` build-verified | GREEN (3115 jobs) | GREEN (SHA-pin transitivity) |
+| Docker daemon | GREEN | GREEN (presumed; no Docker invocation needed this iter) |
+| Host disk | GREEN (60 Gi) | GREEN (33 Gi; above 5.4 Gi floor, downgrade flagged) |
+| `proofs/.lake` symlink | GREEN (non-blocking) | GREEN (unchanged) |
+| Canonical research JSON sync | GREEN | GREEN |
+| Mathlib pin stable | GREEN | GREEN |
+
+**9/9 GREEN** at S16. The next research iteration on this slug should pursue: (S17 alt-A) genuinely new mathematics on Path D.ii or Path E, or (S17 alt-B) the OQ-01 gallery wiring described above.
+
 
 ## S15 BUILD-VERIFY — clears S12 build-pending (researcher-1, 2026-05-30T18:30Z, this PR — doc-only, tight 2-file)
 
