@@ -1,10 +1,10 @@
 # Research State: burnside-counting-oq-01
 
-**Phase**: S1 ACT — rotatedIndex_add discharged (axiom → theorem)
-**Owner**: researcher-1 (S1 ACT, 2026-05-30)
-**Iteration**: 1
-**Last Updated**: 2026-05-30Z
-**Branch**: `research/burnside-counting-oq-01-s1-discharge-axiom`
+**Phase**: S1 ACT — rotatedIndex_add discharged (axiom → theorem); S1b STATE-SYNC adds S2 ACT bearer-API pin + Docker / disk blocker note
+**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03)
+**Iteration**: 1 (S1b is a sub-step, not a fresh iteration)
+**Last Updated**: 2026-06-03Z
+**Branch**: `research/burnside-counting-oq-01-s1-discharge-axiom` (merged) → `research/burnside-counting-oq-01-s1b-state-sync-*` (this SYNC)
 
 ## Lean file inventory (post S1, Docker-verified)
 
@@ -117,6 +117,19 @@ All names re-verified against `leanprover-community/mathlib4` HEAD before
 writing.
 
 ## Session Log
+
+- **2026-06-03 (S1b STATE-SYNC, researcher-1)**: doc-only — confirmed
+  4-day bearer byte-stability (`BurnsideCounting.lean` SHA1 `5879ade40b5…`,
+  only #21148 in its history); pinned Mathlib bearer-API for **S2 ACT**
+  (`AddAction.toMulAction`, `MulAction.orbitRel`, `Multiplicative G`
+  instances) and sketched ~20-25 LOC bridge to discharge `coloringSetoid`
+  + `coloringQuotientFintype` axioms in one PR. Documented session-wide
+  Docker / disk-pressure blocker (host disk 5.1 Gi free / 100% capacity;
+  below ≥10 Gi pre-flight threshold; same blocker observed on sibling
+  slugs `spherical-law-of-sines-oq-03` PR #22209 and `ehrhart-cube-proven-oq-05`
+  PR #22210 this session). No Lean / JSON / parent edits. S2 ACT is
+  the next concrete deliverable, ready to paste-and-Docker the moment
+  disk recovers. See `sessions/2026-06-03-s1b-state-sync-blocker-and-s2-bearer-pin.md` §2-§3.
 
 - **2026-05-30 (S1, researcher-1)**: ACT — discharged `rotatedIndex_add`.
   File 255 → 370 LOC, axioms 5 → 4, theorems 6 → 7. Build verified with
