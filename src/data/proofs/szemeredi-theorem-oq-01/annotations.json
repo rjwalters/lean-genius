@@ -77,11 +77,38 @@
     ]
   },
   {
+    "id": "ann-imports",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 50
+    },
+    "type": "structure",
+    "title": "Imports, Namespace, and `open Real`",
+    "content": "**Imports.**\n\n- `Mathlib.Combinatorics.Additive.Corner.Roth` — provides `rothNumberNat : ℕ → ℕ`, the Mathlib invariant against which the Kelley–Meka bound is stated. Choosing this exact name (rather than redefining a parallel `r_3` in this file) makes the axiom directly composable with the rest of Mathlib's additive-combinatorics chain — any downstream theorem already using `rothNumberNat` can consume `kelley_meka_bound` without translation.\n\n- `Mathlib.Analysis.SpecialFunctions.Log.Basic` — provides `Real.log : ℝ → ℝ`, the natural logarithm. Note that `Real.log` is defined for all reals (with `Real.log x = 0` for `x ≤ 0`); this is why the axiom's threshold `N₀` exists, to skirt the regime where `log N` is non-positive.\n\n- `Mathlib.Analysis.SpecialFunctions.Pow.Real` — provides `Real.rpow : ℝ → ℝ → ℝ` (notated `^` with a real exponent), giving the `(log N) ^ ((1 : ℝ) / 12)` expression its meaning. The `(1 : ℝ) / 12` type ascription is required because `1 / 12 = 0` in `ℕ` and `ℤ`; without it Lean would silently truncate the exponent to `0` and the bound would degenerate to `r_3(N) ≤ N · exp(-c)`, a trivially false statement.\n\n- `Mathlib.Tactic` — bulk import of Mathlib's tactic library, providing `obtain`, `refine`, `exact_mod_cast`, and the `simp`/`linarith`/`positivity` family used inline in the corollary.\n\n**Namespace `SzemerediTheoremOQ01`** — encloses the axiom and corollary so that their names do not collide with future variants (`SzemerediTheoremOQ02.kelley_meka_bound`, e.g., for a different exponent). Anchoring the namespace to the slug `szemeredi-theorem-oq-01` keeps gallery and Lean naming in sync.\n\n**`open Real`** — brings `exp`, `log`, and `rpow` into local scope. Without it, the axiom and corollary would need to write `Real.exp (-(c * Real.log N ^ ...))`; with it, the expressions read as in mathematical notation. The `open` is local to the namespace section and does not affect downstream files.",
+    "mathContext": "**Naming discipline.** Stating $r_3(N)$ as `rothNumberNat` (rather than introducing a parallel definition) is a deliberate gallery convention: any future formalization of Kelley–Meka can replace the `axiom` by a `theorem` with the *exact same signature*, so downstream consumers (proofs of corollaries, surveys, exponent-improvement entries) need no rewrites.\n\n**Type-ascription trap on `1/12`.** A common Lean mistake is to write `Real.log N ^ (1/12)` without the `(1 : ℝ)` ascription. Because `^` for an `ℕ`-exponent is `Monoid.npow`, and `1/12 = 0` in `ℕ`, Lean would silently use the zero-power and the bound would read $r_3(N) \\leq N \\cdot e^{-c}$ — a false statement absorbed by Lean's elaboration. The explicit `((1 : ℝ) / 12)` forces `Real.rpow`, which is what we want.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Mathlib naming conventions for additive combinatorics",
+      "Real.rpow vs Monoid.npow distinction",
+      "namespace-per-entry gallery convention",
+      "open Real notation idiom",
+      "rothNumberNat (Mathlib)",
+      "type-ascription discipline for rpow exponents"
+    ],
+    "prerequisites": [
+      "Lean 4 module system and namespace resolution",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real (Real.rpow)",
+      "Mathlib's Real.log convention for non-positive inputs",
+      "distinction between Monoid.npow and Real.rpow"
+    ]
+  },
+  {
     "id": "ann-density-corollary",
     "proofId": "szemeredi-theorem-oq-01",
     "range": {
       "startLine": 68,
-      "endLine": 83
+      "endLine": 77
     },
     "type": "concept",
     "title": "rothNumberNat_density_le_kelley_meka: Non-Axiomatic Density Form",
@@ -99,6 +126,36 @@
       "kelley_meka_bound axiom",
       "div_le_iff₀ for positive denominators",
       "max-threshold idiom (`max N₀ 1` to fuse boundary and asymptotic conditions)"
+    ]
+  },
+  {
+    "id": "ann-proof-tactics",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "type": "proof-step",
+    "title": "Tactic-by-Tactic Walkthrough of the Density Corollary",
+    "content": "The 9-line proof body is denser than it looks; each tactic does one bookkeeping job.\n\n**Line 78** — `obtain ⟨c, hc, N₀, hbound⟩ := kelley_meka_bound`. Anonymous-constructor destructuring on the existential `∃ c, 0 < c ∧ ∃ N₀, ∀ N ≥ N₀, ...`. Extracts four things: the constant `c : ℝ`, the positivity proof `hc : 0 < c`, the threshold `N₀ : ℕ`, and the witnessing function `hbound : ∀ N, N₀ ≤ N → r_3(N) ≤ N · exp(...)`. Note: Lean's `obtain` is smart enough to pierce the nested `∧` and `∃` without requiring `⟨c, ⟨hc, N₀, hbound⟩⟩` parentheses.\n\n**Line 79** — `refine ⟨c, hc, max N₀ 1, ?_⟩`. Provides three of the four pieces for the corollary's existential: same `c`, same `hc`, threshold `max N₀ 1`. The `?_` defers the universal statement to a sub-goal that the rest of the proof discharges. Choosing `max N₀ 1` (rather than just `N₀`) is the key threshold-engineering step: it ensures `1 ≤ N` so `(N : ℝ) > 0`, which is required for `div_le_iff₀`.\n\n**Line 80** — `intro N hN`. Standard universal-introduction. After this, the goal is `r_3(N)/N ≤ exp(-c (log N)^(1/12))` and the context has `hN : max N₀ 1 ≤ N`.\n\n**Line 81** — `have hN₀ : N₀ ≤ N := (le_max_left N₀ 1).trans hN`. Decomposes `max N₀ 1 ≤ N` into `N₀ ≤ N`. The pattern `(le_max_left ...).trans hN` is the canonical way to recover one side of a `max` after a `max ≤` hypothesis.\n\n**Line 82** — `have hN1 : 1 ≤ N := (le_max_right N₀ 1).trans hN`. Symmetric: recovers `1 ≤ N` from the other side of the `max`. This is what makes `max N₀ 1` work as a fused threshold.\n\n**Line 83** — `have hN_pos : (0 : ℝ) < N := by exact_mod_cast Nat.lt_of_succ_le hN1`. Promotes `1 ≤ N` (in `ℕ`) to `0 < N` (in `ℝ`). `Nat.lt_of_succ_le` converts `1 ≤ N` to `0 < N` in `ℕ`; `exact_mod_cast` then handles the `ℕ → ℝ` coercion. This positivity is what `div_le_iff₀` requires.\n\n**Line 84** — `have hb := hbound N hN₀`. Applies the axiom's witnessing function with our `N` and the recovered `hN₀`, yielding `r_3(N) ≤ N · exp(-c (log N)^(1/12))`. This is the axiom's content specialized to the current `N`.\n\n**Line 85** — `rw [div_le_iff₀ hN_pos, mul_comm]`. Two rewrites in one tactic. First, `div_le_iff₀ hN_pos : a/b ≤ c ↔ a ≤ c * b` rewrites the goal from `r_3(N)/N ≤ exp(...)` to `r_3(N) ≤ exp(...) * N`. Second, `mul_comm` swaps the right-hand side to `N · exp(...)`, matching the axiom's exact form. The order matters: `div_le_iff₀` first, then `mul_comm` once the division is gone.\n\n**Line 86** — `exact hb`. The goal `r_3(N) ≤ N · exp(...)` is now syntactically identical to `hb`. The proof closes.\n\n**Why this matters as enrichment**: the 9-line proof showcases three reusable patterns — anonymous-constructor destructuring for nested ∃/∧, the `max N₀ 1` fused threshold for combining boundary and asymptotic conditions, and the `div_le_iff₀ ; mul_comm` rewrite chain for moving from `r_3(N)/N ≤ ...` to `r_3(N) ≤ ... · N`. Any future quantitative-density entry (e.g., for higher k or improved exponents) can copy this skeleton directly.",
+    "mathContext": "**Tactical complexity vs mathematical content**: this proof is purely bookkeeping. The mathematical content (the bound itself) is entirely in the axiom; the corollary is just a division by $N$. The 9 tactics are all of the type \"unpack the existential / set up positivity / rewrite the division.\" This separation is intentional — once `kelley_meka_bound` is replaced by an unconditional theorem, the corollary's proof body needs zero changes.\n\n**Why the `max N₀ 1` fused threshold is sharp**. The axiom's $N_0$ is unspecified; the corollary needs $N \\geq 1$ for the division by $N$ to be well-defined and for `div_le_iff₀` to apply. Rather than asserting both `N ≥ N₀` and `N ≥ 1` separately, the proof fuses them into a single `max N₀ 1 ≤ N` hypothesis. This is a small but recurring idiom in quantitative-bound proofs: when a theorem needs multiple lower bounds on the input, fuse them with `max` rather than carrying multiple hypotheses.\n\n**Casting layer**: `exact_mod_cast Nat.lt_of_succ_le hN1` is the standard Lean 4 idiom for `1 ≤ N` (in `ℕ`) ⟹ `(0 : ℝ) < N`. The chain `Nat.lt_of_succ_le : 0 + 1 ≤ N → 0 < N` is in `ℕ`; `exact_mod_cast` performs the `Nat.cast`. Writing this in one line beats unfolding it as `have : (0 : ℕ) < N := Nat.lt_of_succ_le hN1; exact_mod_cast this`.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "anonymous-constructor destructuring on nested ∃/∧",
+      "div_le_iff₀ rewrite pattern",
+      "exact_mod_cast for ℕ → ℝ positivity",
+      "fused max-threshold idiom",
+      "le_max_left / le_max_right transitivity chain",
+      "Nat.lt_of_succ_le",
+      "refine with `?_` placeholder",
+      "two-step rw chain (div_le_iff₀; mul_comm)"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic syntax (obtain, refine, intro, have, rw, exact)",
+      "Mathlib.Algebra.Order.Field.Basic (div_le_iff₀)",
+      "Mathlib.Order.Lattice (le_max_left, le_max_right)",
+      "Nat.lt_of_succ_le and the ℕ ↪ ℝ cast",
+      "anonymous-constructor pattern for ∃/∧ destructuring"
     ]
   }
 ]

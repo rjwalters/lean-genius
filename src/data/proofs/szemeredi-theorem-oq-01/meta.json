@@ -105,7 +105,9 @@
       "The non-axiomatic density corollary `rothNumberNat_density_le_kelley_meka` certifies that the axiom is non-vacuous in the asymptotic direction: it directly produces the form `r_3(N)/N ≤ exp(-c (log N)^{1/12})` that is most often cited in surveys.",
       "The exponent 1/12 in Kelley–Meka is not the best possible; subsequent work has improved it (e.g., Bloom–Sisask follow-ups). This entry intentionally fixes 1/12 to match the original paper, leaving exponent-improvement as a separate follow-up question.",
       "The gap between Kelley–Meka (exp(-c (log N)^{1/12})) and Behrend (exp(-c sqrt(log N))) leaves an open exponent question: what is the right exponent θ such that r_3(N) = N · exp(-(log N)^θ + o(1))? Kelley–Meka give θ ≥ 1/12 (i.e., the upper bound holds with exponent ≥ 1/12), Behrend gives θ ≤ 1/2. Closing this gap is a central open problem; even Behrend's exponent 1/2 is conjectured to be sharp for the lower bound side, so the question reduces to whether the upper bound can be pushed to exponent 1/2.",
-      "Once Bohr sets and sifted Fourier are formalized (per the prerequisites laid out in this entry), the Kelley–Meka axiom can be discharged *without* changing this file's downstream API: every consumer continues to import `kelley_meka_bound` and the density corollary `rothNumberNat_density_le_kelley_meka` as before. This is the gallery's `axiomatized → verified` upgrade pathway in action: an axiom whose statement is calibrated to Mathlib's existing combinator (`rothNumberNat`) can later be replaced by a `theorem` with no consumer-side breakage. Compare with the `abel-ruffini` chain, where the upgrade analogue replaced axioms about `Gal(x^5 − 4x + 2)` with a full bijectivity proof — same pattern, different domain."
+      "Once Bohr sets and sifted Fourier are formalized (per the prerequisites laid out in this entry), the Kelley–Meka axiom can be discharged *without* changing this file's downstream API: every consumer continues to import `kelley_meka_bound` and the density corollary `rothNumberNat_density_le_kelley_meka` as before. This is the gallery's `axiomatized → verified` upgrade pathway in action: an axiom whose statement is calibrated to Mathlib's existing combinator (`rothNumberNat`) can later be replaced by a `theorem` with no consumer-side breakage. Compare with the `abel-ruffini` chain, where the upgrade analogue replaced axioms about `Gal(x^5 − 4x + 2)` with a full bijectivity proof — same pattern, different domain.",
+      "The proof of the density corollary is a 9-line bookkeeping exercise that does not depend on the Kelley–Meka exponent. Replace `1/12` by any future improved exponent `θ ∈ (0, 1/2]` in the axiom and the entire corollary still type-checks unchanged. This decoupling means an exponent-improvement entry (e.g., a Heath-Brown-reduction follow-up pushing 1/12 → 1/9) can swap the axiom in-place without touching the corollary — a concrete instance of the `axiomatized → verified → improved` ratchet.",
+      "The type ascription `((1 : ℝ) / 12)` on the exponent is load-bearing. Without it, Lean would elaborate `1 / 12` in `ℕ` (where it equals `0`), silently degrading `(Real.log N) ^ (1/12)` to `(Real.log N) ^ 0 = 1` and reducing the bound to `r_3(N) ≤ N · exp(-c)` — false. This is the canonical `Real.rpow` vs `Monoid.npow` trap that any future quantitative-density formalization must avoid; recording the exact ascription pattern here documents the workaround for the next agent."
     ],
     "prerequisites": [
       "Roth's theorem in its qualitative form (covered by `szemeredi-theorem`)",
@@ -116,28 +118,44 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Module Header and Imports",
+      "id": "preamble-docstring",
+      "title": "Module Docstring",
       "startLine": 1,
+      "endLine": 41,
+      "summary": "Module-level docstring stating the Kelley–Meka bound, the reason for axiomatizing, the rate gap against Mathlib's tower-type `cornersTheoremBound`, and the sibling slug for Approach B. Records the FOCS 2023 / Annals 2024 citation.",
+      "mathContext": "Frames the bound r_3(N) ≤ N · exp(-c (log N)^{1/12}) and contrasts it with Mathlib's existing chain (which gives only iterated-log class density via inversion of tower-type SzemerediRegularity.bound)."
+    },
+    {
+      "id": "imports-namespace",
+      "title": "Imports, Namespace, and `open Real`",
+      "startLine": 43,
       "endLine": 50,
-      "summary": "Module docstring stating the Kelley–Meka bound, the reason for axiomatizing, the rate gap against Mathlib's tower-type `cornersTheoremBound`, and the sibling slug for Approach B. Imports `Corner.Roth` (for `rothNumberNat`), `Log.Basic`, `Pow.Real`, and `Tactic`.",
-      "mathContext": "Statement: ∃ c > 0, ∃ N₀, ∀ N ≥ N₀, rothNumberNat N ≤ N · exp(-c (log N)^{1/12}). The exponent 1/12 follows the Kelley–Meka 2023 paper."
+      "summary": "Imports `Corner.Roth` (for `rothNumberNat`), `Log.Basic`, `Pow.Real`, and `Tactic`. Opens namespace `SzemerediTheoremOQ01` and `Real`. The `Pow.Real` import provides `Real.rpow`, used for the fractional exponent `(log N) ^ (1/12)`.",
+      "mathContext": "The `Real.rpow` import is load-bearing: the type ascription `((1 : ℝ) / 12)` in the axiom forces `Real.rpow` instead of `Monoid.npow`, avoiding the silent `1/12 = 0 in ℕ` trap."
     },
     {
       "id": "kelley-meka-axiom",
       "title": "Kelley–Meka Axiom",
-      "startLine": 55,
-      "endLine": 66,
-      "summary": "Axiomatizes the Kelley–Meka bound `kelley_meka_bound`: there exists an absolute constant c > 0 and N₀ such that for all N ≥ N₀, `(rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * (Real.log N) ^ (1/12)))`.",
-      "mathContext": "∃ c > 0, ∃ N₀, ∀ N ≥ N₀, r_3(N) ≤ N · exp(-c (log N)^{1/12}). Stated against Mathlib's `rothNumberNat` exactly."
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "Axiomatizes the Kelley–Meka bound `kelley_meka_bound`: there exists an absolute constant c > 0 and N₀ such that for all N ≥ N₀, `(rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * (Real.log N) ^ (1/12)))`. The doc comment notes the exponent 1/12 follows the 2023 paper; subsequent improvements are out of scope here.",
+      "mathContext": "∃ c > 0, ∃ N₀, ∀ N ≥ N₀, r_3(N) ≤ N · exp(-c (log N)^{1/12}). Stated against Mathlib's `rothNumberNat` exactly. The `((1 : ℝ) / 12)` ascription forces `Real.rpow` rather than `Monoid.npow`."
     },
     {
-      "id": "density-corollary",
-      "title": "Density Corollary",
-      "startLine": 68,
-      "endLine": 83,
-      "summary": "**Proved.** `rothNumberNat_density_le_kelley_meka`: under the axiom, `r_3(N) / N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`. Proof: extract `c, N₀` from `kelley_meka_bound`, take the threshold `max N₀ 1`, divide by `N` using `div_le_iff₀` and `mul_comm`.",
-      "mathContext": "From `r_3(N) ≤ N · exp(-c (log N)^{1/12})` and `N ≥ 1`, dividing both sides by `N` gives `r_3(N)/N ≤ exp(-c (log N)^{1/12})`. The `max N₀ 1` threshold ensures `N > 0` for the division."
+      "id": "density-corollary-statement",
+      "title": "Density Corollary Statement and Doc",
+      "startLine": 67,
+      "endLine": 77,
+      "summary": "Doc comment and statement of `rothNumberNat_density_le_kelley_meka`: under the axiom, `r_3(N) / N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`. The doc comment explains why this is the surveyor-cited form and why the right-hand side beats every `(log N)^{-k}`.",
+      "mathContext": "Statement form `∃ c > 0, ∃ N₀, ∀ N ≥ N₀, r_3(N)/N ≤ exp(-c (log N)^{1/12})`. The shift from `r_3(N) ≤ N · exp(...)` to `r_3(N)/N ≤ exp(...)` requires `N > 0` for the division to be well-defined."
+    },
+    {
+      "id": "density-corollary-proof",
+      "title": "Density Corollary Proof Tactics",
+      "startLine": 78,
+      "endLine": 86,
+      "summary": "9-line tactic proof. Extracts `c, N₀, hbound` from the axiom, takes the fused threshold `max N₀ 1`, decomposes `max N₀ 1 ≤ N` into `N₀ ≤ N` (for the axiom) and `1 ≤ N` (for positivity), casts `1 ≤ N` to `(0 : ℝ) < N`, applies the axiom's witnessing function, and closes via the rewrite chain `div_le_iff₀ hN_pos; mul_comm`. Purely bookkeeping — no new mathematics.",
+      "mathContext": "Tactical complexity: the proof is 9 lines but uses three reusable patterns. (1) anonymous-constructor destructuring on the nested ∃ ∧ ∃ ∀; (2) `max N₀ 1` as a fused threshold satisfying both the axiom's lower bound and the positivity required by `div_le_iff₀`; (3) `div_le_iff₀ ; mul_comm` rewrite chain to align with the axiom's right-hand side."
     }
   ],
   "crossReferences": [
@@ -169,7 +187,9 @@
       "Can the Kelley–Meka exponent `1/12` be improved? Subsequent work has nudged it; a follow-up gallery entry could record the current best.",
       "Closing the Kelley–Meka / Behrend gap (1/12 vs 1/2 in the (log N)^α exponent) is open. What is the true exponent?",
       "Can Bohr sets, sifted Fourier analysis on Z/NZ, and the U^3 inverse theorem be formalized in Mathlib, allowing this axiom to be discharged?",
-      "Approach B (Salem–Spencer quantitative `O(N / log log N)`) is recommended as the sibling slug `szemeredi-theorem-oq-01-incomplete-01`. When will the upstream infrastructure for that bound be available?"
+      "Approach B (Salem–Spencer quantitative `O(N / log log N)`) is recommended as the sibling slug `szemeredi-theorem-oq-01-incomplete-01`. When will the upstream infrastructure for that bound be available?",
+      "Does the Kelley–Meka argument extend to the `k = 4` (4-AP-free) case? The pre-Kelley–Meka best for `k = 4` is a tower-type bound from Gowers' hypergraph regularity; whether a sifted-Fourier-style argument can break the tower barrier for `k ≥ 4` is open. A positive answer would yield a sibling gallery entry for higher k.",
+      "Is there a constructive (algorithmic) version of the Kelley–Meka bound? Behrend's lower bound construction is explicit; whether one can produce a randomized or derandomized polynomial-time algorithm that *finds* a 3-AP-free set witnessing the matching upper bound is a separate open question of interest to TCS."
     ]
   },
   "leanFile": {
