@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T13:07:48.619Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "OBSERVE",
+    "since": "2026-06-04T22:20:00Z",
+    "iteration": 2,
+    "focus": "S1 STATE-SYNC (2026-06-04): JSON `knowledge` field was cross-contaminated — progressSummary/insights/nextSteps described a 4-point planar TwoDistanceConfig classification problem, but the actual on-disk file `Erdos65OQ03.lean` is about the Liu-Montgomery sharp cycle-length constant (JAMS 2023). Reconciled.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Future work on Erdos65OQ03.lean would address the single remaining axiom `liu_montgomery_sharp` (lines 128-137). This is a 43-page JAMS 2023 result and not formalisable in a single session; the axiom should remain. A scoped next step would be to add a structural lemma relating `partialHarmonicFrom2 m` to `partialHarmonic m - 1` (mentioned in the file's PART I docstring but not proved).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,20 +29,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced sorry scope from \"complete classification theorem\" to a single dimension argument (4 equidistant points impossible in ℝ²). Key insight: True configs in TwoDistanceConfig immediately rule out distinctDistances=2.",
-    "builtItems": [
-      "Simplified proof structure: h with .kite → distinctDistances≠2, omega → ≤1, need ≥2 contradiction"
-    ],
+    "progressSummary": "S1 STATE-SYNC (2026-06-04): file Erdos65OQ03.lean is in excellent shape — 267 lines, 15 theorems, 1 axiom (`liu_montgomery_sharp` — Liu-Montgomery JAMS 2023, 43-page proof, must remain axiom), 0 sorries. The pre-S1 `knowledge` fields described a different problem entirely (4-point planar TwoDistanceConfig classification, mentioning a sorry at line 242, kite configs, 6 axioms from Moree-Osburn / Landau) — none of that content appears in the file. Most likely the JSON was populated from a sibling/predecessor research session whose insights leaked here. Reconciled.",
+    "builtItems": [],
     "insights": [
-      "The sorry at line 242 requires proving that any 4-point planar set with at most 2 distinct distances matches one of 6 TwoDistanceConfig patterns",
-      "This is a classification theorem in combinatorial geometry — the proof involves exhaustive case analysis on distance matrices",
-      "All 6 axioms are deep results: Moree-Osburn, lattice point properties, Landau theorem on x^2+2y^2",
-      "3 of 6 TwoDistanceConfig variants use True characterization, so hypothesis trivially eliminates distinctDistances=2",
-      "Remaining sorry reduced to: 4 distinct points in ℝ² → distinctDistances ≥ 2 (equidistant 4-point sets impossible in 2D)"
+      "Erdos65OQ03.lean formalizes the Liu-Montgomery sharp constant (1/2 - o(1)) · log d for cycle-length reciprocal sums (JAMS 2023, 43 pages)",
+      "The constant 1/2 arises because complete bipartite graphs K_{m,m} are the extremal minimizers — they have only even-length cycles, and even cycles of length 2j contribute 1/(2j) = (1/2)(1/j)",
+      "Key definitions: partialHarmonic (H(m)), partialHarmonicFrom2 (shifted Σ_{j=2}^m 1/j), evenHarmonic (Σ 1/(2j) = H/2), bipartiteCycleRecipSum (cycle sum for K_{r,s})",
+      "The single axiom `liu_montgomery_sharp` carries the deep ε(d) → 0 statement; structural lemmas (evenHarmonic_eq_half_harmonic, bipartiteCycleRecipSum_eq_half_shifted, bipartite_is_even, sharp_constant_achieved) and concrete instantiations (partialHarmonic_four, evenHarmonic_four, evenCycleSum_four) are all proved without sorry",
+      "S1 STATE-SYNC (2026-06-04): the pre-S1 insights about TwoDistanceConfig / kite configs / Moree-Osburn axioms / Landau theorem on x²+2y² belong to a different (likely planar-geometry / distinct-distance) research problem that was never about Erdos65OQ03.lean; archived here for traceability."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "No Mathlib API for cycle-length reciprocal sums of graphs"
+    ],
     "nextSteps": [
-      "Prove dimension lemma: 4 equidistant points impossible in ℝ² (circle intersection argument)"
+      "Add a structural lemma: `partialHarmonicFrom2 m = partialHarmonic m - 1` for m ≥ 1 (the file's PART I docstring asserts this identity but does not formalize it)",
+      "Concretely verify additional small cases (m=5,6) of partialHarmonic / evenCycleSum to strengthen the pedagogical examples",
+      "DO NOT attempt to eliminate `liu_montgomery_sharp` — the 43-page JAMS 2023 proof relies on regularity-method and probabilistic techniques far beyond the scope of a single research session"
     ]
   },
   "tags": [
@@ -73,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T13:07:48.619Z",
-  "lastUpdate": "2026-03-30T16:00:00.000Z",
+  "lastUpdate": "2026-06-04T22:22:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -201,7 +203,7 @@
     {
       "path": "Proofs/Erdos65OQ03.lean",
       "filename": "Erdos65OQ03.lean",
-      "lineCount": 268,
+      "lineCount": 267,
       "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 6,
