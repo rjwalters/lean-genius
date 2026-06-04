@@ -95,12 +95,34 @@
       "uncountability",
       "congrFun tactic",
       "constructive proof",
-      "existential witness"
+      "existential witness",
+      "Cantor's 1891 paper 'Über eine elementare Frage der Mannigfaltigkeitslehre' (the diagonal method's debut)",
+      "Cantor's 1874 paper 'Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen' (the original cardinality argument using nested intervals)",
+      "Russell's paradox (1901): same fixed-point-avoidance pattern, applied to set membership $x \\notin x$ — derived from Cantor's argument",
+      "Tarski's undefinability of truth (1933): no formula $T(x)$ in arithmetic captures 'x is true', proved by diagonalization on Gödel-numbered formulas",
+      "Gödel's first incompleteness theorem (1931): self-referential sentence $G$ asserting 'G is unprovable', constructed via diagonal lemma",
+      "Turing's halting problem (1936): no decidable predicate $H(p, x)$ captures 'p halts on x', proved by diagonalization on machine indices",
+      "Lawvere's fixed-point theorem (1969): categorical generalization — if $\\Delta: A \\to A \\times A$ has no weak fixed point, then $A^A$ has no surjection from $A$",
+      "Cantor's theorem: $|X| < |\\mathcal{P}(X)|$ for any set $X$ (the diagonal argument with characteristic functions)",
+      "Power set as $2^X$ via characteristic functions: $\\mathcal{P}(X) \\cong (X \\to \\{0, 1\\}) = 2^X$",
+      "$|\\mathbb{N}| = \\aleph_0 < 2^{\\aleph_0} = \\mathfrak{c}$ (continuum hypothesis context)",
+      "halting-problem (gallery entry: same fixed-point structure on machine indices)",
+      "godel-incompleteness (gallery entry: same fixed-point structure on formulas)",
+      "cantor-diagonalization-oq-* (cousin gallery entries extending the argument)",
+      "cantors-theorem (gallery entry: |X| < |𝒫(X)| via diagonal on characteristic functions)"
     ],
     "prerequisites": [
       "diagonal definition",
       "diagonal_differs lemma",
-      "congrFun (function congruence)"
+      "congrFun (function congruence)",
+      "Function-type equality and pointwise equality (`funext` ⇔ `∀ n, f n = g n`)",
+      "Bool.not / negation of boolean values and `Bool.not_ne_self` / `Bool.not_eq_self`",
+      "Proof by contradiction (`intro h; exact contra ...`)",
+      "Existential elimination + introduction in Lean (`∃ s, ...` proved by `use witness; ...`)",
+      "Negation of surjectivity: 'no $f$ is surjective' = 'for every $f$, there is a point not in its image'",
+      "Self-application / diagonal evaluation $f \\mapsto f(n)(n)$ as a fundamental operation (the `Δ` map)",
+      "Familiarity with `BinarySeq := ℕ → Bool` and the function-space perspective on power sets",
+      "The reading: '$f n \\neq s$' = 'sequences $f n$ and $s$ are not pointwise equal' — and the contrapositive used in the proof"
     ]
   },
   {
