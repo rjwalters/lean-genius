@@ -69,8 +69,8 @@
     "id": "ann-axiom",
     "proofId": "szemeredi-theorem-oq-01",
     "range": {
-      "startLine": 55,
-      "endLine": 66
+      "startLine": 52,
+      "endLine": 65
     },
     "type": "concept",
     "title": "kelley_meka_bound: Axiomatized Quantitative Density Bound",
@@ -80,14 +80,18 @@
     "relatedConcepts": [
       "Bloom–Sisask 2020 (pre-Kelley–Meka best bound)",
       "Bohr sets",
+      "Gowers–Green–Manners–Tao 2023 (PFR / Marton conjecture)",
       "Heath-Brown reduction",
+      "Polynomial Freiman–Ruzsa conjecture (2023 co-temporal result)",
       "Real.exp",
       "Real.log",
       "Real.rpow",
       "Real.rpow convention for fractional powers",
+      "Sanders 2011 (Bohr-set framework ancestor)",
       "U^3 inverse theorem",
       "axiom integrity policy",
       "density-increment argument",
+      "entropy / spectral structure-vs-randomness framework",
       "exponent-tracking in increment loops",
       "quasi-polynomial vs poly-logarithmic vs polynomial density savings",
       "rothNumberNat",
@@ -108,8 +112,8 @@
     "id": "ann-density-corollary",
     "proofId": "szemeredi-theorem-oq-01",
     "range": {
-      "startLine": 68,
-      "endLine": 83
+      "startLine": 67,
+      "endLine": 86
     },
     "type": "concept",
     "title": "rothNumberNat_density_le_kelley_meka: Non-Axiomatic Density Form",
