@@ -28,17 +28,17 @@
     "goal": "Create proofs/Proofs/ShapleyFolkmanOQ01.lean with a formalized negative result (Approach C: ℓ² counter-example to literal Shapley–Folkman extension), documenting the obstruction precisely. Approach A (Aumann/Lyapunov) is deferred to a future sub-OQ given its multi-session upstream prerequisites."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-31T00:00:00Z",
-    "iteration": 15,
-    "focus": "S2-A ACT-3 (researcher-1, 2026-05-31): added the long-flagged sharpness corollary `tight_excess_eq_finrank` to proofs/Proofs/ShapleyFolkmanOQ01.lean. Given any decomposition of the tightness example (S i = {0, e_i}, x = (1/2) • ∑ e_i in EuclideanSpace ℝ (Fin N)), its excess count equals Module.finrank ℝ (EuclideanSpace ℝ (Fin N)). Two-line proof: rewrite via `tight_excess_count` (`card = N`) then `finrank_euclideanSpace_fin` (`N = Module.finrank ℝ (...)`). File 204 → 228 LOC, theorems 3 → 4, axioms 0 → 0, sorries 0 → 0, 5 inherited axioms unchanged. Docker build verified `✔ [7744/7744] (23s)` on warm cache at pinned Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. The corollary is parameterised on a given Decomposition — existence (via natural midpoint construction) is left as the S2-A ACT-4 follow-up. The mathematical significance is linguistic: the OQ01 sharpness claim is now stated in the parent's `Module.finrank ℝ E` vocabulary, making it directly comparable to the parent `shapley_folkman` upper bound `card ≤ Module.finrank ℝ E`.",
+    "phase": "PREP",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 16,
+    "focus": "S2-A ACT-4 PREP (researcher-1, 2026-06-04): materialised the long-flagged existence form into a citation-pinned 32-LOC paste-ready Lean recipe in sessions/2026-06-04-s2a-act-4-prep-existence-form-recipe.md. Three named results scoped: (1) helper lemma midpoint_mem_convexHull_pair_zero_basis (~23 LOC), (2) noncomputable def midpointDecomp (~14 LOC), (3) theorem exists_tight_decomposition (~12 LOC, anonymous constructor combining midpointDecomp with the S2-A ACT-3 tight_excess_eq_finrank corollary). All 5 Mathlib v4.26.0 bearers re-verified at lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Finset.smul_sum at Algebra/BigOperators/GroupWithZero/Action.lean:57-59 is the only new bearer; the other four — convexHull_pair, convex_convexHull, subset_convexHull, finrank_euclideanSpace_fin — already used in the OQ01 file). Fallbacks documented for four failure modes (simp on set-literal membership, Finset.smul_sum binder mismatch, absurd elaboration, noncomputable rejection). No .lean / no meta.json / no knowledge.md edits this iteration — docker daemon unavailable, ACT deferred. File still at 228 LOC, 4 theorems, 0 sorries, 0 local axioms, 5 inherited axioms.",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "S2-A ACT-4 existence form (~15-25 LOC): construct the natural midpoint decomposition `def midpointDecomp` with `point i = (1/2) • e_i` and assemble the existence form `∃ D, D.excessIndices.card = Module.finrank ℝ E`. Needs membership lemma `(1/2) • e_i ∈ convexHull ℝ {0, e_i}` via `Convex.midpoint_mem` or `convexHull_pair`. OR pivot to gallery entry creation (enricher scope): create src/data/proofs/shapley-folkman-oq-01/ gallery entry with status=axiomatized (5 inherited axioms), badge=axiom, sorries=0, theoremCount=4 (now includes `tight_excess_eq_finrank`). Multi-session deferred: S2-B PREP/ACT truncation lift to EuclideanSpace ℝ ℕ / lp 2 ℕ.",
+    "nextAction": "S2-A ACT-4 ACT pass (paste-ready, single session, ~5-10 min wall-clock when docker is available): paste sessions/2026-06-04-s2a-act-4-prep-existence-form-recipe.md §3.1-§3.3 verbatim into proofs/Proofs/ShapleyFolkmanOQ01.lean immediately before `end ShapleyFolkmanOQ01` (line 228), run ./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01, apply §5 fallbacks if any subproof misfires (low risk). Expected delta: +32 LOC (228 → 260), +2 theorems + 1 def (4 theorems → 5 theorems + 1 noncomputable def). Or pivot to gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/ with status=axiomatized, badge=axiom, theoremCount=4 (or 5 if ACT-4 lands first), sorries=0, 5 inherited axioms. Multi-session deferred: S2-B PREP/ACT truncation lift.",
     "attemptCounts": {
-      "total": 15,
-      "currentApproach": 14,
+      "total": 16,
+      "currentApproach": 15,
       "approachesTried": 1
     }
   },
@@ -57,7 +57,7 @@
     }
   ],
   "knowledge": {
-    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge). Session 9 (STATE-SYNC, 2026-05-14, researcher-12): catch-up for merged S5 PREP (#18929) that explicitly scoped itself doc-only and did not touch state.md / JSON. Both surviving sorries in ShapleyFolkmanOQ01.lean now have verbatim Lean recipes (S5 PREP §3 for mem_convexHull_finset_sum, S3 PREP §4 + S4 PREP §3 for tight_excess_count). Remaining ACT-2 uncertainty is build-side only.",
+    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge). Session 9 (STATE-SYNC, 2026-05-14, researcher-12): catch-up for merged S5 PREP (#18929) that explicitly scoped itself doc-only and did not touch state.md / JSON. Both surviving sorries in ShapleyFolkmanOQ01.lean now have verbatim Lean recipes (S5 PREP §3 for mem_convexHull_finset_sum, S3 PREP §4 + S4 PREP §3 for tight_excess_count). Remaining ACT-2 uncertainty is build-side only. Session 16 (S2-A ACT-4 PREP, 2026-06-04, researcher-1): doc-only PREP materialising the existence form `exists_tight_decomposition` into a 32-LOC paste-ready Lean recipe across three named results (helper lemma midpoint_mem_convexHull_pair_zero_basis, noncomputable def midpointDecomp, theorem exists_tight_decomposition). All five Mathlib v4.26.0 bearers re-verified at lake SHA; the only new bearer relative to the existing OQ01 file is Finset.smul_sum at Algebra/BigOperators/GroupWithZero/Action.lean:57-59. Four failure-mode fallbacks documented (§5 of session file). Race-safety probes clean: 0 open OQ01 PRs at claim time; OQ01 .lean file unchanged on origin/main since 2026-06-01T02:20Z. ACT deferred to next docker-available session — paste-ready recipe means the next session is ~5-10 min wall-clock.",
     "builtItems": [
       "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
       "research/problems/shapley-folkman-oq-01/state.md: Session 1–8 entries with iteration history table",
@@ -85,13 +85,13 @@
       "Midpoint extraction: x = (1/2) ∑ eᵢ is non-extreme in each convexHull ℝ Sᵢ, making every i excess"
     ],
     "nextSteps": [
-      "S2-A ACT-2 docker-build pass: verify helper lemma (line 58); discharge mem_convexHull_finset_sum (line 87) via S5 PREP §3 verbatim 18-LOC skeleton; discharge tight_excess_count (line 119) via S3 PREP §4 coordinate-eval.",
-      "If helper lemma build fails, switch to S3 PREP §3.2 segment_eq_image' route (documented fallback in S3b PREP §3.3).",
-      "If S5 PREP §3 convex_convexHull two-point combo misfires, switch to S5 PREP §5.3 segment-route fallback.",
-      "After S2-A build-verified, consider S2-A ACT-3 sharpness corollary (S5 PREP §10): combine tight_excess_count with parent shapley_folkman to witness ∃ D, D.excessIndices.card = Module.finrank ℝ E.",
-      "S2-B PREP/ACT (deferred to post-S2-A): lift Fin N tightness to truncation-based refutation of any uniform bound for EuclideanSpace ℝ ℕ / lp 2 ℕ."
+      "S2-A ACT-4 ACT pass: paste the §3.1-§3.3 verbatim recipe into ShapleyFolkmanOQ01.lean before line 228, run docker build, commit + PR.",
+      "If §3 recipe build fails: apply §5 fallbacks (simp on set-literal membership, Finset.smul_sum binder mismatch, absurd elaboration, noncomputable rejection) — all four documented in session file.",
+      "Gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/meta.json with status=axiomatized, badge=axiom, sorries=0, theoremCount=4 (or 5 if ACT-4 lands first); 5 inherited axioms from parent.",
+      "S2-B PREP/ACT (deferred): truncation lift of Fin N tightness to EuclideanSpace ℝ ℕ / lp 2 ℕ.",
+      "S3 ACT (deferred multi-session): Aumann set-valued integral statement-only — needs Lyapunov upstream not in Mathlib."
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-31T00:00:00Z"
+  "updatedAt": "2026-06-04T00:00:00Z"
 }
