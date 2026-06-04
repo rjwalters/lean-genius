@@ -252,10 +252,14 @@ theorem trivial_upper (k : ℕ) (_hk : 2 ≤ k) :
     smoothThreshold k ≤ k + 1 := by
   exact Nat.find_le (smoothBlockSet_pos_density k)
 
-/-- **Rosser's sieve.** S(k) > k^{1/2−o(1)}.
-For every ε > 0 and large enough k, S(k) ≥ k^{1/2−ε}. -/
-/-- **Ford–Green–Konyagin–Maynard–Tao (2018).**
-S(k) ≪ k · log log log k / (log log k · log log log log k). -/
+/- **Rosser's sieve.** S(k) > k^{1/2−o(1)}.
+For every ε > 0 and large enough k, S(k) ≥ k^{1/2−ε}.
+(Not formalized — appears as commentary only.)
+
+**Ford–Green–Konyagin–Maynard–Tao (2018).**
+S(k) ≪ k · log log log k / (log log k · log log log log k).
+(Not formalized — appears as commentary only.) -/
+
 /- ## Structural Observations -/
 
 /-- If k₁ ≤ k₂, the small-factor block set for k₂ is contained in that for k₁. -/
@@ -375,3 +379,51 @@ theorem smooth_threshold_2 : smoothThreshold 2 = 3 := by
     calc (smoothBlockSet 2 2).upperDensity
         ≤ ({0} : Set ℕ).upperDensity := upperDensity_mono smoothBlockSet_two_two_sub_zero
       _ ≤ 0 := upperDensity_singleton_zero
+
+/- ## General Lower Bound: S(k) ≥ 3 for k ≥ 2 -/
+
+/-- For k ≥ 2 and x ≤ 1, the block set is empty.
+Proof: smoothBlockSet k x ⊆ smoothBlockSet 2 x = ∅ by antitone in k. -/
+theorem smoothBlockSet_empty_of_ge_two_le_one {k x : ℕ}
+    (hk : 2 ≤ k) (hx : x ≤ 1) : smoothBlockSet k x = ∅ := by
+  rw [Set.eq_empty_iff_forall_notMem]
+  intro n hn
+  have h2 : n ∈ smoothBlockSet 2 x := smoothBlockSet_antitone 2 k x hk hn
+  rw [smoothBlockSet_two_empty_of_le_one hx] at h2
+  exact h2
+
+/-- For k ≥ 2, smoothBlockSet k 2 ⊆ {0}.
+Proof: smoothBlockSet k 2 ⊆ smoothBlockSet 2 2 ⊆ {0} by antitone in k. -/
+theorem smoothBlockSet_two_sub_zero_of_ge_two {k : ℕ} (hk : 2 ≤ k) :
+    smoothBlockSet k 2 ⊆ {0} :=
+  fun _ hn => smoothBlockSet_two_two_sub_zero (smoothBlockSet_antitone 2 k 2 hk hn)
+
+/-- Upper density of the empty set is 0. -/
+theorem upperDensity_empty : (∅ : Set ℕ).upperDensity = 0 := by
+  simp [Set.upperDensity, Filter.limsup_const]
+
+/-- **General lower bound.** S(k) ≥ 3 for k ≥ 2.
+For x ≤ 1, smoothBlockSet k x is empty.
+For x = 2, smoothBlockSet k 2 ⊆ {0} has upper density 0.
+Hence no x ≤ 2 witnesses positive density, so smoothThreshold k ≥ 3.
+
+Together with `trivial_upper`, we have 3 ≤ S(k) ≤ k+1 for k ≥ 2. -/
+theorem smoothThreshold_ge_three (k : ℕ) (hk : 2 ≤ k) :
+    3 ≤ smoothThreshold k := by
+  unfold smoothThreshold
+  rw [Nat.le_find_iff]
+  intro x hx hd
+  interval_cases x
+  · -- x = 0: smoothBlockSet k 0 = ∅
+    rw [smoothBlockSet_empty_of_ge_two_le_one hk (by omega : (0:ℕ) ≤ 1)] at hd
+    rw [upperDensity_empty] at hd
+    exact lt_irrefl 0 hd
+  · -- x = 1: smoothBlockSet k 1 = ∅
+    rw [smoothBlockSet_empty_of_ge_two_le_one hk (le_refl 1)] at hd
+    rw [upperDensity_empty] at hd
+    exact lt_irrefl 0 hd
+  · -- x = 2: smoothBlockSet k 2 ⊆ {0}, density ≤ 0
+    have hle : (smoothBlockSet k 2).upperDensity ≤ 0 :=
+      le_trans (upperDensity_mono (smoothBlockSet_two_sub_zero_of_ge_two hk))
+        upperDensity_singleton_zero
+    linarith

@@ -21,10 +21,10 @@
     "erdosUrl": "https://erdosproblems.com/929",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 377,
-    "assumptions": "0 axioms, 0 sorries. Known bounds (rosser_lower from Rosser sieve, fgkmt_upper from Ford-Green-Konyagin-Maynard-Tao 2018) appear as docstring comments only — no axiom declarations. smooth_threshold_2 and smoothBlockSet_pos_density fully proved.",
+    "lineCount": 429,
+    "assumptions": "0 axioms, 0 sorries. Known bounds (Rosser sieve, Ford-Green-Konyagin-Maynard-Tao 2018) appear as commentary only — no axiom declarations. Proved: smoothBlockSet_pos_density, smooth_threshold_2, smoothThreshold_mono, smoothThreshold_ge_three (general lower bound S(k) ≥ 3 for k ≥ 2).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 19,
+    "theoremCount": 23,
     "definitionCount": 7
   },
   "overview": {
