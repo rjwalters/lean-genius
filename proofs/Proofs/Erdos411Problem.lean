@@ -395,3 +395,97 @@ when n ≥ 3, since φ(n) is even for n ≥ 3. -/
 theorem totientStep_ge (n : ℕ) : totientStep n ≥ n := by
   unfold totientStep
   omega
+
+/-
+## Section VIII: Cambie Family Doubling Tower
+
+The Steinerberger equation φ(n) + φ(n + φ(n)) = n is preserved under
+the doubling map n ↦ 2n (when n is even, n > 2). Each l = 1 base case in
+Cambie's conjectured family {2 · p : p ∈ {2, 3, 5, 7, 35, 47}} therefore
+generates an infinite tower {2^l · p : l ≥ 1} of doubling solutions.
+
+Combined with `doubling_r2_n4`, `doubling_r2_n6`, `doubling_r2_n10`,
+`doubling_r2_n14`, `doubling_r2_n70`, `doubling_r2_n94`, this realizes the
+*entire* sufficient direction of Cambie's conjecture: every n in the
+predicted family is unconditionally proved to be an r = 2 doubling solution.
+The converse — that no other n satisfies DoublingRelation n 2 — remains open.
+-/
+
+/-- **Steinerberger equation lifts under doubling.** If n is even, n > 2,
+and φ(n) + φ(n + φ(n)) = n, then φ(2n) + φ(2n + φ(2n)) = 2n.
+
+Proof: φ(2n) = 2·φ(n) since 2 ∣ n; then 2n + φ(2n) = 2(n + φ(n)) and
+n + φ(n) is even (n even and φ(n) even by `Nat.totient_even` since n > 2),
+so φ(2n + φ(2n)) = φ(2(n + φ(n))) = 2·φ(n + φ(n)). The sum equals
+2·(φ(n) + φ(n + φ(n))) = 2n. -/
+theorem steinerberger_eq_lift {n : ℕ} (hn_even : 2 ∣ n) (hn_gt : n > 2)
+    (h_eq : n.totient + (n + n.totient).totient = n) :
+    (2 * n).totient + (2 * n + (2 * n).totient).totient = 2 * n := by
+  have hn_pos : 0 < n := by omega
+  have hφn_even : 2 ∣ n.totient := Nat.totient_even hn_gt
+  have h_phi2n : (2 * n).totient = 2 * n.totient :=
+    totient_double_even hn_even hn_pos
+  have hsum_even : 2 ∣ (n + n.totient) := dvd_add hn_even hφn_even
+  have hsum_pos : 0 < n + n.totient := by omega
+  have h_phi_sum : (2 * (n + n.totient)).totient = 2 * (n + n.totient).totient :=
+    totient_double_even hsum_even hsum_pos
+  have h_arg_eq : 2 * n + 2 * n.totient = 2 * (n + n.totient) := by ring
+  calc (2 * n).totient + (2 * n + (2 * n).totient).totient
+      = 2 * n.totient + (2 * n + 2 * n.totient).totient := by rw [h_phi2n]
+    _ = 2 * n.totient + (2 * (n + n.totient)).totient := by rw [h_arg_eq]
+    _ = 2 * n.totient + 2 * (n + n.totient).totient := by rw [h_phi_sum]
+    _ = 2 * (n.totient + (n + n.totient).totient) := by ring
+    _ = 2 * n := by rw [h_eq]
+
+/-- Iterated lifting: every doubling of a Steinerberger base case still
+satisfies Steinerberger's equation. -/
+theorem steinerberger_eq_pow_two {n : ℕ} (hn_even : 2 ∣ n) (hn_gt : n > 2)
+    (h_eq : n.totient + (n + n.totient).totient = n) (l : ℕ) :
+    (2^l * n).totient + (2^l * n + (2^l * n).totient).totient = 2^l * n := by
+  induction l with
+  | zero => simpa using h_eq
+  | succ l ih =>
+    have hpow_ge_one : 1 ≤ 2^l := Nat.one_le_two_pow
+    have h_pow_n_even : 2 ∣ 2^l * n := dvd_mul_of_dvd_right hn_even _
+    have h_pow_n_gt : 2^l * n > 2 := by
+      have hge : 1 * n ≤ 2^l * n := Nat.mul_le_mul_right n hpow_ge_one
+      omega
+    have := steinerberger_eq_lift h_pow_n_even h_pow_n_gt ih
+    have hrw : 2^(l+1) * n = 2 * (2^l * n) := by ring
+    rw [hrw]; exact this
+
+/-- **Cambie family tower theorem.** From any even base case n > 2 satisfying
+Steinerberger's equation, the entire arithmetic-geometric tower
+{n, 2n, 4n, 8n, …} consists of r = 2 doubling solutions.
+
+Applied to the six l = 1 base cases (n ∈ {4, 6, 10, 14, 70, 94}), this proves
+unconditionally that *every* element of Cambie's conjectured family
+{2^l · p : l ≥ 1, p ∈ {2, 3, 5, 7, 35, 47}} is a doubling solution. -/
+theorem cambie_family_doubling {n : ℕ} (hn_even : 2 ∣ n) (hn_gt : n > 2)
+    (h_eq : n.totient + (n + n.totient).totient = n) (l : ℕ) :
+    DoublingRelation (2^l * n) 2 := by
+  have hpow_ge_one : 1 ≤ 2^l := Nat.one_le_two_pow
+  refine steinerberger_r2_sufficient ?_ ?_ (steinerberger_eq_pow_two hn_even hn_gt h_eq l)
+  · exact dvd_mul_of_dvd_right hn_even _
+  · have hge : 1 * n ≤ 2^l * n := Nat.mul_le_mul_right n hpow_ge_one
+    omega
+
+/-- **Cambie l = 2 layer**: g_{k+2}(n) = 2·g_k(n) for n ∈ {8, 12, 20, 28, 140, 188},
+obtained as the l = 2 instances of `cambie_family_doubling`. -/
+theorem doubling_r2_n8 : DoublingRelation 8 2 :=
+  cambie_family_doubling (n := 4) (by norm_num) (by omega) steinerberger_eq_n4 1
+
+theorem doubling_r2_n12 : DoublingRelation 12 2 :=
+  cambie_family_doubling (n := 6) (by norm_num) (by omega) steinerberger_eq_n6 1
+
+theorem doubling_r2_n20 : DoublingRelation 20 2 :=
+  cambie_family_doubling (n := 10) (by norm_num) (by omega) steinerberger_eq_n10 1
+
+theorem doubling_r2_n28 : DoublingRelation 28 2 :=
+  cambie_family_doubling (n := 14) (by norm_num) (by omega) steinerberger_eq_n14 1
+
+theorem doubling_r2_n140 : DoublingRelation 140 2 :=
+  cambie_family_doubling (n := 70) (by norm_num) (by omega) steinerberger_eq_n70 1
+
+theorem doubling_r2_n188 : DoublingRelation 188 2 :=
+  cambie_family_doubling (n := 94) (by norm_num) (by omega) steinerberger_eq_n94 1

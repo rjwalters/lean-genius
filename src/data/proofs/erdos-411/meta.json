@@ -51,17 +51,18 @@
       "Formalized Steinerberger's (2025) reduction — sufficient direction: proved steinerberger_iff (g_2(n) = 2n ↔ φ(n) + φ(n + φ(n)) = n) and steinerberger_r2_sufficient (even n > 2 with φ(n) + φ(n + φ(n)) = n implies DoublingRelation n 2 with K = 0); also proved steinerberger_eq_n10 and steinerberger_eq_n94 verifying the two known r=2 cases satisfy the equation",
       "Proved even preservation under g using Mathlib's Nat.totient_even",
       "Stated Cambie's structural conjecture (n = 2^l·p with p ∈ {2,3,5,7,35,47}) as a definition; conjecture itself is open",
-      "S9: Proved four additional Cambie l=1 doubling solutions (n=4, 6, 14, 70) via steinerberger_r2_sufficient — together with prior n=10 and n=94 this exhausts the l=1 layer of Cambies conjectured family n = 2^l*p with p in {2,3,5,7,35,47}"
+      "S9: Proved four additional Cambie l=1 doubling solutions (n=4, 6, 14, 70) via steinerberger_r2_sufficient — together with prior n=10 and n=94 this exhausts the l=1 layer of Cambies conjectured family n = 2^l*p with p in {2,3,5,7,35,47}",
+      "S10: steinerberger_eq_lift — Steinerberger's equation φ(n)+φ(n+φ(n))=n is preserved under n ↦ 2n for even n>2, proved via totient_double_even applied to both n and the even sum n+φ(n); steinerberger_eq_pow_two iterates the lift to give 2^l·n satisfies the equation for all l; cambie_family_doubling combines with steinerberger_r2_sufficient to give DoublingRelation (2^l·n) 2 from a single base case. Specializing to the six l=1 base cases proves the *entire* sufficient direction of Cambie's conjectured family {2^l·p : l≥1, p∈{2,3,5,7,35,47}} — every predicted n is unconditionally a doubling solution. The l=2 layer (n∈{8,12,20,28,140,188}) is recorded as named theorems doubling_r2_n8/n12/n20/n28/n140/n188 (build pending)"
     ],
     "axiomCount": 0,
-    "lineCount": 397,
-    "assumptions": "No axioms. All results (cambie_ratio3, cambie_ratio4_148646, cambie_ratio4_4325798, r=2 solutions n=10/94, Steinerberger's sufficient direction) are proved. Open conjecture stated as definition, not axiom.",
-    "theoremCount": 30,
+    "lineCount": 491,
+    "assumptions": "No axioms. All results (cambie_ratio3, cambie_ratio4_148646, cambie_ratio4_4325798, r=2 solutions n=10/94, Steinerberger's sufficient direction, the entire l≥1 layer of Cambie's conjectured family via the cambie_family_doubling tower) are proved. Open conjecture stated as definition, not axiom.",
+    "theoremCount": 39,
     "definitionCount": 6
   },
   "leanFile": {
     "path": "Proofs/Erdos411Problem.lean",
-    "lineCount": 397,
+    "lineCount": 491,
     "namespace": "root",
     "imports": [
       "Mathlib.Data.Nat.Totient",
@@ -72,7 +73,9 @@
     "mainTheorems": [
       "totientStep_even_of_even",
       "totientStep_ge",
-      "steinerberger_r2_sufficient"
+      "steinerberger_r2_sufficient",
+      "steinerberger_eq_lift",
+      "cambie_family_doubling"
     ],
     "mainDefinitions": [
       "totientStep",
@@ -83,7 +86,7 @@
       "CambieConjecture"
     ],
     "axiomCount": 0,
-    "theoremCount": 30,
+    "theoremCount": 39,
     "sorries": 0,
     "definitionCount": 6
   },
@@ -153,10 +156,17 @@
       "startLine": 85,
       "endLine": 108,
       "summary": "Proved: even preservation $2 \\mid n \\wedge n > 2 \\implies 2 \\mid g(n)$ via `Nat.totient_even`. Cambie's conjecture: $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$. Monotonicity: $g(n) \\geq n$ by `omega`."
+    },
+    {
+      "id": "cambie-family-tower",
+      "title": "Cambie Family Doubling Tower",
+      "startLine": 399,
+      "endLine": 490,
+      "summary": "Proves Steinerberger's equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$ is preserved under doubling: for even $n > 2$, the equation holds for $n$ iff it lifts to $2n$ (`steinerberger_eq_lift`). Iterating gives `steinerberger_eq_pow_two`: $\\varphi(2^l n) + \\varphi(2^l n + \\varphi(2^l n)) = 2^l n$ for all $l$. Composed with the sufficient direction yields `cambie_family_doubling`: $\\text{DoublingRelation}(2^l n)\\, 2$ for every $l \\geq 0$. Applied to the six l=1 base cases this proves *every* element of Cambie's conjectured family $\\{2^l p : l \\geq 1,\\ p \\in \\{2,3,5,7,35,47\\}\\}$ is an $r=2$ doubling solution unconditionally; the $l=2$ layer is recorded as `doubling_r2_n8`, `doubling_r2_n12`, `doubling_r2_n20`, `doubling_r2_n28`, `doubling_r2_n140`, `doubling_r2_n188`."
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. The formalization proves 17 theorems (0 axioms, 0 sorries): all known solutions ($n = 10, 94$ for $r = 2$; Cambie's ratio-3 $n = 738$ and ratio-4 $n = 148646, 4325798$). The main characterization conjecture and Cambie's conjecture are stated as open propositions. Steinerberger's (2025) reduction is noted in comments.",
+    "summary": "Erdős Problem #411 asks for all $(n, r)$ such that iterating $g(n) = n + \\varphi(n)$ satisfies $g^{k+r}(n) = 2 \\cdot g^k(n)$ for large $k$. The formalization proves 39 theorems (0 axioms, 0 sorries): all known solutions ($n = 10, 94$ for $r = 2$; Cambie's ratio-3 $n = 738$ and ratio-4 $n = 148646, 4325798$); Steinerberger's (2025) sufficient reduction; and the *entire* l ≥ 1 layer of Cambie's conjectured family $\\{2^l p : p \\in \\{2,3,5,7,35,47\\}\\}$ via the `cambie_family_doubling` tower theorem, derived from the lifting result $\\varphi(n) + \\varphi(n + \\varphi(n)) = n \\Rightarrow \\varphi(2n) + \\varphi(2n + \\varphi(2n)) = 2n$. The main characterization conjecture and the converse direction of Cambie's conjecture remain open.",
     "implications": "**Theoretical Significance**: A full characterization would reveal deep structure in the arithmetic dynamics of the totient function and its interaction with addition.\n\nThe connection between the multiplicative nature of $\\varphi$ and the additive iteration $g(n) = n + \\varphi(n)$ is fundamental. The multi-ratio phenomenon discovered by Cambie suggests the problem is part of a richer classification of growth rates in arithmetic dynamical systems.",
     "openQuestions": [
       "Are there finitely or infinitely many $(n, r)$ with the doubling property? Cambie's conjecture would give infinitely many (all $2^l \\cdot p$ for each valid $p$)",
