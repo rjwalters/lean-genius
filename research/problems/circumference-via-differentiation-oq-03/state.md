@@ -1,12 +1,54 @@
 # Current State: circumference-via-differentiation-oq-03
 
-**Phase**: ACT-S8-PASTED (S8 — polymorphic main theorem `riemannianVolumeBall_hasDerivWithinAt` added by composition of S7 Bridge 1 with parent `nBallVolumeFn_hasDerivAt` via `HasDerivWithinAt.congr`; R1 vector-space ACT roadmap complete; build verification deferred per G9 lake self-loop)
+**Phase**: ACT-MERGED (S8 ACT polymorphic main theorem `riemannianVolumeBall_hasDerivWithinAt` LANDED on `main` via PR #22088 merged 2026-06-02T13:20:45Z; commit `fd413760cf7`. R1 vector-space ACT roadmap CLOSED on main. R2/R3 remain Mathlib-roadmap gaps; in-repo OQ-03 has no remaining ACT deliverable.)
 **Path**: full
-**Since**: 2026-06-02T13:00Z (this S8 ACT polymorphic main theorem); S7 ACT-S3 merged 2026-05-31 (#21506); S6 GALLERY-WIRING merged 2026-05-31T~02:40Z; ACT-MERGED 2026-05-30T12:15Z (S5 STATE-SYNC); ACT-merged 2026-05-16T08:55Z (commit ecb47b35601 in PR #19454 bulk merge); root-since 2026-05-12T22:55:00Z
-**Iteration**: 11 (S1, S2 PREP, S2b PREP, S2c PREP, S2d PREP, S2 ACT [merged via #19454 bulk], S3 PREP, S4 PREP, S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT [this])
-**Researcher**: researcher-1 (S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT); preceding: researcher-9 (S1, S2 ACT, S4 PREP), researcher-N (S2/S2b PREP), researcher-12 (S2c PREP + S3 PREP), researcher-4 (S2d PREP)
+**Since**: 2026-06-04T16:30Z (this S9 STATE-SYNC reconciles state.md + JSON cursor with the post-merge reality of PR #22088); S8 ACT merged 2026-06-02T13:20:45Z (#22088); S7 ACT-S3 merged 2026-05-31 (#21506); S6 GALLERY-WIRING merged 2026-05-31T~02:40Z; ACT-MERGED 2026-05-30T12:15Z (S5 STATE-SYNC); ACT-merged 2026-05-16T08:55Z (commit ecb47b35601 in PR #19454 bulk merge); root-since 2026-05-12T22:55:00Z
+**Iteration**: 12 (S1, S2 PREP, S2b PREP, S2c PREP, S2d PREP, S2 ACT [merged via #19454 bulk], S3 PREP, S4 PREP, S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT [merged via #22088], S9 STATE-SYNC [this])
+**Researcher**: researcher-1 (S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT, S9 STATE-SYNC); preceding: researcher-9 (S1, S2 ACT, S4 PREP), researcher-N (S2/S2b PREP), researcher-12 (S2c PREP + S3 PREP), researcher-4 (S2d PREP)
 
-## Current Focus (S8 ACT, researcher-1, 2026-06-02)
+## Current Focus (S9 STATE-SYNC, researcher-1, 2026-06-04)
+
+This iteration is a **doc-only STATE-SYNC** reconciling `state.md` and the
+JSON cursor `src/data/research/problems/circumference-via-differentiation-oq-03.json`
+with the post-merge reality of PR #22088 (S8 ACT polymorphic main theorem,
+merged 2026-06-02T13:20:45Z, commit `fd413760cf7`). The 2-day-old state
+documents still presented the S8 ACT PR as open (`phase: ACT-S8-PASTED`,
+"build pending — G9 lake self-loop"). This S9 STATE-SYNC moves them to
+`phase: ACT-MERGED`.
+
+**On main as of 2026-06-04** (verified `git log -1` on `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean`):
+- file size: 194 LOC (matches state.md prediction post-S8)
+- theorem count: 6 (matches state.md prediction post-S8)
+- sorries: 0 (`grep -c "sorry"` returns 0)
+- axioms: 0 (`grep -c "^axiom "` returns 0; only matched line is the
+  comment header `"Status: 0 sorries, 0 axioms."`)
+- imports unchanged from S7 ACT-S3 +
+  `import Proofs.CircumferenceViaDifferentiationOQ01`
+- The 6 theorems on main:
+  1. `riemannianVolumeBall_fin_two` (S2 ACT)
+  2. `riemannianVolumeBall_fin_three` (S2 ACT)
+  3. `riemannianVolumeBall_hasDerivWithinAt_fin_two` (S2 ACT)
+  4. `riemannianVolumeBall_hasDerivWithinAt_fin_three` (S2 ACT)
+  5. `riemannianVolumeBall_eq_nBallVolumeFn` (S7 ACT-S3, #21506)
+  6. `riemannianVolumeBall_hasDerivWithinAt` (S8 ACT, #22088)
+
+**Net change this PR**: `state.md` header + Focus + Open PRs + Iteration
+History; the JSON cursor `phase` / `since` / `iteration` fields; one new
+session file `sessions/2026-06-04-s9-state-sync-post-s8-act-merge.md`.
+**No Lean modification. No gallery `meta.json` modification (already
+verified-status-accurate per Axiom Integrity Policy at the S6
+GALLERY-WIRING merge: status="verified", sorries=0, axiomCount=0,
+lineCount=194, theoremCount=6). No build needed.**
+
+**R1 vector-space ACT roadmap status**: CLOSED. After this S9 STATE-SYNC,
+the in-repo OQ-03 slug has no remaining ACT deliverable. Recommend
+**release-and-cycle silently** for subsequent claims unless (a) a
+Mathlib bearer drift is observed, (b) the G9 blocker clears and a
+Docker re-verification PR makes sense (likely a meaningless ceremony
+once Mathlib bearers haven't drifted), or (c) the seeker promotes
+the R2/R3 Mathlib-roadmap follow-up to a new slug.
+
+### Previous Focus (S8 ACT, researcher-1, 2026-06-02)
 
 This iteration adds the **polymorphic main theorem** `riemannianVolumeBall_hasDerivWithinAt` to `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean`, closing the R1 vector-space ACT roadmap for OQ-03. The new theorem composes:
 
@@ -88,19 +130,27 @@ The Lean S2 ACT deliverable (n=2 and n=3 Euclidean partial) landed on main as
 2026-05-16). PR #18985 (researcher-9, 2026-05-14) was CLOSED; its code was
 absorbed into the bulk.
 
-## Verified Deliverables on main (as of 2026-05-31, post-S7 ACT-S3 merge #21506)
+## Verified Deliverables on main (as of 2026-06-04, post-S8 ACT merge #22088)
 
-- `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` (152 LOC, 5 thms;
-  this S8 ACT extends to 194 LOC / 6 thms in this PR, pending merge)
+- `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` (194 LOC, 6 thms,
+  0 sorries, 0 axioms — confirmed via `git ls-files` + `wc -l` + `grep -c`
+  in researcher-1's worktree at HEAD `ac6fb953b79`)
   - `riemannianVolumeBall_fin_two` — Bridge 1, n=2: vol(closedBall p r) = π r²
   - `riemannianVolumeBall_fin_three` — Bridge 1, n=3: vol(closedBall p r) = (4π/3) r³
   - `riemannianVolumeBall_hasDerivWithinAt_fin_two` — Main S5, n=2: dV/dr = 2π r
   - `riemannianVolumeBall_hasDerivWithinAt_fin_three` — Main S5, n=3: dV/dr = 4π r²
   - `riemannianVolumeBall_eq_nBallVolumeFn` — S7 ACT-S3 polymorphic Bridge 1
+  - `riemannianVolumeBall_hasDerivWithinAt` — S8 ACT polymorphic main theorem
 - `proofs/Proofs.lean` — `import Proofs.CircumferenceViaDifferentiationOQ03` present
-- 0 sorries; 0 axioms; build verified at the time of the bulk merge
+- `src/data/proofs/circumference-via-differentiation-oq-03/{meta.json, index.ts, annotations.json}` —
+  S6 GALLERY-WIRING (#21430); `meta.json` already reports `lineCount: 194`,
+  `theoremCount: 6`, `sorries: 0`, `axiomCount: 0`, `status: "verified"`,
+  `badge: "original"` (in agreement with reality post-S8 ACT merge)
+- 0 sorries; 0 axioms; build verification deferred per documented
+  G9 lake self-loop blocker (cross-cutting, separate remit; carries
+  the standard "build pending" qualifier from S7 ACT-S3 / S8 ACT PRs)
 
-## Just completed (S8 ACT, this iteration, build pending — G9 lake self-loop)
+## Previously completed (S8 ACT, merged 2026-06-02 via PR #22088)
 
 - **Polymorphic main theorem (Workaround C')** — `riemannianVolumeBall_hasDerivWithinAt`:
   for every `[NormedAddCommGroup E] [InnerProductSpace ℝ E]
@@ -180,17 +230,19 @@ gallery slug is seeded for the R2/R3 path.
 
 ## Open PRs
 
-- **(this PR, S8 ACT)**: researcher-1, opened 2026-06-02T13:00Z.
-  Lean +42 net (152 → 194, no new imports, +1 new theorem
-  `riemannianVolumeBall_hasDerivWithinAt`, header comment updated to
-  list 6th theorem). 0 sorries, 0 axioms. Build pending — G9 lake
-  self-loop. Pre-flight: 0 drift since S7 ACT-S3 at pinned SHA (2 days
-  elapsed); no new Mathlib bearer dependencies (composition of two
-  existing in-repo theorems via `HasDerivWithinAt.congr` already in use
-  by `_fin_two`/`_fin_three`).
+- **(this PR, S9 STATE-SYNC)**: researcher-1, opened 2026-06-04T16:30Z.
+  Doc-only: `state.md` (header phase + Focus + Open PRs + Iteration History +
+  Calibration); JSON cursor (`phase` → `ACT-MERGED`, `since`, `iteration` 11→12);
+  one new session file. **No Lean modification. No gallery `meta.json`
+  modification. No build needed.**
+- S8 ACT (researcher-1, MERGED 2026-06-02T13:20:45Z via #22088, commit
+  `fd413760cf7`): polymorphic main theorem `riemannianVolumeBall_hasDerivWithinAt`
+  via composition of `nBallVolumeFn_hasDerivAt` and `riemannianVolumeBall_eq_nBallVolumeFn`
+  through `HasDerivWithinAt.congr`. +42 net LOC (152 → 194), 0 sorries,
+  0 axioms. Build verification deferred per G9 lake self-loop.
 - S7 ACT-S3 (researcher-1, merged 2026-05-31 via #21506): polymorphic
-  Bridge 1 `riemannianVolumeBall_eq_nBallVolumeFn`. The bearer this S8
-  ACT composes against.
+  Bridge 1 `riemannianVolumeBall_eq_nBallVolumeFn`. The bearer S8 ACT
+  composed against.
 - S6 GALLERY-WIRING (researcher-1, merged 2026-05-31 via #21430): gallery
   entry created.
 
@@ -220,7 +272,8 @@ gallery slug is seeded for the R2/R3 path.
 | S5 STATE-SYNC | 2026-05-30 | researcher-1 | (merged) | Post-S2-ACT-landing doc reconciliation: state.md + JSON cursor → ACT-MERGED; doc-only. |
 | S6 GALLERY-WIRING | 2026-05-31 | researcher-1 | (open / merge pending) | Create src/data/proofs/circumference-via-differentiation-oq-03/{meta.json (~290 LOC), index.ts (25 LOC), annotations.json (5 annotations)}. Verified via npx tsx scripts/annotations/build.ts: 2436 proofs discovered (+1), listings.json includes slug with annotationCount=5 / mathlibCount=6 / status=verified. tsc --noEmit clean. |
 | S7 ACT-S3 | 2026-05-31 | researcher-1 | #21506 (merged) | Polymorphic Bridge 1 paste from S3 PREP §3.2 verbatim: +1 import (Proofs.CircumferenceViaDifferentiationOQ01), +1 theorem (riemannianVolumeBall_eq_nBallVolumeFn, ~30 LOC body, ~14 LOC docstring + signature). +59 net LOC (93 → 152). 0 sorries, 0 axioms. Build pending — G9 lake self-loop. |
-| **S8 ACT** | **2026-06-02** | **researcher-1** | **(this PR)** | **Polymorphic main theorem composition: +1 theorem (riemannianVolumeBall_hasDerivWithinAt, ~4 LOC body + ~12 LOC docstring + ~16 LOC signature/header expansion = +42 net LOC, 152 → 194). 0 sorries, 0 axioms. No new imports. Composes nBallVolumeFn_hasDerivAt (parent) with riemannianVolumeBall_eq_nBallVolumeFn (S7 Bridge 1) via HasDerivWithinAt.congr. R1 vector-space ACT roadmap COMPLETE. Build pending — G9 lake self-loop. Pre-flight: SHA-pin transitivity from S7 ACT-S3 (2-day gap); no new Mathlib bearers.** |
+| S8 ACT | 2026-06-02 | researcher-1 | #22088 (merged) | Polymorphic main theorem composition: +1 theorem (riemannianVolumeBall_hasDerivWithinAt, ~4 LOC body + ~12 LOC docstring + ~16 LOC signature/header expansion = +42 net LOC, 152 → 194). 0 sorries, 0 axioms. No new imports. Composes nBallVolumeFn_hasDerivAt (parent) with riemannianVolumeBall_eq_nBallVolumeFn (S7 Bridge 1) via HasDerivWithinAt.congr. R1 vector-space ACT roadmap COMPLETE. Build pending — G9 lake self-loop. Pre-flight: SHA-pin transitivity from S7 ACT-S3 (2-day gap); no new Mathlib bearers. |
+| **S9 STATE-SYNC** | **2026-06-04** | **researcher-1** | **(this PR)** | **Doc-only STATE-SYNC reconciling state.md + JSON cursor with the post-merge reality of PR #22088. Phase ACT-S8-PASTED → ACT-MERGED. Iteration 11 → 12. No Lean modification, no gallery meta.json modification, no build needed. Verifies on main: 194 LOC, 6 theorems, 0 sorries, 0 axioms, all 4 imports present, including Proofs.CircumferenceViaDifferentiationOQ01 (added by S7 ACT-S3). R1 vector-space ACT roadmap CLOSED.** |
 
 ## Reference Files (in this directory)
 
@@ -235,7 +288,8 @@ gallery slug is seeded for the R2/R3 path.
 - `sessions/2026-05-30-s5-state-sync-post-s2-act-landing.md` — S5 session.
 - `sessions/2026-05-31-s6-gallery-wiring.md` — S6 session.
 - `sessions/2026-05-31-s7-s3-act-polymorphic-bridge-1.md` — S7 ACT-S3 session.
-- `sessions/2026-06-02-s8-act-polymorphic-main-theorem.md` — this iteration's session doc.
+- `sessions/2026-06-02-s8-act-polymorphic-main-theorem.md` — S8 ACT session.
+- `sessions/2026-06-04-s9-state-sync-post-s8-act-merge.md` — this iteration's session doc.
 
 ## Calibration
 
