@@ -179,6 +179,49 @@ For any `m` satisfying the resolvent cubic, `ferrari_roots_are_roots`
 No drift observed on these APIs at Mathlib v4.26.0 (per the canonical
 references in similar S3 proofs across the gallery).
 
+### S5b SCAFFOLD-3 — `pan_witness_t_zero_nondegenerate_root` (2026-06-04)
+
+Added an **explicit** non-degenerate resolvent root at the Pan witness's
+`t = 0` boundary. The factored form `s²(s − 2)` from
+`pan_witness_t_zero_factorisation` (S5b SCAFFOLD-2) has its single
+(non-double) root at `s = 2`. Translating back to `m`-coordinates via
+`m = (s + 1)/2` gives `m = 3/2`, where `2m + p = 3 - 1 = 2 ≠ 0` — the
+**non-degenerate Ferrari branch** at the Pan-witness boundary.
+
+```lean
+theorem pan_witness_t_zero_nondegenerate_root :
+    (resolventCubic (-1) 0 (1/4 : ℂ)).eval (3/2 : ℂ) = 0 := by
+  simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  ring
+```
+
+This makes the abstract existence statement `ferrari_biquad_limit (-1)
+(1/4) hpr` concrete with `m = 3/2`. Crucially, this pins down the third
+root location at `t = 0` for the future `pan_witness_k1_tangency`:
+Newton-polygon analysis (PR #18455 §3) predicts the third root stays
+at `m = 3/2 + O(t²)` while the double root at `m = 1/2` (`s = 0`)
+perturbs into a `Θ(t)` pair, driving the `α(t) = Θ(t)` first-order
+cancellation that is OQ-02.a.1's `k = 1` witness.
+
+**Files modified in S5b SCAFFOLD-3:**
+- `proofs/Proofs/GeneralQuartic.lean`: +23 lines (+1 theorem, +1 `#check`)
+- `src/data/proofs/general-quartic/meta.json`: `theoremCount: 15 → 16`,
+  `lineCount: 576 → 599`, `assumptions` field extended.
+
+**Metrics after S5b SCAFFOLD-3:**
+- Lean theoremCount: 15 → 16 (+1)
+- Lean sorryCount: 0 (unchanged)
+- Lean axiomCount: 6 (unchanged)
+- LOC: 576 → 599 (+23)
+
+**Mathlib API touched in S5b SCAFFOLD-3:**
+- Same `simp only` set as `pan_witness_t_zero_factorisation`
+  (S5b SCAFFOLD-2, line 426): `Polynomial.eval_add/mul/pow/X/C`.
+- `ring` tactic to close the polynomial identity over `ℂ`.
+
+No drift observed; identical proof shape to four prior already-merged
+Pan-witness-adjacent theorems in the same file.
+
 ## Survey of Prior Art
 
 ### Folklore Status

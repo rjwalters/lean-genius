@@ -428,6 +428,28 @@ theorem pan_witness_t_zero_factorisation (s : ℂ) :
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   ring
 
+/-- **Pan-witness `t = 0` non-degenerate root** (S5b SCAFFOLD-3).
+
+At the Pan witness's `t = 0` boundary `(p, q, r) = (-1, 0, 1/4)`, the
+cleaned resolvent factorises as `s² · (s - 2)` (see
+`pan_witness_t_zero_factorisation`). Translating back to `m`-coordinates
+via `m = (s + 1)/2`, the third (non-double) resolvent root sits at
+`s = 2`, i.e. `m = 3/2`, where `2m + p = 3 - 1 = 2 ≠ 0` — the
+**non-degenerate Ferrari branch** at the Pan-witness boundary.
+
+This lemma makes the abstract existence statement
+`ferrari_biquad_limit (-1) (1/4) hpr` concrete with `m = 3/2`. It also
+matches the Newton-polygon prediction in `pan_witness_t_zero_factorisation`'s
+docstring (third root stays at `s = 2 + O(t²)` under `t ≠ 0`
+perturbation).
+
+Proof: identical `simp only + ring` pattern as
+`pan_witness_t_zero_factorisation` (line 426). -/
+theorem pan_witness_t_zero_nondegenerate_root :
+    (resolventCubic (-1) 0 (1/4 : ℂ)).eval (3/2 : ℂ) = 0 := by
+  simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  ring
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
@@ -572,5 +594,6 @@ end GeneralQuartic
 #check GeneralQuartic.resolvent_cubic_eval_s_form
 #check GeneralQuartic.pan_witness_cleaned_resolvent
 #check GeneralQuartic.pan_witness_t_zero_factorisation
+#check GeneralQuartic.pan_witness_t_zero_nondegenerate_root
 #check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple

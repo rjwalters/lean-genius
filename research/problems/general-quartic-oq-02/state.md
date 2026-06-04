@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (post-S3 DISCHARGE; S5a SCAFFOLD shipped)
-**Since**: 2026-05-13T04:25Z
-**Iteration**: 5 (S5a SCAFFOLD just completed; S5b ACT next)
+**Phase**: ACT (post-S3 DISCHARGE; S5a + S5b SCAFFOLD-1/-2/-3 shipped)
+**Since**: 2026-06-04T22:00Z
+**Iteration**: 7 (S5a + S5b SCAFFOLD-1/-2/-3 all shipped; S5b ACT proper next)
 
 ## Current Focus
 
@@ -11,12 +11,21 @@ fully discharged in `proofs/Proofs/GeneralQuartic.lean` (Part VI.5). The
 S2 `sorry` on `ferrari_biquad_limit` is now closed; the file's sorry
 count remains 0.
 
-**S5a SCAFFOLD (this session)**: added `resolvent_cubic_eval_s_form`
-(Lemma 1 from PR #18455 S4c PREP §2). Ring-discharged general-form
-substitution `m ↦ (s − p)/2` transforming the resolvent cubic into the
-Newton-polygon-cleaned `R̃(s) = s³ + 2p·s² + (p² − 4r)·s − q²`. +25 LOC,
-+1 theorem, no new axioms, no new sorries. Build pending (see honesty
-caveats in `sessions/2026-05-13-s5a-scaffold-resolvent-cubic-eval-s-form.md`).
+**S5b SCAFFOLD-3 (this session, researcher-1, 2026-06-04)**: added
+`pan_witness_t_zero_nondegenerate_root` — explicit non-degenerate
+resolvent root `m = 3/2` at the Pan witness's `t = 0` boundary
+`(p, q, r) = (-1, 0, 1/4)`. This is the `s = 2` root of the factored
+form `s²(s − 2)` (from `pan_witness_t_zero_factorisation`) translated
+back via `m = (s + 1)/2`. Pins down the third root location for the
+future `pan_witness_k1_tangency` perturbation analysis (Newton-polygon
+prediction: `m = 3/2 + O(t²)` under `t ≠ 0`). +23 LOC, +1 theorem, no
+new axioms, no new sorries. Build pending (same `simp + ring` pattern
+as four prior already-merged Pan-witness theorems in the same file).
+
+**Sibling SCAFFOLDs already shipped** (state.md was stale on this):
+- S5a SCAFFOLD (`resolvent_cubic_eval_s_form`) — PR #18569.
+- S5b SCAFFOLD-1 (`pan_witness_cleaned_resolvent`) — PR #18650.
+- S5b SCAFFOLD-2 (`pan_witness_t_zero_factorisation`) — PR #18651.
 
 ## Active Approach
 
@@ -75,10 +84,16 @@ Lemma 1 is in place. (2) and (4) are tight gallery-facing deliverables;
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 OBSERVE — markdown survey + JSON scaffold;
+- Total attempts: 7 (S1 OBSERVE — markdown survey + JSON scaffold;
   S2 SCAFFOLD — 2 helper lemmas proved + main statement scaffolded;
   S3 DISCHARGE — `ferrari_biquad_limit` proved, 1 sorry removed;
-  S5a SCAFFOLD — `resolvent_cubic_eval_s_form` added, +1 theorem).
-- Current approach attempts: 3 (S2 + S3 + S5a)
-- Approaches tried: 1 (Approach A discharged; B and C still deferred,
-  but B is now ≤ 50 LOC from a.1 discharge with Lemma 1 in place).
+  S5a SCAFFOLD — `resolvent_cubic_eval_s_form` added, +1 theorem;
+  S5b SCAFFOLD-1 — `pan_witness_cleaned_resolvent` added, +1 theorem;
+  S5b SCAFFOLD-2 — `pan_witness_t_zero_factorisation` added, +1 theorem;
+  S5b SCAFFOLD-3 — `pan_witness_t_zero_nondegenerate_root` added, +1
+  theorem [this session]).
+- Current approach attempts: 6 (S2 + S3 + S5a + S5b SCAFFOLD-1/-2/-3)
+- Approaches tried: 1 (Approach A discharged; B is now well-staged for
+  the `pan_witness_k1_tangency` ACT proper with Lemma 1, the
+  symbolic-`t` form, the factored form, AND the explicit third root
+  location all in place; C still deferred).
