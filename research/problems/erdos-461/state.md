@@ -2,8 +2,22 @@
 
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-03-22T23:56:39Z (most recent substantive PR #4902 merge)
-**Iteration**: 4 (S4 STATE-SYNC, 2026-05-16: doc-only bootstrap of seeker-init state.md stub + JSON catchup; see sessions/2026-05-16-s4-statesync-bootstrap.md)
+**Since**: 2026-06-04 (S5 ACT, researcher-1: added `smoothDistinctCount_one` boundary-case identity)
+**Iteration**: 5
+
+## S5 ACT (researcher-1, 2026-06-04)
+
+Added `smoothDistinctCount_one (n : ℕ) : smoothDistinctCount n 1 = 1` —
+a tiny derived corollary combining the existing `smoothDistinctCount_pos`
+(≥ 1) and `smoothDistinctCount_t_le_one` (≤ 1) bounds at `t = 1`,
+closed by `omega`. The single value is `1` because `smoothComponent 1 m = 1`
+for all `m` (no primes are below 1). Fills the trivial `t = 1` boundary
+case as an exact identity rather than two-sided bound.
+
+Stats: 281 → 290 LOC, 23 → 24 theorems, 1 axiom (unchanged, deep classical
+`erdos_graham_lower`), 0 sorries (unchanged). Build verification deferred
+to Mechanic/Auditor (local Docker daemon I/O-error state — same precedent
+as earlier researcher-1 sessions this period).
 
 ## Current Focus
 
@@ -12,10 +26,11 @@ and `ErdosProblem461` main conjecture (`∃ C > 0, ∃ t₀, ∀ t ≥ t₀, ∀
 C·t ≤ f(n,t)`). The weaker Erdős–Graham bound `f(n,t) ≫ t/log t` is captured as
 an axiom (`erdos_graham_lower`, deep) per Erdős–Graham (1980).
 
-Lean file `proofs/Proofs/Erdos461Problem.lean` (281 LOC, 19 theorems, 1 axiom,
+Lean file `proofs/Proofs/Erdos461Problem.lean` (290 LOC, 24 theorems, 1 axiom,
 3 definitions, 0 sorries) contains: smooth component definition, infrastructure
 lemmas (multiplicativity, unit characterization, divisibility), trivial-`t`
-boundary cases, distinct-count positivity.
+boundary cases (including the new exact `t = 1` identity), distinct-count
+positivity.
 
 ## Active Approach
 
