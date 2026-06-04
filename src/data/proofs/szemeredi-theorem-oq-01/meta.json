@@ -126,28 +126,68 @@
   },
   "sections": [
     {
-      "id": "preamble",
-      "title": "Module Header and Imports",
+      "id": "header-statement-status",
+      "title": "Header: Bound Statement and Status",
       "startLine": 1,
+      "endLine": 16,
+      "summary": "Opening docstring block. States the Kelley–Meka bound `r_3(N) ≤ N · exp(-c (log N)^{1/12})` against Mathlib's `rothNumberNat`, flags the entry's `Status: Axiomatized` (Bohr sets, sifted Fourier over `Z/NZ`, and the `U^3` inverse theorem are absent from Mathlib 4.26), and frames the contribution as recording the *quantitative* shape of the current best bound rather than duplicating the existing qualitative chain.",
+      "mathContext": "Headline equation in the docstring: $r_3(N) \\le N \\cdot \\exp(-c (\\log N)^{1/12})$. The `1/12` exponent is the original Kelley–Meka 2023 value; status `axiomatized` is the gallery's marker for *stated against a Mathlib invariant, proof gap documented*."
+    },
+    {
+      "id": "rate-gap-motivation",
+      "title": "Why Honestly Stronger Than the Existing Chain",
+      "startLine": 17,
+      "endLine": 26,
+      "summary": "Motivation block explaining why this entry cannot be derived as a corollary of existing Mathlib work. Mathlib's `roth_3ap_theorem_nat` is driven by `cornersTheoremBound`, which itself depends on `SzemerediRegularity.bound` — a tower-type exponential. Inverting a tower-type rate yields an iterated-logarithm (`log*`) density class, asymptotically much weaker than Kelley–Meka's quasi-polynomial `exp(-c (log N)^{1/12})`. The rate gap is exactly what forces axiomatization here.",
+      "mathContext": "Complexity-class hierarchy in play: $\\log^*$ (iterated log, from tower inversion) $\\prec$ $1 / (\\log N)^k$ (polylog) $\\prec$ $\\exp(-c (\\log N)^{1/12})$ (quasi-poly, Kelley–Meka) $\\prec$ $N^{-\\delta}$ (polynomial, conjectural)."
+    },
+    {
+      "id": "sibling-and-reference",
+      "title": "Companion Sibling Note and Reference",
+      "startLine": 27,
+      "endLine": 41,
+      "summary": "Closing docstring block pointing to (i) the recommended sibling slug `szemeredi-theorem-oq-01-incomplete-01`, which tracks an attempted Salem–Spencer-quantitative Approach B that was investigated in research/problems/szemeredi-theorem-oq-01/ Session 2 and ruled out (it is `BLOCKED` on the same Bohr-set / sifted-Fourier / U^3 infrastructure), and (ii) the canonical Kelley–Meka 2023 reference (FOCS 2023, full version Annals of Mathematics, 2024).",
+      "mathContext": "Sibling Approach B (`O(N / \\log \\log N)` via Salem–Spencer-quantitative) is BLOCKED at the same upstream-Mathlib boundary, so the gallery records *both* paths as axiomatized while waiting for Bohr sets / sifted Fourier / `U^3` to land in Mathlib."
+    },
+    {
+      "id": "imports-namespace-open",
+      "title": "Imports, Namespace, and `open Real`",
+      "startLine": 43,
       "endLine": 50,
-      "summary": "Module docstring stating the Kelley–Meka bound, the reason for axiomatizing, the rate gap against Mathlib's tower-type `cornersTheoremBound`, and the sibling slug for Approach B. Imports `Corner.Roth` (for `rothNumberNat`), `Log.Basic`, `Pow.Real`, and `Tactic`.",
-      "mathContext": "Statement: ∃ c > 0, ∃ N₀, ∀ N ≥ N₀, rothNumberNat N ≤ N · exp(-c (log N)^{1/12}). The exponent 1/12 follows the Kelley–Meka 2023 paper."
+      "summary": "Minimal-footprint import set: `Mathlib.Combinatorics.Additive.Corner.Roth` (supplies `rothNumberNat`, the canonical 3-AP-free invariant), `Mathlib.Analysis.SpecialFunctions.Log.Basic` (supplies `Real.log`), `Mathlib.Analysis.SpecialFunctions.Pow.Real` (supplies the `Real.rpow` instance so `(log N) ^ ((1:ℝ)/12)` is the real-exponent power, not the ℕ-truncated `0`), and `Mathlib.Tactic` (umbrella). `namespace SzemerediTheoremOQ01` scopes the axiom; `open Real` lets the file read `exp` / `log` in either qualified or unqualified form.",
+      "mathContext": "Each import supplies exactly one essential ingredient. Omitting `Pow.Real` collapses the bound to `r_3(N) ≤ N · exp(-c)` because the `1/12` exponent would be interpreted at type `ℕ` and equal `0`."
     },
     {
-      "id": "kelley-meka-axiom",
-      "title": "Kelley–Meka Axiom",
+      "id": "axiom-docstring",
+      "title": "`kelley_meka_bound` Docstring",
       "startLine": 52,
-      "endLine": 65,
-      "summary": "Axiomatizes the Kelley–Meka bound `kelley_meka_bound`: there exists an absolute constant c > 0 and N₀ such that for all N ≥ N₀, `(rothNumberNat N : ℝ) ≤ N · Real.exp (-(c * (Real.log N) ^ (1/12)))`. Lines 52–61 contain the axiom docstring (statement, calibration to `rothNumberNat`, and the `1/12` exponent caveat); lines 62–65 declare the axiom itself.",
-      "mathContext": "∃ c > 0, ∃ N₀, ∀ N ≥ N₀, r_3(N) ≤ N · exp(-c (log N)^{1/12}). Stated against Mathlib's `rothNumberNat` exactly."
+      "endLine": 61,
+      "summary": "Documentation block introducing the axiom. Frames the bound in plain English ('there exists an absolute constant `c > 0` such that for all sufficiently large `N`, every 3-AP-free subset of `{0, …, N-1}` has size at most `N · exp(-c (log N)^{1/12})`'), calibrates it explicitly to Mathlib's `rothNumberNat` so future downstream theorems can compose directly with the additive-combinatorics gallery, and pins the `1/12` exponent to the original Kelley–Meka 2023 value (noting that subsequent improvements may push it up but are not in scope).",
+      "mathContext": "Calibration choice: the docstring commits to using *exactly* `rothNumberNat` from `Mathlib.Combinatorics.Additive.Corner.Roth`. This forecloses a tempting alternative (introducing a custom `r3` definition local to the file) that would force every downstream consumer to insert translation glue."
     },
     {
-      "id": "density-corollary",
-      "title": "Density Corollary",
+      "id": "axiom-declaration",
+      "title": "`kelley_meka_bound` Axiom Declaration",
+      "startLine": 62,
+      "endLine": 65,
+      "summary": "The four-line axiom proper: `axiom kelley_meka_bound : ∃ c : ℝ, 0 < c ∧ ∃ N₀ : ℕ, ∀ N : ℕ, N₀ ≤ N → (rothNumberNat N : ℝ) ≤ (N : ℝ) * Real.exp (-(c * Real.log (N : ℝ) ^ ((1 : ℝ) / 12)))`. The existential-of-existential shape (`∃ c, ∃ N₀, …`) is what the corollary's `obtain ⟨c, hc, N₀, hbound⟩` will destructure in a single step. The `(1 : ℝ) / 12` annotation forces `Real.rpow` rather than `Nat.pow`.",
+      "mathContext": "Lean type: $\\exists c \\in \\mathbb{R},\\ 0 < c \\land \\exists N_0 \\in \\mathbb{N},\\ \\forall N \\geq N_0,\\ (\\text{rothNumberNat } N : \\mathbb{R}) \\leq N \\cdot \\exp(-c \\cdot (\\log N)^{1/12})$. The threshold $N_0$ absorbs the small-$N$ regime where $\\log N \\leq 0$."
+    },
+    {
+      "id": "corollary-docstring",
+      "title": "Density Corollary Docstring",
       "startLine": 67,
+      "endLine": 73,
+      "summary": "Documentation for `rothNumberNat_density_le_kelley_meka`. Explains that under the axiom, the density `r_3(N)/N` is bounded above by `exp(-c (log N)^{1/12})` once `N ≥ max N₀ 1`, and emphasizes this is the form most commonly cited in surveys: the right-hand side `1 / exp(c (log N)^{1/12})` beats *every* `1 / (log N)^k`, which is the structural sense in which the Kelley–Meka rate is genuinely quasi-polynomial rather than poly-logarithmic.",
+      "mathContext": "Density form vs absolute form: $\\frac{r_3(N)}{N} \\leq \\exp(-c (\\log N)^{1/12})$. For any $k > 0$, $\\exp(-c (\\log N)^{1/12}) = o((\\log N)^{-k})$ as $N \\to \\infty$, which formalizes 'quasi-polynomial beats poly-log'."
+    },
+    {
+      "id": "corollary-proof",
+      "title": "`rothNumberNat_density_le_kelley_meka` Theorem and Proof",
+      "startLine": 74,
       "endLine": 86,
-      "summary": "**Proved.** `rothNumberNat_density_le_kelley_meka`: under the axiom, `r_3(N) / N ≤ exp(-c (log N)^{1/12})` for `N ≥ max N₀ 1`. Proof: extract `c, N₀` from `kelley_meka_bound`, take the threshold `max N₀ 1`, divide by `N` using `div_le_iff₀` and `mul_comm`. The docstring (lines 67–73) records why the right-hand side `1/exp(c (log N)^{1/12})` beats every `1/(log N)^k`, making the rate genuinely quasi-polynomial.",
-      "mathContext": "From `r_3(N) ≤ N · exp(-c (log N)^{1/12})` and `N ≥ 1`, dividing both sides by `N` gives `r_3(N)/N ≤ exp(-c (log N)^{1/12})`. The `max N₀ 1` threshold ensures `N > 0` for the division."
+      "summary": "**Proved (no new axioms).** The 9-line tactic proof: (1) `obtain ⟨c, hc, N₀, hbound⟩ := kelley_meka_bound` destructures the existential-of-existential axiom; (2) `refine ⟨c, hc, max N₀ 1, ?_⟩` re-packages the witness using *threshold fusion* — the `max N₀ 1` simultaneously enforces the axiom's `N₀ ≤ N` and the corollary's `1 ≤ N` positivity requirement; (3) `le_max_left`/`le_max_right` extract both consequences; (4) `Nat.lt_of_succ_le` + `exact_mod_cast` lifts `1 ≤ N` to `(0 : ℝ) < N`; (5) `rw [div_le_iff₀ hN_pos, mul_comm]` rewrites the density goal `r_3(N)/N ≤ E` to the absolute form `r_3(N) ≤ N · E`; (6) `exact hb` closes by the axiom specialization `hbound N hN₀`. This is the canonical Mathlib *absolute-bound ↦ density-corollary* skeleton.",
+      "mathContext": "Tactic chain: $\\text{obtain} \\to \\text{refine (threshold fusion)} \\to \\text{le\\_max\\_*} \\to \\text{exact\\_mod\\_cast positivity} \\to \\text{div\\_le\\_iff}_0 + \\text{mul\\_comm} \\to \\text{exact axiom}$. The `div_le_iff₀` (not `div_le_iff`) variant is the strict-positive (`0 < N`) form; it is the right choice given the positivity hypothesis we have available."
     }
   ],
   "crossReferences": [
