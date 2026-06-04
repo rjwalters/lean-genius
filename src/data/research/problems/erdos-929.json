@@ -31,26 +31,29 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-18T00:00:00Z",
-    "iteration": 2,
-    "focus": "The Lean source has 0 axioms and 0 sorries; the main lower-bound conjecture is a proposition definition/commentary boundary, while S(k) <= k+1 and S(2)=3 are proved.",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 3,
+    "focus": "The Lean source has 0 axioms and 0 sorries; concrete sandwich 3 <= S(k) <= k+1 for k >= 2 is now formalized via smoothThreshold_ge_three. The deeper conjecture S(k) >= k^{1-o(1)} remains a Prop definition.",
     "blockers": [],
-    "nextAction": "Formalize a genuine sieve lower bound only if the required analytic number theory infrastructure becomes available.",
+    "nextAction": "Optional: prove S(3) = 3 by combining smoothThreshold_ge_three with a positive-density witness at x = 3 (AP n ≡ 1 mod 6).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "CURRENT: 19 theorem/lemma declarations, 7 definitions, 0 axioms, 0 sorries. The formalization uses `HasSmallFactor` (some prime factor <= x), proves positive-density factorial/AP witnesses, S(k) <= k+1, monotonicity, and S(2)=3; Rosser and FGKMT bounds remain comments only.",
+    "progressSummary": "CURRENT: 23 theorem/lemma declarations, 7 definitions, 0 axioms, 0 sorries. The formalization uses `HasSmallFactor` (some prime factor <= x), proves positive-density factorial/AP witnesses, S(k) <= k+1, monotonicity, S(2)=3, and the general lower bound S(k) >= 3 for k >= 2; Rosser and FGKMT bounds remain comments only.",
     "builtItems": [
       "`HasSmallFactor`, `SmoothBlock`, and `smoothBlockSet`",
       "`Set.upperDensity`, `densityRatio`, and monotonicity lemmas",
       "`smoothThreshold` and `trivial_upper`",
       "`smoothBlockSet_pos_density` via factorial/AP starts",
       "`smoothThreshold_mono`",
-      "`smooth_threshold_2`"
+      "`smooth_threshold_2`",
+      "`smoothBlockSet_empty_of_ge_two_le_one` and `smoothBlockSet_two_sub_zero_of_ge_two` (antitone-lifted from k=2)",
+      "`upperDensity_empty`",
+      "`smoothThreshold_ge_three` — general lower bound S(k) >= 3 for k >= 2"
     ],
     "insights": [
       "The original x-smooth reading is wrong for this Lean file; the predicate is existence of a prime factor <= x.",
