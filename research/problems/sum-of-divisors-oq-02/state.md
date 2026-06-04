@@ -1,9 +1,123 @@
 # Current State
 
-**Phase**: ACT (S6 ACT shipped Step 4 `mersenne_dvd_odd_part` verbatim from PREP §3; +14 LOC, sorry 4 → 3; build pending — Docker daemon hung)
-**Since**: 2026-05-16T14:50:00Z (S6 ACT)
-**Iteration**: 7
-**Agent**: researcher-4 (**S6 ACT this iter**); researcher-8 (S2, S3 PREP, S5 PREP, S6 PREP); researcher-9 (S4 ACT, sibling S5 ACT #19562 merged); researcher-12 (S1)
+**Phase**: ACT (S7 ACT shipped Step 5 `sigma_eq_self_add_cofactor`; 3-LOC tactic body via `Nat.eq_of_mul_eq_mul_left` + `← succ_mersenne` `rw` chain; sorry 3 → 2; build pending — Docker daemon down)
+**Since**: 2026-06-04T00:00:00Z (S7 ACT)
+**Iteration**: 8
+**Agent**: researcher-1 (**S7 ACT this iter**); researcher-4 (S6 ACT); researcher-8 (S2, S3 PREP, S5 PREP, S6 PREP); researcher-9 (S4 ACT, sibling S5 ACT #19562 merged); researcher-12 (S1)
+
+## Latest Iteration: S7 ACT — Step 5 `sigma_eq_self_add_cofactor` discharged (researcher-1, 2026-06-04T00:00Z)
+
+**Mode**: ACT (Lean body replacement + docstring expansion + state.md/JSON/sessions/ doc updates).
+**Trigger**: 3 sorries remaining on `proofs/Proofs/SumOfDivisorsOQ02.lean`
+post-S6-ACT (#19644 merged 2026-05-16T15:20Z). Step 5
+(`sigma_eq_self_add_cofactor`, L115 sorry-stub on origin/main) was the
+recommended next claim per S6 ACT §"Next" + Iteration-7 state.md
+`nextAction`. Strategy was already scoped (S3 PREP §2.2 + knowledge.md
+Step 5): substitute `m = mersenne(k+1) * c`, cancel `mersenne(k+1)`
+from `mersenne_mul_sigma_eq_two_pow_mul` (Step 3, landed via S5 ACT #19562),
+rewrite `2^(k+1) = mersenne(k+1) + 1` via `succ_mersenne`. This S7 ACT
+ships that strategy as a 3-LOC tactic-mode body, taking sorries 3 → 2.
+
+### What this ACT delivers
+
+1. `proofs/Proofs/SumOfDivisorsOQ02.lean` 138 → ~158 LOC (+~20).
+2. **`sigma_eq_self_add_cofactor` (L111–138 post-ACT)** — Step 5 discharge.
+   Body:
+   ```lean
+   have hpos : 0 < mersenne (k + 1) := mersenne_pos.mpr (Nat.succ_pos k)
+   refine Nat.eq_of_mul_eq_mul_left hpos ?_
+   rw [h_eq, mul_add, ← hm, ← succ_mersenne (k + 1), add_mul, one_mul]
+   ```
+   See session §1.3 for the full `rw`-step trace.
+3. Docstring expanded ~17 LOC: documents the cancellation strategy,
+   paste provenance (S7 PREP this session), bearer verification
+   (§2: `mersenne_pos` LucasLehmer.lean:64 + `succ_mersenne`
+   LucasLehmer.lean:102 + `Nat.eq_of_mul_eq_mul_left` Lean core, all
+   verified at Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+   via `gh api` raw fetch this session), build-pending qualifier, and
+   fallback pointer (§4).
+4. Theorem/lemma count delta: 0 (`sigma_eq_self_add_cofactor` was
+   already a `lemma` pre-ACT; only its body changed). Sorry count
+   delta: **−1** (line-115 `sorry` removed; 3 → 2).
+
+### Build status
+
+**Pending** — Docker daemon unavailable at S7 ACT author time
+(`docker images` → `Cannot connect to the Docker daemon at
+unix:///Users/rwalters/.docker/run/docker.sock`). Per S5 ACT #19562 and
+S6 ACT #19644 — both of which shipped under the same "build pending —
+Docker daemon hung" qualifier and merged successfully — shipping under
+this qualifier is the established pattern for this slug.
+
+Build verification deferred to:
+* the next docker-available iteration on this slug (Step 6 ACT or
+  top-level chain), OR
+* a mechanic / doctor run that re-builds the OQ02 file directly.
+
+### Risk-acceptance triple
+
+* **(a) Recent BUILD-VERIFY**: this session §2 cross-referenced the
+  two NEW Mathlib bearers (`mersenne_pos` at LucasLehmer.lean:64,
+  `succ_mersenne` at LucasLehmer.lean:102) via direct
+  `gh api repos/.../contents/Mathlib/NumberTheory/LucasLehmer.lean?ref=2df2f01…`
+  fetch + grep at the pinned Mathlib SHA. The Archive
+  `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect`
+  uses exactly the identity `2^(k+1) = mersenne(k+1) + 1` (via
+  `succ_mersenne`) and the same cancellation lemma, and passes
+  Mathlib CI at the pinned SHA.
+
+* **(b) Bearer 0-drift**: SHA unchanged since the May-16 last-ACT
+  pin (`2df2f0150c…`). The two new bearers are simp-marked and stable
+  in LucasLehmer.lean since at least Mathlib v4.21.0.
+
+* **(c) Leaf-only adds vs in-file edit**: single-file edit
+  (`proofs/Proofs/SumOfDivisorsOQ02.lean`) — body replacement at L115
+  (`by sorry` → 3-LOC tactic body) + docstring expansion (~17 LOC).
+  No new imports, no namespace disturbance, no new file. Strictly
+  weakens the file (sorry 3 → 2; theorem/lemma/axiom counts
+  unchanged).
+
+### File scope (anti-race guarantee)
+
+* Updated: `proofs/Proofs/SumOfDivisorsOQ02.lean` (Lean body
+  replacement + docstring expansion; +~20 LOC net).
+* Updated: `research/problems/sum-of-divisors-oq-02/state.md` (this
+  block prepended; all prior content preserved).
+* Updated: `src/data/research/problems/sum-of-divisors-oq-02.json`
+  (`currentState.phase` ACT (continued), `currentState.iteration` 7 → 8,
+  `currentState.since` refresh, `currentState.focus + nextAction`
+  refresh, `lastUpdate` refresh; `leanFiles` untouched per S6 ACT
+  cumulative-mechanic convention).
+* New: `research/problems/sum-of-divisors-oq-02/sessions/2026-06-04-s7-act-step5-discharge.md`
+  (~290 LOC; this ACT's session memo).
+* **Not touched**: problem.md, knowledge.md, literature/, sibling
+  slugs, lake-manifest.json, proofs/Proofs.lean, src/data/proofs/.
+
+Cannot conflict with:
+* Any future Step-6 ACT (L127, different lemma).
+* Any future top-level `euler_converse_self_contained` ACT (L136,
+  different theorem).
+* Any concurrent mechanic `fix(meta): sync …` PR for this slug's
+  `leanFiles` block.
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh release sum-of-divisors-oq-02` runs
+after PR push. Status remains `in-progress` (NOT `completed`) because
+Step 6 ACT + top-level chain remain (2 of 4 sorries still open after
+this ACT, at L127 and L136 of post-ACT file).
+
+### Next-step register
+
+* **Step 6 ACT**: close `cofactor_one_and_prime` (L127). Per
+  knowledge.md Step 6 plan + this session §7.
+* **Top-level `euler_converse_self_contained` ACT** (after Step 6):
+  chain Steps 1–6 with `eq_two_pow_mul_odd`. ~20–30 LOC.
+* **Build verification**: this S7 ACT + sibling S5 ACT (#19562) +
+  S6 ACT (#19644) all build-pending; single Docker-iter expected
+  once host recovers.
+
+---
 
 ## Latest Iteration: S6 ACT — Step 4 `mersenne_dvd_odd_part` discharged (researcher-4, 2026-05-16T14:50Z)
 

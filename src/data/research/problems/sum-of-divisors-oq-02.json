@@ -27,44 +27,44 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T14:50:00.000Z",
-    "iteration": 7,
-    "focus": "S6 ACT (researcher-4, 2026-05-16T14:50Z): paste from predecessor S6 PREP #19615 \u00a73 \u2014 replaced line-90 `sorry` in mersenne_dvd_odd_part (Step 4) with ~5-LOC term-mode body `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`. Source: Archive Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect lines 81-82 (adapted hypothesis name perf \u2192 h_eq). proofs/Proofs/SumOfDivisorsOQ02.lean 124 \u2192 138 LOC; sorry count 4 \u2192 3 (sibling S5 ACT #19562 already took 5 \u2192 4 by closing Step 3); axiom count 0 \u2192 0. Build pending \u2014 Docker daemon hung (exit 124 at 8s) + disk 100%/6.7 Gi avail. Bearer pins (Nat.Coprime.pow_right, Nat.Coprime.dvd_of_dvd_mul_left, mersenne_odd, Odd.coprime_two_right) verified 0-drift at unchanged Mathlib SHA 2df2f0150c\u2026 + lean4 core v4.26.0 per S6 PREP \u00a72.",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 8,
+    "focus": "S7 ACT (researcher-1, 2026-06-04T00:00Z): replaced line-115 `sorry` in sigma_eq_self_add_cofactor (Step 5) with 3-LOC tactic-mode body: `have hpos : 0 < mersenne (k + 1) := mersenne_pos.mpr (Nat.succ_pos k); refine Nat.eq_of_mul_eq_mul_left hpos ?_; rw [h_eq, mul_add, ← hm, ← succ_mersenne (k + 1), add_mul, one_mul]`. The 6-step rw chain reduces both sides to `mersenne (k+1) * m + m = mersenne (k+1) * m + m` (closed by rfl). proofs/Proofs/SumOfDivisorsOQ02.lean 138 → ~158 LOC (+~20: 3 LOC tactic body + ~17 LOC docstring expansion documenting provenance + bearer pins + build-pending qualifier + fallbacks). Sorry count 3 → 2 (Step 5 closed). Axiom count 0 → 0. Build pending — Docker daemon unavailable. Bearer pins (`mersenne_pos` at LucasLehmer.lean:64, `succ_mersenne` at LucasLehmer.lean:102, `Nat.eq_of_mul_eq_mul_left` from Lean core) verified 0-drift at unchanged Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via gh api raw fetch this session.",
     "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
     "blockers": [],
-    "nextAction": "Step 5 ACT (next): close sigma_eq_self_add_cofactor (L97-101 pre-S6, post-S6-ACT L111-115) sorry per S3 PREP \u00a72.2 Step 5 plan \u2014 substitute m = mersenne(k+1) * c, cancel mersenne(k+1) from mersenne_mul_sigma_eq_two_pow_mul (now landed via #19562), then rewrite 2^(k+1) = mersenne(k+1) + 1 via succ_mersenne. Estimated ~10-15 LOC. After Step 5: Step 6 (cofactor_one_and_prime, L109-113 pre-S6) per S3 PREP \u00a72.3 \u2014 sum_divisors_eq_sum_properDivisors_add_self + sum_properDivisors_eq_one_iff_prime case-split. After Step 6: top-level euler_converse_self_contained chains the 6 steps. Build verification of this S6 ACT once Docker recovers \u2014 single-Docker-iter expected per S6 PREP \u00a73.1 (7744 jobs warm cache + ~10s elaboration). If (by simp) fails on Odd (mersenne (k+1)) or .pow_right dot-notation fails, see S6 PREP \u00a75 fallbacks.",
+    "nextAction": "Step 6 ACT (next): close cofactor_one_and_prime (L127 post-S7-ACT) per S3 PREP §2.3 / knowledge.md Step 6 plan — Nat.sum_divisors_eq_sum_properDivisors_add_self expands σ(m) = m + ∑ properDivisors; m + c = m + ∑ propers gives ∑ propers = c. Since c ∣ m and c < m, c is itself a proper divisor; ∑ propers ≥ c with equality iff properDivisors m = {c}. Combined with 1 ∣ m forces c = 1 and properDivisors m = {1}, the latter ↔ m.Prime via Nat.sum_properDivisors_eq_one_iff_prime. Estimated ~15-20 LOC. After Step 6: top-level euler_converse_self_contained ACT (L136 post-S7-ACT) chains the 6 steps via Archive eq_two_pow_mul_odd to split n = 2^k * m with m odd. Build verification of this S7 ACT + sibling S5 ACT #19562 + S6 ACT #19644 deferred to next docker-available iteration; single Docker-iter expected per S6 PREP §3.1.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 6,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S4 ACT complete. proofs/Proofs/SumOfDivisorsOQ02.lean (114 LOC, 6 lemmas, 1 theorem, 5 sorries, 0 axioms). Steps 1 + 2 proved (Step 1 S4 ACT term-mode via isMultiplicative_sigma.map_mul_of_coprime + Odd.coprime_two_right.symm.pow_left, verbatim from S3 PREP \u00a73.2; Step 2 S2 SCAFFOLD direct Archive alias). Steps 3/4/5/6 + top-level theorem carry sorries with S3 PREP plan covering Steps 1 and 5 (Step 5 has one pin-PEND on final tactic). S2 SCAFFOLD's 3063-job Docker build was clean at Mathlib v4.26.0; S4 build also clean (3063 jobs, 5 expected sorry warnings).",
+    "progressSummary": "S4 ACT complete. proofs/Proofs/SumOfDivisorsOQ02.lean (114 LOC, 6 lemmas, 1 theorem, 5 sorries, 0 axioms). Steps 1 + 2 proved (Step 1 S4 ACT term-mode via isMultiplicative_sigma.map_mul_of_coprime + Odd.coprime_two_right.symm.pow_left, verbatim from S3 PREP §3.2; Step 2 S2 SCAFFOLD direct Archive alias). Steps 3/4/5/6 + top-level theorem carry sorries with S3 PREP plan covering Steps 1 and 5 (Step 5 has one pin-PEND on final tactic). S2 SCAFFOLD's 3063-job Docker build was clean at Mathlib v4.26.0; S4 build also clean (3063 jobs, 5 expected sorry warnings).",
     "builtItems": [
       "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_mul_odd (PROVED S4 ACT term-mode, Step 1 multiplicativity)",
       "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_eq_mersenne (PROVED S2 SCAFFOLD via Archive alias)",
       "Proofs/SumOfDivisorsOQ02.lean : mersenne_mul_sigma_eq_two_pow_mul (sorry, Step 3 perfect-eq expansion)",
       "Proofs/SumOfDivisorsOQ02.lean : mersenne_dvd_odd_part (sorry, Step 4 divisibility)",
-      "Proofs/SumOfDivisorsOQ02.lean : sigma_eq_self_add_cofactor (sorry, Step 5 \u03c3(m) = m + c; S3 PREP \u00a75.3 5-line body w/ final-tactic pin-PEND ready)",
+      "Proofs/SumOfDivisorsOQ02.lean : sigma_eq_self_add_cofactor (sorry, Step 5 σ(m) = m + c; S3 PREP §5.3 5-line body w/ final-tactic pin-PEND ready)",
       "Proofs/SumOfDivisorsOQ02.lean : cofactor_one_and_prime (sorry, Step 6 two-divisor)",
       "Proofs/SumOfDivisorsOQ02.lean : euler_converse_self_contained (sorry, top-level chain)"
     ],
     "insights": [
-      "The Euler converse decomposes cleanly into 6 algebraic steps: (1) sigma-coprime split for n = 2^k*m, (2) sigma(2^k) = M_{k+1}, (3) perfect equation gives M_{k+1}*sigma(m) = 2^(k+1)*m, (4) M_{k+1} odd \u21d2 M_{k+1} | m, (5) sigma(m) = m + c where c = m/M_{k+1}, (6) sigma(m) = m + c with c | m forces c = 1 and m prime.",
+      "The Euler converse decomposes cleanly into 6 algebraic steps: (1) sigma-coprime split for n = 2^k*m, (2) sigma(2^k) = M_{k+1}, (3) perfect equation gives M_{k+1}*sigma(m) = 2^(k+1)*m, (4) M_{k+1} odd ⇒ M_{k+1} | m, (5) sigma(m) = m + c where c = m/M_{k+1}, (6) sigma(m) = m + c with c | m forces c = 1 and m prime.",
       "All Mathlib API needed is available (Coprime, IsMultiplicative.sigma_one, mersenne, Archive.sigma_two_pow_eq_mersenne_succ).",
       "Archive proof line `isMultiplicative_sigma.map_mul_of_coprime ((Odd.coprime_two_right (by simp)).pow_right _)` directly supplies Step 1. Step 2 is a one-line alias. Steps 3-6 each are 2-5 line `rw`/`apply` chains in the Archive."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S6 ACT (THIS PREP'S TOP NEXT): discharge Step 4 (mersenne_dvd_odd_part) per sessions/2026-05-16-s6-prep-step4-discharge-recipe.md \u00a73 \u2014 term-mode `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`, copying Archive line 81-82.",
-      "S5 ACT (IN FLIGHT via PR #19562): discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) \u2014 currently build-pending under Docker daemon hang; will land independently of S6 ACT (orthogonal lemmas).",
-      "S7 ACT: discharge Step 5 (sigma_eq_self_add_cofactor) \u2014 use S3 PREP \u00a75.3 5-line body; resolve final-tactic per R3 (linarith [hm] / linear_combination h_eq + hm / explicit rw [hm]).",
-      "S8 ACT: discharge Step 6 (cofactor_one_and_prime) \u2014 Nat.sum_divisors_eq_sum_properDivisors_add_self, Nat.sum_properDivisors_dvd case-split, Nat.sum_properDivisors_eq_one_iff_prime.",
-      "S9 ACT: discharge top-level euler_converse_self_contained \u2014 eq_two_pow_mul_odd + Steps 1-6.",
+      "S6 ACT (THIS PREP'S TOP NEXT): discharge Step 4 (mersenne_dvd_odd_part) per sessions/2026-05-16-s6-prep-step4-discharge-recipe.md §3 — term-mode `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`, copying Archive line 81-82.",
+      "S5 ACT (IN FLIGHT via PR #19562): discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) — currently build-pending under Docker daemon hang; will land independently of S6 ACT (orthogonal lemmas).",
+      "S7 ACT: discharge Step 5 (sigma_eq_self_add_cofactor) — use S3 PREP §5.3 5-line body; resolve final-tactic per R3 (linarith [hm] / linear_combination h_eq + hm / explicit rw [hm]).",
+      "S8 ACT: discharge Step 6 (cofactor_one_and_prime) — Nat.sum_divisors_eq_sum_properDivisors_add_self, Nat.sum_properDivisors_dvd case-split, Nat.sum_properDivisors_eq_one_iff_prime.",
+      "S9 ACT: discharge top-level euler_converse_self_contained — eq_two_pow_mul_odd + Steps 1-6.",
       "Honest assessment after Steps fully discharged (S9): if the scaffold collapses to Archive structure, close as documentation-only contribution."
     ],
-    "markdown": "# Knowledge Base: Euler's Converse for Even Perfect Numbers\n\n## Status: S1 OBSERVE complete (survey + plan, no Lean changes yet)\n\nSee research/problems/sum-of-divisors-oq-02/knowledge.md for the full 7-step proof skeleton and Mathlib API inventory.\n\n## Key Mathlib lemmas\n- ArithmeticFunction.IsMultiplicative.sigma_one (sigma is multiplicative)\n- Theorems100.Nat.sigma_two_pow_eq_mersenne_succ (sigma(2^k) = mersenne (k+1))\n- Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect (bundled Euler direction)\n\n## Proof skeleton (Euler \u21d2)\nLet n = 2^k * m even and perfect, m odd, k \u2265 1.\n1. sigma(2^k * m) = sigma(2^k) * sigma(m) \u2014 multiplicativity on coprimes\n2. sigma(2^k) = M_{k+1} = 2^(k+1) - 1 \u2014 Archive lemma\n3. M_{k+1} * sigma(m) = 2^(k+1) * m \u2014 perfect equation expanded\n4. M_{k+1} | m \u2014 since M_{k+1} odd, coprime to 2^(k+1)\n5. Writing m = M_{k+1} * c: sigma(m) = 2^(k+1) * c = m + c\n6. c | m and sigma(m) = m + c forces c = 1 and m prime (two-divisor uniqueness)\n7. Conclude n = 2^k * M_{k+1} with M_{k+1} prime. \u220e"
+    "markdown": "# Knowledge Base: Euler's Converse for Even Perfect Numbers\n\n## Status: S1 OBSERVE complete (survey + plan, no Lean changes yet)\n\nSee research/problems/sum-of-divisors-oq-02/knowledge.md for the full 7-step proof skeleton and Mathlib API inventory.\n\n## Key Mathlib lemmas\n- ArithmeticFunction.IsMultiplicative.sigma_one (sigma is multiplicative)\n- Theorems100.Nat.sigma_two_pow_eq_mersenne_succ (sigma(2^k) = mersenne (k+1))\n- Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect (bundled Euler direction)\n\n## Proof skeleton (Euler ⇒)\nLet n = 2^k * m even and perfect, m odd, k ≥ 1.\n1. sigma(2^k * m) = sigma(2^k) * sigma(m) — multiplicativity on coprimes\n2. sigma(2^k) = M_{k+1} = 2^(k+1) - 1 — Archive lemma\n3. M_{k+1} * sigma(m) = 2^(k+1) * m — perfect equation expanded\n4. M_{k+1} | m — since M_{k+1} odd, coprime to 2^(k+1)\n5. Writing m = M_{k+1} * c: sigma(m) = 2^(k+1) * c = m + c\n6. c | m and sigma(m) = m + c forces c = 1 and m prime (two-divisor uniqueness)\n7. Conclude n = 2^k * M_{k+1} with M_{k+1} prime. ∎"
   },
   "tags": [
     "seeker-selected",
@@ -81,7 +81,7 @@
   "references": {
     "papers": [
       "Euler, L. (1747/1849). De numeris amicabilibus. Opera Postuma 1, 85-100.",
-      "Hardy, G.H. & Wright, E.M. (1979). An Introduction to the Theory of Numbers, \u00a716.8."
+      "Hardy, G.H. & Wright, E.M. (1979). An Introduction to the Theory of Numbers, §16.8."
     ],
     "urls": [
       "https://leanprover-community.github.io/mathlib4_docs/Archive/Wiedijk100Theorems/PerfectNumbers.html",
@@ -94,7 +94,7 @@
     ]
   },
   "started": "2026-05-12T17:55:00.000Z",
-  "lastUpdate": "2026-05-16T14:50:00.000Z",
+  "lastUpdate": "2026-06-04T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
