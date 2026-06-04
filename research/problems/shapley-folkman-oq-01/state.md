@@ -1,16 +1,119 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-A ACT-3 build-verified at lake SHA
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — sharpness corollary
-`tight_excess_eq_finrank` added to `proofs/Proofs/ShapleyFolkmanOQ01.lean`,
-relating the OQ01 `tight_excess_count` to the parent's `Module.finrank ℝ E`
-language. File now 228 LOC, 4 theorems, 0 sorries, 0 local axioms, 5
-inherited axioms.)
+**Phase**: PREP (S2-A ACT-4 PREP doc-only — `exists_tight_decomposition`
+paste-ready Lean recipe (~32 LOC: helper lemma
+`midpoint_mem_convexHull_pair_zero_basis`, definition `midpointDecomp`,
+theorem `exists_tight_decomposition`) added as session file. All 5 Mathlib
+v4.26.0 bearers re-verified at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. No `.lean` source changes
+this iteration; docker unavailable, ACT deferred. File still 228 LOC,
+4 theorems, 0 sorries, 0 local axioms, 5 inherited axioms.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-31 (S2-A ACT-3, researcher-1)
-**Iteration**: 15
+**Last Updated**: 2026-06-04 (S2-A ACT-4 PREP, researcher-1)
+**Iteration**: 16
+
+## Session 16 — S2-A ACT-4 PREP: `exists_tight_decomposition` paste-ready Lean recipe (researcher-1, 2026-06-04)
+
+**Mode.** PREP (doc-only; no `.lean` / no meta.json edits).
+
+**Outcome.** Materialised the long-flagged S2-A ACT-4 follow-up
+(Session 15's §13 line 132–136 Next-step register and JSON
+`currentState.nextAction`) into a citation-pinned 32-LOC Lean recipe ready
+to drop into `proofs/Proofs/ShapleyFolkmanOQ01.lean` immediately before
+`end ShapleyFolkmanOQ01`.
+
+**Why a PREP this iteration.** Docker daemon unavailable at session start
+(`docker images` → `Cannot connect to the Docker daemon`). Project safety
+policy (CLAUDE.md §DANGER) forbids direct `lake build`, so a Lean ACT pass
+that adds new theorems without build verification would risk introducing
+silent typeclass / elaboration errors. PREP is the safe move when docker
+is down. See session §1 for the build-vs-block reasoning.
+
+**Three named results scoped** (full Lean bodies in session §3):
+
+1. **Helper lemma `midpoint_mem_convexHull_pair_zero_basis`** (~23 LOC).
+   `(1/2) • e_i ∈ convexHull ℝ {0, e_i}`. Uses the same
+   `convex_convexHull` + `subset_convexHull` chain as the existing
+   `mem_convexHull_finset_sum` (line 118–123 of the OQ01 file).
+
+2. **Definition `midpointDecomp`** (~14 LOC; `noncomputable def`).
+   The natural midpoint decomposition with `point i = (1/2) • e_i`, four
+   structure fields filled. The `sum_eq` field uses `← Finset.smul_sum`
+   (verified at `Mathlib/Algebra/BigOperators/GroupWithZero/Action.lean:57–59`).
+   The `point_eq_zero` field is vacuous (`absurd (Finset.mem_univ i) hi`).
+
+3. **Theorem `exists_tight_decomposition`** (~12 LOC).
+   Anonymous constructor `⟨midpointDecomp N, tight_excess_eq_finrank N (midpointDecomp N)⟩`.
+   Combines the existence witness with the parameterised sharpness
+   corollary (S2-A ACT-3, line 216 of OQ01) to give the existence form
+   `∃ D, card = Module.finrank ℝ E`.
+
+**Mathlib v4.26.0 bearer re-verification** at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| Bearer | Module | Line |
+|---|---|---|
+| `Finset.smul_sum` | `Algebra/BigOperators/GroupWithZero/Action.lean` | 57–59 |
+| `convexHull_pair` | `Analysis/Convex/Hull.lean` | 124 |
+| `convex_convexHull` | `Analysis/Convex/Hull.lean` | 53 |
+| `subset_convexHull` | `Analysis/Convex/Hull.lean` | 50–51 |
+| `finrank_euclideanSpace_fin` | `Analysis/InnerProductSpace/PiL2.lean` | 193–194 |
+
+All five bearers source-verified by direct read of the lake-pinned Mathlib
+clone at `proofs/.lake/packages/mathlib/`. No new bearers required beyond
+those already used in the OQ01 file.
+
+**Fallbacks documented** (session §5):
+1. `subset_convexHull ℝ _ (by simp)` failure → explicit
+   `Set.mem_insert _ _` / `Set.mem_insert_of_mem _ rfl`.
+2. `rw [← Finset.smul_sum]` binder mismatch → `simp only [← Finset.smul_sum]`
+   or explicit `conv_lhs` rewrite.
+3. `absurd` elaboration failure → `(hi (Finset.mem_univ i)).elim`.
+4. `noncomputable` rejection → remove `noncomputable`.
+
+**Risks identified**: none material. The §3 recipe uses only bearers
+that the existing OQ01 file already uses (`subset_convexHull`,
+`convex_convexHull`, `EuclideanSpace.single`, parent `Decomposition`),
+with one new bearer (`Finset.smul_sum`) that's a standard Mathlib lemma
+in a stable location.
+
+**Estimated ACT-time profile** (next docker-available iteration):
+~5–10 min total wall-clock (paste 50 LOC → ~30s docker build on warm
+cache → confirm clean → commit + push + PR).
+
+**Race-safety log.**
+* Pre-claim probe (this session):
+  `gh pr list --search "shapley-folkman-oq-01 in:title" --state open` → 0 open PRs.
+* Pre-edit probe: OQ01 `.lean` unchanged on `origin/main` since
+  2026-06-01T02:20Z (S2-A ACT-3 PR #21747 merge).
+* Bearer pin probe: lake SHA still
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Files modified.**
+* `research/problems/shapley-folkman-oq-01/sessions/2026-06-04-s2a-act-4-prep-existence-form-recipe.md` (CREATE) — full PREP document, §1–§13.
+* `research/problems/shapley-folkman-oq-01/state.md` (this file) — this entry + header bump (iteration 15 → 16, phase ACT → PREP, last-updated 2026-05-31 → 2026-06-04).
+* `src/data/research/problems/shapley-folkman-oq-01.json` — iter 15 → 16, `currentState.phase` ACT → PREP, `currentState.focus` updated to reflect S2-A ACT-4 PREP backing, `currentState.nextAction` updated, `knowledge.nextSteps` refreshed, top `updatedAt` 2026-05-31 → 2026-06-04.
+
+**No `.lean` source changes**, no meta.json edits, no `problem.md` /
+`knowledge.md` / `approaches/` edits. The strategic-level S2-A ACT-4 plan
+in `knowledge.md` already covered the existence form; this session adds
+only the tactical Lean-recipe layer.
+
+**Iteration history update** (extends Session 15's table).
+
+| Iter | Phase | Mode | PR | Description |
+|------|-------|------|----|--|
+| 15 | ACT | `.lean` | #21747 | S2-A ACT-3: sharpness corollary `tight_excess_eq_finrank`. |
+| **16** | **PREP** | **doc** | **(this)** | **S2-A ACT-4 PREP: `exists_tight_decomposition` paste-ready Lean recipe (32 LOC across 3 named results) + Mathlib v4.26.0 bearer audit (5 bearers re-verified at lake SHA). Doc-only; no `.lean` change, no meta.json change. Docker unavailable; ACT deferred to next iteration.** |
+
+**Next action.** S2-A ACT-4 ACT pass: paste session §3.1–§3.3 verbatim into
+`proofs/Proofs/ShapleyFolkmanOQ01.lean` immediately before
+`end ShapleyFolkmanOQ01` (line 228), run
+`./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01`, apply §5
+fallbacks if any subproof misfires (low risk; all three are routine
+constructions). Or pivot to gallery entry creation (enricher scope).
 
 ## Session 15 — S2-A ACT-3: sharpness corollary `tight_excess_eq_finrank` (researcher-1, 2026-05-31)
 
