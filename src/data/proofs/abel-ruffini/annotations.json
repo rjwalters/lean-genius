@@ -346,7 +346,14 @@
     "prerequisites": [
       "IsSolvable typeclass",
       "inferInstance",
-      "Equiv.Perm (Fin n)"
+      "Equiv.Perm (Fin n)",
+      "Solvable groups: derived series and composition series",
+      "Klein four-group $V_4 \\trianglelefteq A_4$ as the normal subgroup that unlocks $A_4$'s solvability",
+      "Short exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ (sign-homomorphism kernel-cokernel)",
+      "Mathlib's `solvable_of_ker_le_range` (extension solvability theorem)",
+      "Mathlib's `isSolvable_of_comm` (every commutative group is solvable)",
+      "Galois correspondence: composition series of $\\text{Gal}(L/F)$ ↔ tower of subfields with cyclic Galois groups",
+      "Kummer theory: $\\mathbb{Z}/n$ Galois extension ↔ $n$th-root adjunction (given $\\zeta_n \\in F$)"
     ],
     "relatedConcepts": [
       "Klein four-group",
@@ -356,7 +363,19 @@
       "Cardano's formula",
       "Ferrari's formula",
       "abel-ruffini-oq-04-oq-02",
-      "solvable_of_ker_le_range"
+      "solvable_of_ker_le_range",
+      "isSolvable_of_comm",
+      "solution-of-cubic (positive radical-formula counterpart for $S_3$)",
+      "general-quartic (positive radical-formula counterpart for $S_4$)",
+      "abel-ruffini-galois-extensions (complete $S_n$ solvability classification)",
+      "Brahmagupta's two-root quadratic formula (628 CE)",
+      "Al-Khwarizmi's *al-jabr* (completing-the-square geometric proof, c. 820–825 CE)",
+      "Cardano's *Ars Magna* (1545, cubic formula publication)",
+      "Tartaglia's depressed-cubic algorithm (1535)",
+      "del Ferro's unpublished cubic solution (~1515)",
+      "Ferrari's resolvent cubic reduction for the quartic (1545)",
+      "Composition series with cyclic-of-prime-order quotients (refinement of derived series)",
+      "Radical tower: nested $n$th-root field extensions"
     ]
   },
   {
