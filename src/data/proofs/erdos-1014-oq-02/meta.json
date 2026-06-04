@@ -28,6 +28,26 @@
     "mathlib_version": "4.26.0",
     "leanFiles": [
       {
+        "path": "Proofs/Erdos1014OQ02.lean",
+        "filename": "Erdos1014OQ02.lean",
+        "lineCount": 186,
+        "theoremCount": 4,
+        "axiomCount": 0,
+        "defCount": 0,
+        "sorries": 0,
+        "isAristotle": false,
+        "description": "Rate of convergence proofs (4 theorems): rate_of_convergence_k3, log_over_l_faster_than_inv_log, conditional_convergence_general_k, rate_is_O_log_over_l_not_inv_log. Imports 12 axioms from Erdos1014Problem.lean."
+      },
+      {
+        "path": "Proofs/Erdos1014Problem.lean",
+        "filename": "Erdos1014Problem.lean",
+        "lineCount": 483,
+        "theoremCount": 15,
+        "axiomCount": 12,
+        "defCount": 0,
+        "sorries": 0,
+        "isAristotle": false,
+        "description": "Parent file providing the 12 axioms (ramseyNumber, ramsey_symm, ramsey_upper_erdos_szekeres, ramsey_monotone_right, ramsey_recurrence, ramsey_k2, R3_lower, R3_upper, erdos_1014_conjecture, R33, R34, R35) and supporting lemmas (ramsey_pos, increment_bound_k3, ratio_from_asymptotics) used by Erdos1014OQ02.lean."
       }
     ],
     "originalContributions": [
