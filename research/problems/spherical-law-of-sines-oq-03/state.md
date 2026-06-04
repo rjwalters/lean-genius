@@ -1,15 +1,35 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry) — re-affirmed by S4 STATE-SYNC
-**Path**: route-A (law-of-cosines + algebra), **in-framework variant**
-**Since**: 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
+**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry) — closes helper-placement decision via S5 PREP
+**Path**: route-A (law-of-cosines + algebra), **in-framework variant**, **inline-helper sub-path** (decided in S5 PREP §3.4)
+**Since**: 2026-06-03 (S5 PREP, this session); 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
 S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z;
-S3b PREP shipped 2026-05-16; S4 STATE-SYNC shipped 2026-05-31 (this session)
-**Iteration**: 6
+S3b PREP shipped 2026-05-16; S4 STATE-SYNC shipped 2026-05-31; S5 PREP this session
+**Iteration**: 7
 
 ## Current Focus
-S4 STATE-SYNC complete (this session, researcher-1, 2026-05-31, doc-only):
+S5 PREP complete (this session, researcher-1, 2026-06-03, doc-only):
+Closes the **first** of two deferred items on the S3b ACT readiness gate
+(S3b PREP §9, item #1): *parent-helper vs inline-helper decision*. Decision:
+**inline private helpers** in `SphericalLawOfSinesOQ03.lean` for S3b ACT
+iteration 1, with optional S3c promotion to parent `SphericalLawOfSines.lean`
+once helper signatures stabilise (S5 PREP §3.4, §3.5). Rationale (5 items)
+is blast-radius dominance at the very-high-risk macro-D iteration, plus
+parent-stability preservation while OQ-01/OQ-02 are still at OBSERVE.
+Incidental correction: parent `src/data/proofs/spherical-law-of-sines/meta.json`
+does NOT carry a `theoremCount` field, so neither helper path incurs parent
+meta drift (S5 PREP §3.3 corrects S3b PREP §4 caution). Macro-case A
+paste-ready Lean snippet (~24 LOC, low risk) drafted in S5 PREP §4.1
+against parent decl signatures verified byte-stable at base SHA
+`996638aefdf`. Second deferred item (build smoke-test) remains DEFERRED:
+host disk at 5.1 Gi free / 100% capacity, below 10 Gi pre-flight threshold,
+blocks Docker S3b ACT this iteration (S5 PREP §7). Net readiness gate:
+5/6 GREEN, 1 DEFERRED (infra-only). No mathematical advance, no Lean edits,
+no parent or `lake-manifest.json` touches.
+
+## Prior Focus (carry-forward from S4 STATE-SYNC)
+S4 STATE-SYNC complete (researcher-1, 2026-05-31, doc-only):
 14-day quiescence audit confirms zero slug-bearer touches across 1421
 origin/main commits since S3b PREP merge (PR #19450, 2026-05-16). Slug Lean
 file `Proofs/SphericalLawOfSinesOQ03.lean` SHA1 `5dd50718…` byte-stable at
@@ -131,6 +151,74 @@ iteration and is optional.
 `gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open` → 0 open PRs — field clear.
 
 ## Session Log
+
+### 2026-06-03 ~22:18 UTC — S5 PREP (researcher-1, doc-only)
+
+* **Mode**: doc-only PREP (zero `.lean` / `lake-manifest.json` / parent
+  meta or any other gallery JSON edits). Files modified: this state.md
+  (head + new S5 entry; no narrative edits to prior entries),
+  `sessions/2026-06-03-s5-prep-helper-placement-decision.md` (~330 LOC),
+  `src/data/research/problems/spherical-law-of-sines-oq-03.json`
+  (`lastUpdated` + `knowledge.progressSummary` prepend).
+* **Why**: S3b PREP §9 ACT-readiness gate left **2 deferred items**:
+  (1) parent-helper vs inline-helper placement decision, and (2) build
+  smoke-test. S3b PREP §4 had recommended *parent-helper* path but §9
+  walked it back to *inline-helper* — internal inconsistency. S4
+  STATE-SYNC preserved this open question. S5 closes item (1)
+  unambiguously and documents the trade-offs with hard numbers so S3c
+  can revisit cleanly if needed.
+* **§1 Quiescence (load-bearing)**: 3-day window since S4 SYNC's merge
+  (PR #21369 at `18b5808017a` UTC 2026-05-31). Across 766 origin/main
+  commits, **0 slug-bearer touches** (`Proofs/SphericalLawOfSinesOQ03.lean`,
+  parent `Proofs/SphericalLawOfSines.lean`, slug research dir, slug JSON).
+* **§1 Bearer byte-stability**: Slug Lean file SHA1 `5dd50718…` unchanged;
+  parent SHA1 `c6643ac7e4486e14d29a8f96c7e6f8bafdb061ee`; slug JSON SHA1
+  `4deb32f994ea11cb049f2ccdf1d7d93dd4bc1767`; lake-manifest SHA1
+  `272effadcde902c98bd16e2d88c457d02d99a5a6` (Mathlib `2df2f0150c…` v4.26.0).
+  Parent decl line numbers re-verified: `arcLen` @45, `unit_sum` @70,
+  `normSq_projPerp_unit` @112, `dihedralAngle` @158, `sin_sq_dihedralAngle`
+  @172 — match S3b PREP §2 + state.md table verbatim.
+* **§2 Race / saturation**: 0 open PRs on slug; 0 open PRs on parent
+  family (parent + 2 verified siblings + 2 OBSERVE-phase siblings).
+* **§3 Decision (load-bearing, the iteration's single mathematical
+  output)**: **Path 2 (inline `private` helpers in
+  `SphericalLawOfSinesOQ03.lean`)** for S3b ACT iteration 1. Rationale:
+  (a) blast-radius dominance at very-high-risk macro-D step; (b)
+  parent-stability preservation; (c) "prove first, extract later" is the
+  standard library pattern; (d) auditor friction symmetric across paths
+  per §3.3 (parent meta lacks `theoremCount` field, contradicting S3b
+  PREP §4); (e) rollback simplicity (one-file revert). S3c cleanup
+  becomes a pure ~15-20 LOC promotion PR.
+* **§3.3 Incidental correction to S3b PREP §4**: parent gallery JSON
+  `src/data/proofs/spherical-law-of-sines/meta.json` tracks only `id`,
+  `slug`, `sorries: 0`, `title` — no `theoremCount` field. So no
+  parent gallery JSON drift on either path (Path 1 or Path 2). Does not
+  change the decision; tightens the friction estimate.
+* **§4 Paste-ready Lean for macro-case A (sin b = 0)**: ~24 LOC snippet
+  exercising the `dihedralAngle` if-branch directly (no helpers
+  needed). Uses parent's `sin_sq_arcLen` + Mathlib's `Real.sqrt_zero`,
+  `Real.sin_zero`, `dot_comm`, plus `simp only [dihedralAngle, if_pos …,
+  Real.sin_zero]`. Low risk; only failure modes are Mathlib lemma-name
+  drift (gated by smoke-test) or `sin_sq_arcLen` argument-order
+  convention (2-LOC swap if needed). Snippet validated against parent
+  decl signatures at base `996638aefdf`.
+* **§5 Updated S3b ACT risk table**: Macro-A risk LOW→LOW (paste-ready);
+  B/C/D unchanged. Total ~75 LOC, dominated by macro-D's ~25-45 LOC
+  algebraic core.
+* **§6 Updated readiness gate**: 5/6 GREEN, 1 DEFERRED (infra-only).
+* **§7 Infra (load-bearing blocker)**: host disk **5.1 Gi free, 100%
+  capacity** — below 10 Gi pre-flight threshold (S4 SYNC observed 57 Gi
+  free 3 days ago; net 52 Gi consumed in 3 days). `docker-build.sh`
+  not safe to run; this is what reduces this iteration from S3b ACT
+  to S5 PREP. PREP itself (~4 KB of writes) is safe.
+* **§8 Honest scope**: Closes 1 of 2 readiness-gate items. Writes 1
+  paste-ready snippet for 1 of 4 macro-cases. **No** Lean changes,
+  **no** macro-D progress, **no** Docker run, **no** parent gallery
+  JSON touches. Phase tag stays at `S3b-PREP`. Iteration 6 → 7;
+  attempt count stays at 4.
+* **§9 Conflict-free**: 3 files (this state.md + new session memo +
+  slug research JSON). Disjoint from any in-flight agent work; race
+  re-affirmed at PR-creation time.
 
 ### 2026-05-31 ~06:30 UTC — S4 STATE-SYNC (researcher-1, doc-only)
 
