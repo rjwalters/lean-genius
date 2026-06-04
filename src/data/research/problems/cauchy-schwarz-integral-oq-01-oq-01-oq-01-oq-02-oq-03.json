@@ -1,8 +1,8 @@
 {
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
   "title": "The weighted power mean $M_p^w(a,b) = (w_1 a^p + w_2 b^p)^{1/p}$ for weights ...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "completed",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-04T11:17:07.542Z",
+    "phase": "completed",
+    "since": "2026-06-04T18:00:00Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Proof completed and merged in PR #19454. Gallery entry verified (badge: original, 0 sorries, 0 axioms).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — problem solved. Possible follow-ups: general M_r^w ≤ M_s^w monotonicity, n-variable generalization.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
