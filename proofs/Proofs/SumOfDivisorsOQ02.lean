@@ -18,7 +18,7 @@ The bundled Archive proof
 `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect`
 performs all six steps in a single block; this file exposes them named.
 
-## Status (post-S5)
+## Status (post-S7)
 
 - Step 1 (`sigma_two_pow_mul_odd`): proved (S4 ACT, term-mode via
   `isMultiplicative_sigma.map_mul_of_coprime` + `.symm.pow_left`).
@@ -26,8 +26,14 @@ performs all six steps in a single block; this file exposes them named.
 - Step 3 (`mersenne_mul_sigma_eq_two_pow_mul`): proved (S5 ACT, ~7 LOC via
   `sigma_one_apply` + `Nat.perfect_iff_sum_divisors_eq_two_mul` bridge, then
   Steps 1+2 + `← mul_assoc; ← pow_succ'`).
-- Steps 4, 5, 6: `sorry` placeholders. Discharge planned for S6+.
-- Top-level theorem `euler_converse_self_contained`: `sorry` (chains steps).
+- Step 4 (`mersenne_dvd_odd_part`): proved (S6 ACT, ~3 LOC term-mode via
+  `Odd.coprime_two_right.pow_right.dvd_of_dvd_mul_left`).
+- Step 5 (`sigma_eq_self_add_cofactor`): proved (S7 ACT, 3-LOC tactic
+  body via `Nat.eq_of_mul_eq_mul_left` + `← succ_mersenne` `rw` chain).
+- Step 6 (`cofactor_one_and_prime`): `sorry` placeholder. Discharge
+  planned for S8+.
+- Top-level theorem `euler_converse_self_contained`: `sorry` (chains
+  Steps 1–6 via Archive `eq_two_pow_mul_odd`).
 
 ## Honesty Note
 
@@ -104,15 +110,32 @@ lemma mersenne_dvd_odd_part
     (Dvd.intro _ h_eq)
 
 /-- **Step 5** (sigma identity post-substitution). Writing `m = M_{k+1} · c` (from
-Step 4) and combining with Step 3 gives `σ(m) = m + c`. The trick is `2^(k+1) = M_{k+1} + 1`,
-so `2^(k+1) · c = (M_{k+1} + 1) · c = M_{k+1} · c + c = m + c`.
-S3+ proof plan: substitute `m`, cancel `M_{k+1}` from `mersenne_mul_sigma_eq_two_pow_mul`,
-then rewrite `2^(k+1) = M_{k+1} + 1` via `succ_mersenne`. -/
+Step 4) and combining with Step 3 gives `σ(m) = m + c`. The trick is
+`2^(k+1) = M_{k+1} + 1`, so `2^(k+1) · m = (M_{k+1} + 1) · m = M_{k+1} · m + m`,
+and the trailing `m` is exactly `M_{k+1} · c` (= `m` by `hm`), so the equation
+becomes `M_{k+1} · σ(m) = M_{k+1} · (m + c)`; cancel `M_{k+1}`.
+
+S7 ACT (paste from sessions/2026-06-04-s7-act-step5-discharge.md §3, tactic-mode
+5-step `rw` chain after `refine Nat.eq_of_mul_eq_mul_left hpos`):
+positivity `mersenne (k+1) > 0` from `mersenne_pos.mpr (Nat.succ_pos k)`;
+then `rw [h_eq, mul_add, ← hm, ← succ_mersenne (k+1), add_mul, one_mul]`
+collapses both sides to `mersenne (k+1) * m + m = mersenne (k+1) * m + m`.
+Bearer pins (`mersenne_pos`, `succ_mersenne`, `Nat.eq_of_mul_eq_mul_left`)
+verified 0-drift at Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+per session §2 via gh raw fetch of `Mathlib/NumberTheory/LucasLehmer.lean`
+(lines 64 `mersenne_pos` and 102 `succ_mersenne`).
+
+Build pending — Docker daemon unavailable at S7 ACT author time
+(`docker images` → `Cannot connect to the Docker daemon`). Follows the
+S5 ACT #19562 / S6 ACT #19644 "build pending — Docker daemon hung"
+qualifier pattern. -/
 lemma sigma_eq_self_add_cofactor
     (k m c : ℕ) (hm : m = mersenne (k + 1) * c)
     (h_eq : mersenne (k + 1) * σ 1 m = 2 ^ (k + 1) * m) :
     σ 1 m = m + c := by
-  sorry
+  have hpos : 0 < mersenne (k + 1) := mersenne_pos.mpr (Nat.succ_pos k)
+  refine Nat.eq_of_mul_eq_mul_left hpos ?_
+  rw [h_eq, mul_add, ← hm, ← succ_mersenne (k + 1), add_mul, one_mul]
 
 /-- **Step 6** (two-divisor forces primality). If `σ(m) = m + c` with `c ∣ m`
 and `c < m` (witness: `m > 1`, so `c = 1` is the only sub-`m` divisor option),
