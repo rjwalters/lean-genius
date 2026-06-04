@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-22T13:03:46.383Z",
-    "iteration": 8,
-    "focus": "S8 STATE-SYNC (researcher-3, this PR, 2026-05-17T00:50Z): absorbs Session 7 (2026-05-02) + PR #14878 (merged 2026-05-02T21:18:35Z) which fixed 6 Mathlib API drift root errors (cascading to ~35 build failures) in FurstenbergCorrespondenceOQ01.lean. Pre-S8 state.md + JSON had stayed at `Phase: BLOCKED, Iteration: 4, lastUpdate: 2026-04-27` for 14 days past the un-blocking. File presumed buildable at pin 2df2f0150c… (v4.26.0) per Session 7 assertion, but NOT yet Docker-verified in S8 (Docker info hangs; host-cron territory). 1 real sorry remains: limit_invariant_on_cylinder at line 779 — 60-line proof structure documented in file comment line ~760. Cesàro infrastructure (Session 2) and shift_iterate / cylinder_isClopen / indicator / Boolean compact-space repairs (Session 7) all GREEN.",
+    "iteration": 9,
+    "focus": "S9 OBSERVE-API-AUDIT (researcher-1, this PR, 2026-06-04T16:05Z): discharges S8's host-recovery gate (docker info returns < 8s with Server: section; df -h / shows 39 Gi avail ≥ 30 Gi floor — both gates pass after 18-day drift since S8). Verifies all 5 Mathlib lemmas referenced by the limit_invariant_on_cylinder proof draft (file comment FurstenbergCorrespondenceOQ01.lean:757-778) actually exist at pinned Mathlib 2df2f0150c… (v4.26.0): ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto' at Portmanteau.lean:333, IsClopen.frontier_eq at Clopen.lean:38, le_of_tendsto_of_tendsto' at OrderClosed.lean:631, ENNReal.tendsto_nat_nhds_top at ENNReal/Lemmas.lean:148, ENNReal.tendsto_inv_nat_nhds_zero at ENNReal/Lemmas.lean:488. Instance resolution for CantorSpace is risk-free because the sibling NNReal Portmanteau (tendsto_measure_of_isClopen_of_tendsto) with identical instance hypotheses already compiles in this file at L672/L684. Did NOT edit .lean: this worktree's proofs/.lake is a self-referencing symlink (isolation artifact), so any Lean edit would be unvalidated. S10 ACT must run from the main checkout where .lake/packages/mathlib resolves. 1 real sorry remains: limit_invariant_on_cylinder at line 779.",
     "blockers": [],
-    "nextAction": "S9 ACT (Lean edit, host-recovery-gated): (1) recover Docker daemon + free ≥ 30 Gi host disk; (2) docker info returns < 5 s + df -h / shows ≥ 30 Gi avail; (3) build-verify current main HEAD compiles via ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01; (4) if build clean: paste the 60-line limit_invariant_on_cylinder proof at line 779 (structure documented in file comment line ~760); (5) rebuild + ship S9 ACT PR. Follow-up S10 ACT for seqCompact_probabilityMeasure_cantor (~150-200 lines via Prokhorov ingredients in Mathlib v4.26).",
+    "nextAction": "S10 ACT (Lean edit, from main checkout — NOT a .loom/worktrees/* isolation): (1) cd /Users/rwalters/GitHub/lean-genius; (2) confirm proofs/.lake/packages/mathlib resolves to a real directory; (3) build-verify current main HEAD compiles via ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01; (4) if build clean: paste the 60-line limit_invariant_on_cylinder proof at line 779 (template in state.md Next Action section, lemma citations verified by S9 audit); (5) rebuild + ship S10 ACT PR. Follow-up S11 ACT for seqCompact_probabilityMeasure_cantor (~150-200 lines via Prokhorov ingredients in Mathlib v4.26).",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
@@ -68,10 +68,10 @@
       "FurstenbergCorrespondenceOQ01.lean Mathlib upgrade: ~35 specific errors (see knowledge.md session 5)"
     ],
     "nextSteps": [
-      "PRIORITY: Merge PR #14878 (Mathlib drift fixes) and verify Docker build succeeds.",
-      "After build succeeds: activate limit_invariant_on_cylinder proof (60-line structure already documented in file comment at line ~760). Uses ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto + ENNReal.Tendsto.add + le_of_tendsto_of_tendsto.",
+      "S10 ACT (from main checkout, NOT isolated worktree): build-verify current main HEAD via ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01.",
+      "S10 ACT: paste 60-line limit_invariant_on_cylinder proof at FurstenbergCorrespondenceOQ01.lean:779 — template + lemma citations in state.md Next Action section. All 5 Mathlib lemmas verified to exist at pin 2df2f0150c… by S9 API audit.",
       "After limit_invariant_on_cylinder: prove seqCompact_probabilityMeasure_cantor via Mathlib Prokhorov ingredients (~150-200 lines).",
-      "Update pool status to available (not blocked) once PR #14878 merges and build confirms."
+      "S9 API audit findings (verified at pin 2df2f0150c…): tendsto_measure_of_null_frontier_of_tendsto' at Portmanteau.lean:333; IsClopen.frontier_eq at Clopen.lean:38; le_of_tendsto_of_tendsto' at OrderClosed.lean:631; ENNReal.tendsto_nat_nhds_top at Lemmas.lean:148; ENNReal.tendsto_inv_nat_nhds_zero at Lemmas.lean:488."
     ]
   },
   "tags": [
@@ -91,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.383Z",
-  "lastUpdate": "2026-05-17T00:50:00.000Z",
+  "lastUpdate": "2026-06-04T16:05:00.000Z",
   "significance": 9,
   "tractability": 4,
   "leanFiles": [

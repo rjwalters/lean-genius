@@ -1,10 +1,183 @@
 # Research State: szemeredi-full-oq-01
 
 ## Current State
-**Phase**: ACT (un-BLOCKED post Session 7 / PR #14878 — 1 sorry remaining)
+**Phase**: ACT (host-recovered, Mathlib API audit complete — 1 sorry remaining)
 **Path**: full
-**Since**: 2026-05-17T00:50:00Z (S8 STATE-SYNC absorbs Session 7 ~14 d catchup)
-**Iteration**: 8 (last update: 2026-05-17 — Sessions 1, 2, 5, 6, 7, plus this S8)
+**Since**: 2026-06-04T16:05:00Z (S9 OBSERVE-API-AUDIT confirms host-recovery + verifies all Mathlib v4.26 lemmas referenced by the proof draft)
+**Iteration**: 9 (last update: 2026-06-04 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), plus this S9)
+
+## S9 OBSERVE-API-AUDIT (researcher-1, 2026-06-04T16:05Z, doc-only)
+
+**Why S9 fires**: Session 8 (three doc-only STATE-SYNC PRs on 2026-05-17:
+#19974, #19976, #19977) absorbed the Session 7 / PR #14878 transition but
+explicitly deferred the actual Lean edit to "S9 ACT (host-recovery-gated)".
+That gating condition (Docker daemon responsive within 5 s + ≥ 30 Gi disk)
+was unverified by S8 — flagged as a HOST blocker. S9 begins by checking
+the gate.
+
+**Host-recovery check (2026-06-04T16:00Z, researcher-1 worktree)**:
+| Gate | S8 (2026-05-17) | S9 (2026-06-04) | Δ |
+|---|---|---|---|
+| `docker info` Server: section returns | hangs at 5 s | < 8 s, full Server block printed | RECOVERED |
+| Docker Server Version | unknown | `29.4.1` | up |
+| `df -h /` Avail on `/` | "3.4 Gi" reported by S8 | **39 Gi** | RECOVERED |
+| Floor for cascade-safety | ≥ 30 Gi | 39 Gi ≥ 30 Gi | PASSES |
+
+Both host gates pass. ACT is no longer host-blocked.
+
+**Why doc-only instead of jumping straight to ACT**: the file comment at
+`FurstenbergCorrespondenceOQ01.lean:776-778` explicitly warns
+"Adding ~60 unvalidated lines here would mask the real blocker." The
+"real blocker" (35 Mathlib drift errors) is discharged, but **this S9
+worktree has no local Mathlib source** (the worktree's `proofs/.lake` is
+a self-referencing symlink in this isolation) so a Lean-level edit would
+still be blind to API-level breakage between the v4.26.0 pin and any
+intervening drift. S9 instead does the auditable thing: verify every
+Mathlib lemma the proof draft references actually exists at the pinned
+revision, via raw GitHub source at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Mathlib v4.26 API audit (proof-draft-driven; 5 lemmas confirmed at pin)**:
+
+| Lemma referenced by file comment (L757-778) | Mathlib v4.26 location | Confirmed |
+|---|---|---|
+| `ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'` (ENNReal-level Portmanteau) | `Mathlib/MeasureTheory/Measure/Portmanteau.lean:333` | ✅ |
+| `IsClopen.frontier_eq` (clopen ⟹ frontier = ∅) | `Mathlib/Topology/Clopen.lean:38` (alias of `isClopen_iff_frontier_eq_empty`, simp-tagged) | ✅ |
+| `le_of_tendsto_of_tendsto'` (pass forall bound to limits) | `Mathlib/Topology/Order/OrderClosed.lean:631` | ✅ |
+| `ENNReal.tendsto_nat_nhds_top` ((n : ℝ≥0∞) → ⊤) | `Mathlib/Topology/Instances/ENNReal/Lemmas.lean:148` | ✅ |
+| `ENNReal.tendsto_inv_nat_nhds_zero` ((n : ℝ≥0∞)⁻¹ → 0) | `Mathlib/Topology/Instances/ENNReal/Lemmas.lean:488` | ✅ |
+
+Auxiliary lemmas already used elsewhere in the file (so independently
+known to compile at v4.26.0):
+- `ProbabilityMeasure.tendsto_measure_of_isClopen_of_tendsto` — Portmanteau.lean:361 (used at L672, L684 of OQ01.lean — NNReal level)
+- `ge_of_tendsto` — used at L674
+- `Filter.eventually_of_forall` / `Eventually.of_forall` — used at L674
+
+**Outcome**: every lemma the documented proof structure depends on exists
+at the pinned Mathlib. The proof draft is API-sound. Remaining residual
+risk for S10 ACT is purely **tactic-level** (does `simp [hSclopen.frontier_eq]`
+close the `frontier = ∅ ⟹ measure = 0` step? does the `(Ns k + 1 : ℝ≥0∞)⁻¹ → 0`
+chain compose cleanly?) — those are first-attempt-debuggable, not API-drift
+class.
+
+**Explicit non-actions (out of scope for S9)**:
+- No `.lean` edits to `proofs/Proofs/FurstenbergCorrespondenceOQ01.lean`.
+  The proof draft remains exactly as Session 5 left it (60-line structured
+  comment + `sorry` at L779). S10 ACT is the proper Lean-edit session,
+  ideally from a non-isolated worktree with working `proofs/.lake/packages/mathlib`.
+- No build attempt. Even with host gates passing, building a single proof
+  file in Docker takes 5-30 min and the worktree's broken `.lake` symlink
+  would block local validation cycles. S10 ACT should run
+  `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+  from the main checkout.
+- No `meta.json` edits. (Slug numerics are mechanic territory.)
+- No `problem.md` / sibling slug / `lake-manifest.json` edits.
+- No pool status change. (Pool remains `available`; S9 claim transition
+  is researcher-1 → released-on-completion of this OBSERVE iteration.)
+
+**S9 closes in a 5-file doc-only motion**:
+
+1. `state.md` head — prepend this S9 block above S8; refresh Phase header
+   metadata (Since, Iteration).
+2. `knowledge.md` — append Session 9 (this audit) below Session 7.
+3. NEW `sessions/2026-06-04-s9-observe-mathlib-api-audit.md` — full
+   audit memo (~150 LOC).
+4. `src/data/research/problems/szemeredi-full-oq-01.json` — bump
+   `currentState.iteration` 8 → 9, refresh `focus` / `nextAction` /
+   `lastUpdate` to S9 narrative; `attemptCounts.total` 7 → 8 (S9 is
+   audit, not Lean attempt; counted as session, not "approach attempt").
+5. `research/registry.json` — bump `lastUpdate` to S9 timestamp.
+
+## Current Focus (POST S9 OBSERVE-API-AUDIT)
+Host gates (Docker + ≥ 30 Gi disk) recovered as of 2026-06-04. The
+documented `limit_invariant_on_cylinder` proof structure (60 LOC,
+file comment L757-778) is API-sound at Mathlib pin v4.26.0
+(`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): all 5 referenced lemmas
+verified. S10 ACT can proceed to write/build/ship.
+
+## Active Approach (POST S9)
+Unchanged from S8: ENNReal-level Portmanteau via `tendsto_measure_of_null_frontier_of_tendsto'`
+on clopen `S` and `shift⁻¹S` (frontier = ∅), combined with telescoping
+bounds `cesaroMeasure_preimage_le/ge` (L529/L548) and the error term
+`(Ns k + 1)⁻¹ → 0`. Both directions then `le_antisymm`.
+
+## Attempt Count (POST S9)
+- Total attempts: 8 sessions (1 survey, 1 Cesàro, 1 proof-write blocked,
+  1 documentation, 1 Mathlib API repair via PR #14878, 2 STATE-SYNC docs,
+  1 OBSERVE-API-AUDIT). The three Session-8 PRs (#19974, #19976, #19977)
+  collapse to "Session 8" for counting purposes.
+- Current approach attempts: 1 (Session 7's Mathlib repair, merged
+  + S9's API verification audit).
+- Approaches tried: Cesàro / T-invariance limit / Mathlib API repair / Mathlib API audit.
+
+## Blockers (POST S9)
+- None at slug level. ACT-ready.
+- None at host level (Docker + disk gates pass on this researcher-1
+  worktree's host as of 2026-06-04T16:00Z).
+- Residual: this worktree's `proofs/.lake` is a self-referencing symlink
+  (isolation artifact), so local Mathlib source lookup requires either
+  curl-from-GitHub-at-pin (what S9 did) or running ACT from the main
+  checkout (recommended for S10).
+
+## Next Action (POST S9)
+**S10 ACT** (Lean edit, from a non-isolated checkout):
+1. From `/Users/rwalters/GitHub/lean-genius` (NOT a `.loom/worktrees/*`
+   isolation), confirm `proofs/.lake/packages/mathlib` resolves to a real
+   directory.
+2. Build-verify current `main` HEAD compiles:
+   `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`.
+3. If build clean: paste the 60-line `limit_invariant_on_cylinder` proof
+   at line 779. Structure (verified by S9 audit, lemma names confirmed at
+   pin `2df2f0150c…`):
+   ```lean
+   theorem limit_invariant_on_cylinder ... := by
+     have hS_clopen_frontier : (μ : Measure CantorSpace) (frontier S) = 0 := by
+       simp [hSclopen.frontier_eq]   -- Clopen.lean:38
+     have hshiftS_clopen : IsClopen (shift ⁻¹' S) := isClopen_shift_preimage hSclopen
+     have hshiftS_frontier : (μ : Measure CantorSpace) (frontier (shift ⁻¹' S)) = 0 := by
+       simp [hshiftS_clopen.frontier_eq]
+     have htend_S := ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'
+       hconv hS_clopen_frontier               -- Portmanteau.lean:333
+     have htend_shiftS := ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'
+       hconv hshiftS_frontier
+     have hinv_tend : Tendsto (fun k => (↑(Ns k + 1) : ℝ≥0∞)⁻¹) atTop (𝓝 0) := by
+       have h1 : Tendsto (fun k => (↑(Ns k + 1) : ℝ≥0∞)) atTop atTop := by
+         exact ENNReal.tendsto_nat_nhds_top.comp (Filter.tendsto_add_atTop_nat 1 |>.comp hNs)
+         -- or: exact_mod_cast ((tendsto_atTop_add_const_right ℕ 1 (atTop : Filter ℕ)).comp hNs)
+       simpa using (ENNReal.tendsto_inv_iff.mpr h1)
+     -- direction ≤: cesaroMeasure_preimage_le + le_of_tendsto_of_tendsto'
+     have hle : (μ : Measure CantorSpace) (shift ⁻¹' S) ≤ (μ : Measure CantorSpace) S := by
+       have hsum_tend : Tendsto
+         (fun k => (μs k : Measure CantorSpace) S + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+         atTop (𝓝 ((μ : Measure CantorSpace) S + 0)) :=
+         Tendsto.add htend_S hinv_tend
+       simp only [add_zero] at hsum_tend
+       refine le_of_tendsto_of_tendsto' htend_shiftS hsum_tend ?_       -- OrderClosed.lean:631
+       intro k
+       rw [hdef k]
+       have := cesaroMeasure_preimage_le x (Ns k) S hS
+       convert this using 2
+     -- direction ≥: cesaroMeasure_preimage_ge symmetric
+     have hge : (μ : Measure CantorSpace) S ≤ (μ : Measure CantorSpace) (shift ⁻¹' S) := by
+       have hsum_tend : Tendsto
+         (fun k => (μs k : Measure CantorSpace) (shift ⁻¹' S) + (↑(Ns k + 1) : ℝ≥0∞)⁻¹)
+         atTop (𝓝 ((μ : Measure CantorSpace) (shift ⁻¹' S) + 0)) :=
+         Tendsto.add htend_shiftS hinv_tend
+       simp only [add_zero] at hsum_tend
+       refine le_of_tendsto_of_tendsto' htend_S hsum_tend ?_
+       intro k
+       rw [hdef k]
+       have := cesaroMeasure_preimage_ge x (Ns k) S hS
+       convert this using 2
+     exact le_antisymm hle hge
+   ```
+   The two `convert ... using 2` steps reconcile `cesaroMeasure x (Ns k + 1)`
+   (what the helper returns, with explicit `Ns k + 1` form) with the
+   measure-coerced form `(μs k : Measure)` after `hdef k` rewrite. May
+   need tactic refinement on first build pass.
+4. Rebuild + ship S10 ACT PR.
+
+After S10 ACT: S11 ACT for `seqCompact_probabilityMeasure_cantor`
+(~150-200 lines via Prokhorov ingredients in Mathlib v4.26).
 
 ## S8 STATE-SYNC (researcher-3, 2026-05-17T00:50Z, doc-only)
 

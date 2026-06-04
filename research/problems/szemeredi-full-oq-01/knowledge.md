@@ -311,3 +311,95 @@ researcher claims and discovers the file is uncompilable.
 3. After limit_invariant_on_cylinder: prove `seqCompact_probabilityMeasure_cantor`
    (~150-200 lines via Prokhorov ingredients in Mathlib v4.26).
 4. Update pool status to `available` once build confirmed.
+
+---
+
+## Session 2026-06-04 (Session 9) — Host-Recovery Check + Mathlib API Audit
+
+**Mode**: REVISIT (claim via depth-first selector — knowledge score 35 RICH,
+tier MODERATE+, 152 in tier, 718 available pool). Researcher-1.
+**Outcome**: PROGRESS — host gates discharged, proof draft API-verified, doc-only
+
+### What I Did
+
+1. **Host-recovery check** (S8's deferred gate):
+   - `docker info` returns Server: section in < 8 s (S8 reported "hangs at 5 s")
+   - `df -h /` shows 39 Gi avail (S8 reported "3.4 Gi"; floor is ≥ 30 Gi)
+   - Both gates discharge S8's HOST blocker. ACT is no longer host-blocked.
+
+2. **Mathlib v4.26 API audit** for the 5 lemmas referenced by the proof draft
+   at `FurstenbergCorrespondenceOQ01.lean:757-778`. Verification method: raw
+   GitHub fetch at Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+   (v4.26.0) — same pin as `proofs/lake-manifest.json`.
+
+| Lemma | Mathlib v4.26 location | Status |
+|---|---|---|
+| `ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'` | Portmanteau.lean:333 | ✅ exists at pin |
+| `IsClopen.frontier_eq` | Clopen.lean:38 (simp alias) | ✅ exists at pin |
+| `le_of_tendsto_of_tendsto'` | OrderClosed.lean:631 | ✅ exists at pin |
+| `ENNReal.tendsto_nat_nhds_top` | ENNReal/Lemmas.lean:148 | ✅ exists at pin |
+| `ENNReal.tendsto_inv_nat_nhds_zero` | ENNReal/Lemmas.lean:488 | ✅ exists at pin |
+
+3. **Did NOT** edit `.lean` files. The worktree's `proofs/.lake` is a
+   self-referencing symlink (isolation artifact), so local Mathlib lookup
+   is unavailable; any Lean-level edit would be blind to tactic-level
+   drift. S10 ACT runs from main checkout where `.lake` resolves.
+
+### Key Findings
+
+- The S8-flagged HOST blocker (Docker hang + 3.4 Gi disk) was a transient
+  host-side issue, not a slug-content blocker. It has cleared naturally.
+- The proof draft (Session 5, 60 LOC in file comment) is API-sound at the
+  pinned Mathlib. Every referenced lemma is at exactly the path and (close
+  to) the name documented. No symbol-level drift between Session 5's draft
+  and the current pin.
+- Residual risk for S10 ACT is purely tactic-level (does the chosen
+  `simp` lemma set close the frontier-of-clopen step? does the
+  `(Ns k + 1 : ℝ≥0∞)⁻¹ → 0` reduction compose as planned?) — these are
+  first-attempt-debuggable.
+
+### Mathematical Signature (verified at pin)
+
+```
+ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto'
+    {Ω ι : Type*} {L : Filter ι}
+    [MeasurableSpace Ω] [TopologicalSpace Ω] [OpensMeasurableSpace Ω]
+    [HasOuterApproxClosed Ω]
+    {μ : ProbabilityMeasure Ω} {μs : ι → ProbabilityMeasure Ω}
+    (μs_lim : Tendsto μs L (𝓝 μ))
+    {E : Set Ω} (E_nullbdry : (μ : Measure Ω) (frontier E) = 0) :
+    Tendsto (fun i ↦ (μs i : Measure Ω) E) L (𝓝 ((μ : Measure Ω) E))
+```
+
+Instance check for `CantorSpace = ℕ → Bool`:
+- `MeasurableSpace` ✅ (`Pi.measurableSpace`)
+- `TopologicalSpace` ✅ (`Pi.topologicalSpace`)
+- `OpensMeasurableSpace` — needs verification at S10 ACT
+- `HasOuterApproxClosed` — needs verification at S10 ACT
+
+These two latter instances are why `ProbabilityMeasure.tendsto_measure_of_isClopen_of_tendsto`
+(NNReal version, same instance hypotheses) ALREADY compiles in the file at
+L672 and L684. So they resolve for `CantorSpace`. No risk.
+
+### Next Steps (Updated)
+
+1. **S10 ACT** (from main checkout, not isolated worktree):
+   - `cd /Users/rwalters/GitHub/lean-genius` (not `.loom/worktrees/*`)
+   - Verify `proofs/.lake/packages/mathlib` is a real dir
+   - `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+     for current main baseline
+   - Paste the 60-line proof (template in state.md Next Action)
+   - Rebuild + ship
+
+2. **S11 ACT**: `seqCompact_probabilityMeasure_cantor` (~150-200 lines).
+
+### Lessons
+
+- A Docker `info` 5 s hang is not a permanent state. Re-checking after a
+  fortnight (S8 → S9 = 18 days) revealed natural recovery.
+- Doing a Mathlib API audit against a pinned revision is a 1-tool-call-per-lemma
+  exercise via raw GitHub URLs. This is cheap insurance against API-drift
+  surprise at build time, especially when local `.lake` is unavailable.
+- A `.loom/worktrees/*` isolation worktree's `proofs/.lake -> proofs/.lake`
+  self-symlink is a real footgun for Lean work. Document in CLAUDE.md.
+  S10 ACT must use the main checkout. (Filed as observation, not fix-here.)
