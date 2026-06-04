@@ -6,70 +6,97 @@
   "tier": "B",
   "path": "route-A-law-of-cosines",
   "problemStatement": {
-    "formal": "For a spherical triangle on the unit sphere with unit-vector vertices A, B, C : Fin 3 → ℝ, arc-length sides a := arcLen(B,C), b := arcLen(A,C), c := arcLen(A,B), and dihedral angles α := dihedralAngle(A,B,C), β := dihedralAngle(B,C,A), γ := dihedralAngle(C,A,B), prove the cotangent four-parts formula in the polynomial form: sin α · cos a · sin b = sin a · sin α · cos b · cos γ + sin a · cos α · sin γ. The classical-form corollary, cot a · sin b = cos b · cos γ + sin γ · cot α, follows by dividing through by sin a · sin α (both nonzero on a non-degenerate spherical triangle).",
-    "plain": "The four-parts formula (a.k.a. the cotangent rule) of spherical trigonometry is the third of the parent SphericalLawOfSines proof's three explicitly-stated openQuestions. It relates four consecutive elements of a spherical triangle (outer side, inner angle, inner side, outer angle) via cot a sin b = cos b cos γ + sin γ cot α. The formula is the workhorse of classical celestial navigation and astronomy — it converts between equatorial and horizontal coordinate systems given local sidereal time, and it derives the intercept method's Sumner line. Mathematically it is a one-line corollary of two applications of the spherical law of cosines plus the law of sines; this gallery entry packages that derivation into the parent's Fin 3 → ℝ cross-product framework.",
+    "formal": "For a spherical triangle on the unit sphere with unit-vector vertices A, B, C : Fin 3 \u2192 \u211d, arc-length sides a := arcLen(B,C), b := arcLen(A,C), c := arcLen(A,B), and dihedral angles \u03b1 := dihedralAngle(A,B,C), \u03b2 := dihedralAngle(B,C,A), \u03b3 := dihedralAngle(C,A,B), prove the cotangent four-parts formula in the polynomial form: sin \u03b1 \u00b7 cos a \u00b7 sin b = sin a \u00b7 sin \u03b1 \u00b7 cos b \u00b7 cos \u03b3 + sin a \u00b7 cos \u03b1 \u00b7 sin \u03b3. The classical-form corollary, cot a \u00b7 sin b = cos b \u00b7 cos \u03b3 + sin \u03b3 \u00b7 cot \u03b1, follows by dividing through by sin a \u00b7 sin \u03b1 (both nonzero on a non-degenerate spherical triangle).",
+    "plain": "The four-parts formula (a.k.a. the cotangent rule) of spherical trigonometry is the third of the parent SphericalLawOfSines proof's three explicitly-stated openQuestions. It relates four consecutive elements of a spherical triangle (outer side, inner angle, inner side, outer angle) via cot a sin b = cos b cos \u03b3 + sin \u03b3 cot \u03b1. The formula is the workhorse of classical celestial navigation and astronomy \u2014 it converts between equatorial and horizontal coordinate systems given local sidereal time, and it derives the intercept method's Sumner line. Mathematically it is a one-line corollary of two applications of the spherical law of cosines plus the law of sines; this gallery entry packages that derivation into the parent's Fin 3 \u2192 \u211d cross-product framework.",
     "whyMatters": [
       "Closes the third and final openQuestion of the parent spherical-law-of-sines gallery entry; alongside OQ-01 (spherical excess) and OQ-02 (dual law of cosines) this completes the standard catalogue of spherical-trig identities derivable from the cross-product framework.",
       "Bridges the two flagship spherical-trig gallery proofs: spherical-law-of-sines and spherical-law-of-cosines were verified standalone but had no proof linking them; the cotangent rule is the natural shared corollary.",
-      "Concrete navigation application: Smart (1977) §3.7 and Bowditch (2002) §22.6 both use the cotangent rule as the primary formula for converting between celestial coordinate systems; this gives the gallery a workable navigation case study.",
-      "Lowest-friction of the three OQ-* siblings: tractability 7 vs 4-5 for OQ-01/OQ-02 because no new infrastructure is needed — only an algebraic substitution chaining two known sibling theorems."
+      "Concrete navigation application: Smart (1977) \u00a73.7 and Bowditch (2002) \u00a722.6 both use the cotangent rule as the primary formula for converting between celestial coordinate systems; this gives the gallery a workable navigation case study.",
+      "Lowest-friction of the three OQ-* siblings: tractability 7 vs 4-5 for OQ-01/OQ-02 because no new infrastructure is needed \u2014 only an algebraic substitution chaining two known sibling theorems."
     ]
   },
   "knownResults": {
     "proven": [
-      "Classical: Smart, Textbook on Spherical Astronomy (1977) §3.7 eq (3.31); Todhunter, Spherical Trigonometry (1886) §62; Wikipedia 'Spherical trigonometry' §'Cotangent four-part formulae'. One of the standard six cyclic variants is in every introductory text.",
+      "Classical: Smart, Textbook on Spherical Astronomy (1977) \u00a73.7 eq (3.31); Todhunter, Spherical Trigonometry (1886) \u00a762; Wikipedia 'Spherical trigonometry' \u00a7'Cotangent four-part formulae'. One of the standard six cyclic variants is in every introductory text.",
       "Parent spherical-law-of-sines (Proofs/SphericalLawOfSines.lean, 323 lines, 0 axioms, 0 sorries, status: verified) provides dot, normSq, IsUnit3, arcLen, tripleProduct, projPerp, dihedralAngle, lagrange_identity, projPerp_cross_eq, sin_sq_dihedralAngle, sin_sq_arcLen, and spherical_law_of_sines_all_sq.",
-      "Sibling spherical-law-of-cosines (Proofs/SphericalLawOfCosines.lean, verified) provides the standard spherical law of cosines cos(a) = cos(b)cos(c) + sin(b)sin(c)cos(α) (exact name + namespace to be confirmed in S2 ORIENT).",
+      "Sibling spherical-law-of-cosines (Proofs/SphericalLawOfCosines.lean, verified) provides the standard spherical law of cosines cos(a) = cos(b)cos(c) + sin(b)sin(c)cos(\u03b1) (exact name + namespace to be confirmed in S2 ORIENT).",
       "Sibling spherical-law-of-cosines-oq-05 (haversine, verified via PR #17898) demonstrates the parent's cross-product framework extending cleanly to navigation-application identities.",
-      "Mathlib v4.26.0 provides Real.sin, Real.cos, Real.arccos, Real.sin_arccos (unconditional), Real.sin_nonneg_of_nonneg_of_le_pi, Real.arccos_nonneg, Real.arccos_le_pi — enough to bridge the parent's `sin_sq_arcLen` to a linear `sin(arcLen) ≥ 0` form. No Real.cot at the pinned revision; encode locally as cos/sin.",
+      "Mathlib v4.26.0 provides Real.sin, Real.cos, Real.arccos, Real.sin_arccos (unconditional), Real.sin_nonneg_of_nonneg_of_le_pi, Real.arccos_nonneg, Real.arccos_le_pi \u2014 enough to bridge the parent's `sin_sq_arcLen` to a linear `sin(arcLen) \u2265 0` form. No Real.cot at the pinned revision; encode locally as cos/sin.",
       "Sibling spherical-law-of-sines-oq-01 (spherical excess) and spherical-law-of-sines-oq-02 (dual law of cosines): both currently in OBSERVE phase, no Lean code; problem.md exists for each."
     ],
     "open": [
-      "Helper lemma: sin_arcLen_nonneg (sine of an arccos value is nonnegative because arccos returns to [0,π]) — ~3 LOC in S2.",
-      "Helper lemma: sin_arcLen_eq_sqrt extracting sin(arcLen u w) = sqrt(normSq (projPerp w u)) from parent's sin_sq_arcLen + nonnegativity — ~5-10 LOC in S2.",
+      "Helper lemma: sin_arcLen_nonneg (sine of an arccos value is nonnegative because arccos returns to [0,\u03c0]) \u2014 ~3 LOC in S2.",
+      "Helper lemma: sin_arcLen_eq_sqrt extracting sin(arcLen u w) = sqrt(normSq (projPerp w u)) from parent's sin_sq_arcLen + nonnegativity \u2014 ~5-10 LOC in S2.",
       "Module-path verification for sibling spherical-law-of-cosines proof (worktree .lake symlink trap; deferred to S2).",
-      "Main theorem statement spherical_cotangent_rule_polynomial in the parent's Fin 3 → ℝ framework (polynomial form, no cot) — ~10 LOC in S2.",
-      "Strategic sorry cotangent_rule_from_cosines (the actual two-line-of-cosines substitution) with full algebra in docstring — closed in S3 ACT.",
-      "Corollary spherical_cotangent_rule (with cot encoded as cos/sin) and explicit non-degeneracy sin a ≠ 0, sin α ≠ 0 — defer to S4 or skip.",
-      "Cyclic-relabelling permutations (six in total) — possibly stated as a `cot_rule_cyclic` derived corollary, defer to S4 or future iteration."
+      "Main theorem statement spherical_cotangent_rule_polynomial in the parent's Fin 3 \u2192 \u211d framework (polynomial form, no cot) \u2014 ~10 LOC in S2.",
+      "Strategic sorry cotangent_rule_from_cosines (the actual two-line-of-cosines substitution) with full algebra in docstring \u2014 closed in S3 ACT.",
+      "Corollary spherical_cotangent_rule (with cot encoded as cos/sin) and explicit non-degeneracy sin a \u2260 0, sin \u03b1 \u2260 0 \u2014 defer to S4 or skip.",
+      "Cyclic-relabelling permutations (six in total) \u2014 possibly stated as a `cot_rule_cyclic` derived corollary, defer to S4 or future iteration."
     ]
   },
   "tractability": {
     "lineCountEstimate": "60-100 (Route A: algebra over two parent/sibling theorems) or 150-200 (Route B: independent cross-product derivation, fallback)",
     "sorriesExpected": "1 strategic sorry in S2 (cotangent_rule_from_cosines), closed in S3",
-    "buildRisk": "low — depends on (a) sibling spherical-law-of-cosines API name, (b) framework compatibility; both will be verified in S2 ORIENT before any nontrivial Lean code is written"
+    "buildRisk": "low \u2014 depends on (a) sibling spherical-law-of-cosines API name, (b) framework compatibility; both will be verified in S2 ORIENT before any nontrivial Lean code is written"
   },
   "approach": {
     "current": "Route A: derive from two applications of the spherical law of cosines + law of sines (~60-100 LOC).",
-    "alternatives": "Route B: independent cross-product derivation in parent's Fin 3 → ℝ framework, mirroring parent's `linear_combination` style (~150-200 LOC). Reserve as fallback if Route A namespace bridge to sibling proves brittle."
+    "alternatives": "Route B: independent cross-product derivation in parent's Fin 3 \u2192 \u211d framework, mirroring parent's `linear_combination` style (~150-200 LOC). Reserve as fallback if Route A namespace bridge to sibling proves brittle."
   },
   "createdAt": "2026-05-12T18:01:16Z",
-  "lastUpdated": "2026-05-31",
+  "lastUpdated": "2026-06-03",
   "researcher": "researcher-12",
   "claimedBy": "researcher-6",
   "claimedAt": "2026-05-16T00:22:52Z",
   "claimExpires": "2026-05-16T01:52:52Z",
   "knowledge": {
-    "progressSummary": "S4 STATE-SYNC complete (2026-05-31, researcher-1, doc-only): 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since S3b PREP merge (PR #19450, 2026-05-16). Slug Lean file Proofs/SphericalLawOfSinesOQ03.lean SHA1 5dd50718… byte-stable at 279 LOC (1 strategic sorry at line 255). Lake-manifest Mathlib pin 2df2f015… byte-stable by cross-slug confirmation (sibling szemeredi-core-oq-04 Iter 18 PR #21364). S3b ACT readiness gate (S3b PREP §9): 4/6 GREEN re-affirmed; 2 deferred items (decision parent-helper-vs-inline + build smoke-test) intentionally left for S3b ACT iteration. Docker daemon healthy (server v29.4.1); disk 57 Gi free above ≥10 Gi pre-flight threshold (94 % capacity). No mathematical advance — STATE-SYNC only. S3b PREP complete (2026-05-16, researcher-12, doc-only): resolved the open question from S3 PREP §4.4 — *does the polynomial form of the cotangent rule reduce to 0=0+0 in the degenerate branches of dihedralAngle?* Answer: yes, via a three-way by_cases split on Real.sin (arcLen X Y) = 0 for each of the three sides (a, b, c), collapsing 8 sign patterns into 4 macro-cases. Macro-case A (sin b = 0): both α and γ are dihedralAngle-degenerate via sin b = 0 → sin α = sin γ = 0 → LHS = RHS = 0 (~14 LOC). Macro-case B (sin a = 0 ∧ sin b ≠ 0): RHS = 0 directly (sin a factor); LHS = 0 via inline helper `sin_dihedralAngle_eq_zero_of_sin_arcLen_third_eq_zero` (~12 LOC + 10 LOC helper). Macro-case C (sin c = 0 ∧ sin a sin b ≠ 0): α-deg via sin c = 0 ⟹ sin α = 0 ⟹ LHS = 0; need sin γ = 0 via symmetric helper (~18 LOC + 10 LOC helper). Macro-case D (non-degenerate): algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice + lagrange_identity (~25-45 LOC, very high risk). Paste-ready Lean skeleton in sessions §7. Total LOC estimate ~70-100 (inline helpers) or ~50-70 (parent helpers in S3c). Bearer drift recheck at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Mathlib/Analysis/SpecialFunctions/Trigonometric/Inverse.lean` (`67fe98d576b76fc0379a6cfe9d9ee00c126663f3`) + `.../Trigonometric/Basic.lean` (`93fc1d70f829448208fd4930ac2fcd38ea94b877`) — 0 drift since S3 PREP. Iteration 4 → 5. S3a ACT complete: 3 of 4 strategic sorries discharged in SphericalLawOfSinesOQ03.lean (Docker-clean, 3061 jobs). cos_arcLen closed via Cauchy-Schwarz from lagrange_identity + Real.cos_arccos (~14 LOC). sin_arcLen_nonneg closed via Real.sin_nonneg_of_nonneg_of_le_pi + arccos bounds (~3 LOC). spherical_law_of_cosines_local closed via simp + linear_combination -⟨A,C⟩⟨B,C⟩ * hC' (~5 LOC). 1 strategic sorry remains: spherical_cotangent_rule_polynomial (the boxed main theorem, deferred to S3b PREP + ACT for dihedralAngle definitional-branch handling).",
+    "progressSummary": "S5 PREP complete (2026-06-03, researcher-1, doc-only): closes the first of two deferred items on the S3b ACT readiness gate (S3b PREP \u00a79). Decision: inline private helpers in SphericalLawOfSinesOQ03.lean for S3b ACT iteration 1, with optional S3c promotion to parent SphericalLawOfSines.lean once helper signatures stabilise (sessions/2026-06-03-s5-prep-helper-placement-decision.md \u00a73.4, \u00a73.5). Rationale: blast-radius dominance at very-high-risk macro-D step, parent-stability preservation while OQ-01/OQ-02 are at OBSERVE, prove-first-extract-later library pattern. Incidental correction: parent gallery meta.json does NOT carry a theoremCount field, so neither helper path incurs parent meta drift (\u00a73.3, tightens S3b PREP \u00a74 friction estimate). Macro-case A paste-ready Lean snippet (~24 LOC, low risk) drafted \u00a74.1 against parent decl signatures verified byte-stable at base SHA 996638aefdf. Second deferred item (build smoke-test) remains DEFERRED: host disk at 5.1 Gi free / 100% capacity, blocks Docker S3b ACT (\u00a77). Net readiness gate: 5/6 GREEN, 1 DEFERRED (infra-only). No mathematical advance, no Lean / lake-manifest / parent gallery JSON edits. Iteration 6 \u2192 7. \n\nS4 STATE-SYNC complete (2026-05-31, researcher-1, doc-only): 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since S3b PREP merge (PR #19450, 2026-05-16). Slug Lean file Proofs/SphericalLawOfSinesOQ03.lean SHA1 5dd50718\u2026 byte-stable at 279 LOC (1 strategic sorry at line 255). Lake-manifest Mathlib pin 2df2f015\u2026 byte-stable by cross-slug confirmation (sibling szemeredi-core-oq-04 Iter 18 PR #21364). S3b ACT readiness gate (S3b PREP \u00a79): 4/6 GREEN re-affirmed; 2 deferred items (decision parent-helper-vs-inline + build smoke-test) intentionally left for S3b ACT iteration. Docker daemon healthy (server v29.4.1); disk 57 Gi free above \u226510 Gi pre-flight threshold (94 % capacity). No mathematical advance \u2014 STATE-SYNC only. S3b PREP complete (2026-05-16, researcher-12, doc-only): resolved the open question from S3 PREP \u00a74.4 \u2014 *does the polynomial form of the cotangent rule reduce to 0=0+0 in the degenerate branches of dihedralAngle?* Answer: yes, via a three-way by_cases split on Real.sin (arcLen X Y) = 0 for each of the three sides (a, b, c), collapsing 8 sign patterns into 4 macro-cases. Macro-case A (sin b = 0): both \u03b1 and \u03b3 are dihedralAngle-degenerate via sin b = 0 \u2192 sin \u03b1 = sin \u03b3 = 0 \u2192 LHS = RHS = 0 (~14 LOC). Macro-case B (sin a = 0 \u2227 sin b \u2260 0): RHS = 0 directly (sin a factor); LHS = 0 via inline helper `sin_dihedralAngle_eq_zero_of_sin_arcLen_third_eq_zero` (~12 LOC + 10 LOC helper). Macro-case C (sin c = 0 \u2227 sin a sin b \u2260 0): \u03b1-deg via sin c = 0 \u27f9 sin \u03b1 = 0 \u27f9 LHS = 0; need sin \u03b3 = 0 via symmetric helper (~18 LOC + 10 LOC helper). Macro-case D (non-degenerate): algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice + lagrange_identity (~25-45 LOC, very high risk). Paste-ready Lean skeleton in sessions \u00a77. Total LOC estimate ~70-100 (inline helpers) or ~50-70 (parent helpers in S3c). Bearer drift recheck at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Mathlib/Analysis/SpecialFunctions/Trigonometric/Inverse.lean` (`67fe98d576b76fc0379a6cfe9d9ee00c126663f3`) + `.../Trigonometric/Basic.lean` (`93fc1d70f829448208fd4930ac2fcd38ea94b877`) \u2014 0 drift since S3 PREP. Iteration 4 \u2192 5. S3a ACT complete: 3 of 4 strategic sorries discharged in SphericalLawOfSinesOQ03.lean (Docker-clean, 3061 jobs). cos_arcLen closed via Cauchy-Schwarz from lagrange_identity + Real.cos_arccos (~14 LOC). sin_arcLen_nonneg closed via Real.sin_nonneg_of_nonneg_of_le_pi + arccos bounds (~3 LOC). spherical_law_of_cosines_local closed via simp + linear_combination -\u27e8A,C\u27e9\u27e8B,C\u27e9 * hC' (~5 LOC). 1 strategic sorry remains: spherical_cotangent_rule_polynomial (the boxed main theorem, deferred to S3b PREP + ACT for dihedralAngle definitional-branch handling).",
     "insights": [
-      "S2 ORIENT scan confirmed framework mismatch: sibling SphericalLawOfCosines uses EuclideanSpace ℝ (Fin 3) with @inner, parent SphericalLawOfSines uses Fin 3 → ℝ with custom dot/normSq. Pivoting to local re-statement of law of cosines avoids the bridge.",
-      "No Real.cot at v4.26.0 — polynomial form (cleared of cotangents) chosen for main theorem; avoids both Real.cot and sin ≠ 0 non-degeneracy hypotheses at the statement level.",
-      "Helper lemma cos_arcLen: cos(arcLen u v) = dot u v for unit u, v — derivable from Real.cos_arccos + Cauchy-Schwarz via parent lagrange_identity. Strategic sorry in S2; ~10 LOC discharge in S3a.",
-      "S3 PREP: spherical_law_of_cosines_local discharge is single `linear_combination ⟨A,C⟩⟨B,C⟩ * (hC' − 1)` after `simp [dot, projPerp, Fin.sum_univ_three]` — hand-computed verification done; sign needs Docker build-time confirmation.",
-      "S3 PREP: spherical_cotangent_rule_polynomial cannot be closed in one shot — `dihedralAngle` is defined with a sqrt-zero `if` branch, so the polynomial form's degenerate case (sin = 0) needs explicit branch handling. Recommend S3b ACT scope this alone."
+      "S2 ORIENT scan confirmed framework mismatch: sibling SphericalLawOfCosines uses EuclideanSpace \u211d (Fin 3) with @inner, parent SphericalLawOfSines uses Fin 3 \u2192 \u211d with custom dot/normSq. Pivoting to local re-statement of law of cosines avoids the bridge.",
+      "No Real.cot at v4.26.0 \u2014 polynomial form (cleared of cotangents) chosen for main theorem; avoids both Real.cot and sin \u2260 0 non-degeneracy hypotheses at the statement level.",
+      "Helper lemma cos_arcLen: cos(arcLen u v) = dot u v for unit u, v \u2014 derivable from Real.cos_arccos + Cauchy-Schwarz via parent lagrange_identity. Strategic sorry in S2; ~10 LOC discharge in S3a.",
+      "S3 PREP: spherical_law_of_cosines_local discharge is single `linear_combination \u27e8A,C\u27e9\u27e8B,C\u27e9 * (hC' \u2212 1)` after `simp [dot, projPerp, Fin.sum_univ_three]` \u2014 hand-computed verification done; sign needs Docker build-time confirmation.",
+      "S3 PREP: spherical_cotangent_rule_polynomial cannot be closed in one shot \u2014 `dihedralAngle` is defined with a sqrt-zero `if` branch, so the polynomial form's degenerate case (sin = 0) needs explicit branch handling. Recommend S3b ACT scope this alone."
     ],
     "builtItems": [
-      "Created proofs/Proofs/SphericalLawOfSinesOQ03.lean (263 LOC including docstrings, 4 declarations all strategic sorries: cos_arcLen line 123, sin_arcLen_nonneg line 137, spherical_law_of_cosines_local line 159, spherical_cotangent_rule_polynomial line 239) — S2 SCAFFOLD, PR #19102 merged 2026-05-15T22:59:12Z",
-      "Wired SphericalLawOfSinesOQ03 into proofs/Proofs.lean umbrella (1 line, after SphericalLawOfSines) — S2 SCAFFOLD",
-      "Docker baseline of new file: build clean, 3061 jobs, no errors, 4 strategic-sorry warnings — S2 SCAFFOLD",
-      "S3 PREP session note: research/problems/spherical-law-of-sines-oq-03/sessions/2026-05-16-s3-prep-bearer-pinning.md — drift recheck (15 bearers), Mathlib manifest (5 lemmas + fallbacks), per-sorry ACT skeletons (4 templates), order-of-discharge split, ACT readiness gate — S3 PREP, PR #19340 merged 2026-05-16T01:08:59Z",
-      "S3a ACT: discharged 3 of 4 strategic sorries in SphericalLawOfSinesOQ03.lean. cos_arcLen (~14 LOC): unfold IsUnit3 + arcLen, Cauchy-Schwarz bound via lagrange_identity + normSq_cross_nonneg, then Real.cos_arccos. sin_arcLen_nonneg (~3 LOC): unfold arcLen, Real.sin_nonneg_of_nonneg_of_le_pi + Real.arccos_nonneg + Real.arccos_le_pi. spherical_law_of_cosines_local (~5 LOC): unit_sum for hC', simp [dot, projPerp, Fin.sum_univ_three], linear_combination -⟨A,C⟩⟨B,C⟩ * hC'. Docker-clean (3061 jobs, 1 strategic-sorry warning remaining)."
+      "Created proofs/Proofs/SphericalLawOfSinesOQ03.lean (263 LOC including docstrings, 4 declarations all strategic sorries: cos_arcLen line 123, sin_arcLen_nonneg line 137, spherical_law_of_cosines_local line 159, spherical_cotangent_rule_polynomial line 239) \u2014 S2 SCAFFOLD, PR #19102 merged 2026-05-15T22:59:12Z",
+      "Wired SphericalLawOfSinesOQ03 into proofs/Proofs.lean umbrella (1 line, after SphericalLawOfSines) \u2014 S2 SCAFFOLD",
+      "Docker baseline of new file: build clean, 3061 jobs, no errors, 4 strategic-sorry warnings \u2014 S2 SCAFFOLD",
+      "S3 PREP session note: research/problems/spherical-law-of-sines-oq-03/sessions/2026-05-16-s3-prep-bearer-pinning.md \u2014 drift recheck (15 bearers), Mathlib manifest (5 lemmas + fallbacks), per-sorry ACT skeletons (4 templates), order-of-discharge split, ACT readiness gate \u2014 S3 PREP, PR #19340 merged 2026-05-16T01:08:59Z",
+      "S3a ACT: discharged 3 of 4 strategic sorries in SphericalLawOfSinesOQ03.lean. cos_arcLen (~14 LOC): unfold IsUnit3 + arcLen, Cauchy-Schwarz bound via lagrange_identity + normSq_cross_nonneg, then Real.cos_arccos. sin_arcLen_nonneg (~3 LOC): unfold arcLen, Real.sin_nonneg_of_nonneg_of_le_pi + Real.arccos_nonneg + Real.arccos_le_pi. spherical_law_of_cosines_local (~5 LOC): unit_sum for hC', simp [dot, projPerp, Fin.sum_univ_three], linear_combination -\u27e8A,C\u27e9\u27e8B,C\u27e9 * hC'. Docker-clean (3061 jobs, 1 strategic-sorry warning remaining)."
     ],
     "nextSteps": [
-      "S3b ACT (next session, ~60-120 min): discharge spherical_cotangent_rule_polynomial per the paste-ready skeleton in sessions/2026-05-16-s3b-prep-dihedral-degenerate-branch.md §7 — three-way by_cases split + four macro-case discharges (A: sin b = 0 → 0=0 directly; B/C: degenerate cases requiring inline helpers; D: non-degenerate algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice). Estimated 70-100 LOC.",
+      "S3b ACT (next session, ~60-120 min): discharge spherical_cotangent_rule_polynomial per the paste-ready skeleton in sessions/2026-05-16-s3b-prep-dihedral-degenerate-branch.md \u00a77 \u2014 three-way by_cases split + four macro-case discharges (A: sin b = 0 \u2192 0=0 directly; B/C: degenerate cases requiring inline helpers; D: non-degenerate algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice). Estimated 70-100 LOC.",
       "S3c (optional, after S3b ACT lands): promote inline helpers `sin_dihedralAngle_eq_zero_of_sin_arcLen_*_eq_zero` from SphericalLawOfSinesOQ03.lean to parent SphericalLawOfSines.lean as named API additions (~+2 theorems in parent meta.json). Pure cleanup; not strictly required.",
-      "S4 (optional polish): add classical-form corollary spherical_cotangent_rule with cot encoded as cos/sin + non-degeneracy hypotheses sin a ≠ 0, sin α ≠ 0. Likely deferred or skipped (polynomial form is technically stronger).",
-      "S4/S5 (optional): cyclic-relabelling permutation lemma (a, α, b, γ) → (b, β, c, α) → (c, γ, a, β) — six cyclic variants; cot_rule_cyclic statement or quote the polynomial form three times."
+      "S4 (optional polish): add classical-form corollary spherical_cotangent_rule with cot encoded as cos/sin + non-degeneracy hypotheses sin a \u2260 0, sin \u03b1 \u2260 0. Likely deferred or skipped (polynomial form is technically stronger).",
+      "S4/S5 (optional): cyclic-relabelling permutation lemma (a, \u03b1, b, \u03b3) \u2192 (b, \u03b2, c, \u03b1) \u2192 (c, \u03b3, a, \u03b2) \u2014 six cyclic variants; cot_rule_cyclic statement or quote the polynomial form three times."
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SphericalLawOfSines.lean",
+      "filename": "SphericalLawOfSines.lean",
+      "lineCount": 324,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfSines.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfSinesOQ03.lean",
+      "filename": "SphericalLawOfSinesOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfSinesOQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "spherical-law-of-sines"
+  ]
 }
