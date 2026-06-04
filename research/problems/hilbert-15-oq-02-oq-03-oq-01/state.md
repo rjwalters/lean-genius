@@ -1,12 +1,100 @@
 # Current State
 
-**Phase**: ACT (S3c-prep-15 staged Step 5 ACT recipe under Path B + bearer drift caught at `Fintype.card_congr` and `Unique.mk'`; Step 5 ACT remains — 5 sorries staged for ACT discharge per memo §6; build pending continues — Docker daemon hung + disk 4.4 Gi)
+**Phase**: ACT (Step 5 ACT recipe staged in PREP-15 §6 under Path B — 5 sorries staged for ACT discharge; build pending — Docker now AVAILABLE, host disk 5.4 Gi remains tight)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-16T15:10:00Z (S3c-prep-15 PREP by researcher-3 — post-Step-4-ACT-merge Step 5 signature refresh + Mathlib bearer 5-spot recheck at unchanged pinned SHA + STATE-SYNC #19371 name-correction clarification; doc-only)
-**Iteration**: 19
+**Last Updated**: 2026-06-03T17:00:00Z (STATE-SYNC-17d-idle by researcher-1 — post-17-day-quiescent freshness refresh + host probe rerun + Mathlib bearer pin recheck; doc-only)
+**Iteration**: 20
 
 > _Phase note: this skill maps "PREP" to canonical "ORIENT" phase per
 > `lean-research` skill conventions._
+
+## STATE-SYNC-17d-idle (2026-06-03T17:00Z, researcher-1) — post-17-day-quiescent freshness refresh (doc-only)
+
+**Mode**: PREP (doc-only — no Lean edits, no build run).
+**Trigger**: 17-day quiescent window since PR #19723 (S3c-prep-15, researcher-3,
+merged 2026-05-16T~15:10Z). Two mechanic/JSON-housekeeping PRs landed in
+the interim (#19674 leanFiles[3] sync, #19822 batch sync of 3 sibling slugs);
+neither touched this slug's Lean file or session bundle.
+
+### What this STATE-SYNC delivers
+
+1. **Host probe refresh** (memo §2). Two ACT-readiness gates moved:
+   * **G11 Docker daemon**: 🔴 RED → ✅ GREEN. `docker info` now returns
+     a healthy Server section in <1 s; the hang PREP-14/PREP-15 author
+     witnessed has cleared.
+   * **G13 open competing PR**: 🟡 AMBER → ✅ GREEN. Mechanic PR #19673
+     (the AMBER citation in PREP-15) merged as #19674; PR #17966
+     remains stale CONFLICTING but is orthogonal.
+   * **G12 disk space**: 🔴 RED unchanged. 5.4 Gi available (vs. ~80 Gi
+     for a Mathlib cold rebuild); marginal improvement from PREP-15's
+     4.4 Gi.
+
+2. **Mathlib bearer pin recheck** (memo §5). Pinned SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged in 17 days;
+   5-spot file/line recheck of `Fintype.card_unique`,
+   `Fintype.card_eq_zero_iff`, `Fintype.card_congr`, `Unique.mk'`,
+   `Subtype.isEmpty_of_false` confirms PREP-15 §5 citations are still
+   accurate (immutable by git SHA, but the table is included for next
+   claimer's convenience).
+
+3. **Lean file byte-stability check** (memo §4).
+   `Hilbert15OQ02OQ03OQ01.lean` is unchanged since PR #19641 (Step 4
+   ACT, 2026-05-16T14:45Z): 1254 LOC, 1 real sorry @ line 413,
+   0 axioms, 33 theorems. PREP-15 §6 line citations (799/889/1040/
+   1083/1160/1212/1229) remain accurate; the §6 skeleton can be
+   pasted **verbatim** at line 1253 before
+   `end Hilbert15OQ02OQ03OQ01`.
+
+4. **Path forward** (memo §6). Two viable paths for the next claimer:
+   * **Path P1** (host disk reclaimed to ≥ 100 Gi): take PREP-15
+     Option A — paste §6 skeleton, discharge 5 sorries under live
+     build, ship 0-new-sorry Step 5 ACT, break cluster's
+     build-pending streak.
+   * **Path P2** (host disk stays tight): take PREP-15 Option B —
+     stage a PREP-16 that discharges the 5 sorries as separate doc
+     inserts; Step 5 ACT then becomes a paste-ready 0-sorry recipe.
+
+### Honest scope assessment
+
+Ships **0 Lean lines**, **0 new theorems**, **0 new sorries**, **0
+new axioms**, **0 staged ACT recipes**. Pure
+freshness-and-housekeeping pass; **scaffolding for scaffolding**
+(meta-PREP for the actual Step 5 ACT). Per researcher honesty rules,
+do **not** describe this as significant progress on the LR rule. The
+value is ~30 min of probe-rerun savings for the next claimer plus a
+refreshed ACT-readiness gate at 2026-06-03 host state. PREP-15
+remains the canonical Step 5 ACT recipe; this STATE-SYNC only
+certifies that PREP-15's assumptions still hold.
+
+### Out-of-scope
+
+* **`leanFiles[]` JSON block**: untouched — mechanic owns these
+  fields, and the file is byte-identical to the leanFiles[3]
+  already on main (1254/33/2/0; the sorryCount=2 includes the
+  cosmetic docstring "sorry" at line 457).
+* **`problem.md` / `knowledge.md`**: substantive domain content,
+  not touched by STATE-SYNCs.
+* **Sibling slugs** (`Hilbert15OQ01`, `Hilbert15OQ02`,
+  `Hilbert15OQ02OQ03`, `Hilbert15Schubert*`): not touched.
+
+### File scope of this STATE-SYNC (anti-race guarantee)
+
+* **New**: `research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-06-03-state-sync-17d-idle.md`
+  (~250 LOC; no Lean code).
+* **Updated**: `research/problems/hilbert-15-oq-02-oq-03-oq-01/state.md`
+  (this block prepended; all prior content preserved).
+* **Updated**: `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`
+  (`currentState.{phase, since, iteration, focus, nextAction}` refresh
+  + `lastUpdate` + `knowledge.progressSummary` prepend; `leanFiles[]`
+  untouched).
+* **Not touched**: any Lean file, `problem.md`, `knowledge.md`,
+  sibling slugs, `lake-manifest.json`.
+
+By construction this PR cannot conflict with:
+* PR #17966 (stale CONFLICTING — different file region).
+* Any future Step 5 ACT PR (same `sessions/` orthogonality).
+* Any future PREP-16 PR (same `sessions/` orthogonality).
+* Any sibling-slug PR.
 
 ## S3c-prep-15 PREP (2026-05-16T15:10Z, researcher-3) — Step 5 signature refresh + bearer drift catch (doc-only)
 
