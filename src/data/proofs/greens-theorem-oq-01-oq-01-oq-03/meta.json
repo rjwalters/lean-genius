@@ -23,8 +23,8 @@
     "axiomCount": 0,
     "assumptions": "No axioms. 0 sorries. All theorems fully proved using Mathlib's measure theory (null sets, restriction equality) and Fubini theorem.",
     "dateAdded": "2026-05-06",
-    "lineCount": 228,
-    "theoremCount": 8,
+    "lineCount": 292,
+    "theoremCount": 10,
     "definitionCount": 0,
     "mathlibDependencies": [
       {
@@ -64,7 +64,9 @@
       "volume_prod_restrict_Icc_eq_Ioo: product measure equality on rectangles",
       "intervalIntegral_swap_of_Ioo_integrable: Fubini with weaker Ioo integrability",
       "integrable_Icc_iff_Ioo: explicit equivalence of Icc and Ioo integrability conditions",
-      "greens_fubini_open_rectangle: application to Green's theorem with open rectangle"
+      "greens_fubini_open_rectangle: application to Green's theorem with open rectangle",
+      "restrict_Icc_eq_Ioo_of_null_endpoints: atomless generalization — for any measure μ on ℝ with μ{a}=μ{b}=0, μ.restrict(Icc a b) = μ.restrict(Ioo a b). Addresses OQ-01 from the conclusion; the original Lebesgue lemma is recovered as the special case where 'null endpoints' follows from singletons being countable",
+      "restrict_Icc_eq_Ioo_of_noAtoms: typeclass-form corollary using MeasureTheory.NoAtoms — any NoAtoms measure on ℝ (e.g., Lebesgue volume, any continuous CDF measure) satisfies the restriction equality. The Lebesgue case factors as a one-line corollary, demonstrating the generalization recovers the original result"
     ]
   },
   "leanFile": {
@@ -72,9 +74,9 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "intervalIntegral", "Set", "Measure", "Filter", "Topology"],
     "namespace": "GreensTheoremOQ01OQ01OQ03",
-    "lineCount": 228,
+    "lineCount": 292,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 0,
     "sorries": 0
   },
@@ -144,8 +146,8 @@
     "summary": "The Icc integrability hypothesis for interval integral swap can be replaced by Ioo integrability (or any boundary variant: Ioc, Ico) because for Lebesgue measure these restrictions are identical. All needed tools exist in Mathlib.",
     "implications": "The key novel contribution is vol.restrict(Icc a b) = vol.restrict(Ioo a b) — a useful lemma for any context where Lebesgue integration on intervals must relate Icc and Ioo hypotheses. This could be contributed to Mathlib's MeasureTheory.Measure.Lebesgue.Basic.",
     "openQuestions": [
-      "Can this restriction equality be generalized to any atomless Borel measure (not just Lebesgue), giving vol.restrict(Icc a b) = vol.restrict(Ioo a b) for any measure that assigns zero to singletons?",
-      "Does Mathlib contain (or could one contribute) a simp lemma stating vol.restrict(Icc a b) = vol.restrict(Ioo a b) directly, avoiding the need for each application to reprove it?",
+      "RESOLVED: Generalization to atomless measures is proved as restrict_Icc_eq_Ioo_of_null_endpoints (endpoint-null hypothesis form) and restrict_Icc_eq_Ioo_of_noAtoms (NoAtoms typeclass form). The Lebesgue volume version is recovered as a one-line corollary, confirming the generalization is conservative.",
+      "Does Mathlib contain (or could one contribute) a simp lemma stating vol.restrict(Icc a b) = vol.restrict(Ioo a b) directly, avoiding the need for each application to reprove it? The atomless typeclass form restrict_Icc_eq_Ioo_of_noAtoms is the natural Mathlib-shaped statement.",
       "Does the analogous statement hold in higher dimensions for the closed cube $[a_1,b_1] \\times \\cdots \\times [a_n,b_n]$ versus the open cube, and can the boundary-null argument be unified across dimensions via a general 'positive-codimension faces have measure zero' lemma?",
       "For non-Lebesgue measures arising in geometric measure theory (e.g., Hausdorff measure $\\mathcal{H}^s$ on a fractal set), the boundary $\\{a,b\\}$ may have positive $\\mathcal{H}^0$ — at what regularity threshold (e.g., $s > 0$ continuous) does the Icc/Ioo restriction equality recover?"
     ]
