@@ -16,55 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-27T14:25:00Z",
-    "iteration": 2,
-    "focus": "Blocked: mul_lt_mul_of_pos_left + div_lt_div_iff drift",
+    "phase": "ACT-blocked",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 3,
+    "focus": "S2 (researcher-1, 2026-06-04): re-audit. OQ01 + OQ02 build still blocked on the same Mathlib 4.26 drift Session 1 diagnosed (still Mechanic-owned). Exploration.lean DOES exist on disk (28,074 lines, 0 sorries, structure-encoded axiom count of 12 per yang-mills-2d gallery entry) — Session 1's 'file removed' note was incorrect. OQ02's single explicit axiom (`casimir_scaling_4d_approximate`) is a 4D conjecture supported by lattice QCD (Bali et al. 2000) and is NOT derivable from the 2D first principles in this file family.",
     "blockers": [
-      "YangMills2DOQ01.lean:152 mul_lt_mul_of_pos_left apply unification fails (mul_one over-simp)",
-      "YangMills2DOQ02.lean:160 div_lt_div_iff renamed to div_lt_div_iff₀",
-      "JSON references stale YangMills/Exploration.lean which no longer exists"
+      "YangMills2DOQ01.lean:151-152 `mul_lt_mul_of_pos_left` apply unification fails after `simp only [..., mul_one]` collapses `d * 1` on RHS — still present on disk (Mechanic-owned per project_mathlib_api_drift_2026_04)",
+      "YangMills2DOQ02.lean:160 still uses `div_lt_div_iff` (renamed to `div_lt_div_iff₀` in Mathlib 4.26) — still present on disk (Mechanic-owned)"
     ],
-    "nextAction": "Mechanic: simp argument fix in OQ01 + div_lt_div_iff₀ rename in OQ02. Researcher (post-repair): reconcile JSON ↔ on-disk files; examine the 1 axiom in OQ02.",
+    "nextAction": "Mechanic: (1) on OQ01.lean:151 drop `mul_one` from `simp only` list (or `conv_rhs => rw [← mul_one d]` before `apply mul_lt_mul_of_pos_left`); (2) on OQ02.lean:160 rename `div_lt_div_iff` → `div_lt_div_iff₀`. Once green, this WIP cohort tracker has no outstanding researcher work — yang-mills-2d-oq-01 / oq-02 are graduation-candidates and the OQ02 axiom is correctly classified (open 4D physics input, not in scope for derivation here).",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED on Mathlib API drift. Docker build of YangMills2DOQ01.lean (line 152) and YangMills2DOQ02.lean (line 160) both fail on origin/master. (1) `mul_lt_mul_of_pos_left` apply unification fails after simp[mul_one] collapses RHS — Lean 4.26 stricter elaboration. (2) `div_lt_div_iff` rename to `div_lt_div_iff₀` (same family as Erdos1151OQ04 drift). Mechanic-owned per project_mathlib_api_drift_2026_04 policy. JSON also references nonexistent YangMills/Exploration.lean — stale reference to a removed file.",
+    "progressSummary": "S2 (researcher-1, 2026-06-04): re-audited disk state. Build still BLOCKED on the same two Mathlib 4.26 drift hits Session 1 diagnosed (OQ01 `mul_one` over-simp + OQ02 `div_lt_div_iff` rename) — Mechanic territory. Reconciled stale Session-1 notes: (a) Exploration.lean exists (28,074 lines, 0 sorries) — Session 1 claimed it had been removed; (b) the single explicit OQ02 axiom `casimir_scaling_4d_approximate` is the 4D lattice-QCD-supported conjecture (Bali et al. 2000), not derivable in 2D — answering Session 1's open question 'can the OQ02 axiom be derived from first principles in 2D' with NO (the axiom is a 4D statement; 2D Casimir scaling is exact and is already a non-axiomatic theorem in OQ02 as `twoD_exact_casimir_scaling`).",
     "builtItems": [
-      "proofs/Proofs/YangMills/Exploration.lean: 12 sorries eliminated (59→47)",
-      "src/data/proofs/yang-mills-2d/meta.json: updated sorry count and line count",
-      "Proved 14 sorries in Exploration.lean (15→1): wv_mass_sq_pos, hook_length_positive, semiclassical_pos, quantum_breaks_scale, dim4_decreases, csTopologicalMass_pos, csRenorm_gt_bare, bv_field_count, num_links_pos (2), tc_decreases_with_mu, sc_tension_monotone_in_N, tension_gap_ratio",
-      "Fixed tension_gap_ratio: corrected math from N/(4π) to π/2",
-      "Fixed quantum_breaks_scale: added missing g≠0 hypothesis",
-      "Fixed bv_field_count: strengthened N≥2 to N≥3 (bound 24 was unachievable for N=2)"
+      "S2 (researcher-1, 2026-06-04): audit + JSON tracker reconciliation. Verified OQ01 (308 ln, 0 axioms, 0 sorries) and OQ02 (244 ln, 1 axiom, 0 sorries) line numbers and content match Session 1 diagnosis; Exploration.lean exists with 0 sorries.",
+      "S1 (2026-04-27): Session 1 diagnosis of OQ01 + OQ02 Mathlib drift; stale Exploration.lean references identified."
     ],
     "insights": [
-      "28K-line Exploration.lean with 59 sorries, 0 axioms (assumptions in structures)",
-      "Many sorries tagged MATHLIB-DRIFT (API breakage), some are simple Nat/Real arithmetic",
-      "Proved Nat division identities: translations (Poincaré = Lorentz + d), conformal_larger, conformal_extra",
-      "Proved orbit_grows_with_N via Nat.pow_lt_pow_left + omega",
-      "Proved softWallMassSq_pos and softWallMassSq_monotone via positivity",
-      "Proved RGZ propagator non-negativity lemma",
-      "Proved mpsCorrelationLength_pos via div_pos_of_neg_of_neg and Real.log_neg",
-      "Proved horizon_condition_dof and ym_anomaly_free via nlinarith+omega",
-      "Proved step scaling lattice correction via sq_pos_of_pos",
-      "Remaining 47 sorries mostly MATHLIB-DRIFT or deeper mathematical content",
-      "tension_gap_ratio had wrong RHS: N/(4π) should be π/2 (σ/m² = g⁴N²/(8π) / (g²N/(2π))² = π/2, N-independent)",
-      "quantum_breaks_scale was unprovable: beta/(2·0)=0 when g=0. Added hg:g≠0 hypothesis.",
-      "bv_field_count was false for d=3,N=2: (6)(3)=18<24. Changed to N≥3.",
-      "Most sorries were simple positivity/arithmetic gaps: Nat.cast_pos, mul_pos, pow_lt_pow_left",
-      "coupling_controlled (1 remaining sorry) needs Real.log chain reconstruction — deferred"
+      "OQ01 (`YangMills2DOQ01.lean`, 308 ln, 0 axioms, 0 sorries): SU(2) Wilson-loop area law via Migdal formula. Single drift hit at line 151-152.",
+      "OQ02 (`YangMills2DOQ02.lean`, 244 ln, 1 axiom, 0 sorries): post-string-breaking ratio. Single drift hit at line 160. The 1 explicit axiom `casimir_scaling_4d_approximate` is a 4D phenomenon (lattice QCD, Bali 2000), not derivable from 2D first principles.",
+      "Exploration.lean (28,074 ln, 0 sorries): the 2D Yang-Mills gallery backbone — exists on disk despite Session 1 claim it was removed. The yang-mills-2d gallery entry records 12 structure-encoded assumptions there (1 explicit `gaugeTransform` + 11 `: True` fields stipulating QFT properties: Slavnov-Taylor, BRST, Coleman-Mandula, Fradkin-Shenker, asymptotic safety).",
+      "Both OQ01 / OQ02 drift hits are the same canonical 2026-04-26 Mathlib 4.26 upgrade cohort already repaired in PRs #13142, #13159, #13216, #13223 — pattern is well-understood, fixes are mechanical.",
+      "Per project axiom-integrity policy: yang-mills-2d-oq-02's `casimir_scaling_4d_approximate` is honestly tagged in the file's docstring as 'OPEN' and 'supported by lattice QCD but not analytically proved'. This is the correct framing — no overclaim, no hidden assumption."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Mechanic: drop `mul_one` from simp on OQ01:151 (or conv_rhs ← mul_one d)",
-      "Mechanic: rename div_lt_div_iff → div_lt_div_iff₀ on OQ02:160",
-      "Researcher (post-repair): reconcile stale JSON references to YangMills/Exploration.lean",
-      "Researcher (post-repair): assess whether the 1 OQ02 axiom can be derived in 2D"
+      "Mechanic (PRIORITY): apply two two-line fixes — `mul_one` removal at YangMills2DOQ01.lean:151 and `div_lt_div_iff₀` rename at YangMills2DOQ02.lean:160; rebuild via `./proofs/scripts/docker-build.sh Proofs.YangMills2DOQ01` and `Proofs.YangMills2DOQ02`.",
+      "Curator / Auditor (post-Mechanic-repair): if green, mark this WIP tracker COMPLETED and graduate yang-mills-2d-oq-01 + yang-mills-2d-oq-02 slugs.",
+      "Researcher (long-horizon, optional): the 11 structure-encoded `: True` assumptions in Exploration.lean (Slavnov-Taylor, BRST, Coleman-Mandula, etc.) are mathematically distinct from the OQ02 4D Casimir-scaling axiom — they are formal QFT framework stipulations that would need genuine non-perturbative QFT formalization to discharge. Each would be its own multi-month research slug if attempted."
     ]
   },
   "tags": [
@@ -85,7 +69,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.258Z",
-  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-06-04T00:00:00Z",
   "significance": 6,
   "tractability": 5
 }

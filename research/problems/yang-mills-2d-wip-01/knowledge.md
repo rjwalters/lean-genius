@@ -90,3 +90,123 @@ is independent of the build drift but worth flagging.
   `progressSummary`, `currentState`, `nextSteps`
 
 No proof code changed.
+
+---
+
+## Session 2 (2026-06-04) — Re-audit + JSON reconciliation
+
+**Mode**: REVISIT (claim-random selected this slug; knowledge score
+25 RICH; Session 1 next-steps explicitly assigned the
+JSON-reconciliation task to "Researcher (post-repair)" but repair has
+not yet happened — doing the doc-side reconciliation now since it does
+not depend on the build being green).
+
+**Outcome**: build still BLOCKED on the same two Session-1 drift hits
+(Mechanic-owned, unchanged on disk). JSON tracker reconciled with
+actual disk state; Session-1 stale claim that
+`YangMills/Exploration.lean` had been removed is corrected — the file
+exists with 28,074 lines and 0 sorries. Session-1 open question on the
+OQ02 axiom is answered: it is a 4D conjecture (lattice QCD, Bali et
+al. 2000) and is NOT derivable from 2D first principles in this slug
+family.
+
+### What I Verified On Disk
+
+| File | Lines | Axioms | Sorries | Drift hit? |
+|---|---:|---:|---:|---|
+| `proofs/Proofs/YangMills2DOQ01.lean` | 308 | 0 | 0 | YES, line 151 (`mul_one` in simp) |
+| `proofs/Proofs/YangMills2DOQ02.lean` | 244 | 1 | 0 | YES, line 160 (`div_lt_div_iff`) |
+| `proofs/Proofs/YangMills/Exploration.lean` | 28,074 | 0 explicit (12 structure-encoded per gallery) | 0 | unaffected by this cohort |
+
+### What Changed Since Session 1
+
+1. **Exploration.lean is present**, contrary to the Session 1 note. It
+   was either restored, was a worktree-visibility artifact at Session
+   1, or Session 1 mis-read the directory listing. Either way: the
+   file exists, has 0 sorries on disk, and is the backbone behind the
+   `yang-mills-2d` gallery entry.
+
+2. **Sorry inventory in Exploration.lean is now 0** (Session 1
+   "builtItems" history mentions 59 → 47 → 1 progression; current
+   state is 0). The "coupling_controlled" sorry Session 1 deferred has
+   evidently been discharged or removed.
+
+3. **OQ01 + OQ02 drift unchanged**. Both lines still contain the
+   broken-on-4.26 idioms. No PR has yet repaired them. This remains
+   strictly Mechanic territory per
+   `project_mathlib_api_drift_2026_04`.
+
+### OQ02 Axiom Assessment (resolves Session 1 open question)
+
+OQ02's single explicit axiom is:
+
+```lean
+axiom casimir_scaling_4d_approximate :
+    ∀ (sigma_R sigma_fund casimir_R casimir_fund : ℝ),
+    sigma_R > 0 → sigma_fund > 0 → casimir_R > 0 → casimir_fund > 0 →
+    ∃ ε : ℝ, ApproximateCasimirScaling4D sigma_R sigma_fund casimir_R casimir_fund ε
+```
+
+The file's docstring is already honest about this:
+
+> **Conjecture (OPEN)**: 4D Yang-Mills exhibits approximate Casimir
+> scaling at intermediate distances. The approximation error ε is
+> small but nonzero due to non-perturbative effects.
+>
+> Status: Supported by lattice QCD (Bali et al. 2000) but not
+> analytically proved. Proving this requires non-perturbative QFT
+> methods beyond current Mathlib.
+
+Session 1 asked "could it be derived from first principles in 2D?".
+The answer is **no, and the question is a category error**: this
+axiom is a statement about 4D Yang-Mills, not 2D. The 2D Casimir
+scaling result is already a non-axiomatic theorem in OQ02
+(`twoD_exact_casimir_scaling`). 2D Casimir scaling is *exact*; 4D
+Casimir scaling is *approximate* and a real open problem. The axiom
+cannot be discharged within this slug's scope without formalizing 4D
+non-perturbative QFT — multi-year scale work.
+
+Per the project's axiom-integrity policy, the existing classification
+(`axiomatized`, `axiom` badge in the gallery entry, plus the
+`OPEN`/`Status` framing in the file docstring) is correct and honest.
+No reclassification needed.
+
+### Why I Did Not Repair The Drift
+
+Same reason as Session 1: project memory
+`project_mathlib_api_drift_2026_04` assigns upstream-induced
+breakage to the Mechanic role. PRs #13142 (Erdos1151OQ04), #13159
+(AngleTrisectionOQ02OQ01OQ02Incomplete01), #13216
+(CevasTheoremNonEuclideanOQ02), #13223 (erdos-353) all followed this
+pattern. The fixes here are two two-line edits Mechanic can apply
+mechanically; preempting that does not match the project's role
+contract.
+
+### Files Modified This Session
+
+- `research/problems/yang-mills-2d-wip-01/knowledge.md` — this Session 2
+  entry
+- `src/data/research/problems/yang-mills-2d-wip-01.json` — reconciled
+  `currentState`, `knowledge.progressSummary`, `knowledge.builtItems`,
+  `knowledge.insights`, `knowledge.nextSteps`, `lastUpdate`
+
+No proof code changed (drift fixes remain Mechanic-owned).
+
+### Next Steps
+
+1. **Mechanic (priority)**: two two-line edits documented in
+   blockers — `mul_one` removal at `YangMills2DOQ01.lean:151` and
+   `div_lt_div_iff` → `div_lt_div_iff₀` at `YangMills2DOQ02.lean:160`.
+   Verify with `./proofs/scripts/docker-build.sh Proofs.YangMills2DOQ01`
+   and `Proofs.YangMills2DOQ02`.
+2. **Curator / Auditor (post-Mechanic)**: if green, this WIP cohort
+   tracker has no remaining researcher work — graduate
+   `yang-mills-2d-oq-01` and `yang-mills-2d-oq-02` slugs and mark this
+   WIP slug COMPLETED.
+3. **Researcher (long-horizon, optional)**: the 11 structure-encoded
+   `: True` assumptions in Exploration.lean (Slavnov-Taylor, BRST,
+   Coleman-Mandula, Fradkin-Shenker, asymptotic safety per
+   `yang-mills-2d` gallery `assumptions` field) are each individually
+   substantive QFT theorems that would each be multi-month research
+   projects to discharge. Out of scope for this WIP tracker.
+
