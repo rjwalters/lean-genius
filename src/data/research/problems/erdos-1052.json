@@ -28,20 +28,20 @@
     "goal": "Surface the verified unitary-divisor definitions, examples, multiplicativity, and parity facts for future work on the finiteness problem."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T14:31:40.057Z",
-    "iteration": 1,
-    "focus": "Metadata backfill aligned with the zero-axiom unitary-perfect-number scaffolds.",
+    "phase": "ACT",
+    "since": "2026-06-04T22:10:00Z",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC + 4th example: progressSummary said '1 axiom (erdos_1052_conjecture)' but file has 0 axioms (conjecture is only documented in a docstring, not declared as axiom). Added isUnitaryPerfect_87360 verification of the 4th known unitary perfect number (Wall 1972) via native_decide.",
     "blockers": [],
-    "nextAction": "Use the verified example and parity/multiplicativity lemmas as the baseline for future classification or finiteness work.",
+    "nextAction": "Future: pursue 5th example 146361946186458562560000 — too large for native_decide enumeration; would need a structural proof from the multiplicative factorisation. Or wait for upstream classification/finiteness progress.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: 1 axiom (erdos_1052_conjecture — open problem: unitary perfect numbers are finite), 0 sorries. Metadata axiomCount stale (was 2, is 1).",
+    "progressSummary": "S2 (2026-06-04): STATE-SYNC corrects stale progressSummary that claimed '1 axiom'; actual file has 0 axioms (the open conjecture is only mentioned in a docstring comment at lines 510-516, not declared as `axiom`). +1 theorem `isUnitaryPerfect_87360` verifying the 4th known unitary perfect number 87360 = 2⁶·3·5·7·13 (Wall 1972) by native_decide over the decidable `IsUnitaryPerfect` instance. Gallery now verifies 4 of 5 known examples (6, 60, 90, 87360); the 5th = 146361946186458562560000 is too large for an enumeration-based decision procedure and would require a structural proof. Axiom count remains 0; sorry count remains 0.",
     "builtItems": [
       "Proved unitaryDivisors_primePow (Erdos1052Problem.lean:175-213)",
       "Fixed sum_odd_parity parity lemmas (Erdos1052Problem.lean:76-106)",
@@ -70,12 +70,15 @@
       "Proved even_of_isUnitaryPerfect: decompose n=p^a*m via minFac, use σ*(n)=(1+p^a)*σ*(m) by multiplicativity, show 4|2n for odd n with ≥2 prime factors",
       "Key helper: even_unitaryDivisorSum_of_odd — any odd m>1 has even σ*(m), since its smallest prime factor p gives an even (1+p^a) factor",
       "Only axiom is the open conjecture itself (unitary perfect numbers are finite) — cannot be eliminated",
-      "Metadata axiomCount was 2 but actual count is 1"
+      "Metadata axiomCount was 2 but actual count is 1",
+      "S2 STATE-SYNC (2026-06-04): no axiom exists in the file at all. The open conjecture appears only in a docstring (`Erdos1052Problem.lean` lines 510-516, '## The Main Conjecture (OPEN)'). progressSummary updated to reflect axiomCount=0.",
+      "S2 ACT (2026-06-04): added isUnitaryPerfect_87360 (Wall 1972 — the 4th known unitary perfect number, 2⁶·3·5·7·13). Proof: native_decide over the existing `instance Decidable (IsUnitaryPerfect n)` (instDecidableAnd on sum=n and 0<n). Enumeration over Finset.Ico 1 87360 is ~87k decidable checks — fast in native-compiled code."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove even_of_isUnitaryPerfect using multiplicativity: case n=1 (trivial), n=p^a (σ*=1+p^a≠2p^a), n has ≥2 primes (4|σ*=2n contradiction)",
-      "Update Aristotle companion file: remove unitaryDivisorSum_mul_coprime sorry (now proved in main file)"
+      "STALE: even_of_isUnitaryPerfect was already proved in Erdos1052Problem.lean:443-509",
+      "STALE: Erdos1052Aristotle.lean has 0 sorries — there's no pending unitaryDivisorSum_mul_coprime stub to clean up",
+      "Post-S2 next steps: (a) structural verification of the 5th example 146361946186458562560000 = 2⁹·3·5⁴·7·11·13·19·37·79·109 from the multiplicativity formula σ*(n) = ∏(1+p^a) — too large for native_decide; (b) sharper structural-divisor lemmas (e.g. number of prime factors lower bound, ω(n) ≥ some constant for unitary perfect n)."
     ],
     "markdown": "# Erdős #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -99,7 +102,7 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:31:40.057Z",
-  "lastUpdate": "2026-03-13T07:52:17.056Z",
+  "lastUpdate": "2026-06-04T22:12:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
@@ -117,8 +120,8 @@
     {
       "path": "Proofs/Erdos1052Problem.lean",
       "filename": "Erdos1052Problem.lean",
-      "lineCount": 519,
-      "theoremCount": 14,
+      "lineCount": 523,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
