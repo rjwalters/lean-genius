@@ -2,13 +2,57 @@
 
 ## Current State
 
-**Phase**: S7 ACT shipped (C2-1d helper lemmas + concrete `decide` soundness — `SpernerSimplicialInstanceOQ05Scarf1d.lean` +52 LOC, 0 new sorries, 0 new axioms, kernel-level Scarf-walk verification on `intervalTriangulation 3` 0,0,1,1 instance; build-verified).
+**Phase**: S7 ACT shipped + S8 ALT (b) reconciled via external mechanic mega-batch (#22005, 2026-06-02). Scarf1d leaf file is now registered in `meta.additionalFiles[]`. Remaining S8+ actions: (a) S8 PREP for `scarfWalk_isPanchromatic` signature amendment, (c) S8 ALT 2-D Hex-no-draw (deferred behind sister slug).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-01 (Session 14 S7 ACT, researcher-1)
-**Iteration**: 12
+**Last Updated**: 2026-06-04 (Session 15 S1 STATE-SYNC, researcher-1)
+**Iteration**: 13
 
-## Session 14 (this session, 2026-06-01, researcher-1) — S7 ACT (helper lemmas + concrete `decide` soundness)
+## Session 15 (this session, 2026-06-04, researcher-1) — S1 STATE-SYNC (S8 ALT (b) external completion + head reconciliation)
+
+**Scope**: doc-only state-sync. No Lean diff, no `meta.json` diff.
+
+**Trigger**: Session 14 (2026-06-01) head listed three pending S8+ actions:
+(a) S8 PREP for `scarfWalk_isPanchromatic` signature amendment,
+(b) S8 ALT gallery promotion (add `Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean`
+to `meta.additionalFiles[]`), and (c) S8 ALT 2-D Hex-no-draw.
+
+Pre-claim audit (2026-06-04T~21:30Z) shows action (b) was completed externally
+by the mechanic mega-batch PR #22005 (`27a6945a83f`, merged 2026-06-02 03:22:26
+PDT) titled *"fix(meta): register 25 orphan companions across 25 slugs"*. The
+commit added the Scarf1d leaf path to this slug's `meta.additionalFiles[]`
+alongside 24 other orphan companions surfaced by `orphan_scan_v8`.
+
+**Action**:
+- Updated head **Phase** to acknowledge S8 ALT (b) external reconciliation,
+  list the remaining (a) and (c) S8+ actions, and bump **Iteration** 12 → 13.
+- Updated **Last Updated** to 2026-06-04 (Session 15 STATE-SYNC, researcher-1).
+- Relabeled Session 14 header to drop the now-obsolete "this session"
+  parenthetical (carries forward to Session 15).
+
+**Verification**:
+- `jq '.meta.additionalFiles' src/data/proofs/sperner-simplicial-instance-oq-05/meta.json`
+  → `["Proofs/SpernerSimplicialInstance.lean", "Proofs/SpernerMathlib4.lean", "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"]`.
+- `git log --oneline -- src/data/proofs/sperner-simplicial-instance-oq-05/meta.json`
+  → top entry is `27a6945a83f fix(meta): register 25 orphan companions across 25 slugs (mega-batch) (#22005)`.
+- Counts on `SpernerSimplicialInstanceOQ05.lean`: 185 lines, 3 theorems,
+  0 axioms, 0 sorries, 1 def — matches `meta.json` top-level counters exactly.
+- Counts on `SpernerSimplicialInstanceOQ05Scarf1d.lean` (additionalFile):
+  170 lines, 5 theorems, 4 defs, 0 axioms, 1 real sorry (line 105,
+  `scarfWalk_isPanchromatic` — the same pre-existing sorry covered by
+  Session 14 §"File diff").
+
+**Remaining Next Action (unchanged from Session 14)**:
+- (a) S8 PREP for `scarfWalk_isPanchromatic` signature amendment with parity
+  hypothesis (e.g. `c 0 ≠ c m`), then S8 ACT discharge. HIGH risk.
+- (c) S8 ALT 2-D Hex-no-draw — deferred behind sister slug
+  `sperner-simplicial-instance-oq-01` 2-D triangulation instance.
+
+**No claim status change**; the slug remains in-progress (S8+ work outstanding).
+
+---
+
+## Session 14 (2026-06-01, researcher-1) — S7 ACT (helper lemmas + concrete `decide` soundness)
 
 **Audit finding (S7 entry)**: the existing `scarfWalk_isPanchromatic` theorem statement is **unprovable** without an extra parity/endpoint hypothesis. Counterexample: `m = 3`, `c ≡ 0`, `start = ⟨0, _⟩`, `k = ⟨1, _⟩` — no panchromatic cell exists, walk runs out of fuel OR hits the right boundary stuck, returns a non-panchromatic cell. The S5 PREP §4 discharge plan was sketched without the parity hypothesis and so cannot close as written.
 
