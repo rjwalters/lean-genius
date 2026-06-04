@@ -40,16 +40,16 @@
     "dateAdded": "2025-12-28",
     "wiedijkNumber": 46,
     "axiomCount": 6,
-    "lineCount": 576,
+    "lineCount": 599,
     "prerequisites": [
       "Complex numbers and polynomial evaluation",
       "Cubic equation solution (Cardano's formula)",
       "Quadratic formula for complex coefficients",
       "Completing the square and factorization techniques"
     ],
-    "assumptions": "6 axioms: ferrari_factorization_forward, ferrari_factorization_backward, quartic_has_four_roots, biquadratic_forward, biquadratic_backward, ferrari_roots_verify. 3 axioms proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA). S3 (OQ-02.c) discharges `ferrari_biquad_limit` (was the file's only sorry) without introducing new axioms. S5a (OQ-02.a substrate) adds `resolvent_cubic_eval_s_form` (Newton-polygon-cleaned resolvent identity `R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2` via `m \u21a6 (s \u2212 p)/2`; ring-discharged). S5b SCAFFOLD-1 specializes Lemma 1 to the Pan witness `(-1, t\u00b2, 1/4 \u2212 t\u00b2 + t\u2074/4)`: `pan_witness_cleaned_resolvent` proves `R\u0303(s; -1, t\u00b2, ...) = s\u00b3 \u2212 2s\u00b2 + (4t\u00b2 \u2212 t\u2074)s \u2212 t\u2074` (ring-discharged via S5a). At `t=0` this is `s\u00b2(s\u22122)`, exposing the double-root tangency that drives the `\u03b1(t)=\u0398(t)` first-order cancellation.",
+    "assumptions": "6 axioms: ferrari_factorization_forward, ferrari_factorization_backward, quartic_has_four_roots, biquadratic_forward, biquadratic_backward, ferrari_roots_verify. 3 axioms proved: depressed_quartic_forward/backward (ring identity), resolvent_cubic_has_root (FTA). S3 (OQ-02.c) discharges `ferrari_biquad_limit` (was the file's only sorry) without introducing new axioms. S5a (OQ-02.a substrate) adds `resolvent_cubic_eval_s_form` (Newton-polygon-cleaned resolvent identity `R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2` via `m \u21a6 (s \u2212 p)/2`; ring-discharged). S5b SCAFFOLD-1 specializes Lemma 1 to the Pan witness `(-1, t\u00b2, 1/4 \u2212 t\u00b2 + t\u2074/4)`: `pan_witness_cleaned_resolvent` proves `R\u0303(s; -1, t\u00b2, ...) = s\u00b3 \u2212 2s\u00b2 + (4t\u00b2 \u2212 t\u2074)s \u2212 t\u2074` (ring-discharged via S5a). At `t=0` this is `s\u00b2(s\u22122)`, exposing the double-root tangency that drives the `\u03b1(t)=\u0398(t)` first-order cancellation. S5b SCAFFOLD-3 (this commit) adds `pan_witness_t_zero_nondegenerate_root`: at the Pan witness's `t=0` boundary `(p,q,r) = (-1,0,1/4)`, `m = 3/2` is the explicit non-degenerate (`2m+p = 2 \u2260 0`) resolvent root, the s=2 root of the factored form `s\u00b2(s-2)` translated back to m-coordinates via m=(s+1)/2. Makes `ferrari_biquad_limit (-1) (1/4) hpr` concrete and fixes the third root location for the future `pan_witness_k1_tangency` perturbation analysis.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15,
+    "theoremCount": 16,
     "definitionCount": 5
   },
   "overview": {
