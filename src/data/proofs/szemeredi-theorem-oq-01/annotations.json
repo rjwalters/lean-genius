@@ -1,5 +1,33 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 43,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Import Set: The Minimal Footprint for Stating Kelley–Meka",
+    "content": "The four imports form the minimal Mathlib footprint required to *state* (not prove) the Kelley–Meka bound against an existing Mathlib invariant.\n\n- **`Mathlib.Combinatorics.Additive.Corner.Roth`** brings in `rothNumberNat : ℕ → ℕ` — Mathlib's canonical 3-AP-free-set invariant. Calibrating the axiom against this exact definition is what makes the entry composable with the rest of the additive-combinatorics gallery (`roth-theorem-k3`, `szemeredi-full-oq-02`, etc.). Without this import, the axiom would have to introduce its own ad-hoc definition of $r_3(N)$, and downstream consumers would need translation glue.\n\n- **`Mathlib.Analysis.SpecialFunctions.Log.Basic`** and **`Mathlib.Analysis.SpecialFunctions.Pow.Real`** are needed *together* for the right-hand side `Real.exp (-(c * Real.log N ^ ((1:ℝ)/12)))`. `Log.Basic` supplies `Real.log` (used inside the exponent), and `Pow.Real` supplies the `Real.rpow` instance so that `Real.log N ^ ((1:ℝ)/12)` is interpreted as the real-exponent power $(\\log N)^{1/12}$ rather than the natural-number power (which would type-error at exponent `1/12`).\n\n- **`Mathlib.Tactic`** is the tactic-bundle import — it brings in `obtain`, `refine`, `omega`, and other tactics used in the density-corollary proof. The file could in principle use the finer-grained `Mathlib.Tactic.Common` plus a handful of specific tactics, but the convention in Mathlib 4 for end-user proofs is the umbrella import.\n\n**The `open Real` line (line 50)** is what lets the file write `Real.exp` and `Real.log` as fully-qualified names but accept downstream consumers who might prefer the unqualified forms; the qualified-name choice in the axiom statement is intentional to make the namespace explicit at the point of axiomatization.",
+    "mathContext": "Minimal import set for stating the axiom: 1 combinatorics module (`rothNumberNat`), 2 analysis modules (`Real.log`, `Real.rpow`), 1 tactic module. Each module supplies exactly one essential ingredient; no superset would import unused content, and no subset would suffice (omitting `Pow.Real` would force the `1/12` exponent into ℕ where it equals `0`, collapsing the bound to `r_3(N) ≤ N · exp(-c)`).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Mathlib.Combinatorics.Additive.Corner.Roth",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Real.rpow vs HPow.hPow at fractional exponents",
+      "open vs qualified namespace conventions",
+      "minimal import set design principle",
+      "rothNumberNat as canonical invariant"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Real.rpow type class resolution",
+      "Mathlib.Tactic umbrella import convention",
+      "rothNumberNat (Mathlib's 3-AP-free invariant)"
+    ]
+  },
+  {
     "id": "ann-docstring",
     "proofId": "szemeredi-theorem-oq-01",
     "range": {
@@ -99,6 +127,37 @@
       "kelley_meka_bound axiom",
       "div_le_iff₀ for positive denominators",
       "max-threshold idiom (`max N₀ 1` to fuse boundary and asymptotic conditions)"
+    ]
+  },
+  {
+    "id": "ann-proof-tactic-chain",
+    "proofId": "szemeredi-theorem-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "Tactic Chain: Witness Extraction, Threshold Fusion, Positivity, Division Rewrite",
+    "content": "The 9-line tactic proof of `rothNumberNat_density_le_kelley_meka` follows a recurring Mathlib idiom for converting an *absolute* bound (with the denominator on the right-hand side) into a *density* bound (denominator divided out). The structure is worth annotating in isolation because it generalizes to virtually any \"axiomatic bound + density corollary\" pattern.\n\n**Step 1 — Witness extraction** (`obtain ⟨c, hc, N₀, hbound⟩ := kelley_meka_bound`). The axiom is existential-of-existential: $\\exists c, \\exists N_0, \\forall N \\geq N_0, \\ldots$ The single `obtain` pattern unpacks both layers in one step, binding `c, hc, N₀, hbound` to the constant, its positivity proof, the threshold, and the universally quantified bound respectively.\n\n**Step 2 — Witness packaging with threshold fusion** (`refine ⟨c, hc, max N₀ 1, ?_⟩`). The corollary needs the *same* constant `c` and a possibly different threshold. The trick is to use `max N₀ 1` rather than just `N₀`: this single threshold simultaneously enforces (a) the axiom's hypothesis `N₀ ≤ N` and (b) the new requirement `1 ≤ N` needed for the division. The `refine` leaves the inner goal as a hole `?_` to be discharged.\n\n**Step 3 — Threshold extraction** (`hN₀ : N₀ ≤ N` and `hN1 : 1 ≤ N` from `hN : max N₀ 1 ≤ N`). `(le_max_left N₀ 1).trans hN` factors `max N₀ 1 ≤ N` through `N₀ ≤ max N₀ 1`; the symmetric `le_max_right` handles the `1 ≤ N` direction. This is the *threshold fusion* technique paying off: one hypothesis, two consequences.\n\n**Step 4 — Positivity for division** (`hN_pos : (0 : ℝ) < N`). The `Nat.lt_of_succ_le hN1` converts `1 ≤ N` (i.e., `Nat.succ 0 ≤ N`) into `0 < N` in $\\mathbb{N}$, then `exact_mod_cast` lifts this to the real numbers as `(0 : ℝ) < N`. This three-step positivity chain — `1 ≤ N` ⟹ `0 < N` in ℕ ⟹ `0 < (N : ℝ)` — is the standard Lean idiom for getting real-positivity from natural-number boundedness.\n\n**Step 5 — Division rewrite** (`rw [div_le_iff₀ hN_pos, mul_comm]`). `div_le_iff₀` rewrites the goal `r_3(N) / N ≤ E` as `r_3(N) ≤ E * N` (using `hN_pos`); then `mul_comm` flips `E * N` to `N * E`, matching the axiom's right-hand side `N * Real.exp (...)`. The two rewrites together convert the density goal into the absolute-bound form.\n\n**Step 6 — Discharge by the axiom** (`exact hb`). After the rewrites, the goal is precisely the axiom's specialization at this `N`, which `hb := hbound N hN₀` already provides.\n\nThis 6-step chain is the canonical Mathlib pattern for *axiomatic bound ↦ density corollary*, and the same skeleton appears across the gallery in entries that pair a quantitative axiom with its normalized density form.",
+    "mathContext": "**Logical content of each step:**\n1. $\\text{axiom} \\vdash \\exists c, c > 0 \\land \\exists N_0, \\forall N \\geq N_0, r_3(N) \\leq N \\cdot e^{-c (\\log N)^{1/12}}$\n2. Goal reduces to: $\\forall N \\geq \\max(N_0, 1), r_3(N)/N \\leq e^{-c (\\log N)^{1/12}}$\n3. From $N \\geq \\max(N_0, 1)$: $N \\geq N_0$ and $N \\geq 1$ (separate consequences via `le_max_{left,right}`)\n4. $N \\geq 1 \\Rightarrow N > 0$ in $\\mathbb{N}$, then cast to $\\mathbb{R}$: $(N : \\mathbb{R}) > 0$\n5. `div_le_iff₀`: $a/b \\leq c \\Leftrightarrow a \\leq c \\cdot b$ when $b > 0$. Then `mul_comm`: $c \\cdot b = b \\cdot c$.\n6. The rewritten goal matches `hbound N hN₀` exactly.\n\n**Why `div_le_iff₀` and not `div_le_iff`**: Mathlib has both, but `div_le_iff₀` is the non-zero (`b ≠ 0`) variant that takes a strict-positivity hypothesis `0 < b`; it is the right choice here because `hN_pos : (0 : ℝ) < N` is what we have available.\n\n**Generalization.** This 6-step skeleton — extract / package-with-fused-threshold / extract-both / positivity / division-rewrite / discharge — is reusable for any density corollary of an absolute bound: replace `r_3(N) ≤ N · f(N)` by `S(N) ≤ T(N) · g(T(N), N)` and the proof transposes line-for-line.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "obtain ⟨⟩ destructuring for existentials",
+      "refine with ?_ holes",
+      "le_max_left / le_max_right (threshold fusion)",
+      "exact_mod_cast (ℕ → ℝ promotion)",
+      "div_le_iff₀ vs div_le_iff",
+      "Nat.lt_of_succ_le",
+      "absolute-bound ↦ density-corollary pattern",
+      "tactic-mode proof skeleton reuse"
+    ],
+    "prerequisites": [
+      "Mathlib tactic mode (obtain, refine, rw, exact)",
+      "le_max_left, le_max_right, .trans",
+      "div_le_iff₀ for strict-positive denominators",
+      "mul_comm rewrite",
+      "Nat.lt_of_succ_le",
+      "exact_mod_cast (numeric coercion across ℕ → ℝ)"
     ]
   }
 ]
