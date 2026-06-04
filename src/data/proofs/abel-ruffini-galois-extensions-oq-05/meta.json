@@ -140,44 +140,92 @@
   },
   "sections": [
     {
-      "id": "imports-doc",
-      "title": "Imports and Mathematical Background",
+      "id": "imports",
+      "title": "Imports",
       "startLine": 1,
+      "endLine": 6,
+      "summary": "Five Mathlib imports plus the parent file: `FieldTheory.AbelRuffini` (the contrapositive impossibility bridge), `GroupTheory.Solvable` (the `IsSolvable` typeclass and derived-series machinery), `FieldTheory.Galois.Basic` (`IsGalois`, `≃ₐ`), `NumberTheory.Cyclotomic.Basic` (foundational cyclotomic-field instances — the only currently-formalized layer of class field theory accessible in Mathlib 2026), `FieldTheory.SplittingField.Construction` (effective splitting-field construction used implicitly by the realizability witnesses), and `Proofs.AbelRuffiniGaloisExtensions` (parent file — supplies `symmetric_solvable_of_le_four`, `s5_not_solvable`, `subgroup_solvable_of_solvable`, `quotient_solvable_of_solvable`). The cyclotomic import is the *intentional* footprint: it signposts that the long-term Lean formalization path for the unconditional Shafarevich theorem would route through Mathlib's cyclotomic-field development, by way of Hilbert-class-field constructions for abelian cases and the Iwasawa-cohomology / embedding-problem theory needed for the general solvable case.",
+      "mathContext": "Each import contributes exactly one infrastructure layer: `AbelRuffini` (contrapositive obstruction), `Solvable` (`IsSolvable`, derived series, perfect groups), `Galois.Basic` (`IsGalois`, `≃ₐ`), `Cyclotomic.Basic` ($\\mathbb{Q}(\\zeta_n)$ as the only accessible CFT-adjacent infrastructure in Mathlib 2026), `SplittingField.Construction` (splitting-field constructors). The parent import wires the file into the sibling Wiedijk #16 chain: `symmetric_solvable_of_le_four` and `s5_not_solvable` are reused verbatim."
+    },
+    {
+      "id": "module-doc",
+      "title": "Module Docstring: Shafarevich vs Abel-Ruffini",
+      "startLine": 8,
       "endLine": 50,
-      "summary": "Imports Mathlib field theory, group theory, Galois basics, and the parent file. The module docstring explains the relationship between Abel-Ruffini and Shafarevich's theorem, and lists the four deep ingredients of Shafarevich's proof.",
-      "mathContext": "$G$ solvable $\\Rightarrow$ $\\exists L/\\mathbb{Q}$ Galois with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ (Shafarevich 1954)."
+      "summary": "43-line module docstring framing this file as the *positive companion* to Abel-Ruffini. Records the asymmetric pairing: Abel-Ruffini shows solvability of $\\mathrm{Gal}(q)$ is *necessary* for $\\alpha$ to be radically expressible (contrapositive form in the parent's `not_solvable_by_rad_of_not_solvable_gal`); Shafarevich (1954) shows that for every finite solvable group $G$ there *exists* a Galois extension $L/\\mathbb{Q}$ with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ — solvability is *sufficient* for realizability over $\\mathbb{Q}$. The combined statement: $G$ realizable as a solvable Galois group over $\\mathbb{Q}$ $\\Leftrightarrow$ $G$ solvable. Lists the four deep ingredients of Shafarevich's proof (embedding problems, Brauer groups, class field theory for abelian steps, induction on the derived series), cites Neukirch–Schmidt–Wingberg §9.5 as the canonical full-proof reference, and signposts the parent file's contribution boundary so future enrichers don't double-count results.",
+      "mathContext": "Asymmetric pairing: $\\mathrm{IsSolvableByRad}\\,F\\,\\alpha \\Rightarrow \\mathrm{IsSolvable}\\,(\\mathrm{minpoly}_F(\\alpha).\\mathrm{Gal})$ (Abel-Ruffini, parent file) vs $\\mathrm{IsSolvable}\\,G \\Rightarrow \\exists L/\\mathbb{Q}\\,\\mathrm{Galois}: \\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$ (Shafarevich, this file). Combined: $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$ for some solvable $L/\\mathbb{Q}$ $\\Leftrightarrow$ $G$ is solvable. The four classical Shafarevich-proof ingredients (embedding problems, Brauer groups, CFT for abelian steps, derived-series induction) are exactly what is missing from Mathlib 2026."
     },
     {
-      "id": "core-axiom",
-      "title": "Shafarevich's Theorem (Axiomatized)",
-      "startLine": 56,
+      "id": "namespace-and-part-1-header",
+      "title": "Namespace, `open`, and Part 1 Banner",
+      "startLine": 52,
+      "endLine": 70,
+      "summary": "Namespace declaration `AbelRuffiniGaloisExtensionsOQ05` (scopes every name in the file under that namespace), `open AbelRuffiniGaloisExtensions` (brings the parent file's lemma names — `symmetric_solvable_of_le_four`, `subgroup_solvable_of_solvable`, `quotient_solvable_of_solvable`, `s5_not_solvable` — into scope as unqualified identifiers), Part-1 banner comment, and a 10-line pre-axiom rationale docstring that calibrates the reader's expectations: the file *does not* prove Shafarevich; it axiomatizes the theorem statement against `IsSolvable` and derives constructive corollaries (cyclic, abelian, $S_3$, $S_4$, closure under subgroups/quotients) entirely from the axiom + existing Mathlib lemmas, and the proof of the axiom itself requires substantial number-theoretic machinery not yet in Mathlib.",
+      "mathContext": "The `open AbelRuffiniGaloisExtensions` is the load-bearing scope decision: it lets `s3_realizable` invoke `symmetric_solvable_of_le_four` unqualified and `s5_not_solvable_obstruction` invoke `s5_not_solvable` directly, preserving the parent's pedagogical naming. Part 1 begins the file's three-tier construction: (1) axiomatize Shafarevich at the right level of generality, (2) specialize to concrete groups, (3) recover closure properties — the same architecture Mathlib uses for its theorem-and-corollary chains."
+    },
+    {
+      "id": "shafarevich-axiom",
+      "title": "`shafarevich_inverse_galois` Axiom",
+      "startLine": 72,
       "endLine": 83,
-      "summary": "The single axiom shafarevich_inverse_galois: for any [IsSolvable G], there exists a Galois extension L/ℚ with G ≃* Gal(L/ℚ). Comments explain the proof sketch (class field theory, embedding problems, Brauer groups).",
-      "mathContext": "$\\forall G$ finite solvable, $\\exists L/\\mathbb{Q}$ Galois: $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$."
+      "summary": "The single load-bearing axiom of the file. Statement: for every finite group $G$ carrying `[Group G] [Fintype G] [IsSolvable G]`, there exists a type `L` with `[Field L] [Algebra ℚ L] [IsGalois ℚ L]` such that `Nonempty (L ≃ₐ[ℚ] L)` (the Galois group is nontrivial — automatic for a nontrivial extension) and `Nonempty (G ≃* (L ≃ₐ[ℚ] L))` (the abstract group $G$ is *isomorphic as a group* to $\\mathrm{Aut}_{\\mathbb{Q}\\text{-Alg}}(L)$). The `Nonempty` wrappers are the standard Lean idiom for stating 'there exists an isomorphism' without committing to a definitional one — they let downstream consumers `obtain` the witness via `Classical.choose` without inducing reducibility issues. The 9-line preceding docstring is calibrated against `IsSolvable G` (Mathlib's canonical solvability predicate, defined via the derived series) and explicitly names the proof-gap rationale: class field theory, embedding problems, Brauer groups — all absent from Mathlib 2026.",
+      "mathContext": "Statement: $\\forall G$ [finite Group] [IsSolvable G], $\\exists L$ [Field] [Algebra $\\mathbb{Q}\\,L$] [$\\mathrm{IsGalois}\\,\\mathbb{Q}\\,L$], $\\mathrm{Nonempty}(L \\simeq_{a[\\mathbb{Q}]} L) \\land \\mathrm{Nonempty}(G \\simeq^* (L \\simeq_{a[\\mathbb{Q}]} L))$. The double `Nonempty` is the canonical *propositional* form of 'there exists an algebra-automorphism realizing every element of $G$' — it discards the constructive content needed only for the existence claim, leaving exactly the propositional statement of realizability. Calibrated against Mathlib's `IsSolvable` predicate (derived series), the axiom is the entire algebraic-number-theoretic missing piece — every subsequent theorem in the file is a one-line corollary."
     },
     {
-      "id": "specific-corollaries",
-      "title": "Corollaries: Cyclic, Abelian, S₃, S₄",
-      "startLine": 88,
+      "id": "cyclic-and-abelian-corollaries",
+      "title": "Cyclic and Abelian Corollaries",
+      "startLine": 85,
+      "endLine": 111,
+      "summary": "Part-2 banner + corollary preamble + two proved corollaries that specialize the axiom to the most familiar solvable groups. `cyclic_group_realizable (n : ℕ) (hn : 0 < n)` constructs $L$ with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong \\mathbb{Z}/n\\mathbb{Z}$ via `haveI : IsSolvable (ZMod n) := inferInstance` (typeclass discovery: `ZMod n` is `CommGroup`, every `CommGroup` is `IsSolvable`) followed by `shafarevich_inverse_galois` and an `obtain` that destructures the existential. `abelian_group_realizable` does the same for *any* finite `CommGroup G`. Both proofs are 4-line idiomatic patterns: provide the `IsSolvable` instance, invoke the axiom, repackage the witness with `inferInstance` for the field/algebra/Galois layers. The `NeZero n` `haveI` in `cyclic_group_realizable` is needed because Mathlib's `ZMod n` carries different typeclass instances depending on whether `n = 0`; `omega` closes the trivial-arithmetic positivity step.",
+      "mathContext": "$\\mathbb{Z}/n\\mathbb{Z}$ is abelian, hence solvable (derived length 1), hence realizable (Shafarevich). For abelian $G$, realizability is in fact *constructive* without invoking the full Shafarevich: the Kronecker-Weber theorem (1853, formalization gap in Mathlib 2026) shows every abelian Galois extension of $\\mathbb{Q}$ embeds in some cyclotomic field $\\mathbb{Q}(\\zeta_n)$, so the abelian case is *strictly weaker* than the general solvable case. The file deliberately routes through Shafarevich anyway for *uniformity* — the same axiom handles every solvable group, simplifying the corollary skeleton."
+    },
+    {
+      "id": "s3-s4-realizable",
+      "title": "`s3_realizable` and `s4_realizable`",
+      "startLine": 113,
       "endLine": 131,
-      "summary": "Four proved corollaries: cyclic_group_realizable (ZMod n via CommGroup.isSolvable), abelian_group_realizable (all CommGroups), s3_realizable and s4_realizable (via symmetric_solvable_of_le_four from parent file).",
-      "mathContext": "$\\mathbb{Z}/n\\mathbb{Z}, A, S_3, S_4$ are all solvable, hence realizable over $\\mathbb{Q}$ by Shafarevich."
+      "summary": "Two named corollaries for $S_3$ and $S_4$ that bridge the symmetric-group solvability results from the parent file with the Shafarevich axiom in this file. Each proof has the shape: `haveI : IsSolvable (Equiv.Perm (Fin n)) := by apply symmetric_solvable_of_le_four; norm_num` (invoke parent lemma + close the numeric bound with `norm_num`), then `obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois (Equiv.Perm (Fin n)) _ _ _` to destructure the axiom witness, then repackage with `inferInstance` for each typeclass layer. The named results `s3_realizable`/`s4_realizable` exist as pedagogical shortcuts — downstream consumers can cite `s3_realizable` directly without re-deriving the `IsSolvable` instance each time. $S_3$ corresponds historically to the cubic (Cardano 1545); $S_4$ to the quartic (Ferrari 1545); both are solvable and have classical radical formulas, consistent with Shafarevich's existence claim.",
+      "mathContext": "$|S_3| = 6 = 2 \\cdot 3$, derived series $S_3 \\triangleright A_3 \\cong \\mathbb{Z}/3 \\triangleright \\{e\\}$ (derived length 2). $|S_4| = 24 = 2^3 \\cdot 3$, derived series $S_4 \\triangleright A_4 \\triangleright V_4 \\triangleright \\{e\\}$ (derived length 3, with $V_4$ the Klein four-group). Both solvable, both realizable. Concrete witnesses outside Shafarevich: $S_3$ as $\\mathrm{Gal}(x^3 - 2/\\mathbb{Q})$ (splitting field $\\mathbb{Q}(\\sqrt[3]{2}, \\zeta_3)$, degree 6); $S_4$ as $\\mathrm{Gal}(x^4 - x - 1/\\mathbb{Q})$ or any quartic with non-square discriminant and irreducible cubic resolvent."
     },
     {
-      "id": "closure-properties",
-      "title": "Closure Under Subgroups and Quotients",
+      "id": "solvable-iff-realizable",
+      "title": "Part 3 Header + `solvable_iff_shafarevich_realizable`",
       "startLine": 133,
+      "endLine": 143,
+      "summary": "Part-3 banner + the abstract universal characterization. `solvable_iff_shafarevich_realizable {G : Type*} [Group G] [Fintype G] [IsSolvable G]` packages the axiom in its most-general statable form: under the four standing typeclass assumptions, $\\exists L$ Galois over $\\mathbb{Q}$ with $G \\cong (L \\simeq_{a[\\mathbb{Q}]} L)$. The 2-line proof is `obtain ⟨L, _, _, _, _, hiso⟩ := @shafarevich_inverse_galois G _ _ _; exact ⟨L, inferInstance, inferInstance, inferInstance, hiso⟩` — pure mechanical repackaging. The name signals the file's *intent*: this is the canonical 'every solvable group is realizable' statement that downstream consumers should depend on, with the cyclic/abelian/S₃/S₄ corollaries above as concrete instantiations and the closure properties below as structural consequences.",
+      "mathContext": "Statement: $\\forall G$ finite group with $\\mathrm{IsSolvable}\\,G$, $\\exists L$ [Field] with $L/\\mathbb{Q}$ Galois and $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$. Identical to the axiom modulo the `Nonempty` wrapper for the algebra-automorphism existence (`L \\simeq_{a[\\mathbb{Q}]} L`) — the name change is for downstream API consistency, not mathematical content. The 'iff' in the name is a slight overclaim: the file proves only the $\\Rightarrow$ direction; the $\\Leftarrow$ ('every Galois extension over $\\mathbb{Q}$ realizes a solvable group') is FALSE (e.g. $S_5 \\cong \\mathrm{Gal}(x^5 - 4x + 2)$ is realizable but non-solvable; see `abel-ruffini-oq-04-oq-01`)."
+    },
+    {
+      "id": "subgroup-and-quotient-closure",
+      "title": "Closure Under Subgroups and Quotients",
+      "startLine": 145,
       "endLine": 163,
-      "summary": "solvable_iff_shafarevich_realizable, subgroup_of_solvable_realizable (subgroup preserves solvability), quotient_of_solvable_realizable (quotient by normal subgroup preserves solvability). All proved from Shafarevich + parent lemmas.",
-      "mathContext": "Solvability is closed under subgroups and quotients: if $G$ is solvable and $H \\leq G$ or $H = G/N$, then $H$ is solvable, hence realizable."
+      "summary": "Two structural-closure corollaries that show the realizability class is closed under the standard subquotient operations. `subgroup_of_solvable_realizable (H : Subgroup G)` shows: if $G$ is solvable and $H \\leq G$, then $H$ is realizable. Proof: `haveI : IsSolvable H := subgroup_solvable_of_solvable H` (parent lemma: subgroup of solvable group is solvable) + invoke axiom. `quotient_of_solvable_realizable (N : Subgroup G) [N.Normal]` shows the analogous statement for quotient groups: if $G$ is solvable and $N \\trianglelefteq G$, then $G/N$ is realizable. Proof: `haveI : IsSolvable (G ⧸ N) := quotient_solvable_of_solvable N` + axiom. Together, the two lemmas show that the *class* of realizable groups (those satisfying the Shafarevich conclusion) is closed under the subquotient operations — exactly mirroring the structural closure of the solvable groups themselves under the derived series.",
+      "mathContext": "Solvability is closed under subgroups (subgroup of derived series is contained in derived series of subgroup) and quotients (quotient's derived series is the image of the parent's). Hence: solvable + realizable is closed under subgroups and quotients. Together with closure under direct products (`A × B` solvable iff both factors are), these closure properties make the realizable-solvable groups a *Serre class* in the technical sense — closed under the three subquotient operations. The formal closure operator on the class of finite groups generated by these operations and containing $\\{1\\}$ is exactly the class of *solvable* groups, which is the structural reason Shafarevich's theorem is *sharp* — every solvable group, but only solvable groups, can be obtained by these operations from cyclic groups."
+    },
+    {
+      "id": "shafarevich-implies-converse",
+      "title": "`shafarevich_implies_converse`",
+      "startLine": 165,
+      "endLine": 176,
+      "summary": "Part-4 banner + `shafarevich_implies_converse` — a *named alias* of `solvable_iff_shafarevich_realizable` whose purpose is *pedagogical signposting*. The docstring identifies it as the converse direction of the Abel-Ruffini biconditional: Abel-Ruffini's contrapositive (in the parent's `not_solvable_by_rad_of_not_solvable_gal`) gives one direction of Galois's full theorem ('solvable Galois group $\\Leftarrow$ solvable by radicals'); Shafarevich gives the other ('every solvable group realizable as a Galois group over $\\mathbb{Q}$'). The two combined are the structural reason 'solvability by radicals' is the *correct* algebraic invariant for radical-expressibility: it precisely characterizes the realizable Galois groups of fields containing all roots of unity. The 2-line proof `:= solvable_iff_shafarevich_realizable` makes the aliasing literal — there is *no* new mathematical content here, only a name carrying interpretive weight.",
+      "mathContext": "Conceptually: Galois's full theorem is the biconditional $\\alpha$ solvable by radicals $\\Leftrightarrow \\mathrm{Gal}(\\mathrm{minpoly}_F(\\alpha))$ solvable, given enough roots of unity in $F$. Abel-Ruffini (the parent file's contrapositive) and Shafarevich (this file's axiom) together formalize the *existence* claims on both sides of the biconditional: every radical extension produces a solvable Galois group, and every solvable group is realizable as a Galois group over $\\mathbb{Q}$. The full biconditional with its converse-direction *radical-expressibility* claim (every root of a polynomial with solvable Galois group is expressible by radicals when $F$ contains enough roots of unity) is the content of `abel-ruffini-oq-04-oq-03`."
     },
     {
       "id": "s5-obstruction",
-      "title": "S₅ Non-Solvability Obstruction",
-      "startLine": 165,
+      "title": "`s5_not_solvable_obstruction`",
+      "startLine": 178,
+      "endLine": 184,
+      "summary": "A 7-line named corollary `s5_not_solvable_obstruction : ¬ IsSolvable (Equiv.Perm (Fin 5))` whose proof is literally `:= s5_not_solvable` (re-export from the parent file). The pedagogical purpose: name the *obstruction* — within the realizability landscape of this file, $S_5$ is exactly the smallest symmetric group that cannot be reached by the Shafarevich axiom. The docstring is careful: '$S_5$ is realizable over $\\mathbb{Q}$ by *other* means' (Hilbert's irreducibility theorem produces concrete polynomials with $\\mathrm{Gal} \\cong S_n$ for every $n$ — `abel-ruffini-oq-04-oq-01`'s $x^5 - 4x + 2$ is the canonical witness for $n = 5$) — Shafarevich just doesn't *imply* its realizability. The naming `_obstruction` records this asymmetry: $S_5$ is realizable in fact, but not by Shafarevich's argument, because Shafarevich's theorem is *strictly about the solvable subclass*.",
+      "mathContext": "$|S_5| = 120 = 2^3 \\cdot 3 \\cdot 5$, derived series $S_5 \\triangleright A_5 \\triangleright A_5 \\triangleright \\cdots$ (stalled because $A_5$ is perfect). $A_5$ is the smallest non-abelian simple group, $|A_5| = 60$. $S_5$ is realizable as $\\mathrm{Gal}(x^5 - 4x + 2/\\mathbb{Q})$ via Eisenstein at $p = 2$ — see `abel-ruffini-oq-04-oq-01`. $A_5$ is realizable as $\\mathrm{Gal}(x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5/\\mathbb{Q})$ — see `inverse-galois-a5` and `inverse-galois-oq-06`. Neither is reachable through Shafarevich's theorem because both groups fail `IsSolvable`."
+    },
+    {
+      "id": "summary-significance",
+      "title": "Part 5 Summary and Significance",
+      "startLine": 186,
       "endLine": 214,
-      "summary": "shafarevich_implies_converse (alias of solvable_iff_shafarevich_realizable), s5_not_solvable_obstruction (imported from parent as s5_not_solvable). The summary comment documents the proof status and connection to Abel-Ruffini.",
-      "mathContext": "$S_5$ is not solvable ($A_5$ is simple non-abelian), so Shafarevich does not apply — though $S_5$ is realizable over $\\mathbb{Q}$ by other means."
+      "summary": "Final 28-line summary docstring + `end AbelRuffiniGaloisExtensionsOQ05` (closes the namespace). The summary enumerates the seven theorems proved (cyclic, abelian, $S_3$, $S_4$, the universal `solvable_iff_shafarevich_realizable`, the subgroup-closure, the quotient-closure), records that the file has *exactly one* axiom (`shafarevich_inverse_galois`), and signposts the proof gap quantitatively: 'approximately 500+ pages of algebraic number theory' (Neukirch–Schmidt–Wingberg §9.5 alone is several hundred pages; the full chain through Brauer groups and embedding problems pushes well past that). The connection to Abel-Ruffini is restated as the two-direction summary: Abel-Ruffini (necessity, parent file) + Shafarevich (sufficiency, this file) = characterizes the realizable Galois groups of radical extensions. The closing `end` is the namespace terminator — every name introduced in the file (`shafarevich_inverse_galois`, all 7 corollaries, the 2 closure lemmas) lives in scope `AbelRuffiniGaloisExtensionsOQ05.*`.",
+      "mathContext": "Summary statistics: 1 axiom, 0 sorries, 9 declared theorems, 214 lines. Mathlib-coverage gap (estimated): ~500+ pages from class field theory of number fields, embedding problems for finite group extensions, Brauer groups and local-global cohomology (Neukirch–Schmidt–Wingberg). Conceptual closure: $(\\text{Abel-Ruffini}\\,\\Rightarrow) + (\\text{Shafarevich}\\,\\Leftarrow) =$ structural characterization 'Galois group of a radical extension over $\\mathbb{Q}$ is solvable iff every solvable group arises this way'. The unconditional formalization of Shafarevich is the closest open Lean target in the Wiedijk #16 ecosystem after the Kronecker-Weber theorem (1853, abelian case)."
     }
   ],
   "conclusion": {
