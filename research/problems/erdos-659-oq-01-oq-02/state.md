@@ -1,9 +1,59 @@
 # Current State
 
-**Phase**: ACT (S4 ACT DISCHARGED — three axis-vs-plane sorries proved; full-rank safety remains open)
-**Since**: 2026-05-29 (S4 ACT discharge via PR #20921)
-**Iteration**: 12 (was 10; S6 STATE-SYNC absorbs S4 ACT #20921)
-**Last Update**: 2026-06-01T20:46Z (researcher-1) — S6 STATE-SYNC: absorbs S4 ACT #20921 (researcher-1-era, merged 2026-05-29T08:45Z) into state.md head + JSON. Pre-S6 drifts: state.md head still narrates S5 STATE-SYNC (iter 10); JSON `currentState.focus` still mentions "discharge the 3 strategic sorries" though they are proved; JSON `lastUpdate: 2026-05-16T16:10Z` (pre-discharge). The S4 ACT shipped: `proofs/Proofs/Erdos659OQ01OQ02.lean` is GREEN with 0 sorries, 0 axioms for the axis-vs-plane half. Refreshes `currentState.{phase, since, iteration, focus, nextAction, lastUpdate}` accordingly.
+**Phase**: PREP (S7 PREP-2 — (3, 5) axis-vs-plane safety paste-ready recipe; doc-only)
+**Since**: 2026-06-04 (S7 PREP-2 doc-only memo)
+**Iteration**: 13 (was 12; S7 PREP-2 adds doc-only recipe for next safe pair)
+**Last Update**: 2026-06-04T18:00Z (researcher-1) — S7 PREP-2: paste-ready Lean recipe for the (3, 5) axis-vs-plane safety theorem, the lowest-LOC of the three S7 ACT candidates per S6 STATE-SYNC §"Next-action menu". Delivers full QR analysis for the new (3, 5) equation A'/B'/C' triple (single modulus = mod 5, same as proved (2, 5)); 2 new `decide`-checked mod-5 helpers (`zmod_5_a_sq_plus_3_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_three_b_sq_iff`); 3 paste-ready descent theorems mirroring `safe_{A,B,C}_holds` structure 1:1; 1 corollary `safe_3_5_axis_vs_plane`. Estimated Lean delta: +142 LOC, 0 sorries, 0 axioms. Docker daemon down at write-time (per `docker info` 2026-06-04T17:54Z) — S7 ACT shipment of the recipe waits for Docker or follows the `(build pending — Docker daemon down)` convention used by S7 ACT sum-of-divisors #22238. No Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits.
+
+## S7 PREP-2 (researcher-1, 2026-06-04, doc-only)
+
+Claim-random landed at 2026-06-04T17:52Z (T+3d post-S6 STATE-SYNC). Pre-S7-PREP-2 drifts: **none** — state.md head and JSON `currentState.{phase, focus, nextAction, lastUpdate}` were all refreshed by S6 STATE-SYNC three days ago and remain accurate.
+
+This S7 PREP-2 picks the **lowest-LOC** of the three S7 ACT candidates listed in S6 STATE-SYNC's next-action menu: generalise the proved (2, 5) axis-vs-plane safety to a second prime pair. Selection criterion: minimise the new Mathlib-API surface and reuse the existing mod-5 helpers as much as possible.
+
+### Why (3, 5) and not another safe pair
+
+S2a OBSERVE PR #18494 §"Empirical search" found seven safe pairs at R ≤ 22: `{(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)}`. Among the six remaining (post-(2, 5)):
+
+| Pair | New modulus needed | Helpers reused | New helpers | Verdict |
+|---|---|---|---|---|
+| (3, 5) | mod 5 (same!) | 0 (different coefficients) | 2 | **lowest cost** |
+| (5, 7) | mod 5 + mod 7 | 0 | 2–4 | second-lowest |
+| (5, 13) | mod 5 + mod 13 | 0 | 2–4 | |
+| (7, 13) | mod 7 + mod 13 | 0 | 4 | |
+| (11, 13) | mod 11 + mod 13 | 0 | 4 | |
+| (2, 13) | mod 13 | 0 | 2 (mod-13 = 169-case `decide`) | |
+
+(3, 5) wins because all three of its equations reduce mod 5, and the existing
+file already imports `Mathlib.Data.ZMod.Basic` (no new imports needed). The
+descent skeleton lifts verbatim with the coefficient `2 → 3` swap.
+
+### S7 PREP-2 deliverables
+
+| File | Change | Why |
+|---|---|---|
+| `sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md` | NEW (~370 lines) | Paste-ready Lean recipe |
+| `state.md` head + this block | UPDATED | Iteration 12 → 13; phase ACT → PREP; absorbed-session table entry |
+| `src/data/research/problems/erdos-659-oq-01-oq-02.json` | `currentState.{focus, nextAction, iteration, lastUpdate, phase, since}` | sync with the new PREP iteration |
+
+**No Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits.**
+
+### Why doc-only (not S7 ACT directly)
+
+`docker info` at 2026-06-04T17:54Z reports `Cannot connect to the Docker daemon`. Per the project's `CLAUDE.md` "DANGER: Never Run `lake build` Directly" policy, **no Lean change can be verified at this moment**. Two prior S7 ACT contributions today shipped under the "(build pending — Docker daemon down)" convention with explicit acknowledgement (#22238 sum-of-divisors-oq-02). This PREP avoids the convention by being doc-only — the recipe is paste-ready for a follow-up S7 ACT PR once Docker returns.
+
+### Next action (S7 ACT)
+
+Apply the recipe from `sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md` to `proofs/Proofs/Erdos659OQ01OQ02.lean`:
+
+1. Insert the 2 new mod-5 helpers immediately after `zmod_5_a_sq_eq_two_b_sq_iff` (currently line 80).
+2. Insert the 3 new descent theorems (`safe_A_3_5_holds`, `safe_B_3_5_holds`, `safe_C_3_5_holds`) and the corollary `safe_3_5_axis_vs_plane` immediately before `end Erdos659OQ01OQ02` (currently line 292).
+3. Expected diff: +142 LOC, 0 sorries, 0 axioms (file 292 → ~434 LOC).
+4. `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` from the worktree directory once Docker is back; see S4 PREP §"Build status" for the worktree mount-path gotcha.
+
+If Docker is still down at S7 ACT write-time, ship the diff under the "(build pending — Docker daemon down)" convention.
+
+See `sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md` for the full recipe (370 lines, including QR reduction tables, paste-ready Lean blocks for each of the three descent theorems, Mathlib v4.26.0 verification table, and risk notes).
 
 ## S6 STATE-SYNC (researcher-1, 2026-06-01, doc-only)
 
