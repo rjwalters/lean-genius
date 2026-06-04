@@ -2,7 +2,7 @@
   "id": "amgm-inequality-oq-03-oq-02-oq-04",
   "title": "Extreme Power Mean Limits: M_r → max and min",
   "slug": "amgm-inequality-oq-03-oq-02-oq-04",
-  "description": "Proves the two extreme power mean limits: lim_{r→+∞} M_r(x) = max(x) and lim_{r→-∞} M_r(x) = min(x). The max case uses a squeeze between M·n^{-1/r} and M, with n^{-1/r} → 1. The min case reduces to the max case via the duality identity M_r(x) = (M_{-r}(1/x))⁻¹. 6 theorems, 0 axioms, 0 sorries.",
+  "description": "Proves the two extreme power mean limits: lim_{r→+∞} M_r(x) = max(x) and lim_{r→-∞} M_r(x) = min(x). The max case uses a squeeze between M·n^{-1/r} and M, with n^{-1/r} → 1. The min case reduces to the max case via the duality identity M_r(x) = (M_{-r}(1/x))⁻¹. 5 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-05",
@@ -21,7 +21,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 219,
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 1,
     "originalContributions": [
       "powerMean_tendsto_max: M_r(x) → max(x) as r → +∞, proved by squeezing between max·n^{-1/r} and max",
@@ -180,7 +180,7 @@
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/AmgmInequalityOQ03OQ02OQ04.lean",
-    "theoremCount": 6,
+    "theoremCount": 5,
     "definitionCount": 1
   },
   "crossReferences": [
