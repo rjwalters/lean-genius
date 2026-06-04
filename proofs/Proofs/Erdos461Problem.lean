@@ -279,3 +279,12 @@ theorem smoothDistinctCount_t_le_one (n t : ℕ) (ht : t ≤ 1) :
         obtain ⟨m, _, rfl⟩ := hx
         simp [smoothComponent_t_le_one m ht])
       _ = 1 := by simp
+
+/-- **Boundary case `t = 1`**: the smooth distinct count is exactly `1`.
+    Combines `smoothDistinctCount_pos` (≥ 1) with `smoothDistinctCount_t_le_one` (≤ 1)
+    at `t = 1`. The single value is `1` because `smoothComponent 1 m = 1` for all `m`
+    (no primes are below 1). -/
+theorem smoothDistinctCount_one (n : ℕ) : smoothDistinctCount n 1 = 1 := by
+  have h1 := smoothDistinctCount_pos n 1 (le_refl 1)
+  have h2 := smoothDistinctCount_t_le_one n 1 (le_refl 1)
+  omega

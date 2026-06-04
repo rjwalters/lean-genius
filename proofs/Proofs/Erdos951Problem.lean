@@ -90,6 +90,34 @@ theorem beurling_linear_growth (bp : BeurlingPrimes) (n : ℕ) :
   | zero => simp
   | succ k ih => push_cast at *; linarith [beurling_consec_gap bp k]
 
+/-- The first element of a Beurling prime sequence is at least 2.
+
+    This is derivable from `WellSeparatedProducts` (no extra hypothesis needed):
+    take `k = 0` (the zero Finsupp, with empty support and product `1`) and
+    `ℓ = Finsupp.single 0 1` (support `{0}`, product `bp.a 0`). Well-separation
+    forces `|1 - bp.a 0| ≥ 1`, and combined with `bp.a 0 > 1` this gives
+    `bp.a 0 ≥ 2`. -/
+theorem beurling_a_zero_ge_two (bp : BeurlingPrimes) : 2 ≤ bp.a 0 := by
+  have hne : (0 : ℕ →₀ ℕ) ≠ Finsupp.single 0 1 := fun h => by
+    have h0 := DFunLike.congr_fun h 0
+    simp [Finsupp.single_eq_same] at h0
+  have hsep := bp.well_separated 0 (Finsupp.single 0 1) hne
+  have hs2 : (Finsupp.single 0 (1 : ℕ)).support = {0} :=
+    Finsupp.support_single_ne_zero _ one_ne_zero
+  rw [Finsupp.support_zero, hs2, Finset.prod_empty, Finset.prod_singleton,
+      Finsupp.single_eq_same, pow_one] at hsep
+  have h_a0 := bp.all_gt_one 0
+  rw [abs_of_neg (by linarith : (1 : ℝ) - bp.a 0 < 0)] at hsep
+  linarith
+
+/-- Sharpened linear growth: `aₙ ≥ n + 2`. Combines `beurling_linear_growth`
+    (`aₙ ≥ a₀ + n`) with `beurling_a_zero_ge_two` (`a₀ ≥ 2`). -/
+theorem beurling_linear_growth_strong (bp : BeurlingPrimes) (n : ℕ) :
+    bp.a n ≥ (n : ℝ) + 2 := by
+  have h1 := beurling_linear_growth bp n
+  have h2 := beurling_a_zero_ge_two bp
+  linarith
+
 /-- The counting set {n | a n <= x} is finite for Beurling prime sequences.
     Since a is strictly increasing with all a_n > 1, only finitely many
     indices satisfy a_n <= x. -/
@@ -125,6 +153,33 @@ theorem beurlingPi_le_floor (bp : BeurlingPrimes) (x : ℝ) :
       ≤ Set.ncard (↑(Finset.range ⌊x⌋₊) : Set ℕ) :=
         Set.ncard_le_ncard hsub (Finset.range _).finite_toSet
     _ = ⌊x⌋₊ := by rw [Set.ncard_coe_Finset, Finset.card_range]
+
+/-- **Sharpened trivial upper bound**: `π_a(x) ≤ ⌊x⌋₊ - 1` (natural truncated
+    subtraction). Saves one over `beurlingPi_le_floor` by exploiting the
+    well-separation-derived strengthening `aₙ ≥ n + 2`.
+
+    Holds unconditionally: when `⌊x⌋₊ ≤ 1` (i.e. `x < 2`) the RHS truncates
+    to `0` and the bound holds because every Beurling prime is `≥ 2 > x`.
+
+    This is still far weaker than the Erdős 951 conjecture `π_a(x) ≤ π(x)`
+    (`π(x) ~ x/log x` sublinear vs. `⌊x⌋₊ - 1` linear). The conjecture's
+    content is the `log x` improvement; this lemma is a one-step refinement
+    within the trivial-bound regime. -/
+theorem beurlingPi_le_floor_pred (bp : BeurlingPrimes) (x : ℝ) :
+    beurlingPi bp.a x ≤ ⌊x⌋₊ - 1 := by
+  unfold beurlingPi
+  have hsub : {n : ℕ | bp.a n ≤ x} ⊆ ↑(Finset.range (⌊x⌋₊ - 1)) := by
+    intro n hn
+    simp only [Set.mem_setOf_eq] at hn
+    simp only [Finset.coe_range, Set.mem_Iio]
+    have h1 := beurling_linear_growth_strong bp n
+    have h3 : ((n + 2 : ℕ) : ℝ) ≤ x := by push_cast; linarith
+    have h4 : n + 2 ≤ ⌊x⌋₊ := Nat.le_floor h3
+    omega
+  calc Set.ncard {n : ℕ | bp.a n ≤ x}
+      ≤ Set.ncard (↑(Finset.range (⌊x⌋₊ - 1)) : Set ℕ) :=
+        Set.ncard_le_ncard hsub (Finset.range _).finite_toSet
+    _ = ⌊x⌋₊ - 1 := by rw [Set.ncard_coe_Finset, Finset.card_range]
 
 /-- The nth prime as a real number. -/
 noncomputable def primeSeq (n : ℕ) : ℝ := Nat.nth Nat.Prime n

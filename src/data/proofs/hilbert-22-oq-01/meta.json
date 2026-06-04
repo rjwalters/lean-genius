@@ -17,16 +17,17 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 155,
+    "lineCount": 167,
     "assumptions": "0 axioms, 0 sorries. IsKobayashiHyperbolic defined via Brody's theorem criterion.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "Kodaira dimension as classification invariant",
       "Enriques-Kodaira surface classification",
-      "Analogy table: 1D uniformization → higher-dim Kodaira"
+      "Analogy table: 1D uniformization → higher-dim Kodaira",
+      "Direct counterexample `not_isKobayashiHyperbolic_complex`: ℂ is not Kobayashi hyperbolic (witness: identity is non-constant entire)"
     ],
-    "theoremCount": 1,
+    "theoremCount": 2,
     "definitionCount": 5
   },
   "overview": {
@@ -107,9 +108,9 @@
       "Mathlib"
     ],
     "namespace": "Hilbert22OQ01",
-    "lineCount": 155,
+    "lineCount": 167,
     "axiomCount": 0,
-    "theoremCount": 1,
+    "theoremCount": 2,
     "definitionCount": 5,
     "path": "Proofs/Hilbert22OQ01.lean",
     "sorries": 0

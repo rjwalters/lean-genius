@@ -87,6 +87,32 @@ def hasComposite (n : ℕ) : Prop :=
     PROVED by native_decide (greedySeq is now computable). -/
 theorem example_n8 : greedySeq 8 0 = 7 ∧ greedySeq 8 1 = 5 := by native_decide
 
+/- ## Small-n Positive Witnesses for the Conjecture
+
+The Erdős 430 conjecture asserts `∃ N₀, ∀ n ≥ N₀, hasComposite n`. The
+smallest meaningful positive instances are the n where `n - 1` is itself
+composite — for these, `greedySeq n 0 = n - 1` is already a composite
+element of the sequence, so `hasComposite n` holds trivially at `k = 0`.
+
+These witnesses (n ∈ {5, 7, 9}, the smallest n ≥ 4 with composite n-1)
+document that the conjecture is *easy* in the "n - 1 composite" regime
+and isolate the real difficulty to n where n - 1 is prime (the cases
+n ∈ {3, 4, 6, 8, 12, 14, 18, 20, 24, 30, …} that `example_n8` exemplifies
+for n = 8).
+-/
+
+/-- `n = 5`: `greedySeq 5 0 = 4` is composite, so `hasComposite 5` at `k = 0`. -/
+theorem hasComposite_5 : hasComposite 5 :=
+  ⟨0, by native_decide, by native_decide, by native_decide⟩
+
+/-- `n = 7`: `greedySeq 7 0 = 6 = 2 · 3` is composite, so `hasComposite 7` at `k = 0`. -/
+theorem hasComposite_7 : hasComposite 7 :=
+  ⟨0, by native_decide, by native_decide, by native_decide⟩
+
+/-- `n = 9`: `greedySeq 9 0 = 8 = 2^3` is composite, so `hasComposite 9` at `k = 0`. -/
+theorem hasComposite_9 : hasComposite 9 :=
+  ⟨0, by native_decide, by native_decide, by native_decide⟩
+
 /- ## Greedy Sequence Properties -/
 
 /-- greedyNext returns an admissible element when positive.

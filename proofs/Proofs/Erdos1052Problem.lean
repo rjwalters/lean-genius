@@ -225,6 +225,11 @@ theorem isUnitaryPerfect_60 : IsUnitaryPerfect 60 := by native_decide
 90 = 2 · 3² · 5. Proper unitary divisors: {1, 2, 5, 9, 10, 18, 45}. Sum = 90. -/
 theorem isUnitaryPerfect_90 : IsUnitaryPerfect 90 := by native_decide
 
+/-- The number 87360 is a unitary perfect number (Wall, 1972 — the 4th known).
+87360 = 2⁶ · 3 · 5 · 7 · 13. Verified by native compilation of the decidable
+`IsUnitaryPerfect` instance enumerating proper unitary divisors of 87360. -/
+theorem isUnitaryPerfect_87360 : IsUnitaryPerfect 87360 := by native_decide
+
 /-
 ## Further Properties
 -/

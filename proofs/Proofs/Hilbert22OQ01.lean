@@ -110,7 +110,19 @@ def IsKobayashiHyperbolic (E : Type*) [NormedAddCommGroup E] [NormedSpace ℂ E]
 
 /-- The unit disk 𝔻 is Kobayashi hyperbolic.
     This recovers the hyperbolic case of uniformization. -/
-/-- ℂ is NOT Kobayashi hyperbolic (the identity is non-constant). -/
+
+/-- **ℂ is not Kobayashi hyperbolic**: the identity `id : ℂ → ℂ` is a
+    non-constant entire (differentiable) function. This formalizes the
+    direct-counterexample classical fact and confirms the dichotomy
+    with `IsKobayashiHyperbolic 𝔻` (which IS hyperbolic via Liouville's
+    theorem on the unit disk; not formalized here). -/
+theorem not_isKobayashiHyperbolic_complex : ¬ IsKobayashiHyperbolic ℂ := by
+  intro h
+  obtain ⟨c, hc⟩ := h id differentiable_id
+  have h0 : (id : ℂ → ℂ) 0 = c := congr_fun hc 0
+  have h1 : (id : ℂ → ℂ) 1 = c := congr_fun hc 1
+  exact zero_ne_one (h0.trans h1.symm)
+
 /-
   The higher-dimensional uniformization analogy:
 

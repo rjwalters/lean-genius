@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-30T04:42:50-07:00",
-    "iteration": 1,
-    "focus": "Proved liouville_uncountable_axiom via Baire category",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "OBSERVE",
+    "since": "2026-06-04T22:00:00Z",
+    "iteration": 2,
+    "focus": "S1 STATE-SYNC — JSON insights were cross-contaminated from sibling OQ-04 work; OQ-01 (effective Roth) needs fresh observation pass",
+    "blockers": [
+      "Effective Roth is a major open Diophantine approximation problem — not tractable in a single session; would require Mathlib infrastructure for explicit constants in Schmidt subspace / Roth-type bounds that does not exist."
+    ],
+    "nextAction": "Observe-phase: clarify whether OQ-01 should target a survey/documentation artifact (effective Roth statement + literature pointers) or be reclassified given its open status.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated liouville_uncountable_axiom. Axiom count 3→2. Proof uses Baire category: Liouville numbers are residual (Mathlib), residual sets are not meagre, but countable sets in ℝ are meagre (each singleton is nowhere dense in the perfect space ℝ).",
+    "progressSummary": "S1 STATE-SYNC (2026-06-04): JSON metadata reconciled with on-disk Lean files. LiouvilleTheoremOQ04.lean sorryCount corrected 4→0 (the 4 grep hits were docstring mentions, not sorry tactics). LiouvilleTheorem.lean confirmed at 1 axiom (roth_theorem, Fields-Medal depth — must remain axiom). Prior insights and progress notes in this JSON describe parent / OQ-04 work (uncountability of Liouville numbers, Baire category proof of liouville_uncountable_axiom) and do not bear on OQ-01's actual question (effective version of Roth's theorem with computable constants). No code change this session.",
     "builtItems": [
       "Proved liouville_uncountable_axiom in LiouvilleTheorem.lean:275-283 using Baire category theorem"
     ],
@@ -45,13 +47,16 @@
       "Docker was unavailable for build verification — cannot write 100+ lines of unverified analysis proofs safely",
       "Proved liouville_uncountable_axiom via Baire category: residual (comeagre) + PerfectSpace ℝ argument",
       "Key Mathlib theorems: eventually_residual_liouville, not_isMeagre_of_mem_residual, interior_singleton, isMeagre_biUnion",
-      "Axiom count reduced from 3 to 2 (remaining: liouville_approximation_theorem_axiom, roth_theorem)"
+      "Axiom count reduced from 3 to 2 (remaining: liouville_approximation_theorem_axiom, roth_theorem)",
+      "S1 STATE-SYNC (2026-06-04): the preceding insights describe parent / OQ-04 work, not OQ-01. OQ-01's actual question is 'effective Roth' — make the constant c(α,ε) in Roth's |α-p/q| > c/q^(2+ε) computable from α and ε. This is genuinely open in mathematics; partial effective bounds exist (Bombieri, Schmidt, Evertse) but only for restricted classes; no Mathlib infrastructure for it.",
+      "S1 STATE-SYNC (2026-06-04): LiouvilleTheorem.lean has 1 remaining axiom = `roth_theorem` (lines 415-416), declared as the noneffective 1955 statement. The OQ-01 follow-up would conceptually replace this axiom with an effective version `roth_theorem_effective` that, given algebraic α (with explicit minimal polynomial data) and ε > 0, produces an explicit c(α,ε). No such theorem exists in Mathlib.",
+      "S1 STATE-SYNC (2026-06-04): leanFiles[1].sorryCount in JSON was 4, but `grep -nE '^[[:space:]]*sorry[[:space:]]*$|:= sorry|:= by sorry'` returns 0 matches in LiouvilleTheoremOQ04.lean — the 4 grep hits are all docstring text (line 647 'sorry/axiom-free', 1248 'Proved (no sorry)', 1276 'Replaced `sorry`', 1278 'sorry 1 → axiom 1'). JSON updated."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove liouville_uncountable_axiom via injection from (ℕ → Bool): (1) define liouvilleFamily, (2) prove convergence, (3) prove Liouville property, (4) prove injectivity, (5) conclude via Cardinal.cantor",
-      "The Liouville property proof needs: tail bound ≤ 4/10^((N+2)!) < 1/10^((N+1)!·m) for N > m",
-      "Injectivity proof: first differing digit has coefficient ≥ 1/10^((n₀+1)!) while tail sum < 2/10^((n₀+2)!) < 1/10^((n₀+1)!)"
+      "STALE (pre-2026-06-04, OQ-04 work): Prove liouville_uncountable_axiom via injection from (ℕ → Bool) — already completed in parent file LiouvilleTheorem.lean:346-354 via Baire category.",
+      "STALE (pre-2026-06-04, OQ-04 work): tail bound and injectivity arguments — superseded by Baire-category proof.",
+      "OQ-01 next steps (post-2026-06-04 STATE-SYNC): (a) decide whether to keep OQ-01 active or reclassify as 'literature-survey-only' since effective Roth is genuinely open; (b) if active, draft a LiouvilleTheoremOQ01.lean stub with the precise effective-Roth statement and explicit reference axioms (e.g. Bombieri-van der Poorten quantitative form), with NO sorries — pure documentation + axiomatization scaffold; (c) survey Mathlib for any quantitative Roth-style results (none expected)."
     ],
     "markdown": "# Knowledge Base: liouville-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -66,7 +71,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T11:59:37.383Z",
-  "lastUpdate": "2026-03-30T11:59:37.397Z",
+  "lastUpdate": "2026-06-04T22:05:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/LiouvilleTheorem.lean",
@@ -86,7 +91,7 @@
       "theoremCount": 33,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 4,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
     }

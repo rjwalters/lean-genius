@@ -61,12 +61,15 @@
       "beurlings_conjecture: if N_a(x) = x + o(log x), then aᵢ = primes",
       "separation_implies_distinct theorem: well-separation implies distinctness",
       "beurling_linear_growth: aₙ ≥ a₀ + n (linear growth from consecutive gap)",
-      "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound; partial result toward main conjecture)"
+      "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound; partial result toward main conjecture)",
+      "beurling_a_zero_ge_two: a₀ ≥ 2 (derived from WellSeparatedProducts applied to 0 vs Finsupp.single 0 1)",
+      "beurling_linear_growth_strong: aₙ ≥ n + 2 (sharpening of linear growth, combining a₀ ≥ 2 with the linear-growth lemma)",
+      "beurlingPi_le_floor_pred: π_a(x) ≤ ⌊x⌋₊ - 1 (sharpened trivial bound — saves one over `beurlingPi_le_floor` by exploiting `aₙ ≥ n + 2`)"
     ],
     "axiomCount": 0,
-    "lineCount": 285,
-    "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified. Open conjecture; supporting lemmas fully verified. Trivial upper bound π_a(x) ≤ ⌊x⌋₊ (`beurlingPi_le_floor`) gives a weaker form of the conjecture as a verified partial result.",
-    "theoremCount": 12,
+    "lineCount": 339,
+    "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified. Open conjecture; supporting lemmas fully verified. Trivial upper bound π_a(x) ≤ ⌊x⌋₊ (`beurlingPi_le_floor`) and its sharpening π_a(x) ≤ ⌊x⌋₊ - 1 (`beurlingPi_le_floor_pred`) give weaker forms of the conjecture as verified partial results.",
+    "theoremCount": 15,
     "definitionCount": 10
   },
   "overview": {
@@ -80,7 +83,8 @@
       "**Sparse examples exist**: Powers of 2 give $\\pi_a(x) = \\lfloor\\log_2 x\\rfloor \\ll \\pi(x) \\sim x/\\ln x$, showing not all Beurling sequences approach the prime density. The gap is enormous: logarithmic vs sublinear growth",
       "**Beurling's rigidity**: If the Beurling integers (products) have counting function $N_a(x) = x + o(\\log x)$, then $a$ must be the actual primes (Diamond 1977 showed this is sharp). This characterizes primes by their products' density",
       "**Finsupp design choice**: Using `ℕ →₀ ℕ` for exponent tuples is elegant: it avoids fixed-length tuples, handles arbitrary numbers of generators, and integrates with Mathlib's `Finset.prod` over the finite support",
-      "**Trivial upper bound vs. conjecture**: Well-separation alone implies the linear bound $\\pi_a(x) \\le \\lfloor x \\rfloor$ (theorem `beurlingPi_le_floor`), since $a_n \\ge a_0 + n > n + 1$. The Erdős 951 conjecture refines this from $\\lfloor x \\rfloor$ (linear) down to $\\pi(x) \\sim x/\\log x$ (sublinear). The factor of $\\log x$ between these bounds is exactly the structural content the conjecture asserts about well-separated sequences"
+      "**Trivial upper bound vs. conjecture**: Well-separation alone implies the linear bound $\\pi_a(x) \\le \\lfloor x \\rfloor$ (theorem `beurlingPi_le_floor`), since $a_n \\ge a_0 + n > n + 1$. The Erdős 951 conjecture refines this from $\\lfloor x \\rfloor$ (linear) down to $\\pi(x) \\sim x/\\log x$ (sublinear). The factor of $\\log x$ between these bounds is exactly the structural content the conjecture asserts about well-separated sequences",
+      "**`a_0 \\ge 2` is derivable, not assumed**: Applying `WellSeparatedProducts` to the zero exponent tuple (`k = 0`, empty product `= 1`) against `\\ell = \\text{single}\\,0\\,1` (product `= a_0`) gives $|1 - a_0| \\ge 1$, which combined with $a_0 > 1$ forces $a_0 \\ge 2$ (theorem `beurling_a_zero_ge_two`). This sharpens linear growth to $a_n \\ge n + 2$ (`beurling_linear_growth_strong`) and the trivial bound to $\\pi_a(x) \\le \\lfloor x \\rfloor_+ - 1$ (`beurlingPi_le_floor_pred`) — still linear, but one tighter than the naive form"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -154,7 +158,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #951 on Beurling prime numbers: whether π_a(x) ≤ π(x) for any well-separated sequence. Includes WellSeparatedProducts predicate using Finsupp, BeurlingPrimes structure, counting functions, actual primes as a Beurling sequence (`primeSeq_well_separated` proved from FTA), separation_implies_distinct (proved), Beurling integers and `beurlings_conjecture` (`def : Prop`, stated but not axiomatized), the linear growth lemma `beurling_linear_growth` (a_n ≥ a_0 + n), and the **trivial upper bound** `beurlingPi_le_floor` (π_a(x) ≤ ⌊x⌋ — a verified weaker form of the main conjecture, refining the conjecture's content to the gap between ⌊x⌋ and π(x)). 0 axioms, 0 sorries. The main conjecture (erdos951_conjecture) is OPEN and defined only as a `Prop`.",
+    "summary": "The formalization captures Erdős Problem #951 on Beurling prime numbers: whether π_a(x) ≤ π(x) for any well-separated sequence. Includes WellSeparatedProducts predicate using Finsupp, BeurlingPrimes structure, counting functions, actual primes as a Beurling sequence (`primeSeq_well_separated` proved from FTA), separation_implies_distinct (proved), Beurling integers and `beurlings_conjecture` (`def : Prop`, stated but not axiomatized), the linear growth lemma `beurling_linear_growth` (a_n ≥ a_0 + n), its sharpening `beurling_a_zero_ge_two` (a_0 ≥ 2, derived from well-separation) and `beurling_linear_growth_strong` (a_n ≥ n + 2), and the **trivial upper bounds** `beurlingPi_le_floor` (π_a(x) ≤ ⌊x⌋ — verified weaker form of the main conjecture) and its sharpening `beurlingPi_le_floor_pred` (π_a(x) ≤ ⌊x⌋ - 1, exploiting the strengthened growth). 0 axioms, 0 sorries. The main conjecture (erdos951_conjecture) is OPEN and defined only as a `Prop`.",
     "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Extremality of Primes**: If true, the conjecture characterizes primes as the densest multiplicatively well-separated sequence — a novel extremal property\n2. **Beurling's Theory**: Connects to the broader study of generalized primes and the generalized prime number theorem, initiated by Beurling in 1937\n**3. Multiplicative Structure**: The well-separation condition abstracts the Fundamental Theorem of Arithmetic's consequence that distinct prime products are distinct integers\n4. **Rigidity Results**: Beurling's conjecture (formalized here) shows primes are uniquely determined by the density of their product set\n5. **Diamond's Sharpness**: Diamond (1977) proved the generalized PNT error term cannot be improved, bounding what structural information the Beurling integer count provides.",
     "openQuestions": [
       "Is $\\pi_a(x) \\le \\pi(x)$ for all Beurling prime sequences? (The main conjecture, completely open)",
@@ -181,9 +185,9 @@
       "Real"
     ],
     "namespace": "Erdos951",
-    "lineCount": 285,
+    "lineCount": 339,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 10,
     "path": "Proofs/Erdos951Problem.lean",
     "sorries": 0

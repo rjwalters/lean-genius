@@ -17,19 +17,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 3,
-    "focus": "Added partial-result trivial bound π_a(x) ≤ ⌊x⌋ + extracted linear-growth lemma",
-    "blockers": [],
-    "nextAction": "Refine trivial ⌊x⌋ bound toward conjectured π(x); explore integer-valued case",
+    "since": "2026-06-04T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 (researcher-1, 2026-06-04): ACT. Sharpened the trivial-bound chain. Added beurling_a_zero_ge_two (a_0 ≥ 2 derived from WellSeparatedProducts, not assumed), beurling_linear_growth_strong (a_n ≥ n + 2), and beurlingPi_le_floor_pred (π_a(x) ≤ ⌊x⌋₊ - 1, unconditional, mirroring beurlingPi_le_floor with the strengthened growth). File 285 → 339 lines; theoremCount 12 → 15; 0 axioms, 0 sorries. Build verification deferred to Mechanic/Auditor (local Docker daemon in I/O-error state, same precedent as szemeredi-theorem-oq-01 S3).",
+    "blockers": [
+      "Local Docker daemon I/O-error state prevents on-host `./proofs/scripts/docker-build.sh Proofs.Erdos951Problem` invocation — Mechanic / Auditor verify post-merge"
+    ],
+    "nextAction": "(1) Mechanic / Auditor: Docker-build Proofs.Erdos951Problem and confirm 15 theorems, 0 axioms, 0 sorries. (2) Researcher (long-horizon): refine sharpened trivial bound `⌊x⌋ - 1` toward a sublinear bound (would require a density-increment argument, multi-week scale). (3) Researcher (short-horizon): investigate whether well-separation forces a_0 to be a positive integer ≥ 2 (apply WellSeparatedProducts to single 0 k for various k).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PARTIAL RESULT: Added beurlingPi_le_floor (π_a(x) ≤ ⌊x⌋, verified) — much weaker than open conjecture π(x) but a real partial bound. Extracted beurling_linear_growth (a_n ≥ a_0 + n) as top-level reusable lemma. File: 0 axioms, 0 sorries, 12 theorems, 10 defs, 285 lines. Main conjecture remains OPEN.",
+    "progressSummary": "PARTIAL RESULTS: trivial-bound chain extended to π_a(x) ≤ ⌊x⌋₊ - 1 via the derivable lemma a_0 ≥ 2 (from WellSeparatedProducts alone). File: 0 axioms, 0 sorries, 15 theorems, 10 defs, 339 lines. Main conjecture (π_a(x) ≤ π(x), open) is not pursued directly — these are SURVEY-tier improvements within the trivial-bound regime.",
     "builtItems": [
       "Proved primeSeq_isPrime helper theorem (Nat.nth_mem_of_infinite)",
       "Proved primeSeq_strictly_increasing from Nat.nth_strictMono",
@@ -46,7 +48,10 @@
       "factorization_prod_at: Finset.induction + Nat.factorization_mul/pow/prime",
       "beurling_linear_growth: a_n ≥ a_0 + n (extracted from local lemma to top-level, by induction on beurling_consec_gap)",
       "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound, partial result toward erdos951_conjecture; verified via Set.ncard_le_ncard + Finset.range)",
-      "Refactored beurlingPi_finite to use beurling_linear_growth (shorter proof)"
+      "Refactored beurlingPi_finite to use beurling_linear_growth (shorter proof)",
+      "S4 (researcher-1, 2026-06-04): beurling_a_zero_ge_two (a_0 ≥ 2 from WellSeparatedProducts applied to 0 vs Finsupp.single 0 1)",
+      "S4 (researcher-1, 2026-06-04): beurling_linear_growth_strong (a_n ≥ n + 2, by linarith combining the two prior lemmas)",
+      "S4 (researcher-1, 2026-06-04): beurlingPi_le_floor_pred (sharpened trivial bound π_a(x) ≤ ⌊x⌋₊ - 1, unconditional via Nat truncated subtraction)"
     ],
     "insights": [
       "primeSeq_strictly_increasing proved via Nat.nth_strictMono + Nat.infinite_setOf_prime",
@@ -61,7 +66,9 @@
       "beurlings_conjecture was never used as a proof term — safe to convert axiom→def without breaking anything",
       "Trivial bound ⌊x⌋ is achievable from well-separation alone; the gap to conjectured π(x) ~ x/log x is the actual mathematical content of Erdős 951",
       "Linear growth a_n > 1 + n follows from a_n ≥ a_0 + n (beurling_linear_growth) + a_0 > 1 (all_gt_one 0)",
-      "Set inclusion {n | a_n ≤ x} ⊆ Finset.range ⌊x⌋₊ via Nat.le_floor + Nat.lt_of_succ_le; cardinality from Set.ncard_coe_Finset + Finset.card_range"
+      "Set inclusion {n | a_n ≤ x} ⊆ Finset.range ⌊x⌋₊ via Nat.le_floor + Nat.lt_of_succ_le; cardinality from Set.ncard_coe_Finset + Finset.card_range",
+      "a_0 ≥ 2 is derivable (not assumed): WellSeparatedProducts on 0 (empty product = 1) vs Finsupp.single 0 1 (product = a_0) forces |1 - a_0| ≥ 1, combined with a_0 > 1 gives a_0 ≥ 2",
+      "Sharpened a_n ≥ n + 2 (linarith from beurling_linear_growth + beurling_a_zero_ge_two) lets the trivial bound improve by 1 (⌊x⌋₊ → ⌊x⌋₊ - 1), which is the maximum that can be extracted from the linear-growth lemma chain alone"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -81,15 +88,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-05-13T11:24:24Z",
+  "lastUpdate": "2026-06-04T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos951Problem.lean",
       "filename": "Erdos951Problem.lean",
-      "lineCount": 285,
-      "theoremCount": 12,
+      "lineCount": 339,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 10,
       "sorryCount": 0,

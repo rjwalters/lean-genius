@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-13T11:35:00Z
-**Iteration**: 2
+**Since**: 2026-06-04T22:25:00Z
+**Iteration**: 3
 
 ## Current Focus
 
@@ -62,3 +62,10 @@ Three plausible directions, in increasing difficulty:
 - Total attempts: 2 (sessions: 1 = scaffolding + k=1/k=2/factorization; 2 = k=3 at n=2,3)
 - Current approach attempts: 1 (brute-force bounded enumeration; succeeded for n ∈ {2, 3})
 - Approaches tried: 2 (axiom-free direct algebra for k ≤ 2; brute-force for small-n k=3)
+
+## Sessions
+
+### S3 (2026-06-04) — STATE-SYNC
+- **Decision**: STATE-SYNC. The on-disk file is at 353 lines / 31 theorems / 1 axiom / 0 sorries; the JSON `leanFiles[0]` was 242 / 23 / 1 / 0 — significantly under-counted (lineCount and theoremCount both stale from before Session 2's k=3 additions). The JSON `currentState.phase` was NEW with focus "Initial exploration" while `state.md` and `knowledge.progressSummary` correctly reflected ACT-phase substantial progress. Also `knowledge.mathlibGaps` and `knowledge.nextSteps` were empty despite the rich `insights` array spelling out the closed-form k=3 lower-bound plan.
+- **JSON delta**: leanFiles.lineCount 242→353, theoremCount 23→31. currentState.phase NEW→ACT, iteration 2→3, focus rewritten, nextAction populated. knowledge.mathlibGaps populated with one entry (no `lcm` of interval API). knowledge.nextSteps populated with four concrete planned steps (closed-form lcmInterval n 3, sharper bound application, Bertrand asymptotic, explicit DO-NOT for thue_siegel_finiteness elimination).
+- **No code change**. No axiom/sorry deltas.
