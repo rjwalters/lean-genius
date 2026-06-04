@@ -23,7 +23,7 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 202,
+    "lineCount": 256,
     "assumptions": "0 axioms, 0 sorries, **0 `:= True` placeholders**. The 2026-06-03 S4 ACT discharged the remaining 2 placeholders (`HasInfiniteEulerPath`, `HasOneWayEulerPath`) by porting the `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure from sibling `Proofs/KonigsbergOQ03OQ02.lean` (adapted to use this file's own `InfiniteGraph`). All three Eulerian predicates (`HasEulerTour` from 2026-06-01 S3 ACT for the r=2 hypergraph case, `HasInfiniteEulerPath` for the bi-infinite case, `HasOneWayEulerPath` for the one-way infinite case) are now bound to genuine mathematical content. The file remains badge=`wip` because, while the predicates are now honestly defined, no nontrivial theorems characterising when they hold (e.g. Erdős–Grünwald–Weiszfeld) have been proved yet. Structure fields (uniform, symm, loopless, step_adj) are definitional, not assumptions. Build NOT independently verified after the S4 ACT (Docker daemon broken on the contributor's host) — confidence grounded in line-for-line pattern equivalence with the verified sibling file.",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs",
     "mathlibDependencies": [
@@ -67,7 +67,7 @@
       "HasInfiniteEulerPath (S4 ACT, 2026-06-03): bi-infinite Euler path bound to ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w — replaces the prior := True placeholder",
       "HasOneWayEulerPath (S4 ACT, 2026-06-03): one-way infinite Euler path bound to ∃ w : InfiniteWalk G, IsEulerWalk G w — replaces the prior := True placeholder"
     ],
-    "theoremCount": 2,
+    "theoremCount": 9,
     "definitionCount": 14
   },
   "overview": {
@@ -266,11 +266,11 @@
   ],
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 202,
+    "lineCount": 256,
     "path": "Proofs/KonigsbergOQ03.lean",
     "sorries": 0,
     "definitionCount": 14,
-    "theoremCount": 2
+    "theoremCount": 9
   },
   "sorries": 0
 }

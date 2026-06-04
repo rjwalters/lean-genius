@@ -139,6 +139,12 @@ theorem step_ne {V : Type*} {G : InfiniteGraph V}
     (w : InfiniteWalk G) (n : ℕ) : w.vertex n ≠ w.vertex (n + 1) :=
   fun h => G.loopless (w.vertex n) (h ▸ w.step_adj n)
 
+/-- Every step in an `InfiniteWalk` is between adjacent vertices (tautology).
+Mirrors the sibling `KonigsbergOQ03OQ02.InfiniteWalk.step_is_adj` accessor. -/
+theorem step_is_adj {V : Type*} {G : InfiniteGraph V}
+    (w : InfiniteWalk G) (n : ℕ) : G.adj (w.vertex n) (w.vertex (n + 1)) :=
+  w.step_adj n
+
 end InfiniteWalk
 
 /-- A one-way Euler walk on `G`: a ℕ-indexed walk that covers every edge and
@@ -146,6 +152,23 @@ no edge twice. The `G` argument is explicit because Lean cannot infer it from
 `w : InfiniteWalk G` in every elaboration context. -/
 def IsEulerWalk {V : Type*} (G : InfiniteGraph V) (w : InfiniteWalk G) : Prop :=
   (∀ u v, G.adj u v → w.CoversEdge u v) ∧ w.IsEdgeInjective
+
+namespace IsEulerWalk
+
+/-- An Euler walk covers each adjacent pair (projection of the `And`).
+Mirrors the sibling `KonigsbergOQ03OQ02.IsEulerWalk.covers` accessor. -/
+theorem covers {V : Type*} {G : InfiniteGraph V} {w : InfiniteWalk G}
+    (hEuler : IsEulerWalk G w) (u v : V) (hadj : G.adj u v) :
+    w.CoversEdge u v :=
+  hEuler.1 u v hadj
+
+/-- An Euler walk is edge-injective (projection of the `And`).
+Mirrors the sibling `KonigsbergOQ03OQ02.IsEulerWalk.injective` accessor. -/
+theorem injective {V : Type*} {G : InfiniteGraph V} {w : InfiniteWalk G}
+    (hEuler : IsEulerWalk G w) : w.IsEdgeInjective :=
+  hEuler.2
+
+end IsEulerWalk
 
 /-- A bi-infinite walk on `G`: a ℤ-indexed sequence of adjacent vertices.
 Needed for the version of the Erdős–Grünwald–Weiszfeld characterisation that
@@ -198,5 +221,36 @@ def HasOneWayEulerPath {V : Type*} (G : InfiniteGraph V) : Prop :=
     that traverses every edge at least once. For finite graphs,
     this is solvable in polynomial time. For infinite graphs,
     the optimal solution may not exist. -/
+
+/-! ### No-edge sanity theorems
+
+The smallest non-trivial Eulerian facts: an `InfiniteGraph` with no edges
+admits no infinite walks at all, hence has no (one-way or bi-infinite)
+Euler path. These confirm the predicates from the 2026-06-03 S4 ACT are
+non-degenerate (they do *not* hold vacuously for every graph). -/
+
+/-- A no-edge `InfiniteGraph` admits no `InfiniteWalk`: any candidate walk's
+step-0 adjacency contradicts the no-edge hypothesis. -/
+theorem InfiniteWalk.isEmpty_of_no_edges {V : Type*} {G : InfiniteGraph V}
+    (h : ∀ u v, ¬ G.adj u v) : IsEmpty (InfiniteWalk G) :=
+  ⟨fun w => h _ _ (w.step_adj 0)⟩
+
+/-- A no-edge `InfiniteGraph` admits no `BiInfiniteWalk`. -/
+theorem BiInfiniteWalk.isEmpty_of_no_edges {V : Type*} {G : InfiniteGraph V}
+    (h : ∀ u v, ¬ G.adj u v) : IsEmpty (BiInfiniteWalk G) :=
+  ⟨fun w => h _ _ (w.step_adj 0)⟩
+
+/-- A no-edge `InfiniteGraph` has no one-way Euler path: the existential is
+unsatisfiable because the walk type itself is empty. -/
+theorem not_hasOneWayEulerPath_of_no_edges {V : Type*} {G : InfiniteGraph V}
+    (h : ∀ u v, ¬ G.adj u v) : ¬ HasOneWayEulerPath G := by
+  rintro ⟨w, _⟩
+  exact h _ _ (w.step_adj 0)
+
+/-- A no-edge `InfiniteGraph` has no bi-infinite Euler path. -/
+theorem not_hasInfiniteEulerPath_of_no_edges {V : Type*} {G : InfiniteGraph V}
+    (h : ∀ u v, ¬ G.adj u v) : ¬ HasInfiniteEulerPath G := by
+  rintro ⟨w, _⟩
+  exact h _ _ (w.step_adj 0)
 
 end KonigsbergOQ03
