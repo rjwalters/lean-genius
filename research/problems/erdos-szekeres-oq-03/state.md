@@ -1,13 +1,45 @@
 # Current State
 
-**Phase**: ACT (S6 ACT-D adds the link/neighborhood-coloring infrastructure;
-the genuine inductive case `s > k ∧ t > k` of `ramsey_existence` remains
-the sole `sorry`, but the splice point is now mechanically derivable)
-**Since**: 2026-05-12 (S6 ACT-D, researcher-9)
-**Iteration**: 6
-**Researcher**: researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-1 (S5-prep, S4-prep); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S7 lands the splice lemma `IsMonochromatic.insert_vertex`,
+the last non-recursive ingredient for the Ramsey 1930 induction; the
+`s > k ∧ t > k` sorry in `ramsey_existence` remains, but is now a pure
+recursion-body question with no missing sub-lemmas)
+**Since**: 2026-06-04 (S7 ACT-E, researcher-1)
+**Iteration**: 7
+**Researcher**: researcher-1 (S7 ACT-E, S5-prep, S4-prep); researcher-9 (S6 ACT-D, S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
 
 ## Current Focus
+
+Session 7 (S7 ACT-E, researcher-1, 2026-06-04): land the splice lemma
+`IsMonochromatic.insert_vertex` — the single missing ingredient
+between the S6 link infrastructure (`kColoring.link`,
+`IsMonochromatic.link_lifts`) and the Ramsey 1930 inductive step. One
+sorry-free declaration lands in `RamseyHypergraph.lean`, lines 654 →
+688 (+34):
+
+* `IsMonochromatic.insert_vertex {n k} {χ : kColoring n} {c}
+  {v : Fin n} {S' : Finset (Fin n)} (hvS' : v ∉ S')
+  (hS' : IsMonochromatic χ k S' c)
+  (hLink : ∀ T ∈ (insert v S').powersetCard k, v ∈ T → χ T = c) :
+  IsMonochromatic χ k (insert v S') c` —
+  the splice composing a non-vertex-side `k`-mono sub-clique `S'`
+  with the vertex-side link-derived coverage `hLink` (produced by
+  `link_lifts`) to yield the `k`-mono clique `insert v S'` of size
+  `|S'| + 1`. Proof is a direct `by_cases hvT : v ∈ T` on each
+  `k`-subset `T ⊆ insert v S'`: when `v ∈ T`, `hLink` discharges;
+  when `v ∉ T`, `T ⊆ S'` and `hS'` discharges.
+
+`leanFile` counts (`RamseyHypergraph.lean`): lineCount 654 → 688
+(+34), theoremCount 18 → 19 (+1 for `insert_vertex`), defCount 5
+(unchanged), sorryCount 1 (unchanged), axiomCount 0 (unchanged).
+
+The lone surviving sorry in `ramsey_existence` (the `s > k ∧ t > k`
+genuine inductive case) is unchanged. With `insert_vertex` landed, the
+**non-recursive** ingredients of the Ramsey 1930 proof are complete;
+S8 ACT-F can run the `Nat.strongRecOn` induction body and close the
+file's last sorry.
+
+## Prior Session Outputs (S6 ACT-D, researcher-9)
 
 Session 6 (S6 ACT-D, researcher-9, 2026-05-12): introduce the link
 (neighborhood) coloring infrastructure that drives the Ramsey 1930
@@ -172,56 +204,52 @@ adequate but verbose.
 
 ## Next Action
 
-**S7 ACT-E — Splice link + sub-clique, then run the Ramsey 1930
-recursion.**
+**S8 ACT-F — Run the Ramsey 1930 induction body, close the file's
+last sorry.**
 
-The S6 link infrastructure (`kColoring.link`, `IsMonochromatic.link_lifts`)
-plus the S4-S5 monotonicity toolkit (`anti_s`, `anti_t`, `mono_n`,
-`mono`, `swap`, `self_right`, `self_left`) cover every facet of the
-Ramsey 1930 recursive bound
+With S7 ACT-E's `IsMonochromatic.insert_vertex` landed, the
+non-recursive ingredients of the Ramsey 1930 proof are complete:
 
-    R_k(s, t) ≤ R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1
-        (k ≥ 2, s, t > k)
+* Monotonicity toolkit: `anti_s`, `anti_t`, `mono_n`, `mono`, `swap`.
+* Boundary cases: `is_ramsey_self_right` (s = k), `is_ramsey_self_left`
+  (t = k).
+* Link/neighborhood machinery: `kColoring.link`, `link_apply`,
+  `link_lifts` (vertex-side `(k-1) → k` mono transfer).
+* Splice: `IsMonochromatic.insert_vertex` (this PR).
 
-except the splice step. S7 should prove:
+The remaining work for the `s > k ∧ t > k` case of `ramsey_existence`
+is the recursion body itself:
 
-* `IsMonochromatic.insert_vertex {n k} {χ : kColoring n} {c}
-  {v : Fin n} {S' : Finset (Fin n)} (hvS' : v ∉ S')
-  (hS' : IsMonochromatic χ k S' c)
-  (hLink : ∀ T ∈ (insert v S').powersetCard k, v ∈ T → χ T = c) :
-  IsMonochromatic χ k (insert v S') c`
+1. Set `n = R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1` (IH on
+   `k - 1` at the lifted target sizes).
+2. Pick vertex `v = ⟨0, _⟩`.
+3. Restrict `χ.link v` to `Fin (n-1)` (need a `castLE`-style
+   embedding) ⇒ apply `IH(k-1)` to extract a `(k-1)`-mono clique `S`
+   of size `R_k(s-1, t) + 1` (false case) or `R_k(s, t-1) + 1` (true
+   case).
+4. WLOG false case: apply `IH(k, s' + t)` with `s' = s - 1` to `χ`
+   restricted to `S` (size `> R_k(s-1, t)` by `mono_n`) ⇒ either a
+   `k`-mono-false `(s-1)`-clique `S' ⊆ S` (use `insert_vertex` to
+   extend by `v` to a `k`-mono-false `s`-clique) or a `k`-mono-true
+   `t`-clique on `S` (done).
 
-— a direct case-split on `v ∈ T` for each `k`-subset
-`T ⊆ insert v S'`: when `v ∉ T`, `T ⊆ S'` and `hS'` discharges; when
-`v ∈ T`, `hLink` discharges. `link_lifts` produces `hLink`.
+The induction needs to be on the lexicographic pair `(k, s + t)`,
+which requires an explicit termination argument
+(`WellFoundedRecursion` or `decreasing_by`-style). Estimated 80–120
+LOC. Once landed, the file becomes 0-sorry / 0-axiom and the gallery
+badge can flip from `wip` to `verified` for the OQ-03 entry.
 
-Then the Ramsey 1930 inductive step assembles:
-
-1. Set `n = R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1` (induction
-   hypothesis on `k - 1` at the lifted target sizes).
-2. Pick vertex `v` (`Fin.castLE`-friendly choice; e.g. `0`).
-3. Restrict `χ.link v` to `Fin n \ {v}` (size `≥` the `(k-1)`-Ramsey
-   number) ⇒ obtain a `(k-1)`-mono clique `S` ⊆ `Fin n \ {v}` of size
-   `R_k(s-1, t) + 1` (false case) or `R_k(s, t-1) + 1` (true case) by
-   the IH on uniformity.
-4. WLOG false case: apply the IH on `s + t` to `χ` restricted to `S`
-   (size `> R_k(s-1, t)` by `mono_n`) ⇒ either a `k`-mono-false
-   `(s-1)`-clique `S' ⊆ S` (use `insert_vertex` to extend by `v` to a
-   `k`-mono-false `s`-clique) or a `k`-mono-true `t`-clique on `S`
-   (done).
-
-Estimated 100–150 lines for `insert_vertex` + the induction body.
-
-S8 will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
+S9+ will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
 
 ## Attempt Counts
 
-- Total attempts: 6
-- Current approach attempts: 6
-- Approaches tried: 6 (literature survey + Lean API design; S2 scaffold;
+- Total attempts: 7
+- Current approach attempts: 7
+- Approaches tried: 7 (literature survey + Lean API design; S2 scaffold;
   S3 `ramseyNumber_one` via pigeonhole iff helper; S4 ACT-C boundary
   factoring + anti-monotonicity; S5-prep monotonicity helpers; S6 ACT-D
-  link/neighborhood coloring infrastructure)
+  link/neighborhood coloring infrastructure; S7 ACT-E splice lemma
+  `insert_vertex`)
 
 ## Outcome of S1
 
@@ -305,3 +333,20 @@ containing `v` has `χ T = c`, via the canonical decomposition
 584 → 654 lines (+70); theorem count 17 → 18 (+1); defCount 4 → 5
 (+1 for `kColoring.link`); sorries / axioms unchanged at 1 / 0. No
 new imports.
+
+## Outcome of S7 ACT-E
+
+One sorry-free declaration lands (build pending; the local worktree
+shares the same broken `proofs/.lake` symlink):
+`IsMonochromatic.insert_vertex` — the splice composing a non-vertex-side
+`k`-mono sub-clique `S'` (hypothesis `hS'`) with the vertex-side
+link-derived coverage `hLink` (produced by `link_lifts`) to yield the
+`k`-mono clique `insert v S'` of size `|S'| + 1`. Proof is a direct
+`by_cases hvT : v ∈ T` on each `k`-subset `T ⊆ insert v S'`: when
+`v ∈ T`, `hLink` discharges; when `v ∉ T`, every `x ∈ T` lies in
+`insert v S'` but is not `v`, so `T ⊆ S'` and `hS'` discharges. File
+grows 654 → 688 lines (+34); theorem count 18 → 19 (+1); defCount 5
+(unchanged); sorries / axioms unchanged at 1 / 0. No new imports.
+With this lemma landed, the non-recursive ingredients of the Ramsey
+1930 proof are complete; S8 ACT-F can run the `Nat.strongRecOn`
+induction body on `(k, s + t)` and close the file's last sorry.

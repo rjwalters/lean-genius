@@ -618,6 +618,40 @@ lemma IsMonochromatic.link_lifts {n k : ℕ} (χ : kColoring n) (v : Fin n)
   rw [hT_eq]
   exact hlink
 
+/-- **Splice (insert vertex).** If `S' ⊆ Fin n \ {v}` is a `k`-monochromatic
+clique of colour `c` for `χ`, and every `k`-subset of `insert v S'` that
+contains `v` is also coloured `c` by `χ`, then `insert v S'` is itself
+a `k`-monochromatic clique of colour `c`.
+
+This is the S7 splice lemma: it combines a *non-vertex side* sub-clique
+(`hS'` — `S'` is already `k`-mono under `χ`) with the *vertex side*
+link-derived coverage (`hLink` — produced by `IsMonochromatic.link_lifts`
+in S6) to yield a single mono-clique of size `|S'| + 1`.
+
+The proof is a case-split on `v ∈ T` for each `k`-subset `T ⊆ insert v S'`:
+when `v ∈ T`, `hLink` discharges directly; when `v ∉ T`, `T ⊆ S'` and `hS'`
+discharges. -/
+lemma IsMonochromatic.insert_vertex {n k : ℕ} {χ : kColoring n} {c : Bool}
+    {v : Fin n} {S' : Finset (Fin n)} (hvS' : v ∉ S')
+    (hS' : IsMonochromatic χ k S' c)
+    (hLink : ∀ T ∈ (insert v S').powersetCard k, v ∈ T → χ T = c) :
+    IsMonochromatic χ k (insert v S') c := by
+  intro T hT
+  rw [Finset.mem_powersetCard] at hT
+  obtain ⟨hTsub, hTcard⟩ := hT
+  by_cases hvT : v ∈ T
+  · -- Case `v ∈ T`: `hLink` applies directly.
+    exact hLink T (Finset.mem_powersetCard.mpr ⟨hTsub, hTcard⟩) hvT
+  · -- Case `v ∉ T`: then `T ⊆ S'` (every element of `T` lies in `insert v S'`
+    -- but is not `v`), so the non-vertex-side hypothesis `hS'` discharges.
+    have hT_sub_S' : T ⊆ S' := by
+      intro x hxT
+      have hxInsert : x ∈ insert v S' := hTsub hxT
+      rcases Finset.mem_insert.mp hxInsert with hxv | hxS'
+      · exact absurd (hxv ▸ hxT) hvT
+      · exact hxS'
+    exact hS' T (Finset.mem_powersetCard.mpr ⟨hT_sub_S', hTcard⟩)
+
 /-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
 and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
 every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
