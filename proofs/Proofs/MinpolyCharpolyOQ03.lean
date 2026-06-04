@@ -204,24 +204,31 @@ discharged by the four-step decomposition documented at the top of
 this file (sub-OQs `oq-03-oq-01` through `oq-03-oq-04`).
 -/
 
-/-- **Rational Canonical Form — Existence (S1 statement, S2+ proof)**:
+/-- **Rational Canonical Form — Existence (S1 statement; S14 strengthened; S2+ proof)**:
 
     Every square matrix `M` over a field `F` admits an
-    `InvariantFactorChain` whose product equals `charpoly M`.
+    `InvariantFactorChain` whose product equals `charpoly M` **and**
+    whose last factor equals `minpoly M`.
 
-    *Status*: **S1 OBSERVE scaffold** — statement only, proof deferred
-    to the four-step decomposition (sub-OQs `oq-03-oq-01` through
-    `oq-03-oq-04`).
+    *Status*: **S14 strong-form statement** — statement only, proof
+    deferred to the four-step decomposition (sub-OQs `oq-03-oq-01`
+    through `oq-03-oq-04`) plus the `lastFactor = minpoly`
+    follow-up (state.md next-action option 2).
 
-    The full Frobenius theorem additionally asserts that `M` is
-    similar to the block diagonal of the companion matrices of the
-    chain, with the last factor equal to `minpoly M`. Those refinements
-    are intentionally omitted from this S1 statement to keep the
-    scaffold minimal; they will be added incrementally as sub-OQs
-    discharge them. -/
+    The strong form adds the conjunct `c.lastFactor = M.minpoly` to
+    the S1 statement. This sets up the deliverable surface for the
+    follow-up proof (option 2 in state.md): the structural fact that
+    `ann(xModule M) = (M.minpoly)` (via
+    `annihilator_top_eq_ker_aeval`) plus monic uniqueness forces
+    `c.lastFactor = M.minpoly`. The strengthened statement remains
+    consistent with the full Frobenius theorem; only the similarity-
+    transform assertion (`M` is similar to the block diagonal of the
+    companion matrices) is still omitted, to be added when sub-OQ
+    `oq-03-oq-04` lands. -/
 theorem rational_canonical_form_exists
     {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F) :
-    ∃ c : InvariantFactorChain F, c.prodFactors = M.charpoly := by
+    ∃ c : InvariantFactorChain F,
+      c.prodFactors = M.charpoly ∧ c.lastFactor = M.minpoly := by
   sorry
 
 /-! ## Part 3: Unconditional structural lemmas

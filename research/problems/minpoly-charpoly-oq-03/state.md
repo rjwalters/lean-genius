@@ -1,13 +1,35 @@
 # Current State
 
-**Phase**: ACT (S13 firstFactor-side mirror landed; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ)
-**Since**: 2026-06-02 (S13 ACT firstFactor mirror, researcher-1; discharges S6 PREP PR #18425)
-**Iteration**: 13
+**Phase**: ACT (S14 strong-form statement upgrade landed; OQ-03-OQ-02 invariant-factor decomposition + lastFactor=minpoly follow-up are the remaining sub-OQs)
+**Since**: 2026-06-04 (S14 ACT strong-form statement upgrade, researcher-1; discharges next-action option 3)
+**Iteration**: 14
 
 ## Current Focus
 
-S13 ACT discharges the S6 PREP (PR #18425) `firstFactor`-side mirror
-design verbatim. Adds Part 7 to `MinpolyCharpolyOQ03.lean` with:
+S14 ACT (researcher-1, 2026-06-04) discharges next-action option 3
+(strong-form statement upgrade): extends `rational_canonical_form_exists`
+to additionally assert `c.lastFactor = M.minpoly`. Sorry-preserved
+(the existing single `sorry` covers the strengthened statement). Sets
+up the deliverable surface for next-action option 2 (the
+`lastFactor = minpoly` proof via `annihilator_top_eq_ker_aeval` plus
+monic uniqueness).
+
+Net file change: lineCount 624 → 631 (+7 LOC from extended docstring
+and the additional `∧ c.lastFactor = M.minpoly` conjunct);
+theoremCount, definitionCount, sorry count, axiomCount all unchanged.
+Build-pending per S2/S3/S4/S5/S13 convention (Docker daemon in
+I/O-error state on this host — host-disk-blocked precedent applies).
+
+Anti-target compliance: zero edits to any other theorem statement
+in the file; no changes to InvariantFactorChain structure; no new
+proof tactics introduced. The change is a pure statement-surface
+strengthening, leaving the S13 firstFactor mirror and all prior
+work untouched.
+
+## S13 ACT (prior iteration) — quick summary
+
+S13 ACT discharged the S6 PREP (PR #18425) `firstFactor`-side mirror
+design verbatim. Added Part 7 to `MinpolyCharpolyOQ03.lean` with:
 
 * `InvariantFactorChain.firstFactor` (new noncomputable def, `head?.getD 1`)
 * `firstFactor_eq_getElem_zero` (private bridging lemma, Plan-B `rcases`
@@ -219,8 +241,8 @@ its output in stronger lemmas.
 
 ## Attempt Counts
 
-- Total attempts: 13 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound, S6 PREP firstFactor design, S7 PREP isTorsionBy cheatsheet, S8 ACT isTorsionBy discharge, S9 PREP isTorsion cheatsheet, S10 ACT isTorsion discharge, S11 PREP elementary-divisors erratum + Route B design, S12 ERRATUM-APPLY, S13 ACT firstFactor mirror)
-- Current approach attempts: 13
+- Total attempts: 14 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound, S6 PREP firstFactor design, S7 PREP isTorsionBy cheatsheet, S8 ACT isTorsionBy discharge, S9 PREP isTorsion cheatsheet, S10 ACT isTorsion discharge, S11 PREP elementary-divisors erratum + Route B design, S12 ERRATUM-APPLY, S13 ACT firstFactor mirror, S14 ACT strong-form statement upgrade)
+- Current approach attempts: 14
 - Approaches tried: 1 (three-ingredient plan via Mathlib's PID structure theorem, with S11 PREP refining OQ-03-OQ-02 from "direct invariant-factor decomposition" to "primary form + ~290-LOC regrouping bookkeeping")
 
 ## Session Log
@@ -384,3 +406,32 @@ its output in stronger lemmas.
   Build-pending per S2/S3/S4/S5 convention. Anti-target compliance
   per S6 PREP §7: no `sandwich` corollary added, no S5 statement
   edits, `rational_canonical_form_exists` unchanged.
+
+* **S14 ACT (researcher-1, 2026-06-04)** — discharged next-action
+  option 3 (strong-form statement upgrade). Extended
+  `rational_canonical_form_exists` at lines 222-227 to additionally
+  assert `c.lastFactor = M.minpoly`:
+  ```lean
+  theorem rational_canonical_form_exists
+      {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F) :
+      ∃ c : InvariantFactorChain F,
+        c.prodFactors = M.charpoly ∧ c.lastFactor = M.minpoly := by
+    sorry
+  ```
+  Updated docstring lines 207-221 to S14 strong-form framing.
+  Sorry-preserved — the existing single `sorry` covers the
+  strengthened conclusion. File 624 → 631 LOC; theoremCount,
+  definitionCount, sorry count, axiomCount all unchanged. No new
+  imports. Build-pending per S2/S3/S4/S5/S13 convention (local
+  Docker daemon in I/O-error state — same precedent as
+  researcher-1's recent same-period sessions on
+  szemeredi-theorem-oq-01 S3, yang-mills-2d-wip-01 S2, erdos-951 S4,
+  erdos-430 S1, erdos-36 S1). Anti-target compliance: zero edits to
+  any other theorem statement; no changes to `InvariantFactorChain`
+  structure; no new proof tactics. The change is pure statement-
+  surface strengthening per state.md next-action option 3, setting
+  up the deliverable surface for option 2 (the `lastFactor = minpoly`
+  proof). Sole external impact: any downstream consumer destructuring
+  the existential `∃ c, ... ` would need to take `⟨c, ⟨hprod, hlast⟩⟩`
+  instead of `⟨c, hprod⟩` — at the time of writing there are no such
+  consumers in the proofs tree (verified by `grep`).
