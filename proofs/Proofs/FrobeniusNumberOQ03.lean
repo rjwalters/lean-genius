@@ -278,4 +278,113 @@ theorem large_representable3_three_consecutive {n m : ℕ} (hn : 1 ≤ n)
     exact hm
   exact large_representable3_via_two_gen hcop hn hb hbound
 
+/-! ### S6 — Pair-symmetric Sylvester bounds
+
+The existing `large_representable3_via_two_gen` (S3b) and
+`frobeniusNumber3_le_sylvester_bound{,_tight}` (S3c, S4a) all use the
+**(a, b)** pair as the coprime input — they witness representability with
+the third generator `c` set to zero. But the choice of which two
+generators to call "the coprime pair" is arbitrary: the `Representable3`
+predicate is symmetric across the three slots. Therefore the Sylvester
+bound applies under any of the three coprimality hypotheses, not just
+the first.
+
+This section adds the **(a, c)** and **(b, c)** variants. The
+consequence is a strictly weaker hypothesis-set for the finiteness
+result `set_non_representable3_finite_of_coprime_ab` (S4): finiteness
+now holds whenever *any* pair of `(a, b, c)` is coprime, not just the
+first two. In particular, the gallery's `Representable3 a b c` becomes
+finite even in cases like `a = 4, b = 6, c = 5` where `gcd(a, b) = 2`
+but `gcd(a, c) = gcd(b, c) = 1`.
+-/
+
+/-- Variant of `representable3_of_two_gen` with the middle coefficient
+    zero — collapses a `Representable3` witness with `y = 0` to a
+    two-generator witness in `(a, c)`. -/
+theorem representable3_of_ac_gen {a b c n x z : ℕ} (h : n = a * x + c * z) :
+    Representable3 a b c n := ⟨x, 0, z, by linarith⟩
+
+/-- Variant of `representable3_of_two_gen` with the first coefficient
+    zero — collapses a `Representable3` witness with `x = 0` to a
+    two-generator witness in `(b, c)`. -/
+theorem representable3_of_bc_gen {a b c n y z : ℕ} (h : n = b * y + c * z) :
+    Representable3 a b c n := ⟨0, y, z, by linarith⟩
+
+/-- **(a, c) bridge**: for coprime `a, c` with `1 ≤ a, 1 ≤ c`, every
+    `n ≥ (a - 1) * (c - 1)` is `Representable3 a b c n` (witnessed with
+    `y = 0`). The middle generator `b` is irrelevant. -/
+theorem large_representable3_via_ac
+    {a b c n : ℕ} (hac : Nat.Coprime a c) (ha : 1 ≤ a) (hc : 1 ≤ c)
+    (hn : (a - 1) * (c - 1) ≤ n) : Representable3 a b c n := by
+  obtain ⟨x, z, hxz⟩ := FrobeniusNumber.large_representable hac ha hc n hn
+  exact representable3_of_ac_gen hxz
+
+/-- **(b, c) bridge**: for coprime `b, c` with `1 ≤ b, 1 ≤ c`, every
+    `n ≥ (b - 1) * (c - 1)` is `Representable3 a b c n` (witnessed with
+    `x = 0`). The first generator `a` is irrelevant. -/
+theorem large_representable3_via_bc
+    {a b c n : ℕ} (hbc : Nat.Coprime b c) (hb : 1 ≤ b) (hc : 1 ≤ c)
+    (hn : (b - 1) * (c - 1) ≤ n) : Representable3 a b c n := by
+  obtain ⟨y, z, hyz⟩ := FrobeniusNumber.large_representable hbc hb hc n hn
+  exact representable3_of_bc_gen hyz
+
+/-- **(a, c) Sylvester bound**: variant of S3c using `(a, c)` instead of
+    `(a, b)` as the coprime pair. -/
+theorem frobeniusNumber3_le_sylvester_bound_ac {a b c : ℕ}
+    (hac : Nat.Coprime a c) (ha : 1 ≤ a) (hc : 1 ≤ c) :
+    frobeniusNumber3 a b c ≤ (a - 1) * (c - 1) := by
+  refine frobeniusNumber3_le_of_subset_Iio (fun n hn => ?_)
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_ac hac ha hc hge)
+
+/-- **(b, c) Sylvester bound**: variant of S3c using `(b, c)` instead of
+    `(a, b)` as the coprime pair. -/
+theorem frobeniusNumber3_le_sylvester_bound_bc {a b c : ℕ}
+    (hbc : Nat.Coprime b c) (hb : 1 ≤ b) (hc : 1 ≤ c) :
+    frobeniusNumber3 a b c ≤ (b - 1) * (c - 1) := by
+  refine frobeniusNumber3_le_of_subset_Iio (fun n hn => ?_)
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_bc hbc hb hc hge)
+
+/-- **(a, c) finiteness**: variant of S4 — the non-representable set is
+    finite whenever `(a, c)` is coprime. -/
+theorem set_non_representable3_finite_of_coprime_ac {a b c : ℕ}
+    (hac : Nat.Coprime a c) (ha : 1 ≤ a) (hc : 1 ≤ c) :
+    { n : ℕ | ¬ Representable3 a b c n }.Finite := by
+  apply Set.Finite.subset (Set.finite_Iio ((a - 1) * (c - 1)))
+  intro n hn
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_ac hac ha hc hge)
+
+/-- **(b, c) finiteness**: variant of S4 — the non-representable set is
+    finite whenever `(b, c)` is coprime. -/
+theorem set_non_representable3_finite_of_coprime_bc {a b c : ℕ}
+    (hbc : Nat.Coprime b c) (hb : 1 ≤ b) (hc : 1 ≤ c) :
+    { n : ℕ | ¬ Representable3 a b c n }.Finite := by
+  apply Set.Finite.subset (Set.finite_Iio ((b - 1) * (c - 1)))
+  intro n hn
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_bc hbc hb hc hge)
+
+/-- **Pair-min bound**: if any two of `(a, b, c)` are coprime, the
+    Frobenius number is bounded by the *minimum* of the corresponding
+    three Sylvester quantities. Useful when more than one pair is
+    coprime — picks the strongest bound automatically. -/
+theorem frobeniusNumber3_le_min_sylvester_bound {a b c : ℕ}
+    (hab : Nat.Coprime a b) (hac : Nat.Coprime a c) (hbc : Nat.Coprime b c)
+    (ha : 1 ≤ a) (hb : 1 ≤ b) (hc : 1 ≤ c) :
+    frobeniusNumber3 a b c ≤
+      min ((a - 1) * (b - 1)) (min ((a - 1) * (c - 1)) ((b - 1) * (c - 1))) := by
+  refine le_min (frobeniusNumber3_le_sylvester_bound hab ha hb) ?_
+  refine le_min (frobeniusNumber3_le_sylvester_bound_ac hac ha hc)
+    (frobeniusNumber3_le_sylvester_bound_bc hbc hb hc)
+
 end FrobeniusOQ03
