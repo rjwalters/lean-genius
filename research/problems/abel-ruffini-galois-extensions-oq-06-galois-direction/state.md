@@ -1,9 +1,76 @@
 # Current State
 
-**Phase**: S1 OBSERVE (scaffold-ready)
-**Since**: 2026-06-01T20:15:00Z
-**Iteration**: 1
-**Owner**: researcher-1 (S1 scaffold, 2026-06-01)
+**Phase**: S2 ORIENT (Lean stub authored; 5-step skeleton + main theorem stub; 7 sorries; 119 LOC; build pending — G9 lake self-loop)
+**Since**: 2026-06-04T17:00:00Z (S2 ORIENT this iteration); S1 since 2026-06-01T20:15:00Z
+**Iteration**: 2 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT this iteration)
+**Owner**: researcher-1 (S1 scaffold, 2026-06-01; S2 ORIENT, 2026-06-04)
+
+## Iteration 2 (researcher-1, 2026-06-04) — S2 ORIENT Lean stub
+
+**Outcome**: scaffold — created
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`
+(119 LOC, 7 sorries, 0 axioms, 6 theorems) plus the auto-generated
+`proofs/Proofs.lean` import refresh (`+1 line` after running
+`./.lean/scripts/generate-proofs-imports.sh`).
+
+### What I added
+
+- **`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`**
+  (NEW, 119 LOC, 7 sorries):
+  - imports `Proofs.AbelRuffiniGaloisExtensionsOQ06`,
+    `Mathlib.GroupTheory.Sylow`,
+    `Mathlib.GroupTheory.Perm.Cycle.Type`
+  - opens parent namespace `AbelRuffiniGaloisExtensionsOQ06`
+  - 5 step-lemma stubs (one per S1 OBSERVE step):
+    - `sylow_p_unique` — `Subsingleton (Sylow p H)` for primitive
+      solvable `H ≤ S_p`
+    - `sylow_p_normal` — `(P : Subgroup H).Normal` for the unique
+      Sylow-p
+    - `sylow_p_is_pcycle` — existence of a `p`-cycle `σ ∈ S_p` with
+      `P ≤ ⟨σ⟩`
+    - `normalizer_iso_AGL1Z` — `(zpowers σ).normalizer ≅ AGL1Z p` via
+      conjugation
+    - `H_le_normalizer` — `H ≤ (zpowers σ).normalizer` since `P ⊴ H`
+  - file-level main stub
+    `primitive_solvable_subgroup_embeds_AGL1Z` returning
+    `∃ φ : H →* AGL1Z p, Function.Injective φ`
+  - 7 sorries total (one per step + main)
+- **`proofs/Proofs.lean`** auto-regenerated via
+  `./.lean/scripts/generate-proofs-imports.sh` to add the new import
+  line at the correct alphabetic insertion point.
+
+### What I did NOT do (deferred to S3+)
+
+- Discharge any of the 7 sorries.
+- Run Docker build (G9 lake self-loop blocker; consistent with sibling
+  build-pending PRs #21477 #21475 #21506 #22088).
+- Author gallery files (`src/data/proofs/.../{meta.json, index.ts,
+  annotations.json}`) — deferred until at least one sorry is discharged
+  (S5+) so that gallery `status` can claim `formalized` or `verified`
+  honestly per Axiom Integrity Policy.
+
+### Bearer pre-flight (re-verified at lake-pinned SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+
+- `Sylow.exists`: ✓ intact
+- `Sylow.normal_of_subsingleton` (`Mathlib/GroupTheory/Sylow.lean:724`): ✓ intact
+- `Equiv.Perm.isCycle_of_prime_order''`
+  (`Mathlib/GroupTheory/Perm/Cycle/Type.lean:412`): ✓ intact
+- `Subgroup.normalizer`: ✓ intact
+- `Subgroup.zpowers`: ✓ intact
+- Parent `AGL1Z`, `AGL1Z.toPerm`, `AGL1Z.toPerm_injective`
+  (`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean`): ✓ intact
+
+No Mathlib drift since S1 OBSERVE (2026-06-01, 3 days elapsed; SHA unchanged).
+
+### Race-safety note (S2)
+
+- Pre-claim probe (2026-06-04 ~17:00 UTC): 0 open PRs on the sub-OQ
+  slug since S1 merge (#22031, 2026-06-02). Branch
+  `research/abel-ruffini-galois-extensions-oq-06-galois-direction-s2-orient`
+  is new (per `git branch -r | grep galois-direction` → 0 matches).
+- Per `feedback_researcher_gh_default_repo_mathlib4_fork_trap.md`:
+  explicit `-R rjwalters/lean-genius` on all `gh pr` calls.
 
 ## Origin
 
@@ -27,7 +94,7 @@ clean).
 This sub-OQ owns the **Galois direction**: every primitive solvable
 subgroup of S_p embeds into AGL(1, p).
 
-## Iteration 1 (researcher-1, 2026-06-01) — S1 OBSERVE scaffold
+## Iteration 1 (researcher-1, 2026-06-01) — S1 OBSERVE scaffold (merged via #22031, 2026-06-02)
 
 **Outcome**: scaffold — created `problem.md`, `knowledge.md`,
 `state.md` (this file), and `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json`.
@@ -98,22 +165,38 @@ No Mathlib drift since 2026-05-15. Bearer ecosystem ready for S2 ACT.
 - Per `feedback_researcher_gh_default_repo_mathlib4_fork_trap.md`
   memory: explicit `-R rjwalters/lean-genius` on all `gh pr` calls.
 
-## Next action (S2 ORIENT)
+## Next action (S3 ACT — discharge Step 1 `sylow_p_unique`)
 
-Author `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`
-with:
+The S2 ORIENT scaffold this iteration exposes 7 sorries. S3 ACT should
+discharge **Step 1 (`sylow_p_unique`)** first because:
 
-1. Imports: parent `Proofs.AbelRuffiniGaloisExtensionsOQ06` +
-   `Mathlib.GroupTheory.Sylow` + `Mathlib.GroupTheory.Perm.Cycle.Type`
-   + `Mathlib.GroupTheory.GroupAction.Primitive` (already in parent;
-   may transitively cover).
-2. File-level `theorem primitive_solvable_subgroup_embeds_AGL1Z`
-   stub (single `sorry`) per `problem.md` §"Formal target".
-3. S3-S5 proof skeletons (5 nested `have` / `obtain` blocks
-   matching the 5-step proof plan), each with its own `sorry`.
+1. It has the cleanest bearer surface: `Sylow.exists` + `Sylow`
+   API + `Nat.card H` divisibility arithmetic, all in
+   `Mathlib.GroupTheory.Sylow`.
+2. It is a prerequisite for Step 2 (`sylow_p_normal` needs a unique
+   Sylow to extract `Sylow.normal_of_subsingleton`).
+3. The argument follows Galois 1832 / Rotman 9.11 verbatim:
+   - `|H| = p · m` where `m < p` (from primitivity + solvability +
+     the fact that `H ≤ S_p`; this needs the parent's
+     `IsPreprimitive.transitive` + a divisor-count argument).
+   - Number of Sylow-p subgroups `s_p ∣ m, s_p ≡ 1 (mod p)`, so
+     `s_p = 1` (since `m < p`).
 
-Estimated S2 ACT size: ~80 lines, ~6 sorries (file-level + 5 step
-skeletons).
+Estimated S3 ACT size: ~40-60 LOC additional content (one theorem
+fully discharged; 6 sorries remaining).
+
+Subsequent iterations:
+
+- S4 ACT — Step 2 (`sylow_p_normal`) via `Sylow.normal_of_subsingleton`,
+  ~5-10 LOC.
+- S5 ACT — Step 3 (`sylow_p_is_pcycle`) via `isCycle_of_prime_order''`,
+  ~20-30 LOC.
+- S6 ACT — Step 4 (`normalizer_iso_AGL1Z`), the hardest step;
+  ~80-150 LOC.
+- S7 ACT — Step 5 (`H_le_normalizer`) + main theorem composition,
+  ~30 LOC.
+- S8 BUILD-VERIFY — Docker build verification once G9 clears.
+- S∞ — gallery integration.
 
 ## Blockers
 
