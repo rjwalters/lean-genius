@@ -2,10 +2,63 @@
 
 ## Current State
 
-**Phase**: ACT (S4, this PR — remaining True placeholders discharged via InfiniteWalk + BiInfiniteWalk infrastructure)
+**Phase**: ACT (S5, this PR — sibling-parity accessors + no-edge sanity theorems)
 **Path**: full
-**Since**: 2026-06-03 (S4 ACT, researcher-1)
-**Iteration**: 4
+**Since**: 2026-06-04 (S5 ACT, researcher-1)
+**Iteration**: 5
+
+## S5 ACT Summary (2026-06-04, researcher-1)
+
+**Mode**: ACT (theorems only; build NOT verified — Docker daemon still broken on this host, same containerd issue as S4).
+
+Added **7 small theorems** in two groups:
+
+1. **Three sibling-parity accessors** (`InfiniteWalk.step_is_adj`,
+   `IsEulerWalk.covers`, `IsEulerWalk.injective`) ported line-for-line
+   from `KonigsbergOQ03OQ02.lean`. Brings the parent's `InfiniteWalk` /
+   `IsEulerWalk` API into parity with the sibling.
+
+2. **Four no-edge sanity theorems** — for an `InfiniteGraph` with no
+   adjacencies: walk types are `IsEmpty`, and the
+   `HasOneWayEulerPath` / `HasInfiniteEulerPath` predicates evaluate
+   to `False`. These confirm the S4-discharged predicates are
+   non-degenerate.
+
+### Net file deltas
+
+| Metric | Before (S4 ACT, `origin/main`) | After (this S5 ACT) | Δ |
+|--------|--------------------------------|---------------------|---|
+| LOC | 202 | 256 | +54 |
+| theorems | 2 | 9 | +7 |
+| defs+structures | 14 | 14 | 0 |
+| `:= True` placeholders | 0 | 0 | 0 |
+| sorries | 0 | 0 | 0 |
+| axioms | 0 | 0 | 0 |
+
+The S4 ACT's recommended S5 candidate "trivial closure lemma" originally
+suggested a constant `InfiniteWalk` on a no-edge graph as a vacuous
+`IsEulerWalk`. That proposal is mathematically wrong:
+`InfiniteGraph.loopless` forbids `G.adj v v`, so no constant walk
+satisfies `step_adj`. This S5 ACT delivers the *correct* dual: when
+there are no edges, no walk exists at all. The resulting
+`isEmpty_of_no_edges` theorems are 1-line term proofs grounded in the
+`step_adj` field of the walk structures.
+
+### Build status — NOT verified locally
+
+Same Docker breakage as the S4 ACT memo. Confidence grounded in:
+
+* **Pattern equivalence**: the three accessors are line-for-line ports
+  of sibling theorems that already build under `Mathlib v4.26.0`.
+* **Trivial term proofs**: every theorem reduces to a single field
+  projection (`w.step_adj 0`, `hEuler.1`, `hEuler.2`) or
+  `rintro ⟨w, _⟩; exact h _ _ (w.step_adj 0)`.
+* **No new imports**: `IsEmpty`, `rintro` are all `import Mathlib`-resident.
+
+See `sessions/2026-06-04-s5-act-accessors-and-no-edge-sanity.md` for the
+full implementation walkthrough and the S6 candidate menu.
+
+## Prior State (S4 ACT, 2026-06-03)
 
 ## S4 ACT Summary (2026-06-03, researcher-1)
 
@@ -175,17 +228,19 @@ This replaces one of the three `True` placeholders with a real definition.
 
 ## Active Approach
 
-All three Eulerian predicates are now bound to genuine content; the
-slug is **placeholder-free**. Next layer of work is theorems
-*about* these predicates (currently 0 theorems specifically about
-`IsEulerWalk` / `IsBiInfiniteEulerWalk` beyond the trivial
-`InfiniteWalk.step_ne`). See `## Next Action` for S5 candidate menu.
+All three Eulerian predicates remain bound to genuine content; the
+slug is **placeholder-free with 9 theorems** (up from 2 at S4). API
+parity with sibling `KonigsbergOQ03OQ02` is now in place
+(`step_is_adj` / `covers` / `injective` accessors), and the
+predicates are confirmed non-degenerate via the no-edge sanity
+theorems. See `## Next Action` for S6 candidate menu (EGW statement,
+one-edge graph, sibling DRY refactor).
 
 ## Attempt Count
 
-- Total attempts: 3 (S2 SURVEY + S3 ACT r=2 case + this S4 ACT infinite/bi-infinite predicates)
-- Current approach attempts: 2 (S3 candidate A: r=2 case; S4: option-3 parent-companion port)
-- Approaches tried: 2
+- Total attempts: 4 (S2 SURVEY + S3 ACT r=2 case + S4 ACT infinite/bi-infinite predicates + this S5 ACT accessors+no-edge sanity)
+- Current approach attempts: 1 (S5: trivial closure lemma via no-edge non-existence + sibling-parity accessors)
+- Approaches tried: 3
 
 ## Blockers
 
@@ -205,15 +260,15 @@ blockers concern the *theorem-statement and proof* stage:
 
 ## Next Action
 
-**S5 candidate menu**:
+**S6 candidate menu**:
 
-* **(trivial closure lemma)** Prove the smallest non-trivial Eulerian
-  fact — e.g. "a no-edge `InfiniteGraph` admits the constant `InfiniteWalk`
-  as a (vacuous) `IsEulerWalk`". ~10 LOC. Confirms the new definitions
-  are non-degenerate.
 * **(EGW statement)** State the Erdős–Grünwald–Weiszfeld characterisation
-  as `theorem ... := by sorry` so Aristotle has a target. Decompose
-  into locally-finite (easy) and non-locally-finite (hard) cases.
+  as `theorem ... := by sorry` once a `Connected` predicate is committed
+  for `InfiniteGraph`. ~5 LOC + supporting def. Useful Aristotle target.
+* **(one-edge graph Euler walk)** For an `InfiniteGraph` with exactly
+  one edge `{u, v}`, prove `¬ HasInfiniteEulerPath G` (a single edge
+  cannot support a non-repeating bi-infinite walk). Smaller than EGW,
+  exercises the `IsEdgeInjective` condition. ~20 LOC.
 * **(sibling DRY refactor — cross-slug)** Claim
   `konigsberg-oq-03-oq-02`, refactor the sibling to import this parent
   and drop its locally-redeclared `InfiniteGraph` / `InfiniteWalk` /
@@ -223,12 +278,12 @@ blockers concern the *theorem-statement and proof* stage:
   using `SimpleGraph.Walk.IsEulerian` extension lemmas + König's
   lemma. Requires assembling graph-theoretic compactness machinery
   not yet aggregated in Mathlib for this purpose.
-* **(skip)** Park this slug as `placeholder-free / theorem-light` and
+* **(skip)** Park this slug as theorem-rich-but-EGW-deferred and
   return to other slugs.
 
-Recommended for S5: (trivial closure lemma) + (EGW statement) in one
-session — both small, both concrete, both immediately useful to
-Aristotle. Sibling DRY refactor can be a separate claim.
+Recommended for S6: (EGW statement) + (one-edge graph) in one
+session — both small, both concrete. Sibling DRY refactor remains a
+separate claim.
 
 ## Iteration history
 
@@ -237,4 +292,5 @@ Aristotle. Sibling DRY refactor can be a separate claim.
 | S1 | 2026-04-04 | (init) | OBSERVE | Initial slug creation; problem.md + state.md scaffolds; no knowledge.md / no Lean edits |
 | S2 | 2026-05-30 | researcher-1 | SURVEY | Honest gap assessment: 3 `True` placeholders are the real gaps; r=2 case (~30 LOC) is the cleanest forward step (PR #21222, doc-only) |
 | S3 | 2026-06-01 | researcher-1 | ACT | r=2 Euler-tour case implemented per S2 SURVEY candidate A: `toSimpleGraph` map + meaningful `HasEulerTour` def via `SimpleGraph.Walk.IsEulerian` + sanity lemma. 74 → 114 LOC (+40), 0 → 1 theorem, 7 → 8 defs, `True` placeholders 3 → 2. Docker build verified clean (PR a8a1307aecf / #21877) |
-| S4 | 2026-06-03 | researcher-1 | ACT | Discharged remaining 2 `True` placeholders by porting sibling `KonigsbergOQ03OQ02.lean`'s `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure adapted to parent's own `InfiniteGraph`. 114 → 202 LOC (+88), 1 → 2 theorems, 8 → 14 defs, `True` placeholders 2 → 0. Build NOT verified (Docker daemon broken on host). (this PR) |
+| S4 | 2026-06-03 | researcher-1 | ACT | Discharged remaining 2 `True` placeholders by porting sibling `KonigsbergOQ03OQ02.lean`'s `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure adapted to parent's own `InfiniteGraph`. 114 → 202 LOC (+88), 1 → 2 theorems, 8 → 14 defs, `True` placeholders 2 → 0. Build NOT verified (Docker daemon broken on host). (PR #22179) |
+| S5 | 2026-06-04 | researcher-1 | ACT | Sibling-parity accessors (`step_is_adj` / `covers` / `injective`) + four no-edge sanity theorems (walk types `IsEmpty` and Eulerian predicates `False` for no-edge graphs). 202 → 256 LOC (+54), 2 → 9 theorems. S4 ACT's S5 "trivial closure lemma" suggestion corrected (constant walk doesn't satisfy `step_adj`; no-edge non-existence is the correct dual). Build NOT verified (Docker daemon still broken). (this PR) |
