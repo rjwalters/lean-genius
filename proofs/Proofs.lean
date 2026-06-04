@@ -11,6 +11,7 @@ import Proofs.AbelRuffiniGaloisExtensionsOQ04
 import Proofs.AbelRuffiniGaloisExtensionsOQ05
 import Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01
 import Proofs.AbelRuffiniGaloisExtensionsOQ06
+import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection
 import Proofs.AbelRuffiniGaloisExtensionsOQ07
 import Proofs.AbelRuffiniOQ04
 import Proofs.AbelRuffiniOQ04OQ01
@@ -1599,6 +1600,7 @@ import Proofs.Erdos543Problem
 import Proofs.Erdos544Problem
 import Proofs.Erdos545Aristotle
 import Proofs.Erdos545Problem
+import Proofs.Erdos545ProblemAristotle
 import Proofs.Erdos546Problem
 import Proofs.Erdos547Problem
 import Proofs.Erdos548Aristotle
@@ -1622,6 +1624,7 @@ import Proofs.Erdos557Problem
 import Proofs.Erdos558Problem
 import Proofs.Erdos559Aristotle
 import Proofs.Erdos559Problem
+import Proofs.Erdos559ProblemAristotle
 import Proofs.Erdos55Problem
 import Proofs.Erdos560Problem
 import Proofs.Erdos561Problem
@@ -1742,6 +1745,7 @@ import Proofs.Erdos632Problem
 import Proofs.Erdos632ProblemAristotle
 import Proofs.Erdos633Aristotle
 import Proofs.Erdos633Problem
+import Proofs.Erdos633ProblemAristotle
 import Proofs.Erdos634Aristotle
 import Proofs.Erdos634Problem
 import Proofs.Erdos635Problem
@@ -2241,6 +2245,7 @@ import Proofs.EulerIdentity
 import Proofs.EulerIdentityOQ01
 import Proofs.EulerIdentityOQ01OQ01
 import Proofs.EulerIdentityOQ01OQ01OQ01
+import Proofs.EulerIdentityOQ01OQ04
 import Proofs.EulerPolyhedralFormula
 import Proofs.EulerPolyhedralFormulaOQ01OQ02
 import Proofs.EulerPolyhedralOQ01
@@ -2398,6 +2403,7 @@ import Proofs.Hilbert11OQ01OQ01
 import Proofs.Hilbert11OQ01OQ01Aristotle
 import Proofs.Hilbert11OQ02
 import Proofs.Hilbert11_QuadraticForms
+import Proofs.Hilbert11_QuadraticFormsAristotle
 import Proofs.Hilbert13GeneralSpaces
 import Proofs.Hilbert13Superposition
 import Proofs.Hilbert14Invariants
@@ -2546,6 +2552,7 @@ import Proofs.LawsOfLargeNumbersOQ04
 import Proofs.LawsOfLargeNumbersOQ04OQ03
 import Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing
 import Proofs.LawsOfLargeNumbersOQ04OQ03BracketingDisproof
+import Proofs.LawsOfLargeNumbersOQ04OQ03QuantileBracketing
 import Proofs.LebesgueMeasure
 import Proofs.LebesgueMeasureOQ01
 import Proofs.LebesgueMeasureOQ01OQ01
@@ -2842,6 +2849,7 @@ import Proofs.SzemerediHypergraphGowers
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediRegularityOQ02
 import Proofs.SzemerediTheorem
+import Proofs.SzemerediTheoremOQ01
 import Proofs.TaylorSinCosConvergence
 import Proofs.TaylorSinCosConvergenceOQ01
 import Proofs.TaylorSinCosConvergenceOQ02
@@ -2942,6 +2950,8 @@ import Proofs.TriangularNumberReciprocals
 import Proofs.TriangularReciprocalAlternatingOQ03
 import Proofs.TriangularReciprocalGeneralized
 import Proofs.TriangularReciprocalsFigurate
+import Proofs.TriangularReciprocalsOQ02
+import Proofs.TriangularReciprocalsOQ02Aristotle
 import Proofs.TwinPrimes
 import Proofs.TwinPrimesSpecialOQ01
 import Proofs.UnitDistanceHN7
