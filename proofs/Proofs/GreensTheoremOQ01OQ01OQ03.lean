@@ -225,4 +225,68 @@ Sorries: 0
 Axioms: 0
 -/
 
+/-! ### Part VII: Atomless Measure Generalization
+
+The original `volume_restrict_Icc_eq_Ioo` was specific to Lebesgue measure
+because it invoked `Set.Countable.measure_zero` (which works because Lebesgue
+is sigma-finite). The argument actually only uses that the boundary endpoints
+have measure zero — i.e., that the measure has no atoms at $a$ and $b$.
+
+This addresses open question OQ-01 from the conclusion:
+"Can this restriction equality be generalized to any atomless Borel measure?"
+Answer: YES — for any measure $\mu$ on $\mathbb{R}$ with $\mu\{a\} = \mu\{b\} = 0$.
+A typeclass version using `MeasureTheory.NoAtoms` is also provided.
+-/
+
+/-- **Atomless generalization (endpoint hypothesis form).** If $\mu$ is any
+measure on $\mathbb{R}$ for which the two endpoints have measure zero, then
+$\mu.\text{restrict}\,[a,b] = \mu.\text{restrict}\,(a,b)$. Generalizes
+`volume_restrict_Icc_eq_Ioo` away from the specific Lebesgue measure. -/
+theorem restrict_Icc_eq_Ioo_of_null_endpoints
+    {μ : MeasureTheory.Measure ℝ} (a b : ℝ)
+    (ha : μ {a} = 0) (hb : μ {b} = 0) :
+    μ.restrict (Set.Icc a b) = μ.restrict (Set.Ioo a b) := by
+  have h_diff_null : μ (Set.Icc a b \ Set.Ioo a b) = 0 :=
+    measure_mono_null
+      (fun x hx => by
+        rw [Set.mem_diff, Set.mem_Icc, Set.mem_Ioo] at hx
+        simp only [Set.mem_union, Set.mem_singleton_iff]
+        obtain ⟨⟨ha', hb'⟩, hlt⟩ := hx
+        push_neg at hlt
+        rcases lt_or_eq_of_le ha' with ha'' | ha''
+        · right; exact le_antisymm hb' (hlt ha'')
+        · left; exact ha''.symm)
+      (measure_union_null ha hb)
+  ext s hs
+  simp only [Measure.restrict_apply hs]
+  apply le_antisymm
+  · have h1 : s ∩ Set.Icc a b ⊆ s ∩ Set.Ioo a b ∪ (Set.Icc a b \ Set.Ioo a b) := by
+      intro x ⟨hxs, hxIcc⟩
+      by_cases hx' : x ∈ Set.Ioo a b
+      · exact Or.inl ⟨hxs, hx'⟩
+      · exact Or.inr ⟨hxIcc, hx'⟩
+    calc μ (s ∩ Set.Icc a b)
+        ≤ μ (s ∩ Set.Ioo a b ∪ (Set.Icc a b \ Set.Ioo a b)) := measure_mono h1
+      _ ≤ μ (s ∩ Set.Ioo a b) + μ (Set.Icc a b \ Set.Ioo a b) := measure_union_le _ _
+      _ = μ (s ∩ Set.Ioo a b) := by rw [h_diff_null, add_zero]
+  · exact measure_mono (Set.inter_subset_inter_right s Set.Ioo_subset_Icc_self)
+
+/-- **Atomless generalization (NoAtoms typeclass form).** Any `NoAtoms` measure
+on $\mathbb{R}$ satisfies $\mu.\text{restrict}\,[a,b] = \mu.\text{restrict}\,(a,b)$.
+Immediate corollary of `restrict_Icc_eq_Ioo_of_null_endpoints` since `NoAtoms`
+provides `measure_singleton`. -/
+theorem restrict_Icc_eq_Ioo_of_noAtoms
+    (μ : MeasureTheory.Measure ℝ) [MeasureTheory.NoAtoms μ] (a b : ℝ) :
+    μ.restrict (Set.Icc a b) = μ.restrict (Set.Ioo a b) :=
+  restrict_Icc_eq_Ioo_of_null_endpoints a b
+    (MeasureTheory.measure_singleton a) (MeasureTheory.measure_singleton b)
+
+/-- The Lebesgue version `volume_restrict_Icc_eq_Ioo` now factors as an
+immediate corollary of the NoAtoms generalization. Recorded as a sanity check
+that the two proofs agree. -/
+example (a b : ℝ) :
+    MeasureTheory.volume.restrict (Set.Icc a b) =
+    MeasureTheory.volume.restrict (Set.Ioo a b) :=
+  restrict_Icc_eq_Ioo_of_noAtoms _ a b
+
 end GreensTheoremOQ01OQ01OQ03
