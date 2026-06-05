@@ -187,17 +187,35 @@
     "type": "insight",
     "title": "The Full Biconditional: Galois's Criterion",
     "content": "This theorem assembles both directions into the complete iff statement. The proof is an anonymous constructor `⟨fun h => ..., fun h => ...⟩` for the biconditional, with each direction simply applying the appropriate theorem. The elegance of this assembly reflects Galois's original insight: solvability by radicals and group solvability are two descriptions of exactly the same mathematical phenomenon, one analytic and one algebraic. This is perhaps the first great example of a 'dictionary' between analysis and algebra in the history of mathematics.",
-    "mathContext": "$\\alpha$ is solvable by radicals over $F$ $\\iff$ $\\operatorname{Gal}(q)$ is a solvable group, where $q$ is the minimal polynomial of $\\alpha$ over $F$ (irreducible hypothesis), $\\operatorname{char}(F) = 0$.",
+    "mathContext": "$\\alpha$ is solvable by radicals over $F$ $\\iff$ $\\operatorname{Gal}(q)$ is a solvable group, where $q$ is the minimal polynomial of $\\alpha$ over $F$ (irreducible hypothesis), $\\operatorname{char}(F) = 0$.\n\n**Lean encoding of the biconditional.** Mathlib represents $\\iff$ as the `Iff` inductive type with constructor `Iff.intro : (P → Q) → (Q → P) → (P ↔ Q)`. The anonymous-constructor form `⟨forward, backward⟩` for `P ↔ Q` is syntactic sugar for `Iff.intro forward backward`, with `forward : P → Q` and `backward : Q → P`. The proof body `⟨fun h => solvable_gal_of_solvable_by_rad h, fun h => solvable_by_rad_of_solvable_gal h⟩` therefore *composes* two independently-proved theorems into a single biconditional certificate; neither direction depends logically on the other, but together they exhaust the equivalence.\n\n**Why both directions are non-trivial — the forward and reverse architectures differ.** The forward direction ($\\alpha$ solvable by radicals $\\implies \\mathrm{Gal}(q)$ solvable) is the *easy* one classically: a radical tower $F = F_0 \\subset F_1 \\subset \\cdots \\subset F_k$ produces a chain of cyclic-quotient Galois groups (after adjoining roots of unity), each cyclic-by-Kummer; the composition is solvable by closure under extensions. In Lean, this is `solvableByRad.isSolvable'` from `Mathlib.FieldTheory.AbelRuffini`. The reverse direction ($\\mathrm{Gal}(q)$ solvable $\\implies \\alpha$ solvable by radicals) is the *hard* one — historically due to Galois (1832) — and requires constructing an explicit radical tower from the composition series of $\\mathrm{Gal}(q)$, lifting each abelian quotient $G_i/G_{i+1}$ to a radical extension via Kummer theory plus adjunction of $n$-th roots of unity. In Mathlib this is the substantive content of `IsSolvable.isSolvableByRad`, a much larger proof that did not exist in early Mathlib versions and is still gated on `char F = 0` (the Kummer theory step requires $n$ invertible in the base field). This file's contribution is the *clean Iff* — a 4-line wrapper — but the asymmetric difficulty of the two directions is a key historical fact obscured by the biconditional notation.\n\n**Characteristic-zero hypothesis is non-removable.** The full criterion fails in positive characteristic when $p \\mid [F_{i+1} : F_i]$ for some radical step: the relevant Kummer theory breaks (the cyclic extension theory requires primitive roots of unity, which are absent when their order is the characteristic). For example, over $\\mathbb{F}_p(t)$ the polynomial $X^p - t$ is *purely inseparable* — its splitting field is the radical extension $\\mathbb{F}_p(t^{1/p})$, but its Galois group is trivial (no separable automorphisms), so the biconditional 'Galois solvable $\\iff$ radically expressible' breaks immediately. The proper characteristic-$p$ analog uses *Artin-Schreier extensions* $X^p - X - a$ in place of $X^p - a$, replacing Kummer theory with Artin-Schreier theory; the result is the **Artin-Schreier criterion** (Witt 1937, *Crelle* 176: 153–156): in characteristic $p$, the radical-solvability $\\iff$ Galois-solvability biconditional holds when 'radicals' is extended to include Artin-Schreier roots. Mathlib does not yet formalize the characteristic-$p$ variant; the `char F = 0` hypothesis in this file's main theorem is *load-bearing*, not a convenience assumption.\n\n**The dictionary metaphor and its 20th-century generalizations.** Galois's analytic-$\\iff$-algebraic dictionary inaugurated a methodological paradigm: translate hard expressibility/existence questions in one mathematical universe (analysis, geometry, topology) into structural invariants of an algebraic object whose presence/absence is decidable. The dictionary has been replayed in at least seven major 20th-century theories:\n- **Differential Galois theory** (Picard 1887, Vessiot 1892, Kolchin 1948): ODE solvability by elementary functions $\\iff$ Picard-Vessiot Galois group is solvable in the differential sense. Companion entry `abel-ruffini-galois-extensions` keyInsight #14.\n- **Tannakian duality** (Saavedra Rivano 1972, Deligne-Milne 1982): a neutral Tannakian category is equivalent to the category of finite-dimensional representations of an affine group scheme.\n- **Grothendieck's anabelian geometry** (1980s): the étale fundamental group $\\pi_1^{\\mathrm{ét}}(X)$ determines $X$ for sufficiently 'hyperbolic' $X$.\n- **Class field theory** (Artin reciprocity 1927): abelian extensions of a number field $K$ correspond to subgroups of $K^\\times \\backslash \\mathbb{A}_K^\\times$.\n- **Langlands program** (Langlands 1967, ongoing): automorphic representations of $\\mathrm{GL}_n(\\mathbb{A}_F)$ correspond to $n$-dimensional Galois representations of $\\mathrm{Gal}(\\bar F / F)$.\n- **Iwasawa theory** (Iwasawa 1959): $p$-adic $L$-functions interpolate special values via Galois cohomology of cyclotomic towers.\n- **Inverse Galois theory**: which finite groups arise as $\\mathrm{Gal}(K/\\mathbb{Q})$? (Shafarevich's affirmative answer for solvable groups; the general case remains open.) Companion entry `inverse-galois`.\n\nEach replays the Galois dictionary's *form* — a structural invariant of an algebraic object encodes the answer to a transcendental question — at a higher level of abstraction. The 4-line Lean wrapper in this file is therefore a microcosm of one of the most generative ideas in 20th-century mathematics.",
     "significance": "key",
     "relatedConcepts": [
       "Galois correspondence",
       "biconditional",
       "radical solvability",
-      "solvable group"
+      "solvable group",
+      "Iff.intro anonymous constructor in Lean 4",
+      "Mathlib `solvableByRad.isSolvable'` (forward direction)",
+      "Mathlib `IsSolvable.isSolvableByRad` (reverse direction, Galois 1832)",
+      "Kummer theory (cyclic-quotient lifts of radical extensions)",
+      "Artin-Schreier theory (characteristic-$p$ analog)",
+      "Witt 1937 Artin-Schreier criterion",
+      "differential Galois theory (Picard-Vessiot)",
+      "Tannakian duality",
+      "Grothendieck's anabelian geometry",
+      "class field theory (Artin reciprocity)",
+      "Langlands program",
+      "Iwasawa theory",
+      "inverse-galois (companion entry)",
+      "abel-ruffini-galois-extensions (differential-Galois cross-reference)"
     ],
     "prerequisites": [
       "forward and reverse directions",
-      "iff in Lean"
+      "iff in Lean",
+      "Lean 4 `Iff` inductive type and `⟨_, _⟩` anonymous constructor",
+      "Kummer theory: cyclic extensions of $K$ containing $\\mu_n$",
+      "characteristic-$p$ failure of Kummer; Artin-Schreier theory",
+      "composition series and abelian quotients $G_i / G_{i+1}$"
     ]
   },
   {
