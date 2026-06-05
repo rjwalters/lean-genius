@@ -1,9 +1,11 @@
 # Current State
 
-**Phase**: ACT (S7 IsStationaryBelow companion lemmas lifted to Basic.lean; S4 ACT still pending)
-**Since**: 2026-06-01 (S7 ACT this session — researcher-1)
-**Iteration**: 11
-**Last update**: 2026-06-01 (S7 ACT by researcher-1 — Basic.lean +29 LOC, 2 IsStationaryBelow companion lemmas lifted from parent §Part VI)
+**Phase**: PREP (S4f dot-notation resolution audit; S4 ACT still pending)
+**Since**: 2026-06-05 (S4f PREP this session — researcher-1)
+**Iteration**: 12
+**Last update**: 2026-06-05 (S4f PREP by researcher-1 — doc-only; documents
+two dot-notation callsites at parent lines 526 and 608 that earlier S4
+PREPs missed because Parts VIII / IX were added after their audits)
 
 > **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
 > within the broader research lifecycle (no `REFINE`-style ACT this round).
@@ -41,7 +43,8 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 | S4d PREP    | doc-only | #18733 | ✅ merged (audit-correction of S4c §2/§3/§7.1) |
 | S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
 | S6 ACT      | Lean     | #21421 | ✅ merged — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker-verified 3060 jobs |
-| S7 ACT      | Lean     | (this session) | ✅ S7 ACT shipped this session — Basic.lean 154 → 183 LOC (+29), 2 `IsStationaryBelow` companion lemmas (`nonempty`, `of_subset`) **lifted** from parent §Part VI (lines 334–348), Docker-verified 3060 jobs |
+| S7 ACT      | Lean     | #21421 (assumed at S6) / merged | ✅ S7 ACT merged — Basic.lean 154 → 183 LOC (+29), 2 `IsStationaryBelow` companion lemmas (`nonempty`, `of_subset`) **lifted** from parent §Part VI (lines 334–348), Docker-verified 3060 jobs |
+| S4f PREP    | doc-only | (this session) | ✅ S4f PREP this session — `sessions/2026-06-05-s4f-prep-dot-notation-resolution.md` documents dot-notation breakage at parent lines 526 and 608 after S4 cuts `def IsStationaryBelow`; prescribes minimal qualified-call rewrite |
 
 ## Active Approach
 
@@ -162,10 +165,14 @@ mechanic. No build failure has been reported.
 ## Next Action
 
 **S4 ACT — any researcher (S3 ACT shipped at PR #19009; S5 STATE-SYNC
-shipped this session expands re-anchoring scope).** Trim parent per the
-S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP (PR #18733)
-§9, **and additionally re-anchor 5 new theorems** added by sister-slug
-oq-04 ACTs (see `sessions/2026-05-16-s05-...` §4):
+expands re-anchoring scope; S4f PREP this session adds two dot-notation
+micro-edits at parent lines 526 and 608 per
+`sessions/2026-06-05-s4f-prep-dot-notation-resolution.md`).** Trim parent
+per the S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP
+(PR #18733) §9, **with two additional dot-notation rewrites** per S4f
+PREP (this session, see "Updated S4 ACT cut recipe" in that session
+memo), **and** re-anchor 5 new theorems added by sister-slug oq-04 ACTs
+(see `sessions/2026-05-16-s05-...` §4):
 
 - Delete the **four** S2-duplicate definitions from
   `proofs/Proofs/FodorPressingDown.lean` (`IsUnboundedBelow`,
@@ -206,10 +213,10 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
 
 ## Attempt Counts
 
-- Total attempts: 11 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
-  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC, S6 ACT, S7 ACT — all
-  merged or pending merge of this PR).
-- Current approach attempts: 11.
+- Total attempts: 12 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC, S6 ACT, S7 ACT, S4f PREP —
+  all merged or pending merge of this PR).
+- Current approach attempts: 12.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
   naming and `Proofs/Club/Basic.lean` placement, design decisions
   unchanged since S1).
@@ -286,6 +293,19 @@ Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
   (universe-not-pinned) of parent's library lemmas now **exhausted**.
   Iteration 10 → 11. See
   `sessions/2026-06-01-s07-act-stationary-helpers.md`.
+- **S4f PREP** (2026-06-05, researcher-1): doc-only — dot-notation
+  resolution audit. Documents two callsites in parent
+  (`Proofs/FodorPressingDown.lean` lines 526 and 608) that break after
+  S4 ACT deletes `def IsStationaryBelow`, because Lean 4 dot notation
+  on `hS : Ordinal.IsStationaryBelow ...` only searches the inferred
+  type's head namespace (`Ordinal.IsStationaryBelow`) for fields/
+  methods, and the relevant `inter_isClubBelow` /
+  `inter_isLimitOrdinals` theorems live in `FodorPressingDown.
+  IsStationaryBelow`. Prescribes the minimal qualified-call rewrite
+  (two micro-edits) that the S4 ACT writer must add to the S4c/d/e
+  PREP cheat-sheet. Earlier S4 PREPs predate the Parts VIII / IX
+  additions and did not catch this. Iteration 11 → 12. See
+  `sessions/2026-06-05-s4f-prep-dot-notation-resolution.md`.
 
 ## Sibling-slug interaction (S5 STATE-SYNC, oq-04 S2-α + S2-β-α)
 
@@ -363,10 +383,10 @@ blocking S4 ACT; deferred decision.
 
 ## Race awareness
 
-OQ-01 has eleven merged PRs (S1 OBSERVE through S6 ACT, including
+OQ-01 has eleven merged PRs (S1 OBSERVE through S7 ACT, including
 S5 STATE-SYNC and the STATE-SYNC iter resync) and **zero open PRs**
-at this S7 ACT's push time. Sister slug `fodor-pressing-down-oq-04`
+at this S4f PREP's push time. Sister slug `fodor-pressing-down-oq-04`
 likewise has zero open PRs (last activity S2-β-β ACT PR #20621
-merged 2026-05-25). The S7 ACT branch is freshly cut from
-`origin/main` at `f486a19e2e0`; rebase risk is minimal for the
-30-minute Docker build window.
+merged 2026-05-25). The S4f PREP branch is freshly cut from
+`origin/main` at `da53bdc3c9e`; this iteration is doc-only (no build
+needed) so rebase risk is irrelevant.
