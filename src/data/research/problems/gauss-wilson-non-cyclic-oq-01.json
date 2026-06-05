@@ -2,7 +2,7 @@
   "slug": "gauss-wilson-non-cyclic-oq-01",
   "title": "Full Gauss–Wilson product formula from the 2-torsion characterization",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -20,20 +20,20 @@
     "goal": "prod_univ_units_zmod_eq_neg_one_iff_isCyclic (n : ℕ) [NeZero n] : ∏ x : (ZMod n)ˣ, x = -1 ↔ IsCyclic (ZMod n)ˣ"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-13T23:35:00.000Z",
-    "iteration": 11,
-    "focus": "S8 ACT shipped (this session, 2026-05-13 ~23:35 UTC). Phase B strategic sorry prod_univ_eq_pow_card_div_two_of_elementary at GaussWilsonNonCyclicOQ01B.lean:131 discharged via strong induction on Finset H (closure-under-(h*·) + erase-one-orbit-per-step). Build-verified via docker-build.sh. Slug-level sorry count: 2 → 1. Phase A (0 sorries, build-verified, #18147), Phase B (0 sorries, BUILD-VERIFIED in this PR, +78 LOC on top of #18232), Phase C (1 sorry remaining, build-pending, #18652). 0 axioms slug-wide. The remaining Phase C non-cyclic-direction sorry at GaussWilsonNonCyclicOQ01.lean:149 is no longer transitively blocked.",
+    "phase": "COMPLETED",
+    "since": "2026-05-30T00:00:00.000Z",
+    "iteration": 15,
+    "focus": "SOLVED (S15 ACT 2026-05-30 — doc-drift cleanup). Slug-wide totals: 0 sorries, 0 axioms, 0 structure-encoded assumptions, all three phases (A/B/C) build-verified. Docker re-verified clean 2026-06-05 by researcher-1: 3066/3066 jobs Built Proofs.GaussWilsonNonCyclicOQ01. The full Phase chain ships in: A=GaussWilsonNonCyclicOQ01A.lean (66 LOC), B=GaussWilsonNonCyclicOQ01B.lean (244 LOC), C=GaussWilsonNonCyclicOQ01.lean (257 LOC). Phase C non-cyclic direction discharged in S12 ACT PR #19440 (2026-05-16); Phase B in S8 ACT PR #18957; Phase A in S2 ACT PR #18147. Subsequent S13 PREP / S14 ACT / S15 ACT iterations did housekeeping (unused-simp-arg removal, docstring drift cleanup).",
     "blockers": [],
-    "nextAction": "S9 ACT — close the Phase C non-cyclic-direction sorry prod_eq_one_of_not_isCyclic_aux at GaussWilsonNonCyclicOQ01.lean:149. With Phase B sorry-free post-S8, composition is mechanically tractable per the in-file docstring (lines 133-135): (i) Phase A prod_univ_eq_prod_two_torsion → (ii) parent card_sq_eq_one_ge_three → (iii) power-of-2-cardinality upgrade from |2-torsion| ≥ 3 to ≥ 4 → (iv) Phase B prod_univ_eq_one_of_elementary_card_ge_four. Step (iii) load-bearing; uses IsPGroup typeclass or hand-rolled Lagrange. Estimated 30-50 lines. After S9: S10 final build-verify pass + meta.json + close slug COMPLETED.",
+    "nextAction": "None — slug is COMPLETED. Open follow-up questions exist (oq-XX children) and are tracked separately. Gallery meta.json integration is the only remaining task and is outside this slug scope.",
     "attemptCounts": {
-      "total": 10,
+      "total": 15,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S8 ACT shipped (2026-05-13, this PR): Phase B strategic sorry discharged via strong induction on Finset (not S4 PREPs Route A.2 or Route B). Build-verified. Slug-level sorry count 3 → 1 across the S7-S8 ACT pair. Phase A 0 sorries build-verified (#18147); Phase B 0 sorries BUILD-VERIFIED (#18232 + this PR, +78 LOC); Phase C 1 sorry remaining build-pending (#18652). 0 axioms slug-wide. Only the Phase C non-cyclic-direction auxiliary remains (no longer transitively blocked).",
+    "progressSummary": "SOLVED. Slug-wide 0 sorries / 0 axioms / 0 structure-encoded assumptions across Phases A + B + C. The non-cyclic-direction theorem (Gauss-Wilson for non-cyclic (ℤ/nℤ)ˣ groups) is fully formalized: (Phase A) the product over (ℤ/nℤ)ˣ equals the product over the 2-torsion subgroup; (Phase B) for elementary abelian 2-groups of order ≥ 4, the product equals 1; (Phase C) combines these into the iff statement that the Wilson product equals 1 iff (ℤ/nℤ)ˣ is non-cyclic of order ≥ 3. Discharge route: S12 ACT PR #19440 (non-cyclic direction) + S8 ACT PR #18957 (elementary abelian product) + S7 ACT PR #18743 (cyclic direction) + S6 ACT PR #18652 (Phase C scaffold) + S3 PR #18232 (Phase B scaffold) + S2 ACT PR #18147 (Phase A). S15 ACT PR (2026-05-30): final doc-drift cleanup. Docker re-verified clean 2026-06-05 by researcher-1: 3066/3066 jobs.",
     "builtItems": [
       "research/problems/gauss-wilson-non-cyclic-oq-01/problem.md (new, ~150 lines): full open-question statement, three-phase decomposition (A: generic 2-torsion reduction, B: elementary abelian 2-group product, C: ZMod specialization), Mathlib readiness map, sibling-overlap analysis with OQ-03, references.",
       "research/problems/gauss-wilson-non-cyclic-oq-01/knowledge.md (new, ~200 lines): 15-row numerical sanity table (n ∈ {1..25, 8, 12, 15, 16, 24}) confirming the dichotomy, full Lean proof sketches for each phase with Mathlib API targets, gap analysis identifying 3 potential Mathlib upstream contributions, S2 next-action skeleton.",
