@@ -181,10 +181,10 @@ theorem skolemNoether_general
   -- hconj: u.val · f(a) = g(a) · u.val
   -- Therefore: f(a) = u⁻¹.val · g(a) · u.val
   calc f a
-      = (u⁻¹.val * u.val) * f a := by rw [Units.inv_mul]; ring
-    _ = u⁻¹.val * (u.val * f a) := by ring
+      = (u⁻¹.val * u.val) * f a := by rw [Units.inv_mul, one_mul]
+    _ = u⁻¹.val * (u.val * f a) := by rw [mul_assoc]
     _ = u⁻¹.val * (g a * u.val) := by rw [hconj]
-    _ = u⁻¹.val * g a * u.val := by ring
+    _ = u⁻¹.val * g a * u.val := by rw [← mul_assoc]
 
 /-! ## Corollaries -/
 
@@ -194,7 +194,7 @@ theorem aut_is_inner
     [IsSimpleRing B] [Algebra.IsCentral K B] [FiniteDimensional K B]
     (σ : B ≃ₐ[K] B) :
     ∃ (u : Bˣ), ∀ (b : B), σ b = u⁻¹.val * b * u.val := by
-  obtain ⟨u, hu⟩ := skolemNoether_general σ.toAlgHom AlgHom.id
+  obtain ⟨u, hu⟩ := skolemNoether_general σ.toAlgHom (AlgHom.id K B)
   exact ⟨u, fun b => by simpa using hu b⟩
 
 /-- Two K-algebra homomorphisms from a finite-dimensional simple K-algebra into
@@ -207,15 +207,86 @@ theorem conjugate_iff_same_image
     (∃ (u : Bˣ), ∀ a, g a = u.val * f a * u⁻¹.val) := by
   constructor
   · rintro ⟨u, hu⟩
-    refine ⟨u⁻¹, fun a => ?_⟩
-    have := hu a
-    rw [this]
-    simp [mul_assoc, Units.mul_inv, Units.inv_mul]
+    -- Use the same unit u: from f = u⁻¹·g·u, derive g = u·f·u⁻¹ by left-mul by u,
+    -- right-mul by u⁻¹.
+    refine ⟨u, fun a => ?_⟩
+    rw [hu a]
+    simp [mul_assoc]
   · rintro ⟨u, hu⟩
-    refine ⟨u⁻¹, fun a => ?_⟩
-    have := hu a
-    rw [this]
-    simp [mul_assoc, Units.mul_inv, Units.inv_mul]
+    -- Use the same unit u: from g = u·f·u⁻¹, derive f = u⁻¹·g·u.
+    refine ⟨u, fun a => ?_⟩
+    rw [hu a]
+    simp [mul_assoc]
+
+/-! ## Conjugacy as an Equivalence Relation
+
+  Skolem-Noether is most naturally stated as: the conjugation relation between
+  K-algebra homomorphisms `A →ₐ[K] B` is *complete* (a single equivalence class).
+  Before stating that, we establish that conjugation is itself an equivalence
+  relation — independent of the Skolem-Noether axiom and the simple/CSA hypotheses.
+-/
+
+/-- Two K-algebra homomorphisms `f, g : A →ₐ[K] B` are **conjugate** if there is a
+    unit `u ∈ Bˣ` such that `f(a) = u⁻¹ · g(a) · u` for all `a ∈ A`.
+
+    This is the relation in which Skolem-Noether asserts that any two homs from a
+    simple algebra into a CSA stand. The next three lemmas show that conjugation
+    is an equivalence relation on `A →ₐ[K] B` for arbitrary rings A, B (no
+    simple / CSA / finite-dim hypotheses needed). -/
+def IsConjugate (f g : A →ₐ[K] B) : Prop :=
+  ∃ u : Bˣ, ∀ a : A, f a = u⁻¹.val * g a * u.val
+
+namespace IsConjugate
+
+/-- Reflexivity: every homomorphism is conjugate to itself via `u = 1`. -/
+theorem refl (f : A →ₐ[K] B) : IsConjugate f f :=
+  ⟨1, fun _ => by simp⟩
+
+/-- Symmetry: if `f` is conjugate to `g`, then `g` is conjugate to `f` via the
+    inverse unit. -/
+theorem symm {f g : A →ₐ[K] B} (h : IsConjugate f g) : IsConjugate g f := by
+  obtain ⟨u, hu⟩ := h
+  refine ⟨u⁻¹, fun a => ?_⟩
+  -- Goal: g a = (u⁻¹)⁻¹.val * f a * u⁻¹.val, i.e., g a = u.val * f a * u⁻¹.val.
+  rw [hu a]
+  simp [mul_assoc, Units.mul_inv]
+
+/-- Transitivity: if `f ~ g` and `g ~ h`, then `f ~ h` via the product unit. -/
+theorem trans {f g h : A →ₐ[K] B}
+    (hfg : IsConjugate f g) (hgh : IsConjugate g h) : IsConjugate f h := by
+  obtain ⟨u, hu⟩ := hfg
+  obtain ⟨v, hv⟩ := hgh
+  -- f a = u⁻¹ · g a · u = u⁻¹ · (v⁻¹ · h a · v) · u = (v·u)⁻¹ · h a · (v·u).
+  refine ⟨v * u, fun a => ?_⟩
+  rw [hu a, hv a]
+  simp [mul_inv_rev, Units.val_mul, mul_assoc]
+
+end IsConjugate
+
+/-- The conjugation setoid on `A →ₐ[K] B`. The Skolem-Noether theorem says this
+    setoid is indiscrete when `A` is simple and `B` is a CSA. -/
+def conjugateSetoid : Setoid (A →ₐ[K] B) where
+  r := IsConjugate
+  iseqv := ⟨IsConjugate.refl, IsConjugate.symm, IsConjugate.trans⟩
+
+/-- **Skolem-Noether Theorem (equivalence-relation form).**
+    For a simple K-algebra `A` and a CSA `B`, any two homomorphisms `A →ₐ[K] B`
+    are conjugate. Equivalently: the conjugation setoid has a single equivalence
+    class. This is a direct repackaging of `skolemNoether_general` using the
+    `IsConjugate` predicate. -/
+theorem skolemNoether_isConjugate
+    [IsSimpleRing A] [FiniteDimensional K A]
+    [IsSimpleRing B] [Algebra.IsCentral K B] [FiniteDimensional K B]
+    (f g : A →ₐ[K] B) : IsConjugate f g :=
+  skolemNoether_general f g
+
+/-- All K-algebra homomorphisms from a finite-dimensional simple K-algebra into a
+    CSA lie in a single conjugacy class. Phrased setoid-theoretically. -/
+theorem conjugateSetoid_single_class
+    [IsSimpleRing A] [FiniteDimensional K A]
+    [IsSimpleRing B] [Algebra.IsCentral K B] [FiniteDimensional K B]
+    (f g : A →ₐ[K] B) : (conjugateSetoid : Setoid (A →ₐ[K] B)).r f g :=
+  skolemNoether_isConjugate f g
 
 /-
   ## Mathlib v4.26 Building Blocks (verified by source inspection)

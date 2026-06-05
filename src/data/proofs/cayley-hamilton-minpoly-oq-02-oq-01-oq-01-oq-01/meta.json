@@ -58,11 +58,17 @@
       "skolemNoether_general: main theorem — any two AlgHom f,g : A →ₐ[K] B are conjugate by a unit (proved from the axiom)",
       "aut_is_inner: every CSA automorphism is inner (special case A = B)",
       "conjugate_iff_same_image: symmetry of the conjugation relation",
+      "IsConjugate: predicate that f ~ g iff ∃ u ∈ Bˣ with f a = u⁻¹·g a·u (defined for arbitrary rings A, B — no simple/CSA/finite-dim hypotheses)",
+      "IsConjugate.refl, IsConjugate.symm, IsConjugate.trans: conjugation is an equivalence relation on A →ₐ[K] B (proved, hypothesis-free)",
+      "conjugateSetoid: explicit Setoid structure on A →ₐ[K] B with IsConjugate as the relation",
+      "skolemNoether_isConjugate: equivalence-relation form of the main theorem — repackages skolemNoether_general using IsConjugate",
+      "conjugateSetoid_single_class: setoid-theoretic restatement — every two AlgHoms lie in a single conjugacy class",
+      "Build repair: fixed pre-existing bugs blocking compilation — conjugate_iff_same_image used wrong unit (u⁻¹ instead of u), skolemNoether_general's calc used commutative-ring `ring` on non-commutative B (replaced with explicit mul_assoc / Units.inv_mul / one_mul rewrites), and aut_is_inner's AlgHom.id required explicit type args (AlgHom.id K B)",
       "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
     ],
-    "lineCount": 241,
-    "theoremCount": 6,
-    "definitionCount": 0
+    "lineCount": 311,
+    "theoremCount": 9,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Skolem-Noether theorem, proved independently by Thoralf Skolem (1927) and Emmy Noether (1929), is a cornerstone of the theory of central simple algebras (CSAs). It generalizes the observation that all matrix algebra automorphisms are inner (conjugation by an invertible matrix) to arbitrary CSAs.\n\nThe general theorem: if A is a simple K-algebra and B is a central simple K-algebra, then any two K-algebra homomorphisms f, g : A → B differ by an inner automorphism of B. In the automorphism case (f = g = id, A = B), this says Aut_K(B) = Inn(B) — every automorphism is conjugation by some unit.\n\nThis result has deep structural consequences:\n- **Brauer group**: CSAs that are Morita-equivalent form a group under ⊗, with Skolem-Noether providing the key tool for showing well-definedness\n- **Galois theory**: The Skolem-Noether theorem underlies the construction of crossed products and the connection to Galois cohomology H²(Gal(L/K), L×) ≅ Br(L/K)\n- **Representation theory**: Schur's lemma + Skolem-Noether shows the automorphism group of a central division algebra is purely inner\n\nThe matrix algebra case (B = Mₙ(K)) was formalized in SkolemNoetherMatrixAut.lean using an elementary approach. This entry extends to arbitrary CSAs, identifying the key module-theoretic step.",
@@ -160,15 +166,14 @@
   "sorries": 0,
   "leanFile": {
     "imports": [
-      "Mathlib",
-      "Proofs.SkolemNoetherMatrixAut"
+      "Mathlib"
     ],
     "opens": [],
     "namespace": "SkolemNoetherCSA",
-    "lineCount": 241,
+    "lineCount": 311,
     "axiomCount": 1,
-    "theoremCount": 6,
-    "definitionCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/SkolemNoetherCSA.lean"
   }
