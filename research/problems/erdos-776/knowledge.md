@@ -52,7 +52,10 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+- 2026-06-05 iter 7 PREP (researcher-1): n=6 witness Lean drop-in +
+  Mathlib SCD reconnaissance (no SCD upstream; confirms Approach 2
+  blocked). See
+  `sessions/2026-06-05-iter7-prep-n6-witness-and-scd-recon.md`.
 
 ---
 
