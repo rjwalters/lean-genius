@@ -1,9 +1,41 @@
 # Current State
 
-**Phase**: PREP — S19 cascade-discovery on `OQ02OQ01.lean` (7-error elaboration break under v4.26.0, latent since 2026-05-16 ecb47b35601 Sperner-bundle commit). S18a-1's `def DMChannel.IsWeaklySymmetric` paste ships intact in `ShannonChannelCoding.lean:484` (host file builds locally — verified clean at line 555 LOC), but the import chain `ShannonChannelCoding.lean:22 → ShannonChannelCodingOQ02OQ01.lean` blocks Docker-verify of the primary target. Per S5a precedent (nth-root-irrational-oq-03 researcher-12 2026-05-13), this iteration ships **doc-only** with comprehensive 7-error inventory + per-error repair recipe (§5 of S19 session note) handed off to mechanic/doctor. Slug's axiom-reduction work (S20 = S18a-2 lemma paste) is unblock-gated on the OQ02OQ01 repair.
-**Since**: 2026-05-16T14:31:00Z
-**Iteration**: 19 (S19 PREP — OQ02OQ01 cascade-discovery; 4 affected slugs, 10-18 LOC estimated repair scope)
-**Last Updated**: 2026-06-01T15:30Z
+**Phase**: ACT — S20 cascade-repair complete + parent file fully repaired. `ShannonChannelCodingOQ02OQ01.lean` AND `ShannonChannelCoding.lean` (the slug's primary file) both build clean under Docker (7748 jobs, exit 0). Net delta: +5 LOC in OQ02OQ01 + −4 LOC in parent = +1 LOC overall. Total 10 latent errors closed (7 cascade + 3 parent-file). The 4 transitively-affected slugs are now unblocked. Next: S21 ACT = S18a-2 paste (`output_marginal_uniform_of_uniform_input_and_column_sum_const`) per S17 PREP §6.2.
+**Since**: 2026-06-05T08:30:00Z
+**Iteration**: 20 (S20 ACT — OQ02OQ01 cascade-repair; Docker-verified clean)
+**Last Updated**: 2026-06-05T08:30Z
+
+## Iteration 20 (researcher-1, 2026-06-05) — S20 ACT (OQ02OQ01 cascade-repair)
+
+**Outcome**: 7-error cascade in `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean` (catalogued in S19 PREP §3.1, with per-error repair recipes in S19 PREP §5.1-§5.4) **fully repaired and Docker-verified clean**. Build evidence: `LEAN_BUILD_TIMEOUT=25m ./proofs/scripts/docker-build.sh Proofs.ShannonChannelCodingOQ02OQ01` exits 0, "Build completed successfully (7747 jobs)". Only pre-existing lint warnings remain (unused variable `hp` at lines 144 and 225, unused simp arg `Fintype.card_unit` at line 156). The S19 PREP recipes were 80% verbatim-correct under Docker; 20% needed small ACT-time adjustments (per session memo §3.1-§3.4). Two Docker iterations: build #1 cleared Groups A/C/D and exposed an over-aggressive `simp` in Group B; build #2 with targeted `simp only [Finset.sum_const_zero, neg_zero]` passes clean.
+
+### What I did
+
+- Pre-flight: verified lake-pin unchanged (`2df2f0150c`), disk 42Gi/926Gi (well above 30Gi build-pending threshold), Docker daemon responsive, 0 open PRs on slug. Branch `research/shannon-oq02oq01-s20-act-cascade-repair-1780647194` (session-specific per `feedback_researcher_shared_branch_bundle_trap.md`).
+- Applied Group A fix (lines 168-171): `rw [Fintype.sum_prod_type] at h; simpa using h` replaces the broken `← Finset.sum_product'` backward pattern.
+- Applied Group B fix (lines 179-187): per-term `by_cases` lemma `hterm` + `simp_rw [hterm]` + targeted `simp only [Finset.sum_const_zero, neg_zero]` + `exact h_nonneg (le_refl 0) zero_le_one`. The targeted-`simp_only` form keeps `exact h_nonneg` load-bearing and prevents the default simp set from auto-closing `0 ≤ h 0` via `binaryEntropy_zero`.
+- Applied Group C fix (lines 235-238): `refine Finset.sum_eq_single x₀ ?_ ?_` replaces `rw [Finset.sum_eq_single x₀]` + 3 bullets. The `refine` form bypasses `rw`'s auto-rfl-closure of the main equation and gives exactly 2 side-goals matching the 2 bullets.
+- Applied Group D fix (lines 303-307): `IsEmpty (α × β)` derived via explicit anonymous constructor `⟨fun ⟨a, _⟩ => ‹IsEmpty α›.elim a⟩` (S19's `inferInstance` did not resolve to an available instance). Sum binder corrected from `∑ x : α, pXY x` to `∑ x : α × β, pXY x`.
+- Docker build #1 (post Groups A+C+D + initial Group B): cleared 6 of 7 errors, 1 residual ("No goals to be solved" at the `exact h_nonneg` line). Root cause: bare `simp` after `simp_rw [hterm]` closed the goal via `binaryEntropy_zero` in the default simp set.
+- Docker build #2 (post Group B refinement): clean. 7747 jobs, exit 0.
+- Docker build #3 (parent file `Proofs.ShannonChannelCoding`): surfaced 3 further latent errors hidden by the OQ02OQ01 cascade — line 79 `jointDist_sum_one` rewrite pattern mismatch (binder-name drift `y` vs `i`), line 503 `by omega : 0 < n` axiom-statement context with no `0 < n` hypothesis in scope, line 535 `bsc.sum_one` `split_ifs <;> ring` producing 2 contradictory cases for `Bool`.
+- Applied 3 additional parent-file fixes (see session memo §5.1): (a) consolidate `jointDist_sum_one` into one `simp only` chain ending in `exact inp.sum_one`; (b) add `∀ (hn : 0 < n)` binder to `channel_coding_achievability` (matches `channel_coding_converse` pattern at line 518); (c) `bsc.sum_one := fun x => by cases x <;> simp` (Bool-native via cases on `x`).
+- Docker build #4 (post parent fixes): clean. 7748 jobs, exit 0.
+
+### Files Modified
+
+- `proofs/Proofs/ShannonChannelCodingOQ02OQ01.lean` (−7 / +12 = net +5 LOC, 0 new imports, 0 new axioms, 0 new sorries)
+- `proofs/Proofs/ShannonChannelCoding.lean` (−10 / +6 = net −4 LOC, parent-file latent error repairs surfaced by lifting the cascade; see §5.1 of session memo for the change table)
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/sessions/2026-06-05-s20-act-cascade-repair.md` (new — full §1-§8 ACT memo with paste-ready before/after diffs for each Group)
+- `research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/state.md` (this entry + Current State header refresh)
+- `src/data/research/problems/shannon-channel-coding-oq-02-oq-01-oq-01.json` (top-level `phase`/`iteration` sync; new built-items entry; new insight on PREP-recipe-to-ACT refinement patterns)
+
+### Knowledge Added
+
+- **Insights**: 1 (S19 PREP recipes were 80% verbatim-correct; documented the 3 small ACT-time adjustments — Group A `simpa` simplification, Group B `simp only` targeting to preserve `exact h_nonneg` load-bearing, Group D explicit anonymous constructor for `IsEmpty (α × β)`).
+- **Built items**: 1 (S20 ACT cascade-repair).
+- **Risks retired**: 2 — (a) the S19 "PREP-recipes-need-Docker-verify-by-mechanic" deferral, (b) the post-S18a-1 "ACT-blocked-on-cascade-repair" gate. Slug is now back to forward-progress mode with S21 = S18a-2 as the natural next ACT step.
+- **Next steps**: S21 ACT (S18a-2 lemma paste), S21b (row_entropy_invariant_under_input), S21c (uniform_input_achieves_capacity_of_weakly_symmetric).
 
 ## Iteration 19 (researcher-1, 2026-06-01) — S19 PREP (OQ02OQ01 cascade-discovery)
 

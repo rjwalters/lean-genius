@@ -74,10 +74,8 @@ theorem jointDist_nonneg {α β : Type*} [Fintype α] [Fintype β]
 theorem jointDist_sum_one {α β : Type*} [Fintype α] [Fintype β]
     (ch : DMChannel α β) (inp : InputDist α) :
     ∑ xy : α × β, jointDist ch inp xy = 1 := by
-  simp only [jointDist, Fintype.sum_prod_type]
-  conv_lhs => arg 2; ext x; rw [← Finset.mul_sum]
-  rw [show ∀ x, ∑ y : β, ch.W x y = 1 from fun x => ch.sum_one x]
-  simp [inp.sum_one]
+  simp only [jointDist, Fintype.sum_prod_type, ← Finset.mul_sum, ch.sum_one, mul_one]
+  exact inp.sum_one
 
 /-- Channel mutual information is non-negative. -/
 theorem channelMI_nonneg {α β : Type*} [Fintype α] [Fintype β]
@@ -498,9 +496,9 @@ axiom channel_coding_achievability {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     (ch : DMChannel α β) {R : ℝ} (hR : 0 < R)
     (hR_cap : R < channelCapacity ch) :
-    ∀ ε : ℝ, 0 < ε → ∀ᶠ (n : ℕ) in Filter.atTop,
+    ∀ ε : ℝ, 0 < ε → ∀ᶠ (n : ℕ) in Filter.atTop, ∀ (hn : 0 < n),
       ∃ (code : BlockCode α n) (decoder : (Fin n → β) → Fin code.M),
-        R ≤ rate_of_code (by omega : 0 < n) code ∧
+        R ≤ rate_of_code hn code ∧
         -- Average error probability < ε
         (∑ i : Fin code.M, (1 - ∑ y : Fin n → β,
           (∏ j : Fin n, ch.W (code.encode i j) (y j)) *
@@ -530,9 +528,7 @@ axiom channel_coding_converse {α β : Type*} [Fintype α] [Fintype β]
 noncomputable def bsc (p : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) : DMChannel Bool Bool where
   W := fun x y => if x = y then 1 - p else p
   nonneg := fun x y => by split_ifs <;> linarith
-  sum_one := fun x => by
-    simp only [Fintype.sum_bool]
-    split_ifs with h <;> ring
+  sum_one := fun x => by cases x <;> simp
 
 /-- BSC capacity = 1 - h(p) bits = log 2 - h(p) nats.
     The capacity-achieving input is uniform Bernoulli(1/2). -/

@@ -166,8 +166,9 @@ theorem fano_trivial_singleton {β : Type*} [Fintype β] [DecidableEq β]
       · rw [sq, mul_div_cancel_left₀ _ h]
     simp_rw [this]
     have hsum' : ∑ y : β, pXY ((), y) = 1 := by
-      have := hsum; simp only [Finset.univ_unique, Finset.sum_singleton] at this
-      rwa [← Finset.sum_product', Finset.univ_product_univ] at this
+      have h := hsum
+      rw [Fintype.sum_prod_type] at h
+      simpa using h
     linarith
   rw [hpe_zero]
   -- Step 4: h(0) ≥ 0 and conditionalEntropy = 0 (Unit X), so 0 ≤ h(0) = 0
@@ -175,9 +176,14 @@ theorem fano_trivial_singleton {β : Type*} [Fintype β] [DecidableEq β]
   -- conditionalEntropy: for each y, pXY((),y)/pXY((),y) = 1, log 1 = 0
   unfold FanoInequality.conditionalEntropy
   simp only [Finset.univ_unique, Finset.sum_singleton]
-  simp only [div_self]
-  simp only [Real.log_one, mul_zero, ite_self, neg_zero]
-  -- Now need: 0 ≤ h 0
+  have hterm : ∀ y, (if pXY ((), y) = 0 then (0:ℝ)
+      else pXY ((), y) * Real.log (pXY ((), y) / pXY ((), y))) = 0 := fun y => by
+    by_cases h0 : pXY ((), y) = 0
+    · simp [h0]
+    · simp only [h0, ↓reduceIte]
+      rw [div_self h0, Real.log_one, mul_zero]
+  simp_rw [hterm]
+  simp only [Finset.sum_const_zero, neg_zero]
   exact h_nonneg (le_refl 0) zero_le_one
 
 -- ============================================================
@@ -227,8 +233,7 @@ theorem fano_singleton_card_one {α β : Type*} [Fintype α] [Fintype β]
   obtain ⟨x₀⟩ := ‹Nonempty α›
   -- Singleton collapse: ∑ x : α, f x = f x₀
   have hcollapse : ∀ (f : α → ℝ), ∑ x : α, f x = f x₀ := fun f => by
-    rw [Finset.sum_eq_single x₀]
-    · rfl
+    refine Finset.sum_eq_single x₀ ?_ ?_
     · intros b _ hb; exact absurd (Subsingleton.elim b x₀) hb
     · intro hmem; exact absurd (Finset.mem_univ x₀) hmem
   -- log((card α : ℝ) - 1) = log 0 = 0
@@ -296,7 +301,8 @@ theorem fano_inequality_proved {α β : Type*} [Fintype α] [Fintype β]
     rcases (Fintype.card α).eq_zero_or_pos with h0 | hpos
     · exfalso
       haveI : IsEmpty α := Fintype.card_eq_zero_iff.mp h0
-      have hsum0 : ∑ x : α, pXY x = 0 := by
+      haveI : IsEmpty (α × β) := ⟨fun ⟨a, _⟩ => ‹IsEmpty α›.elim a⟩
+      have hsum0 : ∑ x : α × β, pXY x = 0 := by
         rw [Finset.univ_eq_empty]; exact Finset.sum_empty
       linarith
     · exact Fintype.card_pos_iff.mp hpos
