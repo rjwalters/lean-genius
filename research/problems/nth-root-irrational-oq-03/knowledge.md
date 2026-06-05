@@ -162,3 +162,39 @@ Harder — but isolated. The continued-fraction route is the right strategy. If 
 - S7 follow-up: use repaired `pi_transcendental_real` to discharge `axiom lindemann_theorem` in `PiTranscendental.lean` (requires first fixing PT's pre-existing v4.26.0 build errors — mechanic-class)
 
 See `sessions/2026-06-05-s7-act-e-transcendental-axiom-discharge-via-hermite-lindemann-bridge.md` for full details.
+
+---
+
+## Session 2026-06-05 (Session 9, S8 ACT) — lindemann_theorem axiom discharge in PiTranscendental.lean
+
+**Researcher**: researcher-11
+**Mode**: REVISIT (extending S7 ACT pattern to sibling file)
+**Outcome**: progress — local axiom reduction in `PiTranscendental.lean` (1→0)
+
+### What I did
+- Recognized `axiom lindemann_theorem` (PT:125) and `axiom hermite_lindemann` (HL:147) differ only in base ring (`IsAlgebraic ℤ` vs `IsAlgebraic ℚ`).
+- Replaced PT's `axiom` with a 3-line `theorem` derived from `HermiteLindemann.hermite_lindemann` via `(IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mp` bridge.
+- Repaired 2 pre-existing v4.26.0 regressions flagged in S7 nextSteps:
+  - Line 228: added `import Mathlib.Analysis.Real.Pi.Irrational` for `irrational_pi`.
+  - Line 285: replaced `isAlgebraic_algebraMap (1 : ℚ)` with `isAlgebraic_one` (S5b Fix #2 pattern).
+- Added imports `Mathlib.Analysis.Real.Pi.Irrational` and `Proofs.HermiteLindemann` (no circular dep: HL.lean has no `import Proofs.*`).
+
+### Key Findings
+- The `IsFractionRing.isAlgebraic_iff` bridge is the canonical ℤ ↔ ℚ algebraicity translator in this codebase (used 10+ times, including the identical `.mp ℤ ℚ ℂ` call at HermiteLindemann.lean:228).
+- S5b/S7 fix patterns generalize cleanly: same diagnoses, same one-line fixes, applied to a different file.
+- The two "pre-existing build errors" flagged by S7 as mechanic-class were not actually deep — both have known 1-line fixes from sibling files. The researcher applied them as part of the axiom-reduction since they were on the critical path.
+
+### Files Modified
+- `proofs/Proofs/PiTranscendental.lean` (+2 imports, axiom→theorem, `isAlgebraic_one` fix; 457→463 lines)
+- `src/data/proofs/pi-transcendental/meta.json` (leanFile.axiomCount 1→0, theoremCount 18→19, lineCount 457→463; assumptions reworded)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (iteration 8→9, +1 insight, +1 builtItem)
+
+### Build verification
+Initial attempts blocked by host disk pressure (cache I/O `os error 5/30`, daemon crash). `docker system prune -f` reclaimed 8.155 GB; re-run surfaced a long-standing forward-reference bug in `pi_transcendental` (refs `I_algebraic`/`neg_one_algebraic` defined later in the file — invalid in Lean 4). Replaced `pi_transcendental` body with a one-line alias to `HermiteLindemann.pi_transcendental_real`. **Final build: 3092/3092 jobs ✓ (81s)**.
+
+### Next Steps
+- S9 watch tick on PR #28013 (head SHA `5abb7c68488` unchanged since 2026-05-29; 7 days).
+- Mechanic: ETranscendentalOQ02.lean line 708 build error remains out of researcher scope.
+- ETranscendentalOQ01.lean transitively depends on PT; S8 fix should unblock it.
+
+See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-lindemann-bridge.md` for full details.
