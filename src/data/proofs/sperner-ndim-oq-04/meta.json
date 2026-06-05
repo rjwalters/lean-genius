@@ -28,7 +28,8 @@
       "Proof that non-FC simplices have 0 or 2 doors under Kuhn compatibility",
       "Proof that non-FC simplex with entry door has a unique exit door (existsUnique)",
       "Proof of kuhn_path_terminates (FC existence via parity, applying sperner_ndim directly)",
-      "Proof of kuhn_walk_result_not_in_visited (walk never returns a previously visited simplex)",
+      "Proof of kuhnWalk_not_in_initial_visited (walk result is never in initial visited set) and kuhnWalk_fc_or_bdry (walk terminates at FC or boundary door)",
+      "Proof of kuhn_path_existential (∃ boundary door from which kuhnPathStart finds an FC simplex; uses bdry_all_even_of_no_fc_walks parity axiom)",
       "Definition of KuhnState structure for path-following algorithm",
       "Definition of kuhnWalk with fuel parameter (termination by fuel bound)",
       "Definition of kuhnPathStart as entry point for boundary door",
@@ -72,74 +73,106 @@
     {
       "id": "kuhn-compatible",
       "title": "Door Degree and Kuhn Compatibility",
-      "startLine": 50,
-      "endLine": 68,
+      "startLine": 81,
+      "endLine": 93,
       "summary": "Defines doorDegree (number of doors per simplex) and IsKuhnCompatible (degree ≤ 2 for all simplices).",
       "mathContext": "The Kuhn compatibility axiom restricts the door graph to have maximum degree 2, making it a disjoint union of paths and cycles."
     },
     {
       "id": "door-parity",
       "title": "Per-Simplex Door Parity",
-      "startLine": 70,
-      "endLine": 90,
+      "startLine": 94,
+      "endLine": 116,
       "summary": "Connects doorDegree to the abstract door parity theorem: FC simplices have odd degree, non-FC have even degree.",
       "mathContext": "Re-derives per_simplex_door_parity using the public abstract_door_parity theorem."
     },
     {
       "id": "door-counts",
       "title": "Exact Door Counts",
-      "startLine": 92,
-      "endLine": 114,
-      "summary": "Under Kuhn compatibility: FC simplices have exactly 1 door, non-FC have 0 or 2.",
+      "startLine": 117,
+      "endLine": 140,
+      "summary": "Under Kuhn compatibility: FC simplices have exactly 1 door (fc_door_count_eq_one), non-FC have 0 or 2 (nonfc_door_count_zero_or_two).",
       "mathContext": "Combines parity (odd/even) with the degree bound (≤ 2) via omega."
     },
     {
       "id": "unique-exit",
       "title": "Unique Exit Door",
-      "startLine": 115,
-      "endLine": 178,
-      "summary": "Non-FC simplex with entry door k_in has a unique exit door k_out ≠ k_in. Proved via Finset.card_eq_two.",
+      "startLine": 141,
+      "endLine": 204,
+      "summary": "Non-FC simplex with entry door k_in has a unique exit door k_out ≠ k_in (nonfc_with_door_has_unique_exit). Proved via Finset.card_eq_two.",
       "mathContext": "The existsUnique statement captures the determinism of Kuhn's algorithm."
     },
     {
       "id": "door-transfer",
       "title": "Door Transfer Lemma",
-      "startLine": 179,
-      "endLine": 202,
+      "startLine": 205,
+      "endLine": 228,
       "summary": "Proves the door property is symmetric under adjacency: isDoorAt c K s k ↔ isDoorAt c K s' k' when K.adj s k = some (s', k').",
       "mathContext": "K.adj_vertices guarantees the d-vertex images of (s,k) and (s',k') are equal, so the same color set is available at both ends of any door edge."
     },
     {
       "id": "kuhn-step",
       "title": "Kuhn Step Function",
-      "startLine": 203,
-      "endLine": 245,
-      "summary": "Defines kuhnStep (one algorithm step) and proves door preservation across adjacency.",
+      "startLine": 229,
+      "endLine": 271,
+      "summary": "Defines kuhnStep (one algorithm step) and proves door preservation across adjacency (kuhnStep_door_preserved).",
       "mathContext": "Uses door_transfer to show the door property is maintained across each step."
     },
     {
       "id": "kuhn-walk",
-      "title": "Kuhn Walk Algorithm",
-      "startLine": 246,
-      "endLine": 297,
-      "summary": "Defines KuhnState structure and kuhnWalk with fuel parameter for termination.",
+      "title": "Kuhn Path Algorithm",
+      "startLine": 272,
+      "endLine": 323,
+      "summary": "Defines the KuhnState structure and the kuhnWalk recursive function with a fuel parameter for termination.",
       "mathContext": "Fuel-based recursion avoids well-founded termination obligations while capturing the algorithm. With fuel = Fintype.card K.Simplex, sufficient fuel is guaranteed when the walk is non-revisiting."
     },
     {
+      "id": "non-revisiting-lemmas",
+      "title": "Non-Revisiting Lemmas",
+      "startLine": 324,
+      "endLine": 363,
+      "summary": "Auxiliary lemmas built on adj_unique_facet: kuhnWalk_no_immediate_back, kuhnWalk_first_exit_interior, kuhn_three_doors_contradiction (3 distinct doors at a simplex contradict IsKuhnCompatible).",
+      "mathContext": "These small lemmas isolate the geometric content (using adj_unique_facet) so the main WalkValid invariant proof can stay abstract."
+    },
+    {
+      "id": "walk-valid-invariant",
+      "title": "Non-Revisiting Invariant (WalkValid + kuhn_step_nonrevisit)",
+      "startLine": 364,
+      "endLine": 616,
+      "summary": "Defines the DoorRecord type and the 5-field WalkValid invariant (has_record, doors_valid, entry_from_chain, exit_to_chain, pred_spec). Proves walkValid_init (the initial boundary-door state is valid), kuhn_step_nonrevisit (the KEY non-revisiting theorem: under WalkValid, adj current k_out = some (s',k') implies s' ∉ visited ∪ {current}), and walkValid_step (WalkValid is preserved by one Kuhn step).",
+      "mathContext": "WalkValid is the structural invariant that lets the walk justify non-revisiting without appealing to door-graph acyclicity directly. kuhn_step_nonrevisit is proved by case analysis on whether s' was previously visited, deriving a 3-door contradiction with IsKuhnCompatible."
+    },
+    {
       "id": "main-theorem",
-      "title": "Termination and Walk Correctness Theorems",
-      "startLine": 298,
-      "endLine": 343,
-      "summary": "kuhn_path_terminates (FC existence via parity, proved) and kuhn_walk_result_not_in_visited (walk never returns a previously visited simplex, proved by structural induction on fuel).",
-      "mathContext": "kuhn_path_terminates is proved: given IsSperner c and odd boundary door count, FC existence follows from sperner_ndim (no walk argument needed). kuhn_walk_result_not_in_visited is proved: by structural induction on fuel, all branches of kuhnWalk either return state.current (not in state.visited by current_not_visited) or recurse into a new_state where state.current joins new_state.visited, and by IH the result is not in new_state.visited ⊇ state.visited. The full constructive theorem (that the walk result IS FC) requires the door-graph acyclicity proof."
+      "title": "Main Theorems (parity-based existence)",
+      "startLine": 617,
+      "endLine": 659,
+      "summary": "kuhn_path_terminates (FC existence via parity from sperner_ndim; the walk hypotheses describe starting conditions but the existence proof uses only IsSperner and odd boundary count) and kuhnWalk_fc_if_started_fc (if the start state is already FC, kuhnWalk returns it immediately).",
+      "mathContext": "kuhn_path_terminates is a non-constructive corollary of sperner_ndim. kuhnWalk_fc_if_started_fc handles the FC base case of the recursion."
     },
     {
       "id": "kuhn-path-start",
       "title": "Kuhn Path from Boundary Door",
-      "startLine": 344,
-      "endLine": 389,
-      "summary": "Defines kuhnPathStart (top-level entry point from boundary door) and proves kuhnPathStart_not_in_empty (result is not in the initial empty visited set).",
-      "mathContext": "kuhnPathStart wraps kuhnWalk with fuel = Fintype.card K.Simplex. kuhnPathStart_not_in_empty is a direct corollary of kuhn_walk_result_not_in_visited, confirming the walk result is distinct from all visited simplices. The full FC-correctness theorem remains open."
+      "startLine": 660,
+      "endLine": 700,
+      "summary": "Defines kuhnPathStart (top-level entry point wrapping kuhnWalk with fuel = Fintype.card K.Simplex from an empty visited set) and proves kuhnPathStart_is_fc_of_fc_start (if the boundary simplex is already FC, kuhnPathStart returns it).",
+      "mathContext": "kuhnPathStart packages the boundary-door initial state and supplies enough fuel for the worst case (visiting every simplex once)."
+    },
+    {
+      "id": "termination-dichotomy",
+      "title": "Termination Dichotomy",
+      "startLine": 701,
+      "endLine": 819,
+      "summary": "Proves kuhnWalk_fc_or_bdry: with sufficient fuel (Fintype.card K.Simplex − visited.card), kuhnWalk terminates at an FC simplex or at a boundary door. Auxiliary lemmas all_visited_forces_bdry and kuhnWalk_congr support the proof.",
+      "mathContext": "The dichotomy combines kuhn_step_nonrevisit (each step is fresh) with the fuel bound (only finitely many simplices) — once everything is visited, the only remaining exit must be a boundary door."
+    },
+    {
+      "id": "walk-pairing-parity",
+      "title": "Walk Pairing Parity and Main Existential",
+      "startLine": 820,
+      "endLine": 948,
+      "summary": "Proves kuhnWalk_not_in_initial_visited (the walk result is never in the initial visited set), states the bdry_all_even_of_no_fc_walks axiom (under hfail, the boundary-door set B has even cardinality via the FPF involution τ), and derives kuhn_path_existential (∃ boundary door whose walk finds FC) and its wrapper kuhnPathStart_finds_fc_existential.",
+      "mathContext": "The parity contradiction argument: if no boundary-door walk finds FC, the map τ: (s₀, Fin.last d) ↦ (kuhnPathStart s₀ (Fin.last d), Fin.last d) is a FPF involution on B, giving Even |B| — contradicting the odd boundary-door hypothesis. The τ∘τ=id step (walkTrace_reversal) is axiomatized as bdry_all_even_of_no_fc_walks."
     }
   ],
   "mainTheorems": [
@@ -162,16 +195,28 @@
       "significance": "Proves determinism of Kuhn's algorithm: each step has a unique next state"
     },
     {
-      "name": "kuhn_walk_result_not_in_visited",
+      "name": "kuhn_step_nonrevisit",
       "type": "core",
-      "statement": "For any fuel and KuhnState, kuhnWalk never returns a simplex already in state.visited",
-      "significance": "Key non-revisiting property: proves the Kuhn walk is injective on the visited simplices, crucial step toward the full FC-termination theorem"
+      "statement": "Under WalkValid, K.adj current k_out = some(s',k') implies s' ∉ visited ∪ {current}",
+      "significance": "Key non-revisiting theorem: each Kuhn step lands on a fresh simplex, preventing the walk from cycling"
     },
     {
-      "name": "kuhnPathStart_not_in_empty",
+      "name": "kuhnWalk_fc_or_bdry",
+      "type": "core",
+      "statement": "With sufficient fuel (Fintype.card K.Simplex − visited.card), kuhnWalk terminates at an FC simplex or at a boundary door",
+      "significance": "Termination dichotomy: combining the non-revisiting invariant with the fuel bound shows the walk cannot loop, so it must exit"
+    },
+    {
+      "name": "kuhn_path_existential",
+      "type": "core",
+      "statement": "Given IsSperner, IsKuhnCompatible, and odd boundary-door count, ∃ a boundary door (s₀, k₀) such that kuhnPathStart finds an FC simplex",
+      "significance": "Main existential result: at least one boundary door's Kuhn walk reaches an FC simplex, proved via the bdry_all_even_of_no_fc_walks parity axiom"
+    },
+    {
+      "name": "kuhnPathStart_finds_fc_existential",
       "type": "corollary",
-      "statement": "kuhnPathStart result is not in the empty initial visited set",
-      "significance": "Immediate consequence of kuhn_walk_result_not_in_visited for the boundary-door start case"
+      "statement": "Thin wrapper around kuhn_path_existential: ∃ boundary door whose Kuhn walk finds an FC simplex",
+      "significance": "Top-level existential statement of Kuhn's algorithm correctness in this formalization"
     }
   ],
   "conclusion": {
