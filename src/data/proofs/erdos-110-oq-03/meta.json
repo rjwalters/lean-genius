@@ -47,11 +47,12 @@
       "Proof that the conjecture fails at every successor aleph ℵ_{α+1} (generalized_ehs_fails_all_successor_alephs)",
       "CounterexampleGraph structure packaging counterexample properties",
       "No-universal-bound theorem: no single F works across all uncountable graphs",
+      "Strengthened no-universal-bound at every successor aleph: no_universal_bound_at_successor lifts the ℵ₁ ruling-out to all ℵ_{α+1} levels (not derivable from the ℵ₁ case)",
       "Identification of limit cardinals as the genuinely open case"
     ],
     "relatedProblems": [],
     "axiomCount": 1,
-    "lineCount": 261,
+    "lineCount": 287,
     "assumptions": "1 axiom: successor_cardinal_counterexample (generalization via Todorcevic walks). The ℵ₁ case (Lambie-Hanson 2020) is proved as a special case at α=0. All 8 theorems derive from this single axiom.",
     "theoremCount": 9,
     "definitionCount": 12
@@ -207,7 +208,7 @@
       "Set"
     ],
     "namespace": "Erdos110Higher",
-    "lineCount": 261,
+    "lineCount": 287,
     "axiomCount": 1,
     "theoremCount": 9,
     "definitionCount": 12,
