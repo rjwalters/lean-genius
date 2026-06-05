@@ -42,10 +42,61 @@ noncomputable def pancyclicExcess (n : ℕ) : ℕ :=
 
 /-- The iterated logarithm log*(n): the number of times log₂ must be
     applied to n before the result is ≤ 1. -/
-noncomputable def iteratedLog : ℕ → ℕ
+def iteratedLog : ℕ → ℕ
   | 0 => 0
   | 1 => 0
   | (n + 2) => 1 + iteratedLog (Nat.log 2 (n + 2))
+termination_by n => n
+decreasing_by
+  show Nat.log 2 (n + 2) < n + 1 + 1
+  have hlog_le : Nat.log 2 (n + 2) ≤ n + 2 := Nat.log_le_self 2 (n + 2)
+  -- Strict inequality: equality is impossible because 2^(n+2) > n+2
+  rcases lt_or_eq_of_le hlog_le with hlt | heq
+  · omega
+  · exfalso
+    have h_pow_le : (2 : ℕ) ^ Nat.log 2 (n + 2) ≤ n + 2 :=
+      Nat.pow_log_le_self 2 (by omega)
+    rw [heq] at h_pow_le
+    have h_lt : n + 2 < 2 ^ (n + 2) := Nat.lt_two_pow_self
+    omega
+
+/-! ## Iterated Logarithm Properties
+
+These are pure structural properties of `iteratedLog` (independent of the
+abstract pancyclic model). They characterize the zero fibre and positivity
+of `log*`, which are useful for any downstream formalization that needs to
+reason about the iterated logarithm regardless of which graph encoding is
+adopted for the pancyclic problem itself.
+-/
+
+/-- Defining equation of `iteratedLog` at `0`. -/
+@[simp] theorem iteratedLog_zero : iteratedLog 0 = 0 := by
+  simp [iteratedLog]
+
+/-- Defining equation of `iteratedLog` at `1`. -/
+@[simp] theorem iteratedLog_one : iteratedLog 1 = 0 := by
+  simp [iteratedLog]
+
+/-- Defining recursion of `iteratedLog` at `n + 2`. -/
+theorem iteratedLog_add_two (n : ℕ) :
+    iteratedLog (n + 2) = 1 + iteratedLog (Nat.log 2 (n + 2)) := by
+  simp [iteratedLog]
+
+/-- `iteratedLog n = 0` exactly when `n ≤ 1`. -/
+theorem iteratedLog_eq_zero_iff (n : ℕ) : iteratedLog n = 0 ↔ n ≤ 1 := by
+  match n with
+  | 0 => exact ⟨fun _ => Nat.zero_le _, fun _ => iteratedLog_zero⟩
+  | 1 => exact ⟨fun _ => Nat.le_refl _, fun _ => iteratedLog_one⟩
+  | k + 2 =>
+    refine ⟨fun h => ?_, fun h => ?_⟩
+    · rw [iteratedLog_add_two] at h; omega
+    · omega
+
+/-- `iteratedLog n ≥ 1` whenever `n ≥ 2`. -/
+theorem iteratedLog_pos {n : ℕ} (hn : 2 ≤ n) : 1 ≤ iteratedLog n := by
+  match n, hn with
+  | k + 2, _ =>
+    rw [iteratedLog_add_two]; omega
 
 /- ## Model Flaw and Consequences
 
@@ -116,7 +167,7 @@ theorem hamiltonian_edge_count :
 theorem bondy_quadratic_threshold :
     ∀ n : ℕ, n ≥ 7 → n * n / 4 ≥ n + Nat.log 2 n := by
   intro n hn
-  rcases le_or_lt n 15 with h15 | h16
+  rcases le_or_gt n 15 with h15 | h16
   · -- n ∈ {7,...,15}: compute directly
     interval_cases n <;> native_decide
   · -- n ≥ 16: n²/4 ≥ 2n and log₂ n ≤ n
@@ -124,7 +175,7 @@ theorem bondy_quadratic_threshold :
     have hq : 2 * n ≤ n * n / 4 := by
       have : 4 * (2 * n) ≤ n * n := by nlinarith
       omega
-    have hl : Nat.log 2 n ≤ n := le_of_lt (Nat.log_lt (by omega) (by omega))
+    have hl : Nat.log 2 n ≤ n := Nat.log_le_self 2 n
     omega
 
 /-- Monotonicity: adding edges preserves pancyclicity.

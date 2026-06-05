@@ -29,11 +29,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-15T13:43:13.293Z",
-    "iteration": 3,
-    "focus": "Metadata backfill aligned with the zero-axiom model-diagnostic proof file.",
+    "since": "2026-06-05T00:00:00Z",
+    "iteration": 4,
+    "focus": "Pure structural lemmas about iteratedLog and a repair of the pre-existing build break.",
     "blockers": [],
-    "nextAction": "Replace the abstract `hasCycleOfLength` model with real graph-cycle infrastructure before pursuing Bondy/Griffin/GKW bounds.",
+    "nextAction": "Build a corrected SimpleGraph (Fin n) based pancyclic model in a separate section; the abstract IsPancyclic model remains as a documented diagnostic scaffold.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0A (false axioms removed due to model flaw), 8T proved, 0S. Model flaw documented: IsPancyclic disconnects edges from cycles.",
+    "progressSummary": "ACT: Fixed pre-existing build break on main (iteratedLog missing termination_by/decreasing_by, bondy_quadratic_threshold mis-using Nat.log_lt iff as direct witness, le_or_lt deprecation). Added 5 model-independent iteratedLog structural lemmas (zero/one/add_two as defining equations; eq_zero_iff and pos as characterizations). Now 12T, 0A, 0S, 209 LOC. Verified by Docker build.",
     "builtItems": [
       "theorem hamiltonian_edge_count: pancyclicExcess n ≥ 0 (trivial for ℕ)",
       "theorem pancyclic_monotone: IsPancyclic independent of edgeCount",
@@ -51,7 +51,12 @@
         "type": "axiom-elimination",
         "description": "Proved n²/4 ≥ n + log₂ n for n ≥ 7 — small cases by native_decide, large by nlinarith + Nat.log_lt"
       },
-      "Proved triangle_pancyclic: sSup ∅ = 0 (defining set empty due to model flaw)"
+      "Proved triangle_pancyclic: sSup ∅ = 0 (defining set empty due to model flaw)",
+      "theorem iteratedLog_zero (simp): iteratedLog 0 = 0",
+      "theorem iteratedLog_one (simp): iteratedLog 1 = 0",
+      "theorem iteratedLog_add_two: iteratedLog (n+2) = 1 + iteratedLog (Nat.log 2 (n+2))",
+      "theorem iteratedLog_eq_zero_iff: iteratedLog n = 0 ↔ n ≤ 1",
+      "theorem iteratedLog_pos: 2 ≤ n → 1 ≤ iteratedLog n"
     ],
     "insights": [
       "hamiltonian_edge_count (pancyclicExcess n ≥ 0) is trivially true for ℕ — eliminated as axiom",
@@ -65,7 +70,13 @@
       "To properly formalize, would need SimpleGraph with Walk.IsCycle and edgeFinset — about 200+ lines of infrastructure",
       "CRITICAL: small_case_4 (pancyclicExcess 4 = 1) is FALSE — pancyclicExcess n = 0 for ALL n≥1",
       "Model flaw: IsPancyclic disconnects edgeCount from hasCycle, making pancyclicExcess trivially 0",
-      "bondy_lower_bound is also FALSE under current model (0+1 < log₂(n-1) for n≥5)"
+      "bondy_lower_bound is also FALSE under current model (0+1 < log₂(n-1) for n≥5)",
+      "Fixed pre-existing build break: iteratedLog needed termination_by/decreasing_by (recursive call on Nat.log 2 (n+2), not a structural subterm of n).",
+      "Decreasing proof uses Nat.log_le_self + Nat.pow_log_le_self + Nat.lt_two_pow_self to rule out the equality case Nat.log 2 (n+2) = n+2.",
+      "Fixed pre-existing build break: bondy_quadratic_threshold used Nat.log_lt as a direct propositional witness, but the current Mathlib lemma is an iff (Nat.log b n < k ↔ n < b^k). Replaced with Nat.log_le_self, which is the direct statement needed.",
+      "Removed noncomputable from iteratedLog: Nat.log is computable and WF recursion is supported for computable defs in Lean 4. This enables decide-style reasoning for callers (though base-case evaluation still requires simp [iteratedLog] because WF recursion equations are propositional, not definitional).",
+      "Replaced deprecated le_or_lt with le_or_gt.",
+      "iteratedLog_eq_zero_iff and iteratedLog_pos are pure structural properties: independent of the abstract IsPancyclic model flaw, so they survive any future redesign of the graph-theoretic encoding."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -93,15 +104,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T13:43:13.294Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-06-05T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1016Problem.lean",
       "filename": "Erdos1016Problem.lean",
-      "lineCount": 159,
-      "theoremCount": 7,
+      "lineCount": 209,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
