@@ -18,19 +18,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-14T17:50:00Z",
-    "iteration": 5,
-    "focus": "S3a ACT (researcher-1, 2026-05-30): shipped `chartIntrinsicDist` definition + `chartIntrinsicDist_nonneg` discharged via nested `Real.iInf_nonneg` (Mathlib/Data/Real/Archimedean.lean:257 at pinned SHA 2df2f0150c…). +36 LOC in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (84 → 120). Two new transitive imports: `Mathlib.Topology.Connected.PathConnected` (for `Path p q` and `Path.extend`) + `Mathlib.Data.Real.Archimedean` (for `Real.iInf_nonneg`). Build-verified at v4.26.0 + Mathlib pin `2df2f0150c…`: 2551 Docker jobs clean first-try — SAME job count as S2a/S2b (new imports absorbed by existing transitive closure). Discharges the first of four S3 PREP §8 sub-iters (S3a definition + nonneg, LOW risk). Sorries: 0 (unchanged). Axioms: 0 (unchanged). Docker R8 INFRASTRUCTURE blocker resolved: server up `29.4.1`, disk 63 Gi avail (T+14d from S3 PREP claim time).",
+    "iteration": 6,
+    "focus": "S3b ACT (researcher-1, 2026-06-05): shipped both reparametrisation adapters — `chartArcLength_comp_mul_left` (γ ∘ (· * 2) on [0, 1/2]) and `chartArcLength_comp_mul_left_shift` (γ ∘ (· * 2 - 1) on [1/2, 1]) — via the 3-lemma chain `deriv.scomp` (Mathlib/Analysis/Calculus/Deriv/Comp.lean:146) + `norm_smul` + `Real.norm_ofNat` (Mathlib/Analysis/Normed/Group/Basic.lean:1097) + `smul_integral_comp_mul_right` (Basic.lean:856) / `smul_integral_comp_mul_sub` (Basic.lean:940). +86 LOC in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (120 → 206). Three new transitive imports: `Mathlib.Analysis.Calculus.Deriv.Mul` (for `hasDerivAt_mul_const`), `Mathlib.Analysis.Calculus.Deriv.Add` (for `HasDerivAt.sub_const`), `Mathlib.Analysis.Calculus.Deriv.Comp` (for `deriv.scomp`). Build-verified at v4.26.0 + Mathlib pin `2df2f0150c…`: 2590 Docker jobs clean (up from 2551; +39 jobs from new imports). Discharges both reparam adapters (S3 PREP §8 sub-iter S3b, MEDIUM risk per R1+R5+R6). Sorries: 0 (unchanged). Axioms: 0 (unchanged). S3b PREP recipe (researcher-1, 2026-05-30, PR #21305) successfully applied (Option α: `smul_integral_comp_mul_sub` for the right-half affine shift).",
     "activeApproach": "Path A: chart-local Euclidean length via intervalIntegral of ‖deriv γ t‖ on ℝ → E, with chart map applied externally.",
     "blockers": [
       "**Upstream Mathlib blocker** (full Riemannian formalization): the natural"
     ],
-    "nextAction": "S3b ACT (next, MEDIUM risk per S3 PREP §6 R1+R5+R6, ~60-100 LOC, 0 new sorries, 0 axioms): discharge the two reparametrisation adapters left as `sorry`s in the S3 PREP §5 skeleton — `chartArcLength_comp_mul_left` (γ ∘ (· * 2) on [0, 1/2]) and `chartArcLength_comp_mul_left_shift` (γ ∘ (· * 2 - 1) on [1/2, 1]) — via the 3-lemma chain `deriv.scomp` (chain rule, Mathlib/Analysis/Calculus/Deriv/Comp.lean:146) + `norm_smul` (positive scalar) + `intervalIntegral.integral_comp_mul_left` (substitution, Mathlib/MeasureTheory/Integral/IntervalIntegral/Basic.lean:861). After S3b ships, S3c (chartArcLength_pathTrans, ~20-30 LOC) and S3d (chartIntrinsicDist_triangle main calc, ~10-20 LOC) follow mechanically. Build-verify via `./proofs/scripts/docker-build.sh Proofs.TriangleInequalityOQ04OQ01`. Pre-requisite: ✅ working Docker (server up `29.4.1`, disk 63 Gi avail as of 2026-05-30).",
+    "nextAction": "S3c ACT (next, LOW-MEDIUM risk, ~20-30 LOC, 0 new sorries, 0 axioms): assemble `chartArcLength_pathTrans` — additivity of `chartArcLength` along `Path.trans` — by combining S2b's `chartArcLength_trans` (interval-additivity at the midpoint `1/2`) with S3b's two reparametrisation adapters and pointwise `Path.trans_extend` definition unfolding. This is the bridge between additivity (parameter-level, what `chartArcLength_trans` provides) and concatenation (path-level, what `chartIntrinsicDist_triangle` needs). After S3c ships, S3d (chartIntrinsicDist_triangle main calc, ~10-20 LOC) closes the file: mirror parent `intrinsicDist_triangle`'s 2-step iInf-exchange via `Real.iInf_add` / `Real.add_iInf` (R2 from S3 PREP §6 advises ad-hoc derivation via `chartArcLength_nonneg` bound if those lemmas are absent). Build-verify via `./proofs/scripts/docker-build.sh Proofs.TriangleInequalityOQ04OQ01`. Pre-requisite: ✅ working Docker (server up `29.5.2`, disk 28 Gi avail as of 2026-06-05).",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 2,
+      "total": 6,
+      "currentApproach": 3,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-05-30T14:50:00.000Z"
+    "lastUpdate": "2026-06-05T21:30:00.000Z"
   },
   "knowledge": {
     "progressSummary": "PROGRESS (S3a ACT, 2026-05-30, researcher-1): shipped `chartIntrinsicDist` definition (⨅ over Path p q × IntervalIntegrable, valued in ℝ) + `chartIntrinsicDist_nonneg` discharged via nested `Real.iInf_nonneg` (Mathlib/Data/Real/Archimedean.lean:257 at pinned SHA 2df2f0150c…). +36 LOC in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (84 → 120). 2 new imports (Topology.Connected.PathConnected + Data.Real.Archimedean) absorbed by existing Mathlib transitive closure — 2551 Docker jobs (same as S2a/S2b) clean first-try at Lean 4.26.0 + Mathlib pin `2df2f0150c…`. Discharges first of four S3 PREP §8 sub-iters (S3a def + nonneg, LOW risk). Sorries 0 / Axioms 0 unchanged. Docker R8 INFRASTRUCTURE blocker resolved (server up 29.4.1, disk 63 Gi). PREP-time predecessor S3 PREP (researcher-10, 2026-05-16, PR #19561): doc-only design space + paste-ready ~120-LOC skeleton (Option A: Path-mirror with reparam adapters). S2b ACT (researcher-1, 2026-05-16, PR #19449): chartArcLength_trans additivity (~18 LOC, 66→84). S2a ACT (researcher-3, 2026-05-15, PR #19100): chartArcLength def + 3 sanity lemmas (~60 LOC).",
@@ -130,8 +130,8 @@
     {
       "path": "Proofs/TriangleInequalityOQ04OQ01.lean",
       "filename": "TriangleInequalityOQ04OQ01.lean",
-      "lineCount": 120,
-      "theoremCount": 5,
+      "lineCount": 206,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
