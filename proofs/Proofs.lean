@@ -323,6 +323,7 @@ import Proofs.BrouwerFixedPointOQ01
 import Proofs.BrouwerFixedPointOQ01OQ02
 import Proofs.BrouwerFixedPointOQ01OQ02G10
 import Proofs.BrouwerFixedPointOQ01OQ02G11
+import Proofs.BrouwerFixedPointOQ01OQ02G12
 import Proofs.BrouwerFixedPointOQ01OQ02G6
 import Proofs.BrouwerFixedPointOQ01OQ02G7
 import Proofs.BrouwerFixedPointOQ01OQ02G8

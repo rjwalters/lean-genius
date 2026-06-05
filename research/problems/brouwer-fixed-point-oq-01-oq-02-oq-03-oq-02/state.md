@@ -1,12 +1,29 @@
 # Current State
 
-**Phase**: ACT (G6/G7/G8/G9 all on main; G6 via S13 companion-file pivot; S9 ACT-D-3 EXEC integration step is the next blocker; Docker daemon hung — B3 INFRA RED)
-**Since**: 2026-05-16T15:05:00Z (Session 14, researcher-11, S14 STATE-SYNC — research-JSON catchup post-S12 PREP + S13 ACT)
-**Iteration**: 14
+**Phase**: ACT-B (G6/G7/G8/G10/G11/G12 all on main; main-file axiom retirement deferred to S19 ACT-C)
+**Since**: 2026-06-04T18:05:00Z (Session 19, researcher-7, S18 ACT-B — G12 sphere-nonzero substantive companion)
+**Iteration**: 19
 
 ## Current Focus
 
-S14 STATE-SYNC (this session, researcher-11, 2026-05-16, doc-only) —
+S18 ACT-B (this session, researcher-7, 2026-06-04) — ships
+`proofs/Proofs/BrouwerFixedPointOQ01OQ02G12.lean` (~120 LOC, single
+theorem `H_n_minus_1_sphere_nonzero_for_retraction`, 0 axioms, 0
+sorries). G12 packages the S15 PREP §5 paste-ready integration body
+for `n ≥ 2` as a standalone companion file rather than as an in-line
+edit to the main file. The conclusion (`∃ ψ, ψ.comp φ = id`) is
+reached by `exfalso` after the homological chain G10 + G8 + G11 +
+`H_n_minus_1_sphere_nonzero_substantive` derives the substantive
+contradiction `IsZero (F.obj ∂𝔻 n)` ⨯ `¬ IsZero (F.obj ∂𝔻 n)`.
+
+The mock axiom `H_n_minus_1_sphere_nonzero` (main:261) is still live
+after this PR — retirement deferred to S19 ACT-C (a one-import edit
+to the main file changing `axiom` → `theorem` and dispatching `n ≥ 2`
+to G12 and `n = 1` to a new `Retraction_one_uninhabited` lemma).
+
+## Historical Focus (S14)
+
+S14 STATE-SYNC (researcher-11, 2026-05-16, doc-only) —
 research-JSON `currentState.*` + `knowledge.builtItems` + top-level
 `lastUpdate` catchup absorbing S12 PREP (PR #19474, doc-only G6
 companion-file pivot pre-staging, merged 2026-05-16T08:54:15Z) +
@@ -93,10 +110,13 @@ alone (single bridge, distinct import set — pure algebra over
 
 | Bridge | On main? | Where |
 |--------|----------|-------|
-| **G6** (`id ℤ` cannot factor through subsingleton) | **Yes (this PR; build pending)** | `…G6.lean:80` as `no_split_through_subsingleton` |
+| **G6** (`id ℤ` cannot factor through subsingleton) | **Yes** | `…G6.lean:80` as `no_split_through_subsingleton` |
 | **G7** (`¬ IsZero (X : AddCommGrpCat) → ∃ x ≠ 0`) | **Yes** | `…G7.lean` (PR #18951) |
 | **G8** (`F.map i ≫ F.map r = 𝟙`) | **Yes** | `…G8.lean:96` (PR #19114, merged 2026-05-15T22:58Z) |
 | **G9** (retract of zero is zero) | **Yes** | `…G8.lean:117` (same PR) |
+| **G10** (`Retraction → TopCat morphism`) | **Yes** | `…G10.lean:50/73` (S16 ACT-A) |
+| **G11** (disk-zero substantive, ULift form) | **Yes** | `…G11.lean:67` (S17 ACT-B-PRE) |
+| **G12** (sphere-nonzero substantive for retractions, `n ≥ 2`) | **Yes (this PR)** | `…G12.lean` as `H_n_minus_1_sphere_nonzero_for_retraction` |
 
 ## Active Approach (unchanged)
 
@@ -168,6 +188,31 @@ the S12 PREP §4 pin exactly.
   knowledge.md §R writeup.
 
 ## Next Action
+
+**S19 ACT-C (main-file axiom retirement)** — replace the mock axiom
+`H_n_minus_1_sphere_nonzero` (main:261) with a `theorem` that wraps
+G12's `H_n_minus_1_sphere_nonzero_for_retraction` for `n ≥ 2` and
+dispatches `n = 1` via a new `Retraction_one_uninhabited` lemma
+(intermediate value theorem, knowledge.md §G5). One-import edit
+(`import Proofs.BrouwerFixedPointOQ01OQ02G12`), `by_cases hn2 : 2 ≤ n`
+body. Expected build size ~3300–3400 jobs (main-file rebuild).
+
+Decision point for S19: ship `Retraction_one_uninhabited` as a thin
+local axiom (net axiom 4 → 4, axiom-count parity with the mock) or
+as a ~5-line IVT proof (net axiom 4 → 3, axiom-count improvement).
+Recommend the proof — IVT is in Mathlib (`intermediate_value`) and
+the n=1 case reduces to: `r : [-1,1] → {-1,1}` continuous, with
+`r(±1) = ±1`, contradicting IVT at 0. See knowledge.md §G5 for the
+sketch.
+
+**S20 ACT-D (post-S19) housekeeping**: after S19 ACT-C lands, the
+mock axiom is gone and only the two B1/B2 thin surrogate axioms
+remain (`contractible_singularHomology_zero`, `sphere_singularHomology_nonzero`).
+Either or both can be discharged by upstream Mathlib contributions
+per knowledge.md Section H (B1 prism operator) or §L3 / B2-CW (B2
+sphere homology).
+
+### Historical Next Action (S13b, retired by S13b PR)
 
 **S13b BUILD-VERIFY (Docker-restored)** — discharge gate 6b. Run
 `./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ01OQ02G6`
