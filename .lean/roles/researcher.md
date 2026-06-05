@@ -279,6 +279,81 @@ end ErdosN
 - **HARD sorries**: Add to companion file (`ErdosNAristotle.lean`) — the Aristotle agent will detect and submit it automatically
 - **OPEN sorries**: Work manually - Aristotle can't help with unsolved problems
 
+### Aristotle MCP (interactive proving)
+
+In addition to the batch companion-file pipeline above, an MCP wrapper for
+Aristotle is registered in this repo's `.mcp.json` (server name: `aristotle`,
+pinned to `vendor/lean-aristotle-mcp.sha`). It exposes Harmonic's prover as
+two MCP tools you can call directly from a session:
+
+- `prove(code, context_files=[...], wait=False)` — submit a single snippet
+  with optional supporting Lean files for imports/definitions. Use this when
+  you hit one isolated hard sorry mid-session and want to keep working on
+  other things while Aristotle searches.
+- `prove_file(path, wait=False)` — submit a whole Lean file with automatic
+  Lake/Mathlib resolution. Use this when the sorry lives inside a tangled
+  proof that depends on many neighbours in the same file, or when you want
+  Aristotle to attempt several sorries in one shot.
+
+**When to reach for `prove()` vs `prove_file()`**
+
+| Situation | Tool |
+|-----------|------|
+| One isolated lemma, small context | `prove()` with a hand-picked `context_files` list |
+| Multiple sorries scattered in one file | `prove_file()` on that file |
+| A standalone helper you can extract into a snippet | `prove()` |
+| Proof depends on local definitions you'd rather not duplicate | `prove_file()` |
+
+**Async pattern (strongly recommended)**
+
+Aristotle searches can take minutes to hours. Use `wait=False` and treat
+each call as a fire-and-poll job:
+
+1. **Submit** — call `prove(snippet, wait=False)` (or `prove_file(...)`)
+   and record the returned `project_id`.
+2. **Continue other work** — pick up a different sorry, refactor, write
+   docs. Do not block the session on a single search.
+3. **Poll** — call `check_proof(project_id)` (or `check_prove_file`)
+   periodically. Status `IN_PROGRESS` means keep waiting; `SUCCEEDED`
+   returns the filled-in code.
+4. **Integrate** — paste the proof in, rebuild, and verify. If it
+   times out or fails, fall back to the batch companion-file flow or
+   manual proof.
+
+**Context-files etiquette**
+
+`prove(context_files=...)` accepts a list of Lean files that the snippet
+depends on (imports, helper lemmas, custom typeclasses). Keep this list
+**minimal**: just the upstream definitions the snippet actually references.
+Do not pass the whole proof file or the whole project — the wrapper
+re-uploads context on every call, and large contexts measurably slow the
+search. If a snippet has no nontrivial dependencies, omit `context_files`
+entirely.
+
+**Result caching**
+
+Aristotle caches project results for **30 days** server-side. If you
+re-submit the exact same snippet within that window you'll get the prior
+result quickly without burning fresh solver budget — so it's safe to
+re-issue a `prove()` call after a session restart rather than carefully
+preserving the `project_id` across restarts.
+
+**Sanity check**
+
+Before relying on the MCP in a session, run the smoke test once on the
+host:
+
+```bash
+./scripts/aristotle/mcp-smoke-test.sh
+```
+
+It confirms `ARISTOTLE_API_KEY` is reachable, the wrapper launches, and a
+trivial `prove()` returns a project id. The batch pipeline
+(`scripts/aristotle/submit-batch.sh`, `find-candidates.sh`,
+`retrieve-integrate.sh`) is unchanged and remains the right path for
+companion-file fleets — the MCP route is additive, for in-session
+interactive proving.
+
 ## Step 4: Update Knowledge
 
 **Every session MUST update problem knowledge:**

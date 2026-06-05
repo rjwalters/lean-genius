@@ -1,0 +1,12 @@
+# Pinned commit for septract/lean-aristotle-mcp
+# Upstream: https://github.com/septract/lean-aristotle-mcp
+# License: MIT
+#
+# This sha is referenced from .mcp.json via the
+#   uvx --from git+https://github.com/septract/lean-aristotle-mcp@<sha>
+# invocation, so the wrapper is fetched on-demand by uv rather than
+# vendored as source. To bump:
+#   1. git ls-remote https://github.com/septract/lean-aristotle-mcp.git HEAD
+#   2. Update both this file and the sha in .mcp.json
+#   3. Re-run scripts/aristotle/mcp-smoke-test.sh
+e53a7ffb856c53d1e85166668af89fe4175a4898
