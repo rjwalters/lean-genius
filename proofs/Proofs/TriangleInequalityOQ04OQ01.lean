@@ -29,6 +29,9 @@ Mathlib survey and the four-path roadmap.
 
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
+import Mathlib.Analysis.Calculus.Deriv.Mul
+import Mathlib.Analysis.Calculus.Deriv.Add
+import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Topology.Connected.PathConnected
 import Mathlib.Data.Real.Archimedean
 
@@ -116,5 +119,88 @@ theorem chartIntrinsicDist_nonneg (p q : E) : 0 ≤ chartIntrinsicDist p q := by
   refine Real.iInf_nonneg (fun γ => ?_)
   refine Real.iInf_nonneg (fun _ => ?_)
   exact chartArcLength_nonneg γ.extend zero_le_one
+
+/-- **Reparameterization adapter (left half)** (S3b): for `γ : ℝ → E`
+differentiable on `[0, 1]`, the chart-local arc length of `γ ∘ (· * 2)` on
+`[0, 1/2]` equals the chart-local arc length of `γ` on `[0, 1]`.
+
+The proof chains three Mathlib bearers: (i) `deriv.scomp` (chain rule, giving
+`deriv (γ ∘ (· * 2)) t = 2 • deriv γ (t * 2)`), (ii) `norm_smul` + `Real.norm_ofNat`
+(extracting the positive scalar `‖(2 : ℝ)‖ = 2`), and (iii)
+`intervalIntegral.smul_integral_comp_mul_right` (substitution `s = t * 2`,
+collapsing the constant scalar and bounds in a single bearer application).
+
+This is the left half of the broken path `Path.trans` used by the parent
+`Proofs.TriangleInequalityOQ04.pathLength_trans`; together with the right half
+(`chartArcLength_comp_mul_left_shift`) and additivity (`chartArcLength_trans`)
+it yields concatenation additivity for `chartArcLength` along `Path.trans`. -/
+private lemma chartArcLength_comp_mul_left {γ : ℝ → E}
+    (hγ : ∀ t ∈ Set.Icc (0 : ℝ) 1, DifferentiableAt ℝ γ t) :
+    chartArcLength (γ ∘ (· * 2)) 0 (1 / 2) = chartArcLength γ 0 1 := by
+  simp only [chartArcLength]
+  have h_pointwise : Set.EqOn (fun t => ‖deriv (γ ∘ (· * 2)) t‖)
+      (fun t => 2 * ‖deriv γ (t * 2)‖) (Set.uIcc (0 : ℝ) (1 / 2)) := by
+    intro t ht
+    rw [Set.uIcc_of_le (by norm_num : (0 : ℝ) ≤ 1 / 2)] at ht
+    have ht01 : (t * 2) ∈ Set.Icc (0 : ℝ) 1 :=
+      ⟨by linarith [ht.1], by linarith [ht.2]⟩
+    have hγt2 : DifferentiableAt ℝ γ (t * 2) := hγ _ ht01
+    have hmul_has : HasDerivAt (fun x : ℝ => x * 2) 2 t := hasDerivAt_mul_const 2
+    have hmul : DifferentiableAt ℝ (fun x : ℝ => x * 2) t := hmul_has.differentiableAt
+    have h_deriv_mul : deriv (fun x : ℝ => x * 2) t = 2 := hmul_has.deriv
+    show ‖deriv (γ ∘ (fun x : ℝ => x * 2)) t‖ = 2 * ‖deriv γ (t * 2)‖
+    rw [deriv.scomp t hγt2 hmul, h_deriv_mul, norm_smul, Real.norm_ofNat]
+  rw [intervalIntegral.integral_congr h_pointwise,
+      intervalIntegral.integral_const_mul]
+  have h := intervalIntegral.smul_integral_comp_mul_right
+              (a := (0 : ℝ)) (b := (1 / 2 : ℝ))
+              (f := fun s => ‖deriv γ s‖) (c := 2)
+  simp only [smul_eq_mul, zero_mul,
+    show (1 / 2 : ℝ) * 2 = 1 from by norm_num] at h
+  exact h
+
+/-- **Reparameterization adapter (right half)** (S3b): for `γ : ℝ → E`
+differentiable on `[0, 1]`, the chart-local arc length of `γ ∘ (· * 2 - 1)` on
+`[1/2, 1]` equals the chart-local arc length of `γ` on `[0, 1]`.
+
+Same three-bearer chain as `chartArcLength_comp_mul_left`, replacing the
+substitution bearer with `intervalIntegral.smul_integral_comp_mul_sub`
+(Option α from S3b PREP §4.2 — handles the affine shift `c * x - d` in a single
+bearer application without decomposing into `integral_comp_add_right` +
+`smul_integral_comp_mul_left`). -/
+private lemma chartArcLength_comp_mul_left_shift {γ : ℝ → E}
+    (hγ : ∀ t ∈ Set.Icc (0 : ℝ) 1, DifferentiableAt ℝ γ t) :
+    chartArcLength (γ ∘ (· * 2 - 1)) (1 / 2) 1 = chartArcLength γ 0 1 := by
+  simp only [chartArcLength]
+  have h_pointwise : Set.EqOn (fun t => ‖deriv (γ ∘ (· * 2 - 1)) t‖)
+      (fun t => 2 * ‖deriv γ (t * 2 - 1)‖) (Set.uIcc (1 / 2 : ℝ) 1) := by
+    intro t ht
+    rw [Set.uIcc_of_le (by norm_num : (1 / 2 : ℝ) ≤ 1)] at ht
+    have ht01 : (t * 2 - 1) ∈ Set.Icc (0 : ℝ) 1 :=
+      ⟨by linarith [ht.1], by linarith [ht.2]⟩
+    have hγst : DifferentiableAt ℝ γ (t * 2 - 1) := hγ _ ht01
+    have hmul_has : HasDerivAt (fun x : ℝ => x * 2 - 1) 2 t :=
+      (hasDerivAt_mul_const 2).sub_const 1
+    have hmul : DifferentiableAt ℝ (fun x : ℝ => x * 2 - 1) t := hmul_has.differentiableAt
+    have h_deriv_mul : deriv (fun x : ℝ => x * 2 - 1) t = 2 := hmul_has.deriv
+    show ‖deriv (γ ∘ (fun x : ℝ => x * 2 - 1)) t‖ = 2 * ‖deriv γ (t * 2 - 1)‖
+    rw [deriv.scomp t hγst hmul, h_deriv_mul, norm_smul, Real.norm_ofNat]
+  rw [intervalIntegral.integral_congr h_pointwise,
+      intervalIntegral.integral_const_mul]
+  -- Bring `t * 2 - 1` into the `c * x - d` form expected by
+  -- `smul_integral_comp_mul_sub` via pointwise `mul_comm`.
+  have h_swap : Set.EqOn (fun t : ℝ => ‖deriv γ (t * 2 - 1)‖)
+      (fun t => ‖deriv γ (2 * t - 1)‖) (Set.uIcc (1 / 2 : ℝ) 1) := by
+    intro t _
+    show ‖deriv γ (t * 2 - 1)‖ = ‖deriv γ (2 * t - 1)‖
+    rw [mul_comm t 2]
+  rw [intervalIntegral.integral_congr h_swap]
+  have h := intervalIntegral.smul_integral_comp_mul_sub
+              (a := (1 / 2 : ℝ)) (b := (1 : ℝ))
+              (f := fun s => ‖deriv γ s‖) (c := 2) (d := 1)
+  simp only [smul_eq_mul,
+    show (2 : ℝ) * (1 / 2) - 1 = 0 from by norm_num,
+    show (2 : ℝ) * 1 - 1 = 1 from by norm_num] at h
+  exact h
 
 end TriangleInequalityOQ04OQ01
