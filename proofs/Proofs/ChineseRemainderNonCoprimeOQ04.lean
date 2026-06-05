@@ -121,6 +121,32 @@ theorem nearest_integer_bound (α : ℝ) :
   use ⌊α + 1 / 2⌋
   rw [abs_le]; constructor <;> linarith [Int.floor_le (α + 1/2), Int.lt_floor_add_one (α + 1/2)]
 
+/-- **Dirichlet's theorem (rational form)**: for every α ∈ ℝ and N ≥ 1, there is a
+    rational p/q with 1 ≤ q ≤ N such that |α − p/q| < 1/(qN).
+
+    This is the textbook reformulation of `dirichlet_approximation` — dividing the
+    bound |qα − p| < 1/N by q (positive) yields the standard "1/(qN)" form, which
+    immediately implies the weaker classical |α − p/q| < 1/q² (since 1/(qN) ≤ 1/q²
+    whenever q ≤ N). The rational form is the standard input to Diophantine
+    approximation refinements (e.g., Liouville-style irrationality lower bounds and
+    the convergents of continued fractions). -/
+theorem dirichlet_approximation_rational (α : ℝ) (N : ℕ) (hN : 0 < N) :
+    ∃ p : ℤ, ∃ q : ℕ, 1 ≤ q ∧ q ≤ N ∧
+      |α - (↑p : ℝ) / (↑q : ℝ)| < 1 / ((↑q : ℝ) * (↑N : ℝ)) := by
+  obtain ⟨p, q, hq1, hqN, hbound⟩ := dirichlet_approximation α N hN
+  refine ⟨p, q, hq1, hqN, ?_⟩
+  have hq_pos : (0 : ℝ) < q := Nat.cast_pos.mpr hq1
+  have hN_pos : (0 : ℝ) < N := Nat.cast_pos.mpr hN
+  -- Rewrite α − p/q = (qα − p)/q, then |·/q| = |·|/q.
+  rw [show α - (↑p : ℝ) / ↑q = ((↑q : ℝ) * α - ↑p) / ↑q from by field_simp]
+  rw [abs_div, abs_of_pos hq_pos]
+  -- Goal: |qα − p| / q < 1 / (q * N). Multiply both sides by q*N (positive).
+  rw [div_lt_div_iff₀ hq_pos (mul_pos hq_pos hN_pos)]
+  -- From hbound : |qα − p| < 1/N, get |qα − p|·N < 1, then close by nlinarith.
+  have hbound' : |(↑q : ℝ) * α - ↑p| * (↑N : ℝ) < 1 := by
+    rw [← lt_div_iff₀ hN_pos]; exact hbound
+  nlinarith
+
 /-!
 ## Part 4: Lattice Point Theorem
 -/

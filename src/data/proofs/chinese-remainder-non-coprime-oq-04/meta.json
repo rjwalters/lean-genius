@@ -21,9 +21,9 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 16,
     "defCount": 2,
-    "lineCount": 239,
+    "lineCount": 265,
     "mathlibDependencies": [
       {
         "theorem": "Fintype.exists_ne_map_eq_of_card_lt",
@@ -48,6 +48,7 @@
     ],
     "originalContributions": [
       "Full pigeonhole proof of Dirichlet's approximation theorem via fractional part binning (binFn : Fin(N+1) → Fin(N))",
+      "Rational form of Dirichlet's theorem: |α − p/q| < 1/(qN) (dirichlet_approximation_rational), the textbook formulation that immediately implies the classical |α − p/q| < 1/q² bound and feeds into continued-fraction / Liouville-style refinements",
       "Stern-Brocot mediant property: mediant lies strictly between input fractions",
       "Farey neighbor ordering: determinant 1 implies strict ordering",
       "Lattice point existence: half-open interval of length m contains a multiple of m",
