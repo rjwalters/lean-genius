@@ -80,14 +80,32 @@ S5 PREP #18639, S6 PREP #18734), then S2 ACT shipped the skeleton
 (#18955), S3-α partial (commit d86b78e5646), and S3 ACT (PR #21322).
 This iteration discharges S4 ACT.
 
+**S5b ACT (researcher-1, 2026-06-05, this iteration)**: four direct
+bridge lemmas connecting the polynomial sub-lattice's `k ≤ 1` slice
+to the parent's `qBinom` / `qMultichoose` (not only `qNumber`):
+* `qtBinom_zero_right_eq_qBinom` (unconditional) — `k = 0`, both = 1.
+* `qtMultichoose_zero_right_eq_qMultichoose` (unconditional) — corollary.
+* `qtBinom_one_right_eq_qBinom` (under `1 - q ≠ 0`) — `k = 1`,
+  composes `qtBinom_one_right_eq_qNumber` (S5 ACT) with the parent's
+  `qBinom_one_right` (`qBinom q N 1 = qNumber q N`).
+* `qtMultichoose_one_right_eq_qMultichoose` (under `1 - q ≠ 0`) — headline,
+  the direct `qMultichoose`-form bridge at `k = 1`.
+
+This closes the bridge chain: the polynomial sub-lattice points at
+`k = 0` and `k = 1` are now equated **directly** to the parent gallery
+entry's polynomial objects (`qBinom`/`qMultichoose`), not only to the
+underlying `qNumber`. Gallery integration (S7) can now quote the
+parent's named objects rather than re-deriving them via `qNumber`.
+
 ## Status
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 14 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 17 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
   specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
-  theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form bridges)
+  theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form
+  bridges to `qNumber`, 4 S5b ACT direct bridges to `qBinom`/`qMultichoose`)
 * Lemmas (private): 1 (`qBinom_mult_recur`, CommRing multiplicative q-Pascal)
 
 ## Build status
@@ -424,5 +442,40 @@ theorem qtMultichoose_two_two_eq_qNumber (q t : R)
     have hg := qNumber_geometric q 3
     linear_combination hg
   rw [h_geom, mul_div_cancel_left₀ _ hq]
+
+-- ============================================================
+-- SECTION IX: S5b ACT — Direct bridges to the parent's qBinom / qMultichoose
+-- ============================================================
+
+/-- **k = 0 trivial bridge to `qBinom`**: `qtBinom q t N 0 = qBinom q N 0 = 1`.
+    Both sides are the empty product / boundary; no hypothesis needed. -/
+theorem qtBinom_zero_right_eq_qBinom (q t : R) (N : ℕ) :
+    qtBinom q t N 0 = qBinom q N 0 := by
+  rw [qtBinom_zero_right, qBinom_zero_right]
+
+/-- **k = 0 trivial bridge to `qMultichoose`**: `qtMultichoose q t n 0 = qMultichoose q n 0 = 1`.
+    Both sides are 1 by their respective boundary lemmas. -/
+theorem qtMultichoose_zero_right_eq_qMultichoose (q t : R) (n : ℕ) :
+    qtMultichoose q t n 0 = qMultichoose q n 0 := by
+  rw [qtMultichoose_zero_right, qMultichoose_zero_right]
+
+/-- **k = 1 bridge to `qBinom`**: at `k = 1`, the rational Macdonald form
+    `qtBinom q t N 1` equals the parent's `qBinom q N 1` provided
+    `1 - q ≠ 0`. Composes `qtBinom_one_right_eq_qNumber` with the parent's
+    `qBinom_one_right : qBinom q N 1 = qNumber q N`. -/
+theorem qtBinom_one_right_eq_qBinom (q t : R) (N : ℕ)
+    (hq : (1 - q : R) ≠ 0) :
+    qtBinom q t N 1 = qBinom q N 1 := by
+  rw [qtBinom_one_right_eq_qNumber q t N hq, ← qBinom_one_right]
+
+/-- **k = 1 bridge to `qMultichoose`** (headline S5b ACT): at `k = 1`, the
+    (q,t)-multichoose coefficient equals the parent's `qMultichoose q n 1`
+    provided `1 - q ≠ 0`. Direct corollary of
+    `qtMultichoose_one_right_eq_qNumber` + the parent's
+    `qMultichoose_one_right : qMultichoose q n 1 = qNumber q n`. -/
+theorem qtMultichoose_one_right_eq_qMultichoose (q t : R) (n : ℕ)
+    (hq : (1 - q : R) ≠ 0) :
+    qtMultichoose q t n 1 = qMultichoose q n 1 := by
+  rw [qtMultichoose_one_right_eq_qNumber q t n hq, ← qMultichoose_one_right]
 
 end QtMultichooseCoefficients
