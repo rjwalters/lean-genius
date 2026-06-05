@@ -9,12 +9,16 @@
 #   ./find-candidates.sh --json       # Output as JSON
 #   ./find-candidates.sh --tier1-only # Return only companion files (Tier 1)
 #
-# Two-tier candidate system:
-#   Tier 1 (preferred): *Aristotle.lean companion files
+# Three-tier candidate system:
+#   Tier 0 (highest priority): *StatementOnly.lean files (Harmonic format)
+#     - One theorem per file with informal /- problem block and standard set_option block
+#     - Mirrors Harmonic's HarmonicLean/StatementOnly_*.lean convention
+#     - Score = theorem_sorries only
+#   Tier 1: *Aristotle.lean companion files
 #     - Purpose-built for Aristotle: only routine lemma sorries, no axioms
 #     - Created by Researchers alongside main proof files
 #     - Score = theorem_sorries only (no axiom penalty)
-#   Tier 2 (fallback): Research output files (non-Erdos, non-Test, non-Aristotle)
+#   Tier 2 (fallback): Research output files (non-Erdos, non-Test, non-Aristotle, non-StatementOnly)
 #     - Researcher-produced files with complete definitions and routine lemma sorries
 #     - Score = theorem_sorries only
 #
@@ -109,7 +113,7 @@ get_blocked_files() {
 }
 
 # Analyze a single file. Returns score -1 for hard rejects.
-# Args: file, tier (1 or 2)
+# Args: file, tier (0, 1 or 2)
 analyze_file() {
     local file="$1"
     local tier="${2:-2}"
@@ -200,6 +204,18 @@ main() {
 
     local candidate_data=()
 
+    # Tier 0: StatementOnly files (*StatementOnly.lean) — Harmonic format
+    local tier0_files=()
+    while IFS= read -r f; do
+        tier0_files+=("$f")
+    done < <(find "$PROOFS_DIR" -name "*StatementOnly.lean" -type f 2>/dev/null | sort)
+
+    if [[ ${#tier0_files[@]} -gt 0 ]]; then
+        while IFS= read -r line; do
+            [[ -n "$line" ]] && candidate_data+=("$line")
+        done < <(collect_candidates 0 "$submitted_files" "$blocked_files" "${tier0_files[@]}")
+    fi
+
     # Tier 1: Companion files (*Aristotle.lean)
     local tier1_files=()
     while IFS= read -r f; do
@@ -218,7 +234,7 @@ main() {
         while IFS= read -r f; do
             tier2_files+=("$f")
         done < <(find "$PROOFS_DIR" -name "*.lean" -type f \
-            ! -name "Erdos*" ! -name "Test*" ! -name "*Aristotle.lean" \
+            ! -name "Erdos*" ! -name "Test*" ! -name "*Aristotle.lean" ! -name "*StatementOnly.lean" \
             2>/dev/null | sort)
 
         if [[ ${#tier2_files[@]} -gt 0 ]]; then
@@ -265,6 +281,12 @@ main() {
             else
                 echo ","
             fi
+            # companion_file is true for Tier 0 (StatementOnly) AND Tier 1 (Aristotle).
+            # Both are purpose-built files for Aristotle submission.
+            local companion_flag="false"
+            if [[ "$tier" -eq 0 || "$tier" -eq 1 ]]; then
+                companion_flag="true"
+            fi
             cat <<EOF
   {
     "file": "proofs/Proofs/${name}.lean",
@@ -274,7 +296,7 @@ main() {
     "theorem_sorries": $thm,
     "score": $score,
     "tier": $tier,
-    "companion_file": $([ "$tier" -eq 1 ] && echo "true" || echo "false")
+    "companion_file": $companion_flag
   }
 EOF
         done <<< "$sorted_data"
@@ -289,20 +311,27 @@ EOF
         while IFS='|' read -r name total def axiom thm score tier; do
             [[ -z "$name" ]] && continue
             local tier_label
-            [[ "$tier" -eq 1 ]] && tier_label="T1" || tier_label="T2"
+            case "$tier" in
+                0) tier_label="T0" ;;
+                1) tier_label="T1" ;;
+                *) tier_label="T2" ;;
+            esac
             printf "%-40s %5s %8d %8d %8d %8d\n" "$name" "$tier_label" "$total" "$def" "$axiom" "$score"
         done <<< "$sorted_data"
 
-        local total_count tier1_count tier2_count
+        local total_count tier0_count tier1_count tier2_count
         total_count=$(echo "$sorted_data" | grep -c '|' 2>/dev/null; true)
+        tier0_count=$(echo "$sorted_data" | grep -c '|0$' 2>/dev/null; true)
         tier1_count=$(echo "$sorted_data" | grep -c '|1$' 2>/dev/null; true)
         tier2_count=$(echo "$sorted_data" | grep -c '|2$' 2>/dev/null; true)
         total_count="${total_count:-0}"
+        tier0_count="${tier0_count:-0}"
         tier1_count="${tier1_count:-0}"
         tier2_count="${tier2_count:-0}"
         echo ""
-        echo "Total candidates: $total_count (T1 companion: $tier1_count, T2 regular: $tier2_count)"
-        echo "T1 companion files are preferred. T2 research output files are fallback when T1 slots exhausted."
+        echo "Total candidates: $total_count (T0 statement-only: $tier0_count, T1 companion: $tier1_count, T2 regular: $tier2_count)"
+        echo "T0 StatementOnly files (Harmonic format) have top priority. T1 companion files are next."
+        echo "T2 research output files are fallback when T0+T1 slots exhausted."
         echo "Best candidates have low score (few sorries, no def sorries)"
     fi
 }

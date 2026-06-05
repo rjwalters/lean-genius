@@ -12,8 +12,9 @@
 #   ARISTOTLE_API_KEY - Required for submission
 #   ARISTOTLE_TARGET  - Target number of active jobs (default 10)
 #
-# Submission order: Tier 1 companion files (*Aristotle.lean) first,
-# then Tier 2 research output files to fill remaining slots.
+# Submission order: Tier 0 StatementOnly files (*StatementOnly.lean) first,
+# then Tier 1 companion files (*Aristotle.lean), then Tier 2 research output
+# files to fill remaining slots.
 #
 
 set -euo pipefail
@@ -51,8 +52,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --target N   Maintain N active jobs (default: 10)"
             echo "  --dry-run    Show what would be submitted"
             echo ""
-            echo "Submission order: Tier 1 companion files (*Aristotle.lean) first,"
-            echo "then Tier 2 research output files to fill remaining slots."
+            echo "Submission order: Tier 0 StatementOnly files (*StatementOnly.lean) first,"
+            echo "then Tier 1 companion files (*Aristotle.lean), then Tier 2 research files."
             exit 0
             ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
@@ -166,8 +167,12 @@ submit_file() {
 
     local is_companion=false
     [[ "$file" == *Aristotle.lean ]] && is_companion=true
+    local is_statement_only=false
+    [[ "$file" == *StatementOnly.lean ]] && is_statement_only=true
 
-    if [[ "$is_companion" == true ]]; then
+    if [[ "$is_statement_only" == true ]]; then
+        echo -e "${BLUE}Submitting [T0 statement-only]:${NC} $file"
+    elif [[ "$is_companion" == true ]]; then
         echo -e "${BLUE}Submitting [T1 companion]:${NC} $file"
     else
         echo -e "${BLUE}Submitting [T2 regular]:${NC} $file"
@@ -254,8 +259,21 @@ submit_file() {
     local tmp_file=$(mktemp)
     local preprocessed_flag="false"
     [[ -n "$preprocess_log" ]] && preprocessed_flag="true"
+    # companion_file flag captures both T0 (statement-only) and T1 (companion)
+    # files — both are purpose-built Aristotle submissions.
     local companion_flag="false"
-    [[ "$is_companion" == true ]] && companion_flag="true"
+    if [[ "$is_companion" == true || "$is_statement_only" == true ]]; then
+        companion_flag="true"
+    fi
+    local submission_tier="T2"
+    local submission_note="Batch submission (T2)"
+    if [[ "$is_statement_only" == true ]]; then
+        submission_tier="T0"
+        submission_note="StatementOnly submission (T0)"
+    elif [[ "$is_companion" == true ]]; then
+        submission_tier="T1"
+        submission_note="Companion file submission (T1)"
+    fi
 
     jq --arg pid "$project_id" \
        --arg file "$file" \
@@ -264,6 +282,8 @@ submit_file() {
        --argjson preprocessed "$preprocessed_flag" \
        --arg preprocess_log "${preprocess_log:-}" \
        --argjson companion "$companion_flag" \
+       --arg tier "$submission_tier" \
+       --arg note "$submission_note" \
        '.jobs += [{
          project_id: $pid,
          file: $file,
@@ -273,7 +293,8 @@ submit_file() {
          preprocessed: $preprocessed,
          preprocessing_log: (if $preprocess_log != "" then $preprocess_log else null end),
          companion_file: $companion,
-         notes: (if $companion then "Companion file submission (T1)" else "Batch submission (T2)" end)
+         tier: $tier,
+         notes: $note
        }]' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
     # Create completion signal for daemon stats tracking
@@ -358,8 +379,9 @@ main() {
     echo "Will submit: $to_submit files"
     echo ""
 
-    # Get best candidates — two-tier system:
-    # Tier 1 (companion *Aristotle.lean files) come first, then Tier 2 (regular files)
+    # Get best candidates — three-tier system:
+    # Tier 0 (*StatementOnly.lean) first, then Tier 1 (companion *Aristotle.lean),
+    # then Tier 2 (regular files). Ordering is enforced by find-candidates.sh.
     local candidates
     candidates=$("$FIND_CANDIDATES" --json --best "$to_submit" 2>/dev/null)
 
@@ -368,12 +390,14 @@ main() {
         return 0
     fi
 
+    local tier0_count
+    tier0_count=$(echo "$candidates" | jq '[.[] | select(.tier == 0)] | length')
     local tier1_count
     tier1_count=$(echo "$candidates" | jq '[.[] | select(.tier == 1)] | length')
     local tier2_count
     tier2_count=$(echo "$candidates" | jq '[.[] | select(.tier == 2)] | length')
 
-    echo "Candidates: $tier1_count Tier 1 companion files + $tier2_count Tier 2 regular files"
+    echo "Candidates: $tier0_count Tier 0 StatementOnly + $tier1_count Tier 1 companion + $tier2_count Tier 2 regular files"
     echo ""
 
     # Submit each candidate (already sorted: T1 first, then T2)
