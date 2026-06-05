@@ -47,7 +47,9 @@ PERSIST_JOBS="$PERSIST_DIR/aristotle-jobs.json"
 # This drives the "1 hour since last work" idle check across agent restarts.
 #
 # RATE_LIMIT_FILE is the contract from issue #22469 (capacity backoff).
-# If present and its mtime is in the future, treat it as an idle reason.
+# The file body (first line) holds a UTC ISO-8601 timestamp written by
+# submit-batch.sh::write_rate_limit_cooldown(). While now < timestamp, the
+# cooldown is active and this agent treats it as an idle reason.
 SCALED_TO_ZERO_MARKER="$PERSIST_DIR/aristotle-scaled-to-zero"
 LAST_CYCLE_FILE="$PERSIST_DIR/aristotle-last-cycle"
 RATE_LIMIT_FILE="$PERSIST_DIR/aristotle-rate-limit-until"
@@ -110,16 +112,33 @@ check_wake_signal() {
 }
 
 # Check whether a rate-limit cooldown is currently active (issue #22469
-# capacity backoff). The contract: $RATE_LIMIT_FILE exists and its mtime
-# is in the future. If the file is missing or its mtime has passed, this
-# returns 1 (no active cooldown) so the caller falls through to other
-# idle checks.
+# capacity backoff). The contract (set by submit-batch.sh, see PR #22487):
+# $RATE_LIMIT_FILE's first line holds a UTC ISO-8601 timestamp
+# (e.g. "2026-06-05T12:34:56Z"). While now < that timestamp, the cooldown
+# is active. If the file is missing, empty, or contains an unparseable
+# value, this returns 1 (not rate-limited) — fail safe so a corrupt file
+# never blocks scale-to-zero.
 is_rate_limited() {
     [[ -f "$RATE_LIMIT_FILE" ]] || return 1
-    local until_epoch now_epoch
-    # mtime in epoch seconds, portable across GNU/BSD stat
-    until_epoch=$(stat -f '%m' "$RATE_LIMIT_FILE" 2>/dev/null || stat -c '%Y' "$RATE_LIMIT_FILE" 2>/dev/null || echo "0")
-    now_epoch=$(date +%s)
+
+    local until_raw
+    until_raw=$(head -n1 "$RATE_LIMIT_FILE" 2>/dev/null | tr -d '[:space:]')
+    [[ -n "$until_raw" ]] || return 1
+
+    local until_epoch=""
+    # macOS BSD date and GNU date have different flags; try both.
+    # The `-u` flag interprets the timestamp as UTC (matches now_epoch).
+    # This mirrors submit-batch.sh::check_rate_limit_cooldown().
+    if date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$until_raw" +%s >/dev/null 2>&1; then
+        until_epoch=$(date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$until_raw" +%s 2>/dev/null)
+    elif date -u -d "$until_raw" +%s >/dev/null 2>&1; then
+        until_epoch=$(date -u -d "$until_raw" +%s 2>/dev/null)
+    fi
+
+    [[ -n "$until_epoch" ]] || return 1
+
+    local now_epoch
+    now_epoch=$(date -u +%s)
     [[ "$until_epoch" -gt "$now_epoch" ]]
 }
 
