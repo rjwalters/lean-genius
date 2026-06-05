@@ -71,8 +71,12 @@ def HasAcyclicColoring {V : Type*} {G : SimpleGraph V}
   ∃ c : V → Fin k, IsAcyclicColoring O c
 
 /-- The dichromatic number δ(G): the minimum k such that every orientation
-    of G admits an acyclic k-coloring. -/
-noncomputable def SimpleGraph.dichromNumber {V : Type*}
+    of G admits an acyclic k-coloring.
+
+    Declared at `_root_` so the `G.dichromNumber` dot notation resolves
+    against the global `SimpleGraph` namespace rather than being shadowed
+    by the surrounding `Erdos761` namespace (Iter 7 wrapper). -/
+noncomputable def _root_.SimpleGraph.dichromNumber {V : Type*}
     (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∀ O : Orientation G, HasAcyclicColoring O k}
 
@@ -83,8 +87,12 @@ def IsCochromatic {V : Type*} (G : SimpleGraph V) {k : ℕ}
   ∀ i : Fin k, (∀ u v, c u = i → c v = i → u ≠ v → G.Adj u v) ∨
                (∀ u v, c u = i → c v = i → u ≠ v → ¬G.Adj u v)
 
-/-- The cochromatic number ζ(G): minimum k for a cochromatic partition. -/
-noncomputable def SimpleGraph.cochromNumber {V : Type*}
+/-- The cochromatic number ζ(G): minimum k for a cochromatic partition.
+
+    Declared at `_root_` so the `G.cochromNumber` dot notation resolves
+    against the global `SimpleGraph` namespace rather than being shadowed
+    by the surrounding `Erdos761` namespace (Iter 7 wrapper). -/
+noncomputable def _root_.SimpleGraph.cochromNumber {V : Type*}
     (G : SimpleGraph V) : ℕ :=
   sInf {k : ℕ | ∃ c : V → Fin k, IsCochromatic G c}
 
@@ -133,8 +141,8 @@ theorem dichrom_le_chrom [Fintype V] [DecidableEq V]
   intro O
   let e := Fintype.equivFin V
   refine ⟨e, isAcyclicColoring_of_no_mono_edge O e ?_⟩
-  intro u v hdir
-  exact mt e.injective (G.ne_of_adj (O.consistent u v hdir))
+  intro u v hdir heq
+  exact G.ne_of_adj (O.consistent u v hdir) (e.injective heq)
 
 /-- [Formerly axiom] ζ(G) ≤ |V|: the injective coloring gives singleton
     color classes, which vacuously satisfy the cochromatic condition. -/
@@ -149,17 +157,38 @@ theorem cochrom_le_chrom [Fintype V] [DecidableEq V]
   -- contradicts injectivity of e
   exact absurd (e.injective (hu.trans hv.symm)) huv
 
+/-- δ(G) ≤ k whenever G is k-colorable. Any proper k-coloring has no
+    monochromatic edges, hence is acyclic for every orientation by the
+    bridge lemma. This is the structural form of the well-known inequality
+    δ(G) ≤ χ(G) at the level of `SimpleGraph.Colorable`. -/
+theorem dichrom_le_of_colorable (G : SimpleGraph V) {k : ℕ}
+    (h : G.Colorable k) :
+    G.dichromNumber ≤ k := by
+  apply csInf_le (nat_bddBelow _)
+  show ∀ O : Orientation G, HasAcyclicColoring O k
+  intro O
+  obtain ⟨c⟩ := h
+  exact ⟨c, isAcyclicColoring_of_no_mono_edge O c
+    (fun u v hdir => c.valid (O.consistent u v hdir))⟩
+
+/-- ζ(G) ≤ k whenever G is k-colorable. Each color class of a proper
+    k-coloring is an independent set, satisfying the cochromatic condition
+    via the `¬G.Adj` branch. This is the structural form of ζ(G) ≤ χ(G). -/
+theorem cochrom_le_of_colorable (G : SimpleGraph V) {k : ℕ}
+    (h : G.Colorable k) :
+    G.cochromNumber ≤ k := by
+  apply csInf_le (nat_bddBelow _)
+  show ∃ c : V → Fin k, IsCochromatic G c
+  obtain ⟨c⟩ := h
+  refine ⟨c, fun _ => Or.inr (fun u v hu hv _ hadj => ?_)⟩
+  exact c.valid hadj (hu.trans hv.symm)
+
 /-- [Formerly sorry] Bipartite graphs have δ(G) ≤ 2.
-    Any proper 2-coloring has no monochromatic edges, hence is acyclic
-    for every orientation by the bridge lemma. -/
+    Direct corollary of `dichrom_le_of_colorable` at k = 2. -/
 theorem bipartite_dichrom_le_two (G : SimpleGraph V)
     (hBip : G.Colorable 2) :
-    G.dichromNumber ≤ 2 := by
-  apply csInf_le (nat_bddBelow _)
-  show ∀ O : Orientation G, HasAcyclicColoring O 2
-  intro O
-  obtain ⟨c⟩ := hBip
-  exact ⟨c, isAcyclicColoring_of_no_mono_edge O c (fun u v hdir => c.valid (O.consistent u v hdir))⟩
+    G.dichromNumber ≤ 2 :=
+  dichrom_le_of_colorable G hBip
 
 /-- [Formerly axiom] For every orientation, every proper coloring is acyclic.
     Proof: construct any orientation (using a total order from Fintype.equivFin),
@@ -199,8 +228,8 @@ theorem dichrom_mono [Fintype V] [DecidableEq V]
   · -- G-set nonempty: Fintype.card V works for all G-orientations
     exact ⟨Fintype.card V, fun O => by
       let e := Fintype.equivFin V
-      exact ⟨e, isAcyclicColoring_of_no_mono_edge O e fun u v hdir =>
-        mt e.injective (G.ne_of_adj (O.consistent u v hdir))⟩⟩
+      exact ⟨e, isAcyclicColoring_of_no_mono_edge O e fun u v hdir heq =>
+        G.ne_of_adj (O.consistent u v hdir) (e.injective heq)⟩⟩
   · -- Inclusion: k acyclic for all G-orientations → acyclic for all H-orientations
     intro k hk O_H
     classical
