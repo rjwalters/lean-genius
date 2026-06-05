@@ -40,7 +40,7 @@
     "dateAdded": "2025-12-29",
     "axiomCount": 1,
     "lineCount": 457,
-    "assumptions": "1 axiom: lindemann_theorem (Lindemann-Weierstrass theorem). pi_transcendental now proved from lindemann_theorem via Euler's identity. All other results proved from these.",
+    "assumptions": "1 axiom (transitive): HermiteLindemann.hermite_lindemann (Hermite-Lindemann theorem). Local axiom lindemann_theorem discharged via IsFractionRing.isAlgebraic_iff bridge to hermite_lindemann (S8 ACT, 2026-06-05). pi_transcendental now proved from theorem lindemann_theorem via Euler s identity. All other results proved from these.",
     "mathlib_version": "4.26.0",
     "theoremCount": 18,
     "definitionCount": 0
@@ -208,9 +208,9 @@
       "Polynomial"
     ],
     "namespace": null,
-    "lineCount": 457,
-    "axiomCount": 1,
-    "theoremCount": 18,
+    "lineCount": 432,
+    "axiomCount": 0,
+    "theoremCount": 19,
     "definitionCount": 0,
     "path": "Proofs/PiTranscendental.lean",
     "sorries": 0

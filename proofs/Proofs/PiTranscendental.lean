@@ -3,6 +3,8 @@ import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
 import Mathlib.Data.Real.Irrational
+import Mathlib.Analysis.Real.Pi.Irrational
+import Proofs.HermiteLindemann
 
 /-!
 # π is Transcendental (Wiedijk #53)
@@ -121,50 +123,23 @@ example : Complex.exp (Real.pi * Complex.I) = -1 := Complex.exp_pi_mul_I
     If α is a non-zero algebraic number, then e^α is transcendental.
 
     This is the key step - once we have this, π's transcendence follows.
-    The full Lindemann-Weierstrass theorem is not yet in Mathlib. -/
-axiom lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic ℤ α) :
-    Transcendental ℤ (Complex.exp α)
+
+    Derived from `HermiteLindemann.hermite_lindemann` (which assumes algebraicity
+    over ℚ) by extending the base ring ℤ → ℚ via `IsFractionRing.isAlgebraic_iff`. -/
+theorem lindemann_theorem (α : ℂ) (hα_ne : α ≠ 0) (hα_alg : IsAlgebraic ℤ α) :
+    Transcendental ℤ (Complex.exp α) :=
+  HermiteLindemann.hermite_lindemann α hα_ne
+    ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mp hα_alg)
 
 /-- **Main Theorem: π is transcendental over ℤ** (Wiedijk #53)
 
-    This follows from Lindemann's theorem and Euler's identity e^(iπ) = -1.
-    Since -1 is algebraic, and e^(iπ) = -1, if iπ were algebraic (which it
-    would be if π were algebraic), we'd contradict Lindemann's theorem.
-
-    Proof:
-    1. Assume π is algebraic over ℤ (in ℝ)
-    2. Then (↑π : ℂ) is algebraic over ℤ (in ℂ) via the embedding ℝ → ℂ
-    3. i is algebraic over ℤ (root of X² + 1)
-    4. So π·i is algebraic over ℤ (algebraic numbers form a ring)
-    5. π·i ≠ 0 (since π > 0 and i ≠ 0)
-    6. By Lindemann's theorem, e^(πi) is transcendental
-    7. But e^(πi) = -1 by Euler's identity
-    8. -1 is algebraic (root of X + 1) — contradiction -/
-theorem pi_transcendental : Transcendental ℤ Real.pi := by
-  intro halg
-  -- Step 2: Transfer algebraicity from ℝ to ℂ via the embedding ℝ → ℂ
-  have hpi_C : IsAlgebraic ℤ (↑(Real.pi) : ℂ) := by
-    obtain ⟨p, hp_ne, hp_eval⟩ := halg
-    refine ⟨p, hp_ne, ?_⟩
-    -- aeval (↑π : ℂ) p = ↑(aeval π p : ℝ) = ↑0 = 0
-    have h : Polynomial.aeval (algebraMap ℝ ℂ Real.pi) p =
-        algebraMap ℝ ℂ (Polynomial.aeval Real.pi p) :=
-      (Polynomial.aeval_algebraMap_apply ℤ Real.pi p).symm
-    rw [h, hp_eval, map_zero]
-  -- Step 3: i is algebraic
-  have hi := I_algebraic
-  -- Step 4: π·i is algebraic (algebraic numbers form a ring)
-  have hpi_i : IsAlgebraic ℤ ((↑Real.pi : ℂ) * Complex.I) := hpi_C.mul hi
-  -- Step 5: π·i ≠ 0
-  have hne : (↑Real.pi : ℂ) * Complex.I ≠ 0 :=
-    mul_ne_zero (Complex.ofReal_ne_zero.mpr (ne_of_gt Real.pi_pos)) Complex.I_ne_zero
-  -- Step 6: By Lindemann's theorem, e^(πi) is transcendental
-  have h_trans := lindemann_theorem ((↑Real.pi : ℂ) * Complex.I) hne hpi_i
-  -- Step 7: But e^(πi) = -1 (Euler's identity)
-  rw [show (↑Real.pi : ℂ) * Complex.I = ↑Real.pi * Complex.I from rfl,
-      Complex.exp_pi_mul_I] at h_trans
-  -- Step 8: -1 is algebraic — contradiction
-  exact h_trans neg_one_algebraic
+    Derived as an alias of `HermiteLindemann.pi_transcendental_real`, which proves
+    the same statement directly from `axiom hermite_lindemann` via Euler's identity.
+    (The previous in-file proof used forward references to `I_algebraic` and
+    `neg_one_algebraic` defined later in the file — invalid in Lean 4. Cross-file
+    delegation is cleaner.) -/
+theorem pi_transcendental : Transcendental ℤ Real.pi :=
+  HermiteLindemann.pi_transcendental_real
 
 /-- π is transcendental over ℚ.
     Derived from pi_transcendental (over ℤ): if π were algebraic over ℚ,
@@ -282,7 +257,7 @@ theorem pi_sq_transcendental : Transcendental ℤ (Real.pi ^ 2) :=
 theorem pi_plus_one_transcendental_axiom : Transcendental ℤ (Real.pi + 1) := by
   intro halg
   have hq : IsAlgebraic ℚ (Real.pi + 1) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
-  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_algebraMap (1 : ℚ)
+  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_one
   have hpi : IsAlgebraic ℚ Real.pi := by
     have := hq.sub h1; rwa [add_sub_cancel_right] at this
   exact pi_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr hpi)
