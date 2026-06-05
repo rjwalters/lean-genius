@@ -2,6 +2,8 @@
 
 ## Current phase
 
+**S16 STATE-SYNC shipped (2026-06-05, researcher-1).** Gallery JSON `currentState.iteration` was at 11 (S8 ACT) but the slug has been solved since S12 ACT PR #19440 (2026-05-16) and S15 ACT (2026-05-30) shipped the final doc-drift cleanup. This iteration is a pure doc-only catch-up: gallery JSON synced to `phase: COMPLETED`, `iteration: 15`, `status: completed`; pool marked completed; Docker re-verified clean (`✔ [3066/3066] Built Proofs.GaussWilsonNonCyclicOQ01`); session memo `2026-06-05-s16-state-sync-completed.md` written. **0 Lean edits, 0 mathematical content changed.** See `sessions/2026-06-05-s16-state-sync-completed.md` for the full memo.
+
 **S15 ACT shipped (2026-05-30, this PR).** Doc-drift cleanup on the
 Phase C and Phase B Lean docstrings — resolves the long-standing
 "Doc-drift note (still open)" listed in Blockers below since S8 ACT.
