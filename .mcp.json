@@ -1,0 +1,17 @@
+{
+  "_comment": "Claude Code MCP server registry for lean-genius. The aristotle entry registers Harmonic's Aristotle theorem prover via the lean-aristotle-mcp wrapper. ARISTOTLE_API_KEY must be set in the shell environment (researchers source it from ~/.aristotle_key — see scripts/aristotle/mcp-smoke-test.sh). Upstream sha pin is tracked in vendor/lean-aristotle-mcp.sha.",
+  "mcpServers": {
+    "aristotle": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/septract/lean-aristotle-mcp@e53a7ffb856c53d1e85166668af89fe4175a4898",
+        "aristotle-mcp"
+      ],
+      "env": {
+        "ARISTOTLE_API_KEY": "${ARISTOTLE_API_KEY}"
+      }
+    }
+  }
+}
