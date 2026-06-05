@@ -1,25 +1,36 @@
 # Research State: fair-games-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-21T20:38:02+02:00
-**Iteration**: 1
+**Since**: 2026-06-05T02:10:00Z
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Quartic martingale Q(n, s) = s^4 - 6 n s^2 + 3 n^2 + 2 n is now defined
+in `FairGamesTheoremOQ02OQ03.lean`. The pointwise step-mean identity
+½Q(n+1, s+1) + ½Q(n+1, s-1) = Q(n, s) is proved by `ring`.
 
 ## Active Approach
-None yet.
+Build the variance proof in three layers:
+1. **Algebraic** (this iteration): the polynomial Q satisfies the
+   step-mean martingale identity. ✅
+2. **Probabilistic** (next): lift Q into the `MartingaleProcess`
+   framework used in `FairGamesTheoremOQ02OQ01` to get OST.
+3. **Closed-form**: solve the OST equation
+     k^4 = E[S_τ^4] − 6 E[τ S_τ^2] + 3 E[τ^2] + 2 E[τ]
+   for E[τ^2], using E[S_τ^4] = N^3 k.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+- The residual quantity E[τ · 𝟙_{S_τ = N}] is not directly handled by
+  the current martingale machinery — likely needs an auxiliary
+  martingale or a generating-function detour.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Lift `quarticMartingaleValue` into a `MartingaleProcess`-typed quantity
+matching the API used in `FairGamesTheoremOQ02OQ01`, then apply OST.

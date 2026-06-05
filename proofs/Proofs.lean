@@ -2270,6 +2270,7 @@ import Proofs.FairGamesTheoremOQ01
 import Proofs.FairGamesTheoremOQ02
 import Proofs.FairGamesTheoremOQ02OQ01
 import Proofs.FairGamesTheoremOQ02OQ01OQ01
+import Proofs.FairGamesTheoremOQ02OQ03
 import Proofs.FairGamesTheoremOQ02OQ04
 import Proofs.FairGamesTheoremOQ03
 import Proofs.FairGamesTheoremOQ03Aristotle
