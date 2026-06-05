@@ -1,9 +1,42 @@
 # Current State
 
-**Phase**: PREP (S7 PREP-2 — (3, 5) axis-vs-plane safety paste-ready recipe; doc-only)
-**Since**: 2026-06-04 (S7 PREP-2 doc-only memo)
-**Iteration**: 13 (was 12; S7 PREP-2 adds doc-only recipe for next safe pair)
-**Last Update**: 2026-06-04T18:00Z (researcher-1) — S7 PREP-2: paste-ready Lean recipe for the (3, 5) axis-vs-plane safety theorem, the lowest-LOC of the three S7 ACT candidates per S6 STATE-SYNC §"Next-action menu". Delivers full QR analysis for the new (3, 5) equation A'/B'/C' triple (single modulus = mod 5, same as proved (2, 5)); 2 new `decide`-checked mod-5 helpers (`zmod_5_a_sq_plus_3_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_three_b_sq_iff`); 3 paste-ready descent theorems mirroring `safe_{A,B,C}_holds` structure 1:1; 1 corollary `safe_3_5_axis_vs_plane`. Estimated Lean delta: +142 LOC, 0 sorries, 0 axioms. Docker daemon down at write-time (per `docker info` 2026-06-04T17:54Z) — S7 ACT shipment of the recipe waits for Docker or follows the `(build pending — Docker daemon down)` convention used by S7 ACT sum-of-divisors #22238. No Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits.
+**Phase**: ACT (S7 ACT — (3, 5) axis-vs-plane safety DISCHARGED; Docker-verified GREEN)
+**Since**: 2026-06-04 (S7 ACT applies the S7 PREP-2 recipe)
+**Iteration**: 14 (was 13; S7 ACT discharges the S7 PREP-2 recipe)
+**Last Update**: 2026-06-04T20:30Z (researcher-1) — S7 ACT: applied the S7 PREP-2 paste-ready Lean recipe to `proofs/Proofs/Erdos659OQ01OQ02.lean` (PRE: 292 LOC → POST: 488 LOC; delta +196 LOC). Adds `safe_3_5_axis_vs_plane`, the second member of the {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)} safe-pair family identified by S2a OBSERVE PR #18494. 2 new mod-5 helpers (`zmod_5_a_sq_plus_3_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_three_b_sq_iff`); 3 new descent theorems `safe_{A,B,C}_3_5_holds`; 1 new corollary. 0 sorries / 0 axioms delta (file remains 0 / 0). Docker-verified GREEN: `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` → "✔ Build completed successfully (3058 jobs)". No meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits — `Erdos659OQ01OQ02.lean` is not surfaced in the parent gallery entry `erdos-659-oq-01`'s `additionalFiles`-counted axioms, so `axiomCount: 3` in `src/data/proofs/erdos-659-oq-01/meta.json` is unaffected.
+
+## S7 ACT (researcher-1, 2026-06-04, Docker-verified GREEN)
+
+Applied the S7 PREP-2 recipe (see `sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md`) verbatim to the Lean file. Memo at `sessions/2026-06-04-s7-act-3-5-axis-vs-plane-discharge.md`.
+
+### Lean delta (Docker-verified)
+
+| Section | Before | After | Δ |
+|---|---|---|---|
+| `proofs/Proofs/Erdos659OQ01OQ02.lean` LOC | 292 | 488 | +196 |
+| `def`s | 4 | 4 | 0 |
+| `theorem`s | 4 | 8 | +4 (`safe_A_3_5_holds`, `safe_B_3_5_holds`, `safe_C_3_5_holds`, `safe_3_5_axis_vs_plane`) |
+| `lemma`s | 2 | 4 | +2 (`zmod_5_a_sq_plus_3_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_three_b_sq_iff`) |
+| Sorries | 0 | 0 | 0 |
+| `axiom` declarations | 0 | 0 | 0 |
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` →
+`✔ [3058/3058] Built Proofs.Erdos659OQ01OQ02 (14s)` → `Build completed successfully (3058 jobs).`
+
+### Updated next-action menu
+
+The S6/S7 next-action menu shrinks by one (the `(3, 5)` axis-vs-plane safety
+is now discharged). Remaining concrete candidates:
+
+1. **`(2, 13)` axis-vs-plane safety** — needs mod-13 reduction (169-case
+   `decide` per helper). Lowest-LOC remaining safe pair.
+2. **`(5, 7)` axis-vs-plane safety** — needs mod-7 reduction. Second-lowest.
+3. **Full-rank safety for `(2, 5)` or `(3, 5)`** — still blocked on ternary
+   Hasse-Minkowski (Mathlib v4.26.0 absence per S2c PREP §5.6) or honest
+   axiomatisation per S2c §6.1.
+4. **Θ(n^{2/3}) assembly** — still blocked on S3/S4 plan axiomatisations.
 
 ## S7 PREP-2 (researcher-1, 2026-06-04, doc-only)
 
