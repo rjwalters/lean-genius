@@ -261,14 +261,54 @@ theorem even_card_interior_doors_hyper
     Even ((Finset.univ : Finset (Σ s : Cell, ι s)).filter
       (fun p => IsDoorHyper vertex c top p.1 p.2 ∧
         adj p.1 p.2 ≠ none)).card := by
-  -- Strategic sorry — apply `Sperner.even_card_fpf_invol` with the
-  -- involution `adjMapHyper adj` on the Σ-type filter. Closure mirrors
-  -- the parent's `even_card_interior_doors` exactly; only the type of
-  -- the involution changes (Cell × Fin (d+1) → Σ s, ι s). The three
-  -- side-conditions (involution, set-stability, fixed-point-free) all
-  -- follow from `hadj_symm`, `isDoorHyper_iff_of_adj` (above), and
-  -- `hadj_ne` respectively. See S2e PREP bearer chain.
-  sorry
+  -- S4 ACT: applies `Sperner.even_card_fpf_invol` with the involution
+  -- `adjMapHyper adj` on the Σ-type filter. The three side-conditions
+  -- (involution, set-stability, fixed-point-free) follow from
+  -- `hadj_symm`, `isDoorHyper_iff_of_adj`, and `hadj_ne` respectively.
+  -- The Σ-form differs from the parent's `Cell × Fin (d+1)` only in the
+  -- fixed-point-free step, which requires `Sigma.eta` rather than the
+  -- parent's `Prod.fst`/`Prod.snd` definitional unfolding. See S2e PREP
+  -- bearer chain.
+  set S := (Finset.univ : Finset (Σ s : Cell, ι s)).filter
+    (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 ≠ none)
+  -- Helper: reduce `adjMapHyper adj q = sk` when `adj q.1 q.2 = some sk`.
+  -- The match-form in `adjMapHyper` doesn't auto-reduce under `simp only`;
+  -- we instead expose the reduction as a local lemma via `unfold`.
+  have hMap : ∀ (q : Σ s : Cell, ι s) (sk : Σ s : Cell, ι s),
+      adj q.1 q.2 = some sk → adjMapHyper adj q = sk := by
+    intro q sk hq
+    unfold adjMapHyper; rw [hq]
+  apply Sperner.even_card_fpf_invol S (adjMapHyper adj)
+  · -- involution: adjMapHyper (adjMapHyper p) = p
+    intro p hp
+    simp only [S, mem_filter, mem_univ, true_and] at hp
+    obtain ⟨_, hadj_ne'⟩ := hp
+    obtain ⟨⟨s', k'⟩, hadj_eq⟩ := adjHyper_some_of_ne_none adj p hadj_ne'
+    have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
+    have h1 := hMap p ⟨s', k'⟩ hadj_eq
+    have h2 := hMap (⟨s', k'⟩ : Σ s : Cell, ι s) ⟨p.1, p.2⟩ hadj_back
+    -- structure-eta closes ⟨p.1, p.2⟩ = p as rfl after the rewrites
+    rw [h1, h2]
+  · -- set-stability: adjMapHyper adj p ∈ S
+    intro p hp
+    simp only [S, mem_filter, mem_univ, true_and] at hp ⊢
+    obtain ⟨hdoor, hadj_ne'⟩ := hp
+    obtain ⟨⟨s', k'⟩, hadj_eq⟩ := adjHyper_some_of_ne_none adj p hadj_ne'
+    have hadj_back := hadj_symm p.1 p.2 s' k' hadj_eq
+    have h1 := hMap p ⟨s', k'⟩ hadj_eq
+    rw [h1]
+    refine ⟨(isDoorHyper_iff_of_adj vertex adj hadj_vertex hadj_eq).mp hdoor, ?_⟩
+    rw [hadj_back]; exact Option.noConfusion
+  · -- fixed-point-free: adjMapHyper adj p ≠ p
+    intro p hp
+    simp only [S, mem_filter, mem_univ, true_and] at hp
+    obtain ⟨_, hadj_ne'⟩ := hp
+    obtain ⟨⟨s', k'⟩, hadj_eq⟩ := adjHyper_some_of_ne_none adj p hadj_ne'
+    have h1 := hMap p ⟨s', k'⟩ hadj_eq
+    rw [h1]
+    -- heq : (⟨s', k'⟩ : Σ s, ι s) = p; chain Sigma.eta with heq.symm.
+    intro heq
+    exact hadj_ne p.1 p.2 s' k' hadj_eq ((Sigma.eta p).trans heq.symm)
 
 end GlobalParity
 
