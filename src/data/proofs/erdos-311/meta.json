@@ -46,14 +46,15 @@
       "validCandidates and deviations definitions (powerset-based)",
       "delta defined as Finset.min' over deviations (concrete, not axiomatized)",
       "delta_pos theorem (proved: min of positive finset is positive)",
+      "delta_antitone_full: full Antitone packaging of the single-step antitonicity (Antitone delta), justifying the limit form of the open conjecture",
       "delta_lower_bound axiom (lcm/PNT lower bound)",
       "tang_upper_bound axiom (subexponential upper bound)",
       "erdos_311_conjecture axiom (ε-N₀ form)"
     ],
     "axiomCount": 3,
-    "lineCount": 114,
+    "lineCount": 129,
     "assumptions": "3 axioms: delta_lower_bound_pnt (PNT-based lower bound e^{-(1+ε)N}), tang_upper_bound (Tang's subexponential upper bound), erdos_311_conjecture (the main open conjecture: log δ(N)/N → -c for c ∈ (0,1)). No sorries.",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 5
   },
   "sections": [

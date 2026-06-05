@@ -83,11 +83,27 @@ theorem delta_le_one (N : ℕ) : delta N ≤ 1 := by
 theorem delta_antitone (N : ℕ) : delta (N + 1) ≤ delta N := by
   apply Finset.min'_le
   have hmin := Finset.min'_mem (deviations N) (deviations_nonempty N)
-  simp only [deviations, Finset.mem_image] at hmin ⊢
-  obtain ⟨A, hA, rfl⟩ := hmin
-  refine ⟨A, ?_, rfl⟩
+  simp only [deviations, Finset.mem_image] at hmin
+  obtain ⟨A, hA, hAeq⟩ := hmin
+  simp only [deviations, Finset.mem_image]
+  refine ⟨A, ?_, hAeq⟩
   simp only [validCandidates, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
   exact ⟨hA.1.trans (Finset.Icc_subset_Icc_right (by omega)), hA.2⟩
+
+/-- δ is antitone in the full sense: `M ≤ N → δ(N) ≤ δ(M)`. Iterates the
+    single-step `delta_antitone` over the gap N − M.
+
+    This packages the structural fact in the standard `Antitone` form, which
+    immediately gives access to Mathlib lemmas about antitone sequences
+    (limits, monotone-convergence, etc.) — in particular this is what justifies
+    the `Filter.Tendsto (...) atTop (nhds (-c))` formulation of the conjecture
+    (`erdos_311_conjecture`): the sequence `log (delta N) / N` only makes sense
+    as a candidate limit because `delta` itself is antitone. -/
+theorem delta_antitone_full : Antitone delta := by
+  intro M N hMN
+  induction hMN with
+  | refl => exact le_refl _
+  | step _ ih => exact (delta_antitone _).trans ih
 
 /- ## Lower Bound -/
 
