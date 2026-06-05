@@ -27,8 +27,9 @@ import Mathlib.Tactic
 def primesUpTo (n : ℕ) : Finset ℕ :=
   (Finset.range (n + 1)).filter Nat.Prime
 
-/-- An integer m is covered by prime p with residue class a if m ≡ a (mod p). -/
-def IsCoveredBy (m p a : ℕ) : Prop :=
+/-- An integer m is covered by prime p with residue class a if m ≡ a (mod p).
+    Marked `@[reducible]` so `DecidablePred` resolves through it transparently. -/
+@[reducible] def IsCoveredBy (m p a : ℕ) : Prop :=
   m % p = a % p
 
 /-- The covering count: how many primes p ≤ n cover m with the
@@ -91,11 +92,25 @@ theorem isRFoldCover_primes_mono {n₁ n₂ r : ℕ} {a : ℕ → ℕ}
 
 -- ## Small Cases
 
+/-- primesUpTo 0 is empty (no primes < 1). -/
+theorem primesUpTo_zero : primesUpTo 0 = ∅ := by
+  simp only [primesUpTo, Finset.filter_eq_empty_iff, Finset.mem_range]
+  intro n hn
+  interval_cases n
+  exact Nat.not_prime_zero
+
 /-- primesUpTo 1 is empty (no primes ≤ 1). -/
 theorem primesUpTo_one : primesUpTo 1 = ∅ := by
   simp only [primesUpTo, Finset.filter_eq_empty_iff, Finset.mem_range]
   intro n hn
   interval_cases n <;> simp [Nat.Prime]
+
+/-- Covering count is 0 when no primes available (n = 0). -/
+theorem coveringCount_zero (m : ℕ) (a : ℕ → ℕ) :
+    coveringCount 0 m a = 0 := by
+  unfold coveringCount
+  rw [primesUpTo_zero]
+  simp
 
 /-- Covering count is 0 when no primes available. -/
 theorem coveringCount_one (m : ℕ) (a : ℕ → ℕ) :
@@ -104,7 +119,54 @@ theorem coveringCount_one (m : ℕ) (a : ℕ → ℕ) :
   rw [primesUpTo_one]
   simp
 
+-- ## Necessary Conditions for r-Fold Cover
+
+/-- NECESSARY CONDITION: If [1, n] admits an r-fold prime covering then
+    r ≤ π(n) (the number of primes ≤ n).
+
+    Proof: apply the covering hypothesis at m = 1 to get r ≤ coveringCount n 1 a,
+    then bound by the total number of primes via `coveringCount_le_card_primes`. -/
+theorem isRFoldCover_card_bound {n r : ℕ} {a : ℕ → ℕ}
+    (h : IsRFoldCover n r a) (hn : 1 ≤ n) :
+    r ≤ (primesUpTo n).card :=
+  le_trans (h 1 (le_refl 1) hn) (coveringCount_le_card_primes n 1 a)
+
+/-- CONTRAPOSITIVE: If r > π(n), no r-fold cover of [1, n] exists.
+
+    This is the obstruction side of Erdős #689: the conjecture asks whether
+    r ≤ π(n) is *eventually sufficient* (for n ≥ N₀(r)); this lemma confirms
+    the trivial necessary part. In particular, N₀(r) ≥ p_r (the r-th prime). -/
+theorem no_rFoldCover_of_few_primes {n r : ℕ} (hn : 1 ≤ n)
+    (hr : (primesUpTo n).card < r) : ¬ ∃ a : ℕ → ℕ, IsRFoldCover n r a := by
+  rintro ⟨a, h⟩
+  have := isRFoldCover_card_bound h hn
+  omega
+
+/-- For n = 0, any r-fold cover claim is vacuously satisfied since [1, 0] is empty. -/
+theorem isRFoldCover_n_zero (r : ℕ) (a : ℕ → ℕ) :
+    IsRFoldCover 0 r a := by
+  intro m hm1 hm0
+  omega
+
+/-- For n = 1, no r-fold cover with r ≥ 1 exists: m = 1 must be covered, but
+    `primesUpTo 1` is empty. Specialization of `no_rFoldCover_of_few_primes`. -/
+theorem no_rFoldCover_n_one {r : ℕ} (hr : 1 ≤ r) :
+    ¬ ∃ a : ℕ → ℕ, IsRFoldCover 1 r a := by
+  apply no_rFoldCover_of_few_primes (le_refl 1)
+  rw [primesUpTo_one, Finset.card_empty]
+  omega
+
 -- ## Main Conjecture (OPEN)
+
+/-- r-fold generalization (OPEN): For any fixed r and sufficiently
+    large n (depending on r), does an r-fold covering exist?
+
+    This is the only remaining axiom in the file: it IS the open Erdős
+    conjecture (and Ben Green's open problem 45 in the r = 10 case). All
+    other theorems are derived. -/
+axiom erdos_689_r_fold (r : ℕ) (hr : r ≥ 1) :
+  ∃ N₀ : ℕ, ∀ n ≥ N₀,
+    ∃ a : ℕ → ℕ, IsRFoldCover n r a
 
 /-- Erdős Problem #689 (OPEN): For sufficiently large n, does there
     exist a choice of congruence classes that 2-fold covers [1, n]?
@@ -113,12 +175,6 @@ theorem erdos_689_double_cover :
   ∃ N₀ : ℕ, ∀ n ≥ N₀,
     ∃ a : ℕ → ℕ, IsRFoldCover n 2 a :=
   erdos_689_r_fold 2 (by norm_num)
-
-/-- r-fold generalization (OPEN): For any fixed r and sufficiently
-    large n (depending on r), does an r-fold covering exist? -/
-axiom erdos_689_r_fold (r : ℕ) (hr : r ≥ 1) :
-  ∃ N₀ : ℕ, ∀ n ≥ N₀,
-    ∃ a : ℕ → ℕ, IsRFoldCover n r a
 
 -- ## Connections to Other Problems
 
@@ -157,8 +213,12 @@ theorem mertens_sum_divergence :
     intro p hp
     simp only [primesUpTo, Finset.mem_filter, Finset.mem_range] at hp ⊢
     exact ⟨by omega, hp.2⟩
-  -- Step 7: Subset + nonneg terms → sum over subset ≤ sum over superset
-  have h_le := Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)
+  -- Step 7: Subset + nonneg terms → sum over subset ≤ sum over superset.
+  -- Type annotation is required so positivity (which needs a concrete numeric type)
+  -- can synthesize the `Zero ℝ` instance for the `0 ≤ f i` side-goal.
+  have h_le : (((Finset.range n).filter Nat.Prime).sum (fun p => (1 : ℝ) / ↑p)) ≤
+              ((primesUpTo n).sum (fun p => (1 : ℝ) / ↑p)) :=
+    Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun i _ _ => by positivity)
   -- Step 8: C < C + 1 ≤ filter_sum ≤ primesUpTo_sum
   linarith
 
