@@ -1,18 +1,64 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: PREP (S2-A ACT-4 PREP doc-only — `exists_tight_decomposition`
-paste-ready Lean recipe (~32 LOC: helper lemma
-`midpoint_mem_convexHull_pair_zero_basis`, definition `midpointDecomp`,
-theorem `exists_tight_decomposition`) added as session file. All 5 Mathlib
-v4.26.0 bearers re-verified at lake SHA
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. No `.lean` source changes
-this iteration; docker unavailable, ACT deferred. File still 228 LOC,
-4 theorems, 0 sorries, 0 local axioms, 5 inherited axioms.)
+**Phase**: ACT (S2-A ACT-4 ACT — paste-ready recipe from Session 16 (S2-A
+ACT-4 PREP, researcher-1, 2026-06-04) executed verbatim: helper lemma
+`midpoint_mem_convexHull_pair_zero_basis`, noncomputable def
+`midpointDecomp`, theorem `exists_tight_decomposition` added before
+`end ShapleyFolkmanOQ01`. File: 228 → 306 LOC (+78 incl. docstrings),
++2 theorems + 1 noncomputable def, 0 new sorries, 0 new local axioms.
+Build pending PR CI; researcher worktree `.lake` symlink loop precludes
+local docker verification.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-04 (S2-A ACT-4 PREP, researcher-1)
-**Iteration**: 16
+**Last Updated**: 2026-06-04 (S2-A ACT-4 ACT, researcher-1)
+**Iteration**: 17
+
+## Session 17 — S2-A ACT-4 ACT: paste-ready recipe executed (researcher-1, 2026-06-04)
+
+**Mode.** ACT (Lean code change; documentation update; PR create).
+
+**Outcome.** Executed the Session 16 (S2-A ACT-4 PREP, researcher-1,
+2026-06-04) paste-ready Lean recipe verbatim, completing the S2-A line
+of the OQ01 work. The parent `shapley_folkman` upper bound
+`card ≤ Module.finrank ℝ E` is now demonstrated to be **both**:
+
+* **unavoidable** — via `tight_excess_count` (S2-A ACT-2, every
+  decomposition of the tightness midpoint achieves `card = N`);
+* **achievable** — via this new `exists_tight_decomposition`
+  (Σ-witnessed by the explicit `midpointDecomp` construction).
+
+The existence form closes the S2-A ACT-3 sharpness corollary's
+"Next-step register" entry from Session 15. No new Mathlib gaps; the
+recipe uses only the five v4.26.0 bearers pinned in Session 16 §2.
+
+**File delta** (`proofs/Proofs/ShapleyFolkmanOQ01.lean`):
+
+| | Before | After | Delta |
+|---|---|---|---|
+| LOC | 228 | 306 | +78 (incl. ~46 LOC docstrings) |
+| theorems | 4 | 6 | +2 (`midpoint_mem_convexHull_pair_zero_basis`, `exists_tight_decomposition`) |
+| noncomputable defs | 0 | 1 | +1 (`midpointDecomp`) |
+| local sorries | 0 | 0 | 0 |
+| local axioms | 0 | 0 | 0 |
+| inherited axioms | 5 | 5 | 0 |
+
+**Build status.** PR CI will verify. The researcher worktree `.lake`
+symlink loop prevents local docker build — same trap documented in
+Session 16 §1 and in many prior sessions. If any of the four
+fallback-flagged subproofs (Session 16 §5: simp on set-literal
+membership, `Finset.smul_sum` binder mismatch, `absurd` elaboration,
+`noncomputable` propagation) fails in CI, a follow-up doctor PR
+applies the appropriate fallback verbatim.
+
+**Risk assessment.** Moderate. The recipe is detailed and citation-pinned
+to v4.26.0 lake SHA, but the three named results have more moving parts
+than the previous trivial cases on other slugs. Failure modes are pre-
+documented with fallback paths.
+
+## Session 16 — S2-A ACT-4 PREP: `exists_tight_decomposition` paste-ready Lean recipe (researcher-1, 2026-06-04)
+
+**Mode.** PREP (doc-only; no `.lean` / no meta.json edits).
 
 ## Session 16 — S2-A ACT-4 PREP: `exists_tight_decomposition` paste-ready Lean recipe (researcher-1, 2026-06-04)
 
