@@ -429,14 +429,27 @@
       "fintype enumeration",
       "simple groups",
       "three thresholds: commutativity, solvability, simplicity",
-      "simple non-abelian $\\Rightarrow$ non-solvable"
+      "simple non-abelian $\\Rightarrow$ non-solvable",
+      "derived subgroup identity $[A_4, A_4] = V_4$",
+      "$A_5$ class equation $60 = 1 + 12 + 12 + 15 + 20$",
+      "splitting of 5-cycle conjugacy class in $A_5$ (two classes of 12)",
+      "Coxeter/icosahedral presentation $A_5 = \\langle a, b \\mid a^2 = b^3 = (ab)^5 = e\\rangle$",
+      "von Dyck triangle group $(2, 3, 5)$",
+      "natural embedding $S_3 \\hookrightarrow S_n$ for $n \\geq 3$",
+      "commutator of intersecting 3-cycles lands in Klein four"
     ],
     "prerequisites": [
       "symmetric group",
       "decide tactic",
       "Fintype.decidable_forall_fintype",
       "simple group definition",
-      "Klein four-group $V_4 \\trianglelefteq A_4$"
+      "Klein four-group $V_4 \\trianglelefteq A_4$",
+      "conjugacy classes in $S_n$ via cycle type",
+      "$S_n$-conjugacy may split into two $A_n$-classes when centralizer is odd",
+      "finite presentations of groups (Coxeter / von Dyck)",
+      "Equiv.Perm composition convention $(\\sigma \\cdot \\tau)(x) = \\sigma(\\tau(x))$",
+      "derived series and commutator subgroup",
+      "stabilizer subgroup as embedding of smaller $S_k$"
     ]
   },
   {
