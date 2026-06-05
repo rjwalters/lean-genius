@@ -141,7 +141,7 @@
       "title": "§1: Cardinality of ℝ",
       "startLine": 67,
       "endLine": 79,
-      "summary": "card_real_eq_continuum: #ℝ = 𝔠. aleph0_lt_card_real: ℵ₀ < #ℝ. Uses Cardinal.mk_real and Cardinal.aleph0_lt_continuum.",
+      "summary": "Lines 67–79 (§ 1) establish the **cardinal infrastructure** for the rest of the file in two short theorems. `card_real_eq_continuum : (#ℝ : Cardinal.{0}) = 𝔠` is a one-line citation of Mathlib's `Cardinal.mk_real` — the bridge from the *concrete* type ℝ to the *abstract* continuum cardinal $\\mathfrak{c} = 2^{\\aleph_0}$. `aleph0_lt_card_real : ℵ₀ < #ℝ` combines this with `Cardinal.aleph0_lt_continuum` (Mathlib's witness that $\\aleph_0 < \\mathfrak{c}$, ultimately a corollary of König's lemma / Cantor's theorem). Together these two facts are the *only* cardinal arithmetic needed for the rest of the file: every uncountability theorem in §§ 2–5 ultimately routes through `aleph0_lt_card_real` and the order-theoretic contradiction $\\#\\mathbb{R} \\leq \\aleph_0 < \\#\\mathbb{R}$. The `Cardinal.{0}` universe annotation pins everything at universe level 0, matching the type-level convention for `ℝ : Type` (no universe polymorphism needed).",
       "mathContext": "#ℝ = 𝔠 = 2^ℵ₀ > ℵ₀. The continuum 𝔠 is the cardinality of all binary sequences (ℕ → Bool), reflecting the diagonal argument."
     },
     {
@@ -149,7 +149,7 @@
       "title": "§2: ℝ is Not Countable",
       "startLine": 80,
       "endLine": 101,
-      "summary": "reals_not_countable: ¬ Countable ℝ. Proof by contradiction: Countable ℝ → #ℝ ≤ ℵ₀ (mk_le_aleph0), but ℵ₀ < #ℝ. Contradiction.",
+      "summary": "Lines 80–101 (§ 2) state the **main theorem** of the file — `reals_not_countable : ¬ Countable ℝ` — and an equivalent renaming `reals_uncountable`. The proof is a 4-line cardinal-arithmetic reductio: assume `Countable ℝ`, derive `#ℝ ≤ ℵ₀` via `Cardinal.mk_le_aleph0`, then apply `not_le.mpr` to `aleph0_lt_card_real` (from § 1) to get the contradiction `¬ (#ℝ ≤ ℵ₀)`. This is the **abstract Cantor 1874 result** in its purest form: $|\\mathbb{R}| > \\aleph_0$, written cardinality-first rather than via the explicit decimal-diagonal construction of Cantor's *second* (1891) diagonal argument. The pedagogical structure separates *what* the diagonal argument proves abstractly ($\\aleph_0 < 2^{\\aleph_0}$, citable as `Cardinal.cantor` and re-stated in § 5 as `cantor_diagonal_gap`) from *how* it specializes to ℝ — exposing that Cantor's 1874 paper and his 1891 diagonal argument are *two distinct proofs* of the same theorem, the former routing through bounded-degree polynomial counting (algebraic ⊂ ℝ countable but ℝ uncountable) and the latter through binary-sequence diagonalization.",
       "mathContext": "Cardinal.mk_le_aleph0 with [Countable α] typeclass gives #α ≤ ℵ₀. Contradict with aleph0_lt_card_real."
     },
     {
@@ -157,7 +157,7 @@
       "title": "§3: No Surjection ℕ → ℝ",
       "startLine": 102,
       "endLine": 126,
-      "summary": "no_surjection_nat_to_real: ¬∃ f : ℕ → ℝ, Surjective f. exists_not_in_range: ∀ f : ℕ → ℝ, ∃ x ∉ range f. One-line proofs via reals_not_countable + Function.Surjective.countable.",
+      "summary": "Lines 102–126 (§ 3) recast uncountability as the **non-existence of an enumeration**: `no_surjection_nat_to_real : ¬ ∃ f : ℕ → ℝ, Function.Surjective f` and the constructive companion `exists_not_in_range : ∀ f : ℕ → ℝ, ∃ x : ℝ, x ∉ Set.range f`. The first proof is a 2-line `rintro` + `Surjective.countable` chain: a surjection ℕ → ℝ would make ℝ countable (image of countable under surjection is countable), contradicting § 2. The second is a `by_contra` + `push_neg`: if every $x$ were in the range, $f$ would be surjective, contradicting the first theorem. This is the **directly citable form** of Cantor's diagonal argument for downstream consumers: 'every enumeration of ℝ misses something' is operationally what `exists_not_in_range` provides, even though the proof here doesn't *construct* the missing element (a constructive diagonal element would require classical choice or a constructive diagonal-decoding function — see `cantor-diagonalization` in the gallery). The contrast between this **non-constructive existence proof** and Cantor's original constructive diagonal is one of the file's pedagogical takeaways: cardinal arithmetic gives the abstract obstruction; the diagonal argument gives the explicit witness.",
       "mathContext": "Equivalence: ∃ surjection ℕ → ℝ ↔ Countable ℝ. Since ℕ is countable, surjection ℕ → ℝ → Countable ℝ (Function.Surjective.countable)."
     },
     {
@@ -165,7 +165,7 @@
       "title": "§4: Transcendental Reals are Uncountable",
       "startLine": 127,
       "endLine": 157,
-      "summary": "transcendentalReals: def {x : ℝ | ¬ IsAlgebraic ℚ x}. transcendentals_uncountable: ¬ Set.Countable transcendentalReals. Union argument: algebraic ∪ transcendental = univ, both countable → ℝ countable → contradiction.",
+      "summary": "Lines 127–157 (§ 4) prove **Cantor's 1874 corollary**: the transcendental reals (`transcendentalReals := {x : ℝ | ¬ IsAlgebraic ℚ x}`) form an uncountable set. The proof (`transcendentals_uncountable`) is a 12-line tactic argument with three key inputs: (1) `AlgebraicNumbersCountable.algebraic_reals_countable` (the algebraic reals are countable — the *sister* gallery proof providing this cross-file dependency); (2) the set-cover identity `{x | IsAlgebraic ℚ x} ∪ transcendentalReals = Set.univ`, proved by `ext` + `Classical.em` (every real is either algebraic or transcendental — the law of excluded middle in set form); (3) `Set.Countable.union` (countable ∪ countable = countable), which combined with (1)–(2) would make `Set.univ : Set ℝ` countable, contradicting § 2 via `Set.countable_univ_iff.mp`. **This is the structural payoff of the entire file**: Cantor's 1874 paper proved two things — the algebraic numbers are countable, and ℝ is uncountable — and their *combination* gives the first proof that **transcendental numbers exist** (and in fact form 'almost all' reals in the cardinality sense). The transcendentals can be exhibited as a countable union of countable sets minus a countable set, hence $|\\text{transcendental}| = \\mathfrak{c}$, the same cardinality as ℝ itself.",
       "mathContext": "algebraic ∪ transcendental = Set.univ (Classical.em). Set.Countable.union + Set.countable_univ_iff.mp → Countable ℝ → contradiction."
     },
     {
@@ -173,7 +173,7 @@
       "title": "§5: Connection to Cantor's Diagonal Argument",
       "startLine": 158,
       "endLine": 192,
-      "summary": "cantor_diagonal_binary: no surjection ℕ → BinarySeq (from CantorDiagonalization.lean). cantor_diagonal_gap: ℵ₀ < 2^ℵ₀ (Cardinal.cantor). diagonal_gap_equals_card_real: 𝔠 = #ℝ. reals_uncountable_summary: conjunction of all results.",
+      "summary": "Lines 158–192 (§ 5) explicitly **bridge** the cardinality argument here to Cantor's diagonal argument as formalized in the sister file `CantorDiagonalization.lean`. Four theorems package the connection: (1) `cantor_diagonal_binary` cites `CantorDiagonalization.no_surjection_nat_to_binary` — there is no surjection ℕ → BinarySeq = (ℕ → Bool), the binary form of Cantor's diagonal; (2) `cantor_diagonal_gap : ℵ₀ < 2^ℵ₀` cites `Cardinal.cantor ℵ₀` — the **most abstract form** of Cantor's theorem, asserting that any cardinal's power set is strictly larger; (3) `diagonal_gap_equals_card_real : 𝔠 = #ℝ` is the order-equality bridge linking the cardinal-arithmetic gap $\\aleph_0 < 2^{\\aleph_0}$ to the concrete uncountability of ℝ via $\\mathfrak{c} = |\\mathbb{R}|$; (4) `reals_uncountable_summary` is the **Cantor 1874 capstone** — a single conjunction packaging `¬ Countable ℝ ∧ ¬ Set.Countable transcendentalReals ∧ Set.Countable {algebraic reals}`. The pedagogical point is that *three different proofs* — the cardinal-arithmetic route via `mk_real` + `aleph0_lt_continuum` (§§ 1–2), the polynomial-counting route via the algebraic-numbers sister file (§ 4), and the diagonal-construction route via `CantorDiagonalization` (§ 5) — all converge on the *same* uncountability fact $|\\mathbb{R}| > \\aleph_0$, demonstrating that Cantor's theorem is structurally **overdetermined** in the Mathlib hierarchy. Closes the namespace at line 192.",
       "mathContext": "The abstract gap ℵ₀ < 2^ℵ₀ (Cardinal.cantor ℵ₀) = the concrete diagonal (no surjection ℕ → BinarySeq). Both express that #BinarySeq = 2^ℵ₀ = 𝔠 = #ℝ > ℵ₀."
     }
   ],
