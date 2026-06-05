@@ -27,32 +27,41 @@
     "goal": "Compute Var(τ) = E[τ²] - E[τ]² using the quartic martingale Sₙ⁴ - 6nSₙ² + 3n² + 2n"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 1,
-    "focus": "Read FairGamesTheoremOQ02.lean for martingale setup, verify quartic martingale identity",
+    "phase": "ACT",
+    "since": "2026-06-05T02:10:00Z",
+    "iteration": 2,
+    "focus": "Created FairGamesTheoremOQ02OQ03.lean scaffold with the quartic martingale value Q(n,s) and proved its step-mean identity ½Q(n+1,s+1)+½Q(n+1,s-1)=Q(n,s).",
     "blockers": [],
-    "nextAction": "Read proofs/Proofs/FairGamesTheoremOQ02.lean to understand martingale/OST infrastructure",
+    "nextAction": "Connect Q to the parent MartingaleProcess infrastructure; derive E[M_τ] = k^4 via OST; reduce to computing E[τ · 𝟙_{S_τ = N}].",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Problem selected by Seeker. Parent establishes E[τ] via quadratic martingale. Variance needs quartic martingale Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n.",
-    "builtItems": [],
+    "progressSummary": "SCAFFOLDED: New file FairGamesTheoremOQ02OQ03.lean (0 axioms, 0 sorries, 6 theorems, 1 def). The pointwise step-mean identity for the quartic Q(n,s) = s^4 - 6ns^2 + 3n^2 + 2n is proved by `ring`; this is the algebraic core of the martingale identity E[M_{n+1}|S_n=s]=M_n for the simple symmetric random walk.",
+    "builtItems": [
+      "Defined quarticMartingaleValue n s := s^4 - 6*n*s^2 + 3*n^2 + 2*n in FairGamesTheoremOQ02OQ03.lean.",
+      "Proved quarticMartingaleValue_step_mean: average of Q at (n+1, s±1) equals Q(n, s) (martingale property, pointwise).",
+      "Proved boundary values Q(0,s) = s^4, Q(n,0) = 3n^2+2n, Q(n,N) = N^4 - 6nN^2 + 3n^2 + 2n.",
+      "Proved increment-zero corollary Q(n+1,s+1) + Q(n+1,s-1) = 2 Q(n,s).",
+      "Added FairGamesTheoremOQ02OQ03 to proofs/Proofs.lean import list."
+    ],
     "insights": [
       "E[τ] = k(N-k) proven via S_n^2 - n martingale and OST in parent",
       "Degree-4 martingale: Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n satisfies E[Mₙ₊₁|Fₙ] = Mₙ",
       "OST at τ: E[Mτ] = M₀ = k⁴ gives an equation in E[τ²] and E[τS_τ²]",
-      "S_τ ∈ {0,N}: E[S_τ²] = N²·(k/N) = Nk; E[S_τ⁴] = N⁴·(k/N) = N³k"
+      "S_τ ∈ {0,N}: E[S_τ²] = N²·(k/N) = Nk; E[S_τ⁴] = N⁴·(k/N) = N³k",
+      "The quartic martingale identity reduces by ring to a polynomial cancellation; the +2n term is essential — without it the constant left over is +2 instead of 0.",
+      "Pointwise step-mean equality is strictly weaker than the conditional-expectation form. Bridging to MartingaleProcess will require lifting Q into the random-walk filtration (next iteration).",
+      "OST at τ gives k^4 = E[S_τ^4] - 6 E[τ S_τ^2] + 3 E[τ^2] + 2 E[τ]. Since S_τ ∈ {0,N}: E[S_τ^4] = N^3 k, E[τ S_τ^2] = N^2 E[τ 𝟙_{S_τ=N}]. The residual quantity E[τ 𝟙_{S_τ=N}] is the bottleneck."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Read FairGamesTheoremOQ02.lean: understand MartingaleProcess and OST usage",
-      "Verify Mₙ = Sₙ⁴ - 6nSₙ² + 3n² + 2n martingale property by direct computation",
-      "Set up OST equation and solve for E[τ²]"
+      "Wire quarticMartingaleValue into the parent MartingaleProcess structure (used in FairGamesTheoremOQ02OQ01 for OST).",
+      "Compute E[τ · 𝟙_{S_τ = N}] either directly or via a separate martingale argument.",
+      "Derive a closed-form formula for Var(τ) and verify against the degenerate case k=1, N=2 (Var = 0)."
     ]
   },
   "tags": [
@@ -82,7 +91,7 @@
     ]
   },
   "started": "2026-04-21T20:38:00.000Z",
-  "lastUpdate": "2026-04-21T20:38:00.000Z",
+  "lastUpdate": "2026-06-05T02:10:00Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
@@ -173,6 +182,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/FairGamesTheoremOQ02OQ03.lean",
+      "filename": "FairGamesTheoremOQ02OQ03.lean",
+      "lineCount": 84,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FairGamesTheoremOQ02OQ03.lean"
     }
   ]
 }
