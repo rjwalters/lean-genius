@@ -24,6 +24,72 @@
     "lineCount": 234,
     "theoremCount": 3,
     "definitionCount": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "JordanHolderLattice",
+        "description": "Mathlib's abstract typeclass packaging the three lattice axioms — `IsMaximal`, `sup_eq_of_isMaximal`, `isMaximal_inf_left_of_isMaximal_sup`, `second_iso` — needed to derive uniqueness of composition series in any algebraic structure with a suitable lattice of sub-objects. As of Mathlib 2026, this file fills the `JordanHolderLattice (Subgroup G)` instance which was an explicit TODO in `Mathlib.Order.JordanHolder` with the comment 'it is not entirely clear how this should be done'. The abstraction is what makes Jordan-Hölder applicable uniformly to groups (this file), modules (instance already in Mathlib), and other algebraic structures.",
+        "module": "Mathlib.Order.JordanHolder"
+      },
+      {
+        "theorem": "CompositionSeries.jordan_holder",
+        "description": "The abstract Jordan-Hölder uniqueness theorem in Mathlib: any two composition series in a `JordanHolderLattice` are equivalent (have the same length and the same multiset of factors). The file's `jordan_holder_subgroups` (line ≈225) is a direct delegation to this theorem once the `JordanHolderLattice (Subgroup G)` instance is established — so the *content* of this file is the instance construction, while the *uniqueness statement* is imported wholesale from Mathlib.",
+        "module": "Mathlib.Order.JordanHolder"
+      },
+      {
+        "theorem": "Subgroup.subgroupOf",
+        "description": "Given subgroups $H \\leq K$ of $G$, `H.subgroupOf K` is the corresponding subgroup of $K$ (the preimage of $H$ under the inclusion $K \\hookrightarrow G$). Used throughout the file to express relative normality: `(H.subgroupOf K).Normal` means $H \\trianglelefteq K$. This indirection is necessary because `Subgroup.Normal` in Mathlib is a property of subgroups of the *ambient* group, not pairs of nested subgroups.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.subgroupOf_sup",
+        "description": "Identity $(H \\sqcup K).\\text{subgroupOf}\\,L = H.\\text{subgroupOf}\\,L \\sqcup K.\\text{subgroupOf}\\,L$ when $H, K \\leq L$. Used in the `sup_eq_of_isMaximal` proof (line 88) to transfer normality of $H$ and $K$ relative to $z$ into normality of $H \\sqcup K$ relative to $z$ — the lattice-theoretic identity that lets the file work in the lattice of subgroups rather than constantly descending to elements.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.normal_subgroupOf_iff_le_normalizer",
+        "description": "Characterizes relative normality via the normalizer: $(H.\\text{subgroupOf}\\,K).\\text{Normal} \\iff K \\leq H.\\text{normalizer}$ (when $H \\leq K$). Used three times in the file to convert between the `Normal` typeclass formulation needed by `subgroupOf_sup` / quotient constructions and the *direct subset* formulation needed by the element-wise argument in Part IV's maximality proof.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.normalizer",
+        "description": "The normalizer $N_G(H) = \\{g \\in G : gHg^{-1} = H\\}$, the *largest* subgroup of $G$ containing $H$ as a normal subgroup. The key normalizer lemma (Part II, line 64) — `le_normalizer_of_normal_in_sup`: if $H$ is relatively normal in $H \\sqcup K$, then $K \\leq H.\\text{normalizer}$ — is the file's structural workhorse, used implicitly via `normal_subgroupOf_iff_le_normalizer` in both `sup_eq_of_isMaximal` and the maximality step of `isMaximal_inf_left_of_isMaximal_sup`.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.mem_sup",
+        "description": "Characterization of membership in a subgroup join: $a \\in H \\sqcup K \\iff \\exists h \\in H, k \\in K, a = hk$. Used in the *element-wise decomposition* of Part IV's maximality argument (the structural lynchpin of the file): given $a \\in x$ with $N \\sqcup y = x \\sqcup y$, decompose $a = n \\cdot b$ with $n \\in N \\leq x$ and $b \\in y$; then $b = n^{-1} a \\in x$ by closure, so $b \\in x \\sqcap y \\leq N$, hence $a = n \\cdot b \\in N$ — yielding $x \\leq N$. This is the *only* place in the file where the proof descends from the lattice $(\\text{Subgroup}\\,G, \\leq, \\sqcup, \\sqcap)$ to individual group elements.",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "QuotientGroup.mk' / quotient construction",
+        "description": "Mathlib's quotient group construction $G / N$ for a normal subgroup $N \\trianglelefteq G$, together with the canonical projection `QuotientGroup.mk' N : G →* G / N`. The file's `second_iso` (Noether's second isomorphism theorem) constructs $(x \\sqcup y)/x \\simeq^* y / (x \\sqcap y)$ by building a homomorphism $\\varphi : y \\to^* (x \\sqcup y)/x$ via direct composition with `QuotientGroup.mk'` and applying the first isomorphism theorem — bypassing the `rw [sup_comm]` rewrite failure that arises when `Normal` typeclass instances need to be transferred across `sup_comm`.",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.IsSimpleGroup characterization",
+        "description": "Mathlib's `IsSimpleGroup` typeclass identifies simple groups as those with exactly two normal subgroups ($\\{e\\}$ and $G$). The `IsMaxNorm H K` predicate (line 49) is shown (in keyInsights) to be equivalent to `IsSimpleGroup (K / H.subgroupOf K)` by the correspondence theorem, but the file defines `IsMaxNorm` *directly* (in terms of maximality among normal-in-$K$ subgroups) to avoid Mathlib's quotient typeclass issues when the `Normal` instance has not yet been registered — a workaround that becomes structurally important once `JordanHolderLattice` needs `IsMaximal` to be a `Prop`-valued predicate rather than a typeclass.",
+        "module": "Mathlib.GroupTheory.Subgroup.Simple"
+      },
+      {
+        "theorem": "MulEquiv.symm and MulEquiv.trans",
+        "description": "Group isomorphisms form an equivalence relation: `MulEquiv.symm` inverts an isomorphism, `MulEquiv.trans` composes two. Used in the file's `iso_symm` and `iso_trans` lemmas (mandated by the `JordanHolderLattice` signature, which requires `GroupQuotIso` to be reflexive/symmetric/transitive) — packaging the underlying `MulEquiv` operations together with the `Normal` evidence carried by `GroupQuotIso`. Reflexivity is automatic from `MulEquiv.refl` and not listed as a separate lemma.",
+        "module": "Mathlib.Algebra.Group.Equiv.Basic"
+      }
+    ],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "**Parent file**. The Jordan-Hölder uniqueness theorem proved here is what makes the parent's $S_n$ solvable $\\iff n \\leq 4$ result an *absolute* threshold: Jordan-Hölder guarantees that no alternative composition series for $S_5$ can avoid $A_5$ as a factor (every composition series must include the non-abelian simple group $A_5$). Without uniqueness, the file's `s5_not_solvable` would establish only that *one particular* composition series shows non-solvability, leaving open the possibility of an alternative series with only abelian factors. This file closes that loophole structurally."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "**Grandparent file** establishing the original Abel-Ruffini theorem ($S_5$ not solvable $\\Rightarrow$ general quintic not solvable by radicals). The lineage abel-ruffini → abel-ruffini-galois-extensions → this file traces a progressive refinement: the original states the impossibility, the parent classifies *all* symmetric groups, and this file provides the uniqueness machinery that makes the classification an unconditional structural fact rather than a property of specific composition-series presentations."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05",
+        "relationship": "**Sibling OQ file** addressing the *converse* direction (Shafarevich realizability) of the same parent's classification. Where this file ensures *uniqueness* of composition series, oq-05 axiomatizes *existence* of Galois realizations for solvable groups. Together they bracket the parent's iff with structural completeness on both sides: every $S_n$ solvable $\\iff n \\leq 4$ has a *unique* composition factorization (this file) and every finite solvable group is *realized* as a Galois group over $\\mathbb{Q}$ (oq-05)."
+      }
+    ],
     "originalContributions": [
       "IsMaxNorm: predicate for maximal normal subgroup H in K (relative normality + maximality)",
       "GroupQuotIso: quotient isomorphism predicate with Normal instance evidence",
