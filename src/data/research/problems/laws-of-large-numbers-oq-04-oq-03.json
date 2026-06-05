@@ -50,7 +50,8 @@
       "S10: the old plan to contribute Monotone.exists_increasing_continuity_seq to Mathlib is VOID — that lemma is about continuous monotone F; the axiom over-generalizes to atomic CDFs. glivenko_cantelli_uniform statement is true but its proof via this axiom is vacuous (axiom inconsistent with Mathlib).",
       "S10: correct fix is to redesign BracketingGrid to track left limits F(qⱼ⁻) (standard quantile construction) and re-prove §2.4/§2.5 with one-sided node values; multi-session redesign, not a one-shot lemma.",
       "S13: the redesign uses Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε as the interior step bound. For atomless F this equals the original F (q j.succ) - F (q j.castSucc) (left limit = function value when F is continuous), so the redesign is conservative. For atomic F (e.g. Dirac) the left limit lets the node sit at the atom while the step is measured to the bottom of the next atom — the standard quantile / DKW empirical process construction.",
-      "S13: dropping the cont field of the original BracketingGrid is safe because Function.leftLim is defined for all monotone functions without continuity. The Mathlib API (Monotone.leftLim_eq_sSup, leftLim_eq_of_tendsto, etc.) supports the quantile-existence proof without needing continuity points."
+      "S13: dropping the cont field of the original BracketingGrid is safe because Function.leftLim is defined for all monotone functions without continuity. The Mathlib API (Monotone.leftLim_eq_sSup, leftLim_eq_of_tendsto, etc.) supports the quantile-existence proof without needing continuity points.",
+      "S13b (doc-only sync, 2026-06-04): the axiom-status summary at the bottom of LawsOfLargeNumbersOQ04OQ03.lean still cited 'Monotone.exists_increasing_continuity_seq, the natural Mathlib home' as the upstream target. That claim has been false since PR #20969 (S10 ACT). The summary was updated to record (a) the S10 refutation of bracketingGrid_exists, (b) the S13 QuantileBracketingGrid scaffold, and (c) that the correct upstream target involves left limits, not continuity points. Parent file grew 163 → 180 lines, all docstring; 0 axioms, 0 sorries, 0 theorems changed. meta.json + research JSON lineCount synced 163 → 180."
     ],
     "mathlibGaps": [
       "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F∩S| ≤ sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
@@ -199,7 +200,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ04OQ03.lean",
       "filename": "LawsOfLargeNumbersOQ04OQ03.lean",
-      "lineCount": 164,
+      "lineCount": 180,
       "theoremCount": 3,
       "axiomCount": 1,
       "defCount": 0,
