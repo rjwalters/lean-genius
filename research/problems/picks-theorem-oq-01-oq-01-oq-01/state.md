@@ -1,11 +1,64 @@
 # Current State
 
-**Phase**: PREP (S3b-act-2 PREP shipped 2026-06-04 — paste-ready code for `OnStrictEdgeInterior` predicate + `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` Case (a) witness ≈ 80 LOC; S3b-act-2 ACT next picker)
-**Since**: 2026-06-04 (S3b-act-2 PREP — paste-ready code authored; iter 14 → 15)
-**Iteration**: 15 (prior 14 from S4 STATE-SYNC; this S3b-act-2 PREP = 15)
-**Last researcher**: researcher-1 (S3b-act-2 PREP — paste-ready code, doc-only, 2026-06-04)
-**Most recent PR**: this S3b-act-2 PREP (pending). Prior: PR #21155 (S3b-act-1 ACT, merged 2026-05-30, Docker-verified 3058 jobs).
-**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — +75 LOC (646 → 721), +1 noncomputable def `latticeSegmentPoints`, +1 private helper `parametrisation_injOn_range`, +1 theorem `card_latticeSegmentPoints`; 3058 jobs clean at v4.26.0 (PR #21155, researcher-1, 2026-05-30)
+**Phase**: ACT (S3b-act-2 ACT shipped 2026-06-05 — Case (a) witness `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` + 3 supporting defs + `edgeGCD_eq_Int_gcd` bridge; +137 LOC, 3058 Docker jobs clean; S3b-act-3 Case (b) primitive-triangle interior witness is next picker)
+**Since**: 2026-06-05 (S3b-act-2 ACT — Lean shipped, Docker-verified; iter 15 → 16)
+**Iteration**: 16 (prior 15 from S3b-act-2 PREP; this S3b-act-2 ACT = 16)
+**Last researcher**: researcher-1 (S3b-act-2 ACT — code shipped, Docker-verified, 2026-06-05)
+**Most recent PR**: this S3b-act-2 ACT (pending). Prior: PR #22311 (S3b-act-2 PREP, merged 2026-06-04, doc-only). Code prior: PR #21155 (S3b-act-1 ACT, merged 2026-05-30, Docker-verified 3058 jobs).
+**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-2 ACT — +137 LOC (721 → 858), +2 defs `vEdgeStart`/`vEdgeEnd`, +1 lemma `edgeGCD_eq_Int_gcd`, +1 def `OnStrictEdgeInterior`, +1 theorem `exists_nonvertex_lattice_point_of_edgeGCD_ge_two`; 3058 jobs clean at v4.26.0 (this PR, researcher-1, 2026-06-05)
+
+## S3b-act-2 ACT (2026-06-05, researcher-1) — Case (a) witness shipped + Docker-verified
+
+**Mode**: ACT (Lean code shipped; Docker-verified 3058 jobs clean at v4.26.0)
+**Outcome**: progress — Case (a) of `exists_nonvertex_lattice_point` now realised in Lean. Combined with Case (b) (still open), this closes the geometric prerequisite from S3b PREP §4.1.
+
+### What shipped
+
+`proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean`: **721 → 858 LOC** (+137).
+
+Section IX (S3b-act-2) adds:
+
+| Item | Kind | Role |
+|---|---|---|
+| `LatticeTriangle.vEdgeStart` | def `Fin 3 → ℤ × ℤ` | edge-start vertex |
+| `LatticeTriangle.vEdgeEnd` | def `Fin 3 → ℤ × ℤ` | edge-end vertex |
+| `LatticeTriangle.edgeGCD_eq_Int_gcd` | lemma | bridges `edgeGCD` (over `Nat.gcd ∘ natAbs`) to `Int.gcd` of signed differences; `fin_cases i <;> rfl` |
+| `LatticeTriangle.OnStrictEdgeInterior` | def `Prop` | on segment, ≠ endpoints |
+| `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` | theorem | **Case (a) witness**: edge with `gcd ≥ 2` has a strict-interior lattice point |
+
+### The witness
+
+For edge `i` with `2 ≤ T.edgeGCD i`, witness = parameter-`k = 1` point of the gcd-parametrisation:
+`(vᵢ.1 + dx/g, vᵢ.2 + dy/g)` where `(dx, dy) = vᵢ₊₁ - vᵢ` and `g = Int.gcd dx dy`.
+
+Three obligations: membership (via `Finset.mem_image.mpr ⟨1, _, _⟩`); `p ≠ vᵢ` (forces `dx = dy = 0`, hence `g = 0` ⊥); `p ≠ vᵢ₊₁` (forces `dx · (g-1) = 0`, with `g ≥ 2` and `mul_eq_zero`, gives `dx = 0`, symmetric for `dy`, hence `g = 0` ⊥).
+
+### Departures from the PREP (#22311) paste
+
+1. **`edgeGCD_eq_Int_gcd` extracted as a top-level lemma** rather than inlined in the main theorem. Trivial `rfl` after `fin_cases`. Reusable for Case (b) or follow-ups.
+2. **First-hole `(by omega)` in the membership step split** — direct `Finset.mem_range.mpr (by omega)` failed because after `unfold latticeSegmentPoints`, the inner `let g_inner := Int.gcd dx dy` was not folded back to the outer `set g` from omega's perspective. Fix: explicit `show 1 ∈ Finset.range (g + 1)` before `Finset.mem_range.mpr (by omega)` bridges the definitional gap via Lean's defeq.
+3. **`Int.natAbs_sub_comm` not needed**. The PREP conjectured a sign-flip in edge 2; in fact `edgeDelta 2 = (v1 - v3, v1.2 - v3.2)` matches `vEdgeStart 2 → vEdgeEnd 2 = v3 → v1`, so direct `rfl` closes. Drops 1 bearer from PREP's 7-bearer table.
+
+### Build verification
+
+```
+$ ./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01
+✔ [3058/3058] Built Proofs.PicksTheoremOQ01OQ01OQ01 (10s)
+Build completed successfully (3058 jobs).
+```
+
+Docker daemon GREEN at v4.26.0, pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. No infra blockers — S4 STATE-SYNC's prediction held.
+
+### Phase head transition
+
+S3b-act-2 PREP (#22311, doc-only) → **S3b-act-2 ACT (this PR, code shipped + Docker-verified)** → S3b-act-3 next picker (Case (b) primitive-triangle interior witness via Euclidean-algorithm-on-edge-vectors, S3b PREP §4.1.b approach (b.ii), ~50–100 LOC estimated). After Case (b), `exists_nonvertex_lattice_point` (combined statement) is one short corollary.
+
+### Files modified
+
+- `proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean` (+137 LOC, 721 → 858)
+- `research/problems/picks-theorem-oq-01-oq-01-oq-01/sessions/2026-06-05-s3b-act2-act-edge-interior-witness.md` (new session report)
+- `research/problems/picks-theorem-oq-01-oq-01-oq-01/state.md` (this head + iter increment 15 → 16)
+- `research/problems/picks-theorem-oq-01-oq-01-oq-01/knowledge.md` (S3b-act-2 ACT entry)
 
 ## S3b-act-2 PREP (2026-06-04, researcher-1) — Paste-ready Case (a) witness
 

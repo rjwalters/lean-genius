@@ -718,4 +718,141 @@ theorem card_latticeSegmentPoints (v w : ℤ × ℤ) :
   rw [Finset.card_image_of_injOn (parametrisation_injOn_range v w),
       Finset.card_range]
 
+-- ════════════════════════════════════════════════════════════════
+-- SECTION IX (S3b-act-2): Edge-Interior Witness for `edgeGCD ≥ 2` (Case (a))
+-- ════════════════════════════════════════════════════════════════
+
+namespace LatticeTriangle
+
+/-- Edge `i` of `T` connects vertex `vEdgeStart i` to vertex `vEdgeEnd i`,
+    following the same edge convention as `edgeDelta`:
+    edge 0 = v1→v2, edge 1 = v2→v3, edge 2 = v3→v1. -/
+def vEdgeStart (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => T.v1
+  | 1 => T.v2
+  | 2 => T.v3
+
+/-- Edge endpoint: edge 0 → v2, edge 1 → v3, edge 2 → v1. -/
+def vEdgeEnd (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => T.v2
+  | 1 => T.v3
+  | 2 => T.v1
+
+/-- Compatibility: `edgeGCD i` equals `Int.gcd` of the signed differences
+    `vEdgeEnd i - vEdgeStart i`.  Holds by `rfl` after `fin_cases` because
+    `Int.gcd a b = Nat.gcd a.natAbs b.natAbs` and `edgeDelta i` is defined
+    via the same signed differences (each component passed through
+    `natAbs`). -/
+lemma edgeGCD_eq_Int_gcd (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeGCD i =
+      Int.gcd ((T.vEdgeEnd i).1 - (T.vEdgeStart i).1)
+              ((T.vEdgeEnd i).2 - (T.vEdgeStart i).2) := by
+  fin_cases i <;> rfl
+
+/-- `p` lies in the strict interior of edge `i` of `T`: it is on the segment
+    from `vEdgeStart i` to `vEdgeEnd i`, but distinct from both endpoints. -/
+def OnStrictEdgeInterior (T : LatticeTriangle) (i : Fin 3) (p : ℤ × ℤ) : Prop :=
+  p ∈ latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i) ∧
+  p ≠ T.vEdgeStart i ∧ p ≠ T.vEdgeEnd i
+
+end LatticeTriangle
+
+/-- **S3b-act-2 — Case (a) witness for `exists_nonvertex_lattice_point`**:
+    when edge `i` of `T` has `edgeGCD ≥ 2`, there is a lattice point in the
+    strict interior of that edge.
+
+    The witness is the parameter-`k = 1` point of the gcd-parametrisation:
+    `vᵢ + Δ/g` where `Δ = vᵢ₊₁ - vᵢ` and `g = Int.gcd Δx Δy`.  Since `g ≥ 2`,
+    `k = 1` lies strictly between `k = 0` (the start endpoint) and `k = g`
+    (the end endpoint), so the witness is a lattice point distinct from
+    both vertices.
+
+    Combined with the Case (b) primitive-triangle witness (separate work),
+    this closes `exists_nonvertex_lattice_point` — the geometric
+    prerequisite for the full Pick's-theorem induction (S3b PREP §4.1). -/
+theorem exists_nonvertex_lattice_point_of_edgeGCD_ge_two
+    (T : LatticeTriangle) (i : Fin 3) (hg : 2 ≤ T.edgeGCD i) :
+    ∃ p : ℤ × ℤ, T.OnStrictEdgeInterior i p := by
+  rw [T.edgeGCD_eq_Int_gcd i] at hg
+  set v := T.vEdgeStart i with hv_def
+  set w := T.vEdgeEnd i with hw_def
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  -- After `set`, the hypothesis reads `hg : 2 ≤ g`.
+  have hgne0 : g ≠ 0 := by omega
+  have hgZne : (g : ℤ) ≠ 0 := by exact_mod_cast hgne0
+  have hgZge2 : (2 : ℤ) ≤ (g : ℤ) := by exact_mod_cast hg
+  have hdvdx : (g : ℤ) ∣ dx := Int.gcd_dvd_left dx dy
+  have hdvdy : (g : ℤ) ∣ dy := Int.gcd_dvd_right dx dy
+  refine ⟨(v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ)), ?_, ?_, ?_⟩
+  · -- Membership in latticeSegmentPoints v w via Finset.mem_image with k = 1.
+    show (v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ)) ∈
+         LatticeTriangle.latticeSegmentPoints v w
+    unfold LatticeTriangle.latticeSegmentPoints
+    refine Finset.mem_image.mpr ⟨1, ?_, ?_⟩
+    · -- 1 ∈ Finset.range (g + 1).  `show` bridges the let-bound inner gcd
+      -- with the outer `set g := Int.gcd dx dy`.
+      show 1 ∈ Finset.range (g + 1)
+      exact Finset.mem_range.mpr (by omega)
+    · -- The witness equals the k=1 image: simp-fold via the set-equations.
+      show (v.1 + (1 : ℤ) * (dx / (g : ℤ)),
+            v.2 + (1 : ℤ) * (dy / (g : ℤ))) =
+           (v.1 + dx / (g : ℤ), v.2 + dy / (g : ℤ))
+      simp
+  · -- Witness ≠ v.  p = v ⟹ dx/g = 0 ∧ dy/g = 0 ⟹ dx = 0 ∧ dy = 0 ⟹ g = 0, ⊥.
+    intro hpv
+    have hxz : dx / (g : ℤ) = 0 := by
+      have h : v.1 + dx / (g : ℤ) = v.1 := congrArg Prod.fst hpv
+      linarith
+    have hyz : dy / (g : ℤ) = 0 := by
+      have h : v.2 + dy / (g : ℤ) = v.2 := congrArg Prod.snd hpv
+      linarith
+    have hdx0 : dx = 0 := by
+      have heq := Int.ediv_mul_cancel hdvdx
+      rw [hxz, zero_mul] at heq
+      exact heq.symm
+    have hdy0 : dy = 0 := by
+      have heq := Int.ediv_mul_cancel hdvdy
+      rw [hyz, zero_mul] at heq
+      exact heq.symm
+    have hg0 : g = 0 := by
+      show Int.gcd dx dy = 0
+      rw [hdx0, hdy0]; rfl
+    omega
+  · -- Witness ≠ w.  p = w ⟹ dx/g = dx ∧ dy/g = dy
+    --              ⟹ dx·g = dx ∧ dy·g = dy   (using g ∣ Δ)
+    --              ⟹ dx·(g-1) = 0 ∧ dy·(g-1) = 0
+    --              ⟹ dx = 0 ∧ dy = 0           (since g ≥ 2)
+    --              ⟹ g = Int.gcd 0 0 = 0, contradicting g ≥ 2.
+    intro hpw
+    have hxw : dx / (g : ℤ) = dx := by
+      have h : v.1 + dx / (g : ℤ) = w.1 := congrArg Prod.fst hpw
+      linarith
+    have hyw : dy / (g : ℤ) = dy := by
+      have h : v.2 + dy / (g : ℤ) = w.2 := congrArg Prod.snd hpw
+      linarith
+    have hxg : dx * (g : ℤ) = dx := by
+      have heq := Int.ediv_mul_cancel hdvdx
+      rw [hxw] at heq
+      exact heq
+    have hyg : dy * (g : ℤ) = dy := by
+      have heq := Int.ediv_mul_cancel hdvdy
+      rw [hyw] at heq
+      exact heq
+    have hdx0 : dx = 0 := by
+      have hf : dx * ((g : ℤ) - 1) = 0 := by linarith
+      rcases mul_eq_zero.mp hf with h | h
+      · exact h
+      · linarith
+    have hdy0 : dy = 0 := by
+      have hf : dy * ((g : ℤ) - 1) = 0 := by linarith
+      rcases mul_eq_zero.mp hf with h | h
+      · exact h
+      · linarith
+    have hg0 : g = 0 := by
+      show Int.gcd dx dy = 0
+      rw [hdx0, hdy0]; rfl
+    omega
+
 end PicksTheoremOQ01OQ01OQ01

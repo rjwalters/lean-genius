@@ -195,3 +195,70 @@ triangles with `twiceArea ≥ 2`). The combined statement closes
 `exists_nonvertex_lattice_point`, which is the hard prerequisite identified
 in S3b PREP §2 for the full induction route to Pick's theorem.
 
+---
+
+## S3b-act-2 ACT (2026-06-05, researcher-1) — Case (a) witness shipped
+
+Lean-side realisation of the S3b-act-2 PREP (#22311). 4 new items shipped
+to `Proofs/PicksTheoremOQ01OQ01OQ01.lean` (Section IX, +137 LOC; 721 → 858).
+Docker-verified 3058 jobs clean at v4.26.0.
+
+### Built items (cumulative + S3b-act-2 ACT)
+
+In addition to all prior items (S1, S2, S3-prep, S3a-prep, S3a-plus ACT,
+S3b-act-1):
+
+- `LatticeTriangle.vEdgeStart : Fin 3 → ℤ × ℤ` — edge `i`'s start vertex
+  (edge 0 → v1, edge 1 → v2, edge 2 → v3)
+- `LatticeTriangle.vEdgeEnd : Fin 3 → ℤ × ℤ` — edge `i`'s end vertex
+  (edge 0 → v2, edge 1 → v3, edge 2 → v1)
+- `LatticeTriangle.edgeGCD_eq_Int_gcd` — bridge lemma showing
+  `edgeGCD i = Int.gcd ((vEdgeEnd i).1 - (vEdgeStart i).1) ((vEdgeEnd i).2 - (vEdgeStart i).2)`.
+  Proved by `fin_cases i <;> rfl` since `Int.gcd a b = Nat.gcd a.natAbs b.natAbs`
+  and `edgeDelta` already uses the same signed differences passed through `natAbs`.
+- `LatticeTriangle.OnStrictEdgeInterior T i p` — strict-edge-interior predicate:
+  `p ∈ latticeSegmentPoints (vEdgeStart i) (vEdgeEnd i) ∧ p ≠ vEdgeStart i ∧ p ≠ vEdgeEnd i`
+- `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` — **Case (a) witness**.
+  For `T : LatticeTriangle`, `i : Fin 3`, `2 ≤ T.edgeGCD i`, gives
+  `p = (vᵢ.1 + dx/g, vᵢ.2 + dy/g)` with `T.OnStrictEdgeInterior i p`.
+
+### Departures from PREP paste
+
+1. **`edgeGCD_eq_Int_gcd` extracted as a top-level lemma** rather than
+   inlined inside the main theorem via a `simp only [...] <;> rfl` chain.
+   Cleaner proof, reusable for Case (b).
+2. **`(by omega)` inside `Finset.mem_range.mpr` needed `show` bridge** —
+   after `unfold latticeSegmentPoints`, the inner let-bound `Int.gcd dx dy`
+   was not folded back to the outer `set g`, so omega could not connect
+   `hg : 2 ≤ g` to the goal `1 < g_inner + 1`. Adding `show 1 ∈ Finset.range (g + 1)`
+   bridges the definitional gap via Lean's defeq checker.
+3. **`Int.natAbs_sub_comm` not needed** — PREP's 7-bearer table conjectured
+   a sign-flip for edge 2, but `edgeDelta 2 = (v1 - v3, v1.2 - v3.2)` matches
+   `vEdgeStart 2 → vEdgeEnd 2 = v3 → v1` directly. Final bearer count: 6.
+
+### Final bearer set (6, all v4.26.0-stable)
+
+- `Int.gcd_dvd_left/right` (`Mathlib/Data/Int/GCD.lean`)
+- `Int.ediv_mul_cancel` (core Lean `Init/Data/Int/DivMod`)
+- `Finset.mem_image` (`Mathlib/Data/Finset/Image.lean`)
+- `Finset.mem_range` (`Mathlib/Data/Finset/Range.lean`)
+- `mul_eq_zero` (`Mathlib/Algebra/Ring/Defs.lean`)
+
+### Reference
+
+- `sessions/2026-06-05-s3b-act2-act-edge-interior-witness.md` — full ACT
+  session report with build verification, bearer audit, and PREP departures.
+
+### What this unlocks
+
+The remaining hard step toward `exists_nonvertex_lattice_point` is now
+**Case (b)** only — Minkowski-style or Euclidean-algorithm-on-edge-vectors
+interior witness for primitive triangles with `twiceArea ≥ 2`. The
+combined statement (∀ T non-degenerate with bounded box, ∃ p ≠ each vertex
+and `p ∈ T.boundingBox`) is then a short case-split:
+- Some `edgeGCD i ≥ 2`: use Case (a) (this ACT).
+- All edges primitive (`edgeGCD i = 1`): use Case (b) on the strict interior.
+
+S3b PREP §4.1.b recommends approach **(b.ii)** (Euclidean-algorithm-on-
+edge-vectors) as the preferred non-circular route to Case (b).
+
