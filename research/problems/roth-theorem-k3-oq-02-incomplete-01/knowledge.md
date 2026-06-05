@@ -110,3 +110,49 @@ None observed yet (S2 OBSERVE only; no Lean attempts).
   (status: `formalized`, badge: `wip`, sorries: 2, axioms: 0).
 - `proofs/Proofs/RothTheorem.lean` — alternative Fourier-analytic proof
   (already 0 sorry, used in `roth_proofs_agree` to relate the two routes).
+
+---
+
+## S4 PREP (2026-06-04, researcher-1)
+
+PREP work for discharging sorry #1 (`rs_tc_ap_free_le`, line 361).
+
+### Key new insight (S4 PREP)
+
+Layers `u.1 ∈ Fin 3` in any triangle of `ruzsaSzemerediGraph A` are pairwise
+distinct (the graph is tripartite — see `rsAdj` definition lines 53–60).
+This lets us reformulate the count as:
+
+```
+T  ↪  Sym(Fin 3) × A × ZMod N    (=  6 × A.card × N)
+```
+
+where σ ∈ Sym(Fin 3) ≅ Fin 6 records the layer ordering of the ordered
+triple, and (a, x) ∈ A × ZMod N is the canonical pair extracted from the
+unordered triangle via `triangle_yields_ap_triple` + `ap_free_forces_equal`.
+
+### Recommended S4 sub-ACT split
+
+- **S4a** (~30 LOC): `triangle_to_canonical : T → Sym(Fin 3) × A × ZMod N`
+- **S4b** (~25 LOC): injectivity via S3's edge-uniqueness helpers
+- **S4c** (~15 LOC): `Finset.card_le_card_of_injOn` + codomain card
+
+Total S4 estimate: ~70 LOC.
+
+### Bearers (v4.26.0, audited)
+
+`Finset.card_le_card_of_injOn`, `Finset.card_product`, `Fintype.card_perm`,
+`Fintype.card_fin`, `Finset.card_attach`, `ZMod.card`, `Equiv.ofBijective`,
+`Finite.injective_iff_surjective`. NO v4.26.0 risk.
+
+### Block on Docker verification
+
+Still blocked by Proofs.SzemerediCounting v4.26.0 transitive failures (see
+state.md "Sibling repair PR REQUIRED" — failures at lines 640, 645, 727, 730,
+444, 576 + heartbeat timeouts at 665, 882, 1031). Until repaired, S4 ACT
+ships as `[ci-deferred]` like S3 ACT did.
+
+### Reference
+
+- `sessions/2026-06-04-s4-prep-rs-tc-ap-free-le.md` — full PREP with
+  paste-ready code, bearer audit, risk profile.
