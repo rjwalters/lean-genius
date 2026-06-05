@@ -104,6 +104,28 @@
         "module": "Mathlib.Data.Nat.Factorization.Defs"
       }
     ],
+    "relatedProblems": [
+      {
+        "id": "abel-ruffini-galois-extensions",
+        "relationship": "**Parent file**. Burnside's $p^a q^b$ theorem extends the parent's $S_n$ classification ($S_n$ solvable iff $n \\leq 4$) along a different axis: instead of classifying solvability by *which specific groups* arise (the symmetric/alternating families), Burnside classifies solvability by *order divisibility* (every group whose order has at most two prime factors is solvable, regardless of structure). The parent's sharp threshold $n = 5$ corresponds exactly to the *minimal cardinality* $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ where Burnside ceases to apply — and $A_5$ is *the* witness that Burnside's two-prime bound is sharp. **Pedagogical bridge**: Burnside provides a 'sufficient condition' (at most 2 prime divisors $\\Rightarrow$ solvable) that perfectly complements the parent's 'necessary structure' analysis of $A_5/S_5$, making this entry the natural companion to the parent for readers asking 'why is $A_5$ specifically the obstruction, and not some smaller group?'."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-04",
+        "relationship": "**Sibling OQ file** on Jordan-Hölder uniqueness. The two entries play complementary structural roles: oq-04 ensures the *composition series factorization is unique* (so the non-abelian simple $A_5$ cannot be 'factored out' by choosing a different series); this entry provides a *sufficient condition* (Burnside) ruling out non-abelian simple factors when only two primes are involved. Together they bracket the parent's classification: oq-04 says 'every group has a canonical composition factorization' and this file says 'two-prime orders cannot have non-abelian simple factors in that factorization'."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05",
+        "relationship": "**Sibling OQ file** on Shafarevich realizability. Both axiomatize a *deep, currently-unformalizable theorem* and derive structural corollaries axiom-free: oq-05 axiomatizes Shafarevich's 1954 inverse Galois theorem (every solvable group is a Galois group over $\\mathbb{Q}$), this file axiomatizes Burnside's 1904 $p^a q^b$ theorem. **Methodological parallel**: both files isolate the *single hardest mathematical fact* (Shafarevich / Burnside non-trivial case) as a single named axiom, then build a constellation of axiom-free corollaries around it — demonstrating the pattern of *responsible axiomatization* where the axiom boundary is sharply documented and the consequences are mechanically verified."
+      },
+      {
+        "id": "abel-ruffini-galois-extensions-oq-05-oq-01",
+        "relationship": "**Nephew OQ file** on Shafarevich feasibility in Lean. While oq-05-oq-01 maps the *current Lean reach* of Shafarevich (cyclic case proved, abelian via linear disjointness gap, full solvable axiomatized), this file maps the analogous current reach of Burnside (trivial cases axiom-free via Mathlib's `IsPGroup → IsNilpotent → IsSolvable`, squarefree case axiom-free via `IsZGroup.of_squarefree`, the $p^2 q$ and higher cases axiomatized). Together they form a *feasibility cartography* for two of the four major axiomatized results in the abel-ruffini family."
+      },
+      {
+        "id": "abel-ruffini",
+        "relationship": "**Grandparent file**. Abel-Ruffini's impossibility theorem ($S_5$ not solvable $\\Rightarrow$ general quintic not solvable by radicals) is what motivates Burnside's bound being interesting in the first place: Burnside guarantees the *Galois groups of polynomial equations with two-prime-power degree* are solvable, hence (by the radical-solvability $\\iff$ solvable-Galois-group correspondence) such polynomials are solvable by radicals. This means *Cardano-style formulas exist for all polynomials of degree $p^a q^b$* — a vast generalization of the classical $n \\leq 4$ case that the grandparent's machinery does not address directly."
+      }
+    ],
     "originalContributions": [
       "pGroup_isSolvable: explicit packaging of Mathlib's IsPGroup → IsNilpotent → IsSolvable chain (axiom-free).",
       "burnside_pq_a_zero: axiom-free proof of Burnside for `a = 0` (G is a q-group).",
