@@ -25,6 +25,48 @@
     "lineCount": 214,
     "theoremCount": 9,
     "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "IsSolvable",
+        "description": "Typeclass marker for solvable groups, defined via existence of a `CommGroup` quotient witness in the derived series. The companion file's seven corollaries all hinge on `inferInstance` finding a registered `IsSolvable G` instance to feed `shafarevich_inverse_galois` — making `IsSolvable` the *typeclass interface* that converts arbitrary structural solvability proofs (cyclic via `ZMod n` instance, abelian via `CommGroup → IsSolvable` instance, $S_3/S_4$ via parent file's `symmetric_solvable_of_le_four`, subgroups via `subgroup_solvable_of_solvable`, quotients via `quotient_solvable_of_solvable`) into Shafarevich-applicable hypotheses.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "subgroup_solvable_of_solvable",
+        "description": "Subgroups of solvable groups are solvable: $H \\leq G$ with $G$ solvable implies $H$ solvable. Used in `subgroup_of_solvable_realizable` (line 151) to lift Shafarevich's existence statement from a solvable group $G$ to any of its subgroups $H \\leq G$ — providing the inheritance closure of realizability under subgroup formation.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "quotient_solvable_of_solvable",
+        "description": "Quotients of solvable groups are solvable: $G$ solvable and $N \\trianglelefteq G$ normal imply $G/N$ solvable. Used in `quotient_of_solvable_realizable` (line 161) to lift Shafarevich's existence statement across quotient formation — together with subgroup closure, gives the *category-of-solvable-groups closure* under sub/quot operations, mirroring the analogous closure properties on the field side (subfields of Galois extensions, quotients via fixed fields of normal subgroups).",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "IsGalois",
+        "description": "Typeclass asserting that $L/F$ is a Galois field extension (normal and separable). The Shafarevich axiom existentially quantifies over $L$ with `[IsGalois ℚ L]` as part of the conclusion structure, so every downstream theorem (`cyclic_group_realizable`, `s3_realizable`, etc.) unpacks the existential with `obtain ⟨L, _, _, _, _, hiso⟩` and re-packages it under fresh existential — the `IsGalois ℚ L` typeclass travels along as a structural witness.",
+        "module": "Mathlib.FieldTheory.Galois.Basic"
+      },
+      {
+        "theorem": "AlgEquiv (≃ₐ[F])",
+        "description": "F-algebra equivalences: ring isomorphisms commuting with the $F$-algebra structure. The Galois group $\\mathrm{Gal}(L/\\mathbb{Q})$ is encoded as the automorphism group $L \\simeq_{\\mathbb{Q}\\text{-alg}} L$ (`L ≃ₐ[ℚ] L`), and the `MulEquiv` $G \\simeq^* (L \\simeq_{\\mathbb{Q}\\text{-alg}} L)$ is the formalization of the isomorphism $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$ underlying the *realizability* statement. Without this Mathlib construction, the Shafarevich conclusion would have no precise meaning.",
+        "module": "Mathlib.Algebra.Algebra.Equiv"
+      },
+      {
+        "theorem": "MulEquiv (≃*)",
+        "description": "Group isomorphisms preserving multiplication. The Shafarevich axiom's payload is `Nonempty (G ≃* (L ≃ₐ[ℚ] L))` — a *nonempty type of isomorphisms* rather than a single chosen isomorphism, matching the mathematical convention that realizability is an existential statement (some extension realizes $G$) rather than a constructive one (an explicit canonical extension realizing $G$, which would require choosing a specific defining polynomial).",
+        "module": "Mathlib.Algebra.Group.Equiv.Basic"
+      },
+      {
+        "theorem": "ZMod n",
+        "description": "Cyclic group of order $n$ (when $n > 0$). Used in `cyclic_group_realizable` (line 97) as the canonical witness for the cyclic-group case: $\\mathbb{Z}/n\\mathbb{Z}$ comes with `CommGroup` (hence `IsSolvable` by Mathlib instance) and `Fintype` instances, so the proof reduces to a single `obtain` from the Shafarevich axiom. This is the *smallest non-trivial case* of Shafarevich's theorem and historically the *first realized* — every cyclic extension of $\\mathbb{Q}$ was constructed (via cyclotomic fields and Kronecker-Weber) decades before Shafarevich's general result.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "CommGroup → IsSolvable",
+        "description": "Mathlib instance: every abelian group is solvable (derived series terminates in one step, $G' = [G, G] = \\{e\\}$). Used in `abelian_group_realizable` (line 109) via `haveI : IsSolvable G := inferInstance` — typeclass inference automatically finds this instance once `CommGroup G` is in scope, demonstrating Lean's design of *making instance hierarchies discoverable* without manual citation. The instance is the smallest mathematical fact in Mathlib's solvability infrastructure but underwrites the *infinite parametric family* of all finite abelian Galois groups over $\\mathbb{Q}$.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
     "originalContributions": [
       "shafarevich_inverse_galois: core axiom — Gal(L/ℚ) ≅ G for every finite solvable G",
       "cyclic_group_realizable: ℤ/nℤ is realizable (abelian → solvable → Shafarevich)",
