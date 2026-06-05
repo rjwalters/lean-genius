@@ -153,3 +153,94 @@ this slug; sibling `roth-theorem-k3-oq-01` has 0 open PRs as well).
 S3+ will start Phase A2 (Heath-Brown / Szemerédi `log log` improvement) or
 Phase B1 (Bohr-set definitions) depending on whichever has the cleaner
 Mathlib-PR-shape — TBD after S2 lands.
+
+---
+
+## Session S2 — 2026-06-05 (researcher-1, STATE-SYNC + scope decision)
+
+### Mode
+
+**S2 STATE-SYNC** — re-verify file state since S1 (2026-05-12), confirm the four
+sorries are still present at the same shape, then deliberately defer the
+Behrend Mathlib wrapper attempt rather than land a half-built bridge.
+
+### State re-verified at HEAD origin/main (2026-06-05)
+
+`proofs/Proofs/RothTheoremQuantitative.lean` still carries 4 sorries, all
+at the same theorem statements documented in S1 (line numbers shifted slightly
+due to nearby refactors but the bodies match):
+
+| Theorem | Old line (S1) | Current line | Statement shape |
+| --- | --- | --- | --- |
+| `roth_quantitative_upper_bound` | 187–190 | 239–242 | `∃ C > 0, ∀ N ≥ 3, (rothNumber N : ℝ) ≤ C·N / log(log N)` |
+| `behrend_lower_bound` | 201–204 | 253–256 | `∃ c > 0, ∀ N ≥ 3, (rothNumber N : ℝ) ≥ N · exp(-c · √(log N))` |
+| `bloom_sisask_bound` | 211–214 | 263–266 | `∃ c > 0, ∀ N ≥ 3, (rothNumber N : ℝ) ≤ N / (log N)^(1+c)` |
+| `kelley_meka_upper_bound` | 223–226 | 275–278 | `∃ c > 0, ∀ N ≥ 3, (rothNumber N : ℝ) ≤ N · exp(-c · (log N)^(1/12))` |
+
+The bridge candidate `apFree_imp_threeAPFree_val` is still at
+`RothTheorem.lean:1337`, providing `APFree A → ThreeAPFree (image ZMod.val A : Set ℕ)`
+— useful for the *upper*-bound direction `rothNumber N ≤ Nat.rothNumberNat N`.
+The Behrend wrapper actually needs the *opposite* direction
+`Nat.rothNumberNat N ≤ rothNumber N` (lifting a ℕ-side AP-free set to a
+ZMod-side `APFree` set), which is a separate construction.
+
+### Why S2 deferred the Behrend wrapper
+
+1. **Bridge direction mismatch.** S1 assumed the existing
+   `apFree_imp_threeAPFree_val` lemma was a direct enabler. On closer reading it
+   is the *upper*-bound bridge (ZMod → ℕ); the Behrend wrapper needs the
+   *lower*-bound bridge (ℕ → ZMod). That second bridge is provable but is
+   genuinely new code — `Fin N → ZMod N` via `(i : ℕ) ↦ (i : ZMod N)`, plus a
+   proof that `Function.Injective` on the image preserves `APFree`. It's likely
+   another ~30 lines on top of the wrapper itself, raising the original S1
+   estimate from "30 lines total" to ~60 lines spanning two artifacts.
+
+2. **Mathlib signature unverified in this session.** This researcher worktree's
+   `proofs/.lake/packages` resolves to a broken self-loop symlink, so direct
+   `Read` of `Mathlib/Combinatorics/Additive/AP/Three/Behrend.lean` is not
+   available; the Docker cache lives only inside the build container. Without
+   confirming the exact statement of `Behrend.roth_lower_bound` (constant
+   placement, N-threshold, ℕ vs ℝ side of the inequality, presence of an
+   `∃ c`, etc.), the wrapper cannot be written as a single
+   informed pass — it would need open-ended iterative Docker probing.
+
+3. **Cycle budget.** This is researcher-1's fifth iteration within the current
+   90-minute TTL. The previous four landed clean structural-lemma PRs in
+   ≤2 Docker cycles each; the Roth Behrend attempt is much higher-variance
+   (the bridge code is new, the Mathlib signature is unknown). Deferring to a
+   future session that starts with the Mathlib source in-hand is strictly
+   better expected value than burning the remaining window on a probe loop.
+
+### Output
+
+This session adds no Lean files. Only this S2 STATE-SYNC note. No JSON edits.
+
+### Concrete S3 plan (in priority order)
+
+1. **S3a — make Mathlib readable from the worktree.** Either rebuild the
+   worktree from a fresh `git worktree add` so `.lake/packages` resolves to
+   a real directory, or have the launcher copy
+   `Mathlib/Combinatorics/Additive/AP/Three/{Behrend,Defs}.lean` into
+   `research/roth-theorem-oq-02/mathlib-snapshot/` before the researcher
+   starts. Until this is fixed, every Mathlib-wrapper task on this slug
+   pays the same probe-loop tax that S2 just declined.
+
+2. **S3b — Behrend wrapper, informed pass.** Concrete ~60-line patch:
+   - Prove `nat_rothNumberNat_le_rothNumber : ∀ N, Nat.rothNumberNat N ≤ rothNumber N`
+     by mapping `Finset (Fin N) → Finset (ZMod N)` via the natural inclusion,
+     using injectivity of `(· : ℕ) → ZMod N` for `· < N` to lift `ThreeAPFree`
+     to `APFree`.
+   - In `behrend_lower_bound`, instantiate `c` from `Behrend.roth_lower_bound`,
+     chain through `nat_rothNumberNat_le_rothNumber`, close with `linarith` /
+     `gcongr`.
+
+3. **S4+** — Phase A2 (Heath-Brown / Szemerédi `log log`) or Phase B1
+   (Bohr-set definitions) per the S1 phase plan.
+
+### Race-safety re-check at S2 start
+
+- `gh pr list --search roth-theorem-oq-02 --state open` — 0 open PRs.
+- `git branch -r | grep roth-theorem-oq-02` — only the S1 scaffold branch
+  history; no parallel in-flight researchers.
+- This slug remains in `in-progress` status; the claim TTL refreshes after
+  this S2 PR lands.
