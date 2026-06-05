@@ -91,6 +91,26 @@ lemma pathLineIntegral_swap_endpoints
   unfold pathLineIntegral
   exact integral_symm a b
 
+/-- **Vector-field-negation symmetry**: negating both `P` and `Q` (the components
+    of the vector field) negates the path line integral.
+
+    No integrability hypothesis is required — the unconditional
+    `intervalIntegral.integral_neg` does the work, since negating each integrand
+    coefficient pointwise commutes with integration regardless of integrability.
+    Combined with `pathLineIntegral_swap_endpoints`, this gives the basic
+    "Klein four" symmetry group of the line integral under (a) parameter
+    reversal and (b) vector-field sign flip; in particular, reversing
+    *both* simultaneously is the identity. -/
+lemma pathLineIntegral_neg_field
+    (P Q : ℝ × ℝ → ℝ) (γx γy γx' γy' : ℝ → ℝ) (a b : ℝ) :
+    pathLineIntegral (fun p => -P p) (fun p => -Q p) γx γy γx' γy' a b =
+      - pathLineIntegral P Q γx γy γx' γy' a b := by
+  unfold pathLineIntegral
+  rw [← intervalIntegral.integral_neg]
+  apply integral_congr
+  intro t _
+  ring
+
 /-!
 ## Part II: Edge Specializations (Bridge to OQ-01)
 

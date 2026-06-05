@@ -21,18 +21,19 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 227,
+    "lineCount": 247,
     "assumptions": "1 own axiom: greens_theorem_smooth_boundary — the planar Green's theorem for a parametrized piecewise-smooth, positively-oriented, simple closed curve bounding a measurable region. This packages the open Mathlib gap: there is no first-class statement that takes a parametrized boundary γ : [a,b] → ℝ² and a region D and asserts ∮_γ (P dx + Q dy) = ∬_D (∂Q/∂x − ∂P/∂y). Mathlib has Stokes' theorem in higher generality via differential forms on manifolds, but the specifically planar Green statement is not packaged in this form. The path-integral side is fully proved (no axioms): `pathLineIntegral` is defined directly via `intervalIntegral`, and the rectangular case is recovered by the bridge lemma `pathLineIntegral_rect_boundary_eq_rectLineIntegral`.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "pathLineIntegral: a definition of the line integral along a parametric plane curve, expressed entirely in terms of Mathlib's intervalIntegral (no axioms)",
       "pathLineIntegral_swap_endpoints: orientation-reversal lemma via integral_symm — traversing the curve backwards negates the integral",
+      "pathLineIntegral_neg_field: vector-field-negation symmetry — negating (P, Q) negates the integral; together with pathLineIntegral_swap_endpoints this gives the Klein four symmetry under parameter reversal × field sign flip",
       "pathLineIntegral_horizontal_segment / pathLineIntegral_vertical_segment: edge specializations connecting the smooth-curve formulation to OQ-01's rectLineIntegral",
       "rectBoundaryPathIntegral: explicit four-edge counterclockwise parametrization of the rectangle boundary, each edge a smooth line segment",
       "pathLineIntegral_rect_boundary_eq_rectLineIntegral: bridge theorem proving the smooth-curve framework agrees with OQ-01's rectangular formulation on the nose",
       "greens_theorem_smooth_boundary (axiomatized): isolates the open Mathlib gap as a single axiom — the parametrized planar Green identity for a piecewise-smooth Jordan curve plus measurable region"
     ],
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 2
   },
   "crossReferences": [
