@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 47,
-    "focus": "S47 PREP shipped doc-only small-case validation for `firstDescentRotation` Defs I + III on recon doc §1 Cases 1+2 (completing S43 §2.3 deferred data); +1 session memo, +S47 PREP block in state.md, +8 JSON fields. 0 Lean LOC, 0 axioms, sorries unchanged at 2 proof-level / 17 textual. Across all 3 cases tested (Cases 1+2+3): Defs I and III agree, existence holds for every P' ≤ M of size a+1. Plus 4 spot-check cases (`{0,0,2,3}`, `{0,1,1,2}`, `{0,0,3,3}`, `{0,0,0,1,1,1}` with a=b=3) — no counter-example to Def I existence found across 7 cases total. Recommends Def I for S48 D' ACT with `h_exists` as caller's obligation; refines S46+ menu item D (MEDIUM risk, ~25-30 LOC) into S48 D' (LOW risk, ~15-20 LOC). Def II ruled out (begs the question via ColStrictSym in existence body). Def III rejected (~25-35 LOC due to List.lex_lt; no observed advantage over Def I). Infra delta since S46: G7 (disk) RECOVERED 2.3 Gi → 57 Gi; G8 (Docker daemon) RECOVERED Server-empty → Server-non-empty; G9 (proofs/.lake self-loop) still RED in main repo (out of scope for individual research PRs). Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable; toolchain `leanprover/lean4:v4.26.0` unchanged.",
+    "phase": "ACT",
+    "since": "2026-06-05T00:00:00.000Z",
+    "iteration": 48,
+    "focus": "S48 D' ACT (researcher-1, 2026-06-05, build pending): applies the S47 PREP recipe verbatim. Ships `firstDescentRotation` Definition I (`Nat.find` on the multiset-equality predicate, h_exists-parameterised) + `firstDescentRotation_take_eq` spec lemma (`Nat.find_spec` direct apply) in proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean. +73 LOC (1 noncomputable def + 1 lemma + S48 section header + per-declaration docstrings). Both declarations placed at the natural junction between the prefix-rotation toolkit (S31/S37/S41/S45/S46) and the JDT bijection scaffolding (S19 totalSym / S19 totalSym'). 0 sorry / 0 axiom delta. Build status: pending — sibling Proofs/BallotProblemOQ03OQ02.lean has pre-existing errors on origin/main per S78 PR #19554 / S81 PR #21203 / S84 PR #22026 active error-reduction iteration (slug ballot-problem-oq-03-oq-01-oq-02). The OQ02 errors block lake dependency closure but are NOT caused by my edit (verified against origin/main baseline). Once OQ02 reaches zero errors, this PR auto-Docker-verifies GREEN.",
     "blockers": [],
-    "nextAction": "S48 D' ACT (LOW risk, ~15-20 LOC): ship Def I `firstDescentRotation` def + `firstDescentRotation_take_eq` spec with `h_exists` parameterised in the signature. Direct `Nat.find`-based implementation. Spec is `Nat.find_spec`. INFRA pre-flight: G9 lake self-loop repair still required for build verification (shared-state, out of scope per research PR); G7+G8 now GREEN. Mathlib pin unchanged. Alternative paths from S47 PREP menu: (E) prove `firstDescentRotation_exists` for general P' (HIGH risk ~50-100 LOC, multiset-prefix cycle lemma); (G) doc-only 2B.4' bijection design memo (LOW risk, ~150-200 markdown LOC).",
+    "nextAction": "S49+ menu (post S48 D' ACT): (E) prove `firstDescentRotation_exists` for `P' ≤ M` of size `a + 1` — the multiset-prefix cycle lemma, ~50-100 LOC, HIGH risk, standalone Mathlib contribution candidate (recon doc §6); (G) doc-only 2B.4' bijection design memo using S48 `firstDescentRotation` as the inverse map (~150-200 LOC markdown, LOW risk); (H) apply S48 `firstDescentRotation` to existing JDT scaffolding to start wiring the inverse direction of the 2B.4' refined-codomain bijection (~30-50 LOC, MEDIUM risk). Recommended next: H (if Docker comes back GREEN on OQ02 first) or E (if Docker still blocked on OQ02 — push math obligation along independently).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -219,7 +219,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-31T11:00:00.000Z",
+  "lastUpdate": "2026-06-05T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",

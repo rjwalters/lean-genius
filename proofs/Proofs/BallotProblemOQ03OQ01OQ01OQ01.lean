@@ -1484,6 +1484,66 @@ private lemma rotateSortedListPrefixSym_val_eq_sub_drop {n c : ℕ}
   show ((rotateSortedList M k).take j : Multiset (Fin n)) = _
   rw [← h, add_tsub_cancel_right]
 
+/-! #### S48 — `firstDescentRotation` (Definition I, h_exists-parameterised)
+
+The 2B.4' refined-codomain bijection (recon doc §1) needs an inverse map
+`(M, P') ↦ k` taking the total multiset `M : Sym (Fin n) (a + b)` and a
+prefix candidate `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1` to a rotation
+index `k : Fin (a + b)` such that the `(a + 1)`-prefix of `rotateSortedList
+M k` has multiset `P'.1`.
+
+S43 §2.2 enumerated three candidate definitions; S43 §2.3 validated Case 3
+(`M = {0, 1, 2, 3}`, all distinct); S47 PREP (2026-05-31, this slug,
+`sessions/2026-05-31-s47-prep-firstdescent-validation.md`) closed the
+deferred validation for Cases 1+2 plus 4 spot-checks and recommended
+**Definition I** (`Nat.find` on the multiset-equality predicate):
+
+- ~10–15 LOC, decidable predicate via `Multiset.decidableEq` (lifted from
+  `DecidableEq (Fin n)` via `Quotient.decidableEq`).
+- Defs I and III agree on all 3 + 4 = 7 validated cases (under the
+  multiset-equality matching of Def III).
+- Def II ruled out per S43 §2.2 (existence proof drags in S29 canonical-
+  complement bridge — circular w.r.t. the cycle lemma).
+
+The existence hypothesis `h_exists` is taken as an explicit caller
+obligation rather than discharged here; the full existence lemma
+(`firstDescentRotation_exists`, ~50–100 LOC, HIGH risk) is the multiset-
+prefix cycle lemma and is the standalone S49+ candidate E. This S48
+ships the LOW-risk ~15–20 LOC def + spec only. -/
+
+/-- **`firstDescentRotation` (S48, Definition I, h_exists-parameterised).**
+
+    Given `M : Sym (Fin n) (a + b)` and `P' : Sym (Fin n) (a + 1)` together
+    with the existence hypothesis `h_exists : ∃ k, take(a+1) (rotate M k) =
+    P'.1`, picks the **smallest** such `k` (via `Nat.find`) and packages it
+    into `Fin (a + b)` by reducing mod `a + b` (well-defined whenever
+    `0 < a + b`). The mod step is necessary because `Nat.find` returns an
+    arbitrary `ℕ` while the bijection's codomain is `Fin (a + b)`; the
+    `rotateSortedList_mod` periodicity lemma (S31, line 944) ensures the
+    mod step does not change the take-prefix multiset.
+
+    The `_take_eq` spec (next lemma) is the load-bearing identity for the
+    2B.4' bijection's inverse-then-forward direction. -/
+private noncomputable def firstDescentRotation {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1))
+    (h_exists : ∃ k : ℕ,
+      ((rotateSortedList M k).take (a + 1) : Multiset (Fin n)) = P'.1)
+    (hab : 0 < a + b) : Fin (a + b) :=
+  ⟨Nat.find h_exists % (a + b), Nat.mod_lt _ hab⟩
+
+/-- **`firstDescentRotation_take_eq` (S48 spec).**
+
+    The take-(a+1) prefix of `rotateSortedList M (Nat.find h_exists)`
+    (i.e. the smallest-`k` rotation realising `P'`) equals `P'.1` as a
+    multiset. Direct consequence of `Nat.find_spec`. -/
+private lemma firstDescentRotation_take_eq {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1))
+    (h_exists : ∃ k : ℕ,
+      ((rotateSortedList M k).take (a + 1) : Multiset (Fin n)) = P'.1) :
+    ((rotateSortedList M (Nat.find h_exists)).take (a + 1) : Multiset (Fin n))
+      = P'.1 :=
+  Nat.find_spec h_exists
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

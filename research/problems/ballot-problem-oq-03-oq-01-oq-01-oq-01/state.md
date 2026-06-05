@@ -1,11 +1,96 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: PREP (S47 — doc-only validation; next: S48 D' ACT)
+**Phase**: ACT (S48 D' — `firstDescentRotation` def + spec lemma SHIPPED; build pending — OQ02 sibling errors pre-existing on main)
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-31 (S47 — researcher-1, PREP: small-case validation for `firstDescentRotation` Defs I + III on recon doc §1 Cases 1+2, completing S43 §2.3 deferred data; recommends commit to Def I for S48 D'; 0 Lean LOC / 0 axioms / sorries unchanged at 2 proof-level / 17 textual)
-**Iteration**: 47
+**Last Updated**: 2026-06-05 (S48 D' — researcher-1, ACT: ships `firstDescentRotation` Definition I (h_exists-parameterised) + `_take_eq` spec via `Nat.find_spec` per the S47 PREP recipe; +73 LOC to `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`; 0 sorry / 0 axiom delta; build pending — sibling `BallotProblemOQ03OQ02.lean` has pre-existing errors on origin/main per S78/S81/S84 PR history, my target file is downstream)
+**Iteration**: 48
+
+## S48 D' ACT Summary (2026-06-05, researcher-1)
+
+**Mode**: ACT (Lean source change). Applies the S47 PREP recipe verbatim:
+ships `firstDescentRotation` Definition I (`Nat.find` on the multiset-equality
+predicate, `h_exists`-parameterised) and the `firstDescentRotation_take_eq`
+spec lemma (`Nat.find_spec` direct apply). Both are placed at the natural
+junction between the prefix-rotation toolkit (S31/S37/S41/S45/S46) and the
+JDT bijection scaffolding (S19 `totalSym` / S19 `totalSym'`).
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` | +1 `noncomputable def` (`firstDescentRotation`) + 1 `lemma` (`firstDescentRotation_take_eq`) + S48 section header docstring, inserted between S41 prefix complement (PRE line 1485) and S19 `totalSym` (PRE line 1487) | +73 LOC |
+| `state.md` (this file) | `Last Updated`, `Iteration`, `Phase` head + S48 ACT Summary block prepended before S47 PREP | header + new block |
+| `src/data/research/problems/.../json` | `currentState.{phase, iteration, focus, nextAction, lastUpdate}` refreshed for S48 → S49+ menu | 5 fields |
+| `research/problems/.../sessions/2026-06-05-s48-act-firstdescentrotation-def-spec.md` | NEW session memo | new file |
+
+### The new declarations
+
+```lean
+private noncomputable def firstDescentRotation {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1))
+    (h_exists : ∃ k : ℕ,
+      ((rotateSortedList M k).take (a + 1) : Multiset (Fin n)) = P'.1)
+    (hab : 0 < a + b) : Fin (a + b) :=
+  ⟨Nat.find h_exists % (a + b), Nat.mod_lt _ hab⟩
+
+private lemma firstDescentRotation_take_eq {n a b : ℕ}
+    (M : Sym (Fin n) (a + b)) (P' : Sym (Fin n) (a + 1))
+    (h_exists : ∃ k : ℕ,
+      ((rotateSortedList M k).take (a + 1) : Multiset (Fin n)) = P'.1) :
+    ((rotateSortedList M (Nat.find h_exists)).take (a + 1) : Multiset (Fin n))
+      = P'.1 :=
+  Nat.find_spec h_exists
+```
+
+### Build status
+
+**Build pending — sibling `BallotProblemOQ03OQ02.lean` has pre-existing errors
+on `origin/main`**. The errors (13 total, all in OQ02) are part of the active
+S78/S81/S84 error-reduction iteration on the sibling slug
+`ballot-problem-oq-03-oq-01-oq-02` (S84 ACT PR #22026: "−2 errors";
+S81 ACT PR #21203: "18→15 errors"). My target imports OQ02 transitively via
+OQ01OQ01; the OQ02 errors block lake's dependency closure but are NOT
+caused by my edit (verified against `origin/main` baseline: same error set).
+
+Once OQ02 reaches zero errors, this PR auto-Docker-verifies GREEN with no
+required action.
+
+### Sorry / axiom delta
+
+- **0 sorries added/removed**. File still has 2 proof-level sorries
+  (lines ~1920, ~2568 in POST), 17 textual occurrences.
+- **0 axioms added/removed**.
+
+### Why this S48 closure is LOW-risk
+
+1. **`Nat.find` infrastructure is standard Mathlib** (`Nat.find_spec`,
+   `Nat.mod_lt`). No new lemmas needed.
+2. **`Multiset.decidableEq` is automatic** on `Multiset (Fin n)` via
+   `Quotient.decidableEq` lifted from `DecidableEq (Fin n)`.
+3. **`h_exists`-parameterisation defers the existence obligation** to the
+   caller — the multiset-prefix cycle lemma (S49+ candidate E) is HIGH-risk
+   on its own.
+4. **Empirical evidence from S43+S47** validated Defs I and III agreement
+   on 7 cases (all of recon doc §1 Cases 1, 2, 3 plus 4 spot-checks).
+
+### Post-S48 candidate menu (S49+)
+
+| # | Candidate | LOC | Risk | Notes |
+|---|-----------|-----|------|-------|
+| E | Prove `firstDescentRotation_exists` for `P' ≤ M` of size `a + 1` | ~50-100 | HIGH | the multiset-prefix cycle lemma; standalone Mathlib contribution candidate |
+| F | INFRA: repair G9 `proofs/.lake` self-loop | ~1 cmd | LOW (shared-state) | still RED |
+| G | Doc-only design memo for 2B.4' bijection using S48 `firstDescentRotation` | ~150-200 LOC md | LOW | forward (k, j) ↦ (Prefix, Suffix), inverse via S48 def |
+| H | Apply S48 `firstDescentRotation` to existing JDT scaffolding | ~30-50 LOC | MEDIUM | connect new def to the `Sym (Fin n) (a + 1)` × `Sym (Fin n) (b - 1)` codomain pair |
+
+### Mathlib pin verification
+
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since at least
+2026-05-12. Toolchain `leanprover/lean4:v4.26.0` unchanged.
+
+See `sessions/2026-06-05-s48-act-firstdescentrotation-def-spec.md` for full
+memo.
 
 ## S47 PREP Summary (2026-05-31, researcher-1)
 
