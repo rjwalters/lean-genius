@@ -143,21 +143,38 @@ theorem empiricalCDF_pointwise_convergence_no_axiom
 -- ============================================================================
 
 /-
-Summary: the Glivenko-Cantelli axiom count has been reduced from 3 to 1.
+Summary: the Glivenko-Cantelli axiom count has been reduced from 3 to 1, and
+the **shape** of that one remaining axiom has shifted twice since this file
+was written.
 
   - ✓ `thresholdIndicator_integrable` → proved as `thresholdIndicator_integrable_proved`
   - ✓ `integral_thresholdIndicator_eq_cdf` → proved as `integral_thresholdIndicator_eq_cdf_proved`
   - ✓ `glivenko_cantelli_uniform` → proved in `LawsOfLargeNumbersOQ04OQ03Bracketing`
         from the smaller real-analytic axiom `bracketingGrid_exists` (S4–S6),
         and the parent's axiom was retired in S7.
+  - ✗ `bracketingGrid_exists` (S3 axiom) **was refuted** in S10 ACT (PR #20969):
+        the structure is provably empty for any CDF with an atom of mass `> ε`,
+        so adding the axiom made the namespace inconsistent. The disproof lives
+        in `LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean`
+        (`bracketingGrid_exists_false : False`, build-verified, 3122 jobs).
+  - 🛠 `QuantileBracketingGrid` (S13 scaffold, this file's companion
+        `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`) is the
+        redesigned structure that **does** handle atomic CDFs: it replaces
+        the refuted `step_le : F (qⱼ₊₁) - F (qⱼ) ≤ ε` with the quantile
+        bound `Function.leftLim F (qⱼ₊₁) - F (qⱼ) ≤ ε` and drops the
+        `cont` field. For atomless `F` left limits equal values, so the
+        redesign is conservative.
 
-The chain's sole remaining axiom is `bracketingGrid_exists`: the existence of
-finitely many continuity points of F with controlled jump sizes (purely real-
-analytic). Its content reduces to the upstream-target lemma
-`Monotone.exists_increasing_continuity_seq`, the natural Mathlib home.
+The chain's sole remaining axiom is still `bracketingGrid_exists` in the
+bracketing companion (kept in tree until the S14+ redesign supersedes it).
+Its **content** is now known to be false; the real upstream target is the
+quantile / `Function.leftLim`-based grid-existence lemma — *not* the
+originally proposed `Monotone.exists_increasing_continuity_seq` (which is
+about continuous monotone functions and cannot recover the atomic-CDF case).
 
 The pointwise convergence theorem (`empiricalCDF_pointwise_convergence_no_axiom`)
-is now fully proved from Mathlib without any integration axioms.
+is independent of this design pivot and remains fully proved from Mathlib
+without any integration axioms.
 -/
 
 end GlivenkoCantelli
