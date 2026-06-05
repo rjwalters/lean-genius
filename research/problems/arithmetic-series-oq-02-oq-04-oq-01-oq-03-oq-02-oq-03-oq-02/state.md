@@ -1,10 +1,54 @@
 # Current State
 
-**Phase**: ACT (S2/S3/S4/S6/S5/S5b ACT shipped; direct bridges to parent `qBinom`/`qMultichoose` shipped in S5b ACT this iteration. Path C `RatFunc` migration for the positive `at_one_one` recovery remains the next major milestone.)
-**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT) → 2026-05-31 (S6 ACT) → 2026-06-01 (S5 ACT) → 2026-06-05 (S5b ACT)
-**Iteration**: 12 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT + S6 ACT + S5 ACT + S5b ACT)
+**Phase**: ACT (S2/S3/S4/S6/S5/S5b/S5c ACT shipped; direct bridges to parent `qBinom`/`qMultichoose` now complete at every polynomial-sub-lattice point including the `(2, 2)` interior. Path C `RatFunc` migration for the positive `at_one_one` recovery remains the next major milestone.)
+**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-30 (S3 ACT) → 2026-05-31 (S4 ACT) → 2026-05-31 (S6 ACT) → 2026-06-01 (S5 ACT) → 2026-06-05 (S5b ACT) → 2026-06-05 (S5c ACT)
+**Iteration**: 13 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3 ACT + S4 ACT + S6 ACT + S5 ACT + S5b ACT + S5c ACT)
 
-`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` is now **~480 LOC** with **17 theorems**, 0 sorries, 0 axioms. After S5b ACT (this iteration), it ships: the Macdonald (q,t)-binomial/multichoose definitions, four boundary cases, the unconditional k-direction multiplicative recurrence `qtBinom_succ`, the S3 ACT `at_t_eq_one` substitution (Path A with `q^(j+1) ≠ 1` hypothesis), the S4 ACT polynomial-sub-lattice interior `qtMultichoose_two_two` plus the Field R 0/0 trap formalisation, the S6 ACT ratio-form corollary `qtBinom_succ_div`, the S5 ACT polynomial-form bridges to `qNumber`, **and the S5b ACT direct bridges `qtBinom_zero_right_eq_qBinom` / `qtMultichoose_zero_right_eq_qMultichoose` / `qtBinom_one_right_eq_qBinom` / `qtMultichoose_one_right_eq_qMultichoose` connecting the polynomial sub-lattice `k ≤ 1` slice directly to the parent gallery's named objects**. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence remains the foundation for the open S5+ Path C work.
+`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` is now **~510 LOC** with **18 theorems**, 0 sorries, 0 axioms. After S5c ACT (this iteration), it ships: the Macdonald (q,t)-binomial/multichoose definitions, four boundary cases, the unconditional k-direction multiplicative recurrence `qtBinom_succ`, the S3 ACT `at_t_eq_one` substitution (Path A with `q^(j+1) ≠ 1` hypothesis), the S4 ACT polynomial-sub-lattice interior `qtMultichoose_two_two` plus the Field R 0/0 trap formalisation, the S6 ACT ratio-form corollary `qtBinom_succ_div`, the S5 ACT polynomial-form bridges to `qNumber`, the S5b ACT direct bridges connecting the `k ≤ 1` slice to parent `qBinom`/`qMultichoose`, **and the S5c ACT direct bridge `qtMultichoose_two_two_eq_qMultichoose` connecting the (2, 2) interior polynomial-sub-lattice point directly to the parent gallery's `qMultichoose q 2 2`**. The polynomial-sub-lattice bridge chain is now **complete at the named-object level** — every point in `{k ≤ 1} ∪ {(2, 2)}` is formally equated to a parent-side named object. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence remains the foundation for the open S5+ Path C work.
+
+## S5c ACT (2026-06-05, researcher-1) — (2, 2) interior bridge to qMultichoose
+
+**Mode**: ACT (Lean diff; **Docker-verified 7745/7745 jobs**).
+
+**Outcome**: Added 1 theorem (~25 LOC including doc + section heading). Discharges the **S5c ACT scope** flagged in the prior state.md as "needs a parent-side `qMultichoose q 2 2 = qNumber q 3` lemma first" — turns out the parent already has `qMultichoose_two_left q k : qMultichoose q 2 k = qNumber q (k + 1)`, which evaluates to `qMultichoose q 2 2 = qNumber q 3` at `k = 2` without any new parent-side helper. The bridge is therefore a one-line composition.
+
+### What landed
+
+1. **`qtMultichoose_two_two_eq_qMultichoose`** (Section X, headline, under `1 - q^2 t ≠ 0` and `1 - q ≠ 0`): composes `qtMultichoose_two_two_eq_qNumber` (S5 ACT) with the parent's `qMultichoose_two_left q 2`. Direct bridge of the unique non-trivial polynomial-sub-lattice interior point `(n, k) = (2, 2)` to the parent gallery's named `qMultichoose` object.
+
+### Mathematical content
+
+Pure composition iteration. The novelty is the **naming**: gallery integration (S7) can now reference `qMultichoose q 2 2` as the canonical interior reference, matching the polynomial style of the parent gallery entry's `meta.json` rather than the rational Macdonald form `(1 - q^3) / (1 - q)` or the intermediate `qNumber q 3`.
+
+### Significance
+
+**Closes the bridge chain for the entire polynomial sub-lattice.** Every point in `{k ≤ 1} ∪ {(2, 2)}` is now formally equated to a parent-side named object:
+
+| Sub-lattice point | Bridge | Source |
+|---|---|---|
+| `(N, 0)` qBinom | `qtBinom q t N 0 = qBinom q N 0 = 1` | S5b ACT |
+| `(N, 1)` qBinom | `qtBinom q t N 1 = qBinom q N 1` (under `1 - q ≠ 0`) | S5b ACT |
+| `(n, 0)` qMC | `qtMultichoose q t n 0 = qMultichoose q n 0 = 1` | S5b ACT |
+| `(n, 1)` qMC | `qtMultichoose q t n 1 = qMultichoose q n 1` (under `1 - q ≠ 0`) | S5b ACT |
+| **`(2, 2)` qMC** | **`qtMultichoose q t 2 2 = qMultichoose q 2 2`** | **S5c ACT (this iteration)** |
+
+### Counts after S5c ACT
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` | **~510** | **18** | 0 | 2 | 0 |
+
+(Up from ~480 LOC / 17 theorems at end of S5b ACT.)
+
+### Build status
+
+**Docker-verified clean**: `./proofs/scripts/docker-build.sh Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02` → `✔ [7745/7745] Built ... (153s) === Build succeeded ===`. Mathlib v4.26.0.
+
+### Remaining work
+
+- **S7 ACT (gallery JSON integration)**: with the polynomial-sub-lattice bridge chain now complete at the named-object level, gallery `meta.json` can quote `qMultichoose q 2 2` (via S5c ACT) and `qMultichoose q n 1` (via S5b ACT) as the canonical references. The gallery entry will be `status: "axiomatized"` (not `verified`) since the positive `at_one_one` recovery still requires Path C migration. ~1 session; doc-only.
+- **Path C (`RatFunc`) migration**: still the canonical route to the positive `qtMultichoose 1 1 n k = Nat.multichoose n k` recovery. ~80–120 LOC, multi-session.
+- **S6 ACT (Macdonald axiomatised, optional)**: principal-specialization identity. Unchanged from prior state.
 
 ## S5b ACT (2026-06-05, researcher-1) — direct bridges to parent qBinom / qMultichoose
 
@@ -216,6 +260,7 @@ Pending. Per CLAUDE.md never invoke `lake build` directly. The file's five lemma
 | 10   | ACT      | merged | researcher-1  | 2026-05-31           | `2026-05-31-s06-act-ratio-identity-corollary.md`                  | (S6 ACT) — `qtBinom_succ_div` (k-direction telescoping ratio identity corollary of `qtBinom_succ`). File ~313 → 348 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
 | 11   | ACT      | TBD    | researcher-1  | 2026-06-01           | `2026-06-01-s05-act-polynomial-form-bridges.md`                   | (S5 ACT) — `qtBinom_one_right_eq_qNumber` + `qtMultichoose_one_right_eq_qNumber` + `qtMultichoose_two_two_eq_qNumber` (polynomial-form bridges of S4 ACT polynomial sub-lattice to parent's `qNumber`). File 348 → 428 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
 | 12   | ACT      | TBD    | researcher-1  | 2026-06-05           | `2026-06-05-s05b-act-direct-qbinom-bridges.md`                    | (S5b ACT) — `qtBinom_zero_right_eq_qBinom` + `qtMultichoose_zero_right_eq_qMultichoose` + `qtBinom_one_right_eq_qBinom` + `qtMultichoose_one_right_eq_qMultichoose` (direct bridges from polynomial sub-lattice `k ≤ 1` slice to parent gallery's named objects). File 428 → ~480 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
+| 13   | ACT      | TBD    | researcher-1  | 2026-06-05           | `2026-06-05-s05c-act-two-two-qmultichoose-bridge.md`              | (S5c ACT) — `qtMultichoose_two_two_eq_qMultichoose` (direct bridge from polynomial sub-lattice `(2, 2)` interior to parent's `qMultichoose q 2 2`; composes `qtMultichoose_two_two_eq_qNumber` with parent's `qMultichoose_two_left q 2`). File ~480 → ~510 LOC; 0 sorries / 0 axioms net; Docker-verified 7745/7745. |
 
 ## Current Focus
 
@@ -277,11 +322,11 @@ S4 PREP (#18616) surfaced the Lean `Field R` 0/0 = 0 convention trap: under the 
 
 ## Next Action
 
-**S7 PREP — gallery JSON scoping, OR Path C (`RatFunc`) migration for the positive `at_one_one` recovery**:
+**S7 ACT — gallery JSON integration, OR Path C (`RatFunc`) migration for the positive `at_one_one` recovery**:
 
-With the S5 ACT polynomial-form bridges in place, the natural next step is either:
+With the S5c ACT bridge in place, the polynomial-sub-lattice bridge chain is **complete at the named-object level** (every point in `{k ≤ 1} ∪ {(2, 2)}` is formally equated to a parent-side `qBinom` or `qMultichoose` named object). The natural next step is either:
 
-1. **S7 PREP (lighter)**: scope the gallery `meta.json` entry, leveraging the new `qNumber`-form bridges. Quote `qNumber q n` and `qNumber q 3` in the public-facing description rather than rational forms, aligning the entry's presentation with the parent gallery entry's polynomial style. Estimated 1 session; doc-only.
+1. **S7 ACT (lighter)**: ship the gallery `meta.json` entry, leveraging the now-complete `qBinom`/`qMultichoose` named-object bridges. Quote `qMultichoose q 2 2` (via S5c ACT), `qMultichoose q n 1` (via S5b ACT), and `qMultichoose q n 0 = 1` (via S5b ACT) as the canonical references for the polynomial-sub-lattice values, aligning the entry's presentation with the parent gallery entry's polynomial style. Estimated 1 session; doc-only. `status: "axiomatized"` (positive `at_one_one` still requires Path C).
 
 2. **Path C migration (heavier, the original next-action)**:
 

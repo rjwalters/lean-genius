@@ -97,15 +97,28 @@ entry's polynomial objects (`qBinom`/`qMultichoose`), not only to the
 underlying `qNumber`. Gallery integration (S7) can now quote the
 parent's named objects rather than re-deriving them via `qNumber`.
 
+**S5c ACT (researcher-1, 2026-06-05, this iteration)**: extends the
+direct-bridge chain to cover the **interior** polynomial-sub-lattice
+point `(n, k) = (2, 2)`:
+* `qtMultichoose_two_two_eq_qMultichoose` (under the two S4 ACT Path A
+  guards `1 - q^2 t ≠ 0` and `1 - q ≠ 0`) — composes
+  `qtMultichoose_two_two_eq_qNumber` (S5 ACT) with the parent's
+  `qMultichoose_two_left q 2 : qMultichoose q 2 2 = qNumber q 3`.
+
+With S5c ACT, **every point** in the polynomial sub-lattice
+`{k ≤ 1} ∪ {(2, 2)}` is now formally equated to a parent-side named
+object (`qBinom` or `qMultichoose`), closing the bridge chain in full.
+
 ## Status
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 17 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 18 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
   specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
   theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form
-  bridges to `qNumber`, 4 S5b ACT direct bridges to `qBinom`/`qMultichoose`)
+  bridges to `qNumber`, 4 S5b ACT direct bridges to `qBinom`/`qMultichoose`,
+  1 S5c ACT (2, 2) interior bridge to `qMultichoose`)
 * Lemmas (private): 1 (`qBinom_mult_recur`, CommRing multiplicative q-Pascal)
 
 ## Build status
@@ -477,5 +490,29 @@ theorem qtMultichoose_one_right_eq_qMultichoose (q t : R) (n : ℕ)
     (hq : (1 - q : R) ≠ 0) :
     qtMultichoose q t n 1 = qMultichoose q n 1 := by
   rw [qtMultichoose_one_right_eq_qNumber q t n hq, ← qMultichoose_one_right]
+
+-- ============================================================
+-- SECTION X: S5c ACT — (2, 2) interior bridge to qMultichoose
+-- ============================================================
+
+/-- **`(n, k) = (2, 2)` bridge to `qMultichoose`** (headline S5c ACT): at
+    the unique non-trivial polynomial-sub-lattice interior point, the
+    (q,t)-multichoose coefficient equals the parent's `qMultichoose q 2 2`
+    provided the two S4 ACT Path A guards `1 - q^2 t ≠ 0` and `1 - q ≠ 0`.
+
+    Composes the S5 ACT `qtMultichoose_two_two_eq_qNumber` with the parent's
+    `qMultichoose_two_left q 2 : qMultichoose q 2 2 = qNumber q 3` (where the
+    `k = 2` instance of `qMultichoose_two_left q k = qNumber q (k + 1)`
+    evaluates the index to `qNumber q 3`).
+
+    Closes the bridge chain for the **entire** polynomial sub-lattice
+    `{k ≤ 1} ∪ {(2, 2)}`: every point is now equated directly to a
+    parent-side named object (`qBinom` / `qMultichoose`), not only to the
+    underlying `qNumber`. Gallery integration (S7) can now quote
+    `qMultichoose q 2 2` as the canonical reference for the (2, 2) value. -/
+theorem qtMultichoose_two_two_eq_qMultichoose (q t : R)
+    (htq : (1 : R) - q ^ 2 * t ≠ 0) (hq : (1 - q : R) ≠ 0) :
+    qtMultichoose q t 2 2 = qMultichoose q 2 2 := by
+  rw [qtMultichoose_two_two_eq_qNumber q t htq hq, ← qMultichoose_two_left q 2]
 
 end QtMultichooseCoefficients
