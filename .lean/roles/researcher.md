@@ -275,9 +275,10 @@ end ErdosN
 
 ### Use Aristotle Strategically
 
-- **TRIVIAL sorries**: Try manually first
-- **HARD sorries**: Add to companion file (`ErdosNAristotle.lean`) — the Aristotle agent will detect and submit it automatically
-- **OPEN sorries**: Work manually - Aristotle can't help with unsolved problems
+- **TRIVIAL sorries**: Try manually first — faster to write yourself than to round-trip through Aristotle
+- **HARD sorries**: **Preferred path is per-sorry MCP `prove()` (see "Per-sorry Aristotle (MCP) usage" below)**. The legacy multi-sorry `*Aristotle.lean` companion-file pipeline is deprecated for new work but remains available as a fallback; existing companion files are not being deleted in this transition.
+- **OPEN sorries**: Work manually — Aristotle can't help with unsolved problems (it will spin on the server until it times out)
+- **Definition sorries**: Never submit — Aristotle skips `def ... := by sorry` entirely. Complete the definition first, then submit downstream theorem sorries.
 
 ### Aristotle MCP (interactive proving)
 
@@ -353,6 +354,122 @@ trivial `prove()` returns a project id. The batch pipeline
 `retrieve-integrate.sh`) is unchanged and remains the right path for
 companion-file fleets — the MCP route is additive, for in-session
 interactive proving.
+
+### Per-sorry Aristotle (MCP) usage
+
+This is the **preferred** in-session workflow for hard supporting lemmas.
+It supersedes the legacy "create a multi-sorry `*Aristotle.lean` companion
+file and wait for the batch agent" pattern for *new* work. (Existing
+companion files keep working; do not delete them in passing.)
+
+The flow is conversational and per-sorry: classify the sorry, submit
+**one snippet** via `prove()`, record the project id, **continue other
+work**, poll, integrate. This mirrors Harmonic's iterative pattern from
+the Aristotle paper (§4) and the Polya–Szego study where this approach
+produced 80/80.
+
+#### When to call `prove()`
+
+Call it as soon as you hit a sorry that classifies as **HARD** per
+[`research/SORRY-CLASSIFICATION.md`](../../research/SORRY-CLASSIFICATION.md):
+
+- The result is **known in the literature** (paper, textbook, Mathlib
+  lemma you can name but haven't located) and
+- The proof requires **no creative insight from you** — only tactical
+  search and bookkeeping.
+
+Typical fits: monotonicity, cardinality bounds, standard inequalities,
+named theorems, computational lemmas that should "just go through".
+
+#### When NOT to call `prove()`
+
+| Classification | Why not | What to do instead |
+|----------------|---------|--------------------|
+| **TRIVIAL** | Round-tripping through Aristotle is slower than writing the 1–3 line tactic yourself | Write it manually (`simp`, `omega`, `linarith`, `decide`, `Finset.card_*`, etc.) |
+| **OPEN** | Aristotle has no proof in its training distribution; MCTS will spin until the server-side cap or the cooldown kicks in | Work on it yourself; that is **the mission** |
+| **DEF SORRY** (`def foo : T := by sorry`) | Aristotle skips definition sorries entirely — submitting wastes a slot | Complete the definition first, *then* submit the downstream theorem sorries |
+| **Sorry inside an axiom** | Axioms are skipped; restate as `theorem ... := by sorry` if you want it attempted | Convert `axiom` → `theorem ... := by sorry` if it really is provable |
+
+#### Pattern (recommended)
+
+1. **Extract** the sorry as a self-contained snippet. Include just the
+   `theorem` / `lemma` statement, its `by` block, and the local
+   variable hypotheses it actually mentions. Do not paste the whole
+   surrounding file.
+2. **List minimal `context_files`**. Include the file that *defines the
+   sorry's symbols* and at most one or two of its direct dependency
+   files. Aristotle pays (in time and credit) for everything it loads
+   — passing the whole project measurably slows search and is a common
+   mistake. If the snippet only uses Mathlib, omit `context_files`
+   entirely.
+3. **Submit async**: `prove(snippet, context_files=[...], wait=False)`
+   and capture the returned `project_id`.
+4. **Record the project id** in a per-session scratch file so you don't
+   lose it across restarts (project results cache for 30 days
+   server-side, but re-submitting the same snippet is the safety net
+   if you do lose the id):
+
+   ```bash
+   mkdir -p .loom/state/aristotle-mcp
+   SCRATCH=".loom/state/aristotle-mcp/$(date -u +%Y%m%dT%H%M%SZ)-$$.jsonl"
+   echo '{"project_id":"<id>","problem":"<problem-id>","sorry":"<short-tag>","submitted":"'"$(date -u +%FT%TZ)"'"}' >> "$SCRATCH"
+   ```
+
+5. **Continue other work**. Pick up a different sorry, refactor, write
+   docs, work on the OPEN main conjecture. Do **not** block the
+   session on a single Aristotle call.
+6. **Poll every ~10 minutes** with `check_proof(project_id)`. Faster
+   polling burns API calls; slower wastes wall-clock. Ten minutes is
+   the cadence the `septract/lean-aristotle-mcp` README recommends.
+7. **Integrate** when status is `SUCCEEDED`: paste the returned code,
+   rebuild via `./proofs/scripts/docker-build.sh Proofs.<YourProof>`,
+   and verify. On `FAILED` or timeout, either rewrite the snippet
+   (better statement, smaller context) and resubmit, or fall back to
+   manually proving it.
+
+#### Concurrency cap
+
+**At most 3 concurrent per-sorry `prove()` submissions per researcher.**
+The Aristotle server cap is shared with the bulk pipeline, and exceeding
+it triggers 429 responses that propagate into a cooldown.
+
+Before submitting, check the cooldown file from #22487:
+
+```bash
+COOLDOWN=".loom/state/aristotle-rate-limit-until"
+if [ -f "$COOLDOWN" ] && [ "$(cat "$COOLDOWN")" -gt "$(date +%s)" ]; then
+  echo "Aristotle is rate-limited until $(date -r "$(cat "$COOLDOWN")"). Skip prove() this cycle."
+  # work on other things — write the proof yourself, refactor, do the OPEN problem
+fi
+```
+
+Also check the scale-to-zero marker from #22486
+(`.loom/state/aristotle-scaled-to-zero`); if present, the queue is empty
+and you should not submit fresh per-sorry work without confirming the
+batch agent is back up.
+
+Count your own in-flight submissions by reading the per-session scratch
+files; if you already have 3 unfinished `prove()` calls, finish polling
+those before submitting another.
+
+#### Deprecation of hand-curated `*Aristotle.lean` companion files
+
+Going forward, **do not hand-curate new multi-sorry `*Aristotle.lean`
+companion files**. The MCTS proof search Aristotle uses is conditioned
+on *proof state + history + informal statement* per sorry, so bundling
+many unrelated sorries into one file dilutes the search budget. New
+work has exactly two supported routes:
+
+1. **Per-sorry interactive**: `prove()` via MCP (this section). Best
+   for in-session work on a single hard supporting lemma.
+2. **Single-theorem batch**: a `*StatementOnly.lean` file (one theorem,
+   informal-proof docstring, full imports) for end-of-session
+   submission to the batch pipeline. See `research/SORRY-CLASSIFICATION.md`
+   §"Harmonic Submission Format (recommended)" for the file template.
+
+Existing `*Aristotle.lean` files keep working — the batch agent still
+picks them up as a fallback — but they are no longer the recommended
+shape for new submissions.
 
 ## Step 4: Update Knowledge
 
