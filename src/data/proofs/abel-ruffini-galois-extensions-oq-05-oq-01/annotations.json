@@ -2,7 +2,10 @@
   {
     "id": "ann-shafarevich-feas-context",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 1, "endLine": 45 },
+    "range": {
+      "startLine": 1,
+      "endLine": 45
+    },
     "type": "context",
     "title": "Can Mathlib Prove Shafarevich's Theorem? A 4-Cell Status Report",
     "content": "**Open question OQ-05-OQ-01**: can the **Shafarevich theorem** (every finite *solvable* group $G$ is realizable as $\\text{Gal}(K/\\mathbb{Q})$ for some number field $K$) be proved in Lean 4 using Mathlib's developing class field theory? This file gives the **first formal status report**, classifying the four cases by what Mathlib already supports vs. what is missing. **Cyclic case** is fully proved upstream (`InverseGalois.lean`, via Dirichlet primes + fixed fields). **Coprime products $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ with $\\gcd(m,n)=1$** are proved here, in 7 lines, by reducing via the Chinese Remainder Theorem to the cyclic case. **General abelian** has exactly **one identified gap** — linear disjointness of cyclotomic subfields at distinct primes (~500 Lean lines). **Full Shafarevich** is gated on a **major missing module**: Galois embedding problems, Brauer groups, Galois cohomology, and Tate–Poitou duality (~5000+ lines), none of which exist in Mathlib 2026.",
@@ -26,7 +29,10 @@
   {
     "id": "ann-shafarevich-cyclic-recap",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 51, "endLine": 70 },
+    "range": {
+      "startLine": 51,
+      "endLine": 70
+    },
     "type": "technique",
     "title": "Part I: Cyclic Case (Recap from InverseGalois.lean)",
     "content": "**`cyclic_realizable n hn`** is a thin wrapper around `InverseGaloisProblem.cyclic_group_realizable`: for every $n > 0$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong \\mathbb{Z}/n\\mathbb{Z}$. **The four-step proof** (proved upstream): (1) **Dirichlet's theorem** gives a prime $p \\equiv 1 \\pmod n$; (2) the $p$-th cyclotomic field $\\mathbb{Q}(\\zeta_p)$ has Galois group $(\\mathbb{Z}/p)^\\times \\cong \\mathbb{Z}/(p-1)$; (3) since $n \\mid p - 1$, take the **fixed field** $K = E^H$ of the unique index-$n$ subgroup $H$; (4) by `IsGalois.normalAutEquivQuotient`, $\\text{Gal}(K/\\mathbb{Q}) \\cong (\\mathbb{Z}/p)^\\times / H \\cong \\mathbb{Z}/n$.\n\n**Gallery provenance of the upstream proof.** `InverseGaloisProblem.cyclic_group_realizable` lives in the master `inverse-galois` entry (1882 lines, 5 axioms, 0 sorries) — the gallery's central Inverse Galois Problem formalization, which collects explicit Galois group realizations for 23 finite groups including A₅, D₄, F₂₀, and the systematic cyclic-and-cyclotomic foundation reused here. This sub-entry's CRT-based coprime-product extension is a *systematic* extension of `inverse-galois`'s cyclic-case theorem along the abelian Shafarevich axis — keeping the four-step Dirichlet-plus-fixed-field recipe and bolting on the Chinese Remainder Theorem to produce $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ realizations from coprime cyclic pieces. The deeper structural fact powering the cyclic case is **Kronecker's Jugendtraum** (Kronecker 1853 / Weber 1886, gallery entry `kroneckers-jugendtraum`): every finite abelian extension of $\\mathbb{Q}$ is contained in some cyclotomic field $\\mathbb{Q}(\\zeta_N)$, which is precisely why the fixed-field-of-$\\mathbb{Q}(\\zeta_p)$ recipe realizes every $\\mathbb{Z}/n$ — and why the full abelian Shafarevich would follow uniformly from a Mathlib Kronecker–Weber formalization plus the linear-disjointness lemma identified in `ann-shafarevich-axiom`.",
@@ -51,7 +57,10 @@
   {
     "id": "ann-shafarevich-part2-strategy",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 71, "endLine": 80 },
+    "range": {
+      "startLine": 71,
+      "endLine": 80
+    },
     "type": "insight",
     "title": "Part II: Why Coprime Products Reduce to Cyclic (Strategic Preamble)",
     "content": "**The Part II docstring (lines 71–80)** frames the central new contribution of the file in one sentence: *when $\\gcd(m, n) = 1$, $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is itself cyclic (isomorphic to $\\mathbb{Z}/(mn)$ by CRT), so its inverse-Galois realization is **just** `cyclic_realizable (m*n)`*. This collapses what looks like a *new* compositum construction into a *recapitulation* of the cyclic case — no fresh field-theoretic work needed. The preamble identifies the precise hypothesis that triggers the collapse (coprimality) and motivates the two lemmas that follow: `zmod_coprime_crt` (lines 81–88, the algebraic identity) and `coprime_product_cyclic_realizable` (lines 89–112, the one-line application).",
@@ -72,7 +81,10 @@
   {
     "id": "ann-shafarevich-crt-iso",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 81, "endLine": 88 },
+    "range": {
+      "startLine": 81,
+      "endLine": 88
+    },
     "type": "definition",
     "title": "zmod_coprime_crt: The Algebraic Heart of the Reduction",
     "content": "**`zmod_coprime_crt`**: when $\\gcd(m, n) = 1$, Mathlib's `ZMod.chineseRemainder` gives a *ring* isomorphism $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$, and `.toAddEquiv` extracts the additive-group isomorphism. The reduction $\\text{coprime cyclic product} \\to \\text{cyclic}$ relies entirely on this one Mathlib lemma — see `ann-shafarevich-coprime-prod` for how `cyclic_realizable (m*n)` immediately consumes the additive iso.\n\n**Why only `.toAddEquiv` is used.** For inverse-Galois purposes the *group* $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is what we need to realize as $\\text{Gal}(K/\\mathbb{Q})$. Galois groups carry no native ring structure — composition of automorphisms is the group operation, and there is no second commutative multiplication on $\\text{Aut}_\\mathbb{Q}(K)$. So discarding the ring multiplication via `.toAddEquiv` is not a loss of information; it's a type-correctness step ensuring the iso has the same algebraic shape (abelian-group / `AddCommGroup` ≃+ → `CommGroup` via the cyclic-generator isomorphism) as the target Galois group.\n\n**Bridge to conductor-coprimality.** The CRT-based reduction is *tight*: it succeeds precisely when the conductors of the two cyclotomic fixed-field realizations are coprime (which guarantees linear disjointness via the discriminant criterion — see `ann-shafarevich-axiom`). The ZMod CRT and the field-theoretic linear disjointness are the same Bézout argument viewed at two different layers: arithmetic ($\\mathbb{Z}/(mn)$) vs. algebraic-number-theoretic (compositum of cyclotomic subfields). Where conductors share a prime ($p_1 = p_2$), CRT fails — which is exactly the $(\\mathbb{Z}/p)^k$ gap formalized in `ann-shafarevich-part3-pp-gap`.",
@@ -102,7 +114,10 @@
   {
     "id": "ann-shafarevich-coprime-prod",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 89, "endLine": 112 },
+    "range": {
+      "startLine": 89,
+      "endLine": 112
+    },
     "type": "insight",
     "title": "Coprime Product Realizable: A 7-Line Reduction to Cyclic",
     "content": "**`coprime_product_cyclic_realizable m n hm hn hcop`**: when $\\gcd(m, n) = 1$, $\\mathbb{Z}/m \\times \\mathbb{Z}/n$ is realizable. The proof is **literally one line**: `cyclic_realizable (m * n) (Nat.mul_pos hm hn)`. Why? Because by CRT $\\mathbb{Z}/(mn) \\cong \\mathbb{Z}/m \\times \\mathbb{Z}/n$ is *itself* cyclic, so realizing $\\mathbb{Z}/(mn)$ realizes the product directly — no compositum needed. **Concrete instances**: `z2z3_realizable` ($\\mathbb{Z}/2 \\times \\mathbb{Z}/3 \\cong \\mathbb{Z}/6$), `z5z7_realizable` ($\\mathbb{Z}/5 \\times \\mathbb{Z}/7 \\cong \\mathbb{Z}/35$).\n\n**Reach across the orders ≤ 60 — quantifying the abelian-fragment gap.** Combined with `cyclic_realizable`, this one-liner *automatically* discharges every finite abelian group whose elementary-divisor primes are *all distinct* — equivalently, the *squarefree-exponent* abelian groups in the structure-theorem decomposition $G \\cong \\mathbb{Z}/p_1^{e_1} \\times \\cdots \\times \\mathbb{Z}/p_k^{e_k}$. Below the Abel-Ruffini threshold $|A_5| = 60$, this includes every cyclic group $\\mathbb{Z}/n$ for $n \\leq 60$ and every non-cyclic abelian group whose factorization $n = p_1^{e_1} \\cdots p_k^{e_k}$ has $k \\geq 2$ with each $p_i$ appearing only once — e.g., $\\mathbb{Z}/6 \\times \\mathbb{Z}/35 = \\mathbb{Z}/210$ would collapse to cyclic, but it falls outside the $\\leq 60$ window. **What it does *not* reach** are the *non-cyclic* abelian groups with repeated prime factors — exactly the *non-squarefree* part of the structure theorem. The smallest unreached cases below 60 are:\n\n- $(\\mathbb{Z}/2)^2$ (Klein four, order 4)\n- $(\\mathbb{Z}/2)^3$ (order 8)\n- $\\mathbb{Z}/4 \\times \\mathbb{Z}/2$ (order 8)\n- $(\\mathbb{Z}/3)^2$ (order 9)\n- $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/3$ (order 12 — fails because the two $\\mathbb{Z}/2$'s share the prime 2)\n- $\\mathbb{Z}/2 \\times \\mathbb{Z}/2 \\times \\mathbb{Z}/5$ (order 20)\n- $(\\mathbb{Z}/5)^2$ (order 25)\n- $\\mathbb{Z}/4 \\times \\mathbb{Z}/4$ (order 16), $\\mathbb{Z}/2 \\times \\mathbb{Z}/4 \\times \\mathbb{Z}/2$, etc.\n\nEach requires *two distinct cyclic-$p$ extensions inside two different cyclotomic fields at primes $p_1, p_2 \\equiv 1 \\pmod p$* — exactly the construction the `galois_compositum_product` axiom (line 141 below) captures. The boundary is *sharp*: the same prime appearing twice is precisely where CRT fails, and where the linear-disjointness machinery is forced.\n\n**Connection to the structure theorem (keyInsight #1)**. The finite-abelian structure theorem writes every abelian $G$ in *invariant factor* form $\\mathbb{Z}/d_1 \\times \\cdots \\times \\mathbb{Z}/d_r$ with $d_1 \\mid \\cdots \\mid d_r$. This theorem handles *exactly* the case $r = 1$ — i.e., where $G$ is already cyclic. For $r \\geq 2$, all $d_i$ share at least one prime (since $d_1 \\mid d_2$), so the elementary-divisor form has repeated primes, and the gap activates. Closing the abelian half of Shafarevich therefore reduces to a *single* problem: realize $(\\mathbb{Z}/p^k)^j$ as Galois over $\\mathbb{Q}$ for every $j \\geq 2$ and every prime power $p^k$. The $p = 2$ case is *further* complicated by the **Grunwald-Wang anomaly** (keyInsight #8): even though $\\mathbb{Z}/2^n$ is realizable globally, prescribing arbitrary 2-adic local behavior fails when $n \\geq 3$. The conductor-discriminant gap (keyInsight #6, ~300 lines) handles the odd part; the 2-part requires ~200 additional lines of Grunwald-Wang correction.",
@@ -123,7 +138,10 @@
   {
     "id": "ann-shafarevich-part3-pp-gap",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 113, "endLine": 131 },
+    "range": {
+      "startLine": 113,
+      "endLine": 131
+    },
     "type": "insight",
     "title": "Why CRT Fails for $(\\mathbb{Z}/p)^2$: The Motivating Example for Linear Disjointness",
     "content": "**Part III's docstring marks the precise boundary between what `coprime_product_cyclic_realizable` covers and what `galois_compositum_product` is needed for**: the *coprime* case collapses onto the cyclic case (via CRT, line 81–87's `zmod_coprime_crt`), but the *non-coprime* abelian case — exemplified by $G = \\mathbb{Z}/p \\times \\mathbb{Z}/p$ — does not. CRT requires $\\gcd(m, n) = 1$, and $\\gcd(p, p) = p \\neq 1$, so $\\mathbb{Z}/p \\times \\mathbb{Z}/p \\not\\cong \\mathbb{Z}/p^2$ (the latter is cyclic, the former is not); a *single* cyclotomic fixed field cannot realize $(\\mathbb{Z}/p)^2$ because every cyclic-Galois fixed field has cyclic Galois group. **The strategy that does work**: pick **two distinct primes** $p_1 \\neq p_2$, both with $p_1, p_2 \\equiv 1 \\pmod p$ (Dirichlet guarantees infinitely many of each), giving two independent index-$p$ fixed fields $K_1 \\subseteq \\mathbb{Q}(\\zeta_{p_1})$ and $K_2 \\subseteq \\mathbb{Q}(\\zeta_{p_2})$. Their **compositum** $K_1 K_2$ has Galois group $\\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q}) \\cong \\mathbb{Z}/p \\times \\mathbb{Z}/p$ — *provided* $K_1$ and $K_2$ are linearly disjoint over $\\mathbb{Q}$, which is the exact role of `galois_compositum_product` (annotated at lines 132–148). The Part III docstring therefore identifies the **minimal example** that drives the entire conductor-theory wishlist: $(\\mathbb{Z}/p)^2$ — the smallest non-cyclic abelian $p$-group — already requires the full disjointness machinery.",
@@ -147,7 +165,10 @@
   {
     "id": "ann-shafarevich-axiom",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 132, "endLine": 148 },
+    "range": {
+      "startLine": 132,
+      "endLine": 148
+    },
     "type": "context",
     "title": "The Linear Disjointness Axiom: Identifying the Mathlib Gap",
     "content": "**`galois_compositum_product`** is the **single axiom** in this file. Statement: if $K_1, K_2 / \\mathbb{Q}$ are Galois with **coprime Galois group orders**, then $\\exists K$ Galois with $\\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q}) \\cong \\text{Gal}(K/\\mathbb{Q})$. **Mathematical justification**: when $K_i \\subseteq \\mathbb{Q}(\\zeta_{p_i})$ with distinct primes $p_1 \\neq p_2$, the extensions are unramified at each other's primes, so by the discriminant criterion they are **linearly disjoint** over $\\mathbb{Q}$, and $\\text{Gal}(K_1 K_2 / \\mathbb{Q}) \\cong \\text{Gal}(K_1/\\mathbb{Q}) \\times \\text{Gal}(K_2/\\mathbb{Q})$ by Galois theory. **Why an axiom**: Mathlib 2026 lacks **conductor theory** for subfields of cyclotomic extensions and the linear-disjointness criterion. Filling this gap is estimated at ~500 lines.",
@@ -169,7 +190,10 @@
   {
     "id": "ann-shafarevich-s3",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 150, "endLine": 174 },
+    "range": {
+      "startLine": 150,
+      "endLine": 174
+    },
     "type": "insight",
     "title": "S₃ Realizable: A Non-Shafarevich Direct Construction",
     "content": "**`s3_realizable_via_cubic`** wraps `InverseGaloisProblem.s3_realizable`, which proves $S_3 \\cong \\text{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\omega)/\\mathbb{Q})$ via the splitting field of $X^3 - 2$. **The lesson**: individual non-abelian solvable groups can be realized **ad-hoc** by clever polynomial choices — but a *uniform* proof for all solvable groups requires Shafarevich's machinery. **`s3_is_solvable`**: $S_3$ has the derived series $S_3 \\rhd A_3 \\rhd \\{1\\}$ with abelian quotients $S_3/A_3 \\cong \\mathbb{Z}/2$, $A_3/\\{1\\} \\cong \\mathbb{Z}/3$, closed by `AbelRuffiniGaloisExtensions.symmetric_solvable_of_le_four`.",
@@ -195,10 +219,13 @@
   {
     "id": "ann-shafarevich-summary",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-01",
-    "range": { "startLine": 176, "endLine": 200 },
+    "range": {
+      "startLine": 176,
+      "endLine": 200
+    },
     "type": "context",
     "title": "Summary: Status Table and the Path Forward",
-    "content": "**`shafarevich_cyclic_case_proved`** is the formal summary theorem: cyclic groups are realizable. The closing comment block restates the **four-cell status table** that opens the file, with concrete Lean-line estimates: cyclic case (proved), coprime products (proved here, ~50 lines), general abelian (~500 more lines for conductor theory), full solvable (~5000+ lines for embedding problems / Galois cohomology / Brauer groups / Tate-Poitou duality). The file's main contribution is **identifying these gaps precisely** rather than closing them — a roadmap for future Mathlib contributors.",
+    "content": "**`shafarevich_cyclic_case_proved`** is the formal summary theorem: cyclic groups are realizable. The closing comment block restates the **four-cell status table** that opens the file, with concrete Lean-line estimates: cyclic case (proved), coprime products (proved here, ~50 lines), general abelian (~500 more lines for conductor theory), full solvable (~5000+ lines for embedding problems / Galois cohomology / Brauer groups / Tate-Poitou duality). The file's main contribution is **identifying these gaps precisely** rather than closing them — a roadmap for future Mathlib contributors.\n\n**Concrete prioritization for the abelian closure.** The keyInsight #7 (conductor-discriminant duality) sharpens the '~500 lines' estimate into four staged sub-modules: (i) **define the conductor** of an abelian extension as the minimal $N$ such that $K \\subseteq \\mathbb{Q}(\\zeta_N)$, ~50 lines on top of Mathlib's `IsCyclotomicExtension` API; (ii) prove **conductor-discriminant for cyclotomic subfields** ($|\\text{disc}(K)| = \\prod_\\chi |\\mathfrak{f}_\\chi|$), ~300 lines and the load-bearing step; (iii) derive **linear disjointness from coprime discriminants** via the resultant-coprimality criterion, ~80 lines; (iv) conclude the **compositum Galois group** as a product, ~70 lines. **Why this ordering is forced**: each step's hypotheses are exactly the previous step's conclusion, and step (ii) is unavoidably first because both (iii) and (iv) require character-conductor manipulations that are only well-typed once conductors are defined. **Where the Grunwald–Wang anomaly enters**: keyInsight #8 shows that step (iv)'s 'product Galois group' conclusion holds *unconditionally* for coprime *odd* moduli but requires care at $p = 2$ for $\\mathbb{Z}/2^n$-extensions with $n \\geq 3$ — so the staged plan should additionally factor (iv) into '(iv.odd) odd-order compositum' (clean) and '(iv.2) 2-part compositum with Grunwald–Wang correction' (~200 additional lines for Wang's counterexample + Artin–Tate restoration). The total honest estimate for *full abelian* closure including the 2-part anomaly is therefore ~700 lines, sharpening the original '~500' figure.\n\n**Mathlib 2026 readiness checkpoint for the long-term solvable case.** The 5000+-line estimate decomposes as: **Galois cohomology** (~1500 lines — `GroupTheory.GroupCohomology.Basic` exists with degrees 0–2 partially formalized, but higher cohomology, the cup product, and Hochschild–Serre await), **Brauer groups** (~1200 lines — `Algebra.BrauerGroup` defines $\\text{Br}(K)$ as central simple algebras modulo similarity, but the local invariant map $\\text{inv}_v: \\text{Br}(\\mathbb{Q}_v) \\to \\mathbb{Q}/\\mathbb{Z}$ and the global Hasse exact sequence $0 \\to \\text{Br}(\\mathbb{Q}) \\to \\bigoplus_v \\text{Br}(\\mathbb{Q}_v) \\to \\mathbb{Q}/\\mathbb{Z} \\to 0$ are open), **Tate–Poitou duality** (~1500 lines — requires Galois cohomology of local fields, local duality, the nine-term exact sequence, and Pontryagin duality for profinite groups), **embedding problems** (~800 lines on top — given the cohomology infrastructure, the actual Shafarevich induction over composition series is comparatively short). **Order of dependency**: cohomology → Brauer → local–global → embedding problems → Shafarevich; no step can be skipped. **Pragmatic gallery roadmap**: this entry's contribution is to identify *which* sub-module is the next high-impact closure (step ii of the abelian plan — conductor-discriminant for cyclotomic subfields), and to flag the Grunwald–Wang anomaly as the load-bearing subtlety any future entry on $\\mathbb{Z}/2^n$-realization must handle. **For the gallery curator**: a future entry titled `mathlib-conductor-discriminant-formula` closing step (ii) would immediately downgrade the '~500' estimate in this file's status table from 'open' to 'proved' and reduce the abelian gap from one axiom (`galois_compositum_product`) to zero.\n",
     "mathContext": "**Mathlib 2026 status for Galois cohomology / class field theory**: cohomology of profinite groups (`Mathlib.GroupTheory.Cohomology`) is partially formalized (degree 1, basic functoriality); higher cohomology and the cup product are not yet present. **Brauer groups** are defined for general fields but the local Brauer group $\\text{Br}(\\mathbb{Q}_p) \\cong \\mathbb{Q}/\\mathbb{Z}$ and the global exact sequence $0 \\to \\text{Br}(\\mathbb{Q}) \\to \\bigoplus_v \\text{Br}(\\mathbb{Q}_v) \\to \\mathbb{Q}/\\mathbb{Z} \\to 0$ (the heart of class field theory) await formalization. **Tate–Poitou duality** for global fields would require the local–global theory and is a multi-year project. The closer term goal — **filling the conductor gap** to close the abelian half — is much more accessible.",
     "significance": "context",
     "relatedConcepts": [
@@ -206,11 +233,18 @@
       "Galois cohomology in Mathlib (partial)",
       "Brauer groups (partial)",
       "Tate–Poitou duality (absent)",
-      "embedding problems"
+      "embedding problems",
+      "conductor-discriminant formula for cyclotomic subfields",
+      "Grunwald-Wang anomaly at p=2 for Z/2^n",
+      "Hasse exact sequence for Brauer groups",
+      "staged Mathlib formalization plan"
     ],
     "prerequisites": [
       "all preceding theorems",
-      "summary perspective on Mathlib's number theory infrastructure"
+      "summary perspective on Mathlib's number theory infrastructure",
+      "keyInsight #7 (conductor-discriminant duality)",
+      "keyInsight #8 (Grunwald-Wang anomaly)",
+      "current Mathlib status of GroupTheory.GroupCohomology and Algebra.BrauerGroup"
     ]
   }
 ]
