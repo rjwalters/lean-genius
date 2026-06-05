@@ -538,37 +538,49 @@
       "name": "algebraic_reals_countable",
       "type": "core",
       "description": "The set of algebraic real numbers {x : ℝ | IsAlgebraic ℚ x} is countable (Cantor 1874)",
-      "leanType": "Set.Countable {x : ℝ | IsAlgebraic ℚ x}"
+      "leanType": "Set.Countable {x : ℝ | IsAlgebraic ℚ x}",
+      "line": 81,
+      "endLine": 83
     },
     {
       "name": "card_algebraic_reals_eq_aleph0",
       "type": "core",
       "description": "The algebraic reals have cardinality exactly aleph0 (countably infinite, not finite)",
-      "leanType": "Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.aleph0"
+      "leanType": "Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.aleph0",
+      "line": 94,
+      "endLine": 96
     },
     {
       "name": "algebraic_reals_eq_iUnion_degree",
       "type": "key",
       "description": "Algebraic reals decompose as countable union of degree strata",
-      "leanType": "{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfDegree d"
+      "leanType": "{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfDegree d",
+      "line": 175,
+      "endLine": 183
     },
     {
       "name": "algebraic_reals_countable_via_strata",
       "type": "key",
       "description": "Alternative countability proof: countability re-derived from the degree-stratification decomposition (countable union of countable sets is countable)",
-      "leanType": "Set.Countable {x : ℝ | IsAlgebraic ℚ x}"
+      "leanType": "Set.Countable {x : ℝ | IsAlgebraic ℚ x}",
+      "line": 198,
+      "endLine": 201
     },
     {
       "name": "card_algebraic_eq_card_rat",
       "type": "key",
       "description": "Cardinality equality: the algebraic reals and the rationals are equinumerous despite the algebraic reals being a strict superset (the 'paradox' of countable infinity)",
-      "leanType": "Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.mk ℚ"
+      "leanType": "Cardinal.mk {x : ℝ // IsAlgebraic ℚ x} = Cardinal.mk ℚ",
+      "line": 228,
+      "endLine": 230
     },
     {
       "name": "algebraic_reals_eq_iUnion_bounded",
       "type": "key",
       "description": "Exhaustive bounded-degree filtration: every algebraic real lies in some algebraicRealsOfBoundedDegree d, witnessing the algebraic reals as the colimit of an ascending chain of countable layers",
-      "leanType": "{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfBoundedDegree d"
+      "leanType": "{x : ℝ | IsAlgebraic ℚ x} = ⋃ d : ℕ, algebraicRealsOfBoundedDegree d",
+      "line": 244,
+      "endLine": 252
     }
   ],
   "sorries": 0
