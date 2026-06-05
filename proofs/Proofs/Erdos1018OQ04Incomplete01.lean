@@ -716,22 +716,23 @@ theorem r2_implies_main_r2 :
 
     2. `turanNumber` (parent sorry) → still sorry (deep, requires Turán theory)
 
-    3. K₃ planar (parent axiom) → K3_planar (theorem with remaining sorry in geom part)
-       Now has explicit coordinates, sorry only on the geometric non-crossing verification.
+    3. K₃ planar (parent axiom) → K3_planar (theorem, fully proved) ✓
+       Explicit coordinates (0,0),(1,0),(0,1) with linear-functional projections on
+       convex hulls discharging the non-crossing condition.
 
-    4. K₄ planar (parent axiom) → K4_planar (theorem with remaining sorry)
-       Now has explicit coordinates, sorry only on geometric verification.
+    4. K₄ planar (parent axiom) → K4_planar (theorem, fully proved) ✓
+       Explicit coordinates (0,0),(3,0),(1,2),(2,2) with linear-functional projections
+       on convex hulls discharging the non-crossing condition.
 
     5. `r2_implies_main_r2` → proved (2026-05-02) ✓
        isEmbeddableConc and isEmbeddable have identical bodies so are definitionally equal.
        criticalDim 2 = 2 * (2-1) = 2, and hasSmallNonEmbeddable/isNonEmbeddable unfold cleanly.
 
     **Remaining work**:
-    - Fill in the geometric verification sorries for K₃ and K₄ (require convex hull intersection theory)
-    - Euler's formula bound for planar_graphs_edge_bound
+    - Euler's formula bound for planar_graphs_edge_bound (|E| ≤ 3|V| - 6, not yet in Mathlib)
 
     **Axiom count**: 1 (Kostochka-Pyber r=2 case, proven but deep)
-    **Sorry count**: 3 (geometric verifications + Euler's formula; down from 4 after r2_implies_main_r2)
+    **Sorry count**: 1 (Euler's formula bound in planar_graphs_edge_bound)
 -/
 
 end Erdos1018OQ04Completion
