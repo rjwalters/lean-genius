@@ -18,11 +18,11 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 448,
-    "assumptions": "1 axiom inherited from BorsukUlam.lean: no_continuous_odd_nonzero_on_sphere (no continuous odd function from sphere is everywhere nonzero — the Borsuk-Ulam theorem). 0 own axioms. 0 sorries.",
+    "lineCount": 533,
+    "assumptions": "1 axiom inherited from BorsukUlam.lean: no_continuous_odd_nonzero_on_sphere (no continuous odd function from sphere is everywhere nonzero — the Borsuk-Ulam theorem). 0 own axioms. 0 sorries. Docker-verified clean build on Lean 4.26.0.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
-    "definitionCount": 16
+    "theoremCount": 13,
+    "definitionCount": 13
   },
   "overview": {
     "historicalContext": "The Borsuk-Ulam theorem (1933) asserts that every continuous map $S^n \\to \\mathbb{R}^n$ identifies a pair of antipodal points. Karol Borsuk posed the conjecture in 1933 and Stanisław Ulam is credited with the original formulation. The covering space proof, developed in the 1950s-60s through the work of algebraic topologists including Eilenberg and Steenrod, reduces the problem to showing no continuous odd map $S^n \\to S^{n-1}$ exists. The key idea is descent: an odd map $g$ induces $\\bar{g}: \\mathbb{R}P^n \\to \\mathbb{R}P^{n-1}$, and the induced homomorphism $\\pi_1(\\mathbb{R}P^n) \\to \\pi_1(\\mathbb{R}P^{n-1})$, i.e., $\\mathbb{Z}/2\\mathbb{Z} \\to \\mathbb{Z}/2\\mathbb{Z}$, must be both surjective (by the lifting property) and trivial (by geometric constraints) — contradiction. The higher categorical perspective emerged from Grothendieck's Pursuing Stacks (1983) and was systematized by Lurie in Higher Topos Theory (2009): classical covering spaces are functors $\\Pi_1(X) \\to \\mathbf{Set}$, while $\\infty$-coverings are local systems $\\Pi_\\infty(X) \\to \\mathbf{Space}$, capturing all homotopical information. Whether these higher-categorical tools yield genuinely stronger Borsuk-Ulam-type results remains an active research question, connecting to equivariant stable homotopy theory and the Hill-Hopkins-Ravenel solution of the Kervaire invariant problem (2016).",
@@ -48,57 +48,71 @@
       "id": "sec-oq04-preamble",
       "title": "Documentation and Imports",
       "startLine": 1,
-      "endLine": 52,
+      "endLine": 56,
       "summary": "Module docstring explaining the classical covering space argument in 6 steps, the higher categorical perspective (0-coverings to ∞-coverings), and the file's goals. Imports Mathlib modules for topology, metric spaces, inner product spaces, ZMod, and tactics."
     },
     {
       "id": "sec-oq04-involutions",
       "title": "Z/2 Involutions and Equivalence Relations",
-      "startLine": 54,
-      "endLine": 84,
+      "startLine": 58,
+      "endLine": 88,
       "summary": "Defines the Involution structure (a self-inverse map), the antipodal involution on Euclidean space, and proves the induced equivalence relation (x ~ σ(x)) is well-formed with full proofs of reflexivity, symmetry, and transitivity."
     },
     {
       "id": "sec-oq04-projective-space",
       "title": "Real Projective Space",
-      "startLine": 86,
-      "endLine": 103,
+      "startLine": 90,
+      "endLine": 107,
       "summary": "Defines RPⁿ as the quotient of R^{n+1} by the antipodal relation, the projection map π, and proves π(-x) = π(x)."
     },
     {
       "id": "sec-oq04-descent",
-      "title": "Descent of Equivariant Maps",
-      "startLine": 105,
-      "endLine": 147,
-      "summary": "Defines IsOdd for equivariant maps, proves odd maps preserve the antipodal relation (odd_preserves_relation), constructs the descent map f̄: RPⁿ → RPᵐ from an odd map f, and proves commutativity with projection."
+      "title": "Descent of Equivariant (Odd) Maps",
+      "startLine": 109,
+      "endLine": 153,
+      "summary": "Defines IsOdd for equivariant maps, proves odd maps preserve the antipodal relation (odd_preserves_relation), constructs the descent map f̄: RPⁿ → RPᵐ from an odd map f, and proves commutativity with projection via Quotient.map reduction."
     },
     {
       "id": "sec-oq04-covering-space",
-      "title": "Covering Space Structure",
-      "startLine": 148,
-      "endLine": 172,
-      "summary": "Axiomatizes the 2-fold covering property of Sⁿ → RPⁿ and the fundamental group π₁(RPⁿ) ≅ Z/2Z for n ≥ 2."
+      "title": "The Covering Space Structure",
+      "startLine": 154,
+      "endLine": 181,
+      "summary": "Proves the 2-element fiber property of S^n → RP^n via Quotient.exact', and witnesses π₁(RP^n) ≅ Z/2Z for n ≥ 2 as a 2-element type."
     },
     {
       "id": "sec-oq04-higher-categorical",
-      "title": "Higher Categorical Framework",
-      "startLine": 174,
-      "endLine": 237,
-      "summary": "Defines CoveringType abstraction capturing key properties for descent arguments, constructs the antipodal covering as an instance, defines EquivariantMap between covering types, and proves odd maps give equivariant maps."
+      "title": "Higher Categorical Framework (CoveringType)",
+      "startLine": 182,
+      "endLine": 247,
+      "summary": "Defines CoveringType abstraction capturing key properties for descent arguments (total/base/projection/deck), constructs the antipodal covering as an instance, defines EquivariantMap between covering types, and proves odd maps give equivariant maps (as a `def`, since EquivariantMap is data)."
     },
     {
       "id": "sec-oq04-obstruction",
-      "title": "The Covering Space Argument",
-      "startLine": 239,
-      "endLine": 261,
-      "summary": "States the covering space obstruction axiom (no continuous odd nonvanishing map on the sphere) and discusses higher categorical generalizations."
+      "title": "The Covering Space Argument (Borsuk-Ulam)",
+      "startLine": 248,
+      "endLine": 281,
+      "summary": "Derives the covering-space obstruction `covering_space_obstruction` directly from `BorsukUlam.no_continuous_odd_nonzero_on_sphere`. The oddness hypothesis is inlined as `∀ x, g (-x) = -g x` (rather than via `IsOdd`) so the codomain `Fin n` need not be reshaped to `Fin (m + 1)`."
     },
     {
       "id": "sec-oq04-open-questions",
-      "title": "Open Questions",
-      "startLine": 263,
-      "endLine": 291,
+      "title": "Open Questions for Higher Analogues",
+      "startLine": 282,
+      "endLine": 309,
       "summary": "Lists four open questions about higher analogues: Z/p generalization, ∞-groupoid perspective, ∞-topos formulation, and whether higher coverings yield new results."
+    },
+    {
+      "id": "sec-oq04-gcovering",
+      "title": "General G-Coverings and Higher Categorical Structure",
+      "startLine": 310,
+      "endLine": 480,
+      "summary": "Generalizes CoveringType from the single-involution (G = ZMod 2) case to arbitrary additive groups G: GCovering G has `act : G → Total → Total` with act_zero/act_add/act_proj. Constructs antipodalZ2Covering as a GCovering (ZMod 2) (case analysis via `by_cases h : g = 0` rather than `fin_cases g`, since the latter left witnesses in un-reduced `(fun i => i) ⟨_, _⟩` form). Proves GCovering_z2_involutive (deck involutivity from 1 + 1 = 0 in ZMod 2), defines GEquivariantMap, and shows odd_gives_GEquivariant compatibility with the classical EquivariantMap via toEquivariantMap_Z2."
+    },
+    {
+      "id": "sec-oq04-zmod-p-periodicity",
+      "title": "ZMod p Periodicity (Cyclic Generalization)",
+      "startLine": 481,
+      "endLine": 532,
+      "summary": "Generalizes GCovering_z2_involutive to arbitrary cyclic deck groups ZMod p. The bridge lemma `GCovering.act_one_iterate` shows `(C.act 1)^[k] x = C.act ((k : ZMod p)) x` via induction (using `Function.iterate_succ_apply'` and `act_add`). The main result `GCovering_zmod_p_periodic` then follows from `ZMod.natCast_self : (p : ZMod p) = 0` and `act_zero`: iterating the generator p times yields the identity. `GCovering_zmod_p_periodic_two` recovers the original p = 2 involutivity statement, confirming the generalization is conservative. This is the algebraic backbone for lens-space coverings S^{2n-1} → L^{2n-1}(p) and the Yang-Borsuk theorem."
     }
   ],
   "conclusion": {
@@ -139,10 +153,10 @@
     ],
     "opens": [],
     "namespace": "BorsukUlamOQ04",
-    "lineCount": 448,
+    "lineCount": 533,
     "axiomCount": 0,
-    "theoremCount": 12,
-    "definitionCount": 16,
+    "theoremCount": 13,
+    "definitionCount": 13,
     "path": "Proofs/BorsukUlamOQ04.lean",
     "sorries": 0
   },

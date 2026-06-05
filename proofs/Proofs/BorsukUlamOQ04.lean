@@ -132,7 +132,10 @@ theorem odd_preserves_relation {n m : ℕ}
     (antipodalInvol m).setoid.r (f x) (f y) := by
   rcases h with rfl | h
   · exact Or.inl rfl
-  · right; rw [h, hf]
+  · right
+    rw [h]
+    show f (-y) = -(f y)
+    exact hf y
 
 /-- Descent: an odd map f: R^{n+1} → R^{m+1} induces a well-defined
     map f̄: RPⁿ → RPᵐ on real projective spaces -/
@@ -146,8 +149,7 @@ def descendOdd {n m : ℕ}
 theorem descendOdd_comm {n m : ℕ}
     (f : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1)))
     (hf : IsOdd f) (x : EuclideanSpace ℝ (Fin (n + 1))) :
-    descendOdd f hf (projMap n x) = projMap m (f x) := by
-  simp [descendOdd, projMap, Quotient.map_mk]
+    descendOdd f hf (projMap n x) = projMap m (f x) := rfl
 
 -- ============================================================
 -- PART 4: The Covering Space Structure
@@ -164,11 +166,13 @@ def Sphere (n : ℕ) : Set (EuclideanSpace ℝ (Fin (n + 1))) :=
 
 /-- On the sphere, the antipodal covering has exactly 2-element fibers:
     if x, y are on the sphere and project to the same point in RPⁿ,
-    then y = x or y = -x. Proved via Quotient.exact’. -/
+    then y = x or y = -x. Proved via `Quotient.exact'`. -/
 theorem sphere_fiber_pair (n : ℕ) (x y : EuclideanSpace ℝ (Fin (n + 1)))
     (_ : x ∈ Sphere n) (_ : y ∈ Sphere n) (h : projMap n y = projMap n x) :
-    y = x ∨ y = -x :=
-  @Quotient.exact’ _ (antipodalInvol n).setoid y x h
+    y = x ∨ y = -x := by
+  have hrel : (antipodalInvol n).setoid.r y x :=
+    Quotient.exact' (s₁ := (antipodalInvol n).setoid) h
+  exact hrel
 
 /-- π₁(RPⁿ) ≅ Z/2Z for n ≥ 2. Witnessed by Fin 2. -/
 theorem fundamental_group_RPn (n : ℕ) (_ : n ≥ 2) :
@@ -231,8 +235,9 @@ structure EquivariantMap (C₁ C₂ : CoveringType) where
   equivariant : ∀ x, totalMap (C₁.deck x) = C₂.deck (totalMap x)
 
 /-- An odd map f: R^{n+1} → R^{m+1} gives an equivariant map
-    between the antipodal coverings -/
-theorem odd_gives_equivariant {n m : ℕ}
+    between the antipodal coverings. Uses `def` since the result is data,
+    not a proposition. -/
+def odd_gives_equivariant {n m : ℕ}
     (f : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1)))
     (hf : IsOdd f) : EquivariantMap (antipodalCovering n) (antipodalCovering m) where
   totalMap := f
@@ -262,10 +267,15 @@ theorem odd_gives_equivariant {n m : ℕ}
     then lives in higher cohomology groups rather than just π₁.
 
     Proved from `no_continuous_odd_nonzero_on_sphere` in BorsukUlam.lean
-    (both state the same result with reordered conjuncts). -/
+    (both state the same result with reordered conjuncts).
+
+    The oddness hypothesis is inlined as `∀ x, g (-x) = -g x` rather than via
+    `IsOdd`, because `IsOdd` requires the codomain to have the form
+    `EuclideanSpace ℝ (Fin (m + 1))`, while here the target is `Fin n` for
+    arbitrary `n ≥ 1`. -/
 theorem covering_space_obstruction (n : ℕ) (hn : n ≥ 1) :
     ¬∃ (g : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin n)),
-      Continuous g ∧ IsOdd g ∧ (∀ x ∈ Sphere n, g x ≠ 0) := by
+      Continuous g ∧ (∀ x, g (-x) = -g x) ∧ (∀ x ∈ Sphere n, g x ≠ 0) := by
   intro ⟨g, hcont, hodd, hnonzero⟩
   exact BorsukUlam.no_continuous_odd_nonzero_on_sphere n hn ⟨g, hcont, hnonzero, hodd⟩
 
@@ -331,19 +341,34 @@ structure GCovering (G : Type*) [AddGroup G] where
   act_proj : ∀ (g : G) x, proj (act g x) = proj x
 
 /-- The antipodal double cover Sⁿ → RPⁿ viewed as a ZMod 2 covering.
-    The nontrivial element (1 : ZMod 2) acts by negation. -/
+    The nontrivial element (1 : ZMod 2) acts by negation.
+
+    The field proofs use `by_cases h : g = 0` (and similar for `h`) rather than
+    `fin_cases`, because `fin_cases g` on `g : ZMod 2` leaves the witness in
+    the un-reduced form `(fun i => i) ⟨0, _⟩` that subsequent `simp`/`rw`
+    cannot match against literal `0`. -/
 def antipodalZ2Covering (n : ℕ) : GCovering (ZMod 2) where
   Base := RP n
   Total := EuclideanSpace ℝ (Fin (n + 1))
   proj := projMap n
   act g x := if g = 0 then x else -x
   act_zero x := if_pos rfl
-  act_add g h x := by fin_cases g <;> fin_cases h <;> simp [neg_neg]
+  act_add g h x := by
+    have hor : ∀ a : ZMod 2, a = 0 ∨ a = 1 := by decide
+    by_cases hg : g = 0
+    · subst hg; simp
+    · by_cases hh : h = 0
+      · subst hh; simp
+      · have hg1 : g = 1 := (hor g).resolve_left hg
+        have hh1 : h = 1 := (hor h).resolve_left hh
+        subst hg1; subst hh1
+        have h11 : (1 + 1 : ZMod 2) = 0 := by decide
+        rw [h11]
+        simp [show (1 : ZMod 2) ≠ 0 from one_ne_zero, neg_neg]
   act_proj g x := by
-    fin_cases g
-    · simp [if_pos rfl]
-    · rw [if_neg (show (1 : ZMod 2) ≠ 0 from one_ne_zero)]
-      exact projMap_neg n x
+    by_cases hg : g = 0
+    · subst hg; simp
+    · rw [if_neg hg]; exact projMap_neg n x
 
 /-- In any ZMod 2 covering, acting twice by the generator (1 : ZMod 2) is the identity.
     This is the algebraic content of "deck transformation is an involution". -/
@@ -397,8 +422,13 @@ def GEquivariantMap.toEquivariantMap_Z2 {C₁ C₂ : GCovering (ZMod 2)}
   equivariant := φ.equivariant 1
 
 /-- An odd map gives a GEquivariantMap between the antipodal ZMod 2 coverings.
-    This is the G-equivariant strengthening of odd_gives_equivariant. -/
-theorem odd_gives_GEquivariant {n m : ℕ}
+    This is the G-equivariant strengthening of odd_gives_equivariant.
+
+    Uses `def` rather than `theorem` because the result is data (a structure
+    value), not a proposition. The equivariance field uses `by_cases h : g = 0`
+    instead of `fin_cases g`, which left the witness in an un-reduced
+    `(fun i => i) ⟨_, _⟩` form that subsequent `simp`/`rw` could not match. -/
+def odd_gives_GEquivariant {n m : ℕ}
     (f : EuclideanSpace ℝ (Fin (n + 1)) → EuclideanSpace ℝ (Fin (m + 1)))
     (hf : IsOdd f) :
     GEquivariantMap (antipodalZ2Covering n) (antipodalZ2Covering m) where
@@ -406,9 +436,12 @@ theorem odd_gives_GEquivariant {n m : ℕ}
   baseMap := descendOdd f hf
   commutes x := (descendOdd_comm f hf x).symm
   equivariant g x := by
-    fin_cases g
-    · simp only [(antipodalZ2Covering n).act_zero, (antipodalZ2Covering m).act_zero]
-    · rw [antipodalZ2Covering_deck_is_neg n x, antipodalZ2Covering_deck_is_neg m (f x)]
+    have hor : ∀ a : ZMod 2, a = 0 ∨ a = 1 := by decide
+    rcases hor g with rfl | rfl
+    · -- g = 0: both sides reduce to f x via act_zero
+      rw [(antipodalZ2Covering n).act_zero, (antipodalZ2Covering m).act_zero]
+    · -- g = 1: both sides reduce via antipodalZ2Covering_deck_is_neg
+      rw [antipodalZ2Covering_deck_is_neg n x, antipodalZ2Covering_deck_is_neg m (f x)]
       exact hf x
 
 /-- The GEquivariantMap from an odd map reduces to the classical EquivariantMap.
@@ -444,5 +477,57 @@ NEXT LEVEL (requires Mathlib algebraic topology):
   This is the ∞-categorical content: BG classifies G-bundles,
   and the full obstruction theory is cohomology of BG.
 -/
+
+-- ============================================================
+-- PART 9: ZMod p Periodicity (Cyclic Generalization of Involutivity)
+-- ============================================================
+/-
+`GCovering_z2_involutive` shows that in any ZMod 2 covering, acting twice
+by the generator yields the identity. The same algebraic mechanism
+generalizes to ZMod p for any p: acting p times by the generator gives
+identity, since `(p : ZMod p) = 0` and `C.act 0 = id`.
+
+This captures the cyclic structure underlying lens-space coverings:
+  L^{2n-1}(p) = S^{2n-1} / (ZMod p)
+where ZMod p acts on S^{2n-1} ⊂ ℂⁿ by multiplication by p-th roots of unity.
+The induced covering S^{2n-1} → L^{2n-1}(p) is a ZMod p covering,
+generalizing the Z/2 antipodal covering S^n → RP^n (the p = 2 case).
+
+The generalized Borsuk-Ulam (Yang-Borsuk) theorem: any continuous ZMod p
+-equivariant map S^{2n-1} → S^{2m-1} forces n ≤ m. This is the direct
+analogue of classical BU for cyclic groups of arbitrary prime order.
+The periodicity lemma below is the algebraic backbone of that framework:
+without it, "ZMod p covering" would not enforce the cyclic structure.
+-/
+
+/-- The iterated action by the generator `(1 : ZMod p)` equals the action by
+    the natural-number cast of the iteration count. This is the bridge
+    between `Function.iterate` and the additive ZMod p action. -/
+theorem GCovering.act_one_iterate {p : ℕ} (C : GCovering (ZMod p)) (k : ℕ)
+    (x : C.Total) :
+    (C.act 1)^[k] x = C.act ((k : ZMod p)) x := by
+  induction k with
+  | zero =>
+    simp only [Function.iterate_zero_apply, Nat.cast_zero]
+    exact (C.act_zero x).symm
+  | succ k ih =>
+    rw [Function.iterate_succ_apply', ih, ← C.act_add]
+    congr 1
+    push_cast
+    ring
+
+/-- Generalization of `GCovering_z2_involutive`: in any ZMod p covering,
+    iterating the generator action p times yields the identity. This is the
+    cyclic-group analogue of involutivity. Uses `ZMod.natCast_self : (p : ZMod p) = 0`. -/
+theorem GCovering_zmod_p_periodic {p : ℕ} (C : GCovering (ZMod p)) (x : C.Total) :
+    (C.act 1)^[p] x = x := by
+  rw [C.act_one_iterate, ZMod.natCast_self, C.act_zero]
+
+/-- The new periodicity statement specializes to the p = 2 case,
+    recovering the involutivity content of `GCovering_z2_involutive`. -/
+theorem GCovering_zmod_p_periodic_two (C : GCovering (ZMod 2)) (x : C.Total) :
+    C.act 1 (C.act 1 x) = x := by
+  have h := GCovering_zmod_p_periodic C x
+  simpa [Function.iterate_succ_apply', Function.iterate_one] using h
 
 end BorsukUlamOQ04
