@@ -32,10 +32,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T00:42:35.518Z",
-    "iteration": 2,
-    "focus": "Added GCovering framework (Part 8): generalizes CoveringType to arbitrary additive group G. Building Docker to verify.",
+    "iteration": 3,
+    "focus": "Repaired pre-existing build breaks and added Part 9 ZMod p periodicity; Docker clean. Next: ZMod p lens space construction (requires complex analytic action of p-th roots of unity).",
     "blockers": [],
-    "nextAction": "Verify Lean builds. Extend CoveringType with higher categorical axioms.",
+    "nextAction": "Either: (a) define explicit ZMod p action on R^{2n} by 2D rotations and instantiate as GCovering (ZMod p); or (b) generalize the obstruction theorem statement to ZMod p (would need Yang-Borsuk axiom as starting point).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added Part 8 (GCovering framework). GCovering generalizes CoveringType to arbitrary additive group G. Proved: GCovering_z2_involutive (deck involutivity), toCoveringType_Z2 (embed in classical), antipodalZ2Covering_deck_matches (connects to classical), odd_gives_GEquivariant (G-equivariant version). Shows Z/2 case exactly recovers classical framework.",
+    "progressSummary": "PROGRESS: Repaired 7 pre-existing build breaks discovered by Docker validation (the previous 'GCovering framework' session committed without verifying), and added Part 9 (ZMod p periodicity). The new section generalizes GCovering_z2_involutive — which used 1 + 1 = 0 in ZMod 2 — to GCovering_zmod_p_periodic: in any ZMod p covering, iterating the generator action p times yields the identity. The proof uses a clean bridge lemma GCovering.act_one_iterate showing the iterated action matches the natural-number cast, then closes via ZMod.natCast_self. This is the algebraic backbone for lens-space coverings S^{2n-1} → L^{2n-1}(p) and the Yang-Borsuk theorem. Docker build clean (3059 jobs).",
     "builtItems": [
       "BorsukUlamOQ04.lean: 295 lines, 4 theorems, 3 axioms, 11 definitions",
       "Involution structure: self-inverse map with proved setoid properties",
@@ -63,7 +63,13 @@
       "antipodalZ2Covering_deck_matches: ZMod 2 framework recovers classical negation deck",
       "GEquivariantMap: equivariant maps between G-coverings",
       "odd_gives_GEquivariant: odd maps yield GEquivariantMap (proved)",
-      "odd_GEquivariant_extends_equivariant: consistent base maps (proved by rfl)"
+      "odd_GEquivariant_extends_equivariant: consistent base maps (proved by rfl)",
+      "BorsukUlamOQ04.lean: rescued 7 pre-existing build breaks (odd_preserves_relation/descendOdd_comm/sphere_fiber_pair/odd_gives_equivariant/covering_space_obstruction/antipodalZ2Covering.act_add/act_proj/odd_gives_GEquivariant) + added Part 9 ZMod p periodicity; Docker clean on Lean 4.26.0 (3059 jobs)",
+      "GCovering.act_one_iterate: bridge lemma (C.act 1)^[k] x = C.act ((k : ZMod p)) x via induction on Function.iterate_succ_apply + act_add",
+      "GCovering_zmod_p_periodic: (C.act 1)^[p] x = x for ANY ZMod p covering — generalizes GCovering_z2_involutive (which forced p = 2)",
+      "GCovering_zmod_p_periodic_two: recovers p = 2 involutivity from the general statement, confirming conservative extension",
+      "Made odd_gives_equivariant and odd_gives_GEquivariant proper `def`s (had `theorem` keyword over structure type)",
+      "Restated covering_space_obstruction to inline oddness as ∀ x, g (-x) = -g x instead of IsOdd (IsOdd requires codomain Fin (m+1), but Fin n is general)"
     ],
     "insights": [
       "Descent of odd maps to RP^n is purely algebraic: odd maps preserve the antipodal equivalence relation",
@@ -76,14 +82,20 @@
       "For G = ZMod 2 (discrete): only pi_1 contributes to obstruction; GCovering_z2_involutive shows why",
       "GCovering generalizes CoveringType: act_zero + act_add + act_proj subsumes deck + deck_inv + deck_proj",
       "The toCoveringType_Z2 embedding shows classical covering theory is the special case G = ZMod 2",
-      "For general G: obstructions live in H*(BG), not just pi_1(BG). G = U(1) gives H^2; G = SU(2) gives H^4"
+      "For general G: obstructions live in H*(BG), not just pi_1(BG). G = U(1) gives H^2; G = SU(2) gives H^4",
+      "The same algebraic mechanism behind Z/2 involutivity (1 + 1 = 0 in ZMod 2) generalizes to ZMod p periodicity (p = 0 in ZMod p) — both reduce to ZMod.natCast_self + act_zero",
+      "fin_cases on (g : ZMod 2) inside a structure literal produces witness `(fun i => i) ⟨0/1, _⟩` that does NOT unify with literal `0`/`1` — must use `by_cases h : g = 0` + `Or.resolve_left` from `∀ a : ZMod 2, a = 0 ∨ a = 1` (decidable via Fintype)",
+      "`theorem` returning a structure type is a hard error in Lean 4.26 — must use `def` (Lean checks the type is a Prop before elaborating body); this caused 2 silently broken declarations in the original file",
+      "Quotient.exact' (with regular apostrophe) is the right lemma for `projMap n y = projMap n x → y ≈ x` via the antipodal setoid; the original file had Unicode prime `’` which silently mis-parsed as a different identifier",
+      "IsOdd in this file requires codomain `EuclideanSpace ℝ (Fin (m + 1))` — for general codomain `Fin n` (without the +1 structure) use raw `∀ x, f (-x) = -f x` instead",
+      "Previous GCovering session committed under 'Building Docker to verify' but never confirmed; the file has been broken on main for the entire intervening period — a counterexample to relying on metadata claims of '0 sorries/0 axioms' without runtime verification"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Run Docker build to verify GCovering framework compiles",
-      "Add ZMod p lens space covering (G = ZMod p, total space = S^{2n-1})",
-      "State generalized Borsuk-Ulam as axiom: no G-equivariant map S^n -> S^m when n > Gdim(m)",
-      "Connect to OQ-02 equivariant BU dimension framework"
+      "Define explicit ZMod p action by 2D rotations on R^{2n} ⊂ EuclideanSpace ℝ (Fin (2n))",
+      "Instantiate `lensZpCovering : ℕ → GCovering (ZMod p)` and prove fiber structure",
+      "State generalized Borsuk-Ulam (Yang-Borsuk) as axiom: no continuous ZMod p-equivariant map S^{2n-1} → S^{2m-1} when n > m",
+      "Verify Part 9 is consumed by any downstream proof (currently standalone)"
     ]
   },
   "tags": [
