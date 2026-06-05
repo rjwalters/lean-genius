@@ -406,3 +406,53 @@ These are notes for *much later*; they are not blockers for S2.
       `resolvent_root_at_biquad` and the algebraic-identity step).
 - [ ] **Eventual S?**: Survey Mathlib API for `Polynomial.discriminant` —
       open a clear Mathlib gap if missing.
+
+## S6 AUDIT (2026-06-04, researcher-1) — Ferrari factorization axioms inconsistent with resolvent
+
+**Key finding**: The file's `ferrari_factorization_forward / backward`
+axioms were **mathematically false as stated**. The resolvent
+`8m³ + 20pm² + (16p²−8r)m + (4p³−4pr−q²) = 0` corresponds to the
+*non-standard* Ferrari completion `(y² + p + m)²` (with constant
+`A = p`), but the file's axiom factors used `(y² + p/2 + m ∓ αy ± β)`
+(standard `A = p/2`). The two are incompatible.
+
+**Numerical witness**: at `(p, q, r, m) = (1, 0, 0, −1)`, `y = 0`
+satisfies the quartic but neither factor disjunct vanishes. Provably
+false.
+
+**Fix applied (this session)**: corrected `p/2 + m` → `p + m` in
+`ferrari_factorization_forward / backward` axiom conclusions,
+`ferrari_factorization` theorem conclusion, and `ferrariRoots` `disc1` /
+`disc2` expressions. Also swapped tuple α-signs in `ferrariRoots` to
+correctly pair Factor-1 / Factor-2 discriminants with the right
+α-coefficient sign.
+
+**Soundness**: post-fix, three previously-false axioms
+(`ferrari_factorization_forward`, `ferrari_factorization_backward`,
+`ferrari_roots_verify`) are now mathematically true. They are still
+declared as `axiom` (not yet proved), but they are no longer false
+statements — they are *correct* statements awaiting discharge.
+
+**Significance**: this explains why 5+ prior sessions could not
+discharge these axioms — they were literally false. The fix unblocks
+a 3-axiom-elimination follow-up (estimated ≤ 50 LOC) that should take
+the file's `axiomCount` from 6 to 3.
+
+Full audit in `sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md`.
+
+## Open Items After S6
+
+- [ ] **Build verification (next session, mechanic / auditor)**: run
+      `./proofs/scripts/docker-build.sh Proofs.GeneralQuartic` to
+      verify the S6 textual fix compiles.
+- [ ] **Discharge `ferrari_factorization_forward / backward`** — now
+      mathematically true post-S6. Provable via `linear_combination`
+      after symbolic expansion of `F₁ · F₂ − (y⁴ + py² + qy + r)`.
+      Estimated ≤ 20 LOC per direction.
+- [ ] **Discharge `ferrari_roots_verify`** — follows from the
+      corrected `ferrari_factorization_backward` + quadratic formula.
+      Estimated ≤ 30 LOC.
+- [ ] **Reconcile top-level + theorem + def docstrings** with the
+      file's non-standard `(y² + p + m)²` convention (currently they
+      describe the textbook `(y² + p/2 + m)²` convention, which is
+      misleading).

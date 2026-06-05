@@ -133,22 +133,35 @@ theorem depressed_quartic_backward (a b c d y : ℂ)
 /-- **Axiom: Ferrari Factorization Forward**
 If y is a root of the depressed quartic and m is a root of the resolvent cubic,
 then y satisfies one of the two quadratic factors. This is Ferrari's key factorization
-insight: the depressed quartic can be written as a product of two quadratics. -/
+insight: the depressed quartic can be written as a product of two quadratics.
+
+**Convention note (S6 AUDIT 2026-06-04):** This file's resolvent cubic
+`8m³ + 20pm² + (16p²−8r)m + (4p³−4pr−q²)` corresponds to the
+**non-standard** Ferrari completion `(y² + p + m)²` (with `A = p`,
+not the textbook `A = p/2`). The factor constant must therefore be
+`p + m`, not the textbook `p/2 + m`. With `α² = 2m + p` and
+`β = q/(2α)`, the polynomial identity
+`F₁ · F₂ = y⁴ + py² + qy + r` then holds iff `m` satisfies this file's
+resolvent. See `sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md`. -/
 axiom ferrari_factorization_forward (p q r m α β y : ℂ)
     (hα : α^2 = 2 * m + p)
     (hβ : α ≠ 0 → β = q / (2 * α))
     (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
     (h : y^4 + p * y^2 + q * y + r = 0) :
-    (y^2 + p/2 + m - α * y + β = 0) ∨ (y^2 + p/2 + m + α * y - β = 0)
+    (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)
 
 /-- **Axiom: Ferrari Factorization Backward**
 If y satisfies either quadratic factor, then y is a root of the depressed quartic.
-This completes the factorization equivalence. -/
+This completes the factorization equivalence.
+
+**Convention note**: see `ferrari_factorization_forward` — the factor
+constant is `p + m` (non-standard completion `(y² + p + m)²`), not
+the textbook `p/2 + m`. -/
 axiom ferrari_factorization_backward (p q r m α β y : ℂ)
     (hα : α^2 = 2 * m + p)
     (hβ : α ≠ 0 → β = q / (2 * α))
     (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
-    (h : (y^2 + p/2 + m - α * y + β = 0) ∨ (y^2 + p/2 + m + α * y - β = 0)) :
+    (h : (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)) :
     y^4 + p * y^2 + q * y + r = 0
 
 /-- **Resolvent Cubic Has Root** (formerly axiom, now proved)
@@ -220,15 +233,19 @@ theorem quartic_to_depressed (a b c d : ℂ) :
 
 /-- Ferrari's key insight: For a depressed quartic y⁴ + py² + qy + r = 0,
     if m is a root of the resolvent cubic, then the quartic factors as:
-    (y² + p/2 + m - αy)(y² + p/2 + m + αy) = 0
-    where α = √(2m + p) (assuming 2m + p ≠ 0). -/
+    (y² + p + m − αy + β)(y² + p + m + αy − β) = 0
+    where α² = 2m + p (assuming 2m + p ≠ 0) and β = q/(2α).
+
+    **Convention note**: this file's resolvent cubic corresponds to the
+    non-standard completion `(y² + p + m)²` (with constant `p + m`,
+    not the textbook `p/2 + m`). See `ferrari_factorization_forward`. -/
 theorem ferrari_factorization (p q r m α β : ℂ)
     (hα : α^2 = 2 * m + p)
     (hβ : α ≠ 0 → β = q / (2 * α))
     (hm : (resolventCubic p q r).eval m = 0) :
     ∀ y : ℂ, (depressedQuartic p q r).eval y = 0 ↔
-             ((y^2 + p/2 + m - α * y + β = 0) ∨
-              (y^2 + p/2 + m + α * y - β = 0)) := by
+             ((y^2 + p + m - α * y + β = 0) ∨
+              (y^2 + p + m + α * y - β = 0)) := by
   intro y
   simp only [depressedQuartic, resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   -- Extract the resolvent cubic condition
@@ -260,19 +277,22 @@ theorem quartic_four_roots (a b c d : ℂ) :
 /-- Explicit formula for roots (Ferrari's formula).
     Given depressed quartic y⁴ + py² + qy + r = 0 with resolvent root m:
 
-    Let α = √(2m + p), and if α ≠ 0, let β = q/(2α). Then the four roots are:
-    y = (-α ± √(α² - 4(p/2 + m + β)))/2
-    y = (α ± √(α² - 4(p/2 + m - β)))/2
+    Let α = √(2m + p), and if α ≠ 0, let β = q/(2α). Then the four roots are
+    (with the file's non-standard `(y² + p + m)²` completion convention —
+    see `ferrari_factorization_forward`):
+
+    Factor 1 (`y² − αy + (p + m + β) = 0`): roots `y = (α ± √(α² − 4(p+m+β)))/2`
+    Factor 2 (`y² + αy + (p + m − β) = 0`): roots `y = (−α ± √(α² − 4(p+m−β)))/2`
 
     For the general quartic x⁴ + ax³ + bx² + cx + d = 0, subtract a/4 from each. -/
 noncomputable def ferrariRoots (p q r m : ℂ) (_hm : (resolventCubic p q r).eval m = 0) : ℂ × ℂ × ℂ × ℂ :=
   let α := Complex.cpow (2 * m + p) (1/2 : ℂ)  -- √(2m + p)
   let β := if α = 0 then 0 else q / (2 * α)
-  let disc1 := α^2 - 4 * (p/2 + m + β)
-  let disc2 := α^2 - 4 * (p/2 + m - β)
+  let disc1 := α^2 - 4 * (p + m + β)   -- discriminant of Factor 1
+  let disc2 := α^2 - 4 * (p + m - β)   -- discriminant of Factor 2
   let sqrt1 := Complex.cpow disc1 (1/2 : ℂ)
   let sqrt2 := Complex.cpow disc2 (1/2 : ℂ)
-  ((-α + sqrt1) / 2, (-α - sqrt1) / 2, (α + sqrt2) / 2, (α - sqrt2) / 2)
+  ((α + sqrt1) / 2, (α - sqrt1) / 2, (-α + sqrt2) / 2, (-α - sqrt2) / 2)
 
 /-- **Axiom: Ferrari Roots Verification**
 The explicit Ferrari root formulas, when substituted back into the depressed quartic,
