@@ -60,13 +60,17 @@ open Cardinal ContinuumHypothesis
 PART I: LARGE CARDINAL HIERARCHY
 ══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- A cardinal κ is a strong limit if 2^λ < κ for all λ < κ. -/
+/-- A cardinal κ is a strong limit if 2^μ < κ for all μ < κ.
+    (We use `μ` rather than `λ` because `λ` is reserved for lambda abstraction
+    in Lean 4 and cannot be used as a binder name.) -/
 def IsStrongLimit (κ : Cardinal.{0}) : Prop :=
-  ∀ λ : Cardinal.{0}, λ < κ → 2 ^ λ < κ
+  ∀ μ : Cardinal.{0}, μ < κ → 2 ^ μ < κ
 
-/-- A cardinal κ is regular if its cofinality equals itself. -/
+/-- A cardinal κ is regular if its cofinality equals itself.
+    (In current Mathlib, `Ordinal.cof : Ordinal → Cardinal` returns a Cardinal
+    directly, so no `.card` projection is needed.) -/
 def IsRegular (κ : Cardinal.{0}) : Prop :=
-  κ.ord.cof.card = κ
+  κ.ord.cof = κ
 
 /-- A cardinal κ is inaccessible if it is uncountable, regular, and a strong limit. -/
 def IsInaccessible (κ : Cardinal.{0}) : Prop :=
@@ -115,7 +119,7 @@ theorem measurable_implies_inaccessible : HasMeasurable → HasInaccessible := b
   exact ⟨κ, measurable_is_inaccessible hκ⟩
 
 /-- Martin's Maximum implies Martin's Axiom. -/
-theorem mm_implies_ma : MartinsMaximum → MartinsAxiom := le_of_eq
+theorem mm_implies_ma : MartinsMaximum → MartinsAxiom := ge_of_eq
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -176,22 +180,22 @@ and implies 2^ℵ₀ = ℵ₂, which directly refutes CH (since CH says 2^ℵ₀
 theorem mm_implies_not_ch : MartinsMaximum → ¬CH := by
   intro hmm hch
   unfold MartinsMaximum at hmm
-  unfold CH aleph_one continuum at hch
+  unfold CH aleph_one ContinuumHypothesis.continuum at hch
   -- hmm : (2:Cardinal.{0})^ℵ₀ = Cardinal.aleph 2
   -- hch : (2:Cardinal.{0})^ℵ₀ = Cardinal.aleph 1
   have h12 : Cardinal.aleph 1 < Cardinal.aleph 2 :=
-    Cardinal.aleph_lt.mpr (by norm_num)
+    Cardinal.aleph_lt_aleph.mpr (by norm_num)
   exact absurd (hch.symm.trans hmm) (ne_of_lt h12)
 
 /-- Martin's Axiom implies ¬CH: under MA_ℵ₁, 2^ℵ₀ ≥ ℵ₂ > ℵ₁. -/
 theorem ma_implies_not_ch : MartinsAxiom → ¬CH := by
   intro hma hch
   unfold MartinsAxiom at hma
-  unfold CH aleph_one continuum at hch
+  unfold CH aleph_one ContinuumHypothesis.continuum at hch
   -- hma : (2:Cardinal.{0})^ℵ₀ ≥ Cardinal.aleph 2
   -- hch : (2:Cardinal.{0})^ℵ₀ = Cardinal.aleph 1
   have h12 : Cardinal.aleph 1 < Cardinal.aleph 2 :=
-    Cardinal.aleph_lt.mpr (by norm_num)
+    Cardinal.aleph_lt_aleph.mpr (by norm_num)
   have hle : Cardinal.aleph 2 ≤ Cardinal.aleph 1 := hch ▸ hma
   exact absurd (lt_of_lt_of_le h12 hle) (lt_irrefl _)
 
@@ -263,21 +267,22 @@ def GCH : Prop :=
 theorem gch_implies_ch : GCH → CH := by
   intro h
   have h0 := h 0
-  simp only [Nat.zero_add, Cardinal.aleph_zero] at h0
-  -- h0 : 2 ^ ℵ₀ = Cardinal.aleph 1
-  unfold CH continuum aleph_one
-  exact h0
+  -- h0 : 2 ^ Cardinal.aleph 0 = Cardinal.aleph (0 + 1)
+  unfold CH ContinuumHypothesis.continuum aleph_one
+  simpa using h0
 
 /-- GCH implies CH and also decides all higher continua. -/
 theorem gch_decides_all_aleph (h : GCH) (n : ℕ) :
     (2 : Cardinal.{0}) ^ Cardinal.aleph n = Cardinal.aleph (n + 1) :=
   h n
 
-/-- Under GCH, 2^ℵₙ = ℵₙ₊₁ < ℵₙ₊₂: the continuum of ℵₙ stays below ℵₙ₊₂. -/
+/-- Under GCH, 2^ℵₙ = ℵₙ₊₁ < ℵₙ₊₂: the continuum of ℵₙ stays below ℵₙ₊₂.
+    The ordinal-side comparison is converted via `exact_mod_cast` from the
+    ℕ-side comparison handled by `omega`. -/
 theorem gch_continuum_below_aleph_add_two (h : GCH) (n : ℕ) :
     (2 : Cardinal.{0}) ^ Cardinal.aleph n < Cardinal.aleph (n + 2) := by
   rw [h n]
-  exact Cardinal.aleph_lt.mpr (by omega)
+  exact Cardinal.aleph_lt_aleph.mpr (by exact_mod_cast (by omega : (n + 1 : ℕ) < n + 2))
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
