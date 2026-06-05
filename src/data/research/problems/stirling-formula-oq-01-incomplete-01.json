@@ -1,7 +1,7 @@
 {
   "slug": "stirling-formula-oq-01-incomplete-01",
   "title": "Higher-Order Stirling Expansion: First Correction Term",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -28,37 +28,40 @@
     "goal": "Track the first correction term for Stirling's formula and reconcile this incomplete research scaffold with the current verified stirling-formula-oq-01 proof record before starting new Lean work."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T02:25:34-07:00",
-    "iteration": 1,
-    "focus": "Owned state.md records initial problem understanding only; current proof metadata should be checked before assigning new work.",
+    "phase": "ACT",
+    "since": "2026-06-05T00:00:00Z",
+    "iteration": 2,
+    "focus": "Original 1/(12n) goal proved upstream; pivoted to setting up the second-order correction by adding stirlingPartial_three identity.",
     "blockers": [],
-    "nextAction": "Reconcile this incomplete scaffold with the verified stirling-formula-oq-01 and StirlingExpansion.lean records, or retarget future work to the next correction term.",
+    "nextAction": "Prove stirling_second_correction (|stirlingSeq n / sqrt pi - stirlingPartial 3 n| <= C/n^3) or retire this slug in favour of stirling-formula-oq-01.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "The owned problem.md asks for the 1/(12n) correction in Stirling's expansion, while owned state.md and knowledge.md contain only initial scaffold content. Current related proof source and metadata now show the first-correction theorem and two-term factorial expansion present in Proofs/StirlingExpansion.lean, with no Lean sorry tokens or axiom declarations found by the targeted source scan.",
+    "progressSummary": "Original first-correction goal already proved upstream in StirlingExpansion.lean (0 sorries, 0 axioms). This session added stirlingPartial_three as the algebraic identity naming the second-order partial sum, preparing the ground for the still-open higher-order error bound.",
     "builtItems": [
       "Proofs/StirlingExpansion.lean: stirling_first_correction theorem for the Stirling sequence first correction.",
       "Proofs/StirlingExpansion.lean: stirling_two_term_expansion theorem translating the correction to the factorial ratio.",
       "Proofs/StirlingExpansion.lean: error_bound_from_correction theorem deriving the base Stirling error bound from the first correction.",
-      "src/data/proofs/stirling-formula-oq-01/meta.json: related gallery metadata for the higher-order Stirling expansion."
+      "src/data/proofs/stirling-formula-oq-01/meta.json: related gallery metadata for the higher-order Stirling expansion.",
+      "Proofs/StirlingExpansion.lean: stirlingPartial_three identity (S_3(n) = 1 + 1/(12n) + 1/(288n^2)) — names the LHS of the still-open second-order error bound."
     ],
     "insights": [
       "The target can be stated either as a factorial-ratio expansion or as a bound on stirlingSeq n / sqrt(pi), since Mathlib's stirlingSeq normalizes by sqrt(2n) * (n/e)^n.",
       "The owned problem.md still describes two remaining sorries, but current related proof source has moved past that state.",
       "The literature README for this owned problem contains no concrete external references beyond scaffold headings.",
-      "The related completed proof state identifies second-correction work as optional follow-up rather than part of the first-correction goal."
+      "The related completed proof state identifies second-correction work as optional follow-up rather than part of the first-correction goal.",
+      "stirlingCoeff_two = 1/288 was already defined; what was missing for higher-order work was the partial-sum identity stirlingPartial_three, now added.",
+      "StirlingExpansionAristotle.lean declares stirling_first_correction and stirling_two_term_expansion as sorries in the same namespace as the proved main-file versions — possible namespace overlap, deferred to a future session that can run a clean build."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Resolve whether this incomplete slug should be retired or linked to the completed stirling-formula-oq-01 record.",
-      "If continuing mathematically, target the next-order correction term rather than redoing the already-present first-correction theorem.",
-      "Keep future status changes tied to the owned state.md or current Lean/proof metadata."
+      "Prove stirling_second_correction: |stirlingSeq n / sqrt pi - stirlingPartial 3 n| <= C / n^3 using sharper log expansions and a refined telescoping argument.",
+      "Audit the StirlingExpansionAristotle.lean namespace overlap with the main file; clean or rename.",
+      "If neither extension is undertaken, retire this slug and link to the verified parent stirling-formula-oq-01."
     ],
     "markdown": "# Knowledge Base: stirling-formula-oq-01-incomplete-01\n\n## Problem Understanding\n\nThe target is the first correction term in Stirling's expansion: the factorial ratio n!/(sqrt(2*pi*n)*(n/e)^n) equals 1 + 1/(12n) up to O(1/n^2).\n\n## Local Evidence\n\nThe owned state.md is still in OBSERVE with zero attempts. The related current proof source Proofs/StirlingExpansion.lean contains stirling_first_correction, stirling_two_term_expansion, and error_bound_from_correction, and the targeted source scan found no Lean sorry tokens or axiom declarations.\n\n## Follow-Up\n\nBefore assigning proof work under this incomplete slug, reconcile it with the completed stirling-formula-oq-01 proof record. New mathematical work should focus on higher-order corrections beyond 1/(12n).\n"
   },
@@ -85,5 +88,5 @@
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 7,
   "tractability": 6,
-  "lastUpdate": "2026-04-12T21:15:00Z"
+  "lastUpdate": "2026-06-05T00:00:00Z"
 }

@@ -74,6 +74,18 @@ theorem stirlingPartial_two (n : ℕ) (hn : n ≠ 0) :
     stirlingCoeff_zero, stirlingCoeff_one]
   ring
 
+/-- The three-term Stirling partial sum equals the first plus second correction:
+    S_3(n) = 1 + 1/(12n) + 1/(288n²).
+
+    The full second-order correction theorem (bounding
+    `stirlingSeq n / sqrt π - S_3(n)` by `C/n^3`) remains open and is the
+    natural successor to `stirling_first_correction`. -/
+theorem stirlingPartial_three (n : ℕ) (hn : n ≠ 0) :
+    stirlingPartial 3 n = 1 + 1 / (12 * (n : ℝ)) + 1 / (288 * (n : ℝ) ^ 2) := by
+  simp [stirlingPartial, Finset.sum_range_succ, Finset.sum_range_one,
+    stirlingCoeff_zero, stirlingCoeff_one, stirlingCoeff_two]
+  ring
+
 -- ═══════════════════════════════════════════════════
 -- Part IIIa: Log Inequality Lemmas
 --
