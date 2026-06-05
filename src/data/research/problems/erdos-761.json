@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2A+0S (was 2A+1S). Proved dichrom_mono: subgraph monotonicity of dichromatic number via orientation extension + TransGen.mono. All 6 formerly-axiom properties now proved. Only the 2 open conjectures remain as axioms.",
+    "progressSummary": "PROGRESS: 2A+0S. Iter 8: added dichrom_le_of_colorable and cochrom_le_of_colorable — the structural ℕ-valued δ(G), ζ(G) ≤ χ(G) bounds via SimpleGraph.Colorable. bipartite_dichrom_le_two is now a 1-line corollary. theoremCount 7→8. Both open conjectures remain as axioms.",
     "builtItems": [
       "dichrom_le_chrom: proved via Fintype.equivFin + ne_of_adj (axiom→theorem)",
       "cochrom_le_chrom: proved via Fintype.equivFin + injective coloring (axiom→theorem)",
@@ -55,7 +55,10 @@
       "cochrom_le_chrom: proved via singleton color classes from injective coloring",
       "bipartite_dichrom_le_two: proved (was sorry) via bridge + proper 2-coloring",
       "acyclic_orientation_exists: proved via total-order orientation + bridge",
-      "Removed complete_dichrom (wrong formula) and odd_cycle_dichrom (True placeholder)"
+      "Removed complete_dichrom (wrong formula) and odd_cycle_dichrom (True placeholder)",
+      "proofs/Proofs/Erdos761Problem.lean: dichrom_le_of_colorable (lines 156-164)",
+      "proofs/Proofs/Erdos761Problem.lean: cochrom_le_of_colorable (lines 169-176)",
+      "proofs/Proofs/Erdos761Problem.lean: bipartite_dichrom_le_two refactored to 1-line corollary (lines 180-183)"
     ],
     "insights": [
       "dichrom_le_chrom proved: injective coloring via Fintype.equivFin gives |V| colors, injectivity + ne_of_adj yields acyclicity",
@@ -77,7 +80,9 @@
       "Bridge lemma is the key: proper coloring ⟹ no mono edges ⟹ no mono cycles. All old proofs work through this bridge",
       "TransGen cycle detection: TransGen (colorClassEdge O c i) v v = directed cycle through v in color i",
       "The bridge lemma proof uses pattern matching on TransGen: single case hits loopless, tail case hits color contradiction",
-      "Session 2026-04-27 (researcher-3): file blocked by Mathlib drift — local `Orientation` structure name now collides with `Mathlib.LinearAlgebra.Orientation`. Build error at line 43 cascades to ~12 downstream errors. Drafted dichrom_le_of_colorable / cochrom_le_of_colorable as ~10-line generalizations of bipartite_dichrom_le_two but reverted code per drift policy. Documented suggested fix and post-fix research targets in knowledge.md."
+      "Session 2026-04-27 (researcher-3): file blocked by Mathlib drift — local `Orientation` structure name now collides with `Mathlib.LinearAlgebra.Orientation`. Build error at line 43 cascades to ~12 downstream errors. Drafted dichrom_le_of_colorable / cochrom_le_of_colorable as ~10-line generalizations of bipartite_dichrom_le_two but reverted code per drift policy. Documented suggested fix and post-fix research targets in knowledge.md.",
+      "Iter 8 (researcher-1): dichrom_le_of_colorable lifts bipartite_dichrom_le_two from k=2 to arbitrary k via isAcyclicColoring_of_no_mono_edge applied to any G.Coloring (Fin k); δ(G) ≤ k whenever G.Colorable k",
+      "Iter 8: cochrom_le_of_colorable bounds ζ(G) ≤ k via the ¬G.Adj branch of IsCochromatic — proper colorings have independent color classes; gives the ℕ-valued ζ ≤ χ inequality"
     ],
     "mathlibGaps": [],
     "nextSteps": [
