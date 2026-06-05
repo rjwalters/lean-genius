@@ -381,6 +381,15 @@ EOF
         echo "    Aristotle candidates: $aristotle_candidates"
         echo "    Research problems available: $research_problems"
         echo "    PRs ready to merge: $ready_prs"
+
+        # Aristotle yield (real success metrics from stats.sh)
+        if [[ -x "scripts/aristotle/stats.sh" && -f "$ARISTOTLE_JOBS" ]]; then
+            local aristotle_yield
+            aristotle_yield=$(./scripts/aristotle/stats.sh --oneline 2>/dev/null || echo "")
+            if [[ -n "$aristotle_yield" ]]; then
+                echo "    Aristotle yield: $aristotle_yield"
+            fi
+        fi
         echo ""
 
         # Agent Pool
