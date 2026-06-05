@@ -77,9 +77,25 @@ theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
 
 **Aristotle spun on Erdős #340** because NO proof exists. That's for US to discover!
 
-## Aristotle Companion Files (Preferred Approach)
+## Aristotle Companion Files (DEPRECATED — early multi-sorry pattern)
 
-The recommended way to submit work to Aristotle is via **companion files**:
+> **Status (2026-06-05):** This multi-sorry companion-file pattern is **superseded** by the
+> [Harmonic Submission Format (recommended)](#harmonic-submission-format-recommended) below.
+> Harmonic's published examples (the `StatementOnly_IMO2025P*.lean` files in
+> [harmonic-ai/IMO2025](https://github.com/harmonic-ai/IMO2025)) and the
+> [Aristotle paper](https://arxiv.org/html/2510.01346v1) make clear that Aristotle's MCTS
+> proof search is conditioned on **proof state + history + informal proof statement**, and
+> that the intended unit of submission is **one theorem per file**, not a companion file
+> with N supporting lemmas. Batching multiple sorries in one file dilutes the MCTS
+> budget across unrelated subgoals and starves the value function of informal context.
+>
+> Existing `*Aristotle.lean` companion files remain valid as a **fallback** — they still
+> work — but new submissions should follow the StatementOnly format. See the new section
+> below. (Subsequent issue: migrate the submission pipeline to the StatementOnly
+> convention.)
+
+The original (now-deprecated) recommended way to submit work to Aristotle was via
+**companion files**:
 
 ```
 proofs/Proofs/Erdos340Problem.lean       ← main file: axioms, main conjecture
@@ -275,25 +291,40 @@ Before running `./research/scripts/aristotle-submit.sh`:
 | **Definition sorry** | **SKIPS entirely** | **0%** |
 | **Placeholder True** | Marks complete, no value | N/A |
 
-## Success Story: Erdős #728
+## Early Successes That Motivate the New Format
+
+The following two cases were our earliest Aristotle wins. They predate the formal
+documentation of Harmonic's `StatementOnly_*.lean` convention, but in hindsight they
+foreshadow exactly *why* that convention works: a single clean theorem statement (or a
+small, tightly-related cluster) with complete definitions and no open conjectures is the
+shape Aristotle's MCTS handles well. Both stories remain accurate as positive existence
+proofs — they are *not* retracted — but new submissions should use the Harmonic format
+documented below, which makes these conditions explicit and uniform.
+
+### Success Story: Erdős #728
 
 Aristotle successfully proved Erdős #728 in 6 hours:
 - Input: File with HARD sorries only (no OPEN conjectures)
 - Output: 1,416 lines of complete proof
 - Result: Zero sorries, builds successfully
 
-This demonstrates that HARD problems are worth overnight runs!
+This demonstrates that HARD problems are worth overnight runs! In the Harmonic-format
+framing, Erdős #728 succeeded because the file effectively *was* a one-statement
+submission — the supporting lemmas were tightly coupled to the main result and the
+informal context (the paper) was implicit in the lemma names and structure.
 
-## Success Story: MotivicFlagMapsProvable
+### Success Story: MotivicFlagMapsProvable
 
 Aristotle proved ALL 10 theorems in an overnight run:
 - Input: File with complete definitions, only theorem sorries
 - Theorems: GL5_class, Fl5_class, GLn_product_expansion, computeA cases
 - Result: Zero sorries, builds successfully
 
-**Key**: All definitions were complete. Only theorems had sorries.
+**Key**: All definitions were complete. Only theorems had sorries. This is consistent
+with Harmonic's `StatementOnly` discipline — definitions are settled before submission,
+not derived as part of the search.
 
-## Failure Patterns (January 2026)
+## Failure Patterns (January 2026, revised June 2026)
 
 Jobs that returned "complete" but made no progress:
 
@@ -303,8 +334,17 @@ Jobs that returned "complete" but made no progress:
 | erdos-59 | `turanNumber`, `countFreeGraphs` def sorries | No proofs |
 | erdos-97 | `danzerPoints` definition sorry | Construction skipped |
 | erdos-39/494/605/645/650 | Placeholder `True` theorems | No meaningful work |
+| (many `*Aristotle.lean`) | **Multi-sorry batching dilutes MCTS budget** | Search exhausts on first hard subgoal, returns partial / no progress |
+| (many `*Aristotle.lean`) | **Missing informal-problem `/-` block** | Value function lacks English context to condition on; search drifts |
+| (any submission) | No `-- Proof attempt:` scaffolding | Aristotle has no human-supplied hint; Rivin reports scaffolding flipped his Pólya–Szegő dataset from 2.8% to 100% solved |
+| (concurrency) | Submitting >5 projects simultaneously | Harmonic's server cap is 5 hard / ~3 soft; queue backs up, jobs time out |
 
-**Lesson**: Only submit files where definitions are complete.
+**Lessons**:
+- Only submit files where definitions are complete.
+- Submit **one theorem per file** (Harmonic `StatementOnly_*.lean` convention).
+- Include an informal problem statement at the top of every file.
+- Provide a (possibly wrong) proof attempt as scaffolding when feasible.
+- Throttle to ~3 concurrent jobs, use async polling (no `--wait`).
 
 ## Syntax Compatibility Issues (January 2026)
 
@@ -376,3 +416,216 @@ mv aristotle-results/new/ProblemX-solved.lean aristotle-results/failed/
 # Change status from "submitted" to "failed"
 # Add outcome describing the failure mode
 ```
+
+## Harmonic Submission Format (recommended)
+
+> **Status (2026-06-05):** This is the **current recommended format** for all new
+> Aristotle submissions, derived from a 2026-06-05 study of Harmonic's published Aristotle
+> system (the IMO-2025 gold-medal run), Harmonic's open-source
+> [`harmonic-ai/IMO2025`](https://github.com/harmonic-ai/IMO2025) example files, Igor
+> Rivin's 100% verified Pólya–Szegő dataset, and the `aristotlelib` / `lean-aristotle-mcp`
+> client tooling. See the [Citations](#citations) section at the bottom for full sources.
+>
+> If you are setting up a new submission, **start here**. Use the deprecated multi-sorry
+> companion file only as a fallback for legacy pipelines.
+
+### Why the format matters
+
+Aristotle is Harmonic's IMO-level proof-search engine. Internally it runs **Monte Carlo
+Tree Search (MCTS) over Lean tactics, conditioned on `(proof state, history, informal
+proof)`**. The informal natural-language problem statement is *not* decoration — it is
+part of the input to Aristotle's value function. Three implications follow:
+
+1. **One theorem per file.** MCTS has a finite budget per project. Splitting that budget
+   across N sorries in a multi-sorry companion file shrinks the per-sorry budget and lets
+   one hard subgoal starve the rest. Harmonic's own input format is exactly one statement
+   per `StatementOnly_*.lean` file.
+2. **Informal context up top.** A `/-` block at the top of the file describing the
+   problem in English gives the value function something to condition on. Submitting bare
+   `:= by sorry` with no English context is throwing away a free signal.
+3. **Scaffolded proof attempts help.** Rivin's Pólya–Szegő dataset went from 2.8% solved
+   (raw statements) to 100% solved (statements + a partial, sometimes wrong, proof
+   attempt as scaffolding). The attempt acts as a prior over the search tree.
+
+### One-theorem-per-file convention
+
+Mirror Harmonic's naming. For each Aristotle target, create a dedicated file:
+
+```
+proofs/Proofs/StatementOnly_Erdos340_SidonLowerBound.lean
+proofs/Proofs/StatementOnly_Erdos340_SidonUpperBound.lean
+proofs/Proofs/StatementOnly_Erdos728_GoodTriples.lean
+```
+
+Each file contains **exactly one** `theorem` declaration with a single `sorry`. No
+supporting lemmas, no other sorries. If you need supporting lemmas, give each its own
+`StatementOnly_*.lean` file and submit them as independent Aristotle projects.
+
+### Required `/-` informal-problem block
+
+Every `StatementOnly_*.lean` file **must** open with a `/- ... -/` block that states the
+problem in English (and gives the answer when the statement is a "determine all"
+problem). This mirrors Harmonic's IMO 2025 P1 file, which begins:
+
+```lean
+/-
+A line in the plane is called sunny if it is not parallel to any of the x-axis,
+the y-axis, and the line x+y=0.
+Let n ≥ 3 be a given integer. Determine all nonnegative integers k such that
+there exist n distinct lines in the plane satisfying both of the following:
+- for all positive integers a and b with a+b ≤ n+1, the point (a, b) is on at
+  least one of the lines; and
+- exactly k of the n lines are sunny.
+
+Answer: 0, 1, 3
+-/
+```
+
+Use `/-` (not `/-!`) — Aristotle's parser still rejects `/-!` docstring sections in some
+configurations.
+
+### Standardized `set_option` block (verbatim from Harmonic)
+
+Copy this block verbatim into every `StatementOnly_*.lean` file, immediately after the
+import and `open` lines. It is taken from
+[`HarmonicLean/StatementOnly_IMO2025P1.lean`](https://github.com/harmonic-ai/IMO2025/blob/main/HarmonicLean/StatementOnly_IMO2025P1.lean):
+
+```lean
+import HarmonicLean.Imports
+
+open scoped BigOperators
+open scoped Real
+open scoped Nat
+open scoped Classical
+open scoped Pointwise
+
+set_option maxHeartbeats 0
+set_option maxRecDepth 4000
+set_option synthInstance.maxHeartbeats 20000
+set_option synthInstance.maxSize 128
+
+set_option pp.fullNames true
+set_option pp.structureInstances true
+
+set_option relaxedAutoImplicit false
+set_option autoImplicit false
+
+set_option pp.coercions.types true
+set_option pp.funBinderTypes true
+set_option pp.letVarTypes true
+set_option pp.piBinderTypes true
+
+set_option linter.all false
+
+noncomputable section
+```
+
+Notes on the block:
+
+- `set_option maxHeartbeats 0` disables the heartbeat limit entirely so long
+  searches do not abort on elaboration cost.
+- `relaxedAutoImplicit false` and `autoImplicit false` force every variable to be
+  bound explicitly — Aristotle's prompts assume this and can be misled by implicit
+  insertions.
+- The `pp.*` options make pretty-printed proof states unambiguous, so the value
+  function sees the same syntax the elaborator does.
+- `noncomputable section` matches Harmonic's project conventions and avoids
+  spurious "failed to compile definition" errors on classical reasoning.
+- The single `import HarmonicLean.Imports` is Harmonic's curated Mathlib bundle.
+  If you do not have access to that import, substitute `import Mathlib` — the
+  rest of the block is unchanged.
+
+### Optional `-- Proof attempt:` scaffolding (Rivin pattern)
+
+Igor Rivin's Pólya–Szegő experiment ([blog post](https://igorrivin.github.io/research/polya-szego-aristotle/),
+[GitHub](https://github.com/igorrivin/polya-szego-lean)) showed that including a
+partial proof attempt — **even one that is wrong** — flipped the success rate from
+2.8% to 100% across 80 inequality problems. Treat the attempt as a *prior* the MCTS
+can refine, not as a binding commitment.
+
+Append it just below the theorem statement, like this:
+
+```lean
+namespace Erdos340Statement
+
+theorem sidon_lower_bound (A : Finset ℕ) (hA : IsSidon A) :
+    A.max' hne ≥ A.card * (A.card - 1) / 2 := by
+  sorry
+
+-- Proof attempt: a sketch of the expected argument. Aristotle is free to ignore
+-- this; it exists only to seed the MCTS prior.
+-- 1. Count ordered pairs (i, j) with i < j in A; there are card * (card - 1) / 2.
+-- 2. By Sidon-ness, all pairwise differences are distinct, so the differences
+--    inject into {1, ..., max'}.
+-- 3. Conclude max' ≥ card * (card - 1) / 2.
+
+end Erdos340Statement
+```
+
+The `-- Proof attempt:` block is plain Lean comments; it never affects elaboration.
+
+### Async submission, polling, and concurrency
+
+Submit jobs in **async mode** (do *not* pass `--wait` to `aristotlelib`). Aristotle jobs
+take minutes to hours — sometimes 6+ hours for HARD problems — and a blocking submit ties
+up the CLI for no benefit. Poll for status from the registry instead.
+
+Concurrency limits observed from Harmonic:
+
+- **Hard cap:** 5 simultaneous projects per account.
+- **Soft cap:** ~3 simultaneous projects before the queue starts noticeably backing up.
+- Our previous configuration targeting 10 concurrent projects exceeds the hard cap and
+  produces queue timeouts; current pipelines should target ~3.
+
+Recommended workflow with `aristotlelib`:
+
+```bash
+# Submit one StatementOnly_*.lean file as a project (async)
+aristotle submit proofs/Proofs/StatementOnly_Erdos340_SidonLowerBound.lean
+
+# Poll later — does NOT block
+aristotle status <project-id>
+
+# Retrieve the solved file when status is "complete"
+aristotle fetch <project-id> -o aristotle-results/new/
+```
+
+For an MCP-style integration (one sorry at a time, persistent connection), see
+[`septract/lean-aristotle-mcp`](https://github.com/septract/lean-aristotle-mcp), which
+exposes a `prove_sorry` tool over MCP. That wrapper assumes the same one-theorem-per-file
+discipline.
+
+### Migration from the deprecated companion-file pattern
+
+If you have an existing `*Aristotle.lean` companion file with N sorries:
+
+1. Identify the theorem-sorries (skip `def`, `axiom`, and `True` placeholders).
+2. For each remaining sorry, create a `StatementOnly_<Problem>_<LemmaName>.lean` file
+   following the format above.
+3. Copy the relevant minimal definitions/imports into each new file.
+4. Add an informal `/-` block describing what that one lemma says and why it should be
+   provable.
+5. (Optional but recommended) Sketch a proof attempt in a `-- Proof attempt:` block.
+6. Submit each new file as an independent project (respecting the ~3-concurrent cap).
+
+Do not delete the original `*Aristotle.lean` companion file until the StatementOnly
+submissions have succeeded — keep it as a fallback.
+
+## Citations
+
+Sources studied for the Harmonic Submission Format section (all consulted 2026-06-05):
+
+- Harmonic, "Aristotle: IMO-level Automated Theorem Proving" — <https://arxiv.org/html/2510.01346v1>
+  — System paper describing Aristotle's MCTS over Lean tactics conditioned on proof state, history, and informal proof; gold-medal IMO 2025 performance.
+- `harmonic-ai/IMO2025` GitHub — <https://github.com/harmonic-ai/IMO2025>
+  — Harmonic's official `StatementOnly_IMO2025P*.lean` submission files; canonical source for the file format, `set_option` block, and `/-` informal-problem block used in this guide.
+- Igor Rivin, "Polya-Szego + Aristotle: From 2.8% to 100% Verified Proofs" — <https://igorrivin.github.io/research/polya-szego-aristotle/>
+  — Empirical demonstration that adding partial proof-attempt scaffolding raises Aristotle's success rate from 2.8% to 100% on 80 inequality problems.
+- `igorrivin/polya-szego-lean` GitHub — <https://github.com/igorrivin/polya-szego-lean>
+  — The 80 verified inputs and outputs from Rivin's run; useful as a reference corpus for the scaffolding pattern.
+- `aristotlelib` on PyPI — <https://pypi.org/project/aristotlelib/>
+  — The official Aristotle CLI / client library we already use; documents async submission, polling, and the project-based submission model.
+- `septract/lean-aristotle-mcp` GitHub — <https://github.com/septract/lean-aristotle-mcp>
+  — MCP wrapper around Aristotle exposing a `prove_sorry` tool; reference implementation of the async per-sorry usage pattern.
+- Aristotle landing page — <https://aristotle.harmonic.fun/>
+  — Harmonic's public-facing description of Aristotle; confirms provenance (Harmonic, not Morph Labs) and high-level positioning.
