@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 6,
     "axiomCount": 2,
-    "theoremCount": 17,
+    "theoremCount": 15,
     "lineCount": 565,
     "defCount": 4,
     "assumptions": "2 axioms: (1) wirtinger_ac — Wirtinger inequality for Lipschitz/AC 2π-periodic functions with zero mean: ∫f² ≤ ∫(f')²; (2) exists_lip_nice_reparam — arc-length reparametrization for Lipschitz curves with positive speed a.e., giving constant-speed and zero-mean reparametrization. 6 technical sorries remain: lip_x/lip_y (MVT bound for periodic C¹ → Lipschitz), hdx_int/hdy_int (derivative-squared integrability from LipschitzWith), harea_zero (area=0 from circumference=0), hf_int (integrability of xy'−yx' for Lipschitz curves).",
@@ -54,7 +54,7 @@
       }
     ],
     "dateAdded": "2026-05-03",
-    "definitionCount": 5
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Hurwitz (1901) proved the isoperimetric inequality for smooth curves using Fourier series. The Wirtinger inequality is the key analytical ingredient: for a zero-mean 2π-periodic smooth function f, ∫₀²π f² ≤ ∫₀²π (f')². The natural regularity level for the isoperimetric inequality is Lipschitz (or even rectifiable) curves, since these include all piecewise-smooth curves (polygons, convex bodies). For Lipschitz curves, Rademacher's theorem guarantees differentiability a.e., so the arc-length and Green's theorem formulas remain valid as Lebesgue integrals. The Wirtinger inequality extends to W^{1,2}(S¹) and hence to all Lipschitz functions. Maz'ya (1985) and Federer (1969) contain the foundational measure-theoretic machinery for this generalization.",
@@ -153,9 +153,9 @@
     "namespace": "LipschitzIsoperimetric",
     "lineCount": 565,
     "axiomCount": 2,
-    "theoremCount": 17,
+    "theoremCount": 15,
     "lemmaCount": 1,
-    "definitionCount": 5,
+    "definitionCount": 4,
     "substantiveTheoremCount": 5,
     "sorries": 6,
     "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
