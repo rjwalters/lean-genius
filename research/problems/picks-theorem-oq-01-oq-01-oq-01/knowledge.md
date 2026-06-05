@@ -145,3 +145,53 @@ None for the S1 OBSERVE scope. Future sessions may need:
   `T.realInteriorCount = 0`.  This closes the base case of the eventual
   induction.
 - **S4** — close the induction via `exists_primitive_triangulation`.
+
+---
+
+## S3b-act-2 PREP (2026-06-04, researcher-1)
+
+Paste-ready Case (a) witness for the missing geometric reduction lemma
+`exists_nonvertex_lattice_point` (S3b PREP §4.1).
+
+### Key technical insight
+
+The witness for an edge with `gcd ≥ 2` is the parameter-`k = 1` point on
+the gcd-parametrisation: `v + Δ/g` where `Δ = w - v` and `g = Int.gcd Δ.fst Δ.snd`.
+Since `Δ/g` is the "primitive" direction vector and `g ` ≥ 2, the witness:
+
+- Is a lattice point (each component is integer because `g ∣ Δ.fst` and `g ∣ Δ.snd`)
+- Lies on the segment (k=1 is in range(g+1) when g ≥ 2)
+- Is NOT the start (k=0 ≠ 1)
+- Is NOT the end (k=g would be the end, k=1 < g when g ≥ 2)
+
+### Three new defs / one new theorem
+
+The PREP adds:
+1. `LatticeTriangle.vEdgeStart` (edge → start vertex)
+2. `LatticeTriangle.vEdgeEnd` (edge → end vertex)
+3. `LatticeTriangle.OnStrictEdgeInterior` (strict-interior-of-edge predicate)
+4. `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` (the Case (a) witness)
+
+The defs are needed because the existing file uses `v1, v2, v3` directly
+without an edge-indexed accessor; the predicate `OnStrictEdgeInterior T i p`
+is what S3b PREP §4.1 case (a) refers to but doesn't exist in the file yet.
+
+### Bearer audit at v4.26.0
+
+7 bearers (Int.gcd_dvd_left/right, Int.ediv_mul_cancel, Finset.mem_image,
+Finset.mem_range, Int.natAbs_sub_comm, mul_eq_zero) — all stable since v4.0,
+no v4.26.0 risk.
+
+### Reference
+
+- `sessions/2026-06-04-s3b-act2-prep-edge-interior-witness.md` — full PREP
+  with ~80 LOC paste-ready code, bearer audit, risk profile.
+
+### Outlook to remaining work
+
+After S3b-act-2 ACT applies the Case (a) witness, the remaining hard sub-step
+is Case (b) (Minkowski / Euclidean-algorithm interior witness for primitive
+triangles with `twiceArea ≥ 2`). The combined statement closes
+`exists_nonvertex_lattice_point`, which is the hard prerequisite identified
+in S3b PREP §2 for the full induction route to Pick's theorem.
+
