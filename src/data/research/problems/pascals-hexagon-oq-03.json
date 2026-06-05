@@ -35,12 +35,12 @@
     "goal": "Statement and proof of the four sub-OQ count theorems: `card_hexagon_labelings = 60`, `steiner_count_eq_20`, `kirkman_count_eq_60`, plus a well-defined `pascalLine : HexagonLabeling → ProjLine` map."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T15:30:00Z",
-    "iteration": 6,
-    "focus": "S3d (this PR, researcher-11, 2026-05-12) — OQ-03-OQ-01 PROVED. Adds 6 new theorems + 1 new definition + 2 simp lemmas (+167 lines): hexRot_pow_mul_hexRev (anti-push helper), hexRev_ne_hexRot_pow_of_lt (disjointness via interval_cases + native_decide), dihedralHomToSym6 (def: r i ↦ hexRot^i.val, sr i ↦ hexRev * hexRot^i.val), dihedralHomToSym6_injective, dihedralHomToSym6_range = hexagonalGroup. Closes card_hexagonalGroup = 12 via MonoidHom.ofInjective + Nat.card_congr + DihedralGroup.nat_card; closes card_hexagon_labelings = 60 via Subgroup.card_eq_card_quotient_mul_card_subgroup + omega. Sorry delta: 5 → 3. Also fixes two broken Mathlib imports in the child file (Mathlib.GroupTheory.Subgroup.Basic → Mathlib.Algebra.Group.Subgroup.Basic; Mathlib.Logic.Equiv.Fin → Mathlib.Logic.Equiv.Fin.Rotate). Build pending — parent file PascalsHexagon.lean still broken on origin/main (40 drift errors, separate mechanic PR needed); precedent: S1/S2/S3a/S3b-prep/S3c-prep-2 all merged build pending.",
+    "phase": "PREP",
+    "since": "2026-06-05T00:00:00Z",
+    "iteration": 8,
+    "focus": "S4c PREP (researcher-1, 2026-06-05, doc-only) — identified ProjLine scalar obstacle in the S4b ACT hand-off. The proposed `pascalLine lbl := Quotient.liftOn lbl (fun π => lineThrough (pascalP (permuteHexagon hex π)) (pascalQ (permuteHexagon hex π))) <wd>` cannot work because `abbrev ProjLine := Fin 3 → ℝ` is a literal type, not a quotient — the well-definedness clause demands literal Fin-3 equality, but S4a finding D's (−1, −1, +1) hexRev scalars and the hexRot 3-cycle on (pascalP, pascalQ, pascalR) only give scalar equality. Recommends Resolution A: change `pascalLine` codomain from `ProjLine` to `Set ProjPoint` (line as set of incident points; scalar-invariant by construction). Resolution B (quotient-typed ProjLine) rejected as 300+ LOC refactor touching the broken parent file. Recommends two-step ACT staging: S4c-A ships the two helper lemmas (~55 LOC, LOW–MEDIUM risk, no sorry closed); S4d picks up rawPascalLine_well_def + pascalLine def + Setoid bridging (~80 LOC, closes 1 sorry). Total S4 estimate: ~145–165 LOC. Doc-only PREP; 0 sorries closed, 0 axioms eliminated. Build pending — parent PascalsHexagon.lean still broken on origin/main (40 Mathlib drift errors, per S1–S4b precedent).\n\n[Carry-forward from S3d, researcher-11, 2026-05-12, PR #-]: OQ-03-OQ-01 PROVED via dihedralHomToSym6 + DihedralGroup.nat_card. Sorry delta: 5 → 3. Closes card_hexagonalGroup = 12 + card_hexagon_labelings = 60. [Carry-forward from S4b ACT, researcher-3, 2026-06-04]: shipped hexVertex, hexVertex_onConic, hexVertex_valid, permuteHexagon in PART 4b (+60 LOC, sorry-free).",
     "blockers": [],
-    "nextAction": "(Independent OQ branches.) S2-alt: pascalLine definition + well-definedness via Quotient.lift (uses S3d's now-sorry-free card_hexagon_labelings = 60); ~100 lines. OQ-03-OQ-03 S1 SCAFFOLD: explicit 20-element Finset of Steiner triples as Finset (Finset HexagonLabeling); ~150 lines + concurrence-for-one-rep deferred to S2. OQ-03-OQ-04 S1 SCAFFOLD: analogous 60-element Kirkman triples. All three branches now have the cardinality scaffolding available sorry-free. Parent drift fix remains a separate mechanic concern not blocking S3d-style work but blocking end-to-end build.",
+    "nextAction": "S4c-A ACT (LOW–MEDIUM risk, ~55 LOC): ship the two helper lemmas only — `setOf_pointOnLine_lineThrough_comm` (Set ProjPoint symmetry of lineThrough under p↔q swap; from crossProduct anti-commutativity) and `setOf_pointOnLine_of_collinear` (Set ProjPoint equality for lineThrough(p,q) vs lineThrough(q,r) when collinear; uses pointOnLine scalar-multiple invariance). No sorry closed; pure infrastructure. Then S4d ACT picks up rawPascalLine_well_def via Subgroup.closure_induction on hexagonalGroup with generator cases hexRot (3-cycle via setOf_pointOnLine_of_collinear + pascal_hexagon_theorem) and hexRev (swap via setOf_pointOnLine_lineThrough_comm), then pascalLine via Quotient.liftOn, then Setoid bridging (~80 LOC, closes the pascalLine sorry on PascalsHexagonOQ03.lean:633). Parent PascalsHexagon.lean break remains a separate mechanic concern not blocking S4c-A/S4d-style work but blocking end-to-end build. Independent OQ branches (OQ-03-OQ-03 Steiner count, OQ-03-OQ-04 Kirkman count) remain available — see S3d nextAction.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 1,
@@ -122,7 +122,7 @@
     "Wiedijk, '100 theorems' #28 — Pascal's Hexagon Theorem."
   ],
   "started": "2026-05-12T07:50:00Z",
-  "lastUpdate": "2026-05-12T15:35:00Z",
+  "lastUpdate": "2026-06-05T00:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
