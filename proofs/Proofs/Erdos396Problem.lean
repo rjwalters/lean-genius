@@ -17,62 +17,86 @@ Known results:
 Reference: https://erdosproblems.com/396
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Nat.Choose.Central
-import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Tactic
+import Mathlib
 
 open Nat
 
+namespace Erdos396
+
 /- ## Core Definitions -/
 
-/-- The descending factorial: n(n−1)(n−2)⋯(n−k+1) = n! / (n−k)! -/
--- We use Nat.descFactorial from Mathlib
+/-- The descending product `n · (n−1) · (n−2) ⋯ (n−k)` of length `k+1`.
+    Equal to `Nat.descFactorial n (k+1)`; we re-expose it under a name
+    matching the problem statement for readability. -/
+def descProduct (n k : ℕ) : ℕ :=
+  n.descFactorial (k + 1)
 
-/-- The central binomial coefficient C(2n, n) -/
--- We use Nat.centralBinom from Mathlib
+/-- The descending product equals the standard descending factorial of length `k+1`. -/
+lemma descProduct_eq_descFactorial (n k : ℕ) :
+    descProduct n k = n.descFactorial (k + 1) := rfl
+
+/-- For `k = 0` the descending product collapses to `n` itself. -/
+lemma descProduct_zero (n : ℕ) : descProduct n 0 = n := by
+  simp [descProduct, Nat.descFactorial]
+
+/-- **Erdős Problem #396 (Erdős–Graham).**
+    For every `k`, there exists `n > k` such that
+    `n · (n−1) · (n−2) ⋯ (n−k)` divides the central binomial coefficient `C(2n, n)`.
+
+    The bound `k < n` rules out the vacuous case where the descending product
+    truncates to `0` and divides everything in `ℕ`. -/
+def Conjecture : Prop :=
+  ∀ k : ℕ, ∃ n : ℕ, k < n ∧ descProduct n k ∣ Nat.centralBinom n
 
 /- ## Basic Divisibility Results -/
 
-/-- n+1 always divides C(2n, n), giving the Catalan number C(2n,n)/(n+1).
+/-- `n+1` always divides `C(2n, n)`, yielding the Catalan number `C(2n,n)/(n+1)`.
     This is the fundamental property behind Catalan numbers. -/
 theorem catalan_divisibility (n : ℕ) :
-    (n + 1) ∣ centralBinom n :=
+    (n + 1) ∣ Nat.centralBinom n :=
   Nat.succ_dvd_centralBinom n
 
-/-- n divides C(2n, n) only for specific values of n. -/
-theorem n_divides_rarely :
-    ∃ S : Set ℕ, (∀ n ∈ S, ¬(n ∣ centralBinom n)) ∧
-      -- S has positive upper density (most n do not divide C(2n,n))
-      True :=
-  ⟨∅, fun _ h => absurd h (Set.not_mem_empty _), trivial⟩
+/-- `n` does **not** in general divide `C(2n, n)`. Concrete counterexample:
+    `3 ∤ C(6, 3) = 20`. This shows that the `k = 0` slice of the conjecture
+    is not a triviality — most `n` do not work. -/
+theorem n_not_always_dvd_centralBinom :
+    ∃ n : ℕ, ¬ (n ∣ Nat.centralBinom n) := by
+  refine ⟨3, ?_⟩
+  decide
 
-/- ## Pomerance's Results (2014) -/
+/- ## Witnesses for Small k -/
 
-/-- Pomerance: for any k ≥ 0, infinitely many n satisfy (n−k) | C(2n, n) -/
-/-- Pomerance: the set of n with (n−k) | C(2n, n) has upper density < 1/3.
-    The measure-theoretic statement requires density infrastructure;
-    the existential structure here is a placeholder. -/
-/-
-  Pomerance: the upper density of {n : (n−k) | C(2n,n)} is less than 1/3.
-  Measure-theoretic statement requires density infrastructure.
--/
+/-- For `k = 0`, the conjecture holds with `n = 2`:
+    `Nat.descFactorial 2 1 = 2` and `Nat.centralBinom 2 = C(4, 2) = 6`,
+    so the descending product divides the central binomial coefficient. -/
+theorem conjecture_holds_for_zero :
+    ∃ n : ℕ, 0 < n ∧ descProduct n 0 ∣ Nat.centralBinom n := by
+  refine ⟨2, by decide, ?_⟩
+  decide
 
-/-
-  Pomerance: the set {n : ∏_{i=1}^{k}(n+i) | C(2n,n)} has asymptotic density 1.
-  Measure-theoretic statement requires density infrastructure.
--/
+/-- For `k = 1`, the value `n = 2` is also a witness:
+    `2 · 1 = 2 ∣ 6 = C(4, 2)`. -/
+theorem conjecture_holds_for_one :
+    ∃ n : ℕ, 1 < n ∧ descProduct n 1 ∣ Nat.centralBinom n := by
+  refine ⟨2, by decide, ?_⟩
+  decide
 
-/- ## The Erdős–Graham Conjecture -/
+/- ## Pomerance's Results (2014)
 
-/-- Erdős Problem 396: For every k, there exists n such that
-    n · (n−1) · ⋯ · (n−k) divides C(2n, n) -/
+  Pomerance: for any `k ≥ 0`, infinitely many `n` satisfy `(n−k) | C(2n,n)`,
+  and the set of such `n` has upper density `< 1/3`.
+  Pomerance: the set `{n : ∏_{i=1}^{k}(n+i) | C(2n,n)}` has asymptotic density 1.
+  Measure-theoretic statements require density infrastructure not yet present here. -/
+
 /- ## Computational Evidence -/
 
-/-- Small cases: the smallest n for each k (OEIS A375077)
-    k=0: n=2 (since 2 | C(4,2) = 6)
-    k=1: n=3 (since 3·2 | C(6,3) = 20? No — 6 ∤ 20)
-    Actually k=1: need n(n-1) | C(2n,n), e.g. n=4: 4·3=12 | C(8,4)=70? No
-    These are non-trivial to find. -/
-axiom smallest_witness : ℕ → ℕ
-/-- The conjecture implies infinitely many witnesses for each k -/
+/-- The smallest `k = 0` witness `n = 2` checks out: `C(4, 2) = 6`. -/
+example : Nat.centralBinom 2 = 6 := by decide
+
+/-- `3 ∤ C(6, 3) = 20`, demonstrating that `n ∣ C(2n, n)` is not universal. -/
+example : ¬ (3 ∣ Nat.centralBinom 3) := by decide
+
+/-- The next `k = 0` witness after `n = 2` is `n = 6`: `6 ∣ C(12, 6) = 924`. -/
+example : 6 ∣ Nat.centralBinom 6 := by decide
+
+end Erdos396
