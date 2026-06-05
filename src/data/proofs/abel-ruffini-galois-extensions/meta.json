@@ -920,6 +920,12 @@
         "short exact sequence",
         "derived series",
         "Galois solvability criterion"
+      ],
+      "prerequisites": [
+        "Lean 4 module/import syntax",
+        "Mathlib group theory namespaces",
+        "Mathlib field theory hierarchy",
+        "basic familiarity with symmetric and alternating groups"
       ]
     },
     {
@@ -937,6 +943,14 @@
         "derived series",
         "alternatingGroup",
         "normal subgroup"
+      ],
+      "prerequisites": [
+        "symmetric group $S_n = \\mathrm{Perm}(\\mathrm{Fin}\\,n)$",
+        "alternating group $A_n$ as kernel of the sign homomorphism",
+        "short exact sequences of groups",
+        "subsingleton/`Unique` typeclass arguments",
+        "Klein four-group $V_4$ as normal subgroup of $A_4$",
+        "`isSolvable_of_comm` and `solvable_of_ker_le_range` (Mathlib)"
       ]
     },
     {
@@ -952,6 +966,13 @@
         "solvability threshold",
         "Cardinal.mk",
         "biconditional"
+      ],
+      "prerequisites": [
+        "biconditional ($\\iff$) proof structure",
+        "derived series of a group",
+        "`Equiv.Perm.not_solvable` for $n \\ge 5$ (Mathlib)",
+        "`omega` tactic for arithmetic on $\\mathbb{N}$",
+        "case split on $n \\le 4$ vs $5 \\le n$"
       ]
     },
     {
@@ -968,6 +989,14 @@
         "IsSolvableByRad",
         "IsGalois.card_aut_eq_finrank",
         "composition factor"
+      ],
+      "prerequisites": [
+        "simple groups and composition series",
+        "`alternatingGroup.isSimpleGroup_five` (Mathlib)",
+        "fundamental theorem of Galois theory",
+        "`IsGalois.card_aut_eq_finrank`",
+        "contrapositive of `solvableByRad.isSolvable'`",
+        "order of $A_5 = 60$"
       ]
     },
     {
@@ -982,6 +1011,12 @@
         "hereditary property",
         "subgroup",
         "typeclass inference"
+      ],
+      "prerequisites": [
+        "subgroup inclusion as a group homomorphism",
+        "`Subgroup.subtype` and `solvable_of_surjective`",
+        "derived subgroup commutes with restriction",
+        "hereditary properties of group classes"
       ]
     },
     {
@@ -997,6 +1032,13 @@
         "proof by contradiction",
         "sign homomorphism",
         "biconditional"
+      ],
+      "prerequisites": [
+        "sign exact sequence $1 \\to A_n \\to S_n \\to \\{\\pm 1\\} \\to 1$",
+        "`solvable_of_ker_le_range` as a closure principle",
+        "proof by contradiction in Lean (`fun h => ...`)",
+        "`symmetric_not_solvable_of_five_le` from Part II",
+        "subgroup solvability (Part VI)"
       ]
     },
     {
@@ -1013,6 +1055,13 @@
         "factorial",
         "index of a subgroup",
         "proof by reflection"
+      ],
+      "prerequisites": [
+        "`Fintype.card` and decidable equality",
+        "factorial recursion $n! = n \\cdot (n-1)!$",
+        "index of a subgroup and Lagrange's theorem",
+        "`Nat.factorial` API in Mathlib",
+        "`native_decide` for elaboration-time computation"
       ]
     },
     {
@@ -1029,6 +1078,13 @@
         "closed class of groups",
         "Galois correspondence",
         "derived series"
+      ],
+      "prerequisites": [
+        "quotient group $G/N$ for normal $N$",
+        "image of derived series under homomorphisms",
+        "`solvable_of_surjective` (Mathlib)",
+        "group isomorphism `MulEquiv`",
+        "closure under subgroup/quotient/isomorphism"
       ]
     },
     {
@@ -1043,6 +1099,12 @@
         "named corollary",
         "A5 obstruction",
         "le_rfl"
+      ],
+      "prerequisites": [
+        "`Subgroup.index` and $[G : H]$ notation",
+        "sign homomorphism as surjection onto $\\{\\pm 1\\}$",
+        "kernel/image decomposition",
+        "`Subgroup.index_eq_two_iff` patterns"
       ]
     },
     {
@@ -1058,6 +1120,12 @@
         "subgroup obstruction",
         "subgroup heredity",
         "non-solvable group"
+      ],
+      "prerequisites": [
+        "general thresholds `symmetric_not_solvable_of_five_le`, `alternating_not_solvable_of_five_le`",
+        "`omega` for numeric bounds $5 \\le n$",
+        "contrapositive of subgroup solvability",
+        "`inferInstance` to invoke typeclass resolution"
       ]
     },
     {
@@ -1074,6 +1142,12 @@
         "Equiv.Perm.mem_alternatingGroup",
         "composition series",
         "abelian factors"
+      ],
+      "prerequisites": [
+        "sign homomorphism $\\mathrm{sgn} : S_n \\to \\{\\pm 1\\}$",
+        "kernel = alternating group identity",
+        "`MonoidHom.ker` and `Subgroup.ext`",
+        "derived series chain $G \\supseteq G' \\supseteq G'' \\supseteq \\dots$"
       ]
     },
     {
@@ -1089,6 +1163,12 @@
         "non-abelian group",
         "solvability vs commutativity",
         "A5 minimal simple group"
+      ],
+      "prerequisites": [
+        "`push_neg` tactic for negating universal quantifiers",
+        "`decide` vs `native_decide` for finite verification",
+        "commutator $[a,b] = aba^{-1}b^{-1}$",
+        "transition from abelian ($n \\le 2$) to non-abelian ($n \\ge 3$) in $S_n$"
       ]
     },
     {
@@ -1105,6 +1185,12 @@
         "GL_4(F_2)",
         "finite simple groups",
         "classification of finite simple groups"
+      ],
+      "prerequisites": [
+        "`native_decide` (kernel-evaluated decidability)",
+        "`Fintype.card (Equiv.Perm (Fin n))` evaluation",
+        "group orders $|S_7|=5040$, $|S_8|=40320$, $|A_7|=2520$, $|A_8|=20160$",
+        "index-2 relation $|A_n| = |S_n|/2$"
       ]
     },
     {
@@ -1121,6 +1207,12 @@
         "index of a subgroup",
         "simp lemma",
         "sign homomorphism"
+      ],
+      "prerequisites": [
+        "`Nat.factorial` definition",
+        "Lagrange's theorem $|G| = |H|\\cdot[G:H]$",
+        "fintype cardinality bridge to `Nat.factorial`",
+        "use as `simp` lemmas in downstream proofs"
       ]
     },
     {
@@ -1136,6 +1228,11 @@
         "Galois solvability criterion",
         "namespace",
         "theorem inventory"
+      ],
+      "prerequisites": [
+        "overview of all 57 theorems and 12 instances",
+        "`#check` for inventory verification",
+        "role of this file as the structural complement to `AbelRuffini.lean`"
       ]
     }
   ],
