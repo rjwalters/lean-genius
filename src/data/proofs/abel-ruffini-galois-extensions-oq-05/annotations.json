@@ -8,8 +8,37 @@
     "content": "This module formalizes the converse direction of the Abel-Ruffini framework. The parent file `AbelRuffiniGaloisExtensions.lean` shows that solvability by radicals *requires* the Galois group to be solvable (Abel-Ruffini's theorem). Shafarevich's theorem (1954) proves the converse: every finite solvable group actually *arises* as a Galois group over ℚ.\n\nTogether, these give a sharp characterization: a finite group G is the Galois group of a radical extension over ℚ if and only if G is solvable. The theorem is axiomatized because its proof requires class field theory, cohomological embedding problem theory, and Brauer groups — deep tools not yet in Mathlib.\n\nThe 7 corollaries (cyclic, abelian, S₃, S₄, subgroups, quotients, S₅ obstruction) are all *proved* from the axiom using Mathlib's existing group theory infrastructure.",
     "mathContext": "Shafarevich (1954): $\\forall G$ finite solvable, $\\exists L/\\mathbb{Q}$ Galois with $\\mathrm{Gal}(L/\\mathbb{Q}) \\cong G$.\n\nWith Abel-Ruffini: $G$ is a radical Galois group over $\\mathbb{Q}$ $\\iff$ $G$ is solvable.\n\nThe proof uses the derived series $G = G^{(0)} \\supset G^{(1)} \\supset \\cdots \\supset G^{(k)} = 1$, building the extension inductively using class field theory for each abelian quotient $G^{(i)}/G^{(i+1)}$.",
     "significance": "key",
-    "relatedConcepts": ["Galois theory", "solvable groups", "inverse Galois problem", "Abel-Ruffini theorem"],
-    "prerequisites": ["Galois extensions", "solvable groups", "AbelRuffiniGaloisExtensions.lean"]
+    "relatedConcepts": [
+      "Galois theory",
+      "solvable groups",
+      "inverse Galois problem",
+      "Abel-Ruffini theorem",
+      "Class field theory (Artin reciprocity, idele class group)",
+      "Galois cohomology and the embedding problem",
+      "Brauer group $\\mathrm{Br}(\\mathbb{Q})$ and central simple algebras",
+      "Shafarevich's 1954 theorem (every finite solvable group is realized over $\\mathbb{Q}$)",
+      "Schreier extension theory: $H^2(Q, N)$ classifies group extensions by abelian kernels",
+      "Derived series $G \\trianglerighteq G^{(1)} \\trianglerighteq \\cdots \\trianglerighteq 1$ as inductive scaffolding",
+      "Cyclotomic extensions $\\mathbb{Q}(\\zeta_n)$ with Galois group $(\\mathbb{Z}/n)^\\times$ (abelian)",
+      "Kronecker-Weber theorem: every abelian extension of $\\mathbb{Q}$ lies in a cyclotomic field",
+      "Hilbert's irreducibility theorem (used in some Inverse-Galois constructions)",
+      "Burnside's $p^a q^b$ theorem (every group of order $p^a q^b$ is solvable, hence Shafarevich-realizable)",
+      "Feit-Thompson theorem (every group of odd order is solvable, hence Shafarevich-realizable)",
+      "Generic-polynomial methods (Noether's problem for the inverse Galois problem)"
+    ],
+    "prerequisites": [
+      "Galois extensions",
+      "solvable groups",
+      "AbelRuffiniGaloisExtensions.lean",
+      "Mathlib's `IsGalois F E` typeclass and `Polynomial.Gal` Galois group",
+      "Solvable group structure: derived series and composition series with abelian factors",
+      "Splitting field of a polynomial and its Galois group",
+      "Group extensions: short exact sequences $1 \\to N \\to G \\to Q \\to 1$ and the embedding-problem framing",
+      "Familiarity with class field theory at the statement level (Artin reciprocity, idele class group)",
+      "Galois cohomology $H^1, H^2$ at the statement level (the obstruction class for solvable embedding problems)",
+      "Brauer group $\\mathrm{Br}(F)$ as the home of the embedding-problem obstruction in the abelian-kernel case",
+      "Inverse Galois problem: open for general finite groups; resolved for solvable groups (Shafarevich)"
+    ]
   },
   {
     "id": "ann-axiom",
@@ -74,8 +103,34 @@
     "content": "The S₃ and S₄ corollaries both use `symmetric_solvable_of_le_four` from the parent file, which proves `Equiv.Perm (Fin n)` is solvable when `n ≤ 4`. The proofs are essentially identical: invoke the parent lemma with `norm_num`, then apply Shafarevich.\n\nThese cases are historically important:\n- S₃ ≅ Gal(x³ + px + q over ℚ) for discriminant-related cubics\n- S₄ ≅ Gal(x⁴ + px² + qx + r over ℚ) for generic quartics\n\nThe sharp threshold at n=4 vs n=5 is precisely the Abel-Ruffini boundary: S₅ is the first symmetric group that is NOT solvable, so Shafarevich's theorem does not apply to it (though S₅ IS realizable over ℚ by other means — e.g., as Gal(x⁵ - 2x - 5)).",
     "mathContext": "$S_n = \\text{Sym}(n)$ is solvable $\\iff n \\leq 4$.\n\n$S_3$ has derived series $S_3 \\supset A_3 \\cong \\mathbb{Z}/3\\mathbb{Z} \\supset 1$.\n$S_4$ has derived series $S_4 \\supset A_4 \\supset V_4 \\supset 1$, where $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$.",
     "significance": "key",
-    "relatedConcepts": ["symmetric group", "symmetric_solvable_of_le_four", "Equiv.Perm", "derived series"],
-    "prerequisites": ["AbelRuffiniGaloisExtensions.lean", "Equiv.Perm Fin n", "IsSolvable"]
+    "relatedConcepts": [
+      "symmetric group",
+      "symmetric_solvable_of_le_four",
+      "Equiv.Perm",
+      "derived series",
+      "Klein four-group $V_4 \\trianglelefteq A_4$ as the abelian normal subgroup unlocking $S_4$'s solvability",
+      "Short exact sequence $1 \\to A_n \\to S_n \\to \\mathbb{Z}^\\times \\to 1$ (sign-homomorphism kernel-cokernel)",
+      "Cardano's formula (1545) — the $S_3$ instance: generic cubic Galois group",
+      "Ferrari's formula (1545) — the $S_4$ instance: resolvent cubic reduction",
+      "Discriminant determining $\\mathrm{Gal} \\subseteq A_n$ vs $S_n$ (square discriminant ↔ $\\mathrm{Gal} \\subseteq A_n$)",
+      "Casus irreducibilis: three real cubic roots force a complex radical expression even when $\\mathrm{Gal} = S_3$",
+      "abel-ruffini-galois-extensions (parent file proving $S_n$ solvability classification)",
+      "abel-ruffini-oq-04-oq-02 (sister file with `inferInstance` IsSolvable typeclass instances for $S_2, S_3, S_4$)",
+      "solution-of-cubic (positive radical-formula counterpart for $S_3$)",
+      "general-quartic (positive radical-formula counterpart for $S_4$)",
+      "inverse-galois-a5 / inverse-galois-oq-06 (the $S_5$/$A_5$ realization addressing the gap left by Shafarevich)"
+    ],
+    "prerequisites": [
+      "AbelRuffiniGaloisExtensions.lean",
+      "Equiv.Perm Fin n",
+      "IsSolvable",
+      "Symmetric group $S_n$ structure for $n = 3, 4$ (orders 6 and 24, conjugacy classes)",
+      "Alternating subgroup $A_n \\leq S_n$ as kernel of the sign homomorphism",
+      "Klein four-group $V_4 \\trianglelefteq A_4$ and its role as abelian normal subgroup",
+      "Galois group of an irreducible cubic / quartic over $\\mathbb{Q}$ as transitive subgroup of $S_3$ / $S_4$",
+      "Discriminant of a polynomial and its role in distinguishing $\\mathrm{Gal} \\subseteq A_n$ from $\\mathrm{Gal} = S_n$",
+      "Generic-polynomial perspective: $\\mathrm{Gal}(\\text{generic } n\\text{-th-degree poly}/\\mathbb{Q}(t_1, \\ldots, t_n)) = S_n$"
+    ]
   },
   {
     "id": "ann-solvable-iff-realizable",
