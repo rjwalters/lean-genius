@@ -2,9 +2,30 @@
 
 ## Current phase
 
-**S3d ACT — OQ-03-OQ-01 PROVED** — `card_hexagonalGroup = 12` is now a theorem (sorry-free), discharged via an injective monoid homomorphism `dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6)` whose range equals `hexagonalGroup`. `card_hexagon_labelings = 60` is also closed via Lagrange. Sorry delta: 5 → 3 (remaining sorries are OQ-03-OQ-02 `pascalLine`, OQ-03-OQ-03 `steiner_count_eq_20`, OQ-03-OQ-04 `kirkman_count_eq_60`).
+**S4b ACT — OQ-03-OQ-02 toolkit shipped** — `permuteHexagon` + the three vertex helpers (`hexVertex`, `hexVertex_onConic`, `hexVertex_valid`) are now sorry-free `def`s in a new PART 4b of `proofs/Proofs/PascalsHexagonOQ03.lean`. This implements the concrete signature designed in S4a PREP (PR #18461) and unblocks the `pascalLine` `Quotient.liftOn` route: with `permuteHexagon hex π : InscribedHexagon C` in hand, the next ACT step is `pascalLine lbl := Quotient.liftOn lbl (fun π => lineThrough (pascalP (permuteHexagon hex π)) (pascalQ (permuteHexagon hex π))) <well-definedness>`. Sorry count unchanged at 3 (this iteration adds infrastructure, does not yet close the `pascalLine` sorry — the well-definedness proof is the remaining content of OQ-03-OQ-02).
 
 ## Latest iteration
+
+**Iteration 7** (2026-06-04, researcher-3)
+
+**Outcome**: S4b ACT — first concrete OQ-03-OQ-02 step. Added new PART 4b (~60 LOC, 4 sorry-free defs) to `proofs/Proofs/PascalsHexagonOQ03.lean`:
+
+| Decl | Statement | Construction |
+|---|---|---|
+| `hexVertex` | `{C : Conic} (hex : InscribedHexagon C) : Fin 6 → ProjPoint` | Dependent pattern match on `⟨k, _⟩` for `k ∈ {0,…,5}` mapping to `hex.A, hex.B, hex.C', hex.D, hex.E, hex.F` (matches the `Erdos1007OQ01OQ01.knownMinEdges` idiom — verified Fin-6 dependent-match style). |
+| `hexVertex_onConic` | `∀ i, pointOnConic (hexVertex hex i) C` | Dependent pattern match returning the six structure fields `hex.hA, …, hex.hF` (note: parent uses `hC` not `hC'` per `PascalsHexagon.lean:148–153` asymmetry). |
+| `hexVertex_valid` | `∀ i, ProjPoint.valid (hexVertex hex i)` | Dependent pattern match returning `hex.hAvalid, …, hex.hFvalid`. |
+| `permuteHexagon` | `(hex) (π : Equiv.Perm (Fin 6)) : InscribedHexagon C` | Structure literal: each of the 18 fields (6 vertices + 6 conic-membership + 6 validity proofs) is filled via `hexVertex* hex (π k)` for `k = 0,…,5`. |
+
+**Rationale for shipping S4b ACT now**: four prior S4 PREP PRs (#18338 survey, #18461 mathlib-audit + permuteHexagon concrete signature, #18559 audit close-out + Fin-6 dependent-match verification, #18690 Projectivization audit) have left the design fully spec'd. The S4a PREP audit findings B + C + D explicitly handed off this exact code block as "the minimal Lean snippet that I propose as the first ACT step for OQ-02 (S4b ACT). Approximately 30 lines, sorry-free, no new Mathlib imports beyond what `PascalsHexagonOQ03.lean` already pulls in." This iteration takes that hand-off. The design is conservative (`⟨k, _⟩` pattern over numeric literals, robustness to dependent-match elaboration) and matches existing codebase idioms.
+
+**Sorry delta**: unchanged at 3 (no sorry closed — this is infrastructure for the next ACT).
+
+**Build status**: pending. Parent `Proofs/PascalsHexagon.lean` remains broken on origin/main (40 Mathlib drift errors per memory `feedback_pascals_hexagon_parent_break.md`); recent build attempts hit the 32GB Docker memory limit (cf. `researcher-11-pascals-s3d-build.log` tail). S1/S2/S3*/S3d all merged "(build pending)"; this PR follows the same precedent. No new Mathlib dependencies — only `Equiv.Perm (Fin 6)` application syntax (already used elsewhere in the file at `dihedralHomToSym6`).
+
+**Meta sync**: `meta.lineCount` 657 → 718; `meta.definitionCount` 8 → 12 (+4 for `hexVertex`, `hexVertex_onConic`, `hexVertex_valid`, `permuteHexagon`); same updates to `leanFile`. Added `originalContributions` entry for S4b ACT. Updated `assumptions` with the toolkit announcement.
+
+**Honest scope note**: S4b ACT does NOT close any sorries. It builds the infrastructure that OQ-03-OQ-02's `pascalLine` `Quotient.liftOn` route depends on. The next ACT step (S4c) is to (i) define `pascalLine := Quotient.liftOn lbl (rawPascalLine) <wd>`, where `rawPascalLine π := lineThrough (pascalP (permuteHexagon hex π)) (pascalQ (permuteHexagon hex π))`, and (ii) prove the well-definedness `wd : ∀ π₁ π₂, π₁ * π₂⁻¹ ∈ hexagonalGroup → rawPascalLine π₁ = rawPascalLine π₂` via `Subgroup.closure_induction` on the two generators `hexRot` and `hexRev` (sign analysis per S4a finding D: `(−1, −1, +1)` scalars for `hexRev`; 3-cycle for `hexRot` per finding C). Estimated S4c size: ~80–120 LOC, −1 sorry (closes `pascalLine`).
 
 **Iteration 6** (2026-05-12, researcher-11)
 
