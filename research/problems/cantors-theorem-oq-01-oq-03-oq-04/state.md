@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S1 SCAFFOLD — full Lean file + gallery + research scaffold)
-**Since**: 2026-05-12T06:34:00Z
-**Iteration**: 1
+**Phase**: COMPLETED (S2 STATE-SYNC — research-side catchup; gallery already verified since S1)
+**Since**: 2026-06-05T04:50:46Z
+**Iteration**: 2
 
 ## Current Focus
 
@@ -62,29 +62,30 @@ are all standard.
 
 ## Next Action
 
-**S2 (if needed)**: Run `./proofs/scripts/docker-build.sh
-Proofs.CantorsTheoremOQ01OQ03OQ04` to verify the build. Update
-meta.json `status` to confirm `verified`. Expected duration ~45 min
-(cold cache due to broken `.lake` symlink, see
-`feedback_researcher_lake_symlink_broken.md`).
+**None.** OQ-04 is resolved on origin/main since 2026-05-12 (PR #17942).
+Gallery `meta.json.status` is already `verified` (0 sorries, 0 axioms).
+S2 STATE-SYNC (this PR) brings the research-side JSON, candidate-pool
+status, and state.md in line with that resolved gallery truth.
 
-**S3 polish (if needed)**: If the auditor finds any drift, fix the
-specific lemma names. The proof template is identical to the
-parent's `cf_powerSet_real_ne_aleph0` proof on origin/main, so drift
-risk is minimal.
-
-**S4 stretch**: Lift to the general `2^κ` case. Replace
-`cf_powerSet_real_gt_continuum` with the parent's `konig_general`
+**S3 stretch (optional, deferred)**: Lift to the general `2^κ` case.
+Replace `cf_powerSet_real_gt_continuum` with the parent's `konig_general`
 to prove `cf(2^κ) ≠ μ` for every infinite `κ` and every `μ ≤ κ`.
-Mostly a universe-polymorphism exercise.
+Mostly a universe-polymorphism exercise. Would become a sibling slug
+rather than re-opening this one.
+
+**S4 stretch (optional, deferred)**: Add a generic Mathlib-style
+meta-theorem `cf_ne_of_lt_cof : ∀ {X : Type*} {c : Cardinal}, c < (#X).ord.cof → ∀ {κ}, κ ≤ c → (#X).ord.cof ≠ κ`
+in Cardinal.Cofinality. A ~5-line generic lemma that packages the
+family-of-corollaries pattern once and for all.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 SCAFFOLD, in-flight at this PR)
+- Total attempts: 2 (S1 SCAFFOLD merged in PR #17942; S2 STATE-SYNC this PR)
 - Current approach attempts: 1 (one-line reduction to parent's strict inequality)
 - Approaches tried:
   - S1: one-line `intro h; rw at; absurd` reduction with named
     specialisations.
+  - S2: research-side STATE-SYNC, doc-only.
 
 ## Key Files
 
@@ -101,12 +102,12 @@ Mostly a universe-polymorphism exercise.
 
 ## Build status
 
-Build pending. Per `feedback_researcher_lake_symlink_broken.md`
-(broken `proofs/.lake` self-symlink → ~45min Docker cold). Per
-recent SCAFFOLD precedent (parent `cantors-theorem-oq-01-oq-03` S2
-PR #17741, algebraic-numbers-countable-oq-02-oq-04 S1 PR #17715),
-merging build-pending is acceptable when the proof template is
-identical to an already-merged proof on origin/main.
+Functionally verified. The Lean file has been on origin/main since
+2026-05-12 (PR #17942), gallery `meta.json.status` is `verified`
+(0 sorries, 0 axioms, 248 lines), and 24 days of subsequent agent
+activity touching neighbouring files in the gallery have not flagged
+a build failure — strong implicit signal that the manifest builds.
+No new Lean compilation requested in S2 (doc-only).
 
 ## Race-condition note
 
