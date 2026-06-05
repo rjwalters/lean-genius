@@ -2,9 +2,119 @@
 
 ## Current phase
 
-**S4b ACT — OQ-03-OQ-02 toolkit shipped** — `permuteHexagon` + the three vertex helpers (`hexVertex`, `hexVertex_onConic`, `hexVertex_valid`) are now sorry-free `def`s in a new PART 4b of `proofs/Proofs/PascalsHexagonOQ03.lean`. This implements the concrete signature designed in S4a PREP (PR #18461) and unblocks the `pascalLine` `Quotient.liftOn` route: with `permuteHexagon hex π : InscribedHexagon C` in hand, the next ACT step is `pascalLine lbl := Quotient.liftOn lbl (fun π => lineThrough (pascalP (permuteHexagon hex π)) (pascalQ (permuteHexagon hex π))) <well-definedness>`. Sorry count unchanged at 3 (this iteration adds infrastructure, does not yet close the `pascalLine` sorry — the well-definedness proof is the remaining content of OQ-03-OQ-02).
+**S4c PREP — `pascalLine` well-definedness recipe + ProjLine scalar obstacle** — Identified a load-bearing design obstacle in the existing `ProjLine := Fin 3 → ℝ` literal-type setup: the S4b ACT hand-off `pascalLine lbl := Quotient.liftOn lbl (fun π => lineThrough (pascalP (permuteHexagon hex π)) (pascalQ (permuteHexagon hex π))) <well-definedness>` **cannot work** as stated because the well-definedness obligation requires literal `Fin 3 → ℝ` equality while the geometric content gives only scalar equality (S4a finding D's (−1, −1, +1) scalars for `hexRev`). Proposed two concrete resolutions with LOC + risk estimates. **Resolution A (recommended)**: change `pascalLine`'s codomain from `ProjLine` to `Set ProjPoint` (line as a set of incident points; scalar-invariant by construction). Estimated S4c ACT LOC: **~145–165** (up from S4b ACT's ~80–120 estimate; new helper lemmas needed: `setOf_pointOnLine_lineThrough_comm` + `setOf_pointOnLine_of_collinear`). Recommended two-step staging: **S4c-A ACT** ships just the two helper lemmas (~55 LOC, LOW–MEDIUM risk, no sorry closed), then **S4d ACT** picks up `rawPascalLine_well_def` + `pascalLine` def + Setoid bridging (~80 LOC, closes 1 sorry on `pascalLine`). Sorry count unchanged at 3 (this PREP is doc-only).
 
 ## Latest iteration
+
+**Iteration 8** (2026-06-05, researcher-1)
+
+**Outcome**: S4c PREP — well-definedness recipe + ProjLine scalar obstacle identified. Doc-only deliverable. See `sessions/2026-06-05-s4c-prep-pascalline-well-definedness-recipe.md`.
+
+### Key finding
+
+The S4b ACT (Iteration 7) state.md handed off:
+
+```
+pascalLine lbl := Quotient.liftOn lbl
+  (fun π => lineThrough (pascalP (permuteHexagon hex π))
+                        (pascalQ (permuteHexagon hex π)))
+  <well-definedness>
+```
+
+The well-definedness clause `<well-definedness>` requires:
+
+```
+∀ π₁ π₂, π₁⁻¹ * π₂ ∈ hexagonalGroup →
+  lineThrough (pascalP (permuteHexagon hex π₁)) (pascalQ (permuteHexagon hex π₁))
+    = lineThrough (pascalP (permuteHexagon hex π₂)) (pascalQ (permuteHexagon hex π₂))
+```
+
+with **literal `Fin 3 → ℝ` equality** (since `abbrev ProjLine := Fin 3 → ℝ`).
+But:
+
+- **hexRev**: S4a finding D gives `(−1, −1, +1)` scalars; resulting representative
+  is `−` original in 2 components and `+` original in 1 component — NOT literally
+  equal.
+- **hexRot**: 3-cycle on `(pascalP, pascalQ, pascalR)` gives `lineThrough (new P)
+  (new Q) = lineThrough (old Q) (old R)`. By `pascal_hexagon_theorem`
+  (`PascalsHexagon.lean:224`), `(old P, old Q, old R)` are collinear, so the
+  point-sets agree — but `crossProduct p q` vs `crossProduct q r` are NOT
+  literally equal as `Fin 3 → ℝ` (different scalars).
+
+### Resolution A (recommended)
+
+Change `pascalLine`'s codomain:
+
+```
+noncomputable def pascalLine
+    {C : Conic} (hex : InscribedHexagon C) (lbl : HexagonLabeling) :
+    Set ProjPoint :=                                   -- ← was ProjLine
+  Quotient.liftOn lbl
+    (fun π => {p : ProjPoint | pointOnLine p
+                  (lineThrough (pascalP (permuteHexagon hex π))
+                               (pascalQ (permuteHexagon hex π)))})
+    (rawPascalLine_well_def hex)
+```
+
+The `Set ProjPoint` representation collapses scalar ambiguity automatically
+because `pointOnLine p (k • l) ↔ pointOnLine p l` for `k ≠ 0`.
+
+### Resolution B (rejected for S4c)
+
+Refactor `ProjLine` to a quotient type. Mathematically correct but a 300+ LOC
+refactor touching the broken parent file. Out of scope for any single S4c
+iteration.
+
+### LOC budget under Resolution A
+
+| Block | LOC | Risk |
+|---|---|---|
+| `setOf_pointOnLine_lineThrough_comm` | ~15 | LOW |
+| `setOf_pointOnLine_of_collinear` | ~40 | MEDIUM |
+| `rawPascalLine_well_def` (`Subgroup.closure_induction`) | ~60 | MEDIUM |
+| `pascalLine` (`Quotient.liftOn`, closes sorry) | ~10 | LOW |
+| `rawPascalLine_well_def_setoid` (Setoid bridging) | ~10 | LOW |
+| Downstream `SteinerPoint.on_lines`, `KirkmanPoint.*` compat | ~10–20 | LOW |
+| **Total** | **~145–165** | MEDIUM |
+
+### Why staging into S4c-A + S4d
+
+`setOf_pointOnLine_lineThrough_comm` + `setOf_pointOnLine_of_collinear`
+are independently shippable (~55 LOC, LOW–MEDIUM risk, no sorry closed).
+Letting them land first reduces the S4d ACT's risk to the
+`Subgroup.closure_induction` body alone.
+
+### Build status
+
+**Pending — parent `Proofs/PascalsHexagon.lean` is broken on `origin/main`**
+(40 Mathlib drift errors per memory `feedback_pascals_hexagon_parent_break.md`,
+S1–S4b precedent). Doc-only PR; no build risk.
+
+### Sorry / axiom delta
+
+- **0 sorries added/removed**: this is doc-only. File still has 3 sorries
+  (`pascalLine` at `PascalsHexagonOQ03.lean:633`, `steiner_count_eq_20`,
+  `kirkman_count_eq_60` or similar).
+- **0 axioms added/removed**.
+
+### Honesty
+
+- The (−1, −1, +1) scalar finding is **inherited from S4a finding D** (not
+  independently re-verified in this PREP).
+- The §4 paste-ready Lean blocks **contain `sorry` placeholders for the
+  proof bodies** of the two helper lemmas — they are skeletons, not
+  finished proofs. A subsequent S4c-A ACT would discharge them.
+- This PREP **does not advance the sorry count**. Its value is identifying
+  the ProjLine scalar obstacle before S4d ACT spends days on a path that
+  cannot close at the existing `ProjLine` type. If S4c-A ACT does not ship
+  within ~3 iterations, this memo's value decays.
+
+### Mathlib pin
+
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since at least
+2026-05-12. Toolchain `leanprover/lean4:v4.26.0` unchanged.
+
+## Previous iteration
 
 **Iteration 7** (2026-06-04, researcher-3)
 
