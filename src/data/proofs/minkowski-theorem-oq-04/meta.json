@@ -22,8 +22,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 987,
-    "theoremCount": 16,
+    "lineCount": 1126,
+    "theoremCount": 17,
     "definitionCount": 0,
     "assumptions": "All four originally-stated axioms have been eliminated in the source file (`MinkowskiTheoremOQ04.lean`). The `axiomCount` fields are synced to 0 (PR #17402, 2026-05-08). Docker build verified clean (3075 jobs, PR #19113, 2026-05-14); status promoted from `axiomatized` to `verified` and badge from `axiom` to `original`. History: (1) `blichfeldt_proj_measurable` (translation continuity \u2192 preimage measurability) and `blichfeldt_disj_bound` (sigma-additivity vs vol(F) = 1) were promoted to proved theorems in earlier sessions; (2) `blichfeldt_volume_partition` was eliminated by rewriting `blichfeldt_basic` as a direct call to `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` (Mathlib's pigeonhole on a fundamental domain); (3) `blichfeldt_general` (the k\u22651 covering-count averaging form) was promoted from axiom to fully-proved theorem in S13 (PR #17298) and S14 (PR #17329) via the Path A contrapose route \u2014 Move A: reuse `volume_eq_setLIntegral_indicator_tsum` (S9, PR #16995, the analytic core \u222b\u207b x in F, \u03a3' g, 1_s((g:\u211d\u207f)+x) dx = vol(s) from `IsAddFundamentalDomain.lintegral_eq_tsum''` + Tonelli); Move B: pointwise c(z) \u2264 k from contraposed hypothesis via `tsum_subtype` + `ENNReal.tsum_set_one` (rewriting tsum-of-indicators as `T(z).encard`), then `Set.toFinset_card` + `Fintype.equivFinOfCardEq` to extract `Fin (k+1) \u2192 L` from the encard bound; Move C: integrate the pointwise bound via `setLIntegral_mono_ae` + `setLIntegral_const` + `stdLattice_covolume = 1` to derive `volume s \u2264 k`, contradicting `k < volume s`. The two former sorries in `minkowski_from_blichfeldt` are closed: T = (1/2)\u00b7s is shown measurable by rewriting as the preimage of s under the doubling map, and the volume identity vol(T) = vol(s)/2\u207f is proved via `Measure.addHaar_smul` plus ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`.",
     "dateAdded": "2026-05-07",
@@ -194,8 +194,8 @@
     "namespace": "BlichfeldtTheorem",
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 987,
-    "theoremCount": 16,
+    "lineCount": 1126,
+    "theoremCount": 17,
     "definitionCount": 0,
     "mainTheorems": [
       {
