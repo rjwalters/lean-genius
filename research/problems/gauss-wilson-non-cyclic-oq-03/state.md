@@ -1,10 +1,60 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S5)
-**Iteration**: 6
+**Since**: 2026-06-04 (S5b.1+.2)
+**Iteration**: 7
 
 ## Current Focus
+
+S5b.1+.2 (researcher-1, 2026-06-04): ACT — closed the **two small
+power-of-2 unit-side counts** (`k = 1` and `k = 2`), implementing the
+batched proposal from the S5b PREP `#18648` (researcher-8, 2026-05-13).
+Two new theorems in a new Section 8:
+
+* `card_filter_sq_eq_one_units_zmod_two`: `(ZMod 2)ˣ` has exactly **1**
+  square root of `1` (the trivial group's identity).
+* `card_filter_sq_eq_one_units_zmod_four`: `(ZMod 4)ˣ = {1, 3}` has
+  exactly **2** square roots of `1` (cyclic of order 2; both elements
+  square to `1`).
+
+Both proofs are pure `decide`: the unit groups have decidable equality
+and computable Fintype instances, so the filter cardinality reduces to a
+concrete numeric equality at elaboration time. Per the S5b PREP API
+audit, no Mathlib bridges (`ZMod.card_units_eq_totient`,
+`Nat.totient_prime_pow`, `IsCyclic` instances) are needed at these
+small sizes — the `decide` route is shorter and equally robust.
+
+Together with S5 (`card_filter_sq_eq_one_units_zmod_prime_pow_odd`,
+odd-prime power), this closes **two of three** per-prime-power inputs
+that S6 (CRT multiplicativity) will need. The remaining input is **S5b.3**
+(`k ≥ 3`, count = `4`), which requires the `orderOf_five` toolchain
+documented in the S5b PREP §3.3.
+
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 335 → 396 lines
+(+61 lines, +2 theorems, +1 new Section 8 with section header docstring).
+Build: pending (PR CI; researcher worktree's `.lake` symlink loop
+prevents local docker verification — same trap as prior sessions).
+0 axioms, 1 sorry (unchanged, main theorem target).
+
+## Next Action
+
+* **S5b.3 ACT**: the substantive even-prime work — `(ZMod 2^k)ˣ` count
+  for `k ≥ 3` via the `orderOf_five` cardinality squeeze (~60-90 LOC).
+  Complete design in S5b PREP `#18648` §3.3; the proof adapts
+  `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s
+  established `orderOf_five` idiom. No new Mathlib gaps.
+
+* **S6 ACT (CRT multiplicativity)**: after S5b.3 lands, combine S5 +
+  S5b.1 + S5b.2 + S5b.3 into a multiplicative formula over
+  `n.primeFactors`. Design in S6 PREP `#18423`.
+
+* **S7 ACT (induction assembly)**: closes the main theorem
+  `card_sqrts_one_eq_numSqrtsOne` via induction on
+  `n.primeFactors.card`. Design in S7 PREP `#18465`.
+
+## Prior Sessions
+
+### S5 (researcher-3, 2026-05-12, merged via #18233)
 
 S5 (researcher-3, 2026-05-12): ACT — closed the **odd-prime-power
 unit-side count** by instantiating the S4 generic theorem
@@ -33,17 +83,6 @@ File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 296 → 336 lines
 (+40 lines, +1 new theorem in a new Section 7, +1 docstring header).
 Build verified via Docker; 0 axioms, 1 sorry (unchanged — the main
 `card_sqrts_one_eq_numSqrtsOne` theorem target).
-
-## Next Action
-
-* **S5b / S6 next**: even-prime case (k = 1, 2, ≥ 3 give `2`, `2`, `4`
-  respectively) — needs case analysis on `v₂(n)`, possibly via
-  `ZMod.unitsCyclicMulOf_units_pow_two` or direct enumeration.
-* **S6 (CRT multiplicativity)**: pulled back to a Finset.prod over
-  `n.primeFactors`, applying `ZMod.chineseRemainder` and
-  `Finset.prod_filter`.
-* **S7 (main theorem)**: induction on `n.primeFactors.card`,
-  base case `n = p^k` from S5/S5b, inductive step from S6.
 
 ## Prior Sessions
 
