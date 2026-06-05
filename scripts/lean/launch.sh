@@ -33,11 +33,19 @@ DAEMON_PID_FILE="research/lean-daemon.pid"
 DAEMON_LOG_FILE="research/lean-daemon.log"
 SCHEDULE_FILE=".loom/lean-schedule.json"
 
+# Aristotle scale-to-zero marker (issue #22471). Written by aristotle-agent.sh
+# when it gracefully exits on an empty queue + idle threshold elapsed; read by
+# get_agent_status / status display / dynamic spawn logic.
+ARISTOTLE_SCALED_MARKER=".loom/state/aristotle-scaled-to-zero"
+
 # Health check thresholds
 STUCK_THRESHOLD_MINUTES=30
 STUCK_CPU_THRESHOLD="0.5"
-# Agent statuses: RUNNING, COMPLETED, STUCK, IDLE, UNKNOWN
+# Agent statuses: RUNNING, COMPLETED, STUCK, IDLE, SCALED_TO_ZERO, UNKNOWN
 # IDLE = polling agent (deployer/seeker) that is healthy but waiting between cycles
+# SCALED_TO_ZERO = aristotle gracefully exited due to empty queue (issue #22471).
+#                  Distinct from STUCK/IDLE/COMPLETED — the daemon will respawn
+#                  it when find-candidates.sh --count or submitted-job count > 0.
 
 # Daemon defaults
 DEFAULT_DAEMON_INTERVAL=60
@@ -941,6 +949,24 @@ is_script_based_agent() {
     [[ "$agent_type" == "aristotle" || "$agent_type" == "tester" ]]
 }
 
+# Helper: Check whether Aristotle is currently in scale-to-zero state
+# (issue #22471). Returns 0 (true) iff the marker file exists AND no
+# aristotle-agent tmux session is currently running. The "no session"
+# clause guards against stale markers from a previous shutdown that
+# wasn't cleaned up — if a session is alive, treat it as authoritative.
+is_aristotle_scaled_to_zero() {
+    [[ -f "$ARISTOTLE_SCALED_MARKER" ]] || return 1
+    tmux has-session -t "aristotle-agent" 2>/dev/null && return 1
+    return 0
+}
+
+# Helper: Clear the Aristotle scale-to-zero marker. Called when the
+# daemon decides to respawn aristotle (work appeared) or when an operator
+# forces a manual spawn — either case represents a fresh "scale up".
+clear_aristotle_scaled_marker() {
+    rm -f "$ARISTOTLE_SCALED_MARKER" 2>/dev/null || true
+}
+
 # Helper: Check if an agent is a polling agent that legitimately idles between cycles
 # Polling agents (deployer, seeker) sleep between work cycles, so low CPU + no network
 # is normal behavior, not a stuck state.
@@ -1187,10 +1213,23 @@ cmd_health() {
         fi
     done <<< "$sessions"
 
+    # Surface Aristotle scale-to-zero (issue #22471) even though no tmux
+    # session exists for it — get_all_agent_sessions only enumerates live
+    # sessions, so we render an extra row when the marker is present.
+    local aristotle_scaled=0
+    if is_aristotle_scaled_to_zero; then
+        aristotle_scaled=1
+        printf "%-22s %-8s %-10s %-7s %-5s %-6s " "aristotle-agent" "-" "-" "-" "-" "-"
+        echo -e "${YELLOW}SCALED_TO_ZERO${NC} (idle queue)"
+    fi
+
     echo ""
     local summary="Summary: ${GREEN}$running_count running${NC}, ${completed_count} completed"
     if [[ $idle_count -gt 0 ]]; then
         summary+=", ${BLUE}$idle_count idle${NC}"
+    fi
+    if [[ $aristotle_scaled -gt 0 ]]; then
+        summary+=", ${YELLOW}1 scaled-to-zero${NC}"
     fi
     if [[ $failing_count -gt 0 ]]; then
         summary+=", ${RED}$failing_count failing${NC}"
@@ -2108,9 +2147,17 @@ cmd_daemon() {
         fi
 
         if [[ $aristotle_active -lt $aristotle ]] && is_cooldown_elapsed "aristotle-agent"; then
-            daemon_log "INFO" "Pool gap: aristotle has 0/$aristotle, spawning"
-            if respawn_agent "aristotle-agent"; then
-                total_respawns=$((total_respawns + 1))
+            # Scale-to-zero gate (issue #22471): if the marker file is
+            # present, treat the missing session as intentional and skip
+            # the pool gap respawn. The dedicated dynamic-spawn block
+            # below (step 4b) will respawn the moment real work appears.
+            if [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+                daemon_log "INFO" "Pool gap: aristotle scaled-to-zero, deferring respawn until queue has work"
+            else
+                daemon_log "INFO" "Pool gap: aristotle has 0/$aristotle, spawning"
+                if respawn_agent "aristotle-agent"; then
+                    total_respawns=$((total_respawns + 1))
+                fi
             fi
         fi
 
@@ -2166,10 +2213,20 @@ cmd_daemon() {
         # 4. Process completion signals and update session stats
         process_completion_signals
 
-        # 4b. Dynamic Aristotle: spawn when candidates or jobs exist but no agent running
+        # 4b. Dynamic Aristotle: spawn when candidates or jobs exist but no agent running.
+        # Scale-to-zero (issue #22471) is the inverse: when the agent has
+        # exited because both queues are empty + idle threshold elapsed,
+        # this block is the only path that brings it back. We always
+        # clear the marker on respawn so the next "fresh start clears
+        # marker" handshake in aristotle-agent.sh is a no-op (idempotent).
         if [[ $aristotle_active -eq 0 ]] && [[ "$aristotle_jobs" -gt 0 || "$aristotle_candidates" -gt 0 ]]; then
             if is_cooldown_elapsed "aristotle-agent"; then
-                daemon_log "INFO" "Auto-spawning Aristotle: $aristotle_jobs pending jobs, $aristotle_candidates candidates"
+                if [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+                    daemon_log "INFO" "Scale-up Aristotle: work appeared (jobs=$aristotle_jobs, candidates=$aristotle_candidates), clearing scale-to-zero marker"
+                    clear_aristotle_scaled_marker
+                else
+                    daemon_log "INFO" "Auto-spawning Aristotle: $aristotle_jobs pending jobs, $aristotle_candidates candidates"
+                fi
                 if respawn_agent "aristotle-agent"; then
                     total_respawns=$((total_respawns + 1))
                 fi
@@ -2564,6 +2621,18 @@ cmd_spawn() {
             if tmux has-session -t "aristotle-agent" 2>/dev/null; then
                 echo -e "${YELLOW}Aristotle agent already running${NC}"
             else
+                # Manual spawn bypasses scale-to-zero (issue #22471).
+                # Operator explicitly asked for an agent, so wipe the
+                # marker and reset the idle clock so the new agent gets
+                # a full cycle before any idle check can fire.
+                if [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+                    echo -e "${BLUE}  Clearing scale-to-zero marker (forced respawn)${NC}"
+                    clear_aristotle_scaled_marker
+                fi
+                # Reset last-cycle timestamp so the new agent gets a
+                # fresh idle-threshold window before scale-to-zero can re-fire.
+                mkdir -p .loom/state
+                touch .loom/state/aristotle-last-cycle 2>/dev/null || true
                 ./scripts/aristotle/launch-agent.sh &
                 sleep 1
                 echo -e "${GREEN}✓ Aristotle agent spawned${NC}"

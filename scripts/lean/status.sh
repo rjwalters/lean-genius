@@ -25,6 +25,10 @@ DAEMON_PID_FILE="research/lean-daemon.pid"
 DAEMON_TMUX_SESSION="lean-daemon"
 ARISTOTLE_JOBS="research/aristotle-jobs.json"
 CANDIDATE_POOL=".lean/state/candidate-pool.json"
+# Aristotle scale-to-zero marker (issue #22471). When this file exists and no
+# aristotle-agent tmux session is running, status reports SCALED_TO_ZERO
+# instead of the generic "0/1 active" line.
+ARISTOTLE_SCALED_MARKER=".loom/state/aristotle-scaled-to-zero"
 
 # Fall back to old location if new state file doesn't exist
 if [[ ! -f "$STATE_FILE" && -f "$OLD_STATE_FILE" ]]; then
@@ -171,9 +175,13 @@ gather_status() {
         fi
     done
 
-    # Aristotle
+    # Aristotle (issue #22471: SCALED_TO_ZERO is distinct from "stopped").
     if session_exists "aristotle-agent"; then
         aristotle_status="running:$(get_session_uptime "aristotle-agent")"
+    elif [[ -f "$ARISTOTLE_SCALED_MARKER" ]]; then
+        local scaled_at
+        scaled_at=$(jq -r '.scaled_at // "unknown"' "$ARISTOTLE_SCALED_MARKER" 2>/dev/null || echo "unknown")
+        aristotle_status="scaled_to_zero:$scaled_at"
     fi
 
     # Researchers (up to 16 supported)
@@ -408,10 +416,14 @@ EOF
             echo -e "    ${BOLD}Enrichers:${NC} ${YELLOW}0 active${NC}"
         fi
 
-        # Aristotle
+        # Aristotle (issue #22471: surface SCALED_TO_ZERO so operators
+        # know the missing session is intentional, not a crash).
         if [[ "${aristotle_status%%:*}" == "running" ]]; then
             echo -e "    ${BOLD}Aristotle:${NC} ${GREEN}1/1 active${NC}"
             echo "      aristotle-agent: Running (${aristotle_status#*:})"
+        elif [[ "${aristotle_status%%:*}" == "scaled_to_zero" ]]; then
+            echo -e "    ${BOLD}Aristotle:${NC} ${YELLOW}SCALED_TO_ZERO${NC} (daemon will respawn when queue has work)"
+            echo "      aristotle-agent: scaled at ${aristotle_status#*:}"
         else
             echo -e "    ${BOLD}Aristotle:${NC} ${YELLOW}0/1 active${NC}"
         fi

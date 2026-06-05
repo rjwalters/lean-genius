@@ -34,6 +34,28 @@ REPO_ROOT="${REPO_ROOT:-$PROJECT_ROOT}"
 PERSIST_DIR="$REPO_ROOT/.loom/state"
 PERSIST_JOBS="$PERSIST_DIR/aristotle-jobs.json"
 
+# Scale-to-zero markers (issue #22471).
+#
+# When the agent detects there is no work and the idle threshold has elapsed,
+# it touches SCALED_TO_ZERO_MARKER and gracefully exits. The daemon's
+# /status, /health, and dynamic spawn logic check this marker to:
+#   - report SCALED_TO_ZERO instead of UNKNOWN when no tmux session exists
+#   - skip respawn until candidates>0 or pending>0 reappear
+#
+# LAST_CYCLE_FILE records the wall-clock timestamp of the most recent
+# work-bearing cycle (any cycle that found candidates>0 or pending>0).
+# This drives the "1 hour since last work" idle check across agent restarts.
+#
+# RATE_LIMIT_FILE is the contract from issue #22469 (capacity backoff).
+# If present and its mtime is in the future, treat it as an idle reason.
+SCALED_TO_ZERO_MARKER="$PERSIST_DIR/aristotle-scaled-to-zero"
+LAST_CYCLE_FILE="$PERSIST_DIR/aristotle-last-cycle"
+RATE_LIMIT_FILE="$PERSIST_DIR/aristotle-rate-limit-until"
+
+# Idle threshold: minutes since the last work-bearing cycle before scale-to-zero.
+# 60 minutes is the conservative starting point from issue #22471.
+ARISTOTLE_IDLE_THRESHOLD_MINUTES="${ARISTOTLE_IDLE_THRESHOLD_MINUTES:-60}"
+
 # Colors
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -85,6 +107,118 @@ check_wake_signal() {
         return 0
     fi
     return 1
+}
+
+# Check whether a rate-limit cooldown is currently active (issue #22469
+# capacity backoff). The contract: $RATE_LIMIT_FILE exists and its mtime
+# is in the future. If the file is missing or its mtime has passed, this
+# returns 1 (no active cooldown) so the caller falls through to other
+# idle checks.
+is_rate_limited() {
+    [[ -f "$RATE_LIMIT_FILE" ]] || return 1
+    local until_epoch now_epoch
+    # mtime in epoch seconds, portable across GNU/BSD stat
+    until_epoch=$(stat -f '%m' "$RATE_LIMIT_FILE" 2>/dev/null || stat -c '%Y' "$RATE_LIMIT_FILE" 2>/dev/null || echo "0")
+    now_epoch=$(date +%s)
+    [[ "$until_epoch" -gt "$now_epoch" ]]
+}
+
+# Record that a work-bearing cycle just ran. The mtime of $LAST_CYCLE_FILE
+# is the canonical "last activity" timestamp for the idle threshold check.
+record_work_cycle() {
+    mkdir -p "$PERSIST_DIR"
+    touch "$LAST_CYCLE_FILE"
+}
+
+# Return 0 (true) if the agent should scale to zero this cycle.
+#
+# Conditions (all must hold):
+#   1. find-candidates.sh --count returns 0 (no work to submit)
+#   2. No "submitted" jobs in aristotle-jobs.json (nothing to poll)
+#   3. Either:
+#       a. $ARISTOTLE_IDLE_THRESHOLD_MINUTES minutes have elapsed since
+#          the last work-bearing cycle, OR
+#       b. A rate-limit cooldown is active (no point continuing to spin)
+#
+# Prints a human-readable reason to stderr on success.
+should_scale_to_zero() {
+    local candidates submitted
+    candidates=$("$SCRIPT_DIR/find-candidates.sh" --count 2>/dev/null || echo "0")
+    candidates="${candidates//[^0-9]/}"
+    candidates="${candidates:-0}"
+
+    if [[ -f "$JOBS_FILE" ]]; then
+        submitted=$(jq '[.jobs[] | select(.status == "submitted")] | length' "$JOBS_FILE" 2>/dev/null || echo "0")
+    else
+        submitted=0
+    fi
+
+    # Rate-limit fast path: if backoff is active and there's no in-flight
+    # work to poll, scale down immediately regardless of idle threshold.
+    if is_rate_limited && [[ "$submitted" -eq 0 ]]; then
+        echo "Scale-to-zero: rate-limit cooldown active and no pending jobs" >&2
+        return 0
+    fi
+
+    # Standard idle: need candidates=0 AND submitted=0.
+    if [[ "$candidates" -gt 0 ]] || [[ "$submitted" -gt 0 ]]; then
+        return 1
+    fi
+
+    # Both queues empty. Has enough time passed since last real work?
+    local last_epoch now_epoch elapsed_min threshold_sec
+    if [[ -f "$LAST_CYCLE_FILE" ]]; then
+        last_epoch=$(stat -f '%m' "$LAST_CYCLE_FILE" 2>/dev/null || stat -c '%Y' "$LAST_CYCLE_FILE" 2>/dev/null || echo "0")
+    else
+        # No baseline — first run with the scale-to-zero feature. Seed
+        # the file so we start the idle clock from now rather than
+        # immediately scaling to zero.
+        record_work_cycle
+        return 1
+    fi
+
+    now_epoch=$(date +%s)
+    threshold_sec=$((ARISTOTLE_IDLE_THRESHOLD_MINUTES * 60))
+    elapsed_min=$(( (now_epoch - last_epoch) / 60 ))
+
+    if (( now_epoch - last_epoch >= threshold_sec )); then
+        echo "Scale-to-zero: idle ${elapsed_min}m >= ${ARISTOTLE_IDLE_THRESHOLD_MINUTES}m threshold (candidates=0, submitted=0)" >&2
+        return 0
+    fi
+
+    return 1
+}
+
+# Mark the agent as scaled-to-zero and gracefully exit. The daemon will
+# poll for new candidates and respawn us when work appears.
+scale_to_zero_exit() {
+    local reason="$1"
+    mkdir -p "$PERSIST_DIR"
+
+    # Write marker with reason + timestamp so /status can surface context.
+    local ts
+    ts=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+    cat > "$SCALED_TO_ZERO_MARKER" <<EOF
+{
+  "scaled_at": "$ts",
+  "reason": "$reason",
+  "idle_threshold_minutes": $ARISTOTLE_IDLE_THRESHOLD_MINUTES
+}
+EOF
+
+    echo ""
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}Aristotle scaling to zero${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}Reason: $reason${NC}"
+    echo -e "${YELLOW}Marker:  $SCALED_TO_ZERO_MARKER${NC}"
+    echo -e "${YELLOW}The daemon will respawn us when candidates > 0 or pending > 0.${NC}"
+    echo ""
+
+    # Persist jobs file one last time so we don't lose state across the gap.
+    persist_jobs_file || true
+
+    exit 0
 }
 
 # Show status
@@ -233,6 +367,14 @@ run_cycle() {
     echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
 
+    # Capture pre-cycle submitted count so we can detect "had work to
+    # poll" even if the cycle drains all submitted jobs to completion
+    # (issue #22471 idle bookkeeping).
+    local _submitted_before=0
+    if [[ -f "$JOBS_FILE" ]]; then
+        _submitted_before=$(jq '[.jobs[] | select(.status == "submitted")] | length' "$JOBS_FILE" 2>/dev/null || echo "0")
+    fi
+
     # Step 1: Check job status
     echo -e "${CYAN}[1/4] Checking job status...${NC}"
     if ! "$SCRIPT_DIR/check-jobs.sh" --update 2>&1; then
@@ -267,6 +409,20 @@ run_cycle() {
     echo -e "${GREEN}Cycle complete in ${duration}s${NC}"
     show_status
 
+    # If this cycle had any work — pre-existing jobs to poll OR new jobs
+    # submitted — update the "last work" timestamp. This drives the idle
+    # threshold check in should_scale_to_zero (issue #22471). We re-read
+    # the jobs file post-cycle rather than calling find-candidates.sh
+    # again, because the cycle's submit-batch step already drained the
+    # candidate queue into submitted jobs if any existed.
+    local _submitted_after=0
+    if [[ -f "$JOBS_FILE" ]]; then
+        _submitted_after=$(jq '[.jobs[] | select(.status == "submitted")] | length' "$JOBS_FILE" 2>/dev/null || echo "0")
+    fi
+    if [[ "$_submitted_before" -gt 0 ]] || [[ "$_submitted_after" -gt 0 ]]; then
+        record_work_cycle
+    fi
+
     # Persist jobs file to survive worktree recreation
     persist_jobs_file
 }
@@ -292,13 +448,28 @@ main() {
         echo -e "${CYAN}Starting Aristotle Agent in loop mode (deterministic)${NC}"
         echo "Interval: ${INTERVAL_MINUTES} minutes"
         echo "Target: ${TARGET_ACTIVE} active jobs"
+        echo "Idle threshold (scale-to-zero): ${ARISTOTLE_IDLE_THRESHOLD_MINUTES} minutes"
         echo ""
+
+        # Fresh launch clears any stale scale-to-zero marker — the act of
+        # starting the agent means the daemon (or operator) decided there
+        # is work to do, so we should not immediately re-report as scaled.
+        mkdir -p "$PERSIST_DIR"
+        rm -f "$SCALED_TO_ZERO_MARKER" 2>/dev/null || true
 
         local cycle_num=0
         while true; do
             # Check stop signal before each cycle
             if check_stop_signal; then
                 exit 0
+            fi
+
+            # Scale-to-zero idle check (issue #22471). Runs before each
+            # cycle so we don't waste a full cycle's wall-clock budget
+            # just to discover the queue is empty.
+            local _scale_reason
+            if _scale_reason=$(should_scale_to_zero 2>&1 >/dev/null); then
+                scale_to_zero_exit "$_scale_reason"
             fi
 
             ((++cycle_num))
