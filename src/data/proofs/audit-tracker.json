@@ -9509,11 +9509,11 @@
       "issues": []
     },
     "erdos-770": {
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T08:10:00Z",
+      "auditCount": 4,
+      "lastAudited": "2026-06-05T23:28:23Z",
       "result": "issues-fixed",
       "issues": [
-        "theoremCount 80→74: meta.meta.theoremCount and leanFile.theoremCount overcounted by 6 after PR #15094 merged"
+        "theoremCount 80→74: meta.meta.theoremCount and leanFile.theoremCount overcounted by 6 — FIXED in this audit cycle"
       ]
     },
     "erdos-771": {
