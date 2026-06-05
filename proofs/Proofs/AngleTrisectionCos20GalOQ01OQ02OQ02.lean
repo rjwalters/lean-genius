@@ -15,14 +15,18 @@
   conjugation in CyclotomicField(2n,ℚ), which is Galois since conjSubgroup is normal
   in the abelian Galois group (ℤ/2nℤ)×).
 
-  **Main results:**
-  1. `cos_pi_minpoly_natDegree`: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2 — PROVED
-  2. `cos_pi_extension_degree`: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2 — PROVED
-  3. `cos_pi_gal_card`: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2 — proved modulo
-     normality of ℚ(cos(π/n))/ℚ (documented sorry)
+  **Main results (all PROVED, 0 sorries):**
+  1. `cos_pi_minpoly_natDegree`: natDegree(minpoly ℚ (cos(π/n))) = φ(2n)/2
+  2. `cos_pi_extension_degree`: ∃ K ⊆ ℝ with cos(π/n) ∈ K, [K:ℚ] = φ(2n)/2
+  3. `cos_pi_splitting_finrank`: finrank ℚ (SplittingField p) = φ(2n)/2
+     (closes the normality of ℚ(cos(π/n))/ℚ inline via autEquivPow + abelian Gal)
+  4. `cos_pi_gal_card` and `gal_order_eq_totient_div2_general`:
+     |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2
 
-  **Gallery consistency checks** (n=5,7,9 verified against φ(2n)/2 formula):
-    n=5: φ(10)/2 = 2  ✓   n=7: φ(14)/2 = 3  ✓   n=9: φ(18)/2 = 3  ✓
+  **Gallery consistency checks** (φ(2n)/2 formula at n = 4,5,6,7,8,9,10,12):
+    n=4:  φ(8)/2  = 2  ✓   n=5:  φ(10)/2 = 2  ✓   n=6:  φ(12)/2 = 2  ✓
+    n=7:  φ(14)/2 = 3  ✓   n=8:  φ(16)/2 = 4  ✓   n=9:  φ(18)/2 = 3  ✓
+    n=10: φ(20)/2 = 4  ✓   n=12: φ(24)/2 = 4  ✓
 -/
 
 import Mathlib
@@ -279,16 +283,36 @@ theorem gal_order_eq_totient_div2_general (n : ℕ) (hn : 3 ≤ n) :
 -- § 6. Gallery Consistency Checks
 -- ============================================================================
 
--- Verify φ(2n)/2 matches the known cases (n=5,7,9)
+-- Verify φ(2n)/2 matches known values across constructible and
+-- non-constructible cases.
 
+theorem totient_formula_n4 : Nat.totient (2 * 4) / 2 = 2 := by decide
 theorem totient_formula_n5 : Nat.totient (2 * 5) / 2 = 2 := by decide
+theorem totient_formula_n6 : Nat.totient (2 * 6) / 2 = 2 := by decide
 theorem totient_formula_n7 : Nat.totient (2 * 7) / 2 = 3 := by decide
+theorem totient_formula_n8 : Nat.totient (2 * 8) / 2 = 4 := by decide
 theorem totient_formula_n9 : Nat.totient (2 * 9) / 2 = 3 := by decide
+theorem totient_formula_n10 : Nat.totient (2 * 10) / 2 = 4 := by decide
+theorem totient_formula_n12 : Nat.totient (2 * 12) / 2 = 4 := by decide
+
+/-- natDegree(minpoly ℚ (cos(π/4))) = 2. cos(π/4) = √2/2 lies in a degree-2
+    extension (constructible). -/
+theorem cos_pi4_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 4))).natDegree = 2 := by
+  have h := cos_pi_minpoly_natDegree 4 (by norm_num)
+  simp only [Nat.cast_ofNat, show Nat.totient (2 * 4) / 2 = 2 from by decide] at h
+  exact h
 
 /-- natDegree(minpoly ℚ (cos(π/5))) = 2, consistent with |Gal| = 2 for n=5. -/
 theorem cos_pi5_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 5))).natDegree = 2 := by
   have h := cos_pi_minpoly_natDegree 5 (by norm_num)
   simp only [Nat.cast_ofNat, show Nat.totient (2 * 5) / 2 = 2 from by decide] at h
+  exact h
+
+/-- natDegree(minpoly ℚ (cos(π/6))) = 2. cos(π/6) = √3/2 lies in a degree-2
+    extension (constructible). -/
+theorem cos_pi6_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 6))).natDegree = 2 := by
+  have h := cos_pi_minpoly_natDegree 6 (by norm_num)
+  simp only [Nat.cast_ofNat, show Nat.totient (2 * 6) / 2 = 2 from by decide] at h
   exact h
 
 /-- natDegree(minpoly ℚ (cos(π/7))) = 3, consistent with |Gal| = 3 for n=7. -/
@@ -297,10 +321,31 @@ theorem cos_pi7_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 7))).natDegre
   simp only [Nat.cast_ofNat, show Nat.totient (2 * 7) / 2 = 3 from by decide] at h
   exact h
 
+/-- natDegree(minpoly ℚ (cos(π/8))) = 4. cos(π/8) = √(2+√2)/2 lies in a
+    degree-4 extension (constructible, regular 16-gon). -/
+theorem cos_pi8_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 8))).natDegree = 4 := by
+  have h := cos_pi_minpoly_natDegree 8 (by norm_num)
+  simp only [Nat.cast_ofNat, show Nat.totient (2 * 8) / 2 = 4 from by decide] at h
+  exact h
+
 /-- natDegree(minpoly ℚ (cos(π/9))) = 3, consistent with |Gal| = 3 for n=9. -/
 theorem cos_pi9_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 9))).natDegree = 3 := by
   have h := cos_pi_minpoly_natDegree 9 (by norm_num)
   simp only [Nat.cast_ofNat, show Nat.totient (2 * 9) / 2 = 3 from by decide] at h
+  exact h
+
+/-- natDegree(minpoly ℚ (cos(π/10))) = 4. Connects to cos(π/5) via
+    cos(π/10) = √((1+cos(π/5))/2); regular 20-gon is constructible. -/
+theorem cos_pi10_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 10))).natDegree = 4 := by
+  have h := cos_pi_minpoly_natDegree 10 (by norm_num)
+  simp only [Nat.cast_ofNat, show Nat.totient (2 * 10) / 2 = 4 from by decide] at h
+  exact h
+
+/-- natDegree(minpoly ℚ (cos(π/12))) = 4. cos(π/12) = (√6+√2)/4 lies in a
+    degree-4 extension (constructible). -/
+theorem cos_pi12_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 12))).natDegree = 4 := by
+  have h := cos_pi_minpoly_natDegree 12 (by norm_num)
+  simp only [Nat.cast_ofNat, show Nat.totient (2 * 12) / 2 = 4 from by decide] at h
   exact h
 
 -- ============================================================================
@@ -326,7 +371,9 @@ theorem cos_pi9_minpoly_degree : (minpoly ℚ (Real.cos (Real.pi / 9))).natDegre
    Reduces to: finrank ℚ (SplittingField p) = φ(2n)/2.
    This follows from: ℚ(cos(π/n)) = maxRealSubfield(2n) is Galois over ℚ
    (conjSubgroup abelian → normal), hence minpoly splits over it, hence
-   SplittingField ≅ ℚ(cos(π/n)). One sorry remains on the normality step.
+   SplittingField ≅ ℚ(cos(π/n)). FULLY PROVED — see `cos_pi_splitting_finrank`
+   for the explicit two-sided finrank pinch via IsSplittingField.lift (upper)
+   and exists_root_of_splits + IntermediateField.adjoin.finrank (lower).
 
 ## Techniques Used
 - **IsCyclotomicExtension**: via AngleTrisectionOQ02OQ03OQ01's `alphaCos`, `maxRealSubfield`

@@ -22,12 +22,12 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 338,
+    "lineCount": 385,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "historicalContext": "The formula |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 connects classical angle trisection impossibility to cyclotomic field theory. Individual cases n=5 (|Gal|=2), n=7 (|Gal|=3), n=9 (|Gal|=3) were proved in earlier gallery entries. This file provides the general proof using IsCyclotomicExtension, answering the open question from AngleTrisectionCos20GalOQ01OQ02.",
     "proofStrategy": "The key observation is cos(π/n) = cos(2π/(2n)). This reduces the problem to the cos(2π/m) family handled by AngleTrisectionOQ02OQ03OQ01 (which formalizes the (m)-th cyclotomic field machinery). Applying that infrastructure with m = 2n gives: natDegree(minpoly(cos(π/n))) = φ(2n)/2. The full Galois order = degree requires additionally showing the splitting field has degree φ(2n)/2, which follows from normality of ℚ(cos(π/n))/ℚ (conjSubgroup is normal in the abelian Galois group).",
-    "theoremCount": 12,
+    "theoremCount": 22,
     "definitionCount": 0
   },
   "overview": {
@@ -55,9 +55,9 @@
       "Proofs.AngleTrisectionCos20GalOQ01OQ02"
     ],
     "namespace": "AngleTrisectionCos20GalOQ01OQ02OQ02",
-    "lineCount": 338,
+    "lineCount": 385,
     "axiomCount": 0,
-    "theoremCount": 12,
+    "theoremCount": 22,
     "definitionCount": 0,
     "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
     "sorries": 0
@@ -99,18 +99,18 @@
     {
       "id": "sec-galois-order",
       "title": "§5. Galois Group Order",
-      "startLine": 235,
-      "endLine": 277,
+      "startLine": 238,
+      "endLine": 280,
       "summary": "cos_pi_gal_card: |Gal(minpoly ℚ (cos(π/n)))| = φ(2n)/2. Follows from Polynomial.Gal.card_of_separable (which gives |Gal(p)| = finrank(SplittingField)) and the splitting field degree. The companion gal_order_eq_totient_div2_general is the public-facing restatement.",
       "mathContext": "`Polynomial.Gal.card_of_separable`: for separable $p$, $|\\text{Gal}(p)| = [\\text{SplittingField}(p):\\mathbb{Q}]$. Combined with $\\text{finrank}\\ \\text{SplittingField} = \\varphi(2n)/2$, this gives the Galois group order."
     },
     {
       "id": "sec-consistency",
-      "title": "§6. Consistency Checks for n=5,7,9",
-      "startLine": 279,
-      "endLine": 305,
-      "summary": "Verifies the general formula φ(2n)/2 against the three known special cases: n=5 (φ(10)/2=2), n=7 (φ(14)/2=3), n=9 (φ(18)/2=3). All consistent with previously proved gallery entries.",
-      "mathContext": "Spot checks: $\\varphi(10)/2 = \\varphi(2\\cdot 5)/2 = 4/2 = 2$ ✓; $\\varphi(14)/2 = 6/2 = 3$ ✓; $\\varphi(18)/2 = 6/2 = 3$ ✓. These match the specific entries AngleTrisectionCos20GalOQ01OQ02 (n=5,7) and AngleTrisectionCos20Gal (n=9)."
+      "title": "§6. Consistency Checks at n = 4,5,6,7,8,9,10,12",
+      "startLine": 282,
+      "endLine": 349,
+      "summary": "Verifies the general formula φ(2n)/2 against eight concrete cases covering both constructible angles (n=4,5,6,8,10,12 — minpoly degree a power of 2) and non-constructible angles (n=7,9 — degree 3). For each n we extract both the totient identity and the minimal polynomial degree of cos(π/n) as a direct corollary of cos_pi_minpoly_natDegree.",
+      "mathContext": "Spot checks: $\\varphi(8)/2=2$, $\\varphi(10)/2=2$, $\\varphi(12)/2=2$, $\\varphi(14)/2=3$, $\\varphi(16)/2=4$, $\\varphi(18)/2=3$, $\\varphi(20)/2=4$, $\\varphi(24)/2=4$. The constructible cases (degrees 2 and 4) align with Wantzel's criterion (regular $2n$-gon constructible iff $\\varphi(2n)$ is a power of 2); the n=7,9 cases (degree 3) explicitly witness the angle-trisection obstruction."
     }
   ],
   "crossReferences": [
