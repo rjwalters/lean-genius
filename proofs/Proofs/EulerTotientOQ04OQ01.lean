@@ -25,14 +25,17 @@ and the alternating binomial-sum identity (`Mathlib.Data.Nat.Choose.Sum.sum_powe
 This is the squarefree analogue of the parent file's GCD-class partition.
 
 ## Status
-**S2 SCAFFOLD** — main statement proved modulo three strategic sorries:
-- `moebius_prod_squarefree`: μ of a product of distinct primes is `(-1)^k`
-- `prod_primeFactors_bij_squarefree`: bijection prod-on-powerset is squarefree
-- `sum_normalizedFactors_eq_sum_primeFactors`: bridge from Mathlib's
-  `normalizedFactors`-formulation back to `primeFactors`
+**Verified** — main theorem `sum_moebius_eq_indicator` fully proved.
+Zero `sorry`s, zero `axiom`s.
 
-The intended S3 ACT discharges all three via `cardFactors_apply_prime`
-+ `prod_primeFactors_of_squarefree` + `factors_eq` (Nat-specific).
+Key building blocks:
+- `moebius_prod_squarefree`: μ of a product of distinct primes is `(-1)^k`
+  (uses `isMultiplicative_moebius.map_prod_of_prime`).
+- `normalizedFactors_toFinset_eq`: Nat-side bridge from
+  `(normalizedFactors n).toFinset` to `n.primeFactors`.
+- `sum_filter_squarefree_moebius_eq_powerset`: combines the Mathlib
+  bijection `Nat.sum_divisors_filter_squarefree` with
+  `moebius_prod_squarefree` on each `S ⊆ primeFactors n`.
 
 ## Mathlib Dependencies
 - `Mathlib.NumberTheory.ArithmeticFunction.Moebius` — `μ`, `moebius_eq_zero_of_not_squarefree`
@@ -69,13 +72,13 @@ theorem sum_moebius_divisors_eq_filter_squarefree (n : ℕ) :
 
 /-- For a finite set `s` of distinct primes, `μ (∏ s) = (-1)^|s|`.
 
-Strategic sorry (S3 ACT): combine `prod_primeFactors_of_squarefree`-style
-argument that `s.prod id` is squarefree (since elements are distinct
-primes), then `moebius_apply_of_squarefree` + `cardFactors` of a
-squarefree product equals `s.card`. -/
+Uses multiplicativity of `μ` on the product of pairwise-coprime primes
+(`isMultiplicative_moebius.map_prod_of_prime`), then `μ p = -1` on each
+prime, then `Finset.prod_eq_pow_card`. -/
 theorem moebius_prod_squarefree (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) :
     μ (∏ p ∈ s, p) = (-1 : ℤ) ^ s.card := by
-  sorry
+  rw [isMultiplicative_moebius.map_prod_of_prime s hs]
+  exact Finset.prod_eq_pow_card (fun p hp => moebius_apply_prime (hs p hp))
 
 /- ## Part III: bridge from Mathlib's normalizedFactors form to primeFactors -/
 
@@ -101,9 +104,12 @@ theorem sum_filter_squarefree_moebius_eq_powerset (n : ℕ) (hn : n ≠ 0) :
   -- Rewrite the powerset index via `normalizedFactors_toFinset_eq`
   rw [normalizedFactors_toFinset_eq n hn]
   -- For each S ⊆ primeFactors n, μ(S.val.prod) = (-1)^|S|.
-  -- This needs that elements of S are primes (from S ⊆ primeFactors n)
-  -- combined with `moebius_prod_squarefree`. Strategic sorry; see S3 plan.
-  sorry
+  refine Finset.sum_congr rfl fun S hS => ?_
+  rw [Finset.mem_powerset] at hS
+  -- Rewrite `S.val.prod` to `∏ p ∈ S, p` via `Finset.prod_val`
+  rw [Finset.prod_val]
+  -- Each element of `S ⊆ n.primeFactors` is prime, so apply `moebius_prod_squarefree`.
+  exact moebius_prod_squarefree S (fun p hp => Nat.prime_of_mem_primeFactors (hS hp))
 
 /- ## Part V: main result -/
 

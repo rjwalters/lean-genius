@@ -1,27 +1,33 @@
 # Research State: euler-totient-oq-04-oq-01
 
 ## Current State
-**Phase**: SCAFFOLD
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-05-14T19:30:00Z
-**Iteration**: 2
+**Since**: 2026-06-04T19:00:00Z
+**Iteration**: 3
 
 ## Current Focus
-S2 SCAFFOLD landed (PR pending): `proofs/Proofs/EulerTotientOQ04OQ01.lean`
-states the main identity `Σ_{d|n} μ(d) = [n = 1]` and proves it modulo
-two strategic sorries:
+S3 ACT (2026-06-04, researcher-4): both strategic sorries discharged,
+file builds clean with 0 sorries / 0 axioms (Docker 1118 jobs, freshly
+built — not replayed).
 
-| Sorry | Location | Discharge plan (S3 ACT) |
+| Sorry (S2) | Location | S3 discharge |
 |---|---|---|
-| `moebius_prod_squarefree` | line 76 | `Squarefree.prod` of distinct primes + `moebius_apply_of_squarefree` + `cardFactors_prod_of_squarefree` |
-| `sum_filter_squarefree_moebius_eq_powerset` | line 96 | unfold Mathlib's `sum_divisors_filter_squarefree`, then `Finset.sum_congr` with `moebius_prod_squarefree` on each `S.val.prod` |
+| `moebius_prod_squarefree` | line 76 | `isMultiplicative_moebius.map_prod_of_prime` + `Finset.prod_eq_pow_card` over `moebius_apply_prime` (2 lines of proof) |
+| `sum_filter_squarefree_moebius_eq_powerset` | line 96 | `Nat.sum_divisors_filter_squarefree` → `normalizedFactors_toFinset_eq` → `Finset.sum_congr` → `Finset.prod_val` → `moebius_prod_squarefree` (6 lines of proof) |
+
+Both discharges came in much shorter than the S2 plan estimate
+(2+6 lines vs ~30-50 anticipated): the multiplicativity route via
+`isMultiplicative_moebius.map_prod_of_prime` (Mathlib gives this directly
+for pairwise-coprime distinct primes) bypassed the `Squarefree.prod` +
+`cardFactors_prod_of_squarefree` chain entirely.
 
 Main theorem `sum_moebius_eq_indicator` and the squarefree-vs-not split
 (`sum_moebius_divisors_eq_filter_squarefree`) are FULLY proved (no sorry).
 The Nat-side bridge `normalizedFactors_toFinset_eq` is fully proved (closes
 via `simp [Nat.factors_eq, Nat.mem_primeFactors, hn]`).
 
-Build verified: 1118 jobs, 2 strategic sorries (warnings only).
+Build verified: 1118 jobs, 0 sorries, 0 axioms (S3 ACT, freshly built).
 
 ## Active Approach
 **Squarefree-divisor / powerset bijection** (S1 OBSERVE recommendation S2-B):
@@ -38,41 +44,27 @@ This is genuinely orthogonal to Mathlib's `moebius_mul_coe_zeta` proof
 (via `recOnPosPrimePosCoprime` multiplicative induction).
 
 ## Attempt Count
-- Total attempts: 3 (Docker iters)
-- Current approach attempts: 3
+- Total attempts: 4 (Docker iters)
+- Current approach attempts: 4
 - Approaches tried: 1 (squarefree-divisor / powerset)
 
 ### Docker build log
 - Iter 1: `EulerTotientOQ04OQ01.lean` file not in worktree (Write-tool path bug); copied + rebuilt
 - Iter 2: `Nat.eq_one_or_self_lt_of_prime_factorization` unknown + `rw [hpf]` motive failure on `if`-Decidable + simp closes goal extra `sorry` "no goals to be solved" + `id` ambiguous (`_root_.id` vs `ArithmeticFunction.id` after `open ArithmeticFunction`)
-- Iter 3: ✅ **CLEAN** — 1118 jobs, 2 strategic sorries, no errors
+- Iter 3: ✅ S2 SCAFFOLD CLEAN — 1118 jobs, 2 strategic sorries, no errors
+- Iter 4 (2026-06-04, researcher-4): ✅ **S3 ACT CLEAN** — 1118 jobs, 0 sorries, 0 axioms; first-pass clean build of both discharges
 
 ## Blockers
-None. Strategic sorries are deliberate S2 SCAFFOLD scope.
+None. File is verified.
 
 ## Next Action
-**S3 ACT** discharges both strategic sorries:
+**Gallery integration (follow-up)**: add `src/data/proofs/euler-totient-oq-04-oq-01/`
+directory (meta.json, annotations.json, index.ts) with `status: verified`
+and `badge: original`. This is the squarefree analogue of the parent
+file's GCD-class partition. Lower priority than the parent's gallery
+entry which already references this file via `additionalFiles`.
 
-1. `moebius_prod_squarefree (s : Finset ℕ) (hs : ∀ p ∈ s, p.Prime) :
-       μ (∏ p ∈ s, p) = (-1 : ℤ) ^ s.card`
-   - Show `∏ p ∈ s, p` is squarefree (using `Squarefree.prod` + `hs`).
-   - Apply `moebius_apply_of_squarefree`.
-   - Compute `cardFactors (∏ p ∈ s, p) = s.card` (sum of `cardFactors_apply_prime`
-     over distinct primes; uses `Nat.cardFactors_mul` + `Coprime` between distinct primes).
-
-2. `sum_filter_squarefree_moebius_eq_powerset (n : ℕ) (hn : n ≠ 0) :
-       ∑ d ∈ n.divisors with Squarefree d, μ d
-         = ∑ S ∈ n.primeFactors.powerset, (-1 : ℤ) ^ S.card`
-   - Rewrite via `Nat.sum_divisors_filter_squarefree hn`.
-   - Rewrite powerset index via `normalizedFactors_toFinset_eq` (already proved).
-   - For each `S ∈ powerset`, `S.val.prod = ∏ p ∈ S, p` and apply
-     `moebius_prod_squarefree`.
-
-S3 target: discharge both, plus add gallery `src/data/proofs/euler-totient-oq-04-oq-01/`
-directory (meta.json, annotations.json, index.ts) with explicit
-"original" vs "axiomatized" status decision based on remaining sorries.
-
-Expected LOC after S3 ACT: 100-150 (currently ~145 with 2 sorries).
+LOC: 165 (was ~145 with 2 sorries; +20 LOC for the discharges + updated header docstring).
 
 ## Cross-references
 - Parent file: `proofs/Proofs/EulerTotientOQ04.lean` (231 LOC, 0 sorries,
