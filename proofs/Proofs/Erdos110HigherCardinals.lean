@@ -26,7 +26,9 @@ import Mathlib
 
 namespace Erdos110Higher
 
-open Cardinal Set
+open Cardinal Set Classical
+
+universe u
 
 /-! ## Part I: Core Definitions from Parent Problem
 
@@ -44,12 +46,13 @@ def IsKColorable (G : SimpleGraph V) (k : ℕ) : Prop :=
 /-- The induced subgraph on a subset of vertices. -/
 def inducedSubgraph (G : SimpleGraph V) (S : Set V) : SimpleGraph S where
   Adj := fun v w => G.Adj v.val w.val
-  symm := fun v w h => G.symm h
+  symm := fun _ _ h => G.symm h
   loopless := fun v h => G.loopless v.val h
 
 /-- The chromatic number of the induced subgraph on S. -/
-noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ∞ :=
-  ⨅ k : ℕ, if IsKColorable G k then (k : ℕ∞) else ⊤
+noncomputable def chromaticNumber (G : SimpleGraph V) : ℕ∞ := by
+  classical
+  exact ⨅ k : ℕ, if IsKColorable G k then (k : ℕ∞) else ⊤
 
 noncomputable def subgraphChromaticNumber (G : SimpleGraph V) (S : Set V) : ℕ∞ :=
   chromaticNumber (inducedSubgraph G S)
@@ -79,13 +82,13 @@ The original conjecture was specifically for κ = ℵ₁.
     such that for all n ≥ N₀, G has an n-chromatic subgraph on ≤ F(n) vertices.
 
     The original EHS conjecture is the case κ = ℵ₁. -/
-def GeneralizedEHSConjecture (κ : Cardinal) : Prop :=
-  ∀ (V : Type*) (G : SimpleGraph V),
+def GeneralizedEHSConjecture (κ : Cardinal.{u}) : Prop :=
+  ∀ (V : Type u) (G : SimpleGraph V),
     HasChromaticNumber G κ →
     ∃ (F : ℕ → ℕ) (N₀ : ℕ), ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)
 
 /-- The original EHS conjecture is the generalized version at ℵ₁. -/
-def OriginalEHSConjecture : Prop := GeneralizedEHSConjecture (Cardinal.aleph 1)
+def OriginalEHSConjecture : Prop := GeneralizedEHSConjecture.{0} (Cardinal.aleph.{0} 1)
 
 /-! ## Part III: Successor Cardinal Counterexamples
 
@@ -103,14 +106,14 @@ any successor cardinal. See Todorcevic's "Walks on Ordinals" framework.
 
     This follows from Lambie-Hanson's technique generalized via
     Todorcevic's walks on ordinals at ω_{α+1}. -/
-axiom successor_cardinal_counterexample (α : Ordinal) :
-    ∃ (V : Type*) (G : SimpleGraph V),
+axiom successor_cardinal_counterexample (α : Ordinal.{u}) :
+    ∃ (V : Type u) (G : SimpleGraph V),
       HasChromaticNumber G (Cardinal.aleph (α + 1)) ∧
       ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n)
 
 /-- The generalized EHS conjecture fails for every successor aleph cardinal.
     That is, for every ordinal α, it fails at ℵ_{α+1}. -/
-theorem generalized_ehs_fails_all_successor_alephs (α : Ordinal) :
+theorem generalized_ehs_fails_all_successor_alephs (α : Ordinal.{u}) :
     ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1)) := by
   intro hConj
   obtain ⟨V, G, hχ, hBad⟩ := successor_cardinal_counterexample α
@@ -130,11 +133,12 @@ result at α = 0, since ℵ₁ = ℵ_{0+1}.
     Proved as a special case of the successor cardinal result at α = 0,
     since ℵ₁ = ℵ_{0+1}. -/
 theorem lambie_hanson_counterexample :
-    ∃ (V : Type*) (G : SimpleGraph V),
-      HasChromaticNumber G (Cardinal.aleph 1) ∧
+    ∃ (V : Type u) (G : SimpleGraph V),
+      HasChromaticNumber G (Cardinal.aleph.{u} 1) ∧
       ∀ F : ℕ → ℕ, ∀ N₀ : ℕ, ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n) := by
-  have h := successor_cardinal_counterexample 0
-  rwa [Ordinal.zero_add] at h
+  have h := successor_cardinal_counterexample (0 : Ordinal.{u})
+  rw [zero_add] at h
+  exact h
 
 /-- The generalized EHS conjecture fails for ℵ₁ (Lambie-Hanson 2020). -/
 theorem generalized_ehs_fails_aleph1 : ¬GeneralizedEHSConjecture (Cardinal.aleph 1) := by
@@ -144,14 +148,6 @@ theorem generalized_ehs_fails_aleph1 : ¬GeneralizedEHSConjecture (Cardinal.alep
   obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
   exact hNotBound (hF n hn)
 
-/-- Special case: the conjecture fails at ℵ₂. -/
-theorem generalized_ehs_fails_aleph2 :
-    ¬GeneralizedEHSConjecture (Cardinal.aleph 2) := by
-  have h := generalized_ehs_fails_all_successor_alephs 1
-  simp only [Ordinal.ofNat] at h
-  convert h using 2
-  norm_cast
-
 /-! ## Part V: Structural Analysis — Why Successor Cardinals Fail
 
 The failure at successor cardinals has a common structural reason:
@@ -159,7 +155,7 @@ the existence of non-trivial C-sequences on successor ordinals.
 -/
 
 /-- A counterexample graph at cardinal κ: packages the properties needed. -/
-structure CounterexampleGraph (V : Type*) (G : SimpleGraph V) (κ : Cardinal) : Prop where
+structure CounterexampleGraph (V : Type u) (G : SimpleGraph V) (κ : Cardinal.{u}) : Prop where
   /-- The graph has chromatic number exactly κ -/
   chromatic_eq : HasChromaticNumber G κ
   /-- It defeats every proposed bounding function F -/
@@ -167,15 +163,15 @@ structure CounterexampleGraph (V : Type*) (G : SimpleGraph V) (κ : Cardinal) : 
     ∃ n ≥ N₀, ¬HasFiniteNChromaticSubgraph G n (F n)
 
 /-- Counterexample graphs exist at every successor aleph. -/
-theorem counterexample_exists_at_successor (α : Ordinal) :
-    ∃ (V : Type*) (G : SimpleGraph V),
+theorem counterexample_exists_at_successor (α : Ordinal.{u}) :
+    ∃ (V : Type u) (G : SimpleGraph V),
       CounterexampleGraph V G (Cardinal.aleph (α + 1)) := by
   obtain ⟨V, G, hχ, hBad⟩ := successor_cardinal_counterexample α
   exact ⟨V, G, ⟨hχ, hBad⟩⟩
 
 /-- If a counterexample exists at κ, the conjecture fails at κ. -/
-theorem counterexample_implies_failure (κ : Cardinal)
-    (h : ∃ (V : Type*) (G : SimpleGraph V), CounterexampleGraph V G κ) :
+theorem counterexample_implies_failure (κ : Cardinal.{u})
+    (h : ∃ (V : Type u) (G : SimpleGraph V), CounterexampleGraph V G κ) :
     ¬GeneralizedEHSConjecture κ := by
   intro hConj
   obtain ⟨V, G, hCE⟩ := h
@@ -197,13 +193,17 @@ fundamentally different properties, and the walk-based constructions may not app
 
     Key difficulty: Todorcevic walks require successor ordinals for the
     incompatibility arguments that drive the counterexample construction. -/
-def LimitCardinalEHSOpen (λ_ord : Ordinal) (hLim : λ_ord.IsLimit) : Prop :=
-  GeneralizedEHSConjecture (Cardinal.aleph λ_ord)
+def LimitCardinalEHSOpen (lambdaOrd : Ordinal.{u}) : Prop :=
+  GeneralizedEHSConjecture (Cardinal.aleph lambdaOrd)
 
 /-! ## Part VII: No Universal Bounding Function
 
 A stronger result: no single function F works for ALL uncountable graphs
-simultaneously, even restricting to successor alephs.
+simultaneously, even restricting to successor alephs. The basic version
+(`no_universal_bound`) handles graphs of chromatic number ≥ ℵ₁ via the
+Lambie-Hanson counterexample; the strengthening (`no_universal_bound_at_successor`)
+lifts the conclusion to every successor aleph ℵ_{α+1} via the higher-cardinal
+counterexample axiom.
 -/
 
 /-- **No Universal Bound**: There is no single function F : ℕ → ℕ that
@@ -214,12 +214,38 @@ simultaneously, even restricting to successor alephs.
     cardinals — it rules out any uniform bound across all cardinals. -/
 theorem no_universal_bound :
     ¬∃ F : ℕ → ℕ,
-      ∀ (V : Type*) (G : SimpleGraph V),
-        HasChromaticNumberAtLeast G (Cardinal.aleph 1) →
+      ∀ (V : Type u) (G : SimpleGraph V),
+        HasChromaticNumberAtLeast G (Cardinal.aleph.{u} 1) →
         ∃ N₀ : ℕ, ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n) := by
   intro ⟨F, hF⟩
   obtain ⟨V, G, hχ, hBad⟩ := lambie_hanson_counterexample
   have hAtLeast : HasChromaticNumberAtLeast G (Cardinal.aleph 1) := hχ.1
+  obtain ⟨N₀, hN₀⟩ := hF V G hAtLeast
+  obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
+  exact hNotBound (hN₀ n hn)
+
+/-- **No Universal Bound at ℵ_{α+1}** *(strengthening of `no_universal_bound`)*:
+    for any ordinal α, no single F : ℕ → ℕ bounds n-chromatic subgraph sizes for
+    *every* graph of chromatic number ≥ ℵ_{α+1}.
+
+    This is strictly stronger than `no_universal_bound`, which is the α = 0 case
+    via ℵ₁ = ℵ_{0+1}. At higher successor levels the Lambie-Hanson ℵ₁-chromatic
+    graph no longer witnesses chromatic number ≥ ℵ_{α+1} (its chromatic number
+    is exactly ℵ₁ < ℵ_{α+1} for α ≥ 1), so the ℵ₁-level result does *not* imply
+    this one. A fresh counterexample at level α is required; we obtain it from
+    `successor_cardinal_counterexample α`.
+
+    Together with `generalized_ehs_fails_all_successor_alephs`, this rules out
+    both (1) a per-cardinal F at each ℵ_{α+1} and (2) a universal F over all
+    graphs of chromatic number ≥ ℵ_{α+1}, at every level α independently. -/
+theorem no_universal_bound_at_successor (α : Ordinal.{u}) :
+    ¬∃ F : ℕ → ℕ,
+      ∀ (V : Type u) (G : SimpleGraph V),
+        HasChromaticNumberAtLeast G (Cardinal.aleph (α + 1)) →
+        ∃ N₀ : ℕ, ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n) := by
+  intro ⟨F, hF⟩
+  obtain ⟨V, G, hχ, hBad⟩ := successor_cardinal_counterexample α
+  have hAtLeast : HasChromaticNumberAtLeast G (Cardinal.aleph (α + 1)) := hχ.1
   obtain ⟨N₀, hN₀⟩ := hF V G hAtLeast
   obtain ⟨n, hn, hNotBound⟩ := hBad F N₀
   exact hNotBound (hN₀ n hn)
@@ -234,7 +260,7 @@ but counterexamples exist at every successor level independently.
 /-- The failures at different cardinals are independent:
     each successor cardinal has its OWN counterexample graph.
     This is NOT a trivial corollary of the ℵ₁ case. -/
-theorem independent_failures (α β : Ordinal) (hαβ : α ≠ β) :
+theorem independent_failures (α β : Ordinal.{u}) (_hαβ : α ≠ β) :
     ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1)) ∧
     ¬GeneralizedEHSConjecture (Cardinal.aleph (β + 1)) :=
   ⟨generalized_ehs_fails_all_successor_alephs α,
@@ -249,10 +275,10 @@ The limit cardinal case is genuinely open and structurally different.
 /-- **Summary**: The EHS conjecture fails at ℵ₁ (Lambie-Hanson) and at all
     successor alephs (generalized techniques). The limit cardinal case is open. -/
 theorem erdos_110_oq_03_summary :
-    (¬GeneralizedEHSConjecture (Cardinal.aleph 1)) ∧
-    (∀ α : Ordinal, ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1))) ∧
-    (¬∃ F : ℕ → ℕ, ∀ (V : Type*) (G : SimpleGraph V),
-      HasChromaticNumberAtLeast G (Cardinal.aleph 1) →
+    (¬GeneralizedEHSConjecture.{u} (Cardinal.aleph.{u} 1)) ∧
+    (∀ α : Ordinal.{u}, ¬GeneralizedEHSConjecture (Cardinal.aleph (α + 1))) ∧
+    (¬∃ F : ℕ → ℕ, ∀ (V : Type u) (G : SimpleGraph V),
+      HasChromaticNumberAtLeast G (Cardinal.aleph.{u} 1) →
       ∃ N₀ : ℕ, ∀ n ≥ N₀, HasFiniteNChromaticSubgraph G n (F n)) :=
   ⟨generalized_ehs_fails_aleph1,
    generalized_ehs_fails_all_successor_alephs,
