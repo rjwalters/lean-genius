@@ -169,3 +169,86 @@ to the known broken `.lake` symlink trap, see
 session if the auditor flags any issue. The proof template is
 identical to the parent's already-merged proof, so build risk is
 minimal.
+
+## Session 2026-06-05 (Session 2) — Research-side STATE-SYNC (doc-only)
+
+**Mode**: STATE-SYNC (research-side bookkeeping catchup; 0 Lean changes)
+**Outcome**: completed — research-side artifacts now align with gallery-resolved truth.
+
+### Why
+
+`claim-problem.sh claim-random` returned this slug at 2026-06-05T~04:50Z.
+Inspection: PR #17942 (S1 SCAFFOLD by researcher-12) merged on 2026-05-12,
+landing the full Lean file (`proofs/Proofs/CantorsTheoremOQ01OQ03OQ04.lean`,
+248 lines, 6 theorems, 0 axioms, 0 sorries) and gallery entry
+(`src/data/proofs/cantors-theorem-oq-01-oq-03-oq-04/{meta,annotations}.json`,
+gallery `meta.json.status: "verified"`). The mathematical resolution is in
+the codebase. However, the research-side state JSON
+(`src/data/research/problems/cantors-theorem-oq-01-oq-03-oq-04.json`),
+state.md, and candidate-pool entry still carried `status: in-progress`,
+`phase: ACT`, and a 24-day-stale `lastUpdate` of `2026-05-12T06:34:00Z`.
+
+The closed PR #17935 (researcher-11, 2026-05-12) intended exactly this
+research-side sync but was closed without merge (likely superseded by
+the SCAFFOLD ship in #17942 which preserved S1 markers). This S2
+completes the doc-side catchup.
+
+### What I Did
+
+- Verified the Lean file is clean: `grep` for `axiom`/`sorry` in
+  `proofs/Proofs/CantorsTheoremOQ01OQ03OQ04.lean` returns 0 hits.
+- Verified gallery: `meta.json` has `status: "verified"`, `sorries: 0`,
+  `axiomCount: 0`, `lineCount: 248`.
+- Verified PR #17942 merged 2026-05-12.
+- Updated `src/data/research/problems/cantors-theorem-oq-01-oq-03-oq-04.json`:
+  `phase: ACT → COMPLETED`, `status: in-progress → completed`,
+  `currentState.phase: ACT → COMPLETED`, `currentState.since` and
+  `lastUpdate` bumped to 2026-06-05T04:50:46Z, `iteration: 1 → 2`,
+  `attemptCounts.total: 1 → 2`, `focus` and `progressSummary` rewritten
+  to reflect S2.
+- Updated `research/problems/cantors-theorem-oq-01-oq-03-oq-04/state.md`:
+  phase header → COMPLETED; Next Action section rewritten with optional
+  S3/S4 stretch goals marked deferred; Build status updated.
+- Marked the candidate-pool entry COMPLETED via
+  `claim-problem.sh update cantors-theorem-oq-01-oq-03-oq-04 completed`.
+- Appended this Session-2 entry.
+
+### Files Modified
+
+- `src/data/research/problems/cantors-theorem-oq-01-oq-03-oq-04.json` —
+  5 field edits per drift inventory.
+- `research/problems/cantors-theorem-oq-01-oq-03-oq-04/state.md` —
+  phase header + Next Action + Build status + Attempt Counts.
+- `research/problems/cantors-theorem-oq-01-oq-03-oq-04/knowledge.md` —
+  this entry (append-only, prior body unchanged).
+- `.lean/state/candidate-pool.json` — slug entry `status` field via
+  `claim-problem.sh update`.
+
+### Files NOT Modified (intentional scope discipline)
+
+- `proofs/Proofs/CantorsTheoremOQ01OQ03OQ04.lean` — already clean on
+  origin/main (248 lines, 6 theorems, 0 axioms, 0 sorries).
+- `src/data/proofs/cantors-theorem-oq-01-oq-03-oq-04/meta.json` —
+  already `status: verified`; no edit needed.
+- `src/data/proofs/cantors-theorem-oq-01-oq-03-oq-04/annotations.json` —
+  unchanged since S1 ship.
+- `proofs/Proofs.lean` — manifest unchanged.
+- `proofs/lake-manifest.json` — Mathlib pin unchanged.
+
+### Build Risk
+
+Zero. 0 Lean files modified. 0 imports changed. 0 tactic changes.
+0 gallery meta.json edits. The build state on origin/main is
+unchanged from PR #17942.
+
+### Phase head transition
+
+S1 SCAFFOLD (researcher-12, PR #17942, merged 2026-05-12) → **S2
+STATE-SYNC (researcher-1, this PR, 2026-06-05) — research-side doc
+catchup, COMPLETED**.
+
+OQ-04 is functionally resolved and is now also bookkeeping-resolved.
+Future claim-random landings on this slug should release immediately;
+optional S3 (universe-polymorphic `2^κ`) and S4 (generic meta-theorem
+`cf_ne_of_lt_cof`) would become new sibling slugs rather than re-open
+this one.

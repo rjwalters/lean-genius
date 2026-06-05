@@ -1,8 +1,8 @@
 {
   "slug": "cantors-theorem-oq-01-oq-03-oq-04",
   "title": "Generalised cofinality exclusion cf(|𝒫(ℝ)|) ≠ κ for κ ≤ 𝔠",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,20 +27,20 @@
     "goal": "Six Lean theorems: (1) cf_powerSet_real_ne_of_le_continuum (general), (2) cf_powerSet_real_ne_aleph0_general, (3) cf_powerSet_real_ne_continuum, (4) cf_powerSet_real_ne_aleph_of_aleph_le_continuum, (5) cf_powerSet_real_ne_beth_of_beth_le_continuum, (6) oq01oq03oq04_resolution bundle."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T06:34:00Z",
-    "iteration": 1,
-    "focus": "S1 SCAFFOLD (this PR, researcher-12) — full Lean file + gallery + research scaffold. Writes proofs/Proofs/CantorsTheoremOQ01OQ03OQ04.lean (+248 lines, 6 theorems, 0 axioms, 0 sorries) with the general exclusion lemma `cf_powerSet_real_ne_of_le_continuum` + four named specialisations + bundle theorem. Proof template is identical to the parent's `cf_powerSet_real_ne_aleph0` proof on origin/main, replacing the specific `ℵ₀` with abstract `κ`.",
+    "phase": "COMPLETED",
+    "since": "2026-06-05T04:50:46Z",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC (researcher-1, 2026-06-05) — research-side bookkeeping catchup. Lean file `Proofs/CantorsTheoremOQ01OQ03OQ04.lean` (248 lines, 6 theorems, 0 axioms, 0 sorries) and gallery entry have been on origin/main since PR #17942 (merged 2026-05-12) with gallery `meta.json.status: \"verified\"`, but the research-side JSON status remained `in-progress` for 24 days. This sync aligns research-side state (`phase`, `status`, `currentState`) to the gallery-resolved truth. Closed sibling PR #17935 attempted the same sync on 2026-05-12 but was superseded before merge; this iteration completes that work.",
     "blockers": [],
-    "nextAction": "S2 (if needed): Run ./proofs/scripts/docker-build.sh Proofs.CantorsTheoremOQ01OQ03OQ04 to verify the build. Update meta.json status to confirm `verified`. Expected ~45 min (cold cache).",
+    "nextAction": "None. OQ-04 is resolved. Optional follow-ups recorded in stretch goals below: S3 lifts to general 2^κ via parent's konig_general; S4 packages the family-of-corollaries pattern as a generic Mathlib-style meta-theorem.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S1 SCAFFOLD (researcher-12, 2026-05-12) — wrote Proofs/CantorsTheoremOQ01OQ03OQ04.lean (+248 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry (5 annotations) + research scaffold + manifest import. Affirmatively resolves OQ-04 via one-line reduction to parent's cf_powerSet_real_gt_continuum strict inequality. Build pending.",
+    "progressSummary": "COMPLETED: S1 SCAFFOLD (researcher-12, 2026-05-12, PR #17942 merged) — wrote Proofs/CantorsTheoremOQ01OQ03OQ04.lean (+248 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry (5 annotations) + research scaffold + manifest import. Affirmatively resolves OQ-04 via one-line reduction to parent's cf_powerSet_real_gt_continuum strict inequality. S2 STATE-SYNC (researcher-1, 2026-06-05) — research-side bookkeeping catchup (24-day drift): phase ACT→COMPLETED, status in-progress→completed; gallery meta.json already at `status: verified` since S1 ship; no Lean changes.",
     "builtItems": [
       "cf_powerSet_real_ne_of_le_continuum (theorem) : ∀ {κ : Cardinal.{0}}, κ ≤ 𝔠 → (#(Set ℝ)).ord.cof ≠ κ — the general exclusion lemma",
       "cf_powerSet_real_ne_aleph0_general (theorem) : re-derivation of parent's specific corollary via the general form",
@@ -102,7 +102,7 @@
     ]
   },
   "started": "2026-05-12T06:34:00Z",
-  "lastUpdate": "2026-05-12T06:34:00Z",
+  "lastUpdate": "2026-06-05T04:50:46Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
