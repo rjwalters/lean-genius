@@ -47,7 +47,12 @@
     "significance": "supporting",
     "prerequisites": [
       "Lean 4 import system",
-      "Mathlib library structure"
+      "Mathlib library structure",
+      "radical tower $K_0 \\subset K_1 \\subset \\cdots \\subset K_m$ with $K_{i+1} = K_i(\\sqrt[n_i]{a_i})$",
+      "Kummer correspondence: cyclic extensions of $K$ containing $\\mu_n$ correspond to subgroups of $K^\\times/(K^\\times)^n$",
+      "cyclotomic extensions $\\mathbb{Q}(\\zeta_n)$ and abelianness of $\\text{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n)^\\times$",
+      "composition series with cyclic factors as the definition of a solvable group",
+      "Mathlib's `Polynomial.Gal` typeclass machinery (`IsSolvable` instance plumbing)"
     ],
     "relatedConcepts": [
       "Mathlib",
@@ -59,7 +64,10 @@
       "alternatingGroup.isSimpleGroup_five",
       "Polynomial.Gal",
       "Kummer theory",
-      "minimal import set"
+      "cyclotomic abelianness",
+      "radical-tower-to-cyclic-tower reduction",
+      "minimal import set",
+      "abel-ruffini-oq-04 (concrete witness pipeline reusing this import quartet)"
     ]
   },
   {
