@@ -286,6 +286,25 @@ theorem qdetN_step_eq_qdetF {n : ℕ}
       = (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j := by
   sorry
 
+/-- **Field consistency at n = 0 (1×1 matrices), base case.** Concrete-witness
+specialisation of `qdetN_step_eq_qdetF` to 1×1 matrices, proved without
+invoking the strategic sorry. The double sum defining `qdetN_step` is
+indexed by `Fin 0 × Fin 0` (empty), and the complementary `minorIJ` is
+the empty 0×0 matrix with determinant 1. Both sides collapse to `A 0 0`
+and the cofactor sign `(-1)^(0+0) = 1` is trivial. This grounds the
+strategic theorem's signed RHS at the smallest case (the n=2 and n=3
+specialisations already proved in Parts III–IV use the parent files'
+`qdet00`/`qdet11`/`qdet3` definitions instead of `qdetN_step`, so this
+is the first verification connecting `qdetN_step` directly to `qdetF`). -/
+theorem qdetN_step_eq_qdetF_fin_one
+    (A : Matrix (Fin 1) (Fin 1) F) (i j : Fin 1)
+    (_h : (minorIJ A i j).det ≠ 0) :
+    qdetN_step A i j (minorIJ A i j)⁻¹
+      = (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j := by
+  fin_cases i
+  fin_cases j
+  simp [qdetN_step, qdetF]
+
 end NonCommutative
 
 end CramersRuleOQ01OQ02OQ01OQ01
