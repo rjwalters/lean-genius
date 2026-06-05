@@ -1295,6 +1295,20 @@
       "description": "Joint solvability packaging for $n \\leq 4$: simultaneously certifies $\\mathrm{IsSolvable}(S_n)$ AND $\\mathrm{IsSolvable}(A_n)$ as a single anonymous-constructor proof $\\langle \\text{symmetric\\_solvable\\_of\\_le\\_four } hn,\\ \\text{alternating\\_solvable\\_of\\_le\\_four } hn\\rangle$. While `symmetric_solvable_iff` and `alternating_solvable_iff` give the full biconditional classifications, this paired conjunction is the form most directly consumed by downstream proofs that need *both* solvability witnesses to construct composition series with abelian factors (the canonical $\\{e\\} \\trianglelefteq A_n \\trianglelefteq S_n$ tower for $n \\leq 4$, refined by $V_4$ at $n = 4$). Flagged as an original contribution in `meta.originalContributions[3]`: bundles two Mathlib instance inferences into a single ergonomic API surface without requiring re-derivation at the call site.",
       "leanType": "(n : ℕ) (hn : n ≤ 4) : IsSolvable (Equiv.Perm (Fin n)) ∧ IsSolvable (alternatingGroup (Fin n))",
       "line": 425
+    },
+    {
+      "name": "symmetric_not_solvable_of_five_le",
+      "type": "key",
+      "description": "The negative half of the symmetric biconditional: $S_n$ is *not* solvable for $n \\geq 5$. The proof routes the integer hypothesis $5 \\leq n$ into Mathlib's `Equiv.Perm.not_solvable`, which expects a cardinal-arithmetic bound $5 \\leq \\#(\\mathrm{Fin}\\,n)$ — the bridge is `Cardinal.mk_fintype` together with `Fintype.card_fin` (lines 163–165). This is the *structurally important* theorem: it carries the entire $A_5$-obstruction into the symmetric-group setting and is the foundational lemma that `symmetric_solvable_iff` (the public biconditional) and the entire $S_n$-non-solvability cascade in Part XI depend on. Without this theorem, the file would have only the easy positive direction and no obstruction theorem; with it, the contrapositive of Galois's solvability theorem becomes citable for all generic degree-$n$ polynomials with $n \\geq 5$. The proof internally invokes the perfect-subgroup argument inside `Equiv.Perm.not_solvable` ($A_n$ perfect for $n \\geq 5$, hence non-solvable, hence $S_n$ has a non-solvable subgroup), which is the canonical Mathlib pathway — see `arg-sharp-threshold` for the tactical breakdown.",
+      "leanType": "{n : ℕ} (hn : 5 ≤ n) : ¬ IsSolvable (Equiv.Perm (Fin n))",
+      "line": 161
+    },
+    {
+      "name": "alternating_not_solvable_of_five_le",
+      "type": "key",
+      "description": "The negative half of the alternating biconditional: $A_n$ is *not* solvable for $n \\geq 5$. Proved by contradiction: if $A_n$ were solvable then the exact sequence $1 \\to A_n \\to S_n \\xrightarrow{\\mathrm{sgn}} \\mathbb{Z}^\\times \\to 1$ would make $S_n$ solvable (via `solvable_of_ker_le_range` applied to `alternatingGroup (Fin n)).subtype` and `Equiv.Perm.sign`, with the kernel-into-range step closed by `Equiv.Perm.mem_alternatingGroup`), contradicting `symmetric_not_solvable_of_five_le`. The 7-line proof is the *constructive backbone* of the file's biconditional architecture: it shows how the abstract Mathlib lemma `solvable_of_ker_le_range` weaponizes the sign sequence to lift solvability across the $A_n \\hookrightarrow S_n$ inclusion in the *contrapositive* direction. Anchors `alternating_solvable_iff` (Part VII) and every $A_n$-side non-solvability witness in Part XI ($A_5, A_6, A_7$).",
+      "leanType": "{n : ℕ} (hn : 5 ≤ n) : ¬ IsSolvable (alternatingGroup (Fin n))",
+      "line": 259
     }
   ],
   "sorries": 0
