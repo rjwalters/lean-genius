@@ -13770,12 +13770,12 @@
       "lastAudited": "2026-06-05T01:34:43Z"
     },
     "angle-trisection-oq-03-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [
         "lineCount 123→150, theoremCount 13→12, all 5 section line ranges off by ~10 (file has been edited since enrichment); core integrity claims (verified/0 sorries/0 axioms) hold — fixed in PR"
       ],
-      "result": "issues-fixed",
-      "lastAudited": "2026-05-03T03:37:43Z"
+      "result": "clean",
+      "lastAudited": "2026-06-05T15:48:19Z"
     },
     "area-of-circle-oq-01-oq-03-oq-02": {
       "auditCount": 1,
