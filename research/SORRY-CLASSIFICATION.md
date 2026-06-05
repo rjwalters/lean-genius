@@ -77,6 +77,81 @@ theorem erdos_340 (ε : ℝ) (hε : ε > 0) :
 
 **Aristotle spun on Erdős #340** because NO proof exists. That's for US to discover!
 
+## Decision Tree: which tool handles which sorry?
+
+When you hit a `sorry`, walk this tree before deciding what to do with it:
+
+```
+                       ┌──────────────────────────────┐
+                       │   You hit a `sorry`. What    │
+                       │   kind of declaration is it? │
+                       └──────────────┬───────────────┘
+                                      │
+              ┌───────────────────────┼────────────────────────┐
+              │                       │                        │
+              ▼                       ▼                        ▼
+        def f := by sorry      theorem/lemma             axiom foo : ...
+        (DEF SORRY)            (classify by tier)        (no body to fill)
+              │                       │                        │
+              ▼                       ▼                        ▼
+        Aristotle SKIPS         Classify the sorry:       Aristotle SKIPS.
+        these entirely.         TRIVIAL / HARD / OPEN     Convert to
+        Complete the def         (see tier table above)   `theorem ... := by sorry`
+        yourself first.                 │                  if you want it attempted.
+                                        │
+                ┌───────────────────────┼───────────────────────┐
+                │                       │                       │
+                ▼                       ▼                       ▼
+            TRIVIAL                   HARD                   OPEN
+        (1-10 min if you           (known result,        (unsolved
+         just write it)             paper exists,         conjecture,
+                │                   no creative           creative
+                │                   insight needed)       insight
+                │                       │                 required)
+                ▼                       ▼                     ▼
+        Write it yourself.    ┌─────────────────────┐   YOU work on it
+        Round-tripping        │ In a researcher     │   manually.
+        through Aristotle     │ session right now?  │   This is the
+        is slower than        └─────────┬───────────┘   MISSION — do not
+        `simp`/`omega`/                  │              submit to
+        `linarith`/                      │              Aristotle.
+        `decide`.            ┌───────────┴────────────┐
+                             │                        │
+                             ▼                        ▼
+                          YES                       NO
+                    (in-session,                 (end of session,
+                     interactive)                 batched cleanup)
+                             │                        │
+                             ▼                        ▼
+                ┌────────────────────────┐  ┌──────────────────────┐
+                │ MCP `prove()` per-     │  │ `*StatementOnly.lean`│
+                │ sorry (preferred)      │  │ single-theorem file  │
+                │                        │  │ for the batch        │
+                │ - extract snippet      │  │ pipeline             │
+                │ - minimal context_files│  │                      │
+                │ - async, poll ~10 min  │  │ (Harmonic format,    │
+                │ - max 3 concurrent     │  │  see section below)  │
+                │   per researcher       │  │                      │
+                └────────────────────────┘  └──────────────────────┘
+```
+
+**Quick rules of thumb:**
+
+| Sorry kind | Tool |
+|-----------|------|
+| `def f := by sorry` | You — Aristotle skips |
+| `axiom foo : ...` | You (or convert to `theorem ... := by sorry` first) |
+| TRIVIAL theorem sorry | You — faster than the round trip |
+| HARD theorem sorry, mid-session | MCP `prove()` (per-sorry, async) |
+| HARD theorem sorry, end-of-session batch | `*StatementOnly.lean` + batch pipeline |
+| OPEN theorem sorry | You — that's the research |
+
+**Hand-curated multi-sorry `*Aristotle.lean` companion files are
+DEPRECATED for new work** — the MCTS proof search is conditioned per
+sorry, so batching unrelated sorries dilutes the search budget. Existing
+companion files remain a working fallback; the batch agent still picks
+them up.
+
 ## Aristotle Companion Files (DEPRECATED — early multi-sorry pattern)
 
 > **Status (2026-06-05):** This multi-sorry companion-file pattern is **superseded** by the
