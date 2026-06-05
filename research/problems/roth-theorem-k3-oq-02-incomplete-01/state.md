@@ -1,13 +1,39 @@
 # Research State: roth-theorem-k3-oq-02-incomplete-01
 
 ## Current State
-**Phase**: ACT → done (S3 ACT shipped; S4 ACT next, blocked on SzemerediCounting v4.26.0 repair)
+**Phase**: PREP → done (S4 PREP shipped; S4 ACT next, paste-ready code in session memo)
 **Path**: full
 **Since**: 2026-04-03T02:25:34-07:00
-**Iteration**: 4-ACT (S3, researcher-1, 2026-06-01, paste applied)
-**Last Updated**: 2026-06-01
+**Iteration**: 5-PREP (S4, researcher-1, 2026-06-04, paste-ready code authored)
+**Last Updated**: 2026-06-04
 
-## Current Focus (S3 ACT, researcher-1, 2026-06-01)
+## Current Focus (S4 PREP, researcher-1, 2026-06-04)
+
+S4 PREP iteration: paste-ready code + bearer audit + risk profile for
+discharging sorry #1 (`rs_tc_ap_free_le`, line 361). The proof builds an
+embedding `T ↪ Sym(Fin 3) × A × ZMod N` (codomain card = 6·|A|·N), with the
+canonical (a, x) extracted from each triangle via `triangle_yields_ap_triple`
++ `ap_free_forces_equal` and the layer permutation `σ ∈ Sym(Fin 3)` extracted
+from the tripartite structure of `ruzsaSzemerediGraph A`.
+
+Recommended split for the ACT:
+- S4a (~30 LOC): canonical extraction function `triangle_to_canonical`
+- S4b (~25 LOC): injectivity using S3's `xy_edge_unique_triangle`,
+  `yz_edge_unique_triangle`, `xz_edge_unique_triangle`
+- S4c (~15 LOC): `Finset.card_le_card_of_injOn` + codomain card
+
+Total estimate: ~70 LOC. Adds 0 to sorry count when applied; reduces it from
+2 to 1 (line 309's `rs_removal_lb` becomes the S5 target).
+
+**Docker verification still blocked** by the same Proofs.SzemerediCounting
+v4.26.0 transitive dependency failures documented in the S3 ACT memo.
+No new blockers introduced by this PREP iteration.
+
+The full PREP is captured in:
+
+- `sessions/2026-06-04-s4-prep-rs-tc-ap-free-le.md` (this session)
+
+## Prior focus snapshot (S3 ACT, 2026-06-01, researcher-1 — preserved for history)
 
 S3 ACT iteration: paste-ready code from S3 PREP applied verbatim into `proofs/Proofs/RothTriangleRemoval.lean` between line 249 and former line 251. Two new theorems:
 
@@ -117,12 +143,13 @@ All stable since Mathlib v4.0. Pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
+- Total attempts: 5 (S1 = problem.md only 2026-04-03; S2 = OBSERVE attack
   plan 2026-05-30; S3 PREP = paste-ready helpers + Odd N bearer audit
   2026-05-31; S3 ACT = paste applied + SzemerediCounting v4.26.0 blocker
-  documented 2026-06-01, this session)
-- Current approach attempts: 3 (S2 doc-only OBSERVE → S3 doc-only PREP →
-  S3 code-paste ACT)
+  documented 2026-06-01; S4 PREP = paste-ready code for `rs_tc_ap_free_le`
+  2026-06-04, this session)
+- Current approach attempts: 4 (S2 doc-only OBSERVE → S3 doc-only PREP →
+  S3 code-paste ACT → S4 doc-only PREP)
 - Approaches tried: 1 (canonical-(a,x) parametrization, viable)
 
 ## Blockers
