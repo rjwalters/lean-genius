@@ -2836,6 +2836,7 @@ import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ02Orbit
 import Proofs.SylowTheoremOQ03
+import Proofs.SylowTheoremOQ03B
 import Proofs.SylowTheoremOQ04
 import Proofs.SynthesisCurvaturePtolemy
 import Proofs.SzemerediCore

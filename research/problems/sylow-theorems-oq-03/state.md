@@ -1,9 +1,81 @@
 # Current State
 
-**Phase**: ACT-REALIZED (S2 ACT shipped 2026-05-15T18:02:55Z; S4 ACT shipped 2026-05-16; §6a Candidate B ACT TOP-priority, deferred 16 days)
+**Phase**: ACT-REALIZED (S2 ACT 2026-05-15; S4 ACT 2026-05-16; S6 ACT 2026-06-05 — Candidate B build-verified)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-06-01 (S5 STATE-SYNC tick by researcher-1, claim `researcher-14190`; doc-only; no Mathlib master fetch this session — local mirror on v4.26.0 pin)
-**Iteration**: 14 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + S4 ACT 2026-05-16 + this S5 STATE-SYNC)
+**Last update**: 2026-06-05 (S6 ACT — Candidate B shipped, build-verified 3066 Docker jobs; researcher-1, claim `researcher-90270`)
+**Iteration**: 15 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + S4 ACT #19380 + S5 STATE-SYNC #22028 + this S6 ACT)
+
+## S6 ACT 2026-06-05 (researcher-1)
+
+**Mode:** S6 ACT — Lean-modifying, ships Candidate B. Build-verified
+`./proofs/scripts/docker-build.sh Proofs.SylowTheoremOQ03B` at 3066 jobs
+(rebuild attempt 2 after a 1-LOC type fix on `Nat.coprime_pow_primes`).
+
+### What changed (concise)
+
+| File | Δ | Note |
+|------|---|------|
+| `proofs/Proofs/SylowTheoremOQ03B.lean` | +163 LOC NEW | Discharges OQ-02 axiom `sylowProP_inter_trivial` via the PREP-2 finite-quotient route, using PREP-4/5's `nhds_basis_clopen` / `exist_openNormalSubgroup_sub_open_nhds_of_one` replacement chain + `IsTopologicalGroup` typeclass bridge |
+| `proofs/Proofs.lean` | +1 line | `import Proofs.SylowTheoremOQ03B` |
+| `research/problems/sylow-theorems-oq-03/state.md` | this header + S6 ACT subsection | Prior STATE-SYNC content preserved verbatim |
+| `src/data/research/problems/sylow-theorems-oq-03.json` | iteration 14 → 15 | `currentState.{focus,nextAction,phase,iteration,lastUpdate}` + `knowledge.{builtItems,nextSteps}` |
+| `research/problems/sylow-theorems-oq-03/sessions/2026-06-05-s6-act-candidate-b.md` | NEW | This session log + plan + risk register |
+
+### Theorem proved
+
+```
+ProfiniteSylow.sylowProP_inter_trivial_via_quotient :
+  ∀ {G : Type u_1} [inst : Group G] [inst_1 : TopologicalSpace G],
+    ProfiniteSylow.IsProfiniteGroup G →
+      ∀ (p q : ℕ) [hp : Fact (Nat.Prime p)] [hq : Fact (Nat.Prime q)],
+        p ≠ q →
+          ∀ (P : ProfiniteSylow.SylowProP G p) (Q : ProfiniteSylow.SylowProP G q),
+            P.toSubgroup ⊓ Q.toSubgroup = ⊥
+```
+
+This signature matches the OQ-02 axiom `sylowProP_inter_trivial` at
+`SylowTheoremOQ02.lean:133` exactly (modulo `[Fact (Nat.Prime _)]` vs
+`(hp : Fact p.Prime)` notation, which is definitionally identical).
+
+### Build risks realized vs predicted
+
+PREP planning identified 4 build risks. Outcome:
+
+| # | Predicted | Outcome |
+|---|-----------|---------|
+| 1 | Power coercion may need explicit `SubgroupClass.coe_pow` | **OK**: `simpa using congrArg Subtype.val ha` worked |
+| 2 | `hp.out.prime` vs `hp.out` for primality coercion | **REALIZED**: First build failed; `Nat.coprime_pow_primes` wants `Nat.Prime p` (not `Prime p`) because the `Nat` namespace shadows `_root_.Prime`. Fixed by dropping `.prime`. 1-LOC delta. |
+| 3 | `IsTopologicalGroup G := {}` anonymous-constructor synthesis | **OK**: Worked as-is |
+| 4 | `OpenNormalSubgroup.toOpenSubgroup.toSubgroup` 2-coercion path | **OK**: Worked as-is |
+
+Net: 1 build iteration + 1 minor type fix. Total Docker time ~50 min
+(~25 min per iteration, both fresh-clone builds).
+
+### Net axiom impact (this PR)
+
+OQ-02 axiom count: **4 → 4 (unchanged in this PR)**. The OQ-02 axiom
+`sylowProP_inter_trivial` at L133 remains, alongside the now-proved
+theorem `sylowProP_inter_trivial_via_quotient` in OQ-03B. **Realizing
+the 4 → 3 drop is a clean follow-on PR** (the OQ-02 axiom can be
+deleted, mirroring the A* → S4 split where S2 ACT shipped A* in OQ-03
+and S4 ACT removed the axiom 1 day later).
+
+### Revised Current Focus / Next Action
+
+- **§7a (NEW TOP)** — Realize the deferred OQ-02 axiom drop 4 → 3:
+  delete `axiom sylowProP_inter_trivial` at `SylowTheoremOQ02.lean:133`
+  + the corresponding `#check @sylowProP_inter_trivial` line at L372.
+  Single-file edit, ~6 LOC deletion, 1 Docker iteration (~25 min).
+  Update `src/data/proofs/sylow-theorems-oq-02/meta.json`:
+  `axiomCount` 4 → 3 + `lineCount` 374 → 368.
+- **§7b** — Mathlib upstream contribution (out-of-band; mathlib4 PR).
+  Unchanged from §6b.
+- **§7c** — `frattini_profinite` axiom restatement (curator/architect
+  scope). Unchanged from §6c.
+- **§7d (natural stopping point)** — once the §7a follow-on lands,
+  OQ-03 reaches its natural stopping point with OQ-02 at 3 axioms
+  (the two deep inverse-limit axioms + derivable `frattini`) and
+  0 sorries.
 
 ## S5 STATE-SYNC 2026-06-01 (researcher-1)
 
