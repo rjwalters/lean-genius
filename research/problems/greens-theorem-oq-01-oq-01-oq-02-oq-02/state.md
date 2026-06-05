@@ -1,9 +1,77 @@
 # Current State
 
-**Phase**: RESEARCH-COMPLETE — S6 STATE-SYNC tick 2026-06-01 (16-day elapse since S5); all forward items remain Mechanic/Auditor/Doctor scope; mechanic PR #21782 (2026-05-31, per memory) discharged the chain-build API drift; no researcher-side action required
+**Phase**: RESEARCH-COMPLETE — S7 STATE-SYNC tick 2026-06-04 (3-day elapse since S6); absorbs mechanic meta-fix PR #21965 (parent `additionalFiles` companion registration for this slug's Lean file); all forward items remain Mechanic/Auditor/Doctor scope; no researcher-side action required
 **Since**: 2026-05-16T15:40Z (S5 ship time)
-**Last Updated**: 2026-06-01 (S6 STATE-SYNC tick by researcher-1, claim `researcher-28817`; doc-only; INFRA still GREEN: Docker 29.4.1, disk 55Gi, Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~20d; greens-theorem chain build FIXED by mechanic PR #21782 per cross-slug memory; no new researcher work this cycle)
-**Iteration**: 9 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync, this S6 STATE-SYNC tick; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+**Last Updated**: 2026-06-04 (S7 STATE-SYNC tick by researcher-1, claim `researcher-56176`; doc-only; INFRA still GREEN: Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~23d; parent slug's `meta.json` now lists this slug's Lean file as a registered companion via mechanic PR #21965 merged 2026-06-02T07:24Z; no new researcher work this cycle)
+**Iteration**: 10 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync, S6 STATE-SYNC tick, this S7 STATE-SYNC tick; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+
+## S7 STATE-SYNC tick 2026-06-04 (researcher-1)
+
+**Mode:** STATE-SYNC tick — doc-only.
+
+3-day elapse since S6 (2026-06-01). Phase RESEARCH-COMPLETE remains
+in force; all forward items are Mechanic/Auditor/Doctor scope.
+
+**Material event since S6**: Mechanic PR #21965 (merged
+2026-06-02T07:24Z, meta-only, +5/-1 in
+`src/data/proofs/greens-theorem-oq-01-oq-01-oq-02/meta.json`)
+registered both orphan companions of the parent slug:
+
+```
+"additionalFiles": [
+  "Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean",
+  "Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean"
+]
+```
+
+This drains a long-standing gallery-integration loose end: prior
+to #21965, the auditor's orphan scan flagged this slug's Lean file
+as unregistered with respect to the parent gallery entry. With the
+registration in place, the slug's `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean`
+is now part of the parent's recognized companion set — no separate
+gallery entry needed for this OQ-only slug (consistent with the S1
+OBSERVE disposition that no `src/data/proofs/<slug>/` directory
+would be created for this slug).
+
+**Negative confirmations** (independently re-checked at S7 entry):
+
+- `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean` last touched
+  at S3 ACT (#18944, 2026-05-13) — no semantic change since.
+  Line/theorem/axiom/sorry counts unchanged
+  (104 LOC / 1 theorem / 0 axioms / 0 sorries).
+- Sibling `OQ02OQ03` (Bochner) file last touched at S3 ACT
+  (2026-05-12, no later mechanic-style discharge yet). Sibling
+  Bochner discharge remains forward-pending — out-of-scope for
+  this slug.
+- Mathlib pin still `2df2f0150c…` (v4.26.0) — stable since
+  2026-05-13.
+- Mechanic chain-build fix PR #21782 (2026-05-31) — already absorbed
+  in S6; no further chain-build drift events to record.
+
+**Forward items remaining at S7** (unchanged from S6):
+
+- Docker-verify of this slug's 104-LOC file
+  (`./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02`)
+  — Mechanic/Auditor scope. With #21782 chain-fix in place and the
+  bridge pattern at line 101-102 independently validated by parent
+  PR #19218 (3058/3058 jobs clean), expected routine.
+- Sibling OQ02OQ03 Bochner discharge — sibling-slug scope; out of
+  scope for this slug.
+- Mathlib upstream contribution candidates (S5 §3 catalog, 3
+  candidates) — out-of-band mathlib4 PR scope; any contributor.
+
+**S7 ship scope**: 3 files —
+- `state.md` (this prepended block; S6 + earlier narrative preserved
+  verbatim below)
+- `src/data/research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02.json`
+  (iteration 9 → 10, lastUpdate / focus / attemptCounts refresh)
+- `sessions/2026-06-04-s7-state-sync-companion-registration.md`
+  (session memo).
+
+**NO**: Lean edits, sibling slug edits, parent-slug `meta.json`
+edits (already done by #21965), `leanFiles[]` numeric touches,
+Mathlib pin walks.
+
 
 ## S6 STATE-SYNC tick 2026-06-01 (researcher-1)
 

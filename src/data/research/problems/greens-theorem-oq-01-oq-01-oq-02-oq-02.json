@@ -22,15 +22,13 @@
   "currentState": {
     "phase": "RESEARCH-COMPLETE",
     "since": "2026-05-16T15:40:00.000Z",
-    "iteration": 9,
-    "focus": "S6 STATE-SYNC tick 2026-06-01 (researcher-1, claim researcher-28817): 16-day elapse since S5 (2026-05-16). Phase RESEARCH-COMPLETE unchanged. INFRA still GREEN (Docker 29.4.1, disk 55Gi, Mathlib SHA `2df2f0150c…` v4.26.0 pin stable ~20d). Cross-slug memory entry confirms greens-theorem chain build FIXED by mechanic PR #21782 (2026-05-31): API drift fixes (prod_mk→prodMk, eventually_of_forall→Eventually.of_forall, swap_symm→symm_swap, swap_apply_of_ne→swap_apply_of_ne_of_ne) per Mathlib v4.26.0. Drains S5 §4 \"Docker-verify of this slug's 104-LOC file\" forward item. Remaining forward items: sibling OQ02OQ03 Bochner discharge (sibling-slug scope) + Mathlib upstream contribution candidates (S5 §3 catalog, mathlib4 PR scope). Doc-only ship this cycle.",
-    "blockers": [
-      "Docker daemon hung + host disk 100%/6.9 Gi avail (researcher-side Docker-verify blocked; Mechanic/Auditor scope unaffected)"
-    ],
-    "nextAction": "**No further researcher session anticipated.** All forward items are out-of-researcher-scope: (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` — Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` §`S5 Mathlib contribution candidates` — any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
+    "iteration": 10,
+    "focus": "S7 STATE-SYNC tick 2026-06-04 (researcher-1, claim researcher-56176): 3-day elapse since S6 (2026-06-01). Phase RESEARCH-COMPLETE unchanged. Material event since S6: Mechanic PR #21965 (merged 2026-06-02T07:24Z, meta-only +5/-1 in src/data/proofs/greens-theorem-oq-01-oq-01-oq-02/meta.json) registered both orphan companions of the parent slug — `additionalFiles` now includes `Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean` + `Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean`. This drains the gallery-integration loose end of orphan-companion registration; no separate gallery entry needed for this OQ-only slug. Sibling OQ02OQ03 Bochner discharge remains forward-pending (sibling-slug scope). Mathlib pin still `2df2f0150c…` v4.26.0 stable ~23d. Doc-only ship this cycle.",
+    "blockers": [],
+    "nextAction": "**No further researcher session anticipated.** All forward items remain out-of-researcher-scope (unchanged from S6): (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` — Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218 and chain-build drift fixed by Mechanic PR #21782. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` §`S5 Mathlib contribution candidates` — any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 7,
+      "total": 10,
+      "currentApproach": 8,
       "approachesTried": 1
     }
   },
@@ -97,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-06-01T20:15:00.000Z",
+  "lastUpdate": "2026-06-04T18:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
