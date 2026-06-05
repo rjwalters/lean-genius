@@ -32,12 +32,12 @@
     "goal": "Formalize in Lean an axiomatised version of the conjectured Θ(n^(2/d)) rate: (1) Define distinctDistancesD and fourPointPropertyD for arbitrary d. (2) Axiomatise Solymosi-Vu lower bound. (3) Axiomatise the Cartesian-lattice construction's properties. (4) Combine to obtain dim_d_distance_rate."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-04T18:00:00.000Z",
-    "iteration": 13,
-    "focus": "S7 PREP-2 (researcher-1, 2026-06-04T18:00Z, doc-only): paste-ready Lean recipe for the (3, 5) axis-vs-plane safety theorem in sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md. Lowest-LOC of three S7 ACT candidates per S6 STATE-SYNC § next-action menu (full-rank (2,5) needs ternary Hasse-Minkowski not in Mathlib v4.26.0; Theta(n^{2/3}) rate needs S3+S4 plan axiomatisations). (3,5) wins because all three equations reduce mod 5 (same modulus as proved (2,5)); recipe ships 2 new decide-checked helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff for equation A_prime, zmod_5_a_sq_eq_three_b_sq_iff for B_prime and C_prime) and 3 new descent theorems mirroring safe_{A,B,C}_holds 1:1 with substitution arithmetic swap 2 -> 3. Estimated Lean delta: +142 LOC, 0 sorries, 0 axioms (file 292 -> ~434 LOC). Docker daemon down at write-time (per docker info 2026-06-04T17:54Z); S7 ACT shipment waits for Docker or follows the (build pending) convention used by S7 ACT sum-of-divisors-oq-02 #22238. No Lean / meta.json / problem.md / knowledge.md / sibling / lake-manifest edits in this PREP.",
+    "phase": "ACT",
+    "since": "2026-06-04T20:30:00.000Z",
+    "iteration": 14,
+    "focus": "S7 ACT (researcher-1, 2026-06-04T20:30Z, Docker-verified GREEN): applied the S7 PREP-2 paste-ready recipe to proofs/Proofs/Erdos659OQ01OQ02.lean (PRE 292 -> POST 488 LOC; delta +196 LOC). The (3, 5) axis-vs-plane safety theorem safe_3_5_axis_vs_plane is now proved as the conjunction of safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds, each by the same QR-descent template as the proved (2, 5) version with two new mod-5 helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff for equation A_prime; zmod_5_a_sq_eq_three_b_sq_iff for B_prime and C_prime). 0 sorry / 0 axiom delta (file remains 0 / 0). Docker-verified GREEN: ./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02 -> Build completed successfully (3058 jobs). This shrinks the S6/S7 next-action menu by one safe pair; remaining: (2, 13), (5, 7), (5, 13), (7, 13), (11, 13) each by analogous QR-descent at a new modulus; full-rank safety still blocked on ternary Hasse-Minkowski (Mathlib v4.26.0 absence per S2c PREP §5.6).",
     "blockers": [],
-    "nextAction": "S7 ACT (any researcher when Docker returns) — apply the (3, 5) recipe from sessions/2026-06-04-s7-prep-2-3-5-axis-vs-plane-recipe.md to proofs/Proofs/Erdos659OQ01OQ02.lean: insert 2 mod-5 helpers after line 80 (after zmod_5_a_sq_eq_two_b_sq_iff) and 3 descent theorems plus the safe_3_5_axis_vs_plane corollary before line 292 (before end Erdos659OQ01OQ02). Expected diff: +142 LOC, 0 sorries, 0 axioms. Verify with ./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02 from the worktree directory. Subsequent next-action candidates remain the other six S2a-safe pairs (each adds either a new modulus or a different non-residue coefficient at mod 5) and the still-open full-rank stratum + Theta(n^{2/3}) assembly (both axiomatised per S2c PREP §6.1 until Mathlib gains ternary Hasse-Minkowski).",
+    "nextAction": "S8 PREP / S8 ACT — Continue the safe-pair coverage. Lowest-LOC remaining is (2, 13): same axis-vs-plane structure with mod-13 reduction (169-case decide per helper, ~150 LOC delta). Alternative: (5, 7) with mod-7 reduction. The remaining two long-term blockers stay the same: full-rank safety (needs ternary Hasse-Minkowski or honest axiomatisation per S2c §6.1) and Theta(n^{2/3}) assembly (needs S3+S4 plan axiomatisations).",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -46,7 +46,7 @@
       "S5_main_theorem": 0,
       "S6_gallery": 0
     },
-    "lastUpdate": "2026-06-04T18:00:00.000Z"
+    "lastUpdate": "2026-06-04T20:30:00.000Z"
   },
   "knowledge": {
     "insights": [
@@ -89,5 +89,5 @@
   "significance": 6,
   "tractability": 3,
   "lastUpdated": "2026-05-14T03:50:00.000Z",
-  "lastUpdate": "2026-06-04T18:00:00.000Z"
+  "lastUpdate": "2026-06-04T20:30:00.000Z"
 }
