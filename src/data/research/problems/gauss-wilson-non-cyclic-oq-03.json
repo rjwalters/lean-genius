@@ -21,14 +21,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T13:00:00.000Z",
-    "iteration": 6,
-    "focus": "S5-prep (researcher-6, 2026-05-12): ACT — added Section 7 parity lemma two_dvd_card_units_zmod_odd_prime_pow: for any odd prime p and k ≥ 1, |(ZMod p^k)ˣ| = φ(p^k) = p^{k-1}(p-1) is even. Proof: ZMod.card_units_eq_totient + Nat.totient_prime_pow, then dvd_mul_of_dvd_right reduces to 2 ∣ p-1, which is immediate from Odd p via destructure + omega. This is the parity hypothesis required by S4 card_filter_sq_eq_one_cyclic_even when specialising to (ZMod p^k)ˣ. Three docstring references to the non-existent name ZMod.isCyclic_units_of_prime_pow were corrected to point at Mathlib’s real classification ZMod.isCyclic_units_iff. File: 296 → 341 lines (+45), +1 theorem, 0 axioms, 1 sorry unchanged.",
+    "since": "2026-06-04T22:50:00.000Z",
+    "iteration": 7,
+    "focus": "S5b.1+.2 (researcher-1, 2026-06-04): ACT — closed the two small power-of-2 unit-side counts (k=1 and k=2), implementing the batched proposal from the S5b PREP #18648 (researcher-8, 2026-05-13). Two new theorems in a new Section 8: card_filter_sq_eq_one_units_zmod_two (count = 1; trivial group) and card_filter_sq_eq_one_units_zmod_four (count = 2; cyclic order 2). Both proofs are pure `decide` — the unit groups have decidable equality and computable Fintype instances, so the filter cardinality reduces to a concrete numeric equality at elaboration time. Together with S5 (odd-prime power), this closes two of three per-prime-power inputs that S6 (CRT multiplicativity) will need. The remaining input is S5b.3 (k≥3, count=4) via the `orderOf_five` toolchain (design in S5b PREP §3.3). File: 335 → 396 lines (+61), +2 theorems, 0 axioms, 1 sorry unchanged.",
     "blockers": [],
-    "nextAction": "S5: package the cyclic instance via (ZMod.isCyclic_units_iff).mpr on the odd-prime-power disjunct, then combine with two_dvd_card_units_zmod_odd_prime_pow (S5-prep, this iteration) + card_filter_sq_eq_one_cyclic_even (S4) to obtain card_units_sq_eq_one_zmod_odd_prime_pow. Compose with S3 ring↔unit bridge for the full ring-level count. Target ~30 lines on top of S5-prep. Then S6 CRT multiplicativity; S7 induction assembly.",
+    "nextAction": "S5b.3 ACT: substantive even-prime work — (ZMod 2^k)ˣ count for k ≥ 3 via the `orderOf_five` cardinality squeeze (~60-90 LOC). Complete design in S5b PREP #18648 §3.3; the proof adapts `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s established `orderOf_five` idiom. Then S6 ACT (CRT multiplicativity) combines S5 + S5b.1 + S5b.2 + S5b.3 into a multiplicative formula over n.primeFactors (design in S6 PREP #18423). Then S7 ACT (induction assembly) closes the main theorem `card_sqrts_one_eq_numSqrtsOne` (design in S7 PREP #18465).",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
@@ -39,7 +39,8 @@
       "research/problems/gauss-wilson-non-cyclic-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/GaussWilsonNonCyclicOQ03.lean with 1 sorry placeholder.",
       "research/problems/gauss-wilson-non-cyclic-oq-03/knowledge.md (new, ~200 lines): numerical table N=1..120 verifying the formula at 18 values, closed-formula derivation, parent-file API summary, Mathlib status with module names, three equivalent counts (ring / units / characters), S2 skeleton.",
       "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (new, ~120 lines): epsTwo, omegaOdd, numSqrtsOne defs; numSqrtsOne_pos proved; 13 decide examples spanning powers of 2, odd-only, and mixed cases; card_sqrts_one_eq_numSqrtsOne main theorem statement with sorry.",
-      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S4 generic endpoint: card_filter_sq_eq_one_cyclic_even (Section 6). For any [Group][DecidableEq][Fintype][IsCyclic] G with 2 ∣ Fintype.card G, #{u : G | u^2 = 1} = 2. Proof: rw card_filter_sq_eq_one_decomp; rw card_orderOf_eq_totient at d=1 and d=2; decide. 257 → 296 lines."
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S4 generic endpoint: card_filter_sq_eq_one_cyclic_even (Section 6). For any [Group][DecidableEq][Fintype][IsCyclic] G with 2 ∣ Fintype.card G, #{u : G | u^2 = 1} = 2. Proof: rw card_filter_sq_eq_one_decomp; rw card_orderOf_eq_totient at d=1 and d=2; decide. 257 → 296 lines.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S5b.1+.2 endpoint (researcher-1, 2026-06-04): Section 8 — card_filter_sq_eq_one_units_zmod_two (count = 1; trivial group (ZMod 2)ˣ) and card_filter_sq_eq_one_units_zmod_four (count = 2; cyclic order 2 (ZMod 4)ˣ). Both via pure `decide`. Implements the batched proposal from S5b PREP #18648 (researcher-8, 2026-05-13). File: 335 → 396 lines, +2 theorems, 0 axioms, 1 sorry unchanged."
     ],
     "insights": [
       "Closed formula: # = 2^(ω_odd(n) + ε₂(n)) where ω_odd(n) is the number of distinct odd prime factors of n and ε₂(n) is 0 if v₂(n) ≤ 1, 1 if v₂(n) = 2, 2 if v₂(n) ≥ 3.",
@@ -95,7 +96,7 @@
     ]
   },
   "started": "2026-05-12T04:44:06.000Z",
-  "lastUpdate": "2026-06-04T22:32:00.000Z",
+  "lastUpdate": "2026-06-04T22:50:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -113,8 +114,8 @@
     {
       "path": "Proofs/GaussWilsonNonCyclicOQ03.lean",
       "filename": "GaussWilsonNonCyclicOQ03.lean",
-      "lineCount": 335,
-      "theoremCount": 8,
+      "lineCount": 396,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 1,

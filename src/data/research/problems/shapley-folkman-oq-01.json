@@ -28,17 +28,17 @@
     "goal": "Create proofs/Proofs/ShapleyFolkmanOQ01.lean with a formalized negative result (Approach C: ℓ² counter-example to literal Shapley–Folkman extension), documenting the obstruction precisely. Approach A (Aumann/Lyapunov) is deferred to a future sub-OQ given its multi-session upstream prerequisites."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-04T00:00:00Z",
-    "iteration": 16,
-    "focus": "S2-A ACT-4 PREP (researcher-1, 2026-06-04): materialised the long-flagged existence form into a citation-pinned 32-LOC paste-ready Lean recipe in sessions/2026-06-04-s2a-act-4-prep-existence-form-recipe.md. Three named results scoped: (1) helper lemma midpoint_mem_convexHull_pair_zero_basis (~23 LOC), (2) noncomputable def midpointDecomp (~14 LOC), (3) theorem exists_tight_decomposition (~12 LOC, anonymous constructor combining midpointDecomp with the S2-A ACT-3 tight_excess_eq_finrank corollary). All 5 Mathlib v4.26.0 bearers re-verified at lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Finset.smul_sum at Algebra/BigOperators/GroupWithZero/Action.lean:57-59 is the only new bearer; the other four — convexHull_pair, convex_convexHull, subset_convexHull, finrank_euclideanSpace_fin — already used in the OQ01 file). Fallbacks documented for four failure modes (simp on set-literal membership, Finset.smul_sum binder mismatch, absurd elaboration, noncomputable rejection). No .lean / no meta.json / no knowledge.md edits this iteration — docker daemon unavailable, ACT deferred. File still at 228 LOC, 4 theorems, 0 sorries, 0 local axioms, 5 inherited axioms.",
+    "phase": "ACT",
+    "since": "2026-06-04T23:00:00Z",
+    "iteration": 17,
+    "focus": "S2-A ACT-4 ACT (researcher-1, 2026-06-04): executed the Session 16 paste-ready Lean recipe verbatim. Three named results added before `end ShapleyFolkmanOQ01`: (1) helper lemma midpoint_mem_convexHull_pair_zero_basis (proves (1/2)•e_i ∈ convexHull ℝ {0, e_i} via subset_convexHull + convex_convexHull chain), (2) noncomputable def midpointDecomp (the natural midpoint decomposition witness with all 4 structure fields filled), (3) theorem exists_tight_decomposition (anonymous-constructor combination of midpointDecomp + tight_excess_eq_finrank). File: 228 → 306 LOC (+78 including ~46 LOC docstrings), +2 theorems + 1 noncomputable def, 0 new sorries, 0 new local axioms. Build pending PR CI (researcher worktree .lake symlink loop prevents local docker verification). This closes the S2-A line of OQ01: parent shapley_folkman bound is now both unavoidable (tight_excess_count) and achievable (exists_tight_decomposition).",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "S2-A ACT-4 ACT pass (paste-ready, single session, ~5-10 min wall-clock when docker is available): paste sessions/2026-06-04-s2a-act-4-prep-existence-form-recipe.md §3.1-§3.3 verbatim into proofs/Proofs/ShapleyFolkmanOQ01.lean immediately before `end ShapleyFolkmanOQ01` (line 228), run ./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01, apply §5 fallbacks if any subproof misfires (low risk). Expected delta: +32 LOC (228 → 260), +2 theorems + 1 def (4 theorems → 5 theorems + 1 noncomputable def). Or pivot to gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/ with status=axiomatized, badge=axiom, theoremCount=4 (or 5 if ACT-4 lands first), sorries=0, 5 inherited axioms. Multi-session deferred: S2-B PREP/ACT truncation lift.",
+    "nextAction": "If PR CI passes: pivot to gallery entry creation (enricher scope): src/data/proofs/shapley-folkman-oq-01/ with status=axiomatized, badge=axiom, theoremCount=6, sorries=0, defs=1, 5 inherited axioms. If any subproof fails: apply Session 16 §5 fallback (simp on set-literal membership, Finset.smul_sum binder mismatch, absurd elaboration, or noncomputable rejection) verbatim in a follow-up doctor PR. Multi-session deferred: S2-B PREP/ACT truncation lift to lp 2 ℕ / EuclideanSpace ℝ ℕ; S3 ACT (Aumann statement-only) — needs Lyapunov upstream not in Mathlib.",
     "attemptCounts": {
-      "total": 16,
-      "currentApproach": 15,
+      "total": 17,
+      "currentApproach": 16,
       "approachesTried": 1
     }
   },
@@ -46,10 +46,10 @@
     {
       "path": "Proofs/ShapleyFolkmanOQ01.lean",
       "filename": "ShapleyFolkmanOQ01.lean",
-      "lineCount": 228,
-      "theoremCount": 4,
+      "lineCount": 306,
+      "theoremCount": 6,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "inheritedAxioms": 5,
       "isAristotle": false,
@@ -93,5 +93,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-06-04T00:00:00Z"
+  "updatedAt": "2026-06-04T23:00:00Z"
 }

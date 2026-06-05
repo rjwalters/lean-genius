@@ -332,4 +332,65 @@ theorem card_filter_sq_eq_one_units_zmod_prime_pow_odd
   -- 2 ∣ p^(k-1) * (p-1) because p odd ⇒ 2 ∣ (p - 1).
   exact dvd_mul_of_dvd_right (hp.even_sub_one hp_odd).two_dvd _
 
+-- ============================================================================
+-- Section 8: Power-of-2 small prime-power cases (S5b.1, S5b.2)
+-- ============================================================================
+
+/-! ### S5b — small power-of-2 unit counts
+
+Companion to S5: handles the even prime `p = 2` case at small exponents
+`k ∈ {1, 2}`. The structural `k ≥ 3` case (`(ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^(k-2)`,
+count = 4) is deferred to S5b.3.
+
+The mathematical content (verified numerically in `knowledge.md` and proved
+here for `k ≤ 2`):
+
+```
+  k = 1 : (ZMod 2)ˣ trivial               → count = 1
+  k = 2 : (ZMod 4)ˣ cyclic order 2        → count = 2
+  k ≥ 3 : (ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^(k-2)   → count = 4   [S5b.3]
+```
+
+Both proofs here are `decide`-based: the unit groups have decidable
+equality and computable Fintype instances (via `ZMod.card_units_eq_totient`
+and `Nat.totient_prime_pow`), so the filter cardinality reduces to a
+concrete natural-number equality at elaboration time.
+
+These per-prime-power facts, together with S5
+(`card_filter_sq_eq_one_units_zmod_prime_pow_odd`), are the base-case
+inputs that the eventual CRT multiplicativity step (S6) consumes when
+assembling the closed-form `numSqrtsOne(n) = 2^(ω_odd(n) + ε₂(n))`
+formula. -/
+
+/-- **S5b.1 — `(ZMod 2)ˣ` has exactly one square root of `1`.**
+
+The unit group `(ZMod 2)ˣ` is trivial: only the residue `1` is coprime
+to `2`, so `|(ZMod 2)ˣ| = φ(2) = 1`. The unique element is the identity,
+which satisfies `1^2 = 1`. Count = `1`.
+
+This is the `ε₂(n) = 0` half of the two-adic correction: when `2 ∥ n`
+(i.e. `v₂(n) = 1`), the power-of-2 factor contributes no extra square
+roots beyond the trivial one. -/
+theorem card_filter_sq_eq_one_units_zmod_two :
+    (Finset.univ.filter (fun u : (ZMod 2)ˣ => u ^ 2 = 1)).card = 1 := by
+  decide
+
+/-- **S5b.2 — `(ZMod 4)ˣ` has exactly two square roots of `1`.**
+
+The unit group `(ZMod 4)ˣ = {1, 3}` is cyclic of order 2 (cardinality
+`φ(4) = 2`). Both elements satisfy `u^2 = 1`: `1^2 = 1` directly, and
+`3^2 = 9 ≡ 1 (mod 4)`. Count = `2`.
+
+This is the `ε₂(n) = 1` case of the two-adic correction: when `4 ∥ n`
+(i.e. `v₂(n) = 2`), the power-of-2 factor contributes a single extra
+square root (`-1 ≡ 3 (mod 4)`), doubling the count.
+
+Alternative proof (not used here, for reference): `(ZMod 4)ˣ` is cyclic
+of even order, so the S4 generic `card_filter_sq_eq_one_cyclic_even`
+applies directly. The `decide` route is shorter (no `IsCyclic` instance
+plumbing) and equally robust at this small size. -/
+theorem card_filter_sq_eq_one_units_zmod_four :
+    (Finset.univ.filter (fun u : (ZMod 4)ˣ => u ^ 2 = 1)).card = 2 := by
+  decide
+
 end GaussWilsonNonCyclicOQ03

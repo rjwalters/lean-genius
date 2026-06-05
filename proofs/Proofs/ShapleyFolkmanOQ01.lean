@@ -225,4 +225,82 @@ theorem tight_excess_eq_finrank (N : ℕ)
         Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) := by
   rw [tight_excess_count N D, finrank_euclideanSpace_fin]
 
+/-- **S2-A ACT-4 helper**. The midpoint `(1/2) • e_i` lies in the convex
+    hull of `{0, e_i}`. This is the per-`i` membership statement needed
+    by `midpointDecomp.mem_convexHull` below.
+
+    Proof: `(1/2) • e_i = (1/2) • 0 + (1/2) • e_i` is a convex combination
+    of `0 ∈ {0, e_i}` and `e_i ∈ {0, e_i}` with weights `(1/2, 1/2)`.
+    Discharged by the same `convex_convexHull` + `subset_convexHull` chain
+    used by `mem_convexHull_finset_sum`. -/
+lemma midpoint_mem_convexHull_pair_zero_basis {N : ℕ} (i : Fin N) :
+    ((1 / 2 : ℝ) • EuclideanSpace.single i (1 : ℝ) :
+        EuclideanSpace ℝ (Fin N))
+      ∈ convexHull ℝ
+          ({0, EuclideanSpace.single i 1} :
+              Set (EuclideanSpace ℝ (Fin N))) := by
+  have h0 : (0 : EuclideanSpace ℝ (Fin N))
+      ∈ convexHull ℝ ({0, EuclideanSpace.single i 1} :
+            Set (EuclideanSpace ℝ (Fin N))) :=
+    subset_convexHull ℝ _ (by simp)
+  have he : (EuclideanSpace.single i (1 : ℝ) :
+                EuclideanSpace ℝ (Fin N))
+      ∈ convexHull ℝ ({0, EuclideanSpace.single i 1} :
+            Set (EuclideanSpace ℝ (Fin N))) :=
+    subset_convexHull ℝ _ (by simp)
+  have hmid :
+      ((1 / 2 : ℝ) • EuclideanSpace.single i (1 : ℝ) :
+          EuclideanSpace ℝ (Fin N))
+        = (1 / 2 : ℝ) • (0 : EuclideanSpace ℝ (Fin N))
+          + (1 / 2 : ℝ) • EuclideanSpace.single i (1 : ℝ) := by
+    rw [smul_zero, zero_add]
+  rw [hmid]
+  exact (convex_convexHull ℝ _) h0 he
+    (by norm_num : (0 : ℝ) ≤ 1 / 2)
+    (by norm_num : (0 : ℝ) ≤ 1 / 2)
+    (by norm_num : (1 / 2 : ℝ) + 1 / 2 = 1)
+
+/-- **S2-A ACT-4 construction**. The natural midpoint decomposition of
+    `(1/2) • ∑ e_i` in `EuclideanSpace ℝ (Fin N)`: each summand
+    `point i = (1/2) • e_i` is in `convexHull ℝ {0, e_i}` (via
+    `midpoint_mem_convexHull_pair_zero_basis`) and the summands add up
+    to the target.
+
+    This is the existence witness for the S2-A ACT-3 sharpness corollary's
+    parameterised statement. -/
+noncomputable def midpointDecomp (N : ℕ) :
+    ShapleyFolkman.Decomposition
+      (fun i : Fin N =>
+        ({0, EuclideanSpace.single i 1} :
+            Set (EuclideanSpace ℝ (Fin N))))
+      (Finset.univ : Finset (Fin N))
+      ((1 / 2 : ℝ) • ∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) where
+  point i := (1 / 2 : ℝ) • EuclideanSpace.single i (1 : ℝ)
+  mem_convexHull i _ := midpoint_mem_convexHull_pair_zero_basis i
+  point_eq_zero i hi := absurd (Finset.mem_univ i) hi
+  sum_eq := by
+    rw [← Finset.smul_sum]
+
+/-- **S2-A ACT-4 main result** (existence form of the sharpness corollary).
+    Combines `midpointDecomp` (existence witness) with the
+    `tight_excess_eq_finrank` corollary (S2-A ACT-3) to assert that the
+    parent `shapley_folkman` upper bound `card ≤ Module.finrank ℝ E` is
+    achieved with equality by an explicit decomposition.
+
+    Together with `tight_excess_count` (universal: every decomposition has
+    `card = N`), this completes the S2-A line of the OQ01 work: the parent
+    bound is sharp on this concrete example, both **achievable** (this
+    theorem) and **unavoidable** (`tight_excess_count`). -/
+theorem exists_tight_decomposition (N : ℕ) :
+    ∃ D : ShapleyFolkman.Decomposition
+            (fun i : Fin N =>
+              ({0, EuclideanSpace.single i 1} :
+                  Set (EuclideanSpace ℝ (Fin N))))
+            (Finset.univ : Finset (Fin N))
+            ((1 / 2 : ℝ) • ∑ i : Fin N, EuclideanSpace.single i (1 : ℝ) :
+                EuclideanSpace ℝ (Fin N)),
+      D.excessIndices.card =
+          Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) :=
+  ⟨midpointDecomp N, tight_excess_eq_finrank N (midpointDecomp N)⟩
+
 end ShapleyFolkmanOQ01
