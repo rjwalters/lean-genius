@@ -91,11 +91,22 @@ theorem isRFoldCover_primes_mono {n₁ n₂ r : ℕ} {a : ℕ → ℕ}
 
 -- ## Small Cases
 
+/-- primesUpTo 0 is empty (no primes < 1). -/
+theorem primesUpTo_zero : primesUpTo 0 = ∅ := by
+  simp [primesUpTo]
+
 /-- primesUpTo 1 is empty (no primes ≤ 1). -/
 theorem primesUpTo_one : primesUpTo 1 = ∅ := by
   simp only [primesUpTo, Finset.filter_eq_empty_iff, Finset.mem_range]
   intro n hn
   interval_cases n <;> simp [Nat.Prime]
+
+/-- Covering count is 0 when no primes available (n = 0). -/
+theorem coveringCount_zero (m : ℕ) (a : ℕ → ℕ) :
+    coveringCount 0 m a = 0 := by
+  unfold coveringCount
+  rw [primesUpTo_zero]
+  simp
 
 /-- Covering count is 0 when no primes available. -/
 theorem coveringCount_one (m : ℕ) (a : ℕ → ℕ) :
@@ -103,6 +114,43 @@ theorem coveringCount_one (m : ℕ) (a : ℕ → ℕ) :
   unfold coveringCount
   rw [primesUpTo_one]
   simp
+
+-- ## Necessary Conditions for r-Fold Cover
+
+/-- NECESSARY CONDITION: If [1, n] admits an r-fold prime covering then
+    r ≤ π(n) (the number of primes ≤ n).
+
+    Proof: apply the covering hypothesis at m = 1 to get r ≤ coveringCount n 1 a,
+    then bound by the total number of primes via `coveringCount_le_card_primes`. -/
+theorem isRFoldCover_card_bound {n r : ℕ} {a : ℕ → ℕ}
+    (h : IsRFoldCover n r a) (hn : 1 ≤ n) :
+    r ≤ (primesUpTo n).card :=
+  le_trans (h 1 hn hn) (coveringCount_le_card_primes n 1 a)
+
+/-- CONTRAPOSITIVE: If r > π(n), no r-fold cover of [1, n] exists.
+
+    This is the obstruction side of Erdős #689: the conjecture asks whether
+    r ≤ π(n) is *eventually sufficient* (for n ≥ N₀(r)); this lemma confirms
+    the trivial necessary part. In particular, N₀(r) ≥ p_r (the r-th prime). -/
+theorem no_rFoldCover_of_few_primes {n r : ℕ} (hn : 1 ≤ n)
+    (hr : (primesUpTo n).card < r) : ¬ ∃ a : ℕ → ℕ, IsRFoldCover n r a := by
+  rintro ⟨a, h⟩
+  have := isRFoldCover_card_bound h hn
+  omega
+
+/-- For n = 0, any r-fold cover claim is vacuously satisfied since [1, 0] is empty. -/
+theorem isRFoldCover_n_zero (r : ℕ) (a : ℕ → ℕ) :
+    IsRFoldCover 0 r a := by
+  intro m hm1 hm0
+  omega
+
+/-- For n = 1, no r-fold cover with r ≥ 1 exists: m = 1 must be covered, but
+    `primesUpTo 1` is empty. Specialization of `no_rFoldCover_of_few_primes`. -/
+theorem no_rFoldCover_n_one {r : ℕ} (hr : 1 ≤ r) :
+    ¬ ∃ a : ℕ → ℕ, IsRFoldCover 1 r a := by
+  apply no_rFoldCover_of_few_primes (le_refl 1)
+  rw [primesUpTo_one, Finset.card_empty]
+  omega
 
 -- ## Main Conjecture (OPEN)
 
