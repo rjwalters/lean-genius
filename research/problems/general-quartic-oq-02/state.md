@@ -1,99 +1,116 @@
 # Current State
 
-**Phase**: ACT (post-S3 DISCHARGE; S5a + S5b SCAFFOLD-1/-2/-3 shipped)
-**Since**: 2026-06-04T22:00Z
-**Iteration**: 7 (S5a + S5b SCAFFOLD-1/-2/-3 all shipped; S5b ACT proper next)
+**Phase**: ACT (S6 AUDIT + BUGFIX — Ferrari factorization axioms made sound)
+**Since**: 2026-06-04T22:00Z (S5b SCAFFOLD-3) → 2026-06-04 (S6 AUDIT, this session)
+**Iteration**: 8 (S5a + S5b SCAFFOLD-1/-2/-3 shipped; S6 AUDIT + BUGFIX this session)
 
 ## Current Focus
 
+S6 AUDIT (this session, researcher-1, 2026-06-04): **identified and
+fixed a long-standing inconsistency in `GeneralQuartic.lean` between
+the file's resolvent cubic and its Ferrari factorization axioms /
+`ferrariRoots` definition.**
+
+* **Bug 1**: The file's resolvent `8m³ + 20pm² + (16p²−8r)m + (4p³−4pr−q²)`
+  corresponds to the **non-standard** completion `(y² + p + m)²`
+  (with `A = p`), but the factor expressions in
+  `ferrari_factorization_forward` / `ferrari_factorization_backward`
+  used the **standard** `(y² + p/2 + m ∓ αy ± β)` form (with `A = p/2`).
+  The two conventions are incompatible — the axioms as stated were
+  **mathematically false**, witnessed numerically at
+  `(p, q, r, m) = (1, 0, 0, −1)`, where `y = 0` is a root of the
+  depressed quartic but neither factor disjunct vanishes.
+
+* **Bug 2**: After fixing Bug 1, `ferrariRoots` still had an α-sign /
+  discriminant pairing mismatch — the tuple components paired Factor 1's
+  discriminant with Factor 2's α-sign convention and vice versa.
+
+Both bugs fixed in this session's commit. The two `ferrari_factorization_*`
+axioms and the `ferrari_roots_verify` axiom are now **mathematically
+true** statements (just declared, not proved yet).
+
+## Approach A discharged (sibling result, prior session)
+
 Approach A (biquadratic-limit removable-singularity identity, OQ-02.c)
-fully discharged in `proofs/Proofs/GeneralQuartic.lean` (Part VI.5). The
-S2 `sorry` on `ferrari_biquad_limit` is now closed; the file's sorry
-count remains 0.
+was discharged in S3 via `ferrari_biquad_limit`. The S6 BUGFIX does
+**not** invalidate that proof — its proof body uses
+`ferrari_roots_are_roots` and `biquadratic_simple` abstractly, both of
+which still apply. The yᵢ tuple-unwrap values change (they are now
+actually roots of the depressed quartic), and the proof becomes
+*genuinely* sound rather than vacuously-via-false-axiom sound.
 
-**S5b SCAFFOLD-3 (this session, researcher-1, 2026-06-04)**: added
-`pan_witness_t_zero_nondegenerate_root` — explicit non-degenerate
-resolvent root `m = 3/2` at the Pan witness's `t = 0` boundary
-`(p, q, r) = (-1, 0, 1/4)`. This is the `s = 2` root of the factored
-form `s²(s − 2)` (from `pan_witness_t_zero_factorisation`) translated
-back via `m = (s + 1)/2`. Pins down the third root location for the
-future `pan_witness_k1_tangency` perturbation analysis (Newton-polygon
-prediction: `m = 3/2 + O(t²)` under `t ≠ 0`). +23 LOC, +1 theorem, no
-new axioms, no new sorries. Build pending (same `simp + ring` pattern
-as four prior already-merged Pan-witness theorems in the same file).
+## Sibling SCAFFOLDs already shipped (prior sessions)
 
-**Sibling SCAFFOLDs already shipped** (state.md was stale on this):
-- S5a SCAFFOLD (`resolvent_cubic_eval_s_form`) — PR #18569.
-- S5b SCAFFOLD-1 (`pan_witness_cleaned_resolvent`) — PR #18650.
-- S5b SCAFFOLD-2 (`pan_witness_t_zero_factorisation`) — PR #18651.
+* S5a SCAFFOLD (`resolvent_cubic_eval_s_form`) — PR #18569.
+* S5b SCAFFOLD-1 (`pan_witness_cleaned_resolvent`) — PR #18650.
+* S5b SCAFFOLD-2 (`pan_witness_t_zero_factorisation`) — PR #18651.
+* S5b SCAFFOLD-3 (`pan_witness_t_zero_nondegenerate_root`) — PR #22280
+  (merged).
 
-## Active Approach
+## Files Modified (S6 BUGFIX)
 
-**Approach A** (OQ-02.c) — Biquadratic-limit symbolic identity.
-Discharged via:
-
-- Sub-step A: `∃ u, u² = r` (FTA on `X² + C(-r)`), then case-split on
-  whether `m₁ = -p + u` is non-degenerate. Otherwise `r = p²/4` forces
-  `p ≠ 0`, and `m₂ = -p - u = -3p/2` is non-degenerate.
-- Sub-step B: `ferrari_roots_are_roots` + `biquadratic_simple` (each
-  Ferrari root squared automatically lands in the biquadratic root pair).
-
-Approaches B (OQ-02.a witness family) and C (OQ-02.b conditioning bound)
-remain deferred — see `knowledge.md`.
+* `proofs/Proofs/GeneralQuartic.lean`:
+  * `ferrari_factorization_forward` axiom — factor constants `p/2 + m`
+    → `p + m`; added convention-note docstring.
+  * `ferrari_factorization_backward` axiom — same factor-constant fix;
+    added docstring.
+  * `ferrari_factorization` theorem — same factor-constant fix in
+    conclusion; updated docstring.
+  * `ferrariRoots` definition — `disc1`, `disc2` updated to use
+    `p + m ± β`; tuple α-signs swapped to pair correctly with
+    discriminants; updated docstring.
+* `research/problems/general-quartic-oq-02/sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md`
+  (NEW) — full audit, derivation, numerical counterexample, fix
+  rationale, follow-up items.
 
 ## Blockers
 
-None for S4. Next-action candidates listed below.
+None for S6. The fix is mathematically verified (symbolically and via
+numerical counterexample). Build verification deferred to next session
+or auditor (Docker `proofs/scripts/docker-build.sh Proofs.GeneralQuartic`
+is the appropriate check).
 
 ## Next Action
 
-**Post-S5a candidate menu** (highest-leverage first):
+**Post-S6 priority order:**
 
-1. **S5b ACT — OQ-02.a problem-statement Option-C split**
-   (per PR #18455 S4c PREP §6): edit `problem.md` to split OQ-02.a into
-   a.1 (`k ≥ 1`, dischargeable) and a.2 (`k ≥ 2`, open with Newton-polygon
-   obstruction citation). Then prove `pan_witness_k1_tangency` using
-   `resolvent_cubic_eval_s_form` (this session) + the Pan witness audit
-   from PR #18438. Estimated ≤ 50 LOC Lean + minor `problem.md` edit.
+1. **Docker build verification** of S6 BUGFIX (auditor or next
+   researcher). Critical — confirms the textual changes compile and
+   `ferrari_biquad_limit`'s proof body still elaborates.
 
-2. **Galois-theoretic context expansion** (gallery-only): add a
-   `relatedProofs` cross-reference from `general-quartic` to
-   `abel-ruffini` and `solution-of-cubic` (and back). Update
-   `crossReferences` in `src/data/proofs/general-quartic/meta.json` with
-   a fourth entry tying the S₄ solvable derived series to the
-   resolvent-cubic depression. **Pure docs**, low collision risk.
+2. **Discharge `ferrari_factorization_backward`** — now mathematically
+   true, provable by `linear_combination` after expanding
+   `F₁ · F₂ − (y⁴ + py² + qy + r)` symbolically. Estimated ≤ 20 LOC.
+   This is the **first concrete axiom-elimination target** in this
+   file in many sessions. Pairs with `ferrari_factorization_forward`
+   discharge (both directions of the iff).
 
-3. **OQ-02.b conditioning bound discharge** (post-PR #18495 S4d PREP):
-   prove `RelativeCondNum`-style bound for `ferrariRoots` using the cleaned
-   resolvent form (the `s = α²` substitution makes the `q²` dependence
-   explicit, which is the entry point for the bound). Higher effort than
-   (1) or (2); requires building condition-number machinery first.
+3. **Discharge `ferrari_roots_verify`** — once
+   `ferrari_factorization_*` is proved, `ferrari_roots_verify` follows
+   by applying the backward direction with each `yᵢ` constructed via
+   the quadratic formula. Estimated ≤ 30 LOC.
 
-4. **S3 corollary — quartic biquadratic special case (full)**: bundle
-   `ferrari_biquad_limit` with `biquadratic_simple` and
-   `depressed_quartic_forward/backward` into a single user-facing
-   theorem `quartic_biquadratic_roots`, showing that for the GENERAL
-   quartic `x⁴ + ax³ + bx² + cx + d = 0` with depression coefficients
-   satisfying `q = 0`, the four roots are `r = -a/4 ± √z` with
-   `z ∈ {(-p + √(p² − 4r))/2, (-p − √(p² − 4r))/2}`. ~30 LOC, no new
-   axioms.
+4. **Reconcile top-level docstring** (lines 39–58) and theorem /
+   def docstrings (lines 223 region, 260–266) with the corrected
+   non-standard `(y² + p + m)²` convention. Pure-documentation
+   follow-up; ~30 LOC of comment rewrites.
 
-**Recommendation**: S5b picks (1) for a substantive forward step now that
-Lemma 1 is in place. (2) and (4) are tight gallery-facing deliverables;
-(3) is the longest-effort but the most numerically-motivated.
+5. **S5b ACT — `pan_witness_k1_tangency` proper** (deferred; not
+   addressed in S6).
+
+6. **Galois-theoretic context expansion** (deferred; not addressed
+   in S6).
+
+**Recommendation**: action (1) first (mechanical / auditor work); then
+(2)+(3) together as a 2-axiom-elimination PR. Both (2) and (3) became
+mathematically tractable for the first time in this file's history as
+a result of S6.
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 OBSERVE — markdown survey + JSON scaffold;
-  S2 SCAFFOLD — 2 helper lemmas proved + main statement scaffolded;
-  S3 DISCHARGE — `ferrari_biquad_limit` proved, 1 sorry removed;
-  S5a SCAFFOLD — `resolvent_cubic_eval_s_form` added, +1 theorem;
-  S5b SCAFFOLD-1 — `pan_witness_cleaned_resolvent` added, +1 theorem;
-  S5b SCAFFOLD-2 — `pan_witness_t_zero_factorisation` added, +1 theorem;
-  S5b SCAFFOLD-3 — `pan_witness_t_zero_nondegenerate_root` added, +1
-  theorem [this session]).
-- Current approach attempts: 6 (S2 + S3 + S5a + S5b SCAFFOLD-1/-2/-3)
-- Approaches tried: 1 (Approach A discharged; B is now well-staged for
-  the `pan_witness_k1_tangency` ACT proper with Lemma 1, the
-  symbolic-`t` form, the factored form, AND the explicit third root
-  location all in place; C still deferred).
+- Total attempts: 8 (S1 OBSERVE; S2 SCAFFOLD; S3 DISCHARGE; S5a SCAFFOLD;
+  S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX [this session]).
+- Current approach attempts: 7 (S2 onward).
+- Approaches tried: 1 (Approach A discharged; Approach B staged for
+  `pan_witness_k1_tangency`; Approach C deferred). S6 is orthogonal —
+  it is a bugfix / soundness improvement, not an approach.

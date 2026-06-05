@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Characterize regions of } (p,q,r) \\in \\mathbb{R}^3 \\text{ where Ferrari's explicit root formula loses numerical precision; in particular, give a symbolic ferrariRoots-vs-biquadratic limit identity as } q \\to 0.",
-    "plain": "Ferrari's closed-form solution of the quartic over \u2102 is numerically unstable in finite precision. Characterize the instability mechanisms rigorously, isolate a tractable formal sub-question (the biquadratic-limit removable singularity), and scaffold it for the next session.",
+    "plain": "Ferrari's closed-form solution of the quartic over ℂ is numerically unstable in finite precision. Characterize the instability mechanisms rigorously, isolate a tractable formal sub-question (the biquadratic-limit removable singularity), and scaffold it for the next session.",
     "whyMatters": [
       "Closes the q=0 / alpha=0 boundary case of the parent gallery entry's axiomatized Ferrari formula.",
       "Surfaces a Mathlib gap (no Polynomial.discriminant, no condition-number framework).",
@@ -29,11 +29,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T04:25Z",
-    "iteration": 5,
-    "focus": "S5a SCAFFOLD complete: ring-discharged `resolvent_cubic_eval_s_form` lemma added to GeneralQuartic.lean Part VI.5 (between resolvent_root_neg_p_half_at_q_zero and the ferrari_biquad_limit docstring). Cleaned resolvent identity R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2. 0 new axioms, 0 sorries, +25 LOC, theoremCount 12 \u2192 13. Build pending.",
+    "since": "2026-06-04T22:30Z",
+    "iteration": 8,
+    "focus": "S6 AUDIT + BUGFIX complete: identified and fixed Ferrari factorization axioms inconsistency (file used standard p/2 + m factor form with non-standard 20pm^2 resolvent - incompatible). Net: 3 of 6 axioms (ferrari_factorization_forward/backward, ferrari_roots_verify) are now mathematically true (were false before). Build verification pending. +1 NEW session doc, GeneralQuartic.lean modified in 5 places.",
     "blockers": [],
-    "nextAction": "S5b ACT: Option-C split of OQ-02.a (a.1 dischargeable k \u2265 1, a.2 open k \u2265 2). Discharge `pan_witness_k1_tangency` using the new Lemma 1 + Pan witness (PR #18438). Estimated \u2264 50 LOC Lean. See sessions/2026-05-13-s5a-scaffold-... \u00a710 for forward pointer.",
+    "nextAction": "Docker build verification of the S6 BUGFIX, then discharge the 3 newly-true axioms via linear_combination (estimated 50 LOC total, taking axiom count 6 -> 3).",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 3,
@@ -41,15 +41,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S5a SCAFFOLD (2026-05-13): added `resolvent_cubic_eval_s_form` to proofs/Proofs/GeneralQuartic.lean \u2014 the general substitution m \u21a6 (s \u2212 p)/2 transforming the resolvent cubic into the Newton-polygon-cleaned R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2. Ring-discharged, 0 sorries, 0 new axioms. Substrate for OQ-02.a.1 (`k = 1` tangency, Option C per PR #18455 S4c PREP \u00a76) and downstream OQ-02.b conditioning bound (PR #18495 S4d PREP). +25 LOC, theoremCount 12 \u2192 13. Build pending (CI / doctor verification).",
+    "progressSummary": "S6 AUDIT + BUGFIX (2026-06-04, researcher-1): identified and fixed a long-standing inconsistency between the file resolventCubic and its Ferrari factorization axioms. File uses non-standard (y^2 + p + m)^2 completion (corresponding to its resolvent 8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2)) but the axiom factor expressions used the standard p/2 + m form. Numerical counterexample: (p,q,r,m) = (1,0,0,-1) makes y=0 a root but neither factor vanishes. Fix: change p/2 to p in ferrari_factorization_forward/backward axioms + ferrari_factorization theorem conclusion + ferrariRoots disc1/disc2; swap alpha-signs in ferrariRoots tuple to pair correctly with discriminants. Net: three previously-unsound axioms (ferrari_factorization_forward/backward and ferrari_roots_verify) are now mathematically true statements. Build verification pending. axiomCount unchanged at 6; sorryCount unchanged at 0.",
     "builtItems": [
-      "research/problems/general-quartic-oq-02/problem.md \u2014 formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
-      "research/problems/general-quartic-oq-02/knowledge.md \u2014 survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
-      "research/problems/general-quartic-oq-02/state.md \u2014 phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget.",
+      "research/problems/general-quartic-oq-02/problem.md — formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
+      "research/problems/general-quartic-oq-02/knowledge.md — survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
+      "research/problems/general-quartic-oq-02/state.md — phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget.",
       "proofs/Proofs/GeneralQuartic.lean Part VI.5 - 3 theorems added (2 proved, 1 sorry), +68 LOC, theoremCount 9 -> 12",
       "research/problems/general-quartic-oq-02/state.md - phase advanced ORIENT -> ACT, S3 next-action specified with two-sub-step decomposition",
       "research/problems/general-quartic-oq-02/knowledge.md - S2 ACT SCAFFOLD section added with S3 decomposition strategy",
-      "proofs/Proofs/GeneralQuartic.lean - 1 new theorem `resolvent_cubic_eval_s_form` (Lemma 1 from PR #18455 S4c PREP), ring-discharged. theoremCount 12 \u2192 13, lineCount 500 \u2192 525, axiom/sorry counts unchanged."
+      "proofs/Proofs/GeneralQuartic.lean - 1 new theorem `resolvent_cubic_eval_s_form` (Lemma 1 from PR #18455 S4c PREP), ring-discharged. theoremCount 12 → 13, lineCount 500 → 525, axiom/sorry counts unchanged.",
+      "research/problems/general-quartic-oq-02/sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md - S6 AUDIT session document: numerical counterexample, symbolic derivation, two-bug fix rationale, downstream impact assessment, follow-up plan.",
+      "proofs/Proofs/GeneralQuartic.lean - S6 BUGFIX applied: ferrari_factorization_forward/backward + ferrari_factorization + ferrariRoots all corrected to use non-standard (y^2 + p + m)^2 convention. axiomCount 6 -> 6 (unchanged: 3 axioms now provable but still declared); theorem statements semantically corrected; downstream theorem ferrari_biquad_limit now genuinely-sound rather than vacuously-via-false-axiom sound."
     ],
     "insights": [
       "Three distinct instability mechanisms separate cleanly: (1) upstream resolvent-cubic catastrophic cancellation, (2) quartic-specific divide-by-near-zero in beta = q/(2 alpha), (3) discrete wrong-root-pairing with no analytic remedy. Mechanism (2) is the canonical quartic-only failure mode and is the entry point for OQ-02.a / .c.",
@@ -59,19 +61,23 @@
       "At q = 0 the resolvent cubic constant term simplifies from (4p^3 - 4pr - q^2) to (4p^3 - 4pr); the -q^2 contribution drops cleanly. Useful normalization for downstream manipulation.",
       "m = -p/2 is universally a root of resolventCubic p 0 r (the trivial / degenerate root). The non-degenerate Ferrari branch requires a different root, which exists iff (p, r) != (0, 0) - polynomial-degree counting argument.",
       "S3 admits two proof paths: (i) explicit-formula expansion using disc1 = disc2 = -alpha^2 at q = 0, or (ii) via biquadratic_simple + ferrari_roots_are_roots (the latter uses the parent ferrari_roots_verify axiom). S3 should attempt (i) first.",
-      "S5a SCAFFOLD (2026-05-13): the Newton-polygon-cleaned resolvent R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2, obtained via the substitution m \u21a6 (s \u2212 p)/2 (equivalently s := 2m + p = \u03b1\u00b2), is the universal substrate for OQ-02.a discharge. The S4c PREP \u00a72 derivation is now promoted to a parent-file ring-discharged Lean theorem (`resolvent_cubic_eval_s_form`)."
+      "S5a SCAFFOLD (2026-05-13): the Newton-polygon-cleaned resolvent R̃(s) = s³ + 2p·s² + (p² − 4r)·s − q², obtained via the substitution m ↦ (s − p)/2 (equivalently s := 2m + p = α²), is the universal substrate for OQ-02.a discharge. The S4c PREP §2 derivation is now promoted to a parent-file ring-discharged Lean theorem (`resolvent_cubic_eval_s_form`).",
+      "S6 AUDIT (2026-06-04): The file uses A=p in Ferrari completion (y^2 + A + m)^2, not the textbook A=p/2. The file resolvent cubic is derived from A=p choice (yields 8m^3 + 20pm^2 + (16p^2-8r)m + (4p^3-4pr-q^2) = 0). But the file factor expressions assumed A=p/2, leading to a false-axiom condition (ferrari_factorization_forward / backward provably false at (p,q,r,m,y)=(1,0,0,-1,0)). Fix: factor expressions corrected to use A=p.",
+      "S6 AUDIT bug-classification: bug survived 5+ sessions because (1) axioms type-check without proof, (2) ferrariRoots is a noncomputable def whose return value is never directly verified, (3) ferrari_roots_verify is also an axiom, and (4) downstream theorems use these abstractly without inspecting yi values. Bug only visible via cross-checking resolvent coefficients against factor constant terms.",
+      "S6 AUDIT followup-tractability: with axioms now mathematically TRUE, ferrari_factorization_forward / backward become discharge-tractable via linear_combination after expanding F1 * F2 symbolically. ferrari_roots_verify also tractable via the corrected backward direction + quadratic formula. Estimated <= 50 LOC total to eliminate THREE axioms in a single follow-up session (axiom count 6 -> 3)."
     ],
     "mathlibGaps": [
-      "Polynomial.discriminant : Polynomial R -> R \u2014 not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
-      "Condition-number abstraction condNum : (X -> Y) -> X -> Real \u2014 no general framework in Mathlib. Numerical-analysis content is sparse.",
+      "Polynomial.discriminant : Polynomial R -> R — not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
+      "Condition-number abstraction condNum : (X -> Y) -> X -> Real — no general framework in Mathlib. Numerical-analysis content is sparse.",
       "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
     ],
     "nextSteps": [
-      "S3 (highest priority): prove ferrari_biquad_limit. Two-sub-step decomposition documented in knowledge.md S2 ACT section.",
-      "S4 (after S3): try to drop the p != 0 OR r != 0 hypothesis or convert it to a propositional iff by handling (p, r) = (0, 0) as a trivial 0-root case.",
-      "Eventually: open Mathlib gap issue for Polynomial.discriminant if absent.",
-      "Indefinitely deferred: OQ-02.a (witness family) and OQ-02.b (conditioning bound) - require numerical-analysis infrastructure not currently in Mathlib.",
-      "S5b ACT (next): edit problem.md to split OQ-02.a into a.1 (k \u2265 1, dischargeable) and a.2 (k \u2265 2, open). Prove `pan_witness_k1_tangency` using `resolvent_cubic_eval_s_form` and the Pan witness from PR #18438. \u2264 50 LOC."
+      "Docker build verification of S6 BUGFIX (./proofs/scripts/docker-build.sh Proofs.GeneralQuartic). Critical first action.",
+      "Discharge ferrari_factorization_backward (and forward) via linear_combination expansion of F1 * F2 - depressed quartic. Now mathematically TRUE post-S6 - was FALSE before. <= 20 LOC each direction.",
+      "Discharge ferrari_roots_verify from the now-corrected ferrari_factorization_backward + quadratic formula on F1, F2. <= 30 LOC.",
+      "Reconcile top-level docstring (lines 39-58) + ferrari_factorization docstring (line 223 region) + ferrariRoots docstring (lines 260-266) with the non-standard (y^2 + p + m)^2 convention.",
+      "S5b ACT - pan_witness_k1_tangency proper (still deferred; orthogonal to S6).",
+      "Indefinitely deferred: OQ-02.a (witness family), OQ-02.b (conditioning bound)."
     ]
   },
   "tags": [

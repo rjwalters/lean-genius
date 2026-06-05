@@ -29,6 +29,7 @@ References:
 
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 import Mathlib.MeasureTheory.Measure.Prod
 import Mathlib.MeasureTheory.Measure.Haar.OfBasis
 import Mathlib.Topology.Basic
@@ -181,11 +182,27 @@ theorem jensen_iff_additive_shifted (f : ℝ → ℝ) :
 /- Helper lemmas for the almost Jensen → almost additive proof.
 These decompose the measure-theoretic components into clean, targeted statements. -/
 
-/-- Preimage of a null set under (x,y) ↦ (2x,2y) is null.
-Lebesgue measure scales as |det|⁻¹ under invertible linear maps; here det = 4.
-Axiomatized due to Mathlib 4.26 API compatibility for product-space smul scaling. -/
-private axiom volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
-    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0
+/-- Preimage of a null set under `(x,y) ↦ (2x, 2y)` is null.
+
+The map factors as `Prod.map (· * 2) (· * 2)` (or equivalently the scalar
+action `(2 : ℝ) • ·` after expanding `Prod.smul_def`). Lebesgue measure on
+`ℝ` is invariant under non-zero scaling up to a constant
+(`Measure.quasiMeasurePreserving_smul` for `μ := volume : Measure ℝ`); the
+product structure `volume = volume.prod volume` on `ℝ × ℝ` lifts this to a
+quasi-measure-preserving map on the product, so `preimage_null` applies. -/
+private lemma volume_preimage_double_null {N : Set (ℝ × ℝ)} (hN : volume N = 0) :
+    volume ((fun p : ℝ × ℝ => (2 * p.1, 2 * p.2)) ⁻¹' N) = 0 := by
+  -- Rewrite both the hypothesis and goal using `volume = volume.prod volume`.
+  rw [show (volume : Measure (ℝ × ℝ)) = (volume : Measure ℝ).prod (volume : Measure ℝ)
+        from MeasureTheory.Measure.volume_eq_prod ℝ ℝ] at hN ⊢
+  -- The map factors as `Prod.map (2 • ·) (2 • ·)`.
+  have h_eq : (fun p : ℝ × ℝ => (2 * p.1, 2 * p.2))
+      = Prod.map ((2 : ℝ) • ·) ((2 : ℝ) • ·) := by
+    funext p; simp [Prod.map, smul_eq_mul]
+  rw [h_eq]
+  -- Each factor is quasi-measure-preserving; lift to the product.
+  have h1 := Measure.quasiMeasurePreserving_smul (μ := (volume : Measure ℝ)) (two_ne_zero)
+  exact (MeasureTheory.QuasiMeasurePreserving.prodMap h1 h1).preimage_null hN
 
 /-- Preimage of a 1D null set under first projection is null in ℝ².
 S × ℝ has volume volume(S) · volume(ℝ) = 0 · ∞ = 0. -/

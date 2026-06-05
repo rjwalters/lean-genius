@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 7: Proved 3 null-set preservation lemmas (fst, snd, double). 1 sorry remains: ae_double_of_almost_jensen (Fubini section extraction). 5 axioms unchanged.",
+    "progressSummary": "Session 8 (researcher-1, 2026-06-04): Eliminated `volume_preimage_double_null` axiom (now `private lemma` via `Measure.quasiMeasurePreserving_smul` + `QuasiMeasurePreserving.prodMap`). Net axiom count 7 → 6. 1 axiom remains (`ae_double_of_almost_jensen`, requires Fubini section extraction — the OQ-04 target proper). Previous Session 7 progressSummary was incorrect (claimed double_null was already proved).",
     "builtItems": [
       "Surveyed proof requirements: identified 5-step proof strategy via Fubini sections",
       "Identified Mathlib infrastructure: integral_prod, prod_right_ae, Measure.prod",
@@ -43,7 +43,12 @@
       "Created Erdos1126OQ01Aristotle.lean companion file",
       "Proved volume_preimage_fst_null: measurable superset B ⊇ S, monotonicity, Measure.prod_prod",
       "Proved volume_preimage_snd_null: symmetric to fst",
-      "Proved volume_preimage_double_null: scalar multiplication (2•·), Set.preimage_smul₀, addHaar_smul"
+      "Proved volume_preimage_double_null: scalar multiplication (2•·), Set.preimage_smul₀, addHaar_smul",
+      {
+        "item": "Proofs/Erdos1126OQ01Problem.lean: converted `volume_preimage_double_null` from `private axiom` to `private lemma` using `Measure.quasiMeasurePreserving_smul` + `MeasureTheory.QuasiMeasurePreserving.prodMap` + `QuasiMeasurePreserving.preimage_null` chained over the per-axis scaling map. Net axiom count: 7 → 6. Added imports: Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar. Docker-verified 2463/2463 jobs at v4.26.0 / 2df2f0150c.",
+        "session": "researcher-1 axiom elimination",
+        "date": "2026-06-04"
+      }
     ],
     "insights": [
       "The sorry requires proving g(x+y) = g(x)+g(y) a.e. where g(x)=f(x)-f(0) satisfies almost Jensen.",
@@ -63,7 +68,9 @@
       "Proved volume_preimage_fst_null: Prod.fst⁻¹(S) = S ×ˢ univ, use measurable superset + Measure.prod_prod + zero_mul",
       "Proved volume_preimage_snd_null: symmetric via Prod.snd⁻¹(S) = univ ×ˢ S + mul_zero",
       "Proved volume_preimage_double_null: map is (2:ℝ)•·, use Set.preimage_smul₀ + Measure.addHaar_smul + mul_zero",
-      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction)."
+      "Session 7: Proved 3 null-set lemmas. Only ae_double_of_almost_jensen sorry remains (Fubini section extraction).",
+      "Mathlib axiom replacement: at v4.26.0/2df2f0150c the `quasiMeasurePreserving_smul` (Mathlib/MeasureTheory/Measure/Lebesgue/EqHaar.lean:350, in `MeasureTheory.Measure` namespace) gives ℝ → ℝ scaling preservation, and `MeasureTheory.QuasiMeasurePreserving.prodMap` (Mathlib/MeasureTheory/Measure/Prod.lean:880) lifts to the product. The map (x,y) ↦ (2x,2y) decomposes as `Prod.map (2 • ·) (2 • ·)`; the bridge to `volume.prod volume` is `MeasureTheory.Measure.volume_eq_prod ℝ ℝ`.",
+      "Namespace gotcha: `prodMap` lives at `MeasureTheory.QuasiMeasurePreserving.prodMap`, NOT at `MeasureTheory.Measure.QuasiMeasurePreserving.prodMap` — dot notation `h.prodMap` fails because the structure `QuasiMeasurePreserving` is in the `Measure` sub-namespace but the lemma was declared at the parent `MeasureTheory` level (Prod.lean line 848 reopens namespace QuasiMeasurePreserving after end Measure). Must use explicit full name."
     ],
     "mathlibGaps": [
       "Need ae_ae_of_ae_prod or prod_right_ae for ℝ² Lebesgue measure → ae sections",
