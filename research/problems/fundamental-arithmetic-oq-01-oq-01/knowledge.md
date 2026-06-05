@@ -55,3 +55,21 @@ This problem asks for a self-contained proof of the FTA that avoids importing `F
 ### Next Steps
 - Verify Docker build completes without errors
 - Promote to gallery with PR
+
+## Session 2026-06-04 (Session 2) — Mathlib v4.26.0 compatibility repair
+
+**Mode**: REPAIR
+**Outcome**: clean — Docker build of `Proofs.FundamentalArithmeticOQ01OQ01` succeeds against the current Mathlib pin. 0 sorries, 0 axioms, 220 lines, 12 theorems + 1 helper lemma.
+
+### API drift fixes applied
+
+- `Finset.induction_on` `insert` case now uses `| @insert a s ha ih` (explicit binders) rather than `rename_i`.
+- `Finset.prod_ne_zero` → `Finset.prod_ne_zero_iff.mpr`.
+- `Nat.mem_primeFactors hn` → bare `Nat.mem_primeFactors` (now an iff with a 3-way conjunction; project via `h.2.1`).
+- `Nat.coprime_iff_disjoint.mp hcop` → `hcop.disjoint_primeFactors` plus `Nat.support_factorization` rewrites.
+- `Finset.sum_ite_eq` → `Finset.sum_ite_eq'` (matches the `if x = a` orientation).
+- `Finsupp.not_mem_support_iff` → `Finsupp.notMem_support_iff` (camelCase rename).
+- `native_decide` on `Finsupp.single` equalities (noncomputable) → reformulated as pointwise `(n).factorization k = e` checks and primeFactors set equalities.
+- Helper `factorization_finset_prod` generalized from `(∏ m ∈ s, m)` to `(∏ i ∈ s, g i)` with `[DecidableEq ι]`, fixing the rewrite failure at the key-lemma site.
+
+No mathematical content changed; only Mathlib API call shapes.

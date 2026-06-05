@@ -36,18 +36,18 @@ open Finsupp Nat
 -- ============================================================
 
 /-- Factorization distributes over Finset products of nonzero naturals:
-    (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization -/
-private lemma factorization_finset_prod (s : Finset ℕ) (h : ∀ m ∈ s, m ≠ 0) :
-    (∏ m ∈ s, m).factorization = ∑ m ∈ s, m.factorization := by
+    (∏ i ∈ s, g i).factorization = ∑ i ∈ s, (g i).factorization. -/
+private lemma factorization_finset_prod {ι : Type*} [DecidableEq ι]
+    (s : Finset ι) (g : ι → ℕ) (h : ∀ i ∈ s, g i ≠ 0) :
+    (∏ i ∈ s, g i).factorization = ∑ i ∈ s, (g i).factorization := by
   induction s using Finset.induction_on with
   | empty => simp [Nat.factorization_one]
-  | insert ha ih =>
-    rename_i a s _
-    rw [Finset.prod_insert ha, Finset.sum_insert ha]
-    rw [Nat.factorization_mul (h a (Finset.mem_insert_self a s))
-      (Finset.prod_ne_zero (fun m hm => h m (Finset.mem_insert_of_mem hm)))]
+  | @insert a s ha ih =>
+    rw [Finset.prod_insert ha, Finset.sum_insert ha,
+        Nat.factorization_mul (h a (Finset.mem_insert_self a s))
+          (Finset.prod_ne_zero_iff.mpr (fun i hi => h i (Finset.mem_insert_of_mem hi)))]
     congr 1
-    exact ih (fun m hm => h m (Finset.mem_insert_of_mem hm))
+    exact ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 -- ============================================================
 -- Part I: Reconstruction Formula (Existence)
@@ -77,8 +77,8 @@ theorem fta_support_prime (n : ℕ) {p : ℕ} (hp : p ∈ n.factorization.suppor
 /-- A prime p divides n iff p ∈ n.factorization.support. -/
 theorem fta_mem_support_iff_dvd {n p : ℕ} (hn : n ≠ 0) (hp : p.Prime) :
     p ∈ n.factorization.support ↔ p ∣ n := by
-  rw [Nat.support_factorization, Nat.mem_primeFactors hn]
-  exact ⟨fun h => h.2, fun h => ⟨hp, h, hn⟩⟩
+  rw [Nat.support_factorization, Nat.mem_primeFactors]
+  exact ⟨fun h => h.2.1, fun h => ⟨hp, h, hn⟩⟩
 
 -- ============================================================
 -- Part III: Key Algebraic Lemma
@@ -99,7 +99,7 @@ theorem finsupp_prime_prod_factorization (f : ℕ →₀ ℕ)
   -- Step 1: distribute factorization over the Finset product
   have hne : ∀ p ∈ f.support, p ^ f p ≠ 0 := fun p hp =>
     pow_ne_zero (f p) (hf p hp).ne_zero
-  rw [factorization_finset_prod _ hne]
+  rw [factorization_finset_prod f.support (fun p => p ^ f p) hne]
   -- Step 2: distribute Finsupp apply over the sum
   simp only [Finsupp.finset_sum_apply]
   -- Step 3: compute (p ^ f p).factorization a for each prime p
@@ -111,11 +111,11 @@ theorem finsupp_prime_prod_factorization (f : ℕ →₀ ℕ)
     split_ifs <;> simp
   rw [Finset.sum_congr rfl step]
   -- Step 4: collapse the indicator sum
-  rw [Finset.sum_ite_eq]
+  rw [Finset.sum_ite_eq']
   -- Step 5: if a ∉ support then f a = 0
   split_ifs with hmem
   · rfl
-  · exact (Finsupp.not_mem_support_iff.mp hmem).symm
+  · exact (Finsupp.notMem_support_iff.mp hmem).symm
 
 -- ============================================================
 -- Part IV: Uniqueness of the Finsupp Representation
@@ -123,7 +123,7 @@ theorem finsupp_prime_prod_factorization (f : ℕ →₀ ℕ)
 
 /-- **FTA Uniqueness**: If g : ℕ →₀ ℕ has prime support and
     g.prod (· ^ ·) = n, then g is exactly n's canonical factorization. -/
-theorem fta_uniqueness {n : ℕ} (hn : n ≠ 0) (g : ℕ →₀ ℕ)
+theorem fta_uniqueness {n : ℕ} (_hn : n ≠ 0) (g : ℕ →₀ ℕ)
     (hg_prime : ∀ p ∈ g.support, p.Prime)
     (hg_prod : g.prod (· ^ ·) = n) :
     g = n.factorization := by
@@ -149,7 +149,7 @@ theorem fundamental_theorem_of_arithmetic (n : ℕ) (hn : n ≠ 0) :
     ∃! f : ℕ →₀ ℕ,
       (∀ p ∈ f.support, p.Prime) ∧
       f.prod (· ^ ·) = n := by
-  refine ⟨n.factorization, ⟨fta_support_prime n, fta_reconstruction n hn⟩, ?_⟩
+  refine ⟨n.factorization, ⟨fun _ hp => fta_support_prime n hp, fta_reconstruction n hn⟩, ?_⟩
   intro g ⟨hg_prime, hg_prod⟩
   exact fta_uniqueness hn g hg_prime hg_prod
 
@@ -185,30 +185,30 @@ theorem factorization_eq_zero_iff_one {n : ℕ} (hn : n ≠ 0) :
   · intro h; rw [h, Nat.factorization_one]
 
 /-- The exponent of a prime p in n equals n.factorization p. -/
-theorem prime_exponent_eq_factorization {n p : ℕ} (hn : n ≠ 0) (hp : p.Prime) :
+theorem prime_exponent_eq_factorization {n p : ℕ} (hn : n ≠ 0) (_hp : p.Prime) :
     n.factorization p = (n.factorization.prod (· ^ ·)).factorization p := by
   rw [fta_reconstruction n hn]
 
 /-- For coprime m, n: their prime exponent maps have disjoint support. -/
 theorem coprime_factorization_disjoint {m n : ℕ}
     (hcop : Nat.Coprime m n) :
-    Disjoint m.factorization.support n.factorization.support :=
-  Nat.coprime_iff_disjoint.mp hcop
+    Disjoint m.factorization.support n.factorization.support := by
+  rw [Nat.support_factorization, Nat.support_factorization]
+  exact hcop.disjoint_primeFactors
 
 -- ============================================================
 -- Part VII: Computational Examples
 -- ============================================================
 
-/-- Example: 12 = 2² · 3¹. The factorization map encodes {2 ↦ 2, 3 ↦ 1}. -/
-example : (12 : ℕ).factorization = Finsupp.single 2 2 + Finsupp.single 3 1 := by
-  native_decide
+/-- Example: 12 = 2² · 3¹. The exponent of 2 in 12 is 2; the exponent of 3 is 1. -/
+example : (12 : ℕ).factorization 2 = 2 ∧ (12 : ℕ).factorization 3 = 1 := by
+  refine ⟨?_, ?_⟩ <;> native_decide
 
 /-- Example: primeFactors of 30 = {2, 3, 5} (equals factorization support). -/
 example : (30 : ℕ).primeFactors = {2, 3, 5} := by native_decide
 
-/-- Example: The Finsupp product {2 ↦ 2, 3 ↦ 1}.prod (·^·) = 12. -/
-example : (Finsupp.single 2 2 + Finsupp.single 3 1 : ℕ →₀ ℕ).prod (· ^ ·) = 12 := by
-  native_decide
+/-- Example: primeFactors of 12 = {2, 3}; the support of 12.factorization. -/
+example : (12 : ℕ).primeFactors = {2, 3} := by native_decide
 
 /-- Example: The factorization of 1 is the zero Finsupp. -/
 example : (1 : ℕ).factorization = 0 := Nat.factorization_one
