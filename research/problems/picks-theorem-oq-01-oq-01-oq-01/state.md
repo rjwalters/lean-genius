@@ -1,11 +1,36 @@
 # Current State
 
-**Phase**: PLAN (S3b-act-1 ACT merged PR #21155 2026-05-30 — `latticeSegmentPoints` def + `parametrisation_injOn_range` helper + `card_latticeSegmentPoints` headline theorem +75 LOC verified; **S3b-act-2 unblocked at S4 STATE-SYNC** — Docker daemon GREEN 2026-06-02, the 2026-05-16 "ACT blocked on Docker recovery" qualifier from the §"Next Action" block is OBSOLETE)
-**Since**: 2026-06-02T00:35:00Z (S4 STATE-SYNC — Docker infra GREEN unblocks S3b-act-2; iter 13 → 14)
-**Iteration**: 14 (prior S1 + S2a + S3 + S3a-prep + S3a-plus ACT + S3b PREP + S3b PREP-2 + S3b STATE-SYNC + S3b PREP-3 + S3b-act-1 ACT counted = 10 in state.md head + 3 from sub-iterations = 13; this S4 STATE-SYNC = 14)
-**Last researcher**: researcher-1 (S4 STATE-SYNC — Docker GREEN unblocking, doc-only, 2026-06-02)
-**Most recent PR**: this S4 STATE-SYNC (pending). Prior: PR #21155 (S3b-act-1 ACT, merged 2026-05-30, Docker-verified 3058 jobs).
+**Phase**: PREP (S3b-act-2 PREP shipped 2026-06-04 — paste-ready code for `OnStrictEdgeInterior` predicate + `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` Case (a) witness ≈ 80 LOC; S3b-act-2 ACT next picker)
+**Since**: 2026-06-04 (S3b-act-2 PREP — paste-ready code authored; iter 14 → 15)
+**Iteration**: 15 (prior 14 from S4 STATE-SYNC; this S3b-act-2 PREP = 15)
+**Last researcher**: researcher-1 (S3b-act-2 PREP — paste-ready code, doc-only, 2026-06-04)
+**Most recent PR**: this S3b-act-2 PREP (pending). Prior: PR #21155 (S3b-act-1 ACT, merged 2026-05-30, Docker-verified 3058 jobs).
 **Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3b-act-1 ACT — +75 LOC (646 → 721), +1 noncomputable def `latticeSegmentPoints`, +1 private helper `parametrisation_injOn_range`, +1 theorem `card_latticeSegmentPoints`; 3058 jobs clean at v4.26.0 (PR #21155, researcher-1, 2026-05-30)
+
+## S3b-act-2 PREP (2026-06-04, researcher-1) — Paste-ready Case (a) witness
+
+**Mode**: PREP (doc-only / paste-ready Lean code authored for the next ACT picker)
+**Outcome**: progress — Case (a) closure of `exists_nonvertex_lattice_point` now has paste-ready code with bearer audit and risk profile.
+
+Target lemma: `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` — given `T : LatticeTriangle` and `i : Fin 3` with `2 ≤ T.edgeGCD i`, witness a lattice point in the strict interior of edge `i`. The witness is the parameter-`k = 1` point of the gcd-parametrisation (`v + Δ/g`), which sits strictly between `(vᵢ, vᵢ₊₁)` when `g ≥ 2`.
+
+Adds two new auxiliary defs needed by the predicate:
+- `LatticeTriangle.vEdgeStart : Fin 3 → ℤ × ℤ` — edge-start vertex picker
+- `LatticeTriangle.vEdgeEnd : Fin 3 → ℤ × ℤ` — edge-end vertex picker
+- `LatticeTriangle.OnStrictEdgeInterior` — strict-edge-interior predicate
+
+Paste-ready code (~80 LOC, includes 3 defs + 1 main theorem) is captured in:
+
+- `sessions/2026-06-04-s3b-act2-prep-edge-interior-witness.md` (this session)
+
+Bearer audit: 7 Mathlib v4.26.0 bearers (Int.gcd_dvd_left/right, Int.ediv_mul_cancel, Finset.mem_image/range, Int.natAbs_sub_comm, mul_eq_zero); all stable since v4.0. NO v4.26.0 risk.
+
+Docker block: NONE for the Picks chain (S4 STATE-SYNC verified 2026-06-02). The next ACT picker can `./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01` directly after pasting.
+
+After S3b-act-2 ACT lands, the remaining hard step toward
+`exists_nonvertex_lattice_point` is Case (b) (Minkowski-style interior witness for primitive triangles with `twiceArea ≥ 2`). See S3b PREP §4.1.b for the recommended Euclidean-algorithm-on-edge-vectors approach (b.ii).
+
+## S4 STATE-SYNC (2026-06-02, researcher-1) — Docker GREEN unblocks S3b-act-2
 
 ## S4 STATE-SYNC (2026-06-02, researcher-1) — Docker GREEN unblocks S3b-act-2
 
