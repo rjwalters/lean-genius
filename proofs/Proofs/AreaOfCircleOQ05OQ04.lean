@@ -84,6 +84,8 @@ import Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Integral.Pi
+import Mathlib.Probability.Distributions.Gaussian.Real
+import Mathlib.Probability.Moments.Variance
 import Proofs.AreaOfCircleOQ05
 
 namespace ComplexGaussianCircle
@@ -792,6 +794,70 @@ theorem complex_fourier_gaussian_density_eigen (w : ℂ) :
   simp_rw [ptw]
   rw [integral_const_mul, h]
 
+/-! ## Part 8 — S6c ACT-1: Diagonal Schur prerequisite (1-D real second moment)
+
+The load-bearing 1-D real Gaussian second moment for the un-normalised
+weight `exp(-x²)`:
+
+    ∫_ℝ x² · exp(-x²) dx = √π / 2.
+
+This is the first step of the S6c diagonal Schur orthogonality assembly
+(per session memo
+`sessions/2026-06-02-s6c-prep-3-gaussianreal-variance-skeleton.md`).
+
+Proof route: gaussianReal variance shortcut (PREP-3 §3 route 2). The
+standard real Gaussian `gaussianReal 0 (1/2 : ℝ≥0)` has pdf
+`(√π)⁻¹ · exp(-x²)`. Its variance equals `∫ x² · pdf dx` (since mean = 0)
+and is `1/2` by definition. Multiplying through by `√π` gives the claim. -/
+
+section DiagonalSchurPrep
+
+open ProbabilityTheory NNReal
+
+/-- 1-D real second moment of the un-normalised Gaussian:
+`∫_ℝ x² · exp(-x²) dx = √π / 2`. Load-bearing prerequisite for the
+S6c diagonal Schur orthogonality assembly. -/
+theorem integral_sq_exp_neg_sq :
+    ∫ x : ℝ, x ^ 2 * Real.exp (-x ^ 2) = Real.sqrt Real.pi / 2 := by
+  -- Parameters: μ = 0, v = (1/2 : ℝ≥0). Variance v gives pdf (√π)⁻¹·exp(-x²).
+  have hv : (1 / 2 : ℝ≥0) ≠ 0 := by norm_num
+  have hv_coe : ((1 / 2 : ℝ≥0) : ℝ) = 1 / 2 := by norm_cast
+  -- Step 1. The mean is zero.
+  have hmean : ∫ x, x ∂(gaussianReal (0 : ℝ) (1 / 2 : ℝ≥0)) = 0 :=
+    integral_id_gaussianReal
+  -- Step 2. Variance = ∫ x² (since mean = 0), and variance = 1/2.
+  have hvar : ∫ x, x ^ 2 ∂(gaussianReal (0 : ℝ) (1 / 2 : ℝ≥0)) = (1 / 2 : ℝ) := by
+    have h := variance_of_integral_eq_zero
+      (X := id) (μ := gaussianReal (0 : ℝ) (1 / 2 : ℝ≥0))
+      measurable_id'.aemeasurable hmean
+    rw [variance_id_gaussianReal] at h
+    simpa [id, hv_coe] using h.symm
+  -- Step 3. Bridge to Lebesgue: ∫ f ∂gaussianReal = ∫ pdf · f dx.
+  rw [integral_gaussianReal_eq_integral_smul (f := fun x : ℝ => x ^ 2) hv] at hvar
+  -- Step 4. Closed-form pdf at (μ = 0, v = 1/2): (√π)⁻¹ · exp(-x²).
+  have hpdf : ∀ x : ℝ,
+      gaussianPDFReal 0 (1 / 2 : ℝ≥0) x
+        = (Real.sqrt Real.pi)⁻¹ * Real.exp (-x ^ 2) := by
+    intro x
+    unfold gaussianPDFReal
+    rw [hv_coe, sub_zero,
+        show (2 * Real.pi * (1 / 2 : ℝ)) = Real.pi from by ring,
+        show (-(x ^ 2) / (2 * (1 / 2 : ℝ))) = -x ^ 2 from by ring]
+  -- Step 5. Pull `(√π)⁻¹` out of the integral.
+  have hpoint : ∀ x : ℝ,
+      gaussianPDFReal 0 (1 / 2 : ℝ≥0) x • (x ^ 2 : ℝ)
+        = (Real.sqrt Real.pi)⁻¹ * (x ^ 2 * Real.exp (-x ^ 2)) := by
+    intro x
+    rw [hpdf x, smul_eq_mul]; ring
+  simp_rw [hpoint] at hvar
+  rw [integral_const_mul] at hvar
+  -- Step 6. Solve: `(√π)⁻¹ · I = 1/2 ⇒ I = √π / 2`, since `√π > 0`.
+  have hπ_ne : Real.sqrt Real.pi ≠ 0 := (Real.sqrt_pos.mpr Real.pi_pos).ne'
+  field_simp at hvar
+  linarith
+
+end DiagonalSchurPrep
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -819,6 +885,7 @@ theorem complex_fourier_gaussian_density_eigen (w : ℂ) :
 - `complex_fourier_gaussian_normSq` : proved (`Complex.normSq` form of the parametric Fourier-Gaussian).
 - `complex_fourier_gaussian_shifted` : proved (modulation companion, direct `_root_.fourier_gaussian_innerProductSpace'` specialization at `V := ℂ`, S6b ACT-2).
 - `complex_fourier_gaussian_density_eigen` : proved (the normalised density `(1/π) · exp(-π · ‖z‖²)` is a Fourier eigenfunction with eigenvalue `1`, via `integral_const_mul` + `complex_fourier_gaussian_pi`, S6b ACT-2).
+- `integral_sq_exp_neg_sq` : proved (1-D real second moment `∫ x²·exp(-x²) = √π/2`, via `gaussianReal 0 (1/2 : ℝ≥0)` variance shortcut, S6c ACT-1).
 
 All theorems above are sorry-free and axiom-free.
 

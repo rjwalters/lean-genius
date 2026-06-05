@@ -1,9 +1,9 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S6c PREP-3 — paste-ready ACT-1 skeleton for `integral_sq_exp_neg_sq` via `gaussianReal` variance, bearers verified @ `2df2f0150c`)
-**Since**: 2026-06-02 (S6c PREP-3 this PR; iter 13 → 14)
-**Iteration**: 14 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + **S6c PREP-3**)
-**Last canonical sync**: 2026-06-02 (researcher-1, this PR — S6c PREP-3 bearer recheck + route-2 concretization)
+**Phase**: RESEARCH (S6c ACT-1 — `integral_sq_exp_neg_sq` via `gaussianReal` variance shortcut shipped, 3208/3208 jobs)
+**Since**: 2026-06-04 (S6c ACT-1 this PR; iter 14 → 15)
+**Iteration**: 15 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + S6c PREP-3 + **S6c ACT-1**)
+**Last canonical sync**: 2026-06-04 (researcher-3, this PR — S6c ACT-1 ships `integral_sq_exp_neg_sq` per PREP-3 §3 route 2)
 
 > _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
 > (Schur orthogonality S6c, n-dim Fourier-Gaussian lift, the multi-week S6d
@@ -137,11 +137,11 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 
 - Sorries: 0
 - Axioms: 0
-- Build: verified at S6b ACT-2 close (2026-05-31 via Docker wrapper,
+- Build: verified at S6c ACT-1 close (2026-06-04 via Docker wrapper,
   `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`),
-  3129/3129 jobs at v4.26.0.
-- Open Lean PR: none for the slug as of this STATE-SYNC (2026-06-01;
-  S6b ACT-2 PR #21779 merged 2026-06-01T03:52Z).
+  **3208/3208 jobs at v4.26.0**.
+- Cumulative: 921 LOC / 27 theorems + 2 private helpers / 0 sorries / 0 axioms.
+- Open Lean PR: this S6c ACT-1 PR (researcher-3, 2026-06-04).
 
 ## Path-to-completion (consolidated)
 
@@ -163,34 +163,33 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 | **S6b ACT** | **ACT** | **`complex_fourier_gaussian` family on V := ℂ (Part 6, +3 thm, +`_normSq` companion sorry-free)** | **#21575** | **merged 2026-05-31T18:34Z** |
 | **S6b ACT-2** | **ACT** | **`complex_fourier_gaussian_shifted` + `_density_eigen` (Part 7, +2 thm, sorry-free)** | **#21779** | **merged 2026-06-01T03:52Z** |
 | STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 | #21977 | merged 2026-06-01T19:23Z |
-| **S6c PREP-3** | **PREP** | **Bearer recheck @ `2df2f0150c` + paste-ready `gaussianReal`-variance route for `integral_sq_exp_neg_sq` (~20-25 LOC ACT-1 skeleton)** | **(this)** | **unmerged** |
-| (next) | ACT-1 | `integral_sq_exp_neg_sq` via `variance_id_gaussianReal` (route 2, ~20-25 LOC) | — | unclaimed |
-| (next+1) | ACT-2 | `complex_gaussian_integral_norm_sq` + n-dim `schur_orthogonality_complex_gaussian_diag` (~40-55 LOC) | — | unclaimed |
+| S6c PREP-3 | PREP | Bearer recheck @ `2df2f0150c` + paste-ready `gaussianReal`-variance route for `integral_sq_exp_neg_sq` (~20-25 LOC ACT-1 skeleton) | (merged) | merged |
+| **S6c ACT-1** | **ACT** | **`integral_sq_exp_neg_sq` via `gaussianReal 0 (1/2)` variance shortcut (Part 8, +1 thm, 22 LOC proof, 3208/3208 jobs)** | **(this)** | **unmerged** |
+| (next) | ACT-2 | `complex_gaussian_integral_norm_sq` + n-dim `schur_orthogonality_complex_gaussian_diag` (~40-55 LOC) | — | unclaimed |
 
 ## Next Action
 
-S6c PREP-3 (this PR) concretizes the PREP-2 §3.4 "route 2" (gaussianReal
-variance) to a paste-ready ~20-25 LOC Lean skeleton for the load-bearing
-1-D real second moment `integral_sq_exp_neg_sq : ∫ x², exp(-x²) dx = √π/2`.
-All five bearers verified present at Mathlib pin `2df2f0150c`:
+S6c ACT-1 (this PR, researcher-3, 2026-06-04) ships the load-bearing 1-D
+real second moment
 
-- `gaussianPDFReal` (`Real.lean:48`)
-- `integral_id_gaussianReal` (`Real.lean:493`)
-- `variance_id_gaussianReal` (`Real.lean:528`, was `:543` in PREP-2)
-- `integral_gaussianReal_eq_integral_smul` (`Real.lean:249`)
-- `variance_of_integral_eq_zero` (`Variance.lean:149`)
+    integral_sq_exp_neg_sq : ∫ x : ℝ, x^2 * exp(-x^2) = √π / 2
 
-**S6c ACT-1 (next research claim)**: drop the §3 skeleton from
-`sessions/2026-06-02-s6c-prep-3-gaussianreal-variance-skeleton.md` into a new
-helper section of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (e.g. `### Part 8.
-Diagonal Schur prerequisites`), expecting ~20-25 LOC, 0 sorries, 0 axioms.
-Risk register in the PREP-3 session covers NNReal coercion, smul-vs-mul
-ordering, and the `MemLp 2` integrability requirement.
+as a new Part 8 of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (Diagonal Schur
+prerequisite). Proof: 22 LOC body via the `gaussianReal 0 (1/2 : ℝ≥0)`
+variance shortcut (PREP-3 §3 route 2) — variance equals `∫ x² · pdf` since
+the mean is 0, and `(√π)⁻¹·exp(-x²)` is the pdf at v = 1/2. Sorry-free,
+axiom-free, Docker-verified 3208/3208 jobs at v4.26.0.
 
-**S6c ACT-2 (after ACT-1 merges)**: ship `complex_gaussian_integral_norm_sq`
+See `sessions/2026-06-04-s6c-act-1-integral-sq-exp-neg-sq.md` for the full
+ACT report (proof structure, bearer recheck, PREP-3 risk register replay,
+linter notes).
+
+**S6c ACT-2 (next research claim)**: ship `complex_gaussian_integral_norm_sq`
 (~15-20 LOC, 1-D complex moment via `Complex.measurableEquivRealProd` +
-Fubini) and `schur_orthogonality_complex_gaussian_diag` (~25-35 LOC, n-dim
-diagonal Schur via `integral_fintype_prod_volume_eq_prod`).
+Fubini, leveraging the new `integral_sq_exp_neg_sq`) and
+`schur_orthogonality_complex_gaussian_diag` (~25-35 LOC, n-dim diagonal
+Schur via `integral_fintype_prod_volume_eq_prod`). Route unchanged from
+PREP-2 §3.2-3.3 and PREP-3 §5; no further PREP needed before ACT-2.
 
 **Pre-ACT-1 gate**: host disk must be GREEN (≥5 Gi free) before launching the
 Docker rebuild. At PREP-3 time `df -h /Users/rwalters` reports 100% capacity,
