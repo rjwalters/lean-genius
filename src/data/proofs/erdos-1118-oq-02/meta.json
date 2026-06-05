@@ -62,10 +62,10 @@
     },
     {
       "id": "section-66",
-      "title": "Part II: The 1D vs nD Comparison (continued)",
+      "title": "Part II (cont.): Plurisubharmonicity and Dimensional Anchors",
       "startLine": 66,
       "endLine": 86,
-      "summary": "Continuation: remaining proofs and definitions in this section."
+      "summary": "Two docstring blocks — plurisubharmonicity of log|f| (the SCV analogue of subharmonicity, equivalent to ∂∂̄ log|f| ≥ 0 in the sense of currents) and real-dimension scaling (E(c) ⊂ ℂⁿ ≅ ℝ^(2n) lives in a space of growing dimension as n increases) — anchor two trivial theorems: superlevel_dimension (2n = 2n by rfl) and growth_increases_with_dim (n₁ < n₂ → 2n₁ < 2n₂ by omega). The latter encodes the heuristic that the Camera-Gol'dberg growth threshold tightens with dimension — for f ~ exp(r^α), finiteness of |E(c)|_(2n) requires α > 2n/(2n-1), a condition approaching 1 as n → ∞."
     },
     {
       "id": "summary",
