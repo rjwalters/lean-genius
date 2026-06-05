@@ -21,7 +21,7 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 293,
+    "lineCount": 312,
     "assumptions": "None for the qdetF definition and the multiplicative identity. The n=2 specialization theorems require the non-degeneracy hypothesis carried in the parent file (A 1 1 ≠ 0 for the (0,0)-case, A 0 0 ≠ 0 for the (1,1)-case). The S3 SCAFFOLD theorem qdetN_step_eq_qdetF (Route B → Route A bridge over a field) requires (minorIJ A i j).det ≠ 0 and currently carries a sorry pending S4 cofactor-expansion expansion.",
     "originalContributions": [
       "Defined minorIJ: the complementary n×n submatrix of an (n+1)×(n+1) matrix via Fin.succAbove, uniformly in n (generalizes CramersRuleOQ01OQ02OQ01.block3)",
@@ -35,9 +35,10 @@
       "Proved qdetF_summary: packaged multiplicative identity + definitional equation in a single result",
       "Defined qdetN_step (S3 SCAFFOLD): the non-recursive one-step Gelfand–Retakh Schur formula `A i j − ∑_{p,q} A i (succAbove j q) · Minv q p · A (succAbove i p) j` over a division ring, parameterised by an explicit complementary-minor inverse Minv",
       "Proved qdetN_step_zero_minv: the degenerate base identity qdetN_step A i j 0 = A i j (the Schur correction term vanishes when Minv = 0)",
-      "Stated qdetN_step_eq_qdetF (S3 SCAFFOLD, deferred): the field-consistency bridge — choosing Minv := (minorIJ A i j)⁻¹ recovers qdetF A i j — together with a detailed S4 proof strategy via Matrix.det_succ_row cofactor expansion and Matrix.adjugate_apply"
+      "Stated qdetN_step_eq_qdetF (S3 SCAFFOLD, deferred): the field-consistency bridge — choosing Minv := (minorIJ A i j)⁻¹ recovers qdetF A i j — together with a detailed S4 proof strategy via Matrix.det_succ_row cofactor expansion and Matrix.adjugate_apply",
+      "Proved qdetN_step_eq_qdetF_fin_one (S17+1 ACT base case): n=0 (1×1 matrix) specialization of the strategic theorem, proved without invoking the deferred sorry — both sides collapse to A 0 0 since the Schur double sum is empty over Fin 0 × Fin 0 and the complementary minor is the empty 0×0 matrix with det = 1; the cofactor sign (-1)^(0+0) = 1 is trivial. First concrete witness connecting qdetN_step directly to qdetF (the n=2/n=3 bridges in Parts III–IV use parent qdet00/qdet11/qdet3 definitions instead)."
     ],
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3
   },
   "sections": [
@@ -151,9 +152,9 @@
       "Matrix"
     ],
     "namespace": "CramersRuleOQ01OQ02OQ01OQ01",
-    "lineCount": 293,
+    "lineCount": 312,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3,
     "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
     "sorries": 1
