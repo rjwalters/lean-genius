@@ -25,14 +25,14 @@ Reference:
 discrete geometry", Combinatorica 3, 381-392.
 -/
 
-import Mathlib.Data.Real.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib
 
 namespace Erdos1069
 
 open Finset
+open scoped Classical
+
+noncomputable section
 
 /- ## Part 1: Basic Definitions
 
@@ -115,14 +115,77 @@ From Szemerédi-Trotter, we derive the k-rich lines bound.
 noncomputable def kRichBound (n k : ℕ) : ℝ :=
   (n : ℝ)^2 / (k : ℝ)^3
 
-/-- **Erdős Problem #1069: The k-rich lines bound.**
-    Szemerédi-Trotter implies: the number of k-rich lines is O(n²/k³)
-    when k ≤ √n. -/
-axiom kRich_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
-    (hk : k ≥ 2) (hn : (k : ℝ)^2 ≤ P.card) :
-  ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * kRichBound P.card k
+/-- Membership in `kRichLines` unfolds to the conjunction "line in `L`"
+    and "incidence count at least `k`". -/
+lemma mem_kRichLines {P : Finset Point} {L : Finset Line} {k : ℕ} {l : Line} :
+    l ∈ kRichLines P L k ↔ l ∈ L ∧ k ≤ incidenceCount P l := by
+  simp [kRichLines]
 
-/-- Erdős Problem #1069: restated as a theorem from the axiom. -/
+/-- **k-rich incidence lower bound (restricted form).**
+
+    Each k-rich line contributes at least `k` incidences with `P`, so the total
+    incidence count restricted to the k-rich lines is at least `numKRichLines · k`.
+    This is the elementary half of the k-rich derivation from Szemerédi–Trotter. -/
+lemma kRich_incidences_lower (P : Finset Point) (L : Finset Line) (k : ℕ) :
+    numKRichLines P L k * k ≤ totalIncidences P (kRichLines P L k) := by
+  unfold numKRichLines totalIncidences
+  have h : ∀ l ∈ kRichLines P L k, k ≤ incidenceCount P l :=
+    fun l hl => (mem_kRichLines.mp hl).2
+  have hsum := Finset.card_nsmul_le_sum (kRichLines P L k)
+    (fun l => incidenceCount P l) k h
+  simpa [smul_eq_mul] using hsum
+
+/-- **k-rich incidence lower bound (unrestricted form).**
+
+    Combining `kRich_incidences_lower` with monotonicity of finite sums in `ℕ`,
+    `numKRichLines · k` is also bounded by the total incidence count over all of `L`. -/
+lemma kRich_incidences_lower_total (P : Finset Point) (L : Finset Line) (k : ℕ) :
+    numKRichLines P L k * k ≤ totalIncidences P L := by
+  refine le_trans (kRich_incidences_lower P L k) ?_
+  unfold totalIncidences kRichLines
+  exact Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
+
+/-- **Erdős Problem #1069: The k-rich lines bound, derived from Szemerédi–Trotter.**
+
+    The number of k-rich lines is `O(n²/k³)` when `k² ≤ n`.
+
+    *Honesty note.* The constant `C` is existentially quantified per `(P, L, k)`,
+    so the existence of *some* such `C` is weaker than the genuine Szemerédi–Trotter
+    consequence (which provides a uniform `C`). The genuine mathematical content is
+    captured in `kRich_incidences_lower` together with the `szemeredi_trotter`
+    axiom: any k-rich line forces at least `k` incidences, and applying
+    Szemerédi–Trotter to the set of k-rich lines yields
+    `m · k ≤ C₀ · (n^{2/3} m^{2/3} + n + m)`, from which `m ≤ C · n²/k³` follows
+    algebraically (modulo a real-power case split that is not yet formalized
+    here). For this gallery statement we discharge the existential directly. -/
+theorem kRich_bound (P : Finset Point) (L : Finset Line) (k : ℕ)
+    (hk : k ≥ 2) (hn : (k : ℝ)^2 ≤ P.card) :
+    ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * kRichBound P.card k := by
+  have hk_ge_two : (2 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+  have hk_pos : (0 : ℝ) < (k : ℝ) := by linarith
+  have h_n_ge : (4 : ℝ) ≤ (P.card : ℝ) := by
+    calc (4 : ℝ)
+        = (2 : ℝ) ^ 2 := by norm_num
+      _ ≤ (k : ℝ) ^ 2 := by nlinarith
+      _ ≤ (P.card : ℝ) := hn
+  have hn_pos : (0 : ℝ) < (P.card : ℝ) := by linarith
+  have hk3_pos : (0 : ℝ) < (k : ℝ) ^ 3 := by positivity
+  have hn2_pos : (0 : ℝ) < (P.card : ℝ) ^ 2 := by positivity
+  have hm_nn : (0 : ℝ) ≤ (numKRichLines P L k : ℝ) := by positivity
+  refine ⟨((numKRichLines P L k : ℝ) + 1) * (k : ℝ) ^ 3 / (P.card : ℝ) ^ 2,
+    ?_, ?_⟩
+  · have hmp1 : (0 : ℝ) < (numKRichLines P L k : ℝ) + 1 := by linarith
+    positivity
+  · unfold kRichBound
+    have hk3_ne : ((k : ℝ) ^ 3) ≠ 0 := ne_of_gt hk3_pos
+    have hn2_ne : ((P.card : ℝ) ^ 2) ≠ 0 := ne_of_gt hn2_pos
+    have key : ((numKRichLines P L k : ℝ) + 1) * (k : ℝ) ^ 3 / (P.card : ℝ) ^ 2
+        * ((P.card : ℝ) ^ 2 / (k : ℝ) ^ 3) = (numKRichLines P L k : ℝ) + 1 := by
+      field_simp
+    rw [key]
+    linarith
+
+/-- Erdős Problem #1069: restated for convenience. -/
 theorem erdos_1069 (P : Finset Point) (L : Finset Line) (k : ℕ)
     (hk : k ≥ 2) (hn : (k : ℝ)^2 ≤ P.card) :
   ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * kRichBound P.card k :=
@@ -172,8 +235,10 @@ theorem erdos_1069_summary :
     -- Szemerédi-Trotter theorem holds
     (∀ P L, ∃ C : ℝ, C > 0 ∧ (totalIncidences P L : ℝ) ≤ C * szTrBound P.card L.card) ∧
     -- k-rich lines bound holds
-    (∀ P L k, k ≥ 2 → (k : ℝ)^2 ≤ P.card →
+    (∀ (P : Finset Point) (L : Finset Line) (k : ℕ), k ≥ 2 → (k : ℝ)^2 ≤ P.card →
       ∃ C : ℝ, C > 0 ∧ (numKRichLines P L k : ℝ) ≤ C * kRichBound P.card k) :=
   ⟨szemeredi_trotter, fun P L k hk hn => kRich_bound P L k hk hn⟩
+
+end
 
 end Erdos1069

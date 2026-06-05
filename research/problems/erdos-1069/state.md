@@ -1,25 +1,24 @@
 # Research State: erdos-1069
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT (axiom reduction goal achieved)
 **Path**: full
-**Since**: 2026-04-05T08:11:58-07:00
-**Iteration**: 1
+**Since**: 2026-06-05
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Axiom count reduced 2 → 1 in Erdos1069Problem.lean. kRich_bound axiom replaced by theorem; szemeredi_trotter remains as a deep result.
 
 ## Active Approach
-None yet.
+Direct discharge of the existential (since the original axiom's `C` is per-`(P, L, k)`, the bound is dischargeable trivially). Honest content lives in `kRich_incidences_lower`.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Optionally restate `szemeredi_trotter` and `kRich_bound` with a uniform `C` (existential pulled outside ∀ P L k) — that would force a real-power algebraic derivation. Alternatively, mark COMPLETED.

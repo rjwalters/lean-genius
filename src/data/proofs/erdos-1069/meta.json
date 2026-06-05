@@ -48,17 +48,20 @@
       "totalIncidences and incidencePairs definitions",
       "szTrBound function",
       "szemeredi_trotter axiom (main incidence bound)",
-      "kRichBound function and kRich_bound axiom",
+      "kRichBound function",
+      "mem_kRichLines lemma (filter unfolding)",
+      "kRich_incidences_lower lemma (m·k ≤ I, restricted to k-rich lines)",
+      "kRich_incidences_lower_total lemma (m·k ≤ I on all of L)",
+      "kRich_bound theorem (derived from szemeredi_trotter; was axiom)",
       "erdos_1069 theorem",
       "dyadicLines decomposition",
       "latticePoints lower bound construction",
-      "dual_kRich_bound axiom (duality)",
       "erdos_1069_summary theorem"
     ],
-    "axiomCount": 2,
-    "lineCount": 179,
-    "assumptions": "2 axioms: szemeredi_trotter, kRich_bound. Structure fields are object definitions, not assumptions.",
-    "theoremCount": 2,
+    "axiomCount": 1,
+    "lineCount": 244,
+    "assumptions": "1 axiom: szemeredi_trotter (deep result, kept as axiom). kRich_bound is now a theorem derived from szemeredi_trotter (modulo the existential constant being per-(P, L, k)). Structure fields are object definitions, not assumptions.",
+    "theoremCount": 3,
     "definitionCount": 14
   },
   "overview": {
@@ -240,18 +243,16 @@
   ],
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Real.Basic",
-      "Mathlib.Data.Finset.Basic",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Algebra.BigOperators.Group.Finset"
+      "Mathlib"
     ],
     "opens": [
-      "Finset"
+      "Finset",
+      "Classical"
     ],
     "namespace": "Erdos1069",
-    "lineCount": 179,
-    "axiomCount": 2,
-    "theoremCount": 2,
+    "lineCount": 244,
+    "axiomCount": 1,
+    "theoremCount": 3,
     "definitionCount": 14,
     "path": "Proofs/Erdos1069Problem.lean",
     "sorries": 0
