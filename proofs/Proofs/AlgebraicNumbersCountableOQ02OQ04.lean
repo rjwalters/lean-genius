@@ -925,4 +925,74 @@ theorem frontier_nonComputableReals_eq_univ :
   rw [frontier, closure_nonComputableReals_eq_univ,
       interior_nonComputableReals_eq_empty, Set.diff_empty]
 
+/-! ## S10 — Fσ-style structure: computable reals are a countable union of closed sets
+
+S8 proved `nonComputableReals_isGδ` — the complement of the countable set
+`{r | IsComputable r}` in the T1 space `ℝ` is a Gδ set. The dual classical
+statement is that `{r | IsComputable r}` is itself Fσ: a countable union of
+closed sets. Mathlib v4.26.0 has no `IsFσ` predicate (only `IsGδ`,
+`residual`, `IsNowhereDense`, `IsMeagre` are provided in
+`Mathlib.Topology.GDelta.{Basic, MetrizableSpace}`), so we state the
+witness explicitly via the `Nat.Partrec.Code` codebook of S3.
+
+For each code `c`, the set
+  `s c := {decodeReal c} ∩ {r | IsComputable r}`
+is a subsingleton (it contains at most the point `decodeReal c`), hence
+closed in the T1 space `ℝ` (`Set.Subsingleton.isClosed`). The union covers
+exactly the computable reals:
+
+* Every computable real `r` lies in `Set.range decodeReal` (S3's
+  `computable_real_mem_range_decodeReal`), so the witness code `c` with
+  `decodeReal c = r` gives `r ∈ s c`.
+* Conversely, `r ∈ s c` immediately gives `IsComputable r` from the right
+  factor of the intersection.
+
+This completes the Borel-hierarchy picture: computable reals are Σ⁰₂
+(Fσ-style, S10) and non-computable reals are Π⁰₂ (Gδ, S8) in the classical
+descriptive-set-theoretic hierarchy. The asymmetric proof — `IsGδ`
+predicate for non-computable, explicit-witness for computable — reflects
+the absence of an `IsFσ` predicate in Mathlib v4.26.0 rather than any
+mathematical asymmetry between the two halves.
+
+* `computable_reals_isFsigma_witness` — `∃ s : Nat.Partrec.Code → Set ℝ,
+  (∀ c, IsClosed (s c)) ∧ {r | IsComputable r} = ⋃ c, s c`.
+-/
+
+/-- **S10 — explicit Fσ-style witness for the computable reals.**
+
+    The family `s c := {decodeReal c} ∩ {r | IsComputable r}` is the desired
+    decomposition of `{r | IsComputable r}` into a countable union of closed
+    sets:
+
+    * Each `s c` is contained in the singleton `{decodeReal c}`, hence is a
+      subsingleton; subsingletons are closed in the T1 space `ℝ`
+      (`Set.Subsingleton.isClosed`).
+    * `{r | IsComputable r} = ⋃ c, s c`: forward by S3's
+      `computable_real_mem_range_decodeReal` (every computable real has a
+      decoding code); reverse by the right factor of the intersection in
+      `s c`.
+
+    No Computable-on-`decodeReal c` argument is required — the intersection
+    formulation absorbs the case-analysis into the membership predicate. -/
+theorem computable_reals_isFsigma_witness :
+    ∃ s : Nat.Partrec.Code → Set ℝ,
+      (∀ c, IsClosed (s c)) ∧
+      {r : ℝ | IsComputable r} = ⋃ c, s c := by
+  refine ⟨fun c => ({decodeReal c} : Set ℝ) ∩ {r : ℝ | IsComputable r}, ?_, ?_⟩
+  · intro c
+    apply Set.Subsingleton.isClosed
+    intro x hx y hy
+    have hx1 : x ∈ ({decodeReal c} : Set ℝ) := hx.1
+    have hy1 : y ∈ ({decodeReal c} : Set ℝ) := hy.1
+    rw [Set.mem_singleton_iff] at hx1 hy1
+    exact hx1.trans hy1.symm
+  · ext r
+    refine ⟨fun hr => ?_, fun hr => ?_⟩
+    · obtain ⟨c, hc⟩ := computable_real_mem_range_decodeReal hr
+      refine Set.mem_iUnion.mpr ⟨c, ?_, hr⟩
+      rw [Set.mem_singleton_iff]
+      exact hc.symm
+    · obtain ⟨c, hc⟩ := Set.mem_iUnion.mp hr
+      exact hc.2
+
 end AlgebraicNumbersCountableOQ02OQ04
