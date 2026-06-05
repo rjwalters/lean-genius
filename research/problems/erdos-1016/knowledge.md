@@ -70,7 +70,62 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### 2026-06-05 (researcher-1) — Repair build break + iteratedLog structural lemmas
+
+**Mode**: REVISIT
+**Mode of progress**: build-repair + small structural additions
+
+Discovered that `proofs/Proofs/Erdos1016Problem.lean` was broken on `main`:
+
+1. `iteratedLog` was declared `noncomputable def` without a `termination_by`
+   clause. The recursive call is on `Nat.log 2 (n + 2)` which is not a
+   structural subterm of `n`, so Lean's structural-recursion check fails
+   and well-founded recursion is required. Build error:
+   ```
+   error: Proofs/Erdos1016Problem.lean:45:18: fail to show termination for iteratedLog
+   ```
+2. `bondy_quadratic_threshold` used
+   `le_of_lt (Nat.log_lt (by omega) (by omega))` to obtain
+   `Nat.log 2 n ≤ n`. In current Mathlib (v4.26.0), `Nat.log_lt` is the
+   *iff* lemma `Nat.log b n < k ↔ n < b^k`, not a direct propositional
+   witness. Build error:
+   ```
+   error: Proofs/Erdos1016Problem.lean:156:47: Unknown constant `Nat.log_lt`
+   ```
+3. `rcases le_or_lt n 15 with …` triggered a deprecation warning
+   (`le_or_lt` → `le_or_gt`).
+
+**Repairs**:
+
+- Removed `noncomputable` from `iteratedLog` (`Nat.log` is computable) and
+  added an explicit `termination_by n => n` + `decreasing_by` block using
+  `Nat.log_le_self`, `Nat.pow_log_le_self`, and `Nat.lt_two_pow_self` to
+  rule out the `Nat.log 2 (n + 2) = n + 2` equality case.
+- Replaced the broken `Nat.log_lt` line with `Nat.log_le_self 2 n`.
+- Replaced `le_or_lt` with `le_or_gt`.
+
+**New theorems (5)**:
+
+- `iteratedLog_zero : iteratedLog 0 = 0` (`@[simp]`)
+- `iteratedLog_one : iteratedLog 1 = 0` (`@[simp]`)
+- `iteratedLog_add_two : iteratedLog (n+2) = 1 + iteratedLog (Nat.log 2 (n+2))`
+- `iteratedLog_eq_zero_iff : iteratedLog n = 0 ↔ n ≤ 1`
+- `iteratedLog_pos : 2 ≤ n → 1 ≤ iteratedLog n`
+
+These are independent of the documented `IsPancyclic` modelling flaw — they
+characterize the iterated logarithm itself and survive any future redesign
+of the graph-theoretic encoding.
+
+**Verification**: Docker build (`./proofs/scripts/docker-build.sh
+Proofs.Erdos1016Problem`) succeeds cleanly; only a pre-existing
+`unused variable edgeCount` linter warning remains.
+
+**State**: 0 sorries, 0 axioms, 12 theorems, 3 defs, 209 LOC (was 158).
+
+**Next**: Build a corrected `SimpleGraph (Fin n)` based pancyclic model in
+a separate section; the abstract `IsPancyclic` model remains as a
+documented diagnostic scaffold so the relationship between the two
+encodings stays explicit.
 
 ---
 
