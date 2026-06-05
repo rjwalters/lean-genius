@@ -96,8 +96,9 @@ theorem growth_increases_with_dim :
   - Hartogs extension phenomena
   - Growth measured by pluricomplex Green function
 
-  3 axioms (Camera-Gol'dberg, higher-dim differences, PSH).
-  0 sorries. 4 theorems.
+  3 documented theoretical principles (Camera-Gol'dberg, higher-dim
+  differences, PSH) — these are docstring exposition, not `axiom`
+  declarations. 0 axioms. 0 sorries. 3 theorems, 1 definition.
 -/
 
 end Erdos1118OQ02
