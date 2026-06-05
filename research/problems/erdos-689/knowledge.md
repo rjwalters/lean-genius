@@ -131,6 +131,105 @@ coverage equal to a divergent sum), but does NOT prove the conjecture.
 3. **Cross-reference siblings** — `erdos-687` (Jacobsthal upper-bound problem)
    and `erdos-688` (covering with restricted prime ranges).
 
+### Session 2026-06-05 (Session 3) — Necessary-condition enrichment
+
+**Mode**: REVISIT (RICH knowledge tier, score 18)
+**Outcome**: Added 6 structural necessary-condition lemmas. Theorem count 13 → 19; axiom count unchanged (1, = open conjecture itself). File grew 180 → 227 lines.
+
+#### Why Revisit
+
+Prior session reduced the file to 1 axiom (the open conjecture itself) and proved 13
+supporting theorems including `mertens_sum_divergence`. State.md recommended
+deprioritizing for axiom removal but noted optional structural enrichment paths:
+"probabilistic expected-coverage formula, exact small-n cases for r=2". This session
+took a different, simpler structural enrichment direction: **the obstruction side**.
+
+#### What I Did
+
+Added 6 lemmas to `proofs/Proofs/Erdos689Problem.lean`:
+
+1. **`primesUpTo_zero`**: π(0) = 0 (trivial, fills small-case symmetry with `primesUpTo_one`).
+2. **`coveringCount_zero`**: with no primes, coverage is 0.
+3. **`isRFoldCover_card_bound`** (KEY): If `IsRFoldCover n r a` holds and `n ≥ 1`, then
+   `r ≤ (primesUpTo n).card = π(n)`. Proof: apply hypothesis at `m = 1`, chain with
+   `coveringCount_le_card_primes`. This is the trivial NECESSARY condition for
+   r-fold cover existence.
+4. **`no_rFoldCover_of_few_primes`**: Contrapositive — if `π(n) < r`, no r-fold cover exists.
+5. **`isRFoldCover_n_zero`**: n = 0 case is vacuously true (empty interval [1, 0]).
+6. **`no_rFoldCover_n_one`**: n = 1 case impossible for r ≥ 1 (specialization of
+   `no_rFoldCover_of_few_primes` via `primesUpTo_one = ∅`).
+
+Also fixed `relatedProofs` self-reference in JSON metadata (Session 2 claimed to
+remove `"erdos-689"` from its own related list but the entry was still present;
+this session actually removed it).
+
+#### Key Finding
+
+**The conjecture is exactly the gap between the trivial necessary condition
+and the asymptotic sufficient condition.** Specifically:
+
+- NECESSARY (Session 3, now formalized): `IsRFoldCover n r a → r ≤ π(n)`.
+- Consequence: `N₀(r) ≥ p_r` (the r-th prime). Smaller n cannot work.
+- CONJECTURED (open axiom): some `N₀(r)` exists with `IsRFoldCover n r a` for all
+  `n ≥ N₀(r)`. We know `N₀(r) ≥ p_r` but the conjecture doesn't give an upper bound.
+
+The structural depth added is the obstruction-side characterization. Combined with
+existing monotonicity (`coveringCount_mono`, `isRFoldCover_le`, `isRFoldCover_primes_mono`)
+and divergence heuristics (`mertens_sum_divergence`), the file now records both
+sides of the conceptual argument: "we have enough covering power eventually
+(Mertens)" but "we need at least r primes to start (necessary condition)".
+
+#### Build-Fix Bonus (pre-existing bugs uncovered)
+
+When attempting to verify the new lemmas under Docker, the file refused to build. Three pre-existing issues had to be fixed:
+
+1. **DecidablePred synthesis failure** — `def IsCoveredBy` did not unfold during
+   typeclass resolution, so `Finset.filter (fun p => IsCoveredBy m p (a p))`
+   inside `coveringCount` failed with "failed to synthesize DecidablePred …".
+   Fix: marked `IsCoveredBy` as `@[reducible]`.
+
+2. **Forward-reference of `erdos_689_r_fold`** — the theorem
+   `erdos_689_double_cover` referenced the axiom on the line *before* its
+   declaration. Lean 4 does not permit forward references for `axiom`. Fix:
+   moved the axiom block above `erdos_689_double_cover` (and above
+   `jacobsthal_connection`, `green_variant_r10` which also use it — these
+   already worked because the axiom was declared earlier in source order,
+   but the move makes the dependency explicit).
+
+3. **`positivity` Zero synthesis failure in `mertens_sum_divergence`** — the
+   call `Finset.sum_le_sum_of_subset_of_nonneg h_sub (fun _ _ _ => by positivity)`
+   left the function type unresolved, so `positivity` couldn't synthesize
+   `Zero ℝ`. Fix: added an explicit type annotation to `h_le`.
+
+The previous session's PR claim that the file "builds" was inaccurate (likely
+the build was never actually invoked, or local cache masked the failure).
+After these fixes the file compiles clean under `docker-build.sh` with no
+errors and no warnings.
+
+#### Files Modified
+
+- `proofs/Proofs/Erdos689Problem.lean` (180 → 239 lines, 13 → 19 theorems, 3 pre-existing bugs fixed)
+- `src/data/research/problems/erdos-689.json` (added proven lemmas, insights,
+  builtItems; updated progressSummary, currentState, lineCount/theoremCount;
+  fixed self-reference in relatedProofs)
+- `research/problems/erdos-689/knowledge.md` (this file — session record)
+- `research/problems/erdos-689/state.md` (phase, iteration, focus updated)
+
+#### Files NOT Modified
+
+- The axiom `erdos_689_r_fold` — IS the open conjecture; cannot be eliminated
+  without genuine mathematical progress.
+
+#### Next Steps
+
+1. **MAINTAIN** — this slug should remain deprioritized for axiom-removal sessions.
+2. **Optional structural enrichment** (still does NOT reduce axiom count):
+   - Prove `expectedCoverage` via probability theory (requires substantial setup).
+   - Compute exact small-r=2 cases (e.g., explicit 2-fold covers for n ≤ 30 via
+     enumeration with Decidable instances).
+3. **Cross-reference siblings** — `erdos-687` (Jacobsthal Y(x)), `erdos-688`
+   (covering with restricted prime ranges).
+
 ---
 
-*Generated from erdosproblems.com on 2026-01-14; updated by researcher-10 on 2026-04-27.*
+*Generated from erdosproblems.com on 2026-01-14; updated by researcher-10 on 2026-04-27; enriched by researcher-1 on 2026-06-05.*
