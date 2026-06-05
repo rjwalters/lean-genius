@@ -123,3 +123,42 @@ Harder — but isolated. The continued-fraction route is the right strategy. If 
 - **Lean files**: `proofs/Proofs/HermiteLindemann.lean`, `eTranscendental.lean`, `ETranscendentalOQ0{1,2,3}.lean`, `PiTranscendental.lean`
 - **Parent**: `nth-root-irrational` (algebraic irrationality of irreducible-polynomial roots) — orthogonal in technique despite shared "expanding $\Q$" theme
 - **Adjacent transcendence work**: `angle-trisection-cos-20-gal-oq-01-oq-03` (cyclotomic $\Phi_{2p}(-1) = p$, requires algebraic-not-transcendental machinery), `algebraic-numbers-countable-oq-02-oq-04` (countability bounds)
+
+---
+
+## Session 2026-06-05 (Session 7) — S7 ACT — `e_transcendental` axiom discharged via Hermite-Lindemann bridge
+
+**Mode**: REVISIT (knowledge tier RICH at 19 items)
+**Outcome**: progress — local axiom reduction + 5 pre-existing Mathlib v4.26.0 build regressions repaired
+
+### What I Did
+- Discovered `HermiteLindemann.lean:208` already contained `hermite_lindemann 1 one_ne_zero (isAlgebraic_int 1)` — an aspirational derivation of `e_transcendental` that never compiled
+- Audited dependency chain: `eTranscendental.lean` had its own `axiom e_transcendental` (line 147) but the same statement was derivable from `axiom hermite_lindemann`
+- Wrote the bridge `e_transcendental_int : Transcendental ℤ (Real.exp 1)` in `HermiteLindemann.lean` using `IsAlgebraic.algebraMap` (3 lines)
+- Replaced `axiom e_transcendental` with `theorem e_transcendental := HermiteLindemann.e_transcendental_int`
+- Repaired 3 broken theorems in `HermiteLindemann.lean` (Mathlib v4.26.0 API regressions): `e_transcendental_rationals`, `pi_transcendental`, `pi_transcendental_real`
+- Cleaned up 7 dangling `/-- ... -/` aspirational-axiom docstrings → `/-! ... -/` blocks
+
+### Key Findings
+- `IsAlgebraic.algebraMap` (Mathlib/RingTheory/Algebraic/Basic.lean:174) is the right primitive for ℝ→ℂ transcendence transfer — replaces the broken `Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom)` pattern in 1 line
+- S5b's "flip `.mp` to `.mpr`" applies consistently: `IsFractionRing.isAlgebraic_iff A K x : IsAlgebraic A x ↔ IsAlgebraic K x` so `.mpr` goes ℚ→ℤ
+- The "4 sibling sorries" claim from S1 (Insight 1) is stale — actual sorry count across all 5 sibling files is **0**
+- `HermiteLindemann.lean` was broken on origin/main but unnoticed because `Proofs.lean` builds Mathlib targets lazily; `ETranscendentalOQ03` doesn't import HermiteLindemann so S5c/S5d/S6 all missed the issue
+- `pi_transcendental` and `pi_transcendental_real` (Wiedijk #53) now provide working bridges in addition to the e bridge — orthogonal axiom-reduction targets opened up
+
+### Files Modified
+- `proofs/Proofs/HermiteLindemann.lean` (3 theorems repaired, 1 new theorem, 7 docstring cleanups; 390→373 lines)
+- `proofs/Proofs/eTranscendental.lean` (axiom → theorem, +1 import; 305→304 lines)
+- `src/data/proofs/e-transcendental/meta.json` (leanFile.axiomCount 1→0, theoremCount 12→13)
+- `src/data/proofs/hermite-lindemann/meta.json` (leanFile.theoremCount 4→5, lineCount 390→373)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (phase OBSERVE→ACT, iteration 7→8, knowledge updates)
+
+### Build verification
+`Proofs.eTranscendental` 3079/3079 jobs ✓; `Proofs.ETranscendentalOQ03` 3085/3085 jobs ✓.
+
+### Next Steps
+- S8 watch tick on PR #28013 (current 169.8h stale, S6 grace period ends ~2026-06-26)
+- S5d.A/B/C continued-fraction-of-e arc remains deferred per S6 grace-period logic
+- S7 follow-up: use repaired `pi_transcendental_real` to discharge `axiom lindemann_theorem` in `PiTranscendental.lean` (requires first fixing PT's pre-existing v4.26.0 build errors — mechanic-class)
+
+See `sessions/2026-06-05-s7-act-e-transcendental-axiom-discharge-via-hermite-lindemann-bridge.md` for full details.

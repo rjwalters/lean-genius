@@ -4,6 +4,7 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Data.Complex.ExponentialBounds
+import Proofs.HermiteLindemann
 
 /-!
 # e is Transcendental (Wiedijk #67)
@@ -129,21 +130,19 @@ theorem e_lt_three : Real.exp 1 < 3 := by
 -/
 
 -- ============================================================
--- PART 4: The Main Theorem (Axiomatized)
+-- PART 4: The Main Theorem (derived from Hermite-Lindemann)
 -- ============================================================
 
-/-- **Main Axiom: e is transcendental over ℤ**
+/-- **Main Theorem: e is transcendental over ℤ** (Wiedijk #67).
 
-    This is Wiedijk #67 and follows from Hermite's 1873 proof. The full
-    formalization requires:
-    1. Polynomial arithmetic over ℤ
-    2. Integration by parts for polynomial × exponential
-    3. Careful divisibility analysis mod p
-    4. Asymptotic estimates showing contradiction
+    Derived from `HermiteLindemann.hermite_lindemann` at α = 1: since 1 ≠ 0
+    is algebraic over ℚ, `Complex.exp 1` is transcendental over ℤ; transfer
+    along the embedding ℝ ↪ ℂ gives `Transcendental ℤ (Real.exp 1)`.
 
-    The Lindemann-Weierstrass theorem (a generalization) is not yet in Mathlib.
-    When formalized, this axiom would be replaced by a direct proof. -/
-axiom e_transcendental : Transcendental ℤ (Real.exp 1)
+    The underlying assumption is now `axiom hermite_lindemann` in
+    `Proofs.HermiteLindemann`; this slug no longer carries an independent axiom. -/
+theorem e_transcendental : Transcendental ℤ (Real.exp 1) :=
+  HermiteLindemann.e_transcendental_int
 
 /-- e is transcendental over ℚ.
     Derived from e_transcendental (over ℤ) via IsFractionRing.isAlgebraic_iff:
