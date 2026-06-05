@@ -15,9 +15,11 @@
 #
 # Rate-limit cooldown:
 #   On a 429 / rate-limit response, the script writes
-#   `.aristotle-rate-limit-until` in the project root with a UTC timestamp
-#   5 minutes in the future. Subsequent invocations short-circuit (exit 0)
-#   until that timestamp passes. Remove the file manually to force resume.
+#   `.loom/state/aristotle-rate-limit-until` with a UTC timestamp 5 minutes
+#   in the future. Subsequent invocations short-circuit (exit 0) until that
+#   timestamp passes. Remove the file manually to force resume. This path is
+#   shared with the aristotle-agent (issue #22471) which reads the same file
+#   for scale-to-zero coordination.
 #
 # Submission order: Tier 0 StatementOnly files (*StatementOnly.lean) first,
 # then Tier 1 companion files (*Aristotle.lean), then Tier 2 research output
@@ -31,7 +33,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
 FIND_CANDIDATES="$SCRIPT_DIR/find-candidates.sh"
 PREPROCESS="$SCRIPT_DIR/preprocess-for-aristotle.sh"
-RATE_LIMIT_FILE="$PROJECT_ROOT/.aristotle-rate-limit-until"
+RATE_LIMIT_FILE="$PROJECT_ROOT/.loom/state/aristotle-rate-limit-until"
 RATE_LIMIT_COOLDOWN_SECONDS=300  # 5 minutes
 
 # Colors
@@ -71,8 +73,9 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Rate-limit cooldown:"
             echo "  On a 429 response, the script writes a UTC timestamp 5 minutes in the"
-            echo "  future to .aristotle-rate-limit-until at the project root. Subsequent"
-            echo "  invocations short-circuit (exit 0) until the cooldown expires."
+            echo "  future to .loom/state/aristotle-rate-limit-until. Subsequent invocations"
+            echo "  short-circuit (exit 0) until the cooldown expires. Shared with the"
+            echo "  aristotle-agent (issue #22471) for scale-to-zero coordination."
             echo "  Cooldown file: $RATE_LIMIT_FILE"
             echo ""
             echo "Submission order: Tier 0 StatementOnly files (*StatementOnly.lean) first,"
@@ -95,8 +98,8 @@ if [[ -z "${ARISTOTLE_API_KEY:-}" ]]; then
 fi
 
 # Short-circuit if a rate-limit cooldown is active.
-# The file `.aristotle-rate-limit-until` contains a UTC ISO-8601 timestamp;
-# while `now < timestamp`, the script exits 0 without submitting.
+# The file `.loom/state/aristotle-rate-limit-until` contains a UTC ISO-8601
+# timestamp; while `now < timestamp`, the script exits 0 without submitting.
 check_rate_limit_cooldown() {
     [[ -f "$RATE_LIMIT_FILE" ]] || return 0
 
@@ -157,6 +160,9 @@ write_rate_limit_cooldown() {
         return 1
     fi
 
+    # Defensive: ensure the .loom/state/ directory exists before writing.
+    # The aristotle-agent (issue #22471) also creates this; harmless to mkdir -p both places.
+    mkdir -p "$(dirname "$RATE_LIMIT_FILE")"
     echo "$until_ts" > "$RATE_LIMIT_FILE"
     echo -e "${YELLOW}Wrote rate-limit cooldown until $until_ts to $RATE_LIMIT_FILE${NC}"
 }
