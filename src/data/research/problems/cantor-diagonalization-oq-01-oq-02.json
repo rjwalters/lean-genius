@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-04-26T08:56:57.651Z",
-    "iteration": 1,
-    "focus": "Formalized large cardinal axioms, Lévy-Solovay independence, and proved MM/MA → ¬CH.",
+    "since": "2026-06-05T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT (researcher-1, 2026-06-05): pure Mathlib API drift repair — 7 breakages fixed across ~10 lines, 0 new mathematical content, Docker-verified 3061/3061 jobs. The file is now buildable under current Mathlib v4.26.0. All 7 axioms retained (deep set-theoretic results requiring forcing / inner model theory not in Mathlib).",
     "blockers": [],
-    "nextAction": "Docker build verification.",
+    "nextAction": "Gallery meta.json enrichment (doc-only, ~1 session): add explicit citations to Lévy-Solovay (1967), Foreman-Magidor-Shelah (1988), Woodin Ultimate-L program. Cross-reference sibling cantor-diagonalization gallery entries. Axiom elimination is BLOCKED until Mathlib has forcing theory / inner model theory infrastructure (multi-year projects).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Session 1, 2026-05-03): Formalized large cardinal axioms (inaccessible, measurable), forcing axioms (Martin's Axiom, Martin's Maximum), Lévy-Solovay independence results (axiomatized), and proved MM→¬CH, MA→¬CH by cardinal arithmetic. 11 theorems, 6 axioms, 0 sorries.",
+    "progressSummary": "S2 ACT shipped (researcher-1, 2026-06-05, this iteration): Mathlib API drift repair. The file was last touched 2026-04-26 (S1 ACT initial formalisation) and never Docker-verified. This iteration discharges the gallery-JSON next-action by actually running Docker build, finding 5 hard errors + 3 warnings, and fixing all of them: (1) λ binder → μ binder (Lean 4 parser tightening), (2) Ordinal.cof returns Cardinal directly (no .card needed), (3) le_of_eq → ge_of_eq for the ≥ direction of MartinsMaximum → MartinsAxiom, (4) continuum → ContinuumHypothesis.continuum (ambiguity with 𝔠 notation), (5) Cardinal.aleph_lt → Cardinal.aleph_lt_aleph (renamed; sibling files already use new name), (6) omega failure on Ordinal target wrapped with exact_mod_cast from ℕ-side omega, (7) simp only [...] → simpa using h0 (unused simp args). 0 new mathematics; file now buildable under Mathlib v4.26.0. Docker-verified 3061/3061. Counts unchanged: 14 theorems, 7 axioms, 10 defs, 0 sorries, 311 LOC. PRIOR (S1 ACT, 2026-04-26): initial formalisation of large cardinal axioms (inaccessible, measurable), forcing axioms (MA, MM), Lévy-Solovay independence, MM/MA → ¬CH, GCH framework, Ultimate-L axiomatisation.",
     "builtItems": [
       "IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable: definitions (CantorDiagonalizationOQ01OQ02.lean:50)",
       "HasInaccessible, HasMeasurable, MartinsAxiom, MartinsMaximum: axiom propositions (line:97)",
@@ -42,7 +42,8 @@
       "ma_implies_not_ch: proved MA → ¬CH by cardinal arithmetic (line:190)",
       "mm_consistent, ma_consistent: axioms for forcing axiom consistency (line:203)",
       "UltimateLConjecture, ultimate_l_implies_ch_consistent: Woodin program (line:228)",
-      "large_cardinals_and_ch_summary, ch_independent_of_large_cardinals: summary theorems (line:248)"
+      "large_cardinals_and_ch_summary, ch_independent_of_large_cardinals: summary theorems (line:248)",
+      "S2 ACT (researcher-1, 2026-06-05): Docker-verified CantorDiagonalizationOQ01OQ02.lean clean (3061/3061 jobs) after repairing 7 Mathlib API drift breakages. Pure infrastructure repair: 0 new theorems, 0 new axioms, 0 sorries closed. File 306 → 311 LOC."
     ],
     "insights": [
       "Standard large cardinals (measurable, supercompact) don't decide CH — Lévy-Solovay: small forcing preserves measurability",
@@ -50,7 +51,8 @@
       "Martin's Axiom implies 2^ℵ₀ ≥ ℵ₂, similarly refuting CH",
       "Woodin Ultimate-L program aims to canonically settle CH as true using inner model theory — still open",
       "The key distinction: 'size' axioms (large cardinals) don't decide CH; 'saturation' axioms (forcing axioms) do",
-      "Cardinal.aleph_lt.mpr (by norm_num) is the clean way to prove aleph α < aleph β from α < β"
+      "Cardinal.aleph_lt.mpr (by norm_num) is the clean way to prove aleph α < aleph β from α < β",
+      "S2 ACT insight (researcher-1, 2026-06-05): Mathlib API drift between April 2026 and June 2026 broke this file across 7 distinct breakages — Lean 4 parser no longer accepts λ as a binder, Ordinal.cof now returns Cardinal directly, Cardinal.aleph_lt renamed to Cardinal.aleph_lt_aleph, continuum is now ambiguous with the 𝔠 notation, and omega cannot prove Ordinal-side inequalities (need exact_mod_cast from ℕ). All fixed in one iteration; sibling file patterns guided the choice of replacement names."
     ],
     "mathlibGaps": [
       "No Mathlib formalization of measurable cardinals (Scott's theorem, ultrafilters on cardinals)",
