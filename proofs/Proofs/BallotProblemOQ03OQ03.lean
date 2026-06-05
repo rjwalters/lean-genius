@@ -184,4 +184,97 @@ example : Cn 1 * (2 * 1) = 2 := by native_decide  -- 1 SYT of shape (1,1)
 example : Cn 2 * (6 * 2) = 24 := by native_decide   -- 2 SYT of shape (2,2)
 example : Cn 3 * (24 * 6) = 720 := by native_decide  -- 5 SYT of shape (3,3)
 
+/-
+## Part VII: Hook-Length Formula for General 2-Row SYT (m,k) with m ≥ k
+
+For a non-square 2-row Young diagram of shape (m, k) with m ≥ k:
+
+- Row 0 cells (0,j), j=0..m-1: hook lengths are m+1-j for j<k (cell has a leg)
+  and m-j for j≥k (no leg). Product: (m+1)·m·…·(m-k+2) · (m-k)·…·1
+                                    = (m+1)! · (m-k)! / (m-k+1)!
+                                    = (m+1)! / (m-k+1)
+- Row 1 cells (1,j), j=0..k-1: hook lengths k-j. Product: k!
+- Total hook product: (m+1)! · k! / (m+1-k)
+
+So f^(m,k) = (m+k)! / ((m+1)!·k!/(m+1-k)) = (m+1-k)·(m+k)! / ((m+1)!·k!).
+
+Since SYT of shape (m,k) biject with ballot sequences (m+1, k):
+  ballotSeqCount(m+1, k) · (m+1)! · k! = (m + 1 - k) · (m + k)!
+
+The rectangular case m = k recovers Cn m · (m+1)!·m! = (2m)! via catalan_eq_ballot.
+The case k = 0 gives 1 · (m+1)! · 1 = (m+1) · m! = (m+1)!.
+-/
+
+/-- **Hook-length formula for general 2-row Young diagrams.**
+    For shape (m, k) with k ≤ m, the SYT count equals ballotSeqCount(m+1, k), and:
+
+      ballotSeqCount(m+1, k) · (m+1)! · k! = (m + 1 - k) · (m + k)!
+
+    The factor (m + 1 - k) reflects the "missing hook" at the corner of the (m,k)
+    Young diagram — equivalently, dividing the (m+1)! hook column by (m-k+1).
+    Specializes to the rectangular case (m=k, giving the Catalan identity) via
+    `catalan_eq_ballot`, and to k=0 via `Nat.factorial_succ`. -/
+theorem hook_length_formula_two_row_general (m k : ℕ) (hk : k ≤ m) :
+    ballotSeqCount (m + 1) k * ((m + 1).factorial * k.factorial)
+      = (m + 1 - k) * (m + k).factorial := by
+  rcases Nat.eq_zero_or_pos k with hk0 | hk1
+  · -- k = 0: ballotSeqCount(m+1, 0) = 1, both sides reduce to (m+1)!
+    subst hk0
+    have h_bsc : ballotSeqCount (m + 1) 0 = 1 := by
+      simp only [ballotSeqCount,
+        show m + 1 + 0 - 1 = m from by omega,
+        show m + 1 - 1 = m from by omega,
+        Nat.choose_self,
+        Nat.choose_eq_zero_of_lt (Nat.lt_succ_self m)]
+    rw [h_bsc, Nat.factorial_zero, mul_one, one_mul,
+        show m + 1 - 0 = m + 1 from rfl,
+        show m + 0 = m from Nat.add_zero m,
+        Nat.factorial_succ, mul_comm (m + 1) m.factorial]
+  · -- k ≥ 1: apply ballot_formula then cancel (m+1+k)
+    have hp : 1 ≤ m + 1 := Nat.one_le_succ _
+    have hpq : k < m + 1 := Nat.lt_succ_of_le hk
+    -- ballotSeqCount(m+1,k) * (m+1+k) = (m+1-k) * C(m+1+k, m+1)
+    have hbf := ballot_formula (m + 1) k hpq hp hk1
+    -- C(m+1+k, m+1) * (m+1)! * k! = (m+1+k)!
+    have hcmf := Nat.choose_mul_factorial_mul_factorial
+      (show m + 1 ≤ m + 1 + k from by omega)
+    rw [show m + 1 + k - (m + 1) = k from by omega] at hcmf
+    -- (m+1+k)! = (m+1+k) * (m+k)!
+    have hfact : (m + 1 + k).factorial = (m + 1 + k) * (m + k).factorial := by
+      rw [show m + 1 + k = (m + k) + 1 from by ring, Nat.factorial_succ]
+    -- Multiply both sides by (m+1+k) and cancel.
+    have hmk_pos : 0 < m + 1 + k := by omega
+    have hmul : ballotSeqCount (m + 1) k * ((m + 1).factorial * k.factorial) * (m + 1 + k)
+                = (m + 1 - k) * (m + k).factorial * (m + 1 + k) := by
+      calc ballotSeqCount (m + 1) k * ((m + 1).factorial * k.factorial) * (m + 1 + k)
+          = ballotSeqCount (m + 1) k * (m + 1 + k) * ((m + 1).factorial * k.factorial) := by ring
+        _ = (m + 1 - k) * Nat.choose (m + 1 + k) (m + 1) * ((m + 1).factorial * k.factorial) := by
+              rw [hbf]
+        _ = (m + 1 - k) * (Nat.choose (m + 1 + k) (m + 1) * (m + 1).factorial * k.factorial) := by ring
+        _ = (m + 1 - k) * (m + 1 + k).factorial := by rw [hcmf]
+        _ = (m + 1 - k) * ((m + 1 + k) * (m + k).factorial) := by rw [hfact]
+        _ = (m + 1 - k) * (m + k).factorial * (m + 1 + k) := by ring
+    exact Nat.eq_of_mul_eq_mul_right hmk_pos hmul
+
+/-- The rectangular case m = k of the general 2-row hook-length formula recovers
+    the Catalan identity via `catalan_eq_ballot`. -/
+theorem hook_length_formula_two_row_via_general (m : ℕ) :
+    Cn m * ((m + 1).factorial * m.factorial) = (2 * m).factorial := by
+  have h := hook_length_formula_two_row_general m m (Nat.le_refl m)
+  rw [← catalan_eq_ballot,
+      show m + 1 - m = 1 from by omega,
+      one_mul,
+      show m + m = 2 * m from by ring] at h
+  exact h
+
+-- Verified: hook-length identity for general 2-row shapes
+-- f^(2,1) = 2: SYT of shape (2,1) — there are 2 such tableaux
+example : ballotSeqCount 3 1 * (6 * 1) = (2 + 1 - 1) * 6 := by native_decide
+-- f^(3,1) = 3: SYT of shape (3,1)
+example : ballotSeqCount 4 1 * (24 * 1) = (3 + 1 - 1) * 24 := by native_decide
+-- f^(3,2) = 5: SYT of shape (3,2)
+example : ballotSeqCount 4 2 * (24 * 2) = (3 + 1 - 2) * 120 := by native_decide
+-- f^(4,2) = 9: SYT of shape (4,2)
+example : ballotSeqCount 5 2 * (120 * 2) = (4 + 1 - 2) * 720 := by native_decide
+
 end LGVCorollaries
