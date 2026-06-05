@@ -2,25 +2,25 @@
 
 ## Current Status
 
-**Phase**: S10 PREP — post-S9-merged STATE-SYNC + S10 ACT direction scaffold (doc-only)
-**Owner**: researcher-1 (S10 PREP, 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
-**Iteration**: 12 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP)
-**Last Updated**: 2026-06-02Z (S10 PREP doc-only; STATE-SYNC post-S9-merge + S10 ACT direction scaffold + meta.json originalContributions backfill S7→S9)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq02-oq04-s10`
+**Phase**: S10 ACT — Fσ-style witness for the computable reals (Σ⁰₂ Borel-hierarchy classification)
+**Owner**: researcher-1 (S10 ACT, 2026-06-04); S10 PREP: researcher-1 (PR #22049 merged 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
+**Iteration**: 13 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP + S10 ACT)
+**Last Updated**: 2026-06-04Z (S10 ACT Lean delta; +1 thm `computable_reals_isFsigma_witness`; 928→998 LOC; 42→43 thms; Docker `3067/3067` jobs clean, 14s file compile)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s10-act-fsigma`
 
-## Lean file inventory (at base `origin/main`, S9 Docker-verified)
+## Lean file inventory (at base `origin/main`, S10 ACT delta)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       928 (was 869 at S8; +59 in S9 including section docstring)
-Theorems:    42 (S9 adds frontier_computable_reals_eq_univ +
-                  frontier_nonComputableReals_eq_univ)
+Lines:       998 (was 928 at S9; +70 in S10 including section docstring)
+Theorems:    43 (S10 adds computable_reals_isFsigma_witness)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S9 added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S10 added no new)
 Axioms:      0
-Build:       ✔ VERIFIED S9 (Docker 3067/3067 jobs clean, 10s file compile, 2026-06-01)
-Imports:     no new (frontier / Set.diff_empty already transitively available
-              via the existing Topology.Instances.Real.Lemmas + Mathlib.Tactic chain)
+Build:       ✔ VERIFIED S10 (Docker 3067/3067 jobs clean, 14s file compile, 2026-06-04)
+Imports:     no new (Set.Subsingleton.isClosed / Set.mem_inter_iff /
+              Set.mem_singleton_iff / Set.mem_iUnion already transitively
+              available via Topology.Instances.Real.Lemmas + Mathlib.Tactic)
 ```
 
 4 critical Mathlib bearers used in S8 proof:
@@ -33,21 +33,28 @@ Imports:     no new (frontier / Set.diff_empty already transitively available
 - `frontier` (Topology.Basic) — `frontier s := closure s \ interior s` (definition unfolded)
 - `Set.diff_empty` — `s \ ∅ = s`
 
-**Next-picker priority (S10+)**: With S7 (computable dense), S8-prep (non-computable
-dense), S8 (Baire-category: computable meagre / non-computable Gδ-residual), and
-S9 (frontier = univ on both partition halves) now in place, the topological
-picture is complete on both sides: computable reals show the same topological
-profile as `ℚ` (countable + dense + meagre + frontier-everywhere), and
-non-computable reals are dense + Gδ + residual + frontier-everywhere. The
-remaining headline next step remains shipping `IsComputable e` (or `π`) as the
-explicit computable transcendental witness sharpening `algebraic ⊊ computable`
-beyond pure cardinality + topology. Path A (e via partial sums of `1/n!`) is
-the cleaner-skeleton candidate at v4.26.0; ~80-150 LOC estimate but **blocked
-on Mathlib gap**: there is no `Computable.add` / `Computable.neg` for `ℚ` in
-current Mathlib v4.26.0 (verified by grep: only `Computable.const`,
-`Computable.encode`, `Computable.comp` on `ℚ`; `Primrec ℚ` arithmetic operations
-not yet provided). Building this machinery is itself a sizeable subgoal (S10
-prereq) — see S6f §5 for full priority tree.
+3 critical Mathlib bearers used in S10 ACT proof:
+- `Set.Subsingleton.isClosed` (Topology.Separation) — every subsingleton in a T1 space is closed
+- `Set.mem_singleton_iff` (Data.Set.Basic) — `x ∈ ({y} : Set α) ↔ x = y`
+- `Set.mem_iUnion` (Data.Set.Lattice) — `x ∈ ⋃ i, s i ↔ ∃ i, x ∈ s i`
+
+**Next-picker priority (S11+)**: With S10 ACT shipping the Fσ-style witness,
+the Borel-hierarchy classification is now complete on both partition halves:
+computable reals are Σ⁰₂ (countable union of closed sets, S10) and
+non-computable reals are Π⁰₂ (Gδ, S8). The topological profile is fully
+captured (countable + dense + meagre + frontier-everywhere + Σ⁰₂-explicit on
+the computable side; full-cardinality + dense + Gδ + residual +
+frontier-everywhere on the non-computable side). The remaining headline next
+step remains shipping `IsComputable e` (or `π`) as the explicit computable
+transcendental witness sharpening `algebraic ⊊ computable` beyond pure
+cardinality + topology + Borel-hierarchy. Path A (e via partial sums of
+`1/n!`) is the cleaner-skeleton candidate at v4.26.0; ~80-150 LOC estimate
+but **blocked on Mathlib gap**: there is no `Computable.add` /
+`Computable.neg` for `ℚ` in current Mathlib v4.26.0 (verified by grep: only
+`Computable.const`, `Computable.encode`, `Computable.comp` on `ℚ`;
+`Primrec ℚ` arithmetic operations not yet provided). Building this
+machinery is itself a sizeable subgoal (S11 prereq) — see S6f §5 for full
+priority tree.
 
 ## What's Done
 
@@ -236,6 +243,34 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   refined here to the strictly finer computable/non-computable split.
   No new defs / sorries / axioms / imports. Lean file 869 → 928 LOC, theorem
   count 40 → 42. See `sessions/2026-06-01-s9-act-frontier-characterization.md`.
+
+- **2026-06-04 (S10 ACT, researcher-1)**: Fσ-STYLE WITNESS for the computable
+  reals — completes the Borel-hierarchy classification (Σ⁰₂-explicit on the
+  computable side; Π⁰₂ Gδ already in place on the non-computable side from
+  S8). One new theorem, no new defs/axioms/sorries/imports:
+  - `computable_reals_isFsigma_witness : ∃ s : Nat.Partrec.Code → Set ℝ,
+    (∀ c, IsClosed (s c)) ∧ {r | IsComputable r} = ⋃ c, s c` — explicit
+    witness via the family `s c := {decodeReal c} ∩ {r | IsComputable r}`.
+    Each `s c` is contained in the singleton `{decodeReal c}`, hence is a
+    subsingleton, hence closed in the T1 space `ℝ` via
+    `Set.Subsingleton.isClosed`. The union covers via S3's
+    `computable_real_mem_range_decodeReal` (every computable real has a
+    decoding code).
+  Mathematical content: completes the descriptive-set-theoretic profile
+  begun by S8 (`nonComputableReals_isGδ`). Computable reals are Σ⁰₂
+  (Fσ-style) and non-computable reals are Π⁰₂ (Gδ) in the classical Borel
+  hierarchy. The Mathlib-gap workaround (no `IsFσ` predicate at v4.26.0) is
+  the explicit-witness formulation, which side-steps the otherwise non-
+  trivial computability argument on `decodeReal c` itself: the intersection
+  formulation `{decodeReal c} ∩ {r | IsComputable r}` absorbs the
+  case-analysis into the membership predicate, so we never need to argue
+  whether `decodeReal c` is itself computable. New Mathlib bearers:
+  `Set.Subsingleton.isClosed`, `Set.mem_singleton_iff`, `Set.mem_iUnion`.
+  Lean file 928 → 998 LOC (+70 including section docstring), 42 → 43 thms,
+  0 sorries → 0 sorries, 0 axioms → 0 axioms. Docker `lake build
+  Proofs.AlgebraicNumbersCountableOQ02OQ04` → ✔ 3067/3067 jobs clean
+  (14s file compile, base SHA `eeca24a5`).
+  See `sessions/2026-06-04-s10-act-fsigma-witness.md` for the full memo.
 
 - **2026-06-02 (S10 PREP STATE-SYNC, researcher-1, doc-only)**: POST-S9-MERGED
   doc tracker catch-up + S10 ACT direction scaffold. PR #22030 (S9 ACT) merged

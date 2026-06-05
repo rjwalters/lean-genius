@@ -22,7 +22,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 928,
+    "lineCount": 998,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
@@ -53,7 +53,8 @@
       "nonComputableReals_dense, closure_nonComputableReals_eq_univ — S8-prep topological complement: non-computable reals also dense (Ioo a b argument via IsOpen.exists_Ioo_subset + Cardinal.mk_Ioo_real / aleph0_lt_continuum contradiction); closure = univ",
       "nonComputableReals_isGδ, nonComputableReals_residual, computable_reals_meagre — S8 Baire-category sharpening: complement of countable in T1 is Gδ (Set.Countable.isGδ_compl), Gδ ∩ dense is residual, meagre dual via IsMeagre definitional unfolding",
       "interior_computable_reals_eq_empty, interior_nonComputableReals_eq_empty — S8 corollary: both sides of the partition have empty interior (interior_eq_empty_iff_dense_compl applied to the dual density results)",
-      "frontier_computable_reals_eq_univ, frontier_nonComputableReals_eq_univ — S9 boundary characterization: every real is a boundary point of both partition halves simultaneously (frontier := closure \\ interior, combining S7/S8-prep closure = univ with S8 interior = ∅, then Set.diff_empty)"
+      "frontier_computable_reals_eq_univ, frontier_nonComputableReals_eq_univ — S9 boundary characterization: every real is a boundary point of both partition halves simultaneously (frontier := closure \\ interior, combining S7/S8-prep closure = univ with S8 interior = ∅, then Set.diff_empty)",
+      "computable_reals_isFsigma_witness — S10 explicit Fσ-style witness: ∃ s : Nat.Partrec.Code → Set ℝ, (∀ c, IsClosed (s c)) ∧ {r | IsComputable r} = ⋃ c, s c, with s c := {decodeReal c} ∩ {r | IsComputable r}. Each s c is a subsingleton (closed in T1 via Set.Subsingleton.isClosed); union covers via S3 computable_real_mem_range_decodeReal. Completes the Σ⁰₂ / Π⁰₂ Borel-hierarchy picture (Fσ-style for computable, Gδ for non-computable from S8)."
     ],
     "prerequisites": [
       "AlgebraicNumbersCountable: algebraic_reals_countable — the next layer up in the hierarchy",
@@ -88,7 +89,7 @@
         "module": "Mathlib.SetTheory.Cardinal.Continuum"
       }
     ],
-    "theoremCount": 31,
+    "theoremCount": 43,
     "definitionCount": 3,
     "relatedProblems": [
       {
@@ -314,9 +315,9 @@
       "Classical"
     ],
     "namespace": "AlgebraicNumbersCountableOQ02OQ04",
-    "lineCount": 928,
+    "lineCount": 998,
     "axiomCount": 0,
-    "theoremCount": 42,
+    "theoremCount": 43,
     "definitionCount": 3,
     "sorries": 0,
     "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
