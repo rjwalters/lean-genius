@@ -147,12 +147,12 @@ The complete proof requires substantial machinery including:
 axiom hermite_lindemann :
     ∀ α : ℂ, α ≠ 0 → IsAlgebraic ℚ α → Transcendental ℤ (Complex.exp α)
 
-/-- **Axiom: Contrapositive of Hermite-Lindemann**
+/-!
+### Note: Contrapositive of Hermite-Lindemann
 
-If e^α is algebraic (for non-zero α), then α is transcendental.
-
-This is the logical contrapositive of the Hermite-Lindemann theorem.
-The proof follows directly from the main theorem. -/
+If e^α is algebraic (for non-zero α), then α is transcendental. This is the
+logical contrapositive of the Hermite-Lindemann theorem.
+-/
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE LINDEMANN-WEIERSTRASS THEOREM
@@ -170,26 +170,19 @@ def AlgebraicallyIndependent (s : Set ℂ) : Prop :=
     (∀ i, f i ∈ s) →
     MvPolynomial.aeval f p = 0 → p = 0
 
-/-- **Axiom: Lindemann-Weierstrass (Classical Form)**
+/-!
+### Note: Lindemann-Weierstrass (Classical Form)
 
 If α₁, α₂, ..., αₙ are distinct algebraic numbers, then e^α₁, e^α₂, ..., e^αₙ
-are linearly independent over the algebraic numbers.
+are linearly independent over the algebraic numbers. The full proof requires
+deep analysis of auxiliary polynomial integrals; not formalized here.
 
-This is the most commonly stated form, emphasizing linear independence.
-The full proof requires deep analysis of auxiliary polynomial integrals.
-
-**Technical Note**: This axiom expresses that exponentials of distinct algebraics
-are ℚ-linearly independent. The full theorem over algebraic numbers requires
-additional machinery. -/
-
-/-- **Lindemann-Weierstrass Theorem** (Strong Form)
+### Note: Lindemann-Weierstrass (Strong Form)
 
 If α₁, α₂, ..., αₙ are algebraic numbers that are linearly independent over ℚ,
-then e^α₁, e^α₂, ..., e^αₙ are algebraically independent over ℚ.
-
-This is the strongest form of the theorem.
-
-**Implementation Note**: Stated as axiom pending full formalization. -/
+then e^α₁, e^α₂, ..., e^αₙ are algebraically independent over ℚ. Pending full
+formalization.
+-/
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART IV: FUNDAMENTAL COROLLARIES
@@ -197,26 +190,22 @@ PART IV: FUNDAMENTAL COROLLARIES
 
 section Corollaries
 
-/-- **Corollary 1: e is transcendental over ℚ (Hermite, 1873; Wiedijk #67)**
+/-!
+### Corollary 1: e is transcendental (Hermite, 1873; Wiedijk #67)
 
-PROVED from hermite_lindemann: take α = 1 (algebraic, non-zero),
-get exp(1) transcendental in ℂ, transfer to ℝ via injective embedding. -/
-theorem e_transcendental_rationals :
-    Transcendental ℚ (Real.exp 1) := by
-  -- Step 1: exp(1) is transcendental over ℤ in ℂ
+Proved from `hermite_lindemann` at α = 1 (algebraic, non-zero): `exp 1` is
+transcendental over ℤ in ℂ, then transferred to ℝ via the injective embedding.
+-/
+
+/-- **Transcendence of e over ℤ.** Bridges `hermite_lindemann` (which speaks of ℂ) to ℝ. -/
+theorem e_transcendental_int : Transcendental ℤ (Real.exp 1) := by
   have h_complex : Transcendental ℤ (Complex.exp (1 : ℂ)) :=
-    hermite_lindemann 1 one_ne_zero (isAlgebraic_int 1)
-  -- Step 2: Complex.exp 1 = ↑(Real.exp 1) (coercion from ℝ to ℂ)
-  rw [show (1 : ℂ) = ↑(1 : ℝ) from by simp, Complex.ofReal_exp] at h_complex
-  -- Step 3: Transfer transcendence from ℂ to ℝ (injective ℝ → ℂ map)
-  have h_real : Transcendental ℤ (Real.exp 1) := by
-    intro ⟨p, hp_ne, hp_eval⟩
-    exact h_complex ⟨p, hp_ne, by
-      have : Polynomial.aeval (↑(Real.exp 1) : ℂ) p = ↑(Polynomial.aeval (Real.exp 1) p) :=
-        Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom) (Real.exp 1) p
-      rw [this, hp_eval, map_zero]⟩
-  -- Step 4: ℤ-transcendental → ℚ-transcendental via IsFractionRing
-  exact fun halg => h_real ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
+    hermite_lindemann 1 one_ne_zero isAlgebraic_one
+  rw [show (1 : ℂ) = ↑(1 : ℝ) from by simp, ← Complex.ofReal_exp] at h_complex
+  exact fun halg => h_complex halg.algebraMap
+
+theorem e_transcendental_rationals : Transcendental ℚ (Real.exp 1) :=
+  fun halg => e_transcendental_int ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr halg)
 
 /-- **Corollary 2: π is transcendental in ℂ (Lindemann, 1882; Wiedijk #53)**
 
@@ -227,12 +216,16 @@ theorem pi_transcendental :
     Transcendental ℤ (Real.pi : ℂ) := by
   intro halg
   -- i is algebraic over ℚ (root of X² + 1)
+  have hI_ne : (X ^ 2 + 1 : ℚ[X]) ≠ 0 := by
+    intro h
+    have h2 : Polynomial.eval (0 : ℚ) (X ^ 2 + 1) = 1 := by simp
+    rw [h] at h2
+    simp at h2
   have hi : IsAlgebraic ℚ (Complex.I : ℂ) :=
-    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mpr
-      ⟨X ^ 2 + 1, by decide, by simp [Polynomial.aeval_def, Complex.I_sq]; ring⟩
+    ⟨X ^ 2 + 1, hI_ne, by simp [Polynomial.aeval_def]⟩
   -- π is algebraic over ℚ (from our assumption via ℤ↔ℚ)
   have hpi_q : IsAlgebraic ℚ (↑Real.pi : ℂ) :=
-    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mpr halg
+    (IsFractionRing.isAlgebraic_iff ℤ ℚ ℂ).mp halg
   -- Product iπ is algebraic over ℚ
   have hipi_q : IsAlgebraic ℚ (↑Real.pi * Complex.I : ℂ) := hpi_q.mul hi
   -- πi ≠ 0
@@ -241,22 +234,23 @@ theorem pi_transcendental :
   -- By Hermite-Lindemann: exp(πi) is transcendental over ℤ
   have hexp := hermite_lindemann (↑Real.pi * Complex.I) hipi_ne hipi_q
   -- But exp(πi) = -1 by Euler's identity
-  rw [show ↑Real.pi * Complex.I = ↑Real.pi * Complex.I from rfl,
-      Complex.exp_mul_I, Complex.ofReal_cos_ofReal_re,
-      Complex.ofReal_sin_ofReal_re, Real.cos_pi, Real.sin_pi] at hexp
-  simp at hexp
+  have h_euler : Complex.exp (↑Real.pi * Complex.I) = -1 := by
+    rw [Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin,
+        Real.cos_pi, Real.sin_pi]
+    push_cast
+    ring
+  rw [h_euler] at hexp
+  exact hexp (show IsAlgebraic ℤ ((-1 : ℂ)) by
+    rw [show ((-1 : ℂ)) = ((-1 : ℤ) : ℂ) by push_cast; ring]
+    exact isAlgebraic_int (-1))
 
 /-- **Corollary 2b: π is transcendental in ℝ**
 
 PROVED from pi_transcendental: if π were algebraic in ℝ,
 the injective embedding ℝ → ℂ would make it algebraic in ℂ. -/
 theorem pi_transcendental_real :
-    Transcendental ℤ Real.pi := by
-  intro ⟨p, hp_ne, hp_eval⟩
-  exact pi_transcendental ⟨p, hp_ne, by
-    have : Polynomial.aeval (↑Real.pi : ℂ) p = ↑(Polynomial.aeval Real.pi p) :=
-      Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom) Real.pi p
-    rw [this, hp_eval, map_zero]⟩
+    Transcendental ℤ Real.pi :=
+  fun halg => pi_transcendental halg.algebraMap
 
 /-- **Corollary 3: e^n is transcendental for any non-zero integer n** -/
 theorem exp_int_transcendental (n : ℤ) (hn : n ≠ 0) :
@@ -265,16 +259,13 @@ theorem exp_int_transcendental (n : ℤ) (hn : n ≠ 0) :
   · simp [hn]
   · exact isAlgebraic_int n
 
-/-- **Axiom: Exponentials of integer multiples are transcendental**
+/-!
+### Note: Exponentials of integer multiples are transcendental
 
-For non-zero algebraic α, all of e^α, e^(2α), e^(3α), ... are transcendental.
-
-**Proof outline**: Since n is an integer and α is algebraic over ℚ, the product
-n*α is also algebraic over ℚ. Since n ≠ 0 and α ≠ 0, we have n*α ≠ 0.
-By Hermite-Lindemann, e^(n*α) is transcendental.
-
-**Why axiomatized**: Requires the fact that the product of algebraic numbers
-is algebraic, which needs IsAlgebraic.mul from Mathlib's algebraic number API. -/
+For non-zero algebraic α, all of e^α, e^(2α), e^(3α), ... are transcendental,
+which follows directly from `hermite_lindemann` once `IsAlgebraic.mul` is used to
+witness `n * α` algebraic; no separate statement is needed here.
+-/
 
 end Corollaries
 
@@ -284,29 +275,21 @@ PART V: APPLICATIONS
 
 section Applications
 
-/-- **Axiom: Squaring the Circle is Impossible**
+/-!
+### Note: Squaring the Circle is Impossible
 
-Since π is transcendental, √π is also transcendental.
+Since π is transcendental, √π is also transcendental (if √π were algebraic,
+then (√π)² = π would be algebraic, contradicting `pi_transcendental_real`).
+Consequence: a square with the same area as a given circle cannot be
+constructed with compass and straightedge.
 
-**Proof outline**: If √π were algebraic, then (√π)² = π would be algebraic
-(as the product of algebraic numbers is algebraic). But we know π is
-transcendental by pi_transcendental_real. Contradiction!
+### Note: e is not rational
 
-**Consequence**: Transcendental numbers are not constructible with compass
-and straightedge, so the ancient problem of constructing a square with the
-same area as a given circle is impossible. -/
-
-/-- **Axiom: e is not rational**
-
-e is not equal to any rational number p/q. This is a weaker statement than
-transcendence (every transcendental is irrational, but not vice versa).
-
-**Proof outline**: If e = p/q for integers p, q with q ≠ 0, then e would be
-a root of the polynomial qX - p, making e algebraic. But e is transcendental
-by e_transcendental_rationals. Contradiction!
-
-**Note**: The title refers to non-periodic decimal expansion because rational
-numbers have eventually periodic decimal expansions, and transcendentals don't. -/
+`e_transcendental_int` plus `Transcendental → Irrational` gives that e is not
+equal to any rational number p/q (every transcendental is irrational, but not
+vice versa). Rational numbers have eventually periodic decimal expansions;
+transcendentals don't.
+-/
 
 end Applications
 

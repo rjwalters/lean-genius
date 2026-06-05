@@ -2,11 +2,61 @@
 
 ## Current State
 
-**Phase**: PREP — S6 watch tick (PR #28013) + CF-of-e Mathlib master rescan (0 new content) + S5c infrastructure build re-verify (3072/3072 clean at HEAD `8bf8a7b3552`). Path C re-evaluation: **no actionable target** — empirical grep confirms no other `LiouvilleWith p (specific-irrational)` axiom anywhere in `proofs/Proofs/`. Strategic posture shifts to Path B (passive watch). PR #28013 staleness 69.8h (warm; 2026-05-29 merge from master reset the clock), well below 168h threshold.
+**Phase**: ACT — S7 (2026-06-05) discharged `axiom e_transcendental` in `eTranscendental.lean` (Wiedijk #67) by deriving it as a theorem from `axiom hermite_lindemann` via a 3-line `IsAlgebraic.algebraMap` bridge. Side benefit: 5 pre-existing Mathlib v4.26.0 build regressions in `HermiteLindemann.lean` (3 broken theorems + 7 dangling docstrings) repaired, restoring `pi_transcendental` and `pi_transcendental_real` (Wiedijk #53) to clean build. Net: eTranscendental.lean local axiom 1→0; HermiteLindemann.lean restored to build-clean. Build verified 3079/3079 jobs. PR #28013 (Mathlib HL upstream) threshold crossed 2026-06-05 (169.8h vs 168h) but S6 grace period (~3-4 weeks after crossing) extends to ~2026-06-26, so S5d.A CF-of-e arc remains deferred. S7 is an orthogonal axiom-reduction path unrelated to the CF-of-e arc.
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-06-01T05:10:00Z (Iteration 7, researcher-1)
-**Iteration**: 7
+**Last Updated**: 2026-06-05T09:30:00Z (Iteration 8, researcher-5)
+**Iteration**: 8
+
+## Iteration 8 (researcher-5, 2026-06-05) — S7 ACT (axiom e_transcendental discharged + HermiteLindemann.lean repaired)
+
+**Outcome**: progress — local axiom reduction in `eTranscendental.lean` (1 → 0) by deriving Wiedijk #67 from the existing `hermite_lindemann` axiom in `HermiteLindemann.lean`. Side benefit: 5 pre-existing Mathlib v4.26.0 build regressions in `HermiteLindemann.lean` repaired, plus 7 dangling docstrings cleaned up — `pi_transcendental` (Wiedijk #53) and `pi_transcendental_real` now build clean (were broken on origin/main, silently because no caller imported the file).
+
+### What I did
+
+- PR #28013 watch tick: head SHA `5abb7c68488…`, `updated_at = 2026-05-29T07:22:48Z` (unchanged from S6). Recomputed staleness at 2026-06-05T09:10Z: **169.8h** — threshold crossed by 1.8h. S6 PREP extended grace period to "~3-4 weeks" after crossing, so S5d.A arc remains deferred until ~2026-06-26.
+- Discovered Mathlib API `IsAlgebraic.algebraMap` (Mathlib/RingTheory/Algebraic/Basic.lean:174) as the replacement primitive for broken `Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom)` pattern (3 lines vs 17 for the original ℂ→ℝ transcendence transfer).
+- Wrote `HermiteLindemann.e_transcendental_int : Transcendental ℤ (Real.exp 1)` using `hermite_lindemann 1 one_ne_zero isAlgebraic_one`, then `Complex.ofReal_exp` rewrite, then `halg.algebraMap`.
+- Replaced `axiom e_transcendental` in `eTranscendental.lean` with `theorem e_transcendental := HermiteLindemann.e_transcendental_int`. Added `import Proofs.HermiteLindemann`.
+- Repaired `pi_transcendental` (Wiedijk #53): replaced removed `Complex.ofReal_cos_ofReal_re`/`_sin_ofReal_re` with `Complex.ofReal_cos`/`_sin` (in `←` direction); replaced failing `by decide` for `(X^2 + 1 : ℚ[X]) ≠ 0` with explicit `eval (0 : ℚ)` discharge; flipped `.mpr` to `.mp` on the `IsFractionRing.isAlgebraic_iff` calls (consistent with S5b's recorded convention `IsAlgebraic A x ↔ IsAlgebraic K x`).
+- Repaired `pi_transcendental_real` with same `halg.algebraMap` shortcut (6 lines → 2).
+- Cleaned up 7 dangling `/-- ... -/` aspirational-axiom docstrings (no attached declarations) → `/-! ... -/` doc blocks. Pre-existing v4.26.0 parser regression — earlier versions tolerated them; current Lean rejects them as parse errors.
+- Build verification: `Proofs.eTranscendental` 3079/3079 jobs clean; `Proofs.ETranscendentalOQ03` 3085/3085 jobs clean (no regression).
+- Pre-existing build failures NOT introduced by S7 (flagged for mechanic): `Proofs.PiTranscendental:228,285` (unknown `irrational_pi`, type mismatch on `isAlgebraic_algebraMap 1`); `Proofs.ETranscendentalOQ02:708` ("No goals to be solved"); these in turn break `Proofs.ETranscendentalOQ01` transitively.
+
+### Files Modified
+
+- `proofs/Proofs/HermiteLindemann.lean` — 1 new theorem (`e_transcendental_int`), 3 broken theorems repaired, 7 docstring cleanups; 390→373 LOC
+- `proofs/Proofs/eTranscendental.lean` — axiom 1→0, +1 import; 305→304 LOC
+- `src/data/proofs/e-transcendental/meta.json` — leanFile.axiomCount 1→0, theoremCount 12→13, lineCount 305→304
+- `src/data/proofs/hermite-lindemann/meta.json` — leanFile.theoremCount 4→5, lineCount 390→373
+- `research/problems/nth-root-irrational-oq-03/state.md` — this entry + Current State header refresh
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` — session summary entry
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-06-05-s7-act-e-transcendental-axiom-discharge-via-hermite-lindemann-bridge.md` — new full session note
+- `src/data/research/problems/nth-root-irrational-oq-03.json` — phase OBSERVE→ACT, iteration 7→8, 1 new insight, 3 new builtItems, progressSummary + nextSteps refreshed
+
+### Knowledge Added
+
+- **Insights**: 1 new
+  1. `axiom e_transcendental` is locally redundant given `axiom hermite_lindemann`: setting α=1 in HL gives transcendence of `Complex.exp 1`, which transfers to `Real.exp 1` via `IsAlgebraic.algebraMap`. The bridge is 3 lines. The original derivation attempt in `e_transcendental_rationals` (HermiteLindemann.lean:204-219) used `Polynomial.aeval_algHom_apply (Complex.ofRealHom.toAlgHom)` which broke at v4.26.0 (`RingHom.toAlgHom` removed). `IsAlgebraic.algebraMap` from `Mathlib.RingTheory.Algebraic.Basic:174` is the cleaner primitive — replaces the entire aeval-algHom machinery in 1 application.
+
+- **Built items**: 3 new
+  1. `HermiteLindemann.e_transcendental_int : Transcendental ℤ (Real.exp 1)` — the ℂ→ℝ bridge; reusable template for analogous transcendence-transfer slugs.
+  2. `e_transcendental : Transcendental ℤ (Real.exp 1)` — was Wiedijk #67 axiom; now a theorem alias for `HermiteLindemann.e_transcendental_int`.
+  3. `HermiteLindemann.pi_transcendental` and `.pi_transcendental_real` (Wiedijk #53) — pre-existing aspirational proofs, broken on origin/main at v4.26.0, repaired in S7.
+
+- **Risks retired**: HermiteLindemann.lean was a silent ticking bomb — any future research touching it would have hit the same regressions. S7's repair eliminates this hazard.
+
+### Next steps
+
+- **S8 watch (passive)**: re-check PR #28013 at next claim. Current 169.8h stale (just over 168h threshold). S6 grace period ends ~2026-06-26 — if PR not merged by then, promote S5d.A.
+- **S5d.A/B/C (deferred)**: CF-of-e formalization arc; activation criterion ~2026-06-26 + still-no-PR-merge.
+- **S7 follow-up (low priority)**: use `pi_transcendental_real` (now working) to discharge `axiom lindemann_theorem` in `PiTranscendental.lean`. Same `halg.algebraMap` bridge pattern. Blocked by pre-existing v4.26.0 build errors in PiTranscendental.lean (mechanic-class repair needed first).
+- **Mechanic flag**: 4 deprecation linter warnings across `eTranscendental.lean` + `HermiteLindemann.lean` (Mathlib import paths). No semantic change.
+
+### Race notes
+
+Pre-action race check (2026-06-05T09:10Z): 0 stale locks; mkdir lock acquired for slug; 0 open PRs with `nth-root-irrational-oq-03` in title; `feature/researcher-5` clean.
 
 ## Iteration 7 (researcher-1, 2026-06-01) — S6 PREP (PR #28013 watch tick + CF-of-e rescan + S5c build re-verify)
 

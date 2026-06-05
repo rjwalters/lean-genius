@@ -9,9 +9,9 @@
     67
   ],
   "created": "2026-05-12",
-  "lastUpdated": "2026-06-01",
-  "phase": "PREP",
-  "iteration": 7,
+  "lastUpdated": "2026-06-05",
+  "phase": "ACT",
+  "iteration": 8,
   "status": "active",
   "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
   "wiedijkRefs": [
@@ -40,7 +40,8 @@
       "S5b ACT (2026-05-14, researcher-9): parent-file build restored on origin/main via 4 surgical Mathlib v4.26.0 fixes (3 diagnosed in S5a, 1 surfaced after Fix #1 unblocked the namespace). `eTranscendental.lean` and `ETranscendentalOQ03.lean` now build cleanly (3071 jobs). Fix breakdown: (1) add `import Mathlib.RingTheory.Localization.Integral` to `eTranscendental.lean` for `IsFractionRing.isAlgebraic_iff` (lemma moved out of `Algebraic.Basic`'s transitive closure). (2) Replace `isAlgebraic_algebraMap (1 : ℚ)` with `isAlgebraic_one` at `eTranscendental.lean:225` (newer Mathlib elaborator doesn't auto-bridge `algebraMap ℚ ℝ 1` to `(1 : ℝ)`). (3) Replace `irrational_exp_iff.mpr ...` with project-local `e_irrational` at `ETranscendentalOQ03.lean:118` (lemma upstream-removed during Mathlib.Data.Real.Irrational → Mathlib.NumberTheory.Real.Irrational refactor). (4) Flip `.mp` to `.mpr` at `eTranscendental.lean:152` (sole site mismatched with v4.26.0 iff convention `IsAlgebraic A x ↔ IsAlgebraic K x`). Unblocks S5c S2 ACT paste-in for axiomCount 2→1.",
       "S5c ACT (2026-05-16, researcher-12): pasted S5a §3 drafted proof body verbatim into ETranscendentalOQ03.lean, replacing `axiom irrational_liouvilleWith_two` with a `theorem` + the helper `rat_approx_bounded_den_finite`. Added import `Mathlib.NumberTheory.DiophantineApproximation.Basic`. Docker build clean on **first attempt** (3072 jobs, OQ03 file built in 5.8s; `eTranscendental` replayed from cache). None of the S5c PREP §4 robustness fallbacks (Option B/C for `field_simp`, `rpow_natCast`, image-membership refine) were needed — Option A compiled verbatim. `e-transcendental-oq-03/meta.json` axiomCount 2→1. Sharp-upper-bound axiom `e_not_liouvilleWith_gt_two` remains (S5d). Marquee `axiom hermite_lindemann` in HermiteLindemann.lean remains gated on Mathlib PR #28013 (S6). The drafted body + slice-finiteness helper is now a reusable template for analogous LiouvilleWith ACTs.",
       "S5d PREP (2026-05-16, researcher-11): enumerated Mathlib `Algebra.ContinuedFractions.*` + `NumberTheory.DiophantineApproximation.*` API at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). Generic CF machinery is fully available: `succ_nth_fib_le_of_nth_den` (Approximations.lean:249), `abs_sub_convs_le` (Approximations.lean:393), `Real.exists_rat_eq_convergent` (Basic.lean:538), `Real.convs_eq_convergent`, `of_partNum_eq_one`/`of_one_le_get?_partDen`. **However the CF expansion of e (Euler's [2;1,2k,1] pattern) is completely absent** — confirmed via 3 independent code searches + full tree filter. Davis's (1978) argument decomposes into 6 steps: steps 3/4/5 (generic machinery) available, steps 1/2 (e-specific input) absent. Direct S5d discharge requires formalising the CF expansion of e from scratch — re-estimated scope 280–480 LOC across 3 sub-tasks (S5d.A `e_continued_fraction_pattern` 150–250 LOC, S5d.B `e_convergent_den_ratio_bounded` 50–80 LOC, S5d.C target axiom 80–150 LOC), not the 150–250 LOC originally estimated. **Recommended hybrid Path B (PR #28013 watch — ~90.93h stale of 168h threshold) + Path C (apply S5c slice-finiteness template to sibling LiouvilleWith-2 slug — ~30–60 LOC ACT) rather than direct S5d ACT.** Also 0 drift on S5c-era bearers (re-pinned at SHA). PR #28013 status unchanged from S5a/S5c records (head SHA `3bafffe27908…`, updated_at `2026-05-12T09:28:36Z`).",
-      "S6 PREP (2026-06-01, researcher-1): 16-day delta watch tick. PR #28013 received exactly one activity since S5d — the 2026-05-29 merge-from-master (head SHA `3bafffe27908…` → `5abb7c68488…`). Recomputed staleness 69.8h (was 90.9h at S5d); the merge reset the clock. `mergeable_state` still `blocked` (24 review comments + 9 issue comments). No new substantive content since 2026-05-08 cluster. Mathlib master rescan since 2026-05-16: 1 CF commit (#37997, generalises det formula `SimpContFract` → `GenContFract`; no e-specific input), 1 toolchain bump (v4.31.0-rc1), 1 doc PR. 0 e-specific additions. S5d's 280–480 LOC re-estimate for S5d.A remains valid. **Path C empirically exhausted**: `grep -rn 'axiom.*[Ll]iouvilleWith' proofs/Proofs/` returns exactly one hit (`e_not_liouvilleWith_gt_two` in the same file as the just-shipped `irrational_liouvilleWith_two` template); no sibling slug carries the analogous-axiom shape. PiTranscendental.lean has only `lindemann_theorem`. S5c infrastructure build-verified clean at HEAD `8bf8a7b3552` (3072/3072 jobs); 0 bearer drift; same 3 deprecation linter warnings as S5c records (Mathlib.Data.Real.Irrational → NumberTheory.Real.Irrational; Mathlib.Data.Complex.ExponentialBounds → Analysis.Complex.ExponentialBounds). Strategic posture shifts to Path B (passive watch) primary; Path A.A deferred."
+      "S6 PREP (2026-06-01, researcher-1): 16-day delta watch tick. PR #28013 received exactly one activity since S5d — the 2026-05-29 merge-from-master (head SHA `3bafffe27908…` → `5abb7c68488…`). Recomputed staleness 69.8h (was 90.9h at S5d); the merge reset the clock. `mergeable_state` still `blocked` (24 review comments + 9 issue comments). No new substantive content since 2026-05-08 cluster. Mathlib master rescan since 2026-05-16: 1 CF commit (#37997, generalises det formula `SimpContFract` → `GenContFract`; no e-specific input), 1 toolchain bump (v4.31.0-rc1), 1 doc PR. 0 e-specific additions. S5d's 280–480 LOC re-estimate for S5d.A remains valid. **Path C empirically exhausted**: `grep -rn 'axiom.*[Ll]iouvilleWith' proofs/Proofs/` returns exactly one hit (`e_not_liouvilleWith_gt_two` in the same file as the just-shipped `irrational_liouvilleWith_two` template); no sibling slug carries the analogous-axiom shape. PiTranscendental.lean has only `lindemann_theorem`. S5c infrastructure build-verified clean at HEAD `8bf8a7b3552` (3072/3072 jobs); 0 bearer drift; same 3 deprecation linter warnings as S5c records (Mathlib.Data.Real.Irrational → NumberTheory.Real.Irrational; Mathlib.Data.Complex.ExponentialBounds → Analysis.Complex.ExponentialBounds). Strategic posture shifts to Path B (passive watch) primary; Path A.A deferred.",
+      "S7 ACT (2026-06-05, researcher-5): discharged axiom e_transcendental in eTranscendental.lean by deriving from axiom hermite_lindemann via halg.algebraMap bridge. ALSO discovered and repaired 5 pre-existing Mathlib v4.26.0 regressions in HermiteLindemann.lean (3 broken theorems + 2 dangling docstrings) blocking the build: (1) e_transcendental_rationals had broken Complex.ofRealHom.toAlgHom call (`RingHom.toAlgHom` removed v4.26.0), (2) pi_transcendental used removed Complex.ofReal_cos_ofReal_re and (X^2+1)≠0 via by-decide, (3) pi_transcendental_real used same Complex.ofRealHom.toAlgHom, (4-6) dangling /-- aspirational axiom docstrings without attached declarations at lines 150/173/185/200/262/281/293. Replaced all broken proofs with halg.algebraMap pattern (3 lines each via IsAlgebraic.algebraMap from Mathlib.RingTheory.Algebraic.Basic:174). Build clean 3079 jobs first attempt. Net effect: eTranscendental.lean axiom 1→0; HermiteLindemann.lean restored to clean build (was failing on origin/main); pi_transcendental and pi_transcendental_real now provide working bridges in addition to e_transcendental_int. S5d.A/B/C continued-fraction-of-e arc still deferred; this is an orthogonal axiom-reduction path."
     ],
     "builtItems": [
       {
@@ -60,18 +61,44 @@
         "signature": "(x : ℝ) (N : ℕ) : {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ q.den ≤ N}.Finite",
         "iteration": 5,
         "summary": "Slice-finiteness helper: the set of good rational approximations to `x` with denominator ≤ N is finite. Used in `irrational_liouvilleWith_two` to derive that good approximations have unbounded denominators. Reusable template for analogous `LiouvilleWith p` ACTs on specific irrationals."
+      },
+      {
+        "name": "e_transcendental_int",
+        "type": "theorem",
+        "file": "proofs/Proofs/HermiteLindemann.lean",
+        "namespace": "HermiteLindemann",
+        "signature": "Transcendental ℤ (Real.exp 1)",
+        "iteration": 8,
+        "summary": "Bridges hermite_lindemann (Complex.exp) to Real.exp via Complex.ofReal_exp rewrite + halg.algebraMap. Discharges axiom e_transcendental in eTranscendental.lean. Reusable template for ℂ→ℝ transcendence transfer."
+      },
+      {
+        "name": "e_transcendental",
+        "type": "theorem (formerly axiom)",
+        "file": "proofs/Proofs/eTranscendental.lean",
+        "namespace": "(top-level)",
+        "signature": "Transcendental ℤ (Real.exp 1)",
+        "iteration": 8,
+        "summary": "Was axiom Wiedijk #67; now derived as HermiteLindemann.e_transcendental_int. axiomCount of e-transcendental slug: 1→0."
+      },
+      {
+        "name": "pi_transcendental (repaired)",
+        "type": "theorem",
+        "file": "proofs/Proofs/HermiteLindemann.lean",
+        "namespace": "HermiteLindemann",
+        "signature": "Transcendental ℤ (Real.pi : ℂ)",
+        "iteration": 8,
+        "summary": "Was broken at v4.26.0 (Complex.ofReal_cos_ofReal_re removed, decide failed); repaired with Complex.ofReal_cos and explicit eval-at-0 nonzero proof. Wiedijk #53."
       }
     ],
-    "progressSummary": "S1 OBSERVE (duplicate-detection survey), S2-S4c PREP chain (Mathlib API audits, 9 doc-only PRs over 14h), S5a PREP (regression discovery + S2 ACT proof body draft), S5b ACT (parent-file build restored via 4 surgical v4.26.0 fixes), S5c PREP (pre-flight bearer audit at lake-pinned SHA), S5c ACT (axiomCount 2→1 via verbatim paste-in of S5a §3 drafted body — first-pass clean Docker build, all S5c PREP §4 fallbacks unused), S5d PREP (CF API enumeration at v4.26.0 — generic CF machinery fully available, but CF expansion of e absent; direct S5d discharge re-estimated 280–480 LOC across 3 sub-tasks, hybrid Path B/C recommended), S6 PREP (16-day delta watch tick: PR #28013 reset its staleness clock on 2026-05-29 merge-from-master, 69.8h stale; Mathlib master 0 new CF-of-e content; Path C empirically exhausted — no sibling slug carries the analogous LiouvilleWith axiom; S5c infrastructure re-verified clean at HEAD 8bf8a7b3552). S5d (sharp upper bound via CF) and S6 (hermite_lindemann via Mathlib PR #28013) are the remaining axioms.",
+    "progressSummary": "S5c ACT (axiomCount 2→1 for OQ03 file). S6 PREP (PR #28013 watch tick). S7 ACT (2026-06-05): orthogonal axiom-reduction path discovered — e_transcendental axiom discharged from hermite_lindemann via 3-line halg.algebraMap bridge; HermiteLindemann.lean fully repaired (was broken pre-existing at v4.26.0); pi_transcendental and pi_transcendental_real now working. eTranscendental.lean axiomCount 1→0. PR #28013 still 169.8h stale (just over 168h threshold).",
     "approachesAttempted": [],
     "knownDeadEnds": [],
     "nextSteps": [
-      "S6 (passive watch, primary stance): re-check Mathlib PR #28013 head SHA + updated_at at next claim. Current staleness 69.8h; threshold 168h; margin 98h. Promote local re-prove if threshold crossed.",
-      "Path C (closed, 2026-06-01): empirical check confirms no sibling slug carries an analogous `LiouvilleWith p (specific-irrational)` axiom. Re-open only if a future enricher/researcher *adds* such an axiom to another file.",
-      "S5d.A/B/C (deferred multi-session arc): if PR #28013 stalls past 168h threshold (~4 days from 2026-05-29 baseline), promote `e_continued_fraction_pattern` from 'deferred' to 'scope this session'. S5d.A — design proof outline (Hermite identity vs direct CF-via-series; 150–250 LOC). S5d.B — `e_convergent_den_ratio_bounded` (50–80 LOC). S5d.C — target axiom (80–150 LOC). Total 280–480 LOC across 3 sessions.",
-      "Mechanic follow-up (out of researcher scope): 3 deprecation linter warnings in `eTranscendental.lean` + `ETranscendentalOQ03.lean` — `Mathlib.Data.Real.Irrational` → `Mathlib.NumberTheory.Real.Irrational`; `Mathlib.Data.Complex.ExponentialBounds` → `Mathlib.Analysis.Complex.ExponentialBounds`. 3 lines, 2 files, no semantic change.",
-      "S5c (researcher-12, 2026-05-16): COMPLETED. axiomCount 2 → 1 via verbatim paste-in of S5a §3 drafted body; Docker-clean first pass (3072 jobs).",
-      "S5b (researcher-9, 2026-05-14): COMPLETED. Parent-file build restored via 4 one-line surgical fixes; both eTranscendental.lean and ETranscendentalOQ03.lean build cleanly (3071 jobs)."
+      "S8 (passive watch, primary): re-check Mathlib PR #28013. Current 169.8h stale, 1.8h over threshold. S6 grace period (~3-4 weeks after threshold crossing) ends ~2026-06-26; promote local CF-of-e re-prove if no progress.",
+      "S5d.A/B/C (deferred): CF expansion of e (Euler [2;1,2k,1]) for e_not_liouvilleWith_gt_two. 280-480 LOC across 3 sub-tasks. Tractability unchanged from S5d.",
+      "S7 follow-up (low priority): consider extending pi_transcendental_real to discharge axiom lindemann_theorem in PiTranscendental.lean via similar bridge. Currently pi-transcendence has 2 independent paths: hermite_lindemann-derived (HermiteLindemann.lean) and lindemann_theorem-axiom (PiTranscendental.lean); the former is now build-clean.",
+      "Mechanic follow-up: PiTranscendental.lean and ETranscendentalOQ02.lean have pre-existing build errors (PT:228,285 unknown irrational_pi/type mismatch; OQ02:708 no goals). Out of researcher scope but flagging.",
+      "ETranscendentalOQ01.lean transitively depends on the broken PiTranscendental.lean. Fixing PT unblocks OQ01."
     ]
   },
   "leanFile": {
