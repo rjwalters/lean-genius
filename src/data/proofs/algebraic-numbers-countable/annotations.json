@@ -9,7 +9,7 @@
     "type": "concept",
     "title": "Cantor 1874: Algebraic Numbers Are Countable — The Theorem That Created Transcendental Number Theory",
     "content": "This module formalizes Cantor's 1874 theorem that the algebraic numbers are countable. The result appears in the same paper ('Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen') where Cantor proved the real numbers are uncountable — the first demonstration that infinite sets can have different sizes.\n\nThe historical significance is profound:\n- Before 1874: mathematicians knew of no transcendental numbers (numbers that are not roots of any rational polynomial)\n- Hermite 1873: proved e is transcendental — the first specific transcendental\n- Cantor 1874: proved 'almost all' reals are transcendental (in the sense of cardinality), before anyone knew how to construct them\n- Liouville 1844 had earlier shown transcendental numbers exist by explicit construction (Liouville's constant), but Cantor's cardinality argument showed they must be 'everywhere'\n\nThe formalization proves 18 theorems organized in 7 sections: direct results (delegating to Mathlib), bounded-degree sets, exact-degree stratification, degree union decomposition, degree 1 = rationals, cardinality equality, and exhaustive filtration. Two proof styles are used: the direct one-line delegation to `Algebraic.countable`, and the constructive degree-stratification proof via `Set.countable_iUnion`.",
-    "mathContext": "Countability hierarchy for number systems: ℕ ≅ ℤ ≅ ℚ ≅ algebraic reals (all ℵ₀) ⊊ ℝ ≅ ℂ ≅ transcendental reals (all 2^ℵ₀). The key fact: |{degree ≤ d polynomials over ℚ}| = |ℚ^{d+1}| = ℵ₀, and each polynomial has ≤ d roots. So |{algebraic reals of degree ≤ d}| ≤ d · ℵ₀ = ℵ₀. The union over d ∈ ℕ remains ℵ₀.",
+    "mathContext": "**Countability hierarchy for number systems:** $\\mathbb{N} \\cong \\mathbb{Z} \\cong \\mathbb{Q} \\cong \\overline{\\mathbb{Q}}$ (all $\\aleph_0$) $\\subsetneq \\mathbb{R} \\cong \\mathbb{C} \\cong (\\mathbb{R} \\setminus \\overline{\\mathbb{Q}})$ (all $2^{\\aleph_0}$). Combined with $|\\mathbb{R}| = 2^{\\aleph_0} > \\aleph_0 = |\\overline{\\mathbb{Q}}|$ (Cantor's diagonal, same 1874 paper), this *immediately* yields the existence of transcendentals — *without* explicit construction.\n\n**The Cantor 1874 height function (constructive enumeration).** Cantor's original 1874 argument assigns to each polynomial $p(x) = a_n x^n + a_{n-1} x^{n-1} + \\cdots + a_0 \\in \\mathbb{Z}[x]$ with $a_n \\neq 0$ a *height* $h(p) = n + |a_n| + |a_{n-1}| + \\cdots + |a_0|$. Two key combinatorial facts:\n\n1. For each fixed integer $h \\geq 1$, there are *finitely many* polynomials with height exactly $h$ (since each $|a_i| \\leq h$ and $n \\leq h$, the count is bounded by $h \\cdot (2h+1)^{h+1}$, an explicit finite combinatorial bound).\n2. Each polynomial of degree $n$ has at most $n$ distinct real roots (fundamental theorem of algebra over $\\mathbb{C}$, restricted to $\\mathbb{R}$).\n\nEnumerate polynomials by height $h = 1, 2, 3, \\ldots$ (finitely many per stratum), within each height enumerate the polynomials lexicographically by $(a_n, a_{n-1}, \\ldots, a_0)$, and within each polynomial enumerate its roots in increasing real order. This gives an explicit bijection between $\\mathbb{N}$ and $\\overline{\\mathbb{Q}} \\cap \\mathbb{R}$ — a *constructive* witness to countability, predating Mathlib's `Polynomial.exists_finset_roots` by 150 years.\n\n**Why ℚ-coefficients vs ℤ-coefficients agree:** $\\alpha$ algebraic over $\\mathbb{Q}$ $\\iff$ $\\alpha$ algebraic over $\\mathbb{Z}$ — multiply through by the common denominator of the $\\mathbb{Q}$-coefficients to clear fractions, preserving the root set. So Cantor's $\\mathbb{Z}[x]$-based enumeration and Mathlib's $\\mathbb{Q}$-coefficient `Algebraic` predicate define the same set.\n\n**Cardinal arithmetic of the bounded-degree filtration (this file's alternative approach):** $|\\{p \\in \\mathbb{Q}[x] : \\deg p \\leq d\\}| = |\\mathbb{Q}^{d+1}| = \\aleph_0^{d+1} = \\aleph_0$ (Cantor's pair-coding identity $\\aleph_0 \\cdot \\aleph_0 = \\aleph_0$, applied $d+1$ times). Each such polynomial has $\\leq d$ real roots, so $|\\{\\alpha \\in \\mathbb{R} : \\alpha\\text{ algebraic of degree} \\leq d\\}| \\leq \\aleph_0 \\cdot d = \\aleph_0$. The exhaustive union $\\overline{\\mathbb{Q}} \\cap \\mathbb{R} = \\bigcup_{d \\in \\mathbb{N}} \\{\\alpha : \\deg \\alpha \\leq d\\}$ is a countable union of countable sets, hence countable (`Set.countable_iUnion` in Mathlib).\n\n**Lower bound on $|\\overline{\\mathbb{Q}}|$:** $\\mathbb{Q} \\subseteq \\overline{\\mathbb{Q}}$ (every rational is a root of $x - q$, degree 1), so $|\\overline{\\mathbb{Q}}| \\geq |\\mathbb{Q}| = \\aleph_0$. Combined with the upper bound, $|\\overline{\\mathbb{Q}}| = \\aleph_0$ exactly. The *proper* containment $\\mathbb{Q} \\subsetneq \\overline{\\mathbb{Q}}$ (witnessed by $\\sqrt{2} \\notin \\mathbb{Q}$, Pythagoras c. 500 BCE) coexisting with the *cardinal equality* $|\\mathbb{Q}| = |\\overline{\\mathbb{Q}}|$ is the cardinal-paradox addressed in `ann-algebraic-cardinality-paradox`.",
     "significance": "key",
     "relatedConcepts": [
       "Cantor-1874",
@@ -17,12 +17,26 @@
       "degree-stratification",
       "Algebraic.countable",
       "transcendental-numbers",
-      "cardinality"
+      "cardinality",
+      "Cantor height function",
+      "fundamental theorem of algebra (root count bound)",
+      "Set.countable_iUnion",
+      "Cardinal.aleph0",
+      "Liouville's constant (1844 explicit transcendental)",
+      "Hermite 1873 ($e$ transcendental)",
+      "Lindemann 1882 ($\\pi$ transcendental, $e^\\alpha$ transcendental for nonzero algebraic $\\alpha$)",
+      "abel-ruffini (algebraic non-radical numbers)",
+      "hermite-lindemann",
+      "liouville-theorem",
+      "cantors-theorem"
     ],
     "prerequisites": [
       "Mathlib.Algebra.AlgebraicCard",
       "Set.Countable and Set.countable_iUnion",
-      "Cardinal.mk and Cardinal.aleph0"
+      "Cardinal.mk and Cardinal.aleph0",
+      "ℵ₀ · ℵ₀ = ℵ₀ (Cantor pairing function)",
+      "polynomial degree and root count (Polynomial.card_roots_le_degree)",
+      "the equivalence Q-algebraic ⟺ Z-algebraic (clear denominators)"
     ]
   },
   {
