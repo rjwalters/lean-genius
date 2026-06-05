@@ -2,7 +2,7 @@
   "id": "abel-ruffini-galois-extensions",
   "title": "Abel-Ruffini Galois Theory Extensions",
   "slug": "abel-ruffini-galois-extensions",
-  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |S₈|=40320, |A₇|=2520, |A₈|=20160 via `native_decide`. 57 theorems, 12 typeclass instances, 0 axioms, 0 sorries.",
+  "description": "Extends the Abel-Ruffini formalization with the complete solvability classification of symmetric groups. Proves S₀–S₄ are solvable, S_n is solvable if and only if n ≤ 4, A₅ is simple (the key obstruction), and non-commutativity witnesses for S₃, S₄, S₅, A₄, A₅. Verifies group orders |S₇|=5040, |S₈|=40320, |A₇|=2520, |A₈|=20160 via `native_decide`. 57 theorems, 15 typeclass instances (11 public + 4 private), 1 private definition (`klein_four`), 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -25,8 +25,8 @@
     "assumptions": "None. Fully machine-verified using Mathlib's solvability infrastructure.",
     "lineCount": 534,
     "theoremCount": 57,
-    "definitionCount": 0,
-    "instanceCount": 12,
+    "definitionCount": 1,
+    "instanceCount": 15,
     "mathlibDependencies": [
       {
         "theorem": "Equiv.Perm.not_solvable",
@@ -177,8 +177,8 @@
     "lineCount": 534,
     "axiomCount": 0,
     "theoremCount": 57,
-    "definitionCount": 0,
-    "instanceCount": 12,
+    "definitionCount": 1,
+    "instanceCount": 15,
     "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
     "sorries": 0,
     "additionalFiles": [
