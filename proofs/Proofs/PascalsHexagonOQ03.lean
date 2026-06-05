@@ -556,6 +556,67 @@ theorem card_hexagon_labelings : Nat.card HexagonLabeling = 60 := by
   omega
 
 -- ============================================================
+-- PART 4b: Hexagon Relabeling Action (S4b ACT — toolkit for OQ-02)
+-- ============================================================
+
+/-- Index the six vertices of an inscribed hexagon as a function `Fin 6 → ProjPoint`.
+    Sets up the relabeling action of `Sym(6)` on inscribed hexagons. -/
+def hexVertex {C : Conic} (hex : InscribedHexagon C) : Fin 6 → ProjPoint
+  | ⟨0, _⟩ => hex.A
+  | ⟨1, _⟩ => hex.B
+  | ⟨2, _⟩ => hex.C'
+  | ⟨3, _⟩ => hex.D
+  | ⟨4, _⟩ => hex.E
+  | ⟨5, _⟩ => hex.F
+
+/-- Conic-membership proof bundled with each vertex. -/
+def hexVertex_onConic {C : Conic} (hex : InscribedHexagon C) :
+    ∀ i : Fin 6, pointOnConic (hexVertex hex i) C
+  | ⟨0, _⟩ => hex.hA
+  | ⟨1, _⟩ => hex.hB
+  | ⟨2, _⟩ => hex.hC
+  | ⟨3, _⟩ => hex.hD
+  | ⟨4, _⟩ => hex.hE
+  | ⟨5, _⟩ => hex.hF
+
+/-- Projective validity proof bundled with each vertex. -/
+def hexVertex_valid {C : Conic} (hex : InscribedHexagon C) :
+    ∀ i : Fin 6, ProjPoint.valid (hexVertex hex i)
+  | ⟨0, _⟩ => hex.hAvalid
+  | ⟨1, _⟩ => hex.hBvalid
+  | ⟨2, _⟩ => hex.hCvalid
+  | ⟨3, _⟩ => hex.hDvalid
+  | ⟨4, _⟩ => hex.hEvalid
+  | ⟨5, _⟩ => hex.hFvalid
+
+/-- Relabel the vertices of an inscribed hexagon by a permutation `π : Sym(6)`.
+    The conic-membership and projective-validity proofs transport along with the
+    vertex permutation, so the result is again an `InscribedHexagon C`. This is
+    the workhorse for **OQ-03-OQ-02**: the Pascal line of a hexagon labeling
+    will be the Pascal line of the hexagon permuted by a representative of the
+    labeling. -/
+def permuteHexagon {C : Conic} (hex : InscribedHexagon C)
+    (π : Equiv.Perm (Fin 6)) : InscribedHexagon C where
+  A := hexVertex hex (π 0)
+  B := hexVertex hex (π 1)
+  C' := hexVertex hex (π 2)
+  D := hexVertex hex (π 3)
+  E := hexVertex hex (π 4)
+  F := hexVertex hex (π 5)
+  hA := hexVertex_onConic hex (π 0)
+  hB := hexVertex_onConic hex (π 1)
+  hC := hexVertex_onConic hex (π 2)
+  hD := hexVertex_onConic hex (π 3)
+  hE := hexVertex_onConic hex (π 4)
+  hF := hexVertex_onConic hex (π 5)
+  hAvalid := hexVertex_valid hex (π 0)
+  hBvalid := hexVertex_valid hex (π 1)
+  hCvalid := hexVertex_valid hex (π 2)
+  hDvalid := hexVertex_valid hex (π 3)
+  hEvalid := hexVertex_valid hex (π 4)
+  hFvalid := hexVertex_valid hex (π 5)
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
