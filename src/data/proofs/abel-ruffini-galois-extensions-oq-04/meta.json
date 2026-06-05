@@ -180,6 +180,13 @@
         "Mathlib.Order.JordanHolder",
         "Mathlib TODO",
         "universe polymorphism"
+      ],
+      "prerequisites": [
+        "`JordanHolderLattice` typeclass (Mathlib)",
+        "`Mathlib.Order.JordanHolder`, `Mathlib.GroupTheory.QuotientGroup.Basic`",
+        "modular lattice $(\\mathrm{Subgroup}\\,G, \\le, \\sqcup, \\sqcap)$",
+        "`CompositionSeries` and Jordan-Hölder uniqueness",
+        "Mathlib TODO conventions and noncomputable instances"
       ]
     },
     {
@@ -198,6 +205,13 @@
         "MulEquiv",
         "haveI pattern",
         "Prop/data divide"
+      ],
+      "prerequisites": [
+        "`Subgroup.subgroupOf` (relative normality)",
+        "`Normal` typeclass and its lattice interaction",
+        "`Nonempty` wrapping of `MulEquiv` for `Prop`-level isomorphism",
+        "`haveI`/`letI` pattern for typeclass synthesis",
+        "the Prop/data divide in Lean 4"
       ]
     },
     {
@@ -214,6 +228,13 @@
         "subgroupOf",
         "le_sup_right",
         "lemma factoring"
+      ],
+      "prerequisites": [
+        "normalizer subgroup $N_G(H)$",
+        "`normal_subgroupOf_iff_le_normalizer`",
+        "`le_sup_left`, `le_sup_right` lattice basics",
+        "relative vs absolute normality",
+        "lemma factoring out fragile rewrites"
       ]
     },
     {
@@ -230,6 +251,13 @@
         "IsMaxNorm",
         "JordanHolderLattice",
         "lt_of_isMaximal"
+      ],
+      "prerequisites": [
+        "`subgroupOf_sup` (Mathlib lattice homomorphism)",
+        "`lt_of_isMaximal` and the diamond lemma",
+        "noncomputable instance declarations",
+        "maximal normal subgroup $x \\trianglelefteq_{\\max} z$",
+        "`JordanHolderLattice.sup_eq_of_isMaximal` axiom signature"
       ]
     },
     {
@@ -246,6 +274,13 @@
         "maximality in lattices",
         "normal_subgroupOf_of_le_normalizer",
         "inf_comm"
+      ],
+      "prerequisites": [
+        "`Subgroup.mem_sup` (element-wise membership)",
+        "`inf_subgroupOf_right` for relative meet",
+        "element-wise argument $a = nb$ with $n \\in N, b \\in y$",
+        "`normal_subgroupOf_of_le_normalizer`",
+        "lattice inf/sup commutativity (`inf_comm`)"
       ]
     },
     {
@@ -262,6 +297,12 @@
         "haveI pattern",
         "equivalence relation",
         "rcases pattern matching"
+      ],
+      "prerequisites": [
+        "`MulEquiv.symm` and `MulEquiv.trans`",
+        "`Nonempty.map` to lift through `Prop` wrapping",
+        "`rcases` pattern matching on `Nonempty` witnesses",
+        "equivalence relation laws for the `Iso` field of `JordanHolderLattice`"
       ]
     },
     {
@@ -279,6 +320,13 @@
         "Noether second isomorphism",
         "kernel computation",
         "le_normalizer_of_normal_in_sup"
+      ],
+      "prerequisites": [
+        "Noether's second isomorphism theorem $(H \\vee K)/H \\simeq K/(H \\wedge K)$",
+        "`QuotientGroup.mk'` and `Subgroup.inclusion`",
+        "`quotientKerEquivOfSurjective` (first isomorphism theorem)",
+        "kernel computation $\\ker \\varphi = x \\wedge y$",
+        "`le_normalizer_of_normal_in_sup` (Part II)"
       ]
     },
     {
@@ -295,6 +343,13 @@
         "A5 simplicity",
         "S5 composition series",
         "prime factorization analogy"
+      ],
+      "prerequisites": [
+        "`CompositionSeries.jordan_holder` (the abstract theorem)",
+        "composition factor isomorphism up to permutation",
+        "role of `JordanHolderLattice (Subgroup G)` as the missing instance",
+        "application to $S_5$: unique composition factor multiset $\\{S_5/A_5, A_5\\}$",
+        "prime factorization analogy"
       ]
     },
     {
@@ -310,6 +365,12 @@
         "instance registration",
         "namespace closure",
         "elaboration-time verification"
+      ],
+      "prerequisites": [
+        "`#check` command for elaboration-time verification",
+        "typeclass resolution diagnosis",
+        "instance availability across modules",
+        "namespace closure (`end AbelRuffiniGaloisExtensionsOQ04`)"
       ]
     }
   ],
