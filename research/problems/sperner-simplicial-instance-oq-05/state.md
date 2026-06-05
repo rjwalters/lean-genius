@@ -2,13 +2,47 @@
 
 ## Current State
 
-**Phase**: S7 ACT shipped + S8 ALT (b) reconciled via external mechanic mega-batch (#22005, 2026-06-02). Scarf1d leaf file is now registered in `meta.additionalFiles[]`. Remaining S8+ actions: (a) S8 PREP for `scarfWalk_isPanchromatic` signature amendment, (c) S8 ALT 2-D Hex-no-draw (deferred behind sister slug).
+**Phase**: S8 PREP shipped (researcher-1, 2026-06-04) — parity hypothesis `c 0 ≠ c m` designed for `scarfWalk_isPanchromatic`, with downstream impact on `exists_panchromatic_constructive` analyzed and S8 ACT discharge sketch (~55 LOC, MED-HIGH risk) scoped. S7 ACT remains shipped; S8 ALT (b) reconciled externally via mechanic mega-batch (#22005, 2026-06-02). Remaining: S8 ACT (discharge), S8 ALT (c) 2-D Hex-no-draw (deferred behind sister slug).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-04 (Session 15 S1 STATE-SYNC, researcher-1)
-**Iteration**: 13
+**Last Updated**: 2026-06-04 (Session 16 S8 PREP, researcher-1)
+**Iteration**: 14
 
-## Session 15 (this session, 2026-06-04, researcher-1) — S1 STATE-SYNC (S8 ALT (b) external completion + head reconciliation)
+## Session 16 (this session, 2026-06-04, researcher-1) — S8 PREP (`scarfWalk_isPanchromatic` parity hypothesis design)
+
+**Scope**: doc-only PREP. No Lean diff, no `meta.json` diff, no gallery diff.
+
+**Trigger**: Session 14 (S7 ACT) flagged the existing `scarfWalk_isPanchromatic` theorem statement as **unprovable** without a parity/endpoint hypothesis; Session 15 (S1 STATE-SYNC) noted (a) S8 PREP as the remaining priority-1 action.
+
+**Action**: Wrote `research/problems/sperner-simplicial-instance-oq-05/sessions/2026-06-04-s8-prep-parity-hypothesis.md` (~280 LOC, 10 sections):
+- §1 S7 audit finding recap with the `m = 3, c ≡ 0` counterexample analyzed step-by-step through `iadj` (counterexample re-verified by hand-eval through the leaf file + parent `iadj` line 818).
+- §2 The amendment: `(h_parity : c 0 ≠ c m)` as a new explicit hypothesis on `scarfWalk_isPanchromatic`. Argued necessary (counterexample), sufficient (1-d Sperner = discrete IVT), canonical (matches general boundary parity), decidable (`Fin 2`).
+- §3 Downstream impact: `exists_panchromatic_constructive` threads `h_parity` through unchanged otherwise; no external callers (grep-confirmed).
+- §4 Discharge sketch (~55 LOC) decomposed into 4 sub-lemmas: `discrete_ivt_panchromatic_cell` (~15 LOC, LOW risk), `scarfWalk_visited_monotone` (~10 LOC, MED), `scarfWalk_visited_no_revisit` (~15 LOC, MED — 1-d makes this trivial via monotone cell-index), main proof (~15 LOC, MED).
+- §5 Verification: leaf file state confirmed (1 real sorry on line 105, despite stale `leanFiles[].sorryCount = 3` in research JSON — handed off to mechanic in §7). Counterexample re-verified by hand-eval. Smoke-test colouring satisfies `h_parity`.
+- §6 Acceptance criteria for S8 ACT (informational): 7 checks including signature shape, no new axioms, smoke-test transferability, Docker build, sorry-count delta 1 → 0.
+- §7 Mechanic handoff: stale `leanFiles[].sorryCount = 3` for `SpernerSimplicialInstanceOQ05Scarf1d.lean` (should be `1`); ready-to-paste `jq` one-liner provided.
+- §8 Risk inventory: 5 risks, all LOW or NONE.
+- §9 References (S7/S6/S5 PREP memos, leaf file, parent file, gallery meta, mechanic PR #22005, Sperner 1928).
+- §10 Host context: HEAD `3928d4fd1c9`, Mathlib pin `2df2f0150c…`, branch `research/sperner-oq05-s8-prep-parity-hypothesis-1780640000`.
+
+**Updated head**: Phase reflects S8 PREP shipping, Iteration 13 → 14, Last Updated 2026-06-04.
+
+**Verification**:
+- New session memo written under canonical path `research/problems/sperner-simplicial-instance-oq-05/sessions/` (per Session 9's canonical-path STATE-SYNC).
+- `leanFiles[].sorryCount` drift noted but not fixed in this PR (mechanic territory per project_mechanic_orphan_scan_v8 memory).
+- No `.lean` diff; no gallery `meta.json` diff; no race risk with mechanic count-drift batches.
+
+**Remaining Next Action (post-Session 16)**:
+- **S8 ACT** (RECOMMENDED next, ~55 LOC, MED-HIGH risk): discharge the amended `scarfWalk_isPanchromatic` per §4 of the S8 PREP memo. Sub-lemmas listed; 1-d specialisation makes `scarfWalk_visited_no_revisit` straightforward (monotone cell-index).
+- S8 ALT (c) 2-D Hex-no-draw — deferred behind sister slug `sperner-simplicial-instance-oq-01` 2-D triangulation instance (unchanged).
+- `leanFiles[].sorryCount` drift (3 → 1) — mechanic territory.
+
+**No claim status change**; slug remains in-progress (S8 ACT outstanding).
+
+---
+
+## Session 15 (2026-06-04, researcher-1) — S1 STATE-SYNC (S8 ALT (b) external completion + head reconciliation)
 
 **Scope**: doc-only state-sync. No Lean diff, no `meta.json` diff.
 
