@@ -496,10 +496,10 @@ theorem perpBisector_dirSq_pos (p₁ p₂ : Point) (h : p₁ ≠ p₂) :
   rcases eq_or_ne p₁.1 p₂.1 with hx | hx
   · have hy : p₁.2 ≠ p₂.2 := fun heq => h (Prod.ext hx heq)
     have h2 : 0 < (p₂.2 - p₁.2)^2 :=
-      sq_pos_of_ne_zero _ (sub_ne_zero.mpr (Ne.symm hy))
+      sq_pos_of_ne_zero (sub_ne_zero.mpr (Ne.symm hy))
     nlinarith [sq_nonneg (p₂.1 - p₁.1)]
   · have h1 : 0 < (p₂.1 - p₁.1)^2 :=
-      sq_pos_of_ne_zero _ (sub_ne_zero.mpr (Ne.symm hx))
+      sq_pos_of_ne_zero (sub_ne_zero.mpr (Ne.symm hx))
     nlinarith [sq_nonneg (p₂.2 - p₁.2)]
 
 /-- **HH-2 reflection law.** The perpendicular bisector of `p₁` and
@@ -593,8 +593,8 @@ for the reflection to be well-defined. -/
 theorem perpThroughPoint_normSq_pos (ℓ : Line) :
     0 < ℓ.a^2 + ℓ.b^2 := by
   rcases ℓ.nondeg with ha | hb
-  · nlinarith [sq_pos_of_ne_zero _ ha, sq_nonneg ℓ.b]
-  · nlinarith [sq_pos_of_ne_zero _ hb, sq_nonneg ℓ.a]
+  · nlinarith [sq_pos_of_ne_zero ha, sq_nonneg ℓ.b]
+  · nlinarith [sq_pos_of_ne_zero hb, sq_nonneg ℓ.a]
 
 /-- The **perpendicular fold through `P` orthogonal to `ℓ`**. The
 fold's normal vector `(-ℓ.b, ℓ.a)` is a 90° rotation of `ℓ`'s normal
