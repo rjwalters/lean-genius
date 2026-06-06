@@ -1,9 +1,55 @@
 # Current State
 
-**Phase**: ACT-REALIZED (S2 ACT 2026-05-15; S4 ACT 2026-05-16; S6 ACT 2026-06-05 — Candidate B build-verified)
+**Phase**: ACT-REALIZED (S2 ACT 2026-05-15; S4 ACT 2026-05-16; S6 ACT 2026-06-05 — Candidate B build-verified; S7a ACT 2026-06-05 — OQ-02 axiom drop 4 → 3 build-verified)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-06-05 (S6 ACT — Candidate B shipped, build-verified 3066 Docker jobs; researcher-1, claim `researcher-90270`)
-**Iteration**: 15 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + S4 ACT #19380 + S5 STATE-SYNC #22028 + this S6 ACT)
+**Last update**: 2026-06-05 (S7a ACT — OQ-02 axiom drop 4 → 3, build-verified Docker 3061 / 3066 jobs; researcher-1, claim `researcher-83301`)
+**Iteration**: 16 (15 prior + this S7a ACT)
+
+## S7a ACT 2026-06-05 (researcher-1)
+
+**Mode:** S7a ACT — Lean + meta.json modifying, ships the §7a follow-on
+from S6 ACT. Realizes the deferred OQ-02 axiom drop 4 → 3 by deleting
+`axiom sylowProP_inter_trivial` from `Proofs/SylowTheoremOQ02.lean`
+together with its corresponding `#check` line, and updating
+`src/data/proofs/sylow-theorems-oq-02/meta.json` to reflect
+`axiomCount` 4 → 3 + `lineCount` 374 → 372.
+
+### Build verification
+
+* `./proofs/scripts/docker-build.sh Proofs.SylowTheoremOQ02` — 3061 jobs
+  clean.
+* `./proofs/scripts/docker-build.sh Proofs.SylowTheoremOQ03B` — 3066 jobs
+  clean (the discharging theorem still elaborates and is unchanged).
+
+### What changed (concise)
+
+| File | Δ | Note |
+|------|---|------|
+| `proofs/Proofs/SylowTheoremOQ02.lean` | −7/+5 LOC (net −2) | Delete `axiom sylowProP_inter_trivial` L133-137 + `#check @sylowProP_inter_trivial` L372; replace axiom block with 5-line discharge comment crediting OQ-03B's `sylowProP_inter_trivial_via_quotient` |
+| `src/data/proofs/sylow-theorems-oq-02/meta.json` | 7 fields | `axiomCount` 4 → 3 (top + leanFile), `lineCount` 374 → 372 (top + leanFile), description / assumptions / conclusion summary / 2 section summaries (axioms + counting-and-summary) updated to reflect the 4 → 3 drop |
+| `research/problems/sylow-theorems-oq-03/sessions/2026-06-05-s7a-act-oq02-axiom-drop-4-to-3.md` | NEW | Session log + risk register |
+| `research/problems/sylow-theorems-oq-03/state.md` | this header + S7a subsection | Prior S6 content preserved verbatim below |
+
+### Net axiom impact
+
+OQ-02 axiom count: **4 → 3 (REALIZED)**. The §7a deferred drop from
+S6 ACT is now live. The remaining 3 OQ-02 axioms are the two deep
+inverse-limit axioms (`sylowProP_exists`, `sylowProP_conjugate`) plus
+the derivable-pending `frattini_profinite` (S6 §7c — curator/architect
+scope).
+
+OQ-03 reaches its **natural stopping point** per S6 §7d: 3 OQ-02
+axioms, 0 sorries, all theorems Docker-verified.
+
+### Revised Current Focus / Next Action
+
+- **§7b** — Mathlib upstream contribution (out-of-band; unchanged from S6).
+- **§7c** — `frattini_profinite` axiom restatement (curator/architect
+  scope; unchanged from S6).
+- **§7d (now realized)** — OQ-02 axiom budget at 3, 0 sorries; Sylow-OQ
+  family at the natural stopping point.
+
+---
 
 ## S6 ACT 2026-06-05 (researcher-1)
 

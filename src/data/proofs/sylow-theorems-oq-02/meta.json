@@ -2,7 +2,7 @@
   "id": "sylow-theorems-oq-02",
   "title": "Pro-p Sylow Theory for Profinite Groups",
   "slug": "sylow-theorems-oq-02",
-  "description": "Generalizes the classical Sylow theorems to profinite groups. Proves conjugation preserves Sylow pro-p structure (closedness, pro-p, maximality), that uniqueness implies normality, plus compactness, trivial subgroup is pro-p, pro-p/p-group equivalence, classical Sylow bridge, counting theorem. 4 axioms, 0 sorries, 10 proved theorems.",
+  "description": "Generalizes the classical Sylow theorems to profinite groups. Proves conjugation preserves Sylow pro-p structure (closedness, pro-p, maximality), that uniqueness implies normality, plus compactness, trivial subgroup is pro-p, pro-p/p-group equivalence, classical Sylow bridge, counting theorem. 3 axioms, 0 sorries, 10 proved theorems.",
   "meta": {
     "author": "Serre (formalized)",
     "sourceUrl": "https://github.com/rjwalters/lean-genius",
@@ -19,8 +19,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 4,
-    "lineCount": 374,
+    "axiomCount": 3,
+    "lineCount": 372,
     "mathlibDependencies": [
       {
         "theorem": "Sylow.nonempty",
@@ -53,7 +53,7 @@
       "Pro-p subgroup p-power order theorem for finite groups",
       "Axiomatization of Serre existence and conjugacy theorems"
     ],
-    "assumptions": "4 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups, (4) trivial intersection of Sylow subgroups for distinct primes. The original 5th axiom — projection of Sylow pro-p subgroups to p-groups in finite quotients — was discharged in sylow-theorems-oq-03 as the continuity-enhanced theorem ProfiniteSylow.sylowProP_projects_pgroup_continuous, with no surviving callers of the deleted axiom in proofs/Proofs/.",
+    "assumptions": "3 axioms encoding deep profinite group theory results: (1) Sylow pro-p existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and compactness, (3) Frattini argument for profinite groups. Two earlier axioms have been discharged: the projection of Sylow pro-p subgroups to p-groups in finite quotients was retired in sylow-theorems-oq-03 (continuity-enhanced theorem ProfiniteSylow.sylowProP_projects_pgroup_continuous), and the trivial-intersection axiom `sylowProP_inter_trivial` for distinct primes was retired in sylow-theorems-oq-03 (S6 ACT Candidate B — proved as ProfiniteSylow.sylowProP_inter_trivial_via_quotient in Proofs/SylowTheoremOQ03B.lean via the PREP-2 finite-quotient route).",
     "dateAdded": "2026-03-25",
     "mathlib_version": "4.26.0",
     "theoremCount": 9,
@@ -101,8 +101,8 @@
       "title": "Pro-p Sylow Theorems (Axiomatized)",
       "startLine": 98,
       "endLine": 139,
-      "summary": "Four axioms encode the deep results of profinite Sylow theory: (1) existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and the finite intersection property, (3) the Frattini argument $G = N \\cdot N_G(P)$, (4) trivial intersection $P \\cap Q = \\{e\\}$ for distinct primes. The original 5th axiom (projection of Sylow pro-p subgroups to p-groups in finite quotients) was discharged in sylow-theorems-oq-03 (S2 ACT PR #19260 plus this S4 ACT axiom-drop) and removed from this file; the continuity-enhanced theorem ProfiniteSylow.sylowProP_projects_pgroup_continuous in SylowTheoremOQ03.lean is the new bearer of the projection result. Each remaining axiom includes a proof sketch documenting the mathematical argument.",
-      "mathContext": "These four results require Zorn's lemma, inverse limit constructions, and the finite intersection property in compact spaces — techniques that go beyond Mathlib's current formalized infrastructure for profinite groups. The axioms together give the complete analogue of the three classical Sylow theorems in the profinite setting (existence, conjugacy, intersection)."
+      "summary": "Three axioms encode the deep results of profinite Sylow theory: (1) existence via Zorn's lemma on closed pro-p subgroups, (2) conjugacy via finite approximation and the finite intersection property, (3) the Frattini argument $G = N \\cdot N_G(P)$. Two earlier axioms have been discharged into sylow-theorems-oq-03: the projection axiom (now ProfiniteSylow.sylowProP_projects_pgroup_continuous in SylowTheoremOQ03.lean, S2/S4 ACT) and the trivial-intersection axiom $P \\cap Q = \\{e\\}$ for distinct primes (now ProfiniteSylow.sylowProP_inter_trivial_via_quotient in SylowTheoremOQ03B.lean, S6 ACT). Each remaining axiom includes a proof sketch documenting the mathematical argument.",
+      "mathContext": "These three results require Zorn's lemma, inverse limit constructions, and the finite intersection property in compact spaces — techniques that go beyond Mathlib's current formalized infrastructure for profinite groups. Together with the now-discharged trivial-intersection theorem (Proofs/SylowTheoremOQ03B.lean), they give the complete analogue of the three classical Sylow theorems in the profinite setting (existence, conjugacy, intersection)."
     },
     {
       "id": "consequences",
@@ -125,7 +125,7 @@
       "title": "Summary Table and Type Checks",
       "startLine": 264,
       "endLine": 298,
-      "summary": "A markdown summary table listing all declarations (4 axioms, 10 proved theorems) with their status (proved/axiom), followed by `#check` commands verifying that all declarations have the expected types. Confirms the final tally: 4 axioms, 0 sorries, 10 proved theorems.",
+      "summary": "A markdown summary table listing all declarations (3 axioms, 10 proved theorems) with their status (proved/axiom), followed by `#check` commands verifying that all declarations have the expected types. Confirms the final tally: 3 axioms, 0 sorries, 10 proved theorems.",
       "mathContext": "The `#check` commands serve as a lightweight verification that all declarations are well-typed and properly exported from the `ProfiniteSylow` namespace."
     },
     {
@@ -141,12 +141,12 @@
       "title": "Counting Theorem and Verification",
       "startLine": 342,
       "endLine": 374,
-      "summary": "Proves n_p is congruent to 1 mod p for finite quotients. Summary of all results: 4 axioms and 10 proved theorems. Verification via #check on all key definitions.",
-      "mathContext": "Sylow counting: $n_p \\equiv 1 \\pmod{p}$. Score: 4 axioms, 10 proved theorems, 0 sorries."
+      "summary": "Proves n_p is congruent to 1 mod p for finite quotients. Summary of all results: 3 axioms and 10 proved theorems. Verification via #check on all key definitions.",
+      "mathContext": "Sylow counting: $n_p \\equiv 1 \\pmod{p}$. Score: 3 axioms, 10 proved theorems, 0 sorries."
     }
   ],
   "conclusion": {
-    "summary": "A 374-line formalization of pro-p Sylow theory for profinite groups with 10 proved theorems, 4 axioms, 5 definitions, and 0 sorries. The formalization bridges finite and infinite Sylow theory, showing that the classical Sylow theorems are a special case of the profinite theory when applied to finite discrete groups.",
+    "summary": "A 372-line formalization of pro-p Sylow theory for profinite groups with 10 proved theorems, 3 axioms, 5 definitions, and 0 sorries. The formalization bridges finite and infinite Sylow theory, showing that the classical Sylow theorems are a special case of the profinite theory when applied to finite discrete groups.",
     "implications": "Pro-p Sylow theory is foundational for: (1) **Galois cohomology**: the absolute Galois group Gal(k̄/k) is profinite, and its Sylow pro-p subgroups control p-adic representations; (2) **p-adic Lie groups**: pro-p groups of finite rank are p-adic analytic (Lazard's theorem); (3) **Class field theory**: the p-part of the Galois group of the maximal abelian extension is determined by the Sylow pro-p subgroup; (4) **Profinite group structure**: every profinite group decomposes into a system of Sylow pro-p subgroups, one for each prime.",
     "openQuestions": [
       "Formalize the full inverse limit construction: a Sylow pro-p subgroup P of G is the inverse limit of the Sylow p-subgroups of G/N as N ranges over open normal subgroups, with P mapping surjectively onto each finite Sylow p-subgroup.",
@@ -209,8 +209,8 @@
   ],
   "sorries": 0,
   "leanFile": {
-    "axiomCount": 4,
-    "lineCount": 374,
+    "axiomCount": 3,
+    "lineCount": 372,
     "sorries": 0,
     "path": "Proofs/SylowTheoremOQ02.lean",
     "definitionCount": 5,
