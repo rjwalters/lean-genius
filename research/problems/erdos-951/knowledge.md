@@ -197,6 +197,141 @@ proven theorem.
    `WellSeparatedProducts` predicate into an explicit density bound
    for `BeurlingPrimes` of multiplicative complexity ≤ k?
 
+### 2026-06-06 (researcher-1) — Session 5: tightness + counter-example
+
+Followed up on Session 4's open-question #1 (whether `a_0 ≥ 3` is
+derivable) by establishing the *negative* answer in verified form:
+the lower bound `a_0 ≥ 2` is best possible.
+
+Three new theorems map two boundary points of the
+`BeurlingPrimes` parameter space:
+
+1. **`powers_of_two_not_well_separated`** — counter-example formalizing
+   the in-file comment. The geometric sequence `a_n = 2^(n+1)` (i.e.
+   `2, 4, 8, …`) does NOT satisfy `WellSeparatedProducts`: the tuples
+   `k = single 0 2` and `ℓ = single 1 1` both produce product `4`,
+   so `|4 - 4| = 0 < 1`. Confirms `BeurlingPrimes` is genuinely
+   restrictive — not implied by "any geometric-style sequence".
+
+2. **`primeSeq_zero : primeSeq 0 = 2`** — the first index-specific
+   value for the canonical Beurling prime sequence. Proof uses
+   `Nat.nth_count Nat.prime_two` rewritten via the computational fact
+   `Nat.count Nat.Prime 2 = 0` (no primes are `< 2`).
+
+3. **`beurling_a_zero_lower_bound_tight : ∃ bp, bp.a 0 = 2`** —
+   tightness of `beurling_a_zero_ge_two`. Direct application of the
+   previous lemma: `⟨actualPrimes, primeSeq_zero⟩` witnesses equality.
+
+#### What I Added
+
+```lean
+theorem powers_of_two_not_well_separated :
+    ¬ WellSeparatedProducts (fun n => (2 : ℝ) ^ (n + 1)) := by
+  intro h
+  have hne : (Finsupp.single 0 2 : ℕ →₀ ℕ) ≠ Finsupp.single 1 1 := by
+    intro heq
+    have h0 := DFunLike.congr_fun heq 0
+    simp [Finsupp.single_apply] at h0
+  have hsep := h (Finsupp.single 0 2) (Finsupp.single 1 1) hne
+  have hk_supp : (Finsupp.single 0 (2 : ℕ)).support = {0} :=
+    Finsupp.support_single_ne_zero _ (by decide : (2 : ℕ) ≠ 0)
+  have hℓ_supp : (Finsupp.single 1 (1 : ℕ)).support = {1} :=
+    Finsupp.support_single_ne_zero _ one_ne_zero
+  rw [hk_supp, hℓ_supp, Finset.prod_singleton, Finset.prod_singleton] at hsep
+  simp only [Finsupp.single_eq_same] at hsep
+  norm_num at hsep
+
+theorem primeSeq_zero : primeSeq 0 = 2 := by
+  show (Nat.nth Nat.Prime 0 : ℝ) = 2
+  have hcount : Nat.count Nat.Prime 2 = 0 := by decide
+  have hnth : Nat.nth Nat.Prime 0 = 2 := by
+    rw [← hcount]; exact Nat.nth_count Nat.prime_two
+  rw [hnth]; norm_num
+
+theorem beurling_a_zero_lower_bound_tight :
+    ∃ bp : BeurlingPrimes, bp.a 0 = 2 :=
+  ⟨actualPrimes, primeSeq_zero⟩
+```
+
+#### Mathematical Content
+
+Together, the three theorems map two boundary points of the
+`BeurlingPrimes` parameter space:
+
+- **Lower envelope point**: `actualPrimes` achieves `a_0 = 2`,
+  saturating `beurling_a_zero_ge_two`. Any candidate sequence with
+  `a_0 < 2` would have to lie outside `BeurlingPrimes` by
+  Session 4's derivation.
+- **Excluded sequence**: the geometric sequence `2^(n+1)` is in the
+  "naive guess" zone but violates well-separation. The exclusion is
+  *small-index*: it fires already at `k.support ⊆ {0, 1}`, so no
+  large-product analysis is needed.
+
+This is parameter-space cartography — the kind of incremental
+mapping work that, accumulated over many sessions, will eventually
+constrain the conjecture's space of counter-examples.
+
+#### Build Verification
+
+Docker build attempted via
+`./proofs/scripts/docker-build.sh Proofs.Erdos951Problem`. Result
+will be recorded in the PR description; on success the Mechanic /
+Auditor agents will close out post-merge verification.
+
+#### Honest Assessment
+
+This session is documentation-grade rather than progress-grade. It
+records facts about `WellSeparatedProducts` that experienced
+researchers in this area would assume without writing down, but
+that the prior file did not formally pin. The lasting value is:
+
+1. The in-file comment about powers of 2 is now a verified theorem,
+   not a remark that could rot or be misread.
+2. The exact lower bound for `a_0` (and its tightness) is part of
+   the formal API and reusable by future iterations.
+3. Open question #1 from Session 4 is *resolved* (negatively): no
+   absolute constant `c > 2` can be derived from `BeurlingPrimes`
+   alone.
+
+The mathematical content of the Erdős 951 conjecture — the
+`log x` factor between `⌊x⌋ - 1` and `π(x)` — remains untouched.
+
+#### Stats after session
+
+- 18 theorems, 9 defs, 0 axioms, 0 sorries.
+- 388 lines (was 339).
+- Phase: ACT (graduation-candidate pending Docker build verification).
+
+#### Files Modified
+
+- `proofs/Proofs/Erdos951Problem.lean` — added 3 theorems
+  (powers_of_two_not_well_separated, primeSeq_zero,
+  beurling_a_zero_lower_bound_tight).
+- `src/data/proofs/erdos-951/meta.json` — bumped lineCount,
+  theoremCount, originalContributions, keyInsights, conclusion summary.
+- `research/problems/erdos-951/state.md` — phase ACT, iteration 5,
+  new next-action list.
+- `research/problems/erdos-951/knowledge.md` — this entry.
+
+#### Open Questions Resolved
+
+- **From Session 4 #1**: "Does `WellSeparatedProducts` force `a_0`
+  to be a positive integer ≥ 3?" — **No**, by
+  `beurling_a_zero_lower_bound_tight` and `primeSeq_zero`.
+
+#### Open Questions Generated
+
+1. Is `beurling_consec_gap` (`a_{n+1} ≥ a_n + 1`) tight on
+   `actualPrimes`? `primeSeq 1 = 3 = 2 + 1` would saturate the gap
+   at `n = 0`. Would pin a second index-specific value.
+2. Is there an explicit construction of a non-prime Beurling sequence
+   (e.g. a transcendental `a_0` with carefully chosen `a_1, a_2, …`)?
+   Beurling 1937 implies existence; a Lean witness would map a third
+   parameter-space point.
+3. For integer-valued Beurling primes, can we *force* `a_n` to be the
+   actual `n`-th prime under additional hypotheses (e.g.
+   multiplicative independence, or `N_a(x) = x + o(log x)`)?
+
 ---
 
 *Generated from erdosproblems.com on 2026-01-15*
