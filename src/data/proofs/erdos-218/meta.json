@@ -33,7 +33,7 @@
     "lineCount": 492,
     "assumptions": "3 axioms: erdos_218a (gap increasing density 1/2), erdos_218b (gap decreasing density 1/2), and the private auxiliary infinite_of_hasDensity_pos (a set with positive density is infinite — standard real-analysis fact, re-axiomatized due to Mathlib v4.26 API drift in `Filter.Tendsto.div` and decidability handling). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 30,
+    "theoremCount": 28,
     "definitionCount": 12
   },
   "overview": {
@@ -161,8 +161,9 @@
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Prime.Nth",
       "Mathlib.Data.Set.Finite.Basic",
-      "Mathlib.Order.Filter.AtTopBot",
+      "Mathlib.Order.Filter.AtTopBot.Basic",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Topology.Algebra.Order.LiminfLimsup",
       "Mathlib.Tactic"
@@ -175,7 +176,7 @@
     "namespace": "Erdos218",
     "lineCount": 492,
     "axiomCount": 3,
-    "theoremCount": 30,
+    "theoremCount": 28,
     "definitionCount": 12,
     "path": "Proofs/Erdos218Problem.lean",
     "sorries": 0
