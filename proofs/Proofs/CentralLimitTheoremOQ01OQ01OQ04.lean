@@ -273,6 +273,29 @@ theorem alpha_stable_is_operator_stable (α : ℝ) (hα : 0 < α) :
   push_cast
   field_simp
 
+/-- The 1D α-stable law embeds into ℝ^1 as `IsOperatorStable` (matrix-witness form).
+
+    Composes `alpha_stable_is_operator_stable` (scalar-exponent c = 1/α form)
+    with the diagonal matrix witness `A_n = n^{-1/α} • (1 : Matrix (Fin 1) (Fin 1) ℝ)`,
+    parallel to `gaussian_is_operator_stable` (the α = 2 / scalar-Gaussian case).
+    The sum collapses via `Matrix.smul_apply` + `Matrix.one_apply` + `Finset.sum_ite_eq`. -/
+theorem alpha_stable_is_operator_stable_matrix (α : ℝ) (hα : 0 < α) :
+    IsOperatorStable 1 (univariateEmbed (stableCharFun α)) := by
+  obtain ⟨b, hb⟩ := alpha_stable_is_operator_stable α hα
+  refine ⟨fun n => (n : ℝ) ^ (-(1 / α)) • (1 : Matrix (Fin 1) (Fin 1) ℝ), b, ?_⟩
+  intro n hn ξ
+  have h_arg :
+      (fun i => ∑ j, ((n : ℝ) ^ (-(1 / α)) •
+        (1 : Matrix (Fin 1) (Fin 1) ℝ)) i j * ξ j)
+        = (fun i => ξ i * (n : ℝ) ^ (-(1 / α))) := by
+    funext i
+    simp only [Matrix.smul_apply, Matrix.one_apply, smul_eq_mul,
+               mul_ite, mul_one, mul_zero, ite_mul, zero_mul,
+               Finset.sum_ite_eq, Finset.mem_univ, if_true]
+    ring
+  rw [h_arg]
+  exact hb n hn ξ
+
 -- ============================================================
 -- PART V: Structural Properties
 -- ============================================================
@@ -303,26 +326,39 @@ theorem const_one_is_operator_stable (d : ℕ) : IsOperatorStable d (fun _ => (1
 -- PART VI: Axiomatized Hard Results
 -- ============================================================
 
-/-- **AXIOM**: Hudson-Mason scalar exponent bound.
-    For a non-degenerate operator-stable law φ admitting a scalar exponent c
+/-- Hudson-Mason scalar exponent bound (vacuous form — broken hypothesis).
+    For a "non-degenerate" operator-stable law φ admitting a scalar exponent c
     (normalizations A_n = n^{-c}·I), we have c ≥ 1/2. This is the scalar
     specialization of the general eigenvalue bound (Hudson-Mason 1982).
 
-    Mathematical content: every eigenvalue λ of the exponent matrix satisfies
-    Re(λ) ≥ 1/2; for E = c·I, this collapses to c ≥ 1/2. We axiomatize the
-    scalar form directly because the general eigenvalue formulation requires
-    a complex-spectrum API (Matrix.eigenvalues was removed at Mathlib v4.26.0
-    in favor of the Hermitian-restricted IsHermitian.eigenvalues — for the
-    non-Hermitian exponent matrices of stable laws we'd need to base-change
-    to ℂ via charpoly.roots, which is mathlib-grade scaffolding outside this
-    file's scope).
+    Mathematical content (Hudson-Mason 1982): every eigenvalue λ of the
+    exponent matrix satisfies Re(λ) ≥ 1/2; for E = c·I, this collapses to
+    c ≥ 1/2. The general eigenvalue formulation requires a complex-spectrum
+    API (Matrix.eigenvalues was removed at Mathlib v4.26.0 in favor of the
+    Hermitian-restricted IsHermitian.eigenvalues — for the non-Hermitian
+    exponent matrices of stable laws we'd need to base-change to ℂ via
+    charpoly.roots, mathlib-grade scaffolding outside this file's scope).
+
+    **S14 ACT discharge note (2026-06-06):** the original `axiom` carried a
+    non-degeneracy hypothesis `hnd : ∀ v : Fin d → ℝ, (∀ i, v i = 0) → False`,
+    intended to mean "the underlying distribution is non-degenerate." That
+    statement is, however, *logically unsatisfiable* — instantiating at
+    `v = 0` gives `(∀ i, (0 : Fin d → ℝ) i = 0)` (immediate by `rfl`), so
+    `hnd` would entail `False`. Consequently the axiom is provable vacuously
+    by `exfalso` + applying `hnd` at the zero vector. We promote it to a
+    theorem to make the encoding bug visible: a future revision should
+    replace `hnd` with a genuine non-degeneracy hypothesis such as
+    `Nontrivial (Fin d → ℝ)` (equivalently `0 < d`) plus an actual support
+    condition, then re-axiomatize (or re-prove) the bound.
 
     Specialization at α-stable: c = 1/α ≥ 1/2 means α ≤ 2 — the classical
     constraint that stable laws have index ≤ 2. -/
-axiom scalar_exponent_ge_half (d : ℕ) (φ : (Fin d → ℝ) → ℂ) (c : ℝ)
-    (hSE : HasScalarExponent d φ c)
+theorem scalar_exponent_ge_half (d : ℕ) (φ : (Fin d → ℝ) → ℂ) (c : ℝ)
+    (_hSE : HasScalarExponent d φ c)
     (hnd : ∀ v : Fin d → ℝ, (∀ i, v i = 0) → False) :
-    1 / 2 ≤ c
+    1 / 2 ≤ c := by
+  exfalso
+  exact hnd (fun _ => 0) (fun _ => rfl)
 
 /-- **AXIOM**: Meerschaert-Scheffler Domain of Attraction Theorem.
     A probability distribution (given by char function φ) is in the operator domain

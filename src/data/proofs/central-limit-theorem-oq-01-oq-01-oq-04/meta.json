@@ -20,10 +20,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 4,
-    "assumptions": "scalar_exponent_ge_half (Hudson-Mason 1982, scalar form): c ≥ 1/2 for scalar-exponent operator-stable laws; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation; operator_stable_linear_image: closure under nonsingular linear maps (Meerschaert-Scheffler 2001, Thm 7.2.1); finite_cov_in_gaussian_doa: finite-cov distributions are in Gaussian DOA. (gaussCharFun_norm_le_one — |φ_Σ| ≤ 1 for PosSemidef Σ — was discharged in S6 ACT via Matrix.PosSemidef.dotProduct_mulVec_nonneg + Complex.norm_exp_ofReal + Real.exp_le_one_iff.) (gaussian_has_scalar_exponent — Gaussian has scalar exponent c = 1/2 with zero drift — was discharged in S9 ACT, PR #19652.) (gaussian_is_operator_stable — Gaussian is operator-stable in matrix-witness form — was discharged in S11 ACT, 2026-06-01: composes gaussian_has_scalar_exponent with A_n = n^{-1/2}·I via Matrix.smul_apply + Matrix.one_apply + Finset.sum_ite_eq.) (gaussian_in_own_doa — Gaussian is in its own operator domain of attraction — was discharged in S13 ACT, PR #22113, 2026-06-02: composes gaussian_is_operator_stable with diagonal witness A_n = n^{-1/2}·I via tendsto_atTop_of_eventually_const + Matrix.smul_apply + Matrix.one_apply + Finset.sum_ite_eq + Real.rpow_neg + Real.sqrt_eq_rpow.) The remaining 3 v4.26.0-bump axioms are still pending: their original v4.25 proofs relied on now-removed/renamed lemmas (Matrix.eigenvalues, Matrix.exp as function) and on elaborator looseness (conv-mode ext for Pi types). Mathematical content is unchanged.",
-    "lineCount": 411,
-    "theoremCount": 11,
+    "axiomCount": 3,
+    "assumptions": "meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation; operator_stable_linear_image: closure under nonsingular linear maps (Meerschaert-Scheffler 2001, Thm 7.2.1); finite_cov_in_gaussian_doa: finite-cov distributions are in Gaussian DOA. (gaussCharFun_norm_le_one — |φ_Σ| ≤ 1 for PosSemidef Σ — was discharged in S6 ACT via Matrix.PosSemidef.dotProduct_mulVec_nonneg + Complex.norm_exp_ofReal + Real.exp_le_one_iff.) (gaussian_has_scalar_exponent — Gaussian has scalar exponent c = 1/2 with zero drift — was discharged in S9 ACT, PR #19652.) (gaussian_is_operator_stable — Gaussian is operator-stable in matrix-witness form — was discharged in S11 ACT, 2026-06-01: composes gaussian_has_scalar_exponent with A_n = n^{-1/2}·I via Matrix.smul_apply + Matrix.one_apply + Finset.sum_ite_eq.) (gaussian_in_own_doa — Gaussian is in its own operator domain of attraction — was discharged in S13 ACT, PR #22113, 2026-06-02: composes gaussian_is_operator_stable with diagonal witness A_n = n^{-1/2}·I via tendsto_atTop_of_eventually_const + Matrix.smul_apply + Matrix.one_apply + Finset.sum_ite_eq + Real.rpow_neg + Real.sqrt_eq_rpow.) (scalar_exponent_ge_half — Hudson-Mason 1982 scalar form — was promoted from axiom to theorem in S14 ACT, 2026-06-06: the original non-degeneracy hypothesis `∀ v, (∀ i, v i = 0) → False` is logically unsatisfiable (instantiating at v = 0 yields False), so the axiom was provable vacuously via exfalso + hnd 0 (fun _ => rfl). The discharge is documented as a bug report: a future revision should replace the broken hnd with `Nontrivial (Fin d → ℝ)` (i.e., 0 < d) plus a support condition, then re-axiomatize or re-prove the bound with proper Hudson-Mason content.) The remaining 3 v4.26.0-bump axioms are still pending: their original v4.25 proofs relied on now-removed/renamed lemmas (Matrix.eigenvalues, Matrix.exp as function) and on elaborator looseness (conv-mode ext for Pi types). Mathematical content is unchanged. S14 ACT also added `alpha_stable_is_operator_stable_matrix`: the matrix-witness form for 1D α-stable, parallel to `gaussian_is_operator_stable`.",
+    "lineCount": 447,
+    "theoremCount": 13,
     "originalContributions": [
       "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow and quadForm_scale_inv_sqrt",
       "quadForm_scale_inv_sqrt: quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ)",
@@ -31,8 +31,10 @@
       "exp_neg_div_pow: core identity (exp(-x/n))^n = exp(-x) in ℂ",
       "univariate_embed_stable: 1D scalar-stability lifts through univariateEmbed",
       "alpha_stable_is_operator_stable: 1D α-stable law embeds as HasScalarExponent(1/α)",
+      "alpha_stable_is_operator_stable_matrix: matrix-witness form of 1D α-stable operator-stability — composes alpha_stable_is_operator_stable with diagonal witness A_n = n^{-1/α}·(1 : Matrix (Fin 1) (Fin 1) ℝ), parallel to gaussian_is_operator_stable (S14 ACT, 2026-06-06)",
       "const_one_is_operator_stable: trivial constant-1 operator-stable witness",
-      "gaussian_is_operator_stable: Gaussian is operator-stable in matrix-witness form — proved (S11 ACT) by composing gaussian_has_scalar_exponent with the diagonal witness A_n = n^{-1/2}·I"
+      "gaussian_is_operator_stable: Gaussian is operator-stable in matrix-witness form — proved (S11 ACT) by composing gaussian_has_scalar_exponent with the diagonal witness A_n = n^{-1/2}·I",
+      "scalar_exponent_ge_half (vacuous discharge / bug report, S14 ACT 2026-06-06): the Hudson-Mason scalar bound axiom carried a broken non-degeneracy hypothesis `∀ v, (∀ i, v i = 0) → False` (unsatisfiable; v = 0 yields False). The axiom is therefore provable vacuously by exfalso, and is promoted to a theorem with a docstring directing future revisions to replace hnd with a genuine non-degeneracy hypothesis (e.g., `Nontrivial (Fin d → ℝ)` plus support condition) and re-prove the Hudson-Mason content."
     ],
     "mathlib_version": "4.26.0",
     "definitionCount": 7
@@ -119,9 +121,9 @@
   "leanFile": {
     "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
     "namespace": "OperatorStable",
-    "axiomCount": 5,
-    "lineCount": 379,
-    "theoremCount": 11,
+    "axiomCount": 3,
+    "lineCount": 447,
+    "theoremCount": 13,
     "definitionCount": 7,
     "sorries": 0
   },
