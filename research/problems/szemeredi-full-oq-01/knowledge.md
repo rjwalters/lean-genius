@@ -403,3 +403,80 @@ L672 and L684. So they resolve for `CantorSpace`. No risk.
 - A `.loom/worktrees/*` isolation worktree's `proofs/.lake -> proofs/.lake`
   self-symlink is a real footgun for Lean work. Document in CLAUDE.md.
   S10 ACT must use the main checkout. (Filed as observation, not fix-here.)
+
+---
+
+## Session 2026-06-06 (Session 10) — Pin-Currency Re-Confirmation + Isolation Verification
+
+**Mode**: STATE-SYNC (claim via depth-first selector — researcher-1).
+**Outcome**: PROGRESS — confirms S9 audit is still current; documents that
+isolation-worktree blocker persists; no Lean changes.
+
+### What I Did
+
+1. **Re-confirmed the Mathlib pin has not moved** since S9:
+   - `proofs/lake-manifest.json` still pins `mathlib` to
+     `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`inputRev: v4.26.0`).
+   - Identical to S9's audited pin. The 5 lemma signatures S9 verified
+     (`tendsto_measure_of_null_frontier_of_tendsto'`, `IsClopen.frontier_eq`,
+     `le_of_tendsto_of_tendsto'`, `ENNReal.tendsto_nat_nhds_top`,
+     `ENNReal.tendsto_inv_nat_nhds_zero`) are therefore still at the exact
+     paths and revisions S9 documented. The proof template in
+     `state.md:122-172` remains API-sound.
+
+2. **Confirmed isolation-worktree obstruction persists**:
+   - `proofs/.lake` resolves to `/Users/rwalters/GitHub/lean-genius/proofs/.lake`
+     (the main repo's directory). However, `ls proofs/.lake/packages/`
+     returns `Too many levels of symbolic links` — the symlink chain is
+     circular at the package level (worktree's `.lake -> main's .lake`
+     where `main's .lake/packages/mathlib` itself contains symlinks that
+     loop back to the worktree).
+   - Lean tactic-level validation from this worktree is **infeasible**.
+     S9's recommendation to run S10 ACT from `/Users/rwalters/GitHub/lean-genius`
+     (the main checkout, not a `.loom/worktrees/*` isolation) remains
+     the only viable path.
+
+3. **Did NOT** edit `.lean` files (consistent with S9's guidance: adding
+   ~60 lines of tactic-level-unvalidated Lean would mask any later real
+   blocker). Did NOT edit `meta.json`, sibling slugs, or `lake-manifest`.
+
+### Key Findings (new since S9)
+
+- **Pin has not drifted** in the 48 hours between S9 (2026-06-04) and S10
+  (2026-06-06). Mechanic / Deployer activity in the surrounding period
+  (PRs #22534, #22535, #22536, #22556, #22557 in `git log --oneline`)
+  has not bumped Mathlib. The audit window remains valid.
+- **The isolation-worktree `.lake` symlink loop** is a structural property
+  of `.loom/worktrees/*` worktrees, not a transient state. Any further
+  doc-only iterations on this slug from `.loom/worktrees/*` will hit the
+  same wall. Pool-management implication: this slug should be removed
+  from the depth-first selector's claim rotation **until a main-checkout
+  ACT lands**. (Doing so is a Guide / Daemon decision, not researcher-1's;
+  filed as an observation.)
+
+### Files Modified (this S10)
+
+- `research/problems/szemeredi-full-oq-01/knowledge.md` (this entry)
+- `research/problems/szemeredi-full-oq-01/state.md` (S10 head + Iteration bump)
+
+### Next Steps (Unchanged from S9)
+
+1. **S11 ACT** (from main checkout `/Users/rwalters/GitHub/lean-genius`,
+   NOT a `.loom/worktrees/*` isolation):
+   - Verify `proofs/.lake/packages/mathlib` resolves cleanly.
+   - `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+     to confirm current main HEAD compiles.
+   - Paste the 40-line proof template from `state.md:132-171` at file
+     position `FurstenbergCorrespondenceOQ01.lean:779` (replacing `sorry`).
+   - Rebuild + ship S11 ACT PR.
+2. **S12 ACT**: `seqCompact_probabilityMeasure_cantor` (~150-200 lines).
+
+### Lesson
+
+- Researcher-pool depth-first selection without a "blocked-from-isolation"
+  signal causes repeated researcher claims on a slug that cannot make
+  Lean-level progress from isolation worktrees. Three sequential doc-only
+  iterations (S8, S9, S10) on the same slug is a signal the rotation
+  policy needs a new state for "ACT-ready but needs main-checkout".
+  Until that exists, isolation-worktree researchers should default to
+  passing on this slug class.
