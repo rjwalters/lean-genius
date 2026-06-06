@@ -4,8 +4,32 @@
 **Phase**: ACT (main file build-blocked; recipe library at S19 post-bridge state; the 3 stalled S17/S18/S20 PRs are **RESOLVED** as of 2026-05-19 — see S22 STATE-SYNC below)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 22
-**Last Update**: 2026-05-31T20:35Z (S22 STATE-SYNC, researcher-1) — substantive catch-up: the 7-day-stall narrative (S21 STATE-SYNC, 2026-05-16) is **OBSOLETE**. Re-verified via `gh pr view --json` at 2026-05-31T20:35Z: PR #17596 (S17 walkEdges' bridge) **MERGED** 2026-05-19T17:59:38Z (merge commit `2c54ea747c4`; but the **squash-merge diff is `knowledge.md`-only**, not the originally-described 96 LOC `walkEdges'` + `walkEdges'_hsteps_list` Recipe additions — likely dropped during conflict resolution); PR #17623 (S18 open-walk edge-balance corollaries) **CLOSED without merge** 2026-05-19T18:03:09Z; PR #17637 (S20 generic step-witness derivation lemmas) **CLOSED without merge** 2026-05-19T18:03:41Z. **Net effect on Recipe library**: zero Lean delta from the 3 PRs — Recipe.lean remains at S19 post-bridge state (`circuit_edge_balance_list'` shipped, but the `walkEdges'` definition + its `hsteps_list`/`hcov_list` bridges that feed it are still absent). State.md iteration 21 → 22; JSON synced.
+**Iteration**: 23
+**Last Update**: 2026-06-05T06:30Z (S23 STATE-SYNC, researcher-1) — T+5d steady from S22 (2026-05-31). Re-verified at S23-time: no commits on `proofs/Proofs/KonigsbergOQ01OQ02.lean` or `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` since S22; no new PRs on the slug. Recipe.lean unchanged at 761 LOC, 0 sorries, 0 axioms, 13 declarations (12 lemmas + 1 `end`); main file unchanged at 1202 LOC, 1 sorry at L1105 (`remove_circuit_balanced`), 2 axioms (`directed_eulerian_iff` / `directed_euler_path_iff` sufficiency). The S22 narrative remains valid; **Path B (orthogonal Recipe extension) is still the strictly cleaner next-action** vs. re-deriving the lost #17596 `walkEdges'` content. JSON iteration 22 → 23; lastUpdate refreshed. State.md S23 entry below; no Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits.
+
+**Last Update (prior)**: 2026-05-31T20:35Z (S22 STATE-SYNC, researcher-1) — substantive catch-up: the 7-day-stall narrative (S21 STATE-SYNC, 2026-05-16) is **OBSOLETE**. Re-verified via `gh pr view --json` at 2026-05-31T20:35Z: PR #17596 (S17 walkEdges' bridge) **MERGED** 2026-05-19T17:59:38Z (merge commit `2c54ea747c4`; but the **squash-merge diff is `knowledge.md`-only**, not the originally-described 96 LOC `walkEdges'` + `walkEdges'_hsteps_list` Recipe additions — likely dropped during conflict resolution); PR #17623 (S18 open-walk edge-balance corollaries) **CLOSED without merge** 2026-05-19T18:03:09Z; PR #17637 (S20 generic step-witness derivation lemmas) **CLOSED without merge** 2026-05-19T18:03:41Z. **Net effect on Recipe library**: zero Lean delta from the 3 PRs — Recipe.lean remains at S19 post-bridge state (`circuit_edge_balance_list'` shipped, but the `walkEdges'` definition + its `hsteps_list`/`hcov_list` bridges that feed it are still absent). State.md iteration 21 → 22; JSON synced.
+
+## S23 STATE-SYNC (researcher-1, 2026-06-05T06:30Z, doc-only, +5d steady)
+
+T+5d since S22 STATE-SYNC #21616 (researcher-1, 2026-05-31T20:35Z). Re-verification at S23-time:
+
+**Recipe.lean (`proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean`)** — verified at S23-time:
+- 761 LOC, 0 real sorries (one `sorry` token at L599 lives inside a Lean docstring `/-- ... -/` describing the use-site of `remove_balanced_subset_balanced'` in `remove_circuit_balanced`, not a tactic), 0 `axiom` declarations.
+- Contains 12 build-verified lemmas (S9–S19 deliverables): `getElem?_eq_some_iff_of_lt`, `closed_walk_balance'`, `open_walk_interior_balanced'`, `open_walk_last_target_excess'`, `open_walk_first_source_excess'`, `walk_source_eq_edge_filter'`, `walk_target_eq_edge_filter'`, `circuit_edge_balance'`, `toFinset_balance'`, `circuit_edge_balance_list'`, `remove_balanced_subset_balanced'`, `remove_balanced_subset_source_excess'`, `remove_balanced_subset_target_excess'`.
+- `grep -c "walkEdges'"` → 0: the S17 `walkEdges'` definition is **still absent** (consistent with the S22 finding that the #17596 squash-merge dropped the Lean content).
+
+**Main file (`proofs/Proofs/KonigsbergOQ01OQ02.lean`)** — verified at S23-time:
+- 1202 LOC, 1 real sorry at L1105 (`remove_circuit_balanced`), 2 `axiom` declarations at L327 (`directed_eulerian_iff`) and L342 (`directed_euler_path_iff`).
+- Build-blocking API drift from PR #16675 (Mathlib v4.26 upgrade) remains unresolved — still ~80 errors on pre-existing `walk.get ⟨i, by omega⟩` patterns inside `Finset.filter` lambdas (per S6 discovery, unchanged since 2026-05-08).
+
+**PR history check** — at S23-time, `gh pr list -R rjwalters/lean-genius --state all --search "konigsberg-oq-01-oq-02"` shows the most recent slug PR is #21616 (S22 STATE-SYNC, merged 2026-05-31T21:40:37Z). No konigsberg-oq-01-oq-02 PRs opened between 2026-05-31 and 2026-06-05. Recent konigsberg activity has been on sibling slug `konigsberg-oq-03-wip-01` (PRs #21877 S3, #22179 S4, #22229 S5) and a `konigsberg-oq-01` meta correction (#22096), all orthogonal to this slug.
+
+**Implication for next-action**: The S22 next-action set is unchanged. **Path B (orthogonal Recipe extension)** remains the strictly cleaner choice, since:
+1. Re-deriving the lost S17 `walkEdges'` content (Path A-redo) requires a full S17-style mechanical pass (~96 LOC of definitions + bridge lemmas) plus a Docker build, which exceeds typical agent-session budget.
+2. The Recipe library is already at a complete-for-its-current-scope state — the 12 shipped lemmas suffice for the consumer obligations of `remove_circuit_balanced` if `walkEdges'` were re-derived, and they already cover the open-trail post-bridge use sites independently of `walkEdges'`.
+3. Path B candidates that do NOT depend on `walkEdges'`: (i) a Finset-arithmetic helper consuming the merged S19 `remove_balanced_subset_source_excess'` / `remove_balanced_subset_target_excess'` lemmas (e.g., a packaged corollary mirroring `circuit_edge_balance_list'` for the open-path case); (ii) a re-derivation of S17 `walkEdges'` + `walkEdges'_hsteps_list` as a fresh PR — but this is structurally Path A-redo, not orthogonal Path B.
+
+**S23 is purely STATE-SYNC** (doc-only). No Lean / Recipe / problem.md / knowledge.md / sibling-slug / lake-manifest edits.
 
 ## S22 STATE-SYNC (researcher-1, 2026-05-31T20:35Z, doc-only, substantive narrative correction)
 
