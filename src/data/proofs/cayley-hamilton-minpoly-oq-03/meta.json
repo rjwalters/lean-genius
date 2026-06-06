@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Minimal_polynomial_(linear_algebra)#Computation",
     "date": "2026",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
     "tags": [
       "linear-algebra",
@@ -78,9 +78,9 @@
         "relationship": "General K-algebra minimal polynomial reduction; provides algebraic foundation"
       }
     ],
-    "axiomCount": 0,
+    "axiomCount": 3,
     "lineCount": 368,
-    "assumptions": "No sorries, no axioms. All 12 theorems fully proved.",
+    "assumptions": "Main proof file (CayleyHamiltonMinpolyOQ03.lean): 0 sorries, 0 axioms — all 12 Krylov theorems fully proved (O(n³) bound). Companion file CayleyHamiltonMinpolyOQ03OQ02.lean adds 3 axioms (`omegaMM`, `omegaMM_two_le`, `omegaMM_lt_three`) declaring the matrix-multiplication exponent ω with its known bounds 2 ≤ ω < 3 (Strassen 1969), as a Layer 3 placeholder for the sibling Keller-Gehrig O(n^ω) question (cayley-hamilton-minpoly-oq-03-oq-02). The Krylov O(n³) result of this entry is unaffected.",
     "mathlib_version": "4.26.0",
     "theoremCount": 13,
     "definitionCount": 1,
@@ -100,12 +100,12 @@
       "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean",
       {
         "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean",
-        "lineCount": 230,
-        "theorems": 9,
+        "lineCount": 333,
+        "theorems": 11,
         "definitions": 2,
-        "axioms": 0,
+        "axioms": 3,
         "sorries": 0,
-        "description": "Companion file for the sibling open question cayley-hamilton-minpoly-oq-03-oq-02 (Keller-Gehrig O(n^ω) characteristic polynomial). Formalizes Layers 1 + 2 of the three-layer decomposition: structural squared-Krylov sequence T_k := M^(2^k) via repeated squaring with bridge T_k = M^(2^k); correctness bridge M^j = ∏_{i ∈ bitIndices j} T_i via Mathlib's Nat.twoPowSum_bitIndices; vector-level corollaries (squareKrylovProd_mulVec, krylov_in_squareKrylov_range). Layer 3 (complexity) out of scope — Mathlib has no complexity monad and no fast matmul. Namespace MinpolyComplexity.SubcubicKrylov."
+        "description": "Companion file for the sibling open question cayley-hamilton-minpoly-oq-03-oq-02 (Keller-Gehrig O(n^ω) characteristic polynomial). Formalizes Layers 1 + 2 of the three-layer decomposition: structural squared-Krylov sequence T_k := M^(2^k) via repeated squaring with bridge T_k = M^(2^k); correctness bridge M^j = ∏_{i ∈ bitIndices j} T_i via Mathlib's Nat.twoPowSum_bitIndices; vector-level corollaries (squareKrylovProd_mulVec, krylov_in_squareKrylov_range); Layer 2.5 matrix-multiplication factor-count bound (popcount(j) ≤ j); and Layer 3 axiomatized ω placeholder with three axioms (`omegaMM : ℝ`, `omegaMM_two_le : 2 ≤ ω`, `omegaMM_lt_three : ω < 3`) — Mathlib has no complexity monad and no fast matmul, so the O(n^ω) operation count remains deferred. Namespace MinpolyComplexity.SubcubicKrylov."
       }
     ]
   },
