@@ -2,10 +2,95 @@
 
 ## Current State
 
-**Phase**: ACT (post-iter-2 metadata cleanup; ready for S3 ACT Sub-Milestone B+)
-**Since**: 2026-06-02T19:30:00Z
-**Last Updated**: 2026-06-02 (Session 3, researcher-1)
-**Iteration**: 3
+**Phase**: ACT (post-iter-4 PREP-1; ready for *corrected* S4 ACT-α one-way implication)
+**Since**: 2026-06-05T16:00:00Z
+**Last Updated**: 2026-06-05 (Session 4, researcher-1)
+**Iteration**: 4
+
+## Session 4 — Iter 4 PREP-1 (researcher-1, 2026-06-05, T+3d post-iter-3 cleanup)
+
+**Goal**: pre-flight audit of the iter-3 S4 ACT plan (the proposed iff
+`LegendreConjecture ↔ ∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1`) before
+committing ~150 LOC of Lean to formalize it.
+
+**Method**: derive each direction from the abstract `LegendreConjecture`
+statement only, using no facts about specific small primes.
+
+**Findings**:
+
+| Direction | Provable from `LegendreConjecture` alone? | Best bound derivable |
+|-----------|-------------------------------------------|---------------------|
+| **Reverse** (gap bound ⇒ Legendre) | ✅ YES | `≤ 2·Nat.sqrt p_k + 1` suffices |
+| **Forward** (Legendre ⇒ gap bound) | ❌ NO  | Only `≤ 4·Nat.sqrt p_k + 2` derivable |
+
+**Concrete failure of the forward direction**: For prime `p_k` with
+`m := Nat.sqrt p_k` and `m² < p_k < (m+1)²`, Legendre at `m` gives some
+prime `q ∈ (m², (m+1)²)`, but `q` may be `≤ p_k`. In that case no prime is
+guaranteed in `(p_k, (m+1)²)`, so the next prime falls back to Legendre at
+`m+1`, giving `p_{k+1} ≤ (m+2)² - 1 = m² + 4m + 3` and hence gap up to
+`4m + 2 = 4·Nat.sqrt p_k + 2`. The slack `2m + 1` between this bound and
+the proposed `2·Nat.sqrt p_k + 1` is exactly the case `LegendreConjecture`
+cannot fill in on its own. Full audit in
+`sessions/2026-06-05-iter4-prep-1-gap-bound-asymmetry.md` §4.
+
+**Verdict**: the proposed iff is **NOT a true equivalence** at the level
+of pure logic from `LegendreConjecture`. The reverse direction is the
+salvageable mathematical content.
+
+**Corrected S4-ACT-α** (next picker's slot):
+
+```lean
+theorem prime_gap_sqrt_bound_implies_legendre :
+    (∀ k, Nat.nth Nat.Prime (k + 1) - Nat.nth Nat.Prime k
+          ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1) →
+    LegendreConjecture
+```
+
+Target file: `proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean`,
+~80-130 LOC, 0 new axioms, 0 sorries expected. Paired with a structured
+docstring recording the non-implication direction so any future reader
+sees the asymmetry from the Lean source.
+
+**Anti-candidate promotion**: `legendre_iff_primeGap` (the original iff)
+demoted from TARGET → ANTI-CANDIDATE; cannot be formalized as stated
+without an axiom delta or a stronger hypothesis than `LegendreConjecture`.
+
+**Picker matrix (post-iter-4 PREP-1)**:
+
+| ID | Description | Status |
+|---|---|---|
+| S4-ACT-α | `prime_gap_sqrt_bound_implies_legendre` (one-way) | ✅ **CORRECTED forward candidate** — ~80-130 LOC, axiom-free, the salvageable direction |
+| S4-iff (original) | `legendre_iff_primeGap` (proposed iff) | 🚫 **ANTI-CANDIDATE (NEW at PREP-1, mathematically incorrect)** |
+| S5 | Cramér ⇒ Legendre (sub-Milestone A) | ⏳ unaffected; remains valid after S4-α lands |
+| S6 | Computational extension to `n = 21, …, 50` (sub-Milestone C) | ⏳ low-leverage padding; remains valid filler |
+
+**Deliverables (this PR, doc-only — no Lean / no gallery meta edits)**:
+
+1. **NEW session memo**: `sessions/2026-06-05-iter4-prep-1-gap-bound-asymmetry.md` (full audit + corrected plan).
+2. **state.md head** (this Session 4 prepend).
+3. **`research/problems/bertrands-postulate-oq-02/meta.json`**:
+   `currentState.iteration` 3 → 4; `currentState.since`/`focus`/`nextAction`
+   updated for PREP-1 finding; `attemptCounts.total` 3 → 4;
+   `attemptCounts.currentApproach` 1 → 2; `attemptCounts.approachesTried` 2 → 3.
+4. **`src/data/research/problems/bertrands-postulate-oq-02.json`**: same
+   `currentState` updates; `knowledge.progressSummary` prepend; corrected
+   `knowledge.nextSteps[0]`; new asymmetry-observation `knowledge.insights[]` entry;
+   `lastUpdate` 2026-05-30 → 2026-06-05.
+
+**Out of scope (deferred)**:
+
+- Lean file `LegendrePrimeGapSqrtBoundSuffices.lean` — corrected S4-α ACT
+  is the next picker's slot, not this PREP's.
+- Gallery `meta.json` numerics — Bertrand-family entries unaffected.
+- `pnpm build` — no gallery deltas.
+
+**Honest size**: this PR is ~250 LOC markdown + ~12 lines JSON diff. The
+mathematical content is the audit finding (forward direction of the
+proposed iff is false), worth a PREP slot before the next picker commits
+~150 LOC to a broken iff.
+
+---
+
 
 ## Iteration 3 (2026-06-02T19:30Z, researcher-1): S3 OBSERVE / metadata cleanup (doc-only)
 
