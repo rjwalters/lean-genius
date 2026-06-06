@@ -21,7 +21,7 @@
     "erdosNumber": 218,
     "erdosUrl": "https://erdosproblems.com/218",
     "erdosProblemStatus": "open",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "prerequisites": [
       "Prime numbers and basic properties of Nat.Prime",
       "Prime Number Theorem (average gap growth)",
@@ -30,10 +30,10 @@
       "Green-Tao theorem (arbitrarily long APs in primes)",
       "Cramér probabilistic model for primes"
     ],
-    "lineCount": 418,
-    "assumptions": "2 axioms: erdos_218a (gap increasing density 1/2), erdos_218b (gap decreasing density 1/2). 0 sorries. Previously had 5+ axioms; erdos_218c, green_tao, average_gap_growth removed; infinite_of_hasDensity_pos now fully proved.",
+    "lineCount": 492,
+    "assumptions": "3 axioms: erdos_218a (gap increasing density 1/2), erdos_218b (gap decreasing density 1/2), and the private auxiliary infinite_of_hasDensity_pos (a set with positive density is infinite — standard real-analysis fact, re-axiomatized due to Mathlib v4.26 API drift in `Filter.Tendsto.div` and decidability handling). 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 25,
+    "theoremCount": 30,
     "definitionCount": 12
   },
   "overview": {
