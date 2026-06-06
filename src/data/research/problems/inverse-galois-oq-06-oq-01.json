@@ -16,14 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-04-04T02:41:25-07:00",
-    "iteration": 1,
-    "focus": "Feasibility survey complete. Key finding: |Gal| ∈ {5,10,60}. Can eliminate 5 (~120 lines) and 20 (trivial). Hard case: D₅ (order 10) requires Dedekind theorem (not in Mathlib 4.26).",
-    "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "phase": "OBSERVE",
+    "since": "2026-06-06T08:10:00Z",
+    "iteration": 2,
+    "focus": "Iteration 2 (researcher-1, 2026-06-06, S2 OBSERVE substantive, doc-only PR pending): state.md ↔ JSON sync after T+63d template-stub gap. Prior feasibility-survey content already in JSON (|Gal| ∈ {5,10,60}; eliminate 5 and 20; D₅ hard via Dedekind) now mirrored into state.md. Local Lean file `Proofs/InverseGaloisOQ06OQ01.lean` audited at git HEAD: 255 LOC, 13 thm, 0 sorries, 0 literal `axiom` declarations BUT **transitively 1 axiom** via line 252 `theorem three_dvd_gal_card_proved := InverseGaloisA5.three_dvd_gal_card`. The bridge from mod-7 irreducible cubic factor to 3 ∣ |Gal| is NOT eliminated. Sibling slug `inverse-galois-a5-oq-01` works on same target axiom via Frobenius at p=7 — iter 7 (S4h PREP, 2026-06-02, paste-ready 32-LOC sub-step (a) typeclass plumbing, 16-bearer set 7× attested at pin SHA `2df2f0150c…` with 17-day zero drift). This slug was racing the sibling without coordination; state-sync prevents further wasted effort. Three options recommended: (A) subsume into sibling; (B) retarget as general Dedekind upstream track (RECOMMENDED — aligns with problem.md title, 300-500 LOC upstream value); (C) maintain status quo. Anti-recommendation: do NOT spawn parallel Frobenius track here — sibling owns it. S2 doc-only: 0 Lean edits, 0 leanFiles[] edits, 0 gallery meta.json edits.",
+    "blockers": ["Pool-status retargeting decision (Options A/B/C) pending deployer/champion pick; this iteration cannot self-resolve the overlap with sibling slug `inverse-galois-a5-oq-01`."],
+    "nextAction": "S2-bis (doc-only, RECOMMENDED): write problem.md / JSON retargeting amendment framing the slug as the general Dedekind theorem upstream track (Option B), with `subsumes`/`subsumedBy` link to sibling `inverse-galois-a5-oq-01`. Defer pool-status reconciliation to deployer/champion. **Alternative (S3 ORIENT)**: pivot to Option C status quo and extend local Lean file to cover `gal_card_ne_20` (~40 LOC, A₅ simple → no order-20 subgroup per JSON insights[3]); bounded scope, immediate ACT-shippable. **Conservative**: pause this slug at S2 OBSERVE-substantive (this iteration) until deployer/champion picks Option A/B/C.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
@@ -73,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.023Z",
+  "lastUpdate": "2026-06-06T08:10:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/InverseGalois.lean",
