@@ -66,7 +66,9 @@
       "Collision pairs both contribute `s³` to the sum (since they share side length `s`), so `2s³ ≤ ∑ side³ = 1`. This bound `s ≤ 2^{-1/3} ≈ 0.7937` is sharper than `s ≤ 1` and is the first quantitative consequence of combining OQ-01's existence theorem with the volumetric constraint",
       "The strict inequality `cube_volume_lt_one_of_card_ge_two` reveals a pigeonhole structure: if any cube were to fully saturate the volume budget (side = 1), all other cubes would need to vanish, contradicting the positivity axiom `c.side > 0`",
       "`volume_constraint_satisfiable` exhibits a non-vacuous witness (one unit cube), confirming the type `VolumeDissection` is inhabited — but this trivial witness does NOT meet the `card ≥ 2` hypothesis of the strict-bound theorems, illustrating that the deeper results apply only to genuine multi-cube tilings",
-      "All proofs are fully formal with 0 axioms and 0 sorries beyond the Mathlib core and the inherited `CubeDissection` field axioms — no new geometric assumptions are introduced by the enrichment"
+      "All proofs are fully formal with 0 axioms and 0 sorries beyond the Mathlib core and the inherited `CubeDissection` field axioms — no new geometric assumptions are introduced by the enrichment",
+      "**2D vs 3D dichotomy**: Duijvestijn's 1978 simple perfect squared square of order 21 (side 112, sub-squares of distinct sizes 2, 4, 6, 7, 8, 9, 11, 15, 16, 17, 18, 19, 22, 23, 24, 25, 27, 29, 33, 35, 50) shows the 2D analog of this question has **positive answers**. The 3D case is **impossible** (Wiedijk #82); the same volume constraint $\\sum s_i^k = 1$ exists in both dimensions (with $k = 2$ in 2D, $k = 3$ in 3D), so volume alone *cannot* be the obstruction — the impossibility relies on a topological/combinatorial argument (smallest top-face cube + minimal-cube-on-top-of-it descent) that exploits 3D-specific structure. This entry's `VolumeDissection` thus captures the *necessary but insufficient* portion of the geometric data; the gallery's `dissection-of-cubes-oq-03` makes the 2D-vs-3D contrast explicit.",
+      "**Dehn-invariant alternative**: Hilbert's Third Problem (Dehn 1900, on Hilbert's 1900 list) showed that a regular tetrahedron and a cube of equal volume are **not** scissors-congruent — *even though the volume constraint is satisfied*, the Dehn invariant $\\sum \\ell_i \\otimes \\alpha_i \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$ provides a second necessary condition. The cube has $\\delta(\\text{cube}) = 0$ (all dihedral angles $\\pi/2$, rational), so any cube dissection must also have total Dehn invariant $0$ — automatically satisfied since the sub-cubes share the cube's zero invariant. The Dehn invariant is therefore *vacuous* for the cube-into-cubes problem, leaving volume + topology as the only available structural constraints. Gallery siblings `dissection-of-cubes-oq-02` and `dissection-of-cubes-oq-04` formalize the Dehn-invariant machinery for the orthogonal (mixed-shape) dissection question."
     ],
     "prerequisites": [
       "Geometry (axis-aligned cubes, volume = side³)",
@@ -89,28 +91,32 @@
       "title": "Volume Sum Definition and Basics",
       "startLine": 54,
       "endLine": 85,
-      "summary": "Defines volumeSum as ∑ c.side³ and VolumeDissection structure. Proves nonneg, singleton, and insert lemmas."
+      "summary": "Defines volumeSum as ∑ c.side³ and VolumeDissection structure. Proves nonneg, singleton, and insert lemmas.",
+      "mathContext": "$\\text{volumeSum}(S) = \\sum_{c \\in S} c.\\text{side}^3$ for $S : \\text{Finset Cube}$. **VolumeDissection** extends CubeDissection with the field `volume_constraint : volumeSum dissection.cubes = 1`. Basic identities: $\\text{volumeSum}(\\emptyset) = 0$, $\\text{volumeSum}(\\{c\\}) = c.\\text{side}^3$, $\\text{volumeSum}(S \\cup \\{c\\}) = \\text{volumeSum}(S) + c.\\text{side}^3$ when $c \\notin S$ (the latter via `Finset.sum_insert`, which requires the `DecidableEq Cube` instance installed in the module header)."
     },
     {
       "id": "volume-bounds",
       "title": "Volume Bounds",
       "startLine": 86,
       "endLine": 158,
-      "summary": "cube_volume_le_one, cube_side_le_one, volumeSum_pos, cube_volume_lt_one_of_card_ge_two."
+      "summary": "cube_volume_le_one, cube_side_le_one, volumeSum_pos, cube_volume_lt_one_of_card_ge_two.",
+      "mathContext": "From $\\sum_{c \\in \\text{cubes}} c.\\text{side}^3 = 1$ and each term $c.\\text{side}^3 \\geq 0$: every term satisfies $c.\\text{side}^3 \\leq 1$ (`Finset.single_le_sum`). The cubic-to-linear step $c.\\text{side}^3 \\leq 1 \\Rightarrow c.\\text{side} \\leq 1$ requires monotonicity of $x \\mapsto x^3$ on $[0, \\infty)$ — discharged by `nlinarith` with the polynomial witness `sq_nonneg (c.side - 1)`. The strict bound when $|\\text{cubes}| \\geq 2$: if one cube has $\\text{side} = 1$, its contribution alone is $1$, forcing all other cubes to have $\\text{side}^3 = 0$ — but every cube has $\\text{side} > 0$, contradiction. The positivity $\\text{volumeSum} > 0$ for nonempty dissections then follows from any one cube contributing strictly positively."
     },
     {
       "id": "collision-structure",
       "title": "Collision Structure",
       "startLine": 159,
       "endLine": 199,
-      "summary": "Bridges to OQ-01: volume_dissection_has_collision, collision_volume_bound (2s³ ≤ 1), collision_side_le_half_cbrt."
+      "summary": "Bridges to OQ-01: volume_dissection_has_collision, collision_volume_bound (2s³ ≤ 1), collision_side_le_half_cbrt.",
+      "mathContext": "OQ-01's `every_dissection_has_collision` lifts to VolumeDissection by forwarding the underlying CubeDissection. For a collision pair $(c_1, c_2)$ with $c_1.\\text{side} = c_2.\\text{side} = s$: both contribute $s^3$ to the volume sum, so $2s^3 \\leq \\sum c.\\text{side}^3 = 1$, giving $s^3 \\leq 1/2$ and $s \\leq 2^{-1/3} \\approx 0.7937$. This is the **first metric refinement** of OQ-01's existence statement — the bound $s \\leq 1$ from volume alone is loose, but combining with the collision condition sharpens to $s \\leq 2^{-1/3}$. The full Wiedijk #82 contradiction would require iterating this sharpening across the infinite descent: each collision pair forces the dissection's minimum cube to have side $\\leq$ some shrinking bound."
     },
     {
       "id": "decomposition",
       "title": "Min Cubes and Volume Decomposition",
       "startLine": 200,
       "endLine": 256,
-      "summary": "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable."
+      "summary": "min_cubes_for_collision, volumeSum_union, volumeSum_eq, volume_constraint_satisfiable.",
+      "mathContext": "Structural decomposition: for $S, T$ disjoint Finsets, $\\text{volumeSum}(S \\cup T) = \\text{volumeSum}(S) + \\text{volumeSum}(T)$ (`Finset.sum_union`). This *partition principle* will eventually enable Bouwkamp-code-style face-aligned block decompositions for the infinite descent. The minimum-cube-count consequence: any collision pair requires $\\geq 2$ cubes (obvious), so dissections of size 1 are collision-free — consistent with the trivial witness `volume_constraint_satisfiable` (one unit cube of side 1, no collision possible since collisions are between *distinct* cubes). The Lean witness for satisfiability: `⟨{⟨⟨0,0,0⟩, 1, by norm_num⟩}, singleton_disjoint, contained_in_unit, covers_trivial, by simp [volumeSum]⟩`."
     }
   ],
   "conclusion": {
@@ -158,22 +164,56 @@
       "targetId": "dissection-of-cubes-oq-01-oq-01",
       "relationship": "sibling",
       "description": "OQ-01-OQ-01 shows HasMinimalCollision is achievable; OQ-01-OQ-03 adds the volume constraint to the structure"
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02",
+      "relationship": "complementary-approach",
+      "description": "3D Shape Dissection: Dehn Invariant and Hilbert's Third Problem — formalizes the *orthogonal* obstruction to the cube-dissection question: Dehn's 1900 scissor-congruence invariant $\\delta = \\sum \\ell_i \\otimes \\alpha_i \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$. For the cube-into-cubes question this entry addresses, Dehn is **vacuous** (every cube has $\\delta = 0$, so any sub-cube dissection automatically respects the invariant), leaving volume (this entry's `VolumeDissection`) and topology as the only available structural constraints. The Dehn machinery becomes essential when the dissecting pieces are allowed to be non-cubes — making `dissection-of-cubes-oq-02` the *mixed-shape* dissection theory complementing this *cube-only* volume theory."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-03",
+      "relationship": "extension",
+      "description": "Cube Dissection and Packing: Connections to Impossibility — formalizes the 2D-vs-3D dimensional contrast cited in this file's new keyInsight: Duijvestijn's 1978 simple perfect squared square (order 21) shows 2D admits perfect distinct-cube dissections, while Wiedijk #82 establishes the 3D impossibility. The 17-theorem packing-bridge in OQ-03 (impossible dissection ⟹ no perfect distinct-size packing) is the *quantitative companion* to this entry's `VolumeDissection`: where `VolumeDissection` enforces the necessary $\\sum s^3 = 1$ algebraic constraint, OQ-03 enforces the disjoint-containment geometric constraint without full coverage. Together, the two refine `CubeDissection`'s placeholder `covers_unit_cube : True` along the volumetric and topological axes respectively."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-04",
+      "relationship": "complementary-approach",
+      "description": "Dehn Invariants for Platonic Solids: Cube Isolation — proves the cube is the **unique** Platonic solid with zero Dehn invariant (the tetrahedron's $\\delta = \\arccos(1/3)/\\pi$ is irrational by Niven 1933; the dodecahedron's $\\arccos(1/\\sqrt{5})/\\pi$ and the icosahedron's $\\arccos(-\\sqrt{5}/3)/\\pi$ are irrational by Chebyshev-integer-sequence arguments proved in OQ-04). Connects to this entry's `VolumeDissection` via complementary necessary conditions: cube dissections automatically satisfy *both* the volume constraint (this entry) and the Dehn-invariant constraint (vacuously, since cube $\\delta = 0$), so any actual impossibility proof must use *topological* structure beyond both algebraic invariants — emphasizing why the descent argument in Wiedijk #82 is genuinely geometric, not algebraic."
+    },
+    {
+      "targetId": "dissection-of-cubes-oq-02-oq-02",
+      "relationship": "sibling-development",
+      "description": "Sub-development of the Dehn-invariant track (oq-02 line) — provides further refinements of the scissor-congruence framework. The OQ-02 line and this entry's OQ-01-OQ-03 sub-tree pursue complementary refinements of the base CubeDissection structure: OQ-02 along the Dehn-invariant axis (relevant for *mixed-shape* dissections), OQ-01-OQ-03 along the volumetric axis (this entry, relevant for *cube-only* dissections). The eventual goal is a combined `MeasureDissection` enforcing $\\mu([0,1]^3 \\setminus \\bigcup C_i) = 0$ — strictly stronger than this entry's $\\sum s^3 = 1$ and strictly stronger than OQ-02's Dehn-invariant equality."
     }
   ],
   "references": [
     {
-      "authors": "John Edensor Littlewood",
+      "authors": ["John Edensor Littlewood"],
       "title": "A Mathematician's Miscellany",
       "year": "1953",
-      "venue": "Methuen",
-      "note": "Infinite descent proof underlying Wiedijk #82; volume argument is implicit in the descent"
+      "venue": "Methuen, London",
+      "note": "**The canonical exposition of the cube-dissection impossibility argument (Wiedijk #82)**, included in Littlewood's collection of mathematical *jeux d'esprit* alongside the squared-square problem. Littlewood's argument is by **infinite descent**: in any candidate dissection of a unit cube into finitely many smaller cubes of distinct sizes, consider the top face $z = 1$. The cubes meeting this face dissect it into a 2D arrangement of squares, all of distinct sizes. The smallest such top-face square cannot lie on the boundary (it would be flanked by larger squares on at least two sides, forcing a contradiction), so it lies in the interior — and the cube sitting on top of this smallest square must itself be smaller than its neighbors, creating a new 'smallest cube' problem one layer down. Iterating produces an infinite descending sequence of strictly decreasing positive sides — contradicting well-foundedness on $\\mathbb{N}$ (or on the cardinality of the dissection). The argument is *purely combinatorial-topological*: the volume constraint $\\sum s^3 = 1$ formalized in this entry is a necessary condition that Littlewood's descent never directly invokes, demonstrating the gap this entry quantifies — `VolumeDissection` is one step closer to a faithful model, but the impossibility ultimately requires the geometric structure that the descent extracts. Modern reprint: J. E. Littlewood, *Littlewood's Miscellany*, ed. Béla Bollobás, CUP 1986 (combines *A Mathematician's Miscellany* with *Some Problems in Real and Complex Analysis*)."
     },
     {
-      "authors": "Freek Wiedijk",
+      "authors": ["Freek Wiedijk"],
       "title": "Formalizing 100 Theorems",
-      "year": "2008",
-      "venue": "http://www.cs.ru.nl/~freek/100/",
-      "note": "Theorem #82: the impossibility of perfect cube dissection, basis for the OQ chain"
+      "year": "2008–present",
+      "venue": "https://www.cs.ru.nl/~freek/100/",
+      "note": "**The canonical formalization tracker**, originally proposed in 1999 as the formal-mathematics analogue of Hilbert's 1900 problems. Theorem #82 — 'A cube cannot be cut into a finite number of distinct smaller cubes' — sits in the geometric/combinatorial tier alongside #59 (squared squares Wiedijk #59 cite), #19 (Brouwer fixed point), and #44 (Sperner's lemma). As of 2026, the cube dissection theorem #82 remains *unverified* in any major proof assistant (Coq, Lean, HOL Light, Mizar, Isabelle) — making the OQ-tree under `dissection-of-cubes` (this entry, sibling `dissection-of-cubes-oq-01` and `dissection-of-cubes-oq-01-oq-01`, and Dehn-invariant branches `oq-02`, `oq-04`) the gallery's tracked formalization push. The completion criterion in Wiedijk's spec is *not* merely a statement of the impossibility but a fully axiomatic derivation including the geometric covering condition $\\bigcup_i C_i = [0,1]^3$ — which this entry's `volume_constraint : volumeSum = 1` provides only a *necessary* coordinate of, leaving the topological-covering coordinate (analogous to Lebesgue's measure-zero complement condition) for future enrichments."
+    },
+    {
+      "authors": ["A. J. W. Duijvestijn"],
+      "title": "Simple perfect squared square of lowest order",
+      "year": "1978",
+      "venue": "Journal of Combinatorial Theory, Series B 25(2): 240-243",
+      "note": "**The 2D analog of the cube-dissection problem solved positively** — Duijvestijn (1978) constructed a *simple perfect squared square* of side 112, dissected into 21 sub-squares of pairwise distinct sizes: {2, 4, 6, 7, 8, 9, 11, 15, 16, 17, 18, 19, 22, 23, 24, 25, 27, 29, 33, 35, 50}. *Simple* means no sub-square is itself the union of a smaller squared sub-rectangle; *perfect* means all sub-square sides are distinct. The minimality (order 21) was proved by exhaustive computer search using the Bouwkamp code (1947) — an encoding of squared rectangles as Kirchhoff-style electrical networks via the Brooks-Smith-Stone-Tutte 1940 correspondence (squared rectangles ↔ planar 3-connected graphs with conductance-current assignment). The 2D positive result vs the 3D impossibility (Wiedijk #82) makes the *dimension* the decisive structural feature — the same volume constraint $\\sum s_i^d = 1$ holds in both dimensions, so volume alone *cannot* be the discriminator, as this entry's new keyInsight makes explicit. Bouwkamp code remains the gold-standard encoding for squared-rectangle enumeration; the analogous 'cube code' for $d \\geq 3$ is unresolved precisely because of the topological obstructions Littlewood's descent exploits."
+    },
+    {
+      "authors": ["M. Dehn"],
+      "title": "Über den Rauminhalt",
+      "year": "1901",
+      "venue": "Mathematische Annalen 55(3): 465-478",
+      "note": "**Dehn's solution to Hilbert's Third Problem** (Hilbert 1900, problem #3): the **Dehn invariant** $\\delta(P) = \\sum_e \\ell_e \\otimes \\alpha_e \\in \\mathbb{R} \\otimes_{\\mathbb{Q}} (\\mathbb{R}/\\pi\\mathbb{Q})$ — sum over edges $e$ of $P$, with $\\ell_e$ the edge length and $\\alpha_e$ the dihedral angle at $e$ — is a *scissors-congruence invariant*: $\\delta(P) = \\delta(Q)$ whenever $P$ and $Q$ are scissors-congruent (decomposable into pairwise-congruent pieces). Cube $\\delta = 0$ (all dihedral angles $\\pi/2$, rational); regular tetrahedron $\\delta = \\arccos(1/3)/\\pi$ which is *irrational* (Niven 1933), so cube and tetrahedron cannot be scissors-congruent even though they can have equal volume — settling Hilbert's question negatively in 8 months (the fastest resolution of any of Hilbert's 23 problems). **Relevance to this entry**: Dehn's invariant is *vacuous* for the cube-into-cubes question (every cube has $\\delta = 0$), so any dissection of a cube into cubes automatically respects the invariant, leaving volume (this entry's `VolumeDissection`) and topology as the only available constraints. Dehn becomes essential when the dissecting pieces are mixed-shape — gallery siblings `dissection-of-cubes-oq-02` and `dissection-of-cubes-oq-04` formalize this orthogonal direction. Modern treatment: J.-P. Serre, 'On Hilbert's Third Problem', *L'Enseignement Mathématique* 1996, and B. Jessen's complete invariant in the trivial scissors-congruence group $\\mathbb{R} \\oplus (\\mathbb{R} \\otimes_{\\mathbb{Q}} \\mathbb{R}/\\pi\\mathbb{Q})$."
     }
   ],
   "sorries": 0
