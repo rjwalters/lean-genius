@@ -447,8 +447,7 @@ on the space of centered distributions with variance 1.
 noncomputable def freeRenormalization (μ : NCDistribution) : NCDistribution :=
   dilate (1 / Real.sqrt 2) (freeConv μ μ)
 
-/-- The semicircle is a FIXED POINT of the free renormalization map:
-    T(w) = w. -/
+-- The semicircle is a FIXED POINT of the free renormalization map: T(w) = w.
 
 /-- Structural verification: the free cumulants are preserved under
     renormalization for the semicircle (κ₂ check). -/
@@ -608,13 +607,13 @@ def bernoulliNC : NCDistribution where
   moment := fun n => if n % 2 = 0 then 1 else 0
   moment_zero := by simp
 
-/-- Boolean cumulants: the simplest cumulant family.
-    For the Boolean CLT, the Boolean cumulants satisfy:
-    βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions.
-
-    Note: Boolean cumulants are not developed further in this file.
-    The CLTStructure framework above would accommodate a Boolean
-    CLT instance with bernoulliNC as the limit law. -/
+-- Boolean cumulants: the simplest cumulant family.
+-- For the Boolean CLT, the Boolean cumulants satisfy:
+-- βₙ(μ ⊎ ν) = βₙ(μ) + βₙ(ν) using interval partitions.
+--
+-- Note: Boolean cumulants are not developed further in this file.
+-- The CLTStructure framework above would accommodate a Boolean
+-- CLT instance with bernoulliNC as the limit law.
 
 /-- Summary: The answer to "How does the topological perspective extend?"
 
