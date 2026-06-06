@@ -129,12 +129,11 @@ axiom frattini_profinite
     (p : ℕ) (hp : Fact p.Prime) :
     ∀ g : G, ∃ (n : N) (m : G), m ∈ N.normalizer ∧ g = n * m
 
-/-- Sylow pro-p subgroups for distinct primes have trivial intersection. -/
-axiom sylowProP_inter_trivial
-    (hpf : IsProfiniteGroup G)
-    (p q : ℕ) (hp : Fact p.Prime) (hq : Fact q.Prime) (hpq : p ≠ q)
-    (P : SylowProP G p) (Q : SylowProP G q) :
-    P.toSubgroup ⊓ Q.toSubgroup = ⊥
+-- The former axiom `sylowProP_inter_trivial` (Sylow pro-p subgroups for
+-- distinct primes have trivial intersection) is now proved as
+-- `ProfiniteSylow.sylowProP_inter_trivial_via_quotient` in
+-- `Proofs.SylowTheoremOQ03B` and is no longer postulated here. Axiom
+-- count drops 4 → 3.
 
 end ProfiniteAxioms
 
@@ -369,6 +368,5 @@ Axiom count: 5, Sorry count: 0, Proved theorems: 10
 #check @sylowProP_normal_of_unique
 #check @frattini_profinite
 #check @finite_quotient_sylow_count
-#check @sylowProP_inter_trivial
 
 end ProfiniteSylow
