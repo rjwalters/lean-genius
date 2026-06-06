@@ -1,13 +1,90 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S29 ACT: shipped the paste-ready `exists_lebesgue_subcover_for_uhc` helper directly from S28 PREP §5; +60 LOC at `SchauderFixedPointOQ03OQ01.lean:716` between `exists_finite_subcover_for_uhc` and `exists_partition_subordinate_to_uhc_cover`; 0 sorries, 0 axioms added; 2 axioms unchanged. File 1419 → 1479 LOC / 17 → 18 theorems (under canonical regex). Build pending: same `9db9a3f1bb19` lake-build sibling container ~4h+; disk 24Gi GREEN; Mathlib pin SHA stable; no new imports.)
+**Phase**: PREP (S30 PREP: doc-only; documents a **two-scale construction** that **bypasses clustering entirely** by reframing the graph-form witness `(x', y')` so that `x' := i_outer(x)` comes from an *outer* cover at scale ε (selected via the S29 Lebesgue radius δ) while the convex-combination `f x` is built from an *inner* cover at scale `ε_in := min δ ε`. The construction uses **convexity of `F (i_outer x)`** (hypothesis `hF_convex (i_outer x)`) to average the *existential* per-`j` thickening witnesses `zsel j ∈ F (i_outer x)` (one per `j ∈ ρ.finsupport x`) into a single `y' ∈ F (i_outer x)` at distance `< ε` from `f x` — no `ysel`-clustering needed. The S28 PREP-identified clustering obstacle is rendered moot. 0 sorries, 0 axioms changed, 0 Lean edits.)
 **Path**: full
-**Since**: 2026-06-02
-**Iteration**: 29-ACT (S29 ACT follows S28 PREP from earlier this session; same researcher, same Mathlib pin, same INFRA snapshot; the S28 PREP picker matrix explicitly authorised this paste-ready single-helper ACT.)
-**Last Updated**: 2026-06-02
+**Since**: 2026-06-06
+**Iteration**: 30-PREP (S30 PREP follows S29 ACT PR #22117 MERGED 2026-06-02; same Mathlib pin, INFRA snapshot improved (host disk 28→34 Gi). The S28 PREP `Path tree (post-S29)` row "S30 (next)" binds this iteration.)
+**Last Updated**: 2026-06-06
 
-## Current Focus (S29 ACT, 2026-06-02, researcher-1)
+## Current Focus (S30 PREP, 2026-06-06, researcher-1)
+
+S30 PREP (researcher-1, 2026-06-06, this PR — doc-only): Reframe the
+output-side graph bound to bypass the S28-identified clustering wall.
+
+Write-up: `sessions/2026-06-06-s30-prep-two-scale-construction-bypassing-clustering.md`.
+
+**Core finding (§2 of the session note):** the graph form
+`IsGraphApproxSelection F f ε` does **not** require closing the
+clustering statement `∀ j ∈ ρ.finsupport x, dist (ysel j) (ysel i₀)
+< ε` that S26→S27→S28 reduced to. The graph form's freedom to choose
+`x' ≠ ρ.finsupport x` admits a two-scale witness:
+
+| Component | Source |
+|---|---|
+| Outer cover `U_out` + Lebesgue radius `δ` | S29 helper `exists_lebesgue_subcover_for_uhc` (file line 746) |
+| Outer per-`x` selector `i_outer x : ↥S` | `choose` on Lebesgue clause `∀ x, ∃ i, ball x δ ⊆ U_out i` |
+| Inner cover `U_in` + partition of unity `ρ` (scale `ε_in := min δ ε`) | S18d helper `exists_partition_subordinate_to_uhc_cover` (file line 812) |
+| `f x := Σ_j ρ j x • Subtype.val (ysel_in j)` | reuses S18a `convex_combination_of_partition_in_S` for `f x ∈ S` |
+| Per-`j` thickening witness `zsel j ∈ F (i_outer x)` | extracted from outer UHC clause once `j ∈ U_out (i_outer x)` is shown |
+| `z x := Σ_j ρ j x • Subtype.val (zsel j) ∈ F (i_outer x)` | reuses S18a applied to `Subtype.val '' F (i_outer x)` (convex by `hF_convex (i_outer x)`) |
+| `dist (f x) (z x) < ε` | `‖Σ_j ρ j x · (a_j − b_j)‖ ≤ Σ_j ρ j x · ‖a_j − b_j‖` with `‖a_j − b_j‖ < ε` and `Σ_j ρ j x = 1` |
+
+The graph witness is then `(i_outer x, z x)`: dist x (i_outer x) < ε
+(outer input-ball at scale ε), `z x ∈ F (i_outer x)`, dist (f x) (z x)
+< ε.
+
+**The key step (§2.3 Step 2) — why j ∈ U_out (i_outer x):**
+
+For each `j ∈ ρ.finsupport x`:
+1. `x ∈ Metric.ball x δ` (since `0 < δ`).
+2. By Lebesgue clause `Metric.ball x δ ⊆ U_out (i_outer x)`, so
+   `x ∈ U_out (i_outer x)`.
+3. By the S26 `finsupport_center_within_input_ball` chain (applied
+   at the *inner* scale `ε_in`), `dist x j < ε_in ≤ δ`, so `j ∈
+   Metric.ball x δ`.
+4. By Lebesgue clause again, `j ∈ U_out (i_outer x)`.
+5. Outer UHC thickening at scale ε: `F j ⊆ Metric.thickening ε
+   (F (i_outer x))`.
+6. Since `ysel_in j ∈ F j`, `ysel_in j ∈ Metric.thickening ε
+   (F (i_outer x))`; unfolding `Metric.thickening` yields the
+   existential `zsel j ∈ F (i_outer x)` with `dist (ysel_in j)
+   (zsel j) < ε`.
+
+This is the step the clustering line could not produce: it uses the
+*outer* UHC thickening (Step 5) rather than the inner, and the
+existential thickening witness (Step 6) rather than `ysel`-equality.
+
+**Helper inventory:** all helpers needed for the two-scale chain are
+already in the file (S18a, S18b, S18d, S26 `finsupport_*`, S29 — see
+§3 of the session note). The chain only requires one *new* helper for
+hygiene, `exists_per_j_thickening_witness`, which packages the
+`Classical.choose`-over-finset step from §2.3 Step 2(f) (~15 LOC).
+
+**Doc-only PR; no Lean / JSON / meta.json edits.** The S26 / S27 /
+S29 helpers survive into the two-scale chain unchanged: S26
+`finsupport_center_within_input_ball` is used in §2.3 Step 2(b),
+S26 `finsupport_nonempty` continues to certify the finsupport is
+nonempty, and S29 `exists_lebesgue_subcover_for_uhc` is the outer
+cover + Lebesgue invocation. None of the prior helpers are
+deprecated.
+
+**Sibling research files modified in this PR (2 files):**
+
+* `research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/sessions/2026-06-06-s30-prep-two-scale-construction-bypassing-clustering.md` — this S30 PREP write-up (new).
+* `research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/state.md` — this entry (S30 PREP `Current Focus` block prepended; S29 ACT block demoted to `Prior Focus`).
+
+**No edits** to: `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean`;
+`src/data/research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01.json`;
+`knowledge.md`; gallery `src/data/proofs/`; any sibling
+`SchauderFixedPoint*.lean` file.
+
+**Next Action (binds S31 ACT):** extract the
+`exists_per_j_thickening_witness` helper per §3 of the session note.
+Estimated +20 LOC, `theoremCount` 18 → 19, `lineCount` 1479 → ~1500,
+`axiomCount` unchanged at 2.
+
+## Prior Focus (S29 ACT, 2026-06-02, researcher-1)
 
 S29 ACT (researcher-1, 2026-06-02, this PR — Lean edit, +60 LOC including docstring): Land the paste-ready Lebesgue-helper from S28 PREP §5 verbatim. Insertion point line 716, immediately after `exists_finite_subcover_for_uhc` (S18c) ends at line 714 and before the S18d scaffold docstring at the new line 776.
 
@@ -88,7 +165,7 @@ Net: **8/8 GREEN, 0 AMBER, 0 RED**. The recent-BUILD-VERIFY criterion (GREEN her
 
 **No edits** to: `src/data/research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01.json` (mechanic territory; theoremCount drift noted, not fixed); the gallery `src/data/proofs/` (mechanic scope); other sibling `SchauderFixedPoint*.lean` files; `knowledge.md`.
 
-## Current Focus (S28 PREP, 2026-06-02, researcher-1)
+## Prior Focus (S28 PREP, 2026-06-02, researcher-1)
 
 S28 PREP (researcher-1, 2026-06-02, this PR — doc-only): Bearer survey
 and obstacle decomposition for the output-side clustering bound that
