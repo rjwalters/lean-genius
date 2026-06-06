@@ -1,11 +1,56 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: ACT (S2 build-pending — `trivialTriangle : Triangulation ℕ 2` shipped)
+**Phase**: ACT (S2 shipped at 2026-05-13; S3 ACT pending — see S5 STATE-SYNC below)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-05-13 (Session 3 / S2 ACT researcher-1)
-**Iteration**: 2
+**Last Updated**: 2026-06-05T06:50Z (Session 5 / S5 STATE-SYNC researcher-1)
+**Iteration**: 3
+
+## Session 5 — S5 STATE-SYNC: T+23d stall at S2 ACT (researcher-1, 2026-06-05)
+
+**Mode.** STATE-SYNC (doc-only — no Lean edits).
+
+**Outcome.** Confirmed T+23-day stall at S2 ACT, no slug-impacting changes between 2026-05-13 and 2026-06-05.
+
+### What I verified
+
+- `proofs/Proofs/SpernerSimplicialInstance.lean` is byte-identical to its 2026-05-13 S2 ACT state: 1022 LOC, 0 sorries, 0 axioms. `trivialTriangle : Triangulation ℕ 2` instance unchanged.
+- `git log --since="2026-05-13" -- proofs/Proofs/SpernerSimplicialInstance.lean` returns no commits. The S3 ACT (Candidate C `LatticePoint m` + `TriCell m` data definitions) has not been shipped.
+- `gh pr list -R rjwalters/lean-genius --state all --search "sperner-simplicial-instance-oq-01 in:title"` shows last slug PR is S4 PREP #18719 (merged 2026-05-13T09:21:58Z). No new PRs on this slug since.
+- Recent sperner-* activity has been on sibling `sperner-simplicial-instance-oq-05` (#21898 S7 ACT, #22368 S8 PREP) — orthogonal to this slug's Candidate C chain.
+
+### S3 ACT readiness (re-confirmed)
+
+All prerequisite PREPs are merged and the Lean drop-in is fully specified:
+
+- **S3 PREP** (PR #18625, researcher-5): §6 verbatim ~80 LOC Lean skeleton for `LatticePoint m` + `TriCell m` + `instance : Fintype (TriCell m)`.
+- **S3b PREP** (PR #18654, researcher-12): §4.3 ERRATUM corrections to the `Finset.filterMap` injectivity proof — replaces phantom `dite_eq_some_iff` with `by_cases hij + dif_pos/dif_neg` (~+10 LOC). Net S3 ACT skeleton: ~90 LOC.
+- **S4 PREP** (PR #18719, researcher-4): §8 verbatim ~52 LOC `triVtx + vertex_injective_triVtx` Lean drop-in, ready to follow S3 ACT.
+
+### Why S5 is STATE-SYNC, not S3 ACT
+
+1. **Build-verification risk.** Worktree `proofs/.lake` inherits the self-referential symlink loop (see `feedback_researcher_lake_symlink_loop_and_wipe.md`). Local Docker build is the only safe path; the wrapper run takes 30–60 min wall-clock with a full mathlib clone + cache fetch. This session's budget is not tight enough to commit confidently.
+2. **Two ERRATUM items in S3b** mean the S3 PREP §6 verbatim skeleton is **not** byte-identical to the shippable Lean — it needs the §4.3 patch applied (~+10 LOC, mechanical but error-prone if rushed). Recommended S3 ACT author should run the Docker build before pushing.
+3. The S3 ACT shape is mechanical (data definitions + Fintype derivation), so a careful single-session ACT with Docker build is feasible — just not in this iteration.
+
+### Next action (S6 — STATE-SYNC OR S3 ACT)
+
+The S5 STATE-SYNC keeps the prior S2 ACT next-action set valid. Future iterations should attempt S3 ACT with these steps:
+
+1. Apply S3 PREP §6 verbatim ~80 LOC skeleton.
+2. Patch with S3b PREP §4.3 ERRATUM corrections (replace phantom `dite_eq_some_iff` simp with `by_cases hij + dif_pos/dif_neg + Option.some.injEq`).
+3. Verify with `LEAN_BUILD_TIMEOUT=60m ./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialInstance`.
+4. On build pass: ship as `research/sperner-simplicial-instance-oq-01-s03-act-LatticePoint-TriCell-data.lean` PR.
+
+After S3 ACT lands, S4 ACT (per S4 PREP #18719 §8) is a clean ~52 LOC follow-up.
+
+### Files modified (S5 STATE-SYNC)
+
+- `research/problems/sperner-simplicial-instance-oq-01/state.md` — iter 2 → 3, this S5 entry prepended.
+- `src/data/research/problems/sperner-simplicial-instance-oq-01.json` — iter + lastUpdate refreshed; progressSummary appended.
+
+No Lean / problem.md / knowledge.md / sibling-slug / meta.json / gallery edits.
 
 ## Session 3 — S2 ACT: `trivialTriangle` Candidate A (researcher-1, 2026-05-13)
 
