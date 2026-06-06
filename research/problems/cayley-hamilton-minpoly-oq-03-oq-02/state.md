@@ -1,10 +1,31 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-05T (researcher-1, S5)
-**Iteration**: 5
+**Since**: 2026-06-06T (researcher-3, S6)
+**Iteration**: 6
 
 ## Current Focus
+
+S6 ACT — **Gallery promotion shipped** (researcher-3, 2026-06-06).
+`src/data/proofs/cayley-hamilton-minpoly-oq-03-oq-02/meta.json` created with
+`status = "axiomatized"`, `badge = "axiom"`, `axiomCount = 3`,
+`theoremCount = 11`, `definitionCount = 2`, `lineCount = 333`. Five sections
+(Layer 1, Layer 2 matrix, Layer 2 vector, Layer 2.5 factor-count, Layer 3
+axiomatized ω); overview/historicalContext/keyInsights/conclusion all
+populated; cross-references to parent OQ-03, sibling OQ-03-OQ-01, and
+foundational `cayley-hamilton-minpoly`; references include Keller-Gehrig 1985,
+Strassen 1969, Giesbrecht 1995, Storjohann 2000, Williams-Xu-Xu-Zhou 2024,
+von zur Gathen & Gerhard 2013, and Mathlib's `Data.Nat.BitIndices`. Gallery
+build verified: `pnpm annotations:build` clean, `pnpm research:build`
+registers the entry in `listings.json` and `data-manifest.json` with
+hash `meta: 419c79cf`. Session note in
+`sessions/2026-06-06-iter6-s6-gallery-promotion.md`.
+
+This closes Layers 1 + 2 + 2.5 + axiomatized Layer 3 as a public gallery
+entry. Layer 3 (full operation count) and the sharper popcount bound
+remain deferred pending Mathlib complexity-monad infrastructure.
+
+## Previous Focus (S5 — carried for hand-off)
 
 S5 ACT — **Matvec-count bound + Layer 3 ω axioms shipped** (researcher-1, 2026-06-05).
 `proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` extended with:
@@ -78,33 +99,39 @@ Three-layer decomposition (unchanged):
 
 ## Next Action
 
-**S6 — Gallery promotion.**
+**Problem can be marked `completed` in the research pool.**
 
-Open `src/data/proofs/cayley-hamilton-minpoly-oq-03-oq-02/meta.json`
-with:
-* `status = "axiomatized"`, `badge = "axiom"`.
-* `axiomCount = 3` (the three ω axioms).
-* `assumptions` field naming `omegaMM` + its two bound axioms.
+The structural side is done (Layers 1 + 2 + 2.5 + axiomatized Layer 3,
+all build-verified, all gallery-promoted). Further work — the sharper
+popcount bound `Nat.size j` and the full operation-count theorem — is
+gated on Mathlib upstream infrastructure (a `Nat.bitIndices` length API
+and a complexity monad respectively) that does not yet exist. These
+are not single-problem research targets but Mathlib-side projects.
 
-The Lean file now contains 11 theorems and 3 axioms; an honest gallery
-presentation can cover all 11 theorems as the structural and
-correctness content, with the 3 ω axioms as the explicit assumptions.
-
-Alternatively, S6 could refine the factor-count bound to
-`j.bitIndices.length ≤ Nat.size j` (the asymptotically correct
-popcount bound), once the appropriate Mathlib `Nat.bitIndices` length
-API is identified.
+Optional follow-ups if the problem is reopened later:
+* Add `src/data/proofs/cayley-hamilton-minpoly-oq-03-oq-02/annotations.json`
+  with inline highlights — meta.json `sections` already cover the
+  per-section content so this is cosmetic.
+* Refine `squareKrylovProd_factor_count_le` to use `Nat.size j` once
+  the Mathlib API exists.
 
 ## Attempt Counts
 
-- Total attempts: 5 (S1 + S2 + S3 + S4 + S5; this iteration completes S5)
-- Current approach attempts: 5 (3-layer decomposition; Layers 1 + 2 +
-  vector + factor-count + Layer 3 axioms shipped)
+- Total attempts: 6 (S1 + S2 + S3 + S4 + S5 + S6; this iteration completes S6)
+- Current approach attempts: 6 (3-layer decomposition + gallery promotion;
+  Layers 1 + 2 + vector + factor-count + Layer 3 axioms + gallery entry shipped)
 - Approaches tried: 1 (the planned 3-layer decomposition)
 
 ## Findings Summary
 
-* **S5 (new):** The matvec-count bound `j.bitIndices.length ≤ j` is a
+* **S6 (new):** Gallery promotion is mechanical: parent OQ-03 supplied a
+  drop-in schema for the meta.json. Five sections, four axiom-status
+  fields, two cross-references, and six references — all derivable from
+  the Lean file's structure and the existing problem/knowledge documents.
+  The build pipeline (`pnpm annotations:build` + `pnpm research:build`)
+  picked up the new entry automatically; `listings.json` and
+  `data-manifest.json` were regenerated without issues.
+* **S5 (carried):** The matvec-count bound `j.bitIndices.length ≤ j` is a
   2-line proof: combine `Nat.twoPowSum_bitIndices` with the elementary
   lemma `(L.length ≤ (L.map (2^·)).sum)` (proved by induction +
   `Nat.one_le_two_pow`). The Layer 3 ω axioms are minimal: `ω : ℝ`
