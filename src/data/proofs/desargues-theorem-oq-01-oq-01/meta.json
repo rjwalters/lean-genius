@@ -74,6 +74,72 @@
             "Rational-coordinate linear algebra in $\\mathbb{Q}^2$: explicit computation of line intersections via the slope-intercept formulas $y = mx + b$ and $y = m'x + b'$, the cross-product collinearity test $\\det\\!\\begin{pmatrix} x_2 - x_1 & y_2 - y_1 \\\\ x_3 - x_1 & y_3 - y_1 \\end{pmatrix} = 0$, and the numeric witnesses $A = (-2, 3)$, $B = (3, 1)$, $C = (0, 1)$, $A' = (-4, 6)$, $B' = (9, 3)$, $C' = (0, 4)$ that produce the explicit counterexample $P = (-17, 9)$, $Q = (27, 17)$, $R = (-6, 11)$"
         ]
     },
+    "mainTheorems": [
+        {
+            "name": "desargues_fails",
+            "type": "core",
+            "description": "The Moulton counterexample's central negative result: the three intersection points P=(-17,9), Q=(27,17), R=(-6,11) are not Moulton-collinear, even though triangles ABC and A'B'C' are in perspective from O=(0,0). Three-case proof: vertical excluded by distinct x-coordinates; m≤0 excluded since hP'−hQ' forces 44m=8>0; m>0 collapses to the system 11m=2 and 61m=16, whose linarith inconsistency (122≠176) closes the goal.",
+            "leanType": "¬ MoultonCollinear P_pt Q_pt R_pt",
+            "line": 233,
+            "endLine": 261
+        },
+        {
+            "name": "moulton_counterexample",
+            "type": "core",
+            "description": "The full Desargues-failure certificate as a single 21-component conjunction: three perspectivity-from-O facts (collinear_OAA', collinear_OBB', collinear_OCC'), eighteen incidence facts (P on AB/A'B', Q on BC/B'C', R on CA/C'A' with all six endpoint memberships), and desargues_fails. Term-mode anonymous-constructor proof. Packages the entire counterexample as one machine-checkable theorem statement asserting the negation of Desargues's theorem in the Moulton plane.",
+            "leanType": "MoultonCollinear O_pt A_pt A'_pt ∧ MoultonCollinear O_pt B_pt B'_pt ∧ MoultonCollinear O_pt C_pt C'_pt ∧ … ∧ ¬ MoultonCollinear P_pt Q_pt R_pt",
+            "line": 268,
+            "endLine": 296
+        },
+        {
+            "name": "onMoultonLine",
+            "type": "definition",
+            "description": "The piecewise Moulton line predicate. For slope m ≤ 0: ordinary line y = mx + b. For m > 0 with x ≤ 0 (left half-plane): also y = mx + b. For m > 0 with x > 0 (right half-plane): y = (m/2)x + b. The bend at x = 0 is continuous since both pieces give y = b there. This is the minimal perturbation of Euclidean lines that breaks Desargues while preserving every affine plane axiom (two points determine a unique line, two non-parallel lines meet, parallel postulate).",
+            "leanType": "(m b : ℝ) → (P : ℝ × ℝ) → Prop",
+            "line": 54,
+            "endLine": 58
+        },
+        {
+            "name": "MoultonCollinear",
+            "type": "definition",
+            "description": "Three-point Moulton collinearity: either all three points share an x-coordinate (vertical line) or they all lie on some non-vertical Moulton line specified by left-slope m and intercept b. The disjunction is critical: vertical lines are not in the range of onMoultonLine since they have undefined slope, so they need separate treatment. This shape directly drives the three-case structure of desargues_fails: vertical, m ≤ 0, m > 0.",
+            "leanType": "(P Q R : ℝ × ℝ) → Prop",
+            "line": 60,
+            "endLine": 64
+        },
+        {
+            "name": "collinear_OAA'",
+            "type": "supporting",
+            "description": "First perspectivity-from-O fact. Line OA has slope -3/2 ≤ 0, so it is an ordinary Moulton line (the bending only affects positive slopes). norm_num closes each of the three incidence checks O, A, A' under the negative-slope branch.",
+            "leanType": "MoultonCollinear O_pt A_pt A'_pt",
+            "line": 110,
+            "endLine": 117
+        },
+        {
+            "name": "collinear_OBB'",
+            "type": "supporting",
+            "description": "Second perspectivity-from-O fact, and the one where Moulton bending becomes operationally visible inside the perspectivity hypothesis: line OB has left-slope 2/3 > 0. O = (0,0) is on the seam (onML_pos_left, since 0 ≤ 0), while B = (3,1) and B' = (9,3) are on the right half (onML_pos_right with right-slope 1/3). All three incidence checks discharge by norm_num.",
+            "leanType": "MoultonCollinear O_pt B_pt B'_pt",
+            "line": 119,
+            "endLine": 125
+        },
+        {
+            "name": "collinear_OCC'",
+            "type": "supporting",
+            "description": "Third perspectivity-from-O fact, dispatched by the vertical-line branch of MoultonCollinear: O, C, C' all have x = 0. This is the case where the disjunctive structure of MoultonCollinear (vertical OR non-vertical Moulton line) is genuinely needed — no single non-vertical Moulton line could contain all three points.",
+            "leanType": "MoultonCollinear O_pt C_pt C'_pt",
+            "line": 127,
+            "endLine": 129
+        },
+        {
+            "name": "PQR_x_distinct",
+            "type": "supporting",
+            "description": "Excludes the vertical case from desargues_fails. The three intersection points P=(-17,9), Q=(27,17), R=(-6,11) have pairwise distinct x-coordinates (-17 ≠ 27 ≠ -6 ≠ -17), so no vertical Moulton line can contain all three. This lemma is what the vertical branch of desargues_fails dispatches against, leaving only the genuine algebraic case (m ≤ 0 or m > 0) for the linarith / linear_combination machinery.",
+            "leanType": "P_pt.1 ≠ Q_pt.1 ∧ P_pt.1 ≠ R_pt.1 ∧ Q_pt.1 ≠ R_pt.1",
+            "line": 227,
+            "endLine": 229
+        }
+    ],
     "sections": [
         {
             "id": "moulton-line-definition",
