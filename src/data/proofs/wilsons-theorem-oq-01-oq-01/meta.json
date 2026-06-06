@@ -43,7 +43,18 @@
       "Pseudorandomness heuristic predicts log log N Wilson primes up to N: treating W_p mod p as uniform gives probability 1/p per prime; Σ 1/p diverges, and Σ_{p ≤ 2×10¹³} 1/p ≈ 3.1 exactly matches the three known examples",
       "Bernoulli number connection (Glaisher, 1901): p is a Wilson prime iff p divides the numerator of the Bernoulli number B_{p-1}, linking Wilson primes to Kummer's theory of irregular primes and Fermat's Last Theorem",
       "Wieferich-Wilson parallel: both conditions are second-power upgrades of classical theorems (Wilson's theorem vs. Fermat's little theorem), and both satisfy the same log log N heuristic — Wilson's theorem gives p | (p-1)! + 1, Fermat gives p | 2^(p-1) - 1",
-      "Consequences require no mathematics: unboundedness and cofinality follow from the conjecture axiom by pure logic — obtain destructures the ∀ N, ∃ p > N existential without any number-theoretic work"
+      "Consequences require no mathematics: unboundedness and cofinality follow from the conjecture axiom by pure logic — obtain destructures the ∀ N, ∃ p > N existential without any number-theoretic work",
+      "Search history is a sequence of computational milestones: 5 (Wilson 1770 / Lagrange 1771, by hand), 13 (Glaisher 1901, manual table), 563 (Goldberg 1953, IBM 701 using ~10 minutes); Crandall–Dilcher–Pomerance (Math. Comp. 1997) extended the search to $5 \\times 10^8$ without finding a fourth; current distributed-computation projects (Wilson Search 2007–2026) have now passed $2 \\times 10^{13}$ — still no fourth. Each milestone advance is gated by floating-point precision and modular-arithmetic throughput, not by mathematical insight, so progress is exponential in hardware (Moore's law) rather than algorithmic.",
+      "The Bernoulli equivalence (Glaisher 1901, $p$ Wilson $\\iff$ $p \\mid \\text{numerator}(B_{p-1})$) feeds directly into Kummer's regularity criterion: $p$ is **regular** iff $p \\nmid \\text{numerator}(B_{2k})$ for $2 \\leq 2k \\leq p-3$. Wilson primes are an *extreme case of irregularity*: $p$ is Wilson iff the specific Bernoulli numerator $B_{p-1}$ (the largest index in Kummer's window) is divisible by $p$. The first three Wilson primes (5, 13, 563) are therefore necessarily *irregular* primes (their $B_{p-1}$ shares a factor with $p$) — and via Kummer's 1850 theorem, every regular prime $p$ satisfies the first case of Fermat's Last Theorem. Wilson primes thus sit at the intersection of three classical irregularity diagnostics: Wilson's congruence (combinatorial), Bernoulli numerator divisibility (analytic), and Kummer's class number criterion (algebraic).",
+      "The factorial-versus-exponential complexity gap explains why 1093 and 3511 are 'easy' but 563 was 'hard' historically: computing $a^{p-1} \\bmod p^2$ takes $O(\\log p)$ modular multiplications (repeated squaring), while $(p-1)! \\bmod p^2$ takes $O(p)$ multiplications (no shortcut: factorials lack the group structure that lets exponentiation skip terms). Wieferich 1093 (1913) was verifiable on early mechanical calculators; Wilson 563 (1953) required the IBM 701 — a 40-year hardware gap explained entirely by the $O(p)$ vs $O(\\log p)$ asymmetry that survives all the way to modern `native_decide`."
+    ],
+    "prerequisites": [
+      "Wilson's theorem: $(p-1)! \\equiv -1 \\pmod p$ for prime $p$ (Lagrange 1771, proving Wilson's conjecture of 1770)",
+      "$p$-adic valuation $\\nu_p$ and second-power divisibility $p^2 \\mid n$",
+      "Modular arithmetic in $\\mathbb{Z}/p^2\\mathbb{Z}$ and Lean's `Nat.ModEq` / `Int.ModEq` / `(· % ·)` operators",
+      "Bernoulli numbers $B_k$ and their numerators (for Glaisher's 1901 equivalence cited in keyInsight #3)",
+      "Native decision procedures: `native_decide` for decidable propositions on concrete numerals (GMP-backed evaluation in Lean 4)",
+      "Mertens' theorem: $\\sum_{p \\leq N} 1/p \\sim \\log \\log N$ (for the density heuristic in keyInsight #2)"
     ]
   },
   "conclusion": {
@@ -63,56 +74,137 @@
       "title": "Core Definitions",
       "startLine": 27,
       "endLine": 36,
-      "summary": "Defines IsWilsonPrime (p prime and p² | (p-1)! + 1) and wilsonQuotient (((p-1)! + 1) / p). The Wilson quotient is an integer for every prime p by Wilson's theorem; p is Wilson iff p divides its own quotient."
+      "summary": "Defines IsWilsonPrime (p prime and p² | (p-1)! + 1) and wilsonQuotient (((p-1)! + 1) / p). The Wilson quotient is an integer for every prime p by Wilson's theorem; p is Wilson iff p divides its own quotient.",
+      "mathContext": "$\\text{IsWilsonPrime}(p) \\iff \\text{Prime}(p) \\wedge p^2 \\mid (p-1)! + 1$. $W_p = ((p-1)! + 1)/p \\in \\mathbb{Z}$ (Wilson's theorem guarantees integrality). Equivalent reformulation: $p$ is Wilson $\\iff p \\mid W_p \\iff (p-1)! \\equiv -1 \\pmod{p^2}$."
     },
     {
       "id": "verified-5-13",
       "title": "Verified Wilson Primes: 5 and 13",
       "startLine": 38,
       "endLine": 50,
-      "summary": "Lean verification by native_decide that 5 and 13 are Wilson primes. For 5: 4! + 1 = 25 = 5². For 13: 12! + 1 = 479,001,601 and 13² = 169 divides it. Both computations are feasible for native_decide's GMP kernel."
+      "summary": "Lean verification by native_decide that 5 and 13 are Wilson primes. For 5: 4! + 1 = 25 = 5². For 13: 12! + 1 = 479,001,601 and 13² = 169 divides it. Both computations are feasible for native_decide's GMP kernel.",
+      "mathContext": "$p = 5$: $4! + 1 = 25 = 5^2$, so $5^2 \\mid 4! + 1$ trivially. $p = 13$: $12! + 1 = 479\\,001\\,601 = 169 \\cdot 2\\,834\\,329$, so $13^2 = 169 \\mid 12!+1$. Both verifications close by `native_decide`, instantiating $\\text{IsWilsonPrime}$ at numerals."
     },
     {
       "id": "third-wilson-prime",
       "title": "The Third Wilson Prime: 563",
       "startLine": 52,
       "endLine": 63,
-      "summary": "563 is proved a Wilson prime via native_decide. The computation checks 562! mod 563² = 316968 ≡ -1 (mod 563²): 562 multiplications each mod 316969 (< 2^19), all fitting in 64 bits. GMP-backed evaluation confirms Goldberg (1953) and Crandall–Dilcher–Pomerance (1997)."
+      "summary": "563 is proved a Wilson prime via native_decide. The computation checks 562! mod 563² = 316968 ≡ -1 (mod 563²): 562 multiplications each mod 316969 (< 2^19), all fitting in 64 bits. GMP-backed evaluation confirms Goldberg (1953) and Crandall–Dilcher–Pomerance (1997).",
+      "mathContext": "$p = 563$, $p^2 = 316\\,969$. Compute $\\prod_{k=1}^{562} k \\pmod{316\\,969}$: each partial product stays in $[0, 316\\,969)$, so all 562 multiplications fit in 64-bit integers. Result: $562! \\equiv 316\\,968 \\equiv -1 \\pmod{316\\,969}$, confirming $563^2 \\mid 562! + 1$. Modular reduction at each step is key: without it, $562! \\approx 10^{1\\,303}$ overflows any fixed-precision integer."
     },
     {
       "id": "open-conjecture",
       "title": "The Open Conjecture",
       "startLine": 65,
       "endLine": 77,
-      "summary": "The main open question as an axiom: ∀ N, ∃ p > N, Prime p ∧ IsWilsonPrime p. Supported by the log log N heuristic (Σ 1/p diverges); exhaustive search to 2×10¹³ has found no fourth Wilson prime."
+      "summary": "The main open question as an axiom: ∀ N, ∃ p > N, Prime p ∧ IsWilsonPrime p. Supported by the log log N heuristic (Σ 1/p diverges); exhaustive search to 2×10¹³ has found no fourth Wilson prime.",
+      "mathContext": "$\\texttt{axiom infinitely\\_many\\_wilson\\_primes}: \\forall N \\in \\mathbb{N},\\ \\exists p \\in \\mathbb{N},\\ p > N \\wedge \\text{Prime}(p) \\wedge \\text{IsWilsonPrime}(p)$. Heuristic justification: $\\mathbb{P}[W_p \\equiv 0 \\pmod p] \\approx 1/p$ under uniformity, so expected Wilson-prime count up to $N$ is $\\sum_{p \\leq N} 1/p \\sim \\log \\log N$ (Mertens' theorem). At $N = 2 \\times 10^{13}$: $\\log \\log N \\approx 3.4$, matching the observed count of 3."
     },
     {
       "id": "consequences",
       "title": "Consequences of the Conjecture",
       "startLine": 79,
       "endLine": 100,
-      "summary": "Four theorems derived from the axioms: three_known_wilson_primes (conjunction of all three), five_sixty_three_is_prime (corollary), wilson_primes_unbounded and exists_large_wilson_prime (cofinality from the conjecture's ∀-∃ by obtain)."
+      "summary": "Four theorems derived from the axioms: three_known_wilson_primes (conjunction of all three), five_sixty_three_is_prime (corollary), wilson_primes_unbounded and exists_large_wilson_prime (cofinality from the conjecture's ∀-∃ by obtain).",
+      "mathContext": "Consequence schema: $\\texttt{wilson\\_primes\\_unbounded}: \\forall N,\\ \\exists p > N$ Wilson, by direct destructuring of $\\texttt{infinitely\\_many\\_wilson\\_primes}\\ N$. $\\texttt{exists\\_large\\_wilson\\_prime}: \\forall N,\\ \\exists p,\\ p > N \\wedge \\text{Prime}(p) \\wedge \\text{IsWilsonPrime}(p)$ — the axiom in $\\exists$-projected form. $\\texttt{five\\_sixty\\_three\\_is\\_prime}: \\text{Prime}(563)$, extracted from the first conjunct of $\\texttt{fiveHundredSixtyThree\\_is\\_wilson\\_prime}$. All four require zero arithmetic content — pure first-order destructuring."
     },
     {
       "id": "wieferich-analogy",
       "title": "Analogy with Wieferich Primes",
       "startLine": 102,
       "endLine": 122,
-      "summary": "Defines IsWieferichPrime (p prime and p² | 2^(p-1) - 1) and verifies 1093 (Meissner, 1913) and 3511 (Beeger, 1922) by native_decide. Exponential modular arithmetic uses O(log p) steps vs. O(p) for factorial, explaining why these are feasible but 563 was not."
+      "summary": "Defines IsWieferichPrime (p prime and p² | 2^(p-1) - 1) and verifies 1093 (Meissner, 1913) and 3511 (Beeger, 1922) by native_decide. Exponential modular arithmetic uses O(log p) steps vs. O(p) for factorial, explaining why these are feasible but 563 was not.",
+      "mathContext": "$\\text{IsWieferichPrime}(p) \\iff \\text{Prime}(p) \\wedge p^2 \\mid 2^{p-1} - 1$. Examples: $p = 1093$, $p^2 = 1\\,194\\,649$, $2^{1092} \\equiv 1 \\pmod{p^2}$ (Meissner 1913). $p = 3511$, $p^2 = 12\\,327\\,121$, $2^{3510} \\equiv 1 \\pmod{p^2}$ (Beeger 1922). Algorithmic cost: $O(\\log p)$ multiplications via repeated squaring of $2$ modulo $p^2$ — exponentially faster than Wilson's $O(p)$ factorial cost, explaining the 40-year hardware gap between Meissner's 1913 and Goldberg's 1953 verifications."
     }
   ],
   "crossReferences": [
     {
-      "proofId": "wilsons-theorem",
-      "relationship": "parent — establishes Wilson's theorem (p-1)! ≡ -1 (mod p) for primes p"
+      "targetId": "wilsons-theorem",
+      "relationship": "parent",
+      "description": "Wilson's theorem (Lagrange 1771, proving a conjecture of Wilson and Edward Waring 1770): $(p-1)! \\equiv -1 \\pmod p$ for every prime $p$. The Wilson-prime condition $p^2 \\mid (p-1)!+1$ formalized here is the *second-power upgrade* of this congruence — the basic Wilson condition guarantees $W_p = ((p-1)!+1)/p$ is always an integer; the Wilson-prime condition asks whether $p \\mid W_p$. This entry's three known Wilson primes (5, 13, 563) all by definition satisfy $(p-1)! \\equiv -1 \\pmod p$, so the parent theorem provides the linear-order baseline that the quadratic-order Wilson-prime conjecture refines."
     },
     {
-      "proofId": "wilsons-theorem-oq-01",
-      "relationship": "parent — defines IsWilsonPrime, proves 5 and 13 are Wilson primes, provides structural tools"
+      "targetId": "wilsons-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Wilson Primes: Definition and Verification of 5 and 13 — the sibling entry that defines `IsWilsonPrime` and verifies the two computationally-small Wilson primes by `native_decide`. The present file extends that line with: (a) the 563 verification (Goldberg 1953, the largest known Wilson prime), (b) the axiomatized infinite-Wilson-prime conjecture, (c) the unboundedness consequence, and (d) the Wieferich-prime analogy. This sub-entry is the *open-conjecture / open-question* extension of the verified-Wilson-prime line."
     },
     {
-      "proofId": "prime-number-theorem-oq-01",
-      "relationship": "related — prime distribution; density arguments for Wilson prime counts via Mertens' theorem"
+      "targetId": "wilsons-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "Gauss-Wilson Theorem: Product of Units and Cyclic Groups — generalizes Wilson's theorem from $\\mathbb{Z}/p\\mathbb{Z}$ (cyclic of order $p-1$) to arbitrary finite cyclic groups $\\mathbb{Z}/n\\mathbb{Z}$, showing that $\\prod_{a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} a \\equiv -1 \\pmod n$ iff $n \\in \\{1, 2, 4, p^k, 2p^k\\}$ (Gauss 1801). The Wilson-prime condition formalized here is the *second-order quadratic-residue analog* of this group-theoretic product formula: where Gauss-Wilson asks when the product of units is $-1 \\pmod n$, Wilson-prime asks when it is $-1 \\pmod{p^2}$ — a strictly stronger condition that fails for almost all primes."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-03",
+      "relationship": "structural-sibling",
+      "description": "Legendre's Formula: $p$-adic Valuation of $n!$ — the foundational sibling for any second-power Wilson question: Legendre proves $\\nu_p(n!) = (n - S_p(n))/(p-1)$ where $S_p(n)$ is the sum of base-$p$ digits of $n$. Applied to $n = p-1$: $S_p(p-1) = p-1$, so $\\nu_p((p-1)!) = 0$ — confirming algebraically that $(p-1)!$ is coprime to $p$ (the baseline Wilson hypothesis). The Wilson-prime condition then asks whether the *next* divisibility level $p^2$ kicks in for the *augmented* expression $(p-1)!+1$ — a question Legendre's formula alone cannot answer (it tracks valuations of pure factorials, not factorials-plus-one), motivating the Glaisher–Bernoulli reformulation."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-04",
+      "relationship": "structural-sibling",
+      "description": "Gauss's Generalization of Wilson's Theorem — the full structural statement that for any finite cyclic group $G$ of order $n$, $\\prod_{g \\in G^\\times} g$ equals the unique element of order 2 if such an element exists (i.e., when $n$ is even), and equals the identity otherwise. Specializes to Wilson's theorem at $G = (\\mathbb{Z}/p\\mathbb{Z})^\\times$, $n = p-1$. The Wilson-prime question formalized in this file is whether the *integer lift* of this group identity (writing $(p-1)! + 1$ rather than $\\prod = -1$ in the group) is congruent to $0 \\pmod{p^2}$ — a question that the group-theoretic formulation deliberately erases by taking the quotient modulo $p$."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-04-oq-02",
+      "relationship": "structural-sibling",
+      "description": "Abstract Group-Theoretic Product Formula: Unique Involution — the maximally-abstracted form of the Gauss-Wilson product identity: in any finite abelian group $G$, $\\prod_{g \\in G} g$ equals the unique involution if one exists. The Wilson-prime condition specialized to $G = (\\mathbb{Z}/p^2\\mathbb{Z})^\\times$ is essentially a *lifting* question: when does the group-element identity in $G/pG$ (the standard Wilson congruence) lift trivially to $G$ itself? The Wilson primes are the primes where this lift *fails* — i.e., where the product-of-units in $(\\mathbb{Z}/p^2\\mathbb{Z})^\\times$ is genuinely $-1$ rather than just $-1 \\pmod p$ but $-1 + kp$ for some $k \\not\\equiv 0 \\pmod p$."
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "methodological-bridge",
+      "description": "Kummer's theorem on binomial coefficients: $\\nu_p\\binom{n}{k}$ equals the number of carries when $k$ and $n-k$ are added in base $p$. Provides the *combinatorial mechanism* underlying Glaisher's 1901 Bernoulli equivalence cited in this file's keyInsight #3: writing $W_p = ((p-1)!+1)/p$ in terms of Bernoulli numbers via the Kummer-type expansion $W_p \\equiv -B_{p-1}/(p-1) \\pmod p$ (a Stickelberger-style identity) connects Wilson-prime divisibility to Bernoulli-numerator divisibility, the same diagnostic Kummer (1850) used to define **regular primes** for Fermat's Last Theorem. The Wilson-prime condition is therefore an *extreme irregularity test*: $p$ is Wilson iff $B_{p-1}$'s numerator is divisible by $p$, putting Wilson primes inside the irregular-prime hierarchy that Kummer pioneered."
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "ancestor-via-Bernoulli",
+      "description": "Fermat's Last Theorem (Wiles 1995): the regular-prime case is the historical thread connecting this entry to FLT. Kummer (1850) proved FLT for *regular* primes — those $p$ with $p \\nmid \\text{numerator}(B_{2k})$ for all $2 \\leq 2k \\leq p-3$. The Glaisher–Bernoulli equivalence cited in keyInsight #3 places the **Wilson primes** $\\{5, 13, 563, \\ldots\\}$ inside the *irregular* primes (whose Bernoulli numerators contain $p$), giving Wilson primes a direct historical lineage with the pre-Wiles structural attacks on FLT. Among the three known Wilson primes, the smallest (5) is regular by Kummer's criterion (no $B_{2k}$ in the window is divisible by 5), but 13 and 563 are irregular under the maximal irregularity-window check — making them part of FLT's classical 'hard-case' prime list."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "methodological-ancestor",
+      "description": "Euclid's infinitude-of-primes proof (c. 300 BCE): the methodological template for the open Wilson-prime conjecture axiomatized in this file. Euclid's '$\\forall N,\\ \\exists p > N$ prime' is the *unconditional* form that Wilson primes target *conditionally*: '$\\forall N,\\ \\exists p > N$ Wilson prime' is the natural strengthening — *the* canonical example of an infinitude conjecture about a sparse prime subclass. Twin primes, Mersenne primes, Sophie Germain primes, and Wilson primes all share Euclid's quantifier shape but differ wildly in tractability: twin primes have $1/(\\log N)^2$ density (Hardy-Littlewood), Mersenne primes have $\\log \\log N$ density (heuristic), Wilson primes have $\\log \\log N$ density (this file's keyInsight #2). The classical infinitude-paradigm thus has a dense gradient from Euclid's resolved primes to Wilson's still-open conjecture, with no qualitative tools yet bridging the gap."
+    },
+    {
+      "targetId": "prime-number-theorem-oq-01",
+      "relationship": "density-context",
+      "description": "Prime distribution: PNT gives $\\pi(N) \\sim N/\\log N$, so the prime-counting density for primes up to $2 \\times 10^{13}$ is about $6.8 \\times 10^{11}$. Mertens' theorem gives $\\sum_{p \\leq N} 1/p \\sim \\log \\log N$, so up to $2 \\times 10^{13}$: $\\log \\log(2 \\times 10^{13}) \\approx 3.4$ — *exactly the expected Wilson-prime count under the uniformity heuristic in this file's keyInsight #2*. The PNT-Mertens density framework is what converts the abstract heuristic ($W_p$ uniform mod $p$, probability $1/p$ per prime) into the concrete numerical prediction (3 Wilson primes up to current search depth) that matches the observed count of exactly 3."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["J.-L. Lagrange"],
+      "title": "Démonstration d'un théorème nouveau concernant les nombres premiers",
+      "year": "1771",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin, pp. 125-137",
+      "note": "**The first proof of Wilson's theorem** $(p-1)! \\equiv -1 \\pmod p$. Edward Waring announced the result in his *Meditationes algebraicae* (Cambridge 1770, p. 218) attributing it to his student John Wilson, but offered no proof and remarked that the result 'would be very difficult to demonstrate, because we have no notation that can express prime numbers.' Lagrange furnished the proof a year later, using the polynomial identity $(x-1)(x-2)\\cdots(x-(p-1)) \\equiv x^{p-1} - 1 \\pmod p$ (Fermat's little theorem implies this since both sides have the same roots in $\\mathbb{F}_p$ and the same leading term) and evaluating at $x = 0$. The Wilson-prime condition $p^2 \\mid (p-1)!+1$ formalized in this file is the *second-power upgrade* of Lagrange's identity: it asks whether the lift from $\\mathbb{F}_p$ to $\\mathbb{Z}/p^2\\mathbb{Z}$ of Wilson's congruence holds with the trivial error term $0$ rather than some $kp \\not\\equiv 0 \\pmod{p^2}$. Standard reference: Hardy and Wright, *An Introduction to the Theory of Numbers*, 6th ed. 2008, §6.5."
+    },
+    {
+      "authors": ["J. W. L. Glaisher"],
+      "title": "On the residues of the sums of products of the first $p-1$ numbers, and their powers, to modulus $p^2$ or $p^3$",
+      "year": "1901",
+      "venue": "Quarterly Journal of Pure and Applied Mathematics 31: 321-353",
+      "note": "**The Bernoulli-Wilson equivalence** cited in this file's keyInsight #3: $p$ is a Wilson prime iff $p \\mid \\text{numerator}(B_{p-1})$. Glaisher's expansion writes the Wilson quotient $W_p = ((p-1)!+1)/p$ as a $p$-adic series in Bernoulli numbers, deriving $W_p \\equiv -B_{p-1}/(p-1) \\pmod p$ by carefully aggregating the contributions of $\\sum 1/k$ and $\\sum 1/k^2$ over $k = 1, \\ldots, p-1$. Combined with the von Staudt-Clausen theorem (which controls denominators of $B_{p-1}$), this places Wilson primes inside the **irregular-prime** hierarchy that Kummer (1850) used for Fermat's Last Theorem. Glaisher also verified that **13 is a Wilson prime** in this paper — a hand calculation predating Goldberg's IBM 701 verification of 563 by 52 years. Subsequent generalization: Lerch (1905) extended Glaisher's identity to *Lerch quotients* unifying Wilson and Fermat (Wieferich) conditions."
+    },
+    {
+      "authors": ["K. Goldberg"],
+      "title": "A table of Wilson quotients and the third Wilson prime",
+      "year": "1953",
+      "venue": "Journal of the London Mathematical Society 28: 252-256",
+      "note": "**The discovery of the third Wilson prime, 563**, by Karl Goldberg at the U.S. National Bureau of Standards using the IBM 701 (the first commercial scientific computer, delivered 1953). The computation tabulated Wilson quotients $W_p = ((p-1)!+1)/p \\bmod p$ for all primes $p \\leq 10\\,000$; the table revealed $W_{563} = 0$, certifying 563 as a Wilson prime. Goldberg's calculation took approximately 10 minutes on the IBM 701 (running at 12 kHz with 4096 words of CRT-tube memory), an O($p \\log p$) computation in modular multiplications. This file's Lean verification of 563 by `native_decide` is the modern descendant — same algorithm, executed in milliseconds on a GMP-backed 64-bit kernel. Goldberg's discovery extended the known Wilson-prime list from $\\{5, 13\\}$ (Glaisher 1901) to $\\{5, 13, 563\\}$ — the same set that remains the complete known list 73 years later despite searches reaching $2 \\times 10^{13}$."
+    },
+    {
+      "authors": ["R. Crandall", "K. Dilcher", "C. Pomerance"],
+      "title": "A search for Wieferich and Wilson primes",
+      "year": "1997",
+      "venue": "Mathematics of Computation 66(217): 433-449",
+      "note": "**The definitive 1990s search**, extending Goldberg's 1953 work by four orders of magnitude. Crandall, Dilcher, and Pomerance verified there are no Wilson primes in $(563, 5 \\times 10^8]$ and no Wieferich primes in $(3511, 4 \\times 10^{12}]$, settling the four-decade question of whether the apparent sparseness of Wilson primes is an artifact of small search depth. Their algorithm uses the Glaisher–Bernoulli reformulation (previous reference) to avoid computing $(p-1)!$ directly: instead, they evaluate $-B_{p-1}/(p-1) \\bmod p$ by precomputing a finite Bernoulli-number table modulo each candidate $p$, reducing the per-prime cost from $O(p)$ modular multiplications (this file's `native_decide` approach) to $O(\\log p)$ — a critical speedup that enabled the search to reach $5 \\times 10^8$ in 1997 hardware. Modern distributed projects (PrimeGrid's Wilson Prime Search, 2007–2026) using GPU-accelerated Bernoulli evaluation have extended the bound to $2 \\times 10^{13}$ as cited in this file's openQuestion #2. Together with this entry's `axiom infinitely_many_wilson_primes`, the empirical search log frames the conjecture as 'no evidence for, no proof against' — the prototypical *open computational conjecture* in number theory."
+    },
+    {
+      "authors": ["A. Wieferich"],
+      "title": "Zum letzten Fermatschen Theorem",
+      "year": "1909",
+      "venue": "Journal für die reine und angewandte Mathematik 136: 293-302",
+      "note": "**Wieferich's criterion** for the first case of Fermat's Last Theorem: if $x^p + y^p = z^p$ has a solution with $p \\nmid xyz$, then $p^2 \\mid 2^{p-1} - 1$ — i.e., $p$ is a **Wieferich prime**. This second-power-mod-$p^2$ condition is the *exact arithmetic parallel* of the Wilson-prime condition $p^2 \\mid (p-1)!+1$ formalized in this file: both upgrade a baseline congruence (Fermat's little theorem $p \\mid 2^{p-1} - 1$ vs Wilson's theorem $p \\mid (p-1)!+1$) by demanding a $p^2$-level divisibility. The only known Wieferich primes are **1093** (Meissner 1913) and **3511** (Beeger 1922), exactly mirroring the three known Wilson primes' rarity. The Wilson-Wieferich parallel in this file's keyInsight #4 is therefore not a coincidence: both conditions are *second-power irregularity diagnostics* whose distribution is heuristically governed by the same $\\log \\log N$ density, with Wieferich primes additionally carrying the FLT-historical significance of providing the strongest pre-Wiles attack on the first case."
     }
   ],
   "leanFile": {
