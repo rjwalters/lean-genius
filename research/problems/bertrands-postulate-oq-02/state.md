@@ -2,10 +2,94 @@
 
 ## Current State
 
-**Phase**: ACT (post-iter-4 PREP-1; ready for *corrected* S4 ACT-α one-way implication)
-**Since**: 2026-06-05T16:00:00Z
-**Last Updated**: 2026-06-05 (Session 4, researcher-1)
-**Iteration**: 4
+**Phase**: ACT (post-iter-5 S4-ACT-α DONE; ready for S5 Cramér ⇒ Legendre)
+**Since**: 2026-06-06T15:00:00Z
+**Last Updated**: 2026-06-06 (Session 5, researcher-1)
+**Iteration**: 5
+
+## Session 5 — Iter 5 S4-ACT-α DONE (researcher-1, 2026-06-06, T+1d post-iter-4 PREP-1)
+
+**Goal**: implement the corrected S4-ACT-α identified by iter 4 PREP-1: the
+salvageable one-way implication
+
+  `(∀ k, p_{k+1} - p_k ≤ 2 · √p_k + 1) ⟹ LegendreConjecture`.
+
+**Method**: new file `proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean`
+(227 LOC), axiom-free. Strategy:
+
+- Case `n = 1`: prime `2` directly witnesses `LegendreAt 1`.
+- Case `n ≥ 2`: take `k = Nat.findGreatest (fun k => p_k ≤ n²) n²`,
+  the index of the largest prime ≤ n². Use:
+  - `not_prime_sq_of_ge_two` to get `p_k < n²` strictly (n² composite for n ≥ 2);
+  - `nth_prime_ge` + `Nat.findGreatest_is_greatest` to get `p_{k+1} > n²`;
+  - the gap-bound hypothesis + `Nat.sqrt_lt'` to get `p_{k+1} < (n+1)²`.
+
+**Deliverable**: `LegendrePrimeGapSqrtBoundSuffices.lean` — 227 LOC,
+0 axioms, 0 sorries, **Docker build verified**:
+
+```
+✔ [3074/3074] Built Proofs.LegendrePrimeGapSqrtBoundSuffices (6.8s)
+Build completed successfully (3074 jobs).
+```
+
+**Public surface**:
+
+| Name | Type | Notes |
+|------|------|-------|
+| `PrimeGapSqrtBound` | `Prop` | Definition: `∀ k, p_{k+1} - p_k ≤ 2·√p_k + 1` |
+| `not_prime_sq_of_ge_two` | aux lemma | `2 ≤ n → ¬ Nat.Prime (n^2)` |
+| `nth_prime_ge` | aux lemma | `k + 2 ≤ Nat.nth Nat.Prime k` |
+| **`prime_gap_sqrt_bound_implies_legendre`** | main thm | `PrimeGapSqrtBound → LegendreConjecture` |
+| `prime_gap_sqrt_bound_implies_gap_form` | corollary | gap form (via iter-2) |
+| `prime_gap_sqrt_bound_implies_distance_form` | corollary | distance form (via iter-2) |
+| `prime_gap_sqrt_bound_implies_halfOpen_form` | corollary | half-open form (via iter-2) |
+
+**Asymmetry preserved in docstring**: the file's module docstring records
+that the converse direction (`Legendre ⟹ gap bound`) is **not** provable
+from `LegendreConjecture` alone (see iter 4 PREP-1 audit memo). The
+asymmetry is visible to any future reader directly from the Lean source.
+
+**Honest size**: ~230 LOC Lean + ~250 LOC markdown + ~15 lines JSON diff.
+The mathematical heavy lifting was done by iter 4 PREP-1 (identifying the
+direction that survives). This iteration is the implementation.
+
+**Picker matrix (post-iter-5)**:
+
+| ID | Description | Status |
+|---|---|---|
+| S4-ACT-α | `prime_gap_sqrt_bound_implies_legendre` (one-way) | ✅ **DONE (iter 5)** |
+| S4-iff (original) | `legendre_iff_primeGap` (proposed iff) | 🚫 ANTI-CANDIDATE (PREP-1 verdict, permanent) |
+| S5 | Cramér ⇒ Legendre (sub-Milestone A) | ⏳ **Newly tractable** via composition with iter-5's theorem |
+| S6 | Computational extension to `n = 21, …, 50` (sub-Milestone C) | ⏳ low-leverage padding |
+
+**Next picker's slot (recommended)**: S5 ACT — Cramér ⇒ Legendre. The route
+factors cleanly through iter-5's theorem:
+
+```
+Cramér's conjecture
+  ⟹ (for sufficiently large k) p_{k+1} - p_k ≤ C·(log p_k)² ≤ 2·√p_k + 1
+  ⟹ LegendreConjecture (via prime_gap_sqrt_bound_implies_legendre)
+```
+
+with legendre-partial covering the finite small-k tail. Estimated +200-250
+LOC, 0 new axioms expected (only Cramér as hypothesis).
+
+**Deliverables (this PR)**:
+
+1. NEW Lean file `proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean`.
+2. NEW session memo `sessions/2026-06-06-iter5-s4-act-alpha-sqrt-bound-suffices.md`.
+3. `proofs/Proofs.lean`: import line added for the new file.
+4. `state.md`: this Session 5 prepend.
+5. `meta.json` + `src/data/research/problems/bertrands-postulate-oq-02.json`:
+   `currentState.iteration` 4 → 5; `phase`/`since`/`focus`/`nextAction` updated;
+   `attemptCounts.total` 4 → 5; `attemptCounts.currentApproach` 2 → 3;
+   `knowledge.builtItems` += new file entries; `knowledge.insights` +=
+   iter-5 result; `lastUpdate` 2026-06-05 → 2026-06-06.
+6. `knowledge.md`: append Iteration 5 Log.
+
+---
+
+
 
 ## Session 4 — Iter 4 PREP-1 (researcher-1, 2026-06-05, T+3d post-iter-3 cleanup)
 

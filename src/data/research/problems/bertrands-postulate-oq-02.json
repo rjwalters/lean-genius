@@ -26,20 +26,20 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-05T16:00:00Z",
-    "iteration": 4,
-    "focus": "S4 PREP-1 / pre-flight audit (researcher-1, 2026-06-05): the iter-3 S4 plan proposed LegendreConjecture ↔ ∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1. PREP-1 audit shows this is NOT a true equivalence at the abstract level. Reverse direction (gap bound ⇒ Legendre) holds; forward direction (Legendre ⇒ gap bound) yields only ≤ 4·Nat.sqrt p_k + 2 worst case (failure mode: when Legendre at m gives a prime ≤ p_k, no prime is forced in (p_k, (m+1)²), and the next-prime argument escalates to Legendre at m+1). No Lean edits. Next: corrected S4-ACT-α formalizes the one-way implication prime_gap_sqrt_bound_implies_legendre in a new file (~80-130 LOC, 0 new axioms). Original iff legendre_iff_primeGap demoted ANTI-CANDIDATE.",
+    "since": "2026-06-06T15:00:00Z",
+    "iteration": 5,
+    "focus": "S4-ACT-α DONE (researcher-1, 2026-06-06): formalized the salvageable one-way implication identified by iter-4 PREP-1 audit. New file proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) proves PrimeGapSqrtBound → LegendreConjecture. Uses Nat.findGreatest on the predicate 'nth Prime k ≤ n²' to extract the largest prime ≤ n², compositeness of n² for n ≥ 2 to get strict inequality nth Prime k < n², and the iter-2 form equivalences to derive three free corollaries (gap/distance/half-open forms). The original iff (Legendre ↔ gap bound) remains ANTI-CANDIDATE — forward direction unprovable from LegendreConjecture alone.",
     "blockers": [],
-    "nextAction": "Corrected S4-ACT-α: formalize the one-way implication (∀ k, Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1) → LegendreConjecture. Proof outline: n=1 → witness prime 2; n ≥ 2 → n² composite, largest prime p_k ≤ n² via Nat.findGreatest on Nat.primeCounting, apply gap bound to get p_{k+1} ≤ n² + 2(n-1) < (n+1)², conclude via legendreAt_iff_halfOpen (iter-2). Target file: proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean (~80-130 LOC, 0 new axioms, 0 sorries). Pair with structured docstring recording the NON-implication direction so future readers see the asymmetry. Anti-candidate: legendre_iff_primeGap (forward direction mathematically false at the level of LegendreConjecture alone).",
-    "lastUpdate": "2026-06-05T16:00:00Z",
+    "nextAction": "S5 ACT — Cramér ⇒ Legendre (Sub-Milestone A, now newly tractable). State Cramér's conjecture as a hypothesis; derive that C·(log p_k)² ≤ 2·√p_k + 1 for sufficiently large k via asymptotics (√ grows faster than log²); bridge the finite-tail base cases via legendre-partial; compose with iter-5's prime_gap_sqrt_bound_implies_legendre to conclude Cramér ⇒ Legendre. Estimated size: +200-250 LOC. 0 new axioms expected (only Cramér as hypothesis). Target file: proofs/Proofs/CramerImpliesLegendre.lean.",
+    "lastUpdate": "2026-06-06T15:00:00Z",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 2,
+      "total": 5,
+      "currentApproach": 3,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 ACT plan and found the proposed iff LegendreConjecture ↔ (∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1) is NOT a true equivalence at the abstract level. Reverse direction (gap bound ⇒ Legendre) holds and is the salvageable Lean target (corrected S4-ACT-α, ~80-130 LOC). Forward direction yields only ≤ 4·Nat.sqrt p_k + 2 from LegendreConjecture alone. Original iff legendre_iff_primeGap demoted ANTI-CANDIDATE. Doc-only PREP. Sub-Milestone B complete (2026-05-30): LegendreGapEquivalence.lean proves LegendreConjecture is equivalent to three reformulations (gap, distance, half-open) via pointwise lemmas. 0 new axioms; build verified end-to-end.",
+    "progressSummary": "Iter 5 ACT (2026-06-06): S4-ACT-α DONE — new file LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. The proof uses Nat.findGreatest to extract the largest prime ≤ n² and compositeness of n² for n ≥ 2. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence (forward direction yields only ≤ 4·√p_k+2). Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
     "builtItems": [
       "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
       "prime-gap hierarchy rows shared with the Bertrand short-interval development",
@@ -47,11 +47,13 @@
       "LegendreGapAt n / LegendreDistanceAt n / LegendreHalfOpenAt n (proofs/Proofs/LegendreGapEquivalence.lean)",
       "legendreAt_iff_gap, legendreAt_iff_distance, legendreAt_iff_halfOpen (pointwise equivalences)",
       "legendre_iff_gap_form, legendre_iff_distance_form, legendre_iff_halfOpen_form (global equivalences)",
-      "Sample transferrals: legendre_gap_1, legendre_gap_5, legendre_gap_20, legendre_distance_10, legendre_halfOpen_15"
+      "Sample transferrals: legendre_gap_1, legendre_gap_5, legendre_gap_20, legendre_distance_10, legendre_halfOpen_15",
+      "PrimeGapSqrtBound def + prime_gap_sqrt_bound_implies_legendre theorem (proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean, iter 5)",
+      "Corollaries prime_gap_sqrt_bound_implies_{gap,distance,halfOpen}_form via iter-2 equivalences (iter 5)"
     ],
     "insights": [
+      "Iter 5 ACT (2026-06-06): The reverse direction PrimeGapSqrtBound → LegendreConjecture is now formalized in Lean (227 LOC, 0 axioms). Key technique: Nat.findGreatest on 'nth Prime k ≤ n²' to extract the largest prime ≤ n², plus compositeness of n² for n ≥ 2 to get the strict inequality. Three free corollaries for gap/distance/half-open forms.",
       "Iter 4 PREP-1 (2026-06-05): The naive iff LegendreConjecture ↔ (∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1) is NOT logically valid at the abstract level. Forward direction fails because Legendre at m only forces *some* prime in (m², (m+1)²), not a prime strictly above p_k — the worst case (Legendre prime ≤ p_k AND no further prime in (p_k, (m+1)²)) forces the next-prime argument to Legendre at m+1, giving only ≤ 4·Nat.sqrt p_k + 2.",
-      "Iter 4 PREP-1 (2026-06-05): The reverse direction (gap bound ⇒ Legendre) IS provable and gives the salvageable corrected S4 deliverable: prime_gap_sqrt_bound_implies_legendre. Proof structure for n ≥ 2: n² is composite, take largest prime ≤ n², apply gap bound at that index, conclude p_{k+1} ≤ n² + 2(n-1) < (n+1)² via Nat.sqrt(n²-1) ≤ n-1.",
       "Legendre is an existence statement, not a density asymptotic",
       "BHP and Cramer occupy different points in the same short-interval landscape",
       "The Lean record correctly treats Legendre as conjectural",
@@ -64,9 +66,8 @@
       "No prime-gap function primeGap n := nth Prime (n+1) - nth Prime n in Mathlib (defined locally in Erdos6Problem.lean, Erdos233Problem.lean)"
     ],
     "nextSteps": [
-      "Corrected S4-ACT-α (from iter 4 PREP-1): prove the ONE-WAY implication (∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1) → LegendreConjecture. Target file LegendrePrimeGapSqrtBoundSuffices.lean, ~80-130 LOC, 0 new axioms. Pair with structured docstring recording the NON-implication direction so the asymmetry is visible from the Lean source.",
-      "ANTI-CANDIDATE (was Sub-Milestone B+): the original iff LegendreConjecture ↔ ∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1 is NOT a true equivalence at the level of LegendreConjecture alone — see iter 4 PREP-1.",
-      "Sub-Milestone A: state Cramer-implies-Legendre eventually (needs Cramer conjecture statement) — unaffected by PREP-1 finding",
+      "S5 ACT — Sub-Milestone A: Cramér ⇒ Legendre, now newly tractable via composition with iter-5's prime_gap_sqrt_bound_implies_legendre. State Cramér's conjecture as a hypothesis; derive C·(log p_k)² ≤ 2·√p_k + 1 for sufficiently large k (asymptotics: √ grows faster than log²); bridge finite tail via legendre-partial. Target file CramerImpliesLegendre.lean, ~200-250 LOC, 0 new axioms.",
+      "ANTI-CANDIDATE (was Sub-Milestone B+): the original iff LegendreConjecture ↔ ∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1 is NOT a true equivalence at the level of LegendreConjecture alone — see iter 4 PREP-1. Salvageable half formalized in iter 5.",
       "Optional polish: connect to LegendrePartials computational cases via primeCounting"
     ]
   },
@@ -94,7 +95,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-06-05T16:00:00.000Z",
+  "lastUpdate": "2026-06-06T15:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
