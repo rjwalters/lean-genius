@@ -23,8 +23,8 @@
     "erdosProblemStatus": "solved",
     "relatedProblems": [],
     "axiomCount": 3,
-    "lineCount": 324,
-    "assumptions": "3 axioms: chenErdos_false (Chen-Erdős conjecture is false, Cambie-Chan-Hunter 2023), cambieChanHunter_construction (counterexample construction exists for all n≥4), ramseyNumber (Ramsey numbers axiomatized as exact values are unknown). 0 sorries.",
+    "lineCount": 397,
+    "assumptions": "3 axioms: chenErdos_false (Chen-Erdős conjecture is false, Cambie-Chan-Hunter 2023), cambieChanHunter_construction (counterexample construction exists for all n≥4), ramseyNumber (Ramsey numbers axiomatized as exact values are unknown). 0 sorries. (oq-02 update: added multiplicity_k_bound generalizing limited_multiplicity_bound to arbitrary k; informal disproof of generalBoundConjecture recorded as general_bound_conjecture_informally_false; pre-existing Mathlib v4.26.0 drift in counterexample_works / degree_diversity_no_ramsey_help / cambie_is_optimal / limited_multiplicity_bound / degree_bound / maxTrivialSize / Aristotle pigeonhole repaired in same patch — file now Docker-builds clean.)",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -61,9 +61,11 @@
       "counterexample_works: assembles the full disproof from the construction axiom",
       "degree_diversity_no_ramsey_help: degree diversity does not improve the Ramsey O(log n) bound",
       "cambie_is_optimal: 3n/4 is asymptotically optimal for multiplicity-2 degree diversity",
-      "generalMultiplicityBound: formula k/(k+1) for max distinct degrees with multiplicity ≤ k"
+      "generalMultiplicityBound: formula k/(k+1) for max distinct degrees with multiplicity ≤ k",
+      "multiplicity_k_bound: general pigeonhole n ≤ k · distinctDegreeCount for any k (generalizes limited_multiplicity_bound)",
+      "general_bound_conjecture_informally_false: alias capturing that 3/4 > 2/3 already refutes the k → k/(k+1) extrapolation numerically; full universe-polymorphic Lean disproof deferred"
     ],
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 20,
     "additionalFiles": [
       "Proofs/Erdos1037Aristotle.lean"
