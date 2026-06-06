@@ -858,6 +858,197 @@ theorem integral_sq_exp_neg_sq :
 
 end DiagonalSchurPrep
 
+/-! ## Part 9 — S6c ACT-2: Diagonal Schur orthogonality (1-D complex + n-dim)
+
+Builds on `integral_sq_exp_neg_sq` (Part 8, S6c ACT-1) to ship the two
+remaining S6c targets:
+
+1. **`complex_gaussian_integral_norm_sq`** (1-D complex second moment):
+
+       ∫_ℂ ‖w‖² · exp(-‖w‖²) dw = π,
+
+   via `Complex.measurableEquivRealProd` + Fubini + the 1-D real second
+   moment.
+
+2. **`schur_orthogonality_complex_gaussian_diag`** (n-dim diagonal Schur):
+
+       ∫_{ℂⁿ} ‖z_i‖² · (1/π)ⁿ · exp(-∑_k ‖z_k‖²) dz = 1,
+
+   via `integral_fintype_prod_volume_eq_prod` with a per-axis factor
+   that picks `‖w‖²·exp(-‖w‖²)` on axis `i` and `exp(-‖w‖²)` elsewhere;
+   each axis integral collapses to `π`, recovering `(1/π)ⁿ · πⁿ = 1`.
+
+This completes the diagonal case of the Schur orthogonality programme. -/
+
+section DiagonalSchur
+
+private lemma integrable_sq_mul_exp_neg_sq :
+    Integrable (fun x : ℝ => x ^ 2 * Real.exp (-x ^ 2)) := by
+  have h := integrable_rpow_mul_exp_neg_mul_sq (b := 1) one_pos
+    (s := 2) (by norm_num : (-1 : ℝ) < 2)
+  simp_rw [Real.rpow_two, neg_one_mul] at h
+  exact h
+
+private lemma integrable_exp_neg_sq :
+    Integrable (fun x : ℝ => Real.exp (-x ^ 2)) := by
+  have h := integrable_exp_neg_mul_sq (b := 1) one_pos
+  simp_rw [neg_one_mul] at h
+  exact h
+
+/-- **1-D complex second moment** of the un-normalised Gaussian:
+
+    ∫_ℂ ‖w‖² · exp(-‖w‖²) dw = π.
+
+Proven via `Complex.volume_preserving_equiv_real_prod` (transport
+ℂ → ℝ × ℝ), the factorisation
+`(x²+y²) · exp(-(x²+y²)) = x²·exp(-x²)·exp(-y²) + exp(-x²)·(y²·exp(-y²))`,
+Fubini (`integral_prod_mul` on each summand), `integral_sq_exp_neg_sq`
+on the moment factor (S6c ACT-1), and `integral_b_gaussian 1` on the
+perpendicular Gaussian factor. -/
+theorem complex_gaussian_integral_norm_sq :
+    ∫ w : ℂ, ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2) = Real.pi := by
+  -- Step 1: rewrite the ℂ integrand using ‖w‖² = w.re² + w.im².
+  have h_norm : ∀ w : ℂ, ‖w‖ ^ 2 = w.re ^ 2 + w.im ^ 2 := by
+    intro w
+    rw [← Complex.normSq_eq_norm_sq, Complex.normSq_apply, sq, sq]
+  have h_eq : ∀ w : ℂ,
+      ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2) =
+        (w.re ^ 2 + w.im ^ 2) * Real.exp (-(w.re ^ 2 + w.im ^ 2)) := by
+    intro w
+    rw [h_norm]
+  simp_rw [h_eq]
+  -- Step 2: transport ∫_ℂ to ∫_{ℝ × ℝ} via the measure-preserving equiv.
+  have h_pull :
+      ∫ w : ℂ, (w.re ^ 2 + w.im ^ 2) * Real.exp (-(w.re ^ 2 + w.im ^ 2)) =
+        ∫ p : ℝ × ℝ,
+          (p.1 ^ 2 + p.2 ^ 2) * Real.exp (-(p.1 ^ 2 + p.2 ^ 2)) := by
+    have := Complex.volume_preserving_equiv_real_prod.integral_comp'
+      (g := fun p : ℝ × ℝ =>
+        (p.1 ^ 2 + p.2 ^ 2) * Real.exp (-(p.1 ^ 2 + p.2 ^ 2)))
+    simpa using this
+  rw [h_pull]
+  -- Step 3: factor (x²+y²)·exp(-(x²+y²)) as a sum of two product summands.
+  have h_factor : ∀ p : ℝ × ℝ,
+      (p.1 ^ 2 + p.2 ^ 2) * Real.exp (-(p.1 ^ 2 + p.2 ^ 2)) =
+        p.1 ^ 2 * Real.exp (-p.1 ^ 2) * Real.exp (-p.2 ^ 2)
+          + Real.exp (-p.1 ^ 2) * (p.2 ^ 2 * Real.exp (-p.2 ^ 2)) := by
+    intro p
+    rw [show -(p.1 ^ 2 + p.2 ^ 2) = -p.1 ^ 2 + -p.2 ^ 2 from by ring,
+        Real.exp_add]
+    ring
+  simp_rw [h_factor]
+  -- Step 4: switch to the product measure to enable Fubini.
+  rw [volume_eq_prod ℝ ℝ]
+  -- Step 5: split the sum (both summands are integrable on the product).
+  rw [integral_add
+        (integrable_sq_mul_exp_neg_sq.mul_prod integrable_exp_neg_sq)
+        (integrable_exp_neg_sq.mul_prod integrable_sq_mul_exp_neg_sq)]
+  -- Step 6: factor each product summand via `integral_prod_mul`.
+  rw [integral_prod_mul (fun x : ℝ => x ^ 2 * Real.exp (-x ^ 2))
+        (fun y : ℝ => Real.exp (-y ^ 2)),
+      integral_prod_mul (fun x : ℝ => Real.exp (-x ^ 2))
+        (fun y : ℝ => y ^ 2 * Real.exp (-y ^ 2))]
+  -- Step 7: evaluate the 1-D factors.
+  rw [integral_sq_exp_neg_sq]
+  have h_gauss : ∫ x : ℝ, Real.exp (-x ^ 2) = Real.sqrt Real.pi := by
+    have h := integral_b_gaussian 1 one_pos
+    simpa using h
+  rw [h_gauss]
+  -- Step 8: algebraic close: (√π/2)·√π + √π·(√π/2) = π.
+  have h_sq_pi : Real.sqrt Real.pi * Real.sqrt Real.pi = Real.pi :=
+    Real.mul_self_sqrt Real.pi_nonneg
+  have h_collapse : Real.sqrt Real.pi / 2 * Real.sqrt Real.pi +
+      Real.sqrt Real.pi * (Real.sqrt Real.pi / 2) =
+      Real.sqrt Real.pi * Real.sqrt Real.pi := by ring
+  rw [h_collapse]; exact h_sq_pi
+
+/-- **n-dimensional diagonal Schur orthogonality** for the complex
+Gaussian density: for `n : ℕ` and any axis `i : Fin n`,
+
+    ∫_{ℂⁿ} ‖z_i‖² · (1/π)ⁿ · exp(-∑_k ‖z_k‖²) dz = 1.
+
+The "diagonal" case picks a single axis `i`, multiplies by the second
+moment weight `‖z_i‖²`, and integrates against the normalised n-fold
+Gaussian density. The answer is `1` for every `i`; equivalently,
+each coordinate carries unit second-moment mass under the standard
+n-fold complex Gaussian. The implicit hypothesis `n ≥ 1` is enforced
+by `i : Fin n` (the type is uninhabited at `n = 0`).
+
+Proof sketch: rewrite the integrand as `(1/π)ⁿ · ∏_k f_k(z_k)` with
+`f_k w := if k = i then ‖w‖²·exp(-‖w‖²) else exp(-‖w‖²)`; pull the
+constant out (`integral_const_mul`), apply heterogeneous Fubini
+(`integral_fintype_prod_volume_eq_prod`), and observe that **both**
+branches of `f_k` integrate to `π` (axis `i` by
+`complex_gaussian_integral_norm_sq` from S6c ACT-2, the others by
+`complex_gaussian_integral_unit_norm` from S3). The product
+collapses to `πⁿ`; `(1/π)ⁿ · πⁿ = 1`. -/
+theorem schur_orthogonality_complex_gaussian_diag {n : ℕ} (i : Fin n) :
+    ∫ z : Fin n → ℂ, ‖z i‖ ^ 2 *
+      ((1 : ℝ) / Real.pi) ^ n * Real.exp (-(∑ k, ‖z k‖ ^ 2)) = 1 := by
+  -- Step 1: rewrite integrand as (1/π)ⁿ · ∏ k, (if k = i then … else …).
+  have h_factor : ∀ z : Fin n → ℂ,
+      ‖z i‖ ^ 2 * ((1 : ℝ) / Real.pi) ^ n *
+        Real.exp (-(∑ k, ‖z k‖ ^ 2)) =
+        ((1 : ℝ) / Real.pi) ^ n *
+          ∏ k : Fin n,
+            (if k = i then ‖z k‖ ^ 2 * Real.exp (-‖z k‖ ^ 2)
+             else Real.exp (-‖z k‖ ^ 2)) := by
+    intro z
+    -- 1.a. push the sign and turn exp(-∑) into ∏ exp(-).
+    rw [show (-(∑ k, ‖z k‖ ^ 2) : ℝ) = ∑ k, -(‖z k‖ ^ 2) from by
+          rw [Finset.sum_neg_distrib],
+        Real.exp_sum]
+    -- 1.b. split the i-th factor out of each product.
+    rw [← Finset.mul_prod_erase Finset.univ
+          (fun k => Real.exp (-‖z k‖ ^ 2)) (Finset.mem_univ i)]
+    rw [← Finset.mul_prod_erase Finset.univ
+          (fun k =>
+            if k = i then ‖z k‖ ^ 2 * Real.exp (-‖z k‖ ^ 2)
+            else Real.exp (-‖z k‖ ^ 2)) (Finset.mem_univ i)]
+    rw [if_pos rfl]
+    -- 1.c. products over `erase i` match (the else-branch is `exp`).
+    have h_erase : ∀ k ∈ Finset.univ.erase i,
+        (if k = i then ‖z k‖ ^ 2 * Real.exp (-‖z k‖ ^ 2)
+         else Real.exp (-‖z k‖ ^ 2)) = Real.exp (-‖z k‖ ^ 2) := by
+      intro k hk
+      rw [Finset.mem_erase] at hk
+      rw [if_neg hk.1]
+    rw [Finset.prod_congr rfl h_erase]
+    ring
+  simp_rw [h_factor]
+  -- Step 2: pull (1/π)ⁿ outside.
+  rw [integral_const_mul]
+  -- Step 3: heterogeneous n-fold Fubini.
+  rw [integral_fintype_prod_volume_eq_prod
+        (fun (k : Fin n) (w : ℂ) =>
+          if k = i then ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2)
+          else Real.exp (-‖w‖ ^ 2))]
+  -- Step 4: both branches integrate to π.
+  have h_each : ∀ k : Fin n,
+      ∫ w : ℂ,
+          (if k = i then ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2)
+           else Real.exp (-‖w‖ ^ 2)) = Real.pi := by
+    intro k
+    by_cases hk : k = i
+    · have hpoint : ∀ w : ℂ,
+          (if k = i then ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2)
+           else Real.exp (-‖w‖ ^ 2)) = ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2) :=
+        fun _ => if_pos hk
+      simp_rw [hpoint]
+      exact complex_gaussian_integral_norm_sq
+    · have hpoint : ∀ w : ℂ,
+          (if k = i then ‖w‖ ^ 2 * Real.exp (-‖w‖ ^ 2)
+           else Real.exp (-‖w‖ ^ 2)) = Real.exp (-‖w‖ ^ 2) :=
+        fun _ => if_neg hk
+      simp_rw [hpoint]
+      exact complex_gaussian_integral_unit_norm
+  rw [Finset.prod_congr rfl (fun k _ => h_each k)]
+  -- Step 5: ∏ π = πⁿ; (1/π)ⁿ · πⁿ = 1.
+  rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, div_pow, one_pow]
+  exact div_mul_cancel₀ _ (pow_ne_zero n Real.pi_ne_zero)
+
+end DiagonalSchur
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -886,6 +1077,8 @@ end DiagonalSchurPrep
 - `complex_fourier_gaussian_shifted` : proved (modulation companion, direct `_root_.fourier_gaussian_innerProductSpace'` specialization at `V := ℂ`, S6b ACT-2).
 - `complex_fourier_gaussian_density_eigen` : proved (the normalised density `(1/π) · exp(-π · ‖z‖²)` is a Fourier eigenfunction with eigenvalue `1`, via `integral_const_mul` + `complex_fourier_gaussian_pi`, S6b ACT-2).
 - `integral_sq_exp_neg_sq` : proved (1-D real second moment `∫ x²·exp(-x²) = √π/2`, via `gaussianReal 0 (1/2 : ℝ≥0)` variance shortcut, S6c ACT-1).
+- `complex_gaussian_integral_norm_sq` : proved (1-D complex second moment `∫_ℂ ‖w‖²·exp(-‖w‖²) = π`, via `measurableEquivRealProd` + Fubini split + `integral_sq_exp_neg_sq` + `integral_b_gaussian 1`, S6c ACT-2).
+- `schur_orthogonality_complex_gaussian_diag` : proved (n-dim diagonal Schur orthogonality `∫_{ℂⁿ} ‖z_i‖²·(1/π)ⁿ·exp(-∑‖z_k‖²) = 1` for `i : Fin n`, via `integral_fintype_prod_volume_eq_prod` + per-axis collapse to `π`, S6c ACT-2).
 
 All theorems above are sorry-free and axiom-free.
 

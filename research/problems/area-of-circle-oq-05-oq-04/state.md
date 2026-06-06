@@ -1,9 +1,9 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S6c ACT-1 — `integral_sq_exp_neg_sq` via `gaussianReal` variance shortcut shipped, 3208/3208 jobs)
-**Since**: 2026-06-04 (S6c ACT-1 this PR; iter 14 → 15)
-**Iteration**: 15 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + S6c PREP-3 + **S6c ACT-1**)
-**Last canonical sync**: 2026-06-04 (researcher-3, this PR — S6c ACT-1 ships `integral_sq_exp_neg_sq` per PREP-3 §3 route 2)
+**Phase**: RESEARCH (S6c ACT-2 — `complex_gaussian_integral_norm_sq` + `schur_orthogonality_complex_gaussian_diag` shipped; diagonal Schur closed)
+**Since**: 2026-06-06 (S6c ACT-2 this PR; iter 15 → 16)
+**Iteration**: 16 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + S6c PREP-3 + S6c ACT-1 + **S6c ACT-2**)
+**Last canonical sync**: 2026-06-06 (researcher-1, this PR — S6c ACT-2 ships `complex_gaussian_integral_norm_sq` + `schur_orthogonality_complex_gaussian_diag` per PREP-3 §5)
 
 > _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
 > (Schur orthogonality S6c, n-dim Fourier-Gaussian lift, the multi-week S6d
@@ -137,11 +137,11 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 
 - Sorries: 0
 - Axioms: 0
-- Build: verified at S6c ACT-1 close (2026-06-04 via Docker wrapper,
-  `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`),
-  **3208/3208 jobs at v4.26.0**.
-- Cumulative: 921 LOC / 27 theorems + 2 private helpers / 0 sorries / 0 axioms.
-- Open Lean PR: this S6c ACT-1 PR (researcher-3, 2026-06-04).
+- Build: re-verified at S6c ACT-2 close (2026-06-06 via Docker wrapper,
+  `./proofs/scripts/docker-build.sh Proofs.AreaOfCircleOQ05OQ04`) — see
+  PR body for the final job count at v4.26.0 / Mathlib `2df2f0150c`.
+- Cumulative: 1098 LOC / 29 theorems + 4 private helpers / 0 sorries / 0 axioms.
+- Open Lean PR: this S6c ACT-2 PR (researcher-1, 2026-06-06).
 
 ## Path-to-completion (consolidated)
 
@@ -164,36 +164,44 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 | **S6b ACT-2** | **ACT** | **`complex_fourier_gaussian_shifted` + `_density_eigen` (Part 7, +2 thm, sorry-free)** | **#21779** | **merged 2026-06-01T03:52Z** |
 | STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 | #21977 | merged 2026-06-01T19:23Z |
 | S6c PREP-3 | PREP | Bearer recheck @ `2df2f0150c` + paste-ready `gaussianReal`-variance route for `integral_sq_exp_neg_sq` (~20-25 LOC ACT-1 skeleton) | (merged) | merged |
-| **S6c ACT-1** | **ACT** | **`integral_sq_exp_neg_sq` via `gaussianReal 0 (1/2)` variance shortcut (Part 8, +1 thm, 22 LOC proof, 3208/3208 jobs)** | **(this)** | **unmerged** |
-| (next) | ACT-2 | `complex_gaussian_integral_norm_sq` + n-dim `schur_orthogonality_complex_gaussian_diag` (~40-55 LOC) | — | unclaimed |
+| **S6c ACT-1** | **ACT** | **`integral_sq_exp_neg_sq` via `gaussianReal 0 (1/2)` variance shortcut (Part 8, +1 thm, 22 LOC proof, 3208/3208 jobs)** | **#22316** | **merged 2026-06-05T01:11Z** |
+| **S6c ACT-2** | **ACT** | **`complex_gaussian_integral_norm_sq` (1-D complex moment) + `schur_orthogonality_complex_gaussian_diag` (n-dim diagonal Schur) (Part 9, +2 thm + 2 private helpers, ~177 LOC)** | **(this)** | **unmerged** |
+| (next, optional) | ACT-3 | Off-diagonal Schur `∫_{ℂⁿ} ⟨z_i, z_j⟩·(1/π)ⁿ·exp(-∑‖z_k‖²) = 0` for `i ≠ j` via per-axis odd symmetry (~30-40 LOC) | — | unclaimed |
 
 ## Next Action
 
-S6c ACT-1 (this PR, researcher-3, 2026-06-04) ships the load-bearing 1-D
-real second moment
+S6c ACT-2 (this PR, researcher-1, 2026-06-06) ships the two follow-on
+theorems deferred at S6c ACT-1 close, completing the diagonal case of
+the Schur orthogonality programme:
 
-    integral_sq_exp_neg_sq : ∫ x : ℝ, x^2 * exp(-x^2) = √π / 2
+    complex_gaussian_integral_norm_sq      : ∫_ℂ ‖w‖² · exp(-‖w‖²) dw = π
+    schur_orthogonality_complex_gaussian_diag {n} (i : Fin n) :
+        ∫_{ℂⁿ} ‖z_i‖² · (1/π)ⁿ · exp(-∑‖z_k‖²) = 1
 
-as a new Part 8 of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (Diagonal Schur
-prerequisite). Proof: 22 LOC body via the `gaussianReal 0 (1/2 : ℝ≥0)`
-variance shortcut (PREP-3 §3 route 2) — variance equals `∫ x² · pdf` since
-the mean is 0, and `(√π)⁻¹·exp(-x²)` is the pdf at v = 1/2. Sorry-free,
-axiom-free, Docker-verified 3208/3208 jobs at v4.26.0.
+as a new Part 9 of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean`. The 1-D
+complex moment uses `Complex.measurableEquivRealProd` + Fubini (split
+the integrand into two `integral_prod_mul` summands) + the S6c ACT-1
+moment + `integral_b_gaussian 1`. The n-dim diagonal Schur uses
+`integral_fintype_prod_volume_eq_prod` with a `if k = i` per-axis factor;
+both branches integrate to π, so `∏ k, π = πⁿ` collapses against `(1/π)ⁿ`.
+Sorry-free, axiom-free.
 
-See `sessions/2026-06-04-s6c-act-1-integral-sq-exp-neg-sq.md` for the full
-ACT report (proof structure, bearer recheck, PREP-3 risk register replay,
-linter notes).
+See `sessions/2026-06-06-s6c-act-2-norm-sq-and-schur-diag.md` for the
+full ACT-2 report (proof structure, bearer recheck delta from PREP-3,
+LOC accounting).
 
-**S6c ACT-2 (next research claim)**: ship `complex_gaussian_integral_norm_sq`
-(~15-20 LOC, 1-D complex moment via `Complex.measurableEquivRealProd` +
-Fubini, leveraging the new `integral_sq_exp_neg_sq`) and
-`schur_orthogonality_complex_gaussian_diag` (~25-35 LOC, n-dim diagonal
-Schur via `integral_fintype_prod_volume_eq_prod`). Route unchanged from
-PREP-2 §3.2-3.3 and PREP-3 §5; no further PREP needed before ACT-2.
+**S6c ACT-3 (next research claim, optional)**: ship the off-diagonal
+Schur orthogonality
 
-**Pre-ACT-1 gate**: host disk must be GREEN (≥5 Gi free) before launching the
-Docker rebuild. At PREP-3 time `df -h /Users/rwalters` reports 100% capacity,
-2.0Gi free — unsafe for a 3000+-job rebuild.
+    ∫_{ℂⁿ} ⟨z_i, z_j⟩ · (1/π)ⁿ · exp(-∑‖z_k‖²) dz = 0   (i ≠ j)
+
+via per-axis Fubini (`integral_fintype_prod_volume_eq_prod`) + odd
+symmetry on each of the `z_i`, `z_j` axes against the even Gaussian
+weight. PREP-2 §4.1 sketches the route; no fresh PREP needed.
+
+**Pre-ACT-2 gate**: host disk re-checked at S6c ACT-2 open (2026-06-06)
+— `df -h /Users/rwalters` reports 35 Gi free / 97% capacity, GREEN per
+the ≥5 Gi threshold, safe for the 3000+-job rebuild.
 
 **Deferred (orthogonal to S6c, multi-week)**:
 
