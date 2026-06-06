@@ -14076,9 +14076,9 @@
       "issues": []
     },
     "fundamental-arithmetic-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-03T14:00:00Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-06-06T11:22:19Z",
+      "result": "clean",
       "issues": [
         "badge was original but existence direction uses Nat.factorization_prod_pow_eq_self (Mathlib); corrected to mathlib"
       ]
