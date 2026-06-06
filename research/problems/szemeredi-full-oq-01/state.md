@@ -1,10 +1,57 @@
 # Research State: szemeredi-full-oq-01
 
 ## Current State
-**Phase**: ACT (host-recovered, Mathlib API audit complete — 1 sorry remaining)
+**Phase**: ACT (host-recovered, Mathlib API audit complete — 1 sorry remaining; isolation-worktree blocked for tactic-level work)
 **Path**: full
-**Since**: 2026-06-04T16:05:00Z (S9 OBSERVE-API-AUDIT confirms host-recovery + verifies all Mathlib v4.26 lemmas referenced by the proof draft)
-**Iteration**: 9 (last update: 2026-06-04 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), plus this S9)
+**Since**: 2026-06-06T13:00:00Z (S10 STATE-SYNC re-confirms S9 pin/audit + documents persistent `.lake` symlink-loop blocker)
+**Iteration**: 10 (last update: 2026-06-06 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), 9, this S10)
+
+## S10 STATE-SYNC (researcher-1, 2026-06-06T13:00Z, doc-only)
+
+**Why S10 fires**: S9 (2026-06-04) flagged that S10 ACT must run from the
+main checkout, not a `.loom/worktrees/*` isolation. Two days later, the
+depth-first selector re-claimed the slug from researcher-1's isolation
+worktree (`/Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-1`).
+S10 verifies the obstruction still applies and produces a clean doc-only
+state sync rather than risk unvalidated Lean code.
+
+**Pin currency check (2026-06-06T13:00Z)**:
+- `proofs/lake-manifest.json` mathlib `rev` = `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  (`inputRev: v4.26.0`). Identical to S9. The 5 lemma signatures S9 audited
+  (`tendsto_measure_of_null_frontier_of_tendsto'`, `IsClopen.frontier_eq`,
+  `le_of_tendsto_of_tendsto'`, `ENNReal.tendsto_nat_nhds_top`,
+  `ENNReal.tendsto_inv_nat_nhds_zero`) are still at the exact paths S9
+  documented. The proof template in `state.md:122-172` (now `state.md:140-189`
+  after S10 head insertion) remains API-sound.
+
+**Isolation-blocker check (2026-06-06T13:00Z)**:
+- `proofs/.lake` resolves to `/Users/rwalters/GitHub/lean-genius/proofs/.lake`
+  (main repo's directory).
+- `ls proofs/.lake/packages/` returns `Too many levels of symbolic links`
+  — the symlink chain is structurally circular at the package level.
+- Lean tactic-level validation from this worktree is infeasible. S9's
+  recommendation (run ACT from main checkout) still holds for what we
+  now call S11.
+
+**Explicit non-actions (out of scope for S10)**:
+- No `.lean` edits to `proofs/Proofs/FurstenbergCorrespondenceOQ01.lean`.
+  Same rationale as S9: adding unvalidated tactic-level code from an
+  isolation worktree would mask future blocker signals.
+- No `meta.json` edits. (No mathematical content change.)
+- No `problem.md` / sibling slug / `lake-manifest.json` edits.
+- No pool status change. (Researcher-1 will release the claim; pool
+  remains `available`. The slug remains in the rotation, but each
+  isolation-worktree researcher hitting it should now find this S10
+  documentation explaining why a passing-doc-sync is the correct action.)
+
+**S10 closes in a 2-file doc-only motion**:
+
+1. `state.md` head — prepend this S10 block above S9; refresh Phase
+   header metadata (Since, Iteration).
+2. `knowledge.md` — append Session 10 STATE-SYNC entry below S9.
+
+No third-file move — the `meta.json` numerics and prior S9 / S8 / S7
+narrative are correct as-is.
 
 ## S9 OBSERVE-API-AUDIT (researcher-1, 2026-06-04T16:05Z, doc-only)
 
