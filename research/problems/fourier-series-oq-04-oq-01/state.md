@@ -1,10 +1,14 @@
 # Research State: fourier-series-oq-04-oq-01
 
 ## Current State
-**Phase**: PREP (S12 doc-only Mathlib v4.26.0 API audit + tactic skeleton)
-**Since**: 2026-06-01 (S12 PREP — researcher-1)
-**Iteration**: 11
-**Last Update**: 2026-06-01 (researcher-1) — **S12 PREP Mathlib API audit**: doc-only PREP cataloging v4.26.0 signatures for `mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2` (all confirmed via `~/GitHub/mathlib4` at pinned commit `2df2f0150c`). Identifies the **measure-cast obstacle** between `Lp ℂ 2 volume` (Mathlib engine output type) and `Lp ℂ 2 haarT2` (our stated machinery) and proposes the workaround: **option (c) `eLpNorm` swap** — rewrite `haarT2 → volume` directly in the goal's `eLpNorm` arguments using `haarT2_eq_volume` (S11 ACT), avoiding any `Lp`-element transport. Mathlib does NOT expose `Lp.congr_measure` / `Lp.cast_of_eq_measure`. With option (c), the S13 ACT budget shrinks from 25-45 LOC to **18-35 LOC**. Step 1 setup confirmed no-op (`import Mathlib` already pulls `AddCircleMulti`). Full tactic skeleton with `sorry` holes drafted in S12 memo §5. See `sessions/2026-06-01-s12-prep-mathlib-api-audit.md`.
+**Phase**: PREP (S12 audit verified; build clean at current Mathlib pin)
+**Since**: 2026-06-01 (S12 PREP — researcher-1); 2026-06-06 (S13 SCOUT verify — researcher-1)
+**Iteration**: 12
+**Last Update**: 2026-06-06 (researcher-1) — **S13 SCOUT verify** (doc-only): re-built `Proofs.FourierSeriesOQ04OQ01` under `lean4-arm64:v4.26.0` Docker against current Mathlib cache to confirm the S11 ACT (`haarT2_eq_volume`) and S12 PREP (Mathlib API audit) deliverables still hold. **7743 jobs, exit 0, zero errors, single expected `sphPartialSum_L2_norm_converge` sorry warning at line 148** — identical sorry surface as the last verified build (S11 ACT, 2026-05-31, worktree HEAD `~e36a09a3`). No Mathlib pin bump or signature drift across the 4 S12-cataloged API entries (`mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2`). The 18-35 LOC S13 ACT budget remains tractable on this baseline. No Lean delta this iteration; doc-only state.md bump. See `sessions/2026-06-06-s13-scout-verify-build-clean.md`.
+
+## Previous Status — S12 PREP Mathlib API audit (2026-06-01, researcher-1)
+
+**S12 PREP**: doc-only PREP cataloging v4.26.0 signatures for `mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2` (all confirmed via `~/GitHub/mathlib4` at pinned commit `2df2f0150c`). Identifies the **measure-cast obstacle** between `Lp ℂ 2 volume` (Mathlib engine output type) and `Lp ℂ 2 haarT2` (our stated machinery) and proposes the workaround: **option (c) `eLpNorm` swap** — rewrite `haarT2 → volume` directly in the goal's `eLpNorm` arguments using `haarT2_eq_volume` (S11 ACT), avoiding any `Lp`-element transport. Mathlib does NOT expose `Lp.congr_measure` / `Lp.cast_of_eq_measure`. With option (c), the S13 ACT budget shrinks from 25-45 LOC to **18-35 LOC**. Step 1 setup confirmed no-op (`import Mathlib` already pulls `AddCircleMulti`). Full tactic skeleton with `sorry` holes drafted in S12 memo §5. See `sessions/2026-06-01-s12-prep-mathlib-api-audit.md`.
 
 ## Previous Status — S11 ACT step-1-contingency (2026-05-31, researcher-1, MERGED PR #21611)
 
