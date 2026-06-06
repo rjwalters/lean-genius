@@ -1,15 +1,16 @@
 # Current State
 
-**Phase**: ACT (S4 — `even_card_interior_doors_hyper` closed; 2 sorries remaining: `door_count_parity_hyper` equality case + `sperner_parity_hyper` chain)
+**Phase**: ACT (S5 — `door_count_parity_hyper` equality case closed; 1 sorry remaining: `sperner_parity_hyper` chain)
 **Since**: 2026-05-12T20:45:00Z (S1 OBSERVE)
-**Iteration**: 13
-**Last update**: 2026-06-04 (researcher-1) — **S4 ACT**: `even_card_interior_doors_hyper` closed (line 271, 41-LOC body) via `Sperner.even_card_fpf_invol` applied to `adjMapHyper adj` on the Σ-type filter. Two unanticipated Lean-elaboration quirks vs. S2e PREP recipe: (a) `simp only` does not reduce the `match` in `adjMapHyper`'s body — worked around with a local `hMap` lemma using `unfold`; (b) structure-eta closes `⟨p.1, p.2⟩ = p` as rfl, so the involution step needs no explicit `Sigma.eta` (the fpf step still does). File 342 → 382 LOC, Docker-verified 7744 jobs / 26s. Sorries 3 → 2. See `sessions/2026-06-04-s4-act-even-card-interior-doors-hyper.md`.
+**Iteration**: 14
+**Last update**: 2026-06-05 (researcher-1) — **S5 ACT**: `door_count_parity_hyper` equality case closed (line ~189, ~80-LOC body) via `Fintype.equivFinOfCardEq` transport + `Equiv.swap` `top`-normalisation, then parent invocation `SpernerMathlib.door_count_parity n f'`. Bridges: LHS via `Finset.card_equiv` + bidirectional predicate iff; RHS via direct surjectivity iff (Equiv injective + apply_symm_apply). Deviation from S2d PREP recipe: replaced `Fin.eq_castSucc_of_ne_last` with explicit `(eP p).val < n` pigeonhole (worktree `.lake` is recursive symlink so the named lemma could not be locally verified). File 382 → 462 LOC. Sorries 2 → 1. See `sessions/2026-06-05-s5-act-door-count-parity-equality-case.md`. Docker verification PENDING (concurrent-checkout race lost the first attempt; will re-run after commit lands).
 
 | Session | Date | Mode | PR | Title / focus | LOC |
 |---|---|---|---|---|---|
 | **S2 ACT** | 2026-05-31 | ACT | #21489 | Ship `SpernerMathlibHyper.lean` 289 LOC / 3 sorries / 0 axioms — hypergraph API with `IsDoorHyper`, `IsPanchromaticHyper`, `adjMapHyper`, door-transfer lemmas, structural sorries per S2c/S2d/S2e PREP. | +289 |
 | **S3 ACT** | 2026-06-01 | ACT | #21683 | Close strict case of `door_count_parity_hyper` (~38 LOC pigeonhole). Equality case remains as the sole sorry inside the by_cases. | +55/-2 |
-| **S4 ACT** | 2026-06-04 | ACT | (this PR) | Close `even_card_interior_doors_hyper` via `Sperner.even_card_fpf_invol` on `adjMapHyper adj`. 41-LOC body; +40 LOC net. Sorries 3 → 2. Two PREP-unanticipated elaboration quirks (match non-reduction under `simp only`; structure-eta as rfl). | +40 |
+| **S4 ACT** | 2026-06-04 | ACT | (#22???) | Close `even_card_interior_doors_hyper` via `Sperner.even_card_fpf_invol` on `adjMapHyper adj`. 41-LOC body; +40 LOC net. Sorries 3 → 2. Two PREP-unanticipated elaboration quirks (match non-reduction under `simp only`; structure-eta as rfl). | +40 |
+| **S5 ACT** | 2026-06-05 | ACT | (this PR) | Close `door_count_parity_hyper` equality case via `Fintype.equivFinOfCardEq` + `Equiv.swap` transport to `SpernerMathlib.door_count_parity n f'`. ~80-LOC body; bearers from S2d PREP except `Fin.eq_castSucc_of_ne_last` replaced with explicit pigeonhole. Sorries 2 → 1. | +80 |
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-1)
 
