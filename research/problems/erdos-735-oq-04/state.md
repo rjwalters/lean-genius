@@ -1,12 +1,43 @@
 # Current State
 
-**Phase**: ACT BUILD-VERIFIED — S4 ACT (`oneflat_eq_parent`) shipped + Docker-verified on Mathlib v4.26.0 (researcher-1, 2026-05-31); cumulative 3 theorems / 4 defs / 0 axioms / 0 sorries
-**Since**: 2026-05-31 (S4 ACT shipped + build-verified — third trivial-case target discharged)
-**Iteration**: 8 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → **S4 ACT**)
-**Last Updated**: 2026-05-31T(this session)Z
+**Phase**: S5 PREP — refined higher-dim conjecture (paste-ready axiom signature, doc-only) (researcher-1, 2026-06-05); cumulative 3 theorems / 4 defs / 0 axioms / 0 sorries (unchanged from S4 ACT)
+**Since**: 2026-06-05 (S5 PREP — converts the S1 OBSERVE axiom sketch with `sorry` placeholders into a syntactically complete, paste-ready signature; identifies and documents the `IsIncenterConfigD` skeleton gap)
+**Iteration**: 9 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → **S5 PREP**)
+**Last Updated**: 2026-06-05T(this session)Z
 
 > _Note: state.md `Phase` line uses local-slug encoding (ACT BUILD-VERIFIED ≡ ACT-VERIFIED in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
+
+## S5 PREP — refined higher-dim conjecture (researcher-1, 2026-06-05)
+
+Produces a **paste-ready, syntactically complete** `axiom` signature
+for the higher-dim ABKPR extension (lines case, `d ≥ 3`).  This
+closes a defect in the S1 OBSERVE sketch (which placed `sorry : Prop`
+inside an `axiom` body, which does not type-check).
+
+**Deliverable**: `sessions/2026-06-05-s5-prep-conjecture-refinement.md`
+(13 sections, ~440 lines).  The session memo provides:
+
+- §3.A–D: 4 paste-ready `def`s for the conjectured classes
+  (`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`,
+  `IsIncenterConfigD`).
+- §3.E: the assembled axiom `oneflat_classification_higher_dim`.
+- §4: confirmation that the S6b refutation (octa/cube fail $k = 2$)
+  is **independent** of this $k = 1$ axiom.
+- §5: sanity check via `oneflat_eq_parent` (S4 ACT) + parent's
+  `magic_classification` for the `d = 2` case.
+- §7: S5 ACT implementation order (~+40 LOC; +4 defs; +1 axiom;
+  +1 corollary theorem `oneflat_classification_dim_two`).
+- §8: bearer audit (all already pinned; no new imports).
+- §9: honest framing — `IsIncenterConfigD` (§3.D) is a structural
+  skeleton, not a tight characterisation; Mathlib's `ℝᵈ` bisector
+  API is absent at v4.26.0.
+
+**Build cost**: 0 (doc-only; no Lean file edits in this iteration).
+
+**Post-S5-ACT projection** (when a future iteration discharges):
+180 LOC → ~220 LOC; 3 theorems → 4; 4 defs → 8; 0 axioms → **1**;
+0 sorries → 0.  Slug eventual `axiomCount: 1`.
 
 ## S4 ACT — parent reduction `oneflat_eq_parent` (researcher-1, 2026-05-31)
 
@@ -142,7 +173,11 @@ Prior iterations:
 | S2 PREP | 2026-05-15 | researcher-8 | #19248 | PREP | Paste-ready Lean scaffold + Mathlib bearer pin verification (doc-only) |
 | S2 PREP | 2026-05-15 | (sibling) | #19278 | PREP | v4.26.0 AffineSubspace API pin + stale-parent-syntax sweep (doc-only) |
 | S3 PREP | 2026-05-15 | researcher-3 | #19245 | PREP | Audit-corrected B1-B4 bearer chain; 3 internal sub-sorries remain (doc-only) |
-| **S3 PREP-2** | **2026-05-16** | **researcher-12** | **(this PR)** | **PREP-2** | **Upgrade S3 PREP §2.2 + §3.2 to fully-discharged paste-ready (~70 LOC, 0 sub-sorries); 5 new bearers (N1-N5) pin-verified (doc-only)** |
+| S3 PREP-2 | 2026-05-16 | researcher-12 | #19573 | PREP-2 | Upgrade S3 PREP §2.2 + §3.2 to fully-discharged paste-ready (~70 LOC, 0 sub-sorries); 5 new bearers (N1-N5) pin-verified (doc-only) |
+| S3 ACT | 2026-05-16 | researcher-9 | #19687 | ACT | Paste S3 PREP-2 §6 theorem bodies into `Erdos735OQ04.lean` (98→153 LOC, 2 sorries → 0; build pending — Docker hung) |
+| S4 BUILD-VERIFY | 2026-05-28/30 | researcher-3 | #20882 | BUILD-VERIFY | Repair API drift (`Module.finrank_eq_of_rank_eq`, `AffineSubspace.mem_top` explicit field) + Docker build-verify the slug |
+| S4 ACT | 2026-05-31 | researcher-1 | #21732 | ACT | `oneflat_eq_parent` (d=2, k=1 reduction) shipped + Docker build-verified (154→180 LOC, +1 theorem) |
+| **S5 PREP** | **2026-06-05** | **researcher-1** | **(this PR)** | **PREP** | **Refined higher-dim conjecture; paste-ready axiom signature; closes S1 OBSERVE `sorry`-in-`axiom`-body defect (doc-only)** |
 
 Per session log
 `sessions/2026-05-13-s2-act-scaffold.md`, the build-and-rebuild loop surfaced
@@ -182,8 +217,9 @@ For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular pol
 |---|---|---|---|
 | S2 | Lean definitions + 2 sorry-theorems (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `kFlatSum`, `IsKFlatMagic`, `zero_flat_magic_trivial` [sorry], `ambient_flat_magic_trivial` [sorry]) | scaffold shipped | #19012 |
 | S3 | Discharge `zero_flat_magic_trivial` (k = 0) + `ambient_flat_magic_trivial` (k = d) | **shipped + build-verified** | #19687 (paste), #20882 (build-verify) |
-| S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **shipped + build-verified** | **(this PR)** |
-| S5 | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
+| S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **shipped + build-verified** | #21732 |
+| S5 PREP | Refined higher-dim conjecture (paste-ready axiom signature) | **shipped (doc-only)** | **(this PR)** |
+| S5 ACT | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
 | S6a | Tetrahedron certificate (PREP) | PREP shipped | #18486 |
 | S6a-ACT | Tetrahedron certificate (Lean) | not shipped | — |
 | S6b/c | Octahedron + cube refutations (PREP) | PREP shipped | #18541 |
@@ -215,19 +251,37 @@ Practical:
 
 ## Next Action
 
-**S4 ACT shipped + build-verified** — `oneflat_eq_parent` discharged on
-`proofs/Proofs/Erdos735OQ04.lean` (researcher-1, 2026-05-31, this PR);
-180 LOC / 3 theorems / 4 defs / 0 axioms / 0 sorries; Docker-clean
-3062 jobs at pinned Mathlib v4.26.0.  Trivial-case targets (k = 0,
-k = d, d = 2 ∧ k = 1 reduction) are all closed.
+**S5 PREP shipped (this PR, 2026-06-05, doc-only)** — paste-ready
+axiom signature `oneflat_classification_higher_dim` for the
+$d \ge 3, k = 1$ extension of ABKPR 2008.  Closes the S1 OBSERVE
+defect (`sorry : Prop` in `axiom` body).  Full design in
+`sessions/2026-06-05-s5-prep-conjecture-refinement.md` (§§1–13).
 
-**Next substantive ACT (any researcher)**: build out the higher-flat
-infrastructure — either (a) S6a-ACT tetrahedron certificate (PREP at
-#18486, paste-ready), (b) S6b/c-ACT octa+cube refutations (PREP at
-#18541, paste-ready), (c) S5 axiom-design PREP refining the higher-dim
-conjecture to the narrow regular-polytope subfamily (exclude octa/cube
-per S6b), or (d) S6e general-position uniform-weight theorem for
-`1 ≤ k ≤ d - 1` in `ℝ^d`.  All four are independently shippable.
+**Next substantive ACT (any researcher)**:
+
+- **(a) S5 ACT** — paste the §3.A–E definitions + axiom into
+  `Erdos735OQ04.lean`. ~+40 LOC, +4 defs, +1 axiom, 0 new sorries.
+  Optional: also prove the doc-only corollary
+  `oneflat_classification_dim_two` reducing to parent's axiom via
+  `oneflat_eq_parent` (S4 ACT) — ~12 LOC.  This is the **lowest-risk
+  remaining ACT** because all bearers are already pinned (§8 audit)
+  and no new imports are required.
+- **(b) S6a-ACT** — tetrahedron certificate (PREP at #18486,
+  paste-ready, ~80–110 LOC, new file
+  `Erdos735OQ04Tetrahedron.lean`).
+- **(c) S6b/c-ACT** — octahedron + cube refutations (PREP at #18541,
+  paste-ready).
+- **(d) S6e** — general-position uniform-weight theorem for
+  `1 ≤ k ≤ d - 1` in `ℝᵈ` (no PREP yet; requires defining
+  `IsGeneralPositionD` and proving the uniform-weighting
+  certificate; ~40-60 LOC; can be combined with (a) S5 ACT
+  since both define `IsGeneralPositionD`).
+
+All four are independently shippable.  **Recommendation: (a) S5 ACT
+next**, since it (i) introduces the first `axiom` to the slug
+(closing the gallery `status: "axiomatized"` requirement), (ii)
+defines `IsGeneralPositionD` which (d) S6e also needs, and (iii) has
+the lowest Docker risk.
 
 **Historical (pre-S4-BUILD-VERIFY) recipe** (preserved for
 traceability):
