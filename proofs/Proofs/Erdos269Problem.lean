@@ -51,8 +51,8 @@ def IsPSmooth (P : Set ℕ) (n : ℕ) : Prop :=
 
 /-- 1 is P-smooth for any P (vacuously: 1 has no prime divisors). -/
 theorem one_isPSmooth (P : Set ℕ) : IsPSmooth P 1 :=
-  ⟨Nat.one_pos, fun p hp hdiv =>
-    absurd (Nat.le_of_dvd Nat.one_pos hdiv) (not_le_of_lt hp.one_lt)⟩
+  ⟨Nat.one_pos, fun _p hp hdiv =>
+    absurd (Nat.le_of_dvd Nat.one_pos hdiv) (not_le_of_gt hp.one_lt)⟩
 
 /-- If p ∈ P and p is prime, then p is P-smooth. -/
 theorem prime_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P) :
@@ -80,8 +80,8 @@ This is the structural building block for the "P infinite ⇒ {a_n} infinite" ar
 if any prime p lies in P, then the powers p, p², p³, ... give infinitely many P-smooth
 numbers, so the smoothSeq sequence is well-defined for all indices. -/
 theorem pow_isPSmooth {P : Set ℕ} {p : ℕ} (hp : p.Prime) (hpP : p ∈ P)
-    {k : ℕ} (hk : 1 ≤ k) : IsPSmooth P (p ^ k) := by
-  refine ⟨Nat.pos_pow_of_pos k hp.pos, ?_⟩
+    {k : ℕ} (_hk : 1 ≤ k) : IsPSmooth P (p ^ k) := by
+  refine ⟨pow_pos hp.pos k, ?_⟩
   intro q hq hdiv
   -- q is prime and q ∣ p^k, so q ∣ p
   have hqp : q ∣ p := hq.dvd_of_dvd_pow hdiv
@@ -106,7 +106,7 @@ noncomputable def smoothSeq (P : Set ℕ) : ℕ → ℕ :=
 /-- smoothSeq P 0 = 1 for any nonempty P.
 The 0-th P-smooth number is 1, since 1 is vacuously P-smooth (has no prime divisors)
 and 0 is not P-smooth (fails the positivity requirement). -/
-theorem smoothSeq_zero (P : Set ℕ) (hP : P.Nonempty) : smoothSeq P 0 = 1 := by
+theorem smoothSeq_zero (P : Set ℕ) (_hP : P.Nonempty) : smoothSeq P 0 = 1 := by
   classical
   unfold smoothSeq
   -- Use Nat.nth_count: if p n, then nth p (count p n) = n
@@ -187,7 +187,7 @@ The problem can also be stated as: is the series NOT rational?
 def isSeriesRational (P : Set ℕ) : Prop :=
   ∃ q : ℚ, (q : ℝ) = lcmSeries P
 
-theorem erdos_269_equivalent (P : Finset ℕ) (hPrime : ∀ p ∈ P, p.Prime) (hCard : P.card ≥ 2) :
+theorem erdos_269_equivalent (P : Finset ℕ) (_hPrime : ∀ p ∈ P, p.Prime) (_hCard : P.card ≥ 2) :
     ¬ isSeriesRational (P : Set ℕ) ↔ Irrational (lcmSeries (P : Set ℕ)) := by
   simp [isSeriesRational, Irrational]
 
