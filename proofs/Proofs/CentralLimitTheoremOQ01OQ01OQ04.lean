@@ -246,7 +246,7 @@ theorem univariate_embed_stable (φ : ℝ → ℂ) (c : ℝ)
       (φ (t * (n : ℝ) ^ (-c))) ^ n = φ t) :
     HasScalarExponent 1 (univariateEmbed φ) c := by
   refine ⟨fun _ _ => 0, fun n hn ξ => ?_⟩
-  simp only [univariateEmbed, vecInner, Pi.zero_apply, zero_mul,
+  simp only [univariateEmbed, vecInner, zero_mul,
              Finset.sum_const_zero, ofReal_zero, mul_zero, Complex.exp_zero, mul_one]
   exact hstable n hn (ξ 0)
 
@@ -402,7 +402,7 @@ axiom finite_cov_in_gaussian_doa (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
     (hSg : Matrix.PosSemidef Sg)
     (φ : (Fin d → ℝ) → ℂ)
     (hφ_char : φ (fun _ => 0) = 1)
-    (hφ_cov : ∃ (hφ_reg : True),
+    (hφ_cov : ∃ (_hφ_reg : True),
       Filter.Tendsto (fun ξ : Fin d → ℝ => φ ξ) (nhds 0) (nhds 1)) :
     ∃ ψ : (Fin d → ℝ) → ℂ, InOperatorDomainOfAttraction d φ ψ
 

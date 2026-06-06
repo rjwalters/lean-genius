@@ -3,7 +3,7 @@ import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
 import Mathlib.NumberTheory.DiophantineApproximation.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.RingTheory.Algebraic.Basic
-import Mathlib.Data.Real.Irrational
+import Mathlib.NumberTheory.Real.Irrational
 import Mathlib.Tactic
 import Proofs.eTranscendental
 
