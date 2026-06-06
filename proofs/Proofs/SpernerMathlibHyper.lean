@@ -185,8 +185,88 @@ theorem door_count_parity_hyper
     -- `le_antisymm hι_size (not_lt.mp hcard)`; transport `f` to the parent's
     -- `Fin (d+1)` shape via `Fintype.equivOfCardEq` + a `top`-permutation
     -- normalisation, then invoke `SpernerMathlib.door_count_parity`. See
-    -- S2c PREP cardinality dichotomy and S2d PREP bearer chains.
-    sorry
+    -- S2c PREP cardinality dichotomy and S2d PREP bearer chains (S5 ACT impl).
+    have hcard_eq : Fintype.card ι_one = Fintype.card P :=
+      le_antisymm hι_size (not_lt.mp hcard)
+    have hP_pos : 0 < Fintype.card P := Fintype.card_pos_iff.mpr ⟨top⟩
+    set n := Fintype.card P - 1 with hn_def
+    have hcardP_succ : Fintype.card P = n + 1 := by omega
+    have hcardι_succ : Fintype.card ι_one = n + 1 := by
+      rw [hcard_eq, hcardP_succ]
+    let eι : ι_one ≃ Fin (n + 1) := Fintype.equivFinOfCardEq hcardι_succ
+    let eP_base : P ≃ Fin (n + 1) := Fintype.equivFinOfCardEq hcardP_succ
+    let eP : P ≃ Fin (n + 1) :=
+      eP_base.trans (Equiv.swap (eP_base top) (Fin.last n))
+    have he_top : eP top = Fin.last n := by
+      simp [eP, Equiv.swap_apply_left]
+    let f' : Fin (n + 1) → Fin (n + 1) := fun i' => eP (f (eι.symm i'))
+    have hparent := SpernerMathlib.door_count_parity n f'
+    have hlhs_card :
+        (Finset.univ.filter (fun k : ι_one =>
+          ∀ p : P, p ≠ top → ∃ i : ι_one, i ≠ k ∧ f i = p)).card =
+        (Finset.univ.filter (fun k' : Fin (n + 1) =>
+          ∀ j : Fin n, ∃ i' : Fin (n + 1), i' ≠ k' ∧
+            f' i' = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩)).card := by
+      apply Finset.card_equiv eι
+      intro k
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      constructor
+      · intro hk j
+        set p : P := eP.symm ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ with hp_def
+        have hp_ne_top : p ≠ top := by
+          intro heq
+          have h1 : eP p = eP top := congr_arg eP heq
+          rw [he_top] at h1
+          have h2 : eP p = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ := by
+            rw [hp_def, Equiv.apply_symm_apply]
+          rw [h2] at h1
+          have hval : j.val = (Fin.last n).val := congr_arg Fin.val h1
+          simp [Fin.last] at hval
+          exact absurd hval (Nat.ne_of_lt j.isLt)
+        obtain ⟨i, hi_ne, hi_eq⟩ := hk p hp_ne_top
+        refine ⟨eι i, fun heq => hi_ne (eι.injective heq), ?_⟩
+        show f' (eι i) = ⟨j.val, Nat.lt_succ_of_lt j.isLt⟩
+        simp only [f', Equiv.symm_apply_apply]
+        rw [hi_eq, hp_def, Equiv.apply_symm_apply]
+      · intro hk' p hp_ne_top
+        have hep_ne_last : eP p ≠ Fin.last n := by
+          intro heq
+          exact hp_ne_top (eP.injective (heq.trans he_top.symm))
+        have hval_lt : (eP p).val < n := by
+          have hle : (eP p).val ≤ n := Nat.lt_succ_iff.mp (eP p).isLt
+          rcases lt_or_eq_of_le hle with hlt | heq
+          · exact hlt
+          · exfalso
+            apply hep_ne_last
+            apply Fin.ext
+            simp [Fin.last, heq]
+        let j : Fin n := ⟨(eP p).val, hval_lt⟩
+        have hj_eq : (⟨j.val, Nat.lt_succ_of_lt j.isLt⟩ : Fin (n + 1)) = eP p :=
+          Fin.ext rfl
+        obtain ⟨i', hi'_ne, hi'_eq⟩ := hk' j
+        refine ⟨eι.symm i', ?_, ?_⟩
+        · intro hke
+          apply hi'_ne
+          rw [← hke, Equiv.apply_symm_apply]
+        · apply eP.injective
+          show eP (f (eι.symm i')) = eP p
+          have hf' : eP (f (eι.symm i')) = f' i' := rfl
+          rw [hf', hi'_eq, hj_eq]
+    have hsurj_iff : Function.Surjective f ↔ Function.Surjective f' := by
+      constructor
+      · intro hsurj j'
+        obtain ⟨i, hi⟩ := hsurj (eP.symm j')
+        refine ⟨eι i, ?_⟩
+        show eP (f (eι.symm (eι i))) = j'
+        rw [Equiv.symm_apply_apply, hi, Equiv.apply_symm_apply]
+      · intro hsurj p
+        obtain ⟨i', hi'⟩ := hsurj (eP p)
+        refine ⟨eι.symm i', eP.injective ?_⟩
+        show eP (f (eι.symm i')) = eP p
+        have hf' : eP (f (eι.symm i')) = f' i' := rfl
+        rw [hf', hi']
+    rw [hlhs_card, hparent]
+    exact (if_congr hsurj_iff rfl rfl).symm
 
 end PerCellParity
 
