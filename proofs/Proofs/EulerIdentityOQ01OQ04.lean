@@ -37,18 +37,32 @@ This file completes that summary at the Mathlib-`Circle` level.
 
 ## Status
 
-**Iter 3 ACT-1 scaffold (researcher-1, 2026-06-03)**: ships the
-isomorphism wrapper with three `sorry`s marking the bijection-inverse
-lemma applications. The structure compiles against the Mathlib API
-identified in the Iter 1 ORIENT/PREP session log
-(`sessions/2026-06-01-iter1-orient-prep-mathlib-bearer-audit.md`).
-Each `sorry` is a 1-3 line `simp` / `rfl` chain over named Mathlib
-lemmas (`homeomorphCircle'.left_inv`, `homeomorphCircle'.right_inv`,
-`AddCircle.toCircle_add` + `Additive.ofMul_mul`). Discharge target:
-Iter 4 ACT-2 (next researcher) or Aristotle companion.
+**Iter 3 ACT-2 sorry discharge (researcher-1, 2026-06-06)**: discharges
+the three named sorries from Iter 2's scaffold. The bridge from
+`AddCircle.toCircle` to `Real.Angle.toCircle` (which is what
+`AddCircle.homeomorphCircle'`'s `toFun` actually uses) is the
+non-trivial step — Mathlib v4.26.0's `AddCircle.toCircle` is a
+different `Periodic.lift` construction than `Real.Angle.toCircle`,
+propositionally equal but not definitionally. The bridge lemma
+`addCircle_toCircle_eq_angle_toCircle` collapses them via the
+`2π/2π = 1` reduction on quotient representatives.
+
+With the bridge in hand, the three obligations reduce to:
+* `left_inv` ⟵ `homeomorphCircle'.symm_apply_apply`
+* `right_inv` ⟵ `homeomorphCircle'.apply_symm_apply` + `Additive.toMul ∘ ofMul = id`
+* `map_add'` ⟵ `AddCircle.toCircle_add` + `Additive.ofMul (a * b) = ofMul a + ofMul b` (rfl)
+
+**Build verification deferred**: the worktree's `proofs/.lake` symlink
+is structurally circular at the package level (verified 2026-06-06:
+`ls proofs/.lake/packages/` returns "Too many levels of symbolic links"),
+so local validation is infeasible from this isolation worktree. The
+Iter 2 scaffold's "host Docker missing" caveat also persists. Build
+verification falls to the next ACT-3 iteration from a main checkout, or
+to the auditor/mechanic pipeline.
 
 - 0 axioms
-- 3 sorries (`left_inv`, `right_inv`, `map_add'`)
+- 0 sorries (down from 3)
+- 1 private bridge lemma (`addCircle_toCircle_eq_angle_toCircle`)
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
@@ -58,6 +72,36 @@ import Mathlib.Tactic
 open Real
 
 namespace EulerIdentityOQ01OQ04
+
+/-! ## §0. Bridge: `AddCircle.toCircle` vs `Real.Angle.toCircle` at `T = 2 * π`
+
+  Mathlib v4.26.0 has two distinct (but propositionally equal) lifts of
+  `Circle.exp` from `AddCircle (2 * π) → Circle`:
+
+  * `AddCircle.toCircle` (general `T`): `(scaled_exp_map_periodic T).lift`,
+    which for `T = 2 * π` evaluates to `Circle.exp ((2π/2π) * x) = Circle.exp x`
+    on representatives. The `(2π/2π) = 1` reduction is propositional, not
+    definitional.
+  * `Real.Angle.toCircle` (i.e., `T = 2 * π` only): `Circle.periodic_exp.lift`,
+    which evaluates directly to `Circle.exp x` on representatives (by `rfl`).
+
+  `AddCircle.homeomorphCircle'` uses `Real.Angle.toCircle` for its `toFun`
+  (Mathlib `SpecialFunctions/Complex/Circle.lean:168`). To package the
+  `≃+` using the "canonical" `AddCircle.toCircle` bearer (as the gallery
+  documents) while reusing `homeomorphCircle'`'s `left_inv`/`right_inv`,
+  we need the bridge below.
+-/
+
+/-- Bridge: at `T = 2 * π`, the `AddCircle` quotient map equals the `Real.Angle`
+    quotient map. Both lift `Circle.exp`; the `2π/2π = 1` reduction is the
+    only nontrivial step. -/
+private lemma addCircle_toCircle_eq_angle_toCircle (x : AddCircle (2 * π)) :
+    AddCircle.toCircle x = Real.Angle.toCircle x := by
+  induction x using QuotientAddGroup.induction_on with
+  | _ r =>
+    rw [AddCircle.toCircle_apply_mk, div_self (by positivity : (2 * π : ℝ) ≠ 0),
+        one_mul]
+    rfl
 
 /-! ## §1. The Isomorphism `AddCircle (2 * π) ≃+ Additive Circle` -/
 
@@ -85,33 +129,33 @@ noncomputable def addCircleEquivAdditiveCircle :
   toFun x := Additive.ofMul (AddCircle.toCircle x)
   invFun y := AddCircle.homeomorphCircle'.symm (Additive.toMul y)
   left_inv x := by
-    -- Goal (after `show`):
-    --   AddCircle.homeomorphCircle'.symm (AddCircle.toCircle x) = x
-    -- Strategy (Iter 4): `AddCircle.homeomorphCircle'` is a `≃ₜ` whose
-    -- `toFun` simp-normal-form is `AddCircle.toCircle` (verbatim per
-    -- the @[simps] attribute at `Mathlib/Analysis/SpecialFunctions/
-    -- Complex/Circle.lean:168`). So this is `homeomorphCircle'.left_inv`
-    -- after a single `rfl`-style rewrite identifying `AddCircle.toCircle x`
-    -- with `homeomorphCircle' x`.
-    sorry
+    -- Goal: AddCircle.homeomorphCircle'.symm (AddCircle.toCircle x) = x
+    -- Bridge AddCircle.toCircle → Real.Angle.toCircle; the latter is
+    -- `homeomorphCircle'.toFun` definitionally.
+    show AddCircle.homeomorphCircle'.symm (AddCircle.toCircle x) = x
+    rw [addCircle_toCircle_eq_angle_toCircle]
+    exact AddCircle.homeomorphCircle'.symm_apply_apply x
   right_inv y := by
-    -- Goal (after `show`):
-    --   Additive.ofMul (AddCircle.toCircle
-    --     (AddCircle.homeomorphCircle'.symm y.toMul)) = y
-    -- Strategy: apply `homeomorphCircle'.right_inv` (after identifying
-    -- the forward map with `AddCircle.toCircle`), then collapse
-    -- `Additive.ofMul ∘ Additive.toMul = id`.
-    sorry
+    -- Goal: Additive.ofMul (AddCircle.toCircle
+    --         (AddCircle.homeomorphCircle'.symm (Additive.toMul y))) = y
+    -- Same bridge, then `apply_symm_apply`, then `Additive.ofMul ∘ toMul = id`.
+    show Additive.ofMul (AddCircle.toCircle
+            (AddCircle.homeomorphCircle'.symm (Additive.toMul y))) = y
+    rw [addCircle_toCircle_eq_angle_toCircle,
+        AddCircle.homeomorphCircle'.apply_symm_apply]
+    rfl
   map_add' x y := by
-    -- Goal:
-    --   Additive.ofMul (AddCircle.toCircle (x + y)) =
-    --     Additive.ofMul (AddCircle.toCircle x) +
-    --     Additive.ofMul (AddCircle.toCircle y)
-    -- Strategy: `AddCircle.toCircle_add` upgrades `(x + y)` to
-    -- `toCircle x * toCircle y`; `Additive.ofMul_mul` rewrites the
-    -- multiplicative `*` on `Circle` to additive `+` on
-    -- `Additive Circle`.
-    sorry
+    -- Goal: Additive.ofMul (AddCircle.toCircle (x + y)) =
+    --         Additive.ofMul (AddCircle.toCircle x) +
+    --         Additive.ofMul (AddCircle.toCircle y)
+    -- `AddCircle.toCircle_add` gives the multiplicative homomorphism law;
+    -- `Additive.ofMul_mul` rewrites `*` on `Circle` to `+` on `Additive Circle`
+    -- (this is `rfl` since `Additive α := α` is a type alias).
+    show Additive.ofMul (AddCircle.toCircle (x + y)) =
+         Additive.ofMul (AddCircle.toCircle x) +
+         Additive.ofMul (AddCircle.toCircle y)
+    rw [AddCircle.toCircle_add]
+    rfl
 
 /-! ## §2. API: extracting the forward and inverse maps -/
 
