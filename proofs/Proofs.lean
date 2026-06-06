@@ -2567,6 +2567,7 @@ import Proofs.LebesgueMeasureOQ06
 import Proofs.LebesgueMeasureOQ06Aristotle
 import Proofs.LegendreGapEquivalence
 import Proofs.LegendrePartial
+import Proofs.LegendrePrimeGapSqrtBoundSuffices
 import Proofs.LeibnizPi
 import Proofs.LeibnizPiOQ01OQ01
 import Proofs.LeibnizPiOQ02

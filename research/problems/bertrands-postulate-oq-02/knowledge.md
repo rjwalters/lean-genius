@@ -252,3 +252,96 @@ function) and is strictly harder. Build on the
 **Sub-Milestone A (Iteration 4+)**: State and prove "Cramér's conjecture
 implies Legendre's conjecture for sufficiently large $n$." Requires first
 stating Cramér's conjecture (not in Mathlib).
+
+## Iteration 5 Log: S4-ACT-α DONE — sqrt prime-gap bound suffices
+
+**Date**: 2026-06-06
+**Researcher**: researcher-1 (Session 5)
+**Phase**: ACT — implementation of the corrected one-way implication
+**Result**: New file `proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean`
+(227 LOC, 0 axioms, 0 sorries) formalizes the salvageable direction
+identified by iter-4 PREP-1.
+
+### Deliverable
+
+`LegendrePrimeGapSqrtBoundSuffices.lean` proves:
+
+  `(∀ k, p_{k+1} - p_k ≤ 2 · √p_k + 1) ⟹ LegendreConjecture`
+
+where `p_k := Nat.nth Nat.Prime k`. Plus three free corollaries (gap form,
+distance form, half-open form) via composition with iteration-2's
+`legendre_iff_*_form` equivalences.
+
+### Why this iteration, not the original iff
+
+Iteration 4 PREP-1 (memo `2026-06-05-iter4-prep-1-gap-bound-asymmetry.md`)
+established that the forward direction `LegendreConjecture ⟹ gap bound` is
+NOT provable from `LegendreConjecture` alone — the best derivable bound is
+`≤ 4·√p_k + 2`, not `≤ 2·√p_k + 1`. This iteration formalizes the
+salvageable reverse direction and documents the asymmetry from the Lean
+source via the module docstring.
+
+### Proof technique (in Lean)
+
+For each `n ≥ 1`, the file constructs a prime in `(n², (n+1)²)`:
+
+1. **Case `n = 1`**: prime `2` directly witnesses `LegendreAt 1` (a `refine`
+   with `Nat.prime_two` plus `norm_num`).
+2. **Case `n ≥ 2`**: Let `k := Nat.findGreatest (fun k => p_k ≤ n²) n²`,
+   the index of the largest prime ≤ n². Key facts:
+   - `Nat.findGreatest_spec` (with witness `k = 0`, since `p_0 = 2 ≤ n²`)
+     yields `p_k ≤ n²`.
+   - `not_prime_sq_of_ge_two` shows `n²` is composite for `n ≥ 2`, so
+     `p_k ≠ n²` and hence `p_k < n²` strictly.
+   - `nth_prime_ge` (k + 2 ≤ p_k) combined with `p_k < n²` gives the bound
+     `k + 1 ≤ n²` needed for `Nat.findGreatest_is_greatest`.
+   - `Nat.findGreatest_is_greatest` then yields `¬ (p_{k+1} ≤ n²)`, i.e.
+     `p_{k+1} > n²`.
+   - The gap-bound hypothesis at `k`: `p_{k+1} - p_k ≤ 2 · √p_k + 1`.
+   - Strict monotonicity (`Nat.nth_strictMono Nat.infinite_setOf_prime`)
+     converts the ℕ-subtraction into a clean addition for omega.
+   - Sqrt monotonicity + `Nat.sqrt_lt'` (sqrt n < m ↔ n < m²) gives the
+     bound `√p_k ≤ √(n² - 1) ≤ n - 1`.
+   - omega assembles the linear arithmetic
+     `p_{k+1} ≤ (n² - 1) + 2(n - 1) + 1 = n² + 2n - 2 < n² + 2n + 1 = (n+1)²`.
+
+3. **Corollaries**: `legendre_iff_*_form.mp` lifts the main theorem through
+   the iter-2 equivalences for gap/distance/half-open formulations.
+
+### Axiom delta
+
+| Before iteration 5 | After iteration 5 |
+|--------------------|-------------------|
+| 1 axiom (`legendre_conjecture` in `LegendrePartial.lean`) | 1 axiom (unchanged) |
+
+0 new axioms, 0 new sorries. Docker build verified end-to-end.
+
+### Honest status
+
+This iteration produces a **conditional implication**, not progress on the
+open conjecture itself. The hypothesis `PrimeGapSqrtBound` is essentially
+equivalent in strength to Legendre (and is open: it would imply Legendre by
+exactly this theorem). The value:
+
+1. Closing the salvageable half of the broken iff (iter-4 PREP-1).
+2. Three free corollaries via iter-2 equivalences.
+3. A clean Lean statement of the gap-bound-suffices structure, ready to
+   compose with future Cramér-style or BHP-style refinements.
+
+### Next Steps
+
+**Iteration 6 recommendation — Sub-Milestone A (Cramér ⇒ Legendre)**:
+Now that `prime_gap_sqrt_bound_implies_legendre` is in place, the route to
+Cramér ⇒ Legendre cleanly factors:
+
+```
+Cramér's conjecture
+  ⟹ (for sufficiently large k) p_{k+1} - p_k ≤ C·(log p_k)² ≤ 2·√p_k + 1
+  ⟹ LegendreConjecture (via prime_gap_sqrt_bound_implies_legendre,
+                          modulo finite tail handled by legendre-partial)
+```
+
+Target file: `proofs/Proofs/CramerImpliesLegendre.lean`. Estimated +200-250
+LOC. 0 new axioms expected (only Cramér as a hypothesis, not an axiom).
+Hard parts: stating Cramér; the asymptotic `C·(log p_k)² ≤ 2·√p_k + 1`
+for sufficiently large k; bridging the finite tail.
