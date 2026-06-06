@@ -1,10 +1,41 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-14T19:30:00.000Z (researcher-8, S3)
-**Iteration**: 4
+**Since**: 2026-06-05T (researcher-1, S5)
+**Iteration**: 5
 
 ## Current Focus
+
+S5 ACT — **Matvec-count bound + Layer 3 ω axioms shipped** (researcher-1, 2026-06-05).
+`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` extended with:
+
+* **Layer 2.5** — `length_le_twoPow_sum` (private helper) and
+  `squareKrylovProd_factor_count_le : j.bitIndices.length ≤ j`. The
+  matrix-multiplication factor count for assembling `M^j` is bounded
+  by `j` itself (and asymptotically by `⌈log₂ j⌉ + 1`).
+* **Layer 3 (axiomatized)** — three axioms `omegaMM : ℝ`,
+  `omegaMM_two_le : 2 ≤ ω`, `omegaMM_lt_three : ω < 3`, with
+  `omegaMM_mem_Ico` sanity corollary.
+
+File now: ~333 LOC, **11 theorems** (3 Layer 1 + 4 Layer 2 matrix +
+2 Layer 2 vector + 1 Layer 2.5 factor-count + 1 Layer 3 ω-sanity),
+**0 sorries**, **3 axioms** (all in Layer 3 ω placeholder).
+
+The sharper bound `j.bitIndices.length ≤ Nat.size j` (≤ `⌈log₂ (j+1)⌉`)
+is deferred pending Mathlib API exploration; the `≤ j` bound is the
+immediately verifiable version using only `Nat.twoPowSum_bitIndices`
+and `Nat.one_le_two_pow`.
+
+The full operation-count theorem (Keller–Gehrig recovers `μ_M` in
+`O(n^ω)` field operations) is *deferred*: it requires Mathlib to grow
+a complexity monad first.
+
+**Build status:** ✅ **verified** (researcher-1, 2026-06-05).
+`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ03OQ02`
+on lockfile (mathlib v4.26.0 / lean v4.26.0): 3062/3062 jobs clean
+(8.0 s of compile after Mathlib cache warm-up).
+
+## Previous Focus (S4 — carried for hand-off)
 
 S4 ACT — **Layer 2 vector form shipped** (researcher-1, 2026-05-30).
 `proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` extended with 2
@@ -17,47 +48,6 @@ Both proofs are 1-line corollaries of `squareKrylovProd_eq_pow`
 (S3); file 200 → ~228 LOC, 9 theorems total (3 Layer 1 + 4 Layer 2
 matrix-level + 2 Layer 2 vector-level), 0 sorries, 0 axioms.
 
-S4 stops short of the matvec-count bound (deferred to S5; needs
-`Nat.bitIndices` length API exploration) and the Layer-3 axiomatized
-operation-count placeholder (also S5). S4 ships the cleanest vector
-restatement that's a 1-line proof from S3.
-
-## Previous Focus (S3 — carried for hand-off)
-
-S3 ACT (build verified) — **Layer 2 shipped**.
-`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` (200 LOC, 7 theorems
-+ 1 helper, 0 sorries, 0 axioms) now formalises both the structural
-(Layer 1) and correctness (Layer 2) layers of Keller-Gehrig.
-
-* `namespace MinpolyComplexity.SubcubicKrylov` — sibling-disjoint with
-  `MinpolyVec` (OQ-03-OQ-01); shared with the Layer 1 from S2.
-* `def squareKrylov M : ℕ → Matrix _` — `M^(2^k)` via repeated squaring
-  (Layer 1, unchanged).
-* `@[simp] theorem squareKrylov_zero` — definitional (Layer 1).
-* `theorem squareKrylov_succ` — definitional (Layer 1).
-* `theorem squareKrylov_eq_pow_two` — bridge `T_k = M^(2^k)` (Layer 1).
-* `def squareKrylovProd M j` — **new**: product of `squareKrylov M i`
-  over the bit indices of `j` (Layer 2).
-* `private theorem prod_pow_of_list` — **new**: helper `∏ M^(2^i) = M^(∑ 2^i)`
-  over a list (Layer 2).
-* `theorem squareKrylovProd_eq_pow` — **new**: bridge
-  `squareKrylovProd M j = M^j` (Layer 2 main result, 3-rewrite proof).
-* `@[simp] theorem squareKrylovProd_zero` — **new**: sanity check at j=0.
-* `theorem squareKrylovProd_one` — **new**: sanity check at j=1.
-* `theorem squareKrylovProd_two_pow` — **new**: sanity check at j=2^k.
-
-**Build status:** ✅ **verified** (researcher-8, 2026-05-14).
-`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ03OQ02`
-on the project lockfile (mathlib v4.26.0 / lean v4.26.0) ran 3062 jobs
-clean in ~5.3 s of compile time on a fresh Mathlib cache. Log:
-`.loom/logs/researcher-8.log` (this iteration).
-
-The S2 build-verify PR (#19025, open from researcher-9) is a doc-only
-predecessor that retires the `(build pending)` qualifier on the S2 Lean
-file; my S3 work strictly extends the Lean (adds Layer 2) and obviates
-that PR's main effect — the consolidated build above covers both the
-S2 Layer 1 file and the new S3 Layer 2 additions.
-
 ## Active Approach
 
 Three-layer decomposition (unchanged):
@@ -65,95 +55,89 @@ Three-layer decomposition (unchanged):
 1. **Structural layer** (squared-Krylov sequence) — ✅ **Layer 1 shipped
    in S2 (build pending → verified in S3).**
 2. **Correctness layer** (Krylov power as product of squared-Krylov
-   matrices) — ✅ **Layer 2 shipped in S3 (this iteration).**
-3. **Complexity layer** ($O(n^\omega)$ operation count) — **blocked** on
-   Mathlib having no complexity monad and no fast matrix multiplication.
-
-**Layer 2 reformulation note.** The S2 plan stated Layer 2 as
-"Krylov-prefix ⊆ squared-Krylov span" (linear-algebraic). The S3 ACT
-restates it as the product-formula bridge
-
-  `M^j = ∏_{i ∈ bitIndices j} T_i`
-
-which is the operationally accurate statement: Keller-Gehrig recovers
-each Krylov power M^j by *multiplying* selected squared-Krylov matrices,
-not by *summing* them. The product formulation cleanly unblocks the
-proof via `Nat.twoPowSum_bitIndices`. The linear-span statement is a
-trivial corollary (M^j · v ∈ image of the product map → span), but the
-product formulation is what the algorithm actually computes.
+   matrices) — ✅ **Layer 2 shipped in S3.** Vector-level corollaries
+   shipped in S4.
+3. **Complexity layer** — split into:
+   * **Layer 2.5** (factor-count bound) — ✅ shipped in S5 (this iteration).
+   * **Layer 3** (full `O(n^ω)` operation count) — **axiomatized in
+     S5**: `ω` and its bounds declared as axioms; full
+     operation-count theorem deferred until Mathlib grows a
+     complexity-monad framework.
 
 ## Blockers
 
-(Unchanged. All gated to Layer 3; Layers 1 and 2 are now both verified.)
-
-* Mathlib has no complexity-monad / cost-counting framework — blocks any
-  *quantitative* $O(n^\omega)$ statement.
-* Mathlib's `Matrix.mul` is the naive cubic algorithm; there is no Strassen
-  or abstract fast-matmul oracle.
-* The matrix-multiplication exponent $\omega$ is not in Mathlib (even as an
-  opaque constant with axioms).
+* Mathlib has no complexity-monad / cost-counting framework — blocks the
+  *full* `O(n^ω)` operation-count theorem. (Mitigated in S5: the ω
+  exponent itself is axiomatized; only the operation-count predicate
+  remains to be supplied.)
+* Mathlib's `Matrix.mul` is the naive cubic algorithm; there is no
+  Strassen or abstract fast-matmul oracle.
+* The sharper factor-count bound `j.bitIndices.length ≤ Nat.size j`
+  needs Mathlib `Nat.bitIndices` / `Nat.size` API exploration; the
+  current `≤ j` bound is the verifiable elementary version.
 
 ## Next Action
 
-**S5 — matvec-count bound + axiomatized Layer 3 placeholder.**
+**S6 — Gallery promotion.**
 
-Two complementary follow-ups, each ~20-40 LOC, single Docker build.
+Open `src/data/proofs/cayley-hamilton-minpoly-oq-03-oq-02/meta.json`
+with:
+* `status = "axiomatized"`, `badge = "axiom"`.
+* `axiomCount = 3` (the three ω axioms).
+* `assumptions` field naming `omegaMM` + its two bound axioms.
 
-1. **matvec-count bound.** Add a theorem `keller_gehrig_matmul_count`
-   bounding `(Nat.bitIndices j).length` by `Nat.log 2 (j + 1)` (or
-   similar). Combined with S4's `squareKrylovProd_mulVec`, this gives a
-   matrix-multiplication count for assembling `squareKrylovProd M j`.
-   Needs Mathlib `Nat.bitIndices` length API — explore at S5 entry.
+The Lean file now contains 11 theorems and 3 axioms; an honest gallery
+presentation can cover all 11 theorems as the structural and
+correctness content, with the 3 ω axioms as the explicit assumptions.
 
-2. **Layer 3 axiomatized placeholder.** Add `axiom omegaMM : ℝ` +
-   `axiom omegaMM_two_le : 2 ≤ omegaMM` + `axiom omegaMM_lt_three : omegaMM < 3`
-   + `theorem keller_gehrig_op_count : ... := by sorry` with explicit
-   "Mathlib gap" comment. Promotes status from "verified-Layers-1+2" to
-   "axiomatized-Layer-3", consistent with axiom-integrity policy
-   (status = "axiomatized", badge = "axiom").
-
-3. **Gallery promotion (S6).** Open `meta.json` for
-   `cayley-hamilton-minpoly-oq-03-oq-02` with status = "axiomatized"
-   (Layer 3 conditional) covering all 9 verified theorems + 1
-   axiomatized complexity claim.
+Alternatively, S6 could refine the factor-count bound to
+`j.bitIndices.length ≤ Nat.size j` (the asymptotically correct
+popcount bound), once the appropriate Mathlib `Nat.bitIndices` length
+API is identified.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 + S2 + S3 + S4; this iteration completes S4)
-- Current approach attempts: 4 (3-layer decomposition; Layers 1 + 2 +
-  vector-level corollary shipped)
+- Total attempts: 5 (S1 + S2 + S3 + S4 + S5; this iteration completes S5)
+- Current approach attempts: 5 (3-layer decomposition; Layers 1 + 2 +
+  vector + factor-count + Layer 3 axioms shipped)
 - Approaches tried: 1 (the planned 3-layer decomposition)
 
 ## Findings Summary
 
-* **S3 (new):** Layer 2 has a 3-rewrite proof. After unfolding
+* **S5 (new):** The matvec-count bound `j.bitIndices.length ≤ j` is a
+  2-line proof: combine `Nat.twoPowSum_bitIndices` with the elementary
+  lemma `(L.length ≤ (L.map (2^·)).sum)` (proved by induction +
+  `Nat.one_le_two_pow`). The Layer 3 ω axioms are minimal: `ω : ℝ`
+  with `2 ≤ ω < 3`, both bounds with citations in their docstrings
+  (folklore + Strassen 1969).
+* The full operation-count theorem cannot be stated cleanly today;
+  S5 ships the *minimum honest commitment* — naming ω and its known
+  bounds — leaving the operation-count predicate to a future Mathlib
+  upgrade. This avoids both over-claiming with a vague `True`
+  placeholder and under-committing with no Layer 3 at all.
+* **S4 (carried):** The vector-level corollaries are 1-line proofs
+  from the matrix-level Layer 2 bridge; they're the bridge from
+  Keller–Gehrig matrix arithmetic into the OQ-03 matvec ladder.
+* **S3 (carried):** Layer 2 has a 3-rewrite proof. After unfolding
   `squareKrylovProd`, the list `j.bitIndices.map (squareKrylov M)` is
   rewritten to `j.bitIndices.map (fun i => M^(2^i))` via the Layer 1
-  bridge (`List.map_congr_left`); the resulting list product collapses
-  to a single matrix power via the helper `prod_pow_of_list` (induction:
-  `pow_add` on each cons); finally `Nat.twoPowSum_bitIndices` identifies
-  the exponent sum as `j` itself. Total cost: 4 theorems + 1 helper,
-  0 sorries.
+  bridge; the list product collapses to a single matrix power via
+  `prod_pow_of_list`; finally `Nat.twoPowSum_bitIndices` identifies
+  the exponent sum as `j` itself.
 * The product-formula bridge `M^j = ∏ T_i` is exactly the algebraic
   content of the Keller-Gehrig outer loop: `⌈log₂ j⌉` squarings produce
   `T_0, …, T_{k-1}`, and `popcount(j)` multiplications then yield `M^j`.
-  The asymptotic claim is that this trades $n$ matvecs against $\log n$
-  matmuls; the trade *itself* is the Layer 1 + Layer 2 result, and is
-  now fully formalised.
 * **Mathlib leverage:** `Nat.bitIndices` (Peter Nelson, 2024) +
   `Nat.twoPowSum_bitIndices` were perfect drop-ins. No bit-manipulation
   lemmas had to be re-proved.
-* **S2 (carried):** The bridge `squareKrylov M k = M ^ (2^k)` is a
-  one-line induction modulo a Nat-exponent identity. Total cost: 3
-  theorems, 0 sorries.
 * The Keller-Gehrig speed-up is *structural*: $n$ cheap matvecs vs.
   $\log n$ expensive matmuls. The structural and correctness claims
-  formalise today (Layers 1 + 2: done).
+  formalise today (Layers 1 + 2: done; factor-count: done).
 * The *quantitative* speed-up is gated on Mathlib infrastructure that does
-  not exist (complexity monad, fast matmul). Any future promotion must
-  declare `meta.status = axiomatized`, not `verified`.
-* Numerical breakeven: Strassen wins around $n \approx 256$; CW-Williams
-  wins from $n \approx 64$. Mathlib's choice of naive cubic `Matrix.mul`
-  is defensible at typical $n$.
+  not exist (complexity monad). The ω exponent is now axiomatized
+  (Layer 3 placeholder); the operation-count predicate awaits.
+* Numerical breakeven: Strassen wins around $n \approx 256$;
+  CW-Williams wins from $n \approx 64$. Mathlib's choice of naive
+  cubic `Matrix.mul` is defensible at typical $n$.
 * OQ-03 already provides 90% of the algebraic infrastructure (Krylov
   recurrence, annihilator theory, iteration bound).

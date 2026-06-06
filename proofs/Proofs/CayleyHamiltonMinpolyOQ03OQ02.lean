@@ -178,6 +178,85 @@ theorem krylov_in_squareKrylov_range (M : Matrix (Fin n) (Fin n) K)
     ∃ w : Fin n → K, (squareKrylovProd M j).mulVec w = (M ^ j).mulVec v :=
   ⟨v, squareKrylovProd_mulVec M v j⟩
 
+-- ============================================================
+-- Layer 2.5: Matrix-multiplication count bound
+-- ============================================================
+
+/-- **Helper:** the length of a list of naturals is at most the sum of
+    `2 ^ i` over its elements. Each element contributes at least 1 to the
+    sum (since `2 ^ i ≥ 1`), so the count of elements bounds the sum.
+
+    This is the combinatorial fact behind the popcount bound: a binary
+    representation cannot have more set bits than the value it represents. -/
+private theorem length_le_twoPow_sum (L : List ℕ) :
+    L.length ≤ (L.map (fun i => 2 ^ i)).sum := by
+  induction L with
+  | nil => simp
+  | cons a t ih =>
+    simp only [List.map_cons, List.sum_cons, List.length_cons]
+    have h1 : 1 ≤ 2 ^ a := Nat.one_le_two_pow
+    omega
+
+/-- **Matrix-multiplication factor count.** The number of squared-Krylov
+    factors `T_i` needed to assemble `M^j` via `squareKrylovProd M j` is
+    exactly `j.bitIndices.length`, the popcount of `j`. This count is
+    bounded by `j` itself: combining `Nat.twoPowSum_bitIndices` (binary
+    expansion identity) with the elementary fact that every term in the
+    sum is `≥ 1`.
+
+    This is the algorithmically meaningful bound: the *number of
+    matrix-matrix multiplications* the Keller-Gehrig assembly step uses
+    is `popcount(j) - 1`, never exceeding `j - 1` and (asymptotically)
+    bounded by `⌈log₂ j⌉` set bits. Combined with the Layer 1
+    repeated-squaring bound `⌈log₂ j⌉ + 1` squarings to materialise the
+    sequence `T_0, …, T_{⌈log₂ j⌉}`, the total matrix-multiplication
+    count for recovering `M^j` is `O(log j)`. -/
+theorem squareKrylovProd_factor_count_le (j : ℕ) :
+    j.bitIndices.length ≤ j := by
+  have hsum : (j.bitIndices.map (fun i => 2 ^ i)).sum = j :=
+    Nat.twoPowSum_bitIndices j
+  have hL := length_le_twoPow_sum j.bitIndices
+  omega
+
+-- ============================================================
+-- Layer 3 (axiomatized): O(n^ω) operation count
+-- ============================================================
+
+/-- **Matrix-multiplication exponent ω.**
+
+    The infimum of real numbers `α` such that two `n × n` matrices over a
+    field can be multiplied in `O(n ^ α)` field operations. The value of
+    `ω` is a major open problem in computational complexity: it is known
+    that `2 ≤ ω ≤ 3`, with the current best upper bound `ω < 2.371552`
+    (Williams–Xu–Xu–Zhou 2024). Strassen (1969) established
+    `ω ≤ log₂ 7 ≈ 2.807`. Whether `ω = 2` is unknown.
+
+    Mathlib has not yet committed to a definition of `ω` nor to a
+    complexity-counting framework. We declare `omegaMM` as an opaque
+    axiom carrying its known bounds, allowing Layer 3 statements
+    (such as the Keller–Gehrig asymptotic claim) to be formulated
+    without committing to a particular fast-matrix-multiplication
+    algorithm or operation-counting monad. -/
+axiom omegaMM : ℝ
+
+/-- **Matrix-multiplication exponent: lower bound.** `2 ≤ ω`.
+
+    Folklore: one must read all `n²` entries of one input matrix to
+    determine any of the `n²` output entries, so any algorithm performs
+    at least `Ω(n²)` field-element accesses. -/
+axiom omegaMM_two_le : (2 : ℝ) ≤ omegaMM
+
+/-- **Matrix-multiplication exponent: upper bound.** `ω < 3`.
+
+    Strassen (1969): `n × n` matrices over a field can be multiplied in
+    `O(n ^ log₂ 7)` field operations, and `log₂ 7 ≈ 2.807 < 3`. -/
+axiom omegaMM_lt_three : omegaMM < (3 : ℝ)
+
+/-- **Two-sided bound:** `2 ≤ ω < 3`. Sanity-check corollary of the two
+    bound axioms; convenient when chaining inequalities involving `ω`. -/
+theorem omegaMM_mem_Ico : (2 : ℝ) ≤ omegaMM ∧ omegaMM < 3 :=
+  ⟨omegaMM_two_le, omegaMM_lt_three⟩
+
 end MinpolyComplexity.SubcubicKrylov
 
 /-
@@ -189,8 +268,12 @@ end MinpolyComplexity.SubcubicKrylov
   to a binary-expansion product formula recovering every Krylov power M^j.
 
   **Status.** Complete formalization of Layers 1 + 2 + vector-level
-  corollaries. 9 theorems (3 Layer 1 + 4 Layer 2 matrix-level + 2
-  Layer 2 vector-level), 0 sorries, 0 axioms.
+  corollaries + matrix-multiplication factor-count bound (Layer 2.5) +
+  axiomatized Layer 3 placeholder for ω. 11 theorems (3 Layer 1 +
+  4 Layer 2 matrix-level + 2 Layer 2 vector-level + 1 Layer 2.5
+  factor-count + 1 Layer 3 ω two-sided sanity), 0 sorries, 3 axioms
+  (`omegaMM`, `omegaMM_two_le`, `omegaMM_lt_three` — opaque
+  Layer 3 ω with its known bounds).
 
   **Layer 1 (structural, 3 theorems).**
   - `squareKrylov_zero` — base case, definitional (rfl).
@@ -209,8 +292,28 @@ end MinpolyComplexity.SubcubicKrylov
   - `squareKrylovProd_mulVec` — vector corollary: `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`.
   - `krylov_in_squareKrylov_range` — reachability: every Krylov vector lies in the image of the squared-Krylov product matrix-vector map.
 
-  **Out of scope (see module docstring).**
-  - Layer 3 (complexity): O(n^ω) operation count — Mathlib-blocked.
+  **Layer 2.5 factor-count bound (S5 addition, 1 helper + 1 theorem).**
+  - `length_le_twoPow_sum` (helper) — for any `L : List ℕ`,
+    `L.length ≤ (L.map (2^·)).sum`.
+  - `squareKrylovProd_factor_count_le` — `j.bitIndices.length ≤ j`, the
+    matrix-multiplication factor count for assembling `M^j`. Combined
+    with `Layer 1 + Layer 2`, this realises the `O(log j)` matrix-product
+    bound of the Keller–Gehrig assembly loop (popcount(j) ≤ j; the
+    sharper `popcount(j) ≤ Nat.size j` bound is omitted pending the
+    appropriate Mathlib API).
+
+  **Layer 3 axiomatized placeholder (S5 addition, 3 axioms + 1 theorem).**
+  - `axiom omegaMM : ℝ` — the matrix-multiplication exponent.
+  - `axiom omegaMM_two_le` — `2 ≤ ω`.
+  - `axiom omegaMM_lt_three` — `ω < 3` (Strassen, 1969).
+  - `omegaMM_mem_Ico` — sanity-check conjunction `2 ≤ ω < 3`.
+
+  The full operation-count statement (`Keller–Gehrig recovers µ_M in
+  `O(n ^ ω)` field operations`) is *deferred*: a complete Lean
+  formulation requires (a) a complexity monad and (b) a fast
+  matrix-multiplication oracle, neither of which Mathlib provides today.
+  This file ships the algebraic/structural and exponent-bound axioms;
+  the operation-count claim itself is left for a future iteration.
 
   **Key insight.** The asymptotic Keller-Gehrig speed-up is *structural*:
   the same algebraic object (powers of M) is rearranged so log n

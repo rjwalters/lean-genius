@@ -120,8 +120,11 @@ docstring).
 |-------|-------|-------|------------|-------|--------|
 | S2: squareKrylov + recurrence | 35 (actual: 104 incl. docstring) | 1× | Easy | Anchors all subsequent work | ✅ **S2 ACT shipped (build verified in S3)** — researcher-10 2026-05-13 |
 | S3: `M^j = ∏ T_i` over bit indices | 60 (actual: +96 incl. docstrings; file at 200 LOC) | 1× | Medium (3-rewrite proof via `Nat.twoPowSum_bitIndices`) | Key correctness bridge — algebraic content of the Keller-Gehrig outer loop | ✅ **S3 ACT shipped (build verified)** — researcher-8 2026-05-14 |
-| S4: vector-level corollary + axiomatised Layer 3 placeholder | 40-60 | 1× | Easy-medium | Bridge to OQ-03 matvec ladder + honest Layer 3 documentation | Next action |
-| Layer 3 (full cost claim) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad | Deferred (formal axiomatised stub in S4) |
+| S4: vector-level corollaries | 30 (file at 228 LOC) | 1× | Easy | Bridge to OQ-03 matvec ladder | ✅ **S4 ACT shipped (build verified)** — researcher-1 2026-05-30 |
+| S5: factor-count bound + Layer 3 ω axioms | ~50 actual lines + ~55 docstrings (file at ~333 LOC) | 1× | Easy | Quantitative matmul-count + minimum honest Layer 3 commitment | ✅ **S5 ACT shipped (build verified)** — researcher-1 2026-06-05 |
+| S6: gallery promotion (`meta.json` with `axiomatized` status) | small | 0× | Easy | Public-facing presentation of Layers 1+2+2.5 + axiomatized Layer 3 | Next action |
+| Sharper factor-count bound (`≤ Nat.size j`) | small | 1× | Medium (needs Mathlib API exploration) | Asymptotically correct popcount bound | Alternative S6 |
+| Layer 3 (full operation-count theorem) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad | Deferred (ω now axiomatized in S5) |
 
 ## S2 outcome (2026-05-13, researcher-10)
 
@@ -220,6 +223,65 @@ content; verified clean on mathlib v4.26.0 / lean v4.26.0.
 **Build verified.** `./proofs/scripts/docker-build.sh
 Proofs.CayleyHamiltonMinpolyOQ03OQ02` — 3062/3062 jobs, 0 errors
 (5.3 s of compile after Mathlib cache warm-up).
+
+## S5 outcome (2026-06-05, researcher-1)
+
+Layer 2.5 (matrix-multiplication factor count) + Layer 3 (axiomatized
+ω placeholder) shipped in the same file, extending it to ~333 LOC
+(11 theorems + 2 helpers, 0 sorries, 3 axioms).
+
+**Layer 2.5 — factor-count bound.** Two new declarations:
+
+```lean
+private theorem length_le_twoPow_sum (L : List ℕ) :
+    L.length ≤ (L.map (fun i => 2 ^ i)).sum := by
+  induction L with
+  | nil => simp
+  | cons a t ih =>
+    simp only [List.map_cons, List.sum_cons, List.length_cons]
+    have h1 : 1 ≤ 2 ^ a := Nat.one_le_two_pow
+    omega
+
+theorem squareKrylovProd_factor_count_le (j : ℕ) :
+    j.bitIndices.length ≤ j := by
+  have hsum : (j.bitIndices.map (fun i => 2 ^ i)).sum = j :=
+    Nat.twoPowSum_bitIndices j
+  have hL := length_le_twoPow_sum j.bitIndices
+  omega
+```
+
+The bound says: the number of squared-Krylov factors needed to assemble
+`M^j` (i.e., `popcount(j)`) is at most `j`. The sharper asymptotic
+bound `popcount(j) ≤ Nat.size j ≤ ⌈log₂ (j+1)⌉` is deferred pending
+Mathlib `Nat.bitIndices` / `Nat.size` API exploration; the `≤ j` bound
+is the immediately verifiable elementary version.
+
+**Layer 3 — axiomatized ω placeholder.** Three axioms + one corollary:
+
+```lean
+axiom omegaMM : ℝ
+axiom omegaMM_two_le : (2 : ℝ) ≤ omegaMM
+axiom omegaMM_lt_three : omegaMM < (3 : ℝ)
+
+theorem omegaMM_mem_Ico : (2 : ℝ) ≤ omegaMM ∧ omegaMM < 3 :=
+  ⟨omegaMM_two_le, omegaMM_lt_three⟩
+```
+
+The ω axiom carries its known bounds: `2 ≤ ω` (folklore: must read n²
+entries) and `ω < 3` (Strassen 1969: `ω ≤ log₂ 7`). The full
+operation-count theorem (Keller–Gehrig recovers `μ_M` in `O(n^ω)` field
+operations) is *deferred*: it needs both ω (now axiomatized) and a
+Mathlib complexity-monad (still absent).
+
+**Why this is the right shape.** S5 is the minimum honest commitment
+to Layer 3: name ω, state its known bounds, and acknowledge what's
+deferred. Future work to add a complexity monad would only need to
+define an operation-count predicate and connect it to `omegaMM`; no
+axiom in this file would need revising.
+
+**Build verified.** `./proofs/scripts/docker-build.sh
+Proofs.CayleyHamiltonMinpolyOQ03OQ02` — 3062/3062 jobs, 0 errors
+(8.0 s of compile after Mathlib cache warm-up).
 
 ## What to leave for OQ-03-OQ-03 / OQ-03-OQ-04 (sibling slugs)
 
