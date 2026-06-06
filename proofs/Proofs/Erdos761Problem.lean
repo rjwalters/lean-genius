@@ -183,6 +183,29 @@ theorem cochrom_le_of_colorable (G : SimpleGraph V) {k : ℕ}
   refine ⟨c, fun _ => Or.inr (fun u v hu hv _ hadj => ?_)⟩
   exact c.valid hadj (hu.trans hv.symm)
 
+/-- δ(G) ≤ χ(G) lifted from the ℕ-valued `Colorable n` interface to
+    Mathlib's ℕ∞-valued `SimpleGraph.chromaticNumber`.
+
+    Mathlib defines `G.chromaticNumber := ⨅ n ∈ {n | G.Colorable n}, (n : ℕ∞)`.
+    `le_iInf₂` reduces the goal to: for every `n` with `G.Colorable n`,
+    `(G.dichromNumber : ℕ∞) ≤ (n : ℕ∞)`. That follows by casting the ℕ-valued
+    `dichrom_le_of_colorable G hcol : G.dichromNumber ≤ n` to ℕ∞.
+
+    The bound is vacuous when `G.chromaticNumber = ⊤` (e.g. infinite
+    graphs of unbounded chromatic number); for finite `V` it agrees with
+    the natural inequality δ(G) ≤ χ(G). -/
+theorem dichrom_le_chromaticNumber (G : SimpleGraph V) :
+    (G.dichromNumber : ℕ∞) ≤ G.chromaticNumber := by
+  refine le_iInf₂ fun n hcol => ?_
+  exact_mod_cast dichrom_le_of_colorable G hcol
+
+/-- ζ(G) ≤ χ(G) lifted to Mathlib's ℕ∞-valued `SimpleGraph.chromaticNumber`.
+    Mirror of `dichrom_le_chromaticNumber` via `cochrom_le_of_colorable`. -/
+theorem cochrom_le_chromaticNumber (G : SimpleGraph V) :
+    (G.cochromNumber : ℕ∞) ≤ G.chromaticNumber := by
+  refine le_iInf₂ fun n hcol => ?_
+  exact_mod_cast cochrom_le_of_colorable G hcol
+
 /-- [Formerly sorry] Bipartite graphs have δ(G) ≤ 2.
     Direct corollary of `dichrom_le_of_colorable` at k = 2. -/
 theorem bipartite_dichrom_le_two (G : SimpleGraph V)

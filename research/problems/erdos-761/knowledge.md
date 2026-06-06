@@ -172,4 +172,66 @@ since the original drift was discovered on 2026-04-27.
 
 ---
 
+### Session 2026-06-06 — Iter 9: ℕ∞ lifts to Mathlib's chromaticNumber (researcher-1)
+
+**Mode**: REVISIT (RICH score 50)
+**Outcome**: PROGRESS — realized the two Iter 9 candidate lemmas
+predicted by Iter 8's state.md, lifting δ(G) ≤ χ(G) and ζ(G) ≤ χ(G)
+from the ℕ-valued `Colorable n` interface to Mathlib's ℕ∞-valued
+`SimpleGraph.chromaticNumber`.
+
+**What I Did**
+
+Added two structural lemmas to `proofs/Proofs/Erdos761Problem.lean`,
+inserted after `cochrom_le_of_colorable` (the `_of_colorable` siblings)
+and before `bipartite_dichrom_le_two`:
+
+- `dichrom_le_chromaticNumber (G : SimpleGraph V) :
+   (G.dichromNumber : ℕ∞) ≤ G.chromaticNumber` — 3-line proof.
+   Reduces via `le_iInf₂` against Mathlib's
+   `chromaticNumber := ⨅ n ∈ setOf G.Colorable, (n : ℕ∞)` to the
+   per-`n` bound `(G.dichromNumber : ℕ∞) ≤ (n : ℕ∞)` whenever
+   `G.Colorable n`. That follows by casting the ℕ-valued
+   `dichrom_le_of_colorable` to ℕ∞.
+- `cochrom_le_chromaticNumber (G : SimpleGraph V) :
+   (G.cochromNumber : ℕ∞) ≤ G.chromaticNumber` — mirror lift via
+   `cochrom_le_of_colorable`. Identical 3-line structure.
+
+The bound is vacuous when `G.chromaticNumber = ⊤` (graphs of
+unbounded chromatic number — possible for infinite `V`) and agrees
+with the natural δ(G), ζ(G) ≤ χ(G) on every finitely-chromatic
+graph. The Iter 8 prediction noted "needs a `WithTop`-aware csInf
+manipulation" but in practice `le_iInf₂` handles the ℕ∞ side
+without an explicit `⊤` case split — Mathlib's chromaticNumber is
+already expressed as an iInf so the inequality lifts uniformly.
+
+**Why this is the right next step**
+
+This is exactly the lemma the gallery's chromatic-number ecosystem
+wants: every other Erdős entry that quantifies chromatic constraints
+(e.g. erdos-705, erdos-922, erdos-629) uses Mathlib's
+`G.chromaticNumber : ℕ∞`, not the ad-hoc per-file ℕ definitions.
+Without the ℕ∞ lift, the file's δ/ζ bounds could not chain with
+anything in the broader gallery — they were "stuck" at the
+`Colorable n` interface. With Iter 9, an external proof that has
+`G.chromaticNumber ≤ k` can directly conclude δ(G), ζ(G) ≤ k via the
+standard `(·: ℕ∞)` cast.
+
+**Files Modified This Session**
+
+- `proofs/Proofs/Erdos761Problem.lean`: +23 lines (291 → 314).
+   theoremCount 8 → 10 (added two ℕ∞-lifts; no other changes).
+- `src/data/proofs/erdos-761/meta.json`: lineCount 291 → 314;
+   theoremCount 8 → 10; assumptions text updated to list the two new
+   theorems.
+- `research/problems/erdos-761/knowledge.md`, `state.md`: this entry.
+
+**Build Status**: Docker build of `Proofs.Erdos761Problem` to be
+confirmed in this session (Iter 8 took 12s after Mathlib cache prime
+under `lean4-arm64:v4.26.0`).
+
+**Sorry/Axiom Count: 2 (unchanged, both OPEN conjectures)**
+
+---
+
 *Generated from erdosproblems.com on 2026-01-15*
