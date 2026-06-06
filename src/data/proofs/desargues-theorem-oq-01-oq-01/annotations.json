@@ -142,6 +142,30 @@
     ]
   },
   {
+    "id": "ann-part-v-intro-narrative",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 212,
+      "endLine": 225
+    },
+    "type": "context",
+    "title": "Part V Intro: The Contradiction Setup Before Any Tactic Fires",
+    "content": "The Part V docstring (lines 212-224) lays out the entire structure of the upcoming contradiction in advance, so a reader can verify the algebra by hand before reading the tactic block. Three keys are stated: (1) The witnesses are $P = (-17, 9)$, $Q = (27, 17)$, $R = (-6, 11)$ — note that $P$ and $R$ have $x \\leq 0$ while $Q$ has $x > 0$, which forces any positive-slope Moulton line through all three to mix the left-branch ($y = mx + b$) and right-branch ($y = \\tfrac{m}{2}x + b$) equations. (2) The two-equation pair from $P$ (left, $9 = m(-17) + b$) and $Q$ (right, $17 = \\tfrac{m}{2}(27) + b$) is recombined to yield $m = 16/61$. (3) Substituting this $m$ into the $R$ equation gives $11 = \\tfrac{725}{61} \\neq \\tfrac{671}{61}$, the numeric contradiction. The docstring also rules out the other cases: negative-slope lines cannot contain PQ (slope $2/11 > 0$) and vertical lines are excluded by distinct x-coordinates — corresponding precisely to the three `by_cases` branches `hv1`, `hm : m ≤ 0`, and `m > 0` in the proof below. This 'pre-flight checklist' makes the tactic block at lines 233-261 a transparent translation of the mathematical content, not a sequence of opaque calls.",
+    "mathContext": "Substituting $m = 16/61$ into $11 = m(-6) + b$ gives $b = 11 + 6 \\cdot \\tfrac{16}{61} = \\tfrac{671 + 96}{61} = \\tfrac{767}{61}$, and then $m \\cdot (-17) + b = \\tfrac{-272 + 767}{61} = \\tfrac{495}{61} \\neq \\tfrac{549}{61} = 9 \\cdot \\tfrac{61}{61}$ — but the docstring's framing prefers the shorter calculation: setting $11 = m(-6) + b$ with $b = 17 + \\tfrac{m}{2}(-27) = 17 - \\tfrac{m \\cdot 27}{2}$ (from $Q$) and $m = 16/61$ gives $b = 17 - \\tfrac{8 \\cdot 27}{61} = \\tfrac{17 \\cdot 61 - 216}{61} = \\tfrac{821}{61}$, and then $m(-6) + b = -\\tfrac{96}{61} + \\tfrac{821}{61} = \\tfrac{725}{61} \\neq \\tfrac{11 \\cdot 61}{61} = \\tfrac{671}{61}$. Either reading exposes the same arithmetic obstruction. The actual proof skips this $b$-elimination by using `linear_combination` to extract two contradictory expressions for $m$ directly.",
+    "significance": "supporting",
+    "prerequisites": [
+      "linear systems in two unknowns",
+      "case analysis on slope sign and verticality",
+      "Moulton plane left/right branch equations"
+    ],
+    "relatedConcepts": [
+      "narrative bridge between definition and proof",
+      "pre-tactic algebraic outline",
+      "three-case structure of desargues_fails",
+      "Lean docstring as proof scaffold"
+    ]
+  },
+  {
     "id": "ann-desargues-fails",
     "proofId": "desargues-theorem-oq-01-oq-01",
     "range": {
