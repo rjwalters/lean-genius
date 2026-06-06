@@ -52,7 +52,9 @@
       "Weak connectivity (underlying undirected graph is connected) is the correct connectivity notion for directed Eulerian theory — strong connectivity is not required for the equivalence.",
       "De Bruijn sequence connection: the de Bruijn graph B(n, Σ) is a digraph on length-(n-1) strings where each vertex has in-degree = out-degree = |Σ|. The directed Eulerian theorem guarantees Eulerian circuits exist in any such balanced weakly-connected digraph, proving de Bruijn sequences of every order exist over every alphabet — and Hierholzer's algorithm constructs them in O(|Σ|^n) time.",
       "BEST theorem: the number of Eulerian circuits starting at vertex w in a directed Eulerian graph equals t_w(G) × ∏_v (outDeg(v)-1)!, where t_w(G) is the number of arborescences (spanning in-trees) rooted at w. This connects Eulerian circuit counting to the Matrix-Tree theorem (Kirchhoff 1847) — a deep result in algebraic graph theory.",
-      "Flow conservation interpretation: the directed handshaking equality ∑ outDeg = ∑ inDeg is equivalent to Kirchhoff's current law (KCL) in electrical networks and conservation of flow in network flow problems. An Eulerian graph (every vertex balanced) is one where a unit of 'flow' entering each vertex also leaves — the combinatorial version of a conservative vector field."
+      "Flow conservation interpretation: the directed handshaking equality ∑ outDeg = ∑ inDeg is equivalent to Kirchhoff's current law (KCL) in electrical networks and conservation of flow in network flow problems. An Eulerian graph (every vertex balanced) is one where a unit of 'flow' entering each vertex also leaves — the combinatorial version of a conservative vector field.",
+      "Eulerian vs Hamiltonian — the algorithmic complexity contrast: deciding whether a directed graph has an Eulerian circuit is solvable in O(|V|+|E|) time (check balance + weak connectivity, both linear-time); deciding whether it has a Hamiltonian circuit is NP-complete (Karp 1972, one of the 21 original NP-complete problems). The degree-balance characterization formalized here, by reducing the global existence question to a vertex-local arithmetic invariant ∀v, inDeg(v) = outDeg(v), is the source of the polynomial-time gap — the analogous reduction for Hamiltonian circuits fails (no comparable local invariant exists), explaining why Eulerian paths became the basis for modern genome assembly (Pevzner-Tang-Waterman 2001) while Hamiltonian-path assembly was abandoned.",
+      "Generalization to hypergraphs and infinite graphs: the directed Eulerian theorem here is the r=2 (binary edges), finite case of a much broader phenomenon. For r-uniform hypergraphs (r≥3), the analogous decision problem becomes NP-complete (gallery entry konigsberg-oq-03), so the polynomial-time tractability of the r=2 case is genuinely special. For infinite graphs, the Erdős-Grünwald-Weiszfeld theorem (1936) characterizes which graphs admit one-way / two-way infinite Eulerian paths via finiteness of odd-vertex sets and connectivity conditions — the infinite path infrastructure (InfiniteWalk, BiInfiniteWalk) is formalized in konigsberg-oq-03-oq-02. Together, the trio (this entry for finite directed, konigsberg-oq-03 for hypergraph, konigsberg-oq-03-oq-02 for infinite) maps the boundary of where the degree-balance characterization extends."
     ],
     "prerequisites": [
       "Eulerian circuits and paths in undirected graphs (konigsberg-oq-01)",
@@ -210,6 +212,21 @@
       "targetId": "konigsberg-oq-04",
       "relationship": "extension",
       "description": "Counting Eulerian Circuits: the BEST Theorem (van Aardenne-Ehrenfest, de Bruijn 1951; Smith, Tutte 1941–48). Once existence is established by directed_eulerian_iff (this file), the BEST theorem gives the exact count via arborescences and the Matrix-Tree theorem — the quantitative refinement of the qualitative result here."
+    },
+    {
+      "targetId": "konigsberg-oq-03",
+      "relationship": "generalization",
+      "description": "Eulerian Paths in Hypergraphs and Infinite Graphs — generalizes the directed Eulerian theorem of this file along two orthogonal axes: (1) r-uniform hypergraphs for r≥3, where the analogous decision problem becomes **NP-complete**, sharply contrasting with the polynomial-time degree-balance characterization formalized here for r=2; and (2) infinite graphs, governed by the Erdős-Grünwald-Weiszfeld theorem (1936). The contrast quantifies the algorithmic specialness of the r=2 finite case proved here: the inDeg(v) = outDeg(v) vertex-local invariant has no analogue in higher dimensions or at infinity."
+    },
+    {
+      "targetId": "konigsberg-oq-03-oq-02",
+      "relationship": "extension",
+      "description": "Infinite Paths in Graphs: ℕ-Indexed Formalization — provides the foundational infrastructure (InfiniteWalk, BiInfiniteWalk, IsEulerWalk with edge-injectivity, HasOneWayInfiniteEulerPath) for extending the directed Eulerian theorem of this file to infinite graphs. The closed-walk balance and walk-position bijections proved here for finite walks are the finite-graph base case; konigsberg-oq-03-oq-02's stream-equivalence and ℤ-indexed bi-infinite walks set up the Erdős-Grünwald-Weiszfeld characterization that the present file's finite degree-balance theorem cannot itself reach."
+    },
+    {
+      "targetId": "euler-polyhedral-formula",
+      "relationship": "methodological-sibling",
+      "description": "Euler's polyhedral formula V - E + F = 2 (Wiedijk #13) — Euler's *other* foundational graph-theory contribution (1758, building on the 1736 Königsberg paper that founded the field). The two results frame Euler's introduction of the abstract vertex-edge framework: Königsberg 1736 extracts global *existence* invariants from local vertex-degree parity; the polyhedral formula extracts global *topological* invariants (genus, the Euler characteristic χ = V - E + F) from local face-counting. The directed handshaking lemma proved here (∑ outDeg = |E| = ∑ inDeg) is the directed-graph analogue of the undirected handshaking identity ∑ deg(v) = 2|E| that underwrites Euler's polyhedral proof. Together the two entries anchor the *vertex-edge-arithmetic-yields-global-invariants* methodological pattern that defines classical graph theory."
     }
   ],
   "sorries": 1
