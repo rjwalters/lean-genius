@@ -152,7 +152,7 @@ theorem beurlingPi_le_floor (bp : BeurlingPrimes) (x : ℝ) :
   calc Set.ncard {n : ℕ | bp.a n ≤ x}
       ≤ Set.ncard (↑(Finset.range ⌊x⌋₊) : Set ℕ) :=
         Set.ncard_le_ncard hsub (Finset.range _).finite_toSet
-    _ = ⌊x⌋₊ := by rw [Set.ncard_coe_Finset, Finset.card_range]
+    _ = ⌊x⌋₊ := by rw [Set.ncard_coe_finset, Finset.card_range]
 
 /-- **Sharpened trivial upper bound**: `π_a(x) ≤ ⌊x⌋₊ - 1` (natural truncated
     subtraction). Saves one over `beurlingPi_le_floor` by exploiting the
@@ -179,7 +179,7 @@ theorem beurlingPi_le_floor_pred (bp : BeurlingPrimes) (x : ℝ) :
   calc Set.ncard {n : ℕ | bp.a n ≤ x}
       ≤ Set.ncard (↑(Finset.range (⌊x⌋₊ - 1)) : Set ℕ) :=
         Set.ncard_le_ncard hsub (Finset.range _).finite_toSet
-    _ = ⌊x⌋₊ - 1 := by rw [Set.ncard_coe_Finset, Finset.card_range]
+    _ = ⌊x⌋₊ - 1 := by rw [Set.ncard_coe_finset, Finset.card_range]
 
 /-- The nth prime as a real number. -/
 noncomputable def primeSeq (n : ℕ) : ℝ := Nat.nth Nat.Prime n
@@ -219,20 +219,20 @@ private lemma factorization_prod_at (S : Finset ℕ) (e : ℕ → ℕ) (n : ℕ)
         pow_pos (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime i).pos _)
     rw [Finset.prod_insert hjs, Nat.factorization_mul ha hb, Finsupp.add_apply, ih,
         Nat.factorization_pow, Finsupp.smul_apply, smul_eq_mul,
-        Nat.factorization_prime (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j),
+        (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime j).factorization,
         Finsupp.single_apply]
     have h_inj := (Nat.nth_strictMono Nat.infinite_setOf_prime).injective
     by_cases hn : j = n
     · subst hn; simp [hjs]
     · simp [show Nat.nth Nat.Prime j ≠ Nat.nth Nat.Prime n from fun h => hn (h_inj h),
-            hn, Ne.symm hn]
+            Ne.symm hn]
 
 /-- The ordinary primes have well-separated products by the
     Fundamental Theorem of Arithmetic: distinct exponent tuples yield
     distinct natural number products, and distinct naturals differ by ≥ 1. -/
 theorem primeSeq_well_separated : WellSeparatedProducts primeSeq := by
   intro k ℓ hne
-  simp only [WellSeparatedProducts, primeSeq]
+  simp only [primeSeq]
   -- Define the products as natural numbers
   set Pk := ∏ i ∈ k.support, (Nat.nth Nat.Prime i) ^ (k i) with hPk_def
   set Pℓ := ∏ j ∈ ℓ.support, (Nat.nth Nat.Prime j) ^ (ℓ j) with hPℓ_def
@@ -241,8 +241,8 @@ theorem primeSeq_well_separated : WellSeparatedProducts primeSeq := by
     intro heq
     apply hne; ext n
     have h := congr_arg (fun m => Nat.factorization m (Nat.nth Nat.Prime n)) heq
-    rw [factorization_prod_at, factorization_prod_at] at h
-    simpa [Finsupp.mem_support_iff] using h
+    simp only [hPk_def, hPℓ_def, factorization_prod_at] at h
+    split_ifs at h with hk hℓ hℓ <;> simp_all
   -- Step 2: The real-valued products equal the natural products cast to ℝ
   have h_cast_k :
       ∏ i ∈ k.support, (↑(Nat.nth Nat.Prime i) : ℝ) ^ (k i) = (↑Pk : ℝ) := by
@@ -252,7 +252,7 @@ theorem primeSeq_well_separated : WellSeparatedProducts primeSeq := by
     norm_cast
   rw [h_cast_k, h_cast_ℓ]
   -- Step 3: Distinct natural numbers cast to ℝ differ by at least 1
-  rcases hne_prod.lt_or_lt with h | h
+  rcases hne_prod.lt_or_gt with h | h
   · rw [abs_of_nonpos (sub_nonpos.mpr (Nat.cast_le.mpr h.le))]
     linarith [show (↑Pk : ℝ) + 1 ≤ ↑Pℓ from by exact_mod_cast Nat.succ_le_of_lt h]
   · rw [abs_of_nonneg (sub_nonneg.mpr (Nat.cast_le.mpr h.le))]
@@ -264,6 +264,27 @@ noncomputable def actualPrimes : BeurlingPrimes where
   strictly_increasing := primeSeq_strictly_increasing
   all_gt_one := primeSeq_gt_one
   well_separated := primeSeq_well_separated
+
+/-- The 0th prime is 2 (cast to ℝ). Proved by `Nat.nth_count` applied to
+    `Nat.prime_two`, using that `Nat.count Nat.Prime 2 = 0` (no primes
+    are strictly less than 2). -/
+theorem primeSeq_zero : primeSeq 0 = 2 := by
+  show (Nat.nth Nat.Prime 0 : ℝ) = 2
+  have hcount : Nat.count Nat.Prime 2 = 0 := by decide
+  have hnth : Nat.nth Nat.Prime 0 = 2 := by
+    rw [← hcount]; exact Nat.nth_count Nat.prime_two
+  rw [hnth]; norm_num
+
+/-- **Tightness of `beurling_a_zero_ge_two`**: the lower bound `2 ≤ a₀`
+    is best possible — the actual primes witness equality `a₀ = 2`.
+
+    Consequence: any attempt to derive `a₀ ≥ 3` (or any stronger absolute
+    constant) from the `BeurlingPrimes` axioms alone must fail.
+    Strengthening requires additional hypotheses (e.g. excluding the
+    actual primes, or restricting to integer sequences with `a₀ ≠ 2`). -/
+theorem beurling_a_zero_lower_bound_tight :
+    ∃ bp : BeurlingPrimes, bp.a 0 = 2 :=
+  ⟨actualPrimes, primeSeq_zero⟩
 
 /-- For the actual primes, beurlingPi equals primePi.
     Uses the Galois connection: n < count Prime m ↔ nth Prime n < m
@@ -282,23 +303,53 @@ theorem actualPrimes_counting : ∀ x : ℝ, beurlingPi primeSeq x = primePi x :
     · -- (↑(nth Prime n) : ℝ) ≤ x → n < count Prime (⌊x⌋₊ + 1)
       intro hle
       have h1 : Nat.nth Nat.Prime n ≤ ⌊x⌋₊ := Nat.le_floor (by exact_mod_cast hle)
-      exact (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr (by omega)
+      exact (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mpr
+        (Nat.lt_succ_of_le h1)
     · -- n < count Prime (⌊x⌋₊ + 1) → (↑(nth Prime n) : ℝ) ≤ x
       intro hlt
-      have h1 := (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp hlt
-      have h2 : Nat.nth Nat.Prime n ≤ ⌊x⌋₊ := by omega
+      have h1 : Nat.nth Nat.Prime n < ⌊x⌋₊ + 1 :=
+        (Nat.lt_nth_iff_count_lt Nat.infinite_setOf_prime).mp hlt
+      have h2 : Nat.nth Nat.Prime n ≤ ⌊x⌋₊ := Nat.lt_succ_iff.mp h1
       have hx_nn : 0 ≤ x := by
         by_contra hlt_x; push_neg at hlt_x
-        have := Nat.floor_eq_zero.mpr (show x < 1 by linarith)
-        exact absurd (le_trans (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n).two_le h2)
-          (by omega)
+        have hfloor : ⌊x⌋₊ = 0 := Nat.floor_eq_zero.mpr (show x < 1 by linarith)
+        have hge2 : 2 ≤ ⌊x⌋₊ := le_trans
+          (Nat.nth_mem_of_infinite Nat.infinite_setOf_prime n).two_le h2
+        omega
       exact le_trans (Nat.cast_le.mpr h2) (Nat.floor_le hx_nn)
-  rw [hset, Set.ncard_coe_Finset, Finset.card_range]
+  rw [hset, Set.ncard_coe_finset, Finset.card_range]
 
 -- NOTE: A previous version claimed powers of 2 form a Beurling prime sequence.
 -- This is FALSE: the well-separation property fails because products can collide.
 -- Counterexample: k = {0 ↦ 2} gives (2^1)^2 = 4, ℓ = {1 ↦ 1} gives (2^2)^1 = 4.
 -- These are distinct tuples with equal products, violating |prod - prod| ≥ 1.
+-- This is formalized as `powers_of_two_not_well_separated` below.
+
+/-- **Counter-example**: the geometric sequence `aₙ = 2^(n+1)` (i.e.
+    `a₀ = 2, a₁ = 4, a₂ = 8, …`) does NOT satisfy `WellSeparatedProducts`.
+
+    The exponent tuples `k = Finsupp.single 0 2` (product `(a₀)² = 4`)
+    and `ℓ = Finsupp.single 1 1` (product `(a₁)¹ = 4`) are distinct
+    Finsupps but yield identical products, so `|4 - 4| = 0 < 1`.
+
+    This formalizes the comment immediately above. The takeaway:
+    `BeurlingPrimes` is not just "any geometric-style sequence" — the
+    well-separation requirement is genuinely restrictive. -/
+theorem powers_of_two_not_well_separated :
+    ¬ WellSeparatedProducts (fun n => (2 : ℝ) ^ (n + 1)) := by
+  intro h
+  have hne : (Finsupp.single 0 2 : ℕ →₀ ℕ) ≠ Finsupp.single 1 1 := by
+    intro heq
+    have h0 := DFunLike.congr_fun heq 0
+    simp at h0
+  have hsep := h (Finsupp.single 0 2) (Finsupp.single 1 1) hne
+  have hk_supp : (Finsupp.single 0 (2 : ℕ)).support = {0} :=
+    Finsupp.support_single_ne_zero _ (by decide : (2 : ℕ) ≠ 0)
+  have hℓ_supp : (Finsupp.single 1 (1 : ℕ)).support = {1} :=
+    Finsupp.support_single_ne_zero _ one_ne_zero
+  rw [hk_supp, hℓ_supp, Finset.prod_singleton, Finset.prod_singleton] at hsep
+  simp only [Finsupp.single_eq_same] at hsep
+  norm_num at hsep
 
 /-- Well-separated products implies distinct products. -/
 theorem separation_implies_distinct (a : ℕ → ℝ) (h : WellSeparatedProducts a) :

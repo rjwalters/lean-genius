@@ -140,6 +140,27 @@ def ErdosProblem1063 : Prop :=
     ∀ k : ℕ, k ≥ 2 →
       ∃ nk : ℕ, IsThreshold nk k ∧ nk ≤ k ^ C
 
+/- ## Part V.5: Unified Existence -/
+
+/--
+**Existence of the threshold**: for every k ≥ 2, there exists some n_k
+satisfying `IsThreshold`. This combines the small-case witnesses
+(`threshold_k2`..`threshold_k5`) with Monier's factorial-bound axiom for
+k ≥ 3, giving a single uniform existence statement.
+
+The bounds — `monier_factorial_bound` (k!) and `cambie_lcm_bound`
+(k · (k-1)!) — both witness existence but with explicit (exponential)
+ceilings; this lemma extracts the bare existence without the size bound.
+-/
+theorem threshold_exists (k : ℕ) (hk : k ≥ 2) :
+    ∃ nk : ℕ, IsThreshold nk k := by
+  by_cases h3 : k ≥ 3
+  · obtain ⟨nk, hth, _⟩ := monier_factorial_bound k h3
+    exact ⟨nk, hth⟩
+  · have : k = 2 := by omega
+    subst this
+    exact ⟨4, threshold_k2⟩
+
 /- ## Part VI: Summary -/
 
 /--

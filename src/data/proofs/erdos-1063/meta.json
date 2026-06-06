@@ -52,9 +52,9 @@
       "erdos_1063_summary theorem combining key results"
     ],
     "axiomCount": 3,
-    "lineCount": 169,
-    "assumptions": "3 axioms: erdos_selfridge_nondivisibility (Erdős-Selfridge impossibility result), monier_factorial_bound (n_k ≤ k!), cambie_lcm_bound (n_k ≤ k·lcm(2,...,k-1)). Former threshold axioms proved and eliminated.",
-    "theoremCount": 5,
+    "lineCount": 190,
+    "assumptions": "3 axioms: erdos_selfridge_nondivisibility (Erdős-Selfridge impossibility result), monier_factorial_bound (n_k ≤ k!), cambie_lcm_bound (n_k ≤ k·lcm(2,...,k-1)). Former threshold axioms proved and eliminated. Unified threshold_exists theorem (k ≥ 2) added to combine small-case witnesses with Monier's bound into one uniform existence statement.",
+    "theoremCount": 6,
     "definitionCount": 5
   },
   "overview": {
@@ -227,9 +227,9 @@
     ],
     "opens": [],
     "namespace": "Erdos1063",
-    "lineCount": 169,
+    "lineCount": 190,
     "axiomCount": 3,
-    "theoremCount": 5,
+    "theoremCount": 6,
     "definitionCount": 5,
     "path": "Proofs/Erdos1063Problem.lean",
     "sorries": 0

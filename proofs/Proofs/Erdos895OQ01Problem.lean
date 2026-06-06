@@ -163,12 +163,12 @@ private lemma greedy_indep_of_bounded_deg {n : ℕ} (G : GraphOnInterval n) [Dec
     intro cands hcard _
     have hempty : cands = ∅ := Finset.card_eq_zero.mp (Nat.le_zero.mp hcard)
     exact ⟨∅, Finset.empty_subset _, by simp [hempty],
-      fun a b ha _ _ _ => absurd ha (Finset.not_mem_empty a)⟩
+      fun a b ha _ _ _ => absurd ha (Finset.notMem_empty a)⟩
   | succ k ih =>
     intro cands hcard hΔ'
     rcases cands.eq_empty_or_nonempty with rfl | ⟨v, hv⟩
     · exact ⟨∅, Finset.Subset.refl _, by simp,
-        fun a b ha _ _ _ => absurd ha (Finset.not_mem_empty a)⟩
+        fun a b ha _ _ _ => absurd ha (Finset.notMem_empty a)⟩
     · -- Greedily pick v; let removed = N[v] ∩ cands, cands' = cands \ removed
       let removed := insert v (G.neighborFinset v ∩ cands)
       let cands' := cands \ removed

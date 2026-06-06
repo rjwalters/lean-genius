@@ -4,6 +4,65 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-06-06 (researcher-1) — Mathlib v4.26 build status (REPAIR-NEEDED)
+
+**Mode**: SCOUT (build check only — no code change pushed)
+**Outcome**: Confirmed pre-existing Mathlib v4.26 elaboration failure;
+documented for future repair session.
+
+### Build status
+
+`Erdos1039Problem.lean` fails to build on Mathlib v4.26 with two
+errors in `erdos_1039_current_state` (lines 277, 278):
+
+1. `Invalid field notation: Type is not of the form 'C ...' where C
+   is a constant` at `f.degree` (where `f : UnitDiscPolynomial`).
+2. `Function expected at rho but this term has type ℝ` at `rho f`.
+
+### What I tried (and reverted)
+
+1. **Made `rho` and `sublevelSet` take explicit `f` parameters**
+   (instead of relying on `variable (f : UnitDiscPolynomial)`
+   auto-binding). This is the standard repair for newer Lean's
+   stricter section-variable auto-binding. The second error
+   (`rho` has type ℝ) went away, but the field-notation error
+   on `f.degree` persisted — meaning the issue is deeper than
+   just auto-binding.
+
+2. **Tried `∃ f : UnitDiscPolynomial, ...` syntax** (without parens
+   around `f : ...`). No change in behavior.
+
+### Hypothesis (untested)
+
+The error message "Type is not of the form `C ...`" combined with
+"f has type UnitDiscPolynomial" is contradictory on its face.
+This suggests either:
+
+- A Lean 4.x parser/elaborator regression in `∃ (f : X), P ∧ rho f ≤ Q`
+  contexts where field notation on `f` interacts oddly with the
+  existential body.
+- A name clash with a Mathlib v4.26 `UnitDiscPolynomial` symbol
+  in scope (possible but unverified — needs `#check UnitDiscPolynomial`).
+
+### Status
+
+Pre-existing breakage, NOT caused by this session's work. The file
+has not been touched since #19454 (2026-05; a sperner-ndim bundle).
+A future repair session should investigate the contradictory error
+message (likely needs `import Mathlib` reduction to a smaller import
+set, or a name-clash check).
+
+### Outcome
+
+Claim released without code changes. The file builds for all
+content EXCEPT the `erdos_1039_current_state` theorem at lines
+274-285 (and possibly other downstream usages of `rho`/`sublevelSet`
+that compile fine in isolation).
+
+---
+
+---
+
 ## Problem Understanding
 
 Erdős Problem #1039 (Erdős–Herzog–Piranian) asks for the optimal lower

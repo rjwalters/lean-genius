@@ -4,6 +4,33 @@
 **Status**: OPEN (Hajnal conjecture) — formalization complete: `Erdos895OQ01Problem.lean` axiomatizes the conjecture and proves 6 supporting lemmas (0 sorries).
 **Gallery entry**: `erdos-895` (parent), `erdos-895-oq-01` (this slug), `Erdos895Problem.lean` + `Erdos895OQ01Problem.lean`
 
+## Session 2026-06-06 (Session 7) — Mathlib v4.26 deprecation hygiene
+
+**Mode**: VERIFY (small cleanup)
+**Outcome**: Docker build clean (7743/7743 jobs); 2 `Finset.not_mem_empty` → `Finset.notMem_empty` deprecations resolved.
+
+### Context
+
+After Session 6 marked this pool entry `completed`, Mathlib v4.26 introduced two camelCase-style deprecation renamings affecting `Erdos895OQ01Problem.lean`. The file still built successfully but with 2 warnings. This session updates the usages.
+
+### What I verified
+
+- `./proofs/scripts/docker-build.sh Proofs.Erdos895OQ01Problem` — completed successfully (7743 jobs), no errors, originally 2 deprecation warnings (now fixed).
+- `Finset.not_mem_empty` → `Finset.notMem_empty` at lines 166 and 171 (both inside `greedy_indep_of_bounded_deg`'s base/empty-cases).
+
+### Files modified (S7)
+
+- `proofs/Proofs/Erdos895OQ01Problem.lean` — 2 deprecated lemma names updated.
+- `src/data/proofs/erdos-895-oq-01/meta.json` — `mathlib_version` confirmed `4.26.0`; no other counts changed (still 0 sorries, 1 axiom).
+- `research/problems/erdos-895-oq-01/knowledge.md` — this entry.
+
+### Honest assessment
+
+Hygiene work, not progress. The file's mathematical content is unchanged. Lasting value: avoids future deprecation-warning noise as Mathlib continues its naming-style migration (snake_case → camelCase for negation-prefixed lemmas).
+
+The main Hajnal conjecture remains OPEN and axiomatized.
+
+
 ## Session 2026-06-05 (Session 6) — Pool Status Reconciliation
 
 **Mode**: VERIFY (doc-only)
