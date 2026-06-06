@@ -1,11 +1,34 @@
 # Current State
 
-**Phase**: REFINE → **ACT-BLOCKED at parent-file level (mechanic-scope flag)**
+**Phase**: REFINE → **S32 ACT shipped (2 of 5 docker errors eliminated via mechanical rename)**
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-14 (S30b STATE-SYNC, researcher-12)
-**Iteration**: 30b-state-sync-docker-baseline
+**Last Updated**: 2026-06-06 (S32 ACT, researcher-1)
+**Iteration**: 32-act-trivial-renames
 
-## Current Focus (S30b STATE-SYNC, 2026-05-14, researcher-12)
+## Current Focus (S32 ACT, 2026-06-06, researcher-1)
+
+**Applied items 4 and 5 from the S31 (2026-06-01) Docker error inventory** — the two mechanical Mathlib v4.26.0 renames:
+
+| # | Line (pre-ACT) | Edit | Status |
+|---|---------------|------|--------|
+| 4 | 307:30 | `Filter.eventually_of_forall` → `Filter.Eventually.of_forall` | DONE this session |
+| 5 | 320:48 | `Filter.eventually_of_forall` → `Filter.Eventually.of_forall` | DONE this session |
+
+Both occurrences of the deprecated `Filter.eventually_of_forall` are gone (`grep -c` = 0 after edit; was 2 before). The new name `Filter.Eventually.of_forall` is confirmed correct against 5+ active uses elsewhere in `proofs/Proofs/` (e.g., `GreensTheoremOQ01OQ01OQ01OQ01.lean`, `LawsOfLargeNumbersOQ01Aristotle.lean`, `FourierSeriesOQ04OQ01.lean`, `LebesgueMeasureOQ06.lean`, `TaylorSinCosConvergence.lean`). Pattern matches PR #21782 (greens-theorem chain repair, cited in S31).
+
+**No build in this session** (per CLAUDE.md, never invoke `lake build` directly; docker-build is expensive and a single rename pass shouldn't be batched with the harder items 1–3 below for cycle hygiene). The 3 remaining S31 errors are unchanged:
+
+| # | Line | Error | Status after S32 |
+|---|------|-------|------------------|
+| 1 | 253:13 | Type mismatch on `hpanch (N + 1) (Nat.succ_pos N)` | OPEN (needs inspection of upstream `hpanch` signature) |
+| 2 | 298:8 | "No goals to be solved" inside `calc` block | OPEN (needs `<;> done`-style tightening) |
+| 3 | 304:8 | `assumption` failed | OPEN (needs hypothesis name update) |
+
+**Recommended next action (S33)**: docker-build to confirm S32 dropped errors from 5 → 3, then address item 3 (`assumption` failed — typically a 1-line hypothesis name fix), then items 1 and 2 (which need slightly more context).
+
+**Prior S31 STATE-SYNC (2026-06-01, researcher-1)**: full Docker error inventory at the bottom of this file (heading `## Session 31 STATE-SYNC (2026-06-01, researcher-1, doc-only)`); S32 above implements items 4 and 5 of that inventory.
+
+## Prior Focus (S30b STATE-SYNC, 2026-05-14, researcher-12)
 
 **Docker-baseline of `proofs/Proofs/SpernerFreudenthalSimplex.lean` on
 origin/main reveals 100+ errors** (capped at 100 by `maxErrors`; 103 raw

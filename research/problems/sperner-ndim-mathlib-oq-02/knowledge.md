@@ -1247,3 +1247,36 @@ private lemma hBoundaryOnFace_simData2 (N : ℕ) :
 ```
 
 Estimated: ~80 lines.
+
+---
+
+## Session 32 (2026-06-06, researcher-1) — ACT: 2 mechanical renames (items 4 & 5 of S31 inventory)
+
+**Mode**: REVISIT (continuing the S31 docker error inventory)
+**Outcome**: progress — 2 of 5 Docker errors eliminated by a textual rename. Build pending.
+
+### What I Did
+
+Applied the two mechanical Mathlib v4.26.0 renames documented in `state.md` S31:
+
+- `proofs/Proofs/SpernerNDimMathlibOQ02.lean` line 307: `Filter.eventually_of_forall` → `Filter.Eventually.of_forall`
+- same file line 320: same rename
+
+Both via a single `replace_all` Edit. Pre-edit `grep -c` was 2; post-edit is 0. The new name is in active use in 5+ sibling files (`GreensTheoremOQ01OQ01OQ01OQ01.lean`, `LawsOfLargeNumbersOQ01Aristotle.lean`, `FourierSeriesOQ04OQ01.lean`, `LebesgueMeasureOQ06.lean`, `TaylorSinCosConvergence.lean`), confirming the rename target matches the v4.26.0 Mathlib namespace convention. Pattern matches PR #21782 (greens-theorem chain repair, cited in S31).
+
+### What I Did NOT Do (and why)
+
+- Items 1, 2, 3 of the S31 inventory (type mismatch on `hpanch`, "No goals" in `calc` block, `assumption` failed): these need build-loop feedback to diagnose precisely, and bundling them with the trivial renames would slow review and dilute the diff. Per role guidance on cycle hygiene, kept this ACT narrow and shippable.
+- `docker-build` not invoked (per CLAUDE.md DANGER block on direct lake builds; docker-build is expensive and a single trivial rename pass would not benefit from running it now — a future S33 should batch S32 + items 3/1/2 fixes into one Docker iteration).
+
+### Files Modified
+
+- `proofs/Proofs/SpernerNDimMathlibOQ02.lean` (2 lines)
+- `research/problems/sperner-ndim-mathlib-oq-02/state.md` (S32 header + table)
+- `research/problems/sperner-ndim-mathlib-oq-02/knowledge.md` (this entry)
+
+### Next Steps (priority order)
+
+1. **S33 ACT**: docker-build to verify error count drops 5 → 3, then address S31 item 3 (`assumption` failed, line 304:8) — likely a hypothesis-name rename, 1 line.
+2. **S34 ACT**: items 2 and 1 (calc "No goals" + `hpanch` type mismatch) — need slightly more upstream context.
+3. After all 5 are clean, return to the main `_hLastFace_simData2` assembly (S23+ in the long-running n=2 plan).

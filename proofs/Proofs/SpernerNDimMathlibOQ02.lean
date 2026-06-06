@@ -304,7 +304,7 @@ theorem brouwer_from_panchromatic {n : ℕ}
         rwa [add_zero] at this
     have := h_diff.add_const (x l)
     rw [zero_add] at this
-    exact this.congr' (Filter.eventually_of_forall fun k => by ring)
+    exact this.congr' (Filter.Eventually.of_forall fun k => by ring)
   -- Step 6: f(x*)ᵢ ≤ x*ᵢ for each i (limit of inequalities f(vᵢ)ᵢ ≤ vᵢᵢ)
   have hfx_le : ∀ i : Fin (n + 1), f x i ≤ x i := by
     intro i
@@ -317,7 +317,7 @@ theorem brouwer_from_panchromatic {n : ℕ}
       (tendsto_pi_nhds.mp (hconv_i i) i).sub (tendsto_pi_nhds.mp hfv_conv i)
     have h_diff_nonneg : ∀ k, 0 ≤ vdata (φ k) i i - f (vdata (φ k) i) i :=
       fun k => sub_nonneg.mpr (hvdata_le (φ k) i)
-    linarith [ge_of_tendsto h_diff_conv (Filter.eventually_of_forall h_diff_nonneg)]
+    linarith [ge_of_tendsto h_diff_conv (Filter.Eventually.of_forall h_diff_nonneg)]
   -- Step 7: Σᵢ f(x*)ᵢ = 1 = Σᵢ x*ᵢ with all f(x*)ᵢ ≤ x*ᵢ → f(x*) = x*
   funext i
   apply le_antisymm (hfx_le i)
