@@ -1,16 +1,19 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-06T14:04:48+03:00
-**Iteration**: 1
+**Phase**: REFINE
+**Since**: 2026-06-06T12:30:00+00:00
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+Witness ambiguity / torsor structure for Skolem-Noether conjugating units.
 
 ## Active Approach
 
-None yet.
+Added 3 hypothesis-free theorems characterizing the witness set as a left coset
+of the centralizer of g(A) in Bˣ (witness_diff_centralizes,
+witness_mul_centralizer, witness_set_torsor). Independent of the
+skolemNoether_module_iso axiom.
 
 ## Blockers
 
@@ -18,10 +21,10 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+Verify Docker build, push PR, optionally proceed to MulAction formulation.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1

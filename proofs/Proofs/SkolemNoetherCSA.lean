@@ -288,6 +288,87 @@ theorem conjugateSetoid_single_class
     (f g : A →ₐ[K] B) : (conjugateSetoid : Setoid (A →ₐ[K] B)).r f g :=
   skolemNoether_isConjugate f g
 
+/-! ## Ambiguity of Skolem-Noether Witnesses
+
+  A **Skolem-Noether witness** for the conjugation `f ~ g` is a unit `u ∈ Bˣ`
+  satisfying `f(a) = u⁻¹ · g(a) · u` for all `a ∈ A`. The next two lemmas
+  characterize the set of all such witnesses for a fixed pair `(f, g)`:
+
+  * `witness_diff_centralizes` — if `u, u'` are both witnesses, then `u' · u⁻¹`
+    commutes with every element of `g(A)`.
+  * `witness_mul_centralizer` — conversely, if `u` is a witness and `c ∈ Bˣ`
+    commutes with every element of `g(A)`, then `c · u` is also a witness.
+
+  Together: the set of conjugating units for a fixed pair `(f, g)` is either
+  empty or a left coset of the centralizer of `g(A)` in `Bˣ`. Skolem-Noether
+  (`skolemNoether_general`) asserts this set is nonempty when `A` is simple and
+  `B` is a CSA, so the "moduli space" of witnesses then coincides with the
+  centralizer of `g(A)` as a torsor.
+
+  These lemmas hold for **arbitrary** rings `A, B` — no simple, CSA, or
+  finite-dimensionality hypotheses — and are independent of the
+  `skolemNoether_module_iso` axiom. They sharpen the `IsConjugate` predicate
+  by tracking the precise ambiguity of conjugating units.
+-/
+
+/-- If `u` and `u'` are both Skolem-Noether witnesses for the same conjugation
+    `f(a) = u⁻¹·g(a)·u = u'⁻¹·g(a)·u'`, then their ratio `u' · u⁻¹` commutes
+    with every element of `g(A)`. -/
+theorem witness_diff_centralizes
+    {f g : A →ₐ[K] B} {u u' : Bˣ}
+    (hu : ∀ a : A, f a = u⁻¹.val * g a * u.val)
+    (hu' : ∀ a : A, f a = u'⁻¹.val * g a * u'.val) :
+    ∀ a : A, (u'.val * u⁻¹.val) * g a = g a * (u'.val * u⁻¹.val) := by
+  intro a
+  have heq : u⁻¹.val * g a * u.val = u'⁻¹.val * g a * u'.val :=
+    (hu a).symm.trans (hu' a)
+  have huu : u.val * u⁻¹.val = 1 := Units.mul_inv u
+  have huu' : u'.val * u'⁻¹.val = 1 := Units.mul_inv u'
+  calc (u'.val * u⁻¹.val) * g a
+      = (u'.val * u⁻¹.val) * g a * 1 := by rw [mul_one]
+    _ = (u'.val * u⁻¹.val) * g a * (u.val * u⁻¹.val) := by rw [huu]
+    _ = u'.val * (u⁻¹.val * g a * u.val) * u⁻¹.val := by simp only [mul_assoc]
+    _ = u'.val * (u'⁻¹.val * g a * u'.val) * u⁻¹.val := by rw [heq]
+    _ = (u'.val * u'⁻¹.val) * g a * (u'.val * u⁻¹.val) := by simp only [mul_assoc]
+    _ = 1 * g a * (u'.val * u⁻¹.val) := by rw [huu']
+    _ = g a * (u'.val * u⁻¹.val) := by rw [one_mul]
+
+/-- Conversely, if `u` is a Skolem-Noether witness for the pair `(f, g)` and
+    `c ∈ Bˣ` commutes with every element of `g(A)`, then `c · u` is also a
+    witness. Combined with `witness_diff_centralizes`, this shows the witness
+    set is a left coset of the centralizer of `g(A)` in `Bˣ`. -/
+theorem witness_mul_centralizer
+    {f g : A →ₐ[K] B} {u : Bˣ} (c : Bˣ)
+    (hu : ∀ a : A, f a = u⁻¹.val * g a * u.val)
+    (hc : ∀ a : A, c.val * g a = g a * c.val) :
+    ∀ a : A, f a = (c * u)⁻¹.val * g a * (c * u).val := by
+  intro a
+  have hconj : c⁻¹.val * g a * c.val = g a := by
+    have h := hc a
+    have hcc' : c⁻¹.val * c.val = 1 := Units.inv_mul c
+    calc c⁻¹.val * g a * c.val
+        = c⁻¹.val * (g a * c.val) := by rw [mul_assoc]
+      _ = c⁻¹.val * (c.val * g a) := by rw [h]
+      _ = (c⁻¹.val * c.val) * g a := by rw [← mul_assoc]
+      _ = 1 * g a := by rw [hcc']
+      _ = g a := by rw [one_mul]
+  rw [mul_inv_rev, Units.val_mul, Units.val_mul, hu a]
+  have hassoc : u⁻¹.val * c⁻¹.val * g a * (c.val * u.val)
+              = u⁻¹.val * (c⁻¹.val * g a * c.val) * u.val := by
+    simp only [mul_assoc]
+  rw [hassoc, hconj]
+
+/-- Group-theoretic restatement of `witness_mul_centralizer`: the map
+    `c ↦ c * u` sends the centralizer of `g(A)` in `Bˣ` into the witness set
+    for `(f, g)`. Together with `witness_diff_centralizes`, this map is a
+    bijection between the centralizer and the witness set. -/
+theorem witness_set_torsor
+    {f g : A →ₐ[K] B} {u : Bˣ}
+    (hu : ∀ a : A, f a = u⁻¹.val * g a * u.val) :
+    ∀ (c : Bˣ), (∀ a : A, c.val * g a = g a * c.val) →
+      ∀ a : A, f a = (c * u)⁻¹.val * g a * (c * u).val :=
+  fun c hc => witness_mul_centralizer c hu hc
+
 /-
   ## Mathlib v4.26 Building Blocks (verified by source inspection)
 

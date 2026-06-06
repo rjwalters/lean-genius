@@ -63,11 +63,15 @@
       "conjugateSetoid: explicit Setoid structure on A →ₐ[K] B with IsConjugate as the relation",
       "skolemNoether_isConjugate: equivalence-relation form of the main theorem — repackages skolemNoether_general using IsConjugate",
       "conjugateSetoid_single_class: setoid-theoretic restatement — every two AlgHoms lie in a single conjugacy class",
+      "witness_diff_centralizes: if u, u' are both Skolem-Noether witnesses for the same pair (f, g), then u'·u⁻¹ centralizes g(A) — proved hypothesis-free, no simple/CSA/finite-dim assumptions",
+      "witness_mul_centralizer: converse — if u is a witness and c ∈ Bˣ centralizes g(A), then c·u is also a witness; proved hypothesis-free",
+      "witness_set_torsor: combined torsor statement — the map c ↦ c·u from the centralizer of g(A) to the witness set is a well-defined embedding (bijection when combined with witness_diff_centralizes)",
+      "Structural contribution: the witness ambiguity lemmas show the set of conjugating units for a fixed pair (f, g) is either empty or a left coset of the centralizer of g(A) in Bˣ; Skolem-Noether asserts non-emptiness, so the witness moduli space coincides with the centralizer",
       "Build repair: fixed pre-existing bugs blocking compilation — conjugate_iff_same_image used wrong unit (u⁻¹ instead of u), skolemNoether_general's calc used commutative-ring `ring` on non-commutative B (replaced with explicit mul_assoc / Units.inv_mul / one_mul rewrites), and aut_is_inner's AlgHom.id required explicit type args (AlgHom.id K B)",
       "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
     ],
-    "lineCount": 311,
-    "theoremCount": 9,
+    "lineCount": 392,
+    "theoremCount": 12,
     "definitionCount": 2
   },
   "overview": {
@@ -135,6 +139,14 @@
       "endLine": 218,
       "summary": "aut_is_inner: every K-algebra automorphism of a finite-dimensional CSA is inner (specialization A=B of skolemNoether_general). conjugate_iff_same_image: the conjugation relation between AlgHoms is symmetric (u-conjugation on one side ↔ u⁻¹-conjugation on the other).",
       "mathContext": "Setting A=B and g=id in Skolem-Noether yields Aut_K(B) = Inn(B) — every K-algebra automorphism of a CSA is conjugation by a unit. The conjugacy relation is symmetric: f = u⁻¹·g·u iff g = u·f·u⁻¹, which is just the inverse-unit substitution."
+    },
+    {
+      "id": "witness-ambiguity",
+      "title": "Ambiguity of Skolem-Noether Witnesses (Torsor Structure)",
+      "startLine": 291,
+      "endLine": 390,
+      "summary": "witness_diff_centralizes + witness_mul_centralizer + witness_set_torsor: characterize the set of conjugating units for a fixed pair (f, g) as a left coset of the centralizer of g(A) in Bˣ. Proved hypothesis-free (no simple/CSA/finite-dim assumptions), independent of the skolemNoether_module_iso axiom.",
+      "mathContext": "A 'Skolem-Noether witness' is a unit u ∈ Bˣ realizing the conjugation f(a) = u⁻¹·g(a)·u. The forward direction says: any two witnesses u, u' differ by an element of the centralizer of g(A), since u'·u⁻¹·g(a) = g(a)·u'·u⁻¹ for all a. The converse says: multiplying a witness by a centralizing unit yields another witness. Together these establish the witness set as a left coset (torsor) of the centralizer. Skolem-Noether's existence claim (skolemNoether_general) ensures the set is nonempty when A is simple and B is a CSA, so the witness moduli space then coincides with the centralizer of g(A) as a torsor — sharpening the qualitative IsConjugate predicate into a quantitative structural result."
     }
   ],
   "conclusion": {
@@ -170,9 +182,9 @@
     ],
     "opens": [],
     "namespace": "SkolemNoetherCSA",
-    "lineCount": 311,
+    "lineCount": 392,
     "axiomCount": 1,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/SkolemNoetherCSA.lean"

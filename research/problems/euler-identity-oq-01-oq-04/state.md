@@ -1,11 +1,42 @@
 # Research State: euler-identity-oq-01-oq-04
 
 ## Current State
-**Phase**: ACT (Iter 2 ACT-1 — Path A wrapper scaffold SHIPPED with three named sorries; build-verification + sorry-discharge pending Iter 3 ACT-2)
+**Phase**: ACT (Iter 3 ACT-2 — sorry discharge SHIPPED; build verification still pending; 0 axioms, 0 sorries)
 **Path**: full
-**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01; first Lean edit 2026-06-03)
-**Last Updated**: 2026-06-03 (Iter 2 ACT-1 — scaffold shipped; iteration 2→3; +1 Lean file (~125 LOC, 0 axioms, 3 sorries), researcher-1)
-**Iteration**: 3
+**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01; first Lean edit 2026-06-03; sorry discharge 2026-06-06)
+**Last Updated**: 2026-06-06 (Iter 3 ACT-2 — sorry discharge; iteration 3→4; +1 private bridge lemma; 3 sorries → 0; researcher-1)
+**Iteration**: 4
+
+## Iter 3 ACT-2 (2026-06-06, researcher-1) — Sorry discharge via Real.Angle.toCircle bridge
+
+Discharges the three named sorries from Iter 2's scaffold. The non-trivial step turned out to be: Mathlib v4.26.0's `AddCircle.toCircle` is a DIFFERENT `Periodic.lift` construction than `Real.Angle.toCircle`, even though both lift `Circle.exp` and are propositionally equal on representatives. The Iter 2 strategy table assumed they were definitionally equal — which would have made the discharge trivial (`exact homeomorphCircle'.symm_apply_apply x`), but actually a propositional bridge is required.
+
+**Mathlib audit (raw GitHub source at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)**:
+- `Real.Angle.toCircle θ := Circle.periodic_exp.lift θ` (line 98 of `Mathlib/Analysis/SpecialFunctions/Complex/Circle.lean`) — direct lift of `Circle.exp` from `ℝ → Circle` to `Angle = AddCircle (2 * π) → Circle`.
+- `AddCircle.toCircle (T) := (@scaled_exp_map_periodic T).lift` (line 138 of same file) — lifts `Circle.exp (2*π/T * x)`. At `T = 2*π`, `(2*π)/(2*π) = 1` propositionally (positivity), so `Circle.exp ((2π/2π) * x) = Circle.exp x` via `div_self + one_mul`.
+- `AddCircle.homeomorphCircle' : AddCircle (2 * π) ≃ₜ Circle` has `toFun := Real.Angle.toCircle` (line 169) — NOT `AddCircle.toCircle`.
+
+**Bridge lemma shipped**: `addCircle_toCircle_eq_angle_toCircle (x : AddCircle (2 * π)) : AddCircle.toCircle x = Real.Angle.toCircle x`. Proof: `QuotientAddGroup.induction_on`, then `rw [AddCircle.toCircle_apply_mk, div_self, one_mul]; rfl`. ~5 lines.
+
+**Three discharges**:
+- `left_inv x`: `rw [bridge]; exact homeomorphCircle'.symm_apply_apply x`.
+- `right_inv y`: `rw [bridge, homeomorphCircle'.apply_symm_apply]; rfl`.
+- `map_add' x y`: `show ...; rw [AddCircle.toCircle_add]; rfl`.
+
+Total LOC added: ~45 (bridge lemma + 3 discharges + comments + docstring update). Net axiom/sorry count: 0 / 0.
+
+**Build verification still deferred**: confirmed `proofs/.lake/packages/` returns "Too many levels of symbolic links" from this isolation worktree (same as the `szemeredi-full-oq-01` S10 sibling-slug observation). Build verification falls to the next ACT-3 iteration from main checkout (`./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`), or to the auditor pipeline post-merge.
+
+**Risks (this iter's best guesses; build will validate)**:
+- `homeomorphCircle'.symm_apply_apply x` may need the unification `homeomorphCircle' x = Real.Angle.toCircle x` to hold by rfl (it should, since `toFun := Real.Angle.toCircle`).
+- `Additive.ofMul (a * b) = Additive.ofMul a + Additive.ofMul b` is assumed to be `rfl` (since `Additive α := α` is a type alias and `Add (Additive α)` is defined as `Mul α` underlyingly). If not rfl, may need `Additive.ofMul_mul` rewrite or `rfl` may need to become `simp`.
+- The `rfl` ending in `right_inv` (after `apply_symm_apply`) reduces to `Additive.ofMul (Additive.toMul y) = y`, which should be `rfl` for the same type-alias reason.
+
+If any of these tactic-level guesses fail in the build, fixes are local (1-2 lines) and the file structure remains correct.
+
+Session log: `sessions/2026-06-06-iter3-act2-sorry-discharge.md` (TBD if needed; the state.md block + session log inline above carries the authoritative context).
+
+
 
 ## Iter 2 ACT-1 (2026-06-03, researcher-1) — Path A wrapper scaffold shipped
 
@@ -39,9 +70,9 @@ First substantive iteration on this slug after 57 idle days. Doc-only PREP advan
 
 ## Current Focus
 
-**Iteration 3 (Iter 2 ACT-1, this iter, researcher-1, 2026-06-03)**: First Lean edit on the slug. Ships the Path A wrapper scaffold (~125 LOC including ~65 LOC of docstring/strategy comments) per the 2026-06-01 PREP's paste-ready skeleton. Three named sorries inside the `AddEquiv` record; two `@[simp]` API lemmas (`apply`/`symm_apply`) which are `rfl`-provable. Build verification deferred — host Docker image missing + corrupted blob.
+**Iteration 4 (Iter 3 ACT-2, this iter, researcher-1, 2026-06-06)**: Sorry discharge via `Real.Angle.toCircle` bridge. Adds 1 private bridge lemma and replaces 3 sorries with named-lemma chains. The discharge required revising the Iter 2 strategy table (which assumed `AddCircle.toCircle` and `Real.Angle.toCircle` were definitionally equal at `T = 2 * π`; they are propositionally equal but not definitionally — the `2π/2π = 1` reduction is not `rfl`).
 
-**Highest-readiness next ACT — Iter 3 ACT-2 (next researcher)**: Run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`, then discharge the three sorries per the per-sorry strategy table in the 2026-06-03 session log. Expected discharge: 3-8 lines total across the three sorries; 5-15 min of tactic polish.
+**Highest-readiness next ACT — Iter 4 ACT-3 (next researcher, from main checkout)**: Run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04` to validate the 3 discharges + bridge lemma. If any tactic mismatches surface, they are local 1-2 line fixes (see "Risks" in Iter 3 ACT-2 block above). On clean build, add the gallery entry at `src/data/proofs/euler-identity-oq-01-oq-04/meta.json`.
 
 ## Active Approach
 
@@ -51,16 +82,16 @@ First substantive iteration on this slug after 57 idle days. Doc-only PREP advan
 
 ## Attempt Count
 
-- Total attempts: 1 (Iter 2 ACT-1 scaffold ship 2026-06-03)
-- Current approach attempts: 1 (Path A scaffold-only ship)
+- Total attempts: 2 (Iter 2 ACT-1 scaffold ship 2026-06-03; Iter 3 ACT-2 sorry discharge 2026-06-06)
+- Current approach attempts: 2 (Path A scaffold-only ship + Path A sorry discharge)
 - Approaches tried: 1 (Path A; Path B still de-recommended, available as alternate follow-up)
 
 ## Blockers
 
-None on the math side. The ACT-2 sorry discharge is a 5-15 min tactic-polish job per the per-sorry strategy table in the 2026-06-03 session log.
+None on the math side. Build verification is the only remaining gating step.
 
-**Soft transient blocker**: host Docker environment (image missing + corrupted blob) at this researcher's worktree was unable to build-verify the scaffold this iteration. Iter 3 ACT-2 should restore Docker access (image rebuild or operator intervention) before running `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`.
+**Soft persistent blocker**: this `.loom/worktrees/*` isolation worktree's `proofs/.lake/packages/` returns "Too many levels of symbolic links" (verified Iter 3 ACT-2 / 2026-06-06; same structural issue as `szemeredi-full-oq-01` S10's blocker note). Local `lake build` / Docker build from this worktree is not possible. Iter 4 ACT-3 must run from `/Users/rwalters/GitHub/lean-genius` (the main checkout), or rely on the post-merge auditor/mechanic pipeline.
 
 ## Next Action
 
-Iter 3 ACT-2 (next researcher): (1) Restore Docker / run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04`; (2) discharge the three sorries in the `addCircleEquivAdditiveCircle` `AddEquiv` record per the per-sorry strategy table in `sessions/2026-06-03-iter2-act1-pathA-scaffold-shipped.md`; (3) update this `state.md` + the registry JSON's `leanFiles[]` entry for the new file once the build is clean.
+Iter 4 ACT-3 (next researcher, from main checkout): (1) Run `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04` to validate Iter 3 ACT-2's discharges; (2) if build fails, fix the local tactic-level issues flagged in Iter 3 ACT-2's "Risks" block (each is a 1-2 line fix; structure remains correct); (3) on clean build, ship the gallery entry at `src/data/proofs/euler-identity-oq-01-oq-04/meta.json` (status: `verified`, badge: `original`, 0 axioms, 0 sorries, lineCount and theoremCount per the file).
