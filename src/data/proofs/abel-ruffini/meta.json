@@ -711,7 +711,7 @@
     {
       "targetId": "abel-ruffini-galois-extensions",
       "relationship": "extended-by",
-      "description": "Provides the complete solvability classification for symmetric groups: S₀–S₄ are solvable (proved explicitly), Sₙ solvable iff n ≤ 4 (bidirectional theorem), A₅ simple. Directly fills the gap noted in this entry where S₂, S₃, S₄ lacked Mathlib instances"
+      "description": "Provides the complete solvability classification for symmetric groups: $S_0$–$S_4$ are solvable (proved explicitly via the derived series $S_4 \\supset A_4 \\supset V_4 \\supset \\{e\\}$), $S_n$ solvable iff $n \\leq 4$ (the bidirectional theorem `symmetric_solvable_iff`), $A_5$ simple, and non-commutativity witnesses for $S_3$, $S_4$, $S_5$, $A_4$, $A_5$. Directly fills the gap noted in this entry's open questions where Mathlib instances `IsSolvable (Equiv.Perm (Fin n))` for $n = 2, 3, 4$ were missing at time of writing — `abel-ruffini-galois-extensions` discharges them by `inferInstance` (small commutative cases) and explicit derived-series unrolling. The companion entry also formalizes the alternating analogue (`alternating_solvable_iff`: $A_n$ solvable iff $n \\leq 4$) and verifies concrete group orders $|S_7| = 5040$, $|S_8| = 40320$, $|A_7| = 2520$, $|A_8| = 20160$ via `native_decide`. 59 theorems across 534 lines, 0 axioms, 0 sorries — the structural complement to this entry's contrapositive synthesis."
     },
     {
       "targetId": "abel-ruffini-oq-04",
