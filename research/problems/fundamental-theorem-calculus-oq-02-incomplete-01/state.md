@@ -2,10 +2,61 @@
 
 ## Current State
 
-**Phase**: ORIENT (S3 Fragment-1 design — induction skeleton + bearer audit + LOC re-estimate; S4 PREP / S5 ACT next)
+**Phase**: PREP (S4 Fragment-1 paste-ready skeleton — concrete bearer names at each sorry; S5 ACT next)
 **Path**: full
-**Since**: 2026-06-02T00:30:00Z (S3 ORIENT Fragment-1 design iteration)
-**Iteration**: 3
+**Since**: 2026-06-06T07:50:00Z (S4 PREP Fragment-1 skeleton iteration)
+**Iteration**: 4
+
+## Iteration 4 (researcher-1, 2026-06-06) — S4 PREP: Fragment 1 paste-ready Lean skeleton (~165 LOC, doc-only)
+
+**Outcome**: PREP complete. Paste-ready skeleton for `iteratedFDeriv_symmetric_of_contDiff` drafted in `sessions/2026-06-06-s4-prep-frag1-skeleton.md` (~285 LOC memo, ~115 LOC inner skeleton + ~115-185 LOC tactic-fill estimate for S5 ACT).
+
+Mathlib pin SHA re-confirmed unchanged (`2df2f0150c…`, T+4d since S3); bearer audit B1-B10 stays valid.
+
+**Skeleton structure** (3 declarations):
+1. `Fin.adjacentSwap_set_isPretransitive` (private B10 hand-roll, ~20-25 LOC tactic-fill).
+2. `iteratedFDeriv_swap_adjacent_of_contDiff` (private analytic-core helper; case-split on `i.castSucc = 0`).
+3. `iteratedFDeriv_symmetric_of_contDiff` (main exported theorem; base n=0/1 + inductive closure decomposition for n=k+2).
+
+**Design decisions committed at S4 PREP**:
+- Reduce arbitrary `σ` to adjacent transpositions *as a separate lemma*, isolating perm-closure plumbing (B8/B9/B10) from analytic core.
+- After sketching both routes, **B6 (`iteratedFDeriv_succ_apply_right`) does NOT help for case i=0** (it extracts the *last* argument, not the *first*) — committed to **B4-twice + B1 + `continuousMultilinearCurryLeftEquiv` unfolding** instead.
+- Skeleton lives at `proofs/Proofs/IteratedFDerivSymmetric.lean` (new file) for S5 ACT; Mathlib upstream-prep at S6.
+
+**Honesty update**: case-(d) i=0 upper bound raised from 50-80 LOC → 65-100 LOC after committing to B4-twice (the `continuousMultilinearCurryLeftEquiv` unfolding adds 15-25 LOC of normal-form bookkeeping). Total post-ACT estimate: **~145-200 LOC range (mid: ~170 LOC)**, consistent with S3 ORIENT's 120-200 LOC band at the upper end.
+
+### Sorry sequencing for S5 ACT (ascending difficulty)
+
+1. n=0 / n=1 base cases (5-10 LOC, no risk)
+2. `Fin.adjacentSwap_set_isPretransitive` (20-25 LOC, low risk)
+3. Case (c) i ≥ 1 (20-40 LOC, medium risk — `Fin.tail` re-indexing)
+4. Inductive closure decomposition (20-30 LOC, medium risk — B9 + `Subgroup.closure_induction`)
+5. Case (d) i = 0 (65-100 LOC, HIGH risk — `continuousMultilinearCurryLeftEquiv` unfolding)
+
+### Next Action (S5 ACT)
+
+Create `proofs/Proofs/IteratedFDerivSymmetric.lean` from the S4 PREP skeleton (sorries kept). Docker-verify the type-checked-with-sorries shell first (~12 min cold start). Then discharge sorries in the ascending-difficulty order above. Budget ~3-5 ACT iterations for case (d) currying. Aristotle MCP candidate for sorries 2-4; case (d) likely needs hand-tactics.
+
+### Anti-scope (S4 PREP)
+
+- No Lean diff (PREP is doc-only; the skeleton is a Markdown code block).
+- No `meta.json` edit (gallery integration deferred to post-ACT).
+- No Mathlib upstream PR-prep (S6 task).
+- No bearer re-spot-check beyond manifest SHA (SHA stable since S2).
+- No Fragment 2-6 design.
+
+### Files modified (S4 doc-only)
+
+- `research/problems/fundamental-theorem-calculus-oq-02-incomplete-01/sessions/2026-06-06-s4-prep-frag1-skeleton.md` (new, ~285 LOC, 12 sections).
+- `research/problems/fundamental-theorem-calculus-oq-02-incomplete-01/state.md` — this file, head + Iteration-4 entry.
+- `src/data/research/problems/fundamental-theorem-calculus-oq-02-incomplete-01.json` — `currentState.{phase ORIENT→PREP, since, iteration, focus, nextAction}` + `lastUpdate` + `attemptCounts.total 2→3`.
+
+### Counts (no Lean file authored yet)
+
+- Parent slug `FundamentalTheoremCalculusStokes.lean`: 395 LOC, 13 thm, 0 sorries, 0 axioms (unchanged).
+- This slug: no own Lean file yet (creation at S5 ACT).
+
+
 
 ## Iteration 3 (researcher-1, 2026-06-02) — S3 ORIENT: Fragment 1 design (iteratedFDeriv n-dim Schwarz, doc-only)
 
