@@ -29,15 +29,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-02T19:30:00Z",
-    "iteration": 3,
-    "focus": "S3 OBSERVE / metadata cleanup (researcher-1, 2026-06-02): create state.md + sessions/ infrastructure (absent until now), absorb iter-2 DEEP DIVE deliverable shipped in PR #21322 on 2026-05-30 (LegendreGapEquivalence.lean, 212 LOC, 21 thms/defs, 0 axioms, 0 sorries), reconcile metadata drift across this file and the gallery-side JSON. No Lean changes. Next: S4 ACT Sub-Milestone B+ — formalize the equivalence between LegendreConjecture and the prime-gap bound Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1; expected size +100-180 LOC in a new file LegendrePrimeGapEquivalence.lean; 0 new axioms.",
+    "since": "2026-06-05T16:00:00Z",
+    "iteration": 4,
+    "focus": "S4 PREP-1 / pre-flight audit of the iter-3 S4 plan (researcher-1, 2026-06-05): audited the proposed iff LegendreConjecture ↔ ∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1 before committing ~150 LOC of Lean. Finding: the iff is NOT a true equivalence at the level of LegendreConjecture alone — reverse direction (gap bound ⇒ Legendre) is provable, but the forward direction (Legendre ⇒ gap bound) yields only ≤ 4·Nat.sqrt p_k + 2 worst case. Concrete failure mode: when Legendre prime in (m², (m+1)²) is ≤ p_k, no prime is forced in (p_k, (m+1)²), so the next-prime argument falls back to Legendre at m+1 and the gap can reach 4m+2. No Lean changes in this iteration. Next: corrected S4-ACT-α formalizes the salvageable one-way implication prime_gap_sqrt_bound_implies_legendre in a new file LegendrePrimeGapSqrtBoundSuffices.lean (~80-130 LOC, 0 new axioms).",
     "blockers": [],
-    "nextAction": "S4 ACT — Sub-Milestone B+: formalize LegendreConjecture ↔ ∀ k, Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1. Forward direction: apply Legendre at n := Nat.sqrt (Nat.nth Nat.Prime k) and use the minimality of nth Nat.Prime (k+1). Reverse direction: for n ≥ 1, find largest k with Nat.nth Nat.Prime k ≤ n², apply gap bound to get Nat.nth Nat.Prime (k+1) ≤ (n+1)² = n² + 2n + 1, then conclude via legendreAt_iff_halfOpen (from iter-2). Building blocks: Nat.nth Prime API (Mathlib.Data.Nat.Prime.Nth, already imported), Nat.sqrt characterizations, nth_prime_succ_le_of_prime_gt at proofs/Proofs/PrimeGapBounds.lean:123. Target file: proofs/Proofs/LegendrePrimeGapEquivalence.lean. Expected: +100-180 LOC, 0 new axioms, 0 sorries.",
+    "nextAction": "Corrected S4-ACT-α: formalize the one-way implication (∀ k, Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1) → LegendreConjecture. Proof outline: for n=1 use prime 2 directly; for n ≥ 2 use that n² is composite, take largest prime p_k ≤ n² (via Nat.findGreatest on Nat.primeCounting), apply gap bound to get p_{k+1} ≤ n² + 2(n-1) < (n+1)², then conclude via legendreAt_iff_halfOpen (iter-2). Target file: proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean. Expected: +80-130 LOC, 0 new axioms, 0 sorries. Pair with a structured docstring recording the NON-implication direction (Legendre ⇏ gap bound) so future readers see the asymmetry from the Lean source. Original iff legendre_iff_primeGap demoted to ANTI-CANDIDATE.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 1,
-      "approachesTried": 2
+      "total": 4,
+      "currentApproach": 2,
+      "approachesTried": 3
     }
   },
   "knowledge": {
