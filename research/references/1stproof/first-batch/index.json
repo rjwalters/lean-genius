@@ -1,0 +1,83 @@
+{
+  "source": {
+    "landing_page": "https://1stproof.org/first-batch.html",
+    "arxiv_id": "2602.05192",
+    "arxiv_abs_url": "https://arxiv.org/abs/2602.05192",
+    "github_blob_url": "https://github.com/1stproof/batch-1/blob/main/First_Proof.tex",
+    "raw_tex_url": "https://raw.githubusercontent.com/1stproof/batch-1/main/First_Proof.tex",
+    "fetch_date": "2026-06-08",
+    "source_sha256": "970602fcce08525d2b7580cfb0694252e2af26ba31b91c6aa3ae47e80de158a2"
+  },
+  "problems": [
+    {
+      "id": 1,
+      "slug": "phi43-shift-equivalence",
+      "area": "stochastic analysis",
+      "short_title": "Equivalence of shifted Phi^4_3 measures on T^3",
+      "statement_path": "first-batch/problems/01-phi43-shift-equivalence.md"
+    },
+    {
+      "id": 2,
+      "slug": "rankin-selberg-nonvanishing",
+      "area": "representation theory",
+      "short_title": "Nonvanishing local Rankin-Selberg integral on GL_{n+1}",
+      "statement_path": "first-batch/problems/02-rankin-selberg-nonvanishing.md"
+    },
+    {
+      "id": 3,
+      "slug": "interpolation-asep-markov-chain",
+      "area": "algebraic combinatorics",
+      "short_title": "Markov chain for interpolation ASEP / Macdonald ratio",
+      "statement_path": "first-batch/problems/03-interpolation-asep-markov-chain.md"
+    },
+    {
+      "id": 4,
+      "slug": "polynomial-convolution-phi-bound",
+      "area": "spectral graph theory",
+      "short_title": "Boxplus convolution and Phi_n bound for real-rooted polynomials",
+      "statement_path": "first-batch/problems/04-polynomial-convolution-phi-bound.md"
+    },
+    {
+      "id": 5,
+      "slug": "n-infty-slice-filtration",
+      "area": "algebraic topology",
+      "short_title": "O-slice filtration and geometric fixed-point connectivity",
+      "statement_path": "first-batch/problems/05-n-infty-slice-filtration.md"
+    },
+    {
+      "id": 6,
+      "slug": "epsilon-light-laplacian-subset",
+      "area": "spectral graph theory",
+      "short_title": "Existence of epsilon-light vertex subsets of size c*epsilon*|V|",
+      "statement_path": "first-batch/problems/06-epsilon-light-laplacian-subset.md"
+    },
+    {
+      "id": 7,
+      "slug": "uniform-lattice-rational-acyclic-cover",
+      "area": "lattices in Lie groups",
+      "short_title": "Uniform lattice with 2-torsion as pi_1 of Q-acyclic-cover manifold",
+      "statement_path": "first-batch/problems/07-uniform-lattice-rational-acyclic-cover.md"
+    },
+    {
+      "id": 8,
+      "slug": "polyhedral-lagrangian-smoothing",
+      "area": "symplectic geometry",
+      "short_title": "Lagrangian smoothing of 4-valent polyhedral Lagrangian surfaces",
+      "statement_path": "first-batch/problems/08-polyhedral-lagrangian-smoothing.md"
+    },
+    {
+      "id": 9,
+      "slug": "generic-3x4-determinant-tensor-relations",
+      "area": "tensor analysis",
+      "short_title": "Algebraic relations among 3x3x3x3 det-tensors of generic 3x4 matrices",
+      "statement_path": "first-batch/problems/09-generic-3x4-determinant-tensor-relations.md"
+    },
+    {
+      "id": 10,
+      "slug": "cp-rkhs-pcg-mode-subproblem",
+      "area": "numerical linear algebra",
+      "short_title": "Preconditioned CG for RKHS-constrained CP-decomposition mode subproblem",
+      "statement_path": "first-batch/problems/10-cp-rkhs-pcg-mode-subproblem.md"
+    }
+  ]
+}
