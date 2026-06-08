@@ -1,0 +1,333 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{ulem}
+\usepackage{enumitem}
+\usepackage{marvosym}
+\usepackage{amsfonts}
+
+\usepackage{xcolor}
+
+
+
+\DeclareMathOperator{\vecop}{vec}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathAlphabet{\catsymbfont}{U}{rsfs}{m}{n}
+\newcommand{\aA}{{\catsymbfont{A}}}
+
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\co}{\colon}
+\newcommand{\scrS}{\mathscr{S}}
+\newcommand{\aO}{{\catsymbfont{O}}}
+
+
+\title{First Proof}
+\author{ Mohammed Abouzaid\footnote{\Letter\ Corresponding author, Email: abouzaid@stanford.edu}
+\\
+  \textit{Stanford University} 
+  \and
+Andrew J. Blumberg\\
+\textit{Columbia University} 
+\and
+    Martin Hairer \\
+\textit{EPFL and Imperial}
+\and
+Joe Kileel\\
+\textit{University of Texas at Austin}
+\and
+Tamara G. Kolda \\
+\textit{MathSci.ai}
+\and
+Paul D. Nelson\\
+\textit{Aarhus University}
+\and
+Daniel Spielman \\
+\textit{Yale University}
+\and 
+Nikhil Srivastava\footnote{\Letter\ Corresponding author, Email: nikhil@math.berkeley.edu}
+\\
+\textit{University of California, Berkeley}
+\and 
+Rachel Ward\footnote{\Letter\ Corresponding author, Email: rward@math.utexas.edu} \\
+\textit{University of Texas at Austin}
+\and
+Shmuel Weinberger\\
+\textit{University of Chicago}
+\and
+Lauren Williams\footnote{\Letter\ Corresponding author, Email: williams@math.harvard.edu} \\
+\textit{Harvard University}
+}
+\date{\today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+To assess the ability of current AI systems to correctly answer research-level mathematics questions, we share a set of  ten math questions which have arisen naturally in the research process of the authors.  The questions had not been shared publicly  until now; the answers are known to the authors of the questions but will remain encrypted for a short time.
+\end{abstract}
+
+\newpage 
+
+\section{Introduction}
+
+In baking, the {\it first proof}, or bulk fermentation process, is a crucial step in which one lets the entire batch of dough ferment as one mass, before dividing and shaping it into loaves.  
+  
+This manuscript represents our preliminary efforts to come up with an objective and realistic methodology for assessing the capabilities of AI systems to autonomously solve research-level math questions. After letting these ideas ferment in the community, we hope to be able to produce a more structured benchmark in a few months.
+
+
+One of our primary goals is to develop a sophisticated understanding of the role that AI tools could play in the workflow of professional mathematicians.  While commercial AI systems are undoubtedly already at a level where they are useful tools for mathematicians\footnote{For instance, mathematicians are using AI tools to do literature searches, check manuscripts for  errors, write computer code, and bounce ideas.}, {\bf it is not yet clear where AI systems stand at solving research-level math questions on their own, without an expert in the loop}.  At the moment, most math benchmarks assess the performance of AI systems on math contest questions, an artificial domain that does not reflect the practice of creative mathematics by researchers.  
+
+Evaluation of research capabilities is a challenging task.  As frontier AI systems are now highly capable of searching the literature and translating mathematical questions from one format to another, it is challenging to disentangle problem-solving capabilities from search capabilities when conducting such an assessment.   Our core observation is that an ideal test should involve {\bf research math questions which arose naturally in the process of a mathematician's own research, were subsequently solved by the mathematician, but have not yet been posted to the internet.}  
+
+Towards this end, we present a diverse set of 10 research-level math questions, drawn from the mathematical fields of  algebraic combinatorics, spectral graph theory, algebraic topology, stochastic analysis, symplectic geometry, representation theory, lattices in Lie groups, tensor analysis, and numerical linear algebra, each of which came about naturally in the research process for one of the authors (sometimes together with collaborators).  Each question has been solved by the author(s) of the question with a proof that is roughly five pages or less,  but the answers are not yet posted to the internet.  The page restriction is due to the technical limitations of current publicly available AI systems, and this means that many of the questions on our list are not of sufficient importance to qualify as publishable research on their own, but are smaller components in future publications.
+
+Most of the questions that we have collected are extracted from lemmas arising in larger works whose main results go beyond what current systems are capable of tackling. Significant effort is required to identify such lemmas as crucial steps in these works.   
+
+Before explaining the nature of our evaluation, we will try to be clear about {\bf what math research is}.  Contrary to the popular conception that research is only about finding solutions to well-specified, age-old problems (e.g., Fermat's Last Theorem), most of the important parts of modern research involve  
+figuring out what the question actually is  
+and  
+developing frameworks within which it can be answered.   
+Perelman's proof of the Poincaré conjecture was a stunning achievement.  But in order for it to be possible, Thurston had to develop a new way of thinking about geometric objects and Hamilton had to invent a new kind of dynamics explaining how such objects change.
+
+
+Our `first proof' experiment is focused on the final and most well-specified
+stage of math research, in which the question and frameworks are already
+understood. We do not address the selection of questions to study, the formulation of new definitions, and the development of novel theories. 
+We wish to be clear that our choice of emphasis on proving well-formed statements is
+driven by the judgment that this is a first step; evaluation of the performance
+of frontier systems on the higher-level research tasks above is also essential.
+
+
+
+
+The answers to our set of ten research level math questions have been encrypted and posted to 
+\url{https://1stproof.org}.  
+The authors will release the answers on February 13, 2026. 
+{\bf We invite the community to experiment with our ten questions before the answers are released, and to share their results and observations online.} Ideally, participants should share a complete transcript of their interaction with an AI system. In this process, we hope to gain insight into questions such as: What is an appropriate prompting strategy? What format should an answer take and how should it be graded? Are there data contamination issues we have missed? 
+We hope to use this understanding to design a more formal benchmark. A few months later, we plan to finalize a second set of questions; 
+we are open to devising agreements to test 
+AI models
+on these questions prior to making them public.
+
+
+Unlike other proposed math research benchmarks (see Section~\ref{sec:related}), our question list should not be considered a benchmark in its current form.  For one, our questions are not numerous enough to be considered a benchmark.   By construction, producing research-level math questions with answers which have not yet been published, and whose answers are a certain length, requires substantial human effort. A typical mathematician might create and address 
+a few such questions a year. Additionally,
+we have not specified a formal grading scheme for answers. While we have found correct answers to each of the questions, correct answers are not always  unique ---  there may be  multiple proofs or, alternatively, multiple counterexamples. 
+This makes assessment more challenging, as it must at present be done by a human expert. 
+
+
+
+Compared to previous assessments of AI systems in completing tasks related to mathematical research (discussed in Section~\ref{sec:related} below), to the best of our knowledge, ours is the first  to simultaneously have all of the following features:
+\begin{itemize}[noitemsep]
+    \item The questions are sampled from the true distribution of questions that mathematicians are currently working on. Their answers are proofs, which at present must be graded by humans.
+    \item The answers have never appeared on the internet, in talks, or in any public forum. This eliminates a substantial data contamination problem.  
+    \item The questions are being made public in this document. This means they cannot be reused in the future, but they can be examined by everyone. 
+    \item We allow models unfettered access to outside resources such as Internet searches, bringing them closer to representing real-world assessments.
+\end{itemize}
+
+We ran 
+preliminary tests on many of our ten questions using GPT 5.2 Pro and Gemini 3.0 Deepthink; we briefly discuss our mitigation strategy for data contamination
+in Section~\ref{sec:implementation}.  Our tests indicate that ---  when the system is given one shot to produce the answer --- the best publicly available AI systems struggle to answer many of our questions.  
+In the interest of following a clear protocol, 
+we chose not to iteratively interact with the systems, or even re-run the queries.
+However, we expect that through such interactions we would 
+be able 
+to coax the systems to produce better answers. \\
+
+
+
+\noindent {\bf Conflicts of interest.} 
+No funding was received for the design or implementation of this
+project. None of the authors of this report was employed by or consulted with
+AI companies during the project, nor will they do so while contributing to it.\\
+
+\noindent {\bf Acknowledgment.} We thank the Simons Institute for the Theory of Computing for hosting the organizational meeting of this project in early December 2025, with support from the Director's Opportunity Fund.  PN is supported by a research grant (VIL54509) from VILLUM FONDEN.  This statement reflects author support and does not imply sponsor involvement in the benchmark.
+
+
+\section{The questions}\label{sec:problems}
+
+\begin{enumerate}
+\item Let $\mathbb{T}^3$ be the three dimensional unit size torus and let $\mu$ be the $\Phi^4_3$ measure on the space of distributions $\mathcal{D}'(\mathbb{T}^3)$. Let $\psi : \mathbb{T}^3 \to \mathbb{R}$ be a smooth function that is not identically zero and let $T_\psi : \mathcal{D}'(\mathbb{T}^3) \to \mathcal{D}'(\mathbb{T}^3)$ be the shift map given by $T_\psi(u) = u + \psi$ (with the usual identification of smooth functions as distributions). Are the measures $\mu$ and $T_\psi^* \mu$ equivalent? Here, equivalence of measures is in the sense of having the same null sets and $T_\psi^*$ denotes the pushforward under $T_\psi$.
+
+\item Let \(F\) be a non-archimedean local field with ring of integers \(\mathfrak o\).  Let $N_r$ denote the subgroup of $\mathrm{GL}_{r}(F)$ consisting of upper-triangular unipotent elements.  Let \(\psi:F\to \mathbb C^\times\) be a nontrivial additive character of conductor \(\mathfrak o\), identified in the standard way with a generic character of $N_r$.
+Let \(\Pi\) be a generic irreducible admissible representation of \(\mathrm{GL}_{n + 1}(F)\), realized in its \(\psi^{-1}\)-Whittaker model \(\mathcal W(\Pi,\psi^{-1})\).  Must there exist \(W\in \mathcal W(\Pi,\psi^{-1})\) with the following property?
+
+Let $\pi$ be a generic irreducible admissible representation of \(\mathrm{GL}_{n}(F)\), realized in its $\psi$-Whittaker model \(\mathcal W(\pi,\psi)\).  Let $\mathfrak{q}$ denote the conductor ideal of $\pi$, let \(Q\in F^\times\) be a generator of \(\mathfrak q^{-1}\), and set
+\[
+  u_Q := I_{n+1} + Q\,E_{n,n+1} \in \mathrm{GL}_{n + 1}(F),
+\]
+where \(E_{i, j}\) is the matrix with a \(1\) in the \((i, j)\)-entry and \(0\) elsewhere.  For some \(V\in \mathcal W(\pi,\psi)\), the local Rankin--Selberg integral
+\[
+  \int_{N_n\backslash \mathrm{GL}_{n}(F)} W(\operatorname{diag}(g,1) u_Q)\,V(g)\,|\det g|^{s-\frac12}\,dg
+\]
+is finite and nonzero for all \(s\in\mathbb C\).
+
+\item Let $\lambda=(\lambda_1 > \dots > \lambda_n \geq 0)$ be a partition with distinct parts.  Assume moreover that
+$\lambda$ is {\it restricted}, in the sense that it has a unique part of size $0$ and no part of size $1$.
+Does there exist a nontrivial Markov chain on $S_n(\lambda)$ whose stationary distribution is given by
+$$\frac{F^*_{\mu}(x_1,\dots,x_n; q=1,t)}{P^*_{\lambda}(x_1,\dots,x_n;
+q=1,t)} \text{ for }\mu\in S_n(\lambda)$$
+where $F^*_{\mu}(x_1,\dots,x_n; q,t)$ and
+$P^*_{\lambda}(x_1,\dots,x_n;q,t)$ are the
+interpolation ASEP polynomial and interpolation Macdonald polynomial,
+respectively?  If so, prove that the Markov chain you construct has the
+desired stationary distribution.  By ``nontrivial'' we mean that the
+transition probabilities of the Markov chain should not be described
+using the polynomials $F_{\mu}^*(x_1,\dots,x_n; q,t)$. 
+
+\item Let $p(x)$ and $q(x)$ be two monic polynomials of degree $n$:
+\[
+p(x) = \sum_{k=0}^n a_k x^{n-k} \quad \text{and} \quad q(x) = \sum_{k=0}^n
+b_k x^{n-k}
+\]
+where $a_0 = b_0 = 1$. Define $p \boxplus_n q(x)$ to be the polynomial
+\[
+(p \boxplus_n q)(x) = \sum_{k=0}^n c_k x^{n-k}
+\]
+where the coefficients $c_k$ are given by the formula:
+\[
+c_k = \sum_{i+j=k} \frac{(n-i)! (n-j)!}{n! (n-k)!} a_i b_j
+\]
+for $k = 0, 1, \dots, n$.
+For a monic polynomial $p(x)=\prod_{i\le n}(x- \lambda_i)$, define 
+$$\Phi_n(p):=\sum_{i\le n}(\sum_{j\neq i} \frac1{\lambda_i-\lambda_j})^2$$ and $\Phi_n(p):=\infty$ if $p$ has a multiple root.
+Is it true that if $p(x)$ and $q(x)$ are monic real-rooted polynomials of
+degree $n$, then
+$$\frac1{\Phi_n(p\boxplus_n q)} \ge \frac1{\Phi_n(p)}+\frac1{\Phi_n(q)}?$$
+
+\item Fix a finite group $G$.  Let $\aO$ denote an incomplete transfer
+system associated to an $N_\infty$ operad.  Define the slice
+filtration on the $G$-equivariant stable category adapted to $\aO$ and
+state and prove a characterization of the $\aO$-slice connectivity of
+a connective $G$-spectrum in terms of the geometric fixed points.
+
+\item For a graph $G = (V, E)$, let $G_S = (V, E(S,S))$ denote the graph with the same vertex set, 
+but only the edges between vertices in $S$. Let $L$ be the Laplacian matrix of $G$ and let $L_S$ be the Laplacian of $G_S$. 
+I say that a set of vertices $S$ is $\epsilon$-light if the matrix $\epsilon L - L_S$ is positive semidefinite. 
+Does there exist a constant $c > 0$ so that for every graph $G$ and every $\epsilon$ between $0$ and $1$, $V$ contains an $\epsilon$-light subset $S$ of size at least $c \epsilon |V|$? 
+
+\item Suppose that $\Gamma$ is a uniform lattice in a real semi-simple group, and that $\Gamma$ contains some 2-torsion. Is it possible for $\Gamma$ to be the fundamental group of a compact manifold without boundary whose universal cover is acyclic over the rational numbers $\mathbb{Q}$?
+
+\item   A polyhedral Lagrangian surface $K$ in $\bR^4$ is a finite polyhedral complex all of whose faces are Lagrangians, and which is a topological submanifold of $\bR^4$. A Lagrangian smoothing of $K$ is a Hamiltonian isotopy $K_t$ of smooth Lagrangian submanifolds, parameterised by $(0,1]$, extending to a topological isotopy, parametrised by $[0,1]$, with endpoint $K_0 = K$.
+
+
+Let $K$ be a polyhedral Lagrangian surface with the property that exactly $4$ faces meet at every vertex. Does $K$ necessarily have a Lagrangian smoothing? 
+
+\item Let $n \geq 5$.  
+Let $A^{(1)}, \ldots, A^{(n)} \in \mathbb{R}^{3 \times 4}$ be Zariski-generic.   
+For $\alpha, \beta, \gamma, \delta \in [n]$, construct $Q^{(\alpha \beta \gamma \delta)} \in \mathbb{R}^{3 \times 3 \times 3 \times 3}$ so that its $(i, j, k, \ell)$ entry for $1 \leq i, j, k, \ell \leq 3$ is given by $Q^{(\alpha \beta \gamma \delta)}_{i j k \ell} = \det [A^{(\alpha)}(i, :); A^{(\beta)}(j, :); A^{(\gamma)}(k, :); A^{(\delta)}(\ell, :)]$.
+Here $A(i, :)$ denotes the $i$th row of a matrix $A$, and semicolon denotes vertical concatenation. 
+We are interested in algebraic relations on the set of tensors $\{Q^{(\alpha \beta \gamma \delta)} : \alpha, \beta, \gamma, \delta \in [n] \}$.
+
+More precisely, does there exist a polynomial map $\mathbf{F}: \mathbb{R}^{81n^4} \rightarrow \mathbb{R}^N$ that satisfies the following three properties?
+\smallskip
+\begin{itemize}\setlength\itemsep{0.5em}
+\item The map $\mathbf{F}$ does not depend on $A^{(1)}, \ldots A^{(n)}$. 
+\item The degrees of the coordinate functions of $\mathbf{F}$ do not depend on $n$.
+\item Let $\lambda \in \mathbb{R}^{n \times n \times n \times n}$ satisfy 
+$\lambda_{\alpha \beta \gamma \delta} \neq 0$ for precisely $\alpha, \beta, \gamma, \delta \in [n]$ that are not identical.  Then $\mathbf{F}(\lambda_{\alpha \beta \gamma \delta} Q^{(\alpha \beta \gamma \delta)} : \alpha, \beta, \gamma, \delta \in [n]) = 0$ holds if and only if there exist $u, v, w, x \in (\mathbb{R}^*)^n$ such that $\lambda_{\alpha \beta \gamma \delta} = u_{\alpha} v_{\beta} w_{\gamma} x_{\delta}$ for all $\alpha, \beta, \gamma, \delta \in [n]$ that are not identical. 
+\end{itemize}
+
+\item Given a $d$-way tensor $\mathcal{T} \in \mathbb{R}^{n_1 \times n_2 \times \cdots \times n_d}$ 
+such that the data is unaligned (meaning the tensor $\mathcal{T}$ has missing entries),
+we consider the problem of computing a CP decomposition of rank $r$ where some modes are infinite-dimensional and constrained to be in a Reproducing Kernel Hilbert Space (RKHS). 
+We want to solve this using an alternating optimization approach, and our question is focused on the mode-$k$ subproblem for an infinite-dimensional mode. 
+For the subproblem, then CP factor matrices 
+$A_1, \dots, A_{k-1}, A_{k+1}, \dots, A_d$ are fixed, and we are solving for $A_k$.
+
+Our notation is as follows.
+Let $N = \prod_i n_i$ denote the product of all sizes.
+Let $n \equiv n_k$ be the size of mode $k$, let
+$M = \prod_{i\neq k} n_i$ be the product of all dimensions except $k$, and assume $n \ll M$.
+Since the data are unaligned, this means only a subset of $\mathcal{T}$'s entries are observed, and we let $q \ll N$ denote the number of observed entries.
+We let $T \in \mathbb{R}^{n \times M}$ denote the mode-$k$ unfolding of the tensor $\mathcal{T}$ with all missing entries set to zero.
+The $\vecop$ operations creates a vector from a matrix by stacking its columns,
+and we let $S \in \mathbb{R}^{N \times q}$ denote the selection matrix (a subset of the $N \times N$ identity matrix) such that $S^T \vecop(T)$ selects the $q$ known entries of the tensor $\mathcal{T}$ from the vectorization of its mode-$k$ unfolding.
+We let $Z = A_d \odot \cdots \odot A_{k+1} \odot A_{k-1} \odot \cdots \odot A_1 \in \mathbb{R}^{M \times r}$ be the Khatri-Rao product of the factor matrices corresponding to all modes except mode $k$.
+We let $B = TZ$ denote the MTTKRP of the tensor $\mathcal{T}$ and Khatri-Rao product $Z$.
+
+We assume $A_k = KW$ where
+$K \in \mathbb{R}^{n \times n}$ denotes the psd RKHS kernel matrix for mode $k$.
+The matrix $W$ of size $n \times r$ is the unknown for which we must solve. 
+The system to be solved is
+\begin{equation} 
+	\left[
+    (Z \otimes K)^T S
+    S^T (Z \otimes K)
+    + \lambda (I_r \otimes K) 
+  \right] \vecop(W)
+	= (I_r \otimes K) 
+	\vecop( B ). \nonumber 
+\end{equation}
+Here, $I_r$ denotes the $r \times r$ identity matrix.
+This is a system of size $nr \times nr$
+Using a standard linear solver costs $O(n^3 r^3)$, 
+and explicitly forming the matrix is an additional expense.
+
+Explain how an iterative preconditioned conjugate gradient linear solver can be used to solve this problem more efficiently. Explain the method and choice of preconditioner. Explain in detail how the matrix-vector products are computed and why this works. Provide complexity analysis. 
+We assume $n,r < q \ll N$. Avoid any computation of order $N$.
+
+
+\end{enumerate}
+
+
+\section{Related work}\label{sec:related}
+
+As mentioned earlier, there have been several proposed math research benchmarks.  We discuss a few of them here.
+
+ FrontierMath \cite{frontier} is a benchmark of ``several hundred unpublished, expert-level mathematics problems that take specialists hours to days to solve.''  
+It was funded by OpenAI.  Presently, the FrontierMath problems are private
+(apart from 12 examples that are publicly available). OpenAI has access to a subset of FrontierMath problems  and solutions, and EpochAI has access to the full set of solutions. The FrontierMath problems are structured so that each final answer is an integer or symbolic expression, which makes them automatically gradable, as well as amenable to post-training via reinforcement learning. 
+
+IMProofBench \cite{schmitt2025improofbench} is a broader mathematical proof benchmark, designed to evaluate the ability of AI systems to create research-level mathematical proofs.  The problems are designed to allow for automatic grading of subquestions, but still require human experts to fully verify correctness. 
+ The IMProofBench questions are private. 
+
+The RealMath benchmark for research-level math questions \cite{zhang2025realmath} scrapes (i.e. collects papers automatically from)
+math and computer science categories in \href{https://arxiv.org}{arXiv.org}, skewing toward fields with ``constructive'' theorems like probability and statistics.  It only scrapes questions posted after the ``training data cutoff'' of the AI models being tested, where training data cutoff refers to the final date from which web data was collected and used for training data.  Like FrontierMath, the RealMath questions are designed to facilitate automatic grading, with a final short symbolic or numeric answer. Unlike FrontierMath and IMProofBench, the RealMath questions are public and intended to be refreshed every so often to avoid data contamination. 
+
+
+\section{Implementation details}\label{sec:implementation}
+
+Over the span of a few weeks, we tested roughly 20 research-level math questions using Gemini 3 Pro, GPT-5.1 Pro, and then GPT-5.2 Pro when GPT 5.2 Pro became available. The final selection of questions used the following criteria:
+  \begin{enumerate}[noitemsep]
+  \item Use of the AI system did not reveal the existence of a previous answer to the question that was unknown to the authors.
+  \item A one page statement was sufficient for the systems to ``understand'' the formulation of the question, i.e. it was able to reformulate the question in its own language before starting to answer it. 
+  \item Agreement was reached with the authors of the question to release a human generated proof within the required parameters (length and timeframe).
+ \item No member of the team contributed more than one problem.
+   \end{enumerate}
+The reason for testing more than 10 questions was to probe the ``boundary'' between the types of questions the models can solve and the types of questions beyond their reach.  To minimize data contamination, we turned off the option to share data for training and improving models, but we are aware that data is still retained for 3 days by Google, and 30 days by OpenAI\footnote{According to our reading of the OpenAI \href{https://help.openai.com/en/articles/8983778-chat-and-file-retention-policies-in-chatgpt}{Terms of Service}, a chat can be retained longer than 30 days if the chat has been de-identified and disassociated from the author.  According to our reading of the Gemini \href{https://support.google.com/gemini/answer/13594961}{Terms of Service}, chats reviewed by human reviewers may be retained for up to 3 years.}.  Throughout the process, we have endeavored  to keep the answers to our questions private. We have uploaded encrypted answers to the private repository,  
+\url{https://1stproof.org}.
+We will make the answers publicly available about a week 
+after we release the questions. 
+
+
+\section{Discussion}
+We have presented a set of ten research-level mathematics questions.  
+As mentioned earlier, mathematical research consists of multiple components, including:
+\begin{itemize} [noitemsep]
+\item creating and selecting the questions to study, which will guide and shape the field;
+\item developing novel theories for approaching these questions, including formalizing new definitions and frameworks;
+\item finding answers to the selected questions, and rigorously proving that these answers are correct.
+\end{itemize}
+Our `first proof' experiment is focused on the final, most well-specified, and most measurable stage of mathematical research, that is, finding answers to the selected questions. We do not address the  question of evaluating whether AI systems can reasonably create  questions to study, or develop novel theories. 
+
+We plan to create a second set of questions of the same nature as the ones in Section~\ref{sec:problems} in the coming months, and we are open to devising agreements to test frontier AI systems on the second set of questions before we release them.  We hope that this second set of questions can serve as a form of benchmark for testing the capabilities of AI. 
+
+Beyond the next release, depending on technological developments, we plan to release additional sets of questions by removing some of the artificial constraints we imposed on our chosen questions, such as length, as well as to explore ways of measuring performance along other aspects of the work of research mathematics.
+
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+
+\end{document}
