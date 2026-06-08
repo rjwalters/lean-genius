@@ -14,6 +14,7 @@
  * Run: npx tsx scripts/research/build.ts
  */
 
+import { createHash } from 'crypto'
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
@@ -27,6 +28,8 @@ const RESEARCH_DIR = path.join(__dirname, '../../research')
 const PROBLEMS_DIR = path.join(RESEARCH_DIR, 'problems')
 const OUTPUT_DIR = path.join(__dirname, '../../src/data/research')
 const PROBLEMS_OUTPUT_DIR = path.join(OUTPUT_DIR, 'problems')
+const PUBLIC_RESEARCH_DIR = path.join(__dirname, '../../public/data/research')
+const DATA_MANIFEST_PATH = path.join(OUTPUT_DIR, 'research-data-manifest.json')
 
 // Types matching src/types/research.ts
 type ResearchPhase = 'NEW' | 'OBSERVE' | 'ORIENT' | 'DECIDE' | 'ACT' | 'VERIFY' | 'LEARN' | 'COMPLETED' | 'PIVOT'
@@ -634,6 +637,92 @@ function updateRegistryFields(problem: ResearchProblem, entry: RegistryEntry): R
 }
 
 /**
+ * Compute the first 8 hex chars of sha256 over a file's contents. Used as the
+ * `?v=<hash>` cache-buster in the runtime data manifest so that any edit to a
+ * problem's JSON busts CDN + browser caches on the next deploy. 8 chars = 32
+ * bits of entropy — comfortably more than enough for the ~2074 unique values
+ * at stake. Mirrors `scripts/annotations/build.ts:sha8`.
+ */
+function sha8(filePath: string): string {
+  const h = createHash('sha256')
+  h.update(fs.readFileSync(filePath))
+  return h.digest('hex').slice(0, 8)
+}
+
+/**
+ * Emit a problem's JSON to the build-generated public asset tree at
+ * `public/data/research/<slug>.json`. The runtime loader in
+ * `src/data/research/index.ts` fetches these by slug instead of importing them
+ * through the Vite/Rollup module graph. This collapses ~2074 per-problem JSON
+ * imports down to a single manifest module. See issue #20994 (build-perf
+ * phase 3) and #20993 (phase 2 — same pattern, applied to gallery proofs).
+ *
+ * Strategy: write the JSON to `public/data/research/<slug>.json` and return the
+ * destination path so the manifest emit step can hash it directly. Skip the
+ * write when the destination already exists with identical bytes — this avoids
+ * needlessly invalidating the cached-buster hash on no-op builds.
+ *
+ * Returns the destination path.
+ */
+function emitPublicProblemJson(slug: string, jsonBody: string): string {
+  const destPath = path.join(PUBLIC_RESEARCH_DIR, `${slug}.json`)
+  if (fs.existsSync(destPath)) {
+    try {
+      const prior = fs.readFileSync(destPath, 'utf-8')
+      if (prior === jsonBody) return destPath
+    } catch {
+      /* fall through and overwrite */
+    }
+  }
+  fs.writeFileSync(destPath, jsonBody)
+  return destPath
+}
+
+/**
+ * Emit `src/data/research/research-data-manifest.json` — a small JSON map of
+ * `{ slug: <sha8> }` consumed by the runtime loader to generate `?v=<hash>`
+ * query params on each fetch.
+ *
+ * This is the ONLY per-problem datum still imported into the Vite/Rollup module
+ * graph after phase 3. It's a single module (~2074 short entries; under
+ * ~80KB), bundled with normal content-hashing, so a deploy that changes any
+ * problem busts the importing chunk hash automatically.
+ *
+ * The manifest is computed AFTER emissions complete (so it reflects the latest
+ * state). Hashes are read from the destinations under `public/data/research/`
+ * because those are the bytes the runtime will actually serve.
+ *
+ * If the on-disk manifest matches what we'd write byte-for-byte, we skip the
+ * write to avoid pointlessly invalidating the manifest chunk's content hash on
+ * no-op builds.
+ *
+ * Sort order: keys are sorted lexicographically for cross-platform determinism.
+ */
+function emitDataManifest(slugs: string[]): void {
+  const sorted = [...slugs].sort()
+  const manifest: Record<string, string> = {}
+  for (const slug of sorted) {
+    const destPath = path.join(PUBLIC_RESEARCH_DIR, `${slug}.json`)
+    if (fs.existsSync(destPath)) {
+      manifest[slug] = sha8(destPath)
+    }
+  }
+
+  const next = JSON.stringify(manifest, null, 2) + '\n'
+
+  if (fs.existsSync(DATA_MANIFEST_PATH)) {
+    const prior = fs.readFileSync(DATA_MANIFEST_PATH, 'utf-8')
+    if (prior === next) {
+      console.log(`Data manifest unchanged (${sorted.length} problems)`)
+      return
+    }
+  }
+
+  fs.writeFileSync(DATA_MANIFEST_PATH, next)
+  console.log(`Generated research-data-manifest.json (${sorted.length} problems, ${Math.round(fs.statSync(DATA_MANIFEST_PATH).size / 1024)}KB)`)
+}
+
+/**
  * Compute a deterministic input-fingerprint for the research build.
  *
  * Inputs (per issue #22149 Strategy B):
@@ -687,10 +776,18 @@ function build(): void {
   if (!fs.existsSync(PROBLEMS_OUTPUT_DIR)) {
     fs.mkdirSync(PROBLEMS_OUTPUT_DIR, { recursive: true })
   }
+  if (!fs.existsSync(PUBLIC_RESEARCH_DIR)) {
+    fs.mkdirSync(PUBLIC_RESEARCH_DIR, { recursive: true })
+  }
 
   // Process each problem
   const problems: ResearchProblem[] = []
   const listings: ResearchListing[] = []
+  // Track every slug whose JSON we emit to public/data/research/<slug>.json.
+  // This includes preserved-from-committed-JSON entries (the common case) and
+  // newly generated problems alike — both are reachable via deep-link at
+  // runtime, even when they're filtered out of listings as unfilled stubs.
+  const emittedSlugs: string[] = []
   let preservedCount = 0
   let generatedCount = 0
   let stubSkippedCount = 0
@@ -720,7 +817,12 @@ function build(): void {
         listings.push(generateListing(problem))
       }
       preservedCount++
-      console.log(`   Preserved ${entry.slug} (from committed JSON)`)
+      // Phase 3 (issue #20994): also emit to public/ so the runtime fetch-by-slug
+      // loader can serve this problem. The registry-merge may have updated fields
+      // (phase/status/dates) so we must emit the merged form, not the raw
+      // committed file. See `emitPublicProblemJson` for the no-op-write skip.
+      emitPublicProblemJson(entry.slug, JSON.stringify(problem, null, 2) + '\n')
+      emittedSlugs.push(entry.slug)
     } else {
       // No existing JSON - generate from markdown (new problem bootstrap)
       console.log(`   Generating ${entry.slug} (new, from markdown)...`)
@@ -737,7 +839,11 @@ function build(): void {
 
         // Write individual problem JSON only for newly generated problems
         const outputPath = path.join(PROBLEMS_OUTPUT_DIR, `${entry.slug}.json`)
-        fs.writeFileSync(outputPath, JSON.stringify(problem, null, 2) + '\n')
+        const body = JSON.stringify(problem, null, 2) + '\n'
+        fs.writeFileSync(outputPath, body)
+        // Phase 3 (issue #20994): also emit to public/ for the runtime loader.
+        emitPublicProblemJson(entry.slug, body)
+        emittedSlugs.push(entry.slug)
       }
     }
   }
@@ -745,6 +851,11 @@ function build(): void {
   // Write listings index (always rebuilt from the loaded problem data)
   const listingsPath = path.join(OUTPUT_DIR, 'research-listings.json')
   fs.writeFileSync(listingsPath, JSON.stringify(listings, null, 2) + '\n')
+
+  // Phase 3 (issue #20994): emit the hashed slug -> sha8 manifest consumed by
+  // the runtime loader in `src/data/research/index.ts`. Must run after the
+  // public/ emit loop so the hashes reflect the bytes actually served.
+  emitDataManifest(emittedSlugs)
 
   // Summary
   const activeCount = listings.filter(l => l.status === 'active').length
