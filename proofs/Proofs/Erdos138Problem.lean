@@ -800,6 +800,42 @@ theorem W_difference_diverges_nat :
     Tendsto (fun k => W (k + 1) - W k) atTop atTop :=
   Filter.tendsto_atTop_mono W_diff_ge_k_all Filter.tendsto_id
 
+/-- For `k ≥ 1`, the van der Waerden numbers are monotone at `k`: `W k ≤ W (k+1)`.
+
+    This follows from `W_diff_ge_k_all`: since `W (k+1) - W k ≥ k ≥ 1` (in ℕ),
+    if `W (k+1) < W k` then the truncated Nat subtraction would give `0 ≥ 1`,
+    a contradiction. -/
+lemma W_monotone_of_pos {k : ℕ} (hk : 1 ≤ k) : W k ≤ W (k + 1) := by
+  have h := W_diff_ge_k_all k
+  by_contra h_lt
+  push_neg at h_lt
+  have h_sub_zero : W (k + 1) - W k = 0 := Nat.sub_eq_zero_of_le h_lt.le
+  omega
+
+/-- **Bridging lemma**: The integer-valued difference proposition `DifferenceDiverges`
+    follows from the ℕ-valued theorem `W_difference_diverges_nat`.
+
+    The bridge composes the ℕ-form with the Nat-cast tendsto, then uses
+    `Nat.cast_sub` (justified by `W_monotone_of_pos`) to convert the cast of a
+    Nat difference into an integer difference. The two formulations agree
+    eventually (for `k ≥ 1`), which is sufficient for `Tendsto`. -/
+theorem W_difference_diverges : DifferenceDiverges := by
+  unfold DifferenceDiverges
+  -- Lift the ℕ-form to ℤ via the natCast tendsto.
+  have h_cast :
+      Tendsto (fun k => ((W (k + 1) - W k : ℕ) : ℤ)) atTop atTop :=
+    tendsto_natCast_atTop_atTop.comp W_difference_diverges_nat
+  -- The integer difference agrees with the cast of the Nat difference eventually.
+  have h_eq :
+      (fun k => ((W (k + 1) - W k : ℕ) : ℤ))
+        =ᶠ[atTop] (fun k => ((W (k + 1) : ℤ) - (W k : ℤ))) := by
+    rw [Filter.EventuallyEq, Filter.eventually_atTop]
+    refine ⟨1, fun k hk => ?_⟩
+    have hmono : W k ≤ W (k + 1) := W_monotone_of_pos hk
+    push_cast [Nat.cast_sub hmono]
+    rfl
+  exact Filter.Tendsto.congr' h_eq h_cast
+
 /-! ## Logical Relationships -/
 
 /-- If the main conjecture holds (W(k)^{1/k} → ∞), then W(k)/2^k → ∞.
