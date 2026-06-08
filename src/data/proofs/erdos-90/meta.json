@@ -60,11 +60,12 @@
       "Stated the Spencer–Szemerédi–Trotter O(n^{4/3}) upper bound with explicit constant",
       "Stated the lattice lower bound n^{1+c/log log n} using Filter.atTop",
       "Formalized both the main conjecture and the weak form u(n) = n^{1+o(1)}",
-      "Documented Valtr's obstruction informally: a non-Euclidean semimetric achieving Θ(n^{4/3}) unit distances exists, showing SST alone cannot beat n^{4/3} (stated in comments, not as a Lean axiom)"
+      "Documented Valtr's obstruction informally: a non-Euclidean semimetric achieving Θ(n^{4/3}) unit distances exists, showing SST alone cannot beat n^{4/3} (stated in comments, not as a Lean axiom)",
+      "Added axiomatized class field tower infrastructure (Proofs/Erdos90/ClassFieldTower.lean, issue #22607): HilbertClassFieldAxioms / LHilbertClassFieldAxioms Prop-valued structures, ClassFieldTowerWitness / LClassFieldTowerWitness for Nat-indexed level families, classFieldTowerLevels explicit Nat.rec iteration, and HasInfiniteClassFieldTower / HasInfiniteLClassFieldTower predicates. Strategy B of research/MATHLIB-PREREQS-UNIT-DISTANCE.md."
     ],
-    "axiomCount": 0,
+    "axiomCount": 13,
     "lineCount": 81,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean. Status note: on 2026-05-20 OpenAI announced a reported disproof of the conjectured exponent (peer review pending); status remains 'axiomatized' and erdosProblemStatus remains 'open' until the disproof is peer-reviewed and erdosproblems.com#90 is reclassified.",
+    "assumptions": "Primary file Erdos90Problem.lean: 0 axioms, 0 sorries. Companion file Proofs/Erdos90/ClassFieldTower.lean (added per issue #22607, sub-issue of #20576): 0 axiom declarations, 0 sorries, but 13 assumption-carrying structure fields (4 in HilbertClassFieldAxioms + 3 in LHilbertClassFieldAxioms + 3 in ClassFieldTowerWitness + 3 in LClassFieldTowerWitness). Per CLAUDE.md axiom integrity policy these structure fields count as axioms, so axiomCount=13. The Hilbert-class-field properties (Galois, Artin reciprocity isomorphism with ClassGroup, unramifiedness, maximal-unramified-abelian universal property) and their ℓ-prime variants are stated as Prop-valued fields awaiting class field theory infrastructure in Mathlib (currently missing per research/MATHLIB-PREREQS-UNIT-DISTANCE.md items 3 and 4). Status note: on 2026-05-20 OpenAI announced a reported disproof of the conjectured exponent (peer review pending); status remains 'axiomatized' and erdosProblemStatus remains 'open' until the disproof is peer-reviewed and erdosproblems.com#90 is reclassified.",
     "mathlib_version": "4.26.0",
     "theoremCount": 0,
     "definitionCount": 3
