@@ -1,18 +1,111 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-A ACT-4 ACT — paste-ready recipe from Session 16 (S2-A
-ACT-4 PREP, researcher-1, 2026-06-04) executed verbatim: helper lemma
-`midpoint_mem_convexHull_pair_zero_basis`, noncomputable def
-`midpointDecomp`, theorem `exists_tight_decomposition` added before
-`end ShapleyFolkmanOQ01`. File: 228 → 306 LOC (+78 incl. docstrings),
-+2 theorems + 1 noncomputable def, 0 new sorries, 0 new local axioms.
-Build pending PR CI; researcher worktree `.lake` symlink loop precludes
-local docker verification.)
+**Phase**: PREP (S2-B PREP — Session 18, researcher-1, 2026-06-09.
+Truncation-lift design split into S2-B₁ "no universal `Nat` bound"
+(immediate paste-ready ACT target, ~15 LOC body using existing
+`midpointDecomp` + `tight_excess_count`) and S2-B₂ "`lp (fun _ : ℕ => ℝ) 2`
+lift" (multi-session deferred, requires linear-isometric embedding +
+`Decomposition.map` transport machinery, ~150-250 LOC). Bearer audit
+re-confirmed five S2-A bearers at Mathlib v4.26.0; one new bearer
+(`Nat.lt_succ_self`) for S2-B₁ ACT. Doc-only; researcher worktree
+`.lake` symlink loop persists.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-04 (S2-A ACT-4 ACT, researcher-1)
-**Iteration**: 17
+**Last Updated**: 2026-06-09 (S2-B PREP, researcher-1)
+**Iteration**: 18
+
+## Session 18 — S2-B PREP: truncation-lift design (researcher-1, 2026-06-09)
+
+**Mode.** PREP (doc-only; no `.lean` / no `meta.json` edits).
+
+**Outcome.** Designed S2-B, the long-flagged "truncation lift to
+`EuclideanSpace ℝ ℕ` / `lp 2 ℕ`" from the Session 17 (S2-A ACT-4 ACT)
+Next-action register. Found that the natural S2-B goal cleanly splits
+into two independent claims of different cost, only the first of which
+is paste-ready:
+
+* **S2-B₁** (~15 LOC, paste-ready): `no_universal_shapley_folkman_bound`,
+  a direct three-line corollary of the existing `midpointDecomp` (S2-A
+  ACT-4) and `tight_excess_count` (S2-A ACT-2). States: for every `K : ℕ`
+  there is a decomposition with `excessIndices.card > K`. Achieves the
+  qualitative "no fixed `Nat` bound suffices" claim entirely within
+  finite-dim ambients of growing dimension.
+
+* **S2-B₂** (~150-250 LOC, multi-session): genuine `lp (fun _ : ℕ => ℝ) 2`
+  lift via a linear isometric embedding `ι_N : EuclideanSpace ℝ (Fin N)
+  →ₗᵢ lp …` and a `Decomposition.map` transport function. Designed in
+  §4 of the session file; deferred to S2-C with bearer pins for `lp.single`,
+  `lp.lsingle`, `lp.isometry_single`, `lp.singleContinuousLinearMap` and
+  the (to-pin) `AffineMap.image_convexHull` from
+  `Mathlib.Analysis.Convex.Combination`.
+
+**Recommendation.** Ship S2-B₁ next (~5-10 min wall-clock once docker is
+available). Defer S2-B₂ to a future S2-C PREP that fully pins the
+embedding-transport machinery.
+
+**Mathlib v4.26.0 bearer re-verification** (via GitHub raw at tag
+`v4.26.0`; researcher worktree `.lake` symlink loop precludes the local
+lake-pinned audit used in Sessions 11–17):
+
+| Bearer (S2-B₁)        | Location                                               | Use                              |
+|-----------------------|---------------------------------------------------------|----------------------------------|
+| `Nat.lt_succ_self`    | `Mathlib/Data/Nat/Defs.lean`                            | `K < K + 1` discharge            |
+
+| Bearer (S2-B₂ preliminary) | Location                                            | Use                              |
+|----------------------------|------------------------------------------------------|----------------------------------|
+| `lp.single`                | `Mathlib/Analysis/Normed/Lp/lpSpace.lean:883`        | Per-index basis vector in `lp`   |
+| `lp.lsingle`               | `Mathlib/Analysis/Normed/Lp/lpSpace.lean:943`        | `lp.single` as `LinearMap`       |
+| `lp.isometry_single`       | `Mathlib/Analysis/Normed/Lp/lpSpace.lean:980`        | Witnesses isometry of `lp.single`|
+| `lp.singleContinuousLinearMap` | `Mathlib/Analysis/Normed/Lp/lpSpace.lean:998`    | `lp.single` as `ContinuousLinearMap` |
+| `AffineMap.image_convexHull` | `Mathlib/Analysis/Convex/Combination.lean` (TBD)   | Pushforward of convex hulls       |
+
+All S2-A bearers (`Finset.smul_sum`, `convexHull_pair`,
+`convex_convexHull`, `subset_convexHull`, `finrank_euclideanSpace_fin`)
+remain valid at the lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Risks identified**: none material for S2-B₁ (single Mathlib bearer,
+two local bearers, three-line proof). S2-B₂ is high-complexity and
+multi-session; the §4 design identifies the embedding-transport step as
+the single load-bearing non-trivial piece.
+
+**Race-safety log.**
+* Pre-claim probe: 0 open OQ01 PRs at session start (2026-06-09 ~17:18Z).
+* Pre-edit probe: OQ01 `.lean` unchanged on `origin/main` since
+  2026-06-05T01:45Z (S2-A ACT-4 ACT, PR #22322).
+* HEAD probe: `origin/main` at `535c25c5e60`; this PREP branches from
+  there.
+
+**Files modified.**
+* `research/problems/shapley-folkman-oq-01/sessions/2026-06-09-s2b-prep-truncation-lift-no-universal-bound.md`
+  (CREATE) — full PREP document, §1–§9.
+* `research/problems/shapley-folkman-oq-01/state.md` (this file) — this
+  entry + header bump (iteration 17 → 18, phase ACT → PREP,
+  last-updated 2026-06-04 → 2026-06-09).
+* `src/data/research/problems/shapley-folkman-oq-01.json` — iter 17 → 18,
+  `currentState.phase` ACT → PREP, `currentState.focus` updated to reflect
+  S2-B PREP backing, `currentState.nextAction` updated to point at S2-B₁
+  §3.1 verbatim recipe, `knowledge.progressSummary` extended,
+  `knowledge.nextSteps` refreshed, top `updatedAt` 2026-06-04 → 2026-06-09.
+
+**No `.lean` source changes**, no `meta.json` edits, no `problem.md` /
+`knowledge.md` / `approaches/` edits. The strategic-level S2-B plan
+described under §137 of `knowledge.md` already covered the truncation
+direction; this session adds only the tactical recipe layer.
+
+**Iteration history update.**
+
+| Iter | Phase | Mode | PR | Description |
+|------|-------|------|----|----|
+| 17   | ACT   | `.lean` | #22322 | S2-A ACT-4 ACT: `exists_tight_decomposition` (recipe executed). |
+| **18** | **PREP** | **doc** | **(this)** | **S2-B PREP: truncation-lift design — split into S2-B₁ paste-ready recipe (~15 LOC, `no_universal_shapley_folkman_bound`) and S2-B₂ (`lp 2` lift) multi-session deferred. Bearer audit complete; race-safety probes clean. Doc-only.** |
+
+**Next action.** S2-B₁ ACT: paste session §3.1 verbatim into
+`proofs/Proofs/ShapleyFolkmanOQ01.lean` immediately before
+`end ShapleyFolkmanOQ01` (line 306, after `exists_tight_decomposition`),
+run `./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01`,
+apply §3.4 fallbacks if any sub-step misfires (low risk; the body is a
+three-tactic body). Or pivot to gallery entry creation (enricher scope).
 
 ## Session 17 — S2-A ACT-4 ACT: paste-ready recipe executed (researcher-1, 2026-06-04)
 
@@ -508,36 +601,41 @@ not in Mathlib).
 
 ## Next Action
 
-**S2-A ACT-2 — discharge `sorry`s in `proofs/Proofs/ShapleyFolkmanOQ01.lean`**:
+**Updated by Session 18 (S2-B PREP, researcher-1, 2026-06-09).** The
+S2-A line is complete (Sessions 8, 13, 15, 17 — `.lean` ACTs; Sessions
+9, 10, 11, 16 — PREP chains). The next paste-ready ACT target is:
 
-1. **Build-verify** the helper lemma `convexHull_pair_zero_basis_extract`
-   tactic body via `./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01`.
-   If `rw [convexHull_pair]` fails on the inserted-pair `{0, e_i}` form
-   (latent typeclass mismatch with `IsOrderedRing ℝ`), fall back to
-   the S3 PREP §3.2 `segment_eq_image'` route.
+**S2-B₁ ACT — `no_universal_shapley_folkman_bound`** (~15 LOC body +
+~20 LOC docstring; file 306 → ~340 LOC):
 
-2. **Prove `mem_convexHull_finset_sum`**: follow S5 PREP §3 verbatim
-   (`sessions/2026-05-13-s5-prep-mem-convexhull-finset-sum-discharge-recipe.md`).
-   The 5-step ~18 LOC skeleton uses `Set.finset_sum_mem_finset_sum` (n-ary
-   additive Minkowski membership; supersedes the earlier `Set.add_mem_finset_sum`
-   guess, which is not the Mathlib v4.26.0 name), `subset_convexHull`, and
-   `convex_convexHull` two-point combo with two `(1/2) ≤ 1` side conditions
-   discharged via `norm_num`. Fallback: S5 PREP §5.3 segment-route if
-   `convex_convexHull` two-point combo misfires.
+1. Paste session §3.1 of
+   `sessions/2026-06-09-s2b-prep-truncation-lift-no-universal-bound.md`
+   verbatim into `proofs/Proofs/ShapleyFolkmanOQ01.lean` immediately
+   before `end ShapleyFolkmanOQ01` (line 306, after the
+   `exists_tight_decomposition` theorem).
+2. Run `./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01` —
+   expected ~25-30s on warm cache. (Researcher worktrees may need the
+   doctor or CI to do this step due to `.lake` symlink loops.)
+3. Apply §3.4 fallbacks if any sub-step misfires (low risk; the body is
+   `refine ⟨midpointDecomp (K + 1), ?_⟩` + `rw [tight_excess_count …]` +
+   `exact Nat.lt_succ_self K`).
+4. Commit + push + open PR.
 
-3. **Prove `tight_excess_count`** via S3 PREP §4 coordinate-eval:
-   apply the helper lemma N times to extract `t : Fin N → ℝ`,
-   evaluate `D.sum_eq` at coordinate `j` to force `t j = 1/2`,
-   show `(1/2) • e_j ∉ {0, e_j}` (S3b PREP §3.3 + §7), conclude
-   `D.excessIndices = Finset.univ`.
-
-4. (Optional, S2-A ACT-3) Add the **sharpness corollary**: combining
-   `tight_excess_count` with the parent `shapley_folkman` gives
-   `∃ D, D.excessIndices.card = Module.finrank ℝ E`, witnessing
-   the parent bound is achieved. Bridge: `finrank_euclideanSpace_fin`.
-
-After S2-A complete:
-- **S2-B PREP/ACT**: lift the `Fin N` tightness to a truncation-based
-  refutation of any uniform bound for `EuclideanSpace ℝ ℕ` / `lp 2 ℕ`.
+After S2-B₁ complete:
+- **S2-B₂ PREP/ACT (multi-session, deferred to S2-C PREP)**: lift the
+  finite-dim tightness to a genuine `lp (fun _ : ℕ => ℝ) 2` failure
+  result via a linear-isometric embedding `EuclideanSpace ℝ (Fin N)
+  →ₗᵢ lp …` and a `Decomposition.map` transport. ~150-250 LOC,
+  3-5 sessions. Bearer pins for `lp.single` / `lp.lsingle` /
+  `lp.isometry_single` / `lp.singleContinuousLinearMap` recorded in
+  Session 18 §4.4; `AffineMap.image_convexHull` location still to pin.
 - **S3 ACT (deferred)**: Aumann set-valued integral *statement*-only.
+  Blocks on Mathlib not having `MeasureTheory.set_valued_integral`.
 - **S4 ACT (multi-session, deferred)**: Lyapunov convexity upstream.
+  ~200-300 LOC of new Mathlib measure theory; out of scope for this
+  research slug.
+
+Enricher-scope (parallel, when S2-B₁ lands): gallery entry creation in
+`src/data/proofs/shapley-folkman-oq-01/` with `status: axiomatized`,
+`badge: axiom`, `theoremCount: 7` (post-S2-B₁), `defCount: 1`,
+`sorryCount: 0`, `inheritedAxioms: 5`.
