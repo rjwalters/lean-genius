@@ -1,11 +1,47 @@
 # Research State: erdos-1151-oq-04
 
 ## Current State
-**Phase**: ACT (still gated on Docker daemon I/O recovery for the deferred BUILD-VERIFY pass; S34 STATE-SYNC this iter absorbs PR #19967 S34-registry-mirror partial + mechanic PR #19775 sibling leanFiles batch + 3 RED INFRA snapshot delta + canonical iter / lastUpdate / nextAction / nextSteps refresh)
+**Phase**: ACT (S35 BUILD-VERIFY-PARTIAL completed; G7/G8 INFRA recovered after 23-day gap; 29 latent build errors surfaced — 8 fixed inline as Mathlib API drift cleanup, 22 remain at lines 180–1247 requiring mechanic-handoff)
 **Path**: full
-**Since**: 2026-05-17T01:39:50Z (S34 STATE-SYNC canonical absorption)
-**Iteration**: 34
-**Last Updated**: 2026-05-17 (researcher-11)
+**Since**: 2026-06-09T18:30:00Z (S35 BUILD-VERIFY-PARTIAL)
+**Iteration**: 35
+**Last Updated**: 2026-06-09 (researcher-8)
+
+## Session 35 (researcher-8, 2026-06-09, BUILD-VERIFY-PARTIAL) — INFRA recovered after 23-day gap; 29 latent build errors surfaced; 8 fixed inline, 22 remain (mechanic-handoff)
+
+Picker matrix S34 §6 row (a) fired: **G7 host disk 3.2 → 101 GiB (+97.8 GiB, GREEN)** and **G8 Docker daemon 8s-timeout → 29.5.3 sub-second-response (GREEN)** in the 23-day window since S34 STATE-SYNC PR #20007 (merged 2026-05-17T01:58:55Z). G9 (`proofs/.lake → proofs/.lake` self-symlink) remains RED but **confirmed non-blocking** for Docker builds (docker-build.sh overlays the persistent Mathlib cache volume at `/workspace/proofs/.lake/build`; container's writable `.lake` shadows the host self-loop; corroborated by today's PR #22624 "Docker 3113 jobs clean" through identical host G9).
+
+**Build attempt 1**: `LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04` → cache fetch 7727 files (~3 min) + 21 cache-exe jobs + Mathlib elaboration begins → **fails with 29 errors at lines 180–2255**. **Outcome interpretation**: file has not been build-verified since pre-S22 (~mid-2026-04); 22 of 29 errors were latent in the S22+ helper infrastructure all along — masked first by "build pending" qualifier through S22-S31, then by Docker daemon outage S32-S34. The Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) has been byte-stable since pre-S32 (~4.7 mo), so this is not new drift — it's accumulated latent drift between helper-author-time interactive Mathlib state and the eventually-locked pin.
+
+**8 surgical fixes this S35 PR** (trailing tactic-glue drift; mechanically obvious; −3 net LOC, 2695 → 2692):
+1. L1758: drop `; ring` after `field_simp` (Mathlib `field_simp` now closes ring goals)
+2. L1841: drop standalone `ring` after `field_simp`
+3. L1882: drop `; ring` after `field_simp`
+4. L1895: drop `; ring` after `field_simp`
+5. L1897: drop `; ring` after `field_simp`
+6. L2055/2073: convert orphan `/-- ... -/` docstring (no following declaration) to `/- ... -/` plain comment
+7. L2133–2134: drop redundant `push_cast; ring` (S20-era `congr 2` now closes the goal alone)
+8. L2166: `le_div_iff hd_pos` → `le_div_iff₀ hd_pos` (Mathlib rename; sibling-precedent S15 `div_lt_div_iff → div_lt_div_iff₀`)
+
+**Build attempt 2** (after the 8 fixes): 22 errors remain (29 → 22, −7 root + −2 cascade from L2073 parser). All 22 are at lines 180–1247 in two clusters:
+- **Cluster A (line 180, 1 error)**: S31 `chebyshevInterp_sub` `exact Finset.sum_sub_distrib` — typeclass instance stuck on `SubtractionCommMonoid ?m.15` (needs type annotation or `apply` form). **Authored 2026-05-09 (S31 PR #17612, researcher-13), never build-verified.**
+- **Cluster B (lines 952–1247, 21 errors)**: pre-S22 helper region. Mix of `linarith` failures, `unsolved goals`, `Application type mismatch`, `Type mismatch`, `omega could not prove`, `mod_cast` signature, `positivity` failure, `rewrite` pattern-not-found, `unknown tactic`. Pattern suggests 3–5 root-cause sites with downstream cascade.
+
+**Mechanic-handoff scope**: S36 mechanic-handoff PR(s) repair Cluster A (single-root-cause, ~5-line fix) first; then sub-cluster sweeps of Cluster B by error-type (typeclass / type-mismatch / positivity-omega-modcast). Estimate 3–5 narrow PRs. After mechanic ships clean build, S37 BUILD-VERIFY re-runs → expected clean at ~3060/3060 jobs.
+
+**Post-clean-build roadmap unchanged from S34 §6**: S38 ACT ContinuousLinearMap packaging Λₙ_x (~80–120 LOC) → S39 ACT operator-norm identity `‖Λₙ_x‖ = chebyshevLebesgue n x` (~30–50 LOC) → S40 ACT Banach-Steinhaus contrapositive → Sorry 2 discharge (~20–40 LOC). Total to 0 sorries: ~130–210 LOC across 3 ACT PRs.
+
+**Files this S35 BUILD-VERIFY-PARTIAL**:
+1. EDIT `proofs/Proofs/Erdos1151OQ04.lean` (8 surgical 1-line fixes, −3 net LOC)
+2. EDIT this `state.md` (head replace + prepend this Session 35 narrative; preserve Session 34 → S1 verbatim)
+3. EDIT `src/data/research/problems/erdos-1151-oq-04.json` (~12 fields per the session memo §4)
+4. CREATE `research/problems/erdos-1151-oq-04/session-35-build-verify-and-infra-recovery.md` (~190 LOC)
+
+**0 meta.json / 0 lake-manifest / 0 problem.md / 0 knowledge.md body / 0 sibling-slug edits.** 0 axiom / 0 sorry change (1 sorry preserved at `divergence_from_lebesgue_growth`). Bearer SHA-stable chain S22 → S35 (no Mathlib re-walk this iter).
+
+`Erdos1151Problem.lean` sibling-list +30-LOC drift (actual 215 vs JSON 185) UNCHANGED from S34; remains deferred to a future mechanic batch.
+
+**Next action**: **S36 MECHANIC-HANDOFF (Cluster A — line 180 `Finset.sum_sub_distrib` typeclass stuck)** then S37 BUILD-VERIFY re-run. Picker matrix S34 §6 row (a) sub-resolution: build-attempt outcome was "errors surface → mechanic-handoff for tactic-glue fixes" — within picker matrix coverage.
 
 ## Session 34 (researcher-11, 2026-05-17, doc-only STATE-SYNC) — post-S33 absorption: S34a registry mirror (PR #19967) + mechanic sibling-leanFiles batch (PR #19775) + INFRA delta + canonical refresh
 
