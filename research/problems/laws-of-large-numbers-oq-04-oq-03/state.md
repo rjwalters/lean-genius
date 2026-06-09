@@ -1,17 +1,27 @@
 # Current State
 
-**Phase**: REDESIGN-IN-PROGRESS (S13 ACT shipped — `QuantileBracketingGrid` typed scaffold; S14+ proves existence)
-**Since**: 2026-06-02T06:30:00Z (S13 ACT, this session)
-**Iteration**: 11 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S13 ACT
-(researcher-1, 2026-06-02) ships the typed scaffold
-`QuantileBracketingGrid`** in a new companion file
+**Phase**: REDESIGN-IN-PROGRESS (S14a ACT shipped — boundary helpers for `QuantileBracketingGrid`; S14b proves interior existence)
+**Since**: 2026-06-09 (S14a ACT, this session)
+**Iteration**: 12 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S14a ACT
+(researcher-4, 2026-06-09) ships the two boundary-node existence
+helpers `trueCDF_exists_le` / `trueCDF_exists_ge` plus the private
+bridge `trueCDF_eq_cdf_map'`** in
+`Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`
+(154 → 216 lines, +2 public lemmas + 1 private bridge, 0 axioms, 0
+sorries, Docker 3113 jobs clean). These discharge the `left_le` /
+`right_ge` fields of `QuantileBracketingGrid` directly via Mathlib's
+`ProbabilityTheory.tendsto_cdf_atBot` / `tendsto_cdf_atTop`; S14b
+constructs the interior quantile nodes and proves `step_le` + `mono`.
+
+**S13 ACT (PR #22044, researcher-1, 2026-06-02)** previously shipped
+the typed scaffold `QuantileBracketingGrid` in a new companion file
 `Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (~150 LOC,
 mostly docstring; 1 structure, 0 axioms, 0 theorems, 0 sorries). This
 mirrors S3 (PR #17442, researcher-12, 2026-05-08) — the original
 `BracketingGrid` scaffold landed in the same shape (structure + axiom in
 a fresh companion) and S4–S6 filled in §2.3–§2.5 over three sessions. S13
 omits the axiom because the new existence statement is provable (the
-genuine quantile construction); S14 will ship it as a theorem, not an
+genuine quantile construction); S14a/S14b ship it as a theorem, not an
 axiom.
 
 **S10 ACT (PR #20969, researcher-1, 2026-05-29) disproved
@@ -949,29 +959,33 @@ verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 
 ## Next Action
 
-> **S13 ACT LANDED 2026-06-02** (this session): typed scaffold
-> `QuantileBracketingGrid` is in tree in
-> `Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`. The redesign
-> is open for S14+ work.
+> **S14a ACT LANDED 2026-06-09** (this session): boundary-node helpers
+> `trueCDF_exists_le` / `trueCDF_exists_ge` and private bridge
+> `trueCDF_eq_cdf_map'` are in tree in
+> `Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`. The
+> `left_le` / `right_ge` fields of `QuantileBracketingGrid` are
+> discharged by direct witness of these helpers. S14b is open for work.
 
-**S14+ REDESIGN (multi-session, scaffold landed)**:
+**S14b ACT — prove `quantileBracketingGrid_exists` (interior nodes)**:
 
-1. **S14 ACT — prove `quantileBracketingGrid_exists`**: the genuine grid
+1. **S14b ACT — prove `quantileBracketingGrid_exists`**: the genuine grid
    existence statement
    ```lean
    theorem quantileBracketingGrid_exists [IsProbabilityMeasure μ]
-       {X : ℕ → Ω → ℝ} (hX_meas : ∀ i, Measurable (X i))
+       {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0))
        {ε : ℝ} (hε : 0 < ε) :
        Nonempty (QuantileBracketingGrid (trueCDF X μ) ε)
    ```
-   via Mathlib's `Function.leftLim` + the standard quantile construction
-   `qⱼ = inf {x | F x ≥ jε}` (Stieltjes-style; PR #18499 and PR #18528 from
-   S10 PREP-1/PREP-2 supply much of the API audit, with corrections for
-   the quantile bound). At `qⱼ`, `Function.leftLim F qⱼ ≤ jε ≤ F qⱼ` by
-   the definition of the infimum + monotonicity, so the step bound
-   `leftLim F (qⱼ₊₁) − F (qⱼ) ≤ (j+1)ε − jε = ε`. ~150 LOC. This is the
-   real Mathlib upstream target, replacing the void
-   `Monotone.exists_increasing_continuity_seq` plan.
+   via Mathlib's `Function.leftLim` + the standard quantile construction.
+   Use this session's `trueCDF_exists_le ε` for `q 0` and
+   `trueCDF_exists_ge (1 - ε)` for `q_last`. Construct interior nodes
+   `qⱼ = sInf {x | F x ≥ jε}` for `j = 1, …, k` with `k = ⌈1/ε⌉.toNat`.
+   At `qⱼ`, `Function.leftLim F qⱼ ≤ jε ≤ F qⱼ` by the definition of the
+   infimum + right-continuity (via Mathlib's
+   `StieltjesFunction.right_continuous`), so the step bound
+   `leftLim F (qⱼ₊₁) − F (qⱼ) ≤ (j+1)ε − jε = ε`. ~125 LOC remaining
+   after S14a. This is the real Mathlib upstream target, replacing the
+   void `Monotone.exists_increasing_continuity_seq` plan.
 2. **S15 ACT — rewrite §2.4** (`bracketing_pointwise_bound`,
    `bracketing_uniform_sup_bound`) using the two-sided node values: interior
    cell `[qⱼ, qⱼ₊₁)` uses `F(x) ≤ leftLim F qⱼ₊₁` and `F(qⱼ) ≤ F(x)` for

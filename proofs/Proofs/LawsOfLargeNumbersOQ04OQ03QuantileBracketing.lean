@@ -101,6 +101,8 @@ namespace GlivenkoCantelli
 
 open MeasureTheory ProbabilityTheory Set Function
 
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω}
+
 -- ============================================================================
 -- §S13.1: The quantile-bracketing-grid predicate
 -- ============================================================================
@@ -149,5 +151,66 @@ structure QuantileBracketingGrid (F : ℝ → ℝ) (ε : ℝ) where
              Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε
   left_le  : F (q 0) ≤ ε
   right_ge : F (q (Fin.last (k + 1))) ≥ 1 - ε
+
+-- ============================================================================
+-- §S14a.1: Boundary node existence helpers
+-- ============================================================================
+
+/-- **Bridge to Mathlib's `cdf`.** Pointwise identification of the parent's
+    `trueCDF X μ` with `ProbabilityTheory.cdf (Measure.map (X 0) μ)`. Mirrors
+    `LawsOfLargeNumbersOQ04OQ03Bracketing.trueCDF_eq_cdf_map` and is restated
+    here so the quantile-bracketing chain has no transitive dependency on the
+    refuted axiom in the bracketing companion. -/
+private lemma trueCDF_eq_cdf_map' [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0)) (x : ℝ) :
+    trueCDF X μ x = ProbabilityTheory.cdf (Measure.map (X 0) μ) x := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  rw [ProbabilityTheory.cdf_eq_real]
+  show (μ {ω | X 0 ω ≤ x}).toReal = ((Measure.map (X 0) μ) (Set.Iic x)).toReal
+  rw [Measure.map_apply hX_meas measurableSet_Iic]; rfl
+
+/-- **Boundary helper for the redesigned grid.** For any `ε > 0`, the CDF
+    has values `≤ ε` arbitrarily far to the left. This will discharge the
+    `left_le : F (q 0) ≤ ε` field of `QuantileBracketingGrid` in the
+    S14b existence proof: pick `q 0` as any witness of this lemma.
+
+    Proof outline: `trueCDF X μ → 0` at `-∞` (via Mathlib's
+    `ProbabilityTheory.tendsto_cdf_atBot`), so the eventual-membership in
+    `Iio ε ∈ 𝓝 0` extracts a witness. -/
+lemma trueCDF_exists_le [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0))
+    {ε : ℝ} (hε : 0 < ε) :
+    ∃ x : ℝ, trueCDF X μ x ≤ ε := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  have h_tend : Filter.Tendsto (trueCDF X μ) Filter.atBot (nhds 0) := by
+    have h_eq : trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ) := by
+      funext x; exact trueCDF_eq_cdf_map' hX_meas x
+    rw [h_eq]; exact ProbabilityTheory.tendsto_cdf_atBot _
+  obtain ⟨x, hx⟩ := (h_tend.eventually (Iio_mem_nhds hε)).exists
+  exact ⟨x, le_of_lt hx⟩
+
+/-- **Boundary helper for the redesigned grid.** For any `η < 1`, the CDF
+    has values `≥ η` arbitrarily far to the right. This will discharge the
+    `right_ge : F (q_last) ≥ 1 - ε` field of `QuantileBracketingGrid` in
+    the S14b existence proof: pick `q_last` as any witness of this lemma
+    instantiated at `η = 1 - ε`.
+
+    Proof outline: `trueCDF X μ → 1` at `+∞` (via Mathlib's
+    `ProbabilityTheory.tendsto_cdf_atTop`), so the eventual-membership in
+    `Ioi η ∈ 𝓝 1` extracts a witness. -/
+lemma trueCDF_exists_ge [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0))
+    {η : ℝ} (hη : η < 1) :
+    ∃ x : ℝ, η ≤ trueCDF X μ x := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  have h_tend : Filter.Tendsto (trueCDF X μ) Filter.atTop (nhds 1) := by
+    have h_eq : trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ) := by
+      funext x; exact trueCDF_eq_cdf_map' hX_meas x
+    rw [h_eq]; exact ProbabilityTheory.tendsto_cdf_atTop _
+  obtain ⟨x, hx⟩ := (h_tend.eventually (Ioi_mem_nhds hη)).exists
+  exact ⟨x, le_of_lt hx⟩
 
 end GlivenkoCantelli

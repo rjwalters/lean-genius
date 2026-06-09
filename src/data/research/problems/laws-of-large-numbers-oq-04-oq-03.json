@@ -34,7 +34,10 @@
       "S8: §2.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521→594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone).",
       "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean — §2.2.6 block: trueCDF_eq_cdf_map bridge + trueCDF_atBot/atTop Tendsto theorems via Mathlib ProbabilityTheory.cdf (S9 ACT, verbatim §3.2 drop-in from S9b OBSERVE #18372). +62 LOC, +1 import (Mathlib.Probability.CDF), 0 axioms added, 0 sorries added.",
       "LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean: bracketingGrid_value_impossible (abstract obstruction) + bracketingGrid_exists_false (Dirac realization)",
-      "S13: Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean — new companion file (153 LOC, 1 structure QuantileBracketingGrid, 0 axioms, 0 theorems, 0 sorries). Imports Proofs.LawsOfLargeNumbersOQ04OQ03, Mathlib.Topology.Order.LeftRightLim (for Function.leftLim), Mathlib.Probability.CDF."
+      "S13: Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean — new companion file (153 LOC, 1 structure QuantileBracketingGrid, 0 axioms, 0 theorems, 0 sorries). Imports Proofs.LawsOfLargeNumbersOQ04OQ03, Mathlib.Topology.Order.LeftRightLim (for Function.leftLim), Mathlib.Probability.CDF.",
+      "trueCDF_exists_le: boundary helper (∃ x, F x ≤ ε for ε > 0) via tendsto_cdf_atBot + Iio_mem_nhds — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:181",
+      "trueCDF_exists_ge: boundary helper (∃ x, η ≤ F x for η < 1) via tendsto_cdf_atTop + Ioi_mem_nhds — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:203",
+      "trueCDF_eq_cdf_map (private dup): bridge to Mathlib cdf, self-contained restatement avoiding transitive dep on refuted Bracketing axiom — LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean:164"
     ],
     "insights": [
       "Basic Glivenko-Cantelli is in LawsOfLargeNumbersOQ04.lean with 3 axioms (indicator_integrable, indicator_integral_eq_cdf, glivenko_cantelli_uniform)",
@@ -51,16 +54,17 @@
       "S10: correct fix is to redesign BracketingGrid to track left limits F(qⱼ⁻) (standard quantile construction) and re-prove §2.4/§2.5 with one-sided node values; multi-session redesign, not a one-shot lemma.",
       "S13: the redesign uses Function.leftLim F (q j.succ) - F (q j.castSucc) ≤ ε as the interior step bound. For atomless F this equals the original F (q j.succ) - F (q j.castSucc) (left limit = function value when F is continuous), so the redesign is conservative. For atomic F (e.g. Dirac) the left limit lets the node sit at the atom while the step is measured to the bottom of the next atom — the standard quantile / DKW empirical process construction.",
       "S13: dropping the cont field of the original BracketingGrid is safe because Function.leftLim is defined for all monotone functions without continuity. The Mathlib API (Monotone.leftLim_eq_sSup, leftLim_eq_of_tendsto, etc.) supports the quantile-existence proof without needing continuity points.",
-      "S13b (doc-only sync, 2026-06-04): the axiom-status summary at the bottom of LawsOfLargeNumbersOQ04OQ03.lean still cited 'Monotone.exists_increasing_continuity_seq, the natural Mathlib home' as the upstream target. That claim has been false since PR #20969 (S10 ACT). The summary was updated to record (a) the S10 refutation of bracketingGrid_exists, (b) the S13 QuantileBracketingGrid scaffold, and (c) that the correct upstream target involves left limits, not continuity points. Parent file grew 163 → 180 lines, all docstring; 0 axioms, 0 sorries, 0 theorems changed. meta.json + research JSON lineCount synced 163 → 180."
+      "S13b (doc-only sync, 2026-06-04): the axiom-status summary at the bottom of LawsOfLargeNumbersOQ04OQ03.lean still cited 'Monotone.exists_increasing_continuity_seq, the natural Mathlib home' as the upstream target. That claim has been false since PR #20969 (S10 ACT). The summary was updated to record (a) the S10 refutation of bracketingGrid_exists, (b) the S13 QuantileBracketingGrid scaffold, and (c) that the correct upstream target involves left limits, not continuity points. Parent file grew 163 → 180 lines, all docstring; 0 axioms, 0 sorries, 0 theorems changed. meta.json + research JSON lineCount synced 163 → 180.",
+      "S14a (researcher-4, 2026-06-09): boundary helpers shipped as independent theorems. Discharging left_le/right_ge in the upcoming S14b existence proof reduces to picking witnesses of trueCDF_exists_le ε and trueCDF_exists_ge (1-ε). Both follow from Mathlib ProbabilityTheory.tendsto_cdf_atBot/atTop without touching the refuted Bracketing axiom."
     ],
     "mathlibGaps": [
       "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F∩S| ≤ sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
     ],
     "nextSteps": [
-      "S14 ACT: prove quantileBracketingGrid_exists via qⱼ = inf {x | F x ≥ jε}. The step bound leftLim F qⱼ₊₁ - F qⱼ ≤ ε follows from infimum monotonicity: leftLim F qⱼ ≤ jε ≤ F qⱼ. ~150 LOC.",
-      "S15 ACT: rewrite §2.4 bracketing_pointwise_bound + bracketing_uniform_sup_bound with two-sided step bounds. Interior cell [qⱼ, qⱼ₊₁) uses F(x) ≤ leftLim F qⱼ₊₁ and F(qⱼ) ≤ F(x). ~150 LOC.",
-      "S16 ACT: rewrite §2.5 glivenko_cantelli_uniform with the two-sided per-grid hypothesis. Diagonal ε = 1/(m+1) structure preserved. ~75 LOC.",
-      "S17 ACT: retire refuted axiom bracketingGrid_exists and disproof file. Chain becomes axiom-free."
+      "S14b: prove quantileBracketingGrid_exists. Use trueCDF_exists_le and trueCDF_exists_ge from this session to land q 0 and q (k+1). Construct interior nodes q j (j = 1, …, k) via the quantile inf {x | F x ≥ j*ε}; pick k = ⌈1/ε⌉. Strict-mono and step_le follow from F right-continuity + leftLim definition.",
+      "S15 ACT: rewrite §2.4 bracketing_pointwise_bound / uniform_sup_bound with two-sided node values (F(x) ≤ leftLim F qⱼ₊₁ on [qⱼ, qⱼ₊₁)). ~150 LOC.",
+      "S16 ACT: rewrite §2.5 glivenko_cantelli_uniform with two-sided per-grid hypothesis. ~75 LOC, ε = 1/(m+1) diagonal preserved.",
+      "S17 ACT: retire refuted axiom + disproof file. Chain returns to axiom-free."
     ]
   },
   "tags": [
@@ -229,6 +233,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04OQ03BracketingDisproof.lean"
+    },
+    {
+      "path": "Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean",
+      "filename": "LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean",
+      "lineCount": 216,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean"
     }
   ]
 }
