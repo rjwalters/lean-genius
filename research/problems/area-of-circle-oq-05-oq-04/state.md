@@ -1,9 +1,9 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH (S6c ACT-2 — `complex_gaussian_integral_norm_sq` + `schur_orthogonality_complex_gaussian_diag` shipped; diagonal Schur closed)
-**Since**: 2026-06-06 (S6c ACT-2 this PR; iter 15 → 16)
-**Iteration**: 16 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + S6c PREP-3 + S6c ACT-1 + **S6c ACT-2**)
-**Last canonical sync**: 2026-06-06 (researcher-1, this PR — S6c ACT-2 ships `complex_gaussian_integral_norm_sq` + `schur_orthogonality_complex_gaussian_diag` per PREP-3 §5)
+**Phase**: RESEARCH (S6c ACT-2 MERGED #22549 2026-06-06; S6c PREP-4 this PR seeds off-diagonal Schur ACT-3 skeleton; diagonal Schur closed)
+**Since**: 2026-06-09 (S6c PREP-4 this PR; iter 16 → 17)
+**Iteration**: 17 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT + S6b ACT + S6b ACT-2 + S6c PREP-3 + S6c ACT-1 + S6c ACT-2 + **STATE-SYNC + S6c PREP-4**)
+**Last canonical sync**: 2026-06-09 (researcher-1, this PR — STATE-SYNC absorbs S6c ACT-2 #22549 + adds S6c PREP-4 paste-ready off-diagonal Schur skeleton)
 
 > _Phase note: Phase remains `RESEARCH` since the slug's remaining frontiers
 > (Schur orthogonality S6c, n-dim Fourier-Gaussian lift, the multi-week S6d
@@ -87,10 +87,21 @@ The cumulative state is:
   the ACT**; the post-ACT decomposition table and next-action wording
   in #19043's canonical state.md was already stale at merge time.
   This S11 PREP fixes that aging.
-- **S11 PREP (this PR, doc-only)**: STATE-SYNC absorbing S6 ACT +
+- **S11 PREP (PR #19594, merged 2026-05-16T09:57Z, doc-only)**: STATE-SYNC absorbing S6 ACT +
   sharpened S6b PREP-2 (bearer recheck, import-gap patch, concretized
-  ~80-LOC paste-ready ACT skeleton). 3 files: this state.md rewrite,
+  ~80-LOC paste-ready ACT skeleton). 3 files: state.md rewrite,
   new sessions memo, research JSON refresh.
+- **STATE-SYNC + S6c PREP-4 (this PR, 2026-06-09, doc-only)**: refreshes
+  state.md after S6c ACT-2 PR #22549 merge (2026-06-06) — the previous
+  iteration left the path-to-completion table and Next Action prose
+  describing ACT-2 in "(this) / unmerged" terms. Also ships a
+  paste-ready ~80-110 LOC body skeleton for **S6c ACT-3 (off-diagonal
+  Schur orthogonality)**: per-axis Fubini + 1-D odd-symmetry collapse
+  on axis `i` (or `j`); single new bearer to confirm at ACT-3 session
+  open is `real_odd_x_exp_neg_sq : ∫_ℝ x · exp(-x²) = 0` (three
+  candidate routes catalogued in PREP-4 §3.1). 2 files this PR: this
+  state.md update + new sessions memo
+  `sessions/2026-06-09-statesync-prep-4-off-diagonal-schur.md`.
 
 ## Built (Lean, cumulative through S6 ACT)
 
@@ -165,43 +176,42 @@ at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 | STATE-SYNC | DOC | Path-to-completion + Next Action refresh post S6b ACT-2 | #21977 | merged 2026-06-01T19:23Z |
 | S6c PREP-3 | PREP | Bearer recheck @ `2df2f0150c` + paste-ready `gaussianReal`-variance route for `integral_sq_exp_neg_sq` (~20-25 LOC ACT-1 skeleton) | (merged) | merged |
 | **S6c ACT-1** | **ACT** | **`integral_sq_exp_neg_sq` via `gaussianReal 0 (1/2)` variance shortcut (Part 8, +1 thm, 22 LOC proof, 3208/3208 jobs)** | **#22316** | **merged 2026-06-05T01:11Z** |
-| **S6c ACT-2** | **ACT** | **`complex_gaussian_integral_norm_sq` (1-D complex moment) + `schur_orthogonality_complex_gaussian_diag` (n-dim diagonal Schur) (Part 9, +2 thm + 2 private helpers, ~177 LOC)** | **(this)** | **unmerged** |
-| (next, optional) | ACT-3 | Off-diagonal Schur `∫_{ℂⁿ} ⟨z_i, z_j⟩·(1/π)ⁿ·exp(-∑‖z_k‖²) = 0` for `i ≠ j` via per-axis odd symmetry (~30-40 LOC) | — | unclaimed |
+| **S6c ACT-2** | **ACT** | **`complex_gaussian_integral_norm_sq` (1-D complex moment) + `schur_orthogonality_complex_gaussian_diag` (n-dim diagonal Schur) (Part 9, +2 thm + 2 private helpers, ~177 LOC)** | **#22549** | **merged 2026-06-06T08:11:01Z** |
+| **STATE-SYNC + S6c PREP-4** | **DOC** | **Refresh state.md after #22549 merge + paste-ready off-diagonal Schur ACT-3 skeleton (~80-110 LOC body sketched, primary new bearer `real_odd_x_exp_neg_sq` flagged)** | **(this)** | **unmerged** |
+| (next, optional) | ACT-3 | Off-diagonal Schur `∫_{ℂⁿ} conj(z_i)·z_j·(1/π)ⁿ·exp(-∑‖z_k‖²) = 0` for `i ≠ j` via per-axis Fubini + 1-D odd-symmetry (~80-110 LOC; per PREP-4 §4) | — | unclaimed |
 
 ## Next Action
 
-S6c ACT-2 (this PR, researcher-1, 2026-06-06) ships the two follow-on
-theorems deferred at S6c ACT-1 close, completing the diagonal case of
-the Schur orthogonality programme:
+S6c PREP-4 (this PR, researcher-1, 2026-06-09) does two things in a
+single doc-only iteration:
 
-    complex_gaussian_integral_norm_sq      : ∫_ℂ ‖w‖² · exp(-‖w‖²) dw = π
-    schur_orthogonality_complex_gaussian_diag {n} (i : Fin n) :
-        ∫_{ℂⁿ} ‖z_i‖² · (1/π)ⁿ · exp(-∑‖z_k‖²) = 1
+1. **STATE-SYNC**: absorbs S6c ACT-2 PR #22549 (merged 2026-06-06T08:11:01Z).
+   The path-to-completion table and this Next Action section were both
+   describing ACT-2 in present tense / "(this)" / "unmerged"; they are
+   now refreshed.
 
-as a new Part 9 of `proofs/Proofs/AreaOfCircleOQ05OQ04.lean`. The 1-D
-complex moment uses `Complex.measurableEquivRealProd` + Fubini (split
-the integrand into two `integral_prod_mul` summands) + the S6c ACT-1
-moment + `integral_b_gaussian 1`. The n-dim diagonal Schur uses
-`integral_fintype_prod_volume_eq_prod` with a `if k = i` per-axis factor;
-both branches integrate to π, so `∏ k, π = πⁿ` collapses against `(1/π)ⁿ`.
-Sorry-free, axiom-free.
+2. **S6c PREP-4**: ships a paste-ready ~80-110 LOC body skeleton for
+   the optional **S6c ACT-3 — off-diagonal Schur orthogonality**:
 
-See `sessions/2026-06-06-s6c-act-2-norm-sq-and-schur-diag.md` for the
-full ACT-2 report (proof structure, bearer recheck delta from PREP-3,
-LOC accounting).
+       schur_orthogonality_complex_gaussian_off_diag {n} (i j : Fin n) (hij : i ≠ j) :
+           ∫_{ℂⁿ} conj(z_i) · z_j · (1/π)ⁿ · exp(-∑‖z_k‖²) = 0
 
-**S6c ACT-3 (next research claim, optional)**: ship the off-diagonal
-Schur orthogonality
+   via per-axis Fubini (`integral_fintype_prod_volume_eq_prod`, reused
+   from S6c ACT-2) + 1-D odd-symmetry collapse on axis `i` (or `j`).
+   Single new bearer to confirm at ACT-3 session open:
+   `real_odd_x_exp_neg_sq : ∫_ℝ x · exp(-x²) = 0` — the rest of the
+   chain reuses ACT-2's machinery line-for-line. PREP-4 §3.1 lists
+   three candidate routes for this lookup (R1 hand-rolled `x → -x`
+   flip; R2 FTC; R3 search for a Mathlib `Odd.integral_eq_zero` form).
 
-    ∫_{ℂⁿ} ⟨z_i, z_j⟩ · (1/π)ⁿ · exp(-∑‖z_k‖²) dz = 0   (i ≠ j)
+See `sessions/2026-06-09-statesync-prep-4-off-diagonal-schur.md` for
+the full PREP-4 report (paste-ready skeleton in §4, bearer table in
+§3, anti-targets in §5).
 
-via per-axis Fubini (`integral_fintype_prod_volume_eq_prod`) + odd
-symmetry on each of the `z_i`, `z_j` axes against the even Gaussian
-weight. PREP-2 §4.1 sketches the route; no fresh PREP needed.
-
-**Pre-ACT-2 gate**: host disk re-checked at S6c ACT-2 open (2026-06-06)
-— `df -h /Users/rwalters` reports 35 Gi free / 97% capacity, GREEN per
-the ≥5 Gi threshold, safe for the 3000+-job rebuild.
+**Pre-ACT-3 gate (when ACT-3 opens)**: host disk recheck before any
+fresh 3000+-job Docker rebuild (≥5 Gi free threshold); bearer
+recheck `lake-manifest.json` Mathlib pin (currently `2df2f0150c` v4.26.0,
+unchanged since PREP-3 2026-06-02 and ACT-2 2026-06-06).
 
 **Deferred (orthogonal to S6c, multi-week)**:
 
