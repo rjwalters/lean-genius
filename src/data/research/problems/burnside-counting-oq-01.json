@@ -27,34 +27,42 @@
     "goal": "Prove the `rotatedIndex_add` composition theorem for the existing `ZMod n`/`Fin n` definition without adding new axioms or sorries."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T07:05:01-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "S2 ACT: discharged coloringSetoid and coloringQuotientFintype axioms via AddAction.orbitRel + Quotient.fintype.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "S3 candidate: discharge fixed_point_sum_binary_4 via native_decide. S4 candidate: discharge binary_necklaces_4 via burnside_lemma + Multiplicative bridge or AddAction-form Burnside.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE: Local docs and the parent proof identify `rotatedIndex_add` as an axiomatized modular-arithmetic composition law in `Proofs/BurnsideCounting.lean`. No OQ-specific Lean proof attempt is recorded in the local state.",
-    "builtItems": [],
+    "progressSummary": "ACT (S2): BurnsideCounting.lean reduced from 4 axioms to 2 by deriving coloringSetoid as AddAction.orbitRel (ZMod n) (Coloring n k) and coloringQuotientFintype via Quotient.fintype + a new DecidableRel instance for orbit membership. Docker 3058/3058 jobs clean. Approach: used the @[to_additive] tag on Mathlib orbitRel (no Multiplicative bridge needed for the setoid axiom).",
+    "builtItems": [
+      "coloringSetoid: def (was axiom) in BurnsideCounting.lean:353 — Setoid (Coloring n k) := AddAction.orbitRel (ZMod n) (Coloring n k)",
+      "coloringSetoid_decidableRel: instance in BurnsideCounting.lean:361 — DecidableRel (coloringSetoid n k).r via decidable_of_iff + AddAction.mem_orbit_iff.symm + Fintype.decidableExistsFintype",
+      "coloringQuotientFintype: def (was axiom) in BurnsideCounting.lean:368 — Fintype (Quotient (coloringSetoid n k)) via Quotient.fintype with letI/haveI for setoid + DecidableRel"
+    ],
     "insights": [
       "The actual source theorem uses `ZMod n` rotations and `Fin n` indices, not bare natural-number rotation parameters.",
       "`rotatedIndex n r i` computes `((i.val + n - (r.val % n)) % n)` to model subtraction modulo `n` in `Nat`.",
       "`cyclicAddActionOnColorings.add_vadd` depends directly on `rotatedIndex_add`.",
-      "Discharging this OQ removes one parent-file axiom, but the overall Burnside-counting entry remains axiomatized until the other four parent axioms are also proved."
+      "Discharging this OQ removes one parent-file axiom, but the overall Burnside-counting entry remains axiomatized until the other four parent axioms are also proved.",
+      "Mathlib orbitRel carries @[to_additive], so AddAction.orbitRel exists directly — the Multiplicative-bridge sketched in the S1b STATE-SYNC plan was unnecessary for the setoid axiom",
+      "Decidability of the orbit relation on Coloring n k reduces to ∃ x : ZMod n, x +ᵥ b = a via AddAction.mem_orbit_iff, then discharged by Fintype.decidableExistsFintype (ZMod n is Fintype, Fin n → Fin k has DecidableEq)",
+      "Quotient.fintype requires the setoid in scope before resolving the DecidableRel on (· ≈ ·); pattern: letI := <setoid>; haveI : DecidableRel (· ≈ ·) := <inst>; exact Quotient.fintype _",
+      "S4 (binary_necklaces_4) still needs a bridge to burnside_lemma (MulAction form) — the Multiplicative bridge from S1b STATE-SYNC §2.1 remains the candidate path"
     ],
     "mathlibGaps": [
       "No confirmed missing Mathlib theorem is documented locally; the expected work is controlling `Nat` subtraction/modulo arithmetic or recasting the argument through `ZMod`/`Fin` lemmas."
     ],
     "nextSteps": [
-      "Reproduce the exact parent theorem in a Lean scratch or feature file and unfold `rotatedIndex`.",
-      "Try a `simp`/`omega` route using `Nat.add_mod`, `Nat.sub_mod`, and `ZMod.val_lt`; if that stalls, move the calculation into `ZMod n` before returning to `Fin n` equality.",
-      "Only after a compiling proof exists, replace the parent axiom and refresh proof metadata."
+      "S3: discharge fixed_point_sum_binary_4 via native_decide. IsFixedByRotation is already decidable (instance at BurnsideCounting.lean:329); the 4 subtype cardinalities should compute.",
+      "S4: discharge binary_necklaces_4. Cleanest route is (a) bridge AddAction.orbitRel.Quotient to MulAction.orbitRel.Quotient via Multiplicative (ZMod n), or (b) use to_additive on burnside_lemma to produce an AddAction-form variant directly applicable to the cyclicAddActionOnColorings instance.",
+      "Optional S5: investigate whether the 3 simpArgs-linter warnings at lines 77/299/301 are worth a separate cleanup (untouched in this PR; pre-existing)."
     ],
     "markdown": "# Knowledge Base: burnside-counting-oq-01\n\n## Problem Understanding\n\nThe target is the parent-file axiom `rotatedIndex_add` in `Proofs/BurnsideCounting.lean`. The source definition is:\n\n```lean\ndef rotatedIndex (n : Nat) [NeZero n] (r : ZMod n) (i : Fin n) : Fin n :=\n  { val := ((i : Nat) + n - (r.val % n)) % n\n    isLt := Nat.mod_lt _ (NeZero.pos n) }\n```\n\nThe theorem to prove is that composing two rotations of this form equals rotation by the sum in `ZMod n`:\n\n```lean\nrotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i\n```\n\n## Source Evidence\n\n`Proofs/BurnsideCounting.lean` proves `rotatedIndex_zero`, but states `rotatedIndex_add` as an axiom. The `cyclicAddActionOnColorings` instance uses this axiom to satisfy `add_vadd`. Parent metadata also lists `rotatedIndex_add` as one of five assumptions in the Burnside-counting gallery proof.\n\n## Current Status\n\nThe research state is still OBSERVE with zero recorded attempts. No local session file records a failed tactic path or a completed Lean proof for this OQ.\n\n## Useful Facts\n\n- The index formula is subtraction modulo `n` implemented in `Nat`: `i + n - r.val`, then `% n`.\n- Equality of `Fin n` values should reduce to a modular arithmetic identity on the underlying natural values.\n- The parent proof already has `[NeZero n]`, so `0 < n` is available as `NeZero.pos n`.\n\n## Next Work\n\nStart from the exact source signature, unfold `rotatedIndex`, and test whether `simp` plus `omega` can close the `Nat` modulo identity. If direct `Nat.sub` arithmetic is brittle, prove the rotation law in `ZMod n` first and transfer it back to the `Fin n` index representation.\n"
   },
@@ -84,10 +92,10 @@
     {
       "path": "Proofs/BurnsideCounting.lean",
       "filename": "BurnsideCounting.lean",
-      "lineCount": 256,
+      "lineCount": 387,
       "theoremCount": 6,
-      "axiomCount": 5,
-      "defCount": 6,
+      "axiomCount": 2,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCounting.lean"
@@ -125,5 +133,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03OQ03.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-09T20:50:00Z"
 }

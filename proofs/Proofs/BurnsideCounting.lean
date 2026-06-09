@@ -346,12 +346,29 @@ axiom fixed_point_sum_binary_4 :
   Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
   Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24
 
-/-- The equivalence relation on colorings by rotation. -/
-axiom coloringSetoid (n k : ℕ) [NeZero n] : Setoid (Coloring n k)
+/-- The equivalence relation on colorings by rotation.
+    Derived from `AddAction.orbitRel` (replacing the prior axiom): two
+    colorings are equivalent iff one is a rotation (in `ZMod n`) of the
+    other. -/
+def coloringSetoid (n k : ℕ) [NeZero n] : Setoid (Coloring n k) :=
+  AddAction.orbitRel (ZMod n) (Coloring n k)
 
-/-- The quotient of colorings by rotation has a Fintype instance. -/
-axiom coloringQuotientFintype (n k : ℕ) [NeZero n] :
-    Fintype (Quotient (@coloringSetoid n k _))
+/-- The orbit relation on colorings is decidable: two colorings are in
+    the same orbit iff `∃ r : ZMod n, r +ᵥ b = a`, which is decidable
+    because `ZMod n` is a `Fintype` and equality of colorings is
+    decidable (`Fin n → Fin k` has decidable equality). -/
+instance coloringSetoid_decidableRel (n k : ℕ) [NeZero n] :
+    DecidableRel (coloringSetoid n k).r := fun a b =>
+  decidable_of_iff (∃ x : ZMod n, x +ᵥ b = a) AddAction.mem_orbit_iff.symm
+
+/-- The quotient of colorings by rotation has a Fintype instance,
+    derived via `Quotient.fintype` from the finite carrier `Coloring n k`
+    and the decidable orbit relation above.  Replaces the prior axiom. -/
+def coloringQuotientFintype (n k : ℕ) [NeZero n] :
+    Fintype (Quotient (@coloringSetoid n k _)) := by
+  letI : Setoid (Coloring n k) := coloringSetoid n k
+  haveI : DecidableRel (α := Coloring n k) (· ≈ ·) := coloringSetoid_decidableRel n k
+  exact Quotient.fintype _
 
 /-- **Binary Necklaces of Length 4**:
     There are exactly 6 distinct binary necklaces of length 4.
