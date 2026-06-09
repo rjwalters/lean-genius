@@ -45,11 +45,15 @@ the full audit table and re-grounded line numbers at the pinned SHA.
 
 * S3 progress: Steps 1–2 of Path A discharged
   (`bisector_param_exists`, `bisector_dist_BD`, `bisector_dist_DC`).
+* S6a progress: Step (b) discharged as helper
+  `cos_BAD_eq_cos_DAC_inner_form` (cosine-equality form of the bisector
+  hypothesis). Main theorem still has 1 sorry (Steps c-f remain).
 * Sorries: 1 (`angle_bisector_ratio_from_geometry` — the main theorem).
 * Axioms: 0.
 -/
 
 open EuclideanGeometry
+open scoped InnerProductSpace
 
 namespace LawOfCosinesOQ04OQ02OQ01
 
@@ -116,19 +120,41 @@ lemma bisector_dist_DC {B C D : P} {s : ℝ}
     _ = (1 - s) * dist C B := by rw [dist_eq_norm_vsub V C B]
     _ = (1 - s) * dist B C := by rw [dist_comm]
 
+/-! ## Step (b): cosine-equality form of the angle-bisector hypothesis
+
+Converts `hbis : ∠ B A D = ∠ D A C` into the inner-product cosine equation
+`⟪B-ᵥA, D-ᵥA⟫ / (‖B-ᵥA‖·‖D-ᵥA‖) = ⟪D-ᵥA, C-ᵥA⟫ / (‖D-ᵥA‖·‖C-ᵥA‖)`.
+
+Strategy: apply `Real.cos` to both sides of `hbis`, unfold
+`EuclideanGeometry.angle` (definitionally `InnerProductGeometry.angle` on
+vsub-vectors), then rewrite both sides with `InnerProductGeometry.cos_angle`.
+
+The `congrArg Real.cos hbis` route avoids the `[-1, 1]` bound obligations that
+the `Real.arccos_inj` alternative would require (see
+`research/problems/law-of-cosines-oq-04-oq-02-oq-01/s4-prep-step-b-and-e-bearer-audit.md` § 2.3). -/
+lemma cos_BAD_eq_cos_DAC_inner_form
+    {A B C D : P} (hbis : ∠ B A D = ∠ D A C) :
+    ⟪B -ᵥ A, D -ᵥ A⟫_ℝ / (‖B -ᵥ A‖ * ‖D -ᵥ A‖)
+      = ⟪D -ᵥ A, C -ᵥ A⟫_ℝ / (‖D -ᵥ A‖ * ‖C -ᵥ A‖) := by
+  have hcos : Real.cos (∠ B A D) = Real.cos (∠ D A C) := congrArg Real.cos hbis
+  unfold EuclideanGeometry.angle at hcos
+  rw [InnerProductGeometry.cos_angle, InnerProductGeometry.cos_angle] at hcos
+  exact hcos
+
 /-! ## Main theorem: geometric angle-bisector identity
 
 `m · b = n · c` derived from the bisector angle equality `∠ B A D = ∠ D A C`
 and `Sbtw ℝ B D C`. The non-degeneracy hypothesis `¬ Collinear ℝ ({A,B,C} : Set P)`
 is required for the strict-Cauchy-Schwarz step (Step 5 of the strategy).
 
-Proof skeleton (deferred to S3):
+Proof skeleton (Path A, S5/S6 refinement of `s5-statesync-audit-extension.md` §§ 4-7):
 1. Extract `s` via `bisector_param_exists`.
-2. Cosine equality from `∠BAD = ∠DAC` via `Real.arccos_inj`.
-3. Inner-product expansion (Steps 2-3 of strategy).
-4. Algebraic factorization `((1-s)c − sb)(bc − ⟪u,v⟫) = 0`.
-5. Exclude `bc = ⟪u,v⟫` via `abs_real_inner_le_norm` strict form + non-collinearity.
-6. Conclude `s = c/(b+c)`, hence `m·b = n·c` after multiplying through by `dist B C`. -/
+2. Cosine equality via `cos_BAD_eq_cos_DAC_inner_form` (Step b, discharged above).
+3. Inner-product bilinear expansion (S5 § 5: `inner_add/sub/smul_left/right`).
+4. Algebraic factorization `((1-s)c − sb)(bc − ⟪u,v⟫) = 0` via `linear_combination` (S5 § 6).
+5. Exclude `bc = ⟪u,v⟫` via `real_inner_div_norm_mul_norm_eq_one_iff` +
+   `angle_eq_zero_iff_ne_and_wbtw` + `Wbtw.collinear` (S5 § 4).
+6. Conclude `s = c/(b+c)`, hence `m·b = n·c` after multiplying through by `dist B C` (S5 § 7). -/
 theorem angle_bisector_ratio_from_geometry
     {A B C D : P}
     (hAB : A ≠ B) (hAC : A ≠ C) (hBC : B ≠ C)
