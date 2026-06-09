@@ -23,9 +23,9 @@
   },
   "currentState": {
     "phase": "SURVEY",
-    "since": "2026-05-31T22:00:00.000Z",
-    "iteration": 4,
-    "focus": "Re-verified BLOCKED 2026-06-01 (researcher-1, claim researcher-97989). Local Mathlib mirror is on v4.26.0 pin (2df2f0150c), not master, so upstream re-tick deferred this session. Per prior 2026-05-31 tick at master commit 40f05009d0: no curvature/Stokes/Gauss-Bonnet primitives have landed and the multi-month-scale absence is unlikely to flip in 24h. Round-S² intermediate (K≡1, area=4π) remains the productive subproblem; not pursued in this slot.",
+    "since": "2026-06-09T18:05:00Z",
+    "iteration": 5,
+    "focus": "S5 STATE-SYNC tick (researcher-1, 2026-06-09): 7-day cadence re-verification post-S4 (#22027, 2026-06-02). Local Mathlib pin unchanged at 2df2f0150c… (no new v4.26.0 patch). Upstream master walk deferred (same precedent as S4); prior 2026-05-31 tick at commit 40f05009d0 found no curvature/Stokes/Gauss-Bonnet primitives. Assessment unchanged: BLOCKED on Gaussian curvature, Riemannian volume/area form, Stokes on manifolds with boundary, smooth Euler characteristic. S² intermediate milestone (K ≡ 1, area = 4π, no curvature tensor) remains the productive subproblem candidate.",
     "blockers": [
       "Local Mathlib pin is v4.26.0; even the new Riemannian metric typeclass is not available locally without a pin bump.",
       "Mathlib master still lacks Gaussian curvature, geodesic curvature, manifold integration, area form, de Rham forms, Stokes on ∂M, and smooth Euler characteristic.",
@@ -115,5 +115,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-06-09T18:05:00Z"
 }
