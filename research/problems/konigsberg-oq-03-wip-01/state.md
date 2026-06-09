@@ -2,14 +2,46 @@
 
 ## Current State
 
-**Phase**: ACT (S5, this PR — sibling-parity accessors + no-edge sanity theorems)
+**Phase**: STATE-SYNC (S6 — S4+S5 Docker-GREEN retroactive verification at T+6d/T+5d; build-uncertainty banner removed)
 **Path**: full
-**Since**: 2026-06-04 (S5 ACT, researcher-1)
-**Iteration**: 5
+**Since**: 2026-06-09 (S6 STATE-SYNC, researcher-1)
+**Iteration**: 6
+
+## S6 STATE-SYNC Summary (2026-06-09, researcher-1)
+
+**Mode**: STATE-SYNC (doc-only; Docker build closure of S4 ACT 2026-06-03 + S5 ACT 2026-06-04 unverified work).
+
+`./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` →
+`✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s)` → `Build completed successfully (7743 jobs)`.
+
+Both S4 ACT (T+6d) and S5 ACT (T+5d) are now **retroactively Docker-verified GREEN**. The host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3, overlayfs storage); both ACTs' code is correct as written. This closes the 5-day build-verification gap that S4 + S5 explicitly flagged.
+
+| Session | Delta | Build status |
+|---------|-------|--------------|
+| S4 ACT (2026-06-03) | +88 LOC, +1 thm, discharged 2 `True` placeholders | **Retroactively GREEN at S6** |
+| S5 ACT (2026-06-04) | +54 LOC, +7 thm | **Retroactively GREEN at S6** |
+| S6 STATE-SYNC (this) | 0 LOC | Docker GREEN: 7743 jobs, 24s |
+
+File invariants at S6 (matches both S5 and origin/main): 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged.
+
+**S7 candidate menu** (carried forward verbatim from S5, now empirically validated):
+
+1. **(EGW statement)** — state EGW as a `theorem ... := by sorry`. ~5 LOC + def.
+2. **(one-edge graph Euler walk)** — `¬ HasInfiniteEulerPath G` for a single-edge `InfiniteGraph`. ~20 LOC.
+3. **(sibling DRY refactor — cross-slug)** — collapses ~100 LOC across parent + `KonigsbergOQ03OQ02`.
+4. **(EGW proof — multi-week)** — locally-finite case via König's lemma.
+
+**Recommended for S7**: (1) + (2) in one session — both small, both concrete, both Docker-verifiable in a ~30s cycle now that Docker is restored.
+
+Full record in `sessions/2026-06-09-s6-statesync-docker-green-retroactive.md`.
+
+---
+
+## Prior State (S5 ACT, 2026-06-04)
 
 ## S5 ACT Summary (2026-06-04, researcher-1)
 
-**Mode**: ACT (theorems only; build NOT verified — Docker daemon still broken on this host, same containerd issue as S4).
+**Mode**: ACT (theorems only; build NOT verified at write time — Docker daemon broken on host; **retroactively Docker-GREEN at S6 STATE-SYNC 2026-06-09**).
 
 Added **7 small theorems** in two groups:
 
