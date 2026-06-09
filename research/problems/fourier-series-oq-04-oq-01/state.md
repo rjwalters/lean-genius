@@ -1,10 +1,14 @@
 # Research State: fourier-series-oq-04-oq-01
 
 ## Current State
-**Phase**: PREP (S12 audit verified; build clean at current Mathlib pin)
-**Since**: 2026-06-01 (S12 PREP — researcher-1); 2026-06-06 (S13 SCOUT verify — researcher-1)
-**Iteration**: 12
-**Last Update**: 2026-06-06 (researcher-1) — **S13 SCOUT verify** (doc-only): re-built `Proofs.FourierSeriesOQ04OQ01` under `lean4-arm64:v4.26.0` Docker against current Mathlib cache to confirm the S11 ACT (`haarT2_eq_volume`) and S12 PREP (Mathlib API audit) deliverables still hold. **7743 jobs, exit 0, zero errors, single expected `sphPartialSum_L2_norm_converge` sorry warning at line 148** — identical sorry surface as the last verified build (S11 ACT, 2026-05-31, worktree HEAD `~e36a09a3`). No Mathlib pin bump or signature drift across the 4 S12-cataloged API entries (`mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2`). The 18-35 LOC S13 ACT budget remains tractable on this baseline. No Lean delta this iteration; doc-only state.md bump. See `sessions/2026-06-06-s13-scout-verify-build-clean.md`.
+**Phase**: ACT (S14 step-4a/6 measure-bridge corollaries shipped; build clean)
+**Since**: 2026-06-09 (S14 ACT — researcher-11)
+**Iteration**: 13
+**Last Update**: 2026-06-09 (researcher-11) — **S14 ACT step-4a/6 measure-bridge corollaries** (Lean delta): added two sorry-free, axiom-free **public** corollaries of `haarT2_eq_volume` (S11) — `memLp_haarT2_iff_volume` (the step-4a `MemLp` lift `MemLp f p haarT2 ↔ MemLp f p volume`) and `eLpNorm_haarT2_eq_volume` (the step-6 `eLpNorm` swap `eLpNorm f p haarT2 = eLpNorm f p volume`). Both compile via a single-tactic `rw [haarT2_eq_volume]`, propagating the measure equality through `MemLp`/`eLpNorm`'s function-of-measure signatures. **Build verified**: Docker `lean4-arm64:v4.26.0`, 7743 jobs, exit 0, zero new warnings; only the pre-existing `sphPartialSum_L2_norm_converge` sorry at line 148 remains (sorry surface unchanged). File: `Proofs/FourierSeriesOQ04OQ01.lean` (446 → 476 lines, 12 → 14 theorems; +2 sorry-free public theorems in a new "S14 ACT step-4a / step-6" section). Gallery meta-json line/theorem counts synced; `originalContributions` extended. These paste-ready the S12 PREP §5 sub-tactics for the eventual S2e ACT close — the next ACT can call `(memLp_haarT2_iff_volume f 2).mp hf` to obtain the volume-domain `MemLp` and `rw [eLpNorm_haarT2_eq_volume]` to swap the goal's measure. See `sessions/2026-06-09-s14-act-memlp-elpnorm-bridges.md`.
+
+## Previous Status — S13 SCOUT verify build-clean (2026-06-06, researcher-1)
+
+**S13 SCOUT verify**: doc-only build verification under `lean4-arm64:v4.26.0` Docker — confirmed the S11 ACT (`haarT2_eq_volume`) and S12 PREP (Mathlib API audit) baseline still holds at current Mathlib cache. **7743 jobs, exit 0, zero errors, single expected `sphPartialSum_L2_norm_converge` sorry warning at line 148** — identical sorry surface as the last verified build (S11 ACT, 2026-05-31, worktree HEAD `~e36a09a3`). No Mathlib pin bump or signature drift across the 4 S12-cataloged API entries (`mFourier`, `mFourierLp`, `mFourierCoeff`, `hasSum_mFourier_series_L2`). The 18-35 LOC closing budget remains tractable on this baseline. See `sessions/2026-06-06-s13-scout-verify-build-clean.md`.
 
 ## Previous Status — S12 PREP Mathlib API audit (2026-06-01, researcher-1)
 

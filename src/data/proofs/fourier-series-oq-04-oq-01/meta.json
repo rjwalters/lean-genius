@@ -15,11 +15,11 @@
       "Topology"
     ],
     "namespace": "FourierSeriesOQ04OQ01",
-    "lineCount": 446,
+    "lineCount": 476,
     "axiomCount": 1,
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 12
+    "theoremCount": 14
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -40,8 +40,8 @@
     "sorries": 1,
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 446,
-    "theoremCount": 12,
+    "lineCount": 476,
+    "theoremCount": 14,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
     "mathlibDependencies": [
@@ -90,7 +90,8 @@
       "latticeDisc_card_le_real (S2-Gauss-real): Real-form qualitative Gauss-circle bound ((latticeDisc R).card : ℝ) ≤ (2|R|+3)² suitable for ℓ¹-majorisation of sphPartialSum",
       "latticeDisc_mem_eventually, latticeDisc_eventually_supset (S2e-cofinality, iter 8): atTop cofinality of latticeDisc — every fixed finite set of lattice points is eventually contained in latticeDisc R as R → ∞; stepping-stone for the Plancherel-tail engine that closes sphPartialSum_L2_norm_converge",
       "coeFn_finset_sum_haarT2 (S2e-step2, iter 9, private helper): inductive `Lp.coeFn_finset_sum`-style helper specialized to `Lp ℂ 2 haarT2` — closes the documented Mathlib gap (no named `Lp.coeFn_finset_sum` / `Finset.coeFn_sum` / `AEEqFun.coeFn_sum` at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) via `Finset.induction_on` + `Lp.coeFn_zero` + `Lp.coeFn_add`. Step 2 of the S7 audit §4 ACT recipe for discharging `sphPartialSum_L2_norm_converge`; independent of step 1 (haarT2/volume setup)",
-      "haarT2_eq_volume (S2e-step1-contingency, iter 10): sorry-free, axiom-free measure-equality bridge `haarT2 = (volume : Measure T2)` on `Fin 2 → AddCircle 1`. Combines `AddCircle.volume_eq_smul_haarAddCircle` (1D scaling identity `volume = ENNReal.ofReal T • haarAddCircle`) with `ENNReal.ofReal_one`, `one_smul`, and `volume_pi` (a `rfl` lemma `volume = Measure.pi (fun _ => volume)` on a Pi type). At `T = 1` the scaling is trivial. Discharges step 1 contingency of the S7 audit §4 ACT recipe (haarT2/volume disambiguation) — the Mathlib engine `hasSum_mFourier_series_L2` in `Mathlib.Analysis.Fourier.AddCircleMulti` (verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 / v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with `volume` measure, so this bridge enables invoking it on our `haarT2`-stated theorems. Sites the rfl-ness of `volume_pi` (Pi.lean:652) and `AddCircle.volume_eq_smul_haarAddCircle` (AddCircle.lean:92)."
+      "haarT2_eq_volume (S2e-step1-contingency, iter 10): sorry-free, axiom-free measure-equality bridge `haarT2 = (volume : Measure T2)` on `Fin 2 → AddCircle 1`. Combines `AddCircle.volume_eq_smul_haarAddCircle` (1D scaling identity `volume = ENNReal.ofReal T • haarAddCircle`) with `ENNReal.ofReal_one`, `one_smul`, and `volume_pi` (a `rfl` lemma `volume = Measure.pi (fun _ => volume)` on a Pi type). At `T = 1` the scaling is trivial. Discharges step 1 contingency of the S7 audit §4 ACT recipe (haarT2/volume disambiguation) — the Mathlib engine `hasSum_mFourier_series_L2` in `Mathlib.Analysis.Fourier.AddCircleMulti` (verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 / v4.26.0, line 224) is stated over `L²(UnitAddTorus d)` with `volume` measure, so this bridge enables invoking it on our `haarT2`-stated theorems. Sites the rfl-ness of `volume_pi` (Pi.lean:652) and `AddCircle.volume_eq_smul_haarAddCircle` (AddCircle.lean:92).",
+      "memLp_haarT2_iff_volume, eLpNorm_haarT2_eq_volume (S14-ACT-step-4a/6 measure-bridge corollaries, iter 13, public): two sorry-free, axiom-free direct corollaries of `haarT2_eq_volume` (S11 ACT) that paste-ready the S12 PREP §5 sub-tactics. `memLp_haarT2_iff_volume` provides the step-4a `MemLp` lift `MemLp f p haarT2 ↔ MemLp f p volume` (so `MemLp.toLp` and the Mathlib engine `hasSum_mFourier_series_L2` become invokable on our `haarT2`-stated hypothesis). `eLpNorm_haarT2_eq_volume` provides the step-6 `eLpNorm` swap `eLpNorm f p haarT2 = eLpNorm f p volume` (the option-(c) workaround, avoiding `Lp`-element transport). Both proofs are single-tactic `rw [haarT2_eq_volume]`, propagating the measure equality through the type-class-resolved `MemLp`/`eLpNorm` definitions."
     ]
   },
   "overview": {

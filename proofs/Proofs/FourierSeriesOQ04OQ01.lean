@@ -441,6 +441,36 @@ theorem haarT2_eq_volume : haarT2 = (volume : Measure T2) := by
   simp_rw [key]
   rfl
 
+/-! ## S14 ACT step-4a / step-6 — `MemLp` / `eLpNorm` measure-bridge corollaries
+
+Direct corollaries of `haarT2_eq_volume` (S11 ACT). These paste-ready the S12
+PREP §5 sub-tactics for the eventual S2e ACT close of
+`sphPartialSum_L2_norm_converge`:
+
+- **Step 4a** (`MemLp` lift to volume): convert `MemLp f 2 haarT2` to
+  `MemLp f 2 volume` so that `MemLp.toLp` and the Mathlib engine
+  `hasSum_mFourier_series_L2` (stated over `volume` on `UnitAddTorus`) become
+  invokable on our `haarT2`-stated hypothesis.
+- **Step 6** (`eLpNorm` swap, option-(c) workaround): rewrite the goal's
+  `eLpNorm _ 2 haarT2` to `eLpNorm _ 2 volume` directly, avoiding `Lp`-element
+  transport.
+
+Both are propositional consequences of the measure equality; no new
+analytic content. -/
+
+/-- **`MemLp` measure-bridge** — `f` is in `L^p(haarT2)` iff `f` is in
+    `L^p(volume)` on `𝕋²`. Direct corollary of `haarT2_eq_volume`. -/
+theorem memLp_haarT2_iff_volume (f : T2 → ℂ) (p : ℝ≥0∞) :
+    MemLp f p haarT2 ↔ MemLp f p (volume : Measure T2) := by
+  rw [haarT2_eq_volume]
+
+/-- **`eLpNorm` measure-bridge** — the `L^p` extended norm of `f` against
+    `haarT2` equals the `L^p` extended norm against `volume` on `𝕋²`.
+    Direct corollary of `haarT2_eq_volume`. -/
+theorem eLpNorm_haarT2_eq_volume (f : T2 → ℂ) (p : ℝ≥0∞) :
+    eLpNorm f p haarT2 = eLpNorm f p (volume : Measure T2) := by
+  rw [haarT2_eq_volume]
+
 end
 
 end FourierSeriesOQ04OQ01
