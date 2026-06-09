@@ -181,6 +181,30 @@
     ]
   },
   {
+    "id": "ann-gcd-tower",
+    "proofId": "fermat-defect-one",
+    "range": {
+      "startLine": 60,
+      "endLine": 60
+    },
+    "type": "technique",
+    "title": "GCD-Tower Idiom for Triple Coprimality",
+    "content": "The primitivity condition `Nat.gcd (Nat.gcd a b) c = 1` encodes coprimality of three naturals via a tower of the binary `Nat.gcd`. Since `Nat.gcd` is binary, the three-argument 'common divisor of $a, b, c$' must be built by composition. Associativity $\\gcd(\\gcd(a,b),c) = \\gcd(a,\\gcd(b,c))$ makes the bracketing mathematically irrelevant, but Lean fixes the left-associated form because it matches how the kernel peels the computation: first reduce $\\gcd(a,b)$, then reduce against $c$. Concretely: $\\gcd(\\gcd(6,8),9) = \\gcd(2,9) = 1$ and $\\gcd(\\gcd(9,10),12) = \\gcd(1,12) = 1$ — both benchmarks are coprime at the strongest level (the triple shares no common prime factor, not merely no pairwise common factor). Note the distinction: pairwise coprimality is strictly stronger than triple coprimality (e.g., $(6, 10, 15)$ has $\\gcd = 1$ overall but $\\gcd(6,10) = 2$), so this form admits 'almost-primitive' triples a pairwise condition would reject.",
+    "mathContext": "$\\gcd(\\gcd(a, b), c) = 1 \\iff \\gcd(a, b, c) = 1 \\iff a, b, c$ share no common prime factor. Strictly weaker than pairwise coprimality $\\gcd(a,b) = \\gcd(b,c) = \\gcd(a,c) = 1$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Nat.gcd associativity",
+      "triple vs pairwise coprimality",
+      "Bézout's identity",
+      "primitive Diophantine solutions",
+      "decidable equality on Nat"
+    ],
+    "prerequisites": [
+      "binary gcd operation",
+      "decidability of `Nat.gcd a b = 1`"
+    ]
+  },
+  {
     "id": "ann-connections",
     "proofId": "fermat-defect-one",
     "range": {
