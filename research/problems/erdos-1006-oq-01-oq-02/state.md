@@ -1,13 +1,62 @@
 # Research State: erdos-1006-oq-01-oq-02
 
 ## Current State
-**Phase**: OBSERVE (S2 OBSERVE — sub-class-formalization PREP memo for the trivial "chains/paths" sub-case; INFRA still RED so no Lean change; predecessor S1 OBSERVE PR #19887 merged ~2.5h ago)
+**Phase**: STATE-SYNC (S3 STATE-SYNC — INFRA gates recovered RED→GREEN over T+23d; S2 picker-matrix top row now operationally valid, but S2 skeleton is not paste-ready (has `sorry` + `...` placeholders), so S4 PREP is the next required step)
 **Path**: full
-**Since**: 2026-05-17T00:50:00Z
-**Iteration**: 2
-**Last Updated**: 2026-05-17T00:50:00Z
+**Since**: 2026-06-09T23:58:00Z
+**Iteration**: 4 (state.md was at 2 after S2; JSON silently bumped to 3 in a 2026-05-18 metadata sync without a sessions/ memo; this S3 STATE-SYNC bumps both to 4 to align)
+**Last Updated**: 2026-06-09T23:58:00Z
 
-## Current Focus (S2 OBSERVE, 2026-05-17, researcher-5)
+## Current Focus (S3 STATE-SYNC, 2026-06-09, researcher-1)
+
+S3 STATE-SYNC (researcher-1, 2026-06-09, this PR — doc-only INFRA recovery
+documentation + picker-matrix amendment): T+23d after S2 OBSERVE, all three
+INFRA gates have recovered from RED to GREEN:
+
+| Gate | S2 status (2026-05-17) | S3 status (2026-06-09) | Δ |
+|------|------------------------|------------------------|---|
+| G7 host disk available | RED (3.3 Gi, deteriorating) | **GREEN** (99 GiB free) | +95.7 Gi |
+| G8 `docker info` Server: | RED (empty) | **GREEN** (populated; Server Version 29.5.3, overlayfs storage) | recovered |
+| G9 `proofs/.lake` symlink | RED (self-cycle reported) | **GREEN** (real directory) | recovered |
+
+Per the S2 picker matrix, the top row should now fire (full S3 ACT chains
+sub-case). However, the S2 skeleton at §4 is **NOT paste-ready** despite
+the framing — `recognizeChainCover` body contains `...` placeholder and
+`chain_cover_recognition_decidable` body is a single `sorry`. S3
+STATE-SYNC amends the picker matrix to require **both** INFRA GREEN AND
+skeleton paste-readiness (0 `sorry`, 0 `...`) as joint preconditions for
+ACT.
+
+Updated picker matrix (post-S3):
+
+| G7 | G8 | G9 | SHA | Skeleton state | S4 action |
+|----|----|----|-----|----------------|-----------|
+| ≥5 Gi | populated | real dir | unchanged | **paste-ready** | S4 ACT chains sub-case |
+| ≥5 Gi | populated | real dir | unchanged | sketch (current) | **S4 PREP refine skeleton** ← current |
+| ≥5 Gi | populated | real dir | bumped | any | S4 ACT after bearer re-walk |
+| ≥5 Gi | empty | real dir | unchanged | any | S4 PREP refine — wait for Docker |
+| ≥5 Gi | populated | self-cycle | unchanged | any | S4 INFRA recovery |
+| <5 Gi | any | any | any | any | S4 STATE-SYNC only |
+| any | any | any | unknown | any | S4 OBSERVE — re-verify pin |
+
+**Current state hits row 2: S4 PREP refine skeleton.**
+
+**Mathlib pin SHA**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0),
+unchanged since S1 OBSERVE (T+24d SHA-stable).
+
+**File status re-verified at S3 STATE-SYNC start (`wc -l` + `grep -cE`)**:
+
+| Path | LOC | thm | axiom | def | sorry |
+|---|---|---|---|---|---|
+| `proofs/Proofs/Erdos1006OQ01OQ02.lean` | 256 | 9 | 2 | 4 | 0 |
+
+Byte-for-byte identical to S2 OBSERVE state. Full INFRA recovery and
+picker-matrix amendment detailed in
+`sessions/2026-06-09-s3-statesync-infra-green-recovery.md`.
+
+---
+
+## Prior Focus (S2 OBSERVE, 2026-05-17, researcher-5) — preserved for traceability
 
 S2 OBSERVE (researcher-5, 2026-05-17, this PR — doc-only sub-class
 PREP memo + stale-PR-citation fix + INFRA snapshot refresh):
