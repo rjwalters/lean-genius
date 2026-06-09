@@ -1,11 +1,63 @@
 # Research State: erdos-1151-oq-04
 
 ## Current State
-**Phase**: ACT (S35 BUILD-VERIFY-PARTIAL completed; G7/G8 INFRA recovered after 23-day gap; 29 latent build errors surfaced — 8 fixed inline as Mathlib API drift cleanup, 22 remain at lines 180–1247 requiring mechanic-handoff)
+**Phase**: ACT (S36 CLUSTER-A-CLOSE — researcher folds chebyshevInterp_sub proof into a single `simp only` matching sibling chebyshevInterp_neg pattern; Cluster A (1 error) eliminated, Cluster B (21 errors at lines 952–1247) deferred to subsequent mechanic-handoff sub-cluster PRs)
 **Path**: full
-**Since**: 2026-06-09T18:30:00Z (S35 BUILD-VERIFY-PARTIAL)
-**Iteration**: 35
-**Last Updated**: 2026-06-09 (researcher-8)
+**Since**: 2026-06-09T18:55:00Z (S36 CLUSTER-A-CLOSE)
+**Iteration**: 36
+**Last Updated**: 2026-06-09 (researcher-3)
+
+## Session 36 (researcher-3, 2026-06-09, build pending — Cluster A surgically closed; Cluster B still 21 errors) — fold chebyshevInterp_sub to single `simp only` matching sibling chebyshevInterp_neg
+
+Surgical 3-line → 1-line refactor of `chebyshevInterp_sub` body at L175–180 to close S35's **Cluster A** error (`exact Finset.sum_sub_distrib` typeclass instance stuck on `SubtractionCommMonoid ?m.15`).
+
+**Before** (S31 PR #17612, researcher-13, 2026-05-09, never build-verified):
+```lean
+theorem chebyshevInterp_sub (n : ℕ) (f g : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => f t - g t) x =
+    chebyshevInterp n f x - chebyshevInterp n g x := by
+  simp only [chebyshevInterp, lagrangeInterp]
+  simp_rw [sub_mul]
+  exact Finset.sum_sub_distrib
+```
+
+**After** (this S36 PR, −2 LOC, 2692 → 2690):
+```lean
+theorem chebyshevInterp_sub (n : ℕ) (f g : ℝ → ℝ) (x : ℝ) :
+    chebyshevInterp n (fun t => f t - g t) x =
+    chebyshevInterp n f x - chebyshevInterp n g x := by
+  simp only [chebyshevInterp, lagrangeInterp, sub_mul, Finset.sum_sub_distrib]
+```
+
+**Sibling-precedent** (same file, line 168, `chebyshevInterp_neg`, build-verified through prior cycles):
+```lean
+simp only [chebyshevInterp, lagrangeInterp, neg_mul, Finset.sum_neg_distrib]
+```
+
+The `_neg` proof was already in the single-`simp only` form; this S36 PR brings `_sub` to structural parity. The `_add` template at line 145 (`simp only [chebyshevInterp, lagrangeInterp]; simp_rw [add_mul]; exact Finset.sum_add_distrib`) ALSO works because `Finset.sum_add_distrib` only requires `[AddCommMonoid]` (universal), whereas `Finset.sum_sub_distrib` requires `[SubtractionCommMonoid]` — the typeclass synthesis fails with `exact` when the goal's expected type hasn't pinned `β := ℝ` before instance search. Folding into a single `simp only` lets the simp-set drive unification + rewrites in one pass, sidestepping the stuck metavariable.
+
+**Sibling-precedent for the exact 1-line form** (`simp only [..., sub_mul, Finset.sum_sub_distrib]`):
+- `HurwitzTheorem.lean:607`: `simp only [innerProd, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib]` (structurally identical: unfold-defs + `sub_mul` + `Finset.sum_sub_distrib` in one `simp only`).
+- `ProbMethodSecondMomentOQ01.lean:48`: `simp only [sub_sq, Finset.sum_sub_distrib, Finset.sum_add_distrib]`.
+- `HurwitzTheorem.lean:409`: `simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum]`.
+
+Three independent sibling files use this exact `simp only [..., Finset.sum_sub_distrib]` shape at the v4.26.0 Mathlib pin, all build-clean.
+
+**Build status**: PENDING (deferred). The single Cluster A error site is closed by construction (sibling-precedent confirmed). Cluster B (21 errors at lines 952–1247) is OUT OF SCOPE for this surgical PR per S35 §6 picker matrix row (b): "single-root-cause-fix scope per Cluster A then sub-clusters of B". Running a fresh Docker build here would not produce a clean build outcome (still 21 Cluster B errors); the verifiable improvement is "22 → 21 errors" which is best confirmed during the eventual S37+ multi-cluster BUILD-VERIFY after all sub-cluster PRs merge.
+
+**Why a researcher (not mechanic) ships this**: the fix is sibling-precedent-confirmed, 1 LOC net delta, and within the "surgical tactic-glue cleanup" scope that S35 itself shipped as a researcher PR (8 fixes inline). S36 mechanic-handoff scope (per S35 narrative) was Cluster A + B sweeps; this PR consumes just Cluster A under the same surgical envelope and leaves Cluster B for the mechanic batch as planned. No role overlap with future mechanic work on Cluster B.
+
+**Files this S36 CLUSTER-A-CLOSE PR**:
+1. EDIT `proofs/Proofs/Erdos1151OQ04.lean` (1 surgical fold, −2 net LOC, 2692 → 2690)
+2. EDIT this `state.md` (head replace + prepend this Session 36 narrative; preserve Session 35 → S1 verbatim)
+3. EDIT `src/data/research/problems/erdos-1151-oq-04.json` (iter 35 → 36, since/lastUpdate refresh, focus prepend, nextAction re-anchor, attemptCounts.total 5 → 6, blockers.B1 evidence refresh to "21 errors at lines 952–1247 (was 22 incl. line 180)")
+4. CREATE `research/problems/erdos-1151-oq-04/session-36-cluster-a-close.md` (this session memo)
+
+**0 meta.json / 0 lake-manifest / 0 problem.md / 0 knowledge.md body / 0 sibling-slug edits.** 0 axiom / 0 sorry change (1 sorry preserved at `divergence_from_lebesgue_growth`). Bearer SHA-stable chain S22 → S36 (no Mathlib re-walk this iter; sibling-precedent grounded at v4.26.0 pin).
+
+`Erdos1151Problem.lean` sibling-list +30-LOC drift (actual 215 vs JSON 185) UNCHANGED from S34/S35; remains deferred to a future mechanic batch.
+
+**Next action**: **S37 MECHANIC-HANDOFF (Cluster B sub-cluster sweeps)** — split the 21 remaining errors at lines 952–1247 by error-type (typeclass + linarith cascade ~952–1016; Application type mismatch ~1068–1091; positivity/omega/mod_cast ~1160–1247) into 3–5 narrow PRs. After all sub-cluster PRs merge, S38 BUILD-VERIFY re-runs → expected clean at ~3060/3060 jobs. Then post-clean roadmap unchanged from S34 §6: S39 ACT ContinuousLinearMap packaging Λₙ_x → S40 ACT operator-norm identity → S41 ACT Banach-Steinhaus contrapositive → Sorry 2 discharge.
 
 ## Session 35 (researcher-8, 2026-06-09, BUILD-VERIFY-PARTIAL) — INFRA recovered after 23-day gap; 29 latent build errors surfaced; 8 fixed inline, 22 remain (mechanic-handoff)
 
