@@ -308,4 +308,54 @@ theorem ch_independent_of_large_cardinals :
     RelativelyConsistent (HasMeasurable ∧ ¬CH) :=
   measurable_independent_of_ch
 
+/-
+═══════════════════════════════════════════════════════════════════════════════
+PART IX: CONTRAPOSITIVE COROLLARIES (CH/GCH BLOCK FORCING AXIOMS)
+═══════════════════════════════════════════════════════════════════════════════
+
+These five corollaries are pure consequences of theorems already in this file —
+no new axioms, no new definitions, no Mathlib infrastructure beyond what
+`mm_implies_not_ch`, `ma_implies_not_ch`, `gch_implies_ch`, and
+`Cardinal.aleph_lt_aleph` already provide. They connect Parts IV (Forcing
+Axioms ⇒ ¬CH) and VII (GCH) by recording the contrapositives:
+
+  CH → ¬MM,   CH → ¬MA,   GCH → ¬MM,   GCH → ¬MA,
+
+plus a quantitative refinement that Martin's Maximum forces the continuum
+strictly above ℵ₁ (which is the precise sense in which MM refutes CH).
+
+The mathematical content is implicit in Parts IV/VII; making the
+contrapositives explicit clarifies the four-way logical structure
+{CH, ¬CH} × {MM/MA, ¬MM/¬MA} that any forcing-axiom-aware reader needs.
+-/
+
+/-- **Corollary** (contrapositive of `mm_implies_not_ch`): CH rules out
+    Martin's Maximum. If 2^ℵ₀ = ℵ₁, then 2^ℵ₀ ≠ ℵ₂. -/
+theorem ch_implies_not_mm (hch : CH) : ¬MartinsMaximum :=
+  fun hmm => mm_implies_not_ch hmm hch
+
+/-- **Corollary** (contrapositive of `ma_implies_not_ch`): CH rules out
+    Martin's Axiom. If 2^ℵ₀ = ℵ₁, then 2^ℵ₀ < ℵ₂. -/
+theorem ch_implies_not_ma (hch : CH) : ¬MartinsAxiom :=
+  fun hma => ma_implies_not_ch hma hch
+
+/-- **Corollary**: GCH rules out Martin's Maximum (composing `gch_implies_ch`
+    with `ch_implies_not_mm`). Under GCH, 2^ℵ₀ = ℵ₁ ≠ ℵ₂. -/
+theorem gch_implies_not_mm (h : GCH) : ¬MartinsMaximum :=
+  ch_implies_not_mm (gch_implies_ch h)
+
+/-- **Corollary**: GCH rules out Martin's Axiom (composing `gch_implies_ch`
+    with `ch_implies_not_ma`). Under GCH, 2^ℵ₀ = ℵ₁ < ℵ₂. -/
+theorem gch_implies_not_ma (h : GCH) : ¬MartinsAxiom :=
+  ch_implies_not_ma (gch_implies_ch h)
+
+/-- **Quantitative refinement of `mm_implies_not_ch`**: under Martin's Maximum,
+    the continuum strictly exceeds ℵ₁ (since MM pins it to ℵ₂ > ℵ₁). This is
+    the cardinal-arithmetic content behind MM ⇒ ¬CH. -/
+theorem mm_continuum_gt_aleph_one (hmm : MartinsMaximum) :
+    Cardinal.aleph 1 < (2 : Cardinal.{0}) ^ ℵ₀ := by
+  unfold MartinsMaximum at hmm
+  rw [hmm]
+  exact Cardinal.aleph_lt_aleph.mpr (by norm_num)
+
 end CantorDiagOQ01OQ02
