@@ -9,7 +9,7 @@
 #   ./find-candidates.sh --json       # Output as JSON
 #   ./find-candidates.sh --tier1-only # Return only companion files (Tier 1)
 #
-# Three-tier candidate system:
+# Four-tier candidate system:
 #   Tier 0 (highest priority): *StatementOnly.lean files (Harmonic format)
 #     - One theorem per file with informal /- problem block and standard set_option block
 #     - Mirrors Harmonic's HarmonicLean/StatementOnly_*.lean convention
@@ -21,6 +21,12 @@
 #   Tier 2 (fallback): Research output files (non-Erdos, non-Test, non-Aristotle, non-StatementOnly)
 #     - Researcher-produced files with complete definitions and routine lemma sorries
 #     - Score = theorem_sorries only
+#   Tier 3 (opt-in, rate-limited): Open-conjecture targets from research/open-conjectures.json
+#     - Long-haul research targets — the headline conjecture STAYS a sorry; the system attempts it
+#     - Failures DO NOT block future attempts; the registry enforces a per-file cadence (default 7d)
+#     - Returned only when the per-target cadence allows another attempt
+#     - If research/open-conjectures.json does not exist, Tier 3 is silent and overall behavior
+#       is identical to the prior three-tier system.
 #
 # Candidates are files that:
 #   - Have theorem/lemma sorries (something to prove)
@@ -35,6 +41,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 PROOFS_DIR="$PROJECT_ROOT/proofs/Proofs"
 JOBS_FILE="$PROJECT_ROOT/research/aristotle-jobs.json"
+OPEN_CONJ_REGISTRY="$PROJECT_ROOT/research/open-conjectures.json"
+ARISTOTLE_RUNS_DIR="$PROJECT_ROOT/research/aristotle-runs"
 
 # Parse arguments
 COUNT_ONLY=false
@@ -194,6 +202,127 @@ collect_candidates() {
     done
 }
 
+# ---------------------------------------------------------------------------
+# Tier 3: open-conjecture registry helpers
+#
+# Tier 3 targets are opt-in via research/open-conjectures.json. Each entry has
+# a per-file `cadence` (default 7d). A target is eligible for re-submission iff
+# its most recent attempt artifact (research/aristotle-runs/<slug>/<ts>/) is
+# older than the cadence — or no attempt exists yet.
+#
+# Failures DO NOT block Tier 3 candidates. This is intentional: the whole point
+# of Tier 3 is to keep trying hard problems, not single-shot them and give up.
+# ---------------------------------------------------------------------------
+
+# Returns 0 (success) if the registry is present, non-zero otherwise.
+tier3_registry_present() {
+    [[ -f "$OPEN_CONJ_REGISTRY" ]]
+}
+
+# Print one basename (no .lean) per line for every file referenced by the
+# Tier-3 registry. Used to suppress duplicate Tier-2 emissions for files that
+# are also Tier-3 targets — a Tier-3 entry takes precedence so the routine
+# blocked/submitted filters do not silence the long-haul target.
+tier3_registered_basenames() {
+    tier3_registry_present || return 0
+    jq -r '.targets[]? | .file' "$OPEN_CONJ_REGISTRY" 2>/dev/null \
+        | while IFS= read -r rel; do
+            [[ -z "$rel" ]] && continue
+            basename "$rel" .lean
+        done | sort -u
+}
+
+# Parse a cadence string like "7d" / "12h" / "30m" into seconds. Defaults to
+# 604800 (7 days) on parse failure.
+cadence_to_seconds() {
+    local cad="$1"
+    if [[ -z "$cad" ]]; then
+        echo 604800
+        return
+    fi
+    local n="${cad%[a-zA-Z]*}"
+    local unit="${cad##*[0-9]}"
+    if [[ ! "$n" =~ ^[0-9]+$ ]]; then
+        echo 604800
+        return
+    fi
+    case "$unit" in
+        s) echo "$n" ;;
+        m) echo $((n * 60)) ;;
+        h) echo $((n * 3600)) ;;
+        d) echo $((n * 86400)) ;;
+        w) echo $((n * 604800)) ;;
+        *) echo 604800 ;;
+    esac
+}
+
+# Print the epoch-seconds of the most recent artifact directory for a given
+# Tier-3 slug, or 0 if none exists.
+tier3_last_attempt_epoch() {
+    local slug="$1"
+    local dir="$ARISTOTLE_RUNS_DIR/$slug"
+    [[ -d "$dir" ]] || { echo 0; return; }
+    # Artifact subdirs are timestamp-named (e.g., 2026-06-10T03-15Z). Use mtime
+    # of the most recently-created subdir as the attempt epoch.
+    local latest
+    latest=$(find "$dir" -mindepth 1 -maxdepth 1 -type d \
+        -exec stat -f '%m' {} \; 2>/dev/null \
+        || find "$dir" -mindepth 1 -maxdepth 1 -type d \
+        -exec stat -c '%Y' {} \; 2>/dev/null \
+        || echo "")
+    if [[ -z "$latest" ]]; then
+        echo 0
+        return
+    fi
+    # Highest mtime among subdirs is the most recent attempt.
+    echo "$latest" | sort -n | tail -1
+}
+
+# Collect Tier-3 candidates from the open-conjectures registry. Emits the same
+# pipe-delimited format as collect_candidates() for the main pipeline.
+collect_tier3_candidates() {
+    tier3_registry_present || return 0
+
+    local default_cadence
+    default_cadence=$(jq -r '.defaults.cadence // "7d"' "$OPEN_CONJ_REGISTRY" 2>/dev/null || echo "7d")
+
+    local now_epoch
+    now_epoch=$(date +%s)
+
+    # Iterate registry entries
+    jq -r '.targets[]? | [.slug, .file, (.cadence // ""), .theorem] | @tsv' \
+        "$OPEN_CONJ_REGISTRY" 2>/dev/null | while IFS=$'\t' read -r slug rel_file cadence theorem; do
+        [[ -z "$slug" ]] && continue
+        [[ -z "$rel_file" ]] && continue
+
+        local abs_file="$PROJECT_ROOT/$rel_file"
+        [[ -f "$abs_file" ]] || continue
+
+        local effective_cadence="${cadence:-$default_cadence}"
+        local cad_secs
+        cad_secs=$(cadence_to_seconds "$effective_cadence")
+
+        local last_epoch
+        last_epoch=$(tier3_last_attempt_epoch "$slug")
+
+        local elapsed=$((now_epoch - last_epoch))
+        # If most recent attempt is within the cadence window, skip.
+        if [[ "$last_epoch" -gt 0 && "$elapsed" -lt "$cad_secs" ]]; then
+            continue
+        fi
+
+        # Analyze the file (tier 3). Score is theorem_sorries.
+        local analysis
+        analysis=$(analyze_file "$abs_file" 3)
+        local score
+        score=$(echo "$analysis" | cut -d'|' -f6)
+        # Skip hard rejects (definition sorries or all-True placeholders).
+        [[ "$score" -eq -1 ]] && continue
+
+        echo "$analysis"
+    done
+}
+
 # Main logic
 main() {
     local submitted_files
@@ -228,10 +357,21 @@ main() {
         done < <(collect_candidates 1 "$submitted_files" "$blocked_files" "${tier1_files[@]}")
     fi
 
-    # Tier 2: Regular proof files (unless --tier1-only)
+    # Tier 2: Regular proof files (unless --tier1-only).
+    # Files registered as Tier-3 open-conjecture targets are excluded from
+    # Tier 2 so the same file is not emitted twice (and so the Tier-2
+    # blocked/submitted filters do not silence a long-haul T3 target).
     if [[ "$TIER1_ONLY" != true ]]; then
+        local tier3_basenames
+        tier3_basenames=$(tier3_registered_basenames)
+
         local tier2_files=()
         while IFS= read -r f; do
+            local bn
+            bn=$(basename "$f" .lean)
+            if [[ -n "$tier3_basenames" ]] && echo "$tier3_basenames" | grep -q "^${bn}$"; then
+                continue
+            fi
             tier2_files+=("$f")
         done < <(find "$PROOFS_DIR" -name "*.lean" -type f \
             ! -name "Erdos*" ! -name "Test*" ! -name "*Aristotle.lean" ! -name "*StatementOnly.lean" \
@@ -242,6 +382,15 @@ main() {
                 [[ -n "$line" ]] && candidate_data+=("$line")
             done < <(collect_candidates 2 "$submitted_files" "$blocked_files" "${tier2_files[@]}")
         fi
+    fi
+
+    # Tier 3: Open-conjecture registry (opt-in, rate-limited, no submitted/blocked filters)
+    # Tier-3 entries are gated by cadence rather than the success/failure status
+    # of prior jobs. The whole point is to keep attempting — failures DO NOT block.
+    if [[ "$TIER1_ONLY" != true ]]; then
+        while IFS= read -r line; do
+            [[ -n "$line" ]] && candidate_data+=("$line")
+        done < <(collect_tier3_candidates)
     fi
 
     if [[ ${#candidate_data[@]} -eq 0 ]]; then
@@ -314,24 +463,29 @@ EOF
             case "$tier" in
                 0) tier_label="T0" ;;
                 1) tier_label="T1" ;;
+                2) tier_label="T2" ;;
+                3) tier_label="T3" ;;
                 *) tier_label="T2" ;;
             esac
             printf "%-40s %5s %8d %8d %8d %8d\n" "$name" "$tier_label" "$total" "$def" "$axiom" "$score"
         done <<< "$sorted_data"
 
-        local total_count tier0_count tier1_count tier2_count
+        local total_count tier0_count tier1_count tier2_count tier3_count
         total_count=$(echo "$sorted_data" | grep -c '|' 2>/dev/null; true)
         tier0_count=$(echo "$sorted_data" | grep -c '|0$' 2>/dev/null; true)
         tier1_count=$(echo "$sorted_data" | grep -c '|1$' 2>/dev/null; true)
         tier2_count=$(echo "$sorted_data" | grep -c '|2$' 2>/dev/null; true)
+        tier3_count=$(echo "$sorted_data" | grep -c '|3$' 2>/dev/null; true)
         total_count="${total_count:-0}"
         tier0_count="${tier0_count:-0}"
         tier1_count="${tier1_count:-0}"
         tier2_count="${tier2_count:-0}"
+        tier3_count="${tier3_count:-0}"
         echo ""
-        echo "Total candidates: $total_count (T0 statement-only: $tier0_count, T1 companion: $tier1_count, T2 regular: $tier2_count)"
+        echo "Total candidates: $total_count (T0 statement-only: $tier0_count, T1 companion: $tier1_count, T2 regular: $tier2_count, T3 open-conjecture: $tier3_count)"
         echo "T0 StatementOnly files (Harmonic format) have top priority. T1 companion files are next."
         echo "T2 research output files are fallback when T0+T1 slots exhausted."
+        echo "T3 open-conjecture targets (research/open-conjectures.json) are rate-limited long-haul attempts."
         echo "Best candidates have low score (few sorries, no def sorries)"
     fi
 }

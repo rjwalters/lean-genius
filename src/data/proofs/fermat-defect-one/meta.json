@@ -25,6 +25,35 @@
     "lineCount": 146,
     "theoremCount": 6,
     "definitionCount": 4,
+    "researchStatus": "actively-attempting",
+    "researchTargets": [
+      {
+        "name": "fermat_defect_one_exists",
+        "kind": "headline",
+        "attackVectors": [
+          "witness-search",
+          "modular-obstruction",
+          "parameterization",
+          "reduction",
+          "structural-lemma"
+        ]
+      },
+      {
+        "name": "witness_n_eq_4_bounded_50",
+        "kind": "bounded-search",
+        "attackVectors": ["witness-search"]
+      },
+      {
+        "name": "witness_n_eq_5_bounded_50",
+        "kind": "bounded-search",
+        "attackVectors": ["witness-search"]
+      },
+      {
+        "name": "no_witness_n_eq_4_below_20",
+        "kind": "bounded-search",
+        "attackVectors": ["witness-search", "structural-lemma"]
+      }
+    ],
     "originalContributions": [
       "FermatDefectWitness, FermatDefectExists, FermatDefectPositive, FermatDefectNegative: four Nat-only predicates expressing |a^n + b^n - c^n| = 1 via a disjunction avoiding signed-integer coercions",
       "fermat_defect_three_neg: verified primitive negative-defect witness 6^3 + 8^3 + 1 = 9^3 (gcd(6,8,9)=1) via native_decide",

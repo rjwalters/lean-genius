@@ -319,6 +319,30 @@ export const ERDOS_PROBLEMS: Record<number, string> = {
 }
 
 /**
+ * A specific theorem / sorry being actively attacked by the research pipeline.
+ *
+ * Surfaced in the gallery for entries with
+ * `meta.researchStatus = "actively-attempting"`. Schema introduced by
+ * issue #22628 (research infrastructure for open-conjecture attempts).
+ */
+export interface ResearchTarget {
+  /** Theorem name in the linked Lean file (e.g., "fermat_defect_one_exists"). */
+  name: string
+  /**
+   * Role of this target within the proof file:
+   * - `"headline"` — the main open conjecture
+   * - `"bounded-search"` — a finite-budget version Aristotle might prove now
+   * - `"supporting"` — a lemma in service of the headline
+   */
+  kind?: 'headline' | 'bounded-search' | 'supporting' | string
+  /**
+   * Attack-vector menu we plan to apply. Vector names match
+   * `research/PROBLEMS-STRUCTURE.md` and the `claims/` filename convention.
+   */
+  attackVectors?: string[]
+}
+
+/**
  * A theorem or lemma imported from Mathlib
  */
 export interface MathlibDependency {
@@ -358,6 +382,33 @@ export interface ProofMeta {
   hilbertNumber?: number
   /** Millennium Prize Problem identifier if applicable */
   millenniumProblem?: MillenniumProblem
+
+  /**
+   * Research stance for the open assumptions in this proof.
+   *
+   * - `"input"` (default when absent): assumptions are accepted as background,
+   *   not actively attacked. Equivalent to prior behavior.
+   * - `"actively-attempting"`: at least one sorry / axiom is a Tier-3 target
+   *   in `research/open-conjectures.json`. Gallery may render a banner.
+   * - `"abandoned"`: the conjecture was previously attempted but no current
+   *   attack is in flight (review for demotion to `"input"` after 90 days
+   *   of no activity).
+   *
+   * NOTE: this does NOT change how axioms are counted (per AXIOM INTEGRITY
+   * POLICY). It is metadata about our research stance, not the assumption count.
+   *
+   * Backwards-compatible legacy values such as `"ongoing"` are tolerated by
+   * the gallery build pipeline; new entries should use one of the three
+   * canonical states above.
+   */
+  researchStatus?: 'input' | 'actively-attempting' | 'abandoned' | string
+
+  /**
+   * Which specific theorems / sorries we are attacking. Each entry references
+   * a theorem name in the linked Lean file and the attack-vector menu we plan
+   * to apply. Read by the gallery's "active research status" banner.
+   */
+  researchTargets?: ResearchTarget[]
 
   // Erdős Problems fields
   /** Erdős problem number from erdosproblems.com */

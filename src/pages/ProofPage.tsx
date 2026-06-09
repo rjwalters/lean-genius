@@ -199,6 +199,20 @@ export function ProofPage() {
           >
             {proof.meta.status}
           </span>
+          {/*
+            TODO(22628): full "active research status" banner.
+            Should link to research/problems/<slug>/, list the most recent
+            claim files, and surface open sub-conjectures. For now we render
+            a minimal badge so the meta-schema extension has a visible effect.
+          */}
+          {proof.meta.researchStatus === 'actively-attempting' && (
+            <span
+              className="px-2 py-0.5 rounded text-xs font-medium bg-purple-500/20 text-purple-300"
+              title="This entry's open assumptions are actively being attacked by the research pipeline. See research/open-conjectures.json and research/problems/<slug>/ for current attack vectors."
+            >
+              actively attempting
+            </span>
+          )}
           <span>{annotations.length} annotations</span>
         </div>
 
