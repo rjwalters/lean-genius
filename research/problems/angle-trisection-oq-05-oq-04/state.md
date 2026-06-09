@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S22 — mechanic-style repair of OQ04 Mathlib-drift errors; cat-A `sq_pos_of_ne_zero` arity fix at L499/L502/L596/L597 + speculative L1117 `field_simp [hS_ne, hS_ne']` fix; cat-B/C downstream errors at L642/L772/L782 cascade-resolved by cat-A repair per Docker B1 re-verification)
-**Since**: 2026-06-05 (S21 STATE-SYNC merged ~T+4d before S22 picker)
-**Iteration**: 21 STATE-SYNC → 22 ACT (this update; ships mechanic-style repair to `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` reducing OQ04 error count from 8 → 1 or 0 per Docker outcome; parent file unchanged since S20)
-**Last Updated**: 2026-06-05T20:30Z
+**Phase**: ACT (S23-α — BUILD-VERIFY full discharge of OQ04 Mathlib-drift errors; **S22 cascade-resolution claim EMPIRICALLY FALSIFIED**: cold-cache rebuild at S23 picker showed 4 errors not 1 [L642 cat-B, L772 cat-B, L782 cat-C, L1117 cat-B residual]; S23-α four-fix recipe ships +12/−8 LOC at the 4 sites — L642 coefficient `D·hq` → `hq`; L772 `field_simp [h_nonpar]` + coefficient `D₂·hq` → `crossDet·hq`; L782 add `hDpos'` commuted variant + drop `crossDet` from simp_only + insert `simp only [crossDet]` post-field_simp so `ring` cancels the function-call atom; L1117 add `hS_ne'` commuted variant + `field_simp [hS_ne, hS_ne']` + linear_combination coefficient `(-2s)·hq + 2(b₁q.1−a₁q.2)·h_cross` → `(-s²)·hq + s·(b₁q.1−a₁q.2)·h_cross` derived via `parallelNormal_left_id`/`_right_id` scaling identity `D₁·Goal = -s·hq_expr + (b₁q.1−a₁q.2)·h_cross_expr` and empirical `s·D₁` field_simp scaling [factor 2 drops as unit]; Docker BUILD-VERIFY GREEN at 3059 jobs / hot cache ~10s; parent file 1144 → 1148 lines)
+**Since**: 2026-06-09 (S22 ACT merged 2026-06-06 ~T+3d before S23-α picker)
+**Iteration**: 22 ACT → 23 ACT (this update; ships build-verified +4-net-LOC repair to `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` discharging **all 4 OQ04 errors**, HH-3 parallel + 4 other HH ingredients move `build pending` / `RED` → `build re-verified GREEN at v4.26.0 Mathlib SHA 2df2f0150c…`)
+**Last Updated**: 2026-06-09 (Session 23 / S23-α ACT — BUILD-VERIFY GREEN — researcher-1, claim `researcher-74962`; INFRA GREEN [Docker 29.5.3, disk 88Gi, Mathlib SHA stable ~28d]; +12/−8 LOC at 4 sites, 5 Docker iters [~25 min wall]; S22 cascade-resolution claim falsified by cold-cache rebuild — actual baseline was 4 errors not 1; S23-α four-fix recipe documented in session memo `2026-06-09-s23-act-alpha-build-verify-4-errors-cleared.md`; S24+ can now paste the S16 PREP §5 HH-6 same-directrix WLOG-frame Lean ungated)
 
 ## Current Focus
 
