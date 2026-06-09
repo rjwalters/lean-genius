@@ -21,23 +21,24 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T11:30:00.000Z",
-    "iteration": 5,
-    "focus": "S5 (researcher-1, 2026-05-12): Added the elementary divergence + sum-of-two-squares infinitude corollary to InfinitudePrimes4k1OQ03.lean (1 private helper + 2 new public theorems, ~100 lines including section docstring). not_summable_primes_4k1_log_div translates the S4 Mertens-style divergence from residueClass-indicator form into the elementary ¬ Summable (n ↦ if (n.Prime ∧ n % 4 = 1) then log n / n else 0) form using the private helper residueClass_one_mod_four_apply_prime (which unfolds the indicator via vonMangoldt_apply_prime + mod_four_eq_one_iff_zmodFour_eq_one). primes_sum_two_squares_infinite is the path-C corollary {p : ℕ | p.Prime ∧ ∃ a b, a^2 + b^2 = p}.Infinite, derived from primes_4k1_infinite_mod via Nat.Prime.sq_add_sq (Fermat's Christmas theorem). No new sorries; the OQ-03 natural-density sorry is unchanged. 0 new imports (Nat.Prime.sq_add_sq transitively available via Proofs.InfinitudePrimes4k1). Build pending (proofs/.lake symlink broken in worktree).",
+    "since": "2026-05-12T13:21:49.000Z",
+    "iteration": 6,
+    "focus": "S6 (researcher-4, 2026-05-12, PR #18131): Statement-only SCAFFOLD for the logarithmic-density target. Added mertens_log_density_4k1 (1 new sorry, +65 lines including section docstring) to InfinitudePrimes4k1OQ03.lean. The statement asserts ∑_{p ≤ N, p ≡ 1 (mod 4)} (log p)/p ~ (1/2) · log N — the Mertens-1874 logarithmic-density form of OQ-03, strictly weaker than the natural-density form (primes_4k1_natural_density, also sorry) but strictly stronger than the qualitative divergence (not_summable_primes_4k1_log_div, S5, fully proved). The S6 docstring records the Abel-summation proof outline on top of S4's LSeries_residueClass_one_mod_four_lower_bound. Net file delta: +1 sorry (1 → 2), +65 lines (392 → 457), +1 theorem (14 → 15). Build pending. S7 STATE-SYNC (researcher-8, 2026-06-09): doc-only catch-up of this meta.json tracker from iteration 5 → 6 (was frozen at S5 since 2026-05-12, lagging the merged S6 PR #18131 by ~28 days). No Lean / state.md / knowledge.md / problem.md body changes this iteration; only meta.json fields + a new sessions/ doc.",
     "blockers": [
       "(mathematical) Natural-density form requires Ikehara-Tauberian transfer not present in Mathlib v4.26.0.",
       "(practical) proofs/.lake symlink is self-referential; builds take 45+ min from clean."
     ],
-    "nextAction": "S6 path B step 3 (Tauberian transfer to natural density): blocked on Mathlib evolution — needs LSeries.Wiener/IkeharaTauberian module. S6 alternative (unblocked, RECOMMENDED): quantitative upgrade of S5's qualitative divergence to ∑_{p ≤ N, p ≡ 1 (4)} log p / p ~ (1/2) log N via Abel summation + the S4 lower bound (~100-150 lines, standard Mertens-1874 outline). S6 path C extension: upgrade primes_sum_two_squares_infinite to the density-1/2 statement once a density form is proved.",
+    "nextAction": "S7 (RECOMMENDED, unblocked): discharge the mertens_log_density_4k1 sorry via Abel summation (~100-150 lines). Concrete path: (1) Abel-summation identity via Mathlib.NumberTheory.AbelSummation primitives relating ∑_{n ≤ N} f(n) / n^x and ∫_1^N (∑_{n ≤ t} f(n)) / t^(x+1) dt; (2) lower-bound transfer via S4's LSeries_residueClass_one_mod_four_lower_bound in the limit x ↘ 1; (3) symmetric upper bound from continuousOn_LFunctionResidueClassAux on re s ≥ 1; (4) convert von-Mangoldt restricted-prime sums to elementary log p / p via S5's residueClass_one_mod_four_apply_prime + vonMangoldt_apply_prime; (5) squeeze the matching bounds. Allow ≥45 minutes for one end-of-session Docker build given the proofs/.lake symlink trap. S7+ path B step 3 (Tauberian to natural density): still blocked on Mathlib gaining a Wiener-Ikehara module. S7+ path C density extension: upgrade primes_sum_two_squares_infinite to density-1/2 once a density form lands.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (researcher-1, 2026-05-12) — Elementary divergence + path-C sum-of-two-squares infinitude corollary. Added 1 private helper + 2 fully-proved public theorems to InfinitudePrimes4k1OQ03.lean (~100 lines): not_summable_primes_4k1_log_div (elementary ¬ Summable (n ↦ if Prime ∧ % 4 = 1 then log n / n else 0) form of the S4 Mertens-style divergence) and primes_sum_two_squares_infinite ({p | Prime ∧ ∃ a b, a²+b² = p}.Infinite, the path-C corollary via Nat.Prime.sq_add_sq + Set.Infinite.mono). The private helper residueClass_one_mod_four_apply_prime unfolds vonMangoldt.residueClass (1 : ZMod 4) on prime arguments using vonMangoldt_apply_prime + mod_four_eq_one_iff_zmodFour_eq_one. File now has 14 declarations (1 private helper + 12 public proved + 1 sorry-target). No new sorries, no new imports. S4 (researcher-10): Dirichlet-density bridge (path-B step 2, 2 lemmas). S3 (researcher-8): character-orthogonality scaffold (3 lemmas). S2 (researcher-11): corrected Mathlib-reality SCAFFOLD.",
+    "progressSummary": "S6 (researcher-4, 2026-05-12, PR #18131) — Statement-only SCAFFOLD: added mertens_log_density_4k1 (sorry'd, +65 lines including section docstring). The statement asserts ∑_{p ≤ N, p ≡ 1 (mod 4)} (log p)/p ~ (1/2) · log N — the Mertens-1874 logarithmic-density form, strictly weaker than natural density (also sorry) but strictly stronger than the qualitative divergence (S5, fully proved). The Abel-summation proof outline is pinned in the docstring on top of the S4 LSeries lower bound. Net file delta: +1 sorry (1 → 2), +65 lines (392 → 457), +1 theorem (14 → 15). S5 (researcher-1, 2026-05-12) — Elementary divergence + path-C sum-of-two-squares infinitude corollary (1 private helper + 2 fully-proved public theorems, ~100 lines). S4 (researcher-10): Dirichlet-density bridge (path-B step 2, 2 lemmas). S3 (researcher-8): character-orthogonality scaffold (3 lemmas). S2 (researcher-11): corrected Mathlib-reality SCAFFOLD. S7 STATE-SYNC (researcher-8, 2026-06-09) — doc-only catch-up of meta.json tracker from iteration 5 → 6 (was frozen at S5 since 2026-05-12). No Lean / body docs changed.",
     "builtItems": [
+      "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S6, ~457 lines, 15 declarations, 0 axioms, 2 sorries): adds statement-only SCAFFOLD mertens_log_density_4k1 for the Mertens-1874 logarithmic-density form (∑_{p ≤ N, p ≡ 1 (mod 4)} (log p)/p ~ (1/2) · log N). The +65-line delta is statement + section docstring with the Abel-summation proof outline; the proof body is deferred to S7+ (unblocked by current Mathlib API). 0 new imports.",
       "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S5, ~392 lines, 14 declarations, 0 axioms, 1 sorry): adds elementary Mertens-style divergence (not_summable_primes_4k1_log_div) and path-C sum-of-two-squares infinitude corollary (primes_sum_two_squares_infinite). New private helper residueClass_one_mod_four_apply_prime unfolds vonMangoldt.residueClass on primes via vonMangoldt_apply_prime + mod_four_eq_one_iff_zmodFour_eq_one. 0 new imports.",
       "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S4, ~289 lines, 11 theorems/lemmas, 0 axioms, 1 sorry): adds Dirichlet-density bridge for (q, a) = (4, 1). New verified theorems: LSeries_residueClass_one_mod_four_lower_bound (specialization of vonMangoldt.LSeries_residueClass_lower_bound with (Nat.totient 4 : ℝ)⁻¹ rewritten to (2 : ℝ)⁻¹), not_summable_primes_4k1_vonMangoldt_div (specialization of vonMangoldt.not_summable_residueClass_prime_div). 0 new imports.",
       "proofs/Proofs/InfinitudePrimes4k1OQ03.lean (S3, ~219 lines, 9 theorems/lemmas, 0 axioms, 1 sorry): adds character-orthogonality scaffold for q = 4. New verified lemmas: sum_dirichletChars_zmodFour, indicator_zmodFour_eq_one, indicator_mod_four_eq_one. New import: Mathlib.NumberTheory.DirichletCharacter.Orthogonality.",
@@ -49,6 +50,7 @@
       "research/problems/infinitude-primes-4k1-oq-03/knowledge.md (S1): Chebyshev bias data N=100..10⁶, Mathlib status with module names, three-density comparison table."
     ],
     "insights": [
+      "S6 (2026-05-12): The logarithmic-density form ∑_{p ≤ N, p ≡ 1 (mod 4)} (log p)/p ~ (1/2) · log N is the *right* intermediate target between S5's qualitative divergence and the natural-density form: it is strictly more informative than 'the sum diverges' (it pins the precise asymptotic rate 1/2 = 1/φ(4)) while remaining *unblocked* by the Mathlib v4.26.0 gap (no Ikehara-Tauberian module needed). The proof path is Abel summation on the S4 LSeries lower bound + a symmetric upper bound from continuousOn_LFunctionResidueClassAux — no Tauberian transfer required. This makes Mertens-1874 semi-elementary in the Mathlib formalization layer just as it is in classical analytic number theory.",
       "S5 (2026-05-12): The Mertens-1874 qualitative divergence is best stated in two parallel forms — the residueClass-indicator form (closer to the Mathlib API; convenient for downstream analytic chaining) and the elementary if-Prime-and-mod form (closer to a textbook statement; convenient for the gallery reader). The translation between the two is a one-shot function-equality proof via a small helper residueClass_one_mod_four_apply_prime that unfolds vonMangoldt.residueClass on primes using vonMangoldt_apply_prime (Λ p = log p for prime p) and the mod-↔-ZMod-eq bridge.",
       "S5 (2026-05-12): The path-C sum-of-two-squares INFINITUDE corollary is unblocked even without a density form. {p prime ∧ p ≡ 1 (4)} ⊆ {p prime ∧ ∃ a b, a²+b² = p} via Fermat's Nat.Prime.sq_add_sq (which only requires p % 4 ≠ 3, weaker than p % 4 = 1), and Set.Infinite.mono lifts the inclusion to the superset's infinitude. This gives a striking gallery corollary today: 'there are infinitely many primes that are sums of two squares' — derivable from the parent's elementary infinitude proof plus Fermat 1640. The density-1/2 form remains deferred until a density form of the parent OQ-03 target is in place.",
       "S4 (2026-05-12): The Mathlib v4.26.0 API exposes precisely the pole-strength data needed for path-B step 2 in two complementary forms: a quantitative lower bound (LSeries_residueClass_lower_bound) and a qualitative divergence statement (not_summable_residueClass_prime_div). Both specialize cleanly to (q, a) = (4, 1) in 2-5 line term-mode proofs given the pre-existing totient_four and one_isUnit_zmodFour helpers. The specializations are the shortest possible interface to Mathlib's residue-class L-series API for downstream consumers.",
@@ -69,10 +71,10 @@
       "(future) A density-form 'sum_of_two_squares_density = 1/2' corollary that explicitly chains through Fermat's two-square theorem. Likely never stated in Mathlib because both inputs are general; the gallery is the right place for this corollary."
     ],
     "nextSteps": [
-      "S6 path B step 3 (blocked on Mathlib): Tauberian transfer from L-series pole strength to natural-density counting asymptotic, once Mathlib gains a Wiener-Ikehara module. Would discharge primes_4k1_natural_density via LSeries_residueClass_one_mod_four_lower_bound + an Ikehara-style transfer.",
-      "S6 alternative (unblocked, RECOMMENDED): quantitative Mertens-1874 upgrade of S5's qualitative divergence. Statement: ∑_{p ≤ N, p ≡ 1 (4)} log p / p ~ (1/2) log N via Abel summation on the S5 not-summable + the S4 lower bound. Estimated 100-150 lines following the standard Mertens-1874 outline.",
-      "S6 path C density extension: upgrade primes_sum_two_squares_infinite to the density-1/2 form once a density form of OQ-03 is in place. About 30 lines chaining through the density theorem.",
-      "S? Aristotle: not applicable to this slug — the remaining sorry is an open Mathlib gap, not a routine supporting lemma."
+      "S7 (RECOMMENDED, unblocked): discharge the mertens_log_density_4k1 sorry via Abel summation (~100-150 lines). 5 concrete sub-steps documented in currentState.nextAction; all required Mathlib API present at the pinned v4.26.0 revision (Mathlib.NumberTheory.AbelSummation primitives, LSeries_residueClass_lower_bound, continuousOn_LFunctionResidueClassAux, vonMangoldt_apply_prime).",
+      "S7+ path B step 3 (blocked on Mathlib): Tauberian transfer from L-series pole strength to natural-density counting asymptotic, once Mathlib gains a Wiener-Ikehara module. Would discharge primes_4k1_natural_density via LSeries_residueClass_one_mod_four_lower_bound + an Ikehara-style transfer.",
+      "S7+ path C density extension: upgrade primes_sum_two_squares_infinite to the density-1/2 form once a density form of OQ-03 is in place (i.e., once mertens_log_density_4k1 lands or once a Tauberian module is added to Mathlib). About 30 lines chaining through the density theorem.",
+      "S? Aristotle: not applicable to either remaining sorry — both are research-level analytic-number-theory targets (Abel summation + L-series asymptotics for the log-density form; Ikehara-Tauberian transfer for the natural-density form), not routine supporting lemmas."
     ]
   },
   "tags": [
@@ -113,7 +115,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-05-12T11:30:00.000Z",
+  "lastUpdate": "2026-06-09T22:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -131,11 +133,11 @@
     {
       "path": "Proofs/InfinitudePrimes4k1OQ03.lean",
       "filename": "InfinitudePrimes4k1OQ03.lean",
-      "lineCount": 392,
-      "theoremCount": 14,
+      "lineCount": 457,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ03.lean"
     }
