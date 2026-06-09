@@ -1,8 +1,8 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext)
-**Last update**: 2026-05-16 (researcher-9) — S5 STATE-SYNC absorbed S4 PREP into state.md/JSON + Step (c)/(d)/(e)/(f) bearer audit-extension; S4 PREP § 3.3 `...` placeholders resolved with disjunct-selection error fix; main theorem now paste-ready for S6 ACT
+**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext) → ACT (S6a Step-b helper)
+**Last update**: 2026-06-09 (researcher-7) — S6a ACT: Step (b) discharged as helper lemma `cos_BAD_eq_cos_DAC_inner_form` (~8 LOC body); main theorem still has 1 sorry (Steps c-f remain). Worktree path trap caught early; edits applied to worktree only.
 
 ## Iteration History
 
@@ -13,7 +13,82 @@
 | 3 | S2 ACT skeleton | ACT (build pending) | 2026-05-13 | #18924 | researcher-10 | +1 Lean (145 LOC, 4 sorries) |
 | 4 | S3 ACT | ACT (build verified, 7745 jobs) | 2026-05-14 | #18963 | researcher-9 | +30 LOC Lean (4→1 sorries) + parent stewarts_theorem fix |
 | 5 | S4 PREP | PREP | 2026-05-15 | #19032 | researcher-12 | +1 doc (s4-prep-step-b-and-e-bearer-audit.md) |
-| 6 | S5 STATE-SYNC + audit-ext | STATE-SYNC + PREP-2 | 2026-05-16 | this PR | researcher-9 | +1 doc (s5-statesync-audit-extension.md), state.md catchup, JSON catchup |
+| 6 | S5 STATE-SYNC + audit-ext | STATE-SYNC + PREP-2 | 2026-05-16 | (merged) | researcher-9 | +1 doc (s5-statesync-audit-extension.md), state.md catchup, JSON catchup |
+| 7 | S6a ACT Step-b helper | ACT (Step b discharged) | 2026-06-09 | this PR | researcher-7 | +25 LOC Lean (1→1 sorries; new helper lemma; main theorem skeleton updated) |
+
+## Session N=6 — S6a ACT Step (b) helper (2026-06-09, researcher-7)
+
+**Mode**: ACT (scoped — discharge Step (b) only as a helper lemma; main theorem still has 1 sorry).
+
+**Outcome**: added `cos_BAD_eq_cos_DAC_inner_form` (~8 LOC body) implementing
+Step (b) of the Path-A strategy. The lemma takes the angle equality
+`hbis : ∠ B A D = ∠ D A C` and produces the inner-product cosine equation
+`⟪B-ᵥA, D-ᵥA⟫ / (‖B-ᵥA‖·‖D-ᵥA‖) = ⟪D-ᵥA, C-ᵥA⟫ / (‖D-ᵥA‖·‖C-ᵥA‖)`.
+
+Proof body (3 tactic lines):
+* `congrArg Real.cos hbis` — apply cosine to both sides of the angle equality.
+* `unfold EuclideanGeometry.angle at hcos` — exposes
+  `InnerProductGeometry.angle` on `vsub`-vectors (per the def at `Affine.lean:42`).
+* `rw [InnerProductGeometry.cos_angle, InnerProductGeometry.cos_angle]` — rewrites
+  both sides to the inner-product / norm ratio form.
+* `exact hcos` — close the goal (after the rewrites the LHS/RHS match the
+  lemma statement exactly).
+
+This is the **`congrArg Real.cos` route** preferred by `s4-prep-step-b-and-e-bearer-audit.md` § 2.3
+over the `Real.arccos_inj` alternative, which would require explicit
+`[-1, 1]` bounds.
+
+**Net diff this session**:
+* `LawOfCosinesOQ04OQ02OQ01.lean`: +25 LOC (164 → 193, 4 → 5 declarations,
+  1 → 1 sorries, 0 → 0 axioms). New helper `cos_BAD_eq_cos_DAC_inner_form`
+  before the main theorem; main theorem proof-skeleton docstring updated
+  to point at S5 §§ 4-7 + identify Step (b) as discharged.
+* `state.md`: Iteration History row 7 + this Session N=6 entry + header
+  refresh.
+* JSON `currentState.{since,iteration,focus,nextAction}` refreshed;
+  `knowledge.progressSummary` prepended.
+
+**Sorry / axiom delta**:
+* `LawOfCosinesOQ04OQ02OQ01.lean`: **1 → 1 sorries** (helper has no sorry;
+  main theorem still does), **0 → 0 axioms**, **4 → 5 declarations**.
+* Parent `LawOfCosinesOQ04OQ02.lean`: **0 → 0 sorries, 0 → 0 axioms**.
+
+**Build verification**: `./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ02OQ01`
+launched at session start; result attached in PR description. The helper
+proof body is short and uses bearers re-verified by S5 audit-extension
+(`Affine.lean:42` for the `EuclideanGeometry.angle` definition,
+`Basic.lean:65` for `InnerProductGeometry.cos_angle`).
+
+**Why scoped S6a vs full S6 ACT**: full S6 ACT discharges ~80-120 LOC across
+Steps (b)–(f). The recipe is paste-ready per S5 § 8.1's 9/9 GREEN gate,
+but each sub-step has its own subtleties (Step c's `inner_smul_left`
+star-conjugate handling; Step d's `linear_combination` sign; Step e's
+disjunct-selection error in the corrected version; Step f's `field_simp`
+extraction of `s = c/(b+c)`). Shipping Step (b) first (a) creates a
+build-verified landmark for sibling tactic-pattern callers, (b) makes
+the next session's ACT scope smaller (~70-100 LOC instead of 80-120),
+(c) reduces compound bearer-drift risk: any drift in Step (b)'s `cos_angle`
+chain would also affect Steps (c)-(e) since they all live in the same
+file, so verifying Step (b) builds is a sentinel for the broader recipe.
+
+**Worktree-path-trap incident** (informational): initial Edit/Read calls
+were accidentally routed to the main repo path
+`/Users/rwalters/GitHub/lean-genius/proofs/...` rather than the worktree
+path `/Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-7/proofs/...`.
+Caught during git status (working tree clean). Main repo file reverted
+via Edit-undo (no `git` operations needed since the main repo had an
+`index.lock` from a concurrent process). Worktree edits then applied
+to the correct path. No data loss; memory `feedback_worktree_path_trap.md`
+applied.
+
+**Next-action**: S6b — discharge Steps (c)/(d) (inner-product expansion +
+factorization, ~40-55 LOC combined). Can use `cos_BAD_eq_cos_DAC_inner_form`
+output as the starting point. Optionally S6b+c+d+e+f combined in one
+PR if the next researcher is willing to take on ~70-100 LOC under
+build-verify; OR three separate scoped PRs (S6b Step c-d, S6c Step e, S6d
+Step f) for sentinel-style staging.
+
+---
 
 ## Session N=5 — S5 STATE-SYNC + audit-extension (2026-05-16, researcher-9)
 
