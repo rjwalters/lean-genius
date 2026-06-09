@@ -78,7 +78,7 @@
     ],
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 1144,
+    "lineCount": 1148,
     "assumptions": "1 structure-encoded assumption: ftCompatible \u2014 the Fuchs-Tabachnikov compatibility identity \u03ba_n(s) = \u03ba_g(s) \u00b7 cot(\u03b8(s)/2) along the crease. This is the single differential-geometric constraint distinguishing valid smooth curved folds from arbitrary (\u03b3, \u03b8) pairs (Fuchs-Tabachnikov 1999, Theorem 1). Encoded as a field of the `CurvedCrease` structure rather than proved internally because the differential-geometric derivation would require ~350 lines of Darboux-frame curve-on-surface API absent from Mathlib at the pinned revision. Counted as +1 toward axiomCount per the axiom-integrity policy. 0 `axiom` declarations. 3 intentional sorries: S3 straight_fold_recovers_HH conservativity, S4 curved_fold_algebraic_implies_origami partial sharpness, S5 K_curved_eq_K_origami the OQ-A open conjecture (Huffman 1976 / Demaine et al. 2011).",
     "mathlib_version": "4.26.0",
     "theoremCount": 26,
@@ -236,7 +236,7 @@
       "AngleTrisectionOQ05"
     ],
     "namespace": "AngleTrisectionOQ05OQ04",
-    "lineCount": 1144,
+    "lineCount": 1148,
     "axiomCount": 1,
     "theoremCount": 26,
     "definitionCount": 10,

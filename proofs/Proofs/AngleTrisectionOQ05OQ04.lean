@@ -639,7 +639,7 @@ theorem reflectAcross_perpThroughPoint_preserves
     rw [hEq]; exact ne_of_gt hPos
   simp only [Line.contains, reflectAcross, perpThroughPoint] at hq ⊢
   field_simp
-  linear_combination ((-ℓ.b)^2 + ℓ.a^2) * hq
+  linear_combination hq
 
 /-- **HH-4 (existence form, standalone).** Given any point `P` and any
 line `ℓ`, there exists a fold line that passes through `P` and
@@ -768,8 +768,8 @@ theorem reflectAcross_hatoriFold_preserves_ℓ₂
     have hEq : (-ℓ₂.b)^2 + ℓ₂.a^2 = ℓ₂.a^2 + ℓ₂.b^2 := by ring
     rw [hEq]; exact ne_of_gt hPos
   simp only [Line.contains, reflectAcross, hatoriFold] at hq ⊢
-  field_simp
-  linear_combination ((-ℓ₂.b)^2 + ℓ₂.a^2) * hq
+  field_simp [h_nonpar]
+  linear_combination (crossDet ℓ₁ ℓ₂) * hq
 
 /-- The Hatori fold sends `P` onto `ℓ₁`: reflecting `P` across the fold
 yields a point of `ℓ₁`. Proof: substitute the fold's `(a, b, c)` into
@@ -785,8 +785,10 @@ theorem reflectAcross_hatoriFold_to_ℓ₁
     have hEq : (-ℓ₂.b)^2 + ℓ₂.a^2 = ℓ₂.a^2 + ℓ₂.b^2 := by ring
     rw [hEq]; exact ne_of_gt hPos
   have hDpos : ℓ₂.a^2 + ℓ₂.b^2 ≠ 0 := ne_of_gt hPos
-  simp only [Line.contains, reflectAcross, hatoriFold, crossDet] at h_nonpar ⊢
-  field_simp
+  have hDpos' : ℓ₂.b^2 + ℓ₂.a^2 ≠ 0 := by rw [add_comm]; exact hDpos
+  simp only [Line.contains, reflectAcross, hatoriFold] at ⊢
+  field_simp [h_nonpar, hDpos, hDpos']
+  simp only [crossDet]
   ring
 
 /-- **HH-7 (existence form, non-parallel case, standalone).** Given a
@@ -1111,12 +1113,14 @@ theorem reflectAcross_parallelBisector_to_ℓ₂
   have hD_ne : ℓ₁.a^2 + ℓ₁.b^2 ≠ 0 := ne_of_gt hD_pos
   have hS_ne : ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b ≠ 0 :=
     parallelBisector_dot_ne_zero ℓ₁ ℓ₂ h_par
+  have hS_ne' : ℓ₂.a * ℓ₁.a + ℓ₁.b * ℓ₂.b ≠ 0 := by
+    rw [mul_comm ℓ₂.a ℓ₁.a]; exact hS_ne
   have h_cross : ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b = 0 := h_par
   simp only [Line.contains, reflectAcross, parallelBisector] at hq ⊢
-  field_simp
+  field_simp [hS_ne, hS_ne']
   linear_combination
-    (-2 * (ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b)) * hq
-      + (2 * (ℓ₁.b * q.1 - ℓ₁.a * q.2)) * h_cross
+    (-(ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b)^2) * hq
+      + ((ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b) * (ℓ₁.b * q.1 - ℓ₁.a * q.2)) * h_cross
 
 /-- **HH-3 (existence form, parallel case, standalone).** Given two
 parallel non-degenerate lines `ℓ₁`, `ℓ₂` (i.e. `crossDet ℓ₁ ℓ₂ = 0`),
