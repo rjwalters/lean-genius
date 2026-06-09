@@ -1,13 +1,13 @@
 {
   "slug": "ehrhart-cube-proven-oq-05",
   "title": "Pick's theorem derived from Ehrhart polynomial existence",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Given the Ehrhart polynomial existence theorem (} \\text{ehrhart\\_theorem} \\text{), Ehrhart-Macdonald reciprocity, and leading-coefficient identity, derive Pick's formula } A = i + b/2 - 1 \\text{ for any simple lattice polygon as a theorem (not an axiom).}",
-    "plain": "The parent gallery proof `ehrhart-cube-proven` proves the Ehrhart polynomial of the unit cube from first principles (verified, 0 axioms). The companion file `EhrhartPolynomials.lean` axiomatizes the general Ehrhart existence theorem and proves a conditional `picks_from_ehrhart` (line 218) deriving Pick's identity FROM the hypothesis L_P(1) = A + b/2 + 1. OQ-05 asks if the standalone `picks_theorem` axiom in `PicksTheorem.lean` can be discharged via Ehrhart: specifically, prove the unconditional linear-term identity L_P(n) = An\u00b2 + (b/2)n + 1 for any lattice polygon, then combine with `picks_from_ehrhart`. The mathematical heart is a 4-line algebraic derivation from the existing Ehrhart axioms (using Macdonald reciprocity at n = -1 to extract the linear coefficient). The deliverable is a CONDITIONAL Pick's theorem inheriting 3 Ehrhart axioms but discharging the standalone Pick's axiom \u2014 a meaningful gallery-architecture contribution.",
+    "plain": "The parent gallery proof `ehrhart-cube-proven` proves the Ehrhart polynomial of the unit cube from first principles (verified, 0 axioms). The companion file `EhrhartPolynomials.lean` axiomatizes the general Ehrhart existence theorem and proves a conditional `picks_from_ehrhart` (line 218) deriving Pick's identity FROM the hypothesis L_P(1) = A + b/2 + 1. OQ-05 asks if the standalone `picks_theorem` axiom in `PicksTheorem.lean` can be discharged via Ehrhart: specifically, prove the unconditional linear-term identity L_P(n) = An² + (b/2)n + 1 for any lattice polygon, then combine with `picks_from_ehrhart`. The mathematical heart is a 4-line algebraic derivation from the existing Ehrhart axioms (using Macdonald reciprocity at n = -1 to extract the linear coefficient). The deliverable is a CONDITIONAL Pick's theorem inheriting 3 Ehrhart axioms but discharging the standalone Pick's axiom — a meaningful gallery-architecture contribution.",
     "whyMatters": [
       "Collapses the gallery's axiom-dependency graph: the standalone `picks_theorem` axiom is shown to be redundant given the three existing Ehrhart axioms. No new mathematics is formalized but the axiom count is structurally reduced.",
       "Demonstrates the gallery's axiomatized proofs are internally coherent: `PicksTheorem.lean`'s axiom + `EhrhartPolynomials.lean`'s axioms can be cross-derived, validating the gallery's choice of independent axiom sets.",
@@ -19,51 +19,51 @@
     "proven": [
       "Pick (1899): A = i + b/2 - 1 for any simple lattice polygon, via triangulation argument (Wiedijk #92).",
       "Ehrhart (1962): L_P(n) is a polynomial of degree d in n for any d-dimensional lattice polytope (C. R. Acad. Sci. Paris).",
-      "Macdonald (1971): Ehrhart-Macdonald reciprocity L_{P\u00b0}(n) = (-1)^d L_P(-n) (Proc. London Math. Soc.).",
-      "Stanley (1980): generating function representation \u03a3 L_P(n) t^n = h*(t)/(1-t)^{d+1} with h*-vector polynomial numerator.",
+      "Macdonald (1971): Ehrhart-Macdonald reciprocity L_{P°}(n) = (-1)^d L_P(-n) (Proc. London Math. Soc.).",
+      "Stanley (1980): generating function representation Σ L_P(n) t^n = h*(t)/(1-t)^{d+1} with h*-vector polynomial numerator.",
       "Gallery: `proofs/Proofs/EhrhartCubeProven.lean` (296 lines, 0 axioms, 0 sorries, verified): L([0,1]^d, n) = (n+1)^d from first principles.",
       "Gallery: `proofs/Proofs/EhrhartCrossPolytope.lean`, `EhrhartSimplexProven.lean`: axiom-free Ehrhart polynomials for cross-polytopes and simplices.",
-      "Gallery: `proofs/Proofs/EhrhartPolynomials.lean` line 218 `picks_from_ehrhart` (theorem, NOT axiom): given the hypothesis (interior + boundary : \u211a) = area + boundary/2 + 1, derives area = interior + boundary/2 - 1. Pick's formula reduced to L_P(1) hypothesis.",
+      "Gallery: `proofs/Proofs/EhrhartPolynomials.lean` line 218 `picks_from_ehrhart` (theorem, NOT axiom): given the hypothesis (interior + boundary : ℚ) = area + boundary/2 + 1, derives area = interior + boundary/2 - 1. Pick's formula reduced to L_P(1) hypothesis.",
       "Gallery: `proofs/Proofs/PicksTheorem.lean` line 148 `axiom picks_theorem`: standalone axiomatic Pick's theorem (the target of OQ-05).",
       "Numerical sanity: 5 worked polygons (unit square, [0,2]^2, unit right triangle, [0,3]^2, pentagon) verify A = i + b/2 - 1 AND L_P(1) = i + b AND Macdonald reciprocity L_P(-1) = i."
     ],
     "open": [
-      "Q1 (R1 main technical content, ~200 Lean lines): prove `ehrhartPoly_2d_explicit` \u2014 for any `LatticePolygon` P, the Ehrhart polynomial has explicit form A\u00b7n\u00b2 + (b/2)\u00b7n + 1. Derivation strategy: use `ehrhart_macdonald_reciprocity` at n = -1 to get L_P(-1) = i; combined with leading coefficient = area (from `ehrhart_leading_coeff_volume`) and constant term = 1 (from already-proven `ehrhart_constant_term`), the three data points + degree-2 constraint over-determine the linear coefficient as b/2 via a 4-line algebraic argument.",
-      "Q2 (R1 bridge, ~150 Lean lines): construct `simpleLatticePolygon_to_latticePolygon` \u2014 a function (or one bridge axiom) connecting `PicksTheorem.SimpleLatticePolygon` to `EhrhartPolynomials.LatticePolygon`. Constructive route preferred (no new axiom); alternative is a single bridge axiom (1 new axiom, but kept minimal).",
-      "Q2 close (R1 main theorem, ~80 Lean lines): `picks_theorem_derived` \u2014 combine Q1 + Q2 bridge + `picks_from_ehrhart` to derive Pick's identity for any `SimpleLatticePolygon`. Conditional status: 3 inherited Ehrhart axioms.",
+      "Q1 (R1 main technical content, ~200 Lean lines): prove `ehrhartPoly_2d_explicit` — for any `LatticePolygon` P, the Ehrhart polynomial has explicit form A·n² + (b/2)·n + 1. Derivation strategy: use `ehrhart_macdonald_reciprocity` at n = -1 to get L_P(-1) = i; combined with leading coefficient = area (from `ehrhart_leading_coeff_volume`) and constant term = 1 (from already-proven `ehrhart_constant_term`), the three data points + degree-2 constraint over-determine the linear coefficient as b/2 via a 4-line algebraic argument.",
+      "Q2 (R1 bridge, ~150 Lean lines): construct `simpleLatticePolygon_to_latticePolygon` — a function (or one bridge axiom) connecting `PicksTheorem.SimpleLatticePolygon` to `EhrhartPolynomials.LatticePolygon`. Constructive route preferred (no new axiom); alternative is a single bridge axiom (1 new axiom, but kept minimal).",
+      "Q2 close (R1 main theorem, ~80 Lean lines): `picks_theorem_derived` — combine Q1 + Q2 bridge + `picks_from_ehrhart` to derive Pick's identity for any `SimpleLatticePolygon`. Conditional status: 3 inherited Ehrhart axioms.",
       "Q3 (R2 unconditional, ~3000+ Lean lines, deferred): discharge the three Ehrhart axioms (`ehrhart_theorem`, `ehrhart_leading_coeff_volume`, `ehrhart_macdonald_reciprocity`) themselves. Each is a major standalone Mathlib contribution requiring Stanley generating functions / Riemann sums / Brion decomposition.",
       "R3 alternative (~1000 Lean lines, separate OQ): triangulation-based Pick's theorem proof. This is `picks-theorem-oq-01`'s scope, orthogonal to OQ-05's Ehrhart angle."
     ],
-    "goal": "S2-S5 deliverable: `picks_theorem_derived` theorem in new `Proofs/EhrhartCubeProvenOQ05.lean`, deriving Pick's identity A = i + b/2 - 1 for any `SimpleLatticePolygon` from the three (axiomatized) Ehrhart identities in `EhrhartPolynomials.lean`. Target status: `formalized` (conditional-verified), 0 new axioms, 0 sorries, 3 inherited Ehrhart axioms. The standalone `picks_theorem` axiom in `PicksTheorem.lean` is shown to be redundant \u2014 a meaningful axiom-dependency reduction in the gallery."
+    "goal": "S2-S5 deliverable: `picks_theorem_derived` theorem in new `Proofs/EhrhartCubeProvenOQ05.lean`, deriving Pick's identity A = i + b/2 - 1 for any `SimpleLatticePolygon` from the three (axiomatized) Ehrhart identities in `EhrhartPolynomials.lean`. Target status: `formalized` (conditional-verified), 0 new axioms, 0 sorries, 3 inherited Ehrhart axioms. The standalone `picks_theorem` axiom in `PicksTheorem.lean` is shown to be redundant — a meaningful axiom-dependency reduction in the gallery."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T23:10:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-9, 2026-05-12): OBSERVE survey on the fifth open question of `ehrhart-cube-proven`. Key discovery: gallery already has `picks_from_ehrhart` proven (theorem, line 218 of `EhrhartPolynomials.lean`) \u2014 derives Pick's identity from the total-count hypothesis L_P(1) = A + b/2 + 1. OQ-05's mathematical heart therefore reduces to a 4-line algebraic argument proving the unconditional linear-term identity L_P(n) = A n\u00b2 + (b/2) n + 1 for 2D lattice polygons, derivable from the existing Ehrhart axioms via Macdonald reciprocity at n = -1. Three discharge routes catalogued: R1 conditional Pick's theorem via Ehrhart (recommended S2-S5, ~500 Lean lines, 3 inherited axioms, 0 new axioms, 0 sorries on success); R2 unconditional discharge of the 3 Ehrhart axioms (~3000+ lines, deferred to Mathlib roadmap); R3 triangulation-based proof (~1000 lines, scope of separate `picks-theorem-oq-01`). Mathlib + gallery API surface mapped; pristine claim verified (0 prior PRs / branches on slug); 5 worked-polygon numerical sanity examples verified including Macdonald reciprocity. 0 Lean files modified, 0 sorries, 0 axioms.",
+    "phase": "ACT",
+    "since": "2026-06-09T18:40:00.000Z",
+    "iteration": 3,
+    "focus": "AXIOM-FIX (researcher-9, 2026-06-09, this session): first Lean-file modification on slug. Applies S2b PREP §1.5/§2.5 Fix B (LatticePolytope gains volume:ℚ + volume_pos:0<volume fields; ehrhart_leading_coeff_volume axiom rewritten to use P.volume — consistent; LatticePolytope3D drops duplicate volume fields; unitCube provides volume:=1) and Fix D (LatticePolygon gains interior_at_one field linking interiorPoints to Macdonald existential) per S2c PREP §1 single-file blast radius. Net delta to `Proofs/EhrhartPolynomials.lean`: ~+14 / -3 LOC. Axiom count unchanged (3 → 3) but the previously inconsistent `ehrhart_leading_coeff_volume` is now consistent (RHS pinned per polytope via P.volume rather than a free parameter). Structure-encoded assumption count remains 0 per the Axiom Integrity Policy. Unblocks S3 ACT (Q1 derivation of ehrhartPoly_2d_explicit) which previously could not honestly use the inconsistent axiom without inviting False.elim short-circuits.",
     "blockers": [],
-    "nextAction": "S2 (any researcher, ~80 lines): create proofs/Proofs/EhrhartCubeProvenOQ05.lean with three theorem stubs `ehrhartPoly_2d_explicit` (Q1, ~200 lines target for S3), `simpleLatticePolygon_to_latticePolygon` (Q2 bridge, ~150 lines target for S4), `picks_theorem_derived` (Q2 close, ~80 lines target for S5), each with `:= by sorry` proof. Imports: `Proofs.EhrhartPolynomials`, `Proofs.PicksTheorem`. Add Proofs.lean entry + minimal src/data/proofs/ehrhart-cube-proven-oq-05/{meta.json, index.ts} with status `formalized` (3 sorries, 3 inherited Ehrhart axioms).",
+    "nextAction": "S2 ACT (next claim, ~80 lines): create proofs/Proofs/EhrhartCubeProvenOQ05.lean with three theorem stubs `ehrhartPoly_2d_explicit` (Q1, ~200 lines target for S3), `simpleLatticePolygon_to_latticePolygon` (Q2 bridge, ~150 lines target for S4), `picks_theorem_derived` (Q2 close, ~80 lines target for S5), each with `:= by sorry` proof. Imports: `Proofs.EhrhartPolynomials`, `Proofs.PicksTheorem`. Add Proofs.lean entry + minimal src/data/proofs/ehrhart-cube-proven-oq-05/{meta.json, index.ts} with status `formalized` (3 sorries, 3 inherited Ehrhart axioms — now logically consistent post-AXIOM-FIX).",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "S5 STATE-SYNC (2026-06-03, researcher-1, doc-only): refreshes 21-day-stale state.md head which was frozen at 'OBSERVE (S1 complete) / Iteration: 1' while 4 follow-on PREP iterations had merged 2026-05-13 (S2 PREP #18475, S4 PREP #18492, S2b PREP #18535, S2c PREP #18617; none updated state.md). Catalogues 5 merged PRs in one place. Next concrete deliverable identified: AXIOM-FIX (single-file ~5 LOC patch to Proofs/EhrhartPolynomials.lean per S2b PREP Fix B + Fix D, 0 cross-file ripple per S2c PREP audit) then S2 ACT (~80 LOC scaffold per S2 PREP blueprint). Both blocked on infra: host disk 5.1 Gi free / 100% capacity, below 10 Gi pre-flight threshold (same blocker observed on sibling spherical-law-of-sines-oq-03 S5 PREP this session, PR #22209). Bearer EhrhartPolynomials.lean SHA1 7f8a2695\u2026, axioms at lines 108/141/178 match S2 PREP audit verbatim. Iteration counter 1 \u2192 2 (catalog-only bump). 0 Lean / parent / lake-manifest / sibling JSON edits. See sessions/2026-06-03-s5-state-sync-post-prep-catalog.md for full catalog and \u00a74 next-action specifications. \n\nS1 (researcher-9, 2026-05-12): OBSERVE phase. Survey-only iteration establishing that OQ-05 has a structurally clean answer: the gallery's `picks_from_ehrhart` theorem (line 218 of `EhrhartPolynomials.lean`) already does the heavy lifting GIVEN the total-count hypothesis L_P(1) = A + b/2 + 1. OQ-05's actual technical content is the unconditional linear-term identity L_P(n) = A n\u00b2 + (b/2) n + 1, derivable from the three existing Ehrhart axioms in a 4-line algebraic argument: Macdonald reciprocity at n = -1 gives L_P(-1) = i; combined with leading coefficient = area and constant term = 1, the linear coefficient is determined as b/2. R1 (conditional Pick's theorem) is the recommended S2-S5 deliverable (~500 lines, 3 inherited Ehrhart axioms, 0 new axioms, 0 sorries on success). R2 unconditional version (discharging the 3 Ehrhart axioms) is ~3000+ lines, deferred to Mathlib roadmap. 5 worked-polygon numerical sanity examples verified including Macdonald reciprocity. 0 Lean files modified.",
+    "progressSummary": "S5 STATE-SYNC (2026-06-03, researcher-1, doc-only): refreshes 21-day-stale state.md head which was frozen at 'OBSERVE (S1 complete) / Iteration: 1' while 4 follow-on PREP iterations had merged 2026-05-13 (S2 PREP #18475, S4 PREP #18492, S2b PREP #18535, S2c PREP #18617; none updated state.md). Catalogues 5 merged PRs in one place. Next concrete deliverable identified: AXIOM-FIX (single-file ~5 LOC patch to Proofs/EhrhartPolynomials.lean per S2b PREP Fix B + Fix D, 0 cross-file ripple per S2c PREP audit) then S2 ACT (~80 LOC scaffold per S2 PREP blueprint). Both blocked on infra: host disk 5.1 Gi free / 100% capacity, below 10 Gi pre-flight threshold (same blocker observed on sibling spherical-law-of-sines-oq-03 S5 PREP this session, PR #22209). Bearer EhrhartPolynomials.lean SHA1 7f8a2695…, axioms at lines 108/141/178 match S2 PREP audit verbatim. Iteration counter 1 → 2 (catalog-only bump). 0 Lean / parent / lake-manifest / sibling JSON edits. See sessions/2026-06-03-s5-state-sync-post-prep-catalog.md for full catalog and §4 next-action specifications. \n\nS1 (researcher-9, 2026-05-12): OBSERVE phase. Survey-only iteration establishing that OQ-05 has a structurally clean answer: the gallery's `picks_from_ehrhart` theorem (line 218 of `EhrhartPolynomials.lean`) already does the heavy lifting GIVEN the total-count hypothesis L_P(1) = A + b/2 + 1. OQ-05's actual technical content is the unconditional linear-term identity L_P(n) = A n² + (b/2) n + 1, derivable from the three existing Ehrhart axioms in a 4-line algebraic argument: Macdonald reciprocity at n = -1 gives L_P(-1) = i; combined with leading coefficient = area and constant term = 1, the linear coefficient is determined as b/2. R1 (conditional Pick's theorem) is the recommended S2-S5 deliverable (~500 lines, 3 inherited Ehrhart axioms, 0 new axioms, 0 sorries on success). R2 unconditional version (discharging the 3 Ehrhart axioms) is ~3000+ lines, deferred to Mathlib roadmap. 5 worked-polygon numerical sanity examples verified including Macdonald reciprocity. 0 Lean files modified.",
     "builtItems": [
-      "research/problems/ehrhart-cube-proven-oq-05/problem.md (S1, ~410 lines): formal target, Q1/Q2/Q3 decomposition, three-route classification (R1 conditional \u2014 recommended for S2-S5; R2 unconditional \u2014 long-term Mathlib; R3 triangulation \u2014 separate OQ family), Mathlib + gallery infrastructure map at v4.26.0, numerical sanity for 5 polygons + Macdonald reciprocity check, anti-targets, no-edit guarantee, references (Pick 1899, Ehrhart 1962, Macdonald 1971, Stanley 1980, Beck-Robins 2015).",
-      "research/problems/ehrhart-cube-proven-oq-05/knowledge.md (S1, ~330 lines): S1 session summary, mathematical background (Ehrhart 1962, Macdonald 1971, Pick 1899, the Q1 4-line polynomial identity derivation made explicit), Mathlib + gallery API surface tables (available + missing), Lean skeleton sketch for S2 (3 theorem stubs), parallel-work check, risk register (4 risks for S2-S5 with mitigations), S\u221e Mathlib-roadmap notes for R2.",
+      "research/problems/ehrhart-cube-proven-oq-05/problem.md (S1, ~410 lines): formal target, Q1/Q2/Q3 decomposition, three-route classification (R1 conditional — recommended for S2-S5; R2 unconditional — long-term Mathlib; R3 triangulation — separate OQ family), Mathlib + gallery infrastructure map at v4.26.0, numerical sanity for 5 polygons + Macdonald reciprocity check, anti-targets, no-edit guarantee, references (Pick 1899, Ehrhart 1962, Macdonald 1971, Stanley 1980, Beck-Robins 2015).",
+      "research/problems/ehrhart-cube-proven-oq-05/knowledge.md (S1, ~330 lines): S1 session summary, mathematical background (Ehrhart 1962, Macdonald 1971, Pick 1899, the Q1 4-line polynomial identity derivation made explicit), Mathlib + gallery API surface tables (available + missing), Lean skeleton sketch for S2 (3 theorem stubs), parallel-work check, risk register (4 risks for S2-S5 with mitigations), S∞ Mathlib-roadmap notes for R2.",
       "research/problems/ehrhart-cube-proven-oq-05/state.md (S1, ~120 lines): OBSERVE phase, 5-stage R1 plan with future-status column, S2 next-action with concrete Lean structure, R2/R3 blocker documentation, iteration log, calibration note on `formalized` (3 inherited axioms) vs `verified` (0 axioms) future status framing.",
       "src/data/research/problems/ehrhart-cube-proven-oq-05.json (S1, this file): research index entry."
     ],
     "insights": [
       "OQ-05 has a structurally clean answer because the gallery ALREADY proves `picks_from_ehrhart` as a theorem (line 218 of `EhrhartPolynomials.lean`). The conditional reduction Pick = `picks_from_ehrhart(L_P(1) = A + b/2 + 1)` is done; only the unconditional linear-term identity is missing.",
       "The Q1 unconditional identity (`ehrhartPoly_2d_explicit`) derives from the existing Ehrhart axioms in 4 lines of algebra: Macdonald reciprocity at n = -1 gives L_P(-1) = i; combined with leading coefficient = area and constant term = 1, the linear coefficient is over-determined as b/2.",
-      "Explicit Q1 derivation: write L_P(n) = a\u2082 n\u00b2 + a\u2081 n + a\u2080; pin a\u2080 = 1 (constant term), a\u2082 = A (leading coefficient = volume). Macdonald @ n = -1: L_P(-1) = i means A - a\u2081 + 1 = i, so a\u2081 = A - i + 1. The polygon's total_eq field gives L_P(1) = i + b. Computing L_P(1) = A + a\u2081 + 1 = A + (A - i + 1) + 1 = 2A - i + 2. Setting equal: 2A - i + 2 = i + b, so A = i + b/2 - 1 (Pick's formula). The intermediate a\u2081 = A - i + 1 = (i + b/2 - 1) - i + 1 = b/2 is the textbook linear-term coefficient.",
+      "Explicit Q1 derivation: write L_P(n) = a₂ n² + a₁ n + a₀; pin a₀ = 1 (constant term), a₂ = A (leading coefficient = volume). Macdonald @ n = -1: L_P(-1) = i means A - a₁ + 1 = i, so a₁ = A - i + 1. The polygon's total_eq field gives L_P(1) = i + b. Computing L_P(1) = A + a₁ + 1 = A + (A - i + 1) + 1 = 2A - i + 2. Setting equal: 2A - i + 2 = i + b, so A = i + b/2 - 1 (Pick's formula). The intermediate a₁ = A - i + 1 = (i + b/2 - 1) - i + 1 = b/2 is the textbook linear-term coefficient.",
       "Q2 bridge: `PicksTheorem.SimpleLatticePolygon` and `EhrhartPolynomials.LatticePolygon` are parallel structures with non-identical signatures. `LatticePolygon` extends `LatticePolytope 2` (with lattice-point count function `latticePointCount`); `SimpleLatticePolygon` is a bare data structure. Bridge construction either constructively builds the `LatticePolytope 2` substructure (preferred) or introduces 1 bridge axiom (acceptable fallback).",
-      "Numerical sanity verifies the Q1 identity across 5 polygons: unit square (A=1, i=0, b=4, L_P(n) = n\u00b2 + 2n + 1 = (n+1)\u00b2, L_P(-1) = 0 = i \u2713), [0,2]\u00b2 (L_P(n) = 4n\u00b2 + 4n + 1 = (2n+1)\u00b2, L_P(-1) = 1 = i \u2713), unit right triangle (L_P(n) = (1/2)n\u00b2 + (3/2)n + 1, L_P(-1) = 0 = i \u2713), [0,3]\u00b2 (L_P(n) = 9n\u00b2 + 6n + 1 = (3n+1)\u00b2, L_P(-1) = 4 = i \u2713), pentagon (L_P(n) = 2n\u00b2 + 2n + 1, L_P(-1) = 1 = i \u2713). All five verify both Pick's formula and Macdonald reciprocity.",
-      "The S5 deliverable status will be honestly 'conditional-verified': 3 inherited Ehrhart axioms, 0 new axioms, 0 sorries. The standalone `picks_theorem` axiom in `PicksTheorem.lean` is shown to be REDUNDANT given the 3 Ehrhart axioms \u2014 a clean gallery-architecture contribution even though no new mathematics is formalized.",
+      "Numerical sanity verifies the Q1 identity across 5 polygons: unit square (A=1, i=0, b=4, L_P(n) = n² + 2n + 1 = (n+1)², L_P(-1) = 0 = i ✓), [0,2]² (L_P(n) = 4n² + 4n + 1 = (2n+1)², L_P(-1) = 1 = i ✓), unit right triangle (L_P(n) = (1/2)n² + (3/2)n + 1, L_P(-1) = 0 = i ✓), [0,3]² (L_P(n) = 9n² + 6n + 1 = (3n+1)², L_P(-1) = 4 = i ✓), pentagon (L_P(n) = 2n² + 2n + 1, L_P(-1) = 1 = i ✓). All five verify both Pick's formula and Macdonald reciprocity.",
+      "The S5 deliverable status will be honestly 'conditional-verified': 3 inherited Ehrhart axioms, 0 new axioms, 0 sorries. The standalone `picks_theorem` axiom in `PicksTheorem.lean` is shown to be REDUNDANT given the 3 Ehrhart axioms — a clean gallery-architecture contribution even though no new mathematics is formalized.",
       "Aristotle non-applicability for Q1 (statement choice) but borderline-applicability for Q1 (derivation): once the statement `ehrhartPoly_2d_explicit` is in place, the 4-line algebraic argument (apply Macdonald + linarith/ring) is the kind of routine derivation Aristotle handles well. Q2 (bridge construction) is definitely manual.",
       "R2 unconditional discharge is a Mathlib-contribution-scale undertaking: `ehrhart_theorem` (~1500 lines, Stanley generating function), `ehrhart_leading_coeff_volume` (~800 lines, Riemann sum), `ehrhart_macdonald_reciprocity` (~1000 lines, Brion decomposition). Total ~3300 lines, ~3+ months. Deferred."
     ],
@@ -79,9 +79,9 @@
       "S2 ACT (~80 lines, status `formalized` with 3 sorries + 3 inherited axioms): create Proofs/EhrhartCubeProvenOQ05.lean with imports (`Proofs.EhrhartPolynomials`, `Proofs.PicksTheorem`), three theorem stubs with `:= by sorry` proofs (`ehrhartPoly_2d_explicit`, `simpleLatticePolygon_to_latticePolygon`, `picks_theorem_derived`). Add Proofs.lean entry + minimal src/data/proofs/{meta.json, index.ts}. Verify file compiles.",
       "S3 ACT (~200 lines): Q1 (`ehrhartPoly_2d_explicit`). Strategy: (1) define `ehrhartPoly_2d_coeffs P` as a triple (A, b/2, 1); (2) use `ehrhart_leading_coeff_volume` to pin the leading coefficient; (3) use `ehrhart_constant_term` (already proven) to pin the constant; (4) use `ehrhart_macdonald_reciprocity` at n = -1 with the polygon's `total_eq` field to derive the linear-term coefficient. The 4-line algebraic derivation is the heart. May need ~50 lines of `Polynomial.eval` / `Polynomial.coeff` boilerplate.",
       "S4 ACT (~150 lines): Q2 bridge (`simpleLatticePolygon_to_latticePolygon`). Constructive route: define `LatticePolytope 2` for any `SimpleLatticePolygon` by using the `total_eq`-style hypothesis as the lattice-point count function at n = 1; for general n, invoke `ehrhart_theorem` to get the polynomial-existence claim. The constructive route may require an additional axiom or definitional choice; document carefully.",
-      "S5 ACT (~80 lines): main theorem `picks_theorem_derived`. Compose `simpleLatticePolygon_to_latticePolygon` (S4) + `ehrhartPoly_2d_explicit` (S3) + `picks_from_ehrhart` (already proven in gallery). 4-line proof chaining the three pieces. Status `conditional-verified` (3 inherited Ehrhart axioms, 0 new axioms, 0 sorries) \u2014 this is the OQ-05 deliverable.",
+      "S5 ACT (~80 lines): main theorem `picks_theorem_derived`. Compose `simpleLatticePolygon_to_latticePolygon` (S4) + `ehrhartPoly_2d_explicit` (S3) + `picks_from_ehrhart` (already proven in gallery). 4-line proof chaining the three pieces. Status `conditional-verified` (3 inherited Ehrhart axioms, 0 new axioms, 0 sorries) — this is the OQ-05 deliverable.",
       "S6+ STRETCH (~80 lines each, optional): explicit witnesses for unit square (verifies `picks_theorem_derived` recovers the unit-square Pick identity A=1, i=0, b=4) and for unit right triangle (A=1/2, i=0, b=3). Cross-checks between R1 and existing parent/sibling proofs.",
-      "S\u221e DEFERRED (R2 Mathlib roadmap, ~3300+ lines): discharge the 3 Ehrhart axioms. Sequence: (1) `ehrhart_theorem` via Stanley generating function (~1500 lines); (2) `ehrhart_leading_coeff_volume` via Riemann sum (~800 lines); (3) `ehrhart_macdonald_reciprocity` via Brion decomposition (~1000 lines). Each is a substantial standalone Mathlib contribution; total ~3+ months effort."
+      "S∞ DEFERRED (R2 Mathlib roadmap, ~3300+ lines): discharge the 3 Ehrhart axioms. Sequence: (1) `ehrhart_theorem` via Stanley generating function (~1500 lines); (2) `ehrhart_leading_coeff_volume` via Riemann sum (~800 lines); (3) `ehrhart_macdonald_reciprocity` via Brion decomposition (~1000 lines). Each is a substantial standalone Mathlib contribution; total ~3+ months effort."
     ]
   },
   "tags": [
@@ -109,11 +109,11 @@
   ],
   "references": {
     "papers": [
-      "G. A. Pick, Geometrisches zur Zahlenlehre, Sitzungsber. Lotos (Prag) 19 (1899), 311-319 \u2014 original Pick's theorem (Wiedijk #92).",
-      "E. Ehrhart, Sur les poly\u00e8dres rationnels homoth\u00e9tiques \u00e0 n dimensions, C. R. Acad. Sci. Paris 254 (1962), 616-618 \u2014 original Ehrhart polynomial.",
-      "I. G. Macdonald, Polynomials associated with finite cell-complexes, J. London Math. Soc. (2) 4 (1971), 181-192 \u2014 Ehrhart-Macdonald reciprocity L_{P\u00b0}(n) = (-1)^d L_P(-n).",
-      "R. P. Stanley, Decompositions of rational convex polytopes, Ann. Discrete Math. 6 (1980), 333-342 \u2014 h*-vector and generating function approach.",
-      "M. Beck, S. Robins, Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra, Springer UTM, 2nd ed. 2015 \u2014 standard textbook on Ehrhart theory."
+      "G. A. Pick, Geometrisches zur Zahlenlehre, Sitzungsber. Lotos (Prag) 19 (1899), 311-319 — original Pick's theorem (Wiedijk #92).",
+      "E. Ehrhart, Sur les polyèdres rationnels homothétiques à n dimensions, C. R. Acad. Sci. Paris 254 (1962), 616-618 — original Ehrhart polynomial.",
+      "I. G. Macdonald, Polynomials associated with finite cell-complexes, J. London Math. Soc. (2) 4 (1971), 181-192 — Ehrhart-Macdonald reciprocity L_{P°}(n) = (-1)^d L_P(-n).",
+      "R. P. Stanley, Decompositions of rational convex polytopes, Ann. Discrete Math. 6 (1980), 333-342 — h*-vector and generating function approach.",
+      "M. Beck, S. Robins, Computing the Continuous Discretely: Integer-Point Enumeration in Polyhedra, Springer UTM, 2nd ed. 2015 — standard textbook on Ehrhart theory."
     ],
     "urls": [
       "https://en.wikipedia.org/wiki/Pick%27s_theorem",
@@ -133,35 +133,35 @@
     {
       "path": "Proofs/EhrhartCubeProven.lean",
       "filename": "EhrhartCubeProven.lean",
-      "lineCount": 296,
-      "theoremCount": 14,
+      "lineCount": 297,
+      "theoremCount": 26,
       "axiomCount": 0,
-      "defCount": 5,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
     },
     {
-      "path": "Proofs/EhrhartPolynomials.lean",
-      "filename": "EhrhartPolynomials.lean",
-      "lineCount": 350,
-      "theoremCount": 12,
-      "axiomCount": 3,
-      "defCount": 8,
-      "sorryCount": 0,
+      "path": "Proofs/EhrhartCubeProvenOQ03.lean",
+      "filename": "EhrhartCubeProvenOQ03.lean",
+      "lineCount": 211,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartPolynomials.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ03.lean"
     },
     {
-      "path": "Proofs/PicksTheorem.lean",
-      "filename": "PicksTheorem.lean",
-      "lineCount": 470,
-      "theoremCount": 15,
-      "axiomCount": 1,
-      "defCount": 5,
-      "sorryCount": 0,
+      "path": "Proofs/EhrhartCubeProvenOQ04.lean",
+      "filename": "EhrhartCubeProvenOQ04.lean",
+      "lineCount": 776,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
     }
   ],
   "lastUpdated": "2026-06-03"

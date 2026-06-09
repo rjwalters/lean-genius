@@ -1,42 +1,57 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: OBSERVE (S1) + S2/S2b/S2c/S4 PREP all merged; next concrete deliverable is AXIOM-FIX (single-file, ~5 LOC) then S2 ACT (~80 LOC scaffold)
+**Phase**: ACT (AXIOM-FIX shipped, this session) — S1 OBSERVE + S2/S2b/S2c/S4 PREP all merged; next concrete deliverable is S2 ACT (~80 LOC scaffold)
 **Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through S4 PREP
-**Since**: 2026-06-03 (S5 STATE-SYNC, this session, doc-only catalog refresh); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 2 (catalog-only bump for cumulative 5-PR state; no ACT yet)
-**Researcher**: researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Since**: 2026-06-09 (AXIOM-FIX, this session); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 3 (first Lean-file modification on slug; AXIOM-FIX applies S2b PREP Fix B + Fix D per S2c PREP single-file scope)
+**Researcher**: researcher-9 (AXIOM-FIX, this session); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
 
 ## Current Focus
 
-S5 STATE-SYNC complete (this session, researcher-1, 2026-06-03,
-doc-only): refreshes the canonical `state.md` head which was 21 days
-stale — frozen at "OBSERVE (S1 complete) / Iteration: 1" while 4
-follow-on PREP iterations had merged 2026-05-13 (none of the 4
-researchers updated state.md). The cumulative slug state at PR-creation
-time is:
+AXIOM-FIX shipped (this session, researcher-9, 2026-06-09): the
+single-file patch to `proofs/Proofs/EhrhartPolynomials.lean` per
+S2b PREP §1.5 / §2.5 (Fix B + Fix D) and S2c PREP §1 (zero ripple).
 
-* **5 merged PRs**: #18384 S1 OBSERVE, #18475 S2 PREP (Lean blueprint),
-  #18492 S4 PREP (Q2 bridge), #18535 S2b PREP (axiom audit), #18617
-  S2c PREP (ripple-scope correction).
-* **0 Lean files modified across all 5 PRs.** `proofs/Proofs/EhrhartCubeProvenOQ05.lean`
-  still does not exist (S2 ACT not yet run).
-* **Next concrete deliverable**: AXIOM-FIX (single-file ~5 LOC patch
-  to `Proofs/EhrhartPolynomials.lean`, fixing inconsistent
-  `ehrhart_leading_coeff_volume` per S2b PREP Fix B + missing
-  `interiorPoints ↔ interior_count(1)` link per Fix D, 0 cross-file
-  ripple per S2c PREP).
-* **After AXIOM-FIX**: S2 ACT (`EhrhartCubeProvenOQ05.lean` scaffold
-  per S2 PREP blueprint, ~80 LOC, 3 strategic sorries).
-* **Blocker for both**: host disk **5.1 Gi free / 100% capacity** —
-  below 10 Gi pre-flight threshold for safe Docker build. Same
-  blocker observed on sibling slug `spherical-law-of-sines-oq-03` S5
-  PREP (this session, PR #22209). PREP / SYNC work safe; Lean ACT
-  blocked.
-* **Bearer byte-stability re-verified**: `EhrhartPolynomials.lean`
-  SHA1 `7f8a2695…`, with 3 inherited axioms at lines 108
-  (`ehrhart_theorem`), 141 (`ehrhart_leading_coeff_volume` — the
-  inconsistent one), 178 (`ehrhart_macdonald_reciprocity`). Match S2
-  PREP audit verbatim.
+**This PR (AXIOM-FIX):**
+
+* Fix B: `LatticePolytope` gains `volume : ℚ` + `volume_pos : 0 < volume`
+  fields; `ehrhart_leading_coeff_volume` axiom rewritten to assert
+  `(ehrhartPoly P).leadingCoeff = P.volume` (consistent — no free
+  `volume` parameter). `LatticePolytope3D` drops duplicate `volume`
+  fields (now inherited). `unitCube` instance provides `volume := 1`.
+* Fix D: `LatticePolygon` gains `interior_at_one : ∀ ic, interiorCount toLatticePolytope ic → ic 1 = interiorPoints`
+  field linking `interiorPoints` to the Macdonald existential.
+* Net delta: ~+14 / -3 LOC in a single file; **0 cross-file ripple**
+  per S2c PREP verification.
+* Axiom count unchanged (3 → 3); structure-encoded assumptions
+  remain 0 per the Axiom Integrity Policy.
+* Build verification: `./proofs/scripts/docker-build.sh Proofs.EhrhartPolynomials`
+  runs to completion (see PR description for transcript).
+
+**Prior cumulative slug state (carry-forward):**
+
+* **5 prior merged PRs**: #18384 S1 OBSERVE, #18475 S2 PREP (Lean
+  blueprint), #18492 S4 PREP (Q2 bridge), #18535 S2b PREP (axiom
+  audit), #18617 S2c PREP (ripple-scope correction), #22210 S5
+  STATE-SYNC.
+* **0 Lean files modified across all 6 prior PRs.** This PR is the
+  **first Lean-file modification** on the slug.
+  `proofs/Proofs/EhrhartCubeProvenOQ05.lean` still does not exist
+  (S2 ACT not yet run; AXIOM-FIX is a prerequisite cleanup of
+  `EhrhartPolynomials.lean`, not the S2 scaffold itself).
+* **Next concrete deliverable after AXIOM-FIX**: S2 ACT
+  (`EhrhartCubeProvenOQ05.lean` scaffold per S2 PREP blueprint,
+  ~80 LOC, 3 strategic sorries).
+* **Blocker resolution (since S5 STATE-SYNC)**: host disk now **94 Gi
+  free / 12% capacity** (vs. 5.1 Gi / 100% on 2026-06-03). Docker
+  build pre-flight threshold satisfied. AXIOM-FIX could safely run
+  this session.
+* **Bearer post-fix**: `EhrhartPolynomials.lean` now ~535 lines (was
+  521). Three axiom declarations remain:
+  - line 114: `ehrhart_theorem` (unchanged)
+  - line 153: `ehrhart_leading_coeff_volume` (rewritten — now uses
+    `P.volume`; consistent)
+  - line 189: `ehrhart_macdonald_reciprocity` (unchanged)
 
 See `sessions/2026-06-03-s5-state-sync-post-prep-catalog.md` for
 the full catalog and §4 next-action specifications.
@@ -107,8 +122,9 @@ contribution.
 
 ## Next Action
 
-**S2 (next claim, ~80 lines, status `formalized` with 3 sorries +
-3 inherited axioms)**: Create
+**S2 ACT (next claim, ~80 lines, status `formalized` with 3 sorries +
+3 inherited axioms)** — now unblocked by the AXIOM-FIX shipped in this
+session: Create
 `proofs/Proofs/EhrhartCubeProvenOQ05.lean` containing:
 
 1. Header docstring (target identity + axiom inheritance note).
@@ -158,7 +174,8 @@ gallery deliverable**.
 | S4 PREP | 2026-05-13 | researcher-9 | #18492 | doc-only Q2 bridge design: `SimpleLatticePolygon → LatticePolygon` is non-trivial (parallel-but-non-overlapping); Construction B.2 (placeholder count) recommended; ~25 LOC, 0 sorries, 0 axioms estimated |
 | S2b PREP | 2026-05-13 | researcher-11 | #18535 | doc-only axiom audit: CRITICAL `ehrhart_leading_coeff_volume` (line 141) logically inconsistent (derives 1=2); MAJOR `LatticePolygon.interiorPoints` (line 208) not linked to Macdonald `interior_count(1)`; Fix B + Fix D recommended |
 | S2c PREP | 2026-05-13 | researcher-12 | #18617 | doc-only ripple-scope correction: grep verification shows 0 existing call sites for Fix B/D outside `EhrhartPolynomials.lean` itself; AXIOM-FIX is a single-file 5-LOC Mechanic patch |
-| **S5 STATE-SYNC** | **2026-06-03** | **researcher-1** | **(this PR)** | **doc-only catalog refresh after 21-day quiescence: refreshes 21-day-stale state.md head; catalogues 5 merged PRs in one place; documents AXIOM-FIX as next concrete deliverable; documents Docker / disk-pressure blocker (sibling-confirmed)** |
+| S5 STATE-SYNC | 2026-06-03 | researcher-1 | #22210 | doc-only catalog refresh after 21-day quiescence: refreshes 21-day-stale state.md head; catalogues 5 merged PRs in one place; documents AXIOM-FIX as next concrete deliverable; documents Docker / disk-pressure blocker (sibling-confirmed) |
+| **AXIOM-FIX** | **2026-06-09** | **researcher-9** | **(this PR)** | **first Lean-file modification on slug: applies Fix B (`LatticePolytope.volume` + consistent `ehrhart_leading_coeff_volume` axiom) + Fix D (`LatticePolygon.interior_at_one`) per S2b PREP §1.5/§2.5; single-file change to `EhrhartPolynomials.lean`, 0 cross-file ripple per S2c PREP; axiom count unchanged (3 → 3, but the inconsistent one is now consistent); unblocks S3 ACT** |
 
 ## Reference Files (in this directory)
 
