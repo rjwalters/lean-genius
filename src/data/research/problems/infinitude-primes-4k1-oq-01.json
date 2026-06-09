@@ -29,13 +29,13 @@
     "goal": "State and prove a clean Lean theorem for Fermat's two-squares characterization of odd primes, reusing Mathlib's SumTwoSquares infrastructure rather than rebuilding the classical proof."
   },
   "currentState": {
-    "phase": "COMPLETE at Lean-file level (S2 SCAFFOLD shipped + build-verified); awaiting enricher gallery-entry creation",
+    "phase": "SUPERSEDED by `fermat-two-squares` gallery slug (Wiedijk #20) — S2 wrapper kept as odd-prime-only pedagogical variant with header redirect",
     "since": "2026-05-30T00:00:00Z",
-    "iteration": 3,
-    "focus": "S3 STATE-SYNC (researcher-1, 2026-06-02): Doc-only. Confirms no Lean drift since S2 merge (PR #21983, 2026-06-02T07:23Z UTC, ~12h prior to iter-3 claim); 0 subsequent commits on proofs/Proofs/InfinitudePrimes4k1OQ01.lean. Corrects S2's own 10-LOC tracking drift — both state.md and this JSON had claimed file at 74 LOC, wc -l reports 84 (drift baked in at S2 write-time, not introduced by later edits). Confirms enricher gallery entry src/data/proofs/infinitude-primes-4k1-oq-01/ still absent at HEAD 6b26c5ba081. Bearer SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 drift = 0. No further researcher ACT warranted per S2 §Next Action (which explicitly anticipated this STATE-SYNC path). S2 historical record preserved with LOC correction.",
+    "iteration": 4,
+    "focus": "S4 SUPERSEDED-BY-FERMAT-TWO-SQUARES (researcher-1, 2026-06-09): Doc-only. Surveying gallery before re-iterating revealed proofs/Proofs/FermatTwoSquares.lean (gallery slug fermat-two-squares, Wiedijk #20, 201 LOC, 6 theorems) already proves the OQ-01 biconditional in a strictly stronger form ((∃ a b, a²+b² = p) ↔ p % 4 ≠ 3 — covers p=2) using the same Mathlib bearer (Nat.Prime.sq_add_sq) and the same interval_cases (n%4) <;> case-analysis technique. The S1 author missed this when surveying. This iteration: (1) documents the supersession in state.md, this JSON, knowledge.md, and a new session file; (2) adds a 9-line header redirect to InfinitudePrimes4k1OQ01.lean (84 → 93 LOC; 0 axioms / 0 sorries unchanged); (3) recommends slug closure as completed. Canonical home is src/data/proofs/fermat-two-squares/; src/data/proofs/infinitude-primes-4k1-oq-01/ should remain absent. Bearer SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 drift = 0 across 10 days since S1.",
     "blockers": [],
-    "nextAction": "Gallery entry creation (enricher task, NOT researcher): create src/data/proofs/infinitude-primes-4k1-oq-01/ with meta.json, annotations.source.json, index.ts. Once gallery entry is created post-merge, slug can move from in-progress to completed via claim-problem.sh update <slug> completed. No further researcher iteration warranted; if a researcher re-claims before the enricher acts, only another doc-only STATE-SYNC is appropriate (and only if material new state has arrived — per memory feedback _back_to_back_statesyncs_at_unchanged_state_is_busywork).",
-    "lastUpdate": "2026-06-02T19:45:00Z",
+    "nextAction": "Mark slug completed via scripts/research/claim-problem.sh update infinitude-primes-4k1-oq-01 completed, then release claim. No enricher gallery entry should be created at src/data/proofs/infinitude-primes-4k1-oq-01/ — that would duplicate the existing fermat-two-squares gallery proof. Optional enricher follow-up (enricher lane, not blocking): add crossReferences in src/data/proofs/fermat-two-squares/meta.json pointing to infinitude-primes-4k1, and/or rewrite infinitude-primes-4k1/meta.json openQuestions §0 from forward-looking (Can…) to backward-looking (See fermat-two-squares).",
+    "lastUpdate": "2026-06-09T17:20:00Z",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -106,5 +106,8 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
     }
-  ]
+  ],
+  "attemptCounts": {
+    "total": 3
+  }
 }

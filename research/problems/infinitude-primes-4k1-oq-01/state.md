@@ -1,11 +1,80 @@
 # Research State: infinitude-primes-4k1-oq-01
 
 ## Current State
-**Phase**: COMPLETE at Lean-file level (S2 SCAFFOLD shipped + build-verified); awaiting enricher gallery-entry creation
+**Phase**: SUPERSEDED by `fermat-two-squares` gallery slug — S2 wrapper kept as odd-prime-only pedagogical variant with header redirect; slug to be marked `completed`
 **Path**: full
 **Since**: 2026-05-30 (S1 OBSERVE; problem created 2026-04-12T14:53:27-07:00, 48d idle prior to S1)
-**Last Updated**: 2026-06-02 (S3 STATE-SYNC — confirm no drift since S2; correct 74→84 LOC tracking error; researcher-1)
-**Iteration**: 3 (S3 STATE-SYNC)
+**Last Updated**: 2026-06-09 (S4 SUPERSEDED-BY-FERMAT-TWO-SQUARES — researcher-1)
+**Iteration**: 4 (S4 SUPERSEDED — doc-only)
+
+## Iteration 4 (2026-06-09T17:20Z, researcher-1): S4 SUPERSEDED-BY-FERMAT-TWO-SQUARES — doc-only
+
+Surveying the gallery before producing the awaited enricher artifact revealed
+that `proofs/Proofs/FermatTwoSquares.lean` (gallery slug `fermat-two-squares`,
+Wiedijk #20, 201 LOC, 6 theorems) **already proves the OQ-01 problem statement
+in a strictly stronger form**, using the same Mathlib bearer
+(`Nat.Prime.sq_add_sq`) and the same `interval_cases (n % 4) <;>` case-analysis
+technique. The S1 author missed this when surveying. This iteration:
+
+1. **Documents the supersession** in this state file, the JSON, knowledge.md,
+   and a new session file
+   (`sessions/2026-06-09-s4-superseded-by-fermat-two-squares.md`).
+
+2. **Adds a header redirect** to `proofs/Proofs/InfinitudePrimes4k1OQ01.lean`
+   (9-line docstring addition, no body changes; 84 → 93 LOC; 0 axioms /
+   0 sorries unchanged). The redirect names `FermatTwoSquares.lean` as
+   canonical, lists its 4 main theorems, and points to this session file.
+
+3. **Recommends slug closure as `completed`** rather than waiting for an
+   enricher artifact at `src/data/proofs/infinitude-primes-4k1-oq-01/`.
+   Creating that artifact would duplicate `src/data/proofs/fermat-two-squares/`.
+
+### Supersession evidence (summary; full table in session file)
+
+| | OQ-01 S2 ship | `fermat-two-squares` |
+|---|---|---|
+| Lean LOC | 84 (now 93 after S4 header) | 201 |
+| Top-level decls | 2 | 6 |
+| Main biconditional | `p odd prime → p ≠ 2 → (p % 4 = 1 ↔ …)` | `(∃ a b, a²+b² = p) ↔ p % 4 ≠ 3` (covers `p = 2`) |
+| Mathlib bearer | `Nat.Prime.sq_add_sq` | `Nat.Prime.sq_add_sq` (same) |
+| Squares-mod-4 helper | `sq_mod_four` via `interval_cases (n % 4)` | inlined, same `interval_cases a%4` / `interval_cases b%4` |
+| Gallery entry | absent | present (Wiedijk #20) |
+
+### Why this is not just a STATE-SYNC
+
+The S3 nextAction and JSON `currentState.nextAction` both warned:
+> *back_to_back_statesyncs_at_unchanged_state_is_busywork — only act if
+> material new state has arrived.*
+
+Material new state has arrived: the discovery that the OQ-01 problem
+statement is already answered by `fermat-two-squares`. This obsoletes the
+S3 premise that an enricher artifact is awaited — that artifact should
+not be created.
+
+### What this iteration is NOT
+
+- **Not** a deletion of `InfinitudePrimes4k1OQ01.lean` (Hermit's lane).
+- **Not** an enricher gallery entry; `src/data/proofs/infinitude-primes-4k1-oq-01/`
+  is intentionally **not** created.
+- **Not** an edit to `fermat-two-squares` cross-references (enricher's lane).
+- **Not** a Lean build re-verification: only the docstring changed; proof
+  body is byte-identical to S2; S2's 3062/3062 build at lake SHA
+  `2df2f0150c…` stands.
+
+### Files changed by this iteration
+
+- `proofs/Proofs/InfinitudePrimes4k1OQ01.lean` — header docstring only;
+  84 → 93 LOC; 0 axioms / 0 sorries unchanged.
+- `research/problems/infinitude-primes-4k1-oq-01/state.md` — this file.
+- `src/data/research/problems/infinitude-primes-4k1-oq-01.json` —
+  iteration 3 → 4, phase → SUPERSEDED, lastUpdate now, attemptCounts
+  total 2 → 3.
+- `research/problems/infinitude-primes-4k1-oq-01/knowledge.md` — first
+  real insights / dead-ends content (was placeholder).
+- `research/problems/infinitude-primes-4k1-oq-01/sessions/2026-06-09-s4-superseded-by-fermat-two-squares.md` —
+  new session file.
+
+## Iteration 3 (2026-06-02T19:45Z, researcher-1): S3 STATE-SYNC — no drift since S2 + correct file-count tracking (doc-only)
 
 ## Iteration 3 (2026-06-02T19:45Z, researcher-1): S3 STATE-SYNC — no drift since S2 + correct file-count tracking (doc-only)
 
@@ -84,30 +153,40 @@ These are exactly the `omega`-hypothesis-enrichment refinements the S1 §5 risk 
 
 ## Active Approach
 
-**Approach 1 (Direct Mathlib wrapper)** — per S1 PR #21168 §4. **SHIPPED**. Implementation verbatim from S1 blueprint with two ≤2-LOC paste-time refinements.
+**Approach 1 (Direct Mathlib wrapper)** — per S1 PR #21168 §4. **SHIPPED at S2 and kept as odd-prime-only pedagogical variant.** S4 supersession finding: an equivalent (and strictly more general) Mathlib wrapper already exists at `proofs/Proofs/FermatTwoSquares.lean` under gallery slug `fermat-two-squares`. The OQ-01 wrapper is mathematically redundant but retained with a header redirect.
 
 ## Attempt Count
 
-- Total attempts: 1 (S2 SCAFFOLD ACT — successful first attempt)
+- Total attempts: 2 (S2 SCAFFOLD ACT — successful first attempt; S4 supersession audit — doc-only outcome)
 - Current approach attempts: 1
-- Approaches tried: 1 (Approach 1 succeeded; no other approaches attempted)
+- Approaches tried: 1 (Approach 1 succeeded; supersession confirmed at S4)
 
 ## Blockers
 
-None. Slug is substantively complete at the Lean-file level.
+None. Slug is mathematically complete (via existing `fermat-two-squares` gallery proof) and ready to be marked `completed`.
 
 ## Next Action
 
-**Gallery entry creation** (enricher task, NOT researcher): create `src/data/proofs/infinitude-primes-4k1-oq-01/` with `meta.json`, `annotations.source.json`, `index.ts`. This is the enricher's lane per CLAUDE.md role split.
+**Slug closure**: after the S4 PR is opened, run
+`scripts/research/claim-problem.sh update infinitude-primes-4k1-oq-01 completed`
+to move the slug into the `completed` tier alongside its mathematical
+content's canonical home (`fermat-two-squares`). Then release the claim.
 
-**Slug decommission readiness**: once gallery entry is created (post-merge), the slug can move from `in-progress` to `completed` via `claim-problem.sh update <slug> completed`. Until then, status stays `in-progress`.
+**No enricher gallery entry**: `src/data/proofs/infinitude-primes-4k1-oq-01/`
+should intentionally remain absent. The canonical home is
+`src/data/proofs/fermat-two-squares/`.
 
-If a researcher claims this slug for an S3 iteration before the enricher acts, a sensible doc-only sweep is a STATE-SYNC confirming no drift between research artifacts. No further ACT iteration is warranted.
+**Optional enricher follow-up** (enricher's lane, not blocking S4 closure):
+- Add a `crossReferences` entry in `src/data/proofs/fermat-two-squares/meta.json`
+  pointing to `infinitude-primes-4k1` (the matching openQuestion §0).
+- Optionally rewrite `infinitude-primes-4k1/meta.json` openQuestions §0 from
+  forward-looking ("Can…") to backward-looking ("See `fermat-two-squares`").
 
 ## Session Log
 
 | Iter | PR | Type | Author | Title summary |
 |------|------|------|--------|---------------|
-| S1 | #21168 (MERGED) | OBSERVE | researcher-1 | Mathlib `SumTwoSquares.lean` API pin-survey at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; 6 bearers pin-verified (F1 `Nat.Prime.sq_add_sq` + 5 supporting); paste-ready S2 SCAFFOLD Lean (~50 LOC, 0 sorries) (doc-only) |
+| S1 | #21168 (MERGED) | OBSERVE | researcher-1 | Mathlib `SumTwoSquares.lean` API pin-survey at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; 6 bearers pin-verified (F1 `Nat.Prime.sq_add_sq` + 5 supporting); paste-ready S2 SCAFFOLD Lean (~50 LOC, 0 sorries) (doc-only). **Note: did not search for an existing `fermat-two-squares` gallery slug; supersession caught at S4.** |
 | S2 | #21983 (MERGED) | ACT | researcher-1 | SCAFFOLD shipped: `proofs/Proofs/InfinitudePrimes4k1OQ01.lean` 84 LOC, 0 axioms, 0 sorries; `Proofs.lean` aggregator updated. Build-verified 3062/3062 jobs in Docker at lake-pinned SHA `2df2f0150c…` (9.1s compile via cache hit). Two ≤2-LOC `omega`-hypothesis-enrichment refinements at paste time. |
-| S3 | this PR | STATE-SYNC | researcher-1 | Doc-only: confirm no Lean drift since S2 merge (~12h prior); correct 74→84 LOC tracking error in state.md + JSON; confirm enricher gallery entry still absent; bearer pin SHA `2df2f0150c…` drift = 0. No further researcher ACT warranted per S2 §"Next Action". |
+| S3 | #22132 (MERGED) | STATE-SYNC | researcher-1 | Doc-only: confirm no Lean drift since S2 merge (~12h prior); correct 74→84 LOC tracking error in state.md + JSON; confirm enricher gallery entry still absent; bearer pin SHA `2df2f0150c…` drift = 0. No further researcher ACT warranted per S2 §"Next Action". |
+| S4 | this PR | SUPERSEDED | researcher-1 | Doc-only: surveying gallery before re-iterating revealed `proofs/Proofs/FermatTwoSquares.lean` already proves the OQ-01 biconditional in a strictly stronger form (covers `p = 2`, 6 theorems vs 2, Wiedijk #20) using the same Mathlib bearer (`Nat.Prime.sq_add_sq`) and the same `interval_cases (n % 4)` technique. Added 9-line header redirect to OQ-01 Lean file (84 → 93 LOC; 0 axioms / 0 sorries unchanged). Recommends slug → `completed` without separate gallery entry. Bearer SHA drift = 0 across 10 days since S1. |
