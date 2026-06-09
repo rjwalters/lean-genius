@@ -1,10 +1,60 @@
 # Current State
 
-**Phase**: S6 ACT — descFactorial bridge shipped (`probAllDistinct_eq_descFactorial_div`, +30 LOC, Docker 7744 jobs)
-**Since**: 2026-05-31 (S6 ACT by researcher-1)
-**Iteration**: 9
+**Phase**: S8 PREP — 9-day STATE-SYNC + tight Paley-Zygmund route choice (Y-α combinatorial direct over Y-β Mathlib lift)
+**Since**: 2026-06-09 (S8 PREP by researcher-11)
+**Iteration**: 10
 
-## S6 ACT update (this PR, 2026-05-31, researcher-1, descFactorial bridge)
+## S8 PREP update (this PR, 2026-06-09, researcher-11, 9-day STATE-SYNC)
+
+Doc-only catch-up after 9 days of file-byte stability:
+
+- `proofs/Proofs/BirthdayProblemOQ01OQ02.lean`: byte-stable since
+  PR #21601 (commit `a1ab1a83cdd`, 2026-05-31). 235 LOC / 5 theorems
+  (4 public + 1 private) / 0 sorries / 0 axioms.
+- Lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`):
+  **26-day window** with zero drift. All 9 named bearers from S4 ACT
+  + S6 ACT carry forward by the lake-manifest-byte-stability argument.
+- No open PR contention on either the `.lean` file or the companion
+  `src/data/research/problems/birthday-problem-oq-01-oq-02.json`.
+
+This iteration ships:
+
+1. **Math re-derivation of the S5 target formula.** Confirms the
+   `E[X²] = E[X] + C(n,2)·(C(n,2) − 1) / d²` claim from state.md
+   "Next Action" is **exact** (not a disjoint-pairs approximation),
+   because for the birthday problem the indicators
+   `I_{ij} := 𝟙[f(i) = f(j)]` are pairwise uncorrelated despite not
+   being independent (case-split over `|{i,j} ∩ {i',j'}|`).
+2. **Numerical recheck.** At `n = 23, d = 365`: current S4 ACT lower
+   bound `0.40939` vs S5 ACT target `0.41005` → gain Δ ≈ 0.00066
+   (slightly larger than the original 0.0003 estimate).
+3. **Route choice for S5 ACT.** Recommend **Route Y-α** (combinatorial
+   direct via `Finset.sum_mul_sq_le_sq_mul_sq` Cauchy-Schwarz +
+   descFactorial bridge) over **Route Y-β** (Mathlib `Probability.Variance`
+   lift). Y-α stays in already-verified API and reuses S6 ACT's
+   bridge. Estimated LOC drops from the original ~120 monolith to
+   70–90 split over two ACT PRs.
+4. **Three-step S5 staging** (`S5a PREP / S5b ACT / S5c ACT`) so each
+   PR is small and Docker-verifiable.
+5. **Failure-mode register extension.** Add F10 (Nat.choose cast
+   residue → stay in `k·(k−1)` arithmetic) and F11 (Cauchy-Schwarz
+   bearer name TBD; flag for S5b PREP audit).
+
+**Bearer pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — unchanged
+since v4.26.0 freeze (2026-05-14, now 26 days stable).
+
+**Next Action**: **S5b PREP** — bearer audit for `Finset`-level
+Cauchy-Schwarz at v4.26.0 (`Finset.sum_mul_sq_le_sq_mul_sq` vs
+alternatives) + paste-ready scaffold for `expected_pairs_sq_eq`
+closed-form `E[X²]` helper (~40 LOC, LOW risk).
+
+See `sessions/2026-06-09-s8-prep-9day-state-sync-and-px-target-refinement.md`
+for the full math re-derivation, route comparison, LOC budget split,
+and updated failure-mode register.
+
+---
+
+## S6 ACT update (PR #21601, 2026-05-31, researcher-1, descFactorial bridge)
 
 Ships the LOW-risk follow-on flagged by state.md "Next Action" — the
 `probAllDistinct ↔ descFactorial` bridge, as a single ~22-line theorem
@@ -262,11 +312,47 @@ theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
 | S4   | 2026-05-16 | researcher-?  | #19422 | ACT — `probCollision_ge_paley_zygmund` + private bridge; +61 LOC (143→203); Docker 7744 jobs; 0/0/0; merged 2026-05-16T04:40:14Z       |
 | S6   | 2026-05-16 | researcher-10 | #19430 | STATE-SYNC — absorb S4 ACT merge; state.md head + JSON 13-field refresh + knowledge Insight 6 (F-extra trap); doc-only                  |
 | S7   | 2026-05-30 | researcher-1  | #21311 | PREP — 14-day bearer drift recheck (3-bearer spot check; ZERO drift; Docker recovered)                                                 |
-| S6 ACT| 2026-05-31 | researcher-1  | (this) | ACT — `probAllDistinct_eq_descFactorial_div` bridge; +30 LOC (205→235); Docker 7744 jobs; 0/0/0; zero iter-1 failure modes              |
+| S6 ACT| 2026-05-31 | researcher-1  | #21601 | ACT — `probAllDistinct_eq_descFactorial_div` bridge; +30 LOC (205→235); Docker 7744 jobs; 0/0/0; zero iter-1 failure modes              |
+| S8 PREP| 2026-06-09 | researcher-11 | (this) | PREP — 9-day STATE-SYNC + math re-derivation of E[X²] formula + Route Y-α vs Y-β choice + 3-step S5 staging plan; doc-only             |
 
 ## Next Action
 
-**S5 PREP — Tight Paley-Zygmund (Path Y elaboration)** (next non-STATE-SYNC iteration).
+**S5b PREP — Cauchy-Schwarz bearer audit + `expected_pairs_sq_eq` scaffold** (next iteration, doc-only).
+
+Audit the Mathlib v4.26.0 surface for `Finset`-level Cauchy-Schwarz:
+
+- Primary candidate: `Finset.sum_mul_sq_le_sq_mul_sq` (or its
+  `Real.inner_mul_le_norm_mul_norm` Finset specialisation).
+- Secondary: hand-rolled via `Finset.inner_mul_le_norm_mul_norm`
+  (if the above is missing).
+
+Then produce a paste-ready scaffold for the helper
+
+```lean
+lemma expected_pairs_sq_eq (k d : ℕ) (_hd : 0 < d) :
+    -- E[X²] over uniform `Fin n → Fin d`, in closed form
+    ((1 : ℝ) / (d : ℝ)^k) *
+      ∑ f : Fin k → Fin d, (collisionCount f : ℝ)^2
+      = (k : ℝ) * ((k : ℝ) - 1) / (2 * (d : ℝ))
+        + ((k : ℝ) * ((k : ℝ) - 1) / 2)
+          * ((k : ℝ) * ((k : ℝ) - 1) / 2 - 1) / (d : ℝ)^2
+```
+
+(or its OQ02-product equivalent via S6 ACT's descFactorial bridge).
+
+**LOC budget**: ~40 LOC for the helper; S5c ACT then chains in
+~40 more LOC for the closed-form
+`probCollision_ge_paley_zygmund_tight`.
+
+**Risk**: LOW-MEDIUM — main risk is the Cauchy-Schwarz bearer name
+(F11 above). If the named bearer is missing, fall back to a 6-line
+Lagrange identity proof.
+
+**Original "S5 PREP — Tight Paley-Zygmund (Path Y elaboration)" superseded by this S8 PREP route choice. Retained below for context.**
+
+---
+
+### Superseded — original "S5 PREP" target (Path Y monolith)
 
 Tighten the lower-bound denominator from `2d + k(k-1)` (current S4 ACT) to `2d + k(k-1) - 2` using exact second-moment formula:
 
