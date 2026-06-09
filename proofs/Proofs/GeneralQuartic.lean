@@ -164,6 +164,115 @@ axiom ferrari_factorization_backward (p q r m α β y : ℂ)
     (h : (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)) :
     y^4 + p * y^2 + q * y + r = 0
 
+/-- **Ferrari factorization polynomial identity** (S7 ACT, 2026-06-09).
+
+The product of the two Ferrari factors equals the depressed quartic
+provided three "Vieta-completion" conditions hold:
+
+* `hα  : α² = 2m + p`        (the `y²` coefficient match);
+* `hβ1 : 2 α β = q`          (the `y` coefficient match);
+* `hβ2 : (p+m)² − β² = r`    (the constant coefficient match).
+
+This is a pure polynomial identity in `(y, p, q, r, m, α, β)` over `ℂ`,
+dischargeable by `linear_combination` from the three hypotheses (no use
+of `α ≠ 0` or the resolvent cubic equation is required at this level).
+
+It is the algebraic substrate of sound Ferrari factorization theorems:
+when `α ≠ 0`, `hβ1` follows from `hβ : α ≠ 0 → β = q/(2α)`, and `hβ2`
+follows from `hα`, `hβ1`, and the resolvent cubic equation `hm` (after
+multiplying by `4α²` and cancelling, see `ferrari_hβ2_of_resolvent`).
+
+**Residual axiom gap closed by this theorem.** The existing
+`ferrari_factorization_forward / backward` axioms (S6 BUGFIX,
+2026-06-04) repaired the `p+m` vs `p/2+m` constant-term sign of the
+factor expressions, but they still admit a degenerate-case
+counterexample at `α = 0`: there `hβ` is vacuous, so `β` may be
+arbitrary, but the conclusion's factorization actually requires
+`β² = (p+m)² − r`. The identity-based formulation below imposes that
+constant-coefficient match (`hβ2`) directly, making both directions
+provably sound. See
+`sessions/2026-06-09-s7-act-ferrari-factorization-id-sound-discharge.md`. -/
+theorem ferrari_factorization_id (p q r m α β y : ℂ)
+    (hα : α^2 = 2 * m + p)
+    (hβ1 : 2 * α * β = q)
+    (hβ2 : (p + m)^2 - β^2 = r) :
+    (y^2 + p + m - α * y + β) * (y^2 + p + m + α * y - β) =
+      y^4 + p * y^2 + q * y + r := by
+  linear_combination (-y^2) * hα + y * hβ1 + hβ2
+
+/-- **Resolvent-cubic-to-`hβ2` bridge under `α ≠ 0`** (S7 ACT, 2026-06-09).
+
+Given the Ferrari setup with `α ≠ 0` and `2αβ = q`, the resolvent cubic
+equation `hm` implies the constant-coefficient match `(p+m)² − β² = r`.
+
+Proof: multiply the target through by `4 α²` to obtain a polynomial
+identity, dischargeable by `linear_combination` from `hα`, `hβ1`, and
+`hm`; then cancel `4 α² ≠ 0` (uses `α ≠ 0`). -/
+theorem ferrari_hβ2_of_resolvent (p q r m α β : ℂ)
+    (hα : α^2 = 2 * m + p)
+    (hα_ne : α ≠ 0)
+    (hβ1 : 2 * α * β = q)
+    (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0) :
+    (p + m)^2 - β^2 = r := by
+  have hα2_ne : α^2 ≠ 0 := pow_ne_zero 2 hα_ne
+  have h4α2_ne : (4 * α^2 : ℂ) ≠ 0 := mul_ne_zero (by norm_num) hα2_ne
+  have key : 4 * α^2 * ((p + m)^2 - β^2 - r) = 0 := by
+    linear_combination (4 * (p + m)^2 - 4 * r) * hα - (2 * α * β + q) * hβ1 + hm
+  have heq : 4 * α^2 * ((p + m)^2 - β^2 - r) = 4 * α^2 * 0 := by
+    rw [mul_zero]; exact key
+  have h0 : (p + m)^2 - β^2 - r = 0 := mul_left_cancel₀ h4α2_ne heq
+  linear_combination h0
+
+/-- **Ferrari factorization, backward direction, non-degenerate case**
+(S7 ACT, 2026-06-09).
+
+The backward direction of `ferrari_factorization` under the strengthened
+hypothesis `α ≠ 0`. **Proved as a theorem** (no axiom appeal), via
+`ferrari_factorization_id` and `ferrari_hβ2_of_resolvent`. Replaces
+`ferrari_factorization_backward` in the case it is actually used by
+downstream theorems (where `α = Complex.cpow (2m + p) (1/2)` with
+`2m + p ≠ 0`, hence `α ≠ 0`). -/
+theorem ferrari_factorization_backward_ne (p q r m α β y : ℂ)
+    (hα : α^2 = 2 * m + p)
+    (hα_ne : α ≠ 0)
+    (hβ : α ≠ 0 → β = q / (2 * α))
+    (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
+    (h : (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)) :
+    y^4 + p * y^2 + q * y + r = 0 := by
+  have hβ_eq : β = q / (2 * α) := hβ hα_ne
+  have hβ1 : 2 * α * β = q := by
+    rw [hβ_eq]; field_simp
+  have hβ2 : (p + m)^2 - β^2 = r :=
+    ferrari_hβ2_of_resolvent p q r m α β hα hα_ne hβ1 hm
+  have hid := ferrari_factorization_id p q r m α β y hα hβ1 hβ2
+  rcases h with hF1 | hF2
+  · rw [hF1, zero_mul] at hid
+    exact hid.symm
+  · rw [hF2, mul_zero] at hid
+    exact hid.symm
+
+/-- **Ferrari factorization, forward direction, non-degenerate case**
+(S7 ACT, 2026-06-09).
+
+The forward direction of `ferrari_factorization` under the strengthened
+hypothesis `α ≠ 0`. Proved using `ferrari_factorization_id` and the
+no-zero-divisor property of `ℂ`. -/
+theorem ferrari_factorization_forward_ne (p q r m α β y : ℂ)
+    (hα : α^2 = 2 * m + p)
+    (hα_ne : α ≠ 0)
+    (hβ : α ≠ 0 → β = q / (2 * α))
+    (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
+    (h : y^4 + p * y^2 + q * y + r = 0) :
+    (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0) := by
+  have hβ_eq : β = q / (2 * α) := hβ hα_ne
+  have hβ1 : 2 * α * β = q := by
+    rw [hβ_eq]; field_simp
+  have hβ2 : (p + m)^2 - β^2 = r :=
+    ferrari_hβ2_of_resolvent p q r m α β hα hα_ne hβ1 hm
+  have hid : (y^2 + p + m - α * y + β) * (y^2 + p + m + α * y - β) = 0 := by
+    rw [ferrari_factorization_id p q r m α β y hα hβ1 hβ2]; exact h
+  exact mul_eq_zero.mp hid
+
 /-- **Resolvent Cubic Has Root** (formerly axiom, now proved)
 By the Fundamental Theorem of Algebra, every polynomial of degree >= 1 over ℂ has a root.
 Since the resolvent cubic has degree 3 (leading coefficient 8 ≠ 0), it has a root. -/
