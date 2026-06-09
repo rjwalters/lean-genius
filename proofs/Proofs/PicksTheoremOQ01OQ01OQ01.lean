@@ -855,4 +855,194 @@ theorem exists_nonvertex_lattice_point_of_edgeGCD_ge_two
       rw [hdx0, hdy0]; rfl
     omega
 
+-- ════════════════════════════════════════════════════════════════
+-- SECTION XI (S3b-act-3): No Edge-Interior Witness When `edgeGCD = 1`
+--                          (Case (a) Converse)
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Primitive edges have no strict-interior lattice points
+
+The converse of `exists_nonvertex_lattice_point_of_edgeGCD_ge_two`
+(S3b-act-2 Case (a)).  When edge `i` of `T` has `edgeGCD i = 1`, the
+lattice-point segment along that edge consists of **exactly** its two
+endpoints, so the strict interior of the edge contains no lattice point.
+
+This completes the edge-interior characterisation for the future
+Pick's-theorem induction: for any non-degenerate primitive lattice
+triangle, every edge has `edgeGCD = 1` (by `primitive_edgeGCD_eq_one`),
+hence every edge has no interior lattice point — the search for
+non-vertex lattice points must move to the geometric interior, where
+`primitive_no_strict_interior` likewise rules them out.
+
+## Proof strategy
+
+`card_latticeSegmentPoints v w = edgeGCD i + 1`.  When `edgeGCD i = 1`,
+this gives `card = 2`.  Both endpoints `v = vEdgeStart i` and
+`w = vEdgeEnd i` lie in the segment (`k = 0` and `k = g = 1`
+parametrisations), and they are distinct (`v = w` would force
+`Int.gcd 0 0 = 0 ≠ 1`).  So `{v, w} ⊆ segment` with both sides of
+cardinality `2`, hence `segment = {v, w}`.  Any `p ∈ segment` must
+therefore equal `v` or `w`, contradicting the strict-interior
+constraints `p ≠ v` and `p ≠ w`.
+-/
+
+namespace LatticeTriangle
+
+/-- The start vertex `v` lies in the lattice segment from `v` to `w`,
+    witnessed by the `k = 0` parameter. -/
+lemma vStart_mem_latticeSegmentPoints (v w : ℤ × ℤ) :
+    v ∈ latticeSegmentPoints v w := by
+  unfold latticeSegmentPoints
+  refine Finset.mem_image.mpr ⟨0, ?_, ?_⟩
+  · exact Finset.mem_range.mpr (by omega)
+  · simp
+
+/-- The end vertex `w` lies in the lattice segment from `v` to `w`,
+    witnessed by the `k = g` parameter (where `g = Int.gcd Δx Δy`).
+    Uses `Int.ediv_mul_cancel` on each component via `g ∣ Δx` and
+    `g ∣ Δy`. -/
+lemma vEnd_mem_latticeSegmentPoints (v w : ℤ × ℤ) :
+    w ∈ latticeSegmentPoints v w := by
+  unfold latticeSegmentPoints
+  set dx : ℤ := w.1 - v.1 with hdx_def
+  set dy : ℤ := w.2 - v.2 with hdy_def
+  set g  : ℕ := Int.gcd dx dy with hg_def
+  refine Finset.mem_image.mpr ⟨g, ?_, ?_⟩
+  · show g ∈ Finset.range (g + 1)
+    exact Finset.mem_range.mpr (by omega)
+  · have hdvdx : (g : ℤ) ∣ dx := Int.gcd_dvd_left dx dy
+    have hdvdy : (g : ℤ) ∣ dy := Int.gcd_dvd_right dx dy
+    have hxe : (g : ℤ) * (dx / (g : ℤ)) = dx := by
+      rw [mul_comm]; exact Int.ediv_mul_cancel hdvdx
+    have hye : (g : ℤ) * (dy / (g : ℤ)) = dy := by
+      rw [mul_comm]; exact Int.ediv_mul_cancel hdvdy
+    show (v.1 + (g : ℤ) * (dx / (g : ℤ)),
+          v.2 + (g : ℤ) * (dy / (g : ℤ))) = w
+    rw [hxe, hye]
+    show (v.1 + dx, v.2 + dy) = w
+    rw [hdx_def, hdy_def]
+    ext <;> simp <;> ring
+
+end LatticeTriangle
+
+/-- **S3b-act-3 — Case (a) converse**.  When edge `i` of `T` has
+    `edgeGCD i = 1` (primitive edge), no lattice point lies in the
+    strict interior of that edge.
+
+    The segment from `vEdgeStart i` to `vEdgeEnd i` has cardinality
+    `edgeGCD i + 1 = 2` by `card_latticeSegmentPoints`; the two
+    endpoints (distinct because `edgeGCD = 1 ≠ 0`) exhaust the segment,
+    so `OnStrictEdgeInterior i p` (which requires `p` to be on the
+    segment but distinct from both endpoints) is unsatisfiable.
+
+    Together with `exists_nonvertex_lattice_point_of_edgeGCD_ge_two`
+    (Case (a)), this gives a complete characterisation:
+    `(∃ p, T.OnStrictEdgeInterior i p) ↔ 2 ≤ T.edgeGCD i`.  For
+    primitive triangles (`twiceArea = 1`), `primitive_edgeGCD_eq_one`
+    forces `edgeGCD i = 1`, so this lemma rules out all edge-interior
+    lattice points; combined with `primitive_no_strict_interior`,
+    every non-vertex lattice point candidate is eliminated. -/
+theorem no_strict_edge_interior_of_edgeGCD_eq_one
+    (T : LatticeTriangle) (i : Fin 3) (h : T.edgeGCD i = 1) :
+    ∀ p, ¬ T.OnStrictEdgeInterior i p := by
+  intro p hp
+  obtain ⟨hmem, hne_v, hne_w⟩ := hp
+  -- Step 1: card S = 2 from card_latticeSegmentPoints + edgeGCD i = 1.
+  have hcard : (LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i)).card = 2 := by
+    have := card_latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i)
+    rw [← T.edgeGCD_eq_Int_gcd i, h] at this
+    exact this
+  -- Step 2: both endpoints lie in the segment.
+  have hv_mem : T.vEdgeStart i ∈ LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) :=
+    LatticeTriangle.vStart_mem_latticeSegmentPoints _ _
+  have hw_mem : T.vEdgeEnd i ∈ LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) :=
+    LatticeTriangle.vEnd_mem_latticeSegmentPoints _ _
+  -- Step 3: endpoints are distinct (otherwise Int.gcd 0 0 = 0 ≠ 1).
+  have hvw : T.vEdgeStart i ≠ T.vEdgeEnd i := by
+    intro heq
+    have hdx0 : (T.vEdgeEnd i).1 - (T.vEdgeStart i).1 = 0 := by rw [heq]; ring
+    have hdy0 : (T.vEdgeEnd i).2 - (T.vEdgeStart i).2 = 0 := by rw [heq]; ring
+    have hg0 : Int.gcd ((T.vEdgeEnd i).1 - (T.vEdgeStart i).1)
+                       ((T.vEdgeEnd i).2 - (T.vEdgeStart i).2) = 0 := by
+      rw [hdx0, hdy0]; rfl
+    rw [← T.edgeGCD_eq_Int_gcd i] at hg0
+    rw [h] at hg0
+    exact one_ne_zero hg0
+  -- Step 4: {v, w} ⊆ segment and both sides have card 2, so segment = {v, w}.
+  have hpair_sub : ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)) ⊆
+                   LatticeTriangle.latticeSegmentPoints
+                     (T.vEdgeStart i) (T.vEdgeEnd i) := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with hxv | hxw
+    · rw [hxv]; exact hv_mem
+    · rw [Finset.mem_singleton] at hxw; rw [hxw]; exact hw_mem
+  have hpair_card : ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)).card = 2 := by
+    rw [Finset.card_insert_of_not_mem (by simp [hvw]), Finset.card_singleton]
+  have hSeq : LatticeTriangle.latticeSegmentPoints
+                (T.vEdgeStart i) (T.vEdgeEnd i) =
+              ({T.vEdgeStart i, T.vEdgeEnd i} : Finset (ℤ × ℤ)) := by
+    symm
+    exact Finset.eq_of_subset_of_card_le hpair_sub (by rw [hcard, hpair_card])
+  -- Step 5: p ∈ segment = {v, w}, so p = v or p = w — both contradict hne_*.
+  rw [hSeq] at hmem
+  rcases Finset.mem_insert.mp hmem with hp_v | hp_w
+  · exact hne_v hp_v
+  · rw [Finset.mem_singleton] at hp_w
+    exact hne_w hp_w
+
+/-- **S3b-act-3 — characterisation of edge-interior witnesses**.  Combines
+    `exists_nonvertex_lattice_point_of_edgeGCD_ge_two` (Case (a)) and
+    `no_strict_edge_interior_of_edgeGCD_eq_one` (Case (a) converse) into
+    a single biconditional: edge `i` carries a strict-interior lattice
+    point iff `edgeGCD i ≥ 2`.
+
+    The `↔` form makes this directly usable in the future
+    `exists_nonvertex_lattice_point` proof, which case-splits on whether
+    any edge has `edgeGCD ≥ 2`. -/
+theorem exists_strict_edge_interior_iff_edgeGCD_ge_two
+    (T : LatticeTriangle) (i : Fin 3) :
+    (∃ p, T.OnStrictEdgeInterior i p) ↔ 2 ≤ T.edgeGCD i := by
+  refine ⟨?_, exists_nonvertex_lattice_point_of_edgeGCD_ge_two T i⟩
+  intro ⟨p, hp⟩
+  -- We get contradiction unless edgeGCD i ≥ 2.  Argue by contrapositive:
+  -- edgeGCD i < 2 means edgeGCD i ∈ {0, 1}.
+  by_contra hlt
+  push_neg at hlt
+  interval_cases (T.edgeGCD i)
+  · -- edgeGCD i = 0.  Then both v and w are equal (since Int.gcd Δx Δy = 0
+    -- forces Δx = Δy = 0), and the segment is just {v}, so card = 1.  But
+    -- `OnStrictEdgeInterior` requires p in the segment with p ≠ v, impossible.
+    -- Alternatively: g = 0 ⟹ segment has card 1, and (p ∈ segment, p ≠ v) is
+    -- self-contradictory.
+    have hg0 : T.edgeGCD i = 0 := by assumption
+    have hcard : (LatticeTriangle.latticeSegmentPoints
+                    (T.vEdgeStart i) (T.vEdgeEnd i)).card = 1 := by
+      have := card_latticeSegmentPoints (T.vEdgeStart i) (T.vEdgeEnd i)
+      rw [← T.edgeGCD_eq_Int_gcd i, hg0] at this
+      exact this
+    -- p ∈ segment and v ∈ segment; if p ≠ v then card ≥ 2, contradicting card = 1.
+    have hv_mem : T.vEdgeStart i ∈ LatticeTriangle.latticeSegmentPoints
+                    (T.vEdgeStart i) (T.vEdgeEnd i) :=
+      LatticeTriangle.vStart_mem_latticeSegmentPoints _ _
+    obtain ⟨hmem, hne_v, _⟩ := hp
+    have hsub : ({p, T.vEdgeStart i} : Finset (ℤ × ℤ)) ⊆
+                LatticeTriangle.latticeSegmentPoints
+                  (T.vEdgeStart i) (T.vEdgeEnd i) := by
+      intro x hx
+      rcases Finset.mem_insert.mp hx with hxp | hxv
+      · rw [hxp]; exact hmem
+      · rw [Finset.mem_singleton] at hxv; rw [hxv]; exact hv_mem
+    have hcard2 : ({p, T.vEdgeStart i} : Finset (ℤ × ℤ)).card = 2 := by
+      rw [Finset.card_insert_of_not_mem (by simp [hne_v]), Finset.card_singleton]
+    have : 2 ≤ 1 := by
+      have := Finset.card_le_card hsub
+      rw [hcard2, hcard] at this
+      exact this
+    omega
+  · -- edgeGCD i = 1.  Direct application of S3b-act-3.
+    exact no_strict_edge_interior_of_edgeGCD_eq_one T i (by assumption) p hp
+
 end PicksTheoremOQ01OQ01OQ01
