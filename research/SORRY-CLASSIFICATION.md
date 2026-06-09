@@ -8,6 +8,14 @@ This guide helps decide **what to send to Aristotle** (proof search tool), NOT w
 - **Claude** → Strategic reasoning, creative approaches, attempting OPEN problems
 - **Aristotle** → Tactical proof search for results with KNOWN proofs
 
+> **Policy update (2026-06-09, issue #22628):** Open conjectures we are
+> actively attacking now have a Tier-3 slot in the candidate pipeline. The
+> prior default of *"convert the headline sorry to an `axiom` so Aristotle skips
+> it"* is **reversed for actively-attempted targets**. See the new
+> [Tier 3: open-conjecture targets](#tier-3-open-conjecture-targets-rate-limited-long-haul)
+> and [Open conjectures: when to use Tier 3 vs `axiom`](#open-conjectures-when-to-use-tier-3-vs-axiom)
+> sections below.
+
 ## Classification Tiers (for Aristotle Submission)
 
 ### TRIVIAL (Minutes)
@@ -685,6 +693,160 @@ If you have an existing `*Aristotle.lean` companion file with N sorries:
 
 Do not delete the original `*Aristotle.lean` companion file until the StatementOnly
 submissions have succeeded — keep it as a fallback.
+
+## Tier 3: open-conjecture targets (rate-limited, long-haul)
+
+> **Added 2026-06-09 by issue #22628.**
+
+The candidate pipeline (`scripts/aristotle/find-candidates.sh`) recognizes a
+fourth tier in addition to T0 / T1 / T2:
+
+| Tier | Source | Purpose | Cadence |
+|------|--------|---------|---------|
+| T0 | `*StatementOnly.lean` | One-theorem-per-file Harmonic submissions | every run |
+| T1 | `*Aristotle.lean` | Multi-sorry companion files (legacy fallback) | every run |
+| T2 | `proofs/Proofs/*.lean` | Routine research output | every run |
+| **T3** | `research/open-conjectures.json` | **Open conjectures we are actively attacking** | **rate-limited (default 7d)** |
+
+### What makes a target Tier 3
+
+A Tier-3 target is a specific theorem in a specific Lean file whose proof is
+genuinely open — no published proof exists. Tier-3 targets are listed in
+`research/open-conjectures.json`. Each entry specifies:
+
+```jsonc
+{
+  "slug": "fermat-defect-one",
+  "file": "proofs/Proofs/FermatDefectOne.lean",
+  "theorem": "fermat_defect_one_exists",
+  "kind": "headline",
+  "attackVectors": ["witness-search", "modular-obstruction", "..."],
+  "cadence": "7d",       // optional, defaults to registry-wide default
+  "budget": "4h",        // optional, max runtime per attempt
+  "problemDir": "research/problems/fermat-defect-one"
+}
+```
+
+### Tier-3 scheduling differs from T0/T1/T2
+
+- **Rate-limited.** The pipeline emits a Tier-3 candidate only when the most
+  recent attempt under `research/aristotle-runs/<slug>/` is older than the
+  per-target cadence. Default cadence is 7 days.
+- **Failures DO NOT block.** Unlike T0/T1/T2 — where two failed jobs without
+  intervening file edits mark the file as `blocked` — Tier-3 failures only
+  consume rate-limit budget. The point of T3 is iteration, not single-shot
+  success.
+- **Per-run artifacts.** Every Tier-3 attempt (success or failure) writes a
+  `research/aristotle-runs/<slug>/<timestamp>/` directory containing
+  `config.json`, `transcript.log`, optional `final-state.lean`, and
+  `summary.md`. The artifact-writing helper is
+  `scripts/aristotle/write-run-artifact.sh`.
+- **Opt-in.** If `research/open-conjectures.json` does not exist, Tier-3
+  contributes zero candidates and the pipeline behavior is identical to the
+  prior three-tier system. There is no automatic upgrade.
+
+### Artifact directory schema
+
+```
+research/aristotle-runs/<slug>/<YYYY-MM-DDTHH-MMZ>/
+  config.json          # tier, status, Aristotle version, timestamp
+  transcript.log       # full Aristotle output (stdout/stderr)
+  final-state.lean     # proof state when the run ended (optional)
+  summary.md           # one-paragraph human-readable summary
+```
+
+The artifact dir doubles as the **memory layer** for the OODA loop: the next
+run on the same slug reads prior `summary.md` files to avoid repeating dead
+ends. (Reading prior summaries is a follow-up — the storage is the prerequisite
+and is shipped now.)
+
+### OODA-loop substrate: `research/problems/<slug>/`
+
+Every Tier-3 slug should have a corresponding `research/problems/<slug>/`
+directory with the layout defined in
+[`research/PROBLEMS-STRUCTURE.md`](./PROBLEMS-STRUCTURE.md). At minimum:
+
+```
+research/problems/<slug>/
+  problem.md           # statement, current state, attack-vector menu
+  claims/              # one file per attempt (success or failure)
+  notes/               # curated cross-claim insights
+  links/               # pointers to lean-files and gallery entries
+```
+
+When the Aristotle wrapper completes a Tier-3 run, `write-run-artifact.sh`
+drops a stub claim file in `research/problems/<slug>/claims/` so that the
+Aristotle agent and the Researcher agent share the same memory.
+
+## Open conjectures: when to use Tier 3 vs `axiom`
+
+> **Policy reversal (2026-06-09, issue #22628).**
+
+There are now **two valid stances** for an open conjecture in a proof file,
+and the choice is no longer driven by queue hygiene.
+
+### Stance A — Tier 3: actively attempting
+
+Use this when you intend the system to *attempt* the conjecture.
+
+```lean
+/-- Headline open conjecture. -/
+theorem fermat_defect_one_exists :
+    ∀ n : Nat, 3 ≤ n → FermatDefectExists n := by
+  sorry
+```
+
+- Keep the conjecture as a `sorry` (NOT an `axiom`).
+- Add the file + theorem to `research/open-conjectures.json`.
+- Create `research/problems/<slug>/problem.md` with the attack-vector menu.
+- Set `researchStatus: "actively-attempting"` in
+  `src/data/proofs/<slug>/meta.json`.
+- Status remains `"axiomatized"` — the open `sorry` is still an assumption
+  (per the Axiom Integrity Policy). `researchStatus` is metadata about the
+  stance, not a license to under-count assumptions.
+
+### Stance B — `axiom`: accepted as input
+
+Use this when the conjecture is a foundational assumption that supports
+downstream proofs but you do NOT plan to attempt it.
+
+```lean
+/-- Accepted as input. -/
+axiom riemann_hypothesis : ∀ s : ℂ, ...
+```
+
+- The conjecture becomes an `axiom`; Aristotle and the candidate pipeline
+  skip it.
+- The downstream proofs in the file proceed normally on the assumption.
+- `researchStatus: "input"` (or absent) in `src/data/proofs/<slug>/meta.json`.
+
+### Choosing between Stance A and Stance B
+
+| Question | Choose Tier 3 (A) | Choose `axiom` (B) |
+|---|---|---|
+| Are we attempting this? | yes | no |
+| Are there small / tractable instances? | yes | no |
+| Is the conjecture downstream of axiomatic prerequisites we accept (e.g., RH)? | no | yes |
+| Does failure to make progress matter? | no — that's the system learning its limits | yes — it would invalidate downstream results |
+
+**Either stance is honest.** Stance A says "we are trying"; Stance B says "we
+are not trying right now". The old default — convert headline sorries to axioms
+purely to keep the queue clean — produced a third, dishonest stance ("we have
+declared this off-limits to avoid running into it again"). That third stance is
+deprecated. Pick A or B and document the choice.
+
+### Migrating an existing axiom-headline to Tier 3
+
+If you previously converted an open-conjecture sorry to an `axiom` purely for
+queue hygiene and you want to attempt it again:
+
+1. Convert the `axiom foo : ...` back to `theorem foo : ... := by sorry`.
+2. Add the entry to `research/open-conjectures.json`.
+3. Create / update `research/problems/<slug>/`.
+4. Update `src/data/proofs/<slug>/meta.json` (set `researchStatus`,
+   `researchTargets`, keep `status: "axiomatized"`).
+5. Confirm the candidate pipeline emits the new Tier-3 entry:
+   `./scripts/aristotle/find-candidates.sh | grep '<basename>'`.
 
 ## Citations
 
