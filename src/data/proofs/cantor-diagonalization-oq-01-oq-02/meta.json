@@ -21,9 +21,9 @@
     "erdosNumber": null,
     "axiomCount": 7,
     "assumptions": "7 axioms: levy_solovay_inaccessible_ch (Lévy-Solovay 1967: inaccessible + CH consistent), levy_solovay_inaccessible_not_ch (Lévy-Solovay 1967: inaccessible + ¬CH consistent), levy_solovay_measurable_ch (Lévy-Solovay: measurable + CH consistent), levy_solovay_measurable_not_ch (Lévy-Solovay: measurable + ¬CH consistent), mm_consistent (Foreman-Magidor-Shelah 1988: MM consistent with ZFC+supercompact), ma_consistent (Martin-Solovay: MA consistent with ZFC), ultimate_l_implies_ch_consistent (Woodin program: open).",
-    "lineCount": 306,
+    "lineCount": 361,
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
+    "theoremCount": 19,
     "originalContributions": [
       "IsStrongLimit definition: ∀ λ < κ, 2^λ < κ",
       "IsRegular definition: κ.ord.cof.card = κ",
@@ -45,7 +45,12 @@
       "GCH definition: ∀ n : ℕ, 2^ℵₙ = ℵₙ₊₁",
       "gch_implies_ch theorem: GCH → CH proved by specializing n=0 (simp + Cardinal.aleph_zero)",
       "gch_decides_all_aleph theorem: GCH gives exact value of all higher continua",
-      "gch_continuum_below_aleph_add_two theorem: GCH → 2^ℵₙ < ℵₙ₊₂ (Cardinal.aleph_lt.mpr + omega)"
+      "gch_continuum_below_aleph_add_two theorem: GCH → 2^ℵₙ < ℵₙ₊₂ (Cardinal.aleph_lt.mpr + omega)",
+      "ch_implies_not_mm theorem: CH → ¬MM (contrapositive of mm_implies_not_ch)",
+      "ch_implies_not_ma theorem: CH → ¬MA (contrapositive of ma_implies_not_ch)",
+      "gch_implies_not_mm theorem: GCH → ¬MM (composes gch_implies_ch with ch_implies_not_mm)",
+      "gch_implies_not_ma theorem: GCH → ¬MA (composes gch_implies_ch with ch_implies_not_ma)",
+      "mm_continuum_gt_aleph_one theorem: MM → ℵ₁ < 2^ℵ₀ (quantitative refinement)"
     ],
     "definitionCount": 10
   },
@@ -120,13 +125,21 @@
       "id": "summary",
       "title": "Summary Theorems",
       "startLine": 283,
-      "endLine": 306,
+      "endLine": 309,
       "summary": "large_cardinals_and_ch_summary and ch_independent_of_large_cardinals combining the main results.",
       "mathContext": "Standard large cardinals leave CH independent; MM decides ¬CH; GCH decides all continua."
+    },
+    {
+      "id": "contrapositive-corollaries",
+      "title": "Contrapositive Corollaries (CH/GCH ⇒ ¬MM/¬MA)",
+      "startLine": 311,
+      "endLine": 360,
+      "summary": "Five axiom-free corollaries that connect Parts IV and VII: ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma, mm_continuum_gt_aleph_one.",
+      "mathContext": "From $\\text{MM} \\Rightarrow \\neg\\text{CH}$ and $\\text{MA} \\Rightarrow \\neg\\text{CH}$ (Part IV), the contrapositives $\\text{CH} \\Rightarrow \\neg\\text{MM}$ and $\\text{CH} \\Rightarrow \\neg\\text{MA}$ follow directly; composing with $\\text{GCH} \\Rightarrow \\text{CH}$ (Part VII) gives the four-corner logical structure linking CH/GCH and the forcing axioms. The quantitative refinement $\\text{MM} \\Rightarrow \\aleph_1 < 2^{\\aleph_0}$ records the cardinal-arithmetic content."
     }
   ],
   "conclusion": {
-    "summary": "Formalizes the large cardinal landscape around CH: standard large cardinals leave CH undecided (Lévy-Solovay, axiomatized), while forcing axioms (MM, MA) decide ¬CH (proved). Adds GCH section: defines GCH (2^ℵₙ = ℵₙ₊₁), proves GCH → CH and structural consequences. 0 sorries, 7 axioms, 14 theorems.",
+    "summary": "Formalizes the large cardinal landscape around CH: standard large cardinals leave CH undecided (Lévy-Solovay, axiomatized), while forcing axioms (MM, MA) decide ¬CH (proved). Adds GCH section: defines GCH (2^ℵₙ = ℵₙ₊₁), proves GCH → CH and structural consequences. 0 sorries, 7 axioms, 19 theorems (5 contrapositive corollaries added in S3 connecting Parts IV and VII).",
     "implications": "The formalization clarifies the precise boundary: set-theoretic 'size' axioms (large cardinals) don't decide CH, but 'saturation' axioms (forcing axioms) do. GCH is the ultimate strengthening and is the target of Woodin's program.",
     "openQuestions": [
       "Does the Woodin Ultimate-L program succeed in settling CH canonically as true?",

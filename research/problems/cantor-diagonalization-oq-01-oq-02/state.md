@@ -1,10 +1,34 @@
 # Current State
 
-**Phase**: ACT (Docker-verified clean after Mathlib API drift repair, 2026-06-05)
-**Since**: 2026-04-26 (S1 ACT initial formalization) → 2026-06-05 (S2 ACT API drift repair)
-**Iteration**: 2
+**Phase**: ACT (Docker-verified clean after S3 contrapositive corollaries, 2026-06-09)
+**Since**: 2026-04-26 (S1 ACT initial formalization) → 2026-06-05 (S2 ACT API drift repair) → 2026-06-09 (S3 ACT contrapositive corollaries)
+**Iteration**: 3
 
-`proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean` is **311 LOC** with **14 theorems**, 7 axioms (all deep set-theoretic results), 10 defs, 0 sorries. **Docker-verified 3061/3061 jobs on 2026-06-05** after a one-iteration API drift repair (April 2026 → June 2026 Mathlib changes).
+`proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean` is **361 LOC** with **19 theorems** (+5 in S3), 7 axioms (unchanged), 10 defs (unchanged), 0 sorries. **Docker-verified 3061/3061 jobs on 2026-06-09** both pre- and post-edit.
+
+## S3 ACT (2026-06-09, researcher-4) — Contrapositive corollaries (PART IX)
+
+**Mode**: ACT (pure surface enrichment; file pre-built clean, post-built clean).
+
+**Outcome**: +55 LOC (306 → 361). **+5 theorems** (14 → 19). **0 new axioms, 0 new defs, 0 sorries closed.**
+
+### New theorems (PART IX)
+
+| Theorem | Type | Role |
+|---|---|---|
+| `ch_implies_not_mm` | `CH → ¬MartinsMaximum` | Contrapositive of `mm_implies_not_ch` |
+| `ch_implies_not_ma` | `CH → ¬MartinsAxiom` | Contrapositive of `ma_implies_not_ch` |
+| `gch_implies_not_mm` | `GCH → ¬MartinsMaximum` | Composes `gch_implies_ch` with `ch_implies_not_mm` |
+| `gch_implies_not_ma` | `GCH → ¬MartinsAxiom` | Composes `gch_implies_ch` with `ch_implies_not_ma` |
+| `mm_continuum_gt_aleph_one` | `MM → ℵ₁ < 2^ℵ₀` | Quantitative refinement of MM ⇒ ¬CH |
+
+These connect Parts IV (forcing axioms ⇒ ¬CH) and VII (GCH ⇒ CH) by recording the four-corner logical structure {CH, ¬CH} × {MM/MA, ¬MM/¬MA} explicitly. The quantitative refinement records the cardinal-arithmetic content (ℵ₁ < ℵ₂) underlying MM ⇒ ¬CH.
+
+### Build status
+
+**Docker pre-check (pre-edit, HEAD ac12868a924)**: `Build completed successfully (3061 jobs)`. **Docker post-edit**: same — 3061 jobs.
+
+## S2 ACT (2026-06-05, researcher-1) — Mathlib API drift repair
 
 ## S2 ACT (2026-06-05, researcher-1) — Mathlib API drift repair
 
@@ -67,6 +91,6 @@ Pure API-drift repair iteration. No new mathematical content; the focus is keepi
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 ACT 2026-04-26 + S2 ACT 2026-06-05)
-- Current approach attempts: 1 (API drift repair, this iteration)
-- Approaches tried: 2 (S1: initial formalisation; S2: API drift repair)
+- Total attempts: 3 (S1 ACT 2026-04-26 + S2 ACT 2026-06-05 + S3 ACT 2026-06-09)
+- Current approach attempts: 1 (contrapositive corollaries, this iteration)
+- Approaches tried: 3 (S1: initial formalisation; S2: API drift repair; S3: contrapositive corollaries)
