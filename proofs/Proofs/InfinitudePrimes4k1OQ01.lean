@@ -6,8 +6,17 @@ import Mathlib.Tactic
 /-!
 # Fermat's Theorem on Sums of Two Squares (OQ-01)
 
-This file formalizes the full biconditional Fermat two-squares characterization
-for odd primes:
+**Superseded by `Proofs/FermatTwoSquares.lean`.** That file proves a strictly
+stronger biconditional `(∃ a b, a²+b² = p) ↔ p % 4 ≠ 3` (covering also `p = 2`)
+plus corollaries (`one_mod_four_is_sum_of_squares`, `three_mod_four_not_sum_of_squares`,
+`prime_classification`, `sum_of_squares_classification`) and the canonical gallery
+entry under slug `fermat-two-squares`. Both files use the same Mathlib bearer
+`Nat.Prime.sq_add_sq` and the same `interval_cases (n % 4)` + `Nat.pow_mod`
+case analysis for the squares-mod-4 step. Kept here as a small odd-prime-only
+pedagogical wrapper; downstream code should prefer `FermatTwoSquares.lean`.
+See `research/problems/infinitude-primes-4k1-oq-01/sessions/2026-06-09-s4-superseded-by-fermat-two-squares.md`.
+
+This file formalizes the odd-prime form of the Fermat two-squares characterization:
 
   p odd prime → (p % 4 = 1 ↔ ∃ a b : ℕ, p = a² + b²)
 
