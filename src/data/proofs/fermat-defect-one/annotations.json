@@ -4,7 +4,7 @@
     "proofId": "fermat-defect-one",
     "range": {
       "startLine": 1,
-      "endLine": 47
+      "endLine": 40
     },
     "type": "concept",
     "title": "Module Overview: The Defect-One Conjecture",
@@ -28,7 +28,7 @@
     "id": "ann-hierarchy",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 18,
+      "startLine": 29,
       "endLine": 33
     },
     "type": "concept",
@@ -46,7 +46,7 @@
     "id": "ann-predicates",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 49,
+      "startLine": 46,
       "endLine": 79
     },
     "type": "definition",
@@ -64,8 +64,8 @@
     "id": "ann-benchmark-neg",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 86,
-      "endLine": 100
+      "startLine": 83,
+      "endLine": 93
     },
     "type": "theorem",
     "title": "Verified n=3 Negative-Defect Benchmark",
@@ -82,8 +82,8 @@
     "id": "ann-benchmark-pos",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 102,
-      "endLine": 116
+      "startLine": 95,
+      "endLine": 107
     },
     "type": "theorem",
     "title": "Verified n=3 Positive-Defect Benchmark (Taxicab Shift)",
@@ -100,7 +100,7 @@
     "id": "ann-existence-derived",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 118,
+      "startLine": 109,
       "endLine": 130
     },
     "type": "theorem",
@@ -138,11 +138,54 @@
     ]
   },
   {
+    "id": "ann-tactic-pattern",
+    "proofId": "fermat-defect-one",
+    "range": {
+      "startLine": 87,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Tactic Pattern: refine + native_decide on Conjunctions",
+    "content": "Each benchmark's proof obligation is a 5-fold conjunction `2 ≤ a ∧ a ≤ b ∧ b < c ∧ gcd_condition ∧ disjunct`. The proof uses `refine ⟨?_, ?_, ?_, ?_, ?_⟩` to introduce five named goals (one per conjunct), then discharges each with `native_decide`. The disjunct goal is handled with `left; native_decide` (negative defect, $a^n + b^n + 1 = c^n$) or `right; native_decide` (positive defect, $a^n + b^n = c^n + 1$) to pick the correct branch before reducing. This pattern is the canonical Lean 4 idiom for closing concrete-witness goals over decidable predicates: structurally decompose the conjunction, computationally close each leaf. `native_decide` reduces to native-code evaluation (faster than the kernel-level `decide`) and is appropriate here because the arithmetic involves $9^3 = 729$ and $12^3 = 1728$ — large enough that kernel reduction would be slow.",
+    "mathContext": "Decomposition: $P_1 \\land P_2 \\land P_3 \\land P_4 \\land (Q_- \\lor Q_+) \\;\\Leftarrow\\; (P_1, P_2, P_3, P_4, Q_\\pm)$ with $\\pm$ picked by `left`/`right`. All five components are decidable on `Nat`.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "refine tactic and anonymous constructor",
+      "native_decide vs decide",
+      "decidability of conjunctions",
+      "left/right for disjunction elimination",
+      "Lean 4 proof-by-evaluation idioms"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "anonymous constructor syntax ⟨ ⟩",
+      "decidable propositions"
+    ]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "fermat-defect-one",
+    "range": {
+      "startLine": 42,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "Imports and Namespace",
+    "content": "`import Mathlib` pulls in the full Mathlib library — needed for `Nat.gcd`, the `decide`/`native_decide` infrastructure, and standard arithmetic lemmas. The whole file lives in `namespace FermatDefectOne`, so the four predicates and six theorems are exposed as `FermatDefectOne.FermatDefectWitness`, `FermatDefectOne.fermat_defect_three_neg`, etc. Gallery convention: a single `import Mathlib` is preferred over piecemeal imports for self-contained gallery entries; this is distinct from Mathlib-bound files (`mathlib-contribution` skill), which are required to use targeted imports.",
+    "mathContext": "Namespace prefix: `FermatDefectOne.*` for all exported names. Mathlib provides `Nat.gcd` and decidability instances.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib import conventions",
+      "namespace conventions in Lean 4",
+      "gallery vs mathlib-bound style"
+    ]
+  },
+  {
     "id": "ann-connections",
     "proofId": "fermat-defect-one",
     "range": {
-      "startLine": 30,
-      "endLine": 45
+      "startLine": 35,
+      "endLine": 39
     },
     "type": "concept",
     "title": "Connections to Known Problem Families",
