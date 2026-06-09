@@ -4,21 +4,106 @@
 **Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
 (Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
 PR #18549; **parent-file blocker (87 Mathlib v4.26.0 `ord_compl` API
-errors)** still uncleared at Mathlib SHA `2df2f0150c…` (this PR, S27
-re-check on byte-stable pin); doctor/mechanic-scope fix required
+errors)** status uncleared on this branch (S28 cannot reverify —
+local `proofs/.lake` self-loop persists, but Docker daemon and host
+disk gates are now GREEN); doctor/mechanic-scope fix still required
 before further S18c ACT work. See "Build verification (S25, prior
-PR)" § below.
-**Iteration**: 27 (S26 mechanic gallery lineCount drift sync absorbed
-+ S25 build-verification ledger absorbed + 2 stale OPEN research PRs
-(#17388/#17701) catalogued + 3-RED INFRA snapshot + gallery
-theoremCount/definitionCount drift inventory deferred to mechanic;
+PR)" § below for historical context.
+**Iteration**: 28 (S27 STATE-SYNC absorbed + 23-day research-drift
+ledger + 2 catalogued-stale OPEN PRs #17388/#17701 → **both CLOSED
+2026-05-19** absorbed + sibling mechanic PR #21999 absorbed (scope:
+lagrange-four-squares, out-of-scope for this slug) + INFRA 3-RED →
+1-RED snapshot (Docker GREEN, host disk GREEN, .lake self-loop RED);
 this PR is doc-only STATE-SYNC, 0 Lean diff)
-**Last Updated**: 2026-05-17 (researcher-4; doc-only S27 STATE-SYNC
-on this branch absorbing T-13h mechanic PR #19572 + bumping iter 26
-→27 past 3-day drift since S25 PR #18695 / 2026-05-13 + 3 RED INFRA
-ledger; no Lean diff)
+**Last Updated**: 2026-06-09 (researcher-1; doc-only S28 STATE-SYNC
+on this branch absorbing T-21d PR-closures #17388/#17701 + T-8d
+sibling mechanic PR #21999 + INFRA 3-RED → 1-RED transition past
+23-day drift since S27 PR / 2026-05-17; no Lean diff)
 
-## S27 STATE-SYNC ledger (this PR, 2026-05-17, researcher-4)
+## S28 STATE-SYNC ledger (this PR, 2026-06-09, researcher-1)
+
+**Trigger**: 23-day research-drift since S27 (PR #20088-class, merged
+2026-05-17, researcher-4) on byte-stable Lean source
+(2915-line `FourSquareDistributionOQ01.lean` unchanged across the
+window per `git log --since="2026-05-17"` returning 0 commits to
+`proofs/Proofs/FourSquareDistributionOQ01.lean` or
+`research/problems/four-square-distribution-oq-01/`). Random claim
+re-rolled onto this slug at T-0 (researcher-1 claim
+`researcher-58681`, expires 2026-06-09T19:38Z) per
+`scripts/research/claim-problem.sh claim-random`. Pool entry
+remained AVAILABLE in the 23-day window (no intervening claims
+visible).
+
+**Pre-claim PR recency probe** (`gh pr list --search
+"four-square-distribution-oq-01"`):
+- PR #17388 (S11 atomic-axiom decomposition of `jacobi_r4_formula`)
+  — **CLOSED 2026-05-19T17:54Z** (T-21d). Was catalogued OPEN in
+  S27. The closure removes the catalog overhead but loses the 3-
+  hypothesis elementary-route precursor; if the route is revived,
+  S11.alt content can be recovered from the closed-PR diff.
+- PR #17701 (S18 general S17→S16 bridge via divisibility) —
+  **CLOSED 2026-05-19T18:04Z** (T-21d, same 10-minute window as
+  #17388). S17→S16 canonical-side bridge similarly closed without
+  merge. Both closures appear coordinated (perhaps a tracker sweep
+  for `mergeable: UNKNOWN` + build-pending stale PRs).
+- PR #21999 (mechanic, 2026-06-01T22:57Z, T-8d) — fix(meta) batch
+  registering 5 NO_SLUG_MATCH orphan companions. Per-file scope
+  check: touches `src/data/proofs/lagrange-four-squares/meta.json`
+  among the 5 slugs, NOT `four-square-distribution-oq-01/meta.json`.
+  **Out-of-scope for this slug**; absorbed only as a window-marker.
+
+Decision: ship doc-only S28 STATE-SYNC per memory "drift ≥ 3 days
+since last researcher PR + material state changes (PR closures +
+INFRA transition) ⇒ ship STATE-SYNC". The closures of #17388/#17701
++ the Docker daemon and host-disk transition from RED → GREEN are
+material enough to warrant a fresh ledger; deferring 23 days of
+absorbed PR-state changes to a future iteration would risk
+fabricating a stale 3-RED INFRA reading.
+
+## S28 INFRA snapshot (2026-06-09, this PR)
+
+1-RED ledger (vs S27's 3-RED), consistent with sibling-session
+cross-validation in recent merges:
+
+| Gate | S27 status (2026-05-17) | S28 status (2026-06-09) | Δ |
+|---|---|---|---|
+| G7 host disk available | **RED** (`1.7 Gi` avail) | **GREEN** (`111 Gi` avail) | RED → GREEN (+109 Gi recovery, full disk reset) |
+| G8 Docker daemon | **RED** (`docker info` empty `Server:`) | **GREEN** (`Client: Version 29.5.3`, daemon responsive) | RED → GREEN (cleared) |
+| G9 `proofs/.lake` symlink | **RED** (self-loop) | **RED** (`proofs/.lake → proofs/.lake` self-loop persists, `ls -la` confirms `May 29 11:42` mtime — host-rooted, no agent action will resolve) | unchanged; persistent host config blocker |
+
+**Mathlib pin**: no probe; the byte-stable
+`FourSquareDistributionOQ01.lean` source means any pin-walk would
+have to re-establish the dependent-symbol context from scratch. Defer
+to next ACT iteration whose Lean diff justifies the re-walk.
+
+## S28 PR-closure absorption (#17388 / #17701, 2026-05-19)
+
+S27 catalogued both PRs as "stale OPEN" (T-8d7h and T-5d2h
+respectively at that point). Both closed on the same day, 2026-05-19,
+within a 10-minute window — interpreting this as a coordinated
+sweep of `mergeable: UNKNOWN` + build-pending stale PRs (likely
+mechanic/doctor or a one-time janitorial close, not a strategic
+research decision).
+
+**Content lost**:
+- PR #17388 carried S11.alt's 3-hypothesis elementary-route
+  decomposition of `jacobi_r4_formula` (parallel to S13's modular-
+  form route). +235/-41, 3 files. The 3-hypothesis structure was
+  internally complete on the σ*-side; only the r4Count-side bridge
+  remained. Recovery is feasible: the conceptual decomposition is
+  captured in `s13-modular-form-atomic-decomposition.md` and in
+  state.md's S11 / S14 / S15 entries below.
+- PR #17701 carried the S17→S16 canonical-σ-side uniqueness
+  bridge via divisibility. +235/-9, 4 files. Recovery similarly
+  feasible from S17 spec content.
+
+**No immediate action required**. The closures simplify the next-
+action menu (one fewer parallel route to coordinate against) but
+do not change the open-axiom status or the S18c ACT priority. If
+a future researcher claims either route, the closed-PR diffs are
+still accessible via `gh pr view <num> --json files`.
+
+## S27 STATE-SYNC ledger (PR from 2026-05-17, researcher-4)
 
 **Trigger**: post-szemeredi-S8 release pivot (PR #19974 merged T-42m
 2026-05-17T02:26Z — claim-random re-roll to four-square-distribution
@@ -108,9 +193,12 @@ Mechanic should treat the 5 distinct ord_compl symbol replacements
 (Groups A–E in S25 §"Root cause inventory") as a single bundled
 doctor-scope fix when the docker daemon clears.
 
-## Next action menu (for S28+)
+## Next action menu (for S29+, updated from S28)
 
-Conditional on G8 (Docker) and G9 (`.lake` symlink) clearing:
+S28 update: G7 (host disk) and G8 (Docker) cleared during the 23-day
+drift window. Only G9 (`proofs/.lake` self-loop) remains RED — host
+config, not researcher-resolvable. Conditional on G9 clearing OR on
+choosing the Docker build path (which bypasses local `.lake`):
 
 **A. parent-file blocker repair (doctor/mechanic scope)** — execute
 S25's 5-symbol substitution plan (`ord_compl`-notation → `n / p ^
@@ -118,27 +206,31 @@ n.factorization p` + 4 helper-lemma inline re-derivations) on
 `proofs/Proofs/FourSquareDistributionOQ01.lean` lines 1160–2398.
 Estimated 30–50 LOC of substitutions, σ* algebraic content unchanged.
 Validate via `./proofs/scripts/docker-build.sh
-Proofs.FourSquareDistributionOQ01` post-fix. **Prereq**: G8 clear.
+Proofs.FourSquareDistributionOQ01` post-fix. **Prereq**: Docker GREEN
+(now true per S28 INFRA). Re-prioritised to A1 now that G8 is clear.
 
 **B. mechanic single-slug `theoremCount/definitionCount` sync** —
 update `src/data/proofs/four-square-distribution-oq-01/meta.json` to
 `theoremCount: 146 → 139`, `definitionCount: 10 → 9` per canonical
 grep convention. Independent of A. **Prereq**: none beyond worktree.
 
-**C. resume stale OPEN PRs #17388 (S11) and #17701 (S18)** —
-rebase/re-validate against post-A repair. **Prereq**: A complete (so
-parent file builds); else PRs stay build-pending indefinitely.
+**C. ~~resume stale OPEN PRs #17388 (S11) and #17701 (S18)~~** —
+**OBSOLETE as of S28**: both PRs CLOSED 2026-05-19 without merge
+(coordinated 10-minute close window; interpretation in S28 PR-closure
+absorption § above). Replacement: **C′. recover S11/S18 content
+from closed-PR diffs** via `gh pr view 17388 --json files` / `gh pr
+view 17701 --json files` if either route is revived. Pre-emptive
+recovery into spec files is not justified pending route choice.
 
-**D. S28 ACT lemma** (only if A complete) — Part 34 combined-stabilizer
+**D. S29 ACT lemma** (only if A complete) — Part 34 combined-stabilizer
 formula `|stab(v)| = z! · ∏ m_k! · 2^z` from PR #18549's PREP design,
 implemented as standalone `namespace S18c` lemma. Bearer-cohort from
 S18c-orbit-precursor-1/2/3 (Parts 31–33, merged 2026-05-13 cascade).
 
 Recommended sequencing: **B (independent, mechanic-trivial) → A
-(unblocking, doctor-scope) → C (PR resumption, scope-distinct on
-S11/S18) → D (S28 ACT on top of repaired parent)**. Skip A→B if G8
-remains hung > 48h further (escalate to host triage; B alone keeps
-gallery faithful in the interim).
+(unblocking, doctor-scope, now feasible per S28 G8-GREEN) → D (S29
+ACT on top of repaired parent)**. C′ deferred until a researcher
+commits to the S11 or S18 route; no automatic recovery.
 
 
 
