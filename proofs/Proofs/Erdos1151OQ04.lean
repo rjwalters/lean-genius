@@ -175,9 +175,7 @@ theorem chebyshevInterp_neg (n : ℕ) (f : ℝ → ℝ) (x : ℝ) :
 theorem chebyshevInterp_sub (n : ℕ) (f g : ℝ → ℝ) (x : ℝ) :
     chebyshevInterp n (fun t => f t - g t) x =
     chebyshevInterp n f x - chebyshevInterp n g x := by
-  simp only [chebyshevInterp, lagrangeInterp]
-  simp_rw [sub_mul]
-  exact Finset.sum_sub_distrib
+  simp only [chebyshevInterp, lagrangeInterp, sub_mul, Finset.sum_sub_distrib]
 
 /-! ## Proved Results: Chebyshev Polynomial Connection -/
 
