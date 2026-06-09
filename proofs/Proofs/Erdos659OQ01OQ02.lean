@@ -100,6 +100,26 @@ lemma zmod_5_a_sq_eq_three_b_sq_iff (a b : ZMod 5) :
   revert a b
   decide
 
+/-- **(S8 ACT, mod-13 step for equation A on the prime pair `(2, 13)`)**
+    `a² + 2 b² ≡ 0 (mod 13)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 13`.
+    Equivalent to the assertion that `−2` is not a square in `ZMod 13`
+    (squares mod 13 are `{0, 1, 3, 4, 9, 10, 12}`; `11 = −2 mod 13` is
+    not among them). 169-case `decide` check. -/
+lemma zmod_13_a_sq_plus_2_b_sq_eq_zero_iff (a b : ZMod 13) :
+    a ^ 2 + 2 * b ^ 2 = 0 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S8 ACT, mod-13 step for equations B and C on the prime pair `(2, 13)`)**
+    `a² ≡ 2 b² (mod 13)` iff both `a ≡ 0` and `b ≡ 0` in `ZMod 13`.
+    Equivalent to the assertion that `2` is not a square in `ZMod 13`
+    (squares mod 13 are `{0, 1, 3, 4, 9, 10, 12}`; `2` is not among them).
+    169-case `decide` check. -/
+lemma zmod_13_a_sq_eq_two_b_sq_iff (a b : ZMod 13) :
+    a ^ 2 = 2 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
 /-- Equation A predicate for the prime pair `(p, q) = (2, 5)`:
     `5 c² = a² + 2 b²` has only the trivial integer solution.
 
@@ -484,5 +504,180 @@ theorem safe_C_3_5_holds :
     axiomatisation per S2c PREP §6.1. -/
 theorem safe_3_5_axis_vs_plane : SafePrimePair_AxisVsPlane 3 5 :=
   ⟨safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds⟩
+
+/-! ## S8 ACT — axis-vs-plane safety for the prime pair `(2, 13)`
+
+The three theorems below mirror `safe_{A,B,C}_holds` 1:1 with the mod-5
+helpers swapped for the new mod-13 helpers
+(`zmod_13_a_sq_plus_2_b_sq_eq_zero_iff`, `zmod_13_a_sq_eq_two_b_sq_iff`) and
+the descent prime `5` swapped for `13`. The coefficient on `b²` stays at `2`,
+so the descent skeleton is *closer* to the (2, 5) case than the (3, 5) case
+was — the only changes are the modulus and the descent prime. -/
+
+/-- **(S8 ACT — axis-vs-plane equation A for `(p, q) = (2, 13)`).**
+    `13 c² = a² + 2 b²` has only `(0, 0, 0)`.
+
+    Infinite descent on `c.natAbs`: mod 13 (via
+    `zmod_13_a_sq_plus_2_b_sq_eq_zero_iff`, i.e. `−2` is not a QR mod 13)
+    forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_A_2_13_holds :
+    ∀ a b c : ℤ, (13 : ℤ) * c ^ 2 = a ^ 2 + 2 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, c.natAbs = n →
+      (13 : ℤ) * c ^ 2 = a ^ 2 + 2 * b ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hc heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hc0 : c = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hc0
+        refine ⟨?_, ?_, rfl⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg b))
+      · have hz : (a : ZMod 13) ^ 2 + 2 * (b : ZMod 13) ^ 2 = 0 := by
+          have h : ((a ^ 2 + 2 * b ^ 2 : ℤ) : ZMod 13) = ((13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul] at h
+          exact h
+        rw [zmod_13_a_sq_plus_2_b_sq_eq_zero_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13 : (13 : ℤ) * c ^ 2 = 13 * (13 * (a' ^ 2 + 2 * b' ^ 2)) := by
+          linear_combination heq
+        have hc2 : c ^ 2 = 13 * (a' ^ 2 + 2 * b' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 + 2 * b' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (13 : ℤ) * c' ^ 2 = a' ^ 2 + 2 * b' ^ 2 := by
+          have h169 : (13 : ℤ) * (13 * c' ^ 2) = 13 * (a' ^ 2 + 2 * b' ^ 2) := by
+            linear_combination hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : c'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at hc
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih c'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key c.natAbs a b c rfl heq
+
+/-- **(S8 ACT — axis-vs-plane equation B for `(p, q) = (2, 13)`).**
+    `2 b² = a² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `b.natAbs`: mod 13 (via `zmod_13_a_sq_eq_two_b_sq_iff`,
+    i.e. `2` is not a QR mod 13) forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_B_2_13_holds :
+    ∀ a b c : ℤ, (2 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, b.natAbs = n →
+      (2 : ℤ) * b ^ 2 = a ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c hb heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have hb0 : b = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst hb0
+        refine ⟨?_, rfl, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg a))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg a]) (sq_nonneg c))
+      · have hz : (a : ZMod 13) ^ 2 = 2 * (b : ZMod 13) ^ 2 := by
+          have h : ((2 * b ^ 2 : ℤ) : ZMod 13) = ((a ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul, add_zero] at h
+          exact h.symm
+        rw [zmod_13_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13 : (13 : ℤ) * c ^ 2 = 13 * (13 * (2 * b' ^ 2 - a' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 13 * (2 * b' ^ 2 - a' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨2 * b' ^ 2 - a' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : (2 : ℤ) * b' ^ 2 = a' ^ 2 + 13 * c' ^ 2 := by
+          have h169 : (13 : ℤ) * (2 * b' ^ 2) = 13 * (a' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : b'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at hb
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih b'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key b.natAbs a b c rfl heq
+
+/-- **(S8 ACT — axis-vs-plane equation C for `(p, q) = (2, 13)`).**
+    `a² = 2 b² + 13 c²` has only `(0, 0, 0)`.
+
+    Infinite descent on `a.natAbs`: mod 13 (via `zmod_13_a_sq_eq_two_b_sq_iff`)
+    forces `13 ∣ a`, `13 ∣ b`, then `13 ∣ c`. -/
+theorem safe_C_2_13_holds :
+    ∀ a b c : ℤ, a ^ 2 = (2 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+  have key : ∀ n : ℕ, ∀ a b c : ℤ, a.natAbs = n →
+      a ^ 2 = (2 : ℤ) * b ^ 2 + 13 * c ^ 2 → a = 0 ∧ b = 0 ∧ c = 0 := by
+    intro n
+    induction n using Nat.strong_induction_on with
+    | _ n ih =>
+      intro a b c ha heq
+      rcases Nat.eq_zero_or_pos n with hn0 | hnpos
+      · have ha0 : a = 0 := Int.natAbs_eq_zero.mp (by omega)
+        subst ha0
+        refine ⟨rfl, ?_, ?_⟩
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg c]) (sq_nonneg b))
+        · exact sq_eq_zero_iff.mp (le_antisymm (by nlinarith [sq_nonneg b]) (sq_nonneg c))
+      · have hz : (a : ZMod 13) ^ 2 = 2 * (b : ZMod 13) ^ 2 := by
+          have h : ((a ^ 2 : ℤ) : ZMod 13) = ((2 * b ^ 2 + 13 * c ^ 2 : ℤ) : ZMod 13) := by
+            rw [heq]
+          push_cast at h
+          rw [show (13 : ZMod 13) = 0 from by decide, zero_mul, add_zero] at h
+          exact h
+        rw [zmod_13_a_sq_eq_two_b_sq_iff] at hz
+        have hda : (13 : ℤ) ∣ a := (ZMod.intCast_zmod_eq_zero_iff_dvd a 13).mp hz.1
+        have hdb : (13 : ℤ) ∣ b := (ZMod.intCast_zmod_eq_zero_iff_dvd b 13).mp hz.2
+        obtain ⟨a', rfl⟩ := hda
+        obtain ⟨b', rfl⟩ := hdb
+        have h13 : (13 : ℤ) * c ^ 2 = 13 * (13 * (a' ^ 2 - 2 * b' ^ 2)) := by
+          linear_combination -heq
+        have hc2 : c ^ 2 = 13 * (a' ^ 2 - 2 * b' ^ 2) :=
+          mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h13
+        have hdc : (13 : ℤ) ∣ c := by
+          have hp : Prime (13 : ℤ) := by norm_num
+          exact hp.dvd_of_dvd_pow (⟨a' ^ 2 - 2 * b' ^ 2, hc2⟩ : (13 : ℤ) ∣ c ^ 2)
+        obtain ⟨c', rfl⟩ := hdc
+        have heq' : a' ^ 2 = (2 : ℤ) * b' ^ 2 + 13 * c' ^ 2 := by
+          have h169 : (13 : ℤ) * a' ^ 2 = 13 * (2 * b' ^ 2 + 13 * c' ^ 2) := by
+            linear_combination -hc2
+          exact mul_left_cancel₀ (by norm_num : (13 : ℤ) ≠ 0) h169
+        have hmeas : a'.natAbs < n := by
+          have h13nat : (13 : ℤ).natAbs = 13 := by decide
+          rw [Int.natAbs_mul, h13nat] at ha
+          omega
+        obtain ⟨ha0, hb0, hc0⟩ := ih a'.natAbs hmeas a' b' c' rfl heq'
+        subst ha0; subst hb0; subst hc0
+        refine ⟨by ring, by ring, by ring⟩
+  intro a b c heq
+  exact key a.natAbs a b c rfl heq
+
+/-- **The main axis-vs-plane safety theorem for the prime pair `(p, q) = (2, 13)`.**
+
+    Derived as the conjunction of `safe_A_2_13_holds`, `safe_B_2_13_holds`, and
+    `safe_C_2_13_holds`, each proved by the same QR-descent template as the
+    proved `(2, 5)` and `(3, 5)` versions. The full-rank half is a separate
+    future axiomatisation per S2c PREP §6.1. -/
+theorem safe_2_13_axis_vs_plane : SafePrimePair_AxisVsPlane 2 13 :=
+  ⟨safe_A_2_13_holds, safe_B_2_13_holds, safe_C_2_13_holds⟩
 
 end Erdos659OQ01OQ02

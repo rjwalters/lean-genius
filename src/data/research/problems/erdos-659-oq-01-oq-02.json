@@ -33,11 +33,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-04T20:30:00.000Z",
-    "iteration": 14,
-    "focus": "S7 ACT (researcher-1, 2026-06-04T20:30Z, Docker-verified GREEN): applied the S7 PREP-2 paste-ready recipe to proofs/Proofs/Erdos659OQ01OQ02.lean (PRE 292 -> POST 488 LOC; delta +196 LOC). The (3, 5) axis-vs-plane safety theorem safe_3_5_axis_vs_plane is now proved as the conjunction of safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds, each by the same QR-descent template as the proved (2, 5) version with two new mod-5 helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff for equation A_prime; zmod_5_a_sq_eq_three_b_sq_iff for B_prime and C_prime). 0 sorry / 0 axiom delta (file remains 0 / 0). Docker-verified GREEN: ./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02 -> Build completed successfully (3058 jobs). This shrinks the S6/S7 next-action menu by one safe pair; remaining: (2, 13), (5, 7), (5, 13), (7, 13), (11, 13) each by analogous QR-descent at a new modulus; full-rank safety still blocked on ternary Hasse-Minkowski (Mathlib v4.26.0 absence per S2c PREP §5.6).",
+    "since": "2026-06-09T23:55:00.000Z",
+    "iteration": 15,
+    "focus": "S8 ACT (researcher-1, 2026-06-09T23:55Z, Docker-verified GREEN): applied the (2, 13) mod-13 QR-descent recipe to proofs/Proofs/Erdos659OQ01OQ02.lean (PRE 488 -> POST 683 LOC; delta +195 LOC). The (2, 13) axis-vs-plane safety theorem safe_2_13_axis_vs_plane is now proved as the conjunction of safe_A_2_13_holds, safe_B_2_13_holds, safe_C_2_13_holds, each by the same QR-descent template as the proved (2, 5) and (3, 5) versions with two new mod-13 helpers (zmod_13_a_sq_plus_2_b_sq_eq_zero_iff for equation A; zmod_13_a_sq_eq_two_b_sq_iff for B and C). The 169-case decide checks succeed without strain. 0 sorry / 0 axiom delta (file remains 0 / 0). Docker-verified GREEN: ./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02 -> `Built Proofs.Erdos659OQ01OQ02 (19s)` -> Build completed successfully (3058 jobs). This shrinks the S7/S8 next-action menu by one safe pair; 3/7 safe pairs from S2a OBSERVE PR #18494 now have proved axis-vs-plane safety (2,5; 3,5; 2,13). Remaining: (5, 7), (5, 13), (7, 13), (11, 13) each by analogous QR-descent at a new modulus; full-rank safety still blocked on ternary Hasse-Minkowski (Mathlib v4.26.0 absence per S2c PREP §5.6).",
     "blockers": [],
-    "nextAction": "S8 PREP / S8 ACT — Continue the safe-pair coverage. Lowest-LOC remaining is (2, 13): same axis-vs-plane structure with mod-13 reduction (169-case decide per helper, ~150 LOC delta). Alternative: (5, 7) with mod-7 reduction. The remaining two long-term blockers stay the same: full-rank safety (needs ternary Hasse-Minkowski or honest axiomatisation per S2c §6.1) and Theta(n^{2/3}) assembly (needs S3+S4 plan axiomatisations).",
+    "nextAction": "S9 ACT — Continue the safe-pair coverage. Lowest new-API surface remaining is (5, 7): mod-7 reduction (49-case decide per helper), no mod-5 helper reuse needed since (5, 7) has 5 as the coefficient on b² (the (2,5)/(3,5) helpers have 2/3 there). Alternative: (5, 13) can reuse no helpers since the b² coefficient changes from 2 to 5, but mod-13 modulus reuse is partial (same prime, new coefficient helpers needed). Long-term blockers unchanged: full-rank safety (needs ternary Hasse-Minkowski or honest axiomatisation per S2c §6.1) and Theta(n^{2/3}) assembly (needs S3+S4 plan axiomatisations).",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -46,7 +46,7 @@
       "S5_main_theorem": 0,
       "S6_gallery": 0
     },
-    "lastUpdate": "2026-06-04T20:30:00.000Z"
+    "lastUpdate": "2026-06-09T23:55:00.000Z"
   },
   "knowledge": {
     "insights": [
@@ -66,7 +66,7 @@
       "safe_A_holds / safe_B_holds / safe_C_holds PROVED in Erdos659OQ01OQ02.lean (infinite descent); safe_2_5_axis_vs_plane now fully machine-checked.",
       "Erdos659OQ01OQ02.lean: 3 strategic sorries → 0, axioms 0, Docker build GREEN."
     ],
-    "progressSummary": "S4 ACT (researcher-1, 2026-05-29): DISCHARGED all 3 axis-vs-plane strategic sorries in Erdos659OQ01OQ02.lean by infinite descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms). safe_A_holds/safe_B_holds/safe_C_holds proved (5c²=a²+2b², 2b²=a²+5c², a²=2b²+5c² each have only the trivial integer solution), completing safe_2_5_axis_vs_plane — the axis-vs-plane half of L_{2,5} sub-lattice safety. Full-rank safety and the headline d≥3 distinct-distance OQ remain open. Prior: S1-S3 scaffold + extensive PREP/OBSERVE (Landau/Bernays asymptotics, Pell-safety search, QR-descent template, Mathlib audits).",
+    "progressSummary": "S8 ACT (researcher-1, 2026-06-09): DISCHARGED (2, 13) axis-vs-plane safety in Erdos659OQ01OQ02.lean by mod-13 QR-descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms, build 3058 jobs in 19s). safe_A_2_13_holds (13c² = a² + 2b²) / safe_B_2_13_holds (2b² = a² + 13c²) / safe_C_2_13_holds (a² = 2b² + 13c²) all proved by Nat.strong_induction_on, with two new mod-13 helpers (zmod_13_a_sq_plus_2_b_sq_eq_zero_iff for −2 non-residue mod 13; zmod_13_a_sq_eq_two_b_sq_iff for 2 non-residue mod 13) checked by 169-case decide. Conjunction gives safe_2_13_axis_vs_plane : SafePrimePair_AxisVsPlane 2 13. File 488 → 683 LOC (+195). Cumulative: 3/7 safe pairs from S2a OBSERVE PR #18494 are proved (2,5 via S4 ACT; 3,5 via S7 ACT; 2,13 via S8 ACT). | S7 ACT (researcher-1, 2026-06-04): DISCHARGED (3, 5) axis-vs-plane safety (safe_3_5_axis_vs_plane = ⟨safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds⟩) via 2 new mod-5 helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff, zmod_5_a_sq_eq_three_b_sq_iff). File 292 → 488 LOC (+196). Docker GREEN. | S4 ACT (researcher-1, 2026-05-29): DISCHARGED all 3 axis-vs-plane strategic sorries in Erdos659OQ01OQ02.lean by infinite descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms). safe_A_holds/safe_B_holds/safe_C_holds proved (5c²=a²+2b², 2b²=a²+5c², a²=2b²+5c² each have only the trivial integer solution), completing safe_2_5_axis_vs_plane — the axis-vs-plane half of L_{2,5} sub-lattice safety. Full-rank safety and the headline d≥3 distinct-distance OQ remain open. Prior: S1-S3 scaffold + extensive PREP/OBSERVE (Landau/Bernays asymptotics, Pell-safety search, QR-descent template, Mathlib audits).",
     "nextSteps": [
       "Full-rank safety for (2,5): elementary descent for the genuinely-ternary equidistant configurations, or an honest documented axiomatisation.",
       "Generalise the descent template to the other safe prime pairs (S2a: 15 candidates, R≤22): applies whenever p and ±q are QR-non-residues mod a common small prime.",
