@@ -221,4 +221,39 @@ theorem summable_hyp2F1 (x : ℝ) (hx : |x| < 1) :
       ≤ 1 * |x| ^ n := mul_le_mul_of_nonneg_right hc hxn
     _ = |x| ^ n := one_mul _
 
+-- ============================================================================
+-- §7 : Per-term M-test bound on compact subsets of (-1, 1)        (S4a ACT)
+-- ============================================================================
+--
+-- Strengthens the per-term inequality from §6: instead of an `|x|`-dependent
+-- bound, gives an `x`-independent bound `|hypCoeff n · x^n| ≤ R^n` valid
+-- uniformly on `{x : |x| ≤ R}`. This is the M-test primitive needed to
+-- extend `summable_hyp2F1` to a uniform-on-compacta summability statement
+-- (`TendstoUniformlyOn`) — itself an input to the term-by-term integration
+-- step in the eventual discharge of `ellipticK_eq_hyp2F1`.
+
+/-- **Per-term uniform bound for the hypergeometric series on compact
+    subsets of `(-1, 1)`** (S4a ACT, 2026-06-09).
+
+For any `0 ≤ R` and `x` with `|x| ≤ R`, the n-th term satisfies the
+**`x`-independent** bound `|hypCoeff n · x^n| ≤ R^n`. The M-test then
+gives summability of `∑ R^n` (for `R < 1`) as a dominating series valid
+*uniformly* across the compact set `[-R, R]`. Compare `summable_hyp2F1`
+(§6), where the dominating series `∑ |x|^n` depends on the chosen `x`.
+
+Proof:
+`|hypCoeff n · x^n| = hypCoeff n · |x|^n ≤ 1 · |x|^n = |x|^n ≤ R^n`,
+using `hypCoeff_le_one` and monotonicity of `(·)^n` on nonnegatives. -/
+lemma hypCoeff_mul_pow_abs_le_of_abs_le
+    (R : ℝ) (n : ℕ) (x : ℝ) (hx : |x| ≤ R) :
+    |hypCoeff n * x ^ n| ≤ R ^ n := by
+  have hR : 0 ≤ R := le_trans (abs_nonneg _) hx
+  rw [abs_mul, abs_pow, abs_of_nonneg (hypCoeff_nonneg n)]
+  calc hypCoeff n * |x| ^ n
+      ≤ 1 * |x| ^ n :=
+        mul_le_mul_of_nonneg_right (hypCoeff_le_one n)
+          (pow_nonneg (abs_nonneg _) n)
+    _ = |x| ^ n := one_mul _
+    _ ≤ R ^ n := pow_le_pow_left₀ (abs_nonneg _) hx n
+
 end AmgmInequalityOQ04OQ03
