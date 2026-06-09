@@ -1755,7 +1755,7 @@ private lemma chebyshev_h_interior_of_close_and_max_index_cap
     linarith
   -- π/n = 2·(π/(2n)) — used to bridge the section-spacing bound to π/(2n) units
   have hpi_n_eq : Real.pi / n = 2 * (Real.pi / (2 * n)) := by
-    field_simp; ring
+    field_simp
   refine ⟨?_, ?_⟩
   · -- Lower bound: θ/2 ≤ φ_{k₀+j+1}
     rw [hφ_idx_eq]
@@ -1838,7 +1838,6 @@ private lemma chebyshev_quarter_floor_hm_le_and_cap_max
     have hLHS : (m : ℝ) * (Real.pi / n) = (m : ℝ) * Real.pi / n := by ring
     have hRHS : ((n : ℝ) * θ / (4 * Real.pi)) * (Real.pi / n) = θ / 4 := by
       field_simp
-      ring
     linarith
   have hθ4_le_π8 : θ / 4 ≤ Real.pi / 8 := by linarith
   have hm_pi_n_le_π8 : (m : ℝ) * Real.pi / n ≤ Real.pi / 8 :=
@@ -1879,7 +1878,7 @@ private lemma chebyshev_quarter_floor_hm_le_and_cap_max
         field_simp
       have hRHS :
           (θ + Real.pi / (2 * n)) * (2 * n) = 2 * (n : ℝ) * θ + Real.pi := by
-        field_simp; ring
+        field_simp
       linarith
     have h_2nθ_le_nπ : 2 * (n : ℝ) * θ ≤ (n : ℝ) * Real.pi := by
       nlinarith [hθ_le, hn_pos.le]
@@ -1892,9 +1891,9 @@ private lemma chebyshev_quarter_floor_hm_le_and_cap_max
     have step := mul_le_mul_of_nonneg_right hm_pi_n_le_π8 h8n_pos.le
     have hLHS :
         (m : ℝ) * Real.pi / n * (8 * (n : ℝ)) = 8 * (m : ℝ) * Real.pi := by
-      field_simp; ring
+      field_simp
     have hRHS : Real.pi / 8 * (8 * (n : ℝ)) = (n : ℝ) * Real.pi := by
-      field_simp; ring
+      field_simp
     have h_8mπ_le_nπ : 8 * (m : ℝ) * Real.pi ≤ (n : ℝ) * Real.pi := by linarith
     nlinarith [h_8mπ_le_nπ, hpi_pos]
   have h8m_nat_le : 8 * m ≤ n := by exact_mod_cast h8m_real_le
@@ -2052,7 +2051,8 @@ private lemma chebyshev_trig_sum_pos (n : ℕ) (hn : 0 < n) (θ : ℝ)
       (abs_pos.mpr (sub_ne_zero.mpr (hne k)))
   · exact ⟨⟨0, hn⟩, Finset.mem_univ _⟩
 
-/-- **[SORRY] Harmonic trig sum lower bound for general θ ∈ (0, π).**
+/- **[SORRY-DESIGN-NOTE — orphan docstring, not attached to a declaration]
+   Harmonic trig sum lower bound for general θ ∈ (0, π).
 
     For any θ ∈ (0, π) with cos θ not a Chebyshev node for any n, the sum
     S_n = Σₖ sin(φₖ)/|cos θ - cos φₖ| grows at least as fast as n · log(n+1).
@@ -2130,8 +2130,6 @@ private lemma trig_sum_small_n_const (θ : ℝ)
                 |Real.cos θ - chebyshevNode n k|) := by
         refine Finset.sum_congr rfl fun k _ => ?_
         congr 2
-        push_cast
-        ring
       linarith
     · -- Denominator positivity: n ≥ 1 and log(n+1) ≥ log 2 > 0.
       apply mul_pos
@@ -2163,7 +2161,7 @@ private lemma trig_sum_small_n_const (θ : ℝ)
                       |Real.cos θ - chebyshevNode n k|) /
         ((↑n : ℝ) * Real.log ((↑n : ℝ) + 1)) := rfl
     rw [hr_unfold] at hC_le
-    rwa [le_div_iff hd_pos] at hC_le
+    rwa [le_div_iff₀ hd_pos] at hC_le
 
 /-- **(Step 7a residue) Asymptotic log lower bound for the quarter-floor input.**
 
@@ -2252,7 +2250,6 @@ private lemma chebyshev_quarter_floor_log_asymp_lb
       ((n : ℝ) + 1) * Real.exp 4 := by
     rw [hK_def]
     field_simp
-    ring
   have h_rhs_simp : (n : ℝ) ^ 2 * (θ ^ 2 / (16 * Real.pi ^ 2)) =
       (n : ℝ) ^ 2 * θ ^ 2 / (16 * Real.pi ^ 2) := by
     ring
