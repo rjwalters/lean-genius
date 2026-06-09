@@ -1863,6 +1863,46 @@ private lemma gvCanonInv_targets_eq_other {r : ℕ} (cfg : LGVConfig r) (hwf : c
       Equiv.swap_apply_of_ne_of_ne hk_ci hk_cj]
   rw [hσ'k]
 
+-- S85 (α) Helper 1: ci-branch ℕ-target equality used by `gvCanonInv`'s ci branch.
+-- Same purpose as `gvCanonInv_targets_eq_other` — replace tactic-elaborated proof
+-- inside `cast (congrArg (PathMN cfg.m) (...))` with a named-lemma application.
+private lemma gvCanonInv_targets_eq_ci {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) (k : Fin r)
+    (hk_ci : k = canonI cfg hwf t ht) :
+    let ci := canonI cfg hwf t ht
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    let ki := splitPosAt cfg t c y ci
+    let kj := splitPosAt cfg t c y cj
+    ki + (cfg.targets (t.1 cj) - cfg.sources cj) - kj =
+      cfg.targets (canonNewPerm cfg hwf t ht k) - cfg.sources k := by
+  subst hk_ci
+  have hσ'ci : canonNewPerm cfg hwf t ht (canonI cfg hwf t ht) =
+      t.1 (canonJ cfg hwf t ht) := by
+    simp only [canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_left]
+  rw [hσ'ci]
+  exact tailSwap_n_ci cfg hwf t ht
+
+-- S85 (α) Helper 2: cj-branch ℕ-target equality used by `gvCanonInv`'s cj branch.
+private lemma gvCanonInv_targets_eq_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
+    (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) (k : Fin r)
+    (hk_cj : k = canonJ cfg hwf t ht) :
+    let ci := canonI cfg hwf t ht
+    let cj := canonJ cfg hwf t ht
+    let c := canonCol cfg hwf t ht
+    let y := canonY cfg hwf t ht
+    let ki := splitPosAt cfg t c y ci
+    let kj := splitPosAt cfg t c y cj
+    kj + (cfg.targets (t.1 ci) - cfg.sources ci) - ki =
+      cfg.targets (canonNewPerm cfg hwf t ht k) - cfg.sources k := by
+  subst hk_cj
+  have hσ'cj : canonNewPerm cfg hwf t ht (canonJ cfg hwf t ht) =
+      t.1 (canonI cfg hwf t ht) := by
+    simp only [canonNewPerm, Equiv.Perm.mul_apply, Equiv.swap_apply_right]
+  rw [hσ'cj]
+  exact tailSwap_n_cj cfg hwf t ht
+
 /-- The canonical GV involution: tail-swap at the lex-min crossing point.
     For paths ci and cj, we swap suffixes at the shared lattice point (c, y).
     Other paths are unchanged (with cast for type compatibility). -/
@@ -1877,25 +1917,15 @@ private noncomputable def gvCanonInv {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
   let kj := splitPosAt cfg t c y cj
   ⟨σ', fun k =>
     if hk_ci : k = ci then
-      cast (congrArg (PathMN cfg.m) (by
-          subst hk_ci
-          have hσ'ci : σ' ci = t.1 cj := by
-            simp only [show σ' = t.1 * Equiv.swap ci cj from rfl,
-              Equiv.Perm.mul_apply, Equiv.swap_apply_left]
-          rw [hσ'ci]
-          exact tailSwap_n_ci cfg hwf t ht)) <|
+      cast (congrArg (PathMN cfg.m)
+        (gvCanonInv_targets_eq_ci cfg hwf t ht k hk_ci)) <|
         tailSwapPath (t.2 ci) (t.2 cj) ki kj
           (splitPos_east_eq cfg hwf t ht)
           (splitPos_le_length cfg hwf t ht ci (Or.inl rfl))
           (splitPos_le_length cfg hwf t ht cj (Or.inr rfl))
     else if hk_cj : k = cj then
-      cast (congrArg (PathMN cfg.m) (by
-          subst hk_cj
-          have hσ'cj : σ' cj = t.1 ci := by
-            simp only [show σ' = t.1 * Equiv.swap ci cj from rfl,
-              Equiv.Perm.mul_apply, Equiv.swap_apply_right]
-          rw [hσ'cj]
-          exact tailSwap_n_cj cfg hwf t ht)) <|
+      cast (congrArg (PathMN cfg.m)
+        (gvCanonInv_targets_eq_cj cfg hwf t ht k hk_cj)) <|
         tailSwapPath (t.2 cj) (t.2 ci) kj ki
           (by rw [splitPos_east_eq cfg hwf t ht])
           (splitPos_le_length cfg hwf t ht cj (Or.inr rfl))
@@ -1919,8 +1949,15 @@ private lemma gvCanonInv_val_ci {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFor
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht)) ++
     (t.2 (canonJ cfg hwf t ht)).val.drop
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonJ cfg hwf t ht)) := by
-  simp only [gvCanonInv, dite_true, tailSwapPath, cast_PathMN_val,
-    Subtype.coe_mk]
+  simp only [gvCanonInv, dite_true]
+  exact cast_PathMN_val
+    (gvCanonInv_targets_eq_ci cfg hwf t ht (canonI cfg hwf t ht) rfl)
+    (tailSwapPath (t.2 (canonI cfg hwf t ht)) (t.2 (canonJ cfg hwf t ht))
+      (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht))
+      (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonJ cfg hwf t ht))
+      (splitPos_east_eq cfg hwf t ht)
+      (splitPos_le_length cfg hwf t ht (canonI cfg hwf t ht) (Or.inl rfl))
+      (splitPos_le_length cfg hwf t ht (canonJ cfg hwf t ht) (Or.inr rfl)))
 
 private lemma gvCanonInv_val_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) :
@@ -1930,8 +1967,15 @@ private lemma gvCanonInv_val_cj {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFor
     (t.2 (canonI cfg hwf t ht)).val.drop
       (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht)) := by
   have hij := canonI_lt_canonJ cfg hwf t ht
-  simp only [gvCanonInv, dif_neg (Fin.ne_of_gt hij), dite_true, tailSwapPath,
-    cast_PathMN_val, Subtype.coe_mk]
+  simp only [gvCanonInv, dif_neg (Fin.ne_of_gt hij), dite_true]
+  exact cast_PathMN_val
+    (gvCanonInv_targets_eq_cj cfg hwf t ht (canonJ cfg hwf t ht) rfl)
+    (tailSwapPath (t.2 (canonJ cfg hwf t ht)) (t.2 (canonI cfg hwf t ht))
+      (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonJ cfg hwf t ht))
+      (splitPosAt cfg t (canonCol cfg hwf t ht) (canonY cfg hwf t ht) (canonI cfg hwf t ht))
+      (by rw [splitPos_east_eq cfg hwf t ht])
+      (splitPos_le_length cfg hwf t ht (canonJ cfg hwf t ht) (Or.inr rfl))
+      (splitPos_le_length cfg hwf t ht (canonI cfg hwf t ht) (Or.inl rfl)))
 
 private lemma gvCanonInv_val_other {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.wellFormed)
     (t : TaggedPathTuple cfg) (ht : ¬isNonCancellable t) (k : Fin r)
