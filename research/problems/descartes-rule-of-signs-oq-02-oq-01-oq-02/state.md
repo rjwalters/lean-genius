@@ -1,12 +1,71 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: ACT (Step-B / Step-C / assembly open; file build-clean at v4.26.0 after S7 ACT)
-**Path**: full (3–6 ACT iterations remaining: Step-B PREP+ACT, Step-C PREP+ACT, assembly PREP+ACT)
-**Since**: 2026-06-01T06:49Z (S7 ACT build-repair merged, PR #21825)
-**Iteration**: 8 (S8 STATE-SYNC, doc-only — this session)
-**Researcher**: researcher-1 (S8 STATE-SYNC absorbing S7 ACT)
+**Phase**: PREP (S9 PREP — Step B design + bearer catalog; file unchanged at S7 ACT build-clean state)
+**Path**: full (3–6 ACT iterations remaining: Step-B ACT, Step-C PREP+ACT, assembly PREP+ACT)
+**Since**: 2026-06-09T18:00Z (S9 PREP, researcher-1 — this PR)
+**Iteration**: 9 (S1 OBSERVE, S2-S4 PREP, S5 ACT Step A, S6 AUDIT, S7 ACT build-repair, S8 STATE-SYNC, **S9 PREP Step B design**)
+**Researcher**: researcher-1 (S8 STATE-SYNC; **S9 PREP, this PR**)
 
-## S8 STATE-SYNC (researcher-1, 2026-06-01)
+## S9 PREP (researcher-1, 2026-06-09) — Step B design + bearer catalog
+
+Doc-only PREP designing the next Lean target in the multi-step program to discharge `sturm_exact_count_axiom` (line 332-336 of `proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean`). Three named steps remain after S5 ACT shipped Step A locally-constant:
+
+* **Step A** (S5 ACT, complete): `sturmVariations_locally_constant` (line 220-277, ~58 LOC; IVT-based).
+* **Step B** (this PREP designs): `sturmVariations_step_through_root_of_p` — `σ_p` decreases by exactly 1 at a root of `p`. ~100-140 LOC across 4 named declarations (B.1 + B.2 + B.3 + assembly).
+* **Step C** (preview only): `sturmVariations_step_through_interior_root` — `σ_p` unchanged at a root of an interior Sturm term. ~80-120 LOC; full design deferred to S10/S11 PREP.
+* **Axiom discharge assembly** (sketch): induction on the number of Sturm-term zeros in `[a, b]`; case split using Step A / B / C. ~40-70 LOC.
+
+**Total remaining axiom-discharge LOC**: ~220-330 LOC across 3-4 ACT iterations. After full discharge: file 513 → ~750-850 LOC, 0 axioms, 0 sorries, all derived corollaries unchanged. Slug status moves `axiomatized → verified`.
+
+### Step B sub-claim decomposition (S9 PREP §2.3)
+
+1. **B.1** — `p(r) = 0 ⇒ p'(r) ≠ 0` (squarefree). ~10 LOC. Uses `Polynomial.Squarefree.isCoprime_derivative` (name TBD at v4.26.0) + `IsCoprime.eval`.
+2. **B.2** — sign of `p · p'` on `(a, r)` and `(r, b)`. ~40-60 LOC. Uses `intermediate_value_Icc`/`Icc'` (already in Step A) + the §5 sign-product chain.
+3. **B.3** — sign-variation count for the first two Sturm terms, list-level. ~30-50 LOC. Uses local `countSignAlts` / `signVariations` definitions + Step A applied to tail of tail.
+4. **B (assembly)** — combine B.1 + B.2 + B.3 + Step A. ~20 LOC.
+
+### Mathlib bearer catalog (S9 PREP §3) — NOT verified at v4.26.0 this iteration
+
+| Bearer | Module (expected) | Use |
+|---|---|---|
+| `Polynomial.Squarefree.isCoprime_derivative` (name TBD) | `RingTheory/Polynomial/Squarefree.lean` (TBD) | B.1 |
+| `IsCoprime.eval` (or `IsCoprime.mul_eval_ne_zero`) | `Algebra/IsCoprime.lean` or `Polynomial/Algebra/Group.lean` (TBD) | B.1 |
+| `intermediate_value_Icc` / `intermediate_value_Icc'` | `Topology/Algebra/Order/IntermediateValue.lean` | B.2 (carried from Step A) |
+| `Polynomial.continuousOn` / `Polynomial.continuous` | `Analysis/Polynomial/Continuity.lean` | B.2 (carried from Step A) |
+| `mul_self_pos` / `mul_self_nonneg` | `Algebra/Order/Ring/Lemmas.lean` | B.2 (already used at line 305) |
+| local `countSignAlts` / `signVariations` | this file, lines 86 / 95 | B.3 |
+| local `sturmVariations_locally_constant` (S5 ACT) | this file, line 220 | B (assembly) |
+
+The §3 bearers should be **re-verified at v4.26.0 in a S10 PREP** via GitHub raw audit (same circumvention pattern as basel iter44 / abel-ruffini S10 PREP); the researcher worktree's `.lake/packages/mathlib/` is unusable through the self-loop.
+
+### Files modified
+
+- `research/problems/descartes-rule-of-signs-oq-02-oq-01-oq-02/sessions/2026-06-09-s9-prep-step-b-catalog.md` (CREATE, ~310 LOC; §1-§10).
+- `research/problems/descartes-rule-of-signs-oq-02-oq-01-oq-02/state.md` (this file) — this entry + header bump (iteration 8 → 9, phase ACT → PREP, since 2026-06-01 → 2026-06-09).
+- `src/data/research/problems/descartes-rule-of-signs-oq-02-oq-01-oq-02.json` — bump `currentState.{iteration, phase, focus, nextAction}` + `updatedAt` 2026-06-09.
+
+**No `.lean` edits**, no `meta.json` edits, no `knowledge.md` / `problem.md` body edits.
+
+### Race-safety
+
+- Pre-claim probe: 0 open descartes PRs at session start (2026-06-09 ~18:00Z).
+- Pre-edit probe: `.lean` file unchanged on `origin/main` since S7 ACT #21825 (2026-06-01T06:05Z); S8 STATE-SYNC #22023 touched only state.md + JSON.
+- HEAD probe: `origin/main` at `58bdf51bc62`; this PREP branches from there.
+
+### Iteration history (extended)
+
+| Iter | Phase | Mode | PR | Description |
+|---|---|---|---|---|
+| 8 | STATE-SYNC | doc | #22023 | S8: absorb S7 ACT build-repair (file build-clean at v4.26.0). |
+| **9** | **PREP** | **doc** | **(this)** | **S9 PREP: Step B design + bearer catalog (~100-140 LOC est, 4-named-decl decomposition B.1+B.2+B.3+assembly); preview of Step C and full axiom-discharge assembly plan; bearer audit at v4.26.0 deferred to S10 PREP.** |
+
+### Next action
+
+**S10 PREP (recommended)**: GitHub-raw bearer audit at Mathlib v4.26.0 for the §3 catalog, especially `Polynomial.Squarefree.isCoprime_derivative` (name verification + module location pin) and `IsCoprime.eval` (form check). Then materialise B.1 (`squarefree_root_has_nonzero_derivative`, ~10 LOC) as a paste-ready Lean recipe. ~30-45 min of doc work.
+
+**Alternative S10 ACT (riskier)**: skip the audit and attempt a paste-ready Step B body. If bearer names match v4.26.0, deliver complete Step B for docker-build verification. 2-5 hours of doctor-time risk if names have drifted (S6 AUDIT pattern: 21 latent errors).
+
+## Prior Focus (S8 STATE-SYNC, researcher-1, 2026-06-01)
 
 Doc-only STATE-SYNC absorbing **S7 ACT** (PR #21825, merged 2026-06-01T06:49Z)
 into state.md. The file is now build-clean at v4.26.0:
