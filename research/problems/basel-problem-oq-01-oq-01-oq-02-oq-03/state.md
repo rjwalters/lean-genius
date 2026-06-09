@@ -1,11 +1,40 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 43 PREP — 28a `linear_combination` algebraic gap FIXED via ℕ-descent; remaining Route B work: 28a ACT after Docker remediation)
+**Phase**: ACT (Iter 44 INFRA-SIGNAL — Docker host RECOVERED since Iter 43; new image `8768de35b1f4` ≠ corrupted `9026c55995f4`; `.lake` self-loop on main repo is the new ACT blocker; Iter 43 paste-ready block remains the next-ACT target unchanged)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-06-03 (Iter 43 PREP — linear_combination gap analysis + ℕ-descent discharge + Docker infra-red flag; iteration 42→43; no Lean edits, no axiom/sorry delta, researcher-1)
-**Iteration**: 43
+**Last Updated**: 2026-06-09 (Iter 44 INFRA-SIGNAL — Docker host recovered; `.lake` self-loop is the new blocker; iteration 43→44; no Lean edits, no axiom/sorry delta, researcher-1)
+**Iteration**: 44
+
+## Iter 44 INFRA-SIGNAL (2026-06-09, researcher-1) — Docker host RECOVERED; `.lake` self-loop is the new blocker
+
+Doc-only INFRA-SIGNAL signalling a partial unblocking of Iter 43 PREP's `## Infrastructure: Docker host degradation (NEW, blocks ACT)` gate. Two infrastructure deltas since 2026-06-03:
+
+- **Docker side: GREEN.** `lean4-arm64:v4.26.0` is present with new image ID `sha256:8768de35b1f4cb4b947670b2003e029e9a79bc25931c76fb3a5583c53e64c493` (≠ Iter 43's corrupted `9026c55995f4`), created 4 days ago, 4.08GB disk / 902MB content. `docker info`, `docker ps`, `docker run --rm lean4-arm64:v4.26.0 echo ...` all succeed. The wedged `lean-build-57602` container from Iter 43 is gone (no running containers). Iter 43's four-step remediation checklist `docker rm -f / system prune / re-pull / docker exec` is effectively complete.
+
+- **`.lake` side: RED (new blocker).** `ls -la /Users/rwalters/GitHub/lean-genius/proofs/.lake` shows it is a **symlink to itself** (target `/Users/rwalters/GitHub/lean-genius/proofs/.lake`). `ls` into it fails with "Too many levels of symbolic links". Every researcher worktree's `proofs/.lake` is a symlink to this broken main-repo target and equally unusable. Docker mounts the host repo at `/workspace`, so the broken symlink propagates into the container and `lake build` cannot resolve `/workspace/proofs/.lake`. This is the same trap intermittently logged across slugs (most recently shapley-folkman-oq-01 Sessions 16/17) and in the user-memory `feedback_researcher_lake_symlink_loop_and_wipe` note.
+
+**Remediation path (recommended, Path A)**:
+```
+rm /Users/rwalters/GitHub/lean-genius/proofs/.lake
+cd /Users/rwalters/GitHub/lean-genius/proofs
+./scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ03
+```
+First run: 10-20 min for `lake exe cache get` + cache-miss + small target build. Subsequent builds: 30s-10min incremental. This iteration does **not** attempt the host-side filesystem mutation — that belongs in the ACT-attempting iteration.
+
+**Iter 43 paste-ready block status: UNCHANGED.** No new Mathlib bearer drift since 2026-06-03 (no new Mathlib release at lake-pinned SHA `2df2f0150c…` between 2026-06-03 and 2026-06-09). The ~85-LOC corrected ℕ-descent discharge in Iter 43 PREP §"Consolidated paste-ready block" is the next-ACT target unchanged. Three NEW Mathlib-core bearers from Iter 43 (`Nat.eq_of_mul_eq_mul_right`, `Nat.factorial_pos`, `Nat.factorial_succ`) are entry-level lemmas with no expected drift.
+
+**Estimated next-ACT wall-clock** (Iter 45 if a researcher claims after `.lake` reset): 10-20 min for `.lake` re-init + 5-10 min for Iter 43 paste + 5 min commit/PR = 20-35 min total.
+
+**File state at INFRA-SIGNAL time**: 1802 LOC unchanged (no Lean edits); 1 axiom `hanson_bound` unchanged; 0 sorries (md5 `4b4ac86002cb4c60b7a2863c157dad48`, byte-identical to Iter 38 ACT state). Build state: 3066/3066 jobs verified at SHA `2df2f0150c…` per Iter 38 ACT #20863 (2026-05-28). Build NOT attempted this iter (`.lake` self-loop blocks).
+
+**No edits outside this iteration's three files**: this session log + this `state.md` block + research JSON `currentState` refresh. No knowledge.md / problem.md / Lean / meta.json edits. Session log: `sessions/2026-06-09-iter44-infra-signal-docker-recovered-lake-symlink-loop.md`.
+
+**Race-safety**:
+- Pre-claim probe: 0 open basel PRs at session start (2026-06-09 ~17:25Z).
+- Pre-edit probe: `.lean` unchanged on `origin/main` since Iter 38 ACT #20863 (2026-05-28).
+- HEAD probe: `origin/main` at `535c25c5e60` (Burnside counting iteration); this INFRA-SIGNAL branches from there.
 
 ## Iter 43 PREP (2026-06-03, researcher-1) — 28a `linear_combination` algebraic gap + corrected ℕ-descent discharge
 
