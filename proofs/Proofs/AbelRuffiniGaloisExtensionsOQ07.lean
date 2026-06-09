@@ -360,6 +360,73 @@ theorem burnside_p_squared_q_p_gt_q
   have hcard' : Nat.card G = p ^ 2 * q ^ 1 := by rw [pow_one]; exact hcard
   exact burnside_pq_with_normal_pSylow (a := 2) (b := 1) hcard' (P : Subgroup G) hP_card
 
+/-- **Burnside `|G| = p^a · q`, case `q < p`** (axiom-free, S31 peel-off
+    per S26 §3.2): Sylow's third theorem gives `n_p ≡ 1 [MOD p]` and
+    `Sylow.card_dvd_index` gives `n_p ∣ q`; the helper
+    `sylow_count_eq_one_of_lt_prime` forces `n_p = 1`. The unique Sylow
+    `p`-subgroup is normal and discharges via
+    `burnside_pq_with_normal_pSylow` with exponents `(a, 1)`.
+
+    For `a = 1` this would reduce to the squarefree case (already covered
+    axiom-free by `burnside_pq_pq_case` via `IsZGroup.of_squarefree`).
+    For `a = 2` this is `burnside_p_squared_q_p_gt_q` (which this theorem
+    subsumes for `q < p`).  For `a ≥ 3` this is new content peeling
+    `(a, 1)` shapes off `burnside_pq_nontrivial` whenever `q < p`. -/
+theorem burnside_p_pow_a_q_q_lt_p
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime] {a : ℕ}
+    (ha : 1 ≤ a) (hpq : q < p)
+    (hcard : Nat.card G = p ^ a * q) :
+    IsSolvable G := by
+  -- Step 1: pick a Sylow p-subgroup; |P| = p^a by `Sylow.card_eq_multiplicity`.
+  obtain ⟨P⟩ : Nonempty (Sylow p G) := inferInstance
+  have hp_ne_q : p ≠ q := by omega
+  have hp_not_dvd_q : ¬ p ∣ q :=
+    mt (Nat.prime_dvd_prime_iff_eq hp.out hq.out).mp hp_ne_q
+  have hcop : Nat.Coprime (p ^ a) q :=
+    ((Nat.coprime_primes hp.out hq.out).mpr hp_ne_q).pow_left a
+  have hP_card : Nat.card (P : Subgroup G) = p ^ a := by
+    have hmult := Sylow.card_eq_multiplicity P
+    have hfact : Nat.factorization (Nat.card G) p = a := by
+      rw [hcard, Nat.factorization_mul_apply_of_coprime hcop,
+          Nat.Prime.factorization_pow hp.out,
+          Nat.factorization_eq_zero_of_not_dvd hp_not_dvd_q]
+      simp
+    rw [hfact] at hmult
+    exact hmult
+  -- Step 2: index of P is q (Lagrange + cancellation).
+  have hpa_pos : 0 < p ^ a := pow_pos hp.out.pos a
+  have hP_index : (P : Subgroup G).index = q := by
+    have h := Subgroup.card_mul_index (P : Subgroup G)
+    rw [hP_card, hcard] at h
+    exact Nat.eq_of_mul_eq_mul_left hpa_pos h
+  -- Step 3: n_p ≡ 1 [MOD p] and n_p ∣ q, so n_p = 1.
+  have hnp_mod : Nat.card (Sylow p G) ≡ 1 [MOD p] := card_sylow_modEq_one p G
+  have hnp_dvd : Nat.card (Sylow p G) ∣ q := hP_index ▸ Sylow.card_dvd_index P
+  have hnp_eq_one : Nat.card (Sylow p G) = 1 :=
+    sylow_count_eq_one_of_lt_prime hp.out hq.out hpq hnp_mod hnp_dvd
+  -- Step 4: n_p = 1 ⇒ Subsingleton (Sylow p G) ⇒ P.Normal.
+  haveI hSub : Subsingleton (Sylow p G) :=
+    (Nat.card_eq_one_iff_unique.mp hnp_eq_one).1
+  haveI hP_normal : (P : Subgroup G).Normal := Sylow.normal_of_subsingleton P
+  -- Step 5: discharge via burnside_pq_with_normal_pSylow with (a, b) = (a, 1).
+  have hcard' : Nat.card G = p ^ a * q ^ 1 := by rw [pow_one]; exact hcard
+  exact burnside_pq_with_normal_pSylow (a := a) (b := 1) hcard' (P : Subgroup G) hP_card
+
+/-- **Burnside `|G| = p · q^b`, case `p < q`** (axiom-free, S31 peel-off
+    per S26 §3.3): mirror of `burnside_p_pow_a_q_q_lt_p` with primes
+    swapped. Reduces to the previous theorem with `(p, q) ↦ (q, p)` and
+    `a ↦ b`. -/
+theorem burnside_p_q_pow_b_p_lt_q
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime] {b : ℕ}
+    (hb : 1 ≤ b) (hpq : p < q)
+    (hcard : Nat.card G = p * q ^ b) :
+    IsSolvable G := by
+  -- Apply burnside_p_pow_a_q_q_lt_p with (p, q) ↦ (q, p) and a ↦ b.
+  have hcard' : Nat.card G = q ^ b * p := by rw [hcard]; ring
+  exact burnside_p_pow_a_q_q_lt_p (p := q) (q := p) (a := b) hb hpq hcard'
+
 /-- **Sylow count constraint** (helper for `|G| = p² · q`, case `p < q`):
     if `n ∣ p²` (with `p` prime), `n ≡ 1 [MOD q]` (`q` prime), `p < q`, and
     `(p, q) ≠ (2, 3)`, then `n = 1`.
