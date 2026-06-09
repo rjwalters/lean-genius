@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: AXIOMATIZED — Lever A residual SHIPPED, S9 mechanic handoff RESOLVED at S10, AUDITOR build-verify UNBLOCKED at S10
-**Since**: 2026-05-30 (S10 STATE-SYNC — researcher-1; rest state unchanged since S8)
-**Iteration**: 9 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification)
-**Last Updated**: 2026-05-30 (S10 STATE-SYNC, researcher-1; JSON.lastUpdate refresh 2026-05-16 → 2026-05-30; S9 mechanic handoff verified resolved; AUDITOR build-verify disk-unblocked)
+**Phase**: AXIOMATIZED — Lever A residual SHIPPED; S10 handoff #4 (docstring) REFUTED at S11 (Mathlib source-verified)
+**Since**: 2026-06-09 (S11 STATE-SYNC — researcher-1; rest state unchanged since S8)
+**Iteration**: 10 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification → S11 STATE-SYNC doc-only handoff #4 refutation)
+**Last Updated**: 2026-06-09 (S11 STATE-SYNC, researcher-1; verified pinned Mathlib `power_le_power_left/_right` semantics against rev `2df2f0150c27`; parent docstring is CORRECT; S10 handoff #4 was a misread, now refuted)
 
 ## Status Summary
 
@@ -178,13 +178,26 @@ Wait for either (a) a seeker selection of this slug for Lever B/C, or
    restrict to successor alephs (~40 LOC axiom-free), or (b) add a
    forcing-side axiom (~60 LOC). See S10 §5.
 
-4. **FUTURE RESEARCHER** — Parent file lines 37–38 + 173–174 docstring
+4. **FUTURE RESEARCHER** — ~~Parent file lines 37–38 + 173–174 docstring
    likely misstates current Mathlib `power_le_power_left/_right`
-   semantics. Sibling OQ-03 uses `_right` for exponent-variation;
-   state.md S4 §insights confirms `_right` is exponent-monotonic.
-   Parent's docstring claim that `_right` varies the base is likely
-   incorrect for Mathlib 4.26. ≤10-LOC fix gated on BUILD-VERIFY.
-   See S10 §6.
+   semantics.~~ **REFUTED at S11 (2026-06-09).** The docstring is
+   CORRECT. Verified against the pinned Mathlib source at the project's
+   lake-manifest rev `2df2f0150c27`
+   (`Mathlib/SetTheory/Cardinal/Order.lean` lines 330–333 and 359–360):
+
+   - `power_le_power_left : ∀ {a b c : Cardinal}, a ≠ 0 → b ≤ c → a^b ≤ a^c`
+     — fixed nonzero base `a`, **varies the exponent** (`b ≤ c`).
+   - `power_le_power_right : ∀ {a b c : Cardinal}, a ≤ b → a^c ≤ b^c`
+     — **varies the base** (`a ≤ b`), fixed exponent `c`.
+
+   This matches the parent file's docstring claim verbatim
+   ("`_left` varies the EXPONENT, while `_right` varies the BASE"),
+   and matches the actual usage at line 181–182
+   (`Cardinal.power_le_power_left (by norm_num : (2 : Cardinal.{0}) ≠ 0) hκν`
+   — base hypothesis, then exponent comparison). The S10 reasoning
+   that "sibling OQ-03 uses `_right` for exponent-variation" was a
+   misread of the sibling's own usage. No edit needed; no BUILD-VERIFY
+   needed. See S11 §1.
 
 5. **TOOLING (low priority, project-wide)** — `enrich-research.ts`
    counts textual `sorry` mentions, not AST proof terms. Affects
@@ -195,7 +208,7 @@ Wait for either (a) a seeker selection of this slug for Lever B/C, or
 
 ## Attempt Counts
 
-- Total iterations: 9 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual; S9 STATE-SYNC doc-only post-S8 cleanup; S10 STATE-SYNC doc-only handoff verification)
+- Total iterations: 10 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual; S9 STATE-SYNC doc-only post-S8 cleanup; S10 STATE-SYNC doc-only handoff verification; S11 STATE-SYNC doc-only handoff #4 refutation)
 - Current approach attempts: 0 (rest state)
 - Approaches tried: 3 — "two-axiom scaffold + 7 Mathlib-derived supporting
   theorems" (Phase-3a, ships); "deeper-axiomatization sibling with
@@ -220,6 +233,7 @@ beyond DRAFT status are listed separately below.
 | S8 | 2026-05-16 | ACT (Lever A residual) | researcher-5 | refactored parent file: deleted 2 vacuous `True`-codomain axioms + 2 `#check` directives, rewrote Part III docstring as 12-LOC pointer to Phase3b; parent file 257 → 230 LOC, axiomCount 2 → 0; slug axiom count 6 → 4 (PR #19462) |
 | S9 | 2026-05-16 | STATE-SYNC (doc-only) | researcher-6 | post-S8 drift cleanup: JSON.lastUpdate 2026-05-08 → 2026-05-16 (was 8d stale); currentState.iteration 7 → 8; nextSteps refreshed to surface MECHANIC + AUDITOR handoffs; packaged ready-to-paste leanFiles[] mechanic snippets for the slug's two missing entries (parent + Phase3b); no Lean / no gallery / no PR-flow side effects |
 | S10 | 2026-05-30 | STATE-SYNC (doc-only) | researcher-1 | post-S9 handoff verification: S9 mechanic handoff RESOLVED (auto-enrich ran between S9 and S10; both deliverables now in JSON.leanFiles[]); S9 auditor handoff UNBLOCKED (disk recovered 5.7Gi→62Gi); JSON.lastUpdate 2026-05-16 → 2026-05-30; iteration 8 → 9; documented Lever B type-mismatch obstruction (Cardinal IsEastonFunction ↛ Ordinal SatisfiesEastonConditions cleanly); flagged docstring `power_le_power_left/_right` inconsistency for future BUILD-VERIFY fix; flagged `enrich-research.ts` textual-sorry false-positive (sibling OQ-03 reports 1 but actual is 0) |
+| S11 | 2026-06-09 | STATE-SYNC (doc-only) | researcher-1 | S10 handoff #4 REFUTED via Mathlib source verification: fetched `Mathlib/SetTheory/Cardinal/Order.lean` at pinned rev `2df2f0150c27` (from `proofs/lake-manifest.json`); `power_le_power_left` is `a ≠ 0 → b ≤ c → a^b ≤ a^c` (fixed base, varies exponent); `power_le_power_right` is `a ≤ b → a^c ≤ b^c` (varies base, fixed exponent). Parent file docstring lines 37–38 + 171–174 are CORRECT; no BUILD-VERIFY needed; no LOC change to Lean files. Strips false handoff from the slug's open-work list, returning it to a fully clean rest state on the four remaining axioms |
 
 ### Unshipped drafts (informational, not session-numbered)
 

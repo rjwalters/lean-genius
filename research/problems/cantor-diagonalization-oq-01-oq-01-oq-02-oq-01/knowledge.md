@@ -12,6 +12,56 @@ or does it inherently require a meta-theoretic forcing construction?
 
 ---
 
+## Session 2026-06-09 (Session 11, researcher-1) — STATE-SYNC (refute S10 handoff #4)
+
+**Mode**: REVISIT (RICH, score 54)
+**Phase change**: AXIOMATIZED (rest) → AXIOMATIZED (rest) — open-handoff list cleaned
+**Outcome**: refuted S10 handoff #4 in `state.md`. Parent file docstring claims about Mathlib `power_le_power_left/_right` semantics are CORRECT. No Lean changes; the slug stays at 4 axioms in `Phase3b.lean` and 0 axioms in parent.
+
+### What was verified
+
+The slug's `lake-manifest.json` pins Mathlib to `2df2f0150c27`. Fetched `Mathlib/SetTheory/Cardinal/Order.lean` at that revision directly from the Mathlib GitHub mirror (no Docker / no `lake build` needed — `.lake/` is a broken self-loop symlink in the worktree, so `Grep` cannot reach it):
+
+| Lemma | Signature (at rev `2df2f0150c27`, `Order.lean`) | Varies |
+|-------|-------------------------------------------------|--------|
+| `Cardinal.power_le_power_left` | `∀ {a b c : Cardinal}, a ≠ 0 → b ≤ c → a^b ≤ a^c` (line 330–333) | exponent (base fixed nonzero) |
+| `Cardinal.power_le_power_right` | `∀ {a b c : Cardinal}, a ≤ b → a^c ≤ b^c` (line 359–360) | base (exponent fixed) |
+
+Parent file `CantorDiagonalizationOQ01OQ01OQ02OQ01.lean`:
+- Lines 37–38 docstring: "`_left` varies the EXPONENT in current Mathlib, `_right` varies the BASE" — ✅ correct.
+- Lines 171–174 docstring: "naming convention: `power_le_power_left` varies the EXPONENT, while `power_le_power_right` varies the BASE" — ✅ correct.
+- Line 181–182 usage: `Cardinal.power_le_power_left (by norm_num : (2 : Cardinal.{0}) ≠ 0) hκν` — base-nonzero hypothesis, then exponent-comparison hypothesis `hκν` — ✅ matches `_left`'s signature.
+
+### Why this is meaningful (small, but real)
+
+S10's flagged handoff said the docstring "likely misstates" Mathlib semantics and gated the fix on a Docker BUILD-VERIFY. That handoff was wrong, and would have wasted a future researcher's session (either chasing a non-existent bug, or paying the Docker cost just to confirm the docstring). Closing it now:
+
+1. Removes a false action item from the slug's open-work list.
+2. Verifies the parent file's exposition is internally consistent with both its own usage and current Mathlib.
+3. Demonstrates that pinned-source verification (via `lake-manifest.json` + GitHub raw fetch) is a usable alternative to BUILD-VERIFY for API-shape questions, when `.lake/` is broken.
+
+### Honest accounting
+
+- No new theorems proved; no axiom-count change; no Lean file modified.
+- Net effect: state.md shrinks the FUTURE RESEARCHER handoff list from 3 items to 2 (Lever B obstruction, `enrich-research.ts` tooling) and reclassifies #4 from OPEN to REFUTED.
+- Iteration counter advances 9 → 10 (S11).
+- This is doc-only, doc-quality-improvement progress, in the same category as S5/S9/S10. Not axiom-elimination, not theorem-discharge.
+
+### Followup work available (unchanged from S10)
+
+1. **Lever B**: bridge with sibling OQ-02-OQ-03. Known type-mismatch obstruction (Cardinal vs Ordinal); options (a) successor-aleph-only ~40 LOC axiom-free, or (b) forcing-side axiom ~60 LOC.
+2. **Lever C**: flypitch-port scoping document (multi-session).
+3. **TOOLING** (project-wide, low priority): `enrich-research.ts` textual-sorry false-positive in sibling OQ-03. Not for this slug.
+
+### Files modified
+
+- `research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/state.md` (header refresh; handoff #4 REFUTED block; S11 row in session-history table; iteration count 9 → 10)
+- `research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/knowledge.md` (this entry)
+
+No Lean files touched. No gallery JSON touched.
+
+---
+
 ## Session 2026-05-14 (Session 6, researcher-8) — ACT (Phase-3b Lever A)
 
 **Mode**: REVISIT (RICH, score 43)
