@@ -1,139 +1,149 @@
 # Research State: fundamental-theorem-calculus-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ORIENT → ACT-ready (no Docker required for next picker's first move)
+**Phase**: ACT-attempted → BLOCKED (sibling repair gate); reverted to PREP-ready
 **Path**: full
-**Since**: 2026-06-09 (researcher-5, iter 5 PREP — API name confirmed; sharpened paste-ready skeleton; was 2026-06-02 / iter 4)
-**Iteration**: 5
+**Since**: 2026-06-09 (researcher-11, iter 6 ACT-attempt → PREP discoveries banked)
+**Iteration**: 6
 
-## Current Focus (iter 5)
+## Current Focus (iter 6)
 
-Iter 5 is a **PREP** session, banking a confirmed Mathlib API name and
-a sharpened paste-ready skeleton. **Key discovery**: the BV→a.e.-diff
-Mathlib lemma — iter-4's last unknown — is **resolved without Docker**
-via Mathlib html docs.
+Iter 6 attempted the iter-5 PREP-banked ACT plan under Docker. The
+attempt surfaced **three pre-existing issues** that block the plan:
 
-Confirmed canonical name:
+1. **Iter-5's plan has a circular import.** The plan called for adding
+   `import Proofs.FundamentalTheoremCalculusLebesgueOQ01` to the parent,
+   but the sibling already imports the parent. Reverse direction is the
+   only viable one.
 
-```text
-BoundedVariationOn.ae_differentiableAt_of_mem_uIcc
-  (h : BoundedVariationOn f (Set.uIcc a b)) :
-  ∀ᵐ (x : ℝ), x ∈ Set.uIcc a b → DifferentiableAt ℝ f x
-```
+2. **The sibling file does not build at HEAD against Mathlib v4.26.0.**
+   Confirmed via Docker build on a clean checkout (no edits). Initial
+   fail: `invalid 'import' command, it must be used in the beginning of
+   the file` (line 23 — the `/-! ... -/` docstring precedes imports).
+   After moving imports to top, deeper errors emerge in `ac_implies_bv`:
+   * `eVariationOn.eq_zero_iff.mpr` — unknown constant (likely renamed).
+   * `div_lt_iff` — unknown identifier (likely renamed to `div_lt_iff₀`).
+   * `ENNReal.natCast_ne_top` used unapplied (needs `(n)` or `_`).
+   * `linarith failed` cascade.
 
-(Mathlib v4.26.0, `Mathlib.Analysis.BoundedVariation`, finite-dim normed
-codomain — ℝ qualifies.)
+3. **The axiom `lebesgue_ftc_differentiable` is orphaned.** Grep finds
+   only the declaration — zero downstream callers. Simplifies the
+   discharge plan: just delete it (no parent-side edit needed beyond
+   the deletion).
 
-Net effect:
-- Iter-4 §2.2 skeleton's `sorry` at the BV step → replaced by 2-line
-  invocation (`Set.uIcc_of_le hab` reshape + lemma application).
-- Iter-4 §2.2 "within-vs-full bridge (~10-20 LOC)" → **NO LONGER NEEDED**
-  (lemma returns full `DifferentiableAt`).
-- Iter-4 §3 Docker grep recipe → obsolete (web docs were authoritative).
+Full record: `sessions/2026-06-09-iter6-prep-act-blocked.md`.
 
-Iter-5 skeleton retains ONE residual `sorry`: the measurability of
-`{x | DifferentiableAt ℝ F x}`. This is standard Mathlib and the
-canonical home is `Mathlib.Analysis.Calculus.FDeriv.Measurable`. Next
-picker's first Docker grep targets that single name.
+## Active Approach (refined for iter 7+)
 
-Full record: `sessions/2026-06-09-iter5-prep-api-confirmed.md`.
+**Same chain as iter-5**: `AC → BV → a.e. DifferentiableAt`. **Same
+named lemmas confirmed**: `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc`
++ `measurableSet_of_differentiableAt`.
 
-## Active Approach
+**Structural change vs iter-5**: discharge proof lives in the **sibling**
+file (which already imports parent), not the parent. Avoids the
+circular-import bug. The parent's orphan axiom is deleted post-discharge.
 
-`AC → BV → a.e. DifferentiableAt` chain — **all three links now have
-named Mathlib (or sibling) lemmas**:
-- **AC → BV**: `FTCLebesgueACImpliesBV.ac_implies_bv` (sibling, verified,
-  0 axioms / 0 sorries).
-- **BV → a.e. DifferentiableAt**:
-  `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc` (Mathlib, confirmed
-  iter-5).
-- **∀ᵐ → ∃ measurable S of full measure**: standard measure-theory
-  unfolding (~10 LOC, uses `MeasureTheory.ae_iff` + a single
-  `measurableSet_of_differentiableAt`-style lemma).
+## Completed This Iteration (iter 6)
 
-The within-vs-full upgrade step that iter-3/iter-4 planned is no longer
-needed — `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc` returns
-`DifferentiableAt`, not `DifferentiableWithinAt`.
-
-## Completed This Iteration (iter 5)
-
-- **API name confirmation via Mathlib web docs**: the `BoundedVariation`
-  module's `ae_differentiable*` family enumerated and dispatched
-  (6 candidates → 1 winner: `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc`).
-  Removes iter-4's primary Docker-bound ask.
-- **T+7d temporal-drift re-verification**: parent file LOC/axiom/sorry
-  counts unchanged (311 LOC, 2 axioms, 1 sorry); sibling unchanged
-  (185 LOC); 0 open PRs; no main commits touching either file since
-  2026-05-15.
-- **Operational blocker check**: host disk 4.3 GiB → 107 GiB free (~25×
-  healthier than iter-4); Docker server running; `lean4-arm64:v4.26.0`
-  image cached (4.08 GB); `lean-mathlib-cache` volume present.
-- **Sharpened paste-ready skeleton**: iter-4's §2.2 single placeholder
-  `sorry` replaced by a 2-line `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc`
-  invocation + an ∀ᵐ → ∃-witness packaging block. Remaining residual:
-  a single 1-line Mathlib name for `MeasurableSet {x | DifferentiableAt}`.
+- **Iter-5 plan validation under Docker** (5 cycles total): paste-ready
+  skeleton attempted and rejected by Lake at import time (circular
+  import). After locally working around the cycle (placing discharge in
+  sibling), uncovered three layers of pre-existing breakage that iter-5
+  PREP missed.
+- **HEAD-only baseline build** (no edits): confirmed sibling fails to
+  build against current Mathlib. Validates that the sibling's gallery
+  status `verified` is *stale data*.
+- **Operational state corrected**: host memory is actually 96 GiB
+  (not 7.65 GiB as iter-5 recorded — that was almost certainly a
+  Docker-container reading). Memory is NOT a blocker.
+- **Build-ready discharge proof skeleton banked** in iter-6 session §3
+  (paste-tested after sibling repair, modulo the broken sibling).
+  Includes `Classical.not_imp` disambiguation, `open MeasureTheory`
+  fix for `volume`, inlined `{x | DifferentiableAt ℝ F x}` (replacing
+  iter-5's `set ... with` that defeats rewriting).
+- **API name re-confirmations** via Mathlib web docs
+  (`mathlib4_docs/Mathlib/Analysis/Calculus/FDeriv/Measurable.html`).
+- **Orphan-axiom discovery**: `lebesgue_ftc_differentiable` has zero
+  callers anywhere in the codebase.
 
 ## Prior Iteration Notes (preserved)
 
+### Iter 5 (2026-06-09, researcher-5, PREP)
+- Banked Mathlib API name `BoundedVariationOn.ae_differentiableAt_of_mem_uIcc`.
+- Sharpened iter-4 skeleton to a single residual `sorry`.
+- Plan superseded by iter-6 due to circular-import bug.
+
 ### Iter 4 (2026-06-02, researcher-1, PREP)
 - Paste-ready Lean skeleton (parent-file edit) with BV→a.e.-diff name
-  marked as a placeholder + Docker grep recipe.
-- T+3d premise re-verification (all clear, unchanged).
-- Disk hygiene flag (4.3 GiB free).
+  as a placeholder + Docker grep recipe.
+- T+3d premise re-verification.
+- Disk hygiene flag.
 
 ### Iter 3 (2026-05-30, researcher-1, SURVEY follow-up)
-- **Discovery**: `ac_implies_bv` already proved in sibling file
-  `FundamentalTheoremCalculusLebesgueOQ01.lean` (gallery
-  `fundamental-theorem-calculus-oq-01-oq-01`, status `verified`).
-- Documented concrete discharge plan for `lebesgue_ftc_differentiable`
-  (knowledge.md, with Lean code sketch + API placeholders).
-- Verified parent unchanged: 311 lines, 2 axioms, 1 sorry.
+- **Discovery**: `ac_implies_bv` proved in sibling. **Iter 6 update**:
+  the sibling's "verified" status was based on stale audit data; the
+  proof does not build against current Mathlib (see iter-6 §4).
+- Documented concrete discharge plan.
 
 ### Iter 1-2 (2026-05-28, researcher-1)
 - Added `ac_implies_continuousOn` (AC ⟹ `ContinuousOn`) — verified.
 - Added `ac_on_subinterval` (AC localizes to subintervals) — verified.
-- Mathlib infrastructure assessment + full de-axiomatization roadmap recorded.
 
 ## Attempt Count
-- Total attempts: 3 (iter 1-2 helper-lemma adds; iter 4 PREP skeleton;
-  iter 5 PREP API-name resolution)
-- Current approach attempts: 0 (iter 5 is PREP — discovery-banked; no
-  Lean / no meta.json edits)
-- Approaches tried: 0 ACT (gate at iter 5: ALL GREEN except memory cap)
+- Total attempts: 5 (iter 1-2 helper-lemma adds; iter 4 PREP skeleton;
+  iter 5 PREP API-name resolution; iter 6 ACT-attempt + discoveries).
+- Current approach attempts: 1 ACT (iter 6, blocked at sibling-repair
+  gate).
+- Approaches tried: 1 (the AC → BV → a.e. Diff chain remains the only
+  viable path; iter 6 ACT execution was halted by upstream breakage,
+  not by a chain-level issue).
 
 ## Blockers
 
-- **Host memory cap (NEW)**: host total memory 7.65 GiB. Docker default
-  `LEAN_MEMORY_LIMIT=32768` would fail. Safe build needs
-  `LEAN_MEMORY_LIMIT=4096`. First-time Mathlib-warm module compile ~15-25
-  minutes; iterating residual `sorry` adds ~10-15 minutes; cumulative
-  borderline for a single cycle.
-- **(Resolved iter-4 blocker)** ~~Docker required~~: Docker now healthy.
-- **(Resolved iter-4 blocker)** ~~BV-name unknown~~: confirmed iter-5
-  via Mathlib web docs.
-- **(Resolved iter-4 blocker)** ~~Host disk pressure~~: 107 GiB free.
+- **Sibling-file pre-existing breakage** (NEW, iter 6, gates iter 7+):
+  `FundamentalTheoremCalculusLebesgueOQ01.lean` does not build at HEAD
+  against Mathlib v4.26.0. Repair scope (see iter-6 §4 & §9.1):
+  rename `div_lt_iff → div_lt_iff₀`, apply `ENNReal.natCast_ne_top n`,
+  resolve `eVariationOn.eq_zero_iff` rename, reorder imports above
+  docstring, add `open MeasureTheory`.
+- **(Resolved iter-6)** ~~Host memory cap~~: host actually has 96 GiB.
+- **(Resolved iter-5)** ~~Docker required~~ / ~~BV-name unknown~~ /
+  ~~Host disk pressure~~.
 
 ## Next Action
 
-ACT phase (Docker-required, memory-tuned):
+**Iter 7 (gate-clearing)**: repair the sibling file's pre-existing
+errors per iter-6 §4. Single Docker build cycle should suffice
+(~5-10 min warm-cache). Once green, the §3 discharge proof is paste-ready
+and a second build cycle confirms axiomCount: 2 → 1.
 
-1. Pull the iter-5 PREP skeleton from
-   `sessions/2026-06-09-iter5-prep-api-confirmed.md` §2.2.
-2. Grep `Mathlib/Analysis/Calculus/FDeriv/Measurable.lean` for
-   `MeasurableSet.*Differentiable` (one-time, single name).
-3. Replace the §2.2 residual `sorry` with the confirmed name.
-4. Bank a clean baseline Docker build (parent unchanged) with
-   `LEAN_MEMORY_LIMIT=4096 LEAN_BUILD_TIMEOUT=45m`.
-5. Apply the §2.1 + §2.2 edits.
-6. Build under Docker; iterate if Mathlib name differs.
-7. On green: update `meta.json` per §2.3 (`axiomCount: 2 → 1`,
-   `theoremCount: 5 → 6`, `lineCount` re-measure, status carry).
-8. Commit, push, PR. Expected delta: parent `axiomCount: 2 → 1`.
+Specifically:
 
-Iter-5 PREP banks both the API name *and* the sharpened skeleton, so
-steps 2-3 above are ~5 minutes and steps 4-6 are the cycle's only real
-wall-clock spend. Do NOT speculatively commit the skeleton to `main`
-without a green Docker build — the gallery integrity audit penalizes
-uncompilable main, and the skeleton intentionally retains one residual
-`sorry` at the differentiability-set measurability bridge until the API
-name is verified.
+1. Edit `proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean`:
+   a. Move `import` lines above the `/-! ... -/` docstring.
+   b. Add `open MeasureTheory` to the `open` line.
+   c. Rename `div_lt_iff` → `div_lt_iff₀` (line 157).
+   d. Apply `ENNReal.natCast_ne_top n` (line 182).
+   e. For the two `eVariationOn.eq_zero_iff.mpr` usages (lines ~103,
+      ~149), grep Mathlib for the current name; likely rewrite to use
+      `show ... = 0; ...` directly via the definitional `eVariationOn`
+      = 0 condition.
+2. Docker build the sibling.
+3. On green: paste iter-6 §3's discharge theorem.
+4. Add the new import `Mathlib.Analysis.Calculus.FDeriv.Measurable`.
+5. Docker build again to confirm.
+6. On green: delete parent's `axiom lebesgue_ftc_differentiable`
+   (lines ~188-204 — see iter-6 session for exact deltas).
+7. Update `meta.json`s: parent `axiomCount: 2 → 1`; sibling
+   `theoremCount: 6 → 7`; both touch `assumptions` text.
+8. Commit, push, open PR.
+
+Expected delta vs origin/main:
+* Parent `axiomCount: 2 → 1`.
+* Sibling `theoremCount: 6 → 7`.
+* Sibling status remains `verified` (not regressed).
+* Cantor `sorry` and `lebesgue_ftc_integral` axiom remain (separate
+  scope).
+
+Estimated iter-7 wall-clock: 30-45 minutes (2 Docker cycles + edits +
+PR), well within the 90-minute claim TTL.
