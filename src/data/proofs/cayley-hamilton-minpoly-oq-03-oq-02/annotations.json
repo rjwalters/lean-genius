@@ -1,0 +1,250 @@
+[
+  {
+    "id": "ann-keller-gehrig-preamble",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 56
+    },
+    "type": "context",
+    "title": "The Keller-Gehrig Algorithm: Three-Layer Decomposition",
+    "content": "The opening docstring frames the entire file as Layers 1, 2, and 2.5 of the Keller-Gehrig (1985) $O(n^\\omega)$ characteristic-polynomial algorithm, with Layer 3 (the actual operation count) deferred. The asymptotic gain replaces the naive Krylov method's $n$ matrix-vector products ($O(n^2)$ each, so $O(n^3)$ total) with $\\lceil \\log_2 n \\rceil$ matrix-matrix products ($O(n^\\omega)$ each, so $O(n^\\omega \\log n)$ total). The structural insight is that the squared-Krylov sequence $T_k := M^{2^k}$ — computed by *repeated squaring* — and the binary expansion of any exponent $j$ together let any Krylov power $M^j$ be reassembled from at most $\\mathrm{popcount}(j)$ multiplications of the $T_k$. Layer 3 is blocked on Mathlib having no complexity-monad and no fast (Strassen-style) matrix multiplication — any quantitative claim is necessarily axiomatic in current Mathlib.",
+    "mathContext": "Keller-Gehrig (1985): produce $M^j$ for any $j < n$ using $\\lceil \\log_2 n \\rceil + \\mathrm{popcount}(j) - 1$ matrix-matrix multiplications, replacing $n$ matrix-vector products of naive Krylov. Asymptotic: $O(n^\\omega \\log n)$ vs $O(n^3)$, beneficial when $\\omega < 3$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Keller-Gehrig 1985",
+      "repeated squaring",
+      "matrix-multiplication exponent omega",
+      "Krylov subspace methods",
+      "Cayley-Hamilton theorem"
+    ],
+    "prerequisites": [
+      "Naive Krylov method (cayley-hamilton-minpoly-oq-03)",
+      "Strassen's algorithm and the matrix-multiplication exponent",
+      "Binary representation of natural numbers",
+      "Big-O asymptotic complexity"
+    ]
+  },
+  {
+    "id": "ann-square-krylov-def",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "Layer 1: The Squared-Krylov Sequence by Repeated Squaring",
+    "content": "The central definition `squareKrylov M k` produces the sequence $T_0, T_1, T_2, \\ldots$ where $T_0 = M$ and $T_{k+1} = T_k \\cdot T_k$. The Lean definition is the textbook recursion: `0 ↦ M`, `k+1 ↦ T_k * T_k`. Two `@[simp]` and `rfl`-true unfolding lemmas (`squareKrylov_zero`, `squareKrylov_succ`) expose the recursion to the simp normaliser so downstream proofs can pattern-match on it without `unfold`. Operationally, computing `squareKrylov M k` takes $k$ matrix multiplications — exactly the repeated-squaring budget Keller-Gehrig exploits to reach $M^{2^k}$.",
+    "mathContext": "$T_0 := M$, $T_{k+1} := T_k \\cdot T_k$. After $k$ squarings, $T_k = M^{2^k}$. Computing $T_k$ requires $k$ matrix multiplications, but yields a matrix power of exponential height — the kernel observation of fast exponentiation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "repeated squaring",
+      "fast exponentiation",
+      "Krylov sequences",
+      "matrix powers",
+      "recursive definitions in Lean"
+    ],
+    "prerequisites": [
+      "Matrix multiplication in Mathlib (Matrix.mul)",
+      "Recursive definitions over Nat",
+      "Simp normal form"
+    ]
+  },
+  {
+    "id": "ann-square-krylov-eq-pow-two",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "insight",
+    "title": "Layer 1 Bridge: T_k = M^(2^k)",
+    "content": "The Layer 1 correctness theorem: the iteratively-squared matrix `squareKrylov M k` equals the ordinary matrix power $M^{2^k}$. The proof is a single induction on $k$. The base case is $M = M^{2^0} = M^1$ via `Nat.pow_zero` and `pow_one`. The inductive step uses the recurrence: $T_{k+1} = T_k \\cdot T_k = M^{2^k} \\cdot M^{2^k} = M^{2^k + 2^k} = M^{2^{k+1}}$, discharged by rewriting with the induction hypothesis, applying `← pow_add` (combining `M^a · M^a = M^{a+a}`), and finishing with `congr 1; ring` on the exponent identity $2^k + 2^k = 2^{k+1}$. The elegance here is that `ring` discharges the entire arithmetic obligation in one tactic call.",
+    "mathContext": "$T_k = M^{2^k}$, proved by induction. Inductive step: $T_{k+1} = T_k \\cdot T_k \\stackrel{IH}{=} M^{2^k} \\cdot M^{2^k} = M^{2^k + 2^k} = M^{2 \\cdot 2^k} = M^{2^{k+1}}$. The exponent identity $2^k + 2^k = 2^{k+1}$ is the algebraic content; everything else is rewriting.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pow_add for matrix powers",
+      "ring tactic for natural-number arithmetic",
+      "induction on Nat",
+      "matrix-power exponentiation"
+    ],
+    "prerequisites": [
+      "Monoid.npow / Matrix power operator",
+      "ring tactic",
+      "pow_add lemma in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-square-krylov-prod-def",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 103
+    },
+    "type": "definition",
+    "title": "Layer 2: The Squared-Krylov Product as Binary-Expansion Assembly",
+    "content": "`squareKrylovProd M j` is defined as `(j.bitIndices.map (squareKrylov M)).prod` — the list product of $T_i = \\mathrm{squareKrylov}\\, M\\, i$ taken over the set bits of $j$. Mathlib's `Nat.bitIndices` (Peter Nelson, 2024) returns the list of bit positions where $j$ has a 1 in binary. For example, $j = 13 = 1101_2$ has `bitIndices = [0, 2, 3]`, so $\\mathrm{squareKrylovProd}\\, M\\, 13 = T_0 \\cdot T_2 \\cdot T_3 = M^1 \\cdot M^4 \\cdot M^8 = M^{13}$. This is the matrix the Keller-Gehrig outer loop physically assembles after $\\lceil \\log_2 j \\rceil$ squarings and $\\mathrm{popcount}(j) - 1$ multiplications.",
+    "mathContext": "$\\mathrm{squareKrylovProd}\\, M\\, j := \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$. For $j = \\sum_{i \\in S} 2^i$ (binary expansion), the product reassembles $M^j$ from the squared-Krylov building blocks. Total matrix multiplications: $|S| - 1 = \\mathrm{popcount}(j) - 1$, on top of the $\\max(S)$ squarings used to materialise the $T_i$ themselves.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.bitIndices",
+      "binary expansion",
+      "popcount (Hamming weight)",
+      "List.prod over a monoid",
+      "Keller-Gehrig outer loop"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.Nat.BitIndices",
+      "List.prod and List.map",
+      "Binary representations of natural numbers"
+    ]
+  },
+  {
+    "id": "ann-prod-pow-of-list",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 105,
+      "endLine": 112
+    },
+    "type": "technique",
+    "title": "Helper: Powers of a Single Matrix Collapse Across List.prod",
+    "content": "`prod_pow_of_list` is the only commutativity used in the entire Layer 2 proof: powers of a *single* matrix $M$ commute pairwise (since $M^a \\cdot M^b = M^{a+b} = M^b \\cdot M^a$), so the list product $\\prod_i M^{f(i)}$ collapses to $M^{\\sum_i f(i)}$. The proof is a textbook list induction: empty list gives $1 = M^0 = M^{\\sum \\emptyset}$; cons step rewrites via `pow_add` and the induction hypothesis. Importantly this avoids needing full commutativity of the matrix ring — matrices over a field do *not* commute in general, but powers of a fixed matrix always do.",
+    "mathContext": "$\\prod_{i \\in L} M^{f(i)} = M^{\\sum_{i \\in L} f(i)}$. The only commutativity required: $M^a \\cdot M^b = M^b \\cdot M^a$ for any $a, b$ (true in any monoid). This is the structural reason the Layer 2 bridge factors so cleanly — Keller-Gehrig never needs matrix-ring commutativity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pow_add",
+      "List.prod and List.sum",
+      "commuting powers in a monoid",
+      "non-commutative matrix algebra"
+    ],
+    "prerequisites": [
+      "List induction in Lean",
+      "pow_add in a monoid",
+      "simp with map_cons / prod_cons"
+    ]
+  },
+  {
+    "id": "ann-square-krylov-prod-eq-pow",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 114,
+      "endLine": 154
+    },
+    "type": "insight",
+    "title": "Layer 2 Bridge: M^j Equals the Squared-Krylov Product Over bitIndices(j)",
+    "content": "The Layer 2 correctness theorem `squareKrylovProd_eq_pow`: for every $j$, $\\mathrm{squareKrylovProd}\\, M\\, j = M^j$. End-to-end, the proof is three rewrites: (1) `squareKrylov_eq_pow_two` rewrites the inner `squareKrylov M i` to `M^(2^i)` (via `List.map_congr_left`); (2) `prod_pow_of_list` collapses $\\prod M^{2^i}$ to $M^{\\sum 2^i}$; (3) `Nat.twoPowSum_bitIndices` identifies $\\sum_{i \\in \\mathrm{bitIndices}(j)} 2^i$ as $j$ itself. Three accompanying sanity checks (`squareKrylovProd_zero`, `_one`, `_two_pow`) verify the empty-product, single-factor, and pure-power edge cases, exposing the bridge to simp at the most common arguments.",
+    "mathContext": "$M^j = \\prod_{i \\in \\mathrm{bitIndices}(j)} T_i$, proved via the rewriting chain $\\prod T_i \\stackrel{\\text{Layer 1}}{=} \\prod M^{2^i} \\stackrel{\\text{commuting powers}}{=} M^{\\sum 2^i} \\stackrel{\\text{binary expansion}}{=} M^j$. The result is the algebraic content of the Keller-Gehrig outer loop.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.twoPowSum_bitIndices",
+      "binary expansion identity",
+      "List.map_congr_left",
+      "Layer 1 bridge",
+      "Keller-Gehrig outer loop"
+    ],
+    "prerequisites": [
+      "Layer 1 bridge squareKrylov_eq_pow_two",
+      "prod_pow_of_list helper",
+      "Nat.twoPowSum_bitIndices in Mathlib"
+    ]
+  },
+  {
+    "id": "ann-vector-layer-2",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 156,
+      "endLine": 179
+    },
+    "type": "insight",
+    "title": "Vector-Level Layer 2: Krylov Vectors via the Squared-Krylov Product",
+    "content": "The matrix-level bridge lifts to vectors: `(squareKrylovProd M j).mulVec v = (M^j).mulVec v`. The proof is a one-line rewrite using `squareKrylovProd_eq_pow`. This is the *operationally accurate* form of Layer 2 — Keller-Gehrig produces each Krylov vector $M^j \\cdot v$ by applying the assembled squared-Krylov product matrix (built from $\\mathrm{popcount}(j)$ matrix multiplications) to $v$ in a single matrix-vector product. The corollary `krylov_in_squareKrylov_range` repackages the bridge as a range/reachability claim: every Krylov vector lies in the image of the squared-Krylov product map. This bridges the matrix arithmetic of Keller-Gehrig into the OQ-03 matvec ladder so the two frameworks compose.",
+    "mathContext": "$(\\mathrm{squareKrylovProd}\\, M\\, j) \\cdot v = M^j v$. Operationally: $\\mathrm{popcount}(j)$ matrix multiplications + 1 matrix-vector product reproduces what naive Krylov computes with $j$ sequential mulVec calls. For $j$ near $n$, this is the asymptotic speed-up.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.mulVec",
+      "Krylov reachability",
+      "matrix-vector products",
+      "image / range of a linear map"
+    ],
+    "prerequisites": [
+      "Matrix.mulVec API",
+      "Layer 2 matrix bridge squareKrylovProd_eq_pow"
+    ]
+  },
+  {
+    "id": "ann-layer-2-5-factor-count",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 181,
+      "endLine": 219
+    },
+    "type": "insight",
+    "title": "Layer 2.5: popcount(j) ≤ j — The Factor-Count Bound",
+    "content": "The quantitative bound `squareKrylovProd_factor_count_le`: the number of squared-Krylov factors needed to assemble $M^j$ is at most $j$. The proof packages `Nat.twoPowSum_bitIndices` (sum of $2^i$ over bit-indices is $j$) with the elementary helper `length_le_twoPow_sum` (each term in the sum is at least $1$, so the count of terms bounds the sum) and finishes with `omega`. This bound is *loose* for large $j$ — the asymptotically sharp version is $\\mathrm{popcount}(j) \\leq \\mathrm{Nat.size}(j) \\approx \\lceil \\log_2(j+1) \\rceil$ — but it is the immediately verifiable elementary version, and combined with the $\\lceil \\log_2 j \\rceil + 1$ squaring count of Layer 1 it gives the structural source of the $O(\\log j)$ matrix-multiplication count of Keller-Gehrig's assembly step.",
+    "mathContext": "$\\mathrm{popcount}(j) = |\\mathrm{bitIndices}(j)| \\leq \\sum_{i \\in \\mathrm{bitIndices}(j)} 2^i = j$. The asymptotically correct bound is $\\mathrm{popcount}(j) \\leq \\lceil \\log_2(j+1) \\rceil$, but the elementary $\\leq j$ bound suffices to certify $O(\\log j)$ when combined with the Layer 1 squaring count.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "popcount (Hamming weight)",
+      "Nat.bitIndices length",
+      "Nat.size",
+      "omega tactic",
+      "matrix-multiplication operation count"
+    ],
+    "prerequisites": [
+      "Nat.twoPowSum_bitIndices",
+      "List induction",
+      "Nat.one_le_two_pow",
+      "omega for linear arithmetic over Nat"
+    ]
+  },
+  {
+    "id": "ann-layer-3-omega-axiomatized",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 221,
+      "endLine": 259
+    },
+    "type": "context",
+    "title": "Layer 3 Axiomatized: The Matrix-Multiplication Exponent ω",
+    "content": "Layer 3 commits to the bare minimum honest formalisation of the matrix-multiplication exponent: three axioms declare $\\omega$ and its known bounds. `omegaMM : ℝ` is the exponent itself — a major open problem in computational complexity, currently bounded $2 \\leq \\omega < 2.371552$ (Williams-Xu-Xu-Zhou 2024). `omegaMM_two_le` ($2 \\leq \\omega$) is folklore: one must read all $n^2$ input entries. `omegaMM_lt_three` ($\\omega < 3$) is Strassen (1969): $\\omega \\leq \\log_2 7 \\approx 2.807$. The convenience corollary `omegaMM_mem_Ico` packages the two-sided bound. The full $O(n^\\omega)$ operation-count theorem is deferred — it requires both a complexity monad and a fast-matmul oracle, neither of which Mathlib provides. A future Mathlib PR adding a complexity-monad would slot in here without changing the axioms, only by defining the operation-count predicate against `omegaMM`.",
+    "mathContext": "$\\omega := \\inf \\{\\alpha \\mid \\text{two } n \\times n \\text{ matrices over a field multiply in } O(n^\\alpha) \\text{ field operations}\\}$. Known: $2 \\leq \\omega < 2.371552$ (Williams-Xu-Xu-Zhou 2024). Whether $\\omega = 2$ is unknown. Strassen 1969: $\\omega \\leq \\log_2 7$. The three axioms here are the minimal honest commitment Layer 3 admits today.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Strassen's algorithm",
+      "Coppersmith-Winograd",
+      "Williams-Xu-Xu-Zhou 2024",
+      "complexity monad",
+      "fast matrix multiplication",
+      "axiomatic placeholders"
+    ],
+    "prerequisites": [
+      "Big-O asymptotic complexity",
+      "ℝ (real numbers) in Mathlib",
+      "axiom declarations in Lean",
+      "History of fast matrix multiplication"
+    ]
+  },
+  {
+    "id": "ann-end-summary",
+    "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
+    "range": {
+      "startLine": 262,
+      "endLine": 333
+    },
+    "type": "context",
+    "title": "Closing Summary: 11 Theorems, 0 Sorries, 3 Axioms",
+    "content": "The closing docstring inventories the file's contents: 11 theorems (3 Layer 1 + 4 Layer 2 matrix + 2 Layer 2 vector + 1 Layer 2.5 + 1 Layer 3 sanity), 0 sorries, 3 axioms (the Layer 3 $\\omega$ block). The structural / quantitative split is explicit: Layers 1, 2, 2.5 are unconditionally proved; the operation count is deferred. The end-of-file commentary also gives the Layer 2 proof sketch in plain English — `squareKrylov_eq_pow_two`, `prod_pow_of_list`, `Nat.twoPowSum_bitIndices` — which a reader can map onto the proof of `squareKrylovProd_eq_pow` to see how the three rewrites compose. This separation cleanly delineates Lean-formalisable structural mathematics (Layers 1+2), Lean-formalisable elementary quantitative bounds (Layer 2.5), and genuinely axiomatic mathematical constants (Layer 3 ω).",
+    "mathContext": "Inventory: $11$ theorems, $0$ sorries, $3$ axioms. The three axioms are all in the Layer 3 placeholder block; Layers 1, 2, and 2.5 are unconditional. The asymptotic Keller-Gehrig claim ($O(n^\\omega)$ field operations) is *deferred*, not asserted — the file ships only what current Mathlib infrastructure supports.",
+    "significance": "context",
+    "relatedConcepts": [
+      "axiom integrity",
+      "structural vs quantitative proofs",
+      "axiomatized placeholders",
+      "Mathlib complexity-monad gap"
+    ],
+    "prerequisites": [
+      "Reading Lean docstrings",
+      "Understanding axiom declarations"
+    ]
+  }
+]
