@@ -1,13 +1,46 @@
 # Current State
 
-**Phase**: ACT (S9 ACT lands cyclic-row wrapper + parent `lemma → noncomputable def` repair; G9 .lake self-loop confirmed INERT for Docker builds per memory `[Lake self-loop in main repo (G9-inert)]`)
-**Since**: 2026-06-01T00:00:00Z (S9 ACT merge — this PR)
-**Iteration**: 9 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation, S8 STATE-SYNC INFRA recovery G7+G8 RED→GREEN, **S9 ACT cyclic-row wrapper + parent prop-fix**)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC); researcher-1 (S8 STATE-SYNC; **S9 ACT, this PR**)
+**Phase**: PREP (S10 PREP — V₄ row Mathlib v4.26.0 bearer re-verification 3 weeks after S4 PREP; 7/7 carried-forward bearers re-confirmed at SHA `2df2f0150c…` with no line-number drift; 1 NEW bearer `Group.mulEquivOfPrimeCardEq` (Mathlib/GroupTheory/SpecificGroups/Cyclic.lean:793) closes S4 PREP §2.4's `(ZMod 2)ˣ ≃* ZMod 2` gap; revised V₄ ACT estimate 50-80 → 40-65 LOC; sketch skeleton in §4 of session doc; `.lake` self-loop status flagged but per memory may not actually block Docker builds at all host states (S9 ACT 7747-job build verified despite the loop))
+**Since**: 2026-06-01T00:00:00Z (S9 ACT merge); refreshed 2026-06-09T17:35Z (S10 PREP, researcher-1)
+**Iteration**: 10 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation, S8 STATE-SYNC INFRA recovery G7+G8 RED→GREEN, S9 ACT cyclic-row wrapper + parent prop-fix, **S10 PREP V₄ bearer re-verify at v4.26.0**)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC); researcher-1 (S8 STATE-SYNC; S9 ACT; **S10 PREP V₄ bearer re-verify, this PR**)
 
-## Current Focus
+## S10 PREP (2026-06-09, researcher-1) — V₄ row Mathlib v4.26.0 bearer re-verification
 
-**S9 ACT (this PR, researcher-1, 2026-06-01)** — combined parent-repair
+Doc-only PREP that re-audits the V₄ row's S4 PREP §2.5 paste-ready skeleton bearers at the current Mathlib v4.26.0 tag, 3 weeks after S4 PREP (#19229, 2026-05-15). Net findings:
+
+- **7/7 carried-forward bearers re-confirmed** at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` with no line-number drift: `IsCyclotomicExtension.autEquivPow` (Cyclotomic/Gal.lean:93), `cyclotomic.irreducible_rat` (Cyclotomic/Roots.lean:190), `ZMod.chineseRemainder` (ZMod/Basic.lean:873), `Units.mapEquiv` (Group/Units/Equiv.lean:39), `MulEquiv.prodUnits` (Group/Prod.lean:591), `ZMod.card_units_eq_totient`, and the 4-step CRT-chain precedent (RingTheory/ZMod/UnitsCyclic.lean:271, 281, 290). Audit via GitHub raw (local `.lake/packages/mathlib/` unusable through the self-loop).
+
+- **1 NEW bearer not in S4 PREP**: `Group.mulEquivOfPrimeCardEq` at `Mathlib/GroupTheory/SpecificGroups/Cyclic.lean:793`. Closes S4 PREP §2.4's `(ZMod 2)ˣ ≃* ZMod 2` gap (which had budgeted hand-construction via `MulEquiv.ofBijective` or `IsCyclic.uniqueMulEquivZMod`). Lemma signature: `noncomputable def mulEquivOfPrimeCardEq {p : ℕ} [Group G] [Group G'] [Fintype G] [Fintype G'] (hG : Fintype.card G = p) (hG' : Fintype.card G' = p) (hp : p.Prime) : G ≃* G'`. Saves ~5-10 LOC per side; revised V₄ ACT estimate 50-80 → **40-65 LOC**.
+
+- **Updated paste-ready V₄ skeleton sketched in §4** of the new session file. Six-step body using `CyclotomicField 12 ℚ` → `autEquivPow` + `cyclotomic.irreducible_rat` (Step 2) → 4-step CRT chain `Units.mapEquiv + .prodUnits` (Step 3) → twin `mulEquivOfPrimeCardEq` for the prime-order factors (Step 4) → `MulEquiv.prodCongr` compose (Step 5) → cardinality discharge via `Fintype.card_prod` (Step 6, one `(by ...)` placeholder where build-time tactic glue is needed). Not yet paste-ready code; requires a docker probe for Step 6.
+
+- **Infrastructure**: per basel iter44 INFRA-SIGNAL (2026-06-09, researcher-1's prior session this day), Docker host is healthy (`lean4-arm64:v4.26.0` image ID `8768de35b1f4`), but `.lake` on the main repo is a self-loop. Per the user memory `Lake self-loop in main repo (G9-inert)`, the loop did NOT block S9 ACT's Docker build (7747 jobs verified). The discrepancy with basel iter44's observation that the loop DOES block Docker builds is TBD by next ACT iteration. Recommended pre-flight (V₄ ACT): test docker-build on the existing cyclic file; if it succeeds, proceed; if it fails, apply basel iter44 §5 remediation.
+
+**Files modified.**
+- `research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-06-09-s10-prep-v4-bearer-reverify-at-v4-26.md` (CREATE, ~340 LOC, §1-§10).
+- `research/problems/abel-ruffini-oq-04-oq-09/state.md` (this file) — this entry + header bump (iteration 9 → 10, phase ACT → PREP).
+- `src/data/research/problems/abel-ruffini-oq-04-oq-09.json` — `currentState.{iteration, phase, focus, nextAction}` refresh + `updatedAt` 2026-06-09.
+
+**No `.lean` edits**, no parent `AbelRuffiniGaloisExtensionsOQ05OQ01.lean` edits, no `meta.json` edits, no `knowledge.md`/`problem.md` edits, no gallery `src/data/proofs/abel-ruffini-oq-04-oq-09/` edits.
+
+**Race-safety**:
+- Pre-claim probe: 0 open OQ-04-OQ-09 PRs at session start (2026-06-09 ~17:35Z).
+- Pre-edit probe: cyclic file `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` unchanged on `origin/main` since S9 ACT PR #21992 (2026-06-01T22:12Z); 46 LOC, 1 theorem, 0 sorries, 0 axioms.
+- HEAD probe: `origin/main` at `58bdf51bc62` (post-S9 + intervening unrelated drains); this PREP branches from there.
+
+**Iteration history update.**
+
+| Iter | Phase | Mode | PR | Description |
+|---|---|---|---|---|
+| 9 | ACT | `.lean` | #21992 | S9 ACT: cyclic-row wrapper + parent `lemma → noncomputable def` repair (Docker-verified 7747 jobs). |
+| **10** | **PREP** | **doc** | **(this)** | **S10 PREP: V₄ row Mathlib v4.26.0 bearer re-verification 3 weeks after S4 PREP; 7/7 carried bearers stable; 1 NEW bearer `Group.mulEquivOfPrimeCardEq` closes the §2.4 prime-order gap; revised LOC budget 50-80 → 40-65; sketch skeleton in session §4 (not yet paste-ready code).** |
+
+**Next action.** S11 V₄ ACT: create `proofs/Proofs/AbelRuffiniOQ04OQ09V4.lean` with the 8-import header + §4 sketch as starting point; docker-probe to nail Step 6 tactic glue; build-verify; commit + PR. Estimated 30-60 min wall-clock assuming `.lake` is OK (otherwise +10-20 min per basel iter44 §5 remediation). After V₄ lands, S11 PREP can re-verify S₃ bearers and continue the row-by-row ship.
+
+## Prior Focus (S9 ACT, PR #21992, MERGED 2026-06-01T22:12:19Z)
+
+**S9 ACT (researcher-1, 2026-06-01)** — combined parent-repair
 + cyclic-row ship. Shipped the **cyclic row** of the `n ≤ 4` Shafarevich
 slice as a one-line specialisation of `ShafarevichFeasibility.cyclic_realizable`
 per the S6 PREP §3.2 paste body:
