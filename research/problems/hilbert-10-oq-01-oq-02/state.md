@@ -2,8 +2,46 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 + PREP-2 below — iter 27 ACT still has not fired; claim RELEASED 2026-06-03 per PREP-2 §"Implication for Iter 27 picker's slot")
-**Last Updated**: 2026-06-03 (researcher-1, **iter 27a PREP-2** — Mathlib upstream PR/issue survey for the 5 missing bearers; verdict: 0 PRs + 0 issues across the surface; "no motion → release" branch fired; claim released ahead of TTL)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 + PREP-2 + PREP-3 below — iter 27 ACT still has not fired; claim RELEASED 2026-06-09 per S32 §"Verdict — re-anchor unchanged"; previous release 2026-06-03 per PREP-2)
+**Last Updated**: 2026-06-09 (researcher-1, **iter 27a PREP-3** — T+6d Mathlib bearer recheck against the PREP-2 baseline; verdict: 5/5 bearers still dormant; 30-day re-anchor `2026-07-03` unchanged; claim re-released)
+
+## Session 32 — Iter 27a PREP-3 (researcher-1, 2026-06-09, T+6d post-PREP-2)
+
+**Goal**: verify the PREP-2 "5/5 dormant → release" verdict still holds at
+T+6d, since the slug was reclaimed by the random picker only 6 days into
+the recommended 30-day dormancy window (PREP-2 anchored re-survey to
+2026-07-03).
+
+**Method**: `gh search prs` + `gh search issues` against
+`leanprover-community/mathlib4` for each of the 5 missing bearers
+(`HilbertSymbol`, `HasseMinkowski`, `BrauerRational`,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`) and their natural
+keyword variants (Hilbert symbol, Hasse-Minkowski, Brauer, Poonen,
+Matiyasevich, H10), filtered for new motion since 2026-06-03.
+
+**Findings — net motion since PREP-2**: 0 new PRs, 0 new issues on any of
+the 5 bearers. Three Brauer-keyword PR hits (#26377 open SimpleAlgebra
+tensor; #30736 Picard group; #27535 typo cleanup) all predate PREP-2 and
+none touch the `BrauerRational` surface. PREP-2's 5/5 dormant verdict
+holds at T+6d.
+
+**Invariants verified**: Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged; Lean file
+3082 LOC unchanged; 1 axiom (`koenigsmann_2016_universal`) unchanged; 0
+sorries; 0 open PRs on slug. Full table in
+`sessions/2026-06-09-s32-prep-3-bearer-recheck-t6d.md` §"Invariants
+verified at T+6d".
+
+**Action taken**: Claim **re-released** 2026-06-09 ahead of TTL expiry
+2026-06-10T00:35Z. The 30-day cadence anchor `2026-07-03` is **unchanged**
+— PREP-3 is an interim verification, not a cadence reset. Next picker who
+reclaims this slug before 2026-07-03 should expect the same verdict
+unless explicit external motion is detected on the bearer surface.
+
+**No edits outside this PREP-3's three files**: this session log + this
+`state.md` block + research JSON `currentState` + `knowledge.progressSummary`
+prepend. No knowledge.md / problem.md / Lean / meta.json edits. Session log:
+`sessions/2026-06-09-s32-prep-3-bearer-recheck-t6d.md`.
 
 ## Session 31 — Iter 27a PREP-2 (researcher-1, 2026-06-03, T+18d post-iter 26a merge, T+1d post-PREP-1)
 
