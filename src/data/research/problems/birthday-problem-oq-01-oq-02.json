@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-01-oq-02",
   "title": "Coupling between expected pairs and collision probability",
-  "phase": "S6 ACT",
+  "phase": "S8 PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,20 +29,20 @@
     "goal": "Keep the closed-form collision-probability bracket synced; the descFactorial bridge is shipped (S6 ACT 2026-05-31), the tight Paley-Zygmund denominator remains optional follow-up."
   },
   "currentState": {
-    "phase": "S6 ACT",
-    "since": "2026-05-31T00:00:00.000Z",
-    "iteration": 9,
-    "focus": "S6 ACT shipped: probAllDistinct_eq_descFactorial_div bridges OQ02's real-valued product formulation with the counting formulation Nat.descFactorial d k / d^k. File now at 5 theorems / 235 LOC / 0 sorries / 0 axioms; Docker verified 7744 jobs.",
+    "phase": "S8 PREP",
+    "since": "2026-06-09T00:00:00.000Z",
+    "iteration": 10,
+    "focus": "9-day STATE-SYNC after S6 ACT: file byte-stable at 235 LOC / 5 theorems / 0 sorries / 0 axioms; Mathlib pin 2df2f015... unchanged for 26 days. Math re-derivation confirms E[X²] = E[X] + C(n,2)(C(n,2)-1)/d² is exact (uncorrelated indicators), gain Δ ≈ 0.00066 at n=23 d=365. Route Y-α (combinatorial direct, ~70-90 LOC) recommended over Y-β (Mathlib Probability.Variance, MEDIUM risk).",
     "blockers": [],
-    "nextAction": "Optional S5 PREP — tight Paley-Zygmund denominator (Δ ≈ 0.0003 via exact E[X²], ~120 LOC, MEDIUM risk). The descFactorial bridge is now downstream-ready for any OQ01OQ01 counting-formulation coupling.",
+    "nextAction": "S5b PREP — bearer audit for Finset-level Cauchy-Schwarz (Finset.sum_mul_sq_le_sq_mul_sq) + paste-ready scaffold for expected_pairs_sq_eq closed-form E[X²] helper (~40 LOC, LOW risk).",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 9,
+      "total": 10,
+      "currentApproach": 10,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S6 ACT: probAllDistinct_eq_descFactorial_div ships the counting-formulation bridge. Combined with S4 ACT's closed-form bracket, the file now exposes probAllDistinct as a real-valued descFactorial ratio, unifying OQ02's product viewpoint with OQ01OQ01-style counting.",
+    "progressSummary": "S8 PREP: 9-day STATE-SYNC. File byte-stable since S6 ACT (PR #21601, 2026-05-31); Mathlib pin unchanged for 26 days. Math re-derivation: E[X²] = E[X] + C(n,2)(C(n,2)-1)/d² is exact because the birthday indicators are pairwise uncorrelated (case-split over |{i,j} ∩ {i',j'}|). Numerical recheck: Δ ≈ 0.00066 at n=23 d=365 (slightly larger than original 0.0003 estimate). Route Y-α (combinatorial direct) preferred over Y-β (Mathlib Probability.Variance lift).",
     "builtItems": [
       "Product union-bound helper (S2).",
       "Closed-form upper bound probCollision <= k*(k-1)/(2*d) (S3).",
@@ -52,14 +52,16 @@
     "insights": [
       "The current bracket is independent of OQ01 and does not require the descFactorial bridge.",
       "The descFactorial bridge is a clean ~22-line proof: rewrite each (1 - i/d) as (d-i)/d (using i < k ≤ d so the Nat subtraction does not truncate), split with Finset.prod_div_distrib, then chain Nat.cast_prod with Nat.descFactorial_eq_prod_range.",
-      "The S6 ACT proof avoids induction entirely; all steps are Mathlib name lookups."
+      "The S6 ACT proof avoids induction entirely; all steps are Mathlib name lookups.",
+      "S8 PREP: birthday indicators I_{ij} are pairwise UNCORRELATED (not independent) — both shared-element and disjoint cross-pairs give E[I·I'] = 1/d², equal to the product of marginals. Hence Var(X) = sum of Var(I_{ij}) with zero cross-covariance, simplifying E[X²] to a clean closed form."
     ],
     "mathlibGaps": [
-      "A tighter second-moment proof may still need local probability algebra rather than a direct Mathlib API."
+      "A tighter second-moment proof may still need local probability algebra rather than a direct Mathlib API.",
+      "S8 PREP audit: at v4.26.0 pin the Finset-level Cauchy-Schwarz bearer name is TBD (Finset.sum_mul_sq_le_sq_mul_sq candidate; fallback is a 6-line Lagrange identity inline)."
     ],
     "nextSteps": [
-      "S5 PREP: tight Paley-Zygmund denominator (Δ ≈ 0.0003 via exact E[X²], ~120 LOC, MEDIUM risk).",
-      "Optional downstream consumer: relate the new descFactorial form to OQ01OQ01's collisionCount random variable for a Paley-Zygmund argument grounded in the finite sample space."
+      "S5b PREP (next, doc-only): bearer audit for Finset-level Cauchy-Schwarz + paste-ready scaffold for expected_pairs_sq_eq closed-form E[X²] helper (~40 LOC, LOW risk).",
+      "S5c ACT (after S5b): chain expected_pairs_sq_eq with descFactorial bridge + Cauchy-Schwarz to ship probCollision_ge_paley_zygmund_tight with denominator 2d + k(k-1) - 2 (~40 LOC)."
     ]
   },
   "tags": [
@@ -95,7 +97,7 @@
       "Mathlib.Data.Fintype.Pi"
     ]
   },
-  "lastUpdate": "2026-05-31T00:00:00.000Z",
+  "lastUpdate": "2026-06-09T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BirthdayProblem.lean",
