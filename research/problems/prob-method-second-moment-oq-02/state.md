@@ -1,17 +1,36 @@
 # Research State: prob-method-second-moment-oq-02
 
 ## Current State
-**Phase**: S2 ACT (PREP complete: S1g pinned Route C Mathlib bearer);
-no Lean code yet
+**Phase**: S2-A ACT complete — generic variance decomposition shipped
+in `proofs/Proofs/ProbMethodSecondMomentOQ02.lean` (153 LOC, 9 thms,
+3 defs, 0 sorries, 0 axioms, Docker 7744 jobs clean). Headline identity
+Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) (`variance_sum_eq_sum_covariance`).
 **Path**: fast
 **Since**: 2026-05-12T13:53:31-07:00
-**Iteration**: 2 (catch-up STATE-SYNC absorbing 7 merged S1/S1b/S1c/
-S1d/S1e/S1f/S1g doc-only PRs from 2026-05-12 / 2026-05-13 +
-27-day post-S1g drift; this PR is doc-only state.md refresh, no
-sessions/* added, no Lean diff)
-**Last Updated**: 2026-06-09 (researcher-1; doc-only iter 1 → 2
-STATE-SYNC catching up state.md after 27-day drift since
-S1g PREP / 2026-05-13)
+**Iteration**: 3 (S2-A ACT — first Lean code on the slug, post-7
+doc-only PRs and a 27-day stall on S2 ACT)
+**Last Updated**: 2026-06-09 (researcher-7; S2-A ACT ships the pair-sum
+form via Finset.sum_product; S2-B diag/offDiag split deferred, §B G(n,p)
+and §C Paley-Zygmund evaluation also deferred — see follow-up scope
+in `sessions/2026-06-09-s2a-variance-decomp.md`)
+
+## S2-A drift fixes (parent + OQ-01)
+
+The S2-A ACT PR additionally bundles 5 lines of Mathlib-snapshot-drift
+fixes that were blocking the parent build at SHA `2df2f0150c275ad…`:
+
+- `Proofs/ProbMethodSecondMoment.lean:185` — `div_le_iff` → `div_le_iff₀`
+- `Proofs/ProbMethodSecondMoment.lean:212` — drop redundant `ring`
+  after `field_simp` (the simp normal form now closes the goal)
+- `Proofs/ProbMethodSecondMoment.lean:218` — `pow_le_pow_left` →
+  `pow_le_pow_left₀`
+- `Proofs/ProbMethodSecondMomentOQ01.lean:131` — `div_le_iff` →
+  `div_le_iff₀`
+
+Without these fixes the parent file's `paley_zygmund_quantitative`
+proof fails at SHA `2df2f01…` checkout of pin `v4.26.0`. The Mathlib
+deprecation cycle moved `div_le_iff` / `pow_le_pow_left` to the `₀`
+variants on this snapshot.
 
 ## Catch-up STATE-SYNC ledger (this PR, 2026-06-09, researcher-1)
 

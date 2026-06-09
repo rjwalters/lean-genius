@@ -182,7 +182,7 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
     (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
       ↑(s.filter (fun a => f a ≥ θ * μ)).card := by
   intro μ
-  rw [div_le_iff hf2_pos]
+  rw [div_le_iff₀ hf2_pos]
   set big := s.filter (fun a => f a ≥ θ * μ) with hbig_def
   have hn_pos : (0 : ℚ) < ↑s.card := Nat.cast_pos.mpr (Finset.Nonempty.card_pos hs)
   have hμ_nn : (0 : ℚ) ≤ μ := div_nonneg (le_of_lt hpos) (le_of_lt hn_pos)
@@ -209,13 +209,12 @@ theorem paley_zygmund_quantitative {α : Type*} [DecidableEq α] {s : Finset α}
             simp only [μ]
             have : (↑s.card : ℚ) ≠ 0 := ne_of_gt hn_pos
             field_simp
-            ring
     linarith
   -- Chain: (1-θ)²·(∑f)² ≤ |big|·∑f²
   calc (1 - θ) ^ 2 * (s.sum f) ^ 2
       = ((1 - θ) * s.sum f) ^ 2 := by ring
     _ ≤ (big.sum f) ^ 2 :=
-        pow_le_pow_left (mul_nonneg (by linarith) (le_of_lt hpos)) hbig_lb 2
+        pow_le_pow_left₀ (mul_nonneg (by linarith) (le_of_lt hpos)) hbig_lb 2
     _ ≤ ↑big.card * big.sum (fun a => f a ^ 2) := sq_sum_le_card_mul_sum_sq big f
     _ ≤ ↑big.card * s.sum (fun a => f a ^ 2) :=
         mul_le_mul_of_nonneg_left

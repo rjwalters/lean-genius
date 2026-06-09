@@ -2679,6 +2679,7 @@ import Proofs.ProbMethodExpectation
 import Proofs.ProbMethodExpectationOQ01
 import Proofs.ProbMethodSecondMoment
 import Proofs.ProbMethodSecondMomentOQ01
+import Proofs.ProbMethodSecondMomentOQ02
 import Proofs.ProductOfSegmentsOfChords
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.ProductOfSegmentsOfChordsOQ03

@@ -128,7 +128,7 @@ theorem paley_zygmund_probability {α : Type*} [DecidableEq α] {s : Finset α}
     (1 - θ) ^ 2 * (s.sum f) ^ 2 / s.sum (fun a => f a ^ 2) ≤
       ↑(s.filter (fun a => θ * (s.sum f / ↑s.card) < f a)).card := by
   have hpz := paley_zygmund_quantitative hs hnn hpos hθ0 hθ1
-  rwa [div_le_iff hf2_pos]
+  rwa [div_le_iff₀ hf2_pos]
 
 /-- At θ = 0, the quantitative PZ reduces to: P[X > 0] · ∑f² ≥ (∑f)².
     This strengthens the qualitative paley_zygmund. -/
