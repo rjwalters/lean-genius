@@ -5,7 +5,80 @@ formalization (LawsOfLargeNumbersOQ04.lean):
   1. `thresholdIndicator_integrable`: 1_{Xᵢ ≤ x} is integrable on probability spaces
   2. `integral_thresholdIndicator_eq_cdf`: E[1_{X₀ ≤ x}] = F(x)
 
-**Status**: COMPLETE — PR #16099, 0 sorries, 0 axioms
+**Status**: REDESIGN-IN-PROGRESS (S14a ACT, 2026-06-09) — main file 0 sorries / 0 axioms; refuted axiom `bracketingGrid_exists` retained in original bracketing companion pending S17 retirement; quantile-bracketing redesign substrate in place with S14a boundary helpers landed.
+
+---
+
+## Session 2026-06-09 (Session 14a) — Boundary-node existence helpers
+
+**Mode**: ACT
+**Outcome**: progress (2 boundary helpers + 1 private bridge lemma landed)
+**Researcher**: researcher-4
+
+### What I Did
+
+Shipped the two boundary-node existence helpers `trueCDF_exists_le` /
+`trueCDF_exists_ge` plus a private bridge lemma `trueCDF_eq_cdf_map'`
+in `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean` (§S14a.1).
+These discharge the `left_le` / `right_ge` fields of
+`QuantileBracketingGrid` directly: the S14b existence proof picks
+`q 0` as a witness of `trueCDF_exists_le ε` and `q_last` as a witness
+of `trueCDF_exists_ge (1 - ε)`.
+
+### Key Findings
+
+- The two helpers follow from `ProbabilityTheory.tendsto_cdf_atBot` /
+  `tendsto_cdf_atTop` + neighborhood-eventually unwinding via
+  `Iio_mem_nhds` / `Ioi_mem_nhds`. ~10 LOC each.
+- The private bridge `trueCDF_eq_cdf_map'` duplicates the bracketing
+  companion's `trueCDF_eq_cdf_map` so the QuantileBracketing chain has
+  no transitive dependency on the refuted axiom. Intentional duplication
+  pending S17 retirement of the bracketing companion.
+- The `IsProbabilityMeasure (Measure.map (X 0) μ)` instance is derived
+  locally via `Measure.isProbabilityMeasure_map hX_meas.aemeasurable`,
+  mirroring the bracketing companion's pattern.
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`:
+  154 → 216 lines, +2 public lemmas + 1 private bridge lemma + variable
+  declaration + §S14a.1 section header
+- `src/data/research/problems/laws-of-large-numbers-oq-04-oq-03.json`:
+  `leanFiles` appended with QuantileBracketing entry; knowledge.builtItems
+  / insights / nextSteps extended
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/state.md`:
+  Next Action redirected to S14b; new S14a ACT block
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/sessions/2026-06-09-s14a-boundary-helpers.md`:
+  detailed memo (new)
+
+### Counts Delta
+
+- `LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`: lineCount 154 →
+  216; theoremCount 0 → 3 (1 private); axioms unchanged at 0; sorries
+  unchanged at 0.
+- Chain-level axiom count: unchanged at 1 (refuted `bracketingGrid_exists`).
+- Chain-level sorry count: unchanged at 0.
+
+### Next Steps
+
+- S14b ACT: prove `quantileBracketingGrid_exists`. Use this session's
+  helpers for boundary nodes; construct interior nodes via
+  `quantile F t := sInf {x | F x ≥ t}` at `t = j * ε` for `j = 1, …, k`
+  with `k = ⌈1/ε⌉`. ~125 LOC estimate (see session memo §6 for
+  decomposition).
+- S15 ACT: rewrite §2.4 with two-sided node values. ~150 LOC.
+- S16 ACT: rewrite §2.5 composition. ~75 LOC.
+- S17 ACT: retire refuted axiom + disproof file. Chain becomes
+  axiom-free.
+
+### Honesty
+
+Infrastructure-only session. No axioms eliminated, no main-theorem
+sorries closed. The two helpers are pre-staged witnesses for S14b's
+boundary-node picks. Per the gallery rubric this is category 5 ("real
+progress; not axiom elimination or sorry reduction"). Build verification
+pending at memo write time; the Docker build was launched and cache
+download finished cleanly (7727 / 7727 files).
 
 ---
 
