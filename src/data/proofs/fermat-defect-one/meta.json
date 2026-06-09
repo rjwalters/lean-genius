@@ -1,0 +1,208 @@
+{
+  "id": "fermat-defect-one",
+  "title": "Fermat Defect-One Conjecture",
+  "slug": "fermat-defect-one",
+  "description": "The Fermat defect-one conjecture asks whether $|a^n + b^n - c^n| = 1$ admits a primitive nontrivial solution ($2 \\le a \\le b < c$, $\\gcd(a,b,c) = 1$) for every $n \\ge 3$ — the natural follow-up to Fermat's Last Theorem, which rules out the zero-defect case. Both signs of the defect are verified at $n = 3$: $6^3 + 8^3 + 1 = 9^3$ (negative) and $9^3 + 10^3 = 12^3 + 1$ (positive, a near-cousin of the Ramanujan-Hardy taxicab number 1729). The headline statement for all $n \\ge 3$ is left as an open conjecture (sorry placeholder).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-09",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/FermatDefectOne.lean",
+    "tags": [
+      "number-theory",
+      "diophantine",
+      "fermat",
+      "open-conjecture",
+      "pillai",
+      "fermat-catalan",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 1,
+    "dateAdded": "2026-06-09",
+    "axiomCount": 0,
+    "assumptions": "1 sorry on the headline conjecture `fermat_defect_one_exists : ∀ n : Nat, 3 ≤ n → FermatDefectExists n`. This is a genuine open mathematical conjecture (a Pillai-type diophantine problem) — the sorry marks the absence of a proof for all n ≥ 4, not a placeholder for tractable work. The n=3 case is fully verified for both signs via `native_decide` (no assumptions). 0 axiom declarations and 0 structure-encoded assumptions; the sorry is the only open mathematical assumption in the file.",
+    "lineCount": 146,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "originalContributions": [
+      "FermatDefectWitness, FermatDefectExists, FermatDefectPositive, FermatDefectNegative: four Nat-only predicates expressing |a^n + b^n - c^n| = 1 via a disjunction avoiding signed-integer coercions",
+      "fermat_defect_three_neg: verified primitive negative-defect witness 6^3 + 8^3 + 1 = 9^3 (gcd(6,8,9)=1) via native_decide",
+      "fermat_defect_three_pos: verified primitive positive-defect witness 9^3 + 10^3 = 12^3 + 1 (gcd(9,10,12)=1) via native_decide — the taxicab number 1729 shifted by one",
+      "fermat_defect_three: derived defect-one existence at n=3 from the negative-defect benchmark",
+      "fermat_defect_one_exists: headline open conjecture stated as a sorry'd target for all n ≥ 3"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Fermat's Last Theorem (1637 marginal note, proved by Wiles in 1995) asserts that $a^n + b^n = c^n$ has no positive integer solutions for $n > 2$. This rules out the zero-defect case $a^n + b^n - c^n = 0$. The natural sharpening — can the defect be exactly $\\pm 1$? — sits in the tradition of Pillai's conjecture (gaps between perfect powers) and the Fermat-Catalan conjecture (finitely many primitive solutions to $x^p + y^q = z^r$ with $1/p+1/q+1/r < 1$). The $n = 3$ positive-defect witness $9^3 + 10^3 = 12^3 + 1 = 1729$ is a unit-shift of Ramanujan and Hardy's famous taxicab number $1729 = 1^3 + 12^3 = 9^3 + 10^3$, the smallest number expressible as a sum of two cubes in two distinct ways. The negative-defect witness $6^3 + 8^3 = 9^3 - 1$ is its sibling on the other side of $9^3$. That both signs are realised at the very first nontrivial exponent makes the conjecture concrete and pedagogically rich, while the absence of any general construction for $n \\ge 4$ keeps it genuinely open.",
+    "problemStatement": "For every integer $n \\ge 3$, do there exist positive integers $a, b, c$ with\n\n$$2 \\le a \\le b < c, \\quad \\gcd(a, b, c) = 1, \\quad |a^n + b^n - c^n| = 1?$$\n\nOn `Nat`, the absolute-value condition is expressed as a disjunction:\n\n$$a^n + b^n + 1 = c^n \\qquad \\text{(negative defect, } a^n+b^n-c^n = -1\\text{)}$$\n\n$$a^n + b^n = c^n + 1 \\qquad \\text{(positive defect, } a^n+b^n-c^n = +1\\text{).}$$\n\nLevel 0 (trivial): $a = c$, $b = 1$ gives $c^n + 1 - c^n = 1$ for any $n$. Excluding this is the role of the bounds $2 \\le a$ and $a \\le b < c$. Level 2 (primitive) is the version stated above. Level 3 strengthens to demanding both signs at every $n$.",
+    "text": "A 146-line Lean 4 file with 4 definitions, 6 theorems, 0 axioms, and 1 sorry (the headline open conjecture). The four predicates package the defect-one condition as a Nat disjunction. Both signs of the n=3 benchmark are verified by `native_decide`: the negative-defect witness $6^3 + 8^3 + 1 = 9^3$ and the positive-defect witness $9^3 + 10^3 = 12^3 + 1$. The headline `fermat_defect_one_exists : ∀ n ≥ 3, FermatDefectExists n` is left as a sorry'd target. Status: axiomatized (the sorry is a genuine open mathematical assumption, not a placeholder for tractable work).",
+    "proofStrategy": "Hierarchy of statements from trivial to sharp:\n\n**Level 0 (trivial existence)**: For every $n \\ge 1$, take $a = c$, $b = 1$: $c^n + 1 - c^n = 1$. Excluded by demanding $2 \\le a$ and $a \\le b < c$.\n\n**Level 1 (nontrivial defect-one existence)**: For every $n \\ge 3$, there exist $2 \\le a \\le b < c$ with $|a^n + b^n - c^n| = 1$.\n\n**Level 2 (primitive nontrivial existence)**: As Level 1, but additionally $\\gcd(a, b, c) = 1$. This is the headline statement.\n\n**Level 3 (signed primitive existence)**: For every $n \\ge 3$ and every $\\epsilon \\in \\{-1, +1\\}$, a primitive witness exists. Possibly false at some $(n, \\epsilon)$ (a refutation would itself be a result).\n\nThe $n = 3$ benchmarks are discharged by `native_decide` after refining the witness conjunction. The arithmetic is small: $6^3 = 216$, $8^3 = 512$, $9^3 = 729$, so $6^3 + 8^3 + 1 = 729$; and $9^3 + 10^3 = 729 + 1000 = 1729 = 1728 + 1 = 12^3 + 1$. The gcd-reduction $\\gcd(\\gcd(6, 8), 9) = \\gcd(2, 9) = 1$ and $\\gcd(\\gcd(9, 10), 12) = \\gcd(1, 12) = 1$ are also computational. No general construction is known for $n \\ge 4$; the open conjecture is a Pillai-type statement and is expected to require deep machinery from Diophantine geometry.",
+    "keyInsights": [
+      "**Defect hierarchy:** FLT rules out defect 0 for $n > 2$. The defect-one conjecture asks the very next question. Pillai-type intuition suggests only finitely many solutions are possible for each fixed pair $(n, \\epsilon)$, but the question is whether at least one exists for every $n$.",
+      "**Primitivity matters:** Without $\\gcd(a, b, c) = 1$, any single solution at exponent $n$ scales to infinitely many — but the scaled triples are not new mathematics. The primitivity demand is the standard way to rule out this triviality, mirroring the convention in Fermat-Catalan and abc-style problems.",
+      "**Why $a \\ge 2$ and $a \\ne c$:** The constraint $a = 1$ collapses to $1 + b^n - c^n = \\pm 1$, i.e., $b^n = c^n$ or $b^n + 2 = c^n$ — both pin $b, c$ very tightly. The constraint $a = c$ gives the Level-0 triviality $c^n + b^n - c^n = b^n = 1$, i.e., $b = 1$. These are not the spirit of the problem.",
+      "**Taxicab connection:** $9^3 + 10^3 = 1729 = 1^3 + 12^3$ is the smallest positive integer expressible as a sum of two cubes in two distinct ways (Ramanujan-Hardy). The defect-one positive witness $9^3 + 10^3 - 12^3 = 1$ is therefore the assertion that $1729 - 12^3 = 1$ — a unit-distance fact about the taxicab number. The negative-defect witness $6^3 + 8^3 - 9^3 = -1$ is its mirror on the other side of $9^3 = 729$.",
+      "**Nat-only formulation:** Stating $|a^n + b^n - c^n| = 1$ on `ℤ` requires signed coercion; on `Nat` it splits into the disjunction $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$. This keeps the predicate decidable and lets `native_decide` close concrete witnesses without algebraic manipulation.",
+      "**Search structure:** For each $n$, a bounded search over $a \\le b < c \\le N$ with mod-$p$ pre-filters is tractable for small $n$ and small $N$. The minimal-witness function $M(n)$ — the smallest $c$ for which a primitive witness exists — is finite where the conjecture holds; $M(3) \\le 9$ from the negative-defect benchmark."
+    ],
+    "prerequisites": [
+      "Basic arithmetic on `Nat` and `Nat.gcd`",
+      "The `decide` and `native_decide` tactics in Lean 4",
+      "Diophantine equations and the Fermat equation $a^n + b^n = c^n$",
+      "Pillai's conjecture (background context)",
+      "Fermat-Catalan conjecture (background context)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-and-overview",
+      "title": "Imports and Module Overview",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring introducing the defect-one conjecture, the Nat disjunction trick, the n=3 benchmarks for both signs, and connections to FLT, Pillai, and Fermat-Catalan.",
+      "mathContext": "$|a^n + b^n - c^n| = 1$ encoded on $\\mathbb{N}$ as $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$."
+    },
+    {
+      "id": "predicates",
+      "title": "Four Predicates",
+      "startLine": 49,
+      "endLine": 79,
+      "summary": "Definitions of FermatDefectWitness (combined signs, with bounds and gcd primitivity), FermatDefectExists (existence over witnesses), FermatDefectPositive (a^n + b^n = c^n + 1), and FermatDefectNegative (a^n + b^n + 1 = c^n).",
+      "mathContext": "$\\mathtt{FermatDefectWitness}\\,n\\,a\\,b\\,c$: $2 \\le a \\le b < c \\land \\gcd(\\gcd(a,b),c) = 1 \\land (a^n+b^n+1 = c^n \\lor a^n+b^n = c^n+1)$."
+    },
+    {
+      "id": "benchmark-n-three",
+      "title": "Verified n=3 Benchmarks (Both Signs)",
+      "startLine": 81,
+      "endLine": 130,
+      "summary": "fermat_defect_three_neg (6^3+8^3+1 = 9^3, gcd(6,8,9)=1) and fermat_defect_three_pos (9^3+10^3 = 12^3+1, gcd(9,10,12)=1), both discharged by native_decide. Derived theorems fermat_defect_three, fermat_defect_three_positive, fermat_defect_three_negative.",
+      "mathContext": "Arithmetic: $216 + 512 + 1 = 729$; $729 + 1000 = 1729 = 1728 + 1$. Primitivity: $\\gcd(2, 9) = 1$, $\\gcd(1, 12) = 1$."
+    },
+    {
+      "id": "open-conjecture",
+      "title": "Open Conjecture: Defect-One Existence for All n ≥ 3",
+      "startLine": 132,
+      "endLine": 146,
+      "summary": "fermat_defect_one_exists : ∀ n ≥ 3, FermatDefectExists n. Headline statement, left as a sorry'd target. The n=3 case is verified above; n ≥ 4 is genuinely open.",
+      "mathContext": "$\\forall n \\ge 3,\\; \\exists a, b, c \\in \\mathbb{N},\\; 2 \\le a \\le b < c \\land \\gcd(a,b,c) = 1 \\land |a^n + b^n - c^n| = 1$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "complementary",
+      "description": "Fermat's Last Theorem rules out the zero-defect case $a^n + b^n = c^n$ for $n > 2$. The defect-one conjecture asks the natural next question: can the defect be exactly $\\pm 1$? Together they form a sharp dichotomy at $n \\ge 3$ — defect 0 forbidden, defect $\\pm 1$ conjecturally always realisable."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "Fermat's two-squares theorem is the other Fermat-named Diophantine statement formalized in the gallery. Both stem from Fermat's marginal notes and concern integer representations involving small powers; the defect-one conjecture cousins the two-squares characterization in spirit, though it lives at higher exponent."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "foundational",
+      "description": "Pythagoras's theorem $a^2 + b^2 = c^2$ at $n = 2$ has infinitely many primitive solutions (Pythagorean triples). FLT shows defect 0 fails for $n > 2$; the defect-one conjecture asks whether something just one unit away is always available. The trio $n = 2$ rich / $n > 2$ zero defect empty / $n \\ge 3$ defect-one conjecturally always present sketches the arithmetic geography of low-power Diophantine equations."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "related",
+      "description": "Pythagorean triples classify $a^2 + b^2 = c^2$. The defect-one conjecture is the higher-exponent analogue of asking 'how close can $a^n + b^n$ come to $c^n$?' — at $n = 2$ infinitely many exact hits; at $n \\ge 3$ no exact hits but conjecturally always within one."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Fermat defect-one conjecture is a concrete, clean Diophantine question sitting one unit away from Fermat's Last Theorem. It has small primitive witnesses at $n = 3$ for both signs of the defect — including a unit-shift of the Ramanujan-Hardy taxicab number 1729 — but is genuinely open for $n \\ge 4$. This gallery entry formalizes the predicates, verifies the $n = 3$ benchmarks via `native_decide`, and states the open conjecture as a `sorry`'d target.",
+    "implications": "**Why it matters**\n\n1. **Sharp dichotomy with FLT.** FLT pins the defect $a^n + b^n - c^n$ to be either zero (only at $n \\le 2$) or at least one unit away (for $n > 2$). The defect-one conjecture asks whether 'one unit away' is achieved, sharpening FLT from a non-existence statement into a structural one.\n\n2. **Pillai-style content.** Pillai's conjecture (gaps between perfect powers) is the closest classical relative. The defect-one problem is a richer Pillai problem — sums of two powers versus one power — and any progress on it would inform Pillai-type techniques.\n\n3. **Fermat-Catalan adjacency.** The Fermat-Catalan conjecture predicts only finitely many primitive solutions to $x^p + y^q = z^r$ with $1/p+1/q+1/r < 1$. The defect-one problem fixes $p = q = r = n$ and adds a unit offset; it's a parametric slice of the broader Fermat-Catalan landscape.\n\n4. **Search tractability.** Strong modular pre-filters make bounded searches at small $n$ feasible. Computational follow-ups (per-$n$ search) are filed as separate issues.\n\n5. **Failure mode is interesting.** A specific $(n, \\epsilon)$ at which Level 3 fails would itself be a result — a modular-arithmetic obstruction would tie the defect-one problem back to congruence-class structure of $n$-th-power residues.",
+    "openQuestions": [
+      "Does Level 2 hold for all $n \\ge 3$? (The headline conjecture.) No general construction is known for $n \\ge 4$; small searches at $n = 4, 5, 6, \\ldots$ are the natural first probe.",
+      "Does Level 3 hold? — i.e., are BOTH signs realised at every $n \\ge 3$? At $n = 3$ yes; for general $n$ a modular obstruction might rule out one sign at specific $n$.",
+      "Asymptotic of $M(n)$: does $M(n) \\to \\infty$ as $n \\to \\infty$? Is $M(n) = O(\\mathrm{poly}(n))$? Pillai-style intuition suggests $M(n) \\to \\infty$ at least.",
+      "Bounded-nonexistence theorems: for fixed $n$ and bound $N$, prove $|a^n + b^n - c^n| \\ne 1$ for all $2 \\le a \\le b < c \\le N$ — a `decide`-style 'no small witness' result that would tighten lower bounds on $M(n)$.",
+      "Connections to abc: does the abc conjecture (or its effective forms) imply finiteness of primitive defect-one solutions for each fixed $n \\ge 4$?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Wiles, Andrew",
+      "title": "Modular elliptic curves and Fermat's Last Theorem",
+      "year": "1995",
+      "venue": "Annals of Mathematics 141(3): 443-551",
+      "note": "Proof that every semistable elliptic curve over Q is modular, which combined with Frey-Ribet proves FLT. FLT rules out the zero-defect case; the defect-one conjecture is the natural follow-up question."
+    },
+    {
+      "authors": "Hardy, G. H.",
+      "title": "Ramanujan: Twelve Lectures on Subjects Suggested by His Life and Work",
+      "year": "1940",
+      "venue": "Cambridge University Press",
+      "note": "Recounts the taxicab anecdote: 1729 is the smallest number expressible as a sum of two cubes in two distinct ways ($1^3 + 12^3 = 9^3 + 10^3$). The positive-defect witness $9^3 + 10^3 - 12^3 = 1$ is a unit-distance fact about 1729."
+    },
+    {
+      "authors": "Waldschmidt, Michel",
+      "title": "Perfect powers: Pillai's works and their developments",
+      "year": "2009",
+      "venue": "Combinatorial number theory and additive group theory (CRM Barcelona, Birkhäuser)",
+      "note": "Survey of Pillai-type problems on perfect powers and their gaps. The defect-one problem is morally a Pillai-type question on a richer set (sum of two powers vs. one power)."
+    },
+    {
+      "authors": "Darmon, Henri; Granville, Andrew",
+      "title": "On the equations $z^m = F(x, y)$ and $Ax^p + By^q = Cz^r$",
+      "year": "1995",
+      "venue": "Bulletin of the London Mathematical Society 27(6): 513-543",
+      "note": "Foundational paper on the Fermat-Catalan equation. The defect-one problem at exponent $n$ is a unit-offset Fermat-Catalan equation in the diagonal case $p = q = r = n$."
+    },
+    {
+      "authors": "Pillai, S. S.",
+      "title": "On $a^x - b^y = c$",
+      "year": "1936",
+      "venue": "Journal of the Indian Mathematical Society 2: 119-122",
+      "note": "Original Pillai conjecture on gaps between perfect powers — for fixed $c$, the equation $a^x - b^y = c$ has only finitely many solutions. The defect-one problem inherits Pillai's finiteness intuition while asking the existence question for each fixed $n$."
+    },
+    {
+      "authors": "Frits Beukers",
+      "title": "The Diophantine equation $Ax^p + By^q = Cz^r$",
+      "year": "1998",
+      "venue": "Duke Mathematical Journal 91(1): 61-88",
+      "note": "Modern analytic-Diophantine treatment of the generalized Fermat-Catalan equation; informs the modular-arithmetic obstructions that may govern Level 3 (per-sign existence)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FermatDefectOne",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/FermatDefectOne.lean",
+    "sorries": 1
+  },
+  "mainTheorems": [
+    {
+      "name": "fermat_defect_three_neg",
+      "type": "core",
+      "description": "Verified primitive negative-defect witness at n=3: 6^3 + 8^3 + 1 = 9^3, gcd(6,8,9)=1, 2 ≤ 6 ≤ 8 < 9.",
+      "leanType": "FermatDefectWitness 3 6 8 9"
+    },
+    {
+      "name": "fermat_defect_three_pos",
+      "type": "core",
+      "description": "Verified primitive positive-defect witness at n=3: 9^3 + 10^3 = 12^3 + 1, gcd(9,10,12)=1, 2 ≤ 9 ≤ 10 < 12. The taxicab number 1729 shifted by one.",
+      "leanType": "FermatDefectWitness 3 9 10 12"
+    },
+    {
+      "name": "fermat_defect_three",
+      "type": "derived",
+      "description": "Defect-one existence at n=3, packaged from the negative-defect benchmark.",
+      "leanType": "FermatDefectExists 3"
+    },
+    {
+      "name": "fermat_defect_one_exists",
+      "type": "headline",
+      "description": "Headline open conjecture (sorry'd): for every n ≥ 3, there exists a primitive nontrivial defect-one witness.",
+      "leanType": "∀ n : Nat, 3 ≤ n → FermatDefectExists n"
+    }
+  ],
+  "sorries": 1
+}
