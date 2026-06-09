@@ -1,21 +1,23 @@
 # Research State: burnside-counting-oq-01
 
-**Phase**: S1 ACT — rotatedIndex_add discharged (axiom → theorem); S1b STATE-SYNC adds S2 ACT bearer-API pin + Docker / disk blocker note
-**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03)
-**Iteration**: 1 (S1b is a sub-step, not a fresh iteration)
-**Last Updated**: 2026-06-03Z
-**Branch**: `research/burnside-counting-oq-01-s1-discharge-axiom` (merged) → `research/burnside-counting-oq-01-s1b-state-sync-*` (this SYNC)
+**Phase**: S2 ACT — `coloringSetoid` + `coloringQuotientFintype` discharged (axioms → derived from `AddAction.orbitRel` + `Quotient.fintype`)
+**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03; **S2 ACT 2026-06-09**)
+**Iteration**: 2 (S2 is a fresh iteration after S1 / S1b)
+**Last Updated**: 2026-06-09Z
+**Branch**: `research/burnside-counting-oq-01-s1-discharge-axiom` (merged) → `research/burnside-counting-oq-01-s1b-state-sync-*` (merged) → `research/burnside-counting-oq-01-s2-act-orbitrel-bridge-*` (this PR)
 
-## Lean file inventory (post S1, Docker-verified)
+## Lean file inventory (post S2, Docker-verified)
 
 ```
 File:        proofs/Proofs/BurnsideCounting.lean
-Lines:       370 (was 255 at S0)
-Theorems:    7 (was 6; rotatedIndex_add promoted from axiom to theorem)
-Definitions: 7 (unchanged)
+Lines:       387 (was 370 at S1; +17 LOC for S2 ACT)
+Theorems:    7 (unchanged)
+Definitions: 9 (was 7; +coloringSetoid def, +coloringQuotientFintype def;
+                 coloringSetoid_decidableRel instance also added)
 Sorries:     0
-Axioms:      4 (was 5; fixed_point_sum_binary_4, coloringSetoid,
-                 coloringQuotientFintype, binary_necklaces_4 remain)
+Axioms:      2 (was 4 at S1; fixed_point_sum_binary_4 and binary_necklaces_4
+                 remain; coloringSetoid and coloringQuotientFintype
+                 discharged this PR)
 Build:       ✔ Docker 3058/3058 jobs clean
 ```
 
@@ -61,44 +63,50 @@ case-split. Materializing both case splits by hand brings each leaf
 to a linear identity that omega *does* close (when invoked via the
 three Nat-mod auxiliaries).
 
-## Axiom inventory (after S1)
+## Axiom inventory (after S2)
 
-The remaining 4 axioms in `BurnsideCounting.lean` are *content* axioms,
-not modular-arithmetic infrastructure:
+The remaining 2 axioms in `BurnsideCounting.lean` are both *content*
+axioms about the specific binary 4-necklace computation:
 
 1. `fixed_point_sum_binary_4` (Part IV) — the `|Fix(0)| + |Fix(1)| +
    |Fix(2)| + |Fix(3)| = 24` computation. Discharge candidate: route
    through `native_decide` once `IsFixedByRotation` is fully decidable
    in the rotation/coloring API.
-2. `coloringSetoid` (Part IV) — the orbit equivalence relation for
-   colorings under rotation. Discharge candidate: derive from
-   `MulAction.orbitRel` once the `AddAction (ZMod n)` ↔
-   `MulAction (Multiplicative (ZMod n))` bridge is built.
-3. `coloringQuotientFintype` (Part IV) — `Fintype` instance for the
-   coloring quotient. Discharge candidate: standard once `coloringSetoid`
-   is concrete.
-4. `binary_necklaces_4` (Part IV) — the headline `= 6` necklace count.
+2. `binary_necklaces_4` (Part IV) — the headline `= 6` necklace count.
    Discharge candidate: combine `burnside_lemma` +
    `fixed_point_sum_binary_4` + `|ZMod 4| = 4`.
 
-S1 discharged the *infrastructure* axiom (the modular-arithmetic
-composition law). The remaining 4 are about the abstract group-action
-API + the concrete computation, sitting one bridge-build away from full
-discharge.
+### Axioms discharged in earlier iterations
 
-## What's Next (S2+ priority)
+- **S1 (PR #21148)**: `rotatedIndex_add` — modular-arithmetic
+  composition law for rotations. Proved unconditionally via
+  `ZMod.val_add` + an 8-leaf case enumeration.
+- **S2 (this PR)**: `coloringSetoid` — orbit equivalence relation.
+  Derived as `AddAction.orbitRel (ZMod n) (Coloring n k)`. The actual
+  bridge is simpler than the S1b STATE-SYNC plan suggested: Mathlib's
+  `orbitRel` is `@[to_additive]`, so `AddAction.orbitRel` exists
+  directly — no `Multiplicative`-bridge needed.
+- **S2 (this PR)**: `coloringQuotientFintype` — `Fintype` instance for
+  the coloring quotient. Derived via `Quotient.fintype` from finite
+  `Coloring n k = Fin n → Fin k` and a new decidable-orbit-relation
+  instance `coloringSetoid_decidableRel` (each orbit membership reduces
+  to `∃ x : ZMod n, x +ᵥ b = a`, decidable by
+  `Fintype.decidableExistsFintype`).
 
-1. **S2 (highest priority)**: build the `AddAction → MulAction` bridge for
-   `ZMod n` acting on `Coloring n k`, via `Multiplicative (ZMod n)`. This
-   would let `coloringSetoid` be derived rather than axiomatized, and
-   unblock `binary_necklaces_4` via `burnside_lemma`. The companion file
-   `BurnsideCountingOQ03OQ03.lean` already sketches this connection
-   chain explicitly.
-2. **S3**: discharge `fixed_point_sum_binary_4` via `native_decide`
+## What's Next (S3+ priority)
+
+1. **S3**: discharge `fixed_point_sum_binary_4` via `native_decide`
    (provided `IsFixedByRotation` is decidable, which it is — there is
    an `instance` at line ~218 of `BurnsideCounting.lean`).
-3. **S4**: combine S2 + S3 to discharge `binary_necklaces_4` and reach
-   the `verified` badge for the entire file.
+2. **S4**: combine S3 with `burnside_lemma` to discharge
+   `binary_necklaces_4` and reach the `verified` badge for the entire
+   file. With `coloringSetoid` now `= AddAction.orbitRel (ZMod n) (Coloring n k)`,
+   `Quotient (coloringSetoid n k) = AddAction.orbitRel.Quotient (ZMod n) (Coloring n k)`,
+   which is exactly the orbit-quotient type that `burnside_lemma` (in its
+   `MulAction` form) would consume after a `Multiplicative`-bridge. For
+   S4, the cleanest path is either (a) restate `burnside_lemma` in
+   `AddAction` form using `to_additive` lemmas, or (b) build the
+   `Multiplicative` bridge for the orbit equivalence specifically.
 
 ## Verified Mathlib API (used in S1 proof)
 
@@ -117,6 +125,27 @@ All names re-verified against `leanprover-community/mathlib4` HEAD before
 writing.
 
 ## Session Log
+
+- **2026-06-09 (S2 ACT, researcher-1)**: ACT — discharged `coloringSetoid`
+  and `coloringQuotientFintype` axioms. File 370 → 387 LOC (+17),
+  axioms 4 → 2, definitions 7 → 9 (+coloringSetoid def, +coloringQuotientFintype def,
+  +coloringSetoid_decidableRel instance). Approach: instead of building
+  the `Multiplicative (ZMod n)` bridge that the S1b STATE-SYNC pinned,
+  observed that Mathlib's `orbitRel` carries `@[to_additive]`, so
+  `AddAction.orbitRel (ZMod n) (Coloring n k)` is directly available.
+  `coloringSetoid` is now a 2-line `def` aliasing this. For Fintype on
+  the quotient, registered a `DecidableRel (coloringSetoid n k).r`
+  instance using `decidable_of_iff` + `AddAction.mem_orbit_iff` +
+  `Fintype.decidableExistsFintype` (membership in orbit reduces to a
+  finite ∃ over `ZMod n`), then `coloringQuotientFintype` is
+  `Quotient.fintype` applied with the setoid + decidability in scope
+  via `letI`/`haveI`. Build verified with
+  `./proofs/scripts/docker-build.sh Proofs.BurnsideCounting` →
+  3058 / 3058 jobs clean (3 pre-existing simpArgs warnings in untouched
+  code at lines 77, 299, 301). meta.json sync: lineCount 370 → 387,
+  axiomCount 4 → 2, definitionCount 7 → 9, assumptions text rewritten,
+  3 new originalContributions added, openQuestions trimmed (now lists
+  just S3 + S4 + Polya + dihedral generalizations).
 
 - **2026-06-03 (S1b STATE-SYNC, researcher-1)**: doc-only — confirmed
   4-day bearer byte-stability (`BurnsideCounting.lean` SHA1 `5879ade40b5…`,
