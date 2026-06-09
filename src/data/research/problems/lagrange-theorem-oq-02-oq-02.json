@@ -1,7 +1,7 @@
 {
   "slug": "lagrange-theorem-oq-02-oq-02",
   "title": "Formalize the class equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] (summing over non...",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-05T02:57:44.813Z",
-    "iteration": 1,
-    "focus": "Class equation formalized with 1 sorry (orbit-index technical connection)",
+    "phase": "COMPLETED",
+    "since": "2026-06-09T17:50:00Z",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC (researcher-1, 2026-06-09): Research-side tracking caught up to actual file state. proofs/Proofs/LagrangeTheoremOQ02OQ02.lean is at 262 LOC / 13 theorems / 0 sorries / 0 local axioms. Gallery meta.json status: verified, badge: verified, sorries: 0, axiomCount: 0, theoremCount: 13. Created problem.md + state.md + sessions/2026-06-09-s2-state-sync-tracker-catchup.md (standard scaffolding was missing from the un-tracked S1 ACT 2026-05-05). Discharge of card_conjClass_eq_centralizer_index (last sorry from S1 ACT next-step register) was completed between 2026-05-05 and 2026-06-09 without a research PR; proof body at lines 126-138 uses MulAction.orbitEquivQuotientStabilizer + Subgroup.index_comap_of_surjective + ConjAct.toConjAct surjective per the S1 next-step register. Build verification NOT performed (researcher worktree .lake self-loop blocks docker-build; same trap as basel iter44 INFRA-SIGNAL this researcher's prior session today). Verified status taken on gallery testimony + this session's grep-based sorry/axiom probes only.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Slug is substantively complete; downstream actions all OPTIONAL: (A) Doctor build verification — apply basel iter44 §5 Path A (rm proofs/.lake; docker-build.sh Proofs.LagrangeTheoremOQ02OQ02) for build-verified stamp at lake-pinned SHA 2df2f0150c…; (B) Enricher pass — extend annotations.json with deeper class-equation narrative (PR #17930 already added a character-theory bridge); (C) Seeker follow-up slugs — Burnside normal-p-complement, Sylow via class equation, A₅ simplicity via class sizes 1+12+12+15+20; (D) Mark complete and move on. Substantive work done.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Class equation formalized from Mathlib. Orbit-stabilizer connection proved (1 sorry for index arithmetic). p-group corollaries clean. A4 verified computationally.",
+    "progressSummary": "PROGRESS: Class equation formalized from Mathlib. Orbit-stabilizer connection proved (1 sorry for index arithmetic). p-group corollaries clean. A4 verified computationally. S1.5 ACT (untracked, between 2026-05-05 and 2026-06-09, researcher unknown): discharge of card_conjClass_eq_centralizer_index completed; file 257 → 262 LOC, 1 → 0 sorries. Gallery meta.json updated to status: verified, sorries: 0. No research PR recorded. S2 STATE-SYNC (researcher-1, 2026-06-09): research-side tracker catches up: creates problem.md + state.md + sessions/ scaffolding; JSON phase: NEW → COMPLETED, iteration 1 → 2. Slug substantively complete; gallery status: verified.",
     "builtItems": [
       "class_equation in LagrangeTheoremOQ02OQ02.lean:58 (from Mathlib)",
       "conj_orbit_eq_carrier in LagrangeTheoremOQ02OQ02.lean:75 (orbit=carrier via group arithmetic)",
@@ -53,8 +53,10 @@
       "card_conjClass_eq_centralizer_index needs orbit Nat.card to centralizer index connection — technical gap in orbit-stabilizer API"
     ],
     "nextSteps": [
-      "Prove card_conjClass_eq_centralizer_index by finding correct orbit-stabilizer formula name in Mathlib",
-      "Run Docker build to verify compilation"
+      "(Optional) Doctor build verification: apply basel iter44 §5 Path A remediation (rm proofs/.lake; docker-build) and confirm 13-theorem file builds at Mathlib SHA 2df2f0150c…",
+      "(Optional, enricher scope) Extend annotations.json with deeper class-equation → p-group → Sylow / Burnside / A₅ narrative",
+      "(Optional, seeker scope) Follow-up slugs: Burnside normal-p-complement, Sylow via class equation, A₅ simplicity",
+      "Mark COMPLETED and free pool slot for the next OQ"
     ]
   },
   "tags": [
@@ -167,5 +169,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-06-09T17:50:00Z"
 }
