@@ -82,6 +82,12 @@ We axiomatize the key data needed for Ehrhart theory.
 structure LatticePolytope (d : ℕ) where
   /-- Number of lattice points in the n-th dilation nP -/
   latticePointCount : ℕ → ℕ
+  /-- Normalized volume of the polytope (each polytope carries its own
+      volume as data, pinning the leading coefficient of its Ehrhart
+      polynomial; see `ehrhart_leading_coeff_volume`). -/
+  volume : ℚ
+  /-- Volume is positive -/
+  volume_pos : 0 < volume
   /-- The polytope is nonempty: it has at least one lattice point -/
   nonempty : 0 < latticePointCount 1
   /-- The 0-th dilation is a point (the origin, or any single vertex) -/
@@ -137,10 +143,15 @@ The coefficients of the Ehrhart polynomial have geometric meaning:
 -/
 
 /-- The leading coefficient of the Ehrhart polynomial equals the
-    normalized volume of the polytope (volume times d!). -/
-axiom ehrhart_leading_coeff_volume (d : ℕ) (P : LatticePolytope d)
-    (volume : ℚ) (hv : 0 < volume) :
-    (ehrhartPoly P).leadingCoeff = volume
+    normalized volume of the polytope (volume times d!).
+
+    The polytope carries its volume as data (`P.volume`, see the
+    `LatticePolytope` structure). This pins the leading coefficient
+    locally per `P`, ruling out the inconsistency that would arise
+    from a free `volume` parameter (e.g. instantiating the axiom twice
+    with distinct positive values to derive `1 = 2`). -/
+axiom ehrhart_leading_coeff_volume (d : ℕ) (P : LatticePolytope d) :
+    (ehrhartPoly P).leadingCoeff = P.volume
 
 /-- The constant term of the Ehrhart polynomial is always 1. -/
 theorem ehrhart_constant_term {d : ℕ} (P : LatticePolytope d) :
@@ -208,6 +219,14 @@ structure LatticePolygon extends LatticePolytope 2 where
   interiorPoints : ℕ
   /-- At n=1, total = interior + boundary -/
   total_eq : latticePointCount 1 = interiorPoints + boundaryPoints
+  /-- Any Macdonald-compatible interior counting function takes the
+      value `interiorPoints` at `n = 1`. This links the structure's
+      `interiorPoints` field to the existential `interior_count`
+      produced by `ehrhart_macdonald_reciprocity`, enabling the
+      derivation `L_P°(1) = P.interiorPoints` used in the Ehrhart-
+      to-Pick reduction. -/
+  interior_at_one : ∀ ic : ℕ → ℕ,
+    interiorCount toLatticePolytope ic → ic 1 = interiorPoints
 
 /-- The Ehrhart polynomial for a 2D polygon is A·n² + (b/2)·n + 1 -/
 def picks_ehrhart (area : ℚ) (boundary : ℕ) : ℚ → ℚ :=
@@ -257,12 +276,12 @@ since no simpler formula involving just volume, surface, and
 lattice counts can work (Reeve tetrahedra).
 -/
 
-/-- A 3D lattice polytope with explicit geometric data -/
+/-- A 3D lattice polytope with explicit geometric data.
+
+    The `volume` and `volume_pos` fields are inherited from
+    `LatticePolytope` (a structure-wide invariant, see Fix B); this
+    structure only adds the surface and edge correction terms. -/
 structure LatticePolytope3D extends LatticePolytope 3 where
-  /-- Volume of the polytope -/
-  volume : ℚ
-  /-- Volume is positive -/
-  volume_pos : 0 < volume
   /-- Half surface area (lattice-normalized) -/
   halfSurface : ℚ
   /-- Edge correction term -/
@@ -322,6 +341,8 @@ theorem unitCube_count_two : unitCubeCount 2 = 27 := by
 /-- Unit cube as a LatticePolytope -/
 def unitCube : LatticePolytope 3 where
   latticePointCount := unitCubeCount
+  volume := 1
+  volume_pos := by norm_num
   nonempty := by unfold unitCubeCount; norm_num
   count_zero := unitCube_count_zero
 
