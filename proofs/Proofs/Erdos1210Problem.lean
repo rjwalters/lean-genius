@@ -34,7 +34,7 @@ This is an open conjecture of Erdős. The inequality asserts that primes are
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Finset.Basic
-import Mathlib.Algebra.BigOperators.Group.Finset
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 
@@ -107,19 +107,18 @@ theorem primesBelow_sum_nonneg (n : ℕ) :
   apply Finset.sum_nonneg
   intro p hp
   simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
-  apply div_nonneg one_nonneg
+  apply div_nonneg zero_le_one
   have : (p : ℝ) < n := by exact_mod_cast hp.1
   linarith
 
 /-- The prime sum is positive for n ≥ 3 (since 1/(n-2) > 0). -/
 theorem primesBelow_sum_pos {n : ℕ} (hn : 3 ≤ n) :
     0 < ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) := by
-  apply Finset.sum_pos (primesBelow_nonempty hn)
+  refine Finset.sum_pos ?_ (primesBelow_nonempty hn)
   intro p hp
   simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hp
-  apply div_pos one_pos
-  have : (p : ℝ) < n := by exact_mod_cast hp.1
-  linarith
+  have hpn : (p : ℝ) < n := by exact_mod_cast hp.1
+  exact _root_.div_pos one_pos (by linarith)
 
 /-
 ## The Main Conjecture (Open)
@@ -161,7 +160,7 @@ theorem erdos_1210_prime_singleton (n : ℕ) (hn : 3 ≤ n) (p : ℕ)
         apply Finset.sum_le_sum_of_subset_of_nonneg (by simp [hp_mem])
         intro q hq _
         simp only [primesBelow, Finset.mem_filter, Finset.mem_range] at hq
-        apply div_nonneg one_nonneg
+        apply div_nonneg zero_le_one
         have : (q : ℝ) < n := by exact_mod_cast hq.1
         linarith
 
@@ -174,5 +173,74 @@ theorem erdos_1210_singleton_bounded (n : ℕ) (hn : 3 ≤ n) (k : ℕ) (hk1 : 1
     (fun a ha b hb hab => by simp only [Finset.mem_singleton] at ha hb; omega)
   simp only [Finset.sum_singleton] at hle
   exact hle
+
+/-
+## Counterexample: The Literal Statement Is FALSE
+
+The literal axiom `erdos_1210` above is **unsound** as transcribed: there is a
+concrete (n, A) for which the hypotheses are satisfied but the inequality
+FAILS. The minimal witness is n = 5, A = {4}:
+
+  - 4 ∈ [1, 5), so `ValidSubset 5 {4}` holds.
+  - A = {4} is trivially pairwise coprime (singleton, vacuous condition).
+  - ∑_{a ∈ {4}} 1/(5 - a) = 1/(5-4) = 1.
+  - primesBelow 5 = {2, 3}, so ∑_{p < 5 prime} 1/(5 - p) = 1/3 + 1/2 = 5/6.
+  - 1 > 5/6, so the conjectured bound fails.
+
+The theorem `erdos_1210_literal_counterexample` below proves this in machine-
+checked form. It does not invoke the bad axiom (to avoid deriving False and
+destabilizing downstream uses), but its statement is direct evidence that
+`erdos_1210` cannot be a theorem of any consistent extension of ZFC + Lean.
+
+### Interpretation
+
+The transcribed conjecture either:
+  (a) requires unstated constraints on A (e.g., A ⊆ (n/2, n) or a > √n), or
+  (b) uses different weights (e.g., 1/a instead of 1/(n-a)), or
+  (c) was misrecorded in the source database.
+
+Two open follow-ups:
+  1. **Locate originals** [Er77c, Er80] to recover the intended hypothesis.
+  2. **Revise the axiom** to a verified or correctly-stated form. The current
+     axiom should be replaced (the four consequence theorems above are then
+     vacuous and should be removed/refactored).
+-/
+
+/-- `primesBelow 5 = {2, 3}` (decidable equality of concrete Finsets). -/
+theorem primesBelow_five : primesBelow 5 = ({2, 3} : Finset ℕ) := by
+  unfold primesBelow
+  decide
+
+/-- The weighted sum over primes below 5 equals 5/6. -/
+theorem primesBelow_five_sum :
+    ∑ p ∈ primesBelow 5, (1 : ℝ) / ((5 : ℝ) - p) = 5 / 6 := by
+  rw [primesBelow_five]
+  have h23 : (2 : ℕ) ∉ ({3} : Finset ℕ) := by decide
+  rw [show ({2, 3} : Finset ℕ) = insert 2 {3} from rfl,
+      Finset.sum_insert h23, Finset.sum_singleton]
+  norm_num
+
+/-- `{4}` satisfies the hypotheses of `erdos_1210` at n = 5. -/
+theorem singleton_four_valid_at_five :
+    ValidSubset 5 ({4} : Finset ℕ) ∧ PairwiseCoprime ({4} : Finset ℕ) := by
+  refine ⟨?_, ?_⟩
+  · intro a ha
+    simp only [Finset.mem_singleton] at ha
+    subst ha
+    exact ⟨by norm_num, by norm_num⟩
+  · intro a ha b hb hab
+    simp only [Finset.mem_singleton] at ha hb
+    omega
+
+/-- **Counterexample to `erdos_1210` (as literally stated)**.
+
+    At n = 5, A = {4}, the A-sum (= 1) STRICTLY EXCEEDS the prime-sum (= 5/6).
+    All hypotheses of `erdos_1210` are satisfied (see
+    `singleton_four_valid_at_five`), but the conclusion fails. -/
+theorem erdos_1210_literal_counterexample :
+    (∑ p ∈ primesBelow 5, (1 : ℝ) / ((5 : ℝ) - p)) <
+      ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) := by
+  rw [primesBelow_five_sum, Finset.sum_singleton]
+  norm_num
 
 end Erdos1210
