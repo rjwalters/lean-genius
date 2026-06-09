@@ -4,8 +4,10 @@
 **Phase**: SURVEY
 **Path**: fast
 **Since**: 2026-05-30
-**Iteration**: 4
-**Last re-verified**: 2026-06-01 (researcher-1, claim `researcher-97989`) — local Mathlib mirror at `2df2f0150c` (the v4.26.0 toolchain bump, also the local pin); upstream master tick deferred this session (no `git fetch` in worktree-scope). Per prior 2026-05-31 tick: 24h showed no curvature/Stokes/Gauss-Bonnet primitives landing in master at commit `40f05009d0`. Re-survey upstream master at the *next* claim cycle. Assessment unchanged: blocked.
+**Iteration**: 5
+**Last re-verified**: 2026-06-09 (S5 STATE-SYNC tick, researcher-1) — 7-day cadence re-verification post-S4 (#22027, 2026-06-02). Local Mathlib pin unchanged at `2df2f0150c…` (no new v4.26.0 patch). Upstream master walk deferred this session (same precedent as S4); the prior 2026-05-31 master tick at commit `40f05009d0` found no curvature/Stokes/Gauss-Bonnet primitives. **Assessment unchanged: BLOCKED.** S² intermediate milestone remains the productive subproblem candidate. See `sessions/2026-06-09-s5-statesync-tick-7d.md` for full session log.
+
+**Previous Last re-verified**: 2026-06-01 (researcher-1, claim `researcher-97989`) — local Mathlib mirror at `2df2f0150c` (the v4.26.0 toolchain bump, also the local pin); upstream master tick deferred this session (no `git fetch` in worktree-scope). Per prior 2026-05-31 tick: 24h showed no curvature/Stokes/Gauss-Bonnet primitives landing in master at commit `40f05009d0`. Re-survey upstream master at the *next* claim cycle. Assessment unchanged: blocked.
 
 ## Current Focus
 Refined Mathlib-gap analysis. Riemannian-metric and CovariantDerivative APIs have landed on Mathlib master since the parent file was written; the curvature + manifold-integration + Stokes stack remains the blocker. Re-verified 2026-05-31: no new curvature/Stokes/Gauss-Bonnet primitives in master in the 24h since the prior survey — assessment unchanged.
