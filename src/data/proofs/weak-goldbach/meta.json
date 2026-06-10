@@ -2,7 +2,7 @@
   "id": "weak-goldbach",
   "title": "Weak Goldbach Conjecture (Ternary Goldbach)",
   "slug": "weak-goldbach",
-  "description": "Formalizes the Weak Goldbach Conjecture (proved by Helfgott 2013): every odd integer >5 is a sum of three primes. Axiomatizes Vinogradov's circle method, Helfgott's proof, Schnirelmann density, and Chen's theorem. Proves structural reductions: binary Goldbach implies ternary, Lévy's conjecture verified for small cases. Ramaré's 6-prime bound and Tao's 5-prime bound are now theorems proved from helfgott_weak_goldbach (S5 axiom elimination). 28 theorems, 7 axioms.",
+  "description": "Formalizes the Weak Goldbach Conjecture (proved by Helfgott 2013): every odd integer >5 is a sum of three primes. Axiomatizes Helfgott's proof, the circle-method asymptotic, Schnirelmann's basis theorem, Chen's theorem, and Oliveira e Silva's binary Goldbach verification. Proves structural reductions: binary Goldbach implies ternary, Lévy's conjecture verified for small cases. Ramaré's 6-prime bound and Tao's 5-prime bound are theorems proved from helfgott_weak_goldbach (S5 axiom elimination); Vinogradov's 1937 theorem and Helfgott's explicit bound are theorems proved from helfgott_weak_goldbach (S8 axiom elimination). 31 theorems, 5 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -18,10 +18,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 7,
-    "assumptions": "7 axioms for deep analytic number theory results: vinogradov_ternary_goldbach (Vinogradov 1937: every sufficiently large odd number is sum of 3 primes), helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5), circle_method_asymptotic (circle method asymptotic formula for ternary representations), schnirelmann_basis_theorem (every dense enough set is an additive basis), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (verified for n ≤ 4·10¹⁸), helfgott_explicit_bound (Helfgott's explicit bound). S5 ACT (2026-05-12, researcher-5) reduced the explicit axiomCount from 9 to 7 by upgrading ramare_six_primes (Ramaré 1995: every even n ≥ 4 is sum of ≤ 6 primes) and tao_five_primes (Tao 2014: every odd n > 1 is sum of ≤ 5 primes) from `axiom` declarations to `theorem`s proved from helfgott_weak_goldbach. The underlying assumption set is unchanged — both new theorems still depend transitively on helfgott_weak_goldbach — but they no longer appear as separate axiomatic claims. Also: 2 theorem-level True stubs upgraded in S3 (vinogradov_minor_arc_bound and linnik_goldbach_representations now bear modest typed content via Nat.primeCounting bounds).",
-    "lineCount": 661,
-    "theoremCount": 29,
+    "axiomCount": 5,
+    "assumptions": "5 axioms for deep analytic number theory results: helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5 — the central load-bearing assumption), circle_method_asymptotic (circle method asymptotic formula for ternary representations), schnirelmann_basis_theorem (every dense enough set is an additive basis), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (Oliveira e Silva 2013: verified for n ≤ 4·10¹⁸). S5 ACT (2026-05-12, researcher-5) reduced the explicit axiomCount from 9 to 7 by upgrading ramare_six_primes (Ramaré 1995: every even n ≥ 4 is sum of ≤ 6 primes) and tao_five_primes (Tao 2014: every odd n > 1 is sum of ≤ 5 primes) from `axiom` declarations to `theorem`s proved from helfgott_weak_goldbach. S8 ACT (2026-06-10) reduced 7 → 5 by upgrading vinogradov_ternary_goldbach (∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n — Helfgott gives this with N₀ := 5) and helfgott_explicit_bound (∀ n > 5, Odd n → IsSumOfThreePrimes n — literally WeakGoldbachConjecture unfolded) from `axiom` to `theorem` proved from helfgott_weak_goldbach. The underlying assumption set is unchanged — all four S5/S8 new theorems depend transitively on helfgott_weak_goldbach — but they no longer appear as separate axiomatic claims. Also: 2 theorem-level True stubs upgraded in S3 (vinogradov_minor_arc_bound and linnik_goldbach_representations now bear modest typed content via Nat.primeCounting bounds).",
+    "lineCount": 680,
+    "theoremCount": 31,
     "definitionCount": 15,
     "originalContributions": [
       "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
@@ -139,7 +139,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures the mathematical landscape around the Weak Goldbach Conjecture: its statement, an algorithmic decision procedure for any finite case, a fully proved structural reduction from binary to ternary Goldbach, the circle method infrastructure, Schnirelmann density theory, Chen's theorem, and the Lévy conjecture. The 9 axioms represent Helfgott's 2013 proof and its historical predecessors — results whose deep analytic proofs await future Lean formalization.",
+    "summary": "This formalization captures the mathematical landscape around the Weak Goldbach Conjecture: its statement, an algorithmic decision procedure for any finite case, a fully proved structural reduction from binary to ternary Goldbach, the circle method infrastructure, Schnirelmann density theory, Chen's theorem, and the Lévy conjecture. The 5 remaining axioms represent Helfgott's 2013 proof and the deepest analytic/computational ingredients (circle-method asymptotic, Schnirelmann basis theorem, Chen's theorem, Oliveira e Silva's binary-Goldbach verification) — results whose proofs await future Lean formalization. The four originally-declared corollaries of Helfgott (Vinogradov 1937, Ramaré 1995 6-prime, Tao 2012 5-prime, helfgott_explicit_bound) are now theorems derived from helfgott_weak_goldbach.",
     "implications": "Helfgott's 2013 resolution of Weak Goldbach is a landmark achievement in analytic number theory — the culmination of 271 years since Goldbach's original conjecture. The circle method infrastructure formalized here (exponential sums over primes, singular series, major/minor arc decomposition) is the same machinery underlying the prime number theorem, Dirichlet's theorem on primes in arithmetic progressions, and Waring's problem. Formalizing these analytic tools in Lean would yield a powerful library for quantitative prime distribution theory. The cascade Schnirelmann → Ramaré → Tao → Helfgott illustrates how additive number theory progresses through increasingly sharp analytic bounds combined with computational verification.",
     "openQuestions": [
       "Binary (Strong) Goldbach Conjecture: every even n > 2 is a sum of two primes — verified to 4×10¹⁸ computationally (Oliveira e Silva 2013) but unproved in general; the deepest open problem in additive number theory.",
@@ -150,9 +150,9 @@
   },
   "leanFile": {
     "namespace": "WeakGoldbach",
-    "lineCount": 661,
-    "axiomCount": 7,
-    "theoremCount": 29,
+    "lineCount": 680,
+    "axiomCount": 5,
+    "theoremCount": 31,
     "definitionCount": 15,
     "path": "Proofs/WeakGoldbach.lean",
     "sorries": 0

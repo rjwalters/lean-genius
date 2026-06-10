@@ -39,15 +39,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T19:25:00.000Z",
-    "iteration": 5,
-    "focus": "S5 (researcher-5, 2026-05-12): Axiom elimination via Helfgott corollaries. Upgraded `ramare_six_primes` and `tao_five_primes` from `axiom` declarations to `theorem` proofs derived from `helfgott_weak_goldbach`. For Ramaré (every even n ≥ 4 = sum of ≤ 6 primes): n ≥ 10 case uses Helfgott on n-3 then prepends 3 (4 primes); small cases n ∈ {4, 6, 8} via [2,2], [3,3], [3,5]. For Tao (every odd n > 1 = sum of ≤ 5 primes): n > 5 case is Helfgott directly (3 primes ≤ 5); small cases n ∈ {3, 5} via singletons. Counts: lineCount 543 → 627, axiomCount 9 → 7, theoremCount (broad) 26 → 28. Underlying assumption set unchanged (still depends on helfgott_weak_goldbach), but file's explicit axiom surface reduced. Skipped S4 (Approach C small-range) — already in flight as open PR #18189. Build pending under documented precedent (parent Mathlib drift in Vinogradov section).",
+    "since": "2026-06-10T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "S8 ACT (researcher-1, 2026-06-10): Axiom elimination second pass. Discharged the two remaining historical-attribution axioms that are provable corollaries of `helfgott_weak_goldbach`: (1) `vinogradov_ternary_goldbach` (∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n) — take N₀ := 5; Helfgott satisfies the pointwise claim. (2) `helfgott_explicit_bound` (∀ n > 5, Odd n → IsSumOfThreePrimes n) — literally WeakGoldbachConjecture unfolded; one-line proof := helfgott_weak_goldbach. Required reorder so helfgott_weak_goldbach precedes vinogradov_ternary_goldbach. Counts: axiomCount 7 → 5, theoremCount 29 → 31, lineCount 661 → 680 (+19), definitionCount 15, sorries 0. The five remaining axioms (helfgott_weak_goldbach, circle_method_asymptotic, schnirelmann_basis_theorem, chen_theorem, binary_goldbach_verified) are genuinely distinct deep results — the practical floor for this slug per S7 PREP §4.6 and S8 PREP-1/PREP-2. Builds on S6 PREP (#18368), S7 PREP (#18504), S8 PREP-1 (#18552), S8 PREP-2 (#18670). Build pending under documented parent-drift precedent.",
     "blockers": [],
-    "nextAction": "S6 (any researcher): Continue axiom elimination via Helfgott. Next candidate: `vinogradov_ternary_goldbach` (line ~258) — asserts ∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n; satisfied by N₀ := 5 via Helfgott. ~5 LOC, brings axiomCount to 6. Or S7: extend PR #18189's small-range kernel range (30 → ~100) via interval_cases + decide. Or S8+ (multi-session): Approach D-phase-1 — Schnirelmann sumset inequality σ(A + B) ≥ α + β − αβ from Mathlib.Combinatorics.Schnirelmann (~600-1000 LOC, 3-6 sessions).",
+    "nextAction": "S9 (any researcher): Begin Approach D — Schnirelmann sumset inequality σ(A+B) ≥ σ(A) + σ(B) − σ(A)σ(B). Per S8 PREP-1 §2.1 and PREP-2 §7, this is ~250-350 LOC, the dominant cost step of the Schnirelmann basis theorem discharge. Mathlib upstream-PR candidate (module docstring explicitly TODOs Schnirelmann's theorem). After S9: S10 combines Step B (induction) + Step C (already a Mathlib theorem per PREP-2 §2) + Step D (combine) + Multiset bridge into a discharge of schnirelmann_basis_theorem (~125-190 LOC). Alternative: defer Approach D and accept axiomCount=5 as the slug's practical floor (per S7 PREP §4.6).",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 1,
-      "approachesTried": 3
+      "total": 8,
+      "currentApproach": 2,
+      "approachesTried": 4
     }
   },
   "knowledge": {

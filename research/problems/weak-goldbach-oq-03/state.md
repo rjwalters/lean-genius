@@ -1,20 +1,39 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S4)
-**Iteration**: 4
+**Since**: 2026-06-10 (S8)
+**Iteration**: 8
 
 ## Current Focus
 
-S4 (researcher-1, 2026-05-12): Approach C — small-range kernel-verified
-binary Goldbach. Added `binary_goldbach_verified_small` theorem covering
-`n ≤ 30` via `interval_cases + decide`, sitting alongside the existing
-axiom `binary_goldbach_verified` (Oliveira e Silva 2013 verification up
-to `4 × 10^18`). Genuine kernel verification of 14 even cases
-(n ∈ {4, 6, …, 30}); odd cases discharged by `Even n` being False. ~22
-lines (theorem + docstring) added; 0 new axioms; 0 new sorries; axiom
-count unchanged at 9 (the new theorem is companion content, not an axiom
-replacement).
+S8 (researcher-1, 2026-06-10): ACT — Axiom elimination, second pass.
+Discharged the two remaining historical-attribution axioms that are
+provable corollaries of `helfgott_weak_goldbach`:
+
+- `vinogradov_ternary_goldbach` (axiom → theorem): `∃ N₀, ∀ n > N₀,
+  Odd n → IsSumOfThreePrimes n`. Take `N₀ := 5`; Helfgott's theorem
+  satisfies the pointwise claim.
+- `helfgott_explicit_bound` (axiom → theorem): `∀ n > 5, Odd n →
+  IsSumOfThreePrimes n`. This is *syntactically* `WeakGoldbachConjecture`
+  unfolded; one-line proof `:= helfgott_weak_goldbach`.
+
+Also reordered: `helfgott_weak_goldbach` moved above
+`vinogradov_ternary_goldbach` so that the latter's derivation
+typechecks.
+
+The underlying mathematical assumption set is **unchanged** — both new
+theorems depend transitively on `helfgott_weak_goldbach`, which remains
+axiomatized. The reduction is in the file's *explicit `axiom`
+declarations*, from 7 to 5, matching the S7 PREP §4.6 projection
+("5 irreducible axioms" after S6+S7 ACT). The remaining 5 axioms
+(`helfgott_weak_goldbach`, `circle_method_asymptotic`,
+`schnirelmann_basis_theorem`, `chen_theorem`, `binary_goldbach_verified`)
+are genuinely distinct deep results — the practical floor for the
+slug per S7 PREP and S8 PREP-1/PREP-2.
+
+Counts: `axiomCount` 7 → 5; `lineCount` 661 → 680 (+19 net: -8 axiom
+lines, +27 theorem+docstring lines); `theoremCount` 29 → 31; `sorries`
+0 (unchanged); `definitionCount` 15 (unchanged).
 
 ## Session History
 
@@ -32,7 +51,23 @@ replacement).
 - S4 (researcher-1): Approach C — small-range kernel-verified binary
   Goldbach for `n ≤ 30`. Theorem `binary_goldbach_verified_small`
   proves the same claim shape as the axiom but for the kernel-tractable
-  initial segment. Build pending.
+  initial segment. Merged #18189.
+- S5 (researcher-5): Axiom elimination — `ramare_six_primes` and
+  `tao_five_primes` upgraded from `axiom` to `theorem` proved from
+  `helfgott_weak_goldbach`. axiomCount 9 → 7. Merged #18265.
+- S6 PREP (researcher-?): doc-only — `vinogradov_ternary_goldbach`
+  1-line discharge sketch from `helfgott_weak_goldbach`. Merged #18368.
+- S7 PREP (researcher-?): doc-only — axiom redundancy audit projecting
+  post-S6+S7-ACT census of 5 irreducible axioms. Merged #18504.
+- S8 PREP-1 (researcher-12): doc-only — Schnirelmann basis theorem
+  4-step discharge roadmap. Merged #18552.
+- S8 PREP-2 (researcher-4): doc-only — Mathlib v4.26.0 bearer audit
+  revealing Step C is already a Mathlib theorem. Merged #18670.
+- S8 ACT (researcher-1, this iteration): Axiom elimination —
+  `vinogradov_ternary_goldbach` and `helfgott_explicit_bound` upgraded
+  from `axiom` to `theorem` proved from `helfgott_weak_goldbach`.
+  axiomCount 7 → 5. Build pending under the documented parent-drift
+  precedent.
 
 ## Earlier Plan (S1, kept for context)
 
