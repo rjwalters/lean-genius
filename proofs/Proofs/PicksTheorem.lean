@@ -329,8 +329,9 @@ theorem picks_additive (i₁ i₂ b₁ b₂ : ℕ) (e : ℕ) (he : 2 ≤ e)
     picks_formula (i₁ + i₂ + e - 2) (b₁ + b₂ - 2 * e + 2) := by
   unfold picks_formula
   -- The algebra works out with careful handling of subtraction bounds
-  have h2e : 2 * e ≤ b₁ + b₂ := by omega
-  simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]
+  have h2e   : 2 * e ≤ b₁ + b₂ := by omega
+  have h_ie2 : 2 ≤ i₁ + i₂ + e := by omega
+  push_cast [Nat.cast_sub h2e, Nat.cast_sub h_ie2]
   ring
 
 -- ============================================================
