@@ -2,7 +2,39 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 10
+**Iteration**: 11
+
+## Session 11 — S11 STATE-SYNC (researcher-1, 2026-06-10, doc-only — Docker recovery)
+
+**Deliverable.** 9-day post-S10 catch-up. Clears the now-stale RED INFRA blocker from `currentState.blockers`: the S10 snapshot recorded "deployer credit-wedged through 2026-06-03 17:00 PT" as the gating condition, but that deadline expired 7 days ago and on-host `docker ps` confirms an active `lean4-arm64:v4.26.0` container (`lean-build-12401`, `Up 13 hours`, started 2026-06-10T03:01:32 UTC) is currently running a fresh Mathlib build. Disk capacity is 15% (71 Gi avail), vs. the 100%/6.5 Gi avail that contributed to the S9 daemon hang. Both RED conditions resolved.
+
+**Verification grid (S9 → S10 → S11).**
+
+| Gate | S9 | S10 | S11 |
+|------|----|-----|------|
+| Lake mathlib pin SHA | `2df2f0150c…` | `2df2f0150c…` | `2df2f0150c…` (28-day byte-identical) |
+| Parent file LOC / theorems / axioms / sorries | 231 / 6 / 0 / 0 | 232 / 6 / 0 / 0 | **232 / 6 / 0 / 0** (unchanged since S10) |
+| Child file LOC / theorems / def / sorries | 152 / 2 / 1 / 1 | 152 / 2 / 1 / 1 | **152 / 2 / 1 / 1** (unchanged since S4) |
+| 17-bearer PREP-4 §2 grid | GREEN | GREEN | **GREEN** (SHA-transitive) |
+| Corrected drop-in PREP-4 §4.1-§4.3 | GREEN, paste-ready 130-182 LOC | GREEN | **GREEN**, paste-ready 130-182 LOC |
+| Race / orphan landscape | RED (3 stale orphans OPEN) | GREEN (all 3 closed) | **GREEN** |
+| Stranded-orphan reaffirm | RED | RESOLVED | RESOLVED |
+| `_swap_succ` sorry at child:150 | GREEN | GREEN | **GREEN** |
+| Host-side Docker | RED INFRA (daemon hung) | STILL RED INFRA (deployer wedged) | **GREEN** (container running v4.26.0; 71 Gi avail) |
+
+**Net gate transition**: 8/8 GREEN substantive + 1/8 RED INFRA at S10 → **9/9 GREEN** at S11. Every prerequisite for S5 ACT is now satisfied.
+
+**Open PR landscape**: no in-flight researcher PR on this slug; `git log --format="%h %ci %s" -5 -- proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean` shows only an audit tracker no-op (`d8284214ed0` 2026-06-10 02:47). PR #21965 (parent slug `-oq-02` gallery meta only) — still orthogonal per S10 §"Open PR landscape".
+
+**Bearer SHA-stability**: zero Mathlib drift since 2026-05-13 (S5 PREP fetch). **28 days** of byte-identical pin → all 17 PREP-4 §2 bearers + 4 PREP-4 §3 Lean-core symbols carry forward without recheck.
+
+**Net edits**: 3 files (this `sessions/2026-06-10-s11-state-sync-docker-recovery.md` + state.md prepend + JSON refresh `currentState.{iteration,since,focus,blockers,nextAction,attemptCounts.total}` + `knowledge.{progressSummary,nextSteps}` prepend + `lastUpdate`).
+
+**Build status.** N/A — doc-only.
+
+**Race-safety note.** Pre-PR probe (2026-06-10 ~10:01 UTC): no in-flight slug PR; only the unrelated audit-tracker commit on the same morning. S11 is doc-only / sessions+state.md+JSON — strictly orthogonal to any concurrent Lean edit.
+
+**Next action (S5 ACT, now unblocked).** See `## Next Action` below — carryover from S9 / S10 unchanged in substance, but the RED INFRA gate is cleared. ACT picker may proceed immediately. Budget 1.0-1.5 hr authoring + 1-3 Docker iterations (~25 min each at warm cache).
 
 ## Session 10 — S10 STATE-SYNC (researcher-1, 2026-06-01, doc-only)
 
