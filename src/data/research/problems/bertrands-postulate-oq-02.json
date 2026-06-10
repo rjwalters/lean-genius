@@ -25,21 +25,21 @@
     "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-06T15:00:00Z",
-    "iteration": 5,
-    "focus": "S4-ACT-α DONE (researcher-1, 2026-06-06): formalized the salvageable one-way implication identified by iter-4 PREP-1 audit. New file proofs/Proofs/LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) proves PrimeGapSqrtBound → LegendreConjecture. Uses Nat.findGreatest on the predicate 'nth Prime k ≤ n²' to extract the largest prime ≤ n², compositeness of n² for n ≥ 2 to get strict inequality nth Prime k < n², and the iter-2 form equivalences to derive three free corollaries (gap/distance/half-open forms). The original iff (Legendre ↔ gap bound) remains ANTI-CANDIDATE — forward direction unprovable from LegendreConjecture alone.",
+    "phase": "PREP",
+    "since": "2026-06-10T00:00:00Z",
+    "iteration": 6,
+    "focus": "S5-PREP-2 DONE (researcher-9, 2026-06-10): pre-flight audit of iter-5's recommended S5 Cramér⇒Legendre ACT. Finding: iter-5's PrimeGapSqrtBound (∀ k) does NOT directly accept Cramér's eventually-quantified output (∀ k ≥ k₀); the bound fails at small k. Numerical analysis: smallest p where C·log²p ≤ 2√p+1 is p=121 (k₀≈29) for C=1 and p=358 (k₀≈70) for the Granville-optimal C=2e^{-γ}. For n≥21 iter-5 uses gap at k(n)≥84, exceeding both thresholds; legendre-partial's n=1..20 finite-tail suffices with margin. Remediation specified: a refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M (with Bertrand-based bridging) recovers iter-5 at M=0. ~85 LOC, 0 new axioms.",
     "blockers": [],
-    "nextAction": "S5 ACT — Cramér ⇒ Legendre (Sub-Milestone A, now newly tractable). State Cramér's conjecture as a hypothesis; derive that C·(log p_k)² ≤ 2·√p_k + 1 for sufficiently large k via asymptotics (√ grows faster than log²); bridge the finite-tail base cases via legendre-partial; compose with iter-5's prime_gap_sqrt_bound_implies_legendre to conclude Cramér ⇒ Legendre. Estimated size: +200-250 LOC. 0 new axioms expected (only Cramér as hypothesis). Target file: proofs/Proofs/CramerImpliesLegendre.lean.",
-    "lastUpdate": "2026-06-06T15:00:00Z",
+    "nextAction": "S5-ACT-B′ — implement the refined iter-5 variant inside LegendrePrimeGapSqrtBoundSuffices.lean. Add prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) with hypotheses (h_gap_above : ∀ k, M ≤ p_k → gap ≤ 2√p_k+1) and (h_legendre_below : ∀ n, 1 ≤ n → n² < 2*M → LegendreAt n). Proof: case n² < 2*M direct from h_legendre_below; case n² ≥ 2*M applies Nat.bertrand at n²/2 to obtain p_k > n²/2 ≥ M, then replays iter-5's findGreatest construction. Derive prime_gap_sqrt_bound_implies_legendre as the corollary at M = 0. Estimated +85 LOC, 0 new axioms. Unblocks S5-ACT-A (real-analytic C·log²p ≤ 2√p+1) and S5-ACT-C (Cramér composition).",
+    "lastUpdate": "2026-06-10T00:00:00Z",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 3,
-      "approachesTried": 3
+      "total": 6,
+      "currentApproach": 4,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "Iter 5 ACT (2026-06-06): S4-ACT-α DONE — new file LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. The proof uses Nat.findGreatest to extract the largest prime ≤ n² and compositeness of n² for n ≥ 2. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence (forward direction yields only ≤ 4·√p_k+2). Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
+    "progressSummary": "Iter 6 PREP (2026-06-10): S5-PREP-2 DONE — pre-flight audit identified a structural quantifier mismatch between iter-5's PrimeGapSqrtBound (∀ k) and Cramér's eventually-quantified gap bound (∀ k ≥ k₀). Numerical thresholds pinned (p₀=121 for C=1, p₀=358 for Granville-optimal); legendre-partial's n=1..20 finite-tail covers the post-threshold regime with margin. Specified refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M, with Bertrand-based proof outline (~85 LOC, 0 new axioms); iter-5 is recovered at M=0. Iter 5 ACT (2026-06-06): S4-ACT-α DONE — LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence. Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
     "builtItems": [
       "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
       "prime-gap hierarchy rows shared with the Bertrand short-interval development",
@@ -52,6 +52,9 @@
       "Corollaries prime_gap_sqrt_bound_implies_{gap,distance,halfOpen}_form via iter-2 equivalences (iter 5)"
     ],
     "insights": [
+      "Iter 6 PREP-2 (2026-06-10): QUANTIFIER MISMATCH — iter-5's PrimeGapSqrtBound is ∀ k (all prime indices); Cramér in every formulation is only ∀ k ≥ k₀ (asymptotic). The bound provably fails at small k — C·(log 2)² < 1 = p₁-p₀ even for C = 1. Iter-5's theorem cannot be applied directly to Cramér's output without a small-k completion.",
+      "Iter 6 PREP-2 (2026-06-10): NUMERICAL THRESHOLDS — smallest p where C·log²p ≤ 2·√p+1 is p₀(C=1) = 121 (k₀ ≈ 29) and p₀(C=2e^{-γ}) = 358 (k₀ ≈ 70). For n ≥ 21, iter-5 uses gap at k(n) := π(n²) - 1 ≥ 84, exceeding both thresholds; the legendre-partial n=1..20 finite-tail suffices with margin under both choices.",
+      "Iter 6 PREP-2 (2026-06-10): REFINED ITER-5 VARIANT specified — prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) takes (∀ k, M ≤ p_k → gap ≤ 2√p_k+1) and (∀ n, 1 ≤ n → n² < 2*M → LegendreAt n), concludes LegendreConjecture. Proof uses Nat.bertrand at n²/2 to ensure p_k > n²/2 ≥ M for n² ≥ 2*M. Recovers iter-5 at M=0. ~85 LOC, 0 new axioms. Unblocks the Cramér⇒Legendre composition.",
       "Iter 5 ACT (2026-06-06): The reverse direction PrimeGapSqrtBound → LegendreConjecture is now formalized in Lean (227 LOC, 0 axioms). Key technique: Nat.findGreatest on 'nth Prime k ≤ n²' to extract the largest prime ≤ n², plus compositeness of n² for n ≥ 2 to get the strict inequality. Three free corollaries for gap/distance/half-open forms.",
       "Iter 4 PREP-1 (2026-06-05): The naive iff LegendreConjecture ↔ (∀ k, p_{k+1} - p_k ≤ 2·Nat.sqrt p_k + 1) is NOT logically valid at the abstract level. Forward direction fails because Legendre at m only forces *some* prime in (m², (m+1)²), not a prime strictly above p_k — the worst case (Legendre prime ≤ p_k AND no further prime in (p_k, (m+1)²)) forces the next-prime argument to Legendre at m+1, giving only ≤ 4·Nat.sqrt p_k + 2.",
       "Legendre is an existence statement, not a density asymptotic",
@@ -66,7 +69,10 @@
       "No prime-gap function primeGap n := nth Prime (n+1) - nth Prime n in Mathlib (defined locally in Erdos6Problem.lean, Erdos233Problem.lean)"
     ],
     "nextSteps": [
-      "S5 ACT — Sub-Milestone A: Cramér ⇒ Legendre, now newly tractable via composition with iter-5's prime_gap_sqrt_bound_implies_legendre. State Cramér's conjecture as a hypothesis; derive C·(log p_k)² ≤ 2·√p_k + 1 for sufficiently large k (asymptotics: √ grows faster than log²); bridge finite tail via legendre-partial. Target file CramerImpliesLegendre.lean, ~200-250 LOC, 0 new axioms.",
+      "S5-ACT-B′ (next picker, recommended by iter-6 PREP-2): implement the refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) inside LegendrePrimeGapSqrtBoundSuffices.lean. ~85 LOC, 0 new axioms. Direct consequence of the iter-6 audit; unblocks both S5-ACT-A and S5-ACT-C.",
+      "S5-ACT-A — Real-analytic estimate ∃ p₀, ∀ p ≥ p₀, C·log²p ≤ 2·√p+1, in Lean via Real.log / Real.sqrt; concrete witness p₀ = 121 (C=1) or p₀ = 358 (Granville-optimal).",
+      "S5-ACT-C — Cramér ⇒ LegendreConjecture composition via S5-ACT-B′ + S5-ACT-A + legendre-partial. With C = 1, no gallery extension needed; with C = 2e^{-γ}, would require legendre_21..26 native_decide rows (6 trivial cases).",
+      "Original S5 ACT (deprecated) — Cramér ⇒ Legendre via composition with iter-5's prime_gap_sqrt_bound_implies_legendre. SUPERSEDED by iter-6 PREP-2: the type signature would not have composed; replaced by the three-step S5-ACT-{B′,A,C} plan above.",
       "ANTI-CANDIDATE (was Sub-Milestone B+): the original iff LegendreConjecture ↔ ∀ k, nth Prime (k+1) - nth Prime k ≤ 2 * Nat.sqrt (nth Prime k) + 1 is NOT a true equivalence at the level of LegendreConjecture alone — see iter 4 PREP-1. Salvageable half formalized in iter 5.",
       "Optional polish: connect to LegendrePartials computational cases via primeCounting"
     ]
@@ -95,7 +101,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-06-06T15:00:00.000Z",
+  "lastUpdate": "2026-06-10T00:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [

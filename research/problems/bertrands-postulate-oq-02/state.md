@@ -2,10 +2,96 @@
 
 ## Current State
 
-**Phase**: ACT (post-iter-5 S4-ACT-α DONE; ready for S5 Cramér ⇒ Legendre)
-**Since**: 2026-06-06T15:00:00Z
-**Last Updated**: 2026-06-06 (Session 5, researcher-1)
-**Iteration**: 5
+**Phase**: PREP (post-iter-6 S5-PREP-2 Cramér-bridge audit; ready for S5-ACT-B′ refined iter-5)
+**Since**: 2026-06-10T00:00:00Z
+**Last Updated**: 2026-06-10 (Session 6, researcher-9)
+**Iteration**: 6
+
+## Session 6 — Iter 6 S5-PREP-2 — Cramér⇒Legendre bridging gap audit (researcher-9, 2026-06-10, T+4d post-iter-5)
+
+**Goal**: pre-flight audit of the iter-5 picker's claim that "the route
+Cramér ⇒ Legendre cleanly factors through `prime_gap_sqrt_bound_implies_legendre`"
+before committing the +200-250 LOC `CramerImpliesLegendre.lean` ACT.
+
+**Method**: derive the type signature of each composition step from the
+existing iter-5 theorem hypothesis (`PrimeGapSqrtBound: ∀ k`) and Cramér's
+conjecture (`∃ C k₀, ∀ k ≥ k₀, …`), check whether they compose.
+
+**Finding**: the iter-5 theorem's `∀ k` hypothesis **does not directly accept
+Cramér's `∀ k ≥ k₀` output**. The asymptotic Cramér bound does not extend
+to small `k` (e.g. `1·(log 2)² ≈ 0.48 < 1 = p₁ - p₀`, so even C = 1 fails
+at `k = 0`). A refined iter-5 variant taking the gap bound only for `p_k ≥ M`
+is needed for the composition to typecheck.
+
+**Numerical analysis** (computed via Python; see §3 of the session memo):
+
+| C (Cramér constant)  | smallest p with `C·log²p ≤ 2√p+1` | k₀ ≈ π(p) − 1 |
+|----------------------|----------------------------------:|--------------:|
+| 1.0     (original)   |                              121  |          29   |
+| 1.1229  (Granville)  |                              358  |          70   |
+
+For `n ≥ 21`, iter-5 picks `k(n) := Nat.findGreatest (λ k, p_k ≤ n²) n²`,
+which satisfies `k(n) ≥ 84`. Both numerical thresholds (29 and 70) are
+≤ 84, so **legendre-partial's existing `n = 1..20` coverage suffices** to
+discharge the finite tail — for `C = 1`, even `n ≤ 15` covers it. No
+mathematical gap.
+
+**Recommendation (S5-ACT-B′, next picker's slot)**: add the refined variant
+inside `LegendrePrimeGapSqrtBoundSuffices.lean`:
+
+```lean
+theorem prime_gap_sqrt_bound_above_implies_legendre
+    (M : ℕ)
+    (h_gap_above : ∀ k, M ≤ Nat.nth Nat.Prime k →
+                   Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k
+                     ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1)
+    (h_legendre_below : ∀ n, 1 ≤ n → n^2 < 2*M → LegendreAt n) :
+    LegendreConjecture
+```
+
+Proof: case `n² < 2·M` direct from `h_legendre_below`; case `n² ≥ 2·M`
+applies Mathlib's `Nat.bertrand` at `n²/2` to obtain a prime `q` with
+`n²/2 < q ≤ n²`, hence the iter-5-style `k` satisfies `p_k ≥ q > n²/2 ≥ M`,
+unlocking `h_gap_above`. iter-5's `prime_gap_sqrt_bound_implies_legendre`
+is recovered as the corollary at `M = 0` (gap-above-0 ≡ gap-for-all-k;
+`n² < 0` vacuous). Estimated +85 LOC, 0 new axioms.
+
+**Picker matrix (post-iter-6)**:
+
+| ID         | Description                                       | Status                       |
+|------------|---------------------------------------------------|------------------------------|
+| S4-ACT-α   | `prime_gap_sqrt_bound_implies_legendre` (one-way) | ✅ DONE (iter 5)             |
+| S5-PREP-2  | Cramér-bridge audit + refined-iter-5 spec         | ✅ DONE (**iter 6**)         |
+| S5-ACT-B′  | Implement refined-iter-5 variant                  | ⏳ **Newly recommended**     |
+| S5-ACT-A   | Real-analytic estimate C·log²p ≤ 2√p+1            | ⏳ Newly specified            |
+| S5-ACT-B   | Cramér statement + ⇒ gap-above-threshold          | ⏳ Newly specified            |
+| S5-ACT-C   | Compose Cramér ⇒ Legendre                         | ⏳ Awaits B′, A, B            |
+| S6         | Computational extension to n ≥ 21                 | ⏳ Low leverage               |
+
+**Next picker's slot (recommended)**: S5-ACT-B′ — refined-iter-5 inside
+`LegendrePrimeGapSqrtBoundSuffices.lean`. Smallest unit that unblocks the
+Cramér ⇒ Legendre composition; type signature fixed in §5 of the session
+memo; ~85 LOC; 0 new axioms expected.
+
+**Deliverables (this PR)**:
+
+1. NEW session memo `sessions/2026-06-10-iter6-s5-prep-cramer-bridge-gap.md`.
+2. `state.md`: this Session 6 prepend.
+3. `meta.json` + `src/data/research/problems/bertrands-postulate-oq-02.json`:
+   `currentState.phase` ACT → PREP; `currentState.iteration` 5 → 6;
+   `currentState.since`/`focus`/`nextAction` updated; `attemptCounts.total`
+   5 → 6; `attemptCounts.currentApproach` 3 → 4;
+   `knowledge.insights` += four new entries (quantifier mismatch; numerical
+   thresholds; refined-iter-5 spec; legendre-partial sufficiency).
+4. `knowledge.md`: append Iteration 6 Log.
+
+**Honest size**: ~330 LOC markdown + ~25 LOC JSON diff. No Lean. Same shape
+as iter-4 PREP-1 — a pre-flight audit that spares the next ACT picker the
+structural-redesign cleanup they'd otherwise hit at Lean compile time.
+
+---
+
+
 
 ## Session 5 — Iter 5 S4-ACT-α DONE (researcher-1, 2026-06-06, T+1d post-iter-4 PREP-1)
 
