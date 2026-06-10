@@ -25,6 +25,32 @@
     ]
   },
   {
+    "id": "ann-classical-decidable-pattern",
+    "proofId": "desargues-theorem-oq-01-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 58
+    },
+    "type": "technique",
+    "title": "open Classical: Why If-Then-Else on Prop Needs Classical Decidability",
+    "content": "Line 46's `open Classical` is the technical hinge that lets the entire bent-line definition exist. In Lean 4's constructive default, `if h then a else b` requires `Decidable h`, but predicates like `m ≤ 0` on `ℝ` are not constructively decidable — there is no algorithm that takes a real number and returns a Boolean indicating its sign in finite time. Real arithmetic decidability is a *classical* fact: it holds for first-order theories of real closed fields by Tarski's 1948 quantifier elimination, but the elimination procedure is not constructive in Lean's type-theoretic sense. The `open Classical` declaration brings `Classical.propDecidable : ∀ p : Prop, Decidable p` into scope as the default `Decidable` instance, instantiating the if-then-else conditions to the classical decider — at the cost of making the definition non-computable (Lean's `#eval` cannot reduce `onMoultonLine m b P` to a Boolean even for concrete rational inputs). For *theorem proving* this is harmless, since classical logic is already implicit in Mathlib's foundational layer (`Classical.choice` is admitted as an axiom in `Mathlib.Logic.Basic`), but for *computation* the consequence is that the Moulton-line predicate is purely propositional — incidence checks must be discharged by tactics (`norm_num`, `linarith`, `ring`) acting on the unfolded equation form, not by Boolean evaluation. The two-level if-then-else (first split on slope sign, then split on $x$-sign for positive slope) compiles to a *propositional* case-split structure that the helper lemmas (`onML_neg_slope`, `onML_pos_left`, `onML_pos_right`) make tractable for downstream proofs: each lemma collapses one level of the if-then-else by providing the branch hypothesis explicitly, so by the time `desargues_fails` invokes `onML_eq_pos_left` (line 252) the goal has been reduced to a bare linear equation in $(m, b)$ over $\\mathbb{R}$ that `linear_combination` can close mechanically.",
+    "mathContext": "Lean 4 syntactic constraint: `if p then a else b` has type `α` only when `[Decidable p]` is in scope. For `p = (m ≤ 0)` with `m : ℝ`, constructive `Decidable` fails since real comparison is undecidable in computable terms. `open Classical` introduces `Classical.propDecidable : (p : Prop) → Decidable p` as the default instance, so every Prop becomes classically decidable. The definition $\\text{onMoultonLine}(m, b, P) := \\text{ite}(m \\leq 0, \\, P_y = mP_x + b, \\, \\text{ite}(P_x \\leq 0, \\, P_y = mP_x + b, \\, P_y = \\tfrac{m}{2}P_x + b))$ then type-checks. The cost: `onMoultonLine` is non-computable (no Boolean evaluation), but propositional reasoning (`simp only [onMoultonLine, if_pos hm]`) unfolds the if-then-else under explicit branch hypotheses, which is what the six helper lemmas at lines 66-88 mechanise.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 `Decidable` typeclass and the `if-then-else` elaboration",
+      "Tarski's quantifier elimination for real closed fields (classical decidability)",
+      "Mathlib's `Classical.propDecidable` instance",
+      "the distinction between propositional and computational definitions in Lean 4"
+    ],
+    "relatedConcepts": [
+      "classical vs constructive logic in Lean 4",
+      "non-computable propositional definitions",
+      "Mathlib `Classical` namespace and `open Classical` idiom",
+      "`if_pos` / `if_neg` simp lemmas",
+      "piecewise definitions over uncomputable predicates"
+    ]
+  },
+  {
     "id": "ann-moulton-line-def",
     "proofId": "desargues-theorem-oq-01-oq-01",
     "range": {
