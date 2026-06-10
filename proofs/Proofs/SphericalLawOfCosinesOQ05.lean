@@ -228,7 +228,7 @@ cross-term vanishes on both sides.
 
 This conversion is deferred to S2. -/
 
-/-- **Haversine formula for a spherical triangle.**
+/- **Haversine formula for a spherical triangle.**
 
 For any spherical triangle with sides `a := t.sideB`, `b := t.sideA`,
 `c := t.sideC` and dihedral angle `C := t.angleC` at vertex `t.C`,
@@ -281,10 +281,7 @@ theorem inner_projectPerp_eq_sin_sin_cos_angleC (t : SphericalTriangle) :
   · -- Degenerate branch: cos t.angleC = 1 (cos 0), but the cross-term sin·sin still
     -- vanishes because one of the sines is 0.
     have h_angle_zero : t.angleC = 0 := by
-      unfold SphericalTriangle.angleC
-      split_ifs with h
-      · rfl
-      · exact absurd h_deg h
+      simp only [SphericalTriangle.angleC, dif_pos h_deg]
     rw [h_angle_zero, Real.cos_zero, mul_one]
     rcases h_deg with hA0 | hB0
     · have h_zeroA : projectPerp t.A t.C = 0 := norm_eq_zero.mp hA0
@@ -317,17 +314,14 @@ theorem inner_projectPerp_eq_sin_sin_cos_angleC (t : SphericalTriangle) :
     have h_div_ge :
         -1 ≤ (@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
               (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖) := by
-      rw [le_div_iff h_prod_pos]; linarith [h_cs'.1]
+      rw [le_div_iff₀ h_prod_pos]; linarith [h_cs'.1]
     -- Unfold t.angleC on the non-degenerate branch
     have h_not_deg : ¬ (‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0) :=
-      fun h => h.elim hA_ne hB_ne
+      not_or.mpr ⟨hA_ne, hB_ne⟩
     have h_angle_eq : t.angleC = Real.arccos
         ((@inner ℝ Vec3 _ (projectPerp t.A t.C) (projectPerp t.B t.C)) /
          (‖projectPerp t.A t.C‖ * ‖projectPerp t.B t.C‖)) := by
-      unfold SphericalTriangle.angleC
-      split_ifs with h
-      · exact absurd h h_not_deg
-      · rfl
+      simp only [SphericalTriangle.angleC, dif_neg h_not_deg]
     rw [h_angle_eq, Real.cos_arccos h_div_ge h_div_le, ← h_normA, ← h_normB]
     field_simp
     ring
@@ -478,7 +472,106 @@ theorem sideC_eq_great_circle_haversine (t : SphericalTriangle) :
   rw [← haversine_formula t]
   exact sideC_eq_two_arcsin_sqrt_haversine t
 
-/- ## Part VIII: Summary
+/- ## Part IX: Strict monotonicity, injectivity, and navigation uniqueness (S4)
+
+The forward `haversine_formula` (S2) and inverse `eq_two_arcsin_sqrt_haversine`
+(S3) define a navigation pipeline that recovers the great-circle distance
+`c` from `(a, b, C)`. For this pipeline to be unambiguous, the haversine
+must be *injective* on the principal range `[0, π]` of arc-lengths -
+otherwise two different `c` values could produce the same haversine,
+and the inverse step would not be well-defined as a function.
+
+Injectivity follows from strict monotonicity, which in turn follows
+from `Real.strictAntiOn_cos` (strict antitonicity of `cos` on `[0, π]`)
+combined with the half-angle identity `haversine = (1 - cos)/2`.
+
+The downstream corollary `arcLength_eq_of_haversine_eq` lifts the
+injectivity from real arc-lengths to the parent gallery's arc-lengths
+between unit vectors, and `sideC_eq_of_haversine_sideC_eq` records the
+two-spherical-triangles statement: equal haversines for `sideC` imply
+equal `sideC`s. -/
+
+/-- **Strict monotonicity** of `haversine` on the principal range `[0, π]`.
+
+Follows from `Real.strictAntiOn_cos` (strict antitonicity of `cos` on `[0, π]`)
+plus the half-angle identity `haversine = (1 - cos)/2`. -/
+theorem haversine_strictMonoOn_Icc_zero_pi :
+    StrictMonoOn haversine (Set.Icc 0 π) := by
+  intro x hx y hy hxy
+  rw [haversine_eq_one_sub_cos_div_two x, haversine_eq_one_sub_cos_div_two y]
+  have h_cos_lt : Real.cos y < Real.cos x := Real.strictAntiOn_cos hx hy hxy
+  linarith
+
+/-- **Injectivity** of `haversine` on `[0, π]`. The recovery of the
+great-circle distance from its haversine is well-defined. -/
+theorem haversine_injOn_Icc_zero_pi :
+    Set.InjOn haversine (Set.Icc 0 π) :=
+  haversine_strictMonoOn_Icc_zero_pi.injOn
+
+/-- **Order characterisation**: on the principal range `[0, π]`,
+`hav x < hav y ↔ x < y`. -/
+theorem haversine_lt_haversine_iff_lt {x y : ℝ}
+    (hx : x ∈ Set.Icc (0 : ℝ) π) (hy : y ∈ Set.Icc (0 : ℝ) π) :
+    haversine x < haversine y ↔ x < y :=
+  haversine_strictMonoOn_Icc_zero_pi.lt_iff_lt hx hy
+
+/-- **Equality characterisation**: on the principal range `[0, π]`,
+`hav x = hav y ↔ x = y`. -/
+theorem haversine_eq_haversine_iff_eq {x y : ℝ}
+    (hx : x ∈ Set.Icc (0 : ℝ) π) (hy : y ∈ Set.Icc (0 : ℝ) π) :
+    haversine x = haversine y ↔ x = y :=
+  ⟨fun h => haversine_injOn_Icc_zero_pi hx hy h, fun h => by rw [h]⟩
+
+/-- **Generic arc-length injectivity via haversine.** For any four unit
+vectors, equal haversines of the arc-lengths imply equal arc-lengths.
+
+This lifts `haversine_injOn_Icc_zero_pi` from real numbers to the
+parent gallery's arc-lengths, using `arcLength_nonneg` and
+`arcLength_le_pi` to confirm membership in `[0, π]`. -/
+theorem arcLength_eq_of_haversine_eq
+    {u v u' v' : Vec3} (hu : IsUnitVec u) (hv : IsUnitVec v)
+    (hu' : IsUnitVec u') (hv' : IsUnitVec v')
+    (h : haversine (arcLength u v) = haversine (arcLength u' v')) :
+    arcLength u v = arcLength u' v' :=
+  haversine_injOn_Icc_zero_pi
+    ⟨arcLength_nonneg u v hu hv, arcLength_le_pi u v hu hv⟩
+    ⟨arcLength_nonneg u' v' hu' hv', arcLength_le_pi u' v' hu' hv'⟩
+    h
+
+/-- **Two-triangle navigation uniqueness.** If two spherical triangles
+have equal haversines for `sideC`, their `sideC`s are equal.
+
+Formalises the well-definedness of great-circle distance recovery: a
+given haversine value uniquely determines its arc-length on the sphere,
+so the inverse step in the navigation pipeline produces no ambiguity. -/
+theorem sideC_eq_of_haversine_sideC_eq (t₁ t₂ : SphericalTriangle)
+    (h : haversine t₁.sideC = haversine t₂.sideC) :
+    t₁.sideC = t₂.sideC :=
+  arcLength_eq_of_haversine_eq t₁.hA t₁.hB t₂.hA t₂.hB h
+
+/-- **Two-triangle uniqueness for sideA.** -/
+theorem sideA_eq_of_haversine_sideA_eq (t₁ t₂ : SphericalTriangle)
+    (h : haversine t₁.sideA = haversine t₂.sideA) :
+    t₁.sideA = t₂.sideA :=
+  arcLength_eq_of_haversine_eq t₁.hB t₁.hC t₂.hB t₂.hC h
+
+/-- **Two-triangle uniqueness for sideB.** -/
+theorem sideB_eq_of_haversine_sideB_eq (t₁ t₂ : SphericalTriangle)
+    (h : haversine t₁.sideB = haversine t₂.sideB) :
+    t₁.sideB = t₂.sideB :=
+  arcLength_eq_of_haversine_eq t₁.hA t₁.hC t₂.hA t₂.hC h
+
+/-- **Vanishing-haversine characterisation** on the principal range.
+On `[0, π]`, `hav θ = 0 ↔ θ = 0`. -/
+theorem haversine_eq_zero_iff_of_mem_Icc {θ : ℝ}
+    (hθ : θ ∈ Set.Icc (0 : ℝ) π) :
+    haversine θ = 0 ↔ θ = 0 := by
+  have h0_mem : (0 : ℝ) ∈ Set.Icc (0 : ℝ) π :=
+    ⟨le_refl 0, Real.pi_pos.le⟩
+  rw [show (0 : ℝ) = haversine 0 from haversine_zero.symm]
+  exact haversine_eq_haversine_iff_eq hθ h0_mem
+
+/- ## Part X: Summary
 
 | Result                                | Status   |
 |---------------------------------------|----------|
@@ -505,10 +598,19 @@ theorem sideC_eq_great_circle_haversine (t : SphericalTriangle) :
 | `sideA_eq_two_arcsin_sqrt_haversine`  | PROVED (S3) |
 | `sideB_eq_two_arcsin_sqrt_haversine`  | PROVED (S3) |
 | `sideC_eq_great_circle_haversine`     | PROVED (S3) |
+| `haversine_strictMonoOn_Icc_zero_pi`  | PROVED (S4) |
+| `haversine_injOn_Icc_zero_pi`         | PROVED (S4) |
+| `haversine_lt_haversine_iff_lt`       | PROVED (S4) |
+| `haversine_eq_haversine_iff_eq`       | PROVED (S4) |
+| `arcLength_eq_of_haversine_eq`        | PROVED (S4) |
+| `sideC_eq_of_haversine_sideC_eq`      | PROVED (S4) |
+| `sideA_eq_of_haversine_sideA_eq`      | PROVED (S4) |
+| `sideB_eq_of_haversine_sideB_eq`      | PROVED (S4) |
+| `haversine_eq_zero_iff_of_mem_Icc`    | PROVED (S4) |
 
 Axioms: 0
 Sorries: 0
-Proved theorems: 22
+Proved theorems: 31
 Definitions: 1
 -/
 
