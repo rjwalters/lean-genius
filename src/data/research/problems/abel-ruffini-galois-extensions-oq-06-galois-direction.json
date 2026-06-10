@@ -43,15 +43,13 @@
   },
   "currentState": {
     "phase": "S2_ORIENT",
-    "since": "2026-06-04T17:00:00Z",
-    "iteration": 2,
-    "focus": "S2 ORIENT (researcher-1, 2026-06-04T17:00Z, this PR): create proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean — 119 LOC, 7 sorries, 0 axioms, 6 theorems (5 step-lemmas + 1 file-level main). Imports parent Proofs.AbelRuffiniGaloisExtensionsOQ06 + Mathlib.GroupTheory.Sylow + Mathlib.GroupTheory.Perm.Cycle.Type. Auto-regenerated proofs/Proofs.lean via ./.lean/scripts/generate-proofs-imports.sh to add the new import line. Bearer pre-flight verified at lake-pinned SHA 2df2f0150c… (3 days elapsed from S1; no Mathlib drift). Build pending — G9 lake self-loop blocker (consistent with sibling PRs #21477, #21475, #21506, #22088).",
-    "nextAction": "S3 ACT — discharge Step 1 (sylow_p_unique). Bearer surface: Sylow.exists + Nat.card H divisibility + the parent's IsPreprimitive.transitive. ~40-60 LOC; reduces sorry count 7 → 6. Subsequent: S4 ACT Step 2 sylow_p_normal (~5-10 LOC via Sylow.normal_of_subsingleton), S5 ACT Step 3 sylow_p_is_pcycle (~20-30 LOC via isCycle_of_prime_order''), S6 ACT Step 4 normalizer_iso_AGL1Z (~80-150 LOC, the hardest), S7 ACT Step 5 + main composition (~30 LOC), S8 BUILD-VERIFY once G9 clears, S∞ gallery integration once verified status achievable.",
-    "blockers": [
-      "G9 lake self-loop in main repo: blocks Docker build verification across all sharing worktrees. Cross-cutting; out-of-band. This S2 ORIENT PR ships under the documented 'build pending — G9 lake self-loop' qualifier."
-    ],
-    "attemptCounts": { "total": 2, "currentApproach": 1, "approachesTried": 1 },
-    "lastUpdate": "2026-06-04T17:00:00Z"
+    "since": "2026-06-10T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC (researcher-1, 2026-06-10): G9 RECLASSIFIED — 'lake self-loop' is a researcher-side grep-convenience issue (host symlink proofs/.lake self-references), NOT a Docker-build blocker. Verified this session: PR #22751 / S21 ACT on slug `lagrange-four-squares-waring-g2-oq-01` shipped a fresh sibling Lean file from THIS worktree via `./proofs/scripts/docker-build.sh` with **7743 jobs clean** (~158 s incremental, ~5–6 min total with Mathlib cache fetch). Docker uses its own .lake inside the container; the host symlink does not enter. Bearer audits should use `gh api` instead of host-side grep (demonstrated this session on PR #22753 / S4 PREP for laws-of-large-numbers-oq-01-oq-02). The 7 sorries remain the real blocker — S3 ACT picker should commit to full Docker build immediately, not defer on G9 grounds. Slug Lean state unchanged at 119 LOC, 7 sorries, 0 axioms.",
+    "nextAction": "S3 ACT — discharge Step 2 (sylow_p_normal) as the warm-up: any unique Sylow is normal via `Sylow.normal_of_subsingleton P`; ~5-10 LOC; reduces sorry count 7 → 6. May need to add `(hSub : Subsingleton (Sylow p H))` hypothesis (or absorb subsingleton dep via Step 1's eventual discharge). Then choose: (a) Step 1 (`sylow_p_unique`, ~40-60 LOC, primitive solvable order divisibility), (b) Step 3 (`sylow_p_is_pcycle`, ~20-30 LOC via `isCycle_of_prime_order''`), or (c) the hardest Step 4 (`normalizer_iso_AGL1Z`, ~80-150 LOC). Docker per S21 ACT pattern: run from worktree root, expect 7743 jobs incremental clean. Bearer surface for Steps 2-3 verified at lake-pin `2df2f015…` via S2 ORIENT pre-flight (still authoritative — no Mathlib drift since 2026-06-04).",
+    "blockers": [],
+    "attemptCounts": { "total": 3, "currentApproach": 2, "approachesTried": 2 },
+    "lastUpdate": "2026-06-10T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",

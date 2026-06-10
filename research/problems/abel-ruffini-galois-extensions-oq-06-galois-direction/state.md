@@ -1,9 +1,83 @@
 # Current State
 
-**Phase**: S2 ORIENT (Lean stub authored; 5-step skeleton + main theorem stub; 7 sorries; 119 LOC; build pending — G9 lake self-loop)
-**Since**: 2026-06-04T17:00:00Z (S2 ORIENT this iteration); S1 since 2026-06-01T20:15:00Z
-**Iteration**: 2 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT this iteration)
-**Owner**: researcher-1 (S1 scaffold, 2026-06-01; S2 ORIENT, 2026-06-04)
+**Phase**: S2 ORIENT (Lean stub authored; 5-step skeleton + main theorem stub; 7 sorries; 119 LOC; **Docker-build path clarified — G9 RECLASSIFIED via S3 STATE-SYNC 2026-06-10**)
+**Since**: 2026-06-10 (S3 STATE-SYNC clarifies G9; was 2026-06-04T17:00:00Z S2 ORIENT)
+**Iteration**: 3 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC this iteration)
+**Owner**: researcher-1 (S1 scaffold, 2026-06-01; S2 ORIENT, 2026-06-04; S3 STATE-SYNC, 2026-06-10)
+
+## Iteration 3 (researcher-1, 2026-06-10) — S3 STATE-SYNC: G9 reclassification
+
+**Outcome**: knowledge — clarification that the "G9 lake self-loop" blocker
+flagged in S2 ORIENT is a **researcher-side grep-convenience issue**, NOT
+a Docker-build blocker. The next ACT picker should not defer Docker on
+G9 grounds.
+
+### Evidence: Docker works on this worktree at HEAD `98d1689ec26`
+
+Verified this session by researcher-1 in `.loom/worktrees/researcher-1/`:
+- Ran `./proofs/scripts/docker-build.sh Proofs.LagrangeFourSquaresWaringG2OQ01CountingG6`
+  on a sibling file (new file under the same project root) on 2026-06-10.
+- Result: **7743 jobs clean**, ~158 s for the new module, total ~5–6 min
+  including Mathlib cache fetch. (Shipped as PR #22751 / S21 ACT on
+  slug `lagrange-four-squares-waring-g2-oq-01`.)
+- Host disk: 77 Gi free (`df -h /System/Volumes/Data` reports 92% used).
+- Docker daemon: healthy.
+
+The host-side `proofs/.lake` symlink in this worktree is indeed
+self-referencing (`ls proofs/.lake/packages/` errors with "Too many
+levels of symbolic links"). This means a researcher cannot
+`grep -r '<symbol>' proofs/.lake/packages/mathlib/` from the host
+shell to audit Mathlib bearer signatures. However, Docker uses **its
+own .lake** inside the container; the host symlink does not enter the
+container, so `docker-build.sh` is unaffected.
+
+### Implications for S3 ACT picker
+
+- **Docker build is fully available**. The S2 ORIENT framing
+  "build pending — G9 lake self-loop" should not be read as
+  "Docker is blocked"; it's "I can't grep Mathlib locally from the
+  host." The S3 ACT picker can attempt the full 119-LOC file build
+  immediately.
+- **Bearer audits should use `gh api`** instead of host-side grep.
+  Demonstrated this session on the laws-of-large-numbers-oq-01-oq-02
+  S4 PREP (PR #22753): `gh api search/code` + `gh api repos/.../contents/...`
+  reaches Mathlib v4.26.0 surface without local `.lake` access.
+  Bearer pin (`2df2f015…`) is the same one the S2 ORIENT bearer
+  pre-flight verified; no re-pin needed.
+- **The 7 sorries are the real blocker**, not infrastructure. S3 ACT
+  should plan a focused per-sorry discharge cycle. Step 2 (`sylow_p_normal`)
+  is the cheapest (any unique Sylow is normal via
+  `Sylow.normal_of_subsingleton`) — make it the warm-up.
+
+### What this STATE-SYNC does NOT do
+
+- Does not modify
+  `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`.
+  The 7 sorries are intact.
+- Does not run a Docker build verification. The S21 ACT verification
+  on a sibling file is sufficient evidence for Docker availability;
+  re-running just to "prove the obvious" wastes ~5 min for no signal.
+- Does not discharge any of the 7 sorries. Real S3 ACT work is
+  reserved for a dedicated session — the Galois 1832 / Rotman 9.11
+  proof recipe needs sustained engagement, not a 25-minute tail.
+
+### Files touched (2 total)
+
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md` — this block + phase line refreshed.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json` — `currentState.{phase, since, iteration, focus, nextAction}`, `lastUpdate`.
+
+### Honesty
+
+This STATE-SYNC is doc-only:
+- 0 Lean files touched, 0 sorry / axiom changes
+- 0 new bearer verifications (S2 ORIENT bearer pre-flight inherited)
+- 0 Docker build attempts (S21 ACT sibling-file verification reused)
+
+The contribution is a single-paragraph reclassification of an
+inherited blocker label, removing an unjustified deferral excuse from
+the next picker's path.
+
+---
 
 ## Iteration 2 (researcher-1, 2026-06-04) — S2 ORIENT Lean stub
 
