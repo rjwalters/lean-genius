@@ -1,7 +1,7 @@
 {
   "slug": "ehrhart-cube-proven-oq-05",
   "title": "Pick's theorem derived from Ehrhart polynomial existence",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -37,14 +37,16 @@
     "goal": "S2-S5 deliverable: `picks_theorem_derived` theorem in new `Proofs/EhrhartCubeProvenOQ05.lean`, deriving Pick's identity A = i + b/2 - 1 for any `SimpleLatticePolygon` from the three (axiomatized) Ehrhart identities in `EhrhartPolynomials.lean`. Target status: `formalized` (conditional-verified), 0 new axioms, 0 sorries, 3 inherited Ehrhart axioms. The standalone `picks_theorem` axiom in `PicksTheorem.lean` is shown to be redundant — a meaningful axiom-dependency reduction in the gallery."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-09T18:40:00.000Z",
-    "iteration": 3,
-    "focus": "AXIOM-FIX (researcher-9, 2026-06-09, this session): first Lean-file modification on slug. Applies S2b PREP §1.5/§2.5 Fix B (LatticePolytope gains volume:ℚ + volume_pos:0<volume fields; ehrhart_leading_coeff_volume axiom rewritten to use P.volume — consistent; LatticePolytope3D drops duplicate volume fields; unitCube provides volume:=1) and Fix D (LatticePolygon gains interior_at_one field linking interiorPoints to Macdonald existential) per S2c PREP §1 single-file blast radius. Net delta to `Proofs/EhrhartPolynomials.lean`: ~+14 / -3 LOC. Axiom count unchanged (3 → 3) but the previously inconsistent `ehrhart_leading_coeff_volume` is now consistent (RHS pinned per polytope via P.volume rather than a free parameter). Structure-encoded assumption count remains 0 per the Axiom Integrity Policy. Unblocks S3 ACT (Q1 derivation of ehrhartPoly_2d_explicit) which previously could not honestly use the inconsistent axiom without inviting False.elim short-circuits.",
-    "blockers": [],
-    "nextAction": "S2 ACT (next claim, ~80 lines): create proofs/Proofs/EhrhartCubeProvenOQ05.lean with three theorem stubs `ehrhartPoly_2d_explicit` (Q1, ~200 lines target for S3), `simpleLatticePolygon_to_latticePolygon` (Q2 bridge, ~150 lines target for S4), `picks_theorem_derived` (Q2 close, ~80 lines target for S5), each with `:= by sorry` proof. Imports: `Proofs.EhrhartPolynomials`, `Proofs.PicksTheorem`. Add Proofs.lean entry + minimal src/data/proofs/ehrhart-cube-proven-oq-05/{meta.json, index.ts} with status `formalized` (3 sorries, 3 inherited Ehrhart axioms — now logically consistent post-AXIOM-FIX).",
+    "phase": "PREP",
+    "since": "2026-06-09T22:00:00.000Z",
+    "iteration": 4,
+    "focus": "S2 ACT-attempt → PREP (researcher-6, 2026-06-09, this session): scaffold for proofs/Proofs/EhrhartCubeProvenOQ05.lean was authored per the S2 PREP blueprint (knowledge.md §'Lean Skeleton Sketch for S2') — 80 LOC, three theorem stubs (ehrhartPoly_2d_explicit, simpleLatticePolygon_to_latticePolygon, picks_theorem_derived) each closed by sorry, plus the proofs/Proofs.lean import-registration line. Docker-attempted with ./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ05; build progressed to 3059/3060 jobs (EhrhartPolynomials built successfully in 181s) then failed at the import-resolution of Proofs.PicksTheorem due to a pre-existing Mathlib v4.26.0 ring regression at line 329 picks_additive (the simp recipe Nat.cast_sub he no longer applies to ↑(i₁ + i₂ + e - 2); linter at 333:27 flags it unused; subsequent ring cannot close). Confirmed pre-existing on a zero-diff worktree checkout from origin/main HEAD 162265bae2c — no nexus to OQ-05. Same Mathlib v4.26.0 regression class flagged by recent siblings (PR #22677 fundamental-theorem-calculus-oq-01: 'sibling broken at HEAD'). Following the established S{N} ACT-attempt → PREP pattern: scaffold banked verbatim in sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md §4 (ready for Write-paste re-attempt once Picks repair lands); suggested 5-LOC Mechanic-class repair in §5 (replace Nat.cast_sub he with Nat.cast_sub h_ie2 where h_ie2 : 2 ≤ i₁ + i₂ + e := by omega, switch simp only [Nat.cast_*] to push_cast). 0 Lean files modified by this PR; doc-only. Axiom count, sorry count, lineCount on bearer unchanged.",
+    "blockers": [
+      "Pre-existing Mathlib v4.26.0 regression in proofs/Proofs/PicksTheorem.lean line 329 picks_additive: simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]; ring does not close the goal. The Nat.cast_sub he hypothesis (he : 2 ≤ e) is reported unused by linter at 333:27 because the goal contains ↑(i₁ + i₂ + e - 2) which needs 2 ≤ i₁ + i₂ + e, not 2 ≤ e. Suggested 5-LOC Mechanic fix banked in sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md §5. Pre-existing breakage unrelated to OQ-05; reproducible on a zero-diff worktree checkout from origin/main HEAD 162265bae2c. Blocks S2 ACT re-attempt until repaired."
+    ],
+    "nextAction": "Mechanic-class infrastructure fix (out of slug scope, prerequisite to S2 ACT): repair proofs/Proofs/PicksTheorem.lean lines 326-334 per the 5-LOC patch sketched in sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md §5. Then S2 ACT re-attempt: Write-paste the banked scaffold from §4 of the same journal to proofs/Proofs/EhrhartCubeProvenOQ05.lean, add `import Proofs.EhrhartCubeProvenOQ05` to proofs/Proofs.lean between Proofs.EhrhartCubeProvenOQ04 and Proofs.EhrhartPolynomialOQ03, add minimal src/data/proofs/ehrhart-cube-proven-oq-05/{meta.json,index.ts} (status formalized, 3 sorries, 3 inherited Ehrhart axioms), and Docker-verify.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 0
     }
