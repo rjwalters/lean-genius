@@ -1,7 +1,7 @@
 {
   "slug": "amgm-inequality-oq-04",
   "title": "Gauss AGM iteration connection to elliptic integrals",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-16T08:55:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT shipped (Lever A): parent AmgmInequalityOQ04.lean axiomCount 3 → 0 by deleting the vacuous Phase-1 placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK (now superseded by rigorous definitions in child slug oq-04-oq-01). Parent slug status axiomatized → verified.",
+    "phase": "PREP",
+    "since": "2026-06-09T03:20:00Z",
+    "iteration": 3,
+    "focus": "S3 BUILD-VERIFY shipped (2026-06-09): Docker build of post-S2 Lever-A parent file AmgmInequalityOQ04.lean completed exit 0 (7743 jobs replayed from lean-mathlib-cache; no fresh elaboration required). One lint warning at line 229 (unused `one_div` simp arg in `gap_tendsto_zero`) — non-blocking. Blocker B1 (host disk 100%) cleared. Slug at 22 thms / 0 parent axioms / 0 sorries / status verified.",
     "blockers": [],
-    "nextAction": "S3 BUILD-VERIFY once host disk recovers (S2 shipped build-pending due to 100% disk corrupting Docker meta.db). Then assess Lever B opportunities in sibling AmgmInequalityOQ04OQ05.lean (currently 7 axioms) or revisit the Borwein-pi connection sketched in keyInsights[4].",
+    "nextAction": "S4 ACT picker: (a) drop unused `one_div` from gap_tendsto_zero simp call at line 229 (Mathlib v4.26.0 lint quick-win); (b) Lever-A scan on sibling AmgmInequalityOQ04OQ05.lean (7 axioms, candidate vacuous-placeholders); (c) Borwein-pi formula sketch combining child slug's agm_ellipticK_connection with Legendre's relation (currently axiomatized in AmgmInequalityOQ04OQ02).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 0,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S2 ACT, 2026-05-16): Parent file AmgmInequalityOQ04.lean refactored to delete 3 vacuous elliptic-integral placeholder axioms (ellipticK uninterpreted function, ellipticK_zero, agm_ellipticK). Lean metrics 316 LOC / 22 thms / 3 axioms / 0 sorries → 306 LOC / 22 thms / 0 axioms / 0 sorries. Slug status axiomatized → verified. The rigorous ellipticK definition (intervalIntegral) + ellipticK_zero theorem live in child file AmgmInequalityOQ04OQ01.lean (different slug oq-04-oq-01) with only the deep AGM-K identity axiom remaining there. Build deferred: host disk at 100% capacity corrupted Docker containerd meta.db; pure-deletion edit is safe to ship per established slug precedent.",
+    "progressSummary": "PROGRESS (S3 BUILD-VERIFY, 2026-06-09): Docker build of post-S2 parent AmgmInequalityOQ04.lean completed exit 0 with 7743 jobs replayed from the persistent lean-mathlib-cache volume — the .olean is consistent with the post-S2 source, no fresh elaboration occurred. One Mathlib v4.26.0 lint warning at line 229 (unused `one_div` simp arg) — banked as S4a quick-win. Blocker B1 (host disk 100% during S2) cleared: df reports 73Gi free at S3 entry. Slug remains at 306 LOC / 22 thms / 0 parent axioms / 0 sorries / status verified.\n\nPROGRESS (S2 ACT, 2026-05-16): Parent file AmgmInequalityOQ04.lean refactored to delete 3 vacuous elliptic-integral placeholder axioms (ellipticK uninterpreted function, ellipticK_zero, agm_ellipticK). Lean metrics 316 LOC / 22 thms / 3 axioms / 0 sorries → 306 LOC / 22 thms / 0 axioms / 0 sorries. Slug status axiomatized → verified. The rigorous ellipticK definition (intervalIntegral) + ellipticK_zero theorem live in child file AmgmInequalityOQ04OQ01.lean (different slug oq-04-oq-01) with only the deep AGM-K identity axiom remaining there. Build deferred: host disk at 100% capacity corrupted Docker containerd meta.db; pure-deletion edit is safe to ship per established slug precedent.",
     "builtItems": [
       "proofs/Proofs/AmgmInequalityOQ04.lean (307 lines, 22T, 3A, 0S)",
       "src/data/proofs/amgm-inequality-oq-04/ (gallery entry)",
@@ -91,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.910Z",
-  "lastUpdate": "2026-05-16T08:55:00Z",
+  "lastUpdate": "2026-06-09T03:20:00Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
