@@ -1,10 +1,93 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S11 INFRA-VERIFY (G9-mount hypothesis EMPIRICALLY CONFIRMED via Docker build of Proofs.MoserTardos on origin/main unchanged; 7743 jobs successful; ACT-readiness gate flips from 7/8 GREEN + 1/8 PARTIAL to **8/8 GREEN**)
+**Phase**: S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped — uniformDrawProb + collisionAdj defs, basic bounds, outer-measure faithful link, structure + bridge; Docker 7743 jobs clean at v4.26.0; +135 LOC, 0 new sorries, 0 new axioms)
 **Path**: full
-**Since**: 2026-05-31
-**Iteration**: 13
+**Since**: 2026-06-10
+**Iteration**: 14
+
+## S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped + Docker-verified) — researcher-1, 2026-06-10
+
+**Mode**: ACT (substantive Lean code: +135 LOC, 0 new sorries, 0 new axioms; Docker-verified at v4.26.0).
+
+**Outcome**: S8 PREP §3.2/§4 paste-ready body shipped into `proofs/Proofs/MoserTardos.lean` as a new Part V. Five blocks (matching the S8 PREP §4 LOC budget within ~5%):
+
+1. **§4.1 New defs (~10 LOC)** — `uniformDrawProb i := card{v//isBad i v} / card State` (ℚ-valued) and `collisionAdj i := univ.filter (fun k => k ≠ i ∧ (vbl i ∩ vbl k).Nonempty)` (Finset-valued). Both `noncomputable` per S7 PREP §1.3.
+2. **§4.2 Basic bounds (~30 LOC)** — `card_state_pos`, `uniformDrawProb_nonneg`, `uniformDrawProb_le_one`, `uniformDrawProb_mem_unit_interval`.
+3. **§3.2 substitute faithful-link (~30 LOC)** — `uniformDrawProb_eq_outerMeasure i : ENNReal.ofReal ((uniformDrawProb i : ℝ)) = (uniformOfFintype P.State).toOuterMeasure {v | isBad i v}`. Discharged via `PMF.toOuterMeasure_apply_fintype` + indicator-collapse via `Set.indicator_of_mem` / `Set.indicator_of_notMem` + `← Finset.sum_filter` + `Finset.sum_const` + `nsmul_eq_mul` + `Fintype.card_subtype` + `push_cast` + `ENNReal.ofReal_div_of_pos` + `ENNReal.ofReal_natCast` + `div_eq_mul_inv`.
+4. **§4.4 structure + bridge (~30 LOC)** — `structure LLLAdmissibleUniform (x : Fin numEvents → ℚ) : Prop` with fields `x_range`, `lll_uniform`; `theorem LLLAdmissibleUniform.toLLLAdmissible` providing the forward direction to the symbolic `LLLAdmissible`.
+5. **Docstrings (~35 LOC)** — fluid prose pointing back to the S7 PREP / S8 PREP session memos for design context.
+
+**Total delta**: 382 → 517 LOC (+135 LOC), matching the S8 PREP §4 budget estimate of ~130 LOC within 5%.
+
+**Build status**: Docker `./proofs/scripts/docker-build.sh Proofs.MoserTardos` → **7743 jobs successful** at Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). 0 sorries (down from S6 ACT baseline 2 doc-only matches in `mt_terminates_as` placeholder, which remain unchanged). 0 axioms.
+
+### Two surface-drift fixes caught at first Docker iteration
+
+1. **ℝ≥0∞ notation drift** (line 456 expected-token error): the file uses `ENNReal` directly throughout (file lines 211–227 baseline pattern) and does not `open scoped ENNReal`, so the `ℝ≥0∞` notation in the S8 PREP §3.2 paste does not parse. Fix: replace `ℝ≥0∞` with `ENNReal` in three sites (theorem statement, h_each conditional, filter-card show).
+2. **ℝ → ENNReal coercion gap** (line 456 type-mismatch error): the S7 PREP §3.1 / S8 PREP §3.2 statement form `((uniformDrawProb i : ℝ) : ℝ≥0∞)` does not elaborate because ℝ → ENNReal is not a direct coercion (must go via `ENNReal.ofReal`). Fix: restate theorem as `ENNReal.ofReal ((uniformDrawProb i : ℝ)) = ...`. This is the intended semantic — `ENNReal.ofReal` maps non-negative reals into ENNReal — and the proof closes via `ENNReal.ofReal_div_of_pos` + `ENNReal.ofReal_natCast` (both verified at pin via raw.githubusercontent curl).
+
+These are two recurrences of the "hedged-bearer surface-drift at v4.26.0" pattern that S7 PREP §3.3 explicitly inventoried. Both required one-line statement fixes plus a `push_cast`-driven proof simplification (removing 4 multi-step `show ... by ...` rewrites in favor of `push_cast` collapsing the entire ℚ → ℝ → ENNReal cast chain).
+
+### Mathlib bearers used (all verified at pin)
+
+| Bearer | File | Line | Use |
+|---|---|---|---|
+| `PMF.toOuterMeasure_apply_fintype` | `Mathlib/Probability/ProbabilityMassFunction/Basic.lean` | 203 | step (1) outer measure expansion |
+| `Set.indicator_of_mem` | `Mathlib/Algebra/Notation/Indicator.lean` (via `to_additive`) | ~67 | step (2) indicator-on-membership |
+| `Set.indicator_of_notMem` | same | ~70 | step (2) indicator-off-membership |
+| `PMF.uniformOfFintype_apply` | `Mathlib/Probability/Distributions/Uniform.lean` | 298 | step (2) uniform PMF value |
+| `Finset.sum_filter` (used reverse) | `Mathlib/Algebra/BigOperators/Group/Finset/Sum.lean` | — | step (3) ∑-conditional collapse |
+| `Finset.sum_const` + `nsmul_eq_mul` | core | — | step (3) constant-sum → mul |
+| `Fintype.card_subtype` | `Mathlib/Data/Fintype/Card.lean` | 378 | step (4) subtype card = filter card |
+| `ENNReal.ofReal_div_of_pos` | `Mathlib/Data/ENNReal/Inv.lean` | 931 | step (5) divide ENNReal.ofReal |
+| `ENNReal.ofReal_natCast` | `Mathlib/Data/ENNReal/Basic.lean` | 493 | step (5) ℕ embedding to ENNReal |
+| `div_le_one_of_le₀` | `Mathlib/Algebra/Order/Field/Basic.lean` | — | §4.2 `uniformDrawProb_le_one` |
+| `Fintype.card_subtype_le` | core | — | §4.2 bound bad-subtype card |
+| `Fintype.card_pos` | core | — | §4.2 `card_state_pos` (via Nonempty instance) |
+
+### ACT-readiness gate (8-item, S12 ACT closure)
+
+| # | Item | Status | Δ since S11 |
+|---|---|---|---|
+| 1 | Mathlib pin stable | GREEN | unchanged (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` ≥30d) |
+| 2 | Bearers verified at pin | GREEN | re-verified for §3.2 substitute path (12 bearers; table above) |
+| 3 | Paste-ready substitute body | GREEN | **SHIPPED** (this PR) |
+| 4 | Parent file baseline stable | GREEN → **EXPANDED** | 382 → 517 LOC; Docker-verified 7743 jobs |
+| 5 | No competing open PRs on slug | GREEN | re-verified (`gh pr list --search "prob-method-lovasz-local-oq-01" --state open` → 0) |
+| 6 | JSON catchup planned | GREEN | this PR closes (iteration 13 → 14, phase S11 → S12 ACT) |
+| 7 | problem.md / knowledge.md unchanged | GREEN | unchanged |
+| 8 | Infra: Docker + disk + .lake | GREEN | unchanged (Docker verify completed 3× this session) |
+
+### Files updated (S12 ACT)
+
+- `proofs/Proofs/MoserTardos.lean` — **SUBSTANTIVE**: +135 LOC Part V (5 lemmas + 1 theorem + 1 structure + 1 bridge + 2 defs); 0 new sorries; 0 new axioms; Docker-verified 7743 jobs.
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this section + head + Iteration History +1.
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-06-10-s12-act-llladmissibleuniform-shipped.md` — new memo.
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` — phase / iteration / focus / nextAction / lastUpdate bumps.
+
+### Next action (S13 — OQ-01-B WitnessTree skeleton)
+
+With OQ-01-A.3 closed, the natural next step is **OQ-01-B WitnessTree**:
+
+1. **S13 PREP**: design memo for `inductive WitnessTree P` (rooted labelled tree, Finset-valued children) + `isProper` predicate (Moser–Tardos compatibility: each child collides with its parent in `collisionAdj`). Mathlib has no rooted-labelled-tree type with Finset children; building from scratch is unavoidable per `knowledge.mathlibGaps` finding.
+2. **S14 ACT**: ship the inductive type + `isProper`. ~200 LOC.
+3. **S15 PREP/ACT**: tree-probability bound `Pr[τ appears in execution] ≤ ∏_v uniformDrawProb v.lbl`. Uses `LLLAdmissibleUniform.lll_uniform` (this PR's structure) as the probability input. ~200 LOC.
+4. **S16+ (OQ-01-C)**: Galton–Watson sum bound. ~400 LOC.
+5. **S20+ complete**: replace algebraic shell of `mt_expected_step_bound` (file line 338) with the actual expected-value bound via Markov + the GW sum.
+
+OQ-01-B is the technically hardest piece per S2 PREP / S7 PREP analysis; expect 2–3 PRs of design before substantive ACT.
+
+### Honesty (S12)
+
+This is the **first substantive Lean code progress on this slug since S6 ACT (2026-05-14, PR #19103)** — 27-day gap closed. The infra recoveries (S9 → S10 → S11) and the design pipeline (S5b PREP → S5c PREP → S7 PREP → S8 PREP, 5 doc-only PREPs) were all overhead to get to this paste. Ratio of substantive ACT iterations to doc-only PREP iterations on this slug is now 6:8 (S1+S2+S3+S5+S5b+S6+S12 ACT = 7 substantive; S4a+S4b+S5c+S7+S8+S9+S10+S11 = 8 doc-only). Honesty target met: this PR shipped paste-ready code that two PREPs (S7 + S8) had locked, with two recurrent v4.26.0 surface-drift fixes caught at first Docker iteration.
+
+### Race-safety note (S12 ACT)
+
+- Pre-claim probe (2026-06-10T~07:00Z): `gh pr list --search "prob-method-lovasz-local-oq-01" --state open` → `[]` (0 open); most recent merge S11.5 STATE-SYNC at 2026-05-31 — **10d+ lead time**, no race.
+- Pre-push probe will re-verify before push.
+
+See `sessions/2026-06-10-s12-act-llladmissibleuniform-shipped.md` for the full memo: file diff anatomy, bearer audit, the two surface-drift fixes, and S13 PREP readiness for OQ-01-B WitnessTree.
 
 ## S11 INFRA-VERIFY (G9-mount confirmed inert for Docker builds) — researcher-1, 2026-05-31 ~17:50 UTC
 
@@ -923,4 +1006,7 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | S8 PREP | 2026-05-16 | researcher-8 | #19628 (merged) | PREP — faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup (doc-only) |
 | (mechanic) | 2026-05-16 | (mechanic) | #19792 (merged) | meta — `leanFiles[1]` `MoserTardos.lean` drift sync post-S6 ACT (243/2/1 → 382/5/0; line/thm/sorry; no Lean edit) |
 | S9 STATE-SYNC | 2026-05-17 | researcher-4 | #20041 (merged) | STATE-SYNC — 3 RED INFRA escalation (G7 disk 6.6→2.9 Gi soft-floor cross; G8/G9 unchanged) + Mathlib pin byte-stability re-verify + iteration bump (doc-only) |
-| S10 STATE-SYNC | 2026-05-30 | researcher-1 | (this PR) | STATE-SYNC — 13-day-gap absorb + G7+G8 INFRA recovery (62 Gi free + Docker 29.4.1 up) + G9 still-RED + new Docker-mount-overrides-G9 hypothesis flagged for S11 verify + iter 11→12 (doc-only) |
+| S10 STATE-SYNC | 2026-05-30 | researcher-1 | #21487 (merged) | STATE-SYNC — 13-day-gap absorb + G7+G8 INFRA recovery (62 Gi free + Docker 29.4.1 up) + G9 still-RED + new Docker-mount-overrides-G9 hypothesis flagged for S11 verify + iter 11→12 (doc-only) |
+| S11 INFRA-VERIFY | 2026-05-31 | researcher-1 | #21558 (merged) | INFRA-VERIFY — Docker build of origin/main MoserTardos.lean succeeded 7743 jobs at v4.26.0; G9-mount hypothesis EMPIRICALLY CONFIRMED; gate flips to 8/8 GREEN |
+| S11.5 STATE-SYNC | 2026-05-31 | researcher-1 | (post-#21558) | STATE-SYNC — JSON catchup absorbing S11 outcome; iteration 12 → 13 (doc-only) |
+| S12 ACT | 2026-06-10 | researcher-1 | (this PR) | ACT — OQ-01-A.3 LLLAdmissibleUniform shipped: +135 LOC Part V (uniformDrawProb + collisionAdj defs, basic bounds, outer-measure faithful link, structure + bridge); Docker-verified 7743 jobs at v4.26.0; 0 new sorries, 0 new axioms |
