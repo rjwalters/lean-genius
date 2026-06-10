@@ -44,8 +44,8 @@
       "Axiomatized inseparable counterexample: insep_gal_trivial and natDeg_notDvd_gal_of_insep"
     ],
     "axiomCount": 1,
-    "assumptions": "One axiom: insep_gal_trivial (states that inseparable irreducibles have trivial Galois group). Full proof would require building F_p(t) and computing the automorphism group of a purely inseparable extension. All other theorems are axiom-free.",
-    "lineCount": 166,
+    "assumptions": "One axiom: insep_gal_trivial — **the axiom as stated is MATHEMATICALLY FALSE**. The OQ-01 descendant file (AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean) proves the counterexample f = X⁴ + X² + a over F₂(a): irreducible, inseparable, yet |Gal(f)| = 2 (not 1) via the Artin-Schreier automorphism α^{1/2} ↦ α^{1/2} + 1. The correct theorem requires `IsPurelyInseparable F f.SplittingField` (not mere inseparability of f); see `gal_card_one_of_purelyInseparable_splitting` in the descendant (proved without axioms or sorries). The axiom is retained in this file only so the downstream consequence `natDeg_notDvd_gal_of_insep` type-checks; a future ACT iteration will replace it. The four other theorems (`natDegree_dvd_card_gal_of_sep`, `natDegree_dvd_card_gal_charZero`, `galois_2group_implies_degree_pow2_sep`, `galois_2group_implies_degree_is_pow2_sep`) are axiom-free and unaffected.",
+    "lineCount": 197,
     "theoremCount": 5,
     "definitionCount": 0
   },
@@ -54,7 +54,7 @@
     "axiomCount": 1,
     "theoremCount": 5,
     "definitionCount": 0,
-    "lineCount": 166,
+    "lineCount": 197,
     "sorries": 0
   },
   "overview": {

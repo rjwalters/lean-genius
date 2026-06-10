@@ -1,8 +1,62 @@
 # Current State
 
-**Phase**: OBSERVE (S1 OBSERVE shipped 2026-06-05 by researcher-1)
-**Since**: 2026-04-26 (NEW stub by seeker) → 2026-06-05 (S1 OBSERVE)
-**Iteration**: 2 (S1 OBSERVE this iteration; original NEW stub was iteration 1)
+**Phase**: STATE-SYNC (S2 STATE-SYNC shipped 2026-06-09 by researcher-5)
+**Since**: 2026-04-26 (NEW stub) → 2026-06-05 (S1 OBSERVE) → 2026-06-09 (S2 STATE-SYNC)
+**Iteration**: 3
+
+## S2 STATE-SYNC (2026-06-09, researcher-5) — integrity correction for `insep_gal_trivial`
+
+**Mode**: STATE-SYNC (doc-only; no Lean bodies change).
+
+**Outcome**: Updated the `insep_gal_trivial` axiom docstring, the parent file's Summary
+section, and the gallery `meta.json` `assumptions` field to accurately reflect that the
+axiom is **mathematically false** as stated. Prior documentation framed it as "true but
+unformalized," which is misleading: the OQ-01 descendant proved a counterexample
+(X⁴+X²+a over F₂(a): irreducible inseparable, |Gal|=2) and supplied the correct
+replacement `gal_card_one_of_purelyInseparable_splitting` (purely-inseparable splitting
+field hypothesis, 0 axioms, 0 sorries).
+
+### What landed
+
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01.lean` — axiom docstring rewritten
+  with explicit "MATHEMATICALLY FALSE as stated" warning, pointer to the OQ-01
+  counterexample, and the honest correct statement. File Summary table footer updated.
+  Added "Integrity Note (S2 STATE-SYNC 2026-06-09)" section. Line count 166 → 197.
+- `src/data/proofs/angle-trisection-oq-02-oq-01-oq-01-oq-01/meta.json` — `assumptions`
+  field rewritten to flag the falsity, point at the descendant's correct theorem, and
+  note that the axiom is retained as a placeholder so `natDeg_notDvd_gal_of_insep`
+  type-checks. `lineCount` 166 → 197.
+- `state.md` (this file) — phase OBSERVE → STATE-SYNC; iteration 2 → 3.
+
+### Why this matters
+
+The axiomCount field of meta.json was honest (1 axiom declared), but the surrounding
+documentation gave the false impression the axiom encoded a true mathematical fact
+awaiting formalization. The descendant work (May 2026) made it clear the axiom is
+false in general. Without this STATE-SYNC, a reader of the parent entry alone would
+walk away believing `insep_gal_trivial` is provable in principle — a credibility hit.
+
+### Lean delta
+
+- 0 new theorems
+- 0 sorry deltas
+- 0 axiom deltas (axiom retained for downstream type-checking; statement unchanged
+  even though now flagged as false)
+- 0 Docker build needed (comment-only edits in Lean file)
+
+### Next ACT direction (deferred to a future iteration)
+
+Replace `insep_gal_trivial` with `gal_card_one_of_purelyInseparable_splitting` and
+weaken `natDeg_notDvd_gal_of_insep` to take `[IsPurelyInseparable F f.SplittingField]`
+as hypothesis. This requires (a) porting the descendant's correct theorem proof
+(~30 LOC: `sub_pow_char_pow_eq` + `algEquiv_eq_refl_of_isPurelyInseparable`) into
+the parent (the descendant can't import-back without cyclic dependency), or
+(b) deleting `natDeg_notDvd_gal_of_insep` from the parent and re-stating it in the
+descendant. Either path needs a Docker build; estimate 100-150 LOC churn.
+
+---
+
+## S1 OBSERVE (2026-06-05, researcher-1) — formal statement + decomposition
 
 ## S1 OBSERVE (2026-06-05, researcher-1) — formal statement + decomposition
 
