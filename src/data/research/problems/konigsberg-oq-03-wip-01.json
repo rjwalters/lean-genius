@@ -1,7 +1,7 @@
 {
   "slug": "konigsberg-oq-03-wip-01",
   "title": "Complete Eulerian Paths in Hypergraphs",
-  "phase": "ACT",
+  "phase": "STATE-SYNC",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -26,12 +26,12 @@
     "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-03T00:00:00Z",
-    "iteration": 4,
-    "focus": "S4 ACT (this PR, researcher-1, 2026-06-03): discharged the remaining 2 :=True placeholders (HasInfiniteEulerPath, HasOneWayEulerPath) by porting sibling KonigsbergOQ03OQ02.lean's InfiniteWalk / BiInfiniteWalk / IsEulerWalk / IsBiInfiniteEulerWalk infrastructure into the parent file, adapted to use the parent's own InfiniteGraph structure (eliminating the sibling's stale self-containment justification — the parent's dependency on the build-broken Konigsberg.lean was already removed in S3 ACT). Net file delta: 114 → 202 LOC (+88), 1 → 2 theorems (added InfiniteWalk.step_ne), 8 → 14 defs+structures; sorries / axioms unchanged at 0 / 0; True placeholders 2 → 0. All three Eulerian predicates (HasEulerTour for r=2 hypergraphs from S3, HasInfiniteEulerPath for bi-infinite, HasOneWayEulerPath for one-way infinite) are now bound to genuine ∃-statements. Build NOT verified locally: Docker daemon on this host has a corrupted containerd content store (the lean4-arm64:v4.26.0 image's blob returns I/O error and cannot be inspected or rebuilt). Confidence grounded in line-for-line pattern equivalence with the verified sibling file. PR description discloses this clearly.",
+    "phase": "STATE-SYNC",
+    "since": "2026-06-09T23:58:00Z",
+    "iteration": 6,
+    "focus": "S6 STATE-SYNC (researcher-1, 2026-06-09): doc-only Docker-GREEN retroactive verification of both S4 ACT (2026-06-03, T+6d unverified) and S5 ACT (2026-06-04, T+5d unverified). Ran `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` from the worktree, returning `✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s) → Build completed successfully (7743 jobs)`. The host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3, overlayfs storage), allowing the build to complete. Both predecessor ACTs' code is correct as written — the line-for-line pattern equivalence with sibling KonigsbergOQ03OQ02.lean (S4 confidence grounding) and the trivial-term-proof structure (S5 confidence grounding) are now empirically validated rather than merely architectural. File invariants at S6 (matches both S5 ACT ship counts and origin/main): 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. Drift note: JSON was at iteration 4 (S4 narrative); S5 ACT updated state.md to iteration 5 without syncing JSON. This S6 STATE-SYNC bumps JSON directly to iteration 6, skipping the unrecorded S5 step in JSON (S5 is fully recorded in state.md and sessions/2026-06-04-s5-act-accessors-and-no-edge-sanity.md). Full record in sessions/2026-06-09-s6-statesync-docker-green-retroactive.md.",
     "blockers": [],
-    "nextAction": "S5 candidate menu: (trivial closure lemma) prove smallest Eulerian fact like 'no-edge InfiniteGraph admits constant-vertex InfiniteWalk as IsEulerWalk vacuously' ~10 LOC, confirms definitions are non-degenerate; (EGW statement) state Erdős-Grünwald-Weiszfeld theorem as theorem ... := by sorry for Aristotle, decomposed into locally-finite (easy) and non-locally-finite (hard) cases; (sibling DRY refactor, cross-slug) claim konigsberg-oq-03-oq-02 and refactor it to import this parent and drop its locally-redeclared InfiniteGraph/InfiniteWalk/IsEulerWalk/BiInfiniteWalk duplicates, collapsing ~100 LOC of duplication, pure refactor with no new math; (EGW proof, multi-week) prove the locally-finite case using SimpleGraph.Walk.IsEulerian extension lemmas + König's lemma machinery; (skip) park this slug as 'placeholder-free / theorem-light' and return to other slugs. Recommended for S5: trivial closure lemma + EGW statement in one session (both small, both concrete, both immediately useful to Aristotle).",
+    "nextAction": "S7 ACT — candidates carried forward verbatim from S5 ACT memo §'Next Action (S6 candidate menu)', now empirically validated since predecessor ACTs are Docker-verified: (1) (EGW statement) state Erdős-Grünwald-Weiszfeld as theorem ... := by sorry once a Connected predicate is committed for InfiniteGraph (~5 LOC + def); (2) (one-edge graph Euler walk) for an InfiniteGraph with exactly one edge {u, v}, prove ¬ HasInfiniteEulerPath G — a single edge cannot support a non-repeating bi-infinite walk (~20 LOC, exercises IsEdgeInjective condition); (3) (sibling DRY refactor — cross-slug) collapses ~100 LOC across parent and KonigsbergOQ03OQ02 slug; (4) (EGW proof — multi-week) locally-finite case using SimpleGraph.Walk.IsEulerian + König's lemma. Recommended for S7: candidates (1) + (2) in one session — both small, both concrete, both Docker-verifiable in a ~30s cycle now that Docker is restored.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S4 ACT (2026-06-03, researcher-1): all True placeholders in KonigsbergOQ03.lean are now discharged. The file ships meaningful Prop bindings for HasEulerTour (r=2 hypergraph case, S3 ACT), HasInfiniteEulerPath (bi-infinite, S4 ACT via BiInfiniteWalk), and HasOneWayEulerPath (one-way infinite, S4 ACT via InfiniteWalk). The infrastructure (~85 LOC) was ported from sibling KonigsbergOQ03OQ02.lean rather than built from scratch — the S2 SURVEY's estimate of 200-400 LOC was conservative because the sibling's infrastructure was not visible to the parent stub maintainers. File 202 LOC, 2 theorems, 14 defs+structures, 0 axioms, 0 sorries, 0 True placeholders. Build NOT verified (Docker corrupted on contributor host). Next layer: theorems characterising when these predicates hold (EGW theorem and friends).",
+    "progressSummary": "S6 STATE-SYNC (2026-06-09, researcher-1): doc-only Docker-GREEN retroactive verification of both S4 ACT (2026-06-03, T+6d unverified) and S5 ACT (2026-06-04, T+5d unverified). docker-build.sh Proofs.KonigsbergOQ03 → ✔ [7743/7743] Built (24s) → Build completed successfully (7743 jobs). Host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3); both predecessor ACTs' code is correct as written, confidence is now empirical. File invariants 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin unchanged at v4.26.0. JSON drift note: JSON was at iter 4 (S4); S5 didn't sync to JSON; S6 bumps JSON to iter 6, S5 is recorded in state.md + sessions only. | S5 ACT (2026-06-04, researcher-1): added 7 small theorems in two groups (3 sibling-parity accessors: InfiniteWalk.step_is_adj, IsEulerWalk.covers, IsEulerWalk.injective ported line-for-line from KonigsbergOQ03OQ02; 4 no-edge sanity theorems showing walk types are IsEmpty and HasOneWayEulerPath/HasInfiniteEulerPath evaluate to False on a no-edge graph). File 202 → 256 LOC (+54), 2 → 9 theorems (+7). Build NOT verified at S5 write time; retroactively GREEN at S6. | S4 ACT (2026-06-03, researcher-1): all True placeholders in KonigsbergOQ03.lean discharged. The file ships meaningful Prop bindings for HasEulerTour (r=2 hypergraph case, S3 ACT), HasInfiniteEulerPath (bi-infinite, S4 ACT via BiInfiniteWalk), and HasOneWayEulerPath (one-way infinite, S4 ACT via InfiniteWalk). Infrastructure (~85 LOC) ported from sibling KonigsbergOQ03OQ02.lean. File 114 → 202 LOC, 1 → 2 theorems, 8 → 14 defs+structures, 0 axioms, 0 sorries, 0 True placeholders. Build NOT verified at S4 write time; retroactively GREEN at S6.",
     "builtItems": [
       "InfiniteWalk structure in Proofs/KonigsbergOQ03.lean:105 — ℕ-indexed walk on InfiniteGraph, with vertex : ℕ → V + step_adj field (S4 ACT)",
       "InfiniteWalk.sameEdge in Proofs/KonigsbergOQ03.lean:115 — two step indices traverse same undirected edge (S4 ACT)",
@@ -115,7 +115,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-06-03T00:00:00Z",
+  "lastUpdate": "2026-06-09T23:58:00Z",
   "leanFiles": [
     {
       "path": "Proofs/KonigsbergOQ03.lean",
