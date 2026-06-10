@@ -1,9 +1,80 @@
 # Current State
 
-**Phase**: ACT (S7 ACT — (3, 5) axis-vs-plane safety DISCHARGED; Docker-verified GREEN)
-**Since**: 2026-06-04 (S7 ACT applies the S7 PREP-2 recipe)
-**Iteration**: 14 (was 13; S7 ACT discharges the S7 PREP-2 recipe)
-**Last Update**: 2026-06-04T20:30Z (researcher-1) — S7 ACT: applied the S7 PREP-2 paste-ready Lean recipe to `proofs/Proofs/Erdos659OQ01OQ02.lean` (PRE: 292 LOC → POST: 488 LOC; delta +196 LOC). Adds `safe_3_5_axis_vs_plane`, the second member of the {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)} safe-pair family identified by S2a OBSERVE PR #18494. 2 new mod-5 helpers (`zmod_5_a_sq_plus_3_b_sq_eq_zero_iff`, `zmod_5_a_sq_eq_three_b_sq_iff`); 3 new descent theorems `safe_{A,B,C}_3_5_holds`; 1 new corollary. 0 sorries / 0 axioms delta (file remains 0 / 0). Docker-verified GREEN: `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` → "✔ Build completed successfully (3058 jobs)". No meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits — `Erdos659OQ01OQ02.lean` is not surfaced in the parent gallery entry `erdos-659-oq-01`'s `additionalFiles`-counted axioms, so `axiomCount: 3` in `src/data/proofs/erdos-659-oq-01/meta.json` is unaffected.
+**Phase**: ACT (S8 ACT — (2, 13) axis-vs-plane safety DISCHARGED; Docker-verified GREEN)
+**Since**: 2026-06-09 (S8 ACT executes the top entry of the S7 ACT next-action menu)
+**Iteration**: 15 (was 14; S8 ACT discharges the lowest-LOC remaining safe pair)
+**Last Update**: 2026-06-09T23:55Z (researcher-1) — S8 ACT: applied the (2, 13) mod-13 QR-descent recipe to `proofs/Proofs/Erdos659OQ01OQ02.lean` (PRE: 488 LOC → POST: 683 LOC; delta +195 LOC). Adds `safe_2_13_axis_vs_plane`, the third member of the {(2,5), (2,13), (3,5), (5,7), (5,13), (7,13), (11,13)} safe-pair family identified by S2a OBSERVE PR #18494. 2 new mod-13 helpers (`zmod_13_a_sq_plus_2_b_sq_eq_zero_iff`, `zmod_13_a_sq_eq_two_b_sq_iff`); 3 new descent theorems `safe_{A,B,C}_2_13_holds`; 1 new corollary. 0 sorries / 0 axioms delta (file remains 0 / 0). Docker-verified GREEN: `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` → "✔ [3058/3058] Built Proofs.Erdos659OQ01OQ02 (19s)" → "Build completed successfully (3058 jobs)". The 169-case `decide` checks for the mod-13 helpers succeed without strain. No meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest edits — `Erdos659OQ01OQ02.lean` is not surfaced in the parent gallery entry `erdos-659-oq-01`'s `additionalFiles`-counted axioms, so `axiomCount: 3` in `src/data/proofs/erdos-659-oq-01/meta.json` is unaffected.
+
+## S8 ACT (researcher-1, 2026-06-09, Docker-verified GREEN)
+
+Executed the top entry of the S7 ACT next-action menu: `(2, 13)` axis-vs-plane safety. Memo at `sessions/2026-06-09-s8-act-2-13-axis-vs-plane-discharge.md`.
+
+### Lean delta (Docker-verified)
+
+| Section | Before | After | Δ |
+|---|---|---|---|
+| `proofs/Proofs/Erdos659OQ01OQ02.lean` LOC | 488 | 683 | +195 |
+| `def`s | 4 | 4 | 0 |
+| `theorem`s | 8 | 12 | +4 (`safe_A_2_13_holds`, `safe_B_2_13_holds`, `safe_C_2_13_holds`, `safe_2_13_axis_vs_plane`) |
+| `lemma`s | 4 | 6 | +2 (`zmod_13_a_sq_plus_2_b_sq_eq_zero_iff`, `zmod_13_a_sq_eq_two_b_sq_iff`) |
+| Sorries | 0 | 0 | 0 |
+| `axiom` declarations | 0 | 0 | 0 |
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02` →
+`✔ [3058/3058] Built Proofs.Erdos659OQ01OQ02 (19s)` → `Build completed successfully (3058 jobs).`
+
+### Why (2, 13) was the lowest-LOC choice
+
+S7 ACT identified (2, 13) as the lowest-LOC remaining candidate among the
+six unproved safe pairs from S2a OBSERVE PR #18494. The coefficient on
+`b²` stays at `2` (same as (2, 5)), so the descent skeleton lifts even
+more directly than the (3, 5) extension did — only the prime modulus
+moves from 5 to 13. Mod-13 has 169 cases (vs 25 for mod-5); `decide`
+handles this in a fraction of a second.
+
+### QR table — mod 13
+
+Squares in `ZMod 13` = `{0, 1, 3, 4, 9, 10, 12}`. Non-residues =
+`{2, 5, 6, 7, 8, 11}`. Both `2` and `−2 = 11` are non-residues, which is
+exactly what equations A (`−2` non-residue) and B/C (`2` non-residue)
+need to force `a ≡ b ≡ 0 (mod 13)` and then `13 ∣ c`.
+
+### Cumulative axis-vs-plane safety progress
+
+| Prime pair `(p, q)` | Status | Iteration | Helper modulus |
+|---|---|---|---|
+| `(2, 5)` | ✅ proved | S4 ACT | mod 5 |
+| `(3, 5)` | ✅ proved | S7 ACT | mod 5 |
+| `(2, 13)` | ✅ proved | **S8 ACT (this)** | mod 13 |
+| `(5, 7)` | ⏳ candidate | next iter | mod 5 + mod 7 |
+| `(5, 13)` | ⏳ candidate | future | mod 5 + mod 13 |
+| `(7, 13)` | ⏳ candidate | future | mod 7 + mod 13 |
+| `(11, 13)` | ⏳ candidate | future | mod 11 + mod 13 |
+
+3/7 safe pairs from S2a OBSERVE PR #18494 now have proved axis-vs-plane
+safety.
+
+### Updated next-action menu
+
+The S7/S8 next-action menu shrinks by one (the `(2, 13)` axis-vs-plane
+safety is now discharged). Remaining concrete candidates:
+
+1. **`(5, 7)` axis-vs-plane safety** — needs mod-7 reduction (49-case
+   `decide` per helper). Lowest new-API surface remaining.
+2. **`(5, 13)` axis-vs-plane safety** — can reuse mod-13 helpers from
+   this S8 ACT (the existing `zmod_13_a_sq_eq_two_b_sq_iff` and
+   `zmod_13_a_sq_plus_2_b_sq_eq_zero_iff` carry the coefficient `2`; for
+   `(5, 13)` the analogous helpers would carry `5`, so two new
+   `zmod_13_*_5_*` helpers are needed — but no new modulus).
+3. **`(7, 13)`, `(11, 13)` axis-vs-plane safety** — require mod-7,
+   mod-11, mod-13 helpers.
+4. **Full-rank safety for `(2, 5)`, `(3, 5)`, or `(2, 13)`** — still
+   blocked on ternary Hasse-Minkowski (Mathlib v4.26.0 absence per S2c
+   PREP §5.6) or honest axiomatisation per S2c §6.1.
+5. **Θ(n^{2/3}) assembly** — still blocked on S3/S4 plan
+   axiomatisations.
 
 ## S7 ACT (researcher-1, 2026-06-04, Docker-verified GREEN)
 
