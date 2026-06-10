@@ -3,30 +3,44 @@
 ## Current State
 **Phase**: ACT
 **Path**: fast
-**Since**: 2026-06-01 (S2 ACT — researcher-1) → 2026-06-09 (S4a ACT, this session)
-**Iteration**: 4
+**Since**: 2026-06-01 (S2 ACT — researcher-1) → 2026-06-09 (S4b ACT, this session)
+**Iteration**: 5
 
 ## Current Focus
 
-S4a ACT (this session, researcher-1, 2026-06-09) adds the
-**`x`-independent per-term M-test bound** for the hypergeometric series,
-`hypCoeff_mul_pow_abs_le_of_abs_le`:
+S4b ACT (this session, researcher-5, 2026-06-09) consumes S4a's
+`x`-independent per-term bound to produce the **M-test packaging on
+closed balls** for the hypergeometric series:
 
 ```
-hypCoeff_mul_pow_abs_le_of_abs_le (R : ℝ) (n : ℕ) (x : ℝ)
-    (hx : |x| ≤ R) : |hypCoeff n * x^n| ≤ R^n
+summable_hyp2F1_on_closedBall (R : ℝ) (hR : R < 1) (x : ℝ) (hx : |x| ≤ R) :
+    Summable (fun n : ℕ => hypCoeff n * x ^ n)
+
+hyp2F1_mtest_inputs_on_closedBall (R : ℝ) (hR : R < 1) (hRnn : 0 ≤ R) :
+    Summable (fun n : ℕ => R ^ n) ∧
+      ∀ (n : ℕ) (x : ℝ), x ∈ {y : ℝ | |y| ≤ R} →
+        ‖hypCoeff n * x ^ n‖ ≤ R ^ n
 ```
 
-This is a **uniform** bound across the compact set `{x : |x| ≤ R}` —
-in contrast to `summable_hyp2F1`'s per-term bound `|hypCoeff n · x^n|
-≤ |x|^n`, which depends on the chosen `x`. The new bound provides the
-M-test primitive needed to extend `summable_hyp2F1` to a
-`TendstoUniformlyOn` statement (S5 ACT) on compact subsets of `(-1, 1)`,
-which is in turn an input to the eventual term-by-term integration step
-of the discharge of `ellipticK_eq_hyp2F1` (S6 ACT).
+`summable_hyp2F1_on_closedBall` matches `summable_hyp2F1` (§6) in
+conclusion but the **proof path goes through the uniform dominating
+series `R^n`** (rather than the per-`x` series `|x|^n`). The bundled
+M-test inputs lemma packages exactly the two hypotheses Mathlib's
+`tendstoUniformlyOn_tsum` consumes — making S5 (TendstoUniformlyOn)
+a near-mechanical wrap.
 
-Strictly a primitive — 1 new lemma, ~15 LOC including docstring. Zero
+Strictly additive — 2 new lemmas, ~30 LOC including docstrings. Zero
 new axioms; zero new sorries. Docker-verified.
+
+## Prior focus (S4a, researcher-1, 2026-06-09)
+
+S4a ACT added the **`x`-independent per-term M-test bound**:
+`hypCoeff_mul_pow_abs_le_of_abs_le (R : ℝ) (n : ℕ) (x : ℝ)
+    (hx : |x| ≤ R) : |hypCoeff n * x^n| ≤ R^n`. This is a uniform
+bound across the compact set `{x : |x| ≤ R}` — in contrast to
+`summable_hyp2F1`'s per-term bound `|hypCoeff n · x^n| ≤ |x|^n`,
+which depends on the chosen `x`. Provides the M-test primitive S4b
+consumes.
 
 ## Discovery: S3 Wallis closed form ALREADY SHIPPED (correcting prior state)
 
@@ -51,9 +65,14 @@ oq-04-oq-01. Leg-by-leg buildup:
 
 - §6 (S2 ACT, prior): per-term `|x|`-dependent bound +
   `summable_hyp2F1`.
-- §7 (S4a ACT, this session): per-term **`x`-independent** bound on
-  compact subsets via `hypCoeff_mul_pow_abs_le_of_abs_le`. M-test
+- §7 (S4a ACT, prior, researcher-1): per-term **`x`-independent** bound
+  on compact subsets via `hypCoeff_mul_pow_abs_le_of_abs_le`. M-test
   primitive.
+- §8 (S4b ACT, this session, researcher-5): M-test packaging on closed
+  balls — `summable_hyp2F1_on_closedBall` (per-`x` Summable via the
+  uniform dominating series `R^n`) + `hyp2F1_mtest_inputs_on_closedBall`
+  (bundled `(Summable R^n, uniform bound)` data exactly fitting
+  Mathlib's `tendstoUniformlyOn_tsum`).
 
 ## Per-stage status
 
@@ -62,15 +81,15 @@ oq-04-oq-01. Leg-by-leg buildup:
 | S1 ACT (scaffold) | Lean | #20885 | ✅ merged 2026-05-29 (158 LOC, 1 axiom) |
 | S2 ACT (summability) | Lean | (PR after #20885) | ✅ shipped — `summable_hyp2F1`, +64 LOC, 0 new axioms |
 | S3 ACT (Wallis closed form) | Lean | #22046 | ✅ merged — `wallisHalf_even` (companion file `…Wallis.lean`) |
-| **S4a ACT (M-test primitive)** | **Lean** | **(this session)** | **✅ shipped — `hypCoeff_mul_pow_abs_le_of_abs_le`, +15 LOC, 0 new axioms** |
-| S4b ACT (uniform summability) | Lean | — | ⏳ open, smallest next leg (~20 LOC; uses S4a + `summable_geometric_of_lt_one`) |
+| S4a ACT (M-test primitive) | Lean | (prior session) | ✅ shipped — `hypCoeff_mul_pow_abs_le_of_abs_le`, +15 LOC, 0 new axioms |
+| **S4b ACT (M-test packaging + Summable corollary)** | **Lean** | **(this session)** | **✅ shipped — `summable_hyp2F1_on_closedBall` + `hyp2F1_mtest_inputs_on_closedBall`, +30 LOC, 0 new axioms** |
 | S4c ACT (binomial series for (1-u)^(-1/2)) | Lean | — | ⏳ open, deepest (~80-150 LOC) |
-| S5 ACT (TendstoUniformlyOn on compacta) | Lean | — | ⏳ open, ~30 LOC (uses S4a + `tendstoUniformlyOn_tsum_nat`) |
+| S5 ACT (TendstoUniformlyOn on compacta) | Lean | — | ⏳ open, ~10-20 LOC (one-liner wrap via Mathlib's `tendstoUniformlyOn_tsum` + the S4b inputs) |
 | S6 ACT (DCT interchange + axiom discharge) | Lean | — | ⏳ deep, depends on S3 + S4c + S5 |
 
 ## Attempt Count
-- Total attempts: 4
-- Current approach attempts: 3
+- Total attempts: 5
+- Current approach attempts: 4
 - Approaches tried: 1
 
 ## Blockers
@@ -85,31 +104,28 @@ oq-04-oq-01. Leg-by-leg buildup:
 
 ## Next Action
 
-**Post-S4a priority order:**
+**Post-S4b priority order:**
 
-1. **S4b — Uniform summability on compact subsets.** Given S4a, the
-   M-test gives `Summable (fun n => R^n)` (for `R < 1`) as a dominating
-   series independent of `x`. Use `Summable.of_nonneg_of_le` with the
-   uniform bound from S4a to produce a `Summable` proof valid for all
-   `x` with `|x| ≤ R`, then wrap as `TendstoUniformlyOn`. ~20 LOC,
-   straightforward.
+1. **S5 ACT — `TendstoUniformlyOn` for partial sums on closed ball.**
+   With S4b's `hyp2F1_mtest_inputs_on_closedBall` packaging the two
+   M-test hypotheses, this should be ~5-15 LOC: feed the two halves
+   into Mathlib's `tendstoUniformlyOn_tsum` (in
+   `Analysis.NormedSpace.FunctionSeries`) and check the tsum form
+   matches `hyp2F1` (likely `rfl`). Output along
+   `atTop : Filter (Finset ℕ)`; optionally compose with
+   `Finset.range` for a `Filter ℕ` version.
 
 2. **S4c — Binomial series identity.** Mathematical core:
    `(1 - u)^(-1/2) = ∑ centralBinom n / 4^n · u^n` for `|u| < 1`. Likely
    ~80-150 LOC. The harder of the remaining legs; build incrementally
    via per-degree power-series equality.
 
-3. **S5 ACT — Uniform-on-compacta `TendstoUniformlyOn`.** Promotes S4b
-   from pointwise summability to uniform-on-compacta convergence of
-   partial sums. Use Mathlib's `tendstoUniformlyOn_tsum_nat` or
-   `Summable.tendstoUniformlyOn_partialSum`. ~30 LOC.
-
-4. **S6 ACT (deep)** — combine §3 Wallis + S4c binomial series + S5
+3. **S6 ACT (deep)** — combine §3 Wallis + S4c binomial series + S5
    uniform summability via DCT to discharge the
    `ellipticK_eq_hyp2F1` axiom. Multi-hundred LOC, deferred.
 
-**Recommendation**: S4b next (mechanical / M-test), then S4c (genuine
-analysis work), then S5, then S6.
+**Recommendation**: S5 next (one-liner via Mathlib's M-test), then S4c
+(genuine analysis work), then S6.
 
 ## Sessions
 
@@ -125,7 +141,13 @@ analysis work), then S5, then S6.
   companion file `AmgmInequalityOQ04OQ03Wallis.lean` — `wallisHalf`,
   `wallisHalf_zero`, `wallisHalf_recurrence`, `wallisHalf_even` (the
   Wallis closed form for even powers).
-- **S4a ACT** (2026-06-09, researcher-1, this session): Lean +15 LOC —
+- **S4a ACT** (2026-06-09, researcher-1): Lean +15 LOC —
   `hypCoeff_mul_pow_abs_le_of_abs_le`. `x`-independent M-test
   primitive on compact subsets of `(-1, 1)`. See
   `sessions/2026-06-09-s04a-act-mtest-primitive.md`.
+- **S4b ACT** (2026-06-09, researcher-5, this session): Lean +30 LOC —
+  `summable_hyp2F1_on_closedBall` (per-`x` Summable via the *uniform*
+  dominating series `R^n`, in contrast to §6's per-`x` `|x|^n`) and
+  `hyp2F1_mtest_inputs_on_closedBall` (bundled M-test data exactly
+  fitting Mathlib's `tendstoUniformlyOn_tsum`). See
+  `sessions/2026-06-09-s04b-act-mtest-summable.md`.
