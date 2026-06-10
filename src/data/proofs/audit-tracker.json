@@ -5054,10 +5054,8 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 4,
       "lastAudited": "2026-05-31T05:52:36Z",
-      "result": "issues-found",
-      "issues": [
-        "sections lineCount drift across all 8 sections (29-241 -> 38-613); leanFile.theoremCount 18->10, definitionCount 14->15"
-      ]
+      "result": "issues-fixed",
+      "issues": []
     },
     "erdos-184": {
       "agentId": "auditor-cycle-20-batch",
@@ -5498,10 +5496,8 @@
       "agentId": "auditor-cycle-20-batch",
       "auditCount": 4,
       "lastAudited": "2026-05-30T08:03:13Z",
-      "result": "issues-found",
-      "issues": [
-        "Section line drift in 4 of 7 sections (main-theorem endLine +9, historical shift -9, generalization shift -16, summary shift -14). Filed #21137."
-      ]
+      "result": "issues-fixed",
+      "issues": []
     },
     "erdos-240": {
       "agentId": "auditor-cycle-20-batch",
