@@ -10,12 +10,16 @@
   positive weights such that every k-flat through at least k+1 points has the
   same weight-sum.
 
-  This file declares the parameterised definitions and proves three trivial-case
-  targets in full — 0 sorries, 0 axioms, Docker build-verified against Mathlib
-  v4.26.0:
-    * `zero_flat_magic_trivial`     (k = 0)
-    * `ambient_flat_magic_trivial`  (k = d)
-    * `oneflat_eq_parent`           (d = 2, k = 1, reduction to parent's IsMagic)
+  This file declares the parameterised definitions, three trivial / reduction
+  theorems proved in full, and one S5 axiom for the higher-dim classification:
+    * `zero_flat_magic_trivial`                  (k = 0, trivial)
+    * `ambient_flat_magic_trivial`               (k = d, trivial)
+    * `oneflat_eq_parent`                        (d = 2, k = 1, parent reduction)
+    * `oneflat_classification_higher_dim`        (d ≥ 3, k = 1, AXIOM, ABKPR ext.)
+
+  Counts (S5 ACT): 0 sorries, 1 axiom, 4 supporting class predicates
+  (`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`, `IsIncenterConfigD`).
+  Docker build-verified against Mathlib v4.26.0.
 
   The parent reduction `oneflat_eq_parent` (S4 ACT) was unblocked after the
   stale "parent is broken" claim was corrected (parent builds clean against
@@ -33,8 +37,11 @@
       S6b PREP (PR #18541).
 
   The general higher-dim classification (S5 axiom, extension of ABKPR 2008
-  beyond ℝ²) is genuinely open in the literature; future iterations will
-  axiomatise it. The eventual gallery entry must use `status: "axiomatized"`.
+  beyond ℝ²) is genuinely open in the literature; this file's S5 ACT iteration
+  ships the conjectural classification as `oneflat_classification_higher_dim`
+  (lines case, `d ≥ 3`).  See the S5 PREP memo at
+  `research/problems/erdos-735-oq-04/sessions/2026-06-05-s5-prep-conjecture-refinement.md`
+  for the full design rationale.  The gallery entry uses `status: "axiomatized"`.
 -/
 
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -81,6 +88,62 @@ noncomputable def kFlatSum {d k : ℕ} (P : PointConfigD d) (w : WeightingD P)
     deferred to S4 ACT, post-parent-repair). -/
 def IsKFlatMagic {d : ℕ} (k : ℕ) (P : PointConfigD d) : Prop :=
   ∃ w : WeightingD P, ∃ c > 0, ∀ F : ConfigKFlat k P, kFlatSum P w F = c
+
+/- ## S5: The Four Conjectured Magic Classes in ℝᵈ (k = 1 case) -/
+
+/-- Class 1 — `ℝᵈ` analogue of `Erdos735.IsCollinear`: all points lie on a single
+    1-flat. -/
+def IsCollinearD {d : ℕ} (P : PointConfigD d) : Prop :=
+  ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin d)),
+    Module.rank ℝ L.direction = 1 ∧ ∀ p ∈ P, p ∈ L
+
+/-- Class 2 — `ℝᵈ` analogue of `Erdos735.IsGeneralPosition`: no three distinct
+    points share a common 1-flat. -/
+def IsGeneralPositionD {d : ℕ} (P : PointConfigD d) : Prop :=
+  ∀ p ∈ P, ∀ q ∈ P, ∀ r ∈ P, p ≠ q → q ≠ r → p ≠ r →
+    ¬ ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin d)),
+      Module.rank ℝ L.direction = 1 ∧ p ∈ L ∧ q ∈ L ∧ r ∈ L
+
+/-- Class 3 — `ℝᵈ` analogue of `Erdos735.IsNearPencil`: all but one point lie
+    on a common 1-flat, and the remaining point is off the flat. -/
+def IsNearPencilD {d : ℕ} (P : PointConfigD d) : Prop :=
+  ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin d)),
+    Module.rank ℝ L.direction = 1 ∧
+    ∃ p ∈ P, p ∉ L ∧ (∀ q ∈ P, q ≠ p → q ∈ L)
+
+/-- Class 4 — `ℝᵈ` analogue of `Erdos735.IsIncenterConfig`: the projective image
+    of a `(d+1)`-simplex extended by the unique point equidistant from all
+    facets (the insphere centre).  **Honest framing**: the body below is a
+    *structural skeleton* (a simplex injection into `P` plus an extra point),
+    not the precise ABKPR-style incenter characterisation.  A semantically
+    tight `ℝᵈ` version of the parent's `IsIncenterConfig` requires the
+    `Mathlib.Geometry.Euclidean.Triangle` / `EuclideanSpace.angle` /
+    `AffineSubspace.bisector` API at the `ℝᵈ`-level, which Mathlib v4.26.0
+    does **not** provide for `d ≥ 3`.  Documented in
+    `research/problems/erdos-735-oq-04/sessions/2026-06-05-s5-prep-conjecture-refinement.md`
+    §3.D and §9. -/
+def IsIncenterConfigD {d : ℕ} (P : PointConfigD d) : Prop :=
+  ∃ simplex : Fin (d + 2) → EuclideanSpace ℝ (Fin d),
+    ∃ incenter : EuclideanSpace ℝ (Fin d),
+    (∀ i, simplex i ∈ P) ∧ incenter ∈ P ∧
+    Function.Injective simplex ∧
+    P.card = d + 2 + 1
+
+/-- **S5 axiom — extension of ABKPR 2008 to higher ambient dimension** (1-flat
+    case only).  For `d ≥ 3`, a configuration `P ⊂ ℝᵈ` is 1-flat magic iff it
+    is collinear, in general position, a near-pencil, or a `ℝᵈ`-incenter
+    analogue (in the sense of `IsIncenterConfigD`'s structural skeleton).
+
+    **Status**: research-level open.  No published proof of the higher-dim
+    classification exists in any `ℝᵈ` for `d ≥ 3` to the formaliser's
+    knowledge as of 2026-06.  The conjecture is the natural lift of ABKPR
+    2008's planar four-class theorem.  Axiomatised pending future proof.
+
+    For `d = 2`, the corresponding statement is the parent's `Erdos735.magic_classification`
+    composed with this slug's S4 ACT `oneflat_eq_parent`. -/
+axiom oneflat_classification_higher_dim {d : ℕ} (hd : 3 ≤ d) (P : PointConfigD d) :
+    IsKFlatMagic 1 P ↔
+      IsCollinearD P ∨ IsGeneralPositionD P ∨ IsNearPencilD P ∨ IsIncenterConfigD P
 
 /-- Trivial case k = 0. Every rank-0 affine subspace is a single ambient point
     `{x}`; the `card ≥ 1` constraint forces `x ∈ P`, so each `ConfigKFlat 0 P`

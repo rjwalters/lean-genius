@@ -1,12 +1,53 @@
 # Current State
 
-**Phase**: S5 PREP — refined higher-dim conjecture (paste-ready axiom signature, doc-only) (researcher-1, 2026-06-05); cumulative 3 theorems / 4 defs / 0 axioms / 0 sorries (unchanged from S4 ACT)
-**Since**: 2026-06-05 (S5 PREP — converts the S1 OBSERVE axiom sketch with `sorry` placeholders into a syntactically complete, paste-ready signature; identifies and documents the `IsIncenterConfigD` skeleton gap)
-**Iteration**: 9 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → **S5 PREP**)
-**Last Updated**: 2026-06-05T(this session)Z
+**Phase**: S5 ACT — higher-dim classification axiom shipped + Docker build-verified (researcher-8, 2026-06-10); cumulative 3 theorems / 8 defs / 1 axiom / 0 sorries
+**Since**: 2026-06-10 (S5 ACT — pasted S5 PREP §3.A–E recipe verbatim; slug acquires its first axiom)
+**Iteration**: 10 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → **S5 ACT**)
+**Last Updated**: 2026-06-10T(this session)Z
 
 > _Note: state.md `Phase` line uses local-slug encoding (ACT BUILD-VERIFIED ≡ ACT-VERIFIED in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
+
+## S5 ACT — higher-dim classification axiom (researcher-8, 2026-06-10)
+
+Pastes the S5 PREP §3.A–E recipe **verbatim** into
+`proofs/Proofs/Erdos735OQ04.lean`.  Adds 4 new class predicates
+(`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`,
+`IsIncenterConfigD`) and one `axiom oneflat_classification_higher_dim`
+asserting the conjectural higher-dim extension of ABKPR 2008 (`d ≥ 3`,
+`k = 1` case).
+
+**Deliverable**: `proofs/Proofs/Erdos735OQ04.lean` 180 → 243 LOC (+63;
+PREP projected +40, delta is +23 from added per-predicate docstrings).
+The slug acquires its **first axiom** (slug `axiomCount: 0 → 1`),
+satisfying the gallery `status: "axiomatized"` requirement for the
+eventual S7 entry.
+
+**Docker build-verify**: clean; pinned Mathlib SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**File delta** (post-S5 ACT):
+
+```
+proofs/Proofs/Erdos735OQ04.lean
+- lineCount:    243 (was 180; +63)
+- theoremCount: 3   (unchanged)
+- defCount:     8   (was 4;   +4: IsCollinearD, IsGeneralPositionD, IsNearPencilD, IsIncenterConfigD)
+- axiomCount:   1   (was 0;   +1: oneflat_classification_higher_dim)
+- sorryCount:   0   (unchanged)
+- imports:      5   (unchanged)
+```
+
+**Honest framing**: per S5 PREP §3.D and §9, the `IsIncenterConfigD`
+predicate is a **structural skeleton** (simplex injection + extra
+incenter point + cardinality constraint), not a semantically tight
+ℝᵈ characterisation.  Mathlib's `ℝᵈ` bisector / insphere API at
+v4.26.0 does not support a tight definition for `d ≥ 3`.  The
+skeleton suffices for the axiom to type-check; tightening is a
+follow-up iteration.
+
+See `sessions/2026-06-10-s5-act-higher-dim-axiom.md` for full memo,
+risk register, pre-flight gate evidence, and next-iteration recommendations.
 
 ## S5 PREP — refined higher-dim conjecture (researcher-1, 2026-06-05)
 
@@ -177,7 +218,8 @@ Prior iterations:
 | S3 ACT | 2026-05-16 | researcher-9 | #19687 | ACT | Paste S3 PREP-2 §6 theorem bodies into `Erdos735OQ04.lean` (98→153 LOC, 2 sorries → 0; build pending — Docker hung) |
 | S4 BUILD-VERIFY | 2026-05-28/30 | researcher-3 | #20882 | BUILD-VERIFY | Repair API drift (`Module.finrank_eq_of_rank_eq`, `AffineSubspace.mem_top` explicit field) + Docker build-verify the slug |
 | S4 ACT | 2026-05-31 | researcher-1 | #21732 | ACT | `oneflat_eq_parent` (d=2, k=1 reduction) shipped + Docker build-verified (154→180 LOC, +1 theorem) |
-| **S5 PREP** | **2026-06-05** | **researcher-1** | **(this PR)** | **PREP** | **Refined higher-dim conjecture; paste-ready axiom signature; closes S1 OBSERVE `sorry`-in-`axiom`-body defect (doc-only)** |
+| S5 PREP | 2026-06-05 | researcher-1 | (prior PR) | PREP | Refined higher-dim conjecture; paste-ready axiom signature; closes S1 OBSERVE `sorry`-in-`axiom`-body defect (doc-only) |
+| **S5 ACT** | **2026-06-10** | **researcher-8** | **(this PR)** | **ACT** | **Paste S5 PREP §3.A–E recipe verbatim; +4 defs, +1 axiom; slug `axiomCount: 0 → 1`; Docker build-verified** |
 
 Per session log
 `sessions/2026-05-13-s2-act-scaffold.md`, the build-and-rebuild loop surfaced
@@ -218,8 +260,8 @@ For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular pol
 | S2 | Lean definitions + 2 sorry-theorems (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `kFlatSum`, `IsKFlatMagic`, `zero_flat_magic_trivial` [sorry], `ambient_flat_magic_trivial` [sorry]) | scaffold shipped | #19012 |
 | S3 | Discharge `zero_flat_magic_trivial` (k = 0) + `ambient_flat_magic_trivial` (k = d) | **shipped + build-verified** | #19687 (paste), #20882 (build-verify) |
 | S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **shipped + build-verified** | #21732 |
-| S5 PREP | Refined higher-dim conjecture (paste-ready axiom signature) | **shipped (doc-only)** | **(this PR)** |
-| S5 ACT | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
+| S5 PREP | Refined higher-dim conjecture (paste-ready axiom signature) | shipped (doc-only) | (prior PR) |
+| S5 ACT | Higher-dim classification axiom (extension of ABKPR) | **shipped + build-verified** | **(this PR)** |
 | S6a | Tetrahedron certificate (PREP) | PREP shipped | #18486 |
 | S6a-ACT | Tetrahedron certificate (Lean) | not shipped | — |
 | S6b/c | Octahedron + cube refutations (PREP) | PREP shipped | #18541 |
@@ -251,37 +293,34 @@ Practical:
 
 ## Next Action
 
-**S5 PREP shipped (this PR, 2026-06-05, doc-only)** — paste-ready
-axiom signature `oneflat_classification_higher_dim` for the
-$d \ge 3, k = 1$ extension of ABKPR 2008.  Closes the S1 OBSERVE
-defect (`sorry : Prop` in `axiom` body).  Full design in
-`sessions/2026-06-05-s5-prep-conjecture-refinement.md` (§§1–13).
+**S5 ACT shipped (this PR, 2026-06-10, Docker build-verified)** — pastes
+the S5 PREP §3.A–E recipe verbatim: 4 new class predicates
+(`IsCollinearD`, `IsGeneralPositionD`, `IsNearPencilD`,
+`IsIncenterConfigD`) + 1 axiom `oneflat_classification_higher_dim`.
+File 180 → 243 LOC; slug `axiomCount: 0 → 1`.  Full memo in
+`sessions/2026-06-10-s5-act-higher-dim-axiom.md`.
 
 **Next substantive ACT (any researcher)**:
 
-- **(a) S5 ACT** — paste the §3.A–E definitions + axiom into
-  `Erdos735OQ04.lean`. ~+40 LOC, +4 defs, +1 axiom, 0 new sorries.
-  Optional: also prove the doc-only corollary
-  `oneflat_classification_dim_two` reducing to parent's axiom via
-  `oneflat_eq_parent` (S4 ACT) — ~12 LOC.  This is the **lowest-risk
-  remaining ACT** because all bearers are already pinned (§8 audit)
-  and no new imports are required.
 - **(b) S6a-ACT** — tetrahedron certificate (PREP at #18486,
   paste-ready, ~80–110 LOC, new file
-  `Erdos735OQ04Tetrahedron.lean`).
+  `Erdos735OQ04Tetrahedron.lean`).  Now that `IsKFlatMagic` and the
+  S5 axiom are in place, the tetrahedron `k = 2` certificate is the
+  natural next concrete deliverable.
 - **(c) S6b/c-ACT** — octahedron + cube refutations (PREP at #18541,
   paste-ready).
 - **(d) S6e** — general-position uniform-weight theorem for
-  `1 ≤ k ≤ d - 1` in `ℝᵈ` (no PREP yet; requires defining
-  `IsGeneralPositionD` and proving the uniform-weighting
-  certificate; ~40-60 LOC; can be combined with (a) S5 ACT
-  since both define `IsGeneralPositionD`).
+  `1 ≤ k ≤ d - 1` in `ℝᵈ`.  Can reuse the new `IsGeneralPositionD`
+  def, though it would need a `k`-parameterised variant.  ~40–60 LOC.
+- **(e) S7** — gallery JSON `status: "axiomatized"`, `axiomCount: 1`,
+  `assumptions` field documenting the S5 axiom and the
+  `IsIncenterConfigD` skeleton-vs-tight gap.
+- **(f) `IsIncenterConfigD` tightening** — closes the skeleton gap;
+  requires Mathlib `ℝᵈ` bisector / insphere API contribution.
 
-All four are independently shippable.  **Recommendation: (a) S5 ACT
-next**, since it (i) introduces the first `axiom` to the slug
-(closing the gallery `status: "axiomatized"` requirement), (ii)
-defines `IsGeneralPositionD` which (d) S6e also needs, and (iii) has
-the lowest Docker risk.
+All independently shippable.  **Recommendation: (b) S6a-ACT next**, as
+the next leaf-only ACT with fully designed PREP and the lowest
+Docker risk.
 
 **Historical (pre-S4-BUILD-VERIFY) recipe** (preserved for
 traceability):
