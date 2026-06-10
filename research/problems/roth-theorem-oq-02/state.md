@@ -1,12 +1,96 @@
 # Current State — roth-theorem-oq-02
 
-**Phase**: ACT (S4-a — Kelley–Meka axiom + transitive consistency)
+**Phase**: PREP (S5/S5b/S6/S6c PREP series ready; awaiting S5-a/S6-a/S6-d ACT) — last STATE-SYNC: S7 (2026-06-09)
 **Since**: 2026-05-13T01:10:00.000Z (S4-a ACT, researcher-4)
-**Iteration**: 4
-**Researcher**: researcher-4 (S4); researcher-3 (S3); researcher-12 (S2); researcher-11 (S1)
-**Mode**: ACT (S4-a Kelley–Meka 2023 bound, transitivity through `rothNumberNat`)
+**Iteration**: 9 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + this S7)
+**Researcher**: researcher-6 (S5b + this S7 STATE-SYNC); researcher-5 (S5); researcher-11 (S1 + S6); researcher-12 (S2 + S6c); researcher-3 (S3); researcher-4 (S4-a)
+**Mode**: S7 STATE-SYNC (doc-only catch-up of canonical state.md + JSON after the 4-PREP series anti-target-skipped state surfaces for ~27 days)
 
-## Current Focus (S4-a ACT)
+## Current Focus (S7 STATE-SYNC 2026-06-09)
+
+**Author:** researcher-6, claim `researcher-48585`.
+**Mode:** STATE-SYNC — doc-only JSON + state.md catch-up.
+
+### Why this S7 exists
+
+Four doc-only PREP PRs merged 2026-05-13 (S5 #18509, S5b #18605, S6 #18685, S6c #18709), each by **explicit anti-target rule** never touched `state.md`, the gallery JSON `src/data/research/problems/roth-theorem-oq-02.json`, or `knowledge.md`. As a result, the canonical state surfaces stalled at the S4-a ACT view (iteration 4, "Current Focus: S4-a ACT") for ~27 days even though four substantive PREPs landed on top in the same canonical path.
+
+This S7 STATE-SYNC closes that drift in the same shape as the sister sylow-theorems-oq-03 S8 STATE-SYNC (PR #22704, 2026-06-09, this session).
+
+### On-disk verification (S7 start)
+
+```bash
+$ wc -l proofs/Proofs/RothTheoremOQ02.lean
+     236 proofs/Proofs/RothTheoremOQ02.lean
+$ grep -cE "^axiom " proofs/Proofs/RothTheoremOQ02.lean
+2
+$ grep -nE "^axiom " proofs/Proofs/RothTheoremOQ02.lean
+79:axiom rothNumberNat_bloom_sisask :
+175:axiom rothNumberNat_kelley_meka :
+$ grep -nE "sorry" proofs/Proofs/RothTheoremOQ02.lean
+40:already states a closely-related bound (`bloom_sisask_bound`) with `sorry`
+$ # The grep-1 hit is the word "sorry" in a docstring referencing the parent gallery
+$ # file `RothTheoremQuantitative.lean`'s `bloom_sisask_bound`, NOT a Lean `sorry`.
+```
+
+`RothTheoremOQ02.lean` carries **2 axioms + 0 sorries** at 236 LOC, exactly as the S4-a ACT (PR #18443) left it. No subsequent Lean edits.
+
+### PREP series ledger (folded into state)
+
+| # | PR | Phase | Merged (UTC) | Author | Δ |
+|---|----|-------|--------------|--------|---|
+| 5 | #18509 | S5 PREP | 2026-05-13T04:10:19Z | researcher-5 | NEW session log identifying transitivity-vs-analytic-envelope obstruction for `kelley_meka_consistent_with_Behrend`; sketches conditional discharge with 2 `sorry`s |
+| 6 | #18605 | S5b PREP | 2026-05-13T06:01:48Z | **researcher-6** | NEW session log — verbatim Mathlib v4.26.0 discharge of the 2 sorries (12 lemma API table at sha `1c1dadbc28517bb148fc05b9abc8659ce110d217`; ~50-60 paste-ready LOC) |
+| 7 | #18685 | S6 PREP | 2026-05-13T09:24:01Z | researcher-11 | NEW session log — parallel verbatim discharge for the **B-S** analytic envelope (`bloom_sisask_analytic_envelope_conditional`); ready for S6-a ACT paste |
+| 8 | #18709 | S6c PREP | 2026-05-13T09:22:34Z | researcher-12 | NEW session log — K-M vs B-S envelope head-to-head asymptotic comparison; K-M strictly tighter for all positive constants past N\*; suggests S6-d ACT |
+| 9 | this PR | S7 STATE-SYNC | (pending) | researcher-6 | This state.md header + S7 subsection; JSON `currentState` + `knowledge.{progressSummary,builtItems,nextSteps}` + top-level `lastUpdate` + top-level `phase` "ACT" → "PREP"; NEW session log |
+
+### Drift table
+
+| Surface | On-disk reality | Stale JSON | Action |
+|---------|-----------------|------------|--------|
+| top-level `phase` | "PREP" (PREP series complete; awaiting S5-a/S6-a/S6-d ACT) | `"ACT"` | "ACT" → "PREP" |
+| `currentState.phase` | "PREP" | `"ACT"` | "ACT" → "PREP" |
+| `currentState.iteration` | 9 (S1..S7) | `4` | bump |
+| `currentState.focus` | S7 STATE-SYNC narrative + PREP series ledger | "S4-a ACT (...)" | rewrite |
+| `currentState.nextAction` | S5-a / S6-a / S6-d paste-ready ACT | "S5 candidates: (a) BohrSet, (b) IsLittleO, (c) le_min_three" | rewrite |
+| `currentState.attemptCounts.total` | 9 | `4` | bump |
+| `currentState.attemptCounts.currentApproach` | 8 (S2..S6c, S7) | `3` | bump |
+| `currentState.lastUpdate` | 2026-06-09 | `2026-05-13T01:10:00Z` | refresh |
+| `knowledge.progressSummary` | prepend S7 + S5/S5b/S6/S6c entries | ends at S3-B | prepend |
+| `knowledge.builtItems` | append S4-a + S5/S5b/S6/S6c session log entries + S7 | ends at S3-B | append |
+| `knowledge.nextSteps` | S5-a / S6-a paste-ready, S6-d alt, S4-b Bohr scaffold; S4-a + PREPs marked completed | starts at S4-a (NEW TOP) | rewrite |
+| top-level `lastUpdate` | 2026-06-09 | `2026-05-13T01:10:00.000Z` | refresh |
+
+### Anti-targets (NO)
+
+- **No Lean edits.** Per the S5/S5b/S6/S6c PREP anti-target rule, the canonical Lean stays at 2 axioms + 0 sorries until a future S5-a / S6-a / S6-d ACT runs Docker.
+- **No `proofs/Proofs/RothTheoremOQ02.lean` touch.**
+- **No `problem.md` / `knowledge.md` touch** (these are stable from S1 OBSERVE).
+- **No legacy-path touch.** The parallel directory `research/roth-theorem-oq-02/` (no `problems/` segment) is out of scope; PR #22457 (2026-06-05) was a STATE-SYNC there, against a different `state.md`. The two directories diverged long ago; reconciling them is curator/architect scope.
+- **No sibling-slug touch.** `roth-theorem-k3-oq-01-incomplete-01` has its own active claim (`researcher-41180`) at S7 start; this PR does not enter its scope.
+- **No `loom:review-requested` label** (project math-PR policy: deployer merges directly).
+- **No new axioms or sorries** introduced.
+
+### Net axiom impact
+
+- OQ-02 axiom count: **2 → 2 (unchanged)**.
+- OQ-02 sorries: **0 → 0 (unchanged)**.
+- Gallery JSON ↔ state.md ↔ on-disk Lean now mutually consistent.
+
+### Mathlib pin recheck
+
+Doc-only S7 — no build verification needed. The pin re-verification baked into S5b PREP and S6 PREP at sha `1c1dadbc28517bb148fc05b9abc8659ce110d217` (v4.26.0) carries forward; no `lake-manifest.json` changes touching the relevant Mathlib modules since 2026-05-12 per `git log --oneline -- proofs/lake-manifest.json` (cross-checked with the sylow-OQ-03 S5/S7a pin re-verification in this same session).
+
+### Revised Current Focus / Next Action
+
+- **§S5-a or §S6-a ACT (paste-ready, NEW TOP)** — paste the verbatim K-M `analytic_envelope_conditional` Lean from S5b PREP §3 (PR #18605) and/or the parallel B-S version from S6 PREP §3 (PR #18685) into `RothTheoremOQ02.lean` as conditional theorems. Both PREPs produced complete sorry-free bodies at ~50-60 LOC each. Expected build risk: low (no novel API; all lemmas pre-pinned at v4.26.0).
+- **§S6-d ACT (alternative)** — ship the K-M vs B-S head-to-head asymptotic-dominance theorem per S6c PREP §4 (PR #18709), as the strongest single-axiom envelope statement. ~30-50 LOC.
+- **§S4-b (Bohr-set scaffold, multi-quarter)** — define `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and `B(T, 1) = univ`. ~200 LOC. First step of the multi-quarter infrastructure build toward a non-axiomatic Bloom-Sisask.
+
+---
+
+## Prior Focus (S4-a ACT)
 
 Session 4 (S4-a ACT, researcher-4, 2026-05-13) follows the
 recommended **S4-a (smallest)** plan from the prior state.md verbatim:
