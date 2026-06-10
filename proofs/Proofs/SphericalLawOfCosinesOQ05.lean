@@ -324,7 +324,6 @@ theorem inner_projectPerp_eq_sin_sin_cos_angleC (t : SphericalTriangle) :
       simp only [SphericalTriangle.angleC, dif_neg h_not_deg]
     rw [h_angle_eq, Real.cos_arccos h_div_ge h_div_le, ← h_normA, ← h_normB]
     field_simp
-    ring
 
 /-- **Trigonometric form of the spherical law of cosines.** Combines the parent's
 `spherical_law_of_cosines_trig` (projection-inner-product form) with the bridge
@@ -568,8 +567,9 @@ theorem haversine_eq_zero_iff_of_mem_Icc {θ : ℝ}
     haversine θ = 0 ↔ θ = 0 := by
   have h0_mem : (0 : ℝ) ∈ Set.Icc (0 : ℝ) π :=
     ⟨le_refl 0, Real.pi_pos.le⟩
-  rw [show (0 : ℝ) = haversine 0 from haversine_zero.symm]
-  exact haversine_eq_haversine_iff_eq hθ h0_mem
+  have h := haversine_eq_haversine_iff_eq hθ h0_mem
+  rw [haversine_zero] at h
+  exact h
 
 /- ## Part X: Summary
 
