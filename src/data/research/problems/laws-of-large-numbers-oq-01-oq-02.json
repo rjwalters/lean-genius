@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Gallery entry with 0 sorries, 3 axioms. Session 2 (2026-06-06): axiom-tractability ranking + reduction plan for pareto_in_lr_iff (layer-cake + integral_rpow) + new α=2 boundary follow-up question (logarithmic correction).",
+    "progressSummary": "COMPLETE: Gallery entry with 0 sorries, 3 axioms. Session 3 (2026-06-09): Aristotle MCP outage (Resource not found) + repository gap finding (zero layer-cake idiom precedent in proofs/) + drafted executable Lean proof skeleton for pareto_in_lr_iff with measurability-hypothesis recommendation, ready for S4 first build. Session 2 (2026-06-06): axiom-tractability ranking + reduction plan for pareto_in_lr_iff (layer-cake + integral_rpow) + new α=2 boundary follow-up question (logarithmic correction).",
     "builtItems": [
       "LawsOfLargeNumbersOQ01OQ02.lean: 10 theorems, 3 axioms — IsLr hierarchy, M-Z rate theorem, Pareto example, stable CLT axiom"
     ],
@@ -38,17 +38,19 @@
       "For Pareto(α) with α∈(1,2): rate is n^{1/r} for r<α, optimal rate n^{1/α} from stable CLT",
       "Key Lean insight: Memℒp.mono_exponent provides L^q ⊆ L^p for p≤q in probability spaces",
       "Axiom tractability ranking (Session 2): pareto_in_lr_iff (TRACTABLE — layer-cake + integral_rpow) > marcinkiewicz_zygmund_slln (HARD but in scope via Kolmogorov 3-series) > stable_clt_attraction (BLOCKED on Mathlib's Lévy continuity)",
-      "Boundary phenomenon (Session 2): At α=2 the strict M-Z rate hierarchy breaks; sharp normalization becomes (n log n)^{1/2} (Feller Vol. II §IX.8) — a logarithmic correction qualitatively distinct from the (1,2) interior."
+      "Boundary phenomenon (Session 2): At α=2 the strict M-Z rate hierarchy breaks; sharp normalization becomes (n log n)^{1/2} (Feller Vol. II §IX.8) — a logarithmic correction qualitatively distinct from the (1,2) interior.",
+      "Aristotle MCP outage (Session 3, 2026-06-09): both real and trivial-smoke prove() calls returned {status:error, message:'Resource not found'}, blocking the role-preferred per-sorry MCP path. Future sessions claiming this problem in the next ~6h should expect the same.",
+      "Repo gap (Session 3): continuous layer-cake formula (lintegral_rpow_eq_lintegral_meas_lt_mul_rpow_sub_one) is unused across all 3000+ proofs in proofs/Proofs/ — this axiom reduction would be the first-of-its-kind application, worth flagging in the technique index."
     ],
     "mathlibGaps": [
       "marcinkiewicz_zygmund_slln: truncation argument using Kolmogorov 3-series not yet in Mathlib 4.26",
-      "pareto_in_lr_iff: improper integral E[X^r] for Pareto(α) not automated in Mathlib 4.26 — REDUCIBLE via lintegral_rpow_eq_lintegral_meas_lt_mul_rpow_sub_one + intervalIntegral.integral_rpow",
+      "pareto_in_lr_iff: improper integral E[X^r] for Pareto(α) not automated in Mathlib 4.26 — REDUCIBLE via lintegral_rpow_eq_lintegral_meas_lt_mul_rpow_sub_one + intervalIntegral.integral_rpow (S3: executable Lean draft now in sessions/2026-06-09-s3-mcp-outage-pareto-lriff-blueprint.md)",
       "stable_clt_attraction: characteristic function approach requires Lévy continuity theorem not formalized",
       "α=2 boundary rate (n log n)^{1/2}: no Mathlib counterpart; would require a logarithmic-correction analog of marcinkiewicz_zygmund_slln"
     ],
     "nextSteps": [
-      "PRIORITY 1: Reduce pareto_in_lr_iff axiom to a Lean proof via layer-cake formula + intervalIntegral.integral_rpow on [1,∞). Plan in research/problems/laws-of-large-numbers-oq-01-oq-02/knowledge.md (Session 2). Estimated 30–80 LOC. Suitable for in-build Aristotle MCP prove() call.",
-      "PRIORITY 2: Aristotle-submit marcinkiewicz_zygmund_slln (Kolmogorov 3-series + Kronecker lemma approach)",
+      "PRIORITY 1 (S3-refined): Implement the executable proof blueprint in sessions/2026-06-09-s3-mcp-outage-pareto-lriff-blueprint.md. Contains pareto_ge_one_ae precursor lemma (X ≥ 1 a.s., ~10 LOC) + pareto_in_lr_iff full proof outline. S4 should (a) verify the 6 named Mathlib symbols in the S3 audit table, then (b) write tactics. Recommended: add (hX_meas : Measurable X) hypothesis to the axiom — all downstream callers already have hmeas.",
+      "PRIORITY 2: Aristotle-submit marcinkiewicz_zygmund_slln (Kolmogorov 3-series + Kronecker lemma approach) — once MCP is back online.",
       "PRIORITY 3: New gallery entry on α=2 boundary regime: (n log n)^{1/2} normalization (Feller Vol. II §IX.8) — qualitatively distinct logarithmic-correction phenomenon, well-defined sibling to oq-01-oq-02."
     ]
   },
@@ -68,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-05-05T02:57:44.816Z",
-  "lastUpdate": "2026-05-05T02:57:44.816Z",
+  "lastUpdate": "2026-06-09T19:35:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
