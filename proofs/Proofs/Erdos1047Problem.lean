@@ -42,6 +42,7 @@ import Mathlib.Analysis.Normed.Field.Basic
 import Mathlib.Topology.Connected.Basic
 import Mathlib.Topology.MetricSpace.Basic
 import Mathlib.Algebra.Polynomial.Eval.SMul
+import Mathlib.Tactic.ComputeDegree
 
 open Polynomial Set
 
@@ -104,8 +105,7 @@ def IsConvexComplex (S : Set ℂ) : Prop :=
 theorem closedBall_isConvex (center : ℂ) (r : ℝ) :
     IsConvexComplex (Metric.closedBall center r) := by
   intro z w hz hw t ht0 ht1
-  have hconv := convex_closedBall center r
-  exact hconv.smul_add_smul_mem_of_nonneg_of_le (by linarith) ht0 (by linarith) ht1 hz hw
+  exact (convex_closedBall center r) hz hw (by linarith) ht0 (by ring)
 
 /-
 ## Part V: The Grunsky Conjecture (Disproved)
@@ -139,8 +139,9 @@ theorem pommerenkePolynomial_monic (k : ℕ) (a : ℂ) :
   unfold pommerenkePolynomial
   exact Monic.mul (monic_X_pow k) (monic_X_sub_C a)
 
-/-- Pommerenke's polynomial has degree k+1 -/
-theorem pommerenkePolynomial_degree (k : ℕ) (a : ℂ) (ha : a ≠ 0) :
+/-- Pommerenke's polynomial has degree k+1.
+    Note: holds for every `a : ℂ` (including `a = 0`); `X - C 0 = X` still has degree 1. -/
+theorem pommerenkePolynomial_degree (k : ℕ) (a : ℂ) :
     (pommerenkePolynomial k a).natDegree = k + 1 := by
   unfold pommerenkePolynomial
   rw [Polynomial.natDegree_mul (pow_ne_zero k X_ne_zero) (X_sub_C_ne_zero a),
@@ -162,6 +163,11 @@ theorem goodmanPolynomial_monic : goodmanPolynomial.Monic := by
   unfold goodmanPolynomial
   exact Monic.mul (monic_X_pow_add_C 1 (by norm_num : (2 : ℕ) ≠ 0))
     ((monic_X_sub_C (2 : ℂ)).pow 2)
+
+/-- Goodman's polynomial has natDegree exactly 4 -/
+theorem goodmanPolynomial_natDegree : goodmanPolynomial.natDegree = 4 := by
+  unfold goodmanPolynomial
+  compute_degree!
 
 /-- Goodman's critical value: c = 5^(3/2)/4 ≈ 2.795 -/
 noncomputable def goodmanCriticalValue : ℝ :=
@@ -187,6 +193,11 @@ noncomputable def refereePolynomial : ℂ[X] :=
 theorem refereePolynomial_monic : refereePolynomial.Monic := by
   unfold refereePolynomial
   exact monic_X.mul (monic_X_pow_sub_C 1 (by norm_num : (5 : ℕ) ≠ 0))
+
+/-- Referee's polynomial has natDegree exactly 6 -/
+theorem refereePolynomial_natDegree : refereePolynomial.natDegree = 6 := by
+  unfold refereePolynomial
+  compute_degree!
 
 /-- Referee's critical value: 5.6^(-6/5) -/
 noncomputable def refereeCriticalValue : ℝ :=
@@ -231,9 +242,7 @@ theorem erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false
 
 /-- Goodman's polynomial has positive degree (degree 4) -/
 theorem goodmanPolynomial_degree_pos : goodmanPolynomial.natDegree > 0 := by
-  unfold goodmanPolynomial
-  simp [Polynomial.natDegree_mul, Polynomial.natDegree_pow]
-  omega
+  rw [goodmanPolynomial_natDegree]; omega
 
 /-- Existence of non-convex lemniscate components via Goodman's example -/
 theorem erdos_1047_counterexample :
