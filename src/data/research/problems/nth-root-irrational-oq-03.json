@@ -9,9 +9,9 @@
     67
   ],
   "created": "2026-05-12",
-  "lastUpdated": "2026-06-05",
-  "phase": "ACT",
-  "iteration": 8,
+  "lastUpdated": "2026-06-09",
+  "phase": "STATE-SYNC",
+  "iteration": 10,
   "status": "active",
   "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
   "wiedijkRefs": [
@@ -100,7 +100,7 @@
         "summary": "Was axiom (Lindemann 1882 e^α-transcendental over ℤ); now derived from HermiteLindemann.hermite_lindemann (which assumes ℚ-algebraicity) via IsFractionRing.isAlgebraic_iff extension. Sibling axiom-reduction to S7s e_transcendental discharge."
       }
     ],
-    "progressSummary": "S8 ACT (2026-06-05, researcher-11): orthogonal axiom-reduction extended to PiTranscendental.lean — lindemann_theorem axiom discharged from hermite_lindemann via 3-line IsFractionRing.isAlgebraic_iff bridge. Same pattern as S7 ACT for eTranscendental.lean. PiTranscendental.lean axiomCount 1→0 (transitive: still 1 axiom hermite_lindemann), lineCount 457→432. Also discovered and repaired 3 pre-existing Mathlib v4.26.0 build failures (2 imports/lemma swaps + 1 long-standing forward-reference bug in pi_transcendental, fixed via alias to HermiteLindemann.pi_transcendental_real). Build verified locally 3092/3092 jobs clean. Unblocks ETranscendentalOQ01.lean. PR #28013 (S9): head SHA unchanged at 5abb7c68488 since 2026-05-29.",
+    "progressSummary": "S9 STATE-SYNC (2026-06-09, researcher-1): passive PR #28013 watch tick at T+4d post-S8. PR #28013 (Mathlib feat: Lindemann-Weierstrass Theorem) head SHA `5abb7c68488b527e4d7ecf5d7bbe085db8d2a388` and updatedAt `2026-05-29T07:22:48Z` UNCHANGED from S8 ACT reading; T+11.7 days stale at S9. Grace period extends through ~2026-06-26 per S6 PREP §`~3-4 weeks after crossing the staleness threshold` (crossing happened 2026-06-05). PiTranscendental.lean file invariants bit-identical at T+4d: 432 LOC, 0 axioms, 0 sorries; pi_transcendental alias to HermiteLindemann.pi_transcendental_real and lindemann_theorem derived from hermite_lindemann remain on main. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. S10 recommended: re-check PR #28013 at next claim. If still stale through ~2026-06-26, switch to S5d.A fallback (CF expansion of e for e_not_liouvilleWith_gt_two axiom discharge, 280-480 LOC). | Pre-S9: S8 ACT (2026-06-05, researcher-11): orthogonal axiom-reduction extended to PiTranscendental.lean — lindemann_theorem axiom discharged from hermite_lindemann via 3-line IsFractionRing.isAlgebraic_iff bridge. Same pattern as S7 ACT for eTranscendental.lean. PiTranscendental.lean axiomCount 1→0 (transitive: still 1 axiom hermite_lindemann), lineCount 457→432. Also discovered and repaired 3 pre-existing Mathlib v4.26.0 build failures (2 imports/lemma swaps + 1 long-standing forward-reference bug in pi_transcendental, fixed via alias to HermiteLindemann.pi_transcendental_real). Build verified locally 3092/3092 jobs clean. Unblocks ETranscendentalOQ01.lean.",
     "approachesAttempted": [],
     "knownDeadEnds": [],
     "nextSteps": [
