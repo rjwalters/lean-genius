@@ -3,138 +3,180 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-01T00:00:00Z (S3 ACT REPAIR-DISCOVERY this PR)
-**Iteration**: 3
+**Since**: 2026-06-09T00:00:00Z (S5 ACT VERIFY-DISCOVERY this PR)
+**Iteration**: 5
 
 ## Current Focus
 
-**S3 ACT REPAIR-DISCOVERY (researcher-1, 2026-06-01)** — STATE-SYNC
-plus a fresh-build Docker audit of
-`proofs/Proofs/RothTheoremQuantitative.lean`. The session began as a
-small-N enumeration ACT (target: `r₃(4) ∈ [2, 3]` bounds). When I ran
-`./proofs/scripts/docker-build.sh Proofs.RothTheoremQuantitative` to
-verify the additions, the build surfaced **six distinct compile
-failures** in the file *as it sits on `main`* (i.e., independent of my
-additions). After investigation, all six trace back to two root causes
-that are not addressable in a single small-N enumeration ACT, so this
-S3 ACT pivots to discovery + state-sync.
+**S5 ACT VERIFY-DISCOVERY (researcher-4, 2026-06-09)** — Attempted
+to Docker-verify the S4 four-fix surgical repair on a remediated
+host disk (105 GiB free vs S4's 158 Mi). The verification failed
+on multiple grounds and S5 ships this as a discovery memo (doc-only
+PR, no Lean file changes) so S6+ does not repeat the trip-up.
 
-### Findings (file as it sits on `main`, fresh Docker build, no cache)
+### Key finding — S4 diagnosis was incomplete
 
-1. **Mathlib v4.26.0 API drift**: `div_lt_iff` (line 174) and
-   `div_le_iff` (line 218) were renamed to `div_lt_iff₀` /
-   `div_le_iff₀` in Mathlib v4.26.0 (commit `2df2f0150c`). Both are
-   simple drop-in renames (same signature `(0 < c) : b / c ≤ a ↔ b ≤
-   a * c`).
+The four S4 fixes are individually correct but **collectively
+insufficient** to restore the file to a fresh-Docker-build-green
+state on Mathlib v4.26.0:
 
-2. **Math bug in `max_iterations_bound`** (line 195–212): the
-   statement `δ + kδ²/100 > 1 → k > ⌊100/δ²⌋₊` is **false** for
-   `δ > 1`. Counterexample: `δ = 2, k = 0` gives `δ + 0 = 2 > 1` ✓
-   but `⌊100/4⌋₊ = 25 ≥ 0 = k`. Algebraically the correct contrapositive
-   from `δ + kδ²/100 > 1` is `k > 100(1 - δ)/δ²` (strictly weaker than
-   `100/δ²` whenever `δ > 0`). The previous `linarith` proof appeared
-   to close on an older Mathlib snapshot but in fact relied on the
-   now-removed `div_le_iff` lemma whose elaboration drift masked the
-   underlying mathematical gap. The companion lemma
-   `iterations_before_contradiction` (line 214) was a downstream
-   consumer.
+- **Fix #1** (`div_lt_iff` → `div_lt_iff₀`) — necessary and correct.
+- **Fix #2** (remove math-false `max_iterations_bound`) — necessary
+  and correct. The math finding (`max_iterations_bound` is False
+  for `δ > 1`, counterexample `δ=2, k=0`) is real and valuable.
+- **Fix #3** (`set_option maxHeartbeats 400000 in` before
+  `rothNumber_three`) — **diagnosis wrong**. The actual fresh-build
+  failure of `fin_cases ... simp_all` is **unclosed subgoals**, not
+  a heartbeat panic. `simp_all` returns successfully with three
+  residual subcases of ZMod 3 arithmetic that it no longer reduces
+  (a `Decidable` discharger moved in v4.26.0). Bumping
+  `maxHeartbeats` does nothing.
+- **Fix #4** (`set S : Finset (Finset (ZMod N))` type annotation +
+  `hS_def ▸` rewrite chain in `rothNumber_achieved`) — **necessary
+  but insufficient**. The actual failure is
+  `failed to synthesize DecidablePred APFree` at three sites inside
+  `rothNumber_achieved` (and same failure in `rothNumber_pos` and
+  `card_le_rothNumber`). The type annotation fixes the membership
+  goal but not the underlying instance-synthesis failure.
 
-3. **`rothNumber_three` `simp_all` timeout** (line 134): the proof
-   `fin_cases a <;> fin_cases d <;> simp_all` over `Finset (ZMod 3)`
-   (9 subcases) exceeds the default 200 000 heartbeat budget in a
-   fresh build. Cached lake builds skip re-verification, which is
-   why merged CI on PR #21520 didn't flag it.
+See `sessions/2026-06-09-s5-act-verify.md` for the full
+verification log (≥10 Docker build attempts, escalating tactic
+replacements, cache clearing, classical-tactic experiment).
 
-4. **`rothNumber_achieved` type mismatch** (line 118): `Finset.mem_filter.mp`
-   leaves a metavariable `?m.52 = ?` that the elaborator can't pin to
-   `filter APFree` without a hint. Likely needs an explicit type
-   annotation on the `set S := ...` line or an `(· : Finset (ZMod N))`
-   ascription.
+### Tentative diagnostic — `DecidablePred APFree`
 
-### Decision
+The `noncomputable def rothNumber` uses
+`Finset.univ.powerset.filter (fun A => APFree A)`, which requires
+`DecidablePred APFree`. On the older Mathlib snapshot this was
+implicitly synthesizable; on v4.26.0 the synthesis fails and the
+classical fallback isn't applied automatically.
 
-REVERT the small-N enumeration additions (they sat on top of broken
-code and shouldn't be merged in isolation). Ship only the state.md /
-JSON updates documenting the regressions. The full repair belongs to
-a dedicated REPAIR session (or a paired-fix PR that bundles the
-small-N enumeration with the four repairs above and a Docker-verified
-fresh build).
+S5's experimental fix attempt was to add `classical` to each
+affected theorem (`rothNumber_pos`, `card_le_rothNumber`,
+`rothNumber_achieved`). This shifted the error but didn't
+eliminate it — the `classical`-introduced local `Decidable`
+instance differs from the global `Classical.dec` used by the
+`noncomputable def`, so the `Finset.filter` expressions no longer
+unify (`{A ∈ univ.powerset | APFree A}.sup card ≤ sorry.sup card`).
 
-### Pre-2026-06-01 STATE-SYNC
+The correct fix likely requires one of:
+- A file-scoped `noncomputable instance : DecidablePred (@APFree N)`;
+- Explicit `Classical.decPred` annotations at every `Finset.filter`
+  site;
+- Relocating `rothNumber_three` (the `decide`-cascade trigger) to a
+  separate file.
 
-The slug's `state.md` had been stuck at "OBSERVE iteration 1" since
-2026-04-03 despite a successful S2 contribution merged on 2026-05-31
-via PR #21520 (`rothNumber_div_tendsto_zero` qualitative asymptotic).
-The JSON's `currentState` had already moved to iteration 2 / ORIENT,
-but state.md was unaware. This S3 ACT also brings state.md into sync
-with the JSON.
+All three are deeper than the surgical-repair scope S4 envisaged.
+
+## Diff this PR ships
+
+```
+proofs/Proofs/RothTheoremQuantitative.lean — UNCHANGED
+research/problems/.../sessions/2026-06-02-s4-act-repair.md — IMPORTED from S4 (never merged)
+research/problems/.../sessions/2026-06-09-s5-act-verify.md — NEW (this S5 report)
+research/problems/.../state.md — UPDATED (this file)
+src/data/research/problems/roth-theorem-k3-oq-01-incomplete-01.json — UPDATED
+```
+
+Zero Lean changes. Counts unchanged: 286 LOC, 9 theorems,
+4 sorries, 0 axioms, 1 def.
+
+## Status of S4 PR #22075
+
+S4 PR #22075 (DRAFT) is **not promotable as-is**. The four edits
+are necessary contributors but not sufficient. S5 leaves the PR
+open for the team to decide whether to:
+- Close as superseded (S6 starts fresh);
+- Rebase + extend with the additional `DecidablePred APFree` /
+  `simp_all`-residue fixes;
+- Cherry-pick fixes #1, #2 only (they're independent and useful
+  even without the full repair).
+
+## Prior Focus (S4 ACT REPAIR DRAFT, 2026-06-02, PR #22075)
+
+S4 (researcher-1, 2026-06-02) drafted four surgical fixes for the
+issues S3 (2026-06-01) discovered. PR opened DRAFT because host
+disk was at 99 % (158 Mi free) and the Docker build could not
+run. S5's host has 105 GiB free, so verification finally
+proceeded — and discovered that the S4 fix design was
+incomplete. See `sessions/2026-06-02-s4-act-repair.md`.
+
+## Prior Focus (S3 ACT REPAIR-DISCOVERY, 2026-06-01, PR #22001)
+
+S3 began as a small-N enumeration ACT but pivoted to a
+fresh-build audit when Docker surfaced 6 distinct compile
+failures in the file *as it sits on `main`*. Identified four
+root causes (which S4 attempted to address surgically; S5
+proves at least two of the four diagnoses were incomplete).
 
 ## Prior Focus (S2 contribution merged 2026-05-31, PR #21520)
 
-S2 (researcher unknown — pre-S3 STATE-SYNC) shipped the qualitative
-asymptotic `rothNumber_div_tendsto_zero : Tendsto (n ↦ rothNumber n / n)
-atTop (𝓝 0)` to `proofs/Proofs/RothTheoremQuantitative.lean` (lines
-156–207 as of f486a19). Proof reduces to `Szemeredi.Roth.roth_density_bound`
-via the corners-theorem chain. **PR #21520 merged with a green CI
-that relied on Lake's incremental cache; rebuilding the file from a
-clean state on Mathlib v4.26.0 surfaces the four issues above.**
+S2 shipped `rothNumber_div_tendsto_zero` to the file (lines
+156–207 of that revision). Proof reduces to
+`Szemeredi.Roth.roth_density_bound` via the corners-theorem
+chain. CI passed via Lake's incremental cache; rebuilding the
+file from a clean state on Mathlib v4.26.0 surfaced the issues
+S3 → S4 → S5 are still working through.
 
 ## Prior Focus (S1 OBSERVE, 2026-04-03)
 
 Initial problem understanding from problem.md. The Lean file
 `RothTheoremQuantitative.lean` has 4 landmark sorries remaining
 (Roth 1953, Behrend 1946, Bloom–Sisask 2020, Kelley–Meka 2023),
-each requiring ≥ 1000 LOC of formalization. None tractable in a
-single session. Tractable adjacent contributions identified:
-qualitative asymptotic + small-N exact values.
+each requiring ≥ 1000 LOC of formalization.
 
 ## Active Approach
-Small-N enumeration → blocked on pre-existing build regressions.
-S4 should be a REPAIR session (or paired-fix PR) to restore the
-file to a fresh-rebuild-green state before resuming small-N
-enumeration.
+
+S6 ACT OBSERVE/REPAIR-DESIGN — design the actual repair given
+S5's findings. Not a simple surgical edit; needs investigation
+into `Finset.filter` over noncomputably-decidable predicates and
+how to keep `DecidablePred APFree` synthesizable across the
+file.
 
 ## Attempt Count
-- Total attempts: 3 (S1 OBSERVE, S2 ACT qualitative, S3 ACT REPAIR-DISCOVERY)
+- Total attempts: 5 (S1 OBSERVE, S2 ACT qualitative, S3 ACT
+  REPAIR-DISCOVERY, S4 ACT REPAIR DRAFT, S5 ACT
+  VERIFY-DISCOVERY this PR)
 - Current approach attempts: 1
-- Approaches tried: 3 (initial OBSERVE, qualitative ACT, REPAIR-DISCOVERY)
+- Approaches tried: 4 (OBSERVE, qualitative ACT,
+  REPAIR-DISCOVERY, REPAIR DRAFT → VERIFY-DISCOVERY)
 
 ## Blockers
-`RothTheoremQuantitative.lean` fails fresh Docker build on Mathlib
-v4.26.0 due to API drift + 1 math bug + 1 `simp_all` heartbeat
-overshoot + 1 type-inference issue (4 root causes, 6 surfaced
-errors). S4 needs to be a dedicated repair session.
+
+`RothTheoremQuantitative.lean` fails fresh Docker build on
+Mathlib v4.26.0. Root causes (S5-revised diagnosis):
+
+1. `div_lt_iff` API rename (drop-in fix, S4 had this right).
+2. Math-false `max_iterations_bound` (S4 had this right;
+   remove and document).
+3. `rothNumber_three`: `simp_all` leaves three residual ZMod 3
+   arithmetic subcases on v4.26.0. Needs tactic redesign,
+   not heartbeat bump.
+4. `DecidablePred APFree` synthesis failure across the
+   noncomputable filter chain in `rothNumber`,
+   `rothNumber_pos`, `card_le_rothNumber`,
+   `rothNumber_achieved`. Needs instance-handling redesign,
+   not just `set` type annotations.
 
 ## Next Action
 
-**S4 ACT REPAIR (recommended)** — a focused repair PR:
+**S6 ACT REPAIR-DESIGN** — investigate `Finset.filter` over
+`DecidablePred` for noncomputable-by-default predicates. Three
+candidate approaches sketched in
+`sessions/2026-06-09-s5-act-verify.md` (file-scoped instance,
+explicit Classical.decPred, separate-file isolation).
 
-1. Rename `div_lt_iff` → `div_lt_iff₀` at line 174 and
-   `div_le_iff` → `div_le_iff₀` at line 218.
+Once S6 lands a green-on-fresh-build file, the original S3
+small-N enumeration plan can resume:
 
-2. Either remove `max_iterations_bound` + `iterations_before_contradiction`
-   as mathematically-incorrect dead code (no callers in the repo),
-   OR restate them with `(hδ : δ ≤ 1)` and the corrected bound
-   `k > 100(1 - δ)/δ²`.
+```lean
+theorem apFree_zero_one_zmod_four : APFree ({0, 1} : Finset (ZMod 4)) := by ...
+theorem two_le_rothNumber_four : 2 ≤ rothNumber 4 := ...
+theorem rothNumber_four_le_three : rothNumber 4 ≤ 3 := ...
+```
 
-3. Add `set_option maxHeartbeats 400000 in` (or hoist the membership
-   `simp` to a separate helper) for `rothNumber_three` to fit the
-   `fin_cases a <;> fin_cases d <;> simp_all` proof within budget on
-   fresh builds.
-
-4. Fix `rothNumber_achieved`: add a `(S : Finset (Finset (ZMod N)))`
-   annotation on the `set` line, OR refactor to `Finset.exists_max_image`
-   with explicit type arguments, so `Finset.mem_filter.mp hAS` resolves
-   `filter APFree` cleanly.
-
-5. Docker-verify the file builds clean from a fresh image.
-
-Once S4 REPAIR ships, **S5 ACT SMALL-N** can resume the original
-plan: `r₃(4) ∈ [2, 3]` via `apFree_zero_one_zmod_four`,
-`two_le_rothNumber_four`, `rothNumber_four_le_three`. The proofs
-themselves are simple (≤ 30 LOC) and were drafted in this session;
-they just can't ship on a broken base.
+≤ 30 LOC total.
 
 The four landmark sorries (`roth_quantitative_upper_bound`,
-`behrend_lower_bound`, `bloom_sisask_bound`, `kelley_meka_upper_bound`)
-remain multi-PR research efforts.
+`behrend_lower_bound`, `bloom_sisask_bound`,
+`kelley_meka_upper_bound`) remain multi-PR research efforts.
