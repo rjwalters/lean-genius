@@ -1,10 +1,74 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-06T (researcher-3, S6)
-**Iteration**: 6
+**Since**: 2026-06-10 (researcher-1, S7 STATE-SYNC)
+**Iteration**: 7
 
-## Current Focus
+## S7 STATE-SYNC 2026-06-10 (researcher-1, doc-only JSON catch-up)
+
+**Mode**: STATE-SYNC — research-JSON catch-up after S5 + S6 shipped Lean / state.md / gallery content but did not update `src/data/research/problems/cayley-hamilton-minpoly-oq-03-oq-02.json`. The JSON last touched `currentState` at S4 (2026-05-30); since then on-disk reality moved through S5 (matvec-count + ω axioms, PR #22531) and S6 (gallery promotion, PR #22595). S7 syncs the JSON to match.
+
+### Drift table
+
+| Surface | On-disk reality | Stale JSON read | Δ |
+|---------|------------------|------------------|----|
+| `proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` | 333 LOC / 11 theorems / 3 axioms / 0 sorries | (JSON is lagging) | — |
+| Gallery `meta.json` `leanFile` | `lineCount: 333, axiomCount: 3, theoremCount: 11, sorries: 0` | (no on-disk Δ) | — |
+| state.md header (pre-S7) | `Phase: ACT, Since: 2026-06-06, Iteration: 6` | (no on-disk Δ) | — |
+| JSON `currentState.iteration` | 7 (6 prior + S7) | `4` | **+3** |
+| JSON `currentState.focus` | S5 + S6 + S7 narrative | `S4 ACT (build verified, researcher-1, 2026-05-30) — Layer 2 vector form shipped…` | rewrite |
+| JSON `currentState.nextAction` | "problem at completion-ready state…" | `S5 — matvec-count bound + axiomatized Layer 3 placeholder…` (now done) | rewrite |
+| JSON `attemptCounts.total` | 7 | `4` | **+3** |
+| JSON `knowledge.progressSummary` | prepend S5 + S6 + S7 | starts at S3 ACT | prepend |
+| JSON `knowledge.builtItems` | append S5 (axioms) + S6 (gallery entry) | ends at S4 ACT | append 2 |
+| JSON `knowledge.nextSteps[0..6]` | re-order: optional follow-ups + Mathlib upstream | starts with done S5 matvec-count | rewrite |
+| JSON `leanFiles[9].lineCount` | 333 | `200` | **+133** |
+| JSON `leanFiles[9].theoremCount` | 11 | `7` | **+4** |
+| JSON `leanFiles[9].axiomCount` | 3 | `0` | **+3** |
+| JSON top-level `lastUpdate` | 2026-06-10 | `2026-05-30` | bump |
+
+### Axiom Integrity recheck (per CLAUDE.md policy)
+
+```text
+$ grep -nE "^axiom " proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean
+240:axiom omegaMM : ℝ
+247:axiom omegaMM_two_le : (2 : ℝ) ≤ omegaMM
+253:axiom omegaMM_lt_three : omegaMM < (3 : ℝ)
+$ grep -nE "^structure |^class " proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean
+(no matches)
+$ grep -nE ":= by sorry|:= sorry|^[[:space:]]+sorry$" proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean
+(no matches)
+```
+
+Three axioms (Layer 3 ω placeholder), zero structure/class encoding, zero sorries. Status `axiomatized` / badge `axiom` is correct per CLAUDE.md.
+
+### Mathlib pin recheck (no drift)
+
+`proofs/lake-manifest.json` mathlib `rev` = `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) — 28-day byte-identical pin since 2026-05-13.
+
+### What changed (concise)
+
+| File | Δ | Note |
+|------|---|------|
+| `src/data/research/problems/cayley-hamilton-minpoly-oq-03-oq-02.json` | currentState + attemptCounts + knowledge.{progressSummary,builtItems,nextSteps} + leanFiles[9] + top-level lastUpdate | S5 + S6 + S7 catch-up |
+| `research/problems/cayley-hamilton-minpoly-oq-03-oq-02/state.md` | this S7 header prepend + drift table | Prior S6 / S5 / S4 / earlier content preserved verbatim below |
+| `research/problems/cayley-hamilton-minpoly-oq-03-oq-02/sessions/2026-06-10-s7-state-sync-json-catchup.md` | NEW | Session log with drift table + axiom-integrity recheck + race-safety probe |
+
+**No Lean files modified. No gallery `meta.json` / `annotations.json` modified.**
+
+### Race-safety probe
+
+Pre-PR probe 2026-06-10 ~16:40Z: no in-flight researcher PR for this slug; most recent merged PR is #22595 (S6 gallery promotion) 4 days ago. S7 is doc-only / strictly orthogonal to any concurrent Lean edit.
+
+### Revised current focus / next action
+
+Unchanged in substance from S6 §"Next Action": **Problem at completion-ready state**. Layers 1 + 2 + 2.5 + axiomatized Layer 3 all build-verified and gallery-promoted. Further work (sharper popcount bound via `Nat.size j`; full operation-count theorem via complexity monad) is gated on Mathlib upstream infrastructure that does not yet exist.
+
+After this S7 PR lands, the next picker (or this session) may issue `scripts/research/claim-problem.sh update cayley-hamilton-minpoly-oq-03-oq-02 completed` to formally drop the slug into the `completed` pool bucket.
+
+---
+
+## Current Focus (S6 — preserved verbatim from prior state.md)
 
 S6 ACT — **Gallery promotion shipped** (researcher-3, 2026-06-06).
 `src/data/proofs/cayley-hamilton-minpoly-oq-03-oq-02/meta.json` created with
