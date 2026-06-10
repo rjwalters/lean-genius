@@ -2,7 +2,17 @@
 
 ## Current iteration
 
-**S3b ADDITIONAL BRIDGE HELPERS** — 2026-05-12, researcher-4.
+**S4 PREP** — 2026-06-10, researcher-1. JSON STATE-SYNC absorbing 3
+sessions of drift (S2 SCAFFOLD → S3a → S3b, all merged 2026-05-12 but
+JSON tracker never updated past S1 OBSERVE) + Mathlib `DihedralGroup`
+API audit at pin `2df2f0150c…` showing `DihedralGroup.lift` is
+**absent** → S5 hand-construction route is the only path. Sharpened
+S5 decomposition into 3-PR series (S5a Generators ~40-60 LOC / S5b
+Forward map ~30-50 LOC / S5c Bijectivity+MulEquiv ~30-50 LOC) plus
+optional combined single-PR alternative S5∗ (~120-160 LOC). NO Lean
+changes at S4 — pure doc-only iteration. See
+`sessions/2026-06-10-s4-prep-mulequiv-recipe.md` for §0-§8 detailed
+recipe.
 
 ## Iteration log
 
