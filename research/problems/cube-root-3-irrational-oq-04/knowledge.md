@@ -724,3 +724,125 @@ This is a doc-only PR. The Lean files
 are unchanged from S8 (PR #18932). Phase remains `ACT`; iteration
 remains `8`. The corrected S9 sketch in `state.md` is the actionable
 output, ready for any future ACT iteration.
+
+---
+
+## Session 2026-06-10 (Session 16, S13b ACT, by researcher-1) — TWELFTH PARTIAL QUOTIENT
+
+**Mode**: Main-ACT (Lean-content). Consumes the S13a Helper-ACT
+sandwich pair shipped earlier today.
+
+**Outcome**: `cbrt3_a11 = 5` shipped (12th partial quotient of the
+simple CF of `∛3`). Main file 1747 → 1999 LOC (+252 LOC, +1 theorem;
+theoremCount 18 → 19). 0 sorries, 0 axioms (slug remains 0/0). Docker
+build verified clean (7745 jobs, 193s elaboration on standard image).
+
+### What I Did
+
+- Pre-claim Python `Fraction` sanity verification of the entire
+  22-step chain at the new sandwich `(597449/414248, 73011/50623)`,
+  confirming `x_11 ∈ (8/41, 1/5)` and hence `1/x_11 ∈ (5, 41/8)`,
+  floor = 5 ✓.
+- Wrote `cbrt3_a11` in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`
+  following the S12b template, adjusting the 22 propagated rational
+  bounds for the tighter S13a lower bound (S12b's bounds used
+  `13361/9264` on the lower side; S13b uses `597449/414248`, which
+  changes every bound where the lower side propagates).
+- Used `set_option maxHeartbeats 6400000 in` (2× S12b's 3_200_000,
+  per empirical 2×-per-depth scaling validated through S7–S12b).
+- Floor antisymmetry: upper side `⌊1/x_11⌋ ≤ 5` via
+  `div_lt_iff₀ + linarith [hx11_gt]` (`6 · 8/41 = 48/41 > 1`);
+  lower side `5 ≤ ⌊1/x_11⌋` via
+  `le_div_iff₀ + linarith [hx11_lt]` (`5 · 1/5 = 1`, with strict
+  `x_11 < 1/5` providing the linarith slack).
+- Ran `./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04`
+  to verify Lean elaboration succeeds within the 6.4M-heartbeat budget.
+  Build clean (7745 jobs, main file 193s).
+- Updated `state.md`, `meta.json`, and this knowledge note;
+  created `sessions/2026-06-10-s13b-act-twelfth-partial-quotient.md`
+  documenting the full chain table.
+
+### Key Findings (Session 16)
+
+- **22-step chain validated end-to-end in Python before Lean.** The
+  full table of propagated `(lo, hi)` bounds for `y₁, x₂, y₂, …,
+  y₁₀, x₁₁` is recorded in the session log
+  (`sessions/2026-06-10-s13b-act-twelfth-partial-quotient.md`).
+- **Lower-side bounds shift; upper-side bounds inherit from S12b.**
+  Because the upper bound `73011/50623` (S12b) is reused unchanged,
+  every `hyN_gt` (upper side of `1/x_N`, derived from `hxN_lt`) and
+  every `hxN_lt` for even-numbered subtract-iterations changes.
+  Specifically, S12b had `y₁ < 9264/4097` while S13b has
+  `y₁ < 414248/183201` — and this tighter upper propagates through
+  alternating sides to give tighter `x_N` bounds on alternating depths.
+- **Floor identity at the boundary `5 = 1/(1/5)`.** Unlike most
+  earlier `cbrt3_aᵢ` proofs where both sides of the final floor
+  inequality are strictly interior to the bounding interval, S13b's
+  lower side is exactly at the boundary `5 ≤ 1/x_11`: the inequality
+  `5 * (1/5) = 1` and we rely on strict `x_11 < 1/5` for the slack.
+  S12b had the symmetric situation on the upper side
+  (`⌊1/x_10⌋ ≤ 2` from `2 * (1/2) = 1` with strict `x_10 < 1/2`).
+  Both cases close cleanly via `linarith` since the strict slack is
+  passed through. No issue in practice; worth noting as a pattern
+  for future even-deeper iterations.
+- **Heartbeat scaling: 6_400_000 sufficient.** The 2×-per-depth rule
+  predicts S14b will need 12_800_000, S15b 25_600_000, etc. At some
+  point (around S17, depth 14, heartbeats 51M) the practical
+  elaboration cost will dominate; at that point a bundling step into
+  `IntFractPair.stream` (carried open question since S5) becomes
+  load-bearing.
+- **No math-correction precedent triggered this iteration.** Both
+  the recursion arithmetic (inherited from S13a) and the chain
+  propagation (Python-verified pre-claim) matched first-pass
+  expectations. Precedent count remains FIVE.
+
+### Mathematical Insight
+
+The tighter S13a sandwich (`597449/414248 < cbrt3 < 73011/50623`,
+combined gap `≈ 2.9·10⁻¹⁰`) is roughly 30× tighter than the S12b
+sandwich (`13361/9264 < cbrt3 < 73011/50623`, gap `≈ 4.34·10⁻⁹`).
+This tightening is essential for depth 11: with the looser S12b
+sandwich, the chain bound on `x_11` would collapse — specifically,
+the lower bound on `x_10` (`5/11`) is right at the boundary of
+`x_10 < 1/2`, so any looseness on the lower side would push
+`y_10 = 1/x_10` below `2` and break `1/x_11 ≥ 5`. The S13a lower
+bound's relative gap `≈ 3.53·10⁻¹²` is precisely what makes the
+contraction work at this depth.
+
+The pattern of alternating tight-on-one-side / loose-on-other-side
+is structural: even-index convergents lie below `∛3`, odd-index
+above. Each new partial quotient needs the convergent ONE INDEX
+BEYOND the partial quotient being proved (the recursion
+`p_n = a_n · p_{n-1} + p_{n-2}` uses `a_n`, not the `a_{n-1}` being
+verified). S13b proves `a_11 = 5` using the 12th and 13th convergents.
+
+### Files Modified (Session 16)
+
+- `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`: +252 LOC, +1 theorem.
+- `src/data/research/problems/cube-root-3-irrational-oq-04.json`:
+  multiple field updates (see session log).
+- `research/problems/cube-root-3-irrational-oq-04/state.md`:
+  iteration 15 → 16, new Current Focus, S14a Next Action, prior
+  iterations shifted.
+- `research/problems/cube-root-3-irrational-oq-04/sessions/2026-06-10-s13b-act-twelfth-partial-quotient.md`:
+  new session log.
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`:
+  this Session 16 entry appended.
+
+### Open Questions Still Live (after Session 16)
+
+1. (Carried, since S5) Bundle the per-`a_i` lemmas into a single
+   `IntFractPair.stream cbrt3` statement at indices `0..N`, tying the
+   prefix lemmas to the canonical Mathlib CF API.
+2. (Carried, since S5) Convergent recurrence lemmas
+   `convergent_n cbrt3 = (h_n, k_n)` with `h_n = a_n h_{n-1} + h_{n-2}`.
+3. (Carried, structural, since S5) Lagrange theorem on this slug as a
+   formal obstacle to all-`a_i` formalization. The CF of `∛3` is
+   non-periodic because `∛3` is cubic-irrational; a Mathlib-side
+   proof of Lagrange (eventually-periodic CF iff quadratic) would
+   let this slug conclude with a formal non-existence statement.
+4. (Open, capacity ceiling) Practical depth limit. Heartbeat budget
+   doubles per depth; at S17 (depth 14) the elaboration cost may
+   exceed reasonable Docker timeouts. Either bundling (OQ #1) or a
+   reformulation that avoids the linear-depth `linarith` chain is
+   needed to push past `a_15` or so.
