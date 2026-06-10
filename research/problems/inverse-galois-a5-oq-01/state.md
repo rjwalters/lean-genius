@@ -1,9 +1,68 @@
 # Current State
 
-**Phase**: ORIENT (S4 ACT-readiness — sub-step (a) paste-ready; gate 5 BUILD-VERIFY stale 17 days)
+**Phase**: ORIENT (S4 ACT-readiness — all 7 gates GREEN; sub-step (a) paste-ready; baseline re-verified)
 **Since**: 2026-05-13 (S4 PREP chain — Strategy B choreography + phantom-API audit)
-**Last Updated**: 2026-06-02 (S4h PREP — 7th bearer attestation @ pin `2df2f0150c` + paste-ready sub-step (a) Lean draft ~32 LOC)
-**Iteration**: 7 (S4h PREP sub-step (a) paste-ready; researcher-1)
+**Last Updated**: 2026-06-09 (S4i BUILD-VERIFY — pre-ACT Docker baseline refreshed at HEAD; 7744 jobs clean)
+**Iteration**: 8 (S4i BUILD-VERIFY refresh; researcher-1)
+
+## S4i BUILD-VERIFY 2026-06-09 (researcher-1)
+
+**Focus**: refresh the stale gate-5 BUILD-VERIFY (S4h note: "gate 5 BUILD-VERIFY
+stale 17 days"). Re-run the pre-ACT Docker baseline so the next ACT picker has
+a same-day confirmation that parent + companion compile clean at HEAD before
+they paste in sub-step (a).
+
+### Result
+
+**`Build completed successfully (7744 jobs).`** Cold cache (mathlib azure fetch
++ decompress); total wall ≈ 3.5 min. **Identical job count to S4g** (2026-05-16:
+also 7744 jobs). Parent `InverseGaloisA5.lean` (2067 LOC, 1 axiom, 0 sorries)
+and companion `InverseGaloisA5Dedekind.lean` (89 LOC, 0 axioms, 1 sorry @ L77 =
+expected S2 ORIENT scaffold) both compile clean against the lake-pinned
+Mathlib v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+### Warnings inventory (3; all identical to S4g, none breaking)
+
+| # | Severity | File | Line | Message | Disposition |
+|---|---|---|---|---|---|
+| W1 | **deprecation** | `Proofs/InverseGaloisA5.lean` | 1468:44 | `IsAlgClosed.splits_codomain` deprecated → `IsAlgClosed.splits` | Mechanic-scope rename (unchanged since S4g) |
+| W2 | style (linter) | `Proofs/InverseGaloisA5.lean` | 1420:20 | `tac1 <;> tac2` could be `(tac1; tac2)` | Mechanic-scope style nit (unchanged since S4g) |
+| W3 | known | `Proofs/InverseGaloisA5Dedekind.lean` | 77:8 | declaration uses `sorry` | Expected; closed by S4 ACT |
+
+No new warnings introduced over the 24-day window (S4g 2026-05-16 → S4i
+2026-06-09). The latent `_researcher_docs_only_chain_silent_parent_regression`
+trap is **NOT** triggering on this slug at HEAD.
+
+### S4 ACT-readiness gate refresh (S4h → S4i)
+
+| # | Precondition | S4h (2026-06-02) | S4i (this) |
+|---|---|---|---|
+| 1 | All S4 PREP chain merged | ✅ | ✅ unchanged |
+| 2 | S4f STATE-SYNC #19081 merged | ✅ | ✅ unchanged |
+| 3 | Mathlib pin still `2df2f0150c` | ✅ | ✅ re-verified `lake-manifest.json` (Docker pulled 7727-file mathlib cache successfully) |
+| 4 | Bearer 16-set drift = 0 across last window | ✅ 7th attestation / 17-day window | ✅ implicit (parent + companion compile clean against the pinned SHA — same as S4g/S4h) |
+| 5 | **Pre-ACT Docker baseline green** | ⚠️ **stale 17 days** | ✅ **GREEN — 7744 jobs / ~3.5min wall (cold cache); SAME job count as S4g** |
+| 6 | No competing in-flight ACT | ✅ | ✅ `gh pr list --search "inverse-galois-a5-oq-01"` returned 0 open |
+| 7 | Paste-ready sub-step (a) Lean draft | ✅ | ✅ unchanged (the S4h hazard map H-A1–H-A7 still applies) |
+
+**All 7 gates are now GREEN.** The next picker can claim S4 ACT and execute
+the S4f `nextAction` 4-sub-step plan (246–381 Lean LOC per S4d post-cancellation
+budget) without re-running this baseline. Pre-flight Docker repeat is **NOT
+required** on the next ACT iteration as long as the picker starts within ~7 days
+of this S4i entry; later than that, refresh gate 5 again following this S4i
+template.
+
+### Honest-status block (S4i)
+
+- **Mathematical progress**: zero. BUILD-VERIFY is bookkeeping (refresh of
+  a previously-verified baseline).
+- **Sorry / axiom delta**: zero on both files.
+- **Lean lines added/changed**: zero.
+- **Build status**: ✅ Docker-clean 7744 jobs / cold cache / ~3.5min wall.
+- **Gallery status**: unchanged (`axiomatized`, badge `axiom`, axiomCount 1).
+- **OQ status**: unchanged (`exists_gal_order_three` still open).
+
+---
 
 ## S4h PREP 2026-06-02 (researcher-1)
 
@@ -414,7 +473,8 @@ migration applied alongside. Lean diff ~+250 LOC (new main file)
 | S4e PREP | researcher-12 post-batch boundary inventory (11 merged + 1 open PR on slug) + S4d integration audit + obsolescence map for #19081 + drop-in §4 appendix + consolidated S4 ACT-readiness onesheet (§5) | PR #19307 merged 2026-05-15T19:00:19Z |
 | S4f STATE-SYNC | researcher-9 absorbs S4d-×2 + S4e facts (M1–M9) into state.md + JSON `currentState` post-#19081 merge; 6th independent bearer spot-check at lake-pinned SHA (0 drift across 60h window) | merged 2026-05-16 |
 | S4g BUILD-VERIFY | researcher-1 discharged pre-ACT Docker baseline (`Proofs.InverseGaloisA5Dedekind`, 7744 jobs / ~4 min wall, cold cache); parent + companion compile clean at pin; 3 non-breaking warnings inventoried (W1 deprecation, W2 linter, W3 expected sorry) | merged 2026-05-16 |
-| S4h PREP | researcher-1 7th bearer pin-verification (16-set, 0 drift across 17-day window since S4g) + paste-ready sub-step (a) Lean draft (~32 LOC) + hazard map H-A1–H-A7; host disk RED + Docker daemon I/O-errored, gate 5 BUILD-VERIFY left stale with caveat | this PR |
+| S4h PREP | researcher-1 7th bearer pin-verification (16-set, 0 drift across 17-day window since S4g) + paste-ready sub-step (a) Lean draft (~32 LOC) + hazard map H-A1–H-A7; host disk RED + Docker daemon I/O-errored, gate 5 BUILD-VERIFY left stale with caveat | merged 2026-06-02 |
+| S4i BUILD-VERIFY | researcher-1 refreshed stale gate-5 BUILD-VERIFY (S4g + 24 days); Docker baseline `Proofs.InverseGaloisA5Dedekind` re-run cold cache → **7744 jobs clean** (identical to S4g); 3 warnings unchanged (W1 W2 W3); all 7 ACT-readiness gates now GREEN; next picker can claim S4 ACT without re-running baseline if started within ~7 days | this PR |
 
 ## Honest Calibration
 

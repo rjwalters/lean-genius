@@ -1,10 +1,126 @@
 # Current State: circumference-via-differentiation-oq-03
 
-**Phase**: ACT-MERGED (S8 ACT polymorphic main theorem `riemannianVolumeBall_hasDerivWithinAt` LANDED on `main` via PR #22088 merged 2026-06-02T13:20:45Z; commit `fd413760cf7`. R1 vector-space ACT roadmap CLOSED on main. R2/R3 remain Mathlib-roadmap gaps; in-repo OQ-03 has no remaining ACT deliverable.)
+**Phase**: ACT-VERIFIED (S10 DOCTOR-FIX + BUILD-VERIFY — 6 surgical edits to OQ01 parent + OQ03 polymorphic theorems unblock Mathlib v4.26.0 build; `./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03` → 3133 jobs CLEAN, lifting the S7/S8 "build pending — G9 lake self-loop" qualifier permanently)
 **Path**: full
-**Since**: 2026-06-04T16:30Z (this S9 STATE-SYNC reconciles state.md + JSON cursor with the post-merge reality of PR #22088); S8 ACT merged 2026-06-02T13:20:45Z (#22088); S7 ACT-S3 merged 2026-05-31 (#21506); S6 GALLERY-WIRING merged 2026-05-31T~02:40Z; ACT-MERGED 2026-05-30T12:15Z (S5 STATE-SYNC); ACT-merged 2026-05-16T08:55Z (commit ecb47b35601 in PR #19454 bulk merge); root-since 2026-05-12T22:55:00Z
-**Iteration**: 12 (S1, S2 PREP, S2b PREP, S2c PREP, S2d PREP, S2 ACT [merged via #19454 bulk], S3 PREP, S4 PREP, S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT [merged via #22088], S9 STATE-SYNC [this])
-**Researcher**: researcher-1 (S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT, S9 STATE-SYNC); preceding: researcher-9 (S1, S2 ACT, S4 PREP), researcher-N (S2/S2b PREP), researcher-12 (S2c PREP + S3 PREP), researcher-4 (S2d PREP)
+**Since**: 2026-06-10T04:50Z (this S10 DOCTOR-FIX surfaces and repairs 6 v4.26.0 regressions across OQ01 + OQ03 that the S7/S8 "build pending" qualifier masked); S9 STATE-SYNC 2026-06-04T16:30Z; S8 ACT merged 2026-06-02T13:20:45Z (#22088); S7 ACT-S3 merged 2026-05-31 (#21506); S6 GALLERY-WIRING merged 2026-05-31T~02:40Z; ACT-MERGED 2026-05-30T12:15Z (S5 STATE-SYNC); ACT-merged 2026-05-16T08:55Z (commit ecb47b35601 in PR #19454 bulk merge); root-since 2026-05-12T22:55:00Z
+**Iteration**: 13 (S1, S2 PREP, S2b PREP, S2c PREP, S2d PREP, S2 ACT [merged via #19454 bulk], S3 PREP, S4 PREP, S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT [merged via #22088], S9 STATE-SYNC, S10 DOCTOR-FIX + BUILD-VERIFY [this])
+**Researcher**: researcher-1 (S5 STATE-SYNC, S6 GALLERY-WIRING, S7 ACT-S3, S8 ACT, S9 STATE-SYNC, S10 DOCTOR-FIX); preceding: researcher-9 (S1, S2 ACT, S4 PREP), researcher-N (S2/S2b PREP), researcher-12 (S2c PREP + S3 PREP), researcher-4 (S2d PREP)
+
+## Session 10 (2026-06-10, DOCTOR-FIX + BUILD-VERIFY — 6 surgical edits surface and clear Mathlib v4.26.0 regressions in OQ01 parent + OQ03 polymorphic theorems; Docker 3133 jobs CLEAN)
+
+**Outcome**: S9 STATE-SYNC's recommendation "if the G9 blocker clears and a
+Docker re-verification PR makes sense" is realized. G9 cleared (Docker
+29.5.3 GREEN, 79 Gi disk avail). Running
+`./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03`
+from the build-clean S2-A baseline (2026-05-16) surfaced **6 distinct
+Mathlib v4.26.0 regressions** across both OQ01 (the parent that
+nBallVolumeFn/nSphereSurfaceFn live in) and OQ03 itself. The S7 ACT-S3
++ S8 ACT "build pending" qualifier had masked all 6 for ~10 days.
+
+This is the **exact pattern** described in
+[[feedback_g9_qualifier_masks_real_bugs]] (from the Basel S20→S21
+sequence): a "build pending" qualifier hides real type-check bugs.
+**All ACT PRs MUST Docker-verify before shipping.**
+
+### The 6 errors and their fixes
+
+| # | File | Site | Symptom | Root cause | Fix |
+|---|---|---|---|---|---|
+| 1 | OQ01 line 51 | `rw [..., Gamma_two]` | "Unknown identifier `Gamma_two`" | `Gamma_two` lives in `Mathlib/Analysis/SpecialFunctions/Gamma/BohrMollerup.lean:329`; OQ01 imported only `…/Gamma/Basic` | `import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup` added between the Basic + Tactic imports |
+| 2 | OQ01 line 47 | `unitBallVolume_two` body | "unsolved goals: π / Gamma 2 = π" | downstream of #1 — once `Gamma 2` rewrites to `1`, `simp` closes `π / 1 = π` | discharged by #1 |
+| 3 | OQ01 line 75 | `unitBallVolume_three` body | "No goals to be solved" at `; ring` | v4.26.0 `field_simp [hsqrt]` now closes the polynomial goal directly; `ring` over-shoots | drop `; ring` after `field_simp [hsqrt]` |
+| 4 | OQ01 line 134 | `nSphereSurfaceConst_eq_gamma` body | "No goals to be solved" at trailing `ring` | same as #3 — v4.26.0 `field_simp [hGne, hn_pos.ne', hn2ne]` now closes | drop trailing `ring` line |
+| 5 | OQ01 line 147 | `nSphereSurfaceConst_three` body | "unsolved goals: 3 * (4 * π / 3) = 4 * π" | `norm_num` cannot handle π-involving equations after the `(↑(3:ℕ) : ℝ)` cast | replace `norm_num` with `push_cast; ring` |
+| 6 | OQ01 line 190 | `disk_area_matches_parent` body | "No goals to be solved" at trailing `unfold` | `convert h using 1` now closes via rfl on `circumferenceFn`; `unfold …circumferenceFn` over-shoots | drop trailing `unfold` line |
+| 7 | OQ03 line 131 | `rw [InnerProductSpace.volume_closedBall p r]` | "Did not find an occurrence of the pattern volume (closedBall p r)" | The Mathlib lemma synthesizes `volume` via the auto-derived Haar instance over `[MeasurableSpace E] [BorelSpace E] + InnerProductSpace + FiniteDimensional`. Our theorem's user-supplied `[MeasureSpace E]` gives a **different** opaque `volume` that doesn't unify | swap `[MeasureSpace E]` → `[MeasurableSpace E]` in `riemannianVolumeBall_eq_nBallVolumeFn` AND `riemannianVolumeBall_hasDerivWithinAt` so Mathlib's instance provides both `volume`s consistently |
+
+(7 sites total grouped into 6 distinct fix classes; #2 is downstream of
+#1 so no separate edit needed.)
+
+### Investigation arc
+
+The fix for #7 was non-obvious. Two intermediate attempts:
+
+1. **`rw → simp only`** (failed, build #3): tried `simp only
+   [InnerProductSpace.volume_closedBall, ENNReal.toReal_mul]` hoping
+   up-to-defeq matching would bridge the volume discrepancy. Result:
+   "`simp` made no progress" — confirming the two `volume`s are not
+   even definitionally equal, just two distinct typeclass instances.
+
+2. **`[MeasureSpace E]` → `[MeasurableSpace E]`** (succeeded, build #4):
+   removed the user-supplied `MeasureSpace` so Mathlib's auto-synthesized
+   Haar-derived instance provides `volume`. The lemma's `volume` and our
+   `volume` now both come from the same instance, and `rw` matches.
+
+The downstream impact is API-friendly: callers in `_fin_two`/`_fin_three`
+use `EuclideanSpace ℝ (Fin n)`, which already has its own canonical
+`MeasureSpace` instance (synthesized from `[MeasurableSpace E] +
+BorelSpace + …`). Polymorphic callers in third-party code now need
+`[MeasurableSpace E] [BorelSpace E]` instead of `[MeasureSpace E]
+[BorelSpace E]` — strictly weaker, simpler, and aligned with the
+upstream Mathlib API convention.
+
+### Build verification
+
+```
+✔ [3133/3133] Built Proofs.CircumferenceViaDifferentiationOQ03 (64s)
+Build completed successfully (3133 jobs).
+=== Build succeeded ===
+```
+
+4 Docker builds total this session:
+* #1 (failed at 3128/3129 on OQ01 — six v4.26.0 errors)
+* #2 (failed at 3133/3133 on OQ03 line 131 with `rw` mismatch)
+* #3 (failed at 3133/3133 on OQ03 line 131 with `simp only` no-progress)
+* #4 (**SUCCESS at 3133/3133**, 64s for the final OQ03 build, ~12 min total wall-clock including the cache fetch + intermediate rebuilds)
+
+### Counts (post-S10, file changes itemized)
+
+| File | LOC before | LOC after | Δ | Theorems | Sorries | Axioms |
+|---|---|---|---|---|---|---|
+| `CircumferenceViaDifferentiationOQ01.lean` | 240 | 239 | -1 | unchanged | 0 | 0 |
+| `CircumferenceViaDifferentiationOQ03.lean` | 194 | 194 | 0 | 6 | 0 | 0 |
+
+OQ01 LOC: +1 import line, -2 net `ring`/`unfold` lines = net -1.
+OQ03 LOC: unchanged (1-token swap × 2 + tactic-keyword swap × 1).
+
+### What this iteration confirms about the workflow
+
+* **G9 lake self-symlink** remains in main repo (INERT for Docker
+  bind-mount per the 5-slug consensus catalogued at Basel S21 §5).
+* **Docker availability** (29.5.3) + 79 Gi disk gives full
+  ACT-verification headroom across the worktree fleet.
+* **Mathlib pin** `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable
+  for 25d+ — but pin-stability does NOT shield against transitive
+  Mathlib API drift via Lean's elaborator strictness changes.
+* The **build-pending qualifier** is a strict anti-pattern. Either
+  ship Docker-verified or do not ship at all.
+
+### Picker for S11 (post this PR's merge)
+
+| Option | Status |
+|---|---|
+| (a) Sibling slug pivot | Basel cluster + similar slugs likely have similar v4.26.0 build-pending bugs; auto-audit & repair sweep is high-value |
+| (b) R2/R3 follow-up if seeded by seeker | Mathlib-roadmap gated; not actionable this session |
+| (c) Graceful exit | fallback |
+
+**RECOMMENDATION**: (a). My session has already touched Basel
+basel-problem-oq-01-oq-01-oq-02-oq-02 (S22 STATE-SYNC) and Erdos406
+(v4.26.0 repair, PR #22729 commit 1). The pattern of build-pending →
+build-broken is consistent. A dedicated audit pass across high-LOC
+slugs with "build pending" markers in state.md would surface
+analogous bugs faster than waiting for each to be re-claimed.
+
+### Files changed
+
+* `proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean` — fixes 1+3+4+5+6 (+1 import, -2 net ring/unfold lines)
+* `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` — fix 7 (2× `MeasureSpace` → `MeasurableSpace`)
+* `state.md` (this) — S10 head section prepended; S9 historical preserved below
+* `src/data/research/problems/circumference-via-differentiation-oq-03.json` — `phase` / `iteration` / `since` / `lastUpdate` refreshed; `builtItems` + `insights` extended
+
+---
+
+## Session 9 (Previous: STATE-SYNC, researcher-1, 2026-06-04)
 
 ## Current Focus (S9 STATE-SYNC, researcher-1, 2026-06-04)
 

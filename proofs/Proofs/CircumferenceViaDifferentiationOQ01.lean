@@ -21,6 +21,7 @@
 
 import Mathlib.Analysis.Calculus.Deriv.Pow
 import Mathlib.Analysis.SpecialFunctions.Gamma.Basic
+import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup
 import Mathlib.Tactic
 import Proofs.CircumferenceViaDifferentiation
 
@@ -72,7 +73,7 @@ theorem unitBallVolume_three : unitBallVolume 3 = 4 * π / 3 := by
   rw [show (3 : ℝ) / 2 = 1 + 1 / 2 from by norm_num]
   rw [rpow_add pi_pos, rpow_one, ← Real.sqrt_eq_rpow]
   have hsqrt : √π ≠ 0 := Real.sqrt_ne_zero'.mpr pi_pos
-  field_simp [hsqrt]; ring
+  field_simp [hsqrt]
 
 -- ============================================================
 -- Main Definitions
@@ -131,7 +132,6 @@ theorem nSphereSurfaceConst_eq_gamma (n : ℕ) (hn : 0 < n) :
   have hGne : Gamma ((n : ℝ) / 2) ≠ 0 := (Gamma_pos_of_pos (by linarith)).ne'
   rw [Gamma_add_one hn2ne]
   field_simp [hGne, hn_pos.ne', hn2ne]
-  ring
 
 -- ============================================================
 -- Part 3: Special Values of the Surface Area Constant
@@ -147,7 +147,8 @@ theorem nSphereSurfaceConst_two : nSphereSurfaceConst 2 = 2 * π := by
 theorem nSphereSurfaceConst_three : nSphereSurfaceConst 3 = 4 * π := by
   unfold nSphereSurfaceConst
   rw [unitBallVolume_three]
-  norm_num
+  push_cast
+  ring
 
 -- ============================================================
 -- Part 4: Concrete Derivative Theorems for n=2 and n=3
@@ -187,7 +188,6 @@ theorem disk_area_matches_parent (r : ℝ) :
     funext nBallVolumeFn_two_eq_areaFn
   rw [hfn] at h
   convert h using 1
-  unfold CircumferenceViaDifferentiation.circumferenceFn
 
 -- ============================================================
 -- Part 6: Volume and Surface Properties

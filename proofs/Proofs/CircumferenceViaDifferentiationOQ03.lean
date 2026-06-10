@@ -123,7 +123,7 @@ See `research/problems/circumference-via-differentiation-oq-03/sessions/2026-05-
 §3 for the proof-chain derivation. -/
 theorem riemannianVolumeBall_eq_nBallVolumeFn
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]
+    [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]
     (p : E) {r : ℝ} (hr : 0 ≤ r) :
     (volume (Metric.closedBall p r)).toReal =
       CircumferenceViaDifferentiationOQ01.nBallVolumeFn
@@ -179,7 +179,7 @@ equation `vol.toReal = nBallVolumeFn (finrank ℝ E) s` is only known for
 identity breaks). -/
 theorem riemannianVolumeBall_hasDerivWithinAt
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
-    [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]
+    [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]
     (p : E) {r : ℝ} (hr : 0 ≤ r) :
     HasDerivWithinAt (fun s => (volume (Metric.closedBall p s)).toReal)
       (CircumferenceViaDifferentiationOQ01.nSphereSurfaceFn

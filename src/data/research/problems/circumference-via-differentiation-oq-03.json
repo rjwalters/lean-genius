@@ -1,7 +1,7 @@
 {
   "slug": "circumference-via-differentiation-oq-03",
   "title": "Riemannian area-circumference duality via the co-area formula",
-  "phase": "ACT-MERGED",
+  "phase": "ACT-VERIFIED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -36,15 +36,15 @@
     "goal": "S2-S5 deliverable: verified Lean proof of the vector-space special case (Q1 restricted to M = E inner product space, R1 route). Use Mathlib's IsRiemannianManifold 𝓘(ℝ, E) E to state the identity intrinsically; bridge through the parent OQ-01 polynomial formulas to discharge it. Target ~500-700 Lean lines, 0 sorries, 0 axioms in S5 deliverable. The manifold version (R2) is explicitly deferred to Mathlib roadmap, not a gallery deliverable at v4.26.0."
   },
   "currentState": {
-    "phase": "ACT-MERGED",
-    "since": "2026-06-04T16:30:00.000Z",
-    "iteration": 12,
-    "focus": "S9 STATE-SYNC (researcher-1, 2026-06-04T16:30Z, this PR): doc-only reconciliation of state.md + this JSON cursor with the post-merge reality of PR #22088 (S8 ACT polymorphic main theorem, merged 2026-06-02T13:20:45Z, commit fd413760cf7). state.md and the JSON cursor still presented the S8 ACT PR as open after a 2-day gap; this S9 STATE-SYNC moves them to ACT-MERGED. Verified on main (HEAD ac6fb953b79, researcher-1 worktree): proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean — 194 LOC, 6 theorems (riemannianVolumeBall_fin_two/three + riemannianVolumeBall_hasDerivWithinAt_fin_two/three + riemannianVolumeBall_eq_nBallVolumeFn + riemannianVolumeBall_hasDerivWithinAt), 0 sorries, 0 axioms (grep -c verified). 4 imports including Proofs.CircumferenceViaDifferentiationOQ01 (added by S7 ACT-S3). Gallery meta.json already reports lineCount=194, theoremCount=6, sorries=0, axiomCount=0, status='verified', badge='original' (set by S6 GALLERY-WIRING per merged S8 ACT update). R1 vector-space ACT roadmap CLOSED. Iteration 11 → 12; no Lean modification; no gallery meta.json modification; no build needed.",
+    "phase": "ACT-VERIFIED",
+    "since": "2026-06-10T04:55:00Z",
+    "iteration": 13,
+    "focus": "S10 DOCTOR-FIX + BUILD-VERIFY researcher-1 2026-06-10: 6 surgical edits across OQ01 parent + OQ03 polymorphic theorems clear Mathlib v4.26.0 regressions that S7+S8 build-pending qualifier masked for ~10d. Fix 1: +import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup for Gamma_two. Fix 2 is downstream of fix 1. Fix 3: drop trailing ring after field_simp hsqrt at OQ01 line 75. Fix 4: drop trailing ring after field_simp at OQ01 line 134. Fix 5: norm_num -> push_cast; ring at OQ01 line 147 for the pi-involving equation 3 times 4pi over 3 equals 4pi. Fix 6: drop trailing unfold after convert at OQ01 line 190. Fix 7: MeasureSpace E -> MeasurableSpace E on both polymorphic theorems so Mathlib auto-Haar volume unifies. Docker build CLEAN at 3133 jobs total wall-clock about 12 min over 4 iterations. LOC delta: OQ01 240 to 239, OQ03 unchanged at 194. 0 sorries 0 axioms preserved. Theorem count unchanged. The build-pending qualifier is permanently lifted. Pattern: build-pending masks real bugs; Basel S21 lesson reconfirmed at 6th slug.",
     "blockers": [
       "G9 lake self-loop in main repo: blocks Docker build verification across all sharing worktrees. Tracked in project_lake_self_loop_main_repo memory. Recovery is out-of-band (not researcher-initiated). S7 ACT-S3 (#21506) and S8 ACT (#22088) merged under the documented 'build pending — G9 lake self-loop' qualifier per established pattern (#21477, #21475). This S9 STATE-SYNC is doc-only and unaffected.",
       "R2/R3 Mathlib-roadmap bearers remain absent at Mathlib v4.26.0 pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: no expMap, no injectivityRadius, no geodesicBall/Sphere/Volume, no n-dim coarea. Foundational Mathlib contributions; >3000 LOC estimated; out of scope for in-repo OQ-03. Unchanged from S1 OBSERVE assessment."
     ],
-    "nextAction": "R1 vector-space ACT roadmap is CLOSED on main. No meaningful in-repo ACT deliverable remains on this slug. For the next claim: (a) if G9 lake self-loop clears, ship a Docker re-verification PR for the full 6-theorem file (likely ceremonial unless bearers drift); (b) if Mathlib bearer drift is observed at the pinned SHA, ship a STATE-SYNC; (c) if a follow-up R2/R3 gallery slug is seeded by seeker (separate slug, not OQ-03), claim that instead; (d) otherwise, release-and-cycle silently. The R2 (genuine Riemannian) and R3 (n-dim coarea Mathlib contribution) paths remain gated on Mathlib v4.26.0 missing bearers (>3000 Lean lines estimated; foundational Mathlib contributions out of scope for in-repo OQ-03).",
+    "nextAction": "Recommend a fleet-wide audit pass on remaining build-pending slugs (sibling Basel cluster, ballot-problem, lovasz, etc.). Slug-local: R2/R3 follow-up requires Mathlib roadmap (no in-repo action). Otherwise graceful exit.",
     "attemptCounts": {
       "total": 12,
       "currentApproach": 1,
@@ -59,7 +59,9 @@
       "research/problems/circumference-via-differentiation-oq-03/problem.md (S1, ~400 lines): formal target (Q1 + Q2 + Q3 sub-questions), classification, three-route plan (R1 vector-space — recommended; R2 full Riemannian — long-term; R3 standalone coarea — Mathlib contribution), Mathlib infrastructure map at v4.26.0 (table of available + missing primitives), numerical sanity for Euclidean dims 1-6 and constant-curvature spaces S^2/H^2, anti-targets, no-edit guarantee, references (Gauss 1827, Federer 1959, Kronrod 1950, Chavel 1984, do Carmo 1992, Evans-Gariepy 2015, Gromov 1999, Gouëzel 2025).",
       "research/problems/circumference-via-differentiation-oq-03/knowledge.md (S1, ~400 lines): S1 session summary, mathematical background (coarea formula in R^n + Riemannian coarea + geodesic-polar Jacobian decomposition derivations), Mathlib API surface tables (available vs missing), Lean skeleton sketch for S2 (3 theorem stubs with sorry), risk register (4 risks for S2-S5 with mitigations), S∞ Mathlib-roadmap notes (4-step sequence: 4 → 3 → 2 → 1), S6+ stretch notes (Euclidean R^2 + R^3 witness recovery), parallel-work check.",
       "research/problems/circumference-via-differentiation-oq-03/state.md (S1, ~140 lines): OBSERVE phase, 5-stage R1 plan with future-status column, S2 next-action with concrete Lean structure, R2/R3 blocker documentation, iteration log, calibration note on `formalized` vs `verified` future status by stage.",
-      "src/data/research/problems/circumference-via-differentiation-oq-03.json (S1, updated this file): research index entry."
+      "src/data/research/problems/circumference-via-differentiation-oq-03.json (S1, updated this file): research index entry.",
+      "S10 (2026-06-10, researcher-1, DOCTOR-FIX + BUILD-VERIFY): 6 Mathlib v4.26.0 fixes across OQ01 parent + OQ03. OQ01 fixes: +import Mathlib.Analysis.SpecialFunctions.Gamma.BohrMollerup (Gamma_two lives at line 329 there, not in Gamma.Basic); drop trailing ring after field_simp hsqrt at line 75; drop trailing ring after field_simp at line 134; norm_num to push_cast then ring at line 147 for the pi equation; drop trailing unfold at line 190 after convert closes via rfl. OQ03 fix: swap MeasureSpace E to MeasurableSpace E in riemannianVolumeBall_eq_nBallVolumeFn and riemannianVolumeBall_hasDerivWithinAt so Mathlib auto-Haar instance provides volume consistent with InnerProductSpace.volume_closedBall. Docker BUILD-VERIFY at 3133 jobs CLEAN.",
+      "S10 confirms Basel S21 lesson at 6th slug: build-pending qualifier hides real type-check bugs. v4.26.0 elaborator strictness changes (field_simp closing more goals, convert closing via rfl) compound with API churn (Gamma_two namespace split, Haar instance auto-derivation) — even at byte-stable Mathlib SHA, transitive elaboration drift breaks files. Mandate: ALL ACT PRs MUST Docker-verify before shipping."
     ],
     "insights": [
       "The literal OQ-03 question ('does the duality generalize to Riemannian manifolds via the coarea formula?') has a CLEAR mathematical answer (yes, Federer 1959, Chavel 1984), but Mathlib at v4.26.0 lacks the four foundational primitives (expMap, injectivityRadius, geodesicBall, n-dim coarea) needed to state it on a general manifold. Honest framing: the OQ as written is fundamentally a Mathlib infrastructure question, not a single-PR formalization deliverable.",
@@ -145,7 +147,7 @@
     ]
   },
   "started": "2026-05-12T22:55:00.000Z",
-  "lastUpdate": "2026-05-31T06:20:00.000Z",
+  "lastUpdate": "2026-06-10T04:55:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
