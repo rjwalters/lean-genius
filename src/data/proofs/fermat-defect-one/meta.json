@@ -148,6 +148,11 @@
       "targetId": "pythagorean-triples",
       "relationship": "related",
       "description": "Pythagorean triples classify $a^2 + b^2 = c^2$. The defect-one conjecture is the higher-exponent analogue of asking 'how close can $a^n + b^n$ come to $c^n$?' — at $n = 2$ infinitely many exact hits; at $n \\ge 3$ no exact hits but conjecturally always within one."
+    },
+    {
+      "targetId": "fermats-last-theorem-oq-03",
+      "relationship": "related",
+      "description": "**Defect-zero at higher bases — the number-field complement to this entry's defect-one question over $\\mathbb{Z}$.** While `fermats-last-theorem` rules out defect 0 over $\\mathbb{Z}$ and this entry asks about defect $\\pm 1$ over $\\mathbb{Z}$, `fermats-last-theorem-oq-03` shifts the *base ring* — asking whether $x^n + y^n = z^n$ has non-trivial solutions over number fields $K \\ne \\mathbb{Q}$. Wiles (1995) proved the $K = \\mathbb{Q}$ case; Freitas-Hung-Siksek (2015) extended modularity-based FLT to all real quadratic fields under mild conditions on the class number. The two extensions of FLT (defect $\\pm 1$ over $\\mathbb{Z}$ here, defect 0 over number fields in -oq-03) form a perpendicular pair: one varies the *target* (allowing a unit offset), the other varies the *ground ring* (allowing algebraic integers). A genuinely interesting hybrid open question would be the *number-field defect-one* statement: for $n \\ge 3$ and ring of integers $\\mathcal{O}_K$, does there exist a primitive coprime triple $a, b, c \\in \\mathcal{O}_K$ with $|a^n + b^n - c^n|_v = 1$ at every place $v$? The $\\mathbb{Z}$ case here is the rationals-only specialization of that broader question; the Freitas-Hung-Siksek modularity techniques would be the natural starting point for a Lean attack."
     }
   ],
   "conclusion": {
