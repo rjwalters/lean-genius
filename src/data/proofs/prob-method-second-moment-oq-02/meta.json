@@ -1,0 +1,110 @@
+{
+  "id": "prob-method-second-moment-oq-02",
+  "title": "Variance of Indicator Sums (Generic Decomposition)",
+  "slug": "prob-method-second-moment-oq-02",
+  "description": "Generic pair-sum decomposition of variance: Var(∑ Xᵢ) = ∑_{(i,j) ∈ t ×ˢ t} Cov(Xᵢ, Xⱼ). This is §A of OQ-02 — the algebraic backbone any second-moment threshold argument reduces to, in the discrete Finset-ℚ setting consistent with the parent.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-09",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ02.lean",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "second-moment-method",
+      "variance",
+      "covariance"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-09",
+    "axiomCount": 0,
+    "lineCount": 153,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "assumptions": "None. 0 axioms, 0 sorries. Fully verified in Lean 4 with Mathlib.",
+    "originalContributions": [
+      "variance_sum_eq_sum_covariance: Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) — the pair-sum form, headline identity",
+      "variance_add: Var(f + g) = Var f + Var g + 2 · Cov(f, g)",
+      "covariance_add_left / covariance_add_right: bilinearity of covariance",
+      "covariance_sum_left / covariance_sum_right: extends bilinearity to Finset-indexed sums",
+      "covariance_symm: covariance is symmetric",
+      "variance_eq_covariance_self: variance is the covariance of f with itself",
+      "Definitions: mean, variance, covariance for ℚ-valued functions on a Finset (counting-measure)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_add_distrib",
+        "description": "Linearity of finite sum: ∑ (f + g) = ∑ f + ∑ g",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_product",
+        "description": "Sum over a product set decomposes into nested sums: ∑ x ∈ s ×ˢ t, f x = ∑ a ∈ s, ∑ b ∈ t, f (a, b)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Sigma"
+      },
+      {
+        "theorem": "Finset.sum_insert",
+        "description": "Decomposition of sum over `insert i t` when i ∉ t — drives the induction in covariance_sum_left",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "Finset.induction_on",
+        "description": "Finset induction (empty / insert) — drives covariance_sum_left",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The variance-of-sums identity Var(∑ Xᵢ) = ∑ Var(Xᵢ) + ∑_{i ≠ j} Cov(Xᵢ, Xⱼ) — equivalently, the bilinear pair-sum form ∑_{(i,j)} Cov(Xᵢ, Xⱼ) — is the algebraic backbone of the second moment method, especially in probabilistic combinatorics. It was implicit in Chebyshev's 1867 work and made fully explicit by the 20th-century formalization of variance and covariance as bilinear forms. The identity is purely algebraic, requiring no probability axioms beyond linearity of expectation and the definition Cov(X, Y) = E[XY] − E[X]E[Y]. Its workhorse status in Erdős-Rényi random-graph threshold arguments (subgraph counts, chromatic-number bounds, Hamilton cycles) makes it indispensable to the field; see Alon–Spencer §4 for representative applications.",
+    "problemStatement": "For ℚ-valued functions X : ι → α → ℚ on a Finset α with counting measure, and an index Finset t : Finset ι, prove the bilinear variance-of-sum identity\n\n  Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j).\n\nThis is the discrete, measure-theory-free form §A of OQ-02 (parent: prob-method-second-moment). The textbook decomposition Var(∑) = ∑ Var + ∑_{i≠j} Cov is one Finset diag/offDiag split away from the pair-sum form, deferred to a follow-up PR.",
+    "text": "Proves the variance-of-sums decomposition in the discrete Finset-ℚ setting consistent with the parent file ProbMethodSecondMoment.lean. The proof is elementary: define mean, variance, covariance via Finset sums and cardinalities; verify the bilinear/symmetric API (mean_add, covariance_symm, covariance_add_left/right, variance_add); extend bilinearity to Finset-indexed sums by Finset induction (covariance_sum_left/right); collapse to the pair-sum form via Finset.sum_product.",
+    "proofStrategy": "Five layers:\n\n1. **Definitions**: mean s f = (s.sum f) / s.card; variance s f = mean (fun a => (f a − mean s f)^2); covariance s f g = mean (fun a => (f a − mean s f) · (g a − mean s g)).\n\n2. **Self-equality**: variance_eq_covariance_self — variance is covariance of f with itself, by `sq` definition.\n\n3. **Bilinear / symmetric API**: covariance_symm by `Finset.sum_congr` + `ring`; mean_add by `Finset.sum_add_distrib` + `add_div`; covariance_add_left by combining mean_add, `Finset.sum_add_distrib`, and `ring`; covariance_add_right by symmetry.\n\n4. **Sum-indexed bilinearity**: covariance_sum_left by Finset induction — empty case collapses to covariance s (fun _ => 0) g = 0 via Finset.sum_const_zero; insert case reuses covariance_add_left.\n\n5. **Pair-sum form**: variance_sum_eq_sum_covariance — apply variance_eq_covariance_self, then covariance_sum_left in slot 1 and covariance_sum_right in slot 2, then collapse with Finset.sum_product to a single sum over t ×ˢ t.",
+    "keyInsights": [
+      "**Bilinearity is the point**: variance-of-sum splits because covariance is a bilinear, symmetric form on the space of functions α → ℚ. Once additivity in both slots and the self-equality variance = Cov(f, f) are established, the indexed pair-sum form follows by routine sum manipulation.",
+      "**The pair-sum form is the cleanest**: Var(∑) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) hides the diagonal/off-diagonal split. For applications (independent indicators → off-diagonal vanishes; pairwise-positively-correlated indicators → off-diagonal bounds Cauchy-Schwarz), the user instantiates the pair-sum form and decomposes the index set as they see fit.",
+      "**Discrete setting avoids measure theory**: with ℚ-valued functions on a Finset and counting measure, all expectations are arithmetic averages and the identity reduces to Finset.sum manipulations. No σ-algebra machinery is needed for the algebraic content of the second moment method.",
+      "**Finset induction handles the indexed sums**: covariance_sum_left is proved by induction on the index Finset t. The empty case collapses via Finset.sum_const_zero (the constant-zero function has zero mean and zero covariance with anything); the insert case threads through covariance_add_left.",
+      "**Indicator hypothesis is not load-bearing for §A**: the bilinear decomposition holds for any ℚ-valued functions. The indicator constraint Xᵢ ∈ {0,1} only matters when one wants to simplify Var(Xᵢ) = E[Xᵢ] − E[Xᵢ]², which is a §B / §C concern (covered by parent's qualitative paley_zygmund or by a follow-up `variance_indicator` lemma)."
+    ],
+    "prerequisites": [
+      "Finset.sum and Finset induction",
+      "Linearity of finite sums (Finset.sum_add_distrib)",
+      "Product Finsets and Finset.sum_product",
+      "Second moment method (parent entry: ProbMethodSecondMoment)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "File header and imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "States the headline identity Var(∑ X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j), motivates the discrete Finset-ℚ working setting, and explains how this §A piece fits into the broader OQ-02 program (G(n,p), Paley-Zygmund routes deferred to follow-ups). Imports Mathlib and the parent ProbMethodSecondMoment."
+    },
+    {
+      "id": "definitions",
+      "title": "Mean, variance, covariance",
+      "startLine": 36,
+      "endLine": 60,
+      "summary": "Three definitions over ℚ-valued functions on a Finset: mean (arithmetic average), variance (mean of squared deviation), covariance (mean of cross-deviation product). Counting-measure formalism — no measure theory required."
+    },
+    {
+      "id": "basic-identities",
+      "title": "Bilinear / symmetric API",
+      "startLine": 61,
+      "endLine": 95,
+      "summary": "variance_eq_covariance_self, covariance_symm, mean_add, covariance_add_left, covariance_add_right. These four/five lemmas exhibit covariance as a symmetric bilinear form and prove that mean distributes over addition. Together they form a minimal API for downstream algebra.",
+      "mathContext": "Variance is the diagonal of the covariance bilinear form: Var(f) = Cov(f, f)."
+    },
+    {
+      "id": "variance-of-sum",
+      "title": "Variance of a sum (pair-sum form)",
+      "startLine": 96,
+      "endLine": 153,
+      "summary": "variance_add (pair case), covariance_sum_left/right (extended to Finset-indexed sums by induction), and the headline variance_sum_eq_sum_covariance. The pair-sum form collapses the variance of an arbitrary finite sum into a single Cov-sum over the product Finset t ×ˢ t.",
+      "mathContext": "Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) — the bilinear pair-sum form, suitable for diagonal / off-diagonal decomposition by the application."
+    }
+  ]
+}
