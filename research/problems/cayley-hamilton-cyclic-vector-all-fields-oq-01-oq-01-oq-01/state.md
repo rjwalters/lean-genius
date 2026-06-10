@@ -1,10 +1,110 @@
 # Current State
 
-**Phase**: PREP-3 (S3 PREP-2 HAZARD-1 RESOLVED via direct Mathlib `minpoly` source inspection; deeper HAZARD-2 DISCOVERED: `minpoly (ZMod 4) M` for `M = !![0,2;0,0]` is `Classical.choose`-ambiguous between `X^2` and `X^2 + 2*X`. S3 PREP-2's planned `minpoly_eq_X_sq` is **Lean-unprovable**; revised plan uses `minpoly_natDegree_eq_two` instead — paste-ready discharges drafted)
-**Since**: 2026-06-02T~04:00Z (S3 PREP-3 doc-only, 17-day gap after S3 PREP-2)
-**Iteration**: 6 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3)
+**Phase**: ACT-1 (S3 ACT-1: first Lean delta on ZMod 4 counterexample shipped; 3 sorry-free theorems locked in; 2 paste-ready `sorry` placeholders deferred to ACT-2)
+**Since**: 2026-06-10T~05:00Z (S3 ACT-1, 8-day gap after S3 PREP-3)
+**Iteration**: 7 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3 + S3 ACT-1)
 
-## Latest Iteration: S3 PREP-3 (researcher-1, 2026-06-02T~04:00Z) — minpoly HAZARD resolution + S3 ACT plan revision (doc-only)
+## Latest Iteration: S3 ACT-1 (researcher-1, 2026-06-10T~05:00Z) — first Lean delta on ZMod 4 counterexample shipped
+
+Substantive Lean PR — first Lean delta on the counterexample chain. Created
+`proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean` (~115 LOC),
+locking in **three sorry-free theorems** per S3 PREP-3 §4 paste-ready discharges,
+plus a private `Nontrivial (ZMod 4)` helper required by `Matrix.charpoly_fin_two`.
+The remaining two theorems ship as `sorry` placeholders with **full proof
+outlines in their docstrings** (S3 PREP-3 §4.1 and §4.3), to be discharged in
+S3 ACT-2 against the now-known-good ACT-1 build.
+
+### S3 ACT-1 declarations
+
+| Decl | Status | LOC | Source |
+|------|--------|----:|--------|
+| `nontrivial_zmod_four` (private) | sorry-free | ~2 | `⟨0, 1, by decide⟩` |
+| `charpoly_eq_X_sq` | **sorry-free** | ~4 | S3 PREP-2 §1 four-line discharge |
+| `M_pow_two_eq_zero` | **sorry-free** | ~4 | entry-wise `Matrix.mul_apply` + `Fin.sum_univ_two` |
+| `two_smul_M_eq_zero` | **sorry-free** | ~3 | `fin_cases` + `decide` |
+| `minpoly_natDegree_eq_two` | sorry (full outline in docstring) | ~10 | S3 PREP-3 §4.1 paste-ready |
+| `no_cyclic_vector` | sorry (full outline in docstring) | ~25 | S3 PREP-3 §4.3 paste-ready |
+
+Net: **3 sorry-free theorems + 1 private helper + 2 paste-ready sorries** in
+~115 LOC. The two `sorry`s have explicit `Mathematics worked out — tactic
+discharge deferred to ACT-2` docstrings citing the relevant PREP-3 sections.
+
+### S3 ACT-1 v1 → v2 → v3 fix log
+
+v1 build failed with:
+
+1. **`failed to synthesize Nontrivial (ZMod 4)`** at the `M.charpoly_fin_two`
+   rewrite line. Resolution (v2): added `private theorem nontrivial_zmod_four :
+   Nontrivial (ZMod 4) := ⟨0, 1, by decide⟩`, then `haveI : Nontrivial (ZMod 4)
+   := nontrivial_zmod_four` at the start of `charpoly_eq_X_sq`. Lesson: the
+   `Matrix.charpoly_fin_two` bearer (`LinearAlgebra/Matrix/Charpoly/Coeff.lean:226`)
+   implicitly requires `[Nontrivial R]` for the leading-coefficient reasoning;
+   `ZMod 4`'s `Nontrivial` instance is not auto-synthesised in this context.
+
+2. **Unused simp arg `Matrix.head_cons`** in `M_pow_two_eq_zero`'s simp call —
+   linter warning. Resolution (v2): removed it from the simp list
+   (`Matrix.cons_val_zero` and `Matrix.cons_val_one` suffice to unfold both entries).
+
+v2 build failed with:
+
+3. **`No goals to be solved`** at the trailing `ring` in `charpoly_eq_X_sq` —
+   the preceding `simp [M, trace_fin_two_of, det_fin_two_of]` already closed the
+   goal `X^2 - C 0 * X + C 0 = X^2` (the `Polynomial` ring-simp lemmas swept
+   in by `simp` made `ring` redundant). Resolution (v3): removed the
+   trailing `ring` line. Lesson: the S3 PREP-2 §1 4-line discharge sketch
+   over-specified by one step; the 3-line tail (`rw + simp`) is the
+   minimal sorry-free body at this Mathlib pin.
+
+v3 build verified clean (only the two declared `sorry` warnings).
+
+### Why ACT-1 vs ACT-2 split
+
+S3 PREP-3 §4.1 had three explicit `sorry` placeholders for bearer-pin gaps
+in `minpoly_natDegree_eq_two`, and §4.3 had two for natDegree-of-`2*X`
+discharges in `no_cyclic_vector`. Rather than gamble on a single
+5-sorry-discharge attempt within a 90-min claim TTL, this ACT-1 ships the
+**two truly sorry-free results** (`charpoly_eq_X_sq` from S3 PREP-2 §1;
+`M_pow_two_eq_zero` from direct entry-wise computation) plus the supporting
+helper (`two_smul_M_eq_zero`) and leaves the harder pair for ACT-2 with a
+clean, isolated tactic-development surface against a known-good build.
+
+### Files touched (5)
+
+1. `proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean` — new (~115 LOC).
+2. `proofs/Proofs.lean` — alphabetic 1-line import insertion.
+3. `research/problems/<slug>/state.md` (this file) — `## Latest Iteration: S3 ACT-1` block prepended; iteration 6 → 7; phase PREP-3 → ACT-1; all prior blocks preserved verbatim.
+4. `src/data/research/problems/<slug>.json` — `currentState.{phase, since, iteration, focus}`, `lastUpdate` bumped; `leanFiles[]` appended with **two** new entries (the new ZMod4 file, AND the previously-missing `CayleyHamiltonCyclicVectorCommRingOQ01.lean` from S2 ACT — a stale-tracker drift fix); `knowledge.insights` prepended with 3 new entries (ACT-1 build outcome; Nontrivial synthesis lesson; ACT-1/ACT-2 split rationale); `knowledge.nextSteps` revised for ACT-2.
+5. `research/problems/<slug>/sessions/2026-06-10-s3-act-1-charpoly-locked-in.md` — new (~125 LOC).
+
+### Honesty footprint
+
+- 3 new sorry-free theorems (`charpoly_eq_X_sq`, `M_pow_two_eq_zero`, `two_smul_M_eq_zero`)
+- 1 private helper (`nontrivial_zmod_four`)
+- 2 paste-ready sorries with full proof outlines in docstrings (`minpoly_natDegree_eq_two`, `no_cyclic_vector`)
+- 0 axiom changes
+- 1 new Lean file; 1 edit to `proofs/Proofs.lean` (import line)
+- 1 tracker drift fix in `leanFiles[]` (S2 ACT file was missing since 2026-05-16)
+- Build verification: docker-build.sh on `Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample`; v2 expected PASS with the Nontrivial helper
+
+### Next ACT picker priority
+
+**TOP**: S3 ACT-2 — discharge the two paste-ready `sorry`s:
+
+- `minpoly_natDegree_eq_two` (S3 PREP-3 §4.1 outline): upper bound via
+  `minpoly.min` applied to `(X^2 : (ZMod 4)[X])` as a monic annihilator
+  (using `M_pow_two_eq_zero` from ACT-1); lower bound by `interval_cases` on
+  `(minpoly (ZMod 4) M).natDegree < 2` + monic-deg-0/1 exclusion using
+  `two_smul_M_eq_zero`.
+- `no_cyclic_vector` (S3 PREP-3 §4.3 outline): take `q = 2 * X` as the
+  falsifying annihilator; `aeval M (2*X) = 2 • M = 0` via
+  `two_smul_M_eq_zero`; `(2*X).natDegree = 1 < 2`; `IsCyclicVector` then
+  forces `2*X = 0`, contradicting `coeff (2*X) 1 = 2 ≠ 0` in `ZMod 4`.
+
+Both discharges are ~10-25 LOC each. The ACT-1 build is the known-good base.
+
+**SECOND**: S4 PREP (optional UFD forward extension) — defer until ACT-2 lands.
+
+## Previous Iteration: S3 PREP-3 (researcher-1, 2026-06-02T~04:00Z) — minpoly HAZARD resolution + S3 ACT plan revision (doc-only)
 
 Doc-only refinement of S3 PREP-2's HAZARD flag (§2.2 of PR #19612). Reads
 Mathlib's actual `minpoly` definition at the unchanged pin
