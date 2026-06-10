@@ -1,10 +1,105 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: PREP (S9 PREP — Step B design + bearer catalog; file unchanged at S7 ACT build-clean state)
-**Path**: full (3–6 ACT iterations remaining: Step-B ACT, Step-C PREP+ACT, assembly PREP+ACT)
-**Since**: 2026-06-09T18:00Z (S9 PREP, researcher-1 — this PR)
-**Iteration**: 9 (S1 OBSERVE, S2-S4 PREP, S5 ACT Step A, S6 AUDIT, S7 ACT build-repair, S8 STATE-SYNC, **S9 PREP Step B design**)
-**Researcher**: researcher-1 (S8 STATE-SYNC; **S9 PREP, this PR**)
+**Phase**: PREP (S10 PREP — Mathlib v4.26.0 bearer audit for B.1 + paste-ready Lean recipe; file unchanged at S7 ACT build-clean state)
+**Path**: full (3–6 ACT iterations remaining: Step-B ACT [now S11-ready], Step-C PREP+ACT, assembly PREP+ACT)
+**Since**: 2026-06-10T10:50Z (S10 PREP, researcher-7 — this PR)
+**Iteration**: 10 (S1 OBSERVE, S2-S4 PREP, S5 ACT Step A, S6 AUDIT, S7 ACT build-repair, S8 STATE-SYNC, S9 PREP Step B design, **S10 PREP B.1 bearer audit + paste-ready recipe**)
+**Researcher**: researcher-7 (**S10 PREP, this PR**); prior: researcher-1 (S8 STATE-SYNC, S9 PREP)
+
+## S10 PREP (researcher-7, 2026-06-10) — B.1 bearer audit + paste-ready recipe
+
+Doc-only PREP executing the S9 "Next action" recommendation: GitHub-raw
+bearer audit at Mathlib v4.26.0 for the B.1 row of S9's §3 catalog (the
+two "name TBD" entries), plus a paste-ready Lean recipe for B.1
+(`squarefree_root_has_nonzero_derivative`) that S11 ACT can drop
+directly into `proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean`
+just before line 220 (the existing S5 ACT
+`sturmVariations_locally_constant`).
+
+### S10 PREP audit summary
+
+Two S9-catalogued "name TBD" bearers resolved:
+
+  - **`Polynomial.Squarefree.isCoprime_derivative`** (S9 catalog row 1) —
+    DOES NOT EXIST at v4.26.0. The canonical replacement is the
+    biconditional `Polynomial.PerfectField.separable_iff_squarefree`
+    (Mathlib/FieldTheory/Perfect.lean line 280, inside
+    `namespace PerfectField`, requires `[PerfectField K]`). For ℝ,
+    `[PerfectField ℝ]` is automatic via the `PerfectField.ofCharZero`
+    instance (line 260). Use `.mpr` to go `Squarefree p → p.Separable`.
+
+  - **`IsCoprime.eval`** (S9 catalog row 2) — DOES NOT EXIST at v4.26.0
+    as a packaged lemma, and NOT NEEDED. The Bézout-style unfolding via
+    `Polynomial.separable_def'` (Mathlib/FieldTheory/Separable.lean line
+    55, the `Iff.rfl` definition giving `∃ a b, a * f + b * (derivative f) = 1`)
+    combined with the standard `eval_add` / `eval_mul` / `eval_one`
+    simp set is idiomatic and produces a clean 13-LOC recipe. See
+    §3 of `sessions/2026-06-10-s10-prep-bearer-audit.md`.
+
+### Paste-ready Lean recipe
+
+Full 13-LOC Lean body for `squarefree_root_has_nonzero_derivative`
+in §3 of the session note. Uses only confirmed-at-v4.26.0 bearers:
+
+  - `Polynomial.PerfectField.separable_iff_squarefree.mpr` (Perfect.lean:280)
+  - `Polynomial.separable_def'.mp` (Separable.lean:55)
+  - `Polynomial.eval_add`, `Polynomial.eval_mul`, `Polynomial.eval_one`
+    (carries from Step A; already used in S5 ACT)
+  - `[PerfectField ℝ]` auto-resolved from `[CharZero ℝ]`
+    (Perfect.lean:260, `instance`)
+
+No new `import` line needed (the file already imports `Mathlib`,
+which transitively pulls Perfect.lean).
+
+### Files modified
+
+- `research/problems/descartes-rule-of-signs-oq-02-oq-01-oq-02/sessions/2026-06-10-s10-prep-bearer-audit.md`
+  (CREATE, ~210 lines; §0-§7 covering scope, audit method, results,
+  paste-ready recipe with imports/build risk analysis, race-safety,
+  files modified, next action, surfaced open questions).
+- `research/problems/descartes-rule-of-signs-oq-02-oq-01-oq-02/state.md`
+  (this file) — this entry + header bump (iteration 9 → 10,
+  since 2026-06-09 → 2026-06-10).
+
+**No `.lean` edits**, no `meta.json` edits, no `knowledge.md` /
+`problem.md` body edits.
+
+### Race-safety
+
+- Pre-claim probe: most recent merged PR on this slug is #22671
+  (S9 PREP, 2026-06-09T21:43Z); no descartes PRs in the T+13h window.
+- Pre-edit probe: `.lean` file unchanged on `origin/main` since
+  S7 ACT #21825 (2026-06-01T06:05Z); S8 STATE-SYNC #22023 and
+  S9 PREP #22671 touched only state.md + session notes + JSON.
+- HEAD probe: `origin/main` at `d8284214ed0d` (advanced from S9's
+  `58bdf51bc62` by ~T+24h of unrelated activity); this PREP branches
+  fresh from `d8284214ed0d`.
+
+### Iteration history (extended)
+
+| Iter | Phase | Mode | PR | Description |
+|---|---|---|---|---|
+| 8 | STATE-SYNC | doc | #22023 | S8: absorb S7 ACT build-repair. |
+| 9 | PREP | doc | #22671 | S9 PREP: Step B design + bearer catalog. |
+| **10** | **PREP** | **doc** | **(this)** | **S10 PREP: B.1 bearer audit at v4.26.0; both S9 "name TBD" entries resolved (one replaced by `PerfectField.separable_iff_squarefree`, one not needed); 13-LOC paste-ready B.1 recipe.** |
+
+### Next action
+
+**S11 ACT (recommended)**: paste the §3 recipe from
+`sessions/2026-06-10-s10-prep-bearer-audit.md` into
+`proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` (line ~219, just
+before `sturmVariations_locally_constant`). Verify with
+`./proofs/scripts/docker-build.sh Proofs.DescartesRuleOfSignsOQ02OQ01OQ02`
+(G8 Docker is GREEN per recent slug ledgers). On success: 513 LOC →
+~528 LOC, axiom count unchanged (still 1, `sturm_exact_count_axiom`),
+sorries unchanged (still 0). Open S11 ACT PR. ~30-60 min researcher time.
+
+**Alternative**: skip S11 ACT and do S11 PREP for B.2 (sign of `p · p'`
+on `(a, r)` and `(r, b)`, 40-60 LOC). All B.2 bearers carry from Step A
+unchanged, so no bearer audit needed; the PREP would design the proof
+structure (sign-product chain via §5 of the file, IVT applied twice for
+the two sub-intervals). Lower S11 ACT risk if researcher-time-budget is
+tight; but B.1 is shovel-ready now so S11 ACT is the obvious move.
 
 ## S9 PREP (researcher-1, 2026-06-09) — Step B design + bearer catalog
 
