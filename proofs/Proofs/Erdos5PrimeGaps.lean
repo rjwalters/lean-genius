@@ -654,4 +654,54 @@ theorem frequently_normalizedGap_gt (M : ℝ) :
     show M < normalizedGap (f (k + K))
     linarith
 
+/- ## Part XV: Liminf / Limsup Corollaries -/
+
+/-- **Unconditional oscillation summary**: the two unconditional oscillation
+    statements packaged together. Combined, they witness `liminf = 0` (using
+    `normalizedGap_nonneg` as the lower bound) and `limsup = ⊤` for the
+    `normalizedGap` sequence along `atTop`. The conjecture asks for the
+    further distributional fact that every intermediate value is also a
+    limit point. -/
+theorem normalizedGap_oscillates :
+    (∀ ε : ℝ, 0 < ε → {n : ℕ | normalizedGap n < ε}.Infinite) ∧
+    (∀ M : ℝ, {n : ℕ | M < normalizedGap n}.Infinite) :=
+  ⟨frequently_normalizedGap_lt, frequently_normalizedGap_gt⟩
+
+/-- **`Eventually`-form of `limsup = ⊤`** (unconditional): there is no upper
+    bound `M : ℝ` such that all-but-finitely-many normalized gaps lie at or
+    below `M`. This is the `Filter.Eventually` reformulation of
+    `frequently_normalizedGap_gt`, and it expresses that
+    `Filter.limsup normalizedGap atTop = ⊤` in any complete extension of `ℝ`
+    (e.g. `EReal`). -/
+theorem not_eventually_normalizedGap_le (M : ℝ) :
+    ¬ ∀ᶠ n in atTop, normalizedGap n ≤ M := by
+  intro h
+  rw [Filter.eventually_atTop] at h
+  obtain ⟨N, hN⟩ := h
+  refine frequently_normalizedGap_gt M (Set.Finite.subset (Set.finite_Iio N) ?_)
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact (not_le.mpr hn) (hN n hge)
+
+/-- **`Eventually`-form of `liminf = 0`** (unconditional): for every `ε > 0`
+    it is NOT the case that `normalizedGap n ≥ ε` for all but finitely many
+    `n`. Combined with `normalizedGap_nonneg`, this expresses that
+    `Filter.liminf normalizedGap atTop = 0`: the values dip arbitrarily
+    close to `0` infinitely often, yet are always non-negative. -/
+theorem not_eventually_le_normalizedGap (ε : ℝ) (hε : 0 < ε) :
+    ¬ ∀ᶠ n in atTop, ε ≤ normalizedGap n := by
+  intro h
+  rw [Filter.eventually_atTop] at h
+  obtain ⟨N, hN⟩ := h
+  refine frequently_normalizedGap_lt ε hε (Set.Finite.subset (Set.finite_Iio N) ?_)
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact (not_le.mpr hn) (hN n hge)
+
 end Erdos5

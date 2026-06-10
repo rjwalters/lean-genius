@@ -20,11 +20,11 @@
     "erdosNumber": 5,
     "erdosUrl": "https://erdosproblems.com/5",
     "erdosProblemStatus": "open",
-    "axiomCount": 4,
-    "lineCount": 657,
-    "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), hildebrand_maier_large_limit_points (arbitrarily large finite limit points, 1988). 0 sorries. Proves 26 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_isClosed, limitPointSet_unbounded, erdos_5_from_dense_values (reduction to distributional density), frequently_near_of_isLimitPoint and erdos_5_iff_dense_at_every_point (forward density direction giving the iff characterization), and unconditional oscillation lemmas frequently_normalizedGap_lt and frequently_normalizedGap_gt.",
+    "axiomCount": 3,
+    "lineCount": 707,
+    "assumptions": "3 axioms: westzynthius_large_gaps (∞ ∈ S, 1931), zhang_bounded_gaps (bounded prime gaps, 2013), hildebrand_maier_large_limit_points (arbitrarily large finite limit points, 1988). 0 sorries. Proves 36 theorems including: zhang_implies_zero_limit, twin_prime_implies_zero_limit, limitPointSet_isClosed, limitPointSet_unbounded, erdos_5_from_dense_values (reduction to distributional density), frequently_near_of_isLimitPoint and erdos_5_iff_dense_at_every_point (forward density direction giving the iff characterization), unconditional oscillation lemmas frequently_normalizedGap_lt and frequently_normalizedGap_gt, and Eventually-form liminf/limsup corollaries not_eventually_normalizedGap_le and not_eventually_le_normalizedGap together with the packaging normalizedGap_oscillates.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 33,
+    "theoremCount": 36,
     "definitionCount": 9,
     "additionalFiles": [
       "Proofs/Erdos5Problem.lean"
@@ -114,7 +114,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. This formalization proves 33 theorems from 3 axioms with 0 sorries. The extremes are settled: 0 ∈ S (derived from Zhang's bounded gaps) and ∞ ∈ S (Westzynthius). Key structural results: S is nonempty, closed, unbounded, and contained in [0, ∞). The reduction theorem erdos_5_from_dense_values together with frequently_near_of_isLimitPoint yields the iff characterization erdos_5_iff_dense_at_every_point: the conjecture is equivalent to normalizedGap values being distributionally dense on [0, ∞). Unconditional oscillation lemmas (frequently_normalizedGap_lt from Zhang, frequently_normalizedGap_gt from Westzynthius) confirm that normalized gaps dip arbitrarily close to 0 and rise arbitrarily high, infinitely often each.",
+    "summary": "Erdős Problem #5 asks whether every non-negative real number is a limit point of normalized prime gaps. This formalization proves 36 theorems from 3 axioms with 0 sorries. The extremes are settled: 0 ∈ S (derived from Zhang's bounded gaps) and ∞ ∈ S (Westzynthius). Key structural results: S is nonempty, closed, unbounded, and contained in [0, ∞). The reduction theorem erdos_5_from_dense_values together with frequently_near_of_isLimitPoint yields the iff characterization erdos_5_iff_dense_at_every_point: the conjecture is equivalent to normalizedGap values being distributionally dense on [0, ∞). Unconditional oscillation lemmas (frequently_normalizedGap_lt from Zhang, frequently_normalizedGap_gt from Westzynthius) confirm that normalized gaps dip arbitrarily close to 0 and rise arbitrarily high, infinitely often each. The Eventually-form corollaries not_eventually_normalizedGap_le and not_eventually_le_normalizedGap reformulate these as witnesses that Filter.limsup normalizedGap atTop = ⊤ and Filter.liminf normalizedGap atTop = 0 along atTop.",
     "implications": "Resolution would provide a complete understanding of prime gap fluctuations at the logarithmic scale, confirming the prediction of Cramér's probabilistic model. It connects to the Hardy-Littlewood prime k-tuples conjecture (which would imply S = [0, ∞)), sieve methods (the GPY-Maynard-Tao framework), and the distribution of primes in short intervals.",
     "openQuestions": [
       "Is every C ≥ 0 a limit point of (p_{n+1} - p_n)/log(p_n)?",
@@ -167,9 +167,9 @@
       "Topology"
     ],
     "namespace": "Erdos5",
-    "lineCount": 657,
+    "lineCount": 707,
     "axiomCount": 3,
-    "theoremCount": 33,
+    "theoremCount": 36,
     "definitionCount": 9,
     "path": "Proofs/Erdos5PrimeGaps.lean",
     "sorries": 0,
