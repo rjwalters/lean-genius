@@ -1,11 +1,55 @@
 # Current State
 
-**Phase**: ACT (S31 peel-off ship — Docker pending) — file compiles Docker-clean at pin `2df2f0150c…` (S30 baseline re-verified 210s 3074 jobs at S31 author-time); 1 axiom (`burnside_pq_nontrivial`, narrowed `p ≠ q ∧ 1 ≤ a ∧ 1 ≤ b ∧ 4 ≤ a + b`); 0 sorries; 40 theorems / 1961 lines (+2 / +67 vs S30); INFRA all-GREEN (Docker 29.5.3, disk 85 Gi, `.lake` worktree symlink redirects to main repo cache correctly)
-**Since**: 2026-06-09T22:47:00Z (S31 ACT — peel-off recipe paste landed)
-**Iteration**: 31 (S31 ACT — paste of S26 §3.2/§3.3 peel-off recipe: `burnside_p_pow_a_q_q_lt_p` (45 LOC) + `burnside_p_q_pow_b_p_lt_q` (12 LOC wrapper) + state.md head drift-fix absorbing the 14-day S29 BUILD-BLOCKER → S30 BUILD-FIX → S31 ACT arrears)
-**Last Updated**: 2026-06-09T22:47Z (researcher-1)
+**Phase**: ACT (S32 dispatch wire-up — Docker-verified GREEN at pin `2df2f0150c…`, 3074 jobs); 1 axiom (`burnside_pq_nontrivial`, unchanged hypothesis but now invoked on a strictly smaller residue); 0 sorries; 40 theorems / 1973 lines (+0 / +12 vs S31); INFRA all-GREEN
+**Since**: 2026-06-09T23:59:00Z (S32 ACT — dispatch wire-up landed)
+**Iteration**: 32 (S32 ACT — wire S31's `burnside_p_pow_a_q_q_lt_p` + `burnside_p_q_pow_b_p_lt_q` into `burnside_pq` dispatch via two new `by_cases` branches inserted between h12 and the residue; +12 LOC; Docker GREEN 3074 jobs)
+**Last Updated**: 2026-06-09T23:59Z (researcher-1)
 
-## S31 ACT — peel off `(a, 1) q<p` and `(1, b) p<q` shapes per S26 §3.2/§3.3 + state.md head drift fix (researcher-1, 2026-06-09T22:47Z, this PR)
+## S32 ACT — Wire `burnside_p_pow_a_q_q_lt_p` and `burnside_p_q_pow_b_p_lt_q` into `burnside_pq` dispatch (researcher-1, 2026-06-09T23:59Z, this PR)
+
+Executes the S31 ACT next-action verbatim: insert two new `by_cases` branches into the `burnside_pq` dispatch at L1727+, immediately after the h12 (1, 2) branch and immediately before the residue axiom call.
+
+**Build**: `./proofs/scripts/docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ07` → `Build completed successfully (3074 jobs)`. Same job count as S31 baseline — no new transitive imports.
+
+### Dispatch table (post-S32)
+
+| Case | Branch | Dispatch target | Axiom touch? |
+|------|--------|-----------------|--------------|
+| (1, 1) | h11 | `burnside_pq_pq_case` | no |
+| (2, 1) | h21 | `burnside_p_squared_q` | no |
+| (1, 2) | h12 | `burnside_p_q_squared` | no |
+| **(a, 1), q < p, a ≥ 3** | **hb1qltp (NEW S32)** | **`burnside_p_pow_a_q_q_lt_p` (S31)** | **no (NEW)** |
+| **(1, b), p < q, b ≥ 3** | **ha1pltq (NEW S32)** | **`burnside_p_q_pow_b_p_lt_q` (S31)** | **no (NEW)** |
+| residue (otherwise, a + b ≥ 4) | fall-through | `burnside_pq_nontrivial` (axiom) | yes |
+
+### Net deltas (S31 → S32)
+
+| Metric | S31 close (1961 LOC, 40 thm) | S32 close (1973 LOC, 40 thm) | Δ |
+|--------|------------------------------|------------------------------|---|
+| LOC | 1961 | 1973 | +12 |
+| theoremCount | 40 | 40 | 0 |
+| axiomCount | 1 | 1 | 0 |
+| sorries | 0 | 0 | 0 |
+| `burnside_pq` dispatch branches | 4 (h11, h21, h12, residue) | 6 (+ hb1qltp, + ha1pltq) | +2 |
+| axiom-residue coverage | `(a, 1, q<p, a≥3)`, `(1, b, p<q, b≥3)`, `(a≥2, b≥2)` | `(a, 1, p<q, a≥3)`, `(1, b, q<p, b≥3)`, `(a≥2, b≥2)` | ~50% reduction on rank-3+ axis-shaped cases |
+
+### Net axiom-reduction (post-S32)
+
+The `burnside_pq_nontrivial` axiom hypothesis (`p ≠ q ∧ 1 ≤ a ∧ 1 ≤ b ∧ 4 ≤ a + b`) is unchanged at the declaration site, but invoked **only** for cases where:
+
+1. `p ≠ q`, `a ≥ 1`, `b ≥ 1`, `a + b ≥ 4`, AND
+2. NOT `(a, 1)` with `q < p` (handled by `burnside_p_pow_a_q_q_lt_p` since S32), AND
+3. NOT `(1, b)` with `p < q` (handled by `burnside_p_q_pow_b_p_lt_q` since S32).
+
+Strict subset of pre-S32 axiom scope. The next S33 ACT candidate is to narrow the axiom's stated hypothesis to match what the residue actually carries (doc-only refactor).
+
+Full record in `sessions/2026-06-09-s32-act-dispatch-wire.md`.
+
+---
+
+## Prior State (S31 ACT, 2026-06-09T22:47Z) — preserved for traceability
+
+## S31 ACT — peel off `(a, 1) q<p` and `(1, b) p<q` shapes per S26 §3.2/§3.3 + state.md head drift fix (researcher-1, 2026-06-09T22:47Z, PR #22691)
 
 **Pivot from initial STATE-SYNC plan**: pre-flight survey first picked S31 STATE-SYNC (state.md head drift-fix only, doc-only) given 1h24min claim-window concern; but a baseline Docker re-verify of the S30 BUILD-FIX completed in 210s (3074 jobs, 0 errors, 1 pre-existing warning) — well under budget — so pivoted to ACT inside the same window. The peel-off recipe paste is additive (no dispatch update yet) and lifts the S26 spec verbatim.
 

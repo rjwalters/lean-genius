@@ -1725,20 +1725,32 @@ theorem burnside_pq {G : Type*} [Group G] [Finite G]
           subst hb2
           have hcard' : Nat.card G = p * q ^ 2 := by simpa [pow_one] using hcard
           exact burnside_p_q_squared hpq hcard'
-        · -- Residue: a + b ≥ 4. Apply narrowed axiom.
-          have hab : 4 ≤ a + b := by
-            by_contra hcontra
-            push_neg at hcontra
-            -- a ≥ 1, b ≥ 1, a + b < 4 ⇒ (a, b) ∈ {(1,1), (2,1), (1,2)}
-            have ha_le : a ≤ 2 := by omega
-            have hb_le : b ≤ 2 := by omega
-            interval_cases a <;> interval_cases b <;>
-              first
-                | exact h11 ⟨rfl, rfl⟩
-                | exact h12 ⟨rfl, rfl⟩
-                | exact h21 ⟨rfl, rfl⟩
-                | omega
-          exact burnside_pq_nontrivial hpq ha hb hab hcard
+        · -- S32 ACT: peel off (a, b) = (a, 1) with q < p via burnside_p_pow_a_q_q_lt_p (S31)
+          by_cases hb1qltp : b = 1 ∧ q < p
+          · obtain ⟨hb1, hqltp⟩ := hb1qltp
+            subst hb1
+            have hcard' : Nat.card G = p ^ a * q := by simpa [pow_one] using hcard
+            exact burnside_p_pow_a_q_q_lt_p ha hqltp hcard'
+          · -- S32 ACT: peel off (a, b) = (1, b) with p < q via burnside_p_q_pow_b_p_lt_q (S31)
+            by_cases ha1pltq : a = 1 ∧ p < q
+            · obtain ⟨ha1, hpltq⟩ := ha1pltq
+              subst ha1
+              have hcard' : Nat.card G = p * q ^ b := by simpa [pow_one] using hcard
+              exact burnside_p_q_pow_b_p_lt_q hb hpltq hcard'
+            · -- Residue: a + b ≥ 4. Apply narrowed axiom.
+              have hab : 4 ≤ a + b := by
+                by_contra hcontra
+                push_neg at hcontra
+                -- a ≥ 1, b ≥ 1, a + b < 4 ⇒ (a, b) ∈ {(1,1), (2,1), (1,2)}
+                have ha_le : a ≤ 2 := by omega
+                have hb_le : b ≤ 2 := by omega
+                interval_cases a <;> interval_cases b <;>
+                  first
+                    | exact h11 ⟨rfl, rfl⟩
+                    | exact h12 ⟨rfl, rfl⟩
+                    | exact h21 ⟨rfl, rfl⟩
+                    | omega
+              exact burnside_pq_nontrivial hpq ha hb hab hcard
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART V: Sanity checks
