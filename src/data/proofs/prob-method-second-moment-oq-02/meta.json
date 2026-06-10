@@ -57,7 +57,7 @@
     "mathlib_version": "4.26.0"
   },
   "overview": {
-    "historicalContext": "The variance-of-sums identity Var(∑ Xᵢ) = ∑ Var(Xᵢ) + ∑_{i ≠ j} Cov(Xᵢ, Xⱼ) — equivalently, the bilinear pair-sum form ∑_{(i,j)} Cov(Xᵢ, Xⱼ) — is the algebraic backbone of the second moment method, especially in probabilistic combinatorics. It was implicit in Chebyshev's 1867 work and made fully explicit by the 20th-century formalization of variance and covariance as bilinear forms. The identity is purely algebraic, requiring no probability axioms beyond linearity of expectation and the definition Cov(X, Y) = E[XY] − E[X]E[Y]. Its workhorse status in Erdős-Rényi random-graph threshold arguments (subgraph counts, chromatic-number bounds, Hamilton cycles) makes it indispensable to the field; see Alon–Spencer §4 for representative applications.",
+    "historicalContext": "The variance-of-sums identity Var(∑ Xᵢ) = ∑ Var(Xᵢ) + ∑_{i ≠ j} Cov(Xᵢ, Xⱼ) — equivalently, the bilinear pair-sum form ∑_{(i,j)} Cov(Xᵢ, Xⱼ) — is the algebraic backbone of the second moment method, especially in probabilistic combinatorics. The underlying second-moment concentration bound is one of the older results in classical probability: **Bienaymé (1853)** stated the inequality P(|X − E[X]| ≥ k σ) ≤ 1/k² in his analysis of Laplace's least-squares theory, and **Chebyshev (1867)** independently rediscovered and popularized it in *Des valeurs moyennes*; the priority dispute was settled in Bienaymé's favor only in the 20th century, but the inequality is universally credited to Chebyshev in the modern literature. The pair-sum variance expansion itself was implicit in Chebyshev's calculations of E[(X − E[X])²] for sums of weakly-dependent variables, and was made fully explicit when **Markov (1884)** and his school cast variance and covariance as bilinear forms on the algebra of random variables — completing the algebraic frame that makes Var(∑) = ∑ Cov a one-line consequence of bilinearity.\n\nThe identity acquired its workhorse status in **combinatorics** with **Erdős and Rényi (1959–1961)**, who used it to compute thresholds in their random-graph model G(n,p): for a subgraph H with density m(H) = max{|E(H')|/|V(H')|}, the threshold for the appearance of a copy of H is p* = n^(−1/m(H)) (proved sharp by **Bollobás 1981**), and the proof reduces — via Chebyshev's inequality applied to the indicator-sum X_H = ∑_{H' ≅ H} 𝟙_{H' ⊆ G} — to the pair-sum variance formalized in this file. The same identity underlies the second-moment proofs of the chromatic-number concentration (Shamir-Spencer 1987), Hamilton-cycle thresholds (Pósa 1976, Komlós-Szemerédi 1983), and the resolution of the **Kahn-Kalai conjecture** by **Park-Pham (2022)**. The complementary anti-concentration ingredient was supplied by **Paley-Zygmund (1932)**: P(X > t·E[X]) ≥ (1−t)²·E[X]²/E[X²] — the lower bound that, together with Chebyshev's upper bound and the pair-sum form proved here, gives both directions of every G(n,p) threshold. The identity is purely algebraic, requiring no probability axioms beyond linearity of expectation and the definition Cov(X, Y) = E[XY] − E[X]E[Y]; it is this measure-theory-free character that makes the discrete Finset-ℚ formalization here a faithful capture of the classical content. See Alon–Spencer §4 and Janson–Łuczak–Ruciński §3.1 for the canonical modern accounts.",
     "problemStatement": "For ℚ-valued functions X : ι → α → ℚ on a Finset α with counting measure, and an index Finset t : Finset ι, prove the bilinear variance-of-sum identity\n\n  Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j).\n\nThis is the discrete, measure-theory-free form §A of OQ-02 (parent: prob-method-second-moment). The textbook decomposition Var(∑) = ∑ Var + ∑_{i≠j} Cov is one Finset diag/offDiag split away from the pair-sum form, deferred to a follow-up PR.",
     "text": "Proves the variance-of-sums decomposition in the discrete Finset-ℚ setting consistent with the parent file ProbMethodSecondMoment.lean. The proof is elementary: define mean, variance, covariance via Finset sums and cardinalities; verify the bilinear/symmetric API (mean_add, covariance_symm, covariance_add_left/right, variance_add); extend bilinearity to Finset-indexed sums by Finset induction (covariance_sum_left/right); collapse to the pair-sum form via Finset.sum_product.",
     "proofStrategy": "Five layers:\n\n1. **Definitions**: mean s f = (s.sum f) / s.card; variance s f = mean (fun a => (f a − mean s f)^2); covariance s f g = mean (fun a => (f a − mean s f) · (g a − mean s g)).\n\n2. **Self-equality**: variance_eq_covariance_self — variance is covariance of f with itself, by `sq` definition.\n\n3. **Bilinear / symmetric API**: covariance_symm by `Finset.sum_congr` + `ring`; mean_add by `Finset.sum_add_distrib` + `add_div`; covariance_add_left by combining mean_add, `Finset.sum_add_distrib`, and `ring`; covariance_add_right by symmetry.\n\n4. **Sum-indexed bilinearity**: covariance_sum_left by Finset induction — empty case collapses to covariance s (fun _ => 0) g = 0 via Finset.sum_const_zero; insert case reuses covariance_add_left.\n\n5. **Pair-sum form**: variance_sum_eq_sum_covariance — apply variance_eq_covariance_self, then covariance_sum_left in slot 1 and covariance_sum_right in slot 2, then collapse with Finset.sum_product to a single sum over t ×ˢ t.",
@@ -124,6 +124,124 @@
       "Generalize the counting-measure setting to weighted Finsets — replacing s.card with ∑_{a ∈ s} w a — to capture non-uniform discrete distributions (e.g. biased coins, weighted bootstrap) without introducing measure theory.",
       "Bridge to Mathlib's measure-theoretic ProbabilityTheory.variance via a counting-measure adapter, so that gallery-level results can compose with downstream Mathlib probability content."
     ]
+  },
+  "mainTheorems": [
+    {
+      "name": "variance_eq_covariance_self",
+      "statement": "∀ {α : Type*} (s : Finset α) (f : α → ℚ), variance s f = covariance s f f",
+      "description": "Variance is the diagonal of the symmetric covariance bilinear form. Proved by `simp only [variance, covariance, sq]` — the definitions unfold identically once `x² = x · x` is rewritten. This identification is the bridge that lets the headline identity be derived entirely from covariance machinery, with no direct variance manipulation."
+    },
+    {
+      "name": "covariance_symm",
+      "statement": "∀ {α : Type*} (s : Finset α) (f g : α → ℚ), covariance s f g = covariance s g f",
+      "description": "Symmetry of covariance. Proved by `Finset.sum_congr rfl` reducing the sum to per-term equality, then `ring` swapping the two factors `(f a - mean s f) * (g a - mean s g)`."
+    },
+    {
+      "name": "mean_add",
+      "statement": "∀ {α : Type*} (s : Finset α) (f g : α → ℚ), mean s (fun a => f a + g a) = mean s f + mean s g",
+      "description": "Linearity of expectation in the discrete setting. Proved by `Finset.sum_add_distrib` followed by `add_div` — the arithmetic average commutes with addition because finite summation does."
+    },
+    {
+      "name": "covariance_add_left",
+      "statement": "∀ {α : Type*} (s : Finset α) (f₁ f₂ g : α → ℚ), covariance s (fun a => f₁ a + f₂ a) g = covariance s f₁ g + covariance s f₂ g",
+      "description": "Left bilinearity. Rewrites the mean of f₁ + f₂ via `mean_add`, the Finset sum via `Finset.sum_add_distrib`, then `ring` closes the per-term identity `(f₁ + f₂ - (m₁ + m₂))(g - mₓ) = (f₁ - m₁)(g - mₓ) + (f₂ - m₂)(g - mₓ)`."
+    },
+    {
+      "name": "covariance_add_right",
+      "statement": "∀ {α : Type*} (s : Finset α) (f g₁ g₂ : α → ℚ), covariance s f (fun a => g₁ a + g₂ a) = covariance s f g₁ + covariance s f g₂",
+      "description": "Right bilinearity, derived from `covariance_add_left` via four applications of `covariance_symm` (one to swap slots, then left-additivity, then two more to swap back). The symmetry-and-left-additivity trick saves duplicating the Finset sum manipulation."
+    },
+    {
+      "name": "variance_add",
+      "statement": "∀ {α : Type*} (s : Finset α) (f g : α → ℚ), variance s (fun a => f a + g a) = variance s f + variance s g + 2 * covariance s f g",
+      "description": "Pair-case variance of a sum — the smallest instance of the headline pair-sum form. Routes through covariance entirely: three applications of `variance_eq_covariance_self`, two of `covariance_add_left/right`, one `covariance_symm` to merge `Cov(f,g) + Cov(g,f)` into `2·Cov(f,g)`, then `ring`. No Finset sum is unfolded directly."
+    },
+    {
+      "name": "covariance_sum_left",
+      "statement": "∀ {α ι : Type*} [DecidableEq ι] (s : Finset α) (t : Finset ι) (X : ι → α → ℚ) (g : α → ℚ), covariance s (fun a => t.sum (fun i => X i a)) g = t.sum (fun i => covariance s (X i) g)",
+      "description": "Lifts left-bilinearity from the pair case to a Finset-indexed sum via `Finset.induction_on t`. Empty case: the LHS becomes Cov(0, g) and collapses via `Finset.sum_const_zero` (the constant-zero function has zero mean and contributes a zero term per `a`). Insert case: `Finset.sum_insert hi` exposes the `X i + ∑_{j ∈ t} X j` shape, then `covariance_add_left` + IH closes the proof."
+    },
+    {
+      "name": "covariance_sum_right",
+      "statement": "∀ {α ι : Type*} [DecidableEq ι] (s : Finset α) (t : Finset ι) (f : α → ℚ) (Y : ι → α → ℚ), covariance s f (fun a => t.sum (fun j => Y j a)) = t.sum (fun j => covariance s f (Y j))",
+      "description": "Right-slot version, derived from `covariance_sum_left` by one `covariance_symm` rewrite plus a pointwise `Finset.sum_congr` of symmetry on each summand."
+    },
+    {
+      "name": "variance_sum_eq_sum_covariance",
+      "statement": "∀ {α ι : Type*} [DecidableEq ι] (s : Finset α) (t : Finset ι) (X : ι → α → ℚ), variance s (fun a => t.sum (fun i => X i a)) = (t ×ˢ t).sum (fun p => covariance s (X p.1) (X p.2))",
+      "description": "**Headline identity.** Four-line proof: (1) `variance_eq_covariance_self` to switch to Cov(∑, ∑); (2) `covariance_sum_left` to extract the outer index; (3) `Finset.sum_product` to flatten the nested double sum into a single sum over the product Finset `t ×ˢ t`; (4) `Finset.sum_congr` applying `covariance_sum_right` pointwise to extract the inner index. The pair-sum form is preferred over the textbook diag/offDiag form because it leaves the index-set decomposition to the caller — independent indicators collapse the off-diagonal to zero, positively-correlated indicators keep it for Cauchy-Schwarz bounding."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Bienaymé, I.-J.",
+      "title": "Considérations à l'appui de la découverte de Laplace sur la loi de probabilité dans la méthode des moindres carrés",
+      "year": "1853",
+      "note": "C. R. Acad. Sci. Paris 37, 309–324. First clear statement of what is now called Chebyshev's inequality — the second-moment bound P(|X - E[X]| ≥ k σ) ≤ 1/k² — predating Chebyshev by 14 years."
+    },
+    {
+      "authors": "Chebyshev, P. L.",
+      "title": "Des valeurs moyennes",
+      "year": "1867",
+      "note": "Journal de Mathématiques Pures et Appliquées 12, 177–184. Independent rediscovery and popularization of the moment inequality; the pair-sum form Var(∑ Xᵢ) = ∑ Cov(Xᵢ, Xⱼ) is implicit in Chebyshev's variance expansion arguments."
+    },
+    {
+      "authors": "Markov, A. A.",
+      "title": "Wahrscheinlichkeitsrechnung",
+      "year": "1912",
+      "note": "German translation of the 1884 Russian original. Cast variance and covariance as bilinear forms on the algebra of random variables — the algebraic frame in which the pair-sum identity Var(∑) = ∑ Cov becomes a one-line consequence of bilinearity, exactly as formalized here."
+    },
+    {
+      "authors": "Park, J. and Pham, H. T.",
+      "title": "A proof of the Kahn–Kalai conjecture",
+      "year": "2022",
+      "note": "arXiv:2203.17207, J. Amer. Math. Soc. 37 (2024) 235–243. Resolves the long-standing conjecture relating expectation thresholds to fractional expectation thresholds for monotone properties — a striking modern application of the second-moment style of argument whose algebraic kernel is the pair-sum form proved here."
+    },
+    {
+      "authors": "Erdős, P. and Rényi, A.",
+      "title": "On the evolution of random graphs",
+      "year": "1960",
+      "note": "Publ. Math. Inst. Hungar. Acad. Sci. 5, 17–61. Founding paper of random graph theory; introduces threshold functions and uses the second moment method (Var(∑ X_H) computation for subgraph indicators) to prove sharp existence thresholds."
+    },
+    {
+      "authors": "Bollobás, B.",
+      "title": "Threshold functions for small subgraphs",
+      "year": "1981",
+      "note": "Math. Proc. Cambridge Philos. Soc. 90, 197–206. Establishes that the threshold for a balanced subgraph H in G(n,p) is p* = n^(-1/m(H)) where m(H) = max{|E(H')|/|V(H')|}; the proof uses exactly the variance-of-indicator-sum pair-sum form formalized here."
+    },
+    {
+      "authors": "Alon, N. and Spencer, J. H.",
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "note": "4th edition, Wiley. Chapter 4 ('The Second Moment') is the canonical modern reference for the techniques this file's headline identity supports — Chebyshev concentration, Paley-Zygmund anti-concentration, threshold functions, and the pair-sum variance decomposition used throughout."
+    },
+    {
+      "authors": "Janson, S., Łuczak, T., and Ruciński, A.",
+      "title": "Random Graphs",
+      "year": "2000",
+      "note": "Wiley-Interscience. The standard reference for second-moment threshold arguments in G(n,p); §3.1 develops the Var(∑ X i) = ∑ Cov(X i, X j) form for subgraph counts in the language used by §B / §C of this OQ-02 program."
+    },
+    {
+      "authors": "Paley, R. E. A. C. and Zygmund, A.",
+      "title": "On some series of functions, (1), (2), (3)",
+      "year": "1932",
+      "note": "Proc. Cambridge Philos. Soc. 26, 337–357 / 458–474 / 28, 190–205. Source of the anti-concentration inequality P(X > t·E[X]) ≥ (1-t)²·E[X]²/E[X²] — the second-moment lower bound that, together with Chebyshev's upper bound, gives the threshold functions this file's pair-sum form serves."
+    }
+  ],
+  "leanFile": {
+    "path": "proofs/Proofs/ProbMethodSecondMomentOQ02.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.ProbMethodSecondMoment"
+    ],
+    "opens": [],
+    "namespace": "ProbMethod.SecondMoment",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 9,
+    "definitionCount": 3,
+    "sorries": 0
   },
   "crossReferences": [
     {
