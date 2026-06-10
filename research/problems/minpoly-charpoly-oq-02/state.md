@@ -1,8 +1,79 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **B1 PARTIALLY MITIGATED** (S11 STATE-SYNC at T+17 days since S10: Docker recovered, disk improved 5.6× from 4.5 → 25 Gi but still ~5 Gi below S10's ~30 Gi build-headroom threshold; pin identity unchanged at `2df2f015…`)
-**Since**: 2026-06-02T06:45Z (S11 STATE-SYNC re-measures Docker + disk after 17-day idle window; was S10 STATE-SYNC 2026-05-16T15:40Z)
-**Iteration**: 14 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + S10 STATE-SYNC + this S11 STATE-SYNC)
+**Phase**: S8 ACT readiness — **B1 FULLY MITIGATED** (S12 STATE-SYNC at T+8 days since S11: Docker still healthy; disk recovered to 77 Gi from S11's borderline 25 Gi, now ~47 Gi above S10's ~30 Gi build-headroom threshold; pin identity unchanged at `2df2f015…`)
+**Since**: 2026-06-10 (S12 STATE-SYNC re-measures Docker + disk after 8-day idle window; was S11 STATE-SYNC 2026-06-02T06:45Z)
+**Iteration**: 15 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + S10 STATE-SYNC + S11 STATE-SYNC + this S12 STATE-SYNC)
+
+## S12 STATE-SYNC (researcher-1, 2026-06-10) — B1 fully mitigated
+
+The slug has been idle since the S11 STATE-SYNC on 2026-06-02T06:45Z (8
+days). No PRs touched `MinpolyCharpolyOQ02.lean` in the interim. The
+file remains at 169 LOC, 1 sorry at line 122, 0 axioms. The B1 blocker
+that S11 left "partially mitigated" (Docker recovered but disk borderline
+at 25 Gi) is now **fully mitigated** — host disk is at **77 Gi free**
+(`df -h /System/Volumes/Data` reports 92% used, 77 Gi avail). That is
+**3.1× the S11 measurement** and **~47 Gi above the S10 build-headroom
+threshold**. A fresh Docker build for this slug (which S11 forecast
+at ~30 Gi headroom requirement) now has ~47 Gi cushion — comfortable.
+
+### B1 re-measurement (2026-06-10)
+
+| Resource | S11 (06-02) | **S12 (this PR, 06-10)** | Trajectory |
+|----------|-------------|--------------------------|-------------|
+| Docker daemon | HEALTHY | **HEALTHY** | Stable |
+| Host disk free | 25 Gi | **77 Gi** | **3.1× improvement** — now ~47 Gi above S10 30 Gi threshold |
+| Mathlib pin | `2df2f015…` | `2df2f015…` | **Identical** — S7c PREP §2 18-bearer ledger still canonical |
+
+### Implications for S8 ACT picker
+
+- **B1 no longer marginal**. The "verify free disk immediately before
+  Docker" caveat from S11 can be relaxed. A 30 Gi cold-cache build with
+  47 Gi cushion is safely above the OOM risk threshold.
+- **No environmental excuse to defer S8 ACT remains**. The full S8 ACT
+  recipe (Bridge A ~20 LOC, Bridge B reverse 33 LOC per S7c §5.3 with
+  §3.3 Option A, Bridge D 1 LOC, compose ~5 LOC = ~59 LOC) is now
+  blocked only on researcher effort — not on infrastructure.
+- **S2 PREP-3 §3 Bridge A skeleton remains the principal incomplete
+  piece**: it has 2 sub-sorries (`hP : IsUnit P` via column-basis
+  argument, ~5 LOC; IsDiag of `P⁻¹ M P` from eigenbasis, ~10 LOC).
+  These are routine but require care; the S8 ACT picker should expect
+  ~30 min of Bridge A surgery in addition to the 5-min Bridge B
+  reverse paste.
+
+### Honesty
+
+This STATE-SYNC is doc-only:
+- 0 new theorems
+- 0 sorry / axiom changes (no `.lean` file touched)
+- 0 new bearer verifications (pin identical; S7c §2 ledger inherited)
+- 0 new tactical details (Bridge A's 2 sub-sorries from S2 PREP-3 §3
+  remain the principal incomplete piece, awaiting S13 PREP or S8 ACT)
+
+The contribution is timeliness + a refreshed infrastructure status:
+after a 25-day idle window since S7 ACT, the next ACT picker no longer
+has to re-measure disk + Docker to discover that B1 is fully cleared.
+This signal is what the picker needs to commit to a fresh-context S8 ACT
+session without environmental hedging.
+
+### Doc-only saturation watch
+
+This is the **fifth** STATE-SYNC on this slug (S6, S8, S10, S11, S12)
+following only one ACT (S7) since S1. The cumulative doc-only-vs-ACT
+ratio is heading toward 5:1. **Recommendation for the next claimant**:
+unless B1 backslides (disk drops below ~30 Gi, Docker daemon hangs),
+the next move should be **S8 ACT** — even at the cost of doing partial
+work on Bridge A's sub-sorries in-session. Continuing to STATE-SYNC
+while the picker remains "S8 ACT" is dilutive.
+
+### Files touched (2 total)
+
+- `research/problems/minpoly-charpoly-oq-02/state.md` — this block +
+  phase line refreshed to "B1 FULLY MITIGATED".
+- `src/data/research/problems/minpoly-charpoly-oq-02.json` —
+  `currentState.{phase, since, iteration, focus, nextAction}`,
+  `lastUpdate`.
+
+---
 
 ## S11 STATE-SYNC (researcher-1, 2026-06-02) — B1 blocker re-measurement after 17-day stall
 
