@@ -95,6 +95,67 @@ Docker 7744 jobs.
 
 ---
 
+## Session 2026-06-10 (Session 16) — ACT: `finite_cov_in_gaussian_doa` vacuous discharge
+
+**Mode**: ACT — axiom→theorem discharge (vacuous, S14 pattern).
+**Outcome**: axiomCount 3 → 2, theoremCount 13 → 14, lineCount 447 → 493.
+Docker 7744 jobs verified (214s build).
+**Researcher**: researcher-1.
+**Session memo**: `sessions/2026-06-10-s16-act-finite-cov-vacuous-discharge.md`.
+
+### Key Findings
+
+- **Bundle-vs-conclusion mismatch (S14 pattern, second instance)**: while
+  pre-staging the S15-planned S13-recipe port, inspection of the axiom
+  surface revealed the hypothesis bundle (`hφ_char : φ 0 = 1`;
+  `hφ_cov : ∃ : True, Tendsto φ to 1 at 0`) is missing the
+  finite-second-moment content needed to invoke the matrix Lindeberg-CLT,
+  but the existential conclusion `∃ ψ, φ ∈ DoA(ψ)` is dischargeable
+  trivially via the degenerate-Gaussian witness ψ = const 1 with
+  A_n = 0 (zero matrix), b_n = 0. The n-th term collapses to
+  `(φ (fun _ => 0))^n = 1^n = 1` by `hφ_char`, identically the constant
+  ψ; `tendsto_const_nhds` then closes the goal.
+- **Vacuous-discharge audit pattern (slug-wide)**: two of three axioms
+  standing post-S15 turned out vacuously dischargeable (S14 unsatisfiable
+  hypothesis; S16 bundle-too-weak-for-strong-claim with existential
+  conclusion). The remaining two axioms
+  (`operator_stable_linear_image`, `meerschaert_scheffler`) carry
+  stronger statements that likely require genuine mathematical content.
+  This suggests a gallery-wide check is warranted: the v4.26.0
+  axiomatization sweep may have produced hypothesis bundles that look
+  plausible but don't carry the intended constraints.
+- **S17 PREP picker**: `operator_stable_linear_image` for the invertible-B
+  subcase. Splits into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)`
+  (provable via witness composition `A_n B^T` + drift `B^{-T} b_n`) and
+  (b) general singular-B case (still axiomatized; dimension-collapse
+  handling needs MS 2001 §7.2). Estimated ~60 LOC + ~5 LOC for renamed
+  weaker axiom. Single Docker pass.
+
+### Files Modified
+
+- `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` — `finite_cov_in_gaussian_doa`
+  axiom → theorem (vacuous discharge via `const_one_is_operator_stable` +
+  zero-matrix scaling + `tendsto_const_nhds`); +46 LOC.
+- `src/data/proofs/central-limit-theorem-oq-01-oq-01-oq-04/meta.json` — `axiomCount` 3 → 2,
+  `theoremCount` 13 → 14, `lineCount` 447 → 493; updated `assumptions`,
+  `originalContributions`, `leanFile` block.
+- `src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04.json` —
+  `iteration` 15 → 16, `since`, `focus`, `nextAction`, `blockers`,
+  `progressSummary`, `builtItems`, `insights`, `mathlibGaps`, `nextSteps`,
+  `leanFiles[OQ04]` block.
+- `research/problems/central-limit-theorem-oq-01-oq-01-oq-04/sessions/2026-06-10-s16-act-finite-cov-vacuous-discharge.md` (new).
+- `research/problems/central-limit-theorem-oq-01-oq-01-oq-04/knowledge.md` (this update).
+
+### Knowledge Added
+
+- Insights: 2 (vacuous-discharge audit pattern; generic degenerate-Gaussian
+  trivial-witness tactic for matrix-DoA axioms with weak hypotheses).
+- Next-Steps: 2 (S17 PREP `operator_stable_linear_image` invertible-B;
+  S14+S16 bug followup re-encoding both vacuous-discharge axioms).
+- Built items: 1 (`finite_cov_in_gaussian_doa` theorem via vacuous discharge).
+
+---
+
 ## Session 2026-06-10 (Session 15) — STATE-SYNC backfill
 
 **Mode**: STATE-SYNC — doc-only catch-up.
