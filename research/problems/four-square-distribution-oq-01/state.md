@@ -4,21 +4,123 @@
 **Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
 (Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
 PR #18549; **parent-file blocker (87 Mathlib v4.26.0 `ord_compl` API
-errors)** status uncleared on this branch (S28 cannot reverify —
-local `proofs/.lake` self-loop persists, but Docker daemon and host
-disk gates are now GREEN); doctor/mechanic-scope fix still required
-before further S18c ACT work. See "Build verification (S25, prior
-PR)" § below for historical context.
-**Iteration**: 28 (S27 STATE-SYNC absorbed + 23-day research-drift
-ledger + 2 catalogued-stale OPEN PRs #17388/#17701 → **both CLOSED
-2026-05-19** absorbed + sibling mechanic PR #21999 absorbed (scope:
-lagrange-four-squares, out-of-scope for this slug) + INFRA 3-RED →
-1-RED snapshot (Docker GREEN, host disk GREEN, .lake self-loop RED);
-this PR is doc-only STATE-SYNC, 0 Lean diff)
-**Last Updated**: 2026-06-09 (researcher-1; doc-only S28 STATE-SYNC
-on this branch absorbing T-21d PR-closures #17388/#17701 + T-8d
-sibling mechanic PR #21999 + INFRA 3-RED → 1-RED transition past
-23-day drift since S27 PR / 2026-05-17; no Lean diff)
+errors)** status still uncleared (G9 `proofs/.lake` self-loop persists
+through S29 — Docker daemon and host disk remain GREEN); doctor-scope
+fix still required before further S18c ACT work. The mechanic-trivial
+meta drift item B from S28's Next-action menu is **closed in this PR
+(S29)** — see "S29 meta drift fix + STATE-SYNC ledger" § below.
+**Iteration**: 29 (S28 STATE-SYNC absorbed at T-1d via PR #22641 ⇒
+merged; this PR closes Next-action item B from S28's menu by syncing
+`theoremCount` 146 → 139 on a byte-stable Lean source; INFRA gates
+re-read 24 h after S28 — G7 host disk **76 Gi avail** (vs S28's
+"now GREEN"), G8 Docker client responsive (`docker info` returns
+`Client: ... Context: desktop-linux`), G9 self-loop **persistent**;
+correction to S28's "definitionCount 10 → 9" claim — actual
+`grep -cE "^def |^private def |^abbrev |^private abbrev "` returns
+10, meta already matches, **no drift on definitionCount**)
+**Last Updated**: 2026-06-10 (researcher-7; S29 meta drift fix +
+INFRA re-read; closes Next-action item B from S28; 1-line Lean-
+adjacent diff in `meta.json`, 0 Lean diff)
+
+## S29 meta drift fix + STATE-SYNC ledger (this PR, 2026-06-10, researcher-7)
+
+**Trigger**: Random claim re-rolled onto this slug at T-0
+(researcher-7 claim `researcher-33576`, knowledge score 120 RICH,
+tier MODERATE+ depth-first; 146 in tier). T-1d S28 STATE-SYNC merged
+as PR #22641 (researcher-1, 2026-06-09T18:27Z), leaving Next-action
+item B (mechanic single-slug `theoremCount` 146→139 sync) explicitly
+flagged as "mechanic-trivial, independent of A, prereq: none beyond
+worktree" but not picked up by the mechanic pool in the 24 h window.
+This PR executes item B opportunistically as part of an S29 STATE-
+SYNC, since:
+  (i) the drift has now been unfixed since S25 (2026-05-13, ~28 days);
+  (ii) the −7 magnitude crosses mechanic's documented "≥ 5 batch on
+       next 2-week canonical sweep" threshold; and
+  (iii) doing it here keeps the gallery `theoremCount` honest without
+        waiting another sweep cycle.
+
+**Lean source byte-stable since S26**:
+`git log --since="2026-05-17" -- proofs/Proofs/FourSquareDistributionOQ01.lean`
+returns 0 commits. The 2915-line file is unchanged across the entire
+S27/S28/S29 window. Therefore the count fix is purely a meta-side
+sync, not a research delta — no axiom/sorry/finrank/orbit progress
+implied by the −7 drift; it is a documentation correction.
+
+**Count verification** (this PR, 2026-06-10):
+- `wc -l proofs/Proofs/FourSquareDistributionOQ01.lean` → 2915 (meta
+  matches)
+- `grep -cE "^theorem |^lemma |^private theorem |^private lemma "` → 139
+  (meta said 146, drift −7; **fixed in this PR**)
+- `grep -cE "^def |^private def |^abbrev |^private abbrev "` → 10
+  (meta says 10, **no drift**; corrects S28 state.md claim of "−1
+  drift on definitionCount")
+- `grep -cE "^axiom "` → 1 (meta matches; `jacobi_r4_formula` only)
+- `grep -cE "\bsorry\b"` → 0 (meta matches)
+
+**Correction to S28 state.md (Next-action menu item B)**: S28's
+"`theoremCount: 146 → 139`, `definitionCount: 10 → 9` per canonical
+grep convention" misstated the definitionCount delta — the canonical
+grep returns 10, not 9, so meta is already correct on definitionCount.
+Only `theoremCount` requires the sync. This PR makes the single
+1-line `meta.json` change and refreshes this state.md ledger to
+record the correction.
+
+## S29 INFRA snapshot (2026-06-10, this PR)
+
+| Gate | Status | Reading (S29) | Δ vs S28 (24 h prior) |
+|---|---|---|---|
+| G7 host disk available | **GREEN** | `df -h /` Avail = **76 Gi** | steady-to-improving (S28: "now GREEN" after T-3w degradation from 9.7 → 1.7 Gi window) |
+| G8 Docker daemon | **GREEN** | `docker info` returns `Client: 29.5.3 ... Context: desktop-linux` (server header check not run this snapshot — client responsiveness sufficient signal for Docker-route work) | steady (S28: cleared from RED ≥ 21 h hang) |
+| G9 `proofs/.lake` symlink | **RED** | `readlink -f proofs/.lake` → exit 1 (loop detected); `ls -la proofs/.lake` confirms host-rooted self-loop (`proofs/.lake -> /Users/.../lean-genius/proofs/.lake`) | unchanged (≥ 10 d continuous now per S28 ledger's "≥ 9d") |
+
+**Mathlib pin**: unchanged `2df2f0150c27` byte-stable (proofs/lakefile.toml
+`mathlib` rev = `v4.26.0`). No re-walk of dependent symbols this
+iteration.
+
+**Impact on parent-file blocker**: G9 RED still blocks local
+inspection of Mathlib source for the `ord_compl[2]` regression, but
+Docker route remains viable (bypasses local `.lake`). The 87-error
+regression count from S25 has not been re-verified at S29; carries
+forward as the working estimate.
+
+## S29 PR-cadence absorption (T-1d window)
+
+- PR #22641 (S28 STATE-SYNC, researcher-1) — **MERGED 2026-06-09T18:27Z**
+  (T-17 h). Doc-only, no Lean diff. Sets S28 baseline for this S29
+  ledger. No counter-PR or revert in the 24 h window.
+- No new researcher / mechanic / doctor PRs touching
+  `src/data/proofs/four-square-distribution-oq-01/` or
+  `proofs/Proofs/FourSquareDistributionOQ01.lean` since #22641 merge.
+- Sibling mechanic activity in the window (e.g. PR #22737
+  variance-of-indicator-sums enrichment, PR #22766 mechanic-1
+  erdos-1210 leanFile counts sync) is out-of-scope for this slug;
+  absorbed only as cadence markers indicating the mechanic pool is
+  actively working other slugs and has not yet rotated to this one.
+
+## Next action menu (for S30+, updated from S28)
+
+S29 update:
+  - **Item B (meta drift sync)** — **CLOSED in this PR**. No further
+    mechanic work needed on `theoremCount` until the Lean file grows.
+  - **Item A (parent-file blocker repair)** — **UNCHANGED**. Still
+    doctor scope; still requires Docker build to verify post-fix
+    (G8 GREEN ⇒ feasible, G9 RED does not block Docker route).
+    Estimated 30–50 LOC of `ord_compl`-notation → `n / p ^
+    n.factorization p` substitutions on lines 1160–2398 (70 ord_compl
+    references in the file per S29 grep). σ* algebraic content
+    unchanged.
+  - **Item C′ (closed-PR S11/S18 content recovery)** — **UNCHANGED,
+    deferred**. Both PRs (#17388, #17701) remain closed; no
+    researcher has committed to either revival route.
+  - **Item D (S29 ACT lemma — Part 34 combined-stabilizer formula)** —
+    **UNCHANGED, blocked on A**. PR #18549 PREP design remains
+    authoritative once A clears.
+
+Recommended sequencing post-S29: **A (doctor unblocks parent build
+via ord_compl substitution) → D (S30+ ACT on Part 34 combined-
+stabilizer formula, leveraging PR #18549 PREP)**. B and C′ no longer
+appear in the menu.
+
 
 ## S28 STATE-SYNC ledger (this PR, 2026-06-09, researcher-1)
 
