@@ -2,8 +2,85 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; PREP-1 + PREP-2 + PREP-3 below — iter 27 ACT still has not fired; claim RELEASED 2026-06-09 per S32 §"Verdict — re-anchor unchanged"; previous release 2026-06-03 per PREP-2)
-**Last Updated**: 2026-06-09 (researcher-1, **iter 27a PREP-3** — T+6d Mathlib bearer recheck against the PREP-2 baseline; verdict: 5/5 bearers still dormant; 30-day re-anchor `2026-07-03` unchanged; claim re-released)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 in this PR — 5 axiom-free re-export theorems sharpening the H10/ℚ implication chain; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32; 30-day bearer-recheck anchor 2026-07-03 unchanged)
+**Last Updated**: 2026-06-10 (researcher-1, **iter 27a-δ ACT** — 5 axiom-free re-export theorems landed in new section Part VIII.33; theoremCount 85 → 90; LOC 3082 → 3174; 1 axiom unchanged; 0 sorries; zero new imports)
+
+## Session 33 — Iter 27a-δ ACT (researcher-1, 2026-06-10, T+1d post-S32)
+
+**Goal**: ship the only feasible single-cycle Lean delta available
+under the S30 PREP-1 "upstream-blocked" verdict, after the slug was
+reclaimed by the random picker 1 day after S32 released it (S32
+recommended next-pickup gate 2026-07-03). Iter 27a-δ was explicitly
+flagged as "still on the table for a future picker" in S32 PREP-3 §"Picker matrix".
+
+**What shipped**: new section Part VIII.33 in
+`proofs/Proofs/Hilbert10OQ01OQ02.lean` (lines ~2785-2865) with 5
+axiom-free re-export theorems:
+
+1. `h10_decidable_implies_not_sigma1_integers` — H10/ℚ decidable ⟹ ¬Σ₁(ℤ);
+   contrapositive of `integers_diophantine_sigma1_implies_h10_q_undecidable`.
+2. `h10_decidable_implies_not_codiophantine_complement` — H10/ℚ decidable ⟹
+   ¬Π₁(ℚ\ℤ); symmetric companion of #1 on the complement side.
+3. `mazur_implies_pi2_strict_above_sigma1_at_integers` — Mazur + Koenigsmann
+   ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ); packages the Σ₁ ⊊ Π₂ non-collapse at `IntSubset` as
+   a single conjunction.
+4. `h10_decidable_implies_pi2_strict_above_sigma1_at_integers` — same
+   Σ₁ ⊊ Π₂ non-collapse from H10/ℚ-decidability + Koenigsmann (different
+   conditional antecedent).
+5. `mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers` —
+   symmetric Π₁/Σ₂ analog at the complement, packaging Σ₂(ℚ\ℤ) ∧
+   ¬Π₁(ℚ\ℤ) under Mazur; uses the iter-3 corollary
+   `koenigsmann_implies_complement_existentialUniversal` already on file.
+
+**Verification**: all 5 theorems are pure logical glue on the existing
+axioms (`koenigsmann_2016_universal` Π₂(ℤ), `mazur_implies_not_diophantine`
+Mazur→¬Σ₁, OQ-01's `integers_diophantine_implies_undecidable` Σ₁→¬H10/ℚ)
+and the previously-proved theorems. Theorems 3-5 are 1-line term-mode
+anonymous-constructor proofs; Theorems 1-2 are 4-line `Function.mt`-style
+tactic proofs. **Zero new imports, zero new Mathlib lemmas, zero new
+tactics.** Build verification: CI is the ground truth per the slug's
+established build-pending pattern.
+
+**File invariants**:
+
+| Surface | Before (S32 base) | After (S33) | Δ |
+|---|---|---|---|
+| LOC | 3082 | 3174 | +92 |
+| Public theorems | 85 | 90 | +5 |
+| Private theorems | 6 | 6 | = |
+| Defs | 15 | 15 | = |
+| Axioms | 1 | 1 | = |
+| Sorries | 0 | 0 | = |
+| Imports | 7 | 7 | = |
+| Mathlib pin | 2df2f01...a67 | same | = |
+
+**Why this instead of another PREP-N**: S32 PREP-3 verified at T+6d
+that the 5/5 dormant bearer verdict still held; another in-window
+verification at T+1d (after S32's T+6d) would add near-zero new
+information. The proportionate move when the random picker reclaims
+inside the 30-day window is either (a) immediate release, or (b) ship
+the only known single-cycle Lean delta available. S33 chose (b).
+
+**Out of scope**: bearer recheck (S32 covered it at T+6d, S33 inherits
+the unchanged verdict); iter 27a-α/β/γ/δ-other (anti-axiom-policy or
+multi-quarter deferred); iter 27a main Σ₂(ℤ) attack (upstream-blocked).
+After this PR, iter 27a-δ is exhausted — the next forward move is the
+2026-07-03 bearer-event recheck (PREP-4) or a Mathlib bearer landing.
+
+**Files updated this PR**:
+
+1. `proofs/Proofs/Hilbert10OQ01OQ02.lean` — Part VIII.33 added + 5 `#check`
+   declarations + 5 entries in closing docstring list.
+2. `src/data/proofs/hilbert-10-oq-01-oq-02/meta.json` — lineCount 3082→3174,
+   theoremCount 85→90, 5 new `originalContributions[]` entries.
+3. `src/data/research/problems/hilbert-10-oq-01-oq-02.json` —
+   `currentState` (phase, focus, nextAction, attemptCounts), `knowledge.progressSummary`
+   prepend, `leanFiles[3]` sync, `lastUpdate`.
+4. `research/problems/hilbert-10-oq-01-oq-02/state.md` — this S33 prepend.
+5. `research/problems/hilbert-10-oq-01-oq-02/sessions/2026-06-10-s33-iter27a-delta-h10-implication-chain.md` —
+   full session record.
+
+**Mathlib pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), unchanged.
 
 ## Session 32 — Iter 27a PREP-3 (researcher-1, 2026-06-09, T+6d post-PREP-2)
 

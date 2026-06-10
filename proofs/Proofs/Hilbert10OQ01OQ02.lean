@@ -2782,6 +2782,88 @@ theorem pi2_intersectionFinset_isUniversalExistentialDefinition
     (pi2_intersectionList_isUniversalExistentialDefinition s.toList h_list)
 
 -- ============================================================
+-- Part VIII.33 (iter 27a-δ): Combined / contrapositive forms of the
+--                            H10/ℚ implication chain
+-- ============================================================
+
+/-- **Contrapositive of `integers_diophantine_sigma1_implies_h10_q_undecidable`**:
+
+    If H10/ℚ is decidable, then ℤ is NOT Σ₁-definable in ℚ.
+
+    Pure logical re-export of the existing Σ₁ → ¬H10/ℚ-decidable
+    direction. No new axioms. Useful when an argument takes H10/ℚ
+    decidability as a working hypothesis and wants to derive the
+    negation of the OPEN Σ₁ question. -/
+theorem h10_decidable_implies_not_sigma1_integers :
+    H10_Rational_Decidable → ¬IntegersAreDiophantineOverQ := by
+  intro hDec hSigma1
+  exact integers_diophantine_sigma1_implies_h10_q_undecidable hSigma1 hDec
+
+/-- **Contrapositive of `codiophantine_complement_implies_h10_q_undecidable`**:
+
+    If H10/ℚ is decidable, then ℚ \ ℤ is NOT Π₁-definable in ℚ.
+
+    Symmetric companion of `h10_decidable_implies_not_sigma1_integers`
+    on the Π₁(complement) side, equivalent via the iter-5 specialization
+    `integers_diophantine_iff_complement_codiophantine`. No new axioms. -/
+theorem h10_decidable_implies_not_codiophantine_complement :
+    H10_Rational_Decidable → ¬IsCoDiophantineDefinition NotIntSubset := by
+  intro hDec hCodiop
+  exact codiophantine_complement_implies_h10_q_undecidable hCodiop hDec
+
+/-- **Mazur + Koenigsmann: Π₂(ℤ) is strict above Σ₁(ℤ)**:
+
+    Under `MazurConjecture`, ℤ is Π₂-definable in ℚ (by Koenigsmann)
+    but NOT Σ₁-definable in ℚ (by Mazur). Packages the two existing
+    conditional facts into a single conjunctive strict-containment
+    witness at the integer subset — making explicit that Mazur posits
+    the Σ₁ ⊊ Π₂ gap to be non-trivial at `IntSubset`.
+
+    Pure logical re-export — uses only the existing axiom
+    `koenigsmann_2016_universal` and (transitively, via
+    `mazur_implies_not_sigma1_definable`) the OQ-01 axiom
+    `mazur_implies_not_diophantine`. No new axioms. -/
+theorem mazur_implies_pi2_strict_above_sigma1_at_integers :
+    MazurConjecture →
+      IsUniversalExistentialDefinition IntSubset ∧ ¬IntegersAreDiophantineOverQ :=
+  fun hM => ⟨koenigsmann_2016_universal, mazur_implies_not_sigma1_definable hM⟩
+
+/-- **H10/ℚ decidable + Koenigsmann: Π₂(ℤ) is strict above Σ₁(ℤ)**:
+
+    Under `H10_Rational_Decidable`, ℤ is Π₂-definable in ℚ (by
+    Koenigsmann) but NOT Σ₁-definable in ℚ (by the contrapositive
+    `h10_decidable_implies_not_sigma1_integers`). Same conclusion as
+    `mazur_implies_pi2_strict_above_sigma1_at_integers`, from a
+    different conditional antecedent: H10/ℚ-decidability also forces
+    the Σ₁ ⊊ Π₂ gap to be non-trivial at `IntSubset`.
+
+    Pure logical re-export — no new axioms. -/
+theorem h10_decidable_implies_pi2_strict_above_sigma1_at_integers :
+    H10_Rational_Decidable →
+      IsUniversalExistentialDefinition IntSubset ∧ ¬IntegersAreDiophantineOverQ :=
+  fun hDec => ⟨koenigsmann_2016_universal,
+                h10_decidable_implies_not_sigma1_integers hDec⟩
+
+/-- **Symmetric Π₁/Σ₂ analog at the complement**:
+
+    Under `MazurConjecture`, ℚ \ ℤ is Σ₂-definable in ℚ (corollary of
+    Koenigsmann via Σ₂/Π₂ duality, already on file as
+    `koenigsmann_implies_complement_existentialUniversal`) but NOT
+    Π₁-definable in ℚ (by Mazur via the iter-5 Σ₁/Π₁ duality, already
+    on file as `mazur_implies_not_codiophantine_complement`). Same
+    strict-containment structure as
+    `mazur_implies_pi2_strict_above_sigma1_at_integers`, transported
+    to the complement side via the two dualities.
+
+    Pure logical re-export — no new axioms. -/
+theorem mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers :
+    MazurConjecture →
+      IsExistentialUniversalDefinition NotIntSubset ∧
+        ¬IsCoDiophantineDefinition NotIntSubset :=
+  fun hM => ⟨koenigsmann_implies_complement_existentialUniversal,
+             mazur_implies_not_codiophantine_complement hM⟩
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -2999,6 +3081,11 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `sigma2_union_isExistentialUniversalDefinition` (Σ₂ closed under binary union via iter 5 duality + iter 24a Π₂ ∩ closure, iter 24a)
   - `sigma2_unionList_isExistentialUniversalDefinition` (Σ₂ closed under finite list union via iter 24a + list induction, iter 25)
   - `pi2_intersectionList_isUniversalExistentialDefinition` (Π₂ closed under finite list intersection via iter 24a + list induction, iter 25)
+  - `h10_decidable_implies_not_sigma1_integers` (H10/ℚ decidable ⟹ ¬Σ₁(ℤ); contrapositive re-export, iter 27a-δ)
+  - `h10_decidable_implies_not_codiophantine_complement` (H10/ℚ decidable ⟹ ¬Π₁(ℚ\ℤ); contrapositive re-export on the complement side, iter 27a-δ)
+  - `mazur_implies_pi2_strict_above_sigma1_at_integers` (Mazur + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — Σ₁ ⊊ Π₂ non-trivial at ℤ under Mazur, iter 27a-δ)
+  - `h10_decidable_implies_pi2_strict_above_sigma1_at_integers` (H10/ℚ decidable + Koenigsmann ⟹ Π₂(ℤ) ∧ ¬Σ₁(ℤ) — same Σ₁ ⊊ Π₂ non-collapse from a different conditional antecedent, iter 27a-δ)
+  - `mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers` (Mazur + Koenigsmann/duality ⟹ Σ₂(ℚ\ℤ) ∧ ¬Π₁(ℚ\ℤ) — Π₁ ⊊ Σ₂ non-trivial at ℚ\ℤ under Mazur, iter 27a-δ)
 -/
 
 #check @IsDiophantineDefinition
@@ -3078,5 +3165,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @pi2_intersectionList_isUniversalExistentialDefinition
 #check @sigma2_unionFinset_isExistentialUniversalDefinition
 #check @pi2_intersectionFinset_isUniversalExistentialDefinition
+#check @h10_decidable_implies_not_sigma1_integers
+#check @h10_decidable_implies_not_codiophantine_complement
+#check @mazur_implies_pi2_strict_above_sigma1_at_integers
+#check @h10_decidable_implies_pi2_strict_above_sigma1_at_integers
+#check @mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers
 
 end Hilbert10Rationals
