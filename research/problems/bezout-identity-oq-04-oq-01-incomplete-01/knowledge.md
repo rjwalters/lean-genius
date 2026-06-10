@@ -37,20 +37,31 @@ Insights accumulated during research on this problem.
 
 ## Mathlib status (v4.26.0, lake-manifest pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
 
-* **Available**: `Matrix.IsDiag`, `Matrix.det_one`, `Matrix.det_mul`,
-  `Matrix.transpose`, `Int.gcd_eq_gcd_ab`, `Int.gcd_dvd_left`,
+* **Available (matrix/integer baseline)**: `Matrix.IsDiag`, `Matrix.det_one`,
+  `Matrix.det_mul`, `Matrix.transpose`, `Int.gcd_eq_gcd_ab`, `Int.gcd_dvd_left`,
   `Int.gcd_dvd_right`, `Matrix.mulVec` + linearity lemmas
   (`mulVec_add`, `mulVec_sub`, `mulVec_smul`).
-* **Available (PID structure side)**: `Module.equiv_directSum_of_pid`
-  (or similar — needs verification at v4.26.0); various
-  `Submodule.IsPrincipal` infrastructure; `EuclideanDomain` typeclass.
-* **Not available**: `Matrix.SmithNormalForm`, `Matrix.snf_exists`,
-  `Matrix.invariantFactors`, `Matrix.elementaryRowOps` as a unified
-  API. Per the parent file's `mathlibDependencies` list (no
-  `SmithNormalForm` entry).
-* **Possibly available** (needs S3 PREP confirmation): row/column
-  swap operations, scalar row addition operations packaged as
-  unimodular-matrix-multiplication.
+* **Available — Approach B' bearer (S3 PREP 2026-06-10)**:
+  - **`Submodule.smithNormalForm`** at
+    `Mathlib/LinearAlgebra/FreeModule/PID.lean:541` — SNF of a submodule
+    of a finitely-generated free module over a PID. **Caveat**: diagonal
+    entries are not certified to satisfy `a 0 ∣ a 1 ∣ ⋯ ∣ a (n-1)`
+    (known Mathlib gap; see `MinpolyCharpolyOQ03.lean:80-82` audit).
+  - **`Basis.SmithNormalForm`** at the same module — the basis-side variant.
+  - **`Module.equiv_directSum_of_isTorsion`** at
+    `Mathlib/Algebra/Module/PID.lean:233` — primary-form decomposition,
+    witness `p : ι → R` with `Irreducible (p i)`. **Not directly usable
+    for invariant-factor chain** (provides prime powers, not chain).
+  - **`Module.equiv_free_prod_directSum`** at the same module —
+    torsion-free splitting.
+* **Available (PID infrastructure)**: `Submodule.IsPrincipal`,
+  `IsPrincipalIdealRing`, `EuclideanDomain` typeclass.
+* **Not available (verified by S3 PREP via in-repo audit cross-reference)**:
+  - Top-level `Matrix.SmithNormalForm` for `Matrix (Fin m) (Fin n) ℤ`
+    (per parent file's `mathlibDependencies` — no `SmithNormalForm` entry).
+  - Divisibility-chain-certifying variant of `Submodule.smithNormalForm`
+    (known Mathlib gap, shared with `minpoly-charpoly-oq-03-oq-02`).
+  - `Matrix.elementaryRowOps` as a unified API.
 
 ## Algorithm sketch (Newman 1972, ch. 2)
 
@@ -92,6 +103,23 @@ recursion).
   enough infrastructure to manipulate elementary row/column operations
   as unimodular-matrix multiplications. This reduces the
   "elementary-ops API" budget materially.
+* **Insight 4 (S3 PREP 2026-06-10)**: Mathlib v4.26.0 *does* have a
+  Smith-Normal-Form bearer at `Submodule.smithNormalForm`
+  (`Mathlib/LinearAlgebra/FreeModule/PID.lean:541`), reachable from `Matrix`
+  via the column-space-as-submodule construction. S2's "no Mathlib SNF
+  API" was an overstatement; the precise statement is "no *top-level
+  Matrix* SNF API, and no divisibility-chain certification on the
+  submodule-level SNF". The first is what our bridge supplies (B1).
+  The second is the genuine remaining gap (B2), shared with
+  `minpoly-charpoly-oq-03-oq-02`.
+* **Insight 5 (S3 PREP 2026-06-10)**: The sibling slug
+  `bezout-identity-oq-04-oq-01-oq-01` (COMPLETED, PR #16026) proved
+  `snf_1x2_invariant_factor_pid` for any `GCDMonoid` and **explicitly
+  flagged** in its `nextSteps`: "Use Mathlib FreeModule.PID to prove
+  `snf_pid_exists` (axiom elimination)". Our slug's discharge of
+  `snf_exists` (ℤ-version) is a strict precursor: a ℤ-side B1 bridge
+  doubles as a template for the PID-side `snf_pid_exists` discharge,
+  meaning a single ACT cycle here unblocks two axioms with one bridge.
 
 ---
 
@@ -106,16 +134,46 @@ recursion).
 
 ## Open Questions for Future Iterations
 
-* **S3 PREP question**: does Approach B's `Module.equiv_directSum_of_pid`
-  bridge actually reduce LOC versus Approach A? Concrete LOC estimate
-  needed before committing.
-* **S3 PREP question**: which Mathlib elementary-row-ops are already
-  available (e.g., `Matrix.swap_rows`, `Matrix.updateRow`,
-  `Equiv.Perm.permMatrix` for permutation matrices)? Need a grep
-  inventory.
-* **S3+ PREP question**: should the proof be `noncomputable` (using
-  `Classical.choice` to pick the minimum entry) or genuinely
-  `Computable` (using `Finset.argmin`)? The parent file uses
-  `noncomputable def rank`, suggesting the project is comfortable with
-  classical choice; however, a `Computable` version is more useful as
-  a Mathlib contribution.
+* **Resolved (S3 PREP 2026-06-10)**: "does Approach B's bearer exist?"
+  Yes — `Submodule.smithNormalForm` at
+  `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`. Confirmed via in-repo
+  cross-reference audit (`MinpolyCharpolyOQ03.lean:79-82`,
+  `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:240-242`,
+  `bezout-identity-oq-04-oq-01-oq-01.json` insights).
+* **S4 ACT question (cycle 1)**: does the bridge from `Submodule.smithNormalForm`
+  (basis-side) to the parent file's `SmithNormalForm m n` (matrix-side)
+  structure fit in ~80-120 LOC, or does basis-coordinate plumbing balloon?
+  Empirical answer after first ACT cycle.
+* **S5 ACT question (B2)**: divisibility-chain certification. Re-sort/re-group
+  approach (~100-150 LOC) or genuine algorithmic proof? Shared Mathlib gap
+  with `minpoly-charpoly-oq-03-oq-02` — coordinate or split?
+* **S3+ PREP question (carried forward)**: should the proof be `noncomputable`
+  or genuinely `Computable`? Parent file uses `noncomputable def rank`,
+  suggesting Classical is acceptable for in-repo discharge. For potential
+  upstream Mathlib promotion, `Computable` is more valuable but not
+  required for axiom discharge.
+* **Cross-slug Mathlib upstream candidate (S3 PREP)**: if B2 succeeds, can
+  the divisibility-chain-certifying variant of `Submodule.smithNormalForm`
+  be PR'd to Mathlib? This would simultaneously unblock
+  `minpoly-charpoly-oq-03-oq-02` (elementary-divisors → invariant-factors
+  regrouping uses the same chain). Track as a post-merge follow-up.
+
+---
+
+## Approach Decomposition (S3 PREP 2026-06-10)
+
+**Approach B'** (`Submodule.smithNormalForm` bridge — committed primary path):
+
+| Sub-step | Content | Estimated LOC | Sorry exit |
+|---|---|---|---|
+| **B1 (bridge)** | Lift `Submodule.smithNormalForm` to parent file's `SmithNormalForm m n` structure. Extract `U, V` from basis change; extract `D` from certified diagonal entries. Discharge `hU`, `hV`, `hD_diag`, `isDecompOf`. | 80-120 | leave `hD_div` as `sorry` |
+| **B2 (chain)** | Prove the diagonal entries satisfy `d_k ∣ d_{k+1}`. Re-sort/re-group of B1's diagonal. Shared Mathlib gap with `minpoly-charpoly-oq-03-oq-02`. | 100-150 | none (or spin out to sibling slug) |
+| **B3 (close)** | Combine B1 + B2 to discharge `axiom snf_exists` at parent file line 146. | 20-40 | none |
+
+**Total Approach B' budget**: ~200-310 LOC across 3 ACT cycles.
+
+**Approach A (fallback)**: ~500 LOC constructive Euclidean reduction;
+unchanged from S2 ORIENT. Activated only if B1 plumbing balloons or
+B2 proves intractable.
+
+**Approach C**: still not viable at v4.26.0; no top-level `Matrix.SmithNormalForm`.
