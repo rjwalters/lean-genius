@@ -119,3 +119,41 @@
 - Insights: 2 (axiom-tractability ranking; layer-cake reduction recipe)
 - Next-Steps: 2 (`pareto_in_lr_iff` reduction plan; α=2 boundary follow-up question)
 - Built items: 0 (no Lean code changes — knowledge-only session)
+
+---
+
+## Session 2026-06-09 (Session 3) — Aristotle MCP Outage + Executable Blueprint
+
+**Mode**: REVISIT (continuing S2's planned axiom-reduction work)
+**Outcome**: knowledge — MCP outage telemetry + repository gap finding + drafted executable proof skeleton
+
+### What I Did
+
+1. Attempted the role-preferred per-sorry Aristotle MCP `prove()` for `pareto_in_lr_iff`. Two calls (real submission + trivial smoke `example : 1 + 1 = 2 := by sorry`) both returned `{"status":"error","message":"Resource not found"}`. The MCP server is reachable (API key present, `.mcp.json` loaded) but its backing service is unavailable in this window.
+2. Grepped `proofs/Proofs/` for any prior use of continuous layer-cake idioms (`lintegral_meas_lt`, `lintegral_meas_le`, `lintegral_rpow_eq`, `Memℒp_iff`, `snorm.*lintegral`). **Zero matches**. This problem would be the first repo proof to thread Mathlib's continuous layer-cake formula. The integer-indexed sibling `ProbabilityTheory.tsum_prob_mem_Ioi_lt_top` is used in `LawsOfLargeNumbersOQ01Aristotle.lean` but the continuous version is greenfield.
+3. Confirmed `proofs/.lake` is a broken self-referencing symlink in this worktree, blocking local Mathlib source grep (would need either to fix the symlink, run `gh search code` against `leanprover-community/mathlib4`, or test via Docker build).
+4. Drafted an executable proof skeleton — see `sessions/2026-06-09-s3-mcp-outage-pareto-lriff-blueprint.md` for the full Lean draft with:
+   - `pareto_ge_one_ae` precursor lemma (X ≥ 1 a.s. from the survival hypothesis) with `< 10 lines once measurability is threaded`
+   - `pareto_in_lr_iff` main proof outline keyed to specific Mathlib symbol names
+   - A measurability-hypothesis recommendation: add `(hX_meas : Measurable X)` to the axiom (downstream callers can supply this from their existing `hmeas` argument)
+   - A Mathlib-symbol audit table for S4 to verify before writing tactics
+
+### Why this session is knowledge-only
+
+The role's preferred path for HARD sorries is per-sorry MCP `prove()`. With Aristotle MCP unavailable and no in-repo layer-cake precedent to copy from, attempting the proof blind without Mathlib source access risks burning multiple expensive Docker cycles for low probability of success. S2's knowledge plan was correct; S3's contribution is converting it into copy-paste Lean code keyed to specific Mathlib symbols so the next session lands fast on first build.
+
+### New Mathlib Gap Discovered
+
+The continuous layer-cake formula (`lintegral_rpow_eq_lintegral_meas_lt_mul_rpow_sub_one`) is unused across the entire repo's 3,000+ proof files. Worth flagging in the gallery's technique index when this axiom reduction lands — it would be a citable first-of-its-kind application.
+
+### Files Modified
+
+- `research/problems/laws-of-large-numbers-oq-01-oq-02/sessions/2026-06-09-s3-mcp-outage-pareto-lriff-blueprint.md` (new — executable proof skeleton)
+- `research/problems/laws-of-large-numbers-oq-01-oq-02/knowledge.md` (this update)
+- `src/data/research/problems/laws-of-large-numbers-oq-01-oq-02.json` (lastUpdate + S3 insights/nextSteps)
+
+### Knowledge Added
+
+- Insights: 2 (Aristotle MCP outage signal at 2026-06-09; layer-cake idiom is first-of-its-kind for this repo)
+- Next-Steps: 1 refined (executable proof blueprint with measurability-hypothesis recommendation; supersedes S2's higher-level plan)
+- Built items: 0 (no Lean code changes — same reason as S2, plus MCP outage telemetry)
