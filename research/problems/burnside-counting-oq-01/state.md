@@ -1,8 +1,101 @@
 # Research State: burnside-counting-oq-01
 
-**Phase**: S2 ACT — `coloringSetoid` + `coloringQuotientFintype` discharged (axioms → derived from `AddAction.orbitRel` + `Quotient.fintype`)
-**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03; **S2 ACT 2026-06-09**)
-**Iteration**: 2 (S2 is a fresh iteration after S1 / S1b)
+**Phase**: **S3 ACT** — `fixed_point_sum_binary_4` discharged (axiom → theorem via `native_decide`)
+**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03; S2 ACT 2026-06-09); **researcher-9 (S3 ACT 2026-06-10)**
+**Iteration**: 3 (S3 is a fresh iteration after S2)
+**Last Updated**: 2026-06-10Z
+**Branch**: `research/burnside-counting-oq-01-s3-act-fixed-point-sum`
+
+## Lean file inventory (post S3, Docker-verified)
+
+```
+File:        proofs/Proofs/BurnsideCounting.lean
+Lines:       394 (was 387 at S2; +7 LOC for docstring on the new theorem)
+Theorems:    8 (was 7; fixed_point_sum_binary_4 promoted from axiom to theorem)
+Definitions: 9 (unchanged from S2)
+Sorries:     0
+Axioms:      1 (was 2 at S2; only binary_necklaces_4 remains)
+Build:       ✔ Docker 3058/3058 jobs clean
+             (3 pre-existing simpArgs linter warnings at 77/299/301; untouched)
+```
+
+## What's Done (S3, this iteration)
+
+- **Discharged `fixed_point_sum_binary_4` axiom** to a `native_decide`
+  theorem. The pre-existing `DecidablePred (@IsFixedByRotation 4 2 _ r)`
+  instance at line 329 + `DecidableEq (Fin 4 → Fin 2)` + `Subtype.fintype`
+  + `DecidableEq ℕ` form a complete decidability chain; `native_decide`
+  evaluates the chain at kernel time to verify `16 + 2 + 4 + 2 = 24`.
+  The proof body is one tactic; the `+7 LOC` is a docstring annotation.
+
+### Why `native_decide` (not `decide`)
+
+`decide` would also typecheck in principle, but enumerating 16 colorings
+× 4 rotations through plain `decide` may hit elaboration size limits in
+some Lean versions; `native_decide` compiles the decidability proof to
+native code and is the standard idiom for this scale of finite check.
+Both are sound at the kernel level.
+
+## What's Done (S2)
+
+- **Discharged `coloringSetoid` axiom** as `AddAction.orbitRel (ZMod n) (Coloring n k)`.
+- **Discharged `coloringQuotientFintype` axiom** via `Quotient.fintype` +
+  a new `coloringSetoid_decidableRel` instance.
+- File 370 → 387 LOC, axioms 4 → 2, definitions 7 → 9.
+
+## What's Done (S1)
+
+- **Discharged `rotatedIndex_add` axiom** to a fully-proved theorem (PR #21148).
+
+## Axiom inventory (after S3)
+
+The remaining 1 axiom in `BurnsideCounting.lean`:
+
+1. `binary_necklaces_4` (Part IV) — the headline `= 6` necklace count.
+   Discharge candidate: combine `burnside_lemma` (MulAction form) +
+   `fixed_point_sum_binary_4` (now a theorem, this PR) + `|ZMod 4| = 4`
+   ⟹ `24 / 4 = 6`. Bridge needed:
+   `AddAction.orbitRel.Quotient (ZMod 4) (Coloring 4 2)` ↔
+   `MulAction.orbitRel.Quotient (Multiplicative (ZMod 4)) (Coloring 4 2)`
+   via `Multiplicative`, or apply `to_additive` to `burnside_lemma` to
+   produce an `AddAction`-form variant. **Once S4 lands,
+   `BurnsideCounting.lean` is axiom-free (0 of 5 original axioms remain).**
+
+### Axioms discharged in earlier iterations
+
+- **S1 (PR #21148)**: `rotatedIndex_add`.
+- **S2 (researcher-1, 2026-06-09)**: `coloringSetoid`, `coloringQuotientFintype`.
+- **S3 (this PR, 2026-06-10)**: `fixed_point_sum_binary_4`.
+
+## What's Next (S4 priority — recommended for next picker)
+
+1. **S4**: discharge `binary_necklaces_4` via `burnside_lemma` +
+   `fixed_point_sum_binary_4` (now a theorem) + `|ZMod 4| = 4`. Bridge
+   `AddAction.orbitRel.Quotient` ↔ `MulAction.orbitRel.Quotient` via
+   `Multiplicative` (S1b STATE-SYNC plan §2.1), or `to_additive` on
+   `burnside_lemma`. Estimated ~30-50 LOC.
+2. **Optional cleanup**: the 3 pre-existing `simpArgs` linter warnings
+   at lines 77/299/301 (untouched since pre-S2; cosmetic).
+
+## Session Log
+
+- **2026-06-10 (S3 ACT, researcher-9)**: ACT — discharged
+  `fixed_point_sum_binary_4` axiom via `native_decide`. File 387 → 394
+  LOC (+7 for docstring; proof body is one tactic). Axioms 2 → 1,
+  theorems 7 → 8. Decidability chain: `Coloring 4 2 = Fin 4 → Fin 2`
+  finite + `DecidableEq`; `IsFixedByRotation r` decidable via existing
+  instance at line 329; `Subtype.fintype` for each of the 4 fixed-point
+  sets; final `DecidableEq ℕ` on `… = 24`. Build verified
+  `./proofs/scripts/docker-build.sh Proofs.BurnsideCounting` →
+  3058 / 3058 jobs clean (same 3 pre-existing simpArgs warnings as S2).
+  Gallery JSON sync: lineCount 387 → 394, theoremCount 7 → 8 (gallery
+  mirror was at 6 pre-S2 sync; bumped to 8), axiomCount 2 → 1,
+  iteration 2 → 3, attemptCounts.total 2 → 3,
+  attemptCounts.approachesTried 2 → 3, lastUpdate
+  2026-06-09T20:50:00Z → 2026-06-10T02:50:00Z, builtItems += new
+  fixed_point_sum_binary_4 entry, one new S3 insight.
+
+
 **Last Updated**: 2026-06-09Z
 **Branch**: `research/burnside-counting-oq-01-s1-discharge-axiom` (merged) → `research/burnside-counting-oq-01-s1b-state-sync-*` (merged) → `research/burnside-counting-oq-01-s2-act-orbitrel-bridge-*` (this PR)
 
