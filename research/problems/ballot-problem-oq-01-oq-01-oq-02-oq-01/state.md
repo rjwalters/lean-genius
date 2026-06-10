@@ -1,10 +1,16 @@
 # Current State
 
-**Phase**: ACT (S12 ACT sharpest one-sided alphabet `x ≤ 1` shipped + Docker-verified; cycle-lemma Lean formalisation has reached the boundary of the equality regime — any further mathematical sharpening of the count formula would be cosmetic)
-**Since**: 2026-06-01 (S12 ACT)
-**Iteration**: 16
-**Last researcher**: researcher-1 (S12 ACT sharpest one-sided alphabet, 2026-06-01)
-**Last Update**: 2026-06-01 (researcher-1) — **S12 ACT** (PR #21857, MERGED 2026-06-01T07:02:01Z): acted on the S11-noted INERT lower bound observation. Introduced `step_le_one_card_eq` — the cycle-lemma strict equality `(goodRotations l).card = l.sum.toNat` on the one-sided alphabet `∀ x ∈ l, x ≤ 1` alone, with **no lower bound on negative steps**. Refactored Option C internals: `levelPosB_eq_optionC` → `levelPosB_eq_capOne`, `goodRotations_card_ge_pathB_optionC` → `goodRotations_card_ge_capOne` (same proof bodies, dropped never-consumed lower-bound conjunct from `hmem`). The public API (`step_in_one_pos_pm_card_eq`, `step_in_one_pos_pm_card_bound`) is preserved byte-identically as one-line corollaries of the sharper theorem. **Docker-verified clean: 3062/3062 jobs, 0 sorries, 0 axioms, 0 warnings; file 608 → 626 LOC.** `x ≤ 1` is now provably the *maximal* clean alphabet for the equality (any upward relaxation admits `l = [-1, 3]` refutation, S1 OBSERVE mechanism). See `sessions/2026-06-01-s12-act-sharpest-onesided-alphabet.md`.
+**Phase**: ACT (S14 ACT gallery promotion shipped — `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/` created with `status="verified"`, `badge="original"`, 12 theorems / 0 axioms / 0 sorries / 626 LOC; six sections + seven annotations; `pnpm annotations:build` and `pnpm research:build` clean; listings.json and data-manifest.json regenerated. Gallery side now mirrors the Lean side: the four-step alphabet refinement (Conjecture E → Path B → Option C → S12 sharpest cap-one) and the m-jump IVTs D + D′ are now publicly browsable.)
+**Since**: 2026-06-10T05:45Z (S14 ACT)
+**Iteration**: 17
+**Last researcher**: researcher-11 (S14 ACT gallery promotion, 2026-06-10)
+**Last Update**: 2026-06-10 (researcher-11) — **S14 ACT** — shipped the gallery slug per S13's "Next Action" item #1. `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/meta.json` created with the full schema modeled on the parent OQ-02 entry: six `sections` covering the preamble, m-jump downward IVT, m-jump upward IVT, Conjecture E, Path B mixed-down, and S12 sharpest cap-one; twelve `mainTheorems` entries (one per public theorem in the Lean file); four `crossReferences` to the parent / grandparent / great-grandparent / Bertrand ancestor; seven literature references including Dvoretzky-Motzkin 1947, Raney 1960, Mohanty 1979, Bingham 1975, Stanley 2011; five `openQuestions` targeting quantitative slack characterisations, continuous-time analogs, multi-step alphabets, two-sided generalisations, and tight-slack witnesses. `annotations.json` with seven section-level highlights (preamble roadmap, m-jump step bound, m-jump downward IVT, Conjecture E, levelPosB combinatorial gadget, Path B equality, S12 sharpest cap-one). **Build pipeline verified clean**: `pnpm annotations:build` reports zero validation errors for this slug; `pnpm research:build` registers the entry in `src/data/proofs/listings.json` and `src/data/proofs/data-manifest.json` with hashes `meta: 10028619`, `ann: 980d36dc`. Session memo at `sessions/2026-06-10-s14-act-gallery-promotion.md`.
+
+---
+
+**S13 STATE-SYNC (2026-06-01, researcher-1)** — doc-only refresh after S12 ACT merge, retained below.
+
+**S12 ACT (researcher-1, 2026-06-01)** (PR #21857, MERGED 2026-06-01T07:02:01Z): acted on the S11-noted INERT lower bound observation. Introduced `step_le_one_card_eq` — the cycle-lemma strict equality `(goodRotations l).card = l.sum.toNat` on the one-sided alphabet `∀ x ∈ l, x ≤ 1` alone, with **no lower bound on negative steps**. Refactored Option C internals: `levelPosB_eq_optionC` → `levelPosB_eq_capOne`, `goodRotations_card_ge_pathB_optionC` → `goodRotations_card_ge_capOne` (same proof bodies, dropped never-consumed lower-bound conjunct from `hmem`). The public API (`step_in_one_pos_pm_card_eq`, `step_in_one_pos_pm_card_bound`) is preserved byte-identically as one-line corollaries of the sharper theorem. **Docker-verified clean: 3062/3062 jobs, 0 sorries, 0 axioms, 0 warnings; file 608 → 626 LOC.** `x ≤ 1` is now provably the *maximal* clean alphabet for the equality (any upward relaxation admits `l = [-1, 3]` refutation, S1 OBSERVE mechanism). See `sessions/2026-06-01-s12-act-sharpest-onesided-alphabet.md`.
 
 **S13 STATE-SYNC (2026-06-01, researcher-1, this PR)**: doc-only state-sync — the prior state.md remained pinned at iteration 15 / S11 ACT through the S12 ACT merge (PR #21857). This iteration refreshes the Phase / Iteration / Last Update fields, refreshes the conjecture status against problem.md, and refreshes the next-action list to reflect the gallery-slug creation as the natural follow-up.
 
@@ -167,31 +173,35 @@ None. No Mathlib gap anticipated (all required primitives — `Finset.min'`,
 `Finset.min'_mem`, `Finset.min'_le`, `List.sum_take_succ`, `List.getElem_mem`
 — present in v4.26.0).
 
-## Next Action (post-S13 STATE-SYNC)
+## Next Action (post-S14 ACT)
 
-Per the S12 ACT memo's "next steps (not done this session)":
+Item #1 (gallery slug creation) **SHIPPED** this iteration. Remaining
+items from S13:
 
-1. **Gallery slug creation** (primary next-action): build
-   `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/` with
-   `meta.json` documenting (a) the refuted naive `⌈S/m⌉` bound (parent
-   meta `openQuestions[0]`), (b) the recovered strict equality
-   `step_le_one_card_eq` on the maximal one-sided alphabet `x ≤ 1`,
-   and (c) the m-jump IVTs (D, D′) as the genuine *infrastructural*
-   generalisation of the parent's unit-IVT. Recommended `status:
-   "verified"`, `badge: "original"`. Also create `annotations.json` +
-   `index.ts`. Estimated 1–2 sessions for a quality entry.
+1. ~~Gallery slug creation~~ — **DONE (S14, this iteration)**.
 
-2. **Parent slug update** (deferred until #1 ships, to avoid the
-   broken-`crossReferences` anti-pattern): amend
+2. **Parent slug update** (now unblocked): amend
    `src/data/proofs/ballot-problem-oq-01-oq-01-oq-02/meta.json` to
    reference this child as the resolution of `openQuestions[0]` (the
-   `step ≥ -m` question) once the child slug renders in the UI.
+   `step ≥ -m` question). Now safe to ship — the child's
+   `crossReferences` already point to the parent, and the parent's
+   `additionalFiles[0]` already names `BallotProblemOQ01OQ01OQ02OQ01.lean`,
+   so the bidirectional reference simply needs a one-paragraph addition
+   to the parent's `openQuestions[0]` description. Estimated 1 session
+   (10–20 LOC of JSON).
 
 3. **Mathematical follow-up** (optional, multi-session): pursue further
    relaxations of the alphabet that nevertheless preserve a *quantified*
    lower bound (not the strict equality, which is now boundary-tight on
    `x ≤ 1`). E.g. characterise the slack term `l.sum.toNat - |gR|` in
-   terms of the maximum positive step.
+   terms of the maximum positive step. Captured as the first item of
+   the new gallery entry's `openQuestions`.
+
+The problem can also be marked `completed` in the research pool — the
+Lean side is at the boundary of the strict-equality regime (S12), and
+the gallery side now mirrors it (S14). Further work is either an
+optional sibling-slug refresh (item #2 above, ~10 minutes) or
+genuinely new mathematics (item #3, multi-session research).
 
 ## Historical — original S2 next-action recommendation (DISCHARGED)
 
@@ -203,6 +213,6 @@ add `m_jump_levels_achieved` corollary (~30 LOC).
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1 (S1 OBSERVE — refutation by example)
+- Total attempts: 17 (S1, S1b, S1c, S2–S14; this iteration completes S14 ACT — gallery promotion)
+- Current approach attempts: 17 (alphabet-refinement + gallery promotion track)
+- Approaches tried: 1 (S1 OBSERVE refutation → m-jump IVT generalisation → four-step alphabet sharpening → gallery promotion)
