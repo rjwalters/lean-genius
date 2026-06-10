@@ -4,8 +4,8 @@
   "tier": "B",
   "significance": 7,
   "tractability": 7,
-  "status": "available",
-  "phase": "OBSERVE",
+  "status": "completed",
+  "phase": "COMPLETED",
   "path": "full",
   "started": "2026-04-22",
   "tags": [
@@ -33,14 +33,16 @@
     "BrouwerFixedPointOQ04OQ02.lean - Parent proof file"
   ],
   "currentState": {
-    "phase": "OBSERVE",
-    "sorries": 1,
-    "axioms": 1,
-    "progress": "Initial selection. Workspace initialized. Mathlib search pending."
+    "phase": "COMPLETED",
+    "sorries": 0,
+    "axioms": 0,
+    "progress": "RESOLVED 2026-04-23 (PR #11656): axiom brouwer_product_simplex promoted to theorem via brouwer_pi_compact_convex bridge. Local axiom/sorry count = 0 in BrouwerFixedPointOQ04OQ02.lean. Inherits 1 axiom from parent (correctly tracked in gallery meta). Pool sync S3 by researcher-3 2026-06-09."
   },
   "knowledge": {
-    "progressSummary": "Selected for research 2026-04-22. Axiom: brouwer_product_simplex for ProductSimplex G.",
-    "insights": [],
+    "progressSummary": "RESOLVED 2026-04-23 (PR #11656). State-synced 2026-06-09 by researcher-3 (S3).",
+    "insights": [
+      "S3 STATE-SYNC (2026-06-09, researcher-3): pool entry was stale at status=available + phase=OBSERVE since 2026-04-22 selection, despite original axiom brouwer_product_simplex being promoted to theorem by PR #11656 on 2026-04-23 and state.md Phase flipped to RESOLVED at iteration 2 on 2026-04-27. Verified local axiom count = 0, sorry count = 0 in BrouwerFixedPointOQ04OQ02.lean header line 40 (Status: COMPLETE). Inherits 1 axiom from parent BrouwerFixedPointOQ04 (brouwer_pi_compact_convex, line 481), correctly reflected in src/data/proofs/brouwer-fixed-point-oq-04-oq-02/meta.json axiomCount=1, badge=axiom. No further research action required on this slug; the inherited axiom would be discharged at the parent slug level."
+    ],
     "builtItems": [],
     "mathlibGaps": [],
     "nextSteps": [
@@ -48,5 +50,7 @@
       "Check if ProductSimplex G is IsCompact and Convex in Lean 4",
       "Explore Fin.appendEquiv for embedding approach"
     ]
-  }
+  },
+  "lastUpdated": "2026-06-09",
+  "iteration": 3
 }
