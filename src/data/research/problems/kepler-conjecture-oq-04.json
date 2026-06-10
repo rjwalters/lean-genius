@@ -40,13 +40,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-31T07:10:00.000Z",
-    "iteration": 6,
-    "focus": "S7 ACT (this iteration, researcher-1, 2026-05-31): final hierarchy aggregation `density_hierarchy_3d` — pure And.intro over the three named facts (S3+S4 axiom-free `tetrahedronDimerDensity_gt_fccDensity`, S5 `ellipsoid_lattice_le_fccPacking`, S6 `ulam_le_fccPacking_density`), 0 new axioms, +1 theorem. File 399 → 456 LOC. Closes the OQ-04 hierarchy as a single quantified statement: the FCC bound is neither universal nor optimal across shape classes. Build verified pending Docker. S6 ACT (researcher-8, 2026-05-14, PR #19109): Ulam conjecture axiom for centrally symmetric convex bodies (+1 STATEMENT axiom). S5 ACT (researcher-9, 2026-05-13, PR #18968): Bezdek–Kuperberg ellipsoid lattice axiom (+1 STATEMENT axiom). S3+S4 (researcher-6, PR #18188, axiom-free): tetrahedronDimerDensity_gt_fccDensity + PackingDensity instance + existential corollary. S2 SCAFFOLD (PR #18113): density definition + positivity/less-than-one/rational anchor. Sorries 0; axioms 2 (bezdek_kuperberg + ulam_conjecture). File at 456 LOC.",
+    "since": "2026-06-09T18:00:00.000Z",
+    "iteration": 7,
+    "focus": "S7-COMPLETED STATE-SYNC (this iteration, researcher-3, 2026-06-09): doc-only tracker reconciliation. S7 ACT (researcher-1, 2026-05-31, PR #21374) was Docker-verified (7744/7744 jobs clean, no new axioms) and merged; mechanic PR #21535 then synced meta.lineCount 399 → 456 (merged 2026-05-31). The OQ-04 hierarchy is STRUCTURALLY CLOSED at 8 theorems / 4 definitions / 2 STATEMENT axioms / 0 sorries / 456 LOC: S2 SCAFFOLD (PR #18113) tetrahedral dimer density 4000/4671 + positivity/lt-one/rational anchor (axiom-free, norm_num); S3+S4 ACT (PR #18188) `tetrahedronDimerDensity_gt_fccDensity` via `div_lt_div_iff₀` + `Real.pi_lt_d2` + `Real.lt_sqrt` + `nlinarith` (axiom-free linear margin ≈ 2086) plus `tetrahedronDimerPacking : PackingDensity` instance and existential `exists_packingDensity_gt_fcc`; S5 ACT (researcher-9, PR #18968) `EllipsoidLatticePacking` marker + `bezdek_kuperberg_ellipsoid_lattice_upper_bound` STATEMENT axiom + `ellipsoid_lattice_le_fccPacking` corollary; S6 ACT (researcher-8, PR #19109) `SymmetricConvexBody3DPacking` marker + `ulam_conjecture` STATEMENT axiom + `ulam_le_fccPacking_density` corollary; S7 ACT (PR #21374) final aggregator `density_hierarchy_3d` (pure And.intro, no new axioms) — single quantified statement that the FCC bound is neither universal nor optimal across shape classes. Net counts (verified by grep on `proofs/Proofs/KeplerConjectureOQ04.lean` at HEAD): 8 real theorems (positivity, lt_one, gt_8563 anchor, gt_fccDensity, exists_packingDensity_gt_fcc, ellipsoid_lattice_le_fccPacking, ulam_le_fccPacking_density, density_hierarchy_3d), 4 type defs (tetrahedronDimerDensity, tetrahedronDimerPacking, EllipsoidLatticePacking, SymmetricConvexBody3DPacking), 2 declared axioms (bezdek_kuperberg + ulam_conjecture — the third `^axiom ` grep hit at L193 is docstring text).",
     "blockers": [],
-    "nextAction": "S8 (deferred): Donev–Stillinger–Chaikin–Torquato (2004) non-lattice ellipsoid bound δ ≈ 0.7707 at aspect ratio α ≈ √2. Introduce `EllipsoidPacking` (non-lattice variant) and add the +1 STATEMENT axiom for the Donev et al. bound. Lower priority than S7 (just shipped) since it doesn't change the hierarchy bound — just fills in the non-lattice ellipsoid row of the hierarchy matrix. Estimated +1 axiom, ~50 LOC, single Docker build. Alternative: meta.json sync for theoremCount 7 → 8 + lineCount 399 → 456 (mechanic to perform after CI green, matching S3+S4 / S5 / S6 convention).",
+    "nextAction": "Three forward paths, in order of mathematical value (highest first): (1) DISCHARGE `bezdek_kuperberg_ellipsoid_lattice_upper_bound` — published proof reduces to affine density invariance under invertible linear transforms `T : ℝ³ ≃ₗ[ℝ] ℝ³` combined with the lattice case of Kepler (parent file's `gauss_lattice_theorem`). Blocker: Mathlib v4.26.0 has no `Convex/AffinePackingDensity` lemma. Estimate: ~150 LOC once Mathlib backbone available, multi-iteration scaffolding. (2) IMPROVE the axiom-free tetrahedral lower bound 4000/4671 — research-grade in discrete geometry (open since 2010); no near-term Lean path. (3) S8 ACT (deferred, low priority) — Donev–Stillinger–Chaikin–Torquato (2004) non-lattice ellipsoid δ ≈ 0.7707 at aspect ratio √2. Adds +1 STATEMENT axiom + `EllipsoidPacking` marker (~50 LOC, single Docker build). Does NOT change the hierarchy bound; just fills the non-lattice ellipsoid row of the matrix. Justified ONLY if S5 discharge stalls and the hierarchy completeness story needs a quantitative non-lattice witness. Mechanic note: meta.json `theoremCount` field is currently 9 (set by PR #19497's `^theorem ` grep heuristic which counted 2 docstring lines starting with the word \"theorem\"); the true post-S7 theorem count is 8. A future mechanic sync to 8 is welcome but cosmetic.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -106,7 +106,7 @@
       "Mathlib.Analysis.Convex.Basic"
     ]
   },
-  "lastUpdate": "2026-05-31",
+  "lastUpdate": "2026-06-09",
   "leanFiles": [
     "proofs/Proofs/KeplerConjectureOQ04.lean"
   ]
