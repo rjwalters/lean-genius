@@ -583,4 +583,61 @@ theorem cbrt3_lt_seven_three_oh_one_one_over_five_oh_six_two_three :
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S13 prep: new lower bound for `a₁₁ = 5` (the twelfth partial quotient)
+
+The thirteenth CF convergent of `∛3` (using `a₁₂ = 8` per OEIS A002945
+prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, …]`, 0-indexed) is
+
+  `p₁₂/q₁₂ = (a₁₂·p₁₁ + p₁₀) / (a₁₂·q₁₁ + q₁₀)`
+  `       = (8 · 73011 + 13361) / (8 · 50623 + 9264)`
+  `       = 597449 / 414248`.
+
+This convergent is even-index (12), so it lies on the LOWER side of
+`∛3` (alternating with the upper-side twelfth convergent `73011/50623`
+from S12b).
+
+Convergent recursion (with `a₁₂ = 8`):
+
+  `q₁₂ = 8 · q₁₁ + q₁₀ = 8 · 50623 + 9264 = 414248`
+  `p₁₂ = 8 · p₁₁ + p₁₀ = 8 · 73011 + 13361 = 597449`
+
+After cubing,
+
+  `(597449/414248)³ = 213_256_617_080_909_849 / 71_085_539_027_220_992`
+  `3                = 213_256_617_081_662_976 / 71_085_539_027_220_992`
+
+so `597449³ = 213_256_617_080_909_849 < 213_256_617_081_662_976 =
+3 · 414248³` (strict, diff `-753_127`). The new lower cube gap
+`753_127 / 71_085_539_027_220_992 ≈ 1.06·10⁻¹¹` (relative-to-`3·q³`:
+`≈ 3.53·10⁻¹²`) is roughly an order of magnitude tighter than S12b's
+upper-side gap of `37_230 / 129_730_961_154_367 ≈ 2.87·10⁻¹⁰` —
+consistent with `597449/414248` being the next true convergent one
+rung beyond `73011/50623`.
+
+(Pre-claim Python sanity check (this S13 session):
+`597449³ = 213_256_617_080_909_849`, `3 · 414248³ =
+213_256_617_081_662_976`, diff `-753_127 < 0` confirming
+`(597449/414248)³ < 3`, hence `597449/414248 < cbrt3` as required
+for a lower bound. Cross-checked against OEIS A002945 via
+Decimal-arithmetic CF expansion of `∛3` to 200 digits (independent
+re-derivation matching the S12a/S12b 200-digit witnesses); first
+13 partial quotients `[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8]`
+match. No math-correction was needed this iteration — both the
+recursion arithmetic `(8 · 73011 + 13361 = 597449,
+8 · 50623 + 9264 = 414248)` and the cube digits matched the
+post-S12b sketch on the first pass.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `597449/414248 < ∛3`. Cube target: `(597449/414248)³ =
+213_256_617_080_909_849 / 71_085_539_027_220_992 <
+213_256_617_081_662_976 / 71_085_539_027_220_992 = 3` (strict:
+`597449³ = 213_256_617_080_909_849 < 213_256_617_081_662_976 =
+3 · 414248³`, gap `753_127`). The thirteenth convergent of the
+simple CF of `∛3` (using `a₁₂ = 8` per OEIS A002945). -/
+theorem five_nine_seven_four_four_nine_over_four_one_four_two_four_eight_lt_cbrt3 :
+    (597449 / 414248 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
