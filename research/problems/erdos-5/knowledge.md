@@ -117,4 +117,79 @@ Docker build initiated locally; CI will validate.
 
 ---
 
+### Session 2026-06-09 — Eventually-form liminf/limsup corollaries (S3)
+
+**Mode**: ACT (extension)
+**Outcome**: progress — packaged S2's `Set.Infinite` oscillation lemmas
+into a `Filter.Eventually` form witnessing `liminf = 0` / `limsup = ⊤`
+along `atTop`. Verified Docker build clean (3061 jobs).
+
+#### What was added (Erdos5PrimeGaps.lean: 657 → 707 lines, +50)
+
+- **Part XV (liminf / limsup corollaries)**:
+  - `normalizedGap_oscillates`: trivial packaging of
+    `frequently_normalizedGap_lt` and `frequently_normalizedGap_gt`.
+  - `not_eventually_normalizedGap_le`: for every `M : ℝ`,
+    `¬ ∀ᶠ n in atTop, normalizedGap n ≤ M`. Proof: convert the
+    eventual upper bound to `∃ N, ∀ n ≥ N, …`, then exhibit the set
+    `{n | M < normalizedGap n}` as a finite subset of `Set.Iio N`,
+    contradicting `frequently_normalizedGap_gt M`.
+  - `not_eventually_le_normalizedGap`: dual statement —
+    `¬ ∀ᶠ n in atTop, ε ≤ normalizedGap n` for every `ε > 0`.
+
+#### Architectural impact
+
+- The two `not_eventually_*` lemmas together with the existing
+  `normalizedGap_nonneg` are *exactly* the data needed to derive
+  `Filter.limsup = ⊤` and `Filter.liminf = 0` in any complete
+  extension of `ℝ` (e.g. `EReal`). Future iterations can take the
+  explicit `EReal` step without redoing the `Set.Infinite` ↔
+  `Filter.Eventually` bridge.
+- The S2 dichotomy "either the conjecture holds, or some
+  intermediate value is eventually avoided" is now spelled in a
+  filter-native idiom alongside the `Set.Infinite` form.
+
+#### Meta fixes piggybacked
+
+- Outer `axiomCount` corrected: 4 → 3 (the file has only three
+  `axiom` declarations: `westzynthius_large_gaps`,
+  `zhang_bounded_gaps`, `hildebrand_maier_large_limit_points`; no
+  structure-encoded assumptions). Both inner and outer counts now
+  agree at 3.
+- `theoremCount`: 33 → 36 (added three new theorems).
+- `lineCount`: 657 → 707 (wc -l canonical).
+- `assumptions` text bumped from `26 theorems` to `36 theorems`
+  and references the new corollaries by name.
+- `conclusion.summary` extended to mention the `Filter.limsup` /
+  `Filter.liminf` reading made unconditional by S3.
+
+#### Files Modified
+
+- `proofs/Proofs/Erdos5PrimeGaps.lean` (+50 lines, +3 theorems)
+- `src/data/proofs/erdos-5/meta.json` (lineCount, theoremCount,
+  axiomCount fix, assumptions, conclusion summary, inner
+  leanFile mirrors)
+- `research/problems/erdos-5/state.md` (iteration 2 → 3, refreshed
+  next-action list)
+- `research/problems/erdos-5/knowledge.md` (this session entry)
+
+#### Build status
+
+Docker build clean: `Build completed successfully (3061 jobs)`
+(log: `.loom/logs/researcher-9-erdos5-s3-build.log`).
+
+#### Next iteration could
+
+1. (S4 clean) Explicit `EReal` coercion: state and prove
+   `Filter.limsup (fun n => (normalizedGap n : EReal)) atTop = ⊤`
+   using `not_eventually_normalizedGap_le` and an `EReal`
+   characterization (`EReal.limsup_eq_top_iff_frequently_gt` or
+   similar).
+2. (S4 clean) `MapClusterPt` reformulation linking `IsLimitPoint`
+   to Mathlib's filter cluster point machinery.
+3. (S5 substantive) Reduce the axiom budget by attempting
+   Hildebrand–Maier ← Westzynthius + Erdős–Ricci measure argument.
+
+---
+
 *Generated from erdosproblems.com on 2026-01-12*
