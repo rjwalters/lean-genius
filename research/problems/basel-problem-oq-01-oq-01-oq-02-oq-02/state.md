@@ -1,8 +1,185 @@
 # Current State
 
-**Phase**: ACT (S21 DOCTOR-FIX + BUILD-VERIFY — S20 `Nat.pow_pos hp.pos i` API misuse at line 959 fixed via 1-token edit; file builds CLEAN 3058/3058 jobs; G9 confirmed INERT for Docker)
-**Since**: 2026-06-01T10:05:00Z
-**Iteration**: 21
+**Phase**: STATE-SYNC (S22 — pre-S23-ACT bearer pin: `Nat.factorization_prod_pow_eq_self` + 2 support bearers verified at byte-stable Mathlib SHA; S21 build status reconfirmed CLEAN by hash inspection; INFRA all GREEN; 0 Lean diff)
+**Since**: 2026-06-10T04:25:00Z
+**Iteration**: 22
+
+## Session 22 (2026-06-10, STATE-SYNC — pre-S23-ACT bearer pin for the general prime-power decomposition + INFRA refresh, doc-only)
+
+Doc-only STATE-SYNC iteration claimed 8d after S21 (PR #21858-equivalent
+shipped 2026-06-01) by researcher-1. Pinned three Mathlib bearers
+required by the planned next ACT (`mul_choose_dvd_lcmRange`) at the
+unchanged lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(byte-stable for 25d+ now), and tightened the next-ACT skeleton from
+"clone of S15" handwave to a concrete 4-stage plan with the new helper
+`prod_pow_factorization_mul_choose` itemized inline.
+
+**Why this matters**: S21's "Picker for S22" recommended option (a)
+"`mul_choose_dvd_lcmRange` clone" as a mechanical S15 clone, but S15's
+`Nat.prod_pow_factorization_choose` (Choose/Factorization.lean:267) is
+*specialized* to `Nat.choose` — it does **not** generalize to
+`m * Nat.choose n m`. The general analogue is
+`Nat.factorization_prod_pow_eq_self` (`Finsupp.prod`-flavored), which
+requires a small adapter to bridge to S15's `Finset.prod`-over-range
+shape. This STATE-SYNC pins the adapter's three load-bearing Mathlib
+inputs so the next ACT is paste-ready.
+
+### What S22 STATE-SYNC adds (3 new bearer pins + 1 INFRA refresh + JSON sync)
+
+**3 NEW bearer pins** at unchanged lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| # | Bearer | Path | Line | Why |
+|---|--------|------|------|-----|
+| 17 | `Nat.factorization_prod_pow_eq_self` | `Mathlib/Data/Nat/Factorization/Defs.lean` | 97 | **General prime-power decomposition** `n.factorization.prod (·^·) = n` for `n ≠ 0`. The Finsupp-flavored analogue of S15's `Nat.prod_pow_factorization_choose`. Anchor for the S23 ACT helper. Signature: `{n : ℕ} (hn : n ≠ 0) : n.factorization.prod (· ^ ·) = n`. |
+| 18 | `Nat.support_factorization` | `Mathlib/Data/Nat/Factorization/Defs.lean` | 56 | **Bridge** `(factorization n).support = n.primeFactors` (rfl-defined, simp). Converts the Finsupp.prod over support to a Finset.prod over `n.primeFactors`. |
+| 19 | `Nat.factorization_eq_zero_of_lt` | `Mathlib/Data/Nat/Factorization/Basic.lean` | 28 | **Range-padding side condition** for `m`: when `m < p`, `m.factorization p = 0`. Together with the S15-era `Nat.factorization_choose_eq_zero_of_lt` (used in the Mathlib proof of `Nat.prod_pow_factorization_choose`), establishes that all primes of `m * C(n, m)` lie within `Finset.range (n + 1)`. |
+
+Verification protocol per memory pattern: `gh api` + `curl -sL` against
+`raw.githubusercontent.com` at the lake-pinned SHA, then `grep -n` for
+the named identifier. All 3 hit exactly at the lines listed above.
+
+**Recheck of existing 16 bearers**: SKIPPED as busywork at unchanged
+SHA (25d byte-stable since S14 §3 last full spot-check, S19 §3
+4/16 spot-check, S20 §3 inheritance). Lake content-addressed.
+
+### S21 build status revalidation (no fresh Docker build run this session)
+
+S21 (2026-06-01) verified CLEAN at 3058/3058 jobs via `docker info`-up
+host. This STATE-SYNC inherits the verification at byte-identical
+Mathlib SHA + 0 Lean edits. Sanity checks performed:
+
+| Check | S21 verified | S22 (this) | Δ |
+|---|---|---|---|
+| `docker info --format '{{.ServerVersion}}'` | 29.4.1 | **29.5.3** | host upgraded, daemon GREEN |
+| `df -h /` | 63 Gi avail | **79 Gi avail / 13% used** | +16 Gi headroom |
+| Lake SHA | `2df2f0150c…` | `2df2f0150c…` | **0 drift over 8d** |
+| `proofs/.lake` self-symlink (G9) | confirmed INERT for Docker bind-mount | confirmed unchanged | G9 marker only |
+| File LOC | 972 | 972 | unchanged |
+| File sorry/axiom count | 0/0 | 0/0 | unchanged |
+
+No fresh Docker rebuild was run this session — at unchanged SHA + 0
+edits, the rebuild would be a no-op cache hit. The next ACT (S23)
+will Docker-verify its own diff.
+
+### Tightened S23 ACT skeleton (was "S22 ACT" in S21's picker)
+
+S21 §"Picker for S22" recommended option (a)
+"`mul_choose_dvd_lcmRange` clone (~30-40 LOC, LOW risk)". This
+STATE-SYNC absorbs iteration 22 (per the S14 §6.1 renumbering
+convention), so the planned ACT shifts +1 to S23.
+
+The "mechanical clone of S15" framing was too loose: S15's `rw [←
+Nat.prod_pow_factorization_choose n k hk]` cannot be substituted
+directly because that lemma is hard-wired to `Nat.choose`. The S23 ACT
+needs a small private helper that does the analogous bounded-range
+decomposition for `m * Nat.choose n m`.
+
+**Stage 1 — Helper `prod_pow_factorization_mul_choose`** (~15 LOC):
+
+```lean
+private lemma prod_pow_factorization_mul_choose
+    {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) :
+    (∏ p ∈ Finset.range (n + 1),
+       p ^ ((m * Nat.choose n m).factorization p))
+      = m * Nat.choose n m := by
+  have hm_ne : m ≠ 0 := hm.ne'
+  have hC_ne : Nat.choose n m ≠ 0 := (Nat.choose_pos hmn).ne'
+  have hN_ne : m * Nat.choose n m ≠ 0 := Nat.mul_ne_zero hm_ne hC_ne
+  -- Use Nat.factorization_prod_pow_eq_self (bearer 17) to convert the
+  -- RHS to the Finsupp.prod form, then transport to a Finset.prod over
+  -- the support via the simp lemma Nat.support_factorization (bearer 18).
+  conv_rhs => rw [← Nat.factorization_prod_pow_eq_self hN_ne]
+  rw [eq_comm, Finsupp.prod, Nat.support_factorization]
+  -- Now both sides are Finset.prod; pad the support (= primeFactors)
+  -- up to Finset.range (n+1) via prod_subset.
+  apply Finset.prod_subset
+  · -- Every prime factor of m * C(n, m) is ≤ n.
+    intro p hp_mem
+    simp only [Nat.mem_primeFactors] at hp_mem
+    obtain ⟨hpp, hp_dvd, _⟩ := hp_mem
+    rw [Finset.mem_range]
+    -- p ∣ m * C(n, m) ⇒ p ∣ m or p ∣ C(n, m) (prime).
+    rcases (Nat.Prime.dvd_mul hpp).mp hp_dvd with hp_m | hp_C
+    · exact Nat.lt_succ_of_le ((Nat.le_of_dvd hm hp_m).trans hmn)
+    · -- p ≤ n via Nat.choose's range cap.
+      exact Nat.lt_succ_of_le ((Nat.Prime.dvd_choose_iff_lt_one hpp).mp_or_something
+              -- alternative: use Nat.factorization_choose_eq_zero_of_lt
+              sorry)
+  · -- Padding zeros: outside support, factorization is 0, so p^0 = 1.
+    intro p _ h_notin
+    simp only [Nat.support_factorization, Nat.mem_primeFactors] at h_notin
+    -- The cleanest discharge:
+    rw [Nat.factorization.notMem_support_iff.mp ?_]  -- yields v_p = 0
+    · simp
+    · exact h_notin
+```
+
+(Sketch — the "p ≤ n from C(n, m)" branch should use
+`Nat.factorization_choose_eq_zero_of_lt` contrapositive directly,
+avoiding the `Nat.Prime.dvd_choose_iff_lt_one` detour. Refine at
+ACT-write time. The shape is right; pin details may shift one or two
+tokens.)
+
+**Stage 2 — Main theorem body** (~25 LOC), structurally identical to
+S15 lines 863–903 with the substitutions:
+
+| S15 (line) | S23 (substitution) |
+|---|---|
+| `rw [← Nat.prod_pow_factorization_choose n k hk]` (865) | `rw [← prod_pow_factorization_mul_choose hm hmn]` |
+| `(Nat.choose n k).factorization p` (every occurrence) | `(m * Nat.choose n m).factorization p` |
+| `Nat.pow_factorization_choose_le hn` (902) | `pow_factorization_mul_choose_le hm hmn` (S20 bearer, already in file) |
+| `pow_pos hpp.pos _` (900) | `pow_pos hpp.pos _` (unchanged) |
+| `Nat.coprime_pow_primes _ _ hpp hqq hne` (887) | unchanged (pairwise IsRelPrime branch is identical) |
+
+**Stage 3 — Imports**: NONE new. All bearers 17–19 are in
+`Mathlib.Data.Nat.Factorization.Defs` / `…Basic`, transitively imported
+by the existing `Mathlib.Data.Nat.Choose.Factorization` import (line 2
+of the slug file).
+
+**Stage 4 — Docker-verify** (per S21 mandate): `./proofs/scripts/docker-build.sh
+Proofs.BaselProblemOQ01OQ01OQ02OQ02`. Expected: 3058 jobs clean (no
+new external deps). Watch for two known regression families: (i) lake
+manifest drift if anything else under `proofs/` changes pre-PR; (ii)
+the `Nat.support_factorization` simp lemma may rfl-unfold differently
+than expected — fallback is `rw [show (factorization n).support = n.primeFactors from rfl]`.
+
+**LOC budget**: helper ~15 + main ~25 = ~40 LOC, well within S21's
+"~30-40 LOC" estimate for the loose-clone version. 0 sorries target,
+0 new axioms.
+
+### Picker for S23
+
+| Option | Status |
+|---|---|
+| (a) S23 ACT — `mul_choose_dvd_lcmRange` per §"Tightened skeleton" above | **available — preferred** (bearers 17-19 now pinned) |
+| (b) vdP §6 application (~80-150 LOC, MED risk) | LONG-TAIL after (a) |
+| (c) Mechanic-scope: leanFiles[4] drift sync 905→972 lc, 36→38 thm + 2 lint warnings drain | mechanic territory |
+| (d) Sibling slug pivot | Basel cluster has 11 leanFiles |
+| (e) Graceful exit | fallback |
+
+**RECOMMENDATION**: prefer (a). All bearers verified at byte-stable
+SHA; helper sketch is concrete; main theorem body is mechanical.
+Estimated single-session work, Docker-verified ship.
+
+### Counts (post-S22, unchanged from S21 because doc-only)
+
+| Metric | Value |
+|--------|-------|
+| File LOC | 972 (unchanged from S20+S21) |
+| Sorries | 0 (unchanged) |
+| Axioms | 0 (unchanged) |
+| Theorems | 38 effective (S20 added +1 from 36, S15 baseline 36; lint count) |
+| Build | inherited S21 CLEAN at 3058 jobs; byte-identical Mathlib SHA |
+
+**Files changed**: this state.md (+~110 LOC near top); the slug's JSON
+(`currentState.{phase,iteration,since,focus,nextAction,lastUpdate}`
+refreshed; +2 builtItems for the bearer pins; +1 nextSteps for the
+tightened S23 plan).
+
+Session memo: `sessions/2026-06-10-s22-state-sync-pre-s23-act-bearer-pin-factorization-prod-pow.md`.
+
+---
 
 ## Session 21 (2026-06-01, DOCTOR-FIX + BUILD-VERIFY — 1-token fix to S20 bearer + Docker verify clean)
 

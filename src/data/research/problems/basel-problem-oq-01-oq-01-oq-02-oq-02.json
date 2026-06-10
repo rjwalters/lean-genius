@@ -1,7 +1,7 @@
 {
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-02",
   "title": "Apéry denominator_control: lcm(1,…,n)³·aₙ ∈ ℤ for the Apéry a-sequence",
-  "phase": "PREP",
+  "phase": "STATE-SYNC",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -26,10 +26,10 @@
     "goal": "Replace `axiom denominator_control` with a `theorem denominator_control` (or `lemma`), or prove it in a companion file `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` that re-exports the result, eliminating one of the 5 Apéry axioms."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-01T10:05:00Z",
-    "iteration": 21,
-    "focus": "S21 DOCTOR-FIX + BUILD-VERIFY (researcher-1, this PR, 2026-06-01T10:05Z): S20's '(build pending — G9 lake self-loop)' qualifier was DOUBLY misleading. Direct Docker re-run via `./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ02` revealed a real `Nat.pow_pos` API misuse at line 959 of S20's pasted `pow_factorization_mul_choose_le` Stage 5 (subset argument): explicit-exponent call `Nat.pow_pos hp.pos i` fails type check because Mathlib v4.26.0 has `n` implicit. 1-token doctor fix: drop the trailing `i`; Lean infers `n=i` from `Nat.mod_lt _ : 0 < ?divisor` with `?divisor = p^i`. Re-build CLEAN: 3058/3058 jobs, exit 0, PathA elaborated in 17s. 2 lint warnings (linter.unusedSimpArgs at lines 256 + 933, mechanic scope: pre-S20 + S20-introduced respectively). S20 bearer `pow_factorization_mul_choose_le` now FORMALLY VERIFIED — S21 ACT plan (mul_choose_dvd_lcmRange framework clone) genuinely actionable. 5th-slug confirmation of G9-INERT (after lovasz S11, ballot S8 follow-up, minkowski-OQ-03 S14, binary-gcd S50 [T-50m], hilbert-11 S24 [T-30m]). Mechanic-territory drift NOT touched by S21: leanFiles[4].lineCount 905 (JSON) vs 972 (filesystem; needs +67 sync); leanFiles[4].theoremCount 36 (JSON) vs 38 (filesystem; needs +2 sync). S21 is minimal-doctor-scope: 1 Lean edit (1-token deletion), 0 leanFiles[] edits, 0 gallery meta edits.",
+    "phase": "STATE-SYNC",
+    "since": "2026-06-10T04:30:00Z",
+    "iteration": 22,
+    "focus": "S22 STATE-SYNC (researcher-1) — pre-S23-ACT bearer pin: 3 Mathlib bearers (Nat.factorization_prod_pow_eq_self at Defs.lean:97; Nat.support_factorization at Defs.lean:56; Nat.factorization_eq_zero_of_lt at Basic.lean:28) verified at byte-stable lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (25d+ unchanged). S15s prod_pow_factorization_choose is specialized to Nat.choose; the general analogue needs a local helper prod_pow_factorization_mul_choose (~15 LOC) anchored on bearer 17. Tightened S23 ACT skeleton from S21s loose clone framing to concrete 4-stage plan (helper + 25 LOC S15 clone with substitutions). INFRA: Docker 29.5.3 GREEN; 79 Gi disk headroom; G9 lake self-symlink confirmed INERT for Docker bind-mount. 0 Lean edits, 0 sorries, 0 axioms unchanged at S21 baseline 3058 jobs clean.",
     "blockers": [
       "(S9 finding) The m=3 even-n case does NOT need Kummer; both parity-of-(n/2) sub-cases admit clean coprime decompositions. S10 implementation is purely arithmetic Lean coding (~85 lines total). NO Mathlib gap.",
       "Genuine Kummer-or-double-induction territory begins at m ≥ 4: the parametrization n = 2m + re-grouping trick that closes m=3 does NOT generalize, because v_p(C(n, m)) is controlled by the digit-sum carry count s_p(m) + s_p(n-m) - s_p(n), which has no uniform absorption.",
@@ -37,9 +37,9 @@
       "Current aperyA is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating aperyA_explicit_formula as a sorried theorem and validating numerically at small n is a future session.",
       "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'. The H_n^{(3)} clearing now in BaselProblemOQ01OQ01OQ02OQ02.lean is the first such instance and could potentially be upstreamed."
     ],
-    "nextAction": "S22 picker (S20 bearer now verified, INFRA fully GREEN): (a) **Planned S21 ACT** — mechanical clone of S15's `mul_choose_dvd_lcmRange` framework with the now-verified `pow_factorization_mul_choose_le` as black-box bearer. ~30-40 LOC, LOW risk per S20 plan. Path α closes once this lands. **Preferred S22 track.** (b) vdP §6 application using S20+(a) — ~80-150 LOC, MED risk, long-tail after (a) merges. (c) Mechanic territory: leanFiles[4] drift sync (lc 905→972, thm 36→38) + lint warning drain (lines 256 unused Finset.sum_range_succ, 933 unused Pi.add_apply). (d) Pivot to sibling slug — Basel cluster has 11 leanFiles, several MODERATE-tier slugs available. (e) Graceful exit / release back to pool — fallback. **RECOMMENDATION**: prefer (a). S20 bearer is verified and the S15-clone framework is paste-ready per S20 nextAction.",
+    "nextAction": "S23 ACT (preferred): paste the tightened skeleton (state.md S22 §Tightened S23 ACT skeleton) into the slug file as Part 13: private helper prod_pow_factorization_mul_choose using bearers 17-19, then mul_choose_dvd_lcmRange as a 25-LOC S15 clone with substitutions. Docker-verify expected 3058 jobs clean (no new imports). Watch for: support_factorization simp lemma rfl-unfold behavior; Nat.Prime.dvd_mul vs alternative routes to bound primes of m * C(n,m) by n. ~40 LOC total. 0 sorries target.",
     "attemptCounts": {
-      "total": 15,
+      "total": 16,
       "currentApproach": 10,
       "approachesTried": 1
     },
@@ -77,7 +77,9 @@
       "Added Part 10c: theorem mul_choose_dvd_lcmRange_three_even {n : ℕ} (hn : 4 ≤ n) (heven : Even n) : 3 * Nat.choose n 3 ∣ lcmRange n (line 766) — dispatches on parity of n/2",
       "Added Part 10d: theorem mul_choose_dvd_lcmRange_three {n : ℕ} (hn : 3 ≤ n) : 3 * Nat.choose n 3 ∣ lcmRange n (line 785) — full m=3 result for any n ≥ 3",
       "Added Part 11 (Session 15 ACT): theorem choose_dvd_lcmRange {n k : ℕ} (hn : 0 < n) (hk : k ≤ n) : Nat.choose n k ∣ lcmRange n (line 884) — A.1 of the Apéry alternating-bilinear discharge path. Proof: rw [← Nat.prod_pow_factorization_choose n k hk]; apply Finset.prod_dvd_of_isRelPrime; sub-goal 1 (pairwise IsRelPrime) handles v_p=0/v_q=0 via isRelPrime_one_left/right + the both-positive case via Nat.coprime_pow_primes + Nat.coprime_iff_isRelPrime; sub-goal 2 (per-p divisibility) handles v_p=0 via one_dvd + v_p>0 via dvd_lcmRange + Nat.pow_factorization_choose_le. Added imports Mathlib.Data.Nat.Choose.Factorization and Mathlib.RingTheory.Coprime.Lemmas. Docker-build VERIFIED CLEAN (3058 jobs, 17s on final file, ~2 min wall-clock total). +106 LOC, +1 theorem, 0 sorries 0 axioms.",
-      "S20 ACT: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean:905` — `theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) {p : ℕ} : p ^ ((m * Nat.choose n m).factorization p) ≤ n` (Part 12 section, ~52 LOC theorem body + ~15 LOC docstring + Part header)."
+      "S20 ACT: `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean:905` — `theorem pow_factorization_mul_choose_le {n m : ℕ} (hm : 0 < m) (hmn : m ≤ n) {p : ℕ} : p ^ ((m * Nat.choose n m).factorization p) ≤ n` (Part 12 section, ~52 LOC theorem body + ~15 LOC docstring + Part header).",
+      "S22 (2026-06-10, researcher-1, STATE-SYNC): Pinned Nat.factorization_prod_pow_eq_self at Mathlib/Data/Nat/Factorization/Defs.lean:97 — the general Finsupp.prod-flavored analogue of S15s Nat.prod_pow_factorization_choose. Anchor bearer for the S23 ACT helper. Verified at byte-stable lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via gh api + curl raw + grep -n.",
+      "S22 (2026-06-10, researcher-1, STATE-SYNC): Pinned Nat.support_factorization at Mathlib/Data/Nat/Factorization/Defs.lean:56 (simp lemma, rfl-defined: (factorization n).support = n.primeFactors). Bridges the Finsupp.prod of bearer 17 to a Finset.prod over primeFactors. Pinned Nat.factorization_eq_zero_of_lt at Mathlib/Data/Nat/Factorization/Basic.lean:28 (when m < p, m.factorization p = 0) — discharges the range-padding side condition for the m factor in the S23 ACT helper. Both verified at byte-stable lake SHA."
     ],
     "insights": [
       "S17 PREP (2026-05-16, researcher-1, doc-only) upgrades the S16 PREP §7 paste-ready S17a skeleton (which had 1 explicit `sorry` on the Kummer carry-count argument) to a **fully-discharged** ~75-LOC paste-ready Lean proof with **0 sorries** by replacing the `multiplicity`/`emultiplicity` bridge approach (S16 §3.3-§3.4 bearers + new `Mathlib.Data.Nat.Multiplicity` import) with a direct **subset-cardinality argument on `Nat.factorization_choose`'s carry formula**. The key insight: `Nat.factorization_choose` at `Mathlib/Data/Nat/Choose/Factorization.lean:131` returns the ℕ-valued carry count `#{i ∈ Ico 1 b | p^i ≤ k%p^i + (n-k)%p^i}` directly — no `emultiplicity → multiplicity → factorization` bridge needed. The carry bound `v_p(C(n,m)) ≤ log p n - v_p(m)` follows from showing the filter set is a subset of `Ico (v_p(m) + 1) (log p n + 1)`: positions `i ≤ v_p(m)` have `p^i ∣ m` (via `Nat.Prime.pow_dvd_iff_le_factorization` at Factorization/Basic.lean:168) ⇒ `m % p^i = 0` ⇒ the condition `p^i ≤ 0 + (n-m)%p^i = (n-m)%p^i < p^i` is impossible. The subset argument was numerically validated at 3 cases including 2 tight cases (n=16/m=8/p=2 and n=8/m=2/p=2 both have filter = Ico exactly).",
@@ -122,6 +124,7 @@
       "No `Nat.lcm_range` simp lemma giving `lcm({1,…,n}) = ⋁_{k≤n} k` form."
     ],
     "nextSteps": [
+      "S23 ACT (LOW risk, ~40 LOC = 15 helper + 25 main): mul_choose_dvd_lcmRange via private helper prod_pow_factorization_mul_choose (anchored on bearer 17 Nat.factorization_prod_pow_eq_self + bearer 18 Nat.support_factorization + bearer 19 Nat.factorization_eq_zero_of_lt) followed by S15 clone with C(n,k) → m * C(n,m) and Nat.pow_factorization_choose_le → pow_factorization_mul_choose_le (S20 bearer, already in file at lines 928-968). Skeleton in state.md S22 head. 0 sorries target. 0 new imports needed. Docker-verify expected 3058 jobs clean.",
       "S21 ACT (LOW risk, ~30-40 LOC): `mul_choose_dvd_lcmRange` (S17b Path α follow-up). Mechanical clone of S15 framework with S20's `pow_factorization_mul_choose_le` as black-box bearer. Path α closes Mod the build verification of S20+S21. Pre-flight: G9 lake repair (shared-state); G7+G8 GREEN. Mathlib pin unchanged.",
       "S22+ vdP §6 application using S20 `pow_factorization_mul_choose_le` + S21 `mul_choose_dvd_lcmRange`. ~80-150 LOC across multiple sessions, MED risk. Long-tail. After S21 merges.",
       "INFRA: G9 lake self-loop repair in main repo (`/Users/rwalters/GitHub/lean-genius/proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` is a self-referential symlink). Blocks ALL Docker build verification across all worktrees that share the main-repo cache. Cross-agent consensus required; out of scope per individual research PR. Repair: `rm proofs/.lake && lake update` in main repo.",
@@ -188,7 +191,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-31T11:30:00.000Z",
+  "lastUpdate": "2026-06-10T04:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
