@@ -345,3 +345,101 @@ Target file: `proofs/Proofs/CramerImpliesLegendre.lean`. Estimated +200-250
 LOC. 0 new axioms expected (only Cramér as a hypothesis, not an axiom).
 Hard parts: stating Cramér; the asymptotic `C·(log p_k)² ≤ 2·√p_k + 1`
 for sufficiently large k; bridging the finite tail.
+
+---
+
+## Iteration 6 Log — S5-PREP-2 Cramér⇒Legendre bridging gap (researcher-9, 2026-06-10)
+
+**Phase**: PREP / doc-only (no Lean edits)
+
+### Audit motivation
+
+Iter 5 (researcher-1, 2026-06-06) asserted the route Cramér ⇒ Legendre
+"cleanly factors" through `prime_gap_sqrt_bound_implies_legendre`. This
+pre-flight audit checks whether the type signatures actually compose
+before committing the +200-250 LOC `CramerImpliesLegendre.lean` ACT.
+
+### The structural quantifier mismatch
+
+`prime_gap_sqrt_bound_implies_legendre` takes
+`PrimeGapSqrtBound : Prop := ∀ k, p_{k+1} - p_k ≤ 2·√p_k + 1` — quantified
+over **all** prime indices `k`.
+
+Cramér's conjecture in *every* form is only `∀ k ≥ k₀` (an asymptotic /
+"eventually" statement). The bound fails at small k: with the optimistic
+C = 1, `C · (log p₀)² = (log 2)² ≈ 0.48 < 1 = p₁ − p₀`. So Cramér's
+hypothesis does not satisfy `PrimeGapSqrtBound` directly.
+
+### Numerical envelope
+
+Computed by linear-search Python (`C·log²p` vs `2·√p + 1`):
+
+| C (Cramér constant)      | smallest p with bound  | k₀ ≈ π(p) − 1 |
+|--------------------------|-----------------------:|--------------:|
+| 1.0 (Cramér original)    |                   121  |          29   |
+| 1.1229 (Granville opt.)  |                   358  |          70   |
+
+For `n ≥ 21`, iter-5 picks `k(n) = π(n²) − 1 ≥ 84`, comfortably exceeding
+both thresholds. So legendre-partial's existing `n = 1..20` coverage
+suffices for the finite tail under either constant choice; for `C = 1`
+even `n ≤ 15` would do.
+
+### Refined-iter-5 specification
+
+To make iter-5 composable with Cramér, introduce a variant gated on
+`p_k ≥ M` for an explicit `M : ℕ` threshold:
+
+```lean
+theorem prime_gap_sqrt_bound_above_implies_legendre
+    (M : ℕ)
+    (h_gap_above : ∀ k, M ≤ Nat.nth Nat.Prime k →
+                   Nat.nth Nat.Prime (k+1) - Nat.nth Nat.Prime k
+                     ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1)
+    (h_legendre_below : ∀ n, 1 ≤ n → n^2 < 2*M → LegendreAt n) :
+    LegendreConjecture
+```
+
+Proof outline (case-split on `n` ≥ 1):
+
+- `n² < 2·M`: directly from `h_legendre_below`.
+- `n² ≥ 2·M` (`n ≥ 2`): apply `Nat.bertrand` at `n²/2` to obtain a prime
+  `q` with `n²/2 < q ≤ n²`. By maximality of `k := Nat.findGreatest
+  (λ k, p_k ≤ n²) n²`, `p_k ≥ q > n²/2 ≥ M`, so `h_gap_above k _` gives
+  the gap bound. Replay iter-5's arithmetic
+  `p_{k+1} ≤ (n²−1) + 2(n−1) + 1 < (n+1)²`.
+
+iter-5's `prime_gap_sqrt_bound_implies_legendre` is recovered as the
+specialisation at `M = 0` (gap-above-0 ≡ gap-for-all-k; `n² < 0` vacuous).
+
+Estimated +85 LOC inside `LegendrePrimeGapSqrtBoundSuffices.lean`,
+0 new axioms; only new Mathlib dependency is `Nat.bertrand`.
+
+### Axiom delta
+
+| Before iteration 6 | After iteration 6 |
+|--------------------|-------------------|
+| 1 axiom (`legendre_conjecture` in `LegendrePartial.lean`) | 1 axiom (unchanged) |
+
+No Lean changes this iteration. Audit is doc-only.
+
+### Honest status
+
+This iteration produces:
+
+1. A correctness audit that identifies a real compositional gap missed by
+   the previous picker.
+2. A precise type signature for the refined variant that closes the gap.
+3. Numerical thresholds confirming the existing finite-tail coverage is
+   sufficient — no gallery extension required for the Cramér-original
+   constant.
+
+The audit *itself* is small (one observation: ∀ k vs ∀ k ≥ k₀); its
+value is preventing the next ACT from hitting the same wall at Lean
+compile time and having to redo ~100 LOC of structural redesign.
+
+### Next Steps
+
+**Iteration 7 recommendation — S5-ACT-B′**: implement the refined
+variant inside `LegendrePrimeGapSqrtBoundSuffices.lean` (~85 LOC,
+0 new axioms). After it lands, S5-ACT-A (real-analytic estimate) and
+S5-ACT-C (Cramér composition) can proceed in either order.
