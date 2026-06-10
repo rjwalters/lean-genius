@@ -99,11 +99,19 @@
       "mathContext": "Variance is the diagonal of the covariance bilinear form: Var(f) = Cov(f, f)."
     },
     {
-      "id": "variance-of-sum",
-      "title": "Variance of a sum (pair-sum form)",
+      "id": "variance-pair-sum",
+      "title": "Pair-case variance of a sum",
       "startLine": 96,
+      "endLine": 108,
+      "summary": "variance_add: Var(f + g) = Var f + Var g + 2·Cov(f, g). Smallest case of the headline pair-sum form, derived by routing through covariance and using the symmetric-bilinear API — no Finset sum is unfolded directly. Demonstrates that the bilinearity lemmas (covariance_add_left, covariance_add_right, covariance_symm) form a complete toolkit for variance arithmetic.",
+      "mathContext": "Var(f + g) = Var(f) + Var(g) + 2·Cov(f, g); the cross term 2·Cov(f, g) is the algebraic obstruction to additivity of variance for dependent variables."
+    },
+    {
+      "id": "variance-indexed-sum",
+      "title": "Headline identity: indexed-sum variance",
+      "startLine": 109,
       "endLine": 153,
-      "summary": "variance_add (pair case), covariance_sum_left/right (extended to Finset-indexed sums by induction), and the headline variance_sum_eq_sum_covariance. The pair-sum form collapses the variance of an arbitrary finite sum into a single Cov-sum over the product Finset t ×ˢ t.",
+      "summary": "covariance_sum_left/right extend bilinearity from the pair case to Finset-indexed sums by Finset induction (empty case via Finset.sum_const_zero, insert case via covariance_add_left + IH). The headline variance_sum_eq_sum_covariance composes self-equality + sum_left + Finset.sum_product + sum_right to collapse the variance of an arbitrary finite sum into a single Cov-sum over the product Finset t ×ˢ t.",
       "mathContext": "Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) — the bilinear pair-sum form, suitable for diagonal / off-diagonal decomposition by the application."
     }
   ],
