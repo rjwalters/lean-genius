@@ -106,5 +106,61 @@
       "summary": "variance_add (pair case), covariance_sum_left/right (extended to Finset-indexed sums by induction), and the headline variance_sum_eq_sum_covariance. The pair-sum form collapses the variance of an arbitrary finite sum into a single Cov-sum over the product Finset t ×ˢ t.",
       "mathContext": "Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) — the bilinear pair-sum form, suitable for diagonal / off-diagonal decomposition by the application."
     }
+  ],
+  "conclusion": {
+    "summary": "A complete, axiom-free Lean 4 formalization of the generic variance-of-sum decomposition in the discrete Finset-ℚ setting consistent with the parent file `ProbMethodSecondMoment.lean`. Three definitions (mean, variance, covariance), six API lemmas exhibiting Cov as a symmetric bilinear form and Mean as additive, the pair variance identity Var(f+g) = Var f + Var g + 2 Cov(f,g), the Finset-induction extension to Cov(∑, ·) and Cov(·, ∑), and the headline pair-sum form Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j). 9 theorems, 3 definitions, 153 lines, 0 sorries, 0 axioms — verified against Mathlib 4.26.0.",
+    "implications": "Provides the §A algebraic backbone for the parent second-moment method: any second-moment threshold argument — Chebyshev tail bound, Paley-Zygmund existence bound, or the parent's second_moment_existence — instantiated on a sum of indicators reduces to bounding the pair-covariance sum produced by this file's headline identity. In random-graph applications (Erdős-Rényi G(n,p) subgraph counts, clique thresholds, Hamilton cycle thresholds), the diagonal/off-diagonal split of t ×ˢ t recovers the textbook ∑ Var + ∑_{i≠j} Cov form and isolates the off-diagonal correlations that determine whether the second-moment method succeeds (Var = o((E[X])²)). The result composes directly with `prob-method-second-moment` (Chebyshev, Paley-Zygmund, second_moment_existence) and `prob-method-second-moment-oq-01` (quantitative Paley-Zygmund) — the OQ-02 program ships §A here and defers the G(n,p) construction plus explicit threshold functions to follow-ups (§B, §C).",
+    "openQuestions": [
+      "§B follow-up: rewrite the pair-sum form Var(∑) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) into the textbook ∑_{i ∈ t} Var(X i) + ∑_{i ≠ j} Cov(X i, X j) via `Finset.diag_union_offDiag`.",
+      "§C follow-up: specialize to the indicator case Xᵢ ∈ {0,1} to derive Var(Xᵢ) = E[Xᵢ] · (1 − E[Xᵢ]) and the second-moment-method threshold E[X²]/(E[X])² → 1.",
+      "G(n,p) follow-up: construct the explicit edge-indicator family on the Erdős-Rényi probability space and instantiate the pair-sum form to recover the subgraph-count threshold functions p(n) = n^{-1/m(H)} for arbitrary fixed H.",
+      "Can the entire OQ-02 program be lifted to the measure-theoretic `MeasureTheory.Lp` setting in Mathlib, or is the discrete Finset-ℚ formulation the right long-run home for the gallery's probabilistic-method work?",
+      "Can the bilinear/symmetric Cov API (and the pair-sum form) be contributed upstream to Mathlib's `Mathlib.Probability.Variance`, generalized to suitable measure spaces, where it would replace ad-hoc per-application variance computations?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "extends",
+      "description": "Parent of the OQ-02 program. This file (§A) supplies the generic Var(∑) = ∑ Cov pair-sum identity that any application of the parent's Chebyshev, Paley-Zygmund, or second_moment_existence theorems to a sum of indicators ultimately reduces to. Reuses the parent's discrete Finset-ℚ setting and `ProbMethod.SecondMoment` namespace."
+    },
+    {
+      "targetId": "prob-method-second-moment-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ-01 ships the quantitative Paley-Zygmund threshold; this OQ-02 §A piece supplies the variance computation that feeds Paley-Zygmund. Together they cover the second-moment-method backbone needed for random-graph threshold arguments."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "Linearity of expectation (mean_add here) is the foundational first-moment identity. The probabilistic method's expectation phase establishes E[X] > 0; the second-moment phase formalized here bounds Var(X) to conclude X > 0 with positive probability."
+    },
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "feeds",
+      "description": "Applications of the probabilistic method — Ramsey lower bounds, tournament constructions, random-graph thresholds — instantiate the pair-sum form with explicit indicator families and decompose t ×ˢ t into diagonal (variance) and off-diagonal (correlation) terms."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Alon, Noga", "Spencer, Joel H."],
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition, §4 (The Second Moment)",
+      "note": "Canonical reference for the second-moment-method applications that the pair-sum identity enables: subgraph counts in G(n,p), clique thresholds, distinct sums, and combinatorial existence proofs via variance bounds."
+    },
+    {
+      "authors": ["Erdős, Paul", "Rényi, Alfréd"],
+      "title": "On the evolution of random graphs",
+      "year": "1960",
+      "venue": "Publications of the Mathematical Institute of the Hungarian Academy of Sciences 5, pp. 17-61",
+      "note": "Founding paper of random-graph theory. The threshold functions for subgraph containment in G(n,p) are derived by exactly the second-moment computation that the pair-sum form streamlines."
+    },
+    {
+      "authors": ["Chebyshev, Pafnuty"],
+      "title": "Des valeurs moyennes",
+      "year": "1867",
+      "venue": "Journal de Mathématiques Pures et Appliquées 12, pp. 177-184",
+      "note": "Introduces what is now Chebyshev's inequality. The bilinear additivity of variance — formalized here as variance_add and its Finset-indexed generalization — was implicit in this work and made fully explicit in the 20th-century framing of variance as a quadratic form."
+    }
   ]
 }

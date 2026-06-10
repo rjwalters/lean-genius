@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ann-oq02-header",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "Discrete Finset-ℚ Setting and OQ-02 Scope",
+    "content": "The file header motivates the bilinear pair-sum form Var(∑ X i) = ∑_{(i,j)} Cov(X i, X j) as the algebraic backbone of any second-moment threshold argument and explains the design choice to stay in the parent file's discrete Finset-ℚ setting. The 'sample space' is a `Finset s`, a 'random variable' is a function `f : α → ℚ`, and expectations are arithmetic averages — `s.sum f / s.card`. This avoids importing `MeasureTheory` while preserving the exact form of every identity used downstream. The `import Mathlib` line brings the full library; `import Proofs.ProbMethodSecondMoment` reuses the parent's namespace and is the canonical entry point for the OQ-02 §A piece.",
+    "mathContext": "Working setting: the sample space is $(s, \\text{counting})$ with $s : \\text{Finset } \\alpha$, random variables are $f : \\alpha \\to \\mathbb{Q}$, and $\\mathbb{E}[f] = \\frac{1}{|s|} \\sum_{a \\in s} f(a)$. No $\\sigma$-algebra; no Lebesgue integration; all identities are pure Finset arithmetic.",
+    "significance": "context",
+    "relatedConcepts": [
+      "discrete probability space",
+      "counting measure",
+      "second moment method",
+      "Erdős-Rényi random graph thresholds"
+    ],
+    "prerequisites": [
+      "Finset",
+      "rational arithmetic",
+      "second moment method (parent: prob-method-second-moment)"
+    ]
+  },
+  {
+    "id": "ann-oq02-definitions",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Mean, Variance, Covariance",
+    "content": "Three definitions in the counting-measure setting. `mean s f := s.sum f / s.card` is the arithmetic average over `s`. `variance s f := mean s (fun a => (f a - mean s f)^2)` is the mean of the squared deviation from the mean — the standard textbook form, but here expressed via Finset sums rather than integrals. `covariance s f g := mean s (fun a => (f a - mean s f) * (g a - mean s g))` is the bilinear analogue. Note: division by zero is silently handled — when `s.card = 0`, every quantity reduces to `0 / 0 = 0` in ℚ, so all identities downstream still hold without an emptiness hypothesis. This is a feature of working in ℚ rather than dragging through `s.Nonempty` everywhere.",
+    "mathContext": "$\\overline{f} := \\frac{1}{|s|} \\sum_{a \\in s} f(a)$, $\\operatorname{Var}_s(f) := \\frac{1}{|s|} \\sum_{a \\in s} (f(a) - \\overline{f})^2$, $\\operatorname{Cov}_s(f, g) := \\frac{1}{|s|} \\sum_{a \\in s} (f(a) - \\overline{f})(g(a) - \\overline{g})$. All three are well-defined as ℚ-valued expressions; the convention $0/0 = 0$ in Lean keeps statements clean at empty `s`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic mean",
+      "squared deviation",
+      "bilinear form",
+      "rational arithmetic convention"
+    ],
+    "prerequisites": [
+      "Finset.sum",
+      "Finset.card",
+      "rational division"
+    ]
+  },
+  {
+    "id": "ann-oq02-variance-self",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Variance Is the Diagonal of Covariance",
+    "content": "`variance_eq_covariance_self : variance s f = covariance s f f` is proved by `simp only [variance, covariance, sq]` — unfolding the definitions and rewriting `x^2 = x * x` makes the two expressions syntactically identical. This one-line lemma is load-bearing: every subsequent variance identity is derived by reducing to a covariance identity and applying bilinearity. Conceptually, this re-expresses variance not as an ad-hoc second-order quantity but as the diagonal of the symmetric bilinear form Cov on functions α → ℚ.",
+    "mathContext": "$\\operatorname{Var}(f) = \\operatorname{Cov}(f, f)$ — variance is the diagonal entry of the covariance bilinear form. Equivalently, $(f - \\overline{f})^2 = (f - \\overline{f}) \\cdot (f - \\overline{f})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bilinear form",
+      "quadratic form",
+      "polarization identity",
+      "inner product on function space"
+    ],
+    "prerequisites": [
+      "square equals self-product (sq)",
+      "definition unfolding"
+    ]
+  },
+  {
+    "id": "ann-oq02-covariance-symm",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 73
+    },
+    "type": "technique",
+    "title": "Covariance Symmetry by Pointwise `ring`",
+    "content": "`covariance_symm : covariance s f g = covariance s g f` is proved by reducing to a pointwise identity inside the Finset sum: `Finset.sum_congr rfl (fun a _ => by ring)` does the heavy lifting. The `ring` tactic handles the trivial pointwise equation `(f a - mean s f) * (g a - mean s g) = (g a - mean s g) * (f a - mean s f)`. The `congr 1` step strips off the division by `s.card` and reduces to an equality of sums, which `Finset.sum_congr rfl` then reduces to pointwise equality. This three-line pattern recurs throughout the file: unfold, congr off the denominator, sum_congr to pointwise, ring.",
+    "mathContext": "$\\operatorname{Cov}(f, g) = \\operatorname{Cov}(g, f)$ because the integrand $(f - \\overline{f})(g - \\overline{g})$ is symmetric under swapping $f \\leftrightarrow g$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "symmetric bilinear form",
+      "Finset.sum_congr",
+      "pointwise ring reasoning"
+    ],
+    "prerequisites": [
+      "Finset.sum_congr",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-oq02-mean-add",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 75,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "Mean Is Additive (Linearity of Expectation)",
+    "content": "`mean_add : mean s (f + g) = mean s f + mean s g` is the linearity-of-expectation lemma in the discrete setting. The proof is essentially one rewrite chain: `Finset.sum_add_distrib` splits the sum, then `add_div` distributes the denominator. In Mathlib's measure-theoretic library this is `integral_add` and requires integrability hypotheses; in the Finset setting it is a one-liner with no hypotheses because every Finset sum is automatically finite.",
+    "mathContext": "$\\mathbb{E}[f + g] = \\mathbb{E}[f] + \\mathbb{E}[g]$. In Finset form: $\\frac{1}{|s|} \\sum_a (f(a) + g(a)) = \\frac{1}{|s|} \\sum_a f(a) + \\frac{1}{|s|} \\sum_a g(a)$, which holds by `Finset.sum_add_distrib` and `add_div`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linearity of expectation",
+      "Finset.sum_add_distrib",
+      "additivity"
+    ],
+    "prerequisites": [
+      "Finset.sum_add_distrib",
+      "add_div"
+    ]
+  },
+  {
+    "id": "ann-oq02-covariance-add-left",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 80,
+      "endLine": 94
+    },
+    "type": "technique",
+    "title": "Bilinearity: Additivity in Each Slot",
+    "content": "`covariance_add_left : Cov(f₁ + f₂, g) = Cov(f₁, g) + Cov(f₂, g)` establishes additivity in the first slot of covariance. The proof unfolds, uses `mean_add` to split the inner mean, then merges the two outer sums (`← Finset.sum_add_distrib`) and one denominator (`← add_div`), reducing to the pointwise distributive identity proved by `ring`. The second slot lemma `covariance_add_right` is one rewrite chain away — it routes through `covariance_symm` on both sides. Together with `mean_add`, these two lemmas exhibit Cov as a bilinear form: a symmetric function α → ℚ × α → ℚ → ℚ that is additive in each argument with the other fixed.",
+    "mathContext": "$\\operatorname{Cov}(f_1 + f_2, g) = \\operatorname{Cov}(f_1, g) + \\operatorname{Cov}(f_2, g)$, and by symmetry $\\operatorname{Cov}(f, g_1 + g_2) = \\operatorname{Cov}(f, g_1) + \\operatorname{Cov}(f, g_2)$. The bilinear-form characterization is: Cov is the unique symmetric bilinear form on $\\{f : \\alpha \\to \\mathbb{Q}\\}/\\text{constants}$ whose diagonal is Var.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bilinear form",
+      "additivity",
+      "symmetric bilinear form"
+    ],
+    "prerequisites": [
+      "mean_add",
+      "Finset.sum_add_distrib",
+      "add_div",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-oq02-variance-add",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 98,
+      "endLine": 107
+    },
+    "type": "concept",
+    "title": "Pair Variance: Var(f+g) = Var f + Var g + 2 Cov(f,g)",
+    "content": "`variance_add` is the textbook pair-case of the variance-of-sum identity. The proof is purely algebraic: apply `variance_eq_covariance_self` three times (LHS once, RHS twice), then use `covariance_add_left` followed by two applications of `covariance_add_right` to expand `Cov(f+g, f+g)` into four terms, use `covariance_symm` to identify the cross terms, and close with `ring`. The factor of 2 is exactly the count of cross terms after expanding the bilinear product. This identity generalizes the elementary $(a+b)^2 = a^2 + b^2 + 2ab$ to functions modulo their means.",
+    "mathContext": "$\\operatorname{Var}(f + g) = \\operatorname{Var}(f) + \\operatorname{Var}(g) + 2 \\operatorname{Cov}(f, g)$. Specializing to independent $f, g$ (where $\\operatorname{Cov}(f, g) = 0$): $\\operatorname{Var}(f + g) = \\operatorname{Var}(f) + \\operatorname{Var}(g)$ — the additivity of variance for independent random variables.",
+    "significance": "key",
+    "relatedConcepts": [
+      "polarization identity",
+      "independence",
+      "additivity of variance",
+      "cross term"
+    ],
+    "prerequisites": [
+      "variance_eq_covariance_self",
+      "covariance_add_left",
+      "covariance_add_right",
+      "covariance_symm"
+    ]
+  },
+  {
+    "id": "ann-oq02-covariance-sum-left",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 109,
+      "endLine": 129
+    },
+    "type": "technique",
+    "title": "Bilinearity over Finset-Indexed Sums (Induction)",
+    "content": "`covariance_sum_left` extends bilinearity from pair sums to arbitrary Finset-indexed sums by `Finset.induction_on`. **Empty case**: when `t = ∅`, the indexed sum is the constant-zero function; covariance with the zero function vanishes, and the RHS empty sum is zero. The `simp only [covariance, mean, Finset.sum_const_zero, zero_div, sub_zero, zero_mul]` chain closes it. **Insert case**: when `t = insert i t'`, `Finset.sum_insert hi` splits the inner sum into `X i a + ∑_{j ∈ t'} X j a`, which is a pair sum — `covariance_add_left` peels off `X i`, and the induction hypothesis closes the rest. The `[DecidableEq ι]` instance is needed for `insert` to be well-defined; ℚ-valued targets avoid additive-group hypotheses. The right-slot version `covariance_sum_right` is one application of `covariance_symm` away.",
+    "mathContext": "$\\operatorname{Cov}\\!\\left(\\sum_{i \\in t} X_i,\\, g\\right) = \\sum_{i \\in t} \\operatorname{Cov}(X_i, g)$. The Finset-induction template: $P(\\emptyset)$ (base) + $P(t) \\Rightarrow P(\\text{insert}~i~t)$ for $i \\notin t$ (step). Each step reduces to a pair-sum decomposition via `Finset.sum_insert`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset induction",
+      "Finset.sum_insert",
+      "extension of bilinearity",
+      "constant-zero function"
+    ],
+    "prerequisites": [
+      "Finset.induction_on",
+      "Finset.sum_insert",
+      "Finset.sum_const_zero",
+      "covariance_add_left"
+    ]
+  },
+  {
+    "id": "ann-oq02-headline",
+    "proofId": "prob-method-second-moment-oq-02",
+    "range": {
+      "startLine": 139,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "Headline: Var(∑) as a Pair-Sum of Covariances",
+    "content": "The headline identity `variance_sum_eq_sum_covariance` collapses Var(∑_{i ∈ t} X i) into a single Cov-sum indexed by the product Finset `t ×ˢ t`. The proof is a four-rewrite chain: (1) `variance_eq_covariance_self` recasts Var as Cov(∑, ∑); (2) `covariance_sum_left` extracts the outer sum; (3) `Finset.sum_product` rewrites the nested-sum form into a single sum over the product Finset; (4) the inner `Finset.sum_congr` + `covariance_sum_right` extracts the inner sum into the pair. This pair-sum form is the cleanest for applications — the user can split `t ×ˢ t = t.diag ∪ t.offDiag` to recover the textbook decomposition Var(∑) = ∑ Var + ∑_{i≠j} Cov, or apply specific bounds on diagonal/off-diagonal terms (e.g. independence ⇒ off-diagonal vanishes; Erdős-Rényi indicator pairs ⇒ off-diagonal Cov computable explicitly).",
+    "mathContext": "$\\operatorname{Var}\\!\\left(\\sum_{i \\in t} X_i\\right) = \\sum_{(i,j) \\in t \\times t} \\operatorname{Cov}(X_i, X_j)$. The diagonal/off-diagonal split: $\\sum_{(i,j) \\in t \\times t} \\operatorname{Cov}(X_i, X_j) = \\sum_{i \\in t} \\operatorname{Var}(X_i) + \\sum_{i \\ne j} \\operatorname{Cov}(X_i, X_j)$, recovering the textbook form.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sum_product",
+      "diagonal/off-diagonal decomposition",
+      "second moment method",
+      "subgraph counts in G(n,p)"
+    ],
+    "prerequisites": [
+      "variance_eq_covariance_self",
+      "covariance_sum_left",
+      "covariance_sum_right",
+      "Finset.sum_product"
+    ]
+  }
+]
