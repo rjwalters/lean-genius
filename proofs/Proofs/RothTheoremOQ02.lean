@@ -1,6 +1,8 @@
 import Mathlib.Combinatorics.Additive.Corner.Roth
 import Mathlib.Combinatorics.Additive.AP.Three.Behrend
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-!
 # Roth's Theorem — Bloom–Sisask Logarithmic Bound (OQ-02, S2 ACT-A)
@@ -220,6 +222,116 @@ theorem rothNumberNat_le_min_blasi_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
           ((N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12))) :=
   le_min (rothNumberNat_le_blasi N hN) (rothNumberNat_le_kelley_meka N hN)
 
+/-! ## S5-a: Conditional analytic envelope (Kelley–Meka vs Behrend)
+
+The transitivity proof `kelley_meka_consistent_with_Behrend` shows the
+two endpoints are compatible by routing through `rothNumberNat N`. That
+proof is correct but *analytically vacuous*: it uses the upper bound to
+upper-bound the lower bound. The transitive `≤` would hold for *any*
+positive constant `kelleyMekaConst`, even ones that would make K-M
+asymptotically *weaker* than Behrend.
+
+The conditional version below records the genuine *analytic content*:
+**assuming** the K-M constant is bounded by `4 * (Real.log 3)^(5/12)`
+(numerically `≈ 4.165`), the K-M upper bound is analytically tighter
+than the Behrend lower bound — independent of `rothNumberNat`.
+
+This conditional theorem is *not unconditional* because the K-M axiom
+asserts only `∃ c > 0, ...` without a quantitative bound on `c`, so
+`Exists.choose` extracts an unconstrained witness. A future
+strengthening of the axiom to `∃ c ≤ K, ...` for explicit `K` would
+make the analytic envelope unconditional; see PR #18509 §"S5-b" for
+the discussion.
+
+The proof uses only Mathlib `Real.log`/`Real.rpow`/`Real.sqrt` API plus
+the `Real.exp_one_lt_d9` numerical bound. -/
+
+/-- **The analytic envelope of the Kelley–Meka 2023 upper bound vs the
+Behrend 1946 lower bound on `rothNumberNat`** as a bare `Prop`-valued
+function.
+
+For each `N`, the proposition asserts: if `N ≥ 3` then the Behrend
+lower-bound function value is dominated by the Kelley–Meka upper-bound
+function value, i.e.
+
+  `N · exp(-4 · √(log N)) ≤ N · exp(-kelleyMekaConst · (log N)^(1/12))`.
+
+This bare definition records the analytic envelope as a target without
+asserting it; the conditional discharge follows in
+`analytic_envelope_conditional`. The unconditional version is *not
+provable* from the present axioms (see the S5-a docstring above). -/
+def analytic_envelope_kelley_meka (N : ℕ) : Prop :=
+  3 ≤ N →
+    (N : ℝ) * Real.exp (-4 * Real.sqrt (Real.log N)) ≤
+      (N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12))
+
+/-- **Conditional analytic envelope: Kelley–Meka dominates Behrend.**
+
+Assuming the Kelley–Meka constant satisfies `kelleyMekaConst ≤
+4 * (Real.log 3)^(5/12)` (numerically `≈ 4.165`), the negated exponents
+inside the Behrend / Kelley–Meka envelope satisfy
+
+  `-(4 : ℝ) * √(log N) ≤ -kelleyMekaConst * (log N)^(1/12)`
+
+for every `N ≥ 3`. Multiplying by `-1` and exponentiating (which both
+preserve order) recovers the full envelope
+`N · exp(-4 √(log N)) ≤ N · exp(-kelleyMekaConst · (log N)^(1/12))`.
+
+The proof is verbatim composition of `Real.log_pos`,
+`Real.exp_one_lt_d9`, `Real.log_lt_log_iff`, `Real.log_exp`,
+`Real.log_le_log`, `Real.rpow_le_rpow`, `Real.rpow_nonneg`,
+`Real.rpow_add`, and `Real.sqrt_eq_rpow`, closed by `linarith`. -/
+theorem analytic_envelope_conditional (N : ℕ) (hN : 3 ≤ N)
+    (hKM_bound : kelleyMekaConst ≤ 4 * (Real.log 3 : ℝ) ^ ((5 : ℝ) / 12)) :
+    -(4 : ℝ) * Real.sqrt (Real.log N) ≤
+      -kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12) := by
+  -- §3: 1 ≤ Real.log N for N ≥ 3
+  have h_log3_pos : (0 : ℝ) < Real.log 3 := Real.log_pos (by norm_num)
+  have h_e_lt_3 : Real.exp 1 < 3 :=
+    Real.exp_one_lt_d9.trans (by norm_num : (2.7182818286 : ℝ) < 3)
+  have h_one_lt_log3 : (1 : ℝ) < Real.log 3 := by
+    have h := (Real.log_lt_log_iff (Real.exp_pos 1)
+                (by norm_num : (0 : ℝ) < 3)).mpr h_e_lt_3
+    rwa [Real.log_exp] at h
+  have h_log3_le_logN : Real.log 3 ≤ Real.log N :=
+    Real.log_le_log (by norm_num : (0 : ℝ) < 3) (by exact_mod_cast hN)
+  have h_one_le_logN : (1 : ℝ) ≤ Real.log N :=
+    le_of_lt (lt_of_lt_of_le h_one_lt_log3 h_log3_le_logN)
+  have h_logN_pos : (0 : ℝ) < Real.log N :=
+    lt_of_lt_of_le zero_lt_one h_one_le_logN
+  -- §4 step 1: (log 3)^(5/12) ≤ (log N)^(5/12)
+  have h_rpow_5_12_mono : (Real.log 3 : ℝ) ^ ((5 : ℝ) / 12) ≤
+      Real.log N ^ ((5 : ℝ) / 12) :=
+    Real.rpow_le_rpow (le_of_lt h_log3_pos) h_log3_le_logN
+      (by norm_num : (0 : ℝ) ≤ 5 / 12)
+  -- §4 step 2: kelleyMekaConst ≤ 4 * (log N)^(5/12)
+  have h_kmConst_le_4_rpow_5_12 : kelleyMekaConst ≤
+      4 * Real.log N ^ ((5 : ℝ) / 12) :=
+    le_trans hKM_bound (mul_le_mul_of_nonneg_left h_rpow_5_12_mono
+                          (by norm_num : (0 : ℝ) ≤ 4))
+  -- §4 step 3-7
+  have h_rpow_1_12_nonneg : (0 : ℝ) ≤ Real.log N ^ ((1 : ℝ) / 12) :=
+    Real.rpow_nonneg (le_of_lt h_logN_pos) _
+  have h_kmConst_mul_rpow_1_12 :
+      kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12) ≤
+        (4 * Real.log N ^ ((5 : ℝ) / 12)) * Real.log N ^ ((1 : ℝ) / 12) :=
+    mul_le_mul_of_nonneg_right h_kmConst_le_4_rpow_5_12 h_rpow_1_12_nonneg
+  have h_exp_eq : ((5 : ℝ) / 12 + (1 : ℝ) / 12) = (1 : ℝ) / 2 := by norm_num
+  have h_rpow_combine :
+      (4 * Real.log N ^ ((5 : ℝ) / 12)) * Real.log N ^ ((1 : ℝ) / 12) =
+        4 * Real.log N ^ ((1 : ℝ) / 2) := by
+    rw [mul_assoc, ← Real.rpow_add h_logN_pos, h_exp_eq]
+  have h_sqrt_rpow : Real.sqrt (Real.log N) = Real.log N ^ ((1 : ℝ) / 2) :=
+    Real.sqrt_eq_rpow _
+  have h_pre_neg : kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12) ≤
+      4 * Real.sqrt (Real.log N) := by
+    rw [h_sqrt_rpow]
+    calc kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12)
+        ≤ (4 * Real.log N ^ ((5 : ℝ) / 12)) * Real.log N ^ ((1 : ℝ) / 12) :=
+          h_kmConst_mul_rpow_1_12
+      _ = 4 * Real.log N ^ ((1 : ℝ) / 2) := h_rpow_combine
+  linarith
+
 #check rothNumberNat_bloom_sisask
 #check blasiConst
 #check blasiConst_pos
@@ -232,5 +344,7 @@ theorem rothNumberNat_le_min_blasi_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
 #check rothNumberNat_le_kelley_meka
 #check kelley_meka_consistent_with_Behrend
 #check rothNumberNat_le_min_blasi_kelley_meka
+#check analytic_envelope_kelley_meka
+#check analytic_envelope_conditional
 
 end RothTheoremOQ02
