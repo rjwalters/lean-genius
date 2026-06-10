@@ -66,7 +66,7 @@ to the auditor/mechanic pipeline.
 -/
 
 import Mathlib.Analysis.SpecialFunctions.Complex.Circle
-import Mathlib.Topology.Instances.AddCircle
+import Mathlib.Topology.Instances.AddCircle.Defs
 import Mathlib.Tactic
 
 open Real
@@ -138,11 +138,16 @@ noncomputable def addCircleEquivAdditiveCircle :
   right_inv y := by
     -- Goal: Additive.ofMul (AddCircle.toCircle
     --         (AddCircle.homeomorphCircle'.symm (Additive.toMul y))) = y
-    -- Same bridge, then `apply_symm_apply`, then `Additive.ofMul ∘ toMul = id`.
+    -- Bridge AddCircle.toCircle → Real.Angle.toCircle; `change` to recognize
+    -- the latter as `homeomorphCircle'` (definitional via `@[simps]` `toFun`);
+    -- then `apply_symm_apply`, and `rfl` for the `Additive.ofMul ∘ toMul = id`
+    -- round-trip on the type alias.
     show Additive.ofMul (AddCircle.toCircle
             (AddCircle.homeomorphCircle'.symm (Additive.toMul y))) = y
-    rw [addCircle_toCircle_eq_angle_toCircle,
-        AddCircle.homeomorphCircle'.apply_symm_apply]
+    rw [addCircle_toCircle_eq_angle_toCircle]
+    change Additive.ofMul (AddCircle.homeomorphCircle'
+              (AddCircle.homeomorphCircle'.symm (Additive.toMul y))) = y
+    rw [AddCircle.homeomorphCircle'.apply_symm_apply]
     rfl
   map_add' x y := by
     -- Goal: Additive.ofMul (AddCircle.toCircle (x + y)) =
