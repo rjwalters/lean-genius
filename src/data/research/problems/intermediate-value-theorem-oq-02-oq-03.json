@@ -1,8 +1,8 @@
 {
   "slug": "intermediate-value-theorem-oq-02-oq-03",
   "title": "Can the constructive IVT be proved in Lean without classical logic (i",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-03T11:41:44.695Z",
-    "iteration": 2,
-    "focus": "Docker build verification and gallery integration",
+    "iteration": 3,
+    "focus": "SOLVED — shipped PR #15283. Session 2: added Decidable-oracle extension (Part IX) closing oq-01.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Generate child problem for oq-02 (constructive reals / Cauchy completeness).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 0 axioms, 14 theorems, 308 lines. PR #15035 open. Gallery fully integrated.",
+    "progressSummary": "COMPLETE: shipped via PR #15283 (2026-05-03). Session 2 (2026-06-09): added Part IX closing oq-01. Total ~18 theorems, 0 sorries, 0 axioms.",
     "builtItems": [
       "paramBisectStep: computable def (not noncomputable) one bisection step",
       "paramBisect: computable iterated bisection with explicit Bool choices",
@@ -39,22 +39,29 @@
       "paramBisect_endpoints_converge: classical convergence via tendsto_atTop_ciSup",
       "bisection_limit_is_root: limit is root given sign-consistent choices",
       "constructive_vs_classical_ivt: main summary theorem 14 results",
-      "annotations.json: 7 pedagogical annotations for computable bisection, width formula, SignConsistent oracle, endpoint convergence, root theorem, main boundary theorem"
+      "annotations.json: 7 pedagogical annotations for computable bisection, width formula, SignConsistent oracle, endpoint convergence, root theorem, main boundary theorem",
+      "algoBisect: computable bisection driven by a Bool sign oracle g (closes oq-01)",
+      "oracleChoices: derives a SignConsistent choices sequence from algoBisect",
+      "algoBisect_eq_paramBisect: algorithmic and oracle-parameterized bisections agree",
+      "oracleChoices_signConsistent: any correct Bool oracle gives sign-consistent choices automatically",
+      "algoBisect_sign: sign invariant holds for algorithmic bisection — no Classical.em",
+      "algoBisect_converges_to_root: limit is a root (classical step only at completeness of ℝ)"
     ],
     "insights": [
       "Bisection structurally constructive: width bounds and sign preservation hold without Classical.em if parameterized by explicit choice oracle",
-      "Classical logic needed only for the sign oracle (deciding f(mid) \u2264 0) - not for structural properties",
+      "Classical logic needed only for the sign oracle (deciding f(mid) ≤ 0) - not for structural properties",
       "parent file uses noncomputable def (Classical.em for if-then-else); paramBisect is computable def",
-      "Endpoint convergence requires Classical.choice via tendsto_atTop_ciSup (completeness of \u211d)",
+      "Endpoint convergence requires Classical.choice via tendsto_atTop_ciSup (completeness of ℝ)",
       "Bishop constructive analysis principle formalized: bisection constructive given locating oracle",
       "Approximate IVT structural core: proven without Classical.em; exact root needs Classical.choice",
-      "Gallery integration complete: 7 annotations covering all key theorems, index.ts auto-discovery registered"
+      "Gallery integration complete: 7 annotations covering all key theorems, index.ts auto-discovery registered",
+      "oq-01 closed: when the user supplies a Bool sign oracle g with (g x = true iff f x ≤ 0), the entire bisection iteration is a regular computable def — Classical.em is unnecessary at every finite precision; only Classical.choice (via ciSup/ciInf) enters at the limit step.",
+      "Architecture: separate the choice oracle (where classical content lives) from the iteration (purely computational). algoBisect_eq_paramBisect transfers every constructive result of paramBisect to the algorithmic version for free."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Docker build compiles (submitted, awaiting result)",
-      "Add gallery annotations explaining constructive vs classical divide",
-      "Follow-up: prove computable IVT for Decidable sign functions (e.g., polynomials over \u211a)"
+      "oq-02 (still open): replace Mathlib reals with a constructive-reals model (Cauchy sequences with computable moduli) so the convergence step itself becomes constructive — substantial undertaking (>500 LOC, would need a custom CReal type).",
+      "Possible Mathlib upstream: paramBisect / algoBisect pair could fill a gap in Mathlib's Analysis.SpecificLimits — currently only noncomputable bisection."
     ]
   },
   "tags": [

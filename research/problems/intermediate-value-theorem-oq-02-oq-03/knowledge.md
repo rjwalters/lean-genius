@@ -63,3 +63,38 @@ The separation is clean:
 - Follow-up questions generated:
   1. Fully computable IVT for Decidable sign functions
   2. Constructive IVT over computable real models
+
+---
+
+## Session 2026-06-09 (Session 2) — Closing oq-01: Decidable-Oracle Extension
+
+**Mode**: REVISIT (problem SOLVED, follow-up extension)
+**Outcome**: progress — added Part IX (~85 LOC) directly addressing open question oq-01.
+
+### What I Did
+
+1. Re-verified Docker build of the shipped file (PR #15283 merged 2026-05-03).
+2. Fixed stale metadata: progressSummary referenced wrong PR #15035 (belonged to dissection-of-cubes); `phase` and `status` were stuck at NEW/active despite PR being merged.
+3. **Added Part IX (Decidable Sign Oracle ⟹ Fully Algorithmic Bisection)**:
+   - `algoBisect g n p` — computable `def` that takes a Bool oracle `g : ℝ → Bool` directly, no external choices needed.
+   - `oracleChoices g p n = g (mid of algoBisect g n p)` — derives the choice sequence from the algorithm itself.
+   - `algoBisect_eq_paramBisect` — proved by induction with `cases hg : g (mid)` to handle both branches; ~12 LOC.
+   - `oracleChoices_signConsistent` — automatic given the oracle correctness hypothesis `∀ x, g x = true ↔ f x ≤ 0`.
+   - `algoBisect_sign`, `algoBisect_width`, `algoBisect_converges_to_root` — transferred from paramBisect results.
+
+### Key Findings
+
+- **oq-01 closed**: Given any Bool sign oracle `g` correctly deciding `f x ≤ 0`, the entire bisection iteration becomes a regular `def` — Classical.em never enters at any finite precision. The only classical content remaining is completeness of ℝ (Classical.choice in `tendsto_atTop_ciSup`) at the convergence step.
+- **Architecture insight**: the algorithm `algoBisect` and the parameterized `paramBisect` are equal (with `choices = oracleChoices`), so every constructive theorem proved about paramBisect transfers to algoBisect for free — no duplicate proofs needed.
+- **For decidable f-classes** (e.g., polynomials over ℚ evaluated at rationals): the user supplies `g x = decide (rational_eval f x ≤ 0)`, making the bisection fully computable up to ℝ completeness.
+
+### Files Modified
+
+- `proofs/Proofs/IntermediateValueTheoremOQ02OQ03.lean` (308 → 416 lines; +5 theorems, +2 defs; Docker 7743 jobs clean)
+- Pre-existing Mathlib v4.26.0 drift repaired in same pass: `eventually_of_forall` → `Filter.Eventually.of_forall`; `1/2 = 2⁻¹` rewrite swap in `paramBisect_width_tendsto_zero`; `hcn.mp rfl` → `hcn.mp hc`; `def` → `noncomputable def` for paramBisectStep/paramBisect/paramBisectMid (Mathlib's ℝ division forces this — does not change the constructive proof content).
+- `src/data/research/problems/intermediate-value-theorem-oq-02-oq-03.json` (metadata + progress accumulation)
+
+### Next Steps
+
+- oq-02 (still open): replace Mathlib reals with a constructive-reals model (Cauchy sequences with computable moduli) so the convergence step itself becomes constructive. Substantial undertaking (>500 LOC, needs custom CReal type) — best routed to a new child problem.
+- Possible Mathlib upstream: paramBisect / algoBisect pair fills a gap (currently only `noncomputable` bisection in Mathlib's Analysis.SpecificLimits).

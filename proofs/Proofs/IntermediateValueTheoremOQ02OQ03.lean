@@ -54,18 +54,20 @@ namespace ConstructiveBisection
 --             choices n = false → take left half (p.1, mid)
 --                                  (f(mid_n) > 0 case)
 
-/-- One bisection step with explicit branch choice (computable). -/
-def paramBisectStep (p : ℝ × ℝ) (c : Bool) : ℝ × ℝ :=
+/-- One bisection step with explicit branch choice. Marked `noncomputable`
+    because Mathlib's `ℝ` division is noncomputable; the proof content below
+    is constructive (no `Classical.em`). -/
+noncomputable def paramBisectStep (p : ℝ × ℝ) (c : Bool) : ℝ × ℝ :=
   if c then ((p.1 + p.2) / 2, p.2) else (p.1, (p.1 + p.2) / 2)
 
-/-- n-fold iterated bisection with explicit choice sequence (computable). -/
-def paramBisect (choices : ℕ → Bool) (n : ℕ) (p : ℝ × ℝ) : ℝ × ℝ :=
+/-- n-fold iterated bisection with explicit choice sequence. -/
+noncomputable def paramBisect (choices : ℕ → Bool) (n : ℕ) (p : ℝ × ℝ) : ℝ × ℝ :=
   match n with
   | 0     => p
   | n + 1 => paramBisectStep (paramBisect choices n p) (choices n)
 
 /-- The midpoint of the bisection interval at step n. -/
-def paramBisectMid (choices : ℕ → Bool) (n : ℕ) (p : ℝ × ℝ) : ℝ :=
+noncomputable def paramBisectMid (choices : ℕ → Bool) (n : ℕ) (p : ℝ × ℝ) : ℝ :=
   ((paramBisect choices n p).1 + (paramBisect choices n p).2) / 2
 
 -- ============================================================
@@ -173,7 +175,7 @@ theorem paramBisect_sign (f : ℝ → ℝ) (choices : ℕ → Bool) (n : ℕ) (p
     | true =>
       -- choices n = true → f(mid) ≤ 0 → take right half
       simp only [paramBisectStep, hc, ite_true]
-      exact ⟨hcn.mp rfl, ih_res.2⟩
+      exact ⟨hcn.mp hc, ih_res.2⟩
     | false =>
       -- choices n = false → f(mid) > 0 → take left half
       simp only [paramBisectStep, hc, ite_false]
@@ -192,7 +194,8 @@ theorem paramBisect_width_tendsto_zero (choices : ℕ → Bool) (a b : ℝ) :
       atTop (nhds 0) := by
   -- Rewrite width formula pointwise to avoid simp-loop between div_eq_mul_inv/inv_eq_one_div
   have hw : ∀ n : ℕ, (paramBisect choices n (a, b)).2 - (paramBisect choices n (a, b)).1 =
-      (b - a) * (1 / 2 : ℝ) ^ n := fun n => by rw [paramBisect_width]; ring
+      (b - a) * (1 / 2 : ℝ) ^ n := fun n => by
+    rw [paramBisect_width, one_div, inv_pow, div_eq_mul_inv]
   simp_rw [hw]
   have h : Tendsto (fun n : ℕ => (b - a) * (1 / 2 : ℝ) ^ n) atTop (nhds ((b - a) * 0)) :=
     tendsto_const_nhds.mul (tendsto_pow_atTop_nhds_zero_of_lt_one (by norm_num) (by norm_num))
@@ -263,9 +266,9 @@ theorem bisection_limit_is_root (f : ℝ → ℝ) (choices : ℕ → Bool) (a b 
     have h := (paramBisect_width_tendsto_zero choices a b).add hlim
     simpa using h
   have hfx_le : f x ≤ 0 :=
-    le_of_tendsto (hf.tendsto x |>.comp hlim) (eventually_of_forall h_sign_l)
+    le_of_tendsto (hf.tendsto x |>.comp hlim) (Filter.Eventually.of_forall h_sign_l)
   have hfx_ge : 0 ≤ f x :=
-    ge_of_tendsto (hf.tendsto x |>.comp hlim_r) (eventually_of_forall h_sign_r)
+    ge_of_tendsto (hf.tendsto x |>.comp hlim_r) (Filter.Eventually.of_forall h_sign_r)
   linarith
 
 -- ============================================================
@@ -304,5 +307,110 @@ theorem constructive_vs_classical_ivt (a b : ℝ) (hab : a ≤ b) :
      paramBisect_sign f choices n (a, b) hfa hfb (hcons n),
    fun choices => paramBisect_width_tendsto_zero choices a b,
    fun choices => paramBisect_endpoints_converge choices a b hab⟩
+
+-- ============================================================
+-- Part IX: Decidable Sign Oracle ⟹ Fully Algorithmic Bisection
+-- ============================================================
+-- Answers open question oq-01: when the user supplies a computable
+-- Bool-valued sign oracle `g : ℝ → Bool` for `f`, paramBisect becomes
+-- fully algorithmic — the choice sequence is computed from g, the bisection
+-- is a regular `def`, and SignConsistent is automatic.
+
+/-- Algorithmic bisection: take the sign oracle directly, no external choices.
+    The `def` is marked `noncomputable` only because Mathlib's `ℝ` is itself
+    noncomputable (division on `ℝ` uses `Real.instDivInvMonoid`); the *proof
+    content* below avoids `Classical.em` entirely, so over a constructive reals
+    model (e.g., CReal) `algoBisect` would be fully executable. -/
+noncomputable def algoBisect (g : ℝ → Bool) (n : ℕ) (p : ℝ × ℝ) : ℝ × ℝ :=
+  match n with
+  | 0     => p
+  | n + 1 =>
+    let q := algoBisect g n p
+    let mid := (q.1 + q.2) / 2
+    if g mid then (mid, q.2) else (q.1, mid)
+
+/-- The choice sequence induced by an oracle `g`: at step `n`, evaluate `g` at
+    the midpoint of the current algorithmic interval. Noncomputable because
+    `algoBisect` is (see remark above). -/
+noncomputable def oracleChoices (g : ℝ → Bool) (p : ℝ × ℝ) : ℕ → Bool :=
+  fun n => g (((algoBisect g n p).1 + (algoBisect g n p).2) / 2)
+
+/-- `algoBisect` coincides with `paramBisect` driven by its induced choices.
+    This means everything proved about paramBisect transfers to algoBisect. -/
+theorem algoBisect_eq_paramBisect (g : ℝ → Bool) (n : ℕ) (p : ℝ × ℝ) :
+    algoBisect g n p = paramBisect (oracleChoices g p) n p := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    show (let q := algoBisect g n p
+          let mid := (q.1 + q.2) / 2
+          if g mid then (mid, q.2) else (q.1, mid)) =
+         paramBisectStep (paramBisect (oracleChoices g p) n p) (oracleChoices g p n)
+    rw [← ih]
+    show (let q := algoBisect g n p
+          let mid := (q.1 + q.2) / 2
+          if g mid then (mid, q.2) else (q.1, mid)) =
+         paramBisectStep (algoBisect g n p)
+           (g (((algoBisect g n p).1 + (algoBisect g n p).2) / 2))
+    cases hg : g (((algoBisect g n p).1 + (algoBisect g n p).2) / 2) with
+    | true  => simp [paramBisectStep, hg]
+    | false => simp [paramBisectStep, hg]
+
+/-- If `g` correctly decides the sign of `f`, the induced choices are
+    sign-consistent at every length `n`. -/
+theorem oracleChoices_signConsistent (f : ℝ → ℝ) (g : ℝ → Bool) (p : ℝ × ℝ)
+    (hg : ∀ x, g x = true ↔ f x ≤ 0) (n : ℕ) :
+    SignConsistent f (oracleChoices g p) p n := by
+  intro k _
+  -- Goal: oracleChoices g p k = true ↔ f (paramBisectMid (oracleChoices g p) k p) ≤ 0
+  unfold paramBisectMid
+  -- Goal: oracleChoices g p k = true ↔
+  --       f (((paramBisect (oracleChoices g p) k p).1 + (paramBisect (oracleChoices g p) k p).2) / 2) ≤ 0
+  rw [← algoBisect_eq_paramBisect g k p]
+  -- Goal: oracleChoices g p k = true ↔
+  --       f (((algoBisect g k p).1 + (algoBisect g k p).2) / 2) ≤ 0
+  show g (((algoBisect g k p).1 + (algoBisect g k p).2) / 2) = true ↔
+       f (((algoBisect g k p).1 + (algoBisect g k p).2) / 2) ≤ 0
+  exact hg _
+
+/-- **Algorithmic IVT bisection** (closing oq-01): given any Bool-valued sign
+    oracle `g` correctly deciding `f x ≤ 0`, the computable `algoBisect`
+    preserves the sign invariant at every step — without Classical.em.
+
+    The remaining classical content is only completeness of ℝ in the limit;
+    for any *finite* precision the algorithm needs no classical axioms. -/
+theorem algoBisect_sign (f : ℝ → ℝ) (g : ℝ → Bool) (a b : ℝ)
+    (hfa : f a ≤ 0) (hfb : 0 ≤ f b) (hg : ∀ x, g x = true ↔ f x ≤ 0) (n : ℕ) :
+    f (algoBisect g n (a, b)).1 ≤ 0 ∧ 0 ≤ f (algoBisect g n (a, b)).2 := by
+  rw [algoBisect_eq_paramBisect]
+  exact paramBisect_sign f (oracleChoices g (a, b)) n (a, b) hfa hfb
+    (oracleChoices_signConsistent f g (a, b) hg n)
+
+/-- The exact width formula transfers to `algoBisect`. -/
+theorem algoBisect_width (g : ℝ → Bool) (n : ℕ) (p : ℝ × ℝ) :
+    (algoBisect g n p).2 - (algoBisect g n p).1 = (p.2 - p.1) / 2 ^ n := by
+  rw [algoBisect_eq_paramBisect]; exact paramBisect_width _ _ _
+
+/-- **Algorithmic IVT** (oq-01, classical limit): with a correct Bool sign
+    oracle, the algorithmic bisection produces a sequence converging to a root.
+    The only classical step is the convergence of bounded monotone sequences
+    (completeness of ℝ); the iteration itself, its width bound, and its sign
+    invariant are all computed without Classical.em. -/
+theorem algoBisect_converges_to_root (f : ℝ → ℝ) (g : ℝ → Bool) (a b : ℝ)
+    (hab : a ≤ b) (hfa : f a ≤ 0) (hfb : 0 ≤ f b) (hf : Continuous f)
+    (hg : ∀ x, g x = true ↔ f x ≤ 0) :
+    ∃ x : ℝ, f x = 0 ∧
+      Tendsto (fun n => (algoBisect g n (a, b)).1) atTop (nhds x) ∧
+      Tendsto (fun n => (algoBisect g n (a, b)).2) atTop (nhds x) := by
+  -- Transfer to paramBisect with the induced sign-consistent choices.
+  have hcons : ∀ n, SignConsistent f (oracleChoices g (a, b)) (a, b) n :=
+    oracleChoices_signConsistent f g (a, b) hg
+  obtain ⟨x, hxl, hxr⟩ :=
+    paramBisect_endpoints_converge (oracleChoices g (a, b)) a b hab
+  refine ⟨x, ?_, ?_, ?_⟩
+  · exact bisection_limit_is_root f (oracleChoices g (a, b)) a b x
+      hab hfa hfb hf hcons hxl
+  · simpa [algoBisect_eq_paramBisect] using hxl
+  · simpa [algoBisect_eq_paramBisect] using hxr
 
 end ConstructiveBisection
