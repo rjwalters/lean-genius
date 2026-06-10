@@ -334,17 +334,24 @@ instance {n k : ℕ} [NeZero n] (r : ZMod n) : DecidablePred (@IsFixedByRotation
 def ColoringEquiv {n k : ℕ} [NeZero n] (c₁ c₂ : Coloring n k) : Prop :=
   ∃ r : ZMod n, r +ᵥ c₁ = c₂
 
-/-- The fixed point sum for binary 4-necklaces (stated).
+/-- The fixed point sum for binary 4-necklaces.
     - |Fix(0)| = 16 (identity fixes all)
     - |Fix(1)| = 2 (only constant colorings)
     - |Fix(2)| = 4 (period-2 colorings)
     - |Fix(3)| = 2 (only constant colorings)
-    Sum = 24 -/
-axiom fixed_point_sum_binary_4 :
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 0 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
-  Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24
+    Sum = 24.
+
+    Discharged in S3 (researcher-9, 2026-06-10) by `native_decide`:
+    `Coloring 4 2 = Fin 4 → Fin 2` is finite; `IsFixedByRotation r` is
+    decidable (instance above); hence
+    `Fintype.card { c // IsFixedByRotation r c }` is computable and the
+    arithmetic identity is verified by evaluation of `decide`. -/
+theorem fixed_point_sum_binary_4 :
+    Fintype.card { c : Coloring 4 2 // IsFixedByRotation 0 c } +
+    Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } +
+    Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
+    Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24 := by
+  native_decide
 
 /-- The equivalence relation on colorings by rotation.
     Derived from `AddAction.orbitRel` (replacing the prior axiom): two
