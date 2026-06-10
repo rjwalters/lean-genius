@@ -1,11 +1,96 @@
 # Current State
 
-**Phase**: ACT (S7-light packages S6 as a certificate framework; Mathlib-bridge still deferred)
-**Since**: 2026-05-12 (S7-light, researcher-4)
-**Iteration**: 7
-**Researcher**: researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2)
+**Phase**: ACT (S8-light promotes per-code certificate to universal form; concrete `identityPredictor` exhibits a strict chain at every level; Mathlib-bridge still deferred)
+**Since**: 2026-06-10 (S8-light, researcher-1)
+**Iteration**: 8
+**Researcher**: researcher-1 (S8-light, S4); researcher-4 (S7-light); researcher-9 (S6, S1); researcher-12 (S5); researcher-6 (S3); researcher-10 (S2)
 
-## Current Focus (S7-light)
+## Current Focus (S8-light, 2026-06-10, researcher-1)
+
+Session 8-light (researcher-1, 2026-06-10) executes **option 3** from
+S7-light's next-session pointer: the self-application strictness chain.
+Adds **Section 12** to `proofs/Proofs/RelativizedHalting.lean`
+(+122 LOC, 0 new imports, 0 sorries, 0 axioms; file 611 → 733 LOC).
+
+The S7-light per-code/per-level `NonDegenerateAt` certificate (Section
+11) is promoted to a **universal** form and given a concrete
+non-vacuous witness that — unlike `trivialPredictor` — satisfies the
+universal condition at **every** level rather than only level 0.
+
+### New Section 12 content
+
+* `IsAlwaysNonDegenerate H o₀ := ∀ n c, NonDegenerateAt H o₀ c n` —
+  universal-quantification form of the S7-light per-code certificate.
+* `chain_strict_succ_of_isAlwaysNonDegenerate` — function-level
+  consequence: if the universal certificate holds, consecutive levels of
+  `jumpIter H o₀` differ as functions, proved by instantiating at code 0
+  and contradicting hypothetical function equality via `congrFun`.
+* `identityPredictor := fun o _ x => o x` — the simplest predictor
+  satisfying the universal condition: it echoes its oracle's value at
+  the self-application point. Per-level certificate by `rfl` (both
+  sides definitionally `(jumpIter identityPredictor o₀ n) c`).
+* `nonDegenerateAt_identityPredictor`,
+  `isAlwaysNonDegenerate_identityPredictor`,
+  `chain_strict_succ_identityPredictor` — the per-level/per-code
+  certificate + universal-form lift + function-level strict-chain
+  consequence for the identity-style predictor.
+
+### Why this is a non-trivial advance over S7-light
+
+S7-light's `trivialPredictor` instantiates the per-code certificate only
+at level 0 (since `jumpIter trivialPredictor falseOracle n c = true` for
+all `n ≥ 1` — the chain stabilizes). The certificate is therefore a
+single-step witness in S7-light. S8-light's `identityPredictor`
+witnesses the certificate at **every** level: `NonDegenerateAt
+identityPredictor o₀ c n` holds by `rfl` for every `o₀, c, n`, so the
+chain advances at every step. This validates the universal form's
+non-vacuity and exhibits a concrete chain that genuinely never collapses
+— the abstract counterpart of a "level-`n`-genuinely-uses-level-`(n−1)`"
+oracle chain in the classical Post 1944 picture.
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.RelativizedHalting` succeeded
+(2 jobs hot-cache, build completed in <5 minutes). All 7 new
+`#check` outputs at the file tail type-check cleanly with the expected
+signatures (`IsAlwaysNonDegenerate`, `chain_strict_succ_of_isAlwaysNonDegenerate`,
+`identityPredictor`, `nonDegenerateAt_identityPredictor`,
+`isAlwaysNonDegenerate_identityPredictor`,
+`chain_strict_succ_identityPredictor`, plus the def itself).
+
+### Ship scope
+
+Three files: parent `proofs/Proofs/RelativizedHalting.lean` (+122 LOC),
+this state.md (S8-light entry + S7-light demotion to "Prior Focus"), and
+the JSON registry (`iteration` 7 → 8, `lastUpdate`, focus, builtItems,
+nextSteps). No sibling slug edits. No new sessions/ memo directory (the
+existing state.md narrative-accumulation pattern is preserved).
+
+### S9+ next-step pointer
+
+Three options remain (carry-forward from S7-light's pointer plus a new
+S9-light option):
+
+1. **(Recommended) S9 — Mathlib bridge sub-OQ.** Unchanged from
+   S7-light's pointer; the new S8-light `identityPredictor` example
+   strengthens the case that the bridge must use a genuinely
+   oracle-using `OracleCode` (since `identityPredictor` exhibits a
+   non-collapsing chain that the embedded classical case demonstrably
+   does not).
+2. **S9 — Arithmetical hierarchy (OQ-03b).** Unchanged from S7-light.
+3. **(Lightweight) S9 — Multi-step strictness lift.** Add a
+   `chain_strict_of_isAlwaysNonDegenerate` lemma stating that under
+   universal non-degeneracy, `jumpIter H o₀ m ≠ jumpIter H o₀ n` for
+   any distinct `m, n` — the genuine pairwise-distinctness claim S7-
+   light's option 3 alluded to but didn't actually establish (consecutive
+   distinctness ≠ pairwise distinctness in general). Doable in ~30
+   LOC but requires care: the proof needs an additional structural
+   hypothesis (e.g., the chain is monotone in some lattice, OR the
+   per-level disagreement-set strictly grows). The cleanest version
+   may need to specialize to a sub-class of predictors. Worth a PREP
+   pass before ACT.
+
+## Prior Focus (S7-light, 2026-05-12, researcher-4) — preserved for traceability
 
 Session 7-light (researcher-4, 2026-05-12) packages the S6 step
 dichotomy + flip characterization into a reusable certificate
