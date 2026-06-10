@@ -70,6 +70,30 @@ at the abstract `Nat -> Nat -> Bool` level. Concretely:
     * `jumpIter_step_stable_of_self_disagree` — disagreement at the
       c-diagonal yields step-wise stability at `c`.
 
+* Section 11 (S7-light, non-degeneracy certificate framework + trivial-
+  predictor instantiation, all proved, no sorries):
+    * `NonDegenerateAt H o₀ c n` — per-code/per-level certificate.
+    * `strict_step_of_nonDegenerateAt` / `..._iff_strict_step` — the
+      certificate equivalences from `jumpIter_step_flip_iff`.
+    * `IsEventuallyNonDegenerateAt` — existential per-code form.
+    * `trivialPredictor`, `falseOracle`, `nonDegenerateAt_trivialPredictor_zero`
+      — small fully-verified instance witnessing non-vacuity at level 0.
+
+* Section 12 (S8-light, universal non-degeneracy + identity-style
+  predictor + function-level strict-chain consequence, all proved,
+  no sorries):
+    * `IsAlwaysNonDegenerate H o₀` — universal form `∀ n c,
+      NonDegenerateAt H o₀ c n`.
+    * `chain_strict_succ_of_isAlwaysNonDegenerate` — function-level
+      consequence: consecutive levels disagree as functions.
+    * `identityPredictor := fun o _ x => o x` — concrete predictor
+      satisfying the universal form for any starting oracle (in contrast
+      to `trivialPredictor`, whose chain stabilizes from level 1).
+    * `nonDegenerateAt_identityPredictor`,
+      `isAlwaysNonDegenerate_identityPredictor`,
+      `chain_strict_succ_identityPredictor` — non-vacuous concrete
+      witness for every level.
+
 ## Out of scope (deferred to future iterations)
 * The Mathlib-`Nat.Partrec.Code` bridge. State.md S2 proposed parameterizing
   `Code.evaln` over an oracle (a new constructor `Code.oracle` is impossible
@@ -577,6 +601,98 @@ theorem strict_step_trivialPredictor_zero (c : Nat) :
   strict_step_of_nonDegenerateAt trivialPredictor falseOracle c 0
     (nonDegenerateAt_trivialPredictor_zero c)
 
+/-! ### Section 12. Function-level strict-chain under uniform non-degeneracy
+(S8-light)
+
+S7-light's `NonDegenerateAt` certificate is per-code, per-level. The
+existential `IsEventuallyNonDegenerateAt` lifts a single per-code witness
+to a strict-step inequality at that code (Section 11). This section
+introduces the *universal* form — non-degeneracy at every level and
+every code simultaneously — and derives the function-level consequence:
+consecutive `jumpIter` levels are distinct as functions.
+
+The trivial example from S7-light (`trivialPredictor` paired with
+`falseOracle`) is non-degenerate only at level 0, since the chain
+stabilizes from level 1 onward (`jumpIter trivialPredictor falseOracle n
+c = true` for all n ≥ 1). To exhibit a non-vacuous example of the
+universal form we use the *identity-style predictor* `identityPredictor
+:= fun o _ x => o x`, which agrees with its oracle's value at every
+self-application point. For this predictor, every level admits a
+`NonDegenerateAt` witness, so the chain advances at every step. -/
+
+/-- **Universal non-degeneracy.** The chain `jumpIter H o₀` admits a
+`NonDegenerateAt` certificate at *every* level and *every* code. By
+`strict_step_of_nonDegenerateAt` applied at any code, this forces
+consecutive levels of the chain to disagree at that code and therefore
+to be distinct as functions. -/
+def IsAlwaysNonDegenerate (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) : Prop :=
+  ∀ n c, NonDegenerateAt H o₀ c n
+
+/-- **Function-level strict-step under universal non-degeneracy.** If
+`H` is always non-degenerate from starting oracle `o₀`, then for every
+level `n`, the level-`(n+1)` and level-`n` oracles disagree as
+functions (i.e., differ at some code).
+
+Proof: instantiate the universal hypothesis at level `n` and code `0`
+to obtain a `NonDegenerateAt` witness, lift it to the per-code strict
+step via `strict_step_of_nonDegenerateAt`, then contradict
+hypothetical function equality at code `0` via `congrFun`. -/
+theorem chain_strict_succ_of_isAlwaysNonDegenerate
+    {H : RelativizedHaltingPredictor} {o₀ : Nat → Bool}
+    (h : IsAlwaysNonDegenerate H o₀) (n : Nat) :
+    jumpIter H o₀ (n + 1) ≠ jumpIter H o₀ n := by
+  intro heq
+  exact strict_step_of_nonDegenerateAt H o₀ 0 n (h n 0) (congrFun heq 0)
+
+/-! #### Concrete witness: the identity-style predictor
+
+The predictor `identityPredictor := fun o _ x => o x` reads its oracle
+unchanged at the self-application point: `identityPredictor o c c = o c`
+for every `o, c`. This is the simplest predictor satisfying the
+universal non-degeneracy condition, since `NonDegenerateAt
+identityPredictor o₀ c n` unfolds to `(jumpIter identityPredictor o₀ n)
+c = (jumpIter identityPredictor o₀ n) c`, definitionally `rfl`.
+
+Note this is structurally distinct from `trivialPredictor`: the trivial
+predictor ignores its oracle (returning `false` unconditionally),
+producing a chain that stabilizes at level 1, whereas `identityPredictor`
+echoes its oracle, producing a chain in which every level flips every
+code relative to its predecessor. -/
+
+/-- The identity-style predictor: returns the oracle's value at the input,
+ignoring the code argument. The simplest predictor that is universally
+non-degenerate against any starting oracle. -/
+def identityPredictor : RelativizedHaltingPredictor :=
+  fun o _ x => o x
+
+/-- **Per-level/per-code certificate for `identityPredictor`.** At every
+level `n` and every code `c`, `identityPredictor` agrees with the current
+oracle's self-application value (which is the defining condition of
+`NonDegenerateAt`). Discharged by `rfl` since both sides reduce
+definitionally to `(jumpIter identityPredictor o₀ n) c`. -/
+theorem nonDegenerateAt_identityPredictor
+    (o₀ : Nat → Bool) (c n : Nat) :
+    NonDegenerateAt identityPredictor o₀ c n := rfl
+
+/-- **Universal non-degeneracy of `identityPredictor`.** The chain
+`jumpIter identityPredictor o₀` admits a `NonDegenerateAt` certificate
+at every level and every code, for any starting oracle `o₀`. -/
+theorem isAlwaysNonDegenerate_identityPredictor (o₀ : Nat → Bool) :
+    IsAlwaysNonDegenerate identityPredictor o₀ :=
+  fun n c => nonDegenerateAt_identityPredictor o₀ c n
+
+/-- **Strict-chain instantiation for `identityPredictor`.** For any
+starting oracle `o₀` and any level `n`, the level-`(n+1)` and level-`n`
+oracles of the `identityPredictor` chain disagree as functions. Direct
+combination of `chain_strict_succ_of_isAlwaysNonDegenerate` with
+`isAlwaysNonDegenerate_identityPredictor`. -/
+theorem chain_strict_succ_identityPredictor
+    (o₀ : Nat → Bool) (n : Nat) :
+    jumpIter identityPredictor o₀ (n + 1) ≠ jumpIter identityPredictor o₀ n :=
+  chain_strict_succ_of_isAlwaysNonDegenerate
+    (isAlwaysNonDegenerate_identityPredictor o₀) n
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
@@ -607,5 +723,11 @@ theorem strict_step_trivialPredictor_zero (c : Nat) :
 #check nonDegenerateAt_trivialPredictor_zero
 #check isEventuallyNonDegenerateAt_trivialPredictor
 #check strict_step_trivialPredictor_zero
+#check IsAlwaysNonDegenerate
+#check chain_strict_succ_of_isAlwaysNonDegenerate
+#check identityPredictor
+#check nonDegenerateAt_identityPredictor
+#check isAlwaysNonDegenerate_identityPredictor
+#check chain_strict_succ_identityPredictor
 
 end RelativizedHalting
