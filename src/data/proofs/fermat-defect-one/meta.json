@@ -104,12 +104,20 @@
       "mathContext": "$\\mathtt{FermatDefectWitness}\\,n\\,a\\,b\\,c$: $2 \\le a \\le b < c \\land \\gcd(\\gcd(a,b),c) = 1 \\land (a^n+b^n+1 = c^n \\lor a^n+b^n = c^n+1)$."
     },
     {
-      "id": "benchmark-n-three",
-      "title": "Verified n=3 Benchmarks (Both Signs)",
+      "id": "benchmark-n-three-raw",
+      "title": "Raw n=3 Witnesses Discharged by native_decide (Both Signs)",
       "startLine": 81,
+      "endLine": 107,
+      "summary": "The two primitive `FermatDefectWitness 3 _ _ _` benchmarks: `fermat_defect_three_neg` ($6^3 + 8^3 + 1 = 9^3$, $\\gcd(6,8,9)=1$) and `fermat_defect_three_pos` ($9^3 + 10^3 = 12^3 + 1$, $\\gcd(9,10,12)=1$). Both proofs follow the identical `refine ⟨?_, ?_, ?_, ?_, ?_⟩` + per-conjunct `native_decide` schema, distinguished only by `left; native_decide` (negative) versus `right; native_decide` (positive) for the final disjunctive branch. This is the gallery's *computational* layer: every claim here is closed by native-code evaluation of decidable predicates on small `Nat` arithmetic.",
+      "mathContext": "Negative: $6^3 + 8^3 + 1 = 216 + 512 + 1 = 729 = 9^3$, primitivity $\\gcd(2,9) = 1$. Positive: $9^3 + 10^3 = 729 + 1000 = 1729 = 1728 + 1 = 12^3 + 1$, primitivity $\\gcd(1,12) = 1$. The positive witness is the Ramanujan-Hardy taxicab number 1729 shifted by one unit."
+    },
+    {
+      "id": "benchmark-n-three-derived",
+      "title": "Derived Existence Corollaries at n=3",
+      "startLine": 109,
       "endLine": 130,
-      "summary": "fermat_defect_three_neg (6^3+8^3+1 = 9^3, gcd(6,8,9)=1) and fermat_defect_three_pos (9^3+10^3 = 12^3+1, gcd(9,10,12)=1), both discharged by native_decide. Derived theorems fermat_defect_three, fermat_defect_three_positive, fermat_defect_three_negative.",
-      "mathContext": "Arithmetic: $216 + 512 + 1 = 729$; $729 + 1000 = 1729 = 1728 + 1$. Primitivity: $\\gcd(2, 9) = 1$, $\\gcd(1, 12) = 1$."
+      "summary": "Three short existential corollaries that consume the raw benchmarks above. `fermat_defect_three : FermatDefectExists 3` is a one-line term-mode anonymous-constructor proof packaging the negative-defect witness. `fermat_defect_three_positive : FermatDefectPositive 3` and `fermat_defect_three_negative : FermatDefectNegative 3` each construct a per-sign existential by re-running the `refine` schema with the explicit witness baked in — together they realise Level 3 of the hierarchy at $n = 3$ (both signs achievable primitively). This is the *logical* layer: the raw benchmarks above are the witnesses, and these corollaries lift them into the existential predicates the headline conjecture quantifies over.",
+      "mathContext": "Level 3 at $n=3$: $\\exists (a,b,c)$ with $a^3 + b^3 + 1 = c^3$ realised by $(6,8,9)$ and $\\exists (a,b,c)$ with $a^3 + b^3 = c^3 + 1$ realised by $(9,10,12)$. The pair $((6,8,9), (9,10,12))$ closes the $n=3$ row of the conjecture's $(n, \\epsilon) \\in \\{3, 4, \\ldots\\} \\times \\{-1, +1\\}$ table."
     },
     {
       "id": "open-conjecture",
