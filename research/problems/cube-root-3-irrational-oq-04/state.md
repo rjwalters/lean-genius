@@ -1,10 +1,47 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-10 (S13 Helper-ACT)
-**Iteration**: 15
+**Since**: 2026-06-10 (S13b ACT)
+**Iteration**: 16
 
 ## Current Focus
+
+S13b ACT (researcher-1, 2026-06-10, Main-ACT): shipped the **twelfth
+partial quotient** `cbrt3_a11 = 5` of the simple CF of `∛3`, consuming
+the S13 Helper-ACT sandwich (`597449/414248 < cbrt3 < 73011/50623`,
+combined gap ≈ 2.9·10⁻¹⁰) through a 22-step
+`lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain on an
+eleven-fold-nested fraction followed by floor antisymmetry.
+Heartbeat budget `set_option maxHeartbeats 6400000 in` (2× S12b's
+3_200_000, per the empirical 2×-per-depth scaling validated
+through S7–S12b). Main file 1747 → 1999 LOC (+252 LOC, +1 theorem;
+theoremCount 18 → 19). 0 sorries, 0 axioms (slug remains 0/0).
+The chain `cbrt3_a0, …, cbrt3_a11` now covers the OEIS A002945
+prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, …]` through index 11.
+
+Final propagated interval `x_11 ∈ (8/41, 1/5)` ⟹
+`1/x_11 ∈ (5, 41/8) ⊂ (5, 6)` ⟹ `⌊1/x_11⌋ = 5` by
+`le_antisymm`. The upper bound `1/x_11 < 6` is closed by
+`div_lt_iff₀` + `linarith [hx11_gt]` (using `6·8/41 = 48/41 > 1`);
+the lower bound `5 ≤ 1/x_11` is closed by `le_div_iff₀` +
+`linarith [hx11_lt]` (using `5·(1/5) = 1` ≥ `5·x_11` with strict
+`x_11 < 1/5` slack).
+
+**No math-correction precedent triggered this iteration**: both
+the recursion arithmetic (inherited from S13a) and the new chain
+bounds matched the post-S13a sketch on the first pass. The
+math-correction precedent count for this slug remains at FIVE
+(no change from S13a). Docker build verified clean against this
+exact Lean content (7745 jobs, `Proofs.CubeRoot3IrrationalOQ04`
+elaborated in 193s on the standard image).
+
+See `sessions/2026-06-10-s13b-act-twelfth-partial-quotient.md` for
+the full algebraic chain table at each of the 22 steps, the
+propagated rational bounds, OEIS A002945 cross-verification, and
+the S14a next-action sketch (`cbrt3_a12 = 8` via the 14th convergent
+upper bound `1_865_358/1_293_367`, even-index hence above `∛3`).
+
+## Prior Focus (S13 Helper-ACT, MERGED 2026-06-10)
 
 S13 Helper-ACT (researcher-8, 2026-06-10, Lean-only narrow-ACT):
 added `Cbrt3Helpers.five_nine_seven_four_four_nine_over_four_one_four_two_four_eight_lt_cbrt3 :
@@ -462,9 +499,40 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
+**S14a Helper-ACT (any researcher)**: Add the **true 14th CF
+convergent upper bound** to `CubeRoot3IrrationalOQ04Helpers.lean`
+via the proven two-line cubing-iff template (`cbrt3_lt_iff_three_lt_cube +
+norm_num`):
+
+```
+Cbrt3Helpers.cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven :
+  cbrt3 < (1_865_358 / 1_293_367 : ℝ)
+```
+
+Per OEIS A002945 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …]`
+(200-digit Decimal CF witness from S12a/S12b), `a₁₃ = 3`, giving
+
+  `p₁₃ = a₁₃ · p₁₂ + p₁₁ = 3 · 597449 + 73011 = 1_865_358`
+  `q₁₃ = a₁₃ · q₁₂ + q₁₁ = 3 · 414248 + 50623 = 1_293_367`
+
+So `p₁₃/q₁₃ = 1_865_358/1_293_367 > cbrt3` (even index relative to the
+sign-alternation pattern: this 14th convergent is on the upper side,
+following the lower-side 13th convergent `597449/414248` from S13a).
+
+**Pre-claim Python cube sanity** (re-verified this S13b session):
+`1_865_358³ = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 =
+3 · 1_293_367³` (diff `+2_277_123 > 0`, relative gap `≈ 3.51·10⁻¹³`
+— yet another order of magnitude tighter than S13a's lower-side gap
+of `≈ 3.53·10⁻¹²`).
+
+Helper file delta: +50–60 LOC (+1 theorem, +1 prose section).
+
+## Prior Next-Action Sketch (S13b, now resolved by THIS iteration)
+
 **S13b (any researcher)**: Prove the twelfth partial quotient,
 `cbrt3_a11 : ⌊1 / (1 / (... - 2) - 5) - …⌋ = (5 : ℤ)`
-in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. **RESOLVED this iteration.**
+Per OEIS A002945
 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]` (200-digit
 Decimal CF witness cross-checked in S12a, S12b, and re-confirmed
 this S13 Helper-ACT session), `a₁₁ = 5`.
@@ -789,13 +857,14 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 11 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇, S10 a₈, S11a helper-only)
+- Total attempts: 15 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇, S10 a₈, S11a helper-only, S11b a₉, S12a helper, S12b a₁₀, S13a helper, S13b a₁₁)
   - S9b PREP (deployer-stall coord, doc-only), S11 PREP MATH-CORRECTION
-    (doc-only), and S11 STATE-SYNC (this iteration, doc-only) do not
-    independently bump the attempt count — they are sub-step interludes
-    around the S9, S10, S11 ACT umbrellas. S11a is counted because it
-    shipped Lean content (the new helper theorem).
-- Current approach attempts: 11 (cubing-iff helper + linarith chain on floor identity)
+    (doc-only), and S11 STATE-SYNC (doc-only) do not independently bump
+    the attempt count — they are sub-step interludes around the S9, S10,
+    S11 ACT umbrellas. S11a, S12a, S13a are counted because each shipped
+    Lean content (a new helper theorem); S12b and S13b are counted as
+    main-ACTs proving new partial quotients.
+- Current approach attempts: 15 (cubing-iff helper + linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
