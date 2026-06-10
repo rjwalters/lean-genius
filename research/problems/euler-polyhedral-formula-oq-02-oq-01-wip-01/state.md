@@ -1,91 +1,81 @@
 # Research State: euler-polyhedral-formula-oq-02-oq-01-wip-01
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-09 (S2 ORIENT — researcher-1)
-**Iteration**: 2
-**Last Updated**: 2026-06-09 (S2: per-field inventory + reduction plan; was a stub OBSERVE before)
+**Since**: 2026-06-10 (S3 ACT — researcher-1)
+**Iteration**: 3
+**Last Updated**: 2026-06-10 (S3 ACT: Reduction D landed, Docker-verified, parent axiomCount 10 → 9)
 
-## S2 ORIENT Summary (2026-06-09, researcher-1)
+## S3 ACT Summary (2026-06-10, researcher-1)
 
-**Mode**: ORIENT (S1 had only stub placeholders; S2 converts the OBSERVE intent into an actionable de-axiomatization plan). Doc-only.
+**Mode**: ACT (Reduction D from the S2 plan). Code change + parent metadata update. Docker-verified.
 
 ### Deliverable
 
-- `sessions/2026-06-09-s2-orient-assumption-inventory.md` — full table of all 10 structure-encoded assumptions with line numbers and TRACTABLE/DEEP classification.
-- `knowledge.md` — promoted to a substantive Knowledge Base with insights + reduction recommendations.
-- `state.md` — phase OBSERVE → ORIENT, iteration 1 → 2.
+- `proofs/Proofs/EulerPolyhedralOQ02OQ01.lean` (lines 628–680 region) — restructured `VectorFieldOnSurface` so its zero set is recorded explicitly via `zeros : Finset ℕ` + `indexAt : ℕ → ℤ`, made `noZeros` and `totalIndex` derived definitions, and converted the old `nonvanishing_index` field into a derived theorem via `Finset.sum_empty`. The five downstream consumers (`hairy_ball`, `sphere_no_nonvanishing_field`, `positive_chi_has_zeros`, `negative_chi_has_zeros`, `nonvanishing_iff_chi_zero`) compile unchanged on the new API.
+- `src/data/proofs/euler-polyhedral-formula-oq-02-oq-01/meta.json` — `axiomCount: 10 → 9`, `lineCount: 786 → 810`, `theoremCount: 60 → 61`, `definitionCount: 13 → 15`, `assumptions` string rewritten to reflect the discharge.
+- `sessions/2026-06-10-s3-act-reduction-D.md` — full session note.
+- `knowledge.md` and this `state.md` — updated.
 
-### Key findings
+### Docker verification
 
-1. **The parent meta.json `axiomCount: 10` is correct.** All 10 assumption-carrying fields are inventoried; the 9 structure declarations in the file are accounted for. The `area_pos` positivity fields are NOT counted (technical premises, not unverified theorems).
-2. **6 of 10 assumptions are genuinely DEEP**, blocked on missing Riemannian / topology Mathlib infrastructure: `gauss_bonnet`, `chi_genus`, `chern_gauss_bonnet`, `gauss_bonnet_boundary`, `poincare_hopf`, `morse_relation`. These should be tracked as MATHLIB GAPS, not researcher work items.
-3. **4 of 10 are TRACTABLE** to varying degrees:
-   - Reduction **D** (`nonvanishing_index`, ~5 LOC, low risk) — operationalize the `noZeros : Prop` placeholder so the field becomes `Finset.sum_empty`.
-   - Reduction **B** (`gauss_bonnet_polygon`, ~10 LOC, medium risk) — derive from `gauss_bonnet_boundary` via a `GeodesicPolygon.toBoundary` coercion.
-   - Reduction **C** (`gauss_bonnet_triangle`, ~15 LOC, medium risk) — derive from polygon GB at n=3 (depends on B).
-   - Reduction **A** (`curvature_is_K_area`, ~5 LOC, high risk) — better to relabel as definition than reduce; **skip**.
-4. **Best-case S3 outcome**: discharge D + B → assumption count 10 → 8 → meta.json `axiomCount: 10 → 8`. Slug remains badge `axiomatized` (6 DEEP assumptions persist), but progress is measurable.
+```
+$ LEAN_BUILD_TIMEOUT=20m ./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01
+…
+✔ [7743/7743] Built Proofs.EulerPolyhedralOQ02OQ01 (88s)
+Build completed successfully (7743 jobs).
+=== Build succeeded ===
+```
+
+No new sorries, no new axioms. Total file goes from 786 to 810 LOC (the structure restructure + the namespace + the derived theorem add ~24 LOC net; comment header in the structure docstring accounts for most of the growth).
+
+### Net effect on the parent gallery proof
+
+| Metric | Before S3 | After S3 |
+|---|---|---|
+| `axiomCount` (structure-encoded assumptions) | 10 | **9** |
+| `sorries` | 0 | 0 |
+| top-level `axiom` declarations | 0 | 0 |
+| `lineCount` | 786 | 810 |
+| `theoremCount` | 60 | 61 |
+| `definitionCount` (incl. structures) | 13 | 15 |
+
+The discharged assumption is `VectorFieldOnSurface.nonvanishing_index`. The remaining 9 are:
+1. `CompactRiemannianSurface.gauss_bonnet` (DEEP)
+2. `OrientableClosedSurface.chi_genus` (DEEP)
+3. `ChernGaussBonnetManifold.chern_gauss_bonnet` (DEEP)
+4. `CompactSurfaceWithBoundary.gauss_bonnet_boundary` (DEEP)
+5. `GeodesicPolygon.gauss_bonnet_polygon` (TRACTABLE — S4 target via Reduction B)
+6. `ConstCurvatureGeodesicPolygon.curvature_is_K_area` (TRACTABLE-but-skipped: cleaner as definition)
+7. `GeodesicTriangle.gauss_bonnet_triangle` (TRACTABLE — S5 target via Reduction C, depends on B)
+8. `VectorFieldOnSurface.poincare_hopf` (DEEP — now `(∑ i ∈ zeros, indexAt i) = surface.chi`)
+9. `MorseFunctionOnSurface.morse_relation` (DEEP)
 
 ## Current Focus
 
-S2 ORIENT complete. Ready for S3 ACT to attempt Reduction D first (smallest, lowest-risk; isolates one structure for editing and one docker build cycle).
+S3 ACT complete. Ready for S4 ACT (Reduction B): derive `gauss_bonnet_polygon` from `gauss_bonnet_boundary` via a `GeodesicPolygon.toBoundary` coercion. ~10 LOC + 1 docker build. Brings `axiomCount` from 9 → 8.
 
 ## Active Approach
 
-**Reduction D** (recommended for S3 ACT): operationalize `VectorFieldOnSurface.noZeros` as a concrete `∀ p, V p ≠ 0` predicate (or equivalent), then derive `nonvanishing_index : noZeros → totalIndex = 0` from `Finset.sum_empty` instead of carrying it as a free field. ~5 LOC edit + 1 docker build verification. Downstream `hairy_ball`, `sphere_no_nonvanishing_field`, `positive_chi_has_zeros`, `negative_chi_has_zeros`, `nonvanishing_iff_chi_zero` consume `nonvanishing_index` and may need cosmetic threading.
+**S4 ACT — Reduction B**: add a `def GeodesicPolygon.toBoundary (P : GeodesicPolygon) : CompactSurfaceWithBoundary` that maps `χ := 1`, `totalCurvature := P.totalCurvature`, `boundaryGeodCurv := P.exteriorAngleSum`, `area := P.area`. Then `P.gauss_bonnet_polygon` follows from `P.toBoundary.gauss_bonnet_boundary`. Drop the field.
 
-**Alternates** (for follow-up sessions):
-
-- Reduction **B**: `gauss_bonnet_polygon` (~10 LOC, medium risk).
-- Reduction **C**: `gauss_bonnet_triangle` (~15 LOC, depends on B).
-
-**Skipped** (not worth pursuing): Reduction A on `curvature_is_K_area`.
+**Risk** (per S2 plan): identifying `boundaryGeodCurv` with `exteriorAngleSum` is itself a non-trivial discrete identity. For geodesic arcs, smooth contributions vanish, so the boundary integral reduces to the vertex angle sum — which the `GeodesicPolygon` name already presupposes. The identity should be assertable as part of the `toBoundary` constructor.
 
 ## Attempt Count
 
-- Total attempts: 1 (this S2 ORIENT — doc-only)
-- Current approach attempts: 0
-- Approaches tried: 1 (S2 inventory survey)
+- Total attempts: 2 (S2 ORIENT doc-only + S3 ACT code change)
+- Current approach attempts: 1 (Reduction D — landed)
+- Approaches tried: 2 (S2 inventory survey + S3 Reduction D)
 
 ## Blockers
 
-None for S3 ACT on Reduction D. The structure edit is local; downstream consumers are few and the substitution is mechanical.
+None. Reduction B is the next clean candidate; concrete sketch is in `sessions/2026-06-09-s2-orient-assumption-inventory.md` §Reduction B.
 
 ## Next Action
 
-**S3 ACT (Reduction D)** — open a worktree, edit `Proofs/EulerPolyhedralOQ02OQ01.lean` around line 638–640:
-
-```lean
--- Before:
-structure VectorFieldOnSurface where
-  surface : CompactRiemannianSurface
-  totalIndex : ℤ
-  noZeros : Prop
-  poincare_hopf : totalIndex = surface.chi
-  nonvanishing_index : noZeros → totalIndex = 0
-
--- After (sketch — adjust to taste):
-structure VectorFieldOnSurface where
-  surface : CompactRiemannianSurface
-  totalIndex : ℤ
-  /-- Predicate: the vector field is nowhere-vanishing.
-      Operationalized as "the (finite) set of zeros is empty". -/
-  noZeros : Prop
-  /-- The Poincaré-Hopf theorem: sum of indices = χ(M) -/
-  poincare_hopf : totalIndex = surface.chi
-
-theorem VectorFieldOnSurface.nonvanishing_index
-    (V : VectorFieldOnSurface)
-    (h : V.noZeros)
-    (h_zeros_empty : V.totalIndex = 0) :  -- needs careful threading
-    V.totalIndex = 0 := h_zeros_empty
-```
-
-The threading detail is the key; the alternative is to make `noZeros` a concrete predicate (e.g., `noZeros := ∀ p, p ∉ zeros`) — but the current structure doesn't track `zeros` explicitly. Simplest clean path: thread `totalIndex = 0` directly through the consumers and remove `nonvanishing_index` as a field.
-
-After the edit:
-1. `./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01`
-2. Update `src/data/proofs/euler-polyhedral-formula-oq-02-oq-01/meta.json` `axiomCount: 10 → 9` and `assumptions:` string.
-3. Commit + PR.
+**S4 ACT (Reduction B)** — operate on `Proofs/EulerPolyhedralOQ02OQ01.lean` around lines 463–490:
+1. Add `def GeodesicPolygon.toBoundary` coercion.
+2. Convert `gauss_bonnet_polygon` field to a theorem `theorem gauss_bonnet_polygon (P : GeodesicPolygon) : ... := P.toBoundary.gauss_bonnet_boundary`.
+3. Verify via `./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01`.
+4. Update `meta.json` `axiomCount: 9 → 8`.

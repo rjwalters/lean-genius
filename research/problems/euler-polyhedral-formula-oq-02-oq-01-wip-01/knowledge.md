@@ -6,9 +6,9 @@ Insights accumulated during research on this problem.
 
 ## Problem Understanding
 
-The parent gallery proof `Proofs/EulerPolyhedralOQ02OQ01.lean` (786 LOC, namespace `SmoothGaussBonnet`) formalizes the smooth Gauss-Bonnet theorem and its consequences. It has 0 sorries and 0 top-level `axiom` declarations, but it encodes 10 substantive mathematical assumptions as structure fields. The parent `meta.json` correctly reports `axiomCount: 10` per the project's axiom-integrity policy.
+The parent gallery proof `Proofs/EulerPolyhedralOQ02OQ01.lean` (810 LOC after S3 ACT 2026-06-10, namespace `SmoothGaussBonnet`) formalizes the smooth Gauss-Bonnet theorem and its consequences. It has 0 sorries and 0 top-level `axiom` declarations. After S3 ACT it encodes **9** substantive mathematical assumptions as structure fields (down from 10 before S3); the parent `meta.json` `axiomCount` is updated accordingly per the project's axiom-integrity policy.
 
-This WIP slug asks: which of those 10 structure-encoded assumptions can be replaced with derived Lean theorems against current Mathlib v4.26.0, and which are genuinely blocked by missing Riemannian-geometry infrastructure?
+This WIP slug asks: which of the original 10 structure-encoded assumptions can be replaced with derived Lean theorems against current Mathlib v4.26.0, and which are genuinely blocked by missing Riemannian-geometry infrastructure?
 
 ---
 
@@ -44,6 +44,14 @@ A complete audit of all 9 structures in the parent file identifies the 10 assump
 | **A** (skip) | `curvature_is_K_area` | ~5 | high — clean reduction blocked by needing #4 first; better to relabel as a *definition* than a theorem |
 
 Best-case S3 outcome: discharge D + B → assumption count 10 → 8 → `axiomCount: 10 → 8` in parent meta.json.
+
+### S3 (2026-06-10) — Reduction D landed (Docker-verified)
+
+`VectorFieldOnSurface` was restructured to record its zero set explicitly as a `Finset ℕ` of index labels (`zeros`) plus a per-label index function (`indexAt : ℕ → ℤ`). With that data in place, `totalIndex` and `noZeros` became *derived definitions* (`totalIndex := ∑ i ∈ zeros, indexAt i`; `noZeros := zeros = ∅`), and `nonvanishing_index` became a *derived theorem* via `Finset.sum_empty`. The deep `poincare_hopf` field remained but is now phrased as `(∑ i ∈ zeros, indexAt i) = surface.chi`, which is the same mathematical claim. The five downstream consumers (`hairy_ball`, `sphere_no_nonvanishing_field`, `positive_chi_has_zeros`, `negative_chi_has_zeros`, `nonvanishing_iff_chi_zero`) compile unchanged on the new API; only `hairy_ball` was edited cosmetically to pin the elaborator on the unfolded sum so `omega` closes.
+
+Net effect: `axiomCount: 10 → 9`. The discharged assumption is `nonvanishing_index`; no other field was added as an assumption, so the deep-assumption set is unchanged. See `sessions/2026-06-10-s3-act-reduction-D.md` for the full diff and axiom-integrity argument.
+
+**Remaining tractables for S4/S5**: Reduction B (`gauss_bonnet_polygon`, ~10 LOC) → 9 → 8; Reduction C (`gauss_bonnet_triangle`, ~15 LOC, depends on B) → 8 → 7. The 6 DEEP assumptions remain blocked on Mathlib infrastructure.
 
 ### Mathlib boundary documentation
 
