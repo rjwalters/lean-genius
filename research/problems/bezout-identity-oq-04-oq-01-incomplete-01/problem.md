@@ -145,27 +145,49 @@ for a full Euclidean-algorithm reduction. This breaks naturally into:
      matrices; substantial scaffolding required. LOC budget may need
      to grow.
 
-2. **Approach B — Lift from Mathlib's PID structure theorem** (~150-200 LOC)
-   - Why it might work: Mathlib has `Module.equiv_directSum_of_pid`
-     and related results for finitely-generated modules over a PID.
-     Smith Normal Form is the matrix shadow of this; ℤ is a PID. A
-     Mathlib-bridge approach could compress the proof significantly.
-   - Risk: bridging from `Submodule.IsPrincipal`-style results back to
-     `Matrix (Fin m) (Fin n) ℤ` may require non-trivial unfolding;
-     constructive vs classical witnesses may diverge.
+2. **Approach B' — Bridge Mathlib's `Submodule.smithNormalForm`** (S3 PREP 2026-06-10: ~200-310 LOC total; ~100-160 LOC for first ACT cycle)
+   - **Confirmed Mathlib bearer** (S3 PREP):
+     - `Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`
+     - `Basis.SmithNormalForm` at the same module
+     - both produce a Smith-Normal-Form basis for a submodule of a free
+       module over a PID. ℤ is a PID.
+   - **Approach decomposition** (S3 PREP):
+     - **B1 (bridge, ~80-120 LOC)**: lift `Submodule.smithNormalForm` to
+       the parent file's `SmithNormalForm m n` structure. Extract `U`,
+       `D`, `V` from the basis-change matrices. Discharge `hU`, `hV`,
+       `hD_diag`, and the `isDecompOf` equation. Leave `hD_div` as
+       a single `sorry`.
+     - **B2 (divisibility chain, ~100-150 LOC)**: prove the diagonal
+       entries satisfy `d_k ∣ d_{k+1}`. **Shared Mathlib gap** with
+       `minpoly-charpoly-oq-03-oq-02` (per `MinpolyCharpolyOQ03.lean:80-82`:
+       "the diagonal entries are not certified to satisfy
+       `a 0 ∣ a 1 ∣ ⋯ ∣ a (n-1)`"). Could be re-sorting / re-grouping of
+       the certified diagonal entries from B1.
+     - **B3 (final assembly, ~20-40 LOC)**: combine B1 + B2 to produce
+       the full discharge.
+   - Why it works: Mathlib provides a Matrix-shaped SNF for free-module
+     submodules; ℤ is a free module of rank `m` and the column-space of
+     `A` is a submodule, so the basis-change matrices give us `U` and
+     `V` directly.
+   - Risk: bridging Mathlib's basis-level `Basis.SmithNormalForm` to
+     our parent file's matrix-level `SmithNormalForm m n` requires
+     non-trivial coordinate plumbing. Divisibility-chain certification
+     (B2) is a known Mathlib gap (per OQ-03 audit).
 
-3. **Approach C — Defer to upstream Mathlib SNF** (potential ~50 LOC bridge)
-   - Why it might work: there are draft Mathlib PRs for SNF (track at
-     `leanprover-community/mathlib4` search "Smith Normal Form"). If
-     one merges, this slug becomes a bridge.
-   - Risk: pure dependency; only viable if an upstream version exists
-     at the lake-manifest pin `2df2f015…`. Per the parent file's
-     `mathlibDependencies` (no `SmithNormalForm` listed), no such
-     upstream version exists today at v4.26.0.
+3. **Approach C — Defer to upstream top-level `Matrix.SmithNormalForm`** (potential ~50 LOC bridge)
+   - **Status: still not viable at v4.26.0** (confirmed S3 PREP 2026-06-10).
+     Mathlib has `Submodule.smithNormalForm` and `Basis.SmithNormalForm`
+     (used by Approach B') but no top-level `Matrix.SmithNormalForm`
+     packaged for `Matrix (Fin m) (Fin n) ℤ`. Per the parent file's
+     `mathlibDependencies` list (no `SmithNormalForm` entry).
+   - Re-evaluate post-Approach B' success; this slug's B1 bridge may
+     itself be the upstream contribution.
 
-**Recommended**: Approach B first (smaller LOC budget, leverages Mathlib's
-PID infrastructure); fall back to Approach A if B's framework bridge
-proves intractable.
+**Recommended (S3 PREP, 2026-06-10)**: Approach B' committed. Start S4 ACT
+with the B1 sub-step (~80-120 LOC scaffold), leaving `hD_div` as a single
+sorry; tackle B2 in a subsequent ACT cycle or spin it out as a sibling
+slug coordinating with `minpoly-charpoly-oq-03-oq-02`. Fall back to
+Approach A only if B1 plumbing balloons unmanageably.
 
 ### Key Difficulties
 
@@ -240,10 +262,20 @@ scope to the `szemeredi-core-oq-04` Part 8 cascade, ~190 LOC).
 - `Mathlib.LinearAlgebra.Matrix.IsDiag` — `Matrix.IsDiag`.
 - `Mathlib.Data.Int.GCD` — `Int.gcd_eq_gcd_ab` (1×2 base case).
 - `Mathlib.RingTheory.Coprime.Basic` — coprime infrastructure.
-- **Missing**: `Matrix.SmithNormalForm`, `Matrix.snf_exists`,
-  `Matrix.invariantFactors` — confirmed via parent file's
-  `mathlibDependencies` list (no `SmithNormalForm` entry) and absence
-  of a direct API at v4.26.0.
+- **Available — Approach B' bearer (S3 PREP 2026-06-10)**:
+  - `Mathlib.LinearAlgebra.FreeModule.PID` — `Submodule.smithNormalForm`
+    at line 541, `Basis.SmithNormalForm` at the same module. SNF for a
+    submodule of a finitely-generated free module over a PID. **No
+    divisibility-chain certification on the diagonal entries** (known
+    Mathlib gap; see `MinpolyCharpolyOQ03.lean:80-82`).
+  - `Mathlib.Algebra.Module.PID` — `Module.equiv_directSum_of_isTorsion`
+    at line 233 (primary-form decomposition, witness `p : ι → R` with
+    `Irreducible (p i)`, **not** invariant-factor chain);
+    `Module.equiv_free_prod_directSum` (torsion-free splitting).
+- **Missing (still, post-S3 PREP)**: top-level `Matrix.SmithNormalForm`
+  for `Matrix (Fin m) (Fin n) ℤ`; divisibility-chain-certifying
+  variant of `Submodule.smithNormalForm` — both upstreamable as Mathlib
+  contributions if discharged here.
 
 ## Metadata
 
@@ -265,8 +297,13 @@ recovered: 2026-05-31 (S2 ORIENT, researcher-1)
 ```
 
 **Significance**: 6/10 (closes a real axiom; not a millennium-class result).
-**Tractability**: 4/10 (heavy Lean 4 plumbing, no Mathlib SNF API).
+**Tractability**: 5/10 (S3 PREP up-calibration from 4: confirmed Mathlib
+bearer `Submodule.smithNormalForm`; Approach B' B1 cycle is ~80-120 LOC).
 
-(Note: the original scaffold listed both at 6/10. This S2 ORIENT
-re-calibrates tractability down to 4/10 reflecting the absence of a
-Mathlib SNF and the ~500 LOC budget.)
+(Note: the original scaffold listed both at 6/10. S2 ORIENT re-calibrated
+tractability down to 4/10 reflecting Mathlib API absence. S3 PREP up-calibrates
+to 5/10 after pinning the `Submodule.smithNormalForm` bearer at
+`Mathlib/LinearAlgebra/FreeModule/PID.lean:541` — the integration
+risk is materially lower than S2 had estimated. The remaining sub-gap is the
+divisibility-chain certification (~100-150 LOC, B2 sub-step), which is shared
+with `minpoly-charpoly-oq-03-oq-02` and upstreamable to Mathlib.)

@@ -1,12 +1,12 @@
 {
   "slug": "bezout-identity-oq-04-oq-01-incomplete-01",
   "title": "Constructive discharge of snf_exists in BezoutIdentityOQ04OQ01.lean",
-  "phase": "ORIENT",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Replace `axiom snf_exists (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) : ∃ snf : SmithNormalForm m n, snf.isDecompOf A` at `proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146` with a `theorem snf_exists … := by …` that constructs a Smith Normal Form via Euclidean reduction (Approach A, ~500 LOC) or the Mathlib PID structure theorem bridge (Approach B, ~150-200 LOC).",
+    "formal": "Replace `axiom snf_exists (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) : ∃ snf : SmithNormalForm m n, snf.isDecompOf A` at `proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146` with a `theorem snf_exists … := by …` via Approach B' (Mathlib `Submodule.smithNormalForm` bridge at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`, ~200-310 LOC across B1/B2/B3 sub-steps; S3 PREP committed 2026-06-10) or Approach A (constructive Euclidean reduction, ~500 LOC) as fallback.",
     "plain": "Every integer matrix A admits a decomposition A = U·D·V with U, V unimodular (det ±1) and D diagonal with divisibility chain d₁|d₂|…. The parent gallery entry currently asserts this existence as an axiom; we want to prove it constructively in Lean 4, using either a direct Euclidean-reduction algorithm or a bridge to Mathlib's PID structure theorem.",
     "whyMatters": [
       "Discharges an axiom in the verified-with-axioms gallery entry bezout-identity-oq-04-oq-01 (badge `axiom`, status `axiomatized`).",
@@ -26,43 +26,46 @@
       "axiom snf_exists (parent file line 146) — main goal of this slug.",
       "axiom snf_solvability_criterion (parent file line 196) — out of scope this slug; possible follow-on incomplete-02."
     ],
-    "goal": "Discharge axiom snf_exists at proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146 with a constructive Lean 4 proof. ~500 LOC for direct Euclidean reduction (Approach A) or ~150-200 LOC if Mathlib's PID structure theorem bridge (Approach B) succeeds."
+    "goal": "Discharge axiom snf_exists at proofs/Proofs/BezoutIdentityOQ04OQ01.lean:146 with a constructive Lean 4 proof. S3 PREP (2026-06-10) committed to Approach B' (Mathlib `Submodule.smithNormalForm` bridge): B1 (~80-120 LOC bridge) + B2 (~100-150 LOC divisibility chain — shared Mathlib gap with `minpoly-charpoly-oq-03-oq-02`) + B3 (~20-40 LOC assembly) = ~200-310 LOC. Approach A (~500 LOC) is the fallback."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-31T06:50:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ORIENT complete (researcher-1, 2026-05-31, doc-only): recovered the missing problem statement that the 2026-04-03 scaffold left blank. The slug's `incomplete-01` suffix and the parent gallery entry's `axiom snf_exists` (line 146) together identify the intended scope: discharge the Smith Normal Form existence axiom with a constructive Lean 4 proof. April blocker resolved; new blocker: Mathlib v4.26.0 has no direct Matrix.SmithNormalForm API.",
+    "phase": "PREP",
+    "since": "2026-06-10T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 PREP complete (researcher-3, 2026-06-10, doc-only): pinned the Mathlib bearer for Approach B via in-repo audit cross-reference (`MinpolyCharpolyOQ03.lean:38-83`, `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean:240-242`, `bezout-identity-oq-04-oq-01-oq-01.json` insights). Confirmed bearer: `Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`, with a known divisibility-chain gap shared with `minpoly-charpoly-oq-03-oq-02`. Committed to Approach B' (~200-310 LOC) decomposed into B1 (bridge, ~80-120 LOC), B2 (chain, ~100-150 LOC), B3 (assembly, ~20-40 LOC). Approach A (~500 LOC Euclidean reduction) remains the fallback. Tractability re-calibrated 4 → 5.",
     "blockers": [
-      "Mathlib v4.26.0 has no direct Matrix.SmithNormalForm API (per parent file's mathlibDependencies list); the discharge is genuinely original Lean 4 content.",
-      "Approach B viability (PID structure theorem bridge) depends on whether Mathlib's Module.equiv_directSum_of_pid (or analogous theorem) is constructive enough to extract U, D, V matrices — needs S3 PREP confirmation."
+      "Approach B' B2 sub-step (divisibility-chain certification on Submodule.smithNormalForm diagonal entries): known Mathlib gap at v4.26.0 (per MinpolyCharpolyOQ03.lean:80-82). Shared with minpoly-charpoly-oq-03-oq-02; both upstreamable to Mathlib.",
+      "Approach B' B1 sub-step (basis-side -> matrix-side bridge): non-trivial coordinate plumbing. Concrete LOC unknown until first ACT cycle (estimated ~80-120 LOC)."
     ],
-    "nextAction": "S3 PREP: grep Mathlib for Module.equiv_directSum_of_pid and adjacent PID-structure theorems at lake-manifest pin 2df2f0150c; estimate LOC concretely for Approach B's bridge code; pick A vs B; if B ≤ 200 LOC commit and draft S4 ACT scaffold, otherwise commit to A and start with elementary-row-operations API (~100 LOC budget for swap_rows/swap_cols/add_row_mult as IsUnimodular left/right multiplications). Doc-only, ~30-60 min.",
+    "nextAction": "S4 ACT cycle 1 (~1-2 hours, ~80-120 LOC Lean): create new file `proofs/Proofs/BezoutIdentityOQ04OQ01Snf.lean` (or extend parent file) declaring `theorem snf_exists_no_chain (m n : ℕ) (A : Matrix (Fin m) (Fin n) ℤ) : ∃ U D V, IsUnimodular U ∧ IsUnimodular V ∧ (∀ i j, i.val ≠ j.val → D i j = 0) ∧ A = U * D * V` via `Submodule.smithNormalForm` on `LinearMap.range (Matrix.toLin' A)`. Leave `hD_div` as a single sorry; isolate the divisibility-chain problem for B2.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ORIENT complete (2026-05-31, researcher-1, doc-only): recovered the missing problem statement via a parent-file survey of Proofs/BezoutIdentityOQ04OQ01.lean. The 2026-04-03 scaffold's blockers (missing statement, no Lean target, no reference) are resolved by mapping `incomplete-01` to the parent's `axiom snf_exists` at line 146. Three approaches surveyed: A (constructive Euclidean reduction, ~500 LOC, low math risk but heavy plumbing), B (PID structure theorem bridge, ~150-200 LOC, moderate risk pending Mathlib confirmation), C (upstream Mathlib SNF dep, ~50 LOC bridge — **not viable** at v4.26.0; no Matrix.SmithNormalForm). Recommended: B first, A fallback. Tractability re-calibrated 6 → 4. No Lean edits. Backfill confirmed that this record is an active OBSERVE-phase Bezout-identity-related problem with no concrete statement or attempts recorded in the local evidence.",
+    "progressSummary": "S3 PREP complete (2026-06-10, researcher-3, doc-only): pinned the Mathlib bearer for Approach B via in-repo audit cross-reference. Confirmed: `Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`, with a known divisibility-chain gap shared with `minpoly-charpoly-oq-03-oq-02`. Committed Approach B' (~200-310 LOC: B1 bridge + B2 chain + B3 assembly). Approach A (~500 LOC) remains fallback; Approach C still not viable. Tractability re-calibrated 4 → 5. Predecessor: S2 ORIENT (2026-05-31, researcher-1, PR #21372) recovered the problem statement from the 2026-04-03 scaffold placeholders. No Lean edits in either iteration.",
     "builtItems": [
-      "Replaced scaffold title, problem statement, known-results, tags, and knowledge notes with evidence-bounded metadata.",
-      "Captured the missing-statement blocker and preserved zero attempt counts from state.md."
+      "S2 ORIENT (2026-05-31, researcher-1, PR #21372): replaced scaffold problem.md, knowledge.md, state.md, and JSON with evidence-bounded ORIENT-phase metadata; surveyed three approaches.",
+      "S3 PREP (2026-06-10, researcher-3, this PR): pinned `Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541` as the Approach B' bearer; committed Approach B' with B1/B2/B3 decomposition; flagged cross-slug coordination opportunity with `minpoly-charpoly-oq-03-oq-02` on the shared divisibility-chain Mathlib gap."
     ],
     "insights": [
-      "problem.md, knowledge.md, and the local literature README are scaffold templates rather than mathematical notes.",
-      "state.md is the only substantive workflow source: phase OBSERVE, path full, iteration 1, no active approach, and zero recorded attempts.",
-      "The slug supplies the Bezout-identity topic, but the available evidence does not specify which Bezout theorem variant or Lean statement is intended."
+      "Approach B' bearer pinned (S3 PREP 2026-06-10): `Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541`, with `Basis.SmithNormalForm` in the same module. Reachable from `Matrix (Fin m) (Fin n) ℤ` via `LinearMap.range (Matrix.toLin' A)` (or analogous domain-side submodule).",
+      "Known Mathlib gap (S3 PREP 2026-06-10): diagonal entries of `Submodule.smithNormalForm` are NOT certified to satisfy `a 0 ∣ a 1 ∣ ⋯ ∣ a (n-1)`. Source: `MinpolyCharpolyOQ03.lean:80-82` audit. This gap is the B2 sub-step's work, shared with `minpoly-charpoly-oq-03-oq-02`.",
+      "Approach decomposition (S3 PREP): B1 (basis→matrix bridge, ~80-120 LOC) leaves only `hD_div` as a sorry. B2 (chain proof, ~100-150 LOC) closes that gap. B3 (assembly, ~20-40 LOC) discharges `axiom snf_exists`. Total ~200-310 LOC across 3 ACT cycles.",
+      "Sibling slug `bezout-identity-oq-04-oq-01-oq-01` (COMPLETED, PR #16026) proved `snf_1x2_invariant_factor_pid` for any GCDMonoid and explicitly flagged in its nextSteps: 'Use Mathlib FreeModule.PID to prove snf_pid_exists'. Our ℤ-side B1 bridge is a strict template for that PID-side discharge.",
+      "S2 ORIENT (2026-05-31) recovered the lineage: `incomplete-01` suffix maps to `snf_exists` axiom at parent file line 146. Companion axiom `snf_solvability_criterion` at line 196 is out of scope (possible follow-on `incomplete-02`)."
     ],
     "mathlibGaps": [
-      "No Mathlib modules or theorem names are identified in the available evidence."
+      "`Submodule.smithNormalForm` at `Mathlib/LinearAlgebra/FreeModule/PID.lean:541` exists at Mathlib v4.26.0 but does NOT certify the divisibility chain `a 0 ∣ a 1 ∣ ⋯` on the diagonal entries — this is the load-bearing gap for Approach B' B2 sub-step. Same gap blocks `minpoly-charpoly-oq-03-oq-02` (elementary-divisors → invariant-factors regrouping). Cross-slug Mathlib upstream candidate.",
+      "No top-level `Matrix.SmithNormalForm` for `Matrix (Fin m) (Fin n) ℤ` at v4.26.0 (per parent file `mathlibDependencies` — no `SmithNormalForm` entry). Approach C remains non-viable; Approach B' B1 bridge would be the upstream contribution."
     ],
     "nextSteps": [
-      "Locate the originating user request or related gallery proof that created this incomplete record.",
-      "Write the formal statement, plain-language statement, and acceptance criteria once the missing source is found.",
-      "Identify relevant Mathlib imports and existing Bezout/gcd lemmas only after the target statement is known.",
-      "Keep phase OBSERVE and attempt counts at zero until an actual proof approach is started."
+      "S4 ACT cycle 1 (~1-2 hours, ~80-120 LOC Lean): scaffold `theorem snf_exists_no_chain` bridging `Submodule.smithNormalForm` to the parent file's `SmithNormalForm m n` structure. Leave `hD_div` as a single sorry. Use `Submodule.smithNormalForm` on the column-space submodule.",
+      "S5 ACT (B2): divisibility-chain proof. Either: (a) re-sort/re-group of B1's certified diagonal entries (~100-150 LOC), or (b) spin out to sibling slug `bezout-identity-oq-04-oq-01-incomplete-01-oq-01` for shared coordination with `minpoly-charpoly-oq-03-oq-02`.",
+      "S6 ACT (B3): combine B1 + B2 to discharge `axiom snf_exists` at parent file line 146.",
+      "Post-merge follow-up: evaluate upstream Mathlib promotion of B2's chain-certifying variant of `Submodule.smithNormalForm` — would simultaneously unblock `minpoly-charpoly-oq-03-oq-02`."
     ],
     "markdown": "# Knowledge Base: bezout-identity-oq-04-oq-01-incomplete-01\n\n## Evidence Summary\n\n- `problem.md` is still a scaffold and does not contain a formal statement, plain-language statement, known results, or references.\n- `knowledge.md` is still a scaffold and records no research findings or dead ends.\n- `state.md` records phase OBSERVE, path full, iteration 1, no active approach, no blockers, and zero attempts.\n- The local `literature/README.md` describes what literature could contain, but it does not provide actual references.\n\n## Current Understanding\n\nThis is an active, incomplete Bezout-identity-related problem record. The slug identifies the topic family, but the local evidence does not specify the theorem variant, hypotheses, codomain, Lean declaration target, or proof objective.\n\n## Known Work\n\nNo Lean proof attempt, literature review, or concrete mathematical result is recorded in the available evidence.\n\n## Blockers\n\nThe missing statement is the primary blocker. Any attempt to name specific lemmas, imports, or a proof plan would be speculative until the source problem is recovered.\n\n## Next Steps\n\n1. Recover the originating request or related gallery lineage for this incomplete record.\n2. Replace the missing formal and plain-language statements with the actual target.\n3. Add concrete references and Mathlib facts after the target statement is known.\n4. Start ORIENT only after the statement and acceptance criteria are recorded.\n"
   },
@@ -73,15 +76,25 @@
     "linear-algebra",
     "constructive"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "bezout-identity-oq-04-oq-01",
+    "bezout-identity-oq-04-oq-01-oq-01",
+    "minpoly-charpoly-oq-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01"
+  ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib/LinearAlgebra/FreeModule/PID.lean:541 — `Submodule.smithNormalForm` (Approach B' bearer)",
+      "Mathlib/LinearAlgebra/FreeModule/PID.lean — `Basis.SmithNormalForm` (basis-side variant)",
+      "Mathlib/Algebra/Module/PID.lean:233 — `Module.equiv_directSum_of_isTorsion` (primary-form, not chain)",
+      "Mathlib/Algebra/Module/PID.lean — `Module.equiv_free_prod_directSum` (torsion-free splitting)"
+    ]
   },
   "started": "2026-04-03T07:56:24.930Z",
-  "lastUpdate": "2026-04-03T01:04:41-07:00",
+  "lastUpdate": "2026-06-10T00:00:00.000Z",
   "significance": 6,
-  "tractability": 6,
-  "lastUpdated": "2026-05-31"
+  "tractability": 5,
+  "lastUpdated": "2026-06-10"
 }
