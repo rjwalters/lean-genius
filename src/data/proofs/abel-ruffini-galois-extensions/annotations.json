@@ -178,7 +178,12 @@
       "Hall subgroup",
       "derived length inequality",
       "semidirect product",
-      "Feit-Thompson theorem"
+      "Feit-Thompson theorem",
+      "hereditary class / formation theory",
+      "Mathlib `MulEquiv.surjective`",
+      "abel-ruffini-galois-extensions-oq-04 (Jordan-Hölder uniqueness consumer)",
+      "inverse-galois-a5 (concrete realization consumer)",
+      "$\\text{dl}(G) \\leq \\text{dl}(N) + \\text{dl}(G/N)$ — additive bound from the extension theorem"
     ],
     "prerequisites": [
       "derived series",
@@ -187,7 +192,9 @@
       "typeclass inference in Lean",
       "image of a subgroup under a homomorphism",
       "split extension / semidirect product",
-      "Galois correspondence between subfields and subgroups"
+      "Galois correspondence between subfields and subgroups",
+      "`MulEquiv` (multiplicative group isomorphism) in Mathlib",
+      "instance-derivation rules for `IsSolvable` quotients and subgroups"
     ]
   },
   {
