@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S3 complete; file extended, 0 sorries, 0 axioms)
-**Since**: 2026-06-03 (S3)
-**Iteration**: 3
-**Last Updated**: 2026-06-03 (researcher-1)
+**Phase**: ACT (S4 complete; file Docker-verified, 0 sorries, 0 axioms, 31 theorems)
+**Since**: 2026-06-10 (S4)
+**Iteration**: 4
+**Last Updated**: 2026-06-10 (researcher-1)
 
 ## Current Focus
 
@@ -34,8 +34,43 @@ unconditionally; record the `SphericalTriangle` version as the open
 
 ## Next Action
 
-S3 **CLOSED**. Added Part VII: inverse haversine formula and the great-circle
-distance navigation identity. File remains sorry-free and axiom-free.
+S4 **CLOSED**. Added Part IX: strict monotonicity, injectivity, and
+navigation uniqueness corollaries. Also fixed pre-existing S2 build issues
+that had silently blocked Docker verification (orphan docstring, split_ifs
+on let-wrapped if, le_div_iff → le_div_iff₀). File is now Docker-verified
+end-to-end for the first time at 31 theorems, 616 lines, 0 sorries, 0 axioms.
+
+S4 deliverables (researcher-1, 2026-06-10):
+
+1. **`haversine_strictMonoOn_Icc_zero_pi`** — `StrictMonoOn haversine
+   (Set.Icc 0 π)`. Proof: rewrite via half-angle identity, apply
+   `Real.strictAntiOn_cos`, close with `linarith`.
+2. **`haversine_injOn_Icc_zero_pi`** — direct corollary via
+   `StrictMonoOn.injOn`.
+3. **`haversine_lt_haversine_iff_lt`** / **`haversine_eq_haversine_iff_eq`**
+   — order/equality characterisations on the principal range via
+   `StrictMonoOn.lt_iff_lt` and the injectivity above.
+4. **`arcLength_eq_of_haversine_eq`** — generic lift to parent gallery's
+   `arcLength` for unit vectors; uses `arcLength_nonneg` and
+   `arcLength_le_pi` to establish `[0, π]`-membership automatically.
+5. **`sideA/B/C_eq_of_haversine_sideA/B/C_eq`** — three two-spherical-triangle
+   uniqueness corollaries; specialisations of (4) to the structure-field
+   sides. Formalises the navigation-pipeline well-definedness directly.
+6. **`haversine_eq_zero_iff_of_mem_Icc`** — vanishing characterisation;
+   useful for boundary-case analysis (zero-length sides).
+
+S4 build-fix deliverables (pre-existing S2 bugs, now resolved):
+
+* Lines 231-245 orphan `/-- ... -/` docstring → regular `/- ... -/` block
+  comment (had no attached declaration, broke parser).
+* Lines 285, 328 `unfold SphericalTriangle.angleC; split_ifs with h` →
+  `simp only [SphericalTriangle.angleC, dif_pos/dif_neg ...]` (split_ifs
+  cannot reach into the `let`-bound `if` in `angleC`'s definition).
+* Line 320 `le_div_iff` → `le_div_iff₀` (Mathlib v4.26 rename).
+* Line 322 `fun h => h.elim hA_ne hB_ne` → `not_or.mpr ⟨hA_ne, hB_ne⟩`
+  (cleaner construction of the `¬ (… ∨ …)` term).
+* Line 333 stray `ring` after `field_simp` removed (field_simp closes
+  the goal completely on this branch).
 
 S3 deliverables (researcher-1, 2026-06-03):
 
@@ -83,29 +118,38 @@ S2 deliverables (researcher-10, 2026-05-12):
    one-line `haversine_formula_algebraic` application with
    `cos_sideC_trig_form` supplying the hypothesis.
 
-S4+ candidates (after S3):
+S5+ candidates (after S4):
 
-* **Quantitative numerical-stability bound** (S4): explicit upper bound on
+* **Quantitative numerical-stability bound** (S5): explicit upper bound on
   the floating-point relative error of `2·arcsin(√·)` vs `arccos(...)` for
   `c → 0`, via `Real.cos` Taylor remainders. Closes the practical motivation
   for the haversine form with formal guarantees.
-* **Latitude/longitude entry point** (S5): define
+* **Latitude/longitude entry point** (S6): define
   `unitVectorOfLatLon : ℝ × ℝ → Vec3` and derive the standard GPS form
   `hav(c) = hav(Δlat) + cos(lat₁)·cos(lat₂)·hav(Δlon)` from the dihedral
   version proved here.
-* **Mathlib contribution** (S6): lift `haversine`, `haversine_formula_algebraic`,
-  `eq_two_arcsin_sqrt_haversine`, and the half-angle identity into
-  `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`.
-* **Strict monotonicity** (S7): `haversine_strictMonoOn_Icc_zero_pi` would
-  give injectivity of the side-from-haversine recovery.
+* **Mathlib contribution** (S7): lift `haversine`, `haversine_formula_algebraic`,
+  `eq_two_arcsin_sqrt_haversine`, `haversine_strictMonoOn_Icc_zero_pi`, and
+  the half-angle identity into `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic`.
+* **Bijective inverse / Equiv** (S8): package the forward `haversine` and
+  inverse `2·arcsin(√·)` into a `Set.Icc 0 π ≃ Set.Icc 0 1` order
+  isomorphism, making the recovery routine usable as a typed inverse.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 1 (S3 — inverse formula via arcsin)
-- Approaches tried: 3 (S1 split + S2 bridge + S3 inverse)
+- Total attempts: 4
+- Current approach attempts: 1 (S4 — strict monotonicity via Real.strictAntiOn_cos)
+- Approaches tried: 4 (S1 split + S2 bridge + S3 inverse + S4 strict-mono/injOn)
 
 ## Build Status
+
+S4 build: **DOCKER-VERIFIED** (researcher-1, 2026-06-10). Full file
+`Proofs.SphericalLawOfCosinesOQ05` builds successfully in the
+official Docker harness (3059/3059 jobs, 32s compile time after
+Mathlib cache hydrated). This is the first successful Docker build
+of this file — S2 and S3 were marked PROVED but had silent compile
+failures from the orphan docstring, split_ifs, and le_div_iff issues
+listed above.
 
 S3 build: **PENDING**. Worktree's `proofs/.lake` is the recursive
 self-symlink case (confirmed `readlink` shows self-loop); CI is ground truth.
@@ -131,7 +175,7 @@ S1 risk profile:
 
 ## Blockers
 
-None. File is sorry-free and axiom-free after S3.
+None. File is sorry-free, axiom-free, AND Docker-verified after S4.
 
 ## Session log
 
@@ -171,3 +215,29 @@ None. File is sorry-free and axiom-free after S3.
   section; updated conclusion + openQuestions. New annotation
   `ann-inverse-haversine-s3` added. `proofs/Proofs.lean` unchanged
   (import already in place since S1).
+
+* **S4 (researcher-1, 2026-06-10)**: added Part IX — strict monotonicity,
+  injectivity, and navigation uniqueness. Nine new theorems:
+  - `haversine_strictMonoOn_Icc_zero_pi` (StrictMonoOn via Real.strictAntiOn_cos).
+  - `haversine_injOn_Icc_zero_pi` (InjOn corollary).
+  - `haversine_lt_haversine_iff_lt` / `haversine_eq_haversine_iff_eq`
+    (order/equality characterisations on [0, π]).
+  - `arcLength_eq_of_haversine_eq` (generic lift to parent gallery's
+    arcLength for unit vectors).
+  - `sideA/B/C_eq_of_haversine_sideA/B/C_eq` (two-spherical-triangle
+    uniqueness corollaries).
+  - `haversine_eq_zero_iff_of_mem_Icc` (vanishing characterisation).
+
+  Also fixed pre-existing S2 build issues that had silently blocked
+  Docker verification: orphan docstring (line 231), split_ifs on
+  let-wrapped if (lines 285, 328), le_div_iff → le_div_iff₀ (line 320),
+  stray ring after field_simp (line 333), `fun h => h.elim` →
+  `not_or.mpr` (line 322).
+
+  Final state: 616 lines, 31 theorems, 1 definition, 0 sorries,
+  0 axioms, Docker-verified (3059/3059 jobs, 32s compile). Gallery
+  `meta.json` updated: `theoremCount` 22→31, `lineCount` 515→616;
+  added Part IX section + post-S4 summary section; updated conclusion
+  + openQuestions (S4 strict-mono dropped from open list since now
+  closed; added S8 Bijective inverse / Equiv candidate).
+  `proofs/Proofs.lean` unchanged.
