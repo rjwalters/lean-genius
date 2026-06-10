@@ -64,7 +64,7 @@
     },
     "type": "concept",
     "title": "Edge Count Partition",
-    "content": "**colourEdgeCount_total:**\n\nThe red and blue edge counts sum to C(|S|, 2):\n```\nred edges + blue edges = C(|S|, 2)\n```\n\nThis is the fundamental partition identity: every edge is exactly one colour. Currently stated with `sorry` — the proof requires showing the filter partition covers all ordered pairs with i < j.",
+    "content": "**colourEdgeCount_total:**\n\nThe red and blue edge counts sum to C(|S|, 2):\n```\nred edges + blue edges = C(|S|, 2)\n```\n\nThis is the fundamental partition identity: every edge is exactly one colour. Proved by showing the union of the two filter partitions covers all ordered pairs with i < j (via `Finset.card_union_of_disjoint`).",
     "mathContext": "This identity is the basis for the balance condition: if both colours exceed α · C(|S|,2), then α must be at most 1/2.",
     "significance": "key",
     "relatedConcepts": [
