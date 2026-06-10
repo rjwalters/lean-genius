@@ -22,6 +22,27 @@
     ]
   },
   {
+    "id": "eioq01x4-ann-01b",
+    "proofId": "euler-identity-oq-01-oq-04",
+    "range": { "startLine": 74, "endLine": 94 },
+    "type": "context",
+    "title": "§0 Header: Two Periodic.lift Paths to the Same Map",
+    "content": "The §0 docstring (lines 76–93) lays out the central obstruction in plain mathematical language before the proof tactics arrive. Mathlib v4.26.0 builds the circle quotient map two distinct ways via `Periodic.lift`. The first, `AddCircle.toCircle` (general $T$), uses `(scaled_exp_map_periodic T).lift`, evaluating on a representative $x$ to $\\exp((2\\pi/T) \\cdot x)$. The second, `Real.Angle.toCircle` (specialized to $T = 2\\pi$), uses `Circle.periodic_exp.lift`, evaluating directly to $\\exp(x)$. At $T = 2\\pi$ the two are propositionally equal (the $(2\\pi)/(2\\pi) = 1$ collapse), but Lean's definitional equality machinery does not see this without `div_self`. Critically, `AddCircle.homeomorphCircle'` — the bijection we want to reuse — uses `Real.Angle.toCircle` as its `toFun` (Mathlib `SpecialFunctions/Complex/Circle.lean:168`), so to expose the `≃+` with the canonical `AddCircle.toCircle` as forward map we must explicitly bridge the two. This is the entire substance of the §0 lemma in the next annotation.",
+    "mathContext": "Two distinct `Periodic.lift` constructions: $\\text{AddCircle.toCircle}_T : \\text{AddCircle}(T) \\to S^1$ vs $\\text{Real.Angle.toCircle} : \\text{AddCircle}(2\\pi) \\to S^1$. At $T = 2\\pi$ they agree on representatives by $2\\pi/2\\pi = 1$, but only propositionally — Lean treats them as distinct definitions until `div_self` collapses the quotient.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Periodic.lift",
+      "scaled_exp_map_periodic",
+      "Circle.periodic_exp",
+      "definitional vs propositional equality"
+    ],
+    "prerequisites": [
+      "Mathlib's Periodic.lift universal property",
+      "AddCircle.toCircle definition",
+      "Real.Angle.toCircle definition"
+    ]
+  },
+  {
     "id": "eioq01x4-ann-02",
     "proofId": "euler-identity-oq-01-oq-04",
     "range": { "startLine": 95, "endLine": 104 },

@@ -98,7 +98,8 @@
       "The subtle obstruction: `AddCircle.toCircle` (general `T`) and `Real.Angle.toCircle` (the `T = 2π` specialization) are *propositionally* but *not definitionally* equal. The former goes through `(scaled_exp_map_periodic T).lift` which evaluates to `Circle.exp ((2π/T) * x)` on representatives; the latter goes through `Circle.periodic_exp.lift` directly. At `T = 2π`, the `2π/2π = 1` reduction collapses them — but it's a `div_self` step, not `rfl`. A small `QuotientAddGroup.induction_on` proof bridges them.",
       "Choice of forward map: we use `AddCircle.toCircle` (the canonical/general quotient bearer) rather than `Real.Angle.toCircle`, even though `homeomorphCircle'` uses the latter. This matches the convention in the sibling `EulerIdentityOQ01OQ01OQ01.lean` which works in terms of `circleMap : ℝ → ℂ` (analogous to `AddCircle.toCircle` lifted), and means the `≃+` packaging composes cleanly with other `AddCircle.toCircle_*` lemmas in Mathlib (`toCircle_zero`, `toCircle_add`, `injective_toCircle`).",
       "The `Additive` wrapper is a type alias (`Additive α := α`), so `Additive.ofMul` and `Additive.toMul` are `rfl`-equalities, and `Add (Additive α)` is implemented as `Mul α` underneath. This is why `map_add'` reduces to `AddCircle.toCircle_add` + `rfl`: the multiplicative homomorphism law and the additive homomorphism law are literally the same proposition through the type alias.",
-      "Sibling complementarity: `EulerIdentityOQ01OQ01OQ01.lean` proves the underlying claim for the project's own `circleMap : ℝ → ℂ` packaged as `circleHom : Multiplicative ℝ →* ℂˣ`. This file is the *companion* on Mathlib's quotient side: `AddCircle (2π) ≃+ Additive Circle`. The two together exhibit `S^1` as a 1-parameter Lie group from both the universal cover and the quotient perspective."
+      "Sibling complementarity: `EulerIdentityOQ01OQ01OQ01.lean` proves the underlying claim for the project's own `circleMap : ℝ → ℂ` packaged as `circleHom : Multiplicative ℝ →* ℂˣ`. This file is the *companion* on Mathlib's quotient side: `AddCircle (2π) ≃+ Additive Circle`. The two together exhibit `S^1` as a 1-parameter Lie group from both the universal cover and the quotient perspective.",
+      "Pontryagin duality consequence: this `≃+` is the substrate on which the Fourier-analytic identification $\\widehat{S^1} \\cong \\mathbb{Z}$ is built. Once $\\text{AddCircle}(2\\pi)$ is recognized as the additive-group $S^1$, the continuous characters $\\chi_n(\\bar{t}) = e^{int}$ for $n \\in \\mathbb{Z}$ are exactly the additive-group homomorphisms $\\text{AddCircle}(2\\pi) \\to \\text{Additive Circle}$, and the dual group structure follows. The packaging here is the formal-Lean prerequisite for stating that duality theorem as an isomorphism rather than as a bare bijection of sets."
     ]
   },
   "sections": [
@@ -137,7 +138,7 @@
   ],
   "conclusion": {
     "summary": "`addCircleEquivAdditiveCircle : AddCircle (2 * π) ≃+ Additive Circle` packages Mathlib's existing topological bijection and homomorphism law into a full additive-group isomorphism. The construction is structurally trivial — combine `homeomorphCircle'` with `toCircle_add` — but required a propositional bridge between two Periodic.lift constructions that Mathlib v4.26.0 uses interchangeably without exposing their equality. The result is the first named `≃+` packaging in the Mathlib / Lean 4 ecosystem for the canonical identification $S^1 \\cong \\mathbb{R}/2\\pi\\mathbb{Z}$.",
-    "implications": "Closes the OQ-04 question posed in `euler-identity-oq-01`: yes, the Euler-formula scaffolding extends to the named additive-group isomorphism `AddCircle (2 * π) ≃+ Additive Circle`. The two @[simp] API lemmas make this isomorphism usable as a rewrite tool in downstream proofs about `AddCircle` and `Circle`. Together with the sibling file `EulerIdentityOQ01OQ01OQ01.lean` (which constructs the analogous `circleHom : Multiplicative ℝ →* ℂˣ` from the project's own `circleMap`), the gallery now exhibits $S^1$ as a 1-parameter Lie group from both the universal-cover perspective (`circleHom`) and the quotient perspective (`addCircleEquivAdditiveCircle`).",
+    "implications": "Closes the OQ-04 question posed in `euler-identity-oq-01`: yes, the Euler-formula scaffolding extends to the named additive-group isomorphism `AddCircle (2 * π) ≃+ Additive Circle`. The two @[simp] API lemmas make this isomorphism usable as a rewrite tool in downstream proofs about `AddCircle` and `Circle`. Together with the sibling file `EulerIdentityOQ01OQ01OQ01.lean` (which constructs the analogous `circleHom : Multiplicative ℝ →* ℂˣ` from the project's own `circleMap`), the gallery now exhibits $S^1$ as a 1-parameter Lie group from both the universal-cover perspective (`circleHom`) and the quotient perspective (`addCircleEquivAdditiveCircle`). Downstream consequences include: (1) the dual-group identification $\\widehat{S^1} \\cong \\mathbb{Z}$ becomes statable as an `AddEquiv` between continuous-character spaces, with the integer-indexed family $\\chi_n$ as its explicit basis; (2) the canonical Haar measure on $S^1$ transports through the equivalence to the (normalized) Lebesgue measure on $[0, 2\\pi]/\\sim$, formalizing the standard identification used in Fourier series; (3) any later development of the Lie-group exponential $\\mathfrak{u}(1) \\to U(1)$ in Mathlib now has its quotient-side packaging ready to use as a rewrite target.",
     "openQuestions": [
       "Should this `≃+` be upstreamed to Mathlib? The construction is mechanical and the missing-definition gap is small; the main barrier is choosing the canonical bearer (`AddCircle.toCircle` vs `Real.Angle.toCircle`) for the forward map.",
       "Can the construction be generalized to arbitrary `T > 0`, packaging `AddCircle T ≃+ Additive Circle` for all positive periods (the forward map being `t ↦ exp(2π i t / T)`)? Mathlib's `AddCircle.toCircle` is already parameterized this way; only the bridge lemma changes."
@@ -174,6 +175,16 @@
       "type": "related",
       "id": "euler-identity-oq-01",
       "description": "The parent open-question slug. OQ-04 specifically asks for the AddCircle ≃+ Additive Circle packaging that this file delivers."
+    },
+    {
+      "type": "depends-on",
+      "id": "euler-identity-oq-01-oq-01",
+      "description": "Foundational: provides the axiom-free Taylor-series proof of Euler's formula exp(it) = cos t + i sin t, the analytic identity that justifies why t ↦ exp(it) lands in the unit circle in the first place."
+    },
+    {
+      "type": "related",
+      "id": "euler-identity",
+      "description": "Sibling: the point-identity exp(iπ) + 1 = 0, which is the value of the addCircleEquivAdditiveCircle map at the quotient class of π (i.e., the order-2 element of S¹). Together they connect the structural quotient isomorphism to its most famous numerical specialization."
     }
   ],
   "leanFile": {
