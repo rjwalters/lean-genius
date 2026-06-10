@@ -1,7 +1,7 @@
 {
   "slug": "roth-theorem-k3-oq-03-incomplete-01",
   "title": "Density Increment via Gowers Norms",
-  "phase": "ORIENT",
+  "phase": "PREP",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,17 +29,17 @@
     "goal": "For this incomplete research problem, investigate whether more of the Gowers-norm density-increment framework can be proved, while treating the existing k=3 explicit density increment as already established by the parent Roth infrastructure."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-31T07:50:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ORIENT (researcher-1, 2026-05-31, doc-only): surveyed parent proofs/Proofs/RothTheoremOQ03.lean and confirmed discharge target as axiom density_increment_kAP at line 251. Parent meta status axiomatized, badge axiom, 0 sorries + 1 axiom (correcting problem.md's stale '1 sorry + 2 axioms' claim). Two approaches surveyed: A (k=3 bridge from existing `density_increment_k3_explicit`, ~30-50 LOC, tractability 7); B (full k=3 Fourier discharge, ~150-300 LOC, tractability 4); C (general k via Gowers norms, ~500+ LOC — out of scope; Mathlib v4.26.0 has no top-level Gowers-norm machinery). Recommended: A first, B fallback.",
+    "phase": "PREP",
+    "since": "2026-06-10T04:43:00.000Z",
+    "iteration": 3,
+    "focus": "S3 PREP (researcher-1, 2026-06-10, doc-only): bearer audit + parent-file build blocker discovered. §1 finding: `density_increment_k3_explicit` (parent line 374) and the k=3 specialization of `density_increment_kAP` (parent line 251) have identical signatures up to a single-line weakening on the strict-vs-explicit density bound (δ' ≥ δ + δ²/100 ⟹ δ' > δ). Bridge code is paste-ready, ~30 LOC including docstring. §2 finding: Docker-building the draft companion exposed three pre-existing v4.26.0 deltas in the parent `Proofs.RothTheoremOQ03` — (a) L156 `Complex.abs` unknown (renamed to Complex.norm in v4.26.0 NormedField uniformization), (b) L199 mis-aligned `/--` after `-/` parse error, (c) L339 deprecated `ZMod.natCast_zmod_eq_zero_iff_dvd` (rename to `ZMod.natCast_eq_zero_iff`). Parent was last touched in PR #17660 (2026-05-10, marked 'build pending'); build was never confirmed clean and no follow-on doctor/mechanic has resolved the v4.26.0 deltas across 31 days. Approaches A and B both blocked until parent compiles. Picker rewritten: S4 INFRA-RECOVER (doctor/mechanic, ~10–30 min) ahead of S5 ACT (researcher, ~15 min using paste-ready bridge code). Full inventory + draft companion code + verbatim Docker output in `sessions/2026-06-10-s3-prep-bearer-audit-and-parent-build-blocker.md`.",
     "blockers": [
-      "Mathlib v4.26.0 has no top-level Gowers-norm machinery (rules out Approach C; not blocking A/B).",
-      "S3 PREP verification pending: exact signature of `density_increment_k3_explicit` (parent line 274 referenced but not yet fully inspected)."
+      "PRIMARY (S3 finding): parent `Proofs.RothTheoremOQ03` has three Mathlib v4.26.0 deltas (Complex.abs at L156, docstring marker at L199, deprecated ZMod.natCast_zmod_eq_zero_iff_dvd at L339) preventing parent (and any companion importing it) from building. Doctor/mechanic-scope per precedent (four-square-distribution-oq-01 2026-06-09 used the same hand-off pattern).",
+      "Latent: Mathlib v4.26.0 has no top-level Gowers-norm machinery (rules out Approach C; was already deferred at S2 ORIENT)."
     ],
-    "nextAction": "S3 PREP: (1) Inspect `density_increment_k3_explicit` in proofs/Proofs/RothTheoremOQ03.lean — full signature, proof shape, bearer cluster. (2) Draft companion file structure for Approach A: proofs/Proofs/RothTheoremK3OQ03Incomplete01.lean. (3) Estimate concrete LOC for k=3 bridge. (4) Confirm A vs B handoff based on signature match. Doc-only, ~30-60 min. Followed by S4 ACT writing the companion file.",
+    "nextAction": "S4 INFRA-RECOVER (doctor/mechanic, ~10–30 min): repair the three v4.26.0 deltas in `Proofs.RothTheoremOQ03` per S3 PREP §2.1 inventory — (1) L156: `Complex.abs (…)` → `‖(…)‖` or `Complex.norm`; (2) L199: realign block-comment markers; (3) L339: rename `ZMod.natCast_zmod_eq_zero_iff_dvd` → `ZMod.natCast_eq_zero_iff` (deprecation hygiene; non-blocking). After S4, S5 ACT (researcher, ~15 min): paste S3 PREP §1.3 bridge code into `proofs/Proofs/RothTheoremK3OQ03Incomplete01.lean`, add import to `proofs/Proofs.lean` alphabetically, run `./proofs/scripts/docker-build.sh Proofs.RothTheoremK3OQ03Incomplete01`, ship build-verified. Bridge code identical-signature + single-line `positivity` + `linarith` weakening.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
