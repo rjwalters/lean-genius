@@ -1,11 +1,13 @@
 # Research State: triangular-reciprocals-oq-02
 
 ## Current State
-**Phase**: COMPLETE (S7+S8 — main `HasSum` proved; both files sorry-free)
+**Phase**: COMPLETE + GALLERY-PUBLISHED (S9 STATE-SYNC — gallery meta.json created)
 **Path**: full
-**Since**: 2026-06-01 (S7/S8 — researcher-1 ACT close Lemma 2 + main theorem)
-**Iteration**: 7 (S7) + 8 (S8) — bundled in one session
-**Prior**: S6 ACT close tail_to_zero (2026-06-01, researcher-1 — main + Aristotle)
+**Since**: 2026-06-10 (S9 — researcher-6 created src/data/proofs/triangular-reciprocals-oq-02/meta.json)
+**Iteration**: 9 (S9 STATE-SYNC)
+**Prior**: S8 ACT close main `HasSum` (2026-06-01, researcher-1)
+         S7 ACT close partial_sum_closed_form (2026-06-01, researcher-1)
+         S6 ACT close tail_to_zero (2026-06-01, researcher-1 — main + Aristotle)
          S5 ACT mechanical-close (2026-06-01, researcher-1 — 5/8 + 2/3 sorries)
          S4 ACT SCAFFOLD (2026-06-01, researcher-1 — both files build clean with sorries)
          S3 ORIENT→DECIDE (2026-06-01, researcher-1 — approach lock + signatures)
@@ -78,11 +80,27 @@ None — problem fully closed.
 
 ## Next Action
 
-**Problem complete.** Update gallery meta.json to reflect 0 sorries + verified
-status (was previously RECOVERING / surveyed). Consider Mathlib upstream
-contribution after the deprecation warnings for `Nat.Ico_succ_right` are
-addressed (replacement `Finset.Ico_succ_right_eq_Icc` not yet available in
-v4.26.0; will land in a future Mathlib bump).
+**Problem complete and gallery-published.** S9 STATE-SYNC (2026-06-10,
+researcher-6) created `src/data/proofs/triangular-reciprocals-oq-02/meta.json`
+with `status: "verified"`, `badge: "original"`, 0 sorries / 0 axioms, and
+6 sections matching the file structure. Counts: main 318 lines / 9 theorems,
+companion 97 lines / 3 theorems, Mathlib v4.26.0.
+
+Future work: Consider Mathlib upstream contribution after the deprecation
+warnings for `Nat.Ico_succ_right` are addressed (replacement
+`Finset.Ico_succ_right_eq_Icc` not yet available in v4.26.0; will land in a
+future Mathlib bump). The digamma reformulation (ψ(k+1) + γ)/k via
+`Real.deriv_Gamma_nat` is the natural follow-up corollary.
+
+## S9 Build Artifact (researcher-6, 2026-06-10)
+
+- `src/data/proofs/triangular-reciprocals-oq-02/meta.json` — new gallery
+  entry, status `verified`, badge `original`, 5 crossReferences (to
+  `triangular-reciprocals`, `-oq-03`, `-oq-01`, `harmonic-divergence`,
+  `basel-problem`), 8 mathlibDependencies, 5 originalContributions.
+- Docker re-verification of `Proofs.TriangularReciprocalsOQ02` +
+  `Proofs.TriangularReciprocalsOQ02Aristotle` against current Mathlib v4.26.0
+  toolchain (confirms S8 result still holds).
 
 ## S4–S8 Build Artifacts (researcher-1, 2026-06-01)
 
