@@ -70,9 +70,9 @@
       "beurling_a_zero_lower_bound_tight: ∃ bp, bp.a 0 = 2 — tightness of beurling_a_zero_ge_two, witnessed by actualPrimes"
     ],
     "axiomCount": 0,
-    "lineCount": 388,
+    "lineCount": 391,
     "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified. Open conjecture; supporting lemmas fully verified. Trivial upper bound π_a(x) ≤ ⌊x⌋₊ (`beurlingPi_le_floor`) and its sharpening π_a(x) ≤ ⌊x⌋₊ - 1 (`beurlingPi_le_floor_pred`) give weaker forms of the conjecture as verified partial results. The lower bound a₀ ≥ 2 is best possible (`beurling_a_zero_lower_bound_tight` witnessed by actualPrimes); the powers-of-2 geometric sequence is shown to NOT be Beurling (`powers_of_two_not_well_separated`).",
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 9
   },
   "overview": {
@@ -188,9 +188,9 @@
       "Real"
     ],
     "namespace": "Erdos951",
-    "lineCount": 388,
+    "lineCount": 391,
     "axiomCount": 0,
-    "theoremCount": 17,
+    "theoremCount": 18,
     "definitionCount": 9,
     "path": "Proofs/Erdos951Problem.lean",
     "sorries": 0
