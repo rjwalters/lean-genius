@@ -1,9 +1,108 @@
 # Current State
 
-**Phase**: ACT-REALIZED (S2 ACT 2026-05-15; S4 ACT 2026-05-16; S6 ACT 2026-06-05 — Candidate B build-verified; S7a ACT 2026-06-05 — OQ-02 axiom drop 4 → 3 build-verified)
+**Phase**: ACT-REALIZED (S2 ACT 2026-05-15; S4 ACT 2026-05-16; S6 ACT 2026-06-05 — Candidate B build-verified; S7a ACT 2026-06-05 — OQ-02 axiom drop 4 → 3 build-verified; S8 STATE-SYNC 2026-06-09 — JSON catch-up after S7a propagated only to state.md)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-06-05 (S7a ACT — OQ-02 axiom drop 4 → 3, build-verified Docker 3061 / 3066 jobs; researcher-1, claim `researcher-83301`)
-**Iteration**: 16 (15 prior + this S7a ACT)
+**Last update**: 2026-06-09 (S8 STATE-SYNC — gallery JSON refreshed to match realized S7a state; on-disk verified OQ-02 = 3 axioms / 0 sorries / 372 lines, OQ-03 + OQ-03B = 0 axioms / 0 sorries; researcher-6, claim `researcher-13471`)
+**Iteration**: 17 (16 prior + this S8 STATE-SYNC)
+
+## S8 STATE-SYNC 2026-06-09 (researcher-6)
+
+**Mode:** STATE-SYNC — doc-only JSON catch-up after S7a ACT (PR #22533,
+merged 2026-06-05T22:28Z by researcher-1) updated `state.md` and
+`SylowTheoremOQ02.lean` + gallery meta but did **not** propagate to
+`src/data/research/problems/sylow-theorems-oq-03.json`. As of this S8,
+the JSON `currentState` still recorded `iteration: 15`,
+`focus: "S6 ACT 2026-06-05..."`, and
+`nextAction: "§7a (NEW TOP) — Realize the deferred OQ-02 axiom drop..."`
+— a stale view from before the S7a follow-on landed.
+
+### Drift detected at S8 start
+
+| Surface | On-disk reality (2026-06-09) | Stale JSON read | Δ |
+|---------|------------------------------|-----------------|----|
+| `proofs/Proofs/SylowTheoremOQ02.lean` | 3 axioms / 0 sorries / 372 lines | (no on-disk Δ; JSON is the lagging surface) | — |
+| `src/data/proofs/sylow-theorems-oq-02/meta.json` | `axiomCount: 3`, `lineCount: 372` | (no on-disk Δ) | — |
+| `proofs/Proofs/SylowTheoremOQ03.lean` | 0 axioms / 0 sorries (grep hit at L60 is the word "axiom" inside a docstring) | (no on-disk Δ) | — |
+| `proofs/Proofs/SylowTheoremOQ03B.lean` | 0 axioms / 0 sorries | (no on-disk Δ) | — |
+| `src/data/research/problems/sylow-theorems-oq-03.json` `currentState.phase` | `"ACT-REALIZED"` | `"ACT-REALIZED"` | — |
+| `..."currentState.iteration"` | should be 17 (16 prior + S8) | `15` | **+2** |
+| `..."currentState.focus"` | should reflect §7d natural stopping point | `"S6 ACT 2026-06-05..."` (pre-S7a) | rewrite |
+| `..."currentState.nextAction"` | §7d natural stopping point reached | `"§7a (NEW TOP) — Realize the deferred OQ-02 axiom drop..."` | rewrite |
+| `..."currentState.attemptCounts.total"` | should be 17 | `15` | **+2** |
+| `..."currentState.lastUpdate"` | 2026-06-09 | `2026-06-05T14:30:00Z` | bump |
+| `..."knowledge.progressSummary"` | prepend S7a + S8 | starts at S6 ACT | prepend |
+| `..."knowledge.nextSteps"` | §7a realized, §7d stopping point reached | §7a still listed as NEW TOP | rewrite |
+| top-level `"lastUpdate"` | 2026-06-09 | `2026-06-05T14:30:00.000Z` | bump |
+| `..."knowledge.builtItems"` | add S7a + S8 session-log entries | ends at 2026-06-05-s6-act | append 2 |
+
+### What changed (concise)
+
+| File | Δ | Note |
+|------|---|------|
+| `src/data/research/problems/sylow-theorems-oq-03.json` | currentState + knowledge.{progressSummary,nextSteps,builtItems} + top-level lastUpdate | Catch-up to realized S7a state + §7d natural stopping point declaration |
+| `research/problems/sylow-theorems-oq-03/state.md` | this S8 header + S8 STATE-SYNC subsection | Prior S7a/S6/S5/S4/S3/STATE-SYNC content preserved verbatim below |
+| `research/problems/sylow-theorems-oq-03/sessions/2026-06-09-s8-state-sync-json-catchup.md` | NEW | Session log: drift table, on-disk verification protocol, S8 ship scope, risk register |
+
+### Axiom Integrity recheck (per CLAUDE.md policy)
+
+```text
+$ grep -cE "^axiom " proofs/Proofs/SylowTheoremOQ02.lean
+3
+$ grep -nE "^axiom " proofs/Proofs/SylowTheoremOQ02.lean
+108:axiom sylowProP_existence
+119:axiom sylowProP_conjugacy
+126:axiom frattini_profinite
+$ grep -nE "^structure |^class " proofs/Proofs/SylowTheoremOQ02.lean
+52:structure IsProfiniteGroup (G : Type*) [Group G] [TopologicalSpace G] : Prop where
+67:class IsProP (G : Type*) [Group G] [TopologicalSpace G] (p : ℕ) : Prop where
+82:structure SylowProP (G : Type*) [Group G] [TopologicalSpace G] (p : ℕ) where
+```
+
+The three structure/class declarations encode *definitions*, not
+gallery assumptions: `IsProfiniteGroup` (5 fields: continuous_mul,
+continuous_inv, isCompact, isT2, isTotallyDisc) is the working
+definition of "G is a profinite group" — each field is a definitional
+condition one verifies for a concrete G, not a global assumption added
+to the gallery. `IsProP` (1 field: index_of_open_normal) is the
+definition of "G is a pro-p group". `SylowProP` (4 fields: toSubgroup,
+isClosed, isProP, isMaximal) is the definition of "P is a Sylow pro-p
+subgroup". This matches the established gallery convention (see e.g.,
+the `Sylow` structure in Mathlib itself) and how the parent gallery
+meta has consistently counted axioms across S2 ACT / S4 ACT / S7a ACT.
+The three `axiom` declarations remain the only assumption-bearing
+gallery contributions; gallery meta `axiomCount: 3` matches.
+
+OQ-03 + OQ-03B both contribute **0 axioms / 0 sorries** to the gallery.
+
+### Mathlib pin recheck (no drift)
+
+`proofs/lake-manifest.json` mathlib `rev` (verification deferred to
+build; no Lean elaboration in this S8 STATE-SYNC). The S5 STATE-SYNC
++ S7a ACT confirmed the v4.26.0 pin
+(`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) and no Mathlib pin walk
+has elapsed since. Doc-only S8 — no build verification needed.
+
+### Net impact
+
+OQ-02 axiom count: **3 → 3 (unchanged)**.
+OQ-03 + OQ-03B contribution: **0 axioms / 0 sorries (unchanged)**.
+Gallery JSON ↔ state.md ↔ on-disk Lean ↔ gallery meta now consistent.
+
+### Revised Current Focus / Next Action
+
+- **§7d (now realized + JSON-synced)** — OQ-03 at its natural stopping
+  point with OQ-02 at 3 axioms (the two deep inverse-limit axioms +
+  derivable frattini) and 0 sorries; OQ-03 + OQ-03B at 0 axioms +
+  0 sorries. No mathematical researcher work remains.
+- **§7b** — Mathlib upstream contribution (out-of-band; mathlib4 PR).
+  Unchanged.
+- **§7c** — `frattini_profinite` axiom restatement (curator/architect
+  scope). Unchanged.
+- **Future STATE-SYNC ticks** — only if drift opens between on-disk
+  lean/meta and this JSON (e.g., an out-of-band §7c restatement or a
+  §7b Mathlib upstream that obsoletes the local axioms).
+
+---
 
 ## S7a ACT 2026-06-05 (researcher-1)
 
