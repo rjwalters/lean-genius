@@ -27,7 +27,7 @@
       {
         "theorem": "Nat.digits",
         "description": "Base-b digit representation of natural numbers (little-endian list)",
-        "module": "Mathlib.Data.Nat.Digits"
+        "module": "Mathlib.Data.Nat.Digits.Defs"
       },
       {
         "theorem": "Nat.Prime",
@@ -48,18 +48,19 @@
       "Proved digits01_sum_of_powers: {0,1}-digit numbers are sums of distinct powers of 3",
       "Exhaustive classification sparse_complete_to_15: for n ≤ 15, 2^n is ternary-sparse iff n ∈ {0, 2, 8}",
       "Bridge theorem sparse_classification_known_range combining small cases + Saye for full known-range classification",
-      "Variant classification dense_complete_to_15: digits {1,2} examples are n ∈ {1,3,5,7,15}",
+      "Variant classification dense_complete_to_15: digits {1,2} examples for n ≤ 15 are n ∈ {0,1,2,3,4,15} (corrected from earlier {1,3,5,7,15} after Mathlib v4.26.0 native_decide flagged 2^0=[1], 2^2=[1,1], 2^4=[1,2,1] as additional members)",
       "Proved variant_classification_known_range: 2^15 is the largest in Saye's verified range",
       "Kummer connection: ternary-sparse powers of 2 are sums of distinct powers of 3",
       "Proved pow3_sum_split: structural decomposition S.sum(3^·) = indicator(0∈S) + 3·(image pred).sum(3^·)",
       "Proved sum_of_distinct_powers_digits01: converse of digits01_sum_of_powers (via strong induction on the sum)",
       "Proved digits01_iff_finset_sum_of_pow3: complete iff characterization HasOnlyDigits01Base3 n ↔ ∃ S, n = S.sum(3^·)",
-      "Proved digits01_double_digits02: doubling preserves digit-bounding (HasOnlyDigits01Base3 n → all digits of 2n are in {0,2}); the digit-level no-carry statement that promotes the Kummer connection from a structural observation to a quantitative bound on v₃(C(2n,n))"
+      "Proved digits01_double_digits02: doubling preserves digit-bounding (HasOnlyDigits01Base3 n → all digits of 2n are in {0,2}); the digit-level no-carry statement that promotes the Kummer connection from a structural observation to a quantitative bound on v₃(C(2n,n))",
+      "Proved digits01_double_eq_map: pointwise digit-doubling equality `Nat.digits 3 (2*n) = (Nat.digits 3 n).map (·*2)` whenever n has only digits {0,1} — the *exact* no-carry statement strengthening digits01_double_digits02 from a digit-bound to a per-column equality, giving Kummer's theorem the lockstep digit relation needed to conclude v₃(C(2n,n)) = 0 for ternary-sparse n"
     ],
     "axiomCount": 1,
-    "lineCount": 310,
+    "lineCount": 352,
     "assumptions": "1 axiom: saye_computation (Saye 2022 computational verification for n ≤ 5.9×10²¹, deep). ErdosProblem406 and variant are defs, not axioms.",
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 6
   },
   "overview": {
@@ -83,16 +84,16 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Digits",
+      "Mathlib.Data.Nat.Digits.Defs",
       "Mathlib.Data.Nat.Prime.Basic",
       "Mathlib.Data.List.Basic",
       "Mathlib.Tactic"
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 310,
+    "lineCount": 352,
     "axiomCount": 1,
-    "theoremCount": 18,
+    "theoremCount": 19,
     "definitionCount": 6,
     "path": "Proofs/Erdos406Problem.lean",
     "sorries": 0

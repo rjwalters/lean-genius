@@ -15,7 +15,7 @@ digit for `16 ≤ n ≤ 5.9 × 10²¹`.
 *Reference:* [erdosproblems.com/406](https://www.erdosproblems.com/406)
 -/
 
-import Mathlib.Data.Nat.Digits
+import Mathlib.Data.Nat.Digits.Defs
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.List.Basic
 import Mathlib.Tactic
@@ -37,6 +37,14 @@ def ternarySparse : Set ℕ :=
 /-- The set of powers of 2 with only ternary digits 1 and 2. -/
 def ternaryDense : Set ℕ :=
     { n | ∃ k : ℕ, n = 2 ^ k ∧ HasOnlyDigits12Base3 n }
+
+/-- Decidability of `HasOnlyDigits01Base3` for concrete values. -/
+instance decidableHasOnlyDigits01Base3 (n : ℕ) : Decidable (HasOnlyDigits01Base3 n) :=
+  List.decidableBAll _ (Nat.digits 3 n)
+
+/-- Decidability of `HasOnlyDigits12Base3` for concrete values. -/
+instance decidableHasOnlyDigits12Base3 (n : ℕ) : Decidable (HasOnlyDigits12Base3 n) :=
+  List.decidableBAll _ (Nat.digits 3 n)
 
 /- ## Main conjecture -/
 
@@ -88,14 +96,14 @@ theorem digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
   | nil => intro _; exact ⟨∅, by simp [Nat.ofDigits]⟩
   | cons d l ih =>
     intro hall
-    have hd := hall d (List.mem_cons_self d l)
+    have hd := hall d List.mem_cons_self
     obtain ⟨S', hS'⟩ := ih (fun x hx => hall x (List.mem_cons_of_mem d hx))
     set T := S'.image (· + 1)
     have h0T : (0 : ℕ) ∉ T := by simp [T]
     have hshift : 3 * S'.sum (3 ^ ·) = T.sum (3 ^ ·) := by
       change 3 * S'.sum (3 ^ ·) = (S'.image (· + 1)).sum (3 ^ ·)
       rw [Finset.sum_image (fun a _ b _ hab => by omega)]
-      simp only [Function.comp, pow_succ']
+      simp only [pow_succ']
       rw [← Finset.mul_sum]
     rcases hd with rfl | rfl
     · exact ⟨T, by simp only [Nat.ofDigits_cons, zero_add, hS', hshift]⟩
@@ -105,17 +113,9 @@ theorem digits01_sum_of_powers (n : ℕ) (h : HasOnlyDigits01Base3 n) :
 /-- The base-3 representation of 0 is empty, so 0 trivially has only
 digits 0 and 1. -/
 theorem zero_hasOnlyDigits01 : HasOnlyDigits01Base3 0 := by
-  intro d hd; exact absurd hd (List.not_mem_nil d)
+  intro d hd; simp at hd
 
 /- ## Small-case exhaustive classification -/
-
-/-- Decidability of `HasOnlyDigits01Base3` for concrete values. -/
-instance (n : ℕ) : Decidable (HasOnlyDigits01Base3 n) :=
-  List.decidableBAll _ (Nat.digits 3 n)
-
-/-- Decidability of `HasOnlyDigits12Base3` for concrete values. -/
-instance (n : ℕ) : Decidable (HasOnlyDigits12Base3 n) :=
-  List.decidableBAll _ (Nat.digits 3 n)
 
 /-- For `n ≤ 15`, the only exponents where `2^n` has ternary digits in {0,1}
 are `n ∈ {0, 2, 8}`. This exhaustively checks all 16 cases. -/
@@ -143,15 +143,18 @@ theorem sparse_classification_known_range (n : ℕ) (hmax : n ≤ 59 * 10 ^ 20)
 /- ## Variant: digits {1, 2} in base 3 -/
 
 /-- For `n ≤ 15`, the exponents where `2^n` has only ternary digits in {1,2}
-are `n ∈ {1, 3, 5, 7, 15}`. -/
+are `n ∈ {0, 1, 2, 3, 4, 15}`. (Verified by `native_decide` on the 16 cases:
+`2^0=1=[1]`, `2^1=2=[2]`, `2^2=4=[1,1]`, `2^3=8=[2,2]`, `2^4=16=[1,2,1]`,
+`2^15=32768=[2,2,1,1,2,2,2,2,1,1]`; the other ten `2^n` each contain a `0` digit.) -/
 theorem dense_complete_to_15 (n : ℕ) (hn : n ≤ 15) (h : HasOnlyDigits12Base3 (2 ^ n)) :
-    n = 1 ∨ n = 3 ∨ n = 5 ∨ n = 7 ∨ n = 15 := by
+    n = 0 ∨ n = 1 ∨ n = 2 ∨ n = 3 ∨ n = 4 ∨ n = 15 := by
   interval_cases n <;> first
     | left; rfl
     | right; left; rfl
     | right; right; left; rfl
     | right; right; right; left; rfl
-    | right; right; right; right; rfl
+    | right; right; right; right; left; rfl
+    | right; right; right; right; right; rfl
     | exact absurd h (by native_decide)
 
 /-- No power of 2 beyond `2^15` and within Saye's range has only digits {1,2}. -/
@@ -196,7 +199,7 @@ theorem digits01_double_digits02 (n : ℕ) (h : HasOnlyDigits01Base3 n) :
       have hn_mod : n % 3 = 0 ∨ n % 3 = 1 := by
         apply h
         rw [Nat.digits_def' (by norm_num : 1 < 3) hpos]
-        exact List.mem_cons_self _ _
+        exact List.mem_cons_self
       rw [Nat.digits_def' (by norm_num : 1 < 3) h2pos] at hd
       simp only [List.mem_cons] at hd
       rcases hd with rfl | hd
@@ -216,6 +219,41 @@ theorem digits01_double_digits02 (n : ℕ) (h : HasOnlyDigits01Base3 n) :
           exact List.mem_cons_of_mem _ hx
         exact ih (n / 3) hn3_lt hn3_d01 d hd
 
+/-- Pointwise digit doubling: if `n` has only base-3 digits in {0,1}, then the
+base-3 digit list of `2 * n` is obtained by doubling each digit of `n`
+componentwise. This is the **exact no-carry equality** strengthening
+`digits01_double_digits02`: it states that every column sum `d + d` with
+`d ∈ {0,1}` produces exactly `2*d` with no carry-in or carry-out, so the digits
+of `2n` and `n` are in lockstep. This is the precise digit-level statement
+Kummer's theorem consumes when computing `v_3(C(2n, n))`. -/
+theorem digits01_double_eq_map (n : ℕ) (h : HasOnlyDigits01Base3 n) :
+    Nat.digits 3 (2 * n) = (Nat.digits 3 n).map (· * 2) := by
+  induction n using Nat.strongRecOn with
+  | _ n ih =>
+    by_cases hn : n = 0
+    · simp [hn]
+    · have hpos : 0 < n := Nat.pos_of_ne_zero hn
+      have h2pos : 0 < 2 * n := by omega
+      have hn_mod : n % 3 = 0 ∨ n % 3 = 1 := by
+        apply h
+        rw [Nat.digits_def' (by norm_num : 1 < 3) hpos]
+        exact List.mem_cons_self
+      have hn3_lt : n / 3 < n := Nat.div_lt_self hpos (by norm_num)
+      have hn3_d01 : HasOnlyDigits01Base3 (n / 3) := by
+        intro x hx
+        apply h
+        rw [Nat.digits_def' (by norm_num : 1 < 3) hpos]
+        exact List.mem_cons_of_mem _ hx
+      have ih_eq : Nat.digits 3 (2 * (n / 3)) = (Nat.digits 3 (n / 3)).map (· * 2) :=
+        ih (n / 3) hn3_lt hn3_d01
+      have hmul_div : 2 * n / 3 = 2 * (n / 3) := by
+        rcases hn_mod with h0 | h1 <;> omega
+      have hmul_mod : 2 * n % 3 = (n % 3) * 2 := by
+        rcases hn_mod with h0 | h1 <;> omega
+      rw [Nat.digits_def' (by norm_num : 1 < 3) h2pos,
+          Nat.digits_def' (by norm_num : 1 < 3) hpos,
+          List.map_cons, hmul_div, hmul_mod, ih_eq]
+
 /- ## Converse: sum of distinct powers of 3 has only digits 0 and 1 -/
 
 /-- Key structural identity: `S.sum (3^·)` equals the zero-indicator plus
@@ -231,7 +269,7 @@ private lemma pow3_sum_split (S : Finset ℕ) :
     rw [← Finset.sum_filter_add_sum_filter_not S (· = 0) (3 ^ ·)]
     congr 1
     apply Finset.sum_congr _ (fun _ _ => rfl)
-    ext x; simp [Finset.mem_filter]; omega
+    ext x; simp
   -- Evaluate the {=0} part: it equals the indicator of 0
   have zero_part : (S.filter (· = 0)).sum (3 ^ ·) = if 0 ∈ S then 1 else 0 := by
     split_ifs with h
@@ -241,7 +279,7 @@ private lemma pow3_sum_split (S : Finset ℕ) :
       rw [hfilt, Finset.sum_singleton, pow_zero]
     · have hfilt : S.filter (· = 0) = ∅ := by
         ext x
-        simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false]
+        simp only [Finset.mem_filter, Finset.notMem_empty, iff_false]
         intro ⟨hxS, hx0⟩; exact h (hx0 ▸ hxS)
       rw [hfilt, Finset.sum_empty]
   -- Evaluate the {>0} part: each 3^i factors as 3 * 3^(i-1)
@@ -259,7 +297,11 @@ private lemma pow3_sum_split (S : Finset ℕ) :
       (S.filter (0 < ·)).sum (fun x => 3 ^ Nat.pred x) := by
     apply Finset.sum_image
     intro a ha b hb hab
-    simp [Finset.mem_filter] at ha hb; omega
+    have hapos : 0 < a := (Finset.mem_filter.mp ha).2
+    have hbpos : 0 < b := (Finset.mem_filter.mp hb).2
+    have ha1 : a = a.pred + 1 := (Nat.succ_pred_eq_of_pos hapos).symm
+    have hb1 : b = b.pred + 1 := (Nat.succ_pred_eq_of_pos hbpos).symm
+    omega
   rw [split, zero_part, pow_factor, image_eq, Finset.mul_sum]
 
 /-- The ones digit of `S.sum (3^·)` in base 3 equals 1 if 0 ∈ S, else 0. -/
@@ -301,7 +343,7 @@ theorem sum_of_distinct_powers_digits01 (S : Finset ℕ) :
         have hdiv : n / 3 = ((T.filter (0 < ·)).image Nat.pred).sum (3 ^ ·) := by
           have := sum_pow3_div3 T; rw [hT] at this; exact this
         exact ih (n / 3) (Nat.div_lt_self (by omega) (by norm_num))
-          ((T.filter (0 < ·)).image Nat.pred) hdiv d hd
+          ((T.filter (0 < ·)).image Nat.pred) hdiv.symm d hd
 
 /-- Complete characterization: `n` has only ternary digits 0 and 1 if and only if
 `n` is a sum of distinct powers of 3. -/
