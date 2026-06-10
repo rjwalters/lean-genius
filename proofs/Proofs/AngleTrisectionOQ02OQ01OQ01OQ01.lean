@@ -128,12 +128,26 @@ The CharZero hypothesis in the original theorem was doing real mathematical work
 as the exact hypothesis needed.
 -/
 
-/-- In characteristic p > 0, an inseparable irreducible polynomial has trivial Galois group.
-    The divisibility natDegree(p) ∣ |Gal(p)| therefore fails whenever natDegree(p) > 1.
+/-- **WARNING — this axiom is MATHEMATICALLY FALSE as stated.**
 
-    Stated as an axiom: a full proof requires building the function field F_p(t), proving
-    irreducibility via Eisenstein's criterion, and computing the automorphism group of a
-    purely inseparable extension — substantial infrastructure beyond this gallery's scope. -/
+    The intended claim — "in char p, every inseparable irreducible f has |Gal(f)| = 1" —
+    fails whenever f = g(X^p) for g a separable irreducible of degree ≥ 2. In that case
+    f is inseparable irreducible but Gal(f) ≅ Gal(g) can be nontrivial.
+
+    **Explicit counterexample** (see `AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`):
+    over F = F₂(a), the polynomial f = X⁴ + X² + a is irreducible and inseparable
+    (f' = 0 in char 2), yet |Gal(f)| = 2 via the Artin-Schreier automorphism
+    α^{1/2} ↦ α^{1/2} + 1.
+
+    **Correct theorem** (proved without axioms in the OQ-01 descendant file):
+    `gal_card_one_of_purelyInseparable_splitting` — if `f.SplittingField` is purely
+    inseparable over F, then |Gal(f)| = 1. The honest hypothesis is purely-inseparable
+    splitting field, NOT mere inseparability of f.
+
+    This axiom is **retained only as a placeholder** so the downstream consequence
+    `natDeg_notDvd_gal_of_insep` still type-checks. Its statement does not reflect
+    a true mathematical fact; the descendant file `insep_gal_trivial_refuted` formally
+    exhibits the refutation. -/
 axiom insep_gal_trivial {F : Type*} [Field F] {p : ℕ} [CharP F p] [hp : Fact p.Prime]
     {f : F[X]} (hf_irr : Irreducible f) (hf_insep : ¬f.Separable) :
     Nat.card f.Gal = 1
@@ -160,7 +174,24 @@ theorem natDeg_notDvd_gal_of_insep {F : Type*} [Field F] {p : ℕ} [CharP F p]
 | `natDeg_notDvd_gal_of_insep` | Irred, Insep, degree > 1 | natDegree ∤ |Gal| |
 
 Theorems proved: 5 (0 sorries)
-Axioms: 1 (insep_gal_trivial — documents the inseparable counterexample)
+Axioms: 1 (`insep_gal_trivial` — **mathematically FALSE as stated**; see warning on the
+        axiom declaration. Retained as a placeholder pending S2 ACT migration to the
+        purely-inseparable-splitting-field hypothesis proved in the OQ-01 descendant.)
+
+## Integrity Note (S2 STATE-SYNC 2026-06-09)
+
+The axiom `insep_gal_trivial` was originally introduced as "documented but unformalized."
+The OQ-01 descendant file (`AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`) subsequently proved
+the axiom is **false** (X⁴+X²+a over F₂(a) has |Gal|=2, not 1) and supplied the correct
+replacement `gal_card_one_of_purelyInseparable_splitting` (0 axioms, 0 sorries). The
+correct hypothesis is purely-inseparable splitting field, not mere inseparability.
+
+The downstream theorem `natDeg_notDvd_gal_of_insep` in this file inherits the falsity of
+its hypothesis chain. A future ACT iteration should either (a) replace this axiom with
+the correct theorem and weaken `natDeg_notDvd_gal_of_insep` accordingly, or (b) lift the
+correct theorem and downstream consequence into this file from the descendant.
+
+This iteration is doc-only — no Lean bodies change; axiomCount and theoremCount unchanged.
 -/
 
 end AngleTrisectionOQ02OQ01OQ01OQ01
