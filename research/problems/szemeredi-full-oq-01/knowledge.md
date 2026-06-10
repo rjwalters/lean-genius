@@ -480,3 +480,140 @@ isolation-worktree blocker persists; no Lean changes.
   policy needs a new state for "ACT-ready but needs main-checkout".
   Until that exists, isolation-worktree researchers should default to
   passing on this slug class.
+
+
+---
+
+## Session 11 — OBSERVE-BUILD-REGRESSION (researcher-5, 2026-06-09)
+
+### Date / Author
+- 2026-06-09T17:55:00Z (claim `researcher-87911`, knowledge score 35 RICH)
+- researcher-5 isolation worktree
+  (`/Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-5`)
+- HEAD: `162265bae2c` (same as S10 inspection)
+
+### Mode / Outcome
+- REVISIT (depth-first claim, tier MODERATE+, 741-available pool)
+- OBSERVE (doc-only). S10's "S11 ACT" gate-step #2 (Docker baseline build)
+  failed; no Lean edit attempted.
+
+### Finding — `Proofs.FurstenbergCorrespondenceOQ01` build FAILS at HEAD
+
+S10 (2026-06-06) wrote:
+> "**S10 ACT** ... (2) Build-verify current `main` HEAD compiles:
+> `./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`.
+> (3) If build clean: paste the 60-line `limit_invariant_on_cylinder` proof
+> at line 779."
+
+S11 ran step (2). Docker baseline build at HEAD: **`=== Build failed with
+exit code 1 ===`** at job `[7743/7743]`. 28 hard errors + 45 warnings.
+
+Pin confirmation: `proofs/lake-manifest.json` mathlib `rev` =
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), identical to S9
+and S10. Pin has not drifted. The breakage is in the file itself
+relative to that pin.
+
+### Error inventory (28 hard errors)
+
+| Category | Line numbers | Count |
+|---|---|---|
+| Surface/parse (expected token — cascade) | 336, 434, 508, 532, 551 | 5 |
+| Type / instance synthesis | 101, 139, 206, 211, 219, 220, 324, 431, 434×2, 669×2 | 12 |
+| Tactic-level (split_ifs, ext, omega, calc, ⟨⟩) | 146, 153, 181, 214, 222, 246, 484, 485, 507 | 9 |
+| Mathlib rename | 674 (`Filter.eventually_of_forall` → `.Eventually.of_forall`) | 1 |
+| Cast | 329 (`mod_cast`) | 1 |
+
+Full inventory + hypothesis column per error in
+`sessions/2026-06-09-s11-observe-build-regression.md` §3.
+
+### Why S9's audit was insufficient
+
+S9's audit verified 5 lemmas at the pinned revision:
+`tendsto_measure_of_null_frontier_of_tendsto'`, `IsClopen.frontier_eq`,
+`le_of_tendsto_of_tendsto'`, `ENNReal.tendsto_nat_nhds_top`,
+`ENNReal.tendsto_inv_nat_nhds_zero`. None of those 5 appear in the
+S11 error list — they're still valid. The 28 errors are in OTHER
+neighborhoods:
+- L101 cylinder/IsClopen constructor (S7 "Fix #1" surface — now broken)
+- L146/L153 `split_ifs` (S7 "Fix #4" surface — now broken)
+- L214 `ext` extensionality (no applicable theorem)
+- L674 the `Filter.eventually_of_forall` rename (high-confidence)
+- 9 instance synthesis failures + 5 parse cascades
+
+S9's scope was "prove the 5-lemma proof draft will resolve"; S9 did NOT
+attempt the full file build. S11 did, and the gap was exposed.
+
+### Honesty calibration
+
+- The 28-error count: `grep -c "^error: Proofs" log` = 28 (plus 2 generic
+  build-failure markers for 30 total `^error` lines in the full log).
+- The 45 warnings include cascading "declaration uses 'sorry'" at
+  L145/L152/L340/L347/L372/L378 — these are **not** literal `sorry`
+  keywords; only L779 has that. The "uses sorry" warning comes from
+  Lean inserting internal sorry markers when a tactic block fails
+  mid-proof. The user-visible `sorry` count is unchanged at 1.
+- The "PR #14878 was insufficient" framing is informational. S11 did
+  not archaeologize PR #14878 to compare its diff against the current
+  errors; either (A) the original fix was incomplete or (B) Mathlib
+  shifted within v4.26.0 between merge (2026-05-02) and HEAD
+  (2026-06-09). The last touch to `lake-manifest.json` is commit
+  `ecb47b35601` (PR #19454, sperner-ndim-mathlib S2-A) which a future
+  Mechanic can git-archaeology to confirm.
+- The Docker symlink-blocker claim from S9/S10 (worktree's `proofs/.lake`
+  is self-referencing) is **falsified for Docker workflows**: docker-build.sh
+  works from this isolation worktree (S11 verified). Recent merged
+  research PRs from worktrees (e.g. #22680 picks-theorem
+  "Docker-verified") corroborate. The symlink only confuses local Lean
+  tactic mode, not Docker container builds. S9/S10's "must run from
+  main checkout" recommendation was over-conservative; the real
+  blocker is the file's own breakage.
+
+### Files modified
+
+- `state.md` (S11 OBSERVE block at head; Current Focus / Active
+  Approach / Blockers / Next Action rewritten; S10 narrative preserved
+  inline)
+- `knowledge.md` (this entry)
+- NEW `sessions/2026-06-09-s11-observe-build-regression.md` (~300 LOC)
+- `src/data/research/problems/szemeredi-full-oq-01.json` (currentState
+  refresh; iteration 9 → 11; phase ACT → OBSERVE; blockers list updated;
+  attemptCounts.total 8 → 9)
+- `research/registry.json` (lastUpdate refresh; phase ACT → OBSERVE)
+
+### Next Steps
+
+1. **S12 MECHANIC** (Lean repair, isolation-worktree OK):
+   - L101 (IsClopen constructor) + L674 (`Filter.eventually_of_forall`
+     rename) are one-line fixes; ship together first to test cascade
+     collapse.
+   - Then address residual instance synthesis (12 errors) and tactic
+     breakage (9 errors).
+   - Verify `docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+     returns clean exit before merging.
+2. **S13 ACT** (Researcher, post-Mechanic): paste the 60-line
+   `limit_invariant_on_cylinder` proof at L779. The S9-audited proof
+   draft (banked in state.md S10 §Next Action L178-219) remains valid.
+3. **Pool recommendation (advisory)**: transition slug to BLOCKED until
+   S12 Mechanic ships. Matches Session 6's intent (knowledge.md L75)
+   and prevents wasted Researcher cycles (4 sessions S8/S9/S10/S11
+   have now bounced off the same unrepaired surface). S11 author does
+   not invoke the transition — same conservative call S10 made — but
+   recommends an operator (Guide, Mechanic, or manual) do so.
+
+### Lesson
+
+- API-existence audits (S9-style "lemma X is at the pinned revision")
+  are necessary but not sufficient for "the file builds". A
+  proof-draft-driven audit verifies the proof site's tools exist; it
+  does not check the surrounding file's `IsClopen` constructors,
+  `split_ifs` interactions, `ext` lemma availability, `omega`
+  hypothesis contexts, `calc` step typing, or instance synthesis.
+  **Future API-audit sessions should pair the lemma-existence audit
+  with at least one Docker baseline build** — a single 5-min build
+  would have exposed this regression at S9, saving S10 and S11 each
+  a futile doc-only iteration.
+- The "isolation worktree blocks Docker build" claim that S9/S10
+  cited is over-broad. Docker handles the broken `.lake` symlink
+  fine; the only real isolation blocker is local Lean tactic mode
+  (e.g. tooling that follows the symlink directly). Future
+  isolation-worktree researchers can attempt Docker builds.

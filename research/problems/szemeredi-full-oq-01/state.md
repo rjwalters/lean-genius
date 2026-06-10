@@ -1,10 +1,86 @@
 # Research State: szemeredi-full-oq-01
 
 ## Current State
-**Phase**: ACT (host-recovered, Mathlib API audit complete — 1 sorry remaining; isolation-worktree blocked for tactic-level work)
+**Phase**: OBSERVE (build regression discovered — S10 "ACT-ready" claim falsified; 28 hard errors at HEAD `162265bae2c`; Mechanic repair required before S13 ACT)
 **Path**: full
-**Since**: 2026-06-06T13:00:00Z (S10 STATE-SYNC re-confirms S9 pin/audit + documents persistent `.lake` symlink-loop blocker)
-**Iteration**: 10 (last update: 2026-06-06 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), 9, this S10)
+**Since**: 2026-06-09T17:55:00Z (S11 OBSERVE Docker-build regression discovered)
+**Iteration**: 11 (last update: 2026-06-09 — Sessions 1, 2, 5, 6, 7, 8 (three S8 STATE-SYNC PRs), 9, 10, this S11)
+
+## S11 OBSERVE-BUILD-REGRESSION (researcher-5, 2026-06-09T17:55Z, doc-only)
+
+**Why S11 fires**: S10 (2026-06-06) recommended that "S11 ACT" run the
+Docker baseline build first as a gate. The researcher-5 worktree
+ran the gate; the baseline build at HEAD `162265bae2c` (same as S10's
+HEAD) **fails** with exit code 1 / `=== Build failed ===` at job
+7743/7743 elaboration of `Proofs.FurstenbergCorrespondenceOQ01`. This
+falsifies S8/S9/S10's shared narrative that the slug is ACT-ready.
+
+**Docker baseline (S10 gate-step 2, 2026-06-09T17:55Z)**:
+- Command: `LEAN_BUILD_TIMEOUT=20m ./proofs/scripts/docker-build.sh Proofs.FurstenbergCorrespondenceOQ01`
+- Environment: Docker 29.5.3, 105 Gi avail, image `lean4-arm64:v4.26.0`, Mathlib pin `2df2f0150c…` (identical to S9/S10).
+- Wall time: ~7 min (cache cold; downloaded 7727 mathlib files then compiled).
+- Result: 28 hard errors in `FurstenbergCorrespondenceOQ01.lean` + 45 warnings (mostly cascading "uses sorry" from failed tactic blocks). Full inventory in S11 session memo.
+
+**Error categories (28 hard errors)**:
+| Category | Lines | Count |
+|---|---|---|
+| Surface/parse cascade (expected token) | 336, 434, 508, 532, 551 | 5 |
+| Type / instance synthesis | 101, 139, 206, 211, 219, 220, 324, 431, 434×2, 669×2 | 12 |
+| Tactic-level (split_ifs, ext, omega, calc) | 146, 153, 181, 214, 222, 246, 484, 485, 507 | 9 |
+| Mathlib rename (`Filter.eventually_of_forall` → `.Eventually.of_forall`) | 674 | 1 |
+| Cast (mod_cast wrong type) | 329 | 1 |
+
+**Why S9's audit missed it**: S9 (2026-06-04) did a proof-draft-driven
+5-lemma audit — confirmed that the 5 lemmas the documented
+`limit_invariant_on_cylinder` proof would use exist at the pin. They
+DO. But the FILE has 28 errors elsewhere (cylinder/IsClopen at L101,
+split_ifs at L146/L153, ext at L214, the `eventually_of_forall` rename
+at L674, several instance-synthesis failures, and parse cascades). S9
+limited itself to lemma existence at the proof site and did not
+attempt the Docker build. The 5 audited lemmas remain valid — they're
+not on the error list — but lemma existence is necessary, not
+sufficient.
+
+**Why S7's "PR #14878 discharged the 35-error drift" claim is
+contradicted**: L101 (`IsClopen` constructor with
+`(isOpen_discrete {b}).preimage`) — exactly the form S7 introduced as
+"Fix #1" — fails today. L146/L153 (`split_ifs` after simp) — S7's
+"Fix #4" — also fails. Either PR #14878 was incomplete, or Mathlib
+shifted again within v4.26.0 between merge (2026-05-02) and HEAD
+(2026-06-09). S11 does not git-archaeology to determine which; either
+way the slug is not ACT-ready.
+
+**Recommendation (S11 advisory, not enacted)**:
+- Pool transition: BLOCKED (re-applying S6's call; matches knowledge.md
+  L75 intent). Researcher cycles wasted: S8/S9/S10/S11 all bounced off
+  this unrepaired surface. S11 author chooses NOT to invoke
+  `FORCE_COMPLETE=1 update` — same conservative call S10 made.
+- Repair path: S12 (Mechanic). Start with L101 + L674 (one-liner fixes),
+  rebuild, see cascade collapse; iterate on residual instance/tactic
+  errors. After Docker build green, S13 ACT can paste the
+  60-line `limit_invariant_on_cylinder` proof at L779 (the 5-lemma
+  proof body S9 audited is still valid for that step).
+
+**S11 closes in a 5-file doc-only motion**:
+1. `state.md` head — prepend this S11 block above S10; refresh Phase
+   header (ACT → OBSERVE; Since 2026-06-09T17:55Z; Iteration 10 → 11).
+2. `knowledge.md` — append Session 11 entry below Session 10.
+3. NEW `sessions/2026-06-09-s11-observe-build-regression.md` — full memo
+   (~300 LOC) with error inventory + repair guidance.
+4. `src/data/research/problems/szemeredi-full-oq-01.json` — bump
+   `currentState.iteration` 9 → 11, `phase` ACT → OBSERVE, rewrite
+   `focus`/`nextAction`/`blockers` to S11 narrative, `lastUpdate`
+   to 2026-06-09T17:55:00Z, `attemptCounts.total` 8 → 9.
+5. `research/registry.json` — bump `lastUpdate` to S11 timestamp;
+   `phase` ACT → OBSERVE.
+
+**Explicit non-actions (out of scope for S11)**:
+- No `.lean` edits to `proofs/Proofs/FurstenbergCorrespondenceOQ01.lean`.
+  Repair is Mechanic territory. The documented 60-line proof draft
+  remains banked for S13 ACT.
+- No `meta.json` edits.
+- No pool status change (advisory only).
+- No `lake-manifest.json` edits.
 
 ## S10 STATE-SYNC (researcher-1, 2026-06-06T13:00Z, doc-only)
 
@@ -134,38 +210,87 @@ class.
    audit, not Lean attempt; counted as session, not "approach attempt").
 5. `research/registry.json` — bump `lastUpdate` to S9 timestamp.
 
-## Current Focus (POST S9 OBSERVE-API-AUDIT)
-Host gates (Docker + ≥ 30 Gi disk) recovered as of 2026-06-04. The
-documented `limit_invariant_on_cylinder` proof structure (60 LOC,
-file comment L757-778) is API-sound at Mathlib pin v4.26.0
-(`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): all 5 referenced lemmas
-verified. S10 ACT can proceed to write/build/ship.
+## Current Focus (POST S11 OBSERVE-BUILD-REGRESSION)
+S10 recommended "S11 ACT" run a Docker baseline build first. S11 ran
+that gate (2026-06-09T17:55Z): **BUILD FAILED**. 28 hard errors in
+`FurstenbergCorrespondenceOQ01.lean` at HEAD `162265bae2c` (same HEAD
+S10 inspected). Mathlib pin unchanged from S9/S10
+(`2df2f0150c…` v4.26.0). The slug is **not ACT-ready** —
+S9's 5-lemma audit (still valid) was insufficient because the file
+has tactic-level + surface-syntax + instance-synthesis breakage
+elsewhere (cylinder/IsClopen constructor at L101, `split_ifs`
+interactions at L146/L153, `ext` extensionality at L214,
+`Filter.eventually_of_forall` → `.Eventually.of_forall` rename at
+L674, plus 9 instance synthesis + 9 tactic + 5 parse-cascade errors).
+Full inventory in `sessions/2026-06-09-s11-observe-build-regression.md`.
 
-## Active Approach (POST S9)
-Unchanged from S8: ENNReal-level Portmanteau via `tendsto_measure_of_null_frontier_of_tendsto'`
-on clopen `S` and `shift⁻¹S` (frontier = ∅), combined with telescoping
-bounds `cesaroMeasure_preimage_le/ge` (L529/L548) and the error term
-`(Ns k + 1)⁻¹ → 0`. Both directions then `le_antisymm`.
+## Active Approach (POST S11)
+**Paused**. The 60-line `limit_invariant_on_cylinder` proof draft
+(S9-audited, banked in §S10 of this state.md L178-219) remains valid
+mathematically and API-soundly for its proof site. It cannot be
+pasted/validated until the surrounding file builds. Approach
+selection deferred to S13 ACT (post-Mechanic repair).
 
-## Attempt Count (POST S9)
-- Total attempts: 8 sessions (1 survey, 1 Cesàro, 1 proof-write blocked,
+## Attempt Count (POST S11)
+- Total attempts: 9 sessions (1 survey, 1 Cesàro, 1 proof-write blocked,
   1 documentation, 1 Mathlib API repair via PR #14878, 2 STATE-SYNC docs,
-  1 OBSERVE-API-AUDIT). The three Session-8 PRs (#19974, #19976, #19977)
-  collapse to "Session 8" for counting purposes.
+  1 OBSERVE-API-AUDIT, 1 STATE-SYNC S10, 1 OBSERVE-BUILD-REGRESSION S11).
+  The three Session-8 PRs (#19974, #19976, #19977) collapse to "Session 8"
+  for counting purposes.
 - Current approach attempts: 1 (Session 7's Mathlib repair, merged
-  + S9's API verification audit).
-- Approaches tried: Cesàro / T-invariance limit / Mathlib API repair / Mathlib API audit.
+  but **now demonstrated insufficient** by S11's Docker rebuild —
+  see S11 session memo §5 for the contradiction analysis).
+- Approaches tried: Cesàro / T-invariance limit / Mathlib API repair /
+  Mathlib API audit / Docker build regression.
 
-## Blockers (POST S9)
-- None at slug level. ACT-ready.
-- None at host level (Docker + disk gates pass on this researcher-1
-  worktree's host as of 2026-06-04T16:00Z).
-- Residual: this worktree's `proofs/.lake` is a self-referencing symlink
-  (isolation artifact), so local Mathlib source lookup requires either
-  curl-from-GitHub-at-pin (what S9 did) or running ACT from the main
-  checkout (recommended for S10).
+## Blockers (POST S11)
+- **Slug-level: BUILD REGRESSION**. 28 hard errors in
+  `FurstenbergCorrespondenceOQ01.lean` at HEAD `162265bae2c`
+  (`grep -c "^error: Proofs" /tmp/s11-build.log` = 28). File does
+  not elaborate. Mechanic repair required before any Researcher ACT
+  can proceed.
+- None at host level (Docker 29.5.3 responsive, 105 Gi avail —
+  far above 30 Gi cascade-safety floor).
+- Symlink "blocker" S9/S10 cited (worktree's `proofs/.lake` is
+  self-referencing) is **falsified for Docker workflows**: docker-build.sh
+  works from isolation worktrees (recent merged PRs like #22680 confirm,
+  S11 confirmed in this run). The "circular symlink" warning only applies
+  to local Lean tactic mode, not Docker container builds.
 
-## Next Action (POST S9)
+## Next Action (POST S11)
+**S12 MECHANIC** (Lean repair, isolation-worktree OK per S11):
+1. From any worktree (isolation OK; Docker handles `.lake` symlink),
+   address the 28 errors. Start with one-liners that cascade:
+   - L101: `IsClopen` constructor argument order — likely needs
+     `IsClopen.mk` / `⟨isOpen, isClosed⟩` swap.
+   - L674: `Filter.eventually_of_forall` → `Filter.Eventually.of_forall`
+     (capital E, dot-form; verifiable by grepping Mathlib at the pinned
+     `rev`).
+2. Re-build after each surface fix; watch the 5 "expected token" errors
+   collapse (they're parser cascades).
+3. Address residual instance synthesis failures (L139, L206, L211, L219,
+   L220, L324, L431, L669) one-by-one. Each may be a class-name rename
+   or argument shuffle.
+4. Tactic-level (L146/L153 `split_ifs`, L181/L222 goals, L214 `ext`,
+   L485 `omega`, L507 `calc`) — likely needs `simp only [...]` to
+   preserve `if-then-else` for split_ifs, or replace with `by_cases`.
+5. Verify clean `lake build Proofs.FurstenbergCorrespondenceOQ01`.
+6. Ship Mechanic PR with the surface fixes.
+
+**S13 ACT** (Researcher, post-Mechanic, banked):
+1. Once main HEAD compiles, paste the 60-line
+   `limit_invariant_on_cylinder` proof at line 779. Structure
+   (S9-audited, verbatim from S10 §"Next Action (POST S9)" L178-219):
+   uses `IsClopen.frontier_eq`, `tendsto_measure_of_null_frontier_of_tendsto'`,
+   `ENNReal.tendsto_inv_nat_nhds_zero`, `le_of_tendsto_of_tendsto'`,
+   `cesaroMeasure_preimage_le/ge`. Both directions then `le_antisymm`.
+2. Docker re-build to verify.
+3. Ship S13 ACT PR.
+
+After S13 ACT: S14 ACT for `seqCompact_probabilityMeasure_cantor`
+(~150-200 lines via Prokhorov ingredients in Mathlib v4.26).
+
+## Next Action (HISTORICAL — pre-S11, see S10 for ACT-ready narrative now falsified)
 **S10 ACT** (Lean edit, from a non-isolated checkout):
 1. From `/Users/rwalters/GitHub/lean-genius` (NOT a `.loom/worktrees/*`
    isolation), confirm `proofs/.lake/packages/mathlib` resolves to a real
