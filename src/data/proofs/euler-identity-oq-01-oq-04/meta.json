@@ -98,7 +98,8 @@
       "The subtle obstruction: `AddCircle.toCircle` (general `T`) and `Real.Angle.toCircle` (the `T = 2π` specialization) are *propositionally* but *not definitionally* equal. The former goes through `(scaled_exp_map_periodic T).lift` which evaluates to `Circle.exp ((2π/T) * x)` on representatives; the latter goes through `Circle.periodic_exp.lift` directly. At `T = 2π`, the `2π/2π = 1` reduction collapses them — but it's a `div_self` step, not `rfl`. A small `QuotientAddGroup.induction_on` proof bridges them.",
       "Choice of forward map: we use `AddCircle.toCircle` (the canonical/general quotient bearer) rather than `Real.Angle.toCircle`, even though `homeomorphCircle'` uses the latter. This matches the convention in the sibling `EulerIdentityOQ01OQ01OQ01.lean` which works in terms of `circleMap : ℝ → ℂ` (analogous to `AddCircle.toCircle` lifted), and means the `≃+` packaging composes cleanly with other `AddCircle.toCircle_*` lemmas in Mathlib (`toCircle_zero`, `toCircle_add`, `injective_toCircle`).",
       "The `Additive` wrapper is a type alias (`Additive α := α`), so `Additive.ofMul` and `Additive.toMul` are `rfl`-equalities, and `Add (Additive α)` is implemented as `Mul α` underneath. This is why `map_add'` reduces to `AddCircle.toCircle_add` + `rfl`: the multiplicative homomorphism law and the additive homomorphism law are literally the same proposition through the type alias.",
-      "Sibling complementarity: `EulerIdentityOQ01OQ01OQ01.lean` proves the underlying claim for the project's own `circleMap : ℝ → ℂ` packaged as `circleHom : Multiplicative ℝ →* ℂˣ`. This file is the *companion* on Mathlib's quotient side: `AddCircle (2π) ≃+ Additive Circle`. The two together exhibit `S^1` as a 1-parameter Lie group from both the universal cover and the quotient perspective."
+      "Sibling complementarity: `EulerIdentityOQ01OQ01OQ01.lean` proves the underlying claim for the project's own `circleMap : ℝ → ℂ` packaged as `circleHom : Multiplicative ℝ →* ℂˣ`. This file is the *companion* on Mathlib's quotient side: `AddCircle (2π) ≃+ Additive Circle`. The two together exhibit `S^1` as a 1-parameter Lie group from both the universal cover and the quotient perspective.",
+      "Two-tactic interplay (the craft detail): the AddEquiv proof navigates the `AddCircle.toCircle` ↔ `Real.Angle.toCircle` ↔ `homeomorphCircle'.toFun` chain using two *different* tactics in succession. First, `rw [addCircle_toCircle_eq_angle_toCircle]` discharges the *propositional* gap (the `2π/2π = 1` reduction) between `AddCircle.toCircle` and `Real.Angle.toCircle`. Then `change` discharges the *definitional* identity between `Real.Angle.toCircle` and `homeomorphCircle'.toFun` (which holds because Mathlib's `homeomorphCircle'` was constructed with `@[simps]` and unfolds to `Real.Angle.toCircle` by `rfl`). Mixing `rw` (for propositional steps) and `change` (for definitional steps) is the right pattern when a proof crosses two different kinds of equality — a `rw` for a `change` would fail (no equality to rewrite); a `change` for a `rw` would fail (not definitionally equal). Both are needed and they cannot be swapped."
     ]
   },
   "sections": [
@@ -140,7 +141,9 @@
     "implications": "Closes the OQ-04 question posed in `euler-identity-oq-01`: yes, the Euler-formula scaffolding extends to the named additive-group isomorphism `AddCircle (2 * π) ≃+ Additive Circle`. The two @[simp] API lemmas make this isomorphism usable as a rewrite tool in downstream proofs about `AddCircle` and `Circle`. Together with the sibling file `EulerIdentityOQ01OQ01OQ01.lean` (which constructs the analogous `circleHom : Multiplicative ℝ →* ℂˣ` from the project's own `circleMap`), the gallery now exhibits $S^1$ as a 1-parameter Lie group from both the universal-cover perspective (`circleHom`) and the quotient perspective (`addCircleEquivAdditiveCircle`).",
     "openQuestions": [
       "Should this `≃+` be upstreamed to Mathlib? The construction is mechanical and the missing-definition gap is small; the main barrier is choosing the canonical bearer (`AddCircle.toCircle` vs `Real.Angle.toCircle`) for the forward map.",
-      "Can the construction be generalized to arbitrary `T > 0`, packaging `AddCircle T ≃+ Additive Circle` for all positive periods (the forward map being `t ↦ exp(2π i t / T)`)? Mathlib's `AddCircle.toCircle` is already parameterized this way; only the bridge lemma changes."
+      "Can the construction be generalized to arbitrary `T > 0`, packaging `AddCircle T ≃+ Additive Circle` for all positive periods (the forward map being `t ↦ exp(2π i t / T)`)? Mathlib's `AddCircle.toCircle` is already parameterized this way; only the bridge lemma changes.",
+      "Can this be lifted to a `LieGroup`-isomorphism rather than just an `AddEquiv`? `AddCircle (2π)` and `Circle` both already have Mathlib `LieGroup` (or at least `TopologicalGroup` + smooth-manifold) structure; the next step would be a `≃L` (continuous-linear / Lie isomorphism) that records the smooth structure, not just the topology and algebra. This would let downstream Lie-theory proofs cite the canonical $S^1 \\cong \\mathbb{R}/2\\pi\\mathbb{Z}$ as a single LieGroup isomorphism.",
+      "Does the dual character lattice $\\widehat{S^1} \\cong \\mathbb{Z}$ (a foundational Fourier-analytic identity) follow cleanly from this `≃+`? Pontryagin duality says $\\widehat{\\mathbb{R}/2\\pi\\mathbb{Z}} \\cong (2\\pi\\mathbb{Z})^{\\vee} \\cong \\mathbb{Z}$; transporting along this `≃+` should give the character-by-integer indexing $\\chi_n(\\theta) = e^{in\\theta}$ used throughout harmonic analysis on the circle. Mathlib has the duality theory but the explicit character lattice isomorphism would be a small follow-up."
     ]
   },
   "references": {
@@ -174,6 +177,16 @@
       "type": "related",
       "id": "euler-identity-oq-01",
       "description": "The parent open-question slug. OQ-04 specifically asks for the AddCircle ≃+ Additive Circle packaging that this file delivers."
+    },
+    {
+      "type": "depends-on",
+      "id": "euler-identity-oq-01-oq-01",
+      "description": "Axiom-elimination intermediate: that file removes the axiom dependency from EulerIdentityOQ01, putting Euler's formula on an axiom-free footing. This file inherits that axiom-free status — the construction here uses 0 axioms because the upstream Mathlib pieces (AddCircle.toCircle, homeomorphCircle', toCircle_add) are all axiom-free, and the chain back through the sibling formalizations preserves that."
+    },
+    {
+      "type": "related",
+      "id": "euler-identity",
+      "description": "Great-grandparent: the original point identity $e^{i\\pi} + 1 = 0$ that motivates the entire OQ-01 lineage. This file delivers the structural generalization: the same Euler exponential $t \\mapsto e^{it}$ that produces $e^{i\\pi} = -1$ at $t = \\pi$ is the carrier of the additive-group isomorphism $\\mathbb{R}/2\\pi\\mathbb{Z} \\simeq_+ S^1$."
     }
   ],
   "leanFile": {
