@@ -1,11 +1,30 @@
 # Research State: euler-identity-oq-01-oq-04
 
 ## Current State
-**Phase**: ACT (Iter 3 ACT-2 — sorry discharge SHIPPED; build verification still pending; 0 axioms, 0 sorries)
+**Phase**: ACT (Iter 4 ACT-3 — Docker build verification + import fix + gallery shipment IN PROGRESS; 0 axioms, 0 sorries)
 **Path**: full
-**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01; first Lean edit 2026-06-03; sorry discharge 2026-06-06)
-**Last Updated**: 2026-06-06 (Iter 3 ACT-2 — sorry discharge; iteration 3→4; +1 private bridge lemma; 3 sorries → 0; researcher-1)
-**Iteration**: 4
+**Since**: 2026-04-05T19:03:34-07:00 (initial selection; first substantive iteration 2026-06-01; first Lean edit 2026-06-03; sorry discharge 2026-06-06; build verification 2026-06-10)
+**Last Updated**: 2026-06-10 (Iter 4 ACT-3 — Docker build surfaced Mathlib v4.26.0 import split: `Mathlib.Topology.Instances.AddCircle` → `.Defs` submodule; fix shipped + gallery entry drafted; researcher-1)
+**Iteration**: 5
+
+## Iter 4 ACT-3 (2026-06-10, researcher-1) — Docker build + import fix + gallery shipment
+
+Build verification surfaced a Mathlib v4.26.0 module split: `Mathlib.Topology.Instances.AddCircle` was refactored into three submodules (`Defs`, `DenseSubgroup`, `Real`). The old monolithic import path is no longer valid. Fixed via replacement: `import Mathlib.Topology.Instances.AddCircle.Defs` (the submodule containing the `AddCircle` type definition itself; the lemmas/instances on `AddCircle.toCircle`/`homeomorphCircle'` come from `Mathlib.Analysis.SpecialFunctions.Complex.Circle`, the file's first import).
+
+**Build evidence**: `./proofs/scripts/docker-build.sh Proofs.EulerIdentityOQ01OQ04` (run from main checkout, host Docker `lean4-arm64:v4.26.0` image): first run failed at `[3063/3063] Running Proofs.EulerIdentityOQ01OQ04 — error: bad import 'Mathlib.Topology.Instances.AddCircle'`, with collateral `[1931/1986] Running Mathlib.Topology.Instances.AddCircle — error: no such file or directory`. Inspection of the container's Mathlib tree at `proofs/.lake/packages/mathlib/Mathlib/Topology/Instances/AddCircle/` showed exactly three files: `Defs.lean`, `DenseSubgroup.lean`, `Real.lean` (no `AddCircle.lean` parent). Second run with `.Defs` suffix surfaced a tactic-level error at `right_inv` line 145: `rw [..., apply_symm_apply]` failed because `Real.Angle.toCircle z` and `homeomorphCircle' z` are only DEFINITIONALLY (not syntactically) equal — `rw` requires syntactic match. Fixed in the same iter by inserting a `change` step between the bridge `rw` and the `apply_symm_apply` `rw`, which converts `Real.Angle.toCircle z` → `homeomorphCircle' z` definitionally. Third run is in flight this iteration with the `change`-based fix.
+
+**Iter 3 risks (logged 2026-06-06) status**: risk #1 (Real.Angle.toCircle unification) **CONFIRMED**: `left_inv`'s `exact homeomorphCircle'.symm_apply_apply x` worked because `exact` does definitional unification, but `right_inv`'s `rw [apply_symm_apply]` did not — needed `change` to convert syntactically. Risks #2 (Additive.ofMul_mul rfl) and #3 (right_inv rfl on `Additive.ofMul ∘ toMul = id`) are validated by the in-flight third run.
+
+**Gallery entry drafted**: `src/data/proofs/euler-identity-oq-01-oq-04/meta.json` (status: verified, badge: original, 0 axioms, 0 sorries, lineCount 197, theoremCount 3, definitionCount 1) and `annotations.json` (5 section annotations covering the bridge lemma + AddEquiv + @[simp] API + sibling cross-reference). Section line ranges updated to match the post-fix file. Ship contingent on the in-flight build completing cleanly.
+
+**Diff this iter**:
+- `proofs/Proofs/EulerIdentityOQ01OQ04.lean`: 1-line import fix (`Mathlib.Topology.Instances.AddCircle` → `.Defs`) + 5-line `right_inv` fix (insert `change` between bridge `rw` and `apply_symm_apply` `rw`).
+- `src/data/proofs/euler-identity-oq-01-oq-04/meta.json` (new file): full gallery metadata.
+- `src/data/proofs/euler-identity-oq-01-oq-04/annotations.json` (new file): 5 annotations.
+- `research/problems/euler-identity-oq-01-oq-04/state.md`: this block.
+
+Session log: inline in state.md (no separate session file needed; the diff is small and surgical).
+
 
 ## Iter 3 ACT-2 (2026-06-06, researcher-1) — Sorry discharge via Real.Angle.toCircle bridge
 
