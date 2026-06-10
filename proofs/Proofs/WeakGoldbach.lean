@@ -254,12 +254,25 @@ theorem binary_implies_weak (h : BinaryGoldbachConjecture) : WeakGoldbachConject
 
 /-! ## Axiomatized Results -/
 
-/-- Vinogradov (1937): sufficiently large odd numbers are sums of 3 primes -/
-axiom vinogradov_ternary_goldbach :
-    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n → IsSumOfThreePrimes n
+/-- Helfgott (2013): the weak Goldbach conjecture is true.
 
-/-- Helfgott (2013): the weak Goldbach conjecture is true -/
+    This is the deep result: every odd `n > 5` is a sum of three primes.
+    It is the single load-bearing assumption that the historical
+    `vinogradov_ternary_goldbach` (1937) and `helfgott_explicit_bound`
+    are now derived from (as theorems, below). -/
 axiom helfgott_weak_goldbach : WeakGoldbachConjecture
+
+/-- Vinogradov (1937): sufficiently large odd numbers are sums of 3 primes.
+
+    **S8 ACT (axiom-elimination):** Originally axiomatized; now derived
+    from the stronger `helfgott_weak_goldbach` (which is unconditional
+    for all `n > 5`). Take `N₀ := 5`; the existential is then satisfied
+    by Helfgott's theorem applied pointwise. The underlying mathematical
+    assumption is unchanged — Vinogradov is *implied by* Helfgott's
+    1933 conditional result strengthened to the unconditional form. -/
+theorem vinogradov_ternary_goldbach :
+    ∃ N₀ : ℕ, ∀ n : ℕ, n > N₀ → Odd n → IsSumOfThreePrimes n :=
+  ⟨5, helfgott_weak_goldbach⟩
 
 /-- Every odd n > 5 is sum of three primes -/
 theorem weak_goldbach (n : ℕ) (hn : n > 5) (hodd : Odd n) :
@@ -601,11 +614,17 @@ def twinPrimeConstant : ℝ := 0.6601618158
 
 /-- Helfgott's explicit bound: all odd n > 5 are sums of three primes.
     The computational part verified odd n ≤ 8.875 × 10³⁰.
-    The analytic part (improved Vinogradov) handled n > 8.875 × 10³⁰. -/
-axiom helfgott_explicit_bound :
-    -- The threshold N₀ in Vinogradov's theorem is at most 8.875 × 10³⁰
-    -- This is small enough to check computationally below
-    ∀ n : ℕ, n > 5 → Odd n → IsSumOfThreePrimes n
+    The analytic part (improved Vinogradov) handled n > 8.875 × 10³⁰.
+
+    **S8 ACT (axiom-elimination):** Originally axiomatized; now derived
+    from `helfgott_weak_goldbach`, since the statement here is
+    syntactically `WeakGoldbachConjecture` unfolded. The threshold
+    `8.875 × 10³⁰` from Helfgott's 2013 paper is not a separate
+    mathematical assumption — it is the *content* of the unconditional
+    main theorem. The underlying assumption set is unchanged. -/
+theorem helfgott_explicit_bound :
+    ∀ n : ℕ, n > 5 → Odd n → IsSumOfThreePrimes n :=
+  helfgott_weak_goldbach
 
 /-- The Levy conjecture (1963): every odd integer > 5 can be written as
     p + 2q where p, q are primes. Stronger than weak Goldbach. -/
