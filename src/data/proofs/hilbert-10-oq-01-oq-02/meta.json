@@ -120,11 +120,16 @@
       "finIntersectionFinset_isDiophantineDefinition: Σ₁ class is closed under `Finset RatSubset`-indexed intersection of arbitrary Σ₁-definable subsets — Finset analog of iter 14's `finIntersectionList_isDiophantineDefinition`, transported via `Finset.mem_toList` and iter 4 class congruence (iter 17 Path B; axiom-free)",
       "finUnionFinset_isCoDiophantineDefinition: Π₁ class is closed under `Finset RatSubset`-indexed union of arbitrary Π₁-definable subsets — Finset analog of iter 14's `finUnionList_isCoDiophantineDefinition` (iter 17 Path B; axiom-free)",
       "finUnionFinset_isDiophantineDefinition: Σ₁ class is closed under `Finset RatSubset`-indexed union of arbitrary Σ₁-definable subsets — Finset analog of iter 15's `finUnionList_isDiophantineDefinition`, completing the Finset-indexed parity with iter 14/15's list-indexed 2×2 grid (iter 17 Path B; axiom-free)",
-      "finIntersectionFinset_isCoDiophantineDefinition: Π₁ class is closed under `Finset RatSubset`-indexed intersection of arbitrary Π₁-definable subsets — Finset analog of iter 15's `finIntersectionList_isCoDiophantineDefinition`. Together with the other three Finset closures and the four singletons-only Finset transports, the 2×2 finite Boolean closure grid for Σ₁/Π₁ over ℚ is now populated at three arities: BINARY (iter 9, 12, 13), LIST (iter 14, 15), and FINSET (iter 17). The OPEN question — countably-infinite ⋃_{n : ℤ} {n} — is unchanged: iter 17 only extends the FINITE side (iter 17 Path B; axiom-free)"
+      "finIntersectionFinset_isCoDiophantineDefinition: Π₁ class is closed under `Finset RatSubset`-indexed intersection of arbitrary Π₁-definable subsets — Finset analog of iter 15's `finIntersectionList_isCoDiophantineDefinition`. Together with the other three Finset closures and the four singletons-only Finset transports, the 2×2 finite Boolean closure grid for Σ₁/Π₁ over ℚ is now populated at three arities: BINARY (iter 9, 12, 13), LIST (iter 14, 15), and FINSET (iter 17). The OPEN question — countably-infinite ⋃_{n : ℤ} {n} — is unchanged: iter 17 only extends the FINITE side (iter 17 Path B; axiom-free)",
+      "h10_decidable_implies_not_sigma1_integers: contrapositive re-export of `integers_diophantine_sigma1_implies_h10_q_undecidable`. If H10/ℚ is decidable, then ℤ is NOT Σ₁-definable in ℚ. Pure logical glue — no new axioms (iter 27a-δ Part VIII.33)",
+      "h10_decidable_implies_not_codiophantine_complement: contrapositive re-export of `codiophantine_complement_implies_h10_q_undecidable`. If H10/ℚ is decidable, then ℚ \\ ℤ is NOT Π₁-definable in ℚ. Symmetric companion of `h10_decidable_implies_not_sigma1_integers` on the Π₁(complement) side, equivalent via the iter-5 `integers_diophantine_iff_complement_codiophantine` duality. No new axioms (iter 27a-δ Part VIII.33)",
+      "mazur_implies_pi2_strict_above_sigma1_at_integers: Mazur + Koenigsmann → Π₂(ℤ) ∧ ¬Σ₁(ℤ). Packages the two existing conditional facts (Koenigsmann's Π₂(ℤ) axiom and `mazur_implies_not_sigma1_definable`) into a single conjunctive strict-containment witness at the integer subset, making explicit that Mazur posits the Σ₁ ⊊ Π₂ gap to be non-trivial at `IntSubset`. No new axioms (iter 27a-δ Part VIII.33)",
+      "h10_decidable_implies_pi2_strict_above_sigma1_at_integers: H10_Rational_Decidable + Koenigsmann → Π₂(ℤ) ∧ ¬Σ₁(ℤ). Same Σ₁ ⊊ Π₂ non-collapse conclusion as `mazur_implies_pi2_strict_above_sigma1_at_integers`, from a different conditional antecedent: H10/ℚ-decidability also forces the gap to be non-trivial at `IntSubset`. No new axioms (iter 27a-δ Part VIII.33)",
+      "mazur_implies_sigma2_strict_above_codiophantine_at_complement_integers: Mazur + Koenigsmann/duality → Σ₂(ℚ\\ℤ) ∧ ¬Π₁(ℚ\\ℤ). Symmetric Π₁/Σ₂ analog of `mazur_implies_pi2_strict_above_sigma1_at_integers` transported to the complement side via the iter-5 Σ₁/Π₁ duality and the iter-5 Σ₂/Π₂ duality (the Σ₂(ℚ\\ℤ) corollary `koenigsmann_implies_complement_existentialUniversal` is already on file). No new axioms (iter 27a-δ Part VIII.33)"
     ],
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 3082,
+    "lineCount": 3174,
     "prerequisites": [
       "Hilbert's 10th problem over ℚ (companion file Hilbert10OQ01.lean)",
       "Arithmetic hierarchy (Σ_n / Π_n) at the level of polynomial formulas",
@@ -132,7 +137,7 @@
     ],
     "assumptions": "One axiom: `koenigsmann_2016_universal` — ℤ is Π₂-definable in ℚ. This is PROVED in Koenigsmann (Annals 2016) via an explicit polynomial built from Hilbert symbols and quaternion algebras over ℚ; axiomatized here pending a Lean formalization of that construction. All other results in this file (Σ₁ → ¬H10/ℚ-decidable, Mazur → ¬Σ₁, the Σ₁/Π₁ and Σ₂/Π₂ dualities and their specializations to ℤ ⊂ ℚ, the Π₁(ℚ\\ℤ) re-exports, the Π₁ ⊆ Σ₂ containment, and the Σ₂(ℚ\\ℤ) corollary of Koenigsmann) are NOT new axioms — they are logical consequences of the OQ-01 axioms together with the Σ₁/Π₁ and Σ₂/Π₂ equivalences proved here. Both duality theorems use classical excluded middle (`Classical.byContradiction`) to convert ¬¬p to p; the Σ₂/Π₂ duality and the Σ₂(ℚ\\ℤ) corollary use it twice, the Σ₁/Π₁ duality once.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 85,
+    "theoremCount": 90,
     "definitionCount": 15
   },
   "overview": {
@@ -266,9 +271,9 @@
     ],
     "opens": [],
     "namespace": "Hilbert10Rationals",
-    "lineCount": 3082,
+    "lineCount": 3174,
     "axiomCount": 1,
-    "theoremCount": 85,
+    "theoremCount": 90,
     "definitionCount": 15,
     "path": "Proofs/Hilbert10OQ01OQ02.lean",
     "sorries": 0
