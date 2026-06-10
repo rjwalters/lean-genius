@@ -1,19 +1,34 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: PREP (S2-B PREP — Session 18, researcher-1, 2026-06-09.
-Truncation-lift design split into S2-B₁ "no universal `Nat` bound"
-(immediate paste-ready ACT target, ~15 LOC body using existing
-`midpointDecomp` + `tight_excess_count`) and S2-B₂ "`lp (fun _ : ℕ => ℝ) 2`
-lift" (multi-session deferred, requires linear-isometric embedding +
-`Decomposition.map` transport machinery, ~150-250 LOC). Bearer audit
-re-confirmed five S2-A bearers at Mathlib v4.26.0; one new bearer
-(`Nat.lt_succ_self`) for S2-B₁ ACT. Doc-only; researcher worktree
-`.lake` symlink loop persists.)
+**Phase**: ACT (S2-B₁ ACT — Session 19, researcher-10, 2026-06-10.
+Executed Session 18 §3.1 paste-ready recipe verbatim:
+`no_universal_shapley_folkman_bound` landed in `ShapleyFolkmanOQ01.lean`.
++33 LOC (306 → 339), +1 theorem (6 → 7), 0 new sorries / axioms.
+Docker build clean: ✔ Built `Proofs.ShapleyFolkmanOQ01` (231s, 7744/7744).
+No fallbacks fired. S2-A and S2-B₁ lines complete. S2-B₂ (genuine `lp 2`
+lift) remains multi-session deferred.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-09 (S2-B PREP, researcher-1)
-**Iteration**: 18
+**Last Updated**: 2026-06-10 (S2-B₁ ACT, researcher-10)
+**Iteration**: 19
+
+## Session 19 — S2-B₁ ACT: `no_universal_shapley_folkman_bound` (researcher-10, 2026-06-10)
+
+**Mode.** ACT (`.lean` + JSON edits).
+
+Executed Session 18 §3.1 recipe verbatim. Pasted 33 LOC (docstring +
+theorem) immediately before `end ShapleyFolkmanOQ01`. The three-step
+body — `refine ⟨midpointDecomp (K + 1), ?_⟩; rw [tight_excess_count
+(K + 1) (midpointDecomp (K + 1))]; exact Nat.lt_succ_self K` —
+elaborates without rewrite or fallback hints.
+
+Docker build clean: `./proofs/scripts/docker-build.sh
+Proofs.ShapleyFolkmanOQ01` →
+`✔ [7744/7744] Built Proofs.ShapleyFolkmanOQ01 (231s)`.
+
+Full session report at
+`sessions/2026-06-10-s2b1-act-no-universal-bound.md`.
 
 ## Session 18 — S2-B PREP: truncation-lift design (researcher-1, 2026-06-09)
 
@@ -98,7 +113,8 @@ direction; this session adds only the tactical recipe layer.
 | Iter | Phase | Mode | PR | Description |
 |------|-------|------|----|----|
 | 17   | ACT   | `.lean` | #22322 | S2-A ACT-4 ACT: `exists_tight_decomposition` (recipe executed). |
-| **18** | **PREP** | **doc** | **(this)** | **S2-B PREP: truncation-lift design — split into S2-B₁ paste-ready recipe (~15 LOC, `no_universal_shapley_folkman_bound`) and S2-B₂ (`lp 2` lift) multi-session deferred. Bearer audit complete; race-safety probes clean. Doc-only.** |
+| 18 | PREP | doc | #22542 | S2-B PREP: truncation-lift design — split into S2-B₁ paste-ready recipe (~15 LOC, `no_universal_shapley_folkman_bound`) and S2-B₂ (`lp 2` lift) multi-session deferred. |
+| **19** | **ACT** | **`.lean`** | **(this PR)** | **S2-B₁ ACT: `no_universal_shapley_folkman_bound` (recipe executed). +33 LOC (306 → 339), +1 theorem (6 → 7), 0 sorries / axioms; Docker build clean (231s, 7744/7744).** |
 
 **Next action.** S2-B₁ ACT: paste session §3.1 verbatim into
 `proofs/Proofs/ShapleyFolkmanOQ01.lean` immediately before
