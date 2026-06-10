@@ -92,47 +92,111 @@ For each position i in a sequence, we define:
 These are always at least 1 (the single element subsequence).
 -/
 
-/-- There exists an increasing subsequence of given length ending at position i -/
+/-- There exists an increasing subsequence of given length ending at position i.
+    The last index (when `len > 0`) equals `i`; all earlier indices are `< i`.
+    The condition `j.val = len - 1` is used (rather than `j = Fin.last (len - 1)`)
+    to keep the position-index in `Fin len` and avoid `Fin (len - 1 + 1)` mismatches. -/
 def HasIncreasingEndingAt {α : Type*} [Preorder α] {n : ℕ}
     (f : Sequence α n) (i : Fin n) (len : ℕ) : Prop :=
   ∃ (k : Fin len → Fin n),
     StrictMono k ∧
-    (∀ j, k j < i ∨ (j = Fin.last (len - 1) ∧ k j = i)) ∧
+    (∀ j, k j < i ∨ (j.val = len - 1 ∧ k j = i)) ∧
     StrictMono (f ∘ k)
 
-/-- There exists a decreasing subsequence of given length ending at position i -/
+/-- There exists a decreasing subsequence of given length ending at position i. -/
 def HasDecreasingEndingAt {α : Type*} [Preorder α] {n : ℕ}
     (f : Sequence α n) (i : Fin n) (len : ℕ) : Prop :=
   ∃ (k : Fin len → Fin n),
     StrictMono k ∧
-    (∀ j, k j < i ∨ (j = Fin.last (len - 1) ∧ k j = i)) ∧
+    (∀ j, k j < i ∨ (j.val = len - 1 ∧ k j = i)) ∧
     StrictAnti (f ∘ k)
+
+/- ## Singleton subsequence (ACT-1: erdos-szekeres-oq-01)
+
+The constant map at `i` witnesses both `HasIncreasingEndingAt f i 1` and
+`HasDecreasingEndingAt f i 1`. These are the base cases for `maxIncLen`/`maxDecLen`
+and establish the lower bound `1 ≤ maxIncLen f i`.
+-/
+
+/-- The constant map at `i` is an increasing subsequence of length 1 ending at `i`. -/
+lemma hasIncreasingEndingAt_one {α : Type*} [Preorder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : HasIncreasingEndingAt f i 1 := by
+  refine ⟨fun _ => i, ?_, ?_, ?_⟩
+  · intro a b hab
+    have heq : a = b := Subsingleton.elim a b
+    exact absurd hab (heq ▸ lt_irrefl _)
+  · intro j
+    right
+    refine ⟨?_, rfl⟩
+    have : j.val < 1 := j.isLt
+    omega
+  · intro a b hab
+    have heq : a = b := Subsingleton.elim a b
+    exact absurd hab (heq ▸ lt_irrefl _)
+
+/-- The constant map at `i` is a decreasing subsequence of length 1 ending at `i`. -/
+lemma hasDecreasingEndingAt_one {α : Type*} [Preorder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : HasDecreasingEndingAt f i 1 := by
+  refine ⟨fun _ => i, ?_, ?_, ?_⟩
+  · intro a b hab
+    have heq : a = b := Subsingleton.elim a b
+    exact absurd hab (heq ▸ lt_irrefl _)
+  · intro j
+    right
+    refine ⟨?_, rfl⟩
+    have : j.val < 1 := j.isLt
+    omega
+  · intro a b hab
+    have heq : a = b := Subsingleton.elim a b
+    exact absurd hab (heq ▸ lt_irrefl _)
+
+/-- Longest increasing subsequence length ending at position `i`.
+    Defined as the greatest `k ≤ i.val + 1` with `HasIncreasingEndingAt f i k`. -/
+noncomputable def maxIncLen {α : Type*} [LinearOrder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : ℕ :=
+  open Classical in
+  Nat.findGreatest (HasIncreasingEndingAt f i) (i.val + 1)
+
+/-- Longest decreasing subsequence length ending at position `i`. -/
+noncomputable def maxDecLen {α : Type*} [LinearOrder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : ℕ :=
+  open Classical in
+  Nat.findGreatest (HasDecreasingEndingAt f i) (i.val + 1)
+
+/-- `maxIncLen f i ≥ 1` — the singleton subsequence at `i` is a witness. -/
+lemma one_le_maxIncLen {α : Type*} [LinearOrder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : 1 ≤ maxIncLen f i := by
+  classical
+  show 1 ≤ Nat.findGreatest (HasIncreasingEndingAt f i) (i.val + 1)
+  exact Nat.le_findGreatest (by omega) (hasIncreasingEndingAt_one f i)
+
+/-- `maxDecLen f i ≥ 1` — the singleton subsequence at `i` is a witness. -/
+lemma one_le_maxDecLen {α : Type*} [LinearOrder α] {n : ℕ}
+    (f : Sequence α n) (i : Fin n) : 1 ≤ maxDecLen f i := by
+  classical
+  show 1 ≤ Nat.findGreatest (HasDecreasingEndingAt f i) (i.val + 1)
+  exact Nat.le_findGreatest (by omega) (hasDecreasingEndingAt_one f i)
 
 /- ## The Main Theorem
 
 We state and prove the Erdős–Szekeres theorem in several equivalent forms.
 -/
 
-/-- **Erdős–Szekeres Theorem (Existence Form)**
+/-- **Erdős–Szekeres Theorem (Existence Form, axiomatized)**
 
 Any sequence of (r-1)(s-1) + 1 distinct elements contains either:
 - An increasing subsequence of length r, or
 - A decreasing subsequence of length s
 
-This is the contrapositive pigeonhole argument: if neither exists, we can
-assign distinct pairs from {1,...,r-1} × {1,...,s-1} to each position,
-but there are only (r-1)(s-1) such pairs and (r-1)(s-1) + 1 positions. -/
-/-- **Axiom:** Erdős–Szekeres theorem via pigeonhole principle.
+The proof uses the pigeonhole principle on (longest-inc, longest-dec) pairs.
+For each position i, let aᵢ = length of longest increasing subsequence ending at i
+and bᵢ = length of longest decreasing subsequence ending at i.
 
-    The proof uses the pigeonhole principle on (longest-inc, longest-dec) pairs.
-    For each position i, let aᵢ = length of longest increasing subsequence ending at i
-    and bᵢ = length of longest decreasing subsequence ending at i.
-
-    Key observations:
-    1. All pairs (aᵢ, bᵢ) are distinct
-    2. If no r-increasing and no s-decreasing exist, then 1 ≤ aᵢ ≤ r-1 and 1 ≤ bᵢ ≤ s-1
-    3. So we have n distinct pairs in a set of size (r-1)(s-1)
-    4. If n ≥ (r-1)(s-1) + 1, this is impossible by pigeonhole -/
+Key observations:
+1. All pairs (aᵢ, bᵢ) are distinct
+2. If no r-increasing and no s-decreasing exist, then 1 ≤ aᵢ ≤ r-1 and 1 ≤ bᵢ ≤ s-1
+3. So we have n distinct pairs in a set of size (r-1)(s-1)
+4. If n ≥ (r-1)(s-1) + 1, this is impossible by pigeonhole -/
 axiom erdos_szekeres_existence_axiom {α : Type*} [LinearOrder α] {n : ℕ}
     (f : Sequence α n) (hf : Injective f) (r s : ℕ) (hr : r ≥ 1) (hs : s ≥ 1)
     (hn : n ≥ (r - 1) * (s - 1) + 1) :
