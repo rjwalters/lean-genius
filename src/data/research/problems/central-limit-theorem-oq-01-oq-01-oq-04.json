@@ -29,46 +29,53 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-04T12:00:00Z",
-    "iteration": 2,
-    "focus": "Gallery entry created: 18 theorems, 2 axioms, 0 sorries. Docker build pending.",
+    "since": "2026-06-06T17:04:03Z",
+    "iteration": 15,
+    "focus": "S15 STATE-SYNC 2026-06-10 (researcher-1): doc-only registry catch-up reconciling 5-week gap between registry (lastUpdate 2026-05-03, iteration 2) and origin/main HEAD `98d1689ec26`. Four ACTs landed in the interim — S9 (`gaussian_has_scalar_exponent`, PR #19652, axiomCount 7→6), S11 (`gaussian_is_operator_stable`, PR #21987, 6→5, Docker 7744), S13 (`gaussian_in_own_doa`, PR #22113, 5→4), S14 (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, 4→3, Docker 7744). Current state: 3 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`, `finite_cov_in_gaussian_doa`), 13 theorems (per S14 commit; grep finds 14 with broader regex), 7 defs, 447 LOC, 0 sorries. S15 session memo: `sessions/2026-06-10-s15-state-sync-post-s14.md`. Gallery `meta.json` already accurate (synced via PR #22591); only research registry stale.",
     "blockers": [
-      "eigenvalue_ge_half requires Mathlib spectral theory for matrix eigenvalue bounds",
-      "meerschaert_scheffler requires weak convergence of probability measures in R^d"
+      "operator_stable_linear_image: general case requires Meerschaert-Scheffler 2001 Thm 7.2.1 (witness construction with drift correction for singular B). Invertible-B subcase tractable.",
+      "meerschaert_scheffler: deep DOA biconditional (MS 2001 Ch. 8); research-level. Not researcher-tractable in single session.",
+      "finite_cov_in_gaussian_doa: matrix CLT for finite-variance distributions. Per S14 docstring, same `tendsto_const_nhds` issue as S13 ACT's `gaussian_in_own_doa` — should port S13 recipe directly."
     ],
-    "nextAction": "Verify Docker build; consider partial axiom elimination via spectral theory",
+    "nextAction": "S16 ACT — discharge `finite_cov_in_gaussian_doa` by porting the S13 ACT recipe (PR #22113's S12 PREP §3 paste). Witness `A_n = n^{-1/2} • I`, `b_n = 0`; reduce function-space tendsto to pointwise via `Filter.tendsto_pi_nhds`; per-ξ pointwise step replicates the Gaussian argument with finite-covariance Lindeberg conditions instead of closed-form self-similarity. Estimated ~40 LOC add, ~6 LOC del, single Docker pass (~5-7 min). Pre-ACT: bearer audit confirming `Filter.tendsto_pi_nhds`, `gaussian_operator_stable`, `InOperatorDomainOfAttraction` signatures unchanged at lake-pin `2df2f01…`. Detailed plan in S15 memo §S16 ACT picker.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 15,
+      "currentApproach": 5,
+      "approachesTried": 5
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Gallery entry created. 18 theorems proved, 2 axioms (eigenvalue bound + DOA theorem). Key: Gaussian operator-stability fully proved. PR pending.",
+    "progressSummary": "PROGRESS (S15 STATE-SYNC 2026-06-10): four ACTs merged since the S1 baseline reduce the file from 6+ axioms to 3 — S9 ACT (`gaussian_has_scalar_exponent`, PR #19652), S11 ACT (`gaussian_is_operator_stable`, PR #21987, Docker-verified), S13 ACT (`gaussian_in_own_doa`, PR #22113, S12 PREP recipe), S14 ACT (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, Docker 7744). At HEAD `98d1689ec26`: 3 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`, `finite_cov_in_gaussian_doa`), 13 theorems, 7 defs, 447 LOC, 0 sorries. Gaussian operator-stability is now fully proved end-to-end including DOA membership. Highest-readiness next move: S16 ACT discharging `finite_cov_in_gaussian_doa` via the S13 recipe port (same `tendsto_const_nhds` issue family).",
     "builtItems": [
-      "exp_neg_div_pow: (exp(-x/n))^n = exp(-x) in C",
-      "quadForm_scale_inv_sqrt: quadForm(xi/sqrt(n)) = (1/n)*quadForm(xi)",
-      "gaussian_operator_stable: Gaussian is operator-stable with exponent 1/2",
-      "gaussian_has_scalar_exponent: HasScalarExponent d (gaussCharFun Sigma) (1/2)",
-      "alpha_stable_is_operator_stable: 1D alpha-stable embeds as operator-stable",
-      "operator_stable_linear_image: closure under linear maps",
-      "gaussian_in_own_doa: Gaussian is in its own domain of attraction"
+      "exp_neg_div_pow: (exp(-x/n))^n = exp(-x) in C (S1, 2026-05-04)",
+      "quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ) (S1, 2026-05-04)",
+      "gaussian_has_scalar_exponent: HasScalarExponent d (gaussCharFun Σ) (1/2) — S9 ACT axiom→theorem (PR #19652, 2026-05-22)",
+      "gaussian_is_operator_stable: Gaussian is operator-stable with exponent E = (1/2)·I — S11 ACT axiom→theorem (PR #21987, 2026-06-01, Docker 7744)",
+      "gaussian_in_own_doa: Gaussian N(0,Σ) is in its own operator domain of attraction — S13 ACT axiom→theorem via Filter.tendsto_pi_nhds + gaussian_operator_stable composition (PR #22113, 2026-06-02)",
+      "scalar_exponent_ge_half: Re(λ(E)) ≥ 1/2 — S14 ACT vacuous-discharge / encoding-bug report (PR #22591, 2026-06-06). Original axiom had unsatisfiable non-degeneracy hypothesis; proved by exfalso.",
+      "alpha_stable_is_operator_stable_matrix: matrix-witness form of 1D α-stable operator-stability (parallel to gaussian_is_operator_stable for α = 2) — S14 ACT new theorem (PR #22591, 2026-06-06)",
+      "alpha_stable_is_operator_stable: 1D α-stable embeds as operator-stable with scalar exponent 1/α (scalar form, predecessor of S14 ACT's matrix form)"
     ],
     "insights": [
       "Core identity (exp(-x/n))^n = exp(-x) is the algebraic heart of Gaussian self-similarity",
-      "Quadratic form scaling quadForm(xi/sqrt(n)) = (1/n)*quadForm(xi) follows from sqrt(n)*sqrt(n) = n",
-      "Eigenvalue constraint Re(lambda(E)) >= 1/2 is the matrix analog of alpha <= 2",
+      "Quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ) follows from √n·√n = n",
+      "Eigenvalue constraint Re(λ(E)) ≥ 1/2 is the matrix analog of α ≤ 2 — but the original axiom encoding was buggy (S14): the non-degeneracy hypothesis `hnd : ∀ v : Fin d → ℝ, (∀ i, v i = 0) → False` is vacuously true (instantiate at v = 0 to derive ⊥), making the axiom unconditionally provable by `exfalso`. A future revision should replace `hnd` with a real non-degeneracy hypothesis (`Nontrivial (Fin d → ℝ)` plus a support condition) and re-prove or re-axiomatize.",
       "Matrix regular variation of tail is the correct multivariate analog of Karamata RV",
-      "The Gaussian is the unique operator-stable law with full symmetry group (E = c*I)"
+      "The Gaussian is the unique operator-stable law with full symmetry group (E = c·I)",
+      "S13 ACT recipe (S15 STATE-SYNC observation): `Filter.tendsto_pi_nhds` reduces a function-space tendsto to pointwise per-ξ tendsto. This pattern is the load-bearing trick for any `InOperatorDomainOfAttraction` discharge in this file — S13 used it for `gaussian_in_own_doa`, and the docstring on `finite_cov_in_gaussian_doa` explicitly flags it as the next application (same `tendsto_const_nhds` issue family).",
+      "Vacuous-axiom encoding-bug pattern (S14 ACT discovery): when an axiom carries a propositional hypothesis intended to encode a side condition, check whether the hypothesis itself is satisfiable before treating the axiom as load-bearing. A hypothesis like `∀ v, P v → False` where `P` has a trivial witness (e.g., `P (fun _ => 0)`) is vacuously unsatisfiable, making the axiom provable by `exfalso`. Worth a slug-wide audit pass."
     ],
     "mathlibGaps": [
-      "No Mathlib theorem for spectral bounds on operator-stable exponent matrices (Hudson-Mason 1982)",
-      "Meerschaert-Scheffler DOA theorem needs weak convergence theory for R^d measures"
+      "operator_stable_linear_image: general (singular B) case requires Meerschaert-Scheffler 2001 Thm 7.2.1 witness construction with drift correction. Invertible-B subcase is partially tractable.",
+      "meerschaert_scheffler: deep DOA biconditional needing weak convergence theory for ℝ^d measures (MS 2001 Ch. 8). Research-level; reasonable to leave axiomatized.",
+      "finite_cov_in_gaussian_doa: matrix CLT for finite-variance distributions. Per the S14 docstring, this is the same `tendsto_const_nhds` issue family that S13 ACT discharged for `gaussian_in_own_doa`; should port directly."
     ],
     "nextSteps": [
-      "Verify Docker build compiles successfully",
-      "Check if eigenvalue_ge_half can be partially proved using Matrix.eigenvalues and Finset",
-      "Consider formalizing Levy-Khintchine representation for operator-stable laws"
+      "PRIORITY 1 (S16 ACT): discharge `finite_cov_in_gaussian_doa` by porting S13 ACT recipe (PR #22113, S12 PREP §3 paste). Witness `A_n = n^{-1/2} • I`, b_n = 0; `Filter.tendsto_pi_nhds` reduction; per-ξ finite-covariance Lindeberg step. Estimated ~40 LOC add, ~6 LOC del, single Docker pass (~5–7 min). Pre-ACT bearer audit per S15 memo §S16 ACT picker.",
+      "PRIORITY 2 (S17 PREP): plan partial discharge of `operator_stable_linear_image` for the invertible-B subcase. Splits the axiom into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)` (provable, witness `A_n B`, drift correction) and (b) general case (still axiomatized).",
+      "PRIORITY 3 (S14 bug followup): replace the buggy `scalar_exponent_ge_half` axiom encoding with a real non-degeneracy hypothesis (`Nontrivial` + support condition) and re-axiomatize or re-prove Hudson-Mason. Currently provable by `exfalso` per S14 ACT — load-bearing only in name.",
+      "INFRASTRUCTURE: registry-JSON staleness tooling. This slug's registry was 38 days behind origin/main; gallery `meta.json` was current via PR-time sync. A simple `gallery_meta_jsons_vs_registry_consistency.sh` check would surface drift before it confuses claimants. Out-of-scope here.",
+      "Future: formalize Lévy-Khintchine representation for operator-stable laws (would unlock characterizations beyond Gaussian + α-stable scalar embeds)."
     ]
   },
   "tags": [
@@ -100,7 +107,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:41:44.690Z",
-  "lastUpdate": "2026-05-03T11:41:44.690Z",
+  "lastUpdate": "2026-06-10T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -140,9 +147,9 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
       "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
-      "lineCount": 359,
-      "theoremCount": 10,
-      "axiomCount": 6,
+      "lineCount": 447,
+      "theoremCount": 13,
+      "axiomCount": 3,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
