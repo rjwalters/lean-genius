@@ -377,6 +377,141 @@ theorem mt_terminates_as
     True := by
   trivial
 
+/-! ## Part V — Refined LLL admissibility (uniform-draw / collision-adjacency)
+
+    OQ-01-A.3 deliverable: the symbolic `LLLAdmissible` predicate above
+    packages the LLL bound around an *existential* over a free `prob` and
+    `adj`. The refined `LLLAdmissibleUniform` ties `prob` to the canonical
+    rational uniform-draw probability of `A_i` (`card{v|isBad i v} / card State`)
+    and `adj` to the canonical variable-collision dependency graph
+    (`k ≠ i ∧ vbl i ∩ vbl k ≠ ∅`). A forward bridge
+    `LLLAdmissibleUniform.toLLLAdmissible` recovers the symbolic predicate.
+
+    Design and Mathlib bearer audit: see
+    `research/problems/prob-method-lovasz-local-oq-01/sessions/`
+    (S7 PREP design memo `2026-05-14-s7-prep-lll-admissible-uniform-design.md`,
+    S8 PREP faithful-link substitute memo
+    `2026-05-16-s08-prep-faithful-link-bearer-gap-substitute.md`). -/
+
+/-- **Rational uniform-draw probability of bad event `A_i`**: the
+    probability of `A_i` under the uniform distribution on `P.State`,
+    expressed as the rational quotient
+    `card{v | isBad i v} / card P.State`. -/
+noncomputable def uniformDrawProb (i : Fin P.numEvents) : ℚ :=
+  (Fintype.card { v : P.State // P.isBad i v } : ℚ) /
+    (Fintype.card P.State : ℚ)
+
+/-- **Variable-collision dependency graph**: `k ∈ collisionAdj i` iff
+    `k ≠ i` and `vbl i ∩ vbl k` is nonempty. This is the dependency graph
+    used in the Moser–Tardos resampling analysis (events that share a
+    variable can interfere when one is resampled). -/
+noncomputable def collisionAdj (i : Fin P.numEvents) :
+    Finset (Fin P.numEvents) :=
+  (Finset.univ : Finset (Fin P.numEvents)).filter
+    (fun k => k ≠ i ∧ (P.vbl i ∩ P.vbl k).Nonempty)
+
+/-- `Fintype.card P.State > 0` as a rational positivity statement.
+    Follows from the `Nonempty P.State` instance (file Part I). -/
+lemma card_state_pos : 0 < (Fintype.card P.State : ℚ) := by
+  exact_mod_cast (Fintype.card_pos : 0 < Fintype.card P.State)
+
+/-- `uniformDrawProb i ≥ 0`: cardinality quotient with a positive
+    denominator. -/
+lemma uniformDrawProb_nonneg (i : Fin P.numEvents) :
+    0 ≤ P.uniformDrawProb i := by
+  unfold uniformDrawProb
+  apply div_nonneg
+  · exact_mod_cast Nat.zero_le _
+  · exact_mod_cast Nat.zero_le _
+
+/-- `uniformDrawProb i ≤ 1`: the bad-event subtype has at most as many
+    elements as the full state space. -/
+lemma uniformDrawProb_le_one (i : Fin P.numEvents) :
+    P.uniformDrawProb i ≤ 1 := by
+  unfold uniformDrawProb
+  apply div_le_one_of_le₀
+  · exact_mod_cast Fintype.card_subtype_le _
+  · exact_mod_cast Nat.zero_le _
+
+/-- Packaged unit-interval membership of `uniformDrawProb`. -/
+lemma uniformDrawProb_mem_unit_interval (i : Fin P.numEvents) :
+    0 ≤ P.uniformDrawProb i ∧ P.uniformDrawProb i ≤ 1 :=
+  ⟨P.uniformDrawProb_nonneg i, P.uniformDrawProb_le_one i⟩
+
+/-- **Faithful link (outer-measure form)** between the rational
+    `uniformDrawProb` and the underlying `PMF`-valued uniform outer
+    measure of the bad event.
+
+    Using `PMF.toOuterMeasure_apply_fintype` (no `[MeasurableSpace]`
+    prerequisite) sidesteps the typeclass plumbing that the analogous
+    `toMeasure` form would require on `P.State = ∀ j, P.alphabet j`.
+
+    The outer-measure form is mathematically equivalent for upper-bound
+    applications (the LLL is an upper bound, and
+    `toOuterMeasure ≤ toMeasure` is unconditional). A `toMeasure`-form
+    corollary requires installing a `MeasurableSpace` instance on each
+    `P.alphabet j`; we defer that to OQ-01-B, where the consumer
+    naturally supplies it. -/
+theorem uniformDrawProb_eq_outerMeasure (i : Fin P.numEvents) :
+    ENNReal.ofReal ((P.uniformDrawProb i : ℝ)) =
+      (PMF.uniformOfFintype P.State).toOuterMeasure
+        { v : P.State | P.isBad i v } := by
+  classical
+  -- (1) Expand the outer measure as a Fintype sum of indicator values.
+  rw [PMF.toOuterMeasure_apply_fintype]
+  -- (2) Each indicator value reduces to a conditional on `isBad`.
+  have h_each : ∀ v : P.State,
+      ({ v : P.State | P.isBad i v }).indicator
+          (PMF.uniformOfFintype P.State) v
+        = (if P.isBad i v then ((Fintype.card P.State : ℕ) : ENNReal)⁻¹
+           else 0) := by
+    intro v
+    by_cases hv : P.isBad i v
+    · rw [Set.indicator_of_mem (show v ∈ { v | P.isBad i v } from hv),
+          PMF.uniformOfFintype_apply, if_pos hv]
+    · rw [Set.indicator_of_notMem (show v ∉ { v | P.isBad i v } from hv),
+          if_neg hv]
+  simp_rw [h_each]
+  -- (3) Collapse `∑ v, if isBad v then C else 0` over the filter.
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+  -- (4) Convert filter card to subtype card.
+  rw [show
+      (((Finset.univ : Finset P.State).filter (P.isBad i)).card : ENNReal)
+      = (Fintype.card { v : P.State // P.isBad i v } : ENNReal) by
+    rw [Fintype.card_subtype]]
+  -- (5) Match LHS: ENNReal.ofReal of the rational quotient.
+  unfold uniformDrawProb
+  have h_pos : (0 : ℝ) < (Fintype.card P.State : ℝ) := by
+    exact_mod_cast Fintype.card_pos
+  push_cast
+  rw [ENNReal.ofReal_div_of_pos h_pos, ENNReal.ofReal_natCast,
+      ENNReal.ofReal_natCast, div_eq_mul_inv]
+
+/-- **Refined LLL admissibility predicate**: the uniform-draw probability
+    of `A_i` is bounded by `x i · ∏_{k ∈ collisionAdj i} (1 - x k)`, with
+    the canonical `uniformDrawProb` (no symbolic `prob` parameter) and
+    the canonical variable-collision adjacency. -/
+structure LLLAdmissibleUniform (x : Fin P.numEvents → ℚ) : Prop where
+  /-- Each tolerance lies in `[0, 1)`. -/
+  x_range : ∀ i, 0 ≤ x i ∧ x i < 1
+  /-- The per-event uniform-draw probability bound, with the canonical
+      `uniformDrawProb` and `collisionAdj`. -/
+  lll_uniform : ∀ i,
+    P.uniformDrawProb i ≤ x i *
+      (P.collisionAdj i).prod (fun k => 1 - x k)
+
+/-- **Forward bridge**: `LLLAdmissibleUniform x` implies `LLLAdmissible x`
+    (instantiating `prob := uniformDrawProb` and `adj := collisionAdj`).
+    This means any client may state assumptions in the cleaner refined
+    form and still consume the symbolic-form theorems downstream
+    (`mt_expected_step_bound`, `mt_terminates_as`). -/
+theorem LLLAdmissibleUniform.toLLLAdmissible
+    {x : Fin P.numEvents → ℚ} (h : P.LLLAdmissibleUniform x) :
+    P.LLLAdmissible x :=
+  ⟨h.x_range,
+   ⟨P.uniformDrawProb, P.collisionAdj, h.lll_uniform,
+    fun i => ⟨P.uniformDrawProb_nonneg i, P.uniformDrawProb_le_one i⟩⟩⟩
+
 end MTProblem
 
 end ProbMethod.MoserTardos
