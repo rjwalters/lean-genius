@@ -1,11 +1,63 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: ACT (S48 D' — `firstDescentRotation` def + spec lemma SHIPPED; build pending — OQ02 sibling errors pre-existing on main)
+**Phase**: STATE-SYNC (S49 — OQ02 sibling progress check at T+4d; S48 D' work unchanged; build still blocked by OQ02 errors)
 **Path**: full
-**Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-06-05 (S48 D' — researcher-1, ACT: ships `firstDescentRotation` Definition I (h_exists-parameterised) + `_take_eq` spec via `Nat.find_spec` per the S47 PREP recipe; +73 LOC to `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`; 0 sorry / 0 axiom delta; build pending — sibling `BallotProblemOQ03OQ02.lean` has pre-existing errors on origin/main per S78/S81/S84 PR history, my target file is downstream)
-**Iteration**: 48
+**Since**: 2026-06-09T23:59:00Z (S49 STATE-SYNC, researcher-1)
+**Last Updated**: 2026-06-09T23:59Z (researcher-1) — S49 STATE-SYNC: T+4d post-S48 D' check. OQ02 sibling reduced 13 → 11 errors via S85 today (researcher-3, full Cluster A α refactor); Cluster A now fully closed; Cluster D cascade hypothesis FALSIFIED. Build of `Proofs.BallotProblemOQ03OQ01OQ01OQ01` still fails on `Proofs.BallotProblemOQ03OQ02` upstream errors (not regressed by my S48 D' edit). INFRA all GREEN (Docker 29.5.3, disk 99 GiB, Mathlib pin unchanged at 28d). My target file: 2557 LOC, 0 sorries (17 'sorry' mentions are docstring-only), 0 axioms — bit-identical to S48 D' ship.
+**Iteration**: 49
+
+## S49 STATE-SYNC Summary (2026-06-09, researcher-1)
+
+**Mode**: STATE-SYNC (doc-only; OQ02 sibling progress check + invariant verification).
+
+### OQ02 sibling progress trend (10 days)
+
+| Ship | Date | Errors | Cluster A | Cluster D |
+|------|------|--------|-----------|-----------|
+| S81 BUILD-VERIFY | 2026-05-30 | 15 | open (4) | open (8) |
+| S82 PARENT-TRIAGE-2 | 2026-05-30 | 15 | open | open |
+| S84 ACT α' Helper-3 | 2026-06-01 | 13 | items 3+4 closed | open |
+| S85 ACT α full refactor | 2026-06-09 | 11 (S85 close report) | fully closed | open (8) |
+| **S49 empirical verify (this)** | **2026-06-09T23:59Z** | **10** | **fully closed** | **open (7)** |
+
+**Empirical at S49**: Docker build returns 10 errors, not 11. S85's close report cited a Cluster D range "L2226/2236/2305-2332" but empirically only 7 Cluster D errors exist (L2226, L2236, L2305, L2306, L2309, L2319, L2322 — no L2332 hit). Rate: ~0.5 errors/day closed. Linear extrapolation: 10 → 0 ≈ 20 days, anchored ~2026-06-29.
+
+S85 surprise finding: Cluster D cascade hypothesis FALSIFIED — closing Cluster A did NOT auto-close Cluster D. Cluster D is independent. S86 plan (per S85 close): Cluster C co-fix at L2091 (~4 LOC) — expected Cluster B unmask.
+
+### My target file (this slug) — unchanged at T+4d
+
+| Item | S48 D' ship (2026-06-05) | S49 check (2026-06-09) |
+|------|--------------------------|------------------------|
+| `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` LOC | 2557 | 2557 |
+| `^axiom ` count | 0 | 0 |
+| `sorry` mentions | 17 (all docstring-only) | 17 (verified docstring-only) |
+| `firstDescentRotation` def + spec lemma | shipped | unchanged |
+| Mathlib pin | `2df2f0150c…` | unchanged (~28d stable) |
+| Direct Docker build | blocked by OQ02 | still blocked by OQ02 |
+
+`./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ03OQ01OQ01OQ01` at S49 entry returns the same error as at S48 D' ship: `Proofs.BallotProblemOQ03OQ02` errors out, taking down the dependency closure. No regression from my S48 D' edit; the block is entirely upstream.
+
+### INFRA at S49
+
+| Gate | Status | Detail |
+|------|--------|--------|
+| G7 host disk | **GREEN** | 99 GiB free (vs 56 GiB at S48 D') |
+| G8 Docker daemon | **GREEN** | Server Version 29.5.3, overlayfs |
+| G9 `proofs/.lake` | **GREEN** | real directory (worktree symlink) |
+| Mathlib pin | STABLE | `2df2f0150c…` unchanged 28d |
+
+### S50+ recommendation
+
+**Continue waiting** (option 1 in S49 §"Next-action menu"). The OQ02 error trend is clearly downward (5 errors closed over 10 days). Building more unverified content on top of unverified S48 D' base would mirror the konigsberg-oq-03-wip-01 S4+S5 unverified-for-5-days pattern that I closed today via S6 — undesirable.
+
+Alternative paths (S50 sibling-slug pivot to OQ02 fix support; S50 new content on unverified base) are explicitly downgraded in the S49 memo §"Next-action menu (S50+)".
+
+Full record in `sessions/2026-06-09-s49-statesync-oq02-progress-t4d.md`.
+
+---
+
+## Prior State (S48 D' ACT, 2026-06-05) — preserved for traceability
 
 ## S48 D' ACT Summary (2026-06-05, researcher-1)
 
