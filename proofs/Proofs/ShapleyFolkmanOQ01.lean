@@ -303,4 +303,36 @@ theorem exists_tight_decomposition (N : ℕ) :
           Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) :=
   ⟨midpointDecomp N, tight_excess_eq_finrank N (midpointDecomp N)⟩
 
+/-- **S2-B₁ — No universal Shapley–Folkman bound across ambient spaces.**
+    For every candidate bound `K : ℕ`, there is an ambient (here
+    `EuclideanSpace ℝ (Fin (K+1))`), a finite family
+    `S : Fin (K+1) → Set _`, and a target point `x` such that **every**
+    `Decomposition` of `x` has `excessIndices.card > K`.
+
+    This is the truncation-lift refutation: a single `Nat` bound `K`
+    fails on the dimension `K+1` example. Combined with the parent
+    `shapley_folkman` (where the actual bound is `Module.finrank ℝ E`),
+    this shows the dimension dependence in the bound is unavoidable:
+    no bound replacement that ignores ambient dimension can survive
+    even within finite-dim ambients of growing dimension.
+
+    Companion to `tight_excess_eq_finrank` (S2-A ACT-3, parameterised
+    sharpness): together they characterise the parent bound as
+    `card = Module.finrank ℝ E` on the tight midpoint family. -/
+theorem no_universal_shapley_folkman_bound :
+    ∀ K : ℕ,
+      ∃ (D : ShapleyFolkman.Decomposition
+              (fun i : Fin (K + 1) =>
+                ({0, EuclideanSpace.single i 1} :
+                    Set (EuclideanSpace ℝ (Fin (K + 1)))))
+              (Finset.univ : Finset (Fin (K + 1)))
+              ((1 / 2 : ℝ)
+                • ∑ i : Fin (K + 1), EuclideanSpace.single i (1 : ℝ) :
+                    EuclideanSpace ℝ (Fin (K + 1)))),
+        D.excessIndices.card > K := by
+  intro K
+  refine ⟨midpointDecomp (K + 1), ?_⟩
+  rw [tight_excess_count (K + 1) (midpointDecomp (K + 1))]
+  exact Nat.lt_succ_self K
+
 end ShapleyFolkmanOQ01
