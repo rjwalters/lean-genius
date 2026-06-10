@@ -1,37 +1,46 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: PREP (S2 ACT attempt → PREP-bank: sibling `PicksTheorem.lean` broken at HEAD by Mathlib v4.26.0 `ring` regression on line 329 `picks_additive`; scaffold banked in session journal, ready to re-attempt once Picks repair lands)
+**Phase**: ACT (S2 ACT landed: `picks_additive` Mechanic-class repair + `EhrhartCubeProvenOQ05.lean` scaffold both Docker-verified; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived` ready for S3-S5 discharge)
 **Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through this iteration
-**Since**: 2026-06-09 (S2 ACT-attempt → PREP, this session); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 4 (S2 ACT scaffold authored + Docker-attempted; build blocked on pre-existing Picks sibling breakage; scaffold banked in `sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md`)
-**Researcher**: researcher-6 (S2 ACT-attempt → PREP, this session); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Since**: 2026-06-09 (S2 ACT landed, this session); 2026-06-09 (S2 ACT-attempt → PREP, prior session, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 5 (S2 ACT landed = iter-4 PREP-bank re-attempt + Picks sibling repair; both Docker-verified; ready for S3 ACT)
+**Researcher**: researcher-6 (S2 ACT landed = this session); researcher-6 (S2 ACT-attempt → PREP, prior session); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
 
 ## Current Focus
 
-S2 ACT-attempt → PREP (this session, researcher-6, 2026-06-09): the
-80-LOC scaffold was authored per the S2 PREP blueprint
-(`knowledge.md` §"Lean Skeleton Sketch for S2") and Docker-attempted.
-The build failed at the import-resolution of `Proofs.PicksTheorem`
-because `PicksTheorem.lean` line 329 `picks_additive` does not
-build at HEAD `162265bae2c`: the existing
-`simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]`
-recipe regresses against Mathlib v4.26.0 (the `Nat.cast_sub he`
-hypothesis no longer applies to `↑(i₁ + i₂ + e - 2)`; linter flags
-it `unused`; subsequent `ring` cannot close).
+S2 ACT (this session, researcher-6, 2026-06-09 — re-attempt of iter-4
+PREP-bank from PR #22713): combines the prerequisite Picks sibling
+repair with the S2 ACT scaffold landing.
 
-Confirmed pre-existing on a clean checkout from `origin/main` —
-no nexus to the OQ-05 slug. Same Mathlib v4.26.0 regression class
-documented in `162265bae2c research(fundamental-theorem-calculus-
-oq-01-incomplete-01): S6 ACT-attempt → PREP — ... sibling broken
-at HEAD (3 pre-existing Mathlib v4.26.0 errors)`.
+**Picks repair (Mechanic-class infrastructure, out of slug scope but
+prerequisite)**: applied the 5-LOC `picks_additive` fix sketched in
+the iter-4 journal §5 to `proofs/Proofs/PicksTheorem.lean` lines
+326-334. The repair adds the missing hypothesis
+`h_ie2 : 2 ≤ i₁ + i₂ + e := by omega` and replaces
+`simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]` with
+`push_cast [Nat.cast_sub h2e, Nat.cast_sub h_ie2]`. Net +1 LOC. Docker
+verification: `./proofs/scripts/docker-build.sh Proofs.PicksTheorem`
+clean. The sibling now builds at `origin/main` HEAD `bf98187d3f5`.
 
-**Scaffold banked verbatim** in
-`sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §4. Once
-a dedicated Mechanic PR repairs `picks_additive` (suggested ~5-LOC
-fix in §5 of the journal: replace `Nat.cast_sub he` with
-`Nat.cast_sub h_ie2` where `h_ie2 : 2 ≤ i₁ + i₂ + e := by omega`,
-switch `simp only [Nat.cast_*]` to `push_cast`), the scaffold can
-re-attempt cleanly.
+**S2 ACT scaffold landing**: `proofs/Proofs/EhrhartCubeProvenOQ05.lean`
+created (~110 LOC counting docstrings; 80 LOC excluding) per the
+iter-4 banked content (`sessions/2026-06-09-s2-act-attempt-prep-picks-
+broken.md` §4). Three stage stubs:
+
+| Stub | Stage | Sorry | Statement |
+|------|-------|-------|-----------|
+| `ehrhartPoly_2d_explicit` | S3 | 1 | Explicit 2D Ehrhart polynomial |
+| `simpleLatticePolygon_to_latticePolygon` | S4 | 1 | Bridge function |
+| `picks_theorem_derived` | S5 | 1 | Pick's formula derived |
+
+Each stub has its full discharge strategy documented inline.
+`proofs/Proofs.lean` updated to import the new file. Docker
+verification: `./proofs/scripts/docker-build.sh
+Proofs.EhrhartCubeProvenOQ05` clean — the scaffold compiles with
+3 sorries, 0 new axioms, 3 inherited Ehrhart axioms.
+
+See `sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md` for
+the full session journal.
 
 **Prior cumulative slug state (carry-forward, unchanged):**
 
@@ -149,21 +158,25 @@ contribution.
 
 ## Next Action
 
-**Mechanic-class infrastructure fix (out of slug scope, but
-prerequisite to S2 ACT)**: repair `picks_additive` in
-`proofs/Proofs/PicksTheorem.lean` lines 326-334 per the suggested
-patch in `sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md`
-§5. Single-theorem, ~5-LOC change, zero structural ripple.
+**S3 ACT** — discharge `ehrhartPoly_2d_explicit` (Q1, ~200 LOC).
+Strategy (per S1 knowledge.md §"The Q1 Polynomial Identity" + S2
+PREP blueprint):
 
-**S2 ACT re-attempt (after Picks repair)** — the scaffold is
-banked verbatim in
-`sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §4 and
-can be `Write`-pasted directly to
-`proofs/Proofs/EhrhartCubeProvenOQ05.lean`. Then add
-`import Proofs.EhrhartCubeProvenOQ05` to `proofs/Proofs.lean`
-between `Proofs.EhrhartCubeProvenOQ04` and
-`Proofs.EhrhartPolynomialOQ03` (alphabetical position confirmed in
-this session).
+1. Establish the degree-2 form of `ehrhartPoly P.toLatticePolytope`
+   via `ehrhart_theorem` (existential supplies a `Polynomial ℚ` of
+   degree 2 with `P.latticePointCount n = p.eval n`).
+2. Pin the constant term using `ehrhart_constant_term` (already
+   proven in `EhrhartPolynomials.lean`): `p.eval 0 = 1`.
+3. Pin the leading coefficient via `ehrhart_leading_coeff_volume`,
+   identifying `P.volume = P.area` for 2D polygons (definitional
+   bridge needed in `LatticePolygon` struct — or a lemma).
+4. Extract the linear coefficient via `ehrhart_macdonald_reciprocity`
+   at `n = -1` combined with `P.interior_at_one` and `P.total_eq`,
+   yielding the 4-line algebraic argument: linear coeff = `b / 2`.
+5. Conclude the explicit form by polynomial equality on three data
+   points (n = 0, 1, -1) + degree-2 constraint.
+
+After S3 closes, slug has 2 remaining sorries (S4 bridge + S5 final).
 
 The original S2 ACT spec, retained for reference:
 
@@ -197,27 +210,12 @@ init is #18337 (no content for OQ-05).
 
 ## Blockers
 
-**ACTIVE (as of 2026-06-09, S2 ACT-attempt → PREP)**: sibling
-`proofs/Proofs/PicksTheorem.lean` does not build on `origin/main`
-HEAD `162265bae2c`. The failure is at line 329 (`picks_additive`):
-`simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]; ring`
-no longer closes after the Mathlib v4.26.0 upgrade — the
-`Nat.cast_sub he` hypothesis doesn't apply to the goal's
-`↑(i₁ + i₂ + e - 2)` term (`he : 2 ≤ e` matches `↑(e - 2)`, not
-`↑(i₁ + i₂ + e - 2)` which needs `2 ≤ i₁ + i₂ + e`). Linter at
-333:27 confirms `Nat.cast_sub he` is unused.
-
-This is a **pre-existing breakage unrelated to OQ-05**, in the
-same Mathlib v4.26.0 regression class flagged by recent slug
-commits (e.g. PR #22677 fundamental-theorem-calculus-oq-01:
-"sibling broken at HEAD (3 pre-existing Mathlib v4.26.0 errors)").
-Confirmed reproducible on a zero-diff worktree checkout.
-
-**Resolution path**: a dedicated Mechanic PR repairs
-`picks_additive` per the suggested 5-LOC fix in
-`sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §5. After
-that lands, the banked scaffold (§4 of the same journal) can be
-re-attempted as a normal S2 ACT cycle.
+**None.** The iter-4 Picks-sibling blocker (Mathlib v4.26.0
+`picks_additive` regression) has been **resolved** this session as
+part of the bundled S2 ACT PR (see `sessions/2026-06-09-s2-act-
+picks-repair-plus-scaffold.md` §2). Both `Proofs.PicksTheorem` and
+`Proofs.EhrhartCubeProvenOQ05` Docker-verify cleanly at `origin/main`
+HEAD `bf98187d3f5`.
 
 **Prior blockers (resolved, retained for context):**
 
@@ -243,7 +241,8 @@ gallery deliverable**.
 | S2c PREP | 2026-05-13 | researcher-12 | #18617 | doc-only ripple-scope correction: grep verification shows 0 existing call sites for Fix B/D outside `EhrhartPolynomials.lean` itself; AXIOM-FIX is a single-file 5-LOC Mechanic patch |
 | S5 STATE-SYNC | 2026-06-03 | researcher-1 | #22210 | doc-only catalog refresh after 21-day quiescence: refreshes 21-day-stale state.md head; catalogues 5 merged PRs in one place; documents AXIOM-FIX as next concrete deliverable; documents Docker / disk-pressure blocker (sibling-confirmed) |
 | AXIOM-FIX | 2026-06-09 | researcher-9 | #22648 | first Lean-file modification on slug: applies Fix B (`LatticePolytope.volume` + consistent `ehrhart_leading_coeff_volume` axiom) + Fix D (`LatticePolygon.interior_at_one`) per S2b PREP §1.5/§2.5; single-file change to `EhrhartPolynomials.lean`, 0 cross-file ripple per S2c PREP; axiom count unchanged (3 → 3, but the inconsistent one is now consistent); unblocks S3 ACT |
-| **S2 ACT-attempt → PREP** | **2026-06-09** | **researcher-6** | **(this PR)** | **scaffold authored (80 LOC) + Docker-attempted; sibling `Proofs/PicksTheorem.lean` broken at HEAD (`picks_additive` line 329, Mathlib v4.26.0 `ring` regression after un-applicable `Nat.cast_sub he`); pre-existing breakage unrelated to OQ-05; banked scaffold + suggested 5-LOC Mechanic repair in `sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §4-5; S2 ACT re-attempts cleanly after Picks repair** |
+| S2 ACT-attempt → PREP | 2026-06-09 | researcher-6 | #22713 | scaffold authored (80 LOC) + Docker-attempted; sibling `Proofs/PicksTheorem.lean` broken at HEAD (`picks_additive` line 329, Mathlib v4.26.0 `ring` regression after un-applicable `Nat.cast_sub he`); pre-existing breakage unrelated to OQ-05; banked scaffold + suggested 5-LOC Mechanic repair in `sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md` §4-5; S2 ACT re-attempts cleanly after Picks repair |
+| **S2 ACT** | **2026-06-09** | **researcher-6** | **(this PR)** | **`picks_additive` Mechanic-class repair (5 LOC, Mathlib v4.26.0 drift fix; out of slug scope but prerequisite to S2 ACT) + `EhrhartCubeProvenOQ05.lean` scaffold (~110 LOC; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived`; 3 sorries; 0 new axioms; 3 inherited Ehrhart axioms); both files Docker-verified (`Proofs.PicksTheorem` clean + `Proofs.EhrhartCubeProvenOQ05` clean); unblocks the iter-4 PREP bank from PR #22713; ready for S3 ACT** |
 
 ## Reference Files (in this directory)
 

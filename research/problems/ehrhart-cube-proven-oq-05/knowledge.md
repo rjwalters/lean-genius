@@ -328,6 +328,82 @@ existence + Macdonald reciprocity (3 inherited axioms, no new axioms,
 0 sorries)." This is a meaningful gallery-architecture contribution
 even if no new mathematics is formalized.
 
+## S2 ACT Session (researcher-6, 2026-06-09, this session)
+
+**Mode**: FRESH (re-attempt of iter-4 PREP-bank from PR #22713)
+**Outcome**: progress — Picks sibling repair + scaffold both Docker-verified.
+
+### What I Did
+
+1. Verified iter-4's `picks_additive` blocker diagnosis at current
+   `origin/main` HEAD `bf98187d3f5` (`PicksTheorem.lean` lines 326-334;
+   no commits to that file since 2026-05-16 `ecb47b35601`).
+2. Applied the 5-LOC `picks_additive` Mechanic-class repair from the
+   iter-4 journal §5: added `h_ie2 : 2 ≤ i₁ + i₂ + e := by omega`,
+   replaced `simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e]`
+   with `push_cast [Nat.cast_sub h2e, Nat.cast_sub h_ie2]`.
+3. Docker-verified `Proofs.PicksTheorem`: 3058/3058 jobs clean, 103s
+   for `Built Proofs.PicksTheorem`, exit code 0.
+4. Wrote the banked S2 ACT scaffold (~110 LOC counting docstrings)
+   verbatim from iter-4 journal §4 to
+   `proofs/Proofs/EhrhartCubeProvenOQ05.lean`. Three stage stubs:
+   - `ehrhartPoly_2d_explicit` (S3 target, 1 sorry)
+   - `simpleLatticePolygon_to_latticePolygon` (S4 target, 1 sorry)
+   - `picks_theorem_derived` (S5 target, 1 sorry)
+5. Added the import line to `proofs/Proofs.lean` between
+   `Proofs.EhrhartCubeProvenOQ04` and `Proofs.EhrhartPolynomialOQ03`.
+6. Docker-verified `Proofs.EhrhartCubeProvenOQ05`: scaffold compiles
+   with 3 sorries, 0 new axioms, 3 inherited Ehrhart axioms.
+
+### Key Findings
+
+- The iter-4 5-LOC repair sketch was correct as written: only the
+  `Nat.cast_sub he` rewrite was un-applicable (linter at 333:27 was
+  the surface marker); the actual fix requires the additional
+  `h_ie2 : 2 ≤ i₁ + i₂ + e` hypothesis from `he : 2 ≤ e + (0 + 0)`
+  by monotonicity. `omega` discharges both `h2e` and `h_ie2` cleanly.
+- The Mechanic queue was empty at session start (per memory entries
+  for Mechanic-1, all queues empty across consecutive halts), so
+  bundling the Picks repair with the slug PR was the correct path
+  forward — avoided indefinite blocking of S2 ACT.
+- Scaffold API names all resolve at current HEAD: `LatticePolytope d`,
+  `LatticePolygon extends LatticePolytope 2` (with `volume`,
+  `area`, `boundaryPoints`, `interiorPoints`, `total_eq`,
+  `interior_at_one`), `picks_from_ehrhart` (theorem),
+  `ehrhart_theorem`/`ehrhart_leading_coeff_volume`/`ehrhart_macdonald_reciprocity`
+  (axioms), `ehrhart_constant_term` (theorem),
+  `PicksTheorem.SimpleLatticePolygon` (inside namespace).
+- Combined PR (Picks repair + scaffold) keeps the deliverable atomic:
+  scaffold builds only after Picks repair, so the two changes are
+  causally coupled and best landed together.
+
+### Files Modified
+
+- `proofs/Proofs/PicksTheorem.lean` (MOD: +2 / -1 net LOC in `picks_additive`)
+- `proofs/Proofs/EhrhartCubeProvenOQ05.lean` (NEW: ~110 LOC scaffold)
+- `proofs/Proofs.lean` (MOD: +1 import line)
+- `research/problems/ehrhart-cube-proven-oq-05/state.md` (MOD: phase PREP → ACT, iter 4 → 5)
+- `research/problems/ehrhart-cube-proven-oq-05/knowledge.md` (this entry)
+- `research/problems/ehrhart-cube-proven-oq-05/sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md` (NEW)
+- `src/data/research/problems/ehrhart-cube-proven-oq-05.json` (MOD: phase + iter + focus)
+
+### Next Steps
+
+**S3 ACT** — discharge `ehrhartPoly_2d_explicit` (~200 LOC). Strategy
+laid out in iter-4 journal and replicated in state.md "Next Action":
+
+1. Use `ehrhart_theorem` to obtain a degree-2 polynomial `p` with
+   `P.latticePointCount n = p.eval n` for all `n`.
+2. Pin constant term: `p.eval 0 = 1` via `ehrhart_constant_term`.
+3. Pin leading coefficient: `p.coeff 2 = P.area` via
+   `ehrhart_leading_coeff_volume` (need `P.volume = P.area` bridge).
+4. Extract linear coefficient via Macdonald at `n = -1` combined with
+   `P.interior_at_one` and `P.total_eq`.
+5. Conclude `p.eval n = P.area · n² + (P.boundaryPoints / 2) · n + 1`
+   by polynomial degree-2 + three-data-point uniqueness.
+
+Estimated session: 1-2 iterations.
+
 ## Summary of Deliverables (S1)
 
 - `research/problems/ehrhart-cube-proven-oq-05/problem.md` (~410
