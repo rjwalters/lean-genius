@@ -20,11 +20,11 @@
     "erdosUrl": "https://erdosproblems.com/689",
     "erdosProblemStatus": "open",
     "axiomCount": 1,
-    "lineCount": 179,
+    "lineCount": 240,
     "assumptions": "1 axiom: erdos_689_r_fold (OPEN conjecture, general r-fold covering). All other results derived: erdos_689_double_cover (r=2), green_variant_r10 (r=10), jacobsthal_connection (r=1 via Filter.eventually_atTop).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 13,
-    "definitionCount": 4
+    "theoremCount": 19,
+    "definitionCount": 3
   },
   "sections": [
     {
@@ -113,10 +113,10 @@
     ],
     "opens": [],
     "namespace": null,
-    "lineCount": 179,
+    "lineCount": 240,
     "axiomCount": 1,
-    "theoremCount": 13,
-    "definitionCount": 4,
+    "theoremCount": 19,
+    "definitionCount": 3,
     "path": "Proofs/Erdos689Problem.lean",
     "sorries": 0
   },
