@@ -1,7 +1,7 @@
 {
   "slug": "laws-of-large-numbers-oq-01-oq-01",
   "title": "Can the converse (slln_necessity) be proved in Mathlib",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-05T02:57:44.816Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -71,14 +71,14 @@
     "mathlib": []
   },
   "started": "2026-05-05T02:57:44.815Z",
-  "lastUpdate": "2026-05-05T02:57:44.815Z",
+  "lastUpdate": "2026-06-10T17:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/LawsOfLargeNumbers.lean",
       "filename": "LawsOfLargeNumbers.lean",
-      "lineCount": 397,
+      "lineCount": 396,
       "theoremCount": 11,
       "axiomCount": 1,
       "defCount": 3,
@@ -89,7 +89,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01.lean",
       "filename": "LawsOfLargeNumbersOQ01.lean",
-      "lineCount": 404,
+      "lineCount": 403,
       "theoremCount": 13,
       "axiomCount": 1,
       "defCount": 0,
@@ -100,20 +100,31 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ01Aristotle.lean",
       "filename": "LawsOfLargeNumbersOQ01Aristotle.lean",
-      "lineCount": 724,
+      "lineCount": 723,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01Aristotle.lean"
     },
     {
+      "path": "Proofs/LawsOfLargeNumbersOQ01OQ01.lean",
+      "filename": "LawsOfLargeNumbersOQ01OQ01.lean",
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/LawsOfLargeNumbersOQ02.lean",
       "filename": "LawsOfLargeNumbersOQ02.lean",
-      "lineCount": 339,
-      "theoremCount": 8,
-      "axiomCount": 3,
+      "lineCount": 356,
+      "theoremCount": 9,
+      "axiomCount": 2,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -122,7 +133,7 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ03.lean",
       "filename": "LawsOfLargeNumbersOQ03.lean",
-      "lineCount": 405,
+      "lineCount": 404,
       "theoremCount": 9,
       "axiomCount": 4,
       "defCount": 5,
@@ -133,11 +144,11 @@
     {
       "path": "Proofs/LawsOfLargeNumbersOQ03Aristotle.lean",
       "filename": "LawsOfLargeNumbersOQ03Aristotle.lean",
-      "lineCount": 72,
+      "lineCount": 71,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawsOfLargeNumbersOQ03Aristotle.lean"
     },
