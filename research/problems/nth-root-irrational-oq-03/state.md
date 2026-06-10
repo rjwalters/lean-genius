@@ -2,11 +2,53 @@
 
 ## Current State
 
-**Phase**: ACT — S8 (2026-06-05, researcher-11) extended S7's orthogonal axiom-reduction to `PiTranscendental.lean` (Wiedijk #53): discharged `axiom lindemann_theorem` by deriving it from `axiom hermite_lindemann` via a 3-line `IsFractionRing.isAlgebraic_iff` bridge (the two axioms differ only in `IsAlgebraic ℤ` vs `IsAlgebraic ℚ`). Side benefit: repaired 3 pre-existing Mathlib v4.26.0 build failures (line 228 missing `Mathlib.Analysis.Real.Pi.Irrational` import for `irrational_pi`; line 285 `isAlgebraic_one` fix; `pi_transcendental` had a long-standing forward-reference bug to `I_algebraic`/`neg_one_algebraic` defined later in the file — replaced with one-line alias to `HermiteLindemann.pi_transcendental_real`). Net: PiTranscendental.lean local axiomCount 1→0, theoremCount 18→19, lineCount 457→432; transitive count still 1 (hermite_lindemann gated on PR #28013). **Build verified locally: 3092/3092 jobs ✓ (81s).** ETranscendentalOQ01.lean transitively depends on PiTranscendental.lean — S8 unblocks its build too.
+**Phase**: STATE-SYNC — S9 passive watch tick of Mathlib PR #28013 (Lindemann-Weierstrass). PR #28013 head SHA `5abb7c68488…` and `updatedAt 2026-05-29T07:22:48Z` unchanged from S8 reading (T+11.7d stale). Grace period through ~2026-06-26 (17 days from S9). Continue passive watch. S8 ACT's PiTranscendental.lean axiom-reduction (1→0 local, 3092/3092 jobs GREEN) is bit-identical at T+4d.
 **Path**: full
-**Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-06-05T17:50:00Z (Iteration 9, researcher-11)
-**Iteration**: 9
+**Since**: 2026-06-09T23:59:00Z (S9 STATE-SYNC, researcher-1)
+**Last Updated**: 2026-06-09T23:59:00Z (Iteration 10, researcher-1)
+**Iteration**: 10
+
+## Iteration 10 (researcher-1, 2026-06-09) — S9 Passive Watch tick on PR #28013
+
+**Outcome**: progress — PR #28013 still stale at T+11.7d since last update; grace period 17 days out (anchored 2026-06-26). S8 ACT deliverables bit-identical on disk. Doc-only iteration counter bump + watch documentation.
+
+### S9 PR #28013 reading
+
+```
+$ gh api repos/leanprover-community/mathlib4/pulls/28013 \
+    --jq '{state, headSha, updatedAt}'
+{
+  "state": "open",
+  "headSha": "5abb7c68488b527e4d7ecf5d7bbe085db8d2a388",
+  "updatedAt": "2026-05-29T07:22:48Z"
+}
+```
+
+`headSha` and `updatedAt` are identical to S8 ACT's reading (2026-06-05). T+11.7 days stale at S9. Grace period through ~2026-06-26 (per S6 PREP §"~3-4 weeks after crossing the staleness threshold").
+
+### File invariants at S9 (T+4d post-S8)
+
+| Item | S8 ship | S9 check |
+|------|---------|----------|
+| `proofs/Proofs/PiTranscendental.lean` LOC | 432 | 432 |
+| `^axiom ` count | 0 | 0 |
+| `sorry` count | 0 | 0 |
+| Mathlib pin SHA | `2df2f0150c…` | unchanged |
+
+Bit-identical to S8 ship.
+
+### S10+ menu (carried forward)
+
+1. **(S10 passive watch — recommended)**: Re-check PR #28013 SHA at next claim cycle. If still stale through ~2026-06-26, switch to (2).
+2. **(S5d.A active fallback)**: CF expansion of e for `e_not_liouvilleWith_gt_two` axiom discharge, 280-480 LOC.
+3. (S8 follow-up, low priority): `pi_transcendental_over_rationals` ℚ-direct path refactor.
+4. (Mechanic scope): `ETranscendentalOQ02.lean` L708 pre-existing error.
+
+Full record in `sessions/2026-06-09-s9-passive-watch-pr-28013.md`.
+
+---
+
+## Prior State (Iteration 9, S8 ACT, 2026-06-05) — preserved for traceability
 
 ## Iteration 9 (researcher-11, 2026-06-05) — S8 ACT (axiom lindemann_theorem discharged in PiTranscendental.lean)
 

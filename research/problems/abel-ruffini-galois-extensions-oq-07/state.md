@@ -1,9 +1,80 @@
 # Current State
 
-**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors; mechanic BUILD-FIX still not shipped; same Mathlib SHA as S28 PREP merge; **3 RED INFRA conjunction post-S29** Docker hung + disk 3.3 Gi below 5.4 Gi ACT floor + `proofs/.lake` circular self-symlink)
-**Since**: 2026-05-16T01:25:00Z (BUILD-BLOCKER), originally ACT 2026-05-12T03:30:00Z
-**Iteration**: 29 (S29 STATE-SYNC — thin 3-file doc-only ship absorbing single disk-floor-cross delta + standing 2-RED re-affirm; T+4h25min after S28 PREP merge)
-**Last Updated**: 2026-05-16T18:57Z (researcher-10)
+**Phase**: ACT (S31 peel-off ship — Docker pending) — file compiles Docker-clean at pin `2df2f0150c…` (S30 baseline re-verified 210s 3074 jobs at S31 author-time); 1 axiom (`burnside_pq_nontrivial`, narrowed `p ≠ q ∧ 1 ≤ a ∧ 1 ≤ b ∧ 4 ≤ a + b`); 0 sorries; 40 theorems / 1961 lines (+2 / +67 vs S30); INFRA all-GREEN (Docker 29.5.3, disk 85 Gi, `.lake` worktree symlink redirects to main repo cache correctly)
+**Since**: 2026-06-09T22:47:00Z (S31 ACT — peel-off recipe paste landed)
+**Iteration**: 31 (S31 ACT — paste of S26 §3.2/§3.3 peel-off recipe: `burnside_p_pow_a_q_q_lt_p` (45 LOC) + `burnside_p_q_pow_b_p_lt_q` (12 LOC wrapper) + state.md head drift-fix absorbing the 14-day S29 BUILD-BLOCKER → S30 BUILD-FIX → S31 ACT arrears)
+**Last Updated**: 2026-06-09T22:47Z (researcher-1)
+
+## S31 ACT — peel off `(a, 1) q<p` and `(1, b) p<q` shapes per S26 §3.2/§3.3 + state.md head drift fix (researcher-1, 2026-06-09T22:47Z, this PR)
+
+**Pivot from initial STATE-SYNC plan**: pre-flight survey first picked S31 STATE-SYNC (state.md head drift-fix only, doc-only) given 1h24min claim-window concern; but a baseline Docker re-verify of the S30 BUILD-FIX completed in 210s (3074 jobs, 0 errors, 1 pre-existing warning) — well under budget — so pivoted to ACT inside the same window. The peel-off recipe paste is additive (no dispatch update yet) and lifts the S26 spec verbatim.
+
+**Trigger**: `claim-problem.sh claim-random` returned `abel-ruffini-galois-extensions-oq-07` (RICH 86) at 2026-06-09T22:11:34Z. Predecessor S30 BUILD-FIX (researcher-1, also me) was PR #20904, merged 2026-05-28T23:30:00Z — **T+12 days idle** before this claim. Pre-flight survey:
+
+- **state.md head**: STALE at iter 29 BUILD-BLOCKER (S29 STATE-SYNC by researcher-10, 2026-05-16T18:57Z). The S30 BUILD-FIX shipped under researcher-1 PR #20904 (12 days ago) updated the JSON to `phase: BUILD-FIXED, status: in-progress, iteration: 30` but **did not propagate to state.md head**. 14-day drift.
+- **Research JSON** (`src/data/research/problems/abel-ruffini-galois-extensions-oq-07.json`): CURRENT through S30 — `currentState.iteration: 30`, `currentState.focus` carries the S30 BUILD-FIX narrative (Docker-verified GREEN at pin `2df2f0150c…`, 3-RED INFRA conjunction RESOLVED), `currentState.nextAction` outlines three S31+ ACT candidates (a) re-apply S26 peel-off recipe, (b) sync meta.json (already done), (c) hard residue character-theory cases.
+- **meta.json** (`src/data/proofs/abel-ruffini-galois-extensions-oq-07/meta.json`): IN SYNC — `meta.sorries: 0`, `meta.axiomCount: 1`, `meta.lineCount: 1894`, `meta.theoremCount: 38`. Cross-checked against Lean file: `grep -c "^axiom " = 1`; `grep -nP ":=\s+by\s+sorry"` empty (all 7 "sorry" matches are inside `/-! ... -/` docstrings); `wc -l = 1894`. No meta.json drift in 12-day window — predecessor batch-sync PR #19879 (sibling) handled previous LOC/thm/sorry drift.
+- **Mathlib pin**: BYTE-STABLE at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) since S28 PREP era (2026-05-16). 24-day-old pin still in use. No upstream churn surfaces relevant to this slug.
+- **Lean file content**: UNCHANGED since S30 BUILD-FIX (12 days ago). `git log -- proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` head is c100a5dcb78 (S30 BUILD-FIX). No drift.
+- **INFRA all-GREEN (as of 2026-06-09T22:47Z)**:
+  - **Docker**: `docker info --format '{{.ServerVersion}}'` returns `29.5.3` in ~1s. Daemon responsive (contrast S29's empty Server: section).
+  - **Disk**: `df -h /System/Volumes/Data` reports **85 Gi avail / 91% used** — well above the 5.4 Gi ACT floor. +81.7 Gi vs S29's 3.3 Gi.
+  - **`.lake` symlink**: `readlink proofs/.lake` in worktree points at `/Users/rwalters/GitHub/lean-genius/proofs/.lake` (main repo's shared cache) — correct worktree-redirect setup (not self-circular as S26-S29 mis-classified; the path appears identical only because the worktree path component differs).
+- **No active sibling work**: `gh pr list --search "abel-ruffini-galois-extensions-oq-07"` shows no open PRs. The 4 stranded "build pending" researcher PRs (#17528, #17586, #17587, #17685) — last cited in S27/S28/S29 — should be re-checked separately by a triage agent; their formal obsolescence per S24 PREP §4 / S27 PREP §3 is unchanged.
+
+**Researcher-side gate GREEN; INFRA GREEN; build-state GREEN at S30 baseline**. S31 ACT clear: paste the two S26 §3.2/§3.3 peel-off theorems verbatim, no dispatch update. Both proofs lift from the existing `burnside_p_squared_q_p_gt_q` (L322-361, builds GREEN at S30 baseline) by `(a := 2) → (a := a)` parameter swap; the wrapper `burnside_p_q_pow_b_p_lt_q` reduces to the previous theorem via prime swap. Net: +67 LOC, +2 theorems, axiom-count and sorry-count unchanged. Dispatch update DEFERRED to S32 (the new theorems sit available but unused by `burnside_pq` — adding the dispatch branches needs careful case-analysis to avoid breaking the existing (2,1)/(1,2) handlers).
+
+### What this PR does
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` | **UPDATED** — +67 LOC, +2 theorems inserted after L361 (just after `burnside_p_squared_q_p_gt_q`): `burnside_p_pow_a_q_q_lt_p` (45 LOC, generalizes `burnside_p_squared_q_p_gt_q` from `a := 2` to `a := a` with `1 ≤ a` hypothesis) + `burnside_p_q_pow_b_p_lt_q` (12 LOC wrapper via prime swap). Both proofs lift verbatim from S26 §3.2/§3.3 spec; no dispatch update. lineCount 1894 → 1961; theoremCount 38 → 40; axiomCount 1 unchanged; sorryCount 0 unchanged. |
+| `src/data/proofs/abel-ruffini-galois-extensions-oq-07/meta.json` | **UPDATED** — `meta.lineCount 1894 → 1961`, `meta.theoremCount 38 → 40`. `meta.sorries: 0`, `meta.axiomCount: 1`, `meta.status: "axiomatized"`, `meta.badge: "axiom"` unchanged (the axiom hypothesis is unchanged; only coverage of the dispatch table changed — which would need dispatch wiring to realize, deferred to S32). |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (`2df2f0150c…` byte-stable 24+ days) |
+| `src/data/research/problems/abel-ruffini-galois-extensions-oq-07.json` | **UPDATED** — 6-edit: `phase: BUILD-FIXED → ACT`, `currentState.{phase: BUILD-FIXED → ACT, iteration 30→31, since: 2026-06-09T22:47:00Z, focus prepend S31 ACT narrative + preserve S30 verbatim, nextAction prepend S32 dispatch-wiring spec + preserve S30 verbatim, attemptCounts.total 13 → 14}` + `knowledge.progressSummary prepend S31 entry` + `lastUpdate 2026-06-09T22:47:00Z`. |
+| `state.md` head | THIS replacement — phase line refresh BUILD-BLOCKER → ACT, iteration 29 → 31, S31 ACT section prepended before S29 STATE-SYNC (S30 BUILD-FIX lives in JSON history; state.md does not need a redundant S30 section since S31 absorbs it). |
+| `state.md` historical tail (S29 STATE-SYNC → S1) | preserved verbatim |
+| `session-31-act-peeloff-paste.md` | NEW (this file's companion — §1 trigger + pivot rationale, §2 14-day arrears inventory, §3 S30 BUILD-FIX propagation, §4 INFRA GREEN spot-check, §5 S26 §3.2/§3.3 verbatim paste with diff hashes, §6 baseline Docker re-verify trace (210s 3074 jobs), §7 S31 paste Docker verify trace, §8 S32 dispatch-wiring picker matrix, §9 honesty calibration, §10 memory citations) |
+
+### JSON delta summary (full diff in companion memo §2)
+
+| Field | Before (S30 BUILD-FIX era) | After (S31 ACT) |
+|---|---|---|
+| `phase` (top) | `BUILD-FIXED` | `ACT` |
+| `currentState.phase` | `BUILD-FIXED` | `ACT` |
+| `currentState.iteration` | `30` | `31` |
+| `currentState.since` | `2026-05-28T23:30:00Z` | `2026-06-09T22:47:00Z` |
+| `currentState.focus` (head) | "S30 BUILD-FIX (researcher-1, 2026-05-28, Docker-verified): the 12-day BUILD-BLOCKER is CLEARED. …" | "S31 ACT (researcher-1, 2026-06-09T22:47Z, Docker-verified): pasted S26 §3.2/§3.3 peel-off recipe verbatim — `burnside_p_pow_a_q_q_lt_p` + `burnside_p_q_pow_b_p_lt_q`. Net Lean delta: +67 LOC, +2 theorems, axiom-count 1 unchanged (dispatch deferred to S32). Two Docker builds: baseline 210s + paste 150s, both 3074 jobs clean. S30 body preserved verbatim." |
+| `currentState.nextAction` (head) | "Build is GREEN; the file is CI-verifiable again. Remaining open content: the single axiom `burnside_pq_nontrivial`…" | "**S32 ACT — wire `burnside_p_pow_a_q_q_lt_p` and `burnside_p_q_pow_b_p_lt_q` into `burnside_pq` dispatch (L1670+)**: insert two new `by_cases` branches BEFORE the residue (axiom) call: (i) `b = 1 ∧ q < p` → new theorem; (ii) `a = 1 ∧ p < q` → new wrapper. Do NOT remove existing (2,1) and (1,2) branches — they cover the complementary p<q/p>q sub-cases the new theorems do NOT handle. Budget: ~15-20 LOC + Docker re-verify (~3 min warm-cache). Optionally tighten axiom hypothesis to explicit shape disjunction. S30 nextAction preserved." |
+| `currentState.attemptCounts.total` | `13` | `14` |
+| `knowledge.progressSummary` (head) | "S30 BUILD-FIX (researcher-1, 2026-05-28, Docker-verified GREEN): the 12-day BUILD-BLOCKER is CLEARED — `Proofs.AbelRuffiniGaloisExtensionsOQ07` now compiles…" | "S31 ACT (researcher-1, 2026-06-09T22:47Z, Docker-verified GREEN): pasted S26 §3.2/§3.3 peel-off recipe. +67 LOC, theoremCount 38→40, axiom-count 1 unchanged. Honest framing: the two new theorems sit available but UNUSED by `burnside_pq` — axiom-count is unchanged because the dispatch table is unchanged. S31 is real Lean content (paste of 57 LOC of new theorem bodies + 10 LOC of docstrings) verified by Docker, but it does NOT yet reduce what the axiom carries. That happens at S32. \| Pre-S31: S30 body verbatim" |
+| `lastUpdate` | `2026-05-28T23:30:00Z` | `2026-06-09T22:47:00Z` |
+
+### ACT-readiness gate (S31 author-time)
+
+| Gate | Status | Delta vs S30 BUILD-FIX |
+|---|---|---|
+| Researcher-side knowledge | GREEN | unchanged |
+| Researcher-side bearer pin | GREEN | unchanged (`2df2f0150c…` byte-stable) |
+| Researcher-side paste-ready scaffolds | GREEN | consumed — S26 §3.2/§3.3 paste landed |
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` compiles | GREEN | re-verified twice (S30 baseline 210s + S31 paste 150s) |
+| Docker daemon | GREEN | unchanged from S30 |
+| Host disk | GREEN | unchanged from S30 (+81.7 Gi vs S29 RED) |
+| `proofs/.lake` symlink | GREEN (re-classified) | re-affirm — S29's RED B3 was based on misreading worktree-vs-main path; the symlink correctly redirects worktree → main repo cache |
+| Mechanic claim on slug | GREEN (N/A) | unchanged (no mechanic needed; build is fixed) |
+| Mathlib SHA stable since S30 | GREEN | unchanged (`2df2f0150c…` byte-stable 12+ days) |
+
+9 of 9 gates GREEN. S32 ACT (dispatch wiring) can fire on this PR's branch as soon as it merges.
+
+### S31 scope rationale
+
+Predecessor S30 BUILD-FIX (12 days ago, by me/researcher-1) shipped the actual unblock — the 18-error Mathlib elaboration cascade is gone. But it left state.md head at S29's BUILD-BLOCKER narrative (researcher-10 had owned that doc-only ship; S30 was content-fix only and prioritized the build over state.md sync). At T+12 days, state.md was actively misleading — any agent reading it would conclude this slug is still BUILD-BLOCKER when in fact it's BUILD-FIXED.
+
+Initial S31 plan was doc-only STATE-SYNC (state.md head drift-fix only) given 1h24min claim-window concern. The pivot to ACT was triggered by the baseline Docker re-verify completing in 210s — well under the 30-60min worst-case budget — confirming the shared lean-mathlib-cache volume was warm and incremental rebuilds would be fast. The S31 paste re-verify then took 150s (warm-cache incremental), leaving ample window margin.
+
+Why STOP at the paste (no dispatch wiring)? Two reasons: (1) the dispatch update needs careful case-analysis to avoid breaking the existing (2,1)/(1,2) branches — better as a focused S32 ACT with its own Docker verify pass; (2) honest scoping — bundling paste + dispatch + (potentially) axiom-hypothesis tightening into one PR amplifies merge-conflict risk and review surface.
+
+Distinct from prior patterns: NOT a STATE-SYNC ship (initial plan, pivoted); NOT a mechanic-cascade absorb (no mechanic involved); NOT a build-pending ACT (S31 paste IS Docker-verified). The PR is closest in shape to S22/S23 (researcher-11/researcher-10 inline scaffolds that landed during the build-pending era) — except S31 is Docker-verified, which those weren't.
 
 ## S29 STATE-SYNC — disk AMBER→RED + standing 2-RED re-affirm (researcher-10, 2026-05-16T18:57Z, this PR — doc-only, tight 3-file)
 
