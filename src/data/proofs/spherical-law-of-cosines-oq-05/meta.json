@@ -22,12 +22,12 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Haversine_formula",
     "dateAdded": "2026-05-12",
     "axiomCount": 0,
-    "lineCount": 515,
-    "assumptions": "None. All 22 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form. S3 (researcher-1, 2026-06-03) added the inverse haversine formula sideC = 2·arcsin(√(haversine sideC)) (general form for θ ∈ [0, π] plus SphericalTriangle specialisations for sideA, sideB, sideC) and the great-circle distance corollary sideC_eq_great_circle_haversine combining the forward and inverse formulas into the canonical navigation identity.",
+    "lineCount": 616,
+    "assumptions": "None. All 31 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form. S3 (researcher-1, 2026-06-03) added the inverse haversine formula sideC = 2·arcsin(√(haversine sideC)) (general form for θ ∈ [0, π] plus SphericalTriangle specialisations for sideA, sideB, sideC) and the great-circle distance corollary sideC_eq_great_circle_haversine combining the forward and inverse formulas into the canonical navigation identity. S4 (researcher-1, 2026-06-10) added strict monotonicity haversine_strictMonoOn_Icc_zero_pi (via Real.strictAntiOn_cos), the InjOn corollary haversine_injOn_Icc_zero_pi, order/equality characterisations on [0,π], the generic-Vec3 corollary arcLength_eq_of_haversine_eq, and two-triangle uniqueness statements sideA/B/C_eq_of_haversine_sideA/B/C_eq formalising the well-definedness of great-circle distance recovery. Also fixed pre-existing S2 build issues (orphan docstring, split_ifs on let-wrapped if, le_div_iff → le_div_iff₀): file is now Docker-verified end-to-end for the first time.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22,
+    "theoremCount": 31,
     "definitionCount": 1,
-    "substantiveTheoremCount": 22
+    "substantiveTheoremCount": 31
   },
   "sections": [
     {
@@ -95,12 +95,20 @@
       "mathContext": "The inverse uses two facts: (1) `sin(θ/2) ≥ 0` on `[0, π/2]`, so `√(sin²(θ/2)) = sin(θ/2)`; (2) `arcsin(sin x) = x` on `[-π/2, π/2]`, and `θ/2 ∈ [0, π/2] ⊆ [-π/2, π/2]` when `θ ∈ [0, π]`. Both branches use only standard Mathlib API (`Real.sin_nonneg_of_nonneg_of_le_pi`, `Real.sqrt_sq`, `Real.arcsin_sin`). The great-circle distance corollary closes the navigation pipeline: given latitudes/longitude-difference, the haversine of the great-circle distance can be computed without going through `arccos` near 1, and the inverse `arcsin(√·)` is well-conditioned because `arcsin` near 0 is well-behaved."
     },
     {
-      "id": "summary-final",
-      "title": "Part VIII: Summary (post-S3)",
+      "id": "strict-mono-injOn",
+      "title": "Part IX: Strict monotonicity, injectivity, and navigation uniqueness (S4)",
       "startLine": 481,
-      "endLine": 514,
-      "summary": "Tabular summary of the file's contents after S3: 22 proved theorems, 0 axioms, 0 sorries, 1 definition, 515 lines.",
-      "mathContext": "Status accounting: this file is `verified` with badge `original`. The S1 algebraic identity, S2 SphericalTriangle bridge, and S3 inverse-formula/navigation corollary together form a complete formalisation of the haversine identity loop."
+      "endLine": 580,
+      "summary": "Establishes strict monotonicity of `haversine` on the principal arc-length range `[0, π]` via `Real.strictAntiOn_cos`, deduces injectivity as a corollary, and records the resulting two-triangle uniqueness statements. Nine new theorems: `haversine_strictMonoOn_Icc_zero_pi`, `haversine_injOn_Icc_zero_pi`, `haversine_lt_haversine_iff_lt`, `haversine_eq_haversine_iff_eq`, the generic-Vec3 corollary `arcLength_eq_of_haversine_eq` (lifting injectivity from real numbers to parent-gallery arc-lengths), the three `sideA/B/C_eq_of_haversine_sideA/B/C_eq` uniqueness statements, and the vanishing characterisation `haversine_eq_zero_iff_of_mem_Icc`.",
+      "mathContext": "Strict monotonicity formalises the navigation pipeline's well-definedness: the forward `haversine_formula` (S2) plus the inverse `eq_two_arcsin_sqrt_haversine` (S3) compute a great-circle distance, and injectivity confirms this distance is uniquely recoverable from its haversine. Mathematically: $\\text{hav}(\\theta) = (1 - \\cos\\theta)/2$, and `cos` is strictly antitone on $[0, \\pi]$, so `haversine` is strictly monotone there. The corollary `arcLength_eq_of_haversine_eq` makes the injectivity directly applicable to arc-lengths between unit vectors, which always lie in $[0, \\pi]$ by `arcLength_nonneg`/`arcLength_le_pi` from the parent file."
+    },
+    {
+      "id": "summary-final",
+      "title": "Part X: Summary (post-S4)",
+      "startLine": 581,
+      "endLine": 615,
+      "summary": "Tabular summary of the file's contents after S4: 31 proved theorems, 0 axioms, 0 sorries, 1 definition, 616 lines.",
+      "mathContext": "Status accounting: this file is `verified` with badge `original`. The S1 algebraic identity, S2 SphericalTriangle bridge, S3 inverse-formula/navigation corollary, and S4 strict-monotonicity/injectivity together form a complete formalisation of the haversine identity loop with full navigation-pipeline well-definedness guarantees."
     }
   ],
   "overview": {
@@ -123,13 +131,12 @@
     ]
   },
   "conclusion": {
-    "summary": "Complete after S3: the forward haversine formula `hav(c) = hav(a−b) + sin(a)·sin(b)·hav(C)` is proved both as an algebraic identity (S1) and for a `SphericalTriangle` (S2 bridge); the inverse `c = 2·arcsin(√(hav c))` is proved on the principal arc-length range `[0, π]` (S3); and the navigation identity `c = 2·arcsin(√(hav(a−b) + sin·sin·hav(C)))` is the composed corollary. 22 theorems, 0 sorries, 0 axioms.",
-    "implications": "The haversine form is the only stable way to compute small great-circle distances in floating-point: at 1 km on Earth's surface ($R \\approx 6371$ km), the standard SLC argument $\\cos a \\cos b + \\sin a \\sin b \\cos C$ differs from 1 by $\\sim 10^{-8}$ — below the resolution of `Real.arccos` near 1 — while $\\text{hav}(c) = \\sin^2(c/2)$ stays well-conditioned because $\\sin^2$ vanishes quadratically rather than $\\cos$ saturating. Formalising the algebraic equivalence (S1's `haversine_formula_algebraic` + `cos_form_of_haversine_formula`) means any Mathlib-formalised algorithm built on the cosine form can be refactored into the haversine form without re-proving correctness. With S3's inverse formula closing the pipeline (`sideC_eq_great_circle_haversine`), the file is now self-contained: a verified end-to-end great-circle distance routine can be written against this file's API without ever calling `Real.arccos`. Methodologically, the file demonstrates a clean three-stage pattern: (S1) algebraic identity (no geometry), (S2) project geometry-to-trigonometry bridge, (S3) numerically stable inverse — isolating the analytic, geometric, and computational content into separate sessions for independent review.",
+    "summary": "Complete after S4: the forward haversine formula `hav(c) = hav(a−b) + sin(a)·sin(b)·hav(C)` is proved both as an algebraic identity (S1) and for a `SphericalTriangle` (S2 bridge); the inverse `c = 2·arcsin(√(hav c))` is proved on the principal arc-length range `[0, π]` (S3); the composed corollary `sideC_eq_great_circle_haversine` is the canonical navigation identity (S3); and strict monotonicity / injectivity of `haversine` on `[0, π]` (S4) formalises the well-definedness of the inverse step. 31 theorems, 0 sorries, 0 axioms. File is now Docker-verified end-to-end — S4 also fixed pre-existing S2 build issues (orphan docstring, split_ifs on let-wrapped if, le_div_iff → le_div_iff₀) that had silently blocked CI verification.",
+    "implications": "The haversine form is the only stable way to compute small great-circle distances in floating-point: at 1 km on Earth's surface ($R \\approx 6371$ km), the standard SLC argument $\\cos a \\cos b + \\sin a \\sin b \\cos C$ differs from 1 by $\\sim 10^{-8}$ — below the resolution of `Real.arccos` near 1 — while $\\text{hav}(c) = \\sin^2(c/2)$ stays well-conditioned because $\\sin^2$ vanishes quadratically rather than $\\cos$ saturating. Formalising the algebraic equivalence (S1's `haversine_formula_algebraic` + `cos_form_of_haversine_formula`) means any Mathlib-formalised algorithm built on the cosine form can be refactored into the haversine form without re-proving correctness. With S3's inverse formula closing the pipeline (`sideC_eq_great_circle_haversine`) and S4's injectivity confirming uniqueness, the file is now self-contained: a verified end-to-end great-circle distance routine can be written against this file's API without ever calling `Real.arccos`, with formal guarantees that the recovered distance is the unique value matching its haversine. Methodologically, the file demonstrates a clean four-stage pattern: (S1) algebraic identity (no geometry), (S2) project geometry-to-trigonometry bridge, (S3) numerically stable inverse, (S4) injectivity + well-definedness — isolating the analytic, geometric, computational, and order-theoretic content into separate sessions for independent review.",
     "openQuestions": [
-      "Lift `haversine`, `haversine_formula_algebraic`, `eq_two_arcsin_sqrt_haversine` to `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` as a potential upstream contribution (no `Real.haversine` exists at v4.26.0).",
+      "Lift `haversine`, `haversine_formula_algebraic`, `eq_two_arcsin_sqrt_haversine`, `haversine_strictMonoOn_Icc_zero_pi` to `Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic` as a potential upstream contribution (no `Real.haversine` exists at v4.26.0).",
       "Quantify the numerical-stability claim: prove an explicit upper bound on the floating-point relative error of `2·arcsin(√(hav(c)))` vs `arccos(...)` for `c → 0`, with the catastrophic-cancellation analysis made rigorous via `Real.cos` Taylor remainder bounds.",
       "Connect to the spherical law of sines (companion gallery entry `spherical-law-of-sines`) for a unified spherical trigonometry library — derive a haversine analogue of `sin a / sin A = sin b / sin B = sin c / sin C`.",
-      "Strict monotonicity of `haversine` on `[0, π]`: prove `haversine_strictMonoOn_Icc_zero_pi`, which would give injectivity of the side-from-haversine recovery (currently expressed as an equality `sideC = 2·arcsin(√(hav sideC))` only, without explicit injectivity).",
       "Latitude/longitude entry point: define `unitVectorOfLatLon : ℝ × ℝ → Vec3` and prove the standard `hav(c) = hav(Δlat) + cos(lat₁)·cos(lat₂)·hav(Δlon)` form from the dihedral version proved here; would make the GPS-distance application directly usable.",
       "Can the half-angle pattern be packaged as a general Mathlib lemma `numerically_stable_form_of_cos_identity` that, given any identity $\\cos f = g$, produces $\\text{hav}\\,f = (1-g)/2$ automatically?"
     ]
