@@ -1,7 +1,7 @@
 {
   "slug": "euler-polyhedral-formula-oq-02-oq-01-wip-01",
   "title": "Complete smooth Gauss-Bonnet formalization beyond structure axioms",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -28,35 +28,39 @@
     "goal": "Turn the WIP completion task into a concrete de-axiomatization plan: start from `CompactRiemannianSurface.gauss_bonnet`, audit current Mathlib support for Riemannian surfaces and integration on manifolds, and either discharge a narrow assumption or document the precise blocker without claiming unsupported Lean progress."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-04T02:41:20-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "ORIENT",
+    "since": "2026-06-09T20:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ORIENT (researcher-1, 2026-06-09): per-field inventory of the 10 structure-encoded assumptions in Proofs/EulerPolyhedralOQ02OQ01.lean, with TRACTABLE/DEEP classification and cost-ordered reduction plan. Confirms parent meta.json axiomCount: 10 is correct. 6 assumptions are DEEP (Mathlib-blocked on Riemannian geometry, vector bundles, Morse theory): gauss_bonnet, chi_genus, chern_gauss_bonnet, gauss_bonnet_boundary, poincare_hopf, morse_relation. 4 are TRACTABLE-DERIVABLE: gauss_bonnet_polygon (line 486, ~10 LOC), curvature_is_K_area (line 494, ~5 LOC), gauss_bonnet_triangle (line 542, ~15 LOC), nonvanishing_index (line 640, ~5 LOC). Best-case S3 outcome: discharge D + B reductions to bring assumption count 10 → 8.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "S3 ACT (Reduction D): operationalize VectorFieldOnSurface.noZeros placeholder so nonvanishing_index becomes derived from Finset.sum_empty instead of a free field. ~5 LOC edit + 1 docker build verification. Threads through 5 downstream consumers (hairy_ball, sphere_no_nonvanishing_field, positive_chi_has_zeros, negative_chi_has_zeros, nonvanishing_iff_chi_zero). Concrete edit sketch in sessions/2026-06-09-s2-orient-assumption-inventory.md.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Initial evidence pass only. The companion problem.md identifies this as a WIP completion task for `euler-polyhedral-formula-oq-02-oq-01`, the smooth Gauss-Bonnet gallery proof. Local proof metadata and source show that the existing Lean file is complete as an axiomatic development (0 sorries, 0 top-level Lean axioms, 60 theorem declarations), but the central differential-geometry content remains structure-encoded because Mathlib v4.26.0 lacks the needed Riemannian geometry infrastructure. No attempts have been recorded in this WIP research state.",
+    "progressSummary": "S2 ORIENT (researcher-1, 2026-06-09, doc-only): converted S1's stub OBSERVE into an actionable de-axiomatization plan. Inventoried all 10 structure-encoded assumptions in Proofs/EulerPolyhedralOQ02OQ01.lean with line numbers and TRACTABLE/DEEP classification. Confirmed parent meta.json axiomCount: 10 is correct. 6 are DEEP (Mathlib-blocked: gauss_bonnet, chi_genus, chern_gauss_bonnet, gauss_bonnet_boundary, poincare_hopf, morse_relation). 4 are TRACTABLE (reducible without writing new Riemannian geometry): gauss_bonnet_polygon, curvature_is_K_area, gauss_bonnet_triangle, nonvanishing_index. Cost-ordered reduction plan ranks them D (lowest risk, ~5 LOC) > B (~10 LOC) > C (~15 LOC, depends on B) > skip A. Best-case S3 outcome: discharge D + B → assumption count 10 → 8.\\n\\nS1 (2026-04-04, OBSERVE): stub placeholder only.",
     "builtItems": [],
     "insights": [
       "The source problem is a completion target for the smooth Gauss-Bonnet proof, not a separate arithmetic or sieve problem.",
       "The current source proof is `Proofs/EulerPolyhedralOQ02OQ01.lean` in namespace `SmoothGaussBonnet`; it wraps the headline formula as `CompactRiemannianSurface.gauss_bonnet : totalCurvature = 2 * pi * chi`.",
       "The proof file has no `sorry` tokens and no top-level `axiom` declarations, but the mathematical assumptions are embedded as structure fields, so the right completion target is de-axiomatization or precise blocker documentation.",
-      "The parent gallery metadata reports 10 structure-encoded assumptions and identifies the proof status as axiomatized, with Mathlib v4.26.0 lacking Riemannian metrics, Gaussian curvature, and integration on manifolds."
+      "The parent gallery metadata reports 10 structure-encoded assumptions and identifies the proof status as axiomatized, with Mathlib v4.26.0 lacking Riemannian metrics, Gaussian curvature, and integration on manifolds.",
+      "S2 inventory (2026-06-09): all 10 assumptions located by line number. 6 DEEP (Mathlib-blocked on Riemannian geometry / vector bundles / Morse theory): gauss_bonnet (L56), chi_genus (L67), chern_gauss_bonnet (L340), gauss_bonnet_boundary (L463), poincare_hopf (L638), morse_relation (L711). 4 TRACTABLE (reducible from current Mathlib + clever structuring): gauss_bonnet_polygon (L486, derivable from #4 via toBoundary coercion), curvature_is_K_area (L494, pure measure theory via setIntegral_const), gauss_bonnet_triangle (L542, derivable from polygon GB at n=3), nonvanishing_index (L640, derivable from Finset.sum_empty if noZeros is operationalized).",
+      "S2 cost-ordered reduction plan: D (nonvanishing_index, ~5 LOC, low risk) > B (gauss_bonnet_polygon, ~10 LOC, medium risk) > C (gauss_bonnet_triangle, ~15 LOC, depends on B) > skip A (curvature_is_K_area — clean reduction blocked by needing #4 first; better to relabel as definition than to reduce)."
     ],
     "mathlibGaps": [
       "No local evidence of Mathlib support for the full smooth Gauss-Bonnet theorem for compact Riemannian surfaces.",
-      "The source proof documentation says Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, integration on manifolds, differential forms, vector bundles with connection, and Morse theory infrastructure needed to replace the current structure fields."
+      "The source proof documentation says Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, integration on manifolds, differential forms, vector bundles with connection, and Morse theory infrastructure needed to replace the current structure fields.",
+      "S2 (2026-06-09) per-assumption Mathlib-gap audit: (1) gauss_bonnet needs Riemannian metrics + 2-form integration on oriented manifolds + Gaussian curvature via Weingarten map; (2) chi_genus needs classification of closed orientable surfaces up to diffeomorphism; (3) chern_gauss_bonnet needs vector bundles with connection + Pfaffian of curvature 2-form + 2n-manifold integration; (4) gauss_bonnet_boundary needs everything from (1) plus boundary 1-manifold integration; (5) poincare_hopf needs vector-field index theory + degree theory on smooth manifolds; (6) morse_relation needs Morse theory + CW-decomposition via critical points + Morse index. All 6 sit in the role's BLOCKED category."
     ],
     "nextSteps": [
-      "Read `Proofs/EulerPolyhedralOQ02OQ01.lean` around `CompactRiemannianSurface`, `OrientableClosedSurface`, and the summary block to list each structure-encoded assumption.",
-      "Search current Mathlib locally for Riemannian surface, Gaussian curvature, manifold integration, and differential-form APIs before attempting an ACT step.",
-      "If no direct de-axiomatization is feasible, narrow the task to one honest deliverable: a documented assumption inventory, a smaller interface around the core `gauss_bonnet` field, or a Mathlib-gap proposal."
+      "S3 ACT (PRIORITY): Reduction D — operationalize VectorFieldOnSurface.noZeros so nonvanishing_index becomes derived via Finset.sum_empty instead of a free structure field. ~5 LOC edit at Proofs/EulerPolyhedralOQ02OQ01.lean lines 630-640, plus threading 5 downstream consumers (hairy_ball, sphere_no_nonvanishing_field, positive_chi_has_zeros, negative_chi_has_zeros, nonvanishing_iff_chi_zero). Verify via ./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01. On success, update parent meta.json axiomCount: 10 → 9.",
+      "S4 ACT: Reduction B — derive gauss_bonnet_polygon from gauss_bonnet_boundary via a GeodesicPolygon.toBoundary coercion. ~10 LOC. Brings assumption count to 8.",
+      "S5 ACT (after B): Reduction C — derive gauss_bonnet_triangle from polygon GB at n=3 + exterior/interior-angle arithmetic. ~15 LOC. Brings assumption count to 7.",
+      "DEFER indefinitely: the 6 DEEP assumptions await Mathlib's Riemannian geometry / vector bundle / Morse theory infrastructure. Track as MATHLIB GAPS, not as researcher work items."
     ],
     "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-wip-01\n\n## Problem Understanding\n\nThis is a WIP completion task for `euler-polyhedral-formula-oq-02-oq-01`, the smooth Gauss-Bonnet gallery proof. The mathematical target is the closed orientable surface formula `int_M K dA = 2*pi*chi(M)`, with `chi(M) = 2 - 2g` for genus `g`.\n\nThe existing local proof is not scaffold-only. `Proofs/EulerPolyhedralOQ02OQ01.lean` is a 786-line axiomatic development in namespace `SmoothGaussBonnet`; it has 60 theorem declarations, 13 definitions/structures, no `sorry` tokens, and no top-level Lean `axiom` declarations. The key caveat is that the central geometric facts are carried as structure fields, especially `CompactRiemannianSurface.gauss_bonnet : totalCurvature = 2 * pi * chi`.\n\n## Local Evidence\n\n- `problem.md` says this WIP was created to complete the smooth Gauss-Bonnet theorem proof in the gallery source `euler-polyhedral-formula-oq-02-oq-01`.\n- `state.md` records OBSERVE phase, fast path, iteration 1, and zero attempts.\n- `src/data/proofs/euler-polyhedral-formula-oq-02-oq-01/meta.json` marks the source proof as `axiomatized`, reports 0 sorries, 786 lines, 60 theorems, and 10 structure-encoded assumptions.\n- `proofs/Proofs.lean` imports `Proofs.EulerPolyhedralOQ02OQ01`.\n\n## Current Completion Target\n\nThe next useful work is not to fill ordinary sorries. It is to inspect and reduce the structure-encoded assumptions, starting with the core smooth Gauss-Bonnet field, or to document exactly why current Mathlib cannot support that replacement.\n\n## Mathlib Boundary\n\nThe local proof comments and metadata say Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, integration on manifolds, differential forms, vector bundles with connection, and Morse theory support at the level needed for a first-principles proof.\n"
   },
@@ -80,5 +84,5 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.023Z"
+  "lastUpdate": "2026-06-09T20:00:00.000Z"
 }
