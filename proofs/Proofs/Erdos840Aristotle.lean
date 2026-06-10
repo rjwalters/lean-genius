@@ -122,12 +122,61 @@ lemma sidon_distinct_sums (A : Finset ℕ) (hS : IsSidon' A)
   ## Section 3: Sumset Size Bounds
 -/
 
-/-- The number of unordered pairs from A is C(|A|, 2).
-    Proof: the map (a,b) ↦ {a,b} bijects strict pairs with 2-element subsets,
-    and there are A.card.choose 2 such subsets by Finset.card_powersetLen.
-    This is a standard combinatorial identity. -/
+/-- The number of strict pairs (a, b) ∈ A × A with a < b is C(|A|, 2).
+
+    Proof strategy (swap-bijection argument, avoiding 2-element subsets):
+    Let L = strict-lt pairs, G = strict-gt pairs. Then
+      * L ∪ G = offDiag (= ≠-pairs), disjoint
+      * |L| = |G| via the swap bijection (a, b) ↦ (b, a)
+      * |offDiag| = |A| * (|A| - 1) by `card_ordered_pairs`
+    Hence 2 * |L| = |A| * (|A| - 1) = 2 * C(|A|, 2) by `two_mul_choose_two`,
+    so |L| = C(|A|, 2). -/
 theorem unordered_pairs_card (A : Finset ℕ) :
-    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2 := by sorry
+    ((A ×ˢ A).filter fun p => p.1 < p.2).card = A.card.choose 2 := by
+  set L := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 < p.2) with hL_def
+  set G := (A ×ˢ A).filter (fun p : ℕ × ℕ => p.2 < p.1) with hG_def
+  -- Disjointness: a < b and b < a cannot both hold
+  have h_disj : Disjoint L G := by
+    rw [Finset.disjoint_left]
+    rintro p hLp hGp
+    simp only [hL_def, hG_def, Finset.mem_filter] at hLp hGp
+    omega
+  -- L ∪ G coincides with the ≠-filter, whose card is given by `card_ordered_pairs`
+  have h_union_card : (L ∪ G).card = A.card * (A.card - 1) := by
+    have h_eq : L ∪ G = (A ×ˢ A).filter (fun p : ℕ × ℕ => p.1 ≠ p.2) := by
+      ext p
+      simp only [hL_def, hG_def, Finset.mem_union, Finset.mem_filter]
+      constructor
+      · rintro (⟨h1, h2⟩ | ⟨h1, h2⟩) <;> exact ⟨h1, by omega⟩
+      · rintro ⟨h1, h2⟩
+        rcases Nat.lt_or_gt_of_ne h2 with hlt | hgt
+        · exact Or.inl ⟨h1, hlt⟩
+        · exact Or.inr ⟨h1, hgt⟩
+    rw [h_eq, card_ordered_pairs]
+  -- Swap bijection: G is the image of L under (a, b) ↦ (b, a)
+  have h_swap_inj : Function.Injective (fun p : ℕ × ℕ => (p.2, p.1)) := by
+    rintro ⟨a, b⟩ ⟨c, d⟩ h
+    simp only [Prod.mk.injEq] at h
+    exact Prod.ext h.2 h.1
+  have h_G_eq : G = L.image (fun p : ℕ × ℕ => (p.2, p.1)) := by
+    ext ⟨a, b⟩
+    simp only [hG_def, hL_def, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_image]
+    constructor
+    · rintro ⟨⟨ha, hb⟩, hgt⟩
+      exact ⟨(b, a), ⟨⟨hb, ha⟩, hgt⟩, rfl⟩
+    · rintro ⟨⟨c, d⟩, ⟨⟨hc, hd⟩, hlt⟩, h_eq⟩
+      obtain ⟨h_d_a, h_c_b⟩ : d = a ∧ c = b := Prod.mk.inj h_eq
+      subst h_d_a; subst h_c_b
+      exact ⟨⟨hd, hc⟩, hlt⟩
+  have h_card_eq : G.card = L.card := by
+    rw [h_G_eq]; exact Finset.card_image_of_injective L h_swap_inj
+  -- Combine: 2 * |L| = |A| * (|A| - 1) = 2 * choose 2
+  have h_two_L : 2 * L.card = A.card * (A.card - 1) := by
+    rw [Finset.card_union_of_disjoint h_disj, h_card_eq] at h_union_card
+    omega
+  have h_two_choose := two_mul_choose_two A.card
+  omega
 
 /-- Sumset is nonempty when A is nonempty -/
 lemma sumset_nonempty (A : Finset ℕ) (hA : A.Nonempty) : (sumset' A).Nonempty := by
