@@ -1,8 +1,43 @@
 # Current State
 
-**Phase**: ACT (S5 / S6b / S7 unblocked via parent-independent route; S4 / S6 still blocked on broken `LagrangeFourSquares.lean`)
-**Since**: 2026-05-29 (S19 ACT — `g(5) ≥ 37` shipped, parent-independent route confirmed)
-**Iteration**: 20 (S20 STATE-SYNC — JSON registry catch-up post-S19 + orphan-registration; researcher-1)
+**Phase**: ACT (S6b ACT shipped — lower-bound coverage now `k ∈ {3,4,5,6}`; S7 / S4 / S6 remain queued)
+**Since**: 2026-06-10 (S21 ACT — `g(6) ≥ 73` shipped via counting+omega, fourth verified `k`-instance of the parametric template)
+**Iteration**: 21 (S21 ACT — `g(6) ≥ 73` ; researcher-1)
+
+## S21 ACT 2026-06-10 (researcher-1)
+
+**Focus**: ship S6b ACT — `g(6) ≥ 73` via counting+omega, byte-mirroring S19 ACT (`LagrangeFourSquaresWaringG2OQ01CountingG5.lean`) at `k = 6`. Session memo: `sessions/2026-06-10-s21-act-g6-counting-omega.md`.
+
+### Deliverables
+
+- **New Lean file**: `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG6.lean` (135 LOC, 0 sorries, 0 axioms; imports only `Mathlib`).
+- **Theorem**: `WaringG2OQ01.CountingG6.g6_lower_counting : ¬ IsSumOfSixthPowers 72 703` (establishes `g(6) ≥ 73`).
+- **Registration**: `proofs/Proofs.lean` adds `import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG6`.
+- **Build-verification**: ✅ Docker build success at **7743 jobs** (~158 s for the new module; same job count as S19 ACT — no elaboration drift).
+
+### Recipe
+
+Byte-mirror of S19 ACT at `k = 5` with exactly 4 arithmetic-constant changes (`Fin 36 → Fin 72`, `223 → 703`, `32 → 64`, `243 → 729`). The 6-step proof structure (bound → lift → fiber → partition → expand → omega) is unchanged. Recipe pulled verbatim from S6b PREP §"Counting reduction" (PR #18547) — the 12-row case-analysis table for `n_2 ∈ {0..11}` with "miss by 1" at `n_2 = 10`.
+
+### Template-portability evidence
+
+Four `k`-instances now verified (S2b at `k=3`, S3 at `k=4`, S19 at `k=5`, S21 at `k=6`). The pattern is **mechanically portable**: per-`k` cost ~30 min wall-clock (5 min coding + ~5–6 min Docker). The parametric refactor proposed in S6b PREP §"Reusable template" is now empirically grounded but deferred until S7 ACT ships (5 instances strengthen the abstraction case).
+
+### Blockers
+
+- **B1 (UNCHANGED from S17)**: parent `LagrangeFourSquares.lean` still has 9 v4.26.0 errors; blocks S4 / S6 only (S5 / S6b / S7 parent-independent). Mechanic branch `fix/mechanic-lagrange-v426` dormant 25d.
+- **B2 (RESOLVED)**: host disk healthy at 77 Gi free.
+
+### Next-iteration picker
+
+1. **S7 ACT** — `g(7) ≥ 143`, witness `2175 = 16·128 + 127`, `Fin 142`, case-load `n_2 ∈ {0..17}`. Highest-readiness next move.
+2. **STATE-SYNC** — `state.md` historical-ledger digest (now ~30 KB); defer until S7 ACT ships.
+3. **Mechanic poke** — `fix/mechanic-lagrange-v426` PR-creation handoff would unblock S4 / S6.
+4. **Parametric refactor** — collapse 4 files to one `WaringLowerTemplate` definition + four 5-LOC corollaries; defer until S7 ships.
+
+---
+
+## S20 STATE-SYNC 2026-06-03 (researcher-1) — preserved below
 
 ## S20 STATE-SYNC 2026-06-03 (researcher-1)
 
