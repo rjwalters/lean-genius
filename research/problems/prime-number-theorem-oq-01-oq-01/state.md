@@ -1,9 +1,65 @@
 # Current State
 
-**Phase**: PREP (S10 PREP — `zeta_conj` Schwarz-reflection bearer-audit COMPLETION; R-3 + R-4 both resolved to concrete v4.26.0 bearers; S11 ACT is now unblocked, LOC estimate tightened from 80–120 to 40–60)
+**Phase**: PREP (S11 PREP CORRECTION — three S10 PREP bearer-module paths verified-and-corrected at v4.26.0 pin; S12 ACT remains unblocked, LOC estimate unchanged at 40–60)
 **Since**: 2026-05-12T18:25:00Z
-**Iteration**: 10
-**Last Update**: 2026-05-31 (researcher-1) — S10 PREP: completed the S3 PREP bearer audit. R-4 (preconnectedness of ℂ \ {1}) DIRECT BEARER FOUND: `isPathConnected_compl_singleton_of_one_lt_rank` (`Mathlib/Analysis/NormedSpace/Connected.lean:112`) + `Complex.rank_real_complex` (`Mathlib/Data/Complex/FiniteDimensional.lean:30`); collapses from 10–15 LOC to 3–5 LOC. R-3 (holomorphy of `conj ∘ ζ ∘ conj`): no one-liner, but `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` (`Mathlib/Analysis/Complex/RealDeriv.lean:156–170`) is identified as the canonical proof template (~20–25 LOC copy-adaptation). R-2 micro-finding: 2 LOC via `starRingEnd_self_apply` involution. New imports needed for S11 ACT: `Mathlib.Analysis.Complex.RealDeriv` + `Mathlib.Analysis.NormedSpace.Connected` + `Mathlib.Analysis.Analytic.Uniqueness`. Full forensics in `sessions/2026-05-31-s10-prep-zeta-conj-bearer-audit-completion.md`.
+**Iteration**: 11
+**Last Update**: 2026-06-10 (researcher-7) — S11 PREP CORRECTION: three bearer-module paths from S10 PREP are wrong at v4.26.0 pin. CORRECTED: (1) `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` lives at `Mathlib/Analysis/Complex/Conformal.lean:153` (not `Mathlib/Analysis/Complex/RealDeriv.lean:156–170`); (2) `isPathConnected_compl_singleton_of_one_lt_rank` lives at `Mathlib/Analysis/Normed/Module/Connected.lean:119` (not `Mathlib/Analysis/NormedSpace/Connected.lean:112` — that file does not exist at v4.26.0); (3) `Complex.rank_real_complex` lives at `Mathlib/LinearAlgebra/Complex/FiniteDimensional.lean:35` (not `Mathlib/Data/Complex/FiniteDimensional.lean:30` — that file does not exist at v4.26.0). All bearer names + signatures unchanged. Verified via direct `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=2df2f0150c…` reads. Without these corrections, S12 ACT would face three `import` failures before the proof elaborates. Corrected import block: `import Mathlib.Analysis.Complex.Conformal` + `import Mathlib.Analysis.Normed.Module.Connected` + `import Mathlib.Analysis.Analytic.Uniqueness` (third unchanged from S10 PREP). Verbatim proof template of `conformalAt_iff_…` (13-line body, 1 line shorter than S10 PREP's claimed 14) included in the new sessions/ memo for paste-and-adapt. Full forensics in `sessions/2026-06-10-s11-prep-zeta-conj-bearer-path-correction.md`.
+
+## Session N=11 — S11 PREP CORRECTION — `zeta_conj` bearer-audit module-path corrections (2026-06-10, researcher-7)
+
+**Mode**: PREP CORRECTION (doc-only Mathlib API path-correction of S10 PREP's three module references; no Lean file edits, no docker build).
+
+**Outcome**: ✓ **HAPPY-PATH** — three module-path errors in S10 PREP's bearer-audit completion memo (`sessions/2026-05-31-s10-prep-zeta-conj-bearer-audit-completion.md`) are identified, verified, and corrected via direct GitHub-API reads at the v4.26.0 pinned SHA. All three bearer **names + signatures** match S10 PREP; only the module **paths** were wrong (the Mathlib v4.x layout has been refactored — `NormedSpace/Connected` → `Normed/Module/Connected`; `Data/Complex` → `LinearAlgebra/Complex`; `Complex/RealDeriv` template moved to `Complex/Conformal`).
+
+**Verified corrections** (full table in S11 sessions/ §0):
+
+| Bearer | S10 PREP path (WRONG) | v4.26.0 actual path (CORRECTED) |
+|---|---|---|
+| `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` | `Mathlib/Analysis/Complex/RealDeriv.lean:156–170` | `Mathlib/Analysis/Complex/Conformal.lean:153` |
+| `isPathConnected_compl_singleton_of_one_lt_rank` | `Mathlib/Analysis/NormedSpace/Connected.lean:112` | `Mathlib/Analysis/Normed/Module/Connected.lean:119` |
+| `Complex.rank_real_complex` | `Mathlib/Data/Complex/FiniteDimensional.lean:30` | `Mathlib/LinearAlgebra/Complex/FiniteDimensional.lean:35` |
+
+The first two paths need explicit `import` lines added to the new child file `proofs/Proofs/PrimeNumberTheoremOQ01OQ01OQ01.lean`. The third (`Complex.rank_real_complex`) is `@[simp]`-tagged and transitively imported by `Mathlib.Analysis.Complex.Basic` (already in scope via the RH file); the path correction is for reference notes only.
+
+**Corrected §2.2 import block** (replaces S10 PREP's §2.2):
+
+```lean
+import Proofs.RiemannHypothesis
+import Proofs.PrimeNumberTheoremOQ01
+import Mathlib.Analysis.Complex.Conformal             -- CORRECTED
+import Mathlib.Analysis.Normed.Module.Connected       -- CORRECTED
+import Mathlib.Analysis.Analytic.Uniqueness           -- unchanged
+```
+
+**Verbatim proof template**: the actual `conformalAt_iff_differentiableAt_or_differentiableAt_comp_conj` proof body (13 LOC after signature, not 14 as S10 PREP claimed) is reproduced verbatim in S11 sessions/ §2 so the S12 ACT-er can paste-and-adapt without re-fetching from Mathlib.
+
+**Build verification**: not applicable (doc-only PREP CORRECTION; no `.lean` edits).
+
+**S12 ACT readiness gate** (all preconditions met):
+
+- (a) All four bearer classes (R-2, R-3, R-4, R-5) have **verified-at-pin** v4.26.0 names + paths.
+- (b) Required new imports identified with corrected paths.
+- (c) Verbatim template proof body included in S11 sessions/ §2.
+- (d) No open PRs on slug — verified at 2026-06-10T08:51Z via `gh pr list --search "prime-number-theorem-oq-01-oq-01 in:title" --state open` → `[]` and `gh pr list --search "PrimeNumberTheoremOQ01OQ01" --state open` → `[]`.
+
+**Sad-paths did NOT occur**:
+
+- Sad-path A (corrections introduce new errors): all three corrected paths verified via API reads showing the bearers exist at the claimed line numbers.
+- Sad-path B (bearer names/signatures changed): grep confirms identical names + signatures; only paths differ.
+- Sad-path C (third file path also wrong): re-verified `Mathlib.Analysis.Analytic.Uniqueness` exists at v4.26.0 (unchanged from S10 PREP).
+
+**Honest-status block**: zero new mathematics; this iteration is purely PREP CORRECTION (Mathlib module-path resolution of S10 PREP's three layout errors). No `.lean` files modified. The `zeta_conj` axiom at `RiemannHypothesis.lean:779` remains. Open conjecture status unchanged (Millennium Prize). **However**, these corrections are load-bearing: without them, the next S12 ACT-er would face three `import` failures before the proof elaborates, costing one wasted build round-trip per error to discover.
+
+**Next ACT picker priority** (post-S11, in order):
+
+1. **S12 ACT — `zeta_conj` discharge** in a new child file `proofs/Proofs/PrimeNumberTheoremOQ01OQ01OQ01.lean` (recommended; keeps the cross-slug discharge in this slug's downstream chain rather than editing the `riemann-hypothesis`-owned parent). 40–60 LOC, follows §3 corrected imports + §2 verbatim template from S11 sessions/. **Most substantive follow-on; now fully unblocked with verified bearer paths.**
+2. **S12 ACT (alternate)** — direct edit of `RiemannHypothesis.lean:779` to replace the axiom with a theorem. Cross-slug per the parent-regression-isolation pattern (`feedback_researcher_parent_regression_isolation_via_new_file_split`); only do this if explicitly authorised. Same 40–60 LOC content.
+3. **S12 OBSERVE** — gallery-side enricher integration of the build-verified bridge into `src/data/proofs/` enrichment tree (out-of-researcher-scope; refer to enricher).
+4. **S12 MECHANIC-SCOPE** — parent-file unused-variable warning at `PrimeNumberTheoremOQ01.lean:276:7` (variable `s`). Trivial 1-LOC mechanic fix; not in slug-owned scope.
+
+Full forensics in `sessions/2026-06-10-s11-prep-zeta-conj-bearer-path-correction.md`.
+
+---
 
 ## Session N=10 — S10 PREP — `zeta_conj` Schwarz-reflection bearer-audit completion (2026-05-31, researcher-1)
 
