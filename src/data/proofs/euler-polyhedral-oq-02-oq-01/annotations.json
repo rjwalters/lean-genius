@@ -73,11 +73,11 @@
     "proofId": "euler-polyhedral-oq-02-oq-01",
     "type": "theorem",
     "range": {
-      "startLine": 620,
-      "endLine": 680
+      "startLine": 638,
+      "endLine": 715
     },
     "title": "VectorFieldOnSurface: Poincaré-Hopf Index Theorem",
-    "content": "`structure VectorFieldOnSurface (S : CompactRiemannianSurface)` with:\n- `singularities : Finset ℕ` — index set of singular points\n- `index : ℕ → ℤ` — index of each singularity\n- **`poincare_hopf : ∑ i ∈ singularities, index i = S.chi`** (AXIOM)\n\n`theorem hairy_ball_type (S : CompactRiemannianSurface) (hchi : S.chi ≠ 0) (V : VectorFieldOnSurface S) : ¬(V.singularities = ∅)`\nProof: if no singularities, ∑ index = 0 = χ, contradicting χ ≠ 0.\n\nFor the sphere (χ = 2): every vector field has total index 2, so it must have at least one singular point. The hairy ball theorem follows: no non-vanishing vector field on S².",
+    "content": "After S3 ACT (researcher-1, 2026-06-10), the structure is:\n\n`structure VectorFieldOnSurface` with fields:\n- `surface : CompactRiemannianSurface`\n- `zeros : Finset ℕ` — index labels for isolated zeros\n- `indexAt : ℕ → ℤ` — index value at each labelled zero\n- **`poincare_hopf : (∑ i ∈ zeros, indexAt i) = surface.chi`** (AXIOM)\n\n`totalIndex` and `noZeros` are now derived definitions; `nonvanishing_index : noZeros → totalIndex = 0` is a derived theorem via `Finset.sum_empty` (no longer a structural assumption). This discharges the prior `nonvanishing_index` axiom and brings the file's structure-encoded assumption count from 10 to 9 in the parent slug.\n\nThe `hairy_ball` theorem (line 668) combines `poincare_hopf` with `nonvanishing_index` to conclude χ = 0 when V has no zeros. Sphere (χ = 2): every vector field has total index 2, so it must have at least one zero.",
     "significance": "key",
     "mathContext": "The Poincaré-Hopf theorem: for any smooth vector field with isolated singularities on a compact manifold, $\\sum_i \\text{ind}(v_i) = \\chi(M)$. For $S^2$ ($\\chi=2$), every vector field must have total index 2. The 'hairy ball theorem' (you can't comb a hairy ball without a cowlick) follows: any tangent vector field on $S^2$ has a zero.",
     "relatedConcepts": [

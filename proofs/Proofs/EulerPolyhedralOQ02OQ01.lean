@@ -626,25 +626,49 @@ Consequences:
 -/
 
 /-- A vector field on a compact surface with isolated zeros.
-    Records the sum of indices at zeros. -/
+    The (finite) zero set is recorded explicitly via index labels in
+    `zeros`, with the actual index value at each label given by `indexAt`.
+    Modeling the zero set concretely lets the "nowhere-vanishing ⇒
+    total index = 0" identity be derived from `Finset.sum_empty`
+    (see `nonvanishing_index` below) rather than carried as a free
+    structural assumption — discharging one of the local structure-
+    encoded assumptions of this file. The deep Poincaré–Hopf identity
+    `(Σ index) = χ(M)` remains an assumption, since it requires
+    vector-field/singularity machinery beyond current Mathlib. -/
 structure VectorFieldOnSurface where
   /-- The underlying surface -/
   surface : CompactRiemannianSurface
-  /-- Sum of indices at all zeros of the vector field -/
-  totalIndex : ℤ
-  /-- Whether the vector field is nowhere-vanishing -/
-  noZeros : Prop
+  /-- Index labels for the isolated zeros of the vector field -/
+  zeros : Finset ℕ
+  /-- Index of the vector field at each labelled zero -/
+  indexAt : ℕ → ℤ
   /-- The Poincaré-Hopf theorem: sum of indices = χ(M) -/
-  poincare_hopf : totalIndex = surface.chi
-  /-- A nowhere-vanishing field has total index 0 -/
-  nonvanishing_index : noZeros → totalIndex = 0
+  poincare_hopf : (∑ i ∈ zeros, indexAt i) = surface.chi
+
+namespace VectorFieldOnSurface
+
+/-- Total index of a vector field — sum of indices over the zero set. -/
+def totalIndex (V : VectorFieldOnSurface) : ℤ := ∑ i ∈ V.zeros, V.indexAt i
+
+/-- A vector field is *nowhere-vanishing* when its (finite) zero set is empty. -/
+def noZeros (V : VectorFieldOnSurface) : Prop := V.zeros = ∅
+
+/-- A nowhere-vanishing vector field has total index 0 — derived from the
+    empty-sum identity, not a structural assumption. -/
+theorem nonvanishing_index (V : VectorFieldOnSurface) (h : V.noZeros) :
+    V.totalIndex = 0 := by
+  show (∑ i ∈ V.zeros, V.indexAt i) = 0
+  rw [show V.zeros = ∅ from h]
+  exact Finset.sum_empty
+
+end VectorFieldOnSurface
 
 /-- **Hairy Ball Theorem** (consequence of Poincaré-Hopf):
     A nowhere-vanishing vector field on a compact surface implies χ = 0. -/
 theorem hairy_ball (V : VectorFieldOnSurface) (h : V.noZeros) :
     V.surface.chi = 0 := by
   have h1 := V.poincare_hopf
-  have h2 := V.nonvanishing_index h
+  have h2 : (∑ i ∈ V.zeros, V.indexAt i) = 0 := V.nonvanishing_index h
   omega
 
 /-- The sphere has no nowhere-vanishing vector field (classical hairy ball). -/

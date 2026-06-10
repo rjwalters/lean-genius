@@ -373,13 +373,13 @@
     "id": "ann-poincare-hopf",
     "proofId": "euler-polyhedral-formula-oq-02-oq-01",
     "range": {
-      "startLine": 630,
-      "endLine": 685
+      "startLine": 638,
+      "endLine": 715
     },
     "type": "definition",
     "title": "Poincar\u00e9-Hopf: \u03a3 index(V,p_i) = \u03c7; Hairy Ball as Corollary",
-    "content": "The Poincar\u00e9-Hopf index theorem: for a vector field on a compact surface with isolated zeros, \u03a3 index(p_i) = \u03c7(M). The `hairy_ball` theorem (line 644) axiomatizes this: if V has no zeros, then \u03c7 = 0. `sphere_no_nonvanishing_field` and `torus_admits_nonvanishing_field` follow as immediate corollaries.\n\n`nonvanishing_iff_chi_zero` gives the complete classification: only surfaces with \u03c7 = 0 (torus and Klein bottle) can support nowhere-vanishing vector fields. The proof: `hairy_ball V` directly for the forward direction.",
-    "mathContext": "$$\\sum_i \\text{index}(V, p_i) = \\chi(M)$$\nThe hairy ball theorem: every continuous tangent vector field on $S^2$ must vanish somewhere, since $\\chi(S^2) = 2 \\neq 0$. Only the torus ($\\chi = 0$) and Klein bottle ($\\chi = 0$) support non-vanishing fields. The `VectorFieldOnSurface` structure (line 630) records the surface, zero-ness predicate, and the index-sum axiom.",
+    "content": "The Poincar\u00e9-Hopf index theorem: for a vector field on a compact surface with isolated zeros, \u03a3 index(p_i) = \u03c7(M). The `VectorFieldOnSurface` structure (line 638) carries this as its only structural assumption (`poincare_hopf`), with the zero set recorded explicitly as a `Finset \u2115` so that `nonvanishing_index` is a *derived* theorem rather than an axiom (proof: `Finset.sum_empty`). See research/problems/euler-polyhedral-formula-oq-02-oq-01-wip-01/sessions/2026-06-10-s3-act-reduction-D.md for the de-axiomatization.\n\nThe `hairy_ball` theorem combines `poincare_hopf` with `nonvanishing_index` to conclude that if V has no zeros, then \u03c7 = 0. `sphere_no_nonvanishing_field` and `torus_admits_nonvanishing_field` follow as immediate corollaries. `nonvanishing_iff_chi_zero` gives the complete classification: only surfaces with \u03c7 = 0 (torus and Klein bottle) can support nowhere-vanishing vector fields.",
+    "mathContext": "$$\\sum_i \\text{index}(V, p_i) = \\chi(M)$$\nThe hairy ball theorem: every continuous tangent vector field on $S^2$ must vanish somewhere, since $\\chi(S^2) = 2 \\neq 0$. Only the torus ($\\chi = 0$) and Klein bottle ($\\chi = 0$) support non-vanishing fields. The `VectorFieldOnSurface` structure (line 638) records the surface, the (finite) zero set, the per-zero index, and the Poincar\u00e9-Hopf identity \u03a3 index = \u03c7 as its single structural assumption.",
     "significance": "key",
     "relatedConcepts": [
       "Poincar\u00e9-Hopf theorem",
@@ -399,12 +399,12 @@
     "id": "ann-morse-theory",
     "proofId": "euler-polyhedral-formula-oq-02-oq-01",
     "range": {
-      "startLine": 701,
-      "endLine": 746
+      "startLine": 725,
+      "endLine": 770
     },
     "type": "definition",
     "title": "Morse Theory: \u03c7 = #min \u2212 #saddles + #max via Critical Points",
-    "content": "Morse theory relates critical points of smooth functions to topology: \u03c7(M) = #minima \u2212 #saddles + #maxima. For S\u00b2 (\u03c7 = 2): every Morse function needs #min + #max \u2265 2 + #saddles. For T\u00b2 (\u03c7 = 0): at least 2 saddles needed whenever min,max \u2265 1.\n\nThe `MorseFunctionOnSurface` structure (line 701) encodes the surface, critical point counts, and the Morse relation as an axiom. `sphere_height_function` and `torus_standard_morse` give the minimal examples. `genus_g_morse_bound` gives the general constraint: min + max \u2212 saddles = 2 \u2212 2g.",
+    "content": "Morse theory relates critical points of smooth functions to topology: \u03c7(M) = #minima \u2212 #saddles + #maxima. For S\u00b2 (\u03c7 = 2): every Morse function needs #min + #max \u2265 2 + #saddles. For T\u00b2 (\u03c7 = 0): at least 2 saddles needed whenever min,max \u2265 1.\n\nThe `MorseFunctionOnSurface` structure (line 725) encodes the surface, critical point counts, and the Morse relation as an axiom. `sphere_height_function` and `torus_standard_morse` give the minimal examples. `genus_g_morse_bound` gives the general constraint: min + max \u2212 saddles = 2 \u2212 2g.",
     "mathContext": "The weak Morse inequality: $\\chi(M) = \\sum_{k} (-1)^k c_k$ where $c_k$ is the number of index-$k$ critical points. For surfaces: $\\chi = c_0 - c_1 + c_2$. Sphere: $1 - 0 + 1 = 2$ (height function). Torus: $1 - 2 + 1 = 0$ (standard embedding). The Morse inequalities further constrain individual Betti numbers: $c_k \\geq b_k$.",
     "significance": "key",
     "relatedConcepts": [
