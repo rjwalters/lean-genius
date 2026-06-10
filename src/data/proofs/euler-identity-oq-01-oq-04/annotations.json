@@ -22,6 +22,28 @@
     ]
   },
   {
+    "id": "eioq01x4-ann-01b",
+    "proofId": "euler-identity-oq-01-oq-04",
+    "range": { "startLine": 74, "endLine": 94 },
+    "type": "context",
+    "title": "§0 Motivation: Why a Bridge Lemma Is Needed at All",
+    "content": "The §0 section docstring (lines 76-93) lays out the two Periodic.lift constructions that motivate the bridge: `AddCircle.toCircle` (general T parameter, defined as `(scaled_exp_map_periodic T).lift` and yielding `Circle.exp ((2π/T) * x)` on representatives) versus `Real.Angle.toCircle` (T = 2π specialization, defined as `Circle.periodic_exp.lift` and yielding `Circle.exp x` on representatives by `rfl`). A casual reader might assume these are the same function — and at T = 2π they ARE, but only propositionally. The cited Mathlib reference (`SpecialFunctions/Complex/Circle.lean:168` in v4.26.0) pins down exactly which bearer `homeomorphCircle'` uses: `Real.Angle.toCircle`. The design choice this file makes — using `AddCircle.toCircle` as the canonical forward map of the new `≃+` — is what forces the bridge: we want the named `≃+` to compose with the general `AddCircle.toCircle_*` lemma family (`toCircle_zero`, `toCircle_add`, `injective_toCircle`), so we cannot just adopt `Real.Angle.toCircle` as the forward map.",
+    "mathContext": "Choice of canonical bearer: $\\text{AddCircle.toCircle}_T$ (parameterized over $T$) vs $\\text{Real.Angle.toCircle}$ (fixed at $T = 2\\pi$). The former is the natural target for general-$T$ lemma reuse; the latter is what Mathlib's existing $\\text{homeomorphCircle}'$ uses internally.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Periodic.lift",
+      "scaled_exp_map_periodic",
+      "Circle.periodic_exp",
+      "canonical bearer choice",
+      "definitional vs propositional equality"
+    ],
+    "prerequisites": [
+      "Mathlib.Topology.Instances.AddCircle.Defs (AddCircle.toCircle definition)",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle (Real.Angle.toCircle, homeomorphCircle')",
+      "Periodic functions and their quotient lifts"
+    ]
+  },
+  {
     "id": "eioq01x4-ann-02",
     "proofId": "euler-identity-oq-01-oq-04",
     "range": { "startLine": 95, "endLine": 104 },
