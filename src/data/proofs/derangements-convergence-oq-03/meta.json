@@ -22,8 +22,8 @@
     "axiomCount": 0,
     "assumptions": "No assumptions. The theorem is fully machine-checked. The proof delegates the rate bound to derangements_convergence_rate from DerangementsConvergence.lean, which establishes |D(n)/n! - e⁻¹| ≤ 1/(n+1)! via the alternating series estimation theorem.",
     "dateAdded": "2026-04-24",
-    "lineCount": 88,
-    "theoremCount": 2,
+    "lineCount": 89,
+    "theoremCount": 1,
     "definitionCount": 0,
     "originalContributions": [
       "derangements_eq_round (PROVED): For n ≥ 2, (numDerangements n : ℤ) = round(n! · rexp(-1))",
@@ -179,9 +179,9 @@
       "Topology"
     ],
     "namespace": "DerangementsConvergenceOQ03",
-    "lineCount": 88,
+    "lineCount": 89,
     "axiomCount": 0,
-    "theoremCount": 2,
+    "theoremCount": 1,
     "substantiveTheoremCount": 1,
     "duplicateTheorems": 0,
     "definitionCount": 0,
