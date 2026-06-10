@@ -40,6 +40,11 @@
       "primitivity convention in Diophantine problems",
       "modular obstructions",
       "scaling families"
+    ],
+    "prerequisites": [
+      "Nat ordering and gcd",
+      "existential quantification on Nat",
+      "primitive Diophantine triples"
     ]
   },
   {
@@ -58,6 +63,11 @@
       "Nat.gcd",
       "decidability of Diophantine predicates on Nat",
       "absolute-value encoding tricks"
+    ],
+    "prerequisites": [
+      "definition/existence Prop-level encodings",
+      "Nat.gcd and disjunction",
+      "Lean 4 `def ... : Prop`"
     ]
   },
   {
@@ -76,6 +86,11 @@
       "native_decide tactic",
       "taxicab number 1729",
       "n=3 cubic Diophantine equations"
+    ],
+    "prerequisites": [
+      "kernel reduction of `Nat` arithmetic",
+      "decidability of `Nat.gcd a b = c`",
+      "the `FermatDefectWitness` definition above"
     ]
   },
   {
@@ -94,6 +109,11 @@
       "taxicab number 1729",
       "Ramanujan-Hardy anecdote",
       "native_decide tactic"
+    ],
+    "prerequisites": [
+      "decidability of arithmetic on `Nat`",
+      "`left`/`right` for disjunction in tactic mode",
+      "the `FermatDefectWitness` definition above"
     ]
   },
   {
@@ -111,6 +131,11 @@
     "relatedConcepts": [
       "Level 3 of the hierarchy",
       "existential introduction"
+    ],
+    "prerequisites": [
+      "existential introduction `⟨a, b, c, proof⟩`",
+      "the four predicates above",
+      "the two benchmark theorems"
     ]
   },
   {
@@ -178,6 +203,11 @@
       "Mathlib import conventions",
       "namespace conventions in Lean 4",
       "gallery vs mathlib-bound style"
+    ],
+    "prerequisites": [
+      "Lake build system",
+      "Lean 4 namespace mechanics",
+      "Mathlib's decidability instances for `Nat`"
     ]
   },
   {
@@ -223,6 +253,63 @@
       "abc conjecture",
       "Thue equations",
       "superelliptic equations"
+    ],
+    "prerequisites": [
+      "exponent vs base structure of $x^p + y^q = z^r$",
+      "the notion of primitive Diophantine solutions",
+      "asymptotic vs existential statements"
+    ]
+  },
+  {
+    "id": "ann-mihailescu-adjacency",
+    "proofId": "fermat-defect-one",
+    "range": {
+      "startLine": 35,
+      "endLine": 39
+    },
+    "type": "context",
+    "title": "Mihailescu / Catalan as the Proved Single-Term Defect-One",
+    "content": "The defect-one equation $a^n + b^n = c^n \\pm 1$ has a proved one-term analogue: Catalan's conjecture (1844), now Mihailescu's theorem (2002), states that $x^p - y^q = 1$ with $p, q \\ge 2$ has *only* the solution $3^2 - 2^3 = 1$ (i.e., $9 - 8 = 1$). Mihailescu's proof uses cyclotomic-field machinery — primary cyclotomic units, Wieferich-style obstructions on $(p, q)$, Bugeaud-Hanrot annihilator techniques. This is the closest *proved* relative of the present open conjecture, and the toolkit is the modern playbook for perfect-power gap problems. The structural difference is decisive: Catalan-Mihailescu has *one* solution (finitely many), defect-one is conjectured to have at least one solution at *every* $n \\ge 3$. A natural research question: do Mihailescu-style cyclotomic obstructions transfer to the two-term diagonal equation $a^n + b^n = c^n \\pm 1$?",
+    "mathContext": "Catalan-Mihailescu: $x^p - y^q = 1$, $p, q \\ge 2 \\Rightarrow (x, y, p, q) = (3, 2, 2, 3)$. Defect-one: $|a^n + b^n - c^n| = 1$ conjecturally has at least one primitive solution at each $n \\ge 3$ — the same '$\\pm 1$' on the right-hand side, with two like powers on the left instead of one.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Mihailescu's theorem (2002)",
+      "Catalan's conjecture (1844)",
+      "cyclotomic units",
+      "Wieferich pairs",
+      "perfect-power gap problems",
+      "Pillai's conjecture",
+      "Bilu-Bugeaud-Mignotte monograph"
+    ],
+    "prerequisites": [
+      "$\\mathbb{Z}[\\zeta_p]$ cyclotomic ring of integers",
+      "finiteness vs existence in Diophantine settings",
+      "the four predicates above"
+    ]
+  },
+  {
+    "id": "ann-shared-nine-at-n3",
+    "proofId": "fermat-defect-one",
+    "range": {
+      "startLine": 83,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Structural Hint: Both n=3 Witnesses Share the Number 9",
+    "content": "The negative-defect witness has $c = 9$ ($6^3 + 8^3 + 1 = 9^3$) and the positive-defect witness has $a = 9$ ($9^3 + 10^3 = 12^3 + 1$). The same integer $9 = 3^2$ appears on opposite sides of $c^n$ in the two benchmarks at $n = 3$. Read against Catalan-Mihailescu, $9 = 3^2$ is the upper member of the unique consecutive-perfect-powers pair $(8, 9) = (2^3, 3^2)$, so $9^3$ is in a sense the smallest cube adjacent to a square that the integer line allows. Whether this is a *structural coincidence* (cubes near small smooth numbers cluster densely) or a *structural hint* (some sign-flipping involution carries one witness to the other through $9^3$) is itself an open question — flagged in the conclusion's `openQuestions` as the 'symmetry between signs' problem. A research-grade probe: does a similar shared-integer phenomenon recur for any other $n$ where both signs are realised? At $n = 3$ the apex is $9$; if a Level-3 witness pair exists at, say, $n = 7$, what is its shared integer (if any)?",
+    "mathContext": "$\\mathrm{neg}\\colon\\ 6^3 + 8^3 - 9^3 = -1,\\quad \\mathrm{pos}\\colon\\ 9^3 + 10^3 - 12^3 = +1$. Both involve $9 = 3^2$. Catalan-Mihailescu: $(8, 9) = (2^3, 3^2)$ are the only consecutive perfect powers $\\ge 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Catalan-Mihailescu's $(8, 9)$ pair",
+      "Level 3 of the conjecture hierarchy",
+      "smooth-number clustering",
+      "involutive symmetry in Diophantine equations",
+      "the 'symmetry between signs' open question"
+    ],
+    "prerequisites": [
+      "the two n=3 benchmark theorems",
+      "perfect powers and consecutive pairs",
+      "the Level-3 strengthening (per-sign existence)"
     ]
   }
 ]
