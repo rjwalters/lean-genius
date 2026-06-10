@@ -106,5 +106,47 @@
       "summary": "variance_add (pair case), covariance_sum_left/right (extended to Finset-indexed sums by induction), and the headline variance_sum_eq_sum_covariance. The pair-sum form collapses the variance of an arbitrary finite sum into a single Cov-sum over the product Finset t ×ˢ t.",
       "mathContext": "Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j) — the bilinear pair-sum form, suitable for diagonal / off-diagonal decomposition by the application."
     }
+  ],
+  "conclusion": {
+    "summary": "Ships §A of OQ-02: the bilinear pair-sum form Var(∑_{i ∈ t} X i) = ∑_{(i,j) ∈ t ×ˢ t} Cov(X i, X j), fully verified in Lean 4 with Mathlib (0 axioms, 0 sorries, 9 theorems, 3 definitions). The proof builds covariance as a symmetric bilinear form on ℚ-valued functions over a Finset (counting measure), extends bilinearity to Finset-indexed sums by induction, and collapses the variance of a sum to a single Finset.sum over the product index set t ×ˢ t.",
+    "implications": "Establishes the algebraic backbone of the second moment method in a measure-theory-free setting. Any threshold argument that reduces to Var(∑ X i) — Chebyshev concentration for indicator sums, the Paley-Zygmund anti-concentration step, random-graph subgraph-count thresholds — can now be expressed as a single Finset.sum over t ×ˢ t of per-pair covariances, with the diagonal / off-diagonal split deferred to the calling site. The pair-sum form is strictly more convenient than the textbook Var + Cov form for code generation: it removes the need to thread a `Finset.diag_union_offDiag` rewrite through every application.",
+    "openQuestions": [
+      "§B (G(n,p) construction): formalize the canonical G(n,p) random-graph sample space — a Finset of edge-subsets of K_n, weighted by p^|E|·(1-p)^(C(n,2)-|E|) — so that subgraph-count indicator sums X_H = ∑_{H' ≅ H} 1_{H' ⊆ G} can be instantiated against this pair-sum form.",
+      "§C (explicit threshold functions): derive the textbook Var(∑ X i) = ∑ Var(X i) + ∑_{i ≠ j} Cov(X i, X j) form via Finset.diag_union_offDiag, then specialize to G(n,p) subgraph counts to recover threshold functions p* = n^(-1/m(H)) for balanced subgraphs H (Bollobás 1981).",
+      "Generalize the counting-measure setting to weighted Finsets — replacing s.card with ∑_{a ∈ s} w a — to capture non-uniform discrete distributions (e.g. biased coins, weighted bootstrap) without introducing measure theory.",
+      "Bridge to Mathlib's measure-theoretic ProbabilityTheory.variance via a counting-measure adapter, so that gallery-level results can compose with downstream Mathlib probability content."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "depends-on",
+      "description": "Parent entry: the second moment method as a probabilistic technique (Chebyshev / Paley-Zygmund). This §A file imports ProbMethodSecondMoment and supplies the variance-of-sums identity that the parent's threshold framework consumes."
+    },
+    {
+      "targetId": "prob-method-second-moment-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ-01 from the same parent: complementary slice of the second moment method's open-question program. Both files share the discrete Finset-ℚ counting-measure formalism established here."
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "depends-on",
+      "description": "Foundational: linearity of expectation (mean_add) is the first-moment ancestor of the bilinearity of covariance used here. Second-moment arguments build on first-moment scaffolding."
+    },
+    {
+      "targetId": "prob-method-applications",
+      "relationship": "used-by",
+      "description": "Subgraph-count threshold arguments in random graphs (Erdős-Rényi G(n,p)) reduce to the pair-sum form proved here. §B / §C of this OQ would directly feed those applications."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "related",
+      "description": "The Paley-Zygmund inequality (parent) uses Cauchy-Schwarz applied to X · 1_{X > 0}, and the off-diagonal covariance bound in second-moment threshold arguments is itself often a Cauchy-Schwarz step on per-pair covariances."
+    },
+    {
+      "targetId": "prob-method-lovasz-local",
+      "relationship": "related",
+      "description": "Both control dependency structure in probabilistic arguments. The pair-sum form here makes dependencies (off-diagonal covariances) explicit; LLL handles them by dependency-graph structure."
+    }
   ]
 }
