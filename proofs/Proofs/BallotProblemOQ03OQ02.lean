@@ -2087,9 +2087,15 @@ private theorem gvCanon_membership {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.well
     heast_cj
   have hpfx_ci : (List.take ki (t.2 ci).val).countP (· = false) = c := heast_ci
   have hpfx_cj : (List.take kj (t.2 cj).val).countP (· = false) = c := heast_cj
-  -- Key bounds: colEntry(img, c+1) ≥ y - src (from northBeforeEast_ge_prefix_true)
-  have hge_ci := northBeforeEast_ge_prefix_true _ _ c hpfx_ci
-  have hge_cj := northBeforeEast_ge_prefix_true _ _ c hpfx_cj
+  -- Key bounds: colEntry(img, c+1) ≥ y - src (from northBeforeEast_ge_prefix_true).
+  -- S86 (α): explicit `sfx` args to resolve placeholder-synthesis failure — `sfx`
+  -- is a free argument in the lemma signature; `hpfx_ci`/`hpfx_cj`'s type constrains
+  -- only `pfx`, so the elaborator cannot synthesize `sfx` and the resulting term
+  -- type drives no expected-type unification.
+  have hge_ci := northBeforeEast_ge_prefix_true
+    ((t.2 ci).val.take ki) ((t.2 cj).val.drop kj) c hpfx_ci
+  have hge_cj := northBeforeEast_ge_prefix_true
+    ((t.2 cj).val.take kj) ((t.2 ci).val.drop ki) c hpfx_cj
   rw [htrue_ci] at hge_ci; rw [htrue_cj] at hge_cj
   -- Rewrite hinterior and hfinal to use tail-swap lists
   rw [hval_ci, himg_ci, hval_cj, himg_cj] at hinterior hfinal
