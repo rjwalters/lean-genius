@@ -157,3 +157,43 @@ The continuous layer-cake formula (`lintegral_rpow_eq_lintegral_meas_lt_mul_rpow
 - Insights: 2 (Aristotle MCP outage signal at 2026-06-09; layer-cake idiom is first-of-its-kind for this repo)
 - Next-Steps: 1 refined (executable proof blueprint with measurability-hypothesis recommendation; supersedes S2's higher-level plan)
 - Built items: 0 (no Lean code changes — same reason as S2, plus MCP outage telemetry)
+
+---
+
+## Session 2026-06-10 (Session 4) — Bearer Verification + API Drift Discovery
+
+**Mode**: REVISIT — close S3's "first task" (verify Mathlib bearer names)
+**Outcome**: knowledge — Mathlib v4.26.0 bearer-pin table with API-drift annotations; Aristotle MCP still down 10h after S3 telemetry
+
+### What I Did
+
+1. Probed Aristotle MCP with trivial smoke test → still `Resource not found` (confirms S3's outage report; the predicted ~6h window passed; outage is longer).
+2. Used `gh api search/code` + `gh api repos/.../contents/...` against `leanprover-community/mathlib4` to verify the four bearer names S3 flagged.
+3. Wrote `sessions/2026-06-10-s4-prep-pareto-lriff-bearer-verify.md` with:
+   - **B1 confirmed**: `MeasureTheory.lintegral_rpow_eq_lintegral_meas_lt_mul` at `Mathlib/Analysis/SpecialFunctions/Pow/Integral.lean:91` — verbatim signature captured.
+   - **B2 has API drift**: `Memℒp` is renamed to `MemLp`; the single iff-lemma S3 named does not exist. Replacement path: 3-step composition via `eLpNorm_eq_lintegral_rpow_enorm` + `MemLp.eLpNorm_lt_top` + `ENNReal.rpow_lt_top_iff`. Local helper `memLp_iff_lintegral_lt_top` sketched (~10 LOC, 2 TRIVIAL sorries).
+   - **B3 confirmed**: `integral_rpow` exists in 10+ Mathlib files; correct one to be identified by reading B1's internal proof.
+   - **B4 not directly named**: `Real.integrable_rpow_of_lt_neg_one` unfound; fallback strategies documented.
+
+### Mathlib API Drift Discovered
+
+Between S1 (2026-05-06) and S4 (2026-06-10) — likely the Mathlib v4.25 → v4.26 bump — the script-letter `Memℒp` type was renamed to ASCII `MemLp`. This affects every probability-theory Lean file in the repo that uses `Memℒp.mono_exponent` and similar. Worth a repo-wide grep when somebody is between work items.
+
+### Honest-Status Block
+
+- **Mathematical progress**: 0 new theorems. Bearer-pin table with API-drift annotations + recommendation that future sessions default to RELEASE-WITHOUT-ACTION if both infrastructure blockers (.lake symlink, MCP outage) persist.
+- **Build-verification status**: not attempted (doc-only PREP).
+- **Axiom status**: unchanged — 3 axioms, 0 sorries.
+- **Doc-only-saturation watch**: this is the THIRD consecutive knowledge-only session (S2 / S3 / S4). Recommended threshold for releasing without modification: if S5 also can't act due to infrastructure, the slug is hard-blocked on Mechanic / Deployer work, not researcher work.
+
+### Files Modified
+
+- `research/problems/laws-of-large-numbers-oq-01-oq-02/sessions/2026-06-10-s4-prep-pareto-lriff-bearer-verify.md` (new — bearer table + S3 blueprint deltas)
+- `research/problems/laws-of-large-numbers-oq-01-oq-02/knowledge.md` (this update)
+- `src/data/research/problems/laws-of-large-numbers-oq-01-oq-02.json` (lastUpdate + S4 insights/nextSteps)
+
+### Knowledge Added
+
+- Insights: 2 (Mathlib v4.25 → v4.26 `Memℒp` → `MemLp` rename; MCP outage exceeded predicted 6h window).
+- Next-Steps: 2 (S5 conditional protocol: act if MCP up, release-without-action if not; B4 fallback search strategies).
+- Built items: 0 (no Lean code changes).
