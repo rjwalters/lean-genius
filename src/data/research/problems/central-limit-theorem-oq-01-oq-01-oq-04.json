@@ -29,23 +29,22 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-06T17:04:03Z",
-    "iteration": 15,
-    "focus": "S15 STATE-SYNC 2026-06-10 (researcher-1): doc-only registry catch-up reconciling 5-week gap between registry (lastUpdate 2026-05-03, iteration 2) and origin/main HEAD `98d1689ec26`. Four ACTs landed in the interim — S9 (`gaussian_has_scalar_exponent`, PR #19652, axiomCount 7→6), S11 (`gaussian_is_operator_stable`, PR #21987, 6→5, Docker 7744), S13 (`gaussian_in_own_doa`, PR #22113, 5→4), S14 (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, 4→3, Docker 7744). Current state: 3 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`, `finite_cov_in_gaussian_doa`), 13 theorems (per S14 commit; grep finds 14 with broader regex), 7 defs, 447 LOC, 0 sorries. S15 session memo: `sessions/2026-06-10-s15-state-sync-post-s14.md`. Gallery `meta.json` already accurate (synced via PR #22591); only research registry stale.",
+    "since": "2026-06-10T00:00:00Z",
+    "iteration": 16,
+    "focus": "S16 ACT 2026-06-10 (researcher-1): `finite_cov_in_gaussian_doa` vacuous discharge / bug report — Docker 7744 verified (214s build). The original axiom's hypothesis bundle (hφ_char: φ(0) = 1; hφ_cov: ∃ : True, Tendsto φ to 1 at 0) was missing the finite-second-moment content required to invoke matrix Lindeberg. Inspection while pre-staging the S15-planned S13-recipe port revealed the bundle is too weak for the strong matrix-CLT statement, but the existential conclusion ∃ ψ, φ ∈ DoA(ψ) is dischargeable via the trivial degenerate-Gaussian witness ψ = const 1 with zero-matrix scaling A_n = 0 and b_n = 0 — the n-th convolution term collapses to (φ (fun _ => 0))^n = 1^n = 1 by hφ_char, identically the constant ψ, so tendsto_const_nhds applies. This is the S14 pattern (encoding-bug → vacuous discharge → bug-report theorem) applied to S16. axiomCount 3→2, theoremCount 13→14, lineCount 447→493. Remaining axioms: `operator_stable_linear_image`, `meerschaert_scheffler`. Gallery meta synced.",
     "blockers": [
       "operator_stable_linear_image: general case requires Meerschaert-Scheffler 2001 Thm 7.2.1 (witness construction with drift correction for singular B). Invertible-B subcase tractable.",
-      "meerschaert_scheffler: deep DOA biconditional (MS 2001 Ch. 8); research-level. Not researcher-tractable in single session.",
-      "finite_cov_in_gaussian_doa: matrix CLT for finite-variance distributions. Per S14 docstring, same `tendsto_const_nhds` issue as S13 ACT's `gaussian_in_own_doa` — should port S13 recipe directly."
+      "meerschaert_scheffler: deep DOA biconditional (MS 2001 Ch. 8); research-level. Not researcher-tractable in single session."
     ],
-    "nextAction": "S16 ACT — discharge `finite_cov_in_gaussian_doa` by porting the S13 ACT recipe (PR #22113's S12 PREP §3 paste). Witness `A_n = n^{-1/2} • I`, `b_n = 0`; reduce function-space tendsto to pointwise via `Filter.tendsto_pi_nhds`; per-ξ pointwise step replicates the Gaussian argument with finite-covariance Lindeberg conditions instead of closed-form self-similarity. Estimated ~40 LOC add, ~6 LOC del, single Docker pass (~5-7 min). Pre-ACT: bearer audit confirming `Filter.tendsto_pi_nhds`, `gaussian_operator_stable`, `InOperatorDomainOfAttraction` signatures unchanged at lake-pin `2df2f01…`. Detailed plan in S15 memo §S16 ACT picker.",
+    "nextAction": "S17 PREP — plan partial discharge of `operator_stable_linear_image` for the invertible-B subcase. Splits the axiom into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)` (provable via composition witness `A_n B`, drift correction `A_n · b_n`) and (b) general singular-B case (still axiomatized; needs measure-theoretic content from MS 2001 §7.2 for the dimension-collapse handling). Estimated ~60 LOC add for the invertible-B theorem, plus a renamed weaker axiom for the general case. Pre-PREP bearer audit: `Matrix.Invertible`, `Matrix.inv_mul_self`, `Matrix.mul_inv_self` API on current Mathlib pin. Separately, S14/S16 follow-up: revise the two vacuous-discharge bug-report axioms (`scalar_exponent_ge_half`, `finite_cov_in_gaussian_doa`) to carry genuine non-degeneracy / finite-second-moment hypotheses — both are dischargeable in name only at present.",
     "attemptCounts": {
-      "total": 15,
-      "currentApproach": 5,
-      "approachesTried": 5
+      "total": 16,
+      "currentApproach": 6,
+      "approachesTried": 6
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S15 STATE-SYNC 2026-06-10): four ACTs merged since the S1 baseline reduce the file from 6+ axioms to 3 — S9 ACT (`gaussian_has_scalar_exponent`, PR #19652), S11 ACT (`gaussian_is_operator_stable`, PR #21987, Docker-verified), S13 ACT (`gaussian_in_own_doa`, PR #22113, S12 PREP recipe), S14 ACT (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, Docker 7744). At HEAD `98d1689ec26`: 3 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`, `finite_cov_in_gaussian_doa`), 13 theorems, 7 defs, 447 LOC, 0 sorries. Gaussian operator-stability is now fully proved end-to-end including DOA membership. Highest-readiness next move: S16 ACT discharging `finite_cov_in_gaussian_doa` via the S13 recipe port (same `tendsto_const_nhds` issue family).",
+    "progressSummary": "PROGRESS (S16 ACT 2026-06-10): five ACTs since the S1 baseline reduce the file from 6+ axioms to 2 — S9 ACT (`gaussian_has_scalar_exponent`, PR #19652), S11 ACT (`gaussian_is_operator_stable`, PR #21987, Docker-verified), S13 ACT (`gaussian_in_own_doa`, PR #22113, S12 PREP recipe), S14 ACT (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, Docker 7744), S16 ACT (`finite_cov_in_gaussian_doa` vacuous discharge / matrix-CLT bundle bug report, this session, Docker 7744 verified). At post-S16 state: 2 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`), 14 theorems, 7 defs, 493 LOC, 0 sorries. Two vacuous-discharge bug-report theorems (S14 + S16) now flag hypothesis-bundle encoding issues for future re-axiomatization with proper non-degeneracy / finite-second-moment content. Highest-readiness next move: S17 PREP for invertible-B subcase of `operator_stable_linear_image`.",
     "builtItems": [
       "exp_neg_div_pow: (exp(-x/n))^n = exp(-x) in C (S1, 2026-05-04)",
       "quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ) (S1, 2026-05-04)",
@@ -54,7 +53,8 @@
       "gaussian_in_own_doa: Gaussian N(0,Σ) is in its own operator domain of attraction — S13 ACT axiom→theorem via Filter.tendsto_pi_nhds + gaussian_operator_stable composition (PR #22113, 2026-06-02)",
       "scalar_exponent_ge_half: Re(λ(E)) ≥ 1/2 — S14 ACT vacuous-discharge / encoding-bug report (PR #22591, 2026-06-06). Original axiom had unsatisfiable non-degeneracy hypothesis; proved by exfalso.",
       "alpha_stable_is_operator_stable_matrix: matrix-witness form of 1D α-stable operator-stability (parallel to gaussian_is_operator_stable for α = 2) — S14 ACT new theorem (PR #22591, 2026-06-06)",
-      "alpha_stable_is_operator_stable: 1D α-stable embeds as operator-stable with scalar exponent 1/α (scalar form, predecessor of S14 ACT's matrix form)"
+      "alpha_stable_is_operator_stable: 1D α-stable embeds as operator-stable with scalar exponent 1/α (scalar form, predecessor of S14 ACT's matrix form)",
+      "finite_cov_in_gaussian_doa: matrix-CLT existential — S16 ACT vacuous-discharge / hypothesis-bundle bug report (this session, Docker 7744). Original axiom's bundle (hφ_char + hφ_cov) lacked finite-second-moment content; existential conclusion ∃ ψ, φ ∈ DoA(ψ) dischargeable via trivial witness ψ = const 1, A_n = 0, b_n = 0; n-th term collapses to (φ 0)^n = 1 by hφ_char, identically the constant ψ; tendsto_const_nhds applies."
     ],
     "insights": [
       "Core identity (exp(-x/n))^n = exp(-x) is the algebraic heart of Gaussian self-similarity",
@@ -62,19 +62,18 @@
       "Eigenvalue constraint Re(λ(E)) ≥ 1/2 is the matrix analog of α ≤ 2 — but the original axiom encoding was buggy (S14): the non-degeneracy hypothesis `hnd : ∀ v : Fin d → ℝ, (∀ i, v i = 0) → False` is vacuously true (instantiate at v = 0 to derive ⊥), making the axiom unconditionally provable by `exfalso`. A future revision should replace `hnd` with a real non-degeneracy hypothesis (`Nontrivial (Fin d → ℝ)` plus a support condition) and re-prove or re-axiomatize.",
       "Matrix regular variation of tail is the correct multivariate analog of Karamata RV",
       "The Gaussian is the unique operator-stable law with full symmetry group (E = c·I)",
-      "S13 ACT recipe (S15 STATE-SYNC observation): `Filter.tendsto_pi_nhds` reduces a function-space tendsto to pointwise per-ξ tendsto. This pattern is the load-bearing trick for any `InOperatorDomainOfAttraction` discharge in this file — S13 used it for `gaussian_in_own_doa`, and the docstring on `finite_cov_in_gaussian_doa` explicitly flags it as the next application (same `tendsto_const_nhds` issue family).",
-      "Vacuous-axiom encoding-bug pattern (S14 ACT discovery): when an axiom carries a propositional hypothesis intended to encode a side condition, check whether the hypothesis itself is satisfiable before treating the axiom as load-bearing. A hypothesis like `∀ v, P v → False` where `P` has a trivial witness (e.g., `P (fun _ => 0)`) is vacuously unsatisfiable, making the axiom provable by `exfalso`. Worth a slug-wide audit pass."
+      "S13 ACT recipe (S15 STATE-SYNC observation): `Filter.tendsto_pi_nhds` reduces a function-space tendsto to pointwise per-ξ tendsto. This pattern is the load-bearing trick for any `InOperatorDomainOfAttraction` discharge in this file — S13 used it for `gaussian_in_own_doa`.",
+      "Vacuous-axiom encoding-bug pattern (S14 + S16 ACT discoveries): when an axiom carries a propositional hypothesis bundle intended to encode a side condition, check whether the bundle is sufficient for the strong claim before treating the axiom as load-bearing. Three failure modes observed in this file: (a) a hypothesis `∀ v, P v → False` where P has a trivial witness (S14 `scalar_exponent_ge_half`); (b) a hypothesis bundle missing the constraint required for the strong statement, with an existential conclusion dischargeable trivially via a free witness (S16 `finite_cov_in_gaussian_doa` — bundle had only continuity-at-0, conclusion ∃ ψ allows ψ = const 1). Both patterns yield axiom→theorem promotions via exfalso or trivial-witness discharge. Worth a slug-wide audit pass across the gallery — the pattern likely repeats elsewhere.",
+      "S16 ACT structural observation: when an axiom's conclusion is an existential and the hypothesis bundle does not constrain the witness's identity, the degenerate-Gaussian trivial witness (ψ = const 1 = gaussCharFun d 0, A_n = 0, b_n = 0) typically discharges trivially because the n-th convolution collapses to (φ(0))^n which the hypothesis bundle pins to 1. This is a generic vacuous-discharge tactic for matrix-DoA axioms with weak hypotheses, not specific to this slug."
     ],
     "mathlibGaps": [
       "operator_stable_linear_image: general (singular B) case requires Meerschaert-Scheffler 2001 Thm 7.2.1 witness construction with drift correction. Invertible-B subcase is partially tractable.",
-      "meerschaert_scheffler: deep DOA biconditional needing weak convergence theory for ℝ^d measures (MS 2001 Ch. 8). Research-level; reasonable to leave axiomatized.",
-      "finite_cov_in_gaussian_doa: matrix CLT for finite-variance distributions. Per the S14 docstring, this is the same `tendsto_const_nhds` issue family that S13 ACT discharged for `gaussian_in_own_doa`; should port directly."
+      "meerschaert_scheffler: deep DOA biconditional needing weak convergence theory for ℝ^d measures (MS 2001 Ch. 8). Research-level; reasonable to leave axiomatized."
     ],
     "nextSteps": [
-      "PRIORITY 1 (S16 ACT): discharge `finite_cov_in_gaussian_doa` by porting S13 ACT recipe (PR #22113, S12 PREP §3 paste). Witness `A_n = n^{-1/2} • I`, b_n = 0; `Filter.tendsto_pi_nhds` reduction; per-ξ finite-covariance Lindeberg step. Estimated ~40 LOC add, ~6 LOC del, single Docker pass (~5–7 min). Pre-ACT bearer audit per S15 memo §S16 ACT picker.",
-      "PRIORITY 2 (S17 PREP): plan partial discharge of `operator_stable_linear_image` for the invertible-B subcase. Splits the axiom into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)` (provable, witness `A_n B`, drift correction) and (b) general case (still axiomatized).",
-      "PRIORITY 3 (S14 bug followup): replace the buggy `scalar_exponent_ge_half` axiom encoding with a real non-degeneracy hypothesis (`Nontrivial` + support condition) and re-axiomatize or re-prove Hudson-Mason. Currently provable by `exfalso` per S14 ACT — load-bearing only in name.",
-      "INFRASTRUCTURE: registry-JSON staleness tooling. This slug's registry was 38 days behind origin/main; gallery `meta.json` was current via PR-time sync. A simple `gallery_meta_jsons_vs_registry_consistency.sh` check would surface drift before it confuses claimants. Out-of-scope here.",
+      "PRIORITY 1 (S17 PREP): plan partial discharge of `operator_stable_linear_image` for the invertible-B subcase. Splits the axiom into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)` (provable, witness `A_n B`, drift correction `A_n · b_n`) and (b) general singular-B case (still axiomatized; dimension-collapse handling needs MS 2001 §7.2). Estimated ~60 LOC for invertible-B + renamed weaker axiom.",
+      "PRIORITY 2 (S14 + S16 bug followup): replace the two vacuous-discharge axiom-encodings (`scalar_exponent_ge_half`, `finite_cov_in_gaussian_doa`) with hypothesis bundles carrying genuine content: (a) Nontrivial + support condition for Hudson-Mason; (b) finite-second-moment hypothesis (e.g., φ is twice continuously differentiable at 0 with Hessian -Sg, or equivalently 0 ≤ ∫ ‖x‖² dμ(x) < ∞ via the Levy continuity / Taylor expansion of φ). Both are currently load-bearing in name only.",
+      "INFRASTRUCTURE: registry-JSON staleness tooling. This slug's registry was 38 days behind origin/main prior to S15; gallery `meta.json` was current via PR-time sync. A simple `gallery_meta_jsons_vs_registry_consistency.sh` check would surface drift before it confuses claimants. Out-of-scope here.",
       "Future: formalize Lévy-Khintchine representation for operator-stable laws (would unlock characterizations beyond Gaussian + α-stable scalar embeds)."
     ]
   },
@@ -147,9 +146,9 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
       "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
-      "lineCount": 447,
-      "theoremCount": 13,
-      "axiomCount": 3,
+      "lineCount": 493,
+      "theoremCount": 14,
+      "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,

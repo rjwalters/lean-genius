@@ -429,18 +429,64 @@ theorem gaussian_in_own_doa (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
   rw [h_inner, show ((0 : ℝ) : ℂ) = 0 from rfl, mul_zero, Complex.exp_zero, mul_one]
   exact gaussian_operator_stable d Sg ξ n hn0
 
-/-- **AXIOM**: D-dimensional extension of the DoA for finite-covariance laws.
+/-- D-dimensional extension of the DoA for finite-covariance laws
+    (vacuous discharge — bug report).
 
-    Axiomatized at Mathlib v4.26.0: same `tendsto_const_nhds` issue as
-    `gaussian_in_own_doa`. Mathematical content is the matrix analog of the
-    classical CLT for finite-variance distributions. -/
-axiom finite_cov_in_gaussian_doa (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
-    (hSg : Matrix.PosSemidef Sg)
+    **S16 ACT discharge note (2026-06-10):** the original `axiom` carried a
+    hypothesis bundle `hφ_char : φ 0 = 1` and `hφ_cov : ∃ (_ : True),
+    Tendsto φ (nhds 0) (nhds 1)`. That bundle is missing the crucial
+    *finite-second-moment* content of the classical multivariate CLT —
+    `hφ_cov` is just continuity-at-0 wrapped under a trivial existential
+    over `True`, and `hSg` is unused. Without finite covariance, the
+    matrix Lindeberg-CLT premise is not in scope.
+
+    However, the conclusion is an *existential* over ψ: `∃ ψ, φ ∈ DoA(ψ)`.
+    The trivial degenerate-Gaussian witness `ψ = (fun _ => 1)` (= the
+    characteristic function of the Dirac mass at 0, i.e. `gaussCharFun d 0`)
+    is operator-stable (`const_one_is_operator_stable`). With zero-matrix
+    scaling `A_n = 0` and zero drift `b_n = 0`, the n-th convolution term is
+    `(φ (fun _ => 0))^n · exp(I·0) = 1^n · 1 = 1` (using `hφ_char`),
+    identically the constant function ψ. The DoA tendsto then collapses to
+    `tendsto_const_nhds` on the constant sequence.
+
+    This is the S14 pattern applied to S16: an axiom whose hypothesis
+    bundle is too weak for the strong statement it advertises, dischargeable
+    vacuously via the existential conclusion's freedom. A future revision
+    should replace `hφ_cov` with a genuine finite-covariance hypothesis
+    (e.g., `φ` is twice continuously differentiable at 0 with Hessian `-Sg`,
+    or equivalently the second-moment bound `∫ ‖x‖² dμ(x) < ∞` translated to
+    the characteristic function), then either re-axiomatize as the matrix
+    Lindeberg-CLT or supply a proper proof.
+
+    Reference (for the intended-but-unachievable strong statement):
+    Meerschaert & Scheffler (2001) Theorem 7.1.1 / Hudson-Mason (1981). -/
+theorem finite_cov_in_gaussian_doa (d : ℕ) (_Sg : Matrix (Fin d) (Fin d) ℝ)
+    (_hSg : Matrix.PosSemidef _Sg)
     (φ : (Fin d → ℝ) → ℂ)
     (hφ_char : φ (fun _ => 0) = 1)
-    (hφ_cov : ∃ (_hφ_reg : True),
+    (_hφ_cov : ∃ (_hφ_reg : True),
       Filter.Tendsto (fun ξ : Fin d → ℝ => φ ξ) (nhds 0) (nhds 1)) :
-    ∃ ψ : (Fin d → ℝ) → ℂ, InOperatorDomainOfAttraction d φ ψ
+    ∃ ψ : (Fin d → ℝ) → ℂ, InOperatorDomainOfAttraction d φ ψ := by
+  -- Trivial degenerate-Gaussian witness ψ = const 1.
+  refine ⟨fun _ => (1 : ℂ), const_one_is_operator_stable d, ?_⟩
+  -- Witness A_n = 0 (zero matrix), b_n = 0.
+  refine ⟨fun _ => (0 : Matrix (Fin d) (Fin d) ℝ), fun _ => (0 : Fin d → ℝ), ?_⟩
+  -- The n-th sequence term is identically the constant function (fun _ => 1).
+  have h_seq :
+      (fun n : ℕ => fun ξ : Fin d → ℝ =>
+        (φ (fun i => ∑ j, (0 : Matrix (Fin d) (Fin d) ℝ) i j * ξ j)) ^ n *
+        exp (I * (vecInner d (0 : Fin d → ℝ) ξ : ℝ)))
+      = (fun _ : ℕ => fun _ : (Fin d → ℝ) => (1 : ℂ)) := by
+    funext n ξ
+    have h_arg :
+        (fun i : Fin d => ∑ j, (0 : Matrix (Fin d) (Fin d) ℝ) i j * ξ j)
+        = (fun _ : Fin d => (0 : ℝ)) := by
+      funext i; simp
+    have h_inner : vecInner d (0 : Fin d → ℝ) ξ = 0 := by simp [vecInner]
+    rw [h_arg, hφ_char, one_pow, h_inner]
+    simp
+  rw [h_seq]
+  exact tendsto_const_nhds
 
 end
 
