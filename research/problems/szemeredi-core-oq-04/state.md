@@ -1,9 +1,81 @@
 # Current State
 
-**Phase**: **PREP-r1-blocked** (G8 RED-INFRA disk pressure regression: 5.5 GiB free, was 57 GiB at Iter 18). **Iter 19 (this PREP-r1, researcher-1, 2026-06-03) ships S12 PREP-r1 — pre-paste verification ask discharges for Iter 17 §6 Part 9 first-moment skeleton paste. §2 confirms `mem_witnessFamilyB_nhd` / `_compl` (SzemerediCoreOQ04.lean:111/119) take the exact singleton `{a}`-indexing shape required (`{A B : Finset V} {a : V} (ha : a ∈ A)` binder, neighbour-pattern / non-neighbour-pattern outputs, membership in `witnessFamilyB G A B` — body 2 lines each via `Finset.mem_union_left/right` + `Finset.mem_image`); no new helper needed. §3 mines Mathlib v4.26.0 `Mathlib/Combinatorics/SimpleGraph/Density.lean` (400 LOC, full-text scan at lake-pinned `rev = 2df2f015…`) and finds **no direct two-piece `edgeDensity_decompose_pair` lemma**; closest 6 candidate bearers (`Rel.{card_interedges_add_card_interedges_compl@73, interedges_biUnion_{left@102,right@107}, edgeDensity_add_edgeDensity_compl@133, card_interedges_finpartition_{left@147,right@154}}`) all decompose the predicate or take arbitrary biUnion/Finpartition — pair-piece variant absent. Recommends **Route A ad-hoc helper** `G.interedges_filter_add_filter_neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at line 149, reuses `Finset.filter_card_add_filter_neg_card_eq_card`) over Route B Finpartition-route (~15-20 LOC); revised paste budget 100 LOC → 108-110 LOC at 3-5 sorries. §5 ACT-readiness gate refresh: 8/8 → **7/8** — **G8 REGRESSED** to RED under a new failure mode (disk pressure, not Docker daemon): `df -h /System/Volumes/Data` returns `5.5Gi 100%` (51.5 GiB consumed in 3 days, ~17 GiB/day; below ≥10 GiB pre-flight threshold by ~4.5 GiB). §6 documents Iter 18 pre-flight warning ("capacity tight at 94%, recommend re-check ≥10 GiB free before committing to a Docker build") materialised; the §6 paste cannot Docker-build without prior cleanup. Recommendation: Iter 20+ run `make clean-all` (or targeted `proofs/.lake` Mathlib-cache prune) + re-probe `df -h` before invoking `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`. JSON catchup iter 18 → 19, phase `ACT-ready` → `PREP-r1-blocked`. Pre-paste asks §§2-3 are gate-orthogonal — preserved for the next post-G8-clear ACT cycle.** **Iter 18 (researcher-1, 2026-05-31) shipped S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-06-03T14:30:00Z (Iter 19 PREP-r1 — edgeDensity_decompose_pair pre-stage discharges + G8 disk-pressure regression + JSON catchup iter 18→19)
-**Last Updated**: 2026-06-03 (Iteration 19 PREP-r1, researcher-1)
-**Iteration**: 19
+**Phase**: **ACT-ready** (G8 RED-INFRA disk-pressure regression CLEARED at Iter 20 re-probe — `/System/Volumes/Data` 5.5 Gi → **75 Gi** free, +69.5 Gi recovered passively over 7 days; Docker daemon also bumped 29.4.1 → 29.5.3 in the same window; both unblocked. ACT-readiness gate restored 7/8 → 8/8). **Iter 20 PREP-r2 (researcher-1, 2026-06-10) ships S13 — G8 disk-pressure gate re-probe confirms unblock without intervention (no `make clean-all` or `docker system prune` from this researcher; likely champion / daemon-scope intervention or competing-slug mechanic prune; corroborated by today's S86 ACT on `ballot-problem-oq-03-oq-01-oq-02` PR #22784 running a successful Docker build at 68 Gi free at T-2h). Docker daemon Server section returns `29.5.3` with 2 containers running. Slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f3e2aaa9ccea77c2f2496719a75b6fa83` byte-stable at 1054 LOC since Iter 13 (PR #19042 merge, ~26 days). Lake-manifest Mathlib pin `2df2f0150c…` byte-stable since 2026-05-16T08:55Z (~25 days). All G1-G7 gates carry forward verbatim by lake-manifest-stability transitivity. Iter 19 §2 (`mem_witnessFamilyB_nhd/_compl` singleton-{a}-indexing shape confirmation) + §3 (Mathlib Density.lean Route A ad-hoc helper `G.interedges_filter_add_filter_neg` recommendation) pre-paste asks gate-orthogonal — carry-forward stable for Iter 21+ ACT verbatim. Iter 21 ACT plan unchanged from Iter 19 §6 recommendation: paste Iter 17 §6 Part 9 first-moment skeleton + Iter 19 §3 Route A helper, total ~108-110 LOC at 3-5 transient sorries, 1 Docker iter expected 10-15 min cold / 5-8 min hot (today's S86 ACT ran ~10.5 min cold-P2 packages). Pre-flight requirement: re-probe `df -h /System/Volumes/Data` immediately before invoking `docker-build.sh` to confirm ≥10 Gi threshold still holds. JSON catchup iter 19 → 20, phase `PREP-r1-blocked` → `ACT-ready`. NO `.lean` / sibling-slug / `leanFiles[]` / lake-manifest / lakefile / meta.json edits.** **Iter 19 (this PREP-r1, researcher-1, 2026-06-03) shipped S12 PREP-r1 — pre-paste verification ask discharges for Iter 17 §6 Part 9 first-moment skeleton paste. §2 confirms `mem_witnessFamilyB_nhd` / `_compl` (SzemerediCoreOQ04.lean:111/119) take the exact singleton `{a}`-indexing shape required (`{A B : Finset V} {a : V} (ha : a ∈ A)` binder, neighbour-pattern / non-neighbour-pattern outputs, membership in `witnessFamilyB G A B` — body 2 lines each via `Finset.mem_union_left/right` + `Finset.mem_image`); no new helper needed. §3 mines Mathlib v4.26.0 `Mathlib/Combinatorics/SimpleGraph/Density.lean` (400 LOC, full-text scan at lake-pinned `rev = 2df2f015…`) and finds **no direct two-piece `edgeDensity_decompose_pair` lemma**; closest 6 candidate bearers (`Rel.{card_interedges_add_card_interedges_compl@73, interedges_biUnion_{left@102,right@107}, edgeDensity_add_edgeDensity_compl@133, card_interedges_finpartition_{left@147,right@154}}`) all decompose the predicate or take arbitrary biUnion/Finpartition — pair-piece variant absent. Recommends **Route A ad-hoc helper** `G.interedges_filter_add_filter_neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at line 149, reuses `Finset.filter_card_add_filter_neg_card_eq_card`) over Route B Finpartition-route (~15-20 LOC); revised paste budget 100 LOC → 108-110 LOC at 3-5 sorries. §5 ACT-readiness gate refresh: 8/8 → **7/8** — **G8 REGRESSED** to RED under a new failure mode (disk pressure, not Docker daemon): `df -h /System/Volumes/Data` returns `5.5Gi 100%` (51.5 GiB consumed in 3 days, ~17 GiB/day; below ≥10 GiB pre-flight threshold by ~4.5 GiB). §6 documents Iter 18 pre-flight warning ("capacity tight at 94%, recommend re-check ≥10 GiB free before committing to a Docker build") materialised; the §6 paste cannot Docker-build without prior cleanup. Recommendation: Iter 20+ run `make clean-all` (or targeted `proofs/.lake` Mathlib-cache prune) + re-probe `df -h` before invoking `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`. JSON catchup iter 18 → 19, phase `ACT-ready` → `PREP-r1-blocked`. Pre-paste asks §§2-3 are gate-orthogonal — preserved for the next post-G8-clear ACT cycle.** **Iter 18 (researcher-1, 2026-05-31) shipped S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-06-10T03:25:00Z (Iter 20 PREP-r2 — G8 disk-pressure regression cleared 5.5 → 75 Gi, ACT-readiness restored 7/8 → 8/8)
+**Last Updated**: 2026-06-10 (Iteration 20 PREP-r2, researcher-1)
+**Iteration**: 20
+
+## Iteration 20 (researcher-1, 2026-06-10) — S13 PREP-r2 (G8 disk-pressure regression CLEARED 5.5 → 75 Gi passive recovery + Docker daemon bump 29.4.1 → 29.5.3 + ACT-readiness gate refresh 7/8 → 8/8 + JSON catchup iter 19 → 20, doc-only)
+
+**Mode.** Doc-only PREP-r2 (zero `.lean` / `problem.md` / `knowledge.md` /
+`lake-manifest` / `lakefile` / `meta.json` edits). Three files:
+`sessions/2026-06-10-s13-prep-r2-g8-unblock-act-ready.md` (this PREP-r2,
+~210 LOC), `state.md` (head block + this entry; no narrative edits to
+prior iterations), `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration: 19 → 20, since, phase: PREP-r1-blocked →
+ACT-ready, focus, nextAction}` + top-level `lastUpdate: 2026-06-03 →
+2026-06-10`).
+
+**Why.** Iter 19 (S12 PREP-r1, PR #22202, merged 2026-06-03T23:17Z)
+discharged Iter 17 §6's two pre-paste verification asks but flagged
+G8 RED-INFRA disk-pressure regression at the same time (`5.5 Gi free
+/ 100% used`, was 57 Gi at Iter 18 §6, 51.5 Gi consumed in 3 days
+at ~17 Gi/day). The §5 ACT-readiness gate dropped 8/8 → 7/8.
+Iter 19 §6 recommended Iter 20+ run `make clean-all` (or targeted
+prune) and re-probe `df -h` before Iter 21+ ACT-paste.
+
+This Iter 20 PREP-r2 executes the re-probe + gate refresh.
+
+**Outcome.**
+
+* **§1 G8 disk re-probe (load-bearing for Iter 21+ ACT)**: `df -h
+  /System/Volumes/Data` at Iter 20 entry (~2026-06-10T03:25Z)
+  returns **75 Gi free / 92% used**. Delta vs Iter 19 baseline
+  (5.5 Gi / 100%): **+69.5 Gi recovered passively over 7 days**
+  (~+10 Gi/day reverse drain, vs Iter 18 → 19's −17 Gi/day forward
+  drain). Cause not attributed (no `make clean-all` or `docker
+  system prune` from this researcher; likely champion / daemon-scope
+  intervention or competing-slug mechanic prune). Independent
+  corroboration: today's S86 ACT on `ballot-problem-oq-03-oq-01-oq-02`
+  (PR #22784, T-2h) ran a successful Docker build at 68 Gi free
+  without reporting disk pressure. Well above ≥10 Gi pre-flight
+  threshold (+65 Gi margin).
+
+* **§1 G8 Docker daemon**: `docker info --format '{{.ServerVersion}}'`
+  returns `29.5.3` (was 29.4.1 at Iter 18 §6). Docker Desktop
+  minor-version bump in the 7-day window. Server section populated
+  with 2 containers running. No impact on slug bearer pins (build
+  reads lake-pinned Mathlib SHA inside container).
+
+* **§2 Iter 19 §2/§3 pre-paste asks carry-forward**: both gate-
+  orthogonal to G8. (a) `mem_witnessFamilyB_nhd/_compl` singleton-
+  `{a}`-indexing shape at SzemerediCoreOQ04.lean:111/119 byte-stable
+  by G7 (slug file SHA unchanged). (b) Mathlib `Density.lean` 6
+  candidate bearer line cites (Rel.* @73/102/107/133/147/154)
+  byte-stable by G1+G2 transitivity. Route A ad-hoc helper
+  `G.interedges_filter_add_filter_neg` (~8-10 LOC) + revised paste
+  budget (100 → 108-110 LOC at 3-5 sorries) carry forward verbatim.
+
+* **§5 ACT-readiness gate refresh**: 7/8 → **8/8 ACT-ready**. G1-G7
+  unchanged from Iter 19 (lake-manifest / Mathlib pin / bearer SHAs
+  / slug file SHA / sorry inventory / prerequisites / no overlapping
+  open PRs — all stable by transitivity); G8 dual-component (Docker
+  daemon + disk) both GREEN.
+
+* **§6 Iter 21+ ACT plan unblock**: Iter 21 ACT can now paste Iter
+  17 §6's Part 9 first-moment skeleton (~100 LOC, 4 transient
+  sorries) + Iter 19 §3's Route A ad-hoc helper (~8-10 LOC) in a
+  single PR. Total ~108-110 LOC, 4-5 transient sorries, 1 Docker
+  iter expected 10-15 min cold or 5-8 min hot. Pre-flight: MUST
+  re-probe `df -h /System/Volumes/Data` immediately before invoking
+  `docker-build.sh` to confirm ≥10 Gi threshold still holds (passive
+  recovery is not guaranteed stable).
+
+**Ship scope.** 3 files — `state.md` (head block + this entry),
+`src/data/research/problems/szemeredi-core-oq-04.json` (~6 fields),
+`sessions/2026-06-10-s13-prep-r2-g8-unblock-act-ready.md` (~210 LOC).
+NO `.lean` edits. NO sibling slug edits. NO `leanFiles[]` numeric
+touches.
 
 ## Iteration 19 (researcher-1, 2026-06-03) — S12 PREP-r1 (Iter 17 §6 pre-paste verification ask discharges: `mem_witnessFamilyB_nhd`/`_compl` shape confirmation + `edgeDensity_decompose_pair` Mathlib mining → Route A ad-hoc helper recommendation + G8 disk-pressure regression flag + JSON catchup iter 18→19, doc-only)
 
