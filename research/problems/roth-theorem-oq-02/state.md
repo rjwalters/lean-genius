@@ -1,12 +1,58 @@
 # Current State — roth-theorem-oq-02
 
-**Phase**: PREP (S5/S5b/S6/S6c PREP series ready; awaiting S5-a/S6-a/S6-d ACT) — last STATE-SYNC: S7 (2026-06-09)
+**Phase**: ACT (S5-a shipped 2026-06-10 — first analytic envelope theorem; S6-a/S6-d remain paste-ready)
 **Since**: 2026-05-13T01:10:00.000Z (S4-a ACT, researcher-4)
-**Iteration**: 9 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + this S7)
-**Researcher**: researcher-6 (S5b + this S7 STATE-SYNC); researcher-5 (S5); researcher-11 (S1 + S6); researcher-12 (S2 + S6c); researcher-3 (S3); researcher-4 (S4-a)
-**Mode**: S7 STATE-SYNC (doc-only catch-up of canonical state.md + JSON after the 4-PREP series anti-target-skipped state surfaces for ~27 days)
+**Iteration**: 10 (S1 + S2 + S3-B + S4-a + S5 + S5b + S6 + S6c + S7 + this S5-a ACT)
+**Researcher**: researcher-6 (S5b + S7 STATE-SYNC + this S5-a ACT); researcher-5 (S5); researcher-11 (S1 + S6); researcher-12 (S2 + S6c); researcher-3 (S3); researcher-4 (S4-a)
+**Mode**: S5-a ACT (Docker-verified paste-in of S5b PREP K-M analytic envelope conditional)
 
-## Current Focus (S7 STATE-SYNC 2026-06-09)
+## Current Focus (S5-a ACT 2026-06-10)
+
+**Author:** researcher-6, claim `researcher-23844`.
+**Mode:** ACT — paste-in + Docker verification.
+
+### What this PR ships
+
+`proofs/Proofs/RothTheoremOQ02.lean`: 236 → 350 LOC (+114).
+
+- **+2 imports**: `Mathlib.Analysis.SpecialFunctions.Pow.Real` (for `Real.rpow_*`, `Real.sqrt_eq_rpow`) and `Mathlib.Analysis.Complex.ExponentialBounds` (for `Real.exp_one_lt_d9`).
+- **+1 def**: `analytic_envelope_kelley_meka (N : ℕ) : Prop` records the bare envelope inequality `N * exp(-4 * √(log N)) ≤ N * exp(-kelleyMekaConst * (log N)^(1/12))` as a `Prop`-valued function. Unprovable unconditionally (`Exists.choose` of unbounded existential).
+- **+1 theorem**: `analytic_envelope_conditional (N : ℕ) (hN : 3 ≤ N) (hKM_bound : kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12))` proves the negated-exponent inequality `-(4) * √(log N) ≤ -kelleyMekaConst * (log N)^(1/12)`. Verbatim composition of 11 Mathlib lemmas closed by `linarith`. ~50 LOC body.
+- **+1 section docstring** at L262-284 explaining why the conditional analytic envelope is *strictly stronger* than the existing transitive `kelley_meka_consistent_with_Behrend`.
+- **+2 `#check`** entries for the new declarations.
+
+Docker-verified at the current pinned Mathlib sha `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Built Proofs.RothTheoremOQ02 (32s)`. Net axiom impact: **2 → 2 (unchanged)**. Net sorry impact: **0 → 0 (unchanged)**.
+
+### Micro-fixes vs S5b PREP §5 verbatim Lean
+
+The S5b PREP audit was against sha `1c1dadbc28517bb148fc05b9abc8659ce110d217`; our current pin is `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Both are labelled v4.26.0 and all 11 cited lemmas matched verbatim at the audited line numbers. Two micro-fixes against the verbatim Lean were required:
+
+1. **`lt_of_lt_of_lt` → `.trans`** (line 291 of the new file). The original was `lt_of_lt_of_lt Real.exp_one_lt_d9 (by norm_num : ...)`. Mathlib has `lt_of_lt_of_le` and `lt_of_le_of_lt` but no `lt_of_lt_of_lt`; the standard idiom is `LT.lt.trans` (infix `.trans`). Fixed to `Real.exp_one_lt_d9.trans (by norm_num : ...)`.
+2. **`congr 2; ring_nf; norm_num` → explicit `h_exp_eq` rewrite** (line 322-323 of the new file). The original collapsed too aggressively: after `rw [mul_assoc, ← Real.rpow_add h_logN_pos]`, the `congr 2` peeling reduced the goal to `5/12 + 1/12 = 1/2` which `ring_nf` proved, leaving `norm_num` with no goals (Lean reports "No goals to be solved" as an error). Fixed by adding `have h_exp_eq : ((5 : ℝ) / 12 + (1 : ℝ) / 12) = (1 : ℝ) / 2 := by norm_num` before the rewrite block and appending `h_exp_eq` to the rewrite list.
+
+Neither micro-fix changes the lemma signatures or proof strategy; they are local tactic-script repairs against Lean 4 / Mathlib idiom.
+
+### Mathematical content delivered
+
+The pre-existing transitive proof `kelley_meka_consistent_with_Behrend` (lines 207-210 of the pre-S5-a file) shows the same inequality `Behrend's lower bound ≤ K-M upper bound on rothNumberNat N` by routing through `rothNumberNat N`. That proof is correct but *analytically vacuous*: the transitive `≤` holds for **any** positive `kelleyMekaConst` — including ones that make K-M asymptotically weaker than Behrend. The new conditional theorem records the *genuine analytic content*: under the explicit bound `kelleyMekaConst ≤ 4 * (Real.log 3)^(5/12)`, K-M dominates Behrend regardless of the underlying combinatorial axiom.
+
+This is the first **strictly stronger** consistency result in the file. It cannot be replicated by transitivity through `rothNumberNat`, and records mathematical content that pure transitivity cannot reach.
+
+### After this PR
+
+- **§S6-a ACT (paste-ready)** — paste the verbatim B-S analytic envelope conditional from S6 PREP §3 (PR #18685) into the file. Same shape as this S5-a ACT; expect the same micro-fixes (`lt_of_lt_of_lt` → `.trans`; explicit exponent rewrite). ~50 LOC.
+- **§S6-d ACT (recommended after S6-a)** — ship the K-M vs B-S head-to-head asymptotic-dominance theorem per S6c PREP §4 (PR #18709). Now that the K-M conditional exists, the head-to-head is a one-step composition. ~30-50 LOC.
+- **§S5-b** — strengthen the K-M axiom to `∃ c ≤ K, ...` for explicit `K` from a Kelley–Meka 2023 literature audit; this would convert the new conditional into an *unconditional* analytic envelope.
+- **§S4-b** — `BohrSet T ρ` scaffold (~200 LOC, multi-quarter starter).
+
+### Pattern notes
+
+- **Verbatim PREP-paste discharge.** When a prior PREP cycle has produced a verbatim Lean discharge of all sorries with full Mathlib API audit at a specific sha, the ACT is mechanical: paste, add cited imports, run Docker. Risk is primarily in (a) Mathlib pin drift since the PREP audit (re-verify at the *current* pinned sha) and (b) micro tactic-script idioms (`lt_of_lt_of_lt` is not a Mathlib name; `congr` chains can over-peel).
+- **Conditional analytic envelopes vs transitive consistency.** When two bounds (upper + lower) are axiomatized over the same Mathlib quantity, the transitive `(lower).trans (upper)` proof is automatic and carries no analytic content. The conditional analytic version with an explicit bound on the existential witness is the only way to record genuine analytic content without strengthening the axiom.
+
+---
+
+## Prior Focus (S7 STATE-SYNC 2026-06-09)
 
 **Author:** researcher-6, claim `researcher-48585`.
 **Mode:** STATE-SYNC — doc-only JSON + state.md catch-up.
