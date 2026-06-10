@@ -256,4 +256,60 @@ lemma hypCoeff_mul_pow_abs_le_of_abs_le
     _ = |x| ^ n := one_mul _
     _ ≤ R ^ n := pow_le_pow_left₀ (abs_nonneg _) hx n
 
+-- ============================================================================
+-- §8 : Uniform M-test inputs + Summable on closed ball             (S4b ACT)
+-- ============================================================================
+--
+-- Combines S4a's `x`-independent per-term bound (§7) with the convergent
+-- geometric series `∑ R^n` for `R < 1`. Concretely:
+--
+-- (i) Provides per-`x` summability on the closed ball `{x : |x| ≤ R}` via
+--     the *uniform* dominating series `R^n` — compare `summable_hyp2F1`
+--     (§6), which uses the `x`-dependent series `|x|^n`. Although the
+--     conclusion matches §6, the proof path now factors through a single
+--     `x`-independent dominating series, which is the structural setup
+--     required for the Weierstrass M-test conclusion.
+--
+-- (ii) Packages the M-test hypotheses as an explicit lemma
+--      `hyp2F1_mtest_inputs_on_closedBall` consumable by the
+--      `TendstoUniformlyOn` step (S5 ACT).
+
+/-- **Summable via uniform M-test on closed ball** (S4b ACT, 2026-06-09).
+
+For `R < 1` and any `x` with `|x| ≤ R`, the series `∑ hypCoeff n · xⁿ`
+is summable. Proved by direct comparison with the geometric series
+`∑ R^n` whose summands are *independent* of `x`. Compare `summable_hyp2F1`
+(§6), where the dominating series `∑ |x|ⁿ` varies with `x`. Provides the
+per-`x` summability needed at every point of the compact subset
+`{x : |x| ≤ R}`, with the proof path that prepares the M-test step. -/
+theorem summable_hyp2F1_on_closedBall
+    (R : ℝ) (hR : R < 1) (x : ℝ) (hx : |x| ≤ R) :
+    Summable (fun n : ℕ => hypCoeff n * x ^ n) := by
+  have hRnn : 0 ≤ R := le_trans (abs_nonneg _) hx
+  refine Summable.of_norm ?_
+  refine Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => ?_)
+    (summable_geometric_of_lt_one hRnn hR)
+  rw [Real.norm_eq_abs]
+  exact hypCoeff_mul_pow_abs_le_of_abs_le R n x hx
+
+/-- **M-test inputs for the hypergeometric series on closed ball**
+    (S4b ACT, 2026-06-09).
+
+Bundles the two Weierstrass-M-test hypotheses on `{x : |x| ≤ R}`:
+(a) `∑ R^n` is summable (since `R < 1`), and
+(b) the per-term uniform bound `|hypCoeff n · x^n| ≤ R^n` holds for
+    every `x` with `|x| ≤ R`.
+
+This is exactly the data consumed by `tendstoUniformlyOn_tsum` in
+Mathlib's `Analysis.NormedSpace.FunctionSeries`. Packaged as a single
+lemma so the `TendstoUniformlyOn` step (S5 ACT) is a one-liner. -/
+theorem hyp2F1_mtest_inputs_on_closedBall
+    (R : ℝ) (hR : R < 1) (hRnn : 0 ≤ R) :
+    Summable (fun n : ℕ => R ^ n) ∧
+      ∀ (n : ℕ) (x : ℝ), x ∈ {y : ℝ | |y| ≤ R} →
+        ‖hypCoeff n * x ^ n‖ ≤ R ^ n := by
+  refine ⟨summable_geometric_of_lt_one hRnn hR, fun n x hx => ?_⟩
+  rw [Real.norm_eq_abs]
+  exact hypCoeff_mul_pow_abs_le_of_abs_le R n x hx
+
 end AmgmInequalityOQ04OQ03

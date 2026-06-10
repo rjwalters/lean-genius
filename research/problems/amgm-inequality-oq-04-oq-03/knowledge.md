@@ -56,11 +56,25 @@ In `Proofs/AmgmInequalityOQ04OQ03.lean` summability section (S2, PR #22021 open 
 - `summable_hyp2F1` : Summable (fun n => hypCoeff n · x^n) for |x| < 1 (comparison
   with geometric).
 
-In `Proofs/AmgmInequalityOQ04OQ03Wallis.lean` (S3 ACT, this session, additive companion):
+In `Proofs/AmgmInequalityOQ04OQ03Wallis.lean` (S3 ACT, prior, additive companion):
 - `wallisHalf n := ∫ θ in 0..π/2, sin θ ^ n` (definition).
 - `wallisHalf_zero` : W(0) = π/2.
 - `wallisHalf_recurrence` : W(n+2) = ((n+1)/(n+2)) · W(n) (half-period reduction).
 - `wallisHalf_even` : W(2n) = (π/2) · centralBinom n / 4^n (main Wallis closed form).
+
+In §7 of `Proofs/AmgmInequalityOQ04OQ03.lean` (S4a ACT, prior):
+- `hypCoeff_mul_pow_abs_le_of_abs_le (R : ℝ) (n : ℕ) (x : ℝ) (hx : |x| ≤ R) :
+   |hypCoeff n · x^n| ≤ R^n` — the `x`-independent per-term M-test bound.
+
+In §8 of `Proofs/AmgmInequalityOQ04OQ03.lean` (S4b ACT, this session):
+- `summable_hyp2F1_on_closedBall (R : ℝ) (hR : R < 1) (x : ℝ) (hx : |x| ≤ R) :
+   Summable (fun n => hypCoeff n · x^n)` — per-`x` summability via the
+   uniform R^n dominating series. Conclusion matches §6 but the proof
+   factors through the uniform bound.
+- `hyp2F1_mtest_inputs_on_closedBall (R : ℝ) (hR : R < 1) (hRnn : 0 ≤ R) :
+   Summable (fun n => R^n) ∧ ∀ n x, |x| ≤ R → ‖hypCoeff n · x^n‖ ≤ R^n`
+   — bundled Weierstrass-M-test hypotheses, exactly the inputs Mathlib's
+   `tendstoUniformlyOn_tsum` consumes.
 
 ---
 
@@ -84,8 +98,12 @@ To prove `ellipticK_eq_hyp2F1 : K(k) = (π/2) · ₂F₁(1/2, 1/2; 1; k²)`:
 2. ✅ **Wallis closed form** (S3, `wallisHalf_even`, this session): the half-period
    integral ∫₀^{π/2} sin^{2n}θ dθ has the explicit central-binomial value.
 3. ⏳ **Binomial series**: (1−u)^(−1/2) = ∑ (centralBinom n / 4ⁿ) uⁿ for |u|<1.
-4. ⏳ **Uniform summability**: on compact k-subsets of (−1, 1), the series
-   ∑ cₙ k^{2n} sin^{2n}θ is dominated and uniformly summable in θ.
+4. ⚙️ **Uniform summability** (in progress): on compact k-subsets of
+   (−1, 1), the series ∑ cₙ k^{2n} sin^{2n}θ is dominated and uniformly
+   summable in θ. S4a/b ship the M-test inputs
+   (`hypCoeff_mul_pow_abs_le_of_abs_le`,
+   `hyp2F1_mtest_inputs_on_closedBall`); S5 will wrap as
+   `TendstoUniformlyOn` via Mathlib's `tendstoUniformlyOn_tsum`.
 5. ⏳ **Sum/integral interchange**: DCT-style argument combining 3, 4 to compute
    K(k) term by term, then close using 2 and 1.
 
