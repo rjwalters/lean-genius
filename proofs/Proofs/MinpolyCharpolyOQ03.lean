@@ -228,7 +228,7 @@ this file (sub-OQs `oq-03-oq-01` through `oq-03-oq-04`).
 theorem rational_canonical_form_exists
     {n : Type*} [Fintype n] [DecidableEq n] (M : Matrix n n F) :
     ∃ c : InvariantFactorChain F,
-      c.prodFactors = M.charpoly ∧ c.lastFactor = M.minpoly := by
+      c.prodFactors = M.charpoly ∧ c.lastFactor = minpoly F M := by
   sorry
 
 /-! ## Part 3: Unconditional structural lemmas
@@ -376,7 +376,7 @@ private theorem lastFactor_eq_getElem_pred
       have hpos : 0 < c.factors.length := length_pos_of_ne_nil h
       omega) := by
   show c.factors.getLast?.getD 1 = _
-  rw [List.getLast?_eq_getLast h]
+  rw [List.getLast?_eq_some_getLast h]
   -- Now: `(some (c.factors.getLast h)).getD 1 = c.factors[...]`
   show c.factors.getLast h = _
   exact List.getLast_eq_getElem h
@@ -540,9 +540,17 @@ noncomputable def InvariantFactorChain.firstFactor
 private theorem firstFactor_eq_getElem_zero
     (c : InvariantFactorChain F) (h : c.factors ≠ []) :
     c.firstFactor = c.factors[0]'(length_pos_of_ne_nil h) := by
-  rcases hl : c.factors with _ | ⟨a, t⟩
-  · exact absurd hl h
-  · rfl
+  -- Factor out the list-only fact to a fresh universally-quantified
+  -- variable `l`, sidestepping the `rcases hl : c.factors`
+  -- generalize-over-dependent-getElem-proof failure.
+  -- See `MinpolyCharpolyOQ03.lean` build error history at S13 ACT.
+  have key : ∀ (l : List F[X]) (h0 : l ≠ []),
+      l.head?.getD 1 = l[0]'(length_pos_of_ne_nil h0) := by
+    intro l h0
+    cases l with
+    | nil => exact absurd rfl h0
+    | cons a t => rfl
+  exact key c.factors h
 
 /-- The first factor of a nonempty invariant-factor chain is a member
     of the chain. Mirror of `lastFactor_mem`. -/
