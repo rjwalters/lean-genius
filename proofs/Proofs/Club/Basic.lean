@@ -210,4 +210,21 @@ theorem IsStationaryBelow.of_subset {S T : Set Ordinal} {o : Ordinal}
   intro C hC
   exact hMeet C hC (hS C hC)
 
+/-! ### Monotonicity helpers
+
+Superset-monotonicity of unboundedness and stationarity — the direction dual to
+`IsStationaryBelow.of_subset`. Enlarging a witnessing set preserves the property;
+these are the forms most sister slugs need and are universe-polymorphic. -/
+
+/-- Unboundedness below `o` is preserved under supersets. -/
+theorem IsUnboundedBelow.mono {S T : Set Ordinal} {o : Ordinal}
+    (hST : S ⊆ T) (hS : IsUnboundedBelow S o) : IsUnboundedBelow T o :=
+  fun α hα => let ⟨β, hβS, h1, h2⟩ := hS α hα; ⟨β, hST hβS, h1, h2⟩
+
+/-- Stationarity below `o` is preserved under supersets: any superset of a
+stationary set is stationary (it meets every club because the smaller set does). -/
+theorem IsStationaryBelow.mono {S T : Set Ordinal} {o : Ordinal}
+    (hST : S ⊆ T) (hS : IsStationaryBelow S o) : IsStationaryBelow T o :=
+  fun C hC => let ⟨γ, hγS, hγC⟩ := hS C hC; ⟨γ, hST hγS, hγC⟩
+
 end Ordinal
