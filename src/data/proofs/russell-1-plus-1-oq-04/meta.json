@@ -19,8 +19,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 251,
-    "assumptions": "None. Each row is witnessed by a self-contained `rfl` in Lean 4 with no Mathlib dependency beyond Proofs.OnePlusOne. The six `#print axioms` stanzas in Part 6 confirm at build time that each row depends on no axioms — the propositional dual to the reductional taxonomy of Parts 1–5 plus the ζ-row of §5.",
+    "lineCount": 277,
+    "assumptions": "None. Each row is witnessed by a self-contained `rfl` in Lean 4 with no Mathlib dependency beyond Proofs.OnePlusOne. The `#print axioms` stanzas (six in Part 6, two more in Part 7) confirm at build time that every theorem depends on no axioms — the propositional dual to the reductional taxonomy of Parts 1–5 plus the ζ-row of §5. Part 7 adds two schematic (all-input) transparency lemmas (addLet_eq_add, bin_add_one) upgrading two row claims from the single point 1+1 to every input.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
     "originalContributions": [
@@ -30,7 +30,8 @@
       "Binary-naturals encoding `Bin`/`Bin.succ`/`Bin.add` matching the {δ, ι} subset at the shortest 3-step depth for the specific input `1 + 1`",
       "Let-bound encoding `addLet (n m : Peano.ℕ) := let n' := n; let m' := m; Peano.add n' m'` whose witness requires {δ, ι, ζ} in 7 kernel-rewrite steps — isolates ζ as the *fourth* CIC primitive, not derivable from {β, ι, δ} on closed terms with let-binders (no β/ι/δ rule has `let` in its LHS pattern)",
       "Structural-incomparability observation: {δ, β} ⊄ {δ, ι} and vice versa, so no non-trivial encoding is strictly weaker than all others (only the empty baseline is)",
-      "Part 6 `#print axioms` stanzas (six total, one per row): machine-checked confirmation that each row depends on no axioms — propositional dual to the reductional analysis of Parts 1–5 plus §5"
+      "Part 6 `#print axioms` stanzas (six total, one per row): machine-checked confirmation that each row depends on no axioms — propositional dual to the reductional analysis of Parts 1–5 plus §5",
+      "Part 7 schematic transparency lemmas: `addLet_eq_add (n m) : addLet n m = Peano.add n m := rfl` (ζ-elimination is definitional for all inputs, generalizing row5_let's single point) and `bin_add_one (m) : Bin.add m Bin.one = m.succ := rfl` (row 4's `_ + one` clause is binary successor schematically), each with its own `#print axioms` stanza"
     ],
     "prerequisites": [
       "Proofs.OnePlusOne (parent file): self-contained Peano arithmetic establishing `Peano.one + Peano.one = Peano.two := rfl`",
@@ -39,7 +40,7 @@
       "The standard ℕ encodings: pattern-matched Peano, raw recursor, Church numerals, binary naturals"
     ],
     "mathlibDependencies": [],
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 8
   },
   "overview": {
@@ -244,9 +245,9 @@
     ],
     "opens": [],
     "namespace": "OnePlusOneOQ04",
-    "lineCount": 251,
+    "lineCount": 277,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 8,
     "sorries": 0,
     "path": "Proofs/OnePlusOneOQ04.lean"
