@@ -1609,9 +1609,15 @@ _do_respawn_agent() {
             sleep 0.2
             tmux send-keys -t "$session" "export CLAUDE_TIMEOUT=14400" Enter
             sleep 0.2
-            # Honour RESEARCHER_CLAUDE_MODEL (per-role) > CLAUDE_MODEL (global),
-            # mirroring initial-start in parallel-research.sh
-            local researcher_model="${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+            # Model resolution chain (mirroring initial-start in parallel-research.sh):
+            #   1. RESEARCHER_${slot}_CLAUDE_MODEL  — per-slot pin survives respawn
+            #   2. RESEARCHER_CLAUDE_MODEL          — per-role override (whole pool)
+            #   3. CLAUDE_MODEL                      — global override
+            #   4. claude-opus-4-8                   — wrapper default
+            # The per-slot pin only works if the daemon's own shell env has it
+            # exported; otherwise the respawn falls through to the pool default.
+            local slot_model_var="RESEARCHER_${agent_num}_CLAUDE_MODEL"
+            local researcher_model="${!slot_model_var:-${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}}"
             tmux send-keys -t "$session" "export CLAUDE_MODEL='$researcher_model'" Enter
             sleep 0.2
             local prompt="You are researcher-$agent_num. Read $repo_root/$prompt_file for your instructions, then start the research workflow."
