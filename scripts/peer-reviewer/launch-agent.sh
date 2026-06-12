@@ -179,15 +179,18 @@ launch_agent() {
     local prompt_file
     prompt_file=$(create_prompt_file)
 
+    # Per-role override: PEER_REVIEWER_CLAUDE_MODEL > CLAUDE_MODEL > wrapper default.
+    local peer_reviewer_model="${PEER_REVIEWER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+
     print_info "Launching peer reviewer agent (${AGENT_ID})..."
     print_info "Interval: $INTERVAL minutes"
     print_info "Worktree: $WORKTREE_PATH"
-    print_info "Model: opus (deep review)"
+    print_info "Model: $peer_reviewer_model"
 
     # Launch in tmux with wrapper
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
-        "REVIEWER_ID=${AGENT_ID} REPO_ROOT=$WORKTREE_PATH $wrapper_script --daemon --prompt 'You are the peer reviewer agent. Read $prompt_file for your instructions, then start the review loop.' --log '$LOG_FILE'"
+        "REVIEWER_ID=${AGENT_ID} REPO_ROOT=$WORKTREE_PATH CLAUDE_MODEL=$peer_reviewer_model $wrapper_script --daemon --prompt 'You are the peer reviewer agent. Read $prompt_file for your instructions, then start the review loop.' --log '$LOG_FILE'"
 
     print_success "Launched peer reviewer agent (${AGENT_ID})"
     echo ""

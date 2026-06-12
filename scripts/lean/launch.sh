@@ -1551,6 +1551,11 @@ _do_respawn_agent() {
             sleep 0.2
             tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
             sleep 0.2
+            # Honour ENRICHER_CLAUDE_MODEL (per-role) > CLAUDE_MODEL (global),
+            # mirroring initial-start in parallel-enrich.sh
+            local enricher_model="${ENRICHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+            tmux send-keys -t "$session" "export CLAUDE_MODEL='$enricher_model'" Enter
+            sleep 0.2
             local prompt="You are $enricher_id. Read $repo_root/$prompt_file for your instructions, then start the enrichment workflow."
             local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"
             tmux send-keys -t "$session" "$wrapper_script --prompt '$prompt' --log '$repo_root/$log_file' --max-retries 5" Enter
@@ -1603,6 +1608,11 @@ _do_respawn_agent() {
             tmux send-keys -t "$session" "export REPO_ROOT='$repo_root'" Enter
             sleep 0.2
             tmux send-keys -t "$session" "export CLAUDE_TIMEOUT=14400" Enter
+            sleep 0.2
+            # Honour RESEARCHER_CLAUDE_MODEL (per-role) > CLAUDE_MODEL (global),
+            # mirroring initial-start in parallel-research.sh
+            local researcher_model="${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+            tmux send-keys -t "$session" "export CLAUDE_MODEL='$researcher_model'" Enter
             sleep 0.2
             local prompt="You are researcher-$agent_num. Read $repo_root/$prompt_file for your instructions, then start the research workflow."
             local wrapper_script="$repo_root/scripts/agents/claude-wrapper.sh"

@@ -313,6 +313,9 @@ launch_agents() {
         tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
         tmux send-keys -t "$session" "export CLAIM_TTL='$CLAIM_TTL'" Enter
         tmux send-keys -t "$session" "export REPO_ROOT='$REPO_ROOT'" Enter
+        # Honour ENRICHER_CLAUDE_MODEL (per-role) > CLAUDE_MODEL (global)
+        local enricher_model="${ENRICHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+        tmux send-keys -t "$session" "export CLAUDE_MODEL='$enricher_model'" Enter
 
         # Write prompt to file (avoids tmux multiline issues)
         local prompt_file="$LOGS_DIR/$session-prompt.md"
@@ -425,6 +428,8 @@ case "${1:-}" in
         tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
         tmux send-keys -t "$session" "export CLAIM_TTL='$CLAIM_TTL'" Enter
         tmux send-keys -t "$session" "export REPO_ROOT='$REPO_ROOT'" Enter
+        enricher_model="${ENRICHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+        tmux send-keys -t "$session" "export CLAUDE_MODEL='$enricher_model'" Enter
         prompt_file="$LOGS_DIR/$session-prompt.md"
         cat > "$prompt_file" << PROMPT_EOF
 # Proof Enrichment Agent $enricher_id

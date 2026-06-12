@@ -507,12 +507,12 @@ run_claude_once() {
     tmpfile=$(mktemp)
 
     # Run in background so we can monitor for startup hangs.
-    # Default to standard-context Opus 4.7. Without --model the CLI auto-selects
-    # claude-opus-4-7[1m] when the prompt + system context is large (CLAUDE.md
-    # alone is enough), and accounts without the 1M-context entitlement reject
-    # the request with `API Error: Extra usage is required for 1M context`.
-    # Override via CLAUDE_MODEL=<other-model> for accounts that do have it.
-    local model="${CLAUDE_MODEL:-claude-opus-4-7}"
+    # Default to Opus 4.8 (1M native context, same $/MTok as 4.7). We still pass
+    # --model explicitly to avoid CLI auto-selection drift. Override the global
+    # default with CLAUDE_MODEL=<other-model>; per-role launch scripts also
+    # honour role-specific overrides (e.g. RESEARCHER_CLAUDE_MODEL) that are
+    # exported as CLAUDE_MODEL before invoking this wrapper.
+    local model="${CLAUDE_MODEL:-claude-opus-4-8}"
     timeout --kill-after=30 "$CLAUDE_TIMEOUT" claude -p --dangerously-skip-permissions --model "$model" "$PROMPT" < /dev/null > "$tmpfile" 2>&1 &
     local timeout_pid=$!
 
