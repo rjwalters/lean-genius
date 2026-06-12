@@ -44,7 +44,7 @@ at every point of (a,b). The Lebesgue generalization weakens this:
 
 - Uses Mathlib measure theory, Vitali families, bounded variation
 - Defines absolutely continuous functions (not yet in Mathlib)
-- States Lebesgue FTC (as axiom, connecting to Mathlib infrastructure)
+- States Lebesgue FTC integral identity (as axiom, connecting to Mathlib infrastructure)
 - Proves: Lipschitz → AC, AC → uniformly continuous
 -/
 
@@ -185,23 +185,18 @@ theorem ac_on_subinterval {F : ℝ → ℝ} {a b c d : ℝ}
 -- PART IV: The Lebesgue FTC (AXIOM)
 -- ═══════════════════════════════════════════════════════════════
 
-/-- **Lebesgue FTC (Part 1)**: AC functions are a.e. differentiable.
+/- **Lebesgue FTC (Part 1)**: AC functions are a.e. differentiable. (PROVED)
 
 If F is absolutely continuous on [a,b], then F is differentiable at
-almost every point of (a,b), and the derivative F' is integrable.
+almost every point of (a,b).
 
-**Proof strategy**: AC → BV → decompose as difference of monotone functions
-→ each monotone function is a.e. differentiable (Lebesgue's theorem,
-which uses the Vitali covering lemma).
-
-**Mathlib building blocks**:
-- `Monotone.ae_differentiableAt` for monotone a.e. differentiability
-- Vitali covering lemma in `Mathlib.MeasureTheory.Covering.Vitali` -/
-axiom lebesgue_ftc_differentiable {F : ℝ → ℝ} {a b : ℝ} (hab : a ≤ b)
-    (hF : AbsolutelyContinuousOn F a b) :
-    ∃ S : Set ℝ, MeasurableSet S ∧
-      volume (Ioo a b \ S) = 0 ∧
-      ∀ x ∈ S, DifferentiableAt ℝ F x
+This result was previously stated here as an axiom. It is now **proved** in the
+companion file `FundamentalTheoremCalculusLebesgueOQ01.lean` as
+`FTCLebesgueACImpliesBV.lebesgue_ftc_differentiable`, via the chain
+AC → BV (`ac_implies_bv`, proved from the ε-δ definition) → a.e. differentiable
+(`BoundedVariationOn.ae_differentiableAt_of_mem_uIcc`). The companion lives
+downstream because it imports this file; placing the proof here would create a
+circular import. The axiom is removed from this file (it had no callers). -/
 
 /-- **Lebesgue FTC (Part 2)**: The integral of the a.e. derivative recovers the function.
 
@@ -293,8 +288,11 @@ For a measurable set S: μ(S ∩ B(x,r)) / μ(B(x,r)) → 1_{S}(x) a.e. -/
 6. ✓ Monotone → a.e. differentiable (from Mathlib)
 
 ## What's Axiomatized
-1. AC → a.e. differentiable (needs: AC → BV → monotone decomposition)
-2. Lebesgue FTC integral identity (deepest result)
+1. Lebesgue FTC integral identity (deepest result)
+
+## Previously Axiomatized, Now Proved
+- AC → a.e. differentiable: proved in `FundamentalTheoremCalculusLebesgueOQ01.lean`
+  as `FTCLebesgueACImpliesBV.lebesgue_ftc_differentiable` (AC → BV → a.e. diff).
 
 ## What's Left (sorry)
 1. Cantor function construction (counterexample, not essential for FTC)
