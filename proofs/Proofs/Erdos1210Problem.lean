@@ -243,4 +243,29 @@ theorem erdos_1210_literal_counterexample :
   rw [primesBelow_five_sum, Finset.sum_singleton]
   norm_num
 
+/-- **The axiom `erdos_1210`, taken verbatim, is false.**
+
+    This upgrades the single-instance `erdos_1210_literal_counterexample`
+    into a refutation of the exact universally-quantified statement that
+    `axiom erdos_1210` asserts: there is no proof of
+
+      `∀ n, 3 ≤ n → ∀ A, ValidSubset n A → PairwiseCoprime A →
+         ∑_{a∈A} 1/(n-a) ≤ ∑_{p<n prime} 1/(n-p)`
+
+    in any consistent system, because the `n = 5, A = {4}` witness satisfies
+    the hypotheses yet violates the conclusion. The declared `axiom erdos_1210`
+    is therefore unsound as transcribed and must be revised once the original
+    Erdős statement ([Er77c], [Er80]) is recovered (see the §Counterexample
+    discussion above). This theorem is itself axiom-free and does NOT invoke
+    `erdos_1210`, so it does not import the inconsistency into downstream use. -/
+theorem erdos_1210_statement_false :
+    ¬ (∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ),
+        ValidSubset n A → PairwiseCoprime A →
+        ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a)
+          ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p)) := by
+  intro h
+  exact absurd
+    (h 5 (by norm_num) {4} singleton_four_valid_at_five.1 singleton_four_valid_at_five.2)
+    (not_le.mpr erdos_1210_literal_counterexample)
+
 end Erdos1210
