@@ -121,26 +121,23 @@ theorem primesBelow_sum_pos {n : ℕ} (hn : 3 ≤ n) :
   exact _root_.div_pos one_pos (by linarith)
 
 /-
-## The Main Conjecture (Open)
+## The Literal Conjecture (as transcribed) — packaged, NOT assumed
 -/
 
-/-- **Erdős Problem 1210 (Open)**: For all n ≥ 3 and all pairwise coprime A ⊆ {1,...,n-1},
-    ∑_{a ∈ A} 1/(n-a) ≤ ∑_{p prime, p < n} 1/(n-p).
-    The set of primes below n maximizes this sum. -/
-axiom erdos_1210 (n : ℕ) (hn : 3 ≤ n) (A : Finset ℕ)
-    (hA_valid : ValidSubset n A)
-    (hA_coprime : PairwiseCoprime A) :
+/-- The Erdős-1210 inequality **as literally transcribed**, packaged as a
+proposition. This is a `def` — deliberately **not** an `axiom` — because the
+literal statement is *false* (refuted below by `not_Erdos1210Statement`, via the
+concrete counterexample `n = 5, A = {4}`). Assuming it as an axiom would make the
+development inconsistent. The genuine Erdős problem presumably carries unstated
+hypotheses on `A` (e.g. `A ⊆ (n/2, n)` or `a > √n`); recovering the intended form
+from [Er77c, Er80] is open. -/
+def Erdos1210Statement : Prop :=
+  ∀ (n : ℕ), 3 ≤ n → ∀ (A : Finset ℕ), ValidSubset n A → PairwiseCoprime A →
     ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p)
 
 /-
 ## Consequences
 -/
-
-/-- Any pairwise coprime A ⊆ {1,...,n-1} has sum bounded by the prime sum (from the axiom). -/
-theorem erdos_1210_bound (n : ℕ) (hn : 3 ≤ n) (A : Finset ℕ)
-    (hA_valid : ValidSubset n A) (hA_coprime : PairwiseCoprime A) :
-    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) :=
-  erdos_1210 n hn A hA_valid hA_coprime
 
 /-- The empty set has sum 0, trivially bounded by the prime sum. -/
 theorem erdos_1210_empty (n : ℕ) (hn : 3 ≤ n) :
@@ -148,7 +145,7 @@ theorem erdos_1210_empty (n : ℕ) (hn : 3 ≤ n) :
   le_of_lt (primesBelow_sum_pos hn)
 
 /-- The prime sum dominates any singleton prime: {p} has sum 1/(n-p) ≤ total prime sum. -/
-theorem erdos_1210_prime_singleton (n : ℕ) (hn : 3 ≤ n) (p : ℕ)
+theorem erdos_1210_prime_singleton (n : ℕ) (_hn : 3 ≤ n) (p : ℕ)
     (hp : p.Prime) (hpn : p < n) :
     (1 : ℝ) / ((n : ℝ) - p) ≤ ∑ q ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - q) := by
   have hp_mem : p ∈ primesBelow n := by
@@ -164,22 +161,12 @@ theorem erdos_1210_prime_singleton (n : ℕ) (hn : 3 ≤ n) (p : ℕ)
         have : (q : ℝ) < n := by exact_mod_cast hq.1
         linarith
 
-/-- Under the conjecture, any singleton {k} with k ∈ [1,n) has sum bounded by the prime sum.
-    In particular, k = 4 (even composite) also satisfies the bound. -/
-theorem erdos_1210_singleton_bounded (n : ℕ) (hn : 3 ≤ n) (k : ℕ) (hk1 : 1 ≤ k) (hkn : k < n) :
-    (1 : ℝ) / ((n : ℝ) - k) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) := by
-  have hle := erdos_1210 n hn {k}
-    (fun a ha => by simp only [Finset.mem_singleton] at ha; subst ha; exact ⟨hk1, hkn⟩)
-    (fun a ha b hb hab => by simp only [Finset.mem_singleton] at ha hb; omega)
-  simp only [Finset.sum_singleton] at hle
-  exact hle
-
 /-
 ## Counterexample: The Literal Statement Is FALSE
 
-The literal axiom `erdos_1210` above is **unsound** as transcribed: there is a
-concrete (n, A) for which the hypotheses are satisfied but the inequality
-FAILS. The minimal witness is n = 5, A = {4}:
+The literal Erdős-1210 inequality (`Erdos1210Statement` above) is **false** as
+transcribed: there is a concrete (n, A) for which the hypotheses are satisfied
+but the inequality FAILS. The minimal witness is n = 5, A = {4}:
 
   - 4 ∈ [1, 5), so `ValidSubset 5 {4}` holds.
   - A = {4} is trivially pairwise coprime (singleton, vacuous condition).
@@ -187,10 +174,10 @@ FAILS. The minimal witness is n = 5, A = {4}:
   - primesBelow 5 = {2, 3}, so ∑_{p < 5 prime} 1/(5 - p) = 1/3 + 1/2 = 5/6.
   - 1 > 5/6, so the conjectured bound fails.
 
-The theorem `erdos_1210_literal_counterexample` below proves this in machine-
-checked form. It does not invoke the bad axiom (to avoid deriving False and
-destabilizing downstream uses), but its statement is direct evidence that
-`erdos_1210` cannot be a theorem of any consistent extension of ZFC + Lean.
+Earlier revisions of this file declared `Erdos1210Statement` as an `axiom`. That
+was **unsound**: combined with `erdos_1210_literal_counterexample` it derives
+`False`. The axiom has been replaced by a plain `def` (asserting nothing), and
+the refutation is recorded as the verified theorem `not_Erdos1210Statement`.
 
 ### Interpretation
 
@@ -199,11 +186,9 @@ The transcribed conjecture either:
   (b) uses different weights (e.g., 1/a instead of 1/(n-a)), or
   (c) was misrecorded in the source database.
 
-Two open follow-ups:
-  1. **Locate originals** [Er77c, Er80] to recover the intended hypothesis.
-  2. **Revise the axiom** to a verified or correctly-stated form. The current
-     axiom should be replaced (the four consequence theorems above are then
-     vacuous and should be removed/refactored).
+Remaining open follow-up:
+  - **Locate originals** [Er77c, Er80] to recover the intended hypothesis, then
+    state and (dis)prove the corrected form.
 -/
 
 /-- `primesBelow 5 = {2, 3}` (decidable equality of concrete Finsets). -/
@@ -220,7 +205,7 @@ theorem primesBelow_five_sum :
       Finset.sum_insert h23, Finset.sum_singleton]
   norm_num
 
-/-- `{4}` satisfies the hypotheses of `erdos_1210` at n = 5. -/
+/-- `{4}` satisfies the hypotheses of `Erdos1210Statement` at n = 5. -/
 theorem singleton_four_valid_at_five :
     ValidSubset 5 ({4} : Finset ℕ) ∧ PairwiseCoprime ({4} : Finset ℕ) := by
   refine ⟨?_, ?_⟩
@@ -232,15 +217,28 @@ theorem singleton_four_valid_at_five :
     simp only [Finset.mem_singleton] at ha hb
     omega
 
-/-- **Counterexample to `erdos_1210` (as literally stated)**.
+/-- **Counterexample to the literal Erdős-1210 statement**.
 
     At n = 5, A = {4}, the A-sum (= 1) STRICTLY EXCEEDS the prime-sum (= 5/6).
-    All hypotheses of `erdos_1210` are satisfied (see
+    All hypotheses of `Erdos1210Statement` are satisfied (see
     `singleton_four_valid_at_five`), but the conclusion fails. -/
 theorem erdos_1210_literal_counterexample :
     (∑ p ∈ primesBelow 5, (1 : ℝ) / ((5 : ℝ) - p)) <
       ∑ a ∈ ({4} : Finset ℕ), (1 : ℝ) / ((5 : ℝ) - a) := by
   rw [primesBelow_five_sum, Finset.sum_singleton]
   norm_num
+
+/-- **The literal Erdős-1210 statement is refuted.** Instantiating
+`Erdos1210Statement` at `n = 5, A = {4}` would force the A-sum below the
+prime-sum, contradicting `erdos_1210_literal_counterexample`. This is the sound
+replacement for the previously-declared (unsound) `axiom`. -/
+theorem not_Erdos1210Statement : ¬ Erdos1210Statement := by
+  intro h
+  have hle := h 5 (by norm_num) {4}
+    singleton_four_valid_at_five.1 singleton_four_valid_at_five.2
+  rw [Finset.sum_singleton] at hle
+  simp only [Nat.cast_ofNat] at hle
+  rw [primesBelow_five_sum] at hle
+  norm_num at hle
 
 end Erdos1210
