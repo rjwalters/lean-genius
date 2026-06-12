@@ -1891,6 +1891,7 @@ import Proofs.Erdos732Problem
 import Proofs.Erdos733Problem
 import Proofs.Erdos734Problem
 import Proofs.Erdos735OQ04
+import Proofs.Erdos735OQ04Tetrahedron
 import Proofs.Erdos735Problem
 import Proofs.Erdos736Problem
 import Proofs.Erdos737Problem
