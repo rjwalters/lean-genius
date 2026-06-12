@@ -57,8 +57,12 @@ theorem docstring below).
 - `qdetF_eq_qdet00` / `qdetF_eq_qdet11` (S2): n=2 specializations.
 - `qdetN_step` (S3): non-recursive Schur formula over a division ring.
 - `qdetN_step_zero_minv` (S3): degenerate case `Minv = 0` gives `A i j`.
-- `qdetN_step_eq_qdetF` (S3 SCAFFOLD, sorry): field-consistency reduction,
-  signed-RHS form `(-1)^(i+j) * qdetF` (corrected by researcher-12 S4-statement-fix).
+- `qdetN_step_eq_qdetF_aux` (S4, sorry): division-free Schur–cofactor
+  polynomial identity `det M · A i j − Σ adj(M) = (-1)^(i+j) · det A`; the
+  sole remaining crux.
+- `qdetN_step_eq_qdetF` (S4): field-consistency, signed-RHS form
+  `(-1)^(i+j) * qdetF`, now PROVED as an algebraic consequence of the aux
+  identity (clear the `det M` denominator). Previously a strategic sorry.
 
 ## References
 
@@ -244,7 +248,41 @@ identity guaranteeing the formula is correctly anchored. -/
   simp only [qdetN_step, Matrix.zero_apply, mul_zero, zero_mul,
     Finset.sum_const_zero, sub_zero]
 
-/-- **Field consistency (S3 SCAFFOLD, deferred to S4).**
+/-- **Schur–cofactor polynomial identity (S4, division-free crux).**
+
+The combinatorial heart of field consistency, stated over the commutative
+ring `F` *without any division*. Writing `M := minorIJ A i j` for the
+complementary minor, this is the polynomial identity
+
+  `det M · A i j − ∑_{p,q} A i (succAbove j q) · adj(M) q p · A (succAbove i p) j
+      = (-1)^(i+j) · det A`.
+
+It is the Schur-complement / matrix-determinant identity in adjugate form:
+multiplying the Route-B Schur step `A i j − bᵀ M⁻¹ c` through by `det M` and
+using `M⁻¹ = (det M)⁻¹ • adj M` turns the field-valued statement into this
+purely polynomial one. Verified by hand at `n = 0` (both sides `A 0 0`),
+`n = 1` diagonal `(0,0)` (`A11·A00 − A01·A10 = det A`) and off-diagonal
+`(0,1)` (`A10·A01 − A00·A11 = −det A`).
+
+The main field-consistency theorem `qdetN_step_eq_qdetF` is a one-line
+algebraic consequence (clear the `det M` denominator). This lemma isolates
+the only genuinely non-trivial content: the cofactor/Schur identity. -/
+theorem qdetN_step_eq_qdetF_aux {n : ℕ}
+    (A : Matrix (Fin (n+1)) (Fin (n+1)) F) (i j : Fin (n+1)) :
+    (minorIJ A i j).det * A i j
+      - ∑ p : Fin n, ∑ q : Fin n,
+          A i (Fin.succAbove j q) * (minorIJ A i j).adjugate q p
+            * A (Fin.succAbove i p) j
+      = (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * A.det := by
+  sorry
+
+/-- **Field consistency (S4, PROVED modulo the polynomial crux).**
+
+Now derived from `qdetN_step_eq_qdetF_aux` by a short field-algebra step:
+expand `(minorIJ A i j)⁻¹ = (det M)⁻¹ • adj M`, factor the scalar out of the
+Schur double sum, substitute the division-free identity, and clear the
+`det M` denominator. The only remaining `sorry` in this file is the
+division-free polynomial crux `aux`, not this theorem.
 
 Over a field `F`, choosing `Minv := (minorIJ A i j)⁻¹` (Mathlib's
 `Matrix.nonsingInv`) inside `qdetN_step` recovers the Route-A quotient
@@ -284,7 +322,34 @@ theorem qdetN_step_eq_qdetF {n : ℕ}
     (h : (minorIJ A i j).det ≠ 0) :
     qdetN_step A i j (minorIJ A i j)⁻¹
       = (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j := by
-  sorry
+  have haux := qdetN_step_eq_qdetF_aux A i j
+  -- Entrywise inverse: `(minorIJ A i j)⁻¹ q p = (det M)⁻¹ * adj M q p`.
+  have hsmul : ∀ q p : Fin n, ((minorIJ A i j)⁻¹) q p
+      = ((minorIJ A i j).det)⁻¹ * (minorIJ A i j).adjugate q p := by
+    intro q p
+    rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv, smul_eq_mul]
+  -- Factor the scalar `(det M)⁻¹` out of the Schur double sum.
+  have hsum : (∑ p : Fin n, ∑ q : Fin n,
+        A i (Fin.succAbove j q) * ((minorIJ A i j)⁻¹) q p * A (Fin.succAbove i p) j)
+      = ((minorIJ A i j).det)⁻¹ * ∑ p : Fin n, ∑ q : Fin n,
+        A i (Fin.succAbove j q) * (minorIJ A i j).adjugate q p
+          * A (Fin.succAbove i p) j := by
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun p _ => ?_
+    rw [Finset.mul_sum]
+    refine Finset.sum_congr rfl fun q _ => ?_
+    rw [hsmul q p]; ring
+  simp only [qdetN_step, qdetF]
+  rw [hsum]
+  -- Replace the (signed) adjugate sum `S` via the polynomial crux `haux`.
+  have hSval : (∑ p : Fin n, ∑ q : Fin n,
+        A i (Fin.succAbove j q) * (minorIJ A i j).adjugate q p
+          * A (Fin.succAbove i p) j)
+      = (minorIJ A i j).det * A i j - (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * A.det := by
+    linear_combination -haux
+  rw [hSval]
+  field_simp
+  ring
 
 /-- **Field consistency at n = 0 (1×1 matrices), base case.** Concrete-witness
 specialisation of `qdetN_step_eq_qdetF` to 1×1 matrices, proved without
