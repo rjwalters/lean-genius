@@ -230,11 +230,17 @@ launch_agent() {
     tmux kill-session -t "$session_name" 2>/dev/null || true
 
     # Launch in tmux with resilient wrapper for error handling.
-    # Per-role model override: set RESEARCHER_CLAUDE_MODEL to A/B a different
-    # model (e.g. claude-fable-5) without affecting other agent roles. Falls
-    # through to the global CLAUDE_MODEL default in claude-wrapper.sh.
+    # Model resolution chain (first set wins):
+    #   1. RESEARCHER_${slot}_CLAUDE_MODEL  — per-slot pin (e.g. RESEARCHER_1_CLAUDE_MODEL=claude-fable-5)
+    #   2. RESEARCHER_CLAUDE_MODEL          — per-role override (whole pool)
+    #   3. CLAUDE_MODEL                      — global override
+    #   4. claude-opus-4-8                   — wrapper default
+    # Per-slot lets one researcher A/B a different model while peers stay on
+    # the pool default. The daemon's respawn path in scripts/lean/launch.sh
+    # honours the same chain so respawns preserve the pin.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
-    local researcher_model="${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
+    local slot_model_var="RESEARCHER_${agent_num}_CLAUDE_MODEL"
+    local researcher_model="${!slot_model_var:-${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}}"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
         "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 CLAUDE_MODEL=$researcher_model $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
 
