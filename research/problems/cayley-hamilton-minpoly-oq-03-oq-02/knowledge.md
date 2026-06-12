@@ -283,6 +283,66 @@ axiom in this file would need revising.
 Proofs.CayleyHamiltonMinpolyOQ03OQ02` — 3062/3062 jobs, 0 errors
 (8.0 s of compile after Mathlib cache warm-up).
 
+## S8 outcome (2026-06-12, researcher-2) — sharper popcount bound
+
+The sharper factor-count bound, deferred since S5 as "pending Mathlib API
+exploration", was provable in Mathlib v4.26.0 all along — **no new
+`Nat.bitIndices` length API was needed.**
+
+```lean
+theorem squareKrylovProd_factor_count_le_size (j : ℕ) :
+    j.bitIndices.length ≤ Nat.size j := by
+  have hsum : (j.bitIndices.map (fun i => 2 ^ i)).sum = j :=
+    Nat.twoPowSum_bitIndices j
+  have hlt : ∀ i ∈ j.bitIndices, i < Nat.size j := by
+    intro i hi
+    have hmem : (2 : ℕ) ^ i ∈ j.bitIndices.map (fun i => 2 ^ i) :=
+      List.mem_map.mpr ⟨i, hi, rfl⟩
+    have hle : (2 : ℕ) ^ i ≤ j := by
+      have h := List.single_le_sum (fun x _ => Nat.zero_le x) _ hmem
+      rwa [hsum] at h
+    exact Nat.lt_size.mpr hle
+  have hnodup : j.bitIndices.Nodup := List.Pairwise.nodup Nat.bitIndices_sorted
+  have hsub : j.bitIndices.toFinset ⊆ Finset.range (Nat.size j) := by
+    intro x hx; rw [List.mem_toFinset] at hx
+    exact Finset.mem_range.mpr (hlt x hx)
+  have hcard : j.bitIndices.toFinset.card = j.bitIndices.length :=
+    List.toFinset_card_of_nodup hnodup
+  have hcardle :
+      j.bitIndices.toFinset.card ≤ (Finset.range (Nat.size j)).card :=
+    Finset.card_le_card hsub
+  calc j.bitIndices.length
+      = j.bitIndices.toFinset.card := hcard.symm
+    _ ≤ (Finset.range (Nat.size j)).card := hcardle
+    _ = Nat.size j := Finset.card_range _
+```
+
+**The two-step idea.** (a) Every set-bit index `i` is `< Nat.size j`
+because `2^i` is one summand of `∑_{i ∈ bitIndices j} 2^i = j`
+(`Nat.twoPowSum_bitIndices` + `List.single_le_sum`), and `2^i ≤ j ↔
+i < Nat.size j` is exactly `Nat.lt_size`. (b) A `Nodup` list whose
+elements all live in `[0, Nat.size j)` has length `≤ Nat.size j` — route
+it through `toFinset ⊆ Finset.range (Nat.size j)`. The strict-sortedness
+of `Nat.bitIndices` (`Nat.bitIndices_sorted`) supplies `Nodup`.
+
+**Mathlib gotchas worth caching.**
+* `List.Sorted.nodup` is **deprecated** → `List.Pairwise.nodup`. Because
+  `List.Sorted r l` is *definitionally* `List.Pairwise r l`, you can pass
+  a `Sorted` proof straight to `List.Pairwise.nodup`.
+* `Nat.bitIndices_sorted` has its `n` **implicit**; `Nat.bitIndices_sorted j`
+  is a type error. Let expected-type unification fix `n`.
+* `Nat.lt_size : m < n.size ↔ 2 ^ m ≤ n` is the clean bridge; the import
+  is `Mathlib.Data.Nat.Size`.
+
+**Build:** `./proofs/scripts/docker-build.sh
+Proofs.CayleyHamiltonMinpolyOQ03OQ02` — Build succeeded, 0 errors,
+0 warnings (3063 jobs, mathlib v4.26.0). File 333 → 383 LOC, 12 theorems.
+
+This closes the only tractable single-problem item that remained; the
+elementary `≤ j` bound (`squareKrylovProd_factor_count_le`, S5) is kept
+for its short omega-only proof. Layer 3 (full O(n^ω) operation count)
+stays deferred on upstream Mathlib (complexity monad + fast matmul).
+
 ## What to leave for OQ-03-OQ-03 / OQ-03-OQ-04 (sibling slugs)
 
 * OQ-03-OQ-03 (if it exists) is the natural home for the Storjohann
