@@ -28,9 +28,9 @@
         "module": "Mathlib.Data.ZMod.Basic"
       },
       {
-        "theorem": "Finset.sup",
-        "description": "Supremum over finite sets for Roth number definition",
-        "module": "Mathlib.Order.SupIndep"
+        "theorem": "csSup_le",
+        "description": "Supremum bound for the sSup-based Roth number definition",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
       },
       {
         "theorem": "Real.log",
@@ -44,14 +44,15 @@
       }
     ],
     "originalContributions": [
-      "Formal definition of the Roth number r₃(N) as Finset.sup over AP-free subsets of ZMod N",
-      "Proof that r₃(N) ≤ N (upper bound from Fintype.card)",
-      "Proof that r₃(N) ≥ 1 for N ≥ 1 (singleton witness)",
-      "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋",
+      "Total definition of the Roth number r₃(N) as sSup over AP-free subset cardinalities (no Fintype instance required, defined for all N)",
+      "Proof that r₃(N) ≤ N (upper bound from Fintype.card) and r₃(N) < N for N ≥ 2",
+      "Proof that r₃(N) ≥ 1 for N ≥ 1 (singleton witness) and r₃(N) ≥ 2 for N ≥ 3 (apFree_pair {0,1} witness)",
+      "Concrete values r₃(1)=1, r₃(2)=1, r₃(3)=2",
+      "Proof of max_iterations_bound: density increment iteration count ≤ ⌊100/δ²⌋ (and its real-valued form iterations_before_contradiction)",
       "Formal statements of 4 quantitative bounds: Roth, Behrend, Bloom-Sisask, Kelley-Meka"
     ],
-    "lineCount": 286,
-    "theoremCount": 19,
+    "lineCount": 333,
+    "theoremCount": 22,
     "definitionCount": 2,
     "additionalFiles": [
       "Proofs/RothTheoremQuantitativeAristotle.lean"
@@ -208,9 +209,9 @@
       "Finset"
     ],
     "namespace": "Szemeredi.Roth.Quantitative",
-    "lineCount": 286,
+    "lineCount": 333,
     "axiomCount": 0,
-    "theoremCount": 19,
+    "theoremCount": 22,
     "definitionCount": 2,
     "path": "Proofs/RothTheoremQuantitative.lean",
     "sorries": 4,
