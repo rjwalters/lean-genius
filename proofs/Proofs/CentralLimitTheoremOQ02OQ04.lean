@@ -31,6 +31,17 @@ Sorries remaining: 2 (unchanged — this PR adds one proven theorem; the two
 sorries `davydov_covariance_inequality` (S5c) and `mixing_clt_ibragimov` (S6+)
 remain).
 
+**This session: S16 — scaled-indicator covariance bound.**
+Added `scaled_indicator_covariance_le_alpha` (PROVEN): promotes the unit
+`indicator_covariance_le_alpha` to arbitrary real scalars,
+`|Cov(a 1_A, b 1_B)| ≤ |a| |b| α(ℱ, 𝒢)`, by pulling the scalars through the
+bilinear covariance (`integral_const_mul` on the joint and marginal integrals)
+and `abs_mul`. This is the single-cell building block of the simple-function
+step toward `davydov_covariance_inequality`: a sub-σ-measurable simple function
+`∑ aᵢ 1_{Aᵢ}` covaried against `∑ bⱼ 1_{Bⱼ}` reduces, by bilinear expansion, to
+a finite sum of exactly these scaled-cell bounds. No sorry reduction this
+session — purely additive infrastructure.
+
 **Earlier session: S5a — Mathlib drift fix.**
 Closed a previously open Mathlib-drift sorry that was carried forward from S2:
 the ζ-function summability fact `Σ n^{-s} < ∞ ↔ s > 1`. We use
@@ -466,6 +477,70 @@ theorem indicator_covariance_le_alpha
   rw [indicator_pair_covariance_eq hA_amb hB_amb]
   simp only [Measure.real_def]
   exact davydov_indicator_bound σPair hA hB
+
+/-- **Scaled-indicator Davydov covariance bound** (S16, this session).
+
+Promotes the unit-indicator bound `indicator_covariance_le_alpha` to arbitrary
+real scalars `a, b` on each factor:
+$$
+\Bigl|\mathrm{Cov}\bigl(a\,\mathbf 1_A,\; b\,\mathbf 1_B\bigr)\Bigr|
+   \;\le\; |a|\,|b|\;\alpha(\mathcal F, \mathcal G).
+$$
+
+The covariance is bilinear, so the scalars `a` and `b` factor straight through
+both the joint integral `∫ (a 1_A)(b 1_B)` and the product of marginals
+`(∫ a 1_A)(∫ b 1_B)`, leaving `a · b` times the unit-indicator covariance. Taking
+absolute values and `abs_mul` splits `|a · b| = |a| · |b|`, and the unit bound
+caps the remaining factor by `α`.
+
+This is the single-cell building block of the simple-function step toward
+`davydov_covariance_inequality`: a simple function measurable w.r.t. `σPair 0`
+is a finite sum `∑ aᵢ 1_{Aᵢ}`, and bilinear expansion of the covariance against
+`∑ bⱼ 1_{Bⱼ}` reduces to a finite sum of exactly these scaled-cell bounds (the
+constant `∑|aᵢ| · ∑|bⱼ|` is then controlled by the `L^p` norms via the
+level-set / Hölder amplification, the remaining S5c analytic content). -/
+theorem scaled_indicator_covariance_le_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {A B : Set Ω} (a b : ℝ)
+    (hA_amb : MeasurableSet A) (hB_amb : MeasurableSet B)
+    (hA : @MeasurableSet Ω (σPair 0) A) (hB : @MeasurableSet Ω (σPair 1) B) :
+    |∫ ω, (a * A.indicator (1 : Ω → ℝ) ω) * (b * B.indicator (1 : Ω → ℝ) ω) ∂μ
+      - (∫ ω, a * A.indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, b * B.indicator (1 : Ω → ℝ) ω ∂μ)|
+    ≤ |a| * |b| *
+        CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  -- Pull the scalars out of the joint integral (`a · b` is a single constant).
+  have hint_prod :
+      ∫ ω, (a * A.indicator (1 : Ω → ℝ) ω) * (b * B.indicator (1 : Ω → ℝ) ω) ∂μ
+        = (a * b) *
+            ∫ ω, A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω ∂μ := by
+    have hpt :
+        (fun ω : Ω => (a * A.indicator (1 : Ω → ℝ) ω) * (b * B.indicator (1 : Ω → ℝ) ω))
+          = (fun ω : Ω =>
+              (a * b) * (A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω)) := by
+      funext ω; ring
+    rw [hpt, integral_const_mul]
+  -- Pull the scalars out of each marginal integral.
+  have hint_A :
+      ∫ ω, a * A.indicator (1 : Ω → ℝ) ω ∂μ
+        = a * ∫ ω, A.indicator (1 : Ω → ℝ) ω ∂μ := integral_const_mul a _
+  have hint_B :
+      ∫ ω, b * B.indicator (1 : Ω → ℝ) ω ∂μ
+        = b * ∫ ω, B.indicator (1 : Ω → ℝ) ω ∂μ := integral_const_mul b _
+  rw [hint_prod, hint_A, hint_B]
+  -- Factor `a · b` out of the whole covariance expression.
+  have hfactor :
+      (a * b) * (∫ ω, A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω ∂μ)
+        - (a * ∫ ω, A.indicator (1 : Ω → ℝ) ω ∂μ)
+          * (b * ∫ ω, B.indicator (1 : Ω → ℝ) ω ∂μ)
+        = (a * b) *
+            (∫ ω, A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω ∂μ
+              - (∫ ω, A.indicator (1 : Ω → ℝ) ω ∂μ)
+                * (∫ ω, B.indicator (1 : Ω → ℝ) ω ∂μ)) := by ring
+  rw [hfactor, abs_mul, abs_mul]
+  have hbase := indicator_covariance_le_alpha (μ := μ) σPair hA_amb hB_amb hA hB
+  exact mul_le_mul_of_nonneg_left hbase (mul_nonneg (abs_nonneg _) (abs_nonneg _))
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
