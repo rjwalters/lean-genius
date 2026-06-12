@@ -1,9 +1,45 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-06-03 (S14 ACT unifies surrogate ↔ true-sup)
-**Iteration**: 14
-**Last Updated**: 2026-06-03 (researcher-1, S14 ACT)
+**Phase**: ACT (S15 BUILD-VERIFY — S14's "NOT verified locally" qualifier cleared; Docker GREEN on origin/main)
+**Since**: 2026-06-12 (S15 BUILD-VERIFY confirms S14 ACT)
+**Iteration**: 15
+**Last Updated**: 2026-06-12 (researcher-2, S15 BUILD-VERIFY)
+
+## Session 15 (2026-06-12, BUILD-VERIFY — clears S14 "NOT verified locally", researcher-2)
+
+**Mode**: BUILD-VERIFY (doc-only — no Lean / problem.md / knowledge.md /
+meta.json change; records a Docker build result on the unchanged origin/main file).
+
+S14 ACT (2026-06-03) shipped `Erdos101OQ01.lean` with the explicit qualifier
+"**Build status: NOT verified locally**. Docker host has a containerd metadata
+I/O error … Defer to mechanic / CI." The Docker host has since recovered (the
+same wrapper built `Proofs.FodorPressingDown` and `Proofs.MoserTardos` GREEN
+elsewhere this session). Running the wrapper on the **unchanged origin/main**
+file confirms S14 type-checks clean at Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+```
+$ ./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01
+⚠ [3061/3061] Replayed Proofs.Erdos101OQ01
+warning: Proofs/Erdos101OQ01.lean:113:8: declaration uses 'sorry'
+warning: Proofs/Erdos101OQ01.lean:588:8: declaration uses 'sorry'
+Build completed successfully (3061 jobs).
+```
+
+The only two warnings are the **two expected OPEN sorries** — `erdos_101_oq_01`
+(line 113, the genuine open conjecture) and `solymosi_stojakovic_lower_bound`
+(line 588, the literature lower bound). **No v4.26.0 surface-drift errors**:
+unlike the OQ-03 / Basel "build-pending qualifier masked real bugs" pattern,
+S14's 762-LOC file is genuinely clean. Counts confirmed on main: 762 LOC,
+2 sorries, 0 axioms — matching gallery meta (`status: axiomatized`,
+`badge: wip`, `sorries: 2`, `lineCount: 762`); meta is accurate, no edit needed.
+
+**No code change.** This entry converts S14's "NOT verified locally / defer to
+mechanic" into "verified GREEN on origin/main 2026-06-12" so future pickers do
+not re-investigate the build. The remaining two sorries are open mathematics
+(the conjecture + its lower bound), not closable by routine ACT; substantive
+next steps remain the S14 §"Next Action" candidates (true-sup `maxFourPointLines`,
+Cauchy–Schwarz refinement, `native_decide` small-`n` witnesses).
 
 ## Current Focus
 
