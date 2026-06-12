@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-06-12",
     "iteration": 2,
-    "focus": "Added triangleFree_indep_pair (researcher-2, 2026-06-12): for n ≥ 4, a triangle-free graph on Fin n has an independent set of card ≥ 2, a sorry-free corollary of the α(G) ≥ √n bound (via Nat.le_sqrt: √n ≥ 2 ⟺ 4 ≤ n). Also fixed a stale header comment that falsely claimed Case 2 of the independence bound still had a HARD sorry — the file is fully sorry-free (only axiom: the open hajnal_conjecture). Docker build green (7743 jobs). File 272 → 289 LOC, theoremCount 11 → 12.",
+    "focus": "Added triangleFree_indep_pair (researcher-2, 2026-06-12): for n >= 4, a triangle-free graph on Fin n has an independent set of card >= 2, a sorry-free corollary of the alpha(G) >= sqrt(n) bound (via Nat.le_sqrt: sqrt(n) >= 2 iff 4 <= n). Also fixed a stale header comment that falsely claimed Case 2 of the independence bound still had a HARD sorry; the file is fully sorry-free (only axiom: the open hajnal_conjecture). Docker build green (7743 jobs). File 272 -> 289 LOC, theoremCount 11 -> 12.",
     "blockers": [],
-    "nextAction": "Strengthen toward Hindman: the independent pair {a,b} is not yet sub-sum independent (a+b may be adjacent). Next, formalize a lemma quantifying when an independent set in a triangle-free additive graph extends to a card-2 Hindman base (a,b,a+b all pairwise non-adjacent), connecting triangleFree_indep_pair to hajnal_k2_gives_additive_triple. The k≥3 Hajnal cases remain open (axiomatized).",
+    "nextAction": "Strengthen toward Hindman: the independent pair {a,b} is not yet sub-sum independent (a+b may be adjacent). Next, formalize when an independent set in a triangle-free additive graph extends to a card-2 Hindman base (a,b,a+b pairwise non-adjacent), connecting triangleFree_indep_pair to hajnal_k2_gives_additive_triple. The k>=3 Hajnal cases remain open (axiomatized).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
