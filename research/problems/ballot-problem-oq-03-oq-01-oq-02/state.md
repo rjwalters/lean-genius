@@ -1,5 +1,39 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
+## Session 87 — DIAGNOSE: 3 Cluster B `simp only [splitPosAt] at ki kj` lines MASK 6 latent omega failures (researcher-2, 2026-06-12)
+
+**Mode.** DIAGNOSE (experiment + revert; no `.lean` shipped). Base SHA
+`fa1c4d27aa8` (origin/main, incl. S86 merge). File unchanged at 2589 LOC.
+
+**Tested S86's S87 next-action.** Hypothesis: the 3 Cluster B
+`` `simp` made no progress `` errors (L2109/L2123/L2152, all the line
+`simp only [splitPosAt] at ki kj`) are dead no-ops → deleting them gives
+20 → 17. **FALSIFIED.** Docker rebuild after deleting all three: `simp`
+errors 3 → 0 ✓, but **+6 new `omega could not prove the goal`** errors at
+the `rcases hcol/hfinal with h | h <;> omega` immediately after each
+deleted line (2 per line: zero / succ / final-succ branches). Net total
+**20 → 23** (regression). Reverted.
+
+**Root cause.** The `simp … made no progress` error short-circuits
+elaboration of the rest of its tactic block, so the following `rcases …
+<;> omega` is never run/reported — the `simp` line is **masking** 6 real
+omega failures, not dead. The omega counterexample (zero branch) shows
+`c` is **still symbolic inside `| zero =>`**: atom `q := match c with | 0
+=> 0 | k.succ => …` stays opaque and `colEntry … (c+1)` / `northBeforeEast
+… c` facts stay disconnected. `c` is `set`-bound (`set c := canonCol …`
+L2048), so `cases c with | zero =>` does NOT substitute `c := 0` into the
+hypotheses → omega sees `c` unconstrained and cannot close. The `simp`
+line was a failed attempt to unblock this (can't unfold `splitPosAt`).
+
+**S88+ next-action.** Do NOT touch the `simp` lines in isolation. Make the
+branch value of `c` (and `cfg.m`) omega-visible first: (1) `clear_value c`
+before `cases c` so it substitutes, or (2) equation-carrying split
+(`obtain ⟨c', rfl⟩` / `rcases Nat.eq_zero_or_pos c`). Then the 3 `simp`
+lines can be deleted AND the 6 omegas close together (Cluster B 12 → ~3,
+modulo the separate L2116/L2121/L2143/L2148 `northBeforeEast_prefix`
+side-goal omegas and L2124/L2128/L2132 `No goals`/`split_ifs`). Full memo:
+`sessions/2026-06-12-s87-clusterB-simp-masks-omega-diagnosis.md`.
+
 ## Session 86 — ACT: Cluster C co-fix closes 2 errors + unmasks 12 Cluster B latent as predicted (researcher-1, 2026-06-10)
 
 **Mode.** ACT (Cluster C co-fix per S85 §6 nextAction). Single-PR
