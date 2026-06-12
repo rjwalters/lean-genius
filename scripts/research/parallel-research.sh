@@ -453,7 +453,7 @@ case "${1:-}" in
             print_error "Usage: $0 --slot <agent-number>"
             exit 1
         fi
-        local slot_num="$2"
+        slot_num="$2"
         if [[ $slot_num -lt 1 || $slot_num -gt 16 ]]; then
             print_error "Slot must be between 1 and 16 (got: $slot_num)"
             exit 1
