@@ -37,12 +37,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE locked design. S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean (98 LOC). S3 PREP/S4 PREP/S4b PREP/S4c PREP/S4d PREP saturated parent-trim recipe (doc-only). S3 ACT (PR #19009) migrated diagInter_isClosedBelow to Basic.lean (119 LOC, Docker-verified). S5 STATE-SYNC (PR #19558) absorbed oq-04 S2-\u03b1/S2-\u03b2-\u03b1 parent growth (385 \u2192 568 LOC). S6 ACT (PR #21421) shipped 4 IsRegressive companion lemmas to Basic.lean (119 \u2192 154 LOC; 5 \u2192 9 theorems; 0 sorries, 0 axioms). S7 ACT (this session) lifted 2 IsStationaryBelow companion lemmas (nonempty, of_subset) from parent \u00a7Part VI into Basic.lean (154 \u2192 183 LOC; 9 \u2192 11 theorems; 0 sorries, 0 axioms; parent untouched). Parent currently 654 LOC via sister-slug oq-04 S2-\u03b2-\u03b2 ACT (PR #20621). S4 ACT (parent trim) still pending; cut scope now includes 2 additional lifted theorem bodies, downstream re-anchoring scope unchanged at 20.",
+    "progressSummary": "S1 OBSERVE locked design. S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean (98 LOC). S3 PREP/S4 PREP/S4b PREP/S4c PREP/S4d PREP saturated parent-trim recipe (doc-only). S3 ACT (PR #19009) migrated diagInter_isClosedBelow to Basic.lean (119 LOC, Docker-verified). S5 STATE-SYNC (PR #19558) absorbed oq-04 S2-\u03b1/S2-\u03b2-\u03b1 parent growth (385 \u2192 568 LOC). S6 ACT (PR #21421) shipped 4 IsRegressive companion lemmas to Basic.lean (119 \u2192 154 LOC; 5 \u2192 9 theorems; 0 sorries, 0 axioms). S7 ACT lifted 2 IsStationaryBelow companion lemmas (nonempty, of_subset) from parent \u00a7Part VI into Basic.lean (154 \u2192 183 LOC; 9 \u2192 11 theorems; 0 sorries, 0 axioms). S8 ACT (this session) added 2 universe-polymorphic monotonicity API helpers \u2014 IsUnboundedBelow.mono and IsStationaryBelow.mono (the superset dual of of_subset) to Basic.lean (183 \u2192 200 LOC; 11 \u2192 13 theorems; 0 sorries, 0 axioms; parent untouched; Docker-verified). Parent currently 654 LOC via sister-slug oq-04 S2-\u03b2-\u03b2 ACT (PR #20621). S4 ACT (parent trim) still pending; cut scope unchanged (new helpers are additive, not lifts), downstream re-anchoring scope unchanged at 20.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-01/problem.md (formal signature targets, acceptance criteria, related slugs)",
       "research/problems/fodor-pressing-down-oq-01/knowledge.md (Mathlib alignment survey, migration plan, risk register)",
       "research/problems/fodor-pressing-down-oq-01/state.md (phase tracking + per-stage status)",
-      "proofs/Proofs/Club/Basic.lean (183 LOC, 4 defs + 1 structure + 11 theorems, 0 sorries, 0 axioms; S2 ACT PR #18367 + S3 ACT PR #19009 + S6 ACT PR #21421 + S7 ACT this session)",
+      "proofs/Proofs/Club/Basic.lean (200 LOC, 4 defs + 1 structure + 13 theorems, 0 sorries, 0 axioms; S2 ACT PR #18367 + S3 ACT PR #19009 + S6 ACT PR #21421 + S7 ACT + S8 ACT this session: IsUnboundedBelow.mono, IsStationaryBelow.mono)",
       "research/problems/fodor-pressing-down-oq-01/sessions/ (11 S1\u2192S7 log files documenting the multi-stage refactor)"
     ],
     "insights": [
@@ -122,8 +122,8 @@
     {
       "path": "Proofs/Club/Basic.lean",
       "filename": "Basic.lean",
-      "lineCount": 183,
-      "theoremCount": 11,
+      "lineCount": 200,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
