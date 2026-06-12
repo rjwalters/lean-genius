@@ -29,6 +29,14 @@
       "outcome": "success",
       "date": "2026-05-07",
       "description": "legendreSym.eq_pow converts p^(q/2) = legendreSym q p in ZMod q after push_cast"
+    },
+    {
+      "name": "Countability-to-measure transfer (Set.Countable.measure_zero + hausdorffMeasure_real dimension bootstrap)",
+      "used_in_problems": [
+        "algebraic-numbers-countable-oq-02-oq-04"
+      ],
+      "outcome": "success",
+      "date": "2026-06-12"
     }
   ]
 }

@@ -10,6 +10,8 @@ import Mathlib.Computability.Primrec
 import Mathlib.Computability.Partrec
 import Mathlib.Computability.PartrecCode
 import Mathlib.Topology.Instances.Real.Lemmas
+import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
+import Mathlib.Topology.MetricSpace.HausdorffDimension
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -994,5 +996,114 @@ theorem computable_reals_isFsigma_witness :
       exact hc.symm
     · obtain ⟨c, hc⟩ := Set.mem_iUnion.mp hr
       exact hc.2
+
+/-
+## S11 — Measure-theoretic smallness: the computable reals are Lebesgue-null
+
+S3 established that the computable reals are *countable* (cardinality
+smallness) and S8 that they are *meagre* (Baire-category smallness). This
+section completes the classical smallness triad with the third coordinate:
+**measure-theoretic smallness**. All results are corollaries of S3's
+countability — they are routine given the Mathlib lemmas
+`Set.Countable.measure_zero` and `dimH_countable` — but they make the
+measure-theoretic profile of the partition explicit for the first time in
+this development:
+
+* `volume_computable_reals_eq_zero` — the computable reals form a Lebesgue
+  null set: `volume {r | IsComputable r} = 0`.
+* `ae_not_isComputable` — **almost every real number is non-computable**.
+  This is the measure form of Turing's 1936 observation: not only do
+  non-computable reals exist (S4, by cardinality), they are the
+  measure-theoretically typical case.
+* `volume_nonComputableReals_eq_top` — the non-computable reals carry the
+  full (infinite) Lebesgue measure of the line.
+* `nonComputableReals_ae_eq_univ` — almost-everywhere identification of
+  `nonComputableReals` with all of `ℝ`.
+* `dimH_computable_reals_eq_zero` — Hausdorff dimension `0` for the
+  computable half.
+* `dimH_nonComputableReals_eq_one` — Hausdorff dimension `1` (full) for the
+  non-computable half, via `μH[1] = volume` on `ℝ`
+  (`MeasureTheory.hausdorffMeasure_real`).
+
+Together with S7–S10 the partition profile is now: the computable reals are
+countable + dense + meagre + null + dimension-0; the non-computable reals
+are continuum-sized + dense + residual + co-null + dimension-1. Each half is
+"small" in no remaining classical sense the other half is not "large" in.
+-/
+
+open MeasureTheory
+open scoped NNReal ENNReal
+
+/-- **S11 — the computable reals are a Lebesgue null set.**
+
+    Direct corollary of S3 countability: Lebesgue measure on `ℝ` has no
+    atoms, and countable sets are null for atomless measures
+    (`Set.Countable.measure_zero`). -/
+theorem volume_computable_reals_eq_zero :
+    volume {r : ℝ | IsComputable r} = 0 :=
+  computable_reals_countable.measure_zero volume
+
+/-- **S11 — almost every real number is non-computable.**
+
+    The measure-theoretic form of Turing's 1936 observation. S4 produced
+    non-computable reals by pure cardinality (`ℵ₀ < 𝔠`); this strengthens
+    the conclusion from "they exist" to "they are the almost-sure case":
+    outside a Lebesgue-null exceptional set, every real is non-computable. -/
+theorem ae_not_isComputable : ∀ᵐ r : ℝ ∂volume, ¬ IsComputable r :=
+  measure_eq_zero_iff_ae_notMem.mp volume_computable_reals_eq_zero
+
+/-- **S11 — the non-computable reals carry full Lebesgue measure.**
+
+    `ℝ` has infinite total measure, the computable half is null (S11), and
+    measure is subadditive on the partition `ℝ = computable ∪ non-computable`
+    (S4), so the non-computable half must have measure `∞`. -/
+theorem volume_nonComputableReals_eq_top :
+    volume nonComputableReals = ∞ := by
+  have h1 : volume (Set.univ : Set ℝ) ≤
+      volume {r : ℝ | IsComputable r} + volume nonComputableReals := by
+    rw [← computable_nonComputable_partition]
+    exact measure_union_le _ _
+  rw [Real.volume_univ, volume_computable_reals_eq_zero, zero_add] at h1
+  exact top_le_iff.mp h1
+
+/-- **S11 — the non-computable reals coincide with `ℝ` almost everywhere.**
+
+    `nonComputableReals =ᵐ[volume] Set.univ`: the complement of
+    `nonComputableReals` is the (null, S11) set of computable reals. -/
+theorem nonComputableReals_ae_eq_univ :
+    nonComputableReals =ᵐ[volume] (Set.univ : Set ℝ) := by
+  rw [ae_eq_univ]
+  have hcompl : nonComputableRealsᶜ = {r : ℝ | IsComputable r} := by
+    ext r
+    simp [nonComputableReals]
+  rw [hcompl]
+  exact volume_computable_reals_eq_zero
+
+/-- **S11 — the computable reals have Hausdorff dimension zero.**
+
+    Countable sets have Hausdorff dimension `0` (`dimH_countable`), so the
+    countability of the computable reals (S3) pins their dimension at the
+    bottom of the scale. -/
+theorem dimH_computable_reals_eq_zero :
+    dimH {r : ℝ | IsComputable r} = 0 :=
+  computable_reals_countable.dimH_zero
+
+/-- **S11 — the non-computable reals have full Hausdorff dimension `1`.**
+
+    Upper bound: monotonicity of `dimH` against `dimH (univ : Set ℝ) = 1`
+    (`Real.dimH_univ`). Lower bound: the `1`-dimensional Hausdorff measure
+    on `ℝ` *is* Lebesgue measure (`MeasureTheory.hausdorffMeasure_real`),
+    which is `∞ ≠ 0` on `nonComputableReals` (S11), so
+    `le_dimH_of_hausdorffMeasure_ne_zero` forces `1 ≤ dimH`. -/
+theorem dimH_nonComputableReals_eq_one :
+    dimH nonComputableReals = 1 := by
+  refine le_antisymm ?_ ?_
+  · calc dimH nonComputableReals ≤ dimH (Set.univ : Set ℝ) :=
+          dimH_mono (Set.subset_univ _)
+      _ = 1 := Real.dimH_univ
+  · have h : (μH[(1 : ℝ≥0)] : Measure ℝ) nonComputableReals ≠ 0 := by
+      rw [NNReal.coe_one, hausdorffMeasure_real, volume_nonComputableReals_eq_top]
+      exact ENNReal.top_ne_zero
+    simpa using le_dimH_of_hausdorffMeasure_ne_zero h
 
 end AlgebraicNumbersCountableOQ02OQ04

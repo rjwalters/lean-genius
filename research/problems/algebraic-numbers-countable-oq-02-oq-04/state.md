@@ -2,26 +2,35 @@
 
 ## Current Status
 
-**Phase**: S10 ACT — Fσ-style witness for the computable reals (Σ⁰₂ Borel-hierarchy classification)
-**Owner**: researcher-1 (S10 ACT, 2026-06-04); S10 PREP: researcher-1 (PR #22049 merged 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S8-prep: researcher-1 (2026-05-30); S7: researcher-1 (2026-05-28)
-**Iteration**: 13 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC + S7 + S8-prep + S8 + S9 + S10 PREP + S10 ACT)
-**Last Updated**: 2026-06-04Z (S10 ACT Lean delta; +1 thm `computable_reals_isFsigma_witness`; 928→998 LOC; 42→43 thms; Docker `3067/3067` jobs clean, 14s file compile)
-**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s10-act-fsigma`
+**Phase**: S11 ACT — measure-theoretic smallness (null / ae / Hausdorff dimension); smallness triad COMPLETE
+**Owner**: researcher-1 (S11 ACT, 2026-06-12); S10 ACT: researcher-1 (2026-06-04); S10 PREP: researcher-1 (PR #22049 merged 2026-06-02); S9 ACT: researcher-1 (PR #22030 merged 2026-06-02); S8: researcher-1 (2026-05-31); S7: researcher-1 (2026-05-28)
+**Iteration**: 14 (S1 … S10 ACT + S11 ACT)
+**Last Updated**: 2026-06-12Z (S11 ACT Lean delta; +6 thms measure/dimension; 998→1109 LOC; 43→49 thms)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq02oq04-s11-act-measure`
 
-## Lean file inventory (at base `origin/main`, S10 ACT delta)
+## Lean file inventory (at base `origin/main`, S11 ACT delta)
 
 ```
 File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
-Lines:       998 (was 928 at S9; +70 in S10 including section docstring)
-Theorems:    43 (S10 adds computable_reals_isFsigma_witness)
+Lines:       1109 (was 998 at S10; +111 in S11 including section docstring)
+Theorems:    49 (S11 adds volume_computable_reals_eq_zero, ae_not_isComputable,
+              volume_nonComputableReals_eq_top, nonComputableReals_ae_eq_univ,
+              dimH_computable_reals_eq_zero, dimH_nonComputableReals_eq_one)
 Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
-Sorries:     0 (S3 discharged the S1 sorry; S4-S10 added no new)
+Sorries:     0 (S3 discharged the S1 sorry; S4-S11 added no new)
 Axioms:      0
-Build:       ✔ VERIFIED S10 (Docker 3067/3067 jobs clean, 14s file compile, 2026-06-04)
-Imports:     no new (Set.Subsingleton.isClosed / Set.mem_inter_iff /
-              Set.mem_singleton_iff / Set.mem_iUnion already transitively
-              available via Topology.Instances.Real.Lemmas + Mathlib.Tactic)
+Build:       ✔ VERIFIED S11 (Docker 3077/3077 jobs clean, 6.7s file compile, 2026-06-12)
+Imports:     +2 new (Mathlib.MeasureTheory.Measure.Lebesgue.Basic,
+              Mathlib.Topology.MetricSpace.HausdorffDimension); new opens
+              MeasureTheory + scoped NNReal/ENNReal in the S11 section
 ```
+
+5 critical Mathlib bearers used in S11 ACT proof:
+- `Set.Countable.measure_zero` (MeasureTheory.Measure.Typeclasses.NoAtoms:56) — countable → null for atomless measures
+- `measure_eq_zero_iff_ae_notMem` (MeasureTheory.OuterMeasure.AE:88) — null ↔ ae-complement
+- `ae_eq_univ` (MeasureTheory.OuterMeasure.AE:147) — `s =ᵐ[μ] univ ↔ μ sᶜ = 0`
+- `MeasureTheory.hausdorffMeasure_real` (MeasureTheory.Measure.Hausdorff:1000) — `μH[1] = volume` on ℝ
+- `le_dimH_of_hausdorffMeasure_ne_zero` + `Real.dimH_univ` + `dimH_countable` (Topology.MetricSpace.HausdorffDimension) — dimension bounds
 
 4 critical Mathlib bearers used in S8 proof:
 - `Set.Countable.isGδ_compl` (Topology.Separation:912) — complement of countable in T1 is Gδ
@@ -38,7 +47,17 @@ Imports:     no new (Set.Subsingleton.isClosed / Set.mem_inter_iff /
 - `Set.mem_singleton_iff` (Data.Set.Basic) — `x ∈ ({y} : Set α) ↔ x = y`
 - `Set.mem_iUnion` (Data.Set.Lattice) — `x ∈ ⋃ i, s i ↔ ∃ i, x ∈ s i`
 
-**Next-picker priority (S11+)**: With S10 ACT shipping the Fσ-style witness,
+**Next-picker priority (S12+)**: With S11 ACT the smallness profile is
+COMPLETE on both partition halves — cardinality (ℵ₀ / 𝔠), Baire category
+(meagre / residual), Lebesgue measure (null / co-null with measure ∞),
+Hausdorff dimension (0 / 1), density, frontier, Borel class (Σ⁰₂ / Π⁰₂).
+Do NOT add further restatement corollaries in these veins. All remaining
+open branches (`IsComputable e`/`π`, algebraic ⊆ computable, subfield
+closure, Chaitin Ω) are blocked on the confirmed Mathlib gap below; the
+problem is effectively saturated within current Mathlib. Re-check the gap
+on each pin bump. Superseded S10-era note follows for context:
+
+With S10 ACT shipping the Fσ-style witness,
 the Borel-hierarchy classification is now complete on both partition halves:
 computable reals are Σ⁰₂ (countable union of closed sets, S10) and
 non-computable reals are Π⁰₂ (Gδ, S8). The topological profile is fully
@@ -243,6 +262,36 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   refined here to the strictly finer computable/non-computable split.
   No new defs / sorries / axioms / imports. Lean file 869 → 928 LOC, theorem
   count 40 → 42. See `sessions/2026-06-01-s9-act-frontier-characterization.md`.
+
+- **2026-06-12 (S11 ACT, researcher-1)**: MEASURE-THEORETIC SMALLNESS —
+  completes the classical smallness triad (cardinality S3 / Baire category
+  S8 / Lebesgue measure S11) plus Hausdorff dimension on both partition
+  halves. Six new theorems, +2 imports
+  (`Mathlib.MeasureTheory.Measure.Lebesgue.Basic`,
+  `Mathlib.Topology.MetricSpace.HausdorffDimension`):
+  - `volume_computable_reals_eq_zero` — null set via
+    `Set.Countable.measure_zero` + `noAtoms_volume`.
+  - `ae_not_isComputable` — almost every real is non-computable
+    (measure form of Turing 1936) via `measure_eq_zero_iff_ae_notMem`.
+  - `volume_nonComputableReals_eq_top` — measure ∞ via partition
+    subadditivity + `Real.volume_univ`.
+  - `nonComputableReals_ae_eq_univ` — ae-identification with `univ` via
+    `ae_eq_univ`.
+  - `dimH_computable_reals_eq_zero` — dimension 0 via `dimH_countable`.
+  - `dimH_nonComputableReals_eq_one` — full dimension 1; the one
+    non-routine proof: `MeasureTheory.hausdorffMeasure_real`
+    (`μH[1] = volume` on ℝ) + `le_dimH_of_hausdorffMeasure_ne_zero`
+    against `∞ ≠ 0`, upper bound by `dimH_mono` + `Real.dimH_univ`.
+  Honesty note: five of six are routine corollaries of S3 countability;
+  value is profile completeness, not depth. Also deepened the Path-A
+  blocker diagnosis: `Primcodable ℚ` encoding is search-based
+  (`ofEncodableOfInfinite` → `Nat.Subtype.denumerable (Set.range encode)`),
+  so `Computable Rat.add/neg` needs >1000 LOC of code-level enumeration
+  analysis — all non-trivial `IsComputable` witnesses remain blocked.
+  Lean file 998 → 1109 LOC (+111), 43 → 49 thms, 0 sorries, 0 axioms.
+  Docker → ✔ 3077/3077 jobs clean (6.7s file compile, first try, base SHA
+  `fa1c4d27aa8`).
+  See `sessions/2026-06-12-s11-act-measure.md` for the full memo.
 
 - **2026-06-04 (S10 ACT, researcher-1)**: Fσ-STYLE WITNESS for the computable
   reals — completes the Borel-hierarchy classification (Σ⁰₂-explicit on the
