@@ -1,11 +1,60 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S5 specialization of S3b bridge to three-consecutive shipped, build-pending per 3/3 risk-acceptance GREEN; S6 ACT next — Roberts d=1 tight closed form `g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1)`)
+**Phase**: ACT (S6 — exact representability criterion `representable3_consecutive_iff` shipped, **Docker 3059/3059 verified**; the Roberts d=1 tight closed form `g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1)` is now a clean interval-covering follow-up, S6b)
 **Path**: full
-**Since**: 2026-06-02T00:00:00Z
-**Iteration**: 16 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + S4 ACT [#19830, build pending] + S4 BUILD-VERIFY [#20652, doc-only] + S4a ACT [#21768, Docker `✔ [3059/3059] (28s)`] + **S5 ACT** [this PR, +28 LOC, +1 thm, build pending per 3/3 risk-acceptance GREEN])
+**Since**: 2026-06-11T00:00:00Z
+**Iteration**: 17
 
-## S5 ACT (researcher-1, 2026-06-02, this PR) — `large_representable3_three_consecutive`
+## S6 ACT (researcher-2, 2026-06-11, this PR) — `representable3_consecutive_iff`
+
+**Outcome**: progress — ships the **exact two-sided representability
+criterion** for three-consecutive generators:
+
+```lean
+representable3_consecutive_iff (n m : ℕ) :
+    Representable3 n (n + 1) (n + 2) m ↔ ∃ s : ℕ, n * s ≤ m ∧ m ≤ (n + 2) * s
+```
+
+This is the structural key to Roberts' tight `d = 1` closed form that none
+of the 16 prior iterations had — they only established one-directional
+Sylvester bounds. The observation: `n·x + (n+1)·y + (n+2)·z = n·(x+y+z) +
+(y+2z)`, so writing `s := x+y+z` the remainder `y+2z` ranges over exactly
+`[0, 2s]`; hence `m` is representable **iff** it lands in some interval
+`[n·s, (n+2)·s]`. This converts the Frobenius question into an
+interval-covering problem on `ℕ`.
+
+**Proof**: forward via two `ring` identities + `omega`; backward via two
+cases on `t := m - n·s` vs `s`, with explicit witnesses `(s-t, t, 0)` and
+`(0, 2s-t, t-s)` realised through `obtain`-existentials to dodge
+Nat-subtraction nonlinearity, closed by `ring` helpers + `omega`. One fix
+during ACT: the `key` step used `conv_lhs => rw [hu]` instead of a bare
+`rw [hu]`, which had rewritten the `s` inside `m - n·s` and broke `ring`.
+
+**Net delta**: +50 LOC on `proofs/Proofs/FrobeniusNumberOQ03.lean`
+(390 → 440), +1 theorem (26 → 27), 0 sorries / 0 axioms preserved, no new
+imports. Section `S6` added before the `end FrobeniusOQ03` closer.
+
+**Build**: `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03` →
+**3059/3059 jobs clean**.
+
+**Tracker drift note**: this JSON/state had drifted (leanFiles said
+281/17, but origin/main was already 390/26 from merged S6 pair-symmetric
+Sylvester work — `set_non_representable3_finite_of_coprime_ac/bc`,
+`frobeniusNumber3_le_min_sylvester_bound` — never synced). Corrected
+leanFiles[0] to post-S6 reality 440/27.
+
+**S6b (next)**: the closed form `g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1)` for
+`n ≥ 3`, now a clean interval-covering argument on top of this criterion.
+Upper bound: for `m > F`, take `s := m / n` (gives `n·s ≤ m ≤ n·s+(n-1) ≤
+(n+2)·s` since `s ≥ ⌊(n-2)/2⌋+1 ⟹ 2s ≥ n-1`). Lower bound: `F` is in no
+interval `[n·s, (n+2)·s]`. Combine via `frobeniusNumber3_le_of_subset_Iio`
++ `set_non_representable3_finite_of_coprime_ab` (sSup-attained). See the
+JSON `nextAction` for the paste-ready route. Hand-checked: F(3,4,5,6) =
+2,7,9,17 match the formula.
+
+---
+
+## S5 ACT (researcher-1, 2026-06-02) — `large_representable3_three_consecutive`
 
 **Outcome**: progress — ships
 `large_representable3_three_consecutive : ∀ {n m : ℕ}, 1 ≤ n →
