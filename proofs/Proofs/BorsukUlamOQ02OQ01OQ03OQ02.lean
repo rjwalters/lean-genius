@@ -1593,6 +1593,51 @@ theorem buDim_lpb_nine_eq_buDim_lpb_ten (d : ℕ) :
     buDim (largestPrimeBelow 9) d = buDim (largestPrimeBelow 10) d := by
   rw [largestPrimeBelow_nine_eq_seven, largestPrimeBelow_ten_eq_seven]
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXVI (cont.): general-theorem instances on the catalogued gaps
+-- ═══════════════════════════════════════════════════════════════════════
+-- The general `buDim_largestPrime_const_in_no_prime_range` above was
+-- instantiated only on the dyadic gap (7, 11).  PARTS XVII/XVIII already
+-- catalogued the prime gaps of size 4, 6, 8 — (13, 17), (23, 29),
+-- (89, 97) — with matching axiom-free `no_prime_in_*` witnesses (whose
+-- `∀ k, n < k → k ≤ m → ¬ Nat.Prime k` shape is exactly the general
+-- theorem's `h_no_prime` slot).  This extends the axiom-free `buDim ∘ lpb`
+-- constancy axis to those three gaps: each is a direct one-line
+-- application, mirroring `buDim_lpb_seven_eq_buDim_lpb_ten` verbatim.
+-- Under the conjecture, each transports to the corresponding `symBUDim`
+-- plateau (`symBUDim_thirteen_eq_sixteen`, `_twentythree_eq_twentyeight`,
+-- `_eightynine_eq_ninetysix`) already proved in PARTS XVII/XVIII, but the
+-- `buDim`-side facts here need **no** `symBUDim_eq_largestPrime`.
+
+/-- **Axiom-free `buDim (lpb 13) d = buDim (lpb 16) d`** across the prime
+    gap of size 4 (13, 17).  The `buDim ∘ lpb`-side companion of PART
+    XVII's conditional `symBUDim_thirteen_eq_sixteen`, holding **without**
+    the conjecture (both sides agree once `lpb 13 = lpb 16` is pinned by
+    `no_prime_in_fourteen_to_sixteen`). -/
+theorem buDim_lpb_thirteen_eq_buDim_lpb_sixteen (d : ℕ) :
+    buDim (largestPrimeBelow 13) d = buDim (largestPrimeBelow 16) d :=
+  buDim_largestPrime_const_in_no_prime_range 13 16 (by norm_num)
+    no_prime_in_fourteen_to_sixteen d
+
+/-- **Axiom-free `buDim (lpb 23) d = buDim (lpb 28) d`** across the first
+    prime gap of size 6 (23, 29) — five consecutive composites.  The
+    `buDim ∘ lpb`-side companion of PART XVII's conditional
+    `symBUDim_twentythree_eq_twentyeight`, axiom-free. -/
+theorem buDim_lpb_twentythree_eq_buDim_lpb_twentyeight (d : ℕ) :
+    buDim (largestPrimeBelow 23) d = buDim (largestPrimeBelow 28) d :=
+  buDim_largestPrime_const_in_no_prime_range 23 28 (by norm_num)
+    no_prime_in_twentyfour_to_twentyeight d
+
+/-- **Axiom-free `buDim (lpb 89) d = buDim (lpb 96) d`** across the first
+    prime gap of size 8 (89, 97) — seven consecutive composites, the
+    longest `lpb` plateau below n = 100.  The `buDim ∘ lpb`-side companion
+    of PART XVIII's conditional `symBUDim_eightynine_eq_ninetysix`,
+    axiom-free. -/
+theorem buDim_lpb_eightynine_eq_buDim_lpb_ninetysix (d : ℕ) :
+    buDim (largestPrimeBelow 89) d = buDim (largestPrimeBelow 96) d :=
+  buDim_largestPrime_const_in_no_prime_range 89 96 (by norm_num)
+    no_prime_in_ninety_to_ninetysix d
+
 /-
 ## Summary
 
