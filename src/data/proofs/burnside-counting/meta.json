@@ -6,7 +6,7 @@
   "meta": {
     "author": "William Burnside (1897), Cauchy (1845), Frobenius (1887), formalized via Mathlib",
     "date": "1897",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/BurnsideCounting.lean",
     "tags": [
       "combinatorics",
@@ -17,13 +17,13 @@
       "group-actions",
       "polya-enumeration"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-04-02",
-    "axiomCount": 2,
-    "assumptions": "2 axioms: fixed_point_sum_binary_4 (computed fixed-point sum = 24) and binary_necklaces_4 (6 distinct binary 4-necklaces). The earlier rotatedIndex_add axiom (modular-arithmetic composition law, discharged in S1 / PR #21148) and the coloringSetoid + coloringQuotientFintype axioms (orbit-equivalence relation and quotient Fintype, discharged in S2 ACT via AddAction.orbitRel + Quotient.fintype with a decidable-orbit-relation instance) are now fully proved.",
-    "lineCount": 387,
-    "theoremCount": 7,
+    "axiomCount": 0,
+    "assumptions": "Axiom-free: 0 `axiom` declarations, 0 sorries, no assumption-carrying structures. All 5 original axioms are discharged across S1–S4 of burnside-counting-oq-01: rotatedIndex_add (S1 / PR #21148, full Nat-modular proof); coloringSetoid + coloringQuotientFintype (S2, AddAction.orbitRel + Quotient.fintype with a decidable-orbit-relation instance); fixed_point_sum_binary_4 (S3, native_decide); binary_necklaces_4 (S4, native_decide on the computable orbit-quotient cardinality). NOTE: the two finite counts (fixed_point_sum_binary_4, binary_necklaces_4) close by `native_decide`, which trusts the Lean compiler (Lean.ofReduceBool) rather than performing kernel reduction; everything else is kernel-checked. burnside_lemma is a re-export of Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (a theorem, not an assumption).",
+    "lineCount": 404,
+    "theoremCount": 9,
     "definitionCount": 9,
     "originalContributions": [
       "burnside_lemma: Burnside orbit-counting theorem from Mathlib (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
@@ -36,7 +36,9 @@
       "IsFixedByRotation: decidable predicate for fixed colorings",
       "coloringSetoid: orbit-equivalence relation on colorings, derived from AddAction.orbitRel (ZMod n) (Coloring n k) (previously axiomatized; discharged in S2 ACT)",
       "coloringSetoid_decidableRel: DecidableRel instance for the orbit relation, via Fintype.decidableExistsFintype on ZMod n and decidable equality of Fin n → Fin k colorings",
-      "coloringQuotientFintype: Fintype instance for the quotient by rotation, via Quotient.fintype + the decidable-orbit-relation instance (previously axiomatized; discharged in S2 ACT)"
+      "coloringQuotientFintype: Fintype instance for the quotient by rotation, via Quotient.fintype + the decidable-orbit-relation instance (previously axiomatized; discharged in S2 ACT)",
+      "fixed_point_sum_binary_4: |Fix(0)|+|Fix(1)|+|Fix(2)|+|Fix(3)| = 16+2+4+2 = 24, closed by native_decide on the decidable IsFixedByRotation subtype cardinalities (previously axiomatized; discharged in S3 ACT)",
+      "binary_necklaces_4: |Coloring 4 2 / rotation| = 6, closed by native_decide on the computable coloringQuotientFintype orbit-quotient cardinality (previously axiomatized; discharged in S4 ACT — the last of the 5 original axioms, making the file axiom-free)"
     ]
   },
   "overview": {
@@ -60,20 +62,19 @@
     ]
   },
   "conclusion": {
-    "summary": "Burnside's lemma is formalized from Mathlib and applied to the classic necklace counting problem. The key mathematical content — the orbit-counting formula — is proved. The application to binary 4-necklaces is axiomatized pending formal proof of modular arithmetic details.",
-    "implications": "This formalization demonstrates the two-layer structure of applying abstract Mathlib theorems to concrete problems: (1) the abstract `burnside_lemma` wraps `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` with zero proof effort; (2) the concrete application requires defining the specific action (cyclic rotation), verifying it satisfies the `AddAction` axioms, and computing fixed-point cardinalities for each group element. The fully verified lemmas (`rotatedIndex_zero`, `rotatedIndex_add`, `binary_4_colorings_count`, `constant_coloring_count`, `period2_count`) show that both the modular-arithmetic infrastructure and the fixed-point counting are elementarily decidable — the remaining 4 axioms are a bridge-building problem between Mathlib's multiplicative and additive group-action APIs. Once that bridge is built (via a `MulAction` instance from the `AddAction` + `AddCommGroup (ZMod n)`, e.g. through `Multiplicative (ZMod n)`), all remaining axioms collapse to `native_decide` or Mathlib lemmas. Burnside's lemma underlies Pólya enumeration (used in chemical isomer counting, OEIS necklace sequences), and this formalization provides the scaffolding for a full Pólya cycle index theorem in Lean 4.",
+    "summary": "Burnside's lemma is formalized from Mathlib and applied to the classic necklace counting problem. The file is now axiom-free: the orbit-counting formula, the cyclic action, the fixed-point counts, and the headline binary 4-necklace count (= 6) are all proved (0 axiom declarations, 0 sorries). The two finite counts are closed by native_decide (compiler-trusted).",
+    "implications": "This formalization demonstrates the two-layer structure of applying abstract Mathlib theorems to concrete problems: (1) the abstract `burnside_lemma` wraps `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` with zero proof effort; (2) the concrete application defines the specific action (cyclic rotation), verifies it satisfies the `AddAction` axioms, and computes fixed-point cardinalities. The instructive lesson from the axiom-elimination programme (burnside-counting-oq-01, S1–S4): the headline count `binary_necklaces_4 = 6` did NOT require bridging Mathlib's multiplicative `burnside_lemma` to the additive `ZMod n` action. Instead, once the orbit-equivalence relation was made a decidable `AddAction.orbitRel` and the quotient given a computable `Quotient.fintype` (S2), the cardinality of the orbit quotient became directly decidable — so both `fixed_point_sum_binary_4` and `binary_necklaces_4` collapse to a single `native_decide`. The abstract Burnside identity remains in the file as a referenced Mathlib result, but the concrete count is obtained computationally. Burnside's lemma underlies Pólya enumeration (chemical isomer counting, OEIS necklace sequences), and this axiom-free formalization provides clean scaffolding for a full Pólya cycle index theorem in Lean 4.",
     "openQuestions": [
-      "Prove fixed_point_sum_binary_4 via native_decide (S3 candidate)",
-      "Discharge binary_necklaces_4 from burnside_lemma + fixed_point_sum_binary_4 + |ZMod 4| = 4 (S4 candidate)",
       "Generalize to Polya enumeration: weighted counting by color frequency",
-      "Extend to dihedral group D_n (necklaces with flip symmetry)"
+      "Extend to dihedral group D_n (necklaces with flip symmetry)",
+      "Derive binary_necklaces_4 via the abstract burnside_lemma (AddAction↔MulAction bridge) as an alternative kernel-checked proof not relying on native_decide"
     ]
   },
   "leanFile": {
     "namespace": "BurnsideCounting",
-    "lineCount": 387,
-    "axiomCount": 2,
-    "theoremCount": 7,
+    "lineCount": 404,
+    "axiomCount": 0,
+    "theoremCount": 9,
     "definitionCount": 9,
     "path": "Proofs/BurnsideCounting.lean",
     "sorries": 0
@@ -123,17 +124,17 @@
     },
     {
       "name": "fixed_point_sum_binary_4",
-      "type": "axiom",
+      "type": "supporting",
       "statement": "$|\\mathrm{Fix}(0)| + |\\mathrm{Fix}(1)| + |\\mathrm{Fix}(2)| + |\\mathrm{Fix}(3)| = 24$",
-      "significance": "**The Burnside numerator.** Records the explicit fixed-point counts for the four elements of $\\mathbb{Z}/4\\mathbb{Z}$ acting on binary 4-colorings: $16 + 2 + 4 + 2 = 24$. Could be discharged by `native_decide` once `IsFixedByRotation` is wired into a fully-decidable framework, but the axiom currently sidesteps the `AddAction` / `MulAction` API mismatch.",
-      "description": "Stated as a sum of `Fintype.card { c : Coloring 4 2 // IsFixedByRotation r c }` for $r = 0, 1, 2, 3$. The arithmetic $16 + 2 + 4 + 2 = 24$ is decidable; the wrapping `Fintype.card` is decidable provided `IsFixedByRotation` is. The 24 directly produces the necklace count $24/4 = 6$ via Burnside."
+      "significance": "**The Burnside numerator (now proved).** Records the explicit fixed-point counts for the four elements of $\\mathbb{Z}/4\\mathbb{Z}$ acting on binary 4-colorings: $16 + 2 + 4 + 2 = 24$. Discharged in S3 ACT (burnside-counting-oq-01) by `native_decide`: `IsFixedByRotation r` is a decidable predicate (instance in the file), so each `Fintype.card { c : Coloring 4 2 // IsFixedByRotation r c }` and their sum are computable.",
+      "description": "Stated as a sum of `Fintype.card { c : Coloring 4 2 // IsFixedByRotation r c }` for $r = 0, 1, 2, 3$. Proof body: `native_decide` (compiler-trusted via Lean.ofReduceBool). The 24 directly produces the necklace count $24/4 = 6$ via Burnside. Previously stated as an axiom."
     },
     {
       "name": "binary_necklaces_4",
-      "type": "axiom",
+      "type": "core",
       "statement": "$|(\\mathrm{Coloring}\\ 4\\ 2)/\\sim| = 6$",
-      "significance": "**The headline application.** The number of distinct binary necklaces of length 4 is exactly 6: $\\{0000\\}, \\{1111\\}, \\{0001, 0010, 0100, 1000\\}, \\{0011, 0110, 1100, 1001\\}, \\{0101, 1010\\}, \\{0111, 1011, 1101, 1110\\}$. Matches OEIS A000029 (necklaces under rotation) at $n=4$.",
-      "description": "Stated against the axiomatized `coloringSetoid` and `coloringQuotientFintype` instance. Once `MulAction.orbitRel` is bridged to the `AddAction` of `ZMod 4`, `binary_necklaces_4` follows from `burnside_lemma` applied to `fixed_point_sum_binary_4` divided by $|\\mathbb{Z}/4\\mathbb{Z}| = 4$."
+      "significance": "**The headline application (now proved).** The number of distinct binary necklaces of length 4 is exactly 6: $\\{0000\\}, \\{1111\\}, \\{0001, 0010, 0100, 1000\\}, \\{0011, 0110, 1100, 1001\\}, \\{0101, 1010\\}, \\{0111, 1011, 1101, 1110\\}$. Matches OEIS A000029 (necklaces under rotation) at $n=4$. Discharged in S4 ACT (burnside-counting-oq-01) — the last of the 5 original axioms, making the file axiom-free.",
+      "description": "Stated against `coloringSetoid` (= `AddAction.orbitRel (ZMod 4) (Coloring 4 2)`) and the computable `coloringQuotientFintype` instance (both derived, not axiomatized, since S2). Because that Fintype is computable, `@Fintype.card (Quotient (coloringSetoid 4 2)) (coloringQuotientFintype 4 2)` is itself decidable, and the proof body is one `native_decide`: enumerate the 16 colorings, map to rotation orbits, dedup via the decidable orbit equality, count the 6 distinct classes. No `burnside_lemma` invocation or AddAction↔MulAction bridge is needed for the formal goal. Previously stated as an axiom."
     }
   ],
   "references": [
@@ -252,10 +253,10 @@
     },
     {
       "id": "sec-burnside-axioms",
-      "title": "Part IV: Summary, Decidable Predicates, and 4 Final Axioms",
-      "startLine": 194,
-      "endLine": 255,
-      "summary": "Documents the 6 necklace classes and fixed-point computation in comments. Defines IsFixedByRotation (decidable) and ColoringEquiv. Axioms: fixed_point_sum_binary_4 (sum=24), coloringSetoid, coloringQuotientFintype, binary_necklaces_4 (= 6). Ends with #check statements confirming all definitions type-check."
+      "title": "Part IV: Summary, Decidable Predicates, and the (now-proved) Necklace Count",
+      "startLine": 306,
+      "endLine": 404,
+      "summary": "Documents the 6 necklace classes and fixed-point computation in comments. Defines IsFixedByRotation (decidable) and ColoringEquiv. Proves fixed_point_sum_binary_4 (sum=24, native_decide), derives coloringSetoid (= AddAction.orbitRel) + coloringSetoid_decidableRel + coloringQuotientFintype (Quotient.fintype), and proves binary_necklaces_4 (= 6, native_decide on the computable orbit-quotient cardinality). All four were axioms in earlier revisions; the file is now axiom-free. Ends with #check statements confirming the definitions type-check."
     }
   ],
   "sorries": 0

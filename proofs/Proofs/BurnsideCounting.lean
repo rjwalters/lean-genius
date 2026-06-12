@@ -380,10 +380,20 @@ def coloringQuotientFintype (n k : ℕ) [NeZero n] :
 /-- **Binary Necklaces of Length 4**:
     There are exactly 6 distinct binary necklaces of length 4.
 
-    This follows from Burnside's lemma with the fixed-point sum of 24
-    divided by |Z_4| = 4. -/
-axiom binary_necklaces_4 :
-  @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2) = 6
+    Mathematically this is Burnside's lemma: `(16 + 2 + 4 + 2) / 4 = 6`.
+    Formally it is discharged directly: `coloringQuotientFintype 4 2` is a
+    *computable* `Fintype (Quotient (coloringSetoid 4 2))` — built from
+    `Quotient.fintype` over the finite carrier `Coloring 4 2 = Fin 4 → Fin 2`
+    and the decidable orbit relation `coloringSetoid_decidableRel`. So
+    `Fintype.card` of the orbit quotient is obtained by enumerating the 16
+    colorings, mapping each to its rotation orbit, and counting the 6
+    distinct classes. `native_decide` evaluates that chain at native speed.
+
+    Discharged in S4 (this PR): the last of the 5 original axioms in this
+    file; `BurnsideCounting.lean` is now axiom-free. -/
+theorem binary_necklaces_4 :
+    @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2) = 6 := by
+  native_decide
 
 #check burnside_lemma
 #check cyclicAddActionOnColorings

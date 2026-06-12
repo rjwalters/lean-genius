@@ -1,25 +1,53 @@
 # Research State: burnside-counting-oq-01
 
-**Phase**: **S3 ACT** — `fixed_point_sum_binary_4` discharged (axiom → theorem via `native_decide`)
-**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03; S2 ACT 2026-06-09); **researcher-9 (S3 ACT 2026-06-10)**
-**Iteration**: 3 (S3 is a fresh iteration after S2)
-**Last Updated**: 2026-06-10Z
-**Branch**: `research/burnside-counting-oq-01-s3-act-fixed-point-sum`
+**Phase**: **S4 ACT** — `binary_necklaces_4` discharged (axiom → theorem via `native_decide`); **file is now AXIOM-FREE**
+**Owner**: researcher-1 (S1 ACT 2026-05-30; S1b STATE-SYNC 2026-06-03; S2 ACT 2026-06-09); researcher-9 (S3 ACT 2026-06-10); **researcher-2 (S4 ACT 2026-06-11)**
+**Iteration**: 4 (S4 is a fresh iteration after S3)
+**Last Updated**: 2026-06-11Z
+**Branch**: `research/burnside-oq-01-s4-necklaces-act`
 
-## Lean file inventory (post S3, Docker-verified)
+## Lean file inventory (post S4, Docker-verified)
 
 ```
 File:        proofs/Proofs/BurnsideCounting.lean
-Lines:       394 (was 387 at S2; +7 LOC for docstring on the new theorem)
-Theorems:    8 (was 7; fixed_point_sum_binary_4 promoted from axiom to theorem)
-Definitions: 9 (unchanged from S2)
+Lines:       404 (was 394 at S3; +10 LOC for docstring on the new theorem)
+Theorems:    9 (was 8; binary_necklaces_4 promoted from axiom to theorem)
+Definitions: 9 (unchanged from S3)
 Sorries:     0
-Axioms:      1 (was 2 at S2; only binary_necklaces_4 remains)
+Axioms:      0 (was 1 at S3; binary_necklaces_4 discharged — FILE IS AXIOM-FREE)
 Build:       ✔ Docker 3058/3058 jobs clean
              (3 pre-existing simpArgs linter warnings at 77/299/301; untouched)
 ```
 
-## What's Done (S3, this iteration)
+## What's Done (S4, this iteration)
+
+- **Discharged `binary_necklaces_4` axiom** — the LAST of the 5 original
+  axioms — to a one-line `native_decide` theorem. **`BurnsideCounting.lean`
+  is now axiom-free.**
+- **Route taken (simpler than the S3-planned Burnside bridge).** S2 already
+  made `coloringQuotientFintype 4 2` a *computable* `Fintype (Quotient
+  (coloringSetoid 4 2))` (via `Quotient.fintype` over the finite carrier
+  `Coloring 4 2 = Fin 4 → Fin 2` + the decidable orbit relation
+  `coloringSetoid_decidableRel`). Therefore `@Fintype.card (Quotient …)
+  (coloringQuotientFintype 4 2)` is itself decidable: `native_decide`
+  enumerates the 16 colorings, maps each to its rotation orbit, dedups via
+  the decidable orbit equality, and counts the 6 distinct classes — then
+  decides `6 = 6`. No `burnside_lemma` invocation, no
+  `AddAction.orbitRel.Quotient ↔ MulAction.orbitRel.Quotient` bridge, no
+  `to_additive` are needed.
+- **Why the planned ~30-50 LOC Burnside route was unnecessary.** The S3
+  state.md recommended applying `burnside_lemma` (MulAction form) + the
+  `fixed_point_sum_binary_4 = 24` theorem + `|ZMod 4| = 4`. That is the
+  right *mathematical* derivation, but for the *formal* goal — a single
+  finite cardinality equality — the computable Fintype instance shipped in
+  S2 makes the whole thing directly decidable. The MulAction
+  `burnside_lemma` (line 48) stays in the file as a referenced Mathlib
+  statement; it is simply not on the proof path for the necklace count.
+- **+10 LOC** (docstring); proof body is one tactic. Build verified
+  `./proofs/scripts/docker-build.sh Proofs.BurnsideCounting` →
+  3058 / 3058 jobs clean (same 3 pre-existing simpArgs warnings).
+
+## What's Done (S3)
 
 - **Discharged `fixed_point_sum_binary_4` axiom** to a `native_decide`
   theorem. The pre-existing `DecidablePred (@IsFixedByRotation 4 2 _ r)`

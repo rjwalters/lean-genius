@@ -21,22 +21,21 @@
       "Local metadata records `Proofs/BurnsideCounting.lean` as having 0 sorries but 5 axioms."
     ],
     "open": [
-      "`rotatedIndex_add` itself is still an axiom in `Proofs/BurnsideCounting.lean`.",
-      "Four other parent-file axioms remain outside this OQ: `fixed_point_sum_binary_4`, `coloringSetoid`, `coloringQuotientFintype`, and `binary_necklaces_4`."
+      "None — all 5 original axioms of `Proofs/BurnsideCounting.lean` are discharged. `rotatedIndex_add` (S1), `coloringSetoid` + `coloringQuotientFintype` (S2), `fixed_point_sum_binary_4` (S3), and `binary_necklaces_4` (S4, this PR) are all theorems/defs now; the file is axiom-free."
     ],
     "goal": "Prove the `rotatedIndex_add` composition theorem for the existing `ZMod n`/`Fin n` definition without adding new axioms or sorries."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-10T00:00:00Z",
-    "iteration": 3,
-    "focus": "S3 ACT (researcher-9, 2026-06-10): discharged fixed_point_sum_binary_4 via native_decide. axiom → theorem. Docker 3058/3058 jobs clean. Coloring 4 2 = Fin 4 → Fin 2 is finite, IsFixedByRotation is decidable (existing instance at line 329), so the 4 subtype cardinalities and their sum to 24 evaluate at compile time. lineCount 387 → 394 (+7 LOC for docstring + theorem header). Only binary_necklaces_4 axiom remains in BurnsideCounting.lean.",
+    "since": "2026-06-11T00:00:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT (researcher-2, 2026-06-11): discharged binary_necklaces_4 — the LAST of the 5 original axioms. BurnsideCounting.lean is now AXIOM-FREE (0 axioms, 0 sorries, 9 theorems, 404 LOC, Docker 3058/3058 jobs clean). Proof is a single native_decide: coloringQuotientFintype 4 2 is a computable Fintype (Quotient (coloringSetoid 4 2)) — built from Quotient.fintype over the finite carrier Coloring 4 2 = Fin 4 → Fin 2 and the decidable orbit relation coloringSetoid_decidableRel — so Fintype.card of the rotation-orbit quotient is obtained by enumerating the 16 colorings, mapping to orbits, and counting the 6 distinct classes. This is dramatically simpler than the S3-planned ~30-50 LOC Burnside-lemma/AddAction-MulAction-bridge route: because S2 already made the quotient Fintype computable, the cardinality is directly decidable. axiom → theorem, +10 LOC (docstring). The MulAction burnside_lemma (line 48) remains in the file as a referenced Mathlib statement but is not needed for the necklace count.",
     "blockers": [],
-    "nextAction": "S4 candidate: discharge binary_necklaces_4. Now that fixed_point_sum_binary_4 is a real theorem, the route is burnside_lemma (MulAction form) + fixed_point_sum_binary_4 + |ZMod 4| = 4 → 24/4 = 6. Bridge needed: AddAction.orbitRel.Quotient (ZMod 4) (Coloring 4 2) ↔ MulAction.orbitRel.Quotient (Multiplicative (ZMod 4)) (Coloring 4 2). Estimated ~30-50 LOC. Once S4 lands, BurnsideCounting.lean is axiom-free (0 of 5 original axioms remaining).",
+    "nextAction": "DONE — BurnsideCounting.lean is axiom-free (all 5 original axioms discharged across S1–S4). No remaining axioms or sorries. Optional cleanup only: the 3 pre-existing simpArgs linter warnings at lines 77/299/301 (cosmetic, untouched since pre-S2). The slug's OQ target (rotatedIndex_add) was discharged in S1; the broader file axiom-elimination is now complete.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
@@ -94,9 +93,9 @@
     {
       "path": "Proofs/BurnsideCounting.lean",
       "filename": "BurnsideCounting.lean",
-      "lineCount": 394,
-      "theoremCount": 8,
-      "axiomCount": 1,
+      "lineCount": 404,
+      "theoremCount": 9,
+      "axiomCount": 0,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
@@ -136,5 +135,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03OQ03.lean"
     }
   ],
-  "lastUpdate": "2026-06-10T02:50:00Z"
+  "lastUpdate": "2026-06-11T00:00:00Z"
 }
