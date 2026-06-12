@@ -947,7 +947,6 @@ private lemma sin_div_one_add_cos {φ : ℝ} (hφ : 0 < φ) (hφ_lt : φ < Real.
   rw [hsin, h1cos]
   have h2cos_ne : 2 * Real.cos (φ / 2) ^ 2 ≠ 0 := by positivity
   field_simp [h2cos_ne, hcos_half_pos.ne']
-  ring
 
 /-- The Chebyshev node angle φₖ = (2k+1)π/(2n) ∈ (0, π) for k < n. -/
 private lemma chebyshevAngle_pos_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
@@ -959,7 +958,7 @@ private lemma chebyshevAngle_pos_lt_pi (n : ℕ) (hn : 0 < n) (k : Fin n) :
   · rw [div_lt_iff₀ (by positivity)]
     have hlt : 2 * k.val + 1 < 2 * n := by omega
     have hlt' : (2 * k.val + 1 : ℝ) < 2 * n := by exact_mod_cast hlt
-    nlinarith
+    nlinarith [hlt', Real.pi_pos]
 
 /-- For x = -1 (e.g., p = q = 1) and the Chebyshev node formula:
     sin(φₖ) / |(-1) - cos φₖ| = sin(φₖ) / (1 + cos φₖ) = tan(φₖ/2) = sin(φₖ/2)/cos(φₖ/2).
@@ -1003,21 +1002,24 @@ private lemma tan_eq_cot_complement (n : ℕ) (hn : 0 < n) (k : Fin n)
   -- Angles sum to π/2: (2k+1)/(4n) + (2j+1)/(4n) = (2n)/(4n) = 1/2
   have hangle_sum : (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) +
                     (2 * (j : ℝ) + 1) * Real.pi / (4 * n) = Real.pi / 2 := by
+    have hkj1 : k.val + j + 1 = n := by omega
     have : (2 * (k.val : ℝ) + 1) + (2 * (j : ℝ) + 1) = 2 * (n : ℝ) := by
-      push_cast; have := hkj; linarith
+      have hc : (k.val : ℝ) + (j : ℝ) + 1 = (n : ℝ) := by exact_mod_cast hkj1
+      linarith
     field_simp; linarith [this]
   -- So (2k+1)π/(4n) = π/2 - (2j+1)π/(4n)
   have hA_eq : (2 * k.val + 1 : ℝ) * Real.pi / (4 * n) =
                Real.pi / 2 - (2 * (j : ℝ) + 1) * Real.pi / (4 * n) := by linarith [hangle_sum]
   -- sin(π/2 - u) = cos(u) and cos(π/2 - u) = sin(u)
   set u := (2 * (j : ℝ) + 1) * Real.pi / (4 * n) with hu_def
-  have hu_pos : 0 < u := by unfold_let u; positivity
+  have hu_pos : 0 < u := by rw [hu_def]; positivity
   have hu_le : u ≤ Real.pi / 3 := by
-    unfold_let u
+    rw [hu_def]
     rw [div_le_div_iff₀ (by positivity : (0 : ℝ) < 4 * ↑n) (by positivity : (0 : ℝ) < 3)]
     -- Need (2j+1)·π·3 ≤ π·(4n), i.e., 3(2j+1) ≤ 4n
-    have hj_bound : j < n / 2 + 1 := by omega
-    nlinarith [Real.pi_pos, hj_bound]
+    have hjn : 3 * (2 * j + 1) ≤ 4 * n := by omega
+    have hjn' : 3 * (2 * (j : ℝ) + 1) ≤ 4 * (n : ℝ) := by exact_mod_cast hjn
+    nlinarith [Real.pi_pos, hjn']
   rw [hA_eq, Real.sin_pi_div_two_sub, Real.cos_pi_div_two_sub]
   -- Now goal: cos(u)/sin(u) ≥ 1/(2u)
   exact cot_ge_inv_two_mul hu_pos hu_le
