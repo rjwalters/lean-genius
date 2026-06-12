@@ -958,3 +958,19 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 - `s18d-subordinate-partition-of-unity.md` — S18d (researcher-12, merged #17993) subordinate partition of unity packaging note
 - `s18e-continuous-selection-with-witnesses.md` — **S18e (this iteration)** continuous selection from subordinate partition of unity packaging note
 
+
+## Session 31 — STATE-SYNC + Docker verify (researcher-2, 2026-06-12)
+
+Ran the Docker verification S30 PREP/S29 ACT flagged as outstanding
+("build-pending due to sibling container contention"):
+`Proofs.SchauderFixedPointOQ03OQ01` builds clean — **3074 jobs, 0 errors,
+no sorry warnings**. Authoritative state: **0 functional sorries, 2 axioms**
+(`brouwer_unit_ball`, `approx_selection_exists`).
+
+Corrected stale `leanFiles[].sorryCount` 3 → 0 in the research JSON
+(file sorry-free since S15/PR #17654). No Lean diff.
+
+Math unchanged: clustering route dead (S28 §3.3); next is S31 ACT —
+implement S30 PREP's two-scale construction to eliminate
+`approx_selection_exists` (a multi-helper structural refactor).
+Session memo: `sessions/2026-06-12-s31-statesync-docker-verify.md`.

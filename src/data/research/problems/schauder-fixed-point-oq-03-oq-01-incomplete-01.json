@@ -1,7 +1,7 @@
 {
   "slug": "schauder-fixed-point-oq-03-oq-01-incomplete-01",
   "title": "Kakutani from Brouwer via Approximate Selections (2 sorries)",
-  "phase": "ACT",
+  "phase": "S31 ACT pending — S30 PREP (two-scale construction bypassing the dead clustering obstacle) shipped; Lean implementation deferred to S31 ACT. STATE-SYNC (researcher-2, 2026-06-12): merged S29 state Docker-verified (3074 jobs, 0 sorries, 2 axioms); stale leanFiles sorryCount 3→0 corrected.",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,12 +28,14 @@
     "goal": "Fill 2 sorries using Mathlib's partition of unity machinery"
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-28",
+    "phase": "S31 ACT pending — S30 PREP (two-scale construction bypassing the dead clustering obstacle) shipped; Lean implementation deferred to S31 ACT. STATE-SYNC (researcher-2, 2026-06-12): merged S29 state Docker-verified (3074 jobs, 0 sorries, 2 axioms); stale leanFiles sorryCount 3→0 corrected.",
+    "since": "2026-06-12T00:00:00Z",
     "iteration": 31,
     "focus": "S29 ACT (researcher-1, 2026-06-02): land paste-ready Lebesgue helper from S28 PREP §5 verbatim. +60 LOC at SchauderFixedPointOQ03OQ01.lean:716 between exists_finite_subcover_for_uhc (S18c) and the S18d scaffold docstring. New private lemma exists_lebesgue_subcover_for_uhc augments S18c's open cover with a uniform Lebesgue radius δ>0 via lebesgue_number_lemma_of_metric (Mathlib/Topology/MetricSpace/Pseudo/Lemmas.lean at pinned SHA 2df2f0150c). Proof: 4 logical steps — materialise CompactSpace ↥S via isCompact_iff_compactSpace.mp; obtain S18c's open cover; derive Set.univ ⊆ ⋃ i, U i (S18d one-liner); apply lebesgue_number_lemma_of_metric isCompact_univ hU_open hU_cover_univ. Build pending: same sibling lake-build container 9db9a3f1bb19 ~4h+; disk 24Gi GREEN; SHA stable 21+ days; no new imports (all bearers in transitively imported modules). Risk-acceptance 8/8 GREEN per S28 PREP §7 picker matrix — recent BUILD-VERIFY 4 days ago (PR #20891 3074 jobs clean) is the qualitative difference vs the older 25-day-old lagrange S16 region BUILD-VERIFY. theoremCount 17→18 under canonical regex; lineCount 1419→1479; axiomCount unchanged at 2; sorries unchanged at 0 functional.",
-    "blockers": [],
-    "nextAction": "S30 (next ACT): re-pose the output-side clustering problem against the Lebesgue helper's δ-uniform-refinement output. The genuine obstacle (per S28 PREP §3) is that UHC controls F z as a set not the chosen ysel j values; S30 candidate paths are (a) thread convex_combination (S18a) through the δ-refined cover to bound dist (ysel j) (ysel i) via center-distance + thickening-radius decomposition, or (b) pivot to anchored selector via S22's exists_nearest_in_image_F + global reference whose distance to each F i is bounded. PREREQUISITE: S29 ACT Docker verify (currently build-pending due to sibling container contention). Auditor or next-cycle picker can run Docker verify after sibling drains.",
+    "blockers": [
+      "S31 ACT two-scale construction is a multi-helper structural refactor (S30 PREP); not yet implemented in Lean. Both file axioms (brouwer_unit_ball, approx_selection_exists) are deep; brouwer_unit_ball has no Mathlib replacement at v4.26.0."
+    ],
+    "nextAction": "S31 ACT: implement the S30 PREP two-scale construction (outer cover at scale ε + S29 Lebesgue helper for uniform δ + inner cover at scale δ with subordinate partition of unity ρ', then average existential thickening witnesses z_j ∈ F(i_outer(x)) by convexity) to discharge the third graph-bound conjunct of IsGraphApproxSelection without the (provably dead) clustering bound. This eliminates `axiom approx_selection_exists`. Large interleaved refactor of the one-scale S18a–S18e helpers; budget a dedicated multi-PR ACT cycle. STATE NOW Docker-verified (3074 jobs, 0 sorries, 2 axioms) on main.",
     "attemptCounts": {
       "total": 31,
       "currentApproach": 5,
@@ -41,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S27 ACT (researcher-1, 2026-05-28): added private lemma finsupport_combination_within_output_ball reducing the output-side graph-bound conjunct dist(f x, ysel i) < ε to selected-value CLUSTERING — if all ysel j (j ∈ ρ.finsupport x) lie within r of ysel i, the partition-weighted sum f x = ∑ ρ j x • ysel j does too (closedBall(ysel i, r) is convex and contains every ysel j; convex_combination_of_partition_in_S + convex_closedBall). This yields a SIMPLER S27/S28 endgame than the prior thickening+nearest-point plan: with witness y := ysel i ∈ F i, the conjunct needs only the clustering dist(ysel j, ysel i) < ε, with NO exists_nearest_in_image_F call. The clustering (needs the uniform/Lebesgue refinement of the S18c cover) is now the sole remaining obstacle for eliminating axiom approx_selection_exists. Build-verified clean 3074 jobs (Built in 7.2s) at pinned SHA 2df2f0150c. 0 functional sorries, 2 axioms unchanged. lineCount 1369→1419, theoremCount 16→17. [Prior S26 ACT: input-ball clause propagation + finsupport_center_within_input_ball (dist x x' < ε half) + finsupport_nonempty.]",
+    "progressSummary": "PROGRESS (Session 31 STATE-SYNC + Docker verify, 2026-06-12, researcher-2, this PR): Ran the Docker verification the S30 PREP/S29 ACT flagged as outstanding (build was 'pending due to sibling container contention'). `Proofs.SchauderFixedPointOQ03OQ01` builds clean — 3074 jobs, no errors, no sorry warnings. Authoritative state: 0 functional sorries, 2 axioms (`brouwer_unit_ball`, `approx_selection_exists`). Corrected stale `leanFiles[].sorryCount` 3→0 (the file has been sorry-free since S15 PR #17654; the value was drift). No Lean diff. Next math step remains S31 ACT: implement the S30 PREP two-scale construction to eliminate `approx_selection_exists`; the clustering route is dead (S28 §3.3). | S27 ACT (researcher-1, 2026-05-28): added private lemma finsupport_combination_within_output_ball reducing the output-side graph-bound conjunct dist(f x, ysel i) < ε to selected-value CLUSTERING — if all ysel j (j ∈ ρ.finsupport x) lie within r of ysel i, the partition-weighted sum f x = ∑ ρ j x • ysel j does too (closedBall(ysel i, r) is convex and contains every ysel j; convex_combination_of_partition_in_S + convex_closedBall). This yields a SIMPLER S27/S28 endgame than the prior thickening+nearest-point plan: with witness y := ysel i ∈ F i, the conjunct needs only the clustering dist(ysel j, ysel i) < ε, with NO exists_nearest_in_image_F call. The clustering (needs the uniform/Lebesgue refinement of the S18c cover) is now the sole remaining obstacle for eliminating axiom approx_selection_exists. Build-verified clean 3074 jobs (Built in 7.2s) at pinned SHA 2df2f0150c. 0 functional sorries, 2 axioms unchanged. lineCount 1369→1419, theoremCount 16→17. [Prior S26 ACT: input-ball clause propagation + finsupport_center_within_input_ball (dist x x' < ε half) + finsupport_nonempty.]",
     "builtItems": [
       "S10 (researcher-12, 2026-05-08): research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/s10-mathlib-v426-lookup3-resolved.md — GitHub-API resolution of LOOKUP-3 against the pinned mathlib4 rev. Definitive evidence that Mathlib4 lacks Brouwer FPT in any form. Three options analyzed (strict-weakening vs in-house Brouwer vs status quo); recommends Option A.",
       "S10 (researcher-12, 2026-05-08): proofs/Proofs/SchauderFixedPointOQ03OQ01.lean lines 76–87 — corrected docstring of axiom brouwer_fpt. Previous claim \"This is proved in Mathlib for the unit ball via degree theory\" replaced with a status note recording the S10 finding and pointing to the s10-... markdown file. No code change.",
@@ -151,7 +153,7 @@
       "theoremCount": 16,
       "axiomCount": 2,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchauderFixedPointOQ03OQ01.lean"
     }
