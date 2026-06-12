@@ -1051,4 +1051,62 @@ lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
   have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
   linarith
 
+/-! ## Part 8b: Markov ⇒ good-bulk domination (combinatorial step 3)
+
+Step 3 of the small-`eps` ADLRY route (see the `_small_eps` docstrings):
+once the analytic Markov averaging supplies the bound
+`|A_bad| ≤ eps · |A|`, any subset `A' ⊆ A` that is large in the slack-4
+sense (`|A'| ≥ 4·eps·|A|`) is dominated (`≥ 3/4`) by its unbiased part
+`A' ∩ A_good`. This lemma isolates the purely combinatorial content of
+that step: it consumes the Markov bound as a hypothesis and derives the
+domination by counting alone, using no graph structure beyond the
+`A_bad`/`A_good` partition. The remaining open content of the route is
+the Markov bound itself (averaging) and the final density transfer. -/
+
+/-- **Good-bulk domination from the Markov bound** (A-side, combinatorial
+step 3). Given the biased-vertex Markov bound `|A_bad| ≤ eps · |A|` and a
+slack-4-large subset `A' ⊆ A` (`4·eps·|A| ≤ |A'|`), the unbiased part
+`A' ∩ A_good` carries at least `3/4` of `|A'|`.
+
+Proof: the biased part `A'.filter (eps < bias)` injects into `A_bad`, so
+its cardinality is `≤ eps·|A| ≤ (1/4)·|A'|` (the last step by slack-4
+largeness). The unbiased part is the complement of the biased part in
+`A'`, hence has cardinality `≥ |A'| − (1/4)·|A'| = (3/4)·|A'|`; it equals
+`A' ∩ A_good` because `A' ⊆ A`. No `eps > 0` hypothesis is needed — the
+bound is monotone and holds vacuously when the antecedents force the
+counts. -/
+lemma three_quarters_good_of_markov (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B A' : Finset V)
+    (hsub : A' ⊆ A)
+    (hcard : 4 * eps * (A.card : ℚ) ≤ (A'.card : ℚ))
+    (hmarkov : ((A_bad G eps A B).card : ℚ) ≤ eps * (A.card : ℚ)) :
+    (3 / 4 : ℚ) * (A'.card : ℚ) ≤ ((A' ∩ A_good G eps A B).card : ℚ) := by
+  -- `A' ∩ A_good` is exactly `A'` filtered by the unbiased predicate.
+  have hgood_eq : A' ∩ A_good G eps A B
+      = A'.filter (fun a => ¬ (eps < vertexBias G a A B)) := by
+    ext x
+    rw [Finset.mem_inter, Finset.mem_filter]
+    constructor
+    · rintro ⟨hxA', hxgood⟩
+      exact ⟨hxA', not_lt.mpr ((mem_A_good G eps A B x).mp hxgood).2⟩
+    · rintro ⟨hxA', hxp⟩
+      exact ⟨hxA', (mem_A_good G eps A B x).mpr ⟨hsub hxA', not_lt.mp hxp⟩⟩
+  -- The biased part of `A'` injects into `A_bad`.
+  have hbad_sub : A'.filter (fun a => eps < vertexBias G a A B)
+      ⊆ A_bad G eps A B := by
+    intro x hx
+    rw [Finset.mem_filter] at hx
+    exact (mem_A_bad G eps A B x).mpr ⟨hsub hx.1, hx.2⟩
+  have hbad_le : ((A'.filter (fun a => eps < vertexBias G a A B)).card : ℚ)
+      ≤ ((A_bad G eps A B).card : ℚ) := by
+    exact_mod_cast Finset.card_le_card hbad_sub
+  -- Biased / unbiased parts of `A'` partition it.
+  have hsplit : ((A'.filter (fun a => eps < vertexBias G a A B)).card : ℚ)
+      + ((A'.filter (fun a => ¬ (eps < vertexBias G a A B))).card : ℚ)
+      = (A'.card : ℚ) := by
+    exact_mod_cast Finset.filter_card_add_filter_neg_card_eq_card
+      (s := A') (p := fun a => eps < vertexBias G a A B)
+  rw [hgood_eq]
+  nlinarith [hbad_le, hmarkov, hcard, hsplit]
+
 end Szemeredi.OQ04

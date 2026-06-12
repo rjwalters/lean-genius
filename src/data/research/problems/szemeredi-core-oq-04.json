@@ -31,12 +31,12 @@
     "goal": "Replace `Classical.choice` at `SzemerediRegularity.lean:436` with a constructive `findRegularPartition` built on a decidable surrogate for `IsEpsilonRegular`."
   },
   "currentState": {
-    "phase": "ACT-ready",
-    "since": "2026-06-03T14:30:00.000Z",
-    "iteration": 20,
-    "focus": "Iter 20 PREP-r2 (researcher-1, 2026-06-10, claim researcher-41096): G8 RED-INFRA disk-pressure regression CLEARED — `df -h /System/Volumes/Data` 5.5 Gi → **75 Gi free** (+69.5 Gi recovered passively over 7 days vs Iter 19 baseline; cause not attributed, no `make clean-all` from this researcher). Docker daemon also bumped 29.4.1 → 29.5.3 in the same window (Server section populated, 2 containers running, no impact on slug bearer pins). ACT-readiness gate refreshed 7/8 → **8/8 ACT-ready**. Iter 19 §2 (`mem_witnessFamilyB_nhd/_compl` singleton-{a}-indexing shape) + §3 (Mathlib Density.lean Route A ad-hoc helper `G.interedges_filter_add_filter_neg` recommendation) pre-paste asks gate-orthogonal — carry-forward stable for Iter 21+ ACT verbatim. Slug Lean file SHA1 `a51ac94f3e2aaa9ccea77c2f2496719a75b6fa83` byte-stable at 1054 LOC since Iter 13 PR #19042 (~26 days); lake-manifest Mathlib pin `2df2f0150c…` byte-stable since 2026-05-16T08:55Z (~25 days); all G1-G7 carry forward by transitivity. JSON catchup iter 19 → 20, phase PREP-r1-blocked → ACT-ready. NO Lean edits, NO sibling slug edits, NO leanFiles[] touches.",
+    "phase": "ACT",
+    "since": "2026-06-12T01:30:00.000Z",
+    "iteration": 21,
+    "focus": "Iter 21 ACT (researcher-2, 2026-06-12): shipped Part 8b sorry-free lemma `three_quarters_good_of_markov` discharging the combinatorial heart of step 3 of the small-eps ADLRY route. Given the analytic Markov bound `|A_bad| <= eps*|A|` (still open) and a slack-4-large subset `A' subset A` (`4*eps*|A| <= |A'|`), the unbiased bulk `A' cap A_good` carries >= 3/4 of |A'| -- by counting alone (biased part injects into A_bad; complement-in-A' bound; cast + nlinarith). No graph structure beyond the A_bad/A_good partition. Docker-verified clean (7744 jobs, 58 Gi free pre-flight). Sorry inventory steady at 2 (line 291 archival-unprovable one-sided + line 831 deferred-provable symmetric); 0 axioms; file 1054 -> ~1108 LOC. Remaining open content of the route: the Markov averaging bound itself (step 2) and the final density transfer (step 4).",
     "blockers": [],
-    "nextAction": "Iter 21 ACT (now mechanically unblocked): paste Iter 17 §6 Part 9 first-moment skeleton (~100 LOC, 4 transient sorries) + Iter 19 §3 Route A ad-hoc helper `G.interedges_filter_add_filter_neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at SzemerediCoreOQ04.lean:149, reuses `Finset.filter_card_add_filter_neg_card_eq_card`) in a single PR. Total ~108-110 LOC at 3-5 transient sorries. 1 Docker iter expected 10-15 min cold-P2-packages / 5-8 min hot (today's S86 ACT on ballot-problem-oq-03-oq-01-oq-02 PR #22784 ran ~10.5 min cold-P2). **Pre-flight requirement (CRITICAL)**: re-probe `df -h /System/Volumes/Data` immediately before invoking `docker-build.sh Proofs.SzemerediCoreOQ04` to confirm ≥10 Gi threshold still holds — passive recovery (Iter 19 → Iter 20 +69.5 Gi) is not guaranteed stable, and the −17 Gi/day forward-drain pattern Iter 18 → 19 could resume. If <10 Gi: run `make clean-all` (or targeted `proofs/.lake` prune) first. Iter 22+ ACT picks up Part 9 sorry discharges. INFRA expected GREEN through Iter 21+.",
+    "nextAction": "Iter 22+: prove the step-2 Markov averaging bound `(A_bad G eps A B).card <= eps * A.card` from `IsWitnessRegular` via the per-vertex vertexBias grid-family argument (mem_witnessFamilyB_nhd/_compl), then assemble step 4 density transfer feeding `three_quarters_good_of_markov` into `witness_regular_symmetric_implies_epsilon_regular_small_eps` (line 831).",
     "attemptCounts": {
       "total": 20,
       "currentApproach": 5,
@@ -173,5 +173,5 @@
     "mathlib-gap",
     "scaffold"
   ],
-  "lastUpdate": "2026-06-10"
+  "lastUpdate": "2026-06-12"
 }
