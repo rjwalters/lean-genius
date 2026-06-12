@@ -1,7 +1,7 @@
 {
   "slug": "fourier-series-oq-04-oq-01",
   "title": "2D Carleson conjecture for spherical Fourier series on T^2",
-  "phase": "ACT",
+  "phase": "DONE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,19 +28,19 @@
     "goal": "Lean-formalize the conjecture as an axiom; surround it with the unconditional partial results (Plancherel L^2-norm convergence, Bochner-Riesz delta > 1/2 a.e. convergence) and the asymmetry results (Fefferman 1971 rectangular divergence in L^1)."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-02T01:00:00Z",
-    "iteration": 11,
-    "focus": "S12 PREP (this session, researcher-1, doc-only). Mathlib v4.26.0 API audit for steps 4-6 of the S7 audit recipe. Catalogs mFourier (multi-index character), mFourierLp (volume-typed Lp realization), mFourierCoeff (default-integral functional), and hasSum_mFourier_series_L2 (the engine), all confirmed at pinned Mathlib commit 2df2f0150c via ~/GitHub/mathlib4. Identifies the measure-cast obstacle between Lp C 2 volume (engine output type) and Lp C 2 haarT2 (our machinery): Mathlib does NOT expose Lp.congr_measure / Lp.cast_of_eq_measure, so direct Lp transport requires Eq.mpr cast or MemLp round-trip. Recommends workaround option (c) - eLpNorm swap: rewrite haarT2 -> volume directly in the goal's eLpNorm arguments using haarT2_eq_volume (S11 ACT), avoiding any Lp-element transport. With option (c), the S13 ACT budget shrinks to 18-35 LOC. Step 1 setup confirmed no-op (import Mathlib already pulls AddCircleMulti). Full tactic skeleton drafted.",
+    "phase": "DONE",
+    "since": "2026-06-12T00:00:00Z",
+    "iteration": 14,
+    "focus": "S15 ACT (researcher-2): sphPartialSum_L2_norm_converge PROVED sorry-free. The file's last sorry is discharged; the sole remaining assumption is the intended open conjecture axiom carleson_2d_sph. Decisive correction to the S11-S14 premise: the Mathlib engine UnitAddTorus.hasSum_mFourier_series_L2 is NOT over the global volume - AddCircleMulti.lean:32 declares a LOCAL MeasureSpace UnitAddCircle := ⟨haarAddCircle⟩, so the engine's ambient measure on UnitAddTorus (Fin 2) is Measure.pi (fun _ => haarAddCircle), which is DEFINITIONALLY our haarT2. The close works natively in haarT2 via defeq with no volume cast; the S11/S14 haarT2_eq_volume bridge targeted the off-by-(1•) global volume and was NOT what the engine needed (now dead-end scaffolding, HERMIT-pruneable). Added bridge lemmas mFourier_fin2 + mFourierCoeff_eq_multiFourierCoeff; close uses latticeDisc_eventually_supset (S9) cofinality + tendsto_iff_norm_sub_tendsto_zero + Lp.norm_def + ENNReal.tendsto_toReal_iff. Build: Docker v4.26.0, 7743 jobs, exit 0. Gotcha: Lean rejects f-hat combining-circumflex identifier; used fhat.",
     "blockers": [
       "Mathlib gap: Plancherel_ntorus not exposed as a named identity. Blocks closing the sphPartialSum_L2_norm_converge sorry. S7 audit (PR #19411) re-confirmed at current rev: gap is specifically `Lp.coeFn_finset_sum` (no named `Finset.coeFn_sum` / `Lp.coeFn_sum` / `AEEqFun.coeFn_sum` at rev 2df2f0150c). The 8-10 LOC inductive helper via Finset.induction_on + Lp.coeFn_add (LpSpace/Basic.lean:195) has now been LANDED at S10 as `coeFn_finset_sum_haarT2` (private, specialised to `Lp \u2102 2 haarT2`); the generic-Mathlib-bound version with `{E p \u03bc}` parameters remains a candidate for upstream contribution. The S11 `haarT2_eq_volume` bridge has now been LANDED (sorry-free, axiom-free): combining `AddCircle.volume_eq_smul_haarAddCircle` (rfl at AddCircle.lean:92) + `ENNReal.ofReal_one` + `one_smul` + `volume_pi` (rfl at Pi.lean:652). Remaining S2e ACT routine wires `coeFn_finset_sum_haarT2` + `haarT2_eq_volume` + S9 cofinality into mFourierBasis.hasSum_repr (l2Space.lean:443) + Lp.norm_def (LpSpace/Basic.lean:215) + hasSum_mFourier_series_L2 (AddCircleMulti.lean:224).",
       "Mathlib gap: no BochnerRiesz / ballMultiplier API. Required for S2b (delta > 1/2 a.e. convergence) and S3 (Fefferman counterexample)."
     ],
-    "nextAction": "S13 ACT - implement the tactic skeleton drafted in S12 PREP memo \u00a75 to discharge sphPartialSum_L2_norm_converge. 18-35 LOC budget via option (c) eLpNorm swap. Sub-task ordering: (4a) MemLp.toLp lift to volume; (4c) identify sphPartialSum with the mFourierLp finset-sum a.e.; (4b) use Lp.coeFn_finset_sum (Mathlib direct on volume) to bridge the inner-sum coeFn; (5) apply hasSum_mFourier_series_L2 + cofinality (S9); (6) close eLpNorm form via Tendsto.toReal / Lp.norm_def. Docker build required. S13 PREP fallback (if option (c) rewrite fails on type-class elaboration) would re-examine option (a) Eq.mpr casts.",
+    "nextAction": "None required for the Lean layer: 1 intended axiom (open conjecture carleson_2d_sph), 0 sorries. Optional HERMIT cleanup: prune the now-dead global-volume scaffolding haarT2_eq_volume, memLp_haarT2_iff_volume, eLpNorm_haarT2_eq_volume (S11/S14) that the close did not use. Out-of-scope: attacking the conjecture itself (genuine open mathematics).",
     "attemptCounts": {
-      "total": 11,
-      "currentApproach": 11,
-      "approachesTried": 2
+      "total": 14,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -83,9 +83,9 @@
       "No Fefferman_ball_multiplier or related counterexample (requires Besicovitch / Kakeya machinery not present)."
     ],
     "nextSteps": [
-      "S13 ACT - implement tactic skeleton (S12 PREP \u00a75) to discharge sphPartialSum_L2_norm_converge sorry. 18-35 LOC budget.",
-      "S13 PREP fallback - re-examine option (a) Eq.mpr casts if option (c) eLpNorm rewrite fails on type-class elaboration.",
-      "S14 (post-close) - update gallery meta.json + annotations.json (sorryCount 1 -> 0)."
+      "DONE (S15): sphPartialSum_L2_norm_converge proved sorry-free; gallery meta.json + annotations.json synced (sorryCount 1 -> 0, theoremCount 14 -> 16).",
+      "Optional HERMIT - prune dead global-volume scaffolding (haarT2_eq_volume, memLp_haarT2_iff_volume, eLpNorm_haarT2_eq_volume) unused by the defeq-native close.",
+      "Out-of-scope - the a.e.-pointwise conjecture carleson_2d_sph is genuine open mathematics and remains axiomatised."
     ]
   },
   "tags": [
@@ -130,18 +130,18 @@
     ]
   },
   "started": "2026-05-12T08:38:00.000Z",
-  "lastUpdate": "2026-06-02T01:00:00Z",
+  "lastUpdate": "2026-06-12T00:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 446,
-      "theoremCount": 12,
+      "lineCount": 598,
+      "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
     },
