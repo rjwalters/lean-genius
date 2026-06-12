@@ -14,9 +14,11 @@ we show:
   3. `minpoly_natDegree_eq_two` — `(minpoly (ZMod 4) M).natDegree = 2`
      (paste-ready with sorry — see proof outline; depends on bearer pins to
      be sharpened in S3 ACT-2).
-  4. `no_cyclic_vector` — `¬ ∃ v, IsCyclicVector M v` (paste-ready with
-     sorry — see proof outline; depends on small tactic adjustments to be
-     verified in S3 ACT-2).
+  4. `no_cyclic_vector` — `¬ ∃ v, IsCyclicVector M v` (proved, sorry-free):
+     the degree-1 polynomial `C 2 * X` annihilates `M` on every `v`
+     (`aeval M (C 2 * X) = 2 • M = 0`) yet is nonzero, contradicting
+     cyclicity.  This is the witness that the **forward direction fails**
+     over `ZMod 4`.
 
 Companion to `CayleyHamiltonCyclicVectorCommRingOQ01.lean`, which proves the
 backward direction `(∃ v, IsCyclicVector M v) → IsNonderogatory M` over any
@@ -105,17 +107,27 @@ the nonzero polynomial `q = 2 * X` satisfies `q.natDegree = 1 < 2`,
 `aeval M q = 2 • M = 0` (by `two_smul_M_eq_zero`), hence
 `(aeval M q).mulVec v = 0`, witnessing `¬ IsCyclicVector M v`.
 
-**Proof outline** (S3 PREP-3 §4.3; full discharge deferred to S3 ACT-2):
-
-  ```
-  rintro ⟨v, hcyc⟩
-  -- aeval M (2 * X) · v = 0 because aeval M (2*X) = 2·M = 0.
-  -- hcyc forces 2*X = 0, but coeff (2*X) 1 = 2 ≠ 0 in ZMod 4 ⇒ contradiction.
-  ```
-
 Reuses `IsCyclicVector` from `GeneralCyclicVectorRing` (S2 ACT). -/
 theorem no_cyclic_vector :
     ¬ ∃ v : Fin 2 → ZMod 4, IsCyclicVector M v := by
-  sorry
+  haveI : Nontrivial (ZMod 4) := nontrivial_zmod_four
+  rintro ⟨v, hcyc⟩
+  -- Witness polynomial `q = C 2 * X`: degree 1, annihilates `M` on `v`, yet ≠ 0.
+  have hdeg : (C (2 : ZMod 4) * X).natDegree < 2 := by
+    have h1 := Polynomial.natDegree_C_mul_le (2 : ZMod 4) X
+    have h2 := Polynomial.natDegree_X_le (R := ZMod 4)
+    omega
+  have haev : (aeval M (C (2 : ZMod 4) * X)).mulVec v = 0 := by
+    have h0 : aeval M (C (2 : ZMod 4) * X) = 0 := by
+      rw [map_mul, aeval_C, aeval_X, Algebra.algebraMap_eq_smul_one,
+          smul_mul_assoc, one_mul, two_smul_M_eq_zero]
+    rw [h0]; exact Matrix.zero_mulVec v
+  have hq0 : C (2 : ZMod 4) * X = 0 := hcyc _ hdeg haev
+  -- But the degree-1 coefficient is `2 ≠ 0` in `ZMod 4`.
+  have hcoeff : (2 : ZMod 4) = 0 := by
+    have h := congrArg (fun p => Polynomial.coeff p 1) hq0
+    simpa [Polynomial.coeff_C_mul, Polynomial.coeff_X_one] using h
+  revert hcoeff
+  decide
 
 end CayleyHamiltonCyclicVectorZMod4Counterexample
