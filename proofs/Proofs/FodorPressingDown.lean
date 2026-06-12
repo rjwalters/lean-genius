@@ -608,6 +608,70 @@ theorem exists_cofHead_constant_stationary_of_stationary {κ : Cardinal.{0}}
     (hS.inter_isLimitOrdinals hκ hκ_unc) (fun _ hα => hα.2)
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part X: Solovay Splitting — Binary Split Packaging (S2-β-γ)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Fiber + co-stationary complement gives a binary split.**
+
+    If a predicate `P` carves a stationary subset `{α ∈ S | P α}` out of
+    `S` whose *complement within `S`* (`{α ∈ S | ¬ P α}`) is also
+    stationary, then `S` splits into two disjoint stationary subsets.
+
+    This is the disjointness-packaging step (§4.4 of the S3b PREP design,
+    `sessions/2026-05-15-s3b-prep-disjointness-drill.md`): the two pieces
+    are automatically disjoint (no `α` satisfies both `P α` and `¬ P α`)
+    and both are `⊆ S`. It is the canonical consumer of the two
+    complementary stationary conjuncts produced by a `fodor_anti_constant`-
+    style argument (`{α ∈ S | g₀ α = β₀ ∧ g₁ α = β₁}` versus
+    `{α ∈ S | g₀ α ≠ β₀ ∨ g₁ α ≠ β₁}`).
+
+    **Scope honesty.** This lemma packages a split once two complementary
+    stationary pieces are in hand; it does *not* produce them. The
+    remaining obstacle for the full `stationary_splits_binary` is to
+    exhibit such a `P` (the index-of-first-disagreement counting argument,
+    not available at the pinned Mathlib SHA). 0 sorries, 0 axioms. -/
+theorem stationary_splits_of_fiber_compl {κ : Cardinal.{0}}
+    {S : Set Ordinal} {P : Ordinal → Prop}
+    (h₁ : IsStationaryBelow {α ∈ S | P α} κ.ord)
+    (h₂ : IsStationaryBelow {α ∈ S | ¬ P α} κ.ord) :
+    ∃ S₁ S₂ : Set Ordinal,
+      S₁ ⊆ S ∧ S₂ ⊆ S ∧ Disjoint S₁ S₂ ∧
+      IsStationaryBelow S₁ κ.ord ∧ IsStationaryBelow S₂ κ.ord := by
+  refine ⟨{α ∈ S | P α}, {α ∈ S | ¬ P α},
+    fun _ ha => ha.1, fun _ ha => ha.1, ?_, h₁, h₂⟩
+  rw [Set.disjoint_left]
+  rintro a ⟨_, ha⟩ ⟨_, hna⟩
+  exact hna ha
+
+/-- **Two distinct constant values give a binary split.**
+
+    If a function `f` is constant on two stationary subsets of `S` with
+    *distinct* values `c₁ ≠ c₂`, then `S` splits into two disjoint
+    stationary subsets. The two fibers `S ∩ f ⁻¹' {c₁}` and
+    `S ∩ f ⁻¹' {c₂}` are disjoint because no `α` can have `f α = c₁` and
+    `f α = c₂` simultaneously, and both are `⊆ S`.
+
+    This is the packaging used by the "two-Fodor" route (S3 PREP §4.3):
+    a single regressive `f` whose fibers at two distinct values are each
+    stationary. Like `stationary_splits_of_fiber_compl`, it isolates —
+    but does not discharge — the obstacle of *producing* two such
+    stationary fibers. 0 sorries, 0 axioms. -/
+theorem stationary_splits_of_two_fibers {κ : Cardinal.{0}}
+    {S : Set Ordinal} {f : Ordinal → Ordinal} {c₁ c₂ : Ordinal}
+    (hc : c₁ ≠ c₂)
+    (h₁ : IsStationaryBelow (S ∩ f ⁻¹' {c₁}) κ.ord)
+    (h₂ : IsStationaryBelow (S ∩ f ⁻¹' {c₂}) κ.ord) :
+    ∃ S₁ S₂ : Set Ordinal,
+      S₁ ⊆ S ∧ S₂ ⊆ S ∧ Disjoint S₁ S₂ ∧
+      IsStationaryBelow S₁ κ.ord ∧ IsStationaryBelow S₂ κ.ord := by
+  refine ⟨S ∩ f ⁻¹' {c₁}, S ∩ f ⁻¹' {c₂},
+    Set.inter_subset_left, Set.inter_subset_left, ?_, h₁, h₂⟩
+  rw [Set.disjoint_left]
+  rintro a ⟨_, ha1⟩ ⟨_, ha2⟩
+  rw [Set.mem_preimage, Set.mem_singleton_iff] at ha1 ha2
+  exact hc (ha1.symm.trans ha2)
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -635,8 +699,17 @@ Key results:
   ✓ `cofHead_lt`: `cofHead α < α` for `IsSuccLimit α` (regressivity)
   ✓ `exists_cofHead_constant_stationary`: Fodor's first application via `cofHead`
   ✓ `exists_cofHead_constant_stationary_of_stationary`: ready-to-use S2-β form
+  ✓ `stationary_splits_of_fiber_compl`: fiber + co-stationary complement ⇒ binary split
+  ✓ `stationary_splits_of_two_fibers`: two distinct stationary fibers ⇒ binary split
 
 Sorries remaining: 0
+
+Open next step (`stationary_splits_binary`): the two packaging lemmas above
+reduce binary Solovay splitting to *producing* two complementary (or two
+distinct-value) stationary pieces from a regressive function. That production
+step is the index-of-first-disagreement counting argument, not available at
+the pinned Mathlib SHA — see the slug's `state.md` and
+`sessions/2026-05-15-s3b-prep-disjointness-drill.md` §4.3.
 
 Connection to parent (CantorDiagonalizationOQ02OQ03):
   The parent proves that for regular uncountable κ, ordinals below κ.ord cannot
