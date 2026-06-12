@@ -106,77 +106,117 @@ lemma nth_prime_ge (k : ℕ) : k + 2 ≤ Nat.nth Nat.Prime k := by
 
 /-! ## Main theorem -/
 
-/-- **Sqrt prime-gap upper bound implies Legendre's Conjecture.**
+/-- **Eventually-suffices form of the sqrt prime-gap criterion.**
 
-If consecutive prime gaps are bounded by `2 · √p_k + 1` for every `k`, then
-for every `n ≥ 1` there is a prime in `(n², (n+1)²)`. The proof uses the
-largest prime ≤ `n²` (existence via `Nat.findGreatest`) and the strict
-inequality `p_k < n²` from compositeness of `n²` for `n ≥ 2`. -/
-theorem prime_gap_sqrt_bound_implies_legendre (h : PrimeGapSqrtBound) :
+If the sqrt prime-gap bound `p_{k+1} - p_k ≤ 2·√p_k + 1` holds for every prime
+`p_k ≥ M`, and Legendre's conjecture is verified directly for every `n` with
+`n² < 2M`, then Legendre's Conjecture holds in full.
+
+The threshold `2M` is exactly what Bertrand's postulate supplies: when
+`n² ≥ 2M`, Bertrand gives a prime in `(n²/2, n²]`, so the largest prime `p_k`
+not exceeding `n²` satisfies `p_k > n²/2 ≥ M`, and the gap hypothesis is
+applicable at that `k`. The remainder of the argument is the iter-5
+`findGreatest` construction. Taking `M = 0` recovers the unconditional
+`prime_gap_sqrt_bound_implies_legendre` below. -/
+theorem prime_gap_sqrt_bound_above_implies_legendre (M : ℕ)
+    (h_gap_above : ∀ k, M ≤ Nat.nth Nat.Prime k →
+      Nat.nth Nat.Prime (k + 1) - Nat.nth Nat.Prime k
+        ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1)
+    (h_legendre_below : ∀ n, 1 ≤ n → n^2 < 2 * M → LegendreAt n) :
     LegendreConjecture := by
   intro n hn
   rcases lt_or_ge n 2 with hn1 | hn2
   · -- n = 1 case: prime 2 witnesses LegendreAt 1
     interval_cases n
     exact ⟨2, Nat.prime_two, by norm_num, by norm_num⟩
-  · -- n ≥ 2 case: use the largest prime ≤ n²
-    set P : ℕ → Prop := fun k => Nat.nth Nat.Prime k ≤ n^2 with hP_def
-    set k := Nat.findGreatest P (n^2) with hk_def
-    -- P 0 holds: nth Prime 0 = 2 ≤ n² (since n ≥ 2 implies n² ≥ 4)
-    have hP0 : P 0 := by
-      show Nat.nth Nat.Prime 0 ≤ n^2
-      rw [first_prime]
-      nlinarith [sq_nonneg n]
-    -- The predicate holds at the maximizer.
-    have hP_k : P k := Nat.findGreatest_spec (Nat.zero_le _) hP0
-    -- The maximizer is ≤ the search bound.
-    have hk_le : k ≤ n^2 := Nat.findGreatest_le _
-    -- nth Prime k is itself prime.
-    have hk_prime : Nat.Prime (Nat.nth Nat.Prime k) := nth_prime_is_prime k
-    -- n² is composite for n ≥ 2.
-    have hn2_not_prime : ¬ Nat.Prime (n^2) := not_prime_sq_of_ge_two hn2
-    -- So the inequality `nth Prime k ≤ n²` is strict.
-    have hk_lt : Nat.nth Nat.Prime k < n^2 := by
-      rcases lt_or_eq_of_le hP_k with h | h
-      · exact h
-      · exfalso
-        rw [← h] at hn2_not_prime
-        exact hn2_not_prime hk_prime
-    -- k + 1 ≤ n² (since nth Prime k ≥ k + 2 and nth Prime k < n²).
-    have hk_succ_le : k + 1 ≤ n^2 := by
-      have hge := nth_prime_ge k
-      omega
-    -- The predicate fails at k + 1, since k = findGreatest.
-    have hPk1_not : ¬ P (k + 1) := by
-      have hlt : Nat.findGreatest P (n^2) < k + 1 := by
-        rw [← hk_def]; omega
-      exact Nat.findGreatest_is_greatest hlt hk_succ_le
-    -- Therefore nth Prime (k+1) > n².
-    have hkp1_gt : n^2 < Nat.nth Nat.Prime (k + 1) := by
-      change ¬ (Nat.nth Nat.Prime (k + 1) ≤ n^2) at hPk1_not
-      omega
-    -- Apply the gap-bound hypothesis at k.
-    have hgap : Nat.nth Nat.Prime (k + 1) - Nat.nth Nat.Prime k
-              ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1 := h k
-    -- Strict monotonicity converts the Nat-subtraction into addition.
-    have hkp1_strict : Nat.nth Nat.Prime k < Nat.nth Nat.Prime (k + 1) :=
-      Nat.nth_strictMono Nat.infinite_setOf_prime (Nat.lt_succ_self k)
-    -- Bound the sqrt term by `n - 1`.
-    have hsqrt_mono : Nat.sqrt (Nat.nth Nat.Prime k) ≤ Nat.sqrt (n^2 - 1) := by
-      apply Nat.sqrt_le_sqrt; omega
-    have hsqrt_n_sub : Nat.sqrt (n^2 - 1) ≤ n - 1 := by
-      have h_lt_n : Nat.sqrt (n^2 - 1) < n := by
-        rw [Nat.sqrt_lt']
-        have hpos : (0 : ℕ) < n^2 := by positivity
+  · -- n ≥ 2 case
+    rcases lt_or_ge (n^2) (2 * M) with hsmall | hlarge
+    · -- n² < 2M: Legendre is verified below the threshold by hypothesis
+      exact h_legendre_below n hn hsmall
+    · -- n² ≥ 2M: use the largest prime ≤ n²
+      set P : ℕ → Prop := fun k => Nat.nth Nat.Prime k ≤ n^2 with hP_def
+      set k := Nat.findGreatest P (n^2) with hk_def
+      -- P 0 holds: nth Prime 0 = 2 ≤ n² (since n ≥ 2 implies n² ≥ 4)
+      have hP0 : P 0 := by
+        show Nat.nth Nat.Prime 0 ≤ n^2
+        rw [first_prime]
+        nlinarith [sq_nonneg n]
+      have hP_k : P k := Nat.findGreatest_spec (Nat.zero_le _) hP0
+      have hk_le : k ≤ n^2 := Nat.findGreatest_le _
+      have hk_prime : Nat.Prime (Nat.nth Nat.Prime k) := nth_prime_is_prime k
+      have hn2_not_prime : ¬ Nat.Prime (n^2) := not_prime_sq_of_ge_two hn2
+      have hk_lt : Nat.nth Nat.Prime k < n^2 := by
+        rcases lt_or_eq_of_le hP_k with h | h
+        · exact h
+        · exfalso
+          rw [← h] at hn2_not_prime
+          exact hn2_not_prime hk_prime
+      have hk_succ_le : k + 1 ≤ n^2 := by
+        have hge := nth_prime_ge k
         omega
-      omega
-    have hsqrt_bound : Nat.sqrt (Nat.nth Nat.Prime k) ≤ n - 1 := by omega
-    -- Combine: nth Prime (k+1) < (n+1)² = n² + 2n + 1.
-    have hkp1_lt : Nat.nth Nat.Prime (k + 1) < (n + 1)^2 := by
-      have hpow : (n + 1)^2 = n^2 + 2 * n + 1 := by ring
-      rw [hpow]
-      omega
-    exact ⟨Nat.nth Nat.Prime (k + 1), nth_prime_is_prime (k + 1), hkp1_gt, hkp1_lt⟩
+      have hPk1_not : ¬ P (k + 1) := by
+        have hlt : Nat.findGreatest P (n^2) < k + 1 := by
+          rw [← hk_def]; omega
+        exact Nat.findGreatest_is_greatest hlt hk_succ_le
+      have hkp1_gt : n^2 < Nat.nth Nat.Prime (k + 1) := by
+        change ¬ (Nat.nth Nat.Prime (k + 1) ≤ n^2) at hPk1_not
+        omega
+      -- NEW (this iteration): the largest prime ≤ n² is itself ≥ M.
+      -- Bertrand gives a prime q ∈ (n²/2, n²]; since p_k is the largest prime
+      -- ≤ n², we have q ≤ p_k, and q > n²/2 ≥ M, hence M ≤ p_k.
+      have hM_le_pk : M ≤ Nat.nth Nat.Prime k := by
+        have h4 : (4 : ℕ) ≤ n^2 := by
+          calc (4 : ℕ) = 2^2 := by norm_num
+            _ ≤ n^2 := Nat.pow_le_pow_left hn2 2
+        have hmpos : n^2 / 2 ≠ 0 := by omega
+        obtain ⟨q, hq_prime, hq_gt, hq_le⟩ := Nat.bertrand (n^2 / 2) hmpos
+        have hq_le_n2 : q ≤ n^2 := by omega
+        have hM_le_q : M ≤ q := by omega
+        set j := Nat.count Nat.Prime q with hj_def
+        have hnj : Nat.nth Nat.Prime j = q := Nat.nth_count hq_prime
+        have hj_le_n2 : j ≤ n^2 := by
+          have hge := nth_prime_ge j
+          rw [hnj] at hge; omega
+        have hPj : P j := by
+          show Nat.nth Nat.Prime j ≤ n^2
+          rw [hnj]; exact hq_le_n2
+        have hj_le_k : j ≤ k := Nat.le_findGreatest hj_le_n2 hPj
+        have hq_le_pk : q ≤ Nat.nth Nat.Prime k := by
+          have hmono := Nat.nth_monotone Nat.infinite_setOf_prime hj_le_k
+          rw [hnj] at hmono; exact hmono
+        omega
+      -- Apply the (eventual) gap-bound hypothesis at k.
+      have hgap : Nat.nth Nat.Prime (k + 1) - Nat.nth Nat.Prime k
+                ≤ 2 * Nat.sqrt (Nat.nth Nat.Prime k) + 1 := h_gap_above k hM_le_pk
+      have hkp1_strict : Nat.nth Nat.Prime k < Nat.nth Nat.Prime (k + 1) :=
+        Nat.nth_strictMono Nat.infinite_setOf_prime (Nat.lt_succ_self k)
+      have hsqrt_mono : Nat.sqrt (Nat.nth Nat.Prime k) ≤ Nat.sqrt (n^2 - 1) := by
+        apply Nat.sqrt_le_sqrt; omega
+      have hsqrt_n_sub : Nat.sqrt (n^2 - 1) ≤ n - 1 := by
+        have h_lt_n : Nat.sqrt (n^2 - 1) < n := by
+          rw [Nat.sqrt_lt']
+          have hpos : (0 : ℕ) < n^2 := by positivity
+          omega
+        omega
+      have hsqrt_bound : Nat.sqrt (Nat.nth Nat.Prime k) ≤ n - 1 := by omega
+      have hkp1_lt : Nat.nth Nat.Prime (k + 1) < (n + 1)^2 := by
+        have hpow : (n + 1)^2 = n^2 + 2 * n + 1 := by ring
+        rw [hpow]
+        omega
+      exact ⟨Nat.nth Nat.Prime (k + 1), nth_prime_is_prime (k + 1), hkp1_gt, hkp1_lt⟩
+
+/-- **Sqrt prime-gap upper bound implies Legendre's Conjecture.**
+
+If consecutive prime gaps are bounded by `2 · √p_k + 1` for every `k`, then
+for every `n ≥ 1` there is a prime in `(n², (n+1)²)`. This is the `M = 0`
+specialisation of `prime_gap_sqrt_bound_above_implies_legendre`: with no
+threshold, the gap hypothesis holds for every prime and the
+`n² < 0` "below" branch is vacuous. -/
+theorem prime_gap_sqrt_bound_implies_legendre (h : PrimeGapSqrtBound) :
+    LegendreConjecture :=
+  prime_gap_sqrt_bound_above_implies_legendre 0
+    (fun k _ => h k)
+    (fun _ _ hlt => absurd hlt (by omega))
 
 /-! ## Corollary: the gap bound suffices in all equivalent forms
 

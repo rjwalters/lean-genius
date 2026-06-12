@@ -430,3 +430,16 @@ Size: +100-150 LOC. Could be done before or after S4; independent.
 - Tao, T. "Structure and randomness in the prime numbers" (2007).
   Notes that Legendre's Conjecture is strictly stronger than what RH
   implies for prime gaps.
+
+## iter6 S5-ACT-B′ — eventually-suffices theorem (researcher-2, 2026-06-12)
+
+Landed `prime_gap_sqrt_bound_above_implies_legendre (M)` in
+`LegendrePrimeGapSqrtBoundSuffices.lean`: the sqrt prime-gap bound need only
+hold for primes `p_k ≥ M`, with `n² < 2M` cases handled by a separate
+`h_legendre_below` hypothesis. New ingredient vs iter-5: `Nat.bertrand` +
+`Nat.nth_count`/`Nat.le_findGreatest`/`Nat.nth_monotone` to show the largest
+prime `≤ n²` is `≥ M` when `n² ≥ 2M`. The old global theorem
+`prime_gap_sqrt_bound_implies_legendre` is now its `M = 0` corollary;
+downstream equivalence corollaries unchanged. **Docker: 3074 jobs, first try;
+0 sorries, 0 new axioms.** Memo:
+`sessions/2026-06-12-iter6-s5-act-b-prime-above-suffices.md`.

@@ -1,7 +1,7 @@
 {
   "slug": "bertrands-postulate-oq-02",
   "title": "Legendre conjecture for square intervals",
-  "phase": "ACT",
+  "phase": "ACT — iter6 S5-ACT-B′ landed (researcher-2, 2026-06-12): prime_gap_sqrt_bound_above_implies_legendre (eventually-suffices form, gap bound only for p_k≥M, small n via h_legendre_below); old global theorem now its M=0 corollary. Docker 3074 jobs, 0 sorries / 0 new axioms.",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -25,12 +25,12 @@
     "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-06-10T00:00:00Z",
+    "phase": "ACT — iter6 S5-ACT-B′ landed (researcher-2, 2026-06-12): prime_gap_sqrt_bound_above_implies_legendre (eventually-suffices form, gap bound only for p_k≥M, small n via h_legendre_below); old global theorem now its M=0 corollary. Docker 3074 jobs, 0 sorries / 0 new axioms.",
+    "since": "2026-06-12T00:00:00Z",
     "iteration": 6,
     "focus": "S5-PREP-2 DONE (researcher-9, 2026-06-10): pre-flight audit of iter-5's recommended S5 Cramér⇒Legendre ACT. Finding: iter-5's PrimeGapSqrtBound (∀ k) does NOT directly accept Cramér's eventually-quantified output (∀ k ≥ k₀); the bound fails at small k. Numerical analysis: smallest p where C·log²p ≤ 2√p+1 is p=121 (k₀≈29) for C=1 and p=358 (k₀≈70) for the Granville-optimal C=2e^{-γ}. For n≥21 iter-5 uses gap at k(n)≥84, exceeding both thresholds; legendre-partial's n=1..20 finite-tail suffices with margin. Remediation specified: a refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M (with Bertrand-based bridging) recovers iter-5 at M=0. ~85 LOC, 0 new axioms.",
     "blockers": [],
-    "nextAction": "S5-ACT-B′ — implement the refined iter-5 variant inside LegendrePrimeGapSqrtBoundSuffices.lean. Add prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) with hypotheses (h_gap_above : ∀ k, M ≤ p_k → gap ≤ 2√p_k+1) and (h_legendre_below : ∀ n, 1 ≤ n → n² < 2*M → LegendreAt n). Proof: case n² < 2*M direct from h_legendre_below; case n² ≥ 2*M applies Nat.bertrand at n²/2 to obtain p_k > n²/2 ≥ M, then replays iter-5's findGreatest construction. Derive prime_gap_sqrt_bound_implies_legendre as the corollary at M = 0. Estimated +85 LOC, 0 new axioms. Unblocks S5-ACT-A (real-analytic C·log²p ≤ 2√p+1) and S5-ACT-C (Cramér composition).",
+    "nextAction": "S5-ACT-A (the hard analytic half): instantiate M and prove h_gap_above from a real prime-gap theorem. NOTE inherent obstacle — known unconditional gap bounds (Cramér-type / Baker–Harman–Pintz) give gap = O(p^0.525) or O(√p·log p), which do NOT beat 2√p+1, so this reduction stays conditional and is not (by itself) a route to unconditional Legendre. The eventually-suffices form is nonetheless the correct target shape for any future analytic input. Optional: a sibling slug could host the C·log²p ≤ 2√p+1 real-analytic lemma.",
     "lastUpdate": "2026-06-10T00:00:00Z",
     "attemptCounts": {
       "total": 6,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Iter 6 PREP (2026-06-10): S5-PREP-2 DONE — pre-flight audit identified a structural quantifier mismatch between iter-5's PrimeGapSqrtBound (∀ k) and Cramér's eventually-quantified gap bound (∀ k ≥ k₀). Numerical thresholds pinned (p₀=121 for C=1, p₀=358 for Granville-optimal); legendre-partial's n=1..20 finite-tail covers the post-threshold regime with margin. Specified refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M, with Bertrand-based proof outline (~85 LOC, 0 new axioms); iter-5 is recovered at M=0. Iter 5 ACT (2026-06-06): S4-ACT-α DONE — LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence. Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
+    "progressSummary": "PROGRESS (iter6 S5-ACT-B′, 2026-06-12, researcher-2, this PR, Docker-verified): Added `prime_gap_sqrt_bound_above_implies_legendre (M)` to LegendrePrimeGapSqrtBoundSuffices.lean — a strictly stronger eventually-suffices conditional reduction: the sqrt prime-gap bound is only needed for primes p_k ≥ M, with the finitely-many n where n² < 2M discharged by a separate h_legendre_below hypothesis. New proof ingredient vs iter-5: Nat.bertrand at n²/2 + Nat.nth_count / Nat.le_findGreatest / Nat.nth_monotone to show the largest prime ≤ n² is ≥ M when n² ≥ 2M. The previous global theorem prime_gap_sqrt_bound_implies_legendre is now its M=0 corollary (one-liner); the three downstream equivalence corollaries are unchanged. Build: 3074 jobs, first try; 0 sorries, 0 new axioms. | Iter 6 PREP (2026-06-10): S5-PREP-2 DONE — pre-flight audit identified a structural quantifier mismatch between iter-5's PrimeGapSqrtBound (∀ k) and Cramér's eventually-quantified gap bound (∀ k ≥ k₀). Numerical thresholds pinned (p₀=121 for C=1, p₀=358 for Granville-optimal); legendre-partial's n=1..20 finite-tail covers the post-threshold regime with margin. Specified refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M, with Bertrand-based proof outline (~85 LOC, 0 new axioms); iter-5 is recovered at M=0. Iter 5 ACT (2026-06-06): S4-ACT-α DONE — LegendrePrimeGapSqrtBoundSuffices.lean (227 LOC, 0 axioms, 0 sorries, Docker build verified) formalizes the salvageable one-way implication PrimeGapSqrtBound → LegendreConjecture, plus three free corollaries via iter-2 equivalences. Iter 4 PREP-1 (2026-06-05): audited the iter-3 S4 plan; found the proposed iff is NOT a true equivalence. Iter 2 (2026-05-30): LegendreGapEquivalence.lean proves four equivalent reformulations.",
     "builtItems": [
       "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
       "prime-gap hierarchy rows shared with the Bertrand short-interval development",
