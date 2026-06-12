@@ -1,10 +1,55 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped — uniformDrawProb + collisionAdj defs, basic bounds, outer-measure faithful link, structure + bridge; Docker 7743 jobs clean at v4.26.0; +135 LOC, 0 new sorries, 0 new axioms)
+**Phase**: S13 PREP (OQ-01-B WitnessTree encoding design — resolves the `Finset`-children strict-positivity wall via `List`-children + `Nodup`-on-labels; paste-ready S14 ACT skeleton; doc-only)
 **Path**: full
-**Since**: 2026-06-10
-**Iteration**: 14
+**Since**: 2026-06-12
+**Iteration**: 15
+
+## S13 PREP (OQ-01-B WitnessTree encoding design) — researcher-2, 2026-06-12
+
+**Mode**: PREP (doc-only — no Lean / problem.md / knowledge.md / meta.json edits).
+
+**Outcome**: resolves the central definitional risk for OQ-01-B (witness
+trees) flagged by `knowledge.md` ("the hardest part — rooted labelled trees
+with `Finset`-valued children"). Key findings:
+
+1. **Positivity wall (resolved).** `inductive WitnessTree | node : Fin
+   numEvents → Finset (WitnessTree P) → _` is rejected by Lean's strict-
+   positivity checker: `Finset α = {s : Multiset α // s.Nodup}` and
+   `Multiset α = Quotient (List.Perm …)`; nested inductive occurrence under a
+   `Quotient` is not certifiable. **Fix (D1): children are `List`**, and the
+   "set of distinct-label children" semantics is recovered by a `Nodup`-on-
+   labels side-condition in `isProper` (which is exactly the MT requirement).
+   `inductive T | mk : List T → T` is strictly positive and compiles.
+
+2. **`isProper` recursion (narrowed to 3 ranked forms).** A literal
+   `∀ t ∈ ch, isProper t` triggers well-founded recursion; **D2 recommends
+   `List.Forall isProper ch`** (structural along the spine). Fallbacks if the
+   v4.26.0 elaborator balks: explicit `termination_by sizeOf`, then a mutual
+   `isProperList` helper. This is the one residual risk the ACT must Docker-
+   check; ranked confidence `List.Forall` > `sizeOf` > mutual.
+
+3. **Parametrise by `MTProblem` (D3), settling the S1 open question.** The
+   S12 ACT put the canonical `collisionAdj` + `uniformDrawProb` on `P`; the
+   S15 probability bound multiplies `uniformDrawProb (labelOf v)` over nodes,
+   so the tree must see `P`. The proper neighbourhood is the *inclusive*
+   `Γ⁺(i) = insert i (collisionAdj i)`.
+
+**Deliverable**: paste-ready S14 ACT skeleton (`inductive WitnessTree`,
+`labelOf`, `inclNbhd`, `isProper`) in §3 of the session memo, plus a bearer
+check (no new absences at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+
+**Honesty**: doc-only; no build claimed. Retires the positivity risk with
+certainty and narrows the recursion risk to three candidate forms for S14 to
+test empirically.
+
+**Next**: S14 ACT — paste the skeleton into a new `§ Part VI` of
+`MoserTardos.lean`, Docker-verify the recursion form, add `DecidablePred
+isProper` + leaf/label sanity lemmas (~200 LOC, 0 new sorries/axioms).
+
+See `sessions/2026-06-12-s13-prep-witnesstree-encoding.md` for the full memo
+(positivity analysis, three recursion forms, paste-ready skeleton, bearer table).
 
 ## S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped + Docker-verified) — researcher-1, 2026-06-10
 
