@@ -253,4 +253,68 @@ theorem not_hasInfiniteEulerPath_of_no_edges {V : Type*} {G : InfiniteGraph V}
   rintro ⟨w, _⟩
   exact h _ _ (w.step_adj 0)
 
+/-! ### One-edge sanity theorems
+
+The next-smallest case after the no-edge graph: an `InfiniteGraph` with a
+single undirected edge `{a, b}` (`a ≠ b`). Unlike the no-edge case its walk
+type is *nonempty* (the alternating walk `a, b, a, b, …` is a valid
+`InfiniteWalk`), so emptiness no longer closes the goal. Yet there is still no
+Euler path: any walk must re-traverse the single edge at consecutive steps,
+violating edge-injectivity. This is a strictly stronger non-degeneracy witness
+for the predicates than the no-edge theorems above. -/
+
+/-- The `InfiniteGraph` on `V` with exactly one undirected edge `{a, b}`
+(`a ≠ b`) and no other adjacencies. -/
+def oneEdgeGraph {V : Type*} (a b : V) (hab : a ≠ b) : InfiniteGraph V where
+  adj u v := (u = a ∧ v = b) ∨ (u = b ∧ v = a)
+  symm := by
+    rintro u v (⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)
+    · exact Or.inr ⟨rfl, rfl⟩
+    · exact Or.inl ⟨rfl, rfl⟩
+  loopless := by
+    rintro v (⟨rfl, h⟩ | ⟨rfl, h⟩)
+    · exact hab h
+    · exact hab h.symm
+
+/-- Two consecutive steps on the one-edge graph return to the start vertex:
+if `x → y` and `y → z` are both the edge `{a, b}` then `x = z`. The
+degenerate cross-cases (`y = a` and `y = b` simultaneously) are ruled out by
+`a ≠ b`. -/
+theorem oneEdge_double_step {V : Type*} {a b : V} (hab : a ≠ b) {x y z : V}
+    (h1 : (x = a ∧ y = b) ∨ (x = b ∧ y = a))
+    (h2 : (y = a ∧ z = b) ∨ (y = b ∧ z = a)) : x = z := by
+  rcases h1 with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> rcases h2 with ⟨h, rfl⟩ | ⟨h, rfl⟩
+  · exact h.symm
+  · rfl
+  · rfl
+  · exact h.symm
+
+/-- A one-edge `InfiniteGraph` has no one-way Euler path: steps 0 and 1 both
+traverse the single edge `{a, b}`, so they form the same undirected edge,
+contradicting edge-injectivity (`0 ≠ 1`). -/
+theorem not_hasOneWayEulerPath_of_one_edge {V : Type*} (a b : V) (hab : a ≠ b) :
+    ¬ HasOneWayEulerPath (oneEdgeGraph a b hab) := by
+  rintro ⟨w, hw⟩
+  have h0 := w.step_adj 0
+  have h1 := w.step_adj 1
+  simp only [zero_add] at h0
+  have hxz : w.vertex 0 = w.vertex (1 + 1) := oneEdge_double_step hab h0 h1
+  have hsame : w.sameEdge 0 1 := by
+    right
+    exact ⟨hxz, by rw [zero_add]⟩
+  exact absurd (hw.2 0 1 hsame) (by norm_num)
+
+/-- A one-edge `InfiniteGraph` has no bi-infinite Euler path: steps 0 and 1
+both traverse the single edge `{a, b}`, contradicting the bi-infinite
+edge-injectivity condition at `0 ≠ 1`. -/
+theorem not_hasInfiniteEulerPath_of_one_edge {V : Type*} (a b : V) (hab : a ≠ b) :
+    ¬ HasInfiniteEulerPath (oneEdgeGraph a b hab) := by
+  rintro ⟨w, hw⟩
+  have h0 := w.step_adj 0
+  have h1 := w.step_adj 1
+  simp only [zero_add] at h0
+  have hxz : w.vertex 0 = w.vertex (1 + 1) := oneEdge_double_step hab h0 h1
+  refine hw.2 0 1 (by norm_num) ?_
+  exact Or.inr ⟨hxz, by rw [zero_add]⟩
+
 end KonigsbergOQ03

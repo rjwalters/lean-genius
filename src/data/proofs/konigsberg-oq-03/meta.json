@@ -23,8 +23,8 @@
     "sorries": 0,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 256,
-    "assumptions": "0 axioms, 0 sorries, **0 `:= True` placeholders**. The 2026-06-03 S4 ACT discharged the remaining 2 placeholders (`HasInfiniteEulerPath`, `HasOneWayEulerPath`) by porting the `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure from sibling `Proofs/KonigsbergOQ03OQ02.lean` (adapted to use this file's own `InfiniteGraph`). All three Eulerian predicates (`HasEulerTour` from 2026-06-01 S3 ACT for the r=2 hypergraph case, `HasInfiniteEulerPath` for the bi-infinite case, `HasOneWayEulerPath` for the one-way infinite case) are now bound to genuine mathematical content. The file remains badge=`wip` because, while the predicates are now honestly defined, no nontrivial theorems characterising when they hold (e.g. Erdős–Grünwald–Weiszfeld) have been proved yet. Structure fields (uniform, symm, loopless, step_adj) are definitional, not assumptions. Build NOT independently verified after the S4 ACT (Docker daemon broken on the contributor's host) — confidence grounded in line-for-line pattern equivalence with the verified sibling file.",
+    "lineCount": 320,
+    "assumptions": "0 axioms, 0 sorries, **0 `:= True` placeholders**. The 2026-06-03 S4 ACT discharged the remaining 2 placeholders (`HasInfiniteEulerPath`, `HasOneWayEulerPath`) by porting the `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure from sibling `Proofs/KonigsbergOQ03OQ02.lean` (adapted to use this file's own `InfiniteGraph`). All three Eulerian predicates (`HasEulerTour` from 2026-06-01 S3 ACT for the r=2 hypergraph case, `HasInfiniteEulerPath` for the bi-infinite case, `HasOneWayEulerPath` for the one-way infinite case) are now bound to genuine mathematical content. The file remains badge=`wip` because, while the predicates are now honestly defined, no nontrivial theorems characterising when they hold (e.g. Erdős–Grünwald–Weiszfeld) have been proved yet; the 2026-06-11 S7 ACT added one-edge non-existence sanity theorems (still not a characterisation). Structure fields (uniform, symm, loopless, step_adj) are definitional, not assumptions. Docker-verified GREEN at 2026-06-11 (`Built Proofs.KonigsbergOQ03`, 7743 jobs) — supersedes the earlier S4 build-uncertainty note (Docker daemon has since recovered).",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_path#In_directed_graphs",
     "mathlibDependencies": [
       {
@@ -65,10 +65,11 @@
       "BiInfiniteWalk structure (S4 ACT, 2026-06-03): ℤ-indexed sequence of adjacent vertices, with CoversEdge predicate, needed for the bi-infinite version of the Erdős–Grünwald–Weiszfeld theorem",
       "IsBiInfiniteEulerWalk (S4 ACT, 2026-06-03): bi-infinite Euler walk = covers every edge + distinct integer step indices traverse distinct edges",
       "HasInfiniteEulerPath (S4 ACT, 2026-06-03): bi-infinite Euler path bound to ∃ w : BiInfiniteWalk G, IsBiInfiniteEulerWalk G w — replaces the prior := True placeholder",
-      "HasOneWayEulerPath (S4 ACT, 2026-06-03): one-way infinite Euler path bound to ∃ w : InfiniteWalk G, IsEulerWalk G w — replaces the prior := True placeholder"
+      "HasOneWayEulerPath (S4 ACT, 2026-06-03): one-way infinite Euler path bound to ∃ w : InfiniteWalk G, IsEulerWalk G w — replaces the prior := True placeholder",
+      "oneEdgeGraph + one-edge sanity theorems (S7 ACT, 2026-06-11, Docker-verified): the single-edge InfiniteGraph {a,b} (a≠b) and the theorems not_hasOneWayEulerPath_of_one_edge / not_hasInfiniteEulerPath_of_one_edge proving it admits no Euler path. Unlike the no-edge case its walk type is nonempty (the alternating walk a,b,a,b,… exists), so the contradiction comes from edge-injectivity (steps 0 and 1 re-traverse the same edge) rather than from emptiness — a strictly stronger non-degeneracy witness. Helper: oneEdge_double_step."
     ],
-    "theoremCount": 9,
-    "definitionCount": 14
+    "theoremCount": 12,
+    "definitionCount": 15
   },
   "overview": {
     "historicalContext": "Euler's 1736 solution to the Königsberg bridge problem established that a graph has an Eulerian circuit iff every vertex has even degree, and an Eulerian path iff exactly two vertices have odd degree. This is one of the founding results of graph theory. Generalizing Euler's theorem beyond simple finite graphs has occupied mathematicians for nearly three centuries. For *hypergraphs* (where edges can connect more than 2 vertices), the naive degree condition fails for $r \\geq 3$: Lonc and Naroski (2010) proved that determining whether an $r$-uniform hypergraph ($r \\geq 3$) has an Eulerian circuit is NP-complete. For *infinite graphs*, the situation is more subtle: Erdős, Grünwald, and Weiszfeld (1936) characterized Eulerian paths in countable graphs. Their result has two parts: for locally finite graphs (every vertex has finite degree), the condition is essentially the same as the finite case; for graphs with vertices of infinite degree, additional conditions on finite subgraphs are required.",
@@ -266,11 +267,11 @@
   ],
   "leanFile": {
     "axiomCount": 0,
-    "lineCount": 256,
+    "lineCount": 320,
     "path": "Proofs/KonigsbergOQ03.lean",
     "sorries": 0,
-    "definitionCount": 14,
-    "theoremCount": 9
+    "definitionCount": 15,
+    "theoremCount": 12
   },
   "sorries": 0
 }

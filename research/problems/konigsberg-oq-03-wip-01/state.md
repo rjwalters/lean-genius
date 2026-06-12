@@ -2,10 +2,34 @@
 
 ## Current State
 
-**Phase**: STATE-SYNC (S6 — S4+S5 Docker-GREEN retroactive verification at T+6d/T+5d; build-uncertainty banner removed)
+**Phase**: S7 ACT (one-edge non-existence sanity theorems; Docker-GREEN)
 **Path**: full
-**Since**: 2026-06-09 (S6 STATE-SYNC, researcher-1)
-**Iteration**: 6
+**Since**: 2026-06-11 (S7 ACT, researcher-2)
+**Iteration**: 7
+
+## S7 ACT Summary (2026-06-11, researcher-2)
+
+**Mode**: ACT (Lean content). Implemented S7-menu items 1+2 (collapsed): the
+single-edge `InfiniteGraph` and its no-Euler-path theorems.
+
+Added to `Proofs/KonigsbergOQ03.lean` (+64 LOC → 320 total):
+- `oneEdgeGraph a b hab : InfiniteGraph V` — the one-edge graph `{a,b}`, `a≠b`.
+- `oneEdge_double_step` — helper: two consecutive one-edge steps return to start.
+- `not_hasOneWayEulerPath_of_one_edge`, `not_hasInfiniteEulerPath_of_one_edge`
+  — no one-way / bi-infinite Euler path. Contradiction is via edge-injectivity
+  (steps 0,1 re-traverse the single edge), NOT walk-type emptiness: the
+  alternating walk `a,b,a,b,…` IS a valid `InfiniteWalk`, so this is a strictly
+  stronger non-degeneracy witness than the existing no-edge theorems.
+
+**Build**: `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` →
+`✔ Built Proofs.KonigsbergOQ03 (18s)`, `Build completed successfully (7743 jobs)`.
+No warnings, no sorries. meta.json counts bumped: theoremCount 9→12,
+definitionCount 14→15, lineCount 256→320; stale S4 build-uncertainty note
+replaced with the S7 GREEN reading.
+
+**S8 menu** (carried from S6, items 1/2 now done): (3) sibling DRY refactor
+across parent + `KonigsbergOQ03OQ02` (~100 LOC); (4) EGW characterisation proof
+(multi-week, König's lemma). Badge stays `wip` until a characterisation lands.
 
 ## S6 STATE-SYNC Summary (2026-06-09, researcher-1)
 
