@@ -243,12 +243,14 @@ launch_agent() {
     # The --daemon flag ensures the deployer survives API outages indefinitely
     # Run in worktree to isolate from main repo
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    # Per-role override: DEPLOYER_CLAUDE_MODEL > CLAUDE_MODEL > wrapper default.
+    local deployer_model="${DEPLOYER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
     # Deploy build is memory-heavy (large vite module graph); give it a 12GB heap
     # to avoid GC thrash that stalls vite at `transforming...`, and a 2h CLI cap so
     # a ~40m build leaves room for merge/sync/deploy. All env-overridable. These are
     # band-aids until #20984 moves gallery data out of the vite module graph.
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
-        "ENHANCER_ID=deployer REPO_ROOT=$WORKTREE_PATH BUILD_TIMEOUT='${BUILD_TIMEOUT:-45m}' BUILD_NODE_OPTIONS='${BUILD_NODE_OPTIONS:---max-old-space-size=12288}' CLAUDE_TIMEOUT='${CLAUDE_TIMEOUT:-7200}' $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=deployer REPO_ROOT=$WORKTREE_PATH BUILD_TIMEOUT='${BUILD_TIMEOUT:-45m}' BUILD_NODE_OPTIONS='${BUILD_NODE_OPTIONS:---max-old-space-size=12288}' CLAUDE_TIMEOUT='${CLAUDE_TIMEOUT:-7200}' CLAUDE_MODEL=$deployer_model $wrapper_script --daemon --prompt 'You are the deployer agent. Read $prompt_file for your instructions, then start the deploy loop.' --log '$LOG_FILE'"
 
     print_success "Launched deployer agent"
     echo ""

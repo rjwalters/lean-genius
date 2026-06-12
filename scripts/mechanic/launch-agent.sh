@@ -225,10 +225,12 @@ launch_agent() {
     print_info "Interval: $INTERVAL minutes"
     print_info "Worktree: $WORKTREE_PATH"
 
-    # Launch in tmux with resilient wrapper in DAEMON mode
+    # Launch in tmux with resilient wrapper in DAEMON mode.
+    # Per-role override: MECHANIC_CLAUDE_MODEL > CLAUDE_MODEL > wrapper default.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    local mechanic_model="${MECHANIC_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
     tmux new-session -d -s "$SESSION_NAME" -c "$WORKTREE_PATH" \
-        "ENHANCER_ID=mechanic REPO_ROOT=$WORKTREE_PATH $wrapper_script --daemon --prompt 'You are the lean mechanic agent. Read $prompt_file for your instructions, then start the repair loop.' --log '$LOG_FILE'"
+        "ENHANCER_ID=mechanic REPO_ROOT=$WORKTREE_PATH CLAUDE_MODEL=$mechanic_model $wrapper_script --daemon --prompt 'You are the lean mechanic agent. Read $prompt_file for your instructions, then start the repair loop.' --log '$LOG_FILE'"
 
     print_success "Launched mechanic agent"
     echo ""

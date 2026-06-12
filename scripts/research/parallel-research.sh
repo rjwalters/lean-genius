@@ -229,10 +229,14 @@ launch_agent() {
     # Kill existing session if any
     tmux kill-session -t "$session_name" 2>/dev/null || true
 
-    # Launch in tmux with resilient wrapper for error handling
+    # Launch in tmux with resilient wrapper for error handling.
+    # Per-role model override: set RESEARCHER_CLAUDE_MODEL to A/B a different
+    # model (e.g. claude-fable-5) without affecting other agent roles. Falls
+    # through to the global CLAUDE_MODEL default in claude-wrapper.sh.
     local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+    local researcher_model="${RESEARCHER_CLAUDE_MODEL:-${CLAUDE_MODEL:-claude-opus-4-8}}"
     tmux new-session -d -s "$session_name" -c "$worktree_path" \
-        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
+        "ENHANCER_ID=researcher-$agent_num REPO_ROOT=$REPO_ROOT CLAUDE_TIMEOUT=14400 CLAUDE_MODEL=$researcher_model $wrapper_script --daemon --prompt 'You are researcher-$agent_num. Read $prompt_file for your instructions, then start the research workflow.' --log '$log_file'"
 
     print_success "Launched $session_name (worktree: $worktree_path)"
 }
