@@ -218,6 +218,44 @@ theorem squareKrylovProd_factor_count_le (j : ℕ) :
   have hL := length_le_twoPow_sum j.bitIndices
   omega
 
+/-- **Sharp factor-count bound (logarithmic).** If `j < 2 ^ k`, then the
+    number of squared-Krylov factors assembling `M^j` via
+    `squareKrylovProd M j` is at most `k`. Taking the least such `k`
+    (namely `Nat.size j = ⌈log₂ (j+1)⌉`) this is the genuine `O(log j)`
+    popcount bound underlying the Keller–Gehrig speed-up, sharpening the
+    trivial `≤ j` of `squareKrylovProd_factor_count_le`.
+
+    Proof: every set-bit index `i ∈ bitIndices j` satisfies
+    `2 ^ i ≤ ∑ 2^i = j < 2 ^ k`, hence `i < k`. The indices are distinct
+    (`Nat.bitIndices` is strictly sorted), so the list injects into
+    `Finset.range k`, bounding its length by `k`. -/
+theorem squareKrylovProd_factor_count_le_of_lt_two_pow
+    {j k : ℕ} (hjk : j < 2 ^ k) :
+    j.bitIndices.length ≤ k := by
+  have hnodup : j.bitIndices.Nodup := (Nat.bitIndices_sorted (n := j)).nodup
+  -- Every set-bit index is `< k`.
+  have hlt : ∀ i ∈ j.bitIndices, i < k := by
+    intro i hi
+    have hmem : (2 ^ i) ∈ j.bitIndices.map (fun t => 2 ^ t) :=
+      List.mem_map.mpr ⟨i, hi, rfl⟩
+    have hle : 2 ^ i ≤ (j.bitIndices.map (fun t => 2 ^ t)).sum :=
+      List.single_le_sum (fun x _ => Nat.zero_le x) _ hmem
+    rw [Nat.twoPowSum_bitIndices] at hle
+    have hlt2 : (2 : ℕ) ^ i < 2 ^ k := lt_of_le_of_lt hle hjk
+    by_contra hki
+    push_neg at hki
+    have hge : (2 : ℕ) ^ k ≤ 2 ^ i := Nat.pow_le_pow_right (by norm_num) hki
+    omega
+  -- The (distinct) indices embed into `range k`.
+  have hsub : j.bitIndices.toFinset ⊆ Finset.range k := by
+    intro i hi
+    rw [List.mem_toFinset] at hi
+    exact Finset.mem_range.mpr (hlt i hi)
+  calc j.bitIndices.length
+      = j.bitIndices.toFinset.card := (List.toFinset_card_of_nodup hnodup).symm
+    _ ≤ (Finset.range k).card := Finset.card_le_card hsub
+    _ = k := Finset.card_range k
+
 -- ============================================================
 -- Layer 3 (axiomatized): O(n^ω) operation count
 -- ============================================================
@@ -269,8 +307,8 @@ end MinpolyComplexity.SubcubicKrylov
 
   **Status.** Complete formalization of Layers 1 + 2 + vector-level
   corollaries + matrix-multiplication factor-count bound (Layer 2.5) +
-  axiomatized Layer 3 placeholder for ω. 11 theorems (3 Layer 1 +
-  4 Layer 2 matrix-level + 2 Layer 2 vector-level + 1 Layer 2.5
+  axiomatized Layer 3 placeholder for ω. 12 theorems (3 Layer 1 +
+  4 Layer 2 matrix-level + 2 Layer 2 vector-level + 2 Layer 2.5
   factor-count + 1 Layer 3 ω two-sided sanity), 0 sorries, 3 axioms
   (`omegaMM`, `omegaMM_two_le`, `omegaMM_lt_three` — opaque
   Layer 3 ω with its known bounds).
@@ -296,11 +334,13 @@ end MinpolyComplexity.SubcubicKrylov
   - `length_le_twoPow_sum` (helper) — for any `L : List ℕ`,
     `L.length ≤ (L.map (2^·)).sum`.
   - `squareKrylovProd_factor_count_le` — `j.bitIndices.length ≤ j`, the
-    matrix-multiplication factor count for assembling `M^j`. Combined
-    with `Layer 1 + Layer 2`, this realises the `O(log j)` matrix-product
-    bound of the Keller–Gehrig assembly loop (popcount(j) ≤ j; the
-    sharper `popcount(j) ≤ Nat.size j` bound is omitted pending the
-    appropriate Mathlib API).
+    trivial matrix-multiplication factor count for assembling `M^j`.
+  - `squareKrylovProd_factor_count_le_of_lt_two_pow` — the sharp
+    logarithmic bound: `j < 2^k → j.bitIndices.length ≤ k`. Taking the
+    least such `k` (`Nat.size j = ⌈log₂(j+1)⌉`) this realises the genuine
+    `O(log j)` popcount bound of the Keller–Gehrig assembly loop, via the
+    strict sortedness of `Nat.bitIndices` (distinct set bits inject into
+    `Finset.range k`).
 
   **Layer 3 axiomatized placeholder (S5 addition, 3 axioms + 1 theorem).**
   - `axiom omegaMM : ℝ` — the matrix-multiplication exponent.
