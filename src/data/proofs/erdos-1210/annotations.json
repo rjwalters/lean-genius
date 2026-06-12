@@ -196,24 +196,24 @@
     "id": "ann-1210-main-axiom",
     "proofId": "erdos-1210",
     "range": {
-      "startLine": 134,
-      "endLine": 178
+      "startLine": 129,
+      "endLine": 167
     },
     "type": "insight",
-    "title": "The Open Conjecture: Why It's Hard and What a Proof Would Need",
-    "content": "The main statement `erdos_1210` is axiomatized: we cannot prove it from known Mathlib results. A proof would likely require deep analytic number theory. One approach: the greedy algorithm — iteratively add the element a with largest 1/(n-a) that maintains coprimality. The primes are 'greedy-optimal' in a certain sense, but proving that no other coprime set can beat them needs careful analysis. The conjecture connects to Schur's inequality, multiplicative functions, and the distribution of 'rough' numbers (those with only large prime factors). The conjecture is open as of 2026 on the erdosproblems.com list.",
-    "mathContext": "Formal statement: $\\forall n \\geq 2, \\forall A \\subseteq [1,n)$ pairwise coprime: $\\sum_{a \\in A} \\frac{1}{n-a} \\leq \\sum_{p < n, p \\text{ prime}} \\frac{1}{n-p}$. Consequences proved: $0 \\leq$ sum (empty set), singletons satisfy the bound, prime singletons satisfy it. Proof difficulty: requires controlling all pairwise coprime subsets of $[1,n)$.",
+    "title": "Why the Literal Inequality Is Refuted and the Axiom Removed",
+    "content": "The statement was originally axiomatized as `erdos_1210`, but the literal transcription (weight 1/(n-a)) is FALSE: at n=5, A={4} the hypotheses hold yet ∑1/(n-a)=1 exceeds the prime sum 5/6. An axiom whose negation is a theorem of the same file makes the development inconsistent (False derivable), so the axiom and the two consequence theorems depending on it (erdos_1210_bound and the literally-false erdos_1210_singleton_bounded) were removed. What survives is axiom-free: the empty-set bound and the prime-singleton bound, both genuine subset-sum facts. The underlying Erdős problem is open, but under its correct '1/a' weighting the inequality is provable for pairwise coprime A by a smallest-prime-factor exchange argument — no axiom needed.",
+    "mathContext": "Refuted literal form: $\\exists n, A$ pairwise coprime with $\\sum_{a \\in A} \\frac{1}{n-a} > \\sum_{p<n} \\frac{1}{n-p}$ (witness $n=5$, $A=\\{4\\}$: $1 > 5/6$). Surviving axiom-free consequences: $0 \\leq \\sum_{p<n}\\frac{1}{n-p}$ and $\\frac{1}{n-p} \\leq \\sum_{q<n}\\frac{1}{n-q}$ for prime $p<n$.",
     "significance": "key",
     "relatedConcepts": [
       "Erdős open problems",
-      "analytic number theory",
-      "greedy algorithms on coprime sets",
+      "soundness of axiomatizations",
+      "counterexample construction",
       "Mertens' theorem",
       "rough numbers"
     ],
     "prerequisites": [
       "axiom declarations in Lean 4",
-      "open problems in number theory",
+      "consistency of formal developments",
       "Finset sums over filtered sets"
     ]
   }

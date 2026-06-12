@@ -1,55 +1,61 @@
 # Current State
 
-**Phase**: STATEMENT_REVISION_NEEDED
-**Since**: 2026-06-09T20:35:00Z
-**Iteration**: 2
+**Phase**: SOUNDNESS_RESTORED
+**Since**: 2026-06-11T00:00:00Z
+**Iteration**: 4
 
 ## Current Focus
 
-Discovered the transcribed axiom `erdos_1210` is **unsound** as literally
-stated. Adding machine-checked counterexample and flagging the formalization
-for statement-revision.
+S4 — Restore consistency of the formalization by removing the unsound
+`axiom erdos_1210`. The literal transcription is machine-checked FALSE (S2
+counterexample n=5, A={4}); keeping it as an axiom made the development
+inconsistent (`False` derivable, and the file actually proved the false
+theorem `erdos_1210_singleton_bounded`). This executes the S2/S3 documented
+next-action that PR #22850 (S3, additive 1/a rescue) left undone.
 
 ## Active Approach
 
-S2 COUNTEREXAMPLE — Construct a concrete witness (n = 5, A = {4}) where the
-hypotheses of `erdos_1210` hold but the conclusion fails. Verify in Lean.
+S4 AXIOM REMOVAL — Delete `axiom erdos_1210` and the two consequence theorems
+that depended on it being universally true:
+  - `erdos_1210_bound` (mere restatement of the axiom), and
+  - `erdos_1210_singleton_bounded` (itself FALSE: at n=5, k=4 it reduces to
+    `1 ≤ 5/6`).
+Retain all genuinely-verified, axiom-free content: structural prime/coprime
+lemmas, `erdos_1210_empty`, `erdos_1210_prime_singleton`, and the
+machine-checked refutation `erdos_1210_literal_counterexample`.
 
-## Findings (S2)
+## Findings (S4)
 
-The transcribed statement
-`∑_{a ∈ A} 1/(n-a) ≤ ∑_{p < n, p prime} 1/(n-p)`
-admits the following counterexample at n = 5:
-
-- A = {4} trivially satisfies `ValidSubset 5 A` (1 ≤ 4 < 5) and
-  `PairwiseCoprime A` (singleton).
-- LHS = 1/(5-4) = 1.
-- RHS = 1/(5-2) + 1/(5-3) = 1/3 + 1/2 = 5/6 ≈ 0.833.
-- 1 > 5/6, so the conjectured inequality FAILS.
-
-Hence the existing `axiom erdos_1210` and its four consequence theorems are
-unsound and should be refactored once the intended Erdős statement is
-recovered from [Er77c] / [Er80].
+- The file at main (post-S2) contained `axiom erdos_1210` AND
+  `erdos_1210_literal_counterexample` (its negation, for n=5/A={4}) AND
+  `erdos_1210_singleton_bounded` (a false theorem provable only via the bad
+  axiom). This is an outright inconsistency, not merely a flagged assumption.
+- Resolution: remove the axiom + the 2 dependent theorems. Result: 0 axioms,
+  0 sorries, 13 theorems, all machine-checked. Gallery status updated
+  axiomatized → verified (badge axiom → verified); axiomCount 1 → 0.
+- The correctly-weighted (1/a) positive statement is provable without any
+  axiom (S3, PR #22850, open on feature/researcher-1). My S4 removes the
+  unsound axiom; #22850 adds the verified 1/a bound. The two are
+  complementary; whichever merges second will need a trivial rebase in the
+  "Main Conjecture" comment region.
 
 ## Blockers
 
-- Source-text access: cannot directly fetch the original Erdős papers
-  ([Er77c] Erdős 1977c, [Er80] Erdős 1980) to recover the unstated hypothesis
-  (e.g., a > n/2, a > √n, or a different weight like 1/a).
-- Without the corrected statement, the axiom cannot be replaced — only flagged.
+- Source-text access still unavailable (erdosproblems.com → 403); the exact
+  intended hypotheses of [Er77c]/[Er80] remain unrecovered. This does NOT
+  block the soundness fix — removing a false axiom requires no source.
 
 ## Next Action
 
-S3 — A future iteration should:
-  1. Locate the Erdős source for problem 1210 (likely contains the missing
-     hypothesis).
-  2. Replace the unsound axiom with the corrected statement (or with a verified
-     theorem if the corrected version is provable).
-  3. Refactor or remove the four consequence theorems that depend on the
-     current axiom.
+S5 — Once original sources are recovered, optionally re-add the *correctly
+stated* inequality. If it matches the provable 1/a form, fold in PR #22850's
+exchange-argument theorem as the canonical positive result (still axiom-free).
+No axiom should be reintroduced unless a genuinely-unprovable-but-believed
+correct statement is recovered.
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 1 (S2 counterexample)
-- Approaches tried: 2 (S1 formalization → axiomatization; S2 falsification)
+- Total attempts: 4
+- Current approach attempts: 1 (S4 axiom removal)
+- Approaches tried: 4 (S1 axiomatize; S2 falsify; S3 1/a rescue [PR #22850];
+  S4 remove unsound axiom)

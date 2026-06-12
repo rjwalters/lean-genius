@@ -13,17 +13,23 @@ a,b ∈ A (pairwise coprime). Is it true that
 In other words: among all pairwise coprime subsets of {1,...,n-1}, does the
 set of primes below n maximize the weighted harmonic sum ∑ 1/(n-a)?
 
-## Status: OPEN
+## Status: OPEN (literal transcription REFUTED)
 
-This is an open conjecture of Erdős. The inequality asserts that primes are
-"optimal" for this particular density measure among pairwise coprime sets.
+The underlying Erdős conjecture is open, but the inequality *as literally
+transcribed above* (weight 1/(n-a)) is FALSE: the counterexample n = 5,
+A = {4} satisfies the stated hypotheses yet violates the bound (proved below in
+`erdos_1210_literal_counterexample`). This file therefore states NO axiom for
+the conjecture; it proves only the structural lemmas and the refutation, all
+machine-checked and axiom-free. The intended (correctly-weighted) form is
+discussed in the "Main Conjecture" section.
 
 ## Key Observations
 
 1. Primes < n are pairwise coprime, so they form a valid candidate set A.
 2. The sum ∑_{p<n} 1/(n-p) is a finite positive quantity for n ≥ 3.
 3. Any pairwise coprime set A has at most one even element.
-4. The inequality is tight when A = {primes < n}.
+4. The literal inequality is NOT a valid bound: a single composite near n
+   (e.g. A = {n-1}) can exceed the whole prime sum (witness n = 5, A = {4}).
 
 ## References
 
@@ -121,26 +127,28 @@ theorem primesBelow_sum_pos {n : ℕ} (hn : 3 ≤ n) :
   exact _root_.div_pos one_pos (by linarith)
 
 /-
-## The Main Conjecture (Open)
--/
+## The Main Conjecture (literal transcription is refuted)
 
-/-- **Erdős Problem 1210 (Open)**: For all n ≥ 3 and all pairwise coprime A ⊆ {1,...,n-1},
-    ∑_{a ∈ A} 1/(n-a) ≤ ∑_{p prime, p < n} 1/(n-p).
-    The set of primes below n maximizes this sum. -/
-axiom erdos_1210 (n : ℕ) (hn : 3 ≤ n) (A : Finset ℕ)
-    (hA_valid : ValidSubset n A)
-    (hA_coprime : PairwiseCoprime A) :
-    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p)
+The transcribed inequality `∑_{a∈A} 1/(n-a) ≤ ∑_{p<n} 1/(n-p)` is FALSE as
+literally stated — see `erdos_1210_literal_counterexample` below (n = 5,
+A = {4}). Earlier revisions asserted it as `axiom erdos_1210`, but an axiom
+whose negation is a theorem of the *same* file makes the development
+inconsistent: `False` becomes derivable (apply the axiom at n = 5, A = {4} and
+combine with the counterexample). The unsound axiom — together with the two
+consequence theorems that depended on it (`erdos_1210_bound`, and the
+literally-false `erdos_1210_singleton_bounded`, which claimed
+`1/(n-k) ≤ ∑_p 1/(n-p)` for every k ∈ [1,n), refuted at n = 5, k = 4 where it
+reduces to `1 ≤ 5/6`) — has therefore been REMOVED. Only machine-checked,
+axiom-free results remain in this file.
+
+The correctly-weighted statement (∑ 1/a in place of ∑ 1/(n-a)) is provable
+*without any axiom* by a smallest-prime-factor exchange argument; that positive
+result is tracked separately. See `research/problems/erdos-1210/state.md`.
+-/
 
 /-
-## Consequences
+## Consequences (axiom-free)
 -/
-
-/-- Any pairwise coprime A ⊆ {1,...,n-1} has sum bounded by the prime sum (from the axiom). -/
-theorem erdos_1210_bound (n : ℕ) (hn : 3 ≤ n) (A : Finset ℕ)
-    (hA_valid : ValidSubset n A) (hA_coprime : PairwiseCoprime A) :
-    ∑ a ∈ A, (1 : ℝ) / ((n : ℝ) - a) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) :=
-  erdos_1210 n hn A hA_valid hA_coprime
 
 /-- The empty set has sum 0, trivially bounded by the prime sum. -/
 theorem erdos_1210_empty (n : ℕ) (hn : 3 ≤ n) :
@@ -164,22 +172,12 @@ theorem erdos_1210_prime_singleton (n : ℕ) (hn : 3 ≤ n) (p : ℕ)
         have : (q : ℝ) < n := by exact_mod_cast hq.1
         linarith
 
-/-- Under the conjecture, any singleton {k} with k ∈ [1,n) has sum bounded by the prime sum.
-    In particular, k = 4 (even composite) also satisfies the bound. -/
-theorem erdos_1210_singleton_bounded (n : ℕ) (hn : 3 ≤ n) (k : ℕ) (hk1 : 1 ≤ k) (hkn : k < n) :
-    (1 : ℝ) / ((n : ℝ) - k) ≤ ∑ p ∈ primesBelow n, (1 : ℝ) / ((n : ℝ) - p) := by
-  have hle := erdos_1210 n hn {k}
-    (fun a ha => by simp only [Finset.mem_singleton] at ha; subst ha; exact ⟨hk1, hkn⟩)
-    (fun a ha b hb hab => by simp only [Finset.mem_singleton] at ha hb; omega)
-  simp only [Finset.sum_singleton] at hle
-  exact hle
-
 /-
 ## Counterexample: The Literal Statement Is FALSE
 
-The literal axiom `erdos_1210` above is **unsound** as transcribed: there is a
-concrete (n, A) for which the hypotheses are satisfied but the inequality
-FAILS. The minimal witness is n = 5, A = {4}:
+The literally-transcribed inequality is **false**: there is a concrete (n, A)
+for which the hypotheses (`ValidSubset`, `PairwiseCoprime`) are satisfied but
+the inequality FAILS. The minimal witness is n = 5, A = {4}:
 
   - 4 ∈ [1, 5), so `ValidSubset 5 {4}` holds.
   - A = {4} is trivially pairwise coprime (singleton, vacuous condition).
@@ -188,9 +186,11 @@ FAILS. The minimal witness is n = 5, A = {4}:
   - 1 > 5/6, so the conjectured bound fails.
 
 The theorem `erdos_1210_literal_counterexample` below proves this in machine-
-checked form. It does not invoke the bad axiom (to avoid deriving False and
-destabilizing downstream uses), but its statement is direct evidence that
-`erdos_1210` cannot be a theorem of any consistent extension of ZFC + Lean.
+checked form, with no axioms. Because its statement directly contradicts the
+formerly-asserted `axiom erdos_1210`, that axiom has been removed from this
+file (an axiom whose negation is a theorem of the same development makes it
+inconsistent). The counterexample stands as direct evidence that the literal
+transcription cannot be a theorem of any consistent extension of ZFC + Lean.
 
 ### Interpretation
 
@@ -199,11 +199,11 @@ The transcribed conjecture either:
   (b) uses different weights (e.g., 1/a instead of 1/(n-a)), or
   (c) was misrecorded in the source database.
 
-Two open follow-ups:
-  1. **Locate originals** [Er77c, Er80] to recover the intended hypothesis.
-  2. **Revise the axiom** to a verified or correctly-stated form. The current
-     axiom should be replaced (the four consequence theorems above are then
-     vacuous and should be removed/refactored).
+The ∑ 1/a re-weighting (b) is in fact provable for pairwise coprime A by a
+smallest-prime-factor exchange argument, with no axiom required — that positive
+result is tracked separately (see `research/problems/erdos-1210/state.md`). The
+remaining open task is to recover the original sources [Er77c, Er80] and
+confirm which corrected form Erdős intended.
 -/
 
 /-- `primesBelow 5 = {2, 3}` (decidable equality of concrete Finsets). -/
