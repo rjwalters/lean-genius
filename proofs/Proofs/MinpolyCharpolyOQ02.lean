@@ -133,6 +133,17 @@ theorem _root_.Matrix.IsDiagonalizable.zero :
     (0 : Matrix n n K).IsDiagonalizable :=
   Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_zero
 
+/-- **Sanity lemma (unconditional).** The identity matrix is diagonalizable. -/
+theorem _root_.Matrix.IsDiagonalizable.one :
+    (1 : Matrix n n K).IsDiagonalizable :=
+  Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_one
+
+/-- **Sanity lemma (unconditional).** Any explicitly diagonal matrix
+`Matrix.diagonal d` is diagonalizable. -/
+theorem _root_.Matrix.IsDiagonalizable.diagonal (d : n → K) :
+    (Matrix.diagonal d).IsDiagonalizable :=
+  Matrix.IsDiagonalizable.of_isDiag (Matrix.isDiag_diagonal d)
+
 -- ============================================================
 -- S7 ACT helpers: endomorphism-level bridges (Mathlib v4.26.0)
 -- ============================================================
