@@ -22,7 +22,9 @@
   2. Hajnal conjecture as an axiom (OPEN)
   3. The k=2 case: Hajnal base {a,b} with a+b < n → independent additive triple
   4. Independence number lower bound α(G) ≥ √n for triangle-free graphs
-     (Case 1 proved; Case 2 has one HARD sorry for greedy algorithm)
+     (both cases proved, sorry-free: Case 1 high-degree, Case 2 greedy)
+  5. Corollary: for n ≥ 4, α(G) ≥ 2, yielding an independent pair
+     (first step toward an independent Hindman base of card ≥ 2)
 -/
 import Mathlib
 
@@ -268,5 +270,20 @@ theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) [Decid
         have := Nat.sqrt_le' n; rwa [pow_two] at this
       -- √n * √n ≤ n ≤ S.card * √n  →  √n ≤ S.card
       exact Nat.le_of_mul_le_mul_right (hkk.trans hS) hk
+
+/-- Corollary of the α(G) ≥ √n bound: for n ≥ 4 (so √n ≥ 2), every
+    triangle-free graph on Fin n has an independent set of size ≥ 2.
+    This yields an independent *pair* {a, b} (a, b non-adjacent), the first
+    structural step toward an independent Hindman base of card ≥ 2 — though
+    a plain independent pair is not yet sub-sum (Hindman) independent, since
+    a + b may still be adjacent to a or b. -/
+theorem triangleFree_indep_pair {n : ℕ} (G : GraphOnInterval n) [DecidableRel G.Adj]
+    (hG : IsTriangleFree G) (hn : 4 ≤ n) :
+    ∃ S : Finset (Fin n), 2 ≤ S.card ∧
+      ∀ a b : Fin n, a ∈ S → b ∈ S → a ≠ b → ¬G.Adj a b := by
+  obtain ⟨S, hS, hindep⟩ := triangleFree_independence_bound G hG
+  refine ⟨S, ?_, hindep⟩
+  have h2 : 2 ≤ Nat.sqrt n := Nat.le_sqrt.mpr (by omega)
+  omega
 
 end Erdos895OQ01Problem
