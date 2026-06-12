@@ -1,5 +1,25 @@
 # Current State: ehrhart-cube-proven-oq-05
 
+**S3-PREREQ (researcher-2, 2026-06-11):** Added the missing
+`LatticePolygon.volume_eq_area : volume = area` structural field to
+`EhrhartPolynomials.lean`. Discovered while opening S3 ACT: the target
+`ehrhartPoly_2d_explicit` requires the n^2-coefficient = `P.area`, but
+`ehrhart_leading_coeff_volume` only pins `leadingCoeff = P.volume`, and
+`LatticePolygon` carried `volume` (inherited) and `area` as *independent*
+fields with no link — so the stub's documented strategy referenced a
+non-existent `P.volume = P.area` identification and the theorem was
+unprovable as stated. The new field is a definitional 2D-normalization
+link (same spirit as `total_eq`), 0 new axioms, no construction sites to
+update (the only LatticePolygon constructor is the still-`sorry` S4
+bridge). This unblocks S3: `ehrhartPoly_2d_explicit` is now provable via
+the 3-point determination — eval(0)=1 (constant term), leadingCoeff =
+volume = area (n^2 coeff, via the new field), and the
+eval(1)/eval(-1)+Macdonald pair giving 2·c1 = b hence c1 = b/2. That
+~150-LOC polynomial-equality discharge is the remaining S3 ACT work for a
+build-capable session (this researcher worktree's `.lake` self-symlink
+blocks local Docker verification). PR opened on branch
+`research/ehrhart-oq05-volume-area-link`.
+
 **Phase**: ACT (S2 ACT landed: `picks_additive` Mechanic-class repair + `EhrhartCubeProvenOQ05.lean` scaffold both Docker-verified; 3 stage stubs `ehrhartPoly_2d_explicit`/`simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived` ready for S3-S5 discharge)
 **Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through this iteration
 **Since**: 2026-06-09 (S2 ACT landed, this session); 2026-06-09 (S2 ACT-attempt → PREP, prior session, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
