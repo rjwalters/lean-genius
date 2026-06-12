@@ -1051,4 +1051,114 @@ lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
   have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
   linarith
 
+/-! ## Part 9: Markov bound on the biased-vertex count (S8 scaffold)
+
+The symmetric second-moment ADLRY proof
+(`witness_regular_symmetric_implies_epsilon_regular_small_eps`) needs the
+Markov / Chebyshev step: the number of `eps`-biased vertices is bounded
+by the *total* per-vertex bias mass. This section proves that purely
+combinatorial primitive — sorry-free — so that once the analytic
+second-moment input `∑ vertexBias ≤ eps² · |A|` is supplied, the bound
+`|A_bad| ≤ eps · |A|` follows by elementary arithmetic.
+
+The Markov inequality `eps · |A_bad| ≤ ∑_{a∈A} vertexBias` is obtained by
+(1) replacing each biased term by `eps` from below
+(`a ∈ A_bad → eps < vertexBias`), (2) summing the constant, and (3)
+extending the sum from `A_bad` to `A` using non-negativity of
+`vertexBias`. All three steps are standard `Finset.sum` API; no new
+bearer lemmas beyond `Finset.sum_const`, `Finset.sum_le_sum`,
+`Finset.sum_le_sum_of_subset_of_nonneg`, and `nsmul_eq_mul`.
+
+The split keeps the genuine ADLRY content (the second-moment estimate
+that produces `hmom`) isolated in `_small_eps`, while making the Markov
+step reusable and verified. -/
+
+/-- **Markov bound (A-side)**: the count of `eps`-biased A-vertices,
+scaled by `eps`, is at most the total per-vertex bias mass over `A`.
+
+This is the combinatorial heart of the Markov step in the symmetric
+second-moment ADLRY proof: combined with a second-moment input
+`∑ vertexBias ≤ eps² · |A|`, it yields `|A_bad| ≤ eps · |A|` (see
+`A_bad_card_le_of_sum_vertexBias_le`). Sorry-free. -/
+lemma eps_mul_A_bad_card_le_sum_vertexBias
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    eps * (A_bad G eps A B).card ≤ ∑ a ∈ A, vertexBias G a A B := by
+  have hsub : A_bad G eps A B ⊆ A := A_bad_subset G eps A B
+  -- (1) ∑_{a ∈ A_bad} eps = |A_bad| * eps  (constant sum).
+  have hconst : ∑ _a ∈ A_bad G eps A B, eps
+      = (A_bad G eps A B).card * eps := by
+    rw [Finset.sum_const, nsmul_eq_mul]
+  -- (2) |A_bad| * eps ≤ ∑_{a ∈ A_bad} vertexBias  (per-term `eps ≤ bias`).
+  have h1 : (A_bad G eps A B).card * eps
+      ≤ ∑ a ∈ A_bad G eps A B, vertexBias G a A B := by
+    rw [← hconst]
+    apply Finset.sum_le_sum
+    intro a ha
+    rw [mem_A_bad] at ha
+    exact le_of_lt ha.2
+  -- (3) ∑_{a ∈ A_bad} vertexBias ≤ ∑_{a ∈ A} vertexBias  (extend by ≥ 0).
+  have h2 : ∑ a ∈ A_bad G eps A B, vertexBias G a A B
+      ≤ ∑ a ∈ A, vertexBias G a A B := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg hsub
+    intro a _ _
+    exact vertexBias_nonneg G a A B
+  calc eps * (A_bad G eps A B).card
+      = (A_bad G eps A B).card * eps := by ring
+    _ ≤ ∑ a ∈ A_bad G eps A B, vertexBias G a A B := h1
+    _ ≤ ∑ a ∈ A, vertexBias G a A B := h2
+
+/-- **Markov bound (B-side)**: dual of `eps_mul_A_bad_card_le_sum_vertexBias`,
+for the B-side biased-vertex set. Sorry-free. -/
+lemma eps_mul_B_bad_card_le_sum_vertexBias_B
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    eps * (B_bad G eps A B).card ≤ ∑ b ∈ B, vertexBias_B G b A B := by
+  have hsub : B_bad G eps A B ⊆ B := B_bad_subset G eps A B
+  have hconst : ∑ _b ∈ B_bad G eps A B, eps
+      = (B_bad G eps A B).card * eps := by
+    rw [Finset.sum_const, nsmul_eq_mul]
+  have h1 : (B_bad G eps A B).card * eps
+      ≤ ∑ b ∈ B_bad G eps A B, vertexBias_B G b A B := by
+    rw [← hconst]
+    apply Finset.sum_le_sum
+    intro b hb
+    rw [mem_B_bad] at hb
+    exact le_of_lt hb.2
+  have h2 : ∑ b ∈ B_bad G eps A B, vertexBias_B G b A B
+      ≤ ∑ b ∈ B, vertexBias_B G b A B := by
+    apply Finset.sum_le_sum_of_subset_of_nonneg hsub
+    intro b _ _
+    exact vertexBias_B_nonneg G b A B
+  calc eps * (B_bad G eps A B).card
+      = (B_bad G eps A B).card * eps := by ring
+    _ ≤ ∑ b ∈ B_bad G eps A B, vertexBias_B G b A B := h1
+    _ ≤ ∑ b ∈ B, vertexBias_B G b A B := h2
+
+/-- **Markov consequence (A-side)**: under the second-moment input
+`∑ vertexBias ≤ eps² · |A|`, the biased-vertex count is at most
+`eps · |A|`.
+
+This is the exact `|A_bad| ≤ eps · |A|` bound the symmetric second-moment
+proof needs. It isolates the combinatorial Markov step (proved here,
+sorry-free) from the still-deferred analytic second-moment estimate that
+supplies the hypothesis `hmom`. -/
+lemma A_bad_card_le_of_sum_vertexBias_le
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps) (A B : Finset V)
+    (hmom : ∑ a ∈ A, vertexBias G a A B ≤ eps ^ 2 * A.card) :
+    ((A_bad G eps A B).card : ℚ) ≤ eps * A.card := by
+  have hmarkov := eps_mul_A_bad_card_le_sum_vertexBias G eps A B
+  nlinarith [hmarkov, hmom, heps, mul_pos heps heps]
+
+/-- **Markov consequence (B-side)**: dual of
+`A_bad_card_le_of_sum_vertexBias_le`. -/
+lemma B_bad_card_le_of_sum_vertexBias_B_le
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps) (A B : Finset V)
+    (hmom : ∑ b ∈ B, vertexBias_B G b A B ≤ eps ^ 2 * B.card) :
+    ((B_bad G eps A B).card : ℚ) ≤ eps * B.card := by
+  have hmarkov := eps_mul_B_bad_card_le_sum_vertexBias_B G eps A B
+  nlinarith [hmarkov, hmom, heps, mul_pos heps heps]
+
 end Szemeredi.OQ04
