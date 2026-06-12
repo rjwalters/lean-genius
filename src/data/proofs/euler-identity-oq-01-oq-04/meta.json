@@ -104,6 +104,19 @@
   },
   "sections": [
     {
+      "id": "sec-preliminaries",
+      "title": "Preliminaries: Module Overview and Imports",
+      "startLine": 1,
+      "endLine": 74,
+      "summary": "Module docstring framing the OQ-01-OQ-04 question (construct ℝ/2πℤ ≅ S¹ from Euler's t ↦ exp(i·t)) and its answer: package Mathlib's existing AddCircle.homeomorphCircle' bijection plus the AddCircle.toCircle_add homomorphism law into a named AddEquiv that Mathlib v4.26.0 leaves unexposed. Records the foundation (sibling file EulerIdentityOQ01OQ01OQ01.lean proves the analogous claims for the project's own circleMap), the verification status (0 axioms, 0 sorries, 1 private bridge lemma), and the three imports: Complex.Circle (for Circle and homeomorphCircle'), AddCircle.Defs (for the quotient), and Mathlib.Tactic. Opens the Real namespace so π denotes Real.pi, then opens namespace EulerIdentityOQ01OQ04.",
+      "concepts": [
+        "module docstring",
+        "open question OQ-01-OQ-04",
+        "Real namespace (π = Real.pi)",
+        "Mathlib imports"
+      ]
+    },
+    {
       "id": "sec-bridge",
       "title": "§0. Bridge: AddCircle.toCircle vs Real.Angle.toCircle at T = 2π",
       "startLine": 76,
