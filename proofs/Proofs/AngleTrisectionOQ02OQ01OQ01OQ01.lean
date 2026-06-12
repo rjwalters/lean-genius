@@ -112,7 +112,7 @@ theorem galois_2group_implies_degree_is_pow2_sep {F : Type*} [Field F]
   exact AngleTrisectionOQ01.dvd_pow_two_is_pow_two _ n hpos hdvd
 
 /-!
-## Part IV: The Inseparable Obstruction
+## Part IV: The Inseparable Obstruction (axiom-free)
 
 When separability fails, the divisibility natDegree(p) ∣ |Gal(p)| can fail.
 
@@ -126,38 +126,79 @@ This shows separability is NOT just a proof artifact — it is necessary for the
 The CharZero hypothesis in the original theorem was doing real mathematical work
 (ensuring all irreducibles are separable). Our generalization identifies separability
 as the exact hypothesis needed.
+
+**Integrity history**: an earlier revision encoded the obstruction via an axiom
+`insep_gal_trivial` asserting "inseparable irreducible ⇒ |Gal| = 1". That axiom is
+**mathematically false** (refuted in the OQ-01 descendant by `X⁴ + X² + a` over `F₂(a)`,
+which has |Gal| = 2). It has now been **deleted** and replaced by the honest,
+axiom-free `gal_card_one_of_purelyInseparable_splitting` (purely-inseparable *splitting
+field* hypothesis) and its consequence
+`natDeg_notDvd_gal_of_purelyInseparable_splitting`. The classical `X^p - t` example
+satisfies the purely-inseparable-splitting-field hypothesis, so the obstruction it
+illustrates is fully covered by the axiom-free theorem.
 -/
 
-/-- **WARNING — this axiom is MATHEMATICALLY FALSE as stated.**
+/-- In characteristic `p`, `(a - b) ^ (p ^ n) = a ^ (p ^ n) - b ^ (p ^ n)` — the iterated
+    Frobenius `x ↦ x ^ (p ^ n)` is a ring hom, so it commutes with subtraction. Ported from
+    the OQ-01 descendant (which imports this file and so cannot be imported here). -/
+lemma sub_pow_char_pow_eq {K : Type*} [CommRing K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
+    (a b : K) (n : ℕ) : (a - b) ^ p ^ n = a ^ p ^ n - b ^ p ^ n := by
+  simpa [iterateFrobenius_def] using map_sub (iterateFrobenius K p n) a b
 
-    The intended claim — "in char p, every inseparable irreducible f has |Gal(f)| = 1" —
-    fails whenever f = g(X^p) for g a separable irreducible of degree ≥ 2. In that case
-    f is inseparable irreducible but Gal(f) ≅ Gal(g) can be nontrivial.
+/-- A purely inseparable F-algebra automorphism of a field `K` is the identity.
 
-    **Explicit counterexample** (see `AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`):
-    over F = F₂(a), the polynomial f = X⁴ + X² + a is irreducible and inseparable
-    (f' = 0 in char 2), yet |Gal(f)| = 2 via the Artin-Schreier automorphism
-    α^{1/2} ↦ α^{1/2} + 1.
+    Each `x ∈ K` satisfies `x ^ p ^ n = algebraMap F K c` for some `c : F` and `n`
+    (purely-inseparable lift); `σ` fixes that element, so `(σ x - x) ^ p ^ n = 0` by the
+    char-`p` freshman's dream, and `K` being a field forces `σ x = x`.
 
-    **Correct theorem** (proved without axioms in the OQ-01 descendant file):
-    `gal_card_one_of_purelyInseparable_splitting` — if `f.SplittingField` is purely
-    inseparable over F, then |Gal(f)| = 1. The honest hypothesis is purely-inseparable
-    splitting field, NOT mere inseparability of f.
+    Ported from the OQ-01 descendant (`AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`), which
+    cannot be imported here (it imports this file). -/
+theorem algEquiv_eq_refl_of_isPurelyInseparable {F K : Type*} [Field F] [Field K]
+    [Algebra F K] {p : ℕ} [CharP K p] [hp : Fact p.Prime]
+    [IsPurelyInseparable F K] (σ : K ≃ₐ[F] K) :
+    σ = (AlgEquiv.refl : K ≃ₐ[F] K) := by
+  ext x
+  show σ x = x
+  haveI hF_p : CharP F p := (Algebra.charP_iff F K p).mpr inferInstance
+  obtain ⟨n, c, hc⟩ : ∃ n : ℕ, ∃ c : F, algebraMap F K c = x ^ p ^ n := by
+    obtain ⟨n, hn⟩ := IsPurelyInseparable.pow_mem F p x
+    obtain ⟨c, hc⟩ := hn
+    exact ⟨n, c, hc⟩
+  have hfixed : σ (x ^ p ^ n) = x ^ p ^ n := by
+    rw [← hc]; exact σ.commutes c
+  have hpow : σ x ^ p ^ n = x ^ p ^ n := by rw [← map_pow σ x, hfixed]
+  have hzero : (σ x - x) ^ p ^ n = 0 := by
+    rw [sub_pow_char_pow_eq (σ x) x n, hpow, sub_self]
+  have hne : p ^ n ≠ 0 := pow_ne_zero _ (Nat.Prime.pos hp.out).ne'
+  exact sub_eq_zero.mp (pow_eq_zero_iff hne |>.mp hzero)
 
-    This axiom is **retained only as a placeholder** so the downstream consequence
-    `natDeg_notDvd_gal_of_insep` still type-checks. Its statement does not reflect
-    a true mathematical fact; the descendant file `insep_gal_trivial_refuted` formally
-    exhibits the refutation. -/
-axiom insep_gal_trivial {F : Type*} [Field F] {p : ℕ} [CharP F p] [hp : Fact p.Prime]
-    {f : F[X]} (hf_irr : Irreducible f) (hf_insep : ¬f.Separable) :
-    Nat.card f.Gal = 1
+/-- **Correct replacement for the (now-deleted) false axiom `insep_gal_trivial`.**
 
-/-- Consequence: for an inseparable irreducible of degree > 1, natDegree ∤ |Gal|. -/
-theorem natDeg_notDvd_gal_of_insep {F : Type*} [Field F] {p : ℕ} [CharP F p]
-    [hp : Fact p.Prime] {f : F[X]} (hf_irr : Irreducible f) (hf_insep : ¬f.Separable)
-    (hf_deg : 1 < f.natDegree) :
+    If `f.SplittingField` is purely inseparable over `F`, then `|Gal(f)| = 1`. The honest
+    hypothesis is a *purely-inseparable splitting field*, NOT mere inseparability of `f`:
+    the naive "inseparable irreducible ⇒ |Gal| = 1" claim is false (e.g. `X⁴ + X² + a`
+    over `F₂(a)` is irreducible and inseparable yet has `|Gal| = 2` via the Artin–Schreier
+    automorphism `α^{1/2} ↦ α^{1/2} + 1`; see `insep_gal_trivial_refuted` in the OQ-01
+    descendant). Proved here without axioms by porting the descendant's argument. -/
+theorem gal_card_one_of_purelyInseparable_splitting {F : Type*} [Field F]
+    {p : ℕ} [CharP F p] [hp : Fact p.Prime]
+    (f : F[X]) [hK : IsPurelyInseparable F f.SplittingField] :
+    Nat.card f.Gal = 1 := by
+  haveI : CharP f.SplittingField p :=
+    (Algebra.charP_iff F f.SplittingField p).mp inferInstance
+  rw [Nat.card_eq_one_iff_unique]
+  refine ⟨⟨fun σ τ => (algEquiv_eq_refl_of_isPurelyInseparable σ).trans
+                      (algEquiv_eq_refl_of_isPurelyInseparable τ).symm⟩,
+          ⟨(AlgEquiv.refl : f.SplittingField ≃ₐ[F] f.SplittingField)⟩⟩
+
+/-- Honest consequence (replacing the false-axiom-backed `natDeg_notDvd_gal_of_insep`):
+    for `f` of degree > 1 with purely-inseparable splitting field, `natDegree ∤ |Gal|`
+    since `|Gal| = 1`. -/
+theorem natDeg_notDvd_gal_of_purelyInseparable_splitting {F : Type*} [Field F] {p : ℕ}
+    [CharP F p] [hp : Fact p.Prime] (f : F[X])
+    [IsPurelyInseparable F f.SplittingField] (hf_deg : 1 < f.natDegree) :
     ¬(f.natDegree ∣ Nat.card f.Gal) := by
-  rw [insep_gal_trivial hf_irr hf_insep]
+  rw [gal_card_one_of_purelyInseparable_splitting f]
   intro h
   have : f.natDegree ≤ 1 := Nat.le_of_dvd Nat.one_pos h
   omega
@@ -171,27 +212,26 @@ theorem natDeg_notDvd_gal_of_insep {F : Type*} [Field F] {p : ℕ} [CharP F p]
 | `natDegree_dvd_card_gal_charZero` | Irreducible, CharZero | natDegree ∣ |Gal| |
 | `galois_2group_implies_degree_pow2_sep` | Irred, Sep, 2-group Gal | natDegree ∣ 2^n |
 | `galois_2group_implies_degree_is_pow2_sep` | Irred, Sep, 2-group Gal | natDegree = 2^k |
-| `natDeg_notDvd_gal_of_insep` | Irred, Insep, degree > 1 | natDegree ∤ |Gal| |
+| `sub_pow_char_pow_eq` | char `p` | `(a-b)^(p^n) = a^(p^n) - b^(p^n)` |
+| `algEquiv_eq_refl_of_isPurelyInseparable` | purely insep `F ≤ K` | every `σ : K ≃ₐ[F] K` is `refl` |
+| `gal_card_one_of_purelyInseparable_splitting` | purely insep splitting field | |Gal| = 1 |
+| `natDeg_notDvd_gal_of_purelyInseparable_splitting` | purely insep splitting, degree > 1 | natDegree ∤ |Gal| |
 
-Theorems proved: 5 (0 sorries)
-Axioms: 1 (`insep_gal_trivial` — **mathematically FALSE as stated**; see warning on the
-        axiom declaration. Retained as a placeholder pending S2 ACT migration to the
-        purely-inseparable-splitting-field hypothesis proved in the OQ-01 descendant.)
+Theorems/lemmas proved: 8 (0 sorries)
+Axioms: 0
 
-## Integrity Note (S2 STATE-SYNC 2026-06-09)
+## Integrity Note (S3 ACT 2026-06-12 — false axiom removed)
 
-The axiom `insep_gal_trivial` was originally introduced as "documented but unformalized."
-The OQ-01 descendant file (`AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`) subsequently proved
-the axiom is **false** (X⁴+X²+a over F₂(a) has |Gal|=2, not 1) and supplied the correct
-replacement `gal_card_one_of_purelyInseparable_splitting` (0 axioms, 0 sorries). The
-correct hypothesis is purely-inseparable splitting field, not mere inseparability.
+The axiom `insep_gal_trivial` ("inseparable irreducible ⇒ |Gal| = 1") was
+**mathematically false** (the OQ-01 descendant `AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`
+refuted it: `X⁴+X²+a` over `F₂(a)` has |Gal|=2). It had been retained as a placeholder.
 
-The downstream theorem `natDeg_notDvd_gal_of_insep` in this file inherits the falsity of
-its hypothesis chain. A future ACT iteration should either (a) replace this axiom with
-the correct theorem and weaken `natDeg_notDvd_gal_of_insep` accordingly, or (b) lift the
-correct theorem and downstream consequence into this file from the descendant.
-
-This iteration is doc-only — no Lean bodies change; axiomCount and theoremCount unchanged.
+This iteration **deletes the false axiom** and its false-axiom-backed consequence
+`natDeg_notDvd_gal_of_insep`, porting the descendant's axiom-free
+`algEquiv_eq_refl_of_isPurelyInseparable` and `gal_card_one_of_purelyInseparable_splitting`
+into this file (the descendant cannot be imported — it imports this file) and restating
+the obstruction honestly as `natDeg_notDvd_gal_of_purelyInseparable_splitting`. The file
+is now **axiom-free** (axiomCount 1 → 0, 0 sorries).
 -/
 
 end AngleTrisectionOQ02OQ01OQ01OQ01
