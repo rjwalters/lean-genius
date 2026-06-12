@@ -29,6 +29,16 @@
     so `swap_succ` lifts to `_perm` (S5+).  Strategic `sorry`; proof
     strategy documented inline (Fin.induction on i; base case reduces
     to parent's 2D `intervalIntegral_swap`).
+  * S5 (researcher-2): Repair the Mathlib v4.26.0 migration drift that
+    had left this file failing to build — the applied interval bounds
+    `a 0 .. b 0` now require parenthesisation `(a 0)..(b 0)` (the bare
+    form mis-parsed as the set-integral region), and the `n = 2`
+    integrand-equality step uses `congrArg`/`funext` in place of the
+    `congr 1` that no longer reduces cleanly.  Add the sorry-free API
+    primitives the deferred swap proof needs: `iteratedIntervalIntegral_succ`
+    (outer-coordinate unfolding), `iteratedIntervalIntegral_zero`
+    (base point), and `iteratedIntervalIntegral_congr` (pointwise
+    substitution under the iterated integral).
 
   Sorries: 1 (on `iteratedIntervalIntegral_swap_succ`, S4 SCAFFOLD)
   Axioms: 0
@@ -59,9 +69,47 @@ noncomputable def iteratedIntervalIntegral :
     ∀ {n : ℕ}, (Fin n → ℝ) → (Fin n → ℝ) → ((Fin n → ℝ) → ℝ) → ℝ
   | 0, _, _, f => f Fin.elim0
   | _ + 1, a, b, f =>
-      ∫ x₀ in a 0 .. b 0,
+      ∫ x₀ in (a 0)..(b 0),
         iteratedIntervalIntegral (a ∘ Fin.succ) (b ∘ Fin.succ)
           (fun rest => f (Fin.cons x₀ rest))
+
+/-- **Unfolding lemma.** The `(n+1)`-fold iterated interval integral peels
+off its outermost coordinate, integrating over `a 0 .. b 0` while the
+remaining `n` coordinates recurse on the tails `a ∘ Fin.succ`,
+`b ∘ Fin.succ`. Definitional, but exposed as a named rewrite target so
+downstream proofs (notably the swap-invariance induction) need not
+re-derive the structural recursion each time. -/
+theorem iteratedIntervalIntegral_succ {n : ℕ}
+    (a b : Fin (n + 1) → ℝ) (f : (Fin (n + 1) → ℝ) → ℝ) :
+    iteratedIntervalIntegral a b f
+      = ∫ x₀ in (a 0)..(b 0),
+          iteratedIntervalIntegral (a ∘ Fin.succ) (b ∘ Fin.succ)
+            (fun rest => f (Fin.cons x₀ rest)) := rfl
+
+/-- **Zero-dimensional base.** The empty iterated integral is the integrand
+evaluated at the unique point `Fin.elim0 : Fin 0 → ℝ`. Definitional. -/
+@[simp] theorem iteratedIntervalIntegral_zero
+    (a b : Fin 0 → ℝ) (f : (Fin 0 → ℝ) → ℝ) :
+    iteratedIntervalIntegral a b f = f Fin.elim0 := rfl
+
+/-- **Pointwise congruence.** Iterated interval integrals of integrands that
+agree everywhere are equal. Proved by induction on `n`, peeling one
+coordinate at a time with `intervalIntegral.integral_congr`.
+
+This is the basic substitution principle the permutation-invariance proofs
+rely on when re-shaping the integrand through `Fin.cons` (the deferred
+`iteratedIntervalIntegral_swap_succ` base case needs exactly this to bridge
+the `Fin.cons` form against the parent's 2D `intervalIntegral_swap`). -/
+theorem iteratedIntervalIntegral_congr :
+    ∀ {n : ℕ} (a b : Fin n → ℝ) {f g : (Fin n → ℝ) → ℝ},
+      (∀ v, f v = g v) →
+      iteratedIntervalIntegral a b f = iteratedIntervalIntegral a b g
+  | 0, _, _, _, _, h => h _
+  | n + 1, a, b, f, g, h => by
+      rw [iteratedIntervalIntegral_succ a b f, iteratedIntervalIntegral_succ a b g]
+      refine intervalIntegral.integral_congr (fun x₀ _ => ?_)
+      exact iteratedIntervalIntegral_congr (a ∘ Fin.succ) (b ∘ Fin.succ)
+        (fun rest => h (Fin.cons x₀ rest))
 
 /-- **Specialisation to `n = 2` matches the parent's iterated form.**
 
@@ -81,10 +129,10 @@ equal by `intervalIntegral.integral_congr` applied twice. -/
 theorem iteratedIntervalIntegral_two
     (a b : Fin 2 → ℝ) (f : (Fin 2 → ℝ) → ℝ) :
     iteratedIntervalIntegral a b f
-      = ∫ x in a 0 .. b 0, ∫ y in a 1 .. b 1,
+      = ∫ x in (a 0)..(b 0), ∫ y in (a 1)..(b 1),
           f (fun i => if i = 0 then x else y) := by
   -- Reduce LHS by structural recursion at `n = 2`, `n = 1`, `n = 0`.
-  show ∫ x in a 0 .. b 0, ∫ y in a 1 .. b 1,
+  show ∫ x in (a 0)..(b 0), ∫ y in (a 1)..(b 1),
          f (Fin.cons x (Fin.cons y Fin.elim0))
        = _
   -- Two interval-integrals agree if the integrands agree pointwise on
@@ -94,7 +142,7 @@ theorem iteratedIntervalIntegral_two
   refine intervalIntegral.integral_congr ?_
   intro y _
   -- Reduce to equality of the two integrand functions on `Fin 2 → ℝ`.
-  congr 1
+  refine congrArg f ?_
   funext i
   fin_cases i <;> simp
 
