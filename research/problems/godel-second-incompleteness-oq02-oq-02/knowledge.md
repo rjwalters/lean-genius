@@ -163,3 +163,33 @@ Solovay's original construction. **Not recommended** as a single S2 effort. Bett
 - Segerberg, K. (1971). "An essay in classical modal logic" — Kripke completeness of GL over finite transitive irreflexive frames.
 - Löb, M. H. (1955). "Solution of a problem of Leon Henkin", *J. Symbolic Logic* — Löb's theorem itself.
 - Iorgulescu, V. (Coq). *A Coq formalization of GL* — closest prior art for an interactive-theorem-prover formalization.
+
+---
+
+## S16 ACT (2026-06-11): arithmetical soundness of GL — rule cases
+
+Shipped `proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean`
+(Docker-verified 3063 jobs, 0 sorries, **0 new axioms**).
+
+**Key structural finding.** The five `GL_proves` constructors split cleanly:
+- **Rules `mp`, `nec` are unconditionally sound** — genuine theorems from existing
+  infrastructure: `nec ⟶ d1_representability`, `mp ⟶ impl_mp`. Exported as
+  `arith_sound_nec` / `arith_sound_mp`.
+- **Schemas `taut`, `k`, `lob`** assert PA-provability of specific object formulas.
+  Under the opaque `Provable` these are *not derivable* (no object deduction
+  theorem; no concrete Σ₁ predicate). So `arithmetical_soundness_of` takes them as
+  explicit hypotheses `Htaut`/`Hk`/`Hlob` — yielding a 0-new-axiom soundness
+  induction whose only assumptions are the three named derivability facts.
+
+**Translations computed (for future discharge):**
+- K-schema: `Prov⌜a→ᶠb⌝ →ᶠ (Prov⌜a⌝ →ᶠ Prov⌜b⌝)` with `a,b := translate ρ p, translate ρ q`.
+- Löb-schema: `Prov⌜Prov⌜a⌝ →ᶠ a⌝ →ᶠ Prov⌜a⌝` with `a := translate ρ p`.
+
+**Induction mechanics.** `induction h with` on `GL_proves`: implicit constructor
+args are NOT counted in the `| ctor ...` binder list — `taut` takes 1 binder,
+`mp` takes 4 (h₁ h₂ ih₁ ih₂), `nec` takes 2 (h ih). The `k`/`lob` axiom cases
+close by `simp only [translate_impl, translate_box]` then `exact H...`.
+
+**Next (S17).** Discharge one of `Htaut`/`Hk`/`Hlob` into a theorem. Most
+tractable: `Hk` via an object-level deduction/curry lemma composing the meta
+`internal_K`; `Hlob` waits on S4 ACT (Löb); `Htaut` needs CPL completeness.

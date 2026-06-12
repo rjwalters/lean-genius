@@ -18,33 +18,36 @@
   "knownResults": {
     "proven": [
       "First and second incompleteness theorems already formalized in GodelIncompleteness.lean and GodelSecondIncompletenessOQ02.lean (6 axioms total).",
-      "Löb's theorem informally stated at GodelSecondIncompletenessOQ02.lean:213 (no Lean proof — needs D2/D3 + Henkin fixed-point)."
+      "Löb's theorem informally stated at GodelSecondIncompletenessOQ02.lean:213 (no Lean proof — needs D2/D3 + Henkin fixed-point).",
+      "S16: arith_sound_nec — nec rule is arithmetically sound (⊢ translate ρ p → ⊢ translate ρ (□p)) via d1_representability. 0 new axioms.",
+      "S16: arith_sound_mp — mp rule is arithmetically sound via impl_mp. 0 new axioms.",
+      "S16: arithmetical_soundness_of — full GL→PA soundness induction, conditional on the three GL-axiom translations being PA-provable (Htaut/Hk/Hlob hypotheses). 0 new axioms."
     ],
     "open": [
       "S2-α: Extend Formula type with object-level impl; state D2 and D3 as honest object-level axioms (companion file).",
-      "S2-β/S3: Soundness direction of Solovay — GL ⊢ φ ⇒ ∀ realizations *, PA ⊢ φ*.",
-      "S3+: Completeness direction — requires concrete Σ_1-formalization of Provable, Segerberg Kripke completeness, Solovay's h construction, and Σ_1-completeness of PA."
+      "S3+: Completeness direction — requires concrete Σ_1-formalization of Provable, Segerberg Kripke completeness, Solovay's h construction, and Σ_1-completeness of PA.",
+      "S16 follow-up: discharge Htaut/Hk/Hlob from hypotheses to theorems (currently the only gap between conditional and unconditional GL→PA soundness)."
     ],
     "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-25T10:00:00Z",
-    "iteration": 15,
-    "focus": "S15 ACT shipped: `translate : (PropAtom → Formula) → GLFormula → Formula` realization function bridging GL syntax to PA syntax, per S10 PREP #18678 §3.3. New companion file `proofs/Proofs/GodelSecondIncompletenessOQ02Translate.lean` (132 LOC) with 4 recursive cases + 5 `rfl`-discharged simp-equation theorems. **0 new axioms.** Docker-verified 3062 jobs clean.",
+    "since": "2026-06-11",
+    "iteration": 16,
+    "focus": "S16 ACT shipped GodelSecondIncompletenessOQ02Soundness.lean (Docker-verified 3063 jobs, 0 sorries, 0 NEW axioms): arithmetical soundness of GL in rule-verified conditional form. The mp/nec inference-rule cases are discharged unconditionally by impl_mp + d1_representability (genuine theorems, exported as arith_sound_mp/arith_sound_nec); the taut/k/lob axiom-schema cases are isolated as explicit hypotheses (Htaut/Hk/Hlob) since they assert PA-provability of object formulas that cannot be derived under the opaque Provable predicate.",
     "blockers": [
-      "S5b PREP rename (ModalFormula → GLFormula) still queued — S5 PREP #18473 names ModalFormula; S8 ACT shipped GLFormula. Demoted from S13 #2 to S14 #3 because Docker has recovered (per 2026-05-25 infra-signal memos elsewhere in gallery); doc-only no longer has a tactical advantage. Recommend pairing with S5 ACT when claimed.",
-      "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope. Unchanged across S13 → S14."
+      "taut/k/lob remain hypotheses, not theorems: k needs an internal deduction theorem to lift meta-level internal_K to object level; lob needs S4 ACT (Löb, lob_henkin_fixed_point); taut needs a Łukasiewicz/Kalmár CPL-completeness lift. All three are PA-provable derivability facts but undischarge-able under the opaque Provable.",
+      "Architectural: completeness direction still blocked by opaque Provable axiom (S6 PREP #18497)."
     ],
-    "nextAction": "S16 ACT — arithmetical soundness of GL: five-case induction `GL_proves φ → ∀ ρ, ⊢ translate ρ φ`. With `translate` now available, `nec`/`mp`/`k` cases discharge by existing axioms + simp-rewrites (0 new axioms); `taut` needs Łukasiewicz CPL completeness (~80-120 LOC); `lob` is blocked on S4 ACT (orthogonal +1 axiom). Total S16 scope: ~150-250 LOC, +0 or +1 axiom.",
+    "nextAction": "S17: discharge one of Htaut/Hk/Hlob into a theorem. Most tractable: Hk via an object-level deduction theorem composing internal_K with a curry axiom; or wire arithmetical_soundness_of into second_incompleteness as a sanity instance.",
     "attemptCounts": {
-      "total": 15,
-      "currentApproach": 15,
+      "total": 16,
+      "currentApproach": 16,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1–S11 (9 merged doc-only PRs) + S2-α ACT (PR #19037, OPEN) + S8 ACT (this update, build-verified): S1 OBSERVE Solovay survey + opaque-Provable architectural flag; S1b OBSERVE typeclass-encoding axiom-budget; S4 PREP Löb (~150 LOC design); S5 PREP Kripke/Segerberg; S6 PREP Σ₁-Provable rebuild scoping (S3+ blocker); S7 PREP arithmetical soundness induction (~250–400 LOC); S8 PREP GLFormula + GL_proves Hilbert design (~40–80 LOC); S9 PREP S8 audit + naming reconciliation; S10 PREP realization translate; S11 PREP arith_tautology_lift via Łukasiewicz Strategy B. **S2-α ACT (OPEN PR #19037)** companion file impl_formula + D2 + D3 + impl_mp axioms + parent v4.26.0 unblocker (3060 jobs clean). **S8 ACT (this update)** companion file GLFormula (4 ctors atom/falsum/impl/box) + PropAxiom (Łukasiewicz k1/k2/k3) + GL_proves (5 ctors taut/k/lob/mp/nec), 0 axioms, 0 sorries, ~55 LOC source, 2-job Docker clean. The two ACTs are orthogonal (PA syntax vs modal syntax). Downstream: S4 Löb / S10 translate / S7 arith soundness gated on PR #19037 merge; S5 Kripke now reachable from S8 ACT.",
+    "progressSummary": "S16 ACT COMPLETE (Docker-verified 3063 jobs, 0 sorries, 0 NEW axioms). Shipped GodelSecondIncompletenessOQ02Soundness.lean: arithmetical soundness of GL in conditional/rule-verified form. The genuine mathematical content — that the mp and nec inference rules preserve PA-provability — is proved unconditionally (impl_mp, d1_representability) and exported as arith_sound_mp/arith_sound_nec. The three axiom-schema cases (taut/k/lob) are isolated as explicit hypotheses Htaut/Hk/Hlob rather than new axioms, because under the gallery's opaque Provable predicate PA-provability of those object formulas cannot be derived. This closes the soundness induction with 0 new axioms and pinpoints exactly the three derivability facts future stages must discharge (k: internal deduction theorem; lob: S4 Löb; taut: CPL completeness lift).",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
@@ -72,7 +75,8 @@
         "dockerJobs": 3062,
         "buildSeconds": 9.0,
         "description": "Realization function bridging GL syntax to PA syntax. 4 recursive cases + 5 simp-equation theorems all rfl-discharged."
-      }
+      },
+      "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean (arith_sound_nec, arith_sound_mp, arithmetical_soundness_of; 0 sorries, 0 new axioms)"
     ],
     "insights": [
       "S14 STATE-SYNC (researcher-1, 2026-05-25T10:00Z): PR #19037 (S2-α ACT) MERGED 2026-05-19T18:15:15Z (commit 84055877c4a, squash-merge, rebased by deployer/champion path with loom:pr + loom:merge-conflict labels). The S13 bottleneck is cleared. Ships GodelSecondIncompletenessOQ02Companion.lean (~225 LOC) with impl_formula, impl_mp, d2_distribution, d3_internal_necessitation, derived internal_K theorem. No new PRs on this slug in the 6 days since merge (2026-05-19 → 2026-05-25); next-action handoff for S10 translate ACT or S4 Löb ACT is needed.",
@@ -138,7 +142,10 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-06-01",
+  "lastUpdate": "2026-06-11",
   "significance": 6,
-  "tractability": 6
+  "tractability": 6,
+  "leanFiles": [
+    "proofs/Proofs/GodelSecondIncompletenessOQ02Soundness.lean"
+  ]
 }
