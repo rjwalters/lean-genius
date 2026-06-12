@@ -1051,4 +1051,315 @@ lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
   have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
   linarith
 
+/-! ## Part 10: Edge-count primitives and first-moment identities
+    (S14 ACT — analytic identity layer for the moment bounds)
+
+The deferred symmetric ADLRY proof at
+`witness_regular_symmetric_implies_epsilon_regular_small_eps` consumes
+moment bounds of the shape `∑ vertexBias ≤ f(eps) · |A|` (the Markov
+machinery over `A_bad` / `B_bad` operates on exactly such sums). This
+Part supplies the *identity layer* those bounds will be proved against:
+
+* `edgeCount` — the ℕ-valued numerator of `edgeDensity`, exposed as a
+  first-class object so sums of densities can be manipulated without
+  re-opening the zero-denominator guard at every step;
+* fiberwise degree decompositions `edgeCount_eq_sum_left/right`
+  (`e(A,B) = ∑_{b ∈ B} deg_A(b)` and the A-side dual);
+* the Route A predicate split `edgeCount_filter_add_filter_neg`
+  (the ad-hoc helper recommended by the Iter 19 §3 Mathlib mining —
+  no direct two-piece decomposition lemma exists in Mathlib v4.26.0);
+* the **first-moment identities**
+  `∑_{b ∈ B} d(A, {b}) = d(A, B) · |B|` (and A-side dual): the
+  *signed* per-vertex deviations sum to zero
+  (`sum_edgeDensity_singleton_sub_left/right`). This is the
+  structural reason the moment bounds carry information only through
+  the *absolute* deviations `vertexBias` / `vertexBias_B`;
+* the **positive-part doubling reductions**
+  `sum_vertexBias_eq_two_mul_pos_part` (and B-side dual): since the
+  signed first moment vanishes, `∑ vertexBias` is exactly twice the
+  one-sided positive-part deviation sum. The open analytic step-2
+  estimate (`∑ vertexBias ≤ f(eps)·|A|` from the symmetric surrogate)
+  thus reduces to a one-sided bound over a single subset of `A`.
+
+All declarations are sorry-free. Content-disjoint from the in-flight
+Markov-consequence lemmas (PR #22890) and the 3/4-domination counting
+lemma (PR #22879); this Part is the upstream identity layer the
+analytic step-2 estimate will consume. -/
+
+/-- **Edge count**: the number of adjacent pairs in `A × B` — the
+ℕ-valued, guard-free numerator of `edgeDensity`. -/
+def edgeCount (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) : ℕ :=
+  ((A.product B).filter (fun p => G.Adj p.1 p.2)).card
+
+/-- `edgeDensity` in terms of `edgeCount`, away from the degenerate
+case. -/
+lemma edgeDensity_eq_edgeCount (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) (hA : A.Nonempty) (hB : B.Nonempty) :
+    edgeDensity G A B = (edgeCount G A B : ℚ) / (A.card * B.card) := by
+  have hA0 : (0 : ℚ) < A.card := by exact_mod_cast hA.card_pos
+  have hB0 : (0 : ℚ) < B.card := by exact_mod_cast hB.card_pos
+  unfold edgeDensity edgeCount
+  rw [dif_neg (mul_pos hA0 hB0).ne']
+
+omit [Fintype V] [DecidableEq V] in
+/-- `edgeDensity` over an empty left part vanishes. -/
+lemma edgeDensity_empty_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (B : Finset V) : edgeDensity G (∅ : Finset V) B = 0 := by
+  unfold edgeDensity
+  rw [dif_pos (by simp)]
+
+omit [Fintype V] [DecidableEq V] in
+/-- `edgeDensity` over an empty right part vanishes. -/
+lemma edgeDensity_empty_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) : edgeDensity G A (∅ : Finset V) = 0 := by
+  unfold edgeDensity
+  rw [dif_pos (by simp)]
+
+/-- **Fiberwise degree decomposition (B-side)**:
+`e(A, B) = ∑_{b ∈ B} deg_A(b)`, where `deg_A(b)` counts the
+`A`-neighbours of `b`. -/
+lemma edgeCount_eq_sum_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    edgeCount G A B = ∑ b ∈ B, (A.filter (fun a => G.Adj a b)).card := by
+  unfold edgeCount
+  have hmaps : ∀ p ∈ (A.product B).filter (fun p => G.Adj p.1 p.2),
+      p.2 ∈ B := by
+    intro p hp
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).2
+  rw [Finset.card_eq_sum_card_fiberwise hmaps]
+  refine Finset.sum_congr rfl (fun b hb => ?_)
+  refine Finset.card_bij' (fun p _ => p.1) (fun a _ => (a, b)) ?_ ?_ ?_ ?_
+  · intro p hp
+    have hpb := (Finset.mem_filter.mp hp).2
+    have hp1 := Finset.mem_filter.mp (Finset.mem_filter.mp hp).1
+    have hadj := hp1.2
+    exact Finset.mem_filter.mpr
+      ⟨(Finset.mem_product.mp hp1.1).1, by rwa [hpb] at hadj⟩
+  · intro a ha
+    have ha' := Finset.mem_filter.mp ha
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha'.1, hb⟩, ha'.2⟩, rfl⟩
+  · intro p hp
+    have hpb := (Finset.mem_filter.mp hp).2
+    show (p.1, b) = p
+    rw [← hpb]
+  · intro a _
+    rfl
+
+/-- **Fiberwise degree decomposition (A-side)**:
+`e(A, B) = ∑_{a ∈ A} deg_B(a)`. -/
+lemma edgeCount_eq_sum_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    edgeCount G A B = ∑ a ∈ A, (B.filter (fun b => G.Adj a b)).card := by
+  unfold edgeCount
+  have hmaps : ∀ p ∈ (A.product B).filter (fun p => G.Adj p.1 p.2),
+      p.1 ∈ A := by
+    intro p hp
+    exact (Finset.mem_product.mp (Finset.mem_filter.mp hp).1).1
+  rw [Finset.card_eq_sum_card_fiberwise hmaps]
+  refine Finset.sum_congr rfl (fun a ha => ?_)
+  refine Finset.card_bij' (fun p _ => p.2) (fun b _ => (a, b)) ?_ ?_ ?_ ?_
+  · intro p hp
+    have hpa := (Finset.mem_filter.mp hp).2
+    have hp1 := Finset.mem_filter.mp (Finset.mem_filter.mp hp).1
+    have hadj := hp1.2
+    exact Finset.mem_filter.mpr
+      ⟨(Finset.mem_product.mp hp1.1).2, by rwa [hpa] at hadj⟩
+  · intro b hbm
+    have hb' := Finset.mem_filter.mp hbm
+    exact Finset.mem_filter.mpr
+      ⟨Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨ha, hb'.1⟩, hb'.2⟩, rfl⟩
+  · intro p hp
+    have hpa := (Finset.mem_filter.mp hp).2
+    show (a, p.2) = p
+    rw [← hpa]
+  · intro b _
+    rfl
+
+/-- Edge count against a singleton on the right is the degree of `b`
+into `A`. -/
+lemma edgeCount_singleton_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) (b : V) :
+    edgeCount G A {b} = (A.filter (fun a => G.Adj a b)).card := by
+  rw [edgeCount_eq_sum_right, Finset.sum_singleton]
+
+/-- Edge count against a singleton on the left is the degree of `a`
+into `B`. -/
+lemma edgeCount_singleton_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (B : Finset V) :
+    edgeCount G {a} B = (B.filter (fun b => G.Adj a b)).card := by
+  rw [edgeCount_eq_sum_left, Finset.sum_singleton]
+
+/-- **Route A predicate split** (Iter 19 §3 recommendation): splitting
+`B` by any decidable predicate splits the edge count additively. The
+two-piece decomposition absent from Mathlib's `Density.lean`. -/
+lemma edgeCount_filter_add_filter_neg (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) (p : V → Prop) [DecidablePred p] :
+    edgeCount G A (B.filter p) + edgeCount G A (B.filter (fun b => ¬ p b))
+      = edgeCount G A B := by
+  rw [edgeCount_eq_sum_right, edgeCount_eq_sum_right, edgeCount_eq_sum_right]
+  exact Finset.sum_filter_add_sum_filter_not B p _
+
+/-- Singleton density on the right as a degree ratio. -/
+lemma edgeDensity_singleton_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) (b : V) (hA : A.Nonempty) :
+    edgeDensity G A {b}
+      = ((A.filter (fun a => G.Adj a b)).card : ℚ) / A.card := by
+  rw [edgeDensity_eq_edgeCount G A {b} hA (Finset.singleton_nonempty b),
+    edgeCount_singleton_right]
+  simp
+
+/-- Singleton density on the left as a degree ratio. -/
+lemma edgeDensity_singleton_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (B : Finset V) (hB : B.Nonempty) :
+    edgeDensity G {a} B
+      = ((B.filter (fun b => G.Adj a b)).card : ℚ) / B.card := by
+  rw [edgeDensity_eq_edgeCount G {a} B (Finset.singleton_nonempty a) hB,
+    edgeCount_singleton_left]
+  simp
+
+/-- **First-moment identity (B-side)**: summing the singleton densities
+`d(A, {b})` over `b ∈ B` recovers `d(A, B) · |B|`. Unconditional. -/
+lemma sum_edgeDensity_singleton_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ b ∈ B, edgeDensity G A {b} = edgeDensity G A B * B.card := by
+  rcases A.eq_empty_or_nonempty with rfl | hA
+  · simp [edgeDensity_empty_left]
+  · rcases B.eq_empty_or_nonempty with rfl | hB
+    · simp
+    · have hA0 : ((A.card : ℚ)) ≠ 0 := by exact_mod_cast hA.card_pos.ne'
+      have hB0 : ((B.card : ℚ)) ≠ 0 := by exact_mod_cast hB.card_pos.ne'
+      have hstep : ∀ b ∈ B, edgeDensity G A {b}
+          = ((A.filter (fun a => G.Adj a b)).card : ℚ) / A.card :=
+        fun b _ => edgeDensity_singleton_right G A b hA
+      rw [Finset.sum_congr rfl hstep, ← Finset.sum_div,
+        edgeDensity_eq_edgeCount G A B hA hB, edgeCount_eq_sum_right]
+      push_cast
+      field_simp [hA0, hB0]
+
+/-- **First-moment identity (A-side)**: summing the singleton densities
+`d({a}, B)` over `a ∈ A` recovers `d(A, B) · |A|`. Unconditional. -/
+lemma sum_edgeDensity_singleton_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ a ∈ A, edgeDensity G {a} B = edgeDensity G A B * A.card := by
+  rcases B.eq_empty_or_nonempty with rfl | hB
+  · simp [edgeDensity_empty_right]
+  · rcases A.eq_empty_or_nonempty with rfl | hA
+    · simp [edgeDensity_empty_left]
+    · have hA0 : ((A.card : ℚ)) ≠ 0 := by exact_mod_cast hA.card_pos.ne'
+      have hB0 : ((B.card : ℚ)) ≠ 0 := by exact_mod_cast hB.card_pos.ne'
+      have hstep : ∀ a ∈ A, edgeDensity G {a} B
+          = ((B.filter (fun b => G.Adj a b)).card : ℚ) / B.card :=
+        fun a _ => edgeDensity_singleton_left G a B hB
+      rw [Finset.sum_congr rfl hstep, ← Finset.sum_div,
+        edgeDensity_eq_edgeCount G A B hA hB, edgeCount_eq_sum_left]
+      push_cast
+      field_simp [hA0, hB0]
+
+/-- **Signed first moment vanishes (A-side)**: the signed per-vertex
+deviations `d({a}, B) − d(A, B)` sum to zero over `a ∈ A`. The Markov
+input `∑ vertexBias` is therefore irreducibly about *absolute*
+deviations — no signed-sum shortcut exists. -/
+lemma sum_edgeDensity_singleton_sub_left (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ a ∈ A, (edgeDensity G {a} B - edgeDensity G A B) = 0 := by
+  rw [Finset.sum_sub_distrib, sum_edgeDensity_singleton_left,
+    Finset.sum_const, nsmul_eq_mul]
+  ring
+
+/-- **Signed first moment vanishes (B-side)**: dual of
+`sum_edgeDensity_singleton_sub_left`. -/
+lemma sum_edgeDensity_singleton_sub_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ b ∈ B, (edgeDensity G A {b} - edgeDensity G A B) = 0 := by
+  rw [Finset.sum_sub_distrib, sum_edgeDensity_singleton_right,
+    Finset.sum_const, nsmul_eq_mul]
+  ring
+
+/-- **Positive-part doubling (A-side)**: since the signed deviations sum
+to zero, the absolute first moment `∑ vertexBias` is exactly twice the
+one-sided positive-part deviation sum. The open analytic step-2
+estimate thus reduces to a one-sided bound over the single subset of
+`A` where the singleton density meets or exceeds the bulk density. -/
+lemma sum_vertexBias_eq_two_mul_pos_part (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ a ∈ A, vertexBias G a A B
+      = 2 * ∑ a ∈ A.filter
+          (fun a => edgeDensity G A B ≤ edgeDensity G {a} B),
+          (edgeDensity G {a} B - edgeDensity G A B) := by
+  have hsplit := Finset.sum_filter_add_sum_filter_not A
+    (fun a => edgeDensity G A B ≤ edgeDensity G {a} B)
+    (fun a => vertexBias G a A B)
+  have hsplit0 := Finset.sum_filter_add_sum_filter_not A
+    (fun a => edgeDensity G A B ≤ edgeDensity G {a} B)
+    (fun a => edgeDensity G {a} B - edgeDensity G A B)
+  have hzero : ∑ a ∈ A, (edgeDensity G {a} B - edgeDensity G A B) = 0 :=
+    sum_edgeDensity_singleton_sub_left G A B
+  have hpos : ∑ a ∈ A.filter
+      (fun a => edgeDensity G A B ≤ edgeDensity G {a} B),
+        vertexBias G a A B
+      = ∑ a ∈ A.filter
+          (fun a => edgeDensity G A B ≤ edgeDensity G {a} B),
+          (edgeDensity G {a} B - edgeDensity G A B) := by
+    refine Finset.sum_congr rfl (fun a ha => ?_)
+    simp only [Finset.mem_filter] at ha
+    unfold vertexBias
+    rw [abs_of_nonneg (by linarith [ha.2] :
+      (0 : ℚ) ≤ edgeDensity G {a} B - edgeDensity G A B)]
+  have hneg : ∑ a ∈ A.filter
+      (fun a => ¬ edgeDensity G A B ≤ edgeDensity G {a} B),
+        vertexBias G a A B
+      = - ∑ a ∈ A.filter
+          (fun a => ¬ edgeDensity G A B ≤ edgeDensity G {a} B),
+          (edgeDensity G {a} B - edgeDensity G A B) := by
+    rw [← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl (fun a ha => ?_)
+    simp only [Finset.mem_filter, not_le] at ha
+    unfold vertexBias
+    rw [abs_of_neg (by linarith [ha.2] :
+      edgeDensity G {a} B - edgeDensity G A B < 0)]
+  linarith [hsplit, hsplit0, hzero, hpos, hneg]
+
+/-- **Positive-part doubling (B-side)**: dual of
+`sum_vertexBias_eq_two_mul_pos_part` for `vertexBias_B`. -/
+lemma sum_vertexBias_B_eq_two_mul_pos_part (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    ∑ b ∈ B, vertexBias_B G b A B
+      = 2 * ∑ b ∈ B.filter
+          (fun b => edgeDensity G A B ≤ edgeDensity G A {b}),
+          (edgeDensity G A {b} - edgeDensity G A B) := by
+  have hsplit := Finset.sum_filter_add_sum_filter_not B
+    (fun b => edgeDensity G A B ≤ edgeDensity G A {b})
+    (fun b => vertexBias_B G b A B)
+  have hsplit0 := Finset.sum_filter_add_sum_filter_not B
+    (fun b => edgeDensity G A B ≤ edgeDensity G A {b})
+    (fun b => edgeDensity G A {b} - edgeDensity G A B)
+  have hzero : ∑ b ∈ B, (edgeDensity G A {b} - edgeDensity G A B) = 0 :=
+    sum_edgeDensity_singleton_sub_right G A B
+  have hpos : ∑ b ∈ B.filter
+      (fun b => edgeDensity G A B ≤ edgeDensity G A {b}),
+        vertexBias_B G b A B
+      = ∑ b ∈ B.filter
+          (fun b => edgeDensity G A B ≤ edgeDensity G A {b}),
+          (edgeDensity G A {b} - edgeDensity G A B) := by
+    refine Finset.sum_congr rfl (fun b hbm => ?_)
+    simp only [Finset.mem_filter] at hbm
+    unfold vertexBias_B
+    rw [abs_of_nonneg (by linarith [hbm.2] :
+      (0 : ℚ) ≤ edgeDensity G A {b} - edgeDensity G A B)]
+  have hneg : ∑ b ∈ B.filter
+      (fun b => ¬ edgeDensity G A B ≤ edgeDensity G A {b}),
+        vertexBias_B G b A B
+      = - ∑ b ∈ B.filter
+          (fun b => ¬ edgeDensity G A B ≤ edgeDensity G A {b}),
+          (edgeDensity G A {b} - edgeDensity G A B) := by
+    rw [← Finset.sum_neg_distrib]
+    refine Finset.sum_congr rfl (fun b hbm => ?_)
+    simp only [Finset.mem_filter, not_le] at hbm
+    unfold vertexBias_B
+    rw [abs_of_neg (by linarith [hbm.2] :
+      edgeDensity G A {b} - edgeDensity G A B < 0)]
+  linarith [hsplit, hsplit0, hzero, hpos, hneg]
+
 end Szemeredi.OQ04

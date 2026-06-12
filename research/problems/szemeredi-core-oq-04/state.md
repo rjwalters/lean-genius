@@ -1,9 +1,57 @@
 # Current State
 
-**Phase**: **ACT-ready** (G8 RED-INFRA disk-pressure regression CLEARED at Iter 20 re-probe — `/System/Volumes/Data` 5.5 Gi → **75 Gi** free, +69.5 Gi recovered passively over 7 days; Docker daemon also bumped 29.4.1 → 29.5.3 in the same window; both unblocked. ACT-readiness gate restored 7/8 → 8/8). **Iter 20 PREP-r2 (researcher-1, 2026-06-10) ships S13 — G8 disk-pressure gate re-probe confirms unblock without intervention (no `make clean-all` or `docker system prune` from this researcher; likely champion / daemon-scope intervention or competing-slug mechanic prune; corroborated by today's S86 ACT on `ballot-problem-oq-03-oq-01-oq-02` PR #22784 running a successful Docker build at 68 Gi free at T-2h). Docker daemon Server section returns `29.5.3` with 2 containers running. Slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f3e2aaa9ccea77c2f2496719a75b6fa83` byte-stable at 1054 LOC since Iter 13 (PR #19042 merge, ~26 days). Lake-manifest Mathlib pin `2df2f0150c…` byte-stable since 2026-05-16T08:55Z (~25 days). All G1-G7 gates carry forward verbatim by lake-manifest-stability transitivity. Iter 19 §2 (`mem_witnessFamilyB_nhd/_compl` singleton-{a}-indexing shape confirmation) + §3 (Mathlib Density.lean Route A ad-hoc helper `G.interedges_filter_add_filter_neg` recommendation) pre-paste asks gate-orthogonal — carry-forward stable for Iter 21+ ACT verbatim. Iter 21 ACT plan unchanged from Iter 19 §6 recommendation: paste Iter 17 §6 Part 9 first-moment skeleton + Iter 19 §3 Route A helper, total ~108-110 LOC at 3-5 transient sorries, 1 Docker iter expected 10-15 min cold / 5-8 min hot (today's S86 ACT ran ~10.5 min cold-P2 packages). Pre-flight requirement: re-probe `df -h /System/Volumes/Data` immediately before invoking `docker-build.sh` to confirm ≥10 Gi threshold still holds. JSON catchup iter 19 → 20, phase `PREP-r1-blocked` → `ACT-ready`. NO `.lean` / sibling-slug / `leanFiles[]` / lake-manifest / lakefile / meta.json edits.** **Iter 19 (this PREP-r1, researcher-1, 2026-06-03) shipped S12 PREP-r1 — pre-paste verification ask discharges for Iter 17 §6 Part 9 first-moment skeleton paste. §2 confirms `mem_witnessFamilyB_nhd` / `_compl` (SzemerediCoreOQ04.lean:111/119) take the exact singleton `{a}`-indexing shape required (`{A B : Finset V} {a : V} (ha : a ∈ A)` binder, neighbour-pattern / non-neighbour-pattern outputs, membership in `witnessFamilyB G A B` — body 2 lines each via `Finset.mem_union_left/right` + `Finset.mem_image`); no new helper needed. §3 mines Mathlib v4.26.0 `Mathlib/Combinatorics/SimpleGraph/Density.lean` (400 LOC, full-text scan at lake-pinned `rev = 2df2f015…`) and finds **no direct two-piece `edgeDensity_decompose_pair` lemma**; closest 6 candidate bearers (`Rel.{card_interedges_add_card_interedges_compl@73, interedges_biUnion_{left@102,right@107}, edgeDensity_add_edgeDensity_compl@133, card_interedges_finpartition_{left@147,right@154}}`) all decompose the predicate or take arbitrary biUnion/Finpartition — pair-piece variant absent. Recommends **Route A ad-hoc helper** `G.interedges_filter_add_filter_neg` (~8-10 LOC, sibling of `witnessFamilyB_card_split` at line 149, reuses `Finset.filter_card_add_filter_neg_card_eq_card`) over Route B Finpartition-route (~15-20 LOC); revised paste budget 100 LOC → 108-110 LOC at 3-5 sorries. §5 ACT-readiness gate refresh: 8/8 → **7/8** — **G8 REGRESSED** to RED under a new failure mode (disk pressure, not Docker daemon): `df -h /System/Volumes/Data` returns `5.5Gi 100%` (51.5 GiB consumed in 3 days, ~17 GiB/day; below ≥10 GiB pre-flight threshold by ~4.5 GiB). §6 documents Iter 18 pre-flight warning ("capacity tight at 94%, recommend re-check ≥10 GiB free before committing to a Docker build") materialised; the §6 paste cannot Docker-build without prior cleanup. Recommendation: Iter 20+ run `make clean-all` (or targeted `proofs/.lake` Mathlib-cache prune) + re-probe `df -h` before invoking `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`. JSON catchup iter 18 → 19, phase `ACT-ready` → `PREP-r1-blocked`. Pre-paste asks §§2-3 are gate-orthogonal — preserved for the next post-G8-clear ACT cycle.** **Iter 18 (researcher-1, 2026-05-31) shipped S11 STATE-SYNC — 14-day quiescence audit confirms zero slug-bearer touches across 1421 origin/main commits since Iter 17 merge (PR #19619, 2026-05-16T14:33Z); lake-manifest Mathlib pin `2df2f015…` byte-stable; slug Lean file `Proofs/SzemerediCoreOQ04.lean` SHA1 `a51ac94f…` byte-stable at 1054 LOC; all 11 Iter 14/15/17 bearer file SHAs byte-stable by transitivity (lake-manifest unchanged → Mathlib commit unchanged → bearer files unchanged); Iter 17 §4 line-cite corrections carry forward verbatim. Iter 17 §9 infra block (B2 Docker daemon hung) CLEARED: `docker info` returns within ~3 s with `Server Version: 29.4.1`, `Kernel 6.12.76-linuxkit`, clean slate (0 containers, 3 images); disk 57 Gi free above the ≥10 Gi pre-flight threshold (capacity tight at 94 %, recommend re-check before next ACT). JSON catchup iter 17 → 18.** **Iter 17 (PR #19619, researcher-10) shipped S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton.** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction.** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-06-10T03:25:00Z (Iter 20 PREP-r2 — G8 disk-pressure regression cleared 5.5 → 75 Gi, ACT-readiness restored 7/8 → 8/8)
-**Last Updated**: 2026-06-10 (Iteration 20 PREP-r2, researcher-1)
-**Iteration**: 20
+**Phase**: **ACT** (Iter 21, researcher-1, 2026-06-12 — Part 10 shipped: edge-count primitives + first-moment identities, 16 sorry-free declarations, ~330 LOC, Docker-verified). The Iter 20 plan (paste Iter 17 §6 Part 9 skeleton + Iter 19 §3 Route A helper) was **overtaken in flight** by two parallel slug PRs opened earlier on 2026-06-12: PR #22879 (Part 8b `three_quarters_good_of_markov`, step-3 counting) and PR #22890 (Part 9 Markov consequences conditional on a moment-sum hypothesis). G7 (no overlapping open PRs) RED for the planned paste — its Markov corollary is materially covered by #22890. This session shipped the **content-disjoint upstream identity layer** instead: `edgeCount` + `edgeDensity_eq_edgeCount` + fiberwise degree decompositions (`edgeCount_eq_sum_left/right`), Route A predicate split `edgeCount_filter_add_filter_neg` (Iter 19 §3 ask discharged in degree-sum form), unconditional first-moment identities `sum_edgeDensity_singleton_left/right`, signed-first-moment-vanishing duals, and positive-part doubling reductions `sum_vertexBias(_B)_eq_two_mul_pos_part`. Sorry inventory steady at 2 (line 291 archival-unprovable + deferred-provable symmetric `_small_eps`); 0 axioms; 0 assumption-encoding structure fields. File 1054 → ~1390 LOC. Caveat recorded: the positive-part subset `A⁺` is NOT a `witnessFamilyB` member, so the surrogate does not bound it directly — genuine step-2 converts grid control to degree variance via the path-counting identity `∑_b deg_A(b)² = ∑_a e(A, B∩N(a))`, now stateable with Part 10 vocabulary (primary S15 ACT target). Merge-conflict note: all three 2026-06-12 PRs append at the file tail; resolve by concatenation (content pairwise disjoint, no duplicate declaration names). Iteration numbering is author-time; merge-order monotone renumbering applies at the next STATE-SYNC.
+**Since**: 2026-06-12T18:00:00Z (Iter 21 ACT — Part 10 first-moment identity layer)
+**Last Updated**: 2026-06-12 (Iteration 21 ACT, researcher-1)
+**Iteration**: 21
+
+## Iteration 21 (researcher-1, 2026-06-12) — S14 ACT (Part 10: edge-count primitives + first-moment identities, 16 sorry-free decls; G7 race adaptation re PRs #22879/#22890)
+
+**Mode.** ACT (Lean edits, Docker-verified). Files: `proofs/Proofs/SzemerediCoreOQ04.lean`
+(+~330 LOC Part 10, appended before `end Szemeredi.OQ04`),
+`sessions/2026-06-12-s14-act-part10-first-moment-identities.md` (session memo),
+`state.md` (head + this entry), slug JSON (`currentState.{iteration 20 → 21,
+phase, since, focus, nextAction}` + `knowledge.{builtItems +5, insights +2,
+progressSummary}` + `lastUpdate`).
+
+**Why this shape.** Pre-flight found G7 RED for the planned Part 9 paste: PR #22879
+(2026-06-12T08:03Z, `three_quarters_good_of_markov` step-3 counting + state.md + JSON)
+and PR #22890 (2026-06-12T12:13Z, Part 9 Markov consequences
+`eps_mul_A_bad_card_le_sum_vertexBias` / `A_bad_card_le_of_sum_vertexBias_le` + B-duals,
+Lean-only) already occupy the combinatorial layer; the Iter 17 §6 skeleton's
+`A_bad_card_first_moment_markov` is materially covered by #22890. Rather than a 21st
+doc-only PREP, this session shipped the upstream identity layer neither PR touches.
+
+**Outcome (16 new declarations, all sorry-free).**
+
+* `edgeCount` (ℕ-valued guard-free numerator of `edgeDensity`) +
+  `edgeDensity_eq_edgeCount` + `edgeDensity_empty_left/right`.
+* Fiberwise degree decompositions `edgeCount_eq_sum_right` (`e(A,B) = ∑_{b∈B} deg_A(b)`)
+  and `edgeCount_eq_sum_left`, via `Finset.card_eq_sum_card_fiberwise` +
+  `Finset.card_bij'`; singleton specializations `edgeCount_singleton_left/right`.
+* **Route A predicate split** `edgeCount_filter_add_filter_neg` — discharges the
+  Iter 19 §3 pre-paste ask in degree-sum form (one line from the fiberwise
+  decomposition + `Finset.sum_filter_add_sum_filter_not`; cheaper than the
+  estimated interedges route).
+* **First-moment identities** `sum_edgeDensity_singleton_right/left`
+  (`∑_{b∈B} d(A,{b}) = d(A,B)·|B|`, unconditional) and signed-moment-vanishing
+  duals `sum_edgeDensity_singleton_sub_left/right` (`∑ (d({a},B) − d(A,B)) = 0`).
+* **Positive-part doubling** `sum_vertexBias_eq_two_mul_pos_part` + B-side dual:
+  `∑ vertexBias = 2·∑_{a∈A⁺} (d({a},B) − d(A,B))` — the open step-2 estimate
+  reduces to a one-sided bound. Caveat: `A⁺` is not a grid member; genuine step-2
+  goes grid → degree variance via path counting (S15 target).
+
+**Build.** `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` — attempt 1:
+4 errors (`simp only [Finset.mem_product]` cannot match `A.product B` syntactically;
+fixed with term-style `Finset.mem_product.mp/.mpr` in the `card_bij'` bullets);
+attempt 2 green (see PR body for job count). Sorry inventory steady at 2; 0 axioms.
+
+**Honesty.** Routine identities, not deep content — the genuine ADLRY second-moment
+estimate remains open. Value is structural: closes the Iter 19 §3 ask, gives the
+exact vocabulary for the path-counting bridge, and proves the signed-shortcut
+impossibility (signed first moment ≡ 0).
+
+---
 
 ## Iteration 20 (researcher-1, 2026-06-10) — S13 PREP-r2 (G8 disk-pressure regression CLEARED 5.5 → 75 Gi passive recovery + Docker daemon bump 29.4.1 → 29.5.3 + ACT-readiness gate refresh 7/8 → 8/8 + JSON catchup iter 19 → 20, doc-only)
 
