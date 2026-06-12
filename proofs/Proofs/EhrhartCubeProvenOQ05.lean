@@ -66,7 +66,9 @@ and `b = P.boundaryPoints`.
 
 The S3 discharge will:
 1. Use `ehrhart_leading_coeff_volume` to pin the leading coefficient
-   to `P.area` (after identifying `P.volume = P.area` for 2D polygons).
+   to `P.volume`, then `P.volume_eq_area` to rewrite it as `P.area`
+   (the `LatticePolygon.volume_eq_area` field exists for exactly this
+   step — without it `leadingCoeff = P.volume` cannot reach `P.area`).
 2. Use `ehrhart_constant_term` (already proved) for the constant term `1`.
 3. Use `ehrhart_macdonald_reciprocity` at `n = -1` together with
    `P.interior_at_one` to extract the linear coefficient as `b/2`,

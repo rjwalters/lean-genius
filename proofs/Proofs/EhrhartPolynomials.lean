@@ -213,6 +213,14 @@ structure LatticePolygon extends LatticePolytope 2 where
   area : ℚ
   /-- Area is positive -/
   area_pos : 0 < area
+  /-- For a 2D lattice polytope the normalized volume coincides with the
+      area, so the inherited `volume` field — which pins the Ehrhart
+      polynomial's leading coefficient via `ehrhart_leading_coeff_volume` —
+      equals `area`. This is a definitional identification of the polygon's
+      own data (in the same spirit as `total_eq`), not a new mathematical
+      assumption: it encodes only the 2D normalization `vol = area`, not
+      Pick's theorem itself. -/
+  volume_eq_area : volume = area
   /-- Number of boundary lattice points -/
   boundaryPoints : ℕ
   /-- Number of interior lattice points -/
