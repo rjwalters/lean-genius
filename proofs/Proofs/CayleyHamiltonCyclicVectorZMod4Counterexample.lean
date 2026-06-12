@@ -14,9 +14,8 @@ we show:
   3. `minpoly_natDegree_eq_two` — `(minpoly (ZMod 4) M).natDegree = 2`
      (paste-ready with sorry — see proof outline; depends on bearer pins to
      be sharpened in S3 ACT-2).
-  4. `no_cyclic_vector` — `¬ ∃ v, IsCyclicVector M v` (paste-ready with
-     sorry — see proof outline; depends on small tactic adjustments to be
-     verified in S3 ACT-2).
+  4. `no_cyclic_vector` — `¬ ∃ v, IsCyclicVector M v` (proved, sorry-free;
+     the polynomial `q = 2 * X` is a degree-1 annihilator with `2 • M = 0`).
 
 Companion to `CayleyHamiltonCyclicVectorCommRingOQ01.lean`, which proves the
 backward direction `(∃ v, IsCyclicVector M v) → IsNonderogatory M` over any
@@ -116,6 +115,22 @@ the nonzero polynomial `q = 2 * X` satisfies `q.natDegree = 1 < 2`,
 Reuses `IsCyclicVector` from `GeneralCyclicVectorRing` (S2 ACT). -/
 theorem no_cyclic_vector :
     ¬ ∃ v : Fin 2 → ZMod 4, IsCyclicVector M v := by
-  sorry
+  rintro ⟨v, hcyc⟩
+  -- The nonzero polynomial `q = 2 * X` annihilates `M` (as `aeval M (2*X) = 2•M = 0`)
+  -- and has `natDegree 1 < 2`, so cyclicity forces `2 * X = 0` — contradiction.
+  have haeval0 : aeval M (2 * X : (ZMod 4)[X]) = 0 := by
+    simp only [map_mul, aeval_X, map_ofNat]
+    ext i j; fin_cases i <;> fin_cases j <;> decide
+  have hdeg : (2 * X : (ZMod 4)[X]).natDegree < 2 := by
+    haveI : Nontrivial (ZMod 4) := nontrivial_zmod_four
+    have h : (2 * X : (ZMod 4)[X]).natDegree
+        ≤ (2 : (ZMod 4)[X]).natDegree + (X : (ZMod 4)[X]).natDegree := natDegree_mul_le
+    simp only [natDegree_ofNat, natDegree_X] at h
+    omega
+  have hq : (2 * X : (ZMod 4)[X]) = 0 :=
+    hcyc (2 * X) hdeg (by rw [haeval0]; simp)
+  have hc := congrArg (Polynomial.eval (1 : ZMod 4)) hq
+  simp only [eval_mul, eval_ofNat, eval_X, mul_one, eval_zero] at hc
+  exact absurd hc (by decide)
 
 end CayleyHamiltonCyclicVectorZMod4Counterexample
