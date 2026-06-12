@@ -211,4 +211,39 @@ lemma coord_of_smul_diff
   simp only [PiLp.sub_apply, PiLp.smul_apply, smul_eq_mul] at hi
   linarith
 
+/-! ## Part 8: Easy direction of the concyclicity criterion (`⟸`) -/
+
+/-- **Concyclic ⟹ determinant vanishes** (the `⟸` direction of
+`concyclicityDet_eq_zero_iff_concyclic`, proved unconditionally — no
+non-degeneracy hypothesis is needed for this direction).
+
+If `P₁, P₂, P₃, P₄` lie on a common circle with center `O` and radius `r`,
+the concyclicity determinant is zero. Reason: writing each point's circle
+equation `(xᵢ−O₀)² + (yᵢ−O₁)² = r²` expands to
+`xᵢ² + yᵢ² = 2O₀·xᵢ + 2O₁·yᵢ + (r²−O₀²−O₁²)`, so the first column of the
+matrix is the linear combination `2O₀·(x col) + 2O₁·(y col) + (r²−O₀²−O₁²)·(1 col)`
+of the other three. The columns are therefore dependent — equivalently the
+nonzero vector `w = (1, −2O₀, −2O₁, O₀²+O₁²−r²)` lies in the kernel — so the
+determinant vanishes (`Matrix.exists_mulVec_eq_zero_iff`). -/
+theorem concyclic_implies_concyclicityDet_zero
+    (P₁ P₂ P₃ P₄ O : Vec2) (r : ℝ)
+    (h₁ : ‖P₁ - O‖ = r) (h₂ : ‖P₂ - O‖ = r)
+    (h₃ : ‖P₃ - O‖ = r) (h₄ : ‖P₄ - O‖ = r) :
+    concyclicityDet P₁ P₂ P₃ P₄ = 0 := by
+  have e : ∀ Q : Vec2, ‖Q - O‖ = r →
+      (Q 0 - O 0) ^ 2 + (Q 1 - O 1) ^ 2 = r ^ 2 := by
+    intro Q hQ
+    have h := norm_sub_sq_coord Q O
+    rw [hQ] at h; linarith
+  unfold concyclicityDet concyclicityDetCoords
+  refine Matrix.exists_mulVec_eq_zero_iff.mp
+    ⟨![1, -(2 * O 0), -(2 * O 1), O 0 ^ 2 + O 1 ^ 2 - r ^ 2], ?_, ?_⟩
+  · intro hw
+    have h0 := congrFun hw 0
+    simp at h0
+  · funext i
+    fin_cases i <;>
+      simp [Matrix.mulVec, dotProduct, Fin.sum_univ_four] <;>
+      nlinarith [e P₁ h₁, e P₂ h₂, e P₃ h₃, e P₄ h₄]
+
 end ProductOfSegmentsOfChordsOQ03
