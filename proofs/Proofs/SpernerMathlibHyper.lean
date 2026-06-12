@@ -200,7 +200,7 @@ theorem door_count_parity_hyper
     have he_top : eP top = Fin.last n := by
       simp [eP, Equiv.swap_apply_left]
     let f' : Fin (n + 1) → Fin (n + 1) := fun i' => eP (f (eι.symm i'))
-    have hparent := SpernerMathlib.door_count_parity n f'
+    have hparent := Sperner.door_count_parity n f'
     have hlhs_card :
         (Finset.univ.filter (fun k : ι_one =>
           ∀ p : P, p ≠ top → ∃ i : ι_one, i ≠ k ∧ f i = p)).card =
@@ -390,6 +390,78 @@ theorem even_card_interior_doors_hyper
     intro heq
     exact hadj_ne p.1 p.2 s' k' hadj_eq ((Sigma.eta p).trans heq.symm)
 
+/-! ## §4b Door-count bookkeeping (hypergraph)
+
+Σ-type analogues of the parent's `per_cell_door_parity`,
+`card_doors_eq_sum`, and `doors_partition`. These are the finite-sum
+bearers that let §5 chain §3 (per-cell parity) and §4 (interior
+involution) into the global parity statement. -/
+
+omit [DecidableEq V] [DecidableEq Cell] [Fintype Cell] in
+/-- Per-cell parity (hypergraph): the door count of a single cell `s`
+is congruent mod 2 to its panchromaticity indicator. Specialises
+`door_count_parity_hyper` to `f := c ∘ vertex s`. -/
+lemma per_cell_door_parity_hyper
+    (vertex : VertexMap V Cell ι) (c : V → P) (top : P)
+    (hι_size : ∀ s : Cell, Fintype.card (ι s) ≤ Fintype.card P) (s : Cell) :
+    (univ.filter (fun k : ι s => IsDoorHyper vertex c top s k)).card % 2 =
+    if IsPanchromaticHyper vertex c s then 1 else 0 := by
+  have h := door_count_parity_hyper (c ∘ vertex s) top (hι_size s)
+  have h1 : (univ.filter (fun k : ι s => IsDoorHyper vertex c top s k)) =
+      (univ.filter (fun k : ι s =>
+        ∀ p : P, p ≠ top → ∃ i : ι s, i ≠ k ∧ (c ∘ vertex s) i = p)) := by
+    ext k; simp only [mem_filter, mem_univ, true_and]; rfl
+  rw [h1]
+  have h2 : IsPanchromaticHyper vertex c s ↔
+      Function.Surjective (c ∘ vertex s) := Iff.rfl
+  simp only [h2]; convert h using 2
+
+omit [DecidableEq V] [DecidableEq Cell] in
+/-- Total door count equals the sum of per-cell door counts (hypergraph).
+The Σ-type analogue of `card_doors_eq_sum`, bridged by `Fintype.sum_sigma`. -/
+lemma card_doors_eq_sum_hyper
+    (vertex : VertexMap V Cell ι) (c : V → P) (top : P) :
+    ((univ : Finset (Σ s : Cell, ι s)).filter
+      (fun p => IsDoorHyper vertex c top p.1 p.2)).card =
+    ∑ s : Cell, (univ.filter
+      (fun k : ι s => IsDoorHyper vertex c top s k)).card := by
+  have hlhs : ((univ : Finset (Σ s : Cell, ι s)).filter
+      (fun p => IsDoorHyper vertex c top p.1 p.2)).card =
+    ∑ p : Σ s : Cell, ι s,
+      if IsDoorHyper vertex c top p.1 p.2 then 1 else 0 := by
+    rw [sum_ite, sum_const_zero, add_zero, sum_const, smul_eq_mul, mul_one]
+  have hrhs : ∀ s : Cell,
+      (univ.filter (fun k : ι s => IsDoorHyper vertex c top s k)).card =
+      ∑ k : ι s, if IsDoorHyper vertex c top s k then 1 else 0 := by
+    intro s
+    rw [sum_ite, sum_const_zero, add_zero, sum_const, smul_eq_mul, mul_one]
+  rw [hlhs, sum_congr rfl (fun s _ => hrhs s), Fintype.sum_sigma]
+
+omit [DecidableEq V] in
+/-- Total doors split into interior (`adj ≠ none`) and boundary
+(`adj = none`) doors (hypergraph). Σ-type analogue of `doors_partition`. -/
+lemma doors_partition_hyper
+    (vertex : VertexMap V Cell ι) (adj : AdjMap Cell ι) (c : V → P) (top : P) :
+    ((univ : Finset (Σ s : Cell, ι s)).filter
+      (fun p => IsDoorHyper vertex c top p.1 p.2)).card =
+    ((univ : Finset (Σ s : Cell, ι s)).filter
+      (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 ≠ none)).card +
+    ((univ : Finset (Σ s : Cell, ι s)).filter
+      (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 = none)).card := by
+  rw [← card_union_of_disjoint]
+  · congr 1; ext p
+    simp only [mem_filter, mem_univ, true_and, mem_union]
+    constructor
+    · intro h
+      by_cases hadj_eq : adj p.1 p.2 = none
+      · right; exact ⟨h, hadj_eq⟩
+      · left; exact ⟨h, hadj_eq⟩
+    · rintro (⟨h, _⟩ | ⟨h, _⟩) <;> exact h
+  · rw [disjoint_left]
+    intro p h₁ h₂
+    simp only [mem_filter, mem_univ, true_and] at h₁ h₂
+    exact h₁.2 h₂.2
+
 end GlobalParity
 
 /-! ## §5 Main theorem -/
@@ -420,15 +492,44 @@ theorem sperner_parity_hyper
       (fun p => IsDoorHyper vertex c top p.1 p.2 ∧
         adj p.1 p.2 = none)).card % 2 := by
   -- Strategy (mirrors parent `sperner_parity`):
-  --   1. Per-cell parity: door_count_parity_hyper applied to (c ∘ vertex s).
-  --   2. Sum the per-cell parities over Cell.
-  --   3. Total doors split into interior (even, §4) and boundary.
+  --   1. Per-cell parity: per_cell_door_parity_hyper (§3 + §4b).
+  --   2. Sum the per-cell parities over Cell (Sperner.sum_mod_congr).
+  --   3. Total doors split into interior (even, §4) and boundary (§4b).
   --   4. The interior contribution vanishes mod 2.
-  -- The full chain is mechanical given §3 and §4. We expose this as a
-  -- sorry to avoid duplicating ~80 LOC of finite-sum bookkeeping that
-  -- the parent already verifies; S3 will close this once the §3/§4
-  -- bearers land.
-  sorry
+  have hper := per_cell_door_parity_hyper vertex c top hι_size
+  have hsum :
+      (∑ s : Cell, (univ.filter
+        (fun k : ι s => IsDoorHyper vertex c top s k)).card) % 2 =
+      (∑ s : Cell, if IsPanchromaticHyper vertex c s then 1 else 0) % 2 :=
+    Sperner.sum_mod_congr univ _ _ (fun s _ => by rw [hper s]; split <;> simp)
+  have hfc_sum :
+      (∑ s : Cell,
+        if IsPanchromaticHyper vertex c s then (1 : ℕ) else 0) =
+      (univ.filter (IsPanchromaticHyper vertex c)).card := by
+    rw [sum_ite, sum_const_zero, add_zero, sum_const, smul_eq_mul, mul_one]
+  have hdoor_sum := card_doors_eq_sum_hyper vertex c top
+  have hpart := doors_partition_hyper vertex adj c top
+  have heven := even_card_interior_doors_hyper vertex adj hadj_symm
+    hadj_vertex hadj_ne top c
+  obtain ⟨m, hm⟩ := heven
+  calc (univ.filter (IsPanchromaticHyper vertex c)).card % 2
+    _ = (∑ s : Cell,
+        if IsPanchromaticHyper vertex c s then 1 else 0) % 2 := by rw [hfc_sum]
+    _ = (∑ s : Cell, (univ.filter
+        (fun k : ι s => IsDoorHyper vertex c top s k)).card) % 2 := hsum.symm
+    _ = ((univ : Finset (Σ s : Cell, ι s)).filter
+        (fun p => IsDoorHyper vertex c top p.1 p.2)).card % 2 := by rw [hdoor_sum]
+    _ = (((univ : Finset (Σ s : Cell, ι s)).filter
+        (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 ≠ none)).card +
+       ((univ : Finset (Σ s : Cell, ι s)).filter
+        (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 = none)).card) % 2 := by
+      rw [hpart]
+    _ = ((univ : Finset (Σ s : Cell, ι s)).filter
+        (fun p => IsDoorHyper vertex c top p.1 p.2 ∧ adj p.1 p.2 = none)).card % 2 := by
+      rw [hm, Nat.add_mod,
+        show (m + m) % 2 = 0 from by simp [← Nat.two_mul, Nat.mul_mod_right],
+        Nat.zero_add, Nat.mod_mod_of_dvd]
+      exact ⟨1, rfl⟩
 
 /-- **Hypergraph Sperner's Lemma**: if the boundary-door count is odd,
 some cell is panchromatic. -/
