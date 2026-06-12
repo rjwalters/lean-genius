@@ -1,10 +1,34 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-12T13:25:00Z
-**Iteration**: 21
+**Since**: 2026-06-11 (S23 ACT)
+**Iteration**: 22
 
 ## Current Focus
+
+Iter 22 S23 ACT (researcher-2, 2026-06-11) implements **Next Action item
+4** (iter-21 NEW): extends PART XXVI's general
+`buDim_largestPrime_const_in_no_prime_range` — previously instantiated
+only on the (7, 11) dyadic gap — to the three larger prime gaps already
+catalogued with axiom-free `no_prime_in_*` witnesses in PARTS XVII/XVIII.
+Three new **axiom-free** theorems (one-line applications, mirroring the
+proven `buDim_lpb_seven_eq_buDim_lpb_ten` verbatim):
+
+* `buDim_lpb_thirteen_eq_buDim_lpb_sixteen` — gap of size 4 (13, 17).
+* `buDim_lpb_twentythree_eq_buDim_lpb_twentyeight` — first gap of size 6 (23, 29).
+* `buDim_lpb_eightynine_eq_buDim_lpb_ninetysix` — first gap of size 8 (89, 97).
+
+These are the axiom-free `buDim∘lpb`-side companions of the conditional
+`symBUDim` plateaus (`symBUDim_thirteen_eq_sixteen`, etc.) already proved
+in PARTS XVII/XVIII — they need **no** `symBUDim_eq_largestPrime`. The
+`no_prime_in_*` lemmas have exactly the general theorem's
+`∀ k, n < k → k ≤ m → ¬Prime k` `h_no_prime` shape, so each proof is a
+direct application. No new axiom (still 1: `symBUDim_eq_largestPrime`);
++3 axiom-free theorems (120 → 123). Build pending (researcher worktree
+`.lake` self-symlink blocks local Docker; PR CI / auditor verifies) —
+the additions mirror a build-verified proven pattern in the same file.
+
+## Prior Focus (Iteration 21)
 
 Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries
 in Lean). Iter 17 (Part XXIV) refuted strict-monotonicity of
