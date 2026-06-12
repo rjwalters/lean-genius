@@ -1,10 +1,39 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-04 (S5b.1+.2)
-**Iteration**: 7
+**Since**: 2026-06-11 (S5b.3a)
+**Iteration**: 8
 
 ## Current Focus
+
+S5b.3a (researcher-2, 2026-06-11): ACT — closed the **two base cases of
+the `k >= 3` power-of-2 unit-side count** (`k = 3` and `k = 4`), the
+`eps2(n) = 2` regime where `(ZMod 2^k)x ~= Z/2 x Z/2^(k-2)` is non-cyclic
+and the count jumps to **4**. Two new theorems in a new Section 9:
+
+* `card_filter_sq_eq_one_units_zmod_eight`: `(ZMod 8)x` (Klein four)
+  has exactly **4** square roots of `1` -- every element squares to `1`.
+* `card_filter_sq_eq_one_units_zmod_sixteen`: `(ZMod 16)x ~= Z/2 x Z/4`
+  has exactly **4** square roots of `1` (`{1, 7, 9, 15} = +-1, 8+-1`),
+  confirming the count stabilises at `4` for all `k >= 3`.
+
+Both proofs are pure `decide`, mirroring the proven S5b.1/.2 pattern.
+`decide` feasibility at these (and larger) 2-power unit groups is
+established by precedent in `Proofs/InverseGalois.lean` (`units_zmod8_card`,
+`zmod8_units_sq_eq_one`, `zmod32_units_exp_8` -- all `decide`).
+
+These pin the `eps2 = 2` count for the two smallest exponents. The
+**general** `k >= 3` statement (count `= 4` for all `k >= 3`) is not
+`decide`-able and remains for a subsequent session: it needs the
+`Z/2 x Z/2^(k-2)` decomposition / `orderOf_five = 2^(k-2)` squeeze
+(S5b PREP `#18648` 3.3, adapting Mathlib's `Carmichael.lean` idiom).
+
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 396 -> 470 lines
+(+74 lines, +2 theorems, +1 new Section 9). Build: pending (PR CI;
+worktree `.lake` self-symlink prevents local docker verification -- same
+trap as prior sessions). 0 axioms, 1 sorry (unchanged, main theorem).
+
+## Prior Focus
 
 S5b.1+.2 (researcher-1, 2026-06-04): ACT — closed the **two small
 power-of-2 unit-side counts** (`k = 1` and `k = 2`), implementing the
@@ -38,9 +67,12 @@ prevents local docker verification — same trap as prior sessions).
 
 ## Next Action
 
-* **S5b.3 ACT**: the substantive even-prime work — `(ZMod 2^k)ˣ` count
-  for `k ≥ 3` via the `orderOf_five` cardinality squeeze (~60-90 LOC).
-  Complete design in S5b PREP `#18648` §3.3; the proof adapts
+* **S5b.3 ACT (general k >= 3)**: the substantive even-prime work --
+  `(ZMod 2^k)x` count `= 4` for *all* `k >= 3` via the `orderOf_five`
+  cardinality squeeze (~60-90 LOC). The two base cases `k = 3, 4` are now
+  closed (S5b.3a, Section 9); the general statement still needs the
+  `Z/2 x Z/2^(k-2)` decomposition. Complete design in S5b PREP `#18648`
+  3.3; the proof adapts
   `Mathlib/NumberTheory/ArithmeticFunction/Carmichael.lean:135-148`'s
   established `orderOf_five` idiom. No new Mathlib gaps.
 
