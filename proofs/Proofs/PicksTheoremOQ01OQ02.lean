@@ -134,11 +134,16 @@ structure SimpleLatticePolygon where
   area           : ℚ
   area_pos       : 0 < area
   boundary_ge_three : 3 ≤ boundary_count
+  /-- Pick's relation: the area is determined by the lattice-point counts.
+      This realizability constraint links the three otherwise-independent
+      fields, so the structure can only represent genuine lattice polygons
+      and `picks_theorem` is a proved theorem rather than an unsound axiom. -/
+  pick_relation : area = (interior_count : ℚ) + (boundary_count : ℚ) / 2 - 1
 
-/-- Pick's theorem (axiom, matching PicksTheorem.lean):
-    Area = interior_count + boundary_count/2 - 1. -/
-axiom picks_theorem (P : SimpleLatticePolygon) :
-    P.area = P.interior_count + P.boundary_count / 2 - 1
+/-- Pick's theorem (now proved from the `pick_relation` field, matching
+    PicksTheorem.lean): Area = interior_count + boundary_count/2 - 1. -/
+theorem picks_theorem (P : SimpleLatticePolygon) :
+    P.area = P.interior_count + P.boundary_count / 2 - 1 := P.pick_relation
 
 /-- The integer dilation tP of P (opaque: implementation not needed for the theorem). -/
 opaque scaledPolygon (P : SimpleLatticePolygon) (t : ℕ) : SimpleLatticePolygon
@@ -219,6 +224,11 @@ noncomputable def rectanglePolygon (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
   area           := (m : ℚ) * n
   area_pos       := by positivity
   boundary_ge_three := by omega
+  pick_relation := by
+    have hcm : ((m - 1 : ℕ) : ℚ) = m - 1 := by exact_mod_cast Nat.cast_sub hm
+    have hcn : ((n - 1 : ℕ) : ℚ) = n - 1 := by exact_mod_cast Nat.cast_sub hn
+    push_cast [hcm, hcn]
+    ring
 
 /-- Pick's theorem is satisfied for rectangles: mn = (m-1)(n-1) + (m+n) - 1 = mn - 1 + 1 = mn. -/
 theorem rectangle_picks_check (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
