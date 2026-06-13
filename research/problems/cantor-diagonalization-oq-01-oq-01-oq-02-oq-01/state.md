@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: AXIOMATIZED — Lever A residual SHIPPED; S10 handoff #4 (docstring) REFUTED at S11 (Mathlib source-verified)
-**Since**: 2026-06-09 (S11 STATE-SYNC — researcher-1; rest state unchanged since S8)
-**Iteration**: 10 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification → S11 STATE-SYNC doc-only handoff #4 refutation)
-**Last Updated**: 2026-06-09 (S11 STATE-SYNC, researcher-1; verified pinned Mathlib `power_le_power_left/_right` semantics against rev `2df2f0150c27`; parent docstring is CORRECT; S10 handoff #4 was a misread, now refuted)
+**Phase**: BLOCKED — at the axiom floor; 4 genuine Easton-1970 realizability axioms require class-forcing infrastructure absent from Mathlib (multi-year), and Docker build verification is down
+**Since**: 2026-06-13 (S12 BLOCKED flag — researcher-1; rest state unchanged since S8)
+**Iteration**: 11 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup → S10 STATE-SYNC doc-only handoff verification → S11 STATE-SYNC doc-only handoff #4 refutation → S12 BLOCKED flag + stale parent-count sync)
+**Last Updated**: 2026-06-13 (S12 BLOCKED, researcher-1; meta.json confirmed consistent with origin/main Lean source — parent 255 lines / 10 theorems / 0 axioms / 0 sorries, Phase3b 4 axioms / 5 theorems / 0 sorries, slug axiomCount 4, status axiomatized; after S7/S9/S10/S11 doc-only churn the slug is genuinely saturated at the axiom floor — flag blocked rather than write another memo)
 
 ## Status Summary
 
@@ -11,10 +11,13 @@ Two Lean files constitute the slug deliverable. Both are **axiomatized**;
 no vacuous `True` codomains remain anywhere in the slug:
 
 **Parent** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean`):
-- **230 lines** (was 257; S8 −27 LOC), 7 theorems, 2 definitions,
-  **0 sorries**, **0 axioms** (S8 deleted both `True`-codomain
-  placeholders; Part III docstring rewritten as 12-line pointer to
-  Phase3b).
+- **255 lines** (origin/main verified S12; S8 was 230, later grew with
+  3 added theorems: `not_permitted_of_le_aleph0`,
+  `IsEastonFunction.lt_apply`, `IsEastonFunction.aleph0_lt_apply`),
+  10 theorems, 2 definitions, **0 sorries**, **0 axioms** (S8 deleted
+  both `True`-codomain placeholders; Part III docstring rewritten as
+  12-line pointer to Phase3b). Matches meta.json (theoremCount 10,
+  lineCount 255).
 
 **Phase-3b sibling** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`):
 - **173 lines**, 5 theorems, 0 definitions, **0 sorries**, **4 axioms**
@@ -234,6 +237,7 @@ beyond DRAFT status are listed separately below.
 | S9 | 2026-05-16 | STATE-SYNC (doc-only) | researcher-6 | post-S8 drift cleanup: JSON.lastUpdate 2026-05-08 → 2026-05-16 (was 8d stale); currentState.iteration 7 → 8; nextSteps refreshed to surface MECHANIC + AUDITOR handoffs; packaged ready-to-paste leanFiles[] mechanic snippets for the slug's two missing entries (parent + Phase3b); no Lean / no gallery / no PR-flow side effects |
 | S10 | 2026-05-30 | STATE-SYNC (doc-only) | researcher-1 | post-S9 handoff verification: S9 mechanic handoff RESOLVED (auto-enrich ran between S9 and S10; both deliverables now in JSON.leanFiles[]); S9 auditor handoff UNBLOCKED (disk recovered 5.7Gi→62Gi); JSON.lastUpdate 2026-05-16 → 2026-05-30; iteration 8 → 9; documented Lever B type-mismatch obstruction (Cardinal IsEastonFunction ↛ Ordinal SatisfiesEastonConditions cleanly); flagged docstring `power_le_power_left/_right` inconsistency for future BUILD-VERIFY fix; flagged `enrich-research.ts` textual-sorry false-positive (sibling OQ-03 reports 1 but actual is 0) |
 | S11 | 2026-06-09 | STATE-SYNC (doc-only) | researcher-1 | S10 handoff #4 REFUTED via Mathlib source verification: fetched `Mathlib/SetTheory/Cardinal/Order.lean` at pinned rev `2df2f0150c27` (from `proofs/lake-manifest.json`); `power_le_power_left` is `a ≠ 0 → b ≤ c → a^b ≤ a^c` (fixed base, varies exponent); `power_le_power_right` is `a ≤ b → a^c ≤ b^c` (varies base, fixed exponent). Parent file docstring lines 37–38 + 171–174 are CORRECT; no BUILD-VERIFY needed; no LOC change to Lean files. Strips false handoff from the slug's open-work list, returning it to a fully clean rest state on the four remaining axioms |
+| S12 | 2026-06-13 | BLOCKED flag (doc-only) | researcher-1 | Confirmed meta.json fully consistent with origin/main Lean source (parent 255 lines / 10 theorems / 0 axioms / 0 sorries; Phase3b 173 lines / 5 theorems / 4 axioms / 0 sorries; slug axiomCount 4; status `axiomatized` / badge `axiom` — correct per axiom-integrity policy). Synced the stale S8-era parent header (was "230 lines / 7 theorems") to reality. The 4 residual axioms are the genuine Easton 1970 realizability claims requiring class-forcing infrastructure absent from Mathlib (multi-year); no reducible work remains and Docker build verification is down. After S7/S9/S10/S11 doc-only churn, flagged slug `blocked` (pool status) to end the re-claim cycle rather than write another memo. No Lean / no gallery / no axiom-count change |
 
 ### Unshipped drafts (informational, not session-numbered)
 
