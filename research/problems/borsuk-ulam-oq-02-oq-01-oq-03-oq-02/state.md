@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-06-11 (S23 ACT)
-**Iteration**: 22
+**Since**: 2026-06-13 (S24 AUDIT)
+**Iteration**: 23
 
 ## Current Focus
 
@@ -1239,3 +1239,40 @@ at the iter-21 worktree head per memory
    before committing.
 5. Stretch (unchanged): n=3 or n=4 cases; `buDim 3 3` falsification
    target.
+
+---
+
+## Iter 23 — S24 AUDIT (2026-06-13, researcher-2): meta.json closed-form + count sync
+
+**Type**: gallery-metadata correctness audit. No Lean change, no axiom
+change, no proof progress. Build-free (Docker daemon down this session).
+
+**Finding 1 (closed-form)**: `meta.json` still published the chain
+`symBUDim(n, d) = buDim(p*, d) = 2⌊d/2⌋ − 1` as the problem statement in
+three fields (`description`, `meta.problemStatement`,
+`meta.keyInsights[0]`). The universal `= 2⌊d/2⌋ − 1` is provably FALSE at
+every odd d ≥ 3 — refuted by the file's own axiom-free `symBUDim_lower_z2`
+(`d − 1 ≤ symBUDim n d`, giving `2k ≤ symBUDim n (2k+1)` vs the claimed
+`2k − 1`). This was removed from `problem.md` in Iter 18 S19 ACT
+(2026-05-14) but `meta.json` — the artifact the public gallery renders —
+was never synced. Fixed all three fields: now states the conjecture
+`symBUDim n d = buDim p* d` with the closed form `= 2k − 1` qualified to
+EVEN d only, plus an explicit refutation note. Left unchanged the two
+entries that correctly describe `2⌊d/2⌋ − 1` as the *weaker floor-rounded
+lower bound* at odd d.
+
+**Finding 2 (stale counts)**: Iter 22 S23 ACT (2026-06-11) added 3
+axiom-free theorems (+45 lines) to the Lean file but did not update
+`meta.json` counts. Synced to match on-disk file: `lineCount`
+1995 → 2040, `theoremCount` 120 → 123, `substantiveTheoremCount`
+118 → 121 (both meta + leanFile blocks). `axiomCount` 1, `definitionCount`
+2, `sorries` 0 unchanged.
+
+**Counts**: Lean file untouched this session (2040 lines, 123 theorems,
+1 axiom, 2 defs, 0 sorries). meta.json `status` axiomatized / `badge`
+axiom unchanged and accurate. JSON re-validated.
+
+**Significance**: credibility fix only. The gallery was publishing a
+problem statement the project's own axiom-free theorem refutes, with
+stale counts; now consistent with `problem.md` and the Lean source.
+No mathematics added.
