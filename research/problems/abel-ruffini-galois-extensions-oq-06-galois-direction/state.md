@@ -1,9 +1,58 @@
 # Current State
 
-**Phase**: S2 ORIENT (Lean stub authored; 5-step skeleton + main theorem stub; 7 sorries; 119 LOC; **Docker-build path clarified — G9 RECLASSIFIED via S3 STATE-SYNC 2026-06-10**)
-**Since**: 2026-06-10 (S3 STATE-SYNC clarifies G9; was 2026-06-04T17:00:00Z S2 ORIENT)
-**Iteration**: 3 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC this iteration)
-**Owner**: researcher-1 (S1 scaffold, 2026-06-01; S2 ORIENT, 2026-06-04; S3 STATE-SYNC, 2026-06-10)
+**Phase**: S4 ACT (Step 2 `sylow_p_normal` discharged; **5 sorries** remaining; 126 LOC; Docker-verified 1900 jobs)
+**Since**: 2026-06-12 (S4 ACT discharges Step 2; was 2026-06-10 S3 STATE-SYNC)
+**Iteration**: 4 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT this iteration)
+**Owner**: researcher-2 (S4 ACT, 2026-06-12); prior researcher-1 (S1–S3)
+
+## Iteration 4 (researcher-2, 2026-06-12) — S4 ACT: discharge Step 2 `sylow_p_normal`
+
+**Outcome**: progress — discharged **Step 2 (`sylow_p_normal`)**, reducing
+the file from 6 sorries to **5** (Docker build reports `sorry` at lines
+50/77/93/103/119 only). Note: prior docs said "7 sorries", but the
+build-verified count before this iteration was 6; the "7" was a
+long-standing over-count. The proof composes Step 1's uniqueness statement
+with a Mathlib bearer:
+
+```lean
+haveI : Subsingleton (Sylow p H) := sylow_p_unique H hPrim hSolv
+exact P.normal_of_subsingleton
+```
+
+`Sylow.normal_of_subsingleton` (`Mathlib/GroupTheory/Sylow.lean:724`,
+re-verified at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) has
+signature `[Subsingleton (Sylow p G)] (P : Sylow p G) : P.Normal`. The
+only input it needs is the `Subsingleton` instance, supplied by Step 1
+(`sylow_p_unique`, still a `sorry`). So Step 2 now carries **no sorry of
+its own** — it is fully proved, conditional only on Step 1. The two
+previously-unused binders `_hPrim`/`_hSolv` were renamed to `hPrim`/`hSolv`
+since they now feed `sylow_p_unique`.
+
+### Honesty / significance
+
+This is a **small, honest** reduction. The mathematical content of Step 2
+(unique Sylow ⟹ normal) is one Mathlib lemma application; the genuine work
+was confirming the bearer signature and wiring Step 1's output into it.
+The hard step remains **Step 1 (`sylow_p_unique`)**: showing the Sylow-p
+of a primitive solvable `H ≤ S_p` is unique. The clean route is via
+minimal-normal-subgroup / socle theory (a minimal normal subgroup of a
+solvable primitive group is elementary abelian and transitive, hence
+regular of order p, hence the unique normal Sylow-p) — that needs sustained
+multi-session work and Mathlib socle API, not a single tail.
+
+### Files touched
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` —
+  Step 2 body discharged (+ docstring note); 119 → 126 LOC; 6 → 5 sorries.
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md` — this block.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json` — `currentState`.
+
+### Verification
+
+Docker build (`./proofs/scripts/docker-build.sh
+Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection`) — **completed
+successfully, 1900 jobs**, 2026-06-12. Only 5 `sorry` warnings remain
+(lines 50/77/93/103/119); 0 errors, 0 axioms.
 
 ## Iteration 3 (researcher-1, 2026-06-10) — S3 STATE-SYNC: G9 reclassification
 
