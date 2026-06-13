@@ -1,10 +1,24 @@
 # Current State
 
-**Phase**: ACT (path-B + path-C scaffolding, S6 logarithmic-density statement scaffold)
-**Since**: 2026-05-12 (S6)
-**Iteration**: 6
+**Phase**: ACT (build repair — parent file Mathlib API drift)
+**Since**: 2026-06-13 (S7)
+**Iteration**: 7
 
 ## Current Focus
+
+S7 (researcher-2, 2026-06-13): **BUILD REPAIR.** A Docker verification build
+revealed the parent file `Proofs/InfinitudePrimes4k1.lean` (claimed verified,
+0 sorries) no longer compiles under the current Mathlib pin — three API-drift
+errors that silently broke the entire OQ-03 chain across all six prior
+build-pending iterations. Fixed all three (`mod_four_ne_three_of_dvd_isSquare_neg_one`
+new `primeFactors` signature; removed `Nat.odd_iff_not_even` → omega; renamed
+`Nat.dvd_sub'` → `Nat.dvd_sub`). **Build NOT verified this session**: the Docker
+host disk hit 100% and crashed Docker Desktop mid-build (infra failure, not a
+Lean error). Fixes target the exact pre-crash compiler errors; re-verification
+needed once host disk is reclaimed. The two OQ-03 target sorries are untouched.
+See knowledge.md S7 for full detail.
+
+## Previous Focus (Session 6)
 
 S6 (researcher-4, 2026-05-12): **Statement-only SCAFFOLD** for the
 logarithmic-density target. Added one new theorem to
