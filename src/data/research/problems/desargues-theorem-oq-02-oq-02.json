@@ -50,8 +50,8 @@
       "Cheapest first compile = finite Desargues 10₃ configuration self-duality: Fin 10 incidence matrix + duality permutation σ, goal inc p l = inc (σ l) (σ p) by decide — no Mathlib Configuration dependency"
     ],
     "mathlibGaps": [
-      "Mathlib Configuration provides ProjectivePlane and Dual (dual-of-projective-plane-is-projective-plane) but NOT perspectivity / Desargues predicates — these must be defined",
-      "Exact Configuration.Dual / ProjectivePlane.dual signatures unconfirmable during blackout (Mathlib source not materialized locally)"
+      "Mathlib Configuration provides ProjectivePlane (L329), Dual (L46), and the instance ProjectivePlane (Dual L) (Dual P) (L338, the duality principle) — confirmed against source — but NOT perspectivity / Desargues predicates, which must be defined",
+      "Gotcha: the dual swaps type order — a predicate Foo P L on the dual is Foo (Dual L) (Dual P), not Foo (Dual P) (Dual L)"
     ],
     "nextSteps": [
       "Part A: finite 10₃ self-dual configuration (Fin 10, incidence Bool matrix, σ : Perm (Fin 10), decide) — blackout-proof milestone",

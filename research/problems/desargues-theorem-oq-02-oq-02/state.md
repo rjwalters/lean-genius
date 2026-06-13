@@ -36,6 +36,6 @@ Two-layer formalization (see knowledge.md "Recommended Lean Plan"):
 When build infra returns: create `proofs/Proofs/DesarguesTheoremOQ02OQ02.lean`
 starting with **Part A** (finite `10₃` self-duality by `decide` — no Mathlib
 Configuration dependency, so it compiles regardless of API drift), then **Parts
-B–C** on `Configuration.ProjectivePlane`/`Configuration.Dual`. Confirm the exact
-`Configuration.Dual` / `ProjectivePlane.dual` signatures against the materialized
-Mathlib source first.
+B–C** on `Configuration.ProjectivePlane`/`Configuration.Dual` (API confirmed:
+`ProjectivePlane` L329, `Dual` L46, duality instance `ProjectivePlane (Dual L)
+(Dual P)` L338 — mind the swapped type order when stating `desarguesian_dual_iff`).

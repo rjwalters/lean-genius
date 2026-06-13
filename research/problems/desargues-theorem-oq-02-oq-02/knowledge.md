@@ -65,19 +65,26 @@ of abstraction above its parent.
 
 ### Insight 2 — Mathlib already provides projective-plane duality
 `Mathlib/Combinatorics/Configuration.lean` provides the abstract incidence
-machinery this OQ needs:
-- `Configuration.ProjectivePlane P L` — points `P`, lines `L`, a `Membership P L`
-  incidence, with `mkPoint`/`mkLine` (intersection / join) and nondegeneracy.
-- `Configuration.Dual` — the dual incidence structure (swaps the two types and
-  flips `Membership`).
-- the **duality principle as an instance**: the dual of a projective plane is a
-  projective plane.
+machinery this OQ needs (API confirmed against the materialized source this
+session, lines as of the current toolchain):
+- `Configuration.ProjectivePlane P L extends HasPoints P L, HasLines P L` (L329) —
+  points `P`, lines `L`, a `Membership P L` incidence, with `mkPoint`/`mkLine`
+  (intersection / join, L76/L82) and `Nondegenerate` (L68).
+- `Configuration.Dual` (L46), with `instance : Membership (Dual L) (Dual P)`
+  flipping incidence (L59).
+- the **duality principle as an instance**:
+  `instance : ProjectivePlane (Dual L) (Dual P)` (L338) — the dual of a projective
+  plane is a projective plane. (Mathlib already uses this internally, e.g.
+  `HasLines.existsUnique_line := HasPoints.existsUnique_point (Dual L) (Dual P)`.)
+
+**Gotcha (confirmed):** the dual swaps the *type order* — the dual plane is
+`Dual L` (points) over `Dual P` (lines), so a predicate `Foo P L` evaluated on the
+dual is written `Foo (Dual L) (Dual P)`, NOT `Foo (Dual P) (Dual L)`. Get this
+order right when stating `desarguesian_dual_iff`.
 
 So duality itself is *given*; the OQ's genuine new content is to (a) define
 `Concurrent`/`Collinear` and central/axial perspectivity on this incidence, and
-(b) prove these two predicates are *exchanged* by `Configuration.Dual`. (Exact
-names/signatures must be confirmed at build time — Mathlib source is not
-materialized locally during the blackout.)
+(b) prove these two predicates are *exchanged* by `Configuration.Dual`.
 
 ### Insight 3 — the meaningful theorem is "the Desarguesian class is self-dual"
 Desargues is **not** a theorem of the projective-plane axioms (the parent's
