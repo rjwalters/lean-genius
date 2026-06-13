@@ -22,11 +22,11 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 640,
+    "lineCount": 641,
     "theoremCount": 13,
     "definitionCount": 0,
     "dateAdded": "2026-06-09",
-    "assumptions": "None. All 12 public theorems are fully proved (0 axioms, 0 sorries). The supporting infrastructure consists of 1 private noncomputable helper definition (`levelPosB`, the rightmost position with prefix sum ≤ minPrefixSum + n) and 11 private theorems/lemmas (Path B `levelPos`-style helpers plus the `_capOne` strengthenings introduced in S12).",
+    "assumptions": "None. All 13 public theorems are fully proved (0 axioms, 0 sorries). The supporting infrastructure consists of 1 private noncomputable helper definition (`levelPosB`, the rightmost position with prefix sum ≤ minPrefixSum + n) and 11 private theorems/lemmas (Path B `levelPos`-style helpers plus the `_capOne` strengthenings introduced in S12).",
     "mathlibDependencies": [
       {
         "theorem": "Finset.min'",
@@ -81,7 +81,7 @@
   "sections": [
     {
       "id": "preamble",
-      "title": "Preamble: Imports, Namespace, and Four-Part Roadmap",
+      "title": "Preamble: Imports, Namespace, and Five-Part Roadmap",
       "startLine": 1,
       "endLine": 37,
       "summary": "File header documenting (1) the S1 OBSERVE refutation of the parent's naive ⌈S/m⌉ bound by the [-m, m+S] family, (2) the m-jump IVT D as the discharge of the parent's openQuestions[0], (3) the m = 1 sanity check recovering the parent's unit-decrement IVT, and (4) the later Conjecture E / Path B / Option C / S12 sharpening cascade. Imports the parent file BallotProblemOQ01OQ01OQ02 (which provides prefixSum, minPrefixSum, rightmostMinPos, isGoodRotation, goodRotations, rightmostAtLevel_good, goodRotations_card_le) and the grandparent BallotProblemOQ01 (which provides cycle_lemma, kCountedSequence_sum, kCountedSequence). Namespace BallotMJumpCycleLemma; opens GeneralizedBallot.",
@@ -91,7 +91,7 @@
       "id": "m-jump-downward-ivt",
       "title": "Part I — m-Jump Downward IVT (D) and Unit Recovery",
       "startLine": 38,
-      "endLine": 129,
+      "endLine": 130,
       "summary": "Three theorems closing the parent's conjecture D. `m_jump_step_bound`: for step ≥ -m sequences, prefix sum drops by at most m per step (`PS(j+1) ≥ PS(j) - m`). `m_jump_downward_ivt`: leftmost-crossing IVT — if PS(i) > v and PS(j) ≤ v for i < j, some k ∈ (i,j] has PS(k) ∈ [v - m + 1, v]. Proof defines `S := Finset.Ico (i+1) (j+1) ∩ {k : PS(k) ≤ v}`, takes `kstar := S.min'`, derives `PS(kstar - 1) > v` by minimality, then uses `hsucc + hstep_bound` to pin PS(kstar) ≥ v - m + 1; combined with PS(kstar) ≤ v from membership, the conclusion follows by `linarith`. `m_jump_downward_ivt_unit_recovery`: at m = 1 the window collapses to {v} and the parent's unit-decrement IVT is recovered. (The `omega` rather than `linarith` finisher is required because v4.26.0 does not auto-normalize `↑(1 : ℕ) = (1 : ℤ)` for `linarith`.)",
       "mathContext": "$\\text{PS}(j+1) \\geq \\text{PS}(j) - m \\quad (\\text{since } l_j \\geq -m).$\nLet $k^* := \\min' \\{k \\in (i,j] : \\text{PS}(k) \\leq v\\}$. Minimality $\\Rightarrow \\text{PS}(k^*-1) > v$; one-step bound $\\Rightarrow \\text{PS}(k^*) \\geq \\text{PS}(k^*-1) - m > v - m$. Combined with $\\text{PS}(k^*) \\leq v$: $\\text{PS}(k^*) \\in [v - m + 1, v]$."
     },
@@ -99,37 +99,37 @@
       "id": "m-jump-upward-ivt",
       "title": "Part II — m-Jump Upward IVT (D′) and Unit Recovery",
       "startLine": 131,
-      "endLine": 235,
+      "endLine": 250,
       "summary": "Symmetric dual of Part I, addressing conjecture D′. `m_jump_step_bound_upward`: for step ≤ m sequences, PS(j+1) ≤ PS(j) + m. `m_jump_upward_ivt`: if PS(i) < v and PS(j) ≥ v for i < j, some k ∈ (i,j] has PS(k) ∈ [v, v + m - 1]. Same leftmost-crossing argument as Part I with all directions reversed (S filters on PS ≥ v instead of PS ≤ v; kstar - 1 has PS < v; upper bound from hsucc + hstep_bound). `m_jump_upward_ivt_unit_recovery`: at m = 1 the window collapses to {v}, recovering an upward-unit IVT (the dual of `unit_decrement_downward_ivt`, which the parent file did not state explicitly).",
       "mathContext": "$\\text{PS}(j+1) \\leq \\text{PS}(j) + m \\quad (\\text{since } l_j \\leq m).$\nLet $k^* := \\min' \\{k \\in (i,j] : \\text{PS}(k) \\geq v\\}$. Minimality $\\Rightarrow \\text{PS}(k^*-1) < v$; one-step bound $\\Rightarrow \\text{PS}(k^*) \\leq \\text{PS}(k^*-1) + m < v + m$. Combined with $\\text{PS}(k^*) \\geq v$: $\\text{PS}(k^*) \\in [v, v + m - 1]$."
     },
     {
       "id": "conjecture-e",
       "title": "Part III — Conjecture E: Cycle-Lemma Bound on Alphabet {+1, -m}",
-      "startLine": 237,
-      "endLine": 316,
+      "startLine": 251,
+      "endLine": 332,
       "summary": "Discharges conjecture E by restricting to the {+1, -m} alphabet and invoking the parent's `cycle_lemma`. Private lemma `ceil_div_le_toNat`: for S > 0 and m ≥ 1, `Int.toNat ⌈S/m⌉ ≤ S.toNat` (the residual arithmetic atom). Public theorem `step_in_one_neg_m_count`: if every step is 1 or -m and l.sum > 0, then `Int.toNat ⌈l.sum / m⌉ ≤ |goodRotations l|`. Proof: bridge `l ∈ kCountedSequence m (l.count 1) (l.count (-m))` (by definition unfolding), use `kCountedSequence_sum` to get `l.sum = a - m·b`, derive `m·b < a` from positivity, apply `cycle_lemma` to get the *exact* count `|gR| = a - m·b = l.sum.toNat`, and finish with `ceil_div_le_toNat`. The result *dominates* the naive ⌈S/m⌉ bound (the count equals `l.sum.toNat`, not just `⌈l.sum/m⌉`).",
       "mathContext": "Restricted to alphabet $\\{+1, -m\\}$: $l \\in \\text{kCountedSequence}_m(a, b) \\Rightarrow |\\text{gR}(l)| = a - m \\cdot b = (\\sum l).\\text{toNat}$ via the parent's `cycle_lemma`. The fractional bound $\\lceil S/m \\rceil \\leq S$ then follows from $m \\geq 1$.\n\n**Contrast** with S1's refutation on the broad family $\\text{step} \\geq -m$: the witness $l = [-m, m+S]$ uses an uncapped positive step $+(m+S)$ that the alphabet restriction $x = 1 \\vee x = -m$ excludes."
     },
     {
       "id": "path-b-mixed-down",
       "title": "Part IV — Path B (S7): Strict Equality on {-m, …, -1, +1}",
-      "startLine": 319,
-      "endLine": 476,
+      "startLine": 333,
+      "endLine": 491,
       "summary": "Extends Conjecture E from {+1, -m} to the *mixed-down* alphabet `x = 1 ∨ ∃ k ∈ {1..m}, x = -k`. The parent file's `levelPos` private helpers are not cross-file callable, so this Part re-implements them as `levelPosB` in this slug's namespace (S7 PREP §3.4 choice (b)). Seven private helpers: `levelPosB` (noncomputable def — rightmost prefix position at or below `minPrefixSum + n`), `levelPosB_mem` / `_le` / `_prefixSum_le` (membership lemmas), `levelPosB_max` (maximality), `levelPosB_lt` (strict inequality from `(n : ℤ) < l.sum`), `levelPosB_right` (cofinal characterization), and `levelPosB_eq` (the level-identity heart — same proof shape as the parent's `levelPos_eq` with a single `rcases` pattern adjustment to destructure the existential negative step; the `linarith` discharge depends only on `0 ≤ k`). `goodRotations_card_ge_pathB` then uses `Finset.card_le_card_of_injOn` with `levelPosB` to inject `Finset.range l.sum.toNat` into `goodRotations l`. Two public theorems: `step_in_one_pos_mixed_neg_card_eq` (strict equality via `le_antisymm` with the alphabet-agnostic `goodRotations_card_le`) and `step_in_one_pos_mixed_neg_card_bound` (B′ slack form via `Int.toNat_of_nonneg` and `nlinarith`).",
       "mathContext": "Alphabet $\\Sigma = \\{+1\\} \\cup \\{-1, \\ldots, -m\\}$. Define $\\text{levelPosB}(l, n) := \\max\\{i \\in [0, |l|] : \\text{PS}(i) \\leq \\text{minPS}(l) + n\\}$ (the *rightmost* prefix at or below level $\\text{minPS} + n$). For each $n < l.\\text{sum}.\\text{toNat}$, the cyclic rotation starting at $\\text{levelPosB}(l, n)$ is good, and these positions are distinct (extracted by inverting the level identity). Hence $|gR(l)| \\geq l.\\text{sum}.\\text{toNat}$; combined with $|gR(l)| \\leq l.\\text{sum}.\\text{toNat}$ (parent), equality."
     },
     {
       "id": "sharpest-cap-one",
       "title": "Part V — S12: The Maximal Clean Alphabet x ≤ 1 and Option C as Corollary",
-      "startLine": 478,
-      "endLine": 625,
+      "startLine": 492,
+      "endLine": 639,
       "summary": "Drops *all* lower bounds on negative steps. Two private strengthenings: `levelPosB_eq_capOne` (the Part IV level identity with the inert lower bound removed — `omega` consumes only `hxle : l[idx] ≤ 1`) and `goodRotations_card_ge_capOne` (the Part IV count bound routed through the strengthened identity). The headline theorem `step_le_one_card_eq` glues these via `le_antisymm` with `goodRotations_card_le`: for every `l : List ℤ` with all steps ≤ 1 and `0 < l.sum`, `|goodRotations l| = l.sum.toNat`. The Option C public API `step_in_one_pos_pm_card_eq` and `_card_bound` is preserved byte-identically and exhibited as one-line corollaries: drop the `.2` of the conjunctive hypothesis and forward. **Mathematical content**: `x ≤ 1` is the *maximal* clean alphabet for the strict cycle-lemma equality — S1's refutation `[-m, m + S]` uses an uncapped `+(m + S)` to skip levels, blocked the moment the cap is in place, so no upward relaxation admits the equality.",
       "mathContext": "$\\forall x \\in l,\\ x \\leq 1\\ \\wedge\\ 0 < \\sum l\\ \\Rightarrow\\ |gR(l)| = (\\sum l).\\text{toNat}.$\n\n**Sharpness** (S1 OBSERVE): the family $l = [-m, m+S]$ (steps $\\{-m, m+S\\}$, $\\sum = S > 0$) has $|gR| = 1$ for any $m \\geq 2$, refuting the equality on any wider upward alphabet. The lower bound on negative steps is *inert* — every proof step (level identity, count, upper bound) consumes only the upper cap."
     }
   ],
   "conclusion": {
-    "summary": "Twelve public theorems close out the m-generalization of the cycle lemma in two complementary modes: (i) two m-jump IVTs (D, D′) supply width-m generalizations of the parent's unit-decrement IVTs, with m = 1 sanity checks recovering the parent verbatim; (ii) a four-step alphabet refinement traces where the *strict* cycle-lemma equality |goodRotations l| = l.sum.toNat survives. The end-state `step_le_one_card_eq` is the maximal clean alphabet: `∀ x ∈ l, x ≤ 1 ∧ 0 < l.sum`, with no lower bound on negative steps at all. The Option C and Path B public theorems are preserved as one-line corollaries.",
+    "summary": "Thirteen public theorems close out the m-generalization of the cycle lemma in two complementary modes: (i) two m-jump IVTs (D, D′) supply width-m generalizations of the parent's unit-decrement IVTs, with m = 1 sanity checks recovering the parent verbatim; (ii) a four-step alphabet refinement traces where the *strict* cycle-lemma equality |goodRotations l| = l.sum.toNat survives. The end-state `step_le_one_card_eq` is the maximal clean alphabet: `∀ x ∈ l, x ≤ 1 ∧ 0 < l.sum`, with no lower bound on negative steps at all. The Option C and Path B public theorems are preserved as one-line corollaries.",
     "implications": "The two m-jump IVTs are an infrastructural piece — the discrete-IVT mechanism is now available for any constant-bounded-step setting, not just the unit-decrement case. The strict-equality strand isolates the precise hypothesis (`x ≤ 1`) that drives the cycle-lemma count and shows the lower bound on negative steps was never doing any work. Together they answer the parent's openQuestion[0] in a sharper form than originally conjectured: the naive ⌈S/m⌉ bound is false on the broad step ≥ -m family (S1 refutation), but the *exact* equality `|gR| = l.sum.toNat` survives on the much broader alphabet `x ≤ 1` (S12 sharpening) — provided one bounds *positive*, not *negative*, steps.",
     "openQuestions": [
       "**Quantitative slack on uncapped alphabets.** For sequences with bounded *positive* steps `x ≤ M` (`M > 1`) and arbitrary negative steps, is there a lower bound `|gR| ≥ f(M) · l.sum.toNat` for some explicit `f`? The S1 refutation rules out the strict equality; characterising the slack term as a function of the maximum positive step would extend the present analysis past the equality boundary.",
@@ -146,7 +146,7 @@
     ],
     "opens": ["GeneralizedBallot"],
     "namespace": "BallotMJumpCycleLemma",
-    "lineCount": 640,
+    "lineCount": 641,
     "axiomCount": 0,
     "theoremCount": 13,
     "definitionCount": 0,
@@ -246,6 +246,11 @@
       "name": "m_jump_step_bound_upward",
       "type": "lemma",
       "description": "For step ≤ m sequences, the prefix sum rises by at most m per step: `prefixSum l (j+1) ≤ prefixSum l j + m`. Symmetric dual of m_jump_step_bound."
+    },
+    {
+      "name": "m_jump_step_abs_bound",
+      "type": "lemma",
+      "description": "Two-sided step bound for the alphabet -m ≤ x ≤ m: consecutive prefix sums differ by at most m in absolute value, `|prefixSum l (j+1) - prefixSum l j| ≤ m`. Packages the downward and upward one-sided bounds into the single Lipschitz-in-index estimate underlying the two-sided IVT family."
     },
     {
       "name": "m_jump_upward_ivt",
