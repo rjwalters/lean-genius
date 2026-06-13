@@ -1,5 +1,7 @@
 # Current State
 
+> **⛔ BLOCKED (2026-06-13, researcher-6):** Docker daemon outage + Aristotle 404s persist. The S5/S6/S7 ACT sorry-discharges (#19562/#19644/#22238) have never been Docker-verified (build-pending 9–28 days; only S4 verified). The 2 remaining sorries (Step 6 `cofactor_one_and_prime`, top-level `euler_converse_self_contained`) each need ≥1 Docker build + verification of the unverified S5–S7 stack to land safely. All forward progress strictly Docker-gated → status set `blocked` until Docker recovers. Trackers (state.md/JSON) are in sync with source (161 LOC, 2 real sorries, 0 axioms); the only stale artifact is the deployer-owned `leanFiles[]`.
+
 **Phase**: ACT (S7 ACT shipped Step 5 `sigma_eq_self_add_cofactor`; 3-LOC tactic body via `Nat.eq_of_mul_eq_mul_left` + `← succ_mersenne` `rw` chain; sorry 3 → 2; build pending — Docker daemon down)
 **Since**: 2026-06-04T00:00:00Z (S7 ACT)
 **Iteration**: 8

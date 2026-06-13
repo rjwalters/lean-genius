@@ -2,7 +2,7 @@
   "slug": "sum-of-divisors-oq-02",
   "title": "Euler's Converse: Every Even Perfect Number is Mersenne-Form",
   "phase": "ACT",
-  "status": "in-progress",
+  "status": "blocked",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -31,7 +31,9 @@
     "iteration": 8,
     "focus": "S7 ACT (researcher-1, 2026-06-04T00:00Z): replaced line-115 `sorry` in sigma_eq_self_add_cofactor (Step 5) with 3-LOC tactic-mode body: `have hpos : 0 < mersenne (k + 1) := mersenne_pos.mpr (Nat.succ_pos k); refine Nat.eq_of_mul_eq_mul_left hpos ?_; rw [h_eq, mul_add, ← hm, ← succ_mersenne (k + 1), add_mul, one_mul]`. The 6-step rw chain reduces both sides to `mersenne (k+1) * m + m = mersenne (k+1) * m + m` (closed by rfl). proofs/Proofs/SumOfDivisorsOQ02.lean 138 → ~158 LOC (+~20: 3 LOC tactic body + ~17 LOC docstring expansion documenting provenance + bearer pins + build-pending qualifier + fallbacks). Sorry count 3 → 2 (Step 5 closed). Axiom count 0 → 0. Build pending — Docker daemon unavailable. Bearer pins (`mersenne_pos` at LucasLehmer.lean:64, `succ_mersenne` at LucasLehmer.lean:102, `Nat.eq_of_mul_eq_mul_left` from Lean core) verified 0-drift at unchanged Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via gh api raw fetch this session.",
     "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
-    "blockers": [],
+    "blockers": [
+      "B-INFRA Docker daemon outage (`timeout 8 docker info` exits 124 — Server section unresponsive) + Aristotle backend 404s, persisting 2026-06-13. The S5 ACT (#19562), S6 ACT (#19644) and S7 ACT (#22238) sorry-discharges have NEVER been Docker-verified (build-pending 9–28 days); only S4 was verified (3063 jobs). The 2 remaining sorries — Step 6 `cofactor_one_and_prime` (~15-20 LOC) and top-level `euler_converse_self_contained` — each need >=1 Docker build plus verification of the existing S5–S7 stack to land safely. All forward progress strictly Docker-gated -> slug set blocked until Docker recovers."
+    ],
     "nextAction": "Step 6 ACT (next): close cofactor_one_and_prime (L127 post-S7-ACT) per S3 PREP §2.3 / knowledge.md Step 6 plan — Nat.sum_divisors_eq_sum_properDivisors_add_self expands σ(m) = m + ∑ properDivisors; m + c = m + ∑ propers gives ∑ propers = c. Since c ∣ m and c < m, c is itself a proper divisor; ∑ propers ≥ c with equality iff properDivisors m = {c}. Combined with 1 ∣ m forces c = 1 and properDivisors m = {1}, the latter ↔ m.Prime via Nat.sum_properDivisors_eq_one_iff_prime. Estimated ~15-20 LOC. After Step 6: top-level euler_converse_self_contained ACT (L136 post-S7-ACT) chains the 6 steps via Archive eq_two_pow_mul_odd to split n = 2^k * m with m odd. Build verification of this S7 ACT + sibling S5 ACT #19562 + S6 ACT #19644 deferred to next docker-available iteration; single Docker-iter expected per S6 PREP §3.1.",
     "attemptCounts": {
       "total": 7,
