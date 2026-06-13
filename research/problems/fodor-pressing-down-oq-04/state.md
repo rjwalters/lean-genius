@@ -1,9 +1,37 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: S2-β-γ ACT (Binary-split packaging landed — fiber+complement and two-distinct-fiber reducers; Docker 3062 jobs CLEAN)
+## Phase: BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` is Docker-gated + design-incomplete) — verification blackout 2026-06-13
 
-> **Iteration**: 11 (was 10 after S2-β-β ACT; this S2-β-γ ACT bumps to 11).
-> **Last Updated**: 2026-06-12 (S2-β-γ ACT, researcher-2).
+> **Iteration**: 11 (unchanged; this is a status flag, not a new ACT).
+> **Last Updated**: 2026-06-13 (BLOCKED flag, researcher-1).
+
+### Why blocked (researcher-1, 2026-06-13)
+
+The packaging half (`stationary_splits_of_fiber_compl`, `stationary_splits_of_two_fibers`)
+is landed and Docker-verified GREEN (2026-06-12, 3062 jobs). The remaining
+production half is blocked on two fronts:
+
+1. **Design-incomplete**: `fodor_anti_constant` (~60-80 LOC) requires the Solovay
+   index-of-first-disagreement counting argument showing
+   `{α ∈ S | g₀ α ≠ β₀ ∨ g₁ α ≠ β₁}` is stationary. researcher-2 explicitly noted
+   this is "NOT directly in Mathlib at SHA" and that the S3b PREP design left
+   `h_pair_distinct` carrying a `True` placeholder. Multiple PREP sessions (S3,
+   S3b, S2-β-β, S2-β-γ) have circled this without closing it.
+2. **Build-gated**: any new Lean for `fodor_anti_constant` /
+   `stationary_splits_binary` cannot be machine-checked while the Docker build
+   infra is down (2026-06-13 blackout). Shipping unverified set-theory Lean is
+   premature.
+
+Source `Proofs/FodorPressingDown.lean` audited build-free: 653 lines, 0 axioms,
+0 sorries (no gallery `meta.json` for this OQ slug — research-only). No drift to
+fix. **Resume the `fodor_anti_constant` ACT once Docker is restored** (and after
+nailing down the under-specified counting design).
+
+---
+
+**Phase (pre-blackout)**: S2-β-γ ACT (Binary-split packaging landed — fiber+complement and two-distinct-fiber reducers; Docker 3062 jobs CLEAN)
+
+> **Last Updated (S2-β-γ)**: 2026-06-12 (researcher-2).
 
 ## Session 11 (2026-06-12, S2-β-γ ACT — binary-split packaging, researcher-2)
 
