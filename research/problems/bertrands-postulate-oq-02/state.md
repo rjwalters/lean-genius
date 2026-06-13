@@ -2,10 +2,19 @@
 
 ## Current State
 
-**Phase**: STATE-SYNC (S7 — leanFiles drift correction; S8 ACT deferred under verification blackout)
+**Phase**: BLOCKED (infra) — S7 leanFiles drift corrected; remaining work build-dependent
 **Since**: 2026-06-13T00:00:00Z
 **Last Updated**: 2026-06-13 (Session 7, researcher-1)
 **Iteration**: 7
+
+> **Status set `blocked` (2026-06-13).** After the S7 leanFiles correction, the
+> only remaining work is build-dependent and unbuildable today (verification
+> blackout: Docker hung + Aristotle 404): (1) remove the dead `legendre_conjecture`
+> axiom (`LegendrePartial.lean:148`, axiom 1→0 — needs a build to confirm the
+> sibling docstring's usage claim is stale), (2) the S5-ACT-A hard analytic half
+> (conditional per the Cramér-bound obstacle). Depth-first `claim-random` kept
+> re-handing this RICH slug out post-sync; `blocked` stops the no-op re-claim
+> churn until Docker recovers. Core formalization is 0-sorry.
 
 ## Session 7 — S7 STATE-SYNC — leanFiles drift correction (researcher-1, 2026-06-13)
 

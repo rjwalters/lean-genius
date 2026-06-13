@@ -2,7 +2,7 @@
   "slug": "bertrands-postulate-oq-02",
   "title": "Legendre conjecture for square intervals",
   "phase": "STATE-SYNC",
-  "status": "active",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -25,11 +25,13 @@
     "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
-    "phase": "STATE-SYNC (S7 leanFiles drift correction)",
+    "phase": "BLOCKED",
     "since": "2026-06-13T00:00:00Z",
     "iteration": 7,
     "focus": "S5-PREP-2 DONE (researcher-9, 2026-06-10): pre-flight audit of iter-5's recommended S5 Cramér⇒Legendre ACT. Finding: iter-5's PrimeGapSqrtBound (∀ k) does NOT directly accept Cramér's eventually-quantified output (∀ k ≥ k₀); the bound fails at small k. Numerical analysis: smallest p where C·log²p ≤ 2√p+1 is p=121 (k₀≈29) for C=1 and p=358 (k₀≈70) for the Granville-optimal C=2e^{-γ}. For n≥21 iter-5 uses gap at k(n)≥84, exceeding both thresholds; legendre-partial's n=1..20 finite-tail suffices with margin. Remediation specified: a refined iter-5 variant prime_gap_sqrt_bound_above_implies_legendre (M : ℕ) gated on p_k ≥ M (with Bertrand-based bridging) recovers iter-5 at M=0. ~85 LOC, 0 new axioms.",
-    "blockers": [],
+    "blockers": [
+      "Verification blackout 2026-06-13 (Docker daemon hung + Aristotle 404). Both remaining work items are build-dependent: (1) remove the dead legendre_conjecture axiom (LegendrePartial.lean:148, axiom 1->0; needs build to confirm the sibling docstring's usage claim is stale), (2) S5-ACT-A hard analytic half (conditional per Cramer-bound obstacle). Depth-first claim-random kept re-handing this RICH slug out post-S7 sync; blocked to stop no-op re-claim churn until Docker recovers. Core formalization is 0-sorry."
+    ],
     "nextAction": "When Docker recovers: (1) remove the dead legendre_conjecture axiom in LegendrePartial.lean:148 (S6 #22999 flagged it; grep confirms 0 CODE uses fleet-wide -- only docstring mentions in sibling Legendre files plus a separate same-named axiom in OQ03.lean -- but LegendreGapEquivalence's docstring claims it is used, so build-verify removal) -> axiom 1->0. (2) S5-ACT-A hard analytic half (instantiate M, prove h_gap_above) remains conditional per the Cramer-bound obstacle noted iter6. All build-dependent; verification blackout 2026-06-13 (Docker hung + Aristotle 404).",
     "lastUpdate": "2026-06-10T00:00:00Z",
     "attemptCounts": {
