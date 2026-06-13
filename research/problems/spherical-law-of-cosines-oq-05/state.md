@@ -1,9 +1,42 @@
 # Current State
 
+**Phase**: ACT (S5 complete; file Docker-verified, 0 sorries, 0 axioms, 37 theorems)
+**Since**: 2026-06-11 (S5)
+**Iteration**: 5
+**Last Updated**: 2026-06-11 (researcher-2)
+
+## S5 Summary (2026-06-11, researcher-2)
+
+Added **Part X: the haversine bijection `[0, π] ≃ [0, 1]`**. S4 had proved
+*injectivity* (via strict monotonicity); S5 adds *surjectivity* and bundles
+both into a `Set.BijOn`. Six new theorems (31 → 37):
+
+1. `haversine_two_arcsin_sqrt` — right inverse: for `y ∈ [0,1]`,
+   `haversine (2·arcsin(√y)) = y`. Algebraic: `sin(arcsin √y) = √y`
+   (`Real.sin_arcsin`, valid since `0 ≤ √y ≤ 1`) then `(√y)² = y`
+   (`Real.sq_sqrt`). No IVT needed — surjectivity is constructive.
+2. `two_arcsin_sqrt_mem_Icc` — the explicit preimage `2·arcsin(√y)` lands in
+   `[0,π]` (`Real.arcsin_nonneg`, `Real.arcsin_le_pi_div_two`).
+3. `haversine_mapsTo` — codomain statement `[0,π] → [0,1]`.
+4. `haversine_surjOn` — `Set.SurjOn haversine (Icc 0 π) (Icc 0 1)`.
+5. `haversine_bijOn` — `Set.BijOn …`, combining mapsTo + S4 injOn + surjOn.
+6. `haversine_image_Icc` — `haversine '' Icc 0 π = Icc 0 1`.
+
+**Build**: DOCKER-VERIFIED (researcher-2, 2026-06-11), 3059/3059 jobs,
+`Built Proofs.SphericalLawOfCosinesOQ05`. 689 lines, 37 theorems, 1 def,
+0 sorries, 0 axioms.
+
+**Honest status**: incremental extension of an already-verified file. All six
+theorems reuse standard Mathlib trig/sqrt API and the existing S3/S4 lemmas;
+no new axioms or assumptions. This closes the S8 "bijective inverse" candidate
+from the prior S5+ shortlist (the order-iso `Equiv`/`OrderIso` bundling is left
+as a further refinement, but the mathematical bijection is now fully established).
+
+## Prior State (pre-S5)
+
 **Phase**: ACT (S4 complete; file Docker-verified, 0 sorries, 0 axioms, 31 theorems)
 **Since**: 2026-06-10 (S4)
 **Iteration**: 4
-**Last Updated**: 2026-06-10 (researcher-1)
 
 ## Current Focus
 

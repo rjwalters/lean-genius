@@ -22,12 +22,12 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Haversine_formula",
     "dateAdded": "2026-05-12",
     "axiomCount": 0,
-    "lineCount": 616,
-    "assumptions": "None. All 31 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form. S3 (researcher-1, 2026-06-03) added the inverse haversine formula sideC = 2·arcsin(√(haversine sideC)) (general form for θ ∈ [0, π] plus SphericalTriangle specialisations for sideA, sideB, sideC) and the great-circle distance corollary sideC_eq_great_circle_haversine combining the forward and inverse formulas into the canonical navigation identity. S4 (researcher-1, 2026-06-10) added strict monotonicity haversine_strictMonoOn_Icc_zero_pi (via Real.strictAntiOn_cos), the InjOn corollary haversine_injOn_Icc_zero_pi, order/equality characterisations on [0,π], the generic-Vec3 corollary arcLength_eq_of_haversine_eq, and two-triangle uniqueness statements sideA/B/C_eq_of_haversine_sideA/B/C_eq formalising the well-definedness of great-circle distance recovery. Also fixed pre-existing S2 build issues (orphan docstring, split_ifs on let-wrapped if, le_div_iff → le_div_iff₀): file is now Docker-verified end-to-end for the first time.",
+    "lineCount": 689,
+    "assumptions": "None. All 37 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form. S3 (researcher-1, 2026-06-03) added the inverse haversine formula sideC = 2·arcsin(√(haversine sideC)) (general form for θ ∈ [0, π] plus SphericalTriangle specialisations for sideA, sideB, sideC) and the great-circle distance corollary sideC_eq_great_circle_haversine combining the forward and inverse formulas into the canonical navigation identity. S4 (researcher-1, 2026-06-10) added strict monotonicity haversine_strictMonoOn_Icc_zero_pi (via Real.strictAntiOn_cos), the InjOn corollary haversine_injOn_Icc_zero_pi, order/equality characterisations on [0,π], the generic-Vec3 corollary arcLength_eq_of_haversine_eq, and two-triangle uniqueness statements sideA/B/C_eq_of_haversine_sideA/B/C_eq formalising the well-definedness of great-circle distance recovery. S5 (researcher-2, 2026-06-11) added surjectivity of haversine onto [0,1] (constructive, via the explicit preimage 2·arcsin(√y)) and bundled it with the S4 injectivity into the bijection haversine_bijOn : Set.BijOn haversine (Set.Icc 0 π) (Set.Icc 0 1), plus the image characterisation haversine_image_Icc — making great-circle distance recovery a genuine two-sided inverse. Docker-verified end-to-end (3059/3059 jobs).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 31,
+    "theoremCount": 37,
     "definitionCount": 1,
-    "substantiveTheoremCount": 31
+    "substantiveTheoremCount": 37
   },
   "sections": [
     {
@@ -103,12 +103,20 @@
       "mathContext": "Strict monotonicity formalises the navigation pipeline's well-definedness: the forward `haversine_formula` (S2) plus the inverse `eq_two_arcsin_sqrt_haversine` (S3) compute a great-circle distance, and injectivity confirms this distance is uniquely recoverable from its haversine. Mathematically: $\\text{hav}(\\theta) = (1 - \\cos\\theta)/2$, and `cos` is strictly antitone on $[0, \\pi]$, so `haversine` is strictly monotone there. The corollary `arcLength_eq_of_haversine_eq` makes the injectivity directly applicable to arc-lengths between unit vectors, which always lie in $[0, \\pi]$ by `arcLength_nonneg`/`arcLength_le_pi` from the parent file."
     },
     {
+      "id": "haversine-bijection",
+      "title": "Part X: The haversine bijection [0,π] ≃ [0,1] (S5)",
+      "startLine": 574,
+      "endLine": 639,
+      "summary": "Completes the bijection picture started in S4. S4 proved injectivity (via strict monotonicity); this part proves surjectivity onto [0,1] and bundles both into `Set.BijOn haversine (Set.Icc 0 π) (Set.Icc 0 1)`. Surjectivity is constructive — the preimage of y is the explicit `2·arcsin(√y)` — so no intermediate-value argument is needed. Six new theorems: `haversine_two_arcsin_sqrt` (right inverse), `two_arcsin_sqrt_mem_Icc` (preimage lands in [0,π]), `haversine_mapsTo`, `haversine_surjOn`, `haversine_bijOn`, and the image characterisation `haversine_image_Icc`.",
+      "mathContext": "Surjectivity onto [0,1] is algebraic: for y ∈ [0,1], hav(2·arcsin(√y)) = sin(arcsin(√y))² = (√y)² = y, using `Real.sin_arcsin` (valid since 0 ≤ √y ≤ 1) and `Real.sq_sqrt` (valid since 0 ≤ y). Combined with the S4 injectivity, `haversine` is a bijection from the principal arc-length range [0,π] onto the haversine range [0,1]. Together with the inverse `eq_two_arcsin_sqrt_haversine` (S3), this makes the great-circle distance recovery a genuine two-sided inverse rather than a one-sided formula — every admissible haversine value is realised by exactly one distance."
+    },
+    {
       "id": "summary-final",
-      "title": "Part X: Summary (post-S4)",
-      "startLine": 581,
-      "endLine": 615,
-      "summary": "Tabular summary of the file's contents after S4: 31 proved theorems, 0 axioms, 0 sorries, 1 definition, 616 lines.",
-      "mathContext": "Status accounting: this file is `verified` with badge `original`. The S1 algebraic identity, S2 SphericalTriangle bridge, S3 inverse-formula/navigation corollary, and S4 strict-monotonicity/injectivity together form a complete formalisation of the haversine identity loop with full navigation-pipeline well-definedness guarantees."
+      "title": "Part XI: Summary (post-S5)",
+      "startLine": 640,
+      "endLine": 689,
+      "summary": "Tabular summary of the file's contents after S5: 37 proved theorems, 0 axioms, 0 sorries, 1 definition, 689 lines.",
+      "mathContext": "Status accounting: this file is `verified` with badge `original`. The S1 algebraic identity, S2 SphericalTriangle bridge, S3 inverse-formula/navigation corollary, S4 strict-monotonicity/injectivity, and S5 surjectivity/bijection together form a complete formalisation of the haversine identity loop with full navigation-pipeline well-definedness guarantees and an explicit bijection [0,π] ≃ [0,1]."
     }
   ],
   "overview": {
