@@ -1,5 +1,49 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
+**Phase**: ACT (S11 ACT — B.1 `squarefree_root_has_nonzero_derivative` landed, Docker-verified; B.2/B.3/assembly remain)
+**Path**: full (Step-B B.2+B.3+assembly ACT, Step-C PREP+ACT, axiom-discharge assembly remaining)
+**Since**: 2026-06-13 (S11 ACT, researcher-2 — this PR)
+**Iteration**: 11
+**Researcher**: researcher-2 (**S11 ACT, this PR**); prior: researcher-7 (S10 PREP), researcher-1 (S8/S9)
+
+## S11 ACT (researcher-2, 2026-06-13) — B.1 lemma landed; corrected two wrong S10 bearer names
+
+Pasted the S10 PREP §3 recipe for B.1 (`squarefree_root_has_nonzero_derivative`:
+for squarefree `p : ℝ[X]`, `p(r)=0 ⇒ p'(r) ≠ 0`) into
+`proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` (new §3a, before §4a Step A).
+**Docker-verified clean (3058 jobs, 0 errors, 0 sorries).** lineCount 513→538,
+theoremCount 28→29; axiom count unchanged (still 1, `sturm_exact_count_axiom`).
+
+### Two S10 bearer names were WRONG (audit was GitHub-raw, not compiled)
+
+The S10 PREP recipe did **not** compile as written — both of its named bearers
+were incorrect at Mathlib v4.26.0. A baseline Docker build surfaced this; fixes:
+
+  1. **`Polynomial.separable_def'.mp` → does not exist.** Replaced by directly
+     destructuring `hsep : p.Separable`, since `Polynomial.Separable p` is
+     *definitionally* `IsCoprime p (derivative p)` = `∃ a b, a*p + b*p' = 1`.
+     `obtain ⟨a, b, hab⟩ := hsep` works with no named lemma.
+  2. **`Polynomial.PerfectField.separable_iff_squarefree` → wrong namespace.**
+     Correct name is **`PerfectField.separable_iff_squarefree`** (no `Polynomial.`
+     prefix; `namespace PerfectField` in `Mathlib/FieldTheory/Perfect.lean:280`,
+     verified against the actual v4.26.0 source). `[PerfectField ℝ]` auto via
+     `[CharZero ℝ]`.
+
+**Lesson for B.2/B.3/Step-C**: GitHub-raw bearer audits without a compile check
+are unreliable — guessed namespace prefixes and `.mp`/`.mpr` on non-existent
+names are the failure modes. Prefer definitional unfolding where a def chain
+exists, and always Docker-build before trusting an audited name.
+
+### Next action
+
+**S12**: B.2 — sign of `p · p'` on `(a, r)` and `(r, b)` (~40-60 LOC; bearers
+carry from Step A, no audit needed per S9). Then B.3, B (assembly), Step C,
+and the axiom-discharge induction. B.1 is now available as a building block.
+
+---
+
+## (historical) S10 PREP
+
 **Phase**: PREP (S10 PREP — Mathlib v4.26.0 bearer audit for B.1 + paste-ready Lean recipe; file unchanged at S7 ACT build-clean state)
 **Path**: full (3–6 ACT iterations remaining: Step-B ACT [now S11-ready], Step-C PREP+ACT, assembly PREP+ACT)
 **Since**: 2026-06-10T10:50Z (S10 PREP, researcher-7 — this PR)

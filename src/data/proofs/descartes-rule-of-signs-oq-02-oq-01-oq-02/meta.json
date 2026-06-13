@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 513,
+    "lineCount": 538,
     "dateAdded": "2026-05-03",
     "assumptions": "1 axiom: sturm_exact_count_axiom (additive form: σ_p(a) = σ_p(b) + #{roots in (a,b]}, bundling exact count and monotonicity). All supporting lemmas proved, including the key structural property (mod_eval_at_root), sequence non-emptiness, linear case verification, and four corollaries (no-roots, unique-root, two-roots, monotonicity).",
     "relatedProblems": [
@@ -34,7 +34,7 @@
         "relationship": "OQ-02-OQ-01 proves Budan's building blocks; Sturm's exact count goes further, using GCD-based sequences instead of derivative towers."
       }
     ],
-    "theoremCount": 28,
+    "theoremCount": 29,
     "definitionCount": 6
   },
   "overview": {
@@ -51,9 +51,9 @@
   },
   "leanFile": {
     "namespace": "SturmTheorem",
-    "lineCount": 513,
+    "lineCount": 538,
     "axiomCount": 1,
-    "theoremCount": 28,
+    "theoremCount": 29,
     "sorries": 0,
     "mainTheorems": [
       {

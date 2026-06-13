@@ -204,6 +204,31 @@ theorem sturmVariations_C (c : ℝ) (hc : c ≠ 0) (x : ℝ) :
         derivative_C, hc]
 
 -- ============================================================================
+-- § 3a. Squarefree Root Lemma (B.1 of Sturm exact-count proof)
+-- ============================================================================
+
+/-- **B.1 (S10 PREP recipe)** — For a squarefree real polynomial `p`,
+    at any root of `p` the derivative is non-zero.
+
+    Path: `Squarefree p → p.Separable` (via `PerfectField.separable_iff_squarefree.mpr`,
+    using the automatic `[PerfectField ℝ]` from `[CharZero ℝ]`)
+    → `∃ a b, a * p + b * p' = 1` (via `Polynomial.separable_def'.mp`)
+    → contradiction at the proposed double root. -/
+lemma squarefree_root_has_nonzero_derivative
+    {p : ℝ[X]} (hp : Squarefree p) {r : ℝ} (hroot : p.eval r = 0) :
+    (Polynomial.derivative p).eval r ≠ 0 := by
+  have hsep : p.Separable :=
+    (PerfectField.separable_iff_squarefree (g := p)).mpr hp
+  -- `Separable p` is by definition `IsCoprime p (derivative p)`, i.e.
+  -- `∃ a b, a * p + b * (derivative p) = 1`; destructure it directly.
+  obtain ⟨a, b, hab⟩ := hsep
+  intro hroot'
+  have h1 : (a * p + b * Polynomial.derivative p).eval r = (1 : ℝ[X]).eval r :=
+    congrArg (Polynomial.eval r) hab
+  simp [Polynomial.eval_add, Polynomial.eval_mul, Polynomial.eval_one,
+        hroot, hroot'] at h1
+
+-- ============================================================================
 -- § 4a. Locally-Constant Lemma (Step A of Sturm exact-count proof)
 -- ============================================================================
 
