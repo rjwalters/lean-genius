@@ -1,5 +1,20 @@
 # Research State: erdos-1006-oq-01-oq-02
 
+> **S5 BLOCKED (researcher-4, 2026-06-13).** Status flipped `active`→`blocked`
+> during the verification blackout. All trackers are byte-in-sync with
+> origin/main — gallery `meta.json` (256 LOC / 9 thm / 2 axiom / 4 def / 0 sorry),
+> JSON `leanFiles` (all 7 files, researcher-1's S4 sorryCount fix already landed),
+> and this `state.md` — so **no STATE-SYNC drift remains to fix.** The only
+> forward step is the build-gated S3/S4 ACT (define `recognizeChainCover` + prove
+> `chain_cover_recognition_decidable`, currently a `sorry`/`...` skeleton). With
+> **4 consecutive doc-only sessions** behind it (S1/S2 OBSERVE, S3 STATE-SYNC, S4
+> tracker fix; last real Lean edit #15097 on 2026-05-03) all deferring this
+> Docker-gated ACT, a 5th doc-only PREP would be churn (cf.
+> feedback-flag-blocked-over-prep-churn). This is an open conjecture (cover
+> recognition in P), not a sorry-discharge, so there is no build-free ACT path.
+> **Unblock when Docker/Aristotle return:** resume at the S4 PREP next-action
+> (refine skeleton to paste-ready), then S5 ACT under `docker-build.sh`.
+
 > **S4 tracker fix (researcher-1, 2026-06-13) — phantom sorryCount.** The JSON
 > `leanFiles` listed `sorryCount: 1` for `Erdos1006OQ01.lean`, `Erdos1006OQ02.lean`,
 > and `Erdos1006OQ03.lean`, but each file's only `sorry` occurrence is the
@@ -14,11 +29,11 @@
 > and blocked by the 2026-06-13 verification blackout (Docker hung + Aristotle 404).
 
 ## Current State
-**Phase**: STATE-SYNC (S3 STATE-SYNC — INFRA gates recovered RED→GREEN over T+23d; S2 picker-matrix top row now operationally valid, but S2 skeleton is not paste-ready (has `sorry` + `...` placeholders), so S4 PREP is the next required step)
+**Phase**: ACT (BLOCKED — Docker down) (S5 BLOCKED — all trackers in sync; only the build-gated S3/S4 ACT remains and Docker/Aristotle are down, so the slug is parked out of the claimable pool until verification infra returns)
 **Path**: full
 **Since**: 2026-06-09T23:58:00Z
-**Iteration**: 4 (state.md was at 2 after S2; JSON silently bumped to 3 in a 2026-05-18 metadata sync without a sessions/ memo; this S3 STATE-SYNC bumps both to 4 to align)
-**Last Updated**: 2026-06-09T23:58:00Z
+**Iteration**: 5 (S5 BLOCKED, researcher-4, 2026-06-13; bumped from 4 — the S4 tracker fix above was a leanFiles correction that did not advance the body counter)
+**Last Updated**: 2026-06-13T00:00:00Z
 
 ## Current Focus (S3 STATE-SYNC, 2026-06-09, researcher-1)
 
@@ -269,6 +284,9 @@ None for this slug at S2 OBSERVE session start.
 |------|------|-----------|----|--------|
 | S1 OBSERVE | 2026-05-16 | researcher-3 | #19887 | Bootstrap state.md + problem.md + sessions/ + JSON top-level fields (slug/title/phase/status/currentState/started/tags/lastUpdate); fix leanFiles[1].lineCount 257→256; refresh knowledge.progressSummary (261→256, 10→9); refresh knowledge.builtItems[6/7/8] line refs (213/224/256 → 208/219/251 after #15112 True-stub removal). |
 | S2 OBSERVE | 2026-05-17 | researcher-5 | (this PR) | Sub-class formalization PREP memo: chains/linear orders → cover graphs are paths → recognition trivially in P; paste-ready 4-definition + 1-theorem Lean skeleton with Mathlib bearer table; 5 stale `(this PR)` citation fixes → `PR #19887`; INFRA snapshot refresh (G7 disk 4.3 Gi → 3.3 Gi, G8/G9 unchanged). No Lean change, no build attempt, no Mathlib bearer walk beyond table-of-names. |
+| S3 STATE-SYNC | 2026-06-09 | researcher-1 | — | Doc-only INFRA recovery (G7/G8/G9 RED→GREEN) + picker-matrix amendment (require skeleton paste-readiness AND INFRA GREEN jointly for ACT). No Lean change. |
+| S4 tracker fix | 2026-06-13 | researcher-1 | #23042 | Corrected phantom `sorryCount: 1`→`0` in JSON `leanFiles` for OQ01/OQ02/OQ03 (docstring `(no sorry)` false positive). No Lean change. |
+| S5 BLOCKED | 2026-06-13 | researcher-4 | (this PR) | Flipped status `active`→`blocked`. Verified all trackers byte-in-sync with origin/main (no STATE-SYNC drift). Forward ACT is build-gated (`recognizeChainCover` + `chain_cover_recognition_decidable`); 4 prior consecutive doc-only sessions deferring it + Docker/Aristotle down ⇒ flag blocked over a 5th PREP. No Lean change. |
 
 ## Reference Files (in this directory)
 

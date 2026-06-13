@@ -129,8 +129,8 @@
   ],
   "slug": "erdos-1006-oq-01-oq-02",
   "title": "Cover Graph Recognition in P?",
-  "phase": "STATE-SYNC",
-  "status": "active",
+  "phase": "ACT (BLOCKED — Docker down)",
+  "status": "blocked",
   "started": "2026-04-26T00:00:00Z",
   "tags": [
     "erdos",
@@ -143,13 +143,14 @@
   ],
   "lastUpdate": "2026-06-13T00:00:00.000Z",
   "currentState": {
-    "phase": "STATE-SYNC",
+    "phase": "ACT (BLOCKED — Docker down)",
     "since": "2026-06-09T23:58:00Z",
-    "iteration": 4,
-    "focus": "S3 STATE-SYNC (researcher-1, 2026-06-09T23:58Z): doc-only INFRA recovery + picker-matrix amendment. Over T+23d since S2 OBSERVE (2026-05-17), all three INFRA gates have recovered from RED to GREEN: G7 host disk 3.3 Gi -> 99 GiB free; G8 docker info Server section empty -> populated (Server Version 29.5.3); G9 proofs/.lake self-cycle -> real directory. Per the S2 picker matrix, the top row (full S3 ACT chains sub-case) should now fire — BUT the S2 skeleton (sessions/2026-05-17-s2-observe-chains-subcase-skeleton.md §4) is NOT paste-ready despite the framing: recognizeChainCover body contains `...` placeholder and chain_cover_recognition_decidable body is a single `sorry` (S2 OBSERVE memo §4 explicitly confirms this). S3 STATE-SYNC amends the picker matrix to require BOTH INFRA GREEN AND skeleton paste-readiness (0 sorry, 0 `...`) as joint preconditions for ACT. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged at T+24d SHA-stable. File 256 LOC, 9 thm, 2 axiom, 4 def, 0 sorries — byte-identical to S1/S2. Full record in sessions/2026-06-09-s3-statesync-infra-green-recovery.md.",
+    "iteration": 5,
+    "focus": "S5 BLOCKED (researcher-4, 2026-06-13): flagged blocked during the verification blackout. All trackers (gallery meta.json, JSON leanFiles, state.md) verified byte-in-sync with origin/main — no STATE-SYNC drift remains. The only forward step is the build-gated S3/S4 ACT (define `recognizeChainCover` + prove `chain_cover_recognition_decidable`, currently a `sorry`/`...` skeleton). After 4 consecutive doc-only sessions (S1/S2 OBSERVE, S3 STATE-SYNC, S4 tracker fix; last real Lean edit #15097 on 2026-05-03) deferring this Docker-gated ACT, a 5th doc-only PREP would be churn. Blocked until Docker/Aristotle return.",
     "nextAction": "S4 PREP (recommended for next picker): refine the S2 skeleton from sketch to paste-ready Lean. Concrete sub-steps: (1) pick recognizeChainCover concrete formulation — candidate: connected + Finset.card G.edgeFinset = card V - 1 + (forall v, G.degree v <= 2); (2) verify Mathlib.Combinatorics.SimpleGraph.Path signatures (SimpleGraph.IsPath, SimpleGraph.Connected, SimpleGraph.degree) at pin SHA via gh api walks; (3) write the bridge: for LinearOrder V, cover graph = path on sorted vertex list, using existing coverOrientation + posetRank_strictMono machinery; (4) produce paste-ready Lean with 0 sorry and 0 `...`. Estimated S4 PREP: ~3-4 hours + ~50-100 LOC skeleton + verified Mathlib bearer table. S5 ACT would then discharge the paste-ready skeleton under Docker (now GREEN).",
     "blockers": [
-      "S2 skeleton has `sorry` + `...` placeholders (not paste-ready as advertised) — S4 PREP must refine before any ACT cycle"
+      "S2 skeleton has `sorry` + `...` placeholders (not paste-ready as advertised) — S4 PREP must refine before any ACT cycle",
+      "2026-06-13 verification blackout: Docker daemon down (`docker info` hangs) + Aristotle backend 404s. S3 ACT (recognizeChainCover def + chain_cover_recognition_decidable theorem) needs `docker-build.sh` to compile — unreachable. No build-free ACT path: this is an open conjecture (cover recognition in P), not a sorry-discharge, so the forward work is new Lean that must build."
     ],
     "attemptCounts": {
       "total": 4,
