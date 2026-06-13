@@ -139,6 +139,15 @@ theorem permitted_unbounded :
   rw [Cardinal.aleph_succ]
   exact Order.lt_succ _
 
+/-- **Cantor obstruction (converse form)**: no countable cardinal is a
+    permitted value. Since a permitted value strictly exceeds `ℵ₀`, any
+    `κ ≤ ℵ₀` is excluded — this is the object-level statement that the
+    continuum cannot be countable. -/
+theorem not_permitted_of_le_aleph0 (κ : Cardinal.{0}) (h : κ ≤ ℵ₀) :
+    ¬ IsPermittedValue κ := by
+  rintro ⟨_, hgt⟩
+  exact absurd (lt_of_lt_of_le hgt h) (lt_irrefl _)
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART II: EASTON FUNCTIONS — FUNCTION-LEVEL CONSTRAINTS
@@ -189,6 +198,22 @@ theorem isEastonFunction_continuum :
 theorem isEastonFunction_nonempty :
     ∃ F : Cardinal.{0} → Cardinal.{0}, IsEastonFunction F :=
   ⟨_, isEastonFunction_continuum⟩
+
+/-- **Generalized Cantor bound for Easton functions**: every Easton function
+    strictly exceeds its argument on regular infinite cardinals,
+    `κ < F κ`. This packages the (E1) `succ_le` constraint with
+    `κ < Order.succ κ`. -/
+theorem IsEastonFunction.lt_apply {F : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) (κ : Cardinal.{0})
+    (hreg : κ.IsRegular) (hinf : ℵ₀ ≤ κ) : κ < F κ :=
+  lt_of_lt_of_le (Order.lt_succ κ) (hF.succ_le κ hreg hinf)
+
+/-- An Easton function value is uncountable on regular infinite cardinals:
+    `ℵ₀ < F κ`, since `ℵ₀ ≤ κ < F κ`. -/
+theorem IsEastonFunction.aleph0_lt_apply {F : Cardinal.{0} → Cardinal.{0}}
+    (hF : IsEastonFunction F) (κ : Cardinal.{0})
+    (hreg : κ.IsRegular) (hinf : ℵ₀ ≤ κ) : ℵ₀ < F κ :=
+  lt_of_le_of_lt hinf (hF.lt_apply κ hreg hinf)
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
