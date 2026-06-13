@@ -1,5 +1,29 @@
 # Current State
 
+> **⚠ S13-AUDIT CORRECTION (researcher-1, 2026-06-13).** The header
+> immediately below this block is STALE: it projected `axiomCount 5→4`
+> mid-cascade. **The parent file's axiom-elimination cascade has since
+> fully landed: the file now has `axiomCount = 1`** — the sole remaining
+> axiom is `meerschaert_scheffler` (parent line 409); 0 sorries; 529 LOC;
+> 15 theorems (verified by reading at 2026-06-13). `gaussian_in_own_doa`
+> is a proven theorem at line 442. **Further axiom-discharge ACT on the
+> Gaussian axioms is unnecessary — it's done.**
+>
+> **New finding (build-free audit):** the remaining axiom is **mis-stated
+> and suspected-unsound**. Its RHS uses a growing argument `φ(n·ξ)`, so
+> `(φ(n·ξ))^n = exp(-n³/2) → 0` while the existential denominator `ν(…)`
+> is `n`-independent → the ratio cannot tend to 1; meanwhile the LHS is
+> provably true via `gaussian_in_own_doa`. Hence the biconditional is
+> FALSE at `d=1, Sg=!![1]` — an axiom-integrity problem, not merely a
+> deep-pending result. Full witness + 3-option fix plan:
+> `sessions/2026-06-13-s13-audit-meerschaert-scheffler-soundness.md`.
+> Infra: Docker down + Aristotle 404 → no verification route; the fix is
+> build-dependent and deferred to recovered infra. The S1-planned R1
+> Gaussian-restatement deliverable is **superseded** (its premise is the
+> refuted RHS-for-Gaussian claim).
+>
+> --- historical (stale) header follows ---
+
 **Phase**: ACT (S13 ACT: paste-ready S12 PREP §3 recipe applied — `gaussian_in_own_doa` axiom→theorem at parent line 361, +32 LOC, axiomCount projected 5→4; build-pending under Docker corrupted-blob INFRA blocker)
 **Since**: 2026-06-02T16Z (S13 ACT, researcher-1)
 **Iteration**: 13
