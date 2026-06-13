@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2-β-γ ACT shipped (2026-06-12): binary-split packaging in new §Part X — `stationary_splits_of_fiber_compl` (stationary fiber + stationary complement ⇒ two disjoint stationary subsets) and `stationary_splits_of_two_fibers` (two distinct-value stationary fibers ⇒ two disjoint stationary subsets). +73 LOC (654→727), 0 sorries, 0 axioms, Docker 3062 jobs CLEAN. These reduce binary Solovay splitting to producing two complementary/distinct stationary pieces; the production step (fodor_anti_constant) remains open and under-specified in the S3b design. Prior: S2-β-β ACT — cofinal-sequence head infrastructure in §Part IX — `cofHead` (noncomputable def, picks 0-th element of a chosen fundamental sequence via Classical.choose on Ordinal.exists_fundamental_sequence; junk fallback when cof α.ord = 0), `cofHead_lt` (regressivity on positive limits), `exists_cofHead_constant_stationary` (Fodor's first application via cofHead on stationary set of limits), `exists_cofHead_constant_stationary_of_stationary` (ready-to-use form composing Part VIII's inter_isLimitOrdinals). +86 LOC clean Docker build (3062 jobs). 0 sorries, 0 axioms. Previously: S2-α (limit ordinals form a club) + S2-β-α (club ∩ club, stationary ∩ club). Step 1 + Step 2 foundations + Step 2 first Fodor application now in place; remaining S2-β work is fodor_anti_constant + stationary_splits_binary.",
+    "progressSummary": "S-audit leanFiles sync (2026-06-13, researcher-6, build-free): corrected leanFiles[FodorPressingDown.lean] theoremCount 20→14 and defCount 4→1 to match origin/main HEAD. Ground truth verified via `git show origin/main:proofs/Proofs/FodorPressingDown.lean`: 653 wc (lineCount 654 = wc+1, already correct), 14 `^(theorem|lemma) ` decls + 1 `noncomputable def` (cofHead), 0 sorries, 0 axioms — file is internally consistent with all §Part I–X present (Part X +73 LOC confirmed via `git show --stat e8f79be62aa`). The stale 20/4 (and the prose '727 LOC, 22 theorems, 4 defs' in session notes) predate the S4 oq-01 trim commit 4850beb8dbe, which moved the club/stationary defs to Proofs.Club.Basic — dropping 3 defs and several helper lemmas from this file. Metrics-only sync; no Lean change; slug stays in-progress. | S2-β-γ ACT shipped (2026-06-12): binary-split packaging in new §Part X — `stationary_splits_of_fiber_compl` (stationary fiber + stationary complement ⇒ two disjoint stationary subsets) and `stationary_splits_of_two_fibers` (two distinct-value stationary fibers ⇒ two disjoint stationary subsets). +73 LOC (654→727), 0 sorries, 0 axioms, Docker 3062 jobs CLEAN. These reduce binary Solovay splitting to producing two complementary/distinct stationary pieces; the production step (fodor_anti_constant) remains open and under-specified in the S3b design. Prior: S2-β-β ACT — cofinal-sequence head infrastructure in §Part IX — `cofHead` (noncomputable def, picks 0-th element of a chosen fundamental sequence via Classical.choose on Ordinal.exists_fundamental_sequence; junk fallback when cof α.ord = 0), `cofHead_lt` (regressivity on positive limits), `exists_cofHead_constant_stationary` (Fodor's first application via cofHead on stationary set of limits), `exists_cofHead_constant_stationary_of_stationary` (ready-to-use form composing Part VIII's inter_isLimitOrdinals). +86 LOC clean Docker build (3062 jobs). 0 sorries, 0 axioms. Previously: S2-α (limit ordinals form a club) + S2-β-α (club ∩ club, stationary ∩ club). Step 1 + Step 2 foundations + Step 2 first Fodor application now in place; remaining S2-β work is fodor_anti_constant + stationary_splits_binary.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
       "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
@@ -114,7 +114,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-06-12T00:00:00Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -122,9 +122,9 @@
       "path": "Proofs/FodorPressingDown.lean",
       "filename": "FodorPressingDown.lean",
       "lineCount": 654,
-      "theoremCount": 20,
+      "theoremCount": 14,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FodorPressingDown.lean"
