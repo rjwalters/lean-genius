@@ -14700,6 +14700,14 @@
         "lineCount mismatch: claims 221, actual 226; theoremCount mismatch: claims 10, actual 12 — fixed in this PR"
       ]
     },
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-13T16:22:13Z",
+      "result": "issues-fixed",
+      "issues": [
+        "conclusion.summary claimed 18 machine-checked theorems; source has 21 (matches theoremCount field) — fixed in this PR"
+      ]
+    },
     "dissection-of-cubes-oq-03-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-05-05T03:54:53Z",
