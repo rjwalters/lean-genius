@@ -76,56 +76,64 @@
     {
       "id": "large-cardinals",
       "title": "Large Cardinal Hierarchy",
-      "startLine": 46,
-      "endLine": 90,
-      "summary": "Defines IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable and derives basic properties.",
+      "startLine": 58,
+      "endLine": 95,
+      "summary": "Defines IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable and derives basic properties (measurable ⇒ inaccessible ⇒ strong limit, inaccessible uncountable).",
       "mathContext": "$\\kappa$ inaccessible: $\\aleph_0 < \\kappa$, regular, and $2^\\lambda < \\kappa$ for all $\\lambda < \\kappa$. Measurable implies inaccessible."
     },
     {
       "id": "forcing-axioms",
-      "title": "Forcing Axioms",
-      "startLine": 91,
-      "endLine": 125,
-      "summary": "Defines HasInaccessible, HasMeasurable, MartinsAxiom (2^ℵ₀ ≥ ℵ₂), MartinsMaximum (2^ℵ₀ = ℵ₂).",
+      "title": "Large Cardinal & Forcing Axiom Propositions",
+      "startLine": 96,
+      "endLine": 123,
+      "summary": "Defines HasInaccessible, HasMeasurable, MartinsAxiom (2^ℵ₀ ≥ ℵ₂), MartinsMaximum (2^ℵ₀ = ℵ₂); proves measurable_implies_inaccessible and mm_implies_ma.",
       "mathContext": "$\\text{MA}_{\\aleph_1}: 2^{\\aleph_0} \\geq \\aleph_2$. $\\text{MM}: 2^{\\aleph_0} = \\aleph_2$. $\\text{MM} \\implies \\text{MA}$."
     },
     {
       "id": "levy-solovay",
       "title": "Lévy-Solovay Theorem",
-      "startLine": 126,
-      "endLine": 163,
+      "startLine": 124,
+      "endLine": 167,
       "summary": "Axiomatizes that inaccessible and measurable cardinals are each consistent with both CH and ¬CH.",
       "mathContext": "Both $\\text{ZFC} + \\text{HasMeasurable} + \\text{CH}$ and $\\text{ZFC} + \\text{HasMeasurable} + \\neg\\text{CH}$ are relatively consistent."
     },
     {
       "id": "forcing-implies-not-ch",
       "title": "Forcing Axioms Imply ¬CH",
-      "startLine": 164,
-      "endLine": 198,
+      "startLine": 168,
+      "endLine": 201,
       "summary": "Proves MM → ¬CH and MA → ¬CH by cardinal arithmetic: ℵ₁ ≠ ℵ₂.",
       "mathContext": "$\\text{MM} \\implies 2^{\\aleph_0} = \\aleph_2 \\neq \\aleph_1$, so $\\neg\\text{CH}$. Similarly for MA."
     },
     {
+      "id": "consistency-forcing-axioms",
+      "title": "Consistency of Forcing Axioms",
+      "startLine": 202,
+      "endLine": 214,
+      "summary": "Axiomatizes the relative consistency of Martin's Maximum (Foreman-Magidor-Shelah 1988, modulo supercompact) and Martin's Axiom (Martin-Solovay).",
+      "mathContext": "$\\text{Con}(\\text{ZFC} + \\text{supercompact}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{MM})$ and $\\text{Con}(\\text{ZFC}) \\Rightarrow \\text{Con}(\\text{ZFC} + \\text{MA})$."
+    },
+    {
       "id": "woodin",
       "title": "Woodin Ultimate-L Program",
-      "startLine": 211,
-      "endLine": 235,
+      "startLine": 215,
+      "endLine": 239,
       "summary": "States the Ultimate-L conjecture and its connection to CH.",
       "mathContext": "Ultimate-L would be an inner model containing all large cardinals and satisfying GCH, canonically settling CH as true."
     },
     {
       "id": "gch",
       "title": "Generalized Continuum Hypothesis",
-      "startLine": 237,
-      "endLine": 282,
+      "startLine": 240,
+      "endLine": 286,
       "summary": "Defines GCH (2^ℵₙ = ℵₙ₊₁ for all n), proves GCH → CH, gch_decides_all_aleph, and gch_continuum_below_aleph_add_two.",
       "mathContext": "$\\text{GCH}: \\forall n : \\mathbb{N}, 2^{\\aleph_n} = \\aleph_{n+1}$. GCH implies CH (n=0). Under GCH: $2^{\\aleph_n} < \\aleph_{n+2}$."
     },
     {
       "id": "summary",
       "title": "Summary Theorems",
-      "startLine": 283,
-      "endLine": 309,
+      "startLine": 287,
+      "endLine": 310,
       "summary": "large_cardinals_and_ch_summary and ch_independent_of_large_cardinals combining the main results.",
       "mathContext": "Standard large cardinals leave CH independent; MM decides ¬CH; GCH decides all continua."
     },
@@ -133,7 +141,7 @@
       "id": "contrapositive-corollaries",
       "title": "Contrapositive Corollaries (CH/GCH ⇒ ¬MM/¬MA)",
       "startLine": 311,
-      "endLine": 360,
+      "endLine": 361,
       "summary": "Five axiom-free corollaries that connect Parts IV and VII: ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma, mm_continuum_gt_aleph_one.",
       "mathContext": "From $\\text{MM} \\Rightarrow \\neg\\text{CH}$ and $\\text{MA} \\Rightarrow \\neg\\text{CH}$ (Part IV), the contrapositives $\\text{CH} \\Rightarrow \\neg\\text{MM}$ and $\\text{CH} \\Rightarrow \\neg\\text{MA}$ follow directly; composing with $\\text{GCH} \\Rightarrow \\text{CH}$ (Part VII) gives the four-corner logical structure linking CH/GCH and the forcing axioms. The quantitative refinement $\\text{MM} \\Rightarrow \\aleph_1 < 2^{\\aleph_0}$ records the cardinal-arithmetic content."
     }
