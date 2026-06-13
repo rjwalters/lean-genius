@@ -10,11 +10,12 @@
 
   Axioms: 3 (channel_coding_achievability, channel_coding_converse,
     bsc_capacity_eq)
-  Theorems: 13 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+  Theorems: 15 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
     channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity,
     capacity_le_log_card, rate_of_code_pos, fano_inequality,
     fano_converse_step, fano_converse_capacity,
-    bsc_capacity_le_one, bsc_capacity_nonneg)
+    bsc_capacity_le_one, bsc_capacity_nonneg,
+    weaklySymmetric_colSum_eq, weaklySymmetric_uniform_output_marginal)
   Sorries: 0
 -/
 import Mathlib
@@ -483,6 +484,63 @@ def DMChannel.IsWeaklySymmetric {α β : Type*} [Fintype α] [Fintype β]
     (ch : DMChannel α β) : Prop :=
   (∀ x x' : α, ∃ σ : β ≃ β, ∀ y, ch.W x y = ch.W x' (σ y)) ∧
   (∀ y y' : β, ∑ x : α, ch.W x y = ∑ x : α, ch.W x y')
+
+/-- **Column-sum value of a weakly symmetric channel (S18a-2 helper).**
+    Each column of `W` sums to the constant `|α| / |β|`.
+
+    The column-constancy conjunct of `IsWeaklySymmetric` says all columns
+    sum to a common value `S`; total-mass `∑_y ∑_x W x y = ∑_x ∑_y W x y =
+    ∑_x 1 = |α|` then pins `|β| · S = |α|`, so `S = |α| / |β|`. (For empty
+    `β` the statement is vacuous since it quantifies over `y : β`.) -/
+theorem weaklySymmetric_colSum_eq {α β : Type*} [Fintype α] [Fintype β]
+    (ch : DMChannel α β) (h : ch.IsWeaklySymmetric) (y : β) :
+    ∑ x : α, ch.W x y = (Fintype.card α : ℝ) / (Fintype.card β : ℝ) := by
+  have hβ : (0 : ℝ) < Fintype.card β := by
+    exact_mod_cast Fintype.card_pos_iff.mpr ⟨y⟩
+  have key : (Fintype.card β : ℝ) * (∑ x : α, ch.W x y) = (Fintype.card α : ℝ) := by
+    calc (Fintype.card β : ℝ) * (∑ x : α, ch.W x y)
+        = ∑ _y' : β, (∑ x : α, ch.W x y) := by
+          rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+      _ = ∑ y' : β, ∑ x : α, ch.W x y' :=
+          Finset.sum_congr rfl (fun y' _ => (h.2 y' y).symm)
+      _ = ∑ x : α, ∑ y' : β, ch.W x y' := Finset.sum_comm
+      _ = ∑ _x : α, (1 : ℝ) :=
+          Finset.sum_congr rfl (fun x _ => ch.sum_one x)
+      _ = (Fintype.card α : ℝ) := by
+          rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one]
+  rw [eq_div_iff hβ.ne']
+  linear_combination key
+
+/-- **Uniform input yields uniform output for a weakly symmetric channel
+    (S18a-2).** If the input distribution is uniform (`inp.p x = |α|⁻¹`),
+    the output marginal `∑_x inp.p x · W x y` equals `|β|⁻¹` for every `y`.
+
+    This is one of the two ingredients of "uniform input achieves capacity
+    for weakly symmetric channels": together with row-entropy invariance it
+    gives `I(X;Y) = log|β| − H_row`. Proof: pull the constant `|α|⁻¹` out of
+    the marginal sum and apply `weaklySymmetric_colSum_eq`. -/
+theorem weaklySymmetric_uniform_output_marginal {α β : Type*}
+    [Fintype α] [Fintype β]
+    (ch : DMChannel α β) (h : ch.IsWeaklySymmetric)
+    (inp : InputDist α) (huniform : ∀ x, inp.p x = (Fintype.card α : ℝ)⁻¹)
+    (y : β) :
+    ∑ x : α, inp.p x * ch.W x y = (Fintype.card β : ℝ)⁻¹ := by
+  have hαpos : 0 < Fintype.card α := by
+    rw [Fintype.card_pos_iff]
+    by_contra hc
+    rw [not_nonempty_iff] at hc
+    haveI := hc
+    simpa using inp.sum_one
+  have hαne : (Fintype.card α : ℝ) ≠ 0 := by exact_mod_cast hαpos.ne'
+  calc ∑ x : α, inp.p x * ch.W x y
+      = ∑ x : α, (Fintype.card α : ℝ)⁻¹ * ch.W x y :=
+        Finset.sum_congr rfl (fun x _ => by rw [huniform x])
+    _ = (Fintype.card α : ℝ)⁻¹ * ∑ x : α, ch.W x y := by rw [← Finset.mul_sum]
+    _ = (Fintype.card α : ℝ)⁻¹ *
+          ((Fintype.card α : ℝ) / (Fintype.card β : ℝ)) := by
+        rw [weaklySymmetric_colSum_eq ch h y]
+    _ = (Fintype.card β : ℝ)⁻¹ := by
+        rw [div_eq_mul_inv, ← mul_assoc, inv_mul_cancel₀ hαne, one_mul]
 
 /- ## Main theorems -/
 
