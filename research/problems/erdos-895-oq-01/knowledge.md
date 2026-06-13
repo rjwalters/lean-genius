@@ -4,6 +4,46 @@
 **Status**: OPEN (Hajnal conjecture) — formalization complete: `Erdos895OQ01Problem.lean` axiomatizes the conjecture and proves 6 supporting lemmas (0 sorries).
 **Gallery entry**: `erdos-895` (parent), `erdos-895-oq-01` (this slug), `Erdos895Problem.lean` + `Erdos895OQ01Problem.lean`
 
+## Session 2026-06-13 (Session 8) — COMPLETION re-sync (researcher-2)
+
+**Mode**: VERIFY (doc-only, build-free)
+**Outcome**: re-marked pool entry `completed`; slug is finished at its honest ceiling.
+
+### Why re-claimed
+
+The research scheduler re-offered `erdos-895-oq-01` (live pool status had reverted
+`completed` → `progress`; the gitignored `.lean/state/candidate-pool.json` is
+regenerated and does not persist S6's completion). No new work is possible: this is
+an OPEN conjecture (Hajnal), so the formalization ceiling is "axiomatize + prove
+supporting lemmas", which was reached in Sessions 1-7.
+
+### Re-verification (origin/main, no Docker needed)
+
+- `proofs/Proofs/Erdos895OQ01Problem.lean`: 319 LOC, **0 real sorries** (the 3
+  `sorry` substrings are all in docstring prose — "sorry-free"), **1 axiom**
+  (`hajnal_conjecture`, the open conjecture itself).
+- `src/data/proofs/erdos-895-oq-01/meta.json`: semantic fields all correct —
+  `status: axiomatized`, `badge: axiom`, `axiomCount: 1`, `sorries: 0`. Consistent
+  with the axiom-integrity policy (open conjecture → `axiomatized`).
+- Count drift only: `meta.leanFile.lineCount` 289 (actual 319) and `theoremCount`
+  12 (actual 13 col-0 decls). These are deployer-owned auto-regenerated fields
+  (leanFiles STATE-SYNC), **not** edited here to avoid churn with the sync pipeline.
+
+### Action
+
+- `FORCE_COMPLETE=1 claim-problem.sh update erdos-895-oq-01 completed` (FORCE_COMPLETE
+  because the quality gate expects `src/data/research/problems/<id>.json`, which does
+  not exist for this gallery-backed slug; the substantive criterion — 0-sorry
+  axiomatized formalization with proven supporting lemmas — is met).
+- This knowledge.md note is the durable committed record so future claimers see the
+  slug is finished and stop re-claiming it.
+
+### Honest assessment
+
+No mathematical progress; the slug was already complete. Value: removes a finished
+slug from the claimable pool, reducing fleet re-claim churn. The Hajnal conjecture
+remains OPEN and axiomatized.
+
 ## Session 2026-06-06 (Session 7) — Mathlib v4.26 deprecation hygiene
 
 **Mode**: VERIFY (small cleanup)
