@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1210",
   "title": "Erdős #1210",
-  "phase": "ACT",
+  "phase": "AXIOMATIZED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-16T17:10:06.887Z",
-    "iteration": 1,
-    "focus": "Formalized main conjecture, prime coprimality structure, and 11 structural theorems.",
+    "phase": "AXIOMATIZED",
+    "since": "2026-06-13T08:00:00Z",
+    "iteration": 3,
+    "focus": "S3: corrected the statement from erdosproblems.com/1210 (RHS = Mertens sum ∑_{p<n} 1/p, with a +O(1) additive term) and re-axiomatized erdos_1210 in honest existential-constant form (∃C, ∀n≥3, ∀ pairwise-coprime A, ∑ 1/(n-a) ≤ primeReciprocalSum n + C). Machine-checked the O(1) term is essential (n=5, A={4}: LHS=1 > 5/6). 14 theorems, 4 defs, 1 axiom, 0 sorries, 230 lines; gallery meta.json synced.",
     "blockers": [],
-    "nextAction": "Docker build verification.",
+    "nextAction": "S4 — explore an unconditional partial bound ∑_{a∈A} 1/(n-a) ≤ C·log log n for pairwise coprime A (via the at-most-one-even structure + a sieve/Mertens estimate). Build-gated; the conjecture itself is open and cannot be resolved by finite computation.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -78,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-04-16T17:10:06.887Z",
-  "lastUpdate": "2026-04-21T11:09:40.249Z",
+  "lastUpdate": "2026-06-13T21:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
