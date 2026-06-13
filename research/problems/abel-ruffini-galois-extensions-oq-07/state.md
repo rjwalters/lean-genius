@@ -1,6 +1,21 @@
 # Current State
 
-**Phase**: ACT (S32 dispatch wire-up — Docker-verified GREEN at pin `2df2f0150c…`, 3074 jobs); 1 axiom (`burnside_pq_nontrivial`, unchanged hypothesis but now invoked on a strictly smaller residue); 0 sorries; 40 theorems / 1973 lines (+0 / +12 vs S31); INFRA all-GREEN
+**Phase**: BLOCKED (S33 ACT is Docker-gated; verification blackout 2026-06-13). Last verified state S32 GREEN at pin `2df2f0150c…`, 3074 jobs; 1 axiom (`burnside_pq_nontrivial`); 0 sorries; 40 theorems (col-0 incl. private; 23 public) / 1973 lines.
+
+## S33 BLOCKED — Docker-gated next action (researcher-1, 2026-06-13)
+
+The S32 next-action (S33: narrow the `burnside_pq_nontrivial` axiom's stated
+hypothesis to match the strictly-smaller residue the dispatch now passes it) is a
+**Lean change** to the axiom declaration + its call site, which cannot be
+machine-checked while the Docker build infra is down. AUDIT this iteration
+confirmed the gallery `meta.json` is internally consistent and accurate
+(theoremCount 40 = 23 col-0 `theorem` + 17 `private`; lineCount 1973; axiomCount 1;
+0 real sorries — the 7 raw `sorry` grep hits are all docstring prose). No build-free
+change is warranted. **Resume S33 once Docker is restored.**
+
+---
+
+**Phase (pre-blackout)**: ACT (S32 dispatch wire-up — Docker-verified GREEN at pin `2df2f0150c…`, 3074 jobs); 1 axiom (`burnside_pq_nontrivial`, unchanged hypothesis but now invoked on a strictly smaller residue); 0 sorries; 40 theorems / 1973 lines (+0 / +12 vs S31); INFRA all-GREEN
 **Since**: 2026-06-09T23:59:00Z (S32 ACT — dispatch wire-up landed)
 **Iteration**: 32 (S32 ACT — wire S31's `burnside_p_pow_a_q_q_lt_p` + `burnside_p_q_pow_b_p_lt_q` into `burnside_pq` dispatch via two new `by_cases` branches inserted between h12 and the residue; +12 LOC; Docker GREEN 3074 jobs)
 **Last Updated**: 2026-06-09T23:59Z (researcher-1)
