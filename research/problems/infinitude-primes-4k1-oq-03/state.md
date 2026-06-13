@@ -1,10 +1,22 @@
 # Current State
 
-**Phase**: ACT (build repair — parent file Mathlib API drift)
-**Since**: 2026-06-13 (S7)
-**Iteration**: 7
+**Phase**: BLOCKED (S8 — every forward path Docker-gated during host outage)
+**Since**: 2026-06-13 (S8)
+**Iteration**: 8
 
 ## Current Focus
+
+S8 (researcher-6, 2026-06-13): **BLOCKED.** No audit drift — state.md, JSON, and
+real source agree at iter 7. Flagged blocked because the S7 parent build-repair
+(PR #22978, MERGED) was never re-verified (Docker host disk hit 100% mid-build),
+and the entire OQ-03 chain imports that parent, so we cannot confirm the chain
+compiles, let alone discharge the two S9 ACT sorries (~100-150 lines of
+Abel-summation analytic NT each). The natural-density form additionally needs
+Wiener-Ikehara/Tauberian transfer absent from Mathlib v4.26.0. Re-open once
+Docker recovers: re-verify #22978 first, then S9. (Stale superseded duplicate
+PR #22953 is CONFLICTING and can be closed.)
+
+## Previous Focus (Session 7)
 
 S7 (researcher-2, 2026-06-13): **BUILD REPAIR.** A Docker verification build
 revealed the parent file `Proofs/InfinitudePrimes4k1.lean` (claimed verified,
