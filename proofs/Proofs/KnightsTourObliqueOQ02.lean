@@ -703,4 +703,61 @@ theorem d4Mul_inv_right (g : Bool × Fin 4) :
      simp only [Fin.val_mk]
      omega)
 
+/-!
+## S10: Orbit partition (equal-or-disjoint) and level-set saturation
+
+With the full equivalence-relation structure from S8 (`d4Equiv_equivalence`)
+now in hand, the D4 orbits `d4Orbit t` **partition** `ClosedTour`: any two
+orbits are either identical or disjoint, and each orbit is contained in a
+single level set. This is the combinatorial backbone of the planned mod-8
+divisibility argument: `levelSet k` decomposes as a disjoint union of D4
+orbits, each of size dividing 8 (`d4Orbit_card_le_eight`, S3).
+
+Every result in this section lives entirely in `Finset`/`d4Equiv` land - it
+uses only the in-file relation lemmas (`mem_d4Orbit_iff`, `d4Equiv_symm`,
+`d4Equiv_trans`) and the S3 containment `d4Orbit_subset_levelSet`. No
+typeclass instances are introduced on `Bool x Fin 4`, so this section
+carries no instance-resolution risk. The `Group`/`MulAction` packaging that
+unlocks Mathlib's `MulAction.card_orbit_dvd_card_group` is deferred to S11.
+-/
+
+/-- Orbit membership is symmetric: `u in d4Orbit t <-> t in d4Orbit u`. -/
+theorem mem_d4Orbit_comm (t u : ClosedTour) :
+    u ∈ d4Orbit t ↔ t ∈ d4Orbit u := by
+  rw [mem_d4Orbit_iff, mem_d4Orbit_iff]
+  exact ⟨d4Equiv_symm, d4Equiv_symm⟩
+
+/-- If `u` lies in the D4 orbit of `t`, the two orbits coincide. -/
+theorem d4Orbit_eq_of_mem {t u : ClosedTour} (h : u ∈ d4Orbit t) :
+    d4Orbit u = d4Orbit t := by
+  have htu : d4Equiv t u := (mem_d4Orbit_iff t u).mp h
+  ext w
+  rw [mem_d4Orbit_iff, mem_d4Orbit_iff]
+  constructor
+  · exact fun hw => d4Equiv_trans htu hw
+  · exact fun hw => d4Equiv_trans (d4Equiv_symm htu) hw
+
+/-- **Orbit partition**: two D4 orbits are either equal or disjoint. -/
+theorem d4Orbit_eq_or_disjoint (t u : ClosedTour) :
+    d4Orbit t = d4Orbit u ∨ Disjoint (d4Orbit t) (d4Orbit u) := by
+  by_cases h : Disjoint (d4Orbit t) (d4Orbit u)
+  · exact Or.inr h
+  · refine Or.inl ?_
+    rw [Finset.not_disjoint_iff] at h
+    obtain ⟨w, hwt, hwu⟩ := h
+    rw [← d4Orbit_eq_of_mem hwt, ← d4Orbit_eq_of_mem hwu]
+
+/-- Tours in a common orbit have orbits of equal cardinality. -/
+theorem d4Orbit_card_eq_of_mem {t u : ClosedTour} (h : u ∈ d4Orbit t) :
+    (d4Orbit u).card = (d4Orbit t).card := by
+  rw [d4Orbit_eq_of_mem h]
+
+/-- **Level-set saturation**: a level set is a union of complete D4 orbits. -/
+theorem d4Orbit_subset_levelSet_of_mem {t : ClosedTour} {k : ℕ}
+    (ht : t ∈ levelSet k) : d4Orbit t ⊆ levelSet k := by
+  have hk : obliqueCount t = k := by
+    simpa only [levelSet, Finset.mem_filter, Finset.mem_univ, true_and] using ht
+  rw [← hk]
+  exact d4Orbit_subset_levelSet t
+
 end KnightsTourOblique
