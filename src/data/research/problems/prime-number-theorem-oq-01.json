@@ -17,26 +17,29 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-04T16:38:18.114Z",
-    "iteration": 2,
-    "focus": "PR #15813 open: 281-line Lean file, 0 sorries, 5 axioms. Docker verification in progress.",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "PR #15813 merged 2026-05-04 (initial RH-PNT error-bound formalization). PR #22912 merged 2026-06-13 (axiom-free functional-equation zero pairs). Source PrimeNumberTheoremOQ01.lean now 315 LOC, 15 theorems, 6 defs, 5 axioms, 0 sorries; gallery meta.json in sync (status=axiomatized, badge=axiom). RH is taken as a hypothesis (not assumed true); the 5 axioms are true classical theorems absent from Mathlib (PNT classical error term, von Koch RH-error equivalence, Littlewood oscillation, pi-exceeds-Li infinitely, Backlund zero-counting).",
     "blockers": [],
-    "nextAction": "Await Docker build confirmation and PR merge by deployer.",
+    "nextAction": "Discharge the 5 Mathlib-gap axioms by porting the classical results (explicit formula psi(x); Backlund/Riemann-von Mangoldt N(T) ~ (T/2pi)log(T/2pi); Littlewood/Skewes oscillation). Each is a major Mathlib-contribution effort and Docker-gated; no build-free ACT path while Docker is down.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Lean file written (281 lines, 0 sorries, 5 axioms). Proved: RH extends zero-free region, zeros symmetric about Re=1/2. Axiomatized: von Koch, Littlewood, Backlund. PR pending Docker verification.",
+    "progressSummary": "PROGRESS: PrimeNumberTheoremOQ01.lean complete at 315 LOC, 0 sorries, 5 axioms (status=axiomatized). #15813 (2026-05-04) established RH definition, RH-extends-zero-free-region, and the von Koch/Littlewood/Backlund axioms. #22912 (2026-06-13) added axiom-free functional-equation zero-pair theorems (s <-> 1-s symmetry in the critical strip). Forward work = discharging the 5 classical axioms (Mathlib-gap, Docker-gated).",
     "builtItems": [
       "PrimeNumberTheoremOQ01.lean: RiemannHypothesis definition (formal, line 52)",
       "PrimeNumberTheoremOQ01.lean: rh_strip_zero_free (RH \u2192 1/2<Re<1 zero-free, line 112)",
       "PrimeNumberTheoremOQ01.lean: rh_zeros_on_half_line (proved, line 121)",
       "PrimeNumberTheoremOQ01.lean: zeros_symmetric_in_strip (functional equation, line 130)",
       "PrimeNumberTheoremOQ01.lean: pnt_error_rh and rh_sharpens_error (under RH, lines 196-212)",
-      "PrimeNumberTheoremOQ01.lean: pnt_rh_landscape summary (line 264)"
+      "PrimeNumberTheoremOQ01.lean: pnt_rh_landscape summary (line 264)",
+      "PrimeNumberTheoremOQ01.lean: reflected_mem_strip (#22912, line 150)",
+      "PrimeNumberTheoremOQ01.lean: zeros_pair_in_strip (#22912, axiom-free zero pairs, line 161)",
+      "PrimeNumberTheoremOQ01.lean: rh_pair_on_line (#22912, under RH, line 170)"
     ],
     "insights": [
       "RH formally defined as: all non-trivial zeros in 0 < Re(s) < 1 have Re(s) = 1/2",
@@ -74,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-05-04T16:38:18.114Z",
-  "lastUpdate": "2026-05-04T16:38:18.114Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
