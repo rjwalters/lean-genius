@@ -387,4 +387,54 @@ theorem frobeniusNumber3_le_min_sylvester_bound {a b c : ℕ}
   refine le_min (frobeniusNumber3_le_sylvester_bound_ac hac ha hc)
     (frobeniusNumber3_le_sylvester_bound_bc hbc hb hc)
 
+/-! ### S6 — Exact representability criterion for three *consecutive* generators
+
+The Sylvester-style bounds above are one-directional (they only establish
+representability *above* a threshold). For the three-consecutive family
+`(n, n + 1, n + 2)` there is a clean two-sided characterisation, which is
+the structural key to Roberts' tight `d = 1` closed form.
+
+The observation: a combination collapses to
+`n·x + (n+1)·y + (n+2)·z = n·(x + y + z) + (y + 2·z)`. Writing
+`s := x + y + z` for the total number of generators used, the "remainder"
+`y + 2·z` ranges over exactly `[0, 2·s]` as `y, z` vary with `y + z ≤ s`.
+Hence `m` is representable **iff** it lands in one of the intervals
+`[n·s, (n+2)·s]` for some `s : ℕ`. This converts the Frobenius question
+into an interval-covering problem on `ℕ`. -/
+
+/-- **Exact representability criterion for consecutive triples.**
+    `m` is `Representable3 n (n+1) (n+2)` iff `n·s ≤ m ≤ (n+2)·s` for some
+    `s : ℕ` (namely `s = x + y + z`, the total generator count). -/
+theorem representable3_consecutive_iff (n m : ℕ) :
+    Representable3 n (n + 1) (n + 2) m ↔ ∃ s : ℕ, n * s ≤ m ∧ m ≤ (n + 2) * s := by
+  constructor
+  · rintro ⟨x, y, z, rfl⟩
+    refine ⟨x + y + z, ?_, ?_⟩
+    · have h : n * (x + y + z) + (y + 2 * z)
+          = n * x + (n + 1) * y + (n + 2) * z := by ring
+      omega
+    · have h : (n + 2) * (x + y + z)
+          = (n * x + (n + 1) * y + (n + 2) * z) + (2 * x + y) := by ring
+      omega
+  · rintro ⟨s, h1, h2⟩
+    rcases le_or_lt (m - n * s) s with ht | ht
+    · -- remainder `t := m - n*s` satisfies `t ≤ s`: use `x = s - t, y = t, z = 0`.
+      obtain ⟨u, hu⟩ : ∃ u, s = u + (m - n * s) := ⟨s - (m - n * s), by omega⟩
+      refine ⟨u, m - n * s, 0, ?_⟩
+      have e1 : (n + 1) * (m - n * s)
+          = n * (m - n * s) + (m - n * s) := by ring
+      have key : n * s = n * u + n * (m - n * s) := by
+        conv_lhs => rw [hu]
+        rw [Nat.mul_add]
+      omega
+    · -- remainder `t` satisfies `s < t ≤ 2·s`: use `x = 0, y = 2s - t, z = t - s`.
+      have hexp : (n + 2) * s = n * s + 2 * s := by ring
+      obtain ⟨v, hv⟩ : ∃ v, m - n * s = s + v := ⟨m - n * s - s, by omega⟩
+      obtain ⟨w, hw⟩ : ∃ w, s = w + v := ⟨s - v, by omega⟩
+      refine ⟨0, w, v, ?_⟩
+      have e2 : (n + 1) * w + (n + 2) * v
+          = n * w + n * v + (w + 2 * v) := by ring
+      have e3 : n * s = n * w + n * v := by rw [hw]; ring
+      omega
+
 end FrobeniusOQ03

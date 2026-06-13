@@ -152,11 +152,12 @@ lemma count_diff_assignments {V : Type*} [Fintype V] [DecidableEq V]
       ext w
       simp only [toggle]
       by_cases hw : w = u
-      · subst hw; simp
-      · simp [Function.update_noteq hw, Function.update_noteq hw]
+      · subst hw; simp only [Function.update_apply, if_true, Bool.not_not]
+      · simp only [Function.update_apply, if_neg hw]
     -- Toggle swaps "same" and "different" assignments
     have toggle_swap : ∀ f, (f u ≠ f v) ↔ (toggle f u = toggle f v) := fun f => by
-      simp only [toggle, Function.update_same, Function.update_noteq huv.symm]
+      have hvu : v ≠ u := huv.symm
+      simp only [toggle, Function.update_apply, if_true, if_neg hvu]
       cases f u <;> cases f v <;> decide
     -- Bijection between "different" and "same" sets
     let diff := Finset.univ.filter (fun f : V → Bool => f u ≠ f v)
@@ -174,7 +175,8 @@ lemma count_diff_assignments {V : Type*} [Fintype V] [DecidableEq V]
         refine ⟨toggle g, ?_, toggle_inv g⟩
         simp only [diff, same, Finset.mem_filter, Finset.mem_univ, true_and, ne_eq] at hg ⊢
         have : toggle g u ≠ toggle g v := by
-          simp only [toggle, Function.update_same, Function.update_noteq huv.symm]
+          have hvu : v ≠ u := huv.symm
+          simp only [toggle, Function.update_apply, if_true, if_neg hvu]
           cases h1 : g u <;> cases h2 : g v <;> simp_all
         exact this
     -- diff and same partition the space

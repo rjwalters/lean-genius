@@ -1,25 +1,28 @@
 # Research State: randomized-maxcut-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT (complete)
 **Path**: fast
-**Since**: 2026-05-12T13:53:32-07:00
-**Iteration**: 1
+**Since**: 2026-06-11
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+S2 ACT shipped: `proofs/Proofs/RandomizedMaxCutOQ03.lean` (Docker-verified, 0
+sorries, 0 axioms). Bipartite tightness witness for the parent's 1/2-approximation
+guarantee. Also repaired the parent file's Mathlib v4.26.0 build break.
 
 ## Active Approach
-None yet.
+Full-cut / proper-2-colouring characterisation of tightness; concrete `K_{m,n}`
+witness via a self-contained `completeBipartite` graph.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 2
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.
-See FAST_PATH.md for protocol.
+Problem essentially complete. Optional S3: upstream-style generalisation or
+linking to Mathlib's `SimpleGraph.IsBipartite`. Otherwise mark completed.
