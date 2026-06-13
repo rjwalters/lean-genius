@@ -99,55 +99,103 @@
     {
       "id": "intro-docstring",
       "startLine": 1,
-      "endLine": 110,
+      "endLine": 116,
       "title": "§0: Open Question, Resolution Plan, and Sub-OQ Decomposition"
     },
     {
       "id": "cyclic-rotation-reversal",
-      "startLine": 113,
-      "endLine": 129,
+      "startLine": 121,
+      "endLine": 136,
       "title": "§1: Cyclic Rotation hexRot and Reversal hexRev on Fin 6"
     },
     {
       "id": "dihedral-subgroup",
-      "startLine": 131,
-      "endLine": 152,
+      "startLine": 137,
+      "endLine": 159,
       "title": "§2: hexagonalGroup — the Dihedral Subgroup of Sym(6)"
     },
     {
+      "id": "dihedral-relations",
+      "startLine": 160,
+      "endLine": 188,
+      "title": "§2b: Dihedral Relations on hexRot and hexRev (S2)"
+    },
+    {
+      "id": "order-facts",
+      "startLine": 189,
+      "endLine": 228,
+      "title": "§2c: Order of hexRot and hexRev (S3a)"
+    },
+    {
+      "id": "semiconjugacy",
+      "startLine": 229,
+      "endLine": 277,
+      "title": "§2d: Semiconjugacy and Power-Inversion (S3b-prep)"
+    },
+    {
+      "id": "zmod-power-helpers",
+      "startLine": 278,
+      "endLine": 338,
+      "title": "§2e: ZMod-Indexed Power Helpers (S3c-prep-2)"
+    },
+    {
+      "id": "anti-push",
+      "startLine": 339,
+      "endLine": 357,
+      "title": "§2f: Anti-Push of hexRev Past hexRot^n (S3d-prep)"
+    },
+    {
+      "id": "hexrev-not-power",
+      "startLine": 358,
+      "endLine": 374,
+      "title": "§2g: hexRev Is Not a Power of hexRot (S3d-prep)"
+    },
+    {
+      "id": "dihedral-homomorphism",
+      "startLine": 375,
+      "endLine": 492,
+      "title": "§2h: The Dihedral Homomorphism dihedralHomToSym6 (S3d — completes OQ-03-OQ-01)"
+    },
+    {
       "id": "hexagon-labeling",
-      "startLine": 154,
-      "endLine": 162,
+      "startLine": 493,
+      "endLine": 502,
       "title": "§3: HexagonLabeling = Sym(6) ⧸ D_6"
     },
     {
       "id": "cardinality-facts",
-      "startLine": 164,
-      "endLine": 190,
+      "startLine": 503,
+      "endLine": 557,
       "title": "§4: Cardinality Facts (card_sym6, card_hexagonalGroup, card_hexagon_labelings)"
     },
     {
+      "id": "hexagon-relabeling",
+      "startLine": 558,
+      "endLine": 618,
+      "title": "§4b: Hexagon Relabeling Action (S4b ACT — toolkit for OQ-03-OQ-02)"
+    },
+    {
       "id": "pascal-line-map",
-      "startLine": 192,
-      "endLine": 219,
+      "startLine": 619,
+      "endLine": 647,
       "title": "§5: Pascal-Line Map and Hexagrammum Mysticum Statement"
     },
     {
       "id": "steiner-points",
-      "startLine": 221,
-      "endLine": 247,
+      "startLine": 648,
+      "endLine": 675,
       "title": "§6: Steiner Points (OQ-03-OQ-03)"
     },
     {
       "id": "kirkman-points",
-      "startLine": 249,
-      "endLine": 272,
+      "startLine": 676,
+      "endLine": 700,
       "title": "§7: Kirkman Points (OQ-03-OQ-04)"
     },
     {
       "id": "sanity-lemmas",
-      "startLine": 274,
-      "endLine": 291,
+      "startLine": 701,
+      "endLine": 718,
       "title": "§8: Sanity Lemmas (hexRot_ne_one, hexRev_ne_one)"
     }
   ],
