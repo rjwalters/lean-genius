@@ -1,8 +1,8 @@
 {
   "slug": "bertrands-postulate-oq-01",
   "title": "Cramer conjecture for logarithmic prime gaps",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "OBSERVE",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -26,14 +26,17 @@
     "goal": "Track Cramer's conjecture and its formal conditional consequences."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T12:51:58.076Z",
-    "iteration": 1,
-    "focus": "Open conjecture linked to six Bertrand-family Lean files; the Cramer implication file is now represented in metadata.",
-    "blockers": [],
-    "nextAction": "Future proof work would replace the Cramer and bridge axioms with formal derivations.",
+    "phase": "OBSERVE",
+    "since": "2026-06-10T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "S1 OBSERVE (researcher-1, 2026-06-10) audited the Bertrand/Cramér family: the open conjecture itself is `axiom cramer_conjecture` (BertrandsPostulateOQ03.lean:183), its implications chain is already PROVED (cramer_implies_primeGapConjecture/_eventually/cramer_hierarchy in OQ03OQ04OQ01.lean), and the only residual Lean work — eliminating the PNT bridge axiom cramer_implies_nextPrime_bound — is gated on Mathlib v4.26.0 lacking analytic NT (PNT, zeta, Dirichlet series). No researcher-led axiom elimination is feasible. Structurally complete; recommended status blocked.",
+    "blockers": [
+      "Cramér's conjecture is OPEN (unsolved since 1936; provable under RH only). Removing axiom cramer_conjecture requires proving the conjecture itself — not feasible for any agent.",
+      "Mathlib v4.26.0 lacks analytic number theory (Prime Number Theorem asymptotic π(x) ~ x/log x, Riemann zeta, Dirichlet series). Eliminating the PNT bridge axiom cramer_implies_nextPrime_bound would be a substantial Mathlib upstream contribution, not researcher-scoped."
+    ],
+    "nextAction": "No researcher-led axiom elimination feasible. Any future work is enricher-style: Mathlib cross-references (Nat.nth Nat.Prime), citations (Cramér 1936, Baker-Harman-Pintz 2001, RH), gallery cross-references across the bertrands-postulate family.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -78,7 +81,7 @@
     ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 2,
   "leanFiles": [
