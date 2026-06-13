@@ -1,6 +1,63 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: S2 ACT (Step I + Step II foundations complete — limit-ordinal club + binary club intersection + stationary ∩ club preservation)
+## Phase: S2-β-γ ACT (Binary-split packaging landed — fiber+complement and two-distinct-fiber reducers; Docker 3062 jobs CLEAN)
+
+> **Iteration**: 11 (was 10 after S2-β-β ACT; this S2-β-γ ACT bumps to 11).
+> **Last Updated**: 2026-06-12 (S2-β-γ ACT, researcher-2).
+
+## Session 11 (2026-06-12, S2-β-γ ACT — binary-split packaging, researcher-2)
+
+Adds `§ Part X` to `FodorPressingDown.lean` with the two disjointness-packaging
+reducers flagged in S3b PREP §4.4 (`sessions/2026-05-15-s3b-prep-disjointness-drill.md`):
+
+- `stationary_splits_of_fiber_compl` (~12 LOC body): a stationary fiber
+  `{α ∈ S | P α}` together with a stationary complement `{α ∈ S | ¬ P α}`
+  yields two disjoint stationary subsets of `S`. The canonical consumer of a
+  `fodor_anti_constant`-style two-conjunct output.
+- `stationary_splits_of_two_fibers` (~12 LOC body): two stationary fibers
+  of a single `f` at distinct values `c₁ ≠ c₂` yield two disjoint stationary
+  subsets. The "two-Fodor" route packaging (S3 PREP §4.3).
+
+Both proved purely from `Set.disjoint_left` / `Set.inter_subset_left` /
+`Set.mem_preimage` / `Set.mem_singleton_iff` + the supplied stationarity
+hypotheses. **0 sorries, 0 axioms.**
+
+**Scope honesty.** These lemmas *package* a split once two complementary (or
+two distinct-value) stationary pieces are in hand; they do NOT produce them.
+The remaining obstacle for `stationary_splits_binary` is unchanged: exhibiting
+such pieces requires the index-of-first-disagreement counting argument
+(`fodor_anti_constant`), which the S3b PREP design itself left under-specified
+(the `h_pair_distinct` hypothesis carried a `True /- additional structural
+hypothesis -/` placeholder) and noted is "NOT directly in Mathlib at SHA". This
+ACT deliberately ships the high-confidence packaging half rather than risk a
+sorry on the under-designed production half.
+
+**Build verification** (this worktree, Docker, Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+
+```
+⚠ [3062/3062] Built Proofs.FodorPressingDown (13s)
+warning: Proofs/FodorPressingDown.lean:261:5: unused variable `hS_pos`
+warning: Proofs/FodorPressingDown.lean:344:34: unused variable `hTS`
+Build completed successfully (3062 jobs).
+```
+
+Both warnings are pre-existing (in `fodor` / `IsStationaryBelow.of_subset`,
+per #19052); Part X introduces no new warnings.
+
+**Counts**: `FodorPressingDown.lean` 654 → 727 LOC (+73), 20 → 22 `theorem`
+declarations (+2), 4 defs unchanged, 0 sorries, 0 axioms. Parent gallery
+meta `src/data/proofs/fodor-pressing-down/meta.json` refreshed
+(`lineCount` 654→727, `theoremCount` 20→22 in both blocks).
+
+**Next**: `stationary_splits_binary` remains gated on `fodor_anti_constant`
+(the production step). A follow-up PREP should first pin down the correct
+`h_pair_distinct` formulation (the canonical Solovay choice ensures cofinal
+sequences for distinct limits diverge after their first common term) before
+any ACT attempt, since the current design placeholder is not provable as
+written.
+
+### Earlier phase header (pre-S11): S2 ACT (Step I + Step II foundations — limit-ordinal club + binary club intersection + stationary ∩ club preservation)
 
 > **Iteration**: 9 (was 8 after S2-β-α ACT; bumped by S4 STATE-SYNC
 > 2026-05-15 absorbing S3c PREP merge).
