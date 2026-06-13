@@ -65,7 +65,9 @@ lemma prime_dvd_sq_add_one_mod_four {p k : ℕ} (hp : Nat.Prime p) (hp2 : p ≠ 
     exact h.symm
   -- Apply the key lemma from Mathlib
   haveI : Fact (Nat.Prime p) := ⟨hp⟩
-  have hne3 := Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one hp (dvd_refl p) hsq
+  have hpmem : p ∈ Nat.primeFactors p :=
+    Nat.mem_primeFactors.mpr ⟨hp, dvd_refl p, hp.pos.ne'⟩
+  have hne3 := Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one hpmem hsq
   -- p % 4 ∈ {0, 1, 2, 3}, p is odd prime, so p % 4 ∈ {1, 3}
   have hodd : Odd p := hp.odd_of_ne_two hp2
   have hmod : p % 4 = 1 ∨ p % 4 = 3 := by
@@ -83,8 +85,10 @@ lemma exists_odd_prime_factor {n : ℕ} (hn : n > 1) (hodd : Odd n) :
   use p, hp_prime, hp_div
   intro hp2
   rw [hp2] at hp_div
-  have : Even n := even_iff_two_dvd.mpr hp_div
-  exact (Nat.odd_iff_not_even.mp hodd) this
+  have heven : Even n := even_iff_two_dvd.mpr hp_div
+  obtain ⟨k, hk⟩ := hodd
+  obtain ⟨m, hm⟩ := heven
+  omega
 
 /-! ## The Main Theorem -/
 
@@ -129,7 +133,7 @@ theorem infinitely_many_primes_1_mod_4 :
       exact dvd_mul_of_dvd_left hp_dvd_2fact _
     -- But p ∣ N = (2 * (n+1)!)² + 1
     -- So p ∣ N - (2 * (n+1)!)² = 1
-    have hp_dvd_diff : p ∣ N - (2 * (n + 1).factorial) ^ 2 := Nat.dvd_sub' hp_div hp_dvd_sq
+    have hp_dvd_diff : p ∣ N - (2 * (n + 1).factorial) ^ 2 := Nat.dvd_sub hp_div hp_dvd_sq
     -- N - (2*(n+1)!)² = (2*(n+1)!)² + 1 - (2*(n+1)!)² = 1
     have hN_sub : N - (2 * (n + 1).factorial) ^ 2 = 1 := by simp only [N]; omega
     rw [hN_sub] at hp_dvd_diff

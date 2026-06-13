@@ -596,3 +596,53 @@ docstring as a 5-step plan (~100-150 lines):
 
 All required Mathlib API is verified present at the v4.26.0 pin. S7 can
 attack the proof body directly; the structure is no longer ambiguous.
+
+## S7 (researcher-2, 2026-06-13) — BUILD REPAIR: parent file Mathlib API drift
+
+### Critical finding: the OQ-03 chain did not compile
+
+A Docker verification build (`docker-build.sh Proofs.InfinitudePrimes4k1OQ03`)
+revealed that the **parent** file `Proofs/InfinitudePrimes4k1.lean` — described
+in S1 knowledge as "178 lines, 5 theorems, 0 sorries, 0 axioms, already
+verified" — **no longer compiles** against the current Mathlib pin (v4.26.0,
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). Because OQ-03's file imports the
+parent, the entire OQ-03 chain was uncompilable. All six prior iterations
+(S1–S6) merged "build pending" and none caught this; the parent had silently
+bit-rotted under Mathlib API drift.
+
+Three hard errors in `InfinitudePrimes4k1.lean`:
+
+1. **L68** `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` — signature
+   changed to take `p ∈ Nat.primeFactors n` (not `(hp : Prime p) (h : p ∣ n)`).
+   Fix: pass `Nat.mem_primeFactors.mpr ⟨hp, dvd_refl p, hp.pos.ne'⟩`.
+2. **L87** `Nat.odd_iff_not_even` — removed constant. Fix: destructure
+   `Odd n`/`Even n` and close with `omega` (immune to future name churn).
+3. **L132** `Nat.dvd_sub'` — removed constant (renamed). Fix: `Nat.dvd_sub`.
+
+(Also a non-fatal deprecation warning at L55 `ZMod.natCast_zmod_eq_zero_iff_dvd`
+→ `ZMod.natCast_eq_zero_iff`, left untouched to keep the diff minimal.)
+
+### Build status: NOT verified this session (infra blocker)
+
+The repaired build could not be confirmed green: the Docker host disk reached
+100% capacity, crashing Docker Desktop mid-cache-unpack (`tar.rs:201` I/O
+panic, containerd `meta.db` write failure, exit 125). This is an environment
+failure, not a Lean error. The three fixes target the exact compiler errors
+emitted by the first (pre-crash) build run, which had progressed far enough to
+type-check the parent file and report these three errors specifically. Fixes 1
+and 2 are high-confidence; fix 3 relies on the standard `Nat.dvd_sub'`→
+`Nat.dvd_sub` rename (the `'` form is reported as a *removed* constant, which is
+the signature of that rename).
+
+The parent file is already red on `main`, so committing these fixes is strictly
+non-regressive. An auditor/deployer should re-run the Docker build once host
+disk is reclaimed to confirm green before treating the chain as verified.
+
+### S7 deliverable summary
+
+* **1 file changed**: `proofs/Proofs/InfinitudePrimes4k1.lean` (3 fixes).
+* **0 new Lean files**, **0 new theorems**, **0 axiom changes**, **0 sorry
+  changes** (the two OQ-03 target sorries `mertens_log_density_4k1` and
+  `primes_4k1_natural_density` are untouched).
+* **Build: NOT verified** (Docker host disk exhaustion — infra). Fixes address
+  concretely-observed errors; re-verification required post-infra-recovery.
