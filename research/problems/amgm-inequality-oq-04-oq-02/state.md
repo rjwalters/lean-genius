@@ -1,8 +1,55 @@
 # Current State
 
-**Phase**: ACT (S14 ACT Site-1 applied — B1 dispatched in `dK_dk`; B2 fully resolved since S13; Site-2 `dE_dk` deferred to S15)
-**Since**: 2026-06-02T19:00:00Z
-**Iteration**: 14
+**Phase**: ACT (S15 BUILD-REPAIR — file now Docker-verified clean; G3 AMBER→GREEN. dE_dk assembly still due.)
+**Since**: 2026-06-13T00:00:00Z
+**Iteration**: 15
+
+## Iteration 15 (2026-06-13, researcher-2): S15 BUILD-REPAIR — Mathlib-drift fixes; file builds clean (Docker 7745)
+
+**Critical finding**: `AmgmInequalityOQ04OQ02.lean` did **not** compile at the
+current Mathlib pin (v4.26.0), despite being labeled `status: axiomatized,
+sorries: 0` in the gallery. The S14 patch (#22… era) left it "build pending"
+and it had in fact accumulated **7 distinct Mathlib-drift breakages** across 6
+sites. A baseline Docker build (this session) surfaced them; all are now fixed
+and the file is **Docker-verified clean (7745 jobs, 0 errors, 0 sorries)**.
+
+### Breakages fixed (Mathlib v4.26.0 drift)
+
+1. **`𝓝` unknown** (×2, `dK_dk`): the file opened `MeasureTheory
+   intervalIntegral Real` but not `Topology`. Added `open scoped Topology`.
+2. **`div_le_div` unknown** (×2, §9 bound lemmas): renamed to `div_le_div₀`
+   in current Mathlib (same 4-arg signature `(0≤c)(a≤c)(0<d)(d≤b) : a/b ≤ c/d`).
+3. **`field_simp; ring` / `linear_combination` failures** (3 sites: the
+   pointwise K/E identity §12, `auxFnK_deriv_form_eq`, `h_eq_intermediate`):
+   current `field_simp`/`ring_nf` commutes the radicand `k²·sin²θ → sin²θ·k²`,
+   splitting `√(1−k²sin²θ)` and `√(1−sin²θk²)` into two distinct atoms `ring`
+   cannot unify, and leaving inverses uncleared because the `≠ 0` hypotheses
+   kept the un-commuted order. **Fix pattern**: canonicalize the radicand to a
+   single `sin²·k²` order via `simp only [show 1−k²sin²θ = 1−sin²θk² from by
+   ring]`, supply commuted `≠ 0` / sqrt-square facts (`mul_comm` + the
+   original), then `field_simp [commuted facts]` clears denominators and
+   `rw [hsq']; ring` closes.
+4. **`field_simp; ring` no-goals** (1 site, §16 dIntegrandK rewrite): current
+   `field_simp` fully closes the goal, so the trailing `ring` errored with
+   "No goals". Removed the redundant `ring`.
+
+### Counts
+
+| | Before | After |
+|--|--|--|
+| Builds (Docker) | **NO (broken)** | **YES (7745 jobs)** |
+| LOC | 1575 | 1601 |
+| Axioms | 1 (`legendre_relation`) | 1 (unchanged) |
+| Theorems | 47 | 47 (unchanged) |
+| Sorries | 0 | 0 |
+
+**Axiom unchanged** — this is a build repair, not an axiom discharge. It
+restores the 47 theorems to genuinely machine-checked status (they were
+unverified while the file was broken). G3 (dK_dk Mathlib-API-clean) is now
+**GREEN/Docker-verified**. G4 (`dE_dk` assembly) remains the next milestone
+toward discharging `legendre_relation` via the Wronskian closure.
+
+---
 
 ## Iteration 14 (2026-06-02T19:00Z, researcher-1): S14 ACT Site-1 — minimal-diff B1 fix in `dK_dk` (§4.4 path; +16 LOC; build pending; Site-2 deferred)
 
