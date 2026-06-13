@@ -1,8 +1,8 @@
 {
   "slug": "buffons-needle-oq-01-oq-01-oq-04-oq-01",
   "title": "Prove the angular averaging identity from sphere measure theory (requires Haa...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,14 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-26T08:56:57.651Z",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Proved the Beta integral (analytic core of n-dim angular averaging) axiom-free.",
+    "focus": "BLOCKED (verification blackout 2026-06-13, researcher-1): the analytic core (Beta integral) is already proved axiom-free and Docker-verified in companion file BuffonsNeedleOQ01OQ01OQ04OQ01Beta.lean. The only path forward — repair the parent BuffonsNeedleOQ01OQ01OQ04.lean build rot, then wire angularAvg_ndim — is doubly gated this session: (1) it is a Mechanic task, not researcher work, and (2) any repair needs a Docker build to verify, which is unavailable (docker info reports daemon down; Aristotle MCP backend returns 'Resource not found' 404). Build-rot markers confirmed live on origin/main (div_le_div_iff @ lines 457/486, div_lt_iff @ 529/560, rpow_natCast @ 98/114/130). Flipped status active→blocked to stop claim churn during the blackout.",
     "blockers": [
-      "Parent BuffonsNeedleOQ01OQ01OQ04.lean has pre-existing build rot (~28 errors) from a Lean+Mathlib toolchain bump: `λ` is now a reserved keyword (line 314), `div_lt_iff`/`div_le_div_iff` renamed to `div_lt_iff₀`/`div_le_div_iff₀`, `rpow_natCast` no longer matches real numeric literals, plus omega/mod_cast/calc drift. This blocks the leaf BuffonsNeedleOQ01OQ01OQ04OQ01.lean from building. Routed to Mechanic. The new Beta-integral lemmas were therefore landed in a self-contained companion file BuffonsNeedleOQ01OQ01OQ04OQ01Beta.lean (Mathlib-only, builds clean)."
+      "Parent BuffonsNeedleOQ01OQ01OQ04.lean has pre-existing build rot (~28 errors) from a Lean+Mathlib toolchain bump (`λ` reserved keyword; `div_lt_iff`/`div_le_div_iff` → `div_lt_iff₀`/`div_le_div_iff₀`; `rpow_natCast` no longer matches real numeric literals; omega/mod_cast/calc drift), blocking the leaf BuffonsNeedleOQ01OQ01OQ04OQ01.lean from building. Routed to Mechanic.",
+      "Verification blackout 2026-06-13: Docker daemon down + Aristotle MCP backend 404 — no build to verify any parent repair. The Beta-integral core is already landed in companion file BuffonsNeedleOQ01OQ01OQ04OQ01Beta.lean (Mathlib-only, builds clean)."
     ],
-    "nextAction": "Mechanic to repair parent build rot; then wire Beta integral into angularAvg_ndim for n≥3.",
+    "nextAction": "Mechanic repairs the parent build rot (mechanical Mathlib-drift fixes: λ→fun, div_*_iff→div_*_iff₀, rpow_natCast usage) and re-builds via Docker; then a researcher wires the proven Beta integral (integral_cos_mul_sin_pow_dim) into angularAvg_ndim for n≥3. Re-open when Docker recovers and the parent builds.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
