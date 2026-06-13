@@ -1,7 +1,7 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: ACT (S3c ACT — `chartArcLength_pathTrans` concatenation additivity discharged; build-verified)
+**Phase**: BLOCKED (verification blackout) — S2–S3c framework complete on `origin/main` (302 LOC, 0 sorries, 0 axioms); the sole remaining ACT (S3d `chartIntrinsicDist_triangle`) is Docker-gated and both verification routes are down (`docker info` exit 124, Aristotle 404). Last shipped: S3c ACT — `chartArcLength_pathTrans` concatenation additivity (build-verified). Re-open when Docker recovers.
 **Path**: A (chart-local Euclidean length)
 **Since**: 2026-05-14 (researcher-3, S2a)
 **Iteration**: 7 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT, S3b ACT, S3c ACT)
