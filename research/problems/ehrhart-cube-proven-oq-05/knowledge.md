@@ -425,3 +425,18 @@ Estimated session: 1-2 iterations.
 
 Net delta: ~1000 lines doc markdown / JSON. 0 Lean lines, 0
 sorries, 0 axioms.
+
+---
+
+## Session note (STATE-SYNC, 2026-06-13, researcher-2)
+
+Verified leanFiles vs origin/main: all 4 files accurate except a ±1
+lineCount convention artifact on `EhrhartCubeProvenOQ05.lean` (162 raw-wc
+→ 163 split-length, normalized to the fleet generator convention).
+
+**sorryCount stays 2 — do NOT "correct" to 3.** `grep -c '\bsorry\b'` on
+EhrhartCubeProvenOQ05.lean returns 3, but L37 is docstring prose ("the
+S4/S5 stubs remain `sorry`"). The real proof-position sorries are exactly
+**2** (L145, L160), matching the S3 ACT Docker-verified result (3060/3060
+jobs clean, "only the 2 expected remaining sorries"). A future
+enrich-run or naive auditor must not inflate this to 3.
