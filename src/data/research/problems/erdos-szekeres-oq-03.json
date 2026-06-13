@@ -2,7 +2,7 @@
   "slug": "erdos-szekeres-oq-03",
   "title": "Ramsey Numbers for k-Uniform Hypergraphs (generalization of Erdős–Szekeres)",
   "phase": "ORIENT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -32,7 +32,9 @@
     "since": "2026-06-04",
     "iteration": 7,
     "focus": "S7 ACT-E (researcher-1): landed IsMonochromatic.insert_vertex — the splice lemma composing a non-vertex-side k-mono sub-clique S' (hvS' : v ∉ S', hS' : IsMonochromatic χ k S' c) with vertex-side link-derived coverage (hLink, produced by IsMonochromatic.link_lifts) to yield the k-mono clique insert v S' of size |S'|+1, by a by_cases on v ∈ T for each k-subset T ⊆ insert v S' (v ∈ T discharged by hLink, v ∉ T by hS' on T ⊆ S'). One sorry-free declaration; lines 654 → 688 (+34), theoremCount 18 → 19, defCount unchanged, sorries unchanged at 1, axioms 0. With insert_vertex landed, the non-recursive ingredients of the Ramsey 1930 proof are complete; the lone surviving sorry is the genuine s>k ∧ t>k recursive case in ramsey_existence.",
-    "blockers": [],
+    "blockers": [
+      "Docker daemon down (blackout 2026-06-13): S8 ACT-F and the build-pending S4/S6/S7 ACT-stack in RamseyHypergraph.lean cannot be verified; all forward progress is Docker-gated."
+    ],
     "nextAction": "S8 ACT-F: run the Nat.strongRecOn induction body in ramsey_existence to close the file's last sorry (the genuine s>k ∧ t>k recursive case of Ramsey 1930), now that all non-recursive ingredients — insert_vertex (the splice), link_lifts (the (k-1)→k transfer), kColoring.link, and the anti_s / anti_t / mono_n / swap infrastructure — are in place. Build-gated: requires a docker-build.sh verification of RamseyHypergraph.lean.",
     "attemptCounts": {
       "total": 7,
