@@ -33,9 +33,9 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-05T00:00:00.000Z",
-    "iteration": 13,
-    "focus": "S5c ACT shipped (researcher-1, 2026-06-05, this iteration): qtMultichoose_two_two_eq_qMultichoose direct bridge for (2,2) interior of polynomial sub-lattice. Composes S5 ACT qtMultichoose_two_two_eq_qNumber with parent qMultichoose_two_left q 2. File ~480 → ~510 LOC, 17 → 18 theorems, 0 sorries, 0 axioms. Docker-verified 7745/7745. Polynomial-sub-lattice bridge chain now complete at named-object level.",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 14,
+    "focus": "S-SYNC (researcher-2, 2026-06-13, doc-only): meta.json counts re-synced to current source after S8 ACT (#22877) drift -- lineCount 518 -> 563, theoremCount 18 -> 22 (file is 563 LOC, 22 thm, 2 def, 0 axiom, 0 sorry). status/badge left at axiomatized/axiom (deliberate; see meta.assumptions). Docker down 2026-06-13 -> no build re-verification. Previous: S5c ACT shipped (researcher-1, 2026-06-05, this iteration): qtMultichoose_two_two_eq_qMultichoose direct bridge for (2,2) interior of polynomial sub-lattice. Composes S5 ACT qtMultichoose_two_two_eq_qNumber with parent qMultichoose_two_left q 2. File ~480 → ~510 LOC, 17 → 18 theorems, 0 sorries, 0 axioms. Docker-verified 7745/7745. Polynomial-sub-lattice bridge chain now complete at named-object level.",
     "blockers": [],
     "nextAction": "S7 ACT (lighter, doc-only, ~1 session): ship gallery JSON meta.json with status: axiomatized (positive at_one_one still requires Path C). Quote qMultichoose q 2 2 (via S5c ACT) and qMultichoose q n 1 (via S5b ACT) as canonical references. OR Path C RatFunc migration (heavier, ~80-120 LOC, multi-session) for positive qtMultichoose 1 1 n k = Nat.multichoose n k recovery.",
     "attemptCounts": {
@@ -56,7 +56,8 @@
       "Mathlib v4.26.0 has NO Macdonald polynomials, NO Hall-Littlewood functions, NO Cherednik DAHA, and only partial Schur functions. This OQ would catalyze infrastructure.",
       "S3 ACT insight (researcher-1, 2026-05-30): the CommRing multiplicative q-Pascal qBinom q n (k+1) · (1 - q^(k+1)) = qBinom q n k · (1 - q^(n-k)) is the missing bridge between the rational Macdonald form and the polynomial Gaussian form. It is UNCONDITIONAL — derived by subtracting qBinom_pascal and qBinom_pascal' via linear_combination, with no nonvanishing hypothesis (out-of-range n < k is handled by qBinom_eq_zero_of_lt zeroing both sides). This avoids the parent's qBinom_product detour suggested by S4 PREP, cutting the S3 proof to ~30 LOC core. The two q-Pascals differ only in their q-weight (q^(k+1) vs q^(n-k)) on the same Pascal expansion — their difference factors cleanly.",
       "The ratio form qtBinom_succ_div makes the S6 PREP §3 \"no (n,k)-dependent denominator shape\" claim explicit at the Lean level: the denominator (1 - q^(k+1) t^k) depends only on k, not on N; the numerator (1 - q^(N-k) t^k) depends on N-k. Pascal-style coefficients have (n,k)-dependent denominator shape; the k-direction recurrence does not. This is the structural reason the k-direction is preferred for Path C (RatFunc.eval).",
-      "S5c ACT insight (researcher-1, 2026-06-05): the parent already has qMultichoose_two_left q k : qMultichoose q 2 k = qNumber q (k + 1), so the (2,2) bridge to qMultichoose is a one-line composition (qtMultichoose_two_two_eq_qNumber + ← qMultichoose_two_left q 2) — no new parent-side helper needed. With this, every point in the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)} is now formally equated to a parent-side named object (qBinom or qMultichoose), completing the bridge chain at the named-object level."
+      "S5c ACT insight (researcher-1, 2026-06-05): the parent already has qMultichoose_two_left q k : qMultichoose q 2 k = qNumber q (k + 1), so the (2,2) bridge to qMultichoose is a one-line composition (qtMultichoose_two_two_eq_qNumber + ← qMultichoose_two_left q 2) — no new parent-side helper needed. With this, every point in the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)} is now formally equated to a parent-side named object (qBinom or qMultichoose), completing the bridge chain at the named-object level.",
+      "S-SYNC (researcher-2, 2026-06-13): STATE-SYNC audit. The S8 ACT commit (#22877, 64934238768) grew ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean to 563 LOC / 22 theorems (21 theorem + 1 lemma) / 2 defs / 0 axioms / 0 sorries, but did NOT update meta.json or this research tracker. Corrected meta.json lineCount 518 -> 563 and theoremCount 18 -> 22 in both the .meta and .leanFile blocks (this PR). This tracker's S5c focus (510 LOC, 18 theorems) likewise predates S8. NOTE for a future build-enabled session: meta.json keeps status='axiomatized' / badge='axiom' with axiomCount=0 and sorries=0 -- this is the deliberate honest choice documented in meta.assumptions (open question only partially resolved; headline t=1 / sub-lattice results are conditional on Path A non-degeneracy guards). Left unchanged. Docker down repo-wide 2026-06-13 -> S8's build status could not be re-verified; counts are from the source text (objective)."
     ],
     "builtItems": [
       "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/problem.md (formal targets + S2-S7 plan).",
@@ -92,6 +93,6 @@
   ],
   "significance": 5,
   "tractability": 4,
-  "lastUpdated": "2026-05-30T00:00:00.000Z",
-  "lastUpdate": "2026-05-30T00:00:00.000Z"
+  "lastUpdated": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z"
 }
