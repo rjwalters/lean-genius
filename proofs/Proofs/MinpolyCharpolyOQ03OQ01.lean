@@ -189,14 +189,25 @@ The chain is packaged as the parent's `InvariantFactorChain` structure
 
 /-- **OQ-03-OQ-02 target (statement, sorry-guarded here)**:
     `xModule M` admits an invariant-factor chain whose product equals
-    `M.charpoly`. This is a restatement of the parent's
-    `rational_canonical_form_exists` consuming the F[X]-module
-    constructed in this file. The two are mutually-derivable; the
-    benefit of stating both is to fix the bridging surface between
-    this sub-OQ and the parent. -/
+    `M.charpoly` **and** whose last factor equals `minpoly F M`. This is
+    a restatement of the parent's `rational_canonical_form_exists`
+    consuming the F[X]-module constructed in this file. The two are
+    mutually-derivable; the benefit of stating both is to fix the
+    bridging surface between this sub-OQ and the parent.
+
+    *Faithfulness note (S14-alignment).* The `lastFactor = minpoly`
+    conjunct is **not** optional padding: without it the existential is
+    vacuously satisfiable by a degenerate chain (`factors = [M.charpoly]`
+    for nonempty `n`, or the empty chain for the `0 × 0` case), which
+    would make the bridge strictly weaker than the parent's S14
+    strong-form `rational_canonical_form_exists`. Adding `c.lastFactor =
+    minpoly F M` forces the genuine invariant-factor decomposition
+    (`minpoly = charpoly` holds only for non-derogatory `M`), restoring
+    the claimed mutual-derivability with the parent. The proof remains
+    deferred to the OQ-03-OQ-02 regrouping algorithm. -/
 theorem xModule_has_invariantFactorChain (M : Matrix n n F) :
     ∃ c : MinpolyCharpolyOQ03.InvariantFactorChain F,
-      c.prodFactors = M.charpoly := by
+      c.prodFactors = M.charpoly ∧ c.lastFactor = minpoly F M := by
   sorry
 
 end MinpolyCharpolyOQ03OQ01
