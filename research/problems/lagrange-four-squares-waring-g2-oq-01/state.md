@@ -1,8 +1,31 @@
 # Current State
 
-**Phase**: ACT (S7 ACT shipped — lower-bound coverage now `k ∈ {3,4,5,6,7}`; S8 / S4 / S6 remain queued)
-**Since**: 2026-06-13 (S22 STATE-SYNC — recording S7 ACT `g(7) ≥ 143` merged in PR #22968; trackers were left stale at S21)
-**Iteration**: 22 (S22 STATE-SYNC — post-S7-ACT tracker catch-up ; researcher-4)
+**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 / S4 / S6 remain queued)
+**Since**: 2026-06-13 (S23 STATE-SYNC — reconcile the historical-ledger tables + `meta.additionalFiles` to origin/main reality after the S22 header-only sync)
+**Iteration**: 23 (S23 STATE-SYNC — bottom-table + meta companion-list reconciliation ; researcher-2)
+
+## S23 STATE-SYNC 2026-06-13 (researcher-2)
+
+**Focus**: finish the catch-up S22 (header-only) started. S22 advanced the header and prepended its narrative but left the two trailing ledger tables (the long *Iteration history* table and the *Future Iterations* table) frozen at S19 — S19 ACT still read `OPEN`, and the S5/S6b/S7 rows still read `ACT TODO`, directly contradicting the header's "coverage now `k ∈ {3,4,5,6,7}`". The gallery `meta.json` companion list was also two files behind. Session memo: `sessions/2026-06-13-s23-state-sync-ledger-reconcile.md`.
+
+### Verified against `git show origin/main:` (build-free)
+
+| File | LOC | Real sorry | `^axiom ` | Registered | PR |
+|---|---:|---:|---:|:--:|---|
+| `…OQ01CountingG5.lean` (g5) | 150 | 0 (prose hit only) | 0 | ✅ | [#21124](https://github.com/rjwalters/lean-genius/pull/21124) (S19) |
+| `…OQ01CountingG6.lean` (g6) | 158 | 0 (prose hit only) | 0 | ✅ | [#22751](https://github.com/rjwalters/lean-genius/pull/22751) (S21) |
+| `…OQ01CountingG7.lean` (g7) | 139 | 0 (prose hit only) | 0 | ✅ | [#22968](https://github.com/rjwalters/lean-genius/pull/22968) (S7) |
+
+All three imports are present in `git show origin/main:proofs/Proofs.lean`. The lone `sorry` grep hit in each file is the docstring phrase "a sorry-free, axiom-free".
+
+### Changes (doc/meta-only — no Lean edits, no build)
+
+- `meta.json`: appended `…CountingG6.lean` + `…CountingG7.lean` to `meta.additionalFiles` (was two files behind; G4/G5 only).
+- `state.md` *Iteration history* table: S19 ACT `OPEN` → `MERGED` #21124; appended S21 ACT (#22751), S7 ACT (#22968), S22 STATE-SYNC (#23088), and this S23 row.
+- `state.md` *Future Iterations* table: S5/S6b/S7 `ACT TODO` → `ACT MERGED` (#21124 / #22751 / #22968). S4 (upper-bound axioms) and S6 (correctness chain) remain genuinely TODO.
+
+### Carry-forward caveat
+G7 (PR #22968) merged during the Docker outage and is **build-unverified**; S22 picker item #1 ("targeted-build `…CountingG7` once Docker is back, confirm 7743-job parity") still stands. This STATE-SYNC does not change that.
 
 ## S22 STATE-SYNC 2026-06-13 (researcher-4)
 
@@ -302,9 +325,13 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | STATE-SYNC | researcher-3 | 2026-05-15 | STATE-SYNC | doc-only refresh after the 3-PR drain wave (#19129 + #19041 + #19177); refreshes `state.md` + JSON + new session memo. **No Lean changes.** | [#19366](https://github.com/rjwalters/lean-genius/pull/19366) | **MERGED** 2026-05-16T03:53:34Z |
 | S17 BUILD-DIAGNOSTIC | researcher-1 | 2026-05-16 | BUILD-DIAGNOSTIC | doc-only; attempted S4 ACT via S16 PREP §3.2 paste-ready recipe but discovered parent `Proofs.LagrangeFourSquares.lean` fails Docker elaboration with 9 v4.26.0 errors at lines 210–365 (5 API-drift classes). Drafted child code reverted. Blocks all 5 queued ACTs (S4/S5/S6/S6b/S7); B1 NEW blocker added. | [#19442](https://github.com/rjwalters/lean-genius/pull/19442) | **MERGED** 2026-05-16T04:39:18Z |
 | S18 PREP | researcher-5 | 2026-05-16 | PREP | doc-only Mechanic handoff upgrading S17 §5 rough fix sketch to paste-ready per-error Lean edits for parent `LagrangeFourSquares.lean` v4.26.0 fixes. 7 fix sites (E1+E2, E3, E4 cascade, E5, E6, E7, E8+E9, E10), ~25 LOC add / ~10 LOC del. Bearer-pinned at lake-SHA `2df2f015…` (7 bearers verified). Risk classification per fix (TRIVIAL/LOW/MEDIUM). Includes S4 ACT 5-min paste cycle once Mechanic ships parent fix. **No Lean changes; no `meta.json` edits.** | [#19546](https://github.com/rjwalters/lean-genius/pull/19546) | **MERGED** 2026-05-16T09:05:04Z |
-| S19 ACT | researcher-1 | 2026-05-29 | ACT | `g5_lower_counting : ¬ IsSumOfFifthPowers 36 223` via counting+omega — third verified instance of the parametric template (sibling of S2b/S3 ACT at `k = 5`). New file `LagrangeFourSquaresWaringG2OQ01CountingG5.lean` (146 LOC, 0 sorries, 0 axioms, no `native_decide`). **Targeted Docker build success, 7743 jobs clean (~3.5 min wall-clock, fresh Mathlib clone)**. Registered in `Proofs.lean`. **Parent-independent route** — bypasses broken `LagrangeFourSquares.lean` (B1 unchanged). | (this PR) | OPEN |
+| S19 ACT | researcher-1 | 2026-05-29 | ACT | `g5_lower_counting : ¬ IsSumOfFifthPowers 36 223` via counting+omega — third verified instance of the parametric template (sibling of S2b/S3 ACT at `k = 5`). New file `LagrangeFourSquaresWaringG2OQ01CountingG5.lean` (146 LOC, 0 sorries, 0 axioms, no `native_decide`). **Targeted Docker build success, 7743 jobs clean (~3.5 min wall-clock, fresh Mathlib clone)**. Registered in `Proofs.lean`. **Parent-independent route** — bypasses broken `LagrangeFourSquares.lean` (B1 unchanged). | [#21124](https://github.com/rjwalters/lean-genius/pull/21124) | **MERGED** |
+| S21 ACT | researcher-1 | 2026-06-10 | ACT | `g6_lower_counting : ¬ IsSumOfSixthPowers 72 703` via counting+omega — fourth verified instance at `k = 6`, byte-mirror of S19 ACT (4 arithmetic-constant changes). New file `LagrangeFourSquaresWaringG2OQ01CountingG6.lean` (0 sorries, 0 axioms, no `native_decide`). **Docker build success, 7743 jobs clean.** Registered in `Proofs.lean`. Parent-independent. | [#22751](https://github.com/rjwalters/lean-genius/pull/22751) | **MERGED** |
+| S7 ACT | researcher-? | 2026-06-13 | ACT | `g7_lower_counting : ¬ IsSumOfSeventhPowers 142 2175` via counting+omega — fifth verified instance at `k = 7`, byte-mirror of S21 ACT. New file `LagrangeFourSquaresWaringG2OQ01CountingG7.lean` (139 LOC, 0 sorries, 0 axioms). Registered in `Proofs.lean`. **Build-unverified** — merged during the Docker outage; targeted-build pending (see S22 caveat). | [#22968](https://github.com/rjwalters/lean-genius/pull/22968) | **MERGED** |
+| S22 STATE-SYNC | researcher-4 | 2026-06-13 | STATE-SYNC | doc-only header/picker catch-up recording S7 ACT (`g(7) ≥ 143`, PR #22968) as shipped; coverage now `k ∈ {3,4,5,6,7}`. No Lean edits. | [#23088](https://github.com/rjwalters/lean-genius/pull/23088) | **MERGED** |
+| S23 STATE-SYNC | researcher-2 | 2026-06-13 | STATE-SYNC | doc/meta-only ledger reconciliation: add CountingG6/G7 to `meta.additionalFiles`, flip S19/S21/S7 ACT rows here + in Future Iterations table from OPEN/TODO to MERGED. No Lean edits. | (this PR) | OPEN |
 
-**Total PREP/ACT artifacts on origin/main**: 17 PRs merged (post-S2b ACT: 11 PREP/ACT/audit + 3 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue + S17 BUILD-DIAGNOSTIC) + this S18 PREP OPEN, ~6k lines of design documentation, 3 verified Lean files (S2 ACT, S2b ACT post-#19041, S3 ACT) on origin/main.
+**Total PREP/ACT artifacts on origin/main**: post-S2b ACT — 11 PREP/ACT/audit + 3 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue + S17 BUILD-DIAGNOSTIC, plus the S19/S21/S7 ACTs (g5/g6/g7 lower bounds) and S20/S22 STATE-SYNCs. **5 verified lower-bound Lean files** on origin/main (`k ∈ {3,4,5,6,7}`: Counting + CountingG4/G5/G6/G7), all 0-sorry / 0-axiom; G7 build-unverified pending Docker recovery.
 
 ## Open branches
 
@@ -389,9 +416,9 @@ The `Iteration` increment 14 → 15 is justified per the slug's iteration-counti
 | S2b | $g(3) \ge 9$ (sibling) | $\neg \text{IsSumOfCubes } 8\ 23$ | counting + omega (template) | **PREP MERGED** #18483; **ACT MERGED** #18928; **BUILD-VERIFY MERGED** #19041 |
 | S3 | $g(4) \ge 19$ | $\neg \text{IsSumOfFourthPowers } 18\ 79$ | counting + omega | **PREP MERGED** #18314; **ACT MERGED** #19129 (build-verified, 7743 jobs) |
 | S4 | upper-bound axioms | `waring_g{3,4,5,6}_upper` | axiomatised | **PREP MERGED** #18348; ACT TODO |
-| S5 | $g(5) \ge 37$ | $\neg \text{IsSumOfFifthPowers } 36\ 223$ | counting + omega | **PREP MERGED** #18463; ACT TODO |
+| S5 | $g(5) \ge 37$ | $\neg \text{IsSumOfFifthPowers } 36\ 223$ | counting + omega | **PREP MERGED** #18463; **ACT MERGED** #21124 (S19, build-verified 7743 jobs) |
 | S6 | $\text{waringG } k = N$ | semantic correctness chain | bridge + `decide` per S6c | **PREP MERGED** #18406, audit #18664; ACT TODO |
-| S6b | $g(6) \ge 73$ | $\neg \text{IsSumOfSixthPowers } 72\ 703$ | counting + omega | **PREP MERGED** #18547, audit #18555; ACT TODO |
-| S7 | $g(7) \ge 143$ | $\neg \text{IsSumOfSeventhPowers } 142\ 2175$ | counting + omega | **PREP MERGED** #19177 (rescued); ACT TODO (newly unblocked) |
+| S6b | $g(6) \ge 73$ | $\neg \text{IsSumOfSixthPowers } 72\ 703$ | counting + omega | **PREP MERGED** #18547, audit #18555; **ACT MERGED** #22751 (S21, build-verified 7743 jobs) |
+| S7 | $g(7) \ge 143$ | $\neg \text{IsSumOfSeventhPowers } 142\ 2175$ | counting + omega | **PREP MERGED** #19177 (rescued); **ACT MERGED** #22968 (S7, build-unverified — merged during Docker outage) |
 | (open) | $g(8) \ge 279$ | $\neg \text{IsSumOfEighthPowers } 278\ 6399$ | counting + omega | not yet designed |
 | (open) | Hilbert–Waring existence | $\forall k \ge 1, \exists s, \forall n, \dots$ | Hardy–Littlewood (axiomatised) | not yet designed |
