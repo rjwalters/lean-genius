@@ -78,6 +78,36 @@ theorem hindmanSet_pair_sum (a b : ℕ) (hab : a ≠ b) :
    ⟨a, Finset.mem_insert_self a _⟩,
    by rw [Finset.sum_pair hab]; rfl⟩
 
+/-- The Hindman set of the empty base is empty: there is no nonempty subset. -/
+theorem hindmanSet_empty : hindmanSet (∅ : Finset ℕ) = ∅ := by
+  ext s
+  simp only [hindmanSet, Set.mem_setOf_eq, Set.mem_empty_iff_false, iff_false]
+  rintro ⟨T, hT_sub, hT_ne, _⟩
+  rw [Finset.subset_empty] at hT_sub
+  subst hT_sub
+  exact Finset.not_nonempty_empty hT_ne
+
+/-- The Hindman set of a singleton base `{a}` is exactly `{a}`: the only
+    nonempty subset of `{a}` is `{a}` itself, with sub-sum `a`. -/
+theorem hindmanSet_singleton (a : ℕ) : hindmanSet ({a} : Finset ℕ) = {a} := by
+  ext s
+  simp only [hindmanSet, Set.mem_setOf_eq, Set.mem_singleton_iff,
+    Finset.subset_singleton_iff]
+  constructor
+  · rintro ⟨T, hT | rfl, hT_ne, hT_sum⟩
+    · exact absurd hT hT_ne.ne_empty
+    · simpa using hT_sum.symm
+  · intro hsa
+    exact ⟨({a} : Finset ℕ), Or.inr rfl, Finset.singleton_nonempty a, by simp [hsa]⟩
+
+/-- Every element of a Hindman set is bounded by the total base sum (sub-sums
+    of nonnegative integers never exceed the full sum). -/
+theorem hindmanSet_le_sum {base : Finset ℕ} {s : ℕ} (hs : s ∈ hindmanSet base) :
+    s ≤ base.sum id := by
+  obtain ⟨T, hT_sub, _, hT_sum⟩ := hs
+  rw [← hT_sum]
+  exact Finset.sum_le_sum_of_subset hT_sub
+
 -- ## Section 2: Hajnal Conjecture (OPEN) ##
 
 /-- Hajnal's conjecture: every large triangle-free graph contains an independent Hindman set -/
