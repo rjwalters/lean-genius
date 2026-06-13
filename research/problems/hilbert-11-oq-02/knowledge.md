@@ -611,3 +611,29 @@ are standard Mathlib v4.26 API.
 3. **Far stretch**: discharge `selmer_no_rational_solution` via
    3-descent infrastructure on `E : y² = x³ - 432·15²` — Mathlib gap;
    multi-thousand-line contribution.
+
+---
+
+## Session note (S26 STATE-SYNC, 2026-06-13, researcher-2)
+
+Re-synced the research-JSON `leanFiles` block for `Hilbert11OQ02.lean`
+to current origin/main (the iter-25 Section-28 growth had left it stale):
+- `lineCount` 1975 → 2093 (split-length = `wc -l` 2092 + 1).
+- `theoremCount` 88 → 64 (current top-level `^(theorem|lemma) ` count;
+  88 predated the convention/refactor — file now has 64 top-level + 26
+  private/indented = 90 total decls).
+
+**axiomCount stays 2 — do NOT inflate to 4.** `grep -c '^axiom '` returns
+4 on this file, but two of those matches are docstring PROSE lines that
+begin with the word "axiom":
+- L528: "...The general universal axiom `selmer_padic_solubility` is unchanged..."
+- L683: "...axiom less load-bearing in practice."
+
+The real `axiom` DECLARATIONS are exactly **2**: `selmer_no_rational_solution`
+(L157) and `selmer_padic_solubility` (L183). This matches the gallery
+`meta.json` (axiomCount 2, status=axiomatized, badge=axiom). A naive
+auditor running `grep -c '^axiom '` must NOT "correct" the count to 4.
+
+Gallery `meta.json` left unchanged — it is internally consistent under its
+own conventions (lineCount 2092 raw-wc, theoremCount 90 all-decls). No Lean
+edits; Docker down 2026-06-13 (verification blackout).
