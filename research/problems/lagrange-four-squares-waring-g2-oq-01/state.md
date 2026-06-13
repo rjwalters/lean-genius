@@ -1,8 +1,37 @@
 # Current State
 
-**Phase**: ACT (S6b ACT shipped — lower-bound coverage now `k ∈ {3,4,5,6}`; S7 / S4 / S6 remain queued)
-**Since**: 2026-06-10 (S21 ACT — `g(6) ≥ 73` shipped via counting+omega, fourth verified `k`-instance of the parametric template)
-**Iteration**: 21 (S21 ACT — `g(6) ≥ 73` ; researcher-1)
+**Phase**: ACT (S7 ACT shipped — lower-bound coverage now `k ∈ {3,4,5,6,7}`; S8 / S4 / S6 remain queued)
+**Since**: 2026-06-13 (S22 STATE-SYNC — recording S7 ACT `g(7) ≥ 143` merged in PR #22968; trackers were left stale at S21)
+**Iteration**: 22 (S22 STATE-SYNC — post-S7-ACT tracker catch-up ; researcher-4)
+
+## S22 STATE-SYNC 2026-06-13 (researcher-4)
+
+**Focus**: catch the trackers up to origin/main. S7 ACT (`g(7) ≥ 143`) was implemented and merged in **PR #22968** (commit `2f87e53df7a`, merged 2026-06-13 05:49 -0700) but that PR touched only the Lean source + registration — it left `state.md` / `knowledge.md` frozen at S21, listing S7 ACT as the *next* picker when it had in fact shipped. This STATE-SYNC reconciles the ledger. Session memo: `sessions/2026-06-13-s22-state-sync-post-s7-act.md`.
+
+### What shipped in PR #22968 (verified against `git show origin/main:`)
+
+- **New Lean file**: `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG7.lean` (139 LOC, 0 real sorries — the lone `sorry` grep hit is the prose "a sorry-free, axiom-free" in the docstring — 0 axioms; imports only `Mathlib`).
+- **Theorem**: `WaringG2OQ01.CountingG7.g7_lower_counting : ¬ IsSumOfSeventhPowers 142 2175` (establishes `g(7) ≥ 143`; matches the known value `g(7) = 143`, Niven 1936 / Kubina–Wunderlich 1990).
+- **Definition**: `WaringG2OQ01.CountingG7.IsSumOfSeventhPowers (s n : ℕ) : Prop := ∃ f : Fin s → ℕ, (∑ i, (f i) ^ 7) = n`.
+- **Registration**: `proofs/Proofs.lean` adds `import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` (confirmed present on origin/main).
+- **Recipe**: byte-mirror of S21 ACT (`…CountingG6.lean`) at `k = 7` — same 6-step structure (bound → lift → fiber → partition → expand → omega), witness `2175 = 16·128 + 127`, `Fin 142`, max feasible `n_2 = ⌊2175/128⌋ = 16` with the "miss by 1" calibration (`n_0 = 142 − 127 − 16 = −1`).
+
+### Build-verification caveat
+
+**Build status of the G7 file is UNCONFIRMED.** PR #22968 merged 2026-06-13 05:49 -0700, during the host Docker outage (daemon down at audit time, `docker info` unresponsive; disk healthy at 17%). The deployer merges math PRs without a build gate, so registration landed unverified. Risk is **low**: the file byte-mirrors the four siblings (g3/g4/g5/g6) that each built clean at **7743 jobs**, uses the identical bearer-lemma set, and adds no new bearers. But because it is *registered* in `proofs/Proofs.lean`, any elaboration drift would break the whole-library build — so a targeted `./proofs/scripts/docker-build.sh Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` must be run once Docker is back to confirm 7743-job parity.
+
+### No edits this session
+
+No Lean edits, no build, no axiom/sorry delta. `state.md`-only reconciliation (header + picker + this entry). `knowledge.md` left untouched — it is a frozen append-only narrative ledger; `state.md` is the authoritative current-state tracker.
+
+### Next-iteration picker
+
+1. **Build-verify G7** — once Docker is back, targeted-build `Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` to confirm the registered file is 7743-job green (closes the S7 caveat above).
+2. **S8 ACT** — `g(8) ≥ 279` (conjectural per Mahler formula `2^8 + ⌊(3/2)^8⌋ − 2 = 279`, `⌊(3/2)^8⌋ = 25`), witness `2^8·17 − 1`? — recompute the Mahler witness `n = 2^8·⌊(3/2)^8⌋ − 1 = 256·25 − 1 = 6399`, `Fin 6398`. **Caveat**: at `k = 8` the per-element bound is `f i < 3` only if `2^8 ≤ n < 3^8`; the counting-table case-load grows — confirm tractability before paste-porting. Lower-readiness than k≤7 ports.
+3. **Parametric refactor** — five `k`-instances (k=3..7) now shipped; collapse to one `WaringLowerTemplate` definition + five short corollaries. Empirically grounded; deferred at S21, now MORE attractive.
+4. **Mechanic poke** — `fix/mechanic-lagrange-v426` PR-creation handoff would unblock S4 / S6 (parent `LagrangeFourSquares.lean` still has 9 v4.26.0 errors per B1).
+
+---
 
 ## S21 ACT 2026-06-10 (researcher-1)
 
