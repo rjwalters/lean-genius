@@ -1,8 +1,8 @@
 {
   "slug": "amgm-inequality-oq-04-oq-03",
   "title": "Gauss AGM Theorem via Hypergeometric Elliptic Integral Identity",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -30,13 +30,15 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-02T00:55:00Z",
-    "iteration": 3,
-    "focus": "S2 ACT (this session, researcher-1, Lean +64 LOC). Added section Summability of the Hypergeometric Series to Proofs/AmgmInequalityOQ04OQ03.lean (158 -> 222 LOC, 0 new axioms, 0 sorries). Three lemmas: centralBinom_le_four_pow (Mathlib v4.26.0 has only the lower bound four_pow_lt_mul_centralBinom; this fills the upper-bound gap via Nat.sum_range_choose), hypCoeff_le_one (direct corollary), summable_hyp2F1 (the headline: Summable (fun n => hypCoeff n * x^n) for |x| < 1, by absolute comparison with the geometric series + Summable.of_norm). Closes the summability leg of the five-leg ellipticK_eq_hyp2F1 discharge plan; structural prerequisite for the DCT-style sum/integral interchange step.",
+    "iteration": 6,
+    "focus": "S5 BLOCKED + STATE-SYNC (researcher-2, 2026-06-13): renewed Docker daemon outage (`timeout 5 docker info` exits 124) makes the remaining discharge legs unverifiable. Also syncs the JSON tracker forward from its stale iteration-3/2026-06-02 reading to the actual state.md S4b state (2026-06-09): S3 Wallis closed form was already shipped (wallisHalf_even, PR #22046, in AmgmInequalityOQ04OQ03Wallis.lean); S4a added the x-independent per-term M-test bound (hypCoeff_mul_pow_abs_le_of_abs_le); S4b added the M-test packaging on closed balls (summable_hyp2F1_on_closedBall + hyp2F1_mtest_inputs_on_closedBall), Docker-verified, 0 new axioms / 0 new sorries. AmgmInequalityOQ04OQ03.lean: 315 LOC, 1 axiom (ellipticK_eq_hyp2F1 — the problem's STATED hypergeometric-series identity hypothesis, legitimate per the problem statement), 0 real sorries. Status active->blocked: the next leg (S5 TendstoUniformlyOn wrap via tendstoUniformlyOn_tsum, then combining legs to the Gauss AGM<->K main result) is Lean proof work requiring Docker builds, unavailable during the outage.",
     "activeApproach": "Power-series realization of 2F1 with central-binomial coefficients c_n = (centralBinom n / 4^n)^2, building on the verified ellipticK from oq-04-oq-01. S2 ACT adds the summability infrastructure via central-binomial upper bound + geometric comparison.",
-    "blockers": [],
-    "nextAction": "S3 ACT - pick one discharge leg. Recommended (easiest first): (1) Wallis closed form int_0^(pi/2) sin^(2n) = (pi/2) * centralBinom n / 4^n via Mathlib.integral_sin_pow recurrence (~50-100 LOC); (2) binomial series (1-u)^(-1/2) = sum centralBinom n / 4^n u^n for |u|<1 (~80-150 LOC); (3) uniform summability of hyp2F1 on compact k-subsets via TendstoUniformlyOn (~30 LOC). S2 ACT's summable_hyp2F1 is input to all three. S6 final discharge composes Wallis + binomial series + uniform summability via DCT.",
+    "blockers": [
+      "B-INFRA Docker daemon outage at S5 entry 2026-06-13: `timeout 5 docker info` exits 124 (Server section unresponsive). Fleet-wide outage (same pathology cleared 2026-05-30, down again). Disk recovered (17% used). Aristotle backend 404s. Every remaining discharge leg (S5 TendstoUniformlyOn wrap + leg-combination toward Gauss AGM<->K) is Lean proof work needing >=1 Docker build to verify -> slug set blocked until Docker recovers."
+    ],
+    "nextAction": "WHEN Docker recovers (`timeout 10 docker info` exit 0): resume S5 ACT — wrap the S4b M-test inputs (hyp2F1_mtest_inputs_on_closedBall) into TendstoUniformlyOn via Mathlib's tendstoUniformlyOn_tsum (near-mechanical per state.md S4b), then continue combining the discharged legs (Wallis closed form + binomial series ₂F₁ realization) toward the Gauss AGM-limit <-> elliptic K identity. Each leg needs a Docker build. Spec/legs detailed in state.md (Active Approach) + knowledge.md.",
     "attemptCounts": {
-      "total": 3,
+      "total": 6,
       "currentApproach": 2,
       "approachesTried": 1
     }
@@ -123,7 +125,7 @@
     ]
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-06-02T00:55:00Z",
+  "lastUpdate": "2026-06-13",
   "leanFiles": [
     {
       "path": "Proofs/AmgmInequalityOQ02.lean",
