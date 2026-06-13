@@ -1,8 +1,8 @@
 {
   "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
   "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
-  "phase": "DISCHARGING",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "partial",
   "problemStatement": {
@@ -30,28 +30,18 @@
     "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
   },
   "currentState": {
-    "phase": "DISCHARGING",
+    "phase": "BLOCKED",
     "since": "2026-05-16T18:02:00Z",
-    "iteration": 10,
+    "iteration": 14,
     "focus": "S10 (2026-05-16T18:02Z, researcher-10, STATE-SYNC — doc-only 3-file ship; ABSORBS 3-PR mechanic cascade in T+2-3h window after S9 ACT merge 15:20Z): (a) PR #19676 MERGED 16:20Z — parent gallery `meta.json` `leanFile.{lineCount,axiomCount,theoremCount}` 343→359, 7→6, 9→10 (verified at HEAD); (b) PR #19720 MERGED 17:20Z — sibling slug `central-limit-theorem-oq-02-oq-04` `leanFiles[CentralLimitTheoremOQ01OQ01OQ04]` post-S9-ACT drift; (c) PR #19742 MERGED 18:19:57Z — parent slug research JSON `leanFiles[]` array gained missing entry for `CentralLimitTheoremOQ01OQ01OQ04.lean` with `{lineCount:359, theoremCount:10, axiomCount:6, defCount:7, sorryCount:0}`. RAISES 3 RED INFRA blockers structurally barring S11 ACT: (1) Docker daemon hung (`docker info` empty Server: section); (2) disk 3.3 Gi avail / 100% — below same-day ACT floor 5.4 Gi (ballot S78 baseline 5.4 Gi, shannon S18a 5.8 Gi); (3) `proofs/.lake` circular self-symlink (cold rebuild won't recover). Bearer 2/8 spot-check at unchanged lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Real.rpow_neg` @ `Pow/Real.lean:252` + `Real.sqrt_eq_rpow` @ `Pow/Real.lean:981` byte-stable; 6 remaining S5/S7 bearers carry forward via SHA transitivity. Parent file `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` verified at HEAD: 359 lines; `theorem gaussian_has_scalar_exponent` at line 186 (S9 axiom→theorem swap landed); 6 axioms total (212/272/302/317/341/349); next axiom target `gaussian_is_operator_stable` at line 212 (S11 ACT). Per memory pattern `feedback_researcher_postship_pivot_to_act_ready_slug_whose_predecessor_statesync_mandated_pre_claim_docker_baseline_due_to_historic_build_pending_chain_but_3_red_infra_blockers_post_merge_with_mechanic_partial_discharge`, 3-RED + mechanic-discharge combo mandates doc-only STATE-SYNC w/ INFRA escalation (not ACT). Net JSON edits: 8. Net file edits: 3 (state.md + this JSON + new session memo).\n",
     "blockers": [
       {
         "type": "infra",
         "severity": "high",
-        "description": "Docker daemon hung. `docker info` returns Client: header but empty Server: section (no exit code returned but no daemon connection). Cold rebuild via docker-build.sh would fail at daemon-connect step. Recovery: host-side Docker Desktop restart."
-      },
-      {
-        "type": "infra",
-        "severity": "high",
-        "description": "Disk pressure 3.3 Gi avail / 100% capacity (worsened −2.9 Gi vs S9 ACT author-time 6.2 Gi over ~3.5h). Below same-day ACT floor (ballot-problem-oq-03-oq-02 S78 baseline 5.4 Gi, shannon-channel-coding S18a 5.8 Gi). Per memory pattern, ACT under <5.4 Gi is structurally barred."
-      },
-      {
-        "type": "infra",
-        "severity": "high",
-        "description": "`proofs/.lake` is a circular self-symlink in the main repo (`readlink proofs/.lake` returns `/Users/rwalters/GitHub/lean-genius/proofs/.lake` itself). Cold rebuild won't recover — needs host-side `rm proofs/.lake && lake build`. Independent of Docker daemon state."
+        "description": "Verification blackout 2026-06-13: Docker daemon hung + Aristotle backend 404 — no verification route. The S13 AUDIT (#22993) established the only remaining work is a build-dependent SOUNDNESS FIX of the meerschaert_scheffler axiom (parent CentralLimitTheoremOQ01OQ01OQ04.lean:409), which is mis-stated (RHS unsatisfiable for non-degenerate operator-stable laws; biconditional FALSE at d=1,Sg=!![1]). 3 fix options documented in sessions/2026-06-13-s13-audit-meerschaert-scheffler-soundness.md; all build-dependent. Flagged blocked to stop depth-first re-claim churn until Docker recovers."
       }
     ],
-    "nextAction": "**S11 ACT (BLOCKED — 3 RED INFRA)**: host-side recovery REQUIRED before any ACT proceeds: (1) restart Docker Desktop until `docker info --format '{{.ServerVersion}}'` returns non-empty version string; (2) free disk to ≥5.4 Gi (same-day ACT floor); (3) `cd /Users/rwalters/GitHub/lean-genius && rm proofs/.lake && cd proofs && lake build` to break circular self-symlink + repopulate `.lake/`. Once GREEN: ship S11 ACT discharge of `gaussian_is_operator_stable` (parent line 212; post-S9-drift +16 from pre-S9 line 196). S4 PREP §4.3 sketches witness-matrix reduction; depends on S9's `gaussian_has_scalar_exponent` (now a theorem at line 186). Budget ~10-20 LOC; result axiomCount 6→5. **S12 ACT (queued, INDEPENDENT of S11)**: discharge `gaussian_in_own_doa` at parent line 341 (post-S9 +16 from pre-S9 line 325). S4 PREP §4.6 sketches via existing companion `gaussian_in_own_doa_via_charfun_form`. Budget ~25-40 LOC; result 5→4 (or 6→5 if S11 deferred). **S13+ doctor honesty corrections (any order, ~5 LOC each)**: E.1 replace `finite_cov_in_gaussian_doa` vacuous `hφ_reg : True`; E.2 add `(hB : IsUnit B.det)` hyp to `operator_stable_linear_image`. **Bearer carry-forward**: 6 of 8 S5/S7 bearers (`PosSemidef.dotProduct_mulVec_nonneg`, `Complex.ofReal_re`, `Real.exp_le_one_iff`, `Real.rpow_div_two_eq_sqrt`, `tendsto_const_nhds`, plus 1 more from S5 catalog) NOT re-spot-checked this session — covered by SHA-transitivity (lake SHA unchanged); per memory pattern, full 8/8 re-spot-check at unchanged SHA is busywork. **DO NOT** touch: parent .lean file (S9 ACT shipped; build-pending verified-by-mechanic on numerics), gallery `meta.json` (mechanic #19676 discharged), parent slug JSON `leanFiles[]` (mechanic #19742 discharged), sibling OQ-02-OQ-04 JSON (mechanic #19720 discharged), `knowledge.md` (no domain advance this session), `problem.md` (statement unchanged), `lake-manifest.json` (pin unchanged), other 13 OQ-04 child slug research JSONs (no mechanic-discharged work present), bearers' line-by-line gh-api re-fetch (SHA unchanged). **Picker hint**: next researcher who claims this slug should first run host-side INFRA recovery script before any ACT; if INFRA still RED, ship S12 ACT (independent of S11 + 0 new bearers needed) as fallback, OR move to PREP for one of the queued ACTs to keep momentum.\n",
+    "nextAction": "BLOCKED on infra. When Docker recovers: apply one of the 3 documented soundness fixes to the meerschaert_scheffler axiom (parent line 409) per the S13 AUDIT memo, then build-verify. The old axiom-discharge roadmap (gaussian_in_own_doa etc.) is DONE/merged — do not re-pursue (parent file is axiomCount=1, 0 sorries, 529 LOC, 15 theorems). The S1-planned R1 Gaussian-restatement is SUPERSEDED (refuted premise).",
     "attemptCounts": {
       "total": 7,
       "currentApproach": 6,
@@ -114,5 +104,5 @@
   ],
   "createdAt": "2026-05-12T19:28:00Z",
   "updatedAt": "2026-05-16T04:10:00Z",
-  "lastUpdate": "2026-05-16T18:02:00Z"
+  "lastUpdate": "2026-06-13T00:00:00.000Z"
 }

@@ -1,5 +1,16 @@
 # Current State
 
+> **S14 STATUS-SYNC + BLOCKED (researcher-1, 2026-06-13).** The S13 AUDIT
+> (#22993) updated `progressSummary`/insights but left the research-JSON
+> `currentState` (iter 10, phase `DISCHARGING`) and top-level `phase`/`lastUpdate`
+> (2026-05-16) **stale**. Synced both to the S13 reality (iter 14, phase
+> `BLOCKED`, lastUpdate 2026-06-13) and set `status: blocked`. Rationale: the
+> only remaining work is the **build-dependent soundness fix** of the
+> `meerschaert_scheffler` axiom (see S13 block below) — unbuildable under the
+> 2026-06-13 verification blackout (Docker hung + Aristotle 404). Depth-first
+> `claim-random` kept re-handing this RICH (score 30) slug out; `blocked` stops
+> the no-op re-claim churn until Docker recovers. No Lean touched.
+
 > **⚠ S13-AUDIT CORRECTION (researcher-1, 2026-06-13).** The header
 > immediately below this block is STALE: it projected `axiomCount 5→4`
 > mid-cascade. **The parent file's axiom-elimination cascade has since
