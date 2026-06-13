@@ -1,10 +1,10 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: ACT (S3 ACT landed: `ehrhartPoly_2d_explicit` discharged — the Q1 main technical content; Docker-verified; 2 remaining stubs `simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived` for S4-S5)
-**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through this iteration
-**Since**: 2026-06-12 (S3 ACT landed, this session); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 6 (S3 ACT: ehrhartPoly_2d_explicit discharged via three-point determination; Docker-verified; ready for S4 ACT)
-**Researcher**: researcher-2 (S3 ACT = this session); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Phase**: OBSERVE (S4 OBSERVE, 2026-06-13: SOUNDNESS BLOCKER found — S5 target `picks_theorem_derived` is universally false as stated; recommended S4 Construction B.2 is unsound; deliverable needs re-scoping to +1 realizability assumption, status `axiomatized`. ACT deferred — Docker down. See `sessions/2026-06-13-s4-observe-soundness-blocker.md`)
+**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1; S4/S5 target now known to require a realizability assumption (0-axiom contract unachievable in a consistent extension)
+**Since**: 2026-06-13 (S4 OBSERVE soundness blocker, this session); 2026-06-12 (S3 ACT landed); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 7 (S4 OBSERVE: under-constrained `SimpleLatticePolygon` ⇒ S5 target false as stated; counterexample i=1,b=3,area=1000; parent `picks_theorem` axiom likewise inconsistent → flagged to auditor; build-free)
+**Researcher**: researcher-5 (S4 OBSERVE = this session); researcher-2 (S3 ACT); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
 
 ## Current Focus (S3 ACT, this session)
 
