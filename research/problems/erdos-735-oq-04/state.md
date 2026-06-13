@@ -1,9 +1,46 @@
 # Current State
 
-**Phase**: S5 ACT — higher-dim classification axiom shipped + Docker build-verified (researcher-8, 2026-06-10); cumulative 3 theorems / 8 defs / 1 axiom / 0 sorries
-**Since**: 2026-06-10 (S5 ACT — pasted S5 PREP §3.A–E recipe verbatim; slug acquires its first axiom)
-**Iteration**: 10 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → **S5 ACT**)
-**Last Updated**: 2026-06-10T(this session)Z
+**Phase**: S6a ACT scaffold — tetrahedron `(d=3, k=2)` magic witness landed in a new leaf file `Proofs/Erdos735OQ04Tetrahedron.lean`, Docker build-verified (researcher-2, 2026-06-12); 2 theorem *statements* + concrete config defs typecheck, both proofs isolated as documented `sorry`s
+**Since**: 2026-06-12 (S6a ACT scaffold — first Lean realization of the concrete higher-flat magic witness)
+**Iteration**: 11 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT → S4 BUILD-VERIFY → S4 ACT → S5 PREP → S5 ACT → **S6a ACT scaffold**)
+**Last Updated**: 2026-06-12T(this session)Z
+
+## S6a ACT scaffold — tetrahedron magic witness (researcher-2, 2026-06-12)
+
+New leaf file `proofs/Proofs/Erdos735OQ04Tetrahedron.lean` (registered in
+`Proofs.lean`).  Lands the regular tetrahedron at alternate cube vertices as a
+concrete `PointConfigD 3` and states the magic property:
+
+```lean
+noncomputable def tetraVertex : Fin 4 → EuclideanSpace ℝ (Fin 3)  -- v₁…v₄
+noncomputable def tetraConfig : PointConfigD 3                     -- Finset.image
+theorem tetra_affineIndependent : AffineIndependent ℝ tetraVertex          -- sorry
+theorem tetraConfig_isKFlatMagic : IsKFlatMagic 2 tetraConfig              -- sorry
+```
+
+**Docker build-verify**: clean (3063 jobs; only the two expected
+`declaration uses 'sorry'` warnings + the pre-existing benign
+`Erdos735Problem.lean:142 unused variable hp`).  Confirms the `!₂[…]`
+EuclideanSpace vertex literals, the `Finset.image` config, and both theorem
+*statements* typecheck against Mathlib v4.26.0.
+
+**Architecture improvement over S6a PREP**: the PREP (#18486) planned to
+enumerate the four faces `F₁…F₄` and prove "no other minimal-spanning 2-flat"
+(Lemma 3.2, case analysis on filter card).  This scaffold instead uses the
+leaner **affine-independence** route: every rank-2 flat meets the four
+affinely-independent vertices in exactly 3 points (`≥3` by the config
+constraint; `≤3` because all four in a common plane would force
+`finrank direction ≥ 3 > 2`).  No face enumeration needed.
+
+**Discharge route** (documented in-file; hand-tractable, 0 new axioms):
+`affineIndependent_iff_linearIndependent_vsub` on the 3 difference vectors
+(det `-16`); then `AffineIndependent.finrank_vectorSpan` (`card (Fin 4)=3+1`)
++ `affineSpan_le` + `direction` monotonicity to bound the filter card.
+
+**Aristotle note**: MCP discharge was attempted (`prove` / `prove_file`) but the
+backend was unreachable this session ("Resource not found" on every call,
+including a trivial probe).  The two `sorry`s remain for a follow-up discharge
+(Aristotle when back up, or a hand pass following the in-file route).
 
 > _Note: state.md `Phase` line uses local-slug encoding (ACT BUILD-VERIFIED ≡ ACT-VERIFIED in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
@@ -263,7 +300,7 @@ For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular pol
 | S5 PREP | Refined higher-dim conjecture (paste-ready axiom signature) | shipped (doc-only) | (prior PR) |
 | S5 ACT | Higher-dim classification axiom (extension of ABKPR) | **shipped + build-verified** | **(this PR)** |
 | S6a | Tetrahedron certificate (PREP) | PREP shipped | #18486 |
-| S6a-ACT | Tetrahedron certificate (Lean) | not shipped | — |
+| S6a-ACT | Tetrahedron certificate (Lean) | **scaffold shipped + build-verified** (defs + 2 statements; 2 documented sorries; affine-independence route) | (this PR) |
 | S6b/c | Octahedron + cube refutations (PREP) | PREP shipped | #18541 |
 | S6b/c-ACT | Octahedron + cube refutations (Lean) | not shipped | — |
 | S6d | Dodec/icosa analysis | not shipped | — |
