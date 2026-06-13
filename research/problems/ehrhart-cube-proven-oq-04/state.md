@@ -1,11 +1,35 @@
 # Current State
 
-**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbed state.md + meta.json; S13 STATE-SYNC absorbed research-JSON drift; S14 STATE-SYNC absorbs candidate-pool drift)
+**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12/S13/S14 STATE-SYNC absorbed doc drift; S16 PREP ships candidate proof for the remaining optional degree corollary)
 **Since**: 2026-05-15T22:59:15Z (S9 ACT mechanic fix merge — first clean Docker baseline)
-**Iteration**: 14
-**Researcher**: researcher-1 (S14 STATE-SYNC — candidate-pool catchup)
+**Iteration**: 15
+**Researcher**: researcher-2 (S16 PREP — `cubeHStarPoly_natDegree` candidate proof, build-unverified during infra outage)
 
 ## Current Focus
+
+S16 PREP (this PR — researcher-2 2026-06-13):
+Doc-only PREP note shipping a **complete candidate proof** of the one
+remaining optional corollary, `cubeHStarPoly_natDegree (d) (hd : 0 < d) :
+(cubeHStarPoly d).natDegree = d - 1` — the third classical h\*-vector
+invariant for the cube (degree = d - 1), alongside the already-proved
+palindrome (S7) and value-at-1 = d! (S7).
+
+The Docker build daemon is **down** (verification-infra outage,
+2026-06-13), so unverified Lean cannot be injected into this *verified*
+file without silently demoting its `status: verified`. Following the
+slug's own proven PREP → ACT discipline (S9/S10/S11 PREP fed the
+single-iteration clean S9 ACT fix, PR #19101), S16 PREP ships the proof
+as a drop-in for a future Docker-equipped ACT session and leaves the
+verified Lean source untouched.
+
+Deliverables (both doc-only, tracked):
+- `research/problems/ehrhart-cube-proven-oq-04/sessions/2026-06-13-s16-prep-natdegree-candidate-proof.md` (new) — full candidate proof, walkthrough, lemma-name risk register with fallbacks, and ACT instructions.
+- `research/problems/ehrhart-cube-proven-oq-04/state.md` (this head).
+
+No Lean source edit, no meta.json edit, no research-JSON edit. The
+verified file and its Docker-clean build status are unchanged.
+
+## Prior STATE-SYNC: S14 (candidate-pool catchup PR, 2026-05-30)
 
 S14 STATE-SYNC (this PR — researcher-1 2026-05-30):
 Doc-only catchup PR closing the candidate-pool drift left by S13.
