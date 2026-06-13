@@ -64,38 +64,38 @@
       "id": "prime-support",
       "title": "Prime Support (Radical)",
       "startLine": 1,
-      "endLine": 40,
+      "endLine": 47,
       "summary": "Defines primSupport and proves basic facts: primSupport(1) = ∅, primSupport(prime p) = {p}.",
       "mathContext": "The prime support (radical) of n is {p prime : p | n} = primeFactors n."
     },
     {
       "id": "divisibility",
       "title": "Divisibility Structure",
-      "startLine": 42,
-      "endLine": 80,
+      "startLine": 48,
+      "endLine": 78,
       "summary": "Proves (x-1) | (x^n-1) via geometric series, and basic nonzero bounds for x^n-1.",
       "mathContext": "x^n - 1 = (x-1)(1 + x + ... + x^{n-1}) — the factorization responsible for all divisibility in the sequence."
     },
     {
       "id": "concrete",
       "title": "Concrete Support Computations",
-      "startLine": 82,
-      "endLine": 118,
+      "startLine": 79,
+      "endLine": 114,
       "summary": "Computes supp(2^k-1) and supp(3^k-1) for k=1..5. Shows 2 and 3 have different support sequences (differ at n=2).",
       "mathContext": "The support sequence of base 2 begins ∅, {3}, {7}, {3,5}, {31}, ... — Mersenne primes dominate. For base 3: {2}, {2,13}, {2,5,13}, ..."
     },
     {
       "id": "zmod-order",
       "title": "ZMod Order Characterization",
-      "startLine": 120,
-      "endLine": 145,
+      "startLine": 115,
+      "endLine": 142,
       "summary": "Proves p | x^n-1 ↔ (x:ZMod p)^n = 1 ↔ orderOf(x:ZMod p) | n.",
       "mathContext": "The bridge between ℤ divisibility and ZMod group theory: p | x^n - 1 iff x ≡ 1 (mod p) iff (x:ZMod p)^n = 1."
     },
     {
       "id": "equal-orders",
       "title": "Equal Orders from Equal Support",
-      "startLine": 147,
+      "startLine": 143,
       "endLine": 185,
       "summary": "Proves: if supp(x^n-1) = supp(y^n-1) for all n, and p ∤ xy, then orderOf(x:ZMod p) = orderOf(y:ZMod p). Uses Fermat's little theorem to establish positive orders, then divisibility antisymmetry.",
       "mathContext": "Fermat: x^(p-1) ≡ 1 (mod p) for p ∤ x, so orderOf(x:ZMod p) | p-1 and is positive. Then: ord_p(x) | ord_p(y) (take n = ord_p(y), use equal support to transfer) and vice versa."
@@ -103,10 +103,42 @@
     {
       "id": "main-theorem",
       "title": "Corrales-Rodánez–Schoof Theorem and Corollaries",
-      "startLine": 187,
-      "endLine": 230,
-      "summary": "Axiomatizes the CS theorem; proves symmetry, transitivity, injectivity of the support map, and support-transfer lemmas including primitive prime transfer.",
+      "startLine": 186,
+      "endLine": 227,
+      "summary": "Axiomatizes the Corrales-Rodánez–Schoof theorem; proves the CS hypothesis is symmetric, the relation is transitive, and the support map x ↦ (n ↦ supp(x^n-1)) is injective for x ≥ 2.",
       "mathContext": "The CS theorem goes beyond the order-equality result proved here: it shows that equal multiplicative orders at ALL primes forces x = y, via Kummer theory over ℚ."
+    },
+    {
+      "id": "support-transfer",
+      "title": "Support Transfer Under the Hypothesis",
+      "startLine": 228,
+      "endLine": 243,
+      "summary": "Proves support_subset_under_hypothesis: under the CS hypothesis any prime in supp(x^n-1) also lies in supp(y^n-1).",
+      "mathContext": "Equal support is, a priori, a two-sided set equality; this records the one-sided containment used downstream."
+    },
+    {
+      "id": "zsygmondy",
+      "title": "The Zsygmondy Connection",
+      "startLine": 244,
+      "endLine": 273,
+      "summary": "Axiomatizes Zsygmondy's theorem (1892) and proves primitive_prime_transferred: primitive prime divisors transfer under the CS hypothesis.",
+      "mathContext": "Zsygmondy: for x ≥ 2, n ≥ 3 (finitely many exceptions) x^n-1 has a primitive prime divisor — a prime dividing x^n-1 but no x^k-1 for k<n. This makes equal support highly restrictive."
+    },
+    {
+      "id": "n-eq-1",
+      "title": "The n = 1 Case",
+      "startLine": 274,
+      "endLine": 285,
+      "summary": "Specializes the CS hypothesis to n = 1: supp(x-1) = supp(y-1).",
+      "mathContext": "The base case already constrains x and y; combined with the order-equality machinery it feeds the uniqueness argument."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 286,
+      "endLine": 308,
+      "summary": "Restates Erdős #1214, the positive answer of Corrales-Rodánez–Schoof (1997), and inventories the 26 sorry-free theorems and 2 classical-result axioms (corrales_schoof, zsygmondy).",
+      "mathContext": "Answer: YES — equal prime support of x^n-1 and y^n-1 for all n forces x = y, via Kummer theory and Galois cohomology."
     }
   ],
   "conclusion": {

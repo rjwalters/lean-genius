@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1214",
   "title": "Erdős #1214",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-16T17:10:06.887Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "RESOLVED (axiomatized): Erdős #1214 has a positive answer (Corrales-Rodánez–Schoof, 1997), formalized with the deep support-problem theorem and Zsygmondy as classical-result axioms; 26 sorry-free supporting theorems.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — problem resolved. Optional future work: discharge the corrales_schoof / zsygmondy axioms against Mathlib if/when the support problem is available.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
