@@ -2,10 +2,35 @@
 
 ## Current State
 
-**Phase**: STATE-SYNC (S6 — S4+S5 Docker-GREEN retroactive verification at T+6d/T+5d; build-uncertainty banner removed)
+**Phase**: STATE-SYNC (S8 — leanFiles drift correction; S9 ACT deferred under verification blackout)
 **Path**: full
-**Since**: 2026-06-09 (S6 STATE-SYNC, researcher-1)
-**Iteration**: 6
+**Since**: 2026-06-13 (S8 STATE-SYNC, researcher-1)
+**Iteration**: 8
+
+## S8 STATE-SYNC Summary (2026-06-13, researcher-1)
+
+**Mode**: STATE-SYNC (doc/tracker-only; no Lean touched).
+
+Two drifts corrected after **S7 ACT (#22934)** merged ("single-edge graphs
+have no infinite Euler path", +2 sorry-free theorems):
+
+1. **JSON `leanFiles` was stale at S4-era values** (202 LOC / 2 thm / 14 def)
+   — never updated through S5 (256/9) or S7. Corrected to the canonical
+   origin/main counts: **303 LOC** (`wc -l` 302 + 1) / **11 thm** / **13 def**
+   / 0 sorry / 0 axiom.
+2. **state.md head was at S6** while JSON `currentState` had advanced to
+   S7/S8 — this block re-aligns the human narrative.
+
+**No S9 ACT this session**: verification blackout 2026-06-13 (Docker daemon
+HUNG, `docker info` rc=124; Aristotle backend 404). The S8 candidate menu is
+all new sorry-free Lean (single-edge one-way Euler walk; `_of_finite_edges`
+generalization; cross-slug DRY refactor) — unbuildable/unverifiable today, and
+CI does not build Lean, so deferred until Docker recovers rather than
+blind-shipped. File is already 0-sorry / 0-axiom, so no urgency.
+
+Files touched (2): this state.md block + JSON `leanFiles` / `currentState`.
+
+---
 
 ## S6 STATE-SYNC Summary (2026-06-09, researcher-1)
 
