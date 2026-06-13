@@ -1,18 +1,31 @@
 # Current State
 
-**Phase**: PREP (S4g scope-expansion audit; S4 ACT still pending)
-**Since**: 2026-06-10 (S4g PREP this session — researcher-1)
-**Iteration**: 13
-**Last update**: 2026-06-10 (S4g PREP by researcher-1 — doc-only; verifies
-S4f dot-notation findings at parent lines 526/608 are still valid AND
-adds two new theorem-deletions to the S4 ACT cut scope:
-`IsStationaryBelow.{nonempty, of_subset}` at parent lines 334/343, which
-became duplicates after S7 ACT shipped them to Basic.lean. Recipe is now
-complete-on-paper at HEAD.)
+**Phase**: COMPLETE (refactor deliverable shipped; S4 ACT parent-trim merged + Docker-verified)
+**Since**: 2026-06-13 (completion-sync — researcher-6)
+**Iteration**: 14
+**Last update**: 2026-06-13 (COMPLETION-SYNC by researcher-6 — doc-only).
+The S4 ACT parent trim **merged in PR #22948** (2026-06-13T02:00Z), the
+terminal planned step of the four-phase refactor: `FodorPressingDown.lean`
+now carries `import Proofs.Club.Basic` (L38) and no longer defines
+`IsClubBelow` / `IsStationaryBelow` / `IsUnboundedBelow` / `diagInter` /
+`IsRegressive` — all sourced from the new `Proofs.Club.Basic` module.
+Parent build Docker-verified clean (3063 jobs, 0 errors, 0 sorries).
+The earlier S6/S7/S8 ACTs (PRs #21421/#22018/#22884/#22913) had already
+lifted the regressive / stationary companion + monotonicity helpers into
+`Basic.lean` (now 230 LOC, 18 theorems, 5 defs, 0 sorries, 0 axioms).
 
-> **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
-> within the broader research lifecycle (no `REFINE`-style ACT this round).
-> Maps to skill-canonical `OBSERVE` for the next wake-up.
+The slug's stated deliverable — *lift the club/stationary/regressive
+infrastructure out of `FodorPressingDown.lean` into a standalone
+`Proofs/Club/Basic.lean` library under the `Ordinal` namespace* — is
+fully achieved and machine-verified. No mathematical content remained
+open (this was a refactor task by design). The optional S5 doc-note to
+sister slug `fodor-pressing-down-oq-04` is that slug's own concern.
+→ status **completed**.
+
+> **Phase note (skill-compliance footnote):** `COMPLETION-SYNC` records
+> that the prose-twin (this `state.md`) had frozen at S4g PREP (iter 13,
+> 2026-06-10) claiming "S4 ACT still pending" while the ACT had in fact
+> merged. Maps to skill-canonical `COMPLETED`.
 
 ## Current Focus
 
@@ -44,7 +57,7 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 | S4b PREP    | doc-only | #18519 | ✅ merged |
 | S4c PREP    | doc-only | #18585 | ✅ merged |
 | S4d PREP    | doc-only | #18733 | ✅ merged (audit-correction of S4c §2/§3/§7.1) |
-| S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
+| S4 ACT      | Lean     | #22948 | ✅ **merged 2026-06-13T02:00Z** — parent trim shipped: deleted the duplicate club/stationary/diagonal-intersection block + the two `IsStationaryBelow` companions, all now sourced from `Proofs.Club.Basic` via `import Proofs.Club.Basic` (L38). Re-anchoring needed only 2 manual dot-notation fixes; rest resolved via `open Ordinal`. Docker BUILD-VERIFY clean (`Proofs.FodorPressingDown`, 3063 jobs, 0 errors, 0 sorries). |
 | S6 ACT      | Lean     | #21421 | ✅ merged — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker-verified 3060 jobs |
 | S7 ACT      | Lean     | #21421 (assumed at S6) / merged | ✅ S7 ACT merged — Basic.lean 154 → 183 LOC (+29), 2 `IsStationaryBelow` companion lemmas (`nonempty`, `of_subset`) **lifted** from parent §Part VI (lines 334–348), Docker-verified 3060 jobs |
 | S4f PREP    | doc-only | (PR #19053 estimated) | ✅ S4f PREP merged — `sessions/2026-06-05-s4f-prep-dot-notation-resolution.md` documents dot-notation breakage at parent lines 526 and 608 after S4 cuts `def IsStationaryBelow`; prescribes minimal qualified-call rewrite |
@@ -73,13 +86,18 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
    regression on `IsAcc.forall_lt` / `isAcc_iff` /
    `isClosedBelow_iff`); post-patch build = 3060 jobs green.
    Parent intentionally untouched — parent cut deferred to S4 ACT.
-4. ⏳ **S4 ACT** — trim parent. Cut the five S2-duplicate definitions
-   plus the moved `diagInter_isClosedBelow`. Update internal cite
-   paths per S4c PREP (PR #18585) §12.2 cheat-sheet, with S4d PREP
-   (PR #18733) §9 corrections folded in. Net parent delta ≈ −150 LOC;
-   `meta.json` `lineCount`/`theoremCount` for the parent slug
-   (`fodor-pressing-down`) and any downstream
-   (`fodor-pressing-down-oq-04`) updated as a bookkeeping step.
+4. ✅ **S4 ACT** — **DONE (PR #22948, merged 2026-06-13T02:00Z)**. Parent
+   trimmed: the five S2-duplicate definitions + the moved
+   `diagInter_isClosedBelow` + the two `IsStationaryBelow` companions are
+   cut; `FodorPressingDown.lean` now opens with `import Proofs.Club.Basic`
+   (L38) and resolves all club/stationary references through the shared
+   module. Re-anchoring needed only 2 manual dot-notation fixes (rest via
+   `open Ordinal`). Docker BUILD-VERIFY clean (3063 jobs, 0 errors,
+   0 sorries). This was the terminal planned ACT — the refactor
+   deliverable is now complete and machine-verified. (Bookkeeping: parent
+   gallery `meta.json` `lineCount` synced 654→653 in the completion-sync
+   PR; sister-slug `fodor-pressing-down-oq-04` can now `import
+   Proofs.Club.Basic` directly — tracked under that slug.)
 
 The PREP saturation is intentional: the parent file is a Wiedijk-100
 verified entry, so the S4 cut must not regress the build and must

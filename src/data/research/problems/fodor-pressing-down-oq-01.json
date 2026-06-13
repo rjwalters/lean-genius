@@ -1,8 +1,8 @@
 {
   "slug": "fodor-pressing-down-oq-01",
   "title": "Club and stationary set library for Mathlib (refactor of Fodor pressing-down infrastructure)",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -24,21 +24,21 @@
     "goal": "Ship Proofs/Club/Basic.lean with 5 definitions + 3 mechanical lemmas + the closed half of diagonal intersection (~80\u2013110 LOC, 0 sorries); trim FodorPressingDown.lean by ~150 LOC; preserve all theorem signatures up to namespace qualification."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-02T00:43:00Z",
-    "iteration": 12,
-    "focus": "S7 ACT this session (researcher-1, Lean +29 LOC). Two strictly-additive IsStationaryBelow companion lemmas lifted from Proofs/FodorPressingDown.lean (parent \u00a7Part VI, lines 334\u2013348) into Proofs/Club/Basic.lean's Ordinal namespace: IsStationaryBelow.nonempty (every stationary set below a successor-limit ordinal is nonempty; witness Iio o club) and IsStationaryBelow.of_subset (stationarity descends along inclusions that meet every club). Both operate on bare o : Ordinal (not Cardinal.{0}.ord), so they fit Basic.lean's universe / pinning policy without requiring polymorphization of the parent's combinatorial Fodor body. Basic.lean 154 \u2192 183 LOC; 9 \u2192 11 theorems; 0 sorries, 0 axioms. Parent untouched. Sister slug fodor-pressing-down-oq-04 (Solovay splitting) will consume both lemmas after S4 ACT cuts the parent duplicates.",
+    "phase": "COMPLETED",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 14,
+    "focus": "COMPLETED (researcher-6 completion-sync, 2026-06-13). The terminal planned step, S4 ACT (parent trim), merged in PR #22948 (2026-06-13T02:00Z) and is Docker BUILD-VERIFY clean (Proofs.FodorPressingDown, 3063 jobs, 0 errors, 0 sorries). FodorPressingDown.lean now carries import Proofs.Club.Basic (L38) and no longer defines IsClubBelow / IsStationaryBelow / IsUnboundedBelow / diagInter / IsRegressive -- all sourced from the new Proofs.Club.Basic module (230 LOC, 18 theorems, 5 defs, 0 sorries, 0 axioms). The slug deliverable -- lift the club/stationary/regressive infrastructure out of FodorPressingDown.lean into a standalone Ordinal-namespace library -- is fully achieved and machine-verified. This was a refactor task with no open mathematical content; the optional doc-note belongs to sister slug fodor-pressing-down-oq-04.",
     "blockers": [],
-    "nextAction": "S4 ACT DONE (S8, researcher-2, 2026-06-12): parent trim COMPLETE and Docker BUILD-VERIFY clean (Proofs.FodorPressingDown, 3063 jobs, 0 errors, 0 sorries). Deleted the parent's duplicate club/stationary/diagonal-intersection block (IsUnboundedBelow, IsClubBelow, IsStationaryBelow, IsClubBelow.mem_lt, IsClubBelow.mem_of_isAcc, isClubBelow_Iio_of_isSuccLimit, diagInter, mem_diagInter, diagInter_subset_Iio, diagInter_isClosedBelow) plus the two IsStationaryBelow companions (nonempty, of_subset) -- all now sourced from Proofs.Club.Basic (namespace Ordinal) via `import Proofs.Club.Basic` + the parent's existing `open Ordinal`. Net parent -86/+12 LOC (654 -> 580). Re-anchoring was lighter than the PREP estimate: only 2 sites needed manual fixes -- the dot-notation calls hS.inter_isClubBelow / hS.inter_isLimitOrdinals (whose theorems remain parent-local under FodorPressingDown.IsStationaryBelow.*) were rewritten as explicit applications with declared arg order (hk hk_unc hS ...). All other downstream references resolved automatically through `open Ordinal`. NEXT (S9): update src/data/proofs/fodor-pressing-down/meta.json post-cut counts + annotations.json line offsets; then sister-slug oq-04 can `import Proofs.Club.Basic` directly. Docker build required for any further parent edits.",
+    "nextAction": "None -- refactor deliverable complete and Docker-verified. Sister slug fodor-pressing-down-oq-04 (Solovay splitting) may now import Proofs.Club.Basic directly; that consumption is tracked under oq-04, not here.",
     "attemptCounts": {
       "total": 11,
       "currentApproach": 11,
       "approachesTried": 1
     },
-    "lastUpdate": "2026-06-12T00:00:00Z"
+    "lastUpdate": "2026-06-13T00:00:00Z"
   },
   "knowledge": {
-    "progressSummary": "S8 ACT (researcher-2, 2026-06-12): S4 parent-trim EXECUTED and BUILD-VERIFY clean (Proofs.FodorPressingDown 3063 jobs, 0 errors, 0 sorries). Cut the parent's duplicate club/stationary/diagInter definitions + 2 IsStationaryBelow companions (all live in Proofs.Club.Basic, namespace Ordinal); added `import Proofs.Club.Basic`; parent's `open Ordinal` auto-resolves downstream names. Only 2 manual re-anchors needed (explicit IsStationaryBelow.inter_isClubBelow / inter_isLimitOrdinals calls, parent-local theorems). Parent -86/+12 LOC (654 -> 580). meta.json/annotations count refresh deferred to S9.\n\nS1 OBSERVE locked design. S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean (98 LOC). S3 PREP/S4 PREP/S4b PREP/S4c PREP/S4d PREP saturated parent-trim recipe (doc-only). S3 ACT (PR #19009) migrated diagInter_isClosedBelow to Basic.lean (119 LOC, Docker-verified). S5 STATE-SYNC (PR #19558) absorbed oq-04 S2-\u03b1/S2-\u03b2-\u03b1 parent growth (385 \u2192 568 LOC). S6 ACT (PR #21421) shipped 4 IsRegressive companion lemmas to Basic.lean (119 \u2192 154 LOC; 5 \u2192 9 theorems; 0 sorries, 0 axioms). S7 ACT (this session) lifted 2 IsStationaryBelow companion lemmas (nonempty, of_subset) from parent \u00a7Part VI into Basic.lean (154 \u2192 183 LOC; 9 \u2192 11 theorems; 0 sorries, 0 axioms; parent untouched). Parent currently 654 LOC via sister-slug oq-04 S2-\u03b2-\u03b2 ACT (PR #20621). S4 ACT (parent trim) still pending; cut scope now includes 2 additional lifted theorem bodies, downstream re-anchoring scope unchanged at 20.",
+    "progressSummary": "COMPLETED 2026-06-13 (researcher-6 completion-sync). S4 ACT (parent trim) -- the terminal planned step -- MERGED in PR #22948 (2026-06-13T02:00Z), Docker BUILD-VERIFY clean (Proofs.FodorPressingDown, 3063 jobs, 0 errors, 0 sorries). The parent's duplicate club/stationary/diagInter definitions + 2 IsStationaryBelow companions were cut and now live in Proofs.Club.Basic (namespace Ordinal); FodorPressingDown.lean opens with import Proofs.Club.Basic (L38) and resolves downstream names via open Ordinal (only 2 manual dot-notation re-anchors needed). Earlier: S1 OBSERVE locked design; S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean; S3 ACT migrated diagInter_isClosedBelow; S6 ACT (PR #21421) added 4 IsRegressive companions; S7 ACT lifted 2 IsStationaryBelow companions; S8 ACT (PR #22884) added monotonicity helpers. Basic.lean now 230 LOC / 18 theorems / 5 defs / 0 sorries / 0 axioms. The refactor deliverable (lift club/stationary/regressive infrastructure into a standalone Ordinal-namespace library) is fully achieved and machine-verified -- a refactor task with no open mathematical content.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-01/problem.md (formal signature targets, acceptance criteria, related slugs)",
       "research/problems/fodor-pressing-down-oq-01/knowledge.md (Mathlib alignment survey, migration plan, risk register)",
@@ -60,9 +60,9 @@
       "Set.Unbounded does not specialise cleanly to ordinal-indexed bounded intervals."
     ],
     "nextSteps": [
-      "S4 ACT \u2014 trim parent FodorPressingDown.lean per S4c PREP (#18585) \u00a712.2 recipe, corrected by S4d PREP (#18733) \u00a79, expanded by S5 STATE-SYNC \u00a74, S6 ACT \u00a76, and this S7 ACT (2 additional theorem bodies to delete). Parent \u2013195 LOC; preserves Wiedijk-100 entry.",
-      "S8 (optional) \u2014 update sister oq-04 problem.md to point at the new dependency once S4 ACT lands.",
-      "S9 (optional) \u2014 bookkeeping: update src/data/proofs/fodor-pressing-down/meta.json lineCount/theoremCount after S4 ACT cuts the parent."
+      "DONE -- refactor deliverable complete and Docker-verified (S4 ACT parent trim merged in PR #22948).",
+      "Bookkeeping: parent gallery meta.json lineCount synced 654 -> 653 in the completion-sync PR.",
+      "Sister slug fodor-pressing-down-oq-04 (Solovay splitting) may now import Proofs.Club.Basic directly -- tracked under that slug, not here."
     ]
   },
   "tags": [
@@ -116,7 +116,7 @@
     ]
   },
   "started": "2026-05-12T20:30:00Z",
-  "lastUpdate": "2026-06-02T00:43:00Z",
+  "lastUpdate": "2026-06-13",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
