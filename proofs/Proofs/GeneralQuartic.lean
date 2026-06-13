@@ -130,40 +130,6 @@ theorem depressed_quartic_backward (a b c d y : ℂ)
   simp only [] at h ⊢
   linear_combination h
 
-/-- **Axiom: Ferrari Factorization Forward**
-If y is a root of the depressed quartic and m is a root of the resolvent cubic,
-then y satisfies one of the two quadratic factors. This is Ferrari's key factorization
-insight: the depressed quartic can be written as a product of two quadratics.
-
-**Convention note (S6 AUDIT 2026-06-04):** This file's resolvent cubic
-`8m³ + 20pm² + (16p²−8r)m + (4p³−4pr−q²)` corresponds to the
-**non-standard** Ferrari completion `(y² + p + m)²` (with `A = p`,
-not the textbook `A = p/2`). The factor constant must therefore be
-`p + m`, not the textbook `p/2 + m`. With `α² = 2m + p` and
-`β = q/(2α)`, the polynomial identity
-`F₁ · F₂ = y⁴ + py² + qy + r` then holds iff `m` satisfies this file's
-resolvent. See `sessions/2026-06-04-s6-axiom-audit-ferrari-factorization-p-over-2-vs-p.md`. -/
-axiom ferrari_factorization_forward (p q r m α β y : ℂ)
-    (hα : α^2 = 2 * m + p)
-    (hβ : α ≠ 0 → β = q / (2 * α))
-    (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
-    (h : y^4 + p * y^2 + q * y + r = 0) :
-    (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)
-
-/-- **Axiom: Ferrari Factorization Backward**
-If y satisfies either quadratic factor, then y is a root of the depressed quartic.
-This completes the factorization equivalence.
-
-**Convention note**: see `ferrari_factorization_forward` — the factor
-constant is `p + m` (non-standard completion `(y² + p + m)²`), not
-the textbook `p/2 + m`. -/
-axiom ferrari_factorization_backward (p q r m α β y : ℂ)
-    (hα : α^2 = 2 * m + p)
-    (hβ : α ≠ 0 → β = q / (2 * α))
-    (hm : 8 * m^3 + 20 * p * m^2 + (16 * p^2 - 8 * r) * m + (4 * p^3 - 4 * p * r - q^2) = 0)
-    (h : (y^2 + p + m - α * y + β = 0) ∨ (y^2 + p + m + α * y - β = 0)) :
-    y^4 + p * y^2 + q * y + r = 0
-
 /-- **Ferrari factorization polynomial identity** (S7 ACT, 2026-06-09).
 
 The product of the two Ferrari factors equals the depressed quartic
@@ -347,9 +313,10 @@ theorem quartic_to_depressed (a b c d : ℂ) :
 
     **Convention note**: this file's resolvent cubic corresponds to the
     non-standard completion `(y² + p + m)²` (with constant `p + m`,
-    not the textbook `p/2 + m`). See `ferrari_factorization_forward`. -/
+    not the textbook `p/2 + m`). See `ferrari_factorization_id`. -/
 theorem ferrari_factorization (p q r m α β : ℂ)
     (hα : α^2 = 2 * m + p)
+    (hα_ne : α ≠ 0)
     (hβ : α ≠ 0 → β = q / (2 * α))
     (hm : (resolventCubic p q r).eval m = 0) :
     ∀ y : ℂ, (depressedQuartic p q r).eval y = 0 ↔
@@ -361,11 +328,9 @@ theorem ferrari_factorization (p q r m α β : ℂ)
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C] at hm
   constructor
   · intro h
-    -- Apply axiom for forward direction
-    exact ferrari_factorization_forward p q r m α β y hα hβ hm h
+    exact ferrari_factorization_forward_ne p q r m α β y hα hα_ne hβ hm h
   · intro h
-    -- Apply axiom for backward direction
-    exact ferrari_factorization_backward p q r m α β y hα hβ hm h
+    exact ferrari_factorization_backward_ne p q r m α β y hα hα_ne hβ hm h
 
 /-- The resolvent cubic always has a solution (over ℂ). -/
 theorem resolvent_has_root (p q r : ℂ) :
@@ -388,7 +353,7 @@ theorem quartic_four_roots (a b c d : ℂ) :
 
     Let α = √(2m + p), and if α ≠ 0, let β = q/(2α). Then the four roots are
     (with the file's non-standard `(y² + p + m)²` completion convention —
-    see `ferrari_factorization_forward`):
+    see `ferrari_factorization_id`):
 
     Factor 1 (`y² − αy + (p + m + β) = 0`): roots `y = (α ± √(α² − 4(p+m+β)))/2`
     Factor 2 (`y² + αy + (p + m − β) = 0`): roots `y = (−α ± √(α² − 4(p+m−β)))/2`
@@ -403,31 +368,95 @@ noncomputable def ferrariRoots (p q r m : ℂ) (_hm : (resolventCubic p q r).eva
   let sqrt2 := Complex.cpow disc2 (1/2 : ℂ)
   ((α + sqrt1) / 2, (α - sqrt1) / 2, (-α + sqrt2) / 2, (-α - sqrt2) / 2)
 
-/-- **Axiom: Ferrari Roots Verification**
-The explicit Ferrari root formulas, when substituted back into the depressed quartic,
-yield zero. This is verified by direct substitution and using the resolvent cubic
-condition on m. The computation is straightforward but involves many terms. -/
-axiom ferrari_roots_verify (p q r m : ℂ)
-    (hm : (resolventCubic p q r).eval m = 0) :
+/-- **Ferrari Roots Verification, non-degenerate case** (formerly axiom
+`ferrari_roots_verify`; S8 SOUND DISCHARGE, 2026-06-13).
+
+The four explicit Ferrari roots satisfy the depressed quartic, **provided**
+the chosen resolvent root `m` is non-degenerate (`2m + p ≠ 0`, equivalently
+`α ≠ 0`).
+
+**Why the `2m + p ≠ 0` hypothesis is mandatory (latent-false axiom found).**
+The former unconditional `ferrari_roots_verify` axiom is *false* on the
+degenerate branch `α = 0`. There `β` is forced to `0` and both
+discriminants collapse to `disc₁ = disc₂ = α² − 4(p+m) = −4(p+m)`, so
+`y₁² = −(p+m)`. The resolvent equation at such an `m = −p/2` forces `q = 0`
+(its constant term is `−q²`), and the four roots are then valid only when
+`r = p²/4`. Concrete counterexample: `(p,q,r,m) = (0,0,1,0)` satisfies
+`hm` (constant term `4p³−4pr−q² = 0`) yet every Ferrari root equals `0`,
+while `(depressedQuartic 0 0 1).eval 0 = r = 1 ≠ 0`. The old axiom thus
+proved `(1 : ℂ) = 0`. This is the same `α = 0` soundness gap that S7 closed
+for `ferrari_factorization_*`.
+
+**Proof.** With `α ≠ 0`, each root lies on one of Ferrari's two quadratic
+factors (a pure `linear_combination` identity using `(√·)² = ·`), and
+`ferrari_factorization_backward_ne` carries factor membership to the
+depressed quartic. -/
+theorem ferrari_roots_verify_ne (p q r m : ℂ)
+    (hm : (resolventCubic p q r).eval m = 0)
+    (h2mp : 2 * m + p ≠ 0) :
     let (y₁, y₂, y₃, y₄) := ferrariRoots p q r m hm
     (depressedQuartic p q r).eval y₁ = 0 ∧
     (depressedQuartic p q r).eval y₂ = 0 ∧
     (depressedQuartic p q r).eval y₃ = 0 ∧
-    (depressedQuartic p q r).eval y₄ = 0
+    (depressedQuartic p q r).eval y₄ = 0 := by
+  -- The half-power squares back: (z ^ (1/2))² = z over ℂ (true even at z = 0).
+  have hcpow_sq : ∀ z : ℂ, (Complex.cpow z (1/2 : ℂ)) ^ 2 = z := by
+    intro z
+    have h := Complex.cpow_nat_inv_pow z (n := 2) (by norm_num)
+    rwa [show ((2 : ℕ) : ℂ)⁻¹ = (1/2 : ℂ) by norm_num] at h
+  -- Resolvent cubic in expanded polynomial form.
+  have hm' : 8 * m ^ 3 + 20 * p * m ^ 2 + (16 * p ^ 2 - 8 * r) * m
+      + (4 * p ^ 3 - 4 * p * r - q ^ 2) = 0 := by
+    have h := hm
+    simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C] at h
+    linear_combination h
+  -- Unfold the explicit roots and the depressed-quartic evaluation.
+  simp only [ferrariRoots, depressedQuartic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  set α : ℂ := Complex.cpow (2 * m + p) (1/2 : ℂ) with hα_def
+  have hα : α ^ 2 = 2 * m + p := by rw [hα_def]; exact hcpow_sq _
+  have hα_ne : α ≠ 0 := fun h0 => h2mp (by rw [← hα, h0]; ring)
+  set β : ℂ := if α = 0 then 0 else q / (2 * α) with hβ_def
+  have hβ_eq : β = q / (2 * α) := by rw [hβ_def]; exact if_neg hα_ne
+  have hβ : α ≠ 0 → β = q / (2 * α) := fun _ => hβ_eq
+  set s1 : ℂ := Complex.cpow (α ^ 2 - 4 * (p + m + β)) (1/2 : ℂ) with hs1_def
+  set s2 : ℂ := Complex.cpow (α ^ 2 - 4 * (p + m - β)) (1/2 : ℂ) with hs2_def
+  have hs1 : s1 ^ 2 = α ^ 2 - 4 * (p + m + β) := by rw [hs1_def]; exact hcpow_sq _
+  have hs2 : s2 ^ 2 = α ^ 2 - 4 * (p + m - β) := by rw [hs2_def]; exact hcpow_sq _
+  -- Each root satisfies one of the two Ferrari quadratic factors.
+  have fac1a : ((α + s1) / 2) ^ 2 + p + m - α * ((α + s1) / 2) + β = 0 := by
+    linear_combination (1 / 4 : ℂ) * hs1
+  have fac1b : ((α - s1) / 2) ^ 2 + p + m - α * ((α - s1) / 2) + β = 0 := by
+    linear_combination (1 / 4 : ℂ) * hs1
+  have fac2a : ((-α + s2) / 2) ^ 2 + p + m + α * ((-α + s2) / 2) - β = 0 := by
+    linear_combination (1 / 4 : ℂ) * hs2
+  have fac2b : ((-α - s2) / 2) ^ 2 + p + m + α * ((-α - s2) / 2) - β = 0 := by
+    linear_combination (1 / 4 : ℂ) * hs2
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · linear_combination
+      ferrari_factorization_backward_ne p q r m α β ((α + s1) / 2) hα hα_ne hβ hm' (Or.inl fac1a)
+  · linear_combination
+      ferrari_factorization_backward_ne p q r m α β ((α - s1) / 2) hα hα_ne hβ hm' (Or.inl fac1b)
+  · linear_combination
+      ferrari_factorization_backward_ne p q r m α β ((-α + s2) / 2) hα hα_ne hβ hm' (Or.inr fac2a)
+  · linear_combination
+      ferrari_factorization_backward_ne p q r m α β ((-α - s2) / 2) hα hα_ne hβ hm' (Or.inr fac2b)
 
 /-! ## Part V: Verification -/
 
 /-- Verification: The Ferrari roots satisfy the depressed quartic equation.
-    This confirms Ferrari's method produces valid solutions. -/
+    This confirms Ferrari's method produces valid solutions.
+
+    Requires the resolvent root `m` to be non-degenerate (`2m + p ≠ 0`); see
+    `ferrari_roots_verify_ne` for why the degenerate branch is genuinely
+    excluded rather than merely inconvenient. -/
 theorem ferrari_roots_are_roots (p q r m : ℂ)
-    (hm : (resolventCubic p q r).eval m = 0) :
+    (hm : (resolventCubic p q r).eval m = 0) (h2mp : 2 * m + p ≠ 0) :
     let (y₁, y₂, y₃, y₄) := ferrariRoots p q r m hm
     (depressedQuartic p q r).eval y₁ = 0 ∧
     (depressedQuartic p q r).eval y₂ = 0 ∧
     (depressedQuartic p q r).eval y₃ = 0 ∧
     (depressedQuartic p q r).eval y₄ = 0 :=
-  -- Substituting each root and using the resolvent condition gives 0
-  ferrari_roots_verify p q r m hm
+  ferrari_roots_verify_ne p q r m hm h2mp
 
 /-! ## Part VI: Special Cases -/
 
@@ -638,7 +667,7 @@ theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
   -- For any valid resolvent root m, each Ferrari root yᵢ satisfies the depressed
   -- quartic (`ferrari_roots_are_roots`), hence yᵢ² is a root of the biquadratic
   -- (`biquadratic_simple`), i.e., yᵢ² ∈ {z₁, z₂}.
-  have hsub_B : ∀ (m : ℂ) (hm : (resolventCubic p 0 r).eval m = 0),
+  have hsub_B : ∀ (m : ℂ) (hm : (resolventCubic p 0 r).eval m = 0), 2 * m + p ≠ 0 →
       (let s : ℂ := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
        let z₁ : ℂ := (-p + s) / 2
        let z₂ : ℂ := (-p - s) / 2
@@ -647,8 +676,8 @@ theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
        (y₂^2 = z₁ ∨ y₂^2 = z₂) ∧
        (y₃^2 = z₁ ∨ y₃^2 = z₂) ∧
        (y₄^2 = z₁ ∨ y₄^2 = z₂)) := by
-    intro m hm
-    obtain ⟨hy₁, hy₂, hy₃, hy₄⟩ := ferrari_roots_are_roots p 0 r m hm
+    intro m hm h2mp
+    obtain ⟨hy₁, hy₂, hy₃, hy₄⟩ := ferrari_roots_are_roots p 0 r m hm h2mp
     exact ⟨(biquadratic_simple p r _).mp hy₁,
            (biquadratic_simple p r _).mp hy₂,
            (biquadratic_simple p r _).mp hy₃,
@@ -673,10 +702,10 @@ theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
       rw [hu_p]
       intro h_eq
       exact hp (by linear_combination -h_eq / 2)
-    exact ⟨-p - u, h_m₂_resolv, hm₂_nondeg, hsub_B (-p - u) h_m₂_resolv⟩
+    exact ⟨-p - u, h_m₂_resolv, hm₂_nondeg, hsub_B (-p - u) h_m₂_resolv hm₂_nondeg⟩
   · -- m₁ non-degenerate
     push_neg at h1
-    exact ⟨-p + u, hresolv u hu, h1, hsub_B (-p + u) (hresolv u hu)⟩
+    exact ⟨-p + u, hresolv u hu, h1, hsub_B (-p + u) (hresolv u hu) h1⟩
 
 /-! ## Part VII: Historical Context and Significance -/
 
@@ -718,6 +747,7 @@ end GeneralQuartic
 #check GeneralQuartic.quartic_four_roots
 #check GeneralQuartic.ferrariRoots
 #check GeneralQuartic.ferrari_roots_are_roots
+#check GeneralQuartic.ferrari_roots_verify_ne
 #check GeneralQuartic.resolvent_cubic_q_zero
 #check GeneralQuartic.resolvent_root_neg_p_half_at_q_zero
 #check GeneralQuartic.resolvent_cubic_eval_s_form
