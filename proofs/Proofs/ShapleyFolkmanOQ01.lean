@@ -35,6 +35,63 @@ import Proofs.ShapleyFolkman
 
 set_option linter.unusedVariables false
 
+namespace ShapleyFolkman
+
+attribute [local instance] Classical.propDecidable
+
+variable {E F : Type*} [AddCommGroup E] [Module ℝ E] [AddCommGroup F] [Module ℝ F]
+
+/-- **Transport a decomposition along a linear map** `f : E →ₗ[ℝ] F`.
+
+    The image summands `f (D.point i)` decompose `f x` over the image families
+    `fun i => f '' S i`. Each field follows from linearity:
+    membership via `LinearMap.image_convexHull`, the off-support vanishing via
+    `map_zero`, and the sum constraint via `map_sum`.
+
+    This is the reusable engine behind cross-ambient Shapley–Folkman transfer.
+    It is what lets the finite-dimensional tightness witnesses of this file be
+    pushed forward along an embedding `EuclideanSpace ℝ (Fin N) →ₗ[ℝ] ℓ²`
+    (the S2-B₂ lift; see `research/problems/shapley-folkman-oq-01/`). -/
+noncomputable def Decomposition.map {ι : Type*} {S : ι → Set E} {t : Finset ι}
+    {x : E} (D : Decomposition S t x) (f : E →ₗ[ℝ] F) :
+    Decomposition (fun i => f '' S i) t (f x) where
+  point i := f (D.point i)
+  mem_convexHull i hi := by
+    show f (D.point i) ∈ convexHull ℝ (f '' S i)
+    rw [← LinearMap.image_convexHull]
+    exact Set.mem_image_of_mem f (D.mem_convexHull i hi)
+  point_eq_zero i hi := by rw [D.point_eq_zero i hi, map_zero]
+  sum_eq := by rw [← D.sum_eq, map_sum]
+
+@[simp]
+lemma Decomposition.map_point {ι : Type*} {S : ι → Set E} {t : Finset ι} {x : E}
+    (D : Decomposition S t x) (f : E →ₗ[ℝ] F) (i : ι) :
+    (D.map f).point i = f (D.point i) := rfl
+
+/-- **An injective linear map preserves the excess-index set.**
+
+    Because `f` is injective, `f (D.point i) ∈ f '' S i ↔ D.point i ∈ S i`
+    (`Function.Injective.mem_set_image`), so the filtered index sets coincide.
+    Injectivity is exactly the hypothesis that lets the *negative* (tightness)
+    result transfer along an embedding: the excess count cannot collapse under
+    the image. -/
+lemma Decomposition.map_excessIndices_of_injective {ι : Type*} {S : ι → Set E}
+    {t : Finset ι} {x : E} (D : Decomposition S t x) {f : E →ₗ[ℝ] F}
+    (hf : Function.Injective f) :
+    (D.map f).excessIndices = D.excessIndices := by
+  simp only [Decomposition.excessIndices, Decomposition.map_point]
+  exact Finset.filter_congr fun i _ => by rw [hf.mem_set_image]
+
+/-- Cardinality form of `map_excessIndices_of_injective`: the directly usable
+    statement for transferring tightness bounds across an embedding. -/
+lemma Decomposition.map_excessIndices_card_of_injective {ι : Type*} {S : ι → Set E}
+    {t : Finset ι} {x : E} (D : Decomposition S t x) {f : E →ₗ[ℝ] F}
+    (hf : Function.Injective f) :
+    (D.map f).excessIndices.card = D.excessIndices.card := by
+  rw [D.map_excessIndices_of_injective hf]
+
+end ShapleyFolkman
+
 namespace ShapleyFolkmanOQ01
 
 open Set Finset Pointwise ShapleyFolkman
