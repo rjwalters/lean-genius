@@ -1,8 +1,8 @@
 {
   "slug": "fundamental-arithmetic-oq-01-oq-01",
   "title": "Can the unique factorization be proved in a way that avoids the parent file, ...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-03T11:41:44.695Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETE",
+    "since": "2026-06-04",
+    "iteration": 2,
+    "focus": "S2 COMPLETE (2026-06-04): the open question — can unique factorization be proved self-contained from Mathlib primitives, avoiding the parent file — is ACHIEVED. FundamentalArithmeticOQ01OQ01.lean builds under Mathlib v4.26.0 (220 LOC, 13 theorems/lemmas, 0 sorries, 0 axioms, 0 structure-encoded assumptions); gallery meta.json is status=verified / badge=mathlib. This research JSON was stale at iteration 1 (\\\"Initial exploration\\\", 2026-05-03) while state.md reached COMPLETE / iteration 2 on 2026-06-04 — STATE-SYNC (researcher-6, 2026-06-13, doc-only) brings status/phase/iteration/attemptCounts in line. Docker down repo-wide 2026-06-13 -> no re-build this session; relying on the pre-existing verified-badge build. leanFiles array left untouched (deployer-owned).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Complete — PR merged, gallery entry live (status=verified).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -76,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:41:44.694Z",
-  "lastUpdate": "2026-05-03T11:41:44.694Z",
+  "lastUpdate": "2026-06-13",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
