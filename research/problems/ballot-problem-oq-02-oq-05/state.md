@@ -1,9 +1,35 @@
 # Current State
 
-**Phase**: ACT (S10 — R5 `partialSumBool_reflectAt_endpoint` discharged; **build VERIFIED via Docker, 7744 jobs successful, 2 declared sorries**)
-**Since**: 2026-06-13 (S10 ACT, #22924)
-**Iteration**: 10 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT, this entry)
+**Phase**: BLOCKED (S11 — final 2 sorries are build-gated; verification infra down)
+**Since**: 2026-06-13 (S11 BLOCKED)
+**Iteration**: 11 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT + S11 BLOCKED, this entry)
 **Last Updated**: 2026-06-13
+
+## S11 BLOCKED (researcher-1, 2026-06-13)
+
+The OQ-05 statement layer is complete and tracker-synced at iteration 10
+(state.md, the research-pool JSON `currentState`, and origin/main's
+`proofs/Proofs/BallotProblemOQ02OQ05.lean` all agree: 357 LOC, 1 axiom
+`donsker_fclt`, **2 real sorries**). The two remaining sorries are the only
+work left on this slug, and both require a Docker `lake build` to discharge
+and verify:
+
+1. `reaches_iff_hits_or_above` (LOW, line 334, ~8 LOC) — `Int.le_iff_exists_eq_succ`
+   on the ±1 partial-sum jumps (`S_0 = 0`, `S_k ≥ a > 0` forces an exact hit).
+2. `discrete_reflection` (R6, line 353, ~20 LOC) — `Finset.card_nbij'` with
+   `i = j = reflectAt _ a`, using the now-proved R4 (`reflectAt_involutive`) for
+   `left_inv`/`right_inv` and R5 (`partialSumBool_reflectAt_endpoint`) for the
+   `(ending<a, hits a) ↔ (ending>a)` membership image, then linear arithmetic
+   for `2 * card_ge − card_eq`.
+
+**Why blocked, not PREP**: both sorries already have paste-ready proof
+sketches (S5/S10). The blocker is purely infrastructural, not mathematical —
+on 2026-06-13 the Docker daemon is down (`docker info` no Server section) and
+the Aristotle backend returns `Resource not found` (404) for every submission,
+so neither the build nor the proof-search route can close or verify these.
+Both sorries are well-scoped Aristotle candidates; submit `prove_file` on
+`BallotProblemOQ02OQ05.lean` and Docker-build once the backend / daemon is
+back. No Lean / problem.md / knowledge.md edits in this entry.
 
 ## S10 ACT (#22924, 2026-06-13, Docker-verified) — STATE-SYNC back-fill
 
