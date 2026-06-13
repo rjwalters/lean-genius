@@ -1,8 +1,8 @@
 {
   "slug": "shannon-channel-coding-oq-02-oq-01-oq-01",
   "title": "Fix ShannonEntropy",
-  "phase": "STATE-SYNC",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "STATE-SYNC",
+    "phase": "BLOCKED",
     "since": "2026-06-13T00:00:00.000Z",
-    "iteration": 21,
-    "focus": "S21 STATE-SYNC (Docker-down): corrected stale slug meta.json to record the problem's primary goal is COMPLETE \u2014 the fano_inequality axiom in ShannonChannelCoding.lean is discharged (theorem @ line 199 := FanoFromConditionalEntropy.fano_inequality_proved; parent axiomCount 4 -> 3). Docker daemon down (8s timeout) so no build/ACT; disk recovered (15%, 67Gi free). Next ACT = S17 PREP \u00a76.2 capacity bundle paste into the PARENT file (DMChannel/channelMI live there), gated on Docker.",
+    "iteration": 22,
+    "focus": "S22 BLOCKED (verification blackout): primary goal COMPLETE on main (fano_inequality is a theorem @ ShannonChannelCoding.lean:200, discharged via FanoFromConditionalEntropy.fano_inequality_proved; parent axiomCount 3, sorries 0, status axiomatized -- all accurate). Only remaining work is the Docker-gated capacity bundle (S18a-2/S18b/S18c: uniform-input-achieves-capacity for weakly symmetric channels). Both verification routes down this session: docker info exit 124 (daemon down); Aristotle MCP backend returns 'Resource not found' (404). No build-free progress remains -- semantic meta is correct; stale lineCount/theoremCount are deployer-owned auto-sync. Re-open when Docker recovers.",
     "blockers": [],
     "nextAction": "S21 ACT (next): paste S18a-2 lemma `output_marginal_uniform_of_uniform_input_and_column_sum_const` from S17 PREP \u00a76.2 (~25-35 LOC) into ShannonChannelCoding.lean immediately after the `def DMChannel.IsWeaklySymmetric` block (lines 487-491). Bearers stable v4.26.0. Then S21b: row_entropy_invariant_under_input.",
     "attemptCounts": {
