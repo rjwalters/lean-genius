@@ -24,18 +24,20 @@
     "goal": "Turn the recorded user-requested target into a precise Lean formalization of Kakutani fixed point theorem derived from Brouwer using Mathlib topology."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-02T21:57:15-07:00",
-    "iteration": 1,
-    "focus": "OBSERVE-stage context gathering for the Kakutani-from-Brouwer target; no active approach or proof attempts are recorded.",
+    "lastUpdated": "2026-06-12T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT — DRIFT REPAIR (researcher-2, 2026-06-12, this PR). Correcting a badly stale record: the prior 'OBSERVE iteration 1, formal statement not specified' was wrong — Proofs/BrouwerFixedPointOQ04OQ01.lean is a complete 297-line Nash-equilibrium-via-Kakutani development (8 theorems, 2 axioms, 0 sorries as recorded). First actual Docker build revealed the file was SILENTLY RED from Mathlib v4.26.0 drift (pin 2df2f015): 11 errors across bestResponse_convex (132: Convex now presents the segment as `a • x + b • y` not `fun k => a*x k + b*y k`), fixed_point_is_nash (204: needed `Function.update_eq_self` to collapse `update σ i (σ i) = σ`), matching_pennies (250: simp left `2⁻¹+2⁻¹=1`), and prisoners_dilemma_nash (271/275-289: `prisonersDilemmaGame.strategies i` no longer reduces to 2, breaking `OfNat (Fin (strategies i))` numerals and `Fin.sum_univ_two` rewrites). Repaired ALL to green at [2366/2366], 0 new axioms, 0 sorries: added a smul→pointwise conversion + explicit convexity inequality; `Function.update_eq_self`; `norm_num` finishers; made `prisonersDilemmaGame` `@[reducible]` and inlined the strategy profile so numerals elaborate. The two pre-existing axioms (bestResponse_uhc = Berge's theorem; kakutani_product_simplex) are unchanged — they remain stated assumptions.",
     "blockers": [
-      "The research notes do not yet specify the formal theorem statement, hypotheses, references, or candidate Mathlib modules."
+      "The slug's nominal target ('prove Kakutani from Brouwer') is NOT yet discharged: Kakutani is the axiom `kakutani_finite_dim` in Proofs/BrouwerFixedPointOQ04OQ03.lean:69, on which this file's `kakutani_product_simplex` axiom rests. Proving it from Brouwer is a large (multi-hundred-line) formalization (simplicial approximation / partition-of-unity), out of scope for a single iteration.",
+      "`bestResponse_uhc` (Berge's maximum theorem) is axiomatized; discharging it is a separate substantial deliverable."
     ],
-    "nextAction": "Move to ORIENT by choosing a precise Kakutani statement and identifying the Brouwer/topology prerequisites available in Mathlib and local related proofs.",
+    "nextAction": "File is green again at the current Mathlib pin. Next substantive ACT steps (each its own iteration): (1) discharge `kakutani_finite_dim` (Kakutani⇐Brouwer) — the slug's true target; (2) discharge `bestResponse_uhc` (Berge). Until then, keep the family build-verified: re-run `./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ04OQ01` after any Mathlib bump, since this family drifts silently red.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -45,6 +47,8 @@
       "State file records OBSERVE phase, full path, iteration 1, no active approach, and zero attempts."
     ],
     "insights": [
+      "S2 ACT (researcher-2, 2026-06-12): BrouwerFixedPointOQ04OQ01.lean was silently drift-broken (11 errors) under Mathlib v4.26.0 despite being recorded as 0-sorry/compiling — confirming the gallery-wide 'builds silently red' risk. Key drift signatures for this family: (a) `Convex`'s segment is now `a • x + b • y` (pointwise Pi smul), so proofs that `rw` a `fun k => a*x k + b*y k` lemma must first convert via `funext k; simp [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`; (b) numerals `0`/`1 : Fin (G.strategies i)` fail `OfNat` synthesis when `G` is a plain `def` whose `strategies` projection no longer reduces — mark such game defs `@[reducible]` and inline strategy profiles so the literals elaborate; (c) `Function.update σ i (σ i)` must be collapsed with `Function.update_eq_self`.",
+      "The whole Brouwer→Kakutani→Nash chain here is axiomatized at the Kakutani level: `kakutani_finite_dim` (OQ04OQ03:69) and `fan_glicksberg` (OQ04OQ03:85) are axioms, and this file's `kakutani_product_simplex` + `bestResponse_uhc` (Berge) are axioms. So Nash existence is proved *conditional on* Kakutani; the slug's nominal 'prove Kakutani from Brouwer' is exactly the undischarged `kakutani_finite_dim`.",
       "The intended route is explicitly from Brouwer via Mathlib topology.",
       "The formal theorem statement is absent from the allowed research notes, so the target must be specified before proof work starts.",
       "No active approach, completed attempts, dead ends, or literature references are recorded for this child problem."
