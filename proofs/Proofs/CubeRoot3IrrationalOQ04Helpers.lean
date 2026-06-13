@@ -640,4 +640,55 @@ theorem five_nine_seven_four_four_nine_over_four_one_four_two_four_eight_lt_cbrt
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S14a prep: new upper bound for `a₁₂ = 8` (the thirteenth partial quotient)
+
+The fourteenth CF convergent of `∛3` (using `a₁₃ = 3` per OEIS A002945
+prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …]`, 0-indexed) is
+
+  `p₁₃/q₁₃ = (a₁₃·p₁₂ + p₁₁) / (a₁₃·q₁₂ + q₁₁)`
+  `       = (3 · 597449 + 73011) / (3 · 414248 + 50623)`
+  `       = 1_865_358 / 1_293_367`.
+
+This convergent is odd-index (13), so it lies on the UPPER side of
+`∛3` (alternating with the lower-side thirteenth convergent
+`597449/414248` from S13).
+
+Convergent recursion (with `a₁₃ = 3`):
+
+  `q₁₃ = 3 · q₁₂ + q₁₁ = 3 · 414248 + 50623 = 1_293_367`
+  `p₁₃ = 3 · p₁₂ + p₁₁ = 3 · 597449 + 73011 = 1_865_358`
+
+After cubing,
+
+  `1_865_358³   = 6_490_625_955_773_462_712`
+  `3 · 1_293_367³ = 6_490_625_955_771_185_589`
+
+so `1_865_358³ = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 =
+3 · 1_293_367³` (strict, diff `+2_277_123`). The new upper cube gap
+(relative-to-`3·q³`: `≈ 3.51·10⁻¹³`) is roughly an order of magnitude
+tighter than S13's lower-side gap of `≈ 3.53·10⁻¹²` — consistent with
+`1_865_358/1_293_367` being the next true convergent one rung beyond
+`597449/414248`.
+
+(Pre-claim Python sanity check (this S14a session):
+`1_865_358³ = 6_490_625_955_773_462_712`, `3 · 1_293_367³ =
+6_490_625_955_771_185_589`, diff `+2_277_123 > 0` confirming
+`(1_865_358/1_293_367)³ > 3`, hence `1_865_358/1_293_367 > cbrt3` as
+required for an upper bound. Recursion arithmetic
+`(3 · 597449 + 73011 = 1_865_358, 3 · 414248 + 50623 = 1_293_367)`
+and the cube digits matched the post-S13b sketch on the first pass —
+no math-correction needed this iteration.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 1865358/1293367`. Cube target: `(1865358/1293367)³ =
+6_490_625_955_773_462_712 / 1_293_367³ > 3` (strict:
+`1865358³ = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 =
+3 · 1293367³`, gap `+2_277_123`). The fourteenth convergent of the
+simple CF of `∛3` (using `a₁₃ = 3` per OEIS A002945). -/
+theorem cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven :
+    cbrt3 < (1865358 / 1293367 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
