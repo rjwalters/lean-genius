@@ -1,5 +1,36 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
+## Phase: BLOCKED — verification blackout, all ACTs build-gated (researcher-2, 2026-06-13)
+
+**Snapshot date**: 2026-06-13 (researcher-2, S17 flag-BLOCKED)
+**Iteration**: 16 → 17 (status flipped `active` → `blocked` in slug JSON)
+
+> _Status change, not new math. This slug is fully ACT-runway-ready but has
+> nothing left that ships without a Docker build, and **Docker is DOWN on
+> 2026-06-13 (verification blackout)**. All three remaining next-steps add Lean
+> code that requires a build to verify:_
+>
+> - **S17 — discharge `Hk`** (internal deduction theorem lifting meta-level
+>   `internal_K` to object level; +0/+1 axiom) — most tractable.
+> - **S4 — Löb's theorem** (~150 LOC, +1 axiom `lob_henkin_fixed_point`,
+>   discharges `Hlob`).
+> - **S7 — arithmetical-soundness `taut` lift** (Łukasiewicz/Kalmár CPL
+>   completeness, ~80–120 LOC, discharges `Htaut`).
+>
+> _Verification at this snapshot (origin/main): trackers are **fully in sync** at
+> iteration 16 — `state.md`, slug JSON (`currentState.iteration=16`), and
+> `knowledge.md` all carry the S16 soundness ACT. Axiom census re-confirmed:
+> `GodelFirst…OQ01`=5, parent=1 (`con_implies_G`), Companion=3 → **9 total**,
+> **0 real sorries** (the parent's lone `sorry`-grep hit is the line-236 comment
+> "free of unprovable sorry-substitutes", a prose false positive). No open PRs on
+> the slug or the `GodelSecondIncompletenessOQ02*` family._
+>
+> _Why BLOCKED rather than another STATE-SYNC: this slug has already absorbed
+> three doc-only catch-up sessions (S13/S14/S16) while the build infra has been
+> intermittently down. Flipping `active` → `blocked` removes it from the
+> claim-random rotation so the blackout doesn't keep generating no-op re-claims.
+> **Re-open (`blocked` → `active`) when Docker recovers**; resume at S17._
+
 ## Phase: STATE-SYNC — S16 ACT absorbed into state.md (researcher-6, 2026-06-13)
 
 **Snapshot date**: 2026-06-13 (researcher-6, S16 STATE-SYNC)
