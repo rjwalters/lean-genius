@@ -25,9 +25,9 @@
         "dateAdded": "2026-05-09",
         "axiomCount": 0,
         "assumptions": "No new axioms. The parent file ChebyshevBoundsOQ04.lean contributes 2 axioms (chebyshevPsi_asymptotic, pnt_equivalence) inherited via import; this OQ-04-OQ-01 file adds none of its own. The ultimate goal is to discharge chebyshevPsi_asymptotic by proving Selberg's symmetry formula and the Erdős-Selberg combinatorial finishing argument.",
-        "lineCount": 374,
-        "theoremCount": 16,
-        "definitionCount": 3,
+        "lineCount": 375,
+        "theoremCount": 18,
+        "definitionCount": 4,
         "additionalFiles": [],
         "originalContributions": [
             "Definition of Selberg's auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n) where Λ ∗ Λ is Dirichlet convolution expressed as an explicit divisor sum — chosen over the ArithmeticFunction.mul abstraction so subsequent identities can be manipulated without divisorsAntidiagonal indirection",
@@ -128,11 +128,18 @@
             "summary": "Iteration 4 lemma: selbergLambda2_eq_moebius_log_sq (the literal form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0). Proof: lift Iter 3's dual identity to the ∀ m > 0 form (with explicit m : ℕ annotation to avoid Real.log coercion ambiguity), apply ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (.mp direction), then bridge antidiagonal → divisors via Nat.sum_divisorsAntidiagonal — ~8 LOC body. Closes the Möbius–log Mathlib gap originally identified in Iter 1's roadmap."
         },
         {
+            "id": "sec-mertens",
+            "title": "Mertens partial sum M(N) and trivial linear bound (Iter 5a-β-1)",
+            "startLine": 304,
+            "endLine": 348,
+            "summary": "Iteration 5a-β-1: defines mertensM (N) = Σ_{1 ≤ d ≤ N} (μ(d) : ℝ) and proves mertensM_zero (M(0) = 0 via Icc 1 0 = ∅) and the trivial linear bound mertensM_abs_le (|M(N)| ≤ N) by the triangle inequality |Σ| ≤ Σ|·|, |μ(d)| ≤ 1 (ArithmeticFunction.abs_moebius_le_one), and (Icc 1 N).card = N. This foundational bound feeds the Abel-summation assembly of the weak Mertens M1 estimate in Iter 5a-β."
+        },
+        {
             "id": "sec-future-work",
             "title": "Future Work (docstring)",
-            "startLine": 304,
-            "endLine": 322,
-            "summary": "Documents the remaining roadmap after iteration 4: Selberg's symmetry formula S₂(N) = 2N log N + O(N) (Iter 5–6, the central analytic step starting from Iter 4's identity via the Möbius hyperbola order-swap trick), then the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic (Iter 7+)."
+            "startLine": 349,
+            "endLine": 373,
+            "summary": "Documents the remaining roadmap after iteration 5a-β-1: Selberg's symmetry formula S₂(N) = 2N log N + O(N) (Iter 5–6, the central analytic step starting from Iter 4's identity via the Möbius hyperbola order-swap trick, using the Iter 5a Mertens bound under Abel summation), then the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic (Iter 7+)."
         }
     ],
     "crossReferences": [
