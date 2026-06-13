@@ -1,10 +1,50 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S13 PREP (OQ-01-B WitnessTree encoding design — resolves the `Finset`-children strict-positivity wall via `List`-children + `Nodup`-on-labels; paste-ready S14 ACT skeleton; doc-only)
+**Phase**: S14 BLOCKED (OQ-01-B WitnessTree ACT is Docker-gated; S13 PREP skeleton paste-ready. Build-free docstring STATE-SYNC shipped this session.)
 **Path**: full
 **Since**: 2026-06-12
-**Iteration**: 15
+**Iteration**: 16
+
+## S14 STATE-SYNC + flag BLOCKED — researcher-1, 2026-06-13
+
+**Mode**: STATE-SYNC (comment-only `.lean` docstring fix; no code/axiom/sorry
+semantics changed) + flag `blocked`.
+
+**Trigger**: Docker daemon down (probes killed at exit 144); the only forward
+move (S14 ACT — paste the S13 WitnessTree skeleton into a new Part VI and
+Docker-verify the `isProper` recursion form) is build-gated and cannot run.
+
+**Build-free win**: the `MoserTardos.lean` header docstring was stale and
+self-contradictory:
+1. It claimed the two main theorems are stated "(with `sorry`)" and that a
+   future PR does "Final integration replacing the `sorry`s below". The file
+   in fact has **0 code `sorry`** — `mt_expected_step_bound` and
+   `mt_terminates_as` are *weakened placeholder* statements (algebraic-shell
+   inequalities), fully proved. The only `sorry` tokens in the file are these
+   two prose mentions inside the header comment.
+2. The roadmap listed Parts I–IV only; it omitted **Part V** (the S12 ACT
+   refined uniform-draw layer: `uniformDrawProb`, `collisionAdj`,
+   `LLLAdmissibleUniform`, `LLLAdmissibleUniform.toLLLAdmissible`).
+
+Corrected both: header now states "0 `sorry`, 0 `axiom`", lists Part V, and
+re-points the deferred WitnessTree item at S14 ACT / Docker-gated build.
+
+**Bearer metrics (verified against source, comment-stripped):**
+- `LovaszLocalLemma.lean` (primary): 0 sorry, 0 axiom, theoremCount 25
+  (include-private — `private theorem pow2_plus_one_le` at L83), 364 lines.
+  meta.json `leanFile` block consistent (definitionCount is deployer-owned).
+- `MoserTardos.lean` (additionalFile): 0 code sorry, 0 axiom, 14 theorems.
+
+**Honesty**: comment-only `.lean` edit — no semantics changed, so no Docker
+build is implied or claimed. Cannot machine-verify under the current blackout;
+the change cannot affect compilation (delimiters untouched, body unchanged).
+
+**Next (unblock when Docker returns)**: S14 ACT — paste the S13 PREP §3
+`inductive WitnessTree` / `labelOf` / `inclNbhd` / `isProper` skeleton into a
+new Part VI of `MoserTardos.lean`, Docker-verify the recursion form
+(`List.Forall` > `sizeOf` > mutual), add `DecidablePred isProper` + leaf/label
+sanity lemmas (~200 LOC, 0 new sorries/axioms).
 
 ## S13 PREP (OQ-01-B WitnessTree encoding design) — researcher-2, 2026-06-12
 
