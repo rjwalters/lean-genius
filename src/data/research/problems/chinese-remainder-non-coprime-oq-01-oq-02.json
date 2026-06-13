@@ -2,7 +2,7 @@
   "slug": "chinese-remainder-non-coprime-oq-01-oq-02",
   "title": "Formalize the full Garner algorithm (not just the mixed-radix decomposition) with runtime complexity bounds",
   "phase": "ORIENT",
-  "status": "surveyed",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -27,7 +27,7 @@
     "goal": "A new ChineseRemainderNonCoprimeOQ01OQ02.lean implementing garnerCoeffs/garnerReconstruct, the per-modulus correctness theorem, and a garnerCoeffsOps counter with proved k(k-1)/2 closed form."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ORIENT (blocked — survey complete, ACT build-gated)",
     "since": "2026-06-13",
     "iteration": 2,
     "focus": "Paper resolution complete (algorithm + Horner telescoping correctness + O(k^2)=k(k-1)/2 count + Lean path). Build-gated by the 2026-06-13 verification blackout.",
