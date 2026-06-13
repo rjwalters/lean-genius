@@ -75,6 +75,26 @@ in Lean, needing the Lp restriction map below).
 
 ---
 
+### Consumer scan: the axiom has zero downstream consumers (2026-06-13, Session 2)
+
+`grep -rn riesz_lp_surjective proofs/` returns only: the axiom declaration itself
+(`OQ01OQ01OQ02.lean:117`), the proven children `riesz_lp_surjective_from_rn` /
+`riesz_lp_surjective_sigma_finite` (distinct names), and docstring mentions. **No
+theorem anywhere applies `riesz_lp_surjective`.** Within its own file the axiom is
+declared but never used — the parent's actual results (`l2_cs:140`,
+`l2_dual_norm_tight:146`, the embedding direction) do not depend on it. The axiom
+exists purely as the "hard direction" placeholder targeted for elimination.
+
+**Consequence for scope:** the *generality* of the arbitrary-μ statement is nominal —
+nothing relies on it. So narrowing the axiom to `[SigmaFinite μ] [Fact (1 ≤ p)]`
+(option A) breaks no downstream proof. **Option (A) is the correct call**; option (B)'s
+~80–150-line general→σ-finite reduction is not on the critical path and can be dropped.
+This does not by itself reduce the assumption count (the axiom remains until a green
+build lets us swap `axiom → theorem := riesz_lp_surjective_sigma_finite`), but it
+removes the only open *mathematical* question that was gating the elimination plan.
+
+---
+
 ## Mathlib gaps
 
 - **Lp restriction map** `Lᵖ(μ) → Lᵖ(μ.restrict S)` and its isometric-inclusion
@@ -97,8 +117,9 @@ in Lean, needing the Lp restriction map below).
      One line, but a strictly weaker statement than the current axiom.
    - **(B) Keep general** — prove `riesz_general_of_sigmaFinite` via the σ-finite-hull
      argument, then discharge the axiom unchanged (~80–150 lines + Lp restriction map).
-3. Before choosing (A), grep the gallery for downstream consumers that rely on the
-   **arbitrary-μ** form. If none, (A) is acceptable and fastest.
+3. ~~Before choosing (A), grep the gallery for downstream consumers that rely on the
+   **arbitrary-μ** form. If none, (A) is acceptable and fastest.~~ **RESOLVED 2026-06-13
+   (Session 2): zero consumers — see "Consumer scan" below. Option (A) is sanctioned.**
 4. After a green build: rewrite `OQ01OQ01OQ02.lean:117` axiom → theorem and update
    `src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-02/meta.json`
    (`axiomCount 1→0`, `status`/`badge`) — only if the elimination preserves the
@@ -126,3 +147,38 @@ in Lean, needing the Lp restriction map below).
   reduction) and the fast alternative (narrow the axiom to σ-finite).
 - No Lean edited — every elimination path is build-gated by the blackout, and the
   CLAUDE.md axiom-integrity policy forbids claiming `verified` without a build.
+
+### 2026-06-13 (Session 2, researcher-3) — ORIENT (consumer scan)
+
+**Mode:** REVISIT. **Outcome:** progress (build-free scope decision resolved).
+
+- Verification blackout persists (probed this session): Docker daemon down,
+  `mcp__aristotle__prove_file` returns backend error. No build/proof route available.
+- Executed Session-1's deferred build-free step 3: scanned the whole `proofs/` tree
+  for consumers of the `riesz_lp_surjective` axiom. **Found zero** — the axiom is
+  declared but applied by nothing (see "Consumer scan" above).
+- Conclusion: option (A) (narrow the axiom to σ-finite via the already-proven
+  `riesz_lp_surjective_sigma_finite`) breaks no downstream proof and is the correct,
+  fastest elimination path. Option (B)'s general→σ-finite reduction is dropped from
+  the critical path.
+- No Lean edited (the one-line `axiom → theorem` swap is still build-gated; doing it
+  blind would risk shipping an unverified `verified` claim, forbidden by CLAUDE.md).
+- **Next session (Docker back):** build-check the `Incomplete01` σ-finite chain, then
+  apply option (A) and update `meta.json` (`axiomCount 1→0`, status/badge) iff green.
+
+### 2026-06-13 (Session 3, researcher-3) — BLOCKED (build-gated, analysis exhausted)
+
+**Mode:** REVISIT. **Outcome:** blocked (no build-free work remains).
+
+- Verification blackout still in force (probed: `docker info` unresponsive). Confirmed
+  meta.json is already accurate — `.meta.status=axiomatized`, `.meta.badge=axiom`,
+  `.meta.axiomCount=1`; primary `OQ01OQ01OQ02.lean` carries exactly the 1 axiom, 0
+  sorries. No STATE-SYNC discrepancy to fix.
+- All build-free questions are resolved across S1 (synthesis plan, #23043) and S2
+  (zero-consumer scan → option A sanctioned, #23241). The single remaining step — the
+  one-line `axiom → theorem := riesz_lp_surjective_sigma_finite` swap plus
+  `axiomCount 1→0` — is **entirely build-gated** and cannot be verified during the
+  blackout.
+- Per the project's "flag BLOCKED over PREP churn" rule, marking this **blocked**
+  rather than writing a third ORIENT memo. Re-open the moment Docker/Aristotle return:
+  build-check the σ-finite `Incomplete01` chain, then apply option (A) iff green.
