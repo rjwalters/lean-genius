@@ -1,12 +1,56 @@
 # Current State
 
-**Phase**: ACT (S8 AXIOM ELIMINATION — axiom count 6 → 3)
+**Phase**: ACT (S9 SURVEY — axiom-tractability assessment for the 3 remaining; trackers re-synced)
 **Since**: 2026-06-04 (S6 AUDIT) → 2026-06-09 (S7 SOUND DISCHARGE) →
-2026-06-13 (S8 AXIOM ELIMINATION, this session)
-**Iteration**: 10 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
-SOUND DISCHARGE; S8 AXIOM ELIMINATION this session)
+2026-06-13 (S8 AXIOM ELIMINATION → S9 SURVEY, this entry)
+**Iteration**: 11 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
+SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 SURVEY this entry)
 
-## S8 AXIOM ELIMINATION (this session, researcher-2, 2026-06-13)
+## S9 SURVEY (researcher-2, 2026-06-13, doc-only — verify infra down)
+
+Tracker sync + next-ACT axiom-elimination roadmap. **No Lean change** —
+both build-verify routes are down today (Docker daemon hung, `timeout 15
+docker info` exit 124; Aristotle MCP backend 404). The S8 work (#22971,
+commit `8e199342763`) is merged and Docker-verified, so the file compiles.
+
+**Tracker fix**: the research JSON `leanFiles` block lagged S8 (it still
+read `axiomCount 6 / sorryCount 1 / lineCount 428 / theoremCount 12`).
+Corrected to match the merged file: **758 LOC, 3 axioms, 0 sorries, 5 defs,
+21 thm+lemma**. (`currentState` block was already current.)
+
+**Tractability of the 3 remaining axioms** (all look provable from Mathlib —
+candidates for the next Docker-up ACT; sketches UNVERIFIED):
+
+1. **`quartic_has_four_roots`** (line 262) — degree-4 poly over ℂ has 4 roots
+   with the membership iff. ℂ is algebraically closed (`Complex.isAlgClosed`);
+   `quarticPoly` is monic so `natDegree = 4 ≠ 0`. Route: `Polynomial.roots`
+   over an alg-closed field has `Multiset.card = natDegree`
+   (`Complex.card_roots` / `Polynomial.roots_count`-style), and
+   `Polynomial.mem_roots` gives `eval x = 0 ↔ x ∈ roots`. Extract the (≤4)
+   distinct roots and pad to exactly 4 by repetition for the `∨`-iff. MEDIUM.
+2. **`biquadratic_backward`** (line 277) — converse: if `y² =` a quadratic-formula
+   solution then `y⁴+py²+r=0`. EASIEST. Key fact `(Complex.cpow w (1/2))² = w`
+   for all `w` (incl. `w=0` by the cpow-zero convention) — derive from
+   `Complex.cpow_natCast` / `Complex.cpow_def` + `Complex.exp_log` (w≠0) and a
+   `simp` for w=0. Then `z := y²` satisfies `z² + p z + r = 0` by quadratic-formula
+   algebra (`linear_combination` with the cpow-sq identity), and
+   `y⁴+py²+r = z²+pz+r = 0`. LOW–MEDIUM.
+3. **`biquadratic_forward`** (line 269) — forward: a biquadratic root gives
+   `y²` is one of the two solutions. Factor `z²+pz+r = (z - z₊)(z - z₋)` with
+   `z± = (-p ± √(p²-4r))/2` (Vieta: `z₊+z₋ = -p`, `z₊z₋ = r`, both from the
+   cpow-sq identity), so `z = y²` root of the product ⟹ `z = z₊ ∨ z = z₋`
+   (`mul_eq_zero`). MEDIUM.
+
+Shared bearer for #2/#3: a `cpow`-square lemma `(w : ℂ) : (w ^ (1/2 : ℂ))² = w`
+(or the `Complex.cpow` form). Line-pin at the next ACT. If absent in Mathlib,
+prove it once as a local helper and reuse across both biquadratic axioms.
+
+**Next ACT (when a verify route recovers)**: discharge in order
+`biquadratic_backward` → `biquadratic_forward` → `quartic_has_four_roots`
+(easiest first; the cpow-sq helper unlocks the two biquadratics together).
+Target 3 → 0 axioms. All are leaf-eligible (verify importers before deleting).
+
+## S8 AXIOM ELIMINATION (researcher-2, 2026-06-13)
 
 **Axiom count 6 → 3.** Docker build verified (3058 jobs, success); 0 sorries.
 
