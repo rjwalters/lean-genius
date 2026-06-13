@@ -1,17 +1,48 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-B₁ ACT — Session 19, researcher-10, 2026-06-10.
-Executed Session 18 §3.1 paste-ready recipe verbatim:
-`no_universal_shapley_folkman_bound` landed in `ShapleyFolkmanOQ01.lean`.
-+33 LOC (306 → 339), +1 theorem (6 → 7), 0 new sorries / axioms.
-Docker build clean: ✔ Built `Proofs.ShapleyFolkmanOQ01` (231s, 7744/7744).
-No fallbacks fired. S2-A and S2-B₁ lines complete. S2-B₂ (genuine `lp 2`
-lift) remains multi-session deferred.)
+**Phase**: ACT (S2-C ACT — Session 20, researcher-2, 2026-06-13.
+Shipped the `Decomposition.map` transport core: general linear-map
+transport `Decomposition S t x → Decomposition (f '' S ·) t (f x)` plus
+`map_point`, `map_excessIndices_of_injective`, and its card form. This
+is the reusable engine for the S2-B₂ `lp 2` lift. +~55 LOC, 0 sorries,
+0 axioms. **Build UNVERIFIED locally — Docker daemon down on host;**
+CI/doctor to verify on PR. S2-B₂ embedding (`ιN` + injectivity + final
+theorem) made paste-ready in the Session 20 doc §4.)
 **Path**: full
-**Since**: 2026-05-12
-**Last Updated**: 2026-06-10 (S2-B₁ ACT, researcher-10)
-**Iteration**: 19
+**Since**: 2026-06-13
+**Last Updated**: 2026-06-13 (S2-C ACT, researcher-2)
+**Iteration**: 20
+
+## Session 20 — S2-C ACT: `Decomposition.map` transport core (researcher-2, 2026-06-13)
+
+**Mode.** ACT (`.lean` + JSON edits).
+
+Added a `namespace ShapleyFolkman` block to `ShapleyFolkmanOQ01.lean`
+with four declarations general over any `f : E →ₗ[ℝ] F`:
+`Decomposition.map` (transport), `map_point` (`rfl` simp lemma),
+`map_excessIndices_of_injective` (injective ⟹ excess sets equal), and
+`map_excessIndices_card_of_injective` (card form — the transfer lemma).
+
+Proof bearers pinned via GitHub API at v4.26.0: `LinearMap.image_convexHull`
+(`Hull.lean:167`), `Function.Injective.mem_set_image` (`Image.lean:192`),
+`Finset.filter_congr` (`Filter.lean:179`), `map_zero`, `map_sum`. The two
+HO-unification-exposed steps were hardened (`show` before the convexHull
+`rw`; `rw [← D.sum_eq, map_sum]` for the sum field).
+
+**Build status: UNVERIFIED locally.** Docker daemon is unresponsive
+(`docker info`/`version` hang) and the `.lake` symlink loop persists, so
+no `lake build` ran. Each step was hand-checked against the v4.26.0
+bearer statements; the `simp only [Decomposition.excessIndices, …]`
+unfold pattern is already used elsewhere in this file. CI/doctor verifies
+on PR open. Fallback register in the session doc §3.
+
+S2-B₂ is now reduced to "build one injective embedding + apply the
+core"; §4 of the session doc gives the paste-ready `ιN`, `ιN_injective`,
+and `shapley_folkman_excess_unbounded_in_lp`.
+
+Full session report at
+`sessions/2026-06-13-s2c-act-decomposition-map-transport.md`.
 
 ## Session 19 — S2-B₁ ACT: `no_universal_shapley_folkman_bound` (researcher-10, 2026-06-10)
 
