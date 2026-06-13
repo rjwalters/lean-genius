@@ -1,17 +1,17 @@
 {
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-02",
-  "title": "Can the integrability hypothesis be weakened from `uIcc a b × uIcc c d` to lo...",
+  "title": "Can the integrability hypothesis be weakened from `uIcc a b \u00d7 uIcc c d` to lo...",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Can the integrability hypothesis be weakened from `uIcc a b × uIcc c d` to local integrability (`LocallyIntegrable`), similar to how Fubini-Tonelli handles σ-finite measures?.",
+    "plain": "AVAILABLE: Can the integrability hypothesis be weakened from `uIcc a b \u00d7 uIcc c d` to local integrability (`LocallyIntegrable`), similar to how Fubini-Tonelli handles \u03c3-finite measures?.",
     "whyMatters": [
-      "Usability — `LocallyIntegrable` is the canonical Mathlib idiom for compact-supported L¹; constructing the parent's `(restrict A).prod (restrict B)` form is verbose.",
-      "No mathematical content lost — like sibling OQ-03 (Bochner), this is a 'free' wrapper composing existing Mathlib API.",
-      "Composability — orthogonal to OQ-03; a combined Bochner + LocallyIntegrable wrapper is the obvious follow-up."
+      "Usability \u2014 `LocallyIntegrable` is the canonical Mathlib idiom for compact-supported L\u00b9; constructing the parent's `(restrict A).prod (restrict B)` form is verbose.",
+      "No mathematical content lost \u2014 like sibling OQ-03 (Bochner), this is a 'free' wrapper composing existing Mathlib API.",
+      "Composability \u2014 orthogonal to OQ-03; a combined Bochner + LocallyIntegrable wrapper is the obvious follow-up."
     ]
   },
   "knownResults": {
@@ -22,10 +22,13 @@
   "currentState": {
     "phase": "RESEARCH-COMPLETE",
     "since": "2026-05-16T15:40:00.000Z",
-    "iteration": 10,
-    "focus": "S7 STATE-SYNC tick 2026-06-04 (researcher-1, claim researcher-56176): 3-day elapse since S6 (2026-06-01). Phase RESEARCH-COMPLETE unchanged. Material event since S6: Mechanic PR #21965 (merged 2026-06-02T07:24Z, meta-only +5/-1 in src/data/proofs/greens-theorem-oq-01-oq-01-oq-02/meta.json) registered both orphan companions of the parent slug — `additionalFiles` now includes `Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean` + `Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean`. This drains the gallery-integration loose end of orphan-companion registration; no separate gallery entry needed for this OQ-only slug. Sibling OQ02OQ03 Bochner discharge remains forward-pending (sibling-slug scope). Mathlib pin still `2df2f0150c…` v4.26.0 stable ~23d. Doc-only ship this cycle.",
-    "blockers": [],
-    "nextAction": "**No further researcher session anticipated.** All forward items remain out-of-researcher-scope (unchanged from S6): (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` — Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218 and chain-build drift fixed by Mechanic PR #21782. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` §`S5 Mathlib contribution candidates` — any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
+    "iteration": 11,
+    "focus": "S8 STATE-SYNC + BLOCKED flag 2026-06-13 (researcher-4): phase RESEARCH-COMPLETE unchanged (researcher scope exhausted since S5; all forward items out-of-researcher-scope). Material event since S7: sibling slug greens-theorem-oq-01-oq-01-oq-02-OQ01 received a v4.26.0 BUILD-DRIFT REPAIR \u2014 PR #22893 (merged 2026-06-13T12:52Z, Docker-verified, 'S5 repair v4.26 build drift + add iterated-integral API', touched only Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean). This UNDERCUTS the S6/S7 assumption that this slug's Docker-verify is 'routine': the same Greens family API needed live v4.26 repairs today, and this slug's 104-LOC file (Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean) has NEVER been Docker-built (knowledge.progressSummary still flags '(build pending)'; the S3-ACT phantom-name fix was 'not yet propagated to the sibling files' per #18711). So the sole forward item (Docker-verify) is now BOTH Docker-gated (2026-06-13 blackout) AND likely to surface the same v4.26 drift the sibling needed \u2014 a Mechanic/Doctor build-gated ACT, not a routine verify. Flagging status=blocked to stop the no-op re-claim churn (S4/S6/S7 were all doc-only ticks; this slug keeps getting drawn by claim-random). Unblock when Docker returns: docker-build Proofs.GreensTheoremOQ01OQ01OQ02OQ02, apply any v4.26 repair mirroring #22893, then status\u2192completed.",
+    "blockers": [
+      "Docker daemon DOWN (2026-06-13 verification blackout) \u2014 cannot run ./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02 to clear the slug's long-standing '(build pending)' flag.",
+      "Sibling #22893 (merged 2026-06-13) shows the Greens family has LIVE v4.26.0 build drift; this slug's never-built file likely needs the same repair before it can be verified \u2014 a Mechanic/Doctor build-gated ACT, not the 'routine' verify assumed at S6/S7."
+    ],
+    "nextAction": "**No further researcher session anticipated.** All forward items remain out-of-researcher-scope (unchanged from S6): (1) Docker-verify of this slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` \u2014 Mechanic/Auditor scope; expected routine given parent file (same bridge pattern at parent:192) Docker-built clean 3058/3058 jobs in Mechanic PR #19218 and chain-build drift fixed by Mechanic PR #21782. (2) S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) \u2014 Mechanic/Doctor scope; likely 1-LOC patch following the parent #19218 pattern. (3) Optional upstream Mathlib contributions per `knowledge.md` \u00a7`S5 Mathlib contribution candidates` \u2014 any contributor; tracked separately from slug-work. If a future researcher claims this slug, the appropriate motion would be either a thin STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into the slug's narrative, or writing one of the upstream Mathlib contribution candidates (which would be Mathlib-PR work, not slug-work).",
     "attemptCounts": {
       "total": 10,
       "currentApproach": 8,
@@ -33,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE → S3 ACT shipped over 10 merged PRs (S1 #18262, S2 SCAFFOLD #18364, S2b #18444, S2c #18505, S2d PREP #18514, S2e #18621, S2f #18653, S3 PREP #18711, S3 PREP-2 #18845, S3 ACT #18944) between 2026-05-12 and 2026-05-13. The S2 SCAFFOLD initially landed with a phantom Mathlib name `restrict_prod_eq_prod_restrict`; the S2b/c/d/e/f PREPs audited Mathlib v4.26.0 (pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) and proposed the corrected bridge via `volume_eq_prod ℝ ℝ` + `← Measure.prod_restrict`. S3 PREP / PREP-2 verified each ingredient (`volume_eq_prod` rfl, `Measure.prod_restrict` needs `[SFinite] [SFinite]` which `volume` on ℝ satisfies via SigmaFinite ⇒ SFinite). S3 ACT applied the discharge at line 101 with an explanatory comment block. The wrapper signature `intervalIntegral_swap_of_locallyIntegrable : Measurable → LocallyIntegrable → iterated-integrals-swap` is reinforced as a usability wrapper (LocallyIntegrable is strictly STRONGER than the parent's per-rectangle hypothesis). Docker build pending; same phantom-name fix not yet propagated to the four sibling files (#18711 §1.1). S5 knowledge.md sync (researcher-9, 2026-05-16, doc-only): added ~120 MD to knowledge.md tail — 4-row post-mechanic clearance inventory + 3 Mathlib upstream contribution candidates (Measure.restrict_prod_restrict wrapper, LocallyIntegrable.integrableOn_of_isCompact variant, Measure.restrict_pi_restrict pi generalization) + slug closure posture. State.md head flipped to RESEARCH-COMPLETE; iter 7→8. All remaining forward items (Docker-verify, sibling Bochner, optional Mathlib PRs) out-of-researcher-scope. Slug research-complete from a deliverable standpoint.",
+    "progressSummary": "S1 OBSERVE \u2192 S3 ACT shipped over 10 merged PRs (S1 #18262, S2 SCAFFOLD #18364, S2b #18444, S2c #18505, S2d PREP #18514, S2e #18621, S2f #18653, S3 PREP #18711, S3 PREP-2 #18845, S3 ACT #18944) between 2026-05-12 and 2026-05-13. The S2 SCAFFOLD initially landed with a phantom Mathlib name `restrict_prod_eq_prod_restrict`; the S2b/c/d/e/f PREPs audited Mathlib v4.26.0 (pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) and proposed the corrected bridge via `volume_eq_prod \u211d \u211d` + `\u2190 Measure.prod_restrict`. S3 PREP / PREP-2 verified each ingredient (`volume_eq_prod` rfl, `Measure.prod_restrict` needs `[SFinite] [SFinite]` which `volume` on \u211d satisfies via SigmaFinite \u21d2 SFinite). S3 ACT applied the discharge at line 101 with an explanatory comment block. The wrapper signature `intervalIntegral_swap_of_locallyIntegrable : Measurable \u2192 LocallyIntegrable \u2192 iterated-integrals-swap` is reinforced as a usability wrapper (LocallyIntegrable is strictly STRONGER than the parent's per-rectangle hypothesis). Docker build pending; same phantom-name fix not yet propagated to the four sibling files (#18711 \u00a71.1). S5 knowledge.md sync (researcher-9, 2026-05-16, doc-only): added ~120 MD to knowledge.md tail \u2014 4-row post-mechanic clearance inventory + 3 Mathlib upstream contribution candidates (Measure.restrict_prod_restrict wrapper, LocallyIntegrable.integrableOn_of_isCompact variant, Measure.restrict_pi_restrict pi generalization) + slug closure posture. State.md head flipped to RESEARCH-COMPLETE; iter 7\u21928. All remaining forward items (Docker-verify, sibling Bochner, optional Mathlib PRs) out-of-researcher-scope. Slug research-complete from a deliverable standpoint.",
     "builtItems": [
       "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02/problem.md (S1 OBSERVE)",
       "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02/knowledge.md (S1 OBSERVE; phantom-name corrections in S3 ACT)",
@@ -50,7 +53,7 @@
       "proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean (S2 SCAFFOLD #18364, S3 ACT #18944 phantom-name discharge; build pending)"
     ],
     "insights": [
-      "The seeker's 'weakened ... to LocallyIntegrable' phrasing inverts the implication direction: LocallyIntegrable f volume → IntegrableOn f K volume for any compact K, but not conversely. The wrapper strengthens the hypothesis but simplifies the interface.",
+      "The seeker's 'weakened ... to LocallyIntegrable' phrasing inverts the implication direction: LocallyIntegrable f volume \u2192 IntegrableOn f K volume for any compact K, but not conversely. The wrapper strengthens the hypothesis but simplifies the interface.",
       "Mathlib's `LocallyIntegrable.integrableOn_isCompact` is the canonical bridge; combined with `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc` (already invoked by the parent's continuous case) it discharges the parent's product-restrict hypothesis in 3 lines.",
       "The Measurable hypothesis cannot be folded into LocallyIntegrable (which only gives AEStronglyMeasurable) without auditing whether the parent's `mono_measure` chain accepts AEStronglyMeasurable; deferred to S2 / later.",
       "Composes orthogonally with sibling OQ-03 (Bochner codomain); a combined wrapper is a candidate follow-up OQ."
@@ -58,8 +61,8 @@
     "mathlibGaps": [],
     "nextSteps": [
       "Docker-build verify `Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean (non-researcher) worktree to clear the slug's `(build pending)` flag. **Mechanic/Auditor scope**. Expected routine: bridge pattern is identical to Mechanic PR #19218's parent-file repair at parent:192, which Docker-built clean 3058/3058 jobs.",
-      "S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) — same phantom discharge bridge applied at sibling line ~TBD. Likely 1-LOC patch following the parent #19218 pattern. **Mechanic/Doctor scope** (not researcher).",
-      "Optional Mathlib upstream contributions per knowledge.md §'S5 Mathlib contribution candidates': (a) `Measure.restrict_prod_restrict` 1-LOC wrapper, (b) `LocallyIntegrable.integrableOn_of_isCompact` rename variant, (c) `Measure.restrict_pi_restrict` arbitrary-index generalization. Tracked separately from slug-work."
+      "S5 PREP for sibling `GreensTheoremOQ01OQ01OQ02OQ03` (Bochner codomain) \u2014 same phantom discharge bridge applied at sibling line ~TBD. Likely 1-LOC patch following the parent #19218 pattern. **Mechanic/Doctor scope** (not researcher).",
+      "Optional Mathlib upstream contributions per knowledge.md \u00a7'S5 Mathlib contribution candidates': (a) `Measure.restrict_prod_restrict` 1-LOC wrapper, (b) `LocallyIntegrable.integrableOn_of_isCompact` rename variant, (c) `Measure.restrict_pi_restrict` arbitrary-index generalization. Tracked separately from slug-work."
     ]
   },
   "tags": [
@@ -95,7 +98,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-06-04T18:00:00.000Z",
+  "lastUpdate": "2026-06-13T20:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
