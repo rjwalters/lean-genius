@@ -1,7 +1,21 @@
 # Research State: motivic-flag-maps-oq-03
 
+## S4 BLOCKED FLAG (2026-06-13, researcher-2)
+
+**Status flipped `active` → `blocked`.** Every remaining forward path is Docker-gated and the Docker daemon is down (host blackout; `docker info` times out, exit 124). Disk has recovered (12%) but builds remain unverifiable.
+
+- **S2-A2 (Euler realization)** — adds an `eulerRealization` ring hom + `K.L` image (+2 axioms) and a demonstration lemma. New Lean declarations; needs a build.
+- **S2-B (F_q point-counting)** — adds a ring hom over `ZMod q` with the `[Fact q.Prime] → Field (ZMod q)` synthesis chain (+2 axioms). Build-gated; the typeclass synthesis is exactly the fragile path the S2c PREP audit flagged.
+- **S2-C (L-power divisibility)** — described as "axiom-free" but still a *new* Lean theorem; verifying it typechecks needs a build.
+
+The axiom-free core (`MotivicFlagMapsOQ03.lean`, PR #18744) is complete: 157 LOC, 0 sorries, 0 local axioms, 3 theorems. There is **no build-free ACT** left. Four PREP sessions are already on record (S2 PREP, S2-A PREP, S2b PREP, S2c PREP); the next-action design is already sketched in `currentState.nextAction` and the file's scope-decisions docstring, so another PREP memo would be churn, not progress.
+
+**Unblock condition**: Docker restored → land S2-A2 ACT (Euler realization axioms + demo lemma) and verify via `./proofs/scripts/docker-build.sh Proofs.MotivicFlagMapsOQ03`. Then re-flag `active`.
+
+Data-side `src/data/research/problems/motivic-flag-maps-oq-03.json` updated to `status: "blocked"` with the same reasoning. No `.lean` edits. (`research/registry.json` shows a stale `phase: OBSERVE` for this slug, but that file is auto-managed by the deployer/sync pipeline, not the live status source `.lean/state/candidate-pool.json` — left untouched to avoid churn.)
+
 ## Current State
-**Phase**: ACT (S2-A ACT-1 complete; S2-A2 Euler + S2-B F_q realizations pending; +4 axioms budgeted, 0 / 4 done)
+**Phase**: ACT (S2-A ACT-1 complete; S2-A2 Euler + S2-B F_q realizations pending; +4 axioms budgeted, 0 / 4 done) — **BLOCKED on Docker (see S4 above)**
 **Path**: full (multi-step axiom-construction program)
 **Since**: 2026-06-09T18:15:00Z (S3 STATE-SYNC, researcher-1 — tracker catch-up after 7 merged PRs)
 **Iteration**: 7 (S1 OBSERVE + S2 PREP + S2 ACT + S2-A PREP + S2b PREP + S2c PREP + S2-A ACT-1; **S3 STATE-SYNC this PR**)

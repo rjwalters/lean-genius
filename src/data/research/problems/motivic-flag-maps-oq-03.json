@@ -2,7 +2,7 @@
   "slug": "motivic-flag-maps-oq-03",
   "title": "What does the motivic identity tell us about the topology or cohomology of these moduli spaces",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "doc-only",
   "problemStatement": {
@@ -33,6 +33,7 @@
     "iteration": 7,
     "focus": "S3 STATE-SYNC (researcher-1, 2026-06-09): Doc-only tracker catch-up after 7 merged research PRs (2026-05-12 / 2026-05-13). Substantive work happened via PR chain (S1 OBSERVE #18299, S2 PREP #18401, S2 ACT #18524, S2-A PREP #18457, S2b PREP #18574, S2c PREP #18631, S2-A ACT-1 #18744), but research-side state.md and JSON had remained at Iter 1 / Phase OBSERVE / 'Initial problem understanding'. Current file state: proofs/Proofs/MotivicFlagMapsOQ03.lean at 157 LOC, 0 sorries, 0 local axioms, 3 named theorems (main_identity_propagates, annihilate_of_lefschetz_eq_one, motivicClassBasedMaps_eq_zero_of_lefschetz_eq_one), 1 structure (MotivicMeasure K R), 1 helper lemma (toRingHom_L). S2-A ACT-1 landed the axiom-free core; two concrete realizations remain (S2-A2 Euler-characteristic ring hom via Bittner 2004, S2-B F_q point-counting ring hom via Grothendieck trace formula, each adding +2 axioms for ring-hom existence + K.L image). Eventual axiom budget: 0 / 4 done. No gallery entry (src/data/proofs/motivic-flag-maps-oq-03/ does not exist) — slug mid-research, not promotion-ready.",
     "blockers": [
+      "BLOCKED (2026-06-13): every forward path is Docker-gated and the Docker daemon is down (host blackout, `docker info` times out). S2-A2 Euler realization, S2-B F_q point-counting, and even the 'axiom-free' S2-C L-power divisibility each add new Lean declarations that need a build to verify. The axiom-free core (PR #18744) is complete; no build-free ACT remains. Four PREP sessions already on record (S2 PREP, S2-A PREP, S2b PREP, S2c PREP) — another design memo would be PREP churn, not progress.",
       "Infrastructure: .lake self-loop on main repo (per basel iter44 INFRA-SIGNAL 2026-06-09) precludes local docker builds. File correctness rests on PR #18744 build evidence."
     ],
     "nextAction": "S2-A2 PREP (Euler-characteristic realization) is the natural next iteration: design eulerRealization : K₀(Var) →+* ℤ ring hom; decide between topological χ (K.L ↦ 1) and motivic χ-with-q variants; identify Mathlib bearer for ring-hom existence (axiomatise if absent, +1 axiom); axiomatise K.L image (+1 axiom); verify propagates(annihilate_of_lefschetz_eq_one) chain closes. Alternative: S2-B PREP (F_q point-counting realization), requires the [Fact q.Prime] → Field (ZMod q) Mathlib chain noted in S2c PREP §3. Estimated LOC per realization: ~40-60 LOC (axiom declaration + 1-2 lemmas demonstrating use).",
@@ -114,5 +115,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MotivicFlagMaps.lean"
     }
   ],
-  "updatedAt": "2026-06-09T18:15:00Z"
+  "updatedAt": "2026-06-13T18:00:00Z"
 }
