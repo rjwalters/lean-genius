@@ -1,8 +1,8 @@
 {
   "slug": "angle-trisection-cos-20-gal-oq-01-oq-02",
   "title": "What is |Gal(minpoly(cos(π/n))/ℚ)| for general n, and can this be proved in L...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "MATURE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-26T08:56:57.648Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "MATURE",
+    "since": "2026-06-10T11:00:00.000Z",
+    "iteration": 3,
+    "focus": "Headline OQ resolved: |Gal(minpoly(cos(π/n))/ℚ)| = φ(2n)/2 is proved for all n ≥ 3 in the child file AngleTrisectionCos20GalOQ01OQ02OQ02.lean (gallery entry angle-trisection-cos-20-gal-oq-01-oq-02-oq-02; cos_pi_gal_card / gal_order_eq_totient_div2_general, 0 sorries, 0 axioms), and the n=5 case is proved in this entry's own file (cos_36_gal_card, 0/0). Session 3 (2026-06-10) reconciled the open-question tracker against those sibling/child proofs.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Entry is mature; the headline general-formula OQ is closed. Optional follow-ons (tracked as new OQs, not blockers): (a) strengthen the cardinality equality |Gal| = φ(2n)/2 to a group isomorphism Gal ≃ (ℤ/2nℤ)ˣ/⟨−1⟩; (b) bespoke n=4/n=6 mini-files replicating the n=5 Vieta+splitting-field architecture; (c) the sin(π/n)/cos(kπ/n) generalisation.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -67,7 +67,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.648Z",
-  "lastUpdate": "2026-04-26T08:56:57.648Z",
+  "lastUpdate": "2026-06-10T11:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
