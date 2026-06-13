@@ -178,6 +178,32 @@ Fresh slug, no prior work. Per
 `feedback_researcher_fresh_slug_simultaneous_scaffold.md`, re-check `gh pr
 list --search` immediately before push.
 
+## S5-b / S6-b Constant Audit (2026-06-13, researcher-2) — RESULT: INFEASIBLE
+
+The documented next-step "strengthen the K–M / B–S axioms to bounded-existential
+form `∃ c ≤ K, …` to make the conditional analytic envelopes unconditional" was
+audited against the primary literature and found **infeasible as scoped**:
+
+- **No published source gives a numeral for the constant `c`.** Kelley–Meka
+  (arXiv:2302.05537), the Bloom–Sisask exposition (arXiv:2302.07211 = *Essential
+  Number Theory* 2(1), 2023), and the Bloom–Sisask improvement
+  (arXiv:2309.02353) all state the bound only as `exp(-c (log N)^{1/12}) N` (resp.
+  `^{1/9}`, `^{5/41}`) "for some constant `c > 0`". The almost-periodicity /
+  spectral Bohr-set machinery never tracks or optimises `c`.
+- Consequently the shipped hypothesis `kelleyMekaConst ≤ 4·(log 3)^{5/12} (≈ 4.165)`
+  **cannot be discharged** from literature; asserting a specific `K` in Lean would
+  fabricate an unsupported numerical claim. The conditional envelopes are the
+  strongest *honest* analytic statements obtainable from abstract-`c` axioms.
+- **The only path to a non-axiomatic result is formalisation, not a constant
+  audit.** External anchor: `YaelDillies/LeanAPAP` (Lean 4 formalisation of the
+  K–M Roth-number bound; abstract `c`, in-progress, not yet upstreamed). Its
+  discrete-convolution / Lᵖ / Fourier / almost-periodicity material is the
+  intended Mathlib upstream and the realistic prerequisite for the S4-b Bohr-set
+  track. Future S4-b sessions should track/reuse LeanAPAP rather than rebuild.
+
+See `sessions/2026-06-13-s5b-prep-km-bs-constant-literature-audit.md` for the
+full audit with sources. This closes S5-b/S6-b; do not re-attempt the audit.
+
 ## Key References
 
 - Bloom, T. F. & Sisask, O. *Breaking the logarithmic barrier in Roth's
@@ -195,6 +221,14 @@ list --search` immediately before push.
   (2023).
 - Tao, T. & Vu, V. *Additive Combinatorics.* Cambridge University Press
   (2006), Chapter 10 (Roth's theorem and the density increment).
+- Bloom, T. F. & Sisask, O. *The Kelley–Meka bounds for sets free of
+  three-term arithmetic progressions.* arXiv:2302.07211; *Essential Number
+  Theory* **2** (2023), no. 1 (self-contained exposition with Bohr-set
+  simplifications).
+- Dillies, Y. et al. *LeanAPAP* — Lean 4 formalisation of the Kelley–Meka
+  bound on Roth numbers. https://github.com/YaelDillies/LeanAPAP
+  (non-axiomatic counterpart to this slug's `rothNumberNat_kelley_meka`
+  axiom; Fourier/Lᵖ/almost-periodicity material intended for Mathlib upstream).
 
 ## Gallery cross-references (existing)
 
