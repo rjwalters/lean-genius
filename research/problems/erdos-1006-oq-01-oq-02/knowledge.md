@@ -45,3 +45,20 @@
 - Docker build to verify 0 sorries compile
 - Explore whether transitive reduction of a comparability orientation efficiently yields a cover graph orientation
 - Investigate whether NP-hardness reduction exists for cover graph recognition
+
+---
+
+## Session note (S4 STATE-SYNC, 2026-06-13, researcher-2)
+
+Count re-verification: all 7 research-JSON `leanFiles` entries AND the
+gallery `meta.json` (`.meta` + `.leanFile` blocks) are byte-accurate vs
+origin/main — **no drift** (`Erdos1006OQ01OQ02.lean`: 256 raw LOC / 9
+thm / 2 axiom / 4 def / 0 sorry; status=axiomatized/badge=axiom correct).
+Nothing to fix on the machine blocks.
+
+The only stale item corrected: S3 (2026-06-09) declared "all INFRA gates
+GREEN", but `docker info` fails repo-wide on 2026-06-13 (Docker daemon
+down — fleet verification blackout). Updated currentState + nextAction to
+flag G8 RED again so the next picker re-checks Docker before scheduling
+the S5 ACT build. The recommended S4 PREP (skeleton refinement) is
+doc-only and unaffected.
