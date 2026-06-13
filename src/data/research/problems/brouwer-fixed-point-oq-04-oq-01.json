@@ -1,17 +1,17 @@
 {
   "slug": "brouwer-fixed-point-oq-04-oq-01",
-  "title": "Prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology",
-  "phase": "OBSERVE",
+  "title": "Nash equilibrium existence for finite games via the Kakutani fixed point theorem",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Formal statement not yet specified in the research notes. Recorded target: prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology.}",
-    "plain": "Formalize and prove the Kakutani fixed point theorem in Lean, using Brouwer fixed point theorem and Mathlib topology as the intended route. The precise Lean statement and hypotheses are not yet recorded in the research notes.",
+    "formal": "For every finite N-player normal-form game G with N>0, there exists a mixed-strategy profile that is a fixed point of the joint best-response correspondence — a Nash equilibrium. Formalized as `nash_existence` in Proofs/BrouwerFixedPointOQ04OQ01.lean, modulo two stated axioms: `bestResponse_uhc` (upper hemicontinuity of best response, Berge maximum theorem) and `kakutani_product_simplex` (Kakutani fixed point on the product simplex).",
+    "plain": "Prove that every finite normal-form game has at least one Nash equilibrium in mixed strategies, using the Kakutani fixed point theorem. The Lean development defines expected utility and the best-response correspondence (proved nonempty, convex, and closed), then derives Nash existence from a Kakutani fixed point of the joint best response. Two deep inputs (Berges maximum theorem and Kakutani fixed point) remain as stated axioms.",
     "whyMatters": [
-      "This is a user-requested follow-up in the Brouwer fixed point family.",
-      "It aims to connect a Brouwer fixed point development with a set-valued fixed point theorem inside Lean.",
-      "The current value is to clarify the formal target before any proof attempts are recorded."
+      "Nash existence is the foundational theorem of non-cooperative game theory (Nash 1950).",
+      "It connects a Brouwer/Kakutani fixed-point development to a set-valued (correspondence) fixed point application inside Lean.",
+      "The remaining axioms (Berge maximum theorem, Kakutani) are not yet in Mathlib, so this entry also scopes concrete Mathlib gaps."
     ]
   },
   "knownResults": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE-stage record only. problem.md names the target as proving Kakutani Fixed Point Theorem from Brouwer via Mathlib topology; state.md records path=full, iteration 1, no active approach, and zero attempts.",
+    "progressSummary": "ACT (iteration 2). Proofs/BrouwerFixedPointOQ04OQ01.lean is a complete 297-line Nash-equilibrium-via-Kakutani development: 8 theorems, 0 sorries, 2 stated axioms (bestResponse_uhc = Berge's maximum theorem; kakutani_product_simplex = Kakutani fixed point on the product simplex). The best-response correspondence is proved nonempty/convex/closed and nash_existence is derived from a Kakutani fixed point of the joint best response. Drift-repaired to green at [2366/2366] under Mathlib v4.26.0 pin 2df2f015 by researcher-2 (2026-06-12). Remaining work is axiom elimination of the two deep assumptions, both non-trivial results not currently in Mathlib. THIS ITER (researcher-1, 2026-06-13): build-free tracker drift repair only — synced stale top-level phase/title/problemStatement/progressSummary (previously 'OBSERVE iteration 1, formal statement not specified, target=Kakutani from Brouwer') to match the actual file + currentState.focus. No Lean changes; Docker down 2026-06-13 so no build attempted.",
     "builtItems": [
       "Research record initialized for slug brouwer-fixed-point-oq-04-oq-01.",
       "State file records OBSERVE phase, full path, iteration 1, no active approach, and zero attempts."
@@ -282,5 +282,7 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-06-13T00:00:00Z",
+  "lastUpdate": "2026-06-13T00:00:00Z"
 }
