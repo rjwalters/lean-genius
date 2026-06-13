@@ -1,6 +1,54 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S11 ACT (this PR) — `EquivModel` / T1b via symmetric Horn closure
+## Phase: S4 ACT (this PR) — Refinement lattice via image profiles
+
+**File**: appended to `proofs/Proofs/TractatusOntologySpectrum.lean`
+(307 → ~450 LOC; +14 declarations: 3 defs + 11 theorems, 0 sorries,
+0 axioms, **Docker-verified 3059 jobs clean**). Implements S4 PREP
+#18470 in full, plus the arbitrary-suprema bonus from §"Arbitrary joins":
+
+- `ImageProfiles M` — the set of Boolean profiles `S → Prop` realised by
+  some world of `M`; `imageProfiles_nonempty` (non-empty by `M.nonempty`).
+- `refines_iff_subset_imageProfiles` — **R-Lattice-1**: `Refines` is
+  exactly subset-inclusion on image profiles. The load-bearing reduction
+  of a `WorldModel` question to a `Set (S → Prop)` question.
+- `refinesEquiv_iff_image_eq` — mutual refinement ↔ equal profile sets.
+- `imageProfiles_freeModel` — **top element**: `ImageProfiles (freeModel S)
+  = Set.univ`.
+- `JoinModel` (`⊕`) + `imageProfiles_join` + `refines_join_iff` — binary
+  **join (LUB)** = profile union; always defined.
+- `MeetModel` (Boolean-profile pullback) + `imageProfiles_meet` +
+  `refines_meet_iff` — binary **meet (GLB)** = profile intersection,
+  defined exactly when the intersection is non-empty.
+- `iJoinModel` (`Σ`) + `imageProfiles_iJoin` + `refines_iJoin_iff` —
+  **arbitrary join (LUB)** of a non-empty indexed family, witnessing a
+  complete join-semilattice modulo refinement-equivalence.
+
+**Structural result.** `(WorldModel S, Refines)` modulo refinement
+equivalence is a **bounded-above, non-empty-meet-partial, complete
+join-semilattice**: top = `freeModel S`, arbitrary joins, partial binary
+meets, and **no bottom** (image profiles are forced non-empty).
+
+**Correction to earlier state.md note.** The previous "Not yet addressed"
+remark proposed *pointwise intersection of `holds`-relations* (worlds in
+`M₁.W × M₂.W`) as the candidate meet. S4 PREP #18470 showed that
+candidate (`ConjModel`) is **neither ≤ nor ≥ the true GLB** in general —
+its image is `{α ∧ β | α ∈ Im M₁, β ∈ Im M₂}`, generically distinct from
+`Im M₁ ∩ Im M₂`. The correct meet is the **Boolean-profile pullback**
+`MeetModel`, now realised in Lean.
+
+**Closes the last remaining ACT candidate.** With S4 landed, all five S1
+OBSERVE open questions and all PREP-deferred candidates (S3 Horn, S4
+lattice, S5 uniqueness, S6 EquivModel, S7 spectrum-invariance) are
+realised in Lean. The slug's T0/T1a/T1b/T2/T3 spectrum architecture is
+complete on the proven tiers (T2/T3 out of scope per S1 OBSERVE).
+
+See `sessions/2026-06-11-s4-act-refines-lattice.md` for the deliverable
+inventory and build verification.
+
+---
+
+## Phase: S11 ACT — `EquivModel` / T1b via symmetric Horn closure
 
 **New file**: `proofs/Proofs/TractatusOntologyEquiv.lean` (138 LOC, 3 defs +
 3 theorem-or-Equiv constructions, 0 sorries, 0 axioms, **Docker-verified

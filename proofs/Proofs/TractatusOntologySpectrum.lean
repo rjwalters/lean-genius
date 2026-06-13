@@ -304,4 +304,156 @@ theorem freeModel_not_refines_weatherModel :
     (hf bad .clouds).mpr hc
   cases habs
 
+/-! ## S4 — Refinement lattice via image profiles
+
+The refinement preorder `Refines` collapses to subset-inclusion on the
+set of Boolean profiles each model realises (`ImageProfiles`). Under that
+reduction the lattice operations on `(WorldModel S, Refines)` are exactly
+the Set-theoretic operations on `Set (S → Prop)`:
+
+- **join** = profile union (`JoinModel`, always defined; arbitrary
+  suprema via `iJoinModel`);
+- **meet** = profile intersection (`MeetModel`, defined exactly when the
+  intersection is non-empty — there is no bottom element);
+- **top** = `freeModel S` (`imageProfiles_freeModel`).
+
+See `research/problems/tractatus-ontology-oq-06/sessions/2026-05-13-s4-prep-refines-lattice-via-image-profiles.md`.
+-/
+
+/-- The **image profile set** of a world model: the Boolean assignments
+    `S → Prop` actually realised by some world of `M`. -/
+def ImageProfiles (M : WorldModel S) : Set (S → Prop) :=
+  { w | ∃ v : M.W, ∀ s, w s ↔ M.holds v s }
+
+/-- The image profile set is non-empty: the profile of any world of `M`
+    (which exists by `M.nonempty`) inhabits it. -/
+theorem imageProfiles_nonempty (M : WorldModel S) :
+    (ImageProfiles M).Nonempty := by
+  obtain ⟨v⟩ := M.nonempty
+  exact ⟨fun s => M.holds v s, ⟨v, fun _ => Iff.rfl⟩⟩
+
+/-- **R-Lattice-1.** `Refines` is exactly subset-inclusion on image
+    profiles.  This is the load-bearing reduction: a structural question
+    on `WorldModel S` becomes a Set-theoretic question on `Set (S → Prop)`. -/
+theorem refines_iff_subset_imageProfiles (M M' : WorldModel S) :
+    Refines M M' ↔ ImageProfiles M ⊆ ImageProfiles M' := by
+  constructor
+  · rintro ⟨f, hf⟩ w ⟨v, hv⟩
+    refine ⟨f v, fun s => ?_⟩
+    rw [hv s]; exact hf v s
+  · intro hsub
+    classical
+    refine ⟨fun v => Classical.choose (hsub ⟨v, fun _ => Iff.rfl⟩), fun v s => ?_⟩
+    exact Classical.choose_spec (hsub ⟨v, fun _ => Iff.rfl⟩) s
+
+/-- Mutual refinement is exactly equality of image profile sets. -/
+theorem refinesEquiv_iff_image_eq (M M' : WorldModel S) :
+    Refines M M' ∧ Refines M' M ↔ ImageProfiles M = ImageProfiles M' := by
+  rw [refines_iff_subset_imageProfiles, refines_iff_subset_imageProfiles,
+      Set.Subset.antisymm_iff]
+
+/-- **Top element.**  `freeModel S` realises every Boolean profile, so its
+    image profile set is the entire ambient `Set (S → Prop)`.  This is the
+    image-profile reformulation of `refines_freeModel`. -/
+theorem imageProfiles_freeModel : ImageProfiles (freeModel S) = Set.univ := by
+  ext w
+  exact ⟨fun _ => trivial, fun _ => ⟨w, fun _ => Iff.rfl⟩⟩
+
+/-- The **disjoint-sum join** of two world models: its worlds are the
+    disjoint union of the two world-types, with `holds` inherited
+    componentwise. -/
+def JoinModel (M₁ M₂ : WorldModel S) : WorldModel S where
+  W        := M₁.W ⊕ M₂.W
+  holds    := fun w s => Sum.elim (fun v₁ => M₁.holds v₁ s)
+                                  (fun v₂ => M₂.holds v₂ s) w
+  nonempty := M₁.nonempty.map Sum.inl
+
+/-- The join realises exactly the union of the two profile sets. -/
+theorem imageProfiles_join (M₁ M₂ : WorldModel S) :
+    ImageProfiles (JoinModel M₁ M₂)
+      = ImageProfiles M₁ ∪ ImageProfiles M₂ := by
+  ext w
+  constructor
+  · rintro ⟨v, hv⟩
+    cases v with
+    | inl v₁ => exact Or.inl ⟨v₁, hv⟩
+    | inr v₂ => exact Or.inr ⟨v₂, hv⟩
+  · rintro (⟨v, hv⟩ | ⟨v, hv⟩)
+    · exact ⟨Sum.inl v, hv⟩
+    · exact ⟨Sum.inr v, hv⟩
+
+/-- **LUB property.**  `JoinModel M₁ M₂` is the least upper bound of `M₁`
+    and `M₂` in the refinement preorder. -/
+theorem refines_join_iff (M₁ M₂ M : WorldModel S) :
+    Refines (JoinModel M₁ M₂) M ↔ Refines M₁ M ∧ Refines M₂ M := by
+  rw [refines_iff_subset_imageProfiles, imageProfiles_join,
+      refines_iff_subset_imageProfiles, refines_iff_subset_imageProfiles,
+      Set.union_subset_iff]
+
+/-- The **Boolean-profile pullback (meet)** of two world models, defined
+    exactly when the intersection of their image profile sets is
+    non-empty.  Its worlds are the shared profiles themselves. -/
+def MeetModel (M₁ M₂ : WorldModel S)
+    (h : (ImageProfiles M₁ ∩ ImageProfiles M₂).Nonempty) : WorldModel S where
+  W        := { wp : (S → Prop) // wp ∈ ImageProfiles M₁ ∩ ImageProfiles M₂ }
+  holds    := fun wp s => wp.val s
+  nonempty := ⟨⟨h.some, h.some_mem⟩⟩
+
+/-- The meet realises exactly the intersection of the two profile sets. -/
+theorem imageProfiles_meet (M₁ M₂ : WorldModel S)
+    (h : (ImageProfiles M₁ ∩ ImageProfiles M₂).Nonempty) :
+    ImageProfiles (MeetModel M₁ M₂ h)
+      = ImageProfiles M₁ ∩ ImageProfiles M₂ := by
+  ext w
+  constructor
+  · rintro ⟨⟨wp, hwp⟩, hh⟩
+    have heq : w = wp := funext (fun s => propext (hh s))
+    rw [heq]; exact hwp
+  · intro hw
+    exact ⟨⟨w, hw⟩, fun _ => Iff.rfl⟩
+
+/-- **GLB property.**  `MeetModel M₁ M₂ h` is the greatest lower bound of
+    `M₁` and `M₂` in the refinement preorder, on the (non-empty
+    intersection) domain where it is defined. -/
+theorem refines_meet_iff (M M₁ M₂ : WorldModel S)
+    (h : (ImageProfiles M₁ ∩ ImageProfiles M₂).Nonempty) :
+    Refines M (MeetModel M₁ M₂ h)
+      ↔ Refines M M₁ ∧ Refines M M₂ := by
+  rw [refines_iff_subset_imageProfiles, imageProfiles_meet,
+      refines_iff_subset_imageProfiles, refines_iff_subset_imageProfiles,
+      Set.subset_inter_iff]
+
+/-- The **arbitrary join** of a non-empty indexed family of world models
+    (`Σ`-type construction), witnessing that the refinement preorder is a
+    complete join-semilattice (modulo refinement-equivalence). -/
+def iJoinModel {I : Type} [Nonempty I] (M : I → WorldModel S) :
+    WorldModel S where
+  W        := Σ i : I, (M i).W
+  holds    := fun w s => (M w.1).holds w.2 s
+  nonempty := by
+    obtain ⟨i⟩ := ‹Nonempty I›
+    obtain ⟨v⟩ := (M i).nonempty
+    exact ⟨⟨i, v⟩⟩
+
+/-- The arbitrary join realises exactly the union of the families'
+    profile sets. -/
+theorem imageProfiles_iJoin {I : Type} [Nonempty I] (M : I → WorldModel S) :
+    ImageProfiles (iJoinModel M) = ⋃ i, ImageProfiles (M i) := by
+  ext w
+  simp only [Set.mem_iUnion]
+  constructor
+  · rintro ⟨⟨i, v⟩, hv⟩
+    exact ⟨i, v, hv⟩
+  · rintro ⟨i, v, hv⟩
+    exact ⟨⟨i, v⟩, hv⟩
+
+/-- **Arbitrary LUB property.**  `iJoinModel M` is the least upper bound of
+    the family `M` in the refinement preorder. -/
+theorem refines_iJoin_iff {I : Type} [Nonempty I]
+    (M : I → WorldModel S) (N : WorldModel S) :
+    Refines (iJoinModel M) N ↔ ∀ i, Refines (M i) N := by
+  rw [refines_iff_subset_imageProfiles, imageProfiles_iJoin,
+      Set.iUnion_subset_iff]
+  simp_rw [refines_iff_subset_imageProfiles]
+
 end Tractatus
