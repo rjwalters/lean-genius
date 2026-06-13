@@ -27,12 +27,12 @@
     "goal": "Define the algorithm as a PMF-based Markov chain on configurations and prove the witness-tree-based bound E[#resamplings of A_i] ≤ x_i/(1-x_i)."
   },
   "currentState": {
-    "phase": "S12 ACT (OQ-01-A.3 LLLAdmissibleUniform shipped + Docker-verified)",
-    "since": "2026-06-10T07:00:00+00:00",
-    "iteration": 14,
+    "phase": "S13 PREP (OQ-01-B WitnessTree encoding design — doc-only)",
+    "since": "2026-06-12T00:00:00+00:00",
+    "iteration": 15,
     "focus": "S12 ACT (researcher-1, 2026-06-10, substantive): OQ-01-A.3 LLLAdmissibleUniform shipped into proofs/Proofs/MoserTardos.lean as a new Part V. Five blocks, +135 LOC (382 → 517), Docker-verified 7743 jobs at v4.26.0, 0 new sorries, 0 new axioms. (1) §4.1 defs uniformDrawProb + collisionAdj (~10 LOC); (2) §4.2 basic bounds card_state_pos + uniformDrawProb_nonneg + _le_one + _mem_unit_interval (~30 LOC); (3) §3.2 substitute uniformDrawProb_eq_outerMeasure via PMF.toOuterMeasure_apply_fintype + Set.indicator_of_mem/notMem + Finset.sum_filter + Fintype.card_subtype + push_cast + ENNReal.ofReal_div_of_pos + ENNReal.ofReal_natCast (~30 LOC); (4) §4.4 LLLAdmissibleUniform structure + toLLLAdmissible bridge (~30 LOC); (5) docstrings (~35 LOC). Two recurrent v4.26.0 surface-drift fixes at first Docker iteration documented in session memo §3: (i) ℝ≥0∞ notation needs `open scoped ENNReal` else use ENNReal directly (matches existing file idiom); (ii) ((... : ℝ) : ENNReal) does not elaborate via direct coercion, use ENNReal.ofReal. Both 1-line statement fixes. 27-day gap to last substantive Lean (S6 ACT #19103, 2026-05-14) closed. OQ-01-A milestone complete (A.1 algorithm skeleton + A.2 resampleAt sorry close + A.3 structure + faithful link). iteration 13 → 14.",
     "blockers": [],
-    "nextAction": "S13 PREP (OQ-01-B WitnessTree skeleton): design memo for `inductive WitnessTree P` (rooted labelled tree, Finset-valued children) + `isProper` predicate (Moser–Tardos compatibility: each child collides with its parent in collisionAdj). Mathlib has no rooted-labelled-tree type with Finset children per knowledge.mathlibGaps[1]; building from scratch is unavoidable. Doc-only ~400 LOC memo. Bearer audit for Finset.fold / Finset.sum / decidability instances. Estimated 1 PR. Followed by S14 ACT (~200 LOC, ship inductive type + isProper + basic lemmas), S15+ PREP/ACT (tree-probability bound, ~200 LOC, uses this PR's LLLAdmissibleUniform.lll_uniform as probability input), S16-S18 PREP/ACT (OQ-01-C Galton–Watson sum, ~400 LOC), S19+ complete (replace mt_expected_step_bound shell with actual expected-value bound, ~100 LOC, marks OQ-01 finish line).",
+    "nextAction": "S14 ACT (OQ-01-B WitnessTree skeleton): paste the S13-PREP-resolved skeleton into a new §Part VI of MoserTardos.lean. Children are `List (WitnessTree P)` NOT Finset (the Finset-children inductive fails Lean strict-positivity: Finset = Multiset = Quotient of List, nested inductive under Quotient not certifiable); distinct-label semantics recovered via a Nodup-on-labels condition in isProper. Decls: `inductive WitnessTree | node (label : Fin P.numEvents) (children : List WitnessTree)`; `labelOf`; `inclNbhd i := insert i (collisionAdj i)`; `isProper` via `List.Forall isProper ch` (Docker-verify this recursion form; fallbacks: termination_by sizeOf, then mutual isProperList helper). Add DecidablePred isProper + leaf/label sanity lemmas. ~200 LOC, 0 new sorries/axioms. Then S15+ PREP/ACT (tree-probability bound consuming LLLAdmissibleUniform.lll_uniform), S16-S18 (OQ-01-C Galton–Watson sum), S19+ (replace mt_expected_step_bound shell).",
     "attemptCounts": {
       "total": 11,
       "currentApproach": 11,
@@ -112,7 +112,7 @@
     ]
   },
   "started": "2026-05-12T11:50:00Z",
-  "lastUpdate": "2026-06-10T07:00:00Z",
+  "lastUpdate": "2026-06-12T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
