@@ -27,8 +27,8 @@
     "lineCount": 762,
     "assumptions": "2 sorries: (1) erdos_101_oq_01 (the main open conjecture, $100 Erdős prize, primary ε–N form); (2) solymosi_stojakovic_lower_bound (the 2013 lower bound, recorded statement — construction itself uses algebraic geometry over finite fields and is deferred). The Mathlib-idiom form erdos_101_oq_01_isLittleO is no longer an independent sorry: it is *derived* from the main conjecture via the chain erdos_101_oq_01_conjecture → rate_form ↔ isLittleO_form (lemmas erdos_101_oq_01_conjecture_iff_rate_form and erdos_101_oq_01_rate_form_iff_isLittleO), so the file's open content is the single primary conjecture plus the deferred Solymosi–Stojaković construction. S14 (2026-06-03) unifies the S12 surrogate `maxFourPointLines` with the S13 genuine sup `maxCountAtSize` via the pointwise bridge `maxCountAtSize_le_maxFourPointLines` (uniform lift of `improved_upper_bound`) and propagates the `O(n²)` certificate to the sup via `maxCountAtSize_isBigO_n_squared`. S3 (2026-05-12) discharged the S2 corollary `erdos_three_halves_conjecture_refuted` from the lower bound via elementary real-analysis arithmetic (specialising to $C = 1/2$, using `Real.exp_one_lt_d9` to get $\\log m > 1$ for $m \\geq 3$, then `Real.rpow_lt_rpow_of_exponent_lt`). All other supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness, IsBigO certificates for surrogate + true sup, isLittleOh ↔ Mathlib IsLittleO bridge) are unconditional and axiom-free. 0 axioms remain — every assumption is a deferred proof obligation rather than a permanent axiomatisation.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 19,
-    "definitionCount": 6,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "substantiveTheoremCount": 17
   },
   "sections": [
@@ -36,14 +36,14 @@
       "id": "header-setup",
       "title": "File Header and Setup",
       "startLine": 1,
-      "endLine": 56,
+      "endLine": 67,
       "summary": "Documentation header outlining the OQ-01 conjecture, status (open, $100 prize), the Solymosi–Stojaković lower bound, and the file's deliverables. Imports the parent `Erdos101Problem`.",
       "mathContext": "OQ-01 is the o(n²) refinement question: every elementary upper bound is currently $\\Theta(n^2)$ (the trivial $n^2$, the $n(n-1)/12$ improved bound, the per-point $(n-1)/3$ bound)."
     },
     {
       "id": "asymptotic-vocabulary",
       "title": "Asymptotic vocabulary",
-      "startLine": 57,
+      "startLine": 68,
       "endLine": 80,
       "summary": "Defines `IsLittleOh_n_squared` (an `ε–N` formulation for `ℕ → ℕ`) and `BoundsAtRate` (a predicate parameterising rate bounds on `fourPointLineCount` over no-five-collinear sets).",
       "mathContext": "The `ε–N` form is chosen for direct readability; equivalence with `Asymptotics.IsLittleO` is deferred to S3."
@@ -52,41 +52,73 @@
       "id": "open-conjecture",
       "title": "The OPEN question, in two equivalent forms",
       "startLine": 81,
-      "endLine": 119,
+      "endLine": 115,
       "summary": "States `erdos_101_oq_01_conjecture` (primary ε–N form) and `erdos_101_oq_01_rate_form` (witness-function form). The theorem `erdos_101_oq_01` records the primary form as a `sorry` — this is the OPEN question.",
       "mathContext": "Each form is the standard expression of the question in combinatorial geometry; both unfold to the assertion that the maximum four-point line count grows strictly slower than $n^2$."
     },
     {
       "id": "easy-cases",
       "title": "Easy cases the conjecture subsumes",
-      "startLine": 120,
-      "endLine": 175,
+      "startLine": 116,
+      "endLine": 173,
       "summary": "Proves unconditionally: (1) `fourPointLineCount_zero_of_small` (n < 4 ⇒ count is 0); (2) `fourPointLineCount_o_n_squared_holds_below_four` (the OQ-01 ε–N bound holds vacuously for every $|P| \\leq 3$); (3) `fourPointLineCount_le_quadratic` (the real-valued $\\leq n^2$ trivial upper bound).",
       "mathContext": "These witness that the OPEN content is genuinely the $o(n^2)$ refinement: the trivial $O(n^2)$ regime is already known."
     },
     {
       "id": "rate-bounds",
       "title": "Known bounds via `BoundsAtRate`",
-      "startLine": 176,
-      "endLine": 217,
+      "startLine": 174,
+      "endLine": 208,
       "summary": "Records the elementary rates: `bounds_at_rate_quadratic_unconditional` (rate $n^2$) and `bounds_at_rate_quadratic_over_twelve` (rate $n^2/12$, weakening of `improved_upper_bound`'s $n(n-1)/12$ to avoid the ℕ subtraction cast subtlety; asymptotically equivalent).",
       "mathContext": "These are the strongest *elementary* rate bounds. None is $o(n^2)$ — closing the gap is the open content."
     },
     {
+      "id": "s11-isbigo-bridge",
+      "title": "S11 ACT: IsBigO / IsLittleO bridge to Mathlib idiom",
+      "startLine": 209,
+      "endLine": 334,
+      "summary": "Bridges the slug-local asymptotic vocabulary to Mathlib's `Asymptotics` idiom on `Filter.atTop`. Defines the aggregator `maxFourPointLines n := n*(n-1)/12` (noncomputable) with its `IsBigO atTop (·^2)` certificate `maxFourPointLines_isBigO_n_squared` and the `NoFiveCollinear`-gated per-`P` corollary `fourPointLineCount_le_max`. The bridge lemma `isLittleOh_n_squared_iff_isLittleO` equates the slug-local strict-`<` predicate with `Asymptotics.IsLittleO` (using the standard `c := ε/2` lift), and `erdos_101_oq_01_isLittleO_form` plus `erdos_101_oq_01_rate_form_iff_isLittleO` give the Mathlib-idiom existential restatement of the OPEN question.",
+      "mathContext": "Phrasing OQ-01 in Mathlib's canonical `IsBigO`/`IsLittleO` idiom lets the result be cited and consumed by downstream gallery work without abandoning the elementary ε–N forms; the `NoFiveCollinear` hypothesis is load-bearing (9 collinear points give `C(9,4)=126` four-point lines)."
+    },
+    {
+      "id": "conjecture-iff-rate",
+      "title": "conjecture ↔ rate_form: collapsing two open sorries into one",
+      "startLine": 335,
+      "endLine": 398,
+      "summary": "Supplies the missing equivalence `erdos_101_oq_01_conjecture_iff_rate_form` linking the primary ε–N conjecture to the witness-function `rate_form`. The `→` direction takes the witness `maxCountAtSize`; the `←` direction is direct from the witness's `o(n²)` decay. Combined with the S11 `rate_form ↔ isLittleO_form` bridge, this lets `erdos_101_oq_01_isLittleO` be *derived* from the single primary conjecture `erdos_101_oq_01` rather than carried as an independent `sorry` — the file's open content collapses to one conjecture (plus the deferred Solymosi–Stojaković construction).",
+      "mathContext": "Reducing the open obligations to a single `sorry` (`erdos_101_oq_01`) is a hygiene win: the three equivalent forms (ε–N, rate, Mathlib-idiom) are now provably interchangeable, so any future closure of one closes all."
+    },
+    {
+      "id": "s14-surrogate-truesup",
+      "title": "S13/S14: true size-indexed supremum and surrogate unification",
+      "startLine": 399,
+      "endLine": 496,
+      "summary": "Introduces the genuine size-indexed extremal quantity `maxCountAtSize n := sSup {fourPointLineCount Q | |Q|=n, NoFiveCollinear Q}` with `maxCountAtSize_bddAbove`, `le_maxCountAtSize`, and `maxCountAtSize_lt_of_forall`. S14 then unifies it with the elementary surrogate via `maxCountAtSize_le_maxFourPointLines`, letting the true sup inherit the `O(n²)` certificate (`maxCountAtSize_isBigO_n_squared`). Closes with `erdos_101_oq_01_conjecture_iff_rate_form` and the derived OPEN main theorem `erdos_101_oq_01_isLittleO`.",
+      "mathContext": "`maxCountAtSize` is the precise quantity OQ-01 asks about; bounding it by the surrogate `maxFourPointLines = n(n-1)/12` transfers the elementary `O(n²)` bound to the genuine extremal function without duplicating cast bookkeeping (empty case via `sSup ∅ = 0`)."
+    },
+    {
       "id": "obstructions",
-      "title": "Proof obstructions and next iterations",
-      "startLine": 218,
-      "endLine": 264,
+      "title": "The OPEN refinement, its consequences, and proof obstructions",
+      "startLine": 497,
+      "endLine": 557,
       "summary": "Documents the Solymosi–Stojaković lower bound $n^{2-O(1/\\sqrt{\\log n})}$ refuting Erdős's $\\Theta(n^{3/2})$ conjecture; the obstructions from Szemerédi–Trotter and trivial double counting; and the S2/S3 next-iteration plan (lower-bound formalisation, `Asymptotics.IsBigO` connection).",
       "mathContext": "The gap between known lower $n^{2-O(1/\\sqrt{\\log n})}$ and known upper $O(n^2)$ is the substantive content of OQ-01."
     },
     {
       "id": "solymosi-stojakovic",
-      "title": "S2/S3: Solymosi–Stojaković Lower Bound + Refutation of $\\Theta(n^{3/2})$",
-      "startLine": 265,
-      "endLine": 381,
+      "title": "S2 ACT: Solymosi–Stojaković Lower Bound + Refutation of $\\Theta(n^{3/2})$",
+      "startLine": 558,
+      "endLine": 674,
       "summary": "Records the Solymosi–Stojaković 2013 existential lower bound `solymosi_stojakovic_lower_bound` ($\\forall C > 0, \\exists N, \\forall n \\geq N, \\exists P$ with $|P| = n$, no-five-collinear, and $\\text{fourPointLineCount}\\,P \\geq n^{2-C/\\sqrt{\\log n}}$) as a `theorem ... := by sorry` (construction deferred, statement registered). The corollary `erdos_three_halves_conjecture_refuted` (no global $O(n^{3/2})$ upper bound exists) is fully discharged in S3 from the lower bound via elementary real-analysis arithmetic: specialise $C = 1/2$, use $\\exp 1 < 3 \\leq m$ to get $\\log m > 1$, hence $\\sqrt{\\log m} > 1$, hence $2 - 1/(2\\sqrt{\\log m}) > 3/2$, then `Real.rpow_lt_rpow_of_exponent_lt`.",
       "mathContext": "$\\Omega(n^{2-O(1/\\sqrt{\\log n})}) > \\Omega(n^{3/2})$ for large $n$; the Solymosi–Stojaković construction over finite fields realises this asymptotic. S3 separates the easy half (refutation from the lower bound) from the hard half (the construction itself, deferred). Recorded as `theorem ... := by sorry` rather than `axiom` to keep the file axiom-free."
+    },
+    {
+      "id": "s4-constructive-refutation",
+      "title": "S4 ACT: constructive refutation of the $\\Theta(n^{3/2})$ conjecture",
+      "startLine": 675,
+      "endLine": 762,
+      "summary": "Provides the positive (constructive) form `erdos_three_halves_conjecture_refuted_constructive`: for every threshold `N` there exists a no-five-collinear planar point set `P` with `|P| ≥ N` and strictly more than `|P|^{3/2}` four-point lines. The proof reuses the S3 chain verbatim through `Real.rpow_lt_rpow_of_exponent_lt` (specialise `solymosi_stojakovic_lower_bound` at `C = 1/2`, then `m ≥ 3 ⟹ log m > 1 ⟹ √(log m) > 1 ⟹ 2 − 1/(2√(log m)) > 3/2`), changing only the final assembly to deliver the witness directly. Sorry-free and axiom-free; depends only on the deferred `solymosi_stojakovic_lower_bound`.",
+      "mathContext": "The constructive form is more useful downstream than the negated-existence S3 refutation: it produces explicit witnesses rather than contradicting a hypothetical bound. Both forms are mutually derivable and share the same single deferred proof obligation; the file's sorry count stays 2 and axiom count stays 0."
     }
   ],
   "overview": {
@@ -131,8 +163,8 @@
     "namespace": "Erdos101OQ01",
     "lineCount": 762,
     "axiomCount": 0,
-    "theoremCount": 19,
-    "definitionCount": 6,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "path": "Proofs/Erdos101OQ01.lean",
     "sorries": 2
   },
