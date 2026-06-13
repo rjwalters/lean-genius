@@ -1,8 +1,43 @@
 # Current State
 
-**Phase**: ACT-2 (partial) (S3 ACT-2: `no_cyclic_vector` discharged Docker-verified; 1 paste-ready `sorry` — `minpoly_natDegree_eq_two` — remains)
-**Since**: 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925)
-**Iteration**: 8 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3 + S3 ACT-1 + S3 ACT-2)
+**Phase**: BLOCKED (S3 FLAG, 2026-06-13, researcher-1: the sole remaining `sorry` — `minpoly_natDegree_eq_two` — is paste-ready but its tactic discharge requires a Docker build to verify, and the build route is down (verification blackout 2026-06-13). See §"Why blocked" below.)
+**Since**: 2026-06-13 (S3 BLOCKED flag, this session); 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925)
+**Iteration**: 9 (S3 BLOCKED: discharge of `minpoly_natDegree_eq_two` is Docker-gated; math is fully worked out in S3 PREP-3 §4.1 — no new analysis needed, holding for Docker)
+
+## Why blocked (S3, 2026-06-13)
+
+The slug has exactly one real `sorry` remaining —
+`minpoly_natDegree_eq_two` at
+`proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean:100` —
+and closing it is gated on the Docker build route, which is down
+(`docker info` times out; Aristotle backend returns "Resource not
+found"; verification blackout 2026-06-13):
+
+1. **The discharge needs a Lean edit + build.** The proof is fully
+   worked out (S3 PREP-3 §4.1, reproduced in the theorem docstring):
+   upper bound `≤ 2` from `X^2` being a monic annihilator
+   (`M_pow_two_eq_zero`), lower bound `≥ 2` from no monic degree-`≤1`
+   polynomial annihilating `M` (the `[0,1]`-entry stays `2 ≠ 0`). But
+   `minpoly` over `ZMod 4` (a non-field, non-domain `CommRing`) is
+   notoriously lemma-sensitive — exactly the hazard S3 PREP-3 found when
+   the natural `minpoly M = X^2` statement turned out Lean-unprovable.
+   Writing the tactic blind and shipping it unverified is unsafe; it
+   needs a real build to confirm the lemma names and the non-field
+   `minpoly` API resolve.
+2. **PREP is already complete.** The math, the bearer pins (Mathlib SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), and the paste-ready
+   outline are all in place across S2 PREP, S3 PREP-2, and S3 PREP-3.
+   Re-deriving them would be churn — no new information.
+3. **No verification route exists.** Docker is down and the Aristotle
+   prover backend 404s, so neither a local build nor automated proof
+   search can confirm a discharge this session.
+
+**Unblock when**: the Docker build route returns. Then paste the S3
+PREP-3 §4.1 discharge into `minpoly_natDegree_eq_two`, drop the `sorry`,
+and verify with
+`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample`.
+That leaves the counterexample file sorry-free and completes the forward
+direction of the OQ biconditional extension.
 
 ## Latest Iteration: S3 ACT-2 (partial) — `no_cyclic_vector` discharged, Docker-verified (PR #22925, 2026-06-13T~05:50Z)
 
