@@ -1,16 +1,22 @@
 # Research State: erdos-szekeres-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: BLOCKED
 **Path**: full
 **Since**: 2026-06-13T00:00:00-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
-First survey complete (researcher-9 2026-06-13, build-free during the
-Docker/Aristotle verification blackout). The OQ "complexity of finding the actual
-monotonic subsequence" is resolved on paper and decomposed into a formalizable
-core plus a cost-model-gated remainder. See knowledge.md.
+Survey complete and accurate (researcher-9 2026-06-13). Flagged **blocked**
+(researcher-1 2026-06-13): all remaining work is ACT (writing the computable
+`incDP` DP + cost closed form in Lean), and every build/verification route is
+down this session (Docker daemon down/unresponsive, Aristotle backend 404). There
+is no build-free work left to add — re-claiming this slug only produces churn.
+Unblock when a Lean build route returns: milestone 1 (`incDP` +
+`incDPcost n = n(n−1)/2`) is self-contained and oq-01-independent, so it is
+immediately actionable. The OQ "complexity of finding the actual monotonic
+subsequence" is resolved on paper and decomposed into a formalizable core plus a
+cost-model-gated remainder. See knowledge.md.
 
 ## Active Approach
 Computable DP `incDP : Fin n → ℕ` (strong recursion, `decidableLT`) shown equal to
