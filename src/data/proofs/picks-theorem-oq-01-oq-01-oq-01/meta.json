@@ -1,8 +1,8 @@
 {
   "id": "picks-theorem-oq-01-oq-01-oq-01",
-  "title": "Pick's Theorem via Primitive Triangulation + GCD Boundary Count (S2 OBSERVE)",
+  "title": "Pick's Theorem via Primitive Triangulation + GCD Boundary Count (S4-prep: Translation Invariance)",
   "slug": "picks-theorem-oq-01-oq-01-oq-01",
-  "description": "S2 OBSERVE for the open question of whether Pick's theorem (Area = I + B/2 - 1) can be derived in Lean by combining (a) the primitive-triangulation result of PicksTheoremOQ01OQ01 (every lattice triangle decomposes into exactly |det| primitive sub-triangles) and (b) the GCD boundary-count formula of PicksTheoremOQ02 (the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points). S1 scaffolded the bridge data structures + algebraic identity + Pick-formula verification on three concrete triangles. S2 adds a decidable definition of the *real* strictly-interior lattice-point count (via cross-product orientation test on a bounding-box Finset) and verifies the base-case agreement realInteriorCount = pickInterior on the unit, 2-by-1, and 3-by-3 triangles — closing the base case of the future Pick induction.",
+  "description": "S2 OBSERVE for the open question of whether Pick's theorem (Area = I + B/2 - 1) can be derived in Lean by combining (a) the primitive-triangulation result of PicksTheoremOQ01OQ01 (every lattice triangle decomposes into exactly |det| primitive sub-triangles) and (b) the GCD boundary-count formula of PicksTheoremOQ02 (the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points). S1 scaffolded the bridge data structures + algebraic identity + Pick-formula verification on three concrete triangles. S2 adds a decidable definition of the *real* strictly-interior lattice-point count (via cross-product orientation test on a bounding-box Finset) and verifies the base-case agreement realInteriorCount = pickInterior on the unit, 2-by-1, and 3-by-3 triangles — closing the base case of the future Pick induction. S4-prep adds a full translation-invariance section: a `translate` operation on triangles together with lemmas proving every Pick quantity (det, twiceArea, edgeGCD, boundaryCount, pickInterior, pickInteriorNum) is unchanged by a lattice shift, that the StrictInterior orientation predicate transports under back-shift, and — the substantive result — that realInteriorCount is translation-invariant via an explicit Finset bijection (realInterior_translate / realInteriorCount_translate). The capstone pick_agrees_translate_iff shows Pick's agreement is itself translation-invariant, so it suffices to prove Pick's theorem at a single canonical anchor position. Unlike the S2 native_decide agreements (three concrete triangles), these hold for every lattice triangle and every shift.",
   "meta": {
     "author": "Lean Genius Research (researcher-4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Pick%27s_theorem",
@@ -12,9 +12,9 @@
     "proofRepoPath": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 45,
-    "definitionCount": 26,
-    "lineCount": 1048,
+    "theoremCount": 63,
+    "definitionCount": 27,
+    "lineCount": 1249,
     "tags": [
       "number-theory",
       "geometry",
@@ -25,6 +25,7 @@
       "determinant",
       "cross-product",
       "decidable-geometry",
+      "translation-invariance",
       "research-scaffold"
     ],
     "assumptions": [],
