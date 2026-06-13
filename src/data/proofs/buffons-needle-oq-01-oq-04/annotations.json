@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-buffon-oq04-01-header",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 4,
+      "endLine": 45
+    },
+    "type": "concept",
+    "title": "Coin Packaging: Reusing the C¹ Smooth-Noodle Bearer",
+    "content": "The header frames the file's contribution as packaging rather than new analysis. The parent file BuffonsNeedleOQ01.lean proved buffon_smooth_of_contDiff: for any C¹ planar curve γ on [a,b], the expected number of grid crossings is 2·arcLength(γ)/(πd). Buffon's coin is simply that theorem applied to a *closed* C¹ boundary curve, so 'perimeter' replaces 'arc length' and no integral is recomputed. The four numbered points enumerate exactly what is added here: the boundary-crossing corollary, the line-cut count (factor-of-two halving), the circle instance, and the shape-independence/sign structural lemmas. The file claims 0 axioms, 0 sorries, inheriting all analytic content from the bearer.",
+    "mathContext": "Bearer: $\\mathbb{E}[\\text{crossings}] = \\frac{2\\,\\mathrm{arcLength}(\\gamma)}{\\pi d}$ for $\\gamma \\in C^1([a,b];\\mathbb{R}^2)$. Coin specialization sets $\\mathrm{arcLength} = p$ (perimeter) by taking $\\gamma$ closed ($\\gamma a = \\gamma b$), giving $\\mathbb{E}[\\text{crossings}] = \\frac{2p}{\\pi d}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "buffon_smooth_of_contDiff",
+      "BuffonsNeedleOQ01",
+      "Cauchy mean-width formula",
+      "perimeter as arc length",
+      "0 axioms 0 sorries"
+    ],
+    "prerequisites": [
+      "BuffonsNeedleOQ01.lean (the C¹ bearer)",
+      "Buffon's needle problem",
+      "arc length of a planar curve"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq04-02-perimeter",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 54,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "boundaryPerimeter: Perimeter as Boundary Arc Length",
+    "content": "boundaryPerimeter γ a b is defined as planarArcLength γ a b — the perimeter of a convex body K is literally the arc length of a closed C¹ parametrisation of its boundary ∂K. The companion lemma boundaryPerimeter_nonneg unfolds the definition and discharges nonnegativity via intervalIntegral.integral_nonneg, since the arc-length integrand √(γ'ₓ² + γ'ᵧ²) is pointwise nonnegative (a Real.sqrt). This is the only definition specific to the convex-body setting; everything downstream is the bearer plus algebra.",
+    "mathContext": "$\\mathrm{perimeter}(K) = \\int_a^b \\lVert \\gamma'(t) \\rVert \\, dt = \\int_a^b \\sqrt{\\gamma_x'(t)^2 + \\gamma_y'(t)^2}\\, dt \\ge 0$ whenever $a \\le b$, since the integrand is a square root.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "planarArcLength",
+      "intervalIntegral.integral_nonneg",
+      "Real.sqrt_nonneg",
+      "rectifiable curve",
+      "noncomputable def"
+    ],
+    "prerequisites": [
+      "arc length integral",
+      "interval integral of a nonnegative integrand"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq04-03-boundary-crossings",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 69,
+      "endLine": 84
+    },
+    "type": "theorem",
+    "title": "buffon_coin_boundary_crossings: The One-Line Corollary",
+    "content": "The central result: the expected number of times the boundary ∂K crosses a grid of spacing d is 2·perimeter(K)/(πd). The proof is a single term — BuffonsNeedleOQ01.buffon_smooth_of_contDiff applied to the boundary curve — with no tactic block. Note that the closure hypothesis γ a = γ b is named _hclosed and is unused by the formula itself: it is carried only to certify that planarArcLength γ a b measures the *full* perimeter of a closed boundary rather than an open arc. This makes explicit that closure is a modeling assumption about what 'perimeter' means, not an analytic requirement.",
+    "mathContext": "$\\mathbb{E}[\\#\\{\\partial K \\cap \\text{grid}\\}] = \\dfrac{2 \\cdot \\mathrm{perimeter}(K)}{\\pi d}$. The result holds for any C¹ curve; closure ($\\gamma a = \\gamma b$) only guarantees the arc length equals the closed-boundary perimeter.",
+    "significance": "key",
+    "relatedConcepts": [
+      "buffon_smooth_of_contDiff",
+      "concreteSmoothExpectedCrossings",
+      "ContDiff ℝ 1",
+      "closed curve hypothesis",
+      "Buffon-Barbier theorem"
+    ],
+    "prerequisites": [
+      "buffon_smooth_of_contDiff",
+      "C¹ smoothness (ContDiff ℝ 1)",
+      "boundaryPerimeter"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq04-04-line-cuts",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 88,
+      "endLine": 111
+    },
+    "type": "theorem",
+    "title": "expectedLineCuts: Where Convexity Enters (the Factor of Two)",
+    "content": "expectedLineCuts := concreteSmoothExpectedCrossings / 2 converts boundary crossings into the count of grid *lines* that cut K. For a convex body, each cutting line meets the boundary ∂K in exactly two points, so the line count is half the crossing count: E[lines cutting K] = perimeter/(πd). The proof of buffon_coin_lineCuts unfolds the definition, rewrites with the boundary-crossing formula, and closes by ring. Crucially, the 0-or-2 dichotomy is encoded *definitionally* as the halving — Mathlib v4.26.0 has no convex-geometry bearer for 'a line meets a convex boundary in ≤ 2 points', and concreteSmoothExpectedCrossings is an integral model, not a literal point count. expectedLineCuts_nonneg confirms the sign via div_nonneg.",
+    "mathContext": "$\\mathbb{E}[\\#\\{\\text{lines cutting } K\\}] = \\tfrac{1}{2}\\,\\mathbb{E}[\\text{crossings}] = \\dfrac{p}{\\pi d}$. The halving is the *only* imprint of convexity, expressing that each cutting line crosses $\\partial K$ in exactly $2$ points.",
+    "significance": "key",
+    "relatedConcepts": [
+      "convex body 0-or-2 dichotomy",
+      "expectedLineCuts",
+      "div_nonneg",
+      "definitional encoding of an axiom",
+      "Cauchy-Crofton"
+    ],
+    "prerequisites": [
+      "buffon_coin_boundary_crossings",
+      "convexity and line-boundary intersection",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq04-05-circle",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 113,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "The Circle (the Coin): 4r/d Crossings, 2r/d Cut Lines",
+    "content": "The canonical instance: circle r := fun t => (r cos t, r sin t) on [0, 2π]. The supporting lemmas establish circle_contDiff (via fun_prop), circle_closed (cos/sin agree at 0 and 2π), and the component derivatives circle_deriv_fst = r·(-sin t), circle_deriv_snd = r·cos t. circle_perimeter computes the arc-length integrand to the constant r — using (r·(-sin t))² + (r·cos t)² = r²(sin²+cos²) = r² then √(r²) = r for r ≥ 0 — so ∫₀^{2π} r dt = 2πr. Feeding this into the corollaries gives circle_crossings = 4r/d and circle_lineCuts = 2r/d. The last is Laplace's classical Buffon's-coin probability: for r ≤ d/2 the diameter 2r ≤ d, and 2r/d = diameter/d.",
+    "mathContext": "$\\gamma(t) = (r\\cos t, r\\sin t)$, $\\lVert\\gamma'(t)\\rVert = \\sqrt{r^2(\\sin^2 t + \\cos^2 t)} = r$, so $p = \\int_0^{2\\pi} r\\,dt = 2\\pi r$. Hence $\\mathbb{E}[\\text{crossings}] = \\frac{2(2\\pi r)}{\\pi d} = \\frac{4r}{d}$ and $\\mathbb{E}[\\text{cut lines}] = \\frac{2r}{d} = \\frac{\\text{diameter}}{d}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.sin_sq_add_cos_sq",
+      "Real.sqrt_sq",
+      "intervalIntegral.integral_const",
+      "Laplace's coin probability diameter/d",
+      "fun_prop"
+    ],
+    "prerequisites": [
+      "trigonometric Pythagorean identity",
+      "derivative of cos and sin",
+      "circle_perimeter computation"
+    ]
+  },
+  {
+    "id": "ann-buffon-oq04-06-shape-independence",
+    "proofId": "buffons-needle-oq-01-oq-04",
+    "range": {
+      "startLine": 181,
+      "endLine": 207
+    },
+    "type": "theorem",
+    "title": "Shape Independence and Monotonicity in Perimeter",
+    "content": "Two structural corollaries that follow purely algebraically from the line-cut formula. coin_shape_independence: any two convex bodies of equal perimeter cut the same expected number of grid lines, regardless of shape — a circle, ellipse, or smoothed square with the same perimeter are indistinguishable to the line grid. The proof rewrites both sides with buffon_coin_lineCuts and applies the perimeter-equality hypothesis hP. coin_lineCuts_mono: the expected cut-line count is monotone in perimeter, proved by reducing to div_le_div_of_nonneg_right since π·d > 0. Together these capture the integral-geometric essence: only the perimeter, never the shape, controls the expected intersection count.",
+    "mathContext": "Shape independence: $p_1 = p_2 \\Rightarrow \\frac{p_1}{\\pi d} = \\frac{p_2}{\\pi d}$. Monotonicity: $p_1 \\le p_2 \\Rightarrow \\frac{p_1}{\\pi d} \\le \\frac{p_2}{\\pi d}$ since $\\pi d > 0$. The expected count is a perimeter functional invariant under shape.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "buffon_coin_lineCuts",
+      "div_le_div_of_nonneg_right",
+      "perimeter invariance",
+      "integral geometry",
+      "isoperimetric intuition"
+    ],
+    "prerequisites": [
+      "buffon_coin_lineCuts",
+      "monotonicity of division",
+      "positivity of π·d"
+    ]
+  }
+]
