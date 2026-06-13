@@ -35,6 +35,7 @@ import Mathlib.SetTheory.Cardinal.Regular
 import Mathlib.SetTheory.Ordinal.Arithmetic
 import Mathlib.SetTheory.Ordinal.Topology
 import Mathlib.Tactic
+import Proofs.Club.Basic
 
 namespace FodorPressingDown
 
@@ -44,84 +45,23 @@ open Cardinal Order Ordinal Set
 -- § Part I: Club and Stationary Sets
 -- ══════════════════════════════════════════════════════════════════
 
-/-- A set S is unbounded below ordinal o. -/
-def IsUnboundedBelow (S : Set Ordinal) (o : Ordinal) : Prop :=
-  ∀ α < o, ∃ β ∈ S, α < β ∧ β < o
-
-/-- A club (closed unbounded) set below ordinal o.
-    We require S ⊆ Iio o so that club members are definitionally below o. -/
-structure IsClubBelow (S : Set Ordinal) (o : Ordinal) : Prop where
-  subset_Iio : S ⊆ Iio o
-  closed : IsClosedBelow S o
-  unbounded : IsUnboundedBelow S o
-
-/-- A set S is stationary below o if it meets every club below o. -/
-def IsStationaryBelow (S : Set Ordinal) (o : Ordinal) : Prop :=
-  ∀ C : Set Ordinal, IsClubBelow C o → (S ∩ C).Nonempty
-
-theorem IsClubBelow.mem_lt {S : Set Ordinal} {o : Ordinal}
-    (hS : IsClubBelow S o) {α : Ordinal} (hα : α ∈ S) : α < o :=
-  hS.subset_Iio hα
-
-theorem IsClubBelow.mem_of_isAcc {S : Set Ordinal} {o : Ordinal}
-    (hS : IsClubBelow S o) {α : Ordinal} (hα : α < o) (hAcc : α.IsAcc S) : α ∈ S :=
-  hS.closed.forall_lt α hα hAcc
-
-/-- Iio o is a club when o is a limit ordinal. -/
-theorem isClubBelow_Iio_of_isSuccLimit {o : Ordinal} (ho : IsSuccLimit o) :
-    IsClubBelow (Iio o) o where
-  subset_Iio := fun _ h => h
-  closed := by
-    rw [isClosedBelow_iff]
-    intro p pltq _hacc
-    exact pltq
-  unbounded := fun α hα => by
-    have h1 : α + 1 < o := ho.succ_lt hα
-    exact ⟨α + 1, h1, lt_add_one α, h1⟩
+-- `IsUnboundedBelow`, `IsClubBelow`, `IsStationaryBelow`, `IsClubBelow.mem_lt`,
+-- `IsClubBelow.mem_of_isAcc`, and `isClubBelow_Iio_of_isSuccLimit` now live in
+-- `Proofs.Club.Basic` (namespace `Ordinal`); reached here via `open Ordinal`.
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part II: Diagonal Intersection
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Diagonal intersection: {γ < o | ∀ β < γ, γ ∈ f β} -/
-def diagInter (f : Ordinal → Set Ordinal) (o : Ordinal) : Set Ordinal :=
-  {γ | γ < o ∧ ∀ β, β < γ → γ ∈ f β}
-
-@[simp]
-theorem mem_diagInter {f : Ordinal → Set Ordinal} {o γ : Ordinal} :
-    γ ∈ diagInter f o ↔ γ < o ∧ ∀ β < γ, γ ∈ f β := Iff.rfl
-
-theorem diagInter_subset_Iio (f : Ordinal → Set Ordinal) (o : Ordinal) :
-    diagInter f o ⊆ Iio o :=
-  fun _ h => h.1
+-- `diagInter`, `mem_diagInter`, and `diagInter_subset_Iio` now live in
+-- `Proofs.Club.Basic` (namespace `Ordinal`); reached here via `open Ordinal`.
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part III: Diagonal Intersection of Clubs is a Club
 -- ══════════════════════════════════════════════════════════════════
 
-/-- **Diagonal Intersection is Closed** (0 sorries).
-
-    Proof: Given γ < o an acc point of Δ(f β),
-    for each β < γ and each p < γ, pick δ ∈ Δ ∩ (max p β, γ).
-    Then β < δ → δ ∈ f β, so f β ∩ (p,γ) ≠ ∅.
-    Hence γ is an acc point of f β → γ ∈ f β (by closure). -/
-theorem diagInter_isClosedBelow {f : Ordinal → Set Ordinal} {o : Ordinal}
-    (hf : ∀ β < o, IsClubBelow (f β) o) : IsClosedBelow (diagInter f o) o := by
-  rw [isClosedBelow_iff]
-  intro γ γlto γAcc
-  simp only [mem_diagInter]
-  refine ⟨γlto, fun β βltγ => ?_⟩
-  apply (hf β (βltγ.trans γlto)).closed.forall_lt γ γlto
-  rw [isAcc_iff]
-  refine ⟨γAcc.pos.ne', fun p pltγ => ?_⟩
-  -- max p β < γ since both p < γ and β < γ
-  obtain ⟨δ, hδ_mem⟩ := γAcc.forall_lt (max p β) (max_lt pltγ βltγ)
-  -- hδ_mem : δ ∈ diagInter f o ∩ Ioo (max p β) γ
-  simp only [mem_inter_iff, mem_diagInter, mem_Ioo] at hδ_mem
-  obtain ⟨⟨_, hδ_mem2⟩, hδ_lo, hδ_hi⟩ := hδ_mem
-  -- β < δ since β ≤ max p β < δ
-  have hβδ : β < δ := lt_of_le_of_lt (le_max_right p β) hδ_lo
-  exact ⟨δ, hδ_mem2 β hβδ, lt_of_le_of_lt (le_max_left p β) hδ_lo, hδ_hi⟩
+-- `diagInter_isClosedBelow` now lives in `Proofs.Club.Basic`
+-- (namespace `Ordinal`); reached here via `open Ordinal`.
 
 /-- **Diagonal Intersection is Unbounded** (zipper construction).
 
@@ -330,22 +270,8 @@ theorem fodor_aleph1
 -- § Part VI: Key Subsidiary Lemmas for Future Work
 -- ══════════════════════════════════════════════════════════════════
 
-/-- Every stationary set is nonempty. -/
-theorem IsStationaryBelow.nonempty {S : Set Ordinal} {o : Ordinal}
-    (hS : IsStationaryBelow S o) (ho : IsSuccLimit o) : S.Nonempty := by
-  have hC : IsClubBelow (Iio o) o := isClubBelow_Iio_of_isSuccLimit ho
-  obtain ⟨γ, hγS, _⟩ := hS (Iio o) hC
-  exact ⟨γ, hγS⟩
-
-/-- Stationary sets are closed under subelements in the following sense:
-    if T ⊆ S, S is stationary, and every club meeting S meets T,
-    then T is stationary. -/
-theorem IsStationaryBelow.of_subset {S T : Set Ordinal} {o : Ordinal}
-    (hS : IsStationaryBelow S o) (hTS : T ⊆ S)
-    (hMeet : ∀ C : Set Ordinal, IsClubBelow C o → (S ∩ C).Nonempty → (T ∩ C).Nonempty) :
-    IsStationaryBelow T o := by
-  intro C hC
-  exact hMeet C hC (hS C hC)
+-- `IsStationaryBelow.nonempty` and `IsStationaryBelow.of_subset` now live in
+-- `Proofs.Club.Basic` (namespace `Ordinal`); reached here via `open Ordinal`.
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part VII: Solovay Splitting — Step 1 (Limit Ordinals Form a Club)
@@ -523,7 +449,7 @@ theorem IsStationaryBelow.inter_isLimitOrdinals {S : Set Ordinal} {κ : Cardinal
     (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
     (hS : IsStationaryBelow S κ.ord) :
     IsStationaryBelow (S ∩ {α : Ordinal | α < κ.ord ∧ IsSuccLimit α}) κ.ord :=
-  hS.inter_isClubBelow hκ hκ_unc (isLimitOrdinals_isClubBelow hκ hκ_unc)
+  IsStationaryBelow.inter_isClubBelow hκ hκ_unc hS (isLimitOrdinals_isClubBelow hκ hκ_unc)
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Part IX: Solovay Splitting — Cofinal-Sequence Head (S2-β)
@@ -605,7 +531,7 @@ theorem exists_cofHead_constant_stationary_of_stationary {κ : Cardinal.{0}}
     ∃ β < κ.ord, IsStationaryBelow
       (S ∩ {α : Ordinal | α < κ.ord ∧ IsSuccLimit α} ∩ cofHead ⁻¹' {β}) κ.ord :=
   exists_cofHead_constant_stationary hκ hκ_unc
-    (hS.inter_isLimitOrdinals hκ hκ_unc) (fun _ hα => hα.2)
+    (IsStationaryBelow.inter_isLimitOrdinals hκ hκ_unc hS) (fun _ hα => hα.2)
 
 -- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
