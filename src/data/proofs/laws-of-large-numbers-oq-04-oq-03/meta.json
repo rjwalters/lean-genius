@@ -88,49 +88,49 @@
       "id": "sec-header",
       "title": "Header Docstring and Imports",
       "startLine": 1,
-      "endLine": 41,
+      "endLine": 46,
       "summary": "Module docstring states the file's purpose: discharge two of the three Glivenko–Cantelli axioms (`thresholdIndicator_integrable`, `integral_thresholdIndicator_eq_cdf`) by proving them from Mathlib's measure-theoretic API. Lists the four key Mathlib lemmas used (`Integrable.mono'`, `integral_indicator`, `integral_const`, `Measure.restrict_apply`) and records the resulting axiom-count reduction 3 → 1. Imports the parent `Proofs.LawsOfLargeNumbersOQ04` (for `thresholdIndicator`, `trueCDF`, `empiricalCDF`, and the structural independence/identity lifts), `Mathlib.MeasureTheory.Integral.Bochner.Set` (for `integral_indicator`), and `Mathlib.Tactic`. Opens `MeasureTheory`, `ProbabilityTheory`, `Set` and enters the `GlivenkoCantelli` namespace.",
       "mathContext": "Goal: replace `axiom thresholdIndicator_integrable` and `axiom integral_thresholdIndicator_eq_cdf` from the parent file with theorems whose proofs use only Mathlib. Result: $\\mathrm{axiomCount}_{\\mathrm{parent}} : 3 \\to 1$, with only the bracketing-uniformity axiom remaining open."
     },
     {
       "id": "sec-axiom-1",
       "title": "Proof of Axiom 1 — Threshold Indicators Are Integrable",
-      "startLine": 43,
-      "endLine": 63,
+      "startLine": 47,
+      "endLine": 68,
       "summary": "Theorem `thresholdIndicator_integrable_proved`: on a probability space, the threshold indicator $\\omega \\mapsto \\mathbf{1}_{X_0(\\omega) \\leq x}$ is integrable. Strategy: apply `Integrable.mono' (integrable_const (1 : ℝ))` — the constant function 1 is integrable on a finite measure space, and the indicator is dominated by it (values ∈ {0, 1}). The two side conditions are: (a) AEMeasurability via `(measurable_iic_indicator x).comp (hX 0)` (composition of a measurable random variable with the Borel indicator of $(-\\infty, x]$), and (b) the pointwise norm bound `‖indicator ω‖ ≤ 1`, discharged by `filter_upwards`/`split_ifs` into the two cases $X_0(\\omega) \\leq x$ and $X_0(\\omega) > x$.",
       "mathContext": "$\\|\\mathbf{1}_{X_0(\\omega) \\leq x}\\| \\leq 1 \\;\\text{a.e.}$; combined with $\\int_\\Omega 1 \\, d\\mu = 1 < \\infty$, `Integrable.mono'` produces $\\int_\\Omega |\\mathbf{1}_{X_0(\\omega) \\leq x}| \\, d\\mu \\leq 1 < \\infty$."
     },
     {
       "id": "sec-preimage-lemma",
       "title": "Preimage Indicator Factorization",
-      "startLine": 65,
-      "endLine": 75,
+      "startLine": 69,
+      "endLine": 80,
       "summary": "Private lemma `thresholdIndicator_eq_preimage_indicator_fun`: pointwise equality $\\mathbf{1}_{X_0(\\omega) \\leq x} = (X_0^{-1}((-\\infty, x])).\\mathrm{indicator}\\,(\\lambda \\_, 1)\\,\\omega$. Proved by `ext`/`simp only [thresholdIndicator, Set.indicator, Set.mem_preimage, Set.mem_Iic]`. This is the algebraic step that bridges from a real-valued function-of-a-random-variable indicator (range-side) to a set-of-the-domain indicator (domain-side), unlocking `integral_indicator`. The lemma is `private` because it is purely a rewrite consumed only inside the next theorem.",
       "mathContext": "$\\mathbf{1}_{X_0(\\omega) \\in (-\\infty, x]} = \\mathbf{1}_{\\omega \\in X_0^{-1}((-\\infty, x])}$ — definitional, but the orientation matters: `integral_indicator` requires the indicator of a *subset of the integration domain*, not of the codomain."
     },
     {
       "id": "sec-axiom-2",
       "title": "Proof of Axiom 2 — Integral of Indicator Equals CDF",
-      "startLine": 77,
-      "endLine": 103,
+      "startLine": 81,
+      "endLine": 107,
       "summary": "Theorem `integral_thresholdIndicator_eq_cdf_proved`: $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}] = F(x)$ where $F$ is `trueCDF X μ`. Five-step proof: (1) establish `MeasurableSet (X 0 ⁻¹' Iic x)` from `(hX 0) measurableSet_Iic`; (2) `simp_rw thresholdIndicator_eq_preimage_indicator_fun` to convert to the preimage-indicator form; (3) `rw integral_indicator hms` to convert the integral over $\\Omega$ of an indicator to a set integral over the preimage with the constant integrand 1; (4) chain `integral_const` + `Measure.restrict_apply MeasurableSet.univ` + `Set.univ_inter` + `smul_eq_mul` + `mul_one` to evaluate $\\int_{\\Omega \\cap s} 1 \\, d\\mu = (\\mu \\, s).\\mathrm{toReal}$; (5) `simp only [trueCDF]; congr 1; ext ω; simp [...]` to identify the preimage set $X_0^{-1}((-\\infty, x])$ with the trueCDF set $\\{\\omega \\mid X_0(\\omega) \\leq x\\}$.",
       "mathContext": "$\\int_\\Omega \\mathbf{1}_{X_0 \\leq x}\\,d\\mu = \\int_{X_0^{-1}((-\\infty, x])} 1\\,d\\mu = \\mu\\bigl(X_0^{-1}((-\\infty, x])\\bigr).\\mathrm{toReal} = \\mu\\bigl(\\{\\omega \\mid X_0(\\omega) \\leq x\\}\\bigr).\\mathrm{toReal} = F(x)$."
     },
     {
       "id": "sec-pointwise-corollary",
       "title": "Application — Axiom-Free Pointwise Convergence",
-      "startLine": 105,
-      "endLine": 135,
+      "startLine": 108,
+      "endLine": 140,
       "summary": "Theorem `empiricalCDF_pointwise_convergence_no_axiom`: for each fixed $x$, $F_n(x) \\to F(x)$ a.s. Composes the two newly-proved lemmas with the parent file's structural lifts (`thresholdIndicator_pairwise_indep`, `thresholdIndicator_identDistrib`) plus Mathlib's `strong_law_ae_real`. Step-by-step: get integrability from `thresholdIndicator_integrable_proved`, get pairwise independence and identical distribution from the parent's structural lifts (these are not integration axioms — just rewrites of indep/i.d. through the indicator function), apply SLLN, substitute the integral identity from `integral_thresholdIndicator_eq_cdf_proved` to identify the limit with $F(x)$, then `convert hω using 1; ext n; simp [empiricalCDF_eq_mean]` to extract the empirical-mean form. Result: pointwise GC has zero remaining integration axioms — only the bracketing-uniformity step is still open.",
       "mathContext": "$\\forall x \\in \\mathbb{R} \\colon \\quad F_n(x) := \\frac{1}{n}\\sum_{i=1}^n \\mathbf{1}_{X_i \\leq x} \\xrightarrow[n \\to \\infty]{\\text{a.s.}} F(x).$ The SLLN is applied to the i.i.d. indicator sequence; the limit $\\mathbb{E}[\\mathbf{1}_{X_0 \\leq x}]$ is identified with $F(x)$ via Axiom 2 (now a theorem)."
     },
     {
       "id": "sec-axiom-status",
       "title": "Axiom Status Summary",
-      "startLine": 137,
-      "endLine": 158,
-      "summary": "Closing block: enumerates the parent file's three axioms with status flags — `thresholdIndicator_integrable` ✓ proved, `integral_thresholdIndicator_eq_cdf` ✓ proved, `glivenko_cantelli_uniform` ✗ remains. Notes that the remaining axiom is mathematically genuine: the uniformity step requires choosing finitely many CDF continuity points with controlled jump sizes plus a finite-intersection-of-pointwise-convergence-events argument — infrastructure for the first piece (a constructive ε-cover by continuity points of a monotone $F$) is not yet present in Mathlib 4.26. Records the headline corollary `empiricalCDF_pointwise_convergence_no_axiom` as the file's take-away.",
-      "mathContext": "Axiom-elimination ledger: $\\{\\mathrm{integrable}, \\mathrm{integral{=}CDF}, \\mathrm{uniform}\\} \\to \\{\\mathrm{uniform}\\}$. The remaining axiom is the only piece that depends on Mathlib infrastructure not yet in 4.26."
+      "startLine": 141,
+      "endLine": 180,
+      "summary": "Closing block (`/-` comment): updated axiom-elimination ledger reflecting the chain's evolution. `thresholdIndicator_integrable` ✓ proved here; `integral_thresholdIndicator_eq_cdf` ✓ proved here; `glivenko_cantelli_uniform` ✓ proved in the bracketing companion `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` from the smaller real-analytic axiom `bracketingGrid_exists` (S4–S6), with the parent's axiom retired in S7. Records that `bracketingGrid_exists` was ✗ refuted in the S10 ACT (PR #20969, `bracketingGrid_exists_false : False`, build-verified) because the structure is provably empty for any CDF with an atom of mass `> ε`, and that `QuantileBracketingGrid` (S13 scaffold in the quantile companion) is the redesigned `Function.leftLim`-based structure that handles atomic CDFs. Emphasizes the headline corollary `empiricalCDF_pointwise_convergence_no_axiom` is independent of this design pivot and remains fully proved from Mathlib without integration axioms.",
+      "mathContext": "Axiom-elimination ledger: $\\{\\mathrm{integrable}, \\mathrm{integral{=}CDF}, \\mathrm{uniform}\\} \\to \\varnothing$ for this file's transitive closure (imports only `LawsOfLargeNumbersOQ04` + Mathlib). The chain's sole remaining axiom `bracketingGrid_exists` lives in the separately-imported bracketing companion and is the subject of the ongoing quantile redesign."
     }
   ],
   "mainTheorems": [
