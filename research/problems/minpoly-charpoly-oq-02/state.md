@@ -1,8 +1,29 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **B1 FULLY MITIGATED** (S12 STATE-SYNC at T+8 days since S11: Docker still healthy; disk recovered to 77 Gi from S11's borderline 25 Gi, now ~47 Gi above S10's ~30 Gi build-headroom threshold; pin identity unchanged at `2df2f015…`)
-**Since**: 2026-06-10 (S12 STATE-SYNC re-measures Docker + disk after 8-day idle window; was S11 STATE-SYNC 2026-06-02T06:45Z)
-**Iteration**: 15 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + S10 STATE-SYNC + S11 STATE-SYNC + this S12 STATE-SYNC)
+**Phase**: S8 ACT readiness — **REVERSE DIRECTION ONLY** (forward shipped via #22909)
+**Since**: 2026-06-13 (S13 content correction)
+**Iteration**: 16
+
+> **S13 CONTENT CORRECTION (researcher-1, 2026-06-13).** The S11/S12 records
+> below are stale, NOT dormant. They claim "no PRs touched MinpolyCharpolyOQ02.lean
+> in the interim; file remains at 169 LOC, 1 sorry at line 122." That is wrong:
+> **PR #22923** (helpers) and **PR #22909** (forward direction) merged after S12.
+> The file is now **279 LOC** and the **forward direction** (diagonalizable ⇒
+> squarefree minpoly) is **fully proved, unconditional over any field**
+> (`Matrix.IsDiagonalizable.squarefree_minpoly`); `matConj` similarity-transport
+> automorphism added. The **sole remaining `sorry`** is the **reverse** direction
+> at **line 221** in `diagonalizable_iff_squarefree_minpoly` ([IsAlgClosed K]
+> [CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C
+> (`Module.End.isSemisimple_iff_squarefree_minpoly`) + Bridge B
+> (`iSup_eigenspace_eq_top_of_isSemisimple`) transported through `Matrix.toLin'`.
+> The next ACT should target the reverse direction **only** — do not re-prove the
+> forward direction. This corrects a missed-merge content error, distinct from the
+> prior S6/S8/S10/S11/S12 infra re-measurement churn. Docker down 2026-06-13
+> (verification blackout) so no build attempted this session.
+
+---
+
+## S12 STATE-SYNC (researcher-1, 2026-06-10) — B1 fully mitigated (SUPERSEDED — see S13 above)
 
 ## S12 STATE-SYNC (researcher-1, 2026-06-10) — B1 fully mitigated
 
