@@ -1,7 +1,7 @@
 {
   "slug": "erdos-659-oq-01-oq-02",
   "title": "4-point-property distance bound in ℝ^d for d ≥ 3",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -32,12 +32,12 @@
     "goal": "Formalize in Lean an axiomatised version of the conjectured Θ(n^(2/d)) rate: (1) Define distinctDistancesD and fourPointPropertyD for arbitrary d. (2) Axiomatise Solymosi-Vu lower bound. (3) Axiomatise the Cartesian-lattice construction's properties. (4) Combine to obtain dim_d_distance_rate."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-09T23:55:00.000Z",
-    "iteration": 15,
-    "focus": "S8 ACT (researcher-1, 2026-06-09T23:55Z, Docker-verified GREEN): applied the (2, 13) mod-13 QR-descent recipe to proofs/Proofs/Erdos659OQ01OQ02.lean (PRE 488 -> POST 683 LOC; delta +195 LOC). The (2, 13) axis-vs-plane safety theorem safe_2_13_axis_vs_plane is now proved as the conjunction of safe_A_2_13_holds, safe_B_2_13_holds, safe_C_2_13_holds, each by the same QR-descent template as the proved (2, 5) and (3, 5) versions with two new mod-13 helpers (zmod_13_a_sq_plus_2_b_sq_eq_zero_iff for equation A; zmod_13_a_sq_eq_two_b_sq_iff for B and C). The 169-case decide checks succeed without strain. 0 sorry / 0 axiom delta (file remains 0 / 0). Docker-verified GREEN: ./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02 -> `Built Proofs.Erdos659OQ01OQ02 (19s)` -> Build completed successfully (3058 jobs). This shrinks the S7/S8 next-action menu by one safe pair; 3/7 safe pairs from S2a OBSERVE PR #18494 now have proved axis-vs-plane safety (2,5; 3,5; 2,13). Remaining: (5, 7), (5, 13), (7, 13), (11, 13) each by analogous QR-descent at a new modulus; full-rank safety still blocked on ternary Hasse-Minkowski (Mathlib v4.26.0 absence per S2c PREP §5.6).",
+    "phase": "PREP",
+    "since": "2026-06-13",
+    "iteration": 16,
+    "focus": "S9 PREP (researcher-2, 2026-06-13, doc-only; Docker down): designed the (5,7) axis-vs-plane discharge. Corrects the S8 menu — (5,7) is NOT a uniform mod-7 analog of (2,13): since −5 ≡ 2 (mod 7) is a QR mod 7, equation A 7c²=a²+5b² cannot be killed mod 7. The discharge is mixed-modulus: equations A and C reduce mod 5 (a²≡2c², reusing the EXISTING zmod_5_a_sq_eq_two_b_sq_iff since 7≡2 mod 5) and only equation B reduces mod 7 (a²≡5b², needing the single NEW helper zmod_7_a_sq_eq_five_b_sq_iff). One new helper, not two; no _plus_-form helper. Paste-ready skeletons + failure register in the session doc. BUILD UNVERIFIED: Docker daemon down on host; QR facts and descent algebra hand-computed and flagged for decide/build verification at the S10 ACT paste.",
     "blockers": [],
-    "nextAction": "S9 ACT — Continue the safe-pair coverage. Lowest new-API surface remaining is (5, 7): mod-7 reduction (49-case decide per helper), no mod-5 helper reuse needed since (5, 7) has 5 as the coefficient on b² (the (2,5)/(3,5) helpers have 2/3 there). Alternative: (5, 13) can reuse no helpers since the b² coefficient changes from 2 to 5, but mod-13 modulus reuse is partial (same prime, new coefficient helpers needed). Long-term blockers unchanged: full-rank safety (needs ternary Hasse-Minkowski or honest axiomatisation per S2c §6.1) and Theta(n^{2/3}) assembly (needs S3+S4 plan axiomatisations).",
+    "nextAction": "S10 ACT (Docker-available session): paste the session 2026-06-13 §5 (new mod-7 helper) + §6 (three descent theorems + composite), build-verify (./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02), apply §8 failure-register fallbacks for the linear_combination coefficients. Do NOT attempt a uniform mod-7 paste — eq A must reduce mod 5. Expected delta: 683 → ~860 LOC, theorems 12 → 16, lemmas 6 → 7, 0 sorries/axioms. After (5,7): re-audit (5,13) QR (likely also mixed-modulus), then (7,13), (11,13).",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -46,7 +46,7 @@
       "S5_main_theorem": 0,
       "S6_gallery": 0
     },
-    "lastUpdate": "2026-06-09T23:55:00.000Z"
+    "lastUpdate": "2026-06-13"
   },
   "knowledge": {
     "insights": [
@@ -88,6 +88,6 @@
   ],
   "significance": 6,
   "tractability": 3,
-  "lastUpdated": "2026-05-14T03:50:00.000Z",
-  "lastUpdate": "2026-06-04T20:30:00.000Z"
+  "lastUpdated": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z"
 }
