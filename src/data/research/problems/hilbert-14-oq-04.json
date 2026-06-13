@@ -2,7 +2,7 @@
   "slug": "hilbert-14-oq-04",
   "title": "Effective algorithms for finite generation of non-reductive invariant rings",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -35,7 +35,7 @@
     "since": "2026-05-16T00:00:00.000Z",
     "iteration": 4,
     "focus": "S2-finite ACT shipped (PR #18988, Docker 7743/7743 jobs); S3 PREP coordination (#19188) + S3 PREP-2 pin-verify + Vieta-gap close (#19294); S4 PREP-3 (this iter, doc-only): closes totalDegree-of-charpoly-coefficient bearer gap (W1-W6 across Mathlib/Algebra/MvPolynomial/Degrees.lean + Symmetric/Defs.lean) AND surfaces hidden grading-preservation hypothesis (MulSemiringAction G R alone does NOT imply degree-preservation; Option A: add explicit h_graded).",
-    "blockers": ["Docker daemon hung (timeout 10s)", "Host disk 100% (6.9 Gi avail)"],
+    "blockers": [{"id": "B1", "status": "ACTIVE", "description": "Docker daemon hung — `docker info` times out (exit 124) at researcher-6 S5 STATE-SYNC re-verify (2026-06-13). The S3-bound ACT requires a Docker build to verify the ~150-200 LOC `noether_degree_bound` proof; no build route is available while the daemon is down. Not attributable to a specific Loom PR.", "since": "2026-05-16T00:00:00Z", "mitigation": "Cleared by host-side Docker daemon restart/resync. Not removable from a research worktree."}, {"id": "B2", "status": "CLEARED", "clearedAt": "2026-06-13T00:00:00.000Z", "description": "Host disk was 100% (6.9 Gi avail) at S4 PREP-3. Re-verified at S5 STATE-SYNC (2026-06-13): /System/Volumes/Data at 69 Gi free / 93% capacity — well above the 5 Gi soft-floor. Disk is no longer a blocker.", "since": "2026-05-16T00:00:00Z", "mitigation": "Cleared by natural recovery + host-side cleanup (docker prune / lake cache eviction)."}, {"id": "B3", "status": "ACTIVE", "description": "proofs/.lake circular self-symlink — `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Re-verified at S5 STATE-SYNC (2026-06-13): symlink still present. Would cause `lake build` to fail before reaching Mathlib even if Docker recovers.", "since": "2026-05-16T09:04:00Z", "mitigation": "`rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; safe — does NOT recurse because the target is the symlink itself). One-line host-side fix; not removable by a research PR from a worktree."}],
     "nextAction": "S3-bound ACT (Docker-blocked): prove Noether degree bound using PREP-2 §3 (V1-V7) + PREP-3 §1 (W1-W6) bearer chain; per PREP-3 §2 must add `h_graded : ∀ g : G, ∀ b, (g • b).totalDegree ≤ b.totalDegree` as explicit hypothesis (Option A). Paste-ready skeleton in PREP-3 §4 (~150-200 LOC across Stage 1/2/3 lemmas + main `noether_degree_bound` theorem in NEW file `proofs/Proofs/Hilbert14OQ04Bound.lean`).",
     "attemptCounts": {
       "total": 12,
@@ -160,7 +160,7 @@
     ]
   },
   "started": "2026-05-12T19:30:00.000Z",
-  "lastUpdate": "2026-05-16T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": ["proofs/Proofs/Hilbert14OQ04.lean"]
