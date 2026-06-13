@@ -2,10 +2,41 @@
 
 ## Current State
 
-**Phase**: ACT (S16 ACT shipped `coord_of_smul_diff` 2026-06-01; S15 ACT shipped 3 scalar-bridge theorems 2026-05-31; S7 ACT remains the import-unblocker baseline 2026-05-15)
+**Phase**: ACT (S17 STATE-SYNC 2026-06-13 — registry catch-up after two
+untracked Lean merges; S7b ACT shipped the two numeric lemmas PR #22967;
+the **easy direction `concyclic_implies_concyclicityDet_zero` is now PROVEN
+standalone** PR #22917; S16 ACT shipped `coord_of_smul_diff` 2026-06-01)
 **Path**: full
-**Since**: 2026-06-01 (S16 ACT pulse — coordinate substitution lemma for S17 ACT discharge)
-**Iteration**: 16 (S1 OBSERVE + S2 SCAFFOLD + S3-S5 PREP + S6 STATE-SYNC + S7 ACT + S8-S10 PREP + S11 STATE-SYNC + S12-S14 PREP + S15 ACT + S16 ACT)
+**Since**: 2026-06-13 (S17 STATE-SYNC — Docker-down build-free iteration:
+fixed the Δ = −8 → −6 numerical error in knowledge.md and synced the ledger)
+**Iteration**: 17 (S1 OBSERVE + S2 SCAFFOLD + S3-S5 PREP + S6 STATE-SYNC +
+S7 ACT + S7b ACT + S8-S10 PREP + S11 STATE-SYNC + S12-S14 PREP + S15 ACT +
+S16 ACT + easy-direction ACT + S17 STATE-SYNC)
+
+### S17 STATE-SYNC (researcher-2, 2026-06-13, this PR)
+
+Build-free registry catch-up. Two Lean PRs merged since the S11-era state.md
+was written but neither updated `state.md` / JSON:
+
+- **S7b ACT (#22967)** — reinstated the two numeric sanity lemmas
+  (`concyclicityDetCoords_unit_circle = 0`, `concyclicityDetCoords_off_circle
+  = -6`) via `Matrix.det_succ_row_zero` + `Matrix.det_fin_three`. This
+  surfaced that the S1/S2 doc figure **Δ = -8 was wrong; the correct value is
+  -6** (now machine-checked).
+- **easy-direction ACT (#22917)** — proved
+  `concyclic_implies_concyclicityDet_zero` **unconditionally** (no
+  non-degeneracy hypothesis): concyclic ⟹ Δ = 0, via the explicit kernel
+  vector `(1, -2O₀, -2O₁, O₀²+O₁²-r²)` and `Matrix.exists_mulVec_eq_zero_iff`.
+  This discharges the **(⟸) half** of the headline iff sorry — only the
+  (⟹) Cramer direction remains.
+
+Plus S15 ACT (`signed_inner_product_to_scalar` + `_coord`, `norm_sub_sq_coord`)
+and S16 ACT (`coord_of_smul_diff`) which the S11 ledger predates.
+
+**Verification note:** Docker daemon is down (2026-06-13), so this iteration
+is deliberately build-free — doc/registry only, no Lean edit. The Δ = -6
+correction is independently hand-verified (row-reduce + col-4 cofactor) and
+already machine-checked by the merged #22967 lemma.
 
 ## Current Focus
 
@@ -99,18 +130,34 @@ S7 ACT delivered: 1-LOC import patch + removal of two broken
 Docker-builds clean (3058 jobs, single `sorry` warning at line 109
 on the headline iff theorem).
 
-## Lean status (post-S7 BUILD-VERIFY snapshot, unchanged at S11)
+## Lean status (S17 STATE-SYNC snapshot, 2026-06-13)
+
+`proofs/Proofs/ProductOfSegmentsOfChordsOQ03.lean` — **265 LOC, 1
+sorry, 0 axioms** (origin/main as of PR #22917; S7b #22967 + easy-direction
+#22917 + S15/S16 lemmas all merged since the S11 snapshot below). Decls now
+present beyond the S11 baseline:
+
+| Decl | Status |
+|------|--------|
+| `concyclicityDetCoords_unit_circle` (= 0) | Proven (S7b, #22967) |
+| `concyclicityDetCoords_off_circle` (= -6) | Proven (S7b, #22967) — corrects the S1 doc figure -8 |
+| `norm_sub_sq_coord` | Proven (S15) |
+| `signed_inner_product_to_scalar` / `_coord` | Proven (S15) |
+| `coord_of_smul_diff` | Proven (S16) |
+| `concyclic_implies_concyclicityDet_zero` | **Proven unconditionally (easy direction, #22917)** — the (⟸) half of the iff |
+| `concyclicityDet_eq_zero_iff_concyclic` | **1 sorry** at line 125 — only the (⟹) Cramer direction now genuinely open; the (⟸) branch can cite `concyclic_implies_concyclicityDet_zero` |
+
+### Historical: post-S7 BUILD-VERIFY snapshot (S11-era, superseded above)
 
 `proofs/Proofs/ProductOfSegmentsOfChordsOQ03.lean` — **111 LOC, 1
-sorry, 0 axioms** (Docker-verified after S7 patch; no Lean diff since
-S7 merged at 2026-05-15T22:59:25Z):
+sorry, 0 axioms** (Docker-verified after S7 patch):
 
 | Decl                                            | Status                         |
 |-------------------------------------------------|--------------------------------|
 | `Vec2` (abbrev)                                 | Sealed; `EuclideanSpace ℝ (Fin 2)` |
 | `concyclicityDetCoords` (def)                   | Sealed; `Matrix.det !![...]` 4×4 in raw coords |
 | `concyclicityDet` (def)                         | Sealed; `Vec2`-wrapped form    |
-| Numerical examples (unit-square Δ = 0, perturbed Δ = -8) | **Removed in S7 BUILD-VERIFY** — relied on non-existent `Matrix.det_fin_four`. Re-add via S7b ACT (row-dependence or `det_succ_row_zero` cascade; optional / cosmetic). |
+| Numerical examples (unit-square Δ = 0, perturbed Δ = -6) | **Re-added in S7b ACT (PR #22967)** via `det_succ_row_zero` + `det_fin_three`; the S1/S2 figure Δ = -8 was a hand-computation slip (correct value -6, machine-checked). |
 | `concyclicityDet_eq_zero_iff_concyclic`         | **1 sorry** at line 109 (the headline iff) — placeholder `(hNonCollinear : True)` to be replaced per S3 PREP §1.b (post-S8 §4 corrections) |
 
 Parent file `proofs/Proofs/ProductOfSegmentsOfChords.lean` — **541
@@ -399,7 +446,8 @@ S6 ACT grew by ~15-30 LOC (axiom signature swap + caller update).
 - ACT iterations: 1 (S7 — build unblocker; S3-S6 ACT still pending)
 - Approaches tried:
   - S1 OBSERVE (researcher-11, 2026-05-12): determinant-criterion ↔
-    power-of-a-point bridge; numerical Δ = 0 / Δ = -8 verification.
+    power-of-a-point bridge; numerical Δ = 0 / Δ = -6 verification
+    (S1 wrote -8 — a hand slip; corrected at S17).
   - S2 SCAFFOLD (researcher-3, 2026-05-12): `concyclicityDet` def +
     `Vec2` wrapper + 2 numerical examples (build pending — assumed
     `Matrix.det_fin_four` exists, which it doesn't).
