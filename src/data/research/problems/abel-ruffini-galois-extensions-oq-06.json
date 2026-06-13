@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06",
   "title": "Primitive solvable permutation groups of prime degree: Galois's AGL(1,p) classification",
-  "phase": "S7_ACT_BUILD_VERIFY",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "forward-direction",
   "problemStatement": {
@@ -37,16 +37,16 @@
     "goal": "First Lean formalization of AGL(1, p) as a primitive solvable permutation group of prime degree, with Galois's structure theorem stating these are the only primitive solvable groups of prime degree. Forward direction is gallery-ready; Galois direction may warrant a sub-OQ for the structure theorem."
   },
   "currentState": {
-    "phase": "S7_ACT_BUILD_VERIFY",
+    "phase": "COMPLETED",
     "since": "2026-05-14T15:30:00Z",
-    "iteration": 8,
+    "iteration": 9,
     "focus": "S7 ACT BUILD-VERIFY (researcher-9, 2026-05-14) — 1-line `rw [toAdd_mul]` fix at line 204 in `transHom.map_mul'` retires the S3–S5b build-pending qualifier across PRs #18399 / #18594 / #18627 / #18672. Docker build clean at 1884 jobs from worktree CWD. The original S3 proof structure used `push_cast; ring` after a `show`, but Mathlib v4.26.0 `ring` cannot close `Multiplicative.toAdd (a * b) = Multiplicative.toAdd a + 1 * Multiplicative.toAdd b` because `toAdd` is opaque to commutative-ring tactics (the definitional `toAdd_mul = rfl` doesn't propagate). Inserting `rw [toAdd_mul]` before `push_cast; ring` puts the goal in pure-ring form. Bearer-pin note: lemma is top-level `toAdd_mul` (NOT `Multiplicative.toAdd_mul`) at `Mathlib/Algebra/Group/TypeTags/Basic.lean:166`, outside the `namespace Multiplicative ... end Multiplicative` block. Forward direction now 529 LOC / 0 sorries / 0 axioms / build clean. The S6 PREP SPLIT-recommendation precondition (S5b build verification) is satisfied; curator/seeker decision on SPLIT vs KEEP is unblocked.",
     "blockers": [
       "Curator / seeker decision on SPLIT vs KEEP recommendation (S6 PREP, PR #18926). The S5b build-verification precondition is now cleared by this S7 ACT BUILD-VERIFY; advance can proceed.",
       "If SPLIT accepted: new sub-OQ `abel-ruffini-galois-extensions-oq-06-galois-direction` needs scaffold (problem.md / knowledge.md / state.md / JSON); bootstrap template in state.md §Iteration 7 §Sub-OQ bootstrap template.",
       "If KEEP: a future S8 ACT under oq-06 begins the ~300-500 LOC Galois-direction structure theorem; expect S9-S12+ iterations and a renewed build-pending window."
     ],
-    "nextAction": "Curator/seeker decision on the S6 PREP SPLIT recommendation. With S5b build verification now landed (this S7 ACT BUILD-VERIFY), oq-06 status can advance 'active' → 'completed' (forward-direction-only) once the curator accepts SPLIT; or a future S8 ACT begins the Galois direction directly under oq-06 if SPLIT is rejected. Either way, the forward-direction work is finalized: AbelRuffiniGaloisExtensionsOQ06.lean = 529 LOC / 0 sorries / 0 axioms / 1884-job Docker build clean at v4.26.0.",
+    "nextAction": "DONE (forward-direction-only). The forward direction is complete & Docker-verified: AbelRuffiniGaloisExtensionsOQ06.lean 531 LOC / 16 thm / 0 sorry / 0 axiom (clean since S7 ACT #19071, 1884 jobs). The Galois direction was spun off (S9 SPLIT) to the sub-slug abel-ruffini-galois-extensions-oq-06-galois-direction, which owns the 5-sorry GaloisDirection.lean scaffold. Status advanced active->completed per the S6 PREP SPLIT recommendation; no further oq-06 work. Empty leanFiles populated; missing lastUpdate added.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 1,
@@ -136,5 +136,19 @@
     "parentGallery": "src/data/proofs/abel-ruffini-galois-extensions",
     "parentLean": "proofs/Proofs/AbelRuffiniGaloisExtensions.lean",
     "category": "extension"
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensionsOQ06.lean",
+      "filename": "AbelRuffiniGaloisExtensionsOQ06.lean",
+      "lineCount": 531,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean"
+    }
+  ],
+  "lastUpdate": "2026-06-13T00:00:00.000Z"
 }

@@ -1,5 +1,16 @@
 # Current State
 
+> **S10 STATUS-SYNC (researcher-1, 2026-06-13) — promoted to COMPLETED.** The
+> forward direction is complete & Docker-verified — `AbelRuffiniGaloisExtensionsOQ06.lean`
+> 531 LOC / 16 thm / 0 sorry / 0 axiom, clean since S7 ACT #19071 (1884 jobs). Per
+> the S6 PREP SPLIT recommendation, oq-06's mandate is **forward-direction-only**;
+> the Galois direction was spun off (S9 SPLIT) to the sub-slug
+> `abel-ruffini-galois-extensions-oq-06-galois-direction`, which owns the 5-sorry
+> `GaloisDirection.lean` scaffold. Advanced `status: active → completed`. Two tracker
+> fixes: research-JSON `leanFiles` was **empty** (populated with the forward file at
+> canonical counts) and `lastUpdate` was **missing** (set). No Lean touched; the
+> completion rests on already-merged, already-verified work (not blackout-dependent).
+
 **Phase**: S9 ACT SPLIT MATERIALIZED (forward direction complete; Galois direction spun off to sub-OQ)
 **Since**: 2026-06-01T20:15:00Z
 **Last Updated**: 2026-06-01 (Iteration 9, researcher-1)
