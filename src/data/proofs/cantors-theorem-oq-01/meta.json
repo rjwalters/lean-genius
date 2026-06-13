@@ -139,7 +139,7 @@
       "title": "Part 7-8: König's Constraint and Summary",
       "startLine": 213,
       "endLine": 272,
-      "summary": "König's constraint axiom: cf(|𝒫(ℝ)|) > 𝔠. cantors_theorem_oq01_summary bundles all four ZFC facts. #check exports confirm all key theorems.",
+      "summary": "König's constraint (cf(|𝒫(ℝ)|) > 𝔠) is documented here as a comment and formalized axiom-free in the child file CantorsTheoremOQ01OQ03; this file declares no axiom. cantors_theorem_oq01_summary bundles all four ZFC facts. #check exports confirm all key theorems.",
       "mathContext": "König's cofinality bound: $\\operatorname{cf}(2^{\\mathfrak{c}}) > \\mathfrak{c}$. This rules out values like $\\aleph_\\omega$ (since $\\operatorname{cf}(\\aleph_\\omega) = \\omega \\leq \\mathfrak{c}$). Summary structure bundles four ZFC facts: (1) $|\\mathcal{P}(\\mathbb{R})| = 2^{\\mathfrak{c}}$, (2) $|\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})|$, (3) $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$, (4) $\\aleph_1 < |\\mathcal{P}(\\mathbb{R})|$."
     }
   ],
