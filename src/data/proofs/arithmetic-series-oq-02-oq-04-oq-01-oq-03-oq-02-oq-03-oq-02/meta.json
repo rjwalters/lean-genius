@@ -26,9 +26,9 @@
     "sorries": 0,
     "dateAdded": "2026-06-13",
     "axiomCount": 0,
-    "assumptions": "No axiom declarations and no sorries: every theorem in the file is machine-checked. The entry is classified `axiomatized` because the open question is only partially resolved and the headline results are conditional. Specifically: (1) the t=1 specialization qtMultichoose q 1 n k = qMultichoose q n k holds under the Path A non-degeneracy hypothesis `q^(j+1) ≠ 1 for all j < k` (q not a low-order root of unity), which keeps the Macdonald rational denominators nonzero; (2) the polynomial-sub-lattice bridges carry the analogous `1 - q ≠ 0` / `1 - q^2 t ≠ 0` guards; (3) the positive q=t=1 recovery of Nat.multichoose is NOT formalized — only the negative `Field R` 0/0-trap form (= 0) is proved, since Lean's field convention sets 0/0 = 0; a positive recovery requires a RatFunc.eval lift (Path C, future work); (4) the interpolating (q,t)-Pascal recurrence remains open (prior PREP analysis falsified the naive candidate at small cases).",
-    "lineCount": 518,
-    "theoremCount": 18,
+    "assumptions": "No axiom declarations and no sorries: every theorem in the file is machine-checked. The entry is classified `axiomatized` because the open question is only partially resolved and the headline results are conditional. Specifically: (1) the t=1 specialization qtMultichoose q 1 n k = qMultichoose q n k holds under the Path A non-degeneracy hypothesis `q^(j+1) ≠ 1 for all j < k` (q not a low-order root of unity), which keeps the Macdonald rational denominators nonzero; (2) the polynomial-sub-lattice bridges carry the analogous `1 - q ≠ 0` / `1 - q^2 t ≠ 0` guards; (3) the positive q=t=1 recovery of Nat.multichoose is formalized ONLY at the k=0 boundary column (qtMultichoose_at_one_one_zero); for every k ≥ 1 only the negative `Field R` 0/0-trap form (= 0) is proved, and S8 ACT upgrades this to a sharp inequality (qtMultichoose_at_one_one_ne_classical) showing the naive substitution provably differs from the classical value in characteristic zero, so a positive k ≥ 1 recovery genuinely requires a RatFunc.eval lift (Path C, future work); (4) the interpolating (q,t)-Pascal recurrence remains open (prior PREP analysis falsified the naive candidate at small cases).",
+    "lineCount": 563,
+    "theoremCount": 21,
     "definitionCount": 2,
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -185,13 +185,21 @@
       "id": "bridge-interior",
       "title": "X. (2,2) Interior Bridge to qMultichoose (S5c ACT)",
       "startLine": 494,
-      "endLine": 518,
+      "endLine": 521,
       "summary": "qtMultichoose_two_two_eq_qMultichoose: the unique interior polynomial-sub-lattice point equals the parent's qMultichoose q 2 2 under both Path A guards, composing qtMultichoose_two_two_eq_qNumber with the parent's qMultichoose_two_left. This closes the bridge chain: every point of {k ≤ 1} ∪ {(2,2)} is now equated directly to a parent-side named object.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,2,2) = \\mathrm{qMultichoose}(q,2,2) \\quad (1 - q^2 t \\neq 0,\\ 1 - q \\neq 0)$$"
+    },
+    {
+      "id": "trap-sharpness",
+      "title": "XI. Sharpness of the Field 0/0 Trap — Path C is Necessary (S8 ACT)",
+      "startLine": 522,
+      "endLine": 561,
+      "summary": "Two theorems pinning the exact boundary of Field-R recoverability of the classical multichoose under the naive q=t=1 substitution. qtMultichoose_at_one_one_zero: the k=0 column DOES recover Nat.multichoose n 0 = 1 (empty product, no 0/0 factor). qtMultichoose_at_one_one_ne_classical [CharZero R]: for n ≥ 1 and every k ≥ 1, the substitution returns 0 (the 0/0 collapse), which is strictly ≠ the nonzero Nat.multichoose n (k+1) — upgrading the one-directional eq_zero result to a sharp inequality and proving a positive q=t=1 recovery is provably unattainable by direct Field-R substitution (Path C / RatFunc.eval genuinely required).",
+      "mathContext": "$$\\mathrm{qtMultichoose}(1,1,n,0) = \\mathrm{multichoose}(n,0); \\qquad \\mathrm{qtMultichoose}(1,1,n,k+1) = 0 \\neq \\mathrm{multichoose}(n,k+1)\\ (n \\geq 1,\\ \\mathrm{char}\\,0)$$"
     }
   ],
   "conclusion": {
-    "summary": "The Macdonald (q,t)-binomial, evaluated at the multichoose index shift N = n+k-1, yields a (q,t)-multichoose coefficient that is well-typed over a Field R and recovers the parent's qMultichoose at t=1 on the open dense set where q is not a low-order root of unity (Path A). The (q,t)-multichoose is t-independent precisely on the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)}, and every point there is bridged to the parent's qNumber/qBinom/qMultichoose. The file is sorry-free and axiom-free (18 machine-checked theorems), but the open question is only partially resolved.",
+    "summary": "The Macdonald (q,t)-binomial, evaluated at the multichoose index shift N = n+k-1, yields a (q,t)-multichoose coefficient that is well-typed over a Field R and recovers the parent's qMultichoose at t=1 on the open dense set where q is not a low-order root of unity (Path A). The (q,t)-multichoose is t-independent precisely on the polynomial sub-lattice {k ≤ 1} ∪ {(2,2)}, and every point there is bridged to the parent's qNumber/qBinom/qMultichoose. The file is sorry-free and axiom-free (21 machine-checked theorems), but the open question is only partially resolved.",
     "implications": "This is the gallery's first contact with Macdonald (q,t)-binomial theory, an area entirely absent from Mathlib v4.26.0 (no Macdonald polynomials, Hall-Littlewood functions, or DAHA). The k-direction multiplicative recurrence and its ratio form give clean Lean handles on the Macdonald binomial that future work can reuse. The explicit formalization of the Field-R 0/0 trap is a reusable cautionary pattern for any rational-function specialization under Lean's 0/0 = 0 convention.",
     "openQuestions": [
       "Positive q=t=1 recovery: prove qtMultichoose 1 1 n k = Nat.multichoose n k by lifting to RatFunc ℚ and evaluating (Path C), avoiding the Field-R 0/0 trap. Estimated ~80–120 LOC and likely multi-session.",
@@ -219,8 +227,8 @@
       "Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03"
     ],
     "axiomCount": 0,
-    "lineCount": 518,
-    "theoremCount": 18,
+    "lineCount": 563,
+    "theoremCount": 21,
     "definitionCount": 2,
     "sorries": 0,
     "additionalFiles": []

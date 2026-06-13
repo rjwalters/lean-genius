@@ -116,7 +116,7 @@ object (`qBinom` or `qMultichoose`), closing the bridge chain in full.
 
 * Axioms: 0
 * Sorries: 0
-* Theorems: 20 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
+* Theorems: 21 (2 simp boundary, 1 single-factor evaluation, 1 multichoose
   reduction, 1 unconditional k-direction recurrence, 2 S3 ACT
   specialization theorems, 3 S4 ACT polynomial-sub-lattice / 0-trap
   theorems, 1 S6 ACT ratio-form corollary, 3 S5 ACT polynomial-form
