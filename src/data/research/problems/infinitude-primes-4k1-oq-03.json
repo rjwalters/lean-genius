@@ -21,17 +21,18 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T13:21:49.000Z",
-    "iteration": 6,
-    "focus": "S6 (researcher-4, 2026-05-12, PR #18131): Statement-only SCAFFOLD for the logarithmic-density target. Added mertens_log_density_4k1 (1 new sorry, +65 lines including section docstring) to InfinitudePrimes4k1OQ03.lean. The statement asserts ∑_{p ≤ N, p ≡ 1 (mod 4)} (log p)/p ~ (1/2) · log N — the Mertens-1874 logarithmic-density form of OQ-03, strictly weaker than the natural-density form (primes_4k1_natural_density, also sorry) but strictly stronger than the qualitative divergence (not_summable_primes_4k1_log_div, S5, fully proved). The S6 docstring records the Abel-summation proof outline on top of S4's LSeries_residueClass_one_mod_four_lower_bound. Net file delta: +1 sorry (1 → 2), +65 lines (392 → 457), +1 theorem (14 → 15). Build pending. S7 STATE-SYNC (researcher-8, 2026-06-09): doc-only catch-up of this meta.json tracker from iteration 5 → 6 (was frozen at S5 since 2026-05-12, lagging the merged S6 PR #18131 by ~28 days). No Lean / state.md / knowledge.md / problem.md body changes this iteration; only meta.json fields + a new sessions/ doc.",
+    "since": "2026-06-13T12:48:41.000Z",
+    "iteration": 7,
+    "focus": "S7 BUILD REPAIR (researcher-2, 2026-06-13, PR #22978, MERGED): a Docker verification build revealed the parent file Proofs/InfinitudePrimes4k1.lean — previously claimed verified, 0 sorries — no longer compiled under the current Mathlib pin. Three API-drift errors (mod_four_ne_three_of_dvd_isSquare_neg_one new primeFactors signature; removed Nat.odd_iff_not_even → omega; renamed Nat.dvd_sub' → Nat.dvd_sub) silently broke the entire OQ-03 chain across all six prior build-pending iterations. All three fixed; parent file grew 178 → 182 lines. The two OQ-03 target sorries (mertens_log_density_4k1, primes_4k1_natural_density) are untouched. S8 STATE-SYNC (researcher-8, 2026-06-13): doc-only catch-up of this canonical meta.json to origin/main. (a) leanFiles synced to the merged source via the enrich-research.ts logic: parent lineCount 178 → 182; OQ03 lineCount 457 → 458, theoremCount 15 → 14 (the prior 15 wrongly counted the `private lemma residueClass_one_mod_four_apply_prime`, which the canonical /^(theorem|lemma) / regex excludes), sorryCount 2 → 8 (canonical \\bsorry\\b counts all occurrences including the 6 docstring mentions; only 2 are real proof-body sorries). (b) currentState advanced from the iteration-6/S6 freeze (lastUpdate 2026-06-09) to iteration 7 to reflect the merged S7 parent-repair. No Lean / state.md / knowledge.md / problem.md body changes this session; only meta.json fields.",
     "blockers": [
       "(mathematical) Natural-density form requires Ikehara-Tauberian transfer not present in Mathlib v4.26.0.",
+      "(practical) S7 parent build-repair (PR #22978) targets the exact pre-crash compiler errors but the Docker build was NOT re-verified (host disk hit 100% mid-build); re-verification needed once the host disk is reclaimed.",
       "(practical) proofs/.lake symlink is self-referential; builds take 45+ min from clean."
     ],
-    "nextAction": "S7 (RECOMMENDED, unblocked): discharge the mertens_log_density_4k1 sorry via Abel summation (~100-150 lines). Concrete path: (1) Abel-summation identity via Mathlib.NumberTheory.AbelSummation primitives relating ∑_{n ≤ N} f(n) / n^x and ∫_1^N (∑_{n ≤ t} f(n)) / t^(x+1) dt; (2) lower-bound transfer via S4's LSeries_residueClass_one_mod_four_lower_bound in the limit x ↘ 1; (3) symmetric upper bound from continuousOn_LFunctionResidueClassAux on re s ≥ 1; (4) convert von-Mangoldt restricted-prime sums to elementary log p / p via S5's residueClass_one_mod_four_apply_prime + vonMangoldt_apply_prime; (5) squeeze the matching bounds. Allow ≥45 minutes for one end-of-session Docker build given the proofs/.lake symlink trap. S7+ path B step 3 (Tauberian to natural density): still blocked on Mathlib gaining a Wiener-Ikehara module. S7+ path C density extension: upgrade primes_sum_two_squares_infinite to density-1/2 once a density form lands.",
+    "nextAction": "S9 (RECOMMENDED, unblocked): discharge the mertens_log_density_4k1 sorry via Abel summation (~100-150 lines). Concrete path: (1) Abel-summation identity via Mathlib.NumberTheory.AbelSummation primitives relating ∑_{n ≤ N} f(n) / n^x and ∫_1^N (∑_{n ≤ t} f(n)) / t^(x+1) dt; (2) lower-bound transfer via S4's LSeries_residueClass_one_mod_four_lower_bound in the limit x ↘ 1; (3) symmetric upper bound from continuousOn_LFunctionResidueClassAux on re s ≥ 1; (4) convert von-Mangoldt restricted-prime sums to elementary log p / p via S5's residueClass_one_mod_four_apply_prime + vonMangoldt_apply_prime; (5) squeeze the matching bounds. PREREQUISITE: re-verify the S7 parent build-repair (PR #22978) compiles once Docker/host disk recovers, since the whole OQ-03 chain imports the parent. S9+ path B step 3 (Tauberian to natural density): still blocked on Mathlib gaining a Wiener-Ikehara module. S9+ path C density extension: upgrade primes_sum_two_squares_infinite to density-1/2 once a density form lands.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 6,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 2
     }
   },
@@ -115,14 +116,14 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-06-09T22:30:00.000Z",
+  "lastUpdate": "2026-06-13T13:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/InfinitudePrimes4k1.lean",
       "filename": "InfinitudePrimes4k1.lean",
-      "lineCount": 178,
+      "lineCount": 182,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -133,11 +134,11 @@
     {
       "path": "Proofs/InfinitudePrimes4k1OQ03.lean",
       "filename": "InfinitudePrimes4k1OQ03.lean",
-      "lineCount": 457,
-      "theoremCount": 15,
+      "lineCount": 458,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 2,
+      "sorryCount": 8,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1OQ03.lean"
     }
