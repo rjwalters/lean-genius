@@ -2,10 +2,58 @@
 
 ## Current State
 
-**Phase**: PREP (post-iter-6 S5-PREP-2 Cramér-bridge audit; ready for S5-ACT-B′ refined iter-5)
-**Since**: 2026-06-10T00:00:00Z
-**Last Updated**: 2026-06-10 (Session 6, researcher-9)
-**Iteration**: 6
+**Phase**: BLOCKED (infra) — S7 leanFiles drift corrected; remaining work build-dependent
+**Since**: 2026-06-13T00:00:00Z
+**Last Updated**: 2026-06-13 (Session 7, researcher-1)
+**Iteration**: 7
+
+> **Status set `blocked` (2026-06-13).** After the S7 leanFiles correction, the
+> only remaining work is build-dependent and unbuildable today (verification
+> blackout: Docker hung + Aristotle 404): (1) remove the dead `legendre_conjecture`
+> axiom (`LegendrePartial.lean:148`, axiom 1→0 — needs a build to confirm the
+> sibling docstring's usage claim is stale), (2) the S5-ACT-A hard analytic half
+> (conditional per the Cramér-bound obstacle). Depth-first `claim-random` kept
+> re-handing this RICH slug out post-sync; `blocked` stops the no-op re-claim
+> churn until Docker recovers. Core formalization is 0-sorry.
+
+## Session 7 — S7 STATE-SYNC — leanFiles drift correction (researcher-1, 2026-06-13)
+
+**Mode**: STATE-SYNC (tracker-only; no Lean touched).
+
+**Drift fixed.** The research JSON `leanFiles` listed the **wrong files
+entirely** — `BertrandsPostulate.lean` + the `BertrandsPostulateOQ03*`
+family (nearly identical to the `bertrands-postulate-oq-03` sibling's list),
+and **none** of this slug's actual deliverables. Every commit tagged
+`research(bertrands-postulate-oq-02)` (S4-ACT-α #22593, iter6 S5-ACT-B′ #22905,
+S6 audit #22999) touches the **`Legendre*.lean`** files. Corrected `leanFiles`
+to the true set, at canonical origin/main counts:
+
+| File | LOC (wc+1) | thm | def | sorry | axiom |
+|------|-----------:|----:|----:|------:|------:|
+| `LegendrePrimeGapSqrtBoundSuffices.lean` | 268 | 8 | 1 | 0 | 0 |
+| `LegendreGapEquivalence.lean` | 213 | 15 | 6 | 0 | 0 |
+| `LegendrePartial.lean` | 166 | 21 | 3 | 0 | 1 |
+
+Slug totals: **0 sorries, 1 axiom** (the `legendre_conjecture` axiom in
+`LegendrePartial.lean:148`, flagged dead by S6 #22999).
+
+**Catch-up since Session-6 head:** iter6 S5-ACT-B′ (#22905,
+`prime_gap_sqrt_bound_above_implies_legendre`, eventually-suffices form) and
+the S6 dead-axiom audit (#22999) both merged after this state.md's head.
+
+**Dead-axiom note (deferred).** `legendre_conjecture : LegendreConjecture`
+(LegendrePartial.lean:148) assumes the OPEN conjecture and has **0 code uses**
+fleet-wide — grep finds only docstring mentions in the sibling Legendre files
+and a *separate* same-named axiom in `BertrandsPostulateOQ03.lean:194`.
+Removal (axiom 1→0) is the right next ACT, BUT `LegendreGapEquivalence.lean`'s
+docstring (lines 38, 197) *claims* it uses `Legendre.legendre_conjecture`,
+contradicting the 0-use grep. Resolve + build-verify when Docker recovers
+(verification blackout 2026-06-13: Docker hung, Aristotle 404) rather than
+blind-shipping an axiom deletion that could silently break the build.
+
+Files touched (2): this state.md block + JSON `leanFiles` / `currentState`.
+
+---
 
 ## Session 6 — Iter 6 S5-PREP-2 — Cramér⇒Legendre bridging gap audit (researcher-9, 2026-06-10, T+4d post-iter-5)
 
