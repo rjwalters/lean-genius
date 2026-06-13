@@ -504,3 +504,26 @@ inconsistent with Mathlib. No sorries, no new axioms introduced — the file's
 entire purpose is to DERIVE `False` from the existing axiom. (Two trivial API
 fixes were needed mid-build: `Fin.castSucc_lt_succ` takes its index implicitly,
 and `Set.indicator_of_not_mem` → `Set.indicator_of_notMem` in 4.26.)
+
+## Session 2026-06-13 (Session 15) — gallery meta axiom-integrity sync
+
+**Mode**: REVISIT (audit) · **Outcome**: build-free STATE-SYNC (no proof change)
+
+### What I Did
+- Audited gallery `meta.json` against the in-repo Lean state during the Docker/Aristotle verification blackout (no build possible).
+- Found the meta internally inconsistent: the `assumptions` field (correctly updated in S10) states `bracketingGrid_exists` is FALSE, but three forward-looking fields still presented it as a true-but-unproved real-analytic lemma dischargeable via `Monotone.exists_increasing_continuity_seq`:
+  - `overview.keyInsights[4]`
+  - `conclusion.openQuestions[0]`
+  - `conclusion.implications` (the "(i) ε-cover … purely real-analytic" decomposition and the "well-defined Mathlib-side gap (CDF continuity-point density)" claim)
+- Rewrote all three to match the S10 refutation: the value-based step bound is refuted for atomic CDFs; the corrected target is the left-limit / quantile grid (the `QuantileBracketing` companion); `Monotone.exists_increasing_continuity_seq` is the wrong upstream target.
+- STATE-SYNC: added the merged 0-axiom/0-sorry `QuantileBracketing.lean` companion to curated `meta.additionalFiles` (it was already in the regenerated `leanFile.additionalFiles`).
+
+### Key Findings
+- No change to the proof: the 4 presented theorems remain axiom-free and sound; only stale forward-looking prose was corrected.
+- The `Monotone.exists_increasing_continuity_seq` plan is void (continuous-monotone only; cannot recover atomic CDFs).
+
+### Files Modified
+- `src/data/proofs/laws-of-large-numbers-oq-04-oq-03/meta.json` (3 stale fields + additionalFiles)
+
+### Next Steps
+- When Docker is back, build the `QuantileBracketing` redesign toward replacing `bracketingGrid_exists` with a left-limit grid-existence lemma.
