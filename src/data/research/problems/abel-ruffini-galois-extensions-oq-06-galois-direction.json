@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S4_ACT",
+  "phase": "S5_OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -44,14 +44,14 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S4_ACT",
-    "since": "2026-06-12T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "S4 ACT (researcher-2, 2026-06-12): discharged Step 2 (`sylow_p_normal`), reducing the file from 6 sorries to 5 (126 LOC). Proof: `haveI : Subsingleton (Sylow p H) := sylow_p_unique H hPrim hSolv; exact P.normal_of_subsingleton`. Bearer `Sylow.normal_of_subsingleton` (Mathlib/GroupTheory/Sylow.lean:724, sig `[Subsingleton (Sylow p G)] (P : Sylow p G) : P.Normal`) re-verified via gh api at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Step 2 now carries no sorry of its own — fully proved, conditional only on Step 1. No new hypothesis needed: the Subsingleton instance is produced internally by Step 1's statement. Docker-verified: build completed successfully, 1900 jobs, 5 sorry warnings at lines 50/77/93/103/119, 0 errors, 0 axioms. (Prior docs said '7 sorries'; build-verified count before this iteration was actually 6.)",
-    "nextAction": "S5 ACT — the hard core is Step 1 (`sylow_p_unique`): Sylow-p uniqueness for a primitive solvable H ≤ S_p. Recommended route via minimal-normal-subgroup / socle theory (a minimal normal subgroup of a solvable primitive group is elementary abelian and transitive ⟹ regular of order p ⟹ the unique normal Sylow-p); needs Mathlib socle API and sustained multi-session work, NOT a single tail. Cheaper independent wins available first: Step 3 (`sylow_p_is_pcycle`, ~20-30 LOC via `Equiv.Perm.isCycle_of_prime_order''`) can be attempted without Step 1. Bearer surface for Step 3 verified at lake-pin `2df2f015…`. Docker per S21 ACT pattern: run from worktree root.",
-    "blockers": [],
-    "attemptCounts": { "total": 4, "currentApproach": 3, "approachesTried": 3 },
-    "lastUpdate": "2026-06-12T00:00:00.000Z"
+    "phase": "S5_OBSERVE",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 5,
+    "focus": "S5 OBSERVE (researcher-5, 2026-06-13): CORRECTNESS DEFECT found in Step 5 (`H_le_normalizer`). The statement `(σ : Equiv.Perm (ZMod p)) (_hσ_in_H : σ ∈ H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer` is MATHEMATICALLY FALSE as written: the hypothesis `σ ∈ H` does not entail that `H` normalises `⟨σ⟩`. Explicit counterexample (p=5): H = `(AGL1Z.toPerm 5).range` (primitive+solvable, from parent file), σ = scaling-by-2 = (1 2 4 3) ∈ H, h = translation (0 1 2 3 4) ∈ H; then hσh⁻¹ : y↦2y-1 sends 0↦4 ∉ ⟨σ⟩ (whose elements all fix 0), so h∉N(⟨σ⟩) and H⊄N(⟨σ⟩). Root cause: σ must generate the image of the NORMAL Sylow-p P (Steps 2+3), not be an arbitrary element of H; the statement does not even require σ to be a p-cycle. No false PROOF was produced (Step 5 + main theorem are still `sorry`), so this is a latent trap, not a soundness break in a closed proof. Docker DOWN this session (verification blackout) — fix is a doc-only ⚠ warning added to the Step 5 docstring in the .lean (inert, build-safe); no signature change shipped blind. 5 sorries unchanged.",
+    "nextAction": "Docker-up session: (1) replace Step 5's signature with the corrected one documented in the .lean docstring + Risk R2 — `(P : Sylow p H) (hPnorm : (P:Subgroup H).Normal) (hgen : ∀ g:P, image g ∈ zpowers σ) (hσH : σ∈H) ⊢ H ≤ (zpowers σ).normalizer` — matching Steps 2/3 outputs, and discharge it (`Subgroup.le_normalizer` style, ~5-15 LOC); (2) rebuild to confirm the new signature typechecks. Independent of this: the hard core remains Step 1 (`sylow_p_unique`) via minimal-normal-subgroup/socle theory, and the cheaper Step 3 (`sylow_p_is_pcycle`) — NOTE Step 3 needs |P|=p, which requires p∣|H| from transitivity, so it is not the trivial 1-LOC bearer the older docs imply.",
+    "blockers": ["Docker daemon down 2026-06-13 (verification blackout): cannot build-verify any signature change, so the Step 5 fix is documented but deferred to a Docker-up session."],
+    "attemptCounts": { "total": 5, "currentApproach": 1, "approachesTried": 4 },
+    "lastUpdate": "2026-06-13T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
