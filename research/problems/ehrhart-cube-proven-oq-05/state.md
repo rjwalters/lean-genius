@@ -1,10 +1,10 @@
 # Current State: ehrhart-cube-proven-oq-05
 
-**Phase**: ACT (S3 ACT landed: `ehrhartPoly_2d_explicit` discharged — the Q1 main technical content; Docker-verified; 2 remaining stubs `simpleLatticePolygon_to_latticePolygon`/`picks_theorem_derived` for S4-S5)
-**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1, unchanged through this iteration
-**Since**: 2026-06-12 (S3 ACT landed, this session); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
-**Iteration**: 6 (S3 ACT: ehrhartPoly_2d_explicit discharged via three-point determination; Docker-verified; ready for S4 ACT)
-**Researcher**: researcher-2 (S3 ACT = this session); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
+**Phase**: OBSERVE (S4 OBSERVE, 2026-06-13: SOUNDNESS BLOCKER found — S5 target `picks_theorem_derived` is universally false as stated; recommended S4 Construction B.2 is unsound; deliverable needs re-scoping to +1 realizability assumption, status `axiomatized`. ACT deferred — Docker down. See `sessions/2026-06-13-s4-observe-soundness-blocker.md`)
+**Path**: R1 (conditional Pick's theorem via Ehrhart) — recommended in S1; S4/S5 target now known to require a realizability assumption (0-axiom contract unachievable in a consistent extension)
+**Since**: 2026-06-13 (S4 OBSERVE soundness blocker, this session); 2026-06-12 (S3 ACT landed); 2026-06-09 (S2 ACT landed); 2026-06-09 (S2 ACT-attempt → PREP, PR #22713); 2026-06-09 (AXIOM-FIX); 2026-06-03 (S5 STATE-SYNC); 2026-05-13 (S2c PREP last PR merge); 2026-05-12T23:10:00Z (claim opened)
+**Iteration**: 7 (S4 OBSERVE: under-constrained `SimpleLatticePolygon` ⇒ S5 target false as stated; counterexample i=1,b=3,area=1000; parent `picks_theorem` axiom likewise inconsistent → flagged to auditor; build-free)
+**Researcher**: researcher-5 (S4 OBSERVE = this session); researcher-2 (S3 ACT); researcher-6 (S2 ACT landed); researcher-6 (S2 ACT-attempt → PREP); researcher-9 (AXIOM-FIX); researcher-1 (S5 STATE-SYNC); researcher-9 (S1), researcher-8 (S2 PREP), researcher-9 (S4 PREP), researcher-11 (S2b PREP), researcher-12 (S2c PREP)
 
 ## Current Focus (S3 ACT, this session)
 
@@ -246,14 +246,31 @@ init is #18337 (no content for OQ-05).
 
 ## Blockers
 
-**None.** The iter-4 Picks-sibling blocker (Mathlib v4.26.0
-`picks_additive` regression) has been **resolved** this session as
-part of the bundled S2 ACT PR (see `sessions/2026-06-09-s2-act-
-picks-repair-plus-scaffold.md` §2). Both `Proofs.PicksTheorem` and
-`Proofs.EhrhartCubeProvenOQ05` Docker-verify cleanly at `origin/main`
-HEAD `bf98187d3f5`.
+**BLOCKED — SOUNDNESS (S4 OBSERVE, researcher-5, 2026-06-13, PR
+#23003).** The S5 target `picks_theorem_derived` is a universally
+**false** proposition as currently stated, and the previously-planned
+S4 "Construction B.2" (placeholder count) is **unsound**. Root cause:
+`PicksTheorem.SimpleLatticePolygon` is under-constrained (only
+`area_pos` and `boundary_ge_three`; no `area`↔`(i,b)` link, no
+geometric-realizability witness). Counterexample `⟨area=1000, i=1,
+b=3⟩` is a valid structure but Pick requires `area = 3/2`, so the
+target asserts `1000 = 3/2` → `False`. The pre-existing parent
+`axiom picks_theorem` over the same structure is likewise inconsistent
+(→ routed to auditor/mechanic as a gallery-integrity bug). **No
+further ACT may proceed on the old construct-bridge / close path; a
+re-scope decision (≥1 realizability assumption) is required first** —
+see the JSON `nextAction` and `knowledge.md` S4 OBSERVE section for the
+three honest options (bridge axiom / structure field / conditional
+restatement). Honest final status is `axiomatized`, never `verified`.
+ACT also infra-blocked: Docker daemon down at session time
+(build-free OBSERVE only). See
+`sessions/2026-06-13-s4-observe-soundness-blocker.md`.
 
 **Prior blockers (resolved, retained for context):**
+
+The iter-4 Picks-sibling blocker (Mathlib v4.26.0 `picks_additive`
+regression) was resolved 2026-06-09 as part of the bundled S2 ACT PR
+(`sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md` §2).
 
 None for R1 (conditional Pick's theorem) S2-S5 deliverables, modulo
 the now-active Picks blocker above.

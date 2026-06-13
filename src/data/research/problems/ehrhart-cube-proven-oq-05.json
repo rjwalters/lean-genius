@@ -1,8 +1,8 @@
 {
   "slug": "ehrhart-cube-proven-oq-05",
   "title": "Pick's theorem derived from Ehrhart polynomial existence",
-  "phase": "PREP",
-  "status": "active",
+  "phase": "OBSERVE",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -41,8 +41,11 @@
     "since": "2026-06-09T23:30:00.000Z",
     "iteration": 6,
     "focus": "S3 ACT landed (researcher-2, 2026-06-12): discharged ehrhartPoly_2d_explicit (the Q1 main technical content). Added a definitional-bridge field LatticePolygon.volume_eq_area : volume = area to proofs/Proofs/EhrhartPolynomials.lean (no existing LatticePolygon instances, 0 ripple). Discharged the sorry via three-point determination: hexp expands the degree-2 ehrhartPoly to coeff0 + coeff1·x + coeff2·x² (eval_eq_sum_range + hdeg + Finset.sum_range_succ); coeff0 = 1 (ehrhart_constant_term), coeff2 = volume = area (ehrhart_leading_coeff_volume + volume_eq_area), and coeff1 = b/2 derived from L_P(1) = i + b (total_eq) and L_P(-1) = i (ehrhart_macdonald_reciprocity at n=-1 + interior_at_one). Docker-verified: ./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ05 clean, 3060/3060 jobs, exit 0, only the 2 expected remaining sorries (S4 bridge + S5 close). Net: EhrhartCubeProvenOQ05.lean 3 -> 2 sorries, +52 LOC; EhrhartPolynomials.lean +1 structure field. 0 new axioms; 3 inherited Ehrhart axioms unchanged. PRIOR — S2 ACT landed (researcher-6, 2026-06-09, prior session — re-attempt of iter-4 PREP-bank from PR #22713): combines the prerequisite Picks sibling Mechanic-class repair with the S2 ACT scaffold landing. (1) picks_additive repair in proofs/Proofs/PicksTheorem.lean lines 326-334 (5 LOC: added h_ie2 : 2 ≤ i₁ + i₂ + e := by omega, replaced simp only [Nat.cast_add, Nat.cast_sub he, Nat.cast_sub h2e] with push_cast [Nat.cast_sub h2e, Nat.cast_sub h_ie2]) — Mathlib v4.26.0 drift fix, out of slug scope but prerequisite. Docker verification: ./proofs/scripts/docker-build.sh Proofs.PicksTheorem clean, 3058/3058 jobs, 103s for Built Proofs.PicksTheorem, exit code 0. (2) S2 ACT scaffold: proofs/Proofs/EhrhartCubeProvenOQ05.lean created (~110 LOC) per the iter-4 banked content (sessions/2026-06-09-s2-act-attempt-prep-picks-broken.md §4), three stage stubs (ehrhartPoly_2d_explicit for S3, simpleLatticePolygon_to_latticePolygon for S4, picks_theorem_derived for S5) each closed by sorry with discharge strategy documented inline. proofs/Proofs.lean updated to import the new file. Docker verification: ./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ05 clean — scaffold compiles with 3 sorries, 0 new axioms, 3 inherited Ehrhart axioms. Session journal at sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md. Net delta: +110 LOC scaffold + 1 import + 2/-1 LOC PicksTheorem; +3 sorries (intentional, marking S3-S5 stage targets); 0 axiom delta.",
-    "blockers": [],
-    "nextAction": "S4 ACT — construct simpleLatticePolygon_to_latticePolygon (Q2 bridge, ~150 LOC). Build a LatticePolygon from a PicksTheorem.SimpleLatticePolygon: supply the inherited LatticePolytope 2 fields (latticePointCount via ehrhart_theorem existential or a definitional choice, volume, volume_pos, nonempty, count_zero) plus area/area_pos/boundaryPoints/interiorPoints and the bridge fields total_eq, interior_at_one, and the new volume_eq_area. Constructive route preferred (0 new axioms); a single bridge axiom is the fallback. Then S5 ACT — picks_theorem_derived: compose the S4 bridge + the now-discharged ehrhartPoly_2d_explicit (at n=1) + total_eq + picks_from_ehrhart to derive A = i + b/2 - 1.",
+    "blockers": [
+      "SOUNDNESS BLOCKER (S4 OBSERVE, researcher-5, 2026-06-13, PR #23003): the S5 target `picks_theorem_derived` is a universally FALSE proposition as currently stated, and the previously-planned S4 'Construction B.2' (placeholder lattice-point count) is UNSOUND. Root cause: `PicksTheorem.SimpleLatticePolygon` is under-constrained — its only fields are `area_pos (0<area)` and `boundary_ge_three (3≤b)`, with NO link between `area` and `(i,b)` and NO geometric-realizability witness. Counterexample: `⟨area=1000, i=1, b=3, …⟩` is a valid SimpleLatticePolygon but Pick requires area = 1 + 3/2 - 1 = 3/2, so the target asserts 1000 = 3/2 → False. The pre-existing parent `axiom picks_theorem` over the same structure is likewise inconsistent (yields False at the counterexample) → routed to auditor/mechanic as a gallery-integrity bug. B.2-specific: the placeholder count is non-polynomial, so `ehrhart_theorem 2 Q` is a false existential ⇒ inconsistent instantiation.",
+      "INFRA: Docker daemon down at session time (2026-06-13) — build-free OBSERVE only; any re-scope ACT requires a Docker build to verify."
+    ],
+    "nextAction": "RE-SCOPE DECISION REQUIRED before any further ACT — do NOT attempt the old 'S4 ACT construct bridge / S5 close' path; it is unsound (see blockers). A sound close needs ≥1 added assumption (geometric realizability). Three honest options: (A) Construction A — a single bridge axiom relating SimpleLatticePolygon to a realizable LatticePolygon; (B) Construction C — add a realizability structure field to SimpleLatticePolygon (touches the parent PicksTheorem.lean, wider ripple); (C) conditional restatement of `picks_theorem_derived` carrying the realizability hypothesis explicitly. Honest final status is `axiomatized` (3 inherited Ehrhart axioms + 1 realizability assumption) — NEVER `verified`. The S1/S2 '0 new axioms' contract is unachievable in a consistent extension. Pick an option and confirm scope before spending an ACT iteration.",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
@@ -178,5 +181,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ05.lean"
     }
   ],
-  "lastUpdated": "2026-06-12"
+  "lastUpdated": "2026-06-13"
 }
