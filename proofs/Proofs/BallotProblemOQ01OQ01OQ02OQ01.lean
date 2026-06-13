@@ -151,6 +151,20 @@ theorem m_jump_step_bound_upward (l : List ℤ) (m : ℕ)
   rw [List.sum_take_succ l j hj]
   linarith [h_step l[j] (List.getElem_mem hj)]
 
+/-- **Two-sided step bound** (B′ alphabet `-m ≤ x ≤ m`): on a sequence whose
+    steps lie in `[-m, m]`, consecutive prefix sums differ by at most `m` in
+    absolute value. This packages the downward (`m_jump_step_bound`) and
+    upward (`m_jump_step_bound_upward`) one-sided bounds into the single
+    Lipschitz-in-index estimate underlying the two-sided IVT family. -/
+theorem m_jump_step_abs_bound (l : List ℤ) (m : ℕ)
+    (h_lo : ∀ x ∈ l, -(m : ℤ) ≤ x) (h_hi : ∀ x ∈ l, x ≤ (m : ℤ))
+    (j : ℕ) (hj : j < l.length) :
+    |prefixSum l (j + 1) - prefixSum l j| ≤ (m : ℤ) := by
+  have h1 := m_jump_step_bound l m h_lo j hj
+  have h2 := m_jump_step_bound_upward l m h_hi j hj
+  rw [abs_le]
+  constructor <;> linarith
+
 /-- **m-jump upward IVT** (D′ — symmetric dual of `m_jump_downward_ivt`).
 
     For a sequence with all steps ≤ m: if the prefix sum at position i
