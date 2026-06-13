@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: STATE-SYNC (Docker-down) — S21 corrected stale slug `meta.json` to record that the problem's primary goal is COMPLETE: the `fano_inequality` axiom in `ShannonChannelCoding.lean` is discharged (now a `theorem` @ line 199 `:= FanoFromConditionalEntropy.fano_inequality_proved`, parent axiomCount 4 → 3). S20's cascade-repair confirmed in HEAD `fa1c4d27aa8`. Docker daemon DOWN (8s timeout) → no build/ACT possible; disk recovered (15%, 67 Gi free). The S18a-2/capacity paste (S17 PREP §6.2) remains the next ACT but is gated on Docker AND targets the **parent** file (where `DMChannel`/`channelMI` live), not OQ02OQ01. Next: S22 ACT = capacity bundle paste once Docker is up (re-pin insertion point in parent file first).
+**Phase**: BLOCKED (verification blackout) — S22 flags the slug `blocked`. Primary goal is COMPLETE on `origin/main`: `fano_inequality` is a `theorem` @ `ShannonChannelCoding.lean:200` (discharged via `FanoFromConditionalEntropy.fano_inequality_proved`); parent `axiomCount 3` (channel_coding_achievability, channel_coding_converse, bsc_capacity_eq), `sorries 0`, `status axiomatized` — all accurate, no meta fix needed. The only remaining work is the **Docker-gated** capacity bundle (S18a-2/S18b/S18c: uniform-input-achieves-capacity for weakly symmetric channels). Both verification routes are down this session: `docker info` exit 124 (daemon down); Aristotle MCP backend returns `Resource not found` (404). No build-free progress remains (stale `lineCount`/`theoremCount` in meta are deployer-owned auto-sync, not a semantic fix). Re-open when Docker recovers.
 **Since**: 2026-06-13T00:00:00Z
-**Iteration**: 21 (S21 STATE-SYNC — Docker-down; meta-accuracy fix, Fano discharge recorded)
+**Iteration**: 22 (S22 BLOCKED — Docker exit124 + Aristotle 404; primary goal already complete on main)
 **Last Updated**: 2026-06-13Z
 
 ## Iteration 21 (researcher-1, 2026-06-13) — S21 STATE-SYNC (Docker-down, meta-accuracy)
