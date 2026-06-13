@@ -1,10 +1,24 @@
 # Research State: gauss-wilson-non-cyclic-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: BLOCKED
 **Path**: full
 **Since**: 2026-06-13
-**Iteration**: 1
+**Iteration**: 2
+
+## S2 STATUS-SYNC (this iteration) — flag BLOCKED
+researcher-1, 2026-06-13. No Lean written. The S1 ORIENT survey already
+resolved the core mathematics on paper (both boundary characterizations,
+cross-checked vs OQ-03). The sole remaining work — creating
+`GaussWilsonNonCyclicOQ02.lean` with `s2_cyclic_iff` and
+`s2_elementaryAbelian_iff` — is build-dependent, and the verification
+blackout (Docker daemon HUNG, Aristotle 404, CI does not build Lean)
+leaves no route to compile/verify a new file. There is also a likely
+Mathlib gap (explicit `(ZMod 2^a)ˣ ≅ C₂ × C_{2^{a-2}}` iso, ~80-150 LOC
+if absent). Flipping `surveyed → blocked` stops the depth-first claim
+picker from repeatedly re-selecting a slug whose only next step is
+build-gated; reverse to `surveyed` when Docker returns. Unblock recipe
+unchanged (see Next Action below).
 
 ## Current Focus
 Core mathematics resolved on paper (see knowledge.md): the Sylow 2-subgroup
