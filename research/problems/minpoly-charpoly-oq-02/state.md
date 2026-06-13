@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **REVERSE DIRECTION ONLY** (forward shipped via #22909)
-**Since**: 2026-06-13 (S13 content correction)
-**Iteration**: 16
+**Phase**: BLOCKED (infra) — **REVERSE DIRECTION ONLY** (forward shipped via #22909)
+**Since**: 2026-06-13 (S14 flagged blocked on verification blackout)
+**Iteration**: 17
 
 > **S13 CONTENT CORRECTION (researcher-1, 2026-06-13).** The S11/S12 records
 > below are stale, NOT dormant. They claim "no PRs touched MinpolyCharpolyOQ02.lean
@@ -20,6 +20,75 @@
 > forward direction. This corrects a missed-merge content error, distinct from the
 > prior S6/S8/S10/S11/S12 infra re-measurement churn. Docker down 2026-06-13
 > (verification blackout) so no build attempted this session.
+
+---
+
+## S14 BLOCKED (researcher-1, 2026-06-13) — verification blackout, all routes down
+
+Flagging this slug **`blocked`** (infra, not math). The state is fully
+synced (S13, today) and the **only** remaining work is the reverse-direction
+`sorry` at `MinpolyCharpolyOQ02.lean:221`, which is **build-dependent and
+unverifiable today**:
+
+| Route | Status (2026-06-13) | Check |
+|-------|---------------------|-------|
+| Docker local build | **HUNG** | `docker info` times out (rc=124) |
+| Aristotle proof search | **404** | `mcp-smoke-test.sh` → `404 Not Found` on `…/api/v1/project` |
+
+Both verification routes are down (cf. fleet-wide blackout). CI does **not**
+build Lean, so a blind reverse-direction edit could silently break the
+currently-green file (forward direction + 5 sanity lemmas all build). Per the
+"flag BLOCKED over PREP churn" rule (16 iters, 1 ACT, 5 prior STATE-SYNCs),
+this session does **not** add a doc-only PREP memo #6 — it flags blocked and
+records the fully-specified unblock recipe below.
+
+### Unblock path (when Docker recovers — paste at line 221)
+
+The three bridges B-fwd / C / D are **already in-tree**. The sole missing
+piece is **Bridge A reverse** (eigenspace decomposition → conjugating matrix),
+which no prior PREP wrote out concretely. Recipe:
+
+```lean
+-- hsq : Squarefree (minpoly K M),  goal : M.IsDiagonalizable
+set f := Matrix.toLin' M with hf
+-- Bridge D: minpoly K f = minpoly K M  (verify exact name at pin)
+have hmp : minpoly K f = minpoly K M := by simp [hf, Matrix.minpoly_toLin']
+-- Bridge C (in-tree): f is semisimple
+have hss : f.IsSemisimple :=
+  (Module.End.isSemisimple_iff_squarefree_minpoly).mpr (hmp ▸ hsq)
+-- Bridge B fwd (in-tree): eigenspaces span ⊤
+have htop : ⨆ μ : K, f.eigenspace μ = ⊤ :=
+  Module.End.iSup_eigenspace_eq_top_of_isSemisimple hss
+-- Bridge A reverse (NEW — the only real gap):
+--   1. eigenspaces are independent: Module.End.eigenspaces_independent f
+--      (or iSupIndep_…; verify name at v4.26.0).
+--   2. independent + htop ⇒ DirectSum.IsInternal (fun μ => f.eigenspace μ)
+--      via DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top.mpr.
+--   3. collected eigenbasis: hInternal.collectedBasis (fun μ => (f.eigenspace μ).basis …),
+--      indexed by Σ μ, Fin (finrank K (f.eigenspace μ)); reindex to n via
+--      Fintype.card equality (Σ-card = finrank = card n over alg-closed).
+--   4. P := (b.reindex e).toMatrix (Pi.basisFun K n)  (columns = eigenvectors);
+--      IsUnit P from basis.toMatrix invertibility.
+--   5. IsDiag (P⁻¹ * M * P): in the eigenbasis toLin' M acts diagonally
+--      (M • bᵢ = μᵢ • bᵢ), so LinearMap.toMatrix b b f is diagonal and the
+--      conjugation P⁻¹ M P equals that diagonal matrix.
+```
+
+Bearers to re-pin-verify when unblocked: `Matrix.minpoly_toLin'`,
+`Module.End.eigenspaces_independent`,
+`DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top`,
+`DirectSum.IsInternal.collectedBasis`, `Basis.toMatrix`,
+`LinearMap.toMatrix_toLin'`. Estimated ~50 LOC. Expected final state:
+**~330 LOC, 0 sorries, 0 axioms** → promote to `verified`.
+
+### Files touched this S14 (2)
+
+- `research/problems/minpoly-charpoly-oq-02/state.md` — this block + header.
+- `src/data/research/problems/minpoly-charpoly-oq-02.json` — `status` →
+  `blocked`, `currentState.{phase, since, iteration, blockers, nextAction}`,
+  `lastUpdate`.
+
+No Lean file touched (sorry count unchanged at 1; axiom count unchanged at 0).
 
 ---
 

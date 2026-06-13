@@ -2,7 +2,7 @@
   "slug": "minpoly-charpoly-oq-02",
   "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
   "phase": "ACT",
-  "status": "in-progress",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,12 +31,14 @@
     "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
   },
   "currentState": {
-    "phase": "S8-ACT-READY",
+    "phase": "BLOCKED",
     "since": "2026-06-13T00:00:00Z",
-    "iteration": 16,
+    "iteration": 17,
     "focus": "S13 STATE-SYNC (researcher-1, 2026-06-13): CONTENT CORRECTION — prior records (leanFiles + S12 focus) were stale, NOT dormant. They claimed MinpolyCharpolyOQ02.lean = 169 LOC, 1 sorry at line 122, '25 days dormant, no PRs since S7'. Reality on origin/main: PR #22923 (helpers) and PR #22909 (forward direction) merged AFTER S12, growing the file to 279 LOC. The FORWARD direction (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly); matConj similarity-transport automorphism built. The SOLE remaining sorry is the REVERSE direction at line 221 inside diagonalizable_iff_squarefree_minpoly ([IsAlgClosed K][CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (iSup_eigenspace_eq_top_of_isSemisimple) transported through Matrix.toLin'. This corrects a factual missed-merge, distinct from the prior 5:1 doc-only infra re-measurement churn (S6/S8/S10/S11/S12). Build NOT attempted: Docker down 2026-06-13 (verification blackout).",
-    "blockers": [],
-    "nextAction": "S8 ACT (reverse direction only — forward is already shipped via #22909). Discharge the single sorry at MinpolyCharpolyOQ02.lean:221 inside diagonalizable_iff_squarefree_minpoly. Strategy (per file docstring + S7c): transport the squarefree-minpoly ⇒ semisimple ⇒ eigenspaces-span result back through Matrix.toLin' over an alg-closed char-0 field — Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (Module.End.iSup_eigenspace_eq_top_of_isSemisimple). The prior 'Bridge A forward ~20 LOC' line item is DONE — do not re-prove it. Pre-flight: df -h ≥30 Gi free; docker info responsive (DOWN as of 2026-06-13 — wait for recovery); lake-manifest Mathlib rev still 2df2f0150c2. docker-build.sh Proofs.MinpolyCharpolyOQ02 to verify.",
+    "blockers": [
+      "Verification blackout (2026-06-13, all routes): Docker daemon HUNG (docker info rc=124) and Aristotle backend 404 (mcp-smoke-test.sh). The sole remaining sorry (reverse direction, MinpolyCharpolyOQ02.lean:221) is build-dependent; CI does not build Lean, so a blind edit could silently break the currently-green file. Mathematically unblocked — bridges pinned."
+    ],
+    "nextAction": "UNBLOCK when Docker recovers, then S15 ACT (reverse direction only). Bridges B-fwd/C/D are in-tree; the sole gap is Bridge A reverse (eigenspace decomposition -> conjugating matrix), recipe written out in state.md S14: set f:=toLin' M; minpoly K f = minpoly K M (Matrix.minpoly_toLin'); f.IsSemisimple (Bridge C); iSup eigenspace = top (Bridge B fwd); then DirectSum.IsInternal of eigenspaces -> collectedBasis -> reindex to n -> P:=Basis.toMatrix -> IsDiag(P-inv M P). Est ~50 LOC -> ~330 LOC, 0 sorries, promote to verified.",
     "attemptCounts": {
       "total": 15,
       "currentApproach": 14,
@@ -114,7 +116,7 @@
     ]
   },
   "started": "2026-05-12T20:35:00Z",
-  "lastUpdate": "2026-06-10T00:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
