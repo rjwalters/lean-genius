@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S2_ORIENT",
+  "phase": "S4_ACT",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -38,18 +38,20 @@
       "Step 4's conjugation-action wiring (Risk R1 in knowledge.md): may need `MulEquiv.ofBijective` rather than direct `AGL1Z.toPerm` reuse.",
       "Step 5's `H ≤ N_{S_p}(P)` (Risk R2 in knowledge.md): `Subgroup.le_normalizer_of_normal` may not exist verbatim — ad-hoc 5-LOC may be required."
     ],
-    "completedThisIter": [],
+    "completedThisIter": [
+      "Step 2 (`sylow_p_normal`) discharged: `haveI : Subsingleton (Sylow p H) := sylow_p_unique H hPrim hSolv; exact P.normal_of_subsingleton`. File 6 → 5 sorries, 119 → 126 LOC, Docker-verified 1900 jobs. Bearer `Sylow.normal_of_subsingleton` re-verified via gh api at pinned SHA 2df2f015."
+    ],
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S2_ORIENT",
-    "since": "2026-06-10T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "S3 STATE-SYNC (researcher-1, 2026-06-10): G9 RECLASSIFIED — 'lake self-loop' is a researcher-side grep-convenience issue (host symlink proofs/.lake self-references), NOT a Docker-build blocker. Verified this session: PR #22751 / S21 ACT on slug `lagrange-four-squares-waring-g2-oq-01` shipped a fresh sibling Lean file from THIS worktree via `./proofs/scripts/docker-build.sh` with **7743 jobs clean** (~158 s incremental, ~5–6 min total with Mathlib cache fetch). Docker uses its own .lake inside the container; the host symlink does not enter. Bearer audits should use `gh api` instead of host-side grep (demonstrated this session on PR #22753 / S4 PREP for laws-of-large-numbers-oq-01-oq-02). The 7 sorries remain the real blocker — S3 ACT picker should commit to full Docker build immediately, not defer on G9 grounds. Slug Lean state unchanged at 119 LOC, 7 sorries, 0 axioms.",
-    "nextAction": "S3 ACT — discharge Step 2 (sylow_p_normal) as the warm-up: any unique Sylow is normal via `Sylow.normal_of_subsingleton P`; ~5-10 LOC; reduces sorry count 7 → 6. May need to add `(hSub : Subsingleton (Sylow p H))` hypothesis (or absorb subsingleton dep via Step 1's eventual discharge). Then choose: (a) Step 1 (`sylow_p_unique`, ~40-60 LOC, primitive solvable order divisibility), (b) Step 3 (`sylow_p_is_pcycle`, ~20-30 LOC via `isCycle_of_prime_order''`), or (c) the hardest Step 4 (`normalizer_iso_AGL1Z`, ~80-150 LOC). Docker per S21 ACT pattern: run from worktree root, expect 7743 jobs incremental clean. Bearer surface for Steps 2-3 verified at lake-pin `2df2f015…` via S2 ORIENT pre-flight (still authoritative — no Mathlib drift since 2026-06-04).",
+    "phase": "S4_ACT",
+    "since": "2026-06-12T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "S4 ACT (researcher-2, 2026-06-12): discharged Step 2 (`sylow_p_normal`), reducing the file from 6 sorries to 5 (126 LOC). Proof: `haveI : Subsingleton (Sylow p H) := sylow_p_unique H hPrim hSolv; exact P.normal_of_subsingleton`. Bearer `Sylow.normal_of_subsingleton` (Mathlib/GroupTheory/Sylow.lean:724, sig `[Subsingleton (Sylow p G)] (P : Sylow p G) : P.Normal`) re-verified via gh api at pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Step 2 now carries no sorry of its own — fully proved, conditional only on Step 1. No new hypothesis needed: the Subsingleton instance is produced internally by Step 1's statement. Docker-verified: build completed successfully, 1900 jobs, 5 sorry warnings at lines 50/77/93/103/119, 0 errors, 0 axioms. (Prior docs said '7 sorries'; build-verified count before this iteration was actually 6.)",
+    "nextAction": "S5 ACT — the hard core is Step 1 (`sylow_p_unique`): Sylow-p uniqueness for a primitive solvable H ≤ S_p. Recommended route via minimal-normal-subgroup / socle theory (a minimal normal subgroup of a solvable primitive group is elementary abelian and transitive ⟹ regular of order p ⟹ the unique normal Sylow-p); needs Mathlib socle API and sustained multi-session work, NOT a single tail. Cheaper independent wins available first: Step 3 (`sylow_p_is_pcycle`, ~20-30 LOC via `Equiv.Perm.isCycle_of_prime_order''`) can be attempted without Step 1. Bearer surface for Step 3 verified at lake-pin `2df2f015…`. Docker per S21 ACT pattern: run from worktree root.",
     "blockers": [],
-    "attemptCounts": { "total": 3, "currentApproach": 2, "approachesTried": 2 },
-    "lastUpdate": "2026-06-10T00:00:00.000Z"
+    "attemptCounts": { "total": 4, "currentApproach": 3, "approachesTried": 3 },
+    "lastUpdate": "2026-06-12T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
