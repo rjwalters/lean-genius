@@ -27,10 +27,10 @@
     "goal": "Prove the backward direction (cyclic ⇒ nonderogatory) over CommRing R; formalize the ZMod 4 counterexample falsifying the forward direction. Stretch goal: settle forward direction over PIDs/UFDs."
   },
   "currentState": {
-    "phase": "ACT-1",
+    "phase": "ACT-2 (partial)",
     "since": "2026-06-10T05:00:00.000Z",
-    "iteration": 7,
-    "focus": "S3 ACT-1 (researcher-1, 2026-06-10T~05:00Z, this PR) — first Lean delta on ZMod 4 counterexample chain. Created proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean (~115 LOC) per S3 PREP-3 §4 paste-ready discharges. **Three sorry-free theorems locked in**: `charpoly_eq_X_sq` (S3 PREP-2 §1 four-line discharge: rw charpoly_fin_two + simp trace_fin_two_of + det_fin_two_of + ring), `M_pow_two_eq_zero` (entry-wise Matrix.mul_apply + Fin.sum_univ_two over Fin 2), `two_smul_M_eq_zero` (fin_cases + decide, supporting future no_cyclic_vector discharge). Plus a private `nontrivial_zmod_four` helper (⟨0, 1, by decide⟩) required by Matrix.charpoly_fin_two's implicit Nontrivial constraint. **Two paste-ready sorries** retained with full proof outlines in docstrings: `minpoly_natDegree_eq_two` (PREP-3 §4.1 outline; needs upper bound via minpoly.min on X^2 monic annihilator + lower bound via interval_cases on natDegree < 2 + monic-deg-0/1 exclusion using two_smul_M_eq_zero) and `no_cyclic_vector` (PREP-3 §4.3 outline; needs q = 2*X annihilator, q.natDegree = 1 < 2 by natDegree_C_mul_X, coeff (2*X) 1 = 2 ≠ 0 in ZMod 4). v1 build failed with (a) `Nontrivial (ZMod 4)` synthesis miss at charpoly_fin_two rewrite, and (b) `Matrix.head_cons` unused-simp-arg linter warning; v2 build adds the Nontrivial helper + trims the unused simp arg. Builder: docker daemon responsive at branch creation; lean-build container warm (9h uptime). leanFiles[] gains 2 entries: the new ZMod4Counterexample.lean (the ACT-1 deliverable) AND the previously-missing CayleyHamiltonCyclicVectorCommRingOQ01.lean (S2 ACT file from 2026-05-16 — drift fix; this S3 STATE-SYNC was supposed to append it but the entry was missing in the prior PR). S3 ACT-2 will discharge the two remaining sorries against the ACT-1 known-good base. Predecessor S3 PREP-3 (PR untracked here but doc-only, MERGED 2026-06-02T~04:00Z) supplied the math; this ACT-1 ships the Lean.",
+    "iteration": 8,
+    "focus": "S3 ACT-2 (STATE-SYNC catch-up, 2026-06-13) — PR #22925 (\"prove no_cyclic_vector, Docker-verified 7744 jobs\", merged 2026-06-13T05:50Z) discharged the `no_cyclic_vector` sorry in CayleyHamiltonCyclicVectorZMod4Counterexample.lean but touched only the Lean file, leaving state.md + this JSON one iteration behind. Synced here. `no_cyclic_vector` (¬ ∃ v, IsCyclicVector M v over ZMod 4) is now sorry-free via the q = 2·X annihilator (q.natDegree = 1 < 2, aeval M q = 2 • M = 0 by two_smul_M_eq_zero), per S3 PREP-3 §4.3. File 115 → 136 LOC, sorryCount 2 → 1; theorem/def/axiom counts unchanged (6 thms incl private nontrivial_zmod_four, 1 def, 0 axioms). The sole remaining sorry is `minpoly_natDegree_eq_two` (S3 PREP-3 §4.1 outline) — next ACT, Docker-gated while the daemon is down.",
     "blockers": [],
     "nextAction": "S3 ACT-2: discharge the two paste-ready `sorry`s remaining from ACT-1 — `minpoly_natDegree_eq_two` (PREP-3 §4.1 outline: upper bound via `minpoly.min` on `(X^2 : (ZMod 4)[X])` as monic annihilator (uses ACT-1's `M_pow_two_eq_zero`); lower bound by `interval_cases` on `natDegree < 2` + monic-deg-0/1 exclusion using ACT-1's `two_smul_M_eq_zero`. ~10 LOC.) and `no_cyclic_vector` (PREP-3 §4.3 outline: take `q = 2 * X` as the falsifying annihilator; `aeval M (2*X) = 2 • M = 0` via ACT-1's `two_smul_M_eq_zero`; `(2*X).natDegree = 1 < 2`; `IsCyclicVector` then forces `2*X = 0`, contradicting `coeff (2*X) 1 = 2 ≠ 0` in ZMod 4. ~25 LOC.). Both discharges develop against ACT-1's known-good build base (sorry-free `charpoly_eq_X_sq`, `M_pow_two_eq_zero`, `two_smul_M_eq_zero`). After ACT-2 lands the file is complete and the OQ is settled negatively over non-domains.",
     "attemptCounts": {
@@ -106,7 +106,7 @@
     "urls": []
   },
   "started": "2026-05-13T07:10:22.517Z",
-  "lastUpdate": "2026-06-10T05:00:00.000Z",
+  "lastUpdate": "2026-06-13T05:50:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -168,11 +168,11 @@
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean",
       "filename": "CayleyHamiltonCyclicVectorZMod4Counterexample.lean",
-      "lineCount": 121,
+      "lineCount": 136,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean"
     }
