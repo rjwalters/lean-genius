@@ -1,12 +1,45 @@
 # Current State
 
-**Phase**: S17 PREP (post-S16 STATE-SYNC with ACT-readiness gate degradation to 8/9 GREEN + 1/9 AMBER: host disk regressed from S16 PREP's 97 Gi avail to 7.8 Gi avail at 100% capacity; Docker remains RESPONSIVE; ACT plan unchanged — S16+1 ACT picker follows S15 PREP §6.2 7-step checklist)
-**Since**: 2026-06-02T04:34:00Z (S17 PREP, researcher-1)
-**Iteration**: 17
-**Last session**: S17 PREP — post-S16 STATE-SYNC + degraded gate refresh (researcher-1, 2026-06-02, doc-only)
-**Last Updated**: 2026-06-02T04:34:00Z
+**Phase**: S18 ACT (STATE-SYNC of a merged .lean-only ACT — PR #22941 proved `qdetN_step_eq_qdetF` modulo a new division-free crux lemma `qdetN_step_eq_qdetF_aux`, which now carries the sole sorry; trackers had been frozen at S17 PREP)
+**Since**: 2026-06-13T19:30:00Z (S18 ACT STATE-SYNC, researcher-6)
+**Iteration**: 18
+**Last session**: S18 ACT STATE-SYNC — record merged S4 ACT #22941 + gallery meta sync (researcher-6, 2026-06-13, doc-only)
+**Last Updated**: 2026-06-13T19:30:00Z
 
-> _Phase note: state.md previously stayed at iter 15 because S16 PREP (researcher-1, 2026-05-25) did not propagate iteration counter to state.md — only updated the JSON. This S17 PREP brings state.md back in sync (15 → 17, skipping the unmemorialised 16)._
+> _Phase note: state.md previously stayed at iter 15 because S16 PREP (researcher-1, 2026-05-25) did not propagate iteration counter to state.md — only updated the JSON. S17 PREP brought it back in sync (15 → 17). This S18 ACT records the merge-skipped S4 ACT (#22941, merged 2026-06-13T12:50Z) that grew the file 312 → 377 LOC and proved the strategic bridge modulo the residual crux._
+
+## Session 18 — S18 ACT STATE-SYNC, record merged S4 ACT #22941 (researcher-6, 2026-06-13, doc-only)
+
+A `.lean`-only ACT (**PR #22941**, "S4 — prove field-consistency modulo
+division-free crux", merged 2026-06-13T12:50:18Z) landed while the trackers
+were frozen at S17 PREP (iter 17, 2026-06-05). It discharged the strategic
+theorem `qdetN_step_eq_qdetF` (the Route B → Route A bridge, choosing
+`Minv := (minorIJ A i j)⁻¹`) **modulo** a newly-isolated division-free crux:
+
+```
+qdetN_step_eq_qdetF_aux :
+  (minorIJ A i j).det * A i j
+    - ∑ p, ∑ q, A i (Fin.succAbove j q) * (minorIJ A i j).adjugate q p
+                  * A (Fin.succAbove i p) j
+    = (-1) ^ (i + j) * A.det        -- line 277, the sole remaining `sorry`
+```
+
+This is the predicted **"1 → 1 partial-discharge"** branch of the S16+1 ACT
+picker (S15 PREP §5): the outer skeleton is now proved, and the residual
+adjugate cofactor-sum identity (no matrix inverses) is isolated as the crux
+lemma rather than fully eliminated.
+
+**Metrics** (source `CramersRuleOQ01OQ02OQ01OQ01.lean`): 312 → **377 LOC**,
+theorems 11 → **12**, sorries **1 → 1** (relocated bridge → crux), 0 axioms.
+The gallery `meta.json` was synced in the **same PR** (lineCount 312→377,
+theoremCount 11→12, Part VI section endLine 269→375, `originalContributions`
++ `assumptions` prose).
+
+**Next**: discharge `qdetN_step_eq_qdetF_aux` via the corrected S15 PREP §4.1
+`submatrix_chain` Form 1 + Block I-IV recipe (now that the outer bridge is
+done) — target 1 → 0 sorry. **Build-gated**: Docker is DOWN per the
+2026-06-13 verification blackout; the crux discharge cannot be Docker-verified
+until the daemon recovers.
 
 ## Session 17 — S17 PREP, post-S16 STATE-SYNC + degraded gate refresh (researcher-1, 2026-06-02, doc-only)
 
