@@ -29,6 +29,7 @@ multi-session plan.
 -/
 
 set_option linter.unusedVariables false
+set_option linter.unusedSimpArgs false
 
 open scoped RealInnerProductSpace
 
@@ -67,27 +68,42 @@ def concyclicityDet (P₁ P₂ P₃ P₄ : Vec2) : ℝ :=
   concyclicityDetCoords (P₁ 0) (P₁ 1) (P₂ 0) (P₂ 1)
     (P₃ 0) (P₃ 1) (P₄ 0) (P₄ 1)
 
-/-! ## Part 3: Numerical sanity check (deferred to S7b ACT)
+/-! ## Part 3: Numerical sanity checks (S7b ACT)
 
-The original S2 SCAFFOLD shipped two numerical sanity checks built on
+The original S2 SCAFFOLD shipped two numerical checks built on
 `Matrix.det_fin_four`, which does not exist in Mathlib v4.26.0 (the lemma
-ladder stops at `Matrix.det_fin_three`; only the cofactor-expansion
-`Matrix.det_succ_row_zero` is available for 4×4 matrices). Both example
-blocks were inert documentation — no downstream consumer — and have been
-removed in S7 BUILD-VERIFY to unblock the file. Reinstating them as
-named numerical lemmas (e.g. via `Matrix.det_succ_row_zero` +
-`Matrix.det_fin_three` expansion, or via an explicit row-dependence
-`Matrix.det_eq_zero_of_row_eq` for the unit-square example) is a small
-follow-up scoped for S7b.
+ladder stops at `Matrix.det_fin_three`; for 4×4 one cofactor step via
+`Matrix.det_succ_row_zero` reduces to four 3×3 minors). They were removed
+in S7 BUILD-VERIFY to unblock the file; S7b ACT (this iteration)
+reinstates them as named numerical lemmas, expanding the 4×4 determinant
+via `Matrix.det_succ_row_zero` + `Matrix.det_fin_three`.
 
-Geometric content for reference:
+Geometric content:
 
-- Unit-square vertices $(1,0), (0,1), (-1,0), (0,-1)$ are concyclic
-  (they lie on the unit circle), so $\Delta = 0$. Rows 1+3 = rows 2+4 =
-  $(2, 0, 0, 2)$, forcing a row dependency.
-- Perturbing the fourth point to $(0, -2)$ moves it off the unit circle
-  and gives $\Delta = -8$.
+- Unit-circle vertices $(1,0), (0,1), (-1,0), (0,-1)$ are concyclic, so
+  $\Delta = 0$ (rows 1+3 = rows 2+4 = $(2,0,0,2)$, a row dependency).
+- Moving the fourth point off the circle to $(0,-2)$ gives $\Delta = -6$.
+  (The S2 SCAFFOLD doc asserted $-8$; direct cofactor expansion — verified
+  here by Lean — gives $-6$, so the earlier figure was a hand-computation
+  slip.)
 -/
+
+/-- The four unit-circle vertices $(1,0),(0,1),(-1,0),(0,-1)$ are concyclic,
+so their concyclicity determinant vanishes. -/
+theorem concyclicityDetCoords_unit_circle :
+    concyclicityDetCoords 1 0 0 1 (-1) 0 0 (-1) = 0 := by
+  unfold concyclicityDetCoords
+  simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_zero, Fin.succAbove]
+  norm_num
+
+/-- Moving the fourth vertex off the unit circle to $(0,-2)$ makes the four
+points non-concyclic, witnessed by a nonzero concyclicity determinant
+($\Delta = -6$). -/
+theorem concyclicityDetCoords_off_circle :
+    concyclicityDetCoords 1 0 0 1 (-1) 0 0 (-2) = -6 := by
+  unfold concyclicityDetCoords
+  simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_zero, Fin.succAbove]
+  norm_num
 
 /-! ## Part 4: Main theorem (statement only) -/
 
