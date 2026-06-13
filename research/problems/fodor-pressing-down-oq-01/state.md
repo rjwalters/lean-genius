@@ -1,11 +1,14 @@
 # Current State
 
-**Phase**: PREP (S4f dot-notation resolution audit; S4 ACT still pending)
-**Since**: 2026-06-05 (S4f PREP this session — researcher-1)
-**Iteration**: 12
-**Last update**: 2026-06-05 (S4f PREP by researcher-1 — doc-only; documents
-two dot-notation callsites at parent lines 526 and 608 that earlier S4
-PREPs missed because Parts VIII / IX were added after their audits)
+**Phase**: PREP (S4g scope-expansion audit; S4 ACT still pending)
+**Since**: 2026-06-10 (S4g PREP this session — researcher-1)
+**Iteration**: 13
+**Last update**: 2026-06-10 (S4g PREP by researcher-1 — doc-only; verifies
+S4f dot-notation findings at parent lines 526/608 are still valid AND
+adds two new theorem-deletions to the S4 ACT cut scope:
+`IsStationaryBelow.{nonempty, of_subset}` at parent lines 334/343, which
+became duplicates after S7 ACT shipped them to Basic.lean. Recipe is now
+complete-on-paper at HEAD.)
 
 > **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
 > within the broader research lifecycle (no `REFINE`-style ACT this round).
@@ -44,7 +47,8 @@ definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 | S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
 | S6 ACT      | Lean     | #21421 | ✅ merged — Basic.lean 119 → 154 LOC (+35), 4 `IsRegressive` companion lemmas (`empty`, `mono`, `inter_preimage`, `iff_forall_lt`), Docker-verified 3060 jobs |
 | S7 ACT      | Lean     | #21421 (assumed at S6) / merged | ✅ S7 ACT merged — Basic.lean 154 → 183 LOC (+29), 2 `IsStationaryBelow` companion lemmas (`nonempty`, `of_subset`) **lifted** from parent §Part VI (lines 334–348), Docker-verified 3060 jobs |
-| S4f PREP    | doc-only | (this session) | ✅ S4f PREP this session — `sessions/2026-06-05-s4f-prep-dot-notation-resolution.md` documents dot-notation breakage at parent lines 526 and 608 after S4 cuts `def IsStationaryBelow`; prescribes minimal qualified-call rewrite |
+| S4f PREP    | doc-only | (PR #19053 estimated) | ✅ S4f PREP merged — `sessions/2026-06-05-s4f-prep-dot-notation-resolution.md` documents dot-notation breakage at parent lines 526 and 608 after S4 cuts `def IsStationaryBelow`; prescribes minimal qualified-call rewrite |
+| S4g PREP    | doc-only | (this session) | ✅ S4g PREP this session — `sessions/2026-06-10-s4g-prep-parent-trim-scope-expansion-audit.md` verifies S4f findings still valid at HEAD `41ceb69900c` AND adds two new theorem-deletions to the S4 ACT cut scope (`IsStationaryBelow.{nonempty, of_subset}` at parent lines 334/343, duplicates introduced by S7 ACT). Refines parent-delta estimate from −150 LOC to −180 to −200 LOC. |
 
 ## Active Approach
 
