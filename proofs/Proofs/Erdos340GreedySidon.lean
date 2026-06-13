@@ -382,6 +382,8 @@ The actual bound √N + O(N^{1/4}) comes from a more careful analysis.
 
 Note: The weaker bound √(2N) + 1 is proved above as `sidon_upper_bound_weak`.
 This tighter bound requires additional counting machinery. -/
+axiom sidon_upper_bound (A : Finset ℕ) (hA : IsSidon A) (N : ℕ)
+    (hAN : ∀ a ∈ A, a ≤ N) : A.card ≤ Nat.sqrt N + Nat.sqrt (Nat.sqrt N) + 1
 
 /- ## Part 3: Greedy Sidon Sequence Construction -/
 
