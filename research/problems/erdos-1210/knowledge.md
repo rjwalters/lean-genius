@@ -159,6 +159,50 @@ i.e., is the proximity-weighted harmonic sum over any pairwise coprime set bound
   pairwise coprime A (e.g. via the ≤1-even-element structure + a sieve/Mertens
   estimate), which would be genuine progress toward the open problem.
 
+### Session 2026-06-13 (Session 4) — researcher-1
+
+**Mode**: ITERATION (SURVEY only — Docker unreliable [`docker ps` hangs], Aristotle backend 404; no verification route, so no Lean changes shipped this session).
+**Outcome**: Tractability-boundary survey for the S4 partial-bound goal, plus a canonical-JSON state correction (the research JSON `progressSummary`/`nextSteps` still described the Session-1 mis-transcribed `1/(n-p)` form; brought into line with S3's corrected statement).
+
+#### The achievable-bounds landscape (what S4 should and should not target)
+
+The conjecture's target is a **`log log n`** (Mertens-order) bound, uniform in
+`n` and `A`. Two very different difficulty regimes:
+
+1. **Trivial `log n` baseline (no coprimality needed, elementary, provable).**
+   For *any* `A ⊆ [1,n)` with distinct elements, the values `{n − a : a ∈ A}`
+   are distinct integers in `[1, n−1]`, so
+   `∑_{a∈A} 1/(n−a) = ∑_{m ∈ {n−a : a∈A}} 1/m ≤ ∑_{m=1}^{n−1} 1/m = H_{n−1} ~ log n`.
+   This uses none of the pairwise-coprimality hypothesis. In Lean it is a
+   "sum over an injective image ≤ sum over the full range" argument
+   (`Finset.sum_le_sum_of_subset_of_nonneg` after mapping `a ↦ n − a`, with
+   injectivity of `a ↦ n − a` on `A ⊆ [1,n)`). **This is the right next ACT
+   deliverable** — a genuine *unconditional* `theorem` bounding the LHS by the
+   harmonic number, instantiating the conjecture's `C`-free shape with `f(n) =
+   H_{n−1}`. It is honest partial progress (a verified upper bound), but it is
+   **NOT** the conjecture: `log n ≫ log log n`.
+
+2. **The conjecture's `log log n` is the hard part — and it is the
+   coprimality that must close the `log n → log log n` gap.** Getting from the
+   trivial harmonic bound down to Mertens order is exactly where the
+   pairwise-coprime structure (≤ 1 element divisible by each prime `p`) does the
+   work, via a sieve/Mertens comparison. **Blocked by a Mathlib gap**: base
+   Mathlib `v4.26.0` does **not** contain Mertens' second theorem
+   (`∑_{p<n} 1/p = log log n + O(1)`) — see this repo's own assessment in
+   `research/problems/bertrands-postulate-oq-01/state.md` ("Mertens' theorems …
+   not present in base Mathlib v4.26.0"). So even *stating* the RHS asymptotic,
+   let alone proving the comparison, requires analytic number theory that would
+   be a substantial upstream contribution. The full conjecture should be treated
+   as **long-horizon / BLOCKED-on-infra**, not a near-term ACT.
+
+#### Recommendation
+- **S5 ACT (when build infra is reliable)**: ship the trivial `H_{n−1}`
+  unconditional bound from regime (1). Small, fully elementary, no new axioms,
+  Mathlib-reachable. Do **not** attempt the `log log n` conjecture directly.
+- Do not blind-ship the regime-(1) proof while Docker is down — the
+  injective-image reindex is exactly the kind of step that fails silently
+  without a compiler.
+
 ---
 
 *Generated from erdosproblems.com on 2026-04-16; statement corrected from source 2026-06-13.*
