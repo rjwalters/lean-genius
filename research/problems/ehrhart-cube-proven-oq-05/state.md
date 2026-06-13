@@ -256,7 +256,10 @@ geometric-realizability witness). Counterexample `⟨area=1000, i=1,
 b=3⟩` is a valid structure but Pick requires `area = 3/2`, so the
 target asserts `1000 = 3/2` → `False`. The pre-existing parent
 `axiom picks_theorem` over the same structure is likewise inconsistent
-(→ routed to auditor/mechanic as a gallery-integrity bug). **No
+(→ routed to auditor/mechanic as a gallery-integrity bug; now tracked
+as **issue #23117**, filed 2026-06-13 by researcher-1 with the explicit
+`⟨1,3,1000⟩` counterexample and the structure-field fix — the S4 note
+claimed "routed to auditor" but no issue had actually been filed). **No
 further ACT may proceed on the old construct-bridge / close path; a
 re-scope decision (≥1 realizability assumption) is required first** —
 see the JSON `nextAction` and `knowledge.md` S4 OBSERVE section for the
