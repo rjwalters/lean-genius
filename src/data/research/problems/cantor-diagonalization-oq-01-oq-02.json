@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-05T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT (researcher-1, 2026-06-05): pure Mathlib API drift repair — 7 breakages fixed across ~10 lines, 0 new mathematical content, Docker-verified 3061/3061 jobs. The file is now buildable under current Mathlib v4.26.0. All 7 axioms retained (deep set-theoretic results requiring forcing / inner model theory not in Mathlib).",
+    "since": "2026-06-09T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT (researcher-4, 2026-06-09): contrapositive corollaries (PART IX) — +5 theorems (14→19), +55 LOC (306→361), 0 new axioms, 0 new defs, 0 sorries. New: ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma (four-corner {CH,¬CH}×{MM/MA,¬MM/¬MA} structure) + mm_continuum_gt_aleph_one (MM → ℵ₁ < 2^ℵ₀ quantitative refinement). Docker-verified 3061/3061 jobs both pre- and post-edit. File is buildable under Mathlib v4.26.0; all 7 axioms retained (deep set-theoretic results requiring forcing / inner model theory not in Mathlib).",
     "blockers": [],
-    "nextAction": "Gallery meta.json enrichment (doc-only, ~1 session): add explicit citations to Lévy-Solovay (1967), Foreman-Magidor-Shelah (1988), Woodin Ultimate-L program. Cross-reference sibling cantor-diagonalization gallery entries. Axiom elimination is BLOCKED until Mathlib has forcing theory / inner model theory infrastructure (multi-year projects).",
+    "nextAction": "Doc-only (lower priority): gallery meta.json enrichment with explicit citations to Lévy-Solovay (1967), Foreman-Magidor-Shelah (1988), Woodin Ultimate-L program; cross-reference sibling cantor-diagonalization gallery entries. Axiom elimination is BLOCKED until Mathlib has forcing theory / inner model theory infrastructure (multi-year projects).",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT shipped (researcher-1, 2026-06-05, this iteration): Mathlib API drift repair. The file was last touched 2026-04-26 (S1 ACT initial formalisation) and never Docker-verified. This iteration discharges the gallery-JSON next-action by actually running Docker build, finding 5 hard errors + 3 warnings, and fixing all of them: (1) λ binder → μ binder (Lean 4 parser tightening), (2) Ordinal.cof returns Cardinal directly (no .card needed), (3) le_of_eq → ge_of_eq for the ≥ direction of MartinsMaximum → MartinsAxiom, (4) continuum → ContinuumHypothesis.continuum (ambiguity with 𝔠 notation), (5) Cardinal.aleph_lt → Cardinal.aleph_lt_aleph (renamed; sibling files already use new name), (6) omega failure on Ordinal target wrapped with exact_mod_cast from ℕ-side omega, (7) simp only [...] → simpa using h0 (unused simp args). 0 new mathematics; file now buildable under Mathlib v4.26.0. Docker-verified 3061/3061. Counts unchanged: 14 theorems, 7 axioms, 10 defs, 0 sorries, 311 LOC. PRIOR (S1 ACT, 2026-04-26): initial formalisation of large cardinal axioms (inaccessible, measurable), forcing axioms (MA, MM), Lévy-Solovay independence, MM/MA → ¬CH, GCH framework, Ultimate-L axiomatisation.",
+    "progressSummary": "S3 ACT shipped (researcher-4, 2026-06-09): contrapositive corollaries (PART IX) — +5 theorems (14→19), +55 LOC (306→361), 0 new axioms/defs/sorries, Docker-verified 3061/3061 jobs. Added ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma (completing the four-corner {CH,¬CH}×{MM/MA,¬MM/¬MA} logical structure) and mm_continuum_gt_aleph_one (MM → ℵ₁ < 2^ℵ₀, quantitative refinement). | S2 ACT shipped (researcher-1, 2026-06-05, this iteration): Mathlib API drift repair. The file was last touched 2026-04-26 (S1 ACT initial formalisation) and never Docker-verified. This iteration discharges the gallery-JSON next-action by actually running Docker build, finding 5 hard errors + 3 warnings, and fixing all of them: (1) λ binder → μ binder (Lean 4 parser tightening), (2) Ordinal.cof returns Cardinal directly (no .card needed), (3) le_of_eq → ge_of_eq for the ≥ direction of MartinsMaximum → MartinsAxiom, (4) continuum → ContinuumHypothesis.continuum (ambiguity with 𝔠 notation), (5) Cardinal.aleph_lt → Cardinal.aleph_lt_aleph (renamed; sibling files already use new name), (6) omega failure on Ordinal target wrapped with exact_mod_cast from ℕ-side omega, (7) simp only [...] → simpa using h0 (unused simp args). 0 new mathematics; file now buildable under Mathlib v4.26.0. Docker-verified 3061/3061. Counts unchanged: 14 theorems, 7 axioms, 10 defs, 0 sorries, 311 LOC. PRIOR (S1 ACT, 2026-04-26): initial formalisation of large cardinal axioms (inaccessible, measurable), forcing axioms (MA, MM), Lévy-Solovay independence, MM/MA → ¬CH, GCH framework, Ultimate-L axiomatisation.",
     "builtItems": [
       "IsStrongLimit, IsRegular, IsInaccessible, IsMeasurable: definitions (CantorDiagonalizationOQ01OQ02.lean:50)",
       "HasInaccessible, HasMeasurable, MartinsAxiom, MartinsMaximum: axiom propositions (line:97)",
@@ -43,7 +43,8 @@
       "mm_consistent, ma_consistent: axioms for forcing axiom consistency (line:203)",
       "UltimateLConjecture, ultimate_l_implies_ch_consistent: Woodin program (line:228)",
       "large_cardinals_and_ch_summary, ch_independent_of_large_cardinals: summary theorems (line:248)",
-      "S2 ACT (researcher-1, 2026-06-05): Docker-verified CantorDiagonalizationOQ01OQ02.lean clean (3061/3061 jobs) after repairing 7 Mathlib API drift breakages. Pure infrastructure repair: 0 new theorems, 0 new axioms, 0 sorries closed. File 306 → 311 LOC."
+      "S2 ACT (researcher-1, 2026-06-05): Docker-verified CantorDiagonalizationOQ01OQ02.lean clean (3061/3061 jobs) after repairing 7 Mathlib API drift breakages. Pure infrastructure repair: 0 new theorems, 0 new axioms, 0 sorries closed. File 306 → 311 LOC.",
+      "S3 ACT (researcher-4, 2026-06-09): +5 contrapositive/quantitative theorems (PART IX) — ch_implies_not_mm, ch_implies_not_ma, gch_implies_not_mm, gch_implies_not_ma, mm_continuum_gt_aleph_one. 14 → 19 theorems, 306 → 361 LOC, 0 new axioms/defs, Docker-verified 3061/3061 jobs."
     ],
     "insights": [
       "Standard large cardinals (measurable, supercompact) don't decide CH — Lévy-Solovay: small forcing preserves measurability",
@@ -94,7 +95,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T08:56:57.651Z",
-  "lastUpdate": "2026-04-26T08:56:57.651Z",
+  "lastUpdate": "2026-06-09T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
