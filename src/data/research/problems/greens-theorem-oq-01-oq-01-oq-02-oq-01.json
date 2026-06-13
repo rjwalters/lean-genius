@@ -2,7 +2,7 @@
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-01",
   "title": "n-dimensional intervalIntegral_swap via Measure.pi",
   "phase": "ACT",
-  "status": "active",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -24,7 +24,7 @@
     "since": "2026-06-10T10:00:00.000Z",
     "iteration": 11,
     "focus": "S11 STATE-SYNC (researcher-1, 2026-06-10, doc-only \u2014 Docker recovery). 9-day post-S10 catch-up clearing the now-stale RED INFRA blocker. S10 recorded `deployer credit-wedged through 2026-06-03 17:00 PT` as the gating condition; that deadline expired 7 days ago and on-host `docker ps` confirms a live `lean4-arm64:v4.26.0` container (`lean-build-12401`, `Up 13 hours`, started 2026-06-10T03:01:32 UTC) actively running a fresh Mathlib build. Disk 15% used / 71 Gi avail (vs. 100% / 6.5 Gi at S9, which contributed to the daemon hang). Mathlib lake pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-identical 28 days since 2026-05-13 \u2192 all 17 PREP-4 \u00a72 bearers + 4 PREP-4 \u00a73 Lean-core symbols carry forward. Parent file 232 LOC / 6 theorems / 0 axioms / 0 sorries (unchanged since S10). Child file 152 LOC / 2 theorems / 1 def / 1 real sorry (unchanged since S4 SCAFFOLD 2026-05-12). Race / orphan landscape GREEN (no in-flight slug PR; PR #21965 orthogonal). ACT-readiness gate: **9/9 GREEN** (was 8/8 GREEN substantive + 1/8 RED INFRA at S10). The corrected drop-in skeleton from PREP-4 \u00a74.1-\u00a74.3 (130-182 LOC) remains paste-ready; only authoring + Docker-iterate remains.",
-    "blockers": [],
+    "blockers": ["Docker daemon down again 2026-06-13 (re-regressed since the S11 2026-06-10 recovery). The sole remaining ACT step is the ~130-182 LOC discharge of `iteratedIntervalIntegral_swap_succ` (1 real sorry at L198), which cannot be verified without a build. After 4 S5 PREP iterations + 3 state-sync sessions with zero Lean delta, status set to blocked to stop recurring no-op claims; revert to active when Docker recovers."],
     "nextAction": "S5 ACT (any researcher, 1.0-1.5 hr authoring + 1-3 Docker iterations ~25 min each at warm cache): implement the corrected drop-in skeleton from PREP-4 \u00a74.1-\u00a74.3 in `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`. Components: `swap_succ_factor` 12-15 LOC (B4-fixed: hoist `h1 h2` before `rw`); `swap_succ_zero` 5 LOC; `continuous_iteratedIntervalIntegral` 26-36 LOC (B1+B3-fixed); outer `iteratedIntervalIntegral_swap_succ` 26-36 LOC (B1+B5+B6-fixed); base-case body 50-70 LOC. Total 130-182 LOC, 0 new sorries, -1 existing sorry. Engine bearer `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'` @ `Mathlib/MeasureTheory/Integral/DominatedConvergence.lean:632` (SHA `2df2f0150c\u2026`, 28-day-stable). Race-safety (S11): no in-flight slug PR; PR #21965 orthogonal (parent gallery meta only). Then S6 lifts `_swap_succ` to full `iteratedIntervalIntegral_perm` via `Equiv.Perm.swap_induction_on` (~50 LOC + lemma-finding).",
     "attemptCounts": {
       "total": 11,
@@ -90,7 +90,7 @@
     ]
   },
   "started": "2026-05-11T19:00:00.000Z",
-  "lastUpdate": "2026-06-10T10:00:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
