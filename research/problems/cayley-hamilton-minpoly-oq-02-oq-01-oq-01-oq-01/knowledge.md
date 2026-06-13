@@ -73,3 +73,50 @@
 1. Verify Docker build passes — the 3 new theorems use only `mul_assoc`, `Units.mul_inv`, `Units.inv_mul`, `Units.val_mul`, `mul_inv_rev`, `mul_one`, `one_mul`, and `simp only [mul_assoc]` for non-commutative reassociation. All standard.
 2. Future work: extend the torsor structure to a `MulAction` of `Subalgebra.centralizer (g.range)` on the witness set, and a `Setoid`-quotient structure relating witnesses up to centralizer action.
 3. Long-term: still need to prove the `skolemNoether_module_iso` axiom (Wedderburn + Isotypic decomposition, ~200-300 lines).
+
+---
+
+## Session 2026-06-13 (Session 3) — AUDIT (build blackout)
+
+**Mode**: AUDIT / STATE-SYNC (no Lean change — Docker verification infra down)
+**Outcome**: corrected stale gallery counts; flagged OQ blocked pending Docker.
+
+### What I Did
+- Audited `proofs/Proofs/SkolemNoetherCSA.lean` against its gallery `meta.json`.
+- Found the published `theoremCount` was **stale at 12** while the source proves
+  **14** theorems by the canonical `^(theorem|lemma) ` convention used in
+  `scripts/research/enrich-research.ts`. Both counting conventions (column-0 and
+  include-namespaced) agree on 14 — there are no indented/private theorems — so 12
+  matched neither convention and was simply wrong.
+- Root cause: the Session-2 narrative recorded "theorem counts (9 → 12)" but the
+  actual delta was 11 → 14 (the 3 `IsConjugate.refl/symm/trans` equivalence-relation
+  theorems were not counted, even though they are listed in `originalContributions`).
+- Fixed `meta.json` in both the `meta` block and the `leanFile` block:
+  `theoremCount` 12 → 14, `lineCount` 392 → 394 (`lines.length` = 393 newlines + 1).
+  `axiomCount` (1), `definitionCount` (2), `sorries` (0) were already correct.
+
+### The 14 theorems
+rightBLinear_is_leftMul, rightBLinear_symm_is_leftMul, isUnit_of_rightBLinear_equiv,
+skolemNoether_general, aut_is_inner, conjugate_iff_same_image, IsConjugate.refl,
+IsConjugate.symm, IsConjugate.trans, skolemNoether_isConjugate,
+conjugateSetoid_single_class, witness_diff_centralizes, witness_mul_centralizer,
+witness_set_torsor.
+
+### Status of the open question
+The sole remaining gap is discharging the axiom `skolemNoether_module_iso`
+(the two A-module structures on B, via f and g, are isomorphic by a right-B-linear
+K-linear bijection). This is BLOCKED during the 2026-06-13 verification blackout:
+- **Research-hard** (~200-300 lines): needs Wedderburn-Artin
+  (`IsSimpleRing.exists_ringEquiv_matrix_divisionRing`, B ≅ Mₙ(D)) + isotypic
+  decomposition (`IsSimpleRing.isIsotypic`, forcing B_f ≅ B_g as A-modules) +
+  a bimodule-extension argument using centrality of K in B.
+- **Build-gated**: Docker build infra is down; unverifiable Lean should not be
+  shipped. Resume the axiom discharge once Docker is restored.
+
+### Files Modified
+- `src/data/proofs/cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01/meta.json`
+  (theoremCount 12 → 14, lineCount 392 → 394, in both blocks)
+- `research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01/state.md`
+  (phase → BLOCKED, iteration 3)
+- `research/problems/cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01/knowledge.md`
+  (this entry)

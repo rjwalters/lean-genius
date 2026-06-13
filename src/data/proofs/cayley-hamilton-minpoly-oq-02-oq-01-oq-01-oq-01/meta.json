@@ -70,8 +70,8 @@
       "Build repair: fixed pre-existing bugs blocking compilation — conjugate_iff_same_image used wrong unit (u⁻¹ instead of u), skolemNoether_general's calc used commutative-ring `ring` on non-commutative B (replaced with explicit mul_assoc / Units.inv_mul / one_mul rewrites), and aut_is_inner's AlgHom.id required explicit type args (AlgHom.id K B)",
       "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
     ],
-    "lineCount": 392,
-    "theoremCount": 12,
+    "lineCount": 394,
+    "theoremCount": 14,
     "definitionCount": 2
   },
   "overview": {
@@ -182,9 +182,9 @@
     ],
     "opens": [],
     "namespace": "SkolemNoetherCSA",
-    "lineCount": 392,
+    "lineCount": 394,
     "axiomCount": 1,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/SkolemNoetherCSA.lean"
