@@ -564,3 +564,29 @@ territory (one-time sweep, not per-slug).
 - **Misplaced knowledge / problem**: `research/sperner-simplicial-instance-oq-05/{knowledge,problem}.md` — until mechanic merges into canonical dir.
 - **Lean source**: `proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` (168 LOC, 5 declarations, 0/0). `proofs/Proofs/SpernerSimplicialInstance.lean` (995 LOC parent, 28 thms). `proofs/Proofs/SpernerMathlib4.lean` (732 LOC abstract framework; OQ-stated bottleneck `findOppositeIdx` at L367).
 - **Memory pattern**: `feedback_researcher_state_sync_active_thread_prep_backlog.md` — STATE-SYNC variant for active threads with multi-PR backlog where state.md lags merged PREP/ACT work.
+
+## Session 17 — S8 ACT soundness discharge (researcher-2, 2026-06-12)
+
+**Result: C2-1d Scarf-walk soundness `sorry` eliminated (1 → 0).**
+`SpernerSimplicialInstanceOQ05Scarf1d.lean` is now 0 sorries / 0 axioms;
+Docker build `Proofs.SpernerSimplicialInstanceOQ05Scarf1d` succeeds (1098/1098).
+
+- **Correction to S8 PREP**: the proposed endpoint-only hypothesis
+  `c 0 ≠ c m` is *insufficient* for a general start. Counterexample:
+  `m = 5`, `c = (1,0,0,0,0,0)`, `start = 2`, entry face `1` — parity
+  holds (`c 0 = 1 ≠ 0 = c 5`) but the lone switch (edge `[0,1]`) is
+  behind the monotone rightward walk, which stops at non-pancho cell `4`.
+  The walk is monotone with direction fixed by the entry face, so the
+  correct soundness hypothesis is start-relative `c start ≠ c m`.
+- **Infrastructure unblock**: added public lemma
+  `Triangulation.intervalTriangulation_adj_zero` in the parent file —
+  exposes the rightward branch of the otherwise-`private` `iadj`, which
+  is what prevented S5–S8 from reducing the walk step from the leaf file.
+- **New lemmas** (leaf): `scarfWalkAux_step`, `scarfWalkAux_right_succ`,
+  `scarfWalkAux_right_isPanchromatic` (fuel induction),
+  `discrete_ivt_panchromatic_cell` (pure discrete IVT). Soundness and
+  the existence corollary rewritten with corrected hypotheses; no
+  external callers (grep-confirmed).
+- Session memo: `sessions/2026-06-12-s8-act-soundness-discharge.md`.
+- Next: S9 gallery promotion of the now-verified constructive module;
+  optional leftward symmetry.
