@@ -29,19 +29,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12",
-    "iteration": 6,
-    "focus": "S6 ACT-D scaffolding (researcher-9): added 2 sorry-free declarations — kColoring.link (link/neighborhood coloring at a vertex v: T ↦ χ (insert v T)) with a defining simp lemma, and IsMonochromatic.link_lifts (the (k-1) → k monochromaticity transfer: a (k-1)-mono clique S ⊆ Fin n \\ {v} for χ.link v forces every k-subset of insert v S containing v to be χ-coloured c). Together these are the neighborhood-collapse infrastructure for the genuine inductive case of ramsey_existence; lines 584 → 654 (+70), sorries unchanged at 1, axioms 0.",
+    "since": "2026-06-04",
+    "iteration": 7,
+    "focus": "S7 ACT-E (researcher-1): landed IsMonochromatic.insert_vertex — the splice lemma composing a non-vertex-side k-mono sub-clique S' (hvS' : v ∉ S', hS' : IsMonochromatic χ k S' c) with vertex-side link-derived coverage (hLink, produced by IsMonochromatic.link_lifts) to yield the k-mono clique insert v S' of size |S'|+1, by a by_cases on v ∈ T for each k-subset T ⊆ insert v S' (v ∈ T discharged by hLink, v ∉ T by hS' on T ⊆ S'). One sorry-free declaration; lines 654 → 688 (+34), theoremCount 18 → 19, defCount unchanged, sorries unchanged at 1, axioms 0. With insert_vertex landed, the non-recursive ingredients of the Ramsey 1930 proof are complete; the lone surviving sorry is the genuine s>k ∧ t>k recursive case in ramsey_existence.",
     "blockers": [],
-    "nextAction": "S7 ACT-E: prove IsMonochromatic.insert_vertex — given S' ⊆ S with both (a) S' a k-monochromatic clique for χ at colour c (anti-chain from the inductive hypothesis on s+t inside S) and (b) S link-monochromatic for χ.link v at colour c with v ∉ S, conclude insert v S' is k-monochromatic for χ at colour c by case-splitting each k-subset on v-membership: v ∈ T uses link_lifts, v ∉ T uses S'.mono. This is the splice point that combines the two-layer Ramsey 1930 induction with the existing anti_s / anti_t / mono_n / link infrastructure.",
+    "nextAction": "S8 ACT-F: run the Nat.strongRecOn induction body in ramsey_existence to close the file's last sorry (the genuine s>k ∧ t>k recursive case of Ramsey 1930), now that all non-recursive ingredients — insert_vertex (the splice), link_lifts (the (k-1)→k transfer), kColoring.link, and the anti_s / anti_t / mono_n / swap infrastructure — are in place. Build-gated: requires a docker-build.sh verification of RamseyHypergraph.lean.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 6,
-      "approachesTried": 6
+      "total": 7,
+      "currentApproach": 7,
+      "approachesTried": 7
     }
   },
   "knowledge": {
-    "progressSummary": "S6 ACT-D scaffolding (researcher-9 2026-05-12): added 2 sorry-free declarations to RamseyHypergraph.lean — kColoring.link (the link/neighborhood coloring at a vertex v, χ.link v T = χ (insert v T), with a defining simp lemma kColoring.link_apply) and IsMonochromatic.link_lifts (the vertex-side (k-1) → k monochromaticity transfer: if S ⊆ Fin n \\ {v} is (k-1)-mono for χ.link v at colour c, then every k-subset T ⊆ insert v S containing v has χ T = c). Proof of link_lifts: decompose T = insert v T' where T' = T.erase v, show T' ⊆ S and |T'| = k-1, then evaluate hSm on T' through kColoring.link_apply. Lines 584→654 (+70), sorries unchanged at 1, axioms 0. Previous S5-prep monotonicity helpers (researcher-1 PR #18122) provided IsMonochromatic.mono, IsRamsey.mono_n, ramseyNumber_swap.",
+    "progressSummary": "S7 ACT-E (researcher-1 2026-06-04): landed IsMonochromatic.insert_vertex in RamseyHypergraph.lean — the sorry-free splice lemma that composes a non-vertex-side k-mono sub-clique S' with the vertex-side link-derived coverage hLink (from link_lifts) to produce the k-mono clique insert v S' of size |S'|+1, via by_cases on v-membership of each k-subset T. Lines 654→688 (+34), theoremCount 18→19, sorries unchanged at 1, axioms 0. This completes all non-recursive ingredients of the Ramsey 1930 induction; the lone surviving sorry is the genuine s>k ∧ t>k recursive case in ramsey_existence, scheduled for S8 ACT-F (Nat.strongRecOn body). S6 ACT-D scaffolding (researcher-9 2026-05-12): added 2 sorry-free declarations to RamseyHypergraph.lean — kColoring.link (the link/neighborhood coloring at a vertex v, χ.link v T = χ (insert v T), with a defining simp lemma kColoring.link_apply) and IsMonochromatic.link_lifts (the vertex-side (k-1) → k monochromaticity transfer: if S ⊆ Fin n \\ {v} is (k-1)-mono for χ.link v at colour c, then every k-subset T ⊆ insert v S containing v has χ T = c). Proof of link_lifts: decompose T = insert v T' where T' = T.erase v, show T' ⊆ S and |T'| = k-1, then evaluate hSm on T' through kColoring.link_apply. Lines 584→654 (+70), sorries unchanged at 1, axioms 0. Previous S5-prep monotonicity helpers (researcher-1 PR #18122) provided IsMonochromatic.mono, IsRamsey.mono_n, ramseyNumber_swap.",
     "builtItems": [
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.anti_s, IsRamsey.anti_t, is_ramsey_self_right, is_ramsey_self_left + boundary-discharging ramsey_existence (S4 ACT-C, researcher-9).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
@@ -54,7 +54,8 @@
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.mono_n (S5-prep: Ramsey condition monotone in n via Fin.castLE embedding + Finset.subset_map_iff lift; researcher-1).",
       "proofs/Proofs/RamseyHypergraph.lean — ramseyNumber_swap (S5-prep: sInf-set congruence corollary of IsRamsey.swap; researcher-1).",
       "proofs/Proofs/RamseyHypergraph.lean — kColoring.link + kColoring.link_apply (S6 ACT-D: link/neighborhood coloring at a vertex with defining simp lemma; researcher-9).",
-      "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.link_lifts (S6 ACT-D: vertex-side (k-1) → k monochromaticity transfer for the Ramsey 1930 recursion; researcher-9)."
+      "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.link_lifts (S6 ACT-D: vertex-side (k-1) → k monochromaticity transfer for the Ramsey 1930 recursion; researcher-9).",
+      "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.insert_vertex (S7 ACT-E: the splice lemma joining a non-vertex-side k-mono sub-clique with vertex-side link coverage to form insert v S' of size |S'|+1; the last non-recursive ingredient of Ramsey 1930; researcher-1)."
     ],
     "insights": [
       "The s=k boundary case is settled at n=t by a direct Bool case-split: either some k-subset is colored false (it IS the mono-false k-clique, since |S|=k forces |T|=|S| ⇒ T=S for any k-sub-subset T ⊆ S, via Finset.eq_of_subset_of_card_le), or every k-subset is colored true (and Finset.univ : Finset (Fin t) is the mono-true t-clique).",
