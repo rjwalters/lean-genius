@@ -307,14 +307,14 @@
     {
       "name": "angle_trisection_impossible",
       "type": "core",
-      "description": "The general angle cannot be trisected by compass and straightedge",
-      "leanType": "not (forall theta, exists constructible_trisection theta)"
+      "description": "60 degrees cannot be trisected: cos(20 deg) is not constructible (degree 3 over Q)",
+      "leanType": "¬ IsConstructible (cos angle20) 3"
     },
     {
-      "name": "sixty_degree_not_trisectible",
+      "name": "cube_doubling_impossible",
       "type": "key",
-      "description": "60 degrees cannot be trisected: cos(20 deg) is not constructible",
-      "leanType": "not (Constructible (Real.cos (20 * pi / 180)))"
+      "description": "Doubling the cube is impossible: the cube root of 2 is not constructible (degree 3 over Q)",
+      "leanType": "¬ IsConstructible ((2 : ℝ)^((1 : ℝ)/3)) 3"
     }
   ],
   "sorries": 0
