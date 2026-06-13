@@ -162,6 +162,24 @@
         "sorries": 0,
         "theoremCount": 1,
         "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG6.lean",
+        "description": "Waring's Problem OQ-01, k=6 lower bound: sorry-free, axiom-free proof of g(6) ≥ 73 via counting+omega (parallel to the G4/G5 ACTs, applied to the 2-equation system n0+n1+n2=72 ∧ n1+64·n2=703; the Mahler witness 703 = 2^6·11 − 1 is infeasible by 1).",
+        "lineCount": 158,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01CountingG7.lean",
+        "description": "Waring's Problem OQ-01, k=7 lower bound: sorry-free, axiom-free proof of g(7) ≥ 143 via counting+omega (parallel to the G4/G5/G6 ACTs, applied to the 2-equation system n0+n1+n2=142 ∧ n1+128·n2=2175; the Mahler witness 2175 = 2^7·17 − 1 is infeasible by 1).",
+        "lineCount": 139,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
       }
     ]
   },
