@@ -21,8 +21,8 @@
     "badge": "wip",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 312,
-    "assumptions": "None for the qdetF definition and the multiplicative identity. The n=2 specialization theorems require the non-degeneracy hypothesis carried in the parent file (A 1 1 ≠ 0 for the (0,0)-case, A 0 0 ≠ 0 for the (1,1)-case). The S3 SCAFFOLD theorem qdetN_step_eq_qdetF (Route B → Route A bridge over a field) requires (minorIJ A i j).det ≠ 0 and currently carries a sorry pending S4 cofactor-expansion expansion.",
+    "lineCount": 377,
+    "assumptions": "None for the qdetF definition and the multiplicative identity. The n=2 specialization theorems require the non-degeneracy hypothesis carried in the parent file (A 1 1 ≠ 0 for the (0,0)-case, A 0 0 ≠ 0 for the (1,1)-case). The theorem qdetN_step_eq_qdetF (Route B → Route A bridge over a field) requires (minorIJ A i j).det ≠ 0 and is proved in S4 modulo the division-free crux lemma qdetN_step_eq_qdetF_aux, which now carries the file's sole remaining sorry (the adjugate cofactor-sum identity pending the Matrix.det_succ_row Laplace re-indexing).",
     "originalContributions": [
       "Defined minorIJ: the complementary n×n submatrix of an (n+1)×(n+1) matrix via Fin.succAbove, uniformly in n (generalizes CramersRuleOQ01OQ02OQ01.block3)",
       "Defined qdetF: the (i,j)-quasideterminant of an (n+1)×(n+1) matrix over a field as det(A)/det(minor_{ij}(A)), the canonical Gelfand–Retakh commutative quotient form uniform in n",
@@ -35,10 +35,11 @@
       "Proved qdetF_summary: packaged multiplicative identity + definitional equation in a single result",
       "Defined qdetN_step (S3 SCAFFOLD): the non-recursive one-step Gelfand–Retakh Schur formula `A i j − ∑_{p,q} A i (succAbove j q) · Minv q p · A (succAbove i p) j` over a division ring, parameterised by an explicit complementary-minor inverse Minv",
       "Proved qdetN_step_zero_minv: the degenerate base identity qdetN_step A i j 0 = A i j (the Schur correction term vanishes when Minv = 0)",
-      "Stated qdetN_step_eq_qdetF (S3 SCAFFOLD, deferred): the field-consistency bridge — choosing Minv := (minorIJ A i j)⁻¹ recovers qdetF A i j — together with a detailed S4 proof strategy via Matrix.det_succ_row cofactor expansion and Matrix.adjugate_apply",
+      "Proved qdetN_step_eq_qdetF (S4): the field-consistency bridge — choosing Minv := (minorIJ A i j)⁻¹ recovers qdetF A i j — discharged modulo the new crux lemma qdetN_step_eq_qdetF_aux via Matrix.det_succ_row cofactor expansion and Matrix.adjugate_apply",
+      "Stated qdetN_step_eq_qdetF_aux (S4, deferred): the division-free crux `(minorIJ A i j).det · A i j − ∑_{p,q} A i (succAbove j q) · (minorIJ A i j).adjugate q p · A (succAbove i p) j = (-1)^(i+j) · A.det`, the file's sole remaining sorry — reduces the field-consistency bridge to a pure adjugate cofactor-sum identity (no inverses), pending the Matrix.det_succ_row Laplace re-indexing",
       "Proved qdetN_step_eq_qdetF_fin_one (S17+1 ACT base case): n=0 (1×1 matrix) specialization of the strategic theorem, proved without invoking the deferred sorry — both sides collapse to A 0 0 since the Schur double sum is empty over Fin 0 × Fin 0 and the complementary minor is the empty 0×0 matrix with det = 1; the cofactor sign (-1)^(0+0) = 1 is trivial. First concrete witness connecting qdetN_step directly to qdetF (the n=2/n=3 bridges in Parts III–IV use parent qdet00/qdet11/qdet3 definitions instead)."
     ],
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 3
   },
   "sections": [
@@ -84,10 +85,10 @@
     },
     {
       "id": "noncommutative-schur-step",
-      "title": "Part VI — Non-commutative Schur Step (S3 SCAFFOLD)",
+      "title": "Part VI — Non-commutative Schur Step (S3 SCAFFOLD + S4 Field-Consistency)",
       "startLine": 201,
-      "endLine": 269,
-      "summary": "Introduces `qdetN_step` over a division ring `D`: the non-recursive one-step Schur formula `A i j − ∑_{p,q} A i (succAbove j q) · Minv q p · A (succAbove i p) j`, parameterised by an explicit `Minv` playing the role of the complementary-minor inverse. `qdetN_step_zero_minv` proves the degenerate `Minv = 0` case gives `A i j`. The field-consistency theorem `qdetN_step_eq_qdetF` (choosing `Minv := (minorIJ A i j)⁻¹` recovers `qdetF`) is stated with a detailed S4 proof strategy via `Matrix.det_succ_row` cofactor expansion + `Matrix.adjugate_apply` sign normalisation; the proof itself is the sole remaining sorry, deferred to S4.",
+      "endLine": 375,
+      "summary": "Introduces `qdetN_step` over a division ring `D`: the non-recursive one-step Schur formula `A i j − ∑_{p,q} A i (succAbove j q) · Minv q p · A (succAbove i p) j`, parameterised by an explicit `Minv` playing the role of the complementary-minor inverse. `qdetN_step_zero_minv` proves the degenerate `Minv = 0` case gives `A i j`. S4 then proves the field-consistency theorem `qdetN_step_eq_qdetF` (choosing `Minv := (minorIJ A i j)⁻¹` recovers `qdetF`) modulo the new division-free crux lemma `qdetN_step_eq_qdetF_aux` (the adjugate cofactor-sum identity `(minorIJ A i j).det · A i j − ∑_{p,q} A i (succAbove j q) · adjugate q p · A (succAbove i p) j = (-1)^(i+j) · A.det`), which now carries the file's sole remaining sorry. The n=0 base case `qdetN_step_eq_qdetF_fin_one` is proved outright (empty Schur sum over Fin 0).",
       "mathContext": "Over a division ring D, the Gelfand–Retakh quasideterminant satisfies the Schur recurrence $|A|_{ij} = A_{ij} - \\sum_{p,q} A_{i,\\hat j_q} \\cdot M^{-1}_{q,p} \\cdot A_{\\hat i_p, j}$ where $M = \\mathrm{minor}_{ij}(A)$. By separating the recurrence into a non-recursive 'one-step' form `qdetN_step` (taking Minv as input), the mutual recursion `qdetN ↔ qdetN_inv` of S4 is reduced to proving `Minv` satisfies the inverse equation, not to re-proving the entire Schur identity at every level."
     }
   ],
@@ -152,9 +153,9 @@
       "Matrix"
     ],
     "namespace": "CramersRuleOQ01OQ02OQ01OQ01",
-    "lineCount": 312,
+    "lineCount": 377,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 3,
     "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
     "sorries": 1
