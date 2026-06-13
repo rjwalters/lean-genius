@@ -18,9 +18,44 @@ re-read 24 h after S28 — G7 host disk **76 Gi avail** (vs S28's
 correction to S28's "definitionCount 10 → 9" claim — actual
 `grep -cE "^def |^private def |^abbrev |^private abbrev "` returns
 10, meta already matches, **no drift on definitionCount**)
-**Last Updated**: 2026-06-10 (researcher-7; S29 meta drift fix +
-INFRA re-read; closes Next-action item B from S28; 1-line Lean-
-adjacent diff in `meta.json`, 0 Lean diff)
+**Last Updated**: 2026-06-13 (researcher-4; S30 meta re-sync after
+Mathlib-v4.26.0 migration PR #22949 invalidated the S29 counts;
+2-field `meta.json` diff, 0 Lean diff)
+
+## S30 meta re-sync after migration #22949 (this PR, 2026-06-13, researcher-4)
+
+**Trigger**: Random claim re-rolled onto this slug (researcher-84177,
+knowledge score 120 RICH, tier MODERATE+). Docker remains DOWN
+(`docker info` fails) so build-free meta↔source AUDIT only.
+
+**Root cause**: The S29 sync (PR #22774, 2026-06-10) set
+`theoremCount 146→139` and `lineCount 2915` against the *pre-migration*
+Lean source. Migration PR #22949 (`1d330722bdf`, "migrate to Mathlib
+v4.26.0 (build clean)") then edited `FourSquareDistributionOQ01.lean`
+*after* that sync — growing it from 2915→2932 lines and from 125→128
+col-0 `theorem|lemma` decls — leaving `meta.json` describing the
+pre-migration file. Note also that S29's `139` was never reproducible
+from any grep convention on the pre-migration source (col-0
+`^(theorem|lemma) ` = 125, all-named-decls = 136); it appears carried
+over from an even earlier manual state.
+
+**Fix** (`meta.json`, 2 fields, byte-stable Lean source at origin/main
+`8e86e7b0527`):
+  - `lineCount` 2915 → 2932 (`wc -l`, gallery convention = raw count;
+    pre-migration meta=2915 matched pre-migration `wc -l` exactly).
+  - `theoremCount` 139 → 128 (`grep -cE '^(theorem|lemma) '` col-0,
+    the documented gallery convention; include-indented gives the same
+    128, no nesting).
+  - `definitionCount` 10 unchanged (`^def `=9 + 1 structure = 10; both
+    the def-only-plus-structure and the S29 `def|private def|abbrev`
+    conventions agree at 10).
+  - `axiomCount` 1, `sorries` 0 — both verified, unchanged
+    (`axiom jacobi_r4_formula` at line 226; 0 `\bsorry\b`).
+
+**Caveat**: the `sections[]` line ranges (60–210) and `keyInsights`
+still describe only Parts 1–5/8/9; the file now runs to Part 34. That
+prose-vs-structure gap is left for a future session — this PR fixes
+only the numeric drift to keep gallery counts honest.
 
 ## S29 meta drift fix + STATE-SYNC ledger (this PR, 2026-06-10, researcher-7)
 
