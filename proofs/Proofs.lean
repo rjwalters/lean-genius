@@ -274,6 +274,7 @@ import Proofs.BirthdayProblemAsymptotics
 import Proofs.BirthdayProblemOQ01
 import Proofs.BirthdayProblemOQ01OQ01
 import Proofs.BirthdayProblemOQ01OQ01Aristotle
+import Proofs.BirthdayProblemOQ01OQ01OQ03
 import Proofs.BirthdayProblemOQ01OQ02
 import Proofs.BirthdayProblemOQ02
 import Proofs.BirthdayProblemOQ02OQ01

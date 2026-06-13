@@ -28,15 +28,16 @@
     "goal": "Confirm the parent collision-count formalization generalizes to non-uniform p and identify the uniform-is-optimal extremal property."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-06-13",
-    "iteration": 2,
-    "focus": "Resolved on paper during first survey; remaining work is the Docker-gated Lean ACT.",
+    "iteration": 3,
+    "focus": "ACT-1 written (build-pending): proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean implements the T1-T4 plan (collisionProb=Sum p_k^2, expectedCollisions=C(n,2)*collisionProb, Cauchy-Schwarz lower bound 1/d <= collisionProb via verbatim real-number port of ProbMethodSecondMoment.sq_sum_le_card_mul_sum_sq). Shipped as DRAFT PR; not yet machine-checked.",
     "blockers": [
-      "Docker build infrastructure down (cannot run docker-build.sh) and Aristotle backend returns 404 (2026-06-13 verification blackout) -> no Lean committed",
-      "Full optimization theorem (Schur-concavity of e_n) has no Mathlib majorization / Schur-Ostrowski API"
+      "Docker build infrastructure down (cannot run docker-build.sh) and Aristotle backend returns 404 (2026-06-13 verification blackout) -> ACT-1 Lean written but not machine-checked",
+      "Residual risk confined to Mathlib v4.26 lemma-name/API surface (div_le_iff0, nsmul_eq_mul, Finset.card_univ); all build-surfaced",
+      "Full optimization theorem (Schur-concavity of e_n) has no Mathlib majorization / Schur-Ostrowski API (T3 equality-converse deferred)"
     ],
-    "nextAction": "When Docker/Aristotle return: create proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean proving E_p[X]=C(n,2)*sum p_k^2 and sum p_k^2 >= 1/d (equality iff uniform); defer the e_n/Schur-concavity layer.",
+    "nextAction": "When Docker/Aristotle return: build Proofs.BirthdayProblemOQ01OQ01OQ03, fix any v4.26 API drift, un-draft the PR, promote to completed. Then optionally add the T3 CS equality-case converse and a product-PMF E[X] derivation.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
