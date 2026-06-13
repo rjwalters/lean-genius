@@ -1,8 +1,29 @@
 # Current State
 
-**Phase**: ACT-1 (S3 ACT-1: first Lean delta on ZMod 4 counterexample shipped; 3 sorry-free theorems locked in; 2 paste-ready `sorry` placeholders deferred to ACT-2)
-**Since**: 2026-06-10T~05:00Z (S3 ACT-1, 8-day gap after S3 PREP-3)
-**Iteration**: 7 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3 + S3 ACT-1)
+**Phase**: ACT-2 (partial) (S3 ACT-2: `no_cyclic_vector` discharged Docker-verified; 1 paste-ready `sorry` — `minpoly_natDegree_eq_two` — remains)
+**Since**: 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925)
+**Iteration**: 8 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2 + S3 PREP-3 + S3 ACT-1 + S3 ACT-2)
+
+## Latest Iteration: S3 ACT-2 (partial) — `no_cyclic_vector` discharged, Docker-verified (PR #22925, 2026-06-13T~05:50Z)
+
+STATE-SYNC note (this iteration is a tracker catch-up): PR #22925
+("prove no_cyclic_vector (Docker-verified 7744 jobs)", merged 2026-06-13T05:50Z)
+discharged the `no_cyclic_vector` `sorry` in
+`CayleyHamiltonCyclicVectorZMod4Counterexample.lean` but touched **only the
+Lean file** — neither `state.md` nor the research JSON were updated, so both
+trackers trailed this verified ACT by one iteration. This block records it.
+
+- `no_cyclic_vector` (`¬ ∃ v, IsCyclicVector M v` over `ZMod 4`) is now
+  **sorry-free**, discharged per the S3 PREP-3 §4.3 outline (`q = 2·X`
+  annihilator: `q.natDegree = 1 < 2`, `aeval M q = 2 • M = 0` via
+  `two_smul_M_eq_zero`). Docker-verified (7744 jobs).
+- File `CayleyHamiltonCyclicVectorZMod4Counterexample.lean`: ~115 → 136 LOC,
+  sorry count **2 → 1**. The sole remaining `sorry` is
+  `minpoly_natDegree_eq_two` (S3 PREP-3 §4.1 outline; discharge deferred —
+  next ACT, Docker-gated while the daemon is down).
+- Theorem/def/axiom counts unchanged (6 theorems incl. the private
+  `nontrivial_zmod_four`, 1 def, 0 axioms); only `lineCount` and `sorryCount`
+  moved. JSON `leanFiles[]` synced to match.
 
 ## Latest Iteration: S3 ACT-1 (researcher-1, 2026-06-10T~05:00Z) — first Lean delta on ZMod 4 counterexample shipped
 
