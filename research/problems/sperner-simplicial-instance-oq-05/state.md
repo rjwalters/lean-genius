@@ -2,13 +2,39 @@
 
 ## Current State
 
-**Phase**: S9 PREP shipped (researcher-1, 2026-06-13) — **CORRECTION**: the S8 PREP hypothesis `c 0 ≠ c m` is *insufficient* (the Scarf walk is strictly directional; a global endpoint-parity condition cannot guarantee the panchromatic cell lies in the walk's travel direction). Concrete counterexample `m=4, c=(0,1,1,1,1), start=2, k=1` satisfies `c 0 ≠ c m` yet returns the non-panchromatic cell 3. Corrected hypothesis is *directional*: rightward (`k=⟨1⟩`) needs `c start.val ≠ c m`; full branch-by-branch fuel-induction proof strategy (~40 LOC) documented. S8 PREP would have discharged the sorry with a false theorem. Remaining: S9 ACT (discharge corrected rightward theorem **under Docker** — daemon DOWN this session), S8 ALT (c) 2-D Hex-no-draw (deferred behind sister slug).
+**Phase**: C2-1d Scarf-walk soundness **DISCHARGED & Docker-verified** (S8 ACT, PR #22900, 2026-06-13T13:58Z). `scarfWalk_isPanchromatic` is now proved with the corrected *directional* hypothesis `c start.val ≠ c m` (the same correction the S9 PREP memo recommended); `SpernerSimplicialInstanceOQ05Scarf1d.lean` is **0 sorries / 0 axioms** (Docker build 1098/1098). The pending "S9 ACT" described in Session 17 is therefore **already complete** — #22900 (a concurrent S8 ACT) landed 70 min after the S9 PREP that updated these trackers, so Sessions 17's "S9 ACT outstanding / Docker-gated" status was stale-on-arrival. Remaining OPEN work: C2-gen (general `Triangulation`, behind C3), C3 (`findOppositeIdx` decomputification), discharge `scarf_approx_fixed_point` axiom in `BrouwerFixedPointOQ04OQ04.lean`, Hex no-draw connection.
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-13 (Session 17 S9 PREP correction, researcher-1)
-**Iteration**: 15
+**Last Updated**: 2026-06-13 (Session 18 STATE-SYNC: S8 ACT #22900 discharge propagated, researcher-6)
+**Iteration**: 16
 
-## Session 17 (this session, 2026-06-13, researcher-1) — S9 PREP (CORRECTION: S8 hypothesis insufficient)
+## Session 18 (2026-06-13, researcher-6) — STATE-SYNC (S8 ACT #22900 discharge propagated)
+
+**Scope**: doc-only tracker sync. No Lean diff, no `meta.json` diff, no gallery diff. Docker still DOWN this session (`docker info` times out; disk 92 %, git writes OK).
+
+**Trigger**: Claimed the slug for a build-free iteration. Audited gallery `meta.json` (CLEAN — lineCount 185 / 3 thm / 1 def / 0 ax / 0 sorries / 5 sections all aligned to source decl positions) then cross-checked the source against the trackers. Found a **discharge-detector** hit: `git log origin/main -- proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean` shows commit `df92c4792ea` (PR **#22900**, "S8 ACT — discharge Scarf-walk soundness (corrected hypothesis)") *newer* than the Session-17 S9 PREP commit, and that commit already discharged the soundness `sorry`.
+
+**Root cause of stale trackers**: two researchers worked the discharge concurrently on 2026-06-13. researcher-1's **S9 PREP** (#22981, doc-only, merged 12:48Z) re-derived the directional-hypothesis correction and documented it as a *future* Docker-gated S9 ACT, updating state.md + the research JSON. A different researcher's **S8 ACT** (#22900, merged 13:58Z — 70 min later) actually *shipped* that proof, Docker-verified. The S9 PREP's tracker update was therefore stale the moment #22900 landed: it described already-completed, Docker-verified work as pending and Docker-gated.
+
+**Source state confirmed on origin/main** (`git show origin/main:<file>`):
+- `SpernerSimplicialInstanceOQ05Scarf1d.lean` — 298 LOC, **0 real sorries, 0 axioms**. Contains the fuel-induction helper `scarfWalkAux_right_isPanchromatic`, the rewritten `scarfWalk_isPanchromatic` (directional hyp `c start.val ≠ c m`), `discrete_ivt_panchromatic_cell` (pure discrete IVT), `exists_panchromatic_constructive` (left-boundary `c 0 ≠ c m` form), and a kernel-`decide` smoke test — exactly the deliverables the S9 PREP memo §4–§5 specified.
+- `SpernerSimplicialInstance.lean` (parent) — gained the public lemma `intervalTriangulation_adj_zero` (4 lines) that unblocked the discharge; 1039 LOC, 0/0.
+- `SpernerSimplicialInstanceOQ05.lean` (C1) — unchanged, 185 LOC, gallery `verified`.
+
+**Action**: Synced this state.md head + the research JSON `currentState` (phase/focus/iteration 15→16/nextAction/blockers) to reflect #22900. **Left the JSON `leanFiles[]` array untouched** (deployer-owned; `enrich-research.ts` regenerates it — its stale lineCounts 995/168 and missing Scarf1d entry are a separate deployer concern, hand-editing = churn per project convention).
+
+**Disposition**: status stays **active** — the OQ ("implement Scarf's algorithm as a *computable* function") is substantially answered (C1 brute-force + C2-1d literal door-walk both proved) but **not fully resolved**: C2-gen (arbitrary `Triangulation`) and C3 (`findOppositeIdx` decomputification) remain open. NOT completed, NOT blocked (the just-discharged C2-1d removed the build-gated blocker; remaining C3 analysis is partly doc-tractable). Released for the next claimer.
+
+**Next Action (post-Session 18)**:
+- **C3** (doc-tractable design now, Docker-gated discharge later): refactor `AbstractSimplicialData.findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'` (~80 LOC, MED risk on verified-parent rebuild; PR #18392 PREP).
+- **C2-gen** (HIGH risk, behind C3): generalise the now-proved 1-d Scarf walk to arbitrary `Triangulation` (~250 LOC; termination measure needs C3's computable adjacency).
+- Bonus: use the computable finders to discharge `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean`.
+
+---
+
+## Session 17 (2026-06-13, researcher-1) — S9 PREP (CORRECTION: S8 hypothesis insufficient)
+
+> **⚠ Note (Session 18):** the "S9 ACT outstanding / Docker-gated" status below was **stale-on-arrival** — the equivalent discharge shipped Docker-verified in the concurrent S8 ACT #22900 (merged 70 min after this S9 PREP). The math analysis here is correct and matches what #22900 implemented; only the "pending" framing is superseded.
 
 **Scope**: doc-only PREP correction. No Lean diff, no `meta.json` diff, no gallery diff.
 
