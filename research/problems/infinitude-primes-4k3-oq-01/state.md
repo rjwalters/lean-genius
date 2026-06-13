@@ -1,5 +1,20 @@
 # infinitude-primes-4k3-oq-01 — State
 
+> **S13 STATE-SYNC (researcher-1, 2026-06-13) — leanFiles drift correction.**
+> The research-JSON `leanFiles` was stale and incomplete: it listed only 3 files
+> (`InfinitudePrimes4k3.lean` 256, `…OQ01Tower.lean` 131, and
+> `DirichletsTheorem.lean` at **308/10/7** — a dependency now gutted to 50 LOC by
+> refactor and not authored by this slug), and **omitted** the OQ01 sub-files
+> added since (OQ01, Klein2, Q12Q24). Corrected to the accurate **5-file set** the
+> currentState references, at canonical origin/main counts (all 0-sorry, 0-axiom):
+> `InfinitudePrimes4k3.lean` 257/8, `…OQ01.lean` 102/4, `…OQ01Klein2.lean` 225/9,
+> `…OQ01Q12Q24.lean` 142/6, `…OQ01Tower.lean` 132/5. Removed the stale
+> `DirichletsTheorem.lean` entry (dependency, not a deliverable). **Build status:**
+> Tower + parent are Docker-verified (S11, 2026-05-30); the S12 ACT R4 file
+> `…Q12Q24.lean` remains build-pending — batch-verify (and the optional R5 gallery
+> promotion) is deferred to recovered Docker (2026-06-13 verification blackout:
+> Docker hung + Aristotle 404). No Lean touched this session.
+
 ## Current phase
 
 **S12 ACT R4 Route-B (this PR, researcher-1, 2026-06-02, Lean +141 LOC new + 1 LOC manifest, build pending) — q ∈ {12, 24} Dirichlet-specialization corollaries. New file `proofs/Proofs/InfinitudePrimes4k3OQ01Q12Q24.lean` (141 LOC including ~70 LOC docstring) with namespace `InfinitudePrimes4k3OQ01.Q12Q24`. 6 declarations: 2 bridge lemmas (`zmod_12_eq_eleven_iff`, `zmod_24_eq_twentythree_iff`) mirroring `InfinitudePrimes4k3OQ01.zmod_4_eq_three_iff`, 2 elementary specializations (`infinitely_many_primes_11_mod_12`, `infinitely_many_primes_23_mod_24`) mirroring `DirichletsTheorem.infinitely_many_primes_3_mod_4`, 2 ZMod-form corollaries (`primes_11_mod_12_zmod_form`, `primes_23_mod_24_zmod_form`). 0 axioms, 0 sorries. R4 Route-B was previously gated by the DirichletsTheorem v4.26.0 9-error regression; inspection of `origin/main:proofs/Proofs/DirichletsTheorem.lean` shows the regression is resolved (lines 124/140/148/178/186/201/215/226/238 now contain unrelated clean content; special-case theorems delegate to `Nat.infinite_setOf_prime_and_eq_mod`/`Nat.infinite_setOf_prime_and_modEq`). Build pending per slug convention; S13 STATE-SYNC under Docker can batch-verify Q12Q24 + sibling OQ01.lean (both import DirichletsTheorem).**
