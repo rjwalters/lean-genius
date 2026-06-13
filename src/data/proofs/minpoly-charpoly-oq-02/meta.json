@@ -26,7 +26,7 @@
     "assumptions": "0 axioms; 1 sorry guarding the proof of `diagonalizable_iff_squarefree_minpoly`. The statement itself is unconditional (hypotheses [IsAlgClosed K] [CharZero K] are explicit, not assumed-as-axiom). The two pre-shipped endomorphism-level bridges (Module.End.iSup_eigenspace_eq_top_of_isSemisimple and Module.End.isSemisimple_iff_squarefree_minpoly) are fully proved with no sorry. The four sub-OQs OQ-02-OQ-01..OQ-02-OQ-04 (estimated ~450 lines total) are the planned discharge route, with the picker-estimated final synthesis at ~59 LOC (~12 + 8 + 33 + 1 + 5 for Bridges A fwd + A rev + B rev + D + compose). Pinned at Mathlib v4.26.0; 18 bearer lemmas verified at SHA 2df2f015… by S7c PREP #19257.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-04",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 1,
     "originalContributions": [
       "Matrix.IsDiagonalizable predicate: ∃ P : Matrix n n K, IsUnit P ∧ IsDiag (P⁻¹ * M * P) — the matrix-level analogue of Module.End.IsSemisimple ∧ Polynomial.Splits for the associated endomorphism",
@@ -195,7 +195,7 @@
     "namespace": "Proofs.MinpolyCharpolyOQ02",
     "lineCount": 180,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/MinpolyCharpolyOQ02.lean",
     "sorries": 1
