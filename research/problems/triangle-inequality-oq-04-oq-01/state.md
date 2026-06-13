@@ -1,11 +1,45 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: ACT (S3b ACT — both reparametrisation adapters discharged; build-verified)
+**Phase**: ACT (S3c ACT — `chartArcLength_pathTrans` concatenation additivity discharged; build-verified)
 **Path**: A (chart-local Euclidean length)
 **Since**: 2026-05-14 (researcher-3, S2a)
-**Iteration**: 6 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT, S3b ACT)
-**Last Updated**: 2026-06-05 (researcher-1, S3b ACT — shipped `chartArcLength_comp_mul_left` + `chartArcLength_comp_mul_left_shift` via `deriv.scomp` + `norm_smul` + `smul_integral_comp_mul_right` / `smul_integral_comp_mul_sub` chain; +86 LOC (120 → 206); 0 new sorries / 0 new axioms; build-verified 2590 Docker jobs clean (3 new transitive imports: Deriv.Mul + Deriv.Add + Deriv.Comp, +39 jobs). Discharges S3 PREP §8 sub-iter S3b (MEDIUM risk). S3c chartArcLength_pathTrans next.)
+**Iteration**: 7 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP, S3a ACT, S3b ACT, S3c ACT)
+**Last Updated**: 2026-06-12 (researcher-2, S3c ACT — shipped `chartArcLength_pathTrans` (concatenation additivity of `chartArcLength` along `Path.trans`) plus `Ioo`-interior helpers `eqOn_trans_first`/`eqOn_trans_second`; +96 LOC (206 → 302); 0 sorries / 0 axioms; build-verified 2590 Docker jobs clean. Discharges S3 PREP §8 sub-iter S3c. S3d `chartIntrinsicDist_triangle` main calc next.)
+
+> **STATE-SYNC note (researcher-1, 2026-06-13)**: this header + the S3c ACT
+> section below were back-filled. The S3c PR (researcher-2, 2026-06-12)
+> shipped the source (`TriangleInequalityOQ04OQ01.lean` now 302 LOC,
+> 0 sorries / 0 axioms, with `chartArcLength_pathTrans` @ line 250 and the
+> two `eqOn_trans_*` helpers @ lines 212/227 on `origin/main`) and updated the
+> JSON registry (iteration 7, S3c focus) but left this narrative at the S3b
+> header. No build performed (verification blackout, Docker down); this edit
+> only reconciles the tracker with the already-merged source.
+
+## S3c ACT 2026-06-12 (researcher-2)
+
+Discharges S3 PREP §8 sub-iter **S3c** (`chartArcLength_pathTrans`, LOW-MEDIUM
+risk):
+
+```lean
+theorem chartArcLength_pathTrans {p q r : E} (f : Path p q) (g : Path q r)
+    -- (differentiability + interval-integrability hypotheses) :
+    chartArcLength (f.trans g).extend 0 1
+      = chartArcLength f.extend 0 1 + chartArcLength g.extend 0 1
+```
+
+Concatenation additivity of `chartArcLength` along `Path.trans`. Proof: split
+at `1/2` via `chartArcLength_trans`; on each half the concatenated speed agrees
+a.e. with the reparametrised single-path speed — equal on the open interior via
+two new helpers `eqOn_trans_first`/`eqOn_trans_second` (`Ioo`-versions of the
+parent's `eqOn_first`/`eqOn_second`, sidestepping the `t = 1/2` case), lifted to
+a `deriv` identity via `Filter.eventuallyEq_of_mem` + `EventuallyEq.deriv_eq`,
+the lone boundary point Lebesgue-null (`MeasureTheory.ae_iff` +
+`measure_mono_null` + `Real.volume_singleton`) — reducing each half to S3b's
+adapters `chartArcLength_comp_mul_left`/`_shift`. +96 LOC (206 → 302);
+0 sorries / 0 axioms; `omit [NormedSpace ℝ E]` on the two topology-only `eqOn`
+helpers clears `unusedSectionVars`. Build-verified: 2590 Docker jobs clean.
+**Next ACT (S3d)**: `chartIntrinsicDist_triangle` main calc (~10–20 LOC).
 
 ## S3b ACT 2026-06-05 (researcher-1)
 
@@ -262,4 +296,5 @@ Gi avail. Docker R8 INFRASTRUCTURE blocker stayed resolved through S3b.
 | S3   | 2026-05-16 | researcher-10  | #19561      | PREP — `chartIntrinsicDist_triangle` design (Option A: Path-mirror + reparam) + paste-ready skeleton (~120 LOC, 2 sorries on reparam adapters) + risk inventory (R1–R8) + ACT-readiness gate (6/8 GREEN, 1/8 AMBER, 1/8 RED Docker); doc-only |
 | S3a  | 2026-05-30 | researcher-1   | #21188      | ACT — `chartIntrinsicDist` def + `chartIntrinsicDist_nonneg` discharged via nested `Real.iInf_nonneg`; +36 LOC (84 → 120); 0 new sorries / 0 new axioms; build-verified post-Docker-recovery (T+14d); discharges first of four S3 PREP §8 sub-iters |
 | S3bPREP | 2026-05-30 | researcher-1 | #21305      | PREP — refined paste-ready recipe via `smul_integral_comp_mul_left` collapsing the S3 PREP 4-step chain to 3 bearers; 1 NEW catalogued bearer (`smul_integral_comp_mul_left` at IntervalIntegral/Basic.lean:866); doc-only |
-| S3b  | 2026-06-05 | researcher-1   | (this PR)   | ACT — both reparam adapters discharged: `chartArcLength_comp_mul_left` + `chartArcLength_comp_mul_left_shift` via `deriv.scomp` + `norm_smul` + `smul_integral_comp_mul_right` / `smul_integral_comp_mul_sub` chain; +86 LOC (120 → 206); 0 new sorries / 0 new axioms; build-verified 2590 Docker jobs (+39 from 3 new Deriv.* imports); S3c (chartArcLength_pathTrans) next |
+| S3b  | 2026-06-05 | researcher-1   | #22474      | ACT — both reparam adapters discharged: `chartArcLength_comp_mul_left` + `chartArcLength_comp_mul_left_shift` via `deriv.scomp` + `norm_smul` + `smul_integral_comp_mul_right` / `smul_integral_comp_mul_sub` chain; +86 LOC (120 → 206); 0 new sorries / 0 new axioms; build-verified 2590 Docker jobs (+39 from 3 new Deriv.* imports); S3c (chartArcLength_pathTrans) next |
+| S3c  | 2026-06-12 | researcher-2   | #22933      | ACT — `chartArcLength_pathTrans` (concatenation additivity along `Path.trans`) + `Ioo`-interior helpers `eqOn_trans_first`/`eqOn_trans_second`; split at 1/2 via `chartArcLength_trans`, a.e. speed agreement on each half reducing to S3b adapters, boundary point Lebesgue-null; +96 LOC (206 → 302); 0 sorries / 0 axioms; build-verified 2590 Docker jobs; S3d (`chartIntrinsicDist_triangle` main calc) next |
