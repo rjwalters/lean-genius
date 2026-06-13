@@ -846,3 +846,55 @@ verified). S13b proves `a_11 = 5` using the 12th and 13th convergents.
    exceed reasonable Docker timeouts. Either bundling (OQ #1) or a
    reformulation that avoids the linear-depth `linarith` chain is
    needed to push past `a_15` or so.
+
+## Session 2026-06-12 (Session 17, S14a Helper-ACT, by researcher-2) — FOURTEENTH CF CONVERGENT (upper bound)
+
+**Mode**: Helper-ACT (Lean-content, narrow). Prepares the upper side of
+the S14b sandwich for the thirteenth partial quotient `cbrt3_a12 = 8`.
+
+**Outcome**: added `cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven :
+cbrt3 < (1865358/1293367 : ℝ)` to `CubeRoot3IrrationalOQ04Helpers.lean`.
+Helper file 643 → 694 LOC (+51 LOC, +1 theorem +1 prose section;
+theoremCount 18 → 19). 0 sorries, 0 axioms (slug remains 0/0). Docker
+build verified clean (7744 jobs, `Proofs.CubeRoot3IrrationalOQ04Helpers`).
+
+### What I Did
+
+- Independently re-derived the 14th CF convergent from the recursion
+  (`a₁₃ = 3` per OEIS A002945): `p₁₃ = 3·597449 + 73011 = 1865358`,
+  `q₁₃ = 3·414248 + 50623 = 1293367`.
+- Python cube-direction sanity (exact integer arithmetic):
+  `1865358³ = 6_490_625_955_773_462_712`,
+  `3·1293367³ = 6_490_625_955_771_185_589`, diff `+2_277_123 > 0`
+  ⟹ `(1865358/1293367)³ > 3` ⟹ `1865358/1293367 > cbrt3` (valid upper
+  bound). Values matched the post-S13b sketch exactly — no math-correction.
+- Wrote the theorem with the established two-line upper-bound template
+  `rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num`, mirroring
+  S12b's `cbrt3_lt_seven_three_oh_one_one_over_five_oh_six_two_three`.
+- Ran `./proofs/scripts/docker-build.sh Proofs.CubeRoot3IrrationalOQ04Helpers`
+  — clean (7744 jobs). No heartbeat bump needed for the helper.
+
+### Key Findings (Session 17)
+
+- The upper-bound cubing-iff template needs **no** heartbeat budget
+  beyond the file default — `norm_num` evaluates the exact rational cube
+  comparison `3 < (p/q)³` directly. All the depth-scaling cost lives in
+  the main-ACT nested-fraction chain, not the helper bounds.
+- The sandwich for S14b (`cbrt3_a12 = 8`) is now complete in the helper
+  file: `597449/414248 < cbrt3 < 1865358/1293367`, combined gap
+  `≈ 3.5·10⁻¹²` (dominated by S13's lower-side gap), roughly 80× tighter
+  than the S13b sandwich (`597449/414248 < cbrt3 < 73011/50623`,
+  `≈ 2.9·10⁻¹⁰`) that sufficed at depth 11 — comfortable margin for
+  depth 12.
+
+### Files Touched (Session 17)
+
+- `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`: +51 LOC, +1 theorem.
+- `src/data/research/problems/cube-root-3-irrational-oq-04.json`:
+  iteration 16 → 17, focus/nextAction/attemptCounts/progressSummary/
+  builtItems/insights/nextSteps/lastUpdate + Helpers leanFiles count
+  643/18 → 694/19.
+- `research/problems/cube-root-3-irrational-oq-04/state.md`: iteration
+  16 → 17, new Current Focus (S14a), Next Action shifted to S14b.
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this
+  Session 17 entry appended.

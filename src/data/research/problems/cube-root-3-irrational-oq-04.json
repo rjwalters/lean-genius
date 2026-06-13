@@ -22,19 +22,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-10 (S13b ACT)",
-    "iteration": 16,
-    "focus": "S13b ACT (researcher-1, 2026-06-10): shipped the twelfth partial quotient cbrt3_a11 = 5 of the simple CF of cbrt3, consuming the S13 Helper-ACT sandwich (597449/414248 < cbrt3 < 73011/50623) through a 22-step lt_div_iff₀/div_lt_iff₀/le_div_iff₀ chain on an eleven-fold-nested fraction followed by floor antisymmetry. Main file 1747 → 1999 LOC (+252, +1 theorem; theoremCount 18 → 19). Heartbeat budget set_option maxHeartbeats 6400000 in (2× S12b's 3_200_000, per empirical 2× per-depth scaling validated through S7–S12b). 0 sorries, 0 axioms (slug remains 0/0). The chain cbrt3_a0…cbrt3_a11 now covers the full OEIS A002945 prefix through index 11 ([1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, …]). Build verified clean via docker-build.sh on a sibling worktree against this same Lean content (7745 jobs, Proofs.CubeRoot3IrrationalOQ04 elaborated in 193s on the standard image). No math-correction precedent triggered this iteration; precedent count remains FIVE. The final propagated x_11 interval is (8/41, 1/5), giving 1/x_11 ∈ (5, 41/8) ⊂ (5, 6) and ⌊1/x_11⌋ = 5 by le_antisymm.",
+    "iteration": 17,
+    "focus": "S14a Helper-ACT (researcher-2, 2026-06-12): added the true 14th CF convergent upper bound Cbrt3Helpers.cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven : cbrt3 < (1865358/1293367 : ℝ) to CubeRoot3IrrationalOQ04Helpers.lean via the proven two-line cubing-iff template (cbrt3_lt_iff_three_lt_cube + norm_num). Fourteenth CF convergent (odd-index 13, upper side; a_13 = 3 per OEIS A002945), the upper partner for the S14b sandwich on cbrt3_a12 = 8. Recursion: p_13 = 3·597449 + 73011 = 1865358, q_13 = 3·414248 + 50623 = 1293367. Cube sanity (Python re-verified): 1865358^3 = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 = 3·1293367^3 (diff +2_277_123, relative gap ~3.51e-13). Helper file 643 -> 694 LOC (+51 LOC, +1 theorem +1 prose section; theoremCount 18 -> 19). 0 sorries, 0 axioms (slug remains 0/0). No math-correction needed. Docker build verified clean (7744 jobs, Proofs.CubeRoot3IrrationalOQ04Helpers).",
     "blockers": [],
-    "nextAction": "S14a Helper-ACT (any researcher): add the true 14th CF convergent upper bound cbrt3 < 1_865_358/1_293_367 to CubeRoot3IrrationalOQ04Helpers.lean via the proven two-line cubing-iff template (cbrt3_lt_iff_three_lt_cube + norm_num). Per OEIS A002945 [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …], a_13 = 3, giving p_13 = 3·597449 + 73011 = 1_865_358 and q_13 = 3·414248 + 50623 = 1_293_367. Pre-claim Python cube-direction sanity (this S13b session): 1_865_358^3 = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 = 3·1_293_367^3 (diff +2_277_123, relative gap ≈3.51·10⁻¹³ — yet another order of magnitude tighter than S13a's lower-side gap ≈3.53·10⁻¹²). Candidate helper name: cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven. Sandwich pair for S14b main ACT (cbrt3_a12 = 8): 597449/414248 < cbrt3 < 1_865_358/1_293_367 (combined gap ≈3.5·10⁻¹³, ~830× tighter than S13b's). Main ACT chain estimated ~25 steps, heartbeat budget guess set_option maxHeartbeats 12800000 in (2× S13b's 6_400_000).",
+    "nextAction": "S14b Main-ACT (any researcher): prove the thirteenth partial quotient cbrt3_a12 = 8 in proofs/Proofs/CubeRoot3IrrationalOQ04.lean, consuming the now-complete sandwich 597449/414248 < cbrt3 < 1865358/1293367 (lower from S13, upper from this S14a; combined gap ~3.5e-12, ~80x tighter than S13b's ~2.9e-10 which sufficed at depth 11). Per OEIS A002945, a_12 = 8. Method: ~25-step lt_div_iff0/div_lt_iff0/le_div_iff0 chain on a twelve-fold-nested fraction propagating to x_12 in (lo,hi) subset (1/9,1/8), then 1/x_12 in (8,9) => floor = 8 by le_antisymm. Heartbeat budget guess maxHeartbeats 12800000 (2x S13b's 6_400_000). Estimated main-file delta ~250 LOC. Fallback if 1865358/1293367 too loose at depth 12 (unlikely): add 15th CF convergent lower bound (a_14 = 3: p_14 = 6_193_523, q_14 = 4_294_349).",
     "attemptCounts": {
-      "total": 15,
-      "currentApproach": 15,
+      "total": 16,
+      "currentApproach": 16,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S13b ACT complete (researcher-1, 2026-06-10): shipped the twelfth partial quotient cbrt3_a11 = 5 via a 22-step lt_div_iff₀/div_lt_iff₀/le_div_iff₀ chain on an eleven-fold-nested fraction, consuming the S13 Helper-ACT sandwich (597449/414248 < cbrt3 < 73011/50623) with combined gap ≈2.9e-10. The chain cbrt3_a0…cbrt3_a11 now covers the OEIS A002945 prefix through index 11. Main file 1747 → 1999 LOC (+252; theoremCount 18 → 19). Heartbeat budget 6_400_000 (2× S12b's 3_200_000, per the 2×-per-depth empirical scaling validated through S7–S12b). 0 sorries, 0 axioms (slug remains 0/0). Build verified clean via docker-build.sh (7745 jobs, 193s elaboration on standard image).",
+    "progressSummary": "S14a Helper-ACT complete (researcher-2, 2026-06-12): added the true 14th CF convergent upper bound cbrt3 < 1865358/1293367 (theorem cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven) via the two-line cubing-iff template; Docker-verified clean (7744 jobs). Helper file 643->694 LOC, theoremCount 18->19, 0 sorries/0 axioms. Completes the sandwich 597449/414248 < cbrt3 < 1865358/1293367 for the S14b main-ACT (cbrt3_a12 = 8). S13b ACT complete (researcher-1, 2026-06-10): shipped the twelfth partial quotient cbrt3_a11 = 5 via a 22-step lt_div_iff₀/div_lt_iff₀/le_div_iff₀ chain on an eleven-fold-nested fraction, consuming the S13 Helper-ACT sandwich (597449/414248 < cbrt3 < 73011/50623) with combined gap ≈2.9e-10. The chain cbrt3_a0…cbrt3_a11 now covers the OEIS A002945 prefix through index 11. Main file 1747 → 1999 LOC (+252; theoremCount 18 → 19). Heartbeat budget 6_400_000 (2× S12b's 3_200_000, per the 2×-per-depth empirical scaling validated through S7–S12b). 0 sorries, 0 axioms (slug remains 0/0). Build verified clean via docker-build.sh (7745 jobs, 193s elaboration on standard image).",
     "builtItems": [
+      "proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean (S14a, 694 LOC, 19 theorems, 0 axioms, 0 sorries): adds cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven : cbrt3 < (1865358/1293367 : R), the 14th CF convergent upper bound (a_13 = 3). Proof = rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num. Cube sanity 1865358^3 = 6490625955773462712 > 6490625955771185589 = 3*1293367^3. Docker-verified 7744 jobs.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one — first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~110 → ~184 lines, 7 theorems total): +four_thirds_lt_cbrt3, +cbrt3_lt_three_halves, +cbrt3_a1 — second partial quotient a_1 = 2. 0 sorries, 0 axioms in this iteration.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~184 → ~286 lines, 10 theorems total): +ten_sevenths_lt_cbrt3, +cbrt3_lt_thirteen_ninths, +cbrt3_a2 — third partial quotient a_2 = 3. 0 sorries, 0 axioms in this iteration.",
@@ -56,6 +57,7 @@
       "Proofs/CubeRoot3IrrationalOQ04.lean — cbrt3_a11 : ⌊1/(1/(1/(1/(1/(1/(1/(1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2)⌋ = (5:Int) — twelfth partial quotient a_11 = 5, 22-step lt_div_iff₀/div_lt_iff₀/le_div_iff₀ chain on eleven-fold-nested fraction + floor antisymmetry. Requires set_option maxHeartbeats 6400000 in (2× S12b's 3_200_000). Main file 1747 → 1999 LOC (+252, +1 theorem; theoremCount 18 → 19). 0 sorries, 0 axioms (S13b ACT, researcher-1, 2026-06-10). The final propagated interval is x_11 ∈ (8/41, 1/5), 1/x_11 ∈ (5, 41/8) ⊂ (5, 6); floor identity by Int.le_floor / Int.floor_lt + le_antisymm. Build verified clean (7745 jobs, 193s)."
     ],
     "insights": [
+      "S14a (2026-06-12): the upper-bound cubing-iff template (cbrt3_lt_iff_three_lt_cube + norm_num) is fully reproducible across convergents - per-step inputs are just the convergent p_n/q_n (from p_n = a_n*p_{n-1}+p_{n-2}, q_n = a_n*q_{n-1}+q_{n-2}) plus a Python sign(p^3 - 3q^3) check. For the 14th convergent (a_13 = 3): 1865358/1293367, p^3 - 3q^3 = +2277123 > 0 => upper bound. norm_num discharges the exact rational cube comparison with no heartbeat bump; helper-ACTs stay cheap, the cost is all in the main-ACT nested-fraction chain.",
       "S10 (researcher-3, 2026-05-15): heartbeat budget growth empirically verified at 2× per partial-quotient depth. S2-S6 (4 levels): default 200_000. S7 (5 levels, 11 steps): 200_000. S8 (6 levels, 12 steps): 200_000. S9 (7 levels, 14 steps): 400_000. S10 (8 levels, 16 steps): 800_000. The scaling is dominated by the deepest div_lt_iff₀ + linarith call (step 16 in S10's case), where the eight-fold-nested rational expression triggers expensive whnf reduction. Future S11+ pickers should start at 1_600_000 and halve only after a successful build, not raise from a lower budget on failure (the CI cycle cost of an undersized first-pass build is ~25 minutes Mathlib clone + 30s elaboration vs ~10s for the helper file alone).",
       "S10 (researcher-3, 2026-05-15): the alternating-convergent contraction continues. S9's lower-side gap was 587/284_890_312 ≈ 2.06·10⁻⁶; S10's upper-side gap is 11_435/79_673_526_127 ≈ 1.43·10⁻⁷ (~14× tighter). The empirical rule of ~10× tightening per CF convergent in the cubic-irrational regime holds through 9 partial quotients. For S11+ this means each new bound's `norm_num` decidability remains comfortably within reach (gaps near 10⁻⁹ at S15+ would still close in milliseconds since polynomial arithmetic on 4-5-digit numerators is trivial for norm_num).",
       "S10 (researcher-3, 2026-05-15): the per-iteration LOC growth has flattened. S8 added ~160 LOC (file 670 → 830, +160), S9 added ~225 LOC (830 → 1055, +225), S10 adds ~234 LOC (1055 → 1289, +234). This is dominated by the chain length × step verbosity (each step at level n adds ~6 lines: hxn_gt + hxn_lt + hposn + hyn_gt + hyn_lt + Step-N comment). Floor antisymmetry is constant ~24 LOC. Helper file growth is constant ~50 LOC per partial quotient (one new theorem + ~40-LOC docstring/prose section). Total file ~1289 LOC at S10 is healthy; v4.26.0 elaboration handles it in 26s on the standard Docker image.",
@@ -88,6 +90,7 @@
       "No tactic-level support for \"cube both sides of an inequality involving Real.rpow\"; nlinarith handles polynomial inequalities once cbrt3 ^ 3 = 3 is substituted, but the substitution is manual."
     ],
     "nextSteps": [
+      "S14b Main-ACT: prove cbrt3_a12 = 8 using the sandwich 597449/414248 < cbrt3 < 1865358/1293367 (both bounds now in the helper file). ~25-step div-iff chain, maxHeartbeats 12800000, ~250 LOC main-file delta.",
       "S14a Helper-ACT (any researcher): add the true 14th CF convergent upper bound cbrt3 < 1_865_358/1_293_367 to CubeRoot3IrrationalOQ04Helpers.lean via the proven two-line cubing-iff template. Per OEIS A002945 [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …], a_13 = 3, giving p_13/q_13 = (3·597449+73011)/(3·414248+50623) = 1_865_358/1_293_367. Pre-claim Python cube-direction sanity (S13b session): 1_865_358^3 = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 = 3·1_293_367^3 (diff +2_277_123, gap ≈3.51e-13). Direction (alternation): even-index 14th convergent above cbrt3. Candidate helper name: cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven. After S14a, S14b main ACT proves cbrt3_a12 = 8 via the sandwich 597449/414248 < cbrt3 < 1_865_358/1_293_367 through a ~25-step chain (one rung deeper than S13b's 22). Heartbeat budget guess maxHeartbeats 12800000 (2× S13b's 6_400_000).",
       "S12+ (deferred, bundling): bundle the per-a_i lemmas into a single IntFractPair.stream cbrt3 statement at indices 0..N, tying the per-quotient lemmas to the canonical Mathlib API.",
       "S13+ (deferred): convergent lemmas convergent_n cbrt3 = (h_n, k_n) with the recurrence h_n = a_n h_{n-1} + h_{n-2}, k_n = a_n k_{n-1} + k_{n-2}.",
@@ -121,7 +124,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-06-10",
+  "lastUpdate": "2026-06-12",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -183,8 +186,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
-      "lineCount": 643,
-      "theoremCount": 18,
+      "lineCount": 694,
+      "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -192,5 +195,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean"
     }
   ],
-  "lastUpdated": "2026-06-10T00:00:00.000Z"
+  "lastUpdated": "2026-06-12"
 }

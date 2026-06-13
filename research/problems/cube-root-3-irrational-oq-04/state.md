@@ -1,10 +1,39 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-10 (S13b ACT)
-**Iteration**: 16
+**Since**: 2026-06-12 (S14a Helper-ACT)
+**Iteration**: 17
 
 ## Current Focus
+
+S14a Helper-ACT (researcher-2, 2026-06-12, Lean-only narrow-ACT): added the
+**true 14th CF convergent upper bound**
+`Cbrt3Helpers.cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven :
+cbrt3 < (1865358/1293367 : ℝ)` to `CubeRoot3IrrationalOQ04Helpers.lean` via the
+proven two-line cubing-iff template (`cbrt3_lt_iff_three_lt_cube + norm_num`).
+This is the **fourteenth CF convergent** (odd-index 13, hence upper side; using
+`a₁₃ = 3` per OEIS A002945), the upper partner for the S14b sandwich on
+`cbrt3_a12 = 8`. Helper file 643 → 694 LOC (+51 LOC, +1 theorem +1 prose
+section; theoremCount 18 → 19). 0 sorries, 0 axioms (slug remains 0/0).
+
+Convergent recursion (`a₁₃ = 3`): `p₁₃ = 3·597449 + 73011 = 1865358`,
+`q₁₃ = 3·414248 + 50623 = 1293367`. Cube-direction sanity (independently
+re-verified with Python this session): `1865358³ = 6_490_625_955_773_462_712 >
+6_490_625_955_771_185_589 = 3·1293367³` (diff `+2_277_123 > 0`, relative gap
+`≈ 3.51·10⁻¹³` — an order of magnitude tighter than S13's lower-side gap of
+`≈ 3.53·10⁻¹²`, consistent with `1865358/1293367` being the next true convergent
+one rung beyond `597449/414248`). **No math-correction needed** — both the
+recursion arithmetic and the cube digits matched the post-S13b sketch on the
+first pass. Docker build verified clean against this exact Lean content
+(7744 jobs, `Proofs.CubeRoot3IrrationalOQ04Helpers`).
+
+Helper-only ACT was chosen to keep this iteration narrow and conflict-free; the
+deeper main-file ACT for `cbrt3_a12 = 8` (the ~25-step `lt_div_iff₀`/`div_lt_iff₀`
+chain on a twelve-fold-nested fraction with heartbeat budget
+`set_option maxHeartbeats 12800000 in` per the 2×-per-depth scaling) is S14b
+territory.
+
+### Prior Focus (S13b Main-ACT, MERGED 2026-06-10)
 
 S13b ACT (researcher-1, 2026-06-10, Main-ACT): shipped the **twelfth
 partial quotient** `cbrt3_a11 = 5` of the simple CF of `∛3`, consuming
@@ -499,35 +528,40 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
+**S14b Main-ACT (any researcher)**: Prove the **thirteenth partial
+quotient** `cbrt3_a12 = 8` in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`,
+consuming the sandwich now fully in place:
+
+  `597449/414248 < cbrt3 < 1_865_358/1_293_367`
+
+(lower bound from S13, upper bound from **this S14a iteration**; combined gap
+`≈` the S14a upper gap `3.51·10⁻¹³` dominated by S13's `3.53·10⁻¹²`, i.e.
+roughly `3.5·10⁻¹²` — about 80× tighter than the S13b sandwich
+`597449/414248 < cbrt3 < 73011/50623`, gap `≈ 2.9·10⁻¹⁰`, which sufficed at
+depth 11). Per OEIS A002945 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …]`,
+`a₁₂ = 8`.
+
+Method (the established main-ACT template, one rung deeper than S13b's 22 steps):
+a ~25-step `lt_div_iff₀`/`div_lt_iff₀`/`le_div_iff₀` chain on a twelve-fold-nested
+fraction propagating the sandwich to `x₁₂ ∈ (lo, hi) ⊂ (1/9, 1/8)`, then
+`1/x₁₂ ∈ (8, 9)` ⟹ `⌊1/x₁₂⌋ = 8` by `le_antisymm`. Heartbeat budget guess
+`set_option maxHeartbeats 12800000 in` (2× S13b's 6_400_000, per the
+2×-per-depth empirical scaling validated through S7–S13b). Estimated main-file
+delta: ~250 LOC (consistent with S13b's +252). If `1_865_358/1_293_367` proves
+too loose at depth 12 (unlikely given the gap analysis), add the true 15th CF
+convergent lower bound (`a₁₄ = 3`: `p₁₄ = 3·1865358 + 597449 = 6_193_523`,
+`q₁₄ = 3·1293367 + 414248 = 4_294_349`) as an S14b-predecessor helper.
+
+## Prior Next-Action Sketch (S14a, now resolved by THIS iteration)
+
 **S14a Helper-ACT (any researcher)**: Add the **true 14th CF
-convergent upper bound** to `CubeRoot3IrrationalOQ04Helpers.lean`
-via the proven two-line cubing-iff template (`cbrt3_lt_iff_three_lt_cube +
-norm_num`):
+convergent upper bound** `cbrt3 < 1_865_358/1_293_367` to
+`CubeRoot3IrrationalOQ04Helpers.lean`. **RESOLVED this iteration** — see
+Current Focus above (theorem
+`cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven`,
+Docker-verified 7744 jobs clean).
 
-```
-Cbrt3Helpers.cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven :
-  cbrt3 < (1_865_358 / 1_293_367 : ℝ)
-```
-
-Per OEIS A002945 `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, …]`
-(200-digit Decimal CF witness from S12a/S12b), `a₁₃ = 3`, giving
-
-  `p₁₃ = a₁₃ · p₁₂ + p₁₁ = 3 · 597449 + 73011 = 1_865_358`
-  `q₁₃ = a₁₃ · q₁₂ + q₁₁ = 3 · 414248 + 50623 = 1_293_367`
-
-So `p₁₃/q₁₃ = 1_865_358/1_293_367 > cbrt3` (even index relative to the
-sign-alternation pattern: this 14th convergent is on the upper side,
-following the lower-side 13th convergent `597449/414248` from S13a).
-
-**Pre-claim Python cube sanity** (re-verified this S13b session):
-`1_865_358³ = 6_490_625_955_773_462_712 > 6_490_625_955_771_185_589 =
-3 · 1_293_367³` (diff `+2_277_123 > 0`, relative gap `≈ 3.51·10⁻¹³`
-— yet another order of magnitude tighter than S13a's lower-side gap
-of `≈ 3.53·10⁻¹²`).
-
-Helper file delta: +50–60 LOC (+1 theorem, +1 prose section).
-
-## Prior Next-Action Sketch (S13b, now resolved by THIS iteration)
+## Prior Next-Action Sketch (S13b, now resolved by S13b)
 
 **S13b (any researcher)**: Prove the twelfth partial quotient,
 `cbrt3_a11 : ⌊1 / (1 / (... - 2) - 5) - …⌋ = (5 : ℤ)`
