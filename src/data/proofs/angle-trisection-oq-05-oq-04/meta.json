@@ -78,7 +78,7 @@
     ],
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 1148,
+    "lineCount": 1149,
     "assumptions": "1 structure-encoded assumption: ftCompatible \u2014 the Fuchs-Tabachnikov compatibility identity \u03ba_n(s) = \u03ba_g(s) \u00b7 cot(\u03b8(s)/2) along the crease. This is the single differential-geometric constraint distinguishing valid smooth curved folds from arbitrary (\u03b3, \u03b8) pairs (Fuchs-Tabachnikov 1999, Theorem 1). Encoded as a field of the `CurvedCrease` structure rather than proved internally because the differential-geometric derivation would require ~350 lines of Darboux-frame curve-on-surface API absent from Mathlib at the pinned revision. Counted as +1 toward axiomCount per the axiom-integrity policy. 0 `axiom` declarations. 3 intentional sorries: S3 straight_fold_recovers_HH conservativity, S4 curved_fold_algebraic_implies_origami partial sharpness, S5 K_curved_eq_K_origami the OQ-A open conjecture (Huffman 1976 / Demaine et al. 2011).",
     "mathlib_version": "4.26.0",
     "theoremCount": 26,
@@ -109,63 +109,71 @@
       "id": "curved-crease-structure",
       "title": "The CurvedCrease Structure and IsStraight Predicate",
       "startLine": 80,
-      "endLine": 137,
+      "endLine": 138,
       "summary": "Defines the `CurvedCrease` structure (L, \u03b3, \u03b8, \u03ba_g, \u03ba_n) with `h\u03b8_pos` (fold angle in (0, \u03c0) on [0, L]) and `ftCompatible` (Fuchs-Tabachnikov identity \u03ba_n(s) = \u03ba_g(s) \u00b7 (tan(\u03b8(s)/2))\u207b\u00b9). Defines `CurvedCrease.IsStraight` as `\u2200 s \u2208 Set.Icc 0 c.L, c.\u03bag s = 0`.",
       "mathContext": "A **curved crease** is a smooth planar curve \u03b3 together with a dihedral fold-angle profile \u03b8 along it; the geodesic and normal curvatures of \u03b3 as a curve on the folded paper surface are linked by the Fuchs-Tabachnikov identity \u03ba_n = \u03ba_g \u00b7 cot(\u03b8/2). The straight-fold limit \u03ba_g \u2261 0 recovers the classical Huzita-Hatori axioms."
     },
     {
       "id": "normal-curvature-zero",
       "title": "Straight-Fold Normal-Curvature Vanishing (proved)",
-      "startLine": 138,
-      "endLine": 162,
+      "startLine": 139,
+      "endLine": 164,
       "summary": "Proves `normal_curvature_zero_of_straight`: if c.IsStraight then c.\u03ban s = 0 for all s \u2208 [0, L]. Pure algebraic consequence of ftCompatible: \u03bag s = 0 substituted into \u03ban s = \u03bag s \u00b7 (tan(\u03b8 s / 2))\u207b\u00b9 via zero_mul.",
       "mathContext": "An immediate corollary of the Fuchs-Tabachnikov identity: with one factor zero, the product is zero, regardless of the dihedral fold-angle profile. No analysis is required."
     },
     {
       "id": "exists-hh-fold",
       "title": "ExistsHHFold Predicate + S3 Conservativity Target",
-      "startLine": 164,
-      "endLine": 211,
+      "startLine": 165,
+      "endLine": 218,
       "summary": "Defines `CurvedCrease.ExistsHHFold` as the existence of an HHAxioms witness together with a Line through both crease endpoints \u03b3 0 and \u03b3 L. States `straight_fold_recovers_HH` (S3 sorry): any straight curved crease with distinct endpoints reduces to an HH-1 fold line through those endpoints.",
       "mathContext": "Conservativity: the curved-crease formalism is a genuine *extension* of the Huzita-Hatori axiom system. The S3 proof strategy is: (1) \u03ba_n \u2261 0 by `normal_curvature_zero_of_straight`; (2) zero curvature \u21d2 \u03b3 is a line segment; (3) HH-1 produces the required line through the endpoints."
     },
     {
+      "id": "constructive-hh1-s3",
+      "title": "Constructive HH-1 — Line Through Two Distinct Points (S3)",
+      "startLine": 219,
+      "endLine": 299,
+      "summary": "Standalone construction of the HH-1 axiom toward the S3 conservativity target. Defines `lineThrough p₁ p₂ h : Line` (the line through two distinct points, explicit coefficients) and proves `lineThrough_contains_left` / `lineThrough_contains_right` (it passes through both points), `hh1_existence` (∀ p₁ ≠ p₂, ∃ line through both — the existence content of the `HHAxioms.hh1` field), and `straight_fold_endpoints_collinear` (a curved crease with distinct endpoints admits a line through both endpoints). No new sorry or axiom is introduced.",
+      "mathContext": "HH-1 (the first Huzita-Hatori axiom) asserts a fold line through two distinct points. Proving it constructively — exhibiting the line explicitly rather than invoking the `HHAxioms.hh1` structure field — supplies the first ingredient of the eventual full `HHAxioms` witness needed to discharge `straight_fold_recovers_HH`; the second ingredient (a straight crease's endpoints lie on such a line) is `straight_fold_endpoints_collinear`."
+    },
+    {
       "id": "curve-algebraic-def",
       "title": "Algebraic-Curve Predicate + S4 Sharpness Target",
-      "startLine": 213,
-      "endLine": 263,
+      "startLine": 300,
+      "endLine": 352,
       "summary": "Defines `CurveAlgebraic \u03b3 d` as existence of a non-zero MvPolynomial p in two variables of total degree \u2264 d that vanishes on the image of \u03b3. States `curved_fold_algebraic_implies_origami` (S4 sorry): for an algebraic crease curve of degree \u2264 d, both coordinates of any \u03b3 s lie in the origami-constructible field.",
       "mathContext": "Demaine-DHPT 2011, Section 5: rule-line endpoints on an algebraic \u03b3 are algebraic over \u211a(\u03b3-coefficients). Combined with Alperin-Lang's degree classification (origami solves all degrees dividing 2^a \u00b7 3^b), this gives sharp containment: algebraic curved folds \u2286 K_origami. The S5 conjecture `K_curved = K_origami` would extend this to all (not just algebraic) curved folds."
     },
     {
       "id": "k-curved-eq-k-origami",
       "title": "OQ-A Open Conjecture (S5 statement-only)",
-      "startLine": 266,
-      "endLine": 317,
+      "startLine": 353,
+      "endLine": 404,
       "summary": "Defines `IsCurvedFoldConstructible \u03b1` as existence of a CurvedCrease c and parameter s \u2208 [0, c.L] with \u03b1 = (c.\u03b3 s).1. States `K_curved_eq_K_origami` (S5 PERMANENT sorry, OPEN): for all real \u03b1, IsCurvedFoldConstructible \u03b1 \u2194 \u2203 d, IsOrigamiConstructible \u03b1 d.",
       "mathContext": "Demaine-DHPT 2011 conjecture: although curved folds can trace transcendental CURVES, the field of constructible POINT COORDINATES is the same as the origami-constructible field. This conjecture is open mathematics dating to Huffman 1976; the Lean statement is intentionally sorry-bearing as a permanent placeholder. The value here is the formal language, not the proof."
     },
     {
       "id": "summary",
       "title": "Summary Comment",
-      "startLine": 319,
-      "endLine": 351,
+      "startLine": 405,
+      "endLine": 439,
       "summary": "Tabular summary of the 8 declarations (1 structure, 4 definitions, 3 statement-only theorems, 1 proved theorem) and the iteration plan S1 (markdown survey) \u2192 S2 (this scaffold) \u2192 S3 (conservativity proof) \u2192 S4 (algebraic sharpness proof) \u2192 S5 (OQ-A stays open).",
       "mathContext": "S2 ORIENT is the second iteration of a five-session program. The deliverable here is the formal language and three target theorems; S3-S5 will fill in the proofs (S5 intentionally remains open)."
     },
     {
       "id": "perp-bisector-s4",
       "title": "Constructive HH-2 \u2014 Perpendicular Bisector (S4)",
-      "startLine": 353,
-      "endLine": 448,
+      "startLine": 440,
+      "endLine": 535,
       "summary": "Defines `perpBisector p\u2081 p\u2082 h : Line` for distinct points with coefficients `(p\u2082.1 - p\u2081.1, p\u2082.2 - p\u2081.2, -((p\u2082.1\u00b2 - p\u2081.1\u00b2) + (p\u2082.2\u00b2 - p\u2081.2\u00b2))/2)`. Proves `perpBisector_dirSq_pos` (chord length positive), `reflectAcross_perpBisector` (the HH-2 reflection law `reflectAcross l p\u2081 = p\u2082` via `field_simp` + `ring` after Prod.ext split), and `hh2_existence` (standalone HH-2 existence: \u2200 p\u2081 \u2260 p\u2082, \u2203 l, reflectAcross l p\u2081 = p\u2082). No new sorry is introduced.",
       "mathContext": "The perpendicular bisector of two points p\u2081 \u2260 p\u2082 is the locus of points equidistant from both, equivalently the line through the midpoint perpendicular to the segment p\u2081p\u2082. Plugging the (a, b, c) coefficients into the reflection formula `reflectAcross l p = p - 2 (l.a p.1 + l.b p.2 + l.c)/(l.a\u00b2 + l.b\u00b2) \u00b7 (l.a, l.b)` yields the parameter `t = -1` at p\u2081, so the reflection adds the direction vector `(p\u2082.1 - p\u2081.1, p\u2082.2 - p\u2081.2)` to p\u2081 and lands at p\u2082. This is the HH-2 axiom of the Huzita-Hatori system in standalone form. Combined with S3's standalone `hh1_existence` (line through two distinct points), two of the seven HH ingredients required by `straight_fold_recovers_HH` are now constructive."
     },
     {
       "id": "perp-through-point-s5",
       "title": "Constructive HH-4 \u2014 Perpendicular Through a Point (S5)",
-      "startLine": 450,
-      "endLine": 572,
+      "startLine": 536,
+      "endLine": 660,
       "summary": "Defines `perpThroughPoint p \u2113 : Line` with coefficients `(-\u2113.b, \u2113.a, \u2113.b \u00b7 p.1 \u2212 \u2113.a \u00b7 p.2)` (fold's normal is a 90\u00b0 rotation of `\u2113`'s, constant chosen so the fold passes through `p`). Proves `perpThroughPoint_normSq_pos` (denominator non-vanishing via `\u2113`'s `nondeg` and `sq_pos_of_ne_zero`), `perpThroughPoint_contains` (the fold passes through `p` via `simp` + `ring`), `reflectAcross_perpThroughPoint_preserves` (reflection across the fold preserves `\u2113` setwise, proved by `simp only` unfolding + `field_simp` + `linear_combination`), and `hh4_existence` (standalone HH-4 existence: \u2200 p \u2113, \u2203 l, l.contains p \u2227 \u2200 q \u2208 \u2113, \u2113.contains (reflectAcross l q)). No new sorry is introduced.",
       "mathContext": "The perpendicular fold through `P` orthogonal to a line `\u2113 : a x + b y + c = 0` has its own normal vector parallel to `\u2113`'s direction (a 90\u00b0 rotation of `(\u2113.a, \u2113.b)` gives `(-\u2113.b, \u2113.a)`). Reflection across this fold acts on `\u2113` by reversing direction along `\u2113` while preserving the locus, because the cross-term `\u2113.a \u00b7 \u2113.b \u2212 \u2113.b \u00b7 \u2113.a` vanishes in the expansion of `\u2113.a \u00b7 q'.1 + \u2113.b \u00b7 q'.2 + \u2113.c`. This is the HH-4 axiom of the Huzita-Hatori system in standalone form. Combined with S3's standalone `hh1_existence` (line through two points) and S4's `hh2_existence` (perpendicular bisector), three of the seven HH ingredients required by `straight_fold_recovers_HH` are now constructive; the remaining four are HH-3 (angle bisector), HH-5 (point-on-line via fold through second point), HH-6 (Beloch fold, the cubic-solving one), and HH-7 (Hatori)."
     },
@@ -173,23 +181,23 @@
       "id": "hatori-fold-s6",
       "title": "Constructive HH-7 (non-parallel case) \u2014 Hatori Fold (S6)",
       "startLine": 661,
-      "endLine": 812,
+      "endLine": 817,
       "summary": "Defines `crossDet \u2113\u2081 \u2113\u2082 := \u2113\u2081.b\u00b7\u2113\u2082.a \u2212 \u2113\u2081.a\u00b7\u2113\u2082.b` (zero iff lines parallel) and `hatoriFold p \u2113\u2081 \u2113\u2082 h_nonpar : Line` with coefficients `(-\u2113\u2082.b, \u2113\u2082.a, (\u2113\u2081.a\u00b7p.1 + \u2113\u2081.b\u00b7p.2 + \u2113\u2081.c)\u00b7(\u2113\u2082.a\u00b2+\u2113\u2082.b\u00b2)/(2\u00b7crossDet) + \u2113\u2082.b\u00b7p.1 \u2212 \u2113\u2082.a\u00b7p.2)`. Proves `hatoriFold_normSq_pos` (denominator non-vanishing, repeats `perpThroughPoint_normSq_pos` specialised to \u2113\u2082), `reflectAcross_hatoriFold_preserves_\u2113\u2082` (fold is perpendicular to \u2113\u2082, mirrors HH-4's proof structure), `reflectAcross_hatoriFold_to_\u2113\u2081` (reflection of P lands on \u2113\u2081, via `field_simp` + `ring` after exposing `crossDet \u2260 0`), and `hh7_existence_nonparallel` (standalone HH-7 existence for non-parallel \u2113\u2081, \u2113\u2082: \u2200 p \u2113\u2081 \u2113\u2082, crossDet \u2260 0 \u2192 \u2203 l, \u2113\u2081.contains (reflectAcross l p) \u2227 \u2200 q \u2208 \u2113\u2082, \u2113\u2082.contains (reflectAcross l q)). No new sorry is introduced.",
       "mathContext": "The Hatori axiom HH-7 (Hatori 2001) states that for any point P and lines \u2113\u2081, \u2113\u2082, there exists a fold perpendicular to \u2113\u2082 sending P onto \u2113\u2081. The unconditional statement is actually false when \u2113\u2081\u2225\u2113\u2082 and P\u2209\u2113\u2081: any fold perpendicular to \u2113\u2082 has direction parallel to \u2113\u2082's normal, hence reflects perpendicular to \u2113\u2082, hence parallel to \u2113\u2081 (since \u2113\u2081\u2225\u2113\u2082), so perpendicular distance from P to \u2113\u2081 is invariant. Classical statements of HH-7 therefore tacitly assume \u2113\u2081 \u2226 \u2113\u2082 (or P\u2208\u2113\u2081); this S6 deliverable makes the non-parallel side condition explicit via `crossDet \u2113\u2081 \u2113\u2082 \u2260 0`. The construction: take fold normal `(-\u2113\u2082.b, \u2113\u2082.a)` (90\u00b0 rotation of \u2113\u2082's normal, guaranteeing perpendicularity to \u2113\u2082) and choose the constant term so the reflection parameter `t = E/crossDet` matches both the perpendicular-to-\u2113\u2082 requirement and the sends-P-to-\u2113\u2081 requirement, where `E := \u2113\u2081.a\u00b7P.1 + \u2113\u2081.b\u00b7P.2 + \u2113\u2081.c` is the signed deviation of P from \u2113\u2081. After substitution, `\u2113\u2081.a\u00b7P'.1 + \u2113\u2081.b\u00b7P'.2 + \u2113\u2081.c = E \u2212 t\u00b7crossDet = E \u2212 (E/crossDet)\u00b7crossDet = 0`. Combined with S3 (HH-1), S4 (HH-2), and S5 (HH-4), four of the seven HH ingredients required by `straight_fold_recovers_HH` are now constructive; the remaining three are HH-3 (angle bisector), HH-5 (point on line through second point), and HH-6 (Beloch fold, the cubic-solving one)."
     },
     {
       "id": "hh7-p-on-l1-s7",
       "title": "Constructive HH-7 (P-on-\u2113\u2081 case) \u2014 Identity-Like Fold (S7)",
-      "startLine": 815,
-      "endLine": 922,
+      "startLine": 818,
+      "endLine": 926,
       "summary": "Adds `reflectAcross_self_of_contains` (a point on a line is fixed by reflection across that line, via vanishing reflection-parameter numerator) and `hh7_existence_p_on_\u2113\u2081` (standalone HH-7 existence in the case `P \u2208 \u2113\u2081`, unconditional in `\u2113\u2081, \u2113\u2082`: the witness is the perpendicular-from-P fold to \u2113\u2082 from S5, which preserves \u2113\u2082 setwise and fixes P). Combined with S6 (`crossDet \u2260 0` case), HH-7 is now constructive on the complement of the genuinely-unsolvable parallel-with-`P\u2209\u2113\u2081` sliver. No new sorry or axiom is introduced.",
       "mathContext": "When `P \u2208 \u2113\u2081`, any fold through `P` fixes `P` under reflection (the reflection-parameter `t` vanishes since `P` already satisfies the fold's defining equation). The perpendicular fold from `P` to `\u2113\u2082` \u2014 already constructed in S5 as `perpThroughPoint P \u2113\u2082` \u2014 therefore both fixes `P` (keeping it on `\u2113\u2081`) and preserves `\u2113\u2082` setwise (its defining property from S5). This witness covers the case `P \u2208 \u2113\u2081` of HH-7 unconditionally in the relative position of `\u2113\u2081` and `\u2113\u2082`. Combined with S6's Hatori-fold witness for `crossDet \u2113\u2081 \u2113\u2082 \u2260 0`, the constructive coverage of HH-7 is now `{crossDet \u2260 0} \u222a {P \u2208 \u2113\u2081}` \u2014 the entire HH-7 statement except the genuinely-unsolvable corner `crossDet = 0 \u2227 P \u2209 \u2113\u2081`. The fixed-point lemma `reflectAcross_self_of_contains` is also a reusable primitive: future HH-3/5/6 constructions whose witness fold contains a designated input point can skip the explicit reflection-equation calculation entirely."
     },
     {
       "id": "hh3-parallel-s8",
       "title": "Constructive HH-3 (parallel case) \u2014 Translate Bisector (S8)",
-      "startLine": 925,
-      "endLine": 1144,
+      "startLine": 927,
+      "endLine": 1148,
       "summary": "Discharges HH-3 in the parallel case (`crossDet \u2113\u2081 \u2113\u2082 = 0`) via the translate-bisector. Adds 4 lemmas (`parallelBisector_dot_ne_zero`, `parallelNormal_left_id`, `parallelNormal_right_id`, `reflectAcross_parallelBisector_to_\u2113\u2082`) + 1 definition (`parallelBisector`) + the standalone existence theorem `hh3_existence_parallel`. Six of seven HH ingredients now constructive; only HH-3 intersecting (`Real.sqrt`-bound), HH-5 (Beloch-light), and HH-6 (Beloch fold) remain.",
       "mathContext": "When two lines are parallel, the unique reflection mapping one onto the other (setwise) is across the line midway between them \u2014 the *translate-bisector*. Unlike the intersecting case (which requires angle bisectors and `Real.sqrt`), the translate-bisector admits an explicit `noncomputable def` over `\u211d` with no transcendental ingredients: its normal vector is identical to `\u2113\u2081`'s and its constant term is a rational function of the input coefficients. The geometric content of parallelism \u2014 that normals are proportional \u2014 surfaces algebraically as the two scaling identities `D\u00b7\u2113\u2082.a = s\u00b7\u2113\u2081.a` and `D\u00b7\u2113\u2082.b = s\u00b7\u2113\u2081.b`, both consequences of `crossDet = 0`."
     }
@@ -236,7 +244,7 @@
       "AngleTrisectionOQ05"
     ],
     "namespace": "AngleTrisectionOQ05OQ04",
-    "lineCount": 1148,
+    "lineCount": 1149,
     "axiomCount": 1,
     "theoremCount": 26,
     "definitionCount": 10,
