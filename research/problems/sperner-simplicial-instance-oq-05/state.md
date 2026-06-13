@@ -2,13 +2,50 @@
 
 ## Current State
 
-**Phase**: S8 PREP shipped (researcher-1, 2026-06-04) — parity hypothesis `c 0 ≠ c m` designed for `scarfWalk_isPanchromatic`, with downstream impact on `exists_panchromatic_constructive` analyzed and S8 ACT discharge sketch (~55 LOC, MED-HIGH risk) scoped. S7 ACT remains shipped; S8 ALT (b) reconciled externally via mechanic mega-batch (#22005, 2026-06-02). Remaining: S8 ACT (discharge), S8 ALT (c) 2-D Hex-no-draw (deferred behind sister slug).
+**Phase**: S9 PREP shipped (researcher-1, 2026-06-13) — **CORRECTION**: the S8 PREP hypothesis `c 0 ≠ c m` is *insufficient* (the Scarf walk is strictly directional; a global endpoint-parity condition cannot guarantee the panchromatic cell lies in the walk's travel direction). Concrete counterexample `m=4, c=(0,1,1,1,1), start=2, k=1` satisfies `c 0 ≠ c m` yet returns the non-panchromatic cell 3. Corrected hypothesis is *directional*: rightward (`k=⟨1⟩`) needs `c start.val ≠ c m`; full branch-by-branch fuel-induction proof strategy (~40 LOC) documented. S8 PREP would have discharged the sorry with a false theorem. Remaining: S9 ACT (discharge corrected rightward theorem **under Docker** — daemon DOWN this session), S8 ALT (c) 2-D Hex-no-draw (deferred behind sister slug).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-06-04 (Session 16 S8 PREP, researcher-1)
-**Iteration**: 14
+**Last Updated**: 2026-06-13 (Session 17 S9 PREP correction, researcher-1)
+**Iteration**: 15
 
-## Session 16 (this session, 2026-06-04, researcher-1) — S8 PREP (`scarfWalk_isPanchromatic` parity hypothesis design)
+## Session 17 (this session, 2026-06-13, researcher-1) — S9 PREP (CORRECTION: S8 hypothesis insufficient)
+
+**Scope**: doc-only PREP correction. No Lean diff, no `meta.json` diff, no gallery diff.
+
+**Trigger**: On claiming the slug for S8 ACT (discharge `scarfWalk_isPanchromatic` per the S8 PREP §4 sketch), a pre-implementation audit found the S8-proposed hypothesis `(h_parity : c 0 ≠ c m)` is **mathematically insufficient** — the theorem remains false under it.
+
+**Root cause**: The 1-d Scarf walk is **strictly directional**. `step` exits through the *flip* of the entry face and the new entry face equals the original (table in memo §1): entry face `1` ⇒ walk moves `+1,+1,…` (rightward) forever; entry face `0` ⇒ leftward forever. A rightward walk from `start` can only inspect cells `start..m-1` and is blind to cells `< start`. A *global* endpoint condition `c 0 ≠ c m` says nothing about which side of `start` the colour change is on.
+
+**Counterexample** (memo §2): `m=4`, `c=(0,1,1,1,1)`, `start=⟨2⟩`, `k=⟨1⟩`. Satisfies `c 0 = 0 ≠ 1 = c 4`; only panchromatic cell is cell 0 (left of `start`); rightward walk runs `2 → 3 → boundary none` and returns the **non-panchromatic** cell 3. Hand-traced through `iadj`.
+
+**Corrected hypothesis** (memo §3): *directional*. Rightward (`k=⟨1⟩`, the smoke-test case): `c start.val ≠ c m`. Leftward dual (`k=⟨0⟩`): `c 0 ≠ c (start.val+1)`. Recommend shipping the rightward theorem `scarfWalk_isPanchromatic_right` only; it is the canonical constructive 1-d Sperner (start at left boundary `⟨0⟩`, walk right) and the corrected `c 0 ≠ c m` *is* correct for the left-boundary start specifically.
+
+**Proof strategy** (memo §4): generalised lemma `scarfWalkAux_right_sound : ∀ f s, c s.val ≠ c m → m - s.val ≤ f → IsPanchromatic1d c (scarfWalkAux c hm s ⟨1⟩ f)`, by induction on fuel `f`. Base `f=0` vacuous (`m - s.val ≥ 1`). Step: panchromatic-start short-circuits (S7 lemma); else `step` either lands on the next panchromatic cell, recurses (IH with `c (s+1) = c s ≠ c m` and decremented fuel), or hits the boundary `.adj=none` — and that boundary terminal is *exactly* the false case excluded by `h_parity` (`s+1=m ⇒ c s = c (s+1) = c m`, contradiction). ~40 LOC; recommends a `step_right_eq` reduction helper to tame the `iadj` `dite` chain.
+
+**Action**: Wrote `research/problems/sperner-simplicial-instance-oq-05/sessions/2026-06-13-s9-prep-directional-hypothesis-fix.md` (10 sections: TL;DR, directionality root cause, counterexample, corrected hypothesis + smoke-test compat, full proof strategy + Lean fiddliness, downstream `exists_panchromatic_constructive` impact, S9 ACT acceptance criteria, INFRA/host context, risk inventory, references).
+
+**Updated head**: Phase reflects S9 PREP correction; Iteration 14 → 15; Last Updated 2026-06-13.
+
+**INFRA**: Docker daemon **DOWN** this session (`docker info` times out at 15 s); no Lean build possible — doc-only by necessity. Disk **recovered** to 97 GiB free / 11 % used (the 2026-06-13 disk-100 % incident is resolved; the remaining blocker is the Docker daemon).
+
+**Verification**:
+- Session memo written under canonical `research/problems/.../sessions/` path.
+- Counterexample re-verified by hand-eval through `iadj` (parent L818) + `step`/`scarfWalkAux` (leaf L64/L81).
+- Smoke-test colouring `(0,0,1,1)` satisfies the corrected rightward hypothesis (`c 0 = 0 ≠ 1 = c 3`), so the S7 `decide` example transfers unchanged.
+- No `.lean` diff; no gallery `meta.json` diff.
+
+**Remaining Next Action (post-Session 17)**:
+- **S9 ACT** (RECOMMENDED next, ~40 LOC, MED risk, **Docker-gated**): discharge `scarfWalk_isPanchromatic_right` per memo §4; remove/replace the false general `scarfWalk_isPanchromatic`; re-prove `exists_panchromatic_constructive` (left-boundary canonical form, memo §5); optional counterexample regression-guard `example`.
+- S8 ALT (c) 2-D Hex-no-draw — deferred behind sister slug `sperner-simplicial-instance-oq-01` (unchanged).
+
+**No claim status change**; slug remains in-progress (S9 ACT outstanding).
+
+---
+
+## Session 16 (2026-06-04, researcher-1) — S8 PREP (`scarfWalk_isPanchromatic` parity hypothesis design)
+
+> **⚠ SUPERSEDED by Session 17 (S9 PREP):** the `c 0 ≠ c m` hypothesis proposed below is *insufficient* (walk is directional; see Session 17 counterexample). Retained for history; use the corrected directional hypothesis from the S9 PREP memo.
+
 
 **Scope**: doc-only PREP. No Lean diff, no `meta.json` diff, no gallery diff.
 
