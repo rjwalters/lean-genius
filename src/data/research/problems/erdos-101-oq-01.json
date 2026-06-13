@@ -8,7 +8,7 @@
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-05-24T22:00:00Z",
+  "lastUpdate": "2026-06-12T00:00:00Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -33,16 +33,15 @@
     "goal": "Prove $\\text{fourPointLineCount}(P) = o(|P|^2)$ for all `NoFiveCollinear P`, or sharpen the bound to an explicit subquadratic rate."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-24T22:00:00Z",
-    "iteration": 12,
-    "focus": "S12 ACT (researcher-1, 2026-05-24): IsBigO/IsLittleO bridge to Mathlib idiom landed per S10 PREP §5.1-§5.3 recipe (all five corrections F/G/H/I/J inlined). New artifacts in Erdos101OQ01.lean: (i) noncomputable def maxFourPointLines (n : ℕ) : ℕ := n*(n-1)/12 + theorem maxFourPointLines_isBigO_n_squared : Asymptotics.IsBigO atTop ↑maxFourPointLines (·^2) + theorem fourPointLineCount_le_max (with load-bearing NoFiveCollinear hypothesis per Bug-G fix). (ii) lemma isLittleOh_n_squared_iff_isLittleO (bridges slug strict-< form ↔ Mathlib isLittleO_iff, with c:=ε/2 + n≥1 lift in ← direction per Bug-H fix). (iii) def erdos_101_oq_01_isLittleO_form (existential, NOT concrete IsLittleO on maxFourPointLines per Bug-F fix) + theorem erdos_101_oq_01_rate_form_iff_isLittleO + theorem erdos_101_oq_01_isLittleO (the OPEN main conjecture in Mathlib idiom, sorry). Bug-I fix: single-norm collapse via Real.norm_of_nonneg (no double abs_of_nonneg). Bug-J: file source order respected — artifact (ii) at L264 before artifact (iii)'s iff at L312. New imports: Mathlib.Analysis.Asymptotics.Defs + Mathlib.Order.Filter.AtTopBot.Basic. Counters: sorries 2 → 3 (added erdos_101_oq_01_isLittleO), axioms 0 → 0, theorems 9 → 13 (+IsBigO, +per-P corollary, +iff bridge, +isLittleO-form main), defs 4 → 5, lemmas 0 → 1, LOC 471 → 603 (+132, larger than budgeted +78 due to docstrings; pure body ~78 LOC matches recipe). Build NOT verified locally (worktree .lake symlink trap); will run in CI/via mechanic.",
+    "phase": "ACT (S15 BUILD-VERIFY — S14 build confirmed GREEN on origin/main)",
+    "since": "2026-06-12T00:00:00Z",
+    "iteration": 15,
+    "focus": "S15 BUILD-VERIFY (researcher-2, 2026-06-12, doc-only): cleared S14's 'NOT verified locally' qualifier. The Docker host recovered from the 2026-06-03 containerd I/O error; running ./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01 on the unchanged origin/main file → 'Build completed successfully (3061 jobs)' at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. The only two warnings are the two expected OPEN sorries: erdos_101_oq_01 (L113, the open conjecture) and solymosi_stojakovic_lower_bound (L588, literature lower bound). No v4.26.0 surface-drift — unlike the OQ-03/Basel 'qualifier masked real bugs' pattern, the 762-LOC S14 file is genuinely clean. Counts on main: 762 LOC, 2 sorries, 0 axioms — matching gallery meta (status axiomatized, badge wip). No code change; no meta edit needed. Prior: S14 ACT (2026-06-03, researcher-1) surrogate↔true-sup unification (maxCountAtSize_le_maxFourPointLines + maxCountAtSize_isBigO_n_squared), shipped unverified; S13 conjecture↔rate_form; S12 IsBigO/IsLittleO Mathlib-idiom bridge.",
     "blockers": [
-      "Build not yet verified — worktree .lake is a self-symlink; verification requires Docker invocation from main repo or via mechanic. Per S10 §8 gate 7: ≤ 2 Docker iterations forecast. Most likely iter-2 fixes: Real.norm_natCast normalisation; or nlinarith fallback to explicit calc chain in artifact (ii) ← direction (S10 §11 documents this ~3 extra LOC).",
-      "Main conjecture erdos_101_oq_01 ($100 Erdős prize) remains OPEN; S12 ACT adds the Mathlib-idiom existential form but does not discharge it.",
-      "solymosi_stojakovic_lower_bound construction over finite fields remains deferred (separate sorry, not addressed in S12)."
+      "Main conjecture erdos_101_oq_01 ($100 Erdős prize) remains OPEN; the file states it in two equivalent Mathlib-idiom forms but does not discharge it.",
+      "solymosi_stojakovic_lower_bound construction over finite fields remains deferred (separate OPEN sorry, L588)."
     ],
-    "nextAction": "S13 PREP or mechanic-iter: monitor the S12 PR's Docker build. If iter 1 fails on Real.norm_natCast vs Real.norm_of_nonneg shape — apply mechanic fix per S10 §11 fallback. If iter 1 passes, S13 candidates: (a) connect the Mathlib-idiom form to downstream gallery work (search for places where Asymptotics.IsLittleO consumers would benefit from the new bridge); (b) true-sup maxFourPointLines via Finset.sup' over no-five-collinear sets (~15 LOC, replaces surrogate); (c) Cauchy–Schwarz refinement of fourCollinearThrough_bound ≤ (n-1)/3 for a 1-o(1) leading constant on the n²/12 elementary bound; (d) witness extraction at fixed n via decide/native_decide on small finite combinatorics. (a)/(c)/(d) are independent; (b) is incremental on top of S12.",
+    "nextAction": "Substantive ACT candidates (all incremental around the two OPEN sorries; none close them): (b) true-sup maxFourPointLines via Finset.sup' over no-five-collinear sets (~15 LOC, replaces the n*(n-1)/12 surrogate); (c) Cauchy–Schwarz refinement of fourCollinearThrough_bound ≤ (n-1)/3 for a 1-o(1) leading constant on the n²/12 bound; (d) native_decide-certified small-n witnesses. Build is now confirmed GREEN, so any ACT can Docker-verify directly via ./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01 (~3061 jobs). The two prize-level sorries are open mathematics and out of scope for routine ACT.",
     "attemptCounts": {
       "total": 11,
       "currentApproach": 1,
