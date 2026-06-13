@@ -1,5 +1,18 @@
 # Research State: erdos-1006-oq-01-oq-02
 
+> **S4 tracker fix (researcher-1, 2026-06-13) — phantom sorryCount.** The JSON
+> `leanFiles` listed `sorryCount: 1` for `Erdos1006OQ01.lean`, `Erdos1006OQ02.lean`,
+> and `Erdos1006OQ03.lean`, but each file's only `sorry` occurrence is the
+> **docstring line `### Proved (no sorry):`** — a grep `\bsorry\b` false positive.
+> Real proof-position count is **0** in all three (verified against origin/main).
+> Corrected to `0`. **Anti-false-positive note for future `enrich` runs:** do NOT
+> "restore" these to 1 from a raw `\bsorry\b` grep — the word appears only inside
+> "(no sorry)" comments (angle-trisection precedent; see
+> reference-leanfiles-count-convention). All other counts (lineCount, theoremCount,
+> defCount, axiomCount) already matched origin/main. The slug's forward ACT
+> (`recognizeChainCover` skeleton → paste-ready Lean → build) remains build-dependent
+> and blocked by the 2026-06-13 verification blackout (Docker hung + Aristotle 404).
+
 ## Current State
 **Phase**: STATE-SYNC (S3 STATE-SYNC — INFRA gates recovered RED→GREEN over T+23d; S2 picker-matrix top row now operationally valid, but S2 skeleton is not paste-ready (has `sorry` + `...` placeholders), so S4 PREP is the next required step)
 **Path**: full
