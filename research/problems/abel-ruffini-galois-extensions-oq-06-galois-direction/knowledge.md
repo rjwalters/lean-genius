@@ -34,9 +34,25 @@ S8 PREP (2026-05-15) confirmed on 2026-06-01 against lake-pinned SHA.
   `MulHom`, so step 4 will probably need a `MulEquiv.ofBijective`
   built from the conjugation-by-translations identity. ~20-30 extra
   LOC.
-- **Risk R2** (low): Step 5's "H ≤ N_{S_p}(P)" is a `Subgroup.le`
-  closure under conjugation; `Subgroup.le_normalizer_of_normal` may
-  not exist verbatim and may need a 5-LOC ad-hoc proof.
+- **Risk R2** (REALISED — defect, researcher-5 S5 OBSERVE 2026-06-13):
+  Step 5 (`H_le_normalizer`) is not merely a wiring risk — its current
+  *statement* is **mathematically false**. The hypothesis `σ ∈ H` does
+  NOT entail `H ≤ N_{S_p}(⟨σ⟩)`; `H` normalises `⟨σ⟩` only because
+  `⟨σ⟩ = image of the normal Sylow-p P` (Steps 2+3), not because `σ` is
+  some element of `H`. Counterexample (p=5): `H = (AGL1Z.toPerm 5).range`,
+  `σ = (x↦2x) = (1 2 4 3) ∈ H`, `h = (x↦x+1) = (0 1 2 3 4) ∈ H`; then
+  `hσh⁻¹ : y↦2y-1` sends `0↦4 ∉ ⟨σ⟩`, so `h ∉ N(⟨σ⟩)`. The statement
+  also fails to require `σ` to be a `p`-cycle. **Corrected signature**
+  (deferred to a Docker-up session): pass the normal Sylow `P` and its
+  generator hypothesis through —
+  `(P : Sylow p H) (hPnorm : (P:Subgroup H).Normal)`
+  `(hgen : ∀ g:P, (H.subtype.comp (P:Subgroup H).subtype) g ∈ zpowers σ)`
+  `(hσH : σ∈H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer`, then close with a
+  `Subgroup.le_normalizer`-style conjugation argument (~5-15 LOC). The
+  in-source `H_le_normalizer` docstring carries a `⚠` block with the same
+  counterexample and corrected signature. No false proof was produced
+  (Step 5 + the main theorem remain `sorry`), so this is a latent trap to
+  fix before final assembly, not a soundness break in a closed proof.
 - **Risk R3** (medium): Build-pending qualifier extends across
   multiple sessions (matches the forward-direction's S3-S7 pattern).
   Plan for a final BUILD-VERIFY iteration.

@@ -99,7 +99,32 @@ theorem normalizer_iso_AGL1Z
 /-- **Step 5 (H ≤ N_{S_p}(P)).** Since the Sylow-p subgroup `P` is
     normal in `H`, the group `H` is contained in the normalizer of `P`
     in `S_p`. Composition with the step-4 isomorphism gives the desired
-    embedding `H ↪ AGL(1, p)`. -/
+    embedding `H ↪ AGL(1, p)`.
+
+    ⚠ **UNSOUND STATEMENT — DO NOT DISCHARGE AS WRITTEN** (researcher-5,
+    S5 OBSERVE 2026-06-13). The current hypothesis `σ ∈ H` is far too
+    weak: it does NOT entail `H ≤ N_{S_p}(⟨σ⟩)`. The conclusion requires
+    `⟨σ⟩` to be *normalised* by `H`, which the proof obtains from Step 2
+    (`P ⊴ H`) together with Step 3 (`⟨σ⟩ = image of P`) — i.e. `σ` must
+    generate the image of the **normal Sylow-p** `P`, not be an arbitrary
+    element of `H`. Note the statement does not even require `σ` to be a
+    `p`-cycle.
+
+    Explicit counterexample (`p = 5`): let `H = (AGL1Z.toPerm 5).range`
+    (primitive + solvable, supplied by the parent file) and `σ = (x ↦ 2x)`,
+    the scaling-by-2 map `= (1 2 4 3)`, a 4-cycle fixing `0`, with `σ ∈ H`.
+    Take `h = (x ↦ x+1) = (0 1 2 3 4) ∈ H`. Then `h σ h⁻¹ : y ↦ 2y - 1`
+    sends `0 ↦ 4`, so it does not fix `0`; but every element of `⟨σ⟩`
+    fixes `0`. Hence `h σ h⁻¹ ∉ ⟨σ⟩`, so `h ∉ N_{S_p}(⟨σ⟩)` and
+    `H ⊄ N_{S_p}(⟨σ⟩)`. The lemma as stated is therefore false.
+
+    **Corrected signature** (to discharge in a future Docker-up session):
+    thread the normal Sylow-p `P` and its `p`-cycle generator through, e.g.
+    `(P : Sylow p H) (hPnorm : (P : Subgroup H).Normal)`
+    `(hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈`
+    `  Subgroup.zpowers σ) (hσH : σ ∈ H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer`,
+    matching the outputs of Steps 2 (`sylow_p_normal`) and 3
+    (`sylow_p_is_pcycle`). See `knowledge.md` Risk R2. -/
 theorem H_le_normalizer
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
