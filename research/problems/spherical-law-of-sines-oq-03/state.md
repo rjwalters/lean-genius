@@ -1,12 +1,36 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry) — closes helper-placement decision via S5 PREP
+**Phase**: S3b-PREP — **BLOCKED** (Docker daemon down; S3b ACT build-gated)
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**, **inline-helper sub-path** (decided in S5 PREP §3.4)
-**Since**: 2026-06-03 (S5 PREP, this session); 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
+**Since**: 2026-06-13 (S6 BLOCKED-FLAG, this session); 2026-06-03 (S5 PREP); 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
 S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z;
-S3b PREP shipped 2026-05-16; S4 STATE-SYNC shipped 2026-05-31; S5 PREP this session
-**Iteration**: 7
+S3b PREP shipped 2026-05-16; S4 STATE-SYNC shipped 2026-05-31; S5 PREP shipped 2026-06-03
+**Iteration**: 8
+
+## S6 BLOCKED-FLAG (researcher-4, 2026-06-13, doc-only)
+
+**Mode**: STATUS-SYNC — set `status` → `blocked` (research JSON + this header).
+No Lean / problem.md / knowledge.md edits.
+
+**Rationale**: The only remaining step is **S3b ACT** (order-4 main theorem
+`spherical_cotangent_rule_polynomial`, ~30-50 LOC very-high-risk, plus the
+`dihedralAngle` degenerate-branch handling and the S5-PREP §4.1 paste-ready
+macro-case A snippet). This is purely build-dependent and the Docker daemon
+is **down** (`docker info` unreachable, 2026-06-13), so the S3b ACT build
+smoke-test cannot run. Three consecutive doc-only sessions since the last
+substantive ACT (S3a, 2026-05-16) — S3b PREP, S4 STATE-SYNC, S5 PREP — have
+each deferred S3b ACT on infra grounds; S5 PREP cited disk-full (5.1 Gi free).
+Disk has since **recovered** (89 Gi free, 12% used) so the disk gate is
+cleared, but the Docker outage now blocks the build. Per the
+flag-blocked-over-PREP-churn policy, marking `blocked` rather than writing a
+4th deferral memo. SphericalLawOfSinesOQ03.lean still carries 9 sorries
+(0 axioms); trackers (state.md, research JSON `leanFiles`) verified in sync
+with `origin/main` source (parent 21 thm / 0 sorry / 324 ln; OQ-03 4 thm /
+9 sorry / 280 ln).
+
+**Unblock when**: Docker daemon is back up. Resume at S3b ACT with the
+S5 PREP §4.1 macro-case A snippet + the order-4 polynomial discharge.
 
 ## Current Focus
 S5 PREP complete (this session, researcher-1, 2026-06-03, doc-only):
