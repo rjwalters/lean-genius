@@ -26,12 +26,12 @@
     "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-12",
-    "iteration": 7,
+    "phase": "STATE-SYNC",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 8,
     "focus": "S7 ACT (researcher-2, 2026-06-12): shipped candidate (2) from the S7 menu — two sorry-free single-edge sanity theorems on `KonigsbergOQ03.lean`. `not_hasInfiniteEulerPath_of_single_edge` and `not_hasOneWayEulerPath_of_single_edge`: if every edge of an InfiniteGraph G equals the single undirected edge {u,v} (u ≠ v), then G has no bi-infinite (resp. one-way) Euler path. Proof: any infinite walk traverses an edge at every step, so with one edge available it is forced to bounce u↔v; the key fact w.vertex 0 = w.vertex 2 (proved by a 4-way rcases on hone applied to steps 0 and 1) makes steps 0 and 1 traverse the same edge, contradicting edge-injectivity (IsBiInfiniteEulerWalk's no-repeat clause / InfiniteWalk.IsEdgeInjective via the second sameEdge disjunct). Index handling: ℤ case needs `simp only [zero_add]` + `by rw [zero_add]` for 0+1->1 normalization; ℕ case is defeq so `rfl` suffices. +46 LOC (256 -> 302). Build-verified: Docker `Proofs.KonigsbergOQ03` green, 0 errors / 0 warnings / 0 sorries / 0 axioms. Theorem count 9 -> 11. Deferred candidate (1) (EGW statement-as-axiom/sorry) — preferred to keep this slug sorry-free; candidates (3) DRY refactor and (4) EGW proof remain. PREVIOUS — S6 STATE-SYNC (researcher-1, 2026-06-09): doc-only Docker-GREEN retroactive verification of both S4 ACT (2026-06-03, T+6d unverified) and S5 ACT (2026-06-04, T+5d unverified). Ran `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03` from the worktree, returning `✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s) → Build completed successfully (7743 jobs)`. The host Docker daemon recovered between 2026-06-04 and 2026-06-09 (Server Version 29.5.3, overlayfs storage), allowing the build to complete. Both predecessor ACTs' code is correct as written — the line-for-line pattern equivalence with sibling KonigsbergOQ03OQ02.lean (S4 confidence grounding) and the trivial-term-proof structure (S5 confidence grounding) are now empirically validated rather than merely architectural. File invariants at S6 (matches both S5 ACT ship counts and origin/main): 256 LOC, 9 theorems, 14 defs+structures, 0 axioms, 0 sorries. Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged. Drift note: JSON was at iteration 4 (S4 narrative); S5 ACT updated state.md to iteration 5 without syncing JSON. This S6 STATE-SYNC bumps JSON directly to iteration 6, skipping the unrecorded S5 step in JSON (S5 is fully recorded in state.md and sessions/2026-06-04-s5-act-accessors-and-no-edge-sanity.md). Full record in sessions/2026-06-09-s6-statesync-docker-green-retroactive.md.",
     "blockers": [],
-    "nextAction": "S8 ACT — candidate (2) is DONE (S7). Remaining menu: (3) RECOMMENDED next (sibling DRY refactor — cross-slug): the InfiniteGraph/InfiniteWalk/IsEulerWalk infrastructure is duplicated between this file and KonigsbergOQ03OQ02.lean; collapse ~100 LOC by sharing one definition (CAVEAT: cross-slug edit — coordinate counts, mechanic-sync leanFiles). (5) NEW small sorry-free wins in the spirit of S7: a two-edge path-graph u-v-w admits a (one-way) Euler walk (existence/constructive) OR `not_hasInfiniteEulerPath_of_finite_edges` generalizing the bounce argument to any graph whose edge set is finite (a bi-infinite injective walk needs infinitely many distinct edges). (1) (EGW statement) only if willing to introduce a sorry/axiom — lower priority given this slug is currently sorry-free and axiom-free. (4) EGW proof — multi-week, locally-finite case via SimpleGraph.Walk.IsEulerian + König's lemma. Build-verify via `./proofs/scripts/docker-build.sh Proofs.KonigsbergOQ03`.",
+    "nextAction": "S9 ACT when Docker recovers (verification blackout 2026-06-13: Docker daemon HUNG + Aristotle 404 — new sorry-free lemmas are unbuildable/unverifiable today). S8 candidate menu (carried from S7): (a) single-edge one-way Euler walk existence/constructive; (b) not_hasInfiniteEulerPath_of_finite_edges generalizing the bounce argument to any finite-edge graph; (c) cross-slug DRY refactor sharing InfiniteGraph/InfiniteWalk/IsEulerWalk with KonigsbergOQ03OQ02.lean (~100 LOC, coordinate counts). All build-dependent.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 3,
@@ -115,15 +115,15 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-06-12",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/KonigsbergOQ03.lean",
       "filename": "KonigsbergOQ03.lean",
-      "lineCount": 202,
-      "theoremCount": 2,
+      "lineCount": 303,
+      "theoremCount": 11,
       "axiomCount": 0,
-      "defCount": 14,
+      "defCount": 13,
       "sorryCount": 0,
       "truePlaceholderCount": 0,
       "isAristotle": false,
