@@ -42,10 +42,12 @@ as a named lemma).
 - `carleson_2d_sph` — for `f : T2 → ℂ` with `MemLp f 2 haarT2`, the spherical
   partial sums converge to `f` almost everywhere as `R → ∞`. **Open.**
 
-### Companion (unconditional, sorried)
-- `sphPartialSum_L2_norm_converge` — the L²-norm version of convergence.
-  Provable from Plancherel; left as `sorry` pending the Plancherel-on-`T²`
-  lemma (Mathlib gap; see `research/problems/fourier-series-oq-04-oq-01/knowledge.md`).
+### Companion (unconditional, proved — S15)
+- `sphPartialSum_L2_norm_converge` — the L²-norm version of convergence,
+  proved sorry-free via Mathlib's multivariate Fourier engine
+  `UnitAddTorus.hasSum_mFourier_series_L2` (whose ambient measure on
+  `UnitAddTorus (Fin 2)` is definitionally `haarT2`) plus the `latticeDisc`
+  cofinality. See the "S15 ACT" section at the end of this file.
 
 ## References
 
@@ -130,34 +132,16 @@ axiom carleson_2d_sph
     (f : T2 → ℂ) (_hf : MemLp f 2 haarT2) :
     ∀ᵐ x ∂haarT2, Tendsto (fun R : ℝ => sphPartialSum f R x) atTop (𝓝 (f x))
 
-/-! ## Unconditional companion (Plancherel-direct, sorried)
+/-! ## Unconditional companion (Plancherel-direct)
 
 The norm-version of the convergence statement holds without any conjectural
-input, by Plancherel applied to the increasing sequence of partial-sum
-projections onto the lattice-disc-indexed sub-basis. The Plancherel identity
-on the 2-torus is implicit in Mathlib's `lp 2` machinery (the tensor product
-of two 1D `fourierBasis` instances gives an orthonormal basis of
-`Lp (T₂ → ℂ) 2 haarT2`), but is not exposed as a named lemma — see
-`research/problems/fourier-series-oq-04-oq-01/knowledge.md` for the Mathlib gap.
+input, by Plancherel. The full close `sphPartialSum_L2_norm_converge` is in the
+**S15 ACT** section at the end of this file, where the `latticeDisc` cofinality
+(S9) and the `Lp` coercion helpers (S10) are in scope. It is discharged via
+Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`
+(`Mathlib.Analysis.Fourier.AddCircleMulti`), whose ambient measure on
+`UnitAddTorus (Fin 2) = T2` is definitionally `haarT2`.
 -/
-
-/-- **L² norm convergence** of spherical Fourier partial sums on `𝕋²`
-    (unconditional, by Plancherel). The proof is left as `sorry` pending the
-    `Plancherel_ntorus` lemma (Mathlib gap; the engine is the orthonormal-basis
-    Bessel-equality on `lp 2`). -/
-theorem sphPartialSum_L2_norm_converge
-    (f : T2 → ℂ) (_hf : MemLp f 2 haarT2) :
-    Tendsto (fun R : ℝ => eLpNorm (fun x => sphPartialSum f R x - f x) 2 haarT2)
-      atTop (𝓝 0) := by
-  -- Outline:
-  --   1. Let `T_R : Lp (T2 → ℂ) 2 → Lp (T2 → ℂ) 2` be the projection onto
-  --      `span {fourier_k · fourier_k' : (k, k') ∈ latticeDisc R}`.
-  --   2. The `T_R` form an increasing family of orthogonal projections
-  --      whose union is dense in `lp 2`; this gives `‖T_R f - f‖ → 0`.
-  --   3. Identify `T_R f x = sphPartialSum f R x` a.e. by Fubini on the
-  --      product Haar measure.
-  -- Step 2 is the Plancherel-on-T² Bessel-equality (Mathlib gap).
-  sorry
 
 /-! ## Sanity-check lemmas (no sorries, definitional)
 
@@ -470,6 +454,144 @@ theorem memLp_haarT2_iff_volume (f : T2 → ℂ) (p : ℝ≥0∞) :
 theorem eLpNorm_haarT2_eq_volume (f : T2 → ℂ) (p : ℝ≥0∞) :
     eLpNorm f p haarT2 = eLpNorm f p (volume : Measure T2) := by
   rw [haarT2_eq_volume]
+
+/-! ## S15 ACT — unconditional L²-norm convergence (sorry-free close)
+
+`sphPartialSum_L2_norm_converge` is discharged by transporting the problem to
+Mathlib's multivariate Fourier engine `UnitAddTorus.hasSum_mFourier_series_L2`
+(`Mathlib.Analysis.Fourier.AddCircleMulti`), which states that the Fourier
+series of an `L²` function on `UnitAddTorus d = d → AddCircle 1` sums to it in
+the `L²` norm. Since `T2 = UnitAddTorus (Fin 2)` and the engine's ambient
+measure is `Measure.pi (fun _ => haarAddCircle)` — definitionally our `haarT2` —
+the engine applies natively, with no `volume` measure-cast required.
+
+The bridge identifies our `multiFourierCoeff` / `sphPartialSum` with the
+engine's `mFourierCoeff` / Fourier partial sums, then uses the `latticeDisc`
+cofinality (S9, `latticeDisc_eventually_supset`) to pass from the
+`Finset`-directed `HasSum` to the `R → ∞` limit.
+-/
+
+/-- The engine's multi-character `mFourier k` evaluated on `T2` factors as the
+    product of the two 1-D characters — the form used by `sphPartialSum`. -/
+theorem mFourier_fin2 (k : Fin 2 → ℤ) (x : T2) :
+    UnitAddTorus.mFourier k x = fourier (k 0) (x 0) * fourier (k 1) (x 1) := by
+  simp only [UnitAddTorus.mFourier, ContinuousMap.coe_mk, Fin.prod_univ_two]
+
+/-- The engine's coefficient functional `mFourierCoeff` agrees with our
+    `multiFourierCoeff` on any `Lp` representative `fhat` of `f`.
+
+    The engine integral is over its ambient measure, which is definitionally
+    `haarT2`; combined with `fhat =ᵐ f` and the character factorisation, the two
+    coefficient functionals coincide. -/
+theorem mFourierCoeff_eq_multiFourierCoeff
+    (f : T2 → ℂ) (fhat : Lp ℂ 2 haarT2) (hfhat : (fhat : T2 → ℂ) =ᵐ[haarT2] f)
+    (k : Fin 2 → ℤ) :
+    UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k = multiFourierCoeff f k := by
+  rw [UnitAddTorus.mFourierCoeff, multiFourierCoeff]
+  refine integral_congr_ae ?_
+  filter_upwards [hfhat] with t ht
+  simp only [UnitAddTorus.mFourier, ContinuousMap.coe_mk, Fin.prod_univ_two,
+    Pi.neg_apply, smul_eq_mul, ht]
+  ring
+
+/-- **L² norm convergence** of spherical Fourier partial sums on `𝕋²`
+    (unconditional, by Plancherel via the multivariate Fourier `HasSum`).
+
+    For `f ∈ L²(𝕋²)`, the spherical partial sums `S_R^{sph} f` converge to `f`
+    in the `L²` norm as `R → ∞`. This is the norm-version companion of the
+    (open, axiomatised) a.e.-convergence conjecture `carleson_2d_sph`. -/
+theorem sphPartialSum_L2_norm_converge
+    (f : T2 → ℂ) (hf : MemLp f 2 haarT2) :
+    Tendsto (fun R : ℝ => eLpNorm (fun x => sphPartialSum f R x - f x) 2 haarT2)
+      atTop (𝓝 0) := by
+  classical
+  -- The `Lp` representative of `f` and its defining a.e. equality.
+  set fhat : Lp ℂ 2 haarT2 := hf.toLp f with hfhatdef
+  have hfhat : (fhat : T2 → ℂ) =ᵐ[haarT2] f := hf.coeFn_toLp
+  -- The engine summand `mFourierCoeff fhat k • mFourierLp 2 k`, as an `Lp` element.
+  set g : (Fin 2 → ℤ) → Lp ℂ 2 haarT2 :=
+    fun k => UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k • UnitAddTorus.mFourierLp 2 k
+    with hgdef
+  -- Mathlib engine: the multivariate Fourier series sums to `fhat` in `L²`.
+  have hSum : Tendsto (fun s : Finset (Fin 2 → ℤ) => ∑ k ∈ s, g k) atTop (𝓝 fhat) :=
+    UnitAddTorus.hasSum_mFourier_series_L2 fhat
+  -- `latticeDisc` is cofinal in the `Finset` filter (S9 cofinality).
+  have htend : Tendsto latticeDisc (atTop : Filter ℝ) atTop := by
+    rw [tendsto_atTop_atTop]
+    intro S
+    obtain ⟨R₀, hR₀⟩ := Filter.eventually_atTop.mp (latticeDisc_eventually_supset S)
+    exact ⟨R₀, fun R hR => Finset.le_iff_subset.mpr (hR₀ R hR)⟩
+  -- Pass from the `Finset`-directed limit to the `R → ∞` limit.
+  have hConv : Tendsto (fun R : ℝ => ∑ k ∈ latticeDisc R, g k) atTop (𝓝 fhat) :=
+    hSum.comp htend
+  -- `Lp` convergence ⟺ the norm of the difference tends to `0`.
+  have hnorm : Tendsto (fun R : ℝ => ‖(∑ k ∈ latticeDisc R, g k) - fhat‖) atTop (𝓝 0) :=
+    tendsto_iff_norm_sub_tendsto_zero.mp hConv
+  -- Identify the `Lp` partial sum with `sphPartialSum`, a.e.
+  have hbridge : ∀ R : ℝ,
+      (⇑(∑ k ∈ latticeDisc R, g k) : T2 → ℂ) =ᵐ[haarT2] fun x => sphPartialSum f R x := by
+    intro R
+    have hstep : ∀ s : Finset (Fin 2 → ℤ),
+        (⇑(∑ k ∈ s, g k) : T2 → ℂ) =ᵐ[haarT2]
+          fun x => ∑ k ∈ s, multiFourierCoeff f k *
+            (fourier (k 0) (x 0) * fourier (k 1) (x 1)) := by
+      intro s
+      induction s using Finset.induction_on with
+      | empty =>
+        simp only [Finset.sum_empty]
+        exact Lp.coeFn_zero ℂ 2 haarT2
+      | @insert k s hkS ih =>
+        simp only [Finset.sum_insert hkS]
+        refine (Lp.coeFn_add (g k) _).trans ?_
+        have hk : (⇑(g k) : T2 → ℂ) =ᵐ[haarT2]
+            fun x => multiFourierCoeff f k *
+              (fourier (k 0) (x 0) * fourier (k 1) (x 1)) := by
+          simp only [hgdef]
+          have h1 := Lp.coeFn_smul (UnitAddTorus.mFourierCoeff (fhat : T2 → ℂ) k)
+            (UnitAddTorus.mFourierLp 2 k)
+          have h2 := UnitAddTorus.coeFn_mFourierLp (d := Fin 2) 2 k
+          filter_upwards [h1, h2] with x hx1 hx2
+          rw [hx1]
+          simp only [Pi.smul_apply, hx2, smul_eq_mul]
+          rw [mFourier_fin2, mFourierCoeff_eq_multiFourierCoeff f fhat hfhat k]
+        filter_upwards [hk, ih] with x hxk hxs
+        simp only [Pi.add_apply]
+        rw [hxk, hxs]
+    filter_upwards [hstep (latticeDisc R)] with x hx
+    rw [hx]
+    simp only [sphPartialSum]
+    exact Finset.sum_congr rfl (fun k _ => (mul_assoc _ _ _).symm)
+  -- The difference `⇑(P R - fhat)` agrees a.e. with `sphPartialSum f R - f`.
+  have hdiff : ∀ R : ℝ,
+      (⇑((∑ k ∈ latticeDisc R, g k) - fhat) : T2 → ℂ) =ᵐ[haarT2]
+        fun x => sphPartialSum f R x - f x := by
+    intro R
+    filter_upwards [Lp.coeFn_sub (∑ k ∈ latticeDisc R, g k) fhat, hbridge R, hfhat]
+      with x hsub hb hfx
+    rw [hsub]
+    simp only [Pi.sub_apply, hb, hfx]
+  -- Rewrite the `Lp` norm as the `eLpNorm` of `sphPartialSum f R - f`.
+  have heq : ∀ R : ℝ, ‖(∑ k ∈ latticeDisc R, g k) - fhat‖
+      = (eLpNorm (fun x => sphPartialSum f R x - f x) 2 haarT2).toReal := by
+    intro R
+    rw [Lp.norm_def]
+    congr 1
+    exact eLpNorm_congr_ae (hdiff R)
+  -- Each `eLpNorm` is finite (the difference is an `Lp` element).
+  have hfin : ∀ R : ℝ,
+      eLpNorm (fun x => sphPartialSum f R x - f x) 2 haarT2 ≠ ∞ := by
+    intro R
+    rw [← eLpNorm_congr_ae (hdiff R)]
+    exact Lp.eLpNorm_ne_top _
+  -- Conclude: the real norms tend to `0`, hence the `ℝ≥0∞` `eLpNorm`s do too.
+  refine (ENNReal.tendsto_toReal_iff hfin ENNReal.zero_ne_top).mp ?_
+  rw [ENNReal.toReal_zero]
+  have hfun : (fun R : ℝ =>
+      (eLpNorm (fun x => sphPartialSum f R x - f x) 2 haarT2).toReal)
+      = fun R : ℝ => ‖(∑ k ∈ latticeDisc R, g k) - fhat‖ := by
+    funext R; exact (heq R).symm
+  rw [hfun]
+  exact hnorm
 
 end
 
