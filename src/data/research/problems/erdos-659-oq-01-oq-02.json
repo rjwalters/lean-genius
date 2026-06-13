@@ -66,7 +66,7 @@
       "safe_A_holds / safe_B_holds / safe_C_holds PROVED in Erdos659OQ01OQ02.lean (infinite descent); safe_2_5_axis_vs_plane now fully machine-checked.",
       "Erdos659OQ01OQ02.lean: 3 strategic sorries → 0, axioms 0, Docker build GREEN."
     ],
-    "progressSummary": "S8 ACT (researcher-1, 2026-06-09): DISCHARGED (2, 13) axis-vs-plane safety in Erdos659OQ01OQ02.lean by mod-13 QR-descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms, build 3058 jobs in 19s). safe_A_2_13_holds (13c² = a² + 2b²) / safe_B_2_13_holds (2b² = a² + 13c²) / safe_C_2_13_holds (a² = 2b² + 13c²) all proved by Nat.strong_induction_on, with two new mod-13 helpers (zmod_13_a_sq_plus_2_b_sq_eq_zero_iff for −2 non-residue mod 13; zmod_13_a_sq_eq_two_b_sq_iff for 2 non-residue mod 13) checked by 169-case decide. Conjunction gives safe_2_13_axis_vs_plane : SafePrimePair_AxisVsPlane 2 13. File 488 → 683 LOC (+195). Cumulative: 3/7 safe pairs from S2a OBSERVE PR #18494 are proved (2,5 via S4 ACT; 3,5 via S7 ACT; 2,13 via S8 ACT). | S7 ACT (researcher-1, 2026-06-04): DISCHARGED (3, 5) axis-vs-plane safety (safe_3_5_axis_vs_plane = ⟨safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds⟩) via 2 new mod-5 helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff, zmod_5_a_sq_eq_three_b_sq_iff). File 292 → 488 LOC (+196). Docker GREEN. | S4 ACT (researcher-1, 2026-05-29): DISCHARGED all 3 axis-vs-plane strategic sorries in Erdos659OQ01OQ02.lean by infinite descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms). safe_A_holds/safe_B_holds/safe_C_holds proved (5c²=a²+2b², 2b²=a²+5c², a²=2b²+5c² each have only the trivial integer solution), completing safe_2_5_axis_vs_plane — the axis-vs-plane half of L_{2,5} sub-lattice safety. Full-rank safety and the headline d≥3 distinct-distance OQ remain open. Prior: S1-S3 scaffold + extensive PREP/OBSERVE (Landau/Bernays asymptotics, Pell-safety search, QR-descent template, Mathlib audits).",
+    "progressSummary": "S9 STATE-SYNC (2026-06-13, researcher-1, build-free): Docker down, no build. Populated the empty leanFiles[] array — the slug owns Erdos659OQ01OQ02.lean (683 LOC, 0 axioms, 0 sorries, 18 theorems, 4 defs at origin/main HEAD fb829e819f7) but the JSON listed NO Lean files, making the slug's substantial Docker-verified S4/S7/S8 work invisible to leanFiles-reading tooling. Added the accurate entry. Counts match the S8 ACT progressSummary (683 LOC / 0 sorries / 0 axioms / Docker GREEN 3058 jobs). No mathematical change; metadata-only catch-up. Remaining open work (full-rank safety + the headline d>=3 distinct-distance OQ, plus the 4 unproven safe-pairs of the original 7) is build-DEPENDENT and gated on Docker recovery. | S8 ACT (researcher-1, 2026-06-09): DISCHARGED (2, 13) axis-vs-plane safety in Erdos659OQ01OQ02.lean by mod-13 QR-descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms, build 3058 jobs in 19s). safe_A_2_13_holds (13c² = a² + 2b²) / safe_B_2_13_holds (2b² = a² + 13c²) / safe_C_2_13_holds (a² = 2b² + 13c²) all proved by Nat.strong_induction_on, with two new mod-13 helpers (zmod_13_a_sq_plus_2_b_sq_eq_zero_iff for −2 non-residue mod 13; zmod_13_a_sq_eq_two_b_sq_iff for 2 non-residue mod 13) checked by 169-case decide. Conjunction gives safe_2_13_axis_vs_plane : SafePrimePair_AxisVsPlane 2 13. File 488 → 683 LOC (+195). Cumulative: 3/7 safe pairs from S2a OBSERVE PR #18494 are proved (2,5 via S4 ACT; 3,5 via S7 ACT; 2,13 via S8 ACT). | S7 ACT (researcher-1, 2026-06-04): DISCHARGED (3, 5) axis-vs-plane safety (safe_3_5_axis_vs_plane = ⟨safe_A_3_5_holds, safe_B_3_5_holds, safe_C_3_5_holds⟩) via 2 new mod-5 helpers (zmod_5_a_sq_plus_3_b_sq_eq_zero_iff, zmod_5_a_sq_eq_three_b_sq_iff). File 292 → 488 LOC (+196). Docker GREEN. | S4 ACT (researcher-1, 2026-05-29): DISCHARGED all 3 axis-vs-plane strategic sorries in Erdos659OQ01OQ02.lean by infinite descent (Docker-VERIFIED GREEN, 0 sorries, 0 axioms). safe_A_holds/safe_B_holds/safe_C_holds proved (5c²=a²+2b², 2b²=a²+5c², a²=2b²+5c² each have only the trivial integer solution), completing safe_2_5_axis_vs_plane — the axis-vs-plane half of L_{2,5} sub-lattice safety. Full-rank safety and the headline d≥3 distinct-distance OQ remain open. Prior: S1-S3 scaffold + extensive PREP/OBSERVE (Landau/Bernays asymptotics, Pell-safety search, QR-descent template, Mathlib audits).",
     "nextSteps": [
       "Full-rank safety for (2,5): elementary descent for the genuinely-ternary equidistant configurations, or an honest documented axiomatisation.",
       "Generalise the descent template to the other safe prime pairs (S2a: 15 candidates, R≤22): applies whenever p and ±q are QR-non-residues mod a common small prime.",
@@ -89,5 +89,18 @@
   "significance": 6,
   "tractability": 3,
   "lastUpdated": "2026-06-13T00:00:00.000Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z"
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos659OQ01OQ02.lean",
+      "filename": "Erdos659OQ01OQ02.lean",
+      "lineCount": 683,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos659OQ01OQ02.lean"
+    }
+  ]
 }
