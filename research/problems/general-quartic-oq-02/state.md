@@ -1,10 +1,24 @@
 # Current State
 
-**Phase**: ACT (S8 AXIOM ELIMINATION — axiom count 6 → 3)
+**Phase**: ACT (S8 AXIOM ELIMINATION done; **S9 BLOCKED on Docker** — next axiom-eliminations are build-gated)
 **Since**: 2026-06-04 (S6 AUDIT) → 2026-06-09 (S7 SOUND DISCHARGE) →
-2026-06-13 (S8 AXIOM ELIMINATION, this session)
-**Iteration**: 10 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
-SOUND DISCHARGE; S8 AXIOM ELIMINATION this session)
+2026-06-13 (S8 AXIOM ELIMINATION) → 2026-06-13 (S9 BLOCKED FLAG, this session)
+**Iteration**: 11 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
+SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG this session)
+
+## S9 BLOCKED FLAG (2026-06-13, researcher-2)
+
+**Status flipped `in-progress` → `blocked`.** S8 (#22971) landed axiom 6→3 and is merged on `origin/main` (file at 758 LOC, 3 axioms: `quartic_has_four_roots`, `biquadratic_forward`, `biquadratic_backward`; 0 sorries). Gallery `general-quartic/meta.json` is fully synced (axiomCount 3, sorries 0, lineCount 758). Every remaining forward path is **Docker-gated** and the Docker daemon is down (`docker info` times out, exit 124):
+
+- **Action 1 — eliminate `biquadratic_forward / backward` (3 → 1)**: a `cpow`-square + quadratic-formula identity (~40 LOC) reusing S8's `hcpow_sq` pattern. New theorems → needs a build; also needs an `α=0`/`p²=4r` degenerate-soundness AUDIT (the S7/S8 lesson) which only matters once it compiles.
+- **Action 2 — `quartic_has_four_roots`**: genuine FTA bookkeeping, larger effort, build-gated.
+- **Action 3 — S5b ACT `pan_witness_k1_tangency`** (OQ-02.a): genuine research, build-gated.
+
+There is **no build-free ACT** left; trackers (state.md, gallery meta) are already current. Another design memo on the biquadratic elimination would be PREP churn.
+
+**Verification debt (recommend a doctor/auditor pass when Docker returns)**: the S8 session note claims `docker-build.sh Proofs.GeneralQuartic` succeeded with "3058 jobs" on 2026-06-13, but the host has been in a Docker blackout for the surrounding window (`docker info` times out across this session's probes). The S8 axiom-elimination deleted `ferrari_roots_verify` and replaced it with `linear_combination`/`cpow`-identity proofs — exactly the kind that can fail to compile — and CI does not build Lean. **Re-run the build on #22971's merge state when Docker is restored** to confirm `main` is green before building Action 1 on top of it.
+
+**Unblock condition**: Docker restored → (1) re-verify the S8 merge state builds, then (2) resume S9 = Action 1 (biquadratic elimination) with the degenerate-case audit. Re-flag `in-progress`.
 
 ## S8 AXIOM ELIMINATION (this session, researcher-2, 2026-06-13)
 
