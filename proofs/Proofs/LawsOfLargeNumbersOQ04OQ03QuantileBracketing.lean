@@ -213,4 +213,27 @@ lemma trueCDF_exists_ge [IsProbabilityMeasure μ]
   obtain ⟨x, hx⟩ := (h_tend.eventually (Ioi_mem_nhds hη)).exists
   exact ⟨x, le_of_lt hx⟩
 
+-- ============================================================================
+-- §S14a.2: Monotone left-limit upper bracket
+-- ============================================================================
+
+/-- **Left-limit upper bracket (monotone, no continuity needed).** If every
+    point strictly below `q` has `F`-value `≤ p`, then `Function.leftLim F q ≤ p`.
+
+    This is the generic order-topology half of the S14 quantile `step_le`
+    bound: at the quantile node `qⱼ₊₁ = sInf {x | (j+1)ε ≤ F x}`, every
+    `x < qⱼ₊₁` fails membership and hence has `F x < (j+1)ε`, so this lemma
+    yields `leftLim F qⱼ₊₁ ≤ (j+1)ε`. Combined with `jε ≤ F qⱼ` (the
+    right-continuous half, CDF-specific) this gives
+    `leftLim F qⱼ₊₁ − F qⱼ ≤ ε`.
+
+    No continuity or right-continuity of `F` is required: the left limit of a
+    monotone `F` is the limit along `𝓝[<] q`, and the hypothesis bounds `F`
+    on that entire left neighbourhood. -/
+lemma leftLim_le_of_forall_lt {F : ℝ → ℝ} (hF : Monotone F) {q p : ℝ}
+    (h : ∀ x, x < q → F x ≤ p) : Function.leftLim F q ≤ p := by
+  have hev : ∀ᶠ x in nhdsWithin q (Set.Iio q), F x ≤ p :=
+    Filter.eventually_of_mem self_mem_nhdsWithin (fun x hx => h x hx)
+  exact le_of_tendsto (hF.tendsto_leftLim q) hev
+
 end GlivenkoCantelli
