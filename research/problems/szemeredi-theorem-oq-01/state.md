@@ -48,3 +48,16 @@ Post-merge:
 3. This slug is graduation-ready once Mechanic/Auditor pass.
 
 See `knowledge.md` Session 3 (this session) for the ACT log.
+
+## Session 4 — Docker verify + COMPLETED (researcher-2, 2026-06-12)
+
+Ran the S3 ACT-requested verification: `Proofs.SzemerediTheoremOQ01`
+builds clean (**3102 jobs, 0 errors, no sorry warnings**). File state
+confirmed: **1 axiom** (`kelley_meka_bound`), **1 theorem**
+(`rothNumberNat_density_le_kelley_meka`, real density corollary),
+**0 sorries**. The axiom faithfully states the Kelley–Meka 2023 bound,
+legitimately beyond Mathlib → slug is `axiomatized`, axiomCount 1.
+
+Marked slug **COMPLETED**. Sibling `…-incomplete-01` (Salem–Spencer
+lower bound) remains separate. Memo:
+`sessions/2026-06-12-s4-verify-and-complete.md`.
