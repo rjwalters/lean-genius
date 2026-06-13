@@ -1,0 +1,111 @@
+{
+  "slug": "divisibility-by-three-oq-01-oq-01",
+  "title": "Automated tactic for divisibility rules over arbitrary base b",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For d coprime to base b, automate generation+verification of either the osculator rule (d ∣ n ↔ d ∣ (n/b + c·(n%b)) with b·c ≡ 1 mod d) or the digit-block rule (d ∣ n ↔ d ∣ (digits (b^k) n).sum with k = ord_d(b)).",
+    "plain": "Build a Lean tactic that, given a divisor d and a base b with gcd(b,d)=1, automatically produces and proves the appropriate divisibility rule (truncation/osculator rule, or block-digit-sum rule), generalizing the hand-written per-prime rules in the gallery.",
+    "whyMatters": [
+      "Unifies the gallery's ~5 hand-coded per-prime truncation proofs and per-modulus digit-sum proofs into one parametric, automatically-instantiated procedure.",
+      "Exercises Lean metaprogramming (elab/macro) on top of already-verified number-theory lemmas."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Base-10 osculator rule (parametric in osculator c): unified_osculator, neg_osculator_from_unified in DivisibilityTruncationGeneralOQ01.lean.",
+      "Arbitrary-base digit-block rule: digit_block_rule_base_b, period_iff_orderOf_dvd_base_b, orderOf_base_b_is_minimal_period in DivisibilityRulesOQ01OQ01OQ01.lean (already general in base b).",
+      "Per-prime instances (7,11,13,17,19) and per-modulus digit-sum rules in DivisibilityByThreeOQ01.lean."
+    ],
+    "open": [
+      "Gap A: base-b osculator theorem unified_osculator_base_b (mechanical port of the base-10 version; ~15 lines).",
+      "Gap B: the divisibility_rule b d tactic (elab/macro) that computes c via extended Euclid or the period k via least-k search, emits the rule, and discharges side goals by native_decide."
+    ],
+    "goal": "Close the OQ with (A) a base-b osculator theorem and (B) a tactic that auto-instantiates either rule family for any (b,d) with gcd(b,d)=1."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-13",
+    "iteration": 2,
+    "focus": "Survey complete; resolution fully specified on paper. Both remaining pieces are build-gated by the 2026-06-13 verification blackout.",
+    "blockers": [
+      "Build-gated: Gap A and the tactic need a Docker lake build to confirm compilation. Docker daemon down (docker info exit 124); Aristotle backend 404 — both confirmed live 2026-06-13."
+    ],
+    "nextAction": "When Docker recovers: implement unified_osculator_base_b (clean first build milestone), then the divisibility_rule tactic. See research/problems/.../knowledge.md for the design.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "The OQ is mostly already solved at the theorem level. The digit-block rule is ALREADY general in base b (digit_block_rule_base_b); the osculator rule is proven for base 10 (unified_osculator). Remaining: (A) a mechanical base-b port of the osculator theorem, and (B) the actual tactic that auto-computes the osculator c (extended Euclid) or the period k (least-k search) and assembles a checked proof term. The substantive mathematics exists; the OQ's remaining content is metaprogramming + one port, not a new theorem.",
+    "builtItems": [],
+    "insights": [
+      "Both classical rule families are formalized in the gallery: osculator (base 10, parametric in c) and digit-block (already arbitrary base b, via multiplicative order).",
+      "KEY: orderOf (b : ZMod d) is noncomputable, so the tactic cannot evaluate the period. It must search externally for the least k>0 with b^k % d = 1, then discharge orderOf (b:ZMod d) ∣ k via period_iff_orderOf_dvd_base_b … (by native_decide). This witness-and-verify pattern is already used by hand in DivisibilityRulesOQ01OQ01OQ01.lean:150-165.",
+      "In Lean the produced proof term IS the verification, so the tactic's 'generate' and 'verify' steps coincide.",
+      "The existing leanFiles/relatedProofs for this slug point only at the DivisibilityByThreeOQ01 parent; the load-bearing prior art is in DivisibilityTruncationGeneral*.lean and DivisibilityRulesOQ01OQ01OQ01.lean."
+    ],
+    "mathlibGaps": [
+      "orderOf is noncomputable in Mathlib — forces the witness-period + native_decide route rather than direct evaluation."
+    ],
+    "nextSteps": [
+      "Gap A: prove unified_osculator_base_b (b d c n) (IsCoprime d b) (d ∣ b*c-1): d ∣ n ↔ d ∣ (n/b + c*(n%b)), identity b·(n/b + c·(n%b)) = n + (b·c−1)·(n%b).",
+      "Gap B: implement divisibility_rule b d as an elab/macro: coprimality check, extended-Euclid osculator or least-period search, emit unified_osculator_base_b / digit_block_rule_base_b, discharge side goals by native_decide/decide/norm_num."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "digit-sum",
+    "modular-arithmetic",
+    "three",
+    "metaprogramming",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "divisibility-by-3-oq-01",
+    "divisibility-by-three-oq-01",
+    "divisibility-by-three-oq-01-oq-02",
+    "divisibility-rules-oq-01-oq-01-oq-01",
+    "divisibility-truncation-general-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Nat.modEq_digits_sum",
+      "orderOf",
+      "ZMod.unitOfCoprime",
+      "ZMod.pow_totient",
+      "Nat.gcdA"
+    ]
+  },
+  "started": "2026-06-10T18:04:48.641Z",
+  "lastUpdate": "2026-06-13",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityTruncationGeneralOQ01.lean",
+      "filename": "DivisibilityTruncationGeneralOQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01OQ01OQ01.lean",
+      "filename": "DivisibilityRulesOQ01OQ01OQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityByThreeOQ01.lean",
+      "filename": "DivisibilityByThreeOQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityByThreeOQ01.lean"
+    }
+  ]
+}
