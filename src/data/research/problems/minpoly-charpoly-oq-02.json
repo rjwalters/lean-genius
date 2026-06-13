@@ -32,11 +32,11 @@
   },
   "currentState": {
     "phase": "S8-ACT-READY",
-    "since": "2026-06-10T00:00:00.000Z",
-    "iteration": 15,
-    "focus": "S12 STATE-SYNC (researcher-1, 2026-06-10): B1 FULLY MITIGATED after 8-day idle since S11. Docker still healthy (Server Version 29.4.1). Host disk recovered to 77 Gi free (3.1× the S11 measurement of 25 Gi; ~47 Gi above S10's 30 Gi cold-cache build threshold). Mathlib pin identity unchanged at 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. No PRs touched MinpolyCharpolyOQ02.lean since S7 ACT (25 days dormant); file still at 169 LOC, 1 sorry at line 122, 0 axioms. Doc-only saturation watch: this is the 5th STATE-SYNC on the slug (S6, S8, S10, S11, S12) following only one ACT (S7) since S1 — cumulative doc-only-vs-ACT ratio 5:1. Recommendation: next claimant should commit to S8 ACT even at the cost of in-session Bridge A surgery (S2 PREP-3 §3 has 2 routine sub-sorries: hP : IsUnit P via column-basis ~5 LOC; IsDiag of P⁻¹ M P from eigenbasis ~10 LOC). S12 session memo embedded in state.md (no separate sessions/ file — minimal STATE-SYNC).",
+    "since": "2026-06-13T00:00:00Z",
+    "iteration": 16,
+    "focus": "S13 STATE-SYNC (researcher-1, 2026-06-13): CONTENT CORRECTION — prior records (leanFiles + S12 focus) were stale, NOT dormant. They claimed MinpolyCharpolyOQ02.lean = 169 LOC, 1 sorry at line 122, '25 days dormant, no PRs since S7'. Reality on origin/main: PR #22923 (helpers) and PR #22909 (forward direction) merged AFTER S12, growing the file to 279 LOC. The FORWARD direction (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly); matConj similarity-transport automorphism built. The SOLE remaining sorry is the REVERSE direction at line 221 inside diagonalizable_iff_squarefree_minpoly ([IsAlgClosed K][CharZero K]): squarefree minpoly ⇒ diagonalizable, via Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (iSup_eigenspace_eq_top_of_isSemisimple) transported through Matrix.toLin'. This corrects a factual missed-merge, distinct from the prior 5:1 doc-only infra re-measurement churn (S6/S8/S10/S11/S12). Build NOT attempted: Docker down 2026-06-13 (verification blackout).",
     "blockers": [],
-    "nextAction": "S8 ACT (any researcher) — assemble the ~59 LOC bridge synthesis (A fwd ~20 LOC, B rev 33 LOC per S7c §5.3 with §3.3 Option A, D 1 LOC, compose ~5 LOC) at MinpolyCharpolyOQ02.lean:122. Pre-flight: (1) re-verify df -h shows ≥30 Gi free (currently 77 Gi; safety margin large); (2) verify docker info Server responsive; (3) confirm proofs/lake-manifest.json Mathlib rev is still 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. In-session work: (a) discharge S2 PREP-3 §3 Bridge A sub-sorries (hP : IsUnit P via Matrix.isUnit_iff_isUnit_det + det-of-basis-cols; IsDiag of P⁻¹ M P from eigenbasis hypothesis); (b) paste Bridge B reverse 33-LOC body from S7c §5.3 with §3.3 Option A (let q := (S \\ {μ}).prod …); (c) apply Bridge D (`Matrix.minpoly_toLin'` 1-LOC simp); (d) compose. Docker-build.sh Proofs.MinpolyCharpolyOQ02; expect ~10-15 min cold-cache, ~5-7 min warm-cache. Expected deliverable: ~228 LOC, 0 sorries, 0 axioms.",
+    "nextAction": "S8 ACT (reverse direction only — forward is already shipped via #22909). Discharge the single sorry at MinpolyCharpolyOQ02.lean:221 inside diagonalizable_iff_squarefree_minpoly. Strategy (per file docstring + S7c): transport the squarefree-minpoly ⇒ semisimple ⇒ eigenspaces-span result back through Matrix.toLin' over an alg-closed char-0 field — Bridge C (Module.End.isSemisimple_iff_squarefree_minpoly) + Bridge B (Module.End.iSup_eigenspace_eq_top_of_isSemisimple). The prior 'Bridge A forward ~20 LOC' line item is DONE — do not re-prove it. Pre-flight: df -h ≥30 Gi free; docker info responsive (DOWN as of 2026-06-13 — wait for recovery); lake-manifest Mathlib rev still 2df2f0150c2. docker-build.sh Proofs.MinpolyCharpolyOQ02 to verify.",
     "attemptCounts": {
       "total": 15,
       "currentApproach": 14,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S11 STATE-SYNC (researcher-1, 2026-06-02): B1 blocker re-measurement after 17-day idle window. Docker recovered to healthy state (was hung 2026-05-16). Host disk recovered 5.6× from 4.5 Gi to 25 Gi but remains marginal vs S10s ~30 Gi cold-cache build-headroom threshold. Mathlib pin unchanged at 2df2f015… (S7c PREP §2 18-bearer ledger remains canonical). S8 ACT is now attemptable but the picker should pre-verify disk + Docker state and prefer warm-cache mode to mitigate the borderline disk pressure. 0 Lean files touched, 0 new bearers verified, 0 new tactical details surfaced. The contribution is timeliness: 5 min friction saved at the start of the next picker session.",
+    "progressSummary": "S13 STATE-SYNC (researcher-1, 2026-06-13): content correction. The forward direction of the headline theorem (diagonalizable ⇒ squarefree minpoly) is now FULLY PROVED and unconditional over any field (Matrix.IsDiagonalizable.squarefree_minpoly), shipped via PR #22909 after S12. File MinpolyCharpolyOQ02.lean is 279 LOC, 9 theorems/lemmas, 2 defs, 0 axioms, 1 sorry — the sorry is now ONLY the reverse direction at line 221 (squarefree minpoly ⇒ diagonalizable over alg-closed char-0, via Bridge B/C through Matrix.toLin'). Prior tracker records (S11/S12) incorrectly described the file as 169 LOC / dormant-since-S7 with the forward direction still open. Build not attempted (Docker down 2026-06-13).",
     "builtItems": [
       "Matrix.IsDiagonalizable (def, line 107-108): `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the matrix-level diagonalizability predicate as an existential over invertible similarity transforms.",
       "diagonalizable_iff_squarefree_minpoly (theorem, sorry-guarded, lines 119-122): the S1 statement of the textbook characterisation under `IsAlgClosed K + CharZero K`. Single sorry at line 122; ~59 LOC paste expected to close it per S7c PREP §5.1.",
@@ -132,13 +132,14 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ02.lean",
       "filename": "MinpolyCharpolyOQ02.lean",
-      "lineCount": 169,
-      "theoremCount": 5,
+      "lineCount": 279,
+      "theoremCount": 9,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 2,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02.lean"
     }
-  ]
+  ],
+  "updatedAt": "2026-06-13T00:00:00Z"
 }
