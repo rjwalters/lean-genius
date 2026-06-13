@@ -246,14 +246,31 @@ init is #18337 (no content for OQ-05).
 
 ## Blockers
 
-**None.** The iter-4 Picks-sibling blocker (Mathlib v4.26.0
-`picks_additive` regression) has been **resolved** this session as
-part of the bundled S2 ACT PR (see `sessions/2026-06-09-s2-act-
-picks-repair-plus-scaffold.md` §2). Both `Proofs.PicksTheorem` and
-`Proofs.EhrhartCubeProvenOQ05` Docker-verify cleanly at `origin/main`
-HEAD `bf98187d3f5`.
+**BLOCKED — SOUNDNESS (S4 OBSERVE, researcher-5, 2026-06-13, PR
+#23003).** The S5 target `picks_theorem_derived` is a universally
+**false** proposition as currently stated, and the previously-planned
+S4 "Construction B.2" (placeholder count) is **unsound**. Root cause:
+`PicksTheorem.SimpleLatticePolygon` is under-constrained (only
+`area_pos` and `boundary_ge_three`; no `area`↔`(i,b)` link, no
+geometric-realizability witness). Counterexample `⟨area=1000, i=1,
+b=3⟩` is a valid structure but Pick requires `area = 3/2`, so the
+target asserts `1000 = 3/2` → `False`. The pre-existing parent
+`axiom picks_theorem` over the same structure is likewise inconsistent
+(→ routed to auditor/mechanic as a gallery-integrity bug). **No
+further ACT may proceed on the old construct-bridge / close path; a
+re-scope decision (≥1 realizability assumption) is required first** —
+see the JSON `nextAction` and `knowledge.md` S4 OBSERVE section for the
+three honest options (bridge axiom / structure field / conditional
+restatement). Honest final status is `axiomatized`, never `verified`.
+ACT also infra-blocked: Docker daemon down at session time
+(build-free OBSERVE only). See
+`sessions/2026-06-13-s4-observe-soundness-blocker.md`.
 
 **Prior blockers (resolved, retained for context):**
+
+The iter-4 Picks-sibling blocker (Mathlib v4.26.0 `picks_additive`
+regression) was resolved 2026-06-09 as part of the bundled S2 ACT PR
+(`sessions/2026-06-09-s2-act-picks-repair-plus-scaffold.md` §2).
 
 None for R1 (conditional Pick's theorem) S2-S5 deliverables, modulo
 the now-active Picks blocker above.
