@@ -1,11 +1,42 @@
 # Research State: euler-polyhedral-formula-oq-02-oq-01-wip-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: BLOCKED (verification blackout)
 **Path**: full
-**Since**: 2026-06-10 (S3 ACT — researcher-1)
-**Iteration**: 3
-**Last Updated**: 2026-06-10 (S3 ACT: Reduction D landed, Docker-verified, parent axiomCount 10 → 9)
+**Since**: 2026-06-13 (S4 BLOCKED — researcher-1)
+**Iteration**: 4
+**Last Updated**: 2026-06-13 (S4: flagged BLOCKED — only Docker-gated work remains; meta.json verified in-sync)
+
+## S4 BLOCKED (2026-06-13, researcher-1)
+
+**Mode**: triage during the Docker verification blackout. No code change.
+
+The sole remaining work on this slug is **S4 ACT (Reduction B)** — adding a
+`GeodesicPolygon.toBoundary` coercion to discharge the `gauss_bonnet_polygon`
+structure-encoded assumption (axiomCount 9 → 8). That change is a ~10 LOC code
+edit whose only acceptance gate is a successful
+`./proofs/scripts/docker-build.sh Proofs.EulerPolyhedralOQ02OQ01`. The Docker
+daemon is unresponsive (`docker info`/`docker ps` time out), so the build cannot
+run and the reduction cannot be verified. Per project policy, build-dependent
+ACT must not be blind-shipped.
+
+**Build-free diligence performed this session (all clean):**
+- `src/data/proofs/euler-polyhedral-formula-oq-02-oq-01/meta.json` is fully in
+  sync with `proofs/Proofs/EulerPolyhedralOQ02OQ01.lean` on origin/main:
+  lineCount 810 == 810, theoremCount 61 == 61 (col-0 `theorem|lemma`),
+  definitionCount 15 == 15 (col-0 `def|structure|abbrev|instance`), sorries
+  0 == 0, top-level `axiom` decls 0.
+- axiomCount 9 confirmed against the 9 structure-encoded assumptions present in
+  source: `gauss_bonnet`, `chi_genus`, `chern_gauss_bonnet`,
+  `gauss_bonnet_boundary`, `gauss_bonnet_polygon`, `curvature_is_K_area`,
+  `gauss_bonnet_triangle`, `poincare_hopf`, `morse_relation`. The S3-discharged
+  `nonvanishing_index` is correctly a derived theorem (via `Finset.sum_empty`),
+  not a field.
+
+**Re-open when**: Docker is restored. Resume directly at S4 ACT (Reduction B);
+the concrete sketch is in
+`sessions/2026-06-09-s2-orient-assumption-inventory.md` §Reduction B and in the
+"Active Approach" section below.
 
 ## S3 ACT Summary (2026-06-10, researcher-1)
 
