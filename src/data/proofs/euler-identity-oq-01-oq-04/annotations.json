@@ -87,6 +87,50 @@
     ]
   },
   {
+    "id": "eioq01x4-ann-03b",
+    "proofId": "euler-identity-oq-01-oq-04",
+    "range": { "startLine": 138, "endLine": 151 },
+    "type": "technique",
+    "title": "§1 right_inv: The rw-then-change Two-Step",
+    "content": "The `right_inv` obligation is where the file's two distinct kinds of equality meet, and the proof is a textbook example of when to use `rw` versus `change`. After the `show`, the goal still mentions `AddCircle.toCircle`, but `homeomorphCircle'.apply_symm_apply` is stated in terms of `homeomorphCircle'`'s actual `toFun`, which is `Real.Angle.toCircle`. Crossing from one to the other takes two steps of *different character*: (1) `rw [addCircle_toCircle_eq_angle_toCircle]` discharges the **propositional** gap — the `2π/2π = 1` reduction proved in §0 — turning `AddCircle.toCircle` into `Real.Angle.toCircle`; (2) `change Additive.ofMul (AddCircle.homeomorphCircle' (…)) = y` discharges the **definitional** identity `Real.Angle.toCircle = homeomorphCircle'.toFun`, which holds by `rfl` because Mathlib built `homeomorphCircle'` with `@[simps]` so its `toFun` unfolds to `Real.Angle.toCircle`. Only after both steps does `rw [apply_symm_apply]` fire, and a final `rfl` collapses the `Additive.ofMul ∘ Additive.toMul = id` round-trip. The two tactics are not interchangeable: a `rw` cannot close step (2) (there is no equality *lemma* to rewrite with — it is true by unfolding), and a `change` cannot close step (1) (the two sides are not definitionally equal — `2π/2π` does not reduce to `1` by `rfl`). Recognizing which gap is propositional and which is definitional is the reusable lesson.",
+    "mathContext": "Two equality regimes in one goal: a *propositional* equality $\\text{AddCircle.toCircle} = \\text{Real.Angle.toCircle}$ (true by a $2\\pi/2\\pi = 1$ computation, dischargeable only by `rw`) followed by a *definitional* equality $\\text{Real.Angle.toCircle} = \\text{homeomorphCircle}'.\\text{toFun}$ (true by unfolding `@[simps]`, dischargeable only by `change`/`rfl`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "rw vs change",
+      "propositional vs definitional equality",
+      "@[simps] generated toFun",
+      "Equiv.apply_symm_apply",
+      "right inverse obligation"
+    ],
+    "prerequisites": [
+      "Bridge lemma addCircle_toCircle_eq_angle_toCircle (§0)",
+      "How @[simps] determines a structure's toFun",
+      "When rw applies (propositional) vs when change applies (definitional)"
+    ]
+  },
+  {
+    "id": "eioq01x4-ann-03c",
+    "proofId": "euler-identity-oq-01-oq-04",
+    "range": { "startLine": 152, "endLine": 163 },
+    "type": "insight",
+    "title": "§1 map_add': The Homomorphism Law Is rfl Through the Type Alias",
+    "content": "The `map_add'` obligation looks like it should require translating between two different operations — multiplication on `Circle` (where `AddCircle.toCircle_add` lives) and addition on `Additive Circle` (what the `≃+` demands). It does not. After `rw [AddCircle.toCircle_add]` rewrites `toCircle (x + y)` to `toCircle x * toCircle y`, the remaining goal `Additive.ofMul (a * b) = Additive.ofMul a + Additive.ofMul b` closes by a single `rfl`. This is the crux of why packaging a *multiplicative* group as an *additive* one costs nothing: `Additive α := α` is a pure type alias, the `Add (Additive α)` instance is *defined* to be the `Mul α` instance underneath, and `Additive.ofMul` is the identity function. So `Additive.ofMul (a * b)` and `Additive.ofMul a + Additive.ofMul b` are not merely equal — they are the *same term* after unfolding, hence `rfl`. The multiplicative homomorphism law and the additive homomorphism law are literally one proposition viewed through the alias. This is the design reason Mathlib exposes `Additive`/`Multiplicative`: a single proof of `toCircle_add` simultaneously witnesses both the `MonoidHom` and the `AddMonoidHom` structure with zero translation overhead.",
+    "mathContext": "$\\text{Additive}\\,\\alpha := \\alpha$ with $(+)_{\\text{Additive}\\,\\alpha} := (\\cdot)_\\alpha$ and $\\text{ofMul} := \\mathrm{id}$. Hence $\\text{ofMul}(a \\cdot b) \\equiv \\text{ofMul}(a) + \\text{ofMul}(b)$ definitionally, and `AddCircle.toCircle_add` alone discharges $f(x+y) = f(x) + f(y)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Additive/Multiplicative type alias",
+      "definitional equality",
+      "map_add' obligation",
+      "AddCircle.toCircle_add",
+      "MonoidHom vs AddMonoidHom duality"
+    ],
+    "prerequisites": [
+      "Additive α := α and its Add instance as the underlying Mul",
+      "Why Additive.ofMul is rfl-trivial",
+      "AddCircle.toCircle_add (Mathlib multiplicative homomorphism law)"
+    ]
+  },
+  {
     "id": "eioq01x4-ann-04",
     "proofId": "euler-identity-oq-01-oq-04",
     "range": { "startLine": 165, "endLine": 175 },
