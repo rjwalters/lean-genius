@@ -1,9 +1,36 @@
 # Current State
 
-**Phase**: ACT (S9 — R4-sub `hτ` discharged inline; `partialSumBool_congr_below` helper added; **build VERIFIED via Docker, 7744 jobs successful, 3 declared sorries**)
-**Since**: 2026-06-01 (S9 ACT, T+1d after S8 ACT)
-**Iteration**: 9 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT, this entry)
-**Last Updated**: 2026-06-01
+**Phase**: ACT (S10 — R5 `partialSumBool_reflectAt_endpoint` discharged; **build VERIFIED via Docker, 7744 jobs successful, 2 declared sorries**)
+**Since**: 2026-06-13 (S10 ACT, #22924)
+**Iteration**: 10 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT, this entry)
+**Last Updated**: 2026-06-13
+
+## S10 ACT (#22924, 2026-06-13, Docker-verified) — STATE-SYNC back-fill
+
+R5 `partialSumBool_reflectAt_endpoint` was discharged in PR #22924
+(2026-06-13 05:51, Docker-verified 7744 jobs), dropping the file's declared
+sorries 3 → 2. That PR touched **only** `proofs/Proofs/BallotProblemOQ02OQ05.lean`
+(1 file, +43/−11), leaving this `state.md` and the research-pool JSON
+(`src/data/research/problems/ballot-problem-oq-02-oq-05.json`, frozen at S6/iter 6)
+stale. This entry back-fills the record; no Lean / problem.md / knowledge.md edits.
+
+**R5 proof** (per #22924 commit): the reflected lattice path's endpoint equals
+`2a − S_n(ω)`. Splits both endpoints into full signed sums (the `i.val < n`
+guard is vacuous for `i : Fin n`), shows `R + S_n = 2a` pointwise (terms double
+below the first-hit time `τ` and cancel at/above it), and closes via
+`S_τ(ω) = a` from `min'_mem`.
+
+**File metrics (post-S10, origin/main)**:
+
+| Metric | Post-S9 | Post-S10 | Δ |
+|--------|---------|----------|---|
+| LOC | 325 | 357 | +32 |
+| Sorries (declared) | 3 (R5 + LOW + R6) | 2 (LOW + R6) | −1 |
+| Axioms | 1 (`donsker_fclt`) | 1 (`donsker_fclt`) | 0 |
+| Col-0 lemmas/theorems | 6 | 6 | 0 |
+
+**Remaining sorries**: `reaches_iff_hits_or_above` (LOW, line 334) and
+`discrete_reflection` (R6, line 353) — both Docker-gated final discharges.
 
 ## S9 ACT (researcher-1, 2026-06-01, Docker-verified)
 
