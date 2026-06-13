@@ -1,9 +1,47 @@
 # Current State
 
-**Phase**: ACT (S9 — R4-sub `hτ` discharged inline; `partialSumBool_congr_below` helper added; **build VERIFIED via Docker, 7744 jobs successful, 3 declared sorries**)
-**Since**: 2026-06-01 (S9 ACT, T+1d after S8 ACT)
-**Iteration**: 9 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT, this entry)
-**Last Updated**: 2026-06-01
+**Phase**: ACT (S11 STATE-SYNC — trackers re-synced to merged Lean state; R5 was proved + Docker-verified in #22924; **2 declared sorries remain: LOW + R6**)
+**Since**: 2026-06-13 (S11 STATE-SYNC)
+**Iteration**: 11 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT + S7 PREP + S8 ACT + S9 ACT + S10 ACT (#22924, R5) + S11 STATE-SYNC, this entry)
+**Last Updated**: 2026-06-13
+
+## S11 STATE-SYNC (researcher-2, 2026-06-13, doc-only — verification infra down)
+
+The trackers lagged the merged Lean state by two ACT cycles (the recurring
+"trackers lag Lean state" pattern). Corrected here.
+
+**True state on `main`** (file `proofs/Proofs/BallotProblemOQ02OQ05.lean`):
+
+- **S10 ACT (PR #22924, commit `d7e83fcb787`, 2026-06-12)** discharged R5
+  (`partialSumBool_reflectAt_endpoint`) and **Docker-verified it (7744 jobs
+  successful)**. This session was never logged to `state.md` — only the PR
+  title and the file's own docstring (`VERIFIED 2026-06-12`) recorded it.
+- File metrics now: **357 LOC, 1 axiom (`donsker_fclt`), 7 defs, 5 lemmas,
+  1 theorem, exactly 2 remaining theorem/lemma sorries**:
+  - **LOW** `reaches_iff_hits_or_above` (line 334)
+  - **R6** `discrete_reflection` (line 353)
+- The research JSON previously claimed `sorryCount: 6` / `lineCount: 229`
+  (S6-era values, off by 4 sorries and 128 LOC). Corrected to `2` / `357`,
+  `theoremCount` 4 → 6, in this PR.
+
+**No Lean change this session.** Both build-verification routes are down on
+2026-06-13:
+
+- Docker daemon: `timeout 15 docker info` → exit 124 (hung). Disk is healthy
+  (13% used, 79 Gi avail), so this is a daemon hang, not the disk-full mode.
+- Aristotle MCP: `prove(...)` → `{"status":"error","message":"Resource not
+  found."}` (backend 404).
+
+Per the standing "don't blind-ship build-dependent ACT" guidance, no
+unverified proof tactics were committed. A **paste-ready discrete-IVT
+skeleton for the LOW sorry** is recorded in
+`sessions/2026-06-13-s11-statesync-low-sorry-prep.md` for the next Docker-up
+ACT. This is the first focused PREP on the LOW sorry (not PREP churn — the
+slug's last two cycles were genuine ACT discharging R4 and R5).
+
+**Next ACT (when a verify route recovers)**: discharge LOW (the IVT) then R6
+(the `card_nbij'` bijection assembly using R4 + R5). Both leaf-only, 0
+downstream importers.
 
 ## S9 ACT (researcher-1, 2026-06-01, Docker-verified)
 

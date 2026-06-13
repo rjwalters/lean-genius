@@ -34,13 +34,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T15:30:00.000Z",
-    "iteration": 6,
-    "focus": "S6 ACT (researcher-9, 2026-05-16, build pending — Docker daemon hung): pasted S5 PREP §5 ~99-LOC `section DiscreteReflection` skeleton verbatim into proofs/Proofs/BallotProblemOQ02OQ05.lean BEFORE `end BallotOQ05` (line 130 → file 229 LOC) so new section sits inside the existing BallotOQ05 namespace. Corrected S5 PREP §5/§11 \"after line 130\" wording to \"before line 130\" (would have placed section outside namespace). Delivery: +3 defs (partialSumBool, hitSet, reflectAt) + 1 noncomputable def (firstHitFin) + 3 lemmas (reflectAt_involutive R4, partialSumBool_reflectAt_endpoint R5, reaches_iff_hits_or_above LOW) + 1 theorem (discrete_reflection R6); 4 acknowledged sorries on R4/R5/LOW/R6 (all theorem/lemma sorries — none on defs); 0 new axioms. Ships under (build pending — Docker daemon hung) qualifier per memory feedback pattern. Risk-acceptance criteria all met: leaf-only file (0 downstream importers via `grep -rn 'import Proofs.BallotProblemOQ02OQ05' proofs/Proofs/`), recent build-verify on base commit (#19282 S2 ACT 2026-05-15 7744 jobs), bearer 0-drift at lake-pinned Mathlib SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (S5 PREP §4 recheck still GREEN), sibling-coordination clean (grep -rnE 'discrete_reflection|partialSumBool|reflectAt' proofs/Proofs/Ballot* matches only this file + parent reflection_principle continuous-BM axiom — unrelated). Host infra at ACT-time: Docker daemon hung (timeout 8 docker info returns no Server section; CLI v29.4.1 responds), disk 100% / 5.4Gi avail (slightly worse than S5 PREP-time 6.9Gi).",
-    "blockers": [],
-    "nextAction": "S7 (any researcher or Aristotle): discharge the 4 inline sorries in dependency order — (1) reflectAt_involutive R4 MEDIUM ~10 LOC via unfold + funext + case-split + Bool.not_not, (2) partialSumBool_reflectAt_endpoint R5 HIGH ~25 LOC via Finset.sum_ite on (firstHitFin ω a).val ≤ i.val + min'_mem h + arithmetic, (3) reaches_iff_hits_or_above LOW ~8 LOC via ±1-jump IVT argument on ℤ-valued partial sums, (4) discrete_reflection R6 HIGH ~20 LOC via Finset.card_nbij' with i=j=reflectAt _ a (using R4 for left_inv/right_inv, R5 for membership-image into ending>a) and linear arithmetic for 2*card_ge - card_eq. Plausible Aristotle candidates: R5 + final assembly (both well-scoped once supporting lemmas land). Build-verify trigger: Docker daemon recovered (timeout 8 docker info ≤ 5s) OR host disk recovered (df shows ≥ 10 Gi avail). Outside this slug, S8+ continues toward parent OQ-02 axiom downgrade (continuous-mapping-for-sup axiom S8, reflection-principle theorem S9, embedded-arcsine via Sparre Andersen S10, parent-file axiom downgrade S11).",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 11,
+    "focus": "S11 STATE-SYNC (researcher-2, 2026-06-13, doc-only — verification infra down). Trackers (this JSON + state.md) lagged the merged Lean state by two ACT cycles. Reality on main: R4 (reflectAt_involutive) discharged in S9 ACT (#22919-era), and R5 (partialSumBool_reflectAt_endpoint) discharged + Docker-verified (7744 jobs) in PR #22924 (commit d7e83fcb787, 2026-06-12). File BallotProblemOQ02OQ05.lean is now 357 LOC, 1 axiom (donsker_fclt), 7 defs, 5 lemmas, 1 theorem, and exactly 2 remaining theorem/lemma sorries: (LOW) reaches_iff_hits_or_above (line 334) and (R6) discrete_reflection (line 353). The prior JSON claimed sorryCount 6 / lineCount 229 — corrected here. No Lean change this session: both build-verification routes are down (Docker daemon: `timeout 15 docker info` → exit 124; Aristotle MCP: prove() → 404 'Resource not found'), so no unverified proof tactics were shipped. A paste-ready discrete-IVT sketch for the LOW sorry is recorded in the S11 session memo for a future Docker-up ACT.",
+    "blockers": [
+      "Build verification unavailable 2026-06-13: Docker daemon hung (timeout 15 docker info exit 124) and Aristotle MCP backend returns 404. ACT that adds/removes proof tactics cannot be verified; deferred until either route recovers."
+    ],
+    "nextAction": "When a build-verify route recovers (`timeout 15 docker info` ≤ 5s, OR Aristotle MCP prove() returns a project_id): discharge the 2 remaining sorries in dependency order. (1) reaches_iff_hits_or_above (LOW): forward direction is a discrete IVT — partialSumBool ω ⟨0⟩ = 0 < a, consecutive partial sums S_k, S_{k+1} differ by exactly ±1 (the i=k summand flips from 0 to ±1), so the minimal index k₀ with S_{k₀} ≥ a satisfies S_{k₀-1} < a and S_{k₀} = S_{k₀-1}+1 ≤ a ⇒ S_{k₀}=a ⇒ k₀ ∈ hitSet; backward direction witnesses the endpoint or the hit index (a ≥ a). See S11 memo for the paste-ready skeleton + step lemma. (2) discrete_reflection (R6, HIGH ~20 LOC): Finset.card_nbij' with i=j=reflectAt _ a, using R4 (reflectAt_involutive) for left_inv/right_inv and R5 (partialSumBool_reflectAt_endpoint) for the membership image into (ending>a). Both are leaf-only (0 downstream importers).",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 4,
       "approachesTried": 1
     }
@@ -138,19 +140,19 @@
     ]
   },
   "started": "2026-05-12T18:15:00.000Z",
-  "lastUpdate": "2026-05-16T15:30:00.000Z",
+  "lastUpdate": "2026-06-13T00:00:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "proofs/Proofs/BallotProblemOQ02OQ05.lean",
-      "lineCount": 229,
+      "lineCount": 357,
       "axiomCount": 1,
-      "sorryCount": 6,
-      "theoremCount": 4,
+      "sorryCount": 2,
+      "theoremCount": 6,
       "defCount": 7,
       "addedInIteration": 2
     }
   ],
-  "iteration": 2
+  "iteration": 11
 }
