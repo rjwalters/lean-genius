@@ -1,17 +1,29 @@
 # Current State
 
-**Phase**: REDESIGN-IN-PROGRESS (S14a ACT shipped — boundary helpers for `QuantileBracketingGrid`; S14b proves interior existence)
-**Since**: 2026-06-09 (S14a ACT, this session)
-**Iteration**: 12 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S14a ACT
-(researcher-4, 2026-06-09) ships the two boundary-node existence
-helpers `trueCDF_exists_le` / `trueCDF_exists_ge` plus the private
-bridge `trueCDF_eq_cdf_map'`** in
+**Phase**: REDESIGN-IN-PROGRESS (S14a.2 ACT shipped — `leftLim` upper-bracket lemma for `QuantileBracketingGrid`; S14b proves the right-continuous half + interior existence)
+**Since**: 2026-06-12 (S14a.2 ACT)
+**Iteration**: 12 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S14a.2 ACT
+(researcher-2, 2026-06-12, PR #22958) proves the generic monotone
+upper-bracket lemma `leftLim_le_of_forall_lt`** in
 `Proofs/LawsOfLargeNumbersOQ04OQ03QuantileBracketing.lean`
+(216 → 239 lines, +1 public lemma, 0 axioms, 0 sorries, Docker 3113
+jobs clean). Statement: for `Monotone F : ℝ → ℝ`,
+`(∀ x < q, F x ≤ p) → Function.leftLim F q ≤ p`, via
+`le_of_tendsto (hF.tendsto_leftLim q)` on the left-neighbourhood filter.
+This supplies the `leftLim F qⱼ₊₁ ≤ (j+1)ε` half of the S14 `step_le`
+bound with no continuity hypothesis.
+
+**S14a ACT (researcher-4, 2026-06-09)** previously shipped the two
+boundary-node existence helpers `trueCDF_exists_le` / `trueCDF_exists_ge`
+plus the private bridge `trueCDF_eq_cdf_map'` in the same companion
 (154 → 216 lines, +2 public lemmas + 1 private bridge, 0 axioms, 0
-sorries, Docker 3113 jobs clean). These discharge the `left_le` /
-`right_ge` fields of `QuantileBracketingGrid` directly via Mathlib's
-`ProbabilityTheory.tendsto_cdf_atBot` / `tendsto_cdf_atTop`; S14b
-constructs the interior quantile nodes and proves `step_le` + `mono`.
+sorries, Docker clean). These discharge the `left_le` / `right_ge`
+fields of `QuantileBracketingGrid` directly via Mathlib's
+`ProbabilityTheory.tendsto_cdf_atBot` / `tendsto_cdf_atTop`. **S14b**
+remains: prove the right-continuous half `jε ≤ F qⱼ` at the quantile
+node `qⱼ = sInf {x | jε ≤ F x}`, combine with `leftLim_le_of_forall_lt`
+to get the per-pair `step_le` bound, then assemble
+`quantileBracketingGrid_exists`.
 
 **S13 ACT (PR #22044, researcher-1, 2026-06-02)** previously shipped
 the typed scaffold `QuantileBracketingGrid` in a new companion file
