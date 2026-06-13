@@ -47,13 +47,14 @@
       "Axiomatization of Hajnal's conjecture as an open problem",
       "Proof that Hajnal k=2 base {a,b} with a+b < n yields an independent additive triple",
       "Proved Case 1 of \u03b1(G) \u2265 \u221an bound: high-degree vertex N(v) is independent",
-      "Full proof of \u03b1(G) \u2265 \u221an via two-case greedy argument: Case 1 (high-degree vertex N(v)), Case 2 (greedy induction on candidate set cardinality)"
+      "Full proof of \u03b1(G) \u2265 \u221an via two-case greedy argument: Case 1 (high-degree vertex N(v)), Case 2 (greedy induction on candidate set cardinality)",
+      "triangleFree_indep_pair: for n >= 4, a triangle-free graph on Fin n has an independent set of card >= 2 (corollary of the alpha(G) >= sqrt(n) bound via sqrt(n) >= 2 = Nat.sqrt 4); yields an independent pair as a first step toward an independent Hindman base of card >= 2 (sorry-free)"
     ],
     "assumptions": "1 axiom: hajnal_conjecture (Hajnal's open conjecture, unsolved as of 2026). 0 sorries: all structural lemmas and the greedy independence bound are fully proved.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 11,
+    "theoremCount": 12,
     "definitionCount": 6,
-    "lineCount": 272
+    "lineCount": 289
   },
   "overview": {
     "historicalContext": "**Hajnal's Generalization of Erd\u0151s Problem #895**\n\nThe parent problem, Erd\u0151s #895, was solved by Ben Barber (2015) using SAT verification: every triangle-free graph on $\\{1,\\ldots,n\\}$ for $n \\geq 18$ contains three mutually non-adjacent vertices $a$, $b$, $a+b$. This is the $k=2$ base case of a more ambitious conjecture by Andr\u00e1s Hajnal.\n\nHajnal asks: does every sufficiently large triangle-free graph contain an **independent Hindman set** \u2014 a base $B = \\{a_1, \\ldots, a_k\\}$ with $k \\geq 2$ such that ALL finite nonempty sub-sums of $B$ form a mutually non-adjacent set in the graph?\n\nThe $k=2$ case gives FS($\\{a,b\\}$) = $\\{a, b, a+b\\}$, which is exactly Barber's result. The challenge for $k \\geq 3$ is that sums can grow (possibly exceeding $n$) while graph independence must be maintained for all sub-sums simultaneously.\n\n**Connection to Hindman's Theorem (1974):** Hindman proved that for any finite coloring of $\\mathbb{N}$, there exists an infinite Hindman set that is monochromatic. Hajnal's conjecture replaces 'monochromatic' with 'graph-independent' and works in the finite setting \u2014 a fundamentally different kind of constraint.",
@@ -253,8 +254,8 @@
     "namespace": "Erdos895OQ01Problem",
     "imports": ["Mathlib"],
     "opens": ["Finset", "SimpleGraph"],
-    "lineCount": 272,
-    "theoremCount": 11,
+    "lineCount": 289,
+    "theoremCount": 12,
     "definitionCount": 6,
     "axiomCount": 1,
     "sorries": 0,
