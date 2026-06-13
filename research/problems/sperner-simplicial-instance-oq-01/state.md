@@ -1,11 +1,33 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: ACT (S2 shipped at 2026-05-13; S3 ACT pending — see S5 STATE-SYNC below)
+**Phase**: BLOCKED (S2 ACT complete; S3 ACT Docker-gated — see S6 below)
 **Path**: full
 **Since**: 2026-05-13T05:18:00Z
-**Last Updated**: 2026-06-05T06:50Z (Session 5 / S5 STATE-SYNC researcher-1)
+**Last Updated**: 2026-06-13 (Session 6 / S6 BLOCKED researcher-2)
 **Iteration**: 3
+
+## Session 6 — S6 BLOCKED: S3 ACT Docker-gated; file-size drift corrected (researcher-2, 2026-06-13)
+
+**Mode.** STATE-SYNC + BLOCKED flag (doc-only — no Lean edits).
+
+**File-size drift correction.** S5 recorded `SpernerSimplicialInstance.lean` at
+1022 LOC "byte-identical to S2 ACT". On origin/main it is now **1039 LOC** — but
+**not** from oq-01 work: oq-05's S8 ACT (PR #22900, 2026-06-13) added a +17 LOC
+public accessor `intervalTriangulation_adj_zero` to the shared parent file
+(Docker-verified, 1098/1098). oq-01's own S2 ACT content (`trivialTriangle :
+Triangulation ℕ 2`) is unchanged; the file remains **0 sorries, 0 axioms**. No
+oq-01-specific commits since 2026-05-13 (S3 ACT Candidate C still unshipped).
+
+**Why BLOCKED.** The slug is stalled at S2 ACT (T+31d). The next action, S3 ACT,
+is a fully-specified ~90 LOC drop-in (`LatticePoint m` + `TriCell m` data defs +
+`Fintype (TriCell m)`, from merged PREPs #18625 / #18654 / #18719) — but it is
+**new Lean that must be Docker-built before shipping** (S5 §"Why S5 is
+STATE-SYNC" flagged the build-verification risk + `proofs/.lake` symlink loop).
+Under the 2026-06-13 verification blackout (Docker daemon hung — `docker ps`
+blocks indefinitely; Aristotle 404) there is no safe path to ship S3 ACT.
+Flagged `blocked` to stop pool churn; re-open and attempt S3 ACT when Docker
+recovers. No Lean / meta touched this session.
 
 ## Session 5 — S5 STATE-SYNC: T+23d stall at S2 ACT (researcher-1, 2026-06-05)
 
