@@ -33,7 +33,7 @@ but the proof here requires NO analytic number theory.
 ## Mathlib Dependencies
 - `Nat.Prime` : Definition of prime numbers
 - `Nat.exists_prime_and_dvd` : Every n ≥ 2 has a prime divisor
-- `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` : Key lemma from SumTwoSquares
+- `ZMod.exists_sq_eq_neg_one_iff` : `IsSquare (-1 : ZMod p) ↔ p % 4 ≠ 3`
 - Basic modular arithmetic
 -/
 
@@ -63,9 +63,9 @@ lemma prime_dvd_sq_add_one_mod_four {p k : ℕ} (hp : Nat.Prime p) (hp2 : p ≠ 
         _ = -1 := by ring
     rw [sq] at h
     exact h.symm
-  -- Apply the key lemma from Mathlib
+  -- Apply the key lemma from Mathlib: -1 is a square mod p iff p % 4 ≠ 3
   haveI : Fact (Nat.Prime p) := ⟨hp⟩
-  have hne3 := Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one hp (dvd_refl p) hsq
+  have hne3 : p % 4 ≠ 3 := ZMod.exists_sq_eq_neg_one_iff.mp hsq
   -- p % 4 ∈ {0, 1, 2, 3}, p is odd prime, so p % 4 ∈ {1, 3}
   have hodd : Odd p := hp.odd_of_ne_two hp2
   have hmod : p % 4 = 1 ∨ p % 4 = 3 := by
@@ -83,8 +83,10 @@ lemma exists_odd_prime_factor {n : ℕ} (hn : n > 1) (hodd : Odd n) :
   use p, hp_prime, hp_div
   intro hp2
   rw [hp2] at hp_div
-  have : Even n := even_iff_two_dvd.mpr hp_div
-  exact (Nat.odd_iff_not_even.mp hodd) this
+  have heven : Even n := even_iff_two_dvd.mpr hp_div
+  obtain ⟨a, ha⟩ := hodd
+  obtain ⟨b, hb⟩ := heven
+  omega
 
 /-! ## The Main Theorem -/
 
@@ -127,14 +129,11 @@ theorem infinitely_many_primes_1_mod_4 :
     have hp_dvd_sq : p ∣ (2 * (n + 1).factorial) ^ 2 := by
       rw [sq]
       exact dvd_mul_of_dvd_left hp_dvd_2fact _
-    -- But p ∣ N = (2 * (n+1)!)² + 1
-    -- So p ∣ N - (2 * (n+1)!)² = 1
-    have hp_dvd_diff : p ∣ N - (2 * (n + 1).factorial) ^ 2 := Nat.dvd_sub' hp_div hp_dvd_sq
-    -- N - (2*(n+1)!)² = (2*(n+1)!)² + 1 - (2*(n+1)!)² = 1
-    have hN_sub : N - (2 * (n + 1).factorial) ^ 2 = 1 := by simp only [N]; omega
-    rw [hN_sub] at hp_dvd_diff
+    -- But p ∣ N = (2 * (n+1)!)² + 1, and p ∣ (2*(n+1)!)², so p ∣ 1
+    simp only [N] at hp_div
+    have hp_dvd_one : p ∣ 1 := (Nat.dvd_add_right hp_dvd_sq).mp hp_div
     -- p ∣ 1 but p is prime, contradiction
-    exact hp_prime.not_dvd_one hp_dvd_diff
+    exact hp_prime.not_dvd_one hp_dvd_one
   -- Show p ≡ 1 (mod 4)
   · exact prime_dvd_sq_add_one_mod_four hp_prime hp_ne2 hp_div
 

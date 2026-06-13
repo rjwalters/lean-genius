@@ -87,9 +87,6 @@ lemma mod_four_eq_one_iff_zmodFour_eq_one {p : ℕ} :
     p % 4 = 1 ↔ (p : ZMod 4) = 1 := by
   have h1 : (1 : ZMod 4) = ((1 : ℕ) : ZMod 4) := by norm_cast
   rw [h1, ZMod.natCast_eq_natCast_iff, Nat.ModEq]
-  constructor
-  · intro h; omega
-  · intro h; omega
 
 /-! ## Mathlib bridge: infinitude form -/
 
@@ -338,6 +335,46 @@ theorem primes_sum_two_squares_infinite :
   haveI : Fact p.Prime := ⟨hp⟩
   exact Nat.Prime.sq_add_sq (by omega)
 
+/-! ## S7 ACT: divergence-to-infinity strengthening (lower half of Mertens rate)
+
+S5's `not_summable_primes_4k1_log_div` is a *qualitative* statement: the series
+of `log p / p` over primes `p ≡ 1 (mod 4)` is not summable. Because every term
+is nonnegative (`log n ≥ 0` for `n ≥ 1`, and `n.Prime → n ≥ 2`), non-summability
+upgrades to the strictly stronger **partial sums diverge to `+∞`** via
+`not_summable_iff_tendsto_nat_atTop_of_nonneg`.
+
+This is the *lower half* of the Mertens-1874 rate target `mertens_log_density_4k1`
+(S6, sorry): it establishes the partial sums are unbounded above and increasing
+to `+∞`, which is the qualitative content that the `(1/2) log N` asymptotic
+quantifies. It is fully proved (no sorry) and requires no analytic input beyond
+S5's divergence plus elementary nonnegativity. -/
+
+/-- **S7 ACT (divergence to `+∞`).** The partial sums of `log p / p` over primes
+`p ≡ 1 (mod 4)` tend to `+∞`. This strengthens S5's qualitative
+`not_summable_primes_4k1_log_div` (non-summability) to monotone divergence,
+using nonnegativity of the summand: `log n ≥ 0` whenever `n.Prime` (so `n ≥ 2`),
+and the dropped terms are exactly `0`.
+
+This is the unbounded-growth content of `mertens_log_density_4k1` (S6); the
+remaining work to pin the *rate* at `(1/2) log N` is the Abel-summation transfer
+deferred to a future iteration. -/
+theorem tendsto_partialSums_primes_4k1_log_div_atTop :
+    Tendsto
+      (fun N : ℕ =>
+        ∑ n ∈ Finset.range N,
+          (if n.Prime ∧ n % 4 = 1 then Real.log n / n else (0 : ℝ)))
+      atTop atTop := by
+  have hnonneg : ∀ n : ℕ,
+      0 ≤ (if n.Prime ∧ n % 4 = 1 then Real.log n / n else (0 : ℝ)) := by
+    intro n
+    split_ifs with h
+    · exact div_nonneg
+        (Real.log_nonneg (by exact_mod_cast h.1.one_lt.le))
+        (Nat.cast_nonneg n)
+    · exact le_refl 0
+  exact (not_summable_iff_tendsto_nat_atTop_of_nonneg hnonneg).mp
+    not_summable_primes_4k1_log_div
+
 /-! ## S6 SCAFFOLD: logarithmic-density target (Mertens-1874 form)
 
 The qualitative divergence in `not_summable_primes_4k1_log_div` (S5) extracts
@@ -451,6 +488,7 @@ theorem primes_4k1_natural_density :
 #check not_summable_primes_4k1_vonMangoldt_div
 #check not_summable_primes_4k1_log_div
 #check primes_sum_two_squares_infinite
+#check tendsto_partialSums_primes_4k1_log_div_atTop
 #check mertens_log_density_4k1
 #check primes_4k1_natural_density
 

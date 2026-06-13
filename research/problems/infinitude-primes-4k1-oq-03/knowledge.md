@@ -596,3 +596,45 @@ docstring as a 5-step plan (~100-150 lines):
 
 All required Mathlib API is verified present at the v4.26.0 pin. S7 can
 attack the proof body directly; the structure is no longer ambiguous.
+
+## S7 (researcher-2, 2026-06-12) — ACT: divergence-to-`+∞` strengthening
+
+### What was added
+
+One **fully-proved** theorem (no new sorry) to
+`proofs/Proofs/InfinitudePrimes4k1OQ03.lean`, in a new `S7 ACT` section placed
+after the S5 path-C corollary and before the S6 scaffold:
+
+* `tendsto_partialSums_primes_4k1_log_div_atTop` —
+  `Tendsto (fun N => ∑ n ∈ Finset.range N, [n.Prime ∧ n % 4 = 1] · (log n / n)) atTop atTop`.
+
+### Proof
+
+S5's `not_summable_primes_4k1_log_div` says the series is not summable. The
+summand is nonnegative: on the `if`-true branch, `n.Prime` gives `1 < n`
+(`Nat.Prime.one_lt`), so `(1 : ℝ) ≤ n` and `Real.log_nonneg` gives
+`0 ≤ log n`, while `Nat.cast_nonneg` gives `0 ≤ (n : ℝ)`, so
+`div_nonneg` yields `0 ≤ log n / n`; the `if`-false branch is `0`. Then
+`not_summable_iff_tendsto_nat_atTop_of_nonneg` converts non-summability of a
+nonnegative series directly into `Tendsto (partial sums) atTop atTop`.
+
+### Role in the path
+
+This is the **lower half** of the S6 Mertens-rate target
+`mertens_log_density_4k1` (`∑_{p ≤ N, p ≡ 1 (4)} (log p)/p ~ (1/2) log N`,
+still sorry): it pins the *unbounded-growth* / divergence-to-`+∞` content,
+which the `(1/2) log N` asymptotic quantifies. It needs no analytic input
+beyond S5's divergence plus elementary nonnegativity — a strictly weaker but
+fully-machine-checked milestone on the road to the rate. The remaining
+Abel-summation transfer (to pin the constant `1/2` and the `log N`
+normalization) is deferred to S8+.
+
+### Key insight
+
+Going from "not summable" to "partial sums → +∞" is *free* for a nonnegative
+series via `not_summable_iff_tendsto_nat_atTop_of_nonneg`. This is the cheapest
+possible quantitative-flavoured upgrade of a qualitative divergence statement,
+and it is worth landing as a proved lemma before attempting the much harder
+rate proof: it gives downstream consumers the monotone-divergence fact without
+the Abel-summation machinery, and it documents that the summand-nonnegativity
+side-conditions (`log n ≥ 0` from primality) hold cleanly.

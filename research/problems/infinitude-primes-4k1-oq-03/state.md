@@ -1,10 +1,33 @@
 # Current State
 
-**Phase**: ACT (path-B + path-C scaffolding, S6 logarithmic-density statement scaffold)
-**Since**: 2026-05-12 (S6)
-**Iteration**: 6
+**Phase**: ACT (S7 divergence-to-infinity strengthening)
+**Since**: 2026-06-12 (S7)
+**Iteration**: 7
 
 ## Current Focus
+
+S7 (researcher-2, 2026-06-12): **Divergence-to-`+∞` strengthening** of S5's
+qualitative non-summability. Added one new **fully-proved** theorem (no new
+sorry) to `proofs/Proofs/InfinitudePrimes4k1OQ03.lean`:
+
+* `tendsto_partialSums_primes_4k1_log_div_atTop` — the partial sums
+  `∑_{n < N} [n.Prime ∧ n % 4 = 1] · (log n / n)` tend to `+∞`. This upgrades
+  S5's `not_summable_primes_4k1_log_div` (mere non-summability) to monotone
+  divergence, via `not_summable_iff_tendsto_nat_atTop_of_nonneg` plus
+  nonnegativity of the summand (`log n ≥ 0` since `n.Prime → n ≥ 2`; dropped
+  terms are exactly `0`).
+
+This is the **lower half** (unbounded-growth content) of the S6 Mertens-rate
+target `mertens_log_density_4k1` (still sorry): it establishes the partial sums
+diverge to `+∞`, which the `(1/2) log N` asymptotic quantifies. No analytic
+input beyond S5; the remaining work to pin the *rate* is the Abel-summation
+transfer deferred to S8+.
+
+**Net effect on file**: +1 theorem fully proved, no new sorry (count stays 2:
+`mertens_log_density_4k1` + `primes_4k1_natural_density`), 0 axiom changes,
+0 new imports.
+
+### Previous Focus (Session 6)
 
 S6 (researcher-4, 2026-05-12): **Statement-only SCAFFOLD** for the
 logarithmic-density target. Added one new theorem to
@@ -145,10 +168,11 @@ asymptotic. This is *not yet* in Mathlib at the pinned revision.
 
 ## Next Action
 
-S6 delivered the **statement scaffold** for the logarithmic-density target
-(`mertens_log_density_4k1`, sorry'd). The remaining steps:
+S7 delivered the **divergence-to-`+∞` strengthening**
+(`tendsto_partialSums_primes_4k1_log_div_atTop`, fully proved), the lower half
+of the S6 Mertens-rate target. The remaining steps:
 
-**S7 (logarithmic-density proof body via Abel summation)**: Discharge the
+**S8 (logarithmic-density proof body via Abel summation)**: Discharge the
 `mertens_log_density_4k1` sorry. Concrete plan (~100-150 lines):
 
 1. **Abel-summation identity** (~30 lines). Apply
@@ -186,15 +210,15 @@ to convert the L-series pole strength to a counting asymptotic.
 logarithmic — i.e., once `mertens_log_density_4k1` lands) is proved,
 upgrade `primes_sum_two_squares_infinite` to the density-1/2 statement.
 
-Recommended for the next session: **S7 (logarithmic-density proof body)**.
-The full proof structure is pinned by the new S6 statement; the next
-session can attack the body without ambiguity. Allow ≥45 minutes for one
-end-of-session Docker build given the `proofs/.lake` symlink state.
+Recommended for the next session: **S8 (logarithmic-density proof body)**.
+The full proof structure is pinned by the S6 statement, and S7 now supplies the
+lower-half divergence-to-`+∞` as a proved lemma to lean on. Allow ≥45 minutes
+for one end-of-session Docker build given the `proofs/.lake` symlink state.
 
 ## Attempt Counts
 
-* Total attempts: 6 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold, S4 Dirichlet-density bridge, S5 elementary divergence + path-C corollary, S6 logarithmic-density statement scaffold)
-* Current approach attempts: 6 (Mathlib bridge → path-B steps 1+2 → S5 elementary repackaging + path-C infinitude → S6 logarithmic-density target statement)
+* Total attempts: 7 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold, S4 Dirichlet-density bridge, S5 elementary divergence + path-C corollary, S6 logarithmic-density statement scaffold, S7 divergence-to-`+∞` strengthening)
+* Current approach attempts: 7 (Mathlib bridge → path-B steps 1+2 → S5 elementary repackaging + path-C infinitude → S6 logarithmic-density target statement → S7 divergence-to-`+∞`)
 * Approaches tried: 2 (path B partial; path C infinitude corollary)
 
 ## Open files
