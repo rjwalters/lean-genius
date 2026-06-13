@@ -1,8 +1,8 @@
 {
   "slug": "birthday-problem-oq-01-oq-02",
   "title": "Coupling between expected pairs and collision probability",
-  "phase": "S8 PREP",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,12 +29,12 @@
     "goal": "Keep the closed-form collision-probability bracket synced; the descFactorial bridge is shipped (S6 ACT 2026-05-31), the tight Paley-Zygmund denominator remains optional follow-up."
   },
   "currentState": {
-    "phase": "S8 PREP",
+    "phase": "COMPLETED",
     "since": "2026-06-09T00:00:00.000Z",
-    "iteration": 10,
-    "focus": "9-day STATE-SYNC after S6 ACT: file byte-stable at 235 LOC / 5 theorems / 0 sorries / 0 axioms; Mathlib pin 2df2f015... unchanged for 26 days. Math re-derivation confirms E[X²] = E[X] + C(n,2)(C(n,2)-1)/d² is exact (uncorrelated indicators), gain Δ ≈ 0.00066 at n=23 d=365. Route Y-α (combinatorial direct, ~70-90 LOC) recommended over Y-β (Mathlib Probability.Variance, MEDIUM risk).",
+    "iteration": 11,
+    "focus": "COMPLETED (researcher-6 completion-sync, 2026-06-13). The stated OQ deliverable -- bracket probCollision between the Markov upper bound k(k-1)/(2d) and the Paley-Zygmund lower bound -- is FORMALIZED and merged. PR #22921 (merged 2026-06-13T12:51Z, +28 LOC) added theorem probCollision_bracket: k(k-1)/(2d + k(k-1)) <= probCollision k d <= k(k-1)/(2d), proved as the pair <probCollision_ge_paley_zygmund, probCollision_le_choose_two_div>, plus the closed counting form probCollision_eq_one_sub_descFactorial_div. BirthdayProblemOQ01OQ02.lean is now 263 LOC / 6 public theorems + 1 private lemma / 0 sorries / 0 axioms. The two-sided sandwich asked for in the problem statement is complete; the tighter variance-based lower bound (Route Y-alpha, gain ~0.00066 at n=23) the earlier S5/S8 PREP iterations were scoping is a beyond-deliverable refinement, not part of the stated bracket.",
     "blockers": [],
-    "nextAction": "S5b PREP — bearer audit for Finset-level Cauchy-Schwarz (Finset.sum_mul_sq_le_sq_mul_sq) + paste-ready scaffold for expected_pairs_sq_eq closed-form E[X²] helper (~40 LOC, LOW risk).",
+    "nextAction": "None -- stated OQ (two-sided bracket of the collision probability) answered by probCollision_bracket (PR #22921). Any future sharper-PZ-via-exact-variance work is a beyond-scope follow-on and would be tracked as a new refinement, not under this slug.",
     "attemptCounts": {
       "total": 10,
       "currentApproach": 10,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S8 PREP: 9-day STATE-SYNC. File byte-stable since S6 ACT (PR #21601, 2026-05-31); Mathlib pin unchanged for 26 days. Math re-derivation: E[X²] = E[X] + C(n,2)(C(n,2)-1)/d² is exact because the birthday indicators are pairwise uncorrelated (case-split over |{i,j} ∩ {i',j'}|). Numerical recheck: Δ ≈ 0.00066 at n=23 d=365 (slightly larger than original 0.0003 estimate). Route Y-α (combinatorial direct) preferred over Y-β (Mathlib Probability.Variance lift).",
+    "progressSummary": "COMPLETED 2026-06-13 (researcher-6 completion-sync). The OQ -- bracket probCollision between OQ01's first-moment Markov upper bound and a Paley-Zygmund second-moment lower bound -- is formalized and merged. PR #22921 (2026-06-13T12:51Z) shipped probCollision_bracket (k(k-1)/(2d+k(k-1)) <= probCollision k d <= k(k-1)/(2d)) combining the existing probCollision_ge_paley_zygmund (lower) and probCollision_le_choose_two_div (Markov upper), plus the closed counting form probCollision_eq_one_sub_descFactorial_div. Earlier stages built the pieces: S3 ACT Markov coupling, S5b ACT pick-time audit, S6 ACT descFactorial bridge (PR #21601). File BirthdayProblemOQ01OQ02.lean: 263 LOC / 6 public theorems + 1 private lemma / 0 sorries / 0 axioms. NOTE: the prose trackers had frozen at S8 PREP (2026-06-09) claiming '235 LOC / 5 theorems, byte-stable' -- they trailed PR #22921 (a .lean-only commit merged 2026-06-13); the deployer-owned leanFiles[] had already auto-synced to 264/6.",
     "builtItems": [
       "Product union-bound helper (S2).",
       "Closed-form upper bound probCollision <= k*(k-1)/(2*d) (S3).",
@@ -60,8 +60,8 @@
       "S8 PREP audit: at v4.26.0 pin the Finset-level Cauchy-Schwarz bearer name is TBD (Finset.sum_mul_sq_le_sq_mul_sq candidate; fallback is a 6-line Lagrange identity inline)."
     ],
     "nextSteps": [
-      "S5b PREP (next, doc-only): bearer audit for Finset-level Cauchy-Schwarz + paste-ready scaffold for expected_pairs_sq_eq closed-form E[X²] helper (~40 LOC, LOW risk).",
-      "S5c ACT (after S5b): chain expected_pairs_sq_eq with descFactorial bridge + Cauchy-Schwarz to ship probCollision_ge_paley_zygmund_tight with denominator 2d + k(k-1) - 2 (~40 LOC)."
+      "DONE -- stated OQ answered: probCollision_bracket (PR #22921) formalizes the two-sided Markov / Paley-Zygmund sandwich; file 0 sorries / 0 axioms.",
+      "Beyond-scope follow-on (NOT this slug): a sharper lower bound via the exact second moment E[X^2] = E[X] + C(n,2)(C(n,2)-1)/d^2 (Route Y-alpha, gain ~0.00066 at n=23) -- would be tracked as a new refinement."
     ]
   },
   "tags": [
@@ -97,7 +97,7 @@
       "Mathlib.Data.Fintype.Pi"
     ]
   },
-  "lastUpdate": "2026-06-09T00:00:00.000Z",
+  "lastUpdate": "2026-06-13",
   "leanFiles": [
     {
       "path": "Proofs/BirthdayProblem.lean",
