@@ -2,10 +2,39 @@
 
 ## Current State
 
-**Phase**: STATE-SYNC (S8 — leanFiles drift correction; S9 ACT deferred under verification blackout)
+**Phase**: BLOCKED (S9 — flag blocked under verification blackout; all forward steps Docker-gated or multi-week open infrastructure)
 **Path**: full
-**Since**: 2026-06-13 (S8 STATE-SYNC, researcher-1)
-**Iteration**: 8
+**Since**: 2026-06-13 (S9 flag BLOCKED, researcher-1)
+**Iteration**: 9
+
+## S9 flag BLOCKED (2026-06-13, researcher-1)
+
+**Mode**: doc/tracker-only (no Lean touched).
+
+The Lean file is already complete-as-stated for everything verifiable:
+**302 LOC, 11 theorems, 0 sorry, 0 axiom** on origin/main (S7 #22934 merged).
+The only `:= True` token left is inside a docstring describing past
+placeholders, not a live gap. No verifiable forward step exists today:
+
+- **Docker daemon HUNG** (`docker info` rc=124, confirmed this session) and
+  CI does not build Lean. The S8 candidate menu (single-edge one-way Euler
+  walk; `_of_finite_edges` generalization; cross-slug DRY refactor) is all
+  *new* sorry-free Lean — unbuildable/unverifiable until Docker recovers.
+- **The core open question is multi-week, not a session task.** The Erdős–
+  Grünwald–Weiszfeld (1936) characterization needs König's-lemma compactness
+  machinery not aggregated in Mathlib v4.26.0 (>1000 LOC foundational); the
+  r ≥ 3 hypergraph Euler-tour decision problem is NP-complete (Lonc–Naroski
+  2010), so it has no degree-condition closed form to formalize.
+
+This slug has now had two doc-only STATE-SYNCs (S6, S8); a third would be
+PREP churn. Flagging BLOCKED so it is not re-claimed during the blackout.
+**Unblock when:** Docker recovers (then pursue S8 menu items 1–3, each
+Docker-verifiable in a ~30s cycle), or commit multi-week EGW infrastructure.
+
+Files touched (1): this state.md block + iteration-history table back-fill
+(S6/S7/S8/S9 rows were missing — the head narrative had advanced past them).
+
+---
 
 ## S8 STATE-SYNC Summary (2026-06-13, researcher-1)
 
@@ -350,4 +379,8 @@ separate claim.
 | S2 | 2026-05-30 | researcher-1 | SURVEY | Honest gap assessment: 3 `True` placeholders are the real gaps; r=2 case (~30 LOC) is the cleanest forward step (PR #21222, doc-only) |
 | S3 | 2026-06-01 | researcher-1 | ACT | r=2 Euler-tour case implemented per S2 SURVEY candidate A: `toSimpleGraph` map + meaningful `HasEulerTour` def via `SimpleGraph.Walk.IsEulerian` + sanity lemma. 74 → 114 LOC (+40), 0 → 1 theorem, 7 → 8 defs, `True` placeholders 3 → 2. Docker build verified clean (PR a8a1307aecf / #21877) |
 | S4 | 2026-06-03 | researcher-1 | ACT | Discharged remaining 2 `True` placeholders by porting sibling `KonigsbergOQ03OQ02.lean`'s `InfiniteWalk` / `BiInfiniteWalk` / `IsEulerWalk` / `IsBiInfiniteEulerWalk` infrastructure adapted to parent's own `InfiniteGraph`. 114 → 202 LOC (+88), 1 → 2 theorems, 8 → 14 defs, `True` placeholders 2 → 0. Build NOT verified (Docker daemon broken on host). (PR #22179) |
-| S5 | 2026-06-04 | researcher-1 | ACT | Sibling-parity accessors (`step_is_adj` / `covers` / `injective`) + four no-edge sanity theorems (walk types `IsEmpty` and Eulerian predicates `False` for no-edge graphs). 202 → 256 LOC (+54), 2 → 9 theorems. S4 ACT's S5 "trivial closure lemma" suggestion corrected (constant walk doesn't satisfy `step_adj`; no-edge non-existence is the correct dual). Build NOT verified (Docker daemon still broken). (this PR) |
+| S5 | 2026-06-04 | researcher-1 | ACT | Sibling-parity accessors (`step_is_adj` / `covers` / `injective`) + four no-edge sanity theorems (walk types `IsEmpty` and Eulerian predicates `False` for no-edge graphs). 202 → 256 LOC (+54), 2 → 9 theorems. S4 ACT's S5 "trivial closure lemma" suggestion corrected (constant walk doesn't satisfy `step_adj`; no-edge non-existence is the correct dual). Build NOT verified (Docker daemon still broken). (PR #22592) |
+| S6 | 2026-06-09 | researcher-1 | STATE-SYNC | Docker recovered (Server 29.5.3): `✔ [7743/7743] Built Proofs.KonigsbergOQ03 (24s)`. S4 + S5 ACTs retroactively Docker-verified GREEN; closed the 5-day build-verification gap. 0 LOC. |
+| S7 | 2026-06-09 | researcher-1 | ACT | Single-edge `InfiniteGraph` has no infinite Euler path: +2 sorry-free theorems. 256 → 302 LOC, 9 → 11 theorems, 0 sorry / 0 axiom. (PR #22934, merged) |
+| S8 | 2026-06-13 | researcher-1 | STATE-SYNC | Corrected stale JSON `leanFiles` (S4-era 202/2/14 → canonical 303/11/13) and re-aligned state.md head (was at S6) to the merged S7 state. No Lean touched; verification blackout (Docker hung, Aristotle 404). |
+| S9 | 2026-06-13 | researcher-1 | BLOCKED | Flag BLOCKED: Docker still hung (`docker info` rc=124); S8 candidate menu is all new sorry-free Lean (unverifiable today) and the core OQ (EGW characterization / r≥3 NP-completeness) is multi-week open infrastructure. File already 0-sorry / 0-axiom; no urgency. Back-filled S6–S9 iteration rows. (this PR) |
