@@ -80,11 +80,11 @@ theorem partial_sum_closed_form (N k : ℕ) (hk : 0 < k) :
       ∑ i ∈ Finset.Icc (k + 1) (N + k), (1 : ℝ) / (i : ℝ) := by
     rw [harm_R (N + k), harm_R k]
     rw [show (Finset.Icc 1 (N + k)) = Finset.Ico 1 (N + k + 1) from
-          (Nat.Ico_succ_right (a := 1) (b := N + k)).symm,
+          (Finset.Ico_succ_right_eq_Icc (a := 1) (b := N + k)).symm,
         show (Finset.Icc 1 k) = Finset.Ico 1 (k + 1) from
-          (Nat.Ico_succ_right (a := 1) (b := k)).symm,
+          (Finset.Ico_succ_right_eq_Icc (a := 1) (b := k)).symm,
         show Finset.Icc (k + 1) (N + k) = Finset.Ico (k + 1) (N + k + 1) from
-          (Nat.Ico_succ_right (a := k + 1) (b := N + k)).symm]
+          (Finset.Ico_succ_right_eq_Icc (a := k + 1) (b := N + k)).symm]
     have h_cons :
         (∑ i ∈ Finset.Ico 1 (k + 1), (1 : ℝ) / (i : ℝ)) +
           (∑ i ∈ Finset.Ico (k + 1) (N + k + 1), (1 : ℝ) / (i : ℝ)) =
@@ -112,9 +112,9 @@ theorem partial_sum_closed_form (N k : ℕ) (hk : 0 < k) :
       ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) + ↑k) =
         ∑ m ∈ Finset.Icc (k + 1) (N + k), (1 : ℝ) / (m : ℝ) := by
     rw [show (Finset.Icc 1 N) = Finset.Ico 1 (N + 1) from
-          (Nat.Ico_succ_right (a := 1) (b := N)).symm,
+          (Finset.Ico_succ_right_eq_Icc (a := 1) (b := N)).symm,
         show Finset.Icc (k + 1) (N + k) = Finset.Ico (k + 1) (N + k + 1) from
-          (Nat.Ico_succ_right (a := k + 1) (b := N + k)).symm]
+          (Finset.Ico_succ_right_eq_Icc (a := k + 1) (b := N + k)).symm]
     -- Rewrite summand so the shift is on a ℕ cast.
     have summand_eq : ∀ n ∈ Finset.Ico 1 (N + 1),
         (1 : ℝ) / ((n : ℝ) + ↑k) = (1 : ℝ) / ((↑(n + k) : ℝ)) := by
@@ -239,7 +239,7 @@ theorem generalized_triangular_reciprocals (k : ℕ) (hk : 0 < k) :
         ∑ n ∈ Finset.Icc 1 N, (1 : ℝ) / ((n : ℝ) * ((n : ℝ) + ↑k)) := by
     intro N
     rw [show (Finset.Icc 1 N) = Finset.Ico 1 (N + 1) from
-          (Nat.Ico_succ_right (a := 1) (b := N)).symm,
+          (Finset.Ico_succ_right_eq_Icc (a := 1) (b := N)).symm,
         ← Nat.Ico_zero_eq_range]
     have key := Finset.sum_Ico_add'
       (fun m : ℕ => (1 : ℝ) / ((m : ℝ) * ((m : ℝ) + ↑k))) 0 N (c := 1)
