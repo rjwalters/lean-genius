@@ -315,4 +315,39 @@ theorem special_case_k3 : ((harmonic 3 : ℝ) / (3 : ℝ)) = 11 / 18 := by
   push_cast
   norm_num
 
+/-- k = 4: H_4 / 4 = 25/48. -/
+theorem special_case_k4 : ((harmonic 4 : ℝ) / (4 : ℝ)) = 25 / 48 := by
+  have h : harmonic 4 = 25 / 12 := by
+    rw [show (4 : ℕ) = 3 + 1 from rfl, harmonic_succ,
+        show (3 : ℕ) = 2 + 1 from rfl, harmonic_succ,
+        show (2 : ℕ) = 1 + 1 from rfl, harmonic_succ,
+        show (1 : ℕ) = 0 + 1 from rfl, harmonic_succ, harmonic_zero]
+    norm_num
+  rw [h]
+  push_cast
+  norm_num
+
+-- ═══════════════════════════════════════════════════
+-- Closed-form numerical values of the actual series
+-- (main result composed with the harmonic special cases)
+-- ═══════════════════════════════════════════════════
+
+/-- The classical Leibniz triangular sum: ∑_{n≥1} 1/(n(n+1)) = 1. -/
+theorem tsum_value_k1 :
+    ∑' n : ℕ, (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ((1 : ℕ) : ℝ))) = 1 := by
+  rw [generalized_triangular_reciprocals_tsum 1 (by norm_num)]
+  simpa using special_case_k1
+
+/-- ∑_{n≥1} 1/(n(n+2)) = 3/4. -/
+theorem tsum_value_k2 :
+    ∑' n : ℕ, (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ((2 : ℕ) : ℝ))) = 3 / 4 := by
+  rw [generalized_triangular_reciprocals_tsum 2 (by norm_num)]
+  simpa using special_case_k2
+
+/-- ∑_{n≥1} 1/(n(n+3)) = 11/18. -/
+theorem tsum_value_k3 :
+    ∑' n : ℕ, (1 : ℝ) / (((n + 1 : ℕ) : ℝ) * (((n + 1 : ℕ) : ℝ) + ((3 : ℕ) : ℝ))) = 11 / 18 := by
+  rw [generalized_triangular_reciprocals_tsum 3 (by norm_num)]
+  simpa using special_case_k3
+
 end TriangularReciprocalsHarmonic
