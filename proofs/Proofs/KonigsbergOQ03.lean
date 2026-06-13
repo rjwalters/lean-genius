@@ -253,4 +253,50 @@ theorem not_hasInfiniteEulerPath_of_no_edges {V : Type*} {G : InfiniteGraph V}
   rintro ⟨w, _⟩
   exact h _ _ (w.step_adj 0)
 
+/-! ### Single-edge sanity theorems
+
+The next-smallest Eulerian facts: an `InfiniteGraph` whose *only* edge is the
+single undirected edge `{u, v}` (`u ≠ v`) supports no Euler path. Any infinite
+walk must traverse an edge at *every* step, so with one edge available the walk
+is forced to bounce `u → v → u → ⋯`; steps `0` and `1` then traverse the same
+edge `{u, v}`, contradicting the edge-injectivity ("no edge twice") half of the
+Eulerian condition. The hypothesis `hone` says every edge of `G` equals `{u, v}`
+(equivalently, `G` has at most this one undirected edge). -/
+
+/-- A single-edge `InfiniteGraph` (every edge is `{u, v}`, `u ≠ v`) has no
+bi-infinite Euler path: the walk must bounce `u ↔ v`, so steps `0` and `1`
+repeat the edge `{u, v}`, violating edge-injectivity. -/
+theorem not_hasInfiniteEulerPath_of_single_edge {V : Type*} {G : InfiniteGraph V}
+    {u v : V} (huv : u ≠ v)
+    (hone : ∀ a b, G.adj a b → (a = u ∧ b = v) ∨ (a = v ∧ b = u)) :
+    ¬ HasInfiniteEulerPath G := by
+  rintro ⟨w, -, hinj⟩
+  have s0 := hone _ _ (w.step_adj 0)
+  have s1 := hone _ _ (w.step_adj 1)
+  simp only [zero_add] at s0
+  have hv02 : w.vertex 0 = w.vertex (1 + 1) := by
+    rcases s0 with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;> rcases s1 with ⟨ha, hb⟩ | ⟨ha, hb⟩
+    · exact absurd (h1.symm.trans ha) huv.symm
+    · rw [h0, hb]
+    · rw [h0, hb]
+    · exact absurd (h1.symm.trans ha) huv
+  exact hinj 0 1 (by norm_num) (Or.inr ⟨hv02, by rw [zero_add]⟩)
+
+/-- A single-edge `InfiniteGraph` (every edge is `{u, v}`, `u ≠ v`) has no
+one-way Euler path, by the same bounce argument on the ℕ-indexed walk. -/
+theorem not_hasOneWayEulerPath_of_single_edge {V : Type*} {G : InfiniteGraph V}
+    {u v : V} (huv : u ≠ v)
+    (hone : ∀ a b, G.adj a b → (a = u ∧ b = v) ∨ (a = v ∧ b = u)) :
+    ¬ HasOneWayEulerPath G := by
+  rintro ⟨w, -, hinj⟩
+  have s0 := hone _ _ (w.step_adj 0)
+  have s1 := hone _ _ (w.step_adj 1)
+  have hv02 : w.vertex 0 = w.vertex (1 + 1) := by
+    rcases s0 with ⟨h0, h1⟩ | ⟨h0, h1⟩ <;> rcases s1 with ⟨ha, hb⟩ | ⟨ha, hb⟩
+    · exact absurd (h1.symm.trans ha) huv.symm
+    · rw [h0, hb]
+    · rw [h0, hb]
+    · exact absurd (h1.symm.trans ha) huv
+  exact absurd (hinj 0 1 (Or.inr ⟨hv02, rfl⟩)) (by norm_num)
+
 end KonigsbergOQ03
