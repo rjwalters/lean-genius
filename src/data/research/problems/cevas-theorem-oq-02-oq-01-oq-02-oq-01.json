@@ -1,8 +1,8 @@
 {
   "id": "cevas-theorem-oq-02-oq-01-oq-02-oq-01",
   "name": "Projective Unification of Ceva's Theorem via the Klein Model",
-  "status": "surveyed",
-  "phase": "ORIENT",
+  "status": "in-progress",
+  "phase": "ACT",
   "problemStatement": {
     "formal": "Exhibit a single projective (Cayley-Klein) Ceva theorem from which the spherical (sin), Euclidean (identity), and hyperbolic (sinh) cevian side-ratio identities and the common concurrency criterion alphaD*alphaE*alphaF = betaD*betaE*betaF all follow as specializations of a curvature sign kappa in {+1,0,-1}.",
     "plain": "The parent proof proves the three classical Ceva theorems (spherical, Euclidean, hyperbolic) share one algebraic concurrency criterion, but derives each metric side-ratio separately. This OQ asks for the genuine geometric unification: one projective Ceva theorem in the Beltrami-Klein / Cayley-Klein model whose three specializations ARE the three geometries. The survey resolves it on paper: all three are Cayley-Klein geometries selected by an absolute conic (curvature sign kappa); a cevian point is the projective point alpha*B + beta*C; and the metric side-ratio collapses to beta/alpha via one curvature-independent cancellation of the common factor sqrt|1-m^2|/n.",
@@ -42,7 +42,9 @@
       "Mathlib has no Cayley-Klein / projective-metric API, so the formalization is definitional (CKCevianConfig + three sqrt factors), not API-wiring; the hard algebra is already in the parent and reused.",
       "The Beltrami-Klein model is the natural one: hyperbolic geodesics are Euclidean chords, so 'hyperbolic Ceva = projective Ceva of chords' is literal with no transcendental detour."
     ],
-    "builtItems": [],
+    "builtItems": [
+      "ACT-1 draft (build-pending, 2026-06-13): proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean \u2014 CKCevianConfig (kappa-sentinel, single hn:n^2>0), crux ck_ratio_cancel ((b*g)/(a*g)=b/a), factors gSph/gHyp/gEuc + _ne_zero, {spherical,hyperbolic,euclidean}_side_ratio, universal_weight_balance (kappa-free concurrency), and projective_ceva_unification. Self-contained (import Mathlib); unverified pending Docker."
+    ],
     "deadEnds": [
       "Building genuine RP^2 + absolute-conic projective geometry in Mathlib: unnecessary, the scalar (m, alpha, beta) data captures the criterion and side-ratio.",
       "Forcing one m-bound for all geometries: none exists; carry n^2 > 0 instead.",
@@ -55,6 +57,12 @@
       "filename": "CevasTheoremOQ02OQ01OQ02.lean",
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean",
+      "filename": "CevasTheoremOQ02OQ01OQ02OQ01.lean",
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean"
     }
   ],
   "relatedProofs": [
