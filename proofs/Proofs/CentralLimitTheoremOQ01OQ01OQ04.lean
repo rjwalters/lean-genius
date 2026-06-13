@@ -300,21 +300,57 @@ theorem alpha_stable_is_operator_stable_matrix (α : ℝ) (hα : 0 < α) :
 -- PART V: Structural Properties
 -- ============================================================
 
-/-- **AXIOM**: Operator-stable laws are closed under nonsingular linear maps.
+/-- Operator-stable laws are closed under **invertible** linear images.
     If φ is operator-stable, then ξ ↦ φ(Bξ) is operator-stable for any
-    nonsingular (invertible) B.
+    invertible matrix B.
 
     Reference: Meerschaert & Scheffler (2001), Theorem 7.2.1 (closure under
-    linear images). The exact form of the new normalization and drift
-    depends on B's invertibility and the conjugation structure (A_n → B⁻¹ A_n B);
-    we axiomatize the existence of *some* witness rather than committing to a
-    specific algebraic form. The witness construction (A_n B, A_n · b_n with
-    appropriate drift correction) requires B invertibility — without it, the
-    image distribution can collapse onto a lower-dimensional subspace where
-    operator-stability does not apply in the same form. -/
-axiom operator_stable_linear_image (d : ℕ) (φ : (Fin d → ℝ) → ℂ)
-    (hφ : IsOperatorStable d φ) (B : Matrix (Fin d) (Fin d) ℝ) :
-    IsOperatorStable d (fun ξ => φ (fun i => ∑ j, B i j * ξ j))
+    linear images). The new normalizations are the conjugates
+    `A'ₙ = B⁻¹ Aₙ B` and the drift is transported by the transpose,
+    `b'ₙ = Bᵀ bₙ`. The computation: `ψ(A'ₙ ξ) = φ(B A'ₙ ξ) = φ(Aₙ (Bξ))`
+    because `B A'ₙ = B (B⁻¹ Aₙ B) = Aₙ B`, so raising to the n-th power and
+    using operator-stability of φ at the point `Bξ` yields
+    `φ(Bξ)·exp(i⟨bₙ, Bξ⟩) = ψ(ξ)·exp(i⟨Bᵀbₙ, ξ⟩)`.
+
+    **S17 ACT discharge note (2026-06-12):** the former `axiom` quantified over
+    *all* B, including singular ones. For singular B the image distribution can
+    collapse onto a lower-dimensional subspace, where the conjugation witness
+    `B⁻¹ Aₙ B` does not exist and operator-stability need not hold in the same
+    form (indeed the all-B statement over arbitrary `φ` is not generally true).
+    The mathematically correct closure statement is the invertible case, proved
+    here via the conjugation/transpose witness; invertibility enters exactly at
+    `B * ⅟B = 1` (`mul_invOf_self`). The singular case is genuinely
+    distribution-dependent and is intentionally not asserted. -/
+theorem operator_stable_linear_image (d : ℕ) (φ : (Fin d → ℝ) → ℂ)
+    (hφ : IsOperatorStable d φ) (B : Matrix (Fin d) (Fin d) ℝ) [Invertible B] :
+    IsOperatorStable d (fun ξ => φ (fun i => ∑ j, B i j * ξ j)) := by
+  obtain ⟨A, b, hAb⟩ := hφ
+  -- Composition of matrix-vector products (hand-rolled to avoid lemma churn).
+  have mvmv : ∀ (M N : Matrix (Fin d) (Fin d) ℝ) (v : Fin d → ℝ),
+      M *ᵥ (N *ᵥ v) = (M * N) *ᵥ v := by
+    intro M N v
+    funext i
+    simp only [Matrix.mulVec, dotProduct, Matrix.mul_apply,
+               Finset.mul_sum, Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => by ring
+  refine ⟨fun n => ⅟B * A n * B, fun n => Bᵀ *ᵥ b n, ?_⟩
+  intro n hn ξ
+  -- B (B⁻¹ Aₙ B) = Aₙ B (invertibility used here).
+  have hM : B * (⅟B * A n * B) = A n * B := by
+    rw [← mul_assoc, ← mul_assoc, mul_invOf_self, one_mul]
+  -- ⟨bₙ, Bξ⟩ = ⟨Bᵀbₙ, ξ⟩ (drift transport by the transpose).
+  have hdrift : vecInner d (b n) (B *ᵥ ξ) = vecInner d (Bᵀ *ᵥ b n) ξ := by
+    simp only [vecInner, Matrix.mulVec, dotProduct, Matrix.transpose_apply,
+               Finset.mul_sum, Finset.sum_mul]
+    rw [Finset.sum_comm]
+    exact Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun i _ => by ring
+  show (φ (B *ᵥ ((⅟B * A n * B) *ᵥ ξ))) ^ n
+     = φ (B *ᵥ ξ) * Complex.exp (I * (vecInner d (Bᵀ *ᵥ b n) ξ : ℝ))
+  rw [mvmv, hM, ← mvmv]
+  have happ := hAb n hn (B *ᵥ ξ)
+  rw [show (fun i => ∑ j, A n i j * (B *ᵥ ξ) j) = A n *ᵥ (B *ᵥ ξ) from rfl] at happ
+  rw [happ, hdrift]
 
 /-- The trivial 1-dimensional operator-stable family: constant functions are stable
     with any normalization (they satisfy the stability equation trivially). -/

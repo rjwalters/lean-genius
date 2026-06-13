@@ -29,14 +29,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-10T00:00:00Z",
-    "iteration": 16,
-    "focus": "S16 ACT 2026-06-10 (researcher-1): `finite_cov_in_gaussian_doa` vacuous discharge / bug report — Docker 7744 verified (214s build). The original axiom's hypothesis bundle (hφ_char: φ(0) = 1; hφ_cov: ∃ : True, Tendsto φ to 1 at 0) was missing the finite-second-moment content required to invoke matrix Lindeberg. Inspection while pre-staging the S15-planned S13-recipe port revealed the bundle is too weak for the strong matrix-CLT statement, but the existential conclusion ∃ ψ, φ ∈ DoA(ψ) is dischargeable via the trivial degenerate-Gaussian witness ψ = const 1 with zero-matrix scaling A_n = 0 and b_n = 0 — the n-th convolution term collapses to (φ (fun _ => 0))^n = 1^n = 1 by hφ_char, identically the constant ψ, so tendsto_const_nhds applies. This is the S14 pattern (encoding-bug → vacuous discharge → bug-report theorem) applied to S16. axiomCount 3→2, theoremCount 13→14, lineCount 447→493. Remaining axioms: `operator_stable_linear_image`, `meerschaert_scheffler`. Gallery meta synced.",
+    "since": "2026-06-12T00:00:00Z",
+    "iteration": 17,
+    "focus": "S17 ACT 2026-06-12 (researcher-2): `operator_stable_linear_image` axiom→theorem discharge — Docker 7744 verified (13s incremental build). Operator-stable laws are closed under invertible linear images. Promoted from axiom to theorem by adding an [Invertible B] hypothesis and supplying the conjugation/transpose witness: normalizations A'ₙ = B⁻¹AₙB, drift b'ₙ = Bᵀbₙ. Proof: ψ(A'ₙξ) = φ(BA'ₙξ) = φ(Aₙ(Bξ)) since B·(B⁻¹AₙB) = AₙB (mul_invOf_self), then operator-stability of φ at the point Bξ closes it; drift inner product ⟨bₙ,Bξ⟩ = ⟨Bᵀbₙ,ξ⟩ via Finset.sum_comm; matrix-vector composition M*ᵥ(N*ᵥv) = (M*N)*ᵥv proved hand-rolled to avoid lemma-name churn. The former axiom quantified over all B including singular ones — unsound, since for singular B the conjugation witness B⁻¹ does not exist and the image can collapse onto a lower-dimensional subspace; the invertible case is the correct Meerschaert-Scheffler 2001 Thm 7.2.1 closure statement. axiomCount 2→1, theoremCount 14→15, lineCount 493→529. Sole remaining axiom: `meerschaert_scheffler` (MS 2001 Ch. 8 — domain of attraction ↔ matrix regular variation; research-level, requires operator-valued regular-variation machinery). Gallery meta synced.",
     "blockers": [
       "operator_stable_linear_image: general case requires Meerschaert-Scheffler 2001 Thm 7.2.1 (witness construction with drift correction for singular B). Invertible-B subcase tractable.",
       "meerschaert_scheffler: deep DOA biconditional (MS 2001 Ch. 8); research-level. Not researcher-tractable in single session."
     ],
-    "nextAction": "S17 PREP — plan partial discharge of `operator_stable_linear_image` for the invertible-B subcase. Splits the axiom into (a) `Matrix.Invertible B → IsOperatorStable d (φ ∘ B)` (provable via composition witness `A_n B`, drift correction `A_n · b_n`) and (b) general singular-B case (still axiomatized; needs measure-theoretic content from MS 2001 §7.2 for the dimension-collapse handling). Estimated ~60 LOC add for the invertible-B theorem, plus a renamed weaker axiom for the general case. Pre-PREP bearer audit: `Matrix.Invertible`, `Matrix.inv_mul_self`, `Matrix.mul_inv_self` API on current Mathlib pin. Separately, S14/S16 follow-up: revise the two vacuous-discharge bug-report axioms (`scalar_exponent_ge_half`, `finite_cov_in_gaussian_doa`) to carry genuine non-degeneracy / finite-second-moment hypotheses — both are dischargeable in name only at present.",
+    "nextAction": "S18 PREP/ACT on `meerschaert_scheffler` is the only remaining axiom but is genuinely research-level (operator-valued regular variation, MS 2001 Ch. 8) — likely stays axiomatized. Alternative: re-encode the two S14/S16 vacuous-discharge bug-report theorems (`scalar_exponent_ge_half`, `finite_cov_in_gaussian_doa`) with genuine non-degeneracy / finite-second-moment hypotheses and re-prove with real Hudson-Mason / matrix-Lindeberg content.",
     "attemptCounts": {
       "total": 16,
       "currentApproach": 6,
@@ -44,8 +44,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (S16 ACT 2026-06-10): five ACTs since the S1 baseline reduce the file from 6+ axioms to 2 — S9 ACT (`gaussian_has_scalar_exponent`, PR #19652), S11 ACT (`gaussian_is_operator_stable`, PR #21987, Docker-verified), S13 ACT (`gaussian_in_own_doa`, PR #22113, S12 PREP recipe), S14 ACT (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix` theorem, PR #22591, Docker 7744), S16 ACT (`finite_cov_in_gaussian_doa` vacuous discharge / matrix-CLT bundle bug report, this session, Docker 7744 verified). At post-S16 state: 2 axioms (`operator_stable_linear_image`, `meerschaert_scheffler`), 14 theorems, 7 defs, 493 LOC, 0 sorries. Two vacuous-discharge bug-report theorems (S14 + S16) now flag hypothesis-bundle encoding issues for future re-axiomatization with proper non-degeneracy / finite-second-moment content. Highest-readiness next move: S17 PREP for invertible-B subcase of `operator_stable_linear_image`.",
+    "progressSummary": "PROGRESS (S17 ACT 2026-06-12): six axiom→theorem discharges since the S1 baseline reduce the file from 6+ axioms to 1 — S9 (`gaussian_has_scalar_exponent`, PR #19652), S11 (`gaussian_is_operator_stable`, PR #21987), S13 (`gaussian_in_own_doa`, PR #22113), S14 (`scalar_exponent_ge_half` vacuous discharge + new `alpha_stable_is_operator_stable_matrix`, PR #22591), S16 (`finite_cov_in_gaussian_doa` vacuous discharge, Docker 7744), and S17 (`operator_stable_linear_image` genuine discharge via conjugation/transpose witness under [Invertible B], this session, Docker 7744 verified, 13s). At post-S17 state: 1 axiom (`meerschaert_scheffler`), 15 theorems, 7 defs, 529 LOC, 0 sorries. S17 is the first NON-vacuous axiom discharge of this slug's closure axioms: it required real matrix algebra (matrix-vector product composition, invertibility B·⅟B=1, transpose drift transport) rather than exploiting a broken hypothesis bundle. It also corrected an unsoundness: the former all-B axiom was false for singular B. Highest-readiness next move: re-encode the S14/S16 bug-report theorems with proper hypotheses, OR leave `meerschaert_scheffler` axiomatized as the headline research-level statement.",
     "builtItems": [
+      "operator_stable_linear_image: operator-stable laws are closed under invertible linear images — S17 ACT axiom→theorem (2026-06-12, Docker 7744). Witness A'ₙ = B⁻¹AₙB, b'ₙ = Bᵀbₙ under [Invertible B]; first non-vacuous closure-axiom discharge, also corrected the unsound all-B axiom.",
       "exp_neg_div_pow: (exp(-x/n))^n = exp(-x) in C (S1, 2026-05-04)",
       "quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ) (S1, 2026-05-04)",
       "gaussian_has_scalar_exponent: HasScalarExponent d (gaussCharFun Σ) (1/2) — S9 ACT axiom→theorem (PR #19652, 2026-05-22)",
@@ -106,7 +107,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T11:41:44.690Z",
-  "lastUpdate": "2026-06-10T00:00:00.000Z",
+  "lastUpdate": "2026-06-12T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -146,9 +147,9 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
       "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
-      "lineCount": 493,
-      "theoremCount": 14,
-      "axiomCount": 2,
+      "lineCount": 529,
+      "theoremCount": 15,
+      "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
