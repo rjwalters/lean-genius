@@ -1,5 +1,53 @@
 # Knowledge: mean-value-theorem-oq-02-oq-04
 
+## ⚠️ STATUS: RETRACTED — the OQ-04 statement is FALSE as posed (read before working)
+
+> **The entire S1 survey below (§3 "proof sketch", §5 risk profile, §6
+> "why an axiom rather than a sorry", and the plan to *discharge* the
+> axiom in S2) is OBSOLETE. Do not attempt to prove the real-line
+> statement — it is mathematically false.**
+
+What actually happened after this S1 document was written:
+
+* **S1 (researcher-3, 2026-05-11, PR #17705):** introduced the OQ-04
+  statement as `axiom analytic_taylor_remainder_uniform_bound` plus an
+  `n = 0` corollary `analytic_remainder_zero_bound`. The plan recorded
+  below was to discharge this axiom in S2 "by replacing it with a
+  theorem of the same signature." **That plan is impossible** — see below.
+
+* **Child slug `mean-value-theorem-oq-02-oq-04-oq-01` (researcher-6,
+  PR #17837, merged 2026-05-12, status `completed`):** proved the S1
+  axiom is **false** via theorem `oq04_axiom_is_false`
+  (`Proofs/MeanValueTheoremOQ02OQ04OQ01.lean §2`). Runge counterexample
+  `(f,a,R,M,r,n,x) = (1/(1+x²), 0, 100, 1, 1, 0, 1)`: `|f 1 − f 0| = 1/2`
+  exceeds the claimed bound `1·1^1/(100−1) = 1/99`.
+
+* **Root cause (Runge phenomenon):** a *real* sup bound `M` on `f` over
+  the interval `(a−R, a+R) ⊂ ℝ` does NOT control the Cauchy coefficient
+  bounds `|f^{(k)}(a)/k!| ≤ M/R^k`. `1/(1+x²)` is real-analytic and
+  bounded by `1` on all of ℝ, yet extends only to the *complex* disk of
+  radius `1` (poles at `±i`). The geometric-tail estimate
+  `M·r^(n+1)/(R−r)` requires the sup bound on the *complex* disk
+  `D(a,R) ⊂ ℂ`, not the real interval. So the corrected statement needs a
+  **strictly stronger hypothesis** (`HasFPowerSeriesOnBall f p a R` on a
+  complex ball) — NOT the same signature the §6 plan assumed.
+
+* **S2 (researcher-8, 2026-05-14):** removed the false axiom and its
+  `n = 0` corollary from `Proofs/MeanValueTheoremOQ02OQ04.lean`, which is
+  now a doc-only retraction stub (0 axioms / 0 theorems / 0 sorries in the
+  file itself; `meta.axiomCount = 1` is the *transitive* count of the
+  inherited `taylor_lagrange_remainder` axiom in the parent file
+  `MeanValueTheoremOQ02.lean`, listed in `additionalFiles`).
+
+**Where the live content is:** the mathematically correct version is
+`analytic_taylor_remainder_uniform_bound_complex` in the child file
+`Proofs/MeanValueTheoremOQ02OQ04OQ01.lean §3` (proven modulo the single
+sub-lemma `cauchy_diag_norm_bound_at_radius`). **This slug should be
+closed** in favour of that child slug; it is retained only as a permanent
+audit record of the refutation.
+
+---
+
 ## 1. The open question
 
 OQ-04 of the parent gallery entry `mean-value-theorem-oq-02`:
