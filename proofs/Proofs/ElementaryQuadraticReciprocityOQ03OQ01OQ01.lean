@@ -30,10 +30,15 @@ def kroneckerNegOne (a : ℤ) : ℤ :=
   if a < 0 then -1 else 1
 
 /-- The Kronecker symbol at n = 2.
-    χ(a, 2) = 0 if a is even, 1 if a ≡ ±1 (mod 8), -1 if a ≡ ±3 (mod 8). -/
+    χ(a, 2) = 0 if a is even, 1 if a ≡ ±1 (mod 8), -1 if a ≡ ±3 (mod 8).
+
+    Note: `a % 8` uses T-division (`Int.emod`), so for positive `a ≡ 7 (mod 8)`
+    we have `a % 8 = 7` (not `-1`). Since `7 ≡ -1 (mod 8)`, the `a % 8 = 7` and
+    `a % 8 = -7` cases must be listed explicitly to give the correct value `+1`
+    (cross-checked against Mathlib's `χ₈` in OQ-04). -/
 def kroneckerTwo (a : ℤ) : ℤ :=
   if a % 2 = 0 then 0
-  else if a % 8 = 1 ∨ a % 8 = -1 then 1
+  else if a % 8 = 1 ∨ a % 8 = 7 ∨ a % 8 = -1 ∨ a % 8 = -7 then 1
   else -1
 
 /-- The Kronecker symbol at n = 0: χ(a, 0) = 1 if |a| = 1, else 0. -/
@@ -122,9 +127,7 @@ theorem kroneckerSym_one_left (n : ℤ) : kroneckerSym 1 n = 1 := by
   split
   · simp [kroneckerZero]
   · next h =>
-    have hkt : kroneckerTwo 1 = 1 := by
-      simp only [kroneckerTwo, show (1 : ℤ) % 2 ≠ 0 from by omega, ite_false,
-        show ((1 : ℤ) % 8 = 1 ∨ (1 : ℤ) % 8 = -1) from Or.inl rfl, ite_true]
+    have hkt : kroneckerTwo 1 = 1 := by norm_num [kroneckerTwo]
     have hkn : kroneckerNegOne 1 = 1 := by simp [kroneckerNegOne]
     split <;> simp [hkt, hkn, one_pow, jacobiSym.one_left]
 

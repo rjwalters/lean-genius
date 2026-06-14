@@ -9,16 +9,18 @@ The gallery's `ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean` defines
 ## Answer
 
 Mathlib 4.26.0 has NO built-in Kronecker symbol — only `jacobiSym` for odd n.
-The gallery definition fills a genuine gap, but `kroneckerTwo` has a correctness
-issue for positive a ≡ 7 (mod 8):
+The gallery definition fills a genuine gap. This file originally identified a
+correctness issue in `kroneckerTwo` for positive a ≡ 7 (mod 8):
 
   The condition `a % 8 = -1` uses T-div mod. For positive integers,
-  `(7 : ℤ) % 8 = 7` (not -1), so the gallery's `kroneckerTwo 7 = -1`
-  but the correct Kronecker value is (7|2) = 1.
+  `(7 : ℤ) % 8 = 7` (not -1), so the old `kroneckerTwo 7` returned -1
+  while the correct Kronecker value is (7|2) = 1.
 
-This file provides:
+That bug has now been fixed in the parent file: `kroneckerTwo` lists the
+`a % 8 = 7` and `a % 8 = -7` cases explicitly. This file retains the
+independent `kroneckerTwoFixed` development as a χ₈ cross-check:
 1. Documentation of the Mathlib gap
-2. Corrected `kroneckerTwoFixed` using `a % 8 = 7`
+2. `kroneckerTwoFixed` using `a % 8 = 7` (matches the corrected parent def)
 3. Verification against Mathlib's `χ₈` on concrete values
 4. Full proof of multiplicativity of `kroneckerTwoFixed`
 -/
@@ -66,8 +68,8 @@ example : kroneckerTwoFixed 3 = χ₈ 3 := by native_decide
 example : kroneckerTwoFixed 5 = χ₈ 5 := by native_decide
 example : kroneckerTwoFixed 7 = χ₈ 7 := by native_decide
 
--- The key discrepancy: gallery's kroneckerTwo 7 = -1 (WRONG)
--- Our fix: kroneckerTwoFixed 7 = 1 (CORRECT)
+-- The key discrepancy (now fixed in the parent): the old kroneckerTwo 7 = -1
+-- was WRONG; both kroneckerTwoFixed 7 and the corrected parent give 1 (CORRECT)
 theorem kroneckerTwoFixed_seven : kroneckerTwoFixed 7 = 1 := by
   norm_num [kroneckerTwoFixed]
 
@@ -135,7 +137,8 @@ theorem kroneckerTwoFixed_agrees_jacobi :
 
 /-- **Summary**:
     - Mathlib has no Kronecker symbol (only Jacobi for odd n)
-    - Gallery's `kroneckerTwo` is incorrect at a ≡ 7 (mod 8): uses T-mod -1
+    - The old `kroneckerTwo` was incorrect at a ≡ 7 (mod 8) (T-mod -1); the
+      parent def is now corrected to list a % 8 = 7 and a % 8 = -7
     - `kroneckerTwoFixed` with `a % 8 = 7` is correct and agrees with χ₈
     - Multiplicativity holds: (ab|2) = (a|2) · (b|2) -/
 theorem summary :
