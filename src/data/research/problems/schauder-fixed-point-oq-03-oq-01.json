@@ -14,12 +14,12 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Built proof framework for Kakutani from Brouwer. Identified three independent axioms (Brouwer, approximate selections, sequential compactness). Framework has 2 sorries for the combination arguments. Main Mathlib gap: partition of unity for approximate selections.",
+    "progressSummary": "SURVEYED: Built proof framework for Kakutani from Brouwer. Identified three independent axioms (Brouwer, approximate selections, sequential compactness). Framework now has 0 sorries: kakutani_from_brouwer is proved; brouwer_unit_ball and approx_selection_exists remain as axioms. Main Mathlib gap: partition of unity for approximate selections.",
     "builtItems": [
       "Created SchauderFixedPointOQ03OQ01.lean with proof framework",
       "Defined IsApproxSelection for ε-approximate continuous selections",
       "Axiomatized three key lemmas: Brouwer, approx selections, seq compactness",
-      "Outlined kakutani_from_brouwer proof (sorry)",
+      "Proved kakutani_from_brouwer (the main Kakutani-from-Brouwer reduction)",
       "Created gallery entry with meta.json, index.ts"
     ],
     "insights": [
@@ -35,7 +35,6 @@
       "Sequential compactness equivalence for compact metric spaces"
     ],
     "nextSteps": [
-      "Complete the sorry in kakutani_from_brouwer with metric space calculations",
       "Prove approx_selection_exists using partition of unity",
       "Check if Mathlib's Brouwer can be extended to compact convex sets"
     ]
