@@ -87,37 +87,58 @@
     {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
-      "startLine": 28,
-      "endLine": 57,
-      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem."
+      "startLine": 44,
+      "endLine": 73,
+      "summary": "IsSidon (all pairwise sums distinct) and the equivalent IsSidonAlt (sumset multiplicity ≤ 1), with the verified equivalence theorem sidon_iff_sidon_alt."
     },
     {
       "id": "basis-definitions",
       "title": "Asymptotic Basis Definitions",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "SumsetK, IsAsymptoticBasis, IsExactBasis."
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "SumsetK A k (integers representable as a sum of at most k elements of A), IsAsymptoticBasis (all sufficiently large n representable), and IsExactBasis."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Erdos157Conjecture and Pilatte's existence theorem."
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "Erdos157Conjecture: ∃ an infinite Sidon set that is an asymptotic basis of order 3. Answered YES by Pilatte (2023)."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 94,
-      "endLine": 111,
-      "summary": "Order 2 impossibility, counting bounds for Sidon sets and bases."
+      "id": "pilatte-theorem",
+      "title": "Pilatte's Theorem",
+      "startLine": 101,
+      "endLine": 107,
+      "summary": "axiom pilatte_existence: the conjecture holds. Axiomatized — the full probabilistic construction is ~1000+ lines (Pilatte 2023)."
+    },
+    {
+      "id": "counting-axioms",
+      "title": "Counting Axioms",
+      "startLine": 108,
+      "endLine": 118,
+      "summary": "Two axiomatized analytic inputs: sidon_counting_bound (Sidon counting function ≤ √N + O(N^{1/4})) and basis_counting_lower (order-k basis counting function ≥ c·N^{1/k})."
+    },
+    {
+      "id": "order-2-impossibility",
+      "title": "Related Results: No Order-2 Basis (proved)",
+      "startLine": 119,
+      "endLine": 491,
+      "summary": "sidon_not_basis_2: no infinite Sidon set is an asymptotic basis of order 2 — fully proved (0 sorries) via direct counting. Helpers: sidon_pair_sum_injective (Sidon pair-sums are injective), sumsetK2_ncard_le (representable integers ≤ M(M+1)/2 via an offDiag/swap pairing bound), and sidon_counting_contradiction (real-analytic gap: at N = 8M⁴, √(2N)=4M², (2N)^{1/4}=2M, so M(M+1)/2 < 2N − N₀). The earlier sorry in sidon_counting_contradiction is closed; the SORRY note in its comment block is stale."
+    },
+    {
+      "id": "construction-outline",
+      "title": "Construction Outline",
+      "startLine": 493,
+      "endLine": 506,
+      "summary": "Prose sketch of Pilatte's probabilistic construction and why Sidon sparsity (~√N) still permits an order-3 basis. References Pilatte 2023 and Erdős–Turán 1941."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 127,
-      "endLine": 180,
-      "summary": "Verified: powers_of_two_sidon. Example finite Sidon set."
+      "title": "Small Examples",
+      "startLine": 507,
+      "endLine": 535,
+      "summary": "powers_of_two_sidon: {2^k} is Sidon (verified). exampleSidonSet = {1,2,5,11} with example_is_sidon (Aristotle-proved; note the original {1,2,5,10,11,13} failed since 1+11=2+10)."
     }
   ],
   "conclusion": {
