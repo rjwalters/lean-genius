@@ -86,68 +86,76 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "summary": "Module docstring stating Erdős Problem #1110 (for coprime p > q ≥ 2, representing n as a sum of p^k q^l terms with no term dividing another), the key results (Erdős-Lewin 1996, Yu-Chen 2022, Yang-Zhao 2025), Erdős's 'silly conjecture' anecdote, and references. Imports Nat/Finset/Real and NumberTheory.Divisors; opens Finset and the Erdos1110 namespace.",
+      "startLine": 1,
+      "endLine": 43,
+      "mathContext": "An integer $n$ is representable if $n = \\sum_i p^{k_i} q^{l_i}$ where the summands form an antichain under divisibility; the question concerns the density of non-representable $n$ when $\\{p,q\\} \\ne \\{2,3\\}$."
+    },
+    {
       "id": "basic-definitions",
-      "title": "Basic Definitions",
-      "summary": "Power form p^k q^l, non-divisibility, representability",
-      "startLine": 42,
-      "endLine": 77,
-      "mathContext": "Mathematical content: Power form p^k q^l, non-divisibility, representability"
+      "title": "Part I — Basic Definitions",
+      "summary": "Defines IsPowerForm (numbers p^k q^l), NoOneDividesAnother (an antichain under divisibility), IsRepresentable (n is a nonempty antichain sum of power forms), and NonRepresentable (the set of n that are not representable).",
+      "startLine": 44,
+      "endLine": 79,
+      "mathContext": "$\\text{IsPowerForm}(p,q,n) :\\Leftrightarrow \\exists k,l.\\ n = p^k q^l$; $n$ representable iff $\\exists$ finite antichain $S$ of power forms with $\\sum S = n$."
     },
     {
       "id": "case-2-3",
-      "title": "The {2,3} Case",
-      "summary": "Erdős's 'silly conjecture' and the simple inductive proof",
-      "startLine": 78,
-      "endLine": 110,
-      "mathContext": "Verified: Erdős's 'silly conjecture' and the simple inductive proof"
+      "title": "Part II — The {2,3} Case (Erdős's \"Silly Conjecture\")",
+      "summary": "Fully proves (0 sorries) that for {p,q} = {2,3} every n ≥ 1 is representable. Eight helper lemmas (isPowerForm_mul_two, noOneDividesAnother_image_mul_two, sum_image_mul_two, mul_two_injOn, isPowerForm_pow_three, even_not_dvd_odd, three_pow_odd, image_mul_two_even) support case_2_3_all_representable, a strong induction: base n=1; even n=2m doubles the representation of m (preserving the antichain and power-form properties); odd n adds 3^k for k = ⌊log₃ n⌋ to a doubled representation of (n−3^k)/2, with the antichain property guaranteed because 3^k is odd while the doubled terms are even and bounded below 2·3^k.",
+      "startLine": 80,
+      "endLine": 277,
+      "mathContext": "By strong induction: even $n = 2m$ doubles an antichain ($2\\cdot3^a2^b = 3^a2^{b+1}$); odd $n$ uses $3^k \\le n < 3^{k+1}$ and represents $n - 3^k = 2m$, the odd $3^k$ staying incomparable to the even doubled terms."
     },
     {
       "id": "general-case",
-      "title": "General Case",
-      "summary": "Erdős-Lewin theorem: finite exceptions iff {2,3}",
-      "startLine": 111,
-      "endLine": 133,
-      "mathContext": "Verified: Erdős-Lewin theorem: finite exceptions iff {2,3}"
+      "title": "Part III — General Case (p,q) ≠ (2,3)",
+      "summary": "Axiomatizes the Erdős-Lewin theorem (1996): the set of non-representable numbers is finite iff {p,q} = {2,3}. Derives infinitely_many_non_rep — for any coprime p > q ≥ 2 with {p,q} ≠ {2,3}, there are infinitely many non-representable numbers.",
+      "startLine": 278,
+      "endLine": 300,
+      "mathContext": "Erdős-Lewin: $\\#\\,\\text{NonRepresentable}(p,q) < \\infty \\iff \\{p,q\\} = \\{2,3\\}$; hence for all other coprime pairs the non-representable set is infinite."
     },
     {
       "id": "yu-chen",
-      "title": "Yu-Chen Results (2022)",
-      "summary": "Density zero and coprime infinitude theorems",
-      "startLine": 134,
-      "endLine": 172,
-      "mathContext": "Verified: Density zero and coprime infinitude theorems"
+      "title": "Part IV — Yu-Chen Results (2022)",
+      "summary": "Defines HasDensity (natural density of a set of integers) and CoprimeNonRepresentable (non-representable n coprime to pq), and documents the Yu-Chen 2022 results: the non-representable numbers have density zero for many parameter ranges (q > 3, or q=3 ∧ p>6, or q=2 ∧ p>10), and there are infinitely many coprime non-representables for most (p,q).",
+      "startLine": 301,
+      "endLine": 329,
+      "mathContext": "Natural density $d(A) = \\lim_{n\\to\\infty} \\frac{|A \\cap [1,n]|}{n}$; Yu-Chen: $d(\\text{NonRepresentable}(p,q)) = 0$ across wide parameter ranges."
     },
     {
       "id": "minimum-summand",
-      "title": "Minimum Summand Size",
-      "summary": "Bounds on f(n): how large can summands be?",
-      "startLine": 173,
-      "endLine": 204,
-      "mathContext": "Bound: Bounds on f(n): how large can summands be?"
+      "title": "Part V — Minimum Summand Size",
+      "summary": "Defines minSummandBound, the supremum f over thresholds such that n admits an antichain representation with every summand > f, and documents the Yu-Chen (2022) two-sided bound and the Yang-Zhao (2025) improved lower bound.",
+      "startLine": 330,
+      "endLine": 350,
+      "mathContext": "$\\dfrac{n}{(\\log n)^{\\log_2 3}} \\ll f(n) \\ll \\dfrac{n}{\\log n}$ (Yu-Chen 2022); Yang-Zhao (2025) sharpen the lower bound to $f(n) \\gg \\dfrac{n}{\\log n}$."
     },
     {
       "id": "related",
-      "title": "Related Problems",
-      "summary": "Connections to Problems #123, #845, #246",
-      "startLine": 205,
-      "endLine": 215,
-      "mathContext": "Mathematical content: Connections to Problems #123, #845, #246"
+      "title": "Part VI — Related Problems",
+      "summary": "Documents connections to neighboring Erdős problems: #123 (three coprime bases p, q, r), #845 (further questions on the {2,3} representation), and #246 (representations without the non-divisibility constraint).",
+      "startLine": 351,
+      "endLine": 361,
+      "mathContext": "Variants relax the two-base or antichain constraints, e.g. three bases $p^k q^l r^m$ (#123) or completeness of $\\{a^k b^l\\}$ without the divisibility restriction (#246)."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "Concrete representations for small numbers",
-      "startLine": 216,
-      "endLine": 246,
-      "mathContext": "Mathematical content: Concrete representations for small numbers"
+      "title": "Part VII — Examples",
+      "summary": "Proves example_1_representable (1 = 2^0·3^0 is representable as the single-element antichain {1}) and documents that all small cases 1..10 are representable for {3,2}.",
+      "startLine": 362,
+      "endLine": 389,
+      "mathContext": "$1 = 3^0 \\cdot 2^0$ with $S = \\{1\\}$; small cases $1,\\ldots,10$ are all representable in the $\\{2,3\\}$ system."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "Problem status and main results",
-      "startLine": 247,
-      "endLine": 265,
-      "mathContext": "Mathematical content: Problem status and main results"
+      "title": "Part VIII — Summary",
+      "summary": "Bundles the file's status into erdos_1110_summary and erdos_1110_status: the {2,3} case is completely solved (every n ≥ 1 representable) and all other coprime pairs have infinitely many non-representable integers. Closes the namespace.",
+      "startLine": 390,
+      "endLine": 437,
+      "mathContext": "$(\\forall n \\ge 1,\\ \\text{IsRepresentable}\\,3\\,2\\,n) \\wedge (\\forall p>q\\ge2 \\text{ coprime},\\ \\{p,q\\}\\ne\\{2,3\\} \\Rightarrow \\text{NonRepresentable}(p,q) \\text{ infinite})$."
     }
   ],
   "conclusion": {
