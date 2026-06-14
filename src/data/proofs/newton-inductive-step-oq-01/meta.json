@@ -80,44 +80,100 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Elementary Symmetric Polynomials",
-      "startLine": 33,
-      "endLine": 58,
-      "summary": "Definition of esymm on lists of reals using the standard recurrence, with simp lemmas.",
-      "mathContext": "The elementary symmetric polynomial $e_k(x_1, \\ldots, x_n)$ satisfies the recurrence $e_k(x_1, \\ldots, x_n) = e_k(x_2, \\ldots, x_n) + x_1 \\cdot e_{k-1}(x_2, \\ldots, x_n)$."
+      "id": "header",
+      "title": "Header and Imports",
+      "summary": "Statement of Newton's inequality e_k² ≥ e_{k-1}·e_{k+1} (log-concavity of elementary symmetric polynomials), the binomial-normalized mean form ē_k² ≥ ē_{k-1}·ē_{k+1}, the four-step induction strategy, references (Newton 1707; Niculescu 2000; Hardy–Littlewood–Pólya), and Mathlib imports.",
+      "startLine": 1,
+      "endLine": 34,
+      "mathContext": "$C(n,k)^2\\,e_k^2\\geq C(n,k-1)C(n,k+1)\\,e_{k-1}e_{k+1}$, equivalently $\\bar e_k^2\\geq\\bar e_{k-1}\\bar e_{k+1}$ with $\\bar e_k=e_k/C(n,k)$. OQ-01 extension of NewtonInductiveStep.lean."
     },
     {
-      "id": "basic-properties",
+      "id": "esymm-def",
+      "title": "Elementary Symmetric Polynomials on Lists",
+      "summary": "Defines `esymm : List ℝ → ℕ → ℝ` via the recurrence esymm (x::xs) k = esymm xs k + x·esymm xs (k−1).",
+      "startLine": 35,
+      "endLine": 45,
+      "mathContext": "$e_k(x{:}{:}xs)=e_k(xs)+x\\cdot e_{k-1}(xs)$ — the recurrence driving the induction on list length."
+    },
+    {
+      "id": "basic-props",
       "title": "Basic Properties",
-      "startLine": 59,
-      "endLine": 100,
-      "summary": "Proves e_0 = 1, vanishing for k > n, e_n = product, and nonnegativity for nonneg inputs.",
-      "mathContext": "$e_0 = 1$, $e_k = 0$ for $k > n$, $e_n = \\prod x_i$, and $e_k \\geq 0$ when all $x_i \\geq 0$."
+      "summary": "Computational rfl/structural lemmas: esymm_nil_zero, esymm_nil_succ, esymm_cons_zero, esymm_cons_succ, esymm_zero (e₀=1), esymm_eq_zero_of_gt (e_k=0 for k>length), esymm_length (e_n = product), and esymm_nonneg (nonneg list ⇒ e_k ≥ 0).",
+      "startLine": 46,
+      "endLine": 107,
+      "mathContext": "$e_0=1$, $e_k=0$ for $k>n$, $e_n=\\prod x_i$, and $x_i\\geq 0\\Rightarrow e_k\\geq 0$."
     },
     {
-      "id": "binom-log-concave",
-      "title": "Log-Concavity of Binomial Coefficients",
-      "startLine": 117,
-      "endLine": 170,
-      "summary": "Proves C(n,k)² ≥ C(n,k-1)·C(n,k+1) using absorption identities, reducing to k(n-k) ≤ (n-k+1)(k+1).",
-      "mathContext": "The binomial coefficients are log-concave: $\\binom{n}{k}^2 \\geq \\binom{n}{k-1} \\binom{n}{k+1}$. Proved via the absorption identity $k \\binom{n}{k} = (n-k+1) \\binom{n}{k-1}$."
+      "id": "base-case",
+      "title": "Newton's Inequality: Single-Element Base Case",
+      "summary": "newton_ineq_singleton: for a single element [a] with a ≥ 0, e₁² ≥ e₀·e₂ holds trivially (0 ≤ a²).",
+      "startLine": 108,
+      "endLine": 114,
+      "mathContext": "Base case of the induction: $e_1([a])^2=a^2\\geq 0=e_0\\cdot e_2$."
+    },
+    {
+      "id": "mean-form-general",
+      "title": "Newton's Inequality: Normalized (Mean) Form",
+      "summary": "States the general binomial-normalized theorem newton_inequality_binomial (C(n,k−1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k−1}·e_{k+1} for all k). The general inductive step is the single remaining `sorry` (line 154) — the Cauchy–Schwarz expansion of the recurrence; the k=1 specialization below is fully proved independently.",
+      "startLine": 115,
+      "endLine": 155,
+      "mathContext": "Equivalent to $\\bar e_k^2\\geq\\bar e_{k-1}\\bar e_{k+1}$. The full induction on $xs$ requires bounding each cross term of $F_k=E_k+xE_{k-1}$; this step is left open (1 sorry)."
+    },
+    {
+      "id": "sum-of-squares",
+      "title": "Sum-of-Squares Identity (k = 1 Key Lemma)",
+      "summary": "esymm_sum_sub_sq_nonneg: the key nonnegativity lemma ∑(xᵢ − t)² ≥ 0 expressed through esymm, the engine of the fully-proved k=1 case.",
+      "startLine": 156,
+      "endLine": 181,
+      "mathContext": "The expression equals $\\sum_{i=1}^n (x_i - t)^2\\geq 0$ — a discriminant-style identity yielding the $k=1$ inequality."
+    },
+    {
+      "id": "k1-case",
+      "title": "Newton's Inequality, k = 1 Case (Fully Proved)",
+      "summary": "newton_inequality_binomial_k_one: the k=1 instance ē₁² ≥ ē₂ (first Maclaurin inequality with cleared denominators), proved completely via the sum-of-squares identity — independent of the open general sorry.",
+      "startLine": 182,
+      "endLine": 335,
+      "mathContext": "$\\bar e_1^2\\geq\\bar e_2$, i.e. $(\\sum x_i/n)^2\\geq(\\sum_{i<j}x_ix_j)/C(n,2)$, from $\\sum(x_i-\\bar x)^2\\geq 0$."
+    },
+    {
+      "id": "direct-form",
+      "title": "Newton's Inequality: Direct Form & Binomial Log-Concavity",
+      "summary": "binom_log_concave (C(n,k)² ≥ C(n,k−1)·C(n,k+1)) and binom_ultra_log_concave — the binomial-coefficient log-concavity feeding the direct (un-normalized) form of Newton's inequality.",
+      "startLine": 336,
+      "endLine": 430,
+      "mathContext": "$\\binom{n}{k}^2\\geq\\binom{n}{k-1}\\binom{n}{k+1}$: log-concavity of the binomial row, squared into the ultra-log-concave bound."
+    },
+    {
+      "id": "mean-form",
+      "title": "Newton's Inequality: Mean Form",
+      "summary": "Defines esymmMean ē_k = e_k/C(n,k) and states newton_inequality_means — the most elegant statement that the elementary symmetric means form a log-concave sequence.",
+      "startLine": 431,
+      "endLine": 471,
+      "mathContext": "$(\\bar e_0,\\bar e_1,\\dots,\\bar e_n)$ is log-concave: $\\bar e_k^2\\geq\\bar e_{k-1}\\bar e_{k+1}$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: Maclaurin & AM–GM",
+      "summary": "maclaurin_first_step and amgm_from_newton, both derived from the fully-proved k=1 case (explicitly independent of the open general sorry), recovering the first Maclaurin inequality and AM–GM.",
+      "startLine": 472,
+      "endLine": 511,
+      "mathContext": "$(\\sum x_i/n)^2\\geq(\\sum_{i<j}x_ix_j)/C(n,2)$ ⇒ AM–GM at the two-term level."
     },
     {
       "id": "small-cases",
       "title": "Explicit Small Cases",
-      "startLine": 193,
-      "endLine": 245,
-      "summary": "Newton's inequality for n=2 (via (x-y)² ≥ 0) and n=3 (both k=1 and k=2), each reduced to sum-of-squares by nlinarith.",
-      "mathContext": "For $n=2$: $(x+y)^2 \\geq 4xy$. For $n=3$: $(x+y+z)^2 \\geq 3(xy+xz+yz)$ and $(xy+xz+yz)^2 \\geq 3xyz(x+y+z)$."
+      "summary": "Concrete instances: newton_two ((x+y)² ≥ 4xy), newton_three_k1 (e₁² ≥ 3e₂), newton_three_k2 (e₂² ≥ 3e₁e₃), and esymm_one_eq_sum (e₁ = list sum).",
+      "startLine": 512,
+      "endLine": 558,
+      "mathContext": "$n=2$: $(x+y)^2\\geq 4xy\\iff(x-y)^2\\geq 0$. $n=3$: $e_1^2\\geq 3e_2$ and $e_2^2\\geq 3e_1e_3$."
     },
     {
-      "id": "consequences",
-      "title": "Consequences: Maclaurin and AM-GM",
-      "startLine": 172,
-      "endLine": 193,
-      "summary": "First Maclaurin inequality ē₁² ≥ ē₂ and the AM-GM connection (mean)² ≥ average pairwise product.",
-      "mathContext": "From Newton's inequality with $k=1$: $\\bar{e}_1^2 \\geq \\bar{e}_0 \\cdot \\bar{e}_2 = \\bar{e}_2$. This gives $(\\sum x_i / n)^2 \\geq \\sum_{i<j} x_i x_j / \\binom{n}{2}$."
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Recap of results: esymm framework and basic properties, the sum-of-squares-based fully-proved k=1 case with its Maclaurin/AM–GM consequences, binomial log-concavity, and the single open sorry in the general inductive step.",
+      "startLine": 559,
+      "endLine": 586,
+      "mathContext": "Status: k=1 case and consequences fully proved; the general $k$ induction (newton_inequality_binomial) remains a single sorry."
     }
   ],
   "conclusion": {
