@@ -126,44 +126,100 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "header-imports",
       "title": "Header and Imports",
-      "summary": "Problem setup, references (OEIS A064152, erdosproblems.com), and Mathlib imports.",
       "startLine": 1,
-      "endLine": 32,
-      "mathContext": "The density question: does lim C(x)/π(x) = 1? Probabilistic heuristic from PNT."
+      "endLine": 51,
+      "summary": "Module docstring stating Erdős Problem #1059 OQ-01 (qualifying primes: primes p such that p − k! is composite for every k with k! < p) and the file's goal — extend the gallery from 2 to 6 computational witnesses and formalize the logarithmic factorial-check bound. Imports Nat prime/factorial/log, Finset/Set, `Mathlib.Tactic`, and the sibling `Proofs.Erdos1059OQ02`.",
+      "mathContext": "The qualifying-prime predicate is the object whose natural density Erdős conjectures to be 1 among all primes. The import of OQ-02 brings in the Selberg-axiom infinitude result reused in the cross-problem synthesis section."
     },
     {
-      "id": "decidability",
+      "id": "core-def",
       "title": "Core Definition and Decidability",
-      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via bounded quantifier. Key lemma: factorial_lt_implies_lt (k ≤ k! → k! < n → k < n).",
-      "startLine": 34,
-      "endLine": 57,
-      "mathContext": "$\\text{AFSC}(n) \\iff \\forall k < n, k! < n \\Rightarrow \\neg\\text{Prime}(n-k!) \\wedge n-k! \\geq 2$. Bound: $k \\leq k! < n \\Rightarrow k < n$."
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "Defines `AllFactorialSubtractionsComposite n` (for every k with k! < n, n − k! is composite, i.e. not prime and ≥ 2), the helper `factorial_lt_implies_lt` (k! < n ⟹ k < n via `Nat.self_le_factorial`), and the `Decidable` instance `decAllFact` reducing the predicate to a bounded quantifier over `range n`.",
+      "mathContext": "Decidability via a bounded quantifier is what makes every concrete witness checkable by `native_decide`; it converts an a-priori unbounded condition over all factorials into a finite check, since k! < n forces k < n."
     },
     {
-      "id": "witnesses",
-      "title": "New Witnesses: 461, 557, 673",
-      "summary": "Verifies three new prime witnesses using native_decide. For each p in (120, 720): checks p-1, p-2, p-6, p-24, p-120 are all composite. Packages all five witnesses (including 101, 211) in five_prime_witnesses.",
-      "startLine": 58,
-      "endLine": 103,
-      "mathContext": "For $p = 461$: $\\{460, 459=3{\\cdot}153, 455=5{\\cdot}91, 437=19{\\cdot}23, 341=11{\\cdot}31\\}$ — all composite. Similarly for 557 and 673."
+      "id": "witnesses-level5",
+      "title": "Witnesses: Level 5 (p ∈ (120, 720))",
+      "startLine": 72,
+      "endLine": 96,
+      "summary": "Verifies three new level-5 prime witnesses 461, 557, 673 by `native_decide`: each `prime_p` and `witness_p` pair establishes primality and `AllFactorialSubtractionsComposite`. For p ∈ (5!, 6!] the binding checks are p−2, p−6, p−24, p−120 (p−1 is even > 2 for odd p).",
+      "mathContext": "For $p = 461$: $\\{459=3{\\cdot}153, 455=5{\\cdot}91, 437=19{\\cdot}23, 341=11{\\cdot}31\\}$ — all composite. Similarly for 557 and 673."
     },
     {
-      "id": "check-structure",
+      "id": "witnesses-level6",
+      "title": "Witnesses: Level 6 (p ∈ (720, 5040))",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "Verifies the first level-6 witness p = 769 (`prime_769`, `witness_769`) by `native_decide` — for p ∈ (6!, 7!] the checks extend to k = 0..6 (k! up to 720). Packages all six witnesses (101, 211, 461, 557, 673, 769) into `six_prime_witnesses`.",
+      "mathContext": "769 is the first prime whose qualifying check reaches level 6 (requiring p − 720 composite), demonstrating that the witness set is not confined to a single factorial interval."
+    },
+    {
+      "id": "factorial-check-structure",
       "title": "Factorial Check Structure",
-      "summary": "Defines factorialCheckSet and factorialCheckCount. Verifies: checkCount(101) = 5, checkCount(211) = checkCount(461) = checkCount(557) = checkCount(673) = 6. Proves monotonicity.",
-      "startLine": 104,
-      "endLine": 134,
-      "mathContext": "For $p \\in (l!, (l+1)!]$: exactly $l+1$ values of $k$ satisfy $k! < p$. $p \\in (5!, 6!] \\Rightarrow l=5 \\Rightarrow 6$ checks."
+      "startLine": 126,
+      "endLine": 156,
+      "summary": "Defines `factorialCheckSet n` (the k-indices with k! < n) and `factorialCheckCount n` (its cardinality), computes the counts for the six witnesses by `native_decide` (5, 6, 6, 6, 6, 7), and proves `factorialCheckCount_mono` (monotone in n).",
+      "mathContext": "For p ∈ (l!, (l+1)!] exactly l+1 values of k satisfy k! < p, so the predicate requires l+1 compositeness checks. The key density heuristic is l+1 = O(log p / log log p), far smaller than ln p."
     },
     {
-      "id": "density",
-      "title": "Natural Density Formalization",
-      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) using Finset.filter. Proves C(x) ≤ π(x), C is monotone, C(673) ≥ 5. States the density-1 axiom.",
-      "startLine": 135,
-      "endLine": 215,
-      "mathContext": "$C(x) = |\\{p \\leq x : p \\text{ prime}, \\text{AFSC}(p)\\}|$, $\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Conjecture: $C(x)/\\pi(x) \\to 1$."
+      "id": "check-count-bound",
+      "title": "Factorial Check Count Bound",
+      "startLine": 157,
+      "endLine": 225,
+      "summary": "Proves the logarithmic bound `factorialCheckCount n ≤ ⌊log₂ n⌋ + 2` (`factorialCheckCount_le_log`) via the induction lemma `2^(k-1) ≤ k!` and the log-monotonicity step `2^m < n ⟹ m ≤ Nat.log 2 n`, with a worked instance `checkCount_bound_769`.",
+      "mathContext": "This is the formal version of the density heuristic's key asymptotic claim: the number of factorial subtractions to verify grows only logarithmically in n, which is what makes qualifying primes 'almost all' primes under the conjecture."
+    },
+    {
+      "id": "exact-check-count",
+      "title": "Exact Factorial Check Count",
+      "startLine": 226,
+      "endLine": 270,
+      "summary": "Sharpens the bound to an exact formula: when l! < n ≤ (l+1)!, `factorialCheckCount n = l+1` (`factorialCheckCount_eq_of_interval`), and the count is constant on each factorial interval (`factorialCheckCount_const_on_interval`).",
+      "mathContext": "Knowing the count exactly (not just ⌊log₂ n⌋ + 2) pins the check complexity to the 'level' l of n, making the O(log n / log log n) growth rate precise rather than merely an upper bound."
+    },
+    {
+      "id": "natural-density",
+      "title": "Natural Density",
+      "startLine": 271,
+      "endLine": 345,
+      "summary": "Formalizes the density framework: `qualifyingPrimeCount x` (= C(x)) and `primeCount x` (= π(x)), with `qualifyingCount_le_primeCount` (C ≤ π, qualifying primes are a subset), `qualifyingPrimeCount_mono`, and the concrete `qualifyingPrimeCount_ge_six` (C(769) ≥ 6).",
+      "mathContext": "The natural density is lim_{x→∞} C(x)/π(x). Establishing C(x) ≤ π(x) and the concrete lower bounds frames the conjecture density = 1 as the statement that the qualifying subset is asymptotically all of the primes."
+    },
+    {
+      "id": "density-conjecture",
+      "title": "The Density Conjecture",
+      "startLine": 346,
+      "endLine": 368,
+      "summary": "States the open density-one conjecture as an `axiom` `density_one_conjecture` (the single assumption in the file) and documents the analytic ingredients a full proof would need (PNT, Brun–Titchmarsh sieve bound).",
+      "mathContext": "This is the one honest assumption carried by the file: lim C(x)/π(x) = 1 is open. The surrounding theorems are all unconditional; only the asymptotic density claim is axiomatized."
+    },
+    {
+      "id": "density-gap",
+      "title": "Non-Qualifying Primes: The Density Gap",
+      "startLine": 369,
+      "endLine": 418,
+      "summary": "Shows the density is strictly < 1 at every finite stage: `three_not_qualifying` (3 − 0! = 2 is prime, so 3 fails), the `qualifyingPrimeCount_lt_primeCount` gap theorem (C(x) < π(x) for x ≥ 3), positivity `qualifyingPrimeCount_pos` (x ≥ 101), and the sandwich `density_strictly_between` (0 < C(x) < π(x)).",
+      "mathContext": "The conjecture density = 1 is an asymptotic statement only: at every finite x there is at least one non-qualifying prime (witnessed by 3), so C(x) < π(x) strictly. The sandwich confirms the limit must approach 1 from below."
+    },
+    {
+      "id": "cross-problem-synthesis",
+      "title": "Cross-Problem Synthesis: Qualifying Primes Are Infinite",
+      "startLine": 419,
+      "endLine": 514,
+      "summary": "Imports OQ-02's Selberg-axiom infinitude result: `qualifyingPrimes_infinite`, the canonical level-l witness `levelCandidate` (chosen via `Classical.choice` in the l-th primorial interval, ≤ (l+1)!), distinctness across levels, and the Selberg lower bound `qualifyingPrimeCount_ge N : C((N+3)!) ≥ N`.",
+      "mathContext": "Conditional on the Selberg density axiom (from OQ-02), the qualifying primes form an infinite set, with an explicit per-level witness construction giving the linear lower bound C((N+3)!) ≥ N. The two files share the predicate body across namespaces."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 515,
+      "endLine": 566,
+      "summary": "Closing docstring recapping the contribution: four new computational witnesses (461, 557, 673 at level 5; 769 at level 6) extending the gallery from 2 to 6, the logarithmic and exact factorial-check-count bounds, the natural-density framework with the strict finite-stage gap, and the conditional infinitude synthesis with OQ-02.",
+      "mathContext": "The file's unconditional content is the witness set and the O(log n / log log n) check-count theory; the density-one statement and the infinitude result remain conditional on the stated axioms."
     }
   ],
   "crossReferences": [
