@@ -59,44 +59,81 @@
   },
   "sections": [
     {
-      "id": "upper-bound",
+      "id": "part1-upper-bound",
       "title": "Part 1: Upper Bound — Lagrange's Theorem",
       "startLine": 39,
-      "endLine": 55,
-      "summary": "`sum_four_squares`: every natural number is a sum of 4 squares (delegates to Mathlib's `Nat.sq_add_sq`). `waring_g2_upper`: combines into Waring language.",
-      "mathContext": "$\\forall n \\in \\mathbb{N}, \\exists a,b,c,d: a^2 + b^2 + c^2 + d^2 = n$. From Mathlib's `Nat.sq_add_sq`."
+      "endLine": 47,
+      "summary": "sum_four_squares: every natural number is a sum of 4 squares (from Mathlib's Nat.sum_four_squares), giving the upper bound g(2) <= 4."
     },
     {
-      "id": "lower-bound",
-      "title": "Parts 2–3: Lower Bound — 7 Needs 4 Squares",
-      "startLine": 56,
-      "endLine": 115,
-      "summary": "Chain of theorems: `sq_mod_eight` (squares ≡ 0,1,4 mod 8), `sum_three_sq_mod_eight_ne_seven` (no sum of 3 squares ≡ 7 mod 8), `seven_not_sum_three_sq`, `seven_not_sum_two_sq`, `seven_not_sq`, `seven_needs_four_squares`. `waring_g2_lower` and `waring_g2_eq_four` complete the proof.",
-      "mathContext": "$x^2 \\bmod 8 \\in \\{0,1,4\\}$ for all $x$. Sum of 3 values from $\\{0,1,4\\}$ cannot equal 7. Hence $7$ requires exactly 4 squares: $4+1+1+1$."
+      "id": "part2-lower-bound",
+      "title": "Part 2: Lower Bound — Some Numbers Need 4 Squares",
+      "startLine": 48,
+      "endLine": 101,
+      "summary": "Mod-8 analysis: squares are 0/1/4 mod 8, a sum of three squares is never 7 mod 8, so 7 is not a sum of <=3 squares -- 7 needs exactly 4 squares (g(2) >= 4)."
     },
     {
-      "id": "descent",
-      "title": "Parts 4–6: Descent and General Exclusion",
-      "startLine": 116,
-      "endLine": 240,
-      "summary": "`eight_b_plus_seven_needs_four`: all 8b+7 need 4 squares. Descent: `sq_mod_four`, `four_dvd_sum_three_sq_imp_all_even`, `four_mul_not_sum_three_sq`. Then specific cases: 28, 112, 448, and `excluded_form_needs_four` (∀ a b, 4^a·(8b+7) needs 4 squares).",
-      "mathContext": "$4n = x^2+y^2+z^2 \\Rightarrow 2 | x,y,z \\Rightarrow n = (x/2)^2+(y/2)^2+(z/2)^2$. Induction gives $4^a(8b+7) \\not= x^2+y^2+z^2$."
+      "id": "part3-main-theorem",
+      "title": "Part 3: g(2) = 4 — The Main Theorem",
+      "startLine": 102,
+      "endLine": 121,
+      "summary": "waring_g2_upper, waring_g2_lower, and waring_g2_eq_four: combining Lagrange with the 7-needs-4 result to prove g(2) = 4."
     },
     {
-      "id": "computable",
-      "title": "Parts 7–9: Computable Classification and Batch Verification",
-      "startLine": 241,
-      "endLine": 420,
-      "summary": "Defines `numSquaresNeeded n`, `isExcludedForm`. Verifies `numSq_0` through `numSq_28` (15+ concrete values). `checkMaxFour 100` and `checkMaxFour 200` verify all ≤ 200 need at most 4. `checkExcludedMatchesFour 50` confirms excluded form ↔ needs 4 for n ≤ 50.",
-      "mathContext": "$\\text{numSquaresNeeded}(n) = \\min\\{k : \\exists a_1,\\ldots,a_k, \\sum a_i^2 = n\\}$ computed by bounded search. Batch verification via `native_decide`."
+      "id": "part4-general-exclusion",
+      "title": "Part 4: Numbers Needing 4 Squares — General Arguments",
+      "startLine": 122,
+      "endLine": 152,
+      "summary": "Every n = 7 (mod 8) needs 4 squares; concrete cases 15, 23, 31 and the general family eight_b_plus_seven_needs_four."
     },
     {
-      "id": "infinity",
-      "title": "Part 9+: Infinity and G(2)=4",
-      "startLine": 230,
-      "endLine": 260,
-      "summary": "`infinitely_many_need_four`: ∀ M, ∃ n > M, n needs exactly 4 squares (via excluded form). `g2_eq_4` and `G_2_eq_4`: both Waring functions equal 4 for squares.",
-      "mathContext": "For any $M$, take $n = 8M + 7 > M$ — this needs exactly 4 squares. So infinitely many numbers require 4 squares, confirming $G(2) = g(2) = 4$."
+      "id": "part5-descent",
+      "title": "Part 5: The Descent Argument — 4·n Preserves Exclusion",
+      "startLine": 153,
+      "endLine": 238,
+      "summary": "Mod-4 descent: 4 | (x^2+y^2+z^2) forces all roots even, so four_mul_not_sum_three_sq lifts exclusion; chains to 28, 112, 448 and the general excluded_form_needs_four (4^a(8b+7)) plus infinitely_many_need_four."
+    },
+    {
+      "id": "part6-computable-classification",
+      "title": "Part 6: Computable Classification",
+      "startLine": 239,
+      "endLine": 323,
+      "summary": "Decidable numSquaresNeeded and isExcludedForm with native_decide verification for n <= 31, batch check checkAllAtMostFour 100, firstNeedingFour = 7, and checkExcludedMatchesFour proving excluded-form <-> needs-4 up to 100."
+    },
+    {
+      "id": "part7-counting-statistics",
+      "title": "Part 7: Counting Statistics",
+      "startLine": 324,
+      "endLine": 343,
+      "summary": "countNeedingK distribution counts and listNeedingFour 50 = [7,15,23,28,31,39,47]."
+    },
+    {
+      "id": "part8-asymptotic-G2",
+      "title": "Part 8: The G(2) Function (Asymptotic Waring)",
+      "startLine": 344,
+      "endLine": 357,
+      "summary": "waring_big_G2_lower: arbitrarily large numbers (the family 8b+7) need 4 squares, so the asymptotic Waring constant G(2) = 4 (Davenport 1939)."
+    },
+    {
+      "id": "part9-structural-results",
+      "title": "Part 9: Additional Structural Results",
+      "startLine": 358,
+      "endLine": 402,
+      "summary": "Converse and scaling (four_mul_sum_three_sq, sq_mul_sum_three_sq), concrete 3- and 4-square decompositions, and fourth_square_essential for excluded numbers."
+    },
+    {
+      "id": "part10-batch-verification",
+      "title": "Part 10: Batch Verification of At-Most-4 Property",
+      "startLine": 403,
+      "endLine": 412,
+      "summary": "checkMaxFour and max_four_200: no number <= 200 needs more than 4 squares."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 413,
+      "endLine": 442,
+      "summary": "Tabulated recap of all proved results (0 axioms, 0 sorries) and key insights: g(2) = 4 is tight, mod-8 lower bound, descent principle, excluded-form characterization, and G(2) = g(2) = 4."
     }
   ],
   "conclusion": {
