@@ -76,66 +76,84 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Problem Statement and Imports",
+      "summary": "Module docstring stating Erdős Problem #1096 (do gaps x_{k+1} − x_k → 0 for q close to 1, with conjectured threshold the smallest Pisot number q₀ ≈ 1.3247), the historical record (Erdős-Joó-Komornik 1990, Bugeaud 1996), imports, and the namespace/opens declarations.",
+      "startLine": 1,
+      "endLine": 33,
+      "mathContext": "For $1 < q$, the $q$-representable numbers $\\{\\sum_{i\\in S} q^i : S \\subseteq \\mathbb{N}\\ \\text{finite}\\}$ ordered as $0 = x_1 < x_2 < \\cdots$; the question is whether $x_{k+1}-x_k \\to 0$."
+    },
+    {
       "id": "q-expansions",
-      "title": "q-Expansions",
-      "summary": "Definition of q-representable numbers and proved examples",
-      "startLine": 39,
-      "endLine": 71,
+      "title": "Part I — q-Expansions",
+      "summary": "Defines QRepresentable, the set of finite power-sums Σ_{i∈S} q^i, with proved membership examples (0, 1, q are q-representable).",
+      "startLine": 34,
+      "endLine": 65,
       "mathContext": "$Q_q = \\{\\sum_{i \\in S} q^i : S \\subseteq \\mathbb{N},\\, |S| < \\infty\\}$ with verified examples: $0, 1, q \\in Q_q$."
     },
     {
       "id": "ordered-sequence",
-      "title": "The Ordered Sequence",
-      "summary": "Axiomatized enumeration and gap definition",
-      "startLine": 72,
-      "endLine": 90,
+      "title": "Part II — The Ordered Sequence",
+      "summary": "Axiomatizes qSequence (the k-th smallest q-representable number) and defines the gap function gap q k = x_{k+1} − x_k.",
+      "startLine": 66,
+      "endLine": 80,
       "mathContext": "Enumeration $0 = x_1 < x_2 < \\cdots$ and gap function $g(k) = x_{k+1} - x_k$."
     },
     {
       "id": "pisot-numbers",
-      "title": "Pisot-Vijayaraghavan Numbers",
-      "summary": "Pisot predicate, smallest Pisot q₀, golden ratio φ",
-      "startLine": 91,
-      "endLine": 118,
-      "mathContext": "$\\text{IsPisot}(\\theta) :\\Leftrightarrow \\theta > 1$ algebraic integer, all conjugates $|\\theta_i| < 1$. Smallest: $q_0 \\approx 1.3247$ (root of $x^3 - x - 1$)."
+      "title": "Part III — Pisot-Vijayaraghavan Numbers",
+      "summary": "Defines IsPisot concretely via integer polynomial roots (an algebraic integer θ > 1 all of whose other conjugates have |z| < 1) and constructs smallestPisot q₀ as the root in (1,2) of x³ = x + 1 (existence by IVT, uniqueness by monotonicity). Fully proves (0 sorries): smallestPisot_value (q₀ ∈ (1.324, 1.325) via nlinarith), smallestPisot_is_pisot (X³−X−1 monic, q₀ a root, and the conjugate roots of the cofactor quadratic have |z|² = q₀²−1 < 1), plus goldenRatio φ = (1+√5)/2 with goldenRatio_gt_one, goldenRatio_lt_two, and goldenRatio_is_pisot (minimal polynomial X²−X−1, the other root 1−φ has |1−φ| = φ−1 < 1).",
+      "startLine": 81,
+      "endLine": 331,
+      "mathContext": "$\\text{IsPisot}(\\theta) :\\Leftrightarrow \\theta > 1$ is an algebraic integer all of whose other conjugates satisfy $|\\theta_i| < 1$. Smallest: $q_0 \\approx 1.3247$, root of $x^3 - x - 1$; golden ratio $\\varphi = \\tfrac{1+\\sqrt5}{2}$, root of $x^2 - x - 1$."
     },
     {
       "id": "ejk-results",
-      "title": "Erdős-Joó-Komornik Results (1990)",
-      "summary": "Pisot numbers lack gap property; universal gap bound ≤ 1",
-      "startLine": 119,
-      "endLine": 135,
+      "title": "Part IV — Erdős-Joó-Komornik Results (1990)",
+      "summary": "Defines HasGapProperty (gaps tend to 0) and axiomatizes the two 1990 results: pisot_no_gap_property (Pisot numbers do NOT have the gap property) and gap_universal_bound (for 1 < q ≤ 2 every gap is ≤ 1).",
+      "startLine": 332,
+      "endLine": 347,
       "mathContext": "$\\theta$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\theta)$. $\\forall q \\in (1,2]: g_q(k) \\leq 1$."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "summary": "Erdős-Joó conjecture with proved second part",
-      "startLine": 136,
-      "endLine": 152,
-      "mathContext": "Conjecture: $\\text{HasGapProperty}(q) \\iff q < q_0$."
+      "title": "Part V — The Main Conjecture",
+      "summary": "States ErdosJooConjecture (all 1 < q < q₀ have the gap property, and q₀ does not) and proves its known second part, conjecture_second_part, from pisot_no_gap_property applied to smallestPisot_is_pisot.",
+      "startLine": 348,
+      "endLine": 363,
+      "mathContext": "Conjecture: $\\text{HasGapProperty}(q) \\iff q < q_0$; the direction $\\neg\\text{HasGapProperty}(q_0)$ is proved."
     },
     {
       "id": "m-digit",
-      "title": "Characterization via m-Digit Expansions",
-      "summary": "Bugeaud's characterization and EJS refinement",
-      "startLine": 153,
-      "endLine": 180,
+      "title": "Part VI — Characterization via m-Digit Expansions",
+      "summary": "Defines the m-digit q-representable numbers (digits 0..m) and their ordered sequence, then axiomatizes Bugeaud's 1996 characterization (Pisot iff the m-digit gaps stay bounded below) and the Erdős-Joó-Schnitzer refinement for q < φ.",
+      "startLine": 364,
+      "endLine": 387,
       "mathContext": "$q$ Pisot $\\iff \\liminf g_q^{(m)}(k) > 0$ for all $m$ (Bugeaud 1996). For $q < \\varphi$: need only $m = 2$ (EJS 1996)."
     },
     {
       "id": "density",
-      "title": "Density Result",
-      "summary": "q-representable numbers become dense as q → 1⁺",
-      "startLine": 181,
-      "endLine": 191
+      "title": "Part VII — Density Result",
+      "summary": "States that as q → 1⁺ the set of q-representable numbers becomes arbitrarily dense in [0, N].",
+      "startLine": 388,
+      "endLine": 392,
+      "mathContext": "As $q \\to 1^+$, $Q_q$ is eventually $\\varepsilon$-dense in $[0, N]$ for every $N$."
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "Main results combining known gaps and Pisot results",
-      "startLine": 192,
-      "endLine": 198
+      "title": "Part VIII — Summary",
+      "summary": "A summary theorem combining the known facts: the universal gap bound and the failure of the gap property at Pisot numbers.",
+      "startLine": 393,
+      "endLine": 405,
+      "mathContext": "Known: $\\forall q\\in(1,2]\\ \\forall k,\\ g_q(k)\\le 1$ and $q_0$ Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(q_0)$."
+    },
+    {
+      "id": "golden-ratio-consequences",
+      "title": "Part IX — Consequences for the Golden Ratio",
+      "summary": "Specializes the general results to φ: the golden ratio does not have the gap property (it is Pisot), its q-expansion gaps are bounded by 1, and the Bugeaud characterization applies to φ. Closes the namespace.",
+      "startLine": 406,
+      "endLine": 424,
+      "mathContext": "$\\varphi$ is Pisot $\\Rightarrow \\neg\\text{HasGapProperty}(\\varphi)$; gaps $g_\\varphi(k) \\le 1$ since $1 < \\varphi \\le 2$."
     }
   ],
   "conclusion": {
