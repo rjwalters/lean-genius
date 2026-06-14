@@ -137,31 +137,45 @@
       "summary": "`ErdosProblem411`: characterize all $(n, r)$ with the doubling property. Formalized as $\\exists S \\subseteq \\mathbb{N} \\times \\mathbb{N}$ capturing all solutions with $S \\neq \\emptyset$."
     },
     {
-      "id": "known-solutions",
-      "title": "Known Solutions",
+      "id": "doubling-propagation",
+      "title": "Doubling Propagation",
       "startLine": 52,
-      "endLine": 74,
-      "summary": "All known solutions proved: $n = 10, 94$ for $r = 2$ via native_decide + doubling_propagation; `GeneralRatioRelation` definition; Cambie's ratio-3 ($n = 738$, $r = 4$, `cambie_ratio3`) and ratio-4 ($n = 148646, 4325798$, $r = 4$, `cambie_ratio4_148646/4325798`) via strong induction with `totientStep_triple/quadruple`. All 0 axioms, 0 sorries."
+      "endLine": 118,
+      "summary": "The self-similarity engine. Proves $\\varphi(2m) = 2\\varphi(m)$ for even $m > 0$ (`totient_double_even`, via `Nat.totient_mul_of_prime_of_dvd`) and the derived step identities $g(2m) = 2g(m)$ (`totientStep_double_even`) and $g(3m) = 3g(m)$ for $3 \\mid m$ (`totientStep_triple`). Establishes $g^k(n) \\geq n$ (`iteratedTotientStep_ge_start`) and even-preservation of iterates (`iteratedTotientStep_even`). Culminates in the private lemma `doubling_propagation`: for even $n > 2$, a single base case $g^2(n) = 2n$ propagates to $g^{k+2}(n) = 2 g^k(n)$ for all $k$ by induction. 0 axioms, 0 sorries."
+    },
+    {
+      "id": "known-solutions",
+      "title": "Known Solutions (PROVED)",
+      "startLine": 119,
+      "endLine": 273,
+      "summary": "All known solutions proved unconditionally. The $r = 2$ doublers $n = 10$ (`doubling_r2_n10`) and $n = 94$ (`doubling_r2_n94`) via `native_decide` base case + `doubling_propagation`. Introduces `GeneralRatioRelation n r c` for ratios $c \\neq 2$. Cambie's ratio-3 solution $g^{k+4}(738) = 3 g^k(738)$ (`cambie_ratio3`, via the strong-induction lemma `ratio3_738_aux` using `totientStep_triple` and 3-divisibility of all iterates). Proves $g(4m) = 4g(m)$ for $4 \\mid m$ (`totientStep_quadruple`, double application of the $p=2$ identity) and Cambie's two ratio-4 solutions $n = 148646, 4325798$ (`cambie_ratio4_148646`, `cambie_ratio4_4325798`, each via a strong-induction aux lemma). 0 axioms, 0 sorries."
     },
     {
       "id": "steinerberger-reduction",
-      "title": "Steinerberger's Reduction",
-      "startLine": 75,
-      "endLine": 84,
-      "summary": "Documents Steinerberger's (2025) equivalence: $\\text{DoublingRelation}(n, 2) \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$. The equivalence is noted in a comment but not formalized as a theorem (proving it would require progress on the open problem). Reduces asymptotic dynamics to a single finite equation."
+      "title": "Steinerberger's Reduction (PROVED, sufficient direction)",
+      "startLine": 274,
+      "endLine": 320,
+      "summary": "Formalizes Steinerberger's (2025, arXiv:2504.08023) reduction of the $r = 2$ case to the elementary equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$. Proves the computational expansion `iteratedTotientStep_two` ($g^2(n) = (n + \\varphi(n)) + \\varphi(n + \\varphi(n))$), the equivalence `steinerberger_iff` ($g^2(n) = 2n \\iff \\varphi(n) + \\varphi(n + \\varphi(n)) = n$), and the main sufficient direction `steinerberger_r2_sufficient`: any even $n > 2$ satisfying the equation is an $r = 2$ doubling solution with $K = 0$. Verifies the equation for the two known solutions $n = 10$ (`steinerberger_eq_n10`) and $n = 94$ (`steinerberger_eq_n94`) by `native_decide`. The converse direction (DoublingRelation → equation) is noted as not formalized."
+    },
+    {
+      "id": "cambie-l1-solutions",
+      "title": "Additional Cambie l=1 Doubling Solutions",
+      "startLine": 321,
+      "endLine": 373,
+      "summary": "Completes the $l = 1$ layer of Cambie's conjectured family $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$, i.e. $n \\in \\{4, 6, 10, 14, 70, 94\\}$. The cases $n = 10, 94$ are already proved above; this section adds the remaining four $n = 4, 6, 14, 70$ via `steinerberger_r2_sufficient`, each gated by a `native_decide` verification of the Steinerberger equation (`steinerberger_eq_n4/n6/n14/n70`) yielding `doubling_r2_n4/n6/n14/n70`. 0 axioms, 0 sorries."
     },
     {
       "id": "structural-properties",
       "title": "Structural Properties",
-      "startLine": 85,
-      "endLine": 108,
-      "summary": "Proved: even preservation $2 \\mid n \\wedge n > 2 \\implies 2 \\mid g(n)$ via `Nat.totient_even`. Cambie's conjecture: $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2, 3, 5, 7, 35, 47\\}$. Monotonicity: $g(n) \\geq n$ by `omega`."
+      "startLine": 374,
+      "endLine": 398,
+      "summary": "Proves even-preservation of $g$: for even $n > 2$, $g(n) = n + \\varphi(n)$ is even (`totientStep_even_of_even`, via `Nat.totient_even`), so orbits of even starting points stay even — consistent with all known solutions being even. States Cambie's structural conjecture as a definition `CambieConjecture` (all $r = 2$ solutions have form $n = 2^l \\cdot p$, $p \\in \\{2,3,5,7,35,47\\}$; open, not an axiom). Records monotonicity $g(n) \\geq n$ (`totientStep_ge`)."
     },
     {
       "id": "cambie-family-tower",
       "title": "Cambie Family Doubling Tower",
       "startLine": 399,
-      "endLine": 490,
+      "endLine": 491,
       "summary": "Proves Steinerberger's equation $\\varphi(n) + \\varphi(n + \\varphi(n)) = n$ is preserved under doubling: for even $n > 2$, the equation holds for $n$ iff it lifts to $2n$ (`steinerberger_eq_lift`). Iterating gives `steinerberger_eq_pow_two`: $\\varphi(2^l n) + \\varphi(2^l n + \\varphi(2^l n)) = 2^l n$ for all $l$. Composed with the sufficient direction yields `cambie_family_doubling`: $\\text{DoublingRelation}(2^l n)\\, 2$ for every $l \\geq 0$. Applied to the six l=1 base cases this proves *every* element of Cambie's conjectured family $\\{2^l p : l \\geq 1,\\ p \\in \\{2,3,5,7,35,47\\}\\}$ is an $r=2$ doubling solution unconditionally; the $l=2$ layer is recorded as `doubling_r2_n8`, `doubling_r2_n12`, `doubling_r2_n20`, `doubling_r2_n28`, `doubling_r2_n140`, `doubling_r2_n188`."
     }
   ],
