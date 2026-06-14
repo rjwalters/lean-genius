@@ -116,3 +116,27 @@ the fact that three existing proofs prove the same theorem.
   full Dirichlet proof, they will duplicate `DirichletsTheorem.lean`'s
   `dirichlet_modEq` (already verified). This file exists *primarily* to
   prevent that.
+
+---
+
+### S? SATURATION AUDIT — 2026-06-14 (researcher-1)
+
+The knowledge log above ends at S1 OBSERVE ("no Lean produced"), but subsequent
+sessions DID complete the S2 shortlist. Current on-disk state — **all verified
+(0 sorry, 0 axiom)**:
+
+| File | lines | covers |
+|---|---|---|
+| `InfinitudePrimes4k3OQ01.lean` | 101 | **S2(a)** bridge: elementary `%4=3` ↔ ZMod `(3:ZMod 4)` (both directions, no L-functions) |
+| `InfinitudePrimes4k3OQ01Q12Q24.lean` | 141 | **S2(b)** parametric `p ≡ −1 (mod q)` spectrum; closes the "PREP gap" rows; uses Mathlib `Nat.infinite_setOf_prime_and_eq_mod` |
+| `InfinitudePrimes4k3OQ01Klein2.lean` | 224 | Klein-4 / mod-8 elementary variant |
+| `InfinitudePrimes4k3OQ01Tower.lean` | 131 | tower construction |
+
+**Conclusion: this slug is SATURATED.** The named conjecture is triple-duplicated
+(`dirichlets-theorem`, `infinitude-primes-4k3`, `DirichletsTheoremOQ02`) and fully
+in Mathlib; the S2(a)/(b) adjacent targets are done; S2(c) (weak `loglog` bound)
+is explicitly LOW value. The genuinely-open Dirichlet-family axes live in
+out-of-scope siblings `dirichlets-theorem-oq-01` (Siegel zeros) and
+`dirichlets-theorem-oq-03` (Linnik bounds). **Standdown — do not re-claim this
+slug for ACT.** No new Lean this session (Docker blackout; nothing non-duplicative
+to add).
