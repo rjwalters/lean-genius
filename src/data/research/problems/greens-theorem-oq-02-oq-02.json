@@ -26,7 +26,7 @@
     "greens-theorem-oq-03",
     "greens-theorem-oq-04"
   ],
-  "status": "surveyed",
+  "status": "blocked",
   "selectedDate": "2026-04-12",
   "selectedBy": "seeker",
   "leanFiles": [
@@ -114,9 +114,10 @@
     "nextSteps": [
       "When Docker/build is restored: do NOT attempt the full GMT route the axiom docstring suggests. Instead build a self-contained FTC-for-AC lemma (≤400 lines) and discharge `greens_theorem_l1curl` by Fubini reduction to two 1D FTC-for-AC applications over the rectangle.",
       "Prototype the bridge: state `theorem ftc_of_absolutelyContinuous (f : ℝ → ℝ) (hf : <AC predicate>) : f b - f a = ∫ x in a..b, deriv f x`. Decide the AC predicate encoding — either via `eVariationOn` + an integrability hypothesis, or via `Measure.AbsolutelyContinuous` of the Lebesgue-Stieltjes measure of f. Check whether Mathlib's `MeasureTheory.Measure.withDensity` / RN-derivative lemmas close the gap.",
-      "Amend the GreensTheoremOQ02.lean axiom docstring: replace the 'requires sets of finite perimeter / Federer trace / Gauss-Green' justification with the accurate narrowed gap (rectangle case needs only Fubini + FTC-for-AC), so the documented blocker matches reality. (Doc-only; safe even during blackout but deferred to keep this survey build-free and focused.)",
+      "DONE (2026-06-13, doc-only): Amended the GreensTheoremOQ02.lean axiom docstring (the 'Part IV' block above the axiom) to replace the overstated 'requires sets of finite perimeter / Federer trace / Gauss-Green' justification with the accurate narrowed gap — rectangle case needs only Fubini + FTC-for-AC. Documented blocker now matches reality.",
       "Sanity check before claiming discharge: the reduction must recover OQ01's conclusion when the curl comes from genuine `HasDerivAt` partials (C¹ ⟹ L¹ on compact rectangle), matching the existing `greens_oq1_from_l1curl` theorem already in GreensTheoremOQ02.lean."
-    ]
+    ],
+    "blockedReason": "BLOCKED (2026-06-13, Docker verification blackout): The ORIENT survey is complete and the only build-free follow-up (docstring accuracy amendment) is now done. The single remaining gap — the FTC-for-AC bridge lemma + Fubini reduction — is a bounded ~200-400 line LOCAL BUILD that cannot be verified while Docker is down. Re-open when Docker is restored."
   },
   "phase": "ORIENT"
 }
