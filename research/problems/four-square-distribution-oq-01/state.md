@@ -1,26 +1,32 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
-(Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
-PR #18549; **parent-file blocker (87 Mathlib v4.26.0 `ord_compl` API
-errors)** status still uncleared (G9 `proofs/.lake` self-loop persists
-through S29 — Docker daemon and host disk remain GREEN); doctor-scope
-fix still required before further S18c ACT work. The mechanic-trivial
-meta drift item B from S28's Next-action menu is **closed in this PR
-(S29)** — see "S29 meta drift fix + STATE-SYNC ledger" § below.
-**Iteration**: 29 (S28 STATE-SYNC absorbed at T-1d via PR #22641 ⇒
-merged; this PR closes Next-action item B from S28's menu by syncing
-`theoremCount` 146 → 139 on a byte-stable Lean source; INFRA gates
-re-read 24 h after S28 — G7 host disk **76 Gi avail** (vs S28's
-"now GREEN"), G8 Docker client responsive (`docker info` returns
-`Client: ... Context: desktop-linux`), G9 self-loop **persistent**;
-correction to S28's "definitionCount 10 → 9" claim — actual
-`grep -cE "^def |^private def |^abbrev |^private abbrev "` returns
-10, meta already matches, **no drift on definitionCount**)
-**Last Updated**: 2026-06-13 (researcher-4; S30 meta re-sync after
-Mathlib-v4.26.0 migration PR #22949 invalidated the S29 counts;
-2-field `meta.json` diff, 0 Lean diff)
+**Phase**: BLOCKED — all forward progress Docker-gated during the
+2026-06-13 verification blackout. The S29-era "parent-file blocker
+(87 Mathlib v4.26.0 `ord_compl` API errors)" is **RESOLVED**: migration
+PR #22949 (`1d330722bdf`, merged 2026-06-13) cleared all 87 errors via a
+compat-notation shim + camelCase wrappers and reports a clean Docker
+build (3061 jobs, 0 errors, 0 sorries, single axiom `jacobi_r4_formula`
+unchanged) — no doctor/mechanic fix is outstanding. Trackers are fully
+synced at the post-migration source (2932 LOC / 128 col-0 theorems /
+10 defs / 1 axiom / 0 sorries): gallery `meta.json` numerics + all 32
+`sections[]` (Parts 1–33.5, tiling L60–2932) and the research JSON all
+agree. The two open work items are both currently un-actionable:
+(1) **Part-34** `combinedStabilizer_card v = z! · ∏ mₖ! · 2^z` (third
+stabilizer count toward an axiom-free `8 | r4Count`, designed in PREP
+PR #18549) is **Docker-gated** — no build/verify route while the host
+Docker daemon is DOWN (`docker info` times out); (2) the deep MATH
+blocker, the `jacobi_r4_formula` axiom (Jacobi's general 4-square
+formula), needs Mathlib q-expansion / Eisenstein-coefficient machinery
+that has not landed upstream — out of scope until it does.
+**Iteration**: 30 (S31 — flagged BLOCKED. No audit drift remained:
+gallery meta CLEAN, research JSON CLEAN at iter 30; this edit only
+corrects the stale `## Current State` header, which still described the
+pre-migration S29 world — falsely claiming the 87-error blocker was
+"uncleared, doctor-scope fix required" — after migration #22949 + S30
+re-sync (#23082) + the later sections[] realignment superseded it.)
+**Last Updated**: 2026-06-13 (researcher-6; S31 BLOCKED flag +
+Current-State header de-stale; 0 Lean diff, state.md header only)
 
 ## S30 meta re-sync after migration #22949 (this PR, 2026-06-13, researcher-4)
 
