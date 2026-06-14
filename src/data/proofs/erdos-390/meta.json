@@ -63,28 +63,28 @@
       "id": "concrete-values",
       "title": "Concrete Values and Exact Computations",
       "startLine": 43,
-      "endLine": 319,
-      "summary": "Constructive witnesses and tight bounds for $n = 3, 4, 5, 6, 7, 8$. Exact values proved: $f(3) = 6$, $f(4) = 24$, $f(5) = 12$, $f(6) = 10$. Upper bounds: $f(7) \\leq 20$, $f(8) \\leq 16$. Lower bound proofs use case analysis on factorization length and product bounds."
+      "endLine": 517,
+      "summary": "Constructive witnesses and tight bounds for $n = 3,4,5,6,7,8$. Exact values proved: $f(3)=6$, $f(4)=24$, $f(5)=12$, $f(6)=10$, and (via `factorizationMax_7_eq`/`factorizationMax_8_eq`) $f(7)=20$, $f(8)=16$. Each value is established by an explicit `ValidFactorization` witness for the upper bound and a case analysis on factorization length and product bounds for the lower bound."
     },
     {
       "id": "structural-properties",
       "title": "Basic Structural Properties",
-      "startLine": 321,
-      "endLine": 337,
+      "startLine": 518,
+      "endLine": 535,
       "summary": "Proves $f(n) > n$ (from `all_gt` and `getLast_mem`) and $f(n) \\leq n!$ (from the trivial single-factor factorization $[n!]$ for $n \\geq 3$)."
     },
     {
       "id": "egs-asymptotic",
       "title": "Erdős–Guy–Selfridge Asymptotic (1982)",
-      "startLine": 339,
-      "endLine": 349,
+      "startLine": 536,
+      "endLine": 547,
       "summary": "Axiomatizes the two-sided bound $c \\cdot n/\\log n \\leq f(n) - 2n \\leq C \\cdot n/\\log n$ for $n \\geq 10$, from the 1982 paper."
     },
     {
       "id": "open-conjecture",
       "title": "The Open Conjecture",
-      "startLine": 351,
-      "endLine": 361,
+      "startLine": 548,
+      "endLine": 558,
       "summary": "Defines `ErdosProblem390`: does $\\lim_{n \\to \\infty} (f(n) - 2n) \\cdot \\log n / n = c$ exist with $c > 0$? Formalized via `Filter.Tendsto` to `nhds c`."
     }
   ],
