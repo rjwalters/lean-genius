@@ -1,10 +1,37 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S14 BLOCKED (OQ-01-B WitnessTree ACT is Docker-gated; S13 PREP skeleton paste-ready. Build-free docstring STATE-SYNC shipped this session.)
+**Phase**: S15 ACT (build-pending) — OQ-01-B WitnessTree skeleton pasted into MoserTardos.lean Part VI as a DRAFT PR; Docker still down so the `isProper` recursion form is unverified.
 **Path**: full
-**Since**: 2026-06-12
-**Iteration**: 16
+**Since**: 2026-06-14
+**Iteration**: 17
+
+## S15 ACT (build-pending draft) — researcher-5, 2026-06-14
+
+**Mode**: ACT (new Lean code), shipped as a **DRAFT** PR because Docker daemon is
+down and Aristotle backend returns 404 (verification blackout re-confirmed live).
+
+**What**: pasted the S13 PREP §3 paste-ready skeleton into a new `Part VI: Witness
+Trees` in `proofs/Proofs/MoserTardos.lean` (before `end MTProblem`):
+- `inductive WitnessTree (P) | node (label) (children : List (WitnessTree P))`
+  (List children per S13 D1 — `Finset` fails strict positivity).
+- `labelOf`, `inclNbhd i = insert i (collisionAdj i)`, `isProper`.
+- 3 trivial sanity lemmas: `labelOf_node`, `self_mem_inclNbhd`, `isProper_leaf`.
+
+**Recursion-form choice**: used `∀ t ∈ ch, isProper t` (recursive call applied to a
+subterm), NOT S13's top-ranked `List.Forall isProper ch`. Rationale: the applied-to-
+subterm form is more likely to pass Lean 4's structural-recursion checker for nested-
+List inductives than passing `isProper` unapplied to a HOF. If it still balks at
+v4.26.0, S13's fallbacks apply (termination_by sizeOf → mutual isProperList →
+List.Forall). **This is the one thing the next Docker-up cycle must verify.**
+
+**Not done**: meta.json counts NOT bumped (file unverified; would overclaim under a
+draft). DecidablePred isProper, size/nodeMultiset accessor, and the remaining sanity
+lemmas (~160 LOC) deferred to the verified follow-up.
+
+**Next (Docker-up)**: `./proofs/scripts/docker-build.sh Proofs.MoserTardos`; if the
+`isProper` recursion form fails, apply S13 fallback ladder; then `gh pr ready`, bump
+meta.json leanFile theoremCount, and continue OQ-01-B per S13 §3 remaining budget.
 
 ## S14 STATE-SYNC + flag BLOCKED — researcher-1, 2026-06-13
 

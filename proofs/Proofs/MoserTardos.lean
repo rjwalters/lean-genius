@@ -517,6 +517,67 @@ theorem LLLAdmissibleUniform.toLLLAdmissible
    ⟨P.uniformDrawProb, P.collisionAdj, h.lll_uniform,
     fun i => ⟨P.uniformDrawProb_nonneg i, P.uniformDrawProb_le_one i⟩⟩⟩
 
+-- ============================================================
+-- PART VI: WITNESS TREES (OQ-01-B)
+-- ============================================================
+--
+-- BUILD-PENDING (2026-06-14 verification blackout: Docker daemon down,
+-- Aristotle backend 404). This is the S13 PREP §3 paste-ready skeleton.
+-- The one residual elaboration risk flagged by S13 is the recursion form of
+-- `isProper`; this draft uses the `∀ t ∈ ch, isProper t` form (recursive call
+-- applied to a subterm `t ∈ ch`). If the v4.26.0 equation compiler balks, the
+-- ranked fallbacks per S13 are: (1) add `termination_by`/`decreasing_by sizeOf`,
+-- (2) split into a mutual `isProperList` helper, (3) `List.Forall isProper ch`.
+-- See research/problems/prob-method-lovasz-local-oq-01/sessions/
+-- 2026-06-12-s13-prep-witnesstree-encoding.md.
+
+/-- A **witness tree** (Moser–Tardos 2010 §4): a rooted, event-labelled tree
+    recording the cascade of resamplings that triggered a given step.
+
+    Children are a `List` rather than a `Finset`: the nested occurrence under
+    `Finset` (= a `Quotient` of `Multiset`/`List`) fails Lean's strict-
+    positivity check, whereas `inductive T | mk : List T → T` is strictly
+    positive. The "distinct sibling labels" requirement is recovered as a
+    `Nodup`-on-labels side-condition in `isProper`. -/
+inductive WitnessTree (P : MTProblem) : Type
+  | node (label : Fin P.numEvents) (children : List (WitnessTree P))
+
+namespace WitnessTree
+
+variable {P}
+
+/-- The event label at the root of a witness tree. -/
+def labelOf : WitnessTree P → Fin P.numEvents
+  | .node l _ => l
+
+@[simp] theorem labelOf_node (l : Fin P.numEvents) (ch : List (WitnessTree P)) :
+    labelOf (.node l ch) = l := rfl
+
+/-- The **inclusive neighbourhood** `Γ⁺(i) = {i} ∪ collisionAdj i`: the labels
+    permitted for the children of a node labelled `i` in a proper witness tree. -/
+def inclNbhd (i : Fin P.numEvents) : Finset (Fin P.numEvents) :=
+  insert i (P.collisionAdj i)
+
+@[simp] theorem self_mem_inclNbhd (i : Fin P.numEvents) : i ∈ inclNbhd (P := P) i :=
+  Finset.mem_insert_self _ _
+
+/-- A witness tree is **proper** when, at every node labelled `i`, the children
+    (a) have pairwise-distinct labels, (b) carry labels in `Γ⁺(i)`, and
+    (c) are themselves proper. This is the structural invariant that Moser–Tardos
+    execution logs satisfy and that the probability bound is summed over. -/
+def isProper : WitnessTree P → Prop
+  | .node i ch =>
+      (ch.map labelOf).Nodup
+      ∧ (∀ t ∈ ch, labelOf t ∈ inclNbhd (P := P) i)
+      ∧ ∀ t ∈ ch, isProper t
+
+/-- A leaf (node with no children) is always proper. -/
+@[simp] theorem isProper_leaf (i : Fin P.numEvents) :
+    isProper (P := P) (.node i []) := by
+  simp [isProper]
+
+end WitnessTree
+
 end MTProblem
 
 end ProbMethod.MoserTardos
