@@ -85,39 +85,76 @@
   },
   "sections": [
     {
+      "id": "overview-header",
+      "title": "Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Provenance docstring (file edited by Aristotle) and the problem docstring for Erdős #157: does there exist an infinite Sidon set that is an asymptotic basis of order 3? Answer: YES (Pilatte 2023). Recaps the definitions, imports Mathlib, and opens `namespace Erdos157`.",
+      "mathContext": "A Sidon set (B₂ sequence) has all pairwise sums distinct: $a+b=c+d \\Rightarrow \\{a,b\\}=\\{c,d\\}$. An asymptotic basis of order $k$ represents every sufficiently large integer as a sum of at most $k$ elements. The tension: Sidon sets are sparse ($\\sim\\sqrt{N}$ up to $N$), yet Pilatte builds one dense enough to be an order-3 basis."
+    },
+    {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
-      "startLine": 28,
-      "endLine": 57,
-      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem."
+      "startLine": 44,
+      "endLine": 73,
+      "summary": "Defines `IsSidon` (distinct pairwise sums) and the equivalent `IsSidonAlt` (the sumset $A+A$ has no repeats), and proves their equivalence `sidon_iff_sidon_alt`.",
+      "mathContext": "$A$ is Sidon iff the map $(a,b)\\mapsto a+b$ is injective on unordered pairs. Equivalently every element of $A+A$ has a unique representation. This distinctness is the engine of the order-2 counting bound below."
     },
     {
       "id": "basis-definitions",
       "title": "Asymptotic Basis Definitions",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "SumsetK, IsAsymptoticBasis, IsExactBasis."
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "Defines `SumsetK A k` (sums of at most $k$ elements of $A$), `IsAsymptoticBasis A k` (every sufficiently large integer is in `SumsetK A k`), and `IsExactBasis A k` (every positive integer is).",
+      "mathContext": "Order-$k$ basis: $\\exists N_0,\\ \\forall n \\ge N_0,\\ n \\in kA$ (the $k$-fold sumset). The Goldbach-type question for a given sparse set $A$: how small can $k$ be? For Sidon sets, $k=2$ is impossible (proved below) but $k=3$ is achievable (Pilatte)."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Erdos157Conjecture and Pilatte's existence theorem."
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "States `Erdos157Conjecture`: the existence of an infinite Sidon set that is an asymptotic basis of order 3.",
+      "mathContext": "Formally: $\\exists A \\subseteq \\mathbb{N}$ infinite with `IsSidon A` and `IsAsymptoticBasis A 3`. This is the precise proposition resolved affirmatively by Pilatte's 2023 construction."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 94,
-      "endLine": 111,
-      "summary": "Order 2 impossibility, counting bounds for Sidon sets and bases."
+      "id": "pilatte-theorem",
+      "title": "Pilatte's Theorem",
+      "startLine": 101,
+      "endLine": 107,
+      "summary": "Records `axiom pilatte_existence : Erdos157Conjecture` — Pilatte's 2023 construction of an infinite order-3 Sidon basis, taken as a stated assumption (the deep probabilistic construction is not formalized).",
+      "mathContext": "Cédric Pilatte (2023) settled Erdős #157 affirmatively using a probabilistic construction. The result is encoded here as one of the file's three `axiom` assumptions (status: axiomatized) rather than re-derived."
     },
     {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 127,
-      "endLine": 180,
-      "summary": "Verified: powers_of_two_sidon. Example finite Sidon set."
+      "id": "counting-axioms",
+      "title": "Counting Axioms",
+      "startLine": 108,
+      "endLine": 118,
+      "summary": "States the two analytic input axioms: `sidon_counting_bound` (a Sidon set has counting function $\\le \\sqrt{N} + O(N^{1/4})$) and `basis_counting_lower` (an order-$k$ basis has counting function $\\ge N^{1/k}$).",
+      "mathContext": "Erdős–Turán (1941): a Sidon set $A$ satisfies $|A \\cap [1,N]| \\le \\sqrt{N} + O(N^{1/4})$. A basis of order $k$ must have $|A \\cap [1,N]| \\gtrsim N^{1/k}$ to cover $[1,N]$ via $k$-fold sums. These bracket the densities and explain why order 2 fails."
+    },
+    {
+      "id": "order-2-impossibility",
+      "title": "Related Results: No Sidon Set is an Order-2 Basis",
+      "startLine": 119,
+      "endLine": 492,
+      "summary": "Fully formalizes the obstruction that forces order 3: no infinite Sidon set can be an asymptotic basis of order 2 (`sidon_not_basis_2`). Helper lemmas: `sidon_pair_sum_injective` (2-element sums are distinct), `sumsetK2_ncard_le` (the count of representable integers $\\le 2N$ is at most $M(M+1)/2$ where $M = |A \\cap [1,2N]|$), and `sidon_counting_contradiction` (the real-analysis step turning the Sidon size bound into a contradiction with covering $[N_0,2N]$). Despite an in-file comment labelling the strategy 'not yet formalized', the theorem is proved with 0 sorries.",
+      "mathContext": "Counting argument: an order-2 basis must represent the $\\sim 2N$ integers in $[N_0,2N]$, but a Sidon set of size $M \\le \\sqrt{2N}+C(2N)^{1/4}$ yields at most $M(M+1)/2 \\approx N + O(N^{3/4})$ distinct 2-sums — too few. Hence $2N \\lesssim N$, a contradiction for large $N$. This is exactly why order 3 (not 2) is the right threshold."
+    },
+    {
+      "id": "construction-outline",
+      "title": "Construction Outline",
+      "startLine": 493,
+      "endLine": 506,
+      "summary": "Docstring sketching Pilatte's construction: a probabilistic method exploiting that Sidon sets, though sparse ($\\sim\\sqrt{N}$), are dense enough for order-3 covering because $3\\sqrt{N}$-scale sumsets beat the $N^{1/3}$ lower bound. Cites Pilatte (2023) and Erdős–Turán (1941).",
+      "mathContext": "Heuristic: a random Sidon set of density $\\sim\\sqrt{N}$ has a 3-fold sumset large enough to cover almost all integers, while the Sidon condition is preserved with positive probability. The full argument is the content of Pilatte's paper, here encapsulated by `pilatte_existence`."
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "startLine": 507,
+      "endLine": 535,
+      "summary": "Concrete verified Sidon sets: `powers_of_two_sidon` proves $\\{2^k\\}$ is Sidon (via 2-adic factorization / `Nat.factorization`), and `example_is_sidon` proves the finite set $\\{1,2,5,11\\}$ is Sidon — with a docstring noting Aristotle's proof search caught a bug in an earlier candidate ($\\{1,2,5,10,11,13\\}$ fails since $1+11 = 2+10$).",
+      "mathContext": "$\\{2^k\\}$ is Sidon because $2^k+2^l = 2^m+2^n$ forces equal multisets of exponents (binary representations are unique). Small explicit Sidon sets like $\\{1,2,5,11\\}$ are the base objects; the bug note illustrates how repeated sums ($1+11=2+10$) violate the Sidon property."
     }
   ],
   "conclusion": {
