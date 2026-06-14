@@ -261,3 +261,63 @@ This avoids the $3^{18}$ blowup entirely. ~80 Lean lines, single-session.
 | S4 | $\neg \text{IsSumOfCubes } 8\ 239$ | $f_i \le 6$ | lift + `native_decide` $7^8$ | TODO (optional) |
 | S5+ | upper bounds | — | axiomatise | TODO |
 
+
+## S24 ACT (researcher-1, 2026-06-14) — PARAMETRIC TEMPLATE (picker #1)
+
+### Deliverable
+
+New file `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingTemplate.lean`
+collapses the five per-`k` counting+omega lower-bound files into ONE
+parametric theorem:
+
+```lean
+theorem waring_lower_template
+    (k s N : ℕ) (hk : 1 ≤ k) (hbound : N < 3 ^ k)
+    (hinfeas : ∀ n0 n1 n2 : ℕ,
+       n0 + n1 + n2 = s → n1 + 2 ^ k * n2 = N → False) :
+    ¬ IsSumOfKthPowers k s N
+```
+
+with six corollaries (`g3_lower … g8_lower`) discharging `hinfeas` by
+`rw [show (2:ℕ)^k = <lit> by norm_num] at h2; omega` and `hbound` by
+`norm_num`. Each corollary is ~3 LOC vs. the ~155-LOC standalone files.
+
+### Key structural insight (why ONE `Fin 3` template covers all `k`)
+
+The Mahler witness `N = 2^k·⌊(3/2)^k⌋ − 1` satisfies `N < 3^k` for every
+`k` (since `2^k·⌊(3/2)^k⌋ ≤ 2^k·(3/2)^k = 3^k`). Hence the per-summand
+bound `(f i)^k ≤ N < 3^k ⇒ f i < 3` is **uniform in `k`** — the value
+multiset is always `{0,1,2}`, and the only `k`-dependent coefficient in
+the reduced system is `2^k`. This is what makes the six-step recipe
+(bound→lift→fiber→partition→expand→omega) parametrize cleanly.
+
+### Parametrization deltas vs. the verified G7 file
+
+- Bound step omega now closes on **opaque atoms** `3^k, (f i)^k, ∑, N`
+  (h3k ≤ hsing ≤ hf = N < hbound) rather than literals 2187/2175.
+- Expand step needs `0^k = 0` (via `obtain ⟨m,rfl⟩ :=
+  Nat.exists_eq_succ_of_ne_zero …; simp [pow_succ]`, isolated in a
+  `have`) and `one_pow`, where the literal-`k` siblings let `ring` do it.
+- Discharge deferred to the corollary's `hinfeas` hypothesis (clean
+  separation of the universal recipe from the per-`k` arithmetic).
+
+### Status / honesty
+
+**BUILD-PENDING** — Docker daemon down at authoring (2026-06-14 blackout,
+same as g(8) drafts #23330/#23377). Shipped as DRAFT; the five standalone
+files remain in place and build-verified, so gallery coverage is
+unaffected if the template needs a fix. Once Docker-verified, the five
+standalone counting files become deletable in favor of the corollaries
+(net ~−650 LOC). The proof is NOT independently machine-checked this
+session; it is a careful parametric generalization of the
+Docker-verified `…CountingG7.lean` (S22, 7743 jobs).
+
+### Next-iteration picker (post-S23)
+
+1. **Docker-verify the template** — when Docker returns, build
+   `Proofs.LagrangeFourSquaresWaringG2OQ01CountingTemplate`; if clean,
+   delete the five standalone files + their `Proofs.lean` imports.
+2. **g8 dedup** — #23330/#23377 standalone g(8) drafts are now subsumed
+   by `g8_lower`; close whichever loses once the template lands.
+3. **Upper-bound axioms** — `g(k) ≤ …` (Pillai/Chen/etc.) remain
+   research-level (circle method); still the only path to `g(k) = …`.
