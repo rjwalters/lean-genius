@@ -36,13 +36,14 @@
       }
     ],
     "originalContributions": [
-      "Channel capacity definition (placeholder returning 0)",
-      "Theorem statements for Fano inequality, achievability, converse, and BSC capacity (all placeholder stubs proving True)"
+      "Real-valued definitions of channel mutual information and channel capacity (channelMI, channelCapacity) as a supremum over input distributions",
+      "Proved capacity bounds (capacity_nonneg, channelMI_le_capacity, capacity_le_log_card) and a proved Fano inequality with single-letter converse lemmas",
+      "Capacity-achieving uniform input for weakly symmetric channels, and the binary symmetric channel with proved 0 ≤ C ≤ 1 bounds; achievability, converse, and the BSC capacity formula stated as the 3 axioms"
     ],
-    "assumptions": "3 axioms: channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 13 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity, capacity_le_log_card, rate/BSC bounds, fano_inequality discharged via Proofs.ShannonChannelCodingOQ02OQ01, single-letter Fano-form converse fano_converse_step + fano_converse_capacity). 0 sorries.",
+    "assumptions": "3 axioms: channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 18 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity, capacity_le_log_card, rate/BSC bounds, fano_inequality discharged via Proofs.ShannonChannelCodingOQ02OQ01, single-letter Fano-form converse fano_converse_step + fano_converse_capacity + Shannon-form/marginal converses, and weakly-symmetric uniform-output lemmas). 0 sorries.",
     "dateAdded": "2026-03-21",
     "axiomCount": 3,
-    "lineCount": 555,
+    "lineCount": 609,
     "prerequisites": [
       "Shannon entropy and mutual information",
       "Discrete memoryless channels and capacity",
@@ -51,7 +52,7 @@
       "Fano's inequality and the channel coding converse"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 9
   },
   "overview": {
@@ -79,49 +80,73 @@
       "id": "introduction",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 14,
-      "summary": "Overview of the noisy channel coding theorem: reliable communication at any rate below channel capacity C = max I(X;Y). Attribution to Claude Shannon (1948).",
-      "mathContext": "Shannon (1948): reliable communication at rate $R$ is possible iff $R < C = \\max_{p(x)} I(X;Y)$."
+      "endLine": 28,
+      "summary": "Module docstring stating Shannon's noisy channel coding theorem — reliable communication is possible at any rate below the channel capacity C = max I(X;Y) (Shannon, 1948) — followed by the Mathlib imports and namespace setup.",
+      "mathContext": "Frames the formalization: capacity as the supremum of mutual information over input distributions, with achievability and converse as the two halves of Shannon's theorem."
     },
     {
-      "id": "capacity-definition",
-      "title": "Channel Capacity Definition",
-      "startLine": 15,
-      "endLine": 20,
-      "summary": "Defines channel capacity as a noncomputable real number. The definition takes a channel transition matrix W : α → β → ℝ and should return the maximum mutual information over input distributions. Currently sorry'd because formalizing the optimization over the probability simplex requires measure theory.",
-      "mathContext": "$C = \\max_{p(x)} I(X;Y) = \\max_{p(x)} [H(Y) - H(Y|X)]$"
+      "id": "dm-channel",
+      "title": "Discrete Memoryless Channel",
+      "startLine": 29,
+      "endLine": 65,
+      "summary": "Defines the core objects: the `DMChannel` structure (transition matrix with row-stochastic conditions), `InputDist` (a probability distribution on the input alphabet), and the noncomputable defs `jointDist` (input × channel joint law), `channelMI` (mutual information I(X;Y)), and `channelCapacity` (the supremum of channelMI over input distributions).",
+      "mathContext": "$C(W) = \\sup_{p_X} I(X;Y)$ where $I(X;Y)$ is the mutual information of the joint distribution induced by input law $p_X$ and channel $W$. All quantities are real-valued noncomputable definitions (no sorries)."
+    },
+    {
+      "id": "joint-dist",
+      "title": "Joint Distribution Properties",
+      "startLine": 66,
+      "endLine": 86,
+      "summary": "Proves basic properties of the induced joint distribution and mutual information: `jointDist_nonneg`, `jointDist_sum_one` (it is a probability distribution), and `channelMI_nonneg` (mutual information is non-negative).",
+      "mathContext": "Establishes that the joint law is a genuine probability distribution and that $I(X;Y) \\ge 0$, the foundation for the capacity bounds."
+    },
+    {
+      "id": "capacity-nonneg",
+      "title": "Channel Capacity Is Non-Negative",
+      "startLine": 87,
+      "endLine": 168,
+      "summary": "Proves the elementary capacity bounds: `channelMI_le_log_card` (I(X;Y) ≤ log|β|), `capacity_nonneg` (C ≥ 0), `channelMI_le_capacity` (each input's mutual information is ≤ capacity), and `capacity_le_log_card` (C ≤ log|output alphabet|).",
+      "mathContext": "$0 \\le C(W) \\le \\log|\\beta|$. Capacity is non-negative (take any input) and bounded above by the log of the output alphabet size."
+    },
+    {
+      "id": "block-codes",
+      "title": "Block Codes",
+      "startLine": 169,
+      "endLine": 189,
+      "summary": "Defines the `BlockCode` structure (an encoder/decoder pair over n channel uses) and the code rate `rate_of_code = (log |messages|)/n`, with `rate_of_code_pos` showing the rate is positive for non-trivial codes.",
+      "mathContext": "$R = \\frac{1}{n}\\log M$ for a length-$n$ block code carrying $M$ messages — the quantity compared against capacity in the coding theorem."
     },
     {
       "id": "fano-inequality",
       "title": "Fano's Inequality",
-      "startLine": 21,
-      "endLine": 28,
-      "summary": "Fano's inequality bounds conditional entropy H(X|Y) in terms of error probability. Currently proves True (placeholder). The full statement requires defining conditional entropy and binary entropy function h(P_e).",
-      "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}| - 1)$"
+      "startLine": 190,
+      "endLine": 464,
+      "summary": "Proves Fano's inequality `fano_inequality` and the full converse machinery built on it: `fano_converse_step`, `fano_converse_capacity`, `fano_converse_shannon_form`, `fano_converse_step_marginal`, and `fano_converse_marginal`. These bound the conditional entropy / error probability in terms of capacity, supplying the analytic core of the converse.",
+      "mathContext": "Fano: $H(X \\mid Y) \\le h(P_e) + P_e \\log(|\\mathcal X| - 1)$. The converse lemmas transfer this into a lower bound on the error probability of any code with rate above capacity."
     },
     {
-      "id": "achievability",
-      "title": "Channel Coding Achievability",
-      "startLine": 29,
-      "endLine": 37,
-      "summary": "Achievability half: for any rate R < C, there exists a code with vanishing error probability as block length grows. Currently proves True (placeholder). The full proof would construct a random codebook and use joint typicality decoding.",
-      "mathContext": "$R < C \\implies \\exists$ code sequence with $P_e^{(n)} \\to 0$"
+      "id": "weakly-symmetric",
+      "title": "Capacity-Achieving Inputs for Weakly Symmetric Channels",
+      "startLine": 465,
+      "endLine": 544,
+      "summary": "Defines `DMChannel.IsWeaklySymmetric` and proves `weaklySymmetric_colSum_eq` and `weaklySymmetric_uniform_output_marginal`: for weakly symmetric channels the uniform input induces a uniform output marginal, identifying a capacity-achieving input distribution (S18 ACT, scoped).",
+      "mathContext": "For weakly symmetric channels the uniform input distribution maximizes $I(X;Y)$, giving a closed form for capacity on this class."
     },
     {
-      "id": "converse",
-      "title": "Channel Coding Converse",
-      "startLine": 38,
-      "endLine": 46,
-      "summary": "Converse half: for any rate R > C, error probability is bounded away from zero. Currently proves True (placeholder). Uses Fano's inequality to show error probability cannot vanish.",
-      "mathContext": "$R > C \\implies P_e^{(n)} \\not\\to 0$"
+      "id": "main-theorems",
+      "title": "Main Theorems",
+      "startLine": 545,
+      "endLine": 581,
+      "summary": "States the two halves of Shannon's noisy channel coding theorem as axioms: `channel_coding_achievability` (for any rate R < C there is a code family with vanishing error) and `channel_coding_converse` (for any rate R > C the error probability is bounded away from zero).",
+      "mathContext": "Achievability and converse are stated as axioms `channel_coding_achievability` and `channel_coding_converse`; their full proofs require random-coding / joint-typicality arguments not yet formalized."
     },
     {
-      "id": "bsc-capacity",
-      "title": "Binary Symmetric Channel Capacity",
-      "startLine": 47,
-      "endLine": 53,
-      "summary": "Computes the capacity of the binary symmetric channel BSC(p): C = 1 - h(p) bits, where h is the binary entropy function. Currently proves True (placeholder). This is the most important concrete channel capacity computation.",
-      "mathContext": "$C_{\\text{BSC}}(p) = 1 - h(p) = 1 + p\\log p + (1-p)\\log(1-p)$"
+      "id": "bsc",
+      "title": "Binary Symmetric Channel",
+      "startLine": 582,
+      "endLine": 609,
+      "summary": "Defines the binary symmetric channel `bsc p`, states its capacity `bsc_capacity_eq` (C = 1 − h(p)) as an axiom, and proves the bounds `bsc_capacity_le_one` (C ≤ 1) and `bsc_capacity_nonneg` (C ≥ 0).",
+      "mathContext": "BSC(p) capacity $C = 1 - h(p)$ bits (axiom), with the proved sanity bounds $0 \\le C \\le 1$ following from the general capacity inequalities."
     }
   ],
   "crossReferences": [
@@ -158,11 +183,11 @@
   ],
   "conclusion": {
     "summary": "The noisy channel coding theorem establishes that reliable communication at rate R is possible if and only if R is below the channel capacity C = max I(X;Y). The achievability proof via random coding and joint typicality decoding is one of the most celebrated probabilistic existence arguments in mathematics. The converse via Fano's inequality provides the matching impossibility result.",
-    "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication, with both achievability and converse proofs machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
+    "implications": "This formalization provides:\n\n**1. The Central Result of Information Theory**\nChannel capacity as the fundamental limit of reliable communication; achievability and converse are stated as axioms, while the supporting capacity bounds and Fano's inequality are machine-checked.\n\n**2. Random Coding as Probabilistic Method**\nThe random coding proof is historically one of the first and most influential uses of the probabilistic method, predating even Erdos's 1947 Ramsey bound.\n\n**3. Fano's Inequality**\nA reusable converse tool that converts entropy bounds into error probability bounds, applicable far beyond channel coding.\n\n**4. Foundation for Modern Coding Theory**\nThe gap between Shannon's existential proof and practical capacity-achieving codes (turbo codes, LDPC, polar codes) drove decades of engineering and mathematical research.\n\n**5. Connection to Computational Complexity**\nChannel coding has deep connections to computational complexity via list decoding and pseudorandomness.",
     "openQuestions": [
-      "Can specific channel capacities (BSC, BEC, AWGN) be computed formally beyond the placeholder True statements?",
+      "Can specific channel capacities (BSC, BEC, AWGN) be derived formally, discharging the bsc_capacity_eq axiom (C = 1 - h(p)) rather than assuming it?",
       "Formalize the random coding argument using Mathlib's probability theory — requires joint typicality and the AEP",
-      "Can Fano's inequality be stated with the full H(X|Y) <= h(P_e) + P_e*log(|X|-1) rather than as True?",
+      "Can the achievability and converse axioms be discharged via a formalized random-coding / joint-typicality argument built on the proved Fano inequality?",
       "Formalize the binary entropy function h(p) = -p*log(p) - (1-p)*log(1-p) and its properties"
     ]
   },
