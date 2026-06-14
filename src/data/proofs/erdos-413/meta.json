@@ -86,118 +86,153 @@
       "Number theory (primes, divisibility)"
     ]
   },
-  "sections": [
+  "sections":   [
     {
       "id": "header-imports",
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Module docstring describing barriers for ω, Erdős's conjecture, known results (expProd density, Selfridge's computation, OEIS A005236), and Mathlib import.",
-      "mathContext": "Erdős #413: Are there infinitely many barriers for $\\omega(n)$? A barrier $n$ satisfies $m + \\omega(m) \\leq n$ for all $m < n$."
+      "summary": "Module docstring for Erdős Problem #413 (iterating $n \\mapsto n + \\omega(n)$, where $\\omega$ counts distinct prime factors, and the 'barrier' phenomenon) and imports."
     },
     {
       "id": "arithmetic-functions",
       "title": "Arithmetic Functions",
       "startLine": 23,
       "endLine": 41,
-      "summary": "Defines three noncomputable arithmetic functions: ω(n) = number of distinct prime divisors, Ω(n) = prime factors with multiplicity, and expProd(n) = product of prime exponents.",
-      "mathContext": "$\\omega(n) = |\\{p \\text{ prime} : p \\mid n\\}|$ (number of distinct prime divisors), $\\Omega(n) = \\sum_{p^k \\| n} k$ (with multiplicity), $\\text{expProd}(n) = \\prod_{p \\mid n} p$."
+      "summary": "The three counting functions: `omega` (number of distinct prime factors), `bigOmega` (prime factors with multiplicity, Ω), and `expProd` (exponent-product F)."
     },
     {
       "id": "barrier-definitions",
       "title": "Barrier Definitions",
       "startLine": 42,
       "endLine": 62,
-      "summary": "Defines IsBarrier for ℕ → ℕ functions, IsBarrierReal for ℝ-valued functions (ε-variant), and the set of barriers.",
-      "mathContext": "$n$ is a barrier for $f$ if $\\forall m < n, m + f(m) \\leq n$. Real variant: $\\forall m < n, m + f(m) < n + \\varepsilon$."
+      "summary": "Defines the barrier notion: `IsBarrier f n` / `IsBarrierReal` (n is a value never jumped over by the iteration of f) and the corresponding barrier sets `barriers` / `barriersReal`."
     },
     {
       "id": "basic-properties",
       "title": "Basic Barrier Properties",
       "startLine": 63,
-      "endLine": 100,
-      "summary": "Proves 0 and 1 are always barriers, characterizes when 2 is a barrier, and shows barrier monotonicity in the function argument.",
-      "mathContext": "0 and 1 are always barriers. 2 is a barrier iff $f(1) \\leq 1$. Each barrier is $\\leq$ the next."
+      "endLine": 101,
+      "summary": "Foundational lemmas about barriers of a general function f."
     },
     {
       "id": "omega-values-bounds",
       "title": "ω Values and Upper Bound",
-      "startLine": 101,
+      "startLine": 102,
       "endLine": 159,
-      "summary": "Computes ω for small inputs, proves ω(p) = 1 for primes, and establishes the key bound 2^ω(n) ≤ n (equivalently ω(n) ≤ log₂ n) via prime factorization.",
-      "mathContext": "$\\omega(1) = 0, \\omega(p) = 1, \\omega(p^k) = 1, \\omega(pq) = 2$. Key bound: $\\omega(n) \\leq \\log_2(n)$ since $2^{\\omega(n)} \\leq n$."
+      "summary": "Concrete $\\omega$ values for small numbers and the upper bound $\\omega(n) \\le \\log_2 n$."
     },
     {
-      "id": "phi-sigma-no-barriers",
-      "title": "φ and σ₁ Have No Barriers",
+      "id": "phi-freeness-omega-le-bigomega",
+      "title": "Barrier Jumps, φ-Freeness, and ω ≤ Ω",
       "startLine": 160,
-      "endLine": 218,
-      "summary": "Proves φ has no barriers beyond 3 (since φ(n) ≥ 2 for n ≥ 3) and σ₁ has no barriers beyond 2 (since σ₁(n) ≥ n+1 for n ≥ 2). Also proves ω ≤ Ω.",
-      "mathContext": "$\\varphi$ has no barriers beyond 3 (since $\\varphi(n) \\geq 2$ for $n \\geq 3$, making $n + \\varphi(n) > n+1$). Similarly $\\sigma_1$ has no barriers beyond 2."
+      "endLine": 227,
+      "summary": "A barrier implies no large jumps; the proof that the totient $\\varphi$ has no barriers; and the relationship $\\omega(n) \\le \\Omega(n)$."
+    },
+    {
+      "id": "omega-prime-powers",
+      "title": "ω of Prime Powers",
+      "startLine": 228,
+      "endLine": 241,
+      "summary": "The value of $\\omega$ on prime powers ($\\omega(p^k) = 1$)."
     },
     {
       "id": "decidable-omega-barriers",
-      "title": "Machine-Verified ω-Barriers",
-      "startLine": 244,
-      "endLine": 402,
-      "summary": "Computable barrier checking via isBarrierBool with soundness/completeness proofs. Machine-verifies ω-barriers at 0-128 and non-barriers at 3,5,7-10,15,16,20 via native_decide. Counts barriers at thresholds.",
-      "mathContext": "Computable barrier checking via `isBarrierBool` with decidable arithmetic. Sound and complete: `isBarrierBool n = true ↔ IsBarrier omega n`."
+      "title": "Decidable ω-Barriers (Machine-Verified)",
+      "startLine": 242,
+      "endLine": 355,
+      "summary": "Decidable barrier checking infrastructure: `omegaC` (computable $\\omega$ via `primeFactors.card`), `isBarrierBool`, `countBarriers`, inside `section DecidableBarriers`. Machine-verified $\\omega$-barriers (OEIS A005236), verified non-barriers, and barrier counting via `native_decide`."
     },
     {
       "id": "structural-theorems",
       "title": "Barrier Structural Theorems",
-      "startLine": 403,
-      "endLine": 480,
-      "summary": "Not-barrier witness extraction, proof that barrier predecessors are prime powers, barrier spacing (gap-two, consecutive barriers, offset bounds), and barrier downward closure.",
-      "mathContext": "Witness extraction: if $n$ is not a barrier, $\\exists m < n, m + \\omega(m) > n$. Barrier predecessors are prime powers."
+      "startLine": 356,
+      "endLine": 433,
+      "summary": "Structural theorems about $\\omega$-barriers and barrier spacing properties."
     },
     {
-      "id": "general-barrier-theory",
-      "title": "General Barrier Theory",
-      "startLine": 519,
-      "endLine": 584,
-      "summary": "Barriers for zero function = all of ℕ, constant function characterization, bounded-by-one implies universal barrier, barrier sum decomposition, and inter-barrier witness theorem.",
-      "mathContext": "Zero function: all $n$ are barriers. Constant $c$: barriers are exactly $\\{0, \\ldots, c\\}$. Bounded $f$: barrier set is cofinite."
+      "id": "sigma-and-general-structure",
+      "title": "σ-Freeness and General Barrier Structure",
+      "startLine": 434,
+      "endLine": 537,
+      "summary": "Defines `sigma1` (sum of divisors) and proves $\\sigma$ has no barriers; general barrier structural theorems applying to arbitrary functions."
     },
     {
-      "id": "iterated-dynamics",
-      "title": "Iterated Dynamics",
-      "startLine": 605,
-      "endLine": 709,
-      "summary": "Defines iterOmega, iterOmegaPow, eventuallyMeet, and orbit. Proves orbits are strictly increasing for n ≥ 2, barriers trap orbits, and orbits respect barrier ordering.",
-      "mathContext": "iterOmega: $\\omega^{(k)}(n)$. orbits are strictly decreasing until reaching 0 or 1. eventuallyMeet: do all orbits merge?"
+      "id": "density-and-dynamics",
+      "title": "Barrier Density and Iterated Dynamics",
+      "startLine": 538,
+      "endLine": 662,
+      "summary": "Barrier density analysis and the connection to iterated dynamics: `iterOmega` ($n + \\omega(n)$), `iterOmegaPow`, `eventuallyMeet`, `orbit`, and orbit/barrier interaction."
     },
     {
-      "id": "decidable-bigomega-expprod",
-      "title": "Verified Ω and expProd Barriers",
-      "startLine": 710,
-      "endLine": 855,
-      "summary": "Computable Ω and expProd, machine-verified barriers for each, barrier counts, and computational comparison hierarchy: F >> ω >> Ω.",
-      "mathContext": "Machine-verified: $\\Omega$-barriers are $\\{0,1,2,3,4,8\\}$. expProd-barriers are $\\{0,1,2\\}$."
+      "id": "decidable-bigomega",
+      "title": "Computable Ω and Verified Ω-Barriers",
+      "startLine": 663,
+      "endLine": 707,
+      "summary": "`bigOmegaC` (computable $\\Omega$) inside `section DecidableBigOmega`, with `native_decide`-verified $\\Omega$-barriers."
+    },
+    {
+      "id": "decidable-expprod",
+      "title": "Computable expProd and Verified F-Barriers",
+      "startLine": 708,
+      "endLine": 767,
+      "summary": "`expProdC` (computable exponent-product F) inside `section DecidableExpProd`, with verified F-barriers (expProd)."
+    },
+    {
+      "id": "extended-and-comparison",
+      "title": "Extended ω-Barriers and Function Comparison",
+      "startLine": 768,
+      "endLine": 834,
+      "summary": "Extended $\\omega$-barrier verification (`section ExtendedBarriers`), the barrier comparison $\\omega$ vs $\\Omega$ vs F (`section BarrierComparison`), and consecutive-barrier analysis."
+    },
+    {
+      "id": "transfer-and-offset",
+      "title": "ω-Transfer and Barrier Offset Bounds",
+      "startLine": 835,
+      "endLine": 866,
+      "summary": "Transfer lemma `omegaC` equals `omega` (bridging the computable and noncomputable definitions) and barrier offset bounds."
+    },
+    {
+      "id": "predecessor-structure",
+      "title": "Barrier and Predecessor Structure",
+      "startLine": 867,
+      "endLine": 918,
+      "summary": "Barrier non-existence from predecessor properties, barrier/predecessor structure, barrier implies a lower bound on the function, and the all-squarefree-below barrier equivalence."
+    },
+    {
+      "id": "orbit-coalescence",
+      "title": "Orbit Coalescence via Barriers",
+      "startLine": 919,
+      "endLine": 970,
+      "summary": "Orbit coalescence results: barriers force iterated-$\\omega$ orbits to eventually meet."
+    },
+    {
+      "id": "main-conjectures",
+      "title": "Main Conjectures and Known Results",
+      "startLine": 971,
+      "endLine": 1022,
+      "summary": "The main open conjectures (OPEN), including the sole **axiom** `erdos_413_conjecture` (line 977) and known results stated as axioms/props (`erdos_expProd_positive_density_theorem`, `selfridge_bigOmega_barrier_theorem`)."
+    },
+    {
+      "id": "main-open-problem",
+      "title": "Main Open Problem Statement",
+      "startLine": 1023,
+      "endLine": 1034,
+      "summary": "The formal statement of the main open problem."
     },
     {
       "id": "omega-multiplicativity",
       "title": "ω Multiplicativity and Subadditivity",
-      "startLine": 1025,
-      "endLine": 1047,
-      "summary": "Proves ω(mn) = ω(m) + ω(n) for coprime m,n, derives ω(6) = 2 and ω(30) = 3, and proves the subadditive bound ω(mn) ≤ ω(m) + ω(n) for general products.",
-      "mathContext": "$\\omega(mn) = \\omega(m) + \\omega(n)$ for $\\gcd(m,n) = 1$. Derives $\\omega(6) = 2$, $\\omega(30) = 3$."
-    },
-    {
-      "id": "main-conjectures",
-      "title": "Main Conjectures and Open Problem",
-      "startLine": 974,
-      "endLine": 1024,
-      "summary": "States the main conjecture (ω-barriers infinite), ε-variant, trajectory merging conjecture (related to #412), Erdős's expProd density result, Selfridge's computation, and the combined open problem.",
-      "mathContext": "Main conjecture: $|\\{n : \\text{IsBarrier}(\\omega, n)\\}| = \\infty$. Trajectory merging: do all $\\omega$-orbits eventually meet?"
+      "startLine": 1035,
+      "endLine": 1087,
+      "summary": "ω multiplicativity for coprime numbers and ω subadditivity."
     },
     {
       "id": "strong-prime-power",
-      "title": "Strong Prime Power Predecessor",
-      "startLine": 1024,
-      "endLine": 1047,
-      "summary": "Proves the strong form: at any barrier n ≥ 3, n-1 is necessarily a prime power p^k with k ≥ 1, using the fact that ω(n-1) = 1 for n ≥ 3 at a barrier.",
-      "mathContext": "At any barrier $n \\geq 3$: $n - 1$ is a prime power $p^k$. Proof: if $n-1 = ab$ with $a,b > 1$ coprime, then $\\omega(n-1) \\geq 2$, violating the barrier condition."
+      "title": "Barrier Predecessor Must Be Prime Power (Strong Form)",
+      "startLine": 1088,
+      "endLine": 1115,
+      "summary": "The strong-form theorem that a barrier predecessor must be a prime power."
     }
   ],
   "conclusion": {
