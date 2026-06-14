@@ -98,33 +98,65 @@
       "id": "intro-docstring",
       "title": "§0b: Open Question, Resolution Plan, and Sub-OQ Decomposition",
       "startLine": 7,
-      "endLine": 109,
-      "summary": "Top-level docstring stating the OQ-03 question, the affirmative resolution via the three-ingredient plan (companion matrices in-tree, Mathlib structure theorem for PID-modules, cyclic-summand-to-companion correspondence), and the four-sub-OQ decomposition roadmap (~150 + 300 + 250 + 200 = ~900 lines total).",
-      "mathContext": "OQ-03: 'Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4?' Resolution: YES via three ingredients, no Mathlib gap."
+      "endLine": 155,
+      "summary": "Top-level module docstring: states the OQ-03 question, the affirmative resolution via the three-ingredient plan (in-tree companion matrices, Mathlib's structure theorem for finitely generated torsion PID-modules `Module.equiv_directSum_of_isTorsion`, and the cyclic-summand-to-companion-block correspondence), the post-S11-audit Mathlib gap status (exactly one genuine gap: the elementary-divisors→invariant-factors regrouping ~290 LOC), the four-sub-OQ decomposition roadmap (~940 lines), an inventory of what this file contributes, and the References block.",
+      "mathContext": "OQ-03: 'Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4?' Resolution: YES; one genuine Mathlib gap (elementary→invariant regrouping), the rest integrative."
     },
     {
-      "id": "invariant-factor-chain",
-      "title": "§1: InvariantFactorChain — Abstract Data Structure",
-      "startLine": 111,
-      "endLine": 148,
-      "summary": "Defines the `InvariantFactorChain F` structure with four fields (factors, monic, posDegree, chain) and the two derived `noncomputable def`s `prodFactors = factors.prod` (target charpoly) and `lastFactor = getLast?.getD 1` (target minpoly). The divisibility chain `p_1 | p_2 | ... | p_k` is captured as a structure field, making it a first-class invariant.",
-      "mathContext": "$\\mathrm{InvariantFactorChain}\\, F = \\{\\, (p_1, \\dots, p_k) : p_i \\in F[X],\\ p_i \\text{ monic},\\ \\deg p_i \\geq 1,\\ p_1 \\mid p_2 \\mid \\cdots \\mid p_k \\,\\}$. Two derived quantities: $\\prod p_i$ (target charpoly) and $p_k$ (target minpoly)."
+      "id": "part-1",
+      "title": "§1 (Part 1): InvariantFactorChain — Abstract Data Structure",
+      "startLine": 156,
+      "endLine": 198,
+      "summary": "Namespace/open/variable preamble, then the `InvariantFactorChain F` structure with four fields (factors, monic, posDegree, chain) plus the two derived `noncomputable def`s `prodFactors = factors.prod` (target charpoly) and `lastFactor = getLast?.getD 1` (target minpoly). The divisibility chain p₁ ∣ p₂ ∣ ⋯ ∣ pₖ is captured as a first-class structure field.",
+      "mathContext": "$\\mathrm{InvariantFactorChain}\\, F = \\{\\,(p_1,\\dots,p_k): p_i \\in F[X],\\ p_i\\text{ monic},\\ \\deg p_i\\ge 1,\\ p_1\\mid\\cdots\\mid p_k\\,\\}$, with derived $\\prod p_i$ (charpoly) and $p_k$ (minpoly)."
     },
     {
-      "id": "main-theorem",
-      "title": "§2: rational_canonical_form_exists (S1 statement + sorry)",
-      "startLine": 150,
-      "endLine": 177,
-      "summary": "The S1 deliverable: the statement of Frobenius's rational canonical form existence theorem, in its weak form (only `prodFactors = charpoly M`, omitting the full similarity claim and the `lastFactor = minpoly M` equality). The proof is a `sorry` placeholder; the four-sub-OQ decomposition described in the docstring above will discharge it.",
-      "mathContext": "**Frobenius's RCF (existence, weak form)**: $\\forall M \\in \\mathrm{Mat}_n(F),\\ \\exists (p_1, \\dots, p_k) \\in (F[X])^k$ with $p_i$ monic, $\\deg p_i \\geq 1$, $p_1 \\mid \\cdots \\mid p_k$, and $\\prod_i p_i = \\mathrm{charpoly}(M)$."
+      "id": "part-2",
+      "title": "§2 (Part 2): rational_canonical_form_exists (S14 statement + sorry)",
+      "startLine": 199,
+      "endLine": 233,
+      "summary": "The main deliverable statement: Frobenius's RCF existence theorem in its S14-strengthened form — every square matrix `M` over a field admits an `InvariantFactorChain` whose product equals `M.charpoly` AND whose last factor equals `minpoly F M`. The proof is the single `sorry` in the file (line 232); the similarity-transform assertion is still omitted, deferred to sub-OQ OQ-03-OQ-04.",
+      "mathContext": "**Frobenius RCF (existence, S14 form)**: $\\forall M\\in\\mathrm{Mat}_n(F),\\ \\exists(p_1,\\dots,p_k)$ monic with $\\deg p_i\\ge 1$, $p_1\\mid\\cdots\\mid p_k$, $\\prod_i p_i=\\mathrm{charpoly}(M)$ and $p_k=\\mathrm{minpoly}(M)$."
     },
     {
-      "id": "empty-chain",
-      "title": "§3: prodFactors_empty — Unconditional Sanity Check",
-      "startLine": 179,
-      "endLine": 191,
-      "summary": "The only unconditional theorem in the S1 scaffold: an empty `InvariantFactorChain` has product 1. Proved by `unfold + rw + simp`. Verifies the `InvariantFactorChain`/`prodFactors` definitions are internally consistent. Mathematically: matches `charpoly (0 : Matrix (Fin 0) (Fin 0) F) = 1` for the degenerate 0×0 matrix.",
-      "mathContext": "$\\mathrm{prodFactors}(\\emptyset) = 1$, matching $\\mathrm{charpoly}(\\mathrm{Mat}_0(F)) = 1$ for the degenerate $0 \\times 0$ matrix."
+      "id": "part-3",
+      "title": "§3 (Part 3): Unconditional Structural Lemmas",
+      "startLine": 234,
+      "endLine": 276,
+      "summary": "Three matrix-independent facts about the abstract chain data: `prodFactors_empty` (empty chain ⇒ product 1), `prodFactors_monic` (product of monic factors is monic, via the private `list_prod_monic_of_all_monic` induction), and `factor_dvd_prodFactors` (each factor divides the product, instance of `List.dvd_prod`). All sorry-free.",
+      "mathContext": "$\\mathrm{prodFactors}(\\emptyset)=1$; $\\prod p_i$ is monic; $p\\in\\text{factors}\\Rightarrow p\\mid\\prod p_i$."
+    },
+    {
+      "id": "part-4",
+      "title": "§4 (Part 4): natDegree Helpers — nonzero, degree-sum, degree chain",
+      "startLine": 277,
+      "endLine": 338,
+      "summary": "Three more unconditional helpers (S3 follow-through): `prodFactors_ne_zero` (corollary of monicness), `prodFactors_natDegree` (natDegree of the product = sum of factor natDegrees, via the private `list_prod_natDegree_of_all_monic` induction using `Polynomial.natDegree_mul` on monic factors), and `chain_natDegree_le` (divisibility chain ⇒ natDegree chain, via `Polynomial.natDegree_le_of_dvd`). Sets up the eventual ∑ deg pᵢ = n dimension argument.",
+      "mathContext": "$\\prod p_i\\ne 0$; $\\deg(\\prod p_i)=\\sum_i\\deg p_i$; $i\\le j\\Rightarrow\\deg p_i\\le\\deg p_j$."
+    },
+    {
+      "id": "part-5",
+      "title": "§5 (Part 5): lastFactor Helpers — membership, monicness, degree maximality",
+      "startLine": 339,
+      "endLine": 419,
+      "summary": "The lastFactor-side structural facts (all conditional on `factors ≠ []`): a robust `length_pos_of_ne_nil` helper, the bridging `lastFactor_eq_getElem_pred` (getLast?.getD 1 = indexed access at length-1), then `lastFactor_mem`, `lastFactor_monic`, and `lastFactor_natDegree_maximal` (every factor's natDegree ≤ lastFactor's — abstract counterpart of 'pₖ = minpoly M has maximal degree').",
+      "mathContext": "For nonempty chains: $\\mathrm{lastFactor}\\in\\text{factors}$, is monic, and $\\forall p\\in\\text{factors},\\ \\deg p\\le\\deg(\\mathrm{lastFactor})$."
+    },
+    {
+      "id": "part-6",
+      "title": "§6 (Part 6): prodFactors.natDegree ≤ length × lastFactor.natDegree",
+      "startLine": 420,
+      "endLine": 491,
+      "summary": "A coarse upper bound composing §4's degree-sum identity with §5's degree maximality: `prodFactors_natDegree_le_lastFactor_natDegree_mul`, proved via the pure-Nat private helper `nat_list_sum_le_length_mul_of_all_le`. Abstract counterpart of `deg(charpoly M) ≤ k · deg(minpoly M)`.",
+      "mathContext": "$\\deg(\\prod p_i)\\le k\\cdot\\deg(\\mathrm{lastFactor})$, the matrix-level $\\deg\\mathrm{charpoly}\\le k\\cdot\\deg\\mathrm{minpoly}$ bound."
+    },
+    {
+      "id": "part-7",
+      "title": "§7 (Part 7): firstFactor-side Mirror + Two-Sided Sandwich",
+      "startLine": 492,
+      "endLine": 639,
+      "summary": "The symmetric counterpart to Parts 5–6 (S13): the `firstFactor = head?.getD 1` def, the bridging `firstFactor_eq_getElem_zero` (Plan-B rcases form, API-name independent), then `firstFactor_mem`, `firstFactor_monic`, `firstFactor_natDegree_minimal` (firstFactor's natDegree ≤ every factor's), the pure-Nat `nat_list_sum_ge_length_mul_of_all_ge`, and `prodFactors_natDegree_ge_firstFactor_natDegree_mul`. Together with Part 6 this yields the sandwich k·deg(firstFactor) ≤ deg(prodFactors) ≤ k·deg(lastFactor).",
+      "mathContext": "$k\\cdot\\deg(\\mathrm{firstFactor})\\le\\deg(\\prod p_i)\\le k\\cdot\\deg(\\mathrm{lastFactor})$, the abstract two-sided sandwich on $\\deg(\\mathrm{charpoly})$."
     }
   ],
   "conclusion": {
@@ -156,7 +188,7 @@
     "lineCount": 639,
     "axiomCount": 0,
     "theoremCount": 22,
-    "definitionCount": 3,
+    "definitionCount": 4,
     "path": "Proofs/MinpolyCharpolyOQ03.lean",
     "sorries": 1
   },
