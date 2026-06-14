@@ -314,15 +314,29 @@ theorem curl_zero_l1 (a b c d : ℝ) :
 The main result: Green's theorem holds under **L¹ curl + Lipschitz boundary**.
 
 This is Whitney's theorem (1957), also proved by Melas (1993) in the sharp form.
-The proof uses:
+For a GENERAL Lipschitz domain the proof uses:
 1. Approximate the Lipschitz domain by smooth domains (C^∞ approximation)
 2. Apply classical Green's theorem to each smooth approximation
 3. Pass to the limit using L¹ convergence of the curl and rectifiability
    of the Lipschitz boundary
 
-In Lean, we axiomatize this theorem because the full proof requires
-geometric measure theory machinery (sets of finite perimeter, BV functions,
-Federer's trace theorem, Gauss-Green formula) not yet assembled in Mathlib.
+The version axiomatized below (`greens_theorem_l1curl`) is, however, the
+RECTANGLE case: the domain is `Set.Icc a b ×ˢ Set.Icc c d` and `hTraversal`
+confines the curve to its frontier. For this simple geometry the heavy
+geometric-measure-theory machinery (sets of finite perimeter, BV functions,
+Federer's trace theorem, Gauss-Green formula) is NOT required. Via Fubini
+(`MeasureTheory.integral_prod`) the rectangle double integral splits into two
+iterated 1D integrals, so the statement reduces to two applications of FTC for
+an absolutely continuous function whose derivative is only L¹/a.e.-defined.
+
+The single genuine Mathlib gap is therefore that FTC-for-AC bridge:
+`f` absolutely continuous on `[a,b]` ⟹ `f b - f a = ∫ x in a..b, deriv f x`
+with `deriv f` only L¹/a.e.-defined. `Mathlib.MeasureTheory.Integral.FundThmCalculus`
+provides only versions requiring continuity / `HasDerivAt` everywhere; the named
+`BoundedVariation` and `Measure.AbsolutelyContinuous` APIs are necessary but not
+sufficient on their own. Estimated discharge: a bounded ~200–400 line build of
+the FTC-for-AC lemma plus the Fubini reduction, not a 1000+ line GMT project.
+(See research problem `greens-theorem-oq-02-oq-02` for the full survey.)
 -/
 
 /-  **Whitney's theorem** (minimal regularity for Green's theorem).
@@ -332,16 +346,24 @@ Federer's trace theorem, Gauss-Green formula) not yet assembled in Mathlib.
 
       ∮_C (P dx + Q dy) = ∬_{Ω} (∂Q/∂x - ∂P/∂y) dA
 
-    **Generalizes OQ-01/OQ-03** by weakening both conditions:
-    1. Boundary: any Lipschitz curve (not just rectangles or TypeI with C¹ bounds)
+    **Generalizes OQ-01/OQ-03** by weakening the field hypothesis:
+    1. Boundary: a Lipschitz curve traversing the frontier of a RECTANGLE
+       `Set.Icc a b ×ˢ Set.Icc c d` (cf. `hTraversal`); not yet a general
+       Lipschitz domain.
     2. Field: L¹ curl only (not pointwise C¹ as in `HasDerivAt`)
 
-    **Proof sketch** (Whitney 1957, §IV.8):
+    **Proof sketch for a GENERAL Lipschitz domain** (Whitney 1957, §IV.8):
     - Approximate the Lipschitz domain Ω_ε by smooth domains Ω_ε
     - Apply smooth Green's theorem: ∮_{∂Ω_ε} = ∬_{Ω_ε} curl dA
     - By Rademacher, line integrals converge: ∮_{∂Ω_ε} → ∮_C as ε → 0
     - By dominated convergence, double integrals converge under L¹ curl
     - Take ε → 0 to get the result
+
+    **For the rectangle case stated here**, the GMT route above is unnecessary:
+    Fubini reduces the double integral to two iterated 1D integrals, each closed
+    by FTC for an absolutely continuous function with L¹/a.e. derivative — the
+    one bridge Mathlib's `FundThmCalculus` currently lacks. The Federer GMT
+    reference is retained only for the general-domain statement.
 
     References:
     - Whitney, H. (1957). *Geometric Integration Theory*, §IV.8
