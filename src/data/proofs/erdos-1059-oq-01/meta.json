@@ -128,42 +128,86 @@
     {
       "id": "header",
       "title": "Header and Imports",
-      "summary": "Problem setup, references (OEIS A064152, erdosproblems.com), and Mathlib imports.",
       "startLine": 1,
-      "endLine": 32,
-      "mathContext": "The density question: does lim C(x)/π(x) = 1? Probabilistic heuristic from PNT."
+      "endLine": 51,
+      "summary": "Problem setup for Erdős #1059 (primes p where p−k! is composite for every k! < p), references (OEIS A064152, erdosproblems.com), Mathlib imports, and namespace."
     },
     {
       "id": "decidability",
       "title": "Core Definition and Decidability",
-      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via bounded quantifier. Key lemma: factorial_lt_implies_lt (k ≤ k! → k! < n → k < n).",
-      "startLine": 34,
-      "endLine": 57,
-      "mathContext": "$\\text{AFSC}(n) \\iff \\forall k < n, k! < n \\Rightarrow \\neg\\text{Prime}(n-k!) \\wedge n-k! \\geq 2$. Bound: $k \\leq k! < n \\Rightarrow k < n$."
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via bounded quantifier. Key lemma: factorial_lt_implies_lt (k! < n → k < n)."
     },
     {
-      "id": "witnesses",
-      "title": "New Witnesses: 461, 557, 673",
-      "summary": "Verifies three new prime witnesses using native_decide. For each p in (120, 720): checks p-1, p-2, p-6, p-24, p-120 are all composite. Packages all five witnesses (including 101, 211) in five_prime_witnesses.",
-      "startLine": 58,
-      "endLine": 103,
-      "mathContext": "For $p = 461$: $\\{460, 459=3{\\cdot}153, 455=5{\\cdot}91, 437=19{\\cdot}23, 341=11{\\cdot}31\\}$ — all composite. Similarly for 557 and 673."
+      "id": "witnesses-level-5",
+      "title": "Witnesses: Level 5 (p ∈ (120, 720))",
+      "startLine": 72,
+      "endLine": 96,
+      "summary": "Three new level-5 prime witnesses 461, 557, 673 verified by native_decide (prime_461/557/673 and witness_461/557/673). For each p ∈ (5!, 6!] the checks p−1,…,p−120 are all composite."
+    },
+    {
+      "id": "witnesses-level-6",
+      "title": "Witnesses: Level 6 (p ∈ (720, 5040))",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "First level-6 witness p = 769 (prime_769, witness_769), requiring 7 compositeness checks. six_prime_witnesses packages all six verified witnesses 101, 211, 461, 557, 673, 769."
     },
     {
       "id": "check-structure",
       "title": "Factorial Check Structure",
-      "summary": "Defines factorialCheckSet and factorialCheckCount. Verifies: checkCount(101) = 5, checkCount(211) = checkCount(461) = checkCount(557) = checkCount(673) = 6. Proves monotonicity.",
-      "startLine": 104,
-      "endLine": 134,
-      "mathContext": "For $p \\in (l!, (l+1)!]$: exactly $l+1$ values of $k$ satisfy $k! < p$. $p \\in (5!, 6!] \\Rightarrow l=5 \\Rightarrow 6$ checks."
+      "startLine": 126,
+      "endLine": 156,
+      "summary": "Defines factorialCheckSet (the k with k! < n) and factorialCheckCount = |factorialCheckSet|. Concrete counts checkCount_101=5, checkCount_211/461/557/673=6, checkCount_769=7, and monotonicity factorialCheckCount_mono."
     },
     {
-      "id": "density",
-      "title": "Natural Density Formalization",
-      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) using Finset.filter. Proves C(x) ≤ π(x), C is monotone, C(673) ≥ 5. States the density-1 axiom.",
-      "startLine": 135,
-      "endLine": 215,
-      "mathContext": "$C(x) = |\\{p \\leq x : p \\text{ prime}, \\text{AFSC}(p)\\}|$, $\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Conjecture: $C(x)/\\pi(x) \\to 1$."
+      "id": "check-count-bound",
+      "title": "Factorial Check Count Bound",
+      "startLine": 157,
+      "endLine": 225,
+      "summary": "factorialCheckCount_le_log: factorialCheckCount(n) ≤ ⌊log₂ n⌋ + 2 for all n, via the elementary bound 2^(k−1) ≤ k!. This is the rigorous form of the density heuristic's claim that each prime needs only O(log n) checks. checkCount_bound_769 instantiates it (7 ≤ 11)."
+    },
+    {
+      "id": "exact-check-count",
+      "title": "Exact Factorial Check Count",
+      "startLine": 226,
+      "endLine": 270,
+      "summary": "factorialCheckCount_eq_of_interval: when l! < n ≤ (l+1)!, factorialCheckCount n = l+1 exactly (proved via factorialCheckSet n = Finset.range (l+1) by double inclusion). factorialCheckCount_const_on_interval: the count is constant within each factorial level."
+    },
+    {
+      "id": "natural-density",
+      "title": "Natural Density",
+      "startLine": 271,
+      "endLine": 345,
+      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) via Finset.filter. Proves qualifyingCount_le_primeCount (C ≤ π), qualifyingPrimeCount_mono, and qualifyingPrimeCount_ge_six (C(769) ≥ 6). The natural density of qualifying primes is lim C(x)/π(x)."
+    },
+    {
+      "id": "density-conjecture",
+      "title": "The Density Conjecture",
+      "startLine": 346,
+      "endLine": 368,
+      "summary": "Axiom density_one_conjecture: the natural density of qualifying primes equals 1 (OPEN). A full proof would need PNT, Brun-Titchmarsh, and Selberg's sieve, none yet in Mathlib, so it is stated as an axiom."
+    },
+    {
+      "id": "density-gap",
+      "title": "Non-Qualifying Primes: The Density Gap",
+      "startLine": 369,
+      "endLine": 418,
+      "summary": "three_not_qualifying: p=3 fails (3−0!=2 prime). qualifyingPrimeCount_lt_primeCount: C(x) < π(x) for x ≥ 3 (strict Finset subset). qualifyingPrimeCount_pos: C(x) ≥ 1 for x ≥ 101. density_strictly_between: 0 < C(x) < π(x) for x ≥ 101."
+    },
+    {
+      "id": "cross-problem-synthesis",
+      "title": "Cross-Problem Synthesis: Qualifying Primes Are Infinite",
+      "startLine": 419,
+      "endLine": 514,
+      "summary": "Imports selberg_implies_erdos from OQ-02 (via definitional equality of AFSC) to prove qualifyingPrimes_infinite. levelCandidate picks one qualifying prime per factorial level ≥ 3; disjoint primorial intervals give distinctness. qualifyingPrimeCount_ge: C((N+3)!) ≥ N for all N (conditional on OQ-02's selberg_density_axiom)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 515,
+      "endLine": 566,
+      "summary": "Recaps the four new witnesses extending the gallery from 2 to 6, the seven key contributions (logarithmic check bound, exact/constant level count, strict density gap, sandwich, infinitude, quantitative lower bound), and the per-witness check counts."
     }
   ],
   "crossReferences": [
