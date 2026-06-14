@@ -1,7 +1,7 @@
 {
   "slug": "cauchy-schwarz-oq-02-oq-03",
   "title": "Complex Polarization Identity",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -25,14 +25,16 @@
     "goal": "Ship a verified (0 sorries, 0 axioms) gallery entry with the complex polarization identity, proven by a one-line wrapper of Mathlib's inner_eq_sum_norm_sq_div_four."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T17:46:00Z",
-    "iteration": 1,
-    "focus": "Mathlib API audit + S2 plan (no Lean changes this iteration).",
-    "blockers": [],
-    "nextAction": "S2 ACT: ship CauchySchwarzOQ02OQ03.lean (typed wrapper ~5 LOC) + gallery entry (~120 LOC) + Docker build verification.",
+    "phase": "ACT",
+    "since": "2026-06-14T00:00:00Z",
+    "iteration": 2,
+    "focus": "S2 deliverable shipped (build-pending): CauchySchwarzOQ02OQ03.lean (218 LOC, 12 theorems, 0 sorries, 0 axioms) + gallery entry, revived from abandoned PR #16999 onto current main. Mathlib pin still v4.26.0, matching the proof's target version.",
+    "blockers": [
+      "Docker build infra unavailable this session (recursive .lake self-symlink forces ~45min fresh Mathlib clone); proof not yet machine-checked. Auditor/deployer must docker-build Proofs.CauchySchwarzOQ02OQ03 and confirm 0 sorries before marking verified and un-drafting."
+    ],
+    "nextAction": "Auditor: docker-build Proofs.CauchySchwarzOQ02OQ03; on green, mark gallery meta status verified and merge the draft PR.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
