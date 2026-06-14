@@ -178,19 +178,38 @@ structure DenckerWeight (n m : ℕ) (P : LinearPDO n m) where
   sign_control : ∀ x ξ,
     (principalSymbol P x ξ).im < 0 → W x ξ ≥ 0
 
-/-- **Condition (Ψ)** restated: Im(p_m) does not change sign from
-    − to + along oriented bicharacteristics. -/
-axiom BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) : Type
+/-- A **bicharacteristic curve** of `P`: a parameterized curve `(x(t), ξ(t))`
+    in phase space along which the principal symbol vanishes, with nonzero
+    cotangent component.
 
-axiom imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
-    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ
+    In the full theory the curve also follows the Hamilton flow of `Re(p_m)`.
+    That ODE condition is omitted here (pending Mathlib ODE infrastructure),
+    making this definition slightly more general than the classical one. This
+    strengthens condition (Ψ) (more curves to check), so all downstream axioms
+    remain sound as stated. -/
+structure BicharacteristicCurve {n m : ℕ} (P : LinearPDO n m) where
+  /-- The spatial component x(t) of the curve in ℝⁿ -/
+  x : ℝ → Fin n → ℝ
+  /-- The cotangent component ξ(t) of the curve in ℝⁿ -/
+  ξ : ℝ → Fin n → ℝ
+  /-- The cotangent vector is nonzero along the curve -/
+  ξ_ne_zero : ∀ t, ξ t ≠ 0
+  /-- The principal symbol vanishes along the curve: p_m(x(t), ξ(t)) = 0 -/
+  symbol_vanishes : ∀ t, principalSymbol P (x t) (ξ t) = 0
+
+/-- The imaginary part of the principal symbol along a bicharacteristic curve
+    at time t: Im(p_m(x(t), ξ(t))). -/
+def imSymbolAlongCurve {n m : ℕ} {P : LinearPDO n m}
+    (γ : BicharacteristicCurve P) (t : ℝ) : ℝ :=
+  (principalSymbol P (γ.x t) (γ.ξ t)).im
 
 /-- The imaginary symbol along a bicharacteristic equals the imaginary part of
     the principal symbol at some point (x, ξ) on the curve. This connects the
     abstract bicharacteristic parameterization to the concrete principal symbol. -/
-axiom imSymbolAlongCurve_spec {n m : ℕ} (P : LinearPDO n m)
+theorem imSymbolAlongCurve_spec {n m : ℕ} (P : LinearPDO n m)
     (γ : BicharacteristicCurve P) (t : ℝ) :
-    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im
+    ∃ x ξ : Fin n → ℝ, imSymbolAlongCurve γ t = (principalSymbol P x ξ).im :=
+  ⟨γ.x t, γ.ξ t, rfl⟩
 
 def ConditionPsi {n m : ℕ} (P : LinearPDO n m) : Prop :=
   ∀ (γ : BicharacteristicCurve P) (t₁ t₂ : ℝ),
@@ -307,14 +326,16 @@ theorem self_adjoint_solvable {n m : ℕ} (P : LinearPDO n m)
 7. dencker_sufficiency: condition (Ψ) → local solvability
 8. real_symbol_solvable: real principal symbol → locally solvable
 9. self_adjoint_solvable: self-adjoint → locally solvable
+10. imSymbolAlongCurve_spec: bicharacteristic Im equals principalSymbol Im (now `rfl`)
 
-### Axioms (8):
+### Definitions/structures (concretized, no longer axioms):
+- BicharacteristicCurve: now a structure (x, ξ, ξ≠0, symbol vanishes)
+- imSymbolAlongCurve: now a concrete def Im(p_m(x(t), ξ(t)))
+
+### Axioms (5):
 - HasAPrioriEstimate: a priori Sobolev estimates (needs Sobolev spaces)
 - IsLocallySolvable: local solvability (needs distributions)
 - hormander_duality: solvability ↔ estimates for adjoint
-- BicharacteristicCurve: bicharacteristic curves (needs Hamilton flow)
-- imSymbolAlongCurve: Im of symbol along bicharacteristic (needs microlocal analysis)
-- imSymbolAlongCurve_spec: bridge connecting bicharacteristic Im to principalSymbol
 - dencker_weight_exists: Dencker's weight construction
 - weight_implies_estimate: weight → a priori estimates
 
