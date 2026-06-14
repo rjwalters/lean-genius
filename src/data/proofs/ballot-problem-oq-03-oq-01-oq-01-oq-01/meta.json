@@ -97,7 +97,7 @@
       "Finset"
     ],
     "namespace": "JacobiTrudi",
-    "lineCount": 2497,
+    "lineCount": 2557,
     "axiomCount": 0,
     "theoremCount": 62,
     "definitionCount": 12,
@@ -139,57 +139,97 @@
       "id": "sec-preamble",
       "title": "Preamble: Imports, Opens, Variables",
       "startLine": 1,
-      "endLine": 29,
+      "endLine": 40,
       "summary": "File header, Mathlib imports (Symmetric.Defs, Determinant.Basic, parent proof), opens (MvPolynomial, Matrix, Finset), namespace, and variable declarations for the abstract commutative ring setting.",
       "mathContext": "Works over `{σ R : Type*} [CommRing R] [Fintype σ] [DecidableEq σ]` — fully abstract in both the variable set σ and coefficient ring R. The parent import `Proofs.BallotProblemOQ03OQ01OQ01` supplies the LGV infrastructure."
     },
     {
       "id": "sec-definitions",
       "title": "Part I: Definitions",
-      "startLine": 35,
-      "endLine": 47,
+      "startLine": 41,
+      "endLine": 58,
       "summary": "Defines jacobiTrudiMatrix (k×k matrix with entries h_{sh_i+j-i} or 0) and schurPolynomial (its determinant). Both are noncomputable due to classical choice in hsymm.",
       "mathContext": "`jacobiTrudiMatrix k sh : Matrix (Fin k) (Fin k) (MvPolynomial σ R)`. `schurPolynomial k sh = Matrix.det (jacobiTrudiMatrix k sh)`. Uses ℕ subtraction with conditional `if i.val ≤ sh i + j.val` to handle the $h_n = 0$ for $n < 0$ convention."
     },
     {
       "id": "sec-base-cases",
       "title": "Part II: Base Cases",
-      "startLine": 53,
-      "endLine": 61,
+      "startLine": 59,
+      "endLine": 72,
       "summary": "schurPolynomial_empty: s_() = 1 (0×0 det via det_fin_zero). schurPolynomial_one_row: s_[n] = h_n (1×1 det via det_fin_one). Both proved with simp.",
       "mathContext": "`Matrix.det_fin_zero`: the determinant of the unique $0 \\times 0$ matrix is $1$. `Matrix.det_fin_one`: the $1 \\times 1$ determinant reduces to the single entry. These are boundary sanity checks for the Jacobi-Trudi definition."
     },
     {
       "id": "sec-symmetry",
       "title": "Part III: Symmetry",
-      "startLine": 63,
-      "endLine": 77,
+      "startLine": 73,
+      "endLine": 100,
       "summary": "Two theorems: entry-level symmetry (each h_n invariant under variable rename, proved via split_ifs + hsymm_isSymmetric) and full Schur polynomial symmetry via AlgHom.map_det (proved).",
       "mathContext": "`IsSymmetric φ` means `∀ e : Equiv.Perm σ, rename e φ = φ`. Strategy: `AlgHom.map_det` gives `rename e (det M) = det (Matrix.mapMatrix (rename e) M)`. Each entry satisfies `rename e (h_n) = h_n` by `rename_hsymm`, so the mapped matrix equals the original."
     },
     {
       "id": "sec-two-row",
       "title": "Part IV: Two-Row Formula",
-      "startLine": 79,
-      "endLine": 90,
+      "startLine": 101,
+      "endLine": 123,
       "summary": "Explicit formula for s_{[a,b]} = h_a*h_b - h_{a+1}*(h_{b-1} or 0). Proved via det_fin_two + Nat arithmetic simplification.",
       "mathContext": "`Matrix.det_fin_two` expands the $2 \\times 2$ determinant as $M_{00} M_{11} - M_{01} M_{10}$. Matrix.cons lemmas extract: $M_{00} = h_a$, $M_{01} = h_{a+1}$, $M_{10} = h_{b-1}$ (if $1 \\le b$, else $0$), $M_{11} = h_b$. Result: $s_{(a,b)} = h_a h_b - h_{a+1} h_{b-1}$."
     },
     {
       "id": "sec-hook-connection",
       "title": "Part V: Hook-Length Connection",
-      "startLine": 92,
-      "endLine": 101,
+      "startLine": 124,
+      "endLine": 159,
       "summary": "Evaluation of one-row Schur polynomial at all-ones gives C(n+k-1, k-1). Proved via Nat.multichoose reduction.",
       "mathContext": "`eval (fun _ : Fin k => (1 : R)) (schurPolynomial 1 (fun _ => n)) = Nat.choose (n + k - 1) (k - 1)`. Uses `schurPolynomial_one_row` to reduce to `eval 1 (hsymm (Fin k) R n)`, then stars-and-bars: $h_n(1,\\ldots,1) = \\binom{n+k-1}{k-1}$."
     },
     {
       "id": "sec-ssyt-definition",
-      "title": "Part VI: SSYT Definition and Jacobi-Trudi Equality",
+      "title": "Part VI: SSYT Definition of Schur Polynomials",
       "startLine": 160,
-      "endLine": 272,
+      "endLine": 292,
       "summary": "Defines SSYTFin (bounded SSYT type with Fintype instance), ssytSchurFin (SSYT generating function), proves ssytSchurFin_empty (k=0), proves ssytSchurFin_one_row (k=1, bijection via sorted multiset reps), and states jacobi_trudi_ssyt_eq (general, sorry for k ≥ 2).",
-      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), 2 sorries remain (ssytSchurFin_two_row + jacobi_trudi_ssyt_eq k≥3)."
+      "mathContext": "SSYTFin n k sh = subtype of ((i:Fin k)×Fin(sh i)→Fin n) satisfying row-weak (weakly increasing rows) and col-strict (strictly increasing columns). Fintype instance via Subtype.fintype (decidable predicates over finite types). ssytSchurFin = ∑_T T.weight where T.weight = ∏_p X(T p). k=0 proved by Unique (empty SSYT, both conditions vacuous) + IsEmpty (empty product = 1). k=1 proved via Fintype.sum_equiv with bijection ψ: SSYTFin n 1 ≃ Sym (Fin n) m using List.sortedLE_ofFn_iff (Monotone ↔ SortedLE). General case (k ≥ 2): RSK correspondence (~300 lines), ssytSchurFin_two_row (k=2) is now fully proved (Part XI); the 2 remaining sorries are Sub-lemma 2B (noColStrict_subSym_a_count_eq_subSym_le_aplus1_count, L1907) and the general k≥3 case of jacobi_trudi_ssyt_eq (L2555)."
+    },
+    {
+      "id": "sec-part-vii",
+      "title": "Part VII: Two-Row Jacobi-Trudi Infrastructure",
+      "startLine": 293,
+      "endLine": 775,
+      "summary": "Defines ColStrictSym (column-strictness for a pair of symmetric multisets via their sorted-list representatives) and the supporting subSym / weight machinery used to fiber two-row SSYTs into ordered Sym-pairs. Establishes the combinatorial scaffold for the k=2 Jacobi-Trudi bijection.",
+      "mathContext": "ColStrictSym a b P Q := ∀ j < min(a,b), (sort P)[j] < (sort Q)[j], comparing the j-th smallest elements of two symmetric multisets P : Sym (Fin n) a, Q : Sym (Fin n) b. Length obligations discharged by Multiset.length_sort. This is the col-strict predicate whose count drives the row-decomposition of two-row SSYTs."
+    },
+    {
+      "id": "sec-part-viii",
+      "title": "Part VIII: Rotation & Sym-Packaging Infrastructure (S31–S46)",
+      "startLine": 776,
+      "endLine": 1486,
+      "summary": "Pure Sym ↔ sorted-list-rotation API (rotateSortedList and the rotateSortedList{Prefix,Suffix}Sym families): length, period, multiset-invariance, composition, take/drop-split, complement-form, and reconstitution lemmas. Builds the bridge toward a cycle-lemma proof of Sub-lemma 2B without committing to the bijection's exact shape.",
+      "mathContext": "rotateSortedList M k is the k-th cyclic shift of M's sorted-list representative; List.rotate is a permutation, so the underlying multiset is invariant (rotateSortedList_toMultiset). S31–S46 provide a hand-checkable kit of period/length/membership/split helpers (each ≤4 lines, none change the sorry or axiom count) used to package a rotation index k ∈ Fin c alongside M : Sym (Fin n) c. See research notes sublemma-2b-cycle-lemma-spec.md §8."
+    },
+    {
+      "id": "sec-part-ix",
+      "title": "Part IX: firstDescentRotation, Weight & Counting Lemmas (S48)",
+      "startLine": 1487,
+      "endLine": 2090,
+      "summary": "Defines firstDescentRotation (Definition I, h_exists-parameterised) and proves the weight/totalSym identities and the counting lemmas that fiber non-col-strict Sym-pairs. Contains Sub-lemma 2B (noColStrict_subSym_a_count_eq_subSym_le_aplus1_count, L1907) which carries one of the file's two open sorries.",
+      "mathContext": "Chains firstDescentRotation_take_eq, totalSym/totalSym'_eq_iff, weight_eq_totalSym(' ), split_count_eq_subSym_le_count, colStrict_pair_count_eq_subSym_filtered_count, comp_card_eq/comp_add_eq, noColStrict_iff_canonicalComp, and colStrict_count_add_eq_subSym_le_count. Sub-lemma 2B (L1907) reduces the count of non-col-strict a-subsymmetric pieces to a count of (a+1)-subsymmetric pieces — the lone remaining structural sorry on the k=2 path."
+    },
+    {
+      "id": "sec-part-x",
+      "title": "Part X: Ballot Counting Identity & Jacobi-Trudi Fibration",
+      "startLine": 2091,
+      "endLine": 2482,
+      "summary": "Proves the ballot_counting_identity and the Jacobi-Trudi weight fibration lemmas (jdt_weight_lhs_fibered, jdt_weight_rhs_fibered, jdt_weight_sum), ssytFin_two_row_eq_sum_colstrict (row-decomposition bijection), and sym_pair_sum_partition. These assemble the algebraic identity ∑_{col-strict} wt = h_a h_b − h_{a+1} h_{b-1}.",
+      "mathContext": "jdt_weight_sum : ∑_{¬col-strict} wt = h_{a+1}·(if 1≤b then h_{b-1} else 0); sym_pair_sum_partition : ∑_{col-strict} + ∑_{¬col-strict} = h_a·h_b. Subtraction yields the two-row Schur = ssytSchurFin identity. ssytFin_two_row_eq_sum_colstrict rewrites the SSYT generating function as a sum over col-strict Sym-pairs via the row-decomposition bijection."
+    },
+    {
+      "id": "sec-part-xi",
+      "title": "Part XI: Main Theorems — ssytSchurFin_two_row & jacobi_trudi_ssyt_eq",
+      "startLine": 2483,
+      "endLine": 2557,
+      "summary": "Proves ssytSchurFin_two_row (k=2 Jacobi-Trudi identity, fully complete) by combining the Part X partition and weight-sum lemmas, then states the general jacobi_trudi_ssyt_eq: proved for k=0,1,2 and left open (sorry, L2555) for k≥3 pending algebraic LGV + RSK.",
+      "mathContext": "ssytSchurFin_two_row: rewrites schurPolynomial via schurPolynomial_two_row into h_a h_b − h_{a+1}(if 1≤b then h_{b-1} else 0), rewrites ssytSchurFin via ssytFin_two_row_eq_sum_colstrict, then closes with eq_sub_of_add_eq on jdt_weight_sum ▸ sym_pair_sum_partition — no sorry. jacobi_trudi_ssyt_eq dispatches k=0 (empty), k=1 (one-row), k=2 (via ssytSchurFin_two_row); k≥3 is the file's second open sorry (needs algebraic LGV ~150 lines + RSK bijection ~150 lines)."
     }
   ],
   "sorries": 2
