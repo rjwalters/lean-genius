@@ -85,39 +85,76 @@
   },
   "sections": [
     {
+      "id": "problem-context",
+      "title": "Problem Context and Setup",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Aristotle provenance note and problem docstring for Erdős #157 (SOLVED, Pilatte 2023): does an infinite Sidon set exist that is an asymptotic basis of order 3? Answer YES. Imports Mathlib and opens the Erdos157 namespace.",
+      "mathContext": "A Sidon set (B₂ sequence) has all pairwise sums distinct; an asymptotic basis of order k represents every large integer as a sum of at most k elements. Pilatte (2023) resolved the order-3 case affirmatively."
+    },
+    {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
-      "startLine": 28,
-      "endLine": 57,
-      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem."
+      "startLine": 44,
+      "endLine": 72,
+      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem sidon_iff_sidon_alt.",
+      "mathContext": "IsSidon: a+b=c+d (with a≤b, c≤d) forces (a,b)=(c,d). IsSidonAlt: each sum value has at most one ordered representation. The equivalence is fully proved."
     },
     {
       "id": "basis-definitions",
       "title": "Asymptotic Basis Definitions",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "SumsetK, IsAsymptoticBasis, IsExactBasis."
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "SumsetK (k-fold sumset), IsAsymptoticBasis (order-k representation of all large integers), and IsExactBasis.",
+      "mathContext": "SumsetK A k collects sums of at most k elements of A; IsAsymptoticBasis A k requires every n ≥ N₀ to lie in SumsetK A k."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Erdos157Conjecture and Pilatte's existence theorem."
+      "startLine": 90,
+      "endLine": 99,
+      "summary": "Erdos157Conjecture: ∃ an infinite Sidon set that is an asymptotic basis of order 3.",
+      "mathContext": "Formal Prop statement of the open-then-solved question; the conjecture itself is the existential resolved by Pilatte."
+    },
+    {
+      "id": "pilatte-theorem",
+      "title": "Pilatte's Theorem (Axiomatized)",
+      "startLine": 101,
+      "endLine": 106,
+      "summary": "Axiom pilatte_existence asserting Erdos157Conjecture. Full formalization would require ~1000+ lines of probabilistic-method infrastructure.",
+      "mathContext": "Pilatte's 2023 existence result is axiomatized here; this is one of the three stated assumptions of the file."
+    },
+    {
+      "id": "counting-axioms",
+      "title": "Counting Axioms",
+      "startLine": 108,
+      "endLine": 117,
+      "summary": "Two axiomatized counting bounds: sidon_counting_bound (Sidon counting ≤ √N + O(N^{1/4})) and basis_counting_lower (order-k basis counting ≥ N^{1/k}).",
+      "mathContext": "Classical Erdős–Turán style bounds, stated as axioms; only sidon_counting_bound is used in the proved order-2 impossibility result."
     },
     {
       "id": "related-results",
-      "title": "Related Results",
-      "startLine": 94,
-      "endLine": 111,
-      "summary": "Order 2 impossibility, counting bounds for Sidon sets and bases."
+      "title": "Order-2 Impossibility (Proved)",
+      "startLine": 119,
+      "endLine": 491,
+      "summary": "Full proof that no Sidon set is an asymptotic basis of order 2 (sidon_not_basis_2), via three helper lemmas: sidon_pair_sum_injective (injectivity of pair sums), sumsetK2_ncard_le (counting bound M(M+1)/2), and sidon_counting_contradiction (real-analysis bound forcing M(M+1)/2 < 2N − N₀). Combines the Sidon counting axiom with direct distinctness counting.",
+      "mathContext": "A Sidon set has ≈√N elements up to N, so its 2-element sums cover at most M(M+1)/2 ≈ N values, but [N₀,2N] needs ≈2N values—contradiction. The real-analysis lemma is fully proved (uses N = 8M⁴ to make √(2N)=4M² and (2N)^{1/4}=2M)."
+    },
+    {
+      "id": "construction-outline",
+      "title": "Construction Outline",
+      "startLine": 493,
+      "endLine": 505,
+      "summary": "Informal outline of Pilatte's probabilistic construction and the density heuristic (3√N > N^{1/3}) for order-3 basis, with references.",
+      "mathContext": "Sidon sets are sparse (≈√N up to N) yet dense enough for an order-3 basis; references Pilatte (2023) and Erdős–Turán (1941)."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 127,
-      "endLine": 180,
-      "summary": "Verified: powers_of_two_sidon. Example finite Sidon set."
+      "title": "Small Examples",
+      "startLine": 507,
+      "endLine": 535,
+      "summary": "Verified examples: powers_of_two_sidon (powers of 2 form a Sidon set) and example_is_sidon for exampleSidonSet = {1,2,5,11}.",
+      "mathContext": "Concrete Sidon witnesses; a docstring notes Aristotle proof search found the original {1,2,5,10,11,13} was not Sidon (1+11=2+10)."
     }
   ],
   "conclusion": {
