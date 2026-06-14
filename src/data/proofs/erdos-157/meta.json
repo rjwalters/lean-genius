@@ -2,7 +2,7 @@
   "id": "erdos-157",
   "title": "Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis",
   "slug": "erdos-157",
-  "description": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Two theorems verified: sidon_iff_sidon_alt and powers_of_two_sidon.",
+  "description": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Verified in Lean: the Sidon-definition equivalence (sidon_iff_sidon_alt), that {2^k} is Sidon (powers_of_two_sidon), and — fully proved — that no infinite Sidon set is an asymptotic basis of order 2 (sidon_not_basis_2).",
   "meta": {
     "author": "Pilatte (2023), Erdős-Turán (1941)",
     "sourceUrl": "https://erdosproblems.com/157",
@@ -56,7 +56,10 @@
       "Pilatte's existence theorem statement",
       "Sidon density upper bound (Erdős-Turán)",
       "Basis density lower bound",
-      "Verified theorem: powers_of_two_sidon"
+      "Verified theorem: powers_of_two_sidon",
+      "Verified theorem: sidon_not_basis_2 (no infinite Sidon set is an asymptotic basis of order 2)",
+      "Counting lemma sumsetK2_ncard_le (M·(M+1)/2 representability bound)",
+      "Real-analysis lemma sidon_counting_contradiction (density contradiction via rpow, Aristotle-proved)"
     ],
     "axiomCount": 3,
     "lineCount": 535,
@@ -65,12 +68,12 @@
     "definitionCount": 7
   },
   "overview": {
-    "historicalContext": "Sidon sets (B$_2$ sequences) — sets where all pairwise sums are distinct — were introduced by Simon Sidon in correspondence with Erdős in the 1930s. Erdős and Pál Turán proved in 1941 that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, establishing their fundamental sparsity.\n\nAsymptotic bases of order $k$ — sets $A$ where every sufficiently large integer is a sum of at most $k$ elements of $A$ — require density at least $N^{1/k}$ by a counting argument. The tension between Sidon sparsity ($\\leq N^{1/2}$) and basis density ($\\geq N^{1/k}$) creates a natural threshold: coexistence requires $1/k \\leq 1/2$, i.e., $k \\geq 2$. But $k = 2$ is exactly the boundary and fails for subtle arithmetic reasons.\n\nErdős conjectured that order 3 should work, and this was open for decades despite partial results by Deshouillers and Plagne (2003) on finite Sidon sets. Cédric Pilatte (Oxford) settled the conjecture affirmatively in 2023 using a probabilistic construction, applying the Lovász Local Lemma and a careful densification argument. His proof is non-explicit: it shows such sets exist without constructing one.\n\nThis formalization includes two fully verified theorems: the equivalence of two Sidon set definitions, and the proof that $\\{2^k : k \\in \\mathbb{N}\\}$ forms a Sidon set (since binary representations are unique).",
+    "historicalContext": "Sidon sets (B$_2$ sequences) — sets where all pairwise sums are distinct — were introduced by Simon Sidon in correspondence with Erdős in the 1930s. Erdős and Pál Turán proved in 1941 that a Sidon subset of $\\{1, \\ldots, N\\}$ has at most $(1+o(1))\\sqrt{N}$ elements, establishing their fundamental sparsity.\n\nAsymptotic bases of order $k$ — sets $A$ where every sufficiently large integer is a sum of at most $k$ elements of $A$ — require density at least $N^{1/k}$ by a counting argument. The tension between Sidon sparsity ($\\leq N^{1/2}$) and basis density ($\\geq N^{1/k}$) creates a natural threshold: coexistence requires $1/k \\leq 1/2$, i.e., $k \\geq 2$. But $k = 2$ is exactly the boundary and fails for subtle arithmetic reasons.\n\nErdős conjectured that order 3 should work, and this was open for decades despite partial results by Deshouillers and Plagne (2003) on finite Sidon sets. Cédric Pilatte (Oxford) settled the conjecture affirmatively in 2023 using a probabilistic construction, applying the Lovász Local Lemma and a careful densification argument. His proof is non-explicit: it shows such sets exist without constructing one.\n\nThis formalization includes several fully verified theorems: the equivalence of two Sidon set definitions, the proof that $\\{2^k : k \\in \\mathbb{N}\\}$ forms a Sidon set (since binary representations are unique), and a complete proof that no infinite Sidon set is an asymptotic basis of order 2 (sidon_not_basis_2), the boundary case ruled out on density grounds.",
     "problemStatement": "**Erdős Problem #157 (SOLVED)**: Does there exist an infinite Sidon set which is an asymptotic basis of order 3?\n\n**Answer**: YES (Pilatte 2023)\n\n**Definitions**:\n- **Sidon set**: A ⊆ ℕ where a + b = c + d (a ≤ b, c ≤ d) implies (a,b) = (c,d)\n- **Asymptotic basis of order k**: ∃ N₀, ∀ n ≥ N₀, n is a sum of ≤ k elements of A\n\n**Key insight**: Sidon sets grow like √N = N^{1/2}. Order-k bases need N^{1/k} density. Since 1/3 < 1/2, order 3 is feasible while order 2 is not.",
-    "text": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Two theorems verified: sidon_iff_sidon_alt and powers_of_two_sidon.",
-    "proofStrategy": "The formalization captures the problem structure:\n\n1. **Sidon definitions**: IsSidon (direct) and IsSidonAlt (via cardinality)\n2. **Verified equivalence**: sidon_iff_sidon_alt proved using Set.ncard\n3. **Basis definitions**: SumsetK and IsAsymptoticBasis\n4. **Counting bounds**: Sidon upper bound (√N), basis lower bound (N^{1/k})\n5. **Pilatte's theorem**: Existence statement (sorry - probabilistic construction)\n6. **Verified example**: powers_of_two_sidon shows {2^k} is Sidon",
+    "text": "Does there exist an infinite Sidon set which is an asymptotic basis of order 3? YES (Pilatte 2023). Verified in Lean: the Sidon-definition equivalence (sidon_iff_sidon_alt), that {2^k} is Sidon (powers_of_two_sidon), and — fully proved — that no infinite Sidon set is an asymptotic basis of order 2 (sidon_not_basis_2).",
+    "proofStrategy": "The formalization captures the problem structure:\n\n1. **Sidon definitions**: IsSidon (direct) and IsSidonAlt (via cardinality)\n2. **Verified equivalence**: sidon_iff_sidon_alt proved using Set.ncard\n3. **Basis definitions**: SumsetK and IsAsymptoticBasis\n4. **Counting bounds**: Sidon upper bound (√N), basis lower bound (N^{1/k})\n5. **Pilatte's theorem**: existence statement (axiom pilatte_existence - probabilistic construction)\n6. **Order-2 impossibility (verified)**: sidon_not_basis_2 fully proves that no infinite Sidon set is an asymptotic basis of order 2, via a counting lemma (sumsetK2_ncard_le) and an rpow real-analysis contradiction (sidon_counting_contradiction)\n7. **Verified example**: powers_of_two_sidon shows {2^k} is Sidon",
     "keyInsights": [
-      "**Order 3 is the boundary**: Order 2 impossible (density too low), order 3 achievable (Pilatte's construction).",
+      "**Order 3 is the boundary**: order 2 is impossible (proven here in Lean, sidon_not_basis_2), order 3 achievable (Pilatte's construction).",
       "**Density arithmetic**: Sidon ≤ √N = N^{1/2}, basis needs ≥ N^{1/k}. Compatible iff k ≥ 3.",
       "**Powers of 2 example**: The canonical Sidon set {1, 2, 4, 8, ...} demonstrates the definition (verified).",
       "**Probabilistic proof**: Pilatte's construction is non-explicit, using the probabilistic method.",
@@ -85,43 +88,92 @@
   },
   "sections": [
     {
+      "id": "overview-imports",
+      "title": "Problem Statement & Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File docstring (Erdős #157, SOLVED by Pilatte 2023), Mathlib import, and namespace/open setup."
+    },
+    {
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
-      "startLine": 28,
-      "endLine": 57,
-      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem."
+      "startLine": 44,
+      "endLine": 73,
+      "summary": "IsSidon (B₂ sequence), IsSidonAlt (sumset-cardinality form), and the verified equivalence sidon_iff_sidon_alt."
     },
     {
       "id": "basis-definitions",
       "title": "Asymptotic Basis Definitions",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "SumsetK, IsAsymptoticBasis, IsExactBasis."
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "SumsetK (k-fold sumset), IsAsymptoticBasis, and IsExactBasis."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Erdos157Conjecture and Pilatte's existence theorem."
+      "startLine": 90,
+      "endLine": 100,
+      "summary": "Erdos157Conjecture: existence of an infinite Sidon set that is an asymptotic basis of order 3."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 94,
-      "endLine": 111,
-      "summary": "Order 2 impossibility, counting bounds for Sidon sets and bases."
+      "id": "pilatte-theorem",
+      "title": "Pilatte's Theorem (Axiomatized)",
+      "startLine": 101,
+      "endLine": 107,
+      "summary": "axiom pilatte_existence — the affirmative answer (Pilatte 2023); the full probabilistic construction is not formalized."
+    },
+    {
+      "id": "counting-axioms",
+      "title": "Counting Axioms",
+      "startLine": 108,
+      "endLine": 118,
+      "summary": "axiom sidon_counting_bound (Sidon density ≤ √N + O(N^{1/4})) and basis_counting_lower (basis density ≥ N^{1/k})."
+    },
+    {
+      "id": "order2-injectivity",
+      "title": "Order-2 Impossibility: Pair-Sum Injectivity",
+      "startLine": 119,
+      "endLine": 146,
+      "summary": "Helper lemma sidon_pair_sum_injective: the map (a,b) ↦ a+b is injective on strict pairs drawn from a Sidon set."
+    },
+    {
+      "id": "order2-counting-lemma",
+      "title": "Order-2 Counting Lemma",
+      "startLine": 147,
+      "endLine": 340,
+      "summary": "private lemma sumsetK2_ncard_le: integers in [N₀,2N] representable as ≤2-element sums inject into M·(M+1)/2 singletons-and-pairs, where M = |A ∩ [1,2N]|."
+    },
+    {
+      "id": "order2-realanalysis",
+      "title": "Real-Analysis Contradiction Lemma",
+      "startLine": 341,
+      "endLine": 442,
+      "summary": "private lemma sidon_counting_contradiction: for the Sidon bound, M·(M+1)/2 < 2N − N₀ at N = 8M⁴ (rpow algebra; previously a sorry, now fully discharged by Aristotle)."
+    },
+    {
+      "id": "order2-main-theorem",
+      "title": "Verified: No Sidon Asymptotic Basis of Order 2",
+      "startLine": 443,
+      "endLine": 491,
+      "summary": "theorem sidon_not_basis_2 — fully proved (0 sorries): no infinite Sidon set is an asymptotic basis of order 2, by combining the counting lemma with the density contradiction."
+    },
+    {
+      "id": "construction-outline",
+      "title": "Construction Outline",
+      "startLine": 492,
+      "endLine": 505,
+      "summary": "Sketch of Pilatte's probabilistic construction and why order 3 (3√N ≫ N^{1/3}) succeeds where order 2 fails."
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 127,
-      "endLine": 180,
-      "summary": "Verified: powers_of_two_sidon. Example finite Sidon set."
+      "title": "Small Examples",
+      "startLine": 506,
+      "endLine": 534,
+      "summary": "Verified: powers_of_two_sidon ({2^k} is Sidon) and example_is_sidon ({1,2,5,11}); Aristotle proof search caught that the original example {1,2,5,10,11,13} was not Sidon (1+11 = 2+10)."
     }
   ],
   "conclusion": {
-    "summary": "We formalize Erdős Problem #157 on infinite Sidon sets as asymptotic bases. The answer is YES for order 3 (Pilatte 2023), while order 2 is impossible due to density constraints. The formalization includes two verified theorems: the equivalence of Sidon definitions, and the proof that powers of 2 form a Sidon set.",
+    "summary": "We formalize Erdős Problem #157 on infinite Sidon sets as asymptotic bases. The answer is YES for order 3 (Pilatte 2023), while order 2 is impossible due to density constraints. The formalization verifies the equivalence of Sidon definitions, that powers of 2 form a Sidon set, and — fully proved — that no infinite Sidon set is an asymptotic basis of order 2 (sidon_not_basis_2).",
     "implications": "This result clarifies the boundary between sparse sets with unique-sum structure and dense sets capable of representing all integers. The interplay between Sidon sparsity (√N) and basis density (N^{1/k}) is fundamental to understanding additive structure.",
     "openQuestions": [
       "Can an explicit infinite Sidon set that is an order-3 basis be constructed?",
