@@ -109,10 +109,10 @@ the best lower bound known for the regular-tetrahedron packing density
 in ℝ³ as of the 2010 construction. (The exact optimal density for
 tetrahedra remains an open problem.)
 
-**Key observation** (Tactic S3, deferred): this value *strictly exceeds*
-the FCC sphere density `π / (3 √ 2) ≈ 0.7405` (`fccDensity` in
-`Proofs.KeplerConjecture`), refuting any naive expectation that the
-Kepler upper bound is shape-universal.
+**Key observation** (Tactic S3, proved as `tetrahedronDimerDensity_gt_fccDensity`):
+this value *strictly exceeds* the FCC sphere density `π / (3 √ 2) ≈ 0.7405`
+(`fccDensity` in `Proofs.KeplerConjecture`), refuting any naive expectation that
+the Kepler upper bound is shape-universal.
 -/
 noncomputable def tetrahedronDimerDensity : ℝ := 4000 / 4671
 
