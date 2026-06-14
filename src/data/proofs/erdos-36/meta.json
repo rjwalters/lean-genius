@@ -99,60 +99,68 @@
   },
   "sections": [
     {
-      "id": "header",
+      "id": "module-header",
       "title": "Module Header",
       "startLine": 1,
-      "endLine": 18,
-      "summary": "Problem statement: partition {1,...,2N} into equal halves, minimize maximum overlap. Known bounds 0.379 < c < 0.381. Status: OPEN.",
-      "mathContext": "Partition $\\{1, \\ldots, 2N\\}$ into $A \\sqcup B$ with $|A| = |B| = N$. Define $M(N) = \\min_{(A,B)} \\max_k |\\{(a,b) : a - b = k\\}|$. The limit $c = \\lim_{N \\to \\infty} M(N)/N$ exists with $0.379005 < c < 0.380876$."
+      "endLine": 23,
+      "summary": "States the minimum overlap problem: partition {1,…,2N} into equal sets A, B; the overlap at difference k counts pairs (a,b) with a−b=k; M(N) is the min over partitions of the max overlap. The problem asks for c = lim M(N)/N (known 0.379005 < c < 0.380876). Imports Mathlib.",
+      "mathContext": "$M(N) = \\min_{|A|=N} \\max_{k \\in \\mathbb{Z}} \\#\\{(a,b) \\in A \\times B : a - b = k\\}$; determine $c = \\lim_{N\\to\\infty} M(N)/N$."
     },
     {
-      "id": "imports",
-      "title": "Imports",
-      "startLine": 19,
-      "endLine": 24,
-      "summary": "Imports Mathlib's **Nat.Basic**, **Int.Basic**, **Finset.Basic**, **Real.Basic**, and **Tactic** for integer differences, finite set cardinality, and real-valued asymptotic bounds.",
-      "mathContext": "Imports: `Finset.filter`/`Finset.card` for counting overlaps, `Real.sqrt` for Scherk's $1 - 1/\\sqrt{2}$ bound, standard arithmetic for the minimax definition."
+      "id": "part-i-core-definitions",
+      "title": "Part I: Core Definitions",
+      "startLine": 24,
+      "endLine": 50,
+      "summary": "Defines `interval N` ({1,…,2N} ⊂ ℤ), `overlap A B k` (pairs at difference k), `maxOverlap` (sup over differences), and `minMaxOverlap`. Includes the note that ℕ lacks ⊤ for Finset.inf, so the genuine min is captured by the axiomatized M(N) below rather than this Finset.sup placeholder.",
+      "mathContext": "$\\mathrm{overlap}(A,B,k) = \\#\\{(a,b)\\in A\\times B : a-b=k\\}$, $\\ \\mathrm{maxOverlap}(A,B) = \\max_k \\mathrm{overlap}(A,B,k)$."
     },
     {
-      "id": "definition",
-      "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 39,
-      "summary": "Defines **overlap**(A,B,k) as the representation function $r_{A-B}(k)$, **maxOverlap** as $\\max_k r_{A-B}(k)$, and **minMaxOverlap** $M(N) = \\min_{(A,B)} \\max_k \\text{overlap}(A,B,k)$.",
-      "mathContext": "$\\text{overlap}(A,B,k) = |\\{(a,b) \\in A \\times B : a - b = k\\}| = r_{A-B}(k)$. $M(N) = \\min_{A \\sqcup B = [2N],\\,|A|=|B|=N} \\max_k r_{A-B}(k)$."
+      "id": "part-ii-basic-properties",
+      "title": "Part II: Basic Properties",
+      "startLine": 51,
+      "endLine": 58,
+      "summary": "Proves `product_card`: |A ×ˢ B| = |A|·|B|, the cardinality fact used in the fiber-sum counting argument.",
+      "mathContext": "$|A \\times B| = |A|\\cdot|B|$."
     },
     {
-      "id": "main-question",
-      "title": "Main Question: The Asymptotic Constant",
-      "startLine": 40,
-      "endLine": 48,
-      "summary": "States the existence of $c = \\lim M(N)/N > 0$ via $\\varepsilon$-$N_0$ definition. The exact value of $c$ is the central open question.",
-      "mathContext": "$c = \\lim_{N \\to \\infty} M(N)/N$ exists and $c > 0$. Currently $0.379005 < c < 0.380876$."
+      "id": "part-iii-mn-definition",
+      "title": "Part III: M(N) Definition and Main Question",
+      "startLine": 59,
+      "endLine": 84,
+      "summary": "Defines `partitions N` (N-element subsets of {1,…,2N}), `overlapValues N`, and `M N` (the min-max overlap), then states the central axiom `erdos_36_limit_exists`: the limit c = lim M(N)/N exists. This axiom encodes the open problem itself.",
+      "mathContext": "Axiom: $\\exists\\, c,\\ \\lim_{N\\to\\infty} M(N)/N = c$ — the existence of the minimum-overlap constant (the open question)."
     },
     {
-      "id": "known-bounds",
-      "title": "Known Bounds",
-      "startLine": 49,
-      "endLine": 71,
-      "summary": "Axiomatizes four bounds: **Erdős** ($> 1/4$, 1955), **Scherk** ($> 1 - 1/\\sqrt{2}$, 1955), **White** ($> 0.379005$, 2022 via Fourier/SDP), **Haugland-TTT** ($< 0.380876$, 2016/2026 via step functions).",
-      "mathContext": "$1/4 < 1 - 1/\\sqrt{2} \\approx 0.293 < 0.379005 < c < 0.380876 < 0.381$. Four progressively tighter bounds spanning 70 years of research."
+      "id": "part-v-known-bounds",
+      "title": "Part V: Known Bounds",
+      "startLine": 85,
+      "endLine": 130,
+      "summary": "Catalogues the historical bounds on c: `erdos_lower_quarter` (Erdős 1955, c > 1/4), `scherk_lower` (Scherk 1955, c > 1 − 1/√2 ≈ 0.293), and the axioms `white_lower` (White 2022, c > 0.379005) and `upper_bound` (Haugland 2016, c < 0.380926).",
+      "mathContext": "$\\tfrac14 < 1-\\tfrac1{\\sqrt2} < 0.379005 < c < 0.380926$ — successive lower bounds (Erdős, Scherk, White) and the best upper bound (Haugland)."
     },
     {
-      "id": "small-values",
-      "title": "Small Values",
-      "startLine": 72,
-      "endLine": 79,
-      "summary": "Records $M(1)=1, M(2)=1, M(3)=2, M(4)=2, M(5)=3$. Computed by exhaustive enumeration; the ratios $M(N)/N$ oscillate toward $c \\approx 0.38$.",
-      "mathContext": "$M(1)/1 = 1, M(2)/2 = 0.5, M(3)/3 \\approx 0.667, M(4)/4 = 0.5, M(5)/5 = 0.6$. The ratios oscillate and converge toward $c \\approx 0.38$."
+      "id": "part-vi-small-values",
+      "title": "Part VI: Small Values",
+      "startLine": 131,
+      "endLine": 160,
+      "summary": "Introduces computable mirrors `maxOverlapC`/`MC` (definitionally equal to M via `MC_eq`, since `noncomputable` affects only code generation) and verifies exact values M(1..5) = 1,1,2,2,3 by `native_decide`.",
+      "mathContext": "$M(1)=1,\\ M(2)=1,\\ M(3)=2,\\ M(4)=2,\\ M(5)=3$, verified computationally via the mirror $MC = M$."
     },
     {
-      "id": "observations",
-      "title": "Observations and Techniques",
-      "startLine": 80,
-      "endLine": 91,
-      "summary": "Discusses Erdős's disproved $c = 1/2$ conjecture, White's Fourier analytic method (autocorrelation → convex optimization), and connections to additive combinatorics and discrepancy theory.",
-      "mathContext": "Write $f = 1_A - 1/2$. Then $\\text{overlap}(A,B,k) = N/2 - \\sum_j f(j)f(j+k)$. By Parseval: $\\max_k |\\hat{f}(k)|^2 \\geq \\|f\\|_2^2/2N$, giving the Fourier lower bound."
+      "id": "part-vii-consequences",
+      "title": "Part VII: Consequences and Observations",
+      "startLine": 161,
+      "endLine": 205,
+      "summary": "Proves `constant_bounds`: any limit c of M(N)/N must lie in [0.379005, 0.380876], derived from the `white_lower` and `upper_bound` axioms. Followed by historical notes (Erdős's original c = 1/2 conjecture, White's Fourier-analytic method, the additive-combinatorics connection).",
+      "mathContext": "Any limit $c$ of $M(N)/N$ satisfies $0.379005 \\le c \\le 0.380876$, sandwiched by the axiomatized bounds."
+    },
+    {
+      "id": "part-viii-pigeonhole",
+      "title": "Part VIII: Elementary Pigeonhole Lower Bound (No Axioms)",
+      "startLine": 206,
+      "endLine": 380,
+      "summary": "An axiom-free derivation of c ≥ 1/4. Builds the fiber-sum identity `sum_overlap_eq_prod` (∑_k overlap A B k = |A|·|B| over the difference range of size 4N−1), via helpers `diff_mem_range`, `overlap_zero_not_image`, `overlap_le_max`, `diff_range_card`, `interval_card`. Pigeonhole then gives `pigeonhole_maxOverlap` and `M_lower_pigeonhole` ((4N−1)·M(N) ≥ N²), yielding `trivial_lower_bound`: M(N)/N > 1/4.",
+      "mathContext": "$\\sum_k \\mathrm{overlap}(A,B,k) = |A||B| = N^2$ over $4N-1$ differences $\\Rightarrow (4N-1)\\,M(N) \\geq N^2 \\Rightarrow M(N)/N > 1/4$ (axiom-free)."
     }
   ],
   "overview": {
