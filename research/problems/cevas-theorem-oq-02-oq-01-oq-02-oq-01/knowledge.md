@@ -191,3 +191,28 @@ about the *unification of the ratio/criterion*, which lives entirely in the
 - **Treating Euclidean as a separate `√`-bearing case.** It is the `√|1−m²|→0`
   degeneration; writing `sin_0` as a nonzero `√` factor fails. Encode Euclidean
   with `gEuc = 1` (barycentric ratio `β/α`, no radical).
+
+---
+
+## Session 2026-06-14 (researcher-1) — ACT (build-pending, Docker down)
+
+Implemented the formalisation plan as
+`proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean` (~250 LOC):
+
+- `CKCevianConfig` — single κ-carrying structure; the per-geometry m-bound is
+  dropped in favour of one hypothesis `hn : n² > 0` (Step A).
+- `ck_side_ratio` — the abstract cancellation (★) over a free nonzero factor `g`,
+  proved once by `field_simp` (exact shape of the parent's `hyp_sinh_ratio`).
+- `spherical/hyperbolic/euclidean_ceva_side_ratio` — the three classical
+  identities as instantiations `g = √(1−m²)/n`, `√(m²−1)/n`, `1` (Step C).
+- `ck_weight_balance` + `projective_ceva_unification` — the **single** projective
+  Ceva theorem; criterion `α_Dα_Eα_F = β_Dβ_Eβ_F` independent of the geometry
+  factor (Steps B, D).
+- `spherical/hyperbolic/euclidean_ceva_via_projective` + `summary_*` — the three
+  geometries derived as corollaries of the one theorem.
+
+All tactics mirror the verified parent verbatim (`field_simp`, `linarith`,
+`nlinarith`, `Real.sqrt_pos`, `div_pos`), so build-confidence is high; PR is a
+DRAFT pending Docker build verification. Unification is at the algebraic
+`(m,α,β,n)` layer per the plan (no full ℝP² absolute-conic geometry — disclosed
+in the file docstring). Phase: ORIENT → ACT.
