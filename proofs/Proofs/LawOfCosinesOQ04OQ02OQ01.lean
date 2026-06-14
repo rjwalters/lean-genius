@@ -47,7 +47,14 @@ the full audit table and re-grounded line numbers at the pinned SHA.
   (`bisector_param_exists`, `bisector_dist_BD`, `bisector_dist_DC`).
 * S6a progress: Step (b) discharged as helper
   `cos_BAD_eq_cos_DAC_inner_form` (cosine-equality form of the bisector
-  hypothesis). Main theorem still has 1 sorry (Steps c-f remain).
+  hypothesis).
+* Step (d) discharged as standalone geometry-free lemma
+  `bisector_factor_algebra` (pure-`ℝ` `linear_combination`; the algebraic
+  factorization of Path A). The remaining glue in the main theorem is the
+  Docker-gated geometry — Step (c) bilinear expansion + denominator clearing
+  to produce `bisector_factor_algebra`'s hypothesis, Step (e) Cauchy-Schwarz
+  non-collinearity exclusion, Step (f) `s = c/(b+c)` conclusion — all
+  paste-ready in `s5-statesync-audit-extension.md` §§4-7.
 * Sorries: 1 (`angle_bisector_ratio_from_geometry` — the main theorem).
 * Axioms: 0.
 -/
@@ -140,6 +147,28 @@ lemma cos_BAD_eq_cos_DAC_inner_form
   unfold EuclideanGeometry.angle at hcos
   rw [InnerProductGeometry.cos_angle, InnerProductGeometry.cos_angle] at hcos
   exact hcos
+
+/-! ## Step (d): the algebraic factorization (geometry-free)
+
+The crux algebra of Path A, isolated as a pure-`ℝ` lemma so it is independent
+of the (Docker-gated) inner-product/Cauchy-Schwarz glue. After Step (c)'s
+bilinear expansion the cosine-equality becomes
+
+    b · ((1-s)·c² + s·iuv) = c · ((1-s)·iuv + s·b²)
+
+(with `b := ‖C-ᵥA‖`, `c := ‖B-ᵥA‖`, `iuv := ⟪B-ᵥA, C-ᵥA⟫`). This lemma turns
+that into the factorized form `((1-s)·c − s·b) · (b·c − iuv) = 0`, which the
+main theorem combines with the non-collinearity exclusion (Step e) to force
+the first factor to vanish, giving `s = c/(b+c)`.
+
+The `linear_combination h` witness is verified by hand: expanding the goal's
+left factor pair gives `(1-s)bc² − (1-s)c·iuv − sb²c + sb·iuv`, which equals
+`h.lhs − h.rhs` term-for-term. (This resolves the sign the S5 bearer audit
+§6 left as "verify by hand": the coefficient is `+h`, not `−h`.) -/
+theorem bisector_factor_algebra {s b c iuv : ℝ}
+    (h : b * ((1 - s) * c ^ 2 + s * iuv) = c * ((1 - s) * iuv + s * b ^ 2)) :
+    ((1 - s) * c - s * b) * (b * c - iuv) = 0 := by
+  linear_combination h
 
 /-! ## Main theorem: geometric angle-bisector identity
 
