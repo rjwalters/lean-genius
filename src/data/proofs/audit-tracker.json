@@ -874,9 +874,9 @@
       "result": "clean"
     },
     "bezout-identity-oq-03": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-03T16:43:30Z",
+      "lastAudited": "2026-06-14T07:52:52Z",
       "result": "clean"
     },
     "bezout-identity-oq-03-oq-01": {
@@ -14702,11 +14702,9 @@
     },
     "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-06-13T16:22:13Z",
+      "lastAudited": "2026-06-13T16:05:52Z",
       "result": "issues-fixed",
-      "issues": [
-        "conclusion.summary claimed 18 machine-checked theorems; source has 21 (matches theoremCount field) — fixed in this PR"
-      ]
+      "issues": []
     },
     "dissection-of-cubes-oq-03-oq-02": {
       "auditCount": 1,
@@ -15321,12 +15319,6 @@
       "auditCount": 1,
       "lastAudited": "2026-06-13T15:12:04Z",
       "result": "clean",
-      "issues": []
-    },
-    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-13T16:05:52Z",
-      "result": "issues-fixed",
       "issues": []
     }
   },
