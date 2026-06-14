@@ -50,20 +50,36 @@ theorem erdos_349_characterization :
 
 /- ## Golden Ratio Conjecture -/
 
-/-- **Golden Ratio Conjecture**: The sequence ⌊tα^n⌋ is complete
-    for all t > 0 and 1 < α < (1+√5)/2 ≈ 1.618. -/
+/-- **Golden Ratio Conjecture** (OPEN): the sequence ⌊tα^n⌋ is complete
+    for all t > 0 and 1 < α < (1+√5)/2 ≈ 1.618.
+
+    The upper bound is the golden ratio φ, the positive root of x² = x + 1.
+    For α > 1, the condition `α < φ` is equivalent to the algebraic
+    inequality `α² < α + 1`, which is used here to avoid `Real.sqrt`. -/
+def GoldenRatioConjecture : Prop :=
+  ∀ t α : ℝ, t > 0 → 1 < α → α ^ 2 < α + 1 → IsGoodPair t α
+
 /- ## Known Results -/
 
-/-- **Graham's Disjoint Segments**: For any k, there exists
-    t_k ∈ (0,1) such that the set of α making ⌊t_k α^n⌋ complete
-    consists of at least k disjoint intervals. -/
+/- **Graham's Disjoint Segments**: For any k, there exists
+   t_k ∈ (0,1) such that the set of α making ⌊t_k α^n⌋ complete
+   consists of at least k disjoint intervals. -/
 /- ## Parity of ⌊(3/2)^n⌋ -/
 
-/-- **Odd Infinitely Often?**: Is ⌊(3/2)^n⌋ odd for infinitely
+/-- The sequence ⌊(3/2)^n⌋, i.e. the `t = 1, α = 3/2` case of `expFloorSeq`. -/
+def floorThreeHalvesPow (n : ℕ) : ℤ := expFloorSeq 1 (3 / 2) n
+
+/-- **Odd Infinitely Often?** (OPEN): is ⌊(3/2)^n⌋ odd for infinitely
     many n? This basic question remains open and is a fundamental
     obstacle to the main conjecture. -/
-/-- **Even Infinitely Often?**: Is ⌊(3/2)^n⌋ even for infinitely
+def OddInfinitelyOften : Prop :=
+  ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Odd (floorThreeHalvesPow n)
+
+/-- **Even Infinitely Often?** (OPEN): is ⌊(3/2)^n⌋ even for infinitely
     many n? Also open. -/
+def EvenInfinitelyOften : Prop :=
+  ∀ N : ℕ, ∃ n : ℕ, n ≥ N ∧ Even (floorThreeHalvesPow n)
+
 /- ## Proved Properties -/
 
 /-- When α = 1, the sequence ⌊t · 1^n⌋ = ⌊t⌋ is constant.

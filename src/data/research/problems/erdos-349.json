@@ -30,15 +30,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-18T00:00:00Z",
-    "iteration": 2,
-    "focus": "The file has 2 theorem declarations, 3 definitions, 0 axioms, and 0 sorries; it proves only a tautological good-pair characterization and the alpha=1 constant-sequence lemma.",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Formalized the open conjectures as Props (per prior nextAction). Added GoldenRatioConjecture (complete for t>0, 1<alpha<phi, encoded algebraically as alpha^2<alpha+1 to avoid Real.sqrt), floorThreeHalvesPow (the t=1,alpha=3/2 sequence), and OddInfinitelyOften / EvenInfinitelyOften (parity of floor((3/2)^n) infinitely often). Also repaired 3 dangling /-- -/ docstrings (Golden Ratio/Odd/Even) by attaching them to the new defs and demoted the Graham docstring to a block comment. defCount 3->7, lineCount 84->100; still 0 axioms / 0 sorries.",
     "blockers": [
       "The explicit good-pair region is not characterized.",
       "Golden-ratio and parity statements remain comments.",
       "No finite subset-sum construction proves completeness for any nontrivial alpha range."
     ],
-    "nextAction": "State the golden-ratio conjecture and the floor((3/2)^n) parity questions as active Props.",
+    "nextAction": "Conjectures now stated as Props. The Graham disjoint-segments result remains a prose comment (harder to state cleanly). Genuine math (proving completeness for 1<alpha<phi, or the floor((3/2)^n) parity) is deeply open. Possible: a sanity lemma floorThreeHalvesPow 0 = 1 (build-gated).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -46,13 +46,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "CURRENT: 2 theorem declarations, 3 definitions, 0 axioms, and 0 sorries; proves a tautological good-pair characterization and the alpha=1 constant-sequence lemma.",
+    "progressSummary": "OPEN, 0 axioms, 0 sorries. Erdos349Problem.lean now 100 LOC, 2 theorems, 7 defs. Defs: IsAdditivelyComplete, expFloorSeq, IsGoodPair, GoldenRatioConjecture, floorThreeHalvesPow, OddInfinitelyOften, EvenInfinitelyOften. The three docstring-only conjectures are now formal Props (stated, not proved). Proved: tautological characterization + alpha=1 constant-sequence lemma.",
     "builtItems": [
       "`IsAdditivelyComplete`",
       "`expFloorSeq`",
       "`IsGoodPair`",
       "`erdos_349_characterization`",
-      "`expFloorSeq_at_one`"
+      "`expFloorSeq_at_one`",
+      "GoldenRatioConjecture (Prop): complete for t>0, 1<alpha<phi via algebraic alpha^2<alpha+1",
+      "floorThreeHalvesPow + OddInfinitelyOften + EvenInfinitelyOften (Props): floor((3/2)^n) parity questions"
     ],
     "insights": [
       "The file is axiom-free and sorry-free.",

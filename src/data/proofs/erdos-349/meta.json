@@ -30,9 +30,9 @@
     "badge": "wip",
     "assumptions": "0 axioms, 0 sorries. All results proved from Lean primitives.",
     "mathlib_version": "4.26.0",
-    "lineCount": 84,
+    "lineCount": 100,
     "theoremCount": 2,
-    "definitionCount": 3
+    "definitionCount": 7
   },
   "crossReferences": [
     {
@@ -98,7 +98,7 @@
       "id": "imports",
       "title": "Mathlib Imports",
       "startLine": 17,
-      "endLine": 20,
+      "endLine": 21,
       "summary": "Imports core Mathlib modules: $\\mathbb{N}$, $\\mathbb{Z}$, $\\mathbb{R}$ basics, and tactics. Provides the floor function $\\lfloor \\cdot \\rfloor$, real exponentiation, and Finset summation.",
       "mathContext": "Key Mathlib primitives: `Int.floor : ℝ → ℤ` for $\\lfloor \\cdot \\rfloor$, `Finset.sum` for $\\sum_{s \\in T} s$, and `Real.rpow` for $\\alpha^n$ with real exponents."
     },
@@ -113,40 +113,40 @@
     {
       "id": "main-question",
       "title": "Main Characterization Problem",
-      "startLine": 38,
-      "endLine": 44,
+      "startLine": 37,
+      "endLine": 50,
       "summary": "States Erdős Problem #349: characterize the set $\\mathcal{G} \\subseteq (0,\\infty)^2$ of all good pairs $(t,\\alpha)$. Formalized as an existential axiom asserting the completeness region exists.",
       "mathContext": "Axiom: $\\exists S \\subseteq \\mathbb{R}^2,\\ \\forall t > 0,\\ \\forall \\alpha > 0,\\ (t,\\alpha) \\in S \\iff \\{\\lfloor t\\alpha^n \\rfloor\\}$ is complete. The problem asks for an explicit description of $S$."
     },
     {
       "id": "golden-ratio",
       "title": "Golden Ratio Conjecture",
-      "startLine": 46,
-      "endLine": 52,
-      "summary": "The central conjecture: $\\lfloor t\\alpha^n \\rfloor$ is complete for all $t > 0$ and $1 < \\alpha < \\varphi = (1+\\sqrt{5})/2$. The golden ratio threshold arises from the Fibonacci sequence's completeness via Zeckendorf's theorem.",
+      "startLine": 51,
+      "endLine": 61,
+      "summary": "Formalizes the **Golden Ratio Conjecture** as a Prop: `GoldenRatioConjecture` states that ⌊tα^n⌋ is complete for all t > 0 and 1 < α < φ. The bound α < φ (φ the positive root of x²=x+1) is encoded algebraically as `α² < α + 1` to avoid `Real.sqrt`. Stated, not proved (the problem is OPEN).",
       "mathContext": "Conjecture: $(0,\\infty) \\times (1, \\varphi) \\subseteq \\mathcal{G}$. The Fibonacci sequence satisfies $F_n = \\lfloor \\varphi^n / \\sqrt{5} + 1/2 \\rfloor$ (i.e., $t = 1/\\sqrt{5}$, $\\alpha = \\varphi$), and Zeckendorf proved it is complete."
     },
     {
       "id": "known-results",
       "title": "Graham's Disjoint Segments",
-      "startLine": 54,
-      "endLine": 64,
+      "startLine": 62,
+      "endLine": 66,
       "summary": "Formalizes Graham's 1964 result: for any $k$, there exists $t_k \\in (0,1)$ such that the completeness set $\\{\\alpha : (t_k, \\alpha) \\in \\mathcal{G}\\}$ consists of $\\geq k$ disjoint intervals, revealing fractal-like complexity.",
       "mathContext": "Graham (1964): $\\forall k,\\ \\exists t_k,\\ \\{\\alpha : (t_k, \\alpha) \\in \\mathcal{G}\\}$ contains $\\geq k$ disjoint open intervals. This implies the boundary $\\partial \\mathcal{G}$ is highly non-trivial — not a simple curve in $(t,\\alpha)$-space."
     },
     {
       "id": "parity-questions",
       "title": "Parity of $\\lfloor (3/2)^n \\rfloor$",
-      "startLine": 66,
-      "endLine": 77,
-      "summary": "States the two fundamental parity sub-problems: is $\\lfloor (3/2)^n \\rfloor$ odd infinitely often? Even infinitely often? Both remain open and connect to equidistribution of $\\{(3/2)^n\\}$ modulo 1.",
+      "startLine": 67,
+      "endLine": 82,
+      "summary": "Formalizes the parity questions for ⌊(3/2)^n⌋ (the t=1, α=3/2 case, `floorThreeHalvesPow`) as Props: `OddInfinitelyOften` and `EvenInfinitelyOften` (∀N ∃n≥N with Odd/Even ⌊(3/2)^n⌋). Both are open and are a fundamental obstacle to the main conjecture. Stated, not proved.",
       "mathContext": "$\\lfloor (3/2)^n \\rfloor \\pmod{2}$ is determined by $\\{(3/2)^n\\} = (3/2)^n - \\lfloor (3/2)^n \\rfloor$. If $\\{(3/2)^n\\}$ were equidistributed mod 1, then $\\lfloor (3/2)^n \\rfloor$ would be odd $\\sim 50\\%$ of the time. But equidistribution of $\\{\\alpha^n\\}$ for non-Pisot $\\alpha$ (like $3/2$) is a major open problem."
     },
     {
       "id": "waring-observation",
       "title": "Waring Connection",
-      "startLine": 79,
-      "endLine": 83,
+      "startLine": 83,
+      "endLine": 99,
       "summary": "Notes the link to Waring's problem: the Ideal Waring formula $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ depends on the same exponential floor values that appear in Problem #349.",
       "mathContext": "$g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 2$ when $\\{(3/2)^k\\} \\leq 1 - (3/4)^k$. This condition holds for all verified $k \\leq 471{,}600{,}000$ (Kubina-Wunderlich). If it fails for some $k$, then $g(k) = 2^k + \\lfloor (3/2)^k \\rfloor - 1$."
     }
