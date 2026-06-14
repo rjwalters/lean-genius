@@ -77,6 +77,32 @@
     }
   },
   {
+    "id": "rs-edge-extraction",
+    "proofId": "roth-theorem-k3-oq-02",
+    "type": "lemma",
+    "startLine": 96,
+    "endLine": 126,
+    "title": "Edge-Extraction Helpers: Recovering Differences from Adjacency",
+    "content": "The three private lemmas rsAdj_xy_mem, rsAdj_yz_mem, and rsAdj_xz_exists invert the adjacency relation. Given an edge between specific part vertices, they recover the membership witness: an XY-edge (xVert x ~ yVert y) yields y - x ∈ A; a YZ-edge yields z - y ∈ A; an XZ-edge yields ∃ a ∈ A, z - x = 2a. Each proof does rcases on the six symmetric disjuncts of rsAdj and discharges the impossible orientations by `simp [xVert, yVert, zVert]` (the part-label mismatches collapse), keeping only the matching case. These extractors are the workhorses that let the triangle ↔ 3-AP correspondence read off a, b, c from a triangle's three edges.",
+    "mathContext": "Inverting $\\sim$ on directed part-pairs: $(0,x) \\sim (1,y) \\Rightarrow y - x \\in A$; $(1,y) \\sim (2,z) \\Rightarrow z - y \\in A$; $(0,x) \\sim (2,z) \\Rightarrow \\exists a \\in A,\\; z - x = 2a$. The disjunctive definition of $\\sim$ forces a unique surviving case once the source/target part labels are fixed.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "adjacency relation",
+      "case analysis (rcases)",
+      "simp normalization",
+      "graph edges"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "Lean 4 rcases on disjunctions",
+      "Fin label arithmetic"
+    ],
+    "range": {
+      "startLine": 96,
+      "endLine": 126
+    }
+  },
+  {
     "id": "ap-triple-struct",
     "proofId": "roth-theorem-k3-oq-02",
     "type": "definition",
