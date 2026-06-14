@@ -1,7 +1,7 @@
 {
   "slug": "feuerbachs-theorem-oq-02-murakami",
   "title": "3D Feuerbach analogue for tetrahedra (Murakami / Court / Mannheim)",
-  "phase": "DECOMPOSE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "scope-then-formalize",
@@ -35,15 +35,14 @@
     "goal": "Land a positive 3D Feuerbach theorem in FeuerbachsTheoremOQ02.lean (or a sibling file), restoring the gallery entry from 'axiomatized via refutation' to a verified positive result."
   },
   "currentState": {
-    "phase": "ACT (BLOCKED — Docker down)",
-    "since": "2026-06-14T01:34:27.000Z",
-    "iteration": 4,
-    "focus": "S7 DONE (2026-06-13, build-free, symbolically + numerically verified exactly): generalised the T0 Grace result to ALL trirectangular tetrahedra (legs a,b,c at the right-angle vertex D=(0,0,0), A=(a,0,0), B=(0,b,0), C=(0,0,c)). The Grace sphere through A,B,C tangent internally to both the insphere and the D-exsphere has RATIONAL centre Theta=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2(a+b+c)) and RATIONAL radius R=(a^2+b^2+c^2+ab+bc+ca)/(2(a+b+c)); rho_in,Dex=(ab+bc+ca -/+ sqrt(a^2 b^2+b^2 c^2+c^2 a^2))/(2(a+b+c)); R-rho_in,Dex=(a^2+b^2+c^2 +/- sqrt(a^2 b^2+b^2 c^2+c^2 a^2))/(2(a+b+c)) (both positive => both tangencies internal). PROOF: imposing tangency of the sphere-through-A,B,C to the insphere and squaring to eliminate R gives an equation in the surd n=sqrt(1/a^2+1/b^2+1/c^2) whose ODD-in-n part vanishes identically, fixing G=abc/(a+b+c) independent of sign(n); since n->-n swaps insphere<->D-exsphere, ONE sphere is tangent to both and the surd cancels (rational centre+radius). T0 (a,b,c)=(2,3,6) recovers S4's Theta=(40,45,72)/22, R=85/22, rho_in=(18-3 sqrt 14)/11, rho_Dex=(18+3 sqrt 14)/11. This is the publishable positive trirectangular 3D Feuerbach (Grace) theorem; only the Lean transcription (S8) remains, Docker-gated.",
+    "phase": "ACT (build-pending — Docker down)",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 5,
+    "focus": "S8 DONE (2026-06-14, build-pending): transcribed the general trirectangular Grace theorem (S7) into proofs/Proofs/FeuerbachsTheoremOQ02Murakami.lean. The file states, over a,b,c>0 and t with t^2=a^2 b^2+b^2 c^2+c^2 a^2: graceCenter=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2(a+b+c)), graceRadius=(a^2+b^2+c^2+ab+bc+ca)/(2(a+b+c)), rhoIn/rhoDex=(ab+bc+ca -/+ t)/(2(a+b+c)), and proves grace_through_A/B/C (dist^2=R^2), grace_tangent_insphere/Dexsphere (dist^2=(R-rho)^2), grace_minus_rhoIn/rhoDex_eq (=(a^2+b^2+c^2 +/- t)/(2 sigma), both positive => internal). Backbone *_cleared division-free lemmas proved by ring (part a) / linear_combination 2*ht (parts b,c) — these were verified symbolically with sympy (odd-in-t part vanishes; both tangency diffs = 2*(t^2 - (a^2 b^2+b^2 c^2+c^2 a^2))). Registered in proofs/Proofs.lean. NOT yet machine-checked: Docker daemon down this cycle; the divided geometric theorems may need a field_simp-scaling tweak to the linear_combination coefficient on build.",
     "blockers": [
-      "S8 (Lean compilation) is Docker-gated: verification infra is down (2026-06-13 blackout). The S4 (T0) AND S7 (general trirectangular) closed-form/statement work is build-free and complete; transcribing the general statement+proof to Lean must wait for Docker. The identities are pure algebra over the field extension by t=sqrt(a^2 b^2+b^2 c^2+c^2 a^2), so the eventual Lean proof is ring/norm_num and carries no remaining mathematical risk.",
-      "Mathlib 3D sphere-sphere tangency and tetrahedron face-circumsphere infrastructure remain sparse; the explicit-coordinate route (now fully realised in S4) avoids depending on it entirely — tangency is reduced to dist(centres)^2 = (r1 - r2)^2 algebraic identities."
+      "S8 build verification is Docker-gated: Docker daemon down (2026-06-14 blackout). The Lean file is written and registered; only machine-checking remains."
     ],
-    "nextAction": "S8 (Docker-gated, do when Docker returns): transcribe the GENERAL trirectangular Grace theorem (S7) into the sibling proofs/Proofs/FeuerbachsTheoremOQ02Murakami.lean. Over variables a,b,c>0 introduce t with t^2 = a^2 b^2+b^2 c^2+c^2 a^2 (the cancelling surd), set Theta=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2(a+b+c)), R=(a^2+b^2+c^2+ab+bc+ca)/(2(a+b+c)), rho_in,Dex=(ab+bc+ca -/+ t)/(2(a+b+c)), I=rho_in*(1,1,1), E=rho_Dex*(1,1,1), and prove (a) |Theta-A|^2=|Theta-B|^2=|Theta-C|^2=R^2 and (b) |Theta-I|^2=(R-rho_in)^2, |Theta-E|^2=(R-rho_Dex)^2 by ring/norm_num. The T0 case (a,b,c)=(2,3,6), t=6 sqrt 14, is the a=2,b=3,c=6 specialisation, so S8 subsumes the earlier S5. Keep the parent FeuerbachsTheoremOQ02.lean untouched; rename its non-standard mongePoint=4G-3O to the classical 2G-O only in the sibling.",
+    "nextAction": "Build verification only (Docker-gated): run ./proofs/scripts/docker-build.sh Proofs.FeuerbachsTheoremOQ02Murakami when Docker returns. If grace_tangent_insphere/Dexsphere fail, the fix is the field_simp scaling: change `linear_combination 2 * ht` to `linear_combination 2 * (2*(a+b+c))^2 * ht` (the *_cleared backbone lemmas are unaffected and already verified). On green build, promote gallery entry from axiomatized-via-refutation to verified positive result and add src/data/proofs/feuerbachs-theorem-oq-02-murakami.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -131,5 +130,7 @@
   "lastUpdate": "2026-06-13T23:30:00.000Z",
   "significance": 7,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    "proofs/Proofs/FeuerbachsTheoremOQ02Murakami.lean"
+  ]
 }

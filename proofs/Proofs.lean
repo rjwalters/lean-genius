@@ -2292,6 +2292,7 @@ import Proofs.FeuerbachsTheoremOQ01Aristotle
 import Proofs.FeuerbachsTheoremOQ01OQ03
 import Proofs.FeuerbachsTheoremOQ02
 import Proofs.FeuerbachsTheoremOQ02Aristotle
+import Proofs.FeuerbachsTheoremOQ02Murakami
 import Proofs.FeuerbachsTheoremOQ05
 import Proofs.FiveColorTheorem
 import Proofs.FodorPressingDown
