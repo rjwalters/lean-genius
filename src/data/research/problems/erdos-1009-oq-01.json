@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1009-oq-01",
   "title": "What is the exact optimal constant $C$ in $f(c) \\leq Cc^2$",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-24T00:48:59.901Z",
-    "iteration": 3,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 4,
+    "focus": "S-ACT: Strengthened the optimal-constant formalization for Györi's f(c) <= C*c^2 bound. Proved the infimum is ATTAINED (optimalBound_validBound: optimalBound is itself a valid bound constant), gave the full characterization optimalBound_iff (ValidBound D <-> optimalBound <= D), and discharged the file's own optimalBoundQuestion Prop as optimalBoundQuestion_wellDefined (well-definedness + characterization, NOT the exact numerical value). theoremCount 10->13, lineCount 160->192. No new axioms; 3 axioms (boundFunction opaque fn, Gyori 1988, Sauer) remain irreducible.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "3 axioms are irreducible without a concrete definition of the bound function f(c) (deep combinatorics: edge-disjoint triangles in K4-free graphs). The exact value of optimalBound (only 1/4 <= C* < inf known) is the genuine open problem. Possible future: prove erdos_small_c_statement (f(c)=0 for c<1/2) IF boundFunction is given a real definition; otherwise it stays a Prop.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated turan_extremal axiom (3→2 axioms). Proved from Mathlib CliqueFree.card_edgeFinset_le.",
+    "progressSummary": "AXIOMATIZED (3 irreducible axioms: opaque boundFunction, gyori_quadratic_bound 1988, sauer_lower_bound). Erdos1009OQ01.lean now 192 LOC, 13 theorems, 4 defs, 0 sorries. NEW: optimalBound_validBound (infimum attained), optimalBound_iff (ValidBound D <-> optimalBound <= D), optimalBoundQuestion_wellDefined (the stated question Prop is provably satisfied as a characterization). Known bounds 1/4 <= optimalBound < inf; exact value open.",
     "builtItems": [
       "Assessment: 8A all appropriate (opaque function + deep results)",
       "edgeDisjoint_comm: symmetry of edge-disjointness",
       "turanThreshold_zero, turanThreshold_one: small value computations",
       "turanThreshold_pos: positivity for n≥2",
       "turanThreshold_mono: monotonicity of Turán threshold",
-      "PROVED turan_extremal from Mathlib (axiom count 3→2)"
+      "PROVED turan_extremal from Mathlib (axiom count 3→2)",
+      "optimalBound_validBound: the infimum optimalBound is itself a valid bound constant (attainment)",
+      "optimalBound_iff: ValidBound D <-> optimalBound <= D (full characterization)",
+      "optimalBoundQuestion_wellDefined: discharges the stated optimalBoundQuestion Prop (well-definedness, not the numeric value)"
     ],
     "insights": [
       "8 axioms: boundFunction (opaque) + deep graph theory (Györi, Turán, Sauer). All appropriate.",

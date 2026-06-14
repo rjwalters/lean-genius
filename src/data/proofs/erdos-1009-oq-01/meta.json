@@ -21,8 +21,8 @@
     ],
     "sorries": 0,
     "axiomCount": 3,
-    "lineCount": 160,
-    "theoremCount": 10,
+    "lineCount": 192,
+    "theoremCount": 13,
     "definitionCount": 4,
     "assumptions": "3 axioms: boundFunction (opaque function representing f(c)), gyori_quadratic_bound (existence of valid constant C from Györi 1988), sauer_lower_bound (f(2) ≥ 1 from Sauer's K_{1,m,m} construction). These encode the deepest published results underpinning the open question.",
     "dateAdded": "2026-05-04",
@@ -52,7 +52,8 @@
       "**Closure under min gives tighter bounds**: The minimum of two valid bound constants is also valid. This structural property underlies the infimum being well-defined: any finite collection of valid constants can be improved by taking their minimum.",
       "**The Sauer lower bound C* ≥ 1/4 follows from a single evaluation**: The argument is entirely local — evaluate the ValidBound constraint at c = 2, use f(2) ≥ 1, and solve D · 4 ≥ 1 to get D ≥ 1/4. The csInf then inherits this lower bound.",
       "**ratio_le reformulates ValidBound**: The lemma ValidBound.ratio_le (f(c)/c² ≤ C) reformulates the bound as a supremum condition: C* = sup_{c>0} f(c)/c². This dual characterization connects the infimum of valid constants to the supremum of the ratio.",
-      "**The open question has a clean Prop formulation**: `optimalBoundQuestion` states that C* is characterized by exactly the property that ValidBound D ↔ C* ≤ D. This is the sharp threshold characterization — C* is the exact cutoff. Proving this Prop requires knowing f(c)/c² → C* as c → ∞ or some sequence approaching the supremum."
+      "**The open question has a clean Prop formulation**: `optimalBoundQuestion` states that C* is characterized by exactly the property that ValidBound D ↔ C* ≤ D. This is the sharp threshold characterization — C* is the exact cutoff. Proving this Prop requires knowing f(c)/c² → C* as c → ∞ or some sequence approaching the supremum.",
+      "**The infimum is attained**: `optimalBound_validBound` proves $C^\\* = \\inf\\{C : \\text{ValidBound }C\\}$ is itself a valid bound, giving the clean characterization $\\text{ValidBound}\\,D \\iff C^\\*\\le D$ (`optimalBound_iff`). The stated `optimalBoundQuestion` is thereby a provable well-definedness/characterization fact (`optimalBoundQuestion_wellDefined`); the exact numerical value of $C^\\*$ remains open."
     ]
   },
   "sections": [
@@ -60,40 +61,40 @@
       "id": "axioms",
       "title": "Axioms and Deep Results",
       "startLine": 27,
-      "endLine": 52,
+      "endLine": 48,
       "summary": "Axiomatizes boundFunction (the f(c) function), gyori_quadratic_bound (existence of valid C > 0 from Györi 1988), and sauer_lower_bound (f(2) ≥ 1 from Sauer's construction).",
       "mathContext": "$f: \\mathbb{R} \\to \\mathbb{N}$ is the 'missing triangles' bound function. Györi (1988): $\\exists C > 0, \\forall c > 0, f(c) \\leq Cc^2$. Sauer: $f(2) \\geq 1$."
     },
     {
       "id": "valid-bound",
       "title": "Valid Bound Constants",
-      "startLine": 53,
-      "endLine": 98,
+      "startLine": 49,
+      "endLine": 87,
       "summary": "Defines ValidBound C, proves validBound_exists (from Györi), ValidBound.nonneg, ValidBound.mono (upward closure), ValidBound.min_valid (closure under min), ValidBound.ratio_le (f(c)/c² ≤ C).",
       "mathContext": "$C$ is a valid bound iff $\\forall c > 0, f(c) \\leq Cc^2$. The set $\\{C : C \\text{ valid}\\}$ is nonempty (by Györi), bounded below by 0, and upward-closed."
     },
     {
       "id": "optimal-bound",
       "title": "The Optimal Bound Constant",
-      "startLine": 99,
-      "endLine": 130,
+      "startLine": 88,
+      "endLine": 118,
       "summary": "Defines optimalBound as sInf {C | ValidBound C}. Proves validBounds_bddBelow, optimalBound_le (csInf_le), optimalBound_nonneg (le_csInf), lt_optimalBound_not_valid (contrapositive).",
       "mathContext": "$C^* = \\inf\\{C : C \\text{ valid}\\}$. Since the set is nonempty and bounded below by 0, $C^*$ is well-defined. For any valid $C$, $C^* \\leq C$; for $D < C^*$, $D$ is not valid."
     },
     {
       "id": "sauer-bound",
       "title": "Lower Bound from Sauer's Construction",
-      "startLine": 131,
-      "endLine": 148,
-      "summary": "Proves optimalBound_ge_quarter: C* ≥ 1/4. Uses sauer_lower_bound (f(2) ≥ 1) at c = 2 to show every valid D satisfies D · 4 ≥ 1, hence D ≥ 1/4.",
+      "startLine": 119,
+      "endLine": 157,
+      "summary": "Sauer's construction $f(2)\\ge 1$ gives `optimalBound_ge_quarter`: $C^\\*\\ge 1/4$. This section also proves that the infimum is **attained** — `optimalBound_validBound` shows $C^\\*$ is itself a valid bound constant (for each $c$, $f(c)/c^2$ is a lower bound of the valid set, so $f(c)/c^2\\le \\inf = C^\\*$) — and `optimalBound_iff` gives the full characterization $\\text{ValidBound}\\,D \\iff C^\\* \\le D$ (forward = `optimalBound_le`, reverse = attainment + upward closure).",
       "mathContext": "For any valid $D$: $D \\cdot 2^2 = 4D \\geq f(2) \\geq 1$, so $D \\geq 1/4$. Taking the infimum: $C^* \\geq 1/4$."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "startLine": 149,
-      "endLine": 160,
-      "summary": "States erdos_small_c_statement (f(c) = 0 for c < 1/2) and optimalBoundQuestion (there exists C = C* with 1/4 ≤ C and ValidBound D ↔ C ≤ D). Both are Lean Props (not asserted true).",
+      "startLine": 158,
+      "endLine": 191,
+      "summary": "States `erdos_small_c_statement` ($f(c)=0$ for $c<1/2$) and `optimalBoundQuestion` (existence of a constant equal to $C^\\*$, $\\ge 1/4$, characterizing valid bounds). `optimalBoundQuestion_wellDefined` **proves** this statement is satisfied — the optimal constant is well-defined and characterized — while making explicit that the genuine open problem is its exact numerical value (only $1/4\\le C^\\* <\\infty$ is known).",
       "mathContext": "Known: $1/4 \\leq C^* < \\infty$. Open: What is $C^*$ exactly? The threshold characterization $C^* \\leq D \\Leftrightarrow D$ valid would follow from the supremum of $f(c)/c^2$ being attained."
     }
   ],
@@ -110,14 +111,18 @@
     {
       "type": "paper",
       "title": "On the number of edge disjoint triangles in K₄-free graphs",
-      "authors": ["E. Györi"],
+      "authors": [
+        "E. Györi"
+      ],
       "year": 1988,
       "journal": "Combinatorica"
     },
     {
       "type": "paper",
       "title": "Some unsolved problems in graph theory and combinatorics",
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "year": 1971,
       "journal": "Combinatorica"
     }

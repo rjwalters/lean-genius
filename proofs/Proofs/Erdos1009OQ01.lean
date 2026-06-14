@@ -134,6 +134,27 @@ theorem optimalBound_ge_quarter : 1 / 4 ≤ optimalBound := by
   simp only [show (2 : ℝ) ^ 2 = 4 by norm_num] at hD2
   linarith
 
+/-- The infimum is attained: `optimalBound` is itself a valid bound constant.
+    For each c > 0, f(c)/c² is a lower bound of the valid set (every valid D
+    satisfies f(c)/c² ≤ D), hence f(c)/c² ≤ sInf = optimalBound, i.e.
+    f(c) ≤ optimalBound · c². This is the "achievability" direction that
+    complements `optimalBound_le`. -/
+theorem optimalBound_validBound : ValidBound optimalBound := by
+  intro c hc
+  have hle : (boundFunction c : ℝ) / c ^ 2 ≤ optimalBound := by
+    obtain ⟨C, _, hC⟩ := validBound_exists
+    apply le_csInf ⟨C, hC⟩
+    intro D hD
+    exact hD.ratio_le hc
+  rwa [div_le_iff (by positivity)] at hle
+
+/-- Full characterization of the optimal constant: a real `D` is a valid bound
+    constant iff `optimalBound ≤ D`. Forward direction is `optimalBound_le`;
+    reverse uses `optimalBound_validBound` together with upward closure
+    (`ValidBound.mono`). -/
+theorem optimalBound_iff {D : ℝ} : ValidBound D ↔ optimalBound ≤ D :=
+  ⟨optimalBound_le, fun h => optimalBound_validBound.mono h⟩
+
 /-!
 ## The open question
 
@@ -156,5 +177,16 @@ def erdos_small_c_statement : Prop :=
     The exact value is an open problem in combinatorics. -/
 def optimalBoundQuestion : Prop :=
   ∃ C : ℝ, C = optimalBound ∧ 1 / 4 ≤ C ∧ ∀ D : ℝ, ValidBound D ↔ C ≤ D
+
+/-- The `optimalBoundQuestion` statement is **satisfied**: the optimal constant is
+    well-defined, is ≥ 1/4, and characterizes the valid bound constants via
+    `ValidBound D ↔ optimalBound ≤ D`. Witnessed by `optimalBound` itself.
+
+    NOTE: this establishes *well-definedness and characterization* of the optimal
+    constant, NOT its exact numerical value — pinning down the precise value of
+    `optimalBound` remains the genuine open problem (only `1/4 ≤ optimalBound < ∞`
+    is known, from Sauer's lower bound and Györi's upper bound). -/
+theorem optimalBoundQuestion_wellDefined : optimalBoundQuestion :=
+  ⟨optimalBound, rfl, optimalBound_ge_quarter, fun _ => optimalBound_iff⟩
 
 end Erdos1009OQ01
