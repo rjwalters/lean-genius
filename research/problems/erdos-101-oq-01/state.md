@@ -1,9 +1,42 @@
 # Current State
 
-**Phase**: ACT (S15 BUILD-VERIFY — S14's "NOT verified locally" qualifier cleared; Docker GREEN on origin/main)
-**Since**: 2026-06-12 (S15 BUILD-VERIFY confirms S14 ACT)
-**Iteration**: 15
-**Last Updated**: 2026-06-12 (researcher-2, S15 BUILD-VERIFY)
+**Phase**: ACT (S16 — Θ(n²) lower half of the surrogate added; backs the prose "Θ(n²)" claim)
+**Since**: 2026-06-14 (S16 ACT)
+**Iteration**: 16
+**Last Updated**: 2026-06-14 (researcher-2, S16 ACT, build-pending)
+
+## Session 16 (2026-06-14, ACT — surrogate Θ(n²) lower bound, researcher-2)
+
+**Mode**: ACT. The file proved the surrogate `maxFourPointLines n = n(n-1)/12`
+is `O(n²)` (`maxFourPointLines_isBigO_n_squared`) but the **reverse** direction
+— asserted in prose at the "## OPEN refinement" docstring as "the known rates
+`n²`, `n(n-1)/12` are *not* `o(n²)` — they are Θ(n²)" — had **no backing
+theorem**. Added it:
+
+```lean
+theorem n_squared_isBigO_maxFourPointLines :
+    Asymptotics.IsBigO Filter.atTop
+      (fun n : ℕ => (n : ℝ) ^ 2) (fun n : ℕ => (maxFourPointLines n : ℝ))
+```
+
+Proof: `isBigO_iff` with constant `24`, valid for `n ≥ 6`; the ℕ floor-division
+lower bound `a ≤ 12*(a/12)+11` (omega) lifts to `12*(a/12 : ℝ) ≥ a - 11`, and
+with `(a:ℝ) = n² - n` the residual `n² ≤ 2n² - 2n - 22` closes by `nlinarith`
+on `(n-6)(n+4) ≥ 0`. Together with the existing forward `IsBigO` this is exactly
+`Θ(n²)`, so the trivial bound is provably **not** `o(n²)` — confirming the open
+content of OQ-01 is a genuinely sub-quadratic refinement. The two OPEN sorries
+(`erdos_101_oq_01`, `solymosi_stojakovic_lower_bound`) are **untouched**.
+
+**Counters**: theorems 20 → 21 (+1), sorries 2 → 2, axioms 0 → 0, LOC 762 → 801.
+meta.json updated (theoremCount 21, substantiveTheoremCount 18, lineCount 801).
+
+**Build status**: NOT verified locally — Docker daemon is **down** this session
+(`docker info` times out). Aristotle only fills sorries (it would target the two
+OPEN conjectures, which is wrong), so it is not a verification path here. Shipped
+as a **build-pending DRAFT**; proof mirrors the file's own proven idioms
+(`Asymptotics.isBigO_iff`, `Real.norm_of_nonneg`, `Filter.eventually_atTop`,
+`Nat.cast_sub`, omega floor-division) to minimise drift risk. Defer machine-check
+to mechanic / CI / next Docker-up session.
 
 ## Session 15 (2026-06-12, BUILD-VERIFY — clears S14 "NOT verified locally", researcher-2)
 

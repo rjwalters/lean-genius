@@ -252,6 +252,43 @@ theorem maxFourPointLines_isBigO_n_squared :
   have hsq : ((n * n : ℕ) : ℝ) = (n : ℝ)^2 := by push_cast; ring
   linarith
 
+/-- **The elementary surrogate is `Ω(n²)`**: `(n:ℝ)² = O(maxFourPointLines n)`
+at infinity. Since `maxFourPointLines n = n(n-1)/12 ∼ n²/12`, the bound grows
+quadratically from below as well as above (witnessed here by the constant
+`24`, valid for `n ≥ 6`).
+
+Together with `maxFourPointLines_isBigO_n_squared` this shows the elementary
+double-counting surrogate is exactly `Θ(n²)` — in particular it is **not**
+`o(n²)`. This is the precise content of the file's remark that the known
+rates (`n²`, `n(n-1)/12`) are `Θ(n²)`: closing OQ-01 requires a genuinely
+sub-quadratic refinement that the elementary bound cannot supply. -/
+theorem n_squared_isBigO_maxFourPointLines :
+    Asymptotics.IsBigO Filter.atTop
+      (fun n : ℕ => (n : ℝ) ^ 2)
+      (fun n : ℕ => (maxFourPointLines n : ℝ)) := by
+  rw [Asymptotics.isBigO_iff]
+  refine ⟨24, ?_⟩
+  rw [Filter.eventually_atTop]
+  refine ⟨6, fun n hn => ?_⟩
+  rw [Real.norm_of_nonneg (by positivity), Real.norm_of_nonneg (by positivity)]
+  unfold maxFourPointLines
+  set a : ℕ := n * (n - 1) with ha
+  -- ℕ floor-division lower bound (omega knows `a = 12*(a/12) + a%12`, `a%12 < 12`).
+  have h12 : a ≤ 12 * (a / 12) + 11 := by omega
+  have hn1 : 1 ≤ n := by omega
+  -- `(a : ℝ) = (n : ℝ)² - n` (valid since `n ≥ 1`).
+  have hacast : (a : ℝ) = (n : ℝ) ^ 2 - (n : ℝ) := by
+    rw [ha, Nat.cast_mul, Nat.cast_sub hn1, Nat.cast_one]; ring
+  -- Real lower bound on the integer quotient `a / 12`.
+  have hqcast : (a : ℝ) - 11 ≤ 12 * ((a / 12 : ℕ) : ℝ) := by
+    have hc : (a : ℝ) ≤ ((12 * (a / 12) + 11 : ℕ) : ℝ) := by exact_mod_cast h12
+    push_cast at hc; linarith
+  have hnR : (6 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+  have h1 : (0 : ℝ) ≤ (n : ℝ) - 6 := by linarith
+  have h2 : (0 : ℝ) ≤ (n : ℝ) + 4 := by positivity
+  have hkey : (0 : ℝ) ≤ ((n : ℝ) - 6) * ((n : ℝ) + 4) := mul_nonneg h1 h2
+  nlinarith [hqcast, hacast, hkey, hnR]
+
 /-- Per-`P` corollary: for every no-five-collinear planar point set `P`,
 `fourPointLineCount P ≤ maxFourPointLines |P|`. The `NoFiveCollinear`
 hypothesis is load-bearing — without it, `P` could place 9 points on a
@@ -500,8 +537,10 @@ The conjecture would imply (via `bounds_at_rate_*`) that there exists
 a witness rate `g : ℕ → ℝ` with `g n = o(n²)` and
 `fourPointLineCount P ≤ g n` for every no-five-collinear `P` of size
 `n`. The known rates `n²`, `n(n-1)/12` are *not* `o(n²)` — they are
-$\Theta(n^2)$ — so the open content is precisely a sub-quadratic
-quantitative refinement.
+$\Theta(n^2)$ (the surrogate `maxFourPointLines` is bounded above by
+`(n:ℝ)²` via `maxFourPointLines_isBigO_n_squared` and below via
+`n_squared_isBigO_maxFourPointLines`) — so the open content is precisely
+a sub-quadratic quantitative refinement.
 
 ## Solymosi–Stojaković lower bound (existence statement)
 
