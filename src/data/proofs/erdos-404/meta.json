@@ -98,56 +98,64 @@
     {
       "id": "core-definitions",
       "title": "Core Definitions",
-      "startLine": 30,
-      "endLine": 49,
+      "startLine": 27,
+      "endLine": 46,
       "summary": "StrictIncSeq, factorialSum, dividesByPrimePower, f(a, p) = sSup",
       "mathContext": "The function $f(a,p) = \\sup\\{k : p^k \\mid \\sum a_i!\\text{ for some }a = a_1 < \\cdots < a_n\\}$ is defined using sSup over ℕ, allowing $f(a,p) = \\infty$ if arbitrarily high powers are achievable."
     },
     {
       "id": "main-questions",
       "title": "Main Questions",
-      "startLine": 50,
-      "endLine": 58,
+      "startLine": 47,
+      "endLine": 55,
       "summary": "secondaryQuestion and erdos404Conjecture (OPEN)",
       "mathContext": "Two open questions: (1) Is $f(a,p) < \\infty$ for all $(a,p)$? (2) Does there exist a prime $p$ and strictly increasing sequence $\\{a_i\\}$ with $v_p(\\sum_{i \\leq k} a_i!) \\to \\infty$?"
     },
     {
       "id": "known-results",
       "title": "Known Results",
-      "startLine": 59,
-      "endLine": 63,
+      "startLine": 56,
+      "endLine": 79,
       "summary": "Lin's bound: f(2, 2) ≤ 254",
       "mathContext": "Lin proved $f(2,2) \\leq 254$: no sum $2! + a_2! + \\cdots + a_n!$ with $2 < a_2 < \\cdots < a_n$ is divisible by $2^{255}$. Combined with $2^3 \\mid 2! + 3! = 8$, we have $3 \\leq f(2,2) \\leq 254$."
     },
     {
       "id": "padic-analysis",
       "title": "p-adic Analysis of Factorials",
-      "startLine": 64,
-      "endLine": 74,
+      "startLine": 80,
+      "endLine": 96,
       "summary": "Legendre's formula and factorial valuation asymptotics",
       "mathContext": "Legendre's formula: $v_p(n!) = \\sum_{i \\geq 1} \\lfloor n/p^i \\rfloor$. Asymptotically, $v_p(n!)/n \\to 1/(p-1)$ as $n \\to \\infty$. This means $v_p(n!) \\approx n/(p-1)$, so factorial valuations grow linearly."
     },
     {
+      "id": "part-iva-digit-sum-identity",
+      "title": "Part IV-A: The Digit-Sum Identity and Valuation Bounds",
+      "startLine": 97,
+      "endLine": 288,
+      "summary": "Defines baseDigitSum and proves the digit-sum identity legendreSum_digitSum_identity (legendreSum(n,p)·(p−1) + baseDigitSum(n,p) = n) by telescoping, then the valuation envelopes padic_val_factorial_upper (ν_p(n!)·(p−1) ≤ n), padic_val_factorial_lower, and the asymptotic padic_val_factorial_asymp (ν_p(n!)/n → 1/(p−1)).",
+      "mathContext": "The digit-sum identity is the quantitative engine behind the linear growth of ν_p(n!): writing n in base p, Legendre's formula gives v_p(n!) = (n − s_p(n))/(p−1) with s_p(n) = baseDigitSum, yielding both the exact value and the upper/lower bounds that pin the asymptotic density 1/(p−1)."
+    },
+    {
       "id": "factorial-structure",
       "title": "Structure of Factorial Sums",
-      "startLine": 75,
-      "endLine": 82,
+      "startLine": 289,
+      "endLine": 296,
       "summary": "Modular structure and factorization of factorial sums",
       "mathContext": "The key factorization: $a_1! + a_2! = a_1!(1 + a_2!/a_1!)$ since $a_1! \\mid a_2!$ when $a_1 \\leq a_2$. So $v_p(a_1! + a_2!) = v_p(a_1!) + v_p(1 + a_2!/a_1!)$. The second term depends on the $p$-adic structure of the ratio."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "startLine": 83,
-      "endLine": 88,
+      "startLine": 297,
+      "endLine": 302,
       "summary": "Three proved examples: 2³ | 2!+3!, 3 | 1!+2!, and 3² | 1!+2!+3!",
       "mathContext": "$2! + 3! = 2 + 6 = 8 = 2^3$, so $v_2(2!+3!) = 3$. Also $1! + 2! = 3$, so $v_3 = 1$. And $1!+2!+3! = 9 = 3^2$. These are verified by `native_decide`."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "startLine": 89,
-      "endLine": 96,
+      "startLine": 303,
+      "endLine": 310,
       "summary": "Proved conjunction of Lin's bounds",
       "mathContext": "The summary theorem packages $f(2,2) \\leq 254 \\wedge (\\forall s,\\; \\neg(2^{255} \\mid \\text{factorialSum}(s)))$ via ⟨lin_bound, lin_bound_meaning⟩."
     }
