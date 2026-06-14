@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01-oq-01",
   "title": "Can the more general Skolem-Noether theorem for arbitrary central simple alge...",
-  "phase": "NEW",
+  "phase": "REFINE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,16 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-05T02:57:44.795Z",
-    "iteration": 1,
-    "focus": "1-axiom formalization of general Skolem-Noether for CSAs",
+    "phase": "REFINE",
+    "since": "2026-06-06T12:30:00+00:00",
+    "iteration": 2,
+    "focus": "Witness ambiguity / torsor structure for Skolem-Noether conjugating units.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Verify Docker build, push PR, optionally proceed to MulAction formulation.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -90,7 +90,7 @@
     "mathlib": []
   },
   "started": "2026-05-05T02:57:44.794Z",
-  "lastUpdate": "2026-05-05T02:57:44.794Z",
+  "lastUpdate": "2026-06-06T12:30:00+00:00",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
