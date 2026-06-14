@@ -76,11 +76,19 @@
     },
     {
       "id": "pipeline",
-      "title": "Part IV: Sperner-Brouwer Pipeline Entry",
-      "startLine": 115,
-      "endLine": 118,
+      "title": "Part IV: Sperner-Brouwer Pipeline Entry (L106–119)",
+      "startLine": 106,
+      "endLine": 119,
       "summary": "pipeline_1d: alias of brouwer_1d as the dimension-1 entry point of the Sperner-to-Brouwer pipeline.",
       "mathContext": "The 1D case is the base case of the Sperner pipeline; higher dimensions use displacement coloring from OQ-03."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary (L120–144)",
+      "startLine": 120,
+      "endLine": 144,
+      "summary": "Closing docstring cataloguing the file's 4 theorems (0 sorries, 0 axioms): brouwer_1d (Part I), contractive_fixed_point_unique (Part II), contractive_iterate_converges (Part III), pipeline_1d (Part IV). States the key insight that in 1D Brouwer is exactly the IVT applied to f − id, with the higher-dimensional Sperner route deferred to SpernerNDimOQ03.lean.",
+      "mathContext": "Pedagogical wrap-up: the 1-dimensional Brouwer fixed-point theorem as the IVT specialised to f − id, serving as the clean base case of the approximate-to-exact fixed-point argument whose n-dimensional generalisation needs Sperner's lemma."
     }
   ],
   "conclusion": {
