@@ -139,11 +139,6 @@
       "targetId": "combinations-formula",
       "relationship": "foundational",
       "description": "The binomial coefficient $\\binom{n}{\\lfloor n/2 \\rfloor}$ appears as `middleLayer_card` — the size of the middle layer antichain. The formalization uses `Nat.centralBinom` from `Nat.Choose.Central` to compute this cardinality."
-    },
-    {
-      "targetId": "dilworth-theorem",
-      "relationship": "related",
-      "description": "Dilworth's theorem (1950) states that in any finite partially ordered set, the maximum antichain size equals the minimum number of chains needed to cover the poset. For the boolean lattice $2^{[n]}$, Dilworth gives maximum antichain size $= \\binom{n}{\\lfloor n/2 \\rfloor}$ (Sperner 1928). The present entry uses `middleLayer_antichain` but does not prove it is the *maximum* antichain."
     }
   ],
   "mainTheorems": [

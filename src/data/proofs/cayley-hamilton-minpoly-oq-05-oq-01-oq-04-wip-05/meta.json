@@ -222,11 +222,6 @@
       "description": "WIP01 used the nonderogatory_similar_to_companion axiom as a stand-in for rational canonical form. WIP05 eliminates this axiom entirely."
     },
     {
-      "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-02",
-      "relationship": "uses",
-      "description": "WIP02 (squarefree minpoly case) is the foundational case proved without module theory, using only CRT projections. WIP05's factorization-based approach reduces ultimately to WIP02 via WIP03 and WIP04."
-    },
-    {
       "targetId": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
       "relationship": "uses",
       "description": "WIP03 (prime-power case) handles individual factors $p_i^{e_i}$ via induction on the exponent. WIP05's product decomposition combines WIP03's handling of each summand in the primary decomposition."
