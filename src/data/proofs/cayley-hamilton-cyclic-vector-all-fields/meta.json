@@ -105,7 +105,7 @@
             "id": "summary-block",
             "title": "§ V. Proof Summary",
             "startLine": 232,
-            "endLine": 268,
+            "endLine": 266,
             "summary": "Closing docstring: enumerates the V2 upgrade (axiom eliminated, factorization bridge proved), lists all five proved results, and documents the V1→V2 delta. Note: the 'one sorry' in lines 253–258 refers to an earlier V2-beta state; the sorry is filled in the current file.",
             "mathContext": "V1 → V2 delta: RCF similarity axiom ($\\sim$800 lines from PID structure theorem + Smith normal form) replaced by direct UFD-based `monic_factored_form` proof. Net: the mathematical content is fully verified with 0 axioms and 0 sorries. The Section V docstring's claim of 'one sorry' describes an intermediate development state."
         }
