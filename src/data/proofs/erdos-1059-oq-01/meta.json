@@ -128,42 +128,98 @@
     {
       "id": "header",
       "title": "Header and Imports",
-      "summary": "Problem setup, references (OEIS A064152, erdosproblems.com), and Mathlib imports.",
       "startLine": 1,
-      "endLine": 32,
-      "mathContext": "The density question: does lim C(x)/π(x) = 1? Probabilistic heuristic from PNT."
+      "endLine": 49,
+      "summary": "Problem setup for Erdős #1059 OQ-01 (natural density of factorial-avoiding primes), a contents list of the 15 proved results plus the single density axiom, references (OEIS A064152, erdosproblems.com/1059), and Mathlib imports including the sibling Proofs.Erdos1059OQ02.",
+      "mathContext": "The density question: does lim C(x)/π(x) = 1? The probabilistic heuristic predicts 1 since a prime p ∈ (l!,(l+1)!] has only l+1 = O(log p/log log p) factorial conditions, each failing with probability ~1/ln p."
     },
     {
       "id": "decidability",
       "title": "Core Definition and Decidability",
-      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via bounded quantifier. Key lemma: factorial_lt_implies_lt (k ≤ k! → k! < n → k < n).",
-      "startLine": 34,
-      "endLine": 57,
-      "mathContext": "$\\text{AFSC}(n) \\iff \\forall k < n, k! < n \\Rightarrow \\neg\\text{Prime}(n-k!) \\wedge n-k! \\geq 2$. Bound: $k \\leq k! < n \\Rightarrow k < n$."
+      "startLine": 50,
+      "endLine": 70,
+      "summary": "Defines AllFactorialSubtractionsComposite (AFSC) and a Decidable instance (decAllFact) via a bounded quantifier over Finset.range n. Key lemma factorial_lt_implies_lt (k! < n ⇒ k < n, from k ≤ k!).",
+      "mathContext": "AFSC(n) ⟺ ∀ k, k! < n ⇒ ¬Prime(n−k!) ∧ n−k! ≥ 2. The bound k ≤ k! < n makes the quantifier finite, hence decidable."
     },
     {
-      "id": "witnesses",
-      "title": "New Witnesses: 461, 557, 673",
-      "summary": "Verifies three new prime witnesses using native_decide. For each p in (120, 720): checks p-1, p-2, p-6, p-24, p-120 are all composite. Packages all five witnesses (including 101, 211) in five_prime_witnesses.",
-      "startLine": 58,
-      "endLine": 103,
-      "mathContext": "For $p = 461$: $\\{460, 459=3{\\cdot}153, 455=5{\\cdot}91, 437=19{\\cdot}23, 341=11{\\cdot}31\\}$ — all composite. Similarly for 557 and 673."
+      "id": "witnesses-level5",
+      "title": "Witnesses: Level 5 (p ∈ (120, 720))",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "Three new prime witnesses 461, 557, 673 verified by native_decide (prime_* and witness_*). For each, the binding subtractions p−2, p−6, p−24, p−120 are all composite.",
+      "mathContext": "For p = 461: {460, 459=3·153, 455=5·7·13, 437=19·23, 341=11·31} all composite. Similarly 557 and 673. p−1 is always even >2 for odd primes, so non-binding."
+    },
+    {
+      "id": "witnesses-level6",
+      "title": "Witnesses: Level 6 (769) and Six-Witness Summary",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "First level-6 witness p = 769 (prime_769, witness_769) where p ∈ (6!,7!], requiring k = 0..6. six_prime_witnesses packages all six verified witnesses 101, 211, 461, 557, 673, 769.",
+      "mathContext": "p = 769: {767=13·59, 763=7·109, 745=5·149, 649=11·59, 49=7²} all composite. Level-6 means 6! = 720 < 769 ≤ 5040 = 7!."
     },
     {
       "id": "check-structure",
       "title": "Factorial Check Structure",
-      "summary": "Defines factorialCheckSet and factorialCheckCount. Verifies: checkCount(101) = 5, checkCount(211) = checkCount(461) = checkCount(557) = checkCount(673) = 6. Proves monotonicity.",
-      "startLine": 104,
-      "endLine": 134,
-      "mathContext": "For $p \\in (l!, (l+1)!]$: exactly $l+1$ values of $k$ satisfy $k! < p$. $p \\in (5!, 6!] \\Rightarrow l=5 \\Rightarrow 6$ checks."
+      "startLine": 126,
+      "endLine": 155,
+      "summary": "Defines factorialCheckSet and factorialCheckCount, verifies concrete counts (checkCount 101 = 5; 211, 461, 557, 673 = 6; 769 = 7), and proves factorialCheckCount_mono (monotone in n).",
+      "mathContext": "For p ∈ (l!,(l+1)!], exactly l+1 values of k satisfy k! < p, so AFSC(p) needs l+1 compositeness checks; l+1 = O(log p/log log p)."
+    },
+    {
+      "id": "check-count-bound",
+      "title": "Factorial Check Count Bound",
+      "startLine": 157,
+      "endLine": 224,
+      "summary": "Proves factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 (factorialCheckCount_le_log), the formal version of the density heuristic's logarithmic-checks claim, via helper lemmas two_pow_pred_le_factorial (2^(k−1) ≤ k!) and le_log_of_pow_lt. Includes the numerical check checkCount_bound_769.",
+      "mathContext": "From 2^(k−1) ≤ k! < n we get k−1 ≤ ⌊log₂ n⌋, so factorialCheckSet n ⊆ range(⌊log₂ n⌋+2). For 769: 7 ≤ log₂ 769 + 2 = 11."
+    },
+    {
+      "id": "exact-count",
+      "title": "Exact Factorial Check Count",
+      "startLine": 226,
+      "endLine": 269,
+      "summary": "Upgrades the logarithmic bound to an exact formula: factorialCheckCount_eq_of_interval (for l! < n ≤ (l+1)!, the count is exactly l+1) and factorialCheckCount_const_on_interval (the count is constant within each factorial level).",
+      "mathContext": "factorialCheckSet n = Finset.range (l+1) by double inclusion using Nat.factorial_le: k ≤ l ⇒ k! ≤ l! < n, and k ≥ l+1 ⇒ k! ≥ (l+1)! ≥ n."
     },
     {
       "id": "density",
-      "title": "Natural Density Formalization",
-      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) using Finset.filter. Proves C(x) ≤ π(x), C is monotone, C(673) ≥ 5. States the density-1 axiom.",
-      "startLine": 135,
-      "endLine": 215,
-      "mathContext": "$C(x) = |\\{p \\leq x : p \\text{ prime}, \\text{AFSC}(p)\\}|$, $\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Conjecture: $C(x)/\\pi(x) \\to 1$."
+      "title": "Natural Density Definitions",
+      "startLine": 271,
+      "endLine": 344,
+      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) via Finset.filter, and proves qualifyingCount_le_primeCount (C ≤ π), qualifyingPrimeCount_mono (C monotone), and qualifyingPrimeCount_ge_six (C(769) ≥ 6 via the six distinct witnesses).",
+      "mathContext": "C(x) = |{p ≤ x : p prime, AFSC(p)}|, π(x) = |{p ≤ x : p prime}|. The density is lim C(x)/π(x)."
+    },
+    {
+      "id": "density-conjecture",
+      "title": "The Density Conjecture (Axiom)",
+      "startLine": 346,
+      "endLine": 367,
+      "summary": "States the single axiom of the file, density_one_conjecture: the natural density of qualifying primes equals 1 (∀ k, eventually C(x)·(k+1) ≥ π(x)·k). A docstring explains the missing Mathlib ingredients (PNT, Brun–Titchmarsh, Selberg sieve) that force axiomatization.",
+      "mathContext": "Failing primes satisfy #{failing p ≤ x} ≲ (log x)·π(x)/log x = O(π(x)/log log x) = o(π(x)), so the density → 1. None of the required analytic inputs are yet in Mathlib."
+    },
+    {
+      "id": "density-gap",
+      "title": "Non-Qualifying Primes: The Density Gap",
+      "startLine": 369,
+      "endLine": 417,
+      "summary": "Shows the density is strictly < 1 at every finite stage: three_not_qualifying (p = 3 fails since 3−0! = 2 is prime), qualifyingPrimeCount_lt_primeCount (C(x) < π(x) for x ≥ 3), qualifyingPrimeCount_pos (C(x) > 0 for x ≥ 101), and density_strictly_between (0 < C(x) < π(x) for x ≥ 101).",
+      "mathContext": "p = 3 lies in π(x) but not C(x), making the qualifying finset a strict subset. Combined with the density-1 axiom: the density starts below 1 and approaches 1 from below."
+    },
+    {
+      "id": "cross-problem",
+      "title": "Cross-Problem Synthesis: Qualifying Primes Are Infinite",
+      "startLine": 419,
+      "endLine": 513,
+      "summary": "Imports OQ-02's Selberg result via definitional equality of AFSC: qualifyingPrimes_infinite ({p | AFSC(p)} infinite) and the quantitative qualifyingPrimeCount_ge (C((N+3)!) ≥ N). Uses private helpers levelCandidate, levelCandidate_spec/_le/_injective to pick one qualifying prime per factorial level and bound them via disjoint primorial intervals.",
+      "mathContext": "These two results depend on Erdos1059OQ02.selberg_density_axiom (an axiom in OQ-02, not this file). They are weaker than density_one_conjecture: infinitely many primes qualify, but the limiting ratio is not determined here."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 515,
+      "endLine": 566,
+      "summary": "Closing docstring recapping the four new witnesses (461, 557, 673 at level 5; 769 at level 6), the seven key contributions, and the per-witness check counts (101→5, 211/461/557/673→6, 769→7).",
+      "mathContext": "Numerical sanity checks: checkCount(769) = 7 ≤ log₂(769)+2 = 11; exact formula 6! = 720 < 769 ≤ 5040 = 7! gives count = 6+1 = 7."
     }
   ],
   "crossReferences": [
