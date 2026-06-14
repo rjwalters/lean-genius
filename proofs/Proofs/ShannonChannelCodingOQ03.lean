@@ -316,7 +316,7 @@ lemma fano_per_element {α : Type*} [Fintype α] [DecidableEq α] [Nonempty α]
     rw [← hcross]; exact hgibbs
 
 -- ============================================================
--- Section 7: Conditional Entropy Fano Bound — MAP Version (SORRY)
+-- Section 7: Conditional Entropy Fano Bound — MAP Version (PROVED)
 -- ============================================================
 
 /-- **[PROVED]**: H(X|Y) ≤ h(P_e^{MAP}) + P_e^{MAP} · log(|X| - 1)
@@ -530,7 +530,7 @@ private lemma per_slice_bound {α : Type*} [Fintype α] [Nonempty α]
     linarith [hcs, sq_nonneg s, sq_abs s]
 
 -- ============================================================
--- Section 8: Monotonicity of h(p) + p·log(c) (SORRY)
+-- Section 8: Monotonicity of h(p) + p·log(c) (PROVED)
 -- ============================================================
 
 /-- **[PROVED]**: For c ≥ 1, f(p) = h(p) + p·log c is non-decreasing on [0, c/(1+c)].
