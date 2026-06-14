@@ -1066,10 +1066,10 @@ and is filed as a downstream `_tight` companion.
 
 This skeleton lands the lemma statements (the API surface downstream
 proofs call) plus the proof shape. The aggregation steps
-(`Finset.sum_le_sum`, `Finset.sum_const`) are discharged here; the two
-remaining `sorry`s are the genuinely mathematical obligations: the
-per-`a` triangle envelope on the `witnessFamilyB` pair, and the first-
-moment Markov corollary. -/
+(`Finset.sum_le_sum`, `Finset.sum_const`) are discharged here, as is the
+first-moment Markov corollary (`Finset.sum_le_sum_of_subset_of_nonneg`).
+The sole remaining `sorry` is the genuinely mathematical obligation: the
+per-`a` triangle envelope on the `witnessFamilyB` pair. -/
 
 /-- **First-moment bias bound** (S7 ACT-α step 4 proper, first-moment route).
 
@@ -1115,9 +1115,17 @@ lemma A_bad_card_first_moment_markov
     (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
     ((A_bad G eps A B).card : ℚ) * eps ≤ 2 * eps * A.card := by
   have hsum := vertexBias_sum_le G heps A B hreg
-  -- `∑_{a ∈ A_bad} vertexBias a ≥ |A_bad| · eps` (definition of `A_bad`),
-  -- and `∑_{a ∈ A_bad} vertexBias a ≤ ∑_{a ∈ A} vertexBias a` via
-  -- `Finset.sum_le_sum_of_subset_of_nonneg` (vertexBias ≥ 0). Chain with `hsum`.
-  sorry  -- ~10-15 LOC.
+  have hsub : A_bad G eps A B ⊆ A := A_bad_subset G eps A B
+  calc ((A_bad G eps A B).card : ℚ) * eps
+      = ∑ _a ∈ A_bad G eps A B, eps := by
+        rw [Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ∑ a ∈ A_bad G eps A B, vertexBias G a A B := by
+        apply Finset.sum_le_sum
+        intro a ha
+        exact le_of_lt ((mem_A_bad G eps A B a).mp ha).2
+    _ ≤ ∑ a ∈ A, vertexBias G a A B :=
+        Finset.sum_le_sum_of_subset_of_nonneg hsub
+          (fun a _ _ => vertexBias_nonneg G a A B)
+    _ ≤ 2 * eps * A.card := hsum
 
 end Szemeredi.OQ04
