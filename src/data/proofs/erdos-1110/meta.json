@@ -88,66 +88,66 @@
     {
       "id": "basic-definitions",
       "title": "Basic Definitions",
-      "summary": "Power form p^k q^l, non-divisibility, representability",
+      "summary": "Defines IsPowerForm (n = p^k·q^l), NoOneDividesAnother (antichain under divisibility), IsRepresentable (antichain sum of power forms), and the NonRepresentable set.",
       "startLine": 42,
-      "endLine": 77,
-      "mathContext": "Mathematical content: Power form p^k q^l, non-divisibility, representability"
+      "endLine": 79,
+      "mathContext": "The core predicates: a power form is p^k q^l; a representation is a nonempty antichain (no element divides another) of power forms summing to n; NonRepresentable p q is the set of n with no such representation."
     },
     {
       "id": "case-2-3",
       "title": "The {2,3} Case",
-      "summary": "Erdős's 'silly conjecture' and the simple inductive proof",
-      "startLine": 78,
-      "endLine": 110,
-      "mathContext": "Verified: Erdős's 'silly conjecture' and the simple inductive proof"
+      "summary": "Erdős's '{2,3} silly conjecture', fully proved: case_2_3_all_representable shows every n ≥ 1 is representable, by strong induction (base n=1; even n doubles a representation; odd n subtracts 3^k).",
+      "startLine": 80,
+      "endLine": 277,
+      "mathContext": "Verified (0 sorries): the main {2,3} theorem case_2_3_all_representable proved by strong induction, with helper lemmas isPowerForm_mul_two, noOneDividesAnother_image_mul_two, sum_image_mul_two, mul_two_injOn, isPowerForm_pow_three, even_not_dvd_odd, three_pow_odd, image_mul_two_even. Doubling preserves the antichain/power-form structure; the odd case adds 3^k to a doubled representation of (n-3^k)/2 and checks divisibility via parity and size bounds."
     },
     {
       "id": "general-case",
-      "title": "General Case",
-      "summary": "Erdős-Lewin theorem: finite exceptions iff {2,3}",
-      "startLine": 111,
-      "endLine": 133,
-      "mathContext": "Verified: Erdős-Lewin theorem: finite exceptions iff {2,3}"
+      "title": "General Case (p,q) ≠ (2,3)",
+      "summary": "Erdős-Lewin (1996) characterization, stated as axiom erdos_lewin_theorem, with corollary infinitely_many_non_rep deriving infinitude of exceptions when {p,q} ≠ {2,3}.",
+      "startLine": 278,
+      "endLine": 300,
+      "mathContext": "Axiomatized: erdos_lewin_theorem states NonRepresentable p q is finite iff {p,q} = {2,3}. The theorem infinitely_many_non_rep derives Set.Infinite (NonRepresentable p q) for coprime p > q ≥ 2 with {p,q} ≠ {2,3}."
     },
     {
       "id": "yu-chen",
       "title": "Yu-Chen Results (2022)",
-      "summary": "Density zero and coprime infinitude theorems",
-      "startLine": 134,
-      "endLine": 172,
-      "mathContext": "Verified: Density zero and coprime infinitude theorems"
+      "summary": "Yu-Chen (2022): natural-density definition HasDensity, density-zero conditions, the CoprimeNonRepresentable set, and coprime-infinitude conditions.",
+      "startLine": 301,
+      "endLine": 329,
+      "mathContext": "Defines HasDensity A d (natural density via filtered range cardinalities) and CoprimeNonRepresentable p q. Documents Yu-Chen density-zero regimes (q>3, or q=3 ∧ p>6, or q=2 ∧ p>10) and coprime-infinitude regimes (q>3, or q=3 ∧ p≠5, or q=2 ∧ p∉{3,5,9})."
     },
     {
       "id": "minimum-summand",
       "title": "Minimum Summand Size",
-      "summary": "Bounds on f(n): how large can summands be?",
-      "startLine": 173,
-      "endLine": 204,
-      "mathContext": "Bound: Bounds on f(n): how large can summands be?"
+      "summary": "minSummandBound: the largest f admitting a representation whose summands all exceed f; Yu-Chen and Yang-Zhao (2025) bounds f(n) ~ n/log n.",
+      "startLine": 330,
+      "endLine": 350,
+      "mathContext": "noncomputable minSummandBound n = sSup over thresholds f with a {3,2} antichain representation of n by power forms all exceeding f. Yu-Chen: n/(log n)^{log₂3} ≪ f(n) ≪ n/log n; Yang-Zhao (2025) improves the lower bound to f(n) ≫ n/log n."
     },
     {
       "id": "related",
       "title": "Related Problems",
-      "summary": "Connections to Problems #123, #845, #246",
-      "startLine": 205,
-      "endLine": 215,
-      "mathContext": "Mathematical content: Connections to Problems #123, #845, #246"
+      "summary": "Connections to Erdős Problems #123, #845, #246.",
+      "startLine": 351,
+      "endLine": 361,
+      "mathContext": "Cross-references: Problem #123 (three coprime bases p,q,r), Problem #845 (further {2,3} representation questions), Problem #246 (representations without the non-divisibility constraint)."
     },
     {
       "id": "examples",
       "title": "Examples",
-      "summary": "Concrete representations for small numbers",
-      "startLine": 216,
-      "endLine": 246,
-      "mathContext": "Mathematical content: Concrete representations for small numbers"
+      "summary": "Constructive example example_1_representable (1 = 2^0·3^0) and small-case representability for n = 1..10.",
+      "startLine": 362,
+      "endLine": 389,
+      "mathContext": "Verified: example_1_representable exhibits the singleton {1} representing n=1. Documents that 1 through 10 are all representable in the {3,2} setting."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Problem status and main results",
-      "startLine": 247,
-      "endLine": 265,
-      "mathContext": "Mathematical content: Problem status and main results"
+      "summary": "erdos_1110_summary and erdos_1110_status bundle the resolved {2,3} case with the partially-open general case, plus status overview and historical note.",
+      "startLine": 390,
+      "endLine": 437,
+      "mathContext": "Verified: erdos_1110_summary and erdos_1110_status conjoin (∀ n ≥ 1, IsRepresentable 3 2 n) with infinitude of non-representables for all coprime {p,q} ≠ {2,3}. Summarizes the answers (density zero in many cases; infinitely many coprime non-representables for most (p,q)) and Erdős's 'silly conjecture' history."
     }
   ],
   "conclusion": {
