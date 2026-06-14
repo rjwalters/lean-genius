@@ -64,116 +64,130 @@
   },
   "sections": [
     {
-      "id": "header-and-imports",
+      "id": "header",
       "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 48,
-      "summary": "Imports Mathlib and `AbelRuffiniGaloisExtensions` (which provides `IsSolvable` instances for $S_0$ through $S_4$). Module docstring summarizes all 11 parts: solvability divide, $A_5$ analysis, Galois correspondence, census, and the open Inverse Galois Conjecture. Opens `Classical`, `Polynomial`, and `Finset`.",
-      "mathContext": "The import of `AbelRuffiniGaloisExtensions` is critical: that file constructs explicit composition series for $S_2, S_3, S_4$, enabling `inferInstance` to find `IsSolvable` instances automatically. Without it, only $S_0$ and $S_1$ (trivial groups) would have solvability proofs."
+      "endLine": 56,
+      "summary": "Module overview of the inverse Galois problem: the solvable case (Shafarevich, axiomatized upstream) vs the non-solvable obstruction, and the companion A₅/S₅ realization files."
     },
     {
-      "id": "solvability-divide",
-      "title": "Part I: The Solvability Divide",
-      "startLine": 49,
-      "endLine": 97,
-      "summary": "Demonstrates solvability of $S_1$ through $S_4$ via `inferInstance`, then proves non-solvability of $S_5, S_6, S_7$ and the general `sn_not_solvable_of_ge_five` using Mathlib's `Equiv.Perm.not_solvable` with a Cardinal.mk bridge ($5 \\leq n$ in $\\mathbb{N}$ cast to $5 \\leq |\\text{Fin}\\,n|$ in Cardinal).",
-      "mathContext": "The four solvable examples pull their proofs from composition series: $S_2 \\cong C_2$, $S_3$ via $1 \\to A_3 \\to S_3 \\to C_2 \\to 1$, $S_4$ via $1 \\to V_4 \\to A_4 \\to C_3 \\to 1$ and $1 \\to A_4 \\to S_4 \\to C_2 \\to 1$. The non-solvability for $n \\geq 5$ follows from $A_n$ being simple and non-abelian."
+      "id": "part1-solvability-divide",
+      "title": "Part I: The Solvability Divide — When is Sₙ Solvable?",
+      "startLine": 57,
+      "endLine": 105,
+      "summary": "The dividing line: Sₙ is solvable iff n ≤ 4, the boundary between classical solvability-by-radicals and the non-solvable regime."
     },
     {
-      "id": "cardinalities",
+      "id": "part2-cardinalities",
       "title": "Part II: Cardinalities of Symmetric Groups",
-      "startLine": 98,
-      "endLine": 125,
-      "summary": "Computes $|S_n| = n!$ for $n = 1, \\ldots, 5$ and $|A_5| = 60$ (via `native_decide`). These cardinalities are used in later structural arguments ($|S_5|/|A_5| = 2$, Cayley embedding size, etc.).",
-      "mathContext": "$|S_n| = n!$ by definition (permutations of $n$ elements). $|A_n| = n!/2$ for $n \\geq 2$ (kernel of the sign homomorphism, which has image $\\{\\pm 1\\}$). The `native_decide` for $|A_5| = 60$ is a computed verification rather than an algebraic proof."
+      "startLine": 106,
+      "endLine": 133,
+      "summary": "Orders of the symmetric and alternating groups (|Sₙ| = n!, |Aₙ| = n!/2), used in the realizability census."
     },
     {
-      "id": "a5-simplicity",
+      "id": "part3-a5-simplicity",
       "title": "Part III: A₅ Simplicity — The Core Obstruction",
-      "startLine": 126,
-      "endLine": 187,
-      "summary": "Four theorems forming the mathematical heart: `a5_simple` (Mathlib), `a5_not_solvable` (if $A_5$ solvable then $S_5$ solvable via the short exact sequence — contradiction), `a5_not_commutative` (commutative implies solvable — contradiction), and `a5_commutator_eq_top` ($[A_5, A_5] = A_5$ by simplicity: the commutator is normal, hence $\\{e\\}$ or $A_5$; if $\\{e\\}$ then $A_5$ abelian — contradiction).",
-      "mathContext": "The chain of implications: $A_5$ simple → $A_5$ has no proper normal subgroups → commutator $[A_5, A_5]$ is $\\{e\\}$ or $A_5$ → if $\\{e\\}$ then abelian → abelian implies solvable → contradicts $A_5$ not solvable → therefore $[A_5, A_5] = A_5$ (perfect). This is the structural reason the derived series of $S_5$ stalls: $D^1(S_5) = A_5$ and $D^k(S_5) = [A_5, A_5] = A_5$ for all $k \\geq 1$."
+      "startLine": 134,
+      "endLine": 195,
+      "summary": "a5_simple: A₅ is a simple group — the core obstruction to solvability of S₅ and the source of the inverse-Galois non-solvable realm."
     },
     {
-      "id": "alternating-characterization",
+      "id": "part4-alternating-characterization",
       "title": "Part IV: The Alternating Group Characterization",
-      "startLine": 188,
-      "endLine": 203,
-      "summary": "Establishes $A_n \\trianglelefteq S_n$ (via `inferInstance`), restates $|A_5| = 60$, and proves $|S_5|/|A_5| = 120/60 = 2$, confirming the index $[S_5:A_5] = 2$.",
-      "mathContext": "$A_n = \\ker(\\text{sign}: S_n \\to \\{\\pm 1\\})$ is a normal subgroup of index 2. The quotient $S_n/A_n \\cong C_2$ is the sign representation."
+      "startLine": 196,
+      "endLine": 211,
+      "summary": "Characterization of the alternating group as the kernel of the sign homomorphism."
     },
     {
-      "id": "nonsolvable-realm",
+      "id": "part5-nonsolvable-realm",
       "title": "Part V: Non-Solvable Realm Analysis",
-      "startLine": 204,
-      "endLine": 239,
-      "summary": "Commentary partitioning all finite groups into the solvable realm (covered by Shafarevich: cyclic, abelian, dihedral, $p$-groups, $S_1$–$S_4$, all groups of order $< 60$) and the non-solvable realm (requiring explicit constructions: $A_5$, $S_5$, $\\text{PSL}(2,7)$, etc.). Proves `trivial_realizable`: the trivial group is realized by $\\mathbb{Q}/\\mathbb{Q}$.",
-      "mathContext": "Shafarevich's theorem (1954): every solvable group $G$ is isomorphic to $\\text{Gal}(K/\\mathbb{Q})$ for some Galois extension $K$. This covers all groups of order $< 60$ (since the smallest non-solvable group is $A_5$ with $|A_5| = 60$). The Burnside $p^aq^b$ theorem further implies all groups of order $p^aq^b$ (two prime factors) are solvable."
+      "startLine": 212,
+      "endLine": 247,
+      "summary": "Aₙ not solvable for n ≥ 5 (an_not_solvable_of_ge_five) and the structure of the non-solvable groups outside Shafarevich's solvable coverage."
     },
     {
-      "id": "quotient-realizability",
+      "id": "part6-quotient-realizability",
       "title": "Part VI: Quotient Realizability via Galois Correspondence",
-      "startLine": 240,
-      "endLine": 301,
-      "summary": "Develops the structural machinery for propagating realizability: `fixed_field_exists` (every subgroup determines a fixed field), `finrank_over_fixed_field` ($[K:K^H] = |H|$ from Mathlib's fundamental theorem), and `finrank_fixed_field_over_base` ($[K^H:F] = [G:H]$ via the tower law). The key consequence: every quotient of a realized Galois group is itself realized.",
-      "mathContext": "The fundamental theorem of Galois theory: for a Galois extension $K/F$ with $G = \\text{Gal}(K/F)$, there is an inclusion-reversing bijection between subgroups $H \\leq G$ and intermediate fields $F \\subseteq E \\subseteq K$, given by $H \\mapsto K^H$ and $E \\mapsto \\text{Gal}(K/E)$. The degree formulas $[K:K^H] = |H|$ and $[K^H:F] = [G:H]$ are the quantitative content."
+      "startLine": 248,
+      "endLine": 309,
+      "summary": "Galois-correspondence machinery: finrank_over_fixed_field, fixed-field degree relations, and quotient_is_galois for normal subgroups."
     },
     {
-      "id": "sign-homomorphism",
-      "title": "Part VII: The Sign Homomorphism",
-      "startLine": 302,
-      "endLine": 321,
-      "summary": "Proves `sign_surjective` ($\\text{sign}: S_n \\to \\{\\pm 1\\}$ is surjective for $n \\geq 2$) and `sign_ker_eq_alternating` ($\\ker(\\text{sign}) = A_n$). Together these give the short exact sequence $1 \\to A_n \\to S_n \\to C_2 \\to 1$.",
-      "mathContext": "The sign homomorphism $\\text{sign}: S_n \\to \\{\\pm 1\\}$ maps even permutations to $+1$ and odd permutations to $-1$. Its kernel is $A_n$ by definition. Surjectivity for $n \\geq 2$ follows from the existence of transpositions (odd permutations). This exact sequence is used in Part III to transfer solvability from $A_5$ to $S_5$."
+      "id": "part7-sign-hom",
+      "title": "Part VII: The Sign Homomorphism and S₅/A₅",
+      "startLine": 310,
+      "endLine": 329,
+      "summary": "The sign homomorphism and the order-2 quotient S₅/A₅ ≅ C₂."
     },
     {
-      "id": "census",
-      "title": "Part VIII: Census of Realized Groups",
-      "startLine": 322,
-      "endLine": 379,
-      "summary": "Extensive commentary listing 18+ groups explicitly realized as Galois groups over $\\mathbb{Q}$ across the Lean-Genius formalization: cyclic groups $C_1$ through $C_{12}$ (cyclotomic), $V_4$ (8th cyclotomic), $S_3$ ($X^3 - 2$), $D_4$ ($X^4 - 2$), $F_{20}$ ($X^5 - 2$), $A_5$ ($x^5 + 20x - 16$), $S_5$ ($x^5 - 4x + 2$). The `nonsolvable_realized_orders` theorem proves that Galois extensions of orders 60 ($A_5$) and 120 ($S_5$) exist, using results from `InverseGaloisA5` and `AbelRuffiniOQ04OQ01`.",
-      "mathContext": "The census documents the formalized frontier of the Inverse Galois Problem. The solvable groups are covered by Shafarevich's theorem (axiomatized); the non-solvable frontier extends to $A_5$ and $S_5$. Key unfformalized targets: $\\text{PSL}(2,7)$ (order 168, the second smallest simple group), $A_6$ (order 360), and the Mathieu groups."
+      "id": "part8-census",
+      "title": "Part VIII: Counting Realized Groups",
+      "startLine": 330,
+      "endLine": 389,
+      "summary": "nonsolvable_realized_orders: the census of realized non-solvable groups (A₅ order 60, S₅ order 120), now sorry-free via the companion-file imports."
     },
     {
-      "id": "inverse-galois-conjecture",
-      "title": "Part IX: The Inverse Galois Conjecture",
-      "startLine": 380,
-      "endLine": 402,
-      "summary": "Formal statement of the open Inverse Galois Conjecture: for every finite group $G$, there exists a Galois extension $K/\\mathbb{Q}$ with $\\text{Gal}(K/\\mathbb{Q}) \\cong G$. The `sorry` is intentional — no general proof is known. Commentary notes known cases: all solvable groups (Shafarevich), all symmetric and alternating groups (Hilbert), 25 of 26 sporadic simple groups.",
-      "mathContext": "The Inverse Galois Conjecture is Problem 12.10 in the Open Problem Garden and appears in multiple problem lists. The strongest evidence is that all simple groups except possibly $M_{23}$ are known to be realizable. Thompson's 1984 paper proving the Monster group $M$ ($|M| \\approx 8 \\times 10^{53}$) is realizable over $\\mathbb{Q}$ is one of the most remarkable results in the area."
+      "id": "part9-igp-statement",
+      "title": "Part IX: The Inverse Galois Conjecture — Formal Statement",
+      "startLine": 390,
+      "endLine": 413,
+      "summary": "inverse_galois_conjecture: the formal statement of the open inverse Galois problem (the single intentional sorry — no general proof is known)."
     },
     {
-      "id": "solvability-characterization",
-      "title": "Part X: The Complete Solvability Characterization",
-      "startLine": 404,
-      "endLine": 420,
-      "summary": "The synthesis theorem `sn_solvable_iff`: $S_n$ is solvable if and only if $n \\leq 4$. Forward direction: if $S_n$ solvable and $n > 4$, then $5 \\leq n$, contradicting `sn_not_solvable_of_ge_five`. Backward direction: `interval_cases n` produces 5 cases ($n = 0, 1, 2, 3, 4$), each solved by `infer_instance`.",
-      "mathContext": "$S_n$ solvable $\\Leftrightarrow$ $n \\leq 4$. This is the complete answer to 'which symmetric groups are solvable?' — the question that drives both Abel-Ruffini (impossibility of radical solutions) and the Inverse Galois Problem (which groups require explicit constructions beyond Shafarevich)."
+      "id": "part10-solvability-characterization",
+      "title": "Part X: The Solvability Characterization",
+      "startLine": 414,
+      "endLine": 430,
+      "summary": "sn_solvable_iff / an_solvable_iff: complete characterizations of when Sₙ and Aₙ are solvable (n ≤ 4)."
     },
     {
-      "id": "embedding-and-verification",
-      "title": "Part XI: Cayley's Theorem and Verification",
-      "startLine": 421,
-      "endLine": 448,
-      "summary": "Cayley's theorem (`cayley_card`): every finite group $G$ embeds into $S_{|G|}$ via the left-regular representation $g \\mapsto (x \\mapsto gx)$. Proof uses `MulAction.toPermHom` with injectivity from the identity element. Followed by `#check` verification of all key results.",
-      "mathContext": "Cayley's theorem ($G \\hookrightarrow S_{|G|}$) implies that realizing all symmetric groups over $\\mathbb{Q}$ is a necessary condition for the Inverse Galois Problem. However, it is not sufficient: embedding $G \\hookrightarrow S_n$ does not automatically yield a Galois extension with group $G$ (one needs $G$ as a quotient, not just a subgroup, of a realizable group)."
+      "id": "part11-embedding",
+      "title": "Part XI: Embedding Theorems",
+      "startLine": 431,
+      "endLine": 444,
+      "summary": "Cayley's theorem (cayley_card) and embedding results placing finite groups inside symmetric groups."
     },
     {
-      "id": "alternating-solvability",
-      "title": "Alternating Group Solvability Characterization",
-      "startLine": 449,
-      "endLine": 482,
-      "summary": "Proves A_n is not solvable for n >= 5 via the exact sequence 1 -> A_n -> S_n -> C_2 -> 1. Proves the biconditional: A_n is solvable iff n <= 4.",
-      "mathContext": "$A_n$ solvable $\\iff n \\leq 4$. Proof via $1 \\to A_n \\to S_n \\to C_2 \\to 1$: solvability of $A_n$ and $C_2$ would force solvability of $S_n$."
+      "id": "part12-an-nonsolvable",
+      "title": "Part XII: General Alternating Group Non-Solvability",
+      "startLine": 445,
+      "endLine": 484,
+      "summary": "General non-solvability of Aₙ for n ≥ 5, generalizing the A₅ obstruction."
     },
     {
-      "id": "quotient-realizability",
-      "title": "Quotient Realizability via FTGT",
-      "startLine": 483,
-      "endLine": 591,
-      "summary": "Proves the fundamental structural theorem: every quotient of a realized Galois group is realized. Given K/F Galois with Gal(K/F) = G and normal H, the fixed field K^H is Galois over F with Gal(K^H/F) isomorphic to G/H.",
-      "mathContext": "FTGT quotient realizability: $\\text{Gal}(K/F) = G, H \\trianglelefteq G \\Rightarrow \\text{Gal}(K^H/F) \\cong G/H$. Consequence: realizing $G$ automatically realizes all quotients $G/H$."
+      "id": "part13-quotient-ftgt",
+      "title": "Part XIII: Quotient Realizability — The Fundamental Structural Theorem",
+      "startLine": 485,
+      "endLine": 536,
+      "summary": "quotient_of_galois_realized / realizability_closed_under_quotients: realizability is closed under taking quotients, via the fundamental theorem of Galois theory."
+    },
+    {
+      "id": "part14-quotient-application",
+      "title": "Part XIV: Quotient Realizability — Application",
+      "startLine": 537,
+      "endLine": 574,
+      "summary": "Applications of quotient realizability: deriving C₂ and the trivial group as quotients of S₅."
+    },
+    {
+      "id": "part15-commutator",
+      "title": "Part XV: The Commutator Subgroup — [S₅,S₅] = A₅",
+      "startLine": 575,
+      "endLine": 654,
+      "summary": "s5_commutator_eq_alternating: the derived subgroup of S₅ is exactly A₅ (both inclusions), so the derived series stalls at the perfect group A₅ — the precise obstruction to solvability."
+    },
+    {
+      "id": "part16-census-integration",
+      "title": "Part XVI: Census Integration — Connecting Realized Groups",
+      "startLine": 655,
+      "endLine": 698,
+      "summary": "a5_galois_iso, s5_galois_iso, and s5_not_solvable_by_radicals: connecting the census to the concrete A₅ (x⁵-5x⁴+...) and S₅ (x⁵-4x+2) realizations from the companion files."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 699,
+      "endLine": 723,
+      "summary": "#check exports of all key results: solvability characterizations, A₅ simplicity/perfectness, the commutator theorem, Galois-correspondence lemmas, quotient realizability, the census, and the open conjecture."
     }
   ],
   "conclusion": {
