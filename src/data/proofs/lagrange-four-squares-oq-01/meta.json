@@ -118,6 +118,14 @@
       "endLine": 366,
       "summary": "minSquares counts nonzero components in greedy output. isExcludedForm detects 4^k(8m+7) via 8 unrolled divisions. checkExcludedFormUpTo 50 verifies Legendre's criterion for all n ≤ 50 by native_decide.",
       "mathContext": "Legendre (1798): n is a sum of three squares iff n ≠ 4^a(8b+7). Excluded forms ≤ 50: 7,15,23,28,31,39,47. These require all four squares nonzero, characterizing 'hard' instances for representation algorithms."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 367,
+      "endLine": 395,
+      "summary": "Closing summary docstring: a results table tallying the proved declarations (0 axioms, 0 sorries) — component bounds, greedy algorithm, algorithm correctness for n = 0..10/30/50/99/100, batch verification for n ≤ 100, uniqueness counts, excluded-form detection, structural bounds, finite search, and Lagrange-with-bounds — plus the key insights (the √n component bound makes search polynomial; the greedy algorithm always succeeds by Lagrange; 4^a(8b+7) needs all four squares nonzero; the decision problem is trivially YES while finding a representation is nontrivial).",
+      "mathContext": "Recap of the entry: existence of a four-square representation is guaranteed (Lagrange), and this file adds the computable greedy witness together with simultaneous component bounds (each ≤ √n) and the Legendre excluded-form characterization."
     }
   ],
   "crossReferences": [
