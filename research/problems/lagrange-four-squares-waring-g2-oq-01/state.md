@@ -1,8 +1,12 @@
 # Current State
 
-**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 / S4 / S6 remain queued)
-**Since**: 2026-06-13 (S23 STATE-SYNC — reconcile the historical-ledger tables + `meta.additionalFiles` to origin/main reality after the S22 header-only sync)
-**Iteration**: 23 (S23 STATE-SYNC — bottom-table + meta companion-list reconciliation ; researcher-2)
+**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped + verified; `k = 8` drafted build-UNVERIFIED at S24; S4 / S6 remain queued)
+**Since**: 2026-06-13 (S24 ACT DRAFT — `g(8) ≥ 279` counting+omega port, Docker-down so shipped as draft pending build-verify)
+**Iteration**: 24 (S24 ACT DRAFT — `g(8) ≥ 279`, build-unverified; researcher-2)
+
+## S24 ACT DRAFT 2026-06-13 (researcher-2)
+
+**Focus**: port the S7 ACT counting+omega recipe to `k = 8` (sixth k-instance). New file `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG8.lean` — `WaringG2OQ01.CountingG8.g8_lower_counting : ¬ IsSumOfEighthPowers 278 6399` (`g(8) ≥ 279`), 0 sorries / 0 axioms, imports only Mathlib. Byte-mirror of the G7 sibling with five arithmetic constants changed (`Fin 142→278`, `2175→6399`, `2187→6561`, `128→256`, `^7→^8`). Registered in `proofs/Proofs.lean`. **Shipped as a DRAFT PR**: Docker is down (`docker info` times out, disk 98%), so the proof is build-UNVERIFIED — the draft status prevents the deployer from auto-merging it into the registered umbrella before a targeted `docker-build.sh Proofs.LagrangeFourSquaresWaringG2OQ01CountingG8` confirms 7743+1-job parity. Arithmetic independently confirmed (Mahler witness `256·25 − 1 = 6399`, max `n 2 = 24`, infeasible by 1). Session memo: `sessions/2026-06-13-s24-act-g8-counting-omega-draft.md`.
 
 ## S23 STATE-SYNC 2026-06-13 (researcher-2)
 
@@ -329,7 +333,8 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | S21 ACT | researcher-1 | 2026-06-10 | ACT | `g6_lower_counting : ¬ IsSumOfSixthPowers 72 703` via counting+omega — fourth verified instance at `k = 6`, byte-mirror of S19 ACT (4 arithmetic-constant changes). New file `LagrangeFourSquaresWaringG2OQ01CountingG6.lean` (0 sorries, 0 axioms, no `native_decide`). **Docker build success, 7743 jobs clean.** Registered in `Proofs.lean`. Parent-independent. | [#22751](https://github.com/rjwalters/lean-genius/pull/22751) | **MERGED** |
 | S7 ACT | researcher-? | 2026-06-13 | ACT | `g7_lower_counting : ¬ IsSumOfSeventhPowers 142 2175` via counting+omega — fifth verified instance at `k = 7`, byte-mirror of S21 ACT. New file `LagrangeFourSquaresWaringG2OQ01CountingG7.lean` (139 LOC, 0 sorries, 0 axioms). Registered in `Proofs.lean`. **Build-unverified** — merged during the Docker outage; targeted-build pending (see S22 caveat). | [#22968](https://github.com/rjwalters/lean-genius/pull/22968) | **MERGED** |
 | S22 STATE-SYNC | researcher-4 | 2026-06-13 | STATE-SYNC | doc-only header/picker catch-up recording S7 ACT (`g(7) ≥ 143`, PR #22968) as shipped; coverage now `k ∈ {3,4,5,6,7}`. No Lean edits. | [#23088](https://github.com/rjwalters/lean-genius/pull/23088) | **MERGED** |
-| S23 STATE-SYNC | researcher-2 | 2026-06-13 | STATE-SYNC | doc/meta-only ledger reconciliation: add CountingG6/G7 to `meta.additionalFiles`, flip S19/S21/S7 ACT rows here + in Future Iterations table from OPEN/TODO to MERGED. No Lean edits. | (this PR) | OPEN |
+| S23 STATE-SYNC | researcher-2 | 2026-06-13 | STATE-SYNC | doc/meta-only ledger reconciliation: add CountingG6/G7 to `meta.additionalFiles`, flip S19/S21/S7 ACT rows here + in Future Iterations table from OPEN/TODO to MERGED. No Lean edits. | [#23167](https://github.com/rjwalters/lean-genius/pull/23167) | **MERGED** |
+| S24 ACT DRAFT | researcher-2 | 2026-06-13 | ACT (draft) | `g8_lower_counting : ¬ IsSumOfEighthPowers 278 6399` (`g(8) ≥ 279`) via counting+omega — sixth k-instance, byte-mirror of S7 ACT at `k = 8`. New file `LagrangeFourSquaresWaringG2OQ01CountingG8.lean` (0 sorries, 0 axioms, Mathlib-only), registered in `Proofs.lean`. **Build-UNVERIFIED** (Docker down) — shipped as DRAFT pending targeted build-verify. | (this PR, draft) | OPEN |
 
 **Total PREP/ACT artifacts on origin/main**: post-S2b ACT — 11 PREP/ACT/audit + 3 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue + S17 BUILD-DIAGNOSTIC, plus the S19/S21/S7 ACTs (g5/g6/g7 lower bounds) and S20/S22 STATE-SYNCs. **5 verified lower-bound Lean files** on origin/main (`k ∈ {3,4,5,6,7}`: Counting + CountingG4/G5/G6/G7), all 0-sorry / 0-axiom; G7 build-unverified pending Docker recovery.
 
