@@ -87,7 +87,7 @@
   "sections": [
     {
       "id": "sequences",
-      "title": "Sequence Definitions",
+      "title": "Basic Definitions",
       "summary": "IsStrictlyIncreasing, StartsAtOne, IsValidSequence",
       "startLine": 25,
       "endLine": 43,
@@ -98,71 +98,128 @@
       "title": "Density of Sequences",
       "summary": "countingFunc, indexUpTo, HasDensity, HasDensityOne",
       "startLine": 44,
-      "endLine": 65,
+      "endLine": 67,
       "mathContext": "Mathematical content: countingFunc, indexUpTo, HasDensity, HasDensityOne"
     },
     {
       "id": "products",
       "title": "Interval Products",
       "summary": "intervalProduct, AllIntervalProducts, ValidPairs, productMap",
-      "startLine": 66,
-      "endLine": 86,
+      "startLine": 68,
+      "endLine": 88,
       "mathContext": "Mathematical content: intervalProduct, AllIntervalProducts, ValidPairs, productMap"
     },
     {
       "id": "distinctness",
       "title": "Distinctness of Products",
       "summary": "HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv",
-      "startLine": 87,
-      "endLine": 112,
+      "startLine": 89,
+      "endLine": 114,
       "mathContext": "Mathematical content: HasDistinctProducts, HasDistinctProductsAlt, distinct_equiv"
+    },
+    {
+      "id": "interval-structure",
+      "title": "Structural Properties of Interval Products",
+      "summary": "intervalProduct_single, intervalProduct_empty, valid_seq_pos, valid_seq_injective, intervalProduct_pos, valid_seq_ge_succ",
+      "startLine": 115,
+      "endLine": 161,
+      "mathContext": "Mathematical content: intervalProduct_single, intervalProduct_empty, valid_seq_pos, valid_seq_injective, intervalProduct_pos, valid_seq_ge_succ"
+    },
+    {
+      "id": "naturals-fail",
+      "title": "Natural Numbers Fail Distinctness",
+      "summary": "natSeq, natSeq_valid, natSeq_not_distinct: d(i)=i+1 has density 1 but fails HasDistinctProducts",
+      "startLine": 162,
+      "endLine": 187,
+      "mathContext": "Mathematical content: natSeq, natSeq_valid, natSeq_not_distinct: d(i)=i+1 has density 1 but fails HasDistinctProducts"
+    },
+    {
+      "id": "powers-fail",
+      "title": "Powers of 2 Also Fail Distinctness",
+      "summary": "pow2Seq, pow2Seq_valid, pow2Seq_not_distinct: distinct factorizations but not distinct interval products",
+      "startLine": 188,
+      "endLine": 210,
+      "mathContext": "Mathematical content: pow2Seq, pow2Seq_valid, pow2Seq_not_distinct: distinct factorizations but not distinct interval products"
+    },
+    {
+      "id": "density-gap",
+      "title": "The Gap Between Density 0 and Density 1",
+      "summary": "distinct_products_growth_lower: primes have distinct products by unique factorization but density 0",
+      "startLine": 211,
+      "endLine": 232,
+      "mathContext": "Mathematical content: distinct_products_growth_lower: primes have distinct products by unique factorization but density 0"
+    },
+    {
+      "id": "advanced-structure",
+      "title": "Advanced Structural Properties",
+      "summary": "intervalProduct_split, total_product_ge_factorial, first_term_ge_two, distinct_products_stronger_growth, total_product_ge_shifted_factorial",
+      "startLine": 233,
+      "endLine": 304,
+      "mathContext": "Mathematical content: intervalProduct_split, total_product_ge_factorial, first_term_ge_two, distinct_products_stronger_growth, total_product_ge_shifted_factorial"
     },
     {
       "id": "conjecture",
       "title": "The Main Conjecture",
       "summary": "ErdosConjecture421, erdos_421_statement",
-      "startLine": 113,
-      "endLine": 129,
+      "startLine": 305,
+      "endLine": 322,
       "mathContext": "Mathematical content: ErdosConjecture421, erdos_421_statement"
     },
     {
       "id": "selfridge",
       "title": "Selfridge's Construction",
       "summary": "selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e",
-      "startLine": 130,
-      "endLine": 150,
+      "startLine": 323,
+      "endLine": 343,
       "mathContext": "Mathematical content: selfridgeDensity, selfridge_construction, selfridge_achieves_one_over_e"
     },
     {
       "id": "bounds",
       "title": "Upper Bounds and Obstructions",
       "summary": "numProductsUpToLength, density constraints",
-      "startLine": 151,
-      "endLine": 165,
+      "startLine": 344,
+      "endLine": 358,
       "mathContext": "Mathematical content: numProductsUpToLength, density constraints"
     },
     {
       "id": "examples",
       "title": "Simple Examples",
       "summary": "Natural numbers fail, primes work but sparse",
-      "startLine": 166,
-      "endLine": 185,
+      "startLine": 359,
+      "endLine": 378,
       "mathContext": "Mathematical content: Natural numbers fail, primes work but sparse"
     },
     {
       "id": "related",
       "title": "Related Problem 786",
-      "summary": "RelatedProblem786",
-      "startLine": 186,
-      "endLine": 194
+      "summary": "RelatedProblem786: Selfridge covering-systems construction",
+      "startLine": 379,
+      "endLine": 395,
+      "mathContext": "Mathematical content: RelatedProblem786: Selfridge covering-systems construction"
+    },
+    {
+      "id": "counting",
+      "title": "Counting Constraints on Distinct Products",
+      "summary": "numValidPairs_eq, adjacent_product_bound, consecutive_product_gt_single, single_ne_pair_product, product_strict_mono_right, total_product_lower_from_counting",
+      "startLine": 396,
+      "endLine": 544,
+      "mathContext": "Mathematical content: numValidPairs_eq, adjacent_product_bound, consecutive_product_gt_single, single_ne_pair_product, product_strict_mono_right, total_product_lower_from_counting"
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_421_status, OEIS references",
-      "startLine": 195,
-      "endLine": 237,
+      "startLine": 545,
+      "endLine": 560,
       "mathContext": "Mathematical content: erdos_421_status, OEIS references"
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Recap of the open problem and the formalized scaffolding",
+      "startLine": 561,
+      "endLine": 579,
+      "mathContext": "Mathematical content: Recap of the open problem and the formalized scaffolding"
     }
   ],
   "conclusion": {
