@@ -501,6 +501,48 @@ theorem lr_pieri_converse (ν μ : Partition2) (k : ℕ)
   simp only [Partition2.size, Nat.add_zero, min_def] at h
   split_ifs at h <;> refine ⟨⟨?_, ?_, ?_⟩, ?_⟩ <;> omega
 
+/-- A 2-row skew shape `ν/μ` is a **vertical strip of size 2** when it has
+    exactly one cell in each row: `ν.a = μ.a + 1` and `ν.b = μ.b + 1`.
+    No two of the two skew cells share a row, which is the defining property
+    of a vertical strip (the transpose notion to a horizontal strip). -/
+def isVerticalStrip2 (ν μ : Partition2) : Prop :=
+  ν.a = μ.a + 1 ∧ ν.b = μ.b + 1
+
+/-- **Dual Pieri formula** for 2-row partitions (multiplication by the
+    elementary symmetric function `e₂ = s₍₁,₁₎`).
+
+    If `ν/μ` is a vertical strip of size 2, then `c^ν_{(1,1), μ} = 1`. The
+    dual Pieri rule governs multiplication by an elementary symmetric
+    function: `e_k · s_μ = Σ_ν s_ν` where `ν/μ` ranges over vertical strips
+    of size `k`. For `k = 2` and 2-row partitions the only vertical strip is
+    one cell per row (`ν.a = μ.a + 1`, `ν.b = μ.b + 1`); the ballot reading of
+    the content `(1,1)` then forces `k₁ = r₁ = 1`, so the unique tableau is
+    valid. This is the `λ ↔ λ'` transpose companion of `lr_pieri`. -/
+theorem lr_pieri_dual (ν μ : Partition2) (h : isVerticalStrip2 ν μ) :
+    lrCoeff2 ν ⟨1, 1, le_refl _⟩ μ = 1 := by
+  obtain ⟨ha, hb⟩ := h
+  have hν := ν.dec; have hμ := μ.dec
+  unfold lrCoeff2
+  simp only [Partition2.size, min_def]
+  split_ifs <;> omega
+
+/-- **Dual Pieri converse**: `c^ν_{(1,1), μ} = 1` implies `ν/μ` is a vertical
+    strip of size 2.
+
+    For the column content `λ = (1,1)`, the ballot condition forces exactly
+    one skew cell in each row: `r₁ = 1` (a second cell in row 1 would need a
+    `2` before any `1`, breaking the ballot word; an empty row 1 leaves the
+    row-2 `2` unmatched). With the size constraint this pins
+    `ν.a = μ.a + 1 ∧ ν.b = μ.b + 1`. -/
+theorem lr_pieri_dual_converse (ν μ : Partition2)
+    (h : lrCoeff2 ν ⟨1, 1, le_refl _⟩ μ = 1) :
+    isVerticalStrip2 ν μ := by
+  have hν := ν.dec; have hμ := μ.dec
+  unfold isVerticalStrip2
+  unfold lrCoeff2 at h
+  simp only [Partition2.size, min_def] at h
+  split_ifs at h <;> omega
+
 /-! ## Summary
 
 This file provides:
@@ -521,7 +563,9 @@ This file provides:
    2-row partitions — Schur function multiplication is commutative.
 
 6. **Pieri formula** (`lr_pieri`, `lr_pieri_converse`): `c^ν_{(k,0),μ} = 1`
-   iff `ν/μ` is a horizontal strip of size `k`.
+   iff `ν/μ` is a horizontal strip of size `k`. The **dual Pieri formula**
+   (`lr_pieri_dual`, `lr_pieri_dual_converse`): `c^ν_{(1,1),μ} = 1` iff
+   `ν/μ` is a vertical strip of size 2 — multiplication by `e₂ = s₍₁,₁₎`.
 
 7. **0 axioms**: All complexity results are theorems (vacuous formal content).
 

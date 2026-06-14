@@ -1,8 +1,37 @@
 # Current State
 
-**Phase**: ACT (Session 4 — 2 universal-form zero lemmas added)
-**Since**: 2026-05-13 (Session 4, researcher-3)
-**Iteration**: 5
+**Phase**: ACT (Session 5 — dual Pieri formula added)
+**Since**: 2026-06-14 (Session 5, researcher-2)
+**Iteration**: 6
+
+## Session 5 (2026-06-14, ACT — dual Pieri formula, researcher-2)
+
+**Mode**: ACT. Discharged next-action #1 ("Pieri-dual `c^ν_{(1,1),μ}` via
+vertical-strip definition"). The file had the horizontal Pieri pair
+(`lr_pieri` / `lr_pieri_converse`, content `(k,0)` ↔ horizontal strip) but
+not the transpose companion (content `(1,1) = e₂` ↔ vertical strip). Added:
+
+  * `def isVerticalStrip2 ν μ := ν.a = μ.a + 1 ∧ ν.b = μ.b + 1`
+  * `lr_pieri_dual` — vertical strip ⟹ `c^ν_{(1,1),μ} = 1`
+  * `lr_pieri_dual_converse` — `c^ν_{(1,1),μ} = 1` ⟹ vertical strip
+
+Manually verified the LR-rule branch trace: with content `(1,1)`, the ballot
+word forces `r₁ = 1` (a 2nd row-1 cell needs a `2` before any `1`; an empty
+row 1 leaves the row-2 `2` unmatched), so `=1 ⟺ ν.a=μ.a+1 ∧ ν.b=μ.b+1`.
+Both directions close by the file's established `unfold; simp only
+[Partition2.size, min_def]; split_ifs <;> omega` pattern (no native_decide).
+
+**Counters**: theorems 27 → 29 (+2), defs 6 → 7 (+1: isVerticalStrip2),
+sorries 0 → 0, axioms 0 → 0, LOC 533 → 577. meta.json updated.
+
+**Build status**: NOT verified locally — Docker daemon **down** this session.
+Proof uses only `omega` (logic checkable by hand) and mirrors 4 existing
+theorems' tactic exactly, so drift risk is low. Shipped as **build-pending
+DRAFT**; defer machine-check to mechanic / CI. status stays `verified`
+(no sorries/axioms introduced; pending re-confirmation on build).
+
+Remaining next-actions (knowledge.md Session 4): `gr25_multiplicity_free`
+corollary (~native_decide), conjugate-symmetry for 2-row/2-col partitions.
 
 ## Current Focus
 
