@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 4→2 sorries in Erdos817Problem.lean. g3_one proved (subsetSums {1}={0,1} by decide, 3-AP-free by interval_cases). g3_two CORRECTED from =2 to =3 with full proof. g_ge_n structure filled (sorry only for nonemptiness). g3_le_exp still sorry (hard: needs carry argument for base-3 AP-freeness).",
+    "progressSummary": "COMPLETE: Erdos817Problem.lean is 0 sorries / 0 axioms. g3_one, g3_two (=3), g_ge_n (g k n ≥ n), and g3_le_exp (g 3 n ≤ 3^n) all proved; the earlier nonemptiness and base-3 AP-freeness sorries are discharged.",
     "builtItems": [
       "g3_one: proved g 3 1 = 1 (Erdos817Problem.lean:191-219)",
       "g3_two: corrected to g 3 2 = 3 with full proof, including hfail2 (only valid N for n=2 requires N≥3)",
@@ -46,12 +46,7 @@
       "Nonemptiness of ValidNs k n for general k≥3, n≥1 — needs AP-free set construction (base-k geometric set)",
       "g3_le_exp: upper bound g_3(n) ≤ 3^n — needs showing {3^0,...,3^{n-1}} subset sums are 3-AP-free (positional/carry argument)"
     ],
-    "nextSteps": [
-      "Try proving nonemptiness of ValidNs 3 n using A = {3^0,...,3^{n-1}} ⊆ Icc 1 (3^n)",
-      "For AP-freeness of geometric set sums: use induction on n, with the observation that the nth element 3^{n-1} creates a gap too large for any AP to bridge",
-      "Alternative for g_ge_n: state as hypothesis or use a separate lemma validSet_exists (k n : ℕ) : ∃ N, N ∈ ValidNs k n",
-      "Submit g_ge_n nonemptiness sorry to Aristotle — it may be within reach via Finset induction"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "erdos-problems",
