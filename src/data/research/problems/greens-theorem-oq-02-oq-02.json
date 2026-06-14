@@ -26,7 +26,7 @@
     "greens-theorem-oq-03",
     "greens-theorem-oq-04"
   ],
-  "status": "available",
+  "status": "surveyed",
   "selectedDate": "2026-04-12",
   "selectedBy": "seeker",
   "leanFiles": [
@@ -96,5 +96,27 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
     }
-  ]
+  ],
+  "knowledge": {
+    "progressSummary": "SURVEYED (ORIENT, build-gated): The OQ asks whether the `greens_theorem_l1curl` axiom (GreensTheoremOQ02.lean:350) can be discharged via Mathlib's BoundedVariation + Measure.AbsolutelyContinuous API. Answer: those APIs are NECESSARY but not SUFFICIENT — the single missing keystone is the function-level FTC-for-absolutely-continuous bridge `f b - f a = ∫ x in a..b, deriv f x` from an a.e./L¹ derivative, which Mathlib's FundThmCalculus does NOT provide (all its versions require continuity / HasDerivAt everywhere). Crucially, because the OQ02 axiom is stated over a RECTANGLE domain, the heavy GMT machinery cited in the axiom docstring (sets of finite perimeter, Federer trace, Gauss-Green) is an OVERSTATEMENT and is NOT needed; via Fubini the axiom reduces to two 1D instances of FTC-for-AC. True blocker is a bounded ~200-400 line local build, not a 1000+ line foundational project. No Lean committed (Docker blackout 2026-06-13 prevents verification).",
+    "builtItems": [],
+    "insights": [
+      "The `greens_theorem_l1curl` axiom (GreensTheoremOQ02.lean:350) is stated over a RECTANGLE domain `Set.Icc a b ×ˢ Set.Icc c d` with the curve C a Lipschitz parametrization of its frontier (hTraversal). The geometric domain is therefore SIMPLE — so the axiom docstring's cited requirement of 'sets of finite perimeter, Federer's trace theorem, Gauss-Green formula' is an overstatement for THIS case. Those are needed for general Lipschitz DOMAINS, not for a rectangle with a Lipschitz boundary parametrization.",
+      "The genuine gap vs the axiom-free OQ01 (GreensTheoremOQ01.lean, 0 axioms, uses pointwise `HasDerivAt` + `intervalIntegral.integral_eq_sub_of_hasDerivAt`) is exactly the weakening of the hypothesis from pointwise-C¹ partial derivatives to an a.e. curl formula with merely L¹-integrable curl (hCurlAE + hL1). Via Fubini (`MeasureTheory.integral_prod`) the rectangle double integral splits into iterated 1D integrals, each of which needs FTC for a function whose derivative is only L¹/a.e.-defined — i.e. FTC for absolutely continuous functions.",
+      "Mathlib's FTC (`Mathlib.MeasureTheory.Integral.FundThmCalculus`) provides ONLY versions requiring continuity at the endpoints or `HasDerivAt`/`HasDerivWithinAt` on the whole interval. It does NOT provide the Lebesgue/AC direction `f absolutely continuous ⟹ f b - f a = ∫_a^b f'` from an a.e. L¹ derivative. This is the keystone the OQ02 axiom needs (confirmed via mathlib4_docs FundThmCalculus + arXiv 2509.05247 survey of the FTC-for-Lebesgue result).",
+      "Mathlib DOES have the supporting ingredients the OQ names: `Mathlib.Analysis.BoundedVariation` (eVariationOn, `LipschitzWith.boundedVariationOn`, BV ⟹ a.e. differentiable), Rademacher (`Mathlib.Analysis.Calculus.Rademacher`, Lipschitz ⟹ a.e. differentiable), and measure-level `MeasureTheory.Measure.AbsolutelyContinuous` (μ ≪ ν) + Radon-Nikodym (`Mathlib.MeasureTheory.Decomposition.RadonNikodym`). NOTE: `Measure.AbsolutelyContinuous` is AC of MEASURES, not of functions — the OQ's intended path is to model the L¹ curl as the RN-derivative of an AC measure and recover boundary values, which still bottlenecks on the same function-level FTC bridge.",
+      "Answer to the OQ as stated: PARTIALLY / not directly. The named BoundedVariation + Measure.AbsolutelyContinuous API is the correct toolkit but is insufficient on its own; the dischargeability hinges entirely on building the FTC-for-AC bridge lemma, after which the rectangle case follows by Fubini + the existing OQ01-style boundary algebra."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the function-level FTC for absolutely continuous functions: `f : ℝ → ℝ` absolutely continuous on [a,b] ⟹ `f b - f a = ∫ x in a..b, deriv f x` with `deriv f` only L¹/a.e.-defined. `Mathlib.MeasureTheory.Integral.FundThmCalculus` covers only continuity/HasDerivAt-everywhere hypotheses. Estimated bounded build: ~200-400 lines (route: f AC ⟹ the pushforward signed measure d f ≪ volume ⟹ deriv f is its Radon-Nikodym derivative ⟹ integrate).",
+      "Mathlib has `Measure.AbsolutelyContinuous` (measures) and BoundedVariation (functions) but no packaged bridge identifying an absolutely-continuous FUNCTION's derivative with the Radon-Nikodym derivative of its associated Lebesgue-Stieltjes measure. This bridge is the technical core of the FTC-for-AC build above."
+    ],
+    "nextSteps": [
+      "When Docker/build is restored: do NOT attempt the full GMT route the axiom docstring suggests. Instead build a self-contained FTC-for-AC lemma (≤400 lines) and discharge `greens_theorem_l1curl` by Fubini reduction to two 1D FTC-for-AC applications over the rectangle.",
+      "Prototype the bridge: state `theorem ftc_of_absolutelyContinuous (f : ℝ → ℝ) (hf : <AC predicate>) : f b - f a = ∫ x in a..b, deriv f x`. Decide the AC predicate encoding — either via `eVariationOn` + an integrability hypothesis, or via `Measure.AbsolutelyContinuous` of the Lebesgue-Stieltjes measure of f. Check whether Mathlib's `MeasureTheory.Measure.withDensity` / RN-derivative lemmas close the gap.",
+      "Amend the GreensTheoremOQ02.lean axiom docstring: replace the 'requires sets of finite perimeter / Federer trace / Gauss-Green' justification with the accurate narrowed gap (rectangle case needs only Fubini + FTC-for-AC), so the documented blocker matches reality. (Doc-only; safe even during blackout but deferred to keep this survey build-free and focused.)",
+      "Sanity check before claiming discharge: the reduction must recover OQ01's conclusion when the curl comes from genuine `HasDerivAt` partials (C¹ ⟹ L¹ on compact rectangle), matching the existing `greens_oq1_from_l1curl` theorem already in GreensTheoremOQ02.lean."
+    ]
+  },
+  "phase": "ORIENT"
 }
