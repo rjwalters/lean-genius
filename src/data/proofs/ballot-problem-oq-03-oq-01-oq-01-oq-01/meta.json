@@ -77,10 +77,11 @@
     ]
   },
   "conclusion": {
-    "summary": "Defines Schur polynomials via Jacobi-Trudi formula and SSYT generating function. Proves symmetry, base cases (k=0,1), two-row formula, hook-length evaluation, k=1 SSYT bijection, and the k=2 SSYT equality (ssytSchurFin_two_row PROVED via row decomp + partition). 4 sorries: twoRow_equiv (mechanical), twoRow_equiv_weight (mechanical), nonColStrict_sum_weight (jdt bijection), jacobi_trudi_ssyt_eq k>=3 (algebraic LGV + RSK).",
-    "implications": "This provides: (1) the first Lean 4 Jacobi-Trudi matrix definition, (2) the first Lean 4 SSYT type for arbitrary partition shapes with Fintype instance, (3) the first formal statement that det[h_{λᵢ-i+j}] = Σ_T weight(T) as a meaningful theorem. The remaining sorry precisely identifies the RSK correspondence for k ≥ 2 (~300 lines) as the key missing ingredient. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule, and connections to Schubert calculus via the existing LGV infrastructure in the gallery.",
+    "summary": "Defines Schur polynomials via the Jacobi-Trudi formula and the SSYT generating function. Proves symmetry, base cases (k=0,1), the two-row formula, hook-length evaluation, and the k=1 SSYT bijection. The k=2 equality (ssytSchurFin_two_row) is assembled via row decomposition + partition + jdt_weight_sum, but is conditional on the deep multiset cycle-lemma. 2 sorries: noColStrict_subSym_a_count_eq_subSym_le_aplus1_count (L1907 — the multiset Cycle Lemma at the heart of ballot_counting_identity, ~150 lines, the only gap in the k=2 case) and jacobi_trudi_ssyt_eq for k≥3 (L2555 — algebraic LGV + RSK, ~300 lines).",
+    "implications": "This provides: (1) the first Lean 4 Jacobi-Trudi matrix definition, (2) the first Lean 4 SSYT type for arbitrary partition shapes with Fintype instance, (3) the first formal statement that det[h_{λᵢ-i+j}] = Σ_T weight(T) as a meaningful theorem. Two sorries remain: a multiset generalization of the Cycle Lemma (Lyndon / Dvoretzky-Motzkin, not yet in Mathlib) that closes the k=2 case, and the RSK correspondence plus algebraic LGV (~300 lines) for k ≥ 3. A completed formalization would unlock: the Pieri rule $s_\\lambda h_n = \\sum_\\mu s_\\mu$, the Murnaghan-Nakayama rule, and connections to Schubert calculus via the existing LGV infrastructure in the gallery.",
     "openQuestions": [
-      "Prove jacobi_trudi_ssyt_eq (general case, k ≥ 2): RSK correspondence SSYT ↔ NI lattice path tuples for the LGV configuration, then weight matching with hsymm products"
+      "Prove noColStrict_subSym_a_count_eq_subSym_le_aplus1_count (L1907): a multiset generalization of the Cycle Lemma (Lyndon / Dvoretzky-Motzkin), the ~150-line combinatorial heart of ballot_counting_identity that closes the k=2 Jacobi-Trudi case.",
+      "Prove jacobi_trudi_ssyt_eq for k ≥ 3 (L2555): RSK correspondence SSYT ↔ NI lattice path tuples for the LGV configuration, then weight matching with hsymm products (~300 lines, algebraic LGV)."
     ]
   },
   "leanFile": {
@@ -228,7 +229,7 @@
       "title": "Part XI: Main Theorems — ssytSchurFin_two_row & jacobi_trudi_ssyt_eq",
       "startLine": 2483,
       "endLine": 2557,
-      "summary": "Proves ssytSchurFin_two_row (k=2 Jacobi-Trudi identity, fully complete) by combining the Part X partition and weight-sum lemmas, then states the general jacobi_trudi_ssyt_eq: proved for k=0,1,2 and left open (sorry, L2555) for k≥3 pending algebraic LGV + RSK.",
+      "summary": "Proves ssytSchurFin_two_row (k=2 Jacobi-Trudi identity) by combining the Part X partition and weight-sum lemmas — conditional on the L1907 cycle-lemma sorry it transitively invokes — then states the general jacobi_trudi_ssyt_eq: assembled for k=0,1,2 and left open (sorry, L2555) for k≥3 pending algebraic LGV + RSK.",
       "mathContext": "ssytSchurFin_two_row: rewrites schurPolynomial via schurPolynomial_two_row into h_a h_b − h_{a+1}(if 1≤b then h_{b-1} else 0), rewrites ssytSchurFin via ssytFin_two_row_eq_sum_colstrict, then closes with eq_sub_of_add_eq on jdt_weight_sum ▸ sym_pair_sum_partition — no sorry. jacobi_trudi_ssyt_eq dispatches k=0 (empty), k=1 (one-row), k=2 (via ssytSchurFin_two_row); k≥3 is the file's second open sorry (needs algebraic LGV ~150 lines + RSK bijection ~150 lines)."
     }
   ],
