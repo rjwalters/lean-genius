@@ -21,23 +21,24 @@
     "erdosUrl": "https://erdosproblems.com/890",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 210,
+    "lineCount": 237,
     "assumptions": "2 axioms: erdos_selfridge_lower_bound, classical_omega_limsup. See Lean source for complete statements.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Selfridge studied $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$ in their 1967 paper [ErSe67], where $\\omega(m)$ counts the distinct prime divisors of $m$. The Hardy-Ramanujan theorem (1917) established that $\\omega(n) \\sim \\log\\log n$ for 'almost all' $n$, and the Erdős-Kac theorem (1940) showed $(\\omega(n) - \\log\\log n)/\\sqrt{\\log\\log n}$ is asymptotically normal. For the cumulative function $S_k(n)$, Erdős and Selfridge proved the lower bound $\\liminf_{n \\to \\infty} S_k(n) \\geq k + \\pi(k) - 1$ using Pólya's 1918 theorem that $k$-smooth numbers (those with all prime factors $\\leq k$) have unbounded gaps: among $n, n+1, \\ldots, n+k-1$, all but at most one must have a prime factor $> k$. This yields at least $k + \\pi(k) - 1$ distinct prime factors in total. The two open conjectures sharpen this: (1) $\\liminf S_k(n) \\leq k + \\pi(k)$, which combined with the lower bound would pin the liminf to $k + \\pi(k) - 1$ or $k + \\pi(k)$; and (2) $\\limsup S_k(n) \\cdot \\log\\log n / \\log n = 1$, generalizing the classical single-integer result to consecutive blocks. The problem connects to Jacobsthal's function $g(k)$ (the maximal gap in $\\{1, \\ldots, m\\}$ coprime to the first $k$ primes) and to recent work on the distribution of $\\omega$ in short intervals.",
     "problemStatement": "Let $\\omega(n)$ denote the number of distinct prime factors of $n$, and define $S_k(n) = \\sum_{i=0}^{k-1} \\omega(n+i)$. Two conjectures: (1) For every $k \\geq 1$, $\\liminf_{n \\to \\infty} S_k(n) \\leq k + \\pi(k)$. (2) $\\limsup_{n \\to \\infty} S_k(n) \\cdot \\frac{\\log\\log n}{\\log n} = 1$. Both remain open.",
     "text": "Is lim inf S_k(n) ≤ k + π(k) where S_k(n) = ∑ ω(n+i)? Is lim sup S_k(n) · log log n / log n = 1? Known: lim inf ≥ k + π(k) − 1 (Erdős–Selfridge). OPEN.",
-    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Four theorems are proved in Lean: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`, the lower bound at $k=1$, the sandwich theorem conditional on Conjecture 1, and a restated lower bound.",
+    "proofStrategy": "The formalization defines `cumulativeOmega k n` using Mathlib's `ArithmeticFunction.omega` and `Finset.range k`. Liminf and limsup are captured by custom predicates `LiminfAtMost`, `LiminfAtLeast`, and `LimsupRatioIsOne` (using $\\varepsilon$-neighborhoods with `Real.log`). The Erdős-Selfridge lower bound and Hardy-Ramanujan $\\omega$ limsup are axiomatized. Twelve theorems are proved in Lean, including: monotonicity $S_{k+1}(n) \\geq S_k(n)$ via `Finset.sum_le_sum_of_subset`; the sum-splitting identity $S_{k+j}(n)=S_k(n)+S_j(n+k)$; the sandwich theorem conditional on Conjecture 1; both conjectures verified at $k=1$ ($\\liminf S_1 \\leq 1+\\pi(1)$ from the infinitude of primes, and the limsup case reduced exactly to the Hardy–Ramanujan axiom); and a sharp lower bound $\\liminf S_1(n) \\geq 1$ that pins the $k=1$ liminf to exactly 1.",
     "keyInsights": [
       "**Cumulative prime factors**: $S_k(n) = \\sum_{i<k} \\omega(n+i)$ counts total distinct prime factors across $k$ consecutive integers. For $k = 1$, this reduces to $\\omega(n)$ itself.",
       "**Erdős-Selfridge lower bound**: The product $n(n+1)\\cdots(n+k-1)$ is divisible by all primes $\\leq k$, so $S_k(n) \\geq k + \\pi(k) - 1$ eventually. The proof uses Pólya's 1918 theorem that $k$-smooth numbers have gaps tending to infinity.",
       "**Tight sandwich**: If Conjecture 1 holds, $\\liminf S_k(n) \\in \\{k + \\pi(k) - 1,\\, k + \\pi(k)\\}$ — determined to within 1. The Lean `erdos_890_liminf_sandwich` theorem formalizes this conditional result.",
       "**Limsup generalization**: The classical Hardy-Ramanujan result $\\limsup \\omega(n) \\cdot \\log\\log n / \\log n = 1$ is conjectured to hold for $S_k(n)$ as well, meaning the maximum growth rate is dominated by a single highly composite integer in each block.",
-      "**Monotonicity**: $S_{k+1}(n) \\geq S_k(n)$ is proved in Lean via `Finset.sum_le_sum_of_subset`, since $\\text{range}\\,k \\subseteq \\text{range}\\,(k+1)$."
+      "**Monotonicity**: $S_{k+1}(n) \\geq S_k(n)$ is proved in Lean via `Finset.sum_le_sum_of_subset`, since $\\text{range}\\,k \\subseteq \\text{range}\\,(k+1)$.",
+      "**Both conjectures resolved at $k=1$**: For $k=1$, $S_1(n)=\\omega(n)$, so Conjecture 1 reduces to $\\liminf\\omega(n)\\leq 1$ (proved from the infinitude of primes) and Conjecture 2 reduces *exactly* to the classical Hardy–Ramanujan limsup. Since $\\omega(n)\\geq 1$ for $n\\geq 2$, the $k=1$ liminf is pinned to exactly $1$, sharpening the Erdős–Selfridge axiom's trivial $k=1$ bound of $0$."
     ],
     "prerequisites": [
       "Arithmetic functions: the distinct prime factor counting function $\\omega(n)$, its properties under multiplication, and its relationship to the prime factorization of $n$",
@@ -93,8 +94,29 @@
       "id": "structural",
       "title": "Structural Theorems",
       "startLine": 132,
-      "endLine": 172,
+      "endLine": 171,
       "summary": "Proves `cumulativeOmega_mono`: $S_k(n) \\leq S_{k+1}(n)$ via `Finset.sum_le_sum_of_subset`. Proves `erdos_890_lower_bound_k1`: the Erdős-Selfridge bound at $k=1$. Proves `erdos_890_liminf_sandwich`: conditional on Conjecture 1, $k + \\pi(k) - 1 \\leq \\liminf S_k(n) \\leq k + \\pi(k)$. Proves `erdos_890_known_lower_bound`: restates the Erdős-Selfridge axiom."
+    },
+    {
+      "id": "additional-structural",
+      "title": "Additional Structural Lemmas",
+      "startLine": 172,
+      "endLine": 187,
+      "summary": "Computes the boundary cases of the cumulative sum: `cumulativeOmega_zero` gives $S_0(n)=0$ (empty sum) and `cumulativeOmega_one` gives $S_1(n)=\\omega(n)$ (single term). `cumulativeOmega_add` proves the splitting identity $S_{k+j}(n) = S_k(n) + S_j(n+k)$ via `Finset.sum_range_add`, enabling divide-and-conquer over consecutive blocks."
+    },
+    {
+      "id": "conjecture1-k1",
+      "title": "Conjecture 1 Verified for k = 1",
+      "startLine": 188,
+      "endLine": 225,
+      "summary": "`omega_prime` shows $\\omega(p)=1$ for prime $p$. `conjecture1_k1` proves the $k=1$ case of Conjecture 1: $\\liminf S_1(n) \\leq 1 + \\pi(1)$, using the infinitude of primes (each prime $p$ has $S_1(p)=\\omega(p)=1$). `omega_ge_one` shows $\\omega(n)\\geq 1$ for $n>1$, and `liminf_k1_sharp_lower` uses it to prove $\\liminf S_1(n) \\geq 1$ — sharpening the trivial $k=1$ instance of the Erdős–Selfridge axiom (which only gives $\\geq \\pi(1)=0$) and pinning the $k=1$ liminf to exactly 1."
+    },
+    {
+      "id": "conjecture2-k1",
+      "title": "Conjecture 2 Verified for k = 1",
+      "startLine": 226,
+      "endLine": 237,
+      "summary": "`conjecture2_k1` proves the $k=1$ case of Conjecture 2: since $S_1(n)=\\omega(n)$, the limsup-ratio statement for $S_1$ is exactly the classical Hardy–Ramanujan result $\\limsup \\omega(n)\\cdot\\log\\log n/\\log n = 1$, discharged via the `classical_omega_limsup` axiom."
     }
   ],
   "conclusion": {

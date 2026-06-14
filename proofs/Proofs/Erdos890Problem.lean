@@ -207,4 +207,31 @@ theorem conjecture1_k1 : LiminfAtMost (cumulativeOmega 1) (1 + pi 1) := by
                      calc ω p = 1 := omega_prime hp
                        _ ≤ 1 + pi 1 := by omega⟩
 
+/-- ω(n) ≥ 1 whenever n > 1: a non-unit has at least one distinct prime factor. -/
+theorem omega_ge_one {n : ℕ} (hn : 1 < n) : 1 ≤ ω n := by
+  have hne : n.primeFactors.Nonempty := Nat.nonempty_primeFactors.mpr hn
+  simp only [ArithmeticFunction.omega]
+  exact Finset.one_le_card.mpr hne
+
+/-- **Sharp lower bound at k = 1.**
+    Since ω(n) ≥ 1 for every n ≥ 2, the liminf of S₁(n) = ω(n) is ≥ 1.
+    This sharpens the k = 1 instance of `erdos_selfridge_lower_bound`, which only
+    gives ≥ 1 + π(1) − 1 = 0 (because π(1) = 0). Combined with `conjecture1_k1`
+    (liminf ≤ 1 + π(1) = 1), this pins the k = 1 liminf to exactly 1. -/
+theorem liminf_k1_sharp_lower : LiminfAtLeast (cumulativeOmega 1) 1 := by
+  refine ⟨2, fun n hn => ?_⟩
+  rw [cumulativeOmega_one]
+  exact omega_ge_one (by omega)
+
+-- ## Part IX: Conjecture 2 Verified for k = 1
+
+/-- **Conjecture 2 verified for k = 1:**
+    For k = 1, S₁(n) = ω(n), so the limsup-ratio statement for S₁ is exactly the
+    classical Hardy–Ramanujan result `lim sup ω(n)·log log n / log n = 1`. -/
+theorem conjecture2_k1 : ErdosConjecture890_limsup 1 := by
+  have h : cumulativeOmega 1 = fun n => ω n := funext cumulativeOmega_one
+  unfold ErdosConjecture890_limsup
+  rw [h]
+  exact classical_omega_limsup
+
 end Erdos890

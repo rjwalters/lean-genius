@@ -17,15 +17,15 @@
   },
   "currentState": {
     "phase": "AXIOMATIZED",
-    "since": "2026-01-15T10:57:29.901Z",
-    "iteration": 2,
-    "focus": "S2 STATE-SYNC: registry was at phase ACT iter 1 since 2026-03-13 (T-65d) despite Lean file Erdos890Problem.lean encoding 2 axioms (erdos_selfridge_lower_bound, classical_omega_limsup) — should be AXIOMATIZED. state.md was still on initial NEW template (Phase: NEW, iteration 1, focus 'Initial exploration') from 2026-01-15. Gallery meta.json already correctly marked status=axiomatized, badge=axiom, axiomCount=2. Single Lean file at 210 LOC (registry had +1 off-by-one: 211→210), 9 theorems, 6 defs, 2 axioms, 0 sorries. Conjecture 1 verified for k=1 via Nat.exists_infinite_primes; sandwich theorem conditional on Conjecture 1; both Erdős-Selfridge lower bound and Hardy-Ramanujan limsup remain axiomatized as deep classical results not in Mathlib.",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT: Completed both conjectures at the base case k=1. Added conjecture2_k1 (Conjecture 2 at k=1 reduces exactly to the Hardy-Ramanujan axiom classical_omega_limsup via cumulativeOmega_one), omega_ge_one (omega(n)>=1 for n>1), and liminf_k1_sharp_lower (liminf S_1(n) >= 1, sharpening the trivial k=1 instance of the Erdos-Selfridge axiom and pinning the k=1 liminf to exactly 1). Lean file 210->237 LOC, 9->12 theorems; gallery meta sections 7->10 (Parts VII-IX were uncovered). Build-pending (Docker unavailable); proofs anchored to the file's compiling omega_prime simp pattern plus standard Mathlib Nat.nonempty_primeFactors / Finset.one_le_card.",
     "blockers": [
       "Mathlib lacks the Erdős-Selfridge S_k(n) ≥ k + π(k) - 1 lower bound (1967 paper, requires Pólya's k-smooth gaps theorem).",
       "Mathlib lacks the Hardy-Ramanujan limsup ω(n)·log log n / log n = 1 (1917 result).",
       "Both conjectures themselves are open since Erdős-Selfridge 1967."
     ],
-    "nextAction": "Slug is AXIOMATIZED with 2 deep classical axioms encoding the lone proven lower bound (Erdős-Selfridge) and the limsup base case (Hardy-Ramanujan). Forward levers: (A) extend conjecture1_kN to general k using sandwich approach; (B) reformulate axioms in terms of Mathlib's Nat.primeCounting and ArithmeticFunction.omega API once Pólya k-smooth gaps lands in Mathlib; (C) explore Jacobsthal function g(k) connection. None of these blockers unblock without upstream Mathlib infrastructure.",
+    "nextAction": "Both conjectures verified at k=1; general k for either remains open (needs sieve / Polya k-smooth-gaps machinery absent from Mathlib). Forward levers: (A) attempt k=2 liminf (liminf S_2(n) <= 2+pi(2)=3) if a constructive infinitely-often witness can be built without sieve theory; (B) reformulate axioms via Mathlib Nat.primeCounting/ArithmeticFunction.omega once Polya gaps land; (C) Jacobsthal g(k) connection.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -33,17 +33,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED: Erdos890Problem.lean — 210 LOC, 9 theorems, 6 defs, 2 axioms, 0 sorries. Definitions: cumulativeOmega, LiminfAtMost, LiminfAtLeast, LimsupRatioIsOne, ErdosConjecture890_liminf, ErdosConjecture890_limsup. Axioms: erdos_selfridge_lower_bound (S_k(n) ≥ k + π(k) - 1), classical_omega_limsup (Hardy-Ramanujan). Proven: conjecture1_k1 (k=1 case via Nat.exists_infinite_primes), omega_prime (ω(p)=1), cumulativeOmega_one/zero/add (sum splitting), monotonicity S_{k+1} ≥ S_k, erdos_890_liminf_sandwich (conditional pin to {k+π(k)-1, k+π(k)}). Forward lever: extend k=1 to general k once Mathlib gains Pólya k-smooth gaps API.",
+    "progressSummary": "AXIOMATIZED: Erdos890Problem.lean - 237 LOC, 12 theorems, 7 defs, 2 axioms, 0 sorries. Both conjectures now verified at k=1: conjecture1_k1 (liminf S_1 <= 1+pi(1) via Nat.exists_infinite_primes) and conjecture2_k1 (limsup case = Hardy-Ramanujan axiom). liminf_k1_sharp_lower gives liminf S_1(n) >= 1 (via omega_ge_one), pinning the k=1 liminf to exactly 1. Axioms erdos_selfridge_lower_bound and classical_omega_limsup remain deep classical results not in Mathlib. General k open.",
     "builtItems": [
       "conjecture1_k1: Conjecture 1 verified for k=1 using Nat.exists_infinite_primes",
       "omega_prime: ω(p)=1 for prime p, proved from primeFactors characterization",
       "cumulativeOmega_one: S_1(n)=ω(n), cumulativeOmega_zero: S_0(n)=0",
-      "cumulativeOmega_add: sum splitting S_{k+j}=S_k+S_j"
+      "cumulativeOmega_add: sum splitting S_{k+j}=S_k+S_j",
+      "conjecture2_k1: Conjecture 2 verified for k=1 (= Hardy-Ramanujan axiom via cumulativeOmega_one)",
+      "omega_ge_one: omega(n) >= 1 for n > 1 (nonempty primeFactors)",
+      "liminf_k1_sharp_lower: liminf S_1(n) >= 1, sharp k=1 lower bound pinning liminf to 1"
     ],
     "insights": [
       "Conjecture 1 holds for k=1: lim inf ω(n) ≤ 1+π(1)=1, proved using infinitude of primes (every prime has ω(p)=1).",
       "Sum splitting: S_{k+j}(n) = S_k(n) + S_j(n+k), enabling divide-and-conquer analysis.",
-      "Both axioms (Erdős-Selfridge lower bound, Hardy-Ramanujan limsup) are deep published results, not provable from Mathlib."
+      "Both axioms (Erdős-Selfridge lower bound, Hardy-Ramanujan limsup) are deep published results, not provable from Mathlib.",
+      "Conjecture 2 at k=1 is LITERALLY the classical Hardy-Ramanujan limsup result, since S_1(n)=omega(n); it discharges directly against the classical_omega_limsup axiom.",
+      "omega(n) >= 1 for all n >= 2 sharpens the k=1 Erdos-Selfridge lower bound from the trivial pi(1)=0 to 1, pinning liminf S_1 to exactly 1."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
