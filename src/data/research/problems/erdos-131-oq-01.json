@@ -38,7 +38,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added sorry-free structural lemma (one_not_in_large_nondividing) and 3-element constructive example ({2,4,5} is non-dividing, proving F(5)≥3). 6 sorries remain (all deep published results).",
+    "progressSummary": "PROGRESS: Added sorry-free structural lemma (one_not_in_large_nondividing) and 3-element constructive example ({2,4,5} is non-dividing, proving F(5)≥3). Now 0 sorries; 2 axioms (pham_zakharov_upper_bound, csaba_lower_bound) encode the deep published bounds.",
     "builtItems": [
       "exp_three_fourths_gt_two: exp(3/4) > 2 via Taylor sum",
       "log_two_lt: log 2 < 3/4",
@@ -63,7 +63,7 @@
       "Finset.eq_of_subset_of_card_le is the key Mathlib lemma for showing S = erase set from cardinality"
     ],
     "nextSteps": [
-      "6 remaining sorries are deep published results (ELRSS, Pham-Zakharov, Csaba, Straus bounds) - not provable from current Mathlib"
+      "Deep published bounds (ELRSS, Pham-Zakharov, Csaba, Straus) are not provable from current Mathlib; now encoded as 2 axioms (pham_zakharov_upper_bound, csaba_lower_bound) rather than sorries"
     ]
   },
   "tags": [
