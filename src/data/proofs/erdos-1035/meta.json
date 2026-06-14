@@ -55,52 +55,116 @@
   },
   "sections": [
     {
+      "id": "header-imports",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Module docstring for Erdős Problem #1035 (does every graph of minimum degree ≥ d contain the hypercube Q_k as a subgraph for d large enough?). Imports Mathlib graph-theory and tactic modules; opens the namespace.",
+      "mathContext": "Erdős #1035 asks for the threshold minimum degree forcing a hypercube subgraph. The file formalizes Q_n via XOR adjacency and proves its basic structural invariants (regularity, edge count, bipartiteness)."
+    },
+    {
       "id": "hypercube",
       "title": "Hypercube Graph $Q_n$",
-      "startLine": 23,
-      "endLine": 39,
+      "startLine": 26,
+      "endLine": 42,
       "summary": "Defines `hypercubeAdj` via $u \\oplus v = 2^k$ and constructs `hypercubeGraph` as a `SimpleGraph (Fin (2^n))` with symmetry (`Nat.xor_comm`) and irreflexivity proofs.",
       "mathContext": "The XOR characterisation is computationally elegant: `u XOR v` is a power of 2 precisely when $u$ and $v$ differ in exactly one bit. This avoids explicit binary-string representation and yields `DecidableRel` adjacency for free."
     },
     {
-      "id": "degree",
+      "id": "mindegree",
       "title": "Minimum Degree Predicate",
-      "startLine": 40,
-      "endLine": 46,
-      "summary": "Defines `HasMinDegree G d` requiring $|\\{w : G.\\mathrm{Adj}\\, v\\, w\\}| \\geq d$ for every vertex $v$.",
-      "mathContext": "The predicate uses `Finset.filter` over the universal `Finset.univ` on `Fin N` with `DecidableRel G.Adj`. This is the standard Lean 4 approach for computing degrees in finite graphs."
+      "startLine": 43,
+      "endLine": 49,
+      "summary": "Defines `HasMinDegree G d`: every vertex of G has degree ≥ d.",
+      "mathContext": "The minimum-degree hypothesis is the driving quantity of Erdős #1035."
     },
     {
-      "id": "containment",
+      "id": "subgraph",
       "title": "Subgraph Containment",
-      "startLine": 47,
-      "endLine": 54,
-      "summary": "Defines `ContainsAsSubgraph G H` via an injective map $f: \\mathrm{Fin}\\,M \\to \\mathrm{Fin}\\,N$ preserving adjacency.",
-      "mathContext": "This is non-induced subgraph containment: $G$ may have extra edges between image vertices. The injectivity requirement (`Function.Injective f`) prevents vertex collisions. For hypercubes, non-induced containment is the natural notion."
+      "startLine": 50,
+      "endLine": 57,
+      "summary": "Defines `ContainsAsSubgraph G H`: an injective adjacency-preserving embedding of H into G.",
+      "mathContext": "The conjecture's conclusion is that G contains Q_k as a subgraph in this sense."
     },
     {
-      "id": "conjecture",
+      "id": "mainconj",
       "title": "Main Conjecture: `ErdosProblem1035`",
-      "startLine": 55,
-      "endLine": 64,
-      "summary": "States $\\exists\\, c > 0$ such that $\\forall\\, n \\geq 1$, any graph on $2^n$ vertices with $\\delta \\geq \\lceil (1-c) \\cdot 2^n \\rceil$ contains $Q_n$.",
-      "mathContext": "The `Nat.ceil` handles rounding of the real-valued threshold $(1-c) \\cdot 2^n$ to a natural number. The universal quantifier over $n$ makes this a uniform statement — a single constant $c$ must work for all dimensions simultaneously."
+      "startLine": 58,
+      "endLine": 67,
+      "summary": "States `ErdosProblem1035` as a Prop: for every k there is a minimum-degree threshold forcing a Q_k subgraph.",
+      "mathContext": "The headline open problem, stated as a Prop (not axiomatized)."
     },
     {
-      "id": "alternatives",
+      "id": "alt",
       "title": "Alternative Formulations",
-      "startLine": 65,
-      "endLine": 84,
-      "summary": "Two fallback questions: (1) `ErdosProblem1035Alt1` — find smallest $m > 2^n$ for non-spanning containment; (2) `ErdosProblem1035Alt2` — find exact threshold sequence $u_n > 0$.",
-      "mathContext": "Alternative 1 relaxes spanning to non-spanning containment (typically easier). Alternative 2 seeks the precise extremal function $u_n$; if $u_n = c \\cdot 2^n$ for constant $c$, this recovers the main conjecture."
+      "startLine": 68,
+      "endLine": 87,
+      "summary": "Defines two alternative formulations `ErdosProblem1035_alt1` (linear threshold c·2^k) and `ErdosProblem1035_alt2`.",
+      "mathContext": "Equivalent phrasings used to probe the threshold's growth rate."
     },
     {
       "id": "properties",
       "title": "Basic Properties",
-      "startLine": 85,
-      "endLine": 99,
+      "startLine": 88,
+      "endLine": 115,
       "summary": "Proves `hypercube_self_subgraph` ($Q_n \\subseteq Q_n$ via identity), `complete_contains_hypercube` ($K_{2^n} \\supseteq Q_n$), and `hypercube_one_is_edge` ($Q_1 \\cong K_2$).",
       "mathContext": "These sanity checks validate the definitions. The identity embedding is trivially injective and adjacency-preserving. The complete graph case shows the conjecture holds for $\\delta = 2^n - 1$. The $Q_1$ characterisation establishes the base case."
+    },
+    {
+      "id": "decidability",
+      "title": "Decidability",
+      "startLine": 116,
+      "endLine": 127,
+      "summary": "Provides `DecidableRel` instances for hypercube adjacency (`hypercubeAdjDecidable`, `hypercubeGraphDecidableAdj`), enabling `decide`-based verification of small Q_n facts.",
+      "mathContext": "The XOR-is-a-power-of-2 adjacency is decidable, so concrete small-n regularity and edge-count claims reduce to finite computation."
+    },
+    {
+      "id": "structural-small",
+      "title": "Q_n Structural Properties (small n)",
+      "startLine": 128,
+      "endLine": 174,
+      "summary": "Computes concrete invariants for small hypercubes by `decide`: `hypercube_two_edges`, the regularity facts `hypercube_one_regular`/`hypercube_two_regular`/`hypercube_three_regular`, and the edge counts `hypercube_two_edge_count` (8) and `hypercube_three_edge_count` (24).",
+      "mathContext": "These small cases anchor the general theorems: Q_2 is 2-regular with 4 undirected edges, Q_3 is 3-regular with 12 undirected edges, matching n·2^(n-1)."
+    },
+    {
+      "id": "adjacency-characterization",
+      "title": "Adjacency Characterization",
+      "startLine": 175,
+      "endLine": 192,
+      "summary": "Proves `hypercube_adj_iff` (adjacency ⟺ XOR is a power of two) and the helper `xor_pow2_ne_self` (v ⊕ 2^k ≠ v), the irreflexivity fact underpinning the bit-flip neighbor maps.",
+      "mathContext": "Reformulating adjacency as a single-bit difference is what makes the general-n regularity bijection (flip bit k) well-defined."
+    },
+    {
+      "id": "general-regularity",
+      "title": "General Q_n Regularity (proved for all n)",
+      "startLine": 193,
+      "endLine": 264,
+      "summary": "Proves Q_n is n-regular for all n. The bit-flip map `hypercubeFlip` (with `hypercube_flip_lt`) sends (v, k) to a neighbor (`hypercube_flip_adj`), every neighbor arises this way (`hypercube_adj_of_flip`), and the map is injective in k (`hypercube_flip_injective`), giving `hypercube_n_regular_general`: each vertex has exactly n neighbors.",
+      "mathContext": "Regularity follows from a bijection between the n coordinate directions and the neighbors of any vertex: flipping bit k (0 ≤ k < n) enumerates exactly the n vertices at Hamming distance 1."
+    },
+    {
+      "id": "general-edge-count",
+      "title": "General Q_n Edge Count",
+      "startLine": 265,
+      "endLine": 300,
+      "summary": "Proves `hypercube_n_edge_count`: Q_n has n·2^n directed edges (n·2^(n-1) undirected), via a bijection between directed edges and pairs (v, k) ∈ Fin(2^n) × Fin n sending (v,k) ↦ (v, v ⊕ 2^k). Generalizes the n=2 and n=3 computations.",
+      "mathContext": "Counting directed edges as (vertex, flip-direction) pairs gives |E⃗| = 2^n · n directly from n-regularity, recovering the standard |E| = n·2^(n-1) undirected edge count."
+    },
+    {
+      "id": "handshaking",
+      "title": "Handshaking Lemma for Q_n",
+      "startLine": 301,
+      "endLine": 317,
+      "summary": "Proves `hypercube_handshaking`: the sum of vertex degrees in Q_n equals twice the (undirected) edge count, instantiating the handshaking lemma for the hypercube from n-regularity and the edge count.",
+      "mathContext": "∑ deg = n·2^n = 2·(n·2^(n-1)) = 2|E|, the handshaking identity specialized to the n-regular Q_n."
+    },
+    {
+      "id": "bipartiteness",
+      "title": "Bipartiteness of Q_n",
+      "startLine": 318,
+      "endLine": 379,
+      "summary": "Proves `hypercube_bipartite`: Q_n is bipartite. Defines `hypercubeBitCount`/`hypercubeColor` (the popcount-parity 2-coloring) and the parity lemma `hypercubeBitCount_xor_pow_parity` (flipping one bit always flips the parity), so adjacent vertices receive different colors.",
+      "mathContext": "The popcount-parity coloring is a proper 2-coloring: adjacency flips exactly one bit, which always toggles the parity of the set-bit count, so no edge is monochromatic — Q_n is bipartite."
     }
   ],
   "conclusion": {
