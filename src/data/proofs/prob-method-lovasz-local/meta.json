@@ -132,29 +132,37 @@
       "id": "symmetric-specialization",
       "title": "Part VI: Symmetric Case Specialization",
       "startLine": 132,
-      "endLine": 229,
+      "endLine": 172,
       "summary": "Symmetric case with uniform x = 1/(d+1): proves x is in [0,1), the avoidance product (d/(d+1))^n is positive, the uniform product equals (d/(d+1))^n, and the Moser-Tardos bound simplifies to n/d.",
       "mathContext": "Uniform $x_i = \\frac{1}{d+1}$: product $= (\\frac{d}{d+1})^n > 0$, expected resampling $= \\frac{n}{d}$"
     },
     {
+      "id": "lll-threshold-dependency-graph",
+      "title": "Part VII: LLL Threshold and Dependency Graph",
+      "startLine": 173,
+      "endLine": 226,
+      "summary": "Defines the LLL threshold lllThreshold d = d^d/(d+1)^(d+1) and evaluates lllThreshold_one = 1/4, lllThreshold_two = 4/27, lllThreshold_three = 27/256. Proves lllThreshold_pos (positivity) and lllThreshold_le_quarter_small (T(d) ≤ 1/4 for d ≤ 3). Defines the IsValidDepGraph structure and HasMaxDegree predicate for dependency graphs, then proves symmetric_lll_avoidance: bounded max degree d with probabilities ≤ T(d) yields a positive avoidance product.",
+      "mathContext": "$T(d) = \\frac{d^d}{(d+1)^{d+1}}$; $T(1) = 1/4$, $T(2) = 4/27$, $T(3) = 27/256$. Dependency graph with max degree $d$ and $\\Pr[A_i] \\leq T(d)$ permits simultaneous avoidance."
+    },
+    {
       "id": "bernoulli-threshold",
-      "title": "Bernoulli's Inequality and Universal Threshold Bound",
-      "startLine": 228,
-      "endLine": 294,
+      "title": "Part VIII: Bernoulli's Inequality and Universal Threshold Bound",
+      "startLine": 227,
+      "endLine": 295,
       "summary": "Proves Bernoulli's inequality $(1+x)^n \\geq 1+nx$ by induction, derives $(1+1/d)^d \\geq 2$, $(d+1)^d \\geq 2d^d$, and the universal bound $T(d) \\leq 1/4$ for the LLL threshold. The chain: Bernoulli $\\Rightarrow$ $(d+1)^d \\geq 2d^d$, $(d+1) \\geq 2$ $\\Rightarrow$ $(d+1)^{d+1} \\geq 4d^d$ $\\Rightarrow$ $T(d) = d^d/(d+1)^{d+1} \\leq 1/4$.",
       "mathContext": "The LLL threshold $T(d) = \\frac{d^d}{(d+1)^{d+1}}$ satisfies $T(d) \\leq 1/4$ for all $d \\geq 1$. This is the classical 'ep \\leq 1/4' condition used in textbook presentations of the symmetric LLL."
     },
     {
       "id": "formal-connections",
-      "title": "Formal Connections: Symmetric from General LLL",
+      "title": "Part IX: Formal Connections — Symmetric from General LLL",
       "startLine": 296,
-      "endLine": 306,
+      "endLine": 307,
       "summary": "Proves `symmetric_from_general`: the symmetric LLL ($x_i = 1/(d+1)$ for all $i$) is a corollary of the general LLL (`general_lll`), formally connecting Parts II and VI.",
       "mathContext": "Setting $x_i = 1/(d+1)$ in the general LLL product $\\prod_j (1 - x_j)$ gives $(d/(d+1))^{|\\Gamma(i)|} \\geq (d/(d+1))^d > 0$, recovering the symmetric bound."
     },
     {
       "id": "threshold-bridge",
-      "title": "Threshold-to-LLL Bridge",
+      "title": "Part X: Threshold-to-LLL Bridge",
       "startLine": 308,
       "endLine": 347,
       "summary": "Proves `lllThreshold_eq_product` ($T(d) = \\frac{1}{d+1} (\\frac{d}{d+1})^d$, the product factorization) and `threshold_satisfies_lll` ($\\Pr[A_i] \\leq T(d)$ with max degree $d$ implies the general LLL condition). Uses `Finset.prod_const` and `pow_le_pow_of_le_one` for the degree bound.",
@@ -162,8 +170,8 @@
     },
     {
       "id": "complete-theorem",
-      "title": "Complete Symmetric LLL",
-      "startLine": 349,
+      "title": "Part X: Complete Symmetric LLL (Capstone)",
+      "startLine": 348,
       "endLine": 364,
       "summary": "Proves `symmetric_lll_complete`: given $\\Pr[A_i] \\leq T(d)$ and dependency degree $\\leq d$, both the general LLL condition and the avoidance positivity hold. Combines `threshold_satisfies_lll` and `symmetric_lll_avoidance`.",
       "mathContext": "The conclusion: $\\Pr[\\cap_i \\bar{A}_i] \\geq \\prod_i (1 - x_i) = (d/(d+1))^n > 0$, so a satisfying assignment exists. This is the complete formal statement of the symmetric Lovász Local Lemma."
