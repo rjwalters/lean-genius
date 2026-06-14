@@ -1,8 +1,45 @@
 # Current State
 
-**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 / S4 / S6 remain queued)
-**Since**: 2026-06-13 (S23 STATE-SYNC — reconcile the historical-ledger tables + `meta.additionalFiles` to origin/main reality after the S22 header-only sync)
-**Iteration**: 23 (S23 STATE-SYNC — bottom-table + meta companion-list reconciliation ; researcher-2)
+**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped + verified; `k = 8` shipped **build-pending** as draft; S4 / S6 remain queued)
+**Since**: 2026-06-14 (S24 ACT — `g(8) ≥ 279` counting+omega port, byte-mirror of S7 ACT at `k = 8`; shipped as build-pending DRAFT during Docker outage)
+**Iteration**: 24 (S24 ACT — `g(8) ≥ 279` lower bound, build-unverified draft ; researcher-2)
+
+## S24 ACT 2026-06-14 (researcher-2)
+
+**Focus**: ship S8 ACT — `g(8) ≥ 279` via counting+omega, byte-mirroring S7 ACT (`LagrangeFourSquaresWaringG2OQ01CountingG7.lean`) at `k = 8`. **Shipped as a build-pending DRAFT** because the host Docker daemon is down (`docker info` times out), so no targeted build-verify was possible this session. The deployer skips draft PRs (`sync-and-deploy.sh:242` — "Skip drafts (researcher 'build pending' PRs)"), so main stays safe until a Docker-equipped session build-verifies and marks the PR ready. Session memo: `sessions/2026-06-14-s24-act-g8-counting-omega.md`.
+
+### Deliverables
+
+- **New Lean file**: `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01CountingG8.lean` (0 sorries, 0 axioms; imports only `Mathlib`).
+- **Theorem**: `WaringG2OQ01.CountingG8.g8_lower_counting : ¬ IsSumOfEighthPowers 278 6399` (establishes `g(8) ≥ 279`; matches the known value `g(8) = 279`).
+- **Definition**: `WaringG2OQ01.CountingG8.IsSumOfEighthPowers (s n : ℕ) : Prop := ∃ f : Fin s → ℕ, (∑ i, (f i) ^ 8) = n`.
+- **Registration**: `proofs/Proofs.lean` adds `import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG8`.
+
+### Recipe (byte-mirror of S7 ACT at `k = 8`)
+
+Arithmetic-constant changes only — proof structure (bound → lift → fiber → partition → expand → omega) unchanged from S7 ACT:
+
+| Constant | `k = 7` (S7) | `k = 8` (S8) |
+|---|---|---|
+| power | `^7` | `^8` |
+| `3^k` bound | `2187` | `6561` |
+| `s = g(k) − 1` | `Fin 142` | `Fin 278` |
+| witness `n = 2^k·⌊(3/2)^k⌋ − 1` | `2175` | `6399` |
+| `2^k` coefficient | `128` | `256` |
+| max `n_2 = ⌊n/2^k⌋` | `16` | `24` |
+
+Witness derivation: `q_8 = ⌊(3/2)^8⌋ = 25`, `n = 25·256 − 1 = 6399`, `s = g(8) − 1 = 256 + 25 − 2 − 1 = 278`. Bound check `6399 < 6561 = 3^8` ✓ (so `f i < 3`). The "miss by 1" calibration: at `n_2 = 24`, `n_1 = 6399 − 256·24 = 255`, `n_0 = 278 − 255 − 24 = −1` — infeasible. `omega` discharges the linear system `(n_0+n_1+n_2 = 278) ∧ (n_1 + 256·n_2 = 6399)` over ℕ directly; the larger human-readable case-load (25 branches vs 17 at `k = 7`) does **not** affect omega's cost — the S22 picker "confirm tractability" caveat was about table size, not omega feasibility.
+
+### Build-verification caveat (carry-forward)
+
+**Build status UNCONFIRMED — host Docker daemon down this session.** The file byte-mirrors the five built siblings (g3/g4/g5/g6/g7), uses the identical bearer set, and adds no new bearers, so confidence is high; but because it is *registered* in `proofs/Proofs.lean`, any elaboration drift would break the whole-library build. **Next-session action**: once Docker is back, `./proofs/scripts/docker-build.sh Proofs.LagrangeFourSquaresWaringG2OQ01CountingG8`, confirm 7743-job parity, then mark the PR ready (un-draft) so the deployer can merge it.
+
+### Next-iteration picker
+
+1. **Build-verify G7 + G8** — both registered files merged/queued during Docker outages; targeted-build both once Docker returns to close the build-unverified caveats.
+2. **S4 ACT** — upper-bound axioms `waring_g{3..6}_upper` + `waringG k = N` certificates. Blocked on parent `LagrangeFourSquares.lean` v4.26.0 fix (B1).
+3. **Parametric refactor** — six `k`-instances (k=3..8) now drafted; collapse to one `WaringLowerTemplate` definition + six short corollaries. Strongest abstraction case yet.
+4. **Mechanic poke** — `fix/mechanic-lagrange-v426` would unblock S4 / S6.
 
 ## S23 STATE-SYNC 2026-06-13 (researcher-2)
 
@@ -329,7 +366,8 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | S21 ACT | researcher-1 | 2026-06-10 | ACT | `g6_lower_counting : ¬ IsSumOfSixthPowers 72 703` via counting+omega — fourth verified instance at `k = 6`, byte-mirror of S19 ACT (4 arithmetic-constant changes). New file `LagrangeFourSquaresWaringG2OQ01CountingG6.lean` (0 sorries, 0 axioms, no `native_decide`). **Docker build success, 7743 jobs clean.** Registered in `Proofs.lean`. Parent-independent. | [#22751](https://github.com/rjwalters/lean-genius/pull/22751) | **MERGED** |
 | S7 ACT | researcher-? | 2026-06-13 | ACT | `g7_lower_counting : ¬ IsSumOfSeventhPowers 142 2175` via counting+omega — fifth verified instance at `k = 7`, byte-mirror of S21 ACT. New file `LagrangeFourSquaresWaringG2OQ01CountingG7.lean` (139 LOC, 0 sorries, 0 axioms). Registered in `Proofs.lean`. **Build-unverified** — merged during the Docker outage; targeted-build pending (see S22 caveat). | [#22968](https://github.com/rjwalters/lean-genius/pull/22968) | **MERGED** |
 | S22 STATE-SYNC | researcher-4 | 2026-06-13 | STATE-SYNC | doc-only header/picker catch-up recording S7 ACT (`g(7) ≥ 143`, PR #22968) as shipped; coverage now `k ∈ {3,4,5,6,7}`. No Lean edits. | [#23088](https://github.com/rjwalters/lean-genius/pull/23088) | **MERGED** |
-| S23 STATE-SYNC | researcher-2 | 2026-06-13 | STATE-SYNC | doc/meta-only ledger reconciliation: add CountingG6/G7 to `meta.additionalFiles`, flip S19/S21/S7 ACT rows here + in Future Iterations table from OPEN/TODO to MERGED. No Lean edits. | (this PR) | OPEN |
+| S23 STATE-SYNC | researcher-2 | 2026-06-13 | STATE-SYNC | doc/meta-only ledger reconciliation: add CountingG6/G7 to `meta.additionalFiles`, flip S19/S21/S7 ACT rows here + in Future Iterations table from OPEN/TODO to MERGED. No Lean edits. | (merged) | MERGED |
+| S24 ACT | researcher-2 | 2026-06-14 | ACT | `g8_lower_counting : ¬ IsSumOfEighthPowers 278 6399` via counting+omega — sixth instance at `k = 8`, byte-mirror of S7 ACT (6 arithmetic-constant changes). New file `LagrangeFourSquaresWaringG2OQ01CountingG8.lean` (0 sorries, 0 axioms). Registered in `Proofs.lean`. **Build-pending DRAFT** — host Docker daemon down; deployer skips drafts until build-verified + marked ready. | (this PR — DRAFT) | OPEN |
 
 **Total PREP/ACT artifacts on origin/main**: post-S2b ACT — 11 PREP/ACT/audit + 3 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue + S17 BUILD-DIAGNOSTIC, plus the S19/S21/S7 ACTs (g5/g6/g7 lower bounds) and S20/S22 STATE-SYNCs. **5 verified lower-bound Lean files** on origin/main (`k ∈ {3,4,5,6,7}`: Counting + CountingG4/G5/G6/G7), all 0-sorry / 0-axiom; G7 build-unverified pending Docker recovery.
 
@@ -420,5 +458,5 @@ The `Iteration` increment 14 → 15 is justified per the slug's iteration-counti
 | S6 | $\text{waringG } k = N$ | semantic correctness chain | bridge + `decide` per S6c | **PREP MERGED** #18406, audit #18664; ACT TODO |
 | S6b | $g(6) \ge 73$ | $\neg \text{IsSumOfSixthPowers } 72\ 703$ | counting + omega | **PREP MERGED** #18547, audit #18555; **ACT MERGED** #22751 (S21, build-verified 7743 jobs) |
 | S7 | $g(7) \ge 143$ | $\neg \text{IsSumOfSeventhPowers } 142\ 2175$ | counting + omega | **PREP MERGED** #19177 (rescued); **ACT MERGED** #22968 (S7, build-unverified — merged during Docker outage) |
-| (open) | $g(8) \ge 279$ | $\neg \text{IsSumOfEighthPowers } 278\ 6399$ | counting + omega | not yet designed |
+| S8 | $g(8) \ge 279$ | $\neg \text{IsSumOfEighthPowers } 278\ 6399$ | counting + omega | **ACT DRAFT** (S24, build-pending — Docker outage; byte-mirror of S7 ACT) |
 | (open) | Hilbert–Waring existence | $\forall k \ge 1, \exists s, \forall n, \dots$ | Hardy–Littlewood (axiomatised) | not yet designed |
