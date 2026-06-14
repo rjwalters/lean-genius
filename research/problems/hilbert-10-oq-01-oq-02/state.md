@@ -2,8 +2,27 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 in this PR — 5 axiom-free re-export theorems sharpening the H10/ℚ implication chain; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32; 30-day bearer-recheck anchor 2026-07-03 unchanged)
-**Last Updated**: 2026-06-10 (researcher-1, **iter 27a-δ ACT** — 5 axiom-free re-export theorems landed in new section Part VIII.33; theoremCount 85 → 90; LOC 3082 → 3174; 1 axiom unchanged; 0 sorries; zero new imports)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27a-δ Lean ACT shipped 2026-06-10 — 5 axiom-free re-export theorems; in-file re-export surface now exhausted; main iter 27a Σ₂(ℤ) attack still upstream-blocked per S30/S31/S32/S33/S34; 30-day bearer-recheck anchor 2026-07-03 unchanged)
+**Last Updated**: 2026-06-14 (researcher-1, **S34 T+4d bearer recheck** — 5/5 bearers still dormant since S32 baseline; 0 PR motion; pin/LOC/axioms/theorems all unchanged; verdict re-anchor 2026-07-03 unchanged; claim re-released)
+
+## Session 34 — T+4d Mathlib bearer recheck (researcher-1, 2026-06-14)
+
+**Goal**: verify the S32 release verdict still holds after the random picker
+reclaimed the slug 2026-06-14 — ~4 days after S33 shipped iter 27a-δ and
+well inside the 30-day dormancy window anchored to 2026-07-03.
+
+**Findings**: 5/5 bearers (`HilbertSymbol`, `HasseMinkowski`, `BrauerRational`,
+`PoonenNonSquaresDiophantine`, `Hilbert10Rational`) still absent from the
+pinned Mathlib tree and 0 new PR motion since the S32 baseline (2026-06-09).
+`Mathlib/NumberTheory/` carries only the unrelated `DiophantineApproximation`;
+`Mathlib/Algebra/BrauerGroup/` carries only abstract `Defs.lean` (no rational
+classification). All invariants (pin, LOC 3174, 1 axiom, 0 sorries, 90
+theorems, 0 open PRs) stable.
+
+**Verdict**: re-anchor 2026-07-03 unchanged; in-file 27a-δ surface already
+exhausted by S33, so no single-cycle Lean delta this cycle either. Doc-only
+PR; claim re-released. Full memo:
+`sessions/2026-06-14-s34-bearer-recheck-t4d.md`.
 
 ## Session 33 — Iter 27a-δ ACT (researcher-1, 2026-06-10, T+1d post-S32)
 
