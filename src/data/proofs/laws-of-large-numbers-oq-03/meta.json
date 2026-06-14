@@ -81,59 +81,99 @@
   "sections": [
     {
       "id": "measure-preserving",
-      "title": "Measure-Preserving Transformations",
-      "startLine": 50,
-      "endLine": 70,
-      "summary": "Introduction of measure-preserving maps using Mathlib's MeasurePreserving, with proof that iterates are measure-preserving.",
+      "title": "Part 1: Measure-Preserving Transformations",
+      "startLine": 51,
+      "endLine": 75,
+      "summary": "Measure-preserving maps via Mathlib's MeasurePreserving, with iterate_measure_preserving proving T^n stays measure-preserving.",
       "mathContext": "A measure-preserving transformation T satisfies μ(T⁻¹A) = μ(A). The iterates T^n inherit this property by induction."
     },
     {
       "id": "ergodicity",
-      "title": "Ergodicity",
-      "startLine": 75,
-      "endLine": 85,
-      "summary": "Definition of ergodicity using Mathlib's Ergodic class.",
+      "title": "Part 2: Ergodicity",
+      "startLine": 76,
+      "endLine": 88,
+      "summary": "Ergodicity via Mathlib's Ergodic class: invariant sets have measure 0 or 1.",
       "mathContext": "Ergodicity means the only T-invariant sets have measure 0 or 1. This forces time averages to converge to a constant (the space average)."
     },
     {
       "id": "birkhoff-averages",
-      "title": "Birkhoff Sums and Averages",
-      "startLine": 90,
-      "endLine": 125,
-      "summary": "Definitions of birkhoffSum and birkhoffAverage with the cocycle relation.",
-      "mathContext": "The Birkhoff sum S_n f(ω) = Σ f(T^i ω) satisfies the cocycle property S_{n+m} = S_n + S_m ∘ T^n, which is fundamental for the proof of Birkhoff's theorem."
+      "title": "Part 3: Ergodic Averages (Birkhoff Sums)",
+      "startLine": 89,
+      "endLine": 121,
+      "summary": "Definitions birkhoffSum and birkhoffAverage with birkhoffAverage_eq_sum_div and the cocycle relation birkhoffSum_add.",
+      "mathContext": "The Birkhoff sum S_n f(ω) = Σ f(T^i ω) satisfies the cocycle property S_{n+m} = S_n + S_m ∘ T^n, fundamental for Birkhoff's theorem."
     },
     {
       "id": "birkhoff-theorem",
-      "title": "Birkhoff's Ergodic Theorem",
-      "startLine": 130,
-      "endLine": 170,
-      "summary": "Statement of Birkhoff's theorem in both general and ergodic forms.",
+      "title": "Part 4: The Birkhoff Ergodic Theorem",
+      "startLine": 122,
+      "endLine": 168,
+      "summary": "Birkhoff's pointwise ergodic theorem stated as axioms in both the general (limit E[f|I]) and ergodic (limit E[f]) forms.",
       "mathContext": "The general form gives almost sure convergence to E[f|I] (conditional on invariants). The ergodic form simplifies to E[f] when T is ergodic."
     },
     {
       "id": "slln-connection",
-      "title": "Connection to Classical SLLN",
-      "startLine": 175,
-      "endLine": 200,
-      "summary": "Explanation of how the classical SLLN is a special case of Birkhoff's theorem.",
+      "title": "Part 5: Connection to Classical SLLN",
+      "startLine": 169,
+      "endLine": 193,
+      "summary": "Documents how the classical SLLN is the shift-on-product-space special case of Birkhoff's theorem (slln_from_birkhoff_sketch).",
       "mathContext": "For i.i.d. X_i, define T = left shift on ℝ^ℕ and f = first coordinate projection. Then f(T^i ω) = X_{i+1}(ω), and Birkhoff gives the SLLN."
     },
     {
+      "id": "maximal-ergodic-lemma",
+      "title": "Part 6: Maximal Ergodic Lemma (Key Tool)",
+      "startLine": 194,
+      "endLine": 212,
+      "summary": "Hopf's maximal ergodic lemma (axiom): the key technical input to Birkhoff's theorem.",
+      "mathContext": "For f* = sup_n S_n f / n, ∫_{f*>0} f dμ ≥ 0. Proved via the sunrise/telescoping lemma; the central tool behind the pointwise ergodic theorem."
+    },
+    {
+      "id": "vonneumann-mean-ergodic",
+      "title": "Part 7: Von Neumann's Mean Ergodic Theorem (L² version)",
+      "startLine": 213,
+      "endLine": 233,
+      "summary": "Von Neumann's mean ergodic theorem (axiom): L² convergence of ergodic averages to the projection onto T-invariant functions.",
+      "mathContext": "For f ∈ L²(μ), the averages (1/n)Σ f∘T^i converge in L² norm to the invariant projection. Weaker than Birkhoff (L² vs a.s.) but proved first (1932)."
+    },
+    {
       "id": "mixing",
-      "title": "Mixing and Rates of Convergence",
-      "startLine": 225,
-      "endLine": 255,
-      "summary": "Definition of strong mixing with examples of irrational rotation and doubling map.",
-      "mathContext": "Mixing means μ(A ∩ T^{-n}B) → μ(A)μ(B). It is strictly stronger than ergodicity and gives faster convergence rates."
+      "title": "Part 8: Mixing and Rates of Convergence",
+      "startLine": 234,
+      "endLine": 283,
+      "summary": "IsMixing definition and the proved theorem mixing_implies_ergodic (full Mathlib proof, no sorry).",
+      "mathContext": "Mixing means μ(A ∩ T^{-n}B) → μ(A)μ(B), strictly stronger than ergodicity; mixing_implies_ergodic is proved via the invariant-set fixed point μ(A)=μ(A)²."
+    },
+    {
+      "id": "examples",
+      "title": "Part 9: Examples of Ergodic Systems",
+      "startLine": 284,
+      "endLine": 297,
+      "summary": "Concrete systems: irrationalRotation (ergodic, not mixing) and doublingMap (mixing).",
+      "mathContext": "Irrational rotation T(x)=x+α mod 1 is ergodic iff α irrational (uniquely ergodic, not mixing); the doubling map T(x)=2x mod 1 is mixing."
+    },
+    {
+      "id": "convergence-hierarchy",
+      "title": "Part 10: Hierarchy of Convergence Modes",
+      "startLine": 298,
+      "endLine": 329,
+      "summary": "Documentation of the LLN generalization chain: i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary ⊂ general dependent, with the corresponding theorems and tools.",
+      "mathContext": "Classical SLLN (i.i.d.) ⊂ Birkhoff ergodic (stationary+ergodic) ⊂ general Birkhoff (E[f|I]) ⊂ Von Neumann (L²); each relaxes the dependence assumption."
     },
     {
       "id": "algebraic-properties",
-      "title": "Proved Algebraic Properties",
-      "startLine": 280,
-      "endLine": 340,
-      "summary": "Linearity, scaling, constant, and telescoping properties of Birkhoff averages.",
+      "title": "Part 11: Proved Results",
+      "startLine": 330,
+      "endLine": 363,
+      "summary": "Linearity (birkhoffAverage_add), scaling (birkhoffAverage_smul), constant (birkhoffAverage_const), and telescoping (birkhoffSum_shift) properties of Birkhoff averages.",
       "mathContext": "These are the concrete algebraic identities that make Birkhoff averages computationally useful."
+    },
+    {
+      "id": "summary",
+      "title": "Part 12: Summary",
+      "startLine": 364,
+      "endLine": 404,
+      "summary": "Tabulated recap of the 9 proved results, 4 deep-theorem axioms (Birkhoff general/ergodic, maximal ergodic lemma, Von Neumann), and the SLLN↔ergodic-theory contribution, plus #check exports.",
+      "mathContext": "Establishes the SLLN-ergodic theory connection: dependent random variables handled via measure-preserving dynamics over the i.i.d. ⊂ mixing ⊂ ergodic ⊂ stationary hierarchy."
     }
   ],
   "crossReferences": [
