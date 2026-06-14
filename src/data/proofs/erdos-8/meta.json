@@ -80,66 +80,66 @@
     {
       "id": "covering-defs",
       "title": "Covering System Definitions",
-      "summary": "CongruenceClass, CoveringSystem, moduli, hasDistinctModuli",
+      "summary": "Defines CongruenceClass (residue mod modulus ≥ 2), CoveringSystem (a list of classes covering ℤ, with nonempty/covers fields), and the derived moduli finset and hasDistinctModuli predicate.",
       "startLine": 34,
       "endLine": 60,
-      "mathContext": "Mathematical content: CongruenceClass, CoveringSystem, moduli, hasDistinctModuli"
+      "mathContext": "A covering system is a finite set of congruence classes $a_i \\pmod{m_i}$ whose union is all of $\\mathbb{Z}$; classically the moduli are distinct."
     },
     {
       "id": "colorings",
       "title": "Colorings",
-      "summary": "Coloring type, IsMonochromatic, hasMonochromaticModuli",
+      "summary": "Defines the Coloring type (a function ℕ → Fin k), IsMonochromatic, and hasMonochromaticModuli — when all moduli of a covering system receive the same color.",
       "startLine": 61,
       "endLine": 78,
-      "mathContext": "Mathematical content: Coloring type, IsMonochromatic, hasMonochromaticModuli"
+      "mathContext": "A $k$-coloring assigns one of $k$ colors to each modulus; the conjecture concerns whether a monochromatic covering system always exists."
     },
     {
       "id": "conjecture",
-      "title": "Original Conjecture",
-      "summary": "Erdős-Graham conjecture and its negation",
+      "title": "The Original Conjecture (DISPROVED)",
+      "summary": "States the Erdős-Graham conjecture (erdos_graham_conjecture: every finite coloring admits a distinct-moduli covering system with monochromatic moduli) and its negation erdos_8_disproved.",
       "startLine": 79,
-      "endLine": 96,
-      "mathContext": "Mathematical content: Erdős-Graham conjecture and its negation"
+      "endLine": 100,
+      "mathContext": "Conjectured TRUE by Erdős-Graham; shown FALSE by Hough (2015). The distinct-moduli hypothesis is essential (else {0,1 mod 2} is trivially monochromatic)."
     },
     {
       "id": "hough",
-      "title": "Hough's Minimum Modulus",
-      "summary": "The key theorem: minimum modulus ≤ 616,000",
-      "startLine": 97,
-      "endLine": 123,
-      "mathContext": "The key theorem: minimum modulus $\\leq$ 616,000"
+      "title": "Hough's Minimum Modulus Theorem",
+      "summary": "Defines CoveringSystem.minModulus, states the axiom hough_minimum_modulus (every distinct-moduli covering system has minimum modulus ≤ 616,000), and derives balister_improved_bound from it.",
+      "startLine": 101,
+      "endLine": 129,
+      "mathContext": "Hough (2015): $\\min_i m_i \\leq 616000$ for any covering system with distinct moduli — the key structural obstruction."
     },
     {
       "id": "counterexample",
-      "title": "Counterexample Construction",
-      "summary": "Hough's coloring and resolution of Problem 8",
-      "startLine": 124,
-      "endLine": 155,
-      "mathContext": "Mathematical content: Hough's coloring and resolution of Problem 8"
+      "title": "The Counterexample Construction",
+      "summary": "Describes Hough's coloring (each n < 10^18 gets a unique color, the rest share one) via hough_counterexample_coloring_exists, and proves erdos_8_resolution and erdos_8_false from bottleneck_counterexample + hough_minimum_modulus.",
+      "startLine": 130,
+      "endLine": 166,
+      "mathContext": "Coloring small numbers distinctly forces any covering system's mandatory small modulus to clash with another modulus's color, breaking monochromaticity."
     },
     {
       "id": "density",
       "title": "Density Version",
-      "summary": "Harmonic sum condition also disproved",
-      "startLine": 156,
-      "endLine": 181,
-      "mathContext": "Mathematical content: Harmonic sum condition also disproved"
+      "summary": "Defines harmonicSumTail, HasLogDensityTail, and ContainsCoveringModuli, then states the disproved density_conjecture and the axiom density_conjecture_false: logarithmic tail density does not force containing covering moduli.",
+      "startLine": 167,
+      "endLine": 192,
+      "mathContext": "Even sets with $\\sum_{a>N} 1/a \\geq c\\log N$ need not contain the moduli of a covering system — also disproved by Hough (2015)."
     },
     {
       "id": "insight",
-      "title": "Why It Works",
-      "summary": "Explanation of the bottleneck argument",
-      "startLine": 182,
-      "endLine": 207,
-      "mathContext": "Mathematical content: Explanation of the bottleneck argument"
+      "title": "Why the Counterexample Works",
+      "summary": "Explains the bottleneck and proves the supporting theorems: single_class_not_covering (a modulus ≥ 2 misses an integer), covering_distinct_has_ge_two_classes, covering_distinct_moduli_card_ge_two, minModulus_mem, and the central bottleneck_counterexample (a pigeonhole coloring with no monochromatic covering — formerly an axiom, now PROVED).",
+      "startLine": 193,
+      "endLine": 302,
+      "mathContext": "Color each $n \\leq 616000$ uniquely and all larger $n$ with color 0; the mandatory small modulus $m_1 \\leq 616000$ then differs in color from any second distinct modulus."
     },
     {
       "id": "summary",
       "title": "Summary",
-      "summary": "Combined theorem: both coloring and density versions disproved",
-      "startLine": 208,
-      "endLine": 237,
-      "mathContext": "Verified: Combined theorem: both coloring and density versions disproved"
+      "summary": "Inventory and the combined theorem erdos_8_summary (both the coloring and density versions are false). Documents the 2 remaining axioms (hough_minimum_modulus, density_conjecture_false, reduced from 5) and the 9 proved theorems, including erdos_8_resolution and bottleneck_counterexample which were previously axioms.",
+      "startLine": 303,
+      "endLine": 351,
+      "mathContext": "Problem 8 is DISPROVED (Hough 2015): no finite coloring is forced to admit a monochromatic distinct-moduli covering system."
     }
   ],
   "conclusion": {
