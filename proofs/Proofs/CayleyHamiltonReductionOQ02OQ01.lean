@@ -338,6 +338,16 @@ theorem charpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
     rw [h0, h1, map_one]
   rw [hq, hq_eq, mul_one]
 
+/-- **The companion matrix is non-derogatory**: its minimal and characteristic
+polynomials coincide (both equal p). This is the defining property that makes
+companion matrices the building blocks of the rational canonical form — each
+invariant factor pᵢ is realised by a single companion block whose minimal
+polynomial is its full characteristic polynomial. -/
+theorem minpoly_eq_charpoly_companionMatrix {d : ℕ} [NeZero d] (p : F[X])
+    (hp : p.Monic) (hdeg : p.natDegree = d) :
+    minpoly F (companionMatrix (d := d) p) = (companionMatrix (d := d) p).charpoly := by
+  rw [minpoly_companionMatrix hp hdeg, charpoly_companionMatrix hp hdeg]
+
 /-! ## Part 4: Trivial Case — Linear Polynomial -/
 
 /-- For p(x) = x - c, the companion matrix is the 1×1 matrix [c].
@@ -351,6 +361,15 @@ theorem companionMatrix_linear (c : F) :
   subst_vars
   simp [Polynomial.coeff_sub, Polynomial.coeff_X, Polynomial.coeff_C]
   ring
+
+/-- The characteristic polynomial of the 1×1 companion block of `X - C c` is
+`X - C c` itself — the eigenvalue `c` read off directly. A concrete instance of
+`charpoly_companionMatrix` for the RCF base case. -/
+theorem charpoly_companionMatrix_linear (c : F) :
+    (companionMatrix (d := 1) (X - C c)).charpoly = X - C c := by
+  apply charpoly_companionMatrix
+  · exact monic_X_sub_C c
+  · exact Polynomial.natDegree_X_sub_C c
 
 /-! ## Part 5: RCF Roadmap
 
@@ -391,6 +410,8 @@ A is similar to the block diagonal matrix
 #check @charpoly_companionMatrix
 #check @minpoly_companionMatrix
 #check @aeval_companionMatrix
+#check @minpoly_eq_charpoly_companionMatrix
 #check @companionMatrix_linear
+#check @charpoly_companionMatrix_linear
 
 end CayleyHamiltonReductionOQ02OQ01
