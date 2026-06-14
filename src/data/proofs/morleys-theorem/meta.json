@@ -83,72 +83,63 @@
       "title": "Imports and Setup",
       "startLine": 1,
       "endLine": 59,
-      "summary": "Imports Mathlib's trigonometric functions, inner product spaces, complex numbers, and Euclidean angle definitions. Sets up the `MorleysTheorem` namespace.",
-      "mathContext": "Uses $\\sin$, $\\cos$ from `Trigonometric.Basic`, inner product on $\\mathbb{R}^2$ from `InnerProductSpace`, and $\\mathbb{C}$ as the Euclidean plane for Conway's complex-coordinate proof."
+      "summary": "Module docstring (Wiedijk #84, statement, Conway backward strategy, trig sine/cosine-rule approach, 0 axioms) and imports of Mathlib trigonometry, inner-product spaces, and Euclidean angles; opens the MorleysTheorem namespace."
     },
     {
       "id": "triangle-angles",
-      "title": "Triangle Angles and Trisection",
-      "startLine": 60,
-      "endLine": 93,
-      "summary": "Defines `TriangleAngles` structure ($\\alpha + \\beta + \\gamma = \\pi$), trisected angles $\\alpha_3 = \\alpha/3$, and the key lemma `trisected_sum`: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$.",
-      "mathContext": "Constraint: $\\alpha + \\beta + \\gamma = \\pi$. Trisected angles: $\\alpha_3 = \\alpha/3$, $\\beta_3 = \\beta/3$, $\\gamma_3 = \\gamma/3$. Key lemma: $\\alpha_3 + \\beta_3 + \\gamma_3 = \\pi/3$ (the interior angle of the equilateral Morley triangle)."
+      "title": "Basic Setup and Definitions",
+      "startLine": 62,
+      "endLine": 91,
+      "summary": "Plane = EuclideanSpace ℝ (Fin 2) and the TriangleAngles structure (α,β,γ > 0 with α+β+γ = π), the trisected angles α₃/β₃/γ₃, and trisected_sum: α₃+β₃+γ₃ = π/3."
     },
     {
       "id": "backward-construction",
-      "title": "Conway's Backward Construction",
-      "startLine": 94,
-      "endLine": 137,
-      "summary": "Defines equilateral triangle vertices as cube roots of unity $e^{i \\cdot 2\\pi k/3}$ in $\\mathbb{C}$. Axiom `equilateral_side_length_axiom` asserts $|Q - P| = |R - Q| = |P - R|$.",
-      "mathContext": "Equilateral vertices: $P = e^{0}$, $Q = e^{i \\cdot 2\\pi/3}$, $R = e^{i \\cdot 4\\pi/3}$ (cube roots of unity on the unit circle in $\\mathbb{C}$). Side length: $|Q - P| = |R - Q| = |P - R| = \\sqrt{3}$."
+      "title": "The Morley Triangle Construction",
+      "startLine": 92,
+      "endLine": 161,
+      "summary": "Conway's backward strategy: start from an equilateral Morley triangle. equilateralVertex k = exp(2πik/3) with P,Q,R, and the theorem equilateral_side_length proving |Q−P| = |R−Q| = |P−R| via the cube-root-of-unity relations R = Q², Q³ = 1 (proved, not axiomatized)."
     },
     {
       "id": "trig-identities",
-      "title": "Trigonometric Identities",
-      "startLine": 138,
-      "endLine": 159,
-      "summary": "Proves $\\sin(\\pi/3 + \\theta)$ and $\\cos(\\pi/3 + \\theta)$ expansions using Mathlib's `sin_add`, `cos_add` with $\\sin(\\pi/3) = \\sqrt{3}/2$, $\\cos(\\pi/3) = 1/2$.",
-      "mathContext": "$\\sin(\\pi/3 + \\theta) = \\tfrac{\\sqrt{3}}{2}\\cos\\theta + \\tfrac{1}{2}\\sin\\theta$ and $\\cos(\\pi/3 + \\theta) = \\tfrac{1}{2}\\cos\\theta - \\tfrac{\\sqrt{3}}{2}\\sin\\theta$, using $\\sin(\\pi/3) = \\sqrt{3}/2$ and $\\cos(\\pi/3) = 1/2$."
+      "title": "Key Trigonometric Identities",
+      "startLine": 162,
+      "endLine": 230,
+      "summary": "sin_pi_third_add, cos_pi_third_add, sin_two_thirds_pi_add (sin(2π/3+x) = sin(π/3−x)), and the key sin_triple_product: sin(3x) = 4 sin x · sin(π/3+x) · sin(π/3−x), proved via the triple-angle and product-to-sum formulas."
     },
     {
-      "id": "vertex-reconstruction",
-      "title": "Original Triangle Reconstruction",
-      "startLine": 160,
-      "endLine": 198,
-      "summary": "Defines `Point := ℂ`, `direction θ := e^{iθ}`, and vertices $A$, $B$, $C$ reconstructed from Morley triangle using trisected-angle-determined rays.",
-      "mathContext": "Points in $\\mathbb{C}$; direction $\\theta \\mapsto e^{i\\theta}$. Conway's backward construction: given the Morley triangle $PQR$, reconstruct $A$, $B$, $C$ by extending rays at angles $\\alpha_3$, $\\beta_3$, $\\gamma_3$ from the Morley vertices."
+      "id": "cosine-rule-identity",
+      "title": "The Cosine Rule Identity",
+      "startLine": 231,
+      "endLine": 277,
+      "summary": "cosine_rule_identity: for p+q+c = π, sin²p + sin²q − 2 sin p sin q cos c = sin²c — the algebraic heart of the proof (the law of cosines for a triangle inscribed in a unit-diameter circle), closed by nlinarith after substituting c = π−(p+q)."
     },
     {
-      "id": "morley-structure",
-      "title": "Morley Triangle and Side Length",
-      "startLine": 199,
-      "endLine": 231,
-      "summary": "Defines `MorleyTriangle t` (three intersection points $M_1, M_2, M_3$) and `morleySideLength` $= 8R \\sin(\\alpha_3) \\sin(\\beta_3) \\sin(\\gamma_3)$.",
-      "mathContext": "Morley side length: $s = 8R \\sin(\\alpha/3) \\sin(\\beta/3) \\sin(\\gamma/3)$, where $R$ is the circumradius of $\\triangle ABC$. The formula is symmetric in $\\alpha/3, \\beta/3, \\gamma/3$, so all three sides are equal."
+      "id": "morley-side-computation",
+      "title": "Morley Side Length Computation",
+      "startLine": 278,
+      "endLine": 333,
+      "summary": "cosineSideSq arm₁ arm₂ angle (cosine-rule squared side) and the core lemma morley_arm_cosine_rule: when the two arms are k·sin(π/3+a), k·sin(π/3+b) with a+b+c = π/3, the opposite side² is k²·sin²c — obtained by applying cosine_rule_identity to the shifted angles (which sum to π with c)."
     },
     {
       "id": "main-theorem",
-      "title": "Morley's Theorem",
-      "startLine": 232,
-      "endLine": 271,
-      "summary": "**Theorem** `morleys_theorem` (Wiedijk #84): $|M_1 M_2| = |M_2 M_3| = |M_3 M_1|$. Proved from axiom. Alternative formulation `morley_triangle_equilateral`.",
-      "mathContext": "Morley's Trisector Theorem: $|M_1 M_2| = |M_2 M_3| = |M_3 M_1| = 8R \\sin(\\alpha/3)\\sin(\\beta/3)\\sin(\\gamma/3)$. The Morley triangle formed by adjacent angle trisector intersections is equilateral."
+      "title": "Morley's Theorem — The Proof",
+      "startLine": 334,
+      "endLine": 429,
+      "summary": "morleySideLength = 8R·sin α₃·sin β₃·sin γ₃. morleys_theorem_side_formula: all three cosine-rule sides equal (morleySideLength)², proved by applying morley_arm_cosine_rule at each vertex with cyclically permuted angles. morleys_theorem_equilateral derives the equal-sides equilateral property as an immediate corollary — fully proved, 0 axioms."
     },
     {
       "id": "special-cases",
-      "title": "Special Cases",
-      "startLine": 272,
-      "endLine": 312,
-      "summary": "Equilateral original triangle ($\\alpha = \\beta = \\gamma = \\pi/3$, trisected angle $= \\pi/9$) and right isosceles ($\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$).",
-      "mathContext": "Equilateral case: $\\alpha = \\beta = \\gamma = \\pi/3$ gives trisected angles $\\pi/9 = 20°$ and Morley side $s = 8R \\sin^3(\\pi/9)$. Right isosceles: $\\alpha = \\beta = \\pi/4$, $\\gamma = \\pi/2$, trisected angles $\\pi/12, \\pi/12, \\pi/6$."
+      "title": "Special Cases and Corollaries",
+      "startLine": 430,
+      "endLine": 470,
+      "summary": "equilateralAngles (α=β=γ=π/3) with equilateral_trisected_angle (α₃ = π/9 = 20°), and rightIsoscelesAngles (π/4, π/4, π/2) as concrete TriangleAngles instances."
     },
     {
       "id": "historical-notes",
-      "title": "Historical Notes and Generalizations",
-      "startLine": 313,
-      "endLine": 352,
-      "summary": "Frank Morley (1860-1937) at Johns Hopkins. Why the theorem was missed (trisection impossibility). Extensions: non-adjacent trisectors, Morley's pentagon, exterior trisectors.",
-      "mathContext": "Angle trisection requires solving the cubic $4\\cos^3\\phi - 3\\cos\\phi = \\cos\\theta$, which is impossible with compass and straightedge (Wantzel 1837). This explains why the ancient Greeks never encountered the Morley configuration. Generalizations include 18 Morley triangles from all trisector combinations."
+      "title": "Historical Notes and Verification",
+      "startLine": 471,
+      "endLine": 532,
+      "summary": "Closing docstring: Frank Morley (1860–1937, Johns Hopkins), why the theorem went undiscovered until 1899 (trisection impossibility), the sine-rule + cosine-rule method recap, generalizations (non-adjacent trisectors, Morley's pentagon), and #check exports of the main results."
     }
   ],
   "conclusion": {
