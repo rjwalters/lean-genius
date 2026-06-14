@@ -108,9 +108,17 @@
       "id": "tighter-bounds",
       "title": "§4: Tighter Bounds",
       "startLine": 125,
-      "endLine": 147,
+      "endLine": 146,
       "summary": "derangements_quarter_bound (n≥3): ≤1/4. derangements_parametric_bound (k≤n+1): ≤1/k. Both are 3-5 line calc proofs via one_div_le_one_div_of_le, generalizing the main bound to arbitrary precision.",
       "mathContext": "$k \\leq n+1 \\implies |D(n) - n!/e| \\leq 1/k$. Subsumes $k=3$ (nearest integer), $k=4$ (quarter bound), and general $k$."
+    },
+    {
+      "id": "parity-controlled-error-sign",
+      "title": "§5: Parity-Controlled Error Sign",
+      "startLine": 147,
+      "endLine": 254,
+      "summary": "derangements_error_sign: 0 ≤ (-1)ⁿ·(D(n) - n!/e), i.e. D(n) ≥ n!/e for even n and D(n) ≤ n!/e for odd n. Proof sets f k = (-1)ᵏ/(n+1+k)!, shows Summable f (norm-bounded by 1/k! via summable_pow_div_factorial), the tsum is ≥ 0 (each partial sum ≥ 0 by alt_partial_sum_nonneg from the parent file), factors D(n) - n!/e = -n!·(-1)ⁿ⁺¹·∑'f using derangements_div_factorial + exp_neg_one_eq_tsum_alt + tsum_eq_partial_sum_add_tail, then cancels signs via (-1)ⁿ·(-1)ⁿ⁺¹ = -1. Reuses only public lemmas from DerangementsConvergence; no new infrastructure required.",
+      "mathContext": "Pins down the *sign* (not just magnitude) of the error: $0 \\leq (-1)^n(D(n) - n!/e)$, refining $\\S1$ to the two-sided $0 \\leq (-1)^n(D(n) - n!/e) \\leq 1/(n+1)$. The tail $D(n)/n! - e^{-1} = (-1)^n \\sum_{k\\geq 0} (-1)^k/(n+1+k)!$ has parity-determined sign because the monic alternating series has non-negative partial sums."
     }
   ],
   "conclusion": {
