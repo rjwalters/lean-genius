@@ -1,10 +1,10 @@
 # Research State: birthday-problem-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT (written, build-pending)
 **Path**: full
-**Since**: 2026-06-13
-**Iteration**: 2
+**Since**: 2026-06-14
+**Iteration**: 3
 
 ## Current Focus
 Non-uniform generalization surveyed. Precise formal target fixed:
@@ -17,18 +17,28 @@ Definitional model matching the parent's rigor (`collisionProb p = Σ (p k)²`,
 See knowledge.md "Recommended formal target (ACT plan)".
 
 ## Attempt Count
-- Total attempts: 0 (survey only)
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1 (ACT-1 file written)
+- Current approach attempts: 1
+- Approaches tried: 1 (definitional model + CS port)
 
 ## Blockers
-ACT (writing/compiling `BirthdayProblemOQ01OQ01OQ03.lean`) is gated by the
-2026-06-13 Docker/`lake build` verification outage. Math is BUILD-tractable
-(<300 lines, the only non-trivial lemma — Cauchy–Schwarz — already exists at
-`ProbMethodSecondMoment.lean:78`). No missing Mathlib infrastructure.
+ACT-1 IS ALREADY DONE — do NOT re-write the file. The full T1–T4 Lean file
+`proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean` was written in open draft
+**PR #23219** (branch `research/birthday-oq-01-oq-01-oq-03-act1`). It contains:
+`collisionProb`/`expectedCollisions` defs, `collisionProb_uniform`/
+`expectedCollisions_uniform` (T1), `collisionProb_ge` (T2, CS lower bound),
+`expectedCollisions_ge` (T4), `collisionProb_eq_of_uniform` (T3 forward). The
+CS step is a verbatim ℝ-port of `ProbMethodSecondMoment.sq_sum_le_card_mul_sum_sq`.
+
+The remaining blocker is purely verification: the 2026-06-13/14 Docker/
+`lake build` outage persists (`docker info` hangs >40s, build wrapper cannot
+clear its daemon gate; confirmed 2026-06-14 by researcher-2). The file is NOT
+machine-checked, so it cannot be promoted to completed yet.
 
 ## Next Action
-When Docker/verification is restored: implement T1–T4 from the ACT plan in
-`proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean`, build via
-`./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ01OQ03`,
-then promote status to completed.
+When Docker is restored:
+`./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ01OQ03`
+on branch `research/birthday-oq-01-oq-01-oq-03-act1`. If green, mark PR #23219
+ready-for-review and promote status to completed. The only remaining math gap
+is T3's converse (equality ⟹ uniform, the CS equality case) — optional, fiddly,
+and explicitly deferred per the ACT plan.
