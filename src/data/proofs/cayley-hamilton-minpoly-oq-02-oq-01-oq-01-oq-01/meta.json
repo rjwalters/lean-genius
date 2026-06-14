@@ -70,7 +70,7 @@
       "Build repair: fixed pre-existing bugs blocking compilation — conjugate_iff_same_image used wrong unit (u⁻¹ instead of u), skolemNoether_general's calc used commutative-ring `ring` on non-commutative B (replaced with explicit mul_assoc / Units.inv_mul / one_mul rewrites), and aut_is_inner's AlgHom.id required explicit type args (AlgHom.id K B)",
       "Infrastructure audit: identified 5 Mathlib v4.26 building blocks sufficient to prove the axiom"
     ],
-    "lineCount": 394,
+    "lineCount": 393,
     "theoremCount": 14,
     "definitionCount": 2
   },
@@ -141,10 +141,18 @@
       "mathContext": "Setting A=B and g=id in Skolem-Noether yields Aut_K(B) = Inn(B) — every K-algebra automorphism of a CSA is conjugation by a unit. The conjugacy relation is symmetric: f = u⁻¹·g·u iff g = u·f·u⁻¹, which is just the inverse-unit substitution."
     },
     {
+      "id": "conjugacy-equivalence",
+      "title": "Conjugacy as an Equivalence Relation",
+      "startLine": 221,
+      "endLine": 290,
+      "summary": "Packages the conjugation relation abstractly: `IsConjugate f g` (∃ u ∈ Bˣ, f a = u⁻¹·g a·u), proved to be an equivalence relation — `IsConjugate.refl` (u=1), `.symm` (inverse unit), `.trans` (product unit) — for arbitrary rings A, B with no simple/CSA/finite-dim hypotheses. Bundled as `conjugateSetoid`. Then `skolemNoether_isConjugate` and `conjugateSetoid_single_class` repackage `skolemNoether_general` as the statement that this setoid has a single equivalence class when A is simple and B is a CSA.",
+      "mathContext": "Conjugation `f ∼ g ⟺ ∃ u∈Bˣ, f=u⁻¹·g·u` is reflexive (u=1), symmetric (u↦u⁻¹), and transitive (u,v↦v·u), so it is an equivalence relation on `A →ₐ[K] B` unconditionally. Skolem-Noether is then the statement that, for A simple and B a CSA, the resulting `conjugateSetoid` is indiscrete — a single conjugacy class."
+    },
+    {
       "id": "witness-ambiguity",
       "title": "Ambiguity of Skolem-Noether Witnesses (Torsor Structure)",
       "startLine": 291,
-      "endLine": 390,
+      "endLine": 393,
       "summary": "witness_diff_centralizes + witness_mul_centralizer + witness_set_torsor: characterize the set of conjugating units for a fixed pair (f, g) as a left coset of the centralizer of g(A) in Bˣ. Proved hypothesis-free (no simple/CSA/finite-dim assumptions), independent of the skolemNoether_module_iso axiom.",
       "mathContext": "A 'Skolem-Noether witness' is a unit u ∈ Bˣ realizing the conjugation f(a) = u⁻¹·g(a)·u. The forward direction says: any two witnesses u, u' differ by an element of the centralizer of g(A), since u'·u⁻¹·g(a) = g(a)·u'·u⁻¹ for all a. The converse says: multiplying a witness by a centralizing unit yields another witness. Together these establish the witness set as a left coset (torsor) of the centralizer. Skolem-Noether's existence claim (skolemNoether_general) ensures the set is nonempty when A is simple and B is a CSA, so the witness moduli space then coincides with the centralizer of g(A) as a torsor — sharpening the qualitative IsConjugate predicate into a quantitative structural result."
     }
@@ -182,7 +190,7 @@
     ],
     "opens": [],
     "namespace": "SkolemNoetherCSA",
-    "lineCount": 394,
+    "lineCount": 393,
     "axiomCount": 1,
     "theoremCount": 14,
     "definitionCount": 2,
