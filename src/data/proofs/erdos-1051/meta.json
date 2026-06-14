@@ -47,60 +47,68 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "header",
       "title": "Problem Statement and Imports",
       "startLine": 1,
-      "endLine": 20,
-      "summary": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics.",
-      "mathContext": "Module docstring citing Erdős–Graham (1980) and Erdős (1988). Imports Mathlib's integer and real basics, irrationality predicate, filter library for liminf, infinite sums (tsum), and general tactics."
+      "endLine": 21,
+      "summary": "States Erdős Problem #1051: if $a_1<a_2<\\cdots$ is a strictly increasing integer sequence with $\\liminf a_n^{1/2^n}>1$, must $\\sum 1/(a_n a_{n+1})$ be irrational? Status OPEN. References Erdős–Graham (1980) and Erdős (1988). Imports integer/real basics, the `Irrational` predicate, filters, `PSeries`.",
+      "mathContext": "$\\liminf a_n^{1/2^n}>1\\Rightarrow\\sum 1/(a_n a_{n+1})$ irrational? (OPEN)"
     },
     {
       "id": "growth-condition",
-      "title": "Growth Condition",
-      "startLine": 21,
-      "endLine": 30,
-      "summary": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation.",
-      "mathContext": "Defines GrowthCondition: $\\liminf a_n^{1/2^n} > 1$ via Filter.liminf with atTop filter. Marked noncomputable due to real-valued limit computation."
+      "title": "Section I: Growth Condition",
+      "startLine": 22,
+      "endLine": 31,
+      "summary": "Defines `GrowthCondition a`: $\\liminf_n a_n^{1/2^n}>1$ (via `Filter.liminf` at `atTop`), the doubly-exponential growth hypothesis. Noncomputable.",
+      "mathContext": "$\\text{GrowthCondition}(a):\\ \\liminf_n a_n^{1/2^n}>1$."
     },
     {
       "id": "series",
-      "title": "The Reciprocal Product Series",
-      "startLine": 31,
-      "endLine": 38,
-      "summary": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums.",
-      "mathContext": "Defines erdosSeries as $\\sum 1/(a_n \\cdot a_{n+1})$ using Mathlib's tsum. Marked noncomputable since it involves real-valued infinite sums."
+      "title": "Section II: The Series",
+      "startLine": 32,
+      "endLine": 39,
+      "summary": "Defines `erdosSeries a` $=\\sum'_n 1/(a_n\\cdot a_{n+1})$ via Mathlib's `tsum`. Noncomputable (real infinite sum).",
+      "mathContext": "$\\text{erdosSeries}(a)=\\sum_{n}1/(a_n a_{n+1})$."
     },
     {
       "id": "conjecture",
-      "title": "The Main Conjecture",
-      "startLine": 39,
-      "endLine": 52,
-      "summary": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono.",
-      "mathContext": "States ErdosProblem1051 as a Prop: for all strictly monotone integer sequences satisfying the growth condition, the erdosSeries is irrational. Uses Mathlib's Irrational and StrictMono."
+      "title": "Section III: The Conjecture",
+      "startLine": 40,
+      "endLine": 53,
+      "summary": "Defines `ErdosProblem1051`: for every strictly monotone integer sequence satisfying the growth condition, `erdosSeries a` is irrational.",
+      "mathContext": "$\\forall a\\ \\text{StrictMono},\\ \\text{GrowthCondition}(a)\\Rightarrow\\text{Irrational}(\\text{erdosSeries}\\,a)$."
     },
     {
       "id": "rapid-growth",
-      "title": "Rapid Growth Case (Solved)",
-      "startLine": 53,
-      "endLine": 64,
-      "summary": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture.",
-      "mathContext": "Axiomatizes Erdős's 1988 result: irrationality holds when $a_{n+1} \\geq C \\cdot a_n^2$ for some $C > 0$. This is the strongest known partial result toward the full conjecture."
+      "title": "Section IV: Rapid Growth Case (Solved)",
+      "startLine": 54,
+      "endLine": 61,
+      "summary": "A documentation note (no declaration) recording Erdős's 1988 result: if $a_{n+1}\\geq C\\,a_n^2$ for some $C>0$, the series is irrational — a stronger growth hypothesis than $\\liminf a_n^{1/2^n}>1$. Not formalized as a theorem or axiom (the file has 0 axioms).",
+      "mathContext": "Erdős 1988 (noted, not formalized): $a_{n+1}\\geq C a_n^2\\Rightarrow$ irrational."
     },
     {
       "id": "convergence",
-      "title": "Convergence and Positivity",
-      "startLine": 65,
-      "endLine": 78,
-      "summary": "Two proved theorems: (1) series_converges: for strictly increasing positive integer sequences, 1/(aₙ·aₙ₊₁) ≤ 1/((n+1)(n+2)) since aₙ ≥ n+1, and Σ 1/((n+1)(n+2)) converges by p-series comparison; (2) series_positive: the sum is strictly positive when all aₙ > 0.",
-      "mathContext": "Two proved theorems: (1) series_converges: for strictly increasing positive integer sequences, 1/(aₙ·aₙ₊₁) ≤ 1/((n+1)(n+2)) since aₙ ≥ n+1, and Σ 1/((n+1)(n+2)) converges by p-series comparison; (2) series_positive: the sum is strictly positive when all aₙ > 0."
+      "title": "Section V: Convergence and Positivity",
+      "startLine": 62,
+      "endLine": 146,
+      "summary": "PROVES `series_converges`: for a strictly increasing positive integer sequence, $a_n\\geq n+1$ so $a_n a_{n+1}\\geq(n+1)(n+2)$, and the series is summable by comparison with the convergent $p$-series $\\sum 1/n^2$. PROVES `series_positive`: the sum is $>0$ (positive summable terms, via `tsum_pos`).",
+      "mathContext": "$a_n\\geq n+1\\Rightarrow$ summable by comparison with $\\sum 1/n^2$; sum $>0$."
     },
     {
       "id": "related-series",
-      "title": "Related Series and Examples",
-      "startLine": 79,
-      "endLine": 98,
-      "summary": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous.",
-      "mathContext": "Defines simpleReciprocalSeries ($\\sum 1/a_n$) and states the parallel irrationality conjecture. The Sylvester–Fibonacci example provides an existential witness confirming the conjecture is non-vacuous."
+      "title": "Section VI: Related Series",
+      "startLine": 147,
+      "endLine": 164,
+      "summary": "Defines `simpleReciprocalSeries a` $=\\sum'_n 1/a_n$ and the parallel `SimpleSeriesConjecture` (irrationality of $\\sum 1/a_n$ under the same growth condition, OPEN). Notes the Sylvester–Fibonacci example $a_n=\\text{Fib}(2^n)$ as a case where the product series telescopes to a known irrational.",
+      "mathContext": "$\\sum 1/a_n$ also conjectured irrational; example $a_n=\\text{Fib}(2^n)$."
+    },
+    {
+      "id": "telescoping",
+      "title": "Section VII: Telescoping and Partial Fraction Identity",
+      "startLine": 165,
+      "endLine": 232,
+      "summary": "Structural lemmas, all PROVED. `partial_fraction` (the telescoping identity $1/(xy)=\\frac1{y-x}(\\frac1x-\\frac1y)$), `term_pos` and `strict_mono_pos` (positivity), `term_le_reciprocal_sq` ($1/(a_n a_{n+1})\\leq1/a_n^2$), and the doubling-growth lemmas `doubling_implies_pos`, `doubling_implies_strict_mono`, and `exponential_growth_bound` ($a_{n+1}\\geq2a_n\\Rightarrow a_n\\geq a_0\\cdot2^n$).",
+      "mathContext": "Telescoping $1/(xy)=\\frac{1}{y-x}(\\frac1x-\\frac1y)$; doubling $a_{n+1}\\geq2a_n\\Rightarrow a_n\\geq a_0 2^n$."
     }
   ],
   "conclusion": {
