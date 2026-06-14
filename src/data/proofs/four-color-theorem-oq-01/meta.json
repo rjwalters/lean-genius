@@ -74,52 +74,116 @@
   },
   "sections": [
     {
-      "id": "kempe-framework",
-      "title": "Kempe Chain Framework",
+      "id": "overview",
+      "title": "Overview & Imports",
+      "summary": "File docstring (open question: is there a human-readable proof of the Four Color Theorem?), imports, namespace, variables.",
       "startLine": 1,
-      "endLine": 80,
-      "summary": "Setting up proper colorings, neighbor color sets, and the notion of a free color.",
-      "mathContext": "A proper $k$-coloring $f: V \\to [k]$ assigns colors so adjacent vertices differ. A color $c$ is free for $v$ if $c \\notin f(N(v))$."
+      "endLine": 55,
+      "mathContext": "Formalizes why the Kempe-chain method succeeds for 5 colors but fails for 4 (Appel-Haken 1976, Heawood 1890)."
+    },
+    {
+      "id": "kempe-framework",
+      "title": "Part 1: Kempe Chain Framework",
+      "summary": "ProperColoring, neighborColors, colorFree.",
+      "startLine": 56,
+      "endLine": 75,
+      "mathContext": "Basic definitions: proper k-colorings, the colors used by a vertex's neighbors, and when a color is free."
     },
     {
       "id": "easy-case",
-      "title": "The Easy Case: Degree < Colors",
-      "startLine": 82,
-      "endLine": 115,
-      "summary": "When $\\deg(v) < k$, at most $\\deg(v) < k$ colors appear among neighbors, so a free color exists by pigeonhole.",
-      "mathContext": "$|f(N(v))| \\leq |N(v)| = \\deg(v) < k = |[k]|$, so $[k] \\setminus f(N(v)) \\neq \\emptyset$."
+      "title": "Part 2: The Easy Case — Degree ≤ k−1",
+      "summary": "neighborColors_card_le_degree and free_color_of_degree_lt (pigeonhole: degree < k ⇒ a free color exists).",
+      "startLine": 76,
+      "endLine": 114,
+      "mathContext": "Verified pigeonhole core: fewer neighbors than colors guarantees an unused color, requiring no chain swaps."
     },
     {
-      "id": "chain-interference",
-      "title": "Chain Interference Obstruction",
-      "startLine": 150,
-      "endLine": 200,
-      "summary": "When two Kempe chains share a vertex, swapping on one chain invalidates the other.",
-      "mathContext": "If $w \\in K(c_1,c_3) \\cap K(c_2,c_3)$ with $f(w) = c_3$, after swapping $c_1 \\leftrightarrow c_3$ on $K(c_1,c_3)$, we get $f'(w) = c_1 \\notin \\{c_2, c_3\\}$, breaking $K(c_2,c_3)$."
+      "id": "five-color-easy",
+      "title": "Part 3: The 5-Color Easy Case",
+      "summary": "five_color_degree_four — degree ≤ 4 with 5 colors always leaves a free color.",
+      "startLine": 115,
+      "endLine": 127,
+      "mathContext": "The instance that makes the Five Color Theorem easy."
     },
     {
-      "id": "five-vs-four",
-      "title": "Why 5 Colors Work But 4 Don't",
-      "startLine": 202,
-      "endLine": 240,
-      "summary": "The key structural difference: 5-coloring needs one swap, 4-coloring needs two. Planarity prevents interference for one swap but not for two.",
-      "mathContext": "$\\binom{5}{2} = 10 > 6 = \\binom{4}{2}$: more color pairs give more room to find non-interfering swaps."
+      "id": "hard-case",
+      "title": "Part 4: The Hard Case — Degree 5 with k Colors",
+      "summary": "degree_five_all_colors_possible and four_color_degree_five_pigeonhole (min d k = 4).",
+      "startLine": 128,
+      "endLine": 148,
+      "mathContext": "Counting facts for a degree-5 vertex when all colors may be used by neighbors."
+    },
+    {
+      "id": "five-color-one-swap",
+      "title": "Part 5: Why 5-Color Kempe Works (One Swap Suffices)",
+      "summary": "swapColors def, swapColors_proper (a global color swap preserves properness), five_color_one_swap_suffices.",
+      "startLine": 149,
+      "endLine": 182,
+      "mathContext": "A single Kempe-chain swap reduces 5 used neighbor-colors to 4; verified that swaps preserve proper colorings."
+    },
+    {
+      "id": "four-color-fails",
+      "title": "Part 6: Why 4-Color Kempe Fails (Two Swaps Needed)",
+      "summary": "kempe_four_color_structure and chain_interference_obstruction (after a (c₁,c₃) swap, w's new color leaves {c₂,c₃}).",
+      "startLine": 183,
+      "endLine": 227,
+      "mathContext": "The algebraic core of the Heawood obstruction: two simultaneous swaps can interfere when chains share a vertex."
+    },
+    {
+      "id": "contrast",
+      "title": "Part 7: The Contrast — 5-Color Avoids Interference",
+      "summary": "five_color_no_double_swap (C(5,2) > C(4,2)).",
+      "startLine": 228,
+      "endLine": 252,
+      "mathContext": "Why 5 colors provide enough 'room' that a single swap always suffices, unlike the 4-color case."
     },
     {
       "id": "heawood",
-      "title": "Heawood's Counterexample",
-      "startLine": 242,
-      "endLine": 270,
-      "summary": "Heawood (1890) constructed a planar graph where both relevant Kempe chains are connected, forcing them to cross by planarity.",
-      "mathContext": "In the Heawood graph, for a degree-5 vertex $v$ with all 4 colors used, both the $(c_1,c_3)$-chain and $(c_2,c_3)$-chain connect their respective endpoints. By the Jordan curve theorem, the chains must cross."
+      "title": "Part 8: Heawood's Counterexample Structure",
+      "summary": "heawood_crossing_forced — both chains connected force a crossing (Jordan-curve argument).",
+      "startLine": 253,
+      "endLine": 287,
+      "mathContext": "Heawood's 1890 configuration where Kempe's 4-color strategy (not 4-colorability itself) fails."
     },
     {
-      "id": "minimum-counterexample",
-      "title": "Structure of a Minimum Counterexample",
-      "startLine": 280,
-      "endLine": 310,
-      "summary": "If 4CT were false, the smallest counterexample would be a planar triangulation with minimum degree 4 or 5. The proof shows no such graph exists by checking 633 configurations.",
-      "mathContext": "A minimum counterexample $G$ has $\\delta(G) \\geq 4$ (since $\\deg(v) \\leq 3 \\Rightarrow$ can remove $v$ and extend coloring) and is a triangulation."
+      "id": "human-readable-needs",
+      "title": "Part 9: What a Human-Readable 4CT Proof Would Need",
+      "summary": "flow_coloring_equivalence — Tutte's k-colorability ↔ k-flow duality (a reformulation, not a simplification).",
+      "startLine": 288,
+      "endLine": 324,
+      "mathContext": "Survey of candidate routes (algebraic, structural, flow-based) to a human-readable proof; all currently circular or open."
+    },
+    {
+      "id": "graph-classes",
+      "title": "Part 10: Graph Classes with Human-Readable 4-Color Proofs",
+      "summary": "colorable_of_card_le_k and four_colorable_small (≤ 4 vertices ⇒ 4-colorable).",
+      "startLine": 325,
+      "endLine": 355,
+      "mathContext": "Specific classes (outerplanar, series-parallel, bounded degree) admit clean proofs; the trivial small case is verified."
+    },
+    {
+      "id": "min-counterexample",
+      "title": "Part 11: The Minimum Counterexample Structure",
+      "summary": "min_counterexample_degree (degree ≤ 3 ⇒ reducible) and min_counterexample_has_low_degree (some vertex has degree 4 or 5).",
+      "startLine": 356,
+      "endLine": 389,
+      "mathContext": "Structural constraints on a hypothetical minimal counterexample, driving the unavoidable-set argument."
+    },
+    {
+      "id": "config-bottleneck",
+      "title": "Part 12: The Configuration Checking Bottleneck",
+      "summary": "config_reduction (633 < 1936).",
+      "startLine": 390,
+      "endLine": 419,
+      "mathContext": "The reducibility check (Appel-Haken 1936 configs, Robertson et al. 633) is where human verification fails."
+    },
+    {
+      "id": "summary",
+      "title": "Part 13: Summary",
+      "summary": "Summary docstring (core obstruction fully proved; 0 axioms, 0 sorries) plus #check exports.",
+      "startLine": 420,
+      "endLine": 458,
+      "mathContext": "Recaps: degree < k easy, one swap for 5 colors, interference for 4 colors, Heawood crossing; the open question remains as of 2025."
     }
   ],
   "crossReferences": [
