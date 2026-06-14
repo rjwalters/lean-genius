@@ -52,70 +52,70 @@
       "title": "Problem Documentation and Imports",
       "summary": "Documents Erdős Problem #1022 on property B for sparse set families. Imports Mathlib's `Finset`, `Fintype`, and `Tactic` modules.",
       "startLine": 1,
-      "endLine": 36,
+      "endLine": 38,
       "mathContext": "Imports and namespace setup for finite set combinatorics."
     },
     {
       "id": "property-b",
       "title": "§ 1: Property B (2-Colorability)",
       "summary": "Defines `HasPropertyB F` via existence of a set $S$ such that every $f \\in F$ intersects both $S$ and its complement. Proves Property B for the empty family (`hasPropertyB_empty`) and monotonicity under subfamilies (`hasPropertyB_subset`).",
-      "startLine": 38,
-      "endLine": 55,
+      "startLine": 39,
+      "endLine": 57,
       "mathContext": "Defines `HasPropertyB` and proves it for empty families and subfamilies."
     },
     {
       "id": "definitions",
       "title": "§ 2: Definitions",
       "summary": "Defines `AllSizeAtLeast F t` (every member has $|f| \\ge t$) and `IsSparse F c` (for all $X$, at most $c \\cdot |X|$ members are subsets of $X$).",
-      "startLine": 57,
-      "endLine": 68,
+      "startLine": 58,
+      "endLine": 70,
       "mathContext": "Core definitions: minimum set size and sparsity condition."
     },
     {
       "id": "conjecture",
       "title": "§ 3: The Conjecture",
       "summary": "States `erdos_1022_conjecture` as an axiom: existence of $c : \\mathbb{N} \\to \\mathbb{N}$ tending to infinity such that $c(t)$-sparse families of sets of size $\\ge t$ have Property B.",
-      "startLine": 70,
-      "endLine": 81,
+      "startLine": 71,
+      "endLine": 83,
       "mathContext": "The main open conjecture, axiomatized."
     },
     {
       "id": "sparsity-properties",
       "title": "§ 4: Sparsity Properties",
       "summary": "Proves structural properties: 0-sparse forces empty members, sparsity is monotone in $c$ (`isSparse_mono`), subfamilies inherit sparsity (`isSparse_subset`), `AllSizeAtLeast` is monotone downward and inherited by subfamilies.",
-      "startLine": 83,
-      "endLine": 139,
+      "startLine": 84,
+      "endLine": 128,
       "mathContext": "Monotonicity and inheritance lemmas for sparsity and minimum-size conditions."
     },
     {
       "id": "small-families",
       "title": "§ 5: Property B for Small Families",
       "summary": "Proves `hasPropertyB_singleton`: any single set of size $\\ge 2$ has Property B by splitting on any element.",
-      "startLine": 141,
-      "endLine": 162,
+      "startLine": 129,
+      "endLine": 151,
       "mathContext": "Base case: singleton families with large sets have Property B."
     },
     {
       "id": "counting",
       "title": "§ 6: Counting Lemmas",
       "summary": "Proves the subset filter is bounded by $|F|$ (`filter_subset_card_le`) and that $c$-sparse families satisfy $|F| \\le c \\cdot |U|$ for any superset $U$ (`sparse_family_size_bound`).",
-      "startLine": 164,
-      "endLine": 184,
+      "startLine": 152,
+      "endLine": 170,
       "mathContext": "Global size bounds from local sparsity conditions."
     },
     {
       "id": "empty-set",
       "title": "§ 7: Sparsity and Empty Set",
       "summary": "Proves $c$-sparsity implies $\\emptyset \\notin F$ (`sparse_no_empty_member`) and that families with min size $\\ge 1$ exclude $\\emptyset$ (`allSizeAtLeast_no_empty`).",
-      "startLine": 186,
-      "endLine": 202,
+      "startLine": 171,
+      "endLine": 193,
       "mathContext": "Exclusion of the empty set from sparse and size-bounded families."
     },
     {
       "id": "filter-monotonicity",
       "title": "§ 8: Monotonicity of Filter Counts",
       "summary": "Proves `filter_subset_mono`: if $X \\subseteq Y$, the number of family members inside $X$ is at most the number inside $Y$. Corollary for element insertion (`filter_subset_insert_le`).",
-      "startLine": 204,
+      "startLine": 194,
       "endLine": 213,
       "mathContext": "Monotonicity of subset counts under set inclusion."
     },
@@ -124,32 +124,40 @@
       "title": "§ 9: Element Degree",
       "summary": "Defines `degree F a` (number of sets containing a) and `maxDegree F`. Proves degree monotonicity under subfamilies and zero-degree characterization.",
       "startLine": 214,
-      "endLine": 237,
+      "endLine": 238,
       "mathContext": "Element degree in set families, monotonicity under subfamilies."
     },
     {
       "id": "lovasz",
       "title": "§ 10: Lovász Theorem (c(2) = 1)",
       "summary": "Documents the removal of the incorrect lovász_theorem axiom (K₃ counterexample). Introduces IsDegreeBounded and proves matching_has_propertyB (0 sorries, proved by induction on F using disjointness from degree bound). The correct Lovász result uses degree, not sparsity.",
-      "startLine": 238,
-      "endLine": 266,
+      "startLine": 239,
+      "endLine": 358,
       "mathContext": "The base case c(2) = 1 of Erdős #1022 (Lovász 1968)."
     },
     {
       "id": "union",
       "title": "§ 11: Union and Combination of Families",
       "summary": "Proves the union of a c-sparse and d-sparse family is (c+d)-sparse (`isSparse_union`), and AllSizeAtLeast is preserved under union.",
-      "startLine": 268,
-      "endLine": 292,
+      "startLine": 359,
+      "endLine": 383,
       "mathContext": "Sparsity and size bounds are preserved under family union."
     },
     {
       "id": "first-moment",
       "title": "§ 12: Erdős First-Moment Threshold",
       "summary": "Proves the Erdős 2^{t-1} bound via the probabilistic first-moment method (counting colorings + pigeonhole). Also proves Property B for families with ≤ 1 member of size ≥ 2.",
-      "startLine": 293,
-      "endLine": 327,
+      "startLine": 384,
+      "endLine": 522,
       "mathContext": "Erdős (1963): |F| < 2^{t-1} with min size ≥ t implies Property B."
+    },
+    {
+      "id": "degree-sparsity",
+      "title": "§ 13: Degree-Based Sparsity (Double Counting)",
+      "startLine": 523,
+      "endLine": 599,
+      "summary": "Proves `degree_bounded_implies_sparse`: if every element appears in at most d members and every member is nonempty, then F is d-sparse — by a double-counting argument swapping summation order between members-inside-X and per-element degree fibers. Corollaries `matching_implies_sparse` (degree-1 ⇒ 1-sparse) and `degree_one_size_two_propertyB_and_sparse` (matchings of ≥2-sets are simultaneously Property B and 1-sparse, linking § 10 and § 13).",
+      "mathContext": "Double counting: $|F \\cap \\mathcal{P}(X)| \\le \\sum_{f \\subseteq X} |f| = \\sum_{x \\in X} \\deg(x) \\le d|X|$. This makes the degree condition strictly stronger than sparsity, reconciling the corrected § 10 Lovász statement with the IsSparse framework."
     }
   ],
   "conclusion": {
