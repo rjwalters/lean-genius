@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-05-07T17:35:00.000Z",
-    "iteration": 4,
-    "focus": "Added structural smoothPart lemmas: positivity, monotonicity in k, boundary cases",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 5,
+    "focus": "Formalized the central u*v decomposition for the binomial coefficient. The file defined binomialRoughPart but never proved C(n,k) = binomialSmoothPart * binomialRoughPart nor that the binomial smooth part divides C(n,k) - the very objects the problem concerns. Added binomial_smooth_rough_decomposition and binomialSmoothPart_dvd (instantiations of the proven general smooth_rough_decomposition/smoothPart_dvd). Also realigned badly-drifted gallery meta sections (ended at 401 vs 462-line file; ranges mismatched Part markers). theoremCount 20->22, lineCount 451->462, axiomCount unchanged at 2.",
     "blockers": [],
-    "nextAction": "Verify Docker build of expanded file; explore reducing f_domain_large axiom via concrete witness for some n₀.",
+    "nextAction": "2 axioms remain (f_domain_large existence threshold; mahler_ineffective). Reducing f_domain_large needs a concrete n0 witness where smoothPart C(n,floor(n/2)) > n^2 - a real computation/estimate. Structural decomposition now complete for the binomial-specific defs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 8 structural lemmas about smoothPart (positivity, monotonicity in k as ∣ and ≤, boundary values 0/1/n). theoremCount 12→20, axiomCount unchanged at 2.",
+    "progressSummary": "OPEN, 2 axioms (f_domain_large, mahler_ineffective), 0 sorries. Erdos684Problem.lean now 462 LOC, 22 theorems. NEW: binomial_smooth_rough_decomposition (C(n,k)=smooth*rough) + binomialSmoothPart_dvd (the central u*v factorization, previously only proved for general m, not the binomial-specific defs). Kummer/Legendre formula, f(n) definition + f_property/below_f_small, Mahler-implies-f->infinity chain all present.",
     "builtItems": [
       "Proved smoothPart_dvd via prod_pow_factorization_dvd helper (Finset induction + coprimality)",
       "Proved f_lower_bound theorem from f_property axiom",
@@ -51,7 +51,9 @@
       "smoothPart_dvd_mono: k₁ ≤ k₂ → smoothPart k₁ m ∣ smoothPart k₂ m (Finset.prod_dvd_prod_of_subset)",
       "smoothPart_mono_k: k₁ ≤ k₂ → smoothPart k₁ m ≤ smoothPart k₂ m (corollary of dvd + pos)",
       "binomialSmoothPart_self: binomialSmoothPart n n = 1 (since C(n,n) = 1)",
-      "binomialSmoothPart_zero: binomialSmoothPart n 0 = 1 (range 1 has no primes)"
+      "binomialSmoothPart_zero: binomialSmoothPart n 0 = 1 (range 1 has no primes)",
+      "binomial_smooth_rough_decomposition: C(n,k) = binomialSmoothPart * binomialRoughPart (central u*v decomposition)",
+      "binomialSmoothPart_dvd: binomialSmoothPart n k | C(n,k)"
     ],
     "insights": [
       "smoothPart_dvd proved: product of p^(factorization p) for primes p ≤ k divides m, via coprimality of distinct prime powers and Finset induction",

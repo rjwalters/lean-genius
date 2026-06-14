@@ -152,6 +152,17 @@ theorem binomialSmoothPart_zero (n : ℕ) : binomialSmoothPart n 0 = 1 := by
     intro hp; exact fun hprime => absurd hprime.two_le (by omega)
   rw [this, Finset.prod_empty]
 
+-- The binomial smooth part divides the binomial coefficient (instantiation of smoothPart_dvd).
+theorem binomialSmoothPart_dvd (n k : ℕ) : binomialSmoothPart n k ∣ Nat.choose n k :=
+  smoothPart_dvd k (Nat.choose n k)
+
+-- The central u·v decomposition for the binomial coefficient: C(n,k) = (k-smooth part)·(k-rough part).
+-- This is the decomposition the whole problem is stated in terms of; here for the binomial-specific
+-- definitions, as a direct instantiation of `smooth_rough_decomposition`.
+theorem binomial_smooth_rough_decomposition (n k : ℕ) (hk : k ≤ n) :
+    Nat.choose n k = binomialSmoothPart n k * binomialRoughPart n k :=
+  smooth_rough_decomposition k (Nat.choose n k) (Nat.choose_pos hk)
+
 /-
 # Part 2: The Function f(n)
 

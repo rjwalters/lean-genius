@@ -61,9 +61,9 @@
       "binomialSmoothPart_self/_zero theorems: boundary values at k = n and k = 0"
     ],
     "axiomCount": 2,
-    "lineCount": 451,
+    "lineCount": 462,
     "assumptions": "2 axiom declarations: f_domain_large (for sufficiently large n, there exists k with smooth part > n²), mahler_ineffective (Mahler's classical bound: for fixed k₀ and ε>0, smooth part ≤ n^{1+ε} eventually). Former axiom f_property now proved from Nat.sInf_mem.",
-    "theoremCount": 20,
+    "theoremCount": 22,
     "definitionCount": 11
   },
   "overview": {
@@ -87,73 +87,73 @@
     {
       "id": "smooth-rough",
       "title": "Smooth and Rough Parts",
-      "summary": "smoothPart, roughPart, binomialSmoothPart, binomialRoughPart",
+      "summary": "smoothPart, roughPart, binomialSmoothPart, binomialRoughPart Adds the binomial-specific decomposition `binomial_smooth_rough_decomposition` ($C(n,k)=$ smooth·rough) and `binomialSmoothPart_dvd` ($u \\mid C(n,k)$) — the central u·v factorization the problem is stated in terms of, instantiated from the general `smooth_rough_decomposition`/`smoothPart_dvd`.",
       "startLine": 38,
-      "endLine": 104,
+      "endLine": 165,
       "mathContext": "Mathematical content: smoothPart, roughPart, binomialSmoothPart, binomialRoughPart"
     },
     {
       "id": "f-definition",
       "title": "The Function f(n)",
       "summary": "f, f_property, below_f_small",
-      "startLine": 105,
-      "endLine": 145,
+      "startLine": 166,
+      "endLine": 206,
       "mathContext": "Mathematical content: f, f_property, below_f_small"
     },
     {
       "id": "mahler",
       "title": "Mahler's Classical Result",
       "summary": "mahler_ineffective, f_tendsto_infty_weak",
-      "startLine": 146,
-      "endLine": 203,
+      "startLine": 207,
+      "endLine": 264,
       "mathContext": "Mathematical content: mahler_ineffective, f_tendsto_infty_weak"
     },
     {
       "id": "modern-bounds",
       "title": "Modern Bounds",
       "summary": "tang_exponent, rh_exponent",
-      "startLine": 204,
-      "endLine": 215,
+      "startLine": 265,
+      "endLine": 276,
       "mathContext": "Bound: tang_exponent, rh_exponent"
     },
     {
       "id": "heuristic",
       "title": "Heuristic Conjectures",
       "summary": "heuristic_bound",
-      "startLine": 216,
-      "endLine": 228,
+      "startLine": 277,
+      "endLine": 289,
       "mathContext": "Bound: heuristic_bound"
     },
     {
       "id": "structure",
       "title": "Structure of Smooth Part",
       "summary": "legendreExponent, kummer_theorem",
-      "startLine": 229,
-      "endLine": 283,
+      "startLine": 290,
+      "endLine": 344,
       "mathContext": "Verified: legendreExponent, kummer_theorem"
     },
     {
       "id": "special-cases",
       "title": "Special Cases",
       "summary": "f_lower_bound, prime_binomial_structure",
-      "startLine": 284,
-      "endLine": 330,
+      "startLine": 345,
+      "endLine": 391,
       "mathContext": "Formal definition: f_lower_bound, prime_binomial_structure"
     },
     {
       "id": "generalized",
       "title": "The Generalized Problem",
       "summary": "fGeneral, f_is_fGeneral_0",
-      "startLine": 331,
-      "endLine": 348,
+      "startLine": 392,
+      "endLine": 409,
       "mathContext": "Mathematical content: fGeneral, f_is_fGeneral_0"
     },
     {
       "id": "status",
       "title": "Problem Status",
       "summary": "erdos_684_statement",
-      "startLine": 349,
-      "endLine": 401,
+      "startLine": 410,
+      "endLine": 461,
       "mathContext": "Mathematical content: erdos_684_statement"
     }
   ],
