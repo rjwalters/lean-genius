@@ -255,3 +255,40 @@ theorem finitely_many_for_fixed_k (k : ℕ) :
   obtain ⟨hn2k, hnsp, hndef⟩ := hn
   simp only [Set.mem_Iic]
   exact Nat.cast_le.mp ((hels n k hn2k hnsp hndef).trans (Nat.le_ceil _))
+
+/-
+## Section X: Fixed-k Slices of the Two Conjecture Parts
+-/
+
+/-- Converse to `deficiency_pos_of_smooth`: positive deficiency yields a witness
+index i < k with n - i being k-smooth. -/
+theorem exists_smooth_of_deficiency_pos {n k : ℕ} (h : 0 < deficiency n k) :
+    ∃ i < k, IsKSmooth k (n - i) := by
+  unfold deficiency at h
+  obtain ⟨i, hi⟩ := Finset.card_pos.mp h
+  rw [Finset.mem_filter, Finset.mem_range] at hi
+  exact ⟨i, hi.1, hi.2⟩
+
+/-- For fixed k, only finitely many n ≥ 2k have deficiency exactly 1.
+This is the fixed-k slice of Part (i) (`ErdosProblem1093i`): the infinitude
+conjectured there must therefore arise from unboundedly many distinct k, not
+from any single value of k. -/
+theorem finitely_many_deficiency_eq_one_for_fixed_k (k : ℕ) :
+    Set.Finite { n : ℕ | 2 * k ≤ n ∧ NoSmallPrimeFactors n k ∧ deficiency n k = 1 } := by
+  apply (finitely_many_for_fixed_k k).subset
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  obtain ⟨h1, h2, h3⟩ := hn
+  exact ⟨h1, h2, by omega⟩
+
+/-- For fixed k, only finitely many n ≥ 2k have deficiency > 1. This is the
+fixed-k slice of Part (ii) (`ErdosProblem1093ii`); the open content is whether
+finiteness survives the union over all k (where the ELS bound C·2^k·√k grows
+exponentially). -/
+theorem finitely_many_deficiency_gt_one_for_fixed_k (k : ℕ) :
+    Set.Finite { n : ℕ | 2 * k ≤ n ∧ NoSmallPrimeFactors n k ∧ deficiency n k > 1 } := by
+  apply (finitely_many_for_fixed_k k).subset
+  intro n hn
+  simp only [Set.mem_setOf_eq] at hn ⊢
+  obtain ⟨h1, h2, h3⟩ := hn
+  exact ⟨h1, h2, by omega⟩
