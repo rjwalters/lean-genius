@@ -51,44 +51,46 @@
   },
   "sections": [
     {
-      "id": "algebraic",
-      "title": "Algebraic Identity Form",
-      "startLine": 43,
+      "id": "part1-algebraic-identity",
+      "title": "Part I: The Algebraic Identity",
+      "startLine": 26,
       "endLine": 47,
-      "summary": "stewarts_algebraic: the identity as a pure ring-theoretic fact, valid for any real a,b,c,d,m,n with m+n=a.",
-      "mathContext": "$b^2 m + c^2 n - a(d^2 + mn) = m(b^2 - d^2 - n^2) + n(c^2 - d^2 - m^2)$. This is verified by substituting $a = m + n$ and expanding both sides. The right side is where the law of cosines will be substituted: $b^2 - d^2 - n^2 = -2dn \\cdot t$ and $c^2 - d^2 - m^2 = 2dm \\cdot t$ (with sign convention $t = \\cos(\\angle BDA)$). The geometric magic happens when these sum to 0."
+      "summary": "The algebraic identity form underlying Stewart's theorem, expressed via the law of cosines on the two sub-triangles of a cevian."
     },
     {
-      "id": "derivation",
-      "title": "Stewart's Theorem from Law of Cosines",
-      "startLine": 50,
-      "endLine": 97,
-      "summary": "Defines the law of cosines for both sub-triangles with supplementary angle variable t, then proves the main theorem in two steps.",
-      "mathContext": "Setup: $c^2 = d^2 + m^2 - 2dm \\cdot t$ (triangle ABD) and $b^2 = d^2 + n^2 + 2dn \\cdot t$ (triangle ACD, note the $+$ sign from supplementary angle). Multiply first by $n$, second by $m$, add: $c^2 n + b^2 m = n(d^2+m^2) - 2dmnt + m(d^2+n^2) + 2dmnt = (m+n)d^2 + m^2 n + mn^2 = a(d^2 + mn(m+n)/a)$... actually $= (m+n)(d^2+mn) = a(d^2+mn)$. The Lean proof: \\texttt{rw [h\\_ABD, h\\_ACD]; ring}."
+      "id": "part2-stewart",
+      "title": "Part II: Stewart's Theorem from Law of Cosines",
+      "startLine": 48,
+      "endLine": 99,
+      "summary": "Stewart's theorem b²m + c²n = a(d² + mn): apply the law of cosines to both sub-triangles using supplementary angles (cos∠BDA = -cos∠CDA) and add to eliminate the cosine terms."
     },
     {
-      "id": "median",
-      "title": "Median Length Formula",
-      "startLine": 109,
-      "endLine": 115,
-      "summary": "Specializes Stewart's theorem to m=n=a/2, deriving d² = (2b²+2c²-a²)/4.",
-      "mathContext": "Substituting $m = n = a/2$: $b^2(a/2) + c^2(a/2) = a(d^2 + (a/2)^2)$. Dividing by $a$ (requires $a \\neq 0$): $(b^2+c^2)/2 = d^2 + a^2/4$, so $d^2 = (b^2+c^2)/2 - a^2/4 = (2b^2+2c^2-a^2)/4$. Lean: \\texttt{field\\_simp at hstewart ⊢; nlinarith} after applying \\texttt{stewarts\\_theorem} with $m = n = a/2$ and \\texttt{by ring} for $a/2 + a/2 = a$."
+      "id": "part3-median",
+      "title": "Part III: Special Case: Median Length Formula",
+      "startLine": 100,
+      "endLine": 117,
+      "summary": "The median length formula d² = (2b² + 2c² - a²)/4 as the m = n = a/2 special case of Stewart's theorem."
     },
     {
-      "id": "verification",
-      "title": "Numerical Verification: Right Triangle 3-4-5",
-      "startLine": 135,
-      "endLine": 137,
-      "summary": "Verifies the median to the hypotenuse of a 3-4-5 right triangle equals 5/2.",
-      "mathContext": "For the 3-4-5 right triangle ($a=5$, $b=4$, $c=3$): median formula gives $d^2 = (2 \\cdot 16 + 2 \\cdot 9 - 25)/4 = (32+18-25)/4 = 25/4$. So $d = 5/2 = a/2$. This confirms the general theorem: in a right triangle, the median to the hypotenuse equals half the hypotenuse (since the right triangle inscribes in a semicircle of diameter $a$, and the median = radius = $a/2$). Proved by \\texttt{norm\\_num}."
-    },
-    {
-      "id": "angle-bisector",
-      "title": "Part IV: Angle Bisector Length Formula",
+      "id": "part4-angle-bisector",
+      "title": "Part IV: Special Case: Angle Bisector Length",
       "startLine": 118,
-      "endLine": 134,
-      "summary": "Specializes Stewart's theorem to the angle bisector cevian (m/n = c/b from the angle bisector theorem) to derive the classical formula d² = bc[(b+c)²-a²]/(b+c)².",
-      "mathContext": "Setting $m = ca/(b+c)$ and $n = ba/(b+c)$ in Stewart's theorem $b^2 m + c^2 n = a(d^2 + mn)$ and simplifying gives the angle bisector length formula. This unifies the median formula (m=n=a/2) and angle bisector formula under the single Stewart's theorem umbrella."
+      "endLine": 127,
+      "summary": "The angle-bisector length formula as a special case of Stewart's theorem."
+    },
+    {
+      "id": "part5-numerical",
+      "title": "Part V: Numerical Verification",
+      "startLine": 128,
+      "endLine": 137,
+      "summary": "right_triangle_median: numerical check for the 3-4-5 right triangle, confirming the median to the hypotenuse equals half the hypotenuse (d = 5/2)."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 138,
+      "endLine": 156,
+      "summary": "Recap: Stewart's theorem derived from the law of cosines, the supplementary-angle proof method, the median special case, and 0 axioms / 0 sorries."
     }
   ],
   "conclusion": {
