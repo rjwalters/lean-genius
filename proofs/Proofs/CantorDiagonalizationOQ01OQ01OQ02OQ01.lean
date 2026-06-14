@@ -29,6 +29,9 @@ and develop the object-level scaffold around it.
 4. `aleph_two_permitted` — ℵ₂ is permitted (PFA value)
 5. `aleph_succ_permitted` — every successor aleph is permitted
 6. `permitted_unbounded` — the permitted-value class is proper (unbounded)
+   - `aleph_one_le_of_permitted` — every permitted value is `≥ ℵ₁`
+   - `aleph_one_least_permitted` — `ℵ₁` is the least permitted value
+   - `isPermittedValue_iff_aleph_one_le` — textbook "regular, `≥ ℵ₁`" form
 
 ### Easton functions (function-level):
 7. `IsEastonFunction F` — structure capturing the three Easton constraints
@@ -148,6 +151,44 @@ theorem not_permitted_of_le_aleph0 (κ : Cardinal.{0}) (h : κ ≤ ℵ₀) :
   rintro ⟨_, hgt⟩
   exact absurd (lt_of_lt_of_le hgt h) (lt_irrefl _)
 
+/-- Every permitted value is at least `ℵ₁`. This is the textbook
+    "uncountable" phrasing of the lower bound: for a cardinal,
+    `ℵ₀ < κ ⟺ ℵ₁ ≤ κ`, since `ℵ₁ = Order.succ ℵ₀`. Derived from the
+    definitional `ℵ₀ < κ` via `Order.succ_le_of_lt`. -/
+theorem aleph_one_le_of_permitted (κ : Cardinal.{0}) (h : IsPermittedValue κ) :
+    Cardinal.aleph 1 ≤ κ := by
+  rcases h with ⟨_, hgt⟩
+  rw [show (1 : Ordinal.{0}) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
+      Cardinal.aleph_succ, Cardinal.aleph_zero]
+  exact Order.succ_le_of_lt hgt
+
+/-- **ℵ₁ is the least permitted value**: it is itself permitted, and it
+    lies below every permitted value. Object-level statement that `ℵ₁`
+    is the minimum of the Easton spectrum — the smallest cardinal
+    consistent with both Cantor's lower bound and König's constraint.
+    There is no gap below it (CH realizes exactly this minimum). -/
+theorem aleph_one_least_permitted :
+    IsPermittedValue (Cardinal.aleph 1) ∧
+      ∀ κ : Cardinal.{0}, IsPermittedValue κ → Cardinal.aleph 1 ≤ κ :=
+  ⟨aleph_one_permitted, aleph_one_le_of_permitted⟩
+
+/-- Reformulation of `IsPermittedValue` in the textbook "regular and
+    `≥ ℵ₁`" form, equivalent to the definitional "regular and `ℵ₀ < κ`"
+    because `ℵ₀ < κ ⟺ ℵ₁ ≤ κ` for cardinals. -/
+theorem isPermittedValue_iff_aleph_one_le (κ : Cardinal.{0}) :
+    IsPermittedValue κ ↔ κ.IsRegular ∧ Cardinal.aleph 1 ≤ κ := by
+  constructor
+  · intro h
+    obtain ⟨hreg, _⟩ := h
+    exact ⟨hreg, aleph_one_le_of_permitted κ h⟩
+  · rintro ⟨hreg, hle⟩
+    refine ⟨hreg, ?_⟩
+    have h1 : ℵ₀ < Cardinal.aleph 1 := by
+      rw [show (1 : Ordinal.{0}) = Order.succ 0 from by rw [Order.succ_eq_add_one, zero_add],
+          Cardinal.aleph_succ, Cardinal.aleph_zero]
+      exact Order.lt_succ _
+    exact lt_of_lt_of_le h1 hle
+
 /-
 ═══════════════════════════════════════════════════════════════════════════════
 PART II: EASTON FUNCTIONS — FUNCTION-LEVEL CONSTRAINTS
@@ -248,6 +289,9 @@ PART IV: VERIFICATION
 #check @aleph_two_permitted
 #check @aleph_succ_permitted
 #check @permitted_unbounded
+#check @aleph_one_le_of_permitted
+#check @aleph_one_least_permitted
+#check @isPermittedValue_iff_aleph_one_le
 #check @IsEastonFunction
 #check @isEastonFunction_continuum
 #check @isEastonFunction_nonempty
