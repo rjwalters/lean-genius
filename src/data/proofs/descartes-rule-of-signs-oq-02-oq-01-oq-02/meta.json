@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 538,
+    "lineCount": 584,
     "dateAdded": "2026-05-03",
     "assumptions": "1 axiom: sturm_exact_count_axiom (additive form: σ_p(a) = σ_p(b) + #{roots in (a,b]}, bundling exact count and monotonicity). All supporting lemmas proved, including the key structural property (mod_eval_at_root), sequence non-emptiness, linear case verification, and four corollaries (no-roots, unique-root, two-roots, monotonicity).",
     "relatedProblems": [
@@ -34,7 +34,7 @@
         "relationship": "OQ-02-OQ-01 proves Budan's building blocks; Sturm's exact count goes further, using GCD-based sequences instead of derivative towers."
       }
     ],
-    "theoremCount": 29,
+    "theoremCount": 30,
     "definitionCount": 6
   },
   "overview": {
@@ -51,9 +51,9 @@
   },
   "leanFile": {
     "namespace": "SturmTheorem",
-    "lineCount": 538,
+    "lineCount": 584,
     "axiomCount": 1,
-    "theoremCount": 29,
+    "theoremCount": 30,
     "sorries": 0,
     "mainTheorems": [
       {
@@ -117,10 +117,19 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 80,
+      "description": "Module docstring: the research question, proof strategy, and the axiom budget (1 axiom — sturm_exact_count_axiom — for the general exact-count statement). Imports and the `open Polynomial` namespace setup.",
+      "theorems": [],
+      "tactics": []
+    },
+    {
       "id": "auxiliary-defs",
       "title": "§ 1. Auxiliary Definitions",
-      "startLine": 66,
-      "endLine": 105,
+      "startLine": 81,
+      "endLine": 126,
       "description": "Three supporting definitions: countSignAlts (count adjacent alternations in ±1 integers), signVariations (count sign changes in a real list, ignoring zeros), and rootsInInterval (count roots in half-open interval (a,b]).",
       "theorems": [
         "signVariations_nil",
@@ -140,8 +149,8 @@
     {
       "id": "sturm-sequence",
       "title": "§ 2. The Sturm Sequence",
-      "startLine": 107,
-      "endLine": 127,
+      "startLine": 127,
+      "endLine": 143,
       "description": "Two definitions: sturmSeqAux (fuel-based Sturm sequence construction via polynomial GCD) and sturmSeq (the full Sturm sequence of p, starting from [p, p']). Uses fuel p.natDegree + 1 which suffices since each GCD step strictly reduces degree.",
       "theorems": [],
       "tactics": []
@@ -149,9 +158,9 @@
     {
       "id": "sequence-properties",
       "title": "§ 3. Basic Properties of the Sturm Sequence",
-      "startLine": 129,
-      "endLine": 195,
-      "description": "Four structural theorems: the sequence is non-empty, the head is always p, the second element is derivative p, and for degree ≥ 1 polynomials the sequence has at least 2 elements.",
+      "startLine": 144,
+      "endLine": 188,
+      "description": "Five structural theorems: the auxiliary and full sequences are non-empty, the head is always p, the auxiliary head matches, and for degree ≥ 1 polynomials the sequence has at least 2 elements.",
       "theorems": [
         "sturmSeqAux_ne_empty",
         "sturmSeq_ne_empty",
@@ -170,9 +179,9 @@
     {
       "id": "sturm-count",
       "title": "§ 4. The Sturm Sign-Variation Count",
-      "startLine": 197,
-      "endLine": 215,
-      "description": "Definition of sturmVariations: the number of sign changes in the Sturm sequence evaluated at x. Basic theorems for zero polynomial and constants.",
+      "startLine": 189,
+      "endLine": 205,
+      "description": "Definition of sturmVariations: the number of sign changes in the Sturm sequence evaluated at x. Basic theorems for the zero polynomial and constants.",
       "theorems": [
         "sturmVariations_zero",
         "sturmVariations_C"
@@ -182,10 +191,44 @@
       ]
     },
     {
+      "id": "squarefree-root-lemma",
+      "title": "§ 3a. Squarefree Root Lemma (B.1 of Sturm exact-count proof)",
+      "startLine": 206,
+      "endLine": 230,
+      "description": "Proves squarefree_root_has_nonzero_derivative: a squarefree polynomial has nonzero derivative at each of its real roots. This is step B.1 of the Sturm exact-count argument, ensuring simple roots so that consecutive Sturm terms change sign cleanly.",
+      "theorems": [
+        "squarefree_root_has_nonzero_derivative"
+      ],
+      "tactics": [
+        "intro",
+        "have",
+        "rw",
+        "simp",
+        "exact"
+      ]
+    },
+    {
+      "id": "locally-constant-lemma",
+      "title": "§ 4a. Locally-Constant Lemma (Step A of Sturm exact-count proof)",
+      "startLine": 231,
+      "endLine": 303,
+      "description": "Proves the private lemma sturmVariations_locally_constant: the Sturm sign-variation count is locally constant on intervals free of roots of the sequence's polynomials. This is Step A of the exact-count argument — the count can only change as x crosses a root.",
+      "theorems": [
+        "sturmVariations_locally_constant"
+      ],
+      "tactics": [
+        "intro",
+        "have",
+        "simp only",
+        "rw",
+        "nlinarith"
+      ]
+    },
+    {
       "id": "key-structural-lemma",
       "title": "§ 5. Key Structural Lemma: Mod at a Root",
-      "startLine": 217,
-      "endLine": 252,
+      "startLine": 304,
+      "endLine": 333,
       "description": "Three theorems proving the foundational algebraic identity: at a root r of q, (p % q)(r) = p(r). This follows from the Euclidean division identity b·(a/b) + (a%b) = a. As a corollary, consecutive Sturm terms bracket any interior root with opposite signs (their product is negative).",
       "theorems": [
         "mod_eval_at_root",
@@ -204,9 +247,9 @@
     {
       "id": "main-theorem",
       "title": "§ 6. Main Theorem: Exact Root Count",
-      "startLine": 254,
-      "endLine": 290,
-      "description": "The main axiom: sturm_exact_count_axiom. For squarefree p with p(a) ≠ 0 and p(b) ≠ 0, the root count in (a,b] equals the Sturm variation difference. Wrapped in theorem sturm_exact_count for convenient use.",
+      "startLine": 334,
+      "endLine": 370,
+      "description": "The main axiom: sturm_exact_count_axiom (line 357). For squarefree p with p(a) ≠ 0 and p(b) ≠ 0, the root count in (a,b] equals the Sturm variation difference. Wrapped in theorem sturm_exact_count for convenient use.",
       "theorems": [
         "sturm_exact_count_axiom",
         "sturm_exact_count"
@@ -216,9 +259,9 @@
     {
       "id": "corollaries",
       "title": "§ 7. Corollaries",
-      "startLine": 292,
-      "endLine": 358,
-      "description": "Four direct consequences of the exact count theorem: no-roots (equal counts → 0 roots), unique root (count drops by 1 → 1 root), two roots (count drops by 2 → 2 roots), and monotonicity of sturmVariations.",
+      "startLine": 371,
+      "endLine": 424,
+      "description": "Five direct consequences of the exact count theorem: no-roots (equal counts → 0 roots), unique root (count drops by 1 → 1 root), two roots (count drops by 2 → 2 roots), the count-≤-variations bound, and monotonicity (antitonicity) of sturmVariations.",
       "theorems": [
         "sturm_no_roots",
         "sturm_unique_root",
@@ -234,11 +277,12 @@
     {
       "id": "linear-example",
       "title": "§ 8. Example: Sturm Sequence for a Linear Polynomial",
-      "startLine": 360,
-      "endLine": 395,
-      "description": "Explicit computation for p(x) = x - c: the Sturm sequence is [x-c, 1], and the sign count is 1 when x < c (one sign change: negative, positive) and 0 when x > c (no sign change: positive, positive). Verifies the theorem for degree-1 polynomials.",
+      "startLine": 425,
+      "endLine": 465,
+      "description": "Explicit computation for p(x) = x - c: the Sturm sequence is [x-c, 1] (linear_deriv, sturmSeq_linear), and the sign count is 1 when x < c (one sign change: negative, positive) and 0 when x > c (no sign change: positive, positive).",
       "theorems": [
         "linear_deriv",
+        "sturmSeq_linear",
         "sturm_linear_left",
         "sturm_linear_right"
       ],
@@ -251,10 +295,28 @@
       ]
     },
     {
+      "id": "linear-exact-count-axiom-free",
+      "title": "§ 8a. Sturm's Exact Count, Verified for Linear Polynomials (axiom-free)",
+      "startLine": 466,
+      "endLine": 511,
+      "description": "Discharges the exact-count statement for linear polynomials without using the axiom: rootsInInterval_X_sub_C computes the root count of (x - c), and sturm_exact_count_linear proves the Sturm exact-count equality for degree-1 polynomials directly — an axiom-free instance of the main theorem.",
+      "theorems": [
+        "rootsInInterval_X_sub_C",
+        "sturm_exact_count_linear"
+      ],
+      "tactics": [
+        "simp",
+        "norm_num",
+        "split",
+        "have",
+        "linarith"
+      ]
+    },
+    {
       "id": "squarefree-gcd",
       "title": "§ 9. Squarefree Polynomials and the GCD Connection",
-      "startLine": 397,
-      "endLine": 425,
+      "startLine": 512,
+      "endLine": 554,
       "description": "Two structural theorems about squarefree polynomials: they share no common real roots with their derivative (squarefree_no_common_roots), and they have nonzero derivative when degree ≥ 1 (squarefree_deriv_ne_zero_of_pos_degree). These are the conditions that make Sturm's exact count work.",
       "theorems": [
         "squarefree_no_common_roots",
@@ -272,8 +334,8 @@
     {
       "id": "comparison",
       "title": "§ 10. Comparison with Budan's Theorem",
-      "startLine": 427,
-      "endLine": 448,
+      "startLine": 555,
+      "endLine": 584,
       "description": "A comparative discussion of Sturm vs Budan: both give root count information, but Sturm is exact while Budan gives an upper bound. The key difference is the sequence construction (GCD-based vs derivative tower) and the squarefree requirement.",
       "theorems": [],
       "tactics": []
