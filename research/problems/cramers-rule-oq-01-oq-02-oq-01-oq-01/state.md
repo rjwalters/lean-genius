@@ -1,12 +1,36 @@
 # Current State
 
-**Phase**: S18 ACT (STATE-SYNC of a merged .lean-only ACT — PR #22941 proved `qdetN_step_eq_qdetF` modulo a new division-free crux lemma `qdetN_step_eq_qdetF_aux`, which now carries the sole sorry; trackers had been frozen at S17 PREP)
-**Since**: 2026-06-13T19:30:00Z (S18 ACT STATE-SYNC, researcher-6)
+**Phase**: S20 BLOCKED (sole remaining work is the division-free crux `qdetN_step_eq_qdetF_aux`, a genuine Lean ACT that is build-gated; Docker is DOWN per the 2026-06-13 verification blackout, so it cannot be verified)
+**Since**: 2026-06-13T23:30:00Z (S20 BLOCKED flag, researcher-2)
 **Iteration**: 18
-**Last session**: S18 ACT STATE-SYNC — record merged S4 ACT #22941 + gallery meta sync (researcher-6, 2026-06-13, doc-only)
-**Last Updated**: 2026-06-13T19:30:00Z
+**Last session**: S20 BLOCKED — flag build-gated during verification blackout (researcher-2, 2026-06-13, doc-only)
+**Last Updated**: 2026-06-13T23:30:00Z
 
 > _Phase note: state.md previously stayed at iter 15 because S16 PREP (researcher-1, 2026-05-25) did not propagate iteration counter to state.md — only updated the JSON. S17 PREP brought it back in sync (15 → 17). This S18 ACT records the merge-skipped S4 ACT (#22941, merged 2026-06-13T12:50Z) that grew the file 312 → 377 LOC and proved the strategic bridge modulo the residual crux._
+
+## Session 20 — S20 BLOCKED, flag build-gated during verification blackout (researcher-2, 2026-06-13, doc-only)
+
+All trackers are fully in sync and there is **no build-free work left**:
+- `state.md` / `knowledge.md` / gallery `meta.json` all reconciled to the
+  merged S4 ACT (#22941, #23165 state-sync, #23227 knowledge.md sync,
+  #23233 gallery prose sync) — verified against `origin/main` this session.
+- Source `CramersRuleOQ01OQ02OQ01OQ01.lean` = 377 LOC, 12 theorems,
+  **1 `sorry`** (line 277), 0 axioms; gallery meta nested fields match
+  exactly (sorries 1 / lineCount 377 / theoremCount 12 / formalized / wip).
+
+The single remaining `sorry` is the division-free Schur–cofactor crux
+`qdetN_step_eq_qdetF_aux`. This is a **genuine Lean ACT**, not a tracker
+gap — a concrete recipe already exists (S15 PREP §4.1 `submatrix_chain`
+Form 1 + Block I-IV; S16+1 ACT picker). Discharging it requires editing
+`.lean` and a Docker `lake` build to verify, but **Docker is DOWN** per the
+2026-06-13 verification blackout (`docker info` unreachable). Writing the
+proof blind would be unverifiable and risks auto-merge of a broken proof.
+
+Per the "flag BLOCKED over PREP churn" policy (Docker-down + the crux
+recipe is already documented across S12/S15/S16 PREP), this session does
+**not** write another PREP memo. Status flipped to `blocked`. **Re-open
+when Docker/`lake` verification returns** — then execute the S15 PREP §4.1
+recipe to take the crux `1 → 0 sorry` and the file becomes `sorry`-free.
 
 ## Session 18 — S18 ACT STATE-SYNC, record merged S4 ACT #22941 (researcher-6, 2026-06-13, doc-only)
 
