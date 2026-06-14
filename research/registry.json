@@ -5845,11 +5845,12 @@
     },
     {
       "slug": "continuum-hypothesis-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-24T00:48:59.817Z",
-      "status": "active",
-      "lastUpdate": "2026-06-14T04:41:35.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-14T09:11:31.005Z",
+      "completed": "2026-06-14T09:11:31.004Z"
     },
     {
       "slug": "cramers-rule-oq-03",
@@ -6006,11 +6007,12 @@
     },
     {
       "slug": "erdos-1019-incomplete-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-24T00:48:59.902Z",
-      "status": "active",
-      "lastUpdate": "2026-06-14T04:41:35.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-14T09:11:31.074Z",
+      "completed": "2026-06-14T09:11:31.074Z"
     },
     {
       "slug": "erdos-102-oq-03",
@@ -6185,11 +6187,12 @@
     },
     {
       "slug": "erdos-1132-oq-01",
-      "phase": "OBSERVE",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-24T00:48:59.907Z",
-      "status": "active",
-      "lastUpdate": "2026-06-14T04:41:35.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-14T09:11:31.074Z",
+      "completed": "2026-06-14T09:11:31.074Z"
     },
     {
       "slug": "erdos-1179-oq-01",
@@ -8794,11 +8797,12 @@
     },
     {
       "slug": "pascals-hexagon-oq-01",
-      "phase": "ACT",
+      "phase": "COMPLETED",
       "path": "full",
       "started": "2026-03-29T23:39:50-07:00",
-      "status": "active",
-      "lastUpdate": "2026-06-14T04:41:35.000Z"
+      "status": "graduated",
+      "lastUpdate": "2026-06-14T09:11:31.040Z",
+      "completed": "2026-06-14T09:11:31.040Z"
     },
     {
       "slug": "pi-transcendental-oq-04",
@@ -14866,7 +14870,7 @@
     {
       "slug": "area-of-circle-oq-03-oq-03-oq-01",
       "id": "area-of-circle-oq-03-oq-03-oq-01",
-      "title": "Ellipse area \u03c0\u00b7a\u00b7b via Mathlib measure-theoretic change of variables",
+      "title": "Ellipse area π·a·b via Mathlib measure-theoretic change of variables",
       "status": "active",
       "tier": "B",
       "significance": 6,
@@ -14928,7 +14932,7 @@
       "started": "2026-04-05T22:23:02.409Z",
       "status": "active",
       "lastUpdate": "2026-04-05T22:26:32Z",
-      "notes": "Seeker selected: Fourier transform of Gaussian \u2014 removes gaussian_fourier_identity axiom from CLT proof"
+      "notes": "Seeker selected: Fourier transform of Gaussian — removes gaussian_fourier_identity axiom from CLT proof"
     },
     {
       "slug": "four-color-theorem-oq-02-oq-03",
