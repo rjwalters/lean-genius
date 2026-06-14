@@ -102,15 +102,15 @@
       "id": "divergence-coprime",
       "title": "Divergence and Coprime Results",
       "startLine": 215,
-      "endLine": 231,
-      "summary": "Informal block comments noting the divergence-of-reciprocals and coprime conditions that inform the axiom. Defines `ErdosProblem281 : Prop`, the formal statement of the problem."
+      "endLine": 219,
+      "summary": "Informal block comments noting the divergence-of-reciprocals and coprime conditions that inform the axiom."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem and Equivalence",
-      "startLine": 232,
+      "startLine": 220,
       "endLine": 250,
-      "summary": "Erdős Problem 281 statement and axiomatized proof. The biconditional `full_covering_iff_uniform` combines hard (axiom) and easy (proved) directions.",
+      "summary": "Defines `ErdosProblem281 : Prop`, the formal problem statement, followed by the axiomatized proof. The biconditional `full_covering_iff_uniform` combines hard (axiom) and easy (proved) directions.",
       "mathContext": "$\\text{HasFullCovering} \\iff \\text{HasUniformFiniteCoverage}$ for valid strictly increasing moduli"
     }
   ],
