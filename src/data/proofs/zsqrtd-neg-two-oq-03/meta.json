@@ -83,43 +83,59 @@
   "sections": [
     {
       "id": "header-imports",
-      "title": "Module Header and Imports",
+      "title": "Module Header, Imports, and ZMod(3) Helpers",
       "startLine": 1,
-      "endLine": 48,
-      "summary": "File docstring describing the S2 ACT infrastructure target and what is deferred to S3-S5. Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` (for later splitting work) and `Mathlib.Tactic` (for `nlinarith`, `ring`, `simp`).",
+      "endLine": 91,
+      "summary": "File docstring describing the S2 ACT infrastructure target and what is deferred to S3-S5. Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` (for later splitting work) and `Mathlib.Tactic` (for `nlinarith`, `ring`, `simp`). Two private `ZMod 3` helper lemmas (`two_ne_zero_zmod_three`, `not_isSquare_two_zmod_three`) used by the S4 splitting argument are also stated here.",
       "mathContext": "The S2 ACT layer is the algebraic foundation. The QR import is forward-looking — used in S4 when `(-3/p) = (p/3)` arises — and does not affect the present file's content."
     },
     {
       "id": "structure",
       "title": "Structure and Primitive Instances",
-      "startLine": 50,
-      "endLine": 103,
+      "startLine": 92,
+      "endLine": 145,
       "summary": "`structure Eisenstein` with two integer coordinates `re, im`, the `ofInt` coercion, and primitive instances `Zero, One, Add, Neg, Mul` together with twelve `@[simp] rfl` projection lemmas for `re/im` on these constructions (zero, one, add, neg, mul) plus the integer-coercion lemmas re_ofInt / im_ofInt.",
       "mathContext": "The multiplication is derived from `ω² + ω + 1 = 0`: `(a + bω)(c + dω) = ac + (ad + bc)ω + bd · ω² = (ac - bd) + (ad + bc - bd)ω`. The projection lemmas expose the constructor form so that `simp` can fire during the ring-axiom proofs."
     },
     {
       "id": "ring-structure",
       "title": "AddCommGroup, AddGroupWithOne, CommRing",
-      "startLine": 105,
-      "endLine": 149,
+      "startLine": 146,
+      "endLine": 191,
       "summary": "Builds the ring structure ladder via the Mathlib `Zsqrtd.commRing` template: `addCommGroup` with explicit `nsmulRec/zsmulRec` and `add_assoc`-style refinements; `addGroupWithOne` with `natCast := ofInt ∘ Int.ofNat` and `intCast := ofInt`; `commRing` with explicit `npowRec` and the ring axioms. Interleaved are `sub_re` and `sub_im` simp lemmas (derived from `sub_eq_add_neg`).",
       "mathContext": "Each axiom is closed by `intros; ext <;> simp <;> ring` — the simp lemmas unfold the projection-component form so that `ring` can normalize the integer arithmetic. This is the exact pattern used in `Mathlib/NumberTheory/Zsqrtd/Basic.lean` around line 164."
     },
     {
       "id": "norm-definition-and-nonneg",
       "title": "Norm Definition and Non-Negativity",
-      "startLine": 151,
-      "endLine": 167,
+      "startLine": 193,
+      "endLine": 209,
       "summary": "Defines the Eisenstein norm `N(a + bω) = a² - ab + b²` together with the trivial `norm_zero`, `norm_one` (closed by `simp [norm]`) and the load-bearing `norm_nonneg` lemma. The latter rests on the algebraic identity `4 · N(z) = (2 re - im)² + 3 · im²` proved by `simp only [norm]; ring`, closed by `nlinarith [sq_nonneg (2 * z.re - z.im), sq_nonneg z.im]`.",
       "mathContext": "The non-negativity certificate `4 · (a² - ab + b²) = (2a - b)² + 3 b²` is the same `disc(x² - x + 1) = 1 - 4 = -3 < 0` discriminant identity that shows `x² - x + 1 > 0` over ℝ. It establishes that `N` is a positive-definite integral quadratic form of discriminant `-3` — exactly the form whose `SL₂(ℤ)`-equivalence class generates the (trivial) class group of `ℚ(√-3)`."
     },
     {
       "id": "norm-properties",
       "title": "Norm Multiplicativity and Zero Criterion",
-      "startLine": 169,
-      "endLine": 207,
+      "startLine": 210,
+      "endLine": 245,
       "summary": "Establishes the three structural properties of the norm needed downstream: `norm_mul` (multiplicativity `N(xy) = N(x) · N(y)` via `simp only [norm, mul_re, mul_im]; ring`), `norm_eq_zero_iff` (the two-square split — extracting `z.re = z.im = 0` from `(2·re - im)² = im² = 0` using `pow_eq_zero_iff` and `linarith`), and `norm_pos_of_ne_zero` (strict positivity on nonzero elements, derived from `norm_nonneg` + `norm_eq_zero_iff`).",
       "mathContext": "Multiplicativity is the algebraic spine of the entire downstream proof: it makes `N : Eisenstein → ℤ` a monoid homomorphism, so that primality in `ℤ` reflects irreducibility in `ℤ[ω]`. The zero criterion `N(z) = 0 ↔ z = 0` is what promotes `ℤ[ω]` to a domain (it forbids zero divisors via the norm map). Strict positivity on nonzero elements is then automatic, and provides the well-founded measure required for the S3 EuclideanDomain instance: any valid quotient/remainder pair `(q, r)` with `0 ≤ N(r) < N(divisor)` terminates the division algorithm."
+    },
+    {
+      "id": "conjugate-and-euclidean-domain",
+      "title": "The Eisenstein Conjugate and Division by Rounding (S3)",
+      "startLine": 247,
+      "endLine": 457,
+      "summary": "Defines `conj z = (re - im) + (-im)ω` with its `norm_conj` (norm-preserving), `mul_conj` (`z · conj z = ⟨N z, 0⟩`), and projection lemmas. Builds division by rounding the rational quotient `(x · conj y)/N(y)` componentwise (`instDiv`, `instMod`, `mod_def`), proves the lattice covering bound `sq_rounding_error_lt_one` (squared rounding error < 1 via `4N = (2a-b)² + 3b²` with `|a|,|b| ≤ 1/2`), and chains `norm_mod_lt → natAbs_norm_mod_lt → norm_le_norm_mul_left` to instantiate `EuclideanDomain Eisenstein`.",
+      "mathContext": "This is the heart of the proof that `ℤ[ω]` is a Euclidean domain (hence a PID/UFD): the Eisenstein lattice has covering radius < 1 in the norm metric, so every point is within norm-distance < 1 of a lattice point, giving a valid remainder `0 ≤ N(r) < N(divisor)`. The Euclidean function is `(norm ·).natAbs` and the well-founded relation is induced from it. Euclideanness is exactly what makes prime splitting (S4) yield genuine factorizations rather than mere norm identities."
+    },
+    {
+      "id": "s4-legendre-splitting",
+      "title": "S4 Splitting Argument — Legendre Symbol Identities",
+      "startLine": 459,
+      "endLine": 559,
+      "summary": "First ingredients of the splitting argument toward `p = α·β` in `ℤ[ω]` for primes `p ≡ 1 (mod 3)`: `legendreSym_neg_three` (`(-3/p) = (-1/p)·(3/p)` from `legendreSym.mul`), the helper `legendreSym_three_eq_one_iff_p_mod_three_eq_one` (`(3/p) = 1 ↔ p ≡ 1 mod 3`, via `IsSquare ((p:ZMod 3))` and the ZMod(3) helpers), and `legendreSym_neg_three_eq_one_iff` (`(-3/p) = 1 ↔ p ≡ 1 mod 3`). Steps 2–3 (extracting actual Eisenstein factors) are deferred to a later iteration.",
+      "mathContext": "The bridge between elementary number theory and the Eisenstein arithmetic: `(-3/p) = 1` is the quadratic-residue condition that `-3` is a square mod `p`, equivalently `p ≡ 1 (mod 3)`. By quadratic reciprocity this controls when `p` splits in `ℤ[ω] = ℤ[√-3]`-order, i.e. when `p = a² - ab + b²` is representable. Combined with the S3 Euclidean-domain structure, a split prime factors as `p = α · conj α` with `N(α) = p`."
     }
   ],
   "overview": {
