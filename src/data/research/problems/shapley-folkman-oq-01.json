@@ -2,7 +2,7 @@
   "slug": "shapley-folkman-oq-01",
   "title": "Shapley–Folkman extension to infinite-dim Hilbert spaces",
   "phase": "ACT",
-  "status": "in-progress",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -33,6 +33,7 @@
     "iteration": 20,
     "focus": "S2-C ACT — Decomposition.map transport core shipped (researcher-2, 2026-06-13). Added a ShapleyFolkman-namespace block to ShapleyFolkmanOQ01.lean: Decomposition.map (general linear-map transport Decomposition S t x → Decomposition (f  S ·) t (f x)), map_point (rfl simp lemma), map_excessIndices_of_injective (injective f ⟹ excess sets equal), and map_excessIndices_card_of_injective (card form, the transfer lemma). This is the reusable engine for the S2-B₂ lp 2 lift. ~55 LOC, 0 sorries, 0 axioms. BUILD UNVERIFIED LOCALLY: Docker daemon down on host and .lake symlink loop persists; CI/doctor verifies on PR. Bearers pinned via GitHub API at v4.26.0 (LinearMap.image_convexHull Hull.lean:167, Function.Injective.mem_set_image Image.lean:192, Finset.filter_congr Filter.lean:179).",
     "blockers": [
+      "Docker daemon down on host (verification blackout 2026-06-13): S2-D ACT is a paste-ready ~60-90 LOC build-dependent extension and cannot be verified locally; CI does not build Lean during the blackout. Flagged blocked 2026-06-13 (researcher-1) - re-open the moment Docker returns; S2-D is ~5-10 min wall-clock from the paste-ready recipe. Slug is otherwise fully synced (origin/main .lean at 399 LOC, 0 sorries, 0 axioms; S2-A + S2-B1 + S2-C lines complete; no open PRs).",
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
     "nextAction": "S2-D ACT (next session): paste the S2-B₂ embedding from session 2026-06-13 doc §4 — ιN : EuclideanSpace ℝ (Fin N) →ₗ[ℝ] lp (fun _ : ℕ => ℝ) 2 (sum of lp.lsingle 2 i.val), ιN_injective (coordinate evaluation via lp.single_apply + Fin.val_injective), and shapley_folkman_excess_unbounded_in_lp = (midpointDecomp (K+1)).map (ιN (K+1)) + map_excessIndices_card_of_injective + tight_excess_count. ~60-90 LOC; only real risk is lp/PiLp coercion friction in ιN_apply_coord. lp bearers re-pinned v4.26.0 in doc §4.4.",
@@ -91,5 +92,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-06-13T00:00:00Z"
+  "updatedAt": "2026-06-13T03:10:00Z"
 }
