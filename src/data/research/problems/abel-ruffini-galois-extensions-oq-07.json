@@ -130,14 +130,12 @@
       "No 'minimal counterexample' tactic infrastructure for finite-group induction proofs — would be a useful methodological add."
     ],
     "nextSteps": [
-      "(S10) Close sylow_two_unique_when_n3_four's sorry via element counting (~80-120 lines): pairwise trivial intersection of distinct Sylow 3-subgroups, partition {g | g^3=1} = {e} ⊔ ⊔ᵢ (Q_i \\ {e}), cardinality 9, residue 3 = |P|−1 pinning P uniquely. Mathlib API: Set.ncard_biUnion / Finset.card_disjUnion, Subgroup.disjoint_iff_inf_eq_bot, Sylow.ext.",
       "(post-S10) Augment burnside_pq dispatch to peel off (a,b)=(2,1) axiom-free for ALL (p,q): combine S7 (q<p), S7.5 (p<q≠p+1), and burnside_p_squared_q_twelve ((p,q)=(2,3)).",
       "(S11) Symmetric (1,2) shape: burnside_p_q_squared_p_gt_q, burnside_p_q_squared_p_lt_q, burnside_p_q_squared_eighteen mirroring S7/S7.5/S9 (~250 lines).",
       "(S12) Augment burnside_pq dispatch to peel off (1,2) too. Narrow burnside_pq_nontrivial axiom hypothesis to 2 ≤ a ∧ 2 ≤ b.",
       "(S13) |G| = p²·q² Sylow analysis (~150 lines).",
       "(S14+) Goldschmidt-Matsuyama on Mathlib.GroupTheory.Focal.",
-      "(Final) Replace burnside_pq_nontrivial axiom; submit Mathlib upstream PR.",
-      "S23: compose `cube_id_card_eq_nine` from in-flight S16 PRs (#17586 Sylow-3 disjointness + #17587 Sylow-3 per-fiber cardinality) once both merge, then plug into S22's `sylow_two_subsingleton_of_cube_id_card_nine` to close the S10 sorry in `sylow_two_unique_when_n3_four`. Estimated ~18 lines total once S16 lands."
+      "(Final) Replace burnside_pq_nontrivial axiom; submit Mathlib upstream PR."
     ]
   },
   "tags": [

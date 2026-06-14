@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: chebyshev_interp structured into 3 steps, 1 inner sorry for interpolation exactness. 2 sorries remain in parent file.",
+    "progressSummary": "PROGRESS: chebyshev_interp structured into 3 steps; interpolation-exactness step now discharged. 0 sorries remain across both files (2 axioms: erdos_1131_conjecture, erdos_1131_variance_conjecture encode the open conjecture).",
     "builtItems": [
       "lagrangeBasis_self: Finset.prod_eq_one + div_self (product of 1s)",
       "lagrangeBasis_other: Finset.prod_eq_zero + sub_self (zero factor)",
