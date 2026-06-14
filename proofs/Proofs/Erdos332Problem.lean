@@ -148,6 +148,13 @@ theorem diffSet_nonempty_iff (A : Set ℕ) :
   rw [diffSet_finite_eq_empty A hfin] at hd
   exact absurd hd (Set.not_mem_empty d)
 
+/-- Complete empty/finite characterization: `D(A) = ∅` if and only if `A` is
+    finite. The forward direction strengthens `diffSet_finite_eq_empty` to a
+    biconditional, dual to `diffSet_nonempty_iff` (nonempty ↔ infinite). -/
+theorem diffSet_eq_empty_iff (A : Set ℕ) :
+    diffSet A = ∅ ↔ A.Finite := by
+  rw [← Set.not_nonempty_iff_eq_empty, diffSet_nonempty_iff, Set.not_infinite]
+
 /-- Positive lower density implies positive upper density. -/
 theorem lower_density_implies_upper (A : Set ℕ) :
     HasPositiveLowerDensity A → HasPositiveUpperDensity A := by

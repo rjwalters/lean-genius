@@ -29,9 +29,9 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-28T09:00:00Z",
-    "iteration": 4,
-    "focus": "Graduated: formalization complete (0 sorries, 1 deep axiom: Prikry's theorem)",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 5,
+    "focus": "Closed a claimed-but-missing biconditional. The progress summary claimed a complete 'empty<->finite' characterization, but the file only had diffSet_finite_eq_empty (finite -> empty). Added diffSet_eq_empty_iff (D(A)=empty <-> A.Finite), dual to the existing diffSet_nonempty_iff. theoremCount 20->21, lineCount 256->263. Single Prikry axiom unchanged (deep, irreducible).",
     "blockers": [],
     "nextAction": "None — all provable structural results formalized. The single remaining axiom (positive_density_bounded_gaps) is the deep Prikry–Tijdeman–Stewart theorem; full proof would require Furstenberg correspondence and ergodic-theoretic recurrence machinery not yet available in Mathlib.",
     "attemptCounts": {
@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 20 theorems, 1 deep axiom (Prikry's theorem), 0 sorries. Complete D(A) characterization: empty↔finite, nonempty↔infinite, syndetic⟸positive density. Full implication chain density → infinite → D(A) nonempty → D(A) syndetic. The single axiom is positive_density_bounded_gaps (Prikry–Tijdeman–Stewart, 1977–78), a deep additive-combinatorics result.",
+    "progressSummary": "COMPLETED: 21 theorems, 1 deep axiom (Prikry's theorem), 0 sorries. Complete D(A) characterization now fully formalized in BOTH directions: empty<->finite (diffSet_eq_empty_iff) and nonempty<->infinite (diffSet_nonempty_iff). Full implication chain density -> infinite -> D(A) nonempty -> D(A) syndetic. The single axiom is positive_density_bounded_gaps (Prikry-Tijdeman-Stewart, 1977-78).",
     "builtItems": [
       "Assessment: all 3A appropriate and deep",
       "Proved diffSet_mono in Erdos332Problem.lean:102",
@@ -62,7 +62,8 @@
       "positive_upper_density_infinite in Erdos332Problem.lean",
       "positive_upper_density_diffSet_nonempty in Erdos332Problem.lean",
       "density_chain in Erdos332Problem.lean",
-      "Graduated problem to completed status (iteration 4)"
+      "Graduated problem to completed status (iteration 4)",
+      "diffSet_eq_empty_iff: D(A)=empty <-> A.Finite (completes the empty/finite characterization as a biconditional)"
     ],
     "insights": [
       "Single axiom is deep: positive_density_bounded_gaps (Prikry–Tijdeman–Stewart, follows from Furstenberg correspondence + Poincaré recurrence). Not currently provable from Mathlib.",
