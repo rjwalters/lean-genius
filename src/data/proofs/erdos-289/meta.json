@@ -21,11 +21,11 @@
     "erdosUrl": "https://erdosproblems.com/289",
     "erdosProblemStatus": "open",
     "axiomCount": 0,
-    "lineCount": 135,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "lineCount": 152,
+    "assumptions": "0 axioms, 0 sorries. The main conjecture is now formally stated as `def ErdosProblem289 : Prop` (∃ K, ∀ k ≥ K, ∃ k pairwise non-adjacent interval blocks with reciprocal sums totaling 1) but remains unproved (open problem), so status is 'axiomatized'+'wip' per the open-problem policy. Proved unconditionally: interval_block_has_two, nonadj_implies_disjoint, reciprocal-sum upper/lower bounds per block, and recipSum_pos (strict positivity).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4,
-    "definitionCount": 6
+    "theoremCount": 5,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Erdős and Graham posed this problem in their influential 1980 monograph 'Old and New Problems and Results in Combinatorial Number Theory,' which collected hundreds of open problems from Erdős's vast collaboration network. The question sits at the intersection of Egyptian fraction theory (expressing rationals as sums of unit fractions, a tradition dating to the Rhind Papyrus c. 1650 BCE) and combinatorial constraints on intervals. Hickerson and Montgomery demonstrated feasibility by constructing 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. The non-adjacency constraint is the essential difficulty: without it, one can decompose any unit fraction representation by splitting and merging adjacent intervals. The problem connects to Croot's 2003 resolution of the Erdős–Graham conjecture (that $\\{n+1, \\ldots, 2n\\}$ contains a subset whose reciprocals sum to 1 for large $n$) and to the broader Egyptian fraction tradition studied by Erdős, Straus, and Graham.",
@@ -57,7 +57,7 @@
       "title": "Main Conjecture",
       "startLine": 61,
       "endLine": 68,
-      "summary": "Axiomatizes Erdős Problem #289: ∃ K, ∀ k ≥ K, there exist k pairwise non-adjacent interval blocks with reciprocal sums totaling 1."
+      "summary": "Formally states Erdős Problem #289 as `def ErdosProblem289 : Prop` = ∃ K, ∀ k ≥ K, there exist k pairwise non-adjacent interval blocks (via ValidDecomposition) with reciprocal sums totaling 1. Stated, not proved (open)."
     },
     {
       "id": "properties",
@@ -70,15 +70,15 @@
       "id": "hickerson-montgomery",
       "title": "Hickerson–Montgomery Example",
       "startLine": 88,
-      "endLine": 97,
-      "summary": "Axiomatizes the Hickerson–Montgomery construction: 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2. Demonstrates feasibility of exact targets under non-adjacency."
+      "endLine": 93,
+      "summary": "Documents the Hickerson–Montgomery construction (as a comment): 5 non-adjacent intervals [2,7], [9,10], [17,18], [34,35], [84,85] with reciprocal sum exactly 2, illustrating feasibility of exact targets under non-adjacency."
     },
     {
       "id": "structural",
       "title": "Structural Observations",
-      "startLine": 98,
-      "endLine": 131,
-      "summary": "Harmonic tail divergence (enough sum available), reciprocal sum upper/lower bounds per block, spreading constraint (max endpoint ≥ k for k blocks), and the easier problem without non-adjacency (Erdős–Graham remark)."
+      "startLine": 94,
+      "endLine": 152,
+      "summary": "Proves interval_recipsum_upper and interval_recipsum_lower (per-block reciprocal-sum bounds |I|/hi ≤ S(I) ≤ |I|/lo) and recipSum_pos (each block's reciprocal sum is strictly positive). Includes commentary on harmonic tail divergence and the easier non-adjacency-free problem (Erdős–Graham remark)."
     }
   ],
   "crossReferences": [
@@ -119,10 +119,10 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 135,
+    "lineCount": 152,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 6,
+    "theoremCount": 5,
+    "definitionCount": 7,
     "path": "Proofs/Erdos289Problem.lean",
     "sorries": 0
   },

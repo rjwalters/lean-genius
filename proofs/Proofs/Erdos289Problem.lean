@@ -62,6 +62,10 @@ def ValidDecomposition (k : ℕ) (blocks : Fin k → IntervalBlock) : Prop :=
 
 /-- **Erdős Problem #289** (OPEN): For all sufficiently large k, there exists
     a valid decomposition of 1 into k disjoint non-adjacent interval blocks. -/
+def ErdosProblem289 : Prop :=
+  ∃ K : ℕ, ∀ k : ℕ, K ≤ k →
+    ∃ blocks : Fin k → IntervalBlock, ValidDecomposition k blocks
+
 /- ## Basic Properties -/
 
 /-- Every interval block has at least 2 elements. -/
@@ -83,14 +87,16 @@ theorem nonadj_implies_disjoint (I J : IntervalBlock) :
 
 /- ## Hickerson–Montgomery Example -/
 
-/-- The Hickerson–Montgomery example: 5 intervals summing to 2.
-    [2,7], [9,10], [17,18], [34,35], [84,85].
-    This shows the feasibility of interval decomposition for targets other than 1. -/
+/- The Hickerson–Montgomery example: 5 intervals summing to 2.
+   [2,7], [9,10], [17,18], [34,35], [84,85].
+   This shows the feasibility of interval decomposition for targets other than 1. -/
+
 /- ## Structural Observations -/
 
-/-- The harmonic series diverges, so the total available reciprocal sum
-    from any tail of ℕ is unbounded. This is necessary for the problem
-    to have solutions for arbitrarily many blocks. -/
+/- The harmonic series diverges, so the total available reciprocal sum
+   from any tail of ℕ is unbounded. This is necessary for the problem
+   to have solutions for arbitrarily many blocks. -/
+
 /-- Each interval block contributes at most (hi-lo+1)/lo.
     Proof: each term 1/n ≤ 1/lo since lo ≤ n for n ∈ [lo, hi]. -/
 theorem interval_recipsum_upper (I : IntervalBlock) :
@@ -128,8 +134,19 @@ theorem interval_recipsum_lower (I : IntervalBlock) :
         exact div_le_div_of_le_left (by positivity) hn_pos hhi_pos
               (Nat.cast_le.mpr hn.2)
 
-/-- To achieve exactly 1 with many small-contribution blocks, we need
-    blocks at large values of n. The gap constraint forces intervals
-    to spread out, making the target harder to hit exactly. -/
-/-- The problem without the non-adjacency constraint is easier: one can
-    always decompose 1 into disjoint intervals (Erdős–Graham remark). -/
+/-- The reciprocal sum of an interval block is strictly positive: it is a
+    sum of strictly positive terms 1/n over a nonempty range. -/
+theorem recipSum_pos (I : IntervalBlock) : 0 < I.recipSum := by
+  unfold IntervalBlock.recipSum IntervalBlock.toFinset
+  apply Finset.sum_pos
+  · intro n hn
+    simp only [mem_Icc] at hn
+    have hn0 : (0 : ℚ) < (n : ℚ) := Nat.cast_pos.mpr (lt_of_lt_of_le I.hlo hn.1)
+    exact div_pos one_pos hn0
+  · exact Finset.nonempty_Icc.mpr I.hle
+
+/- To achieve exactly 1 with many small-contribution blocks, we need
+   blocks at large values of n. The gap constraint forces intervals
+   to spread out, making the target harder to hit exactly. -/
+/- The problem without the non-adjacency constraint is easier: one can
+   always decompose 1 into disjoint intervals (Erdős–Graham remark). -/
