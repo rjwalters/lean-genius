@@ -148,80 +148,382 @@
   },
   "sections": [
     {
-      "id": "conjecture",
-      "title": "The Inverse Galois Conjecture",
-      "startLine": 60,
-      "endLine": 81,
-      "summary": "Formal statement of the IGP as a Lean proposition. Marked as an open problem with sorry - no proof is known for the general case.",
-      "mathContext": "The Inverse Galois Conjecture: $\\forall G$ (finite group), $\\exists\\, K/\\mathbb{Q}$ Galois with $\\operatorname{Gal}(K/\\mathbb{Q}) \\cong G$. Formalized as a Lean proposition; `sorry` marks the open problem."
-    },
-    {
-      "id": "cyclotomic-galois",
-      "title": "Cyclotomic Fields Are Galois",
-      "startLine": 82,
-      "endLine": 121,
-      "summary": "CyclotomicField n ℚ is Galois over ℚ (IsCyclotomicExtension.isGalois), and its Galois group is abelian (commutative).",
-      "mathContext": "$\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}$ is a Galois extension with $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ abelian, since cyclotomic extensions are always Galois."
-    },
-    {
-      "id": "galois-group-structure",
-      "title": "Galois Group ≅ (ZMod n)ˣ",
-      "startLine": 122,
-      "endLine": 170,
-      "summary": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat.",
-      "mathContext": "The Galois group of the n-th cyclotomic polynomial is isomorphic to (ZMod n)ˣ. Cyclotomic irreducibility proved via Polynomial.cyclotomic.irreducible_rat."
-    },
-    {
-      "id": "s3-realization",
-      "title": "S₃ Realization via X³-2",
-      "startLine": 367,
-      "endLine": 700,
-      "summary": "Gal(X³-2/ℚ) ≅ S₃ proved from scratch: Eisenstein irreducibility at p=2, 3||Gal| (prime degree), |Gal||6 (Gal ↪ S₃), 2||Gal| (cube root of unity), coprimality gives |Gal|=6, bijectivity of galActionHom.",
-      "mathContext": "$\\operatorname{Gal}(\\mathbb{Q}(\\sqrt[3]{2}, \\zeta_3)/\\mathbb{Q}) \\cong S_3$. Eisenstein at $p=2$ gives irreducibility; $3 \\mid |\\operatorname{Gal}|$ (prime degree), $|\\operatorname{Gal}| \\mid 6$ ($\\operatorname{Gal} \\hookrightarrow S_3$), $2 \\mid |\\operatorname{Gal}|$ ($\\zeta_3 \\notin \\mathbb{Q}$), so $|\\operatorname{Gal}|=6$."
-    },
-    {
-      "id": "a5-realization",
-      "title": "A₅ Realization (First Non-Solvable Group)",
+      "id": "header",
+      "title": "Imports and Module Overview",
       "startLine": 1,
-      "endLine": 992,
-      "summary": "In InverseGaloisA5.lean: A₅ ≅ Gal(x⁵-5x⁴+10x³-10x²+25x-5/ℚ). Eisenstein irreducibility at p=5, |Gal|=60 via Sylow theory (no S₅ subgroups of order 15 or 30), explicit MulEquiv with alternatingGroup(Fin 5). 85 theorems, 1 axiom (Dedekind's theorem), 0 sorries. VP² proved via ℂ embedding + Sophie Germain identity.",
-      "file": "Proofs/InverseGaloisA5.lean",
-      "mathContext": "$A_5 \\cong \\operatorname{Gal}(q/\\mathbb{Q})$ where $q = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5$. Eisenstein at $p=5$; $|\\operatorname{Gal}| = 60$ by Sylow theory (no subgroups of order 15 or 30 in $S_5$); index-2 subgroup detection yields $\\operatorname{Gal} \\cong A_5$."
+      "endLine": 58,
+      "summary": "Header block: four Mathlib imports (cyclotomic fields, Galois theory, solvable groups, polynomial Galois groups) plus the module docstring laying out what the file formalizes, its status, the realizability results proved, and Mathlib dependencies. The `InverseGalois` namespace scopes the entire development.",
+      "mathContext": "Establishes the field-theoretic and group-theoretic infrastructure: cyclotomic extensions, `Polynomial.Gal`, `IsSolvable`, and `(ZMod n)ˣ`. Sets the stage for realizing finite groups as Galois groups over ℚ.",
+      "relatedConcepts": [
+        "IsGalois",
+        "Polynomial.Gal",
+        "cyclotomic field",
+        "(ZMod n)ˣ",
+        "inverse Galois problem"
+      ],
+      "prerequisites": [
+        "Lean 4 import syntax",
+        "Galois theory basics",
+        "cyclotomic polynomials"
+      ]
     },
     {
-      "id": "d4-realization",
-      "title": "D₄ Realization via X⁴-2",
-      "startLine": 1,
-      "endLine": 680,
-      "summary": "In InverseGaloisD4.lean: D₄ ≅ Gal(X⁴-2/ℚ). 27 theorems, 0 axioms, 0 sorries. Proves the dihedral group of order 8 is realizable as a Galois group over ℚ.",
-      "file": "Proofs/InverseGaloisD4.lean",
-      "mathContext": "$D_4 \\cong \\operatorname{Gal}(X^4 - 2 / \\mathbb{Q})$: the dihedral group of order 8 realized as the Galois group of the splitting field $\\mathbb{Q}(\\sqrt[4]{2}, i)$. Fully proved (0 axioms, 0 sorries)."
+      "id": "part-i-conjecture",
+      "title": "Part I: The Formal Conjecture",
+      "startLine": 59,
+      "endLine": 77,
+      "summary": "States the Inverse Galois Problem as a formal conjecture via `axiom inverse_galois_problem_open_conjecture` (line 73): every finite group arises as the Galois group of some Galois extension of ℚ. This is the open conjecture the rest of the file attacks case by case.",
+      "mathContext": "The IGP is unsolved in general; encoding it as an axiom marks the global target while the concrete realizations below discharge specific finite groups unconditionally.",
+      "relatedConcepts": [
+        "inverse Galois problem",
+        "finite group",
+        "Galois extension of ℚ"
+      ],
+      "prerequisites": [
+        "Galois extensions",
+        "statement of the IGP"
+      ]
     },
     {
-      "id": "f20-realization",
-      "title": "F₂₀ (Frobenius) Realization via X⁵-2",
-      "startLine": 1,
-      "endLine": 529,
-      "summary": "In InverseGaloisF20.lean: F₂₀ ≅ Gal(X⁵-2/ℚ). The Frobenius group of order 20 (the unique solvable transitive subgroup of S₅ of order 20). 27 theorems, 0 axioms, 0 sorries.",
-      "file": "Proofs/InverseGaloisF20.lean",
-      "mathContext": "$F_{20} \\cong \\operatorname{Gal}(X^5 - 2 / \\mathbb{Q})$: the Frobenius group $F_{20} = \\mathbb{Z}/5\\mathbb{Z} \\rtimes \\mathbb{Z}/4\\mathbb{Z}$, the unique solvable transitive subgroup of $S_5$ of order 20. Fully proved (0 axioms, 0 sorries)."
+      "id": "part-ii-cyclotomic-galois",
+      "title": "Part II: Cyclotomic Extensions Are Galois",
+      "startLine": 78,
+      "endLine": 106,
+      "summary": "Proves cyclotomic fields ℚ(ζₙ) are Galois (`cyclotomic_field_isGalois`, line 92) and that their Galois group is abelian (`instance cyclotomic_galois_isAbelian`, line 103). This is the entry point for realizing all abelian groups via cyclotomic theory.",
+      "mathContext": "Cyclotomic extensions are the canonical abelian extensions of ℚ; their Galois groups embed into `(ZMod n)ˣ`, supplying the abelian half of the realizability program.",
+      "relatedConcepts": [
+        "cyclotomic field",
+        "IsGalois",
+        "abelian Galois group"
+      ],
+      "prerequisites": [
+        "roots of unity",
+        "cyclotomic extensions"
+      ]
     },
     {
-      "id": "group-census",
-      "title": "Realizability Census (Orders ≤ 8 and Beyond)",
-      "startLine": 1100,
-      "endLine": 1530,
-      "summary": "Systematic census of all groups of order ≤ 8: 14 of 15 groups realized with sorry-free proofs. Only Q₈ (quaternion) remains. Extended census covers 21+ groups including order 16 (C₂×C₈, C₂²×C₄), order 20 (C₂×C₁₀), and order 24 (C₄×C₆). Uses cyclotomic fields with totient/exponent analysis and native_decide verification.",
-      "mathContext": "Realizability census: for $|G| \\leq 8$, 14 of 15 groups realized via $\\operatorname{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q}) \\cong (\\mathbb{Z}/n\\mathbb{Z})^{\\times}$ and totient analysis. Extended to $C_2 \\times C_8$ via $(\\mathbb{Z}/32\\mathbb{Z})^{\\times}$, $C_2^2 \\times C_4$ via $(\\mathbb{Z}/40\\mathbb{Z})^{\\times}$, etc. Only $Q_8$ unformalized."
+      "id": "part-iii-galois-group-structure",
+      "title": "Part III: The Galois Group is (ℤ/nℤ)ˣ",
+      "startLine": 107,
+      "endLine": 158,
+      "summary": "Establishes irreducibility of cyclotomic polynomials over ℚ (`cyclotomic_irreducible_over_rationals`, line 133), constructs the isomorphism `Gal(ℚ(ζₙ)/ℚ) ≅ (ZMod n)ˣ` (`noncomputable def cyclotomic_galois_group_iso_units_zmod`, line 144), and computes the group order (`cyclotomic_galois_group_card`, line 154).",
+      "mathContext": "The central structural identity: the cyclotomic Galois group is canonically `(ZMod n)ˣ`, reducing group realizability to unit-group structure modulo n.",
+      "relatedConcepts": [
+        "cyclotomic_galois_group_iso_units_zmod",
+        "(ZMod n)ˣ",
+        "cyclotomic irreducibility"
+      ],
+      "prerequisites": [
+        "minimal polynomial of ζₙ",
+        "unit groups of ZMod n"
+      ]
     },
     {
-      "id": "sharp-threshold",
-      "title": "Sharp Threshold: S_n Solvable iff n ≤ 4",
-      "startLine": 158,
-      "endLine": 534,
-      "summary": "In AbelRuffiniGaloisExtensions.lean: S_n is solvable iff n ≤ 4. Uses Equiv.Perm.not_solvable for n ≥ 5. This is the fundamental threshold in the Abel-Ruffini theorem. 59 theorems, all fully proved.",
-      "file": "Proofs/AbelRuffiniGaloisExtensions.lean",
-      "mathContext": "Sharp solvability threshold: $S_n$ is solvable $\\iff n \\leq 4$. For $n \\geq 5$, the commutator series $S_n \\supset A_n \\supset \\{e\\}$ fails since $A_n$ is simple and non-abelian. This is the group-theoretic core of Abel-Ruffini."
+      "id": "part-iv-cyclic-realizations",
+      "title": "Part IV: Specific Cyclic Group Realizations",
+      "startLine": 159,
+      "endLine": 215,
+      "summary": "Computes unit-group cardinalities for small moduli (`units_zmod4_card`, `units_zmod5_card`, `units_zmod7_card`, line 177–193) and the prime case (`units_zmodPrime_card`, line 202), realizing specific cyclic groups as cyclotomic Galois groups.",
+      "mathContext": "Each `(ZMod p)ˣ` is cyclic of order p−1, so prime cyclotomic fields realize cyclic groups Cₚ₋₁ over ℚ.",
+      "relatedConcepts": [
+        "units_zmodPrime_card",
+        "cyclic group",
+        "totient"
+      ],
+      "prerequisites": [
+        "structure of (ZMod p)ˣ",
+        "Euler totient"
+      ]
+    },
+    {
+      "id": "part-iv-b-composite-cyclotomic",
+      "title": "Part IV.b: Composite Cyclotomic Fields and Non-Cyclic Galois Groups",
+      "startLine": 216,
+      "endLine": 266,
+      "summary": "Computes unit cardinalities for composite moduli (`units_zmod3/8/11/12/13/15_card`, line 234–254) and proves the general identity `units_card_eq_totient` (line 263), exposing non-cyclic Galois groups like (ZMod 8)ˣ ≅ C₂×C₂.",
+      "mathContext": "Composite moduli give non-cyclic `(ZMod n)ˣ`, the first source of non-cyclic abelian realizations and the foundation for the later order census.",
+      "relatedConcepts": [
+        "units_card_eq_totient",
+        "non-cyclic abelian group",
+        "composite cyclotomic field"
+      ],
+      "prerequisites": [
+        "CRT for unit groups",
+        "Euler totient"
+      ]
+    },
+    {
+      "id": "part-v-abelian-realizable",
+      "title": "Part V: Abelian Groups are Realizable (Kronecker–Weber)",
+      "startLine": 267,
+      "endLine": 296,
+      "summary": "States `axiom abelian_realizable` (line 293): every finite abelian group is a Galois group over ℚ. This packages the Kronecker–Weber theorem plus the structure theorem for finite abelian groups as a stated assumption.",
+      "mathContext": "Every finite abelian group embeds as a quotient of some `(ZMod n)ˣ`; Kronecker–Weber guarantees realizability but is taken axiomatically here rather than reproved.",
+      "relatedConcepts": [
+        "abelian_realizable",
+        "Kronecker–Weber theorem",
+        "structure theorem for abelian groups"
+      ],
+      "prerequisites": [
+        "Kronecker–Weber",
+        "finite abelian group classification"
+      ]
+    },
+    {
+      "id": "part-vi-solvable-shafarevich",
+      "title": "Part VI: Solvable Groups are Realizable (Shafarevich)",
+      "startLine": 297,
+      "endLine": 342,
+      "summary": "States `axiom shafarevich_theorem` (line 319): every finite solvable group is realizable over ℚ. Includes `a5_not_solvable` (line 332), establishing that A₅ lies outside this solvable regime.",
+      "mathContext": "Shafarevich's theorem settles the solvable case of the IGP; A₅ marks the boundary where solvable methods stop and non-solvable realizability becomes genuinely open.",
+      "relatedConcepts": [
+        "shafarevich_theorem",
+        "solvable group",
+        "a5_not_solvable"
+      ],
+      "prerequisites": [
+        "solvable groups",
+        "Shafarevich's theorem"
+      ]
+    },
+    {
+      "id": "part-vii-symmetric-realizable",
+      "title": "Part VII: Symmetric Groups are Realizable",
+      "startLine": 343,
+      "endLine": 361,
+      "summary": "States `axiom symmetric_group_realizable` (line 358): each symmetric group Sₙ is a Galois group over ℚ, classically via Hilbert irreducibility applied to the generic polynomial.",
+      "mathContext": "Sₙ is realized by a generic degree-n polynomial; the result is standard but axiomatized here since Hilbert irreducibility is not yet in Mathlib.",
+      "relatedConcepts": [
+        "symmetric_group_realizable",
+        "Hilbert irreducibility",
+        "generic polynomial"
+      ],
+      "prerequisites": [
+        "symmetric group as Galois group",
+        "Hilbert irreducibility theorem"
+      ]
+    },
+    {
+      "id": "part-vii-b-s3-via-x3-2",
+      "title": "Part VII.b: S₃ Realizability via X³ − 2",
+      "startLine": 362,
+      "endLine": 398,
+      "summary": "Begins the explicit S₃ realization through X³−2: proves the polynomial is irreducible (`x_cube_sub_2_irreducible`, line 385) and has degree 3 (`x_cube_sub_2_natDegree`, line 390), the first concrete non-abelian realization.",
+      "mathContext": "X³−2 has Galois group S₃ over ℚ; this section sets up the irreducibility and degree facts that the later computation of |Gal| = 6 relies on.",
+      "relatedConcepts": [
+        "x_cube_sub_2_irreducible",
+        "S₃",
+        "Eisenstein criterion"
+      ],
+      "prerequisites": [
+        "irreducibility of X³−2",
+        "splitting fields"
+      ]
+    },
+    {
+      "id": "part-viii-known-and-open",
+      "title": "Part VIII: What's Known and What's Open",
+      "startLine": 399,
+      "endLine": 439,
+      "summary": "Expository part surveying the state of the IGP — what is settled (abelian, solvable, symmetric) versus open — including the subsection 'The Deepest Obstacle' (line 421) on the absolute Galois group of ℚ.",
+      "mathContext": "Frames the remaining difficulty: the structure of Gal(ℚ̄/ℚ) is unknown, which is why the general IGP resists the constructive methods used above.",
+      "relatedConcepts": [
+        "absolute Galois group",
+        "open problem",
+        "solvable vs non-solvable"
+      ],
+      "prerequisites": [
+        "profinite groups",
+        "absolute Galois group of ℚ"
+      ]
+    },
+    {
+      "id": "part-ix-connections",
+      "title": "Part IX: Connections to Related Theorems",
+      "startLine": 440,
+      "endLine": 480,
+      "summary": "Links the IGP to neighboring results: `connection_to_abel_ruffini` (line 462) and `solvable_iff_solvable_galois_group` (line 473), tying realizability to the radical-solvability criterion.",
+      "mathContext": "Relates group realizability to Abel–Ruffini: solvability of a polynomial's Galois group governs radical solvability, connecting this file to the broader Galois-theory gallery.",
+      "relatedConcepts": [
+        "connection_to_abel_ruffini",
+        "solvable_iff_solvable_galois_group",
+        "radical solvability"
+      ],
+      "prerequisites": [
+        "Abel–Ruffini theorem",
+        "Galois solvability criterion"
+      ]
+    },
+    {
+      "id": "summary-open-questions",
+      "title": "Summary and Open Questions",
+      "startLine": 481,
+      "endLine": 544,
+      "summary": "Narrative summary enumerating the realizability results achieved (abelian via cyclotomic, solvable via Shafarevich, symmetric via Hilbert, concrete small groups) and listing open follow-up questions for the gallery.",
+      "mathContext": "Consolidates the realizability census so far and identifies which cases are unconditional versus axiomatized.",
+      "relatedConcepts": [
+        "realizability census",
+        "open questions",
+        "summary"
+      ],
+      "prerequisites": [
+        "overview of file results"
+      ]
+    },
+    {
+      "id": "part-x-gal-x3-2-card",
+      "title": "Part X: Proving |Gal(X³ − 2 / ℚ)| = 6",
+      "startLine": 545,
+      "endLine": 798,
+      "summary": "The technical core computing the Galois group order of X³−2: degree/divisibility lemmas (`no_root_of_irreducible_degree_ndvd` line 567, `three_dvd_gal_card` line 666, `gal_card_dvd_six` line 674), the cyclotomic-3 connection (`x_sq_add_x_add_1_*`), splitting-field finrank computations (lines 739–762), culminating in `x_cube_sub_2_gal_card` (line 791) proving |Gal| = 6.",
+      "mathContext": "Establishes |Gal(X³−2/ℚ)| = 6 by bounding the order above (divides 6) and below (divisible by 2 and 3) via splitting-field degree arithmetic — the unconditional engine behind the S₃ realization.",
+      "relatedConcepts": [
+        "x_cube_sub_2_gal_card",
+        "splitting field finrank",
+        "three_dvd_gal_card",
+        "gal_card_dvd_six"
+      ],
+      "prerequisites": [
+        "splitting field degree",
+        "Galois group order",
+        "cyclotomic field ℚ(ζ₃)"
+      ]
+    },
+    {
+      "id": "part-xii-eliminating-axiom",
+      "title": "Part XII: Eliminating the x_cube_sub_2_gal_iso_s3 Axiom",
+      "startLine": 799,
+      "endLine": 860,
+      "summary": "Discharges what was previously an axiom: `x_cube_sub_2_gal_iso_s3_proved` (line 812) proves Gal(X³−2/ℚ) ≅ S₃ from the order computation, and `s3_realizable` (line 848) concludes S₃ is realized over ℚ — a fully unconditional non-abelian realization.",
+      "mathContext": "Upgrades the S₃ realization from axiom to theorem: a group of order 6 acting faithfully on three roots with a non-trivial relation must be S₃, giving an unconditional non-abelian Galois group.",
+      "relatedConcepts": [
+        "x_cube_sub_2_gal_iso_s3_proved",
+        "s3_realizable",
+        "S₃"
+      ],
+      "prerequisites": [
+        "groups of order 6",
+        "faithful action on roots"
+      ]
+    },
+    {
+      "id": "part-xiii-units-zmod-realizable",
+      "title": "Part XIII: (ℤ/nℤ)ˣ Realizability Bridge",
+      "startLine": 861,
+      "endLine": 890,
+      "summary": "Proves `units_zmod_realizable` (line 880): each unit group `(ZMod n)ˣ` is realizable as a Galois group over ℚ, bridging the cyclotomic structure of Part III to concrete realizability claims.",
+      "mathContext": "Packages Parts II–IV into a single bridge lemma: the cyclotomic Galois isomorphism makes every `(ZMod n)ˣ` a Galois group over ℚ.",
+      "relatedConcepts": [
+        "units_zmod_realizable",
+        "(ZMod n)ˣ",
+        "cyclotomic realization"
+      ],
+      "prerequisites": [
+        "cyclotomic Galois isomorphism"
+      ]
+    },
+    {
+      "id": "part-xiv-cyclic-realizability",
+      "title": "Part XIV: Cyclic Group Realizability",
+      "startLine": 891,
+      "endLine": 1063,
+      "summary": "Realizes cyclic groups over ℚ: prime cyclotomic Galois groups are cyclic (`prime_cyclotomic_galois_isCyclic` line 923, `prime_cyclotomic_galois_card` line 937), the helper `exists_prime_dvd_pred` (line 945), `cyclic_prime_pred_realizable` (line 954), and the general `cyclic_group_realizable` (line 972).",
+      "mathContext": "Every cyclic group Cₘ is realized by choosing a prime p ≡ 1 (mod m) (Dirichlet) so that Cₘ is a quotient of the cyclic (ZMod p)ˣ — an unconditional realization of all cyclic groups.",
+      "relatedConcepts": [
+        "cyclic_group_realizable",
+        "prime_cyclotomic_galois_isCyclic",
+        "Dirichlet primes in AP"
+      ],
+      "prerequisites": [
+        "cyclic unit groups",
+        "Dirichlet's theorem"
+      ]
+    },
+    {
+      "id": "part-xv-concrete-totients",
+      "title": "Part XV: Concrete Group Realizability and Totient Computations",
+      "startLine": 1064,
+      "endLine": 1217,
+      "summary": "Computes totients for small n (`totient_2`–`totient_12`, lines 1092–1116), proves unit-group structure facts (e.g. `zmod8_units_not_cyclic` line 1130), realizes the Klein four-group (`klein_four_realized`, line 1177), and concludes all groups of order ≤ 6 are realized (`all_groups_order_le_6_realized`, line 1210).",
+      "mathContext": "Begins the explicit finite-group census: combining cyclic, S₃, and Klein-four realizations covers every isomorphism class of order ≤ 6 unconditionally.",
+      "relatedConcepts": [
+        "klein_four_realized",
+        "all_groups_order_le_6_realized",
+        "totient computations"
+      ],
+      "prerequisites": [
+        "Euler totient values",
+        "group classification by order"
+      ]
+    },
+    {
+      "id": "part-xvi-order-7-12-census",
+      "title": "Part XVI: Order 7–12 Census and Abelian Group Realizability",
+      "startLine": 1218,
+      "endLine": 1527,
+      "summary": "Extends the census to orders 7–12: totients (`totient_7`–`totient_24`), non-cyclicity lemmas for (ZMod 15/24/21)ˣ, realizations `c2_times_c4_realized` (1321), `c2_cubed_realized` (1374), `c2_times_c6_realized` (1423), plus `all_groups_order_7_realized` (1455) and `groups_order_8_status` (1470).",
+      "mathContext": "Pushes the realizability census through order ≤ 8 (14 of 15 classes sorry-free) and beyond, using composite unit groups to realize non-cyclic abelian groups like C₂×C₄, C₂³, and C₂×C₆.",
+      "relatedConcepts": [
+        "c2_times_c4_realized",
+        "c2_cubed_realized",
+        "groups_order_8_status",
+        "order census"
+      ],
+      "prerequisites": [
+        "abelian group structure",
+        "composite unit groups"
+      ]
+    },
+    {
+      "id": "part-xvii-order-16",
+      "title": "Part XVII: Order 16 Abelian Groups",
+      "startLine": 1528,
+      "endLine": 1669,
+      "summary": "Realizes order-16 abelian groups: totient facts (`totient_32` line 1558, `totient_40` line 1616), unit-group order/exponent lemmas for (ZMod 32/40)ˣ, and the realizations `c2_times_c8_realized` (1585) and `c2_sq_times_c4_realized` (1644).",
+      "mathContext": "Continues the abelian census at order 16 by exhibiting moduli whose unit groups have the required exponent and order structure (e.g. C₂×C₈ via ℚ(ζ₃₂)).",
+      "relatedConcepts": [
+        "c2_times_c8_realized",
+        "c2_sq_times_c4_realized",
+        "order 16 abelian groups"
+      ],
+      "prerequisites": [
+        "unit group exponents",
+        "(ZMod 2^k)ˣ structure"
+      ]
+    },
+    {
+      "id": "part-xviii-orders-20-24",
+      "title": "Part XVIII: Extending the Census to Orders 20 and 24",
+      "startLine": 1670,
+      "endLine": 1746,
+      "summary": "Begins the orders 20/24 extension: `totient_35` (line 1698), exponent/non-cyclicity lemmas for (ZMod 35)ˣ, and the realization `c4_times_c6_realized` (line 1721).",
+      "mathContext": "Extends abelian realizability to order 24 (C₄×C₆) by selecting a modulus whose unit group decomposes appropriately under CRT.",
+      "relatedConcepts": [
+        "c4_times_c6_realized",
+        "totient_35",
+        "order 24 abelian groups"
+      ],
+      "prerequisites": [
+        "CRT decomposition of unit groups"
+      ]
+    },
+    {
+      "id": "part-xviii-b-orders-20-24-abelian",
+      "title": "Part XVIII: Order 20 and 24 Abelian Groups",
+      "startLine": 1747,
+      "endLine": 1877,
+      "summary": "Completes the orders 20/24 census: `totient_33` (1769) and `totient_84` (1820), unit-group exponent/order lemmas for (ZMod 33/84)ˣ, and the realizations `c2_times_c10_realized` (1795) and `c2_c2_c6_realized` (1850).",
+      "mathContext": "Finishes the explicit abelian realizability census through order 24, realizing C₂×C₁₀ and C₂×C₂×C₆ via cyclotomic unit groups of moduli 33 and 84.",
+      "relatedConcepts": [
+        "c2_times_c10_realized",
+        "c2_c2_c6_realized",
+        "totient_84",
+        "order 24 abelian groups"
+      ],
+      "prerequisites": [
+        "unit group structure (ZMod 84)ˣ",
+        "CRT"
+      ]
     }
   ],
   "conclusion": {
