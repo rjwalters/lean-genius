@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-04",
   "title": "Jordan-Hölder Uniqueness Theorem: Composition Factors of Finite Groups in Lean",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "src/data/proofs/abel-ruffini-galois-extensions-oq-04/meta.json",
   "problemStatement": "Instantiate Mathlib's JordanHolderLattice typeclass for Subgroup G and derive the Jordan-Hölder uniqueness theorem for groups. Mathlib has CompositionSeries.jordan_holder as an abstract theorem, but the concrete instance for Subgroup G is a TODO in Mathlib.Order.JordanHolder.",
@@ -12,9 +12,9 @@
     "Noether second isomorphism theorem: quotientInfEquivProdNormalizerQuotient in Mathlib",
     "quotientKerEquivOfSurjective for first isomorphism theorem"
   ],
-  "currentState": "JordanHolderLattice (Subgroup G) instance 5/6 proved (1 sorry in maximality step of isMaximal_inf_left_of_isMaximal_sup). sup_eq_of_isMaximal, second_iso, iso_symm, iso_trans all proved.",
+  "currentState": "COMPLETE. JordanHolderLattice (Subgroup G) instance fully proved — the maximality step of isMaximal_inf_left_of_isMaximal_sup was discharged via an element-wise subgroup argument, closing the last sorry. Gallery proof AbelRuffiniGaloisExtensionsOQ04.lean is verified 0 axioms / 0 sorries with 3 theorems (le_normalizer_of_normal_in_sup, jordan_holder_subgroups, jordan_holder_finite_groups), deriving the Jordan-Hölder uniqueness theorem for finite groups.",
   "knowledge": {
-    "progressSummary": "PROGRESS: sup_eq_of_isMaximal proved, second_iso proved via first iso theorem avoiding sup_comm rewrite failure. 1 sorry remains in isMaximal_inf_left_of_isMaximal_sup maximality step.",
+    "progressSummary": "COMPLETE: all three JordanHolderLattice axioms proved — sup_eq_of_isMaximal, second_iso (via first iso theorem avoiding sup_comm rewrite failure), and isMaximal_inf_left_of_isMaximal_sup including the maximality step. Jordan-Hölder uniqueness for finite groups derived. 0 axioms / 0 sorries.",
     "builtItems": [
       "IsMaxNorm predicate: maximal normal subgroup (H < K, H relatively normal in K, maximality condition)",
       "GroupQuotIso predicate: quotient isomorphism with explicit Normal witnesses",
@@ -23,7 +23,7 @@
       "second_iso proved: φ = mk' ∘ inclusion le_sup_right via first iso theorem; ker = (x⊓y).subgroupOf y; surjectivity via hn_sup.conj_mem",
       "iso_symm proved: MulEquiv.symm",
       "iso_trans proved: MulEquiv.trans",
-      "isMaximal_inf_left_of_isMaximal_sup: x⊓y < x proved, Normal proved; maximality 1 sorry"
+      "isMaximal_inf_left_of_isMaximal_sup: x⊓y < x proved, Normal proved; maximality step discharged via element-wise subgroup argument (sorry closed)"
     ],
     "insights": [
       "rw [sup_comm y x] fails at quotient type (x ⊔ y) ⧸ x.subgroupOf(x ⊔ y) with 'motive not type correct' — Normal typeclass depends on rewritten term",
