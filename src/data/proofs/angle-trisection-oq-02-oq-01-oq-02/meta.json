@@ -77,46 +77,53 @@
   },
   "sections": [
     {
-      "id": "constructible-framework",
-      "title": "Constructible Number Framework",
+      "id": "part1-framework",
+      "title": "Part 1: Constructible Number Framework",
       "startLine": 1,
-      "endLine": 68,
-      "summary": "Module documentation, imports (Galois, Minpoly, IntermediateField), and the inductive definition of IsConstructible via rational and sqrt_ext constructors. Basic results: rationals, 0, and 1 are constructible."
+      "endLine": 70,
+      "summary": "The constructible-number setup: definitions for straightedge-and-compass constructibility framed via field extensions."
     },
     {
-      "id": "tower-extensions",
-      "title": "Tower of Quadratic Extensions",
-      "startLine": 70,
-      "endLine": 97,
-      "summary": "Defines IsQuadraticExtension ([K:F] = 2), proves finrank_of_double_quadratic (double quadratic tower has degree 4) via the tower law, and states tower_degree_dvd_pow_two."
+      "id": "part2-tower",
+      "title": "Part 2: Tower of Quadratic Extensions",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "The tower of quadratic extensions characterization of constructible numbers."
     },
     {
-      "id": "degree-criterion",
-      "title": "Degree Criterion (Necessary Condition)",
-      "startLine": 99,
-      "endLine": 119,
-      "summary": "Defines DegreePowerOfTwo and states not_constructible_of_bad_degree: if a polynomial is irreducible with degree not a power of 2, no root is constructible. This bridge theorem has a sorry."
+      "id": "part3-degree-criterion",
+      "title": "Part 3: Degree Criterion (Necessary Condition)",
+      "startLine": 100,
+      "endLine": 121,
+      "summary": "The degree criterion: a constructible number's minimal polynomial degree is a power of 2 (necessary condition)."
     },
     {
-      "id": "specific-results",
-      "title": "Specific Non-Constructibility Results",
-      "startLine": 121,
-      "endLine": 151,
-      "summary": "Verifies x^3 - 2 has degree 3 and 3 ≠ 2^k (via interval_cases). Same for 8x^3 - 6x - 1 (the cos(20°) polynomial). Irreducibility of x^3 - 2 is sorry'd (needs Eisenstein)."
+      "id": "part4-non-constructibility",
+      "title": "Part 4: Specific Non-Constructibility Results",
+      "startLine": 122,
+      "endLine": 178,
+      "summary": "Specific non-constructibility results derived from the degree criterion (e.g. cube roots / cos 20 degrees having degree-3 minimal polynomials)."
     },
     {
-      "id": "three-impossibilities",
-      "title": "The Three Classical Impossibilities",
-      "startLine": 153,
-      "endLine": 177,
-      "summary": "Derives angle_trisection_impossible_degree, doubling_cube_impossible_degree, and regular_7gon_impossible_degree as applications of the degree criterion."
-    },
-    {
-      "id": "galois-characterization",
-      "title": "Galois Characterization and Summary",
+      "id": "part5-three-impossibilities",
+      "title": "Part 5: The Three Classical Impossibilities",
       "startLine": 179,
-      "endLine": 234,
-      "summary": "Defines IsTwoGroup (group order is 2^k) and states the full Wantzel-Galois theorem: α constructible iff Gal(minpoly(ℚ,α)) is a 2-group. Summary of proved results and remaining sorries."
+      "endLine": 209,
+      "summary": "The three classical impossibilities — angle trisection, cube duplication, and circle squaring — as consequences of the degree criterion."
+    },
+    {
+      "id": "part6-galois-characterization",
+      "title": "Part 6: Galois Characterization (Sufficient Condition)",
+      "startLine": 210,
+      "endLine": 231,
+      "summary": "The Galois-theoretic characterization providing the sufficient condition for constructibility (2-group Galois group)."
+    },
+    {
+      "id": "part7-summary",
+      "title": "Part 7: Summary",
+      "startLine": 232,
+      "endLine": 265,
+      "summary": "Summary of the constructibility results, the necessary/sufficient conditions, and the status of the remaining deferred lemmas."
     }
   ],
   "conclusion": {
@@ -198,35 +205,45 @@
   ],
   "references": [
     {
-      "authors": ["Pierre Laurent Wantzel"],
+      "authors": [
+        "Pierre Laurent Wantzel"
+      ],
       "title": "Recherches sur les moyens de reconnaître si un Problème de Géométrie peut se résoudre avec la règle et le compas",
       "year": "1837",
       "venue": "Journal de Mathématiques Pures et Appliquées, vol. 2, pp. 366–372",
       "note": "Wantzel's 1837 paper establishing the degree criterion: a real number constructible by compass and straightedge has minimal polynomial of degree a power of 2. Resolves the trisection, cube-doubling, and regular 7/9/11/13-gon problems in one stroke. The first proof of any of the ancient Greek impossibility results."
     },
     {
-      "authors": ["Carl Friedrich Gauss"],
+      "authors": [
+        "Carl Friedrich Gauss"
+      ],
       "title": "Disquisitiones Arithmeticae",
       "year": "1801",
       "venue": "Section VII (Constructio polygonorum regularium), pp. 412–489",
       "note": "Gauss's 1801 work establishing the sufficiency of the constructibility criterion for regular n-gons: an n-gon is constructible iff n is a product of a power of 2 and distinct Fermat primes. Famously included the regular 17-gon (Fermat prime, F₂ = 2² + 1 = 17). The complement to Wantzel's necessity proof."
     },
     {
-      "authors": ["Évariste Galois"],
+      "authors": [
+        "Évariste Galois"
+      ],
       "title": "Mémoire sur les conditions de résolubilité des équations par radicaux",
       "year": "1846",
       "venue": "Journal de Mathématiques Pures et Appliquées, vol. 11, pp. 381–444 (posthumous)",
       "note": "Galois's foundational memoir introducing the Galois group of a polynomial. The full Wantzel–Galois theorem (constructibility ⇔ 2-group Galois group) was articulated by later authors building on Galois's framework; in this file `wantzel_galois_iff` is stated using Mathlib's `Polynomial.Gal`."
     },
     {
-      "authors": ["David A. Cox"],
+      "authors": [
+        "David A. Cox"
+      ],
       "title": "Galois Theory",
       "year": "2012",
       "venue": "Pure and Applied Mathematics (Hoboken), 2nd ed., John Wiley & Sons, Ch. 10",
       "note": "Modern graduate text with a complete treatment of Wantzel's theorem (Ch. 10) — both the degree-necessity direction and the 2-group-sufficiency direction. The reference for filling the `sorry` in `not_constructible_of_bad_degree` and for the full `wantzel_galois_iff` characterization."
     },
     {
-      "authors": ["The Mathlib Community"],
+      "authors": [
+        "The Mathlib Community"
+      ],
       "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
       "year": "2024",
       "venue": "https://github.com/leanprover-community/mathlib4",
