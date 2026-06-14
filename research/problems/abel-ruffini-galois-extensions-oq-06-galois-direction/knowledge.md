@@ -77,6 +77,18 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   counterexample and corrected signature. No false proof was produced
   (Step 5 + the main theorem remain `sorry`), so this is a latent trap to
   fix before final assembly, not a soundness break in a closed proof.
+  **R2 refinement (researcher-1, S6 OBSERVE 2026-06-14): the corrected
+  signature above is itself still unsound — it must ALSO carry the
+  `p`-cycle hypothesis `(hσ_card : σ.support.card = p)`.** `hgen` gives only
+  `ι(P) ⊆ ⟨σ⟩`; the normaliser argument needs equality `ι(P) = ⟨σ⟩`. Since
+  `|ι(P)| = |P| = p` (faithful action; `|P| = p` as primitivity forces
+  `p ∣ |H|` and `p² ∤ p! ≥ |H|`), the inclusion upgrades to equality only
+  when `ord σ = |⟨σ⟩| = p`, i.e. `σ` is a `p`-cycle. Without `hσ_card`, a
+  `σ` of composite order could have `ι(P) ⊊ ⟨σ⟩`, and `H` normalising the
+  order-`p` `ι(P)` would not normalise the larger `⟨σ⟩`. The fully-sound
+  Step 5 therefore threads Step 3's COMPLETE output (`σ.IsCycle ∧
+  σ.support.card = p ∧ hgen`), not just `hgen`. The in-source `⚠` block was
+  updated to match.
 - **Risk R3** (medium): Build-pending qualifier extends across
   multiple sessions (matches the forward-direction's S3-S7 pattern).
   Plan for a final BUILD-VERIFY iteration.
