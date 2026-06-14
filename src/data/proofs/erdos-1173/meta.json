@@ -60,9 +60,9 @@
       "free_set_subset"
     ],
     "axiomCount": 0,
-    "lineCount": 217,
+    "lineCount": 235,
     "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 11
   },
   "overview": {
@@ -139,6 +139,14 @@
       "endLine": 167,
       "summary": "Axiomatizes the Erdős–Hajnal theorem for $\\aleph_1$ (free sets of size $\\aleph_1$ for countably bounded mappings on $\\omega_1$). Defines `erdos_1173_weak`: the weak conjecture asking for a free set of size $\\aleph_\\omega$ instead of $\\aleph_{\\omega+1}$.",
       "mathContext": "The $\\aleph_1$ case (Erdős-Hajnal): $f : \\omega_1 \\to [\\omega_1]^{\\le \\aleph_0}$ with $|f(\\alpha) \\cap f(\\beta)| < \\aleph_0$ has a free set of size $\\aleph_1$. Here $\\aleph_0$ is regular, so Hajnal's theorem applies directly. `erdos_1173_weak`: replace the conclusion $|S| = \\aleph_{\\omega+1}$ with $|S| = \\aleph_\\omega$ — a weaker (but potentially more tractable) target."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 182,
+      "endLine": 235,
+      "summary": "Proved structural lemmas about free sets and the cardinal constants: `aleph_omega_lt_succ` ($\\aleph_\\omega < \\aleph_{\\omega+1}$), `gch_power` ($2^{\\aleph_\\omega} = \\aleph_{\\omega+1}$ under GCH), `free_set_empty`, `free_set_singleton`, `free_set_subset`, `hasFreeSetOfCard_zero`, and `erdos_1173_implies_weak` (the full conjecture implies the weak form).",
+      "mathContext": "Monotonicity facts ($\\aleph_\\omega < \\aleph_{\\omega+1}$, $2^{\\aleph_\\omega} = \\aleph_{\\omega+1}$) and the free-set lattice basics: $\\emptyset$ and singletons are free, freeness is downward-closed under $\\subseteq$, and a 0-cardinality free set always exists. The capstone `erdos_1173_implies_weak`: if the full conjecture yields a free $S$ with $|S| = \\aleph_{\\omega+1}$, then since $\\aleph_\\omega < \\aleph_{\\omega+1}$ some subset $T \\subseteq S$ has $|T| = \\aleph_\\omega$ (`Cardinal.le_mk_iff_exists_subset`), and $T$ is free by `free_set_subset` — so the weak form is a logical consequence, not an independent open question."
     }
   ],
   "conclusion": {
@@ -174,9 +182,9 @@
       "Ordinal"
     ],
     "namespace": "Erdos1173",
-    "lineCount": 217,
+    "lineCount": 235,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 11,
     "path": "Proofs/Erdos1173Problem.lean",
     "sorries": 0

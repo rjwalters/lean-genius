@@ -214,4 +214,22 @@ theorem free_set_subset (γ : Ordinal) (f : SetMapping γ)
     IsFreeSet γ f T :=
   fun a b ha hb hab => hfree a b (hTS ha) (hTS hb) hab
 
+/-- Every set mapping has a free set of cardinality 0 (the empty set). -/
+theorem hasFreeSetOfCard_zero (γ : Ordinal) (f : SetMapping γ) :
+    HasFreeSetOfCard γ f 0 :=
+  ⟨∅, free_set_empty γ f, Cardinal.mk_emptyCollection _⟩
+
+/-- **The full conjecture implies the weak partial result.** A free set of
+    cardinality ℵ_{ω+1} contains a subset of cardinality ℵ_ω (since
+    `aleph_omega < aleph_omega_succ`), and a subset of a free set is free.
+    Hence `erdos_1173 → erdos_1173_weak`: the weak form is a logical
+    consequence of the full conjecture, not an independent open question. -/
+theorem erdos_1173_implies_weak : erdos_1173 → erdos_1173_weak := by
+  intro h hgch f hbound hdisj
+  obtain ⟨S, hSfree, hScard⟩ := h hgch f hbound hdisj
+  have hle : aleph_omega ≤ Cardinal.mk S := by
+    rw [hScard]; exact le_of_lt aleph_omega_lt_succ
+  obtain ⟨T, hTS, hTcard⟩ := Cardinal.le_mk_iff_exists_subset.mp hle
+  exact ⟨T, free_set_subset omega_omega_succ f S T hSfree hTS, hTcard⟩
+
 end Erdos1173
