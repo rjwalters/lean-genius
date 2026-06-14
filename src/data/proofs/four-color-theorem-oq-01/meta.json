@@ -35,14 +35,15 @@
       }
     ],
     "originalContributions": [
-      "Formal proof that degree < k guarantees a free color (no swaps needed)",
-      "Kempe chain interference theorem for 4-color attempts",
-      "Structural comparison: why 5-color Kempe works but 4-color fails",
-      "Heawood crossing obstruction formalization"
+      "Color-swap preserves proper coloring (swapColors_proper) — fully formalized",
+      "Degree < k guarantees a free color, no swap needed (free_color_of_degree_lt) — fully formalized",
+      "Kempe chain interference obstruction (chain_interference_obstruction): after a (c₁,c₃)-swap a shared chain vertex leaves the {c₂,c₃} chain — fully formalized",
+      "Structural contrast between the 5-color and 4-color Kempe arguments, illustrated via counting/arithmetic witnesses (e.g. C(5,2) > C(4,2)), not the full geometric proof",
+      "Heawood crossing scenario stated with a placeholder hypothesis (paths_in_plane : True); the Jordan-curve crossing argument is described in prose, not formalized"
     ],
     "dateAdded": "2026-03-28",
     "axiomCount": 0,
-    "assumptions": "0 axioms. 0 sorries. All results fully proved.",
+    "assumptions": "0 axioms. 0 sorries. The graph-coloring lemmas (color-swap preserves proper coloring, free-color-from-low-degree, Kempe chain interference) are fully proved. The deep geometric facts — notably the Jordan-curve crossing that forces two Kempe chains to intersect — are illustrated via trivial arithmetic witnesses or a `True` placeholder hypothesis, not formalized. This is an exploratory entry; see the 'What a Human-Readable 4CT Proof Would Need' section.",
     "proofRepoPath": "Proofs/FourColorTheoremOQ01.lean",
     "mathlib_version": "4.26.0",
     "lineCount": 458,
