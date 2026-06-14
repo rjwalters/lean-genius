@@ -7,16 +7,23 @@
   function) elementarily, removing the axiom `chebyshevPsi_asymptotic`
   from `ChebyshevBoundsOQ04.lean`.
 
-  ## Status: Iteration 1 / OBSERVE
+  ## Status: Iteration 5a-β-1 (Lean source frozen) — 18 theorems, 4 defs,
+  0 sorries, 0 axioms. Tracker phase: PREP toward Iter 5a-β-2 (weak Mertens
+  M1 estimate |Σ_{d ≤ N} μ(d)/d| ≤ 1 + log N via Abel summation).
 
   This file scaffolds the Selberg-Erdős 1949 elementary proof strategy.
   Concretely, it:
 
   - Defines the Selberg auxiliary function
         Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n),
-    where Λ ∗ Λ denotes Dirichlet convolution.
-  - Defines the Selberg partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n).
-  - Proves routine non-negativity, base-value, and monotonicity lemmas.
+    where Λ ∗ Λ denotes Dirichlet convolution, the Selberg partial sum
+    S₂(N) = Σ_{n ≤ N} Λ₂(n), and the Mertens partial sum M(N) = Σ_{d ≤ N} μ(d).
+  - Proves routine non-negativity, base-value, monotonicity, and prime-value
+    lemmas for Λ₂ (including the clean closed form Λ₂(p) = (log p)²).
+  - Proves Selberg's dual identity Σ_{d ∣ n} Λ₂(d) = (log n)² (Iter 3) and its
+    Möbius-inverse literal form Λ₂(n) = Σ_{d ∣ n} μ(d)·log²(n/d) (Iter 4),
+    together with the bridge lemma `vonMangoldtConv_eq_mul`.
+  - Proves the trivial linear Mertens bound |M(N)| ≤ N (Iter 5a-β-1).
   - Documents the elementary-PNT roadmap and identifies Mathlib gaps.
 
   No new axioms are added; the parent file's `chebyshevPsi_asymptotic`
