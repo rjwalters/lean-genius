@@ -211,9 +211,17 @@
       "id": "entry-gap-analysis",
       "title": "Entry Gap Analysis and swapTails Properties",
       "startLine": 1215,
-      "endLine": 2878,
+      "endLine": 2874,
       "summary": "FULLY PROVED: Entry gap framework (NI preserves positive gap, gap positive at all columns under NI + y₁<y₂). swapTails East step count preservation. Suffix North step count decomposition.",
       "mathContext": "The entry gap $\\texttt{entryGap}(l_1, l_2, y_1, y_2, k) = (y_2 + \\text{colEntry}(l_2, k)) - (y_1 + \\text{colEntry}(l_1, k))$ measures path separation at each column. Under non-intersection with $y_1 < y_2$, the gap stays positive at all columns ($\\texttt{entryGap\\_pos\\_all}$). This section also proves $\\texttt{swapTails}$ preserves East step counts and decomposes suffix North steps, completing the infrastructure for the Lindström involution."
+    },
+    {
+      "id": "lgv-lemma-2x2",
+      "title": "2×2 LGV Lemma and Non-Negativity",
+      "startLine": 2875,
+      "endLine": 2922,
+      "summary": "FULLY PROVED: lgv_lemma_2x2 — the headline result. Non-intersecting path-pair count equals the 2×2 Lindström-Gessel-Viennot determinant. Three cases (equal starts, equal ends, strict ordering); the strict case combines complement counting (ni_complement_count') with the lindstrom_involution and closes by omega/zify/ring. Corollary lgvDet_nonneg: the LGV determinant is non-negative because it equals a cardinality.",
+      "mathContext": "|{NI pairs}| = C(m+n₁,m)·C(m+n₂,m) − C(m+n₁',m)·C(m+n₂',m) = det[[e(A₁,B₁), e(A₁,B₂)], [e(A₂,B₁), e(A₂,B₂)]], with n₁',n₂' the crossed lengths. Non-negativity is immediate since the determinant equals a nonnegative count (Int.natCast_nonneg)."
     }
   ],
   "conclusion": {
