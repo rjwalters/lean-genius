@@ -19,14 +19,14 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-05-08T16:55:00Z",
+    "since": "2026-06-13T00:00:00Z",
     "iteration": 4,
-    "focus": "Final axiom `polar_angle_eq` eliminated in Session 4 (PR pending).",
+    "focus": "STATE-SYNC: gallery proof Proofs/LawOfCosinesOQ01OQ01OQ03.lean is verified (0 sorries, 0 axioms) and fully proves the stated question. Research tracker was stale; flipped active→completed to match published gallery verdict. dual_spherical_law_of_cosines general theorem.",
     "activeApproach": "(N/A — research target completed.) Build verification pending.",
     "blockers": [
       "None mathematical. CI Docker build pending; if `proofs/.lake` cache is cold the"
     ],
-    "nextAction": "Wait for CI to confirm the build, then close this research thread.",
+    "nextAction": "None — completed and gallery-verified.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 1,
@@ -66,7 +66,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.190Z",
-  "lastUpdate": "2026-05-29T19:14:09.238Z",
+  "lastUpdate": "2026-06-13T00:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
