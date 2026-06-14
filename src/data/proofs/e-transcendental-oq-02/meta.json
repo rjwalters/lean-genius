@@ -107,42 +107,66 @@
     {
       "id": "definitions",
       "title": "Definitions: Normal Numbers",
-      "startLine": 57,
-      "endLine": 78,
+      "startLine": 56,
+      "endLine": 77,
       "summary": "Three definitions: nthDigit (the n-th base-b digit as ⌊bⁿ·x⌋ % b), IsNormalInBase (Tendsto digit frequency condition), IsAbsolutelyNormal (normal in all bases ≥ 2).",
       "mathContext": "`nthDigit b n x = ⌊b^n · x⌋ % b ∈ ℤ`. `IsNormalInBase b x`: for all $k$ and $s : \\text{Fin}\\,k \\to \\text{Fin}\\,b$, frequency of $s$ in base-$b$ expansion tends to $b^{-k}$."
     },
     {
       "id": "known-properties",
       "title": "Known Properties of e",
-      "startLine": 80,
-      "endLine": 104,
+      "startLine": 78,
+      "endLine": 103,
       "summary": "e is irrational (from ETranscendental), transcendental (from ETranscendental), lies in (2.718281828, 2.7182818286) from Mathlib bounds, and between 2 and 3.",
       "mathContext": "$e > 2.718281828$ (`exp_one_gt_d9`) and $e < 2.7182818286$ (`exp_one_lt_d9`). These 9-digit Mathlib bounds pin down all 9 decimal digits of e = 2.718281828..."
     },
     {
       "id": "digit-lemmas",
       "title": "Decimal Digits 1–9 of e",
-      "startLine": 106,
+      "startLine": 104,
       "endLine": 200,
       "summary": "Machine-checked proofs that e = 2.718281828...: ⌊10ⁿ·e⌋ computed for n = 1..9, digits 7,1,8,2,8,1,8,2,8 extracted via floor arithmetic. All proved from exp_one_gt_d9 + exp_one_lt_d9 + Int.floor_eq_iff. The 9th digit saturates the Mathlib lower bound 2.718281828.",
       "mathContext": "Pattern: $\\lfloor 10^n \\cdot e \\rfloor$ pinned between $10^n \\cdot 2.718281828$ and $10^n \\cdot 2.7182818286$. For $n=9$: $2718281828 < 10^9 e < 2718281828.6$, so $\\lfloor 10^9 e \\rfloor = 2718281828$ and digit $= 8$."
     },
     {
-      "id": "normal-irrational",
-      "title": "Normal Implies Irrational (Axiomatized)",
+      "id": "part4-layer1-pigeonhole",
+      "title": "Part IV — Layer 1: Orbit Pigeonhole on a Finite Type",
       "startLine": 201,
-      "endLine": 230,
-      "summary": "Three axioms formalizing the proof that normality implies irrationality: (1) rationals have eventually periodic digit expansions, (2) T-periodic sequences have missing k-tuples when bᵏ > T, (3) the full theorem. Proof sketches provided in docstrings.",
-      "mathContext": "If $x = p/q \\in \\mathbb{Q}$, the sequence $n \\mapsto \\lfloor b^n x \\rfloor \\bmod b$ is eventually periodic with period $T \\mid \\varphi(q) \\leq q$. For $k$ with $b^k > T$, the orbit has $\\leq T < b^k$ distinct $k$-tuples, so some string $s_0$ never appears after position $N_0$. Its density is $0 \\neq b^{-k}$."
+      "endLine": 257,
+      "summary": "Layer 1 of the now machine-checked proof that normality ⇒ irrationality (previously axiomatized, now fully proved). exists_iterate_collision and eventually_periodic_iterate: iterating any function f : α → α on a finite type α from a point eventually cycles, by pigeonhole on the finite orbit.",
+      "mathContext": "Pigeonhole foundation: on a finite type α the orbit {x, f x, f² x, …} must repeat, so n ↦ fⁿ x is eventually periodic. This is the combinatorial core behind eventual periodicity of rational base-b digit expansions."
     },
     {
-      "id": "open-question",
-      "title": "The Open Question: e is Absolutely Normal",
-      "startLine": 231,
-      "endLine": 266,
-      "summary": "Axiom e_absolutely_normal (the main open conjecture). Consequences: e is normal in base 10, in base 2. Theorem: normality implies uniform decimal digit distribution (each digit 0–9 appears with frequency 1/10).",
-      "mathContext": "**Open conjecture** (axiomatized): $e$ is absolutely normal — normal in every base $b \\geq 2$. Computational check: first $5 \\times 10^{13}$ decimal digits pass $\\chi^2$ and serial correlation tests. No proof exists for any specific constant."
+      "id": "part4-layer2-residue",
+      "title": "Part IV — Layer 2: Rational Residue Sequence in ZMod q.den",
+      "startLine": 258,
+      "endLine": 324,
+      "summary": "Layer 2: the base-b digit dynamics of a rational q realized as iteration on a finite residue type. ratResidue (private def): the ZMod q.den residue at step n. ratResidue_succ and ratResidue_eq_iterate express it as an iterate of the ×b map; ratResidue_eventually_periodic concludes eventual periodicity via Layer 1's pigeonhole.",
+      "mathContext": "For q = p/q.den, the scaled residues live in the finite type ZMod q.den and advance by multiplication by b, so by Layer 1 the residue sequence is eventually periodic — the dynamical reason rational expansions repeat."
+    },
+    {
+      "id": "part4-layer3-floor-bridge",
+      "title": "Part IV — Layer 3: Floor/Residue Bridge and Periodicity of Rational Digits",
+      "startLine": 325,
+      "endLine": 483,
+      "summary": "Layer 3 connects the residue dynamics back to actual digits. floor_pow_mul_div, floor_pow_rat_eq_ediv, int_mul_ediv_eq reduce ⌊bⁿ·(p/q)⌋ to integer (Euclidean) division; nthDigit_succ_via_residue and nthDigit_succ_eq_of_emod_eq show the n-th digit is determined by the residue. rational_digits_eventually_periodic (was axiom): a rational's base-b digit sequence is eventually periodic. periodic_has_missing_ktuple: a period-T sequence omits some length-k string once bᵏ > T.",
+      "mathContext": "Combining the floor/Euclidean-division identities with Layer 2 yields eventual periodicity (period T ≤ q.den) of rational digit sequences. A T-periodic sequence visits at most T distinct k-tuples, so when bᵏ > T some k-tuple never appears — the seed of the density contradiction."
+    },
+    {
+      "id": "part4-5-layer4a-normal-irrational",
+      "title": "Part IV.5 — Layer 4a: Fin b Cast Bridge and the Proof that Normal ⇒ Irrational",
+      "startLine": 484,
+      "endLine": 678,
+      "summary": "Layer 4a and the culminating theorem. nthDigit_nonneg, nthDigit_lt_base, the private def nthDigitFin, and nthDigitFin_intCast / nthDigitFin_eq_iff recast the ℤ-valued nthDigit as a Fin b value. rational_has_missing_ktuple(_intCast): a rational has a length-k string of zero asymptotic density. rational_match_count_le and tendsto_bounded_count_div_atTop_zero show that matching count over N tends to 0. normal_imp_irrational (was axiom): the main theorem — a base-b normal real is irrational.",
+      "mathContext": "The contradiction is assembled: if x were rational some k-tuple would have asymptotic density 0, but normality forces every k-tuple to density b⁻ᵏ > 0. Hence normal ⇒ irrational, proved with no axioms (theorem normal_imp_irrational, via tendsto_nhds_unique)."
+    },
+    {
+      "id": "part5-open-question",
+      "title": "Part V: The Open Question — e is Absolutely Normal (Axiomatized)",
+      "startLine": 679,
+      "endLine": 715,
+      "summary": "The sole axiom and its consequences. axiom e_absolutely_normal: e is absolutely normal (the 2026 open conjecture). e_normal_base_10 and e_normal_binary are immediate consequences; e_normal_implies_uniform_decimal_digits gives each decimal digit 0–9 frequency 1/10 under base-10 normality; e_irrational_necessary_for_normality records that e is irrational (a necessary condition), derived independently from e_irrational.",
+      "mathContext": "Open conjecture (axiomatized): e is normal in every base b ≥ 2; computational evidence over the first 5×10¹³ digits is consistent but no proof exists for any base. Irrationality, a necessary condition, is already proved unconditionally."
     }
   ],
   "conclusion": {
