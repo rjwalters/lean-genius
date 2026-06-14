@@ -1996,4 +1996,145 @@ theorem cbrt3_a11 :
     rw [Int.le_floor]
     exact_mod_cast hge
 
+set_option maxHeartbeats 12800000 in
+/-- **Thirteenth partial quotient of the simple CF of `∛3`.**
+
+  `⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5)⌋ = 8`.
+
+This is `a₁₂ = 8` in the prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, …]`
+of OEIS A002945 — the largest partial quotient in the known prefix.
+
+Proof: from `597449/414248 < cbrt3 < 1865358/1293367` (S13 Helper lower
+bound, the true 13th CF convergent, paired with the S14a-introduced 14th CF
+convergent upper bound `1865358/1293367`) propagate the sandwich through
+twelve reciprocation/subtraction steps to `x₁₂ ∈ (3/25, 1/8) ⊂ (1/9, 1/8)`,
+hence `1/x₁₂ ∈ (8, 25/3) ⊂ (8, 9)`. The floor identity follows by `le_antisymm`
+using `Int.le_floor` / `Int.floor_lt`. The lower endpoint `1/x₁₂ → 8` is
+exactly the limit as `cbrt3 → 1865358/1293367`, so the strict upper bound on
+`cbrt3` is what separates `1/x₁₂` from `8` — the true 14th convergent is
+optimally tight for this digit.
+
+Note: the twelve-level nesting pushes Lean's term-elaboration above the S13b
+budget of 6_400_000 heartbeats; `set_option maxHeartbeats 12800000` (scoped via
+`in`) is allotted, per the empirical 2× per-depth scaling held through S7–S13b. -/
+theorem cbrt3_a12 :
+    ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5)⌋ = (8 : ℤ) := by
+  have hpos1 : (0 : ℝ) < cbrt3 - 1 := by linarith [four_thirds_lt_cbrt3]
+  have h_lo : (597449/414248 : ℝ) < cbrt3 :=
+    Cbrt3Helpers.five_nine_seven_four_four_nine_over_four_one_four_two_four_eight_lt_cbrt3
+  have h_hi : cbrt3 < (1865358/1293367 : ℝ) :=
+    Cbrt3Helpers.cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_three_six_seven
+  have hy1_gt : (1293367/571991 : ℝ) < 1 / (cbrt3 - 1) := by
+    rw [lt_div_iff₀ hpos1]
+    linarith [h_hi]
+  have hy1_lt : 1 / (cbrt3 - 1) < (414248/183201 : ℝ) := by
+    rw [div_lt_iff₀ hpos1]
+    linarith [h_lo]
+  have hx2_gt : (149385/571991 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  have hx2_lt : 1 / (cbrt3 - 1) - 2 < (47846/183201 : ℝ) := by linarith
+  have hpos2 : (0 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  have hy2_gt : (183201/47846 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) := by
+    rw [lt_div_iff₀ hpos2]
+    linarith [hx2_lt]
+  have hy2_lt : 1 / (1 / (cbrt3 - 1) - 2) < (571991/149385 : ℝ) := by
+    rw [div_lt_iff₀ hpos2]
+    linarith [hx2_gt]
+  have hx3_gt : (39663/47846 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  have hx3_lt : 1 / (1 / (cbrt3 - 1) - 2) - 3 < (123836/149385 : ℝ) := by linarith
+  have hpos3 : (0 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  have hy3_gt : (149385/123836 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) := by
+    rw [lt_div_iff₀ hpos3]
+    linarith [hx3_lt]
+  have hy3_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) < (47846/39663 : ℝ) := by
+    rw [div_lt_iff₀ hpos3]
+    linarith [hx3_gt]
+  have hx4_gt : (25549/123836 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  have hx4_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 < (8183/39663 : ℝ) := by linarith
+  have hpos4 : (0 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  have hy4_gt : (39663/8183 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) := by
+    rw [lt_div_iff₀ hpos4]
+    linarith [hx4_lt]
+  have hy4_lt : 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) < (123836/25549 : ℝ) := by
+    rw [div_lt_iff₀ hpos4]
+    linarith [hx4_gt]
+  have hx5_gt : (6931/8183 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by linarith
+  have hx5_lt : 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 < (21640/25549 : ℝ) := by linarith
+  have hpos5 : (0 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by linarith
+  have hy5_gt : (25549/21640 : ℝ) < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) := by
+    rw [lt_div_iff₀ hpos5]
+    linarith [hx5_lt]
+  have hy5_lt : 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) < (8183/6931 : ℝ) := by
+    rw [div_lt_iff₀ hpos5]
+    linarith [hx5_gt]
+  have hx6_gt : (3909/21640 : ℝ) < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by linarith
+  have hx6_lt : 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 < (1252/6931 : ℝ) := by linarith
+  have hpos6 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by linarith
+  have hy6_gt : (6931/1252 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) := by
+    rw [lt_div_iff₀ hpos6]
+    linarith [hx6_lt]
+  have hy6_lt : 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) < (21640/3909 : ℝ) := by
+    rw [div_lt_iff₀ hpos6]
+    linarith [hx6_gt]
+  have hx7_gt : (671/1252 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 := by linarith
+  have hx7_lt : 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 < (2095/3909 : ℝ) := by linarith
+  have hpos7 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 := by linarith
+  have hy7_gt : (3909/2095 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) := by
+    rw [lt_div_iff₀ hpos7]
+    linarith [hx7_lt]
+  have hy7_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) < (1252/671 : ℝ) := by
+    rw [div_lt_iff₀ hpos7]
+    linarith [hx7_gt]
+  have hx8_gt : (1814/2095 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1 := by linarith
+  have hx8_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1 < (581/671 : ℝ) := by linarith
+  have hpos8 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1 := by linarith
+  have hy8_gt : (671/581 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) := by
+    rw [lt_div_iff₀ hpos8]
+    linarith [hx8_lt]
+  have hy8_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) < (2095/1814 : ℝ) := by
+    rw [div_lt_iff₀ hpos8]
+    linarith [hx8_gt]
+  have hx9_gt : (90/581 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1 := by linarith
+  have hx9_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1 < (281/1814 : ℝ) := by linarith
+  have hpos9 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1 := by linarith
+  have hy9_gt : (1814/281 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) := by
+    rw [lt_div_iff₀ hpos9]
+    linarith [hx9_lt]
+  have hy9_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) < (581/90 : ℝ) := by
+    rw [div_lt_iff₀ hpos9]
+    linarith [hx9_gt]
+  have hx10_gt : (128/281 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6 := by linarith
+  have hx10_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6 < (41/90 : ℝ) := by linarith
+  have hpos10 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6 := by linarith
+  have hy10_gt : (90/41 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) := by
+    rw [lt_div_iff₀ hpos10]
+    linarith [hx10_lt]
+  have hy10_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) < (281/128 : ℝ) := by
+    rw [div_lt_iff₀ hpos10]
+    linarith [hx10_gt]
+  have hx11_gt : (8/41 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2 := by linarith
+  have hx11_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2 < (25/128 : ℝ) := by linarith
+  have hpos11 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2 := by linarith
+  have hy11_gt : (128/25 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) := by
+    rw [lt_div_iff₀ hpos11]
+    linarith [hx11_lt]
+  have hy11_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) < (41/8 : ℝ) := by
+    rw [div_lt_iff₀ hpos11]
+    linarith [hx11_gt]
+  have hx12_gt : (3/25 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 := by linarith
+  have hx12_lt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 < (1/8 : ℝ) := by linarith
+  have hpos12 : (0 : ℝ) < 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5 := by linarith
+  apply le_antisymm
+  · have hlt : 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) < (9 : ℝ) := by
+      rw [div_lt_iff₀ hpos12]
+      linarith [hx12_gt]
+    have hflt : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5)⌋ < (9 : ℤ) := by
+      rw [Int.floor_lt]
+      exact_mod_cast hlt
+    omega
+  · have hge : (8 : ℝ) ≤ 1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1) - 6) - 2) - 5) := by
+      rw [le_div_iff₀ hpos12]
+      linarith [hx12_lt]
+    rw [Int.le_floor]
+    exact_mod_cast hge
+
 end CubeRoot3IrrationalOQ04

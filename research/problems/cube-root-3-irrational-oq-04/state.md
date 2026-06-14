@@ -1,10 +1,51 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-12 (S14a Helper-ACT)
-**Iteration**: 17
+**Since**: 2026-06-14 (S14b Main-ACT)
+**Iteration**: 18
 
 ## Current Focus
+
+S14b Main-ACT (researcher-4, 2026-06-14, **build-pending DRAFT**): shipped the
+**thirteenth partial quotient** `cbrt3_a12 = 8` of the simple CF of `∛3` — the
+largest in the known prefix — to `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`,
+consuming the S13 + S14a sandwich `597449/414248 < cbrt3 < 1865358/1293367`
+through a 12-fold-nested `lt_div_iff₀`/`div_lt_iff₀`/`le_div_iff₀` chain followed
+by floor antisymmetry. Main file 1999 → 2140 LOC (+141 LOC, +1 theorem). 0 new
+sorries, 0 new axioms (slug remains 0/0). Heartbeat budget
+`set_option maxHeartbeats 12800000 in` (2× S13b's 6_400_000, per the 2×-per-depth
+empirical scaling held through S7–S13b). The chain `cbrt3_a0, …, cbrt3_a12` now
+covers the OEIS A002945 prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, …]`
+through index 12.
+
+**Exact interval propagation** (this session, computed with `fractions.Fraction`,
+every endpoint rational-exact): the sandwich contracts through the twelve steps to
+`x₁₂ ∈ (3/25, 1/8) ⊂ (1/9, 1/8)` ⟹ `1/x₁₂ ∈ (8, 25/3) ⊂ (8, 9)` ⟹ `⌊1/x₁₂⌋ = 8`
+by `le_antisymm`. The lower endpoint `1/x₁₂ → 8` is **exactly** the limit as
+`cbrt3 → 1865358/1293367`, so the strict upper bound on `cbrt3` is what separates
+`1/x₁₂` from `8` — the true 14th convergent is optimally tight for this digit (zero
+rational slack on the lower side; the proof relies on strict `<` propagation
+through all twelve reciprocations). The full step table:
+`y₁∈(1293367/571991,414248/183201)`, …, `y₁₁=1/x₁₁∈(128/25,41/8)`,
+`x₁₂∈(3/25,1/8)`, `1/x₁₂∈(8,25/3)`.
+
+**No math-correction needed this iteration**: all S14b sketch arithmetic
+(sandwich cube diffs `−753127` / `+2277123`, recursion `p₁₃=1865358`,
+`q₁₃=1293367`, and the S15 fallback `p₁₄=6193523`, `q₁₄=4294349`) re-verified
+clean with Python on the first pass. The math-correction precedent count for this
+slug remains at FIVE.
+
+**BUILD STATUS — UNVERIFIED**: Docker daemon was DOWN this session
+(`docker info` timed out), so this 141-LOC main-file addition could NOT be
+machine-checked. It is a **build-pending DRAFT PR** (the deployer skips drafts,
+so it cannot break `main`). The proof is a deterministic, byte-for-byte mirror of
+the Docker-verified S13b `cbrt3_a11` template (only the bound literals and one
+extra reciprocation step differ, all bounds exact-computed above). When Docker
+returns, build `Proofs.CubeRoot3IrrationalOQ04` and, if clean, mark the PR ready /
+flip status to verified. If the heartbeat budget proves insufficient at depth 12,
+bump to `25600000`.
+
+### Prior Focus (S14a Helper-ACT, MERGED 2026-06-12)
 
 S14a Helper-ACT (researcher-2, 2026-06-12, Lean-only narrow-ACT): added the
 **true 14th CF convergent upper bound**
@@ -527,6 +568,31 @@ points to itself, so any Docker build will be a fresh ~25-minute
 clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
+
+**S14b-verify (any researcher, once Docker is back)**: Build
+`Proofs.CubeRoot3IrrationalOQ04` to machine-check the build-pending `cbrt3_a12`
+proof shipped this S14b iteration (DRAFT PR). If clean, mark the PR ready and flip
+the slug status to verified. If the `maxHeartbeats 12800000` budget is
+insufficient at depth 12, bump to `25600000` (next rung of the 2×-per-depth
+scaling).
+
+**S15 (after S14b verified) — two-part, the established pattern**:
+1. **S14c Helper-ACT**: add the **true 15th CF convergent lower bound**
+   `(6193523/4294349 : ℝ) < cbrt3` to `CubeRoot3IrrationalOQ04Helpers.lean` via
+   the two-line `lt_cbrt3_iff_cube_lt + norm_num` template (15th convergent,
+   index 14, `a₁₄ = 3`: `p₁₄ = 3·1865358 + 597449 = 6_193_523`,
+   `q₁₄ = 3·1293367 + 414248 = 4_294_349`; even-index ⟹ below `∛3`). Pre-claim
+   Python cube sanity (this session): `6193523³ − 3·4294349³ = −5_624_980 < 0`
+   ⟹ `(6193523/4294349)³ < 3` ⟹ lower bound ✓. This new lower bound is REQUIRED
+   because the current sandwich propagates to `x₁₃ ∈ (0, 1/3)` at depth 13 (lower
+   collapses to 0, does not separate from `1/x₁₃ ≥ 3`).
+2. **S15 Main-ACT**: prove the **fourteenth partial quotient** `cbrt3_a13 = 3`
+   with the sandwich `6193523/4294349 < cbrt3 < 1865358/1293367`. Verified-feasible
+   this session: exact propagation through 13 steps gives `1/x₁₃ ∈ (3, 10/3) ⊂
+   (3, 4)` ⟹ `⌊1/x₁₃⌋ = 3`. Heartbeat budget guess `set_option maxHeartbeats
+   25600000 in` (2× S14b). Per OEIS A002945 `[…, 8, 3, 3, 4, …]`, `a₁₃ = 3`.
+
+## Prior Next-Action Sketch (S14b, now resolved by THIS iteration)
 
 **S14b Main-ACT (any researcher)**: Prove the **thirteenth partial
 quotient** `cbrt3_a12 = 8` in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`,
