@@ -88,60 +88,80 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring on the research question (sharp constant K and rate for exponential Fourier decay of strip-analytic functions, |ĉ_n| ≤ K·e^{−2πδ|n|/T}), the contour-shifting proof technique, and context vs the polynomial/Hölder OQ-02 results. Imports Mathlib Fourier/AddCircle machinery; sets T with Fact (0 < T)."
+    },
+    {
       "id": "strip-analyticity",
-      "title": "Strip Analyticity Definition",
-      "startLine": 56,
-      "endLine": 82,
+      "title": "§ 1. Analytic Functions on a Strip",
+      "startLine": 60,
+      "endLine": 84,
       "summary": "Defines IsStripAnalytic (strip width, integrability, exponential decay) and stripNorm (infimum of valid constants).",
       "mathContext": "f is strip-analytic of width delta if it extends holomorphically to {z : |Im z| < delta}"
     },
     {
       "id": "decay-bound",
-      "title": "Exponential Decay Bound (Axiomatized)",
-      "startLine": 84,
+      "title": "§ 2. The Exponential Decay Bound (Axiomatized)",
+      "startLine": 85,
       "endLine": 108,
       "summary": "Axiomatizes the contour-shifting decay bound: |c_n| <= M * e^{-2*pi*delta*|n|/T}.",
       "mathContext": "Shift contour to Im z = delta - epsilon, Cauchy's theorem cancels vertical edges"
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
-      "startLine": 110,
-      "endLine": 157,
-      "summary": "Proves exponential factor is positive, at most 1, monotone in strip width, summable, and gives absolute Fourier convergence.",
+      "title": "§ 3. Structural Properties of Exponential Decay",
+      "startLine": 109,
+      "endLine": 189,
+      "summary": "exp_decay_pos, exp_decay_le_one, wider_strip_faster_decay (monotone in δ), exp_decay_summable (the ℤ-series ∑ e^{−c|n|} converges via geometric comparison), and exp_decay_abs_convergence (exponential coefficient decay ⟹ absolute convergence of the Fourier series).",
       "mathContext": "Wider strip => faster decay; exponential decay => absolute convergence"
     },
     {
       "id": "sharpness",
-      "title": "Sharpness and Paley-Wiener",
-      "startLine": 159,
-      "endLine": 197,
-      "summary": "Axiomatizes rate sharpness (achieved by cosh-based extremal functions) and the Paley-Wiener converse (exponential decay => analyticity).",
-      "mathContext": "Exponential Fourier decay <=> strip analyticity (complete characterization)"
+      "title": "§ 4. Sharpness of the Exponential Rate",
+      "startLine": 190,
+      "endLine": 212,
+      "summary": "axiom rate_is_sharp: the rate 2πδ/T cannot be improved — for every ε > 0 there is a strip-δ function whose coefficients are ≥ C·e^{−2π(δ+ε)|n|/T} for cofinitely many n (extremal f = 1/(cosh(2πz/T) − cosh(2πδ/T)) with poles on the strip boundary)."
+    },
+    {
+      "id": "paley-wiener",
+      "title": "§ 5. Paley-Wiener Characterization (Converse)",
+      "startLine": 213,
+      "endLine": 231,
+      "summary": "axiom paley_wiener_converse: if |ĉ_n| = O(e^{−c|n|}) then f extends holomorphically to the strip of width cT/(2π) — combined with the § 2 bound this gives the full characterization strip-analytic δ ⟺ O(e^{−2πδ|n|/T})."
     },
     {
       "id": "sharp-constant",
-      "title": "Sharp Constant for a Given Function",
-      "startLine": 199,
-      "endLine": 228,
-      "summary": "Defines the function-dependent sharp constant K(f) as a supremum and proves it is optimal.",
+      "title": "§ 6. The Sharp Constant for a Given Function",
+      "startLine": 232,
+      "endLine": 324,
+      "summary": "sharpConstant δ f = ⨆_{n≠0} ‖ĉ_n‖·e^{2πδ|n|/T}, with sharpConstant_is_bound (it is a valid decay constant, via le_ciSup with a BddAbove witness from IsStripAnalytic) and sharpConstant_optimal (it is the smallest valid bound, via ciSup_le).",
       "mathContext": "K(f) = sup_n |c_n| * e^{2*pi*delta*|n|/T}"
     },
     {
       "id": "comparison",
-      "title": "Comparison with Holder Decay",
-      "startLine": 230,
-      "endLine": 253,
-      "summary": "Shows exponential decay dominates polynomial decay and that analytic functions are in all weighted l^p spaces.",
+      "title": "§ 7. Comparison with Polynomial (Hölder) Decay",
+      "startLine": 325,
+      "endLine": 348,
+      "summary": "exp_dominates_polynomial (exponential decay eventually beats any C/|n|^α) and analytic_hierarchy (strip-analytic ⟹ summable against every polynomial weight |n|^α) — both stated with the standard exp-beats-polynomial argument left as sorry (the file's 2 sorries).",
       "mathContext": "e^{-c|n|} = o(|n|^{-alpha}) for any alpha"
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "startLine": 255,
-      "endLine": 285,
-      "summary": "Poisson kernel example with explicit strip width computation, and trigonometric polynomial vacuity.",
+      "title": "§ 8. Examples",
+      "startLine": 349,
+      "endLine": 383,
+      "summary": "The Poisson kernel (poissonKernelStripWidth, poissonKernel_strip_positive — explicit strip width −T·ln r/(2π) for 0<r<1, coefficients r^|n|, sharp constant 1) and trig_poly_vacuous (degree-N trigonometric polynomials satisfy the bound vacuously beyond |n| > N).",
       "mathContext": "P_r has strip width -T*ln(r)/(2*pi) and coefficients c_n = r^|n|"
+    },
+    {
+      "id": "roadmap",
+      "title": "§ 9. What Remains to Formalize",
+      "startLine": 384,
+      "endLine": 427,
+      "summary": "Roadmap docstring: axiom-elimination plan for the three axioms (contour integration on periodic domains for contour_shift_decay; extremal-function construction for rate_is_sharp; uniform-convergence Paley-Wiener for the converse) and the sorry-elimination list, with line estimates (~800–1100 lines total)."
     }
   ],
   "conclusion": {
