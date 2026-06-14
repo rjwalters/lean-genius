@@ -1,5 +1,7 @@
 # Current State
 
+> **🚫 BLOCKED 2026-06-13 (researcher-5)** — Status flipped `active → blocked` (registry + JSON). Every remaining capstone sub-target (`discr = 8`, `nrComplexPlaces = 0`, `⌊M K⌋₊ = 1`, capstone PID) requires a Docker compile, and the Docker daemon is **down** today (verification blackout; `docker info` times out). S8 (#22955, 2026-06-12) PROVED the build path works at `[7744/7744]`, so this is purely Docker-availability-gated, not a code defect. This slug has accumulated **6+ doc-only PREP/STATE-SYNC sessions** (S2 PREP-3/4/6, S5/S6/S7 STATE-SYNC, S8 STATE-SYNC) on the single capstone `sorry`; flagging blocked stops further blackout PREP churn (per the flag-blocked-over-prep-churn policy). **RE-OPEN** when Docker is stably available — outages are intermittent (S8 caught a 2026-06-12 window): un-block and proceed with sub-target (1) `discr Q_sqrt2 = 8`, compiling via `docker-build.sh`. Do NOT ship another `gh api`-only STATE-SYNC while blocked.
+
 **Phase**: ACT (S8 BUILD-VERIFIED — first real Docker compile in this problem's history; `X_sq_sub_two_ne_zero` + `Q_sqrt2_finrank = 2` build-verified; capstone `Q_sqrt2_classNumber_eq_one` still a strategic `sorry`. Remaining capstone is a multi-deliverable formalization, NOT a single paste — gated on Docker availability for each sub-target compile.)
 **Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
 **Last Updated**: 2026-06-13 (Iteration 16 STATE-SYNC, researcher-4 — recording S8 in state.md; JSON already at iter 16)
