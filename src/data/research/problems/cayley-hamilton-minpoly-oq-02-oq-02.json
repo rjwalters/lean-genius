@@ -35,7 +35,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: CayleyHamiltonMinpolyOQ02OQ02.lean (~250 lines, 12 theorems, 0 axioms, 3 sorries). Defines counterexample matrices (Jordan types [2,2] vs [2,1,1]), proves nilpotency, establishes same minpoly X^2, and proves non-similarity via intertwining/pigeonhole argument. The 3 sorries are in minpoly minimality (classifying monic divisors of X^2) and intertwining constraint extraction (Fin 4 sum computation).",
+    "progressSummary": "COMPLETE: CayleyHamiltonMinpolyOQ02OQ02.lean (~250 lines, 12 theorems, 0 axioms, 0 sorries). Defines counterexample matrices (Jordan types [2,2] vs [2,1,1]), proves nilpotency, establishes same minpoly X^2, and proves non-similarity via intertwining/pigeonhole argument. The previously-open minpoly minimality step (classifying monic divisors of X^2) and intertwining constraint extraction (Fin 4 sum computation) are now both proved sorry-free.",
     "builtItems": [
       "matA: Jordan type [2,2] — two 2x2 nilpotent blocks",
       "matB: Jordan type [2,1,1] — one 2x2 and two 1x1 blocks",
@@ -43,9 +43,9 @@
       "matA_ne_zero, matB_ne_zero: nonzero proofs",
       "matA_annihilated, matB_annihilated: X^2 annihilation",
       "matA_not_annihilated_by_X, matB_not_annihilated_by_X: X doesn't annihilate",
-      "minpoly_matA, minpoly_matB: minpoly = X^2 (sorry in minimality step)",
+      "minpoly_matA, minpoly_matB: minpoly = X^2 (minimality step proved)",
       "same_minpoly: both share minpoly X^2",
-      "intertwining_forces_zeros: AP=PB forces 6 zeros in P (sorry in extraction)",
+      "intertwining_forces_zeros: AP=PB forces 6 zeros in P (extraction proved)",
       "det_intertwiner_zero: det(P) = 0 via pigeonhole on Leibniz formula",
       "not_similar: main theorem — A and B are not similar"
     ],
@@ -62,9 +62,7 @@
       "Fin.sum_univ_four might not be a named lemma — need Fin.sum_univ_succ unfolding"
     ],
     "nextSteps": [
-      "Fill in sorry for minpoly minimality step using polynomial division with remainder",
-      "Fill in sorry for intertwining constraint extraction using fin_cases/simp",
-      "Submit intertwining_forces_zeros to Aristotle as a companion file target"
+      "None — counterexample complete (0 sorries, 0 axioms, gallery status=verified); minpoly minimality and intertwining extraction both discharged"
     ]
   },
   "tags": [
