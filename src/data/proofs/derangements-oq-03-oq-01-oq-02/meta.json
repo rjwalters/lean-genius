@@ -84,49 +84,57 @@
       "id": "foundations",
       "title": "Foundations",
       "startLine": 44,
-      "endLine": 100,
+      "endLine": 189,
       "summary": "Self-contained definitions and proofs of altFactTerm, altFactPartialSum, summability, the exponential series identity, and the derangement-factorial identity.",
       "mathContext": "$D(n) = n! \\sum_{k=0}^n \\frac{(-1)^k}{k!}$ and $e^{-1} = \\sum_{k=0}^\\infty \\frac{(-1)^k}{k!}$"
     },
     {
       "id": "error-tail-sum",
       "title": "Error Tail Sum",
-      "startLine": 176,
-      "endLine": 240,
+      "startLine": 190,
+      "endLine": 273,
       "summary": "Definition and properties of errorTailSum(m) = ∑' k, (-1)^k/(m+k)!. Non-negativity, upper bound 1/m!, recurrence, strict positivity, and tight lower bound.",
       "mathContext": "$0 < T(m) = \\frac{1}{m!} - T(m+1) \\le \\frac{1}{m!}$"
     },
     {
       "id": "closed-form",
       "title": "Closed-Form Identity",
-      "startLine": 250,
-      "endLine": 275,
+      "startLine": 274,
+      "endLine": 306,
       "summary": "Main theorem: D(n)/n! - 1/e = (-1)^n · errorTailSum(n+1). Factors the alternating sign from the tail.",
       "mathContext": "$\\frac{D(n)}{n!} - \\frac{1}{e} = (-1)^n \\sum_{k=0}^\\infty \\frac{(-1)^k}{(n+1+k)!}$"
     },
     {
       "id": "recurrence",
       "title": "Error Recurrence",
-      "startLine": 277,
-      "endLine": 290,
+      "startLine": 307,
+      "endLine": 319,
       "summary": "The error at n+1 equals the error at n plus (-1)^{n+1}/(n+1)!, reflecting addition of one more series term.",
       "mathContext": "$e_{n+1} = e_n + \\frac{(-1)^{n+1}}{(n+1)!}$"
     },
     {
       "id": "sign-alternation",
       "title": "Strict Sign Alternation",
-      "startLine": 292,
-      "endLine": 310,
+      "startLine": 320,
+      "endLine": 337,
       "summary": "D(2n)/(2n)! strictly exceeds 1/e; D(2n+1)/(2n+1)! is strictly below 1/e.",
       "mathContext": "$\\frac{D(2n)}{(2n)!} > \\frac{1}{e} > \\frac{D(2n+1)}{(2n+1)!}$"
     },
     {
       "id": "normalized-limit",
       "title": "Normalized Error Limit",
-      "startLine": 312,
-      "endLine": 370,
+      "startLine": 338,
+      "endLine": 398,
       "summary": "(-1)^n · (D(n)/n! - 1/e) · (n+1)! → 1, proving the error is asymptotically (-1)^n/(n+1)!.",
       "mathContext": "$(-1)^n \\left(\\frac{D(n)}{n!} - \\frac{1}{e}\\right) (n+1)! \\to 1$"
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values",
+      "startLine": 399,
+      "endLine": 410,
+      "summary": "error_n0_pos: D(0)/0! - 1/e = 1 - 1/e > 0 (instance of error_strict_pos_even 0). error_n1_neg: D(1)/1! - 1/e = -1/e < 0 (instance of error_strict_neg_odd 0). Concrete base cases confirming the sign alternation.",
+      "mathContext": "$\\frac{D(0)}{0!} = 1 > \\frac{1}{e}$ and $\\frac{D(1)}{1!} = 0 < \\frac{1}{e}$."
     }
   ],
   "crossReferences": [
