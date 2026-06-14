@@ -134,12 +134,10 @@
       "No representation-theoretic decomposition of Sₙ-modules into irreducibles in Mathlib at the level needed for BU computations"
     ],
     "nextSteps": [
-      "S18 PREP delivered: Iter 18 ACT Option A — fix problem.md formal statement (Option A from §1.5: drop `= 2⌊d/2⌋ - 1` from chain of equalities, add separate even-d closed-form footnote). ~10-line markdown edit, low-risk, brings problem.md into consistency with 6+-iter-old axiom-free Z/2 monotonicity bound.",
       "S18 PREP delivered: Iter 18 ACT Option B — add parent-side axiom `buDim_prime_odd (p k : ℕ) (hp : Nat.Prime p) (hp_odd : Odd p) (hk : 0 < k) : buDim p (2 * k + 1) = 2 * k` in BorsukUlamOQ02OQ01.lean after line 71, and derive PART XXV downstream theorems (`symBUDim_odd_formula_at_three_or_more`, `symBUDim_odd_formula`, `symBUDim_closed_form`) in BorsukUlamOQ02OQ01OQ03OQ02.lean. ~135 LOC across two Lean files. Parent axiomCount 9→10. Honest framing: trivialises conjecture to `symBUDim n d = d - 1` uniformly.",
       "Iter 19+: consider unified `axiom buDim_all (p d : ℕ) (hp : Nat.Prime p) (hd : 0 < d) : buDim p d = d - 1` replacing buDim_two, buDim_prime, buDim_prime_odd. axiomCount 4→2 in parent. Strict cleanup.",
       "S8 stretch: investigate whether an odd-d cyclic-prime Yang-Borsuk axiom would extend `symBUDim_eq_largestPrime`'s tight closed form past even d. Currently `buDim_prime p k` only handles `buDim p (2k) = 2k − 1`; an odd-d analog `buDim p (2k+1) = 2k` (parallel to parent's `buDim_two`) at odd primes would let `symBUDim_eq_largestPrime` derive the tight closed form `symBUDim n (2k+1) = 2k − 1` (or = 2k via the Z/2 route?) at all d. Worth a literature check on Yang's original paper.",
       "S8 stretch: prove n=4 case directly via V_4 ≤ S_4 — explicit equivariant index calculation. The new uniform Z/2 bound `d − 1 ≤ symBUDim 4 d` is the **best axiom-free lower bound** at n=4; any improvement would have to come from V_4-specific (non-cyclic) structure. If V_4 contributes nothing beyond Z/2 + Z/3 (the maximal cyclic primes ≤ 4), the conjecture holds at n=4; if it contributes more, the conjecture fails at n=4.",
-      "S4 DONE: Added import Proofs.BorsukUlamOQ02OQ01OQ03OQ02 to proofs/Proofs.lean (after line 257). File now builds as part of gallery target.",
       "Stretch: explore whether n=3 can be made redundant analogously — would require parent-side `symBUDim_three` base axiom (not currently in `BorsukUlamOQ02OQ01OQ03.lean`).",
       "Stretch: tackle n=4 case directly via V_4 ≤ S_4 — would either confirm or refute the conjecture at the smallest non-trivial composite n. Concrete: compute Fadell-Husseini index of the V_4 sign representation; if equal to buDim 3 d, conjecture holds at n=4; if greater, it fails.",
       "Stretch: prove the conjecture's compatibility with `sym_has_smaller_sym n d` (parent's S_n ⊃ S_{n-1} monotonicity) — symBUDim_eq_largestPrime should commute with monotonicity since largestPrimeBelow is non-decreasing.",
@@ -147,11 +145,6 @@
       "Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral D_n) — share the squeeze argument for largestPrimeBelow.",
       "Docker build (`./proofs/scripts/docker-build.sh Proofs.BorsukUlamOQ02OQ01OQ03OQ02`) — verify the scaffold compiles. Watch for: (a) Nat.findGreatest_spec API drift, (b) DecidablePred Nat.Prime resolution, (c) `simpa using this` numeric reductions in symBUDim_three_four / symBUDim_four_six",
       "If `simpa using this` fails for the symBUDim_three_four / symBUDim_four_six concrete instances, use `convert symBUDim_even_formula 3 2 ... using 2 <;> norm_num` style instead.",
-      "Phase-2: define `largestPrimeBelow n : ℕ` using `Nat.find` (or rephrase as `Nat.find_greatest (Nat.Prime) n`) and prove it is prime, ≤ n, and > n/2 (Bertrand)",
-      "Phase-2: state `axiom symBUDim_eq_largest_prime : ∀ n d, symBUDim n d = buDim (largestPrimeBelow n) d` with full proof-sketch citation",
-      "Phase-2: prove `theorem symBUDim_eq_floor_formula : ∀ n d, n ≥ 2 → symBUDim n d = 2 * (d / 2) - 1` from the axiom + `buDim p d = 2⌊d/2⌋−1` cyclic axiom",
-      "Phase-2: state and prove the partial result `theorem symBUDim_lower_bound : symBUDim n d ≥ 2 * (d / 2) - 1` from existing Bertrand + subgroup monotonicity (axiom-free up to the cyclic-prime axiom)",
-      "Phase-3: gallery entry `src/data/proofs/borsuk-ulam-oq-02-oq-01-oq-03-oq-02/`",
       "Coordinate with sister-question OQ-02-OQ-01-OQ-03-OQ-01 (dihedral Dₙ) — they share infrastructure",
       "Stretch: tackle n = 4 case by hand to either falsify the conjecture (find Sₙ-specific extra structure) or confirm it (compute equivariant index of S₄ on a small d-dim rep)"
     ],
