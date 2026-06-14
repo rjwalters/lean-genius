@@ -88,36 +88,78 @@
       "id": "sidon-definitions",
       "title": "Sidon Set Definitions",
       "startLine": 28,
-      "endLine": 57,
-      "summary": "IsSidon, IsSidonAlt, and the verified equivalence theorem."
+      "endLine": 72,
+      "summary": "Definition recap plus IsSidon, IsSidonAlt, and the verified equivalence theorem sidon_iff_sidon_alt."
     },
     {
       "id": "basis-definitions",
       "title": "Asymptotic Basis Definitions",
-      "startLine": 58,
-      "endLine": 73,
-      "summary": "SumsetK, IsAsymptoticBasis, IsExactBasis."
+      "startLine": 74,
+      "endLine": 88,
+      "summary": "SumsetK (k-fold sumset), IsAsymptoticBasis, and IsExactBasis."
     },
     {
       "id": "main-question",
       "title": "The Main Question",
-      "startLine": 74,
-      "endLine": 93,
-      "summary": "Erdos157Conjecture and Pilatte's existence theorem."
+      "startLine": 90,
+      "endLine": 99,
+      "summary": "Erdos157Conjecture: an infinite Sidon set that is an asymptotic basis of order 3."
     },
     {
-      "id": "related-results",
-      "title": "Related Results",
-      "startLine": 94,
-      "endLine": 111,
-      "summary": "Order 2 impossibility, counting bounds for Sidon sets and bases."
+      "id": "pilatte-theorem",
+      "title": "Pilatte's Theorem",
+      "startLine": 101,
+      "endLine": 106,
+      "summary": "axiom pilatte_existence — Pilatte (2023) constructed the required set; the full probabilistic construction is axiomatized."
     },
     {
-      "id": "examples",
-      "title": "Examples",
-      "startLine": 127,
-      "endLine": 180,
-      "summary": "Verified: powers_of_two_sidon. Example finite Sidon set."
+      "id": "counting-axioms",
+      "title": "Counting Axioms",
+      "startLine": 108,
+      "endLine": 117,
+      "summary": "sidon_counting_bound (√N + O(N^{1/4}) upper bound) and basis_counting_lower (N^{1/k} lower bound)."
+    },
+    {
+      "id": "pair-sum-injectivity",
+      "title": "Sidon Pair-Sum Injectivity",
+      "startLine": 119,
+      "endLine": 146,
+      "summary": "Helper sidon_pair_sum_injective: the map (a,b) ↦ a+b is injective on strictly-ordered pairs from a Sidon set."
+    },
+    {
+      "id": "sumsetk-cardinality-bound",
+      "title": "Counting Lemma: SumsetK Cardinality Bound",
+      "startLine": 148,
+      "endLine": 341,
+      "summary": "Verified sumsetK2_ncard_le: integers of [N₀,2N] covered by SumsetK A 2 inject into FA ∪ strict-pair-sums, giving 2N−N₀+1 ≤ M(M+1)/2 via an offDiag swap-disjointness argument."
+    },
+    {
+      "id": "real-analytic-contradiction",
+      "title": "Real-Analytic Contradiction Bound",
+      "startLine": 342,
+      "endLine": 442,
+      "summary": "Verified sidon_counting_contradiction: choosing N = 8M⁴ makes (√(2N)+C(2N)^{1/4})(…+1)/2 < 2N−N₀ via explicit polynomial rpow bounds."
+    },
+    {
+      "id": "no-order-2-basis",
+      "title": "No Sidon Set is an Asymptotic Basis of Order 2",
+      "startLine": 444,
+      "endLine": 491,
+      "summary": "Main verified theorem sidon_not_basis_2: combines the counting lemma and contradiction bound to rule out order-2 bases (contrast with the order-3 existence result)."
+    },
+    {
+      "id": "construction-outline",
+      "title": "Construction Outline",
+      "startLine": 493,
+      "endLine": 505,
+      "summary": "Informal sketch of Pilatte's probabilistic construction and why order 3 (3√N > N^{1/3}) is achievable while order 2 is not."
+    },
+    {
+      "id": "small-examples",
+      "title": "Small Examples",
+      "startLine": 507,
+      "endLine": 535,
+      "summary": "Verified powers_of_two_sidon ({2^k} is Sidon) and example_is_sidon (the finite set {1,2,5,11} is Sidon; the original {1,2,5,10,11,13} was not)."
     }
   ],
   "conclusion": {
