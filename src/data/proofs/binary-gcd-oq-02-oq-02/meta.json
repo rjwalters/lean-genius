@@ -192,11 +192,6 @@
       "description": "Parallel integer extension via natAbs reduction for the binary GCD algorithm; both this entry and `binary-gcd-oq-02` follow the same template and agree on every ℤ input via the shared `Int.gcd` bridge"
     },
     {
-      "targetId": "binary-gcd-oq-03-oq-01",
-      "relationship": "depends-on",
-      "description": "Imports the ℕ-level Lehmer GCD `lehmerGcd` and its correctness theorem `lehmerGcd_correct` from `LehmerGcdOQ01`"
-    },
-    {
       "targetId": "binary-gcd-oq-03-oq-02",
       "relationship": "related",
       "description": "Lehmer's leading-digit quotient-estimate accelerator (the substantive content of Lehmer 1938) is formalized in this sibling open question — orthogonal to the integer extension proved here"

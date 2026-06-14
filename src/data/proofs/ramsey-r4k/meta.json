@@ -225,11 +225,6 @@
       "description": "The parent entry formalizes the general Ramsey theorem $R(r,s) < \\infty$ for all $r,s$. This entry specializes to off-diagonal $R(4,k)$ and proves quantitative upper bounds via the Pascal recursion and the Erdős-Szekeres binomial bound $\\binom{k+2}{3}$"
     },
     {
-      "targetId": "probabilistic-method",
-      "relationship": "related",
-      "description": "The probabilistic method (Erdős 1947) gives lower bounds for Ramsey numbers via the first-moment method. This entry's Part VIII sets up the `expectedCliqueTerm` framework for this calculation. The full Lovász local lemma (used for asymptotically sharper bounds) would extend this infrastructure"
-    },
-    {
       "targetId": "combinations-formula",
       "relationship": "uses",
       "description": "The Erdős-Szekeres bound $R(4,k) \\leq \\binom{k+2}{3}$ is the central formula in this file. The cubic bound proof uses `choose_le_pow_three : ∀ n, C(n,3) ≤ n³` — a binomial coefficient inequality proved by induction on $n$"

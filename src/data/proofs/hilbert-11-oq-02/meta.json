@@ -225,11 +225,6 @@
       "description": "Parent gallery entry. hilbert-11 formalizes the Hasse-Minkowski theorem for quadratic forms (the local-global principle holds in degree 2). This entry shows that the Hasse principle FAILS in degree 3 — specifically for the Selmer cubic. Together they sandwich the local-global principle: it works for quadratics but is no longer automatic in higher degree."
     },
     {
-      "targetId": "hilbert-11-oq-01",
-      "relationship": "related",
-      "description": "Sibling open-question entry on the refined Hasse-Minkowski theorem. Both files axiomatize a deep arithmetic input on top of the Hasse-principle framework; this entry localizes the OQ to the Selmer cubic counterexample, while OQ-01 sharpens the Hasse-Minkowski statement."
-    },
-    {
       "targetId": "e-transcendental-oq-02",
       "relationship": "related",
       "description": "Same axiomatization pattern: a deep open or classical theorem (Selmer 1951 / e is absolutely normal) is encoded as an axiom, with all the elementary surrounding framework proved unconditionally. Both entries use `Prop := True` as a documented placeholder for an open conjecture whose full statement requires Mathlib infrastructure not yet present."

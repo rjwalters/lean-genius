@@ -123,11 +123,6 @@
       "description": "Builds on SzemerediTheorem.lean's ap_free_density_bound (ε-N₀ form) to derive the Filter.Tendsto/IsLittleO asymptotic form — the key bridge from quantitative to asymptotic"
     },
     {
-      "targetId": "szemeredi-full-oq-01",
-      "relationship": "related",
-      "description": "The Furstenberg ergodic approach to Szemerédi — an alternative proof route connecting arithmetic progressions to measure-preserving systems and recurrence, with entirely different infrastructure needs"
-    },
-    {
       "targetId": "roth-theorem-k3",
       "relationship": "foundational",
       "description": "Roth's 1953 theorem: k=3 AP-free subsets of {1,...,N} have |A| = o(N). This is the k=3 case of Szemerédi; the file uses Mathlib's `rothNumberNat_isLittleO_id` as the direct formalization"
