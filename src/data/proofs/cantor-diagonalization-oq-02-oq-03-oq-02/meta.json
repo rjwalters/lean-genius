@@ -2,11 +2,11 @@
   "id": "cantor-diagonalization-oq-02-oq-03-oq-02",
   "title": "Fodor's Pressing-Down Lemma for Regular Cardinals",
   "slug": "cantor-diagonalization-oq-02-oq-03-oq-02",
-  "description": "Formalizes Fodor's Pressing-Down Lemma (1956): for any uncountable regular cardinal \u03ba, every regressive function f on a stationary set S \u2286 \u03ba.ord is constant on a stationary subset of S. Defines club sets (closed unbounded subsets of ordinals below \u03ba.ord) and stationary sets. The key combinatorial tool is the diagonal intersection {\u03b1 | \u2200 \u03b2 < \u03b1, \u03b1 \u2208 f(\u03b2)}, shown to be a club when each f(\u03b2) is a club. The main theorem is fully proved from one remaining sorry (diagInter_isUnbounded, with complete proof sketch).",
+  "description": "Formalizes Fodor's Pressing-Down Lemma (1956): for any uncountable regular cardinal \u03ba, every regressive function f on a stationary set S \u2286 \u03ba.ord is constant on a stationary subset of S. Defines club sets (closed unbounded subsets of ordinals below \u03ba.ord) and stationary sets. The key combinatorial tool is the diagonal intersection {\u03b1 | \u2200 \u03b2 < \u03b1, \u03b1 \u2208 f(\u03b2)}, shown to be a club when each f(\u03b2) is a club. Both the closed and unbounded parts of the diagonal-intersection theorem are fully proved, so the main theorem is established with 0 sorries and 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
     "tags": [
       "set-theory",
@@ -57,10 +57,9 @@
     ]
   },
   "conclusion": {
-    "summary": "This file formalizes Fodor's pressing-down lemma for regular uncountable cardinals. The proof structure is complete: club sets and stationary sets are defined, the diagonal intersection operator is introduced and characterized, the closed part of the diagonal intersection theorem is fully proved, and Fodor's lemma follows once the one remaining sorry (diagInter_isUnbounded) is resolved. The sorry has a complete mathematical proof sketch in its docstring.",
+    "summary": "This file formalizes Fodor's pressing-down lemma for regular uncountable cardinals. The proof structure is complete: club sets and stationary sets are defined, the diagonal intersection operator is introduced and characterized, and both the closed part (diagInter_isClosedBelow) and the unbounded part (diagInter_isUnbounded) of the diagonal intersection theorem are fully proved. Fodor's lemma follows from diagInter_isClub. The file is complete with 0 sorries and 0 axioms.",
     "implications": "**Combinatorial set theory**: Fodor's lemma is the primary tool for proving that 'large' sets cannot be decomposed into 'small' pieces in a structured way. It underlies proofs of non-reflection for stationary sets and is used in Shelah's PCF theory.\n\n**Descriptive set theory**: The club filter and stationary ideal on \u03c9\u2081 are fundamental objects. Fodor's lemma shows the club filter is not \u03c3-generated from below.\n\n**Connection to parent proof**: This proof extends CantorDiagonalizationOQ02OQ03 from finding one diagonal ordinal to finding a stationary set of them. The `regular_sup_bounded` tool from the parent is exactly what the unbounded-part sorry needs.",
     "openQuestions": [
-      "Resolve the one sorry: prove `diagInter_isUnbounded` by formalizing (1) `isClub_inter` (intersection of two clubs is a club) via the ping-pong sequence construction, then (2) the \u03c9-sequence argument using `Ordinal.iSup_lt_ord`.",
       "Formalize the club filter: show that clubs generate a filter (finite intersection of clubs is a club), and that stationary sets are exactly the sets not in the dual ideal.",
       "Prove Silver's theorem using Fodor's lemma: if \u03ba is a singular cardinal of uncountable cofinality and GCH holds below \u03ba, then 2^\u03ba = \u03ba\u207a."
     ]
@@ -128,10 +127,10 @@
     },
     {
       "id": "unbounded-part",
-      "title": "\u00a75. Diagonal Intersection is Unbounded (SORRY)",
+      "title": "\u00a75. Diagonal Intersection is Unbounded (PROVED)",
       "startLine": 177,
       "endLine": 224,
-      "content": "diagInter_isUnbounded: if every f(\u03b2) is a club, then diagInter f is unbounded below \u03ba.ord. SORRY with complete proof sketch: build an \u03c9-sequence using regularity of \u03ba, take the sup (< \u03ba.ord by iSup_lt_ord), show the sup is in the diagonal intersection."
+      "content": "diagInter_isUnbounded: if every f(\u03b2) is a club, then diagInter f is unbounded below \u03ba.ord. PROVED: builds an \u03c9-sequence using regularity of \u03ba via a bump operator (bsup over \u03b2 < \u03b4+1), takes the sup (< \u03ba.ord by iSup_lt_ord_lift_of_isRegular), and shows the sup lies in the diagonal intersection."
     },
     {
       "id": "fodors-lemma",
