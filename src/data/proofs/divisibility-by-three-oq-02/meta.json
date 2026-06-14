@@ -66,49 +66,49 @@
     {
       "id": "section-altsum-framework",
       "title": "Part I: General Alternating Block Sum Framework",
-      "startLine": 41,
-      "endLine": 122,
+      "startLine": 21,
+      "endLine": 123,
       "summary": "Defines alternatingSum and altBlockSum, proves alternatingSum_cons (key recursive identity), then proves the core framework theorems ofDigits_modEq_alternatingSum and dvd_iff_altSum: when B ≡ -1 (mod d), divisibility by d reduces to divisibility of the alternating digit sum in base B."
     },
     {
       "id": "section-div-seven",
       "title": "Part II: Divisibility by 7 via Alternating Three-Digit Groups",
-      "startLine": 149,
-      "endLine": 165,
+      "startLine": 124,
+      "endLine": 166,
       "summary": "Instantiates the framework with B = 1000, d = 7 (using native_decide to verify 1000 % 7 = 6 = 7-1). Provides both Int and Nat versions of the divisibility equivalence, with concrete examples."
     },
     {
       "id": "section-div-11-13-1001",
       "title": "Part III: Divisibility by 11, 13, and 1001 via Alternating Three-Digit Groups",
-      "startLine": 183,
-      "endLine": 201,
+      "startLine": 167,
+      "endLine": 202,
       "summary": "Applies the same alternating three-digit block test to d = 11, 13, and 1001, all justified by the factorization 1001 = 7 × 11 × 13 which forces 1000 ≡ -1 modulo each divisor of 1001."
     },
     {
       "id": "section-repunit",
       "title": "Part IV: Repunit Divisibility Theory",
-      "startLine": 218,
-      "endLine": 284,
+      "startLine": 203,
+      "endLine": 285,
       "summary": "Defines repunit R(k), proves 9·R(k) = 10^k - 1 by induction, proves R(k) ≡ 0 (mod d) ↔ 10^k ≡ 1 (mod d) for gcd(d,9) = 1. Uses native_decide to verify ord_7(10) = 6, ord_11(10) = 2, ord_13(10) = 6, and that R(6) = 111111 is divisible by 7, 11, 13, and 37."
     },
     {
       "id": "section-palindrome",
       "title": "Part V: Even-Length Palindrome Divisibility by 11",
-      "startLine": 309,
-      "endLine": 339,
+      "startLine": 286,
+      "endLine": 340,
       "summary": "Proves 2-, 4-, and 6-digit palindromes are always divisible by 11 via explicit algebraic factorizations (ring + dvd_mul_right). Illustrates that odd-length palindromes are not universally divisible by 11."
     },
     {
       "id": "section-digitsum-step",
       "title": "Part VI: Digit Sum Iteration",
-      "startLine": 353,
-      "endLine": 371,
+      "startLine": 341,
+      "endLine": 372,
       "summary": "Defines digitSumStep (decimal digit sum), proves it preserves mod 9 and mod 3 via Mathlib, and is strictly decreasing for n ≥ 10 via Nat.sum_digits_lt — the key termination property of the digital root algorithm."
     },
     {
       "id": "section-cross-base-master",
       "title": "Parts VII–VIII: Cross-Base Divisibility Tests and Master Theorem",
-      "startLine": 389,
+      "startLine": 373,
       "endLine": 432,
       "summary": "Proves three equivalent divisibility tests for 7 (octal digit sum, base-50 digit sum, alternating 3-digit blocks). The master theorem alternating_block_rules bundles all main results — four alternating block rules, four repunit facts, and the palindrome theorem — into a single verified conjunction."
     }
