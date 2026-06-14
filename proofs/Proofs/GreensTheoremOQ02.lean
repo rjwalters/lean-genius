@@ -320,9 +320,20 @@ The proof uses:
 3. Pass to the limit using L¹ convergence of the curl and rectifiability
    of the Lipschitz boundary
 
-In Lean, we axiomatize this theorem because the full proof requires
-geometric measure theory machinery (sets of finite perimeter, BV functions,
-Federer's trace theorem, Gauss-Green formula) not yet assembled in Mathlib.
+In Lean, we axiomatize this theorem. NOTE on the actual blocker: while the
+GENERAL Whitney theorem (arbitrary Lipschitz domain) does require geometric
+measure theory machinery (sets of finite perimeter, BV functions, Federer's
+trace theorem, Gauss-Green formula), THIS axiom is stated only over a
+RECTANGLE domain -- the `hTraversal` hypothesis forces the curve C onto
+`frontier (Set.Icc a b ×ˢ Set.Icc c d)`. For a rectangle the GMT machinery is
+NOT needed: by Fubini (`MeasureTheory.integral_prod`) the double integral
+splits into iterated 1D integrals, reducing the axiom to two instances of the
+Fundamental Theorem of Calculus for absolutely continuous functions
+(`f b - f a = ∫ x in a..b, deriv f x` with `deriv f` only L¹/a.e.-defined).
+Mathlib's `MeasureTheory.Integral.FundThmCalculus` provides only versions
+requiring continuity / `HasDerivAt` everywhere, so the single genuine gap is
+this FTC-for-AC bridge (a bounded ~200-400 line build via `BoundedVariation`
++ Radon-Nikodym), not the full GMT project the references below describe.
 -/
 
 /-  **Whitney's theorem** (minimal regularity for Green's theorem).
