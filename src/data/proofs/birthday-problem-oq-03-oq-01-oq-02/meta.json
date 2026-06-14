@@ -95,43 +95,99 @@
       "id": "choose3-bounds",
       "title": "§1. C(n,3) Formula and Bounds",
       "summary": "Binomial coefficient C(n,3) formula and asymptotic bounds used throughout.",
-      "startLine": 52,
-      "endLine": 110
+      "startLine": 49,
+      "endLine": 133
     },
     {
       "id": "expected-triples",
-      "title": "§2. Expected Number of Triples",
+      "title": "§2. Expected Triple Count",
       "summary": "Expected number of birthday triples in n people with d possible birthdays.",
-      "startLine": 108,
-      "endLine": 130
+      "startLine": 134,
+      "endLine": 155
     },
     {
       "id": "asymp-threshold",
-      "title": "§3. Asymptotic Threshold Definition and Properties",
+      "title": "§3. The Asymptotic Threshold",
       "summary": "The asymptotic threshold asympThreshold d = (6d² ln 2)^{1/3} with proved order bounds.",
-      "startLine": 130,
-      "endLine": 200
+      "startLine": 156,
+      "endLine": 226
     },
     {
       "id": "numerical",
-      "title": "§4. Numerical Verification for d=365",
+      "title": "§4. Numerical Verification for d = 365",
       "summary": "Exact numerical verification of the threshold crossover at n=83/84 for d=365.",
-      "startLine": 200,
-      "endLine": 295
+      "startLine": 227,
+      "endLine": 303
     },
     {
       "id": "poisson",
-      "title": "§5. Poisson Approximation (Axiom)",
+      "title": "§5. Poisson Approximation (Sorry/Axiom)",
       "summary": "Chen-Stein Poisson approximation axiom connecting expected triples to actual probability.",
-      "startLine": 294,
-      "endLine": 315
+      "startLine": 304,
+      "endLine": 474
     },
     {
       "id": "k2-comparison",
-      "title": "§6. k=3 vs k=2 Threshold Comparison",
+      "title": "§6. k=2 vs k=3 Threshold Comparison",
       "summary": "The k=3 threshold grows as d^{2/3} while the k=2 threshold grows as d^{1/2}; k=3 threshold exceeds k=2.",
-      "startLine": 310,
-      "endLine": 420
+      "startLine": 475,
+      "endLine": 528
+    },
+    {
+      "id": "elementary-counting-bound",
+      "title": "§7. Elementary Counting Bound (Union Bound)",
+      "summary": "An elementary union-bound estimate on the probability of a birthday triple.",
+      "startLine": 529,
+      "endLine": 622
+    },
+    {
+      "id": "indicator-algebra",
+      "title": "§3 (Lemma C). Indicator Algebra",
+      "summary": "Layer 1 of the Lemma C roadmap: indicator-function algebra for triple-coincidence events.",
+      "startLine": 623,
+      "endLine": 706
+    },
+    {
+      "id": "per-triple-count",
+      "title": "§4 (Lemma C). Per-Triple Count, General n",
+      "summary": "Layer 2 of the Lemma C roadmap: per-triple coincidence count for general n.",
+      "startLine": 707,
+      "endLine": 1026
+    },
+    {
+      "id": "first-moment-identity",
+      "title": "§5 (Lemma C). First-Moment Identity",
+      "summary": "Layer 2 part 2 of the Lemma C roadmap: the first-moment identity for the triple count.",
+      "startLine": 1027,
+      "endLine": 1263
+    },
+    {
+      "id": "second-factorial-moment",
+      "title": "§6 (Lemma C). Second Factorial Moment, r = 2",
+      "summary": "Layer 3 sub-pieces 3a/3b: the second factorial moment of the triple count.",
+      "startLine": 1264,
+      "endLine": 1373
+    },
+    {
+      "id": "overlap-pattern-partition",
+      "title": "§7 (Lemma C). Overlap-Pattern Partition",
+      "summary": "Layer 3c+3d: partition of triple pairs by their overlap pattern.",
+      "startLine": 1374,
+      "endLine": 1611
+    },
+    {
+      "id": "disjoint-joint-coincidence",
+      "title": "§8 (Lemma C). Disjoint Joint-Coincidence Count",
+      "summary": "Layer 3e: joint-coincidence count over disjoint triple pairs.",
+      "startLine": 1612,
+      "endLine": 1930
+    },
+    {
+      "id": "overlap-union-cardinality",
+      "title": "§9 (Lemma C). Overlap-Pattern Union-Cardinality",
+      "summary": "Layer 3f preliminaries: union-cardinality estimates over overlap-pattern families.",
+      "startLine": 1931,
+      "endLine": 2263
     }
   ],
   "leanFile": {
