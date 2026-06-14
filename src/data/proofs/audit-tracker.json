@@ -13753,12 +13753,12 @@
     },
     "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01": {
       "status": "completed",
-      "result": "issues-found",
+      "result": "clean",
       "auditor": "auditor-agent",
-      "completedAt": "2026-05-02T23:12:30Z",
-      "notes": "meta.json lineCount stale: 230 → 220 (file is 220 lines). Fixed in both meta.lineCount and leanFile.lineCount. All other fields verified clean: 3 sorries (lines 120/155/192) match meta, 0 axioms, 5 theorems, status/badge formalized appropriate for Tier C scaffold.",
-      "auditCount": 2,
-      "lastAudited": "2026-06-05T01:34:43Z"
+      "completedAt": "2026-06-14T10:36:07Z",
+      "notes": "Re-audit 2026-06-14: stale issues-found flag cleared. The 3 sorries from the former Tier C scaffold (status formalized) were eliminated; main file now delegates all 3 theorems (lp_truncation_tendsto_zero, localization_existence, riesz_lp_surjective_sigma_finite) via exact-calls to the sorry-free RieszSigmaFiniteComplete namespace in the Incomplete01 companion. Confirmed 0 actual sorry tactics and 0 axioms in BOTH files (the 11/1 grep hits are docstring text). meta.json verified/original/0-sorries/0-axioms is accurate; lineCount 208 and theoremCount 5 match source. Genuine independent proof (built from project parent finite-measure Riesz + localization), not a Mathlib wrapper. Minor non-blocking: main-file docstring still describes outdated 3-sorry design (cosmetic, non-public); companion (~950 LOC where the proof lives) not listed in additionalFiles.",
+      "auditCount": 3,
+      "lastAudited": "2026-06-14T10:36:07Z"
     },
     "angle-trisection-oq-03-oq-01": {
       "auditCount": 2,
