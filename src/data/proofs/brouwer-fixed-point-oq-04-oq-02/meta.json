@@ -71,42 +71,72 @@
     {
       "id": "module-overview",
       "title": "Module Header and Imports",
+      "range": null,
       "startLine": 1,
-      "endLine": 60,
-      "summary": "Documents the open question (OQ-04-OQ-02): can Nash equilibrium be proved via Nash's original Brouwer argument without Berge's theorem? Defines Nash's deviation map in pseudocode. Compares OQ-01 (2 axioms, Kakutani/Berge) to OQ-02 (1 axiom + 1 sorry). Imports topology, convex analysis, and the parent BrouwerFixedPointOQ04.",
-      "mathContext": "Nash map: $\\phi_i(k, \\sigma) = \\frac{\\sigma_i(k) + \\text{excess}_i(k,\\sigma)}{1 + \\sum_l \\text{excess}_i(l,\\sigma)}$ where $\\text{excess}_i(k,\\sigma) = \\max(0,\\, EU_i(e_k,\\sigma) - EU_i(\\sigma_i,\\sigma))$."
+      "endLine": 65
     },
     {
       "id": "game-structure",
-      "title": "MultilinearGame Structure and Mixed Strategies",
-      "startLine": 61,
-      "endLine": 104,
-      "summary": "Defines MultilinearGame (N players, finite strategy sets, pure payoffs), MixedProfile (mixed strategy per player), ProductSimplex (valid mixed strategy profiles), mixedUtility (multilinear extension as expectation over pure profiles), and pureStrat (Dirac delta at a pure strategy).",
-      "mathContext": "$\\text{mixedUtility}_i(\\sigma) = \\sum_{s \\in S} u_i(s) \\prod_j \\sigma_j(s_j)$ — a degree-N polynomial in $\\sigma_1,\\ldots,\\sigma_N$."
+      "title": "Part 1: Multilinear Game Structure",
+      "range": null,
+      "startLine": 66,
+      "endLine": 109
+    },
+    {
+      "id": "mixed-utility-continuity",
+      "title": "Part 2: Continuity of Mixed Utility",
+      "range": null,
+      "startLine": 110,
+      "endLine": 148
     },
     {
       "id": "multilinear-linearity",
-      "title": "Multilinear Factoring and Continuity",
-      "startLine": 101,
-      "endLine": 210,
-      "summary": "mixedUtility_linear_in_i: EU_i(σ) = Σₖ σᵢ(k)·EU_i(eₖ, σ₋ᵢ). Proved via Finset.sum_comm, product splitting at index i, and indicator sum identity. Also includes indicator_lp_hasSum, functional_hasSum_parts, and signedMeasureOfFunctional infrastructure.",
-      "mathContext": "EU_i(eₖ) = Σ_{s₋ᵢ} ∏_{j≠i} σ_j(s_j) · u_i(k, s₋ᵢ). Requires Finset.sum_product' to factor the sum over ∏_j Fin(mⱼ) by the i-th coordinate."
+      "title": "Part 3: Linearity of Mixed Utility in Player i's Strategy",
+      "range": null,
+      "startLine": 149,
+      "endLine": 216
     },
     {
       "id": "nash-map",
-      "title": "Nash Deviation Map: Well-Definedness and Self-Mapping",
-      "startLine": 141,
-      "endLine": 200,
-      "summary": "Defines excess payoff (max 0, deviation gain) and normalized Nash map. Proves: denominator > 0 (well-defined division), nashMap components are non-negative, components sum to 1 (self-maps the simplex), nashMap is continuous.",
-      "mathContext": "excess G i k σ = max 0 (EU_i(eₖ, σ₋ᵢ) − EU_i(σᵢ, σ₋ᵢ)). nashMap G i k σ = (σᵢ(k) + excess) / (1 + Σₗ excess). Denominator ≥ 1 > 0. Σₖ nashMap = (1 + Cᵢ)/(1 + Cᵢ) = 1."
+      "title": "Part 4: Nash's Deviation Map",
+      "range": null,
+      "startLine": 217,
+      "endLine": 253
+    },
+    {
+      "id": "simplex-self-map",
+      "title": "Part 5: Nash Map Maps the Simplex to Itself",
+      "range": null,
+      "startLine": 254,
+      "endLine": 287
+    },
+    {
+      "id": "nash-map-continuous",
+      "title": "Part 6: Nash Map is Continuous",
+      "range": null,
+      "startLine": 288,
+      "endLine": 330
     },
     {
       "id": "fixed-point-and-nash",
-      "title": "Fixed Point Is Nash + Main Existence Theorem",
-      "startLine": 201,
-      "endLine": 280,
-      "summary": "fixed_point_is_nash: algebraic proof that any fixed point σ* of Nash's map is a Nash equilibrium (Cᵢ = 0 for all i). nash_existence: apply brouwer_product_simplex theorem to nashMap, then fixed_point_is_nash.",
-      "mathContext": "At fixed point: eᵢₖ = σ*ᵢ(k)·Cᵢ for all i,k. If Cᵢ > 0: EU_i(σ*ᵢ, σ*₋ᵢ) > EU_i(σ*ᵢ, σ*₋ᵢ) — contradiction. So Cᵢ = 0, meaning σ* is a Nash equilibrium."
+      "title": "Part 7: Fixed Points Are Nash Equilibria",
+      "range": null,
+      "startLine": 331,
+      "endLine": 436
+    },
+    {
+      "id": "brouwer-product-simplex",
+      "title": "Part 8: Brouwer FPT on the Product Simplex",
+      "range": null,
+      "startLine": 437,
+      "endLine": 475
+    },
+    {
+      "id": "nash-existence",
+      "title": "Part 9: Nash Equilibrium Existence",
+      "range": null,
+      "startLine": 476,
+      "endLine": 519
     }
   ],
   "crossReferences": [
