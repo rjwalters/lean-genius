@@ -50,38 +50,73 @@
   "sections": [
     {
       "id": "partition2",
-      "title": "2-Row Partitions",
-      "startLine": 58,
-      "endLine": 79,
-      "summary": "Partition2 structure with DecidableEq, size, containment."
+      "title": "Part I: 2-Row Partitions",
+      "startLine": 62,
+      "endLine": 84,
+      "summary": "Partition2 structure (a >= b >= 0) with DecidableEq/Repr, size, and decidable containment."
     },
     {
       "id": "lr-computation",
-      "title": "LR Coefficient Computation",
-      "startLine": 81,
-      "endLine": 137,
-      "summary": "Decidable lrCoeff2 function via ballot-sequence counting over k1 parameter."
+      "title": "Part II: LR Coefficient for 2-Row Partitions",
+      "startLine": 85,
+      "endLine": 151,
+      "summary": "Decidable lrCoeff2 via the standard reverse row reading word (Fulton convention); ballot condition forces row 1 all-ones, so the result is always 0 or 1."
     },
     {
       "id": "gr24-verification",
-      "title": "Gr(2,4) Verification",
-      "startLine": 139,
-      "endLine": 234,
-      "summary": "All 7 nonzero structure constants verified. Nontrivial zero sigma_2*sigma_11=0 proved. Full multiplication table confirmed."
+      "title": "Part III: Verified Values for Gr(2,4)",
+      "startLine": 152,
+      "endLine": 241,
+      "summary": "All 7 nonzero structure constants of A*(Gr(2,4)) verified, plus the nontrivial zero c^{(2,2)}_{(2,0),(1,1)}=0 and universal size-mismatch and non-containment zero theorems."
+    },
+    {
+      "id": "gr24-multiplicity-free",
+      "title": "Part IV: Gr(2,4) Multiplicity-Free Property",
+      "startLine": 242,
+      "endLine": 274,
+      "summary": "All 6^3 = 216 LR coefficients among the 6 Gr(2,4) Schubert classes lie in {0,1}; full multiplication table proved explicitly by native_decide."
+    },
+    {
+      "id": "general-structure",
+      "title": "Part V: General Structural Properties",
+      "startLine": 275,
+      "endLine": 310,
+      "summary": "General multiplicity-free theorem lrCoeff2_le_one for all Gr(2,n), the identity c^lambda_{lambda,0}=1, and regression tests against the old (incorrect) reading-word definition."
     },
     {
       "id": "decidability",
-      "title": "Decidability",
-      "startLine": 236,
-      "endLine": 257,
-      "summary": "LR coefficient computation and positivity testing are decidable instances."
+      "title": "Part VI: Decidability of LR Coefficients",
+      "startLine": 311,
+      "endLine": 332,
+      "summary": "LR coefficient equality and positivity are decidable instances; the 2-row case is computable in O(1) comparisons (constant-time, in P)."
     },
     {
-      "id": "complexity",
-      "title": "Complexity Results (Axiomatized)",
-      "startLine": 259,
-      "endLine": 342,
-      "summary": "Saturation theorem, P-membership of positivity, and #P-completeness of counting documented as theorems (formerly vacuous axioms)."
+      "id": "complexity-documentation",
+      "title": "Part VII: Complexity Results (Documentation)",
+      "startLine": 333,
+      "endLine": 386,
+      "summary": "Knutson-Tao saturation, P-membership of positivity, and #P-completeness of counting (Narayanan 2006) recorded as theorems with vacuous formal content (True) -- no axioms."
+    },
+    {
+      "id": "complexity-gap",
+      "title": "Part VIII: The Complexity Gap as a Mathematical Phenomenon",
+      "startLine": 387,
+      "endLine": 418,
+      "summary": "Concrete witnesses that LR values depend on partition shape, not size alone: c^{(2,2)}_{(2,0),(1,1)}=0 vs c^{(2,2)}_{(1,1),(1,1)}=1, illustrating the positivity/counting hardness gap."
+    },
+    {
+      "id": "symmetry-pieri",
+      "title": "Part IX: Symmetry and Pieri Formula",
+      "startLine": 419,
+      "endLine": 503,
+      "summary": "Right identity, commutativity lrCoeff2_comm (c^nu_{lambda,mu}=c^nu_{mu,lambda}), and the Pieri formula with converse: c^nu_{(k,0),mu}=1 iff nu/mu is a horizontal strip of size k."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 504,
+      "endLine": 533,
+      "summary": "Recap: concrete lrCoeff2 definition, Gr(2,4) verification, general multiplicity-free, two-sided identity, commutativity, Pieri formula, 0 axioms, and the complexity dichotomy."
     }
   ],
   "crossReferences": [
