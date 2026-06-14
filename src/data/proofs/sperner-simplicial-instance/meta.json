@@ -41,7 +41,7 @@
       "interval_sperner: 1-d Sperner's lemma for interval triangulation"
     ],
     "dateAdded": "2026-05-04",
-    "lineCount": 1022,
+    "lineCount": 1039,
     "theoremCount": 26,
     "definitionCount": 13,
     "mathlib_version": "4.26.0"
@@ -96,7 +96,7 @@
       "Proofs.SpernerMathlib4"
     ],
     "namespace": "Triangulation",
-    "lineCount": 1022,
+    "lineCount": 1039,
     "axiomCount": 0,
     "theoremCount": 26,
     "definitionCount": 13,
@@ -142,11 +142,27 @@
     },
     {
       "id": "sec-interval-example",
-      "title": "Interval Triangulation Concrete Example (L808–994)",
+      "title": "Interval Triangulation Concrete Example (L808–991)",
       "startLine": 808,
-      "endLine": 994,
-      "summary": "intervalTriangulation m hm: subdivision of [0,m] into m unit intervals (Fin m cells). Vertex map ivtx: i-th cell has vertices {i, i+1}. Adjacency iadj: cell i is adjacent to cell i+1 (via face {i+1}) and to cell i-1 (via face {i}). All 4 adjacency axioms proved by iadj_cases. interval_sperner: 1-d Sperner's lemma for this triangulation.",
+      "endLine": 991,
+      "summary": "intervalTriangulation m hm: subdivision of [0,m] into m unit intervals (Fin m cells). Vertex map ivtx: i-th cell has vertices {i, i+1}. Adjacency iadj: cell i is adjacent to cell i+1 (via face {i+1}) and to cell i-1 (via face {i}). All 4 adjacency axioms proved by iadj_cases, plus the accessor intervalTriangulation_adj_zero exposing the i=0 forward edge.",
       "mathContext": "The interval [0,m] subdivided into m unit segments is the 1-dimensional standard simplex triangulation. A Sperner coloring of vertices {0,...,m} assigns colors in {0,1} with the boundary condition (0→0, m→1). Any such coloring has an odd number of boundary doors, hence a panchromatic edge (one vertex colored 0, one colored 1)."
+    },
+    {
+      "id": "sec-trivial-triangle",
+      "title": "Trivial 2-Simplex Triangulation (L992–1019)",
+      "startLine": 992,
+      "endLine": 1019,
+      "summary": "trivialTriangle : Triangulation ℕ 2 — the minimal single 2-simplex instance with ordered vertices (0,1,2), three boundary faces, and no adjacencies (adj ≡ none). All four pseudomanifold obligations discharge via Fin.val_injective or Option.noConfusion. Serves as a smoke-test for the abstract bridge toCellComplex at n=2 and a fixture for boundary_doors_odd work on the standard 2-simplex (open question sperner-simplicial-instance-oq-03).",
+      "mathContext": "The 2-dimensional analogue of the singleton interval intervalTriangulation 1: a single top-dimensional 2-simplex with its three boundary edges as faces and no shared codim-1 faces, so adjacency is everywhere none. A prerequisite Triangulation ℕ 2 fixture for downstream m × m subdivision constructions (Candidate C)."
+    },
+    {
+      "id": "sec-interval-sperner",
+      "title": "Interval Sperner's Lemma (L1020–1039)",
+      "startLine": 1020,
+      "endLine": 1039,
+      "summary": "interval_sperner: the 1-dimensional Sperner theorem specialised to intervalTriangulation. Given an odd boundary-door count, a panchromatic cell exists. Proved in one line via the abstract Triangulation.sperner applied to the interval triangulation — a sanity check that the concrete instance satisfies the abstract theorem's hypotheses.",
+      "mathContext": "A direct corollary of the general Triangulation.sperner for the concrete 1-d interval. Confirms the abstract Sperner machinery (CellComplex.IsPanchromatic, CellComplex.IsDoor) instantiates correctly on intervalTriangulation, closing the worked example with the theorem it was built to demonstrate."
     }
   ],
   "conclusion": {
