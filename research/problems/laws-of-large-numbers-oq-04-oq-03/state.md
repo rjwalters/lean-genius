@@ -1,5 +1,7 @@
 # Current State
 
+> **BLOCKED (2026-06-13, Docker blackout)**: S14b — the sole forward step — is strictly build-gated (needs Lean verification of the right-continuous CDF half + interior existence). All trackers (state.md / JSON / gallery meta) are in sync and the last ACT (S14a.2, #22958) was Docker-verified 2026-06-12; 7 doc-only PREP/STATE-SYNC sessions have since accumulated (3 PRs today: #23178/#23244/#23245). No build-free ACT route remains. Re-open when Docker is restored.
+
 **Phase**: REDESIGN-IN-PROGRESS (S14a.2 ACT shipped — `leftLim` upper-bracket lemma for `QuantileBracketingGrid`; S14b proves the right-continuous half + interior existence)
 **Since**: 2026-06-12 (S14a.2 ACT)
 **Iteration**: 12 ACT + 7 doc-only PREP/OBSERVE/STATE-SYNC. **S14a.2 ACT
