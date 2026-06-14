@@ -128,42 +128,98 @@
     {
       "id": "header",
       "title": "Header and Imports",
-      "summary": "Problem setup, references (OEIS A064152, erdosproblems.com), and Mathlib imports.",
+      "summary": "Problem setup (density of factorial-avoiding primes), the probabilistic heuristic predicting density 1, a 15-item proof inventory, references (OEIS A064152, erdosproblems.com/1059), and Mathlib imports including Proofs.Erdos1059OQ02.",
       "startLine": 1,
-      "endLine": 32,
-      "mathContext": "The density question: does lim C(x)/π(x) = 1? Probabilistic heuristic from PNT."
+      "endLine": 51,
+      "mathContext": "The density question: does $\\lim_{x\\to\\infty} C(x)/\\pi(x)=1$? Heuristic: for $p\\in(l!,(l+1)!]$ the expected failure count is $(l+1)/\\ln p=O(1/\\log\\log p)\\to 0$."
     },
     {
       "id": "decidability",
       "title": "Core Definition and Decidability",
-      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via bounded quantifier. Key lemma: factorial_lt_implies_lt (k ≤ k! → k! < n → k < n).",
-      "startLine": 34,
-      "endLine": 57,
-      "mathContext": "$\\text{AFSC}(n) \\iff \\forall k < n, k! < n \\Rightarrow \\neg\\text{Prime}(n-k!) \\wedge n-k! \\geq 2$. Bound: $k \\leq k! < n \\Rightarrow k < n$."
+      "summary": "Defines AllFactorialSubtractionsComposite and provides a Decidable instance via a bounded quantifier over Finset.range n. Key lemma factorial_lt_implies_lt (k! < n ⇒ k < n) bounds the quantifier.",
+      "startLine": 52,
+      "endLine": 71,
+      "mathContext": "$\\text{AFSC}(n)\\iff\\forall k,\\ k!<n\\Rightarrow\\neg\\text{Prime}(n-k!)\\wedge n-k!\\geq 2$. Bound: $k\\leq k!<n\\Rightarrow k<n$ via Nat.self_le_factorial."
     },
     {
-      "id": "witnesses",
-      "title": "New Witnesses: 461, 557, 673",
-      "summary": "Verifies three new prime witnesses using native_decide. For each p in (120, 720): checks p-1, p-2, p-6, p-24, p-120 are all composite. Packages all five witnesses (including 101, 211) in five_prime_witnesses.",
-      "startLine": 58,
-      "endLine": 103,
-      "mathContext": "For $p = 461$: $\\{460, 459=3{\\cdot}153, 455=5{\\cdot}91, 437=19{\\cdot}23, 341=11{\\cdot}31\\}$ — all composite. Similarly for 557 and 673."
+      "id": "witnesses-level5",
+      "title": "Witnesses: Level 5 (p ∈ (120, 720))",
+      "summary": "Verifies three new level-5 prime witnesses 461, 557, 673 (each in (5!,6!], requiring 6 checks) via native_decide: both primality and AFSC.",
+      "startLine": 72,
+      "endLine": 96,
+      "mathContext": "For $p=461$: $\\{459=3{\\cdot}153,\\ 455=5{\\cdot}91,\\ 437=19{\\cdot}23,\\ 341=11{\\cdot}31\\}$ — all composite. Similarly for 557, 673."
+    },
+    {
+      "id": "witnesses-level6",
+      "title": "Witnesses: Level 6 (p ∈ (720, 5040))",
+      "summary": "Verifies the first level-6 witness p = 769 (in (6!,7!], requiring 7 checks) and packages all six witnesses (101, 211, 461, 557, 673, 769) in six_prime_witnesses.",
+      "startLine": 97,
+      "endLine": 125,
+      "mathContext": "For $p=769$: $\\{767=13{\\cdot}59,\\ 763=7{\\cdot}109,\\ 745=5{\\cdot}149,\\ 649=11{\\cdot}59,\\ 49=7^2\\}$ — all composite."
     },
     {
       "id": "check-structure",
       "title": "Factorial Check Structure",
-      "summary": "Defines factorialCheckSet and factorialCheckCount. Verifies: checkCount(101) = 5, checkCount(211) = checkCount(461) = checkCount(557) = checkCount(673) = 6. Proves monotonicity.",
-      "startLine": 104,
-      "endLine": 134,
-      "mathContext": "For $p \\in (l!, (l+1)!]$: exactly $l+1$ values of $k$ satisfy $k! < p$. $p \\in (5!, 6!] \\Rightarrow l=5 \\Rightarrow 6$ checks."
+      "summary": "Defines factorialCheckSet and factorialCheckCount. Verifies concrete counts (5 for 101; 6 for 211,461,557,673; 7 for 769) by native_decide and proves factorialCheckCount_mono (monotonicity).",
+      "startLine": 126,
+      "endLine": 156,
+      "mathContext": "For $p\\in(l!,(l+1)!]$ exactly $l+1$ values of $k$ satisfy $k!<p$, so $\\text{AFSC}(p)$ needs $l+1$ checks; $l+1=O(\\log p/\\log\\log p)$."
     },
     {
-      "id": "density",
-      "title": "Natural Density Formalization",
-      "summary": "Defines qualifyingPrimeCount C(x) and primeCount π(x) using Finset.filter. Proves C(x) ≤ π(x), C is monotone, C(673) ≥ 5. States the density-1 axiom.",
-      "startLine": 135,
-      "endLine": 215,
-      "mathContext": "$C(x) = |\\{p \\leq x : p \\text{ prime}, \\text{AFSC}(p)\\}|$, $\\pi(x) = |\\{p \\leq x : p \\text{ prime}\\}|$. Conjecture: $C(x)/\\pi(x) \\to 1$."
+      "id": "check-count-bound",
+      "title": "Factorial Check Count Bound",
+      "summary": "Proves the logarithmic bound factorialCheckCount n ≤ ⌊log₂ n⌋ + 2 (0 sorries) via two private lemmas: two_pow_pred_le_factorial (2^(k-1) ≤ k! by induction) and le_log_of_pow_lt. Includes numerical check for 769.",
+      "startLine": 157,
+      "endLine": 225,
+      "mathContext": "$k!<n$ and $2^{k-1}\\leq k!$ give $2^{k-1}<n$, so $k-1\\leq\\lfloor\\log_2 n\\rfloor$ via $n<2^{\\lfloor\\log_2 n\\rfloor+1}$ (Nat.lt_pow_succ_log_self)."
+    },
+    {
+      "id": "exact-count",
+      "title": "Exact Factorial Check Count",
+      "summary": "Upgrades the upper bound to a closed form: factorialCheckCount_eq_of_interval shows the count equals exactly l+1 when l! < n ≤ (l+1)!, and factorialCheckCount_const_on_interval shows the count is constant within each factorial level.",
+      "startLine": 226,
+      "endLine": 270,
+      "mathContext": "$\\text{factorialCheckSet}(n)=\\text{Finset.range}(l+1)$ via double inclusion: $k\\leq l\\Rightarrow k!\\leq l!<n$; $k\\geq l+1\\Rightarrow k!\\geq(l+1)!\\geq n$."
+    },
+    {
+      "id": "natural-density",
+      "title": "Natural Density",
+      "summary": "Defines the counting functions qualifyingPrimeCount C(x) and primeCount π(x). Proves C(x) ≤ π(x), C is monotone, and C(769) ≥ 6 (six distinct verified witnesses).",
+      "startLine": 271,
+      "endLine": 345,
+      "mathContext": "$C(x)=|\\{p\\leq x:p\\text{ prime},\\text{AFSC}(p)\\}|$, $\\pi(x)=|\\{p\\leq x:p\\text{ prime}\\}|$. Density $=\\lim C(x)/\\pi(x)$, conjectured to be 1."
+    },
+    {
+      "id": "density-conjecture",
+      "title": "The Density Conjecture",
+      "summary": "Axiomatizes density_one_conjecture: for every k, eventually C(x)·(k+1) ≥ π(x)·k. The full proof would need PNT, Brun-Titchmarsh, and Selberg's sieve — none yet in Mathlib.",
+      "startLine": 346,
+      "endLine": 368,
+      "mathContext": "Failing primes satisfy $\\#\\{p\\leq x\\text{ failing}\\}\\lesssim(\\log x)\\pi(x)/\\log x=O(\\pi(x)/\\log\\log x)=o(\\pi(x))$, so density $\\to 1$."
+    },
+    {
+      "id": "density-gap",
+      "title": "Non-Qualifying Primes: The Density Gap",
+      "summary": "Shows the density is strictly < 1 at every finite stage. three_not_qualifying (p=3 fails since 3−0!=2 is prime), qualifyingPrimeCount_lt_primeCount (C(x) < π(x) for x ≥ 3), qualifyingPrimeCount_pos (C(x) > 0 for x ≥ 101), and the density_strictly_between sandwich.",
+      "startLine": 369,
+      "endLine": 418,
+      "mathContext": "$p=3\\in\\pi(x)$ but $\\notin C(x)$ (since $3-0!=2$ prime), so $C(x)\\subsetneq\\pi(x)$; for $x\\geq 101$: $0<C(x)<\\pi(x)$."
+    },
+    {
+      "id": "cross-problem-synthesis",
+      "title": "Cross-Problem Synthesis: Qualifying Primes Are Infinite",
+      "summary": "Imports OQ-02's Selberg framework: qualifyingPrimes_infinite (set of qualifying primes is infinite via selberg_implies_erdos) and the Selberg lower bound qualifyingPrimeCount_ge (C((N+3)!) ≥ N), built from levelCandidate picking one qualifying prime per disjoint primorial level.",
+      "startLine": 419,
+      "endLine": 514,
+      "mathContext": "For levels $l\\in\\{3,\\dots,N+2\\}$, selberg_density_axiom yields a qualifying prime $p_l\\in I(l)\\subseteq(0,(N+3)!]$; disjoint intervals make them distinct, giving $C((N+3)!)\\geq N$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Recaps the four new witnesses (461, 557, 673 level-5; 769 level-6, extending the gallery from 2 to 6) and the seven key results: log bound, exact interval formula, level-constancy, density gap, density sandwich, infinitude, and the Selberg lower bound, with per-witness check counts.",
+      "startLine": 515,
+      "endLine": 566,
+      "mathContext": "Check counts: 101→5 (level 4); 211,461,557,673→6 (level 5); 769→7 (level 6). Verifications: $\\text{checkCount}(769)=7\\leq\\log_2 769+2=11$; $6!=720<769\\leq 5040=7!$."
     }
   ],
   "crossReferences": [
