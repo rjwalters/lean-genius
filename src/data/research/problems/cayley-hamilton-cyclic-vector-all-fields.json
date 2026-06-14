@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-25T13:30:37+02:00",
     "iteration": 2,
-    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V2 (axiom-free): 0 axioms, 1 sorry (monic_factored_form, routine ~50-line Mathlib UFM API). Eliminated RCF similarity axiom by routing through WIP04 primary decomposition (PR #13041, 2026-04-27).",
+    "focus": "Gallery entry CayleyHamiltonCyclicVectorAllFields.lean V2: 0 axioms, 0 sorries (gallery status=verified). monic_factored_form is now a fully-proved theorem (via monic_irreducible_multiset_factorization + finset_factorization_from_multiset), no longer a sorry. Eliminated RCF similarity axiom by routing through WIP04 primary decomposition (PR #13041, 2026-04-27).",
     "blockers": [],
-    "nextAction": "Submit monic_factored_form (routine UFM/normalizedFactors API) to Aristotle to reach 0 sorries / 0 axioms.",
+    "nextAction": "None — proof is complete (0 sorries / 0 axioms, gallery status=verified). Maintenance only.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,

@@ -19,12 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-13T20:56:21.000Z",
     "iteration": 1,
-    "focus": "Created PtolemysTheoremOQ01.lean: cross-ratio reality theorem + concyclicity characterization",
-    "blockers": [
-      "unit_star_eq_inv needs exact Mathlib name for Complex.mul_conj normalization",
-      "ptolemy_ratio_pos_of_ccw requires inscribed angle/trig argument with Complex.exp"
-    ],
-    "nextAction": "Submit ptolemy_ratio_pos_of_ccw sorry to Aristotle; resolve unit_star_eq_inv API",
+    "focus": "PtolemysTheoremOQ01.lean complete: cross-ratio reality theorem + concyclicity characterization, 0 sorries / 0 axioms (gallery status=verified). ptolemy_ratio_pos_of_ccw is now fully proved (half-angle sine factorization via exp_diff_factor), no longer a sorry.",
+    "blockers": [],
+    "nextAction": "None — proof is complete (0 sorries / 0 axioms, gallery status=verified). Maintenance only.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,

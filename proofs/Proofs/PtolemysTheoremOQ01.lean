@@ -17,7 +17,7 @@ proportionality characterization), we establish:
    R = (z₂-z₃)(z₁-z₄) / ((z₁-z₂)(z₃-z₄)) is always real (proved algebraically).
 
 2. **Positivity for CCW order**: For four unit-circle points in counterclockwise order,
-   R > 0 (the ratio is a positive real). [sorry: requires inscribed angle theorem]
+   R > 0 (the ratio is a positive real). [proved via half-angle sine factorization]
 
 3. **Ptolemy equality for concyclic CCW points**: Combining the above with
    `ptolemy_equality_of_proportional`, four unit-circle points in CCW order satisfy
@@ -461,7 +461,7 @@ are equivalent:
 
 The present file proves:
 - (3 → 2 → 1): If R > 0, Ptolemy equality holds (algebraic)
-- (4 → 3): If CCW concyclic, R > 0 [requires `ptolemy_ratio_pos_of_ccw`, currently sorry]
+- (4 → 3): If CCW concyclic, R > 0 [proved via `ptolemy_ratio_pos_of_ccw`]
 - Unit circle cross-ratio is always real (1 → 3 for unit circle case), proved algebraically
 -/
 
