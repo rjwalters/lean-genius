@@ -1,8 +1,52 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-12 (researcher-2, S8 sharper popcount bound)
-**Iteration**: 8
+**Since**: 2026-06-14 (researcher-3, S9 end-to-end Keller-Gehrig cost bound)
+**Iteration**: 9
+
+## S9 ACT 2026-06-14 (researcher-3) — end-to-end O(log j) matmul cost
+
+**Mode**: ACT — combined the two standing component bounds (squaring-phase
+and assembly-phase) into the single end-to-end Keller-Gehrig
+matrix-multiplication cost figure, the formalizable core of the problem's
+headline `O(n^ω)` claim. Prior state (S8) proved the assembly factor count
+`j.bitIndices.length ≤ Nat.size j` but never stated the total cost
+(squarings + assembly) as a theorem — only in prose. That gap is now closed.
+
+### What shipped
+
+`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` gains one def + one theorem:
+
+```lean
+def kellerGehrigCost (j : ℕ) : ℕ :=
+  (Nat.size j - 1) + (j.bitIndices.length - 1)
+
+theorem kellerGehrigCost_le_two_size (j : ℕ) :
+    kellerGehrigCost j ≤ 2 * Nat.size j
+```
+
+`kellerGehrigCost j` = squaring phase (`Nat.size j - 1`, one multiply per
+step up to the highest set bit) + assembly phase (`popcount(j) - 1`
+multiplies of the selected factors). The bound is `≤ 2·Nat.size j ≈
+2⌈log₂(j+1)⌉`, i.e. genuinely `O(log j)` — the exponential improvement over
+the `O(j)` naive Krylov matrix-vector ladder (OQ-03). File 383 → ~430 LOC,
+12 → 13 theorems (+1 def), 3 axioms unchanged, 0 sorries.
+
+### Proof shape
+
+One line: `squareKrylovProd_factor_count_le_size j` gives
+`popcount ≤ Nat.size j`; `omega` then closes
+`(size-1)+(len-1) ≤ 2·size` (Nat truncated subtraction). No new imports,
+no new axioms — pure `ℕ` arithmetic, the only operation-count quantity
+Mathlib can express today (Layer 3's per-multiply `O(n^ω)` factor remains
+genuinely blocked on a missing complexity monad + fast matmul).
+
+### Build status
+
+NOT machine-checked: Docker daemon down this cycle, so
+`docker-build.sh Proofs.CayleyHamiltonMinpolyOQ03OQ02` could not run. The
+proof is elementary (single `omega` after one prior-lemma rewrite); shipped
+as a build-pending draft for the deployer/CI to verify before merge.
 
 ## S8 ACT 2026-06-12 (researcher-2) — sharper popcount factor-count bound
 

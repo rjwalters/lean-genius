@@ -265,6 +265,46 @@ theorem squareKrylovProd_factor_count_le_size (j : ℕ) :
     _ ≤ (Finset.range (Nat.size j)).card := hcardle
     _ = Nat.size j := Finset.card_range _
 
+/-- **Keller-Gehrig matrix-multiplication cost (realizable model).**
+    The total number of `n × n` matrix multiplications used to assemble
+    `M^j` decomposes into two phases:
+
+    * **squaring phase** — materialise the squared-Krylov sequence
+      `T_0, …, T_{Nat.size j - 1}` by repeated squaring, costing
+      `Nat.size j - 1` multiplications (one per step `T_{i+1} = T_i · T_i`,
+      up to the highest set bit of `j`, which sits at index
+      `Nat.size j - 1`); and
+    * **assembly phase** — multiply the `popcount(j)` selected factors
+      `∏ i ∈ bitIndices j, T_i` together, costing
+      `j.bitIndices.length - 1` multiplications.
+
+    This is the operation-count quantity Mathlib *can* express today
+    (a plain `ℕ`, no complexity monad needed), and it is the bridge from
+    the two component bounds to the headline Keller-Gehrig figure. -/
+def kellerGehrigCost (j : ℕ) : ℕ :=
+  (Nat.size j - 1) + (j.bitIndices.length - 1)
+
+/-- **End-to-end logarithmic cost bound.** The total matrix-multiplication
+    count to recover `M^j` by the Keller-Gehrig squared-Krylov route is
+    `O(log j)`: concretely `kellerGehrigCost j ≤ 2 · Nat.size j ≈ 2⌈log₂(j+1)⌉`.
+
+    This is the formalizable core of the problem's headline claim. The
+    naive Krylov ladder (OQ-03) uses `j` matrix-vector products to reach
+    `M^j v`; here both the squaring phase (`Nat.size j - 1`, the highest
+    set-bit index) and the assembly phase
+    (`j.bitIndices.length - 1 ≤ Nat.size j - 1`, by
+    `squareKrylovProd_factor_count_le_size`) are individually `≤ Nat.size j`,
+    so their sum is `≤ 2 · Nat.size j`. The exponential gap between
+    `O(log j)` matrix multiplications and `O(j)` Krylov steps is exactly
+    the asymptotic Keller-Gehrig speed-up, made fully machine-checkable
+    without any fast-matmul oracle (which only affects the per-multiply
+    `O(n^ω)` cost, the genuinely Mathlib-blocked Layer 3). -/
+theorem kellerGehrigCost_le_two_size (j : ℕ) :
+    kellerGehrigCost j ≤ 2 * Nat.size j := by
+  have h := squareKrylovProd_factor_count_le_size j
+  unfold kellerGehrigCost
+  omega
+
 -- ============================================================
 -- Layer 3 (axiomatized): O(n^ω) operation count
 -- ============================================================
@@ -316,9 +356,10 @@ end MinpolyComplexity.SubcubicKrylov
 
   **Status.** Complete formalization of Layers 1 + 2 + vector-level
   corollaries + matrix-multiplication factor-count bounds (Layer 2.5) +
-  axiomatized Layer 3 placeholder for ω. 12 theorems (3 Layer 1 +
+  axiomatized Layer 3 placeholder for ω. 13 theorems (3 Layer 1 +
   4 Layer 2 matrix-level + 2 Layer 2 vector-level + 2 Layer 2.5
-  factor-count + 1 Layer 3 ω two-sided sanity), 0 sorries, 3 axioms
+  factor-count + 1 Layer 2.5 end-to-end cost + 1 Layer 3 ω two-sided
+  sanity), 0 sorries, 3 axioms
   (`omegaMM`, `omegaMM_two_le`, `omegaMM_lt_three` — opaque
   Layer 3 ω with its known bounds).
 
@@ -351,6 +392,13 @@ end MinpolyComplexity.SubcubicKrylov
     `Finset.range (Nat.size j)`, bounding its length by that range's
     cardinality. This realises the genuinely `O(log j)` matrix-product
     bound of the Keller–Gehrig assembly loop.
+  - `kellerGehrigCost` (def) + `kellerGehrigCost_le_two_size` (S9) — the
+    end-to-end matrix-multiplication cost
+    `(Nat.size j - 1) + (j.bitIndices.length - 1)` (squaring phase +
+    assembly phase) is `≤ 2 · Nat.size j ≈ 2⌈log₂(j+1)⌉`. This combines
+    the squaring-phase and assembly-phase bounds into the single
+    `O(log j)` figure that is the formalizable core of the headline
+    Keller–Gehrig speed-up (vs `O(j)` naive Krylov matrix-vector steps).
 
   **Layer 3 axiomatized placeholder (S5 addition, 3 axioms + 1 theorem).**
   - `axiom omegaMM : ℝ` — the matrix-multiplication exponent.
