@@ -39,7 +39,7 @@
     "blockers": [
       "Structure theorem for f.g. modules over PIDs not in Mathlib v4.26"
     ],
-    "nextAction": "Prove orbit dimension bound; attempt countable union avoidance for uncountable fields",
+    "nextAction": "Orbit dimension bound proved (cyclicSubspace_le_minpoly_degree); remaining direction is countable-union avoidance for uncountable fields",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added finiteSpan_le_cyclicSubspace lemma (proved). Documented proof strategy for orbit dimension bound. 3 sorries remain.",
+    "progressSummary": "PROGRESS: Added finiteSpan_le_cyclicSubspace lemma (proved) and proved the orbit dimension bound cyclicSubspace_le_minpoly_degree. File is now 0 sorries, 0 axioms. Open research directions (countable-union avoidance, PID structure theorem) remain conceptual, not sorries.",
     "builtItems": [
       "proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean (262 lines)",
       "src/data/proofs/cayley-hamilton-minpoly-oq-05-oq-01-oq-03/ (gallery data)",
@@ -67,7 +67,6 @@
       "Smith normal form"
     ],
     "nextSteps": [
-      "Prove cyclicSubspace_le_minpoly_degree (orbit dimension bound)",
       "Investigate countable union avoidance for specific module-theoretic subspaces",
       "Connect to Mathlib Module.IsTorsion for torsion K[X]-modules"
     ]
