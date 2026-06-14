@@ -53,7 +53,7 @@
       "The blocker is the internal sorry in SpernerNDim, not Mathlib infrastructure"
     ],
     "nextSteps": [
-      "PRIORITY: Resolve the sorry in SpernerNDim.lean (compose global parity argument)",
+      "Done — the global parity sorry is resolved; SpernerNDimOQ03.lean is 0 sorries, 0 axioms (approximate_fixed_point and brouwer_simplex both proved).",
       "Then generalize displacement coloring from BrouwerFixedPointOQ02OQ01 to n dimensions",
       "Prove n-dim Sperner boundary condition for displacement coloring",
       "Convergence: sequential compactness on closed simplex gives fixed point"

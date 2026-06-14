@@ -54,8 +54,7 @@
       "WF descent on Carathéodory vertex count: needed for Sub-case B2 where bv ∉ S; formal prerequisite is binary_repr_of_mem_convexHull_not_mem returning full n-vertex count so caraDepth(bv) = caraDepth(x) - 1 can be tracked"
     ],
     "nextSteps": [
-      "Implement WF descent for Sub-case B2: add caraDepth parameter to reduce_excess, strong induction on totalCaraDepth — ~80 lines",
-      "Alternative: submit Sub-case B2 sorry to Aristotle proof search for automated verification"
+      "None — the Sub-case B2 sorry is closed: the WF descent (strong induction on total minCaraDepth) is implemented and the proof is sorry-free (0 sorries, 0 axioms across ShapleyFolkman.lean, ShapleyFolkmanAristotle.lean, ShapleyFolkmanOQ03.lean)."
     ],
     "phase": "ACT"
   },
