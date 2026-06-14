@@ -103,9 +103,16 @@
       "id": "corollaries",
       "title": "Section VI: Corollaries and Examples",
       "startLine": 162,
-      "endLine": 210,
+      "endLine": 213,
       "summary": "Derives consequences: three_sq_of_not_7_mod_8, three_sq_1_mod_8, three_or_four_squares (every n is sum of 3 or 4 squares). Concrete examples: 7, 15, 28, 112 need four squares.",
       "mathContext": "Examples: $7 = 4^0(8 \\cdot 0 + 7)$, $28 = 4^1(8 \\cdot 0 + 7)$, $112 = 4^2(8 \\cdot 0 + 7)$."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 214,
+      "endLine": 226,
+      "summary": "#check exports for the key lemmas: sq_mod_8, three_sq_not_7_mod_8, four_dvd_three_sq, obstructed_not_three_squares, not_obstructed_is_three_squares, and legendre_three_squares'."
     }
   ],
   "conclusion": {
