@@ -77,76 +77,100 @@
   },
   "sections": [
     {
-      "title": "Basic Definitions",
+      "id": "basic-definitions",
+      "title": "Part 1: Basic Definitions",
       "startLine": 31,
-      "endLine": 54,
-      "summary": "Defines ordinal products ω₁², ω₂² and graphs on vertex sets",
-      "mathContext": "Formal definition: Defines ordinal products ω₁², ω₂² and graphs on vertex sets",
-      "id": "basic-definitions"
+      "endLine": 66,
+      "summary": "Overview and Part 1: the ordinals ω₁, ω₂ and the ordinal-product vertex sets ω₁², ω₂², plus the GraphOn structure (symmetric adjacency) used throughout.",
+      "mathContext": "Vertices are products of ordinals such as $\\omega_1^2$ and $\\omega_2^2$; a graph is a symmetric adjacency relation on the vertex type."
     },
     {
-      "title": "Chromatic Number",
-      "startLine": 55,
-      "endLine": 73,
-      "summary": "Proper colorings and chromatic number for infinite graphs",
-      "mathContext": "Mathematical content: Proper colorings and chromatic number for infinite graphs",
-      "id": "chromatic-number"
+      "id": "chromatic-number",
+      "title": "Part 2: Chromatic Number",
+      "startLine": 67,
+      "endLine": 84,
+      "summary": "Proper colorings and the chromatic number χ(G) for infinite graphs, using existential color types (following Erdős #1176) to avoid Cardinal.toType API issues.",
+      "mathContext": "$\\chi(G)$ is the least cardinality of a color type admitting a proper coloring (adjacent vertices receive distinct colors)."
     },
     {
-      "title": "Order Type and Subgraphs",
-      "startLine": 74,
-      "endLine": 89,
-      "summary": "Order type of subsets and induced subgraphs",
-      "mathContext": "Mathematical content: Order type of subsets and induced subgraphs",
-      "id": "order-type-and-subgraphs"
+      "id": "induced-subgraphs",
+      "title": "Part 3: Induced Subgraphs and Monotonicity",
+      "startLine": 85,
+      "endLine": 122,
+      "summary": "Induced subgraphs on a vertex subset and chromatic monotonicity: the chromatic number of an induced subgraph is bounded by that of the whole graph.",
+      "mathContext": "For $S \\subseteq V$, the induced subgraph keeps edges with both endpoints in $S$; $\\chi(G[S]) \\le \\chi(G)$."
     },
     {
-      "title": "Erdős-Hajnal Construction",
-      "startLine": 90,
-      "endLine": 108,
-      "summary": "The counterexample graph on ω₁² with χ = ℵ₁",
-      "mathContext": "Mathematical content: The counterexample graph on ω₁² with χ = ℵ₁",
-      "id": "erdős-hajnal-construction"
+      "id": "erdos-hajnal-construction",
+      "title": "Part 4: The Erdős-Hajnal Construction",
+      "startLine": 123,
+      "endLine": 159,
+      "summary": "The Erdős-Hajnal graph on ω₁²: a construction showing Babai's theorem does not generalize to higher cardinals.",
+      "mathContext": "Two pairs in $\\omega_1^2$ are adjacent when one coordinate increases while the other decreases, yielding a graph with large chromatic number but small induced subgraphs."
     },
     {
-      "title": "Main Questions",
-      "startLine": 109,
-      "endLine": 130,
-      "summary": "Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²",
-      "mathContext": "Mathematical content: Question1 (χ = ℵ₂) and Question2 (χ = ℵ₁) for ω₂²",
-      "id": "main-questions"
+      "id": "infrastructure-aleph1-lower-bound",
+      "title": "Part 4a: Infrastructure for the ℵ₁ Chromatic Lower Bound",
+      "startLine": 160,
+      "endLine": 369,
+      "summary": "Proves χ(E-H graph on ω₁²) = ℵ₁ via a double pigeonhole argument: cardinal pigeonhole (uncountable domain + countable codomain ⇒ uncountable fiber), countability of initial segments of ω₁ (so uncountable sets are cofinal), then double pigeonhole on rows and colors to force a monochromatic edge.",
+      "mathContext": "An uncountable set of rows mapped into countably many colors has an uncountable monochromatic fiber; cofinality of ω₁ then produces a same-color adjacent pair, so $\\chi \\ge \\aleph_1$."
     },
     {
-      "title": "Partial Results",
-      "startLine": 131,
-      "endLine": 148,
-      "summary": "Construction with ℵ₁ bound (not ℵ₀)",
-      "mathContext": "Bound: Construction with ℵ₁ bound (not ℵ₀)",
-      "id": "partial-results"
+      "id": "main-questions",
+      "title": "Part 5: The Main Questions",
+      "startLine": 370,
+      "endLine": 391,
+      "summary": "Formalizes the open questions at the next cardinal level: Question 1 (a graph on ω₂² with χ = ℵ₂ and all small-cardinality induced subgraphs bounded) and Question 2 (the ℵ₁ analogue).",
+      "mathContext": "Does there exist $G$ on $\\omega_2^2$ with $\\chi(G) = \\aleph_2$ yet every subset of cardinality $< \\aleph_2$ inducing chromatic number $\\le \\aleph_1$?"
     },
     {
-      "title": "Generalization",
-      "startLine": 149,
-      "endLine": 171,
-      "summary": "General question for cardinals κ, λ, μ",
-      "mathContext": "Mathematical content: General question for cardinals κ, λ, μ",
-      "id": "generalization"
+      "id": "partial-results",
+      "title": "Part 6: Known Partial Results",
+      "startLine": 392,
+      "endLine": 433,
+      "summary": "Partial constructions toward the questions: the Erdős-Hajnal graph on ω₂² (two pairs adjacent iff one coordinate increases while the other decreases).",
+      "mathContext": "The $\\omega_2^2$ analogue of the E-H graph gives an $\\aleph_1$ bound on small induced subgraphs, partially addressing the $\\aleph_2$ question."
     },
     {
-      "title": "Babai Connection",
-      "startLine": 172,
-      "endLine": 193,
-      "summary": "Babai's theorem and why it fails at ω₁",
-      "mathContext": "Verified: Babai's theorem and why it fails at ω₁",
-      "id": "babai-connection"
+      "id": "infrastructure-aleph2-lower-bound",
+      "title": "Part 6a: Infrastructure for the ω₂² Chromatic Lower Bound",
+      "startLine": 434,
+      "endLine": 600,
+      "summary": "Proves χ(E-H graph on ω₂²) = ℵ₂ by double pigeonhole one cardinal level up, structurally identical to the ω₁² case (ℵ₁ < ℵ₂, initial segments of ω₂ have size ≤ ℵ₁, etc.).",
+      "mathContext": "Replacing $\\aleph_0/\\aleph_1$ with $\\aleph_1/\\aleph_2$, the same fiber-and-cofinality argument gives $\\chi(\\text{E-H on } \\omega_2^2) \\ge \\aleph_2$."
     },
     {
-      "title": "Formal Statement",
-      "startLine": 224,
-      "endLine": 241,
-      "summary": "Main theorem combining both questions",
-      "mathContext": "Verified: Main theorem combining both questions",
-      "id": "formal-statement"
+      "id": "generalization",
+      "title": "Part 7: Generalization to Higher Cardinals",
+      "startLine": 601,
+      "endLine": 627,
+      "summary": "A general question parameterized by an arbitrary vertex type and cardinal bounds (chromatic target χ and an induced-subgraph cardinality/bound threshold).",
+      "mathContext": "Generalizes to: for vertex type $V$ and cardinals, does there exist a graph with $\\chi = \\kappa$ whose subsets of cardinality $< \\mu$ induce chromatic number $\\le \\lambda$?"
+    },
+    {
+      "id": "babai-connection",
+      "title": "Part 8: Connection to Babai's Theorem",
+      "startLine": 628,
+      "endLine": 654,
+      "summary": "Babai's theorem (simplified): a chromatic bound on the whole graph propagates to all induced subgraphs — and why the E-H construction shows this fails to generalize at higher cardinals.",
+      "mathContext": "Babai: a chromatic bound on $G$ descends to every induced $G[S]$; the E-H graphs separate whole-graph and small-subgraph chromatic numbers, breaking the generalization."
+    },
+    {
+      "id": "problem-status",
+      "title": "Part 9: Problem Status",
+      "startLine": 655,
+      "endLine": 678,
+      "summary": "Records that both questions remain open and packages them as the named formal statements ErdosProblem919Part1 (Question1) and the Part 2 analogue.",
+      "mathContext": "$\\texttt{ErdosProblem919Part1} := \\texttt{Question1}$; both questions are open conjectures at the $\\aleph_2$ level."
+    },
+    {
+      "id": "formal-statement",
+      "title": "Part 10: Formal Problem Statement",
+      "startLine": 679,
+      "endLine": 690,
+      "summary": "The headline formal statements: question1_implies_exists extracts an ω₂² graph with χ = ℵ₂ from Question1, tying the formalization back to the problem's existential claim.",
+      "mathContext": "$\\texttt{Question1} \\Rightarrow \\exists G \\text{ on } \\omega_2^2,\\ \\chi(G) = \\aleph_2$."
     }
   ],
   "conclusion": {
