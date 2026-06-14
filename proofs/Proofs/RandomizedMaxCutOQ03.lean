@@ -32,6 +32,7 @@ A graph admits a full cut **iff** it is bipartite (admits a proper 2-colouring
 ## Main results
 * `maxCut_eq_edges_of_fullCut` : a full cut forces `MaxCut(G) = |E|`.
 * `rand_approx_tight_of_fullCut` : tightness from any full cut.
+* `isFullCut_iff_isProper2Coloring` : full cut ⟺ proper 2-colouring (the iff).
 * `rand_approx_tight_of_proper2Coloring` : tightness for any bipartite graph.
 * `rand_approx_tight_completeBipartite` : concrete witness `K_{m,n}`.
 
@@ -110,6 +111,25 @@ lemma fullCut_of_proper2Coloring (G : SimpleGraph V) [DecidableRel G.Adj]
     rw [edgeInCut_ofAssignment_iff]
     exact hf hadj
 
+/-- Conversely, a full cut is a proper 2-colouring: if `f` cuts every edge then
+    adjacent vertices receive different colours. -/
+lemma proper2Coloring_of_fullCut (G : SimpleGraph V) [DecidableRel G.Adj]
+    (f : V → Bool) (hf : IsFullCut G f) : IsProper2Coloring G f := by
+  intro u v hadj
+  have he : s(u, v) ∈ G.edgeFinset := by
+    rw [SimpleGraph.mem_edgeFinset, SimpleGraph.mem_edgeSet]
+    exact hadj
+  have hcut := hf s(u, v) he
+  rwa [edgeInCut_ofAssignment_iff] at hcut
+
+/-- **Full cut ⟺ proper 2-colouring.** An assignment cuts every edge of `G`
+    exactly when it is a proper 2-colouring. This is the precise sense, asserted
+    in the module docstring, in which the tight instances of the randomized
+    1/2-approximation are exactly the bipartite graphs. -/
+theorem isFullCut_iff_isProper2Coloring (G : SimpleGraph V) [DecidableRel G.Adj]
+    (f : V → Bool) : IsFullCut G f ↔ IsProper2Coloring G f :=
+  ⟨proper2Coloring_of_fullCut G f, fullCut_of_proper2Coloring G f⟩
+
 /-- **Tightness on bipartite graphs.** Any graph with a proper 2-colouring (i.e.
     any bipartite graph) makes the randomized 1/2-approximation tight:
     `E[|C|] = MaxCut(G)/2`. -/
@@ -148,6 +168,7 @@ theorem rand_approx_tight_completeBipartite (m n : ℕ) :
     (isProper2Coloring_completeBipartite m n)
 
 #check @rand_approx_tight_of_fullCut
+#check @isFullCut_iff_isProper2Coloring
 #check @rand_approx_tight_of_proper2Coloring
 #check @rand_approx_tight_completeBipartite
 
