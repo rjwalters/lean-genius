@@ -111,11 +111,6 @@
   ],
   "crossReferences": [
     {
-      "targetId": "brouwer-fixed-point-oq-04-oq-01",
-      "relationship": "related",
-      "description": "Alternative Nash existence proof via Kakutani FPT + Berge's maximum theorem (set-valued best-response correspondence). This file reduces axiom count from 2 to 1 by using Nash's original single-valued Brouwer argument."
-    },
-    {
       "targetId": "brouwer-fixed-point-oq-04",
       "relationship": "depends-on",
       "description": "Provides the brouwer_pi_compact_convex axiom (general Brouwer FPT) from which brouwer_product_simplex is proved, and the kakutani_fixed_point_axiom used in OQ-01."

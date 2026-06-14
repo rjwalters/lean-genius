@@ -142,11 +142,6 @@
       "targetId": "frobenius-number",
       "relationship": "extends",
       "description": "Direct parent: provides the Frobenius number formula $g(a, b) = ab - a - b$ via `sylvester_frobenius`. This file uses $\\neg\\text{Rep}(g)$ (the largest non-representable element) as the +1 contribution to the count."
-    },
-    {
-      "targetId": "frobenius-number-oq-02",
-      "relationship": "uses",
-      "description": "Sibling: provides the Frobenius symmetry $\\text{Rep}(k) \\Leftrightarrow \\neg\\text{Rep}(g - k)$ for $0 < k < g$ via `frobenius_symmetry`. This biconditional is the *only* non-elementary input to the bijection lemma."
     }
   ],
   "references": [

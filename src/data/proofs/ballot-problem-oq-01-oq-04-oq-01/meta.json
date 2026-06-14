@@ -80,11 +80,6 @@
       "targetId": "ballot-problem",
       "relationship": "ancestor",
       "description": "Original Bertrand-1887 ballot problem entry; uses André's reflection principle (1887). This entry's bijective Chung-Feller approach is the structural complement to reflection — both prove ballot-style equalities, with bijection winning when one needs an explicit *witness* for each class."
-    },
-    {
-      "targetId": "catalan-numbers",
-      "relationship": "applies-to",
-      "description": "The Chung-Feller bijection gives a self-contained combinatorial proof that the n-th Catalan number is $\\binom{2n}{n}/(n+1)$ via two-way counting of balanced paths."
     }
   ],
   "leanFile": {

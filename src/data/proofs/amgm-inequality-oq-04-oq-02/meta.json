@@ -61,11 +61,6 @@
   },
   "crossReferences": [
     {
-      "targetId": "amgm-inequality-oq-04-oq-01",
-      "relationship": "extends",
-      "description": "Reuses the rigorous `ellipticK` definition (Mathlib intervalIntegral). This file defines `ellipticE` analogously and adds the complementary modulus k' = √(1-k²) plus the Legendre relation."
-    },
-    {
       "targetId": "amgm-inequality-oq-04-oq-05",
       "relationship": "supports",
       "description": "OQ04OQ05 (Brent-Salamin) currently axiomatizes the symmetric Legendre relation `2KE - K² = π/2` at k = 1/√2. This file's `legendre_relation_symmetric` theorem (proved from the more general axiom) provides exactly that statement, enabling a future session to discharge the OQ04OQ05 axiom."
