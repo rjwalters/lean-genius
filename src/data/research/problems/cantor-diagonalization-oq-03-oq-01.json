@@ -9,7 +9,7 @@
     "question": "Can the Lawvere fixed-point theorem be formalized in a topos-theoretic setting in Lean?"
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Generalized Lawvere FPT to abstract evaluation structure. Proved core theorem, diagonal lemma, type-theoretic recovery, and 3 concrete instances. Sketched categorical framework (2 sorries). 0 axioms, 14 proved theorems, 294 lines.",
+    "progressSummary": "COMPLETED: Generalized Lawvere FPT to abstract evaluation structure. Proved core theorem, diagonal lemma, type-theoretic recovery, and 3 concrete instances. Categorical framework completed sorry-free (lawvere_categorical now proved by reducing to lawvere_abstract). 0 axioms, 14 proved theorems, 294 lines.",
     "builtItems": [
       "proofs/Proofs/CantorDiagonalizationOQ03OQ01.lean (294 lines)",
       "EvalStructure and IsPointSurjective definitions",
@@ -30,7 +30,6 @@
       "No Lawvere fixed-point theorem in Mathlib's category theory"
     ],
     "nextSteps": [
-      "Prove lawvere_categorical without sorry (connect CategoricalEval to EvalStructure)",
       "Use Mathlib CartesianClosed + ihom for full CCC version",
       "Derive Rice's theorem as a Lawvere instance"
     ]
