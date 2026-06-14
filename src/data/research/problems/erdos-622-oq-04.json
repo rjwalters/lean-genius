@@ -58,9 +58,9 @@
       "Need neighborhood-restricted degree summation (handshaking for induced subgraphs)"
     ],
     "nextSteps": [
-      "Prove absorbing_pair_exists: existence follows from common_neighbors_ge + adjacency in N(w)",
-      "Prove erdos_faudree_absorbing_pairs_ge: count edges in induced subgraph on N(w)",
-      "Submit 2 sorries to Aristotle for automated proof search"
+      "DONE: absorbing_pair_exists was proved via the common-neighborhood bound (fixed flipped hypothesis |V|+2 ≤ 2d). Kept for record.",
+      "DONE: erdos_faudree_absorbing_pairs_ge was proved via the injection argument u ↦ (u, choose(N(u) ∩ N(w))). Kept for record.",
+      "DONE: no sorries remain to submit — Erdos622OQ04.lean / Erdos622Problem.lean are 0-sorry/0-axiom (9 theorems, 4 definitions); slug status is completed. No live next step — SOLVED."
     ]
   },
   "tags": [
