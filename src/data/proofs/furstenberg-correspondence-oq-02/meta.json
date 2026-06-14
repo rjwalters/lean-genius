@@ -56,10 +56,10 @@
     ],
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
-    "lineCount": 413,
+    "lineCount": 445,
     "assumptions": "0 axioms. 0 sorries. Survey file with demonstrated infrastructure.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 4,
+    "theoremCount": 7,
     "definitionCount": 2
   },
   "sections": [
@@ -90,15 +90,15 @@
     {
       "title": "Infrastructure Demonstration",
       "startLine": 265,
-      "endLine": 310,
-      "description": "Defines the invariant σ-algebra in Lean 4 and proves basic properties (preimage stability, intersection closure).",
+      "endLine": 386,
+      "description": "Defines the invariant σ-algebra in Lean 4 and proves its Boolean-algebra closure properties (preimage stability, intersection, union, complement, univ) plus ergodic_invariantSigmaAlgebra_null_or_conull — for an ergodic system the invariant σ-algebra is μ-trivial (every invariant-measurable set is null or co-null), the conceptual backbone of the ergodic decomposition.",
       "summary": "Infrastructure Demonstration",
       "id": "infrastructure-demonstration"
     },
     {
       "title": "Feasibility Assessment",
-      "startLine": 315,
-      "endLine": 380,
+      "startLine": 387,
+      "endLine": 445,
       "description": "Final assessment: YES, feasible. Recommends Approach C via Mathlib disintegration as the lowest-effort path (~1200 lines).",
       "summary": "Feasibility Assessment",
       "id": "feasibility-assessment"
@@ -169,9 +169,9 @@
       "MeasurableSpace"
     ],
     "namespace": "FurstenbergOQ02",
-    "lineCount": 413,
+    "lineCount": 445,
     "axiomCount": 0,
-    "theoremCount": 4,
+    "theoremCount": 7,
     "definitionCount": 2,
     "sorries": 0,
     "path": "Proofs/FurstenbergCorrespondenceOQ02.lean"

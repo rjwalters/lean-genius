@@ -336,6 +336,35 @@ theorem invariant_univ {α : Type*} [m : MeasurableSpace α] (T : α → α) :
     @MeasurableSet α (invariantSigmaAlgebra T) Set.univ :=
   ⟨MeasurableSet.univ, preimage_univ⟩
 
+/-- Finite unions of invariant sets are invariant (dual of `invariant_inter`). -/
+theorem invariant_union {α : Type*} [m : MeasurableSpace α] {T : α → α}
+    {s t : Set α}
+    (hs : @MeasurableSet α (invariantSigmaAlgebra T) s)
+    (ht : @MeasurableSet α (invariantSigmaAlgebra T) t) :
+    @MeasurableSet α (invariantSigmaAlgebra T) (s ∪ t) := by
+  refine ⟨hs.1.union ht.1, ?_⟩
+  rw [preimage_union, hs.2, ht.2]
+
+/-- The complement of an invariant set is invariant. -/
+theorem invariant_compl {α : Type*} [m : MeasurableSpace α] {T : α → α}
+    {s : Set α} (hs : @MeasurableSet α (invariantSigmaAlgebra T) s) :
+    @MeasurableSet α (invariantSigmaAlgebra T) sᶜ := by
+  refine ⟨hs.1.compl, ?_⟩
+  rw [preimage_compl, hs.2]
+
+/-- **Ergodicity = triviality of the invariant σ-algebra.** For an ergodic
+    system, every set measurable with respect to the invariant σ-algebra is
+    null or co-null. This connects the newly-defined `invariantSigmaAlgebra`
+    to Mathlib's `Ergodic` infrastructure: the σ-algebra of invariant sets is
+    μ-trivial exactly in the ergodic case, which is the conceptual backbone of
+    the ergodic decomposition surveyed in this file. -/
+theorem ergodic_invariantSigmaAlgebra_null_or_conull
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {T : α → α}
+    (hE : Ergodic T μ) {s : Set α}
+    (hs : @MeasurableSet α (invariantSigmaAlgebra T) s) :
+    μ s = 0 ∨ μ sᶜ = 0 :=
+  hE.preErgodic.ae_empty_or_univ hs.1 hs.2
+
 /-!
 ### Multiple Recurrence: What Ergodic Decomposition Would Give Us
 
@@ -409,5 +438,8 @@ Completing the ergodic decomposition would:
 #check invariantSigmaAlgebra       -- Invariant σ-algebra (new, this file)
 #check invariant_preimage_eq       -- Preimage stability (new, this file)
 #check invariant_inter             -- Intersection closure (new, this file)
+#check invariant_union             -- Union closure (new, this file)
+#check invariant_compl             -- Complement closure (new, this file)
+#check @ergodic_invariantSigmaAlgebra_null_or_conull  -- Ergodic ⇒ trivial (new)
 
 end FurstenbergOQ02
