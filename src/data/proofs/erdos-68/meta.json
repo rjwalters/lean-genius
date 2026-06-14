@@ -96,82 +96,90 @@
     {
       "id": "target-sum",
       "title": "The Target Sum",
-      "summary": "factorialSum, summand, summand_pos",
+      "summary": "Part 1 defines the object of study: `factorialSum = ∑' n, 1/((n+2)! − 1)` together with `summand n = 1/((n+2)! − 1)` and `summand_pos` (every term is strictly positive).",
       "startLine": 26,
-      "endLine": 51,
+      "endLine": 56,
       "mathContext": "$S = \\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$. Each term $\\frac{1}{n!-1} > 0$ and $\\to 0$ rapidly."
     },
     {
       "id": "convergence",
       "title": "Convergence",
-      "summary": "summand_tendsto_zero, factorialSum_summable, factorialSum_pos",
-      "startLine": 52,
-      "endLine": 68,
+      "summary": "Part 2 proves convergence: `summand_tendsto_zero`; geometric domination via `factorial_ge_two_pow` and `summand_le_half_pow` (`summand n ≤ (1/2)^n`); `factorialSum_summable`; and `factorialSum_pos`.",
+      "startLine": 57,
+      "endLine": 120,
       "mathContext": "$\\frac{1}{n!-1} \\to 0$ as $n \\to \\infty$. Series converges by comparison with $\\sum 1/n!$. $S > 0$ since all terms positive."
     },
     {
       "id": "weisenberg",
       "title": "Weisenberg's Identity",
-      "summary": "inv_factorial_minus_one_eq_geom, weisenberg_identity",
-      "startLine": 69,
-      "endLine": 91,
+      "summary": "Part 3 establishes Weisenberg's telescoping identity: `inv_factorial_minus_one_eq_geom` (`1/(n!−1) = ∑ₖ (1/n!)^k` for `n ≥ 2`) and `weisenberg_identity`, rewriting the whole sum as a double geometric series.",
+      "startLine": 121,
+      "endLine": 171,
       "mathContext": "Weisenberg: $\\frac{1}{n!-1} = \\frac{1}{n!} \\cdot \\frac{1}{1-1/n!} = \\sum_{k=1}^{\\infty} \\frac{1}{(n!)^k}$, a geometric series."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture",
-      "summary": "ErdosConjecture68, erdos_68",
-      "startLine": 92,
-      "endLine": 107,
+      "summary": "Part 4 states the open problem: `ErdosConjecture68 := Irrational factorialSum`, recorded as `axiom erdos_68` — the single axiom in this file, since the conjecture is unproven.",
+      "startLine": 172,
+      "endLine": 187,
       "mathContext": "Conjecture (OPEN): $S = \\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$ is irrational."
     },
     {
       "id": "broader-conjecture",
       "title": "Erdős's Broader Conjecture",
-      "summary": "generalizedFactorialSum, erdosTranscendenceConjecture, problem_68_is_special_case",
-      "startLine": 108,
-      "endLine": 148,
+      "summary": "Part 5 records Erdős's stronger transcendence conjecture: `generalizedFactorialSum t = ∑' 1/((n+2)! + t)`, `erdosTranscendenceConjecture` (transcendental for every integer `t`), and `problem_68_is_special_case` (the `t = −1` case equals `factorialSum`).",
+      "startLine": 188,
+      "endLine": 227,
       "mathContext": "Stronger: $\\sum_{n=2}^{\\infty} \\frac{1}{n!-c}$ is transcendental for all integers $c \\neq 0$. This implies irrationality."
     },
     {
       "id": "small-values",
       "title": "Small Value Computations",
-      "summary": "first_term, second_term, third_term, fourth_term",
-      "startLine": 149,
-      "endLine": 178,
+      "summary": "Part 6 collects numerical computations: closed forms `first_term`…`sixth_term` (1, 1/5, 1/23, 1/119, 1/719, 1/5039), `partial_sum_approx`, and the rational enclosure `factorialSum_lower_bound` (> 1.253) and `factorialSum_lt` (< 1.254) with their factorial-tail domination lemmas.",
+      "startLine": 228,
+      "endLine": 404,
       "mathContext": "Small values: $1/(2!-1) = 1$, $1/(3!-1) = 1/5$, $1/(4!-1) = 1/23$, $1/(5!-1) = 1/119$. Sum $\\approx 1.2646\\ldots$"
     },
     {
       "id": "difficulty",
       "title": "Why This Is Hard",
-      "summary": "eRelatedSum, perturbation_difference",
-      "startLine": 179,
-      "endLine": 205,
+      "summary": "Part 7 (\"Why This Is Hard\") contrasts the sum with the tractable `eRelatedSum = ∑' 1/(n+2)! = e − 2` (`eRelatedSum_value`) and its rational bounds, and proves `perturbation_difference`, quantifying how the `−1` perturbation breaks the factorial structure that makes `e` tractable.",
+      "startLine": 405,
+      "endLine": 604,
       "mathContext": "Difficulty: $S$ differs from $e - 1 = \\sum 1/n!$ by $\\sum (1/(n!-1) - 1/n!) = \\sum 1/(n!(n!-1))$, a very small perturbation."
     },
     {
       "id": "oeis",
       "title": "OEIS Connection",
-      "summary": "oeis_a331373",
-      "startLine": 206,
-      "endLine": 214,
-      "mathContext": "OEIS A331373: decimal expansion of $S$. The constant $S \\approx 1.264686...$ is not recognized as any known constant."
+      "summary": "Part 8 records the OEIS connection (decimal expansion A331373) and `factorialSum_bounds`: the proved enclosure `1.253 < factorialSum < 1.254` (true value ≈ 1.25349875569995).",
+      "startLine": 605,
+      "endLine": 619,
+      "mathContext": "OEIS A331373: decimal expansion of $S$. The constant $S \\approx 1.25349875569995...$ is not recognized as any known constant; the file proves the rational enclosure $1.253 < S < 1.254$."
     },
     {
       "id": "transcendence",
       "title": "Transcendence Theory",
-      "summary": "transcendence_implies_irrationality, transcendence_implies_68",
-      "startLine": 215,
-      "endLine": 242,
+      "summary": "Part 9 places the problem in transcendence theory: `transcendence_implies_irrationality` (`Transcendental ℚ x → Irrational x`) and `transcendence_implies_68` (transcendence of `factorialSum` would settle the conjecture).",
+      "startLine": 620,
+      "endLine": 647,
       "mathContext": "Transcendence $\\implies$ irrationality. Known: $\\sum 1/n! = e - 1$ is transcendental (Hermite 1873). But $\\sum 1/(n!-1)$ is harder."
     },
     {
       "id": "status",
       "title": "Problem Status",
-      "summary": "erdos_68_status, erdos_68_statement, Summary",
-      "startLine": 243,
-      "endLine": 356,
+      "summary": "Part 10 records the status: `erdos_68_status = \"OPEN\"` and the headline equivalence `erdos_68_statement : ErdosConjecture68 ↔ Irrational factorialSum`.",
+      "startLine": 648,
+      "endLine": 660,
       "mathContext": "Status: OPEN. Neither irrationality nor rationality has been proved for $S$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 661,
+      "endLine": 680,
+      "summary": "Closing summary docstring: restates the problem (irrationality of $\\sum 1/(n!-1)$), its OPEN status, the known value ≈ 1.25349875569995 (OEIS A331373), Weisenberg's identity, Erdős's broader transcendence conjecture, and the key challenge — the `−1` perturbation breaks the factorial structure that made `e` tractable.",
+      "mathContext": "$S = \\sum_{n=2}^{\\infty} \\frac{1}{n!-1}$ is OPEN: neither irrationality nor rationality is known. The strongest formal results in this file are the convergence/summability facts, Weisenberg's geometric-series identity, and the rational enclosure $1.253 < S < 1.254$; the irrationality statement itself is carried by `axiom erdos_68`."
     }
   ],
   "conclusion": {
