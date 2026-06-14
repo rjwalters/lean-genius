@@ -35,8 +35,8 @@
     "goal": "Land a positive 3D Feuerbach theorem in FeuerbachsTheoremOQ02.lean (or a sibling file), restoring the gallery entry from 'axiomatized via refutation' to a verified positive result."
   },
   "currentState": {
-    "phase": "DECOMPOSE",
-    "since": "2026-06-13T23:30:00.000Z",
+    "phase": "ACT (BLOCKED — Docker down)",
+    "since": "2026-06-14T01:34:27.000Z",
     "iteration": 4,
     "focus": "S7 DONE (2026-06-13, build-free, symbolically + numerically verified exactly): generalised the T0 Grace result to ALL trirectangular tetrahedra (legs a,b,c at the right-angle vertex D=(0,0,0), A=(a,0,0), B=(0,b,0), C=(0,0,c)). The Grace sphere through A,B,C tangent internally to both the insphere and the D-exsphere has RATIONAL centre Theta=((a+b)(a+c),(a+b)(b+c),(a+c)(b+c))/(2(a+b+c)) and RATIONAL radius R=(a^2+b^2+c^2+ab+bc+ca)/(2(a+b+c)); rho_in,Dex=(ab+bc+ca -/+ sqrt(a^2 b^2+b^2 c^2+c^2 a^2))/(2(a+b+c)); R-rho_in,Dex=(a^2+b^2+c^2 +/- sqrt(a^2 b^2+b^2 c^2+c^2 a^2))/(2(a+b+c)) (both positive => both tangencies internal). PROOF: imposing tangency of the sphere-through-A,B,C to the insphere and squaring to eliminate R gives an equation in the surd n=sqrt(1/a^2+1/b^2+1/c^2) whose ODD-in-n part vanishes identically, fixing G=abc/(a+b+c) independent of sign(n); since n->-n swaps insphere<->D-exsphere, ONE sphere is tangent to both and the surd cancels (rational centre+radius). T0 (a,b,c)=(2,3,6) recovers S4's Theta=(40,45,72)/22, R=85/22, rho_in=(18-3 sqrt 14)/11, rho_Dex=(18+3 sqrt 14)/11. This is the publishable positive trirectangular 3D Feuerbach (Grace) theorem; only the Lean transcription (S8) remains, Docker-gated.",
     "blockers": [
