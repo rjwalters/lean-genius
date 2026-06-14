@@ -9,7 +9,7 @@
     "question": "Can the parametric solution extend to systems of linear Diophantine equations (matrix form Ax = b over ℤ), characterizing the full solution lattice via the Smith Normal Form?"
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Built Smith Normal Form infrastructure in Lean 4. Defined SmithNormalForm structure with unimodular matrices, diagonal form, and invariant factor chain. Axiomatized SNF existence and solvability criterion. Proved bezout_from_snf (classical Bézout recovery), null space ℤ-submodule structure, and affine lattice characterization of solution sets. 2 axioms, 1 sorry, 11 proved theorems.",
+    "progressSummary": "COMPLETED: Built Smith Normal Form infrastructure in Lean 4. Defined SmithNormalForm structure with unimodular matrices, diagonal form, and invariant factor chain. Axiomatized SNF existence and solvability criterion. Proved bezout_from_snf (classical Bézout recovery), null space ℤ-submodule structure, and affine lattice characterization of solution sets. 2 axioms, 0 sorries, 11 proved theorems (snf_1x2_invariant_factor proved sorry-free).",
     "builtItems": [
       "Created proofs/Proofs/BezoutIdentityOQ04OQ01.lean (335 lines)",
       "IsUnimodular predicate with closure properties (identity, product)",
@@ -33,8 +33,7 @@
       "No integer matrix reduction algorithm"
     ],
     "nextSteps": [
-      "Prove snf_1x2_invariant_factor (sorry) — connect 1×2 SNF to gcd",
-      "Consider constructive SNF existence proof (~500 lines of Euclidean reduction)",
+      "Eliminate snf_existence axiom: constructive SNF existence proof (~500 lines of Euclidean reduction)",
       "Extend to PID generalization (bezout-identity-oq-02-oq-02 connection)"
     ]
   },

@@ -57,10 +57,8 @@
       "Finset.card_biUnion for the union bound sum over F (hbad_bound)"
     ],
     "nextSteps": [
-      "Submit card_subsets_containing to Aristotle (HARD sorry — bijection via B ↦ X \\ B)",
-      "Submit hbad_bound to Aristotle (HARD sorry — union bound sum over F)",
-      "Submit hgood_bad to Aristotle (HARD sorry — partition of X.powerset)",
-      "Consider alternative: use Finset.card_sdiff_add_card_eq_card for hgood_bad"
+      "Optional refactor: hgood_bad could alternatively use Finset.card_sdiff_add_card_eq_card (current proof: disjoint filter partition, already sorry-free)",
+      "Optional: upstream card_subsets_containing involution bijection (B ↦ X \\ B) to Mathlib"
     ],
     "phase": "ACT"
   },
