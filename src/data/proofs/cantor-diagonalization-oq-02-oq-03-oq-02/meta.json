@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. 0 axioms, 0 sorries.",
-    "lineCount": 380,
+    "lineCount": 382,
     "theoremCount": 6,
     "definitionCount": 5,
     "additionalFiles": [
@@ -66,7 +66,7 @@
   },
   "leanFile": {
     "namespace": "FodorLemma",
-    "lineCount": 380,
+    "lineCount": 382,
     "axiomCount": 0,
     "theoremCount": 6,
     "definitionCount": 5,
@@ -94,50 +94,64 @@
       "id": "header",
       "title": "File Header and Overview",
       "startLine": 1,
-      "endLine": 42,
-      "content": "Module documentation explaining Fodor's lemma, its place in set theory, and the proof architecture."
+      "endLine": 50,
+      "content": "Module documentation explaining Fodor's lemma, its place in set theory, and the proof architecture (\u00a71-6). Lists key techniques (Ordinal.bsup, iSup_lt_ord_lift_of_isRegular, IsSuccLimit) and references (Fodor 1956, Jech). Imports SetTheory.Cardinal.Cofinality/Regular, SetTheory.Ordinal.Arithmetic/Topology, and Mathlib.Tactic; opens namespace FodorLemma with Cardinal Order Ordinal Set."
     },
     {
       "id": "club-sets",
       "title": "\u00a71. Club Sets",
-      "startLine": 44,
+      "startLine": 52,
       "endLine": 72,
-      "content": "Definitions of IsUnboundedBelow, IsClosedBelow, and IsClub for ordinals below \u03ba.ord."
+      "content": "Definitions of IsUnboundedBelow (cofinal in \u03ba.ord), IsClosedBelow (contains all limit points below \u03ba.ord), and IsClub (closed unbounded) for ordinals below \u03ba.ord."
     },
     {
       "id": "stationary-sets",
       "title": "\u00a72. Stationary Sets",
       "startLine": 74,
-      "endLine": 102,
-      "content": "IsStationary: a set S that intersects every club. not_isStationary_iff: equivalent to having a club disjoint from S."
+      "endLine": 93,
+      "content": "IsStationary: a set S that intersects every club. not_isStationary_iff: S is non-stationary iff some club avoids S entirely."
     },
     {
       "id": "diagonal-intersection",
       "title": "\u00a73. Diagonal Intersection",
-      "startLine": 104,
-      "endLine": 130,
-      "content": "diagInter f = {\u03b1 | \u2200 \u03b2 < \u03b1, \u03b1 \u2208 f \u03b2}. The key diagonalization tool that makes Fodor's lemma work."
+      "startLine": 95,
+      "endLine": 112,
+      "content": "diagInter f = {\u03b1 | \u2200 \u03b2 < \u03b1, \u03b1 \u2208 f \u03b2}, the key diagonalization tool that makes Fodor's lemma work, plus the @[simp] membership characterization mem_diagInter."
     },
     {
       "id": "closed-part",
       "title": "\u00a74. Diagonal Intersection is Closed (PROVED)",
-      "startLine": 132,
-      "endLine": 175,
+      "startLine": 114,
+      "endLine": 147,
       "content": "diagInter_isClosedBelow: if every f(\u03b2) is a club, then diagInter f satisfies the closed condition. Proof uses cofinality of diagInter f in a limit ordinal \u03b3 to show each f(\u03b2) is cofinal in \u03b3, then applies the closed condition of f(\u03b2)."
     },
     {
       "id": "unbounded-part",
       "title": "\u00a75. Diagonal Intersection is Unbounded (PROVED)",
-      "startLine": 177,
-      "endLine": 224,
+      "startLine": 149,
+      "endLine": 244,
       "content": "diagInter_isUnbounded: if every f(\u03b2) is a club, then diagInter f is unbounded below \u03ba.ord. PROVED: builds an \u03c9-sequence using regularity of \u03ba via a bump operator (bsup over \u03b2 < \u03b4+1), takes the sup (< \u03ba.ord by iSup_lt_ord_lift_of_isRegular), and shows the sup lies in the diagonal intersection."
     },
     {
+      "id": "diaginter-isclub",
+      "title": "\u00a76. Diagonal Intersection of Clubs is a Club",
+      "startLine": 246,
+      "endLine": 256,
+      "content": "diagInter_isClub: for a regular uncountable \u03ba, the diagonal intersection of a \u03ba-indexed family of clubs is itself a club, combining the proved closed part (\u00a74) with the proved unbounded part (\u00a75)."
+    },
+    {
       "id": "fodors-lemma",
-      "title": "\u00a76-7. Fodor's Pressing-Down Lemma (PROVED)",
-      "startLine": 226,
-      "endLine": 300,
-      "content": "fodors_pressing_down: the main theorem. Proved by contradiction: assume no fiber is stationary, form diagonal intersection D of avoiding clubs, S \u2229 D is nonempty, take \u03b1 \u2208 S \u2229 D, derive contradiction from f(\u03b1) < \u03b1 and \u03b1 \u2208 C_{f(\u03b1)}."
+      "title": "\u00a77. Fodor's Pressing-Down Lemma (PROVED)",
+      "startLine": 258,
+      "endLine": 331,
+      "content": "fodors_pressing_down: the main theorem. Proved by contradiction: assume no fiber is stationary, use Classical.choose to build a club family avoiding each preimage, form the diagonal intersection D (a club by \u00a76), intersect with stationary S, take \u03b1 \u2208 S \u2229 D, derive a contradiction from f(\u03b1) < \u03b1 and \u03b1 \u2208 C_{f(\u03b1)}."
+    },
+    {
+      "id": "implications",
+      "title": "\u00a78. Implications and Mathematical Notes",
+      "startLine": 333,
+      "endLine": 382,
+      "content": "Docstring on consequences: the club filter is not principal, stationary sets cannot be covered by fewer than \u03ba non-stationary sets, the connection to the parent proof (regular_sup_bounded), and future work (isClub_inter, the club filter / stationary ideal). Closes with #check type-checks of the main results."
     }
   ],
   "sorries": 0
