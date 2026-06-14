@@ -1,7 +1,7 @@
 {
   "slug": "erdos-265",
   "title": "Erdős #265",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "S-ACT: Formalized Erdős's first conjecture in the main file. Ported the Aristotle-verified reduction singleExp_of_genExp from Erdos265Aristotle.lean into Erdos265Problem.lean and added erdos_265_firstConjecture, which derives (from the kovac_tao_theorem axiom) the existence of a valid sequence with a_n^{1/n} -> infinity. Previously only asserted in a docstring (with a 'see companion file' pointer). No new axioms; theoremCount 5->7, lineCount 233->285; gallery meta sections 9->10.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Two axioms remain and are both irreducible: kovac_tao_theorem (deep 2024 result, not in Mathlib) and erdos_265_doubleExp_necessary (the still-OPEN second conjecture). Possible future work: (A) formalize Cantor's sequence membership in validSequences by proving sum 1/(cantorSeq n - 1) rational via partial-fraction telescoping over (n-2)(n+1); (B) prove a_n^{1/n} -> 1 for Cantor (polynomial growth). Both are real-analysis-heavy and build-gated.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,10 +29,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Axiomatized with 2 axioms (erdos_265_doubleExp_necessary, kovac_tao_theorem). Gallery entry live.",
+    "progressSummary": "AXIOMATIZED (2 irreducible axioms: kovac_tao_theorem, erdos_265_doubleExp_necessary). Erdos265Problem.lean now 285 LOC, 7 theorems, 11 defs, 0 sorries. Erdős's first conjecture is now a derived theorem (erdos_265_firstConjecture) via the ported, Aristotle-verified reduction singleExp_of_genExp. Cantor's triangular-number example has rational reciprocal sum (telescoping). The main open question (limsup a_n^{1/2^n} > 1?) is captured as erdos_265_main / erdos_265_remaining.",
     "builtItems": [
       "erdos_265_remaining: proved via Or.inr erdos_265_doubleExp_necessary (axiom eliminated)",
-      "Fixed Erdos265Aristotle.lean: replaced exact? with Real.rpow_le_rpow_of_exponent_le hx hpq (line 94)"
+      "Fixed Erdos265Aristotle.lean: replaced exact? with Real.rpow_le_rpow_of_exponent_le hx hpq (line 94)",
+      "singleExp_of_genExp: a_n^{1/β^n} -> ∞ (β>1) implies a_n^{1/n} -> ∞ (ported from verified companion)",
+      "erdos_265_firstConjecture: Erdős conj 1 (single-exp growth achievable) derived from kovac_tao_theorem axiom"
     ],
     "insights": [
       "erdos_265_main is a logical tautology (∃ a P(a) ∨ ∀ a ¬P(a)), provable by classical excluded middle",

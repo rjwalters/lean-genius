@@ -126,7 +126,7 @@ Erdős made two conjectures about the growth rate:
 /-- Erdős's first conjecture: single exponential growth is achievable.
     NOTE: This follows from kovac_tao_theorem — if a_n^{1/β^n} → ∞ for some β > 1,
     then a_n^{1/n} → ∞ since a_n^{1/n} ≥ a_n^{1/β^n} for large n (when β^n ≥ n).
-    See Erdos265Aristotle.lean for the reduction. -/
+    Formalized below as `erdos_265_firstConjecture` (via `singleExp_of_genExp`). -/
 /-- Erdős's second conjecture: double exponential implies limit 1
     NOTE: This is still an OPEN CONJECTURE (not a proven result).
     The Kovač-Tao result (2024) only shows β > 1 is achievable, not β = 2.
@@ -159,6 +159,58 @@ theorem erdos_265_remaining :
     hasBothRationalSums a →
     Filter.Tendsto (doubleExpGrowth a) Filter.atTop (nhds 1)) :=
   Or.inr erdos_265_doubleExp_necessary
+
+/-
+## Erdős's First Conjecture (derived from Kovač–Tao)
+
+Erdős conjectured that single-exponential growth aₙ^(1/n) → ∞ is achievable.
+This is a consequence of the Kovač–Tao result (2024): if some valid sequence
+has aₙ^(1/βⁿ) → ∞ for β > 1, then aₙ^(1/n) → ∞ for the same sequence, because
+β^n ≥ n eventually and rpow with base ≥ 1 is monotone in the exponent.
+-/
+
+/-- Monotone comparison: for `β > 1` and a positive-integer sequence `a`, doubly
+    exponential growth `aₙ^(1/βⁿ) → ∞` forces single-exponential growth
+    `aₙ^(1/n) → ∞`, since eventually `β^n ≥ n` and thus `aₙ^(1/n) ≥ aₙ^(1/βⁿ)`. -/
+open Filter in
+theorem singleExp_of_genExp (a : ℕ → ℕ) (β : ℝ) (hβ : β > 1)
+    (hpos : IsPositiveIntSeq a)
+    (htend : Tendsto (genExpGrowth a β) atTop atTop) :
+    Tendsto (singleExpGrowth a) atTop atTop := by
+  rw [Filter.tendsto_atTop_atTop] at *
+  have h_exp_ge : ∀ᶠ n in atTop, (n : ℝ) ≤ β ^ n := by
+    have h_exp_growth : Filter.Tendsto (fun n : ℝ => β ^ n / n) Filter.atTop Filter.atTop := by
+      have h_exp_growth : Filter.Tendsto (fun n : ℝ => Real.exp (n * Real.log β) / n)
+          Filter.atTop Filter.atTop := by
+        have := Real.tendsto_exp_div_pow_atTop 1
+        have := this.comp (Filter.tendsto_id.atTop_mul_const (Real.log_pos hβ))
+        convert this.const_mul_atTop (Real.log_pos hβ) using 2 ; norm_num ; ring
+        norm_num [mul_assoc, mul_comm, mul_left_comm, ne_of_gt, Real.log_pos hβ]
+      simpa only [Real.rpow_def_of_pos (zero_lt_one.trans hβ), mul_comm] using h_exp_growth
+    filter_upwards [h_exp_growth.eventually_gt_atTop 1, Filter.eventually_gt_atTop 0]
+      with n hn hn' using by rw [lt_div_iff₀ hn'] at hn; linarith
+  have h_ge : ∀ᶠ n in atTop,
+      ((a n) : ℝ) ^ (1 / (n : ℝ)) ≥ ((a n) : ℝ) ^ (1 / (β ^ n : ℝ)) := by
+    filter_upwards [h_exp_ge.natCast_atTop, Filter.eventually_gt_atTop 0] with n hn hn'
+    gcongr ; aesop
+    exact_mod_cast hn
+  exact fun b => by
+    rcases htend b with ⟨i, hi⟩
+    rcases Filter.eventually_atTop.mp h_ge with ⟨j, hj⟩
+    exact ⟨Max.max i j, fun n hn => le_trans (hi n (le_trans (le_max_left _ _) hn))
+      (hj n (le_trans (le_max_right _ _) hn))⟩
+
+/-- **Erdős's first conjecture (single-exponential growth is achievable):**
+    There is a valid sequence (positive, strictly increasing, both reciprocal sums
+    rational) with `aₙ^(1/n) → ∞`. Derived from the `kovac_tao_theorem` axiom via the
+    monotone comparison `singleExp_of_genExp`. This was previously asserted only in
+    prose; here it is discharged as a theorem from the Kovač–Tao assumption. -/
+theorem erdos_265_firstConjecture :
+    ∃ a : ℕ → ℕ, IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧
+      hasBothRationalSums a ∧
+      Filter.Tendsto (singleExpGrowth a) Filter.atTop Filter.atTop := by
+  obtain ⟨β, hβ, a, hpos, hinc, hrat, htend⟩ := kovac_tao_theorem
+  exact ⟨a, hpos, hinc, hrat, singleExp_of_genExp a β hβ hpos htend⟩
 
 /-
 ## Irrationality Threshold

@@ -38,10 +38,10 @@
       "erdos_265_main: open problem formalized as a classical disjunction (limsup aₙ^(1/2ⁿ) > 1 achievable, or all valid sequences satisfy aₙ^(1/2ⁿ) → 1)"
     ],
     "axiomCount": 2,
-    "lineCount": 233,
+    "lineCount": 285,
     "assumptions": "2 axioms: erdos_265_doubleExp_necessary, kovac_tao_theorem. 0 sorries.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 7,
     "definitionCount": 11,
     "additionalFiles": [
       "Proofs/Erdos265Aristotle.lean"
@@ -57,7 +57,8 @@
       "**Higher polynomials work with shifted constraints**: Cubic sequences like $n^3 + 6n^2 + 5n$ can satisfy the dual rationality condition with a different shift constant, expanding the family of examples",
       "**Kovač-Tao broke the exponential barrier**: Their 2024 Annals paper shows $\\exists \\beta > 1$ with valid sequences growing as $a_n \\sim \\beta^{\\beta^n}$, confirming Erdős's first conjecture that super-exponential growth is achievable",
       "**The irrationality threshold at $\\beta = 2$**: A folklore result in transcendence theory shows that if $a_n^{1/2^n} \\to c > 1$ for a constant $c$, then $\\sum 1/a_n$ is irrational — providing a mechanism for why $\\beta = 2$ might be the hard limit",
-      "**The disjunction structure of the open problem**: Either (a) some valid sequence has $\\limsup a_n^{1/2^n} > 1$, disproving Erdős's second conjecture, or (b) all valid sequences satisfy $\\limsup a_n^{1/2^n} \\leq 1$, confirming it. This is formalized as a logical disjunction in Lean"
+      "**The disjunction structure of the open problem**: Either (a) some valid sequence has $\\limsup a_n^{1/2^n} > 1$, disproving Erdős's second conjecture, or (b) all valid sequences satisfy $\\limsup a_n^{1/2^n} \\leq 1$, confirming it. This is formalized as a logical disjunction in Lean",
+      "**Erdős's first conjecture is a theorem, not just prose**: `erdos_265_firstConjecture` derives the existence of a valid sequence with $a_n^{1/n}\\to\\infty$ directly from the Kovač–Tao axiom, via the monotone comparison $a_n^{1/n}\\ge a_n^{1/\\beta^n}$ (valid once $\\beta^n\\ge n$). The reduction `singleExp_of_genExp` is fully proved (no new axioms)."
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -77,31 +78,31 @@
       "id": "valid-sequences",
       "title": "Sequences with Rational Sums",
       "startLine": 22,
-      "endLine": 47,
+      "endLine": 49,
       "summary": "Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums.",
       "mathContext": "Formal definition: Core definitions: positive integer sequences, strict monotonicity, reciprocal sum ∑ 1/aₙ, shifted reciprocal sum ∑ 1/(aₙ-1), and the combined rationality predicate hasBothRationalSums."
     },
     {
       "id": "cantor-example",
       "title": "Cantor's Example",
-      "startLine": 48,
-      "endLine": 97,
+      "startLine": 50,
+      "endLine": 98,
       "summary": "Defines Cantor's sequence (triangular numbers n(n+1)/2). Proves strict monotonicity (cantorSeq_increasing), rationality of reciprocal sum (cantorSeq_rational_sum), and rationality of shifted reciprocal sum (cantorSeq_shifted_rational) via telescoping series.",
       "mathContext": "cantorSeq n = n*(n+1)/2. Proved theorems: cantorSeq_increasing, cantorSeq_rational_sum (telescoping via TriangularNumberReciprocals), cantorSeq_shifted_rational."
     },
     {
       "id": "growth-rates",
       "title": "Growth Rate Measures",
-      "startLine": 99,
-      "endLine": 116,
+      "startLine": 100,
+      "endLine": 117,
       "summary": "Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1.",
       "mathContext": "Mathematical content: Three growth measures: singleExpGrowth (aₙ^(1/n)), doubleExpGrowth (aₙ^(1/2ⁿ)), and genExpGrowth (aₙ^(1/βⁿ)) for parameterized β > 1."
     },
     {
       "id": "erdos-conjectures",
       "title": "Erdős's Conjectures",
-      "startLine": 118,
-      "endLine": 137,
+      "startLine": 119,
+      "endLine": 138,
       "summary": "Two conjectures: (1) aₙ^(1/n) → ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) → 1 is necessary (still open).",
       "mathContext": "Two conjectures: (1) aₙ^(1/n) $\\to$ ∞ is achievable (proved by Kovač-Tao), (2) aₙ^(1/2ⁿ) $\\to$ 1 is necessary (still open)."
     },
@@ -109,31 +110,38 @@
       "id": "kovac-tao",
       "title": "Kovač-Tao Result and Open Question",
       "startLine": 139,
-      "endLine": 161,
+      "endLine": 162,
       "summary": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) → ∞ achievable. The remaining open question: can β = 2 work?",
       "mathContext": "Kovač-Tao theorem: ∃ β > 1 with aₙ^(1/βⁿ) $\\to$ ∞ achievable. The remaining open question: can β = 2 work?"
     },
     {
+      "id": "first-conjecture",
+      "title": "Erdős's First Conjecture (derived from Kovač–Tao)",
+      "startLine": 163,
+      "endLine": 215,
+      "summary": "Formalizes Erdős's first conjecture as a derived theorem. `singleExp_of_genExp` (proof ported from the Aristotle-verified companion) shows that for $\\beta>1$ and a positive-integer sequence, $a_n^{1/\\beta^n}\\to\\infty$ forces $a_n^{1/n}\\to\\infty$, using `eventually` $\\beta^n\\ge n$ and rpow exponent-monotonicity. `erdos_265_firstConjecture` then derives, from the `kovac_tao_theorem` axiom, the existence of a valid sequence with $a_n^{1/n}\\to\\infty$ — previously only asserted in a docstring."
+    },
+    {
       "id": "irrationality",
       "title": "Irrationality Threshold",
-      "startLine": 163,
-      "endLine": 175,
+      "startLine": 216,
+      "endLine": 222,
       "summary": "Informal block comment noting the folklore irrationality threshold: if aₙ^(1/2ⁿ) → c > 1, then ∑ 1/aₙ is irrational. No Lean declaration — block comment only (line 170 is a block comment, not a formalized axiom or theorem).",
       "mathContext": "Folklore result (not formalized): if aₙ^(1/2ⁿ) $\\to$ c > 1, then ∑ 1/aₙ is irrational. Described in block comments at lines 163–175."
     },
     {
       "id": "valid-set-poly",
       "title": "Valid Set and Polynomial Examples",
-      "startLine": 177,
-      "endLine": 195,
+      "startLine": 223,
+      "endLine": 245,
       "summary": "Defines validSequences (set of all valid sequences) and maxGrowthRate (sup of single-exponential growth rates). Polynomial families that can satisfy the constraint are noted in an informal block comment — not formalized as a Lean declaration.",
       "mathContext": "validSequences := {a | IsPositiveIntSeq a ∧ IsStrictlyIncreasing a ∧ hasBothRationalSums a}. maxGrowthRate := ⋃ (a ∈ validSequences), limsup singleExpGrowth a. Polynomial examples noted in block comment only."
     },
     {
       "id": "main-open",
       "title": "Main Open Problem",
-      "startLine": 197,
-      "endLine": 232,
+      "startLine": 246,
+      "endLine": 284,
       "summary": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup ≤ 1.",
       "mathContext": "The formal statement of Erdős #265 as a disjunction: either ∃ valid sequence with limsup aₙ^(1/2ⁿ) > 1, or all valid sequences have limsup $\\leq$ 1."
     }
