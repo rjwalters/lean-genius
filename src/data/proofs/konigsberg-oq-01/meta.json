@@ -60,43 +60,59 @@
       "id": "sec-imports",
       "title": "Imports and Setup",
       "startLine": 1,
-      "endLine": 23,
+      "endLine": 24,
       "summary": "Imports SimpleGraph.Trails (for Walk.IsEulerian, card_odd_degree), SimpleGraph.Connectivity, Algebra.Ring.Parity (for Even/Odd), and tactics. Opens SimpleGraph namespace."
     },
     {
       "id": "sec-square",
       "title": "Square Graph C₄: Explicit Eulerian Circuit",
       "startLine": 25,
-      "endLine": 102,
+      "endLine": 103,
       "summary": "Defines SqVerts (inductive A|B|C|D), sqAdj (the cycle adjacency), sqGraph (SimpleGraph), proves sq_degree=2, sq_all_even, sq_edge_count=4, constructs sqCircuit (Walk A A via Walk.cons chain), proves sqCircuit_length=4, sqCircuit_visits_all, sqCircuit_isEulerian (by Sym2.ind + cases a cases b)."
     },
     {
       "id": "sec-pentagon",
       "title": "Pentagon Graph C₅: Explicit Eulerian Circuit",
       "startLine": 104,
-      "endLine": 182,
+      "endLine": 183,
       "summary": "Analogous to C₄ with 5 vertices (A|B|C|D|E). Defines pentGraph, proves pent_degree=2, pent_all_even, pent_edge_count=5, constructs pentCircuit (5-edge Walk.cons chain), proves pentCircuit_length=5, pentCircuit_visits_all, pentCircuit_isEulerian."
     },
     {
       "id": "sec-k4",
       "title": "Complete Graph K₄: No Eulerian Path",
       "startLine": 184,
-      "endLine": 249,
+      "endLine": 250,
       "summary": "Defines K4Verts (V1|V2|V3|V4), k4Adj (all 6 pairs), k4Graph. Proves k4_degree=3, k4_all_odd, k4_edge_count=6, k4_four_odd (4 odd-degree vertices by native_decide). k4_not_eulerian applies hp.card_odd_degree and gets 4 ≠ 0 and 4 ≠ 2 by omega."
     },
     {
       "id": "sec-trail-theory",
       "title": "General Trail Theory",
       "startLine": 251,
-      "endLine": 298,
+      "endLine": 299,
       "summary": "Variable section with general G. Proves: euler_criterion_necessary (necessary condition for Eulerian paths via hp.card_odd_degree), no_eulerian_path_three_or_more_odd (≥3 odd vertices → no Euler path, immediate from card_odd_degree), euler_circuit_implies_all_even (circuit → all even via hp.even_degree_iff), euler_trail_non_endpoint_even (non-endpoint vertices in trail have even degree via tauto)."
     },
     {
       "id": "sec-odd-regular",
       "title": "Odd-Regular Graphs Have No Eulerian Path",
       "startLine": 300,
-      "endLine": 356,
+      "endLine": 337,
       "summary": "regular_odd_no_euler: for k-odd-regular G with |V| ≥ 3, shows |{v | Odd(deg v)}| = |V| ≥ 3 via Fintype.card_subtype + ext, then contradicts hp.card_odd_degree via omega. Also verifies handshaking lemma (Σ deg = 2|E|) for C₄ and K₄ by native_decide."
+    },
+    {
+      "id": "sec-degree-sum",
+      "title": "Degree-Sum Examples (Handshaking Lemma)",
+      "startLine": 338,
+      "endLine": 357,
+      "summary": "native_decide verifications of the handshaking identity Σ deg(v) = 2|E| for C₄ (sq_degree_sum) and K₄ (k4_degree_sum).",
+      "mathContext": "Concrete instances of the handshaking lemma on the running example graphs, confirming the degree-sum equals twice the edge count."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Summary and Sanity Checks",
+      "startLine": 358,
+      "endLine": 404,
+      "summary": "Closing docstring cataloguing the 24 proved theorems (C₄, C₅, K₄, and general trail theory) with 0 axioms / 0 sorries, plus #check sanity statements for the key Eulerian results.",
+      "mathContext": "Epilogue; no new declarations. #checks confirm sqCircuit_isEulerian, pentCircuit_isEulerian, k4_not_eulerian, and regular_odd_no_euler typecheck."
     }
   ],
   "conclusion": {
