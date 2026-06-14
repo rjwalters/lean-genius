@@ -8,7 +8,7 @@
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-06-12T00:00:00Z",
+  "lastUpdate": "2026-06-13T16:03:00Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -121,8 +121,28 @@
     "erdos-101-oq-04"
   ],
   "leanFiles": [
-    "Proofs/Erdos101OQ01.lean",
-    "Proofs/Erdos101Problem.lean"
+    {
+      "path": "Proofs/Erdos101OQ01.lean",
+      "filename": "Erdos101OQ01.lean",
+      "lineCount": 763,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos101Problem.lean",
+      "filename": "Erdos101Problem.lean",
+      "lineCount": 759,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos101Problem.lean"
+    }
   ],
   "references": [
     "Erdős, P. (1984–1997). Problem 101. https://erdosproblems.com/101",
