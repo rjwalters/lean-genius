@@ -64,3 +64,21 @@ Note: `Measure.AbsolutelyContinuous` is AC of **measures** (μ ≪ ν), not of f
 
 **Next Steps**
 - Build FTC-for-AC bridge lemma; discharge axiom by Fubini once Docker restored.
+
+### Session 2026-06-14 (Session 2) — Docker blackout: family-meta section-realign
+
+**Mode**: BLOCKED (Docker down — `docker info` times out >25s; the FTC-for-AC build path from Session 1 is gated).
+
+**What I Did**
+- Re-confirmed the OQ's build path (`ftc_of_absolutelyContinuous`, ~200–400 lines) is gated by the Docker blackout. No Lean committed.
+- Pivoted to the build-free vein: scanned the whole `greens-theorem*` gallery family for section/count drift.
+- Fixed stale gallery metadata in 4 sibling entries (pure metadata, no Lean changes):
+  - `greens-theorem-oq-01-oq-01-oq-03`: added missing **§ VII. Atomless Measure Generalization** section (228–292); 67-line tail was hidden.
+  - `greens-theorem-oq-01-oq-02`: re-pinned all 5 Part ranges (file grew ~20 lines, sections never re-synced); synced stale `leanFile` counts (lineCount 227→247, theoremCount 5→6).
+  - `greens-theorem-oq-04`: rebuilt sections array 11→12 (split lumped "Parts VIII-IX", fixed shifted ranges and Part IV/V/XI/XII banner titles to match the file).
+  - `greens-theorem-oq-02` (parent of this OQ): re-pinned Part IV/V ranges + lineCount 507→518. theoremCount=19 is correct (3 apparent extras were docstring false positives).
+
+**Verified clean (no fix)**: `greens-theorem`, `greens-theorem-oq-01` (gaps = trailing `end`/blank only); `greens-theorem-oq-03` (def 15/ax 3 grep counts were ```lean docstring false positives — real counts 14/2 match meta).
+
+**Next Steps (unchanged from Session 1)**
+- When Docker restored: build FTC-for-AC bridge lemma; discharge `greens_theorem_l1curl` by Fubini reduction to two 1D FTC-for-AC applications over the rectangle.
