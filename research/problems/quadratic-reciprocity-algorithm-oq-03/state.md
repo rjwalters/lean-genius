@@ -1,10 +1,41 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT (build-pending) — M1 producer lemma transcribed to Lean
 **Path**: full
-**Since**: 2026-06-14 (S6 ORIENT — Milestone 2 numerically certified)
-**Iteration**: 6
+**Since**: 2026-06-15 (S10 ACT — first Lean file for oq-03)
+**Iteration**: 10
+
+## Session 10 (2026-06-15, researcher-3) — M1 producer lemma transcribed to a build-pending Lean file
+Dual blackout **reconfirmed live this session**: `docker info` times out (Docker down) and the
+Aristotle MCP `prove` tool — now loaded — returns `"Resource not found"` on a submitted M1 snippet
+(backend unreachable). So still no machine verification possible.
+
+After 9 sessions of "paste-ready, deferred to first live backend" with the backend never returning,
+transcribed S9's fully-pinned, numerically-certified Milestone-1 core into actual Lean:
+`proofs/Proofs/QuadraticReciprocityAlgorithmOQ03.lean` (UNREGISTERED, build-pending — not added to
+`Proofs.lean` so it cannot break auto-merge). Contents:
+
+- `isCycle_mulLeft_of_generator` — the single producer lemma S9 proved Mathlib lacks (left-mult by a
+  generator of a finite group is a single cycle). Discharges the `IsCycle` constructor with witness
+  `x = 1`, using `Equiv.mulLeft_zpow` for the `(mulLeft g)^i = mulLeft (g^i)` glue and
+  `Subgroup.mem_zpowers_iff` for the SameCycle witness.
+- `sign_mulLeft_generator` — corollary: for a generated group of **even** order, `sign (mulLeft g) = -1`
+  (support = univ since `mulLeft g` is fixed-point-free; `IsCycle.sign` + even-power collapse).
+
+**Honest status:** UNVERIFIED. Several tactic forms (`Equiv.mulLeft_zpow`, `Subgroup.zpowers_one_eq_bot`,
+`Subgroup.card_bot`, the support computation) are pinned-by-reasoning but not compiled; the next
+live-backend session should `docker-build` / Aristotle-check and repair. Deliberately scoped to the two
+genuinely-new lemmas; the Euler-criterion tie (Zolotarev headline) and M2 grid-sign remain prose in
+knowledge.md. Invariants: still 1 parent axiom upstream, this file adds 0 axioms / 0 `sorry`.
+
+## Session 6 (2026-06-14, researcher-2) — Milestone 2 certified, honesty flag discharged
+Build-free (Docker down). Added `verify_reciprocity_m2.py` (all asserts pass, 240 odd-prime
+pairs). Pinned the M2 reciprocity bridge with verify-before-assert: the **grid-transpose
+permutation** `σ=c∘r⁻¹` (`r(i,j)=i·q+j`, `c(i,j)=j·p+i`) has `sign(σ)=(-1)^((p-1)/2·(q-1)/2)`
+— a self-contained, M1-independent combinatorial identity — and assembles with the M1 Zolotarev
+signs to recover QR. **Refuted** the naive CRT-listing permutation `ρ(k)=(k mod p)·q+(k mod q)`
+as the bridge (its sign is neither the reciprocity factor nor the Legendre product). M2 is no
 
 ## Session 6 (2026-06-14, researcher-2) — Milestone 2 certified, honesty flag discharged
 Build-free (Docker down). Added `verify_reciprocity_m2.py` (all asserts pass, 240 odd-prime

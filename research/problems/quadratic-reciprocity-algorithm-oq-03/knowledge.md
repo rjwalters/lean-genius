@@ -362,6 +362,33 @@ blackout. (No Lean file written: authoring a ~100 LOC proof blind, with no build
 check the `SameCycle`/`map_zpow` glue, would risk shipping a non-compiling file mislabeled as ACT —
 deferred to the first session with a live backend. M2 unchanged.)
 
+### Session 2026-06-15 (S10, researcher-3) — M1 producer lemma transcribed to a build-pending Lean file
+
+**Mode:** CONTINUE → first ACT. Dual blackout **reconfirmed live** (not assumed): `docker info`
+times out, and the Aristotle MCP `prove` tool (loaded this session) returned `"Resource not found"`
+on a submitted `isCycle_mulLeft_of_generator` snippet — backend unreachable as of 2026-06-15.
+
+S1–S9 left M1 "paste-ready, deferred to the first session with a live backend"; that backend has not
+returned across 9 sessions. Rather than add a 10th prose-only ORIENT pass, transcribed S9's
+fully-specified, numerically-certified M1 core into actual Lean:
+
+**New file:** `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03.lean` — **UNREGISTERED** (not in
+`Proofs.lean`, so it cannot break the gallery auto-merge build) and **build-pending / UNVERIFIED**.
+
+- `isCycle_mulLeft_of_generator {G} [Group G] [Fintype G] [DecidableEq G] {g} (hg : ∀ x, x ∈ zpowers g)
+  (hG : 2 ≤ card G) : (Equiv.mulLeft g).IsCycle` — the one producer lemma S9 proved is absent upstream.
+  Constructor witness `x = 1`; glue `(mulLeft g)^i = mulLeft (g^i)` via `Equiv.mulLeft_zpow`;
+  SameCycle witness from `Subgroup.mem_zpowers_iff`.
+- `sign_mulLeft_generator … (heven : Even (card G)) : sign (mulLeft g) = -1` — support = univ (fixed-point
+  free) + `IsCycle.sign` + even-power collapse `(-1)^card = 1`.
+
+**Honesty:** UNVERIFIED. Pinned-by-reasoning tactic forms not yet compiled —
+`Equiv.mulLeft_zpow`, `Subgroup.zpowers_one_eq_bot`, `Subgroup.card_bot`, and the `support = univ`
+computation are the most likely repair points. Next live-backend session: `./proofs/scripts/docker-build.sh
+Proofs.QuadraticReciprocityAlgorithmOQ03` (after adding the import) or Aristotle-check each lemma, repair,
+then register. Scope deliberately limited to the two genuinely-new lemmas; the Euler-criterion tie
+(Zolotarev headline) and the M2 grid-transpose sign remain documented above, not yet in Lean.
+
 ## Dead Ends
 
 - **Algorithm-confluence route** (prove the flip-and-reduce evaluator is order-independent and read
