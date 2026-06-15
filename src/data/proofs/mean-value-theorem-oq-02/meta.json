@@ -96,7 +96,7 @@
       "Can the axiom `taylor_lagrange_remainder` be proved from Mathlib's integral form? The key missing lemma is the MVT for integrals applied to $h(t) = (b-t)^n / n!$ and $g(t) = f^{(n+1)}(t)$ on $[a,b]$.",
       "Is there a formalized version of Taylor's theorem for functions $f : \\mathbb{R}^n \\to \\mathbb{R}$? The multivariate Lagrange remainder involves the Hessian and higher-order derivatives, and Mathlib's `HasFDerivAt` infrastructure could support this.",
       "Can the Taylor polynomial definition be connected to Mathlib's `taylorWithinEval`? Mathlib's Taylor module defines polynomials differently (using `taylorWithinEval`); reconciling the two definitions would allow direct use of Mathlib's existing Taylor remainder bounds.",
-      "Is there a uniform error bound formalization: for all $x \\in [a-r, a+r]$ and $f$ analytic on the disk of radius $R > r$, $|f(x) - T_n f(a)(x)| \\leq M r^{n+1} / (R-r)$? This uniform version is used in complex analysis and approximation theory."
+      "Can a *uniform* error bound be transferred from the complex disk back to the real interval? The naive real-line claim $\\sup_{x \\in [a-r,a+r]} |f(x) - T_n f(a)(x)| \\leq M r^{n+1}/(R-r)$ (with $M = \\sup |f^{(n+1)}|$) is **false** — the gallery child entry `mean-value-theorem-oq-02-oq-04` refutes it via the Runge function $f(x) = 1/(1+x^2)$ ($a=0$, $R=100$, $r=1$, $n=0$: $|f(1)-f(0)| = 1/2 > 1/99$). The correct statement requires analyticity on a *complex* disk and Cauchy's integral estimates (`analytic_taylor_remainder_uniform_bound_complex`). The open question is whether this complex-disk bound yields a sharp, *correct* real-interval remainder estimate."
     ]
   },
   "crossReferences": [
@@ -114,6 +114,16 @@
       "targetId": "intermediate-value-theorem",
       "relationship": "foundational",
       "description": "The intermediate value theorem underlies the MVT (via Rolle's theorem), and the MVT underlies Taylor's theorem. The existence of the intermediate point c in the Lagrange remainder is a continuity argument analogous to the IVT."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-02-oq-04",
+      "relationship": "extended-by",
+      "description": "Child entry that pursues this file's open question on a *uniform* Taylor remainder bound. It shows the naive real-line uniform estimate is false (Runge counterexample $f(x)=1/(1+x^2)$ at $a=0$ gives $|f(1)-T_0(1)| = 1/2 > M r/(R-r) = 1/99$) and instead formalizes the correct complex-disk Cauchy estimate `analytic_taylor_remainder_uniform_bound_complex`. This directly sharpens open question 5 below."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "Sibling entry generalizing the n=0 case (the ordinary MVT proved here as `mvt_is_first_order_taylor`) from scalar functions to vector-valued maps. The equality $f(b)-f(a)=f'(c)(b-a)$ has no vector analogue, so it relaxes to the mean value *inequality* $\\|f(b)-f(a)\\| \\leq \\sup_{c}\\|f'(c)\\|\\,(b-a)$."
     }
   ],
   "references": [
