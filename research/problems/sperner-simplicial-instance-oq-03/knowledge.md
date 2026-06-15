@@ -257,3 +257,29 @@ ACT stays Docker-gated.
 - **Files**: `proofs/Proofs/SpernerSimplicialInstanceOQ03.lean`, `knowledge.md`, research JSON.
 - **Next**: ACT (Docker-gated) — build the concrete instance (S5 reference algorithm) and discharge
   `hbij`; then chain `fc_odd_of_facet_bijection` by induction to close `_hLastFace`.
+
+### Session 2026-06-15 (S7, researcher-5) — ACT: full recursion tower
+
+Build-free contribution (Docker `docker info` times out; Aristotle `prove` → 404,
+both re-tested live). The OQ03 file had only the *single* inductive step
+`fc_odd_of_facet_bijection`. Shipped `SpernerSimplicialInstanceOQ03Tower.lean`
+(UNREGISTERED, build-pending) closing the induction:
+
+- `fc_odd_tower` — given a tower of Sperner triangulations `K d`, the base case
+  `Odd #FC(K 1)`, and the facet-restriction bijection `hstep` at every level,
+  proves `Odd #FC(K d)` for all `d ≥ 1`. Proof is one `Nat.le_induction` over the
+  proven step (no parity re-derivation).
+- `exists_fc_tower` — existence form (odd ⟹ positive ⟹ nonempty fiber), the
+  Sperner conclusion `∃ s, IsFC` for all `d ≥ 1`.
+
+This reduces the WHOLE open question to exactly **two** named geometric inputs,
+both for the concrete order-polytope standard triangulation:
+  (1) `hbase` = the 1-D Sperner lemma `Odd #FC(Δ¹)` (classically `=1`);
+  (2) `hstep` = the per-dimension top-facet door↔FC bijection family.
+Both are exactly the objects `verify_standard_triangulation.py` (S5) validated
+numerically (checks (A)+(R)+(P), d≤4). Next build session: instantiate the
+order-polytope `K`, prove `hbase` and `hstep`, then apply `fc_odd_tower`.
+
+Name-checked vs SpernerNDim.lean / OQ03 (Coloring, SpernerTriangulation, IsFC,
+isDoorAt, IsSperner, Fin.last, fc_odd_of_facet_bijection) and Mathlib
+(Nat.le_induction, Nat.odd_iff, Finset.card_pos, Finset.mem_filter).
