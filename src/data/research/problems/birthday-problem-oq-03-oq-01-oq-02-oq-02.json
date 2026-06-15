@@ -18,33 +18,35 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-14",
-    "iteration": 2,
-    "lastUpdate": "2026-06-14",
-    "focus": "Exact second-order correction term; corrected S1's Stein-Chen framing.",
-    "blockers": ["Docker down (no lake build); Lean formalization of E[W] tail expansion deferred."],
-    "nextAction": "When Docker is up, formalize M1 (leading order) + M2 (E[W] tail expansion to Theta(d^{-1/3})).",
-    "attemptCounts": 2
+    "iteration": 3,
+    "lastUpdate": "2026-06-15",
+    "focus": "Closed the surrogate<->exact-median chain: c0/4 confirmed against the exact median; 1/c0 sub-coefficient re-scoped as heuristic for the integer median.",
+    "blockers": ["Docker down (no lake build); Aristotle MCP 404; Lean formalization of E[W] tail expansion deferred."],
+    "nextAction": "When Docker is up, formalize M1 (leading order) + M2 (E[W] tail expansion to the Theta(d^{-1/3}) / c0/4 term ONLY; the 1/c0 term is heuristic for the integer median).",
+    "attemptCounts": 3
   },
   "knowledge": {
     "insights": [
       "The true median threshold solves E[W] = ln 2 where W = #{days with >= 3 people}, NOT E[X] = ln 2 with X = #colliding triples; since C(m,3) >= 1[m>=3], E[X] >= E[W] and the E[X] root undershoots the median.",
       "The second-order correction is Theta(d^{-1/3}) with NO logarithm; the gallery's O(ln d / d^{1/3}) is a loose upper bound. Exact leading coefficient is c0/4 = (6 ln 2)^{1/3}/4 ~ 0.402037.",
       "The dominant correction is a deterministic first-moment 'boxes-vs-triples' gap n_W - n_X = (c0^2/4) d^{1/3}, NOT Poisson-approximation/Stein-Chen fluctuation error (which only enters the o(d^{-2/3}) remainder). This corrects prior session S1's attribution.",
-      "Expansion E[W] = d*P(Bin(n,1/d)>=3) = (n^3/6d^2)(1 - 3/n - 3n/(4d) + ...) gives n = n0(1+eps), eps = 1/n0 + n0/(4d) + ..., so eps*d^{1/3} -> c0/4."
+      "Expansion E[W] = d*P(Bin(n,1/d)>=3) = (n^3/6d^2)(1 - 3/n - 3n/(4d) + ...) gives n = n0(1+eps), eps = 1/n0 + n0/(4d) + ..., so eps*d^{1/3} -> c0/4.",
+      "S3 head-to-head (exact integer/real median vs surrogate root n_W of E[W]=ln2, d=50..2*10^5): gap = n_med_real - n_W -> ~ -1.03 (bounded O(1)) and gap/d^{1/3} -> 0. CONFIRMS c0/4 is the true leading coefficient of the EXACT median (Poisson displacement is o(d^{1/3})). HONEST: the gap -> a nonzero constant ~ -1.03, so the 1/c0 sub-coefficient is rigorous for n_W but only heuristic for the integer median n*_med (off by an O(1) Poisson term). Sign n_med<n_W => P(W=0)<e^{-E[W]} = mild negative day-association."
     ],
     "builtItems": [
       "research/scripts/verify_birthday_oq03_second_order.py — exact median via log-space occupancy P(no triple)=n![x^n](1+x+x^2/2)^d/d^n, d=50..10^5.",
-      "research/scripts/verify_birthday_oq03_correction_coeff.py — real root of E[W]=ln2 (cancellation-free tail) confirming eps*d^{1/3}->c0/4 and (n_W-n_X)/d^{1/3}->c0^2/4, d=10^2..10^11."
+      "research/scripts/verify_birthday_oq03_correction_coeff.py — real root of E[W]=ln2 (cancellation-free tail) confirming eps*d^{1/3}->c0/4 and (n_W-n_X)/d^{1/3}->c0^2/4, d=10^2..10^11.",
+      "research/scripts/verify_birthday_oq03_poisson_gap.py — S3: head-to-head gap n_med_real - n_W over d=50..2*10^5, confirming c0/4 against the exact median and re-scoping 1/c0 as heuristic."
     ],
     "mathlibGaps": [
       "Only Archive/Wiedijk100Theorems/BirthdayProblem.lean (basic pairwise birthday). No occupancy/k-collision asymptotics. The second-order correction needs only an elementary binomial-upper-tail expansion (<300 lines), NOT Stein-Chen; Stein-Chen is only for the o(d^{-2/3}) remainder."
     ],
     "nextSteps": [
-      "Docker up: formalize M1 (leading order) and M2 (E[W] tail expansion to the Theta(d^{-1/3}) term, coefficient c0/4).",
+      "Docker up: formalize M1 (leading order) and M2 (E[W] tail expansion to the Theta(d^{-1/3}) / c0/4 term ONLY; the 1/c0 term is heuristic for the integer median per S3).",
       "Keep the Poisson limit axiomatised; the coefficient claim refines the same deferred limit.",
-      "Optional M3: Stein-Chen bound for P(W=0)-e^{-E[W]} to rigorise the remainder."
+      "Optional M3: bound P(W=0)-e^{-E[W]} to pin the O(1) ~ -1.03 constant and promote the 1/c0 sub-coefficient from heuristic to rigorous."
     ],
-    "progressSummary": "PROGRESS (ORIENT): exact second-order term derived and certified — Theta(d^{-1/3}), coefficient c0/4, no log; corrects S1's Stein-Chen framing and re-scopes the Lean milestones."
+    "progressSummary": "PROGRESS (ORIENT, S3): closed the surrogate<->exact-median chain. c0/4 confirmed as the true leading correction coefficient of the EXACT median (Poisson displacement is o(d^{1/3})); honestly re-scoped the 1/c0 sub-coefficient as rigorous for the E[W]=ln2 root but only heuristic for the integer median (off by an O(1)~-1.03 Poisson term)."
   },
   "tags": ["gallery-extracted", "probability", "seeker-selected", "birthday-problem", "asymptotics"],
   "references": {
@@ -55,5 +57,5 @@
   "significance": 6,
   "tractability": 5,
   "started": "2026-06-14T00:00:00.000Z",
-  "lastUpdate": "2026-06-14T00:00:00.000Z"
+  "lastUpdate": "2026-06-15T00:00:00.000Z"
 }
