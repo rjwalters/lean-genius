@@ -28,7 +28,7 @@ the first `m` odds is `m²`, so
 Defining `T n` as the Gauss sum (rather than the closed form `n(n+1)/2`) sidesteps **all**
 ℕ-division and ℕ-subtraction. The whole proof uses only `ring` (valid on the ℕ semiring),
 `Finset.sum_range_succ`, `Finset.sum_Ico_consecutive`, `Finset.range_eq_Ico`, and one
-`Nat.add_left_cancel`. The triangular recurrence appears in the division-/subtraction-free form
+`Nat.add_left_cancel`. The triangular recurrence appears in the division-free, subtraction-free form
 `2·T i + i = i²` (`two_T_add`), proved by a one-line induction.
 
 ## Contents
