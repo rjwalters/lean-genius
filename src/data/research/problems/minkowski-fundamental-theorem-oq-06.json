@@ -1,0 +1,116 @@
+{
+  "slug": "minkowski-fundamental-theorem-oq-06",
+  "title": "The Minkowski–Hlawka Theorem",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: The Minkowski–Hlawka Theorem.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T01:25:28.051Z",
+    "iteration": 2,
+    "focus": "Confirmed Mathlib gap and pinned constants; full proof blocked on Siegel mean-value, staged/elementary targets identified.",
+    "blockers": [],
+    "nextAction": "Either stage Siegel as a hypothesis and prove the extraction, or ACT the elementary 2^-n saturation bound (both Docker-gated).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: confirmed Mathlib gap at pin (no Siegel mean-value / lattice-space measure / packing density; Hlawka title-only in 1000.yaml). Pinned the constants (symmetric threshold 2*zeta(n) -> delta_n >= zeta(n)/2^(n-1)) and verified the bound hierarchy + factor 2*zeta(n) improvement over trivial saturation. Full proof BLOCKED on Siegel; staged hypothesis file + elementary 2^-n bound identified as actionable next targets.",
+    "builtItems": [
+      "research/problems/minkowski-fundamental-theorem-oq-06/verify_minkowski_hlawka.py - durable sympy verification: (A) symmetric threshold 2*zeta(n) <-> density zeta(n)/2^(n-1); (B) hierarchy 2^-n <= MH <= delta_known; (C) improvement factor = 2*zeta(n). All pass."
+    ],
+    "insights": [
+      "Minkowski-Hlawka is the EXISTENCE complement to the gallery parent (which proves only the Minkowski convex-body OBSTRUCTION). Parent MinkowskiFundamentalTheorem.lean is sorry-free but proves a different theorem; Hlawka is absent from proofs/ (grep -i hlawka hits only Erdos997Problem.lean, unrelated).",
+      "Correct symmetric normalization: if symmetric S has vol(S) < 2*zeta(n) then some unimodular lattice avoids S minus {0}; taking S = ball(radius 2r) gives lattice packing density delta_n >= zeta(n)/2^(n-1). The seed problem.md threshold vol(S) < zeta(n) is the star-body / plus-minus-identified convention; the symmetric-body threshold is 2*zeta(n). Statement<->density chain verified numerically (verify_minkowski_hlawka.py check A).",
+      "Bound hierarchy verified for n in {2..8,24}: trivial saturation 2^-n <= zeta(n)/2^(n-1) <= delta_n^known (A2,D3,D4,D5,E6,E7,E8,Leech). MH is a VALID but very weak lower bound vs known optima (n=8: MH 0.00784 vs E8 0.2537).",
+      "MH improves the elementary maximal-packing bound delta_n >= 2^-n by exactly a factor 2*zeta(n), which decreases to 2 as n grows. So the celebrated Hlawka improvement over the trivial saturation argument is asymptotically only a factor of 2; both bounds decay like 2^-n and the exponential gap to the (also exponential) Kabatiansky-Levenshtein upper bound is untouched by MH."
+    ],
+    "mathlibGaps": [
+      "Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: GeometryOfNumbers.lean has ONLY Blichfeldt (exists_pair_mem_lattice_not_disjoint_vadd) + Minkowski convex-body (exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt/le_measure). No Hlawka.",
+      "No Siegel mean-value theorem in Mathlib (gh search SiegelMeanValue/siegel_mean = 0 hits). The identity int_{X_n} sum_{v in L minus 0} f(v) dmu = int_{R^n} f is THE engine of the standard proof and is absent.",
+      "No space of unimodular lattices X_n = SL_n(Z)\\SL_n(R) with its finite SL_n(R)-invariant probability measure. Mathlib has Haar on locally compact groups and ZLattice/Zspan covolume, but not this homogeneous space / its finite measure.",
+      "No packing-density notion (gh search packingDensity = 0). 'Minkowski-Hlawka theorem' appears in Mathlib docs/1000.yaml as a TITLE-ONLY entry (no decl:/author:), i.e. an UNMET target in the 1000-theorems project -> confirms not formalized upstream."
+    ],
+    "nextSteps": [
+      "Decision = SURVEY / effectively BLOCKED for full proof: standard route needs Siegel mean-value over SL_n(R)/SL_n(Z) (>1000 LOC of missing measure theory). Do NOT attempt full formalization.",
+      "Staged ACT target (realistic, Docker-gated): a Lean file stating Minkowski-Hlawka with Siegel's identity as an explicit HYPOTHESIS (axiom or structure field), then prove the better-than-average => existence extraction with plus-minus pairing to land delta_n >= zeta(n)/2^(n-1). Isolates the one deep lemma.",
+      "Genuinely reachable elementary stepping stone (ACT-able from Mathlib alone, ~200-400 LOC): the saturation bound delta_n >= 2^-n via maximal packing + radius-doubling cover. This is the easy constant; MH only sharpens it by the 2*zeta(n) factor.",
+      "When building the staged file, mirror sibling style (MinkowskiFundamentalTheoremOQ02/OQ04: survey docstring + Mathlib aliases where available, explicit assumption where not). Set badge=axiom (Siegel staged as assumption), status=axiomatized."
+    ]
+  },
+  "tags": [
+    "geometry-of-numbers",
+    "lattices",
+    "packing-density",
+    "minkowski-hlawka",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "minkowski-fundamental-theorem",
+    "minkowski-fundamental-theorem-oq-02",
+    "minkowski-fundamental-theorem-oq-04",
+    "minkowski-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T01:25:28.051Z",
+  "lastUpdate": "2026-06-15T01:25:28.051Z",
+  "significance": 7,
+  "tractability": 3,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinkowskiFundamentalTheorem.lean",
+      "filename": "MinkowskiFundamentalTheorem.lean",
+      "lineCount": 687,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheorem.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiFundamentalTheoremOQ02.lean",
+      "filename": "MinkowskiFundamentalTheoremOQ02.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiFundamentalTheoremOQ04.lean",
+      "filename": "MinkowskiFundamentalTheoremOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiFundamentalTheoremOQ04.lean"
+    }
+  ]
+}
