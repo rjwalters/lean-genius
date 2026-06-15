@@ -149,15 +149,32 @@ noncomputable def digitSum (p n : ℕ) : ℕ :=
   if n = 0 then 0
   else n % p + digitSum p (n / p)
 
-/-- Legendre's identity -/
-axiom legendre_identity (p n : ℕ) (hp : Nat.Prime p) (hp2 : p ≥ 2) :
-    padicValNat p n.factorial = (n - digitSum p n) / (p - 1)
+/-- The file's recursive `digitSum p n` agrees with Mathlib's base-`p` digit sum
+    `(Nat.digits p n).sum` for any base `p > 1`. -/
+theorem digitSum_eq_digits_sum (p : ℕ) (hp : 1 < p) (n : ℕ) :
+    digitSum p n = (Nat.digits p n).sum := by
+  induction n using Nat.strong_induction_on with
+  | _ n ih =>
+    rcases eq_or_ne n 0 with rfl | hn
+    · simp [digitSum]
+    · have hpos : 0 < n := Nat.pos_of_ne_zero hn
+      have hunfold : digitSum p n = n % p + digitSum p (n / p) := by
+        rw [digitSum.eq_def, if_neg hn]
+      rw [hunfold, Nat.digits_def' hp hpos, List.sum_cons,
+        ih (n / p) (Nat.div_lt_self hpos hp)]
 
-/-- For p = 2: v_2(n!) = n - s_2(n) -/
+/-- For p = 2: v_2(n!) = n - s_2(n).
+
+    Proved from Mathlib's Legendre theorem `sub_one_mul_padicValNat_factorial`:
+    `(p - 1) * v_p(n!) = n - (digits p n).sum`, which for `p = 2` (where `p - 1 = 1`)
+    gives the identity directly. Formerly forwarded to the `legendre_identity`
+    axiom; now fully discharged. -/
 theorem legendre_for_two (n : ℕ) :
     padicValNat 2 n.factorial = n - digitSum 2 n := by
-  have h := legendre_identity 2 n Nat.prime_two (by omega)
-  simp [Nat.div_one] at h
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  have h := sub_one_mul_padicValNat_factorial (p := 2) n
+  rw [show (2 - 1 : ℕ) = 1 from rfl, one_mul] at h
+  rw [digitSum_eq_digits_sum 2 one_lt_two n]
   exact h
 
 /-
