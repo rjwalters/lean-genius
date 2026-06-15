@@ -334,11 +334,14 @@ theorem descartes_tight_X_sub_C (c : ℝ) (hc : 0 < c) :
   omega
 
 /-
-## Part VI: The Parity Result — Open Formalization Challenge
+## Part VI: The Parity Result — Proved in This File (no axiom)
 
-Mathlib has the UPPER BOUND but NOT the PARITY RESULT.
+Mathlib has the UPPER BOUND but NOT the PARITY RESULT. This file supplies the
+parity result itself: `descartes_parity_proved` (Part IX) establishes it with
+0 sorries and 0 axioms, and the public theorem `descartes_parity` (Part X) is
+discharged by it. The sketch below records the strategy actually carried out.
 
-**Statement** (axiomatic here):
+**Statement** (theorem `descartes_parity`):
   ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations
 
 **Classical proof sketch**:
@@ -359,30 +362,15 @@ Mathlib has the UPPER BOUND but NOT the PARITY RESULT.
 These are doable but require ~200 lines of new Mathlib infrastructure.
 -/
 
-/-- **Axiom** (parity result — not proved in Mathlib):
-The difference between sign variations and the positive root count is always even. -/
-axiom descartes_parity (p : ℝ[X]) (hp : p ≠ 0) :
-    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations
-
-/-- **Combined Descartes' Rule**:
-    positive root count + even number = sign variation count. -/
-theorem descartes_rule_combined (p : ℝ[X]) (hp : p ≠ 0) :
-    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations :=
-  descartes_parity p hp
+/-- **Descartes parity** is fully proved in this file — there is no parity axiom.
+The proof, `descartes_parity_proved` (Part IX), and the corollaries that depend on
+it (`descartes_parity`, `descartes_rule_combined`, `one_sign_variation_one_positive_root`,
+`positive_root_count_from_sv`) appear at the end of the file, after the algebraic
+infrastructure they require. -/
 
 /-
 ## Part VII: Consequences
 -/
-
-/-- If p has exactly 1 sign variation, it has exactly 1 positive root.
-    (Uses the parity axiom for the exact count.) -/
-theorem one_sign_variation_one_positive_root (p : ℝ[X]) (hp : p ≠ 0)
-    (h1 : p.signVariations = 1) : p.roots.countP (0 < ·) = 1 := by
-  obtain ⟨k, hk⟩ := descartes_parity p hp
-  rw [h1] at hk
-  have hle := descartes_upper_bound p
-  rw [h1] at hle
-  omega
 
 /-- The Descartes bound for products: countP(p*q) ≤ sv(p) + sv(q). -/
 theorem descartes_mul_bound (p q : ℝ[X]) (hp : p ≠ 0) (hq : q ≠ 0) :
@@ -395,14 +383,6 @@ theorem zero_sv_no_positive_roots (p : ℝ[X]) (h : p.signVariations = 0) :
     p.roots.countP (0 < ·) = 0 := by
   have hle := descartes_upper_bound p
   omega
-
-/-- If we know the sign variation count exactly, we know the positive root count
-    (via parity): sv = countP + 2k for some k ≥ 0. -/
-theorem positive_root_count_from_sv (p : ℝ[X]) (hp : p ≠ 0) (n : ℕ)
-    (h : p.signVariations = n) :
-    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = n := by
-  obtain ⟨k, hk⟩ := descartes_parity p hp
-  exact ⟨k, by rw [← h]; exact hk⟩
 
 /-
 ## Summary
@@ -428,15 +408,16 @@ is that the main upper bound is proved directly from Mathlib with 0 axioms.
 14. `zero_sv_no_positive_roots` — Zero-sv consequence
 15. `descartes_negative_roots` — Negative root bound (0 sorries, via rootMultiplicity algebra)
 
-**With 1 axiom** (legacy — now proved by `descartes_parity_proved` in Part IX):
-16. `descartes_parity` — Parity axiom (PROVED: see `descartes_parity_proved`)
+**Parity corollaries** (0 axioms — `descartes_parity` is now a theorem, see Part X):
+16. `descartes_parity` — Parity result (theorem, discharged by `descartes_parity_proved`)
 17. `descartes_rule_combined` — Combined form
 18. `one_sign_variation_one_positive_root` — 1 sv → 1 positive root
 19. `positive_root_count_from_sv` — Root count from sv via parity
 
-**NOTE**: The axiom `descartes_parity` is now fully proved by `descartes_parity_proved`
-in Part IX. A future refactor should replace the axiom with the proved theorem and
-restructure the file so `descartes_parity_proved` appears before Parts VI-VII.
+**NOTE**: The former `axiom descartes_parity` has been removed. The parity result is
+now the theorem `descartes_parity`, discharged by `descartes_parity_proved` (Part IX);
+its corollaries are collected in Part X (after the proof they depend on). This file is
+now fully axiom-free (0 axioms, 0 sorries).
 
 **Key technique for negative roots (replacing old sorry)**:
 The proof uses three private helper lemmas:
@@ -1070,5 +1051,44 @@ theorem descartes_parity_proved (p : ℝ[X]) (hp : p ≠ 0) :
       simp [Polynomial.roots_X, Multiset.countP_add, ihm]
   rw [hsv, hcountP]
   exact ⟨k, hk⟩
+
+/-
+## Part X: Parity Result and Corollaries (formerly axiomatized)
+
+These were previously stated in Parts VI–VII backed by `axiom descartes_parity`.
+That axiom has been removed: `descartes_parity` is now a theorem discharged by
+`descartes_parity_proved`, and the corollaries follow. They live here because
+`descartes_parity_proved` (Part IX) must be defined before they can cite it.
+-/
+
+/-- **Descartes' Rule of Signs (Parity)** — now a theorem (no axiom):
+    the difference between sign variations and the positive root count is even,
+    i.e. positive root count + 2k = sign variation count for some k. -/
+theorem descartes_parity (p : ℝ[X]) (hp : p ≠ 0) :
+    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations :=
+  descartes_parity_proved p hp
+
+/-- **Combined Descartes' Rule**:
+    positive root count + even number = sign variation count. -/
+theorem descartes_rule_combined (p : ℝ[X]) (hp : p ≠ 0) :
+    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = p.signVariations :=
+  descartes_parity p hp
+
+/-- If p has exactly 1 sign variation, it has exactly 1 positive root. -/
+theorem one_sign_variation_one_positive_root (p : ℝ[X]) (hp : p ≠ 0)
+    (h1 : p.signVariations = 1) : p.roots.countP (0 < ·) = 1 := by
+  obtain ⟨k, hk⟩ := descartes_parity p hp
+  rw [h1] at hk
+  have hle := descartes_upper_bound p
+  rw [h1] at hle
+  omega
+
+/-- If we know the sign variation count exactly, we know the positive root count
+    (via parity): sv = countP + 2k for some k ≥ 0. -/
+theorem positive_root_count_from_sv (p : ℝ[X]) (hp : p ≠ 0) (n : ℕ)
+    (h : p.signVariations = n) :
+    ∃ k : ℕ, p.roots.countP (0 < ·) + 2 * k = n := by
+  obtain ⟨k, hk⟩ := descartes_parity p hp
+  exact ⟨k, by rw [← h]; exact hk⟩
 
 end DescartesRuleOQ01
