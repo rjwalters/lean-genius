@@ -133,5 +133,27 @@
       "linear maps",
       "Lebesgue measure of half-spaces"
     ]
+  },
+  {
+    "id": "hs-remaining-gap",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "type": "context",
+    "range": {
+      "startLine": 339,
+      "endLine": 369
+    },
+    "title": "The Exact Dichotomy: What Was Proved vs. the Lone Input",
+    "content": "The closing note makes the file's contribution precise. The parent's `ham_sandwich_theorem` axiom was justified solely by the difficulty of the continuity step, and this file confirms that diagnosis is exact: every other ingredient — the topological reduction, the oddness of the discrepancy, the 'zero ⇒ bisected' bridge, the antipodal swap, and volume finiteness — is dispatched here by elementary means, and two of the three originally-listed side conditions become theorems for the linear parameterization. What remains is a single, self-contained measure-theory fact, and `ham_sandwich_standard_of_scalar_continuity` states the conclusion with exactly that fact (plus finiteness) as its only hypotheses.",
+    "mathContext": "The residual input is the Lebesgue continuity of $x \\mapsto \\mathrm{vol}(\\mathrm{body}_i \\cap \\{y : \\langle u(x), y\\rangle < t(x)\\}).\\mathrm{toReal}$ on $S^n$, provable by dominated convergence for parameterized half-spaces. The dichotomy is now sharp: the topological core is fully proved, and the lone analytic input is scalar Lebesgue continuity — no longer a topological obligation.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "de-axiomatization",
+      "dominated convergence",
+      "proof-scope analysis"
+    ],
+    "prerequisites": [
+      "measure theory",
+      "Borsuk-Ulam theorem"
+    ]
   }
 ]
