@@ -12,13 +12,19 @@ OQ-01's "square twice to isolate √30" trick is the n = 3 shadow of the fact th
 √2+√3+√5 is a primitive element of the degree-8 multiquadratic field ℚ(√2,√3,√5).
 OQ-02 replaces the ad-hoc squaring with the uniform degree theorem.
 
-## STATUS — ORIENT skeleton, NOT build-verified (Docker unavailable this session)
+## STATUS — partial: 2 endpoints discharged, induction core still open (Docker unavailable)
 
-This file records the *decomposition* into the load-bearing lemmas. The
-statements have NOT been checked by the Lean elaborator. The single non-trivial
-step is `sqrt_prime_not_mem_multiquadratic` (the induction heart); everything
-else is either a Mathlib one-liner (base case, upper bound) or follows from the
-degree theorem by linear algebra.
+This file records the *decomposition* into the load-bearing lemmas. The single
+non-trivial step is `sqrt_prime_not_mem_multiquadratic` (the induction heart);
+everything else is either a Mathlib one-liner (base case, upper bound) or follows
+from the degree theorem by linear algebra.
+
+Discharged (no sorry): `irrational_sqrt_prime` (`Nat.Prime.irrational_sqrt`) and
+`irrational_sqrt2_add_sqrt3_add_sqrt5` (the OQ-01 corollary, by direct citation of
+the proved `Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01` — see note there). Still `sorry`:
+the induction heart and the two results that depend on it (`*_linearIndependent`).
+These statements have NOT yet been checked by the Lean elaborator (no build this
+session); the file remains unregistered pending a Docker build.
 
 The mathematical content (degree = 2ⁿ, induction heart = degree doubling, and the
 linear independence) is certified exactly in
@@ -29,6 +35,7 @@ Tags: number-theory, field-theory, multiquadratic, besicovitch, linear-independe
 -/
 
 import Mathlib
+import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01
 
 namespace BesicovitchOQ02
 
@@ -82,11 +89,15 @@ theorem besicovitch_sqrt_linearIndependent
     LinearIndependent ℚ (fun d : S => (Real.sqrt ((d : ℕ) : ℝ) : ℝ)) := by
   sorry
 
-/-- **OQ-01 recovered as a corollary.** `√2+√3+√5` is irrational because
-`{1,√2,√3,√5}` is ℚ-linearly independent (a special case of Besicovitch with
-`S = {1,2,3,5}`), so the nontrivial combination `√2+√3+√5` cannot be rational. -/
+/-- **OQ-01 recovered.** `√2+√3+√5` is irrational. This is the `n = 3`,
+`{2,3,5}` instance that OQ-02 generalizes, and it is already fully proved
+(0 sorries, 0 axioms) in `Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01` via the
+"square twice to isolate √30" route. We discharge it here by direct citation
+of that gallery proof — note this does **not** route through the still-open
+`besicovitch_sqrt_linearIndependent` above (which would be circular), so it is
+build-verifiable independently of the induction heart. -/
 theorem irrational_sqrt2_add_sqrt3_add_sqrt5 :
-    Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5) := by
-  sorry
+    Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5) :=
+  Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.irrational_sqrt2_plus_sqrt3_plus_sqrt5
 
 end BesicovitchOQ02
