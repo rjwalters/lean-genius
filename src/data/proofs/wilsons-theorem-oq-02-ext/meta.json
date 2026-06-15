@@ -8,9 +8,9 @@
     "proofRepoPath": "Proofs/WilsonsTheoremOQ02Ext.lean",
     "badge": "original",
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 23,
     "definitionCount": 1,
-    "lineCount": 539,
+    "lineCount": 566,
     "imports": [
       "Mathlib.NumberTheory.Wilson",
       "Mathlib.Data.Nat.Factorial.Basic",
@@ -61,14 +61,14 @@
       "id": "product-reduction",
       "title": "Product Reduction and Non-Cyclic Product Theorem",
       "startLine": 303,
-      "endLine": 437,
-      "summary": "prod_eq_prod_sq_eq_one: reduces \u220f(ZMod n)\u00d7 to \u220fS (the 2-torsion) via pairing non-square-root units with their inverses. prod_units_one_of_not_cyclic_ext: the two-involution trick \u2014 pick distinct c, d \u2208 S\\{1}; involution x\u21a6cx gives \u220fS = c^(|S|/2); involution x\u21a6cdx gives (cd)^(|S|/2); combining forces d^(|S|/2) = 1, then c^(|S|/2) = 1, so \u220fS = 1. Hence \u220f(ZMod n)\u00d7 = 1."
+      "endLine": 461,
+      "summary": "prod_eq_prod_sq_eq_one: reduces \u220f(ZMod n)\u00d7 to \u220fS (the 2-torsion) via pairing non-square-root units with their inverses. prod_eq_one_of_card_sq_eq_one_ge_three (OQ-01): the abstract two-involution trick for any finite CommGroup G \u2014 if |{x | x\u00b2=1}| \u2265 3 then \u220fG = 1; pick distinct c, d \u2208 S\\{1}; involution x\u21a6cx gives \u220fS = c^(|S|/2); involution x\u21a6cdx gives (cd)^(|S|/2); combining forces d^(|S|/2) = 1, then c^(|S|/2) = 1, so \u220fS = 1. prod_units_one_of_not_cyclic_ext is now a one-line corollary feeding card_sq_eq_one_ge_three_of_not_cyclic_zmod to the abstract theorem."
     },
     {
       "id": "main-theorem",
       "title": "Gauss-Wilson Complete Characterization",
-      "startLine": 438,
-      "endLine": 539,
+      "startLine": 462,
+      "endLine": 566,
       "summary": "gaussWilson_abstract_ext: for n \u2265 3, \u220f(ZMod n)\u00d7 = -1 \u2194 IsCyclic (ZMod n)\u00d7. The two directions: (\u2190) cyclic case uses Mathlib's Wilson theorem infrastructure (prod_units_neg_one_of_cyclic'); (\u2192) non-cyclic case uses prod_units_one_of_not_cyclic_ext and the fact that 1 \u2260 -1 for n \u2265 3. This gives the complete group-theoretic characterization of the Gauss-Wilson product."
     }
   ],
@@ -88,7 +88,7 @@
     "summary": "The non-cyclic case of the Gauss-Wilson theorem \u2014 $\\prod (\\mathbb{Z}/n)^\\times = 1$ when non-cyclic \u2014 is machine-checked using the two-involution trick on the 2-torsion subgroup. The complete characterization $\\prod = -1 \\iff$ cyclic follows by combining with Mathlib's Wilson theorem for the cyclic case.",
     "implications": "The Gauss-Wilson theorem is the complete generalization of Wilson's theorem from prime moduli to all moduli. It characterizes the multiplicative structure of $\\mathbb{Z}/n$ via a single invariant (the product of all units) and connects to the cyclic classification of $(\\mathbb{Z}/n)^\\times$. The two-involution trick is a reusable technique in finite group theory: whenever a group's 2-torsion has \u2265 3 elements, the group product is 1. This principle can be stated abstractly for any finite abelian group and is useful in computing global invariants from local structure. In algebraic number theory, the analogous result for rings of integers in number fields relates to the structure of class groups and unit groups.",
     "openQuestions": [
-      "Can the two-involution trick be formalized as a general theorem about finite abelian groups \u2014 that $\\prod G = 1$ whenever $|\\{x \\in G : x^2 = 1\\}| \\geq 3$ \u2014 using Mathlib's `Fintype.prod_univ` and abstract group theory?",
+      "RESOLVED \u2014 the two-involution trick is now formalized as a general theorem about finite abelian groups: `prod_eq_one_of_card_sq_eq_one_ge_three` proves $\\prod G = 1$ whenever $|\\{x \\in G : x^2 = 1\\}| \\geq 3$, for any finite `CommGroup G`. The $(\\mathbb{Z}/n)^\\times$ result `prod_units_one_of_not_cyclic_ext` is now a one-line corollary of it.",
       "Does the Gauss-Wilson theorem extend to rings of integers in algebraic number fields: is there a characterization of when $\\prod_{u \\in \\mathcal{O}_K^\\times} u = -1$ analogous to the ZMod case?",
       "Can this result give a direct Lean 4 proof of quadratic reciprocity via the product formula for $(\\mathbb{Z}/p)^\\times$ and the Legendre symbol?"
     ]
@@ -107,10 +107,10 @@
   ],
   "leanFile": {
     "path": "Proofs/WilsonsTheoremOQ02Ext.lean",
-    "lineCount": 539,
+    "lineCount": 566,
     "axiomCount": 0,
     "sorries": 0,
-    "theoremCount": 22,
+    "theoremCount": 23,
     "definitionCount": 1,
     "imports": [
       "import Mathlib.NumberTheory.Wilson",

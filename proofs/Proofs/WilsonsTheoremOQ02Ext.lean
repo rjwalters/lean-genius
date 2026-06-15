@@ -356,21 +356,30 @@ private theorem mul_involution_on_sq_eq_one {G : Type*} [CommGroup G] [Decidable
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
     rw [mul_comm x (c * x), mul_assoc, ← sq, hx, mul_one]
 
-/-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1.
+/-- **Two-involution trick (abstract form)** — answers OQ-01.
 
-    Proof: Two-involution trick. See module docstring for details. -/
-theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
-    [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
-    ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
-  suffices hprod : ∏ x : (ZMod n)ˣ, x = 1 by
-    rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
-      (units_val_prod _ _).symm, hprod]
-    simp
+    In *any* finite commutative group `G`, if the 2-torsion subgroup
+    `S = {x | x² = 1}` has at least three elements, then the product of all
+    group elements is the identity: `∏ G = 1`.
+
+    This is the general theorem the `(ZMod n)ˣ` development was a special case of.
+    The hypothesis `3 ≤ |S|` is exactly what makes the trick fire; below it is
+    supplied for `(ZMod n)ˣ` by `card_sq_eq_one_ge_three_of_not_cyclic_zmod`.
+
+    Proof (two-involution trick):
+    - `∏ G = ∏ S` (pair each non-involution with its distinct inverse).
+    - Pick `c, d ∈ S \ {1}` distinct (possible since `|S| ≥ 3`).
+    - Each of `x ↦ cx`, `x ↦ dx`, `x ↦ (cd)x` is an FPF involution on `S` with
+      constant pair product, so `∏ S = c^(|S|/2) = d^(|S|/2) = (cd)^(|S|/2)`.
+    - Comparing the first and third forces `d^(|S|/2) = 1`, hence `c^(|S|/2) = 1`,
+      hence `∏ S = 1`. -/
+theorem prod_eq_one_of_card_sq_eq_one_ge_three
+    {G : Type*} [CommGroup G] [Fintype G] [DecidableEq G]
+    (hS_card : 3 ≤ (Finset.univ.filter (fun x : G => x ^ 2 = 1)).card) :
+    ∏ x : G, x = 1 := by
   -- Step 1: ∏ G = ∏ S where S = {x | x² = 1}
   rw [prod_eq_prod_sq_eq_one]
-  set S := Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)
-  -- Step 2: |S| ≥ 3
-  have hS_card : 3 ≤ S.card := card_sq_eq_one_ge_three_of_not_cyclic_zmod hn hncyc
+  set S := Finset.univ.filter (fun x : G => x ^ 2 = 1)
   -- S membership gives x² = 1
   have hS_mem_sq : ∀ x ∈ S, x ^ 2 = 1 := fun x hx => by
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx; exact hx
@@ -394,7 +403,7 @@ theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
       exact Finset.not_mem_empty x (hempty ▸ Finset.mem_sdiff.mpr ⟨hx, by
         simp only [Finset.mem_insert, Finset.mem_singleton]; push_neg; exact hxne⟩)
     have := Finset.card_le_card this
-    have : ({1, c} : Finset (ZMod n)ˣ).card ≤ 2 := Finset.card_insert_le _ _
+    have : ({1, c} : Finset G).card ≤ 2 := Finset.card_insert_le _ _
     omega
   obtain ⟨d, hd_mem⟩ := hS_sub2_nonempty
   have hd_in_S : d ∈ S := (Finset.mem_sdiff.mp hd_mem).1
@@ -434,6 +443,21 @@ theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
   have hc_pow : c ^ (S.card / 2) = 1 := by rw [hP_eq_c, hP_eq_d, hd_pow]
   -- Step 9: ∏ S = c^k = 1
   rw [hP_eq_c, hc_pow]
+
+/-- When (ZMod n)ˣ is not cyclic and n ≥ 3, the product of units is 1.
+
+    Now a direct corollary of the abstract two-involution trick
+    `prod_eq_one_of_card_sq_eq_one_ge_three`: supply the 2-torsion bound
+    `card_sq_eq_one_ge_three_of_not_cyclic_zmod` for `(ZMod n)ˣ`. -/
+theorem prod_units_one_of_not_cyclic_ext {n : ℕ} (hn : n ≥ 3)
+    [hne : NeZero n] (hncyc : ¬ IsCyclic (ZMod n)ˣ) :
+    ∏ x : (ZMod n)ˣ, (x : ZMod n) = 1 := by
+  suffices hprod : ∏ x : (ZMod n)ˣ, x = 1 by
+    rw [show (∏ x : (ZMod n)ˣ, (x : ZMod n)) = (↑(∏ x : (ZMod n)ˣ, x) : ZMod n) from
+      (units_val_prod _ _).symm, hprod]
+    simp
+  exact prod_eq_one_of_card_sq_eq_one_ge_three
+    (card_sq_eq_one_ge_three_of_not_cyclic_zmod hn hncyc)
 
 -- ============================================================================
 -- Section 6: Gauss-Wilson Abstract Biconditional
@@ -503,7 +527,7 @@ theorem gaussWilson_abstract_ext {n : ℕ} (hn : n ≥ 3) [hne : NeZero n] :
 -- ============================================================================
 
 /-
-## Results in this file — ALL SORRY-FREE (8 theorems)
+## Results in this file — ALL SORRY-FREE (9 theorems)
 
 1. `even_card_of_fpf_involution`: FPF involution → even cardinality
 2. `prod_involution_const`: FPF involution with constant pair product → ∏ S = c^(|S|/2)
@@ -512,8 +536,10 @@ theorem gaussWilson_abstract_ext {n : ℕ} (hn : n ≥ 3) [hne : NeZero n] :
 5. `prod_units_neg_one_of_cyclic'`: IsCyclic → ∏ units = -1
 6. `card_sq_eq_one_ge_three_of_not_cyclic_zmod`: For (ZMod n)ˣ, n ≥ 3, ¬cyclic → |{x | x²=1}| ≥ 3
    PROVEN via GaussWilsonNonCyclic.exists_third_sqrt_of_not_cyclic (CRT + power-of-2 construction).
-7. `prod_units_one_of_not_cyclic_ext`: ¬cyclic → ∏ units = 1
-8. `gaussWilson_abstract_ext`: ∏ units = -1 ↔ cyclic
+7. `prod_eq_one_of_card_sq_eq_one_ge_three` **(OQ-01)**: abstract two-involution trick —
+   in *any* finite CommGroup G, |{x | x²=1}| ≥ 3 → ∏ G = 1.
+8. `prod_units_one_of_not_cyclic_ext`: ¬cyclic → ∏ units = 1 (now a corollary of (7)).
+9. `gaussWilson_abstract_ext`: ∏ units = -1 ↔ cyclic
 
 ### Proof architecture
 The two-involution trick (in this file) cleanly avoids the need for:
@@ -531,6 +557,7 @@ The 2-torsion bound (in GaussWilsonNonCyclic.lean) uses:
 All theorems in this file are now fully proven.
 -/
 
+#check @prod_eq_one_of_card_sq_eq_one_ge_three
 #check @prod_units_one_of_not_cyclic_ext
 #check @gaussWilson_abstract_ext
 #check @prod_involution_const
