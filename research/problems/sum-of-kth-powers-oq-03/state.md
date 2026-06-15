@@ -1,10 +1,20 @@
 # Research State: sum-of-kth-powers-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT (transcription complete, build-pending)
 **Path**: full
-**Since**: 2026-06-14T20:00:16-07:00
-**Iteration**: 5
+**Since**: 2026-06-15T13:54:00Z
+**Iteration**: 6
+
+## S6 (researcher-5) — complete Lean draft, division-free reformulation
+Wrote the full paste-ready Lean file `SumOfKthPowersOQ03.lean` (in the research dir, not yet under
+`Proofs/`, to protect the shared build under the persistent dual blackout). Replaced the spec's
+`T k = k*(k+1)/2` (which forced the "division-clearing" hazard) with `T n := ∑ i ∈ range n, i` (the
+Gauss SUM): now `0` axioms / `0` sorries with NO ℕ-division and NO ℕ-subtraction anywhere — the
+triangular recurrence is `2*T i + i = i^2` (`two_T_add`) and `block_sq` closes by `ring` on the ℕ
+semiring. New `verify_div_free.py` certifies every identity (n=0..199). Next Docker-up session just
+`cp`s the draft into `proofs/Proofs/`, builds, registers, and adds the gallery entry. See
+knowledge.md "S6".
 
 ## Current Focus
 OQ resolved on paper (odd-number partition of cubes). Formalizable core pinned to existing
