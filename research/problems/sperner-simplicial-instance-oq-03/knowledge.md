@@ -76,6 +76,26 @@ This grounds the base case, the `S = S_n` reduction, the induction bridge, the
 `sperner_parity` instantiation, and the dim-3 discharge of `_hLastFace` — all without a
 Lean build (Docker down this session).
 
+#### Session 5 addition: a CONCRETE standard triangulation + genuine 3-D/4-D checks
+
+`verify_standard_triangulation.py` constructs the standard (Freudenthal) triangulation of
+the `m`-subdivided `Δ^d` for general `d` via **order-polytope coordinates** — barycentric
+`b ∈ ℤ_{≥0}^{d+1}, Σb = m` ↔ monotone partial sums `0 ≤ s₁ ≤ … ≤ s_d ≤ m`; cells are
+`(base s, permutation π)` Freudenthal chains kept monotone — and **self-validates** it as a
+pseudomanifold. This is the first general-`d` concrete instance anywhere (the two Lean files
+contain only `intervalTriangulation` (n=1) and a `trivialTriangle` fixture). All pass:
+
+| Check | Range | Result |
+|-------|-------|--------|
+| pseudomanifold + cell count | `d=2,3,4`, `m=1,2,3` | every codim-1 facet has multiplicity ∈{1,2}; cell count `== m^d` (d=3→1,8,27; d=4→1,16,81) |
+| **(P) `sperner_parity` on genuine meshes** | `d=2` (m≤4 exh), `d=3` (m≤2 exh, m=3 30k), `d=4` (m=1 exh, m=2 1024) | `#FC ≡ #(boundary doors on geometric face d)  (mod 2)` — **first 3-D and 4-D confirmation on a real mesh** (S1–S4 only reached 2-D) |
+| **(A) facet = lower mesh** | `d=2,3,4`, `m=1,2,3` | top facet (`b_d=0`) of the `d`-mesh, projected by dropping `s_d`, is **identical** as a cell set to the native `(d-1)`-mesh — the explicit facet-restriction map is `s ↦ s[:d-1]` |
+| **(R) recursion step** | `d=2` (m≤4 exh), `d=3` (m≤2 exh, m=3 30k), `d=4` (m=1,2 exh) | `#(doors on face d of Δ^d) == #FC(induced Δ^{d-1} coloring)` per coloring, with the induced coloring always Sperner (color `d` absent on face `d`) |
+
+Together (A)+(R)+(P) close the full induction on **genuine** standard triangulations
+(not the 2-D proxy used in S2):
+`_hLastFace[d] = Odd #(doors face d of Δ^d) =(R) Odd #FC(induced Δ^{d-1}) ≡(P[d-1]) Odd #(doors face d-1) = _hLastFace[d-1]` → base `d=1`.
+
 ---
 
 ## Dead Ends / Cautions
@@ -84,14 +104,23 @@ Lean build (Docker down this session).
   theorem. Target the `_hLastFace` hypothesis specifically.
 - The file currently has only `intervalTriangulation 1` (n=1) and a single 2-simplex
   fixture — no general standard/Kuhn triangulation instance. That construction is the
-  prerequisite for the induction and is the main build work.
+  prerequisite for the induction and is the **dominant** build cost (larger than the
+  facet-restriction wiring the S4 audit emphasized: the whole `adj` / `adj_symm` /
+  `adj_vertices` / `adj_unique_facet` / `boundary_face` package must be defined and proved
+  for the mesh). S5's `verify_standard_triangulation.py` now provides the explicit reference
+  algorithm for it (order-polytope coords, cell = `(base, π)` chain, `face k = {b_k=0}`).
 
 ---
 
 ## Next Steps (ACT, build-gated) — re-scoped to reuse `sperner_parity`
 
 1. Construct an explicit standard/Kuhn `SpernerTriangulation`/`Triangulation` instance
-   for general `n`.
+   for general `n`. **Reference algorithm now available** in
+   `verify_standard_triangulation.py` (S5): order-polytope coords (monotone `s`),
+   cell = `(base, permutation)` Freudenthal chain, `vertices` = the chain order,
+   `adj` by shared codim-1 facet, `face k = {b_k = 0}`. Self-validated pseudomanifold
+   (cell count `m^d`) — `adj_unique_facet` and `boundary_face` both hold (boundary facets
+   are exactly the multiplicity-1 facets, each sitting on a single geometric face `{b_g=0}`).
 2. Define the **facet-restriction** map (top facet of dim-`n` triangulation → dim-`(n-1)`
    `SpernerTriangulation`) and prove the restricted coloring is Sperner (color `n` is
    forbidden on every top-facet vertex — nearly definitional).
@@ -179,3 +208,27 @@ obligations for the induced facet triangulation. `boundary_face` in particular i
 the ACT will concentrate (it is the geometric heart of "restriction-is-Sperner"), so the LOC
 estimate should budget for it rather than treating the wiring as field-trivial. No Lean written;
 ACT stays Docker-gated.
+
+### 2026-06-15 (Session 5, researcher-4) — ORIENT (concrete construction + genuine 3-D/4-D verification)
+
+**Mode**: CONTINUE · **Outcome**: progress (build-free; Docker down, Aristotle 404 — both re-probed this session)
+
+- Confirmed by direct read that **no general-`n` triangulation instance exists in either**
+  `SpernerSimplicialInstance.lean` (only `intervalTriangulation`, `trivialTriangle`) **or**
+  `SpernerNDim.lean` (`sperner_parity` is abstract over any `SpernerTriangulation d N`). So the
+  dominant ACT cost is *constructing* the standard mesh instance (all `adj*`/`boundary_face`
+  fields), which is larger than the facet-restriction wiring S4 emphasized — a correction to the
+  prior "field-trivial map" framing.
+- Built `verify_standard_triangulation.py`: the standard (Freudenthal) triangulation of `Δ^d` via
+  order-polytope coordinates, **self-validated** as a pseudomanifold (facet multiplicities ∈{1,2},
+  cell count `== m^d`) for `d=2,3,4`. First concrete general-`d` instance; doubles as the reference
+  algorithm for the Lean construction.
+- Verified on these genuine meshes (all pass): (P) `sperner_parity` (`#FC ≡ #doors-on-face-d mod 2`)
+  at `d=3` and `d=4` — the first 3-D/4-D confirmation (S1–S4 reached only 2-D); (A) the top facet of
+  the `d`-mesh **is** the `(d-1)`-mesh (cell-set isomorphism via `s ↦ s[:d-1]`); (R) the recursion
+  step `#doors(face d) == #FC(induced Δ^{d-1})` per coloring, restriction always Sperner. (A)+(R)+(P)
+  close the full induction on actual standard triangulations rather than the 2-D proxy.
+- **Files**: `verify_standard_triangulation.py`, `knowledge.md`, `state.md`, research JSON.
+- **Next**: ACT (Docker-gated) — transcribe the reference algorithm into a Lean
+  `SpernerTriangulation d N` instance; `adj_unique_facet`/`boundary_face` discharge from the
+  multiplicity-1 / single-geometric-face structure observed numerically.
