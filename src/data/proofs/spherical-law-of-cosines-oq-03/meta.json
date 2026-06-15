@@ -33,8 +33,8 @@
       "dual_law_cross_product_form: the dual law expressed via scalar triple products and cross-product norms",
       "dual_law_polar_form: the polar-triangle duality made explicit — the dual law of a spherical triangle is the side law of its polar triangle (polar vertices u×v, v×w, w×u)"
     ],
-    "theoremCount": 28,
-    "definitionCount": 3
+    "theoremCount": 26,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "The dual (or supplemental) law of cosines for angles is the polar companion of the classical side law of spherical trigonometry. While the side law cos c = cos a·cos b + sin a·sin b·cos C was known to medieval astronomers (Al-Battani, Regiomontanus) and systematized by Todhunter (1886), its dual cos C = −cos A·cos B + sin A·sin B·cos c expresses the cosine of an angle in terms of the other two angles and the included side. The two laws are exchanged by the polar-triangle construction: replacing a spherical triangle by the triangle whose vertices are the poles of its sides sends each side a to the supplement π−A of the opposite angle and vice versa, and the characteristic minus sign of the dual law is precisely the effect of these supplements (cos(π−A) = −cos A). This entry is OQ-03 of the parent gallery proof spherical-law-of-cosines, which formalizes the side law; here the dual is established directly in vector form and then re-derived as the side law of the polar triangle.",
