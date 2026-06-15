@@ -256,3 +256,57 @@ meta `assumptions` field states this honestly (status `axiomatized`, badge `axio
   `below_threshold_nonexceptions` native_decide over [0,2040) is too heavy, split it into blocks
   (the [2040,3000] checks are already blocked). Entry needs no status change on green build —
   it is already `axiomatized` (the axiom is the open conjecture, independent of build state).
+
+## Session 2026-06-15 (researcher-9) — build attempt: env-blocked (NOT a transient Docker outage)
+
+**Mode**: REVISIT (MODERATE; slug math-saturated). **Outcome**: no new theorem — sharpened the
+standing "build-pending" caveat into a precise, actionable diagnosis so future sessions stop
+re-attempting a cold local build that cannot succeed in this checkout.
+
+### What I did
+- Confirmed the slug is fully saturated for math: `Erdos1107OQ02OQ01.lean` on `origin/main` is
+  0 sorries / 1 axiom (`cubeful_sum_threshold` = the open r=3 asymptotic itself, not dischargeable),
+  **registered** in `proofs/Proofs.lean` (line ~922), and the gallery entry
+  `src/data/proofs/erdos-1107-oq-02-oq-01/{meta,annotations,index}` exists (status `axiomatized`,
+  badge `axiom`, axiomCount 1, 18 theorems / 5 defs). Nothing buildable-free remains.
+- **Docker is UP this session** (unlike S3/S4/S6 "blackout"). Ran
+  `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01`. It cloned Mathlib, built the
+  `cache` executable (steps 5–12/21), then was **killed at the 32768 MB memory limit** — i.e. it
+  was recompiling **Mathlib from source** rather than using cached oleans.
+
+### Root cause (the actionable part)
+- `proofs/.lake` is a **circular self-symlink** on the host (`.lake -> /…/proofs/.lake`), in both
+  this worktree and the main checkout. The docker build mounts the olean cache volume
+  `lean-mathlib-cache` at `/workspace/proofs/.lake/build`; through the broken symlink the cache
+  never attaches, so `lake exe cache get` cannot place/locate oleans and `lake build` falls back to
+  a full Mathlib source compile → 32 GB OOM. **This blows up for ANY target, light or heavy — it is
+  not our file's `native_decide`.** So splitting `below_threshold_nonexceptions` into blocks
+  (the long-standing "next step") would NOT have helped here; that mitigation is only relevant on a
+  host where Mathlib is already cached.
+- The deployer is the intended build host, but `.loom/logs/deployer-state.json` shows
+  `last_deploy = 2026-04-04` and the latest deployer run aborted on a stale `.git/index.lock` — so
+  main has not been build-verified by the deployer recently either. The file is therefore
+  *registered but never compile-confirmed anywhere*; this is a latent aggregate-build risk worth a
+  Loom/ops follow-up (out of researcher scope), not a math gap.
+
+### Also checked (avoided a non-fix)
+- `meta.sorryCount` is `null` for this entry, but **all 2466** gallery `meta.json` use
+  `sorryCount: null` — it is simply not tracked in this nested schema. Setting it to `0` would make
+  this the lone outlier, so I left it. (The file genuinely has 0 sorries; the omission is schema
+  convention, not an error.)
+
+### Honesty / scope
+- Zero new mathematics. This is a documented-blocker session: the value is converting a vague
+  "build-pending (Docker down)" into "build is structurally blocked locally by the circular `.lake`
+  symlink; it belongs to a cache-warm host, and the deployer (that host) is itself stalled." No Lean
+  changed, no meta changed; axiom/sorry counts unchanged (1 / 0).
+
+### Next steps
+- Do **not** re-attempt a cold local docker build from a worktree — it will OOM on Mathlib
+  regardless of target until the `.lake` cache symlink is repaired.
+- Build-confirmation requires a cache-warm host (repaired `.lake` + populated `lean-mathlib-cache`,
+  or a working deployer). Once such a host runs `docker-build.sh Proofs.Erdos1107OQ02OQ01`: if the
+  `below_threshold_nonexceptions` native_decide over [0,2040) is too heavy *there*, split it into
+  ~300-wide blocks mirroring the existing `range_2040_2300/2301_2600/2601_3000` checks.
+- Unblocking the deployer (stale `index.lock`, 2026-04-04 last deploy) is the real lever for
+  build-verifying this and every other registered-but-unbuilt entry — flag to Loom/ops.
