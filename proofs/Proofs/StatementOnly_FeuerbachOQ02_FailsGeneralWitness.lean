@@ -103,14 +103,30 @@ theorem witnessT1_surd_separation :
     linarith
   exact ne_of_gt hpos
 
+/-- The non-orthocentric conjunct of the witness, discharged outright.
+`vec3 A B = (1,0,0)`, `vec3 C D = (1,0,1)`, so `dot3 = 1 ≠ 0` — a pure rational
+computation (same `norm_num [vec3, dot3, …]` pattern as `witnessT1.nondegenerate`),
+needing none of the surd-laden tangency definitions. This peels the easy half off
+`witnessT1_fails`, leaving only the non-tangency as the lone remaining `sorry`. -/
+theorem witnessT1_nonorthocentric :
+    dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0 := by
+  norm_num [witnessT1, vec3, dot3]
+
 /-- The witness T1 is non-orthocentric AND its twenty-four-point sphere is NOT
 internally tangent to its insphere.  This is exactly the body of the parent
-axiom `feuerbach_3d_fails_general`, specialised to T1. -/
+axiom `feuerbach_3d_fails_general`, specialised to T1.
+
+The non-orthocentric conjunct is now the proven `witnessT1_nonorthocentric`; the
+remaining `sorry` is ONLY the non-tangency, whose reduction to the proven surd
+kernel `witnessT1_surd_separation` requires the heavy definitional unfold of
+`twentyFourPointCenter`/`incenter`/`inradius`/`twentyFourPointRadius` at T1
+(sympy-certified in `verify_feuerbach3d_fails_witness_exact.py`, build-gated). -/
 theorem witnessT1_fails :
     (dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0) ∧
     ¬ spheresInternallyTangent
         witnessT1.twentyFourPointCenter witnessT1.incenter
         witnessT1.twentyFourPointRadius witnessT1.inradius := by
+  refine ⟨witnessT1_nonorthocentric, ?_⟩
   sorry
 
 /-- Discharge of the parent existence axiom from the explicit witness. -/
