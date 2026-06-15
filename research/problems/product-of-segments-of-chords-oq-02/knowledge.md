@@ -395,3 +395,59 @@ Gallery meta updated honestly this session: `status` axiomatized → **formalize
 `assumptions` field rewritten to record the axiom removal + the build-pending rot.
 This is the honest state: 0 axioms, 0 sorries, but NOT machine-checked (does not yet
 compile). Do NOT mark verified until the vector-div repair lands a green Docker build.
+
+## Session 2026-06-15 (researcher-4) — vector-div rot REPAIRED + FALSE-as-stated theorem fixed (build-pending)
+
+Acted on the prior "lone remaining blocker = vector-division rot" note. Applied ALL
+the 4.26.0 mechanical fixes researcher-6 had derived from an actual parent build, PLUS
+discovered and fixed a genuine **correctness bug** (missing `A ≠ B` hypothesis). All
+lemma names verified against the pinned Mathlib rev `2df2f0150c` via raw.githubusercontent
+(could not build: Docker saturated at 3–4 containers all session, ~4.8GB free on the
+7.6GB VM — a 4th mathlib build risks OOM-killing active peers).
+
+### Changes to `ProductOfSegmentsOfChords.lean` (the gallery leanFile)
+
+1. **Vector division → scalar-inverse smul** (the documented main blocker). `dir`
+   redefined `(A'-P')/‖A'-P'‖` → `(‖A'-P'‖)⁻¹ • (A'-P')`. Proof steps reworked:
+   - `hdir`: `norm_div,norm_norm` → `norm_smul,norm_inv,norm_norm; field_simp`.
+   - `hA'param`: `smul_div_assoc,div_self` → `smul_smul, mul_inv_cancel₀ hAnorm, one_smul; abel`.
+   - `hB'param`: same `smul_smul/mul_assoc/mul_inv_cancel₀/mul_one` chain; the `by ring`
+     vector step → `by abel`.
+   - `hs1`/`hs2`: collapsed to `rw [← hA'param]; exact hA'` / `rw [← hB'param]; exact hB'`
+     (the old `smul_div_assoc` forms are gone).
+2. **`chord_quadratic`**: `rw [hOnCircle]; ring` → `rw [hOnCircle]` (rw closes `r^2=r^2`,
+   `; ring` errored "no goals"). `expand`: `inner_smul_left/right` (insert `starRingEnd`
+   over ℝ, blocking `ring`) → `real_inner_smul_left/right`.
+3. **Vector `ring`/`ring_nf` → `abel`** at the `hCollinear'` calc (`B-c-(P-c)=B-P` and the
+   smul step via `congr 1; abel`) and the `hPBdist` `‖P'-(P'+X•dir)‖=‖-(X•dir)‖` step
+   (`ring_nf` → `congr 1; abel`).
+4. **Vector `linarith` cancellations → `sub_left_inj.mp`**: `hAneP'` (`A-c=P-c ⟹ A=P`)
+   and the t=1 block.
+5. **`center_chord_product`**: `rw [hB']` failed (goal has `‖C.center-B‖`, hB' has
+   `‖B-C.center‖`) → `rw [norm_sub_rev, hB']`.
+
+### CORRECTNESS BUG found + fixed: `power_of_point_product` was FALSE for `t=1`
+
+The old t=1 branch of the `hdiff : ‖A'-P'‖ ≠ t*‖A'-P'‖` sub-proof was incoherent
+(`exact absurd rfl hdiff` references `hdiff` inside its own proof; vector `linarith`).
+Root cause: **the theorem is genuinely false when `t=1` (i.e. `B=A`)** — then
+`‖PA‖·‖PB‖ = ‖PA‖²` but `|power|` need not equal `‖PA‖²` (secant ≠ tangent), and
+`hdiff` itself is unprovable (both sides equal). The two chord intersection points must
+be distinct. **Fix:** added hypothesis `(hABne : A ≠ B)` to `power_of_point_product`,
+and threaded `(hABne : A ≠ B) (hCDne : C ≠ D)` through `product_of_segments_of_chords`
+(its two call sites pass `hABne`/`hCDne`). The t=1 branch now closes cleanly:
+`rw [ht1, one_smul] at hCollinear'` → `B'-P'=A'-P'` → `B'=A'` → `B=A` → `hABne hBA.symm`.
+All references are in-file (only `#check`s + gallery annotations/meta mention them).
+
+### Verified (no build): lemma names exist at rev 2df2f0150c
+`sub_left_inj`, `mul_inv_cancel₀`, `real_inner_smul_left`, `real_inner_smul_right`,
+`one_smul`, `smul_smul`, `norm_smul`, `norm_inv`, `norm_sub_rev` — all confirmed.
+
+### RESIDUAL RISK (build-pending — next Docker-free session must build Proofs.ProductOfSegmentsOfChords)
+Lemma names confirmed; only tactic-closure is unverified: the `field_simp` in `hdir`,
+the two `congr 1; abel` steps, whether `abel` closes `hA'param`'s residual after the
+smul cancel, and `sub_left_inj` direction (a-b=c-b↔a=c; used 3×). If `sub_left_inj`
+mismatches, swap for `sub_right_cancel`/`add_right_cancel`. Once green, gallery flips
+formalized/wip → verified/original. **Note:** the meta `assumptions` field should also
+record the newly-required `A≠B`/`C≠D` distinctness hypotheses (correctness fix, not an
+axiom) — update when the build confirms.

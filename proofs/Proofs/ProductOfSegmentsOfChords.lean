@@ -108,14 +108,15 @@ theorem abs_power_inside (P : Vec2) (C : Circle) (h : ‖P - C.center‖ < C.rad
 theorem chord_quadratic (r : ℝ) (P dir : Vec2) (t : ℝ)
     (hdir : ‖dir‖ = 1) (hOnCircle : ‖P + t • dir‖ = r) :
     t^2 + 2 * t * inner ℝ P dir + (‖P‖^2 - r^2) = 0 := by
-  have h1 : ‖P + t • dir‖^2 = r^2 := by rw [hOnCircle]; ring
+  have h1 : ‖P + t • dir‖^2 = r^2 := by rw [hOnCircle]
   simp only [sq] at h1
   rw [← real_inner_self_eq_norm_mul_norm] at h1
   -- Expand ⟨P + t·dir, P + t·dir⟩
   have expand : inner ℝ (P + t • dir) (P + t • dir) =
       inner ℝ P P + 2 * t * inner ℝ P dir + t^2 * inner ℝ dir dir := by
     rw [inner_add_left, inner_add_right, inner_add_right]
-    rw [inner_smul_left, inner_smul_right, inner_smul_left, inner_smul_right]
+    rw [real_inner_smul_left, real_inner_smul_right, real_inner_smul_left,
+      real_inner_smul_right]
     rw [real_inner_comm dir P]
     ring
   rw [expand] at h1
@@ -250,7 +251,7 @@ theorem product_of_segments_of_chords_origin (r : ℝ) (hr : 0 < r)
 theorem power_of_point_product (P A B : Vec2) (C : Circle)
     (hA : onCircle A C) (hB : onCircle B C)
     (hCollinear : ∃ t : ℝ, B - P = t • (A - P))
-    (hAneP : A ≠ P) (hBneP : B ≠ P) :
+    (hAneP : A ≠ P) (hBneP : B ≠ P) (hABne : A ≠ B) :
     ‖P - A‖ * ‖P - B‖ = |powerOfPoint P C| := by
   -- Translate to center at origin
   let P' := P - C.center
@@ -265,18 +266,17 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
   have hCollinear' : B' - P' = t • (A' - P') := by
     simp only [P', A', B']
     calc B - C.center - (P - C.center)
-        = B - P := by ring
+        = B - P := by abel
       _ = t • (A - P) := ht
-      _ = t • (A - C.center - (P - C.center)) := by ring_nf
+      _ = t • (A - C.center - (P - C.center)) := by
+          congr 1; abel
   -- Express A' and B' in terms of P' and a direction
   -- A' = P' + (A' - P') and B' = P' + (B' - P') = P' + t • (A' - P')
   -- Let dir = (A' - P') / ‖A' - P'‖
   have hAneP' : A' ≠ P' := by
     simp only [A', P']
     intro h
-    have : A - C.center = P - C.center := h
-    have : A = P := by linarith [this]
-    exact hAneP this
+    exact hAneP (sub_left_inj.mp h)
   have hAnorm : ‖A' - P'‖ ≠ 0 := by
     rw [norm_ne_zero_iff]
     exact sub_ne_zero.mpr hAneP'
@@ -290,29 +290,27 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
   -- Now we use the parametric form
   -- Let dir = (A' - P') / ‖A' - P'‖, then A' = P' + ‖A' - P'‖ • dir
   -- and B' = P' + t • (A' - P') = P' + (t * ‖A' - P'‖) • dir
-  let dir := (A' - P') / ‖A' - P'‖
+  let dir := (‖A' - P'‖)⁻¹ • (A' - P')
   have hdir : ‖dir‖ = 1 := by
     simp only [dir]
-    rw [norm_div, norm_norm]
+    rw [norm_smul, norm_inv, norm_norm]
     field_simp
   have hA'param : A' = P' + ‖A' - P'‖ • dir := by
     simp only [dir]
-    rw [smul_div_assoc, div_self hAnorm, smul_one_smul, one_smul]
-    ring_nf
+    rw [smul_smul, mul_inv_cancel₀ hAnorm, one_smul]
+    abel
   have hB'param : B' = P' + (t * ‖A' - P'‖) • dir := by
     simp only [dir]
-    calc B' = P' + (B' - P') := by ring
+    calc B' = P' + (B' - P') := by abel
       _ = P' + t • (A' - P') := by rw [hCollinear']
-      _ = P' + (t * ‖A' - P'‖) • ((A' - P') / ‖A' - P'‖) := by
-          rw [smul_div_assoc, mul_comm, mul_smul]
-          congr 1
-          rw [div_self hAnorm, one_smul]
+      _ = P' + (t * ‖A' - P'‖) • ((‖A' - P'‖)⁻¹ • (A' - P')) := by
+          rw [smul_smul, mul_assoc, mul_inv_cancel₀ hAnorm, mul_one]
   -- Distances
   have hPAdist : ‖P' - A'‖ = |‖A' - P'‖| := by rw [norm_sub_rev, abs_of_nonneg (norm_nonneg _)]
   have hPBdist : ‖P' - B'‖ = |t * ‖A' - P'‖| := by
     calc ‖P' - B'‖
         = ‖P' - (P' + (t * ‖A' - P'‖) • dir)‖ := by rw [hB'param]
-      _ = ‖-((t * ‖A' - P'‖) • dir)‖ := by ring_nf
+      _ = ‖-((t * ‖A' - P'‖) • dir)‖ := by congr 1; abel
       _ = ‖(t * ‖A' - P'‖) • dir‖ := by rw [norm_neg]
       _ = |t * ‖A' - P'‖| * ‖dir‖ := by rw [norm_smul]
       _ = |t * ‖A' - P'‖| * 1 := by rw [hdir]
@@ -341,13 +339,9 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
         -- So |s₁ * s₂| = |‖P'‖² - r²|
         -- |s₁| * |s₂| = |‖A' - P'‖| * |t * ‖A' - P'‖| = ‖A' - P'‖² * |t|
         have hs1 : ‖P' + ‖A' - P'‖ • dir‖ = C.radius := by
-          simp only [dir]
-          rw [smul_div_assoc, div_self hAnorm, one_smul]
-          convert hA'
-          ring
+          rw [← hA'param]; exact hA'
         have hs2 : ‖P' + (t * ‖A' - P'‖) • dir‖ = C.radius := by
-          convert hB'
-          rw [hB'param]
+          rw [← hB'param]; exact hB'
         have hq1 := chord_quadratic C.radius P' dir ‖A' - P'‖ hdir hs1
         have hq2 := chord_quadratic C.radius P' dir (t * ‖A' - P'‖) hdir hs2
         -- From the quadratic: s₁ * s₂ = ‖P'‖² - r² (constant term / leading coeff)
@@ -372,18 +366,11 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
                   exact (mul_left_cancel₀ h this).symm
               cases ht1 with
               | inl ht1 =>
-                -- t = 1 means B' - P' = A' - P', so B' = A', contradiction with B ≠ A
-                rw [ht1] at hCollinear'
-                simp at hCollinear'
-                have : B' = A' := by linarith [hCollinear']
-                simp [B', A'] at this
-                have : B = A := by linarith [this]
-                have : A ≠ P := hAneP
-                have : B ≠ P := hBneP
-                -- Need A ≠ B, but this is implied by hCollinear saying t ≠ 1 effectively
-                -- Actually we need to derive contradiction differently
-                -- If t = 1 and ‖A' - P'‖ ≠ 0, then s₁ = s₂ which violates hdiff
-                exact absurd rfl hdiff
+                -- t = 1 means B' - P' = A' - P', so B' = A', so B = A, contradicting hABne
+                rw [ht1, one_smul] at hCollinear'
+                have hBA' : B' = A' := sub_left_inj.mp hCollinear'
+                have hBA : B = A := sub_left_inj.mp (show B - C.center = A - C.center from hBA')
+                exact hABne hBA.symm
               | inr h => exact absurd h hAnorm
             have hdiff2 : ‖A' - P'‖^2 - (t * ‖A' - P'‖)^2 + 2 * (‖A' - P'‖ - t * ‖A' - P'‖) * inner ℝ P' dir = 0 := by linarith
             have hfactor : (‖A' - P'‖ - t * ‖A' - P'‖) * (‖A' - P'‖ + t * ‖A' - P'‖ + 2 * inner ℝ P' dir) = 0 := by ring_nf; linarith
@@ -430,10 +417,11 @@ theorem product_of_segments_of_chords
     (hAB_through_P : ∃ t : ℝ, B - P = t • (A - P))
     (hCD_through_P : ∃ t : ℝ, D - P = t • (C - P))
     (hAneP : A ≠ P) (hBneP : B ≠ P) (hCneP : C ≠ P) (hDneP : D ≠ P)
+    (hABne : A ≠ B) (hCDne : C ≠ D)
     (hPinside : ‖P - circle.center‖ < circle.radius) :
     ‖P - A‖ * ‖P - B‖ = ‖P - C‖ * ‖P - D‖ := by
-  have hAB := power_of_point_product P A B circle hA hB hAB_through_P hAneP hBneP
-  have hCD := power_of_point_product P C D circle hC hD hCD_through_P hCneP hDneP
+  have hAB := power_of_point_product P A B circle hA hB hAB_through_P hAneP hBneP hABne
+  have hCD := power_of_point_product P C D circle hC hD hCD_through_P hCneP hDneP hCDne
   rw [hAB, hCD]
 
 -- ============================================================
@@ -451,7 +439,7 @@ theorem center_chord_product (C : Circle) (A B : Vec2)
   rw [norm_sub_rev] at hA'
   calc ‖C.center - A‖ * ‖C.center - B‖
       = C.radius * ‖C.center - B‖ := by rw [hA']
-    _ = C.radius * C.radius := by rw [hB']
+    _ = C.radius * C.radius := by rw [norm_sub_rev, hB']
     _ = C.radius^2 := by ring
 
 /-
