@@ -114,58 +114,73 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 16,
+      "endLine": 19,
       "summary": "Module docstring describing Erdős Problem #462 on least prime factor sums in short intervals. States the known asymptotic ∑_{n<x, composite} p(n)/n ~ c·√x/(log x)² (Alladi-Erdős 1977) and the open question: does there exist C > 0 such that the sum over an interval of length C·√x·(log x)² is bounded below? References Erdős-Graham (1980), p. 92. Imports the full Mathlib library.",
       "mathContext": "Let p(n) denote the least prime factor of n. The global composite sum grows as Θ(√x/(log x)²), making √x·(log x)² the natural interval scale. The conjecture asks whether every interval of this length captures Ω(1) contribution — an equidistribution question analogous to the prime number theorem in short intervals. The single `import Mathlib` provides Nat.minFac, Real.log, and Finset.Icc needed for the formalization."
     },
     {
       "id": "least-prime-factor",
       "title": "Least Prime Factor",
-      "startLine": 17,
-      "endLine": 41,
-      "summary": "leastPrimeFactor via Nat.minFac with three proved properties (primality, divisibility, minimality)"
+      "startLine": 20,
+      "endLine": 44,
+      "summary": "leastPrimeFactor via Nat.minFac with three proved properties (primality, divisibility, minimality)",
+      "mathContext": null
     },
     {
       "id": "sums",
       "title": "Sums Involving Least Prime Factor",
-      "startLine": 42,
-      "endLine": 62,
-      "summary": "compositeSum (filtering primes), intervalSum (full interval), and compositeIntervalSum (composites in interval)"
+      "startLine": 45,
+      "endLine": 66,
+      "summary": "compositeSum (filtering primes), intervalSum (full interval), and compositeIntervalSum (composites in interval)",
+      "mathContext": null
     },
     {
       "id": "asymptotics",
       "title": "Known Asymptotics",
-      "startLine": 55,
-      "endLine": 64,
-      "summary": "Θ(√x/(log x)²) two-sided bound for compositeSum (sole axiom)"
+      "startLine": 67,
+      "endLine": 76,
+      "summary": "Θ(√x/(log x)²) two-sided bound for compositeSum (sole axiom)",
+      "mathContext": null
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture",
-      "startLine": 65,
-      "endLine": 75,
-      "summary": "ErdosProblem462: short interval sum bounded below by δ"
+      "startLine": 77,
+      "endLine": 91,
+      "summary": "ErdosProblem462: short interval sum bounded below by δ",
+      "mathContext": null
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "startLine": 76,
-      "endLine": 100,
-      "summary": "p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites — all proved from Mathlib"
+      "startLine": 92,
+      "endLine": 117,
+      "summary": "p(p) = p for primes, p(n) ≥ 2, p(n) ≤ √n for composites — all proved from Mathlib",
+      "mathContext": null
+    },
+    {
+      "id": "sum-properties",
+      "title": "Sum Properties",
+      "startLine": 118,
+      "endLine": 145,
+      "summary": "Non-negativity and monotonicity of compositeSum, and non-negativity of intervalSum — all proved from Mathlib (Finset.sum_nonneg, Finset.sum_le_sum_of_subset_of_nonneg).",
+      "mathContext": null
     },
     {
       "id": "structural-properties",
       "title": "Additional Structural Properties",
-      "startLine": 143,
-      "endLine": 191,
-      "summary": "p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1 bound, interval sum monotonicity, singleton evaluation, and interval splitting — all proved from Mathlib"
+      "startLine": 146,
+      "endLine": 192,
+      "summary": "p(n) ≤ n, p(n) = 2 for even n, p(n)/n ≤ 1 bound, interval sum monotonicity, singleton evaluation, and interval splitting — all proved from Mathlib",
+      "mathContext": null
     },
     {
       "id": "composite-interval-properties",
       "title": "Composite Interval Sum Properties",
-      "startLine": 192,
+      "startLine": 193,
       "endLine": 259,
-      "summary": "compositeIntervalSum: non-negativity, comparison with intervalSum, monotonicity, splitting, and the key bridge compositeIntervalSum_eq_compositeSum_sub connecting the short interval sum to the global cumulative sum difference — all proved from Mathlib"
+      "summary": "compositeIntervalSum: non-negativity, comparison with intervalSum, monotonicity, splitting, and the key bridge compositeIntervalSum_eq_compositeSum_sub connecting the short interval sum to the global cumulative sum difference — all proved from Mathlib",
+      "mathContext": null
     }
   ],
   "conclusion": {
