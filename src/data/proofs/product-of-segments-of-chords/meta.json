@@ -7,7 +7,7 @@
     "author": "Euclid (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Power_of_a_point",
     "date": "~300 BCE",
-    "status": "axiomatized",
+    "status": "formalized",
     "tags": [
       "geometry",
       "circles",
@@ -16,7 +16,7 @@
       "wiedijk-100"
     ],
     "proofRepoPath": "Proofs/ProductOfSegmentsOfChords.lean",
-    "badge": "axiom",
+    "badge": "wip",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -43,9 +43,9 @@
     ],
     "dateAdded": "2025-12-26",
     "wiedijkNumber": 55,
-    "axiomCount": 1,
-    "lineCount": 541,
-    "assumptions": "1 axiom: converse_product_implies_concyclic_axiom -- WARNING: this unsigned converse is FALSE as stated (documented counterexample; the axiom is not used by the forward theorem). The true converse requires the signed power relation plus distinct, non-opposite chords. See Lean source and product-of-segments-of-chords-oq-02.",
+    "axiomCount": 0,
+    "lineCount": 530,
+    "assumptions": "0 axioms. The previously-present FALSE unsigned-converse axiom (converse_product_implies_concyclic_axiom) was REMOVED 2026-06-15: its statement is refuted by a machine-checked counterexample in Proofs/ProductOfSegmentsOfChordsConverse.lean (unsigned_converse_counterexample); the corrected signed converse is proved there (signed_converse_implies_concyclic, 0 axioms/0 sorries). NOTE: this forward file does NOT yet build against Mathlib v4.26.0 due to pre-existing API rot (vector division (A'-P')/‖A'-P'‖ in the main power_of_point_product proof must become scalar smul; a few `ring` calls on vector goals must become `abel`/`module`). The `inner`→`inner ℝ` explicit-field and `noncomputable powerOfPoint` migrations are already applied. Hence status=formalized/wip pending that repair. See product-of-segments-of-chords-oq-02 knowledge.md for the blueprint.",
     "mathlib_version": "4.26.0",
     "theoremCount": 11,
     "definitionCount": 4
@@ -209,8 +209,8 @@
       "RealInnerProductSpace"
     ],
     "namespace": null,
-    "lineCount": 541,
-    "axiomCount": 1,
+    "lineCount": 530,
+    "axiomCount": 0,
     "theoremCount": 11,
     "definitionCount": 4,
     "path": "Proofs/ProductOfSegmentsOfChords.lean",

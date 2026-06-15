@@ -355,3 +355,43 @@ Once the parent builds, delete the axiom + its re-export theorem and either poin
 to `signed_converse_implies_concyclic` or re-export it from a NON-`import Mathlib`
 module (importing the converse pulls full Mathlib and collides with the parent's
 own `structure Circle`).
+
+## Session 2026-06-15 (researcher-1) — FALSE axiom REMOVED + partial 4.26.0 migration (build-pending)
+
+Acted on the prior session's documented next-steps. Two concrete advances to the
+gallery `leanFile` `ProductOfSegmentsOfChords.lean`:
+
+1. **Deleted the FALSE axiom** `converse_product_implies_concyclic_axiom` and its
+   re-export theorem `converse_product_implies_concyclic`. They are replaced by a
+   plain `/- -/` doc block that states the unsigned converse is false, points at the
+   machine-checked `unsigned_converse_counterexample` / `signed_converse_implies_concyclic`
+   in the converse file, and explicitly records WHY the corrected theorem is NOT
+   re-exported here: `import Proofs.ProductOfSegmentsOfChordsConverse` pulls full
+   `import Mathlib`, whose root-namespace `Circle` (`Submonoid.unitSphere ℂ`) shadows
+   the local `structure Circle`, breaking every `C.center`/`C.radius` in this file.
+   (Confirmed empirically: the import-and-delegate version compiled the converse fine
+   but failed with `Invalid field 'center'/'radius'` across the forward lemmas.)
+   File `axiomCount` 1 → **0**. Nothing depends on the deleted re-export (only doc
+   mentions in OQ03 + the converse file).
+
+2. **Applied the forced mechanical 4.26.0 migrations** (reduce the repair surface):
+   - `inner X Y` → `inner ℝ X Y` at all ~24 application sites (forms `inner P dir`,
+     `inner P' dir`, `inner P P`, `inner dir dir`, `inner (P+t•dir) (P+t•dir)`).
+   - `def powerOfPoint` → `noncomputable def` (EuclideanSpace norm has no IR).
+
+**Still build-pending — the lone remaining blocker is the vector-division rot** in
+`power_of_point_product` (~lines 290–410), unchanged this session because it needs a
+working build to iterate and the shared `.lake` mathlib cache was wiped mid-session
+(re-clone → OOM risk on the 7.65GB Docker VM). Blueprint (still accurate):
+`dir := (A'-P') / ‖A'-P'‖` → `(‖A'-P'‖)⁻¹ • (A'-P')`, reworking each
+`smul_div_assoc`/`div_self` step into `smul_smul`/`inv_mul_cancel₀`; `ring`/`ring_nf`
+on vector goals (268/270/304/315) → `abel`/`module`; the `A=P`-from-`A-c=P-c`
+`linarith` steps → `sub_left_injective`/`sub_right_cancel`; and the `rw` at
+`center_chord_product` (~line 454). Once green, gallery flips formalized/wip →
+verified/original (or mathlib).
+
+Gallery meta updated honestly this session: `status` axiomatized → **formalized**,
+`badge` axiom → **wip**, `axiomCount` 1 → **0**, `lineCount` 541 → 530, and the
+`assumptions` field rewritten to record the axiom removal + the build-pending rot.
+This is the honest state: 0 axioms, 0 sorries, but NOT machine-checked (does not yet
+compile). Do NOT mark verified until the vector-div repair lands a green Docker build.
