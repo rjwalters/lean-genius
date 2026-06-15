@@ -27,13 +27,46 @@ the local proof: `Subgroup.subgroupOf_sup`, `Subgroup.mem_sup`,
 ## Insight 3 — Cert anchor (`verify_jordan_holder_lattice.py`)
 Brute-force subgroup lattices verify A1 + A2 on V4 (6/6, 6/6), C6 (2/2, 2/2),
 S3 (vacuous — only A3 is maximal-normal), D4 order 8 (18/18, 18/18). Regression
-oracle for the re-namespaced upstream instance.
+oracle for the re-namespaced upstream instance. **S2 (2026-06-15) added a
+map-obstruction witness** (see Insight 4) — script still exits 0 / ALL PASS.
+
+## Insight 4 — The "map composition series across homomorphisms" piece (S2, 2026-06-15)
+The TODO asks for two things: (i) the subgroup *instance* (Insights 1–2), and
+(ii) **"an API for mapping composition series across homomorphisms."** S2 pins
+down what (ii) actually needs, against the repo pin and master:
+
+- **The generic carrier already exists** at BOTH v4.26.0 and master:
+  `RelSeries.map (p : RelSeries r) (f : r.Hom s) : RelSeries s`
+  (`Mathlib/Order/RelSeries.lean:372`, with `@[simp] head_map`/`last_map`),
+  where `r.Hom s` is a function preserving the relation (`f.1 : α → β`,
+  `f.2 : r a b → s (f a) (f b)`). So pushing a series along a relation-preserving
+  map is **not** the missing infrastructure.
+- **The missing piece is the group-specific `RelSeries.Hom` builder.** The naive
+  candidate — push a `CompositionSeries (Subgroup G)` along `Subgroup.map φ` —
+  does **not** instantiate `r.Hom s` for the JordanHolder `IsMaximal = IsMaxNorm`
+  relation, because **maximal-normality is not stable under images with
+  nontrivial kernel**. Concrete obstruction (now in the cert):
+  `G = C4 = ⟨g⟩`, `N = ⟨g²⟩ = ker φ`, quotient `φ : C4 ↠ C4/N ≅ C2`. The covering
+  `{e} ◁ ⟨g²⟩` maps to `φ{e} = φ⟨g²⟩ = {e}`, i.e. `{e} ◁ {e}` — not strict, not a
+  covering, so `Subgroup.map φ` fails the `r.Hom s` *step law*.
+- **Consequence**: the map API the TODO wants is not `RelSeries.map (Subgroup.map φ)`.
+  It must restrict φ (injective ⇒ images preserve the covering) or handle quotient
+  steps through the second isomorphism theorem (collapse the kernel-side prefix
+  and re-index). This is a sharper statement of the remaining upstream work than
+  S1's "an API for mapping composition series across homomorphisms (orthogonal)".
 
 ## Open threads
-- Track the Mathlib TODO; a `composition-series-across-homomorphisms` API is the
-  other piece the TODO requests (orthogonal to the instance).
+- **OQ still OPEN at master (re-confirmed S2, 2026-06-15)**: the TODO block in
+  `Mathlib/Order/JordanHolder.lean` is present at v4.26.0 and master (master file
+  grew 420→454 LOC, now under `@[expose] public section`, but the TODO/NOTE at
+  L51-68 is unchanged). No `JordanHolderLattice (Subgroup G)` instance has landed
+  (`search/code JordanHolderLattice Subgroup` → only the TODO mention +
+  `nolints.json`). So this OQ does not auto-close.
+- The map-API builder (Insight 4) — restrict to injective φ first; the quotient
+  case needs the second-iso-theorem re-indexing.
 - Confirm whether a `ModularLattice` `JordanHolderLattice` instance has landed
   upstream (would force the subgroup instance to be non-global regardless).
+  **S2: still not present at master.**
 
 ## Links
 - Parent: [[abel-ruffini-galois-extensions-oq-04]] (Jordan-Hölder for finite groups).
