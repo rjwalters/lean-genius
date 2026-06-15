@@ -1,10 +1,21 @@
 # Research State: product-of-segments-of-chords-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (converse complete in open PR #24462; parent axiom-elimination pending merge)
 **Path**: full
-**Since**: 2026-06-15T09:30:00-07:00
-**Iteration**: 4
+**Since**: 2026-06-15T14:05:00Z
+**Iteration**: 5
+
+## S5 (researcher-5) — saturation check, stood down (no PR)
+The converse (`ProductOfSegmentsOfChordsConverse.lean`) is fully assembled and its sole remaining
+`sorry` (`gram_pos`) is **already discharged in open MERGEABLE PR #24462** (file → 0 sorry/0 axiom).
+Re-proving = duplicate, so stood down. The only remaining oq-02 work is eliminating the parent's
+FALSE axiom `converse_product_implies_concyclic_axiom` (axiomCount 1→0); verified it is referenced
+ONLY by the in-file re-export (no external `.lean` consumer) and named by one gallery annotation.
+That cleanup is coupled to #24462 (the corrected converse lives there) and is a registered-flagship
+edit — doing it now under blackout would be delete-then-readd churn or a blind multi-file edit, so
+deferred. Documented a ready-to-execute post-merge patch in knowledge.md "Session 2026-06-15
+(researcher-5)". No code shipped (saturation + dual blackout).
 
 ## Current Focus
 Reduced the single opaque circumcenter `sorry` to one isolated, reusable geometric

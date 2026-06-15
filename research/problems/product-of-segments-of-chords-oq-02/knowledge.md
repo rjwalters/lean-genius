@@ -255,3 +255,47 @@ names/directions of `real_inner_self_eq_norm_sq` / `real_inner_smul_right` /
 unverified). `equidistant_of_inner` uses only lemmas already exercised elsewhere
 in this file. Next live Docker session: build, repair any gaps, prove `gram_pos`,
 then discharge the parent axiom.
+
+## Session 2026-06-15 (researcher-5) — saturation check + consolidated axiom-elimination plan (no PR)
+
+Dual blackout still LIVE (`docker info` timeout; Aristotle `prove` → 404, re-probed). Claimed the
+slug, found it **saturated for this session**:
+
+- `ProductOfSegmentsOfChordsConverse.lean` is fully assembled; the **sole** remaining `sorry`
+  (`gram_pos`, strict Cauchy–Schwarz) is **already discharged in open, MERGEABLE PR #24462**
+  (witness `z = ‖u‖²•v − ⟪u,v⟫•u`, `⟪z,z⟩ = ‖u‖²·Δ`, `z ≠ 0` by `LinearIndependent.pair_iff`).
+  That PR makes the file **0 sorry / 0 axiom**. Re-proving it would duplicate #24462 — stood down.
+  (gram_pos was also proved independently in PR #24451 via `inner_lt_norm_mul_iff_real`.)
+
+- **Only remaining oq-02 work = eliminate the parent's FALSE axiom**
+  `converse_product_implies_concyclic_axiom` (`ProductOfSegmentsOfChords.lean:468`), driving
+  `meta.json` axiomCount `1 → 0`. Dependency map (verified this session):
+  * The axiom is referenced **only** by the re-export `converse_product_implies_concyclic`
+    (`:481–490`) inside the same file. **No other `.lean` uses it** (other hits are docstrings).
+    meta.json itself notes "the axiom is not used by the forward theorem."
+  * The re-export `converse_product_implies_concyclic` is named by **one gallery annotation**
+    (`src/data/proofs/product-of-segments-of-chords/annotations.source.json:120`) — must be
+    repointed/removed if the re-export is deleted, else the auditor flags a dangling annotation.
+  * Nothing below `:490` (Part 8 numerical examples) touches either declaration.
+
+  **Why not now:** doing it under blackout means either (a) pure deletion of axiom + re-export now,
+  then a LATER PR re-adding a corrected signed re-export once #24462 merges (delete-then-readd
+  churn on a registered flagship), or (b) a blind multi-file flagship edit I can't typecheck. Both
+  bad. The clean single move belongs in the **post-#24462-merge, Docker-up** session.
+
+  **Ready post-merge patch (execute once #24462 is on main + Docker returns):**
+  1. In `ProductOfSegmentsOfChords.lean`: delete `axiom converse_product_implies_concyclic_axiom`
+     (`:468`). Replace the re-export `converse_product_implies_concyclic` (`:481`) with the
+     **corrected signed** statement, proved by `exact ProductOfSegmentsOfChordsConverse.signed_converse_implies_concyclic …`
+     (add `import Proofs.ProductOfSegmentsOfChordsConverse`). Signature gains `(t s : ℝ)`,
+     `hAB : B-P = t•(A-P)`, `hCD : D-P = s•(C-P)`, `hindep : LinearIndependent ℝ ![A-P, C-P]`,
+     `hsigned : t*‖A-P‖² = s*‖C-P‖²`, `hAneP hCneP`; drop the unsigned `hProduct`.
+  2. Update the gallery annotation (`annotations.source.json:120`) to the corrected signature, or
+     drop it; regen annotations.
+  3. `meta.json`: axiomCount `1 → 0`; keep `status:"axiomatized"`→ may move toward `"verified"`
+     ONLY after a clean full build confirms 0 sorries/0 axioms across parent + Converse.
+  4. Register `import Proofs.ProductOfSegmentsOfChordsConverse` in `proofs/Proofs.lean` (currently
+     unregistered) and build both.
+
+No code shipped this session (saturation + blackout). Forward value = the dependency map + the
+consolidated post-merge patch above, so the next session executes in one pass without re-deriving.
