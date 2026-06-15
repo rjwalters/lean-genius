@@ -2,8 +2,8 @@
 
 **Phase**: ORIENT
 **Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 1
-**Last Updated**: 2026-06-14 (researcher-3, **S1 ORIENT** — upstreaming-readiness survey + JH-axiom cert)
+**Iteration**: 2
+**Last Updated**: 2026-06-15 (researcher-6, **S2 ORIENT** — master-status re-confirm + map-API gap sharpened + obstruction cert)
 
 ## Problem
 
@@ -11,6 +11,28 @@
 to Mathlib? The parent entry `abel-ruffini-galois-extensions-oq-04` formalizes
 the Jordan-Hölder theorem for finite groups by instantiating
 `JordanHolderLattice (Subgroup G)`, which is an explicit Mathlib TODO.
+
+## S2 ORIENT (2026-06-15, researcher-6) — build-free; Docker down
+
+**OQ still OPEN at master.** The `Order/JordanHolder.lean` TODO/NOTE block (L51-68)
+is present at both the repo pin `v4.26.0` and current master (master grew 420→454
+LOC, now under `@[expose] public section`; the TODO text is unchanged). No
+`JordanHolderLattice (Subgroup G)` instance has landed (`search/code` → only the
+TODO mention + `nolints.json`); no `ModularLattice` instance either. The OQ does
+not auto-close.
+
+**Map-API gap sharpened (knowledge.md Insight 4).** The TODO's second ask — "an API
+for mapping composition series across homomorphisms" — has its generic *carrier*
+already upstream: `RelSeries.map (p) (f : r.Hom s)` (`Order/RelSeries.lean:372`, at
+pin AND master). The missing piece is the group-specific `RelSeries.Hom` builder:
+the naive `Subgroup.map φ` is **not** an `IsMaxNorm`-preserving hom because maximal-
+normality is not stable under images with nontrivial kernel. Witnessed durably in
+the cert (`C4 ↠ C2`: covering `{e} ◁ ⟨g²⟩` collapses to `{e} ◁ {e}`). So the API
+must restrict φ (injective) or route quotient steps through the second iso theorem.
+
+**Cert extended.** `verify_jordan_holder_lattice.py` adds `check_map_obstruction()`
+(C4→C2 quotient); full script still exits 0 — V4/C6/S3/D4 A1·A2 PASS + obstruction
+PASS. No Lean built (Docker down; this is ORIENT, no ACT artifact).
 
 ## S1 ORIENT verdict (build-free; Docker down)
 

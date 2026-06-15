@@ -146,6 +146,78 @@ def check_group(name, gens, n):
     return ok
 
 
+def map_subgroup(H, phi):
+    """Image phi(H) = {phi(h) : h in H} as a frozenset. For a homomorphism phi
+    this is automatically a subgroup of the codomain."""
+    return frozenset(phi[h] for h in H)
+
+
+def is_homomorphism(phi, G, n_dom):
+    """Check phi : G -> codomain respects composition on all pairs."""
+    for a in G:
+        for b in G:
+            if phi[compose(a, b)] != compose(phi[a], phi[b]):
+                return False
+    return True
+
+
+def check_map_obstruction():
+    """Durable witness for the *map* half of the Mathlib TODO.
+
+    Mathlib master/v4.26.0 already provide the generic carrier
+    `RelSeries.map (p) (f : r.Hom s)` (Order/RelSeries.lean:372) which pushes a
+    series along a *relation-preserving* map `f`. The JordanHolder TODO asks for
+    "an API for mapping composition series across homomorphisms". The naive
+    candidate -- push a CompositionSeries of `Subgroup G` along `Subgroup.map phi`
+    -- does NOT instantiate `RelSeries.Hom` for the `IsMaxNorm` relation, because
+    `IsMaxNorm` (maximal *normal* covering) is not stable under images with
+    nontrivial kernel.
+
+    Concrete obstruction: G = C4 = <g>, kernel N = <g^2> (order 2), quotient map
+    phi : C4 -> C4/N =~ C2. The composition series {e} <| <g^2> <| C4 has the
+    maximal-normal covering {e} <| <g^2>. But phi({e}) = phi(<g^2>) = {e}
+    (since <g^2> = ker phi), so the image step {e} <| {e} is NOT a covering
+    (not even strict). Hence `Subgroup.map phi` fails the `r.Hom s` step law and
+    `RelSeries.map` cannot be applied. The map API must therefore restrict phi
+    (e.g. injective) or route quotient steps through the second isomorphism
+    theorem -- it is not the trivial `RelSeries.map (Subgroup.map phi)`.
+    """
+    n = 4
+    g = (1, 2, 3, 0)                      # 4-cycle generates C4 on {0,1,2,3}
+    G = closure([g], n)
+    subs = [s for s in all_subgroups(G, n) if s <= G]
+    ident = tuple(range(n))
+    g2 = compose(g, g)
+    N = closure([g2], n)                  # <g^2>, order 2 = ker phi
+    triv = frozenset([ident])
+
+    # phi : C4 -> C2 (C2 realized on {0,1}); phi(g^k) = (1,0)^k.
+    c2_id, c2_swap = (0, 1), (1, 0)
+    phi = {}
+    cur = ident
+    img = c2_id
+    for _ in range(len(G)):
+        phi[cur] = img
+        cur = compose(cur, g)
+        img = compose(img, c2_swap)
+
+    hom_ok = is_homomorphism(phi, G, n)
+    cover_ok = is_max_norm(triv, N, subs, n)          # {e} <| <g^2> in C4
+    phi_triv = map_subgroup(triv, phi)
+    phi_N = map_subgroup(N, phi)
+    collapses = (phi_triv == phi_N)                    # image step is non-strict
+    # The image is not a covering: phi(triv) is not maximal-normal in phi(N).
+    not_a_cover = (phi_triv == phi_N)                  # equal => not H < K
+
+    ok = hom_ok and cover_ok and collapses and not_a_cover
+    print(f"[{'PASS' if ok else 'FAIL'}] map-obstruction (C4 -->phi C2): "
+          f"phi hom={hom_ok}, "
+          f"source cover {{e}}<|<g^2>={cover_ok}, "
+          f"image collapses phi({{e}})==phi(<g^2>)={collapses} "
+          f"==> Subgroup.map phi is NOT an IsMaxNorm RelSeries.Hom")
+    return ok
+
+
 def main():
     results = []
     # Klein four V4 = C2xC2: 3 maximal subgroups (all index 2, normal) -> rich A1.
@@ -161,12 +233,19 @@ def main():
     results.append(check_group("D4 (dihedral, order 8)",
                                [(1, 2, 3, 0), (0, 3, 2, 1)], 4))
 
+    # Map half of the TODO: the naive Subgroup.map phi is not a RelSeries.Hom.
+    print()
+    results.append(check_map_obstruction())
+
     print("\n=== RESULT ===")
     if all(results):
-        print("All JordanHolderLattice axiom checks PASS on V4, C6, S3, D4.")
+        print("All JordanHolderLattice axiom checks PASS on V4, C6, S3, D4,")
+        print("and the map-obstruction witness confirms `Subgroup.map phi` is not")
+        print("an `IsMaxNorm` RelSeries.Hom (maximality not stable under images).")
         print("Validates the (proved, 0-sorry) Lean instance's A1/A2 on examples;")
-        print("the upstreaming question is packaging (global-instance diamonds),")
-        print("not provability. See state.md.")
+        print("the instance-upstreaming question is packaging (global-instance")
+        print("diamonds), and the map-API question needs phi restricted (not the")
+        print("trivial `RelSeries.map (Subgroup.map phi)`). See state.md.")
     else:
         print("FAILURES present.")
         raise SystemExit(1)
