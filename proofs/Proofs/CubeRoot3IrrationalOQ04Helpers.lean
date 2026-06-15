@@ -857,4 +857,57 @@ theorem one_five_nine_three_three_six_eight_three_seven_five_over_one_one_zero_f
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-- `8350315863/5789785648 < ∛3`. The twenty-first convergent of the simple CF
+of `∛3` (using `a₂₀ = 1`).
+
+Convergent recursion (with `a₂₀ = 1`):
+
+  `q₂₀ = 1 · q₁₉ + q₁₈ = 1 · 4685005721 + 1104779927 = 5_789_785_648`
+  `p₂₀ = 1 · p₁₉ + p₁₈ = 1 · 6756947488 + 1593368375 = 8_350_315_863`
+
+After cubing,
+
+  `8_350_315_863³   = 582_248_945_773_308_354_436_424_440_647`
+  `3 · 5_789_785_648³ = 582_248_945_773_308_354_444_942_053_376`
+
+so `8_350_315_863³ < 3 · 5_789_785_648³` (strict, diff `8_517_612_729`), hence
+`(8350315863/5789785648)³ < 3` and `8350315863/5789785648 < cbrt3` as required
+for a lower bound (even convergent index `20`).
+
+`a₂₀ = 1` was re-derived independently from a 200-digit CF recomputation of
+`∛3` (cert `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py`), per the
+established anti-typo discipline: never re-quote a prior sketch tail, always
+recompute `aᵢ` and verify the cube-side direction before claiming. Two-line
+proof via the cubing-iff helper. -/
+theorem eight_three_five_zero_three_one_five_eight_six_three_over_five_seven_eight_nine_seven_eight_five_six_four_eight_lt_cbrt3 :
+    (8350315863 / 5789785648 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- `∛3 < 31807895077/22054362665`. The twenty-second convergent of the simple CF
+of `∛3` (using `a₂₁ = 3`), an UPPER bound (odd convergent index `21`).
+
+Convergent recursion (with `a₂₁ = 3`):
+
+  `q₂₁ = 3 · q₂₀ + q₁₉ = 3 · 5789785648 + 4685005721 = 22_054_362_665`
+  `p₂₁ = 3 · p₂₀ + p₁₉ = 3 · 8350315863 + 6756947488 = 31_807_895_077`
+
+After cubing,
+
+  `31_807_895_077³   = 32_181_389_399_984_333_588_608_803_821_533`
+  `3 · 22_054_362_665³ = 32_181_389_399_984_333_588_555_341_288_875`
+
+so `3 · 22_054_362_665³ < 31_807_895_077³` (strict, diff `53_462_532_658`), hence
+`3 < (31807895077/22054362665)³` and `cbrt3 < 31807895077/22054362665` as
+required for an upper bound.
+
+`a₂₁ = 3` was re-derived independently from a 200-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py`, which also
+records the 22nd-convergent recursion + cube direction), per the established
+anti-typo discipline. Two-line proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_three_one_eight_zero_seven_eight_nine_five_zero_seven_seven_over_two_two_zero_five_four_three_six_two_six_six_five :
+    cbrt3 < (31807895077 / 22054362665 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
