@@ -67,9 +67,9 @@
       "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 2,
+    "axiomCount": 1,
     "lineCount": 1099,
-    "assumptions": "2 axioms: korselt_backward, infinitely_many_carmichaels. 0 sorries.",
+    "assumptions": "1 axiom: infinitely_many_carmichaels (Alford–Granville–Pomerance infinitude of Carmichael numbers). 0 sorries. Korselt's 1899 criterion is now fully proved in both directions (korselt_forward and korselt_backward).",
     "theoremCount": 66,
     "definitionCount": 14
   },
@@ -106,10 +106,10 @@
     {
       "id": "carmichael",
       "title": "Definitions: Korselt and Carmichael",
-      "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem.",
+      "summary": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and proves Korselt's 1899 equivalence theorem in both directions (`korselt_forward`, `korselt_backward`).",
       "startLine": 39,
       "endLine": 60,
-      "mathContext": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and axiomatizes Korselt's 1899 equivalence theorem."
+      "mathContext": "Defines `satisfiesKorselt` (squarefree + divisibility), `IsCarmichael` (composite + Korselt), `satisfiesFermat` ($a^n \\equiv a \\pmod{n}$ for all $a$), and proves Korselt's 1899 equivalence theorem in both directions: the backward direction (`korselt_backward`) uses the elementary $a=p$ argument for squarefreeness and cyclicity of $(\\mathbb{Z}/p)^\\times$ for the divisibility condition."
     },
     {
       "id": "small",
