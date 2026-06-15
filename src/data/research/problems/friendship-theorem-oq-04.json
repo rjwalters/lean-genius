@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (build-pending): wrote FriendshipTheoremOQ04.lean — diameter-2 covering + locally-finite=>finite + universal-vertex capstone, the spectral-free positive result. Unregistered until a build backend confirms (dual blackout). Counterexample direction still open.",
+    "progressSummary": "PROGRESS: Positive half of OQ-04 formalized (sharp restoring condition = local finiteness) + new contrapositive theorem; full Mathlib name-check passed under Docker blackout. Build-pending/unregistered. Negative half (C5-amalgamation counterexample) still open.",
     "builtItems": [
       "research/problems/friendship-theorem-oq-04/verify_infinite_friendship.py: certifies linear-invariant preservation across 4 amalgamation rounds (|V| up to 3695, max common-nbrs stays 1), no universal vertex, degree blow-up [4,5,13,83], diameter-2 covering on W_1..W_8, and covering bound |V|<=1+deg(v)+sum deg(x) on W_1..W_13.",
       "proofs/Proofs/FriendshipTheoremOQ04.lean: ACT formalization (build-pending, unregistered under dual blackout). Fintype-free IsFriendshipGraph + 6 theorems.",
       "friendship_diameter_two (FriendshipTheoremOQ04.lean:71): every friendship graph has diameter <=2 (G.Adj v u OR common neighbor x), no Fintype.",
       "univ_subset_two_ball (:79): univ subset {v} U N(v) U bigUnion_{x in N(v)} N(x) via exists_common_neighbor.",
       "univ_finite_of_locallyFinite (:96) + locally_finite_is_finite (:109): local finiteness => Finite V via Set.Finite.biUnion of the 2-ball covering.",
-      "locally_finite_friendship_has_universal (:117): capstone — restores universal vertex by bridging Finite->Fintype (Fintype.ofFinite) and applying the finite FriendshipTheorem.friendship_theorem with card>=3 from three distinct vertices."
+      "locally_finite_friendship_has_universal (:117): capstone — restores universal vertex by bridging Finite->Fintype (Fintype.ofFinite) and applying the finite FriendshipTheorem.friendship_theorem with card>=3 from three distinct vertices.",
+      "infinite_friendship_has_infinite_degree in FriendshipTheoremOQ04.lean (build-pending, unregistered)",
+      "S3: name-checked all 12 Mathlib deps of FriendshipTheoremOQ04.lean against sibling v4.26 — all confirmed"
     ],
     "insights": [
       "Theorem FAILS for infinite graphs: C5 free-amalgamation (Chvatal-Kotzig-Rosenberg-Davies 1976) yields a countable friendship graph with no universal vertex; all vertices have infinite degree.",
@@ -45,7 +47,8 @@
       "RESTORING CONDITION = local finiteness: the diameter-2 covering makes V a finite union of finite sets => finite => windmill => universal vertex. Obstruction is precisely an infinite-degree vertex.",
       "WHERE finite proof breaks: spectral step friendship_regular_implies_universal (FriendshipTheorem.lean:193) is entirely finite-matrix (trace, finite eigenvalue multiplicities, integrality) with no infinite analogue. The regularity dichotomy degrades to vacuous (all infinite degrees equal as cardinals).",
       "ACT: the positive OQ-04 result is finiteness-light and spectral-free — the diameter-2 covering (purely local) plus local finiteness gives Finite V directly, bypassing the trace/eigenvalue step that has no infinite analogue.",
-      "Bridge technique: my Fintype-free IsFriendshipGraph is DEFINITIONALLY equal to FriendshipTheorem.IsFriendshipGraph (both = forall u v, u!=v -> (commonNeighbors).ncard=1), so the lambda (fun u v h => hF u v h) coerces between them with no rewriting."
+      "Bridge technique: my Fintype-free IsFriendshipGraph is DEFINITIONALLY equal to FriendshipTheorem.IsFriendshipGraph (both = forall u v, u!=v -> (commonNeighbors).ncard=1), so the lambda (fun u v h => hF u v h) coerces between them with no rewriting.",
+      "S3: Every infinite friendship graph has an infinite-degree vertex (infinite_friendship_has_infinite_degree) — exact contrapositive of locally_finite_is_finite; infinite degree is forced, not incidental."
     ],
     "mathlibGaps": [
       "No infinite/analytic spectral analogue: ERS spectral step needs finite adjacency matrix trace + finite eigenvalue multiplicities (Mathlib adjMatrix trace is Fintype-bound). Infinite side must avoid it entirely (use diameter-2 covering instead)."

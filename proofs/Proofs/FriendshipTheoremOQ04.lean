@@ -32,6 +32,10 @@ that has no infinite analogue:
   restoring condition: the sole obstruction to finiteness is an infinite-degree
   vertex.
 
+* `infinite_friendship_has_infinite_degree` — the contrapositive: every *infinite*
+  friendship graph is forced to contain a vertex of infinite degree. Infinite degree
+  is not incidental to the known counterexamples — it is unavoidable.
+
 * `locally_finite_friendship_has_universal` — combining the above with the finite
   gallery theorem `FriendshipTheorem.friendship_theorem` recovers a universal
   vertex for any locally finite friendship graph with at least three vertices.
@@ -110,6 +114,21 @@ theorem locally_finite_is_finite (hF : IsFriendshipGraph G)
     (hfin : ∀ w : V, (G.neighborSet w).Finite) :
     Finite V :=
   Set.finite_univ_iff.mp (univ_finite_of_locallyFinite hF hfin)
+
+/-- **The sharp obstruction, stated positively.** Every *infinite* friendship graph
+has a vertex of infinite degree. This is the exact contrapositive of
+`locally_finite_is_finite`: an infinite friendship graph cannot be locally finite, so
+infinite degree is *forced*, not incidental. It pinpoints where the finite proof
+breaks — the dichotomy/spectral machinery silently assumes finite degrees. -/
+theorem infinite_friendship_has_infinite_degree (hF : IsFriendshipGraph G) [Infinite V] :
+    ∃ w : V, (G.neighborSet w).Infinite := by
+  by_contra h
+  have hfin : ∀ w : V, (G.neighborSet w).Finite := by
+    intro w
+    by_contra hw
+    exact h ⟨w, hw⟩
+  haveI : Finite V := locally_finite_is_finite hF hfin
+  exact not_finite V
 
 /-- **Conclusion restored.** A locally finite friendship graph with at least three
 vertices has a universal vertex — recovered from the finite gallery theorem via the

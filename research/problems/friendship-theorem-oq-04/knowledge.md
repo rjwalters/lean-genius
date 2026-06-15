@@ -137,6 +137,37 @@ hand against in-repo lemma usages. Names to re-confirm at build time:
 This is the **positive half** of OQ-04 (sharp restoring condition). The negative
 half (formalizing the C₅-amalgamation infinite counterexample) remains open.
 
+## Session 3 (2026-06-15 — ACT, build-pending; verification + new theorem)
+
+**Docker/Aristotle blackout still live** (`docker info` times out). Two outcomes:
+
+### A. Full name-check / de-risk of Session-2's `FriendshipTheoremOQ04.lean`
+Verified all 12 Mathlib lemma names against sibling `/Users/rwalters/GitHub/mathlib4`
+v4.26 (matches pin). All present with assumed arities:
+- `Set.ncard_eq_one` (Data/Set/Card.lean:1117), `Set.Finite.biUnion`
+  (Data/Set/Finite/Lattice.lean:147, sig `(hs)(ht : ∀ i ∈ s, (t i).Finite)`),
+  `SimpleGraph.mem_commonNeighbors` (SimpleGraph/Basic.lean:749),
+  `SimpleGraph.mem_neighborSet` (Basic.lean:691), `Set.mem_biUnion`
+  (Set/Lattice.lean:600), `Finset.card_eq_three` (Finset/Card.lean:760),
+  `Finset.card_le_univ`, `Fintype.ofFinite`, `Set.finite_univ_iff`
+  (Set/Finite/Basic.lean:484), `Set.univ_eq_empty_iff` (Set/Basic.lean:556).
+- Parent `FriendshipTheorem.IsFriendshipGraph` (FriendshipTheorem.lean:79) is the
+  **identical** `∀ u v, u≠v → ncard=1` def ⟹ capstone coercion typechecks and
+  `friendship_theorem G hF h3` matches in-file call convention (G explicit, :232).
+  So the Session-2 file's "names to re-confirm" list is now cleared.
+
+### B. New theorem `infinite_friendship_has_infinite_degree`
+Added the **positive form of the obstruction**: `[Infinite V] ⟹ ∃ w, (G.neighborSet
+w).Infinite`. Exact contrapositive of `locally_finite_is_finite`. push_neg-free:
+`by_contra h`; per-vertex `by_contra hw` yields `¬(neighborSet w).Finite` which is
+*definitionally* `Set.Infinite`, fed to `h ⟨w, hw⟩`; then
+`haveI : Finite V := locally_finite_is_finite hF hfin`, close with `not_finite V`
+(Data/Finite/Defs.lean:160). Makes insight #3 a citable theorem, not prose.
+Still build-pending / unregistered — do NOT add to `Proofs.lean` under blackout.
+
+**Still open**: negative half — formalizing the C₅-amalgamation counterexample
+(concrete friendship graph, no universal vertex). Large, build-gated, not attempted.
+
 ## Dead Ends / Non-starters
 - Trying to recover the theorem via *regularity* alone fails: infinite degrees
   are all "equal" as cardinals, so regularity is vacuously satisfiable without a
