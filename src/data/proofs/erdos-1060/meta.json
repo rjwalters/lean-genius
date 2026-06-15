@@ -91,7 +91,7 @@
       "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 33,
+      "endLine": 28,
       "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Finset); namespace `Erdos1060`",
       "mathContext": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Finset); namespace `Erdos1060`"
     },
@@ -99,71 +99,71 @@
       "id": "divisor-function",
       "title": "Sum of Divisors Function",
       "summary": "sigma definition and basic properties",
-      "startLine": 34,
-      "endLine": 62,
+      "startLine": 29,
+      "endLine": 64,
       "mathContext": "$\\sigma(k) = \\sum_{d \\mid k} d$ is the sum of divisors function. It is multiplicative: $\\sigma(mn) = \\sigma(m)\\sigma(n)$ for $\\gcd(m,n) = 1$. Basic values: $\\sigma(1) = 1$, $\\sigma(p) = p+1$ for prime $p$, $\\sigma(p^a) = (p^{a+1}-1)/(p-1)$."
     },
     {
       "id": "product-function",
       "title": "Product k·σ(k)",
       "summary": "g definition, g_one, g_prime theorems",
-      "startLine": 63,
-      "endLine": 84,
+      "startLine": 65,
+      "endLine": 85,
       "mathContext": "Define $g(k) = k \\cdot \\sigma(k)$. For primes: $g(p) = p(p+1)$. Note $g$ is NOT multiplicative: $g(6) = 6 \\cdot 12 = 72$ but $g(2) \\cdot g(3) = 6 \\cdot 12 = 72$ coincidentally; in general $g(mn) \\neq g(m)g(n)$."
     },
     {
       "id": "counting-function",
       "title": "Counting Function f(n)",
-      "summary": "solutionSet, f definitions, finiteness proof",
-      "startLine": 85,
-      "endLine": 130,
+      "summary": "solutionSet, f definitions, finiteness proof; f' (Finset reformulation) and f_eq_f' (f = f' for n > 0).",
+      "startLine": 86,
+      "endLine": 176,
       "mathContext": "$f(n) = |\\{k : g(k) = n\\}|$. Finiteness: since $\\sigma(k) \\geq 1$ for $k \\geq 1$, we have $g(k) = k\\sigma(k) \\geq k$, so $g(k) = n$ implies $k \\leq n$. Thus $f(n) \\leq n$ trivially."
     },
     {
       "id": "basic-values",
       "title": "Basic Values",
       "summary": "f(1), f(0) theorems",
-      "startLine": 131,
-      "endLine": 147,
+      "startLine": 177,
+      "endLine": 221,
       "mathContext": "$f(1) = 1$ (only $k=1$ gives $g(1) = 1\\cdot 1 = 1$). $f(0) = 1$ (only $k=0$ gives $g(0) = 0$). Most values of $n$ have $f(n) = 0$ (not in the range of $g$)."
     },
     {
       "id": "trivial-upper-bound",
       "title": "Trivial Upper Bound",
       "summary": "f_le_n, g_pos, g_gt_k theorems",
-      "startLine": 211,
-      "endLine": 257,
+      "startLine": 222,
+      "endLine": 267,
       "mathContext": "**Trivial upper bound:** $f(n) \\leq n$ for $n > 0$, since solutions $k$ lie in $[1,n]$. Also $g(k) > 0$ for $k > 0$, and $g(k) > k$ for $k \\geq 2$ (because $\\sigma(k) \\geq k+1$ when both $1$ and $k$ divide $k$). The open conjectures ask for dramatically better bounds than $f(n) \\leq n$."
     },
     {
       "id": "conjectures",
       "title": "Upper Bound Conjectures (Open)",
       "summary": "Weak and strong conjecture axioms",
-      "startLine": 259,
-      "endLine": 283,
+      "startLine": 268,
+      "endLine": 285,
       "mathContext": "Weak: $f(n) \\leq n^{o(1/\\log\\log n)}$, meaning for any $\\varepsilon > 0$, eventually $f(n) \\leq n^{\\varepsilon/\\log\\log n}$. Strong: $f(n) \\leq (\\log n)^C$ for some absolute constant $C$. Both remain OPEN."
     },
     {
       "id": "oeis",
       "title": "OEIS Connection",
       "summary": "A327153 definition and membership",
-      "startLine": 285,
-      "endLine": 313,
+      "startLine": 286,
+      "endLine": 315,
       "mathContext": "OEIS A327153: the set $\\{n : f(n) > 0\\} = \\{g(k) : k \\geq 1\\} = \\{1, 6, 12, 30, 56, 72, \\ldots\\}$. This is the range of $g(k) = k\\sigma(k)$."
     },
     {
       "id": "examples",
       "title": "Examples and Computations",
       "summary": "Concrete verified examples using native_decide",
-      "startLine": 324,
-      "endLine": 360,
+      "startLine": 316,
+      "endLine": 353,
       "mathContext": "Verified: $g(2) = 6$, $g(3) = 12$, $g(5) = 30$, $g(6) = 72$, $g(7) = 56$. For primes $p$: $g(p) = p(p+1)$, giving infinitely many values in the range."
     },
     {
       "id": "sqrt-bound",
       "title": "The Square Root Bound",
       "summary": "Proved f(n) ≤ √n for n > 0",
-      "startLine": 362,
+      "startLine": 354,
       "endLine": 387,
       "mathContext": "Since $\\sigma(k) \\geq k$ for $k > 0$ (as $k | k$), we have $g(k) = k \\cdot \\sigma(k) \\geq k^2$. Hence any solution $k$ to $g(k) = n$ satisfies $k \\leq \\sqrt{n}$, giving the bound $f(n) \\leq \\sqrt{n}$. This is a concrete proved bound, intermediate between the trivial $f(n) \\leq n$ and the open conjectures $f(n) \\leq n^{o(1/\\log\\log n)}$ and $f(n) \\leq (\\log n)^{O(1)}$."
     }
