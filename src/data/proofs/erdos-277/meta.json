@@ -125,54 +125,54 @@
       "id": "trivial-covering",
       "title": "Trivial Covering Analysis",
       "startLine": 123,
-      "endLine": 172,
+      "endLine": 153,
       "summary": "Defines and proves properties of the trivial covering $\\{0 \\pmod{1}\\}$: it covers all integers (proved), $1 \\mid n$ for all $n \\geq 1$ (proved), so every $n \\geq 1$ has some covering with divisor moduli (proved). Motivates the non-trivial refinement.",
       "mathContext": "Defines and proves properties of the trivial covering $\\{0 \\pmod{1}\\}$: it covers all integers (proved), $1 \\mid n$ for all $n \\geq 1$ (proved), so every $n \\geq 1$ has some covering with divisor moduli (proved)."
     },
     {
       "id": "nontrivial-refinement",
       "title": "Non-Trivial Covering Refinement",
-      "startLine": 173,
-      "endLine": 191,
+      "startLine": 154,
+      "endLine": 166,
       "summary": "Defines `HasDistinctModuli`, `IsNonTrivialCovering` ($\\geq 2$ distinct moduli), and `HasNonTrivialCoveringWithDivisorModuli`. documents in source comments `haight_strong_theorem` (no Lean declaration exists): the stronger result excluding non-trivial coverings.",
       "mathContext": "Defines `HasDistinctModuli`, `IsNonTrivialCovering` ($\\geq 2$ distinct moduli), and `HasNonTrivialCoveringWithDivisorModuli`. documents in source comments `haight_strong_theorem` (no Lean declaration exists): the stronger result excluding non-trivial coverings."
     },
     {
       "id": "covering-properties",
       "title": "Key Properties of Covering Systems",
-      "startLine": 192,
-      "endLine": 214,
+      "startLine": 167,
+      "endLine": 183,
       "summary": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence.",
       "mathContext": "Defines the reciprocal sum $\\sum_{c \\in S} 1/m_c$ and states the bound $\\sum 1/m_i \\geq 1$ in a docstring (no Lean declaration). Proves `covering_crt_connection` via `Finset.mem_image`: every modulus in a covering system has at least one congruence."
     },
     {
       "id": "haight-construction",
       "title": "Haight's Construction Insight",
-      "startLine": 215,
-      "endLine": 243,
+      "startLine": 184,
+      "endLine": 198,
       "summary": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section.",
       "mathContext": "Source comments outline Haight's strategy: primorial-like products $n = p_1 \\cdots p_k$ achieve high $\\sigma(n)/n$ via $\\prod (1 + 1/p_i)$ while having divisor reciprocal sums too small for covering. No Lean definitions are introduced in this section."
     },
     {
       "id": "related-concepts",
       "title": "Related Concepts",
-      "startLine": 244,
-      "endLine": 263,
+      "startLine": 199,
+      "endLine": 221,
       "summary": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$). Proves `lcm_divides_of_all_divide` and `haight_superabundance_connection`.",
       "mathContext": "Defines `coveringLCM` (period of covering system), `IsHighlyComposite` ($n$ maximizes $d(n)$ up to $n$), `IsSuperabundant` ($n$ maximizes $\\sigma(n)/n$ up to $n$)."
     },
     {
       "id": "connections",
       "title": "Connections to Other Problems",
-      "startLine": 244,
-      "endLine": 263,
+      "startLine": 222,
+      "endLine": 241,
       "summary": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition). Part of Erdős's covering system cluster #273-#279.",
       "mathContext": "Links to Problem #276 (distinct-moduli covering existence), #278 (covering density), and Egyptian fractions ($\\sum 1/m_i$ as unit fraction decomposition)."
     },
     {
       "id": "summary",
       "title": "Summary and Main Results",
-      "startLine": 264,
+      "startLine": 242,
       "endLine": 275,
       "summary": "Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`.",
       "mathContext": "Verified: Three restatements of the main result: `erdos_277` (abstract), `erdos_277_main` (explicit $\\sigma(n) > cn$ formulation), and `erdos_277_summary`. All derive from the axiomatized `haight_theorem`."
