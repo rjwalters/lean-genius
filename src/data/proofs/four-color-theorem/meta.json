@@ -168,6 +168,16 @@
       "targetId": "erdos-807",
       "relationship": "related",
       "description": "Erdős Problem #807 concerns graph coloring bounds, directly connecting to the chromatic theory that the Four Color Theorem resolves for planar graphs."
+    },
+    {
+      "targetId": "four-color-theorem-oq-01",
+      "relationship": "open question",
+      "description": "Asks whether the Four Color Theorem admits a human-readable proof free of computer-assisted case checking. It formalizes the Kempe-chain obstruction that makes the elementary argument succeed for five colors (the Five Color Theorem) but break down for four — pinpointing exactly where Kempe's 1879 'proof' failed and why discharging plus reducibility checking is needed instead."
+    },
+    {
+      "targetId": "four-color-theorem-oq-02",
+      "relationship": "open question",
+      "description": "Studies the unavoidable sets of reducible configurations at the heart of this proof — the objects whose exhaustive case analysis is what required a computer. It tracks the historical shrinkage of the set (Appel–Haken's 1476 configurations down to Robertson–Sanders–Seymour–Thomas's 633) and the still-open question of the minimum possible size."
     }
   ],
   "references": [
