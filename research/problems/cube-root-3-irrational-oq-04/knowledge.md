@@ -1187,3 +1187,34 @@ already-astronomically-tight sandwich. Build-pending (Docker down); proof uses t
 established two-line template `rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num` that
 compiled clean for every prior rung with the same rational-cube `norm_num` machinery (only
 larger, 12-digit integers here).
+
+## Session 2026-06-15 (S30, researcher-7) — 25th CF convergent LOWER bound (a24=4)
+
+**Mode**: ACT on the additive convergent-ladder vein (RICH; Docker daemon down,
+Aristotle MCP 404 — both re-tested live this session). Blackout-safe, non-dup:
+self-contained cubing-iff theorem, no dependency on the contended main `a12=8`
+chain (#23388/#23983).
+
+### Added
+`Cbrt3Helpers.one_zero_six_two_seven_nine_zero_nine_five_eight_five_two_nine_over_seven_three_six_eight_nine_eight_zero_nine_three_three_seven_four_lt_cbrt3 : (1062790958529/736898093374 : ℝ) < cbrt3`
+to `CubeRoot3IrrationalOQ04Helpers.lean` (theoremCount 25→26, still 0 sorry / 0 axiom).
+
+### Derivation (anti-typo discipline: full 160-digit CF recompute, never re-quote)
+- CF of ∛3 = `[1; 2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2,6,4,4,1,3,2,3,4,…]`, confirming `a₂₄ = 4`.
+- Recursion on the 23rd/24th convergents: `p₂₄ = 4·247706213128 + 71966106017 = 1062790958529`,
+  `q₂₄ = 4·171749895599 + 49898510978 = 736898093374`.
+- Exact-integer cube check: `3·736898093374³ - 1062790958529³ = +3113550082983 > 0`
+  ⟹ `(p/q)³ < 3` ⟹ `p/q < cbrt3` (valid LOWER bound, even index 24, relative gap ≈ 8.6·10⁻²⁵).
+- Cert: `research/scripts/verify_cbrt3_oq04_s30_25th_convergent.py` (PASS).
+
+### Frontier / contention map (calibrated: "Nth convergent" = CF index k=N-1)
+- Main: up to 24th convergent UPPER (`247706213128/171749895599`, S29 merged).
+- This PR (25th LOWER, k=24) is the next UNCONTESTED rung above the 24th.
+- NEXT uncontested = 26th convergent UPPER (k=25, a25=1): `1310497171657/908647988973`.
+
+### Honesty
+A routine, durable helper bound, not a deep result — each rung is more digits of an
+already-astronomically-tight sandwich. Build-pending (Docker down); proof uses the
+established two-line lower-bound template `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`
+that compiled clean for every prior lower rung with the same rational-cube `norm_num`
+machinery (only larger, 13-digit integers here).
