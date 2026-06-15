@@ -85,3 +85,58 @@ Numerically pre-verified (sympy): φ(n) ≥ 2 for all 3 ≤ n ≤ 200; deg Φ_n 
 ## Dead ends
 
 - "Irrational real root of Φ_n" — vacuous; Φ_n has no real roots for n ≥ 3.
+
+---
+
+## Result (Session 2, 2026-06-15, REVISIT → ACT) — real subfield SOLVED
+
+New file `proofs/Proofs/NthRootIrrationalOQ01OQ01Real.lean` (0 sorries, 0 axioms,
+build-pending — Docker/Aristotle blackout at authoring). Separate file to avoid
+colliding with the still-open S1 PR #24349 (`NthRootIrrationalOQ01OQ01.lean`).
+
+Closes the "maximal real subfield" follow-up the S1 notes flagged as a Mathlib
+gap. **The gap was illusory.** S1 thought we'd need the minimal polynomial *of*
+`2cos(2π/n)` (absent in Mathlib). Instead the degree argument runs the other way
+and needs nothing new:
+
+1. `trace_not_rational` — for `ζ : ℂ` a primitive `n`-th root of unity with
+   `φ(n) ≥ 3`, `ζ + ζ⁻¹ = 2·cos(2π/n) ∉ Set.range (algebraMap ℚ ℂ)`
+   (i.e. irrational). **Proof:** if `ζ + ζ⁻¹ = r ∈ ℚ`, clear by `ζ` to get
+   `ζ² − r·ζ + 1 = 0`, so `ζ` is a root of the *rational* quadratic
+   `q = X² − C r·X + 1`. Then `minpoly ℚ ζ ∣ q` (`minpoly.dvd`), so
+   `deg(minpoly ℚ ζ) ≤ deg q = 2` (`natDegree_le_of_dvd`). But
+   `minpoly ℚ ζ = Φ_n` (`Polynomial.cyclotomic_eq_minpoly_rat`), of degree
+   `φ(n) ≥ 3` (`natDegree_cyclotomic`) — contradiction by `omega`.
+2. `fifthRoot_trace_not_rational` — concrete `n = 5`: `2·cos(2π/5) = (√5−1)/2`
+   is irrational (`φ(5) = 4`), via `Complex.isPrimitiveRoot_exp 5`.
+
+### Key insight
+
+The honest content of the real subfield is captured WITHOUT building any
+"minpoly of cos" machinery: the *trace* `ζ + ζ⁻¹` being rational forces `ζ` to
+satisfy a degree-2 rational polynomial, contradicting `deg Φ_n = φ(n) ≥ 3`. The
+sharp bound is `φ(n) ≥ 3` (⇔ `n ∉ {1,2,3,4,6}`), matching Niven's theorem: the
+only rational values of `2·cos(2π/n)` are `{2, −2, −1, 0, 1}`.
+
+### Mathlib lemmas used (all name-checked vs leanprover-community/mathlib4 master)
+
+- `Polynomial.cyclotomic_eq_minpoly_rat` (RingTheory/Polynomial/Cyclotomic/Roots.lean:178)
+- `Polynomial.natDegree_cyclotomic`, `minpoly.dvd` (FieldTheory/Minpoly/Field.lean:72;
+  args `(A) (x)` explicit), `Polynomial.natDegree_le_of_dvd`
+  (Algebra/Polynomial/Degree/Domain.lean:61), `Nat.totient_pos` (iff form).
+
+### Fragile points if CI fails
+
+- `by decide` for `3 ≤ Nat.totient 5` — fallback `rw [Nat.totient_prime (by norm_num)]`.
+- `compute_degree!` for `q.natDegree = 2` — fallback: prove `q.Monic` (`monicity!`)
+  for `q ≠ 0` and use `≤ 2` from `compute_degree`.
+- `rw [hr]` where `hr : algebraMap ℚ ℂ r = ζ + ζ⁻¹` after `simp` emits
+  `aeval_C` — if the coercion forms diverge, replace `rw [hr]; linear_combination -hmul`
+  with `linear_combination (-ζ) * hr - hmul` (no rewrite).
+- Register `Proofs.NthRootIrrationalOQ01OQ01Real` in `proofs/Proofs.lean` once a
+  backend is available (left UNREGISTERED to protect auto-merge).
+
+### Next follow-up (still genuinely open)
+
+- The *exact degree* `[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` (not just `> 1`) — would need the
+  minimal polynomial of the real generator, still absent in Mathlib.
