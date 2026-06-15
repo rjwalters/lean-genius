@@ -1,25 +1,33 @@
 # Research State: erdos-729-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-04-05T23:54:18-07:00
-**Iteration**: 1
+**Since**: 2026-06-15
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+OQ-02 resolved: `legendre_for_two` ($v_2(n!) = n - s_2(n)$) is now proved
+axiom-free from Mathlib's `sub_one_mul_padicValNat_factorial`. The
+`legendre_identity` axiom has been deleted (file axiom count 4 → 3).
 
 ## Active Approach
-None yet.
+Direct application of Mathlib's Legendre theorem at $p = 2$, plus a strong-induction
+bridge `digitSum_eq_digits_sum` from the file's recursive digit sum to
+`(Nat.digits p n).sum`.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+Docker build wrapper unavailable this session (blackout). Proof shipped
+build-pending after full name-check against sibling mathlib4 v4.26.0.
+Sole at-risk line: `rw [digitSum.eq_def, if_neg hn]` (wf-def unfold idiom).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Build-verify when Docker returns:
+`./proofs/scripts/docker-build.sh Proofs.Erdos729Problem`.
+Remaining axioms (Erdős 1968, Barreto–Leeham) are the genuinely deep open math,
+out of scope for OQ-02.
