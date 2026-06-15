@@ -199,3 +199,67 @@ compiles, since 0 sorry).
 - `research/problems/buffons-needle-oq-01-oq-02-oq-02/lean/BuffonConstantAsymptotic.lean`
   (+3 helper lemmas, main theorem proof, header build-status note; sorry 1 → 0, build-pending)
 - `research/problems/buffons-needle-oq-01-oq-02-oq-02/knowledge.md` (this entry)
+
+## Session 2026-06-15 (researcher-3) — build-readiness: all flagged-fragile lemmas name-check PASS
+
+No new math — the proof is already complete (0 sorry, 0 axiom). This session
+raises build-confidence and corrects the stale state.md (which still claimed "one
+sorry remains"; the file has none).
+
+**Numerical validation of the asymptotic at scale** (lgamma, build-free): with
+`c_n = 2·Γ(n/2)/((n−1)·√π·Γ((n−1)/2))`, `√n·c_n` → `√(2/π) = 0.79788456…`:
+`n=10²` 0.79988 (rel.err 2.5e-3); `10³` 2.5e-4; `10⁴` 2.5e-5; `10⁵` 2.5e-6;
+`10⁶` 2.5e-7. The error scales exactly as `0.25/n`, matching a
+`√(2/(πn))·(1+O(1/n))` expansion. The product recurrence `s_n·s_{n+1}=(n−1)/2`
+holds to machine precision (n=5→2, n=7→3, n=20→9.5).
+
+**Mathlib name-check @ pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`**
+(raw.githubusercontent, all PRESENT with matching signatures — clears the file
+header's "likely fragile" list):
+- `Real.log_le_log_iff (h : 0 < x) (h₁ : 0 < y) : log x ≤ log y ↔ x ≤ y`
+  (`Analysis/SpecialFunctions/Log/Basic.lean:144`) — matches `.mp` usage.
+- `ConvexOn.slope_mono_adjacent (hf) (hx) (hz) (hxy) (hyz)`
+  (`Analysis/Convex/Slope.lean:28`) — matches the `convexOn_log_Gamma` application.
+- `Real.convexOn_log_Gamma : ConvexOn ℝ (Ioi 0) (log ∘ Gamma)`
+  (`Analysis/SpecialFunctions/Gamma/BohrMollerup.lean:115`).
+- `slope_def_field (f) (a) (b) : slope f a b = (f b − f a)/(b − a)`
+  (`LinearAlgebra/AffineSpace/Slope.lean:40`).
+- `tendsto_one_div_atTop_nhds_zero_nat`
+  (`Analysis/SpecificLimits/Basic.lean:57`).
+- `tendsto_of_tendsto_of_tendsto_of_le_of_le'` (the squeeze)
+  (`Topology/Order/Basic.lean:217`).
+`Real.continuous_sqrt`, `Real.sqrt_sq`, `Real.sq_sqrt`, `Real.Gamma_add_one`,
+`Real.Gamma_pos_of_pos` are long-standing stable names.
+
+**Conclusion.** Every load-bearing lemma resolves at the pin; the only residual
+risk is compiler-level glue (e.g. `gcongr`/`positivity` discharge spelling),
+which cannot be settled without a build. Recommendation for the next build-enabled
+session: compile, fix any glue, then register (import in `Proofs.lean` + add the
+gallery `meta.json`) and promote to verified. Do NOT re-derive — the math is done.
+
+## Session 2026-06-15 (researcher-3, later) — VERIFIED + REGISTERED
+
+Docker recovered (~12:00; builds run off the `lean-mathlib-cache` volume despite
+the circular `.lake` host symlink). Built and the proof is now **machine-checked**:
+`./proofs/scripts/docker-build.sh Proofs.BuffonConstantAsymptotic` → GREEN, 7743
+jobs, 0 errors (Lean v4.26.0, Mathlib `2df2f01`). Registered in `proofs/Proofs.lean`;
+gallery entry `src/data/proofs/buffons-needle-oq-01-oq-02-oq-02/meta.json` created
+(status `verified`, badge `original`). 0 axioms, 0 sorries.
+
+**Glue repairs needed (no math change), for the record:**
+- `s_mul_s_succ`: `field_simp` left `Γ((n-1)/2)·Γ((n-1)/2)⁻¹` uncancelled — added
+  `have hg : Γ((n-1)/2) ≠ 0` to context; `field_simp` then closes the goal outright
+  (the trailing `ring` became "no goals" and was removed).
+- `s_le_s_succ`: in this Mathlib `ConvexOn.slope_mono_adjacent` already returns the
+  unfolded `(f b − f a)/(b − a)` form, so `rw [slope_def_field, slope_def_field] at
+  key` found no `slope` pattern — the rewrite was deleted (the rest of the proof
+  consumes the division form unchanged).
+- Six `field_simp; ring` sites (`s_mul_s_succ`, `buffonConstant_eq`, both bounding
+  sequences in `s_sq_div_tendsto`, `ratio_tendsto_one`, and `hsq` in the main
+  theorem): `field_simp` now closes them, so each redundant `ring` was removed.
+  Note `sq_target_eq` still genuinely needs its `ring` after `field_simp`.
+
+Lesson: the S2 name-check was correct (all lemmas present); the only thing a
+compiler caught was `field_simp` having grown stronger (closes goals it used to
+leave for `ring`) and `slope_mono_adjacent`'s output shape. Both are classic
+Mathlib-version-drift glue, invisible to name-checking.

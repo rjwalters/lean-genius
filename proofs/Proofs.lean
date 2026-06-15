@@ -346,6 +346,7 @@ import Proofs.BrouwerFixedPointOQ04OQ01
 import Proofs.BrouwerFixedPointOQ04OQ02
 import Proofs.BrouwerFixedPointOQ04OQ03
 import Proofs.BrouwerFixedPointOQ04OQ04
+import Proofs.BuffonConstantAsymptotic
 import Proofs.BuffonsNeedle
 import Proofs.BuffonsNeedleOQ01
 import Proofs.BuffonsNeedleOQ01OQ01
