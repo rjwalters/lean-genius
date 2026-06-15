@@ -81,6 +81,45 @@ extra power to fix parity before the prime can be odd.
 3. The conjecture itself is open and needs sieve/large-sieve machinery (Gallagher
    line); not within brute-force or near-term Lean reach.
 
+## Session 2 (2026-06-15) — sharpening the parity caps (build-free)
+
+Session 1 noted the +1 offset (odd ≤ 2, even ≤ 3 in range) but framed the odd side
+as *only trivially* in `S_3` and did not check whether **2 powers is ever necessary**
+on odds. `verify_min_powers_parity.py` (pure stdlib, exact sieve, `N = 10^6`) settles
+this and quantifies the offset across the *whole* distribution.
+
+**P1 — the odd cap is genuinely 2, first attained at 905.** The smallest odd `n`
+with `minPowers(n) = 2` is **905 = 5·181**, a *de Polignac number* (odd, composite,
+and not of the form `2^a + prime`). So `S_2` is **not** trivial on odds: there exist
+odd `n ∉ S_1`. Every odd `n ≤ 10^6` (and `≤ 3·10^6`, S1) has `minPowers ≤ 2`.
+
+**P2 — 905 and 906 are consecutive.** Smallest odd needing 2 powers = **905**;
+smallest even needing 3 powers = **906** (S1). The smallest forcing value for each
+parity sits back-to-back — a clean illustration of the +1 offset at the extreme.
+
+**P3 — the offset holds across the entire distribution (approximately).** The even
+`minPowers` distribution is the odd one shifted up by exactly 1, matching to within
+~0.02%:
+
+| k        | 0      | 1      | 2      | 3     |
+|----------|--------|--------|--------|-------|
+| odd  [k] | 78497  | 393538 | 27964  | 0     |
+| even [k] | 1      | 78511  | 393529 | 27959 |
+
+so `even[k] ≈ odd[k−1]` (diffs `+14, −9, −5`). **Mechanism (honest, not an exact
+identity):** `minPowers(2j) ≤ 1 + minPowers(2j−1)` — an even `n` spends one `2^0`
+to repair parity and is left with the odd subproblem on `n−1`. Equality holds
+*usually*; the small deviations come from even `n` that reach the prime `2` directly
+via the even offset `m = n−2`, occasionally beating the +1 route.
+
+**P4 — reading of GS.** The conjectured caps `3` (odd) / `4` (even) are exactly the
+in-range caps `2` / `3` **plus one**. The extra power is a safety margin beyond what
+is forced for `n ≤ 10^6`; the cases that actually force it (Crocker odd `∉ S_2`,
+Grechuk even `1117175146 ∉ S_3`) live far beyond brute force. This is consistent with
+GS but, as in S1, only weak evidence for it.
+
+**Files (S2):** `research/problems/erdos-10-oq-02/verify_min_powers_parity.py` (new).
+
 ## References
 
 - Granville, A.; Soundararajan, K. (1998). *A binary additive problem of Erdős and
