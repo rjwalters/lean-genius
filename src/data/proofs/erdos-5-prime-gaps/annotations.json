@@ -216,7 +216,7 @@
     "proofId": "erdos-5-prime-gaps",
     "range": {
       "startLine": 520,
-      "endLine": 572
+      "endLine": 571
     },
     "type": "insight",
     "title": "The Density Reduction: Erdős #5 from Frequence Density",
@@ -232,6 +232,77 @@
       "exists_nat_gt",
       "Filter.tendsto_atTop",
       "Metric.tendsto_atTop"
+    ]
+  },
+  {
+    "id": "ann-forward-density",
+    "proofId": "erdos-5-prime-gaps",
+    "range": {
+      "startLine": 572,
+      "endLine": 614
+    },
+    "type": "insight",
+    "title": "Forward Density: Limit Points Are Approached Infinitely Often",
+    "content": "frequently_near_of_isLimitPoint is the converse of the diagonal-extraction lemma: if C is a limit point of the normalized gaps, a convergent subsequence f composed with a shift injects ℕ into the ε-ball around C, so {n : dist(normalizedGap n, C) < ε} is infinite. Pairing this with erdos_5_from_dense_values yields erdos_5_iff_dense_at_every_point, which recasts the open problem in purely distributional terms — no explicit subsequence construction is needed, only that the normalized gaps are everywhere abundant on [0,∞).",
+    "mathContext": "$C\\in S \\iff \\forall\\varepsilon>0,\\ \\{n:|\\mathrm{normalizedGap}(n)-C|<\\varepsilon\\}\\text{ infinite}$. Erdős #5 $\\iff$ this holds $\\forall C\\ge0$ and $\\infty\\in S$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limit point",
+      "subsequence",
+      "infinite set",
+      "density"
+    ],
+    "prerequisites": [
+      "metric topology",
+      "Set.Infinite",
+      "Filter.Tendsto"
+    ]
+  },
+  {
+    "id": "ann-unconditional-oscillation",
+    "proofId": "erdos-5-prime-gaps",
+    "range": {
+      "startLine": 615,
+      "endLine": 656
+    },
+    "type": "context",
+    "title": "Unconditional Oscillation: Zhang and Westzynthius Corollaries",
+    "content": "Two corollaries proved without assuming the full conjecture. frequently_normalizedGap_lt is the Zhang (2013) bounded-gaps consequence: for every ε>0 the normalized gap drops below ε infinitely often. frequently_normalizedGap_gt is the Westzynthius/Erdős–Rankin large-gaps consequence: for every M the normalized gap exceeds M infinitely often. These are theorems (the underlying analytic inputs are the axiomatized known results), establishing that the normalized prime gaps oscillate between accumulation at 0 and unboundedness.",
+    "mathContext": "$\\liminf_n \\frac{p_{n+1}-p_n}{\\log p_n}=0$ (Zhang) and $\\limsup_n \\frac{p_{n+1}-p_n}{\\log p_n}=\\infty$ (Westzynthius), both in the 'infinitely often' sense.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "bounded prime gaps",
+      "Zhang's theorem",
+      "Westzynthius",
+      "liminf/limsup"
+    ],
+    "prerequisites": [
+      "prime gap asymptotics",
+      "Set.Infinite"
+    ]
+  },
+  {
+    "id": "ann-liminf-limsup",
+    "proofId": "erdos-5-prime-gaps",
+    "range": {
+      "startLine": 657,
+      "endLine": 707
+    },
+    "type": "insight",
+    "title": "Liminf / Limsup Corollaries: 0 and ∞ Are Genuine Limit Points",
+    "content": "The closing corollaries restate the oscillation in liminf/limsup and Eventually language. normalizedGap_oscillates bundles the Part XIV pair; not_eventually_normalizedGap_le shows no M eventually bounds the gap above (limsup = ⊤); not_eventually_le_normalizedGap shows no ε eventually bounds it below (liminf = 0). Together they certify that 0 and ∞ are bona fide limit points of the normalized prime gaps — the two extreme endpoints of the conjectured equality S = [0,∞].",
+    "mathContext": "$\\neg(\\forall^\\infty n,\\ g_n\\le M)$ and $\\neg(\\forall^\\infty n,\\ \\varepsilon\\le g_n)$ where $g_n=\\frac{p_{n+1}-p_n}{\\log p_n}$, i.e. $\\limsup g_n=\\infty$, $\\liminf g_n=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "limsup",
+      "liminf",
+      "Filter.Eventually",
+      "limit point",
+      "Erdős #5"
+    ],
+    "prerequisites": [
+      "limsup/liminf",
+      "Filter.Eventually"
     ]
   }
 ]
