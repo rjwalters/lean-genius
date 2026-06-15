@@ -1005,4 +1005,36 @@ theorem six_three_zero_four_seven_seven_nine_six_four_five_one_five_seven_over_f
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-- **Twenty-eighth continued-fraction convergent of `∛3`** (upper bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, 4, 1, 4, 9, …]`.  With `a₂₇ = 9`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`,
+`qₖ = aₖ qₖ₋₁ + qₖ₋₂` on the 26th/27th convergents `1310497171657/908647988973`
+and `6304779645157/4371490049266` gives the 28th convergent
+
+  `p₂₇ = 9·6304779645157 + 1310497171657 = 58_053_513_978_070`
+  `q₂₇ = 9·4371490049266 + 908647988973 = 40_252_058_432_367`.
+
+After cubing,
+
+  `58_053_513_978_070³   = 195_652_561_511_710_577_055_548_326_394_749_116_943_000`
+  `3 · 40_252_058_432_367³ = 195_652_561_511_710_577_055_548_326_190_542_549_124_589`
+
+so `58_053_513_978_070³ > 3 · 40_252_058_432_367³` (strict, diff
+`204_206_567_818_411`), hence `(58053513978070/40252058432367)³ > 3` and
+`∛3 < 58053513978070/40252058432367` as required for an upper bound (odd
+convergent index `27`; relative gap `≈ 5.0·10⁻²⁸`).
+
+`a₂₇ = 9` was re-derived independently from a 600-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s33_28th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 27th convergent (PR #24782); a routine, durable helper bound, not a deep
+result.  Two-line proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_five_eight_zero_five_three_five_one_three_nine_seven_eight_zero_seven_zero_over_four_zero_two_five_two_zero_five_eight_four_three_two_three_six_seven :
+    cbrt3 < (58053513978070 / 40252058432367 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

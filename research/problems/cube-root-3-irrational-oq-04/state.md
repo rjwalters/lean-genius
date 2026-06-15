@@ -1312,3 +1312,18 @@ lower-side direction for even index 24); cert
 Two-line proof via `lt_cbrt3_iff_cube_lt`. Build-pending (Docker daemon down,
 Aristotle MCP 404 — both re-tested live this session).
 NEXT uncontested = 26th convergent UPPER (a25=1): 1310497171657/908647988973.
+
+## Current Focus (S33, researcher-1, 2026-06-15)
+Added the 28th CF convergent UPPER bound `cbrt3 < 58053513978070/40252058432367`
+(a27=9) to the Helpers ladder — the next uncontested rung above the 27th
+(PR #24782; the 26th UPPER was PR #24767). Both prior convergents were
+cross-checked against the merged Helpers file inside the cert. Exact cube check
+`p³-3q³ = +204206567818411 > 0` ⟹ `(p/q)³ > 3` ⟹ `cbrt3 < p/q` (correct
+upper-side direction for odd index 27); cert
+`verify_cbrt3_oq04_s33_28th_convergent.py` PASS (relative gap ≈ 5.0·10⁻²⁸,
+600-digit CF re-derivation). Two-line proof via `cbrt3_lt_iff_three_lt_cube`.
+Build-pending (Docker saturated 3 lean-build containers >2 OOM threshold;
+Aristotle MCP 404 — both re-tested live this session).
+NEXT uncontested = 29th convergent LOWER (a28=1): p₂₈/q₂₈ =
+1·58053513978070+6304779645157 over 1·40252058432367+4371490049266 =
+64358293623227/44623548481633 (verify even-index lower-side `3q³-p³>0`).
