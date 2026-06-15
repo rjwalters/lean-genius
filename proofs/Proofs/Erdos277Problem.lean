@@ -4,11 +4,17 @@
   Source: https://erdosproblems.com/277
   Status: SOLVED (Haight 1979)
 
-  Statement:
-  Is it true that, for every c > 0, there exists an n such that σ(n) > cn
-  but there is no covering system whose moduli all divide n?
+  Statement (verbatim, erdosproblems.com/277):
+  Is it true that, for every c > 0, there exists an n such that σ(n) > cn but
+  there is no covering system whose moduli are all distinct divisors of n
+  (which are > 1)?
 
   Answer: YES (Haight 1979)
+
+  NOTE: the "distinct" and "> 1" qualifiers on the moduli are essential. Without
+  the "> 1" constraint the trivial covering 0 (mod 1) covers ℤ for every n, so
+  the question would be vacuously false. The formal `ErdosQuestion277` below uses
+  `HasProperCoveringWithDivisorModuli`, which encodes both qualifiers.
 
   Key Concepts:
   - σ(n) = sum of divisors of n
@@ -92,29 +98,55 @@ def moduliSet (S : Finset Congruence) : Finset ℕ :=
 def AllModuliDivide (S : Finset Congruence) (n : ℕ) : Prop :=
   ∀ c ∈ S, c.modulus ∣ n
 
-/-- There exists a covering system with all moduli dividing n. -/
+/-- There exists a covering system with all moduli dividing n.
+
+    NOTE: this *permissive* notion places no constraint on the moduli, so it is
+    satisfied by every n ≥ 1 via the trivial covering 0 (mod 1) — see
+    `every_n_has_trivial_covering` below. It is therefore NOT the notion Erdős's
+    question is about; the question uses `HasProperCoveringWithDivisorModuli`. -/
 def HasCoveringWithDivisorModuli (n : ℕ) : Prop :=
   ∃ S : Finset Congruence, IsCoveringSystem S ∧ AllModuliDivide S n
+
+/-- A *proper* covering of the kind Erdős #277 asks about: a covering system
+    whose moduli are **distinct divisors of n, each `> 1`**. This matches the
+    primary source verbatim ("no covering system whose moduli are all distinct
+    divisors of `n` (which are `> 1`)", erdosproblems.com/277).
+
+    The `> 1` constraint excludes the trivial covering 0 (mod 1); without it the
+    question would be vacuously false (every n ≥ 1 admits the trivial covering),
+    which is the soundness defect this statement repairs. -/
+def HasProperCoveringWithDivisorModuli (n : ℕ) : Prop :=
+  ∃ S : Finset Congruence,
+    IsCoveringSystem S ∧
+    (∀ c₁ ∈ S, ∀ c₂ ∈ S, c₁.modulus = c₂.modulus → c₁ = c₂) ∧
+    (∀ c ∈ S, c.modulus > 1) ∧
+    (∀ c ∈ S, c.modulus ∣ n)
 
 /-
 ## Part III: The Erdős Question
 -/
 
-/-- Erdős's Question: For every c, does there exist n with σ(n) > cn
-    but no covering system has all moduli dividing n? -/
+/-- Erdős's Question (erdosproblems.com/277): For every `c`, does there exist `n`
+    with σ(n) > cn but **no covering system whose moduli are distinct divisors of
+    `n`, each `> 1`**?
+
+    The "distinct" and "`> 1`" constraints are essential: the permissive
+    `HasCoveringWithDivisorModuli` holds for every n ≥ 1 (trivial covering), so
+    stating the question with its negation would make it vacuously false. We use
+    `HasProperCoveringWithDivisorModuli`, which faithfully encodes the source. -/
 def ErdosQuestion277 : Prop :=
   ∀ c : ℝ, c > 0 →
     ∃ n : ℕ, n ≥ 1 ∧
       IsAbundant n c ∧
-      ¬HasCoveringWithDivisorModuli n
+      ¬HasProperCoveringWithDivisorModuli n
 
 /-
 ## Part IV: Haight's Theorem (1979)
 -/
 
 /-- **Haight's Theorem (1979):**
-    For every c > 0, there exists n such that σ(n) > cn
-    but no covering system has all moduli dividing n. -/
+    For every c > 0, there exists n such that σ(n) > cn but no covering system
+    has distinct moduli, each > 1, all dividing n. -/
 axiom haight_theorem : ErdosQuestion277
 
 /-- The answer to Erdős Problem #277 is YES. -/
@@ -146,10 +178,22 @@ theorem trivial_divides_all (n : ℕ) (hn : n ≥ 1) :
   exact one_dvd n
 
 /-- So every n ≥ 1 has SOME covering with divisor moduli (the trivial one).
-    Haight's theorem is about NON-TRIVIAL coverings! -/
+    Haight's theorem is about coverings with distinct moduli all `> 1`! -/
 theorem every_n_has_trivial_covering (n : ℕ) (hn : n ≥ 1) :
     HasCoveringWithDivisorModuli n :=
   ⟨trivialCovering, trivial_is_covering, trivial_divides_all n hn⟩
+
+/-- The *proper* notion is genuinely restrictive: there is no covering of `1`
+    with moduli `> 1`, since the only divisor of `1` is `1` itself. Hence
+    `¬HasProperCoveringWithDivisorModuli 1` holds, witnessing that the corrected
+    `ErdosQuestion277` is not vacuous (unlike the permissive predicate, whose
+    negation is false for every n ≥ 1 by `every_n_has_trivial_covering`). -/
+theorem no_proper_covering_one : ¬HasProperCoveringWithDivisorModuli 1 := by
+  rintro ⟨S, hcov, _, hgt, hdvd⟩
+  obtain ⟨c, hcS, _⟩ := hcov 0
+  have h1 : c.modulus ≤ 1 := Nat.le_of_dvd one_pos (hdvd c hcS)
+  have h2 : c.modulus > 1 := hgt c hcS
+  omega
 
 /-- For non-trivial results, we require distinct moduli. -/
 def HasDistinctModuli (S : Finset Congruence) : Prop :=
@@ -245,8 +289,8 @@ def IsSuperabundant (n : ℕ) : Prop :=
 
 /-- **Erdős Problem #277: SOLVED by Haight (1979)**
 
-Question: For every c > 0, does there exist n with σ(n) > cn
-such that no covering system has all moduli dividing n?
+Question: For every c > 0, does there exist n with σ(n) > cn such that no
+covering system has distinct moduli, each > 1, all dividing n?
 
 Answer: YES
 
@@ -261,7 +305,7 @@ theorem erdos_277_main :
     ∀ c : ℝ, c > 0 →
       ∃ n : ℕ, n ≥ 1 ∧
         (sigma n : ℝ) > c * n ∧
-        ¬HasCoveringWithDivisorModuli n :=
+        ¬HasProperCoveringWithDivisorModuli n :=
   haight_theorem
 
 /-- The problem summary. -/
