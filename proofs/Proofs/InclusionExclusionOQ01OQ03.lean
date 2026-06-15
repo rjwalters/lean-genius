@@ -91,4 +91,23 @@ theorem totient_eq_sum_moebius_mul (n : ℕ) (hn : 0 < n) :
   -- forward input: `(m : ℤ) = Σ_{d | m} φ(d)`, the cast of `Nat.sum_totient`.
   exact_mod_cast (Nat.sum_totient m).symm
 
+/-- **Möbius convolution identity** `Σ_{d | n} μ(d) = [n = 1]` (for `n > 0`).
+    This is the defining property of the Möbius function as the multiplicative
+    inverse of the constant-one function (`μ ∗ 1 = δ`), and the cleanest face of
+    inclusion–exclusion: the divisor-lattice IE signs cancel completely except at
+    `n = 1`.  Derived purely from `moebius_inversion_divisors` (no extra Mathlib
+    Möbius lemma): take `f ≡ 1`; the unique `g` with `f(n) = Σ_{d|n} g(d)` is the
+    indicator `g = [· = 1]`, and inversion reads off `g(n) = Σ_{d|n} μ(d)`. -/
+theorem moebius_sum_divisors_eq_ite (n : ℕ) (hn : 0 < n) :
+    (∑ d ∈ n.divisors, (μ d : R)) = if n = 1 then (1 : R) else 0 := by
+  have hfwd : ∀ m > 0, (1 : R) = ∑ d ∈ m.divisors, (if d = 1 then (1 : R) else 0) := by
+    intro m hm
+    rw [Finset.sum_eq_single (1 : ℕ)]
+    · simp
+    · intro b _ hb1; simp [hb1]
+    · intro h1; exact absurd (Nat.one_mem_divisors.mpr hm.ne') h1
+  have key := (moebius_inversion_divisors (R := R)
+      (f := fun _ => (1 : R)) (g := fun m => if m = 1 then (1 : R) else 0)).mp hfwd n hn
+  simpa using key.symm
+
 end InclusionExclusionOQ01OQ03
