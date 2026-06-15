@@ -25,7 +25,7 @@ This file formalizes:
 - Algebraic properties: Lyapunov at δ=0, variance formulas, zero-variable results
 - Characteristic function properties
 
-Proved theorems: 18, Axioms: 2, Sorries: 2
+Proved theorems: 19, Axioms: 2, Sorries: 1
 
 NOTE: `iid_satisfies_lyapunov` now requires an explicit identical-distribution
 hypothesis (`hIdent`) on the common `(2+δ)`-th moment, because the `IIDSequence`
@@ -494,14 +494,29 @@ theorem independent_implies_zero_mixing
       alphaMixingCoeff μ (σ_k k) (σ_k (k + n)) = 0 := by
   intro k n hn
   simp only [alphaMixingCoeff]
-  -- Each term = 0 by independence: μ(A∩B) = μ(A)·μ(B)
-  -- For all measurable A ∈ σ_k(k), B ∈ σ_k(k+n):
-  --   k + n = k + (n-1) + 1, so hIndep applies with gap (n-1)
-  --   |μ(A∩B).toReal - μ(A).toReal · μ(B).toReal| = |0| = 0
-  -- The nested ciSup of all-zero nonneg terms over ℝ (ConditionallyCompleteLattice)
-  -- requires showing sSup of range = 0, which is technically involved due to
-  -- the interaction of Prop-indexed sups and missing CompleteLattice on ℝ.
-  sorry
+  -- Every term of the 4-fold supremum vanishes: for measurable A ∈ σ_k(k) and
+  -- B ∈ σ_k(k+n), independence (gap n-1, since k+n = k+(n-1)+1) gives
+  -- μ(A∩B) = μ(A)·μ(B), hence |μ(A∩B).toReal - μ(A).toReal·μ(B).toReal| = 0.
+  -- A nonneg family bounded above by 0 has supremum 0. We peel each ⨆ layer with
+  -- the reflective `Real.iSup_le`/`Real.iSup_nonneg` lemmas — the same pattern
+  -- used by `alphaMixingCoeff_nonneg`/`alphaMixingCoeff_le_one` in OQ02OQ04 —
+  -- which sidestep the per-layer `BddAbove` discharge entirely.
+  refine le_antisymm ?_ ?_
+  · -- Upper bound: every term is ≤ 0 by independence.
+    apply Real.iSup_le _ (le_refl 0); intro A
+    apply Real.iSup_le _ (le_refl 0); intro hA
+    apply Real.iSup_le _ (le_refl 0); intro B
+    apply Real.iSup_le _ (le_refl 0); intro hB
+    have hkn : k + n = k + (n - 1) + 1 := by omega
+    rw [hkn] at hB
+    rw [hIndep k (n - 1) A B hA hB, ENNReal.toReal_mul]
+    simp
+  · -- Lower bound: every term is nonnegative (an absolute value).
+    apply Real.iSup_nonneg; intro _A
+    apply Real.iSup_nonneg; intro _hA
+    apply Real.iSup_nonneg; intro _B
+    apply Real.iSup_nonneg; intro _hB
+    exact abs_nonneg _
 
 /-
 ## Part IX: Relationship Between Generalizations
