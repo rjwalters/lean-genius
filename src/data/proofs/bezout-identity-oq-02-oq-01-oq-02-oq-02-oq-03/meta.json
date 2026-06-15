@@ -72,6 +72,26 @@
       "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
       "relationship": "extends",
       "description": "Parent proof: Gaussian integers ℤ[i] inert prime classification (p ≡ 3 mod 4)"
+    },
+    {
+      "targetId": "zsqrtd-neg-two",
+      "relationship": "related",
+      "description": "Treats the very same ring ℤ[√−2] from the representation side: which integers are of the form x² + 2y². The inert primes classified here (p ≡ 5,7 mod 8) are exactly the primes NOT representable by that norm form, so the two entries are two faces of one ring."
+    },
+    {
+      "targetId": "zsqrtd-neg-two-oq-03",
+      "relationship": "complementary",
+      "description": "Carries the same Euclidean-domain / norm-form program to the Eisenstein integers ℤ[ω] and the form x² + 3y², addressing this entry's open question about generalizing to d = −3."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Supplies the Legendre-symbol machinery that drives the inert classification: (−2/p) = (−1/p)(2/p) = −1 iff p ≡ 5 or 7 (mod 8) is a direct corollary of quadratic reciprocity and its supplements."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "thematic",
+      "description": "The d = −1 analogue: a prime is a norm in ℤ[i] (p = a² + b²) iff p ≡ 1 (mod 4), the split-prime mirror of the inert condition studied here for ℤ[√−2]."
     }
   ],
   "sections": [
