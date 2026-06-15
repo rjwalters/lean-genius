@@ -1218,3 +1218,38 @@ already-astronomically-tight sandwich. Build-pending (Docker down); proof uses t
 established two-line lower-bound template `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`
 that compiled clean for every prior lower rung with the same rational-cube `norm_num`
 machinery (only larger, 13-digit integers here).
+
+## Session 2026-06-15 (S33, researcher-3) — 28th CF convergent UPPER bound (a27=9)
+
+**Mode**: ACT on the additive convergent-ladder vein (RICH). Blackout-safe, non-dup:
+self-contained cubing-iff theorem, no dependency on the contended main `a12=8` chain
+(#23388/#23983) nor on the still-open 26th UPPER (PR #24767).
+
+### Added
+`Cbrt3Helpers.cbrt3_lt_five_eight_zero_five_three_five_one_three_nine_seven_eight_zero_seven_zero_over_four_zero_two_five_two_zero_five_eight_four_three_two_three_six_seven : cbrt3 < (58053513978070/40252058432367 : ℝ)`
+to `CubeRoot3IrrationalOQ04Helpers.lean` (theoremCount 28→29, lineCount → 1040, still 0/0).
+
+### Derivation (anti-typo discipline: full 200-digit CF recompute, never re-quote)
+- CF of ∛3 = `[1; 2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2,6,4,4,1,3,2,3,4,1,4,9,…]`, confirming `a₂₇ = 9`.
+- Recursion on the 26th/27th convergents: `p₂₇ = 9·6304779645157 + 1310497171657 = 58053513978070`,
+  `q₂₇ = 9·4371490049266 + 908647988973 = 40252058432367`.
+- Exact-integer cube check: `58053513978070³ − 3·40252058432367³ = +204206567818411 > 0`
+  ⟹ `(p/q)³ > 3` ⟹ `cbrt3 < p/q` (valid UPPER bound, odd index 27, relative gap ≈ 5.0·10⁻²⁸).
+- Cert `research/scripts/verify_cbrt3_oq04_s33_28th_convergent.py` — PASS. It ALSO reproduces
+  main's convergents k=23..26 (24th/25th/26th/27th) exactly, validating the recursion path.
+
+### Frontier / contention map (calibrated: "Nth convergent" = CF index k=N-1)
+- Main (merged): 24th UPPER (S29 #24653), 25th LOWER (S30 #24673), 27th LOWER (S32 #24782).
+- Open PRs: #24767 (26th UPPER, a25=1), #24635 (23rd LOWER), #24612 (20th UPPER),
+  #24538 (18th UPPER), #24516 (17th LOWER); main `a12=8` chain #23388/#23983.
+- This PR (28th UPPER, k=27) is the next UNCONTESTED rung above the 27th (main frontier).
+- NEXT uncontested = 29th convergent LOWER (k=28, a28=1): p₂₈ = 1·p₂₇ + p₂₆, q₂₈ = 1·q₂₇ + q₂₆
+  = 64358293623227/44623548481633 (predicted; re-derive a28 before claiming).
+
+### Honesty
+A routine, durable helper bound, not a deep result — each rung is more digits of an
+already-astronomically-tight sandwich. Build-pending (Docker VM at 4 lean-build
+containers on a 7.65 GiB VM — over the safe ≤2 threshold; building would OOM peers).
+Proof uses the established two-line upper template
+`rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num` that compiled clean for every
+prior rung with the same rational-cube `norm_num` machinery (only larger, 14-digit integers).
