@@ -40,11 +40,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: korselt_backward discharged (2 to 1 axioms); Korselt criterion now proved both directions. Remaining axiom is AGP infinitude (deep).",
+    "builtItems": [
+      "korselt_backward proved in proofs/Proofs/Erdos1057Problem.lean:148 (replaces the former axiom); file now has 1 axiom (infinitely_many_carmichaels). PR #24511."
+    ],
+    "insights": [
+      "Korselt backward (Fermat implies Korselt) splits cleanly: squarefreeness is elementary (a=p witness); divisibility (p-1)|(n-1) needs cyclicity of the units group (ZMod p)^x.",
+      "Squarefree-from-Fermat avoids subtraction-distribution: from p^2 | n derive p^2 | p^n and p^2 | p^n - p, then p^2 | p^n - (p^n - p) = p via Nat.dvd_sub' plus an omega collapse using p <= p^n.",
+      "Forcing u^(n-1)=1 for every unit: in field ZMod p, u^n=u and u != 0 give mul_right_cancel0; lift to units via Units.ext + push_cast; a generator's order = p-1 = totient p via ZMod.card_units_eq_totient and Nat.totient_prime, and orderOf_dvd_of_pow_eq_one finishes."
+    ],
+    "mathlibGaps": [
+      "infinitely_many_carmichaels (Alford-Granville-Pomerance) remains axiomatized: no Mathlib formalization, deep (>1000 LOC), genuinely blocked."
+    ],
+    "nextSteps": [
+      "When Docker/Aristotle return, machine-check PR #24511. Risk points: the simpa [ZMod.natCast_val, ZMod.cast_id] closing of hcast; IsCyclic (ZMod p)^x instance resolution; exact name ZMod.card_units_eq_totient.",
+      "Only remaining axiom is AGP infinitude (not tractable); the OQ-04 axiom-elimination angle is effectively at its floor."
+    ]
   },
   "tags": [
     "seeker-selected",
