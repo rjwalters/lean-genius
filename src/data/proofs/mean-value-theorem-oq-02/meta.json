@@ -32,6 +32,26 @@
         "theorem": "ContDiff",
         "description": "n-times continuously differentiable",
         "module": "Mathlib.Analysis.Calculus.ContDiff.Defs"
+      },
+      {
+        "theorem": "iteratedDeriv_zero",
+        "description": "iteratedDeriv 0 f = f; collapses the k=0 term of the Taylor sum",
+        "module": "Mathlib.Analysis.Calculus.IteratedDeriv.Defs"
+      },
+      {
+        "theorem": "iteratedDeriv_one",
+        "description": "iteratedDeriv 1 f = deriv f; bridges the n=0/n=1 cases to the classical first derivative",
+        "module": "Mathlib.Analysis.Calculus.IteratedDeriv.Defs"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Σ_{k<n+1} = Σ_{k<n} + (nth term); unfolds the two-term sum in taylorPolynomial_one",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "taylor_mean_remainder_lagrange",
+        "description": "Mathlib's native Lagrange-form remainder (via taylorWithinEval/iteratedDerivWithin on Set.Icc); the convention bridge that would discharge this file's axiom",
+        "module": "Mathlib.Analysis.Calculus.Taylor"
       }
     ],
     "originalContributions": [
@@ -45,7 +65,7 @@
   "overview": {
     "historicalContext": "Taylor's theorem has a layered history. Brook Taylor (1715) published the series formula in *Methodus Incrementorum*, though similar expansions appeared in work of Gregory (1668) and Newton. Taylor's original argument was formal and lacked rigorous error bounds. The crucial improvement came from Joseph-Louis Lagrange (1797), who introduced the remainder term $R_n = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$, making the theorem quantitatively useful for approximation. Augustin-Louis Cauchy (1823) gave the integral remainder $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$, which Mathlib uses as its primary form.\n\nThe Mean Value Theorem (also Lagrange, 1797; with precursors in Rolle 1691 and Cauchy) is the $n=0$ case of Taylor's theorem. This connection unifies two of the most important results of calculus under a single framework. Weierstrass's later work on rigorous foundations (1850s) put all of this on the $\\varepsilon$-$\\delta$ footing that modern analysis and formalization require.\n\nModern formalizations of Taylor's theorem in proof assistants typically use the integral remainder form because it arises naturally from the fundamental theorem of calculus. Converting to the Lagrange form requires applying the *mean value theorem for integrals* to the integral remainder, which explains why this file must axiomatize that step.",
     "problemStatement": "Formalize Taylor's theorem with Lagrange remainder in Lean 4. Specifically: (1) define the Taylor polynomial $T_n f(a)(x) = \\sum_{k=0}^n \\frac{f^{(k)}(a)}{k!}(x-a)^k$; (2) prove the Lagrange remainder theorem: if $f$ is $(n+1)$-times differentiable, then $\\exists c \\in (a,b)$ with $f(b) - T_n f(a)(b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$; (3) derive the MVT and second-order expansion as special cases.",
-    "proofStrategy": "Four parts. Part I defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using `Finset.sum` over `Finset.range (n+1)`. Concrete cases `taylorPolynomial_zero` and `taylorPolynomial_one` are proved by `simp` with `iteratedDeriv_zero` and `iteratedDeriv_one`. Part II axiomatizes the Lagrange remainder: the conversion from Mathlib's integral form requires the mean value theorem for integrals. Part III derives `mvt_is_first_order_taylor` by specializing the axiom at $n=0$, using `taylorPolynomial_zero` and `iteratedDeriv_one` to simplify to the standard MVT form. Part IV derives `taylor_second_order` similarly at $n=1$, using `taylorPolynomial_one` and specializing the second derivative.",
+    "proofStrategy": "Four parts. Part I defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using `Finset.sum` over `Finset.range (n+1)`. The case `taylorPolynomial_zero` closes by `simp [taylorPolynomial, iteratedDeriv_zero]` (a one-term sum), while `taylorPolynomial_one` additionally needs `Finset.sum_range_succ` to unfold the two-term sum before `iteratedDeriv_zero`/`iteratedDeriv_one` collapse it to `f a + deriv f a · (x-a)`. Part II axiomatizes the Lagrange remainder: the conversion from Mathlib's integral form requires the mean value theorem for integrals. Part III derives `mvt_is_first_order_taylor` by specializing the axiom at $n=0$, using `taylorPolynomial_zero` and `iteratedDeriv_one` to simplify to the standard MVT form. Part IV derives `taylor_second_order` similarly at $n=1$, using `taylorPolynomial_one` and `simp [Nat.factorial]` to reduce $2! = 2$, then `linarith` to close the rearranged equation.",
     "keyInsights": [
       "**MVT = Taylor at order 0**: The Mean Value Theorem $\\exists c \\in (a,b): f(b) - f(a) = f'(c)(b-a)$ is precisely the Lagrange remainder theorem with $n=0$, since $T_0 f(a)(b) = f(a)$ and $f^{(1)}(c) = f'(c)$. This is more than an analogy: `mvt_is_first_order_taylor` is a *theorem* proved from the Taylor axiom.",
       "**Lagrange vs integral remainder**: Mathlib's `Mathlib.Analysis.Calculus.Taylor` uses the integral form $R_n = \\int_a^b \\frac{(b-t)^n}{n!}f^{(n+1)}(t)\\,dt$. Converting to the Lagrange form $\\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ requires the MVT for integrals: $\\int_a^b g(t)\\,dt = g(c)(b-a)$ for some $c \\in (a,b)$. This is the content of the one axiom in this file.",
