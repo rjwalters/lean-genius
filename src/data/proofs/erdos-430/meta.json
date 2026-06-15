@@ -49,75 +49,74 @@
     {
       "id": "imports",
       "title": "Imports and Dependencies",
+      "summary": "Imports Mathlib's $\\texttt{Nat.minFac}$, $\\texttt{Nat.Prime}$, $\\texttt{Nat.Factorization}$, and $\\texttt{Finset}$ for constructing and analyzing the greedy sequence.",
       "startLine": 18,
       "endLine": 22,
-      "summary": "Imports Mathlib's $\\texttt{Nat.minFac}$, $\\texttt{Nat.Prime}$, $\\texttt{Nat.Factorization}$, and $\\texttt{Finset}$ for constructing and analyzing the greedy sequence."
+      "mathContext": null
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
+      "summary": "Defines $\\texttt{minPrimeFactor}$, the roughness predicate $\\texttt{allPrimeFactorsExceed}(m, k) \\iff \\forall p \\mid m,\\; p > k$, the admissibility condition $\\texttt{IsAdmissible}(n, m)$, and the greedy next-element selector $\\texttt{greedyNext}$ via $\\texttt{Finset.sup}$.",
       "startLine": 23,
-      "endLine": 42,
-      "summary": "Defines $\\texttt{minPrimeFactor}$, the roughness predicate $\\texttt{allPrimeFactorsExceed}(m, k) \\iff \\forall p \\mid m,\\; p > k$, the admissibility condition $\\texttt{IsAdmissible}(n, m)$, and the greedy next-element selector $\\texttt{greedyNext}$ via $\\texttt{Finset.sup}$."
+      "endLine": 65,
+      "mathContext": null
     },
     {
       "id": "greedy-sequence",
       "title": "The Greedy Sequence",
-      "startLine": 43,
-      "endLine": 58,
-      "summary": "Constructs the sequence $a_0 = n - 1$, $a_{k+1} = \\texttt{greedyNext}(n, a_k)$ with termination at $a_k = 0$, and defines $\\texttt{hasComposite}(n) \\iff \\exists k,\\; a_k > 1 \\wedge \\neg a_k.\\text{Prime}$."
+      "summary": "Constructs the sequence $a_0 = n - 1$, $a_{k+1} = \\texttt{greedyNext}(n, a_k)$ with termination at $a_k = 0$, and defines $\\texttt{hasComposite}(n) \\iff \\exists k,\\; a_k > 1 \\wedge \\neg a_k.\\text{Prime}$.",
+      "startLine": 66,
+      "endLine": 81,
+      "mathContext": null
     },
     {
       "id": "example",
       "title": "Example: $n = 8$",
-      "startLine": 59,
-      "endLine": 65,
-      "summary": "For $n = 8$: $a_0 = 7$, $a_1 = 5$, then termination. Both terms are prime. The integer $4$ fails admissibility since $2 \\mid 4$ but $2 \\leq 8 - 4 = 4$."
+      "summary": "For $n = 8$: $a_0 = 7$, $a_1 = 5$, then termination. Both terms are prime. The integer $4$ fails admissibility since $2 \\mid 4$ but $2 \\leq 8 - 4 = 4$.",
+      "startLine": 82,
+      "endLine": 89,
+      "mathContext": null
     },
     {
-      "id": "equivalence",
-      "title": "Equivalence with Problem #385",
-      "startLine": 66,
-      "endLine": 75,
-      "summary": "Adenwalla's equivalence: the greedy sequence contains a composite for large $n$ iff for large $n$ there exists a composite $m < n$ with all prime factors $> n - m$. Reduces the constructive greedy question to an existence question about rough composites."
-    },
-    {
-      "id": "main-conjecture",
-      "title": "Main Conjecture",
-      "startLine": 76,
-      "endLine": 83,
-      "summary": "The open conjecture: $\\exists N_0,\\; \\forall n \\geq N_0$, the greedy sequence contains a composite. Supported by Selfridge's computations but unproven."
-    },
-    {
-      "id": "small-n",
-      "title": "Small $n$ Behavior",
-      "startLine": 84,
-      "endLine": 90,
-      "summary": "For small $n$, the sequence may be entirely prime. The prime number theorem ($\\pi(n) \\sim n/\\ln n$) suggests primes thin out, but proving composites must enter the greedy process requires sieve-theoretic arguments."
+      "id": "small-n-witnesses",
+      "title": "Small-$n$ Positive Witnesses",
+      "summary": "Documents the easy regime of the conjecture: when $n-1$ is composite (e.g. $n \\in \\{5, 7, 9\\}$), $a_0 = n-1$ is already a composite element, so $\\texttt{hasComposite}(n)$ holds trivially at $k = 0$ (each proved by $\\texttt{native\\_decide}$). This isolates the real difficulty to $n$ where $n-1$ is prime, such as the $n = 8$ case.",
+      "startLine": 90,
+      "endLine": 115,
+      "mathContext": null
     },
     {
       "id": "greedy-properties",
       "title": "Greedy Sequence Properties",
-      "startLine": 90,
-      "endLine": 157,
       "summary": "Proves key structural lemmas: `greedyNext_admissible` (positive greedyNext is admissible), `greedySeq_admissible` (positive sequence elements are admissible), `greedyNext_lt` (strict decrease while positive), `greedySeq_le` (the bound $a_k \\leq n - 1 - k$), and `greedySeq_terminates` (the sequence is zero by step $n$, giving at most $n - 1$ nonzero terms).",
+      "startLine": 116,
+      "endLine": 184,
       "mathContext": "The admissibility invariant: $a_k > 0 \\Rightarrow \\texttt{IsAdmissible}(n, a_k)$. For $k = 0$: $a_0 = n - 1$ and $n - a_0 = 1$, so any prime $p \\mid (n-1)$ satisfies $p \\geq 2 > 1$. For $k + 1$: follows from `greedyNext_admissible` since $a_{k+1} = \\texttt{greedyNext}(n, a_k)$."
     },
     {
       "id": "equivalence-proof",
-      "title": "Problem #385 Equivalence Proof",
-      "startLine": 127,
-      "endLine": 156,
+      "title": "Connection to Problem #385",
       "summary": "Proves `erdos_385_equivalence`: the greedy sequence contains a composite for large $n$ iff there exists a composite rough number near $n$ for large $n$. The forward direction extracts the admissible composite from the greedy sequence. The backward direction shows any admissible composite is reached by the greedy process via strong induction on the gap between the current sequence element and $m$.",
+      "startLine": 185,
+      "endLine": 246,
       "mathContext": "The equivalence $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n) \\Leftrightarrow \\exists N_0, \\forall n \\geq N_0, \\exists m < n, m \\text{ composite} \\wedge m \\text{ admissible}$. The forward direction uses `greedySeq_admissible`; the backward direction requires that the greedy maximum-first strategy reaches every admissible element."
     },
     {
-      "id": "axioms",
-      "title": "Main Conjecture and Small-$n$ Axiom",
-      "startLine": 158,
-      "endLine": 172,
-      "summary": "The remaining axiom `erdos_430_conjecture` (the greedy sequence contains a composite for large $n$) is the open conjecture itself. The `small_n_all_prime` theorem (formerly an axiom) is proved: for $n \\leq 1$ the sequence is identically zero.",
-      "mathContext": "The conjecture: $\\exists N_0, \\forall n \\geq N_0, \\texttt{hasComposite}(n)$. The small-$n$ axiom: $\\exists n_0, \\forall n \\leq n_0, \\forall k, a_k > 0 \\Rightarrow a_k \\text{ prime or } a_k = 1$. Together these assert a phase transition: the greedy sequence is all-prime below some threshold and must include composites above it."
+      "id": "main-conjecture",
+      "title": "Main Conjecture",
+      "summary": "The open conjecture: $\\exists N_0,\\; \\forall n \\geq N_0$, the greedy sequence contains a composite. Supported by Selfridge's computations but unproven.",
+      "startLine": 247,
+      "endLine": 254,
+      "mathContext": null
+    },
+    {
+      "id": "auxiliary",
+      "title": "Auxiliary: Prime Elements Dominate for Small $n$",
+      "summary": "Proves $\\texttt{small\\_n\\_all\\_prime}$ (formerly an axiom): via $\\texttt{greedyNext\\_zero}$ and $\\texttt{greedySeq\\_zero\\_of\\_le\\_one}$, for $n \\leq 1$ the greedy sequence is identically zero, so every positive element is vacuously prime or $1$.",
+      "startLine": 255,
+      "endLine": 275,
+      "mathContext": null
     }
   ],
   "conclusion": {
