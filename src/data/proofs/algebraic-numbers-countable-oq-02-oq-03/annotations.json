@@ -128,7 +128,7 @@
     "title": "Main Theorem: One-Line Assembly",
     "content": "With both bounds established, the main theorem is one line:\n```lean\ntheorem card_transcendentalReals_eq_continuum :\n    (#(↑transcendentalReals : Set ℝ) : Cardinal) = 𝔠 :=\n  le_antisymm card_transcendentals_le_continuum continuum_le_card_transcendentals\n```\n\nThis is the standard pattern for proving cardinality equalities via a double inequality. `le_antisymm` (Lean's version of antisymmetry of ≤) takes the two bounds and produces the equality. The entire mathematical content is in the bound proofs; the assembly is mechanical.",
     "mathContext": "le_antisymm : a ≤ b → b ≤ a → a = b. Applied at the Cardinal level with a = #transcendentalReals and b = 𝔠.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "le_antisymm",
       "double inequality",
