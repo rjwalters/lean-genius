@@ -198,17 +198,45 @@ theorem normalizer_iso_AGL1Z
     composite, `ι(P)` (order `p`) could sit as a proper subgroup of `⟨σ⟩`
     and `H`'s normalising `ι(P)` would not normalise the larger `⟨σ⟩`.
 
-    Discharge plan once a backend is up: from `hPnorm`, every `h ∈ H`
-    conjugates `ι(P)` to itself; upgrade `ι(P) ⊆ ⟨σ⟩` to `ι(P) = ⟨σ⟩` via
-    the equal-cardinality fact (`|ι(P)| = p = |⟨σ⟩|` from `hσ_card`), then
-    close with `Subgroup.le_normalizer`-style reasoning (~5–15 LOC). See
-    `knowledge.md` Risk R2 (numerically certified sound by
-    `verify_step5_normalizer.py` for all odd primes `3 ≤ p ≤ 29`). -/
+    ## Corrected discharge plan (researcher-5, S13 ORIENT 2026-06-15)
+
+    The earlier plan ("upgrade `ι(P) ⊆ ⟨σ⟩` to `=` via `|ι(P)| = p = |⟨σ⟩|`
+    from `hσ_card`") has a gap: `|⟨σ⟩| = orderOf σ`, and `orderOf σ = p`
+    follows from `σ.support.card = p` **only when `σ` is a single cycle**
+    (`IsCycle.orderOf : orderOf σ = #σ.support`, `Perm/Cycle/Basic.lean:363`).
+    For a non-cycle permutation `orderOf σ = lcm(cycle lengths) ≠
+    #σ.support = Σ lengths` in general, so `hσ_card` ALONE does not pin
+    `|⟨σ⟩| = p`. The fix is to thread the cycle hypothesis `hσ_cycle :
+    σ.IsCycle` — it is supplied for free by Step 3 (`sylow_p_is_pcycle`
+    returns `σ.IsCycle ∧ σ.support.card = p ∧ hgen`), so the eventual
+    composition in `primitive_solvable_subgroup_embeds_AGL1Z` loses nothing.
+
+    With `hσ_cycle` in hand the discharge is:
+    1. `orderOf σ = p` from `hσ_cycle.orderOf.trans hσ_card`, hence
+       `Nat.card ↥(zpowers σ) = p` (`Nat.card_zpowers`).
+    2. `Nat.card ↥P = p`: `P : Sylow p ↥H`; `Nat.card ↥H ∣ Nat.card
+       (Equiv.Perm (ZMod p)) = p!` and `padicValNat p (p!) = 1` (Legendre,
+       `Nat.factorization_factorial` / `Nat.Prime.factorization_factorial`),
+       while `p ∣ Nat.card ↥H` (from `orderOf σ = p`, `σ ∈ H`), so the
+       Sylow order is exactly `p` (`Sylow.card_eq_multiplicity` + `pow_one`).
+    3. `ι(P) = zpowers σ`: `ι(P) ⊆ zpowers σ` (`hgen`, `ι` injective so
+       `Nat.card ι(P) = p`) + equal finite cardinality ⟹ equality
+       (`Subgroup.eq_of_le_of_card_le` / `Set.eq_of_subset_of_ncard_le`).
+    4. `(zpowers σ).subgroupOf H = (P : Subgroup ↥H)` by `Subgroup.ext` +
+       `mem_subgroupOf`, transporting `hPnorm` to
+       `((zpowers σ).subgroupOf H).Normal`.
+    5. close with `Subgroup.le_normalizer_of_normal_subgroupOf`
+       (`Subgroup/Basic.lean:378`) and `Subgroup.zpowers_le.mpr hσH`.
+
+    Numerically certified sound by `verify_step5_normalizer.py` for all odd
+    primes `3 ≤ p ≤ 29`. Body remains `sorry` pending the (multi-step) ACT
+    discharge of items 2–4; the signature is now sound and dischargeable. -/
 theorem H_le_normalizer
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (P : Sylow p H)
     (_hPnorm : (P : Subgroup H).Normal)
     (σ : Equiv.Perm (ZMod p))
+    (_hσ_cycle : σ.IsCycle)
     (_hσ_card : σ.support.card = p)
     (_hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
       Subgroup.zpowers σ)
