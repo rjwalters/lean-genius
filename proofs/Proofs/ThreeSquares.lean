@@ -430,6 +430,39 @@ lemma excluded_form_four_mul_iff {n : ℕ} :
     refine ⟨a + 1, b, ?_⟩
     rw [pow_succ, h]; ring
 
+/-- **Classification of the 4-free core.**  When `4 ∤ n`, the number `n` is of
+excluded form *iff* `n ≡ 7 (mod 8)`.  This is the decision rule the sufficiency
+descent reduces to: after stripping the `4 ^ a` factor via
+`excluded_form_four_mul_iff`, the remaining `4`-free core is excluded precisely
+on the single residue class `7 (mod 8)` — every other `4`-free residue
+(`1, 2, 3, 5, 6` and the even `4 ∤` case) is *non*-excluded, hence (by the open
+sufficiency direction) a sum of three squares.
+
+Together with `excluded_form_four_mul_iff` this gives a complete, elementary
+decision procedure for `IsExcludedForm` (strip factors of `4`, then test
+`% 8 = 7`), and it is the rigorous engine behind the `1/6` natural density of
+excluded forms: among `4`-free numbers exactly the `≡ 7 (mod 8)` ones are
+excluded. -/
+theorem not_four_dvd_excluded_iff {n : ℕ} (h4 : ¬ (4 ∣ n)) :
+    IsExcludedForm n ↔ n % 8 = 7 := by
+  constructor
+  · rintro ⟨a, b, rfl⟩
+    rcases a with _ | a'
+    · -- `a = 0`: `n = 8b + 7`, so `n % 8 = 7`.
+      simp only [pow_zero, one_mul]; omega
+    · -- `a ≥ 1`: then `4 ∣ n`, contradicting `h4`.
+      exact absurd ⟨4 ^ a' * (8 * b + 7), by rw [pow_succ]; ring⟩ h4
+  · intro h
+    exact ⟨0, n / 8, by simp only [pow_zero, one_mul]; omega⟩
+
+/-- **Odd characterization.**  An odd number is of excluded form iff it is
+`≡ 7 (mod 8)`.  Immediate corollary of `not_four_dvd_excluded_iff` (an odd number
+is not divisible by `4`). -/
+theorem odd_excluded_iff {n : ℕ} (hn : Odd n) : IsExcludedForm n ↔ n % 8 = 7 := by
+  apply not_four_dvd_excluded_iff
+  rw [Nat.odd_iff] at hn
+  omega
+
 /-- Primes ≡ 1 (mod 4) are sums of 3 squares.
 This follows from Fermat's two-squares theorem (they're sums of 2 squares). -/
 lemma prime_one_mod_four_is_sum_three_sq {p : ℕ} (hp : Nat.Prime p) (hmod : p % 4 = 1) :
