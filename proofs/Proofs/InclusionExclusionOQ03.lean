@@ -31,13 +31,13 @@ the subset lattice evaluated at (∅, U).
 using the "fast subset convolution" / "SOS" (sum over subsets) technique, rather
 than the naive O(3ⁿ) approach.
 
-## Status (0 axioms, 4 sorries — proof strategies documented)
+## Status (0 axioms, 0 sorries — fully proved)
 - [x] Zeta transform definition and properties
 - [x] Möbius transform definition
-- [ ] signed_sum_subsets — key cancellation identity (see proof strategy below)
-- [ ] Möbius inversion (depends on signed_sum_subsets)
-- [ ] Möbius subset lattice (depends on signed_sum_subsets)
-- [ ] Odd-even subset balance (independent, involution argument)
+- [x] signed_sum_subsets — key cancellation identity (via `prod_add` product expansion)
+- [x] Möbius inversion (`mobius_inverts_zeta`, via `inner_sum_eq` bijection)
+- [x] Möbius subset lattice (`mobius_subset_lattice`)
+- [x] Odd-even subset balance (`odd_even_subset_balance`)
 - [x] Connection to inclusion-exclusion
 - [x] Fast SOS DP step definition and properties
 
