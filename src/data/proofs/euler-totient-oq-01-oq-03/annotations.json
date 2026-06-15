@@ -183,5 +183,25 @@
       "transitivity of divisibility",
       "Carmichael vs Euler exponent"
     ]
+  },
+  {
+    "id": "ann-rsa-round-trip",
+    "proofId": "euler-totient-oq-01-oq-03",
+    "range": { "startLine": 168, "endLine": 196 },
+    "type": "theorem",
+    "title": "End-to-End RSA Round-Trip: Encryption and Decryption are Mutual Inverses",
+    "content": "The file closes by packaging the correctness lemmas into a literal RSA implementation. `rsaEncrypt e a = a ^ e` and `rsaDecrypt d c = c ^ d` are the textbook operations in ZMod n. `rsa_decrypt_encrypt` then proves the headline round-trip `rsaDecrypt d (rsaEncrypt e a) = a` for EVERY message a, under the single key-generation hypothesis `e·d = 1 + k·λ(n)`: unfolding the two operations gives (aᵉ)ᵈ = a^(e·d) = a^(k·λ(n) + 1), and `rsa_correct_carmichael` (with `λ(n) ∣ k·λ(n)` by `dvd_mul_left`) discharges it. This is the verified statement that RSA encryption and decryption are inverse functions — the end-to-end correctness an implementation actually needs, stated against the minimal universal exponent.",
+    "mathContext": "$\\mathrm{rsaDecrypt}_d(\\mathrm{rsaEncrypt}_e(a)) = (a^e)^d = a^{ed} = a^{k\\lambda(n)+1} = a$ for all $a : \\mathbb{Z}/n$, given $ed = 1 + k\\,\\lambda(n)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "RSA encryption/decryption",
+      "mutual inverses",
+      "pow_mul",
+      "end-to-end correctness"
+    ],
+    "prerequisites": [
+      "RSA key-generation congruence",
+      "rsa_correct_carmichael"
+    ]
   }
 ]
