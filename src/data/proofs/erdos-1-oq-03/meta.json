@@ -121,6 +121,21 @@
       "targetId": "erdos-1",
       "relationship": "extends",
       "description": "Extends the Erdos #1 formalization with the Conway-Guy construction and optimality"
+    },
+    {
+      "targetId": "erdos-1-oq-02",
+      "relationship": "complementary",
+      "description": "The same Erdős #1 problem from the lower-bound side: the Dubroff–Fox–Xu framework for bounding f(n) from below. This entry gives the Conway-Guy upper bound f(n) ≤ a_n; together they bracket the true value of f(n)."
+    },
+    {
+      "targetId": "erdos-340-greedy-sidon",
+      "relationship": "thematic",
+      "description": "Another greedy additive-combinatorics construction: a Sidon sequence built by greedily choosing each term just large enough to avoid collisions — the same paradigm Conway-Guy uses for distinct subset sums."
+    },
+    {
+      "targetId": "erdos-28-additive-bases",
+      "relationship": "thematic",
+      "description": "A companion additive-combinatorics Erdős problem (Erdős-Turán on additive bases). Both concern how the additive/representation structure of an integer set constrains its size and growth."
     }
   ],
   "conclusion": {
