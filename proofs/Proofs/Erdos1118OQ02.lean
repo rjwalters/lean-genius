@@ -12,8 +12,12 @@ In one variable: for a non-constant entire function f : ℂ → ℂ,
 the superlevel set E(c) = {z : |f(z)| > c} can have finite
 planar Lebesgue measure for some c > 0.
 
-In several variables: f : ℂⁿ → ℂ, the superlevel set
-E(c) = {z ∈ ℂⁿ : |f(z)| > c} lives in ℝ^(2n).
+In several variables: this file works with scalar holomorphic
+f : ℂⁿ → ℂ, whose superlevel set E(c) = {z ∈ ℂⁿ : |f(z)| > c}
+lives in ℝ^(2n). The OQ's vector form f : ℂⁿ → ℂⁿ reduces to this
+via the norm: {z : ‖f(z)‖ > c} with log‖f‖ plurisubharmonic.
+Because all norms on ℂⁿ are equivalent, finiteness of the
+(2n)-measure of E(c) is independent of the chosen norm.
 
 Key differences:
 1. Growth is measured by the Nevanlinna characteristic T(r,f)
@@ -77,8 +81,12 @@ theorem superlevel_dimension (n : ℕ) :
     2 * n = 2 * n := rfl
 
 /-- The growth needed for finite measure increases with dimension.
-    Roughly: M(r) must grow faster than exp(r^(2n/(2n-1)))
-    for the superlevel set to have finite (2n)-measure. -/
+    The polar volume element scales from r dr (n = 1, planar area)
+    to r^(2n-1) dr in ℝ^(2n), so the natural candidate growth
+    integral is ∫₀^∞ r^(2n-1)/(log log M(r)) dr < ∞. The r^(2n-1)
+    volume factor is solid; the log log M(r) denominator is the
+    conjectural part and the precise threshold is OPEN — no specific
+    closed-form growth rate is established here. -/
 theorem growth_increases_with_dim :
     -- Higher dimension needs faster growth
     ∀ n₁ n₂ : ℕ, n₁ < n₂ → 2 * n₁ < 2 * n₂ := by
