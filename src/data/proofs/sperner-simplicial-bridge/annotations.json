@@ -123,7 +123,7 @@
   {
     "id": "ann-main-theorem",
     "proofId": "sperner-simplicial-bridge",
-    "range": { "startLine": 564, "endLine": 612 },
+    "range": { "startLine": 564, "endLine": 611 },
     "type": "insight",
     "title": "Sperner's Lemma for Pseudomanifold Simplicial Complexes",
     "content": "`exists_panchromatic`: given `topCells` (a finite set of (d+1)-vertex simplices satisfying the pseudomanifold condition), a vertex coloring `c : E → Fin(d+1)`, and an odd number of boundary door-face pairs, there exists a panchromatic cell — one whose vertices collectively receive all d+1 colors.\n\nThe proof instantiates `Sperner.exists_panchromatic` from `SpernerMathlib` by providing:\n- `adjFn topCells hcard` as the adjacency function\n- The three verified axioms: `adjFn_vertex`, `adjFn_ne`, `adjFn_symm`\n\nThis is the bridge payoff: all the geometric machinery (vertex sorting, face construction, adjacency via containers) exists to satisfy the abstract axioms of the Sperner theorem in `SpernerMathlib`. Once the axioms are met, the combinatorial proof runs automatically.\n\nThe parity condition (odd boundary doors) is the discrete analog of Sperner's boundary condition: in the original Sperner's lemma, the boundary coloring must be 'Sperner-proper', which ensures an odd count of boundary simplices with d-1 distinct colors.",
