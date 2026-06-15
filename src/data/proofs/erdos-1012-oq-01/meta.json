@@ -74,6 +74,16 @@
       "targetId": "erdos-1012",
       "relationship": "extends",
       "description": "Parent problem establishing the edge threshold; OQ-01 proves the exact f(k) formula"
+    },
+    {
+      "proofId": "erdos-1012-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 strengthens the pancyclicity corollary derived here. Woodall's theorem (axiomatized in OQ-01) gives *existence* of cycles of every length 3 to n-k once n ≥ f(k); OQ-02 promotes this to **vertex-pancyclicity** — every individual vertex lies on a cycle of each such length — via Bondy's 1971 theorem (dense Hamiltonian graphs are vertex-pancyclic or bipartite K_{n/2,n/2}) and the Schmeichel–Hakimi 1988 Ore-type sharpening. The threshold f(k)=2k+3 proved here is exactly the regime in which OQ-02's per-vertex statement holds, so the two entries form the existence → uniform-coverage refinement of the same dense-cycle phenomenon."
+    },
+    {
+      "proofId": "erdos-1012-oq-03",
+      "relationship": "complementary",
+      "description": "OQ-03 is the directed-graph counterpart. The three undirected ingredients axiomatized in OQ-01 each have a digraph analogue formalized there: Ore's degree-sum Hamiltonicity condition corresponds to **Ghouila-Houri's theorem** (a strongly connected digraph with min in/out-degree ≥ n/2 is Hamiltonian), Dirac/Bondy-type density to **Moon–Moser** tournament results, and the existence of a Hamiltonian path to **Rédei's theorem** (every tournament has a directed Hamiltonian path). Reading OQ-01 and OQ-03 together exhibits how the long-cycle threshold machinery transfers — and where it must be re-proved — when edges acquire orientation."
     }
   ],
   "sections": [
