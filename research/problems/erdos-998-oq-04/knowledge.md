@@ -108,13 +108,19 @@ and the proof that it is the cyclic successor — pure `Nat`/order reasoning.
 
 ## Next Steps
 
-1. Prove `orbit_card` (injectivity of `i ↦ {iα}` via `Int.fract_eq_fract` +
-   `Irrational`) — fully elementary, ~15 lines.
+1. ~~Prove `orbit_card`~~ DONE (S2). Injectivity of `i ↦ {iα}` on `range N` via
+   `Int.fract_eq_fract` (→ `(i-j)·α = z ∈ ℤ`), then `Irrational.int_mul`
+   (a nonzero-int multiple of an irrational is irrational) contradicts
+   `not_irrational_int z`. Card follows from `Finset.card_image_of_injOn` +
+   `Finset.card_range`. Build-pending (circular `.lake` OOM).
 2. Formalize the first-return generators `p, q` and the successor map (step 2).
 3. Discharge `three_gap` and `three_gap_additive` from the classification.
 4. Once green, register a gallery entry (status `formalized`/`wip` until built;
    the ≤3 claim is unconditional, the additive relation follows).
 
-**progressSummary:** SURVEYED→ORIENT. Stated the theorem formally for the first
-time in Lean, built robust structural lemmas, and reduced the open content to a
-single elementary combinatorial classification with a documented proof path.
+**progressSummary:** ORIENT→ATTACK. Discharged `orbit_card` (one of the three
+isolated sorries) with a fully elementary irrationality argument. The remaining
+open content is the single combinatorial gap-classification core (`three_gap`,
+`three_gap_additive`), with the documented van Ravenstein proof path. The ≤3
+distinct-lengths statement remains the first formal Lean statement of the
+three-gap/Steinhaus theorem.

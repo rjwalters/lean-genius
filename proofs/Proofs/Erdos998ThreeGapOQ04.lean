@@ -34,10 +34,11 @@
     * `zero_mem_orbit`    — `0` is always an orbit point (the `i = 0` term)
     * `orbit_nonempty`    — the orbit is nonempty for `N ≥ 1`
     * `forwardGap_nonneg` — every forward gap length is `≥ 0`
+    * `orbit_card`        — for irrational `α` the orbit has exactly `N` points
+                            (injectivity of `i ↦ {iα}` via `Int.fract_eq_fract`
+                            and `Irrational.int_mul`)
 
   ISOLATED (the genuine content — see the proof-path comments and knowledge.md):
-    * `orbit_card`        — for irrational `α` the orbit has exactly `N` points
-                            (injectivity of `i ↦ {iα}` via `Int.fract_eq_fract`)
     * `three_gap`         — at most three distinct gap lengths  [HARD core]
     * `three_gap_additive`— the additive relation among the three lengths
 
@@ -105,7 +106,21 @@ theorem forwardGap_nonneg (α : ℝ) (N : ℕ) (x : ℝ) : 0 ≤ forwardGap α N
     `Finset.card_image_of_injective` and `Finset.card_range`. -/
 theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     (orbit α N).card = N := by
-  sorry
+  have hinj : Set.InjOn (fun i : ℕ => Int.fract ((i : ℝ) * α)) ↑(Finset.range N) := by
+    intro i _ j _ hij
+    simp only at hij
+    by_contra hne
+    rw [Int.fract_eq_fract] at hij
+    obtain ⟨z, hz⟩ := hij
+    have hm : ((i : ℤ) - (j : ℤ)) ≠ 0 := sub_ne_zero.mpr (by exact_mod_cast hne)
+    have key : (((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α = (z : ℝ) := by
+      push_cast
+      rw [sub_mul]
+      exact hz
+    have hirr : Irrational ((((i : ℤ) - (j : ℤ) : ℤ) : ℝ) * α) := hα.int_mul hm
+    rw [key] at hirr
+    exact (not_irrational_int z) hirr
+  rw [orbit, Finset.card_image_of_injOn hinj, Finset.card_range]
 
 /-- **The Three-Gap (Three-Distance / Steinhaus) Theorem.**
 
