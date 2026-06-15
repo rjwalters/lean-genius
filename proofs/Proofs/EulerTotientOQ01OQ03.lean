@@ -51,14 +51,13 @@
   • `rsa_decrypt_correct` — the textbook phrasing `m^(e·d) ≡ m` once
     `e·d = 1 + k·λ`.
 
-  Status: 0 axioms, 0 sorries.  Registered in `Proofs/Proofs.lean`.  Authored
-  under a Docker + Aristotle blackout; name-checked against pinned Mathlib
-  v4.26.0 (rev 2df2f01): `ZMod.pow_card_sub_one_eq_one` takes `{a}` IMPLICITLY
-  (FieldTheory/Finite/Basic.lean:605), so its earlier call passed `a` into the
-  `a ≠ 0` slot — fixed here.  `ZMod.chineseRemainder` confirmed
-  (Data/ZMod/Basic.lean:873).  The CRT componentwise step (`Prod.ext_iff` +
-  `simpa` on the projection-of-power simp lemmas) remains the one piece to
-  confirm in a live build.
+  Status: 0 axioms, 0 sorries.  Registered in `Proofs/Proofs.lean`.
+  Machine-verified via docker-build on 2026-06-15 (the dependency
+  `EulerTotientOQ01.lean` required seven Mathlib-API fixes to the Carmichael
+  infrastructure first).  `ZMod.pow_card_sub_one_eq_one` takes `{a}` IMPLICITLY
+  (FieldTheory/Finite/Basic.lean:605); `ZMod.chineseRemainder` confirmed
+  (Data/ZMod/Basic.lean:873); the CRT componentwise step (`Prod.ext_iff` +
+  `simpa` on the projection-of-power simp lemmas) typechecks.
 -/
 
 import Mathlib.Data.ZMod.Basic

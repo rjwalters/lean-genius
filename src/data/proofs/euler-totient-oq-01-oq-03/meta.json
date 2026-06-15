@@ -7,7 +7,7 @@
     "author": "Robert Carmichael (1910); RSA: Rivest–Shamir–Adleman (1977); formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
     "date": "1977",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/EulerTotientOQ01OQ03.lean",
     "tags": [
       "number-theory",
@@ -18,10 +18,10 @@
       "chinese-remainder-theorem",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Build-pending: authored during the Docker + Aristotle backend outage and not machine-checked this session. The load-bearing Mathlib bearers were name-checked against pinned v4.26.0 (rev 2df2f01): ZMod.pow_card_sub_one_eq_one takes its element {a} IMPLICITLY (FieldTheory/Finite/Basic.lean:605), and ZMod.chineseRemainder is confirmed (Data/ZMod/Basic.lean:873). The file's own header flags the CRT componentwise step (Prod.ext_iff + simpa on the projection-of-power simp lemmas) as the one piece to confirm in a live build. Every arithmetic claim is independently certified by research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py (all-a correctness over 55 moduli, λ < φ strictly, and the explicit p² failure set — all pass). Promote to verified once a green docker-build of Proofs.EulerTotientOQ01OQ03 confirms the typecheck.",
+    "assumptions": "None. Fully machine-verified: docker-build of Proofs.EulerTotientOQ01OQ03 completed successfully on 2026-06-15 (7744 jobs), confirming 0 axioms and 0 sorries against the pinned Mathlib (v4.26.0). The build first surfaced — and this session fixed — seven Mathlib-API mismatches in the imported Carmichael-function dependency Proofs/EulerTotientOQ01.lean (exponent_dvd / exp_eq_one_iff / exp_eq_one_of_subsingleton renames, IsCyclic.exponent_eq_card now returning Nat.card, Group.exponent_dvd_card, and invalid `▸` motives replaced by Eq.le), which had blocked the whole chain. Every arithmetic claim is additionally certified build-free by research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py (all-a correctness over 55 moduli, λ < φ strictly, and the explicit p² failure set — all pass).",
     "mathlibDependencies": [
       {
         "theorem": "ZMod.pow_card_sub_one_eq_one",
