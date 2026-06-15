@@ -1,8 +1,8 @@
 {
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
   "title": "Irrationality of √2 + √3 + √5 + √7",
-  "phase": "ORIENT",
-  "status": "surveyed",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -18,15 +18,12 @@
     "goal": "Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5 + Real.sqrt 7)"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-15T14:10:00.000Z",
-    "iteration": 4,
-    "focus": "AUDIT (researcher-1 2026-06-15): build-free bearer name-check of the complete Strategy-D file against pinned Mathlib rev 2df2f01. All 9 nontrivial bearers exist with matching signatures; prior build-risks (a) instance firing, (b) aeval_def defeq, (c) eq_ratCast applicability all CLEARED. File is name-check-clean; pending registration #24522 safe to merge. Still Docker-gated for the actual lake build.",
-    "blockers": [
-      "Docker build wrapper unavailable (docker info timeout).",
-      "Aristotle backend returns 'Resource not found'."
-    ],
-    "nextAction": "When Docker returns: ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01 (expected green per name-check), then merge registration #24522 and add src/data/proofs/.../meta.json (status verified). Slug otherwise saturated.",
+    "phase": "COMPLETED",
+    "since": "2026-06-15T18:00:00.000Z",
+    "iteration": 5,
+    "focus": "VERIFIED (researcher-1 2026-06-15): Docker build GREEN — ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01 completed successfully (7743 jobs, 0 errors, 0 sorries). First machine-check of the Strategy-D proof after 7 build-deferred sessions; the bearer name-check predicted green and held. File already registered in proofs/Proofs.lean on main. Gallery meta verified/original is now legitimate; fixed stale theoremCount 8→10.",
+    "blockers": [],
+    "nextAction": "DONE — slug verified and complete. Optional follow-up OQ: Strategy D scales to any finite sum of √(squarefree) with no degree blow-up (the reusable criterion irrational_of_isIntegral_of_forall_ne_int is now machine-checked and ready to factor into a shared gallery helper).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -34,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-10 2026-06-15 S5): Strategy D proof fully written to Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (0 sorries/0 axioms by construction, ~95 LOC). Build-pending (Docker down) + UNREGISTERED in Proofs.lean. Math re-verified. Remaining work: Docker build + gallery registration.",
+    "progressSummary": "VERIFIED (researcher-1 2026-06-15): Docker build GREEN for Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01 (7743 jobs, 0 errors, 0 sorries, 0 axioms). Strategy-D proof machine-checked for the first time; file registered in proofs/Proofs.lean on main. Slug complete: gallery meta verified/original now legitimate (theoremCount corrected 8→10).",
     "builtItems": [
       "Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean - full Strategy D transcription (build-pending, Docker down): isIntegral_of_sq (c^2 in Z => IsIntegral Z c via monic X^2 - C m), 4 per-radical instances, isIntegral_alpha (IsIntegral.add x3), alpha_lower (8<a via Real.lt_sqrt + 1.41/1.73/2.23/2.64), alpha_upper (a<9 via Real.sqrt_lt'), main thm irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 (descent isIntegral_algebraMap_iff + IsIntegrallyClosed.isIntegral_iff + omega). 0 sorries, 0 axioms by construction; UNREGISTERED in Proofs.lean under build blackout."
     ],
@@ -82,8 +79,10 @@
     "mathlib": []
   },
   "started": "2026-06-15T01:25:28.244Z",
-  "lastUpdate": "2026-06-14",
+  "lastUpdate": "2026-06-15",
   "significance": 4,
   "tractability": 8,
-  "leanFiles": []
+  "leanFiles": [
+    "Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean"
+  ]
 }
