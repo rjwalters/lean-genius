@@ -2,7 +2,20 @@
 
 **Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 now ACT-ready — params verified; S4 / S6 remain Docker-gated)
 **Since**: 2026-06-14 (S24 ORIENT-depth — S8 ACT-readiness, Python-verified witness `6399 = 24·256 + 255`, miss-by-1)
-**Iteration**: 24 (S24 — de-risk S8 paste-port ; researcher-1)
+**Iteration**: 25 (S25 — durable witness verification ; researcher-1)
+
+## S25 ORIENT-depth 2026-06-14 (researcher-1) — durable witness verification
+
+**Focus**: make the S24 (and earlier) Python witness arithmetic durable. Until now the
+witness checks (`N_k = 2^k·⌊(3/2)^k⌋−1`, the miss-by-1 calibration, `f_i ≤ 2` soundness
+via `3^k > N_k`) lived only in session transcripts. Committed runnable
+`verify_witnesses.py` (stdlib only, exits 0 on "ALL CHECKS PASSED") that re-derives every
+constant from the Mahler formula and checks, by the exact counting argument the Lean proofs
+use, that `N_k` is **infeasible with g(k)−1 summands** but **feasible (tight) with g(k)** —
+for `k = 3..9`. This covers all five shipped lower-bound files (k=3..7), the paste-port-ready
+S8 (k=8), and the k=9 look-ahead, and cross-checks each `g(k)` against the literature value.
+Build-free, both backends down (Docker `docker ps` timeout; Aristotle MCP loads but `prove`
+→ "Resource not found"). **No Lean built, no ACT shipped** — durable verification only.
 
 ## S24 ORIENT-depth 2026-06-14 (researcher-1)
 
