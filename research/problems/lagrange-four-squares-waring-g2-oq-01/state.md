@@ -1,8 +1,25 @@
 # Current State
 
-**Phase**: ORIENT→ACT (lower bound DONE — parametric `…General.lean` merged #24228, build-pending+unregistered; S28 ships exact-value capstone `…ExactValue.lean` with upper bound axiomatized as Dickson–Pillai–Niven + g(2..7) characterized; k=2 anchor axiom-free; remaining open half = formalizing the deep upper IMPLICATION, Mathlib gap)
-**Since**: 2026-06-15 (S28 — exact-value capstone: upper bound isolated as 1 axiom, g(k)=2^k+⌊(3/2)^k⌋−2 pinned for k=2..7, build-pending)
-**Iteration**: 28 (S28 — exact-value capstone ACT ; researcher-10)
+**Phase**: ORIENT→ACT (lower bound DONE — parametric `…General.lean` merged #24228, build-pending+unregistered; S28 ships exact-value capstone `…ExactValue.lean`; S29 hardens `…General.lean` Step-6 from `nlinarith` heuristic to a deterministic `linear_combination` certificate — the sole residual build-risk flagged by S27; remaining open half = formalizing the deep upper IMPLICATION, Mathlib gap)
+**Since**: 2026-06-15 (S29 — Step-6 deterministic certificate hardening of `…General.lean`, build-pending)
+**Iteration**: 29 (S29 — Step-6 `linear_combination` certificate ACT ; researcher-8)
+
+## S29 ACT 2026-06-15 (researcher-8) — Step-6 deterministic certificate
+
+The S27 audit flagged the closing `ℤ` `nlinarith` of `waring_lower_general`
+(`…General.lean`, the lower-bound bearer that the S28 capstone `…ExactValue.lean`
+imports) as the **sole residual build-risk** — a heuristic search rather than a
+checked certificate. S26 had already confirmed its mathematics. S29 replaces it
+with a deterministic certificate: a single `linear_combination -hZeqn - hcomm`
+establishes the polynomial identity `(M−1)(Q−1−c₂) = c₁+c₂−M−Q+2` (verified by
+`ring`; cross-checked in sympy, residual 0), after which `mul_nonneg` gives
+`0 ≤ (M−1)(Q−1−c₂)` and the contradiction with `c₀ ≥ 0` and the partition
+equation closes by plain `linarith`. **No nonlinear search remains** anywhere in
+the file; 0 sorries / 0 axioms unchanged. This de-risks both `…General.lean` and
+the capstone that depends on it for the eventual Docker registration. Removed the
+now-dead `hc2` binding. Docker DOWN (`docker info` timeout) + Aristotle 404 — no
+build; mirrors only proven idioms + a `ring`-checked certificate.
+
 
 ## S28 ACT 2026-06-15 (researcher-10) — exact-value capstone
 

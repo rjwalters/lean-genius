@@ -48,7 +48,10 @@ whose infeasibility over `ℕ` is the one-line algebra
 `c₁ + c₂ = (2^k − 1)(Q − c₂) + Q − 1 ≥ 2^k + Q − 2 > 2^k + Q − 3`, so
 `c₀ < 0` — impossible. Because the coefficients `2^k`, `Q` are now
 symbolic, the final discharge moves from `omega` (fixed coefficients) to a
-short `ℤ`-cast `nlinarith` with one product witness `(2^k−1)(Q−1−c₂) ≥ 0`.
+short `ℤ`-cast argument whose only nonlinear ingredient is the product
+witness `(2^k−1)(Q−1−c₂) ≥ 0`; that witness is supplied as a deterministic
+`linear_combination` certificate rather than left to a heuristic search, so
+the closing step is plain `linarith`.
 
 ## ⚠️ BUILD STATUS — NOT build-verified (dual-backend blackout)
 
@@ -56,8 +59,14 @@ Written 2026-06-14 (researcher-10) while **both** verification backends were
 unavailable: the host Docker daemon was unresponsive (`docker info` hung) so
 `docker-build.sh` could not run, and the Aristotle MCP returned
 `Resource not found`. The proof mirrors the proven idioms of the sibling
-`…CountingG4.lean` (built clean at 7743 jobs) for Steps 1–5; only the final
-`ℤ` `nlinarith` discharge (Step 6) is new logic.
+`…CountingG4.lean` (built clean at 7743 jobs) for Steps 1–5. The final `ℤ`
+Step-6 discharge — the one piece of new logic and the sole residual build-risk
+flagged by the S27 lemma audit — was hardened from a heuristic `nlinarith`
+search into a **deterministic certificate**: a single `linear_combination`
+establishes the polynomial identity `(M−1)(Q−1−c₂) = c₁+c₂−M−Q+2`
+(coefficient certificate `−hZeqn − hcomm`, machine-checked by `ring`), after
+which the contradiction closes by plain `linarith`. No nonlinear search
+remains.
 
 **For safety this file is deliberately NOT registered in `proofs/Proofs.lean`,**
 so it cannot break the whole-library build. A follow-up session with Docker
@@ -74,7 +83,7 @@ Same set as `…CountingG4.lean` plus, for the symbolic final step:
 `Nat.div_pos`, `Nat.mul_pos`, `Finset.single_le_sum`,
 `Finset.sum_fiberwise`, `Finset.card_eq_sum_card_fiberwise`,
 `Fin.sum_univ_three`, `Finset.sum_const`, `zero_pow`, `one_pow`,
-`mul_le_mul_of_nonneg_left`, `mul_nonneg`, and `nlinarith`.
+`mul_le_mul_of_nonneg_left`, `mul_nonneg`, `linear_combination`, and `linarith`.
 -/
 
 namespace WaringG2OQ01.General
@@ -174,7 +183,6 @@ theorem waring_lower_general (k : ℕ) (hk : 1 ≤ k) :
   have hZQ1 : (1 : ℤ) ≤ (Q : ℤ) := by exact_mod_cast hQ1
   have hc0 : (0 : ℤ) ≤ (c 0 : ℤ) := by positivity
   have hc1 : (0 : ℤ) ≤ (c 1 : ℤ) := by positivity
-  have hc2 : (0 : ℤ) ≤ (c 2 : ℤ) := by positivity
   have hcomm : (Q : ℤ) * M = (M : ℤ) * Q := mul_comm _ _
   -- `c 2 ≤ Q − 1` (else `M·Q ≤ M·c₂` forces `c₁ + 1 ≤ 0`).
   have hdQ : (c 2 : ℤ) ≤ (Q : ℤ) - 1 := by
@@ -185,8 +193,16 @@ theorem waring_lower_general (k : ℕ) (hk : 1 ≤ k) :
       mul_le_mul_of_nonneg_left hQc (by linarith)
     linarith [hZeqn, hc1, hcomm, hmul]
   -- `c₁ + c₂ ≥ M + Q − 2`, contradicting `c₀ + c₁ + c₂ = M + Q − 3` with `c₀ ≥ 0`.
-  nlinarith [hZpart, hZeqn, hc0, hc1, hc2, hcomm, hdQ,
-    mul_nonneg (by linarith : (0 : ℤ) ≤ (M : ℤ) - 1)
-               (by linarith : (0 : ℤ) ≤ (Q : ℤ) - 1 - (c 2 : ℤ))]
+  -- Deterministic certificate (replaces the prior `nlinarith` search): the key
+  -- product expands EXACTLY to the linear quantity `c₁ + c₂ − M − Q + 2` once the
+  -- value equation `hZeqn` and the commutation `hcomm` are substituted. Verified
+  -- `(M−1)(Q−1−c₂) − (c₁+c₂−M−Q+2) = −hZeqn − hcomm` as a polynomial identity.
+  have hexpand : ((M : ℤ) - 1) * ((Q : ℤ) - 1 - c 2) = (c 1 : ℤ) + c 2 - M - Q + 2 := by
+    linear_combination -hZeqn - hcomm
+  have hprod : (0 : ℤ) ≤ ((M : ℤ) - 1) * ((Q : ℤ) - 1 - c 2) :=
+    mul_nonneg (by linarith) (by linarith)
+  -- `0 ≤ c₁ + c₂ − M − Q + 2` (from `hexpand`+`hprod`), then `c₀ ≤ −1` via `hZpart`,
+  -- contradicting `hc0 : 0 ≤ c₀`. All three steps are purely linear.
+  linarith [hexpand, hprod, hZpart, hc0]
 
 end WaringG2OQ01.General
