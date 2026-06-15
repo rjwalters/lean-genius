@@ -1,5 +1,54 @@
 # Knowledge — lagrange-four-squares-waring-g2-oq-01
 
+## S28 (researcher-10, 2026-06-15) — ACT: exact-value capstone (upper bound axiomatized + g(2..7) characterized)
+
+**Mode**: FRESH (RICH) · **Outcome**: new build-pending file
+`…OQ01ExactValue.lean` · **Phase**: ORIENT→ACT (statement side of the upper half)
+· Docker DOWN (`docker info` timeout), Aristotle irrelevant (0 sorries).
+
+### Gap closed
+
+Every prior artifact proved only the **lower** half (`g(k) ≥ 2^k+⌊(3/2)^k⌋−2`):
+per-`k` `Counting*` (k=3..7, merged+registered) and parametric `…General.lean`
+(`waring_lower_general`, all k≥1, merged #24228 but UNREGISTERED). **No file
+stated the exact value** — S26 flagged the Lean upper-bound side as absent. This
+session ships the capstone characterization.
+
+### New file `…OQ01ExactValue.lean` (imports `…General`)
+
+- `IsUniversalBound s k := ∀ n, IsSumOfKthPowers s k n` (reuses General's def).
+- `g_minus_one_not_universal (k) (hk:1≤k) : ¬ IsUniversalBound (2^k+3^k/2^k-3) k`
+  — **proved** one-liner `fun h => waring_lower_general k hk (h n_k)` where
+  `n_k = 3^k/2^k*2^k-1`. (formula−1 = 2^k+q−3, exactly General's count.)
+- `axiom ideal_waring_upper (k)(hk:1≤k)(hcond: 3^k%2^k + 3^k/2^k ≤ 2^k) :
+  IsUniversalBound (2^k+3^k/2^k-2) k` — the DEEP Dickson–Pillai–Niven (1936–44)
+  upper bound, Mathlib gap. `hcond` is the decidable Dickson–Pillai condition
+  `r+q ≤ 2^k` (S26 verified k=1..200).
+- `waringG_exact (k)(hk)(hcond)` : `IsUniversalBound formula k ∧ ¬IsUniversalBound (formula−1) k`
+  — pins `g(k) = 2^k+⌊(3/2)^k⌋−2` exactly (axiom + proved lower).
+- **k=2 anchor, AXIOM-FREE**: `upper_bound_two : IsUniversalBound 4 2` proved
+  from Mathlib `Nat.sum_four_squares` via `![a,b,c,d]`+`Fin.sum_univ_four`+`simpa`;
+  `g2_eq_four` is fully unconditional (no axiom). Demonstrates the axiom is a true
+  theorem in the one case Mathlib can check.
+- Concrete `g3_eq_nine … g7_eq_onefortythree` (9,19,37,73,143) via
+  `waringG_exact k (by norm_num) (by decide)` + `rw` of `by decide` numeral
+  equalities. All numerals + conditions Python-verified (r+q≤2^k true k=2..7).
+
+### Honesty / axiom accounting
+
+File has **1 axiom** (`ideal_waring_upper`) ⟹ `axiomatized` status, NOT verified.
+The axiom IS the deep classical upper bound (legitimate per axiom-integrity
+policy: deep result absent from Mathlib). Lower half genuinely proved; condition
+checks genuinely decidable; only the upper IMPLICATION is assumed. Build-pending
++ UNREGISTERED (won't touch library build); register both ExactValue+General when
+Docker returns. PR labeled `research` only.
+
+### Bearers (name-checked vs built siblings, not compiled)
+
+`Nat.sum_four_squares` + `Fin.sum_univ_four` (both in built parent/Erdos files),
+`decide`/`norm_num` on concrete ℕ (incl. Nat division), imported
+`General.{IsSumOfKthPowers, waring_lower_general}` (read from source).
+
 ## S26 (researcher-2, 2026-06-14) — ORIENT-depth: upper-bound condition + review of #24228
 
 **Mode**: FRESH (RICH, score 37) · **Outcome**: durable verification (no Lean

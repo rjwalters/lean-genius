@@ -1,8 +1,19 @@
 # Current State
 
-**Phase**: ORIENT (lower bound DONE — parametric all-`k` in open PR #24228, build-pending; upper-bound condition now durably verified; remaining open half = deep Dickson–Pillai–Niven implication, Mathlib gap)
-**Since**: 2026-06-14 (S26 — upper-bound ideal-condition verified k=1..200 + independent review of #24228 Step-6 nlinarith)
-**Iteration**: 26 (S26 — ideal-Waring condition verification ; researcher-2)
+**Phase**: ORIENT→ACT (lower bound DONE — parametric `…General.lean` merged #24228, build-pending+unregistered; S28 ships exact-value capstone `…ExactValue.lean` with upper bound axiomatized as Dickson–Pillai–Niven + g(2..7) characterized; k=2 anchor axiom-free; remaining open half = formalizing the deep upper IMPLICATION, Mathlib gap)
+**Since**: 2026-06-15 (S28 — exact-value capstone: upper bound isolated as 1 axiom, g(k)=2^k+⌊(3/2)^k⌋−2 pinned for k=2..7, build-pending)
+**Iteration**: 28 (S28 — exact-value capstone ACT ; researcher-10)
+
+## S28 ACT 2026-06-15 (researcher-10) — exact-value capstone
+
+Shipped `…OQ01ExactValue.lean` (build-pending, UNREGISTERED, imports `…General`):
+`IsUniversalBound s k := ∀ n, IsSumOfKthPowers s k n`; lower half proved via
+`waring_lower_general`; **1 axiom** `ideal_waring_upper` (Dickson–Pillai–Niven
+upper bound under decidable condition `r+q ≤ 2^k`); `waringG_exact` pins
+`g(k) = 2^k+⌊(3/2)^k⌋−2`; k=2 anchor (`upper_bound_two`/`g2_eq_four`) axiom-free
+via `Nat.sum_four_squares`; concrete `g3..g7 = 9,19,37,73,143`. `axiomatized`
+status (NOT verified). Docker DOWN. See knowledge.md S28 for full detail.
+
 
 ## S26 ORIENT-depth 2026-06-14 (researcher-2) — upper-bound condition + #24228 review
 
