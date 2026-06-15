@@ -1,16 +1,16 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-04-21T12:53:48.289Z
-**Iteration**: 1
+**Phase**: COMPLETED
+**Since**: 2026-06-15
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+None — problem is solved and shipped.
 
 ## Active Approach
 
-None yet.
+Double induction on m (generalizing r) and r. Complete.
 
 ## Blockers
 
@@ -18,10 +18,11 @@ None.
 
 ## Next Action
 
-Begin problem exploration.
+None. The proof is merged to `main` (audit-clean #22746), 0 axioms / 0 sorries,
+and the gallery entry is fully populated (status `verified`, badge `original`).
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
