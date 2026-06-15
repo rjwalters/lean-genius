@@ -37,23 +37,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: extremal bound s ≤ 8R sin³(π/9) and attainment at equilateral proved (build-pending, UNREGISTERED). Strict uniqueness remains.",
+    "progressSummary": "PROGRESS: strict uniqueness DONE — morley_side_eq_iff proves (R>0) morleySide=8R sin³(π/9) iff equilateral, via equality cases of AM-GM/Jensen (build-pending under Docker blackout). File now: bound + attainment + uniqueness, 0 sorry / 0 axiom.",
     "builtItems": [
       "amgm_three in MorleysTheoremOQ03.lean (AM-GM for 3 nonnegatives, cubed form, via nlinarith + SOS hints)",
       "sin_jensen_three in MorleysTheoremOQ03.lean (3-point Jensen for sin on [0,π] via chained 2-point concavity)",
       "morley_side_le_equilateral in MorleysTheoremOQ03.lean (s ≤ 8R sin³(π/9))",
-      "morley_side_equilateral + morley_side_max in MorleysTheoremOQ03.lean (bound attained; packaged maximum)"
+      "morley_side_equilateral + morley_side_max in MorleysTheoremOQ03.lean (bound attained; packaged maximum)",
+      "sin_two_eq in MorleysTheoremOQ03.lean (equality case of 2-pt concavity for sin via strictConcaveOn_sin_Icc.2)",
+      "sin_jensen_three_eq in MorleysTheoremOQ03.lean (3-pt Jensen equality ⟹ a₁=a₂=a₃, chained 2-pt strict)",
+      "morley_side_eq_iff in MorleysTheoremOQ03.lean (R>0: morleySide = 8R sin³(π/9) ↔ α=β=γ=π/3 — strict uniqueness)"
     ],
     "insights": [
       "Substituting aᵢ=αᵢ/3, the constraint α+β+γ=π becomes a₁+a₂+a₃=π/3, so the trisected-angle mean is always π/9 regardless of the triangle.",
       "Maximizing the Morley side reduces to maximizing ∏ sin(αᵢ/3) at fixed sum π/3, whose max is at the equal point by concavity+AM-GM.",
       "Two-step bound: ∏ sin aᵢ ≤ ((Σ sin aᵢ)/3)³ ≤ sin(π/9)³ (AM-GM then Jensen), numerically verified with 0 violations.",
-      "AM-GM(3) certificate: (u+v+w)³−27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)² ≥ 0."
+      "AM-GM(3) certificate: (u+v+w)³−27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)² ≥ 0.",
+      "Strict uniqueness extracted from the bound proof: equality sandwiches ((Σsin)/3)³ = sin(π/9)³, then pow_left_inj₀ (a^n=b^n↔a=b on nonnegatives) gives (Σsin)/3 = sin(π/9), i.e. Jensen is tight.",
+      "Tight Jensen ⟹ angles equal handled by sin_jensen_three_eq, which reads the equality case off each chained 2-point step via strict concavity (strictConcaveOn_sin_Icc.2).",
+      "R>0 is essential for uniqueness: at R=0 every triangle has Morley side 0, so the maximizer is not unique."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove strict uniqueness: equality holds iff α=β=γ=π/3 (StrictConcaveOn strict Jensen + strict AM-GM).",
-      "Build under Docker once available; register in gallery and add src/data/proofs/morleys-theorem-oq-03 meta.json."
+      "Build under Docker once available; if green, add src/data/proofs/morleys-theorem-oq-03 gallery meta.json (status verified, 0 axioms).",
+      "Possible follow-up: quantitative deficit bound s_max - s in terms of angle spread (a Δ-stability estimate)."
     ]
   },
   "tags": [

@@ -107,6 +107,66 @@ theorem sin_jensen_three {a₁ a₂ a₃ : ℝ}
   linarith
 
 -- ============================================================
+-- Part I·b: Equality cases (strict concavity)
+-- ============================================================
+
+/-- **Equality case of two-point concavity for `sin`.**
+    If `sin p + sin q = 2 · sin((p+q)/2)` for `p, q ∈ [0, π]`, then `p = q`.
+
+    `sin` is *strictly* concave on `[0, π]`, so the midpoint inequality is strict
+    whenever `p ≠ q`; equality therefore forces `p = q`. -/
+theorem sin_two_eq {p q : ℝ} (hp : p ∈ Icc (0 : ℝ) π) (hq : q ∈ Icc (0 : ℝ) π)
+    (heq : sin p + sin q = 2 * sin ((p + q) / 2)) : p = q := by
+  by_contra hne
+  have hstr := strictConcaveOn_sin_Icc.2 hp hq hne (by norm_num : (0 : ℝ) < 1 / 2)
+    (by norm_num : (0 : ℝ) < 1 / 2) (by norm_num)
+  simp only [smul_eq_mul] at hstr
+  rw [show (1 : ℝ) / 2 * p + 1 / 2 * q = (p + q) / 2 by ring] at hstr
+  linarith
+
+/-- **Equality case of three-point Jensen for `sin`.**
+    If `sin a₁ + sin a₂ + sin a₃ = 3 · sin((a₁+a₂+a₃)/3)` for `aᵢ ∈ [0, π]`, then
+    all three points coincide: `a₁ = a₂` and `a₂ = a₃`.
+
+    Same chained two-point structure as `sin_jensen_three`, but reading off the
+    strict equality case (`sin_two_eq`) at each tight midpoint step. -/
+theorem sin_jensen_three_eq {a₁ a₂ a₃ : ℝ}
+    (h₁ : a₁ ∈ Icc (0 : ℝ) π) (h₂ : a₂ ∈ Icc (0 : ℝ) π) (h₃ : a₃ ∈ Icc (0 : ℝ) π)
+    (heq : sin a₁ + sin a₂ + sin a₃ = 3 * sin ((a₁ + a₂ + a₃) / 3)) :
+    a₁ = a₂ ∧ a₂ = a₃ := by
+  have midmem : ∀ {p q : ℝ}, p ∈ Icc (0 : ℝ) π → q ∈ Icc (0 : ℝ) π →
+      (p + q) / 2 ∈ Icc (0 : ℝ) π := by
+    intro p q hp hq
+    exact ⟨by linarith [hp.1, hq.1], by linarith [hp.2, hq.2]⟩
+  have two_le : ∀ {p q : ℝ}, p ∈ Icc (0 : ℝ) π → q ∈ Icc (0 : ℝ) π →
+      sin p + sin q ≤ 2 * sin ((p + q) / 2) := by
+    intro p q hp hq
+    have hineq := (strictConcaveOn_sin_Icc.concaveOn).2 hp hq (by norm_num : (0 : ℝ) ≤ 1 / 2)
+      (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num)
+    simp only [smul_eq_mul] at hineq
+    rw [show (1 : ℝ) / 2 * p + 1 / 2 * q = (p + q) / 2 by ring] at hineq
+    linarith
+  set m := (a₁ + a₂ + a₃) / 3 with hm_def
+  have hm : m ∈ Icc (0 : ℝ) π :=
+    ⟨by rw [hm_def]; linarith [h₁.1, h₂.1, h₃.1],
+     by rw [hm_def]; linarith [h₁.2, h₂.2, h₃.2]⟩
+  have hp : (a₁ + a₂) / 2 ∈ Icc (0 : ℝ) π := midmem h₁ h₂
+  have hq : (a₃ + m) / 2 ∈ Icc (0 : ℝ) π := midmem h₃ hm
+  have hA : sin a₁ + sin a₂ ≤ 2 * sin ((a₁ + a₂) / 2) := two_le h₁ h₂
+  have hB : sin a₃ + sin m ≤ 2 * sin ((a₃ + m) / 2) := two_le h₃ hm
+  have hC : sin ((a₁ + a₂) / 2) + sin ((a₃ + m) / 2) ≤ 2 * sin m := by
+    have := two_le hp hq
+    rwa [show ((a₁ + a₂) / 2 + (a₃ + m) / 2) / 2 = m by rw [hm_def]; ring] at this
+  -- Equality in the chained sum forces each two-point step to be tight.
+  have hAeq : sin a₁ + sin a₂ = 2 * sin ((a₁ + a₂) / 2) := le_antisymm hA (by linarith)
+  have hBeq : sin a₃ + sin m = 2 * sin ((a₃ + m) / 2) := le_antisymm hB (by linarith)
+  have e12 : a₁ = a₂ := sin_two_eq h₁ h₂ hAeq
+  have e3m : a₃ = m := sin_two_eq h₃ hm hBeq
+  refine ⟨e12, ?_⟩
+  rw [hm_def] at e3m
+  linarith [e12, e3m]
+
+-- ============================================================
 -- Part II: The Morley side length and its maximum
 -- ============================================================
 
@@ -190,6 +250,67 @@ theorem morley_side_max {R : ℝ} (hR : 0 ≤ R) :
   rw [morley_side_equilateral R]
   exact morley_side_le_equilateral hR hα hβ hγ hsum
 
+/-- **Strict uniqueness of the maximizer.** For circumradius `R > 0`, the Morley
+    side length attains its maximal value `8 R sin³(π/9)` *iff* the triangle is
+    equilateral (`α = β = γ = π/3`).
+
+    The forward direction extracts the equality cases of the AM–GM and Jensen
+    steps: tightness in `pow_le_pow_left₀`/`amgm_three` sandwiches the average of
+    the three sines to exactly `sin(π/9)`, and `sin_jensen_three_eq` then forces
+    the three trisected angles to coincide.  (The hypothesis `R > 0` is essential:
+    when `R = 0` every triangle gives Morley side `0`, so the maximizer is not
+    unique.) -/
+theorem morley_side_eq_iff {R α β γ : ℝ} (hR : 0 < R)
+    (hα : 0 < α) (hβ : 0 < β) (hγ : 0 < γ) (hsum : α + β + γ = π) :
+    morleySide R α β γ = 8 * R * sin (π / 9) ^ 3 ↔
+      α = π / 3 ∧ β = π / 3 ∧ γ = π / 3 := by
+  constructor
+  · intro heq
+    -- The three trisected angles lie in [0, π], with nonnegative sines.
+    have ha : α / 3 ∈ Icc (0 : ℝ) π := div_three_mem_Icc hα hβ hγ hsum
+    have hb : β / 3 ∈ Icc (0 : ℝ) π := by
+      have := div_three_mem_Icc hβ hα hγ (by linarith); simpa using this
+    have hc : γ / 3 ∈ Icc (0 : ℝ) π := by
+      have := div_three_mem_Icc hγ hα hβ (by linarith); simpa using this
+    have hsa : 0 ≤ sin (α / 3) := sin_nonneg_of_nonneg_of_le_pi ha.1 ha.2
+    have hsb : 0 ≤ sin (β / 3) := sin_nonneg_of_nonneg_of_le_pi hb.1 hb.2
+    have hsc : 0 ≤ sin (γ / 3) := sin_nonneg_of_nonneg_of_le_pi hc.1 hc.2
+    have hsin9_nonneg : 0 ≤ sin (π / 9) := by
+      have hpi := Real.pi_pos
+      apply sin_nonneg_of_nonneg_of_le_pi <;> linarith
+    have hmean : (α / 3 + β / 3 + γ / 3) / 3 = π / 9 := by
+      rw [show (α / 3 + β / 3 + γ / 3) / 3 = (α + β + γ) / 9 by ring, hsum]
+    -- From the equality of side lengths, the product of sines equals sin(π/9)³.
+    have h8R : (0 : ℝ) < 8 * R := by linarith
+    have hms : morleySide R α β γ = (8 * R) * (sin (α / 3) * sin (β / 3) * sin (γ / 3)) := by
+      unfold morleySide; ring
+    have hprod_eq : sin (α / 3) * sin (β / 3) * sin (γ / 3) = sin (π / 9) ^ 3 := by
+      have step : (8 * R) * (sin (α / 3) * sin (β / 3) * sin (γ / 3))
+          = (8 * R) * sin (π / 9) ^ 3 := by rw [← hms, heq]; ring
+      exact mul_left_cancel₀ h8R.ne' step
+    -- AM–GM and Jensen, exactly as in the bound proof.
+    have hamgm : sin (α / 3) * sin (β / 3) * sin (γ / 3) ≤
+        ((sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3) ^ 3 := amgm_three hsa hsb hsc
+    have hjen : sin (α / 3) + sin (β / 3) + sin (γ / 3) ≤ 3 * sin (π / 9) := by
+      have := sin_jensen_three ha hb hc; rwa [hmean] at this
+    have hmid : (sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3 ≤ sin (π / 9) := by linarith
+    have havg_nonneg : 0 ≤ (sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3 := by linarith
+    have hcube : ((sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3) ^ 3 ≤ sin (π / 9) ^ 3 :=
+      pow_le_pow_left₀ havg_nonneg hmid 3
+    -- The product is sandwiched at sin(π/9)³, forcing the cube — hence the average — tight.
+    have hcube_eq : ((sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3) ^ 3 = sin (π / 9) ^ 3 :=
+      le_antisymm hcube (by rw [← hprod_eq]; exact hamgm)
+    have hav_eq : (sin (α / 3) + sin (β / 3) + sin (γ / 3)) / 3 = sin (π / 9) :=
+      (pow_left_inj₀ havg_nonneg hsin9_nonneg (by norm_num)).mp hcube_eq
+    -- Equality in Jensen forces the three trisected angles to coincide.
+    have hJeq : sin (α / 3) + sin (β / 3) + sin (γ / 3)
+        = 3 * sin ((α / 3 + β / 3 + γ / 3) / 3) := by rw [hmean]; linarith [hav_eq]
+    obtain ⟨e1, e2⟩ := sin_jensen_three_eq ha hb hc hJeq
+    exact ⟨by linarith [e1, e2], by linarith [e1, e2], by linarith [e1, e2]⟩
+  · rintro ⟨hα', hβ', hγ'⟩
+    subst hα'; subst hβ'; subst hγ'
+    exact morley_side_equilateral R
+
 /-
 ## Summary
 
@@ -200,12 +321,11 @@ Proved (target: 0 sorries, 0 axioms — build pending under Docker blackout):
 - `morley_side_equilateral`     : the equilateral attains the bound.
 - `morley_side_max`             : packaged "maximum at the equilateral".
 
-The maximal Morley side is `8R sin³(π/9) ≈ 0.32008 R` (`π/9 = 20°`).
+- `sin_two_eq` / `sin_jensen_three_eq` : equality cases of two-/three-point Jensen.
+- `morley_side_eq_iff` : **strict uniqueness** — for `R > 0`, `s = 8R sin³(π/9)`
+  *iff* `α = β = γ = π/3` (the equilateral is the unique maximizer).
 
-### Remaining (future session)
-- **Strict uniqueness**: equality `s = 8R sin³(π/9)` holds *iff* `α = β = γ = π/3`.
-  This needs the strict forms (`StrictConcaveOn.lt_map_sum` for `sin`, and strict
-  AM–GM equality), and is the natural OQ-03 follow-up.
+The maximal Morley side is `8R sin³(π/9) ≈ 0.32008 R` (`π/9 = 20°`).
 -/
 
 end MorleysTheoremOQ03
