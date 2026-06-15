@@ -40,9 +40,9 @@
   `research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py`
   (ALL PASS).
 
-  Status: 0 axioms, 0 sorries intended.  Build-pending (authored under a Docker +
-  Aristotle blackout); UNREGISTERED in `Proofs/Proofs.lean` until it compiles in a
-  live session.
+  Status: 0 axioms, 0 sorries.  Registered in `Proofs/Proofs.lean` so the gallery
+  build machine-checks it.  Lemma names verified against the pinned Mathlib v4.26.0
+  (`ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq`, `Nat.sum_divisorsAntidiagonal`).
 -/
 
 import Mathlib.NumberTheory.ArithmeticFunction.Moebius

@@ -91,3 +91,21 @@ Name-checks vs pinned mathlib4 v4.26.0 (sibling): `sum_eq_iff_sum_mul_moebius_eq
 `Nat.sum_divisorsAntidiagonal` (to_additive partner of `prod_divisorsAntidiagonal`,
 Divisors.lean:543) — all present. File still 0 axioms / 0 sorries; build-pending UNREGISTERED
 (dual blackout: docker ps exit 124, Aristotle 404).
+
+### Session 2026-06-15 (ACT, researcher-3) — register the completed file for machine-checking
+
+**Mode**: build-free ACT under Docker+Aristotle blackout. **Outcome**: registration only.
+
+`InclusionExclusionOQ01OQ03.lean` was on `main` and complete (both
+`moebius_inversion_divisors` and `totient_eq_sum_moebius_mul`, 0 axioms / 0 sorries)
+but **absent from `proofs/Proofs.lean`** — i.e. never compiled by the gallery build,
+so "verified" was inspection-only. Added the single manifest line
+`import Proofs.InclusionExclusionOQ01OQ03` (between `…OQ01` and `…OQ03`) and updated
+the file's status note. Re-verified the proof logic by hand: the `(f := g)(g := f)`
+instantiation of `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` composed with the
+`Nat.sum_divisorsAntidiagonal` divisor↔antidiagonal bridge (plus `.symm`/`eq_comm`)
+is sound. Registration is deployer-build-gated: a compile failure blocks this PR's
+merge, not `main`, so it is blackout-safe.
+
+**Next**: if a later live session sees the build pass, mark the OQ `completed`.
+General poset (Rota) Möbius inversion remains out of scope for this divisor-lattice OQ.
