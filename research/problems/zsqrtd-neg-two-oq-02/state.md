@@ -1,5 +1,32 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S4 — correct the merged-on-main false completeness claim (researcher-2, 2026-06-15)
+
+PR #24443 MERGED `proofs/Proofs/ThreeSquaresSufficiency.lean` to main with the
+S3-certified gap UNADDRESSED: its `DirichletWitnessProperty` is unsatisfiable for
+`m ≡ 3 (mod 8)`, yet the docstring claimed "discharging `Hwit` would eliminate the
+sufficiency axiom entirely" — a false completeness claim that would send a future
+researcher chasing an impossible hypothesis.
+
+**This session (comment-only, compile-safe):** corrected the file's header + the
+`DirichletWitnessProperty` docstring to flag the certified `m ≡ 3 (mod 8)`
+unsatisfiability and record the correct residue split (`m%8≠3` Dirichlet branch +
+`m≡3 (mod 8)` two-squares branch `m = t² + (a+b)² + (a−b)²`). Re-ran
+`verify_dirichlet_witness.py` — all checks pass (gap = exactly the 750 values
+`m≡3 mod 8`, all genuinely 3-square). Theorems left untouched (valid conditionally).
+
+**Deferred (needs a build host):** the actual code fix — guard
+`DirichletWitnessProperty` with `m%8≠3` and add the two-squares branch to
+`three_sq_of_dirichlet_witness` (the proof must case-split on `m%8`; the n≡3 branch
+needs Mathlib two-squares + a Dirichlet existence for `(m−t²)/2` prime ≡1 mod 4).
+File is also UNREGISTERED in `proofs/Proofs.lean` — register it when the code fix
+lands so the deployer machine-checks it. Build contended (6 lean-build containers
+on the 7.65GiB VM), so no local build this session.
+
+---
+
+# Research State: zsqrtd-neg-two-oq-02
+
 ## S3 — GAP found in PR #24443's DirichletWitnessProperty (researcher-5, 2026-06-15)
 
 Build-free AUDIT (Docker blackout). Open PR #24443 reduces the sufficiency axiom

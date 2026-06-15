@@ -25,15 +25,36 @@
 
   CONSEQUENCE FOR THE AXIOM BUDGET.  `not_excluded_form_is_sum_three_sq` is *not*
   an independent assumption: it follows from `dirichlet_key_lemma` together with
-  `Hwit`.  The witness property `Hwit` is the genuine remaining open content; it
-  is exactly Dirichlet's theorem on primes in arithmetic progressions (available
-  in Mathlib as `Nat.infinite_setOf_prime_and_eq_mod`) combined with a quadratic
-  reciprocity computation choosing the residue class so that `-d` is a quadratic
-  residue mod `p`.  Discharging `Hwit` would eliminate the sufficiency axiom from
-  `ThreeSquares.lean` entirely, turning two axioms into one.
+  `Hwit`.  The witness property `Hwit` isolates the remaining open content for the
+  classes it covers — Dirichlet's theorem on primes in arithmetic progressions
+  (available in Mathlib as `Nat.infinite_setOf_prime_and_eq_mod`) combined with a
+  quadratic reciprocity computation choosing the residue class so that `-d` is a
+  quadratic residue mod `p`.
 
-  STATUS: reduction is unconditional given `Hwit`; the `Hwit` hypothesis is the
-  only open piece and is stated, not assumed as a global axiom.
+  ⚠ KNOWN GAP (certified, researcher-2 S3 — `verify_dirichlet_witness.py`).
+  `DirichletWitnessProperty` as written is **UNSATISFIABLE for `m ≡ 3 (mod 8)`**.
+  For odd `m` only even `d` are admissible (else `d*m-1` is even), and
+  `legendreSym (d*m-1) (-d)` depends only on `(m%8, d%8)`; the `(m%8, d%8)` classes
+  giving `+1` are exactly
+  `m%8 ∈ {1,5} → d%8 ∈ {2,6}`, `m%8 ∈ {2,6} → d%8 ∈ {1,2,5,6}`, and
+  **`m%8 = 3 → none`**.  Exhaustively (every non-excluded `m` with `4∤m`, `m<6000`,
+  `d<200`) the *only* witness-less `m` are precisely the 750 values `m ≡ 3 (mod 8)`,
+  and all of them ARE sums of three squares — so the gap is genuine, not vacuous.
+  Hence `three_sq_of_dirichlet_witness` is logically valid (it is conditional on
+  `Hwit`) but `Hwit` can **never** be discharged, so it does not yet reduce the
+  axiom: the proof stalls on `m ≡ 3 (mod 8)`.
+
+  CORRECT SPLIT (certified) — the witness property must be split by residue:
+    * `m ≢ 3 (mod 8)`:  the Dirichlet witness `(d, p = d*m-1)` above (now sound);
+    * `m ≡ 3 (mod 8)`:  `∃` odd `t` with `(m - t²)/2 = a² + b²` (sum of two squares,
+      from Mathlib), giving `m = t² + 2a² + 2b² = t² + (a+b)² + (a−b)²`.
+  A future build-host session should amend `DirichletWitnessProperty` to require
+  `m % 8 ≠ 3` and add the `m ≡ 3 (mod 8)` two-squares branch to
+  `three_sq_of_dirichlet_witness`.  See `WITNESS-GAP-S3.md` for the full analysis.
+
+  STATUS: the reduction is unconditional given `Hwit`, but `Hwit` is unsatisfiable
+  on `m ≡ 3 (mod 8)` (above), so it is NOT yet a complete axiom reduction; it is
+  stated, not assumed as a global axiom.
 -/
 import Proofs.ThreeSquares
 
@@ -45,7 +66,14 @@ form and is not divisible by `4`, there is a multiplier `d` and a prime
 
 This is precisely the input needed by `dirichlet_key_lemma`. It is the classical
 Dirichlet-1850 selection step (Dirichlet's theorem on primes in AP + quadratic
-reciprocity) and is the sole open ingredient of the sufficiency direction. -/
+reciprocity).
+
+⚠ As written this property is **unsatisfiable for `m ≡ 3 (mod 8)`** (certified;
+see the file header "KNOWN GAP"): no admissible `d` yields `legendreSym = +1`
+there. It should be guarded by `m % 8 ≠ 3`, with the `m ≡ 3 (mod 8)` class handled
+by a separate two-squares branch. Theorems below remain valid *conditionally* on
+this property but cannot fully discharge the sufficiency axiom until the split is
+made. -/
 def DirichletWitnessProperty : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → 1 < m →
     ∃ d p : ℕ, 0 < d ∧ p = d * m - 1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1
