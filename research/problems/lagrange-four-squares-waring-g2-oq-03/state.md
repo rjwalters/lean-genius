@@ -1,10 +1,52 @@
 # Research State: lagrange-four-squares-waring-g2-oq-03
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
 **Since**: 2026-06-14T17:42:09-07:00
-**Iteration**: 2
+**Iteration**: 3
+
+## Session 2026-06-15 (researcher-3) — residue-3 obstruction PROVED (was numerical)
+
+The residue-3 carve-out in `ThreeSquaresSufficiencyCorrected.lean` rests on the
+claim that the monolithic Dirichlet witness (`∃ d, p = d·m−1 prime,
+legendreSym p (−d)=1`) is UNSATISFIABLE for every 4-free core `m ≡ 3 (mod 8)`.
+Across prior sessions this was only a NUMERICAL observation ("0/750"). This
+session upgrades it to a THEOREM and formalizes it in Lean (build-pending):
+
+**Key reduction.** Since `p = d·m − 1 ≡ −1 (mod m)`, we have `d·m ≡ 1 (mod p)`,
+so `d ≡ m⁻¹ (mod p)` and `legendreSym p (−d) = legendreSym p (−m)`. Thus the
+witness condition is exactly **`−m` is a QR mod `p`**.
+
+**Obstruction (proved by Jacobi reciprocity).** For `m ≡ 3 (mod 4)` and any odd
+prime `p ≡ −1 (mod m)`:
+  `(−m | p) = χ₄(p)·(m | p)`, `(m | p) = ±(p | m)` (sign from `p mod 4`, using
+  `m ≡ 3 mod 4`), and `(p | m) = (−1 | m) = χ₄(m) = −1`. The two `p`-dependent
+  signs CANCEL in both classes `p ≡ 1, 3 (mod 4)` ⟹ `(−m | p) = −1` identically.
+Hence the witness is impossible, and `dirichlet_key_lemma` provably cannot reach
+`m ≡ 3 (mod 8)`. The carve-out is a genuine obstruction, not a finite-search
+artifact.
+
+**Deliverables (PR this session):**
+- `proofs/Proofs/ThreeSquaresResidue3Obstruction.lean` (NEW, unregistered,
+  build-pending): `legendreSym_neg_m_eq_neg_one` (the obstruction),
+  `legendreSym_neg_d_eq_neg_m` (the `−d`↔`−m` reduction), `no_residue3_witness`
+  (witness unsatisfiable). 0 axioms, 0 sorry. All Mathlib bearers name-checked
+  @ pinned rev 2df2f0150c (jacobiSym.neg / quadratic_reciprocity_{one,three}_mod_four
+  / at_neg_one / mod_left' ; ZMod.χ₄_nat_{one,three}_mod_four ; legendreSym.{mul,mod,
+  sq_one,at_one,to_jacobiSym}).
+- `verify_residue3_obstruction.py` (NEW): certifies obstruction + identity +
+  Residue3Property + good-residue witness existence. PASS for m<20000, d≤3000
+  (2499 residue-3 cores, 9999 good cores, 51 986 prime-pair identity checks).
+
+**Build status.** Worktree `.lake` is a circular self-symlink (defeats olean
+cache → Mathlib-from-source → OOM on the 7.65GB Docker VM). Verified locally
+impossible; deployer cache-warm gate is the verifier.
+
+## (prior) Current Focus
+Feasibility / route survey for the "if" direction of Legendre's three-square
+theorem ( n ≠ 4^a(8b+7) ⟹ n = x²+y²+z² ).
+
 
 ## Current Focus
 Feasibility / route survey for the "if" direction of Legendre's three-square
