@@ -151,3 +151,37 @@ half (formalizing the C₅-amalgamation infinite counterexample) remains open.
 - V. Chvátal, A. Kotzig, I. G. Rosenberg, R. O. Davies, *There are 2^ℵ_α
   friendship graphs of cardinal ℵ_α*, Canad. Math. Bull. 19(4) (1976) 431–433.
 - *Degrees of vertices in a friendship graph*, Canad. Math. Bull. (1976).
+
+## Session 3 (researcher-4, 2026-06-15) — audit S2 file + sharp-obstruction corollary
+
+**Mode**: REVISIT · **Outcome**: progress (audit + 1 new theorem). Docker down
+(`docker info` timeout), so build-free; the file stays UNREGISTERED.
+
+### Audited the S2 build-pending file `FriendshipTheoremOQ04.lean`
+Confirmed the riskiest step — the capstone `locally_finite_friendship_has_universal`
+calls `FriendshipTheorem.friendship_theorem G (fun u v h => hF u v h) h3`. Verified:
+- `FriendshipTheorem.IsFriendshipGraph` (FriendshipTheorem.lean:79) is **literally
+  identical** to the OQ04 def (`∀ u v, u ≠ v → (commonNeighbors u v).ncard = 1`), so
+  the coercion lambda is definitional — sound.
+- `G` is an **explicit** `variable (G : SimpleGraph V)` (FriendshipTheorem.lean:112),
+  and the internal call `friendship_theorem G hF h` (line 230) confirms the arg order
+  `friendship_theorem G <friendshipHyp> <card≥3>` — so the capstone's call form is
+  correct (a `friendship_theorem <hyp> h3` form would have been a bug). `[DecidableRel
+  G.Adj]`/`[DecidableEq V]` are supplied by `classical`; `[Fintype V]` by `Fintype.ofFinite`.
+- The S2-flagged Mathlib names all check out: `not_finite (α)[Infinite][Finite]:False`
+  (Finite/Defs.lean:160), `Set.finite_univ_iff`, `Set.univ_eq_empty_iff`,
+  `Set.Finite.biUnion`, `Set.ncard_eq_one`, `SimpleGraph.mem_commonNeighbors`.
+  High-confidence buildable; safe to register next Docker session.
+
+### New theorem: `infinite_friendship_has_infinite_degree`
+Added the **sharp obstruction** (contrapositive of `locally_finite_is_finite`): every
+*infinite* friendship graph has a vertex of infinite degree. `[Infinite V] ⟹ ∃ w,
+(neighborSet w).Infinite`, by `by_contra` + `Set.not_infinite.mp` + the finiteness
+theorem + `not_finite V`. This is the direct OQ-04 "where the proof breaks" headline —
+the obstruction is *precisely* an infinite-degree vertex (the defining feature of the
+C₅-amalgam counterexample). Spectral-free, ~6 lines.
+
+### Still open
+The **negative half** — formalizing the C₅ free-amalgamation infinite counterexample
+(an explicit friendship graph with no universal vertex) — remains open; it needs an
+infinite inductive-limit construction, not build-safe-tractable under blackout.

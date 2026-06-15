@@ -111,6 +111,20 @@ theorem locally_finite_is_finite (hF : IsFriendshipGraph G)
     Finite V :=
   Set.finite_univ_iff.mp (univ_finite_of_locallyFinite hF hfin)
 
+/-- **The sharp obstruction (contrapositive).** Every *infinite* friendship graph
+has a vertex of infinite degree. Equivalently, the sole reason the finite theorem
+fails on infinite graphs is the presence of an infinite-degree vertex — exactly the
+feature of the C₅ free-amalgamation counterexample, where every vertex is locally
+infinite. This is the direct OQ-04 "where does the proof break" statement, derived
+from `locally_finite_is_finite` with no spectral input. -/
+theorem infinite_friendship_has_infinite_degree (hF : IsFriendshipGraph G) [Infinite V] :
+    ∃ w : V, (G.neighborSet w).Infinite := by
+  by_contra h
+  push_neg at h
+  have hfin : ∀ w : V, (G.neighborSet w).Finite := fun w => Set.not_infinite.mp (h w)
+  haveI : Finite V := locally_finite_is_finite hF hfin
+  exact not_finite V
+
 /-- **Conclusion restored.** A locally finite friendship graph with at least three
 vertices has a universal vertex — recovered from the finite gallery theorem via the
 finiteness above, with no spectral input on the infinite side. -/
