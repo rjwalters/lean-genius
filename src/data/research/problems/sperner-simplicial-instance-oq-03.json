@@ -38,11 +38,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: parity skeleton (S6) verified build-confident; problem is BUILD-GATED not math-blocked — all 4 remaining items (concrete instance, door<->FC bijection, structure bridge, base case) need Docker. Next productive step is a Docker session, not another abstract skeleton.",
+    "progressSummary": "ORIENT (Docker down): re-scoped the ACT. Found SpernerNDim.sperner_parity (#FC == #face-d boundary doors mod 2, 0 sorries/0 axioms) already proves the dimension-general parity; _hLastFace = Odd #FC of the induced facet coloring is dischargeable by citing it in dim n-1, so the remaining work is the facet-restriction wiring between SpernerSimplicialInstance and SpernerNDim. Verified the parity instantiation on the concrete 2-D Kuhn mesh and the dim-3 -> dim-2 reduction mesh-free (restriction is Sperner; top-facet doors == FC == odd).",
     "builtItems": [
       "research/problems/sperner-simplicial-instance-oq-03/verify_boundary_doors.py — reproducible exhaustive verification: n=1 interval (one boundary door) and n=2 Kuhn-triangulated triangle (odd panchromatic, odd boundary doors, all on top facet, count == induced 1-D door count) over all Sperner colorings, grids m<=4.",
-      "research/problems/sperner-simplicial-instance-oq-03/verify_standard_triangulation.py - self-validated standard Freudenthal triangulation of Delta^d (d=2,3,4) + genuine-mesh checks of sperner_parity (P), facet=lower-mesh (A), and the recursion step (R); reference algorithm for the Lean construction.",
-      "S7: rw-chain + symbol verification of SpernerSimplicialInstanceOQ03.lean against SpernerNDim.lean sperner_parity(:601)/sperner_ndim(:654)"
+      "research/problems/sperner-simplicial-instance-oq-03/verify_standard_triangulation.py - self-validated standard Freudenthal triangulation of Delta^d (d=2,3,4) + genuine-mesh checks of sperner_parity (P), facet=lower-mesh (A), and the recursion step (R); reference algorithm for the Lean construction."
     ],
     "insights": [
       "boundary_doors_odd is NOT an open assumption in the .lean — it is a PROVEN theorem (line 173) that already establishes S = S_n (all boundary doors lie on the top facet) via the Sperner condition. The OQ description (\"leaves boundary_doors_odd as an assumption\") is stale.",
@@ -56,7 +55,7 @@
       "Verified mesh-free that the restriction of a Sperner Delta^3 coloring to the top facet (opposite v3) uses only colors {0,1,2} (color 3 forbidden there), so it is automatically a Sperner Delta^2 coloring, and #(top-facet doors of Delta^3) == #FC(panchromatic) of the induced Delta^2 coloring == odd (all Sperner colorings, facet grids m<=4).",
       "S5: Built a CONCRETE self-validated standard (Freudenthal) triangulation of Delta^d for general d (order-polytope coords: barycentric b<->monotone partial sums s; cells = (base, permutation) chains). Pseudomanifold confirmed (facet multiplicities in {1,2}), cell count == m^d (d=3: 1,8,27; d=4: 1,16,81). First general-d concrete instance anywhere; doubles as the reference algorithm for the Lean SpernerTriangulation.",
       "S5: On GENUINE 3-D and 4-D meshes (S1-S4 reached only 2-D) verified all three pillars: (P) sperner_parity #FC == #(boundary doors on geometric face d) (mod 2); (A) the top facet (b_d=0) of the d-mesh IS the (d-1)-mesh as a cell set (restriction map s |-> s[:d-1]); (R) #(doors on face d of Delta^d) == #FC of the induced Delta^{d-1} coloring per coloring, restriction always Sperner. Together they close the full induction _hLastFace[d] -> _hLastFace[d-1] -> ... -> base d=1 on actual standard triangulations.",
-      "S7: statically verified S6 OQ03 file — fc_odd_of_facet_bijection rw-chain matches parent sperner_ndim verified pattern; hbij door filter matches sperner_parity@(d+1) char-for-char. File build-confident, ready to register when Docker returns."
+      "2026-06-15 (researcher-3): standdown. PR #24362 (abstract inductive step) confirmed MERGED; no concrete general-n SpernerTriangulation instance exists yet. Remaining ACT = construct the Freudenthal/order-polytope mesh instance (geometric adj_unique_facet/boundary_face fields), a large Docker-gated build. Numerics already verified d=2,3,4. No safe build-free step under dual blackout."
     ],
     "mathlibGaps": [
       "No off-the-shelf Mathlib lemma for boundary-face parity of standard-simplex triangulations; the door-counting engine is gallery-local (SpernerMathlib.lean).",

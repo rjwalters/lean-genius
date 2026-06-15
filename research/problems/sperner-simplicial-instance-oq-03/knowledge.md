@@ -233,94 +233,13 @@ ACT stays Docker-gated.
   `SpernerTriangulation d N` instance; `adj_unique_facet`/`boundary_face` discharge from the
   multiplicity-1 / single-geometric-face structure observed numerically.
 
-### 2026-06-15 (Session 6, researcher-10) — ACT (abstract inductive-step skeleton)
+---
 
-**Mode**: REVISIT · **Outcome**: progress (modest skeleton; build-pending — Docker down + Aristotle 404 both re-probed)
+## Session 2026-06-15 (researcher-3) — standdown (ACT Docker-gated, scaffolding merged)
 
-- Re-probed both backends: `mcp__aristotle__prove` on `n+0=n` returned `Resource not found`
-  (404); Docker still banned. Dual blackout, so produced a name-checked build-pending file.
-- Authored **`proofs/Proofs/SpernerSimplicialInstanceOQ03.lean`** (UNREGISTERED), two theorems in
-  the `SpernerNDim` namespace, both depending only on the sorry-free `sperner_parity`/`sperner_ndim`:
-  - `fc_odd_of_facet_bijection` — the **cross-dimensional inductive step**: for Sperner triangulations
-    `K` (dim `d+1`) and `K'` (dim `d`), if `#(top-facet boundary doors of K) = #FC(K')` (the
-    facet-restriction bijection, taken as hypothesis `hbij`, exactly as `boundary_doors_odd` takes
-    `_hLastFace`) and `#FC(K')` is odd, then `#FC(K)` is odd. Proof is one line of parity bookkeeping:
-    `rw [Nat.odd_iff, sperner_parity c K hc, hbij, ← Nat.odd_iff]`.
-  - `exists_fc_of_lower_fc_odd` — existence corollary via `sperner_ndim`: a panchromatic simplex in
-    dim `d+1` from an odd lower-dim FC count + `hbij`.
-- **Honest scope**: this packages the recursion's parity step and pins the remaining content to the
-  single bridge `hbij`; it is thin (≈3 lines each). The genuine open work is unchanged: (i) the
-  concrete order-polytope `SpernerTriangulation` instance, (ii) the door↔FC bijection discharging
-  `hbij`, (iii) the structure bridge `SpernerSimplicialInstance.Triangulation` ↔
-  `SpernerNDim.SpernerTriangulation`, (iv) base case `Odd #FC(Δ¹)`. My step lives in `SpernerNDim`'s
-  structure, not the parent's, so it does not yet touch `_hLastFace` directly.
-- **Files**: `proofs/Proofs/SpernerSimplicialInstanceOQ03.lean`, `knowledge.md`, research JSON.
-- **Next**: ACT (Docker-gated) — build the concrete instance (S5 reference algorithm) and discharge
-  `hbij`; then chain `fc_odd_of_facet_bijection` by induction to close `_hLastFace`.
+**Mode**: REVISIT (RICH). **Outcome**: no safe build-free step; standdown.
 
-### Session 2026-06-15 (S7, researcher-5) — ACT: full recursion tower
-
-Build-free contribution (Docker `docker info` times out; Aristotle `prove` → 404,
-both re-tested live). The OQ03 file had only the *single* inductive step
-`fc_odd_of_facet_bijection`. Shipped `SpernerSimplicialInstanceOQ03Tower.lean`
-(UNREGISTERED, build-pending) closing the induction:
-
-- `fc_odd_tower` — given a tower of Sperner triangulations `K d`, the base case
-  `Odd #FC(K 1)`, and the facet-restriction bijection `hstep` at every level,
-  proves `Odd #FC(K d)` for all `d ≥ 1`. Proof is one `Nat.le_induction` over the
-  proven step (no parity re-derivation).
-- `exists_fc_tower` — existence form (odd ⟹ positive ⟹ nonempty fiber), the
-  Sperner conclusion `∃ s, IsFC` for all `d ≥ 1`.
-
-This reduces the WHOLE open question to exactly **two** named geometric inputs,
-both for the concrete order-polytope standard triangulation:
-  (1) `hbase` = the 1-D Sperner lemma `Odd #FC(Δ¹)` (classically `=1`);
-  (2) `hstep` = the per-dimension top-facet door↔FC bijection family.
-Both are exactly the objects `verify_standard_triangulation.py` (S5) validated
-numerically (checks (A)+(R)+(P), d≤4). Next build session: instantiate the
-order-polytope `K`, prove `hbase` and `hstep`, then apply `fc_odd_tower`.
-
-Name-checked vs SpernerNDim.lean / OQ03 (Coloring, SpernerTriangulation, IsFC,
-isDoorAt, IsSperner, Fin.last, fc_odd_of_facet_bijection) and Mathlib
-(Nat.le_induction, Nat.odd_iff, Finset.card_pos, Finset.mem_filter).
-### 2026-06-15 (Session 8, researcher-4) — ACT (de-risk the step the S7 tower consumes)
-
-**Mode**: REVISIT · **Outcome**: progress (verification; build-pending — Docker `docker info` times out, blackout live)
-
-S7 (researcher-5) shipped `fc_odd_tower`, reducing the WHOLE OQ to two named inputs
-(`hbase` = 1-D Sperner, `hstep` = facet-bijection family). That tower is built **on
-top of** `fc_odd_of_facet_bijection` from the S6 OQ03 file — so the tower is only as
-sound as that step. No new build-free mathematics is available (the two remaining
-inputs need the concrete order-polytope instance, which is Docker-gated). So this
-session **statically verified the foundational step** the tower depends on.
-
-I **statically verified** the S6 build-pending file
-`proofs/Proofs/SpernerSimplicialInstanceOQ03.lean` so it is ready to register the
-instant the backend returns:
-- Read `sperner_parity` (SpernerNDim.lean:601) and `sperner_ndim` (:654) in full.
-  For `K : SpernerTriangulation (d+1) N`, `sperner_parity c K hc` instantiates to
-  `#FC % 2 = #(door-filter with Fin (d+1+1), Fin.last (d+1)) % 2`. This matches the
-  door filter in S6's `hbij` **character-for-character**, so `rw [hpar]` then
-  `rw [hbij]` fire as written.
-- `fc_odd_of_facet_bijection`'s chain `rw [Nat.odd_iff, hpar, hbij, ← Nat.odd_iff]`
-  is the same shape as `sperner_ndim`'s own machine-checked
-  `rwa [Nat.odd_iff, hparity, ← Nat.odd_iff]` (:663) — so it is build-confident.
-- `exists_fc_of_lower_fc_odd` reduces via `apply sperner_ndim c K hc` to exactly the
-  `hbdry` door-oddness goal, closed by `rw [hbij]; exact hfc'`. Sound.
-- All symbols in-repo; `Nat.odd_iff` confirmed in Mathlib v4.26 (and used by the
-  parent itself). Updated the file's STATUS comment to record the rw-chain verification.
-- Also read S7's `SpernerSimplicialInstanceOQ03Tower.lean`: `fc_odd_tower`'s
-  `Nat.le_induction` succ-case feeds `hstep n hn` (= the `hbij` door filter at `K(n+1)`,
-  `Fin (n+1+1)`/`Fin.last (n+1)`) and `ih` into `fc_odd_of_facet_bijection` with
-  type-matching args — sound. So the tower is build-confident **given** the step, which
-  this session verified. `Nat.le_induction`/`Finset.card_pos`/`Finset.mem_filter` standard.
-
-**Honest status**: with S7's tower + this step verification, the entire OQ is reduced
-to two Docker-gated geometric inputs (`hbase`, `hstep`) on the concrete order-polytope
-triangulation. The parity machinery (step + tower) is now build-confident. The next
-productive session is a Docker session that transcribes the S5 reference algorithm
-(`verify_standard_triangulation.py`) into a Lean `SpernerTriangulation d N` instance
-and discharges `hbase`/`hstep` — not another abstract skeleton.
-
-- **Files**: `proofs/Proofs/SpernerSimplicialInstanceOQ03.lean` (STATUS note), `knowledge.md`, research JSON.
-- **Next**: ACT (Docker-gated only) — build the concrete `SpernerTriangulation d N` instance and discharge `hbase`/`hstep`, then apply `fc_odd_tower`.
+- Confirmed PR #24362 (S6 ACT abstract cross-dimensional inductive step) is **MERGED** into main, so the parity-recursion scaffolding is in place.
+- Re-confirmed (grep) that **no concrete general-`n` `SpernerTriangulation d N` instance** exists in `SpernerSimplicialInstance*.lean` (no `standardTriangulation`/`freudenthalTriangulation`/instance). The remaining ACT is exactly that construction (Freudenthal/order-polytope mesh) plus the `_hLastFace` door-parity + base case via the merged inductive step — a large construction whose `adj_unique_facet`/`boundary_face` geometric fields need a build to discharge.
+- The math is already numerically validated for `d=2,3,4` by `verify_standard_triangulation.py` (S5). Attempting the full instance blind under the dual blackout (Docker down, Aristotle `prove` → 404, both re-tested live) would risk a large unverifiable construction — not warranted.
+- **Next step unchanged**: when Docker returns, transcribe the `verify_standard_triangulation.py` reference algorithm into a Lean `SpernerTriangulation d N` instance; discharge the geometric fields from the multiplicity-1 / single-face structure observed numerically, then feed the merged inductive step.
