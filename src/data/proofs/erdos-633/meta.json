@@ -83,44 +83,100 @@
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Header docstring stating Erdős Problem #633 ($25, OPEN): classify the triangles that can ONLY be cut into a square number of congruent triangles. Notes that every triangle dissects into n² congruent copies, references Soifer's √2/√3/√4 example and the related similar-dissection Problem #634. Imports Mathlib and opens Real, Set.",
+      "mathContext": "Erdős #633: classify triangles whose congruent-dissection counts are exactly the perfect squares. Background: every triangle admits a dissection into $n^2$ congruent copies (the $n \\times n$ scaling), so the question is which triangles admit *no* non-square count."
+    },
+    {
       "id": "triangle-representation",
       "title": "Triangle Representation",
       "startLine": 37,
-      "endLine": 67,
-      "summary": "Defines the Triangle type (three real-valued vertices), basic geometric operations, and the notion of similarity/congruence. Sets up the framework for dissecting triangles into triangular pieces.",
-      "mathContext": "A triangle dissection into $n$ pieces is a partition of the interior into $n$ non-overlapping triangles with the same total area. The Dehn-Sydler theorem (1965) characterizes dissectable polygons."
+      "endLine": 66,
+      "summary": "Defines the Triangle structure (three positive side lengths with the triangle inequalities), the TriangleByAngles structure (three angles in (0,π) summing to π), and Triangle.area via Heron's formula.",
+      "mathContext": "A triangle is encoded by side lengths $a,b,c>0$ satisfying the three triangle inequalities, or alternatively by angles $\\alpha,\\beta,\\gamma \\in (0,\\pi)$ with $\\alpha+\\beta+\\gamma=\\pi$. Area uses Heron: $\\sqrt{s(s-a)(s-b)(s-c)}$ with $s=(a+b+c)/2$."
     },
     {
       "id": "dissection-definitions",
       "title": "Dissection Definitions",
       "startLine": 67,
-      "endLine": 100,
-      "summary": "Defines CanDissectInto T n (T can be dissected into n triangles), DissectionCounts (the set of achievable n), IsSquare (n = k²), HasSquareOnlyProperty (only square ns work), and SquareOnlyTriangles.",
-      "mathContext": "Erdős #633 asks: for which triangles T is $\\{n : T$ can be dissected into $n$ similar triangles$\\} = \\{k^2 : k \\geq 1\\}$? Soifer conjectured all non-right triangles have only square dissection numbers."
+      "endLine": 83,
+      "summary": "Defines CongruentDissection T S n (n copies of S tile T, with an area condition and a congruence/proportionality condition), CanDissectInto T n (∃ such S), and DissectionCounts T (the set of n ≥ 1 into which T can be congruently dissected).",
+      "mathContext": "CongruentDissection requires $\\mathrm{area}(T)=n\\cdot\\mathrm{area}(S)$ together with proportional side ratios. DissectionCounts$(T)=\\{n\\geq 1 : T$ can be cut into $n$ congruent copies$\\}$."
+    },
+    {
+      "id": "square-number-property",
+      "title": "Square Number Property",
+      "startLine": 84,
+      "endLine": 97,
+      "summary": "Defines IsSquare n (n = k²), HasSquareOnlyProperty T (every achievable dissection count is a perfect square), and the set SquareOnlyTriangles of triangles with that property — the central object Erdős #633 asks to classify.",
+      "mathContext": "$\\mathrm{HasSquareOnlyProperty}(T) :\\Leftrightarrow \\forall n \\in \\mathrm{DissectionCounts}(T),\\ \\exists k,\\ n=k^2$. SquareOnlyTriangles is the subset of all such $T$; the open problem is to characterize it geometrically."
     },
     {
       "id": "universal-dissection",
-      "title": "Universal Dissection Theorems",
-      "startLine": 101,
-      "endLine": 130,
-      "summary": "Proves universal_square_dissection: every triangle can be dissected into k² similar copies for any k ≥ 1 (by subdivision). Proves squares_always_achievable. Discusses the open question about non-square achievable n.",
-      "mathContext": "Universal bound: $k^2$ is always achievable by $k \\times k$ subdivision. The question is whether other values of $n$ (non-square) are achievable, and for which triangles T."
+      "title": "Universal Dissection into Squares",
+      "startLine": 98,
+      "endLine": 112,
+      "summary": "universal_square_dissection (sorry): every triangle dissects into n² congruent copies for any n ≥ 1. squares_always_achievable (proved from it): every perfect square ≥ 1 lies in DissectionCounts T, so the square numbers are always achievable.",
+      "mathContext": "The $n \\times n$ scaling subdivision gives $k^2 \\in \\mathrm{DissectionCounts}(T)$ for all $k\\geq 1$ and every triangle $T$. Thus square counts are universal; the problem is whether any *non-square* count is also achievable."
     },
     {
       "id": "soifer-example",
-      "title": "Soifer's Example and Counterexamples",
+      "title": "Soifer's Example",
       "startLine": 113,
-      "endLine": 180,
-      "summary": "Presents Soifer's (1995) construction of right triangles that can be dissected into non-square numbers of similar pieces, showing the 'square-only' property is non-universal. Axiomatizes the right-triangle exceptional cases.",
-      "mathContext": "Right triangles with legs in ratio $1 : \\sqrt{2}$ can be dissected into $2$ similar copies (the square root of 2 construction). More generally, right triangles often have non-square achievable dissection numbers."
+      "endLine": 150,
+      "summary": "Defines soiferTriangle, the triangle with sides √2, √3, √4 (= 2), discharging its positivity and triangle-inequality obligations with explicit sqrt bounds. soifer_square_only (sorry) asserts this triangle has the square-only property.",
+      "mathContext": "Soifer's witness has sides $\\sqrt2,\\sqrt3,2$; the triangle inequalities follow from $1<\\sqrt2,\\sqrt3<2$. It is the canonical example conjectured to be cuttable only into square numbers of congruent copies."
     },
     {
-      "id": "open-conjecture",
-      "title": "Open Conjecture and Known Results",
-      "startLine": 180,
+      "id": "integral-independence",
+      "title": "Integral Independence",
+      "startLine": 151,
+      "endLine": 164,
+      "summary": "Defines HasIntegrallyIndependentAngles (no non-trivial integer combination of the angles vanishes) and integral_independence_implies_square_only (sorry), the heuristic that integrally independent angles force the square-only property.",
+      "mathContext": "Integral independence of $(\\alpha,\\beta,\\gamma)$ rules out the rational angle relations that enable non-square dissections, suggesting a link between angle arithmetic and the square-only property."
+    },
+    {
+      "id": "non-square-dissections",
+      "title": "Non-Square Dissections for Generic Triangles",
+      "startLine": 165,
+      "endLine": 180,
+      "summary": "Defines HasNonSquareDissection (some achievable count is not a perfect square) and gives two existence witnesses (both sorry): equilateral triangles dissect into 3 copies, and right isosceles triangles (legs equal, hypotenuse = leg·√2) dissect into 2 copies.",
+      "mathContext": "Generic triangles admit non-square counts: equilaterals give $3\\in\\mathrm{DissectionCounts}$, right isosceles give $2$. These are the obstructions that a square-only triangle must avoid."
+    },
+    {
+      "id": "similar-vs-congruent",
+      "title": "Similar vs Congruent Dissections",
+      "startLine": 181,
+      "endLine": 198,
+      "summary": "Defines CanDissectIntoSimilar (dissection into n similar — not necessarily congruent — pieces) and states the related Problem #634 results: similar_dissection_characterization (every triangle dissects into n similar copies for n ∉ {2,3,5}) and exceptional_similar_cases (some triangle resists n = 2,3,5), both sorry.",
+      "mathContext": "For *similar* dissections the answer is known (Problem #634): every triangle is cuttable into $n$ similar copies for all $n \\notin \\{2,3,5\\}$, with genuine exceptions at $2,3,5$. This contrasts with the still-open *congruent* case of #633."
+    },
+    {
+      "id": "classification-problem",
+      "title": "The Classification Problem (OPEN)",
+      "startLine": 199,
+      "endLine": 212,
+      "summary": "Defines erdos633Classification (the existence of a 'nice' geometric predicate P characterizing HasSquareOnlyProperty) and the placeholder theorem erdos_633_open (a tautology marking the problem as unresolved). The $25 prize is for a complete characterization.",
+      "mathContext": "The classification target: a geometric predicate $P$ with $\\mathrm{HasSquareOnlyProperty}(T) \\Leftrightarrow P(T)$ for all $T$. No such characterization is known; this remains the open core of Erdős #633."
+    },
+    {
+      "id": "partial-results",
+      "title": "Partial Results",
+      "startLine": 213,
+      "endLine": 225,
+      "summary": "Defines soiferFamily (triangles with sides √p, √q, √r for distinct naturals satisfying the triangle inequality) and soifer_family_square_only (sorry): this family is contained in SquareOnlyTriangles — the known partial result toward the classification.",
+      "mathContext": "soiferFamily $=\\{T : a=\\sqrt p, b=\\sqrt q, c=\\sqrt r,\\ p,q,r$ distinct$\\}$, conjectured $\\subseteq$ SquareOnlyTriangles. This generalizes the single $\\sqrt2,\\sqrt3,\\sqrt4$ witness."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem Statement",
+      "startLine": 226,
       "endLine": 236,
-      "summary": "States the open conjecture (non-right triangles have square-only dissection numbers) and summarizes known results: Snover-Warath-Williams (1990) proved n=2 is never achievable for obtuse triangles, and the general classification remains open.",
-      "mathContext": "Known: $n=2$ is impossible for obtuse triangles (Snover et al. 1990). Conjectured: for non-right, non-equilateral triangles, only $n = k^2$ are achievable. The equilateral triangle case is open too (can it be dissected into 2 similar equilateral triangles?)."
+      "summary": "erdos_633: there exists a triangle with the square-only property, proved by exhibiting soiferTriangle together with soifer_square_only. Closes with #check commands for the main results.",
+      "mathContext": "Top-level statement $\\exists T,\\ \\mathrm{HasSquareOnlyProperty}(T)$, witnessed by Soifer's triangle. The full classification (which triangles, not merely existence) is the open part."
     }
   ],
   "conclusion": {
