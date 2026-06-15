@@ -121,10 +121,27 @@ theorem normalizer_iso_AGL1Z
     **Corrected signature** (to discharge in a future Docker-up session):
     thread the normal Sylow-p `P` and its `p`-cycle generator through, e.g.
     `(P : Sylow p H) (hPnorm : (P : Subgroup H).Normal)`
+    `(hσ_card : σ.support.card = p)`
     `(hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈`
     `  Subgroup.zpowers σ) (hσH : σ ∈ H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer`,
     matching the outputs of Steps 2 (`sylow_p_normal`) and 3
-    (`sylow_p_is_pcycle`). See `knowledge.md` Risk R2. -/
+    (`sylow_p_is_pcycle`).
+
+    ⚠ **The `p`-cycle hypothesis `hσ_card : σ.support.card = p` is NOT
+    optional** (researcher-1, S6 OBSERVE 2026-06-14). `hgen` only states
+    `ι(P) ⊆ ⟨σ⟩` (where `ι = H.subtype.comp (P : Subgroup H).subtype`); the
+    normalizer argument needs the *equality* `ι(P) = ⟨σ⟩`. We have
+    `|ι(P)| = |P| = p` (faithful action; `|P| = p` because primitivity
+    forces `p ∣ |H|` while `p² ∤ p! ≥ |H|`), so `ι(P) = ⟨σ⟩` follows from
+    `ι(P) ⊆ ⟨σ⟩` **only when** `|⟨σ⟩| = ord σ = p`, i.e. `σ` is a `p`-cycle.
+    Drop `hσ_card` and the signature is still unsound: e.g. if `ord σ` were
+    composite, `ι(P)` (order `p`) could sit as a proper subgroup of `⟨σ⟩`
+    and `H`'s normalising `ι(P)` would not normalise the larger `⟨σ⟩`.
+    The S5 corrected-signature sketch (and `knowledge.md` Risk R2) omitted
+    this hypothesis. Discharge plan once threaded: from `hPnorm`, every
+    `h ∈ H` conjugates `ι(P)` to itself; rewrite `ι(P) = ⟨σ⟩` and close with
+    `Subgroup.le_normalizer`-style reasoning (~5–15 LOC). See `knowledge.md`
+    Risk R2. -/
 theorem H_le_normalizer
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
