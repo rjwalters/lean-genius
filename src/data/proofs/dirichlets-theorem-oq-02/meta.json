@@ -69,27 +69,6 @@
   },
   "sections": [
     {
-      "id": "key-lemma",
-      "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
-      "startLine": 17,
-      "endLine": 53,
-      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction."
-    },
-    {
-      "id": "main-theorem",
-      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
-      "startLine": 55,
-      "endLine": 95,
-      "summary": "Constructs N = 4·(n+1)! - 1 to find primes ≡ 3 (mod 4) larger than any given bound."
-    },
-    {
-      "id": "existence",
-      "title": "Existence Witness",
-      "startLine": 97,
-      "endLine": 101,
-      "summary": "Exhibits 3 as a prime ≡ 3 (mod 4)."
-    },
-    {
       "id": "setup",
       "title": "Setup: Imports and Mathematical Context",
       "startLine": 1,
@@ -98,12 +77,26 @@
       "mathContext": "The arithmetic progression $3, 7, 11, 15, 19, \\ldots$ (primes ≡ 3 mod 4): $3, 7, 11, 19, 23, 31, \\ldots$ The density of such primes is $1/\\varphi(4) = 1/2$ of all primes by the general Dirichlet density theorem, but this file proves infinitude without analytic methods."
     },
     {
+      "id": "key-lemma",
+      "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
+      "startLine": 17,
+      "endLine": 54,
+      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction: if every prime factor were ≡ 1 (mod 4), their product would be ≡ 1 (mod 4)."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
+      "startLine": 55,
+      "endLine": 96,
+      "summary": "Constructs N = 4·(n+1)! - 1 (which is ≡ 3 mod 4) to find a prime ≡ 3 (mod 4) larger than any given bound, via a Euclid-style argument without L-functions."
+    },
+    {
       "id": "existence-witness",
-      "title": "Witness: 3 is Prime and ≡ 3 (mod 4)",
+      "title": "Existence Witness: 3 is Prime and ≡ 3 (mod 4)",
       "startLine": 97,
       "endLine": 101,
-      "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3, proved by decide. This completes the Set.Infinite proof by providing the base case.",
-      "mathContext": "$3$ is prime (decidable) and $3 \\bmod 4 = 3$ (computable). The existence of at least one such prime, combined with the unboundedness from infinite_primes_three_mod_four, gives the full Set.Infinite characterization."
+      "summary": "Proves exists_prime_three_mod_four: the set is nonempty via the concrete example p = 3. Combined with the unboundedness from infinite_primes_three_mod_four, this gives the full Set.Infinite characterization.",
+      "mathContext": "$3$ is prime (decidable) and $3 \\bmod 4 = 3$ (computable). The existence of at least one such prime, together with the unboundedness result, yields the complete Set.Infinite statement."
     }
   ],
   "conclusion": {
