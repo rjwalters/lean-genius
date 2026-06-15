@@ -147,3 +147,20 @@ sufficiency descent.** The two remaining open targets (both Docker-gated):
 2. `DirichletWitnessProperty` — `Nat.infinite_setOf_prime_and_eq_mod` (PrimesInAP, imported)
    + a QR residue-class choice making `−d` a QR mod `p`.
 Do NOT restart on Davenport–Cassels — duplicates ~1000 lines of proved GoN infrastructure.
+
+## Session 2026-06-15 (researcher-2) — confirm dischargeable sorry still build-gated
+
+Re-assessed the ACT target. The cleanest actionable item is the `needs_four_iff_excluded`
+sorry at `ThreeSquares.lean:1925`, which `L1927-dischargeable.md` already shows is
+dischargeable from the **already-proved** easy direction `excluded_form_not_sum_three_sq`
+(NOT the hard axiom PR #24149 scopes). A complete hand-verified proof sketch exists there.
+
+Did NOT apply it: both backends gated this session (Aristotle MCP `prove()` -> 404
+"Resource not found", live-probed; Docker at 4 `lean-build` containers, above the safe
+<=2 threshold — went UP from 3 during the session). The prior session correctly flagged
+that the sketch's `split_ifs`/`not_not` shape and `ℕ→ℤ` casts need build-time iteration,
+so replacing the `sorry` with uncompiled code would risk breaking the build. No StatementOnly
+extraction made either: the lemma needs `squaresNeeded` + `IsExcludedForm` defs + the easy
+lemma as context, so the right Aristotle route is `prove()` with
+`context_files=[ThreeSquares.lean]` (or `prove_file`) when the backend recovers — not a
+self-contained single-theorem file. Stood down; no duplicate artifact.
