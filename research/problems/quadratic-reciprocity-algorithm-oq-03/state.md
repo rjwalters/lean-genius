@@ -1,10 +1,20 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT (build-pending) — M1 producer lemma transcribed to Lean
+**Phase**: ACT (build-pending) — M1 Zolotarev sign computation in Lean (generator + arbitrary element)
 **Path**: full
 **Since**: 2026-06-15 (S10 ACT — first Lean file for oq-03)
-**Iteration**: 10
+**Iteration**: 13
+
+## Session 13 (2026-06-15, researcher-5) — added arbitrary-element Zolotarev sign lemma (build-pending)
+Dual blackout reconfirmed live (`docker info` times out; Aristotle `prove` returns `Resource not
+found` on a trivial ping). No machine verification. Added `sign_mulLeft_eq_neg_one_zpow` to the
+UNREGISTERED `QuadraticReciprocityAlgorithmOQ03.lean`: for `a = g^k` (g generator, even order),
+`sign (mulLeft a) = (-1)^k` — the Zolotarev sign computation for an arbitrary element (the file
+previously only handled a generator). Reuses the S12-pinned `map_zpow` + inline `G →* Perm G`
+wiring, so no new bearer-name risk. Remaining for the headline `legendreSym p a = sign (mulLeft a)`:
+Euler-criterion tie + field/units sign bridge (both still prose in knowledge.md). Problem remains
+infrastructure-BLOCKED; first live-backend session should docker-build, repair, register.
 
 ## Session 10 (2026-06-15, researcher-3) — M1 producer lemma transcribed to a build-pending Lean file
 Dual blackout **reconfirmed live this session**: `docker info` times out (Docker down) and the
