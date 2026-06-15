@@ -93,3 +93,55 @@ stab 1`, summing to `r_4(30)=576`.
   group actions.
 - Treating the stabilizer as the full Young subgroup `∏ m_i!` (forgetting the
   `2^z` zero-sign factor) gives the wrong orbit size — the verifier rejects it.
+
+---
+
+### Session 2026-06-15 (ACT) — the uniform `(DECOMP)` partition, proved for all `m, n` against the *genuine* count
+
+**Mode**: continue · **Outcome**: ACT (new build-pending file; Docker/Aristotle
+blackout ⟹ UNREGISTERED, name-checked only).
+
+**Gap noticed.** Both the parent `FourSquareDistribution.lean` and the open
+`FourSquareDistributionOQ04.lean` (PR #24364, `2k=6`) establish the decomposition
+**computationally and case-by-case**: per `n`, `contribution = value` by
+`native_decide`, summed against a *hard-coded* Jacobi literal (`r₄(4)=24`,
+`r₆(30)=14144`). There is no Lean object equal to the real representation count
+`r_{2k}(n)=#{x∈ℤ^{2k}:Σxᵢ²=n}`, and so no proof that the contributions sum to it —
+only an assertion validated by the Python certificate.
+
+**New file** `proofs/Proofs/FourSquareDistributionOQ04Decomp.lean` (distinct from
+PR #24364; different filename, no `.json`/parent edits ⟹ no collision). Supplies
+the missing **uniform** step, for every `m` and every `n` at once, against the
+actual count:
+
+- `reps m n : Finset (Fin m → ℤ)` = representations as a filter on the box
+  `[-n,n]^m`. `mem_reps_iff` proves it faithful (`f ∈ reps m n ↔ Σ(f i)²=n`); the
+  box is lossless because `|x| ≤ x²` (lemma `abs_le_sq`) forces `|fᵢ| ≤ n`. So
+  `(reps m n).card` *is* `r_m(n)`. For `m=2k` this is `r_{2k}(n)`.
+- `shape f` = multiset `{|f i|}`, the `B_m`-orbit invariant.
+- **`reps_card_eq_sum_fiber` — fully proved, no sorry** —
+  `(reps m n).card = Σ_{s∈shapes} ((reps m n).filter (shape·=s)).card`, directly
+  from `Finset.card_eq_sum_card_fiberwise`. This is `(DECOMP)` for **all** `m,n`
+  simultaneously, about the real count — the step the parent files only asserted.
+- `shapeContribution m s = (m!/∏(count v)!)·2^{#nonzero}` is `(★)`.
+- The whole open question collapses to ONE isolated lemma
+  `fiber_card_eq_contribution` (the **sole** `sorry`): each shape-fiber has size
+  `(★)`. That is precisely the orbit-size statement of `B_m=S_m⋉(ℤ/2)^m`.
+  `reps_card_eq_sum_contribution` assembles the full `r_{2k}=Σ contribution` from
+  it via `sum_congr`.
+
+**Why this is real progress (honest).** The fiberwise partition is *new*: the
+prior files cannot state "contributions sum to `r_{2k}`" because they never form
+the count. Here that sum law holds unconditionally for all `m,n`, and the residual
+open content is pinned to one orbit-size lemma — the classic "isolate the heart"
+reduction. The Jacobi arithmetic is no longer needed for the *partition*; it would
+only evaluate the RHS in closed form.
+
+**Bearers** (name-checked from memory; no sibling Mathlib this session):
+`Fintype.piFinset`/`Fintype.mem_piFinset`, `Finset.card_eq_sum_card_fiberwise`,
+`Finset.single_le_sum`, `Finset.mem_image_of_mem`, `sq_abs`, `abs_le`. Orbit count
+of each fiber still validated by `verify_hyperoctahedral_2k.py` (PASS).
+
+**Next-session ACT.** Build & register `…Decomp.lean`; discharge
+`fiber_card_eq_contribution` by the `MulAction` orbit–stabilizer route (next-step
+#1) — now the *single* remaining goal rather than a per-`n` enumeration.
