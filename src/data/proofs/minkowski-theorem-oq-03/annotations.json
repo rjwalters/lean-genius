@@ -47,7 +47,7 @@
   {
     "id": "ann-mink-oq03-class-number-estimate",
     "proofId": "minkowski-theorem-oq-03",
-    "range": { "startLine": 85, "endLine": 113 },
+    "range": { "startLine": 85, "endLine": 106 },
     "type": "theorem",
     "title": "An Explicit Bound on the Class Number",
     "content": "`classNumber_le_card_absNorm_le`: classNumber K ≤ #{ I : absNorm I ≤ ⌊M_K⌋ }. The index set is finite (`Ideal.finite_setOf_absNorm_le₀`); the class-representative map is surjective because every class has a representative of norm ≤ M_K, floored to ⌊M_K⌋ via `Nat.le_floor`; and a surjection from a finite set bounds cardinality (`Nat.card_le_card_of_surjective`), with `classNumber = Fintype.card (ClassGroup …) = Nat.card (ClassGroup …)`.",
@@ -63,6 +63,25 @@
       "Nat.card_le_card_of_surjective",
       "Nat.le_floor",
       "Nat.card_eq_fintype_card"
+    ]
+  },
+  {
+    "id": "ann-mink-oq03-finiteness-corollary",
+    "proofId": "minkowski-theorem-oq-03",
+    "range": { "startLine": 108, "endLine": 113 },
+    "type": "insight",
+    "title": "Finiteness as the Qualitative Shadow of the Head-Count",
+    "content": "The closing `example : Finite (ClassGroup (𝓞 K))` re-derives the finiteness of the class group purely from `inferInstance`. The point is conceptual rather than logical: once the explicit estimate `classNumber_le_card_absNorm_le` is in hand, finiteness is the *qualitative shadow* of a quantitative bound. A set whose cardinality is bounded by that of a finite set (the ideals of norm ≤ ⌊M_K⌋) is automatically finite, so Mathlib's `instFintypeClassGroup` and the historical finiteness theorem are recovered as a one-line corollary of the head-count rather than proved independently.",
+    "mathContext": "$\\#\\mathrm{Cl}(\\mathcal{O}_K) \\le \\#\\{\\,I : \\mathrm{absNorm}(I) \\le \\lfloor M_K\\rfloor\\,\\} < \\infty$, so the finiteness of the class group is exactly the loss of the numeric content of the Minkowski bound.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finiteness of the class group",
+      "class number",
+      "Nat.card"
+    ],
+    "prerequisites": [
+      "NumberField.RingOfIntegers.instFintypeClassGroup",
+      "Finite instances in Lean"
     ]
   }
 ]
