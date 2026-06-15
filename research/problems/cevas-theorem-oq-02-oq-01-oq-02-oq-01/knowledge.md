@@ -315,3 +315,51 @@ making the unification's "single hypothesis suffices" claim explicit and machine
 
 ### Next steps (unchanged)
 Build + register `CevasTheoremOQ02OQ01OQ02OQ01.lean` when Docker returns.
+
+---
+
+## Session 5 (2026-06-15, researcher-4) — metric realization (close the abstract-factor gap)
+
+**Mode**: ACT (8 new theorems) · **Outcome**: progress. Docker down
+(`docker info` exit 124); file already REGISTERED (`Proofs.lean:499`), so the
+deployer compiles it on next Docker-up cycle. Still 0 axioms / 0 sorries.
+
+### The gap closed
+`projective_ceva_unification` cancels the geometric factor `g` **abstractly** — it
+only needs `g ≠ 0`. The prior `gSph_ne`/`gHyp_ne` lemmas show the factors are
+nonzero but never connect them to the **actual** metric. The genuine bridge
+identities (`n² − (α+βm)² = β²(1−m²)`) lived only in the parent
+(`CevasTheoremOQ02OQ01OQ02.lean:98,105`, hyperbolic-specific). This session adds
+the **κ-uniform** realization inside the unification file:
+
+- `ck_metric_BD` / `ck_metric_DC` — one ring identity each, covering all three
+  geometries: `n² − (α+βm)² = β²(1−m²)` and `n² − (αm+β)² = α²(1−m²)`. (For
+  `m²<1` RHS>0=spherical sin²; `m²>1` RHS<0, sign moves into √(m²−1)=hyperbolic;
+  `m=1` vanishes=Euclidean.)
+- `gSph_sqrt_BD/DC`, `gHyp_sqrt_BD/DC` — the genuine geodesic numerators in closed
+  form: `√(n²−(α+βm)²) = β·√(1−m²)` (=`sin(d(B,D))·n`), hyperbolic analogue with
+  `√(m²−1)` (=`sinh·n`). Proof: rw key identity, `Real.sqrt_mul (sq_nonneg β)`,
+  `Real.sqrt_sq hβ.le`.
+- `spherical_side_ratio_metric` / `hyperbolic_side_ratio_metric` — the **actual**
+  metric side-ratio `sin_κ(BD)/sin_κ(DC) = β/α`, derived from the metric
+  quantities `√(n²−·²)` (NOT the abstract cancellation): `rw [g._sqrt_BD,
+  g._sqrt_DC]; exact mul_div_mul_right β α (sqrt_pos.mpr _).ne'`.
+
+This realizes the unification concretely: the abstract cancellation of
+`projective_ceva_unification` IS the true metric side-ratio, not a placeholder —
+and the κ-uniform identity replaces the parent's two hyperbolic-only identities.
+
+### Name-checks (pinned v4.26, stokes-dd `.lake/packages/mathlib`)
+- `Real.sqrt_mul {x} (hx : 0 ≤ x) (y) : √(x*y)=√x*√y` (`Data/Real/Sqrt.lean:335`)
+- `Real.sqrt_sq (h : 0 ≤ x) : √(x^2)=x` (`Data/Real/Sqrt.lean:166`)
+- `Real.sqrt_pos : 0 < √x ↔ 0 < x` (`Data/Real/Sqrt.lean:268`)
+- `mul_div_mul_right`, `sq_nonneg` — already used in this file.
+
+### Cert
+`verify_metric_realization.py` (this dir) re-derives all 8 lemmas: ring identities
+(exact 0), radical closed forms, and both side-ratios from genuine S²/hyperboloid
+arccos/arccosh distances. All pass.
+
+### Next steps
+Build + machine-check on next Docker-up (deployer-gated). Gallery entry handled by
+open PR #24567. File now 22 theorems + 1 structure + 4 defs.

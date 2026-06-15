@@ -177,6 +177,90 @@ theorem gHyp_ne (m n : ℝ) (hm : 1 < m ^ 2) (hn : 0 < n) : gHyp m n ≠ 0 := by
 theorem gEuc_ne : gEuc ≠ 0 := one_ne_zero
 
 /-!
+## Metric realization: the geometric factor IS the genuine side length
+
+`projective_ceva_unification` cancels the factor `g` *abstractly* — it only needs
+`g ≠ 0`.  The lemmas above record that `gSph`/`gHyp` are nonzero, but they do not
+yet show those factors are the **actual** metric quantities.  This section closes
+that gap, proving that `√(1 − m²)` (spherical) and `√(m² − 1)` (hyperbolic) really
+are the per-unit-weight geodesic side lengths, via the single κ-uniform identity
+
+      n² − (α + βm)² = β²·(1 − m²),       n² − (αm + β)² = α²·(1 − m²),
+
+which collapses to the parent's hyperbolic `hyp_key_identity_BD/DC` and its
+spherical sign-flip simultaneously.  Consequently the metric side-ratio
+`sin_κ(BD)/sin_κ(DC)` — built from genuine geodesic distances, not the abstract
+`g` — equals the weight ratio `β/α`.  This realizes the unification concretely:
+the abstract cancellation of `projective_ceva_unification` is the true metric
+side-ratio, not a formal placeholder.
+-/
+
+/-- **The κ-uniform key identity (BD side).**  `n² − (α + βm)² = β²(1 − m²)`.  A
+    single ring identity covering all three geometries: for `m² < 1` the right
+    side is `> 0` (spherical `sin²`), for `m² > 1` it is `< 0` (hyperbolic, the
+    sign moves into `√(m²−1)`), for `m = 1` it vanishes (Euclidean limit). -/
+theorem ck_metric_BD (cfg : CKCevianConfig) :
+    cfg.n_sq - (cfg.α + cfg.β * cfg.m) ^ 2 = cfg.β ^ 2 * (1 - cfg.m ^ 2) := by
+  unfold CKCevianConfig.n_sq; ring
+
+/-- **The κ-uniform key identity (DC side).**  `n² − (αm + β)² = α²(1 − m²)`. -/
+theorem ck_metric_DC (cfg : CKCevianConfig) :
+    cfg.n_sq - (cfg.α * cfg.m + cfg.β) ^ 2 = cfg.α ^ 2 * (1 - cfg.m ^ 2) := by
+  unfold CKCevianConfig.n_sq; ring
+
+/-- **Spherical side length (BD).**  The genuine geodesic numerator
+    `√(n² − (α + βm)²)` equals `β·√(1 − m²)`, i.e. `β` times the spherical factor's
+    radical.  This is `sin(d(B,D))·n` in the unit-sphere model. -/
+theorem gSph_sqrt_BD (cfg : CKCevianConfig) :
+    Real.sqrt (cfg.n_sq - (cfg.α + cfg.β * cfg.m) ^ 2)
+      = cfg.β * Real.sqrt (1 - cfg.m ^ 2) := by
+  rw [ck_metric_BD, Real.sqrt_mul (sq_nonneg cfg.β), Real.sqrt_sq cfg.hβ.le]
+
+/-- **Spherical side length (DC).**  `√(n² − (αm + β)²) = α·√(1 − m²)`. -/
+theorem gSph_sqrt_DC (cfg : CKCevianConfig) :
+    Real.sqrt (cfg.n_sq - (cfg.α * cfg.m + cfg.β) ^ 2)
+      = cfg.α * Real.sqrt (1 - cfg.m ^ 2) := by
+  rw [ck_metric_DC, Real.sqrt_mul (sq_nonneg cfg.α), Real.sqrt_sq cfg.hα.le]
+
+/-- **Hyperbolic side length (BD).**  `√((α + βm)² − n²) = β·√(m² − 1)`, i.e.
+    `sinh(d(B,D))·n` in the hyperboloid model. -/
+theorem gHyp_sqrt_BD (cfg : CKCevianConfig) :
+    Real.sqrt ((cfg.α + cfg.β * cfg.m) ^ 2 - cfg.n_sq)
+      = cfg.β * Real.sqrt (cfg.m ^ 2 - 1) := by
+  have h : (cfg.α + cfg.β * cfg.m) ^ 2 - cfg.n_sq = cfg.β ^ 2 * (cfg.m ^ 2 - 1) := by
+    unfold CKCevianConfig.n_sq; ring
+  rw [h, Real.sqrt_mul (sq_nonneg cfg.β), Real.sqrt_sq cfg.hβ.le]
+
+/-- **Hyperbolic side length (DC).**  `√((αm + β)² − n²) = α·√(m² − 1)`. -/
+theorem gHyp_sqrt_DC (cfg : CKCevianConfig) :
+    Real.sqrt ((cfg.α * cfg.m + cfg.β) ^ 2 - cfg.n_sq)
+      = cfg.α * Real.sqrt (cfg.m ^ 2 - 1) := by
+  have h : (cfg.α * cfg.m + cfg.β) ^ 2 - cfg.n_sq = cfg.α ^ 2 * (cfg.m ^ 2 - 1) := by
+    unfold CKCevianConfig.n_sq; ring
+  rw [h, Real.sqrt_mul (sq_nonneg cfg.α), Real.sqrt_sq cfg.hα.le]
+
+/-- **Spherical metric side-ratio (κ = +1).**  The ratio of the *genuine* geodesic
+    side lengths `sin(d(B,D))/sin(d(D,C))` equals the weight ratio `β/α`.  Unlike
+    `spherical_ceva_unified` (which cancels an abstract factor), this is derived
+    from the actual metric quantities `√(n² − ·²)` via `gSph_sqrt_BD/DC`. -/
+theorem spherical_side_ratio_metric (cfg : CKCevianConfig) (hm : cfg.m ^ 2 < 1) :
+    Real.sqrt (cfg.n_sq - (cfg.α + cfg.β * cfg.m) ^ 2) /
+        Real.sqrt (cfg.n_sq - (cfg.α * cfg.m + cfg.β) ^ 2) = cfg.β / cfg.α := by
+  rw [gSph_sqrt_BD, gSph_sqrt_DC]
+  have hpos : (0 : ℝ) < 1 - cfg.m ^ 2 := by linarith
+  exact mul_div_mul_right cfg.β cfg.α (Real.sqrt_pos.mpr hpos).ne'
+
+/-- **Hyperbolic metric side-ratio (κ = −1).**  The ratio of the genuine geodesic
+    side lengths `sinh(d(B,D))/sinh(d(D,C))` equals the weight ratio `β/α`,
+    derived from the actual metric quantities via `gHyp_sqrt_BD/DC`. -/
+theorem hyperbolic_side_ratio_metric (cfg : CKCevianConfig) (hm : 1 < cfg.m ^ 2) :
+    Real.sqrt ((cfg.α + cfg.β * cfg.m) ^ 2 - cfg.n_sq) /
+        Real.sqrt ((cfg.α * cfg.m + cfg.β) ^ 2 - cfg.n_sq) = cfg.β / cfg.α := by
+  rw [gHyp_sqrt_BD, gHyp_sqrt_DC]
+  have hpos : (0 : ℝ) < cfg.m ^ 2 - 1 := by linarith
+  exact mul_div_mul_right cfg.β cfg.α (Real.sqrt_pos.mpr hpos).ne'
+
+/-!
 ## The single positivity hypothesis is implied by each geometry's distance bound
 
 The unified `CKCevianConfig` carries only `hn : 0 < α² + 2αβm + β²` in place of the
