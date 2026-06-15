@@ -1,81 +1,111 @@
 {
   "slug": "minkowski-theorem-oq-03",
   "title": "Minkowski Bound on Ideal Norms: Geometry of Numbers Connection",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Minkowski Bound on Ideal Norms: Geometry of Numbers Connection.",
-    "whyMatters": []
+    "formal": "\\mathrm{classNumber}\\,K \\le \\#\\{\\, I : \\mathrm{absNorm}\\,I \\le \\lfloor M_K \\rfloor \\,\\}, \\quad M_K = (4/\\pi)^{r_2}\\,(n!/n^n)\\,\\sqrt{|d_K|}",
+    "plain": "Expose the Minkowski bound as a reusable definition and prove the class-number estimate it yields: the class number of a number field K is at most the number of integral ideals of absolute norm at most the floor of the Minkowski bound.",
+    "whyMatters": [
+      "The estimate is the formal backbone of the standard class-number algorithm: enumerating ideals below the Minkowski bound already exhausts every ideal class.",
+      "Refines the bare finiteness of the class group into an explicit, computable head-count.",
+      "Makes the geometry-of-numbers ⟹ ideal-norm bound connection reusable downstream by naming the bound Mathlib hides as a local notation."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib: every ideal class contains an integral ideal of norm ≤ M_K (NumberField.exists_ideal_in_class_of_norm_le).",
+      "Mathlib: the class group is finite (RingOfIntegers.instFintypeClassGroup).",
+      "Mathlib: small-bound ⟹ PID criterion (RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt) and prime-by-prime PID criteria.",
+      "This file: minkowskiIdealBound (named constant), exists_ideal_in_class_absNorm_le (restatement), classNumber_le_card_absNorm_le (new head-count). Build pending."
+    ],
+    "open": [
+      "Concrete worked example: a specific quadratic field (e.g. ℚ(√-1), ℚ(√-3), ℚ(√5)) shown to have class number 1 via the Minkowski bound — blocked by the absence of a clean quadratic-field discriminant instance in Mathlib."
+    ],
+    "goal": "classNumber K ≤ Nat.card {I : (Ideal (𝓞 K))⁰ // Ideal.absNorm (↑I) ≤ ⌊minkowskiIdealBound K⌋₊}"
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T12:51:58.296Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-06-15",
+    "iteration": 2,
+    "focus": "Named the Minkowski bound and proved the class-number head-count; build pending.",
+    "blockers": [
+      "Worktree Docker olean cache unavailable — file not kernel-checked.",
+      "Aristotle MCP endpoint returned 'Resource not found'."
+    ],
+    "nextAction": "Green Docker build to promote status to verified; resubmit to Aristotle when endpoint recovers.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (build pending): named the Minkowski bound (minkowskiIdealBound), restated the ideal-norm bound, and proved the new estimate classNumber K ≤ #{ideals of norm ≤ ⌊M_K⌋} — the formal backbone of the class-number algorithm, not present in Mathlib.",
+    "builtItems": [
+      "MinkowskiIdealBound.minkowskiIdealBound — reusable def of the Minkowski bound (MinkowskiTheoremOQ03.lean:60)",
+      "MinkowskiIdealBound.minkowskiIdealBound_nonneg — bound ≥ 0 (MinkowskiTheoremOQ03.lean:65)",
+      "MinkowskiIdealBound.exists_ideal_in_class_absNorm_le — ideal-norm bound vs named constant (MinkowskiTheoremOQ03.lean:74)",
+      "MinkowskiIdealBound.classNumber_le_card_absNorm_le — new class-number head-count (MinkowskiTheoremOQ03.lean:85)"
+    ],
+    "insights": [
+      "Mathlib's Minkowski bound is only a local notation inside ClassNumber.lean, so it is not reusable downstream; reintroducing it as a definition character-for-character identical to the notation lets exists_ideal_in_class_of_norm_le be reused by definitional unfolding (unfold; exact).",
+      "The headline ideal-norm bound and class-group finiteness are already in Mathlib; the genuine new content is the explicit head-count classNumber ≤ #{ideals of bounded norm}.",
+      "Counting step: the class-representative map from {ideals of norm ≤ ⌊M_K⌋} onto the class group is surjective (content of the Minkowski bound), and Nat.card_le_card_of_surjective converts this into the cardinality inequality.",
+      "Real→ℕ collapse: absNorm I is a natural number bounded by the real M_K ≥ 0, so Nat.le_floor gives absNorm I ≤ ⌊M_K⌋, matching the natural-number-indexed finiteness lemma finite_setOf_absNorm_le₀."
+    ],
+    "mathlibGaps": [
+      "No reusable named definition of the Minkowski bound (Mathlib hides it as a local notation M K).",
+      "No explicit statement classNumber ≤ #{ideals of norm ≤ ⌊M_K⌋} (the class-number algorithm's backbone).",
+      "No clean NumberField instance with computed discriminant for a concrete quadratic field, blocking a worked 'ℚ(√d) is a PID via the bound' example."
+    ],
+    "nextSteps": [
+      "Green Docker build to promote status to verified/original; if 'unfold; exact' fails on the restatement, try simpa only [minkowskiIdealBound] or massage the √|discr K| coercion.",
+      "Resubmit to Aristotle when its MCP endpoint recovers for an independent verified proof.",
+      "Concrete example: prove ℚ(√-1)/ℚ(√-3)/ℚ(√5) has class number 1 via isPrincipalIdealRing_of_abs_discr_lt once quadratic-field discriminant infrastructure exists."
+    ]
   },
   "tags": [
     "number-theory",
     "algebraic-number-theory",
     "minkowski",
-    "ideals"
+    "ideals",
+    "class-group",
+    "class-number",
+    "geometry-of-numbers"
   ],
   "relatedProofs": [
     "minkowski-theorem",
     "minkowski-theorem-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Marcus, Number Fields, Theorem 37 and following discussion"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib/NumberTheory/NumberField/ClassNumber.lean @ 2df2f0150c",
+      "Mathlib/RingTheory/Ideal/Norm/AbsNorm.lean @ 2df2f0150c",
+      "Mathlib/NumberTheory/NumberField/CanonicalEmbedding/ConvexBody.lean @ 2df2f0150c"
+    ]
   },
   "started": "2026-04-22T12:51:58.295Z",
-  "lastUpdate": "2026-04-22T12:51:58.295Z",
+  "lastUpdate": "2026-06-15",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/MinkowskiTheoremOQ02.lean",
-      "filename": "MinkowskiTheoremOQ02.lean",
-      "lineCount": 285,
-      "theoremCount": 6,
-      "axiomCount": 3,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
-      "filename": "MinkowskiTheoremOQ02OQ01.lean",
-      "lineCount": 268,
-      "theoremCount": 7,
+      "path": "Proofs/MinkowskiTheoremOQ03.lean",
+      "filename": "MinkowskiTheoremOQ03.lean",
+      "lineCount": 113,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ03.lean"
     }
   ]
 }
