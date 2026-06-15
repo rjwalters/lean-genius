@@ -29,16 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: extended nth-root irrationality to cyclotomic polynomials — Phi_n has no rational root (n>=3), rational roots of unity are +-1, complex primitive roots are irrational; 0 sorries/0 axioms, build-pending; real-subfield (2cos) deferred",
+    "progressSummary": "Niven cosine classification COMPLETE: irrational direction (phi(n)>=3, merged #24427) + rational direction (n in {1,2,3,4,6}, this session). Build-pending/unregistered. Sole remaining open item: exact degree [Q(2cos):Q]=phi(n)/2 (Docker-gated IntermediateField tower).",
     "builtItems": [
       "cyclotomic_no_rational_root (NthRootIrrationalOQ01OQ01.lean): Phi_n over Q has no rational root for n>=3",
       "rational_root_of_unity_le_two: only rational roots of unity are +-1 (primitive n-th root in Q forces n<=2)",
       "primitiveRoot_not_rational: complex primitive n-th root of unity (n>=3) is not in range(algebraMap Q C)",
-      "totient_ge_two: 3<=n implies 2<=Nat.totient n; primitiveCubeRoot_not_rational instance e^{2pi i/3}"
+      "totient_ge_two: 3<=n implies 2<=Nat.totient n; primitiveCubeRoot_not_rational instance e^{2pi i/3}",
+      "cos_two_pi_div_{one,two,three,four,six}_rational + cos_two_pi_div_rational_of_mem in NthRootIrrationalOQ01OQ01CosRational.lean (build-pending, unregistered)"
     ],
     "insights": [
       "Cyclotomic extension of nth-root irrationality reduces to swapping X^n-p (Eisenstein) for Phi_n (cyclotomic.irreducible_rat) in the parent irreducibility-implies-irrational pipeline; only new lemma is degree bound phi(n)>=2 iff n>=3",
-      "Phi_n has NO real roots for n>=3, so honest content is complex not-rational + rational-roots-of-unity=+-1; an irrational-real-root statement is vacuous"
+      "Phi_n has NO real roots for n>=3, so honest content is complex not-rational + rational-roots-of-unity=+-1; an irrational-real-root statement is vacuous",
+      "S4 (R4): rational half of Niven shipped (NthRootIrrationalOQ01OQ01CosRational.lean) — cos(2pi/n) rational for n in {1,2,3,4,6} with values {1,-1,-1/2,0,1/2}; combined with merged irrational direction gives full classification cos(2pi/n) rational <=> n in {1,2,3,4,6}."
     ],
     "mathlibGaps": [
       "No gap for rational/complex statements; the real subfield story (minpoly of 2cos(2pi/n), degree phi(n)/2) was NOT formalized and is the missing piece"

@@ -140,3 +140,42 @@ only rational values of `2·cos(2π/n)` are `{2, −2, −1, 0, 1}`.
 
 - The *exact degree* `[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` (not just `> 1`) — would need the
   minimal polynomial of the real generator, still absent in Mathlib.
+
+---
+
+## Result (Session 4, 2026-06-15, researcher-4, REVISIT → ACT) — rational half of Niven (classification completed)
+
+New file `proofs/Proofs/NthRootIrrationalOQ01OQ01CosRational.lean` (0 sorries, 0
+axioms, build-pending — Docker `docker info` times out, Aristotle 404; both re-probed).
+Branch built from origin/main so the sibling Cos/Real files are present.
+
+The S2/S3 work (merged: #24403 real subfield, #24427 `cos_two_pi_div_n_irrational`)
+proved the **irrational** direction `φ(n) ≥ 3 ⟹ Irrational(cos(2π/n))`, sharp at
+`φ(n) ≤ 2 ⇔ n ∈ {1,2,3,4,6}`. This session adds the **complementary rational
+direction**, so the two files together give the full Niven classification:
+
+> `cos(2π/n)` is rational  ⟺  `n ∈ {1, 2, 3, 4, 6}`,  values `1, −1, −1/2, 0, 1/2`.
+
+Theorems (each an elementary special-angle evaluation):
+- `cos_two_pi_div_one_rational` — `cos(2π) = 1` (`Real.cos_two_pi`).
+- `cos_two_pi_div_two_rational` — `cos π = −1` (`Real.cos_pi`).
+- `cos_two_pi_div_three_rational` — `cos(π−π/3) = −cos(π/3) = −1/2`
+  (`Real.cos_pi_sub` + `Real.cos_pi_div_three`).
+- `cos_two_pi_div_four_rational` — `cos(π/2) = 0` (`Real.cos_pi_div_two`).
+- `cos_two_pi_div_six_rational` — `cos(π/3) = 1/2` (`Real.cos_pi_div_three`).
+- `cos_two_pi_div_rational_of_mem` — bundled over `n ∈ {1,2,3,4,6}` via `rcases … rfl`.
+
+Reusable pattern: `not_irrational_of_eq_rat (q : ℚ) (h : x = (q:ℝ)) : ¬Irrational x`
+(`rw [h]; exact q.not_irrational`); angle identity `2π/k = <std angle>` by
+`push_cast; ring`; final rational-cast equality by `norm_num`.
+
+### Mathlib lemmas name-checked vs sibling v4.26 (`/Users/rwalters/GitHub/mathlib4`)
+`Real.cos_two_pi` (Trig/Basic.lean:224), `Real.cos_pi` (:216), `Real.cos_pi_sub`
+(:331), `Real.cos_pi_div_two` (:133), `Real.cos_pi_div_three` (:775),
+`Rat.not_irrational` (NumberTheory/Real/Irrational.lean:197), `not_irrational_one`
+(:99), `not_irrational_zero` (:98).
+
+### Still genuinely open (unchanged)
+- The *exact degree* `[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` (not just `> 1`): IntermediateField
+  tower `φ(n) = [ℚ(ζ):ℚ] = [ℚ(ζ):ℚ(ζ+ζ⁻¹)]·[ℚ(ζ+ζ⁻¹):ℚ] = 2·(φ(n)/2)`. Needs the
+  real-subfield minpoly / adjoin-tower machinery; Docker-gated, ~150 LOC.
