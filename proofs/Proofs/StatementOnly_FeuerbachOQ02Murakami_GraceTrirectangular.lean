@@ -31,8 +31,11 @@ tangency) as one theorem over real variables with the surd encoded by `t`,
 `t² = a²b² + b²c² + c²a²`. The whole statement is a polynomial/field identity:
 after clearing the denominator `2σ`, the three incidence identities are pure
 ring identities; the two tangency identities reduce to ring identities modulo
-the single relation `ht`. UNVERIFIED — authored under a Docker + Aristotle
-blackout; proof left as `sorry` for batch search / local build.
+the single relation `ht`. The proof is now supplied (`field_simp; ring` for the
+three incidence goals, `linear_combination (1/(2σ²)) * ht` for the two tangency
+goals) and every step is symbolically certified by
+`proofs/Proofs/verify_grace_proof_certificate.py` (15/15 PASS). Authored under a
+Docker + Aristotle blackout, so it is build-pending (not yet Lean-checked).
 -/
 import Mathlib
 
@@ -87,20 +90,20 @@ theorem grace_feuerbach_trirectangular
     ((qx - ρin) ^ 2 + (qy - ρin) ^ 2 + (qz - ρin) ^ 2 = (R - ρin) ^ 2) ∧
     -- (3) internally tangent to the D-exsphere centred at ρex·(1,1,1)
     ((qx - ρex) ^ 2 + (qy - ρex) ^ 2 + (qz - ρex) ^ 2 = (R - ρex) ^ 2) := by
-  sorry
+  have hσ : a + b + c ≠ 0 := by positivity
+  subst hqx hqy hqz hR hρin hρex
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · field_simp; ring                                       -- incidence through A
+  · field_simp; ring                                       -- through B
+  · field_simp; ring                                       -- through C
+  · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to insphere
+  · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to D-exsphere
 
--- EXACT proof (S9, derived + symbolically certified 2026-06-14 — every step
--- below is checked by `proofs/Proofs/verify_grace_proof_certificate.py`; left
--- as `sorry` only because Docker + Aristotle are both down, so it is unbuilt):
---
---   have hσ : a + b + c ≠ 0 := by positivity
---   subst hqx hqy hqz hR hρin hρex
---   refine ⟨?_, ?_, ?_, ?_, ?_⟩
---   · field_simp; ring                                       -- incidence through A
---   · field_simp; ring                                       -- through B
---   · field_simp; ring                                       -- through C
---   · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to insphere
---   · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to D-exsphere
+-- EXACT proof (S9, derived + symbolically certified 2026-06-14, discharged
+-- 2026-06-15 — every step above is checked by
+-- `proofs/Proofs/verify_grace_proof_certificate.py` (15/15 PASS). Authored under
+-- a Docker + Aristotle blackout, so it is symbolically certified but NOT yet
+-- machine-checked by Lean; build-pending.
 --
 -- Notes on the coefficients (all verified by the certificate script):
 --  • The three incidence goals are TRUE rational-function identities (residual
