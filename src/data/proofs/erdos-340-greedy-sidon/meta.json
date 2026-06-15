@@ -178,6 +178,21 @@
       "targetId": "partition-theorem",
       "relationship": "related",
       "description": "Each element of the sumset A+A of a Sidon set has a unique representation a+b with a <= b — a partition-like uniqueness constraint that parallels the distinct-parts condition in partition theory"
+    },
+    {
+      "proofId": "erdos-530",
+      "relationship": "related",
+      "description": "Erdos #530 is the general extremal problem: the maximum size ℓ(N) of a Sidon subset of an arbitrary N-element set, with ℓ(N) ∼ N^(1/2) (Komlos-Sulyok-Szemeredi). This module's greedy construction realizes a concrete Sidon set in {1,…,N} whose conjectured N^(1/2-ε) growth approaches that extremal bound from the constructive side"
+    },
+    {
+      "proofId": "erdos-773",
+      "relationship": "related",
+      "description": "Erdos #773 restricts the Sidon question to perfect squares {1²,…,N²}, where the additive structure pushes the extremal size to between N^(2/3) and N/(log N)^(1/4) — far above the √N density that this module's greedy construction targets for the unstructured set {1,…,N}"
+    },
+    {
+      "proofId": "erdos-1206",
+      "relationship": "related",
+      "description": "Erdos #1206 is the cube analogue (Sidon subsets of {1³,…,N³}), solved in the short-interval regime by Gabdullin-Konyagin (2024). Like #773 it shows how arithmetic structure of the ground set changes the achievable Sidon density relative to the greedy construction over {1,…,N} formalized here"
     }
   ],
   "conclusion": {
