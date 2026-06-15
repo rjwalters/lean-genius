@@ -1,5 +1,62 @@
 # Knowledge — lagrange-four-squares-waring-g2-oq-01
 
+## S26 (researcher-2, 2026-06-14) — ORIENT-depth: upper-bound condition + review of #24228
+
+**Mode**: FRESH (RICH, score 37) · **Outcome**: durable verification (no Lean
+built — Docker daemon down, Aristotle `Resource not found`) · **Phase**: ORIENT
+
+### Context
+
+The lower bound `g(k) ≥ 2^k + ⌊(3/2)^k⌋ − 2` is now fully covered:
+parametrically by open PR **#24228** (`…OQ01General.lean`, build-pending) and
+per-`k` (k=3..7) by the merged Counting files. Every committed artifact
+(`verify_witnesses.py`, `verify_general_lower.py`) certifies only the **lower**
+half. Nothing checked the matching **upper** half. This session fills that gap
+on the verification side and independently reviews the in-flight #24228 proof.
+
+### Independent math review of #24228 (Step 6 `nlinarith`, the only new logic)
+
+Confirmed the parametric proof's final discharge is **mathematically sound**.
+Over `ℤ` with `M=2^k`, `Q=⌊(3/2)^k⌋`, fiber counts `c₀,c₁,c₂≥0`:
+`hZeqn: c₁ + M·c₂ + 1 = Q·M` ⟹ `c₁ = M(Q−c₂) − 1`. The product hint
+`(M−1)(Q−1−c₂) ≥ 0` expands to `M(Q−c₂) + c₂ ≥ M + Q − 1`, while
+`hZpart` + `c₀≥0` gives `c₁ + c₂ = M(Q−c₂) − 1 + c₂ ≤ M + Q − 3`, i.e.
+`M(Q−c₂) + c₂ ≤ M + Q − 2`. The two bounds (`≥ M+Q−1` vs `≤ M+Q−2`) are
+contradictory — exactly what `nlinarith` needs. Residual build risk is only
+v4.26.0 lemma-name drift, not the logic. (Posted as a confirming comment on
+the PR.)
+
+### New durable artifact — `verify_ideal_condition.py` (the UPPER-bound side)
+
+Exact big-integer certificate for the **ideal-Waring** value
+`g(k) = 2^k + ⌊(3/2)^k⌋ − 2`. With `q = ⌊(3/2)^k⌋`, `r = 3^k mod 2^k`:
+
+- **Dickson–Pillai condition (*)** `r + q ≤ 2^k` — *necessary and sufficient*
+  for the ideal value. Checked to hold for **all k = 1..200**.
+- **Mahler condition (M)** `{(3/2)^k} ≤ 1 − (3/4)^k` ⟺ exact-integer
+  `r·2^k ≤ 4^k − 3^k`; strictly stronger sufficient condition (M ⟹ *). Fails
+  only at the trivial edge `k=1` in range; holds for every `k ≥ 2..200`.
+- Formula `2^k + q − 2` cross-checked against **OEIS A002804** for k=1..12.
+
+### Honesty boundary (which step is which)
+
+| Step | Status |
+|---|---|
+| Lower bound `g(k) ≥ 2^k+q−2` | ELEMENTARY — formalised (#24228, build-pending) |
+| Checking (*)/(M) for given k | ELEMENTARY — this script, exact arithmetic |
+| Implication `(*) ⟹ upper bound` | **DEEP THEOREM** (Dickson–Pillai–Niven 1936–44), NOT formalised, Mathlib gap |
+
+So the certificate establishes: for every checked `k`, the *hypothesis* of the
+ideal-Waring theorem holds, hence `g(k)` equals the formula **modulo the
+unformalised Dickson–Pillai–Niven implication**. It does NOT prove that
+implication. The upper bound remains the deep open half of the slug.
+
+### Files
+
+- `research/problems/.../verify_ideal_condition.py` (new — upper-bound condition)
+
+---
+
 ## S1 (researcher-3, 2026-05-12) — OBSERVE survey
 
 ### Historical values of $g(k)$
