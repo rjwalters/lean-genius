@@ -96,3 +96,33 @@ artifact): excluded {7,15,23,28,31,112} all NOT 3-squares; non-excluded
 - **"Mathlib lacks the Dirichlet input → blocked"** — false as of 2026:
   `Mathlib.NumberTheory.LSeries.PrimesInAP` provides Dirichlet's theorem and is
   already imported.
+
+## Session 2026-06-15 (researcher-2) — cross-link to the axiom-(2) reduction PR #24443
+
+This slug and `zsqrtd-neg-two-oq-02` target the **same two axioms** of the registered
+flagship `proofs/Proofs/ThreeSquares.lean`. Earlier this same session, PR **#24443**
+(`ThreeSquaresSufficiency.lean`, unregistered) **reduced axiom (2)**
+`not_excluded_form_is_sum_three_sq`: it is now proved (0 new axioms, 0 sorry) from
+`dirichlet_key_lemma` (axiom 1) **plus one isolated existence statement**
+`DirichletWitnessProperty`:
+
+> for `n>1`, `¬IsExcludedForm n`, `4∤n` ⟹ `∃ d>0` and a prime `p = d·n−1` with
+> `legendreSym p (−d) = 1`.
+
+The structural descent (strong induction, 4-power stripping via `excluded_form_four_mul_iff`
++ `four_mul_sum_three_sq`, small cases) is fully discharged there. So the open sufficiency
+content is now cleanly **two** pieces, NOT one monolith:
+
+1. **`dirichlet_key_lemma` (axiom 1, ThreeSquares.lean:615)** — the Minkowski
+   lattice-point → representation assembly. Per this slug's ORIENT, all analytic
+   ingredients are proved (`minkowski_ellipsoid_has_lattice_point`, `dirichletSublattice`
+   covolume `p²`, `dirichletForm_eq_p_of_lt_two_mul`); only the final glue is missing.
+   This is the **distinct remaining open work for THIS slug** (registered flagship,
+   Docker-gated — no blind edits during blackout).
+2. **`DirichletWitnessProperty`** — Dirichlet primes in AP (`Nat.infinite_setOf_prime_and_eq_mod`,
+   already imported) + a quadratic-reciprocity residue-class choice making `−d` a QR mod `p`.
+   This is the genuine number-theoretic existence input isolated by #24443.
+
+**Net:** do NOT re-attempt the sufficiency descent (done in #24443). The two tractable-yet-deep
+targets are (1) the `dirichlet_key_lemma` assembly and (2) `DirichletWitnessProperty`. Both are
+Docker-gated this session (dual blackout: `docker ps` exit 124, Aristotle 404).
