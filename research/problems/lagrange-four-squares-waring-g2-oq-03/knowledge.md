@@ -197,3 +197,53 @@ together cover all 4-free non-excluded cores, and the monolithic witness NEVER
 works on m≡3 (obstruction holds — 0 accidental successes). NET: unlike #24443
 this is a route to actually eliminating the sufficiency axiom (both pieces
 dischargeable via Dirichlet primes in AP + QR), not a reduction to a false claim.
+
+## Session 2026-06-15 (researcher-3) — the residue-3 obstruction is a THEOREM (Jacobi reciprocity)
+
+Prior sessions justified the residue-3 carve-out only NUMERICALLY ("monolithic
+witness 0/750 on m≡3 mod 8"). This is now a proved theorem, and formalized in
+Lean (`proofs/Proofs/ThreeSquaresResidue3Obstruction.lean`, build-pending).
+
+**Two-step argument.**
+1. *Reduction `−d` → `−m`.* The witness uses `p = d·m − 1`, so `d·m ≡ 1 (mod p)`,
+   i.e. `d ≡ m⁻¹ (mod p)`. Multiplicativity of the Legendre symbol +
+   `legendreSym p (d·m) = legendreSym p 1 = 1` give
+   `legendreSym p (−d) = legendreSym p (−m)`. So the witness condition
+   `legendreSym p (−d) = 1` is **exactly** `−m` is a QR mod `p`.
+   (Lean: `legendreSym_neg_d_eq_neg_m`, via `legendreSym.{mul,mod,sq_one,at_one}`.)
+2. *Obstruction.* For `m ≡ 3 (mod 4)` and any odd prime `p ≡ −1 (mod m)`,
+   `(−m | p) = −1` identically. Proof = pure Jacobi reciprocity:
+   `J(−m | p) = χ₄(p)·J(m | p)`; `J(m | p) = ±J(p | m)` with the sign
+   `(−1)^{(p−1)/2}` (because `m ≡ 3 mod 4` makes `(m−1)/2` odd); and
+   `J(p | m) = J(−1 | m) = χ₄(m) = −1` (since `p ≡ −1 mod m`, `m ≡ 3 mod 4`).
+   The `χ₄(p)` factor and the reciprocity sign BOTH equal `(−1)^{(p−1)/2}`, so
+   they cancel: `(−m | p) = (−1)^{(p−1)/2}·(−1)·(−1)^{(p−1)/2} = −1`.
+   (Lean: `legendreSym_neg_m_eq_neg_one`, via `jacobiSym.neg`,
+   `quadratic_reciprocity_{one,three}_mod_four`, `at_neg_one`, `mod_left'`,
+   `ZMod.χ₄_nat_{one,three}_mod_four`. Case split on `p % 4 ∈ {1,3}`.)
+
+Combined: `no_residue3_witness` — for `m ≡ 3 (mod 4)`, `p = d·m−1` an odd prime,
+`legendreSym p (−d) = −1 ≠ 1`. Among non-excluded 4-free cores, `m ≡ 3 mod 4`
+is exactly `m ≡ 3 mod 8` (the `7 mod 8` cores are excluded). So
+`dirichlet_key_lemma` provably cannot represent these — the carve-out is forced.
+
+**Note on the obstruction's reach (uses only `m ≡ 3 mod 4`, not `mod 8`).** The
+proof never uses `m % 8`; it only needs `m % 4 = 3`. The mod-8 phrasing in the
+companion files is because the `7 mod 8` sub-case of `m ≡ 3 mod 4` is the
+*excluded form* (handled by necessity), leaving `3 mod 8` as the live class.
+
+**Scoping note for `Residue3Property` (unchanged, but sharpened).** The
+successful prime deficits `mm = (m−t²)/2` are forced into `mm ≡ 1 (mod 4)` but
+spread over residues `{1,5} (mod 8)` (certificate output), i.e. NOT a single
+linear arithmetic progression. So plain Dirichlet-in-AP does not by itself
+discharge `Residue3Property`: it is a "prime of quadratic-deficit form"
+existence (`m = t² + 2p`), closer to a Hardy–Littlewood-type statement than to
+`PrimesInAP`. This is the genuine remaining analytic risk in the corrected
+split, and the next session should weigh it against the classical single-linear-AP
+route (which keeps residue-3 inside a Dirichlet/Minkowski framework with a
+different modulus rather than the `t²+2p` reduction).
+
+Certificate: `verify_residue3_obstruction.py` (PASS, m<20000, d≤3000): obstruction
+empty, identity `legendreSym p(−d)=legendreSym p(−m)` holds on all 51 986 prime
+pairs, Residue3Property holds for all 2499 residue-3 cores, witness exists for all
+9999 good-residue cores.
