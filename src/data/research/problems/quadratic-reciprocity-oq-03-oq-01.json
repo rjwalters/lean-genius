@@ -27,7 +27,7 @@
       "path": "Proofs/QuadraticReciprocityOQ03OQ01.lean",
       "filename": "QuadraticReciprocityOQ03OQ01.lean",
       "lineCount": 83,
-      "theoremCount": 1,
+      "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -52,21 +52,22 @@
     ]
   },
   "started": "2026-06-15T00:00:00.000Z",
-  "lastUpdate": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-15",
   "knowledge": {
-    "progressSummary": "ACT (build-pending, docker blackout): answered YES. New file proofs/Proofs/QuadraticReciprocityOQ03OQ01.lean (namespace QRAlgorithmTwo), 1 theorem + 5 decide examples, 0 axioms / 0 sorries. legendreSym_two_eq : legendreSym p 2 = χ₈ (p : ZMod 8) := legendreSym.at_two hp — the fourth reduction lemma completing the parent's algorithm toolkit, mirroring the first-supplementary wrapper QRAlgorithm.legendreSym_neg_one_eq. KEY OBSERVE finding: Mathlib states the second supplementary law ONLY in character form (legendreSym.at_two → χ₈), NOT the textbook (-1)^((p^2-1)/8) form. The χ₈ form is the one the algorithm actually evaluates (depends only on p mod 8). Five (2/p) example computations verified by decide and cross-checked against p mod 8 ∈ {1,7} ⟺ residue. NOT registered in Proofs.lean and NOT build-verified (docker-build.sh host hangs this cycle).",
+    "progressSummary": "ACT S2 (researcher-4, 2026-06-15, build-pending, docker blackout): added the RESIDUE-CRITERION (decision) form of the second supplementary law to proofs/Proofs/QuadraticReciprocityOQ03OQ01.lean. legendreSym_two_eq_one_iff: legendreSym p 2 = 1 ↔ p%8=1 ∨ p%8=7, and legendreSym_two_eq_neg_one_iff: legendreSym p 2 = -1 ↔ p%8=3 ∨ p%8=5. Proof composes legendreSym.eq_one_iff / eq_neg_one_iff with ZMod.exists_sq_eq_two_iff; the (2:ZMod p)≠0 side-goal reduces to p≠2 via ZMod.natCast_eq_zero_iff + Nat.prime_dvd_prime_iff_eq; the neg-one complement closes by omega using Odd p ⟹ p%8∈{1,3,5,7}. All bearer names verified against Mathlib pin 2df2f01 (v4.26.0) by gh-api. Still 0 axioms/0 sorries. Builds on S1's legendreSym_two_eq (χ₈ form). The textbook exponential form (-1)^((p^2-1)/8) remains the sole documented follow-up (needs a ℕ-division parity bridge, ~50-100 LOC). NOT registered in Proofs.lean (never built); docker-build.sh host hangs this cycle (dual blackout).",
     "builtItems": [
       "legendreSym_two_eq (p) (hp : p ≠ 2) : legendreSym p 2 = χ₈ (p : ZMod 8)  -- fourth reduction lemma",
-      "5 verified (2/p) example computations: p = 3,5,23,31,41"
+      "5 verified (2/p) example computations: p = 3,5,23,31,41",
+      "legendreSym_two_eq_one_iff (p)(hp:p≠2): legendreSym p 2 = 1 ↔ p%8=1 ∨ p%8=7",
+      "legendreSym_two_eq_neg_one_iff (p)(hp:p≠2): legendreSym p 2 = -1 ↔ p%8=3 ∨ p%8=5"
     ],
     "mathlibGaps": [
       "No named lemma for the textbook exponential form legendreSym p 2 = (-1)^((p^2-1)/8); Mathlib uses χ₈ (legendreSym.at_two).",
       "Bridge χ₈ (p:ZMod 8) = (-1:ℤ)^((p^2-1)/8) for odd p needs a p % 8 case analysis + parity of (p^2-1)/8 (= 0,1,1,0 mod 2 on residues 1,3,5,7); ZModChar.lean has the χ₈ value-mod-8 facts."
     ],
     "nextSteps": [
-      "Build via ./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityOQ03OQ01 once docker is back, then register in proofs/Proofs.lean.",
-      "Optional: prove the textbook exponential form legendreSym p 2 = (-1)^((p^2-1)/8) via the χ₈ value-mod-8 bridge.",
-      "Optional: add the residue-criterion form legendreSym p 2 = 1 ↔ p % 8 = 1 ∨ p % 8 = 7 from ZMod.exists_sq_eq_two_iff + legendreSym.eq_one_iff."
+      "Build via ./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityOQ03OQ01 once docker returns, then register in proofs/Proofs.lean.",
+      "Remaining gap: textbook exponential form legendreSym p 2 = (-1)^((p^2-1)/8) via the χ₈/exponent parity bridge (p%8 case analysis; (p^2-1)/8 parity = 0,1,1,0 on residues 1,3,5,7). ~50-100 LOC, ℕ-division reasoning (deferred under no-build)."
     ]
   }
 }
