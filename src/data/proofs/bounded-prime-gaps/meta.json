@@ -113,92 +113,305 @@
   },
   "sections": [
     {
-      "id": "imports-header",
+      "id": "header-overview",
       "title": "Imports and Overview",
       "startLine": 1,
-      "endLine": 56,
-      "summary": "Header explaining the bounded prime gaps theorem and its context. Imports: Nat.Prime, Nth, Finset.Card, ZMod, NumberTheory.Bertrand, and Proofs.PrimeGapBounds.",
-      "mathContext": "The central theorem: $\\liminf_{n \\to \\infty}(p_{n+1} - p_n) \\leq 246$ (Polymath 8b, 2014). Three axioms encode deep sieve-theoretic results; all combinatorial infrastructure is proved from Mathlib. The `open Nat Finset` declarations bring prime-number and finite-set operations into scope."
+      "endLine": 45,
+      "summary": "Module imports and overview: bounded prime gaps (Zhang/Maynard-Tao), admissible tuples, and the H = 246 result"
     },
     {
-      "id": "admissible-definition",
-      "title": "Admissible Tuples: Definition and Basic Properties",
-      "startLine": 57,
-      "endLine": 106,
-      "summary": "Defines IsAdmissible: a Finset ℕ is admissible if for every prime p, its image mod p has fewer than p elements. Proves basic properties: empty set, singletons, subsets, and sets with card < 2 are all admissible.",
-      "mathContext": "`IsAdmissible H` $\\iff \\forall p$ prime, $|\\{h \\bmod p : h \\in H\\}| < p$. This ensures $H$ doesn't cover all residue classes mod any prime — the combinatorial condition guaranteeing that no single prime can obstruct all translates $n + H$ from containing primes. Example: $\\{0, 2\\}$ is admissible because $\\{0, 2\\} \\bmod 2 = \\{0\\}$ has size 1 < 2, and for $p > 2$, $|\\{0, 2\\}| = 2 < p$."
+      "id": "admissible-tuples",
+      "title": "Admissible Tuples",
+      "startLine": 46,
+      "endLine": 61,
+      "summary": "An admissible k-tuple is a finite set H = {h₁, ..., hₖ} of integers such that for every prime p, the set H does not cover all residue classes modulo p.…"
     },
     {
-      "id": "specific-admissible-tuples",
-      "title": "Specific Admissible Tuples",
-      "startLine": 107,
-      "endLine": 215,
-      "summary": "Proves admissibility of {0,2} (twin primes), {0,2,6}, {0,4,6}, {0,2,6,8} via case analysis over small primes. Proves non-admissibility of {0,1} and {0,1,2} (cover all residues mod 2 and 3 respectively).",
-      "mathContext": "$\\{0, 2\\}$: admissible (twin prime tuple). $\\{0, 2, 6\\}$: admissible (prime triple). $\\{0, 1\\}$: NOT admissible ($\\{0, 1\\} \\bmod 2 = \\{0, 1\\}$, covers all residues mod 2). $\\{0, 1, 2\\}$: NOT admissible ($\\{0, 1, 2\\} \\bmod 3 = \\{0, 1, 2\\}$, covers all residues mod 3). Admissibility is verified by `decide` or `interval_cases` + `omega` over primes $p \\leq |H|$."
+      "id": "basic-properties-of-admissible-tuples",
+      "title": "Basic Properties of Admissible Tuples",
+      "startLine": 62,
+      "endLine": 95,
+      "summary": "Declarations: `admissible_empty`, `admissible_singleton`, `admissible_subset`, `admissible_of_card_lt_two`"
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorems and Axioms",
-      "startLine": 216,
-      "endLine": 265,
-      "summary": "Three axioms state the deep sieve-theoretic results: maynard_tao_m_tuples (m-tuple generalization), maynard_tao_sieve (k≥50 admissible tuple → bounded gaps ≤ diameter), maynard_tao_sieve_eh (EH-conditional variant). Derives zhang_bounded_gaps_70M, infinitely_many_small_gaps, liminf_prime_gaps_finite.",
-      "mathContext": "Axiom 1 (`maynard_tao_m_tuples`): $\\forall m \\geq 2$, $\\exists C_m$, infinitely many intervals of length $C_m$ contain $m$ primes. Axiom 2 (`maynard_tao_sieve`): admissible $H$ with $|H| \\geq 50$ and diameter $D$ $\\Rightarrow \\liminf(p_{n+1} - p_n) \\leq D$. Axiom 3 (`maynard_tao_sieve_eh`): same under Elliott-Halberstam with $|H| \\geq 6$. Key derivation: apply axiom 2 to the Engelsma 50-tuple of diameter 246."
+      "id": "verified-small-admissible-tuples",
+      "title": "Verified Small Admissible Tuples",
+      "startLine": 96,
+      "endLine": 183,
+      "summary": "We verify specific small admissible tuples using `decide` for small primes and cardinality bounds for larger primes."
     },
     {
-      "id": "dickson-conjecture",
-      "title": "Dickson Conjecture and Consequences",
-      "startLine": 263,
-      "endLine": 380,
-      "summary": "Formalizes DicksonConjecture (admissible tuples have infinitely many prime translates). Derives: twin primes (from {0,2} admissibility), prime triples (from {0,2,6}), and maynard_tao_consecutive_gaps. Constructs a 50-element admissible tuple with diameter ≤ 246 (exists_admissible_50_tuple_246).",
-      "mathContext": "Dickson's conjecture: for admissible $H = \\{h_1,\\ldots,h_k\\}$, $\\exists^\\infty n$, all $n + h_i$ are prime. Twin prime conjecture = Dickson for $\\{0, 2\\}$. The 50-tuple $\\{0, 2, 8, 14, 18, 20, \\ldots, 246\\}$ (Engelsma's optimized set) has `card = 50` and `diameter = 246`, proved by `native_decide`. Applying `maynard_tao_sieve` to this tuple gives $\\liminf(p_{n+1} - p_n) \\leq 246$."
+      "id": "non-admissible-tuples",
+      "title": "Non-Admissible Tuples",
+      "startLine": 184,
+      "endLine": 204,
+      "summary": "Not every set is admissible. A set that covers all residues mod some prime is not admissible."
     },
     {
-      "id": "prime-gap-infrastructure",
-      "title": "Prime Gap Infrastructure",
-      "startLine": 379,
-      "endLine": 640,
-      "summary": "Establishes: nthPrime properties (primality, strict monotonicity, positivity, p₀=2, p₁=3), primeGap properties (positivity, evenness for n≥1, gap ≥ 2), admissibility criteria (not_admissible_range, admissible_card_lt_of_prime), eh_implies_polymath, and maynard_tao_consecutive_gaps.",
-      "mathContext": "$p_n$ = `Nat.nth Nat.Prime n` (the $n$-th prime). $g_n = p_{n+1} - p_n$ (prime gap). Properties: $g_n \\geq 1$ (primes are distinct), $g_n$ is even for $n \\geq 1$ (both primes are odd), $g_n \\geq 2$ for $n \\geq 1$. Non-admissibility: $\\{0,1,\\ldots,p-1\\}$ is not admissible for any prime $p$ (covers all residues). EH implication: `maynard_tao_sieve_eh` on $\\{0,2,6,8,12\\}$ (admissible 5-tuple of diameter 12) gives $\\liminf g_n \\leq 12$."
+      "id": "the-bounded-prime-gaps-theorem",
+      "title": "The Bounded Prime Gaps Theorem",
+      "startLine": 205,
+      "endLine": 226,
+      "summary": "Declarations: `nthPrime`, `primeGap`, `maynard_tao_m_tuples`, `bounded_intervals_k_primes`"
     },
     {
-      "id": "oscillation-sextuples",
-      "title": "Gap Oscillation and Admissible Sextuples",
-      "startLine": 641,
-      "endLine": 720,
-      "summary": "Proves prime_gaps_unbounded via factorial construction (N!+k is composite for 2≤k≤N) and prime_gaps_oscillate (bounded liminf but infinite gaps). Verifies admissible sextuples {0,2,6,8,12,18} and {0,4,6,10,12,16} by case analysis over primes up to 7.",
-      "mathContext": "Unbounded gaps: $N! + k$ is composite for $2 \\leq k \\leq N$ (since $k \\mid N! + k$), giving a gap of $\\geq N - 1$. Therefore $\\limsup_{n \\to \\infty} g_n = \\infty$. Combined with $\\liminf g_n \\leq 246$: prime gaps oscillate — infinitely often $\\leq 246$ yet infinitely often arbitrarily large."
+      "id": "connection-to-admissible-tuples",
+      "title": "Connection to Admissible Tuples",
+      "startLine": 227,
+      "endLine": 260,
+      "summary": "Declarations: `DicksonConjecture`, `MaynardTaoDensity`, `maynard_tao_implies_twin_primes`"
     },
     {
-      "id": "gap-bounds-estimates",
+      "id": "the-admissible-tuple-behind-h-246",
+      "title": "The Admissible Tuple Behind H = 246",
+      "startLine": 261,
+      "endLine": 343,
+      "summary": "The Polymath 8b result uses an admissible k-tuple of diameter ≤ 246."
+    },
+    {
+      "id": "part-viii-a-sieve-reduction-framework",
+      "title": "## Part VIII.a: Sieve Reduction Framework",
+      "startLine": 344,
+      "endLine": 403,
+      "summary": "The Maynard-Tao sieve mechanism converts combinatorial data (admissible k-tuples) into analytic conclusions (bounded prime gaps). The sieve axiom is the…"
+    },
+    {
+      "id": "properties-of-nthprime-and-primegap",
+      "title": "Properties of nthPrime and primeGap",
+      "startLine": 404,
+      "endLine": 462,
+      "summary": "Declarations: `nthPrime_prime`, `nthPrime_strictMono`, `primeGap_pos`, `primeGap_even` …"
+    },
+    {
+      "id": "non-admissibility-of-complete-residue-systems",
+      "title": "Non-Admissibility of Complete Residue Systems",
+      "startLine": 463,
+      "endLine": 490,
+      "summary": "Declarations: `not_admissible_range`, `not_admissible_of_covers_residues`"
+    },
+    {
+      "id": "structural-properties-of-admissible-tuples",
+      "title": "Structural Properties of Admissible Tuples",
+      "startLine": 491,
+      "endLine": 652,
+      "summary": "Declarations: `admissible_card_lt_of_prime`, `admissible_misses_residue`, `eh_implies_polymath`, `maynard_tao_consecutive_gaps` …"
+    },
+    {
+      "id": "translation-invariance-and-structural-properties",
+      "title": "Translation Invariance and Structural Properties",
+      "startLine": 653,
+      "endLine": 669,
+      "summary": "Declarations: `all_divisible_same_residue`"
+    },
+    {
+      "id": "additional-admissible-tuples",
+      "title": "Additional Admissible Tuples",
+      "startLine": 670,
+      "endLine": 718,
+      "summary": "Declarations: `admissible_sextuple_0_2_6_8_12_18`, `admissible_sextuple_0_4_6_10_12_16`"
+    },
+    {
+      "id": "prime-gap-bounds-and-estimates",
       "title": "Prime Gap Bounds and Estimates",
-      "startLine": 720,
-      "endLine": 930,
-      "summary": "Restates gap minimum (≥ 2 for n ≥ 1), nthPrime lower bounds (≥ n+2), admissible 7-tuples {0,2,6,8,12,18,20} and {0,2,8,12,18,20,26}. Dickson sextuplet consequence: if {0,2,6,8,12,18} satisfies Dickson, infinitely many prime sextuplets exist.",
-      "mathContext": "The gap bound hierarchy: $\\text{primeGap}(n) \\geq 2$ for $n \\geq 1$ (consecutive odd primes differ by at least 2), and $p_n \\geq n + 2$ (strict monotonicity from $p_0 = 2$). Admissible 7-tuples verified by case analysis on primes $\\leq 7$ with `native_decide`, then cardinality bound for $p \\geq 11$."
+      "startLine": 719,
+      "endLine": 748,
+      "summary": "Declarations: `primeGap_min_for_large`, `primeGap_ne_zero`, `nthPrime_ge_add_two`, `nthPrime_tendsto_atTop`"
     },
     {
-      "id": "larger-tuples-bertrand",
-      "title": "Larger Admissible Tuples and Bertrand Gap Bound",
-      "startLine": 930,
-      "endLine": 1460,
-      "summary": "Verifies admissible 10-tuple {0,2,6,8,12,18,20,26,30,32} (diameter 32). Proves primeGap_le_nthPrime from Bertrand's postulate (p_{n+1} ≤ 2p_n implies gap ≤ p_n). Establishes TwinPrimeConjecture ↔ DicksonConjecture {0,2} equivalence: the forward direction via gap=2 translates to Dickson witnesses, the reverse via Dickson prime pairs.",
-      "mathContext": "Bertrand gap bound: $p_{n+1} \\leq 2p_n$ gives $g(n) = p_{n+1} - p_n \\leq p_n$. The twin prime equivalence: $\\text{TPC} \\iff \\text{Dickson}(\\{0,2\\})$. Forward: if gap $= 2$ at index $n$, then $p_n$ and $p_n + 2$ are both prime. Reverse: Dickson gives infinitely many $n$ with both $n$ and $n+2$ prime, which implies gap $= 2$ infinitely often."
+      "id": "maynard-tao-implications-for-specific-m",
+      "title": "Maynard-Tao Implications for Specific m",
+      "startLine": 749,
+      "endLine": 767,
+      "summary": "Declarations: `bounded_intervals_three_primes`, `bounded_intervals_four_primes`, `bounded_intervals_five_primes`"
     },
     {
-      "id": "related-conjectures",
-      "title": "Related Conjectures: Polignac, Legendre, Hardy-Littlewood, Firoozbakht",
-      "startLine": 1458,
-      "endLine": 1835,
-      "summary": "Formalizes Polignac's conjecture (gap = 2k infinitely often for each even 2k), Legendre's conjecture (prime between n² and (n+1)²), Hardy-Littlewood Conjecture A (density of prime constellations with singular series $C_H$), and Firoozbakht's conjecture ($p_n^{1/n}$ strictly decreasing). Proves firoozbakht_implies_gap_bound: Firoozbakht gives gap < p_n^{1+1/n} - p_n.",
-      "mathContext": "Polignac ($k=1$): twin primes. Hardy-Littlewood A: $\\pi_H(x) \\sim C_H \\cdot x/(\\log x)^k$ with singular series $C_H = \\prod_p \\frac{1 - \\nu_H(p)/p}{(1-1/p)^k}$. Firoozbakht: $p_{n+1}^{1/(n+1)} < p_n^{1/n}$, implying $g(n) < (\\log p_n)^2 - \\log p_n$ asymptotically. All remain open; Firoozbakht verified to $10^{18}$."
+      "id": "dickson-conjecture-implications-for-larger-tuples",
+      "title": "Dickson Conjecture Implications for Larger Tuples",
+      "startLine": 768,
+      "endLine": 798,
+      "summary": "Declarations: `dickson_quadruple_implies_prime_quadruplets`, `dickson_quintuple_implies_prime_quintuplets`"
     },
     {
-      "id": "brun-constant-summary",
-      "title": "Brun's Constant, Gap Hierarchy, and Summary",
-      "startLine": 1836,
+      "id": "cardinality-bounds",
+      "title": "Cardinality Bounds",
+      "startLine": 799,
+      "endLine": 811,
+      "summary": "Declarations: `admissible_card_constraint`"
+    },
+    {
+      "id": "translation-invariance-of-admissibility",
+      "title": "Translation Invariance of Admissibility",
+      "startLine": 812,
+      "endLine": 849,
+      "summary": "Admissibility is invariant under uniform translation: if H is admissible, then {h + c : h ∈ H} is admissible. The key insight is that the composed map x ↦ (x +…"
+    },
+    {
+      "id": "admissible-7-tuples-and-larger-patterns",
+      "title": "Admissible 7-Tuples and Larger Patterns",
+      "startLine": 850,
+      "endLine": 925,
+      "summary": "Declarations: `admissible_septuple_0_2_6_8_12_18_20`, `admissible_septuple_0_2_8_12_18_20_26`, `dickson_sextuple_implies_prime_sextuplets`"
+    },
+    {
+      "id": "accumulation-of-small-gaps",
+      "title": "Accumulation of Small Gaps",
+      "startLine": 926,
+      "endLine": 985,
+      "summary": "A key consequence of bounded gaps: infinitely many gaps of size ≤ 246 means small gaps accumulate densely."
+    },
+    {
+      "id": "bounds-on-admissible-tuple-size",
+      "title": "Bounds on Admissible Tuple Size",
+      "startLine": 986,
+      "endLine": 1004,
+      "summary": "Declarations: `admissible_card_lt_prime`, `admissible_bound_from_injectivity`"
+    },
+    {
+      "id": "prime-gap-lower-bound-from-nthprime-growth",
+      "title": "Prime Gap Lower Bound from nthPrime Growth",
+      "startLine": 1005,
+      "endLine": 1033,
+      "summary": "Declarations: `sum_primeGaps`, `sum_primeGaps_eq`, `avgPrimeGap`"
+    },
+    {
+      "id": "generalized-bounded-interval-results",
+      "title": "Generalized Bounded Interval Results",
+      "startLine": 1034,
+      "endLine": 1064,
+      "summary": "Declarations: `maynard_tao_gap_bound`, `bounded_intervals_six_primes`, `bounded_intervals_seven_primes`, `bounded_intervals_ten_primes` …"
+    },
+    {
+      "id": "verified-admissible-10-tuple-optimal-diameter-32",
+      "title": "Verified Admissible 10-Tuple (Optimal Diameter 32)",
+      "startLine": 1065,
+      "endLine": 1113,
+      "summary": "The narrowest admissible 10-tuple has diameter 32 (OEIS A008407, a(10)=32). The tuple {0, 2, 6, 8, 12, 18, 20, 26, 30, 32} achieves this optimal diameter.…"
+    },
+    {
+      "id": "prime-gap-upper-bound-from-bertrand-s-postulate",
+      "title": "Prime Gap Upper Bound from Bertrand's Postulate",
+      "startLine": 1114,
+      "endLine": 1146,
+      "summary": "From Bertrand: for all p_n, there exists a prime in (p_n, 2p_n]. Therefore p_{n+1} ≤ 2p_n, giving the gap bound g(n) ≤ p_n."
+    },
+    {
+      "id": "admissible-tuples-and-the-sieving-bound",
+      "title": "Admissible Tuples and the Sieving Bound",
+      "startLine": 1147,
+      "endLine": 1170,
+      "summary": "For an admissible k-tuple, the number of distinct residues mod any prime p is at most k (obviously) and strictly less than p (by definition). Therefore, k < p…"
+    },
+    {
+      "id": "monotonicity-of-bounded-gap-results",
+      "title": "Monotonicity of Bounded Gap Results",
+      "startLine": 1171,
+      "endLine": 1188,
+      "summary": "Declarations: `bounded_gaps_monotone`, `bounded_gaps_from_polymath`"
+    },
+    {
+      "id": "dickson-conjecture-for-the-10-tuple",
+      "title": "Dickson Conjecture for the 10-Tuple",
+      "startLine": 1189,
+      "endLine": 1214,
+      "summary": "Declarations: `dickson_10_tuple_implies_prime_10_tuples`"
+    },
+    {
+      "id": "union-bound-on-admissible-tuples",
+      "title": "Union Bound on Admissible Tuples",
+      "startLine": 1215,
+      "endLine": 1238,
+      "summary": "The image of an admissible k-tuple mod p lies in {0, ..., p-1} and misses at least one element. This gives the \"sieve dimension\" bound."
+    },
+    {
+      "id": "cram-r-s-conjecture-and-gap-growth-conjectures",
+      "title": "Cramér's Conjecture and Gap Growth Conjectures",
+      "startLine": 1239,
+      "endLine": 1258,
+      "summary": "Declarations: `CramerConjecture`, `GranvilleConjecture`, `cramer_implies_granville_weak`"
+    },
+    {
+      "id": "prime-gaps-and-the-twin-prime-conjecture",
+      "title": "Prime Gaps and the Twin Prime Conjecture",
+      "startLine": 1259,
+      "endLine": 1281,
+      "summary": "Declarations: `TwinPrimeConjecture`, `polymath_weakens_twin_primes`, `twin_primes_liminf`"
+    },
+    {
+      "id": "gap-bound-hierarchy",
+      "title": "Gap Bound Hierarchy",
+      "startLine": 1282,
+      "endLine": 1306,
+      "summary": "Declarations: `gap_bound_hierarchy`, `maynard_tao_monotone`"
+    },
+    {
+      "id": "gap-extremes-and-bounds",
+      "title": "Gap Extremes and Bounds",
+      "startLine": 1307,
+      "endLine": 1339,
+      "summary": "Declarations: `bounded_gaps_min`, `nthPrime_le_of_gaps_bounded`"
+    },
+    {
+      "id": "large-prime-gaps-factorial-construction",
+      "title": "Large Prime Gaps (Factorial Construction)",
+      "startLine": 1340,
+      "endLine": 1445,
+      "summary": "The complementary result to bounded prime gaps: prime gaps are UNBOUNDED. While Zhang/Polymath proved liminf(primeGap) ≤ 246, the factorial construction shows…"
+    },
+    {
+      "id": "twin-primes-iff-dickson-conjecture-full-equivalence",
+      "title": "Twin Primes ↔ Dickson Conjecture (Full Equivalence)",
+      "startLine": 1446,
+      "endLine": 1488,
+      "summary": "The Dickson conjecture for {0, 2} is equivalent to the twin prime conjecture. `dickson_twin_implies_twin_primes` (already proved) gives the → direction. Here…"
+    },
+    {
+      "id": "polignac-s-conjecture",
+      "title": "Polignac's Conjecture",
+      "startLine": 1489,
+      "endLine": 1530,
+      "summary": "Polignac's conjecture (1849) is a natural generalization of the twin prime conjecture: for every even positive integer 2k, infinitely many consecutive prime…"
+    },
+    {
+      "id": "gpy-theorem-2005",
+      "title": "GPY Theorem (2005)",
+      "startLine": 1531,
+      "endLine": 1595,
+      "summary": "The Goldston-Pintz-Yildirim (GPY) theorem (2005) was the pivotal breakthrough before Zhang's 2013 result. It shows that normalized prime gaps g_n / log(p_n)…"
+    },
+    {
+      "id": "legendre-s-conjecture",
+      "title": "Legendre's Conjecture",
+      "startLine": 1596,
+      "endLine": 1633,
+      "summary": "Legendre (1798) conjectured that there is always a prime between consecutive perfect squares. This is orthogonal to Zhang/Polymath: bounded gaps are about…"
+    },
+    {
+      "id": "hardy-littlewood-prime-k-tuples-conjecture-hl-a",
+      "title": "Hardy-Littlewood Prime k-Tuples Conjecture (HL-A)",
+      "startLine": 1634,
+      "endLine": 1701,
+      "summary": "Hardy and Littlewood (1923) conjectured a much more detailed picture of prime distributions. HL Conjecture A (qualitative form): every admissible k-tuple is…"
+    },
+    {
+      "id": "firoozbakht-s-conjecture",
+      "title": "Firoozbakht's Conjecture",
+      "startLine": 1702,
+      "endLine": 1759,
+      "summary": "Farideh Firoozbakht (1982) conjectured that p_n^{1/n} is strictly decreasing: (p_{n+1})^{1/(n+1)} < p_n^{1/n} for all n ≥ 1. This is equivalent to: p_{n+1} <…"
+    },
+    {
+      "id": "connections-between-prime-gap-conjectures",
+      "title": "Connections Between Prime Gap Conjectures",
+      "startLine": 1760,
+      "endLine": 1817,
+      "summary": "Summary of the landscape: - Zhang/Polymath (proved): liminf g_n ≤ 246 (unconditional) - EH conditional (axiom): liminf g_n ≤ 12 - GPY (axiom): liminf g_n /…"
+    },
+    {
+      "id": "brun-s-theorem-and-the-twin-prime-constant",
+      "title": "Brun's Theorem and the Twin Prime Constant",
+      "startLine": 1818,
       "endLine": 2017,
-      "summary": "Defines Brun's constant $B \\approx 1.9022$ (sum of reciprocals of twin primes converges) and the twin prime constant $C_2 \\approx 1.3203$ (product formula for Hardy-Littlewood density). Proves twin_prime_factor_lt_one: each factor $p(p-2)/(p-1)^2 < 1$. States the full gap bound hierarchy: $2 \\leq 6 \\leq 12 \\leq 246 \\leq 4680 \\leq 70000000$. File summary listing 128 theorems from 3 axioms.",
-      "mathContext": "Brun's constant: $B = \\sum_{p,\\, p+2 \\text{ prime}} (1/p + 1/(p+2)) \\approx 1.9022$. The convergence of this sum (Brun 1919) contrasts with $\\sum 1/p = \\infty$ — twin primes are 'sparse' even if infinite. The gap hierarchy: TPC ($H=2$) $\\Rightarrow$ GEH ($H \\leq 6$) $\\Rightarrow$ EH ($H \\leq 12$) $\\Rightarrow$ Polymath ($H \\leq 246$) $\\Rightarrow$ Maynard ($H \\leq 600$) $\\Rightarrow$ Zhang ($H \\leq 7 \\times 10^7$)."
+      "summary": "Declarations: `brunsConstant`, `brunsConstant_pos`, `twinPrimeConstant`, `twin_prime_factor_3` …"
     }
   ],
   "conclusion": {
