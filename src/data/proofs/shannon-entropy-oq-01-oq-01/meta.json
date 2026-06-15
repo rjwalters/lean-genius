@@ -1,0 +1,109 @@
+{
+  "id": "shannon-entropy-oq-01-oq-01",
+  "title": "Differential Entropy of the Uniform[a,b] Distribution: h = ln(b−a)",
+  "slug": "shannon-entropy-oq-01-oq-01",
+  "description": "Computes the differential entropy of the continuous Uniform[a,b] distribution, h(f) = ln(b−a), using Mathlib's Bochner integral. The uniform density 1/(b−a)·1_[a,b] is shown to integrate to 1 and to be nonnegative; the entropy integrand f·ln f collapses to a constant supported on [a,b] and integrates to −ln(b−a).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-15",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/ShannonEntropyOQ01OQ01.lean",
+    "tags": [
+      "information-theory",
+      "differential-entropy",
+      "measure-theory",
+      "probability",
+      "uniform-distribution"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-15",
+    "axiomCount": 0,
+    "lineCount": 88,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "assumptions": "None (0 axioms, 0 sorries). BUILD VERIFICATION PENDING: Docker build capacity was saturated when this entry was added, so the file has not yet been machine-checked in CI. Status will be promoted to verified after a green build. Depends only on Mathlib and the parent differentialEntropy definition in ShannonEntropyOQ01.lean.",
+    "originalContributions": [
+      "uniformPDF: the Uniform[a,b] density 1/(b−a) on [a,b], 0 elsewhere, as a Set.indicator",
+      "uniformPDF_integral_eq_one: the uniform density integrates to 1",
+      "uniformPDF_nonneg: the uniform density is nonnegative",
+      "uniformDifferentialEntropy: h(Uniform[a,b]) = ln(b−a)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Differential entropy h(X) = −∫ f(x)ln f(x)dx, introduced by Shannon (1948) as the continuous analogue of discrete entropy, can be negative — and the uniform distribution is the canonical illustration: Uniform[0,a] has h = ln a, which is negative for a < 1. This entry resolves the first open question recorded in the parent shannon-entropy-oq-01 (Gaussian maximum entropy) gallery conclusion: 'Formalize the differential entropy of the Uniform[a,b] distribution: h = ln(b−a).'",
+    "problemStatement": "Using the parent file's definition h(f) = −∫ f(x)ln f(x)dx, formalize and prove that the differential entropy of the Uniform[a,b] distribution (density f(x) = 1/(b−a) on [a,b], 0 elsewhere) equals ln(b−a) for a < b.",
+    "proofStrategy": "The entropy integrand f·ln f equals the constant (1/(b−a))·ln(1/(b−a)) on [a,b] and 0 off [a,b] (the off-support term is 0·ln 0 = 0, automatic since Real.log 0 = 0). Hence the integrand is itself a Set.indicator of [a,b] with a constant value, and integral_indicator + setIntegral_const + Real.volume_Icc reduce the integral to (b−a)·(1/(b−a))·ln(1/(b−a)) = ln(1/(b−a)) = −ln(b−a). Negating gives h = ln(b−a).",
+    "keyInsights": [
+      "Real.log 0 = 0 in Mathlib makes the 0·ln 0 = 0 convention automatic, so the off-support part of the integrand vanishes with no special casing",
+      "f·ln f for the uniform density is itself an indicator of [a,b] times a constant, so the whole entropy integral reduces to a single setIntegral_const over a set of Lebesgue length b−a",
+      "ln(1/(b−a)) = −ln(b−a) via Real.log_inv supplies the sign, matching that differential entropy is negative for b−a < 1",
+      "The result is a clean continuous counterpart to the parent file's Gaussian entropy computation h(N(μ,σ²)) = ½ln(2πeσ²)"
+    ],
+    "prerequisites": [
+      "Bochner integral (MeasureTheory.integral) in Mathlib",
+      "MeasureTheory.integral_indicator and setIntegral_const",
+      "Real.volume_Icc: volume (Icc a b) = ENNReal.ofReal (b − a)",
+      "differentialEntropy from Proofs/ShannonEntropyOQ01.lean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Uniform Density",
+      "summary": "uniformPDF a b x = (1/(b−a))·1_[a,b](x): the Uniform[a,b] density as a Set.indicator.",
+      "startLine": 37,
+      "endLine": 40,
+      "mathContext": "The Uniform[a,b] probability density is `uniformPDF a b x = Set.indicator (Set.Icc a b) (fun _ => 1/(b−a)) x`, i.e. the constant $1/(b-a)$ on $[a,b]$ and $0$ elsewhere. Encoding it as a `Set.indicator` makes the support structure explicit and lets the off-support contribution to any integral vanish automatically."
+    },
+    {
+      "id": "normalization",
+      "title": "Normalization",
+      "summary": "uniformPDF_integral_eq_one: ∫ f = 1.",
+      "startLine": 42,
+      "endLine": 51,
+      "mathContext": "`uniformPDF_integral_eq_one` shows the density is genuine: $\\int f = \\frac{1}{b-a}\\cdot \\mathrm{vol}([a,b]) = \\frac{1}{b-a}\\cdot(b-a) = 1$, via `integral_indicator`, `setIntegral_const`, `Real.volume_Icc`, and `div_self`."
+    },
+    {
+      "id": "entropy",
+      "title": "Differential Entropy = ln(b−a)",
+      "summary": "uniformDifferentialEntropy: differentialEntropy (uniformPDF a b) = Real.log (b−a).",
+      "startLine": 53,
+      "endLine": 76,
+      "mathContext": "`uniformDifferentialEntropy` proves $h(\\text{Uniform}[a,b]) = \\ln(b-a)$. The integrand $f\\cdot\\ln f$ is rewritten (lemma `hkey`) as the indicator of $[a,b]$ with constant value $(1/(b-a))\\ln(1/(b-a))$; off $[a,b]$ the term is $0\\cdot\\ln 0 = 0$. Then `integral_indicator` + `setIntegral_const` + `Real.volume_Icc` give $\\int f\\ln f = (b-a)\\cdot(1/(b-a))\\ln(1/(b-a)) = \\ln(1/(b-a)) = -\\ln(b-a)$ (using `Real.log_inv` and `mul_inv_cancel₀`). Unfolding `differentialEntropy` and applying `neg_neg` yields $h = -(-\\ln(b-a)) = \\ln(b-a)$."
+    },
+    {
+      "id": "nonnegativity",
+      "title": "Nonnegativity",
+      "summary": "uniformPDF_nonneg: 0 ≤ f.",
+      "startLine": 78,
+      "endLine": 86,
+      "mathContext": "`uniformPDF_nonneg` is immediate from $1/(b-a) > 0$ for $a < b$ (via `positivity`) and the indicator being $0$ off-support; together with `uniformPDF_integral_eq_one` it certifies `uniformPDF` is a genuine probability density."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the differential entropy of the Uniform[a,b] distribution: h(f) = ln(b−a), with the density shown to be a genuine nonnegative probability density. 88 lines, 3 theorems, 1 definition, 0 sorries, 0 axioms (build verification pending).",
+    "implications": "Provides the canonical example of negative differential entropy (h < 0 when b−a < 1), completing the contrast with discrete entropy noted in the parent file. Confirms Mathlib's Bochner integral handles indicator-density entropy computations cleanly.",
+    "openQuestions": [
+      "Compute the differential entropy of the exponential distribution Exp(λ): h = 1 − ln λ",
+      "Show the uniform distribution maximizes differential entropy among densities supported on a fixed interval [a,b]"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-entropy-oq-01",
+      "relationship": "extends",
+      "description": "Parent: differential entropy, Gibbs inequality, and Gaussian maximum entropy; lists this Uniform[a,b] computation as its first open question."
+    }
+  ],
+  "leanFile": {
+    "namespace": "DifferentialEntropy",
+    "lineCount": 88,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/ShannonEntropyOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
