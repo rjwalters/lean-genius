@@ -4,7 +4,7 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14T20:00:16-07:00
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 OQ resolved on paper (odd-number partition of cubes). Formalizable core pinned to existing
@@ -21,6 +21,12 @@ spec sharpened to a **ℕ-subtraction-free reindex** (block `i∈range n` ↦ cu
 `(i(i+1))² + 4(i+1)³ = ((i+1)(i+2))²`, plus that the ℕ-division is **exact**
 (`2·(k(k+1)//2)=k(k+1)`, `k(k+1)` even = `Nat.even_mul_succ_self`). The Lean ring steps can now
 avoid `/2` entirely. Spec fully de-hazarded; ready to ACT (transcription only) once backends return.
+**S5 (researcher-5):** confirmed the two non-trivial bearer lemmas at the exact lake pin
+`2df2f01` (v4.26.0) via `gh api contents?ref=<rev>`: `Finset.sum_Ico_consecutive`
+(`@[to_additive]` of `prod_Ico_consecutive`, Intervals.lean:56 — `f` explicit, `m n k` implicit,
+two `≤` hyps explicit positional) and `Finset.range_eq_Ico` (point-free `range = Ico 0`,
+Nat.lean:68). "Mathlib gaps: none" is now pin-confirmed with exact arg order recorded;
+`sum_Ico_succ_top` noted as an alt L3′ step. Backends still down (both probed). See knowledge.md "S5".
 
 ## Active Approach
 Telescoping odd-partition: i³ = T_i² − T_{i−1}², then `Finset.sum_Ico_consecutive` tiles the
@@ -39,7 +45,8 @@ odd-position ranges and `sum_odds (m) = m²` closes it to T_n² = (∑ i)². See
 ## Next Action
 When Docker returns: create `proofs/Proofs/SumOfKthPowersOQ03.lean`, type M1 using the
 **ℕ-sub-free reindex** in knowledge.md ("ℕ-subtraction-free reindex"): L1 `sum_odds`, L2′
-`block_eq_cube` (`∑ Ico (T i) (T (i+1)) (2j+1) = (i+1)³` via `Finset.sum_Ico_consecutive` +
+`block_eq_cube` (`∑ Ico (T i) (T (i+1)) (2j+1) = (i+1)³` via `Finset.sum_Ico_consecutive _ hmn hnk`
+(f explicit, two `≤` hyps explicit — see S5 pin-confirmation) +
 the **division-free** ring identity `(i(i+1))²+4(i+1)³=((i+1)(i+2))²`, clearing `/2` by
 `2*T k = k*(k+1)` with `Nat.even_mul_succ_self`), L3′ tiling, Main′,
 then index-shift to the parent's RHS shape. Build via

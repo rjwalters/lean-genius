@@ -167,3 +167,38 @@ the spec *before* it is typed:
 
 Conclusion: the spec is ℕ-sound as written; M1 carries no hidden off-by-one. No spec changes needed
 — this only raises confidence for the Docker-up ACT. (Verified with `python3` emulating ℕ semantics.)
+
+---
+
+## Session 2026-06-14 (S5, researcher-5) — bearer-lemma pin-confirmation at v4.26.0
+
+Still backend blackout (Docker `docker info` timeout; Aristotle `prove` → "Resource not found";
+probed both this session). No build/ACT possible. Closed the last *asserted-but-unconfirmed* item:
+knowledge.md previously stated "Mathlib gaps: none" but never confirmed the load-bearing lemmas'
+**exact signatures at the pinned rev**. Confirmed directly against the Mathlib source at the lake
+pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) via `gh api .../contents?ref=<rev>`:
+
+- **`Finset.sum_Ico_consecutive`** — the `@[to_additive]` image of
+  `Finset.prod_Ico_consecutive` at `Mathlib/Algebra/BigOperators/Intervals.lean:56`. Exact shape:
+  `sum_Ico_consecutive (f : ℕ → M) {m n k : ℕ} (hmn : m ≤ n) (hnk : n ≤ k) :`
+  `(∑ i ∈ Ico m n, f i) + (∑ i ∈ Ico n k, f i) = ∑ i ∈ Ico m k, f i`.
+  **Transcription note:** `f` is **explicit**, `m n k` are **implicit**, and the two `≤` hyps are
+  **explicit positional** args — so L3′ must supply them as `Finset.sum_Ico_consecutive _ hmn hnk`
+  (or name `f`), not as a bare rewrite. This is exactly the form L3′ needs to glue blocks.
+- **`Finset.range_eq_Ico`** — `Mathlib/Order/Interval/Finset/Nat.lean:68`, stated **point-free**:
+  `Finset.range_eq_Ico : range = Ico 0`. So `range (T n) = Ico 0 (T n)` is `congrFun … _` /
+  `by rw [Finset.range_eq_Ico]`; it rewrites the L1 RHS `range (T n)` into the `Ico 0 (T n)` shape
+  L3′ produces (and vice-versa). Confirmed in active use at Intervals.lean:86.
+- **Bonus cleaner L3′ step:** `Finset.sum_Ico_succ_top (hab : a ≤ b) (f : ℕ → M) :`
+  `∑ k ∈ Ico a (b+1), f k = (∑ k ∈ Ico a b, f k) + f b` (Intervals.lean, `@[to_additive]` of
+  `prod_Ico_succ_top`) is also present — an alternative to `sum_Ico_consecutive` for the induction
+  step if a single-step top-extension is preferred.
+- `Finset.sum_range_id`, `Finset.sum_range_succ`, and the parent's `sum_first_powers_classical`
+  are already exercised in `Proofs/SumOfKthPowers.lean` at this same pin → presence is implied by a
+  green parent build; not re-fetched.
+
+**Net effect:** "Mathlib gaps: none" is now **pin-confirmed for the two non-trivial bearers**, with
+their exact argument order recorded (the one thing the prose spec omitted and the transcriber would
+otherwise have to discover at build time). No spec change; the ACT plan stands. Still Docker-gated:
+no `.lean` written (an unbuildable file under `Proofs/` would break the shared build), exactly as
+S1–S4 deferred. Decision: **ORIENT** — pin-confirmation only, zero churn to spec.
