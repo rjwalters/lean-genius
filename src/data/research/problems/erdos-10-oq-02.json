@@ -1,0 +1,59 @@
+{
+  "slug": "erdos-10-oq-02",
+  "title": "Granville–Soundararajan conjecture (k = 3 for odd integers)",
+  "status": "in-progress",
+  "phase": "ORIENT",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 4,
+  "started": "2026-06-15T06:02:35Z",
+  "lastUpdate": "2026-06-15T06:02:35Z",
+  "path": "research/problems/erdos-10-oq-02",
+  "tags": [
+    "number-theory",
+    "additive-combinatorics",
+    "primes",
+    "powers-of-2",
+    "open-conjecture",
+    "gallery-extracted",
+    "seeker-selected"
+  ],
+  "problemStatement": "Is the Granville–Soundararajan conjecture true: is every odd integer n > 1 a sum of a prime and at most 3 powers of 2 (n = p + 2^{a_1} + ... + 2^{a_j}, p prime, j ≤ 3)? The companion even part conjectures at most 4 powers suffice for even n. Both open (Granville–Soundararajan 1998).",
+  "knownResults": {
+    "proven": [
+      "Reduction lemma: m is a sum of at most k powers of 2 (multiset of exponents, size ≤ k) iff popcount(m) ≤ k; hence n ∈ S_k ⟺ ∃ m, popcount(m) ≤ k ∧ n−m ≥ 2 ∧ (n−m) prime.",
+      "Gallagher (1975): for any ε>0 there is k(ε) with lowerDensity(S_k) ≥ 1−ε (best unconditional result).",
+      "Crocker (1971): infinitely many odd n are NOT in S_2 — the reason k=3 (not 2) is needed on the odd side; witnesses are very large (covering systems).",
+      "Grechuk: 1117175146 (even) ∉ S_3 — k=3 cannot extend to all integers."
+    ],
+    "open": [
+      "GS-odd: every odd n > 1 is in S_3 (this question).",
+      "GS-even: every even n ≥ 2 is in S_4.",
+      "Erdős–Graham: no finite k makes {n>1} ⊆ S_k."
+    ],
+    "goal": "Decide GS-odd. Near-term realistic target: formalize the popcount reduction lemma and a Decidable membership for sumPrimeAndTwoPows in Lean, enabling decide/native_decide on concrete witnesses."
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT (build-free; Docker + Lean unavailable). Established the popcount≤k reduction characterizing S_k membership, and ran a reproducible experiment. ODD side: every odd n ≤ 10^6 ∈ S_3, but only trivially — ≤2 powers always suffice in range (no odd n leaves S_2 up to 3·10^6), so direct small-N data is weak evidence for GS-odd; the k=3-over-k=2 necessity (Crocker) lives at scales beyond brute force. EVEN side genuinely exercises S_3: ~5.6% of even n need exactly 3 powers (smallest = 906), all even n ≤ 10^6 ∈ S_3, first known even failure is Grechuk's 1117175146 (∈ S_4, ∉ S_3). The +1-power parity offset between odd and even is visible directly in the data, matching the conjecture's k=3 (odd) vs k=4 (even) structure.",
+    "builtItems": [
+      "research/problems/erdos-10-oq-02/verify_granville_soundararajan_odd.py — stdlib+sympy experiment (odd/even sweeps via the popcount reduction, minimal-#powers distributions, Grechuk check)."
+    ],
+    "insights": [
+      "S_k membership reduces to popcount(m) ≤ k offsets: n ∈ S_k ⟺ ∃ m with popcount(m) ≤ k and (n−m) prime, n−m ≥ 2.",
+      "Brute force confirms GS-odd only trivially: every odd n ≤ 3·10^6 is already in S_2, so the third power is never needed in range. Crocker's odd ∉ S_2 witnesses are astronomically large.",
+      "The even side is where S_3 is genuinely tested: smallest even n needing exactly 3 powers is 906; ~5.6% of even n need exactly 3; all even n ≤ 10^6 ∈ S_3.",
+      "Parity offset is explicit: in range, odd n need ≤2 powers and even n need ≤3 — the same +1 gap GS conjectures (k=3 odd vs k=4 even). Subtracting one even power from odd n leaves an odd candidate for primality; even n must first spend a power to fix parity.",
+      "Grechuk's 1117175146 confirmed ∉ S_3 and ∈ S_4 (popcount 16)."
+    ],
+    "mathlibGaps": [
+      "No Decidable instance wired for sumPrimeAndTwoPows / IsPrimePlusKPowers; the popcount reduction would supply one.",
+      "Crocker (1971) and Gallagher (1975) results are documented in source comments only, not formalized."
+    ],
+    "nextSteps": [
+      "ACT (Docker-gated): formalize the popcount≤k reduction lemma and a Decidable membership for sumPrimeAndTwoPows; discharge the 906 / Grechuk witnesses by decide/native_decide.",
+      "Add Crocker (1971) citation to the gallery as the precise reason k=3 (not 2) is required on the odd side.",
+      "GS-odd itself needs sieve/large-sieve machinery (Gallagher line) — out of brute-force and near-term Lean reach."
+    ],
+    "markdown": "See research/problems/erdos-10-oq-02/knowledge.md for the full write-up (reduction lemma, experiment results, parity structure, references)."
+  }
+}
