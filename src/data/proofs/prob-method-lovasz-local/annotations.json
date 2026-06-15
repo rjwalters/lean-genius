@@ -4,7 +4,7 @@
     "proofId": "prob-method-lovasz-local",
     "range": {
       "startLine": 1,
-      "endLine": 13
+      "endLine": 16
     },
     "type": "concept",
     "title": "The Lovász Local Lemma: Crown Jewel of the Probabilistic Method",
@@ -27,12 +27,12 @@
     "id": "ann-symmetric-lll",
     "proofId": "prob-method-lovasz-local",
     "range": {
-      "startLine": 24,
-      "endLine": 28
+      "startLine": 25,
+      "endLine": 34
     },
     "type": "concept",
     "title": "Symmetric LLL (Simplified Criterion)",
-    "content": "The symmetric LLL states that if each of $n$ bad events has probability $\\leq p$ and depends on at most $d$ other events, and a criterion involving $p$, $d$ is met, then all bad events can be avoided. The formalization uses $p(d+1) \\leq 1/3$ as a simplified criterion (the exact bound is $ep(d+1) \\leq 1$ where $e \\approx 2.718$). The constant $1/3$ is a safe approximation since $1/e \\approx 0.368 > 1/3$. The theorem currently proves `True` as a placeholder because the full statement requires formalizing events, probability measures, and dependency graphs.",
+    "content": "The symmetric LLL states that if each of $n$ bad events has probability $\\leq p$ and depends on at most $d$ other events, and a criterion involving $p$, $d$ is met, then all bad events can be avoided. The formalization uses $p(d+1) \\leq 1/3$ as a simplified criterion (the exact bound is $ep(d+1) \\leq 1$ where $e \\approx 2.718$). The constant $1/3$ is a safe approximation since $1/e \\approx 0.368 > 1/3$. The formalization proves the algebraic core `symmetric_lll_bound`: given $0 \\leq p$ and $p(d+1) \\leq 1/3$, the avoidance factor $(1-p)^n > 0$. This captures the positivity heart of the symmetric LLL; the full probabilistic statement $\\Pr[\\bigcap \\overline{A_i}] \\geq (1-p)^n > 0$ additionally requires formalizing events, probability measures, and dependency graphs.",
     "mathContext": "Simplified: $p(d+1) \\leq 1/3$. Exact: $ep(d+1) \\leq 1$, i.e., $p \\leq \\frac{1}{e(d+1)}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -50,8 +50,8 @@
     "id": "ann-general-lll",
     "proofId": "prob-method-lovasz-local",
     "range": {
-      "startLine": 33,
-      "endLine": 37
+      "startLine": 40,
+      "endLine": 48
     },
     "type": "concept",
     "title": "General (Asymmetric) Lovász Local Lemma",
@@ -74,8 +74,8 @@
     "id": "ann-ksat",
     "proofId": "prob-method-lovasz-local",
     "range": {
-      "startLine": 41,
-      "endLine": 44
+      "startLine": 96,
+      "endLine": 115
     },
     "type": "concept",
     "title": "k-SAT Satisfiability via LLL",
@@ -97,12 +97,12 @@
     "id": "ann-moser-tardos",
     "proofId": "prob-method-lovasz-local",
     "range": {
-      "startLine": 48,
-      "endLine": 52
+      "startLine": 119,
+      "endLine": 129
     },
     "type": "concept",
     "title": "Moser-Tardos Constructive LLL (2010)",
-    "content": "Robin Moser and Gábor Tardos (2010) gave a constructive proof of the LLL via a simple resampling algorithm: while any bad event $A_i$ occurs, pick one and resample its random variables. They proved that the expected number of resampling steps is at most $\\sum_i x_i/(1-x_i)$, which is polynomial in $n$ under the LLL conditions. This resolved a major open problem: Erdős and Lovász's original proof was purely existential and gave no algorithm. The formalization currently only states that this sum is non-negative (a weak bound), with a sorry on a simplified version of the witness condition.",
+    "content": "Robin Moser and Gábor Tardos (2010) gave a constructive proof of the LLL via a simple resampling algorithm: while any bad event $A_i$ occurs, pick one and resample its random variables. They proved that the expected number of resampling steps is at most $\\sum_i x_i/(1-x_i)$, which is polynomial in $n$ under the LLL conditions. This resolved a major open problem: Erdős and Lovász's original proof was purely existential and gave no algorithm. The formalization proves `moser_tardos_termination`: the resampling-bound sum $\\sum_i x_i/(1-x_i)$ is non-negative (a weak but fully verified bound) via `Finset.sum_nonneg`. The full quantitative expectation bound and the witness-tree termination argument are not yet formalized.",
     "mathContext": "Moser-Tardos: expected resampling steps $\\leq \\sum_{i=1}^n \\frac{x_i}{1-x_i}$",
     "significance": "key",
     "relatedConcepts": [
