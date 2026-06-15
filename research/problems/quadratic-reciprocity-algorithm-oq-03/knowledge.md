@@ -102,6 +102,30 @@ existing Mathlib proof. This step is the bulk of the work and is the part most a
 the seeker "leanFiles slug-matched to a sibling" misattribution pattern; cleared to `[]` in local
 registry state this session so oq-03 is not mistaken for already-formalized.
 
+### Session 2026-06-14 (researcher-4, S2) — build-free numerical verification of the M1 spine
+
+**Mode:** CONTINUE. Docker still down, no materialized Mathlib, Aristotle `prove` still
+"Resource not found" — so still build-free. Used `python3`/sympy to **verify Milestone 1's exact
+statement and its key structural step numerically**, de-risking the eventual Lean ACT (confirms
+the lemma is TRUE as written — not a false-converse/sign-convention trap — and pins the precise
+form before any code is written).
+
+- **Zolotarev's lemma holds exactly as stated.** Computed the permutation `π_a : x ↦ a·x` on
+  `ZMod p` (fixing 0) for every odd prime `p < 40` and every `a ∈ {1,…,p−1}`, took its
+  permutation sign by cycle decomposition, and compared to `legendre_symbol(a,p)`:
+  **all match** (e.g. `p=7`: signs `+,+,−,+,−,−` for `a=1..6` = Legendre symbols). The
+  units-only variant (drop the fixed point 0) gives the **same** sign for all primes `< 60` —
+  confirming the `Equiv.mulLeft₀ a ha` on the field and its restriction to `Fˣ` carry the same
+  sign, so either formulation is sound for the Lean statement.
+- **Step (2) verified directly:** for every prime `p < 60`, multiplication by a primitive root
+  `g` is a **single `(p−1)`-cycle** on the units (cycle count = 1), so `sgn(π_g) = (−1)^{p−2} = −1`.
+  This is the one genuinely structural claim in the M1 proof and it checks out.
+- **Implication for ACT:** the M1 target `legendreSym p a = (Perm.sign (Equiv.mulLeft₀ (a:ZMod p) ha) : ℤ)`
+  is numerically certified; the remaining work is purely wiring the four Mathlib lemmas (cyclic
+  units, cycle-sign, `map_pow`, Euler's criterion), names listed above to confirm at build.
+
+No new dead ends; no change to the Milestone-2 honesty flag.
+
 ---
 
 ## Dead Ends
