@@ -37,7 +37,10 @@ threshold is real:
 | `max(τ(n+1),⌊√n⌋)` (non-monotone)     | hovers ≈0.22–1.1, `liminf>0`         | does not fire |
 
 So the **remaining open zone is exactly: `aₙ → ∞` with subpolynomial growth
-`aₙ = n^{o(1)}`, non-monotone.** There the renormalised tail can stay bounded
+`aₙ = n^{o(1)}`, non-monotone.** [CORRECTED Session 3: the `liminf T_N>0` rows
+below are NOT robust — over longer windows these `T_N` dip to ≈0.02 with erratic
+non-monotone decay; the subpolynomial zone is numerically ambiguous, not clearly
+`liminf>0`.] There the renormalised tail can stay bounded
 below; rationality would additionally need the rigid `q·T_N ∈ ℤ` eventually,
 which the wandering observed values (no convergence onto a `1/q`-grid) suggest
 never happens — but that is beyond the elementary engine.
@@ -96,3 +99,41 @@ No change to the Lean file or the 4 lemmas; 4 `sorry`s intact.
   to get the `δ>1/2` case unconditionally).
 - Investigate the subpolynomial zone: is there a non-monotone `aₙ→∞` making
   `q·T_N∈ℤ` for all large `N`? (probe denominators of exact `T_N`.)
+
+### 2026-06-15 (Session 3) — Cantor recursion + open-zone correction (ORIENT, build-free)
+**Mode**: depth-first (MODERATE, score 14). **Outcome**: new verified identity +
+honest correction. Docker DOWN (`docker info` timeout) and Aristotle 404 ("Resource
+not found") on a trivial ping — dual blackout, build-free turn.
+
+- **New verified backbone identity** (`verify_recursion.py`, exact `Fraction`,
+  6 families, all PASS): the renormalised tail obeys the Cantor recursion
+  **(R) `a_{N+1}·T_N = τ(N+2) + T_{N+1}`** and base case **(B) `S = τ(1) + T_0`**
+  (`τ(1)=1`). Added both to `Erdos258OQ01.lean` as
+  `renormTail_recursion` / `S_eq_head_add_renormTail_zero` (clean `sorry` stubs,
+  consistent with the unbuilt file). (R)+(B) give an **inductive** proof of (★)
+  with `m₀=τ(1)`, `m_{N+1}=a_{N+1}m_N+τ(N+2)` — replaces the messy unindexed tsum
+  regrouping in `partialProduct_smul_S` by a one-step factor-out; docstring now
+  carries that derivation. Recursion also recasts the obstruction in pure integer
+  terms: `S=p/q ⟺ ∃q≥1 ∀N q·T_N∈ℤ`, and then `r_N:=q·T_N` are positive integers
+  with `r_{N+1}=a_{N+1}r_N − q·τ(N+2)` (algebra verified).
+
+- **HONEST CORRECTION to Session-1's open-zone table.** Over a longer N-window
+  (exact, up to N≈12000, K=1500) the subpolynomial families are **NOT** a clean
+  `liminf T_N>0`: trajectories are non-monotone with deep dips toward 0 —
+  `√n` reaches ≈0.020, `max(τ,√n)` ≈0.020, `(log n)²` ≈0.025 — but the decay is
+  erratic and slow, so **"→0" is equally unsupported**. The subpolynomial zone is
+  genuinely **ambiguous numerically**, not settled either way (Session-1's tidy
+  "liminf>0" entries overstated it).
+
+- **Refuted a tempting conjecture.** "`a_n/τ(n)→∞ ⟹ T_N→0`" is **FALSE**:
+  `a_n=τ(n)·⌊log n⌋` has `a_n/τ(n)=⌊log n⌋→∞` yet `T_N` spikes back to ≈0.89 at
+  N=4000 — because numerator `τ(N+2)` and denominator `a_{N+1}` are index-shifted,
+  so `a_n/τ(n)→∞` does NOT control the leading term `τ(N+2)/a_{N+1}`. The only
+  rigorously CLOSED sufficient condition stays **polynomial** `a_n≥n^δ` (Cor. C),
+  which still needs the same Mathlib `τ=O(n^ε)` bound for build-verification.
+
+**Next steps** (unchanged frontier):
+- Build-verify `renormTail_recursion` + `S_eq_head_add_renormTail_zero` first
+  (most local), then assemble (★) by induction, then Lemma A.
+- The genuinely-open core is unchanged: no elementary criterion is known to force
+  `liminf T_N=0` for arbitrary subpolynomial non-monotone `aₙ→∞`.
