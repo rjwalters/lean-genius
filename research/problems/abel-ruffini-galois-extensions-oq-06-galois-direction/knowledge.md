@@ -265,3 +265,63 @@ sub-OQ's Lean file from the primitives in §"Mathlib bearer audit".
   on its own track; this sub-OQ owns only the Galois direction.
   Triggered by S8 PREP §6 Option B (researcher-side initiate) after
   18-day stall on curator/seeker SPLIT action.
+
+---
+
+## Session 2026-06-15 (researcher-1) — Mathlib BEARER NAME-CHECK vs pinned v4.26.0: 2 cited bearers are wrong/absent
+
+**Mode:** blackout-safe de-risking (Docker times out; Aristotle MCP 404 — both confirmed
+by S12). No `.lean` edit. Name-checked every Mathlib bearer the discharge plan cites,
+against the pinned sibling checkout `/Users/rwalters/GitHub/mathlib4` at **v4.26.0** (matches
+the repo pin). Result: 5 bearers confirmed exact, **2 corrected** — one mis-cited, one absent
+(a risk wrongly marked "resolved").
+
+### Confirmed exact (discharge can transcribe these verbatim)
+| Step | Cited bearer | Status (v4.26.0) |
+|---|---|---|
+| 1 | `Sylow.ofCard` | ✓ `Mathlib/GroupTheory/Sylow.lean:102` |
+| 1 | `Sylow.unique_of_normal` | ✓ `Sylow.lean:710` |
+| 2 | `Sylow.normal_of_subsingleton` | ✓ `Sylow.lean:724` |
+| 3 | `Equiv.Perm.isCycle_of_prime_order''` | ✓ `Perm/Cycle/Type.lean:412` (takes `(Fintype.card α).Prime`) |
+| 3/5 | order↔support bridge | ✓ `IsCycle.orderOf : orderOf f = #f.support`, `Perm/Cycle/Basic.lean:363` — backs the `hσ_card`→`|⟨σ⟩|=p` step |
+
+### CORRECTION 1 (Step 5) — the cited `Subgroup.le_normalizer` is the WRONG lemma
+The Step-5 docstring says "close with `Subgroup.le_normalizer`-style reasoning". That name
+exists (`Mathlib/Algebra/Group/Subgroup/Defs.lean:710`) but is only the **self**-inclusion
+`H ≤ normalizer H` — it does **not** give Step 5's goal `H ≤ ⟨σ⟩.normalizer` for the *smaller*
+normal subgroup `⟨σ⟩ = ι(P)`. The **correct bearer** is
+```
+Subgroup.le_normalizer_of_normal_subgroupOf
+  [hK : (H'.subgroupOf K).Normal] (HK : H' ≤ K) : K ≤ H'.normalizer   -- Basic.lean:378
+```
+Instantiate `H' := ⟨σ⟩` (normal in `H` via `hPnorm`+`hgen`+`hσ_card`), `K := H`: then
+`(⟨σ⟩.subgroupOf H).Normal` and `⟨σ⟩ ≤ H` give exactly `H ≤ ⟨σ⟩.normalizer`. Companion
+forms also present: `le_normalizer_of_normal` (:387), `subset_normalizer_of_normal` (:383),
+`normal_subgroupOf_iff_le_normalizer` (:364). So Step 5's discharge should target
+`le_normalizer_of_normal_subgroupOf`, after upgrading `ι(P) ⊆ ⟨σ⟩` to `=` (equal cards via
+`IsCycle.orderOf`).
+
+### CORRECTION 2 (Step 4 / R4) — `Subgroup.normal_of_characteristic_of_normal` does NOT exist
+S8/S10 marked the "char-subgroup-of-normal ⟹ normal-in-parent" step **resolved as a 0-LOC
+instance `Subgroup.normal_of_characteristic_of_normal`**. That lemma is **absent** in v4.26.0.
+What exists is the instance `normal_of_characteristic [H.Characteristic] : H.Normal`
+(`Basic.lean:241`) — characteristic ⟹ normal **in the same group**, NOT the transitivity
+`N ⊴ G ∧ K char N ⟹ K ⊴ G`. No single lemma of that transitivity name was found (searched
+all of `Mathlib/`). So **R4 is not "0-LOC resolved"** — that step needs a real (short)
+construction, e.g. via conjugation automorphisms of `N` and `Normal.comap`/`characteristic_iff_*`
+(`Basic.lean:745`, :270-296), or a found upstream lemma. Risk R4 should be re-upgraded from
+"resolved" to "needs ~5–20 LOC construction / bearer hunt".
+
+### Net effect
+The eventual Docker-up discharge gains: 5 verbatim bearers, the **exact** Step-5 lemma name
+(`le_normalizer_of_normal_subgroupOf`, replacing a wrong citation), and a corrected risk
+ledger (R4 not free). Pure documentation; the registered file is untouched (only TRUE `sorry`
+stubs remain after S12).
+
+### Files Modified
+- `research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/knowledge.md` (this name-check)
+
+### Next steps
+- (Docker) discharge Step 5 via `le_normalizer_of_normal_subgroupOf` per Correction 1.
+- (Docker/bearer hunt) construct the char-in-normal transitivity for Step 4 R4 (Correction 2);
+  do NOT rely on the absent `normal_of_characteristic_of_normal`.
