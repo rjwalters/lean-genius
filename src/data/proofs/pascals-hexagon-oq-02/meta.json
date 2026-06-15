@@ -125,5 +125,14 @@
       "endLine": 198,
       "summary": "brianchon_circumscribed restates the theorem for a hexagon tangent to a point-conic C (line-conic adj(C)), and side_tangent_iff_on_dualConic records that tangency is by definition membership on the dual conic."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "Brianchon's theorem — the three main diagonals of a hexagon circumscribed about a conic are concurrent — is obtained as the exact projective dual of Pascal's hexagon theorem. Working in the self-dual ℝ³ homogeneous-coordinate model, where join and meet are both the cross product and collinearity and concurrency are the same determinant condition, the Brianchon configuration is literally Pascal's configuration read through the point↔line duality, with the dual conic given by the adjugate adj(C) = (det C)·C⁻¹. brianchon_theorem and its tangency-framed form brianchon_circumscribed follow with no new axioms and no sorries.",
+    "implications": "Demonstrates that projective duality can be a zero-cost proof technique in a well-chosen model: because the ℝ³ model is self-dual, the dual theorem is not re-proved but reinterpreted, so Brianchon inherits Pascal's correctness verbatim. The same self-dual setup turns any incidence theorem about points on a conic into a dual theorem about tangent lines (e.g. dualizing the converses, degenerate Pappus cases, or the pentagon/quadrilateral specializations) for free.",
+    "openQuestions": [
+      "Discharge the single inherited axiom conic_implies_pascal_constraint (the Cayley–Bacharach/Bézout step of Pascal's theorem); eliminating it would make both Pascal and Brianchon fully axiom-free in one stroke.",
+      "Formalize the converse (Brianchon ⇒ the hexagon is circumscribed about a conic) and the degenerate cases (the hexagon's sides tangent to a degenerate conic / a conic pair), again via the duality bridge.",
+      "Package the point↔line duality and the adjugate dual-conic correspondence as a reusable Lean transfer principle so future incidence results dualize automatically."
+    ]
+  }
 }
