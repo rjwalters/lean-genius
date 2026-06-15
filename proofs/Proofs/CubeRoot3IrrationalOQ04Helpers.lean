@@ -805,4 +805,56 @@ theorem cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S25 prep: new lower bound for `a₁₇ = 6` (the eighteenth partial quotient)
+
+The nineteenth CF convergent of `∛3` (using `a₁₈ = 4` per a 300-digit CF
+recomputation, true prefix `a₀..a₁₈ =
+[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4]`, 0-indexed) is
+
+  `p₁₈/q₁₈ = (a₁₈·p₁₇ + p₁₆) / (a₁₈·q₁₇ + q₁₆)`
+  `       = (4 · 383473988 + 59472423) / (4 · 265886013 + 41235875)`
+  `       = 1_593_368_375 / 1_104_779_927`.
+
+This convergent is even-index (18), so it lies on the LOWER side of `∛3`
+(alternating with the upper-side eighteenth convergent `383473988/265886013`,
+the seventeenth partial quotient `a₁₇ = 6`).
+
+Here `p₁₇/q₁₇ = 383473988/265886013` (the eighteenth convergent, upper) and
+`p₁₆/q₁₆ = 59472423/41235875` (the seventeenth convergent, lower) are the two
+prior rungs; both lie in sibling helper PRs (S24, S23) but this lower-bound
+theorem is self-contained — it is discharged purely by cubing the literal
+fraction, independent of whether those rungs are present in the file.
+
+Convergent recursion (with `a₁₈ = 4`):
+
+  `q₁₈ = 4 · q₁₇ + q₁₆ = 4 · 265886013 + 41235875 = 1_104_779_927`
+  `p₁₈ = 4 · p₁₇ + p₁₆ = 4 · 383473988 + 59472423 = 1_593_368_375`
+
+After cubing,
+
+  `1_593_368_375³   = 4_045_279_924_912_085_586_177_734_375`
+  `3 · 1_104_779_927³ = 4_045_279_924_912_085_587_552_412_949`
+
+so `1_593_368_375³ = 4_045_279_924_912_085_586_177_734_375 <
+4_045_279_924_912_085_587_552_412_949 = 3 · 1_104_779_927³` (strict, diff
+`-1_374_678_574`), hence `(1_593_368_375/1_104_779_927)³ < 3` and
+`1_593_368_375/1_104_779_927 < cbrt3` as required for a lower bound.
+
+`a₁₈ = 4` was re-derived independently from a 300-digit CF recomputation of
+`∛3` (cert `research/scripts/verify_cbrt3_oq04_s25_19th_convergent.py`), per the
+S9-prep / S14a / S15-prep anti-typo discipline: never re-quote a prior sketch
+tail, always recompute `aᵢ` and verify the cube-side direction before claiming.
+Two-line proof via the cubing-iff helper. -/
+
+/-- `1593368375/1104779927 < ∛3`. Cube target:
+`(1593368375/1104779927)³ = 4_045_279_924_912_085_586_177_734_375 / 1104779927³
+< 3` (strict: `1593368375³ = 4_045_279_924_912_085_586_177_734_375 <
+4_045_279_924_912_085_587_552_412_949 = 3 · 1104779927³`, gap `1_374_678_574`).
+The nineteenth convergent of the simple CF of `∛3` (using `a₁₈ = 4` per a
+300-digit CF recomputation). -/
+theorem one_five_nine_three_three_six_eight_three_seven_five_over_one_one_zero_four_seven_seven_nine_nine_two_seven_lt_cbrt3 :
+    (1593368375 / 1104779927 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
