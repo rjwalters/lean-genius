@@ -455,3 +455,57 @@ cycle-recovery lemma). Step 1's `sylow_p_unique` (~70–110 LOC) remains the lar
 - Aristotle remains down — re-try `mcp__aristotle__prove` on Step 5 (now self-contained,
   `import Mathlib` only) when the backend recovers.
 - Step 1 (`sylow_p_unique`) + Step 4 (`normalizer_iso_AGL1Z`) remain the big sorries.
+
+## S14 ORIENT — bearer re-verification + R4 regression retraction (researcher-1, 2026-06-15)
+
+**Backends:** dual blackout — Docker 5-saturated (no build window), Aristotle
+MCP returns `{'status':'error','message':'Resource not found'}` on a trivial
+probe. No discharge/verification possible; this session is build-free.
+
+**Retraction of the 2026-06-15 "R4 REFUTED" note.** The progressSummary/insight
+claiming `normal_of_characteristic_of_normal` is ABSENT at v4.26.0 (and that the
+char-in-normal bridge needs a ~5–20 LOC ad-hoc construction) is **wrong**. That
+check searched the `Subgroup.` namespace. The instance lives in `ConjAct.`:
+
+```
+-- Mathlib/GroupTheory/GroupAction/ConjAct.lean:260  (namespace ConjAct, pin 2df2f015)
+instance normal_of_characteristic_of_normal {H : Subgroup G} [hH : H.Normal]
+    {K : Subgroup H} [h : K.Characteristic] : (K.map H.subtype).Normal
+```
+
+Re-confirmed this session by `gh api .../ConjAct.lean?ref=2df2f015 | base64 -d`
+(namespace `ConjAct` opens at line 46, closes 267; instance at 260; signature
+EXACT). Being an `instance`, it fires by typeclass resolution as soon as
+`Mathlib.GroupTheory.GroupAction.ConjAct` is imported — the file already imports
+it (line 38). **So Step-4/R4 is genuinely 0-LOC**, restoring the original S10
+(researcher-7) finding. The registered `.lean` file's Step-1 docstring was
+correct throughout and is left untouched.
+
+**Full discharge-plan bearer re-verification (all present at pin 2df2f015):**
+
+| Bearer | Location (at pin) | Plan use |
+|--------|-------------------|----------|
+| `Equiv.Perm.IsCycle.orderOf` | Perm/Cycle/Basic.lean:363 | Step 5 item 1 (`orderOf σ = #σ.support`) |
+| `Subgroup.le_normalizer_of_normal_subgroupOf` | Algebra/Group/Subgroup/Basic.lean:**378** | Step 5 item 5 (close) |
+| `Sylow.card_eq_multiplicity` | Sylow.lean:702 | Step 5 item 2 (`|P| = p`) |
+| `Sylow.ofCard` | Sylow.lean:102 | Step 1 item 5 |
+| `Sylow.unique_of_normal` | Sylow.lean:710 | Step 1 item 5 |
+| `Sylow.normal_of_subsingleton` | Sylow.lean:724 | Step 2 |
+| `Sylow.characteristic_of_normal` | Sylow.lean:728 | Step 1 item 4 |
+| `padicValNat_factorial` (Legendre) | Padics/PadicVal/Basic.lean | Step 1 item 5 / Step 5 item 2 |
+| `Nat.card_zpowers` | (used in Sylow.lean, PGroup.lean @pin) | Step 5 item 1 |
+| `derivedSeries_succ/normal/characteristic` | Solvable.lean:49/53/65 | Step 1 item 1 |
+| `MulAction.IsBlock.orbit_of_normal` | Blocks.lean:475 | Step 1 item 2 |
+| `MulAction.IsBlock.subsingleton_or_eq_univ` | Primitive.lean:115 | Step 1 item 2 |
+| `ConjAct.normal_of_characteristic_of_normal` | ConjAct.lean:260 | Step 1 item 4 (0-LOC instance) |
+
+**Path-drift note:** `le_normalizer_of_normal_subgroupOf` is at
+`Mathlib/Algebra/Group/Subgroup/Basic.lean:378`, not the `Mathlib/GroupTheory/
+Subgroup/Basic.lean` cited in older notes (the line number 378 is right; the
+directory moved upstream). Harmless — it's the same fully-qualified
+`Subgroup.le_normalizer_of_normal_subgroupOf` and resolves by name.
+
+**Net:** every bearer the Step-1 and Step-5 discharge plans name is present at
+the pin. Both routes are pure-transcription-ready; the next Docker-up (or
+Aristotle-up) ACT session can discharge without further bearer hunting. 5
+sorries intact, registered file unchanged.
