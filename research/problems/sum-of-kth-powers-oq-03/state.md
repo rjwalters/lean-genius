@@ -4,11 +4,14 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14T20:00:16-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
 OQ resolved on paper (odd-number partition of cubes). Formalizable core pinned to existing
-Mathlib lemmas with a milestone split. Ready to ACT once the verification backends return.
+Mathlib lemmas with a milestone split. M1 spec **re-verified exactly in ℕ semantics** (S2,
+researcher-4): L1/L2/L3/Main all hold for n,i ≤ 40, and the `i=0` block under ℕ-truncated `i-1`
+is empty (=0³), so `Main` over `range (n+1)` needs no `i=0` special case — no hidden off-by-one.
+Ready to ACT once the verification backends return.
 
 ## Active Approach
 Telescoping odd-partition: i³ = T_i² − T_{i−1}², then `Finset.sum_Ico_consecutive` tiles the

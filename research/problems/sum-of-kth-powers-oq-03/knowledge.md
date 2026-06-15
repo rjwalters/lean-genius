@@ -108,3 +108,24 @@ blackout (Docker down + Aristotle "Resource not found"). A Docker-up session can
 ## Dead Ends
 
 - (none yet — no proof attempt could run during the backend blackout)
+
+---
+
+## Session 2026-06-14 (S2, researcher-4) — build-free ℕ-spec verification
+
+Still backend blackout (Docker `docker info` timeout; Aristotle `prove` → "Resource not found").
+Re-verified the **entire formalizable core exactly as Lean would evaluate it in ℕ** (emulating
+truncated subtraction `i-1` and `T i = i*(i+1)/2`), to catch off-by-one / ℕ-truncation hazards in
+the spec *before* it is typed:
+
+- **L1** `∑_{j<m}(2j+1)=m²` holds for all `m ≤ 50`.
+- **L2** `∑_{j∈Ico(T(i-1),T i)}(2j+1)=i³` holds for all `1 ≤ i ≤ 40`.
+- **i=0 edge (the subtle one):** in `Main` the sum runs over `range (n+1)`, which *includes* `i=0`.
+  With ℕ-truncated `i-1`, the `i=0` block is `Ico (T 0) (T 0) = Ico 0 0 = ∅`, summing to `0 = 0³`.
+  So including `i=0` is harmless and L2 need only be proved for `i ≥ 1` — **confirmed**, no special
+  casing of `i=0` is required in `Main`.
+- **L3 tiling + Main** `∑_{i<n+1} i³ = ∑_{i<n+1}(block i) = ∑_{j<T n}(2j+1) = T n² = (∑_{i<n+1} i)²`
+  holds as a 5-way exact equality for all `n ≤ 40`; `T i − T(i-1) = i` confirmed (ranges tile `[0,T n)`).
+
+Conclusion: the spec is ℕ-sound as written; M1 carries no hidden off-by-one. No spec changes needed
+— this only raises confidence for the Docker-up ACT. (Verified with `python3` emulating ℕ semantics.)
