@@ -101,34 +101,42 @@
   },
   "sections": [
     {
+      "id": "setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "File docstring laying out the four-stage proof architecture (right-B-linear ⇒ left-mul, unit extraction, the module-isomorphism axiom, and the conjugation conclusion), the Mathlib v4.26 gap for the axiom, and the base typeclass setup: a field K with K-algebras A and B.",
+      "mathContext": "The general Skolem-Noether theorem: for a field K, a finite-dimensional simple K-algebra A and a finite-dimensional central simple K-algebra B, any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit of B. The variables fix the ambient ring/algebra structures used throughout; the simple/central/finite-dimensional hypotheses are attached per-theorem as typeclass instances."
+    },
+    {
       "id": "right-linear-maps",
       "title": "Right-B-Linear Maps are Left Multiplication",
-      "startLine": 40,
-      "endLine": 65,
+      "startLine": 41,
+      "endLine": 61,
       "summary": "rightBLinear_is_leftMul and rightBLinear_symm_is_leftMul: φ(b) = φ(1)·b for any right-B-linear K-linear map, and likewise for its inverse.",
       "mathContext": "A K-linear map φ : B → B satisfying φ(bc) = φ(b)c for all b,c ∈ B is called a right B-module map. Setting b=1: φ(c) = φ(1)·c. This is the key algebraic lemma."
     },
     {
       "id": "unit-extraction",
       "title": "Unit Extraction from Right-B-Linear Equivalence",
-      "startLine": 67,
-      "endLine": 95,
+      "startLine": 62,
+      "endLine": 94,
       "summary": "isUnit_of_rightBLinear_equiv: If φ : B ≃ₗ[K] B satisfies φ(b)=u·b, then u is a unit. Proof: v=φ⁻¹(1), u·v=1 from φ(φ⁻¹(1))=1, v·u=1 from φ⁻¹(φ(1))=1.",
       "mathContext": "No finite-dimensionality needed! The bijectivity of φ directly gives both sides of the unit equation via the identity φ ∘ φ⁻¹ = id and φ⁻¹ ∘ φ = id."
     },
     {
       "id": "module-axiom",
       "title": "Core Axiom: Module Isomorphism (Wedderburn + Isotypic)",
-      "startLine": 98,
-      "endLine": 140,
+      "startLine": 95,
+      "endLine": 143,
       "summary": "axiom skolemNoether_module_iso: the two A-module structures on B (via f and g) are isomorphic via a right-B-linear K-linear bijection. Proof sketch provided; gap = 200-300 lines using Mathlib's Wedderburn-Artin and IsIsotypic.",
       "mathContext": "Via f, B is an A-module with action a·b = f(a)·b. Via g, another A-module with a·b = g(a)·b. Since A is simple and B is Artinian, both B_f and B_g are semisimple A-modules of the same K-dimension, hence isomorphic. The isomorphism extends to a (left-A, right-B)-bimodule map using centrality."
     },
     {
       "id": "main-theorem",
       "title": "General Skolem-Noether Theorem",
-      "startLine": 143,
-      "endLine": 187,
+      "startLine": 144,
+      "endLine": 188,
       "summary": "skolemNoether_general: any two K-algebra homomorphisms f, g : A →ₐ[K] B are conjugate by a unit u ∈ Bˣ.",
       "mathContext": "From the module isomorphism φ: φ(f(a)·b) = g(a)·φ(b) and φ(b·c) = φ(b)·c. Setting b=1: φ(f(a)) = g(a)·φ(1). From left-mul formula: φ(f(a)) = φ(1)·f(a). So φ(1)·f(a) = g(a)·φ(1). With u=φ(1): u·f(a)=g(a)·u, hence f(a)=u⁻¹·g(a)·u."
     },
@@ -136,7 +144,7 @@
       "id": "corollaries",
       "title": "Corollaries: Inner Automorphisms and Conjugacy",
       "startLine": 189,
-      "endLine": 218,
+      "endLine": 220,
       "summary": "aut_is_inner: every K-algebra automorphism of a finite-dimensional CSA is inner (specialization A=B of skolemNoether_general). conjugate_iff_same_image: the conjugation relation between AlgHoms is symmetric (u-conjugation on one side ↔ u⁻¹-conjugation on the other).",
       "mathContext": "Setting A=B and g=id in Skolem-Noether yields Aut_K(B) = Inn(B) — every K-algebra automorphism of a CSA is conjugation by a unit. The conjugacy relation is symmetric: f = u⁻¹·g·u iff g = u·f·u⁻¹, which is just the inverse-unit substitution."
     },
