@@ -22,7 +22,7 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 147,
+    "lineCount": 175,
     "mathlibDependencies": [
       {
         "theorem": "contMDiff_circleExp",
@@ -68,6 +68,7 @@
       "hasDerivAt_circleExp: defining ODE of the Lie group exponential, γ'(t) = γ(t)·I",
       "hasDerivAt_circleExp_zero: velocity at the identity is the imaginary unit I — the Lie algebra generator",
       "generator_mem_imaginary_axis: Re(I)=0, Im(I)=1, exhibiting the Lie algebra as iℝ",
+      "circleExp_eq_one_iff: kernel of the exponential — Circle.exp t = 1 ⟺ t ∈ 2πℤ (periodicity of the one-parameter subgroup)",
       "main: bundles homomorphism + C∞ (all orders) + Lie algebra generator I"
     ],
     "dateAdded": "2026-06-15",
@@ -82,7 +83,7 @@
       "euler-identity-oq-01-oq-01-oq-01",
       "de-moivre"
     ],
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -186,8 +187,8 @@
   "leanFile": {
     "path": "Proofs/EulerIdentityOQ01OQ01OQ01OQ01.lean",
     "filename": "EulerIdentityOQ01OQ01OQ01OQ01.lean",
-    "lineCount": 147,
-    "theoremCount": 8,
+    "lineCount": 175,
+    "theoremCount": 9,
     "definitionCount": 0,
     "sorries": 0,
     "axiomCount": 0,
