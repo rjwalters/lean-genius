@@ -87,5 +87,31 @@
       "endLine": 130,
       "summary": "angle_bisector_length_inner: for the foot dividing BC in ratio c:b, (b+c)²‖A−D‖² = bc((b+c)² − a²)."
     }
+  ],
+  "conclusion": {
+    "summary": "Starting from a single bilinear lemma (the squared norm of a linear combination of two vectors), the entry establishes Stewart's theorem as a coordinate-free identity in an arbitrary real inner product space. The master identity ‖A−D‖² = (1−s)‖A−B‖² + s‖A−C‖² − s(1−s)‖B−C‖², with the cevian foot encoded as the affine combination D = (1−s)·B + s·C, specializes by substitution to the classical form b²m + c²n = a(d² + mn), to Apollonius' median theorem (s = 1/2), and to the internal angle-bisector length formula (the c:b segment ratio).",
+    "implications": "Grounding Stewart's theorem in genuine inner-product geometry removes the side conditions that the scalar law-of-cosines derivation must carry. The segment relation m + n = a holds by construction rather than as a collinearity/sign hypothesis, and the abstract cosine parameter t of the parent entry is exposed as the real inner product ⟪A−B, A−C⟫. Because nothing depends on dimension, the same identity covers planar triangles, spatial-tetrahedron cevians, and arbitrary-dimensional configurations — a single algebraic fact replacing a family of case-specific geometric arguments. This is a model for how classical metric geometry lifts to inner-product spaces: the law of cosines becomes the polarization identity, and cevian results become substitutions into one bilinear expansion.",
+    "openQuestions": [
+      "Can the angle-bisector specialization be completed by proving that the segment ratio BD:DC = c:b is exactly the one realized by the true angle bisector (equal angles at A), so the formula attaches to the genuine bisector rather than to a hypothesized foot?",
+      "Does the same affine-combination encoding give a clean coordinate-free treatment of the generalized (mass-point / barycentric) Stewart relations, or of concurrent cevians (Ceva/Routh-type identities)?",
+      "Over a complex inner product space, does the bilinear engine extend with the appropriate Hermitian polarization, or does the loss of symmetry ⟪u,v⟫ ≠ ⟪v,u⟫ obstruct the ring-level closure?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines-oq-04",
+      "relationship": "scalar-counterpart",
+      "description": "The parent entry derives Stewart's theorem at the scalar level, taking the two law-of-cosines equations for the sub-triangles as hypotheses with an abstract cosine parameter $t$. This entry replaces $t$ by the genuine inner product $\\langle A-B,\\,A-C\\rangle$ and the vertices by points of a real inner product space, so the result becomes a single bilinear identity instead of an algebraic elimination."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "foundational-tool",
+      "description": "The law of cosines $c^2 = a^2 + b^2 - 2ab\\cos C$ appears here not as a hypothesis but as the polarization identity $\\lVert u-v\\rVert^2 = \\lVert u\\rVert^2 + \\lVert v\\rVert^2 - 2\\langle u,v\\rangle$, the special case of the bilinear expansion that powers the master identity."
+    },
+    {
+      "targetId": "law-of-cosines-oq-04-oq-02",
+      "relationship": "shared-corollary",
+      "description": "The angle-bisector length formula is developed as its own entry from the scalar Stewart's theorem; here the same formula $(b+c)^2\\lVert A-D\\rVert^2 = bc((b+c)^2 - a^2)$ is obtained as a direct specialization of the coordinate-free master identity."
+    }
   ]
 }
