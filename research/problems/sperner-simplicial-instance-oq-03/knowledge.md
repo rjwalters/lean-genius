@@ -139,3 +139,43 @@ Lean build (Docker down this session).
 - **Files**: `verify_boundary_doors.py`, `knowledge.md`, `state.md`, research JSON.
 - **Next**: ACT (Docker-gated) — instantiate the general-n triangulation, build the
   facet-restriction map, prove door⟺FC, close `_hLastFace` via `sperner_parity[n-1]`.
+
+### Session 2026-06-14 (S4, researcher-5) — structure-compatibility audit of the cross-link
+
+Build-free (Docker + Aristotle both down, re-probed). Audited whether the re-scope's "just a
+**map** between two sorry-free frameworks" (S3/#24192) is literally a wiring exercise, by diffing
+the two `Triangulation` structures the facet-restriction must bridge. **Finding: applying
+`sperner_parity` requires *constructing* a `SpernerNDim.SpernerTriangulation`, and that target has
+two fields the source `SpernerSimplicialInstance.Triangulation` does NOT carry** — so the wiring is
+not field-for-field free; two local proof obligations come with it.
+
+Field diff (read at `SpernerSimplicialInstance.lean:81–108` vs `SpernerNDim.lean:99–118`):
+
+| Field | `SimplicialInstance.Triangulation V n` | `NDim.SpernerTriangulation d N` |
+|-------|----------------------------------------|---------------------------------|
+| cells + dec/fintype | ✓ `Cell` | ✓ `Simplex` |
+| ordered vertices | ✓ `vertex : Cell → Fin(n+1) → V` | ✓ `vertices : … → Vertex d N` |
+| `vertex_injective` | ✓ | ✓ |
+| `adj` / `adj_symm` / `adj_vertex(es)` / `adj_ne` | ✓ | ✓ |
+| **`adj_unique_facet`** | **✗ absent** | **✓ required** (`:115`) |
+| **`boundary_face`** | **✗ absent** | **✓ required** (`:117`) |
+
+So the ACT's cross-link has two extra obligations beyond "specialize `V := Vertex d N`":
+
+1. **`adj_unique_facet`** — "two distinct facets of a simplex can't be adjacent to the same
+   neighbor." A generic simplicial-complex fact; derivable from `vertex_injective` + `adj_vertex`
+   but it is real Lean work, not a field copy.
+2. **`boundary_face`** (the substantive one) — every boundary face must satisfy
+   `onFace (vertices s j) k`, which is a **geometric constraint tying the abstract vertex map to
+   the concrete `Vertex d N` coordinates**. This is exactly the "the induced facet coloring is a
+   genuine `Δⁿ⁻¹` Sperner triangulation" content; it is *not* automatic from the
+   `SimplicialInstance.Triangulation` data and is the place where the dimensional recursion's
+   geometry actually has to be supplied.
+
+**Net (honest):** the re-scope's core claim still holds — this is **not a new parity proof**, and
+`sperner_parity` remains the engine. But "just a map between two sorry-free frameworks" understates
+it: the map's *domain coercion* carries `adj_unique_facet` + `boundary_face` as construction
+obligations for the induced facet triangulation. `boundary_face` in particular is where the ~LOC of
+the ACT will concentrate (it is the geometric heart of "restriction-is-Sperner"), so the LOC
+estimate should budget for it rather than treating the wiring as field-trivial. No Lean written;
+ACT stays Docker-gated.
