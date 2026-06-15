@@ -34,7 +34,7 @@
     "title": "powSum and the Merge Identity 2^a + 2^a = 2^{a+1}",
     "content": "`powSum s` is the sum of 2^a over a multiset s of exponents (repeats allowed). The keystone `powSum_merge` proves that replacing a duplicated exponent pair (a, a) by the single exponent (a+1) preserves the sum: 2^a + 2^a = 2^{a+1}. This single identity is the atomic step of the whole reduction — collapsing a repeat strictly shrinks the multiset while preserving the value, so any representation can be driven to one with no repeats and no more terms.",
     "mathContext": "$\\mathrm{powSum}(a ::_m a ::_m s) = \\mathrm{powSum}((a{+}1) ::_m s)$, proved by `simp [powSum_cons, pow_succ]; ring`.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": [
       "geometric series",
       "carry propagation in binary",
@@ -43,6 +43,28 @@
     "prerequisites": [
       "powers of two",
       "multiset sum"
+    ]
+  },
+  {
+    "id": "ann-representability-erdos10oq02",
+    "proofId": "erdos-10-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 94
+    },
+    "type": "definition",
+    "title": "Part II: RepWithAtMost vs RepDistinct",
+    "content": "Two representability predicates are defined as the existence of an exponent multiset of bounded cardinality summing (via powSum) to n. `RepWithAtMost k n` allows repeated exponents; `RepDistinct k n` additionally demands `s.Nodup` (pairwise-distinct exponents). The trivial `repWithAtMost_mono` shows allowing one more power only relaxes representability (the same witness multiset works for k+1). These two predicates are exactly what the reduction lemma will identify: the merge identity guarantees the distinct version is never harder to satisfy than the repeats-allowed version.",
+    "mathContext": "$\\mathrm{RepWithAtMost}(k,n) := \\exists s,\\ |s| \\le k \\wedge \\mathrm{powSum}(s) = n$ and $\\mathrm{RepDistinct}(k,n)$ adds $s.\\mathrm{Nodup}$. Both quantify over multisets of exponents, so $2^a$ may appear once (distinct) or several times (with-at-most).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "multiset cardinality",
+      "Nodup multisets",
+      "monotonicity"
+    ],
+    "prerequisites": [
+      "multisets",
+      "powSum"
     ]
   },
   {
@@ -56,7 +78,7 @@
     "title": "The Reduction Lemma: ≤k Powers ⟺ ≤k Distinct Powers",
     "content": "`exists_nodup_powSum` canonicalizes any exponent multiset into a Nodup (pairwise-distinct) one of no greater cardinality and the same powSum, by strong induction on cardinality: if there is a repeat, collapse it via the merge identity (strictly smaller card, same sum) and recurse. This yields `repWithAtMost_iff_repDistinct`: a number is a sum of at most k powers of 2 iff it is a sum of at most k DISTINCT powers of 2. Repeats never reduce the number of terms needed, so the minimal count is achieved with distinct exponents — which (in the companion file) equals the binary popcount.",
     "mathContext": "$\\mathrm{RepWithAtMost}(k,n) \\iff \\mathrm{RepDistinct}(k,n)$. Engine: strong induction on `s.card`, collapsing a duplicated exponent each step via `powSum_merge`.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "uniqueness of binary representation",
       "strong induction",
