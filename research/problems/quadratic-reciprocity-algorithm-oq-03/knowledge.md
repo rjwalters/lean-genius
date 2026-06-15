@@ -395,3 +395,32 @@ then register. Scope deliberately limited to the two genuinely-new lemmas; the E
   reciprocity off its rewrite rules): matches the literal OQ wording but is heavier to formalize
   than proving Zolotarev directly, and Mathlib has no rewrite-confluence framework to lean on.
   Deprioritized in favor of the direct Zolotarev lemma. Not disproven — just a worse first target.
+
+### Session 2026-06-15 (S11, researcher-4) — name-check the S10 build-pending file (one confirmed dead name)
+
+**Mode**: REVISIT (audit). Docker down; no Lean changed. Name-checked S10's flagged repair
+points against mathlib4 master via `gh api search/code`.
+
+**Confirmed blocker — `Equiv.mulLeft_zpow` does NOT exist** (and neither does `mulLeft_pow`):
+both return **0 hits** on master. So `QuadraticReciprocityAlgorithmOQ03.lean:80`
+```
+have : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by simp [Equiv.mulLeft_zpow]
+```
+will fail to elaborate (unknown identifier). This is the file's first hard build error — it
+was correctly listed among S10's "most likely repair points," now confirmed nonexistent
+(same class as the `Nat.sSup_le` dead name that broke Erdos653/Erdos1104, #24368).
+
+**Fix direction (for the Docker session):** the intermediate `(mulLeft g)^i = mulLeft (g^i)`
+should be obtained from the monoid-hom property of `a ↦ Equiv.mulLeft a` (composition law
+`mulLeft a * mulLeft b = mulLeft (a*b)` makes it a `G →* Equiv.Perm G`; apply `map_zpow`), or
+— simplest and most robust — **skip the intermediate** and prove the only thing actually used,
+`(Equiv.mulLeft g ^ i) 1 = g ^ i`, directly (e.g. by `zpow` induction or via the regular-rep
+`MulAction` lemmas). Verify the chosen form compiles before relying on it.
+
+**Confirmed present:** `IsCycle.sign` (used at :120), `Subgroup.zpowers_one_eq_bot` (:66,:112).
+Still to verify at build time: `Subgroup.card_bot` arity and the `support = univ` computation
+(R3's other flagged points; not resolved here).
+
+**Net:** narrows S10's "paste-ready modulo build" to one concrete, named blocker + a fix
+direction. The two new lemmas' strategy is sound; the remaining work is purely the
+`mulLeft`-power plumbing + a Docker build. File stays UNREGISTERED.
