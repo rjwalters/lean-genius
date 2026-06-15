@@ -214,8 +214,24 @@ confirms them). Findings:
 
 **M2 Lean target, now pinned:** the grid-transpose sign lemma (B) — a finite, decidable
 permutation-sign computation independent of M1 — assembled with the M1 Zolotarev signs to recover
-reciprocity. Still Docker-gated; M2 bearers (a permutation-sign / `Equiv.Perm.sign` of an explicit
-product permutation) not yet pinned to `file:line` — that audit is the next build-free step.
+reciprocity. Still Docker-gated.
+
+**M2 bearer audit (S6, @ pin `2df2f01` / v4.26.0):**
+- **The permutation-sign route is ABSENT upstream** (same status as M1): on current mathlib4,
+  `Zolotarev` → 0 hits, `legendreSym … sign` → 0 hits; `quadraticReciprocity` exists (6 hits) but
+  only via the **Gauss-sum** proof (`Mathlib/NumberTheory/LegendreSymbol/QuadraticReciprocity.lean`).
+  So the Zolotarev/grid-sign route is a genuine, reusable gap, not duplication.
+- **Building blocks present at the exact pin** (confirmed via `gh api contents?ref=2df2f01`):
+  - `Equiv.Perm.sign : Perm α →* ℤˣ` — `Mathlib/GroupTheory/Perm/Sign.lean:357` (a `MonoidHom`,
+    so multiplicativity `sign (σ∘τ)=sign σ · sign τ` is free); `sign_symm` :385.
+  - `finProdFinEquiv : Fin m × Fin n ≃ Fin (m * n)` — `Mathlib/Logic/Equiv/Fin/Basic.lean:329`
+    (the indexing that turns the `p × q` grid into `Fin (p*q)`; the grid-transpose `σ` is its
+    conjugate of the factor swap `Equiv.prodComm`).
+- **Residual to discharge in ACT:** express `σ` as `(finProdFinEquiv).permCongr`-conjugate of
+  `prodComm`/transpose and evaluate `Equiv.Perm.sign σ = (-1)^((p-1)/2·(q-1)/2)` — no upstream lemma
+  gives this sign directly, so it is the new ~30–80 LOC content (decidable for fixed p,q, but the
+  uniform formula needs the explicit cycle/inversion count). Then assemble with M1 via the
+  `sign` MonoidHom. This is the genuinely-new M2 work; M1 stays the prerequisite.
 
 ## Dead Ends
 
