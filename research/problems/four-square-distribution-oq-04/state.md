@@ -1,25 +1,35 @@
 # Research State: four-square-distribution-oq-04
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ORIENT
 **Path**: full
-**Since**: 2026-06-14T22:54:17-07:00
-**Iteration**: 1
+**Since**: 2026-06-15
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Generalization of the four-square type-decomposition to r_{2k}(n) under the
+hyperoctahedral group B_{2k} = S_{2k} ⋉ (Z/2)^{2k} CONFIRMED: orbit size
+2^{#nonzero}·(2k)!/∏m_i!, stabilizer 2^z·z!·∏(nonzero m_j!), and
+r_{2k}(n) = Σ_shapes orbit. Verified exactly for 2k ∈ {2,4,6,8}; Mathlib
+orbit–stabilizer bearer pinned.
 
 ## Active Approach
-None yet.
+Build-free ORIENT (Docker + Aristotle both down this session). Durable exact
+verifier `verify_hyperoctahedral_2k.py` (all checks pass).
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+- Lean ACT is Docker-gated (no build this session).
+- B_{2k} (signed permutations) has no Mathlib name — must be assembled from
+  `Equiv.Perm (Fin 2k)` + sign flips.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+ACT (next Docker session): for fixed m = 2k ∈ {4,6,8}, define the B_m MulAction on
+`{f : Fin m → ℤ // Σ f² = n}`, compute the stabilizer order (zero/nonzero split),
+and apply `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` for the
+orbit-size formula. The real obstruction is the orbit PARTITION
+(r_{2k} = Σ orbit), not the orbit-size formula.
