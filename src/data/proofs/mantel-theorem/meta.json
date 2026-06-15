@@ -1,0 +1,83 @@
+{
+  "id": "mantel-theorem",
+  "title": "Mantel's Theorem",
+  "slug": "mantel-theorem",
+  "description": "A triangle-free simple graph on n vertices has at most ⌊n²/4⌋ edges, and the bound is attained by the balanced complete bipartite graph. Mantel's theorem (1907) is the founding result of extremal graph theory and the r = 2 case of Turán's theorem.",
+  "meta": {
+    "author": "Willem Mantel (1907), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_theorem#Mantel's_theorem",
+    "date": "1907",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "extremal-graph-theory",
+      "turan-theorem",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/MantelTheorem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.CliqueFree.card_edgeFinset_le",
+        "description": "General Turán edge bound: an (r+1)-clique-free graph has at most as many edges as the Turán graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      },
+      {
+        "theorem": "SimpleGraph.turanGraph",
+        "description": "The canonical (r+1)-clique-free Turán graph on n vertices",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      },
+      {
+        "theorem": "SimpleGraph.card_edgeFinset_turanGraph",
+        "description": "Exact edge count of the Turán graph",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      },
+      {
+        "theorem": "SimpleGraph.turanGraph_cliqueFree",
+        "description": "The Turán graph turanGraph n r is (r+1)-clique-free",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      }
+    ],
+    "originalContributions": [
+      "Standalone statement of Mantel's edge bound (CliqueFree 3 ⟹ #E ≤ ⌊n²/4⌋), specialized from Mathlib's general Turán development",
+      "Arithmetic identity turan_two_simp collapsing the general Turán r=2 bound (n² − (n%2)²)·(2−1)/(2·2) + (n%2).choose 2 to the clean floor n²/4",
+      "Sharpness theorem exhibiting turanGraph n 2 as a triangle-free graph attaining ⌊n²/4⌋ edges, proving the bound is tight"
+    ],
+    "dateAdded": "2026-06-15",
+    "axiomCountNote": "0 axiom declarations, 0 structure-encoded assumptions; all results are machine-checked consequences of Mathlib's Turán theorem."
+  },
+  "overview": "Mantel's theorem (1907) bounds the number of edges in a triangle-free graph. If a simple graph G on n vertices contains no triangle (it is K₃-free, i.e. CliqueFree 3), then it has at most ⌊n²/4⌋ edges. This is the founding result of extremal graph theory and the base case r = 2 of Turán's theorem (which forbids Kᵣ₊₁ instead of K₃). Mathlib develops Turán's theorem in full generality; this entry specializes the general edge bound `SimpleGraph.CliqueFree.card_edgeFinset_le` to r = 2 and collapses the resulting arithmetic to the familiar floor ⌊n²/4⌋. The bound is sharp: the balanced complete bipartite graph — realized as `turanGraph n 2` — is triangle-free and has exactly ⌊n²/4⌋ edges.",
+  "conclusion": "Mantel's edge bound is fully machine-checked in Lean 4 with no axioms or sorries, derived from Mathlib's Turán theorem. The key arithmetic step is `turan_two_simp`, which shows the general Turán right-hand side at r = 2 equals ⌊n²/4⌋ exactly (the binomial correction term vanishes since n % 2 < 2, and n² − (n%2)² is a multiple of 4). Sharpness is witnessed by `turanGraph n 2`. The equality characterization (equality holds iff G is the balanced complete bipartite graph) follows from `SimpleGraph.isTuranMaximal_iff_nonempty_iso_turanGraph` and is noted as a future direction.",
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "related",
+      "description": "Both are structural/extremal results constraining simple graphs; the friendship theorem forbids a local configuration while Mantel forbids triangles globally."
+    },
+    {
+      "targetId": "erdos-565-incomplete-01",
+      "relationship": "related",
+      "description": "Both sit in extremal/Ramsey graph theory and reason about edge counts under forbidden substructures."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "Fintype", "SimpleGraph"],
+    "namespace": "Mantel",
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/MantelTheorem.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    "mantel_card_edgeFinset_le",
+    "card_edgeFinset_turanGraph_two",
+    "mantel_bound_is_tight"
+  ],
+  "sorries": 0
+}
