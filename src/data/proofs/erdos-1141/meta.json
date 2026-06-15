@@ -90,90 +90,98 @@
     {
       "id": "header",
       "title": "Problem Statement",
+      "summary": "Erdős #1141: are there infinitely many n such that n−k² is prime for all k with gcd(n,k)=1 and k²<n? Documents the known good values (OEIS A214583, largest 1722) and the 2026 resolution (Alexeev–Putterman–Sawhney–Sellke–Valiant): only finitely many such n exist.",
       "startLine": 1,
-      "endLine": 18,
-      "summary": "Documentation header stating the problem: are there infinitely many n with n - k² prime for all coprime k? Lists OEIS A214583 values, the 10^10 search bound, and ChatGPT-Tang's density result.",
-      "mathContext": "Problem #1141: infinitely many $n$ where $n - k^2$ is prime for all $k$ with $\\\\gcd(n,k)=1$ and $k^2 < n$?"
+      "endLine": 25,
+      "mathContext": "Erdős #1141: are there infinitely many n such that n−k² is prime for all k with gcd(n,k)=1 and k²<n? Documents the known good values (OEIS A214583, largest 1722) and the 2026 resolution (Alexeev–Putterman–Sawhney–Sellke–Valiant): only finitely many such n exist."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 20,
-      "endLine": 25,
-      "summary": "Imports Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder, and Tactic from Mathlib.",
-      "mathContext": "Mathlib: Nat.Prime, Nat.GCD, Finset, LocallyFiniteOrder for decidable bounded quantification."
+      "summary": "Imports Mathlib for the number-theoretic and decidability machinery used throughout.",
+      "startLine": 26,
+      "endLine": 27,
+      "mathContext": "Imports Mathlib for the number-theoretic and decidability machinery used throughout."
     },
     {
       "id": "core-def",
       "title": "Core Definition",
-      "startLine": 26,
-      "endLine": 43,
-      "summary": "Defines IsErdos1141Good using bounded quantification over Finset.range for decidability, then proves equivalence with the unbounded mathematical formulation.",
-      "mathContext": "$n$ is good if $\\\\forall k$ with $\\\\gcd(n,k)=1$ and $k^2 < n$: $n - k^2$ is prime. Bounded quantification over Finset.range."
+      "summary": "Defines IsErdos1141Good n (n−k² is prime for every coprime k with k²<n) and proves isErdos1141Good_iff_unbounded relating it to the unbounded-set formulation of the conjecture.",
+      "startLine": 28,
+      "endLine": 49,
+      "mathContext": "Defines IsErdos1141Good n (n−k² is prime for every coprime k with k²<n) and proves isErdos1141Good_iff_unbounded relating it to the unbounded-set formulation of the conjecture."
     },
     {
       "id": "positive-examples",
-      "title": "Positive Examples (decide)",
-      "startLine": 45,
-      "endLine": 69,
-      "summary": "Computationally verifies IsErdos1141Good for n = 3, 4, 6, 8, 12, 14, 18, 20 using the decide tactic.",
-      "mathContext": "Computationally verified: 3, 4, 6, 8, 12, 14, 18, 20, 24, ... are good. Uses decide tactic."
+      "title": "Computational Verification of Small Examples",
+      "summary": "Verifies via decide that the small known good values satisfy the property: good_3, good_4, good_6, good_8, good_12, good_14, good_18, good_20.",
+      "startLine": 50,
+      "endLine": 75,
+      "mathContext": "Verifies via decide that the small known good values satisfy the property: good_3, good_4, good_6, good_8, good_12, good_14, good_18, good_20."
     },
     {
       "id": "counterexamples",
       "title": "Counterexamples",
-      "startLine": 71,
-      "endLine": 86,
-      "summary": "Proves ¬IsErdos1141Good for n = 5, 7, 9, 10, 16 using decide, demonstrating specific k values that violate the property.",
-      "mathContext": "Not good: 5, 7, 9, 10, 16. For $n=5$: $5-1=4$ is not prime. Demonstrates non-trivial exclusions."
+      "summary": "Verifies values that do NOT satisfy the property: not_good_5, not_good_7, not_good_9, not_good_10, not_good_16.",
+      "startLine": 76,
+      "endLine": 92,
+      "mathContext": "Verifies values that do NOT satisfy the property: not_good_5, not_good_7, not_good_9, not_good_10, not_good_16."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 88,
-      "endLine": 107,
-      "summary": "Three structural results: good_0 (vacuously true), not_good_1, not_good_2, and the key theorem good_implies_pred_prime showing good n ≥ 2 requires n-1 prime.",
-      "mathContext": "Structural: 0 is vacuously good. 1 is not good (no primes to check). Primes $\\\\geq 5$ are not good."
+      "summary": "Edge cases and structural lemmas: good_0, not_good_1, not_good_2, good_implies_pred_prime (a good n forces n−1 or related predecessors prime), and good_ge4_even (good values ≥ 4 are even).",
+      "startLine": 93,
+      "endLine": 120,
+      "mathContext": "Edge cases and structural lemmas: good_0, not_good_1, not_good_2, good_implies_pred_prime (a good n forces n−1 or related predecessors prime), and good_ge4_even (good values ≥ 4 are even)."
     },
     {
       "id": "conjecture",
-      "title": "Finiteness Theorem (Alexeev et al. 2026)",
+      "title": "The Open Conjecture (Finiteness)",
+      "summary": "States the headline result as the axiom erdos_1141_finitely_many: only finitely many good n exist (Alexeev et al. 2026, deduced ineffectively from Pollack's theorem via Siegel).",
       "startLine": 121,
-      "endLine": 128,
-      "summary": "Axiomatizes the finiteness theorem proved by Alexeev-Putterman-Sawhney-Sellke-Valiant (2026, arXiv:2604.06609): there exists N such that all n ≥ N are not Erdős-1141 good. Proved via Pollack's theorem; not yet in Mathlib.",
-      "mathContext": "SOLVED: $\\\\exists N, \\\\forall n \\\\ge N : \\\\neg\\\\text{IsErdos1141Good}(n)$ (Alexeev et al. 2026)"
+      "endLine": 129,
+      "mathContext": "States the headline result as the axiom erdos_1141_finitely_many: only finitely many good n exist (Alexeev et al. 2026, deduced ineffectively from Pollack's theorem via Siegel)."
+    },
+    {
+      "id": "known-finite-results",
+      "title": "Known Finite Results",
+      "summary": "Defines knownGoodValues (the 41-term list ending at 1722) and proves knownGoodValues_length recording its cardinality.",
+      "startLine": 130,
+      "endLine": 140,
+      "mathContext": "Defines knownGoodValues (the 41-term list ending at 1722) and proves knownGoodValues_length recording its cardinality."
     },
     {
       "id": "large-examples",
-      "title": "Large Verified Examples (native_decide)",
-      "startLine": 116,
-      "endLine": 161,
-      "summary": "Defines knownGoodValues (41 terms), verifies list length, and computationally proves IsErdos1141Good for n = 24, 30, 60, 90, 110, 198, 252, 570, 1722 using native_decide.",
-      "mathContext": "41 known good values (OEIS A214583): verified computationally up to 308."
+      "title": "Larger Verified Examples (native_decide)",
+      "summary": "Verifies larger known good values using native_decide for speed: good_24, good_30, good_60, good_90, good_110, good_198, good_252, good_570, good_1722.",
+      "startLine": 141,
+      "endLine": 169,
+      "mathContext": "Verifies larger known good values using native_decide for speed: good_24, good_30, good_60, good_90, good_110, good_198, good_252, good_570, good_1722."
     },
     {
       "id": "unified-verification",
       "title": "Unified Verification",
-      "startLine": 163,
-      "endLine": 165,
-      "summary": "Single theorem verifying all 41 known OEIS A214583 values satisfy the property, via native_decide over the knownGoodValues list.",
-      "mathContext": "Single theorem verifying all 41 OEIS values satisfy the property."
+      "summary": "all_known_good: a single theorem confirming every entry of knownGoodValues satisfies IsErdos1141Good.",
+      "startLine": 170,
+      "endLine": 174,
+      "mathContext": "all_known_good: a single theorem confirming every entry of knownGoodValues satisfies IsErdos1141Good."
     },
     {
       "id": "classification",
       "title": "Complete Classification to n = 100",
-      "startLine": 167,
-      "endLine": 180,
-      "summary": "Exhaustive classification: computes exactly which values in {0,...,100} satisfy IsErdos1141Good, yielding 24 good values. Proved by filtering Finset.range 101 and comparing to the explicit list.",
-      "mathContext": "Exhaustive: which $n \\\\in \\\\{0,\\\\ldots,100\\\\}$ are good? Complete classification by computation."
+      "summary": "Defines goodValuesUpTo100 and proves classification_100 (the good values below 100 are exactly the listed ones) and good_count_100 (their count).",
+      "startLine": 175,
+      "endLine": 188,
+      "mathContext": "Defines goodValuesUpTo100 and proves classification_100 (the good values below 100 are exactly the listed ones) and good_count_100 (their count)."
     },
     {
       "id": "structural-corollaries",
       "title": "Structural Corollaries",
-      "startLine": 182,
-      "endLine": 202,
-      "summary": "Three corollaries: no prime ≥ 5 is good (primes are odd but good values ≥ 4 are even), 3 is the unique odd good value ≥ 3, and good n ≥ 10 coprime to 3 forces n − 9 to be prime.",
-      "mathContext": "No prime $\\\\geq 5$ is good (primes are odd, causing composite residues). Good values are rare."
+      "summary": "Further corollaries on the structure of good values: good_not_prime_ge5, good_odd_eq_three (the only odd good value is 3), and good_coprime3_sub9_prime.",
+      "startLine": 189,
+      "endLine": 210,
+      "mathContext": "Further corollaries on the structure of good values: good_not_prime_ge5, good_odd_eq_three (the only odd good value is 3), and good_coprime3_sub9_prime."
     }
   ],
   "conclusion": {
