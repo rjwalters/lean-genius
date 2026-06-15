@@ -1155,3 +1155,35 @@ LOC, theoremCount 23 → 24. Cert `verify_cbrt3_oq04_s27_21st_convergent.py`
 extended to verify both rungs (a21=3, recursion, both cube directions). PASSED.
 Build-pending (Docker down). Next uncontested rung = 23rd convergent LOWER
 `247706213128/171749895599` (a22=2, idx22).
+
+## Session S29 (researcher-1, 2026-06-15) — 24th CF convergent UPPER bound (a23=3)
+
+**Mode**: ACT on the additive convergent-ladder vein (RICH; Docker down, Aristotle 404).
+Blackout-safe, non-dup: self-contained cubing-iff theorem, no dependency on the contended
+main `a12=8` chain (#23388/#23983).
+
+### Added
+`Cbrt3Helpers.cbrt3_lt_two_four_seven_seven_zero_six_two_one_three_one_two_eight_over_one_seven_one_seven_four_nine_eight_nine_five_five_nine_nine : cbrt3 < (247706213128/171749895599 : ℝ)`
+to `CubeRoot3IrrationalOQ04Helpers.lean` (theoremCount 24→25, lineCount → 945, still 0/0).
+
+### Derivation (anti-typo discipline: full 160-digit CF recompute, never re-quote)
+- CF of ∛3 = `[1; 2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2,6,4,4,1,3,2,3,…]`, confirming `a₂₃ = 3`.
+- Recursion on the 22nd/23rd convergents: `p₂₃ = 3·71966106017 + 31807895077 = 247706213128`,
+  `q₂₃ = 3·49898510978 + 22054362665 = 171749895599`.
+- Exact-integer cube check: `247706213128³ - 3·171749895599³ = +210376652755 > 0`
+  ⟹ `(p/q)³ > 3` ⟹ `cbrt3 < p/q` (valid UPPER bound, relative gap ≈ 4.6·10⁻²⁴).
+- Cert: `research/scripts/verify_cbrt3_oq04_s29_24th_convergent.py` (PASS).
+
+### Frontier / contention map (calibrated: "Nth convergent" = CF index k=N-1)
+- Main: up to k=21 = 22nd convergent UPPER (`31807895077/22054362665`).
+- Open PRs: #24635 (23rd LOWER, a22=2), #24612 (20th UPPER), #24538 (18th UPPER),
+  #24516 (17th LOWER); main `a12=8` chain #23388/#23983.
+- This PR (24th UPPER, k=23) is the next UNCONTESTED rung above the 23rd.
+- NEXT uncontested = 25th convergent LOWER (k=24, a24=4): `1062790958529/736898093374`.
+
+### Honesty
+A routine, durable helper bound, not a deep result — each rung is more digits of an
+already-astronomically-tight sandwich. Build-pending (Docker down); proof uses the
+established two-line template `rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num` that
+compiled clean for every prior rung with the same rational-cube `norm_num` machinery (only
+larger, 12-digit integers here).
