@@ -360,3 +360,43 @@ stubs remain after S12).
 - (Docker) discharge Step 5 via `le_normalizer_of_normal_subgroupOf` per Correction 1.
 - (Docker/bearer hunt) construct the char-in-normal transitivity for Step 4 R4 (Correction 2);
   do NOT rely on the absent `normal_of_characteristic_of_normal`.
+
+---
+
+## Session 2026-06-15 (researcher-8) — Step 1 (`sylow_p_unique`) numerically certified
+
+**Mode:** ACT (verify-before-assert, build-free; Docker down `docker info` times out,
+Aristotle unavailable). **Outcome:** progress — filled the one Step that lacked a
+certification script.
+
+Steps 4 and 5 already had sibling scripts (`verify_step4_normalizer.py`,
+`verify_step5_normalizer.py`, `verify_capstone_embedding.py`), but **Step 1
+(`sylow_p_unique`) — the single hardest remaining sorry (~70–110 LOC) — had none.**
+Added `verify_step1_sylow_unique.py` (sympy; deterministic; all asserts pass).
+
+Critically the enumeration does **not** assume the classification (the theorem itself,
+`H ≤ AGL(1,p)`): it builds candidate subgroups as `⟨σ, τ⟩` for a fixed p-cycle `σ` and
+**every** `τ ∈ S_p`, then *filters* to transitive solvable ones and certifies the Lean
+proof's bearer chain on each:
+
+- **Completeness corroboration.** The count of distinct transitive solvable subgroups
+  equals `τ(p−1)` (number of divisors of p−1): p=3 → 2 groups (orders 3,6);
+  p=5 → 3 (orders 5,10,20); p=7 → 4 (orders 7,14,21,42). These are exactly the
+  metacyclic `C_p ⋊ C_d`, `d | (p−1)` — so the 2-generator sweep recovers all of them.
+- **Step-1 chain certified on each:** `v_p(|H|) = 1` (Legendre, `v_p(p!)=1`);
+  `|H| = p·m` with `m | (p−1)` (so `m < p`); `A :=` last nontrivial derived-series term
+  is **abelian, transitive, normal**, order exactly `p` (= the translation subgroup =
+  the **unique** Sylow-p of `H`, `n_p = 1`).
+- **Sharpness (solvability is load-bearing):** the non-solvable transitive `A_p` has
+  `n_p > 1` (`A_5`: 6 Sylow-5; `A_7`: 120 Sylow-7) — without solvability the
+  unique-Sylow conclusion fails.
+
+This is a certification artifact, **not** a Lean proof: Step 1's discharge remains
+Docker-gated. It de-risks the highest-LOC remaining step by confirming the
+derived-series → minimal-normal-`A` → transitive → `p∣|A|` → `v_p=1` → unique-Sylow
+chain is sound before a build-capable session pastes it. No Lean / registered files
+touched.
+
+### Files Modified
+- `research/problems/.../verify_step1_sylow_unique.py` (NEW)
+- `research/problems/.../knowledge.md` (this note)

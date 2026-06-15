@@ -69,7 +69,8 @@
       "Bearer ecosystem (Sylow, isCycle, normalizer, MonoidHom.ofInjective, parent AGL1Z*) confirmed intact at lake-pinned SHA on 2026-06-01.",
       "Bearer name-check vs pinned mathlib4 v4.26.0 (researcher-1 2026-06-15): Steps 1-3 bearers confirmed EXACT (Sylow.ofCard:102, unique_of_normal:710, normal_of_subsingleton:724, isCycle_of_prime_order'':Type.lean:412, IsCycle.orderOf:Basic.lean:363).",
       "CORRECTION (Step 5): cited Subgroup.le_normalizer (Defs.lean:710) is only the SELF-inclusion H≤normalizer H, wrong for the goal H≤⟨σ⟩.normalizer. Correct bearer = Subgroup.le_normalizer_of_normal_subgroupOf (Basic.lean:378): from (⟨σ⟩.subgroupOf H).Normal + ⟨σ⟩≤H gives H≤⟨σ⟩.normalizer.",
-      "CORRECTION (Step 4/R4): cited '0-LOC instance Subgroup.normal_of_characteristic_of_normal' does NOT EXIST in v4.26.0. Only normal_of_characteristic (char⟹normal SAME group, Basic.lean:241). The char-in-normal transitivity (N⊴G ∧ K char N ⟹ K⊴G) needs a real ~5-20 LOC construction; R4 is NOT 0-LOC resolved."
+      "CORRECTION (Step 4/R4): cited '0-LOC instance Subgroup.normal_of_characteristic_of_normal' does NOT EXIST in v4.26.0. Only normal_of_characteristic (char⟹normal SAME group, Basic.lean:241). The char-in-normal transitivity (N⊴G ∧ K char N ⟹ K⊴G) needs a real ~5-20 LOC construction; R4 is NOT 0-LOC resolved.",
+      "Step 1 (sylow_p_unique), the hardest remaining sorry, numerically certified WITHOUT assuming the classification: enumerate <sigma,tau> transitive solvable subgroups of S_p (p=3,5,7) = exactly tau(p-1) metacyclic C_p:C_d; each has v_p(|H|)=1, |H|=p*m with m|(p-1), and derived-series minimal-normal A is abelian+transitive of order p = the unique Sylow-p. A_p non-solvable has n_p>1 (solvability load-bearing)."
     ],
     "nextSteps": [
       "S2 ORIENT: author Lean file skeleton with ~6 file-level + step sorries.",
@@ -80,7 +81,8 @@
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/problem.md",
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/knowledge.md",
       "research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction/state.md",
-      "src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json"
+      "src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json",
+      "verify_step1_sylow_unique.py — sympy verify-before-assert for Step 1 of the Galois-direction structure theorem (fills the gap; Steps 4/5 already had scripts)"
     ]
   },
   "references": [
