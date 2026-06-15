@@ -181,3 +181,43 @@ of each fiber still validated by `verify_hyperoctahedral_2k.py` (PASS).
 **Next-session ACT.** Build & register `…Decomp.lean`; discharge
 `fiber_card_eq_contribution` by the `MulAction` orbit–stabilizer route (next-step
 #1) — now the *single* remaining goal rather than a per-`n` enumeration.
+
+## S4 (ACT — sign-count half of the keystone; dual blackout persists)
+Backends re-tested live: `docker info` times out; Aristotle `prove` → "Resource
+not found." No machine check possible.
+
+**Keystone factorization.** `fiber_card_eq_contribution` (the sole real `sorry`
+in `…Decomp.lean`) is a `B_m = S_m ⋉ (ℤ/2)^m` orbit-size. The formula `(★)`
+factors cleanly:
+
+    (★) = (arrangement count  m!/∏ count_v!) · (sign count  2^{#nonzero}).
+
+Brute-force **confirmed both halves** (`verify_orbit_formula.py`, PASS):
+orbit formula 58 fibers m≤5,n≤12 (0 mismatch); sign count 3905 abs-profiles m≤5
+(0 mismatch).
+
+**Shipped (build-pending, UNREGISTERED):** `…OQ04Sign.lean` proves the sign half
+in full —
+- `signFiber g := Fintype.piFinset (fun i => {g i, -g i})`,
+- `card_pair_neg c : ({c,-c}).card = if c=0 then 1 else 2` (via `Finset.card_pair`
+  + `c = -c ↔ c = 0`),
+- `signFiber_card : (signFiber g).card = 2 ^ #{i : g i ≠ 0}` via
+  `Fintype.card_piFinset` → `∏ (if … then 1 else 2)` → `Finset.prod_ite` +
+  `Finset.prod_const`.
+
+**Remaining = ONE standard lemma (arrangement_card).** With `signFiber_card`, the
+keystone reduces (blueprint in the file footer) by `card_eq_sum_card_fiberwise`
+over the abs-value map to:
+
+    arrangement_card : #{g : Fin m → ℤ | g i ≥ 0, multiset(g)=s} = m!/∏ count_v!.
+
+This multiset-permutation/multinomial count has no obvious Mathlib lemma —
+candidate leads for a build session: `Nat.multinomial`, `Equiv.Perm (Fin m)`
+action on functions, `Multiset.permutations`/`Multiset.Nodup` card. Good Aristotle
+target once the backend returns.
+
+## Remaining next steps (updated)
+1. Build `…OQ04Sign.lean` (fix any `Fintype.card_piFinset`/`Finset.prod_ite`
+   name drift), then register both `…Decomp` and `…Sign`.
+2. Prove/locate `arrangement_card` (the multinomial count) — the sole residue.
+3. Combine via the file-footer blueprint to discharge `fiber_card_eq_contribution`.
