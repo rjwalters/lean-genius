@@ -29,28 +29,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: complete 0-sorry/0-axiom formalization (Sqrt2MinpolyOQ01OQ02.lean, 11 thms) generalizing minpoly ℚ (√n)=X²−n to rational radicands; build-pending (infra down).",
+    "progressSummary": "PROGRESS: rational-radicand degree-2 result merged (#24789). Prime-power generalization minpoly ℚ (a^(1/pⁿ))=X^(pⁿ)−a written (odd prime p, n≥1, a not a p-th power) via Kummer X_pow_sub_C_irreducible_iff_of_prime_pow at general n; 0 sorry/0 axiom, build-pending.",
     "builtItems": [
       "irrational_sqrt_of_not_isSquare_rat (Sqrt2MinpolyOQ01OQ02.lean:55)",
       "minpoly_sqrt_of_not_isSquare_rat — main theorem (Sqrt2MinpolyOQ01OQ02.lean:71)",
       "irrational_sqrt_iff_not_isSquare_rat (Sqrt2MinpolyOQ01OQ02.lean:129)",
       "minpoly_sqrt_natDegree, sqrt_isIntegral, adjoin_sqrt_finrank (degree/extension, lines 146-163)",
       "cleared_denom_form + minpoly_sqrt_div explicit p/q form (lines 169-181)",
-      "Example minpoly_sqrt_half: minpoly ℚ (√(1/2)) = X² − 1/2 (line 199)"
+      "Example minpoly_sqrt_half: minpoly ℚ (√(1/2)) = X² − 1/2 (line 199)",
+      "minpoly_rpow_of_odd_prime_pow: minpoly ℚ (a^(1/pⁿ))=X^(pⁿ)−a for odd prime p, n≥1, a≥0 rational, ¬(p-th power) (Sqrt2MinpolyOQ01OQ02PrimePow.lean)",
+      "minpoly_rpow_natDegree (=pⁿ), rpow_isIntegral, adjoin_rpow_finrank ([ℚ(a^(1/pⁿ)):ℚ]=pⁿ) corollaries (Sqrt2MinpolyOQ01OQ02PrimePow.lean)",
+      "rpow_inv_pow / aeval_rpow at general exponent N (generic N-th root machinery, self-contained)"
     ],
     "insights": [
       "For a rational radicand r, irrationality of √r is direct: a rational value s of √r squares to r, exhibiting r as a rational square. No irrational_nrt_of_notint_nrt needed (unlike the natural-number case).",
       "The minimal polynomial is canonically monic, so the answer is X² − r; the informal q·X² − p is the non-monic integer associate (scale by C q).",
       "The degree argument (monic divisor of monic degree-2) transfers verbatim from the verified Sqrt2MinpolyOQ01 Part VII with radicand type ℕ → ℚ.",
-      "algebraMap ℚ ℝ r must be identified with (r : ℝ) via eq_ratCast inside aeval simp normal forms."
+      "algebraMap ℚ ℝ r must be identified with (r : ℝ) via eq_ratCast inside aeval simp normal forms.",
+      "Kummer criterion X_pow_sub_C_irreducible_iff_of_prime_pow governs ALL prime-power exponents pⁿ (n≥1), not just p; the irreducibility obstruction ∀b, b^p≠a is independent of n. X⁹−2 is irreducible because 2 is not a CUBE, not because it is not a 9th power.",
+      "Prime-power proof is the odd-prime proof with exponent p→pⁿ; at general n NO pow_one rewrite is needed (#24816 needed it only because it specialized to n=1)."
     ],
     "mathlibGaps": [
       "Mathlib has no direct minpoly-of-rational-square-root lemma; built from minpoly.dvd + irrationality + monic-divisor uniqueness."
     ],
     "nextSteps": [
-      "Build/verify via Docker (deferred this session: build pool saturated, Aristotle 404).",
-      "Prove ℚ(√(p/q)) = ℚ(√(pq)) to reduce rational-radicand quadratic fields to squarefree-integer generators.",
-      "Generalize to k-th roots of rationals: minpoly ℚ (r^(1/k)) = X^k − r."
+      "Build/register Sqrt2MinpolyOQ01OQ02PrimePow.lean when Docker pool ≤2 containers (saturated at 3 this session).",
+      "Add a concrete instance, e.g. minpoly ℚ (2^(1/3))=X³−2, by proving ∀b:ℚ, b³≠2 (ℤ integrally closed in ℚ + no integer cubes to 2).",
+      "Prove ℚ(√(p/q)) = ℚ(√(pq)) to reduce rational-radicand quadratic fields to squarefree-integer generators."
     ],
     "markdown": "# Knowledge Base: sqrt2-minpoly-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
