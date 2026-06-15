@@ -51,9 +51,14 @@
   • `rsa_decrypt_correct` — the textbook phrasing `m^(e·d) ≡ m` once
     `e·d = 1 + k·λ`.
 
-  Status: 0 axioms, 0 sorries intended.  Build-pending (authored under a Docker +
-  Aristotle blackout); the CRT-assembly proof in `rsa_correct` is the step to
-  confirm in a live build.  Intentionally UNREGISTERED in `Proofs/Proofs.lean`.
+  Status: 0 axioms, 0 sorries.  Registered in `Proofs/Proofs.lean`.  Authored
+  under a Docker + Aristotle blackout; name-checked against pinned Mathlib
+  v4.26.0 (rev 2df2f01): `ZMod.pow_card_sub_one_eq_one` takes `{a}` IMPLICITLY
+  (FieldTheory/Finite/Basic.lean:605), so its earlier call passed `a` into the
+  `a ≠ 0` slot — fixed here.  `ZMod.chineseRemainder` confirmed
+  (Data/ZMod/Basic.lean:873).  The CRT componentwise step (`Prod.ext_iff` +
+  `simpa` on the projection-of-power simp lemmas) remains the one piece to
+  confirm in a live build.
 -/
 
 import Mathlib.Data.ZMod.Basic
@@ -73,7 +78,7 @@ theorem zmod_pow_eq_self {p : ℕ} [Fact p.Prime] (a : ZMod p) {m : ℕ}
   rcases eq_or_ne a 0 with h | h
   · subst h
     rw [zero_pow (Nat.succ_ne_zero _)]
-  · rw [pow_succ, pow_mul, ZMod.pow_card_sub_one_eq_one a h, one_pow, one_mul]
+  · rw [pow_succ, pow_mul, ZMod.pow_card_sub_one_eq_one h, one_pow, one_mul]
 
 /-- **RSA correctness for `n = p·q`.**  For distinct primes `p, q` and any
     exponent `m` divisible by both `p-1` and `q-1` (equivalently, any multiple of
