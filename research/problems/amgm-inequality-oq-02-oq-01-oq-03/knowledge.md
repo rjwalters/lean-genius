@@ -91,3 +91,36 @@ template), not just the MvPolynomial API.
 
 ### Next Steps
 Build-verify + register; finish the concrete general Finset version (Route A crux L2).
+
+## Session 2026-06-15 (Session 2) — partial proof + a Route-A correctness finding (build-pending)
+
+**Mode**: continue · **Outcome**: progress + finding (dual blackout, build-pending).
+
+New file `proofs/Proofs/AmgmInequalityOQ02OQ01OQ03Finset.lean` turns the S1 skeleton
+into a partially-proven file:
+
+- **PROVEN `D_collapse` (L3)**: `Doff = e₁·p₂ − p₃` via `Finset.sum_erase_eq_sub`
+  (pull `fᵢ²` out, `∑_{j≠i} fⱼ = e₁ − fᵢ`, distribute). 0 sorries.
+- **PROVEN `offdiag_pair_eq`**: `∑ᵢ∑_{j≠i} fᵢfⱼ = e₁² − p₂` (`linear_combination -h`
+  off the parent `AMGMInequalityOQ02OQ01.sq_sum_eq_diag_plus_offdiag`). Reusable.
+- **PROVEN `two_mul_newton_girard`**: `2·p₃ = 2·(e₁³ − 3e₁e₂ + 3e₃)`, the honest
+  endpoint of Route A, assembled by `linear_combination hL2 + 3·hL3 + 3·e₁·hL4 −
+  3·e₁·hpar` (coefficients verified in sympy). Valid over any `CommRing`. (Depends
+  on the two cruxes `cube_partition`, `two_e2_eq_off_diag`, still `sorry`.)
+
+**FINDING (corrects the S1 skeleton).** Route A's ordered-triple partition
+determines only **`2·p₃`**, not `p₃`. The skeleton's final "÷2" step is **invalid
+over a general commutative ring** — it fails in characteristic 2 (e.g. `ℤ/2`,
+where the four relations hold but do not pin `p₃` without a `½`). The bare identity
+`p₃ = e₁³ − 3e₁e₂ + 3e₃` is nonetheless TRUE over every ring (integer
+coefficients); proving it in full generality requires **Route B** — the `aeval`
+specialization of the already-proven universal `psum_three_closed` — not the
+partition. So `newton_girard_three_finset` is left as a documented `sorry` to be
+closed by Route B, and Route A's reach is recorded exactly by
+`two_mul_newton_girard`.
+
+**Remaining cruxes** (the only blocking `sorry`s): `cube_partition` (L2,
+`powersetCard 3` ↔ ordered triples, mult. 1/3/6) and `two_e2_eq_off_diag` (L4,
+`powersetCard 2` ↔ ordered pairs) — both good Aristotle targets once the backend
+returns. The Route-B `aeval` bridge (its one fiddly step is the `powersetCard`
+reindex from `univ : Finset ↥s` onto `s`) is the path for the general main theorem.
