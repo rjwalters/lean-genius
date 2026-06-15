@@ -125,6 +125,33 @@ i.e. the Lie algebra direction is `iℝ`. -/
 theorem generator_mem_imaginary_axis : (Complex.I).re = 0 ∧ (Complex.I).im = 1 :=
   ⟨Complex.I_re, Complex.I_im⟩
 
+/-! ## §4b. The integral lattice `2πℤ`: kernel of the exponential
+
+The Lie group exponential `Circle.exp : ℝ → S¹` is surjective with a discrete
+kernel. Identifying that kernel is the last structural ingredient of the
+ℝ → S¹ picture: it is the *integral lattice* `2πℤ ⊆ iℝ` inside the Lie algebra,
+and the induced isomorphism `S¹ ≅ ℝ / 2πℤ` realises the circle as the quotient
+of its Lie algebra by this lattice. -/
+
+/-- **Kernel of the exponential = the lattice `2πℤ`.** `Circle.exp t` is the
+identity exactly when `t` is an integer multiple of `2π`. This is the period
+lattice of the one-parameter subgroup; in Lie-theoretic terms it is the integral
+lattice of `S¹` sitting inside the Lie algebra `iℝ`. -/
+theorem circleExp_eq_one_iff (t : ℝ) :
+    (Circle.exp t : ℂ) = 1 ↔ ∃ n : ℤ, t = n * (2 * π) := by
+  rw [Circle.coe_exp, Complex.exp_eq_one_iff]
+  constructor
+  · rintro ⟨n, hn⟩
+    refine ⟨n, ?_⟩
+    have hI : (t : ℂ) * Complex.I = ((n : ℂ) * (2 * π)) * Complex.I := by
+      rw [hn]; ring
+    have ht : (t : ℂ) = (n : ℂ) * (2 * π) := mul_right_cancel₀ Complex.I_ne_zero hI
+    have : (t : ℂ) = (((n : ℝ) * (2 * π) : ℝ) : ℂ) := by rw [ht]; push_cast; ring
+    exact_mod_cast this
+  · rintro ⟨n, hn⟩
+    refine ⟨n, ?_⟩
+    rw [hn]; push_cast; ring
+
 /-! ## §5. Summary -/
 
 /-- **Packaging complete.** Euler's formula presents `t ↦ exp(it)` as the smooth
@@ -142,6 +169,7 @@ theorem main :
 #check @contMDiff_circleExp_packaged
 #check @circleMap_eq_coe_circleExp
 #check @hasDerivAt_circleExp_zero
+#check @circleExp_eq_one_iff
 #check @main
 
 end EulerIdentityOQ01OQ01OQ01OQ01
