@@ -8,12 +8,15 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, and ring theory for integer properties.",
+    "content": "We import from Mathlib's FLT modules: `FLT.Basic` for the theorem statement, `FLT.Four` for Fermat's descent proof of the n=4 case, `FLT.Three` for Euler's n=3 case, and `EuclideanDomain.Basic` / `RingTheory.Int.Basic` for integer divisibility and unique factorization.",
+    "mathContext": "The imported Mathlib modules supply the verified small cases that this file wraps. `Mathlib.NumberTheory.FLT.Basic` defines `FermatLastTheoremFor n` — the statement that $a^n + b^n = c^n$ has no solution in positive integers $a,b,c$ — and the aggregate `FermatLastTheorem`. `FLT.Four` provides `fermatLastTheoremFour`, Fermat's own infinite-descent proof that $x^4 + y^4 = z^4$ has no nontrivial solution (the one case Fermat could actually prove). `FLT.Three` provides `fermatLastTheoremThree`, Euler's $n=3$ case via unique factorization in the Eisenstein integers $\\mathbb{Z}[\\omega]$, $\\omega = e^{2\\pi i/3}$. The general $n > 2$ theorem (Wiles–Taylor 1995, via the modularity of elliptic curves and Ribet's level-lowering) is not yet in Mathlib and is axiomatized in this file pending the Imperial College FLT project.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "Lean 4",
-      "formalization"
+      "formalization",
+      "fermatLastTheoremFour",
+      "fermatLastTheoremThree"
     ]
   },
   {
