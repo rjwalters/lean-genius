@@ -25,7 +25,12 @@ This file formalizes:
 - Algebraic properties: Lyapunov at δ=0, variance formulas, zero-variable results
 - Characteristic function properties
 
-Proved theorems: 17, Axioms: 2, Sorries: 3
+Proved theorems: 18, Axioms: 2, Sorries: 2
+
+NOTE: `iid_satisfies_lyapunov` now requires an explicit identical-distribution
+hypothesis (`hIdent`) on the common `(2+δ)`-th moment, because the `IIDSequence`
+structure only records independence + a common *second* moment, not identical
+higher-moment distributions. See the theorem docstring.
 -/
 
 import Mathlib.Probability.Martingale.Basic
@@ -534,19 +539,75 @@ theorem classical_clt_from_martingale
     exact iid_mda_variance_converges S
 
 /-- For i.i.d. sequences, the Lyapunov condition is automatically satisfied
-    if the (2+δ)-th moment is finite (for any δ > 0). -/
+    if the (2+δ)-th moment is finite (for any δ > 0).
+
+    NOTE on the `hIdent` hypothesis: the `IIDSequence` structure only encodes
+    *independence* and a *common second moment* (`variance`); it does **not**
+    record that the `X_k` are identically distributed in their higher moments.
+    The "identically distributed" half of i.i.d. is exactly what forces the
+    common `(2+δ)`-th moment `∫|X_k|^{2+δ} = ∫|X_0|^{2+δ}` used below, so it is
+    supplied explicitly as `hIdent`. Without it the Lyapunov sum need not reduce
+    to `n · E[|X₀|^{2+δ}] / n^{(2+δ)/2}` and the statement is false in general. -/
 theorem iid_satisfies_lyapunov
     {μ : Measure Ω} [IsProbabilityMeasure μ]
     (S : IIDSequence Ω μ) (δ : ℝ) (hδ : 0 < δ)
-    (hMoment : Integrable (fun ω => |S.X 0 ω| ^ (2 + δ)) μ) :
+    (hMoment : Integrable (fun ω => |S.X 0 ω| ^ (2 + δ)) μ)
+    (hIdent : ∀ k, ∫ ω, |S.X k ω| ^ (2 + δ) ∂μ
+                = ∫ ω, |S.X 0 ω| ^ (2 + δ) ∂μ) :
     S.toMDA.lyapunovCondition δ := by
   refine ⟨hδ, ?_⟩
-  simp only [MartingaleDiffArray.lyapunovSum, IIDSequence.toMDA]
-  -- Λ_n(δ) = ∑_{k<n} E[|X_k/√n|^{2+δ}]
-  --         = n · E[|X₀|^{2+δ}] / n^{(2+δ)/2}
-  --         = E[|X₀|^{2+δ}] / n^{δ/2}
-  --         → 0 since δ > 0
-  sorry -- requires moment computation + rpow decay
+  -- Common `(2+δ)`-th moment.
+  set C : ℝ := ∫ ω, |S.X 0 ω| ^ (2 + δ) ∂μ
+  -- Closed form of the Lyapunov sum:  Λ_n(δ) = C / n^{δ/2}  for n ≥ 1.
+  have hclosed : ∀ n : ℕ, 1 ≤ n →
+      S.toMDA.lyapunovSum n δ = C / (n : ℝ) ^ (δ / 2) := by
+    intro n hn
+    have hn_pos : (0 : ℝ) < n := by exact_mod_cast hn
+    have hnne : (n : ℝ) ≠ 0 := ne_of_gt hn_pos
+    have hsqrt_pos : 0 < Real.sqrt (n : ℝ) := Real.sqrt_pos.mpr hn_pos
+    have hsqrt_nonneg : 0 ≤ Real.sqrt (n : ℝ) := hsqrt_pos.le
+    simp only [MartingaleDiffArray.lyapunovSum, IIDSequence.toMDA]
+    -- Pointwise: |X_k/√n|^{2+δ} = |X_k|^{2+δ} · ((√n)^{2+δ})⁻¹.
+    have hpt : ∀ k, ∀ ω,
+        |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ)
+          = |S.X k ω| ^ (2 + δ) * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹ := by
+      intro k ω
+      rw [abs_div, abs_of_nonneg hsqrt_nonneg, div_eq_mul_inv,
+        Real.mul_rpow (abs_nonneg _) (by positivity),
+        Real.inv_rpow hsqrt_nonneg]
+    -- Each integral term equals C · ((√n)^{2+δ})⁻¹.
+    have hterm : ∀ k,
+        (∫ ω, |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ) ∂μ)
+          = C * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹ := by
+      intro k
+      have hfun : (fun ω => |S.X k ω / Real.sqrt (n : ℝ)| ^ (2 + δ))
+          = (fun ω => |S.X k ω| ^ (2 + δ) * ((Real.sqrt (n : ℝ)) ^ (2 + δ))⁻¹) :=
+        funext (hpt k)
+      rw [hfun, integral_mul_const, hIdent k]
+    simp_rw [hterm]
+    rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+    -- (√n)^{2+δ} = n^{1 + δ/2}.
+    have hpow : (Real.sqrt (n : ℝ)) ^ (2 + δ) = (n : ℝ) ^ (1 + δ / 2) := by
+      rw [Real.sqrt_eq_rpow, ← Real.rpow_mul hn_pos.le]
+      congr 1
+      ring
+    -- n^{1 + δ/2} = n · n^{δ/2}.
+    have hsplit : (n : ℝ) ^ (1 + δ / 2) = (n : ℝ) * (n : ℝ) ^ (δ / 2) := by
+      rw [Real.rpow_add hn_pos, Real.rpow_one]
+    have hd : (0 : ℝ) < (n : ℝ) ^ (δ / 2) := Real.rpow_pos_of_pos hn_pos _
+    rw [hpow, hsplit]
+    field_simp [hnne, hd.ne']
+    ring
+  -- The closed form tends to 0 since δ/2 > 0.
+  have hlim : Tendsto (fun n : ℕ => C / (n : ℝ) ^ (δ / 2)) atTop (nhds 0) := by
+    have hpow_tendsto : Tendsto (fun n : ℕ => (n : ℝ) ^ (δ / 2)) atTop atTop :=
+      (Real.tendsto_rpow_atTop (by positivity : (0 : ℝ) < δ / 2)).comp
+        tendsto_natCast_atTop_atTop
+    simpa using hpow_tendsto.const_div_atTop C
+  -- Transfer the limit back to the Lyapunov sum via eventual equality.
+  refine hlim.congr' ?_
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  exact (hclosed n hn).symm
 
 /-
 ## Part X: Additional Proved Results
