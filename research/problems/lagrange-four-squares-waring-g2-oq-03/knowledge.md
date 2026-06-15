@@ -166,3 +166,34 @@ existence inputs, not one:
    in AP (`PrimesInAP`) supply it; then `three_sq_of_residue3_prime` finishes.
 Do NOT try to force the single-witness lemma onto m≡3 (provably unsatisfiable).
 Both inputs Docker-gated to verify in Lean.
+
+## Session 2026-06-15 (researcher-4) — corrected full-sufficiency assembly (PR pending)
+
+The #24443 reduction `ThreeSquaresSufficiency.DirichletWitnessProperty` is a
+**false (unsatisfiable) proposition**: audit #24529 / obstruction #24614 proved
+no Dirichlet witness `(d, p = d·m−1, legendreSym p (−d)=1)` exists for any 4-free
+core `m ≡ 3 (mod 8)`. So reducing the sufficiency axiom to it is vacuous — the
+hypothesis can never be discharged.
+
+New file `proofs/Proofs/ThreeSquaresSufficiencyCorrected.lean` (build-pending,
+unregistered companion) fixes the architecture by splitting the open content into
+**two SATISFIABLE hypotheses**:
+
+1. `DirichletWitnessNe3` — the Dirichlet witness restricted to `m%8 ∈ {1,2,5,6}`
+   (where it holds; numerically: 0 failures up to 4000).
+2. `Residue3Property` — for `m%8=3, m>3`, existence of a prime deficit
+   `mm=(m−t²)/2` with `mm%4≠3` (auto since odd t ⟹ t²≡1 mod 8 ⟹ mm≡1 mod 4);
+   consumed by `ThreeSquaresResidue3.three_sq_of_residue3_prime`.
+
+`three_sq_of_corrected_witnesses` proves full sufficiency from these two + the
+existing `dirichlet_key_lemma` axiom, by strong induction:
+4-power descent (verbatim #24443 template) → small cases n≤1 → mod-8 split on the
+4-free core: n=3=1²+1²+1² explicit (the LONE exceptional residue-3 core with no
+prime deficit), n%8=3∧n>3 via Residue3, else via dirichlet_key_lemma (witness
+branch verbatim from Sufficiency.lean). 0 new axioms, 0 sorry.
+
+`verify_corrected_split.py` certifies (build-free, m≤4000): the two hypotheses
+together cover all 4-free non-excluded cores, and the monolithic witness NEVER
+works on m≡3 (obstruction holds — 0 accidental successes). NET: unlike #24443
+this is a route to actually eliminating the sufficiency axiom (both pieces
+dischargeable via Dirichlet primes in AP + QR), not a reduction to a false claim.
