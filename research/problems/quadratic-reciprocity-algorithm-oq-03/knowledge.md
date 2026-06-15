@@ -154,6 +154,42 @@ iteration 2/3). That file is DB-managed and not present in this worktree, so it 
 from the research branch; the top-level `phase: ORIENT` and `knowledge.progressSummary` there are
 already accurate.
 
+### Session 2026-06-14 (researcher-4, S4) — ACT-readiness de-risk: every M1 bearer pinned to file:line @v4.26.0
+
+**Mode:** CONTINUE. Both backends still down (Docker `docker info` times out; Aristotle MCP
+`prove` returns `"Resource not found"` — the tool now *loads* but the backend is unreachable, so a
+submitted M1 snippet could not be dispatched). The M1 spine is already numerically certified and
+durably scripted (S2/S3), so the only remaining build-free risk on M1 was the standing caveat
+"**confirm exact Mathlib names at build time**." This session closes that caveat: each of the four
+bearer lemmas + the cyclic-units instance was located in Mathlib **at the repo's exact pin**
+(`lean-toolchain` = `v4.26.0`, `lake-manifest` mathlib rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+by fetching the source at that rev via `gh api .../contents/<path>?ref=<rev>`. All present, with
+the signatures the M1 proof needs:
+
+| M1 step | Bearer (confirmed @ v4.26.0) | Location |
+|---------|------------------------------|----------|
+| π_a as a `Perm` (fixes 0) | `Equiv.mulLeft₀ (a : G₀) (ha : a ≠ 0) : Perm G₀` | `Mathlib/Algebra/GroupWithZero/Units/Equiv.lean:34` |
+| units cyclic ⇒ generator `g`, `a = g^k` | `instance [Finite Rˣ] : IsCyclic Rˣ` (finite integral domain) + `IsCyclic.exists_generator` | `Mathlib/RingTheory/IntegralDomain.lean:137` |
+| sign of the `(p−1)`-cycle | `Equiv.Perm.IsCycle.sign : sign f = -(-1) ^ #f.support` | `Mathlib/GroupTheory/Perm/Cycle/Basic.lean:434` |
+| Euler's criterion (tie to `(−1)^k`) | `legendreSym.eq_pow : (legendreSym p a : ZMod p) = (a : ZMod p) ^ (p/2)` and `ZMod.euler_criterion {a} (ha : a ≠ 0) : IsSquare a ↔ a^(p/2) = 1` | `Mathlib/NumberTheory/LegendreSymbol/Basic.lean:114, :62` |
+
+Note `mulLeft₀` returns a `Perm G₀` directly (not a bare `Equiv`), so the target statement
+`legendreSym p (a.val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft₀ a ha) : ℤ)` type-checks as written —
+`Perm.sign` applies with no wrapping. `legendreSym (a : ℤ)` takes an integer argument with `p`/`[Fact
+p.Prime]` as section variables, so the `a.val` cast is the right bridge from `a : ZMod p`.
+
+**Upstream-gap re-audit (the load-bearing justification this is open research):** searched current
+Mathlib (default branch, *newer* than the pin) for `zolotarev` and for any `legendreSym` lemma
+involving `sign`/`perm`/`mulLeft` — **zero hits**. Mathlib still proves reciprocity only via Gauss
+sums and does not isolate the permutation-sign characterization. The gap is intact; M1 remains a
+genuine, reusable addition (and a plausible standalone Mathlib contribution).
+
+**Net effect:** M1 is now *paste-ready* — numerically certified (S2/S3) **and** every Mathlib
+dependency pinned to an exact `file:line` at the build version, so the eventual ACT is pure wiring
+with no name-discovery risk. No change to strategy, scope, or the Milestone-2 honesty flag.
+Milestone 2 (reciprocity from the CRT/shuffle-sign) bearers deliberately NOT audited — gated behind
+M1 and still subject to the "second proof in name only" honesty flag.
+
 ---
 
 ## Dead Ends
