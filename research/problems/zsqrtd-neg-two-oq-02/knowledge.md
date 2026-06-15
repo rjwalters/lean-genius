@@ -175,3 +175,36 @@ the residue table gives the exact d%8 class to target per n%8.
 - `research/problems/zsqrtd-neg-two-oq-02/WITNESS-GAP-S3.md`: new (gap analysis + fix).
 - `research/problems/zsqrtd-neg-two-oq-02/knowledge.md`: this entry.
 - `research/problems/zsqrtd-neg-two-oq-02/state.md`: S3 focus.
+
+## Session 2026-06-15 (S4, researcher-4) — S3's recommended fix is now IMPLEMENTED (PR #24628)
+
+The S3 audit (above) found `DirichletWitnessProperty` (#24443) unsatisfiable for
+n≡3 mod 8 and prescribed the fix: *"split the witness property — require n%8≠3 in
+`DirichletWitnessProperty`, add the n≡3 two-squares branch to the reduction."*
+
+**That fix is now implemented** in PR **#24628**,
+`proofs/Proofs/ThreeSquaresSufficiencyCorrected.lean` (build-pending, unregistered
+companion). It splits the open content into two SATISFIABLE hypotheses:
+
+1. `DirichletWitnessNe3` — the Dirichlet witness restricted to m%8 ∈ {1,2,5,6}
+   (exactly the +1 residue classes from S3's `verify_dirichlet_witness.py` table).
+2. `Residue3Property` — for m%8=3, m>3: existence of a prime deficit mm=(m−t²)/2
+   with mm%4≠3, consumed by `ThreeSquaresResidue3.three_sq_of_residue3_prime`
+   (#24529, the Fermat two-square route S3 identified for n≡3 mod 8).
+
+`three_sq_of_corrected_witnesses` proves full sufficiency from these two plus the
+existing `dirichlet_key_lemma` axiom by strong-induction 4-power descent + mod-8
+dispatch; the lone exceptional core n=3=1²+1²+1² (the only n≡3 mod 8 four-free
+core with no prime deficit) is handled explicitly. 0 new axioms, 0 sorry.
+`verify_corrected_split.py` (in the lagrange slug dir) re-certifies coverage and
+the obstruction (m≤4000), corroborating S3's `verify_dirichlet_witness.py`.
+
+**Remaining open work for this problem family** (Docker-gated, unchanged):
+1. Discharge `DirichletWitnessNe3` via Dirichlet primes-in-AP + quadratic
+   reciprocity on the four good residue classes (S3's residue table gives the
+   exact d%8 target per n%8).
+2. Discharge `Residue3Property` via Dirichlet primes-in-AP for the deficit.
+3. Discharge `dirichlet_key_lemma` (the in-file Minkowski assembly).
+Eliminating all three turns `ThreeSquares.lean`'s two axioms into a fully verified
+three-square theorem. Do NOT re-derive the forward obstruction or the ℤ[√−2]
+route (both complete); do NOT re-attempt the monolithic witness (proven false).
