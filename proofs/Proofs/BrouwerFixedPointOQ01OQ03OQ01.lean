@@ -166,6 +166,100 @@ theorem ham_sandwich_of_discrepancy (n : ℕ) (hn : n ≥ 1)
     linarith [hzero]
   exact (ENNReal.toReal_eq_toReal_iff' (hfin_pos x i) (hfin_neg x i)).mp hsub
 
+-- ============================================================
+-- PART 4: The standard linear half-space parameterization
+-- ============================================================
+
+/-- The positive open half-space cut by the oriented hyperplane parameterized by
+    a direction-point `x`, when the direction `u x` and threshold `t x` are
+    extracted *linearly* from `x`. A single hyperplane cuts every body, so the
+    assignment is constant in the body index `i`. -/
+noncomputable def stdPos (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (_i : Fin n) :
+    Set (EuclideanSpace ℝ (Fin n)) :=
+  {y | inner (𝕜 := ℝ) (u x) y < t x}
+
+/-- The negative open half-space for the standard linear parameterization. -/
+noncomputable def stdNeg (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (_i : Fin n) :
+    Set (EuclideanSpace ℝ (Fin n)) :=
+  {y | t x < inner (𝕜 := ℝ) (u x) y}
+
+/-- **Antipodal swap for the standard parameterization.** Because the direction
+    and threshold are *linear* in `x`, replacing `x` by `-x` negates both, which
+    exactly exchanges the two open half-spaces. The swap is therefore a
+    *theorem* for any linear direction/threshold extraction — not an extra
+    assumption. This discharges the `hswap` hypothesis of
+    `ham_sandwich_of_discrepancy`. -/
+theorem stdPos_neg (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n) :
+    stdPos n u t (-x) i = stdNeg n u t x i := by
+  unfold stdPos stdNeg
+  ext y
+  simp only [Set.mem_setOf_eq, map_neg, inner_neg_left]
+  constructor <;> intro h <;> linarith
+
+/-- The companion swap `neg(-x) = pos(x)`, discharging `hswap'`. -/
+theorem stdNeg_neg (n : ℕ)
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (x : EuclideanSpace ℝ (Fin (n + 1))) (i : Fin n) :
+    stdNeg n u t (-x) i = stdPos n u t x i := by
+  unfold stdPos stdNeg
+  ext y
+  simp only [Set.mem_setOf_eq, map_neg, inner_neg_left]
+  constructor <;> intro h <;> linarith
+
+-- ============================================================
+-- PART 5: Volume finiteness from bounded bodies
+-- ============================================================
+
+/-- **Finiteness of the half-space slices.** If a body has finite volume, every
+    half-space slice of it does too, being a subset. This discharges the
+    `hfin_pos`/`hfin_neg` hypotheses of `ham_sandwich_of_discrepancy` for
+    finite-volume (e.g. bounded) bodies. -/
+theorem volume_inter_ne_top (n : ℕ)
+    (body S : Set (EuclideanSpace ℝ (Fin n)))
+    (hbody : volume body ≠ ⊤) : volume (body ∩ S) ≠ ⊤ :=
+  ne_top_of_le_ne_top hbody (measure_mono Set.inter_subset_left)
+
+-- ============================================================
+-- PART 6: Ham Sandwich for the standard linear parameterization
+-- ============================================================
+
+/-- **Ham Sandwich Theorem, standard linear parameterization.**
+
+    Specializing `ham_sandwich_of_discrepancy` to the standard half-space
+    assignment `stdPos`/`stdNeg` (a linear direction `u` and threshold `t`), the
+    antipodal-swap and volume-finiteness hypotheses become *theorems*
+    (`stdPos_neg`, `stdNeg_neg`, `volume_inter_ne_top`). The ONLY remaining
+    hypothesis is `hcomp`: that the discrepancy map is realized by a continuous
+    `SphereFun`.
+
+    This pins the Lebesgue-continuity of the bisecting-measure map as the sole
+    unproved input, with every combinatorial / set-theoretic / finiteness side
+    condition discharged. -/
+theorem ham_sandwich_standard (n : ℕ) (hn : n ≥ 1)
+    (bodies : Fin n → Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (F : SphereFun n)
+    (hbody : ∀ i, volume (bodies i) ≠ ⊤)
+    (hcomp : ∀ x i, F.toFun x i = discrepancy n bodies (stdPos n u t) (stdNeg n u t) x i) :
+    ∃ x ∈ Sphere n, ∀ i,
+      volume (bodies i ∩ stdPos n u t x i) = volume (bodies i ∩ stdNeg n u t x i) :=
+  ham_sandwich_of_discrepancy n hn bodies (stdPos n u t) (stdNeg n u t) F
+    (stdPos_neg n u t) (stdNeg_neg n u t)
+    (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
+    (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
+    hcomp
+
 /-
 ## Significance and the Remaining Gap
 
@@ -177,13 +271,20 @@ the discrepancy map), the Ham Sandwich conclusion is fully **proved**, not
 axiomatized. The oddness and the "zero ⇒ bisected" steps, which one might worry
 also hide content, are dispatched here by elementary means.
 
-Remaining analytic work to fully retire the axiom:
-  * show `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)})` is continuous on `Sⁿ`
+Two of the three originally-listed side conditions are now discharged for the
+standard parameterization (Parts 4–6):
+  * the antipodal swap `pos(-x) = neg(x)` holds for any *linear* direction /
+    threshold extraction (`stdPos_neg`, `stdNeg_neg`) — it is a consequence of
+    linearity, not an assumption,
+  * finiteness `vol(bodyᵢ ∩ H) < ⊤` follows from `vol(bodyᵢ) < ⊤` since the
+    slice is a subset (`volume_inter_ne_top`).
+
+The single genuinely-remaining analytic input is therefore:
+  * the continuity of `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)})` on `Sⁿ`
     (Lebesgue continuity of parameterized half-spaces; dominated convergence),
-  * verify the antipodal swap `pos(-x) = neg(x)` for the standard
-    direction/threshold parameterization,
-  * establish finiteness `vol(bodyᵢ) < ⊤` (bounded bodies).
-Each is a self-contained measure-theory lemma; none is topological.
+    which packages the discrepancy map as the continuous `SphereFun` `F` whose
+    existence is the lone hypothesis `hcomp` of `ham_sandwich_standard`.
+This is a self-contained measure-theory fact; it is not topological.
 -/
 
 end BrouwerFixedPointOQ01OQ03OQ01
