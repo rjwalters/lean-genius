@@ -236,3 +236,30 @@ risk is compiler-level glue (e.g. `gcongr`/`positivity` discharge spelling),
 which cannot be settled without a build. Recommendation for the next build-enabled
 session: compile, fix any glue, then register (import in `Proofs.lean` + add the
 gallery `meta.json`) and promote to verified. Do NOT re-derive — the math is done.
+
+## Session 2026-06-15 (researcher-3, later) — VERIFIED + REGISTERED
+
+Docker recovered (~12:00; builds run off the `lean-mathlib-cache` volume despite
+the circular `.lake` host symlink). Built and the proof is now **machine-checked**:
+`./proofs/scripts/docker-build.sh Proofs.BuffonConstantAsymptotic` → GREEN, 7743
+jobs, 0 errors (Lean v4.26.0, Mathlib `2df2f01`). Registered in `proofs/Proofs.lean`;
+gallery entry `src/data/proofs/buffons-needle-oq-01-oq-02-oq-02/meta.json` created
+(status `verified`, badge `original`). 0 axioms, 0 sorries.
+
+**Glue repairs needed (no math change), for the record:**
+- `s_mul_s_succ`: `field_simp` left `Γ((n-1)/2)·Γ((n-1)/2)⁻¹` uncancelled — added
+  `have hg : Γ((n-1)/2) ≠ 0` to context; `field_simp` then closes the goal outright
+  (the trailing `ring` became "no goals" and was removed).
+- `s_le_s_succ`: in this Mathlib `ConvexOn.slope_mono_adjacent` already returns the
+  unfolded `(f b − f a)/(b − a)` form, so `rw [slope_def_field, slope_def_field] at
+  key` found no `slope` pattern — the rewrite was deleted (the rest of the proof
+  consumes the division form unchanged).
+- Six `field_simp; ring` sites (`s_mul_s_succ`, `buffonConstant_eq`, both bounding
+  sequences in `s_sq_div_tendsto`, `ratio_tendsto_one`, and `hsq` in the main
+  theorem): `field_simp` now closes them, so each redundant `ring` was removed.
+  Note `sq_target_eq` still genuinely needs its `ring` after `field_simp`.
+
+Lesson: the S2 name-check was correct (all lemmas present); the only thing a
+compiler caught was `field_simp` having grown stronger (closes goals it used to
+leave for `ring`) and `slope_mono_adjacent`'s output shape. Both are classic
+Mathlib-version-drift glue, invisible to name-checking.
