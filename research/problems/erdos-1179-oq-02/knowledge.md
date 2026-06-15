@@ -54,3 +54,41 @@ Bearer name-checked @ 2df2f01: `Nat.clog_pow (b x:ℕ)(hb:1<b): clog b (b^x)=x`
 **Next:** post-blackout register+build `Erdos1179OQ02Upper.lean`; optionally
 instantiate at `G=(ZMod 2)^m` with the standard basis to exhibit a concrete
 `∀g, reprCount A g = 1` witness (needs the powerset-sum↔indicator bijection over 𝔽₂).
+
+## Session 2026-06-15 (researcher-4) S5 ACT — extremal converse + equivalence on minimum-size sets
+
+**Record correction (the top "Status" block is stale).** Both sibling files are now
+REGISTERED on `main` (not "unregistered" as S3 says): `Proofs/Erdos1179OQ02.lean`
+(lower bound, #24551) and `Proofs/Erdos1179OQ02Upper.lean` are both in `Proofs.lean`,
+0 axioms / 0 sorries each. The lower bound `g_ε(N) ≥ log₂N` and the
+unique-representation optimality (`|A| = ⌈log₂N⌉`, additive constant 0 on `N=2^m`)
+are formalized, NOT merely ORIENT/DEFINE.
+
+**New this session.** The previous files give lower bound + the *forward* direction
+"unique reps ⟹ minimal 0-uniform set". This session adds the **converse / extremal
+rigidity** — the missing structural half:
+
+- `unique_repr_of_epsUniform_zero_clog`: if `A` is `0`-uniform AND meets the lower
+  bound `|A| = ⌈log₂N⌉`, then `∀g, reprCount A g = 1`. Proof: `ε=0` collapses every
+  count to the expected `μ = 2^|A|/N` (so all counts equal one nat `c`), parent
+  `total_reprCount` gives `N·c = 2^|A|`, so `N ∣ 2^|A|` ⟹ `N = 2^j`
+  (`Nat.dvd_prime_pow Nat.prime_two`), `⌈log₂N⌉ = j` (`Nat.clog_pow`), the minimality
+  hyp forces `|A| = j`, hence `2^j·c = 2^j` ⟹ `c = 1` (`Nat.eq_of_mul_eq_mul_left`).
+- `epsUniform_zero_iff_unique_repr_of_clog`: combining the converse with the sibling
+  `epsUniform_zero_of_unique_repr` gives the full EQUIVALENCE on minimum-size sets —
+  `|A| = ⌈log₂N⌉ ⟹ ( IsEpsUniform A 0 ↔ ∀g, reprCount A g = 1 )`.
+- `unique_repr_card_le_of_epsUniform`: a unique-representation set is a
+  minimum-cardinality `ε`-uniform set for every `ε<1` (the optimum `0` is attained,
+  no smaller `ε`-uniform set exists).
+
+Upshot: on the power-of-two family the conjectured additive constant is *exactly* `0`
+AND the optimum is attained ONLY by unique-representation (basis-type) sets — no slack
+at the extreme. Still does NOT touch general `N` or the w.h.p. random setting (the
+genuine open content of oq-02; both remain analytic / out of reach for finite methods).
+
+**Built (build-pending, UNREGISTERED — Docker + Aristotle both still down):**
+`proofs/Proofs/Erdos1179OQ02Extremal.lean`, 0 axioms / 0 sorry by construction.
+Imports the parent + both sibling files. Bearers name-checked @ 2df2f01:
+`Nat.dvd_prime_pow`, `Nat.clog_pow` (Data/Nat/Log.lean:453, same lemma Upper uses),
+`Nat.eq_of_mul_eq_mul_left`, `nsmul_eq_mul`. Post-blackout: verify via
+`./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Extremal` then register.
