@@ -63,7 +63,8 @@
       "Over ℚ the irrationality argument is strictly simpler than over ℕ: IsSquare is taken directly in ℚ, so a rational value of √r immediately produces a rational square, with no descent or integrality lemma required.",
       "The minimal polynomial is canonically monic, so the genuine answer is the monic X² − r; the q·X² − p form of the informal statement is the non-monic integer associate obtained by scaling by C q.",
       "The degree argument is purely about monic divisors of a monic degree-2 polynomial, reusing the verified Sqrt2MinpolyOQ01 Part VII skeleton verbatim with the radicand type changed from ℕ to ℚ.",
-      "The irrationality characterization is an iff: √r is irrational exactly when r is not a rational square, recovering the standard irrationality criterion for square roots of rationals."
+      "The irrationality characterization is an iff: √r is irrational exactly when r is not a rational square, recovering the standard irrationality criterion for square roots of rationals.",
+      "The field ℚ(√r) depends only on the squarefree part of r: since ℚ(√(p/q)) = ℚ(√(pq)), every rational-radicand quadratic field already arises from an integer radicand, so the rational generalization adds new minimal polynomials without adding new fields."
     ]
   },
   "sections": [
