@@ -26,9 +26,12 @@
   This file matches the parent's *definitional* rigor (the parent defines
   `expectedPairs` as a closed formula rather than constructing a measure space),
   giving T1 (uniform recovery), T2 (Cauchy–Schwarz lower bound), T3 (equality
-  characterization, forward direction), and T4 (monotone consequence). The
-  Cauchy–Schwarz step is a verbatim port over ℝ of the induction proof in
-  `ProbMethodSecondMoment.lean`.
+  characterization, both directions — `collisionProb p = 1/d ↔ p` uniform, so the
+  uniform distribution is the *unique* minimizer), and T4 (monotone consequence).
+  The Cauchy–Schwarz step is a verbatim port over ℝ of the induction proof in
+  `ProbMethodSecondMoment.lean`; the T3 converse uses the variance identity
+  `∑ (1/d − p k)² = collisionProb p − 1/d` to reduce the equality case to a
+  vanishing sum of squares.
 
   BUILD STATUS: not yet machine-checked — written during the 2026-06-13 Docker /
   `lake build` verification outage. Shipped as a draft pending a Docker build via
@@ -126,10 +129,54 @@ theorem expectedCollisions_ge (hp : ∀ k, 0 ≤ p k) (hsum : ∑ k, p k = 1) (h
     _ ≤ (n.choose 2 : ℝ) * collisionProb p := hstep
 
 /-- (T3) Equality characterization (forward direction): if `p` is uniform then
-    `collisionProb p = 1/d`. The converse (equality ⟹ uniform) follows from the
-    Cauchy–Schwarz equality case; deferred per the ACT plan. -/
+    `collisionProb p = 1/d`. -/
 theorem collisionProb_eq_of_uniform (hd : 0 < d) :
     collisionProb (fun _ : Fin d => (1 : ℝ) / d) = 1 / d :=
   collisionProb_uniform hd
+
+/-- Variance identity: `∑ (1/d − p k)² = collisionProb p − 1/d`. The cross term
+    vanishes because `∑ k, p k = 1`. This reduces the Cauchy–Schwarz equality
+    case to "a sum of squares is zero," sidestepping the abstract
+    `inner_mul_le_norm_mul_norm` equality characterization. -/
+theorem sum_sq_sub_uniform (hsum : ∑ k, p k = 1) (hd : 0 < d) :
+    (∑ k : Fin d, (1 / d - p k) ^ 2) = collisionProb p - 1 / d := by
+  have hd' : (d : ℝ) ≠ 0 := by exact_mod_cast hd.ne'
+  have hexpand : (∑ k : Fin d, (1 / d - p k) ^ 2) =
+      ↑(Finset.univ : Finset (Fin d)).card * (1 / d) ^ 2
+        - 2 * (1 / d) * (∑ k, p k) + (∑ k : Fin d, (p k) ^ 2) := by
+    simp only [sub_sq, Finset.sum_sub_distrib, Finset.sum_add_distrib]
+    simp only [Finset.sum_const, Finset.mul_sum]
+    ring
+  rw [hexpand, Finset.card_univ, Fintype.card_fin, hsum]
+  unfold collisionProb
+  field_simp
+  ring
+
+/-- (T3, converse) Cauchy–Schwarz equality case: if the collision probability
+    attains its uniform lower bound `1/d`, then `p` is uniform. Combined with
+    `collisionProb_ge` (T2) this means the uniform distribution is the *unique*
+    minimizer of expected collisions. -/
+theorem uniform_of_collisionProb_eq (hsum : ∑ k, p k = 1) (hd : 0 < d)
+    (heq : collisionProb p = 1 / d) : ∀ k, p k = 1 / d := by
+  have hzero : (∑ k : Fin d, (1 / d - p k) ^ 2) = 0 := by
+    rw [sum_sq_sub_uniform p hsum hd, heq]; ring
+  have hterm := (Finset.sum_eq_zero_iff_of_nonneg
+    (fun k _ => sq_nonneg (1 / d - p k))).mp hzero
+  intro k
+  have hk : (1 / d - p k) ^ 2 = 0 := hterm k (Finset.mem_univ k)
+  have hk0 : (1 : ℝ) / d - p k = 0 := sq_eq_zero_iff.mp hk
+  linarith
+
+/-- (T3, full) Equality characterization: `collisionProb p = 1/d ↔ p` uniform.
+    The minimum of the expected collision count is attained exactly at the
+    uniform distribution. -/
+theorem collisionProb_eq_iff_uniform (hsum : ∑ k, p k = 1) (hd : 0 < d) :
+    collisionProb p = 1 / d ↔ ∀ k, p k = 1 / d := by
+  constructor
+  · exact uniform_of_collisionProb_eq p hsum hd
+  · intro huniform
+    have hpe : p = fun _ : Fin d => (1 : ℝ) / d := funext huniform
+    rw [hpe]
+    exact collisionProb_uniform hd
 
 end BirthdayDistributionNonUniform
