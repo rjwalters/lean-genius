@@ -66,6 +66,14 @@
   },
   "sections": [
     {
+      "id": "overview-and-setup",
+      "title": "Problem Framing, Parent Dependency, and Imports",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "The module docstring frames Erdős #1179 (Erdős–Hall 1976, gₑ(N) = (1+oₑ(1))·log₂N) and OQ-02's sharpening to an additive Oₑ(1) error, then states what is formalized here: the axiom-free per-subset lower bound N ≤ 2^|A| underlying the parent's abstract axiom basic_lower_bound. It explains the key non-circular insight (μ > 0 from N ≥ 1 alone drives spanning) and records the only dependencies — Erdos1179.total_reprCount and expectedReprCount_pos — followed by the imports (Proofs.Erdos1179Problem, Mathlib), the Erdos1179 namespace, and open Finset Real.",
+      "mathContext": "Sets up $\\mu = 2^{|A|}/N$, the ε-uniformity bound $|F_A(g)-\\mu| \\le \\varepsilon\\mu$, and the parent identity $\\sum_g F_A(g) = 2^{|A|}$ used downstream."
+    },
+    {
       "id": "spanning",
       "title": "Hypothesis-Free Spanning from ε-Uniformity",
       "startLine": 49,
