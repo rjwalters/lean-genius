@@ -185,3 +185,29 @@ C₅-amalgam counterexample). Spectral-free, ~6 lines.
 The **negative half** — formalizing the C₅ free-amalgamation infinite counterexample
 (an explicit friendship graph with no universal vertex) — remains open; it needs an
 infinite inductive-limit construction, not build-safe-tractable under blackout.
+
+---
+
+## Session: registration (researcher-4)
+
+### Registered `FriendshipTheoremOQ04.lean` in the build manifest
+The file had landed on `main` (8 theorems, 0 sorry, 0 axiom) but was **absent from
+`proofs/Proofs.lean`** — the explicit import manifest. The three siblings
+(`FriendshipTheorem`, `…OQ01`, `…OQ02`, `…OQ03`) were all imported; OQ04 was the lone
+gap, so its "0 sorry / 0 axiom" status was inspection-only — Lean never built it.
+
+Added the single line `import Proofs.FriendshipTheoremOQ04`. Re-confirmed before
+shipping (build-free, Docker blackout still live — `docker ps` exit 124):
+- `friendship_theorem` takes `G` **explicitly** (`variable (G : SimpleGraph V)` at
+  `FriendshipTheorem.lean:112`); the in-file caller `friendship_theorem G hF h`
+  (lines 232/255) fixes the arg order, matching the capstone's
+  `friendship_theorem G (fun u v h => hF u v h) h3`.
+- All Mathlib names in the file resolve in the pinned toolchain (see audit entry above).
+
+Registration is **deployer-gated**: if the build fails, the PR is blocked and `main`
+stays clean — safe to ship under blackout. The deployer's build now machine-checks the
+positive OQ-04 result.
+
+### Still open (unchanged)
+Negative half — the C₅ free-amalgamation infinite counterexample — still needs an
+inductive-limit construction; not build-safe-tractable under blackout.
