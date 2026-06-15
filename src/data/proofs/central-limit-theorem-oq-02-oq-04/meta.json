@@ -189,16 +189,12 @@
   ],
   "crossReferences": [
     {
-      "type": "parent",
-      "slug": "central-limit-theorem-oq-02",
-      "title": "Central Limit Theorem OQ-02: Generalization to Dependent Random Variables",
-      "relation": "Direct parent. Defines alphaMixingCoeff, AlphaMixingSequence, longRunVariance, and martingale/mixing CLT axioms. This OQ-02-OQ-04 file imports it and adds the polynomial-rate specialization."
+      "targetId": "central-limit-theorem-oq-02",
+      "relationship": "Direct parent. Defines alphaMixingCoeff, AlphaMixingSequence, longRunVariance, and martingale/mixing CLT axioms. This OQ-02-OQ-04 file imports it and adds the polynomial-rate specialization."
     },
     {
-      "type": "ancestor",
-      "slug": "central-limit-theorem",
-      "title": "Central Limit Theorem (classical)",
-      "relation": "Foundational ancestor. The classical CLT is the i.i.d. specialization of Ibragimov's mixing CLT (α(n) = 0 for n ≥ 1)."
+      "targetId": "central-limit-theorem",
+      "relationship": "Foundational ancestor. The classical CLT is the i.i.d. specialization of Ibragimov's mixing CLT (α(n) = 0 for n ≥ 1)."
     }
   ],
   "conclusion": {

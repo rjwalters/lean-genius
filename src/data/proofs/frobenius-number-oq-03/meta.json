@@ -151,14 +151,12 @@
   },
   "crossReferences": [
     {
-      "slug": "frobenius-number",
-      "title": "Frobenius Number (Two Generators, Sylvester)",
+      "targetId": "frobenius-number",
       "relationship": "parent",
       "description": "The 2-generator parent: Sylvester's 1884 closed form $g(a, b) = ab - a - b$ for coprime $a, b$. The S3b bridge `large_representable3_via_two_gen` imports `FrobeniusNumber.large_representable` directly — the 3-generator Sylvester upper bound is a one-line corollary of the 2-generator theorem (setting $z = 0$). Without the parent's `large_representable`, the entire S3c/S4 stack here would be inaccessible."
     },
     {
-      "slug": "frobenius-number-oq-01",
-      "title": "Frobenius Number: Count of Non-Representable Integers = (a-1)(b-1)/2",
+      "targetId": "frobenius-number-oq-01",
       "relationship": "sibling",
       "description": "The 2-generator count theorem: exactly $(a-1)(b-1)/2$ positive integers are non-representable for coprime $a, b \\ge 2$. The 3-generator analogue (a closed-form count theorem) is **open** — there is no Roberts-type closed form for the count, only for the maximum (the Frobenius number itself, on specific families)."
     },

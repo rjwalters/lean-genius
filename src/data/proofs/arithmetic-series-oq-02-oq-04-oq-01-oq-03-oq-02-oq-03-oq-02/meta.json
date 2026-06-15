@@ -201,13 +201,11 @@
   },
   "crossReferences": [
     {
-      "id": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
-      "title": "q-Multichoose: The Gaussian Binomial as q-Analog of Multiset Coefficients",
+      "targetId": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
       "relationship": "parent — this entry answers (partially) the (q,t)-deformation open question posed in the parent's conclusion; it recovers the parent's qMultichoose at t=1 and bridges its polynomial sub-lattice to the parent's named objects"
     },
     {
-      "id": "combinations-formula-oq-03",
-      "title": "q-Analog Binomial Coefficients (Gaussian Binomial Coefficients)",
+      "targetId": "combinations-formula-oq-03",
       "relationship": "dependency — provides qBinom, qBinom_pascal, qBinom_pascal', qBinom_eq_zero_of_lt, qBinom_one_right, and qNumber_geometric, used to derive the t=1 specialization and the polynomial-form bridges"
     }
   ],

@@ -104,19 +104,19 @@
   },
   "crossReferences": [
     {
-      "id": "combinations-formula-oq-01",
+      "targetId": "combinations-formula-oq-01",
       "relationship": "parent",
-      "note": "Extended Binomial Coefficient Identities — this is OQ-04"
+      "description": "Extended Binomial Coefficient Identities — this is OQ-04"
     },
     {
-      "id": "ballot-problem-oq-03-oq-02",
+      "targetId": "ballot-problem-oq-03-oq-02",
       "relationship": "depends-on",
-      "note": "Imports the r×r LGV proof via Gessel-Viennot involution"
+      "description": "Imports the r×r LGV proof via Gessel-Viennot involution"
     },
     {
-      "id": "ballot-problem-oq-03",
+      "targetId": "ballot-problem-oq-03",
       "relationship": "related",
-      "note": "The 2×2 LGV for ballot problem lattice paths"
+      "description": "The 2×2 LGV for ballot problem lattice paths"
     }
   ],
   "leanFile": {

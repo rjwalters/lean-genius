@@ -175,18 +175,15 @@
   ],
   "crossReferences": [
     {
-      "type": "uses",
-      "slug": "spherical-law-of-cosines",
+      "targetId": "spherical-law-of-cosines",
       "description": "Parent file: provides `SphericalTriangle`, `sideA/B/C`, `angleC`, `arcLength`, `projectPerp`, and `spherical_law_of_cosines_trig`."
     },
     {
-      "type": "related",
-      "slug": "spherical-law-of-sines",
+      "targetId": "spherical-law-of-sines",
       "description": "Companion gallery entry; the haversine formula and the spherical law of sines together give a complete spherical-triangle library."
     },
     {
-      "type": "related",
-      "slug": "law-of-cosines",
+      "targetId": "law-of-cosines",
       "description": "Planar analogue; the haversine formula reduces to the planar law of cosines in the small-angle limit."
     }
   ],

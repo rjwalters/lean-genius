@@ -314,22 +314,16 @@
   },
   "crossReferences": [
     {
-      "type": "sibling",
-      "slug": "angle-trisection-cos-20-gal-oq-01-oq-02",
-      "title": "p=5 case: Galois group of cos(π/5)",
-      "relation": "Sibling file establishing Eisenstein at 5 for the equivalent polynomial 4X²−2X−1 (= r_5(2X+2))."
+      "targetId": "angle-trisection-cos-20-gal-oq-01-oq-02",
+      "relationship": "Sibling file establishing Eisenstein at 5 for the equivalent polynomial 4X²−2X−1 (= r_5(2X+2))."
     },
     {
-      "type": "sibling",
-      "slug": "angle-trisection-cos-20-gal-oq-01",
-      "title": "p=7 case: Galois group of cos(π/7)",
-      "relation": "Sibling file establishing Eisenstein at 7 for the equivalent polynomial 8X³−4X²−4X+1 (= r_7(2X+2))."
+      "targetId": "angle-trisection-cos-20-gal-oq-01",
+      "relationship": "Sibling file establishing Eisenstein at 7 for the equivalent polynomial 8X³−4X²−4X+1 (= r_7(2X+2))."
     },
     {
-      "type": "parent",
-      "slug": "angle-trisection-cos-20-gal",
-      "title": "Galois group of cos(20°) = cos(π/9)",
-      "relation": "Origin of the family. Uses Eisenstein at p=3 for Y³−6Y²+9Y−3. Not part of the prime-p family (9 is not prime) but structurally analogous."
+      "targetId": "angle-trisection-cos-20-gal",
+      "relationship": "Origin of the family. Uses Eisenstein at p=3 for Y³−6Y²+9Y−3. Not part of the prime-p family (9 is not prime) but structurally analogous."
     }
   ]
 }
