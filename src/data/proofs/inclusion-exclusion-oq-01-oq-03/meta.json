@@ -7,7 +7,7 @@
     "author": "August Ferdinand Möbius (1832); formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/M%C3%B6bius_inversion_formula",
     "date": "1832",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/InclusionExclusionOQ01OQ03.lean",
     "tags": [
       "number-theory",
@@ -17,7 +17,7 @@
       "euler-totient",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "0 axioms, 0 sorries. Registered in Proofs.lean (import Proofs.InclusionExclusionOQ01OQ03 present on main), so the gallery build machine-checks it. The proof is a thin, faithful bridge over Mathlib's ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq and Nat.sum_divisorsAntidiagonal at pinned v4.26.0, plus the Euler-φ corollary and the Möbius convolution identity Σ_{d|n} μ(d) = [n=1] (μ ∗ 1 = δ) derived purely from the inversion theorem. All three statements are independently certified by research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py (all n ≤ 400, random data — all pass).",
