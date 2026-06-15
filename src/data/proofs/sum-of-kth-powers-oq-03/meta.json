@@ -100,9 +100,17 @@
       "id": "tiling-and-main",
       "title": "Tiling and Nicomachus's Theorem",
       "startLine": 118,
-      "endLine": 144,
+      "endLine": 140,
       "summary": "tiling (L3): ∑_{i<n}(block i) = ∑_{j<T n}(2j+1), by induction with Finset.sum_Ico_consecutive (the blocks tile [0, T n)). The main theorem sum_cubes_eq_sum_squared_via_odds rewrites each i³ as its block (block_eq_cube), applies tiling and sum_odds to reach (T(n+1))², and closes by rfl since T(n+1) is definitionally ∑_{i<n+1} i — matching the parent's RHS exactly.",
       "mathContext": "$\\sum_{i\\le n} i^3 = \\sum_{j<T(n+1)}(2j+1) = (T(n+1))^2 = \\big(\\sum_{i\\le n} i\\big)^2$."
+    },
+    {
+      "id": "per-cube-corollary",
+      "title": "Per-Cube Corollary: Each Cube as Consecutive Odds",
+      "startLine": 142,
+      "endLine": 155,
+      "summary": "cube_eq_sum_consecutive_odds restates block_eq_cube as a standalone identity over range i: i³ = ∑_{k<i}(2·(T i + k) + 1), the i consecutive odd numbers starting at 2·(T i)+1. Derived from block_eq_cube by Finset.sum_Ico_eq_sum_range and T_succ, eliminating ℕ-subtraction. This is the classical visual form of Nicomachus (1³=1, 2³=3+5, 3³=7+9+11, …).",
+      "mathContext": "$i^3 = \\sum_{k<i}\\bigl(2(T_i + k) + 1\\bigr)$, the $i$ consecutive odds from $2T_i+1$."
     }
   ],
   "crossReferences": [
