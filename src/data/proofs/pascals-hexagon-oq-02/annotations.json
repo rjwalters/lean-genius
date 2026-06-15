@@ -28,7 +28,7 @@
     "title": "The Dual Conic and Tangency",
     "content": "`dualConic C` is the adjugate matrix $\\mathrm{adj}(C)$, representing the **line-conic** (envelope) dual to the point-conic $C$. A line $\\ell$ is `IsTangentLine` to $C$ exactly when, as a vector, it lies on the dual conic: $\\ell^T\\,\\mathrm{adj}(C)\\,\\ell = 0$.",
     "mathContext": "For a nondegenerate conic, $\\mathrm{adj}(C) = (\\det C)\\,C^{-1}$, so the tangency condition $\\ell^T C^{-1}\\ell = 0$ is captured (up to the nonzero scalar $\\det C$) by membership on $\\mathrm{adj}(C)$. The adjugate is used rather than the inverse so the definition makes sense for every conic and avoids invertibility side-conditions.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["dual-conic", "adjugate-matrix", "tangent-line", "envelope"],
     "prerequisites": ["adjugate-matrix", "conic-quadratic-form"]
   },
@@ -52,7 +52,7 @@
     "title": "Circumscribed Hexagon and Main Diagonals",
     "content": "`CircumscribedHexagon D` packages six valid sides $a,\\dots,f$ each lying on the line-conic $D$ (tangent to the dual point-conic). Its vertices are the meets of consecutive sides, and `diagAD`, `diagBE`, `diagCF` are the three main diagonals joining opposite vertices: $AD=(a\\wedge b)\\vee(d\\wedge e)$, $BE=(b\\wedge c)\\vee(e\\wedge f)$, $CF=(c\\wedge d)\\vee(f\\wedge a)$.",
     "mathContext": "Each diagonal is built from the cross product twice: an inner cross product computes a vertex (meet of two sides), and an outer cross product computes the line through two opposite vertices. Because join and meet are the same cross product in this model, no separate 'line through points' machinery is needed.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["circumscribed-hexagon", "main-diagonal", "meet-and-join"],
     "prerequisites": ["cross-product", "conic-quadratic-form"]
   },
