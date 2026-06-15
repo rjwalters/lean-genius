@@ -29,32 +29,35 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-15",
-    "iteration": 2,
-    "focus": "Named the Minkowski bound and proved the class-number head-count; build pending.",
+    "iteration": 3,
+    "focus": "Derived a PID criterion (M_K < 2 ⟹ classNumber 1 ⟹ PID) directly from the S1 head-count; build pending.",
     "blockers": [
-      "Worktree Docker olean cache unavailable — file not kernel-checked.",
-      "Aristotle MCP endpoint returned 'Resource not found'."
+      "Worktree proofs/.lake is the circular self-symlink (0 oleans) — a Docker build would recompile Mathlib from source and OOM; not kernel-checked.",
+      "Aristotle MCP endpoint still returns 'Resource not found'."
     ],
-    "nextAction": "Green Docker build to promote status to verified; resubmit to Aristotle when endpoint recovers.",
+    "nextAction": "Green Docker build (cache-warm deployer) to promote status to verified; resubmit to Aristotle when endpoint recovers. Remaining real content: a concrete quadratic-field example, blocked on a clean discriminant instance.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (build pending): named the Minkowski bound (minkowskiIdealBound), restated the ideal-norm bound, and proved the new estimate classNumber K ≤ #{ideals of norm ≤ ⌊M_K⌋} — the formal backbone of the class-number algorithm, not present in Mathlib.",
+    "progressSummary": "PROGRESS (build pending): named the Minkowski bound (minkowskiIdealBound), restated the ideal-norm bound, proved the new estimate classNumber K ≤ #{ideals of norm ≤ ⌊M_K⌋} (the class-number algorithm's backbone, not in Mathlib), and (S2) derived from it a PID criterion: M_K < 2 ⟹ classNumber K = 1 ⟹ 𝓞 K is a principal ideal ring, obtained directly from the head-count rather than via the discriminant route.",
     "builtItems": [
       "MinkowskiIdealBound.minkowskiIdealBound — reusable def of the Minkowski bound (MinkowskiTheoremOQ03.lean:60)",
       "MinkowskiIdealBound.minkowskiIdealBound_nonneg — bound ≥ 0 (MinkowskiTheoremOQ03.lean:65)",
       "MinkowskiIdealBound.exists_ideal_in_class_absNorm_le — ideal-norm bound vs named constant (MinkowskiTheoremOQ03.lean:74)",
-      "MinkowskiIdealBound.classNumber_le_card_absNorm_le — new class-number head-count (MinkowskiTheoremOQ03.lean:85)"
+      "MinkowskiIdealBound.classNumber_le_card_absNorm_le — new class-number head-count (MinkowskiTheoremOQ03.lean:85)",
+      "MinkowskiIdealBound.classNumber_eq_one_of_minkowskiIdealBound_lt_two — M_K < 2 ⟹ classNumber K = 1, from the head-count (MinkowskiTheoremOQ03.lean:117)",
+      "MinkowskiIdealBound.isPrincipalIdealRing_of_minkowskiIdealBound_lt_two — M_K < 2 ⟹ 𝓞 K is a PID (MinkowskiTheoremOQ03.lean:152)"
     ],
     "insights": [
       "Mathlib's Minkowski bound is only a local notation inside ClassNumber.lean, so it is not reusable downstream; reintroducing it as a definition character-for-character identical to the notation lets exists_ideal_in_class_of_norm_le be reused by definitional unfolding (unfold; exact).",
       "The headline ideal-norm bound and class-group finiteness are already in Mathlib; the genuine new content is the explicit head-count classNumber ≤ #{ideals of bounded norm}.",
       "Counting step: the class-representative map from {ideals of norm ≤ ⌊M_K⌋} onto the class group is surjective (content of the Minkowski bound), and Nat.card_le_card_of_surjective converts this into the cardinality inequality.",
-      "Real→ℕ collapse: absNorm I is a natural number bounded by the real M_K ≥ 0, so Nat.le_floor gives absNorm I ≤ ⌊M_K⌋, matching the natural-number-indexed finiteness lemma finite_setOf_absNorm_le₀."
+      "Real→ℕ collapse: absNorm I is a natural number bounded by the real M_K ≥ 0, so Nat.le_floor gives absNorm I ≤ ⌊M_K⌋, matching the natural-number-indexed finiteness lemma finite_setOf_absNorm_le₀.",
+      "PID criterion from the count (S2): when M_K < 2, ⌊M_K⌋₊ ≤ 1, and since every nonzero ideal has absNorm ≥ 1 with equality iff it is ⊤ (absNorm_pos_of_nonZeroDivisors + absNorm_eq_one_iff), the index subtype is a Subsingleton, so Nat.card ≤ 1 (Nat.card_le_one); chaining with the head-count and classNumber_pos forces classNumber = 1 by omega. This is the classical 'no class survives the Minkowski bound' PID test obtained directly from the head-count, not from the discriminant criterion isPrincipalIdealRing_of_abs_discr_lt."
     ],
     "mathlibGaps": [
       "No reusable named definition of the Minkowski bound (Mathlib hides it as a local notation M K).",

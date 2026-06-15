@@ -105,6 +105,56 @@ theorem classNumber_le_card_absNorm_le :
   rw [hcard]
   exact Nat.card_le_card_of_surjective _ hsurj
 
+/-- **PID criterion from the head-count.** If the Minkowski bound is below `2`, the class
+number is `1`.
+
+This is the qualitative payoff of `classNumber_le_card_absNorm_le`: when `M_K < 2` the only
+integral ideal of norm `≤ ⌊M_K⌋ ≤ 1` is the unit ideal `⊤` (every nonzero ideal has norm
+`≥ 1`, with equality iff it is `⊤`), so the head-count collapses to a single ideal and the
+class number is forced down to `1`. It recovers the classical "no class survives the Minkowski
+bound" PID test directly from the counting estimate, rather than via the discriminant route of
+`RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt`. -/
+theorem classNumber_eq_one_of_minkowskiIdealBound_lt_two
+    (h : minkowskiIdealBound K < 2) : classNumber K = 1 := by
+  -- `⌊M_K⌋₊ ≤ 1` because `0 ≤ M_K < 2`.
+  have hfloor : ⌊minkowskiIdealBound K⌋₊ ≤ 1 := by
+    by_contra hc
+    push_neg at hc
+    have hc2 : (2 : ℕ) ≤ ⌊minkowskiIdealBound K⌋₊ := by omega
+    have h2 : ((2 : ℕ) : ℝ) ≤ minkowskiIdealBound K :=
+      (Nat.le_floor_iff (minkowskiIdealBound_nonneg K)).mp hc2
+    push_cast at h2
+    linarith
+  -- The index set of the head-count is a subsingleton: every member coerces to `⊤`.
+  have hsub : Subsingleton {I : (Ideal (𝓞 K))⁰ //
+      Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊} := by
+    have key : ∀ x : {I : (Ideal (𝓞 K))⁰ //
+        Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊},
+        (x.1 : Ideal (𝓞 K)) = ⊤ := by
+      rintro ⟨I, hI⟩
+      have hpos : 0 < Ideal.absNorm (I : Ideal (𝓞 K)) :=
+        Ideal.absNorm_pos_of_nonZeroDivisors I
+      have h2 : Ideal.absNorm (I : Ideal (𝓞 K)) ≤ 1 := le_trans hI hfloor
+      have hone : Ideal.absNorm (I : Ideal (𝓞 K)) = 1 := by omega
+      exact Ideal.absNorm_eq_one_iff.mp hone
+    refine ⟨fun a b => ?_⟩
+    have hab : (a.1 : Ideal (𝓞 K)) = (b.1 : Ideal (𝓞 K)) := by rw [key a, key b]
+    exact Subtype.ext (Subtype.ext hab)
+  haveI := hsub
+  have hle := classNumber_le_card_absNorm_le K
+  have hpos := NumberField.classNumber_pos (K := K)
+  have hone : Nat.card {I : (Ideal (𝓞 K))⁰ //
+      Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊} ≤ 1 :=
+    Nat.card_le_one
+  omega
+
+/-- The previous bound, packaged as a principal-ideal-ring criterion: a number field whose
+Minkowski bound is below `2` has a principal ideal ring of integers. -/
+theorem isPrincipalIdealRing_of_minkowskiIdealBound_lt_two
+    (h : minkowskiIdealBound K < 2) : IsPrincipalIdealRing (𝓞 K) :=
+  (NumberField.classNumber_eq_one_iff (K := K)).mp
+    (classNumber_eq_one_of_minkowskiIdealBound_lt_two K h)
+
 /-- Restated as finiteness: the class group is finite (already an instance in Mathlib via
 `NumberField.RingOfIntegers.instFintypeClassGroup`), here re-derived as a sanity check that the
 counting bound is meaningful. -/
