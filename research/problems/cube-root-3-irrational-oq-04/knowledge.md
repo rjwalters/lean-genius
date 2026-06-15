@@ -1075,3 +1075,67 @@ without a heartbeat bump.
   + Helpers leanFiles count 753/20 → 808/21.
 - `research/problems/cube-root-3-irrational-oq-04/state.md`: new Current Focus (S22).
 - `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this Session S22 entry.
+
+## Session 2026-06-15 (S27, researcher-2) — twenty-first CF convergent LOWER bound (a20=1, Docker-down)
+
+**Mode:** Helper-ACT (Lean content, narrow, conflict-free). Docker down
+(`docker info` times out — blackout continues). The a12=8 main frontier is
+double-claimed (PRs #23388 DRAFT, #23983 OPEN). The convergent ladder in
+`origin/main` reaches the **19th** (idx18, lower, `1593368375/1104779927`,
+merged S25 #24556); the **17th** (#24516), **18th** (#24538), and **20th**
+(#24612) are open PRs. The next non-colliding forward rung is therefore the
+**21st CF convergent (idx20) LOWER bound**.
+
+**Outcome:** added
+`Cbrt3Helpers.eight_three_five_zero_three_one_five_eight_six_three_over_five_seven_eight_nine_seven_eight_five_six_four_eight_lt_cbrt3 :
+(8350315863/5789785648 : ℝ) < cbrt3` to `CubeRoot3IrrationalOQ04Helpers.lean`.
+Helper file 860 → 887 LOC (+27 LOC, +1 theorem; theoremCount 22 → 23).
+0 sorries, 0 axioms (slug remains 0/0).
+
+### What I did
+
+- Re-derived the CF prefix at **200-digit precision** (Decimal Newton ∛3 + CF
+  extraction): `a₀..a₂₀ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2,6,4,4,1]`,
+  confirming `a₂₀ = 1` (anti-typo discipline — never re-quote a prior sketch tail).
+- Convergent recursion (`a₂₀ = 1`): `p₂₀ = 1·6756947488 + 1593368375 =
+  8_350_315_863`, `q₂₀ = 1·4685005721 + 1104779927 = 5_789_785_648`.
+- Exact-integer cube-direction check: `8350315863³ =
+  582_248_945_773_308_354_436_424_440_647 < 582_248_945_773_308_354_444_942_053_376
+  = 3·5789785648³` (diff `+8_517_612_729`), so `(8350315863/5789785648)³ < 3`
+  ⟹ `8350315863/5789785648 < cbrt3` (valid LOWER bound, even index 20, relative
+  gap `≈ 1.5·10⁻²⁰`).
+- Wrote the theorem with the established two-line lower-bound template
+  `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`.
+
+### Significance / honesty
+
+A **routine, durable helper bound**, not a deep result. Its value is extending
+the verified convergent ladder one rung past main's 19th, prepping the FUTURE
+main-ACT for the partial quotient `cbrt3_a19`. That main-ACT remains gated on
+the still-open `a12 = 8` (#23388/#23983) and the intermediate quotients landing
+in order — the nested-fraction chain grows one rung per quotient and must be
+proved sequentially. So this prep cannot be consumed yet. **Not Docker-verified**
+this session (docker down); the proof relies on the identical `norm_num`
+rational-cube template that compiled clean in S13/S14a/S15a/S22/S25, here with a
+31-digit cube `norm_num` handles without a heartbeat bump.
+
+### Verification artifact (durable)
+
+- `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py` — 200-digit CF
+  recomputation + `a₂₀ = 1` confirmation + convergent recursion + exact integer
+  cube-side direction. CERTIFICATE PASSED.
+
+### Files touched (Session S27)
+
+- `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`: +27 LOC, +1 theorem.
+- `research/scripts/verify_cbrt3_oq04_s27_21st_convergent.py`: new.
+- `src/data/research/problems/cube-root-3-irrational-oq-04.json`: helper
+  lineCount/theoremCount 808/21 → 887/23, currentFocus/nextAction/lastUpdate.
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this entry.
+- `research/problems/cube-root-3-irrational-oq-04/state.md`: S27 focus.
+
+### Next action (S28 Helper-ACT)
+
+22nd CF convergent UPPER bound `31807895077/22054362665` (a₂₁ = 3, idx21 odd =
+upper) via `cbrt3_lt_iff_three_lt_cube`. Re-derive `a₂₁` at ≥200-digit precision
+first (anti-typo). Main a12 chain still contention-blocked.

@@ -189,8 +189,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
-      "lineCount": 808,
-      "theoremCount": 21,
+      "lineCount": 887,
+      "theoremCount": 23,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -199,6 +199,6 @@
     }
   ],
   "lastUpdated": "2026-06-15",
-  "currentFocus": "S21 Helper-ACT: added a13 lower-bound convergent p14=6193523/4294349 (corrected a14=3, not 4); a13 sandwich now complete. a12 frontier math re-verified (exact interval propagation).",
-  "nextAction": "S15b main-ACT (build-gated): prove cbrt3_a13 = 3 using sandwich 6193523/4294349 < cbrt3 < 1865358/1293367, mirroring the cbrt3_a12 nested-fraction chain."
+  "currentFocus": "S27 Helper-ACT: added 21st CF convergent lower bound 8350315863/5789785648 < cbrt3 (a20=1, idx20 even=lower). Next uncontested rung beyond main's 19th (#24556) and open PRs S23 17th/#24516, S24 18th/#24538, S26 20th/#24612. Two-line cubing-iff proof; build-pending (Docker down).",
+  "nextAction": "S28 Helper-ACT: 22nd CF convergent UPPER bound 31807895077/22054362665 (a21=3, idx21 odd=upper) via cbrt3_lt_iff_three_lt_cube; re-derive a21 at 200-digit precision first. Main a12=8 chain (#23388/#23983) still contention-blocked."
 }
