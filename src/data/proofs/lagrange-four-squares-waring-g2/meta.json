@@ -224,7 +224,42 @@
     {
       "targetId": "lagrange-four-squares",
       "relationship": "extends",
-      "description": "Extends the Lagrange four-square theorem to the full Waring problem: g(2) = 4"
+      "description": "Extends the Lagrange four-square theorem to the full Waring problem: g(2) = 4. That entry supplies the upper bound $g(2) \\le 4$ (every $n$ is a sum of four squares, $\\texttt{Nat.sum\\_four\\_squares}$); this entry adds the matching lower bound $g(2) \\ge 4$ and the asymptotic statement $G(2) = 4$."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-04",
+      "relationship": "complementary",
+      "description": "Legendre–Gauss three-square theorem (necessity direction): $4^a(8b+7)$ is never a sum of three squares. This is exactly the obstruction that forces $g(2) \\ge 4$ here — the $\\texttt{excluded\\_form\\_needs\\_four}$ family in this entry is the same arithmetic content. The companion entry isolates and studies that characterization on its own."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The two-square analogue: a prime $p$ is a sum of two squares iff $p = 2$ or $p \\equiv 1 \\pmod 4$. Both results classify which integers are representable by a fixed number of squares via congruence obstructions — mod 4 for two squares, mod 8 for three. Together they trace the descending chain $r_2, r_3, r_4$ that culminates in Lagrange's unconditional four-square theorem."
+    },
+    {
+      "targetId": "four-square-distribution",
+      "relationship": "related",
+      "description": "Where this entry asks how *many* squares are needed, the distribution entry asks how many *ways* $n = a^2+b^2+c^2+d^2$ can be written ($r_4(n)$) and how those representations split across ordering types. Complementary existence-vs-counting views of the same four-square representation problem."
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "related",
+      "description": "Jacobi's exact four-square formula $r_4(n) = 8\\sum_{d \\mid n,\\, 4 \\nmid d} d$. This quantifies Lagrange's qualitative theorem: since the divisor sum is always positive, $r_4(n) > 0$ for every $n$ — an alternative, formula-driven route to the upper bound $g(2) \\le 4$ established here."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-01",
+      "relationship": "related",
+      "description": "Computational complexity of *finding* a four-square representation, complementing this entry's computable $\\texttt{numSquaresNeeded}$ classifier. Knowing $g(2) = 4$ guarantees a representation exists; that entry studies how efficiently one can be produced."
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-02",
+      "relationship": "related",
+      "description": "Classifies how the representations $n = a^2+b^2+c^2+d^2$ distribute among orderings (trivial, all-equal, three-equal, etc.). A finer structural study of the four-square representations whose mere existence is the upper bound proved here."
+    },
+    {
+      "targetId": "elementary-quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "The lower bound rests on the set of quadratic residues mod 8 ($\\{0,1,4\\}$) and mod 4 ($\\{0,1\\}$). Quadratic reciprocity is the deep theory governing quadratic residues across all moduli; the elementary mod-8 census used here is the simplest instance of that residue analysis underpinning representation by quadratic forms."
     }
   ],
   "mainTheorems": [
