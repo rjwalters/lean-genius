@@ -91,5 +91,31 @@
       "endLine": 424,
       "summary": "Polar inner products of U=v×w, V=w×u, W=u×v via Binet–Cauchy (polar_inner_*, polar_self_*), and dual_law_polar_form: the dual law is the side law of the polar triangle."
     }
+  ],
+  "conclusion": {
+    "summary": "The dual (angles) spherical law of cosines $\\cos C = -\\cos A\\,\\cos B + \\sin A\\,\\sin B\\,\\cos c$ is formalized radical-free and division-free: after substituting the normal-form expressions for the angle cosines and sines and multiplying through by $\\sin a\\,\\sin b\\,\\sin^2 c$, the entire law collapses to a single polynomial identity (dual_poly) closed by ring. The geometric, trigonometric, and cross-product forms are recovered from it, and the polar-triangle identity dual_law_polar_form makes the duality dual(T) = primal(polar T) an explicit algebraic equality rather than a heuristic correspondence.",
+    "implications": "Because the dual law is derived from the side law (the angle cosines/sines are the side law solved for the angle, not independent inputs), the two cosine laws of spherical trigonometry are exposed as a single algebraic object viewed through the polar-triangle involution. The characteristic minus sign of the dual law is identified precisely as the algebraic shadow of the supplements $\\cos(\\pi-A) = -\\cos A$. The radical-free clearing strategy — replace every $\\sin$ and angle by its side-cosine normal form, then close by ring — is a reusable template for formalizing spherical and hyperbolic trigonometric identities without analytic side conditions or non-degeneracy hypotheses.",
+    "openQuestions": [
+      "Does the same clear-radicals-then-ring strategy yield the hyperbolic dual law of cosines $\\cosh C = -\\cosh A\\,\\cosh B + \\sinh A\\,\\sinh B\\,\\cosh c$ over a Lorentzian (Minkowski) inner-product structure, with the cross product replaced by its pseudo-Euclidean analogue?",
+      "Can the polar-triangle involution be packaged as a single Lean definition on triangles (vertices → polar vertices) so that the side law and the dual law become one theorem applied to a triangle and to its polar, rather than two separately proved identities?",
+      "What is the right non-degeneracy hypothesis to upgrade the cleared polynomial form back to the full trigonometric statement on degenerate or antipodal configurations, where some $\\sin a$ vanishes and the division by $\\sin a\\,\\sin b\\,\\sin c$ is no longer valid?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "spherical-law-of-cosines",
+      "relationship": "dual-of",
+      "description": "The parent entry formalizes the side law $\\cos c = \\cos a\\,\\cos b + \\sin a\\,\\sin b\\,\\cos C$. This entry establishes its polar dual: applying the side law to the polar triangle (vertices u×v, v×w, w×u) reproduces the dual law cos C = −cos A·cos B + sin A·sin B·cos c, with the sign flip arising from the supplements π−A, π−a."
+    },
+    {
+      "targetId": "spherical-law-of-cosines-oq-05",
+      "relationship": "related",
+      "description": "A sibling open-question entry in the spherical-law-of-cosines family, built on the same unit-vector / dot-and-cross-product infrastructure on S²."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "specializes",
+      "description": "In the small-angle (flat) limit the spherical relations reduce to the planar law of cosines c² ≈ a² + b² − 2ab·cos C; the dual angle law degenerates to the Euclidean fact A + B + C = π (angle sum), the flat shadow of the spherical excess."
+    }
   ]
 }
