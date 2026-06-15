@@ -149,23 +149,19 @@
   },
   "crossReferences": [
     {
-      "id": "spherical-law-of-cosines",
-      "title": "Spherical Law of Cosines",
+      "targetId": "spherical-law-of-cosines",
       "relationship": "Direct predecessor: proves cos(c) = cos(a)cos(b) + sin(a)sin(b)cos(C). This entry proves the dual law by importing SphericalLawOfCosines and using its inner product decomposition lemma."
     },
     {
-      "id": "law-of-cosines-oq-01",
-      "title": "Spherical Law of Cosines (Open Question)",
+      "targetId": "law-of-cosines-oq-01",
       "relationship": "Parent open question about spherical trigonometry; this entry answers the specific question about the dual law."
     },
     {
-      "id": "spherical-law-of-sines",
-      "title": "Spherical Law of Sines",
+      "targetId": "spherical-law-of-sines",
       "relationship": "Sibling result: sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c). Both the dual cosine law and the sine rule follow from the same Gram determinant framework."
     },
     {
-      "id": "law-of-cosines",
-      "title": "Law of Cosines",
+      "targetId": "law-of-cosines",
       "relationship": "Planar analogue: c² = a² + b² − 2ab·cos(C). The spherical law of cosines reduces to this as the sphere radius → ∞ (small-angle limit)."
     }
   ],

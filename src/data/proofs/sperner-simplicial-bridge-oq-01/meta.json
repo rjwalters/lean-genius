@@ -117,34 +117,28 @@
   ],
   "crossReferences": [
     {
-      "type": "generalisation-of",
-      "slug": "sperner-simplicial-bridge",
-      "rationale": "OQ-01 strictly generalises the pure pseudomanifold case to mixed-dimension complexes. `MixedPseudomanifold.of_pure` proves the embedding of pure data into the mixed framework."
+      "targetId": "sperner-simplicial-bridge",
+      "description": "OQ-01 strictly generalises the pure pseudomanifold case to mixed-dimension complexes. `MixedPseudomanifold.of_pure` proves the embedding of pure data into the mixed framework."
     },
     {
-      "type": "uses",
-      "slug": "sperner-simplicial-bridge",
-      "rationale": "The per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
+      "targetId": "sperner-simplicial-bridge",
+      "description": "The per-stratum proof is a single application of the parent's `exists_panchromatic` on the chosen stratum after packaging per-stratum `hcard`, `hpseudo`, and `hbdry`."
     },
     {
-      "type": "sibling-of",
-      "slug": "sperner-simplicial-instance",
-      "rationale": "Both slugs build on `sperner-simplicial-bridge`. `sperner-simplicial-instance` provides concrete Kuhn-style triangulation instances of the parent; this slug extends the parent's framework to non-pure (mixed-dimension) complexes."
+      "targetId": "sperner-simplicial-instance",
+      "description": "Both slugs build on `sperner-simplicial-bridge`. `sperner-simplicial-instance` provides concrete Kuhn-style triangulation instances of the parent; this slug extends the parent's framework to non-pure (mixed-dimension) complexes."
     },
     {
-      "type": "depends-on",
-      "slug": "sperner-mathlib",
-      "rationale": "The parent's `exists_panchromatic` (which this slug's headline theorem applies stratum-by-stratum) is built on the abstract door-counting parity machinery established in `sperner-mathlib`. Transitively, the mixed-dimension result inherits its combinatorial backbone from the `Sperner.IsDoor` / `Sperner.IsPanchromatic` predicates introduced there."
+      "targetId": "sperner-mathlib",
+      "description": "The parent's `exists_panchromatic` (which this slug's headline theorem applies stratum-by-stratum) is built on the abstract door-counting parity machinery established in `sperner-mathlib`. Transitively, the mixed-dimension result inherits its combinatorial backbone from the `Sperner.IsDoor` / `Sperner.IsPanchromatic` predicates introduced there."
     },
     {
-      "type": "related-to",
-      "slug": "sperner-ndim-mathlib",
-      "rationale": "`sperner-ndim-mathlib` proves Sperner's lemma on the standard `n`-simplex in Mathlib's `CellComplex` setting. The mixed-pseudomanifold framework here is the abstract-`Finset (Finset E)`-of-cells counterpart, with the dimensional stratification playing the role of `CellComplex.facesOfDim`. The two lines of work converge in OQ-02 (`Mathlib.Geometry.SimplicialComplex.facets` bridge)."
+      "targetId": "sperner-ndim-mathlib",
+      "description": "`sperner-ndim-mathlib` proves Sperner's lemma on the standard `n`-simplex in Mathlib's `CellComplex` setting. The mixed-pseudomanifold framework here is the abstract-`Finset (Finset E)`-of-cells counterpart, with the dimensional stratification playing the role of `CellComplex.facesOfDim`. The two lines of work converge in OQ-02 (`Mathlib.Geometry.SimplicialComplex.facets` bridge)."
     },
     {
-      "type": "related-to",
-      "slug": "sperner-ndim-mathlib-oq-01",
-      "rationale": "`sperner-ndim-mathlib-oq-01` lifts Sperner to the Freudenthal `CellComplex` framework — a parallel exercise in extending Sperner beyond its pure-simplicial origins. Both slugs address Open Question 1 of their respective parents; the mixed-dimension generalisation here is to abstract simplicial complexes what the Freudenthal lift is to cell complexes."
+      "targetId": "sperner-ndim-mathlib-oq-01",
+      "description": "`sperner-ndim-mathlib-oq-01` lifts Sperner to the Freudenthal `CellComplex` framework — a parallel exercise in extending Sperner beyond its pure-simplicial origins. Both slugs address Open Question 1 of their respective parents; the mixed-dimension generalisation here is to abstract simplicial complexes what the Freudenthal lift is to cell complexes."
     }
   ],
   "overview": {

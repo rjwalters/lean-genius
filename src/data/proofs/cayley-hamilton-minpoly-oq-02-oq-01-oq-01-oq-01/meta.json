@@ -176,18 +176,15 @@
   },
   "crossReferences": [
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
-      "title": "Skolem-Noether for Matrix Algebras",
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01-oq-01",
       "relationship": "Parent: proves Skolem-Noether for the special case B = Mₙ(K) using an elementary matrix approach. This entry extends to arbitrary central simple algebras via Wedderburn-Artin + isotypic decomposition."
     },
     {
-      "id": "cayley-hamilton-minpoly-oq-02-oq-01",
-      "title": "Minimal Polynomial Preservation",
+      "targetId": "cayley-hamilton-minpoly-oq-02-oq-01",
       "relationship": "Grandparent: minimal polynomial preservation under algebra equivalences — the seed of the Skolem-Noether chain. Establishes the algebraic context for why automorphisms must be inner."
     },
     {
-      "id": "cayley-hamilton",
-      "title": "Cayley-Hamilton Theorem",
+      "targetId": "cayley-hamilton",
       "relationship": "Foundational: Cayley-Hamilton provides the polynomial integrality that underlies the minimal polynomial machinery used throughout this chain."
     }
   ],

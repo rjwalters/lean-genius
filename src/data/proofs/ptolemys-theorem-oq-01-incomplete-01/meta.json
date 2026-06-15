@@ -128,17 +128,17 @@
   },
   "crossReferences": [
     {
-      "slug": "ptolemys-theorem-oq-01",
+      "targetId": "ptolemys-theorem-oq-01",
       "relationship": "extends",
       "description": "Provides the forward direction (CCW → Ptolemy equality) and defines IsCCWOrder; this file proves the converse"
     },
     {
-      "slug": "ptolemys-complex-proof",
+      "targetId": "ptolemys-complex-proof",
       "relationship": "uses",
       "description": "Source of ptolemy_equality_of_proportional, used in the backward direction of the biconditional"
     },
     {
-      "slug": "ptolemys-complex-proof-oq-01",
+      "targetId": "ptolemys-complex-proof-oq-01",
       "relationship": "uses",
       "description": "Source of ptolemy_equality_implies_proportional, the first step of the converse proof"
     }

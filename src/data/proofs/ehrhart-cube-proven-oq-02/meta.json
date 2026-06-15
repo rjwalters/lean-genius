@@ -184,13 +184,11 @@
   },
   "crossReferences": [
     {
-      "slug": "ehrhart-cube-proven",
-      "title": "Ehrhart Polynomial of the Unit Cube",
+      "targetId": "ehrhart-cube-proven",
       "relationship": "Parent proof whose OQ-02 this answers. Uses (n+1)^d via Fintype.card_fun."
     },
     {
-      "slug": "ehrhart-cube-proven-oq-01",
-      "title": "Ehrhart Polynomial of the Standard Simplex",
+      "targetId": "ehrhart-cube-proven-oq-01",
       "relationship": "Sibling proof (OQ-01) using multisets Sym (Fin(d+1)) n for the simplex case."
     }
   ],

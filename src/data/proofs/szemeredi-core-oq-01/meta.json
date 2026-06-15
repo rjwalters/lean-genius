@@ -93,13 +93,11 @@
   },
   "crossReferences": [
     {
-      "id": "szemeredi-core",
-      "title": "Szemer\u00e9di Core Definitions",
+      "targetId": "szemeredi-core",
       "relationship": "Imports edgeDensity, partitionEnergy, and IsEpsilonRegular from this parent file."
     },
     {
-      "id": "szemeredi-regularity",
-      "title": "Szemer\u00e9di Regularity",
+      "targetId": "szemeredi-regularity",
       "relationship": "Imports irregularity witness existence from this sibling file."
     }
   ],
