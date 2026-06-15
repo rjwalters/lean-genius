@@ -1,0 +1,106 @@
+{
+  "slug": "wilsons-theorem-oq-02-ext-oq-01",
+  "title": "Two-Involution Trick as a General Theorem on Finite Abelian Groups",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "standard",
+  "problemStatement": {
+    "formal": "\\forall \\text{ finite abelian } G,\\ \\prod_{x \\in G} x = t \\text{ if } G \\text{ has a unique } t \\text{ with } t^2=1, t\\neq 1; \\text{ else } \\prod_{x \\in G} x = 1.",
+    "plain": "Can the two-involution trick (used to prove the Gauss-Wilson theorem for the unit group (ZMod n)ˣ) be formalized as a general theorem about arbitrary finite abelian groups?",
+    "whyMatters": [
+      "Separates the genuinely group-theoretic content of Gauss-Wilson from the (ZMod n)-specific cyclicity case analysis.",
+      "The general statement is strictly more elementary than the proven specialization: it takes the cardinality bound on square roots of 1 as a hypothesis instead of deriving it via CRT and the 2^k case split."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Gauss-Wilson for (ZMod n)ˣ (WilsonsTheoremOQ02Ext.gaussWilson_abstract_ext): product of units = -1 iff (ZMod n)ˣ is cyclic.",
+      "Abstract pairing lemma prod_eq_prod_sq_eq_one for any finite CommGroup (already in WilsonsTheoremOQ02Ext).",
+      "Abstract prod_involution_const and even_card_of_fpf_involution for any finite CommGroup."
+    ],
+    "open": [],
+    "goal": "State and prove the general finite-abelian-group Gauss-Wilson theorem and its constituent two-involution lemma."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-15T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Generalized two-involution trick from (ZMod n)ˣ to arbitrary finite abelian groups.",
+    "blockers": [
+      "Docker build unavailable this session (dual-backend blackout); Lean file is build-pending and not yet registered in proofs/Proofs.lean."
+    ],
+    "nextAction": "On a Docker-up session: build Proofs.WilsonsTheoremOQ02ExtOQ01, then register it in proofs/Proofs.lean.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ACT (build-pending): wrote general CommGroup theorems generalizing the proven (ZMod n)ˣ two-involution trick. Heart theorem is a near-verbatim copy of prod_units_one_of_not_cyclic_ext with the 3 ≤ |{x:x²=1}| cardinality bound taken as a hypothesis.",
+    "builtItems": [
+      "WilsonsTheoremOQ02ExtOQ01.prod_eq_one_of_three_le_card_sqrt_one: finite CommGroup with ≥3 square roots of 1 ⇒ product of all elements = 1 (the general two-involution trick).",
+      "WilsonsTheoremOQ02ExtOQ01.prod_eq_one_of_no_involution: no element of order 2 ⇒ product = 1.",
+      "WilsonsTheoremOQ02ExtOQ01.prod_eq_unique_involution: unique element t of order 2 ⇒ product = t.",
+      "WilsonsTheoremOQ02ExtOQ01.prod_eq_one_or_unique_involution: full characterization (product = unique involution if one exists, else 1).",
+      "research/verification/wilsons_oq02_ext_oq01_abelian.py: exact check over 1311 finite abelian groups (cyclic n≤200, products a,b≤30, selected higher-rank products, and unit groups (ZMod n)ˣ n≤200)."
+    ],
+    "insights": [
+      "Inspecting prod_units_one_of_not_cyclic_ext (WilsonsTheoremOQ02Ext.lean:362-436): the ONLY (ZMod n)-specific step is line 373 deriving 3 ≤ |S| from ¬IsCyclic via GaussWilsonNonCyclic; everything from prod_eq_prod_sq_eq_one onward is already stated for an arbitrary finite CommGroup.",
+      "The general theorem is therefore MORE elementary than the proven specialization — it sheds the entire CRT / 2^k case analysis of GaussWilsonNonCyclic by taking the cardinality bound as a hypothesis.",
+      "S = {x : x²=1} is the kernel of x↦x², an elementary abelian 2-group, so |S| is always a power of 2; the value |S|=3 never occurs, but 3 ≤ |S| is exactly what the two-involution trick needs (it implies |S| ≥ 4).",
+      "Mathlib (as of v4.26.0) has only the field-units case FiniteField.prod_univ_units_id_eq_neg_one (underlying ZMod.wilsons_lemma); there is no general finite-abelian-group 'product = unique involution or 1' theorem.",
+      "Python verification confirmed the trichotomy exactly on 1311 groups (0 mismatches), including the pairing lemma prod(G)=prod(S) and |S| being a power of 2."
+    ],
+    "mathlibGaps": [
+      "No general theorem 'product of all elements of a finite abelian group = unique element of order 2 if one exists, else 1' in Mathlib v4.26.0 (only the field-units/Wilson specialization exists)."
+    ],
+    "nextSteps": [
+      "Build Proofs.WilsonsTheoremOQ02ExtOQ01 under Docker and register it in proofs/Proofs.lean (deferred due to blackout).",
+      "Optionally upstream the general two-involution theorem to Mathlib (self-contained, ~150 LOC, fills a clear gap).",
+      "Optionally restate gaussWilson_abstract_ext for (ZMod n)ˣ as a corollary of the new general theorem to de-duplicate."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "group-theory",
+    "number-theory",
+    "extension"
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-02-ext",
+    "gauss-wilson-non-cyclic-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "P. L. Clark, Wilson's Theorem: An Algebraic Approach (generalization to finite commutative groups)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "FiniteField.prod_univ_units_id_eq_neg_one",
+      "ZMod.wilsons_lemma"
+    ]
+  },
+  "started": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-15T00:00:00.000Z",
+  "completed": null,
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/WilsonsTheoremOQ02ExtOQ01.lean",
+      "filename": "WilsonsTheoremOQ02ExtOQ01.lean",
+      "lineCount": 220,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "buildStatus": "pending-docker",
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WilsonsTheoremOQ02ExtOQ01.lean"
+    }
+  ]
+}
