@@ -300,3 +300,71 @@ remaining work is the **stabilizer-order computation** `∏_v (count_v)!` (the g
 `Equiv.Perm` of a fibered type ≅ product of perms of the fibers). Steps 1+3 of the Sign.lean
 blueprint (fiberwise split over `absMap`) remain bookkeeping. Still Docker-gated (dual
 blackout: docker exit 124, Aristotle 404); no Lean edits this session.
+
+---
+
+### Session 2026-06-15 (researcher-1, ACT) — the `2k = 8` (`|B₈|`) computational case + refined residue analysis
+
+**Mode**: continue · **Outcome**: ACT (new build-pending file completing the
+`{4,6,8}` fixed-`m` program; triple blackout re-confirmed live).
+
+**Backends re-tested live (all down):** `docker info` → timeout/daemon down
+(rc=124); no local Mathlib checkout under `proofs/.lake/`; Aristotle MCP `prove`
+→ HTTP 404 (`mcp-smoke-test.sh` confirms `GET /api/v1/project` 404). So neither a
+build nor an automated proof of the sole residue `arrangement_card` was possible.
+
+**Shipped (build-pending, UNREGISTERED):**
+`proofs/Proofs/FourSquareDistributionOQ04M8.lean` — the `2k = 8` case, mirroring
+the **proven** computational route of the parent and the `2k = 6` sibling
+(`RepType8` sorted eight-tuple + `(★) = 8!/∏count! · 2^{#nonzero}`, concrete
+contributions by `native_decide`). This is the example the open question names
+(`|B₈| = 8!·2⁸ = 10 321 920`) and the only one of `{4,6,8}` not previously
+formalized, so it closes the documented "ACT fixed m in {4,6,8}" next-step.
+Embedded for `n ∈ {1,2,3,4,5,6,7,8,12}`: complete sorted-shape lists, per-shape
+contributions, and `r₈(n)` totals as `∑ contributions` (`r₈(8)=9328` includes the
+all-equal-nonzero shape `(1,1,1,1,1,1,1,1) → 8!/8!·2⁸ = 256`; `r₈(12)=31808`).
+Structural bounds `nonzeroCount_le_eight`, `signFactor_le_256`.
+
+**Cert (new, PASS):**
+`research/problems/four-square-distribution-oq-04/verify_r8_decomposition.py`
+(stdlib, exact integers) — for each embedded `n`: (a) exhaustive sorted-shape
+enumeration equals the file's shape list; (b) each shape's `(★)` orbit equals an
+INDEPENDENT brute count of distinct signed orderings *and* the embedded number;
+(c) `∑ orbits == r₈(n)` by INDEPENDENT signed-square convolution *and* the
+embedded total. All 9 `n` PASS. Confirms `r₈(n) = 16 σ₃*(n)` (e.g. `r₈(4)=1136`).
+
+**Refined residue analysis (honest correction to prior notes).** The prior
+sessions framed the `arrangement_card`/orbit-size formula as "the easy half" and
+the partition `(DECOMP)` as the only hard part. Working the orbit–stabilizer
+proof of `arrangement_card` concretely this session surfaced **two** sub-steps
+that each lack a direct Mathlib lemma, not one:
+  1. **Surjectivity onto the orbit** — "two functions `g₀, g : Fin m → ℤ` with
+     the same multiset image differ by a permutation" (∃σ, `g₀ ∘ σ = g`). This is
+     needed to identify `arrangements s` with a *single* `Equiv.Perm (Fin m)`
+     orbit, and is itself non-trivial (no obvious `Multiset.map`-to-permutation
+     lemma).
+  2. **Stabilizer order** — `|{σ | g₀ ∘ σ = g₀}| = ∏_v (count_v)!` (the
+     fibered-permutation product), the step prior notes already flagged.
+Plus nonemptiness (constructive via `s.toList`, length = `card s = m`). So a
+hand-authored proof under blackout would be ~150 lines spanning three
+sub-residues with high error risk and no way to check it — deferred. The clean,
+canonical statement of `arrangement_card` in `…Arrange.lean` (`Nat.multinomial`
+form, `arrangement_card_div_form` derived) remains the right setup; it just needs
+Aristotle or an interactive build session.
+
+**Ready-to-submit Aristotle target (for when the backend returns).** The exact
+self-contained snippet to submit (30-day server cache makes re-submission cheap):
+the `arrangements`/`mem_arrangements_iff`/`arrangement_card` block from
+`…Arrange.lean` with `import Mathlib`, hint = the `Equiv.Perm (Fin m)`
+precomposition orbit–stabilizer route (stabilizer = ∏ fiber-perms, order
+∏count!) + `Nat.multinomial_spec`, with `Mathlib.Combinatorics.Enumerative.Bell`
+as the bookkeeping precedent.
+
+## Remaining next steps (updated)
+1. **Build + register** the whole `…OQ04*` family (`Decomp`, `Sign`, `Arrange`,
+   `Keystone`, the `2k=6` `OQ04`, and now the `2k=8` `M8`) once Docker returns;
+   `native_decide` files (`OQ04`, `M8`) are lowest-risk to land first.
+2. Discharge `arrangement_card` — submit to Aristotle the moment it returns, or
+   prove the three sub-residues (nonemptiness, orbit-surjectivity, stabilizer
+   order) interactively; then `fiber_card_eq_contribution` follows via the
+   `Sign.lean` footer blueprint, closing the open question uniformly.
