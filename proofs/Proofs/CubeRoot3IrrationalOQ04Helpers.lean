@@ -805,4 +805,57 @@ theorem cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S24 prep: eighteenth CF convergent upper bound (one rung beyond S23)
+
+The eighteenth convergent of the simple CF of `∛3` is
+
+  `p₁₇/q₁₇ = (a₁₇·p₁₆ + p₁₅) / (a₁₇·q₁₆ + q₁₅)`
+  `       = (6 · 59472423 + 26639450) / (6 · 41235875 + 18470763)`
+  `       = 383_473_988 / 265_886_013`.
+
+It is built on the seventeenth convergent `p₁₆/q₁₆ = 59472423/41235875`
+(the lower bound being added in parallel by S23) together with the
+sixteenth convergent `p₁₅/q₁₅ = 26639450/18470763` already on `main`.
+
+This convergent is odd-index (17), so it lies on the UPPER side of `∛3`,
+alternating with the lower-side seventeenth convergent `59472423/41235875`
+(S23). `a₁₇ = 6` was derived from a 200-digit CF recomputation of `∛3`
+(true prefix `a₀..a₁₉ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4,
+2, 6, 4, 4]`), per the S9-prep / S15a anti-typo discipline: never re-quote
+a prior sketch tail, always recompute `aᵢ`.
+
+Convergent recursion (with `a₁₇ = 6`):
+
+  `q₁₇ = 6 · q₁₆ + q₁₅ = 6 · 41235875 + 18470763 = 265_886_013`
+  `p₁₇ = 6 · p₁₆ + p₁₅ = 6 · 59472423 + 26639450 = 383_473_988`
+
+After cubing,
+
+  `383_473_988³     = 56_390_731_723_337_477_324_766_272`
+  `3 · 265_886_013³ = 56_390_731_723_337_476_944_612_591`
+
+so `383_473_988³ = 56_390_731_723_337_477_324_766_272 >
+56_390_731_723_337_476_944_612_591 = 3 · 265_886_013³` (strict, diff
+`+380_153_681`), hence `(383_473_988/265_886_013)³ > 3` and
+`cbrt3 < 383_473_988/265_886_013` as required for an upper bound. The new
+upper cube gap (relative-to-`3·q³`: `≈ 6.7·10⁻¹⁸`) is roughly two orders
+of magnitude tighter than S15's sixteenth-convergent upper gap of
+`≈ 2.55·10⁻¹⁵` — consistent with `383_473_988/265_886_013` being two true
+convergents further along than `26_639_450/18_470_763`.
+
+The theorem is self-contained (proved purely by cubing the rational via
+the cubing-iff helper) and so does not depend on the seventeenth-convergent
+theorem landing first. Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 383473988/265886013`. Cube target: `(383473988/265886013)³ =
+56_390_731_723_337_477_324_766_272 / 265_886_013³ > 3` (strict:
+`383473988³ = 56_390_731_723_337_477_324_766_272 >
+56_390_731_723_337_476_944_612_591 = 3 · 265886013³`, gap `+380_153_681`).
+The eighteenth convergent of the simple CF of `∛3`
+(using `a₁₇ = 6` per a 200-digit CF recomputation). -/
+theorem cbrt3_lt_three_eight_three_four_seven_three_nine_eight_eight_over_two_six_five_eight_eight_six_zero_one_three :
+    cbrt3 < (383473988 / 265886013 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
