@@ -93,7 +93,7 @@ def SmallPrimes (C : ℝ) : Set ℕ :=
 /-- The "reduced" quotient: n!/(a!b!) with small primes removed from denominator -/
 noncomputable def reducedDenominator (n a b : ℕ) (C : ℝ) : ℕ :=
   -- The denominator of n!/(a!b!) with factors from small primes removed
-  Classical.choose (⟨1, fun _ => rfl⟩ : ∃ d : ℕ, d > 0)
+  Classical.choose (⟨1, Nat.one_pos⟩ : ∃ d : ℕ, d > 0)
 
 /-- The relaxed divisibility condition: a!b! | n! up to small primes -/
 def DividesFactorialModSmall (n a b : ℕ) (C : ℝ) : Prop :=
