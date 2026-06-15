@@ -1,7 +1,7 @@
 {
   "slug": "pell-equation-oq-05",
   "title": "Norm Equations in Number Fields of Degree > 2",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -21,29 +21,36 @@
       "Norm equation N(xi)=2 solved by xi=t (N(t)=2); the coset t*u^k gives infinitely many solutions in one class mod units (Z[cbrt2] has class number 1).",
       "Classical Pell x^2-2y^2=1 recovered as the rank-1 real-quadratic special case (Brahmagupta chain from (3,2))."
     ],
+    "proven_lean_buildpending": [
+      "PellEquationOQ05.lean (S4, build-pending, unregistered): cnorm_eq_det (norm form = det of mult matrix via Matrix.det_fin_three_of), cnorm_cmul (norm multiplicative, ring), cnorm_u + cmul_u_uinv (u=t-1 unit of norm 1), cnorm_upow (every u^k has norm 1 -> infinite Pell chain, by induction), qnorm Pell-recovery chain."
+    ],
     "open": [
-      "Lean formalization of the rank specialization for a concrete cubic (Docker-gated; no build this session).",
-      "Clean Lean statement of finiteness of N(xi)=m solution classes modulo O_K^x."
+      "Lean rank specialization: prove card(InfinitePlace (AdjoinRoot(X^3-2)))=2 (signature (1,1)) -> rank=1. Mathlib ships NO signature-from-minpoly procedure; this is the bearer-less LOC-dominant step, still deferred.",
+      "Clean Lean statement of finiteness of N(xi)=m solution classes modulo O_K^x.",
+      "Distinctness of the u^k (|u|<1 at the real place) to upgrade cnorm_upow to a literal 'infinitely many' cardinality statement."
     ],
     "goal": "Formalize, for a concrete cubic field (Q(cbrt2)), the unit-group rank and the N(xi)=1 chain via the fundamental unit, plus a general finiteness statement for N(xi)=m solution classes, reusing Mathlib’s Dirichlet unit theorem."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-14T21:05:00-07:00",
-    "iteration": 2,
-    "focus": "ORIENT survey: math structure verified with sympy; Mathlib API located; milestones decomposed into buildable vs Docker-gated.",
-    "blockers": [],
-    "nextAction": "ACT (Docker-gated): write Proofs/PellEquationOQ05.lean instantiating NumberField.Units.rank for Q(cbrt2) and stating norm-equation finiteness.",
+    "phase": "ACT",
+    "since": "2026-06-15",
+    "iteration": 4,
+    "focus": "Wrote PellEquationOQ05.lean (build-pending, unregistered) formalizing the concrete cubic-Pell core that needs no signature/Dirichlet machinery: cubic norm form = det, multiplicativity, fundamental unit t-1, and the inductive norm-1 chain cnorm_upow. Sidesteps the S3 place-count blocker, which stays the open hard Lean target.",
+    "blockers": [
+      "Unit rank via signature: card(InfinitePlace (AdjoinRoot(X^3-2)))=2 has no Mathlib signature-from-minpoly bearer; must hand-wire embeddings<->roots of X^3-2."
+    ],
+    "nextAction": "Build PellEquationOQ05.lean once Docker is up (docker-build.sh Proofs.PellEquationOQ05); then attempt the rank/signature step under a backend-up session.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (ORIENT): structure of the higher-degree norm equation verified from first principles via reproducible sympy script; Mathlib Dirichlet API identified; ACT is Docker-gated.",
+    "progressSummary": "PROGRESS (ACT): wrote PellEquationOQ05.lean (build-pending, unregistered) formalizing the concrete cubic-Pell core — norm form = det, multiplicativity, fundamental unit t-1, and the inductive norm-1 chain cnorm_upow — decoupled from the bearer-less signature/Dirichlet step, which stays the deferred hard target. Identities sympy-verified exactly.",
     "builtItems": [
-      "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass)."
+      "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass).",
+      "proofs/Proofs/PellEquationOQ05.lean — (build-pending, unregistered) cnorm/cnorm_eq_det, cmul/cnorm_cmul (multiplicativity), u/uinv/cnorm_u, cnorm_upow (chain norm 1 by induction), qnorm Pell-recovery. 0 axioms, 0 sorries."
     ],
     "insights": [
       "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
@@ -57,10 +64,10 @@
       "No off-the-shelf statement packaging finiteness of N(xi)=m solution classes as an O_K^x-orbit count; would need bridging from ClassGroup finiteness + Units."
     ],
     "nextSteps": [
-      "ACT (Docker-gated): instantiate NumberField.Units.rank / rank_modTorsion for K=Q(cbrt2), proving rank = 1 from signature (1,1).",
-      "State recover-Pell lemma: real quadratic => rank 1, matching parent pell-equation.",
-      "Formalize cubic norm form via Algebra.norm / det of mul matrix and verify N(t-1)=1.",
-      "State (not necessarily prove) finiteness of N(xi)=m solution classes using ClassGroup finiteness + Units."
+      "Build PellEquationOQ05.lean: ./proofs/scripts/docker-build.sh Proofs.PellEquationOQ05. Fallback if Matrix.det_fin_three_of is missing: simp [Matrix.det_fin_three]; ring. On green, register import + gallery meta.json (status verified, 0 axioms).",
+      "Hard open Lean target: instantiate NumberField.Units.rank for K=AdjoinRoot(X^3-2), proving rank=1 from card(InfinitePlace K)=2 — needs a hand-built embeddings<->roots-of-X^3-2 place count (no Mathlib bearer).",
+      "Optionally connect cnorm to Algebra.norm (𝓞 K) via the power basis to upgrade the standalone norm form to the genuine field norm.",
+      "State finiteness of N(xi)=m solution classes using ClassGroup finiteness + Units."
     ]
   },
   "tags": [
@@ -82,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-06-15T01:25:28.243Z",
-  "lastUpdate": "2026-06-14T21:05:00-07:00",
+  "lastUpdate": "2026-06-15",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [

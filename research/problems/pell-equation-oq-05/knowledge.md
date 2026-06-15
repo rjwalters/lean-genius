@@ -158,3 +158,55 @@ verification de-risk the eventual ACT step.
 3. Recover-Pell lemma: real quadratic $\Rightarrow$ rank 1 (ties to parent).
 4. Cubic norm via `Algebra.norm` / det; verify $N(t-1)=1$.
 5. State finiteness of $N(\xi)=m$ classes via `ClassGroup` finiteness + `Units`.
+
+---
+
+## Session 4 (researcher-5, 2026-06-15) — ACT on the concrete core (build-pending)
+
+**Mode**: continue (ACT; Docker + Aristotle both down again this session).
+**Outcome**: progress — wrote `proofs/Proofs/PellEquationOQ05.lean` formalizing the
+**concrete cubic-Pell core that needs NO signature/Dirichlet machinery**, sidestepping
+the S3 blocker (the bearer-less `card (InfinitePlace K) = 2` place-count). Items 4 and the
+Pell-recovery part of item 3 above are now done in Lean; items 1–2 (rank/signature) remain.
+
+### What I Did
+Wrote a self-contained ℤ-arithmetic file (0 axioms, 0 sorries) over $\mathbb{Z}[t]/(t^3-2)$:
+- `cnorm a b c = a³+2b³+4c³-6abc` and `cnorm_eq_det`: it equals the determinant of the
+  multiplication matrix `!![a,2c,2b; b,a,2c; c,b,a]` (via `Matrix.det_fin_three_of` + `ring`)
+  — i.e. it IS `Algebra.norm` of $a+bt+ct^2$, computed.
+- `cmul`: the explicit ring multiplication (reduce by $t^3=2$); `cnorm_cmul`: **N is
+  multiplicative** (a 6-variable polynomial identity, closed by `ring`).
+- `u=t-1=(-1,1,0)`, `uinv=t²+t+1=(1,1,1)`: `cmul_u_uinv` ($u\,u^{-1}=1$) and `cnorm_u`
+  ($N(u)=1$).
+- `upow k` and **`cnorm_upow : ∀k, cnorm3 (upow k)=1`** (induction via `cnorm_cmul`+`cnorm_u`):
+  the higher-degree Pell chain — infinitely many $N(\xi)=1$ solutions. `upow 1..4` match
+  the S2 values $(-1,1,0),(1,-2,1),(1,3,-3),(-7,-2,6)$.
+- Parent tie-in: `qnorm p q=p²-2q²`, `qnorm_fundamental` (3,2), `qnorm_chain`
+  (17,12),(99,70),(577,408) all norm 1.
+
+### Verification without a build (Docker down)
+- `sympy` confirms every identity exactly: `cnorm_cmul` residual $=0$, det$-$cnorm$=0$,
+  $u\,u^{-1}=(1,0,0)$, $N(u)=1$, and $N(u^k)=1$ for $k\le5$ with the S2 coordinate values.
+
+### Honesty / scope
+- This is the **concrete algebraic core**, deliberately decoupled from `NumberField`/
+  `Algebra.norm` API so it compiles without the blocked place-count. It rigorously
+  establishes multiplicativity + an explicit unit + the infinite norm-1 chain (the actual
+  Pell-analogue payoff). It does **NOT** prove the unit *rank* (= 1 via signature (1,1)),
+  which remains the deferred hard, Mathlib-bearer-less part (S3 §"Bearer pin + ACT re-scope").
+  "Infinitely many" is honest modulo the unstated analytic distinctness of the $u^k$
+  (|u|<1 at the real place); the file states `cnorm_upow` for all $k$, not distinctness.
+- **Build-pending**: no `lake`/Docker available, so compile is unverified. Risk is
+  concentrated in `cnorm_eq_det` (relies on `Matrix.det_fin_three_of`); the ring/decide/
+  induction core is near-certain. Left UNREGISTERED in `Proofs.lean`.
+
+### Files Modified
+- `proofs/Proofs/PellEquationOQ05.lean` (new; build-pending, NOT registered)
+- `research/problems/pell-equation-oq-05/knowledge.md` (this note)
+
+### Next Steps
+- Build once Docker is up: `./proofs/scripts/docker-build.sh Proofs.PellEquationOQ05`.
+  If `Matrix.det_fin_three_of` is misnamed/missing, fall back to
+  `simp [Matrix.det_fin_three]; ring`.
+- The hard rank/signature ACT (S3 items 1–2) is still the open Lean target; attempt under a
+  backend-up session.
