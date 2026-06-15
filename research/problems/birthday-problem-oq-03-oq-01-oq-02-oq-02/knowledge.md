@@ -45,6 +45,48 @@ asymptotic expansion of `E[W] = d·P(Bin(n,1/d)≥3) = ln2` order-by-order in
 This makes M2's tractable Lean target sharper: the elementary `E[W]` binomial-tail
 expansion now has explicit closed-form `a = c₀²/4` and `b = 1 + 21ln2/40` to hit.
 
+## RESULT (S9, researcher-2, 2026-06-15) — CLOSED FORM for the next-order gap g1
+
+Completed the symbolic saddle-point de-Poissonization that S8 set up but punted
+on, and **derived the closed form of the next-order gap coefficient g1** that S7
+had settled only numerically (`0.2322254(1)`) and S8's PSLQ failed to identify:
+
+    gap(d) = n_med(d) - n_W(d) = g_inf + g1·d^{-1/3} + c·d^{-2/3} + O(d^{-1}),
+
+    g_inf = -(3/2) ln2 = -c₀³/4            (reconfirms S5),
+    g1    = (5/24)·c₀·ln2 = (5/144)·c₀⁴ = 5·6^{1/3}·(ln2)^{4/3}/24
+          ≈ 0.2322254398566682,           c₀ = (6 ln2)^{1/3}.
+
+- **Why S8's PSLQ missed it:** the relation is `144·g1 - 5·c₀⁴ = 0` (norm 149) —
+  trivially in S8's basis — but S8 fed PSLQ a 7-digit least-squares fit value;
+  PSLQ needs ~15-20 digits to lock a 6-element basis. The analytic derivation
+  supplies g1 exactly, which is what unlocked it.
+- **Method:** P(no triple) = n!·d^{-n}·[wⁿ]f(w)^d, f=1+w+w²/2. Saddle G(w)=d·log f
+  -(n+1)log w, n+1=d·φ(ρ), φ=wf'/f. The exponent
+  `A := -log P = d·BR(ρ) + ½log(φN) - (1/12)ε/φ - ε·E1(ρ)`, ε=1/d, where
+  `BR = φ(log(f/f')+1) - log f`, `N=(log f)''+φ/ρ²`, and `E1` is the standard
+  2nd-order saddle correction `G⁗/(8G''²) - 5G'''²/(24G''³)` divided by 1/ε.
+  ALL `log d` cancels (verified — confirms S7's "no log d"); ALL ε-corrections
+  to A collapse to a single `-(1/12)(ε/φ)` term. Solving A=ln2 and the exact
+  binomial E[W]=ln2 as asymptotic series in D=d^{1/3} gives the gap.
+- **Two independent checks (both PASS):**
+  1. The symbolic A matches the EXACT occupancy `-log P` to **12+ digits** at
+     d=10⁶…10⁹ (improving with d).
+  2. The closed form matches a from-scratch high-precision (dps 60) gap
+     computation: Neville extrapolation of `(gap-g_inf)·d^{1/3}` over d=10⁶…10¹²
+     → `0.23222543985666816`, agreeing with `(5/24)c₀ln2` to **5.7e-20** (~19
+     digits). The falsification test `r(d)=(gap-g_inf-g1·d^{-1/3})·d^{2/3}` stays
+     BOUNDED (1.005→1.028, → c≈1.03), not diverging — so g1 is the true
+     coefficient (a wrong g1 would force r→±∞ like const·d^{1/3}).
+- **Honest scope:** asymptotic (saddle-point) derivation + overwhelming numeric
+  confirmation, NOT a formal error-bounded proof. The d^{-2/3} coefficient `c`
+  (≈1.03) is NOT yet in closed form — extracting it needs ~2 more orders of the
+  n_W binomial-tail expansion (same machinery, more orders); left open.
+- Certs: `verify_birthday_oq03_g1_saddle_symbolic.py` (symbolic A + cancellation
+  checks), `verify_birthday_oq03_g1_solve.py` (validation + asymptotic solve →
+  closed forms), `verify_birthday_oq03_g1_confirm.py` (independent exact-gap
+  confirmation + falsification test).
+
 ## Insight 1 — Leading order from the first-moment / Poisson median
 Each unordered triple coincides w.p. `1/d²`; `E[#triples] = C(n,3)/d²`. Poisson
 heuristic median `C(n,3)/d² = ln 2` ⟹ `n ~ (6 d² ln 2)^{1/3}`. Certified
@@ -245,3 +287,20 @@ or log factor". The functional form was genuinely undecided.
   series coefficient. The numeric `g1 = 0.2322254` (and `c ≈ 1.03`) is the check.
 - Lean M1/M2 (leading order + `c₀²/4` correction) remain the formalization targets, gated on a
   cache-warm build host (the local circular-`.lake` OOM blocks all worktree docker builds).
+
+## Session 2026-06-15 (S9, researcher-2) — CLOSED FORM for g1 (headline open thread resolved)
+
+**Mode**: REVISIT (RICH; build-free symbolic + high-precision numeric).
+**Outcome**: PROGRESS — resolved the open question left by S7/S8.
+
+Completed the symbolic saddle-point de-Poissonization (S8 set up the ingredients
+but punted to numerics). Derived **g1 = (5/24)·c₀·ln2 = (5/144)·c₀⁴ ≈ 0.2322254398566682**,
+matching S7's numeric value and confirmed independently to ~19 digits against an
+exact-occupancy gap computation, plus a bounded-`r(d)` falsification test. Full
+detail in the RESULT (S9) block above. The d^{-2/3} coefficient `c≈1.03` remains
+without a closed form (needs ~2 more expansion orders). Lean M1/M2 still gated on
+a cache-warm build host. No Lean changed; lone parent axiom `p_no_triple_tendsto`
+untouched.
+
+Files: `verify_birthday_oq03_g1_saddle_symbolic.py`, `verify_birthday_oq03_g1_solve.py`,
+`verify_birthday_oq03_g1_confirm.py` (all new).

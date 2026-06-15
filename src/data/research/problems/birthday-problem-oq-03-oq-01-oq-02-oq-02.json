@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-14",
-    "iteration": 3,
+    "iteration": 4,
     "lastUpdate": "2026-06-15",
-    "focus": "Closed the surrogate<->exact-median chain: c0/4 confirmed against the exact median; 1/c0 sub-coefficient re-scoped as heuristic for the integer median.",
+    "focus": "S9 derived the closed form g1 = (5/24)c0 ln2 = (5/144)c0^4 via completed symbolic saddle-point de-Poissonization (S8 punted on it); confirmed independently to ~19 digits. g_inf=-(3/2)ln2 reconfirmed. c~1.03 still open.",
     "blockers": [
       "Docker down (no lake build); Aristotle MCP 404; Lean formalization of E[W] tail expansion deferred."
     ],
-    "nextAction": "When Docker is up, formalize M1 (leading order) + M2 (E[W] tail expansion to the Theta(d^{-1/3}) / c0/4 term ONLY; the 1/c0 term is heuristic for the integer median).",
-    "attemptCounts": 3
+    "nextAction": "Extract the d^{-2/3} gap coefficient c~1.03 in closed form (extend the saddle/E[W] series ~2 orders). When Docker is up, formalize M1 (leading order) + M2 (E[W] tail expansion to the c0/4 term).",
+    "attemptCounts": 4
   },
   "knowledge": {
     "insights": [
@@ -37,25 +37,31 @@
       "S6 (researcher-7): the next-order gap term is NOT a cleanly settled const*d^{-1/3}. h(t)=(gap-g_inf)/d^{-1/3} decreases monotonically 0.2390->0.2344 over d=2e6..6.4e7 and is still falling; Neville extrapolation does not converge. The prior S5 'flattens to 0.24' read a slowly-varying h too early. Headline g_inf=-(3/2)ln2 solidly reconfirmed; next coeff, if a constant, g1~0.231(4) (revised DOWN from 0.24), closest simple candidate ln2/3=0.23105 but UNCONFIRMED (PSLQ null).",
       "S7 (researcher-9): SETTLED the next-order gap functional form. gap(d)-g_inf = g1 d^{-1/3} + c d^{-2/3} + O(d^{-1}) is a CLEAN power series with NO log d factor. Explicit competing-model fits (A: const*u, B: a*u+b*u*ln d, C: a*u+c*u^2) on sliding d-windows to d=1e9: Model C wins (residual 1.2e-6 vs A 9.5e-5 vs B 2.1e-5), its a-coeff stable. Model A drifts 0.234->0.249 == S6 non-convergence, explained: h=(gap-g_inf)/u is LINEAR in u, not constant.",
       "Sharp value g1 = 0.2322254(1) (deepest-window 4-term pure-power fit, stable to ~1e-7). REFUTES S6 candidate ln2/3=0.23105 (off by 1.2e-3) and 7/30. PSLQ over {1,ln2,c0,c0^2,c0 ln2,1/c0} maxcoeff 5000: no relation. c (d^{-2/3} coeff) ~ 1.03.",
-      "Analytic corroboration of no-log: in the saddle-point eval of [x^n](1+x+x^2/2)^d, the prefactor -1/2 log(2*pi*rho) (rho ~ d^2/n) plus Stirling +1/2 log(2*pi*n) gives +log mu, which cancels the -log mu of the main saddle term n log mu - (n+1) log x* (x*=mu(1+O(mu^2))). Remaining corrections are clean powers of t=d^{-1/3}."
+      "Analytic corroboration of no-log: in the saddle-point eval of [x^n](1+x+x^2/2)^d, the prefactor -1/2 log(2*pi*rho) (rho ~ d^2/n) plus Stirling +1/2 log(2*pi*n) gives +log mu, which cancels the -log mu of the main saddle term n log mu - (n+1) log x* (x*=mu(1+O(mu^2))). Remaining corrections are clean powers of t=d^{-1/3}.",
+      "S9 (researcher-2): CLOSED FORM for g1. Completing the symbolic saddle-point de-Poissonization (S8 punted to numerics) gives g1 = (5/24) c0 ln2 = (5/144) c0^4 = 5*6^{1/3}(ln2)^{4/3}/24 ~ 0.2322254398566682, and reconfirms g_inf = -(3/2)ln2 = -c0^3/4. Method: exponent A:=-logP = d*BR(rho) + (1/2)log(phi*N) - (1/12)eps/phi - eps*E1(rho) with eps=1/d, BR=phi(log(f/f')+1)-log f, N=(log f)''+phi/rho^2, E1 the standard 2nd-order saddle correction; ALL log d cancels and ALL eps-corrections collapse to -(1/12)(eps/phi). Solve A=ln2 and exact-binomial E[W]=ln2 as series in D=d^{1/3}; gap = n_med - n_W.",
+      "S9 why S8's PSLQ missed g1: the relation 144*g1 - 5*c0^4 = 0 (norm 149) was in S8's basis, but S8 fed PSLQ only a 7-digit fit value (needs ~15-20 digits for a 6-element basis). The analytic derivation supplies g1 exactly. The d^{-2/3} coefficient c~1.03 is NOT yet closed-form (needs ~2 more expansion orders).",
+      "S9 verification (both PASS): (1) symbolic A matches the EXACT occupancy -logP to 12+ digits at d=1e6..1e9 (improves with d); (2) closed form matches a from-scratch dps-60 gap computation -- Neville extrap of (gap-g_inf)d^{1/3} over d=1e6..1e12 -> 0.23222543985666816, agreeing with (5/24)c0 ln2 to 5.7e-20 (~19 digits); falsification test r(d)=(gap-g_inf-g1 d^{-1/3})d^{2/3} stays BOUNDED (1.005->1.028 -> c~1.03), confirming g1 is the true coefficient. Honest: asymptotic derivation + numeric confirmation, not an error-bounded proof."
     ],
     "builtItems": [
       "research/scripts/verify_birthday_oq03_second_order.py — exact median via log-space occupancy P(no triple)=n![x^n](1+x+x^2/2)^d/d^n, d=50..10^5.",
       "research/scripts/verify_birthday_oq03_correction_coeff.py — real root of E[W]=ln2 (cancellation-free tail) confirming eps*d^{1/3}->c0/4 and (n_W-n_X)/d^{1/3}->c0^2/4, d=10^2..10^11.",
       "research/scripts/verify_birthday_oq03_poisson_gap.py — S3: head-to-head gap n_med_real - n_W over d=50..2*10^5, confirming c0/4 against the exact median and re-scoping 1/c0 as heuristic.",
       "research/scripts/verify_birthday_oq03_g1_coefficient.py: full-mpmath (dps=50) occupancy GF + surrogate root, seeded median; clears the float64 cancellation wall (reliable d pushed 2e6 -> 6.4e7) and tabulates h(t) with Neville/2-pt/PSLQ extrapolation.",
-      "research/scripts/verify_birthday_oq03_g1_logterm.py — exact occupancy P(no triple)=n![x^n](1+x+x^2/2)^d/d^n via PEAK-TRUNCATED j-sum (sum outward from j~n^2/(2d), early stop; matches full sum to 1e-40) reaching d=1e9 (S6 stalled 6.4e7); centered-Vandermonde interpolation; sliding-window model fits + PSLQ."
+      "research/scripts/verify_birthday_oq03_g1_logterm.py — exact occupancy P(no triple)=n![x^n](1+x+x^2/2)^d/d^n via PEAK-TRUNCATED j-sum (sum outward from j~n^2/(2d), early stop; matches full sum to 1e-40) reaching d=1e9 (S6 stalled 6.4e7); centered-Vandermonde interpolation; sliding-window model fits + PSLQ.",
+      "research/scripts/verify_birthday_oq03_g1_saddle_symbolic.py (S9) — builds the symbolic saddle-point exponent A=-logP as a clean Laurent series in rho (sympy); verifies the log-d cancellation and the -(1/12)(eps/phi) collapse of all eps-corrections.",
+      "research/scripts/verify_birthday_oq03_g1_solve.py (S9) — validates symbolic A vs exact -logP to 12+ digits, then solves A=ln2 and E[W]=ln2 as asymptotic series in D=d^{1/3} to extract g_inf=-(3/2)ln2 and g1=(5/24)c0 ln2 in closed form.",
+      "research/scripts/verify_birthday_oq03_g1_confirm.py (S9) — independent dps-60 exact-gap confirmation: Neville extrap -> g1 to ~19 digits matching the closed form, plus the bounded-r(d) falsification test."
     ],
     "mathlibGaps": [
       "Only Archive/Wiedijk100Theorems/BirthdayProblem.lean (basic pairwise birthday). No occupancy/k-collision asymptotics. The second-order correction needs only an elementary binomial-upper-tail expansion (<300 lines), NOT Stein-Chen; Stein-Chen is only for the o(d^{-2/3}) remainder.",
       "No occupancy/de-Poissonization asymptotics in Mathlib 4.26; the sub-leading gap structure (whether a clean d^{-1/3} constant, or a non-integer power / log d factor) is open analytically."
     ],
     "nextSteps": [
-      "Analytic de-Poissonization to one more order of R(d)=logP(W=0)+E[W] now has a clean target (no log term to chase) — predict closed forms for g1=0.2322254 and c~1.03.",
+      "DONE (S9): closed form g1 = (5/24)c0 ln2 = (5/144)c0^4. Remaining analytic frontier: extract the d^{-2/3} coefficient c~1.03 in closed form by extending the same saddle/E[W] series ~2 more orders (n_W binomial-tail expansion currently truncated short).",
       "Lean M1 (leading order) + M2 (c0^2/4 correction) remain gated on a cache-warm build host (local worktree docker builds OOM on Mathlib via the circular .lake symlink).",
-      "Optional M3: Stein-Chen bound for P(W=0)-e^{-E[W]} to rigorise the O(d^{-2/3}) remainder."
+      "Optional M3: Stein-Chen bound for P(W=0)-e^{-E[W]} to rigorise the O(d^{-2/3}) remainder (would also upgrade the S9 derivation from asymptotic+numeric to error-bounded)."
     ],
-    "progressSummary": "PROGRESS (S7): next-order gap functional form SETTLED — clean d^{-1/3}+d^{-2/3} power series, NO log d; g1=0.2322254(1) refutes ln2/3 and explains S6 non-convergence. Lean formalization gated."
+    "progressSummary": "PROGRESS (S9): CLOSED FORM derived for the next-order gap coefficient g1 = (5/24)c0 ln2 = (5/144)c0^4 = 5*6^{1/3}(ln2)^{4/3}/24 ~ 0.2322254398566682 (matches S7 numeric; confirmed independently to ~19 digits + bounded-r(d) falsification test). Completes the saddle-point de-Poissonization S8 punted on; reconfirms g_inf=-(3/2)ln2. c~1.03 still open; Lean gated."
   },
   "tags": [
     "gallery-extracted",
