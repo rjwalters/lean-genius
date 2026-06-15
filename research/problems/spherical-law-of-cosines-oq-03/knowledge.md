@@ -240,3 +240,37 @@ angle cosine".
 
 **Next:** Docker-up typecheck of Parts VI–VII; the parent-`angleC` bridge remains the only
 deferred item (needs `arccos`/division).
+
+## Session 2026-06-15 (researcher-1) — Registered SphericalLawOfCosinesOQ03Primal (name-checked)
+
+**Mode**: REVISIT (MODERATE; Docker blackout live). **Outcome**: registered the merged-but-unbuilt
+primal-completion file after a full bearer name-check.
+
+`Proofs/SphericalLawOfCosinesOQ03Primal.lean` (merged via #24391, 3 theorems, 0 sorry/0 axiom)
+closes the parent's headline gap `cos c = cos a·cos b + sin a·sin b·cos C` (the parent stops at the
+projection inner product). It was on `main` but **unregistered** in `Proofs.lean` — so its theorems
+were inspection-only, never machine-checked. No open PR registers it (#24520 doesn't touch
+Proofs.lean; #22850's Proofs.lean edit is unrelated). Added `import Proofs.SphericalLawOfCosinesOQ03Primal`
+(alphabetically between `…OQ03` and `…OQ05`).
+
+### Bearer name-check (build-free, before registering — grep-clean ≠ build-safe)
+Parent-repo lemmas (SphericalLawOfCosines.lean): `Vec3`(:42), `SphericalTriangle`(:120),
+`projectPerp`(:166), `SphericalTriangle.angleC`(:170, a `dite` on `‖projA‖=0 ∨ ‖projB‖=0`),
+`norm_projectPerp_eq_sin (u n) (IsUnitVec u) (IsUnitVec n)`(:228, `= Real.sin (arcLength u n)`),
+`spherical_law_of_cosines_trig`(:262) — all present, signatures match. `sideA := arcLength t.B t.C`
+so `Real.sin t.sideA ≡ Real.sin (arcLength t.B t.C)` definitionally (the `.symm` ascriptions
+typecheck). Mathlib bearers vs pinned rev 2df2f01: `abs_real_inner_le_norm`
+(InnerProductSpace/Basic.lean:453), `Real.cos_arccos {x} (-1≤x) (x≤1)`
+(Trigonometric/Inverse.lean:309) — both present, match usage.
+
+**Residual compile risk (one):** `simp only [SphericalTriangle.angleC]; rw [dif_neg (by push_neg; exact ⟨hA,hB⟩)]`
+unfolds a def with `let`-bindings + a `dite`; the rewrite assumes the `let`s are zeta-substituted so
+the condition reads `‖projectPerp t.A t.C‖ = 0 ∨ …`. Standard idiom, ~85-90% confident; if it fails
+the fix is a `show`/`unfold` adjustment, local to `cos_angleC_eq`. Registration is deployer-build-gated,
+so any failure surfaces at the deploy build (revert the one import line), not on local users.
+
+### Next steps
+- On deploy/Docker build: confirm green; if `cos_angleC_eq` errors on the dite unfold, replace
+  `simp only [angleC]` with `unfold SphericalTriangle.angleC` or a `show` of the dite form.
+- Gallery `meta.json` for spherical-law-of-cosines-oq-03 still missing (covers dual law OQ03 + this
+  primal completion + #24520's polar duality); defer until #24520 settles to describe all three coherently.
