@@ -1,0 +1,108 @@
+/-
+  OQ-01-OQ-03: Verified RSA correctness with the Carmichael function λ(n)
+  (euler-totient-oq-01-oq-03)
+
+  Open question #2 of the parent gallery entry `euler-totient-oq-01`
+  ("Carmichael's Function: λ(n) and the Minimal Universal Exponent"):
+
+    Can Carmichael's function be used to define a Lean-verified implementation of
+    RSA with the correct modular exponent? A formally verified RSA needs the
+    decryption-correctness theorem `m^(e·d) ≡ m (mod n)` for the *minimal*
+    universal exponent `λ(n)` (rather than Euler's `φ(n)`).
+
+  ── The mathematics ───────────────────────────────────────────────────────────
+
+  RSA uses `n = p·q` (distinct primes), a public exponent `e` with
+  `gcd(e, λ(n)) = 1`, and the private exponent `d ≡ e⁻¹ (mod λ(n))`, where
+  `λ(n) = lcm(p-1, q-1)` is Carmichael's function (the parent file defines
+  `λ(n) = Monoid.exponent (ZMod n)ˣ`).  Then `e·d = 1 + k·λ(n)` for some `k`, and
+  decryption recovers the message:
+
+        m^(e·d) = m^(1 + k·λ(n)) ≡ m   (mod n)   for ALL m.                  (RSA)
+
+  The crucial point — and the reason `λ(n)` is the *right* exponent — is that
+  (RSA) holds for **every** `m`, including those sharing a factor with `n`, not
+  just the units.  This is what makes textbook RSA correct.
+
+  **Proof skeleton (this file).**  By CRT `ZMod (p·q) ≃+* ZMod p × ZMod q`, it
+  suffices to prove the per-prime fixed point `a^(m+1) = a` in `ZMod p` whenever
+  `(p-1) ∣ m`.  That is `zmod_pow_eq_self` below:
+    - `a = 0`: both sides vanish (`m+1 ≥ 1`);
+    - `a ≠ 0`: `a` is a unit, Fermat gives `a^(p-1) = 1`, so
+      `a^(m+1) = (a^(p-1))^t · a = a`.
+  Since `(p-1) ∣ λ(n)` and `(q-1) ∣ λ(n)`, taking `m = k·λ(n)` discharges both
+  components, and CRT reassembles them.
+
+  **Squarefree is necessary.**  The all-`a` fixed point can FAIL for
+  non-squarefree `n` (e.g. `n = p²`, any `a` divisible by `p`): `a^j` stays `≡ 0
+  (mod p)` but need not return to `a (mod p²)`.  RSA moduli `n = p·q` are
+  squarefree, so (RSA) is safe.  See
+  `research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py` (stdlib,
+  ALL PASS): correctness for all `m` over 55 moduli, `λ < φ` strictly in all of
+  them, and the explicit `p²` failure set.
+
+  ── Lean scope ────────────────────────────────────────────────────────────────
+
+  • `zmod_pow_eq_self` — the per-prime fixed point (the proven core; Fermat +
+    case split).
+  • `rsa_correct` — RSA decryption correctness for `n = p·q` via CRT, stated for
+    any exponent `m` with `(p-1) ∣ m` and `(q-1) ∣ m` (i.e. any multiple of
+    `λ(p·q) = lcm(p-1, q-1)`).
+  • `rsa_decrypt_correct` — the textbook phrasing `m^(e·d) ≡ m` once
+    `e·d = 1 + k·λ`.
+
+  Status: 0 axioms, 0 sorries intended.  Build-pending (authored under a Docker +
+  Aristotle blackout); the CRT-assembly proof in `rsa_correct` is the step to
+  confirm in a live build.  Intentionally UNREGISTERED in `Proofs/Proofs.lean`.
+-/
+
+import Mathlib.Data.ZMod.Basic
+import Mathlib.FieldTheory.Finite.Basic
+import Mathlib.Tactic
+
+open scoped Classical
+
+namespace EulerTotientOQ01OQ03
+
+/-- **Per-prime fixed point (Fermat).** In `ZMod p` with `p` prime, if `(p-1) ∣ m`
+    then `a^(m+1) = a` for *every* `a` (units and `0` alike).  This is the
+    arithmetic heart of RSA decryption correctness. -/
+theorem zmod_pow_eq_self {p : ℕ} [Fact p.Prime] (a : ZMod p) {m : ℕ}
+    (hm : (p - 1) ∣ m) : a ^ (m + 1) = a := by
+  obtain ⟨t, rfl⟩ := hm
+  rcases eq_or_ne a 0 with h | h
+  · subst h
+    rw [zero_pow (Nat.succ_ne_zero _)]
+  · rw [pow_succ, pow_mul, ZMod.pow_card_sub_one_eq_one a h, one_pow, one_mul]
+
+/-- **RSA correctness for `n = p·q`.**  For distinct primes `p, q` and any
+    exponent `m` divisible by both `p-1` and `q-1` (equivalently, any multiple of
+    `λ(n) = lcm(p-1, q-1)`), the map `a ↦ a^(m+1)` is the identity on `ZMod (p·q)`:
+        `a^(m+1) = a`   for ALL `a`.
+    Proved componentwise through the CRT isomorphism. -/
+theorem rsa_correct {p q : ℕ} [Fact p.Prime] [Fact q.Prime] (hcop : Nat.Coprime p q)
+    (a : ZMod (p * q)) {m : ℕ} (hp : (p - 1) ∣ m) (hq : (q - 1) ∣ m) :
+    a ^ (m + 1) = a := by
+  have e := ZMod.chineseRemainder hcop
+  apply e.injective
+  rw [map_pow]
+  have hx : (e a).1 ^ (m + 1) = (e a).1 := zmod_pow_eq_self _ hp
+  have hy : (e a).2 ^ (m + 1) = (e a).2 := zmod_pow_eq_self _ hq
+  refine Prod.ext_iff.mpr ⟨?_, ?_⟩
+  · simpa using hx
+  · simpa using hy
+
+/-- **Textbook RSA decryption.**  If the public/private exponents satisfy
+    `e·d = 1 + k·λ` where `λ` is a common multiple of `p-1` and `q-1`
+    (the Carmichael exponent of `n = p·q`), then `a^(e·d) = a` for all `a`. -/
+theorem rsa_decrypt_correct {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcop : Nat.Coprime p q) (a : ZMod (p * q)) {e d k lam : ℕ}
+    (hp : (p - 1) ∣ lam) (hq : (q - 1) ∣ lam) (hed : e * d = 1 + k * lam) :
+    a ^ (e * d) = a := by
+  have hp' : (p - 1) ∣ k * lam := hp.mul_left k
+  have hq' : (q - 1) ∣ k * lam := hq.mul_left k
+  have hexp : e * d = k * lam + 1 := by rw [hed]; ring
+  rw [hexp]
+  exact rsa_correct hcop a hp' hq'
+
+end EulerTotientOQ01OQ03

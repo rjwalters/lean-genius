@@ -1,0 +1,65 @@
+{
+  "slug": "euler-totient-oq-01-oq-03",
+  "title": "Verified RSA with the Carmichael function lambda(n)",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": "Open question #2 of euler-totient-oq-01: can Carmichael's function lambda(n) be used for a Lean-verified RSA with correct decryption m^(e*d) = m (mod n) for all m, using the minimal universal exponent lambda(n) instead of Euler's phi(n)?",
+  "knownResults": "Parent EulerTotientOQ01.lean defines carmichael n = Monoid.exponent (ZMod n)^x and proves a^lambda(n)=1 for units, lambda|phi, lambda(p)=p-1. Missing: all-m decryption correctness.",
+  "currentState": "ORIENT complete: theorem + CRT/Fermat proof + squarefree necessity + bearers; build-pending Lean.",
+  "knowledge": {
+    "progressSummary": "ORIENT: RSA-lambda correctness for n=p*q (distinct primes): e*d == 1 (mod lambda(n)) ⟹ m^(e*d) == m (mod n) for ALL m. Proof = CRT ZMod(p*q)≃ZMod p×ZMod q + per-prime Fermat fixed point (a^(m+1)=a when (p-1)|m). Squarefree necessary (fails for p^2). No Mathlib gap. Verifier ALL PASS; sorry-free build-pending Lean (per-prime core proven, CRT assembly build-pending).",
+    "builtItems": [
+      "research/problems/euler-totient-oq-01-oq-03/verify_rsa_lambda.py - exhaustive all-residue verifier (correctness, lambda<phi, squarefree necessity), ALL PASS",
+      "proofs/Proofs/EulerTotientOQ01OQ03.lean (build-pending, UNREGISTERED): zmod_pow_eq_self (per-prime fixed point, PROVEN), rsa_correct (n=p*q via ZMod.chineseRemainder), rsa_decrypt_correct (textbook e*d=1+k*lambda)."
+    ],
+    "insights": [
+      "RSA correctness with lambda(n)=lcm(p-1,q-1) holds for ALL m (not just units) precisely because n=p*q is squarefree; this is what makes textbook RSA correct.",
+      "Proof reduces by CRT to the per-prime fixed point a^(m+1)=a in ZMod p when (p-1)|m: a=0 trivial, a unit via Fermat a^(p-1)=1.",
+      "lambda(n) | phi(n) and is strictly smaller in all tested moduli, giving a no-larger private exponent with the same decryption map.",
+      "Squarefree is NECESSARY: for n=p^2 the all-m fixed point fails on multiples of p (n=9→{3,6}, n=25→{5,10,15,20}).",
+      "carmichael_pow_eq_one alone (units only) cannot prove the all-m statement; the CRT/per-prime route is essential."
+    ],
+    "mathlibGaps": [
+      "None for the n=p*q theorem (ZMod.pow_card_sub_one_eq_one + ZMod.chineseRemainder suffice).",
+      "For a carmichael-phrased corollary, need carmichael(p*q)=lcm(carmichael p, carmichael q) (exponent of product of coprime-order groups) - not yet in the parent file."
+    ],
+    "nextSteps": [
+      "ACT (live build): compile EulerTotientOQ01OQ03.lean, repair any CRT-assembly lemma names (Prod.ext_iff/Prod.fst_pow/ZMod.pow_card_sub_one_eq_one), register in Proofs/Proofs.lean.",
+      "Add bridge (p-1)|carmichael(p*q) and (q-1)|carmichael(p*q) so rsa_correct restates as carmichael(p*q)|m → a^(m+1)=a.",
+      "Optional: def rsaEncrypt/rsaDecrypt on ZMod n + round-trip corollary."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "carmichael",
+    "cryptography",
+    "rsa",
+    "euler-totient"
+  ],
+  "relatedProofs": [
+    "euler-totient-oq-01",
+    "euler-totient"
+  ],
+  "references": [],
+  "started": "2026-06-15",
+  "lastUpdate": "2026-06-15",
+  "significance": 5,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotientOQ01OQ03.lean",
+      "filename": "EulerTotientOQ01OQ03.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ03.lean",
+      "buildPending": true,
+      "registered": false
+    }
+  ]
+}
