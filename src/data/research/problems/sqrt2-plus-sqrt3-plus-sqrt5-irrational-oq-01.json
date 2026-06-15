@@ -20,10 +20,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-15T01:25:28.245Z",
-    "iteration": 2,
-    "focus": "Feasibility survey complete: resolved on paper, 3 strategies assessed.",
-    "blockers": [],
-    "nextAction": "When Docker returns, draft Strategy A (iterated-squaring extension) in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean.",
+    "iteration": 3,
+    "focus": "Survey deepened (Session 2): NEW recommended Strategy D (algebraic-integer + bound, ~60-100 LOC) supersedes A; explicit degree-16 minimal polynomial and bound 8<α<9 computed and verified (sympy/mpmath). Still Docker-gated for final build.",
+    "blockers": ["Docker build wrapper unavailable (docker info timeout).", "Aristotle backend returns 'Resource not found'."],
+    "nextAction": "When Docker returns, implement Strategy D in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (~60-100 LOC); confirm the 4 lemma names in the knowledge.md skeleton and fill the single sorry. Fallbacks: Strategy A (3-squaring chain) or m(α)=0 + rational-root theorem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,24 +31,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT (build-free survey, researcher-10 2026-06-14): resolved on paper (degree-16 algebraic integer ⇒ irrational); 3 formalization strategies assessed; elementary iterated-squaring (A) is the only no-new-Mathlib path, BUILD-class and Docker-gated. Fixed leanFiles misattribution (JSON pointed at the parent √2+√3+√5 proof, falsely showing 0 sorries/solved) and added the real problem statement.",
+    "progressSummary": "ORIENT deepened (build-free, researcher-4 2026-06-14 Session 2): found NEW recommended Strategy D (algebraic-integer + bounded-interval, ~60-100 LOC) that avoids ALL degree-16 algebra and supersedes Strategy A; computed and verified (sympy/mpmath) the explicit degree-16 monic minimal polynomial m(x)=x^16-136x^14+6476x^12-141912x^10+1513334x^8-7453176x^6+13950764x^4-5596840x^2+46225 and the decisive bound 8<α<9 (α≈8.0281). Also confirmed Strategy A's single-surd endgame has ugly coefficients (common denom 14499840 for √210 in the α power basis). Prior (researcher-10): resolved on paper degree-16, fixed leanFiles misattribution. Still Docker-gated for final Lean build.",
     "builtItems": [],
     "insights": [
       "RESOLVED ON PAPER: √2+√3+√5+√7 is irrational — in fact an algebraic integer of degree 16 over ℚ. The 16 sign-combinations ±√2±√3±√5±√7 are its full set of Galois conjugates (Galois group (ℤ/2)^4 of the multiquadratic field ℚ(√2,√3,√5,√7)); α is a primitive element, so its minimal polynomial has degree 16 with rational integer coefficients. Degree ≠ 1 ⇒ irrational.",
       "Three formalization strategies, in increasing Mathlib-infrastructure cost: (A) elementary iterated squaring; (B) ℚ-linear independence of {1,√2,√3,√5,√7} (Besicovitch); (C) field degree [ℚ(√2,√3,√5,√7):ℚ]=16.",
       "Strategy A generalizes the existing 145-line √2+√3+√5 proof (Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean) but does NOT collapse to a single surd: after subtracting √7 and squaring once, three independent surds √6,√10,√15 appear alongside √7, so the contradiction requires unwinding the full degree-16 relation. Honest LOC estimate 300-600, all elementary (ring/linarith/Real.sq_sqrt/irrational_sqrt_natCast_iff), NO new Mathlib. Upper end of BUILD range; Docker-gated.",
       "Strategy B is mathematically cleanest (α rational ⇒ a nontrivial ℚ-linear relation among 1,√2,√3,√5,√7, contradicting Besicovitch independence of √ of distinct squarefree integers) but Mathlib has NO ready lemma for linear independence of square roots of squarefree integers (web-confirmed 2026-06); building the general theorem is >500 LOC.",
-      "Strategy C parallels the sibling gallery proof Sqrt2PlusSqrt3IrrationalOQ03 (minimal polynomial of √2+√3 = X⁴-10X²+1 via minpoly/IntermediateField), scaled to the degree-16 multiquadratic field; needs linear-disjointness / degree-of-multiquadratic infrastructure not assembled in Mathlib (>500 LOC)."
+      "Strategy C parallels the sibling gallery proof Sqrt2PlusSqrt3IrrationalOQ03 (minimal polynomial of √2+√3 = X⁴-10X²+1 via minpoly/IntermediateField), scaled to the degree-16 multiquadratic field; needs linear-disjointness / degree-of-multiquadratic infrastructure not assembled in Mathlib (>500 LOC).",
+      "NEW Strategy D (RECOMMENDED, Session 2): α = √2+√3+√5+√7 is a sum of four algebraic integers (each √k a root of monic X²-k), hence integral over ℤ (IsIntegral.add). A rational number integral over ℤ lies in ℤ (ℤ integrally closed in ℚ, IsIntegrallyClosed). But 8 < α < 9 (α≈8.0281, verified), so α ∉ ℤ ⇒ irrational. This sidesteps the ENTIRE degree-16 algebra: no squaring chain, no minimal-polynomial expansion, no surd isolation. ~60-100 LOC, no new Mathlib theory (just the integral-closure API). Lean skeleton drafted in knowledge.md with 4 lemma names to confirm at build.",
+      "Explicit minimal polynomial (sympy-verified m(α)=0 exactly): m(x)=x^16-136x^14+6476x^12-141912x^10+1513334x^8-7453176x^6+13950764x^4-5596840x^2+46225 (monic, integer, even; constant 46225=215²); equivalently g(α²)=0 with g(y)=y^8-136y^7+6476y^6-141912y^5+1513334y^4-7453176y^3+13950764y^2-5596840y+46225. Confirms the degree-16 claim concretely; alternative Lean target (m(α)=0 then rational-root theorem), though the 16th-power expansion is heavy vs Strategy D.",
+      "Strategy A's single-surd endgame is NOT clean (numerically confirmed Session 2): √210=Σcᵢαⁱ in the α power basis has only even powers but rational coefficients over common denominator 14499840 (e.g. c₀=42047681/2899968). No small-integer analog of the parent's α⁴-20α²-24=8α√30 — reinforces switching to Strategy D."
     ],
     "mathlibGaps": [
       "No usable Mathlib lemma for ℚ-linear independence of {√d : d squarefree} (Besicovitch); needed for Strategy B.",
       "No assembled multiquadratic-field degree result [ℚ(√p₁,…,√pₖ):ℚ]=2^k / linear disjointness of ℚ(√pᵢ); needed for Strategy C.",
-      "Sufficient for Strategy A and already present: irrational_sqrt_natCast_iff, Real.sq_sqrt, Real.sqrt_mul — no gap."
+      "Sufficient for Strategy A and already present: irrational_sqrt_natCast_iff, Real.sq_sqrt, Real.sqrt_mul — no gap.",
+      "Strategy D (recommended) needs only the integral-closure API expected to be present: IsIntegral.add, IsIntegrallyClosed ℤ / IsIntegrallyClosed.isIntegral_iff, and integrality descent along algebraMap ℚ ℝ — to be confirmed at build, no known gap."
     ],
     "nextSteps": [
-      "When Docker returns: draft Strategy A — extend the 2-squaring chain of Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean to a 3-squaring chain isolating one non-square surd; target new file Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean. Elementary, no new Mathlib, ~300-600 LOC. BUILD-class, Docker-gated.",
-      "Fallback if Strategy A algebra is unwieldy: build the specific 4-prime Besicovitch lemma (LinearIndependent ℚ ![1,√2,√3,√5,√7]) as standalone infrastructure (~200-400 LOC), narrower than the general theorem.",
-      "Aristotle-eligible once a clean surd-isolation lemma statement exists (the identities are HARD-but-known mechanical algebra, not OPEN). Currently blocked: Aristotle backend returns 'Resource not found' (2026-06-14)."
+      "When Docker returns: implement Strategy D (RECOMMENDED) in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (~60-100 LOC). Confirm the 4 Mathlib lemma names in the knowledge.md skeleton (IsIntegral.add; integrality descent along the injective algebraMap ℚ ℝ; IsIntegrallyClosed ℤ ⇒ rational integral element is an integer; sqrt bounds for 8<α<9), then fill the single sorry.",
+      "Fallback 1: Strategy A (3-squaring chain) — no infrastructure dependency but ~300-600 LOC and ugly single-surd endgame. Fallback 2: prove m(α)=0 (explicit poly recorded) and apply the rational-root theorem (monic ℤ-poly ⇒ rational roots are integers; α∈(8,9) ⇒ none).",
+      "Aristotle-eligible once the backend returns: submit the Strategy D theorem (or m(α)=0) directly. As of 2026-06-14 Aristotle 'prove' still returns 'Resource not found' (re-confirmed Session 2)."
     ]
   },
   "tags": [

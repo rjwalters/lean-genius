@@ -44,8 +44,24 @@ polynomial of α has degree 16. Degree ≠ 1 ⇒ irrational.
   Strategy A needs no new Mathlib (`irrational_sqrt_natCast_iff`, `Real.sq_sqrt`, `Real.sqrt_mul`
   all present).
 
-- **Recommended path**: Strategy A — same toolkit as the parent, no infrastructure dependency,
-  BUILD-class. Reserve B/C if the A bookkeeping balloons.
+  - **(D) Algebraic-integer + bounded-interval** (NEW, 2026-06-14 Session 2; **now recommended**) —
+    α is a sum of four algebraic integers √2,√3,√5,√7 (each a root of the monic `X²−k`), so α is
+    integral over ℤ. A rational number that is integral over ℤ lies in ℤ (ℤ is integrally closed
+    in ℚ). But `8 < α < 9` (α ≈ 8.0281, verified), so α ∉ ℤ; hence α is irrational. This sidesteps
+    the entire degree-16 algebra: **no squaring chain, no minimal polynomial, no surd isolation.**
+    Estimated **~60–100 LOC**, no new Mathlib theory — just the integral-closure API.
+
+- **Recommended path**: **Strategy D** — far shorter than A and avoids the messy degree-16
+  bookkeeping that A and B/C require. Strategy A remains a valid fallback (no infrastructure
+  dependency) but is now superseded; reserve B/C only if the integral-closure lemmas are missing.
+
+- **Explicit minimal polynomial** (sympy-verified, `m(α)=0` exactly): α has degree-16 minimal
+  polynomial over ℚ (monic, integer coefficients, even):
+  `m(x) = x¹⁶ − 136x¹⁴ + 6476x¹² − 141912x¹⁰ + 1513334x⁸ − 7453176x⁶ + 13950764x⁴ − 5596840x² + 46225`
+  (constant term `46225 = 215²`). Equivalently `g(α²)=0` with the degree-8
+  `g(y)=y⁸−136y⁷+6476y⁶−141912y⁵+1513334y⁴−7453176y³+13950764y²−5596840y+46225`. This confirms
+  the degree-16 claim concretely and gives an alternative Lean target (`m(α)=0` is `ring`-provable
+  after `Real.sq_sqrt`, but the 16th-power expansion is heavy — Strategy D avoids needing it).
 
 ---
 
@@ -54,6 +70,13 @@ polynomial of α has degree 16. Degree ≠ 1 ⇒ irrational.
 - Naive reduction "√2+√3+√5 = q − √7 with both sides irrational" gives **no** contradiction
   (irrational − irrational can be rational). Squaring it yields √6+√10+√15+q√7 ∈ ℚ, i.e. four
   surds again — no shortcut around the degree-16 structure.
+- **Strategy-A single-surd reduction has ugly coefficients** (Session 2, numerically confirmed).
+  Expressing √210 (= √2·√3·√5·√7) in the power basis of α gives
+  `√210 = Σ cᵢ αⁱ` with only even powers but rational coefficients over a common denominator
+  `14 499 840` (e.g. `c₀ = 42047681/2899968`, `c₁₄ = −1/906240`). There is **no** clean
+  small-integer single-surd identity analogous to the parent's `α⁴−20α²−24 = 8α√30`. This is
+  concrete evidence that Strategy A's "isolate one surd" endgame is heavy, reinforcing the switch
+  to Strategy D.
 
 ---
 
@@ -85,3 +108,56 @@ polynomial of α has degree 16. Degree ≠ 1 ⇒ irrational.
 2. Fallback: narrow 4-prime Besicovitch lemma `LinearIndependent ℚ ![1,√2,√3,√5,√7]`.
 3. Surd-isolation identities are Aristotle-eligible (HARD-but-known) once stated — blocked by
    the Aristotle backend outage.
+
+---
+
+## Session 2026-06-14 (Session 2) — Build-free strategy deepening (researcher-4)
+
+**Mode**: CONTINUE · **Outcome**: ORIENT deepened (new recommended strategy + verified
+artifacts). Both backends still down (Docker `docker info` timeout; Aristotle `prove` →
+"Resource not found"), so build-free only — all results checked with sympy/mpmath, not Lean.
+
+### What I found (all numerically/symbolically verified)
+1. **Explicit minimal polynomial** of α (sympy `minimal_polynomial`, then `m(α)=0` confirmed
+   exactly): degree 16, monic, integer, even — see Insights above. Independently re-derivable
+   from `p=√2+√3 ⇒ p⁴−10p²+1=0` and `q=√5+√7 ⇒ q⁴−24q²+4=0` via the resultant
+   `Res_y(y⁴−10y²+1, (α−y)⁴−24(α−y)²+4)`.
+2. **New Strategy D (algebraic integer + bound)** — now the recommended path; ~60–100 LOC,
+   avoids all degree-16 algebra. The key arithmetic fact `8 < α < 9` (α ≈ 8.0281) is verified.
+3. **Strategy A's single-surd endgame is ugly** (denominator 14 499 840) — see Dead Ends.
+
+### Strategy D — concrete Lean skeleton (for ACT when Docker returns)
+```lean
+import Mathlib
+open Real
+-- √k is integral over ℤ: root of monic X^2 - C k.
+lemma isIntegral_sqrt (k : ℕ) : IsIntegral ℤ (Real.sqrt k) := by
+  refine ⟨Polynomial.X ^ 2 - Polynomial.C (k : ℤ), ?_, ?_⟩
+  · -- monic (leading coeff 1)
+    monicity?  -- Polynomial.monic_X_pow_sub_C-style; degree-2 monic
+  · -- aeval (√k) (X^2 - C k) = 0, i.e. (√k)^2 - k = 0
+    simp [Real.sq_sqrt (by positivity : (0:ℝ) ≤ k)]
+theorem irrational_sum :
+    Irrational (sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7) := by
+  have hα : IsIntegral ℤ (sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7) :=
+    (((isIntegral_sqrt 2).add (isIntegral_sqrt 3)).add (isIntegral_sqrt 5)).add (isIntegral_sqrt 7)
+  rintro ⟨r, hr⟩                       -- r : ℚ, (r:ℝ) = α
+  -- (r:ℝ) integral over ℤ  ⇒  r integral over ℤ  (ℚ↪ℝ injective)  ⇒  r ∈ ℤ (ℤ integrally closed)
+  -- then 8 < (r:ℝ)=α < 9 forces a non-integer integer. Contradiction.
+  sorry
+```
+Open Lean items to confirm at build time (lemma names, not math):
+- `IsIntegral.add` (algebraic integers closed under +) — standard, in `Mathlib.RingTheory.IntegralClosure`.
+- Descent of integrality along the injective `algebraMap ℚ ℝ` (so `(r:ℝ)` integral ⇒ `r` integral).
+- `IsIntegrallyClosed ℤ` ⇒ a rational integral over ℤ equals some `(n:ℤ)` (`IsIntegrallyClosed.isIntegral_iff`).
+- Bounds `8 < √2+√3+√5+√7 < 9` via `Real.sqrt_lt_sqrt`/`Real.lt_sqrt` + `norm_num`.
+
+### Files modified
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+- `src/data/research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01.json`
+
+### Next steps
+1. When Docker returns: implement **Strategy D** (above) — much smaller than A; verify the four
+   Lean lemma names resolve, fill the `sorry`. If `IsIntegrallyClosed` descent is awkward, fall
+   back to Strategy A or prove `m(α)=0` and apply the rational-root theorem (α∉ℤ ⇒ irrational).
+2. Strategy A remains the no-infrastructure fallback (3-squaring chain; ugly but elementary).
