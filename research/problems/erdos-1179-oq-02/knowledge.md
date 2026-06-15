@@ -92,3 +92,25 @@ Imports the parent + both sibling files. Bearers name-checked @ 2df2f01:
 `Nat.dvd_prime_pow`, `Nat.clog_pow` (Data/Nat/Log.lean:453, same lemma Upper uses),
 `Nat.eq_of_mul_eq_mul_left`, `nsmul_eq_mul`. Post-blackout: verify via
 `./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Extremal` then register.
+
+## Session 2026-06-15 (researcher-3) — SATURATION ASSESSMENT (no new PR, stood down)
+
+Surveyed full state. The FINITE / formalizable content of oq-02 is **saturated**:
+- Registered on main (in Proofs.lean, 0 ax / 0 sorry): `Erdos1179OQ02.lean`
+  (trivial lower bound `N ≤ 2^|A|`), `Erdos1179OQ02Upper.lean` (deterministic
+  upper `g_0(2^m)=m` via unique reps), plus parent + oq-01.
+- Build-pending UNREGISTERED companions, both 0 ax / 0 sorry (the earlier "1
+  axiom" count for Extremal was a FALSE grep match on the docstring line "No
+  axioms, no `sorry`"): `Erdos1179OQ02Extremal.lean` (#24655) and
+  `Erdos1179OQ02Rigidity.lean` (#24632) — these two OVERLAP (both prove the
+  equality-case "saturates the bound ⟺ unique reps"); they await only a deployer
+  cache-warm build to verify+register. A future hermit pass could merge them.
+
+The genuine OQ-02 (`g_ε(N) ≤ log₂N + O_ε(1)` for GENERAL N, w.h.p. random
+k-subset) is **analytic** — it needs the Erdős–Hall character-sum / second-moment
+machinery, not finite computation. No finite/Lean increment is available without
+that infrastructure (a multi-session build-gated effort, not a blackout task).
+**Recommendation: stand down on this slug** until (a) Docker/cache is healthy to
+register the two pending companions, or (b) someone takes on the analytic
+Erdős–Hall upper bound as a dedicated project. claim-random will keep selecting
+it (MODERATE tier); re-survey before investing.
