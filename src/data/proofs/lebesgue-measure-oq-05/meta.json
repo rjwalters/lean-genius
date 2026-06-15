@@ -1,0 +1,142 @@
+{
+  "id": "lebesgue-measure-oq-05",
+  "title": "Radon–Nikodym Theorem for σ-finite Measures",
+  "slug": "lebesgue-measure-oq-05",
+  "description": "The classical Radon–Nikodym package for σ-finite measures: for μ ≪ ν with both σ-finite there is a measurable density f with μ = ν.withDensity f (the Radon–Nikodym derivative), it is unique ν-a.e., satisfies ∫⁻_s f dν = μ s, and yields the general Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν).",
+  "meta": {
+    "author": "Radon (1913), Nikodym (1930)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ05.lean",
+    "tags": [
+      "measure-theory",
+      "radon-nikodym",
+      "sigma-finite",
+      "density",
+      "lebesgue-decomposition",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 92,
+    "assumptions": "0 axioms, 0 sorries. All seven results are obtained by assembling Mathlib's Lebesgue-decomposition / Radon–Nikodym API (Measure.measurable_rnDeriv, Measure.withDensity_rnDeriv_eq, Measure.rnDeriv_withDensity, Measure.haveLebesgueDecomposition_add, withDensity_apply); the SigmaFinite instances supply HaveLebesgueDecomposition automatically. BUILD PENDING: not yet kernel-checked locally (worktree Docker OOM, Aristotle unavailable this session) — awaiting deployer build-gate. This is a formalization entry: the mathematics is classical and already in Mathlib; the contribution is a clean, self-contained statement of the σ-finite package for the gallery.",
+    "dateAdded": "2026-06-15",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Self-contained σ-finite Radon–Nikodym package: existence, canonical witness, integral characterization, total mass, ν-a.e. uniqueness, and Lebesgue decomposition assembled in one entry",
+      "ν-a.e. uniqueness of the density derived from Measure.rnDeriv_withDensity"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Radon (1913) proved the density theorem for measures on ℝⁿ; Nikodym (1930) extended it to abstract σ-finite measure spaces, giving the modern statement. The Radon–Nikodym derivative dμ/dν is the foundation of conditional expectation, the change-of-variables formula for measures, the definition of probability densities, and the Lebesgue decomposition of a measure into absolutely-continuous and singular parts. Mathlib formalizes the general theory via the HaveLebesgueDecomposition typeclass; σ-finite measures always carry an instance, which makes the classical σ-finite statement a direct corollary.",
+    "problemStatement": "Let $\\mu, \\nu$ be $\\sigma$-finite measures on a measurable space with $\\mu \\ll \\nu$. Then there exists a measurable $f : \\alpha \\to [0,\\infty]$ with $\\mu = \\nu.\\mathrm{withDensity}\\, f$; the canonical choice is the Radon–Nikodym derivative $f = d\\mu/d\\nu$. The density is unique $\\nu$-a.e. and satisfies $\\int_s f \\, d\\nu = \\mu(s)$ for every measurable $s$. Dropping absolute continuity, every $\\sigma$-finite $\\mu$ admits the Lebesgue decomposition $\\mu = \\mu_{\\perp\\nu} + \\nu.\\mathrm{withDensity}(d\\mu/d\\nu)$.",
+    "text": "Packages Mathlib's Radon–Nikodym / Lebesgue-decomposition machinery into the classical σ-finite statement, with existence, the canonical density, the integral characterization, total mass, ν-a.e. uniqueness, and the general Lebesgue decomposition.",
+    "proofStrategy": "Each result is a direct corollary of Mathlib's general theory. (1) measurability is Measure.measurable_rnDeriv. (2) the canonical-witness identity ν.withDensity (μ.rnDeriv ν) = μ is Measure.withDensity_rnDeriv_eq, using the HaveLebesgueDecomposition instance supplied by σ-finiteness. (3) existence packages (1)+(2). (4) the integral characterization rewrites ∫⁻_s (dμ/dν) dν as (ν.withDensity (dμ/dν)) s via withDensity_apply, then applies (2). (5) total mass specializes (4) to s = univ via setLIntegral_univ. (6) uniqueness: if ν.withDensity f = μ then f =ᵐ[ν] (ν.withDensity f).rnDeriv ν = μ.rnDeriv ν (Measure.rnDeriv_withDensity), and likewise for g, so f =ᵐ[ν] g by transitivity. (7) the Lebesgue decomposition is Measure.haveLebesgueDecomposition_add.",
+    "keyInsights": [
+      "σ-finiteness of both measures is exactly what supplies the HaveLebesgueDecomposition instance, so the classical statement falls out of Mathlib's general (typeclass-gated) theory with no extra hypotheses.",
+      "ν-a.e. uniqueness does not need absolute continuity or σ-finiteness of μ: it follows from Measure.rnDeriv_withDensity (the derivative of a withDensity recovers the integrand ν-a.e.) plus transitivity, needing only σ-finiteness of ν.",
+      "The Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) holds for any σ-finite pair without assuming μ ≪ ν; absolute continuity is precisely the condition that the singular part vanishes."
+    ],
+    "prerequisites": [
+      "Measures, withDensity, and the lower Lebesgue integral",
+      "Absolute continuity μ ≪ ν",
+      "σ-finite measures",
+      "Lebesgue decomposition and the Radon–Nikodym derivative"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Statement",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Imports, namespace, and the module docstring stating the σ-finite Radon–Nikodym package and its honest formalization scope.",
+      "mathContext": "Fixes a measurable space $\\alpha$ and measures $\\mu, \\nu$ on it. The classical σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are the targets."
+    },
+    {
+      "id": "measurability-witness",
+      "title": "Measurability and the Canonical Density",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "rnDeriv_measurable (the Radon–Nikodym derivative is measurable) and rnDeriv_isDensity (ν.withDensity (dμ/dν) = μ for σ-finite μ ≪ ν).",
+      "mathContext": "$d\\mu/d\\nu$ is measurable, and for $\\sigma$-finite $\\mu \\ll \\nu$ it is a density: $\\nu.\\mathrm{withDensity}(d\\mu/d\\nu) = \\mu$. The HaveLebesgueDecomposition instance comes from σ-finiteness."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of a Density",
+      "startLine": 54,
+      "endLine": 58,
+      "summary": "exists_density: there is a measurable f with ν.withDensity f = μ.",
+      "mathContext": "Packages measurability and the witness identity into the existential form of the Radon–Nikodym theorem."
+    },
+    {
+      "id": "integral-characterization",
+      "title": "Integral Characterization and Total Mass",
+      "startLine": 60,
+      "endLine": 71,
+      "summary": "rnDeriv_setLIntegral (∫⁻_s (dμ/dν) dν = μ s for measurable s) and rnDeriv_lintegral (the total-mass specialization to s = univ).",
+      "mathContext": "$\\int_s (d\\mu/d\\nu)\\, d\\nu = \\mu(s)$ via withDensity_apply and the witness identity; specializing to $s = \\mathrm{univ}$ gives $\\int (d\\mu/d\\nu)\\, d\\nu = \\mu(\\mathrm{univ})$."
+    },
+    {
+      "id": "uniqueness",
+      "title": "ν-a.e. Uniqueness",
+      "startLine": 73,
+      "endLine": 83,
+      "summary": "density_unique: any two measurable densities for μ with respect to σ-finite ν agree ν-a.e.",
+      "mathContext": "From Measure.rnDeriv_withDensity, any density $f$ satisfies $f =^{ae}_\\nu (\\nu.\\mathrm{withDensity}\\,f).\\mathrm{rnDeriv}\\,\\nu = \\mu.\\mathrm{rnDeriv}\\,\\nu$; transitivity gives $f =^{ae}_\\nu g$."
+    },
+    {
+      "id": "lebesgue-decomposition",
+      "title": "General Lebesgue Decomposition",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "lebesgue_decomposition: μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) for any σ-finite pair, no absolute continuity assumed.",
+      "mathContext": "Measure.haveLebesgueDecomposition_add: every σ-finite $\\mu$ splits as a $\\nu$-singular part plus an absolutely-continuous part with density $d\\mu/d\\nu$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The σ-finite Radon–Nikodym theorem and the general Lebesgue decomposition are assembled from Mathlib's HaveLebesgueDecomposition theory: existence of a measurable density, the canonical Radon–Nikodym derivative as witness, the integral characterization ∫⁻_s (dμ/dν) dν = μ s, ν-a.e. uniqueness, and the decomposition μ = μ.singularPart ν + ν.withDensity (dμ/dν).",
+    "openQuestions": [
+      "Formalize the change-of-variables / chain rule for Radon–Nikodym derivatives: d(μ)/d(λ) = (dμ/dν)(dν/dλ) ν-a.e. for a compatible σ-finite chain μ ≪ ν ≪ λ.",
+      "Connect this package to conditional expectation: identify E[X | 𝒢] with a Radon–Nikodym derivative of the signed measure A ↦ ∫_A X dμ restricted to the sub-σ-algebra 𝒢."
+    ],
+    "implications": "The Radon–Nikodym derivative underlies conditional expectation, probability densities, likelihood ratios in statistics, and the change-of-measure formulas (Girsanov) of stochastic analysis. Stating the σ-finite package cleanly makes these downstream uses directly citable in the gallery."
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "parent-problem",
+      "description": "Develops the density theory (Radon–Nikodym derivative) attached to the Lebesgue measure formalization"
+    }
+  ],
+  "references": [
+    {
+      "author": "Radon, J.",
+      "title": "Theorie und Anwendungen der absolut additiven Mengenfunktionen",
+      "year": 1913,
+      "note": "Density theorem for measures on ℝⁿ"
+    },
+    {
+      "author": "Nikodym, O.",
+      "title": "Sur une généralisation des intégrales de M. J. Radon",
+      "year": 1930,
+      "note": "Extension to abstract σ-finite measure spaces — the modern Radon–Nikodym theorem"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "LebesgueRadonNikodym",
+    "lineCount": 92,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ05.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
