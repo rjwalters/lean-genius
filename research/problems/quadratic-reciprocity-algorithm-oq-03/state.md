@@ -4,15 +4,16 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
 Zolotarev's lemma as the formalization spine: `legendreSym p a = Perm.sign (mulLeft a)` on
 `ZMod p`. OQ resolved on paper (researcher-8 S1); Milestone-1 statement + key cycle-structure
-step numerically verified (researcher-4 S2). researcher-5 S3 **committed that verification as a
-reproducible script** (`verify_zolotarev.py`): asserts the lemma + all four proof steps for every
-odd prime 3≤p<80 and every nonzero a, so the M1 target is now a durable, re-runnable certificate.
-Formalizable core pinned and de-risked; awaiting Docker for the build.
+step numerically verified (researcher-4 S2); committed as a reproducible script
+(`verify_zolotarev.py`, researcher-5 S3, asserts all four steps for every odd prime 3≤p<80).
+researcher-4 S4 **pinned every M1 Mathlib bearer to an exact `file:line` at the build version**
+(v4.26.0, mathlib rev `2df2f01`) and re-confirmed Zolotarev's lemma is still absent upstream — so
+M1 is now paste-ready (numerically certified AND name-discovery-free), awaiting only Docker.
 
 ## Active Approach
 Permutation-sign (Zolotarev) proof. Milestone 1 = the Zolotarev lemma itself (cyclic units +
@@ -30,10 +31,14 @@ CRT/shuffle-permutation sign) is gated and larger — assess after Milestone 1.
 
 ## Next Action
 **ACT Milestone 1 (when Docker returns):** new file `proofs/Proofs/QuadraticReciprocityZolotarev.lean`
-proving `legendreSym p a = (Perm.sign (Equiv.mulLeft₀ (a : ZMod p) ha) : ℤ)` for odd prime `p`,
-`a ≠ 0`. Steps: (1) `π_g` is a single `(p−1)`-cycle on the units ⇒ `sign = −1`; (2) `a = g^k`,
-`sign (π_a) = (−1)^k` via `map_pow`; (3) Euler's criterion gives `legendreSym p a = (−1)^k`.
-Confirm exact Mathlib names at build time (`Equiv.Perm.IsCycle.sign`, `ZMod.euler_criterion`,
-`IsCyclic (ZMod p)ˣ`). Then create the gallery entry `src/data/proofs/quadratic-reciprocity-zolotarev/`.
+proving `legendreSym p (a.val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft₀ a ha) : ℤ)` for odd prime `p`,
+`a : ZMod p`, `a ≠ 0`. Steps: (1) `π_g` is a single `(p−1)`-cycle on the units ⇒ `sign = −1`;
+(2) `a = g^k`, `sign (π_a) = (−1)^k` via `map_pow`; (3) Euler's criterion gives `legendreSym p a =
+(−1)^k`. **All bearers confirmed @ v4.26.0 (rev `2df2f01`) — no name-discovery left** (see S4 in
+knowledge.md for the file:line table): `Equiv.mulLeft₀` (Algebra/GroupWithZero/Units/Equiv.lean:34,
+returns `Perm G₀`), `IsCyclic Rˣ` instance (RingTheory/IntegralDomain.lean:137) + `IsCyclic.exists_generator`,
+`Equiv.Perm.IsCycle.sign` (GroupTheory/Perm/Cycle/Basic.lean:434), `legendreSym.eq_pow` /
+`euler_criterion` (NumberTheory/LegendreSymbol/Basic.lean:114/:62). Then create the gallery entry
+`src/data/proofs/quadratic-reciprocity-zolotarev/`.
 
 See knowledge.md for the full survey, Mathlib inventory, and the honesty flag on Milestone 2.
