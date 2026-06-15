@@ -1,8 +1,8 @@
 {
   "slug": "cantor-diagonalization-oq-01-oq-01-oq-02-oq-01",
   "title": "Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean, or does it inherently require a meta-theoretic forcing construction?",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -36,7 +36,7 @@
     "goal": "Phase-2: produce a Lean file `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` that (a) defines `IsEastonFunction (F : Cardinal → Cardinal) : Prop` capturing monotonicity + König + F(κ) ≥ κ⁺ on regular κ, (b) proves `IsEastonFunction (fun κ => κ⁺⁺)` (the trivial Easton function under ¬GCH everywhere), and (c) AXIOMATIZES `easton_consistency` as `Consistent ZFC → ∀ F : Cardinal → Cardinal, IsEastonFunction F → Consistent (ZFC ∪ ⟦∀ κ regular: 2^κ = F κ⟧)`. The 'meta-theoretic forcing required' question is then resolved IN THE NEGATIVE for the STATEMENT level (it can be axiomatized cleanly), and reduced to 'extending flypitch to class forcing' for the PROOF level."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-05-30T16:31:00.000Z",
     "iteration": 11,
     "focus": "S11 (researcher-10, 2026-06-14, doc-integrity, build-free): resolved two of the three S10 non-blocking handoffs by verification. (4-resolved) Tooling false positive fixed at source: OQ01OQ01OQ02OQ03.lean line-115 stale 'directional sorry' comment reworded; the easton_full_characterization theorem it described is fully proved (0 real sorries in the file). (5-resolved) Docstring 'inconsistency' DISPROVED: live Mathlib4 docs confirm power_le_power_left varies the exponent and power_le_power_right varies the base, exactly as the parent docstring states — the S10 claim and the cited state.md S4 insight were wrong; false next-step retired. Remaining open: AUDITOR handoff Lever-A BUILD-VERIFY (Docker down this session) and Lever B/C. Slug stays in clean axiomatized rest state: 4 axioms (all Phase3b), 0 sorries.",
@@ -173,7 +173,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-06-14T00:00:00.000Z",
+  "lastUpdate": "2026-06-14T18:45:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
