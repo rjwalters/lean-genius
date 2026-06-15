@@ -1,14 +1,16 @@
 # Research State: mantel-theorem
 
 ## Current State
-**Phase**: ACT (M1 shipped)
+**Phase**: ACT (M2 written, build-pending)
 **Path**: full
 **Since**: 2026-06-15
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-M1 complete: Mantel's edge bound + sharpness formalized and BUILD GREEN. Next natural
-target is the equality characterization (M2).
+M1 complete and merged (edge bound + sharpness, BUILD GREEN, #24750/#24771/#24780).
+M2 (equality characterization) written in companion file `MantelTheoremUniqueness.lean`,
+BUILD-PENDING (Docker cold-build timeout + Aristotle down). Once verified, M2 completes the
+full extremal statement of Mantel's theorem.
 
 ## Active Approach
 Specialize Mathlib's general Turán edge bound `SimpleGraph.CliqueFree.card_edgeFinset_le`
@@ -28,17 +30,35 @@ BUILD GREEN (7743 jobs, exit 0, docker-build.sh @8GB):
 Gallery data added at `src/data/proofs/mantel-theorem/meta.json` (status `verified`,
 badge `original`).
 
+## What Shipped (M2, researcher-11, 2026-06-15)
+New companion file `proofs/Proofs/MantelTheoremUniqueness.lean` (BUILD-PENDING):
+
+- `mantel_equality_iff` — **equality characterization**: for triangle-free `G` on `n` vertices,
+  `#G.edgeFinset = ⌊n²/4⌋ ↔ Nonempty (G ≃g turanGraph n 2)`. Completes the extremal statement.
+
+Proof (~12 lines): rewrite the RHS to `G.IsTuranMaximal 2` via Mathlib's Turán uniqueness
+`isTuranMaximal_iff_nonempty_iso_turanGraph`; forward direction builds `IsExtremal` from
+`mantel_card_edgeFinset_le` (every triangle-free graph has `≤ ⌊n²/4⌋` edges, and `G` attains
+it); reverse direction transfers `turanGraph n 2`'s edge count via `Iso.card_edgeFinset_eq`
+and `card_edgeFinset_turanGraph_two`.
+
+All Mathlib lemma names/signatures verified against pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Lean v4.26.0). Companion file (imports verified
+`Proofs.MantelTheorem`) so a latent error cannot regress the verified M1 entry.
+
 ## Attempt Count
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
-- Approaches tried: 1 (Mathlib Turán specialization — succeeded)
+- Approaches tried: 1 (Mathlib Turán + IsTuranMaximal uniqueness — written, pending build)
 
 ## Blockers
-None.
+Docker cold-build timeout (every build re-clones Mathlib + downloads cache, ~750s setup,
+exceeding the 20m wrapper timeout before the target compiles); Aristotle backend 404.
+M2 is build-pending until a warm-cache build slot is available.
 
 ## Next Action
-**M2 — equality characterization.** Prove that equality `#G.edgeFinset = ⌊n²/4⌋` holds iff
-`G` is isomorphic to the balanced complete bipartite graph, via
-`SimpleGraph.isTuranMaximal_iff_nonempty_iso_turanGraph`. Requires connecting the floor bound
-to `IsTuranMaximal` (a Turán-maximal triangle-free graph attains the bound) and unfolding the
-`turanGraph n 2` structure as `K_{⌊n/2⌋,⌈n/2⌉}`.
+1. **Verify M2.** `docker-build.sh Proofs.MantelTheoremUniqueness` when a warm Mathlib cache /
+   uncontended slot is available; if green, fold `mantel_equality_iff` into the gallery entry
+   (theoremCount 5→6) and resolve the equality-characterization open question.
+2. **M3 (stability).** Erdős–Simonovits stability: a triangle-free graph with near-`⌊n²/4⌋`
+   edges is structurally close to the balanced complete bipartite graph.
