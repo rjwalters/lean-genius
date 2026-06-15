@@ -2,7 +2,7 @@
   "id": "nth-root-irrational-oq-01-oq-01",
   "title": "Cyclotomic Roots and Niven's Theorem on Rational Cosines",
   "slug": "nth-root-irrational-oq-01-oq-01",
-  "description": "Extends the 'root of an irreducible degree ≥ 2 polynomial is irrational' principle to cyclotomic polynomials Φ_n and their roots, and uses it to prove Niven's theorem: cos(2π/n) is rational iff n ∈ {1,2,3,4,6}. A complex primitive n-th root of unity is irrational for n ≥ 3, the maximal-real-subfield generator ζ+ζ⁻¹ = 2cos(2π/n) is irrational when φ(n) ≥ 3, and the five exceptional rational cases complete the classification. A 4-file family, 0 axioms, 0 sorries.",
+  "description": "Extends the 'root of an irreducible degree ≥ 2 polynomial is irrational' principle to cyclotomic polynomials Φ_n and their roots, and uses it to prove Niven's theorem: cos(2π/n) is rational iff n ∈ {1,2,3,4,6}. A complex primitive n-th root of unity is irrational for n ≥ 3, the maximal-real-subfield generator ζ+ζ⁻¹ = 2cos(2π/n) is irrational when φ(n) ≥ 3, and the five exceptional rational cases complete the classification. The exact degree of the maximal real subfield, 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n), is also proved, turning the rationality criterion into a degree theorem. A 5-file family, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Ivan Niven (1956); cyclotomic theory: Gauss, Kronecker; formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Niven%27s_theorem",
@@ -21,7 +21,7 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries across all four files. Build-pending: authored during the Docker + Aristotle backend outage and not machine-checked this session; relies on Mathlib's cyclotomic API (cyclotomic.irreducible_rat, natDegree_cyclotomic, IsPrimitiveRoot.isRoot_cyclotomic) and special-angle cosine lemmas at pinned v4.26.0. The metrics below are for the primary file (133 lines, 6 theorems); the three companions Cos (150), CosRational (103), Real (113) total ≈ 499 lines and 17 theorems. Promote to verified once a green docker-build of Proofs.NthRootIrrationalOQ01OQ01 (and its three companions) confirms the typecheck.",
+    "assumptions": "0 axioms, 0 sorries across all five files. Build-pending: relies on Mathlib's cyclotomic API (cyclotomic.irreducible_rat, natDegree_cyclotomic, IsPrimitiveRoot.isRoot_cyclotomic, cyclotomic_eq_minpoly_rat) plus, in the Degree companion, the IntermediateField tower API (finrank_bot_mul_relfinrank, extendScalars_adjoin, adjoin.finrank) at pinned v4.26.0. The metrics below are for the primary file (133 lines, 6 theorems); the four companions Real (113), Cos (150), CosRational (103), and Degree (267) total ≈ 766 lines. The Degree companion (added this session, all five now registered in proofs/Proofs.lean) closes the previously-open exact-degree item: 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n), making the 'cos(2π/n) rational ⟺ φ(n) ≤ 2' equivalence a degree theorem. Local docker-build OOMs on import-Mathlib files (broken Mathlib olean cache: circular .lake symlink + cache volume mounted at the wrong path), so the typecheck is gated to the deployer build, which already builds the four merged siblings green. Promote to verified once a green build of Proofs.NthRootIrrationalOQ01OQ01 and its four companions confirms the typecheck.",
     "mathlibDependencies": [
       {
         "theorem": "cyclotomic.irreducible_rat",
@@ -46,7 +46,8 @@
       "primitiveRoot_not_rational / primitiveCubeRoot_not_rational: a complex primitive n-th root of unity (n ≥ 3) is not in the image of ℚ — e.g. e^{2πi/3}",
       "trace_not_rational (Real.lean): the maximal-real-subfield generator ζ+ζ⁻¹ = 2cos(2π/n) is irrational when φ(n) ≥ 3, by a minimal-polynomial degree argument (minpoly ℚ ζ = Φ_n divides a rational quadratic ⟹ φ(n) ≤ 2)",
       "cos_two_pi_div_n_irrational (Cos.lean): the textbook Niven statement φ(n) ≥ 3 ⟹ Irrational(cos(2π/n)), connecting ζ+ζ⁻¹ to the genuine analytic Real.cos via Complex.exp_mul_I",
-      "cos_two_pi_div_rational_of_mem (CosRational.lean): the complementary rational direction — cos(2π/n) ∈ {1,−1,−1/2,0,1/2} for n ∈ {1,2,3,4,6} — completing Niven's classification"
+      "cos_two_pi_div_rational_of_mem (CosRational.lean): the complementary rational direction — cos(2π/n) ∈ {1,−1,−1/2,0,1/2} for n ∈ {1,2,3,4,6} — completing Niven's classification",
+      "finrank_adjoin_trace_eq (Degree.lean): the exact degree of the maximal real subfield, 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n) for n ≥ 3 (division-free form of [ℚ(ζ)⁺:ℚ] = φ(n)/2), via the relative degree [ℚ(ζ):ℚ(ζ+ζ⁻¹)] = 2 (relfinrank_adjoin_trace_eq_two) over the explicitly-constructed real subfield {z : ℂ | z.im = 0}"
     ],
     "dateAdded": "2026-06-15",
     "lineCount": 133,
@@ -55,7 +56,8 @@
     "additionalFiles": [
       "Proofs/NthRootIrrationalOQ01OQ01Real.lean",
       "Proofs/NthRootIrrationalOQ01OQ01Cos.lean",
-      "Proofs/NthRootIrrationalOQ01OQ01CosRational.lean"
+      "Proofs/NthRootIrrationalOQ01OQ01CosRational.lean",
+      "Proofs/NthRootIrrationalOQ01OQ01Degree.lean"
     ],
     "prerequisites": [
       "Cyclotomic polynomials Φ_n and their irreducibility over ℚ",
@@ -109,6 +111,14 @@
       "endLine": 103,
       "summary": "NthRootIrrationalOQ01OQ01CosRational.lean: the complementary direction — cos(2π/n) is rational for each n ∈ {1,2,3,4,6}, with values 1, −1, −1/2, 0, 1/2 (cos_two_pi_div_{one,two,three,four,six}_rational and the bundling cos_two_pi_div_rational_of_mem). Together with the Cos companion this gives Niven's full iff classification.",
       "mathContext": "$\\cos(2\\pi/n)\\in\\{1,-1,-\\tfrac12,0,\\tfrac12\\}$ for $n\\in\\{1,2,3,4,6\\}$ — the rational half of Niven's theorem."
+    },
+    {
+      "id": "exact-degree",
+      "title": "Exact Degree of the Real Subfield (Degree companion)",
+      "startLine": 1,
+      "endLine": 267,
+      "summary": "NthRootIrrationalOQ01OQ01Degree.lean: finrank_adjoin_trace_eq proves 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n) for n ≥ 3 (division-free form of [ℚ(ζ)⁺:ℚ] = φ(n)/2). The maximal real subfield is built explicitly as realField = {z : ℂ | z.im = 0}; the relative degree relfinrank_adjoin_trace_eq_two shows [ℚ(ζ):ℚ(ζ+ζ⁻¹)] = 2 (ζ is a root of X² − (ζ+ζ⁻¹)·X + 1 over the real subfield, and degree 1 is excluded because ζ is non-real for n ≥ 3), then the tower multiplicativity finrank_bot_mul_relfinrank against [ℚ(ζ):ℚ] = φ(n) gives the result. Instance fifthRoot_finrank_adjoin_trace for n = 5.",
+      "mathContext": "$2\\cdot[\\mathbb{Q}(\\zeta+\\zeta^{-1}):\\mathbb{Q}]=\\varphi(n)$, i.e. $[\\mathbb{Q}(\\zeta)^+:\\mathbb{Q}]=\\varphi(n)/2$, via $[\\mathbb{Q}(\\zeta):\\mathbb{Q}(\\zeta+\\zeta^{-1})]=2$."
     }
   ],
   "crossReferences": [
@@ -124,12 +134,12 @@
     }
   ],
   "conclusion": {
-    "summary": "Cyclotomic polynomials Φ_n have no rational root for n ≥ 3, so primitive n-th roots of unity are irrational; the maximal-real-subfield generator ζ + ζ⁻¹ = 2cos(2π/n) is irrational when φ(n) ≥ 3; and the five exceptional rational cases (n ∈ {1,2,3,4,6}) complete Niven's classification: cos(2π/n) is rational iff n ∈ {1,2,3,4,6}. A four-file family with 0 axioms and 0 sorries throughout.",
+    "summary": "Cyclotomic polynomials Φ_n have no rational root for n ≥ 3, so primitive n-th roots of unity are irrational; the maximal-real-subfield generator ζ + ζ⁻¹ = 2cos(2π/n) is irrational when φ(n) ≥ 3; the five exceptional rational cases (n ∈ {1,2,3,4,6}) complete Niven's classification: cos(2π/n) is rational iff n ∈ {1,2,3,4,6}; and the exact degree of the real subfield is pinned, 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n). A five-file family with 0 axioms and 0 sorries throughout.",
     "implications": "Turns the abstract 'irreducible degree ≥ 2 ⟹ irrational' principle into the concrete, classical Niven theorem on rational cosine values, exercising Mathlib's cyclotomic and roots-of-unity API end to end.",
     "openQuestions": [
       "Extend Niven's theorem to cos(qπ) for general rational q (not just q = 2/n), classifying all rational values via the same cyclotomic degree argument",
       "Prove the companion classification for tan(2π/n) and sin(2π/n) rational values using the same maximal-real-subfield machinery",
-      "Compute [ℚ(ζ)⁺ : ℚ] = φ(n)/2 explicitly in Lean to make the 'rational iff φ(n) ≤ 2' equivalence a degree theorem rather than a case analysis"
+      "Derive the rationality criterion cos(2π/n) ∈ ℚ ⟺ φ(n) ≤ 2 directly from the degree theorem (Degree.lean) as a single corollary, replacing the explicit n ∈ {1,2,3,4,6} case analysis"
     ]
   },
   "references": [
@@ -163,7 +173,8 @@
     "additionalFiles": [
       "Proofs/NthRootIrrationalOQ01OQ01Real.lean",
       "Proofs/NthRootIrrationalOQ01OQ01Cos.lean",
-      "Proofs/NthRootIrrationalOQ01OQ01CosRational.lean"
+      "Proofs/NthRootIrrationalOQ01OQ01CosRational.lean",
+      "Proofs/NthRootIrrationalOQ01OQ01Degree.lean"
     ]
   },
   "mainTheorems": [
@@ -184,6 +195,12 @@
       "type": "supporting",
       "description": "A complex primitive n-th root of unity (n ≥ 3) is not in the image of ℚ",
       "leanType": "3 ≤ n → IsPrimitiveRoot ζ n → ζ ∉ Set.range (algebraMap ℚ ℂ)"
+    },
+    {
+      "name": "finrank_adjoin_trace_eq",
+      "type": "core",
+      "description": "Exact degree of the maximal real subfield: 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n) for n ≥ 3 (Degree companion)",
+      "leanType": "3 ≤ n → IsPrimitiveRoot ζ n → 2 * Module.finrank ℚ ℚ⟮ζ + ζ⁻¹⟯ = n.totient"
     }
   ],
   "sorries": 0
