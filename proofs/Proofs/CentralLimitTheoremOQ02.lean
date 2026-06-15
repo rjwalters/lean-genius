@@ -25,12 +25,14 @@ This file formalizes:
 - Algebraic properties: Lyapunov at δ=0, variance formulas, zero-variable results
 - Characteristic function properties
 
-Proved theorems: 18, Axioms: 2, Sorries: 2
+Proved theorems: 21, Axioms: 2, Sorries: 1
 
-NOTE: `iid_satisfies_lyapunov` now requires an explicit identical-distribution
-hypothesis (`hIdent`) on the common `(2+δ)`-th moment, because the `IIDSequence`
-structure only records independence + a common *second* moment, not identical
-higher-moment distributions. See the theorem docstring.
+NOTE: The `IIDSequence` structure now carries an `ident` field recording that the
+`X_k` are identically distributed (equal laws). This is the "identically
+distributed" half of i.i.d., and it powers `iid_satisfies_lindeberg`
+(the classical Lindeberg condition via dominated convergence on truncated
+moments) as well as subsuming the explicit `hIdent` hypothesis of
+`iid_satisfies_lyapunov`.
 -/
 
 import Mathlib.Probability.Martingale.Basic
@@ -354,6 +356,13 @@ structure IIDSequence (Ω : Type*) [MeasurableSpace Ω]
   hσ : 0 < sigma_sq
   /-- Each X_k has variance σ² -/
   variance : ∀ k, ∫ ω, (X k ω) ^ 2 ∂μ = sigma_sq
+  /-- **Identically distributed**: every `X_k` has the same law as `X₀`.
+      This is the "identically distributed" half of i.i.d.. Without it the
+      truncated second moments `E[X_k² · 1{|X_k|>c}]` could differ across `k`
+      and the Lindeberg sum would not collapse to a single truncated moment.
+      (It also subsumes the explicit `hIdent` hypothesis of
+      `iid_satisfies_lyapunov`, since equal laws give equal moments.) -/
+  ident : ∀ k, Measure.map (X k) μ = Measure.map (X 0) μ
 
 /-- Construct a MDA from i.i.d. variables: X_{n,k} = X_k / √n. -/
 noncomputable def IIDSequence.toMDA
@@ -519,6 +528,121 @@ proof techniques. The common thread is that individual terms become
 "asymptotically negligible" — no single summand dominates.
 -/
 
+/-- Measurability of the truncated-square kernel `x ↦ x² · 1{|x| > c}`. -/
+private theorem measurable_truncSq (c : ℝ) :
+    Measurable (fun x : ℝ => x ^ 2 * (if c < |x| then (1 : ℝ) else 0)) := by
+  apply Measurable.mul
+  · exact (continuous_pow 2).measurable
+  · refine Measurable.ite ?_ measurable_const measurable_const
+    exact measurableSet_lt measurable_const continuous_abs.measurable
+
+/-- **Identically distributed ⇒ equal truncated second moments.**
+    Each `X_k` has the same law as `X₀`, so the integral of the truncated
+    square `x² · 1{|x| > c}` is the same for every index. -/
+private theorem iid_trunc_swap
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (S : IIDSequence Ω μ) (c : ℝ) (k : ℕ) :
+    ∫ ω, (S.X k ω) ^ 2 * (if c < |S.X k ω| then (1 : ℝ) else 0) ∂μ
+    = ∫ ω, (S.X 0 ω) ^ 2 * (if c < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+  have hm := measurable_truncSq c
+  calc ∫ ω, (S.X k ω) ^ 2 * (if c < |S.X k ω| then (1 : ℝ) else 0) ∂μ
+      = ∫ y, (y ^ 2 * (if c < |y| then (1 : ℝ) else 0)) ∂(Measure.map (S.X k) μ) :=
+        (integral_map (S.measurable k).aemeasurable hm.aestronglyMeasurable).symm
+    _ = ∫ y, (y ^ 2 * (if c < |y| then (1 : ℝ) else 0)) ∂(Measure.map (S.X 0) μ) := by
+        rw [S.ident k]
+    _ = ∫ ω, (S.X 0 ω) ^ 2 * (if c < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ :=
+        integral_map (S.measurable 0).aemeasurable hm.aestronglyMeasurable
+
+/-- **For i.i.d. sequences the Lindeberg condition holds.**
+
+    Writing `c_n = ε√n`, the Lindeberg sum for the normalized array
+    `X_{n,k} = X_k/√n` collapses — using identical distribution — to the single
+    truncated second moment
+      `L_n(ε) = E[X₀² · 1{|X₀| > ε√n}]`,
+    which tends to `0` by dominated convergence: the integrands are dominated by
+    the integrable `X₀²`, and the indicators vanish pointwise because `ε√n → ∞`.
+
+    This is the classical Lindeberg–Lévy route to the CLT (finite variance only,
+    no `(2+δ)`-moment needed), discharging the dominated-convergence step.
+    Reference: Billingsley "Probability and Measure" §27. -/
+theorem iid_satisfies_lindeberg
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (S : IIDSequence Ω μ) :
+    S.toMDA.lindebergCondition := by
+  intro ε hε
+  -- Reduction: for n > 0 the Lindeberg sum equals one truncated second moment.
+  have hkey : ∀ n : ℕ, 0 < n →
+      S.toMDA.lindebergSum n ε
+      = ∫ ω, (S.X 0 ω) ^ 2 * (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+    intro n hn
+    have hn_real : (0 : ℝ) < n := Nat.cast_pos.mpr hn
+    have hsqrt_pos : 0 < Real.sqrt ↑n := Real.sqrt_pos.mpr hn_real
+    -- Per-index identity: term_k = (1/n) · E[X₀² · 1{|X₀|>ε√n}].
+    have hterm : ∀ k,
+        (∫ ω, (S.X k ω / Real.sqrt ↑n) ^ 2 *
+            (if ε < |S.X k ω / Real.sqrt ↑n| then (1 : ℝ) else 0) ∂μ)
+        = (↑n)⁻¹ *
+            ∫ ω, (S.X 0 ω) ^ 2 *
+              (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ := by
+      intro k
+      have hpt : (fun ω => (S.X k ω / Real.sqrt ↑n) ^ 2 *
+            (if ε < |S.X k ω / Real.sqrt ↑n| then (1 : ℝ) else 0))
+          = (fun ω => (↑n)⁻¹ * ((S.X k ω) ^ 2 *
+              (if ε * Real.sqrt ↑n < |S.X k ω| then (1 : ℝ) else 0))) := by
+        funext ω
+        have hsq : (S.X k ω / Real.sqrt ↑n) ^ 2 = (↑n)⁻¹ * (S.X k ω) ^ 2 := by
+          rw [div_pow, Real.sq_sqrt hn_real.le]; ring
+        have hiff : (ε < |S.X k ω / Real.sqrt ↑n|) ↔ (ε * Real.sqrt ↑n < |S.X k ω|) := by
+          rw [abs_div, abs_of_nonneg (Real.sqrt_nonneg _), lt_div_iff₀ hsqrt_pos]
+        rw [hsq]
+        by_cases hc : ε * Real.sqrt ↑n < |S.X k ω|
+        · rw [if_pos (hiff.mpr hc), if_pos hc]; ring
+        · rw [if_neg (fun hh => hc (hiff.mp hh)), if_neg hc]; ring
+      rw [hpt, integral_const_mul]
+      congr 1
+      exact iid_trunc_swap S (ε * Real.sqrt ↑n) k
+    -- Sum the n identical terms: n · (1/n) · G = G.
+    simp only [MartingaleDiffArray.lindebergSum, IIDSequence.toMDA, gt_iff_lt]
+    rw [Finset.sum_congr rfl fun k _ => hterm k, Finset.sum_const, Finset.card_range,
+      nsmul_eq_mul, ← mul_assoc, mul_inv_cancel₀ (ne_of_gt hn_real), one_mul]
+  -- The single truncated moment vanishes by dominated convergence.
+  have hG : Tendsto (fun n : ℕ =>
+      ∫ ω, (S.X 0 ω) ^ 2 * (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) ∂μ)
+      atTop (nhds (∫ (_ω : Ω), (0 : ℝ) ∂μ)) := by
+    apply tendsto_integral_of_dominated_convergence (fun ω => (S.X 0 ω) ^ 2)
+    · -- measurability of each truncated integrand
+      intro n
+      exact ((measurable_truncSq (ε * Real.sqrt ↑n)).comp (S.measurable 0)).aestronglyMeasurable
+    · -- dominating function is integrable
+      exact S.sq_integrable 0
+    · -- pointwise domination by X₀²
+      intro n
+      refine ae_of_all _ (fun ω => ?_)
+      have hnn : (0 : ℝ) ≤ (S.X 0 ω) ^ 2 := sq_nonneg _
+      have hge : (0 : ℝ) ≤ (S.X 0 ω) ^ 2 *
+          (if ε * Real.sqrt ↑n < |S.X 0 ω| then (1 : ℝ) else 0) := by
+        apply mul_nonneg hnn; split_ifs <;> norm_num
+      rw [Real.norm_eq_abs, abs_of_nonneg hge]
+      refine le_trans (mul_le_mul_of_nonneg_left ?_ hnn) (le_of_eq (mul_one _))
+      split_ifs <;> norm_num
+    · -- pointwise convergence to 0 since ε√n → ∞
+      refine ae_of_all _ (fun ω => ?_)
+      have hsqrt_tendsto : Tendsto (fun n : ℕ => Real.sqrt (↑n)) atTop atTop := by
+        have := (tendsto_rpow_atTop (show (0 : ℝ) < 1 / 2 by norm_num)).comp
+          tendsto_natCast_atTop_atTop
+        exact this.congr'
+          (by filter_upwards [eventually_ge_atTop 0] with N _; simp [Real.sqrt_eq_rpow])
+      have hthr : Tendsto (fun n : ℕ => ε * Real.sqrt (↑n)) atTop atTop :=
+        hsqrt_tendsto.const_mul_atTop hε
+      refine tendsto_const_nhds.congr' ?_
+      filter_upwards [hthr.eventually_gt_atTop |S.X 0 ω|] with n hn
+      rw [if_neg (not_lt.mpr (le_of_lt hn)), mul_zero]
+  rw [integral_zero] at hG
+  -- Conclude: lindebergSum is eventually equal to G, hence also tends to 0.
+  refine hG.congr' ?_
+  filter_upwards [eventually_ge_atTop 1] with n hn
+  exact (hkey n (by omega)).symm
+
 /-- Classical CLT follows from martingale CLT: i.i.d. sequences with
     mean 0 and variance σ² satisfy the Lindeberg condition. -/
 theorem classical_clt_from_martingale
@@ -531,10 +655,8 @@ theorem classical_clt_from_martingale
   -- 2. Lindeberg condition (from dominated convergence + finite variance)
   intro t
   apply martingale_clt S.toMDA S.sigma_sq S.hσ
-  · -- Lindeberg condition for i.i.d./√n
-    -- Key: E[(X_k/√n)² · 1{|X_k/√n|>ε}] = (1/n) E[X_k² · 1{|X_k|>ε√n}]
-    -- Sum of n such terms = E[X₁² · 1{|X₁|>ε√n}] → 0 by DCT
-    sorry -- requires dominated convergence theorem for truncated moments
+  · -- Lindeberg condition for i.i.d./√n (dominated convergence on truncated moments)
+    exact iid_satisfies_lindeberg S
   · -- Variance convergence
     exact iid_mda_variance_converges S
 
