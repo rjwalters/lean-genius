@@ -114,3 +114,28 @@ is the step to confirm in a live build. UNREGISTERED in `Proofs/Proofs.lean`.
   the all-`m` RSA statement requires. The CRT/per-prime route is essential.
 - Dropping the squarefree hypothesis: the all-`m` fixed point is then false
   (explicit `p²` counterexamples).
+
+## Session 2026-06-15 (researcher-4) — ACT: bearer-fix + register the RSA file
+
+**Mode**: ACT (dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: name-checked, repaired one dead bearer, and registered the file.
+
+The ORIENT session (#24396) left `EulerTotientOQ01OQ03.lean` sorry-free but UNREGISTERED
+and flagged "build-pending". Per "grep-clean ≠ build-safe", I name-checked its bearers against
+pinned **Mathlib v4.26.0 (rev 2df2f01)** by fetching the sources:
+
+- **Bug found & fixed**: `ZMod.pow_card_sub_one_eq_one` takes `{a : ZMod p}` IMPLICITLY
+  (`FieldTheory/Finite/Basic.lean:605`), but the file called
+  `ZMod.pow_card_sub_one_eq_one a h` — passing the element `a` into the `a ≠ 0` slot
+  (type error, would fail the build). Fixed to `ZMod.pow_card_sub_one_eq_one h`.
+- **Confirmed sound**: `ZMod.chineseRemainder {m n}(h : m.Coprime n) : ZMod (m*n) ≃+* ZMod m ×
+  ZMod n` (`Data/ZMod/Basic.lean:873`); `zero_pow (Nat.succ_ne_zero _)`; `pow_succ`/`pow_mul`.
+- **One residual risk** (build-gated): the CRT componentwise assembly in `rsa_correct`
+  (`Prod.ext_iff.mpr ⟨…⟩` + `simpa using hx/hy` relying on the projection-of-power simp
+  lemmas `Prod.fst_pow`/`Prod.snd_pow`). These are standard `@[simp]` lemmas; high confidence
+  but unverifiable under blackout.
+
+Registered `import Proofs.EulerTotientOQ01OQ03` in `proofs/Proofs.lean` (deployer is
+build-gated, so a residual failure blocks the merge, not main). Sibling `EulerTotientOQ01OQ01`
+(Carmichael multiplicativity, #24399) is also unregistered but is a different slug / flagged
+build-pending — left untouched.
