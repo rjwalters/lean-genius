@@ -54,7 +54,10 @@
     "summary": "q-Vandermonde identity [m+n choose r]_q = ∑_k q^{k*(m+k-r)} [m choose r-k]_q [n choose k]_q proved by induction on m. Works in any CommRing. Key infrastructure: Part A exponent identity (zify+ring) and Part B ℕ subtraction alignment (omega). Fully verified: 0 axioms, 0 sorries.",
     "implications": "The q-Vandermonde identity is a fundamental identity in quantum calculus with applications to q-hypergeometric series and representation theory of quantum groups. Connects the Gaussian binomial convolution structure to classical Vandermonde via q=1 specialization.",
     "openQuestions": [
-      "Extend to the full q-Chu-Vandermonde identity with non-integer q-exponents"
+      "Extend to the full q-Chu-Vandermonde identity with non-integer q-exponents",
+      "Climb the q-hypergeometric hierarchy: this identity is the terminating ₂φ₁ q-Gauss summation. Can the same induction-on-m strategy be pushed to the balanced ₃φ₂ q-Saalschütz summation, the next fundamental closed-form evaluation in the theory of basic hypergeometric series?",
+      "Give a bijective proof. Over a finite field 𝔽_q, [m+n choose r]_q counts the r-dimensional subspaces of an (m+n)-dimensional space, and the q-Vandermonde sum stratifies them by the dimension k of intersection with a fixed n-dimensional subspace, the q^{k(m+k-r)} factor recording the affine freedom. Can this subspace-counting bijection be formalized in Lean as an alternative to the algebraic induction?",
+      "Specialize at roots of unity rather than at q=1. When q is a primitive d-th root of unity the Gaussian binomials satisfy the q-Lucas theorem; does the q-Vandermonde identity descend to a Lucas-type congruence relating the base-d digit expansions of m, n, and r?"
     ]
   },
   "leanFile": {
