@@ -231,7 +231,32 @@
     {
       "targetId": "birthday-problem",
       "relationship": "extends",
-      "description": "Extends the classic birthday problem (probability threshold at n=23) to the expected-pairs formulation (expectation threshold at n=28)"
+      "description": "Extends the classic birthday problem (probability threshold at $n=23$) to the expected-pairs formulation (expectation threshold at $n=28$)"
+    },
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "foundational",
+      "description": "The closed form $E[\\text{pairs}] = \\binom{n}{2}/d$ is a direct application of linearity of expectation (the first moment method): the number of colliding pairs is a sum of $\\binom{n}{2}$ pair-indicator variables, each with probability $1/d$, and expectation passes through the sum without any independence assumption."
+    },
+    {
+      "targetId": "prob-method-second-moment-oq-02",
+      "relationship": "foundational",
+      "description": "`variancePairs` instantiates the generic indicator-sum variance decomposition $\\operatorname{Var}(\\sum X_i) = \\sum_{(i,j)} \\operatorname{Cov}(X_i, X_j)$ for pair-collision indicators, where each $X_i$ is Bernoulli$(1/d)$ with variance $(d-1)/d^2$."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "technique",
+      "description": "The variance bound $\\operatorname{Var} \\le E[\\text{pairs}]$ proved here is exactly the input the Second Moment Method (Chebyshev / Paley-Zygmund) needs to turn an expectation threshold into a concentration / existence statement about the number of shared-birthday pairs."
+    },
+    {
+      "targetId": "birthday-problem-oq-02",
+      "relationship": "sibling",
+      "description": "A complementary view of the same collision phenomenon: this entry counts the *expected number* of colliding pairs, whereas OQ-02 bounds the *probability* of at least one collision via $\\prod(1 - i/n) \\le \\exp(-k(k-1)/(2n))$. Both pivot on the $\\binom{k}{2}$ pair count."
+    },
+    {
+      "targetId": "birthday-problem-oq-03",
+      "relationship": "sibling",
+      "description": "Generalizes the collision notion in the orthogonal direction — from pairwise ($k=2$) to $k$-way coincidences — where this entry instead enriches the $k=2$ case with full first- and second-moment analysis."
     }
   ],
   "mainTheorems": [
