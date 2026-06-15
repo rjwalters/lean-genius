@@ -106,8 +106,8 @@
     {
       "id": "definition",
       "title": "The Categorical Schroeder-Bernstein Property",
-      "startLine": 95,
-      "endLine": 96,
+      "startLine": 86,
+      "endLine": 101,
       "summary": "`HasSBP (C : Type*) [Category C] : Prop := ∀ X Y, (∃ m : X ⟶ Y, Mono m) → (∃ n : Y ⟶ X, Mono n) → Nonempty (X ≅ Y)`. The categorical generalization of mutual-injections-imply-bijection.",
       "mathContext": "A category $\\mathcal{C}$ has the **Schroeder-Bernstein property** iff for all $X, Y \\in \\mathrm{Ob}(\\mathcal{C})$, $\\bigl(\\exists\\, m : X \\hookrightarrow Y\\, \\text{mono}\\bigr) \\wedge \\bigl(\\exists\\, n : Y \\hookrightarrow X\\, \\text{mono}\\bigr) \\Rightarrow X \\cong Y$."
     },
@@ -115,7 +115,7 @@
       "id": "type-bridge",
       "title": "S2/S3 — `Type u` has SBP",
       "startLine": 102,
-      "endLine": 110,
+      "endLine": 121,
       "summary": "Bridges classical Schroeder-Bernstein through `mono_iff_injective` (Type) and `Function.Embedding.antisymm`. Concrete non-vacuous witness: in Type, the inclusion `{ n // n ∈ s } ↪ ℕ` is a non-iso mono.",
       "mathContext": "Monomorphisms in $\\mathbf{Type}$ are exactly injections; `Function.Embedding.antisymm` gives the Schroeder-Bernstein equivalence, which `Equiv.toIso` promotes to a categorical iso."
     },
@@ -123,39 +123,39 @@
       "id": "discrete-concrete",
       "title": "S4 — `Discrete α` has SBP (vacuous concrete)",
       "startLine": 122,
-      "endLine": 124,
+      "endLine": 125,
       "summary": "Every morphism in `Discrete α` is an iso, so the first supplied mono witnesses the required iso directly. The second mono is unused — diagnostic of vacuousness.",
       "mathContext": "$\\mathrm{Discrete}\\,\\alpha$ has $\\mathrm{Hom}(a, b) = \\{a = b\\}$, so every morphism is invertible. SBP holds trivially."
     },
     {
       "id": "topcat-refutation",
       "title": "S5 — `¬ HasSBP TopCat` via [0,1] vs (0,1)",
-      "startLine": 137,
-      "endLine": 193,
+      "startLine": 126,
+      "endLine": 194,
       "summary": "Explicit private continuous injections `fHom : [0,1] → (0,1)` via $x \\mapsto (x+1)/4$ (range in $[1/4, 1/2]$) and `gHom : (0,1) → [0,1]` (inclusion), with injectivity lemmas. The refutation transfers compactness from `[0,1]` to `(0,1)` via `Homeomorph.compactSpace` and contradicts `isCompact_Ioo_iff`.",
       "mathContext": "Classical topological failure of SBP: $[0,1]$ and $(0,1)$ admit mutual continuous injections (compression and inclusion) but are not homeomorphic — $[0,1]$ is compact, $(0,1)$ is not."
     },
     {
       "id": "isdiscrete-abstract",
       "title": "S6 — `[IsDiscrete C] → HasSBP C` (vacuous abstract)",
-      "startLine": 223,
-      "endLine": 226,
+      "startLine": 195,
+      "endLine": 227,
       "summary": "Abstracts `hasSBP_Discrete` from `Discrete α` to any `[IsDiscrete C]`. Mathlib's `isIso_of_isDiscrete` makes every morphism iso; the proof is `exact ⟨asIso m⟩`.",
       "mathContext": "`IsDiscrete C` asserts: (a) at most one morphism between any two objects, and (b) any morphism $f : X \\to Y$ forces $X = Y$. Together these collapse $\\mathrm{Mono} = \\mathrm{Iso}$."
     },
     {
       "id": "isgroupoid-abstract",
       "title": "S11 — `[IsGroupoid C] → HasSBP C` (vacuous-but-broadening)",
-      "startLine": 263,
-      "endLine": 266,
+      "startLine": 228,
+      "endLine": 267,
       "summary": "Broadens the IsDiscrete regime to all groupoids. `IsGroupoid.all_isIso` makes every morphism iso; proof again `exact ⟨asIso m⟩`. New instance space: fundamental groupoids of spaces, Brandt groupoids, `EssGroupoid`.",
       "mathContext": "A groupoid is a category in which every morphism is an isomorphism — strictly broader than discrete (which is also a groupoid but trivially so). SBP holds because the first mono is already iso."
     },
     {
       "id": "fullfaithful-forget",
       "title": "S12 — `(forget C).Full + Faithful + PreservesMono → HasSBP C` (first genuinely non-vacuous)",
-      "startLine": 334,
-      "endLine": 351,
+      "startLine": 268,
+      "endLine": 353,
       "summary": "The first sufficient condition in the corpus that does NOT force `Mono = Iso`. Lifts classical Schroeder-Bernstein in Type through the fully-faithful forgetful: PreservesMono converts C-monos to Type-injections; `Function.Embedding.antisymm` yields a Type-iso; `Functor.FullyFaithful.preimageIso` pulls it back to a C-iso. Narrow (instance space ≈ full subcategories of Type) but mathematically substantive.",
       "mathContext": "If $U = \\mathrm{forget}\\,\\mathcal{C} : \\mathcal{C} \\to \\mathbf{Type}$ is full and faithful and preserves monos, then $U$ reflects isos and any pair of mutual $\\mathcal{C}$-monos gives a pair of mutual Type-injections, which Schroeder-Bernstein turns into a Type-bijection that lifts to a $\\mathcal{C}$-iso via the fully-faithful $U$."
     }
