@@ -11,19 +11,24 @@ these two first because they are *closed* (known-mathematics, HARD-not-OPEN) and
 have no upstream dependencies.
 
 This file turns that prose design into **typed Lean statements** so they are
-directly submittable to Aristotle / buildable the moment a backend frees. Both
-proofs are `sorry`.
+directly submittable to Aristotle / buildable the moment a backend frees.
+Sublemma B now carries a **full candidate proof** (Grassmann dimension count);
+Sublemma A remains `sorry`.
 
 ## Status
 
-STATEMENT-OF-RECORD, build-pending. Authored while both backends were down
-(Aristotle MCP → `Resource not found`; Docker VM saturated at 3 concurrent
-`lean-build` containers on the 7.65 GiB VM, above the safe ≤2 threshold), so the
-statements below are **not yet machine-checked**. Sublemma B is pure
-finite-dimensional linear algebra and is the higher-confidence target; Sublemma A
-carries an inner-product/eigenbasis hypothesis and its exact spelling
-(`inner` field annotation, `Finset → Set` image coercion) should be re-confirmed
-at first compile. Not registered in `Proofs.lean`.
+BUILD-PENDING (candidate proof for B, sorry for A). Authored / extended while both
+backends were down (Aristotle MCP → `Resource not found`; Docker VM saturated at 3
+concurrent `lean-build` containers on the 7.65 GiB VM, above the safe ≤2
+threshold), so the proof below is **not yet machine-checked**.
+
+Sublemma B is pure finite-dimensional linear algebra: the four lemmas it uses
+(`Submodule.finrank_sup_add_finrank_inf_eq`, `Submodule.finrank_le`,
+`finrank_bot` via `simp`, `Submodule.ne_bot_iff`) are all standard Mathlib API
+and the `omega` arithmetic is routine, so confidence is high — but it must still
+be compiled to confirm. Sublemma A carries an inner-product/eigenbasis hypothesis
+and its exact spelling (`inner` field annotation, `Finset → Set` image coercion)
+should be re-confirmed at first compile. Not registered in `Proofs.lean`.
 -/
 
 open scoped InnerProductSpace
@@ -40,13 +45,26 @@ Proof route (design §1.B): `Submodule.finrank_sup_add_finrank_inf_eq V W` gives
 `finrank (V ⊔ W) + finrank (V ⊓ W) = finrank V + finrank W`; with
 `finrank (V ⊔ W) ≤ finrank E` (`Submodule.finrank_le`) rearrange to
 `finrank (V ⊓ W) ≥ finrank V + finrank W − finrank E ≥ 1 > 0`; positive finrank
-⇒ `≠ ⊥` ⇒ has a nonzero element. -/
+⇒ `≠ ⊥` ⇒ has a nonzero element. Proof below follows exactly this route. -/
 theorem inf_ne_bot_of_finrank_add_lt
     {𝕜 E : Type*} [Field 𝕜] [AddCommGroup E] [Module 𝕜 E]
     [FiniteDimensional 𝕜 E] (V W : Submodule 𝕜 E)
     (h : Module.finrank 𝕜 E < Module.finrank 𝕜 V + Module.finrank 𝕜 W) :
     ∃ x ∈ V ⊓ W, x ≠ 0 := by
-  sorry
+  -- The Grassmann/dimension formula: `dim(V⊔W) + dim(V⊓W) = dim V + dim W`.
+  have hkey := Submodule.finrank_sup_add_finrank_inf_eq V W
+  -- The join sits inside the ambient space, so its dimension is bounded by `dim E`.
+  have hle : Module.finrank 𝕜 (V ⊔ W : Submodule 𝕜 E) ≤ Module.finrank 𝕜 E :=
+    Submodule.finrank_le _
+  -- Hence the intersection has strictly positive dimension.
+  have hpos : 0 < Module.finrank 𝕜 (V ⊓ W : Submodule 𝕜 E) := by omega
+  -- Positive dimension rules out the trivial subspace.
+  have hne : (V ⊓ W : Submodule 𝕜 E) ≠ ⊥ := by
+    intro hbot
+    rw [hbot] at hpos
+    simp at hpos
+  -- A nontrivial subspace contains a nonzero vector.
+  exact (Submodule.ne_bot_iff _).1 hne
 
 /-! ## Sublemma A — Rayleigh bounds on a coordinate eigenspan
 
