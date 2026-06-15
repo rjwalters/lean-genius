@@ -54,7 +54,7 @@
   "started": "2026-06-15T00:00:00.000Z",
   "lastUpdate": "2026-06-15",
   "knowledge": {
-    "progressSummary": "ACT S2 (researcher-4, 2026-06-15, build-pending, docker blackout): added the RESIDUE-CRITERION (decision) form of the second supplementary law to proofs/Proofs/QuadraticReciprocityOQ03OQ01.lean. legendreSym_two_eq_one_iff: legendreSym p 2 = 1 ↔ p%8=1 ∨ p%8=7, and legendreSym_two_eq_neg_one_iff: legendreSym p 2 = -1 ↔ p%8=3 ∨ p%8=5. Proof composes legendreSym.eq_one_iff / eq_neg_one_iff with ZMod.exists_sq_eq_two_iff; the (2:ZMod p)≠0 side-goal reduces to p≠2 via ZMod.natCast_eq_zero_iff + Nat.prime_dvd_prime_iff_eq; the neg-one complement closes by omega using Odd p ⟹ p%8∈{1,3,5,7}. All bearer names verified against Mathlib pin 2df2f01 (v4.26.0) by gh-api. Still 0 axioms/0 sorries. Builds on S1's legendreSym_two_eq (χ₈ form). The textbook exponential form (-1)^((p^2-1)/8) remains the sole documented follow-up (needs a ℕ-division parity bridge, ~50-100 LOC). NOT registered in Proofs.lean (never built); docker-build.sh host hangs this cycle (dual blackout).",
+    "progressSummary": "SOLVED (2026-06-15): all three forms of the 2nd supplementary law of QR proven, 0 sorries/0 axioms, build-pending under Docker blackout. (1) χ₈ character form legendreSym_two_eq (S1); (2) residue-criterion legendreSym_two_eq_one_iff/neg_one_iff (S2, #24353); (3) textbook exponential form legendreSym_two_eq_pow = (-1)^((p^2-1)/8) (S3, researcher-9 #24361, in QuadraticReciprocityOQ03OQ01Exp.lean). The earlier progressSummary calling the exponential form the open follow-up was STALE — researcher-3 re-verified it is complete (verify_exp_form.py ALL PASS; all Mathlib bearers present in v4.26). Sole remaining work: Docker-up build + register both files in proofs/Proofs.lean (currently unregistered).",
     "builtItems": [
       "legendreSym_two_eq (p) (hp : p ≠ 2) : legendreSym p 2 = χ₈ (p : ZMod 8)  -- fourth reduction lemma",
       "5 verified (2/p) example computations: p = 3,5,23,31,41",
@@ -66,8 +66,10 @@
       "Bridge χ₈ (p:ZMod 8) = (-1:ℤ)^((p^2-1)/8) for odd p needs a p % 8 case analysis + parity of (p^2-1)/8 (= 0,1,1,0 mod 2 on residues 1,3,5,7); ZModChar.lean has the χ₈ value-mod-8 facts."
     ],
     "nextSteps": [
-      "Build via ./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityOQ03OQ01 once docker returns, then register in proofs/Proofs.lean.",
-      "Remaining gap: textbook exponential form legendreSym p 2 = (-1)^((p^2-1)/8) via the χ₈/exponent parity bridge (p%8 case analysis; (p^2-1)/8 parity = 0,1,1,0 on residues 1,3,5,7). ~50-100 LOC, ℕ-division reasoning (deferred under no-build)."
+      "Docker-up: build Proofs.QuadraticReciprocityOQ03OQ01 and Proofs.QuadraticReciprocityOQ03OQ01Exp, then register both in proofs/Proofs.lean. Both are 0-sorry/0-axiom and fully name-checked vs v4.26; this is the only remaining step. No open mathematical gap — all three forms (χ₈/residue/exponential) of the 2nd supplementary law are proven."
+    ],
+    "insights": [
+      "S3 verification (2026-06-15, researcher-3, build-free blackout): CORRECTION — the exponential form is NOT an open follow-up, it is DONE. legendreSym_two_eq_pow (legendreSym p 2 = (-1)^((p^2-1)/8) for odd prime p) is fully proven (0 sorries/0 axioms) in proofs/Proofs/QuadraticReciprocityOQ03OQ01Exp.lean (shipped by researcher-9 #24361, on main). Proof: case p%8∈{1,3,5,7}, exact subtraction-free p^2=8(...)+1 decomposition, omega for (p^2-1)/8, Even/Odd.neg_one_pow for sign, bridged to χ₈ via legendreSym_two_eq (S1) + ZMod.χ₈_nat_eq_if_mod_eight. Re-verified this session: research/problems/.../verify_exp_form.py ALL CHECKS PASS (0 mismatches over odd primes <20000); name-checked legendreSym.at_two (QuadraticReciprocity.lean:60) + ZMod.χ₈_nat_eq_if_mod_eight (ZModChar.lean:151) + legendreSym_two_eq (S1 file:70) all present in v4.26 sibling. SLUG SOLVED: all 3 forms of the 2nd supplementary law (χ₈ S1, residue-criterion S2, exponential S3) complete, 0 sorries/0 axioms. Sole remaining work = Docker-up build+register of QuadraticReciprocityOQ03OQ01.lean + ...Exp.lean (neither yet in Proofs.lean)."
     ]
   }
 }
