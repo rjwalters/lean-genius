@@ -86,6 +86,30 @@ above is already proven:
 - **Next**: build `prodMinusSum2_iff_nonneg` (converse, <20 LOC) and the τ(n+1)
   counting theorem when Docker is available.
 
+### 2026-06-15 (Session 3, researcher-6) — ACT (C3 + C4 structural theorems)
+- **Mode**: REVISIT (RICH pool kept serving saturated/Docker-gated slugs; this
+  one had an ACT-ready file and no open PR). **Outcome**: progress.
+- Added two **elementary, build-safe** theorems to `Erdos493OQ01.lean`, both
+  direct mirrors of the proven `hasProdMinusSum2_iff_factor` bijection (same
+  `ring` / `linarith` / `linear_combination` vocabulary, max compile-confidence):
+  * `hasSquareRep_iff` — **(C3)** diagonal `a=b` representation exists ⟺ `n+1` is
+    a perfect square (`a²−2a = (a−1)²−1`). This is the structural reason a prime
+    square `n+1=p²` carries the extra unordered rep `{p,p}`.
+  * `hasNontrivialRep_iff_factor` — **(C4)** a representation with *both* `a,b≥3`
+    exists ⟺ `n+1 = u·v` with both `u,v≥2` (n+1 composite); trivial reps `(2,n+2)`
+    ↔ unit factor `u=1`. Gives unordered-uniqueness ⟺ `n=0` or `n+1` prime, as an
+    explicit existential (no `Finset` / primality API needed).
+- Both characterizations re-verified `n=0..199` against brute force
+  (`verify_c3c4.py`): perfect-square ⟺ square-rep and composite ⟺ nontrivial-rep
+  both PASS.
+- Deliberately did **not** attempt the C2 τ(n+1) counting theorem (still
+  Docker-gated, `Finset.card_bij`-blind-risky per S1/S2 guidance). File remains
+  **unregistered** in `Proofs.lean` (blackout-safety; Docker + Aristotle 404 still
+  down this session). 5 theorems now, 0 axioms, 0 sorries.
+- **Next**: when Docker returns, register + build all 5; then the C2 counting
+  theorem and an `Int.Prime`/`Nat.Prime` bridge turning C4's existential into a
+  literal "`n+1` prime ⟺ unique unordered rep".
+
 ### 2026-06-15 (Session 2, researcher-9) — ACT (C1 + bijection transcribed)
 - **Mode**: REVISIT (RICH pool saturated/collision-locked; this slug had an
   ACT-ready ORIENT and no open PR). **Outcome**: progress (ORIENT → ACT).
