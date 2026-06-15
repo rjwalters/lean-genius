@@ -1,0 +1,47 @@
+{
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02",
+  "title": "Besicovitch's Theorem: ℚ-Linear Independence of √(squarefree)",
+  "status": "surveyed",
+  "phase": "ORIENT",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 6,
+  "started": "2026-06-14",
+  "lastUpdate": "2026-06-14",
+  "path": "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02",
+  "problemStatement": "Generalize OQ-01 (irrationality of √2+√3+√5) to Besicovitch's theorem: the square roots of distinct squarefree integers are linearly independent over ℚ; equivalently [ℚ(√p₁,…,√pₙ):ℚ]=2ⁿ for distinct primes, with the 2ⁿ subset products a ℚ-basis.",
+  "problemSource": "Seeker-selected stub (no problem.md); OQ defined this session.",
+  "tags": [
+    "number-theory",
+    "field-theory",
+    "multiquadratic",
+    "besicovitch",
+    "linear-independence",
+    "diophantine",
+    "research"
+  ],
+  "knowledge": {
+    "progressSummary": "ORIENT (Docker down, no build): known theorem (Besicovitch 1940). Framed as the structural generalization of OQ-01's ad-hoc squaring; exact-arithmetic verification ALL PASS; Mathlib bearer map identifies the single ~250-450 LOC gap (non-membership induction).",
+    "builtItems": [
+      "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02/verify_besicovitch.py: exact sympy verification (A) degree=2^n via primitive element, (B) linear independence of distinct squarefree roots, (C) induction-heart degree doubling, (D) direct refutation for the OQ-01 field — ALL PASS",
+      "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean: ORIENT skeleton (NOT build-verified) decomposing into irrational_sqrt_prime (base, one-liner), sqrt_prime_not_mem_multiquadratic (HEART, sorry), multiquadratic_subset_products_linearIndependent, besicovitch_sqrt_linearIndependent, and OQ-01 recovery",
+      "research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-02/knowledge.md: field-theory proof + sign-flip-automorphism alternative + bearer map"
+    ],
+    "insights": [
+      "OQ-01's 'square twice to isolate √30' is exactly the n=3 shadow of √2+√3+√5 being a primitive element of the degree-8 field ℚ(√2,√3,√5) (minpoly degree 8 > 1 ⟹ irrational)",
+      "The whole theorem reduces to ONE non-trivial step: √pₖ ∉ ℚ(√p₁,…,√pₖ₋₁) for a new prime pₖ (the induction heart). Upper bound ≤2ⁿ and the n=1 base case are Mathlib one-liners",
+      "Equivalent operational test of the heart (certified exactly): minpoly(Σ_{i≤k} √pᵢ) has exactly twice the degree of minpoly(Σ_{i<k} √pᵢ)",
+      "Independence of distinct squarefree √d follows from degree=2ⁿ because distinct squarefree d have distinct odd-power-prime signatures ⟹ distinct subset-product basis vectors",
+      "Sign-flip automorphism proof (σ_p: √p↦−√p) is the conceptual content of OQ-01's repeated squaring, but needs the same degree theorem to know the automorphisms exist — not strictly easier in Lean"
+    ],
+    "mathlibGaps": [
+      "No general multiquadratic degree-2ⁿ theorem in Mathlib v4.26.0",
+      "No non-membership lemma √pₖ ∉ ℚ(√p₁,…,√pₖ₋₁) — this is the ~250-450 LOC crux (BUILD-class, not blocked)"
+    ],
+    "nextSteps": [
+      "With Docker up: discharge upper bound (tower of quadratics) + n=1 base; leave sqrt_prime_not_mem_multiquadratic as the single sorry",
+      "Submit sqrt_prime_not_mem_multiquadratic to Aristotle (HARD known result) once the scaffold builds",
+      "Choose encoding of the heart: squares-characterization (r²·∏ subset primes) vs (ℤ/2)ⁿ Galois/sign-flip — pick by Mathlib support"
+    ]
+  }
+}
