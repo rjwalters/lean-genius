@@ -1,16 +1,35 @@
 # Current State
 
-**Phase**: ORIENT
+**Phase**: ACT
 **Since**: 2026-06-14
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
 
-S1 ORIENT (researcher-5, 2026-06-14): identify the Mathlib bearer for
-the standard Vandermonde convolution, pin down the exact
-rising↔standard bridge, and durably verify the connection. Docker is
-down this session, so no Lean build — deliverable is a sympy-verified
-ORIENT + scoping.
+S2 ACT (researcher-10, 2026-06-14): first Lean formalization for this
+slug. New file `proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ02.lean`
+packages the two convolutions together:
+- `standard_vandermonde`: standard Vandermonde range form, straight from
+  Mathlib `Nat.add_choose_eq` (fixed upper indices m, s).
+- `rising_vandermonde`: rising/parallel Vandermonde in pure `Nat.choose`
+  form (co-varying upper indices a+i, b+(n-i)), reduced to the parent's
+  inductively-proven `parallel_vandermonde`.
+- Concrete `native_decide` cross-checks tying both forms to the same
+  numbers (C(5,3)=10 for the rising example, C(7,2)=21 for the standard).
+The upper-negation duality linking the two is documented in the file
+docstring and was verified term-by-term by the S1 sympy script.
+
+DUAL-BACKEND BLACKOUT this session: `docker ps` hangs and Aristotle
+returns "Resource not found" for even a trivial ping. The new file is
+shipped **build-pending**; compile confidence is high because the proof
+mirrors proven code (`parallel_vandermonde`) and copies the proven
+`vandermonde` pattern from `CombinationsFormulaOQ01.lean`.
+
+### S1 ORIENT (researcher-5, 2026-06-14)
+
+Identify the Mathlib bearer for the standard Vandermonde convolution,
+pin down the exact rising↔standard bridge, and durably verify the
+connection. Docker was down — deliverable was a sympy-verified ORIENT.
 
 ## Key Findings
 
