@@ -1,0 +1,50 @@
+{
+  "slug": "erdos-1047-oq-02",
+  "title": "Characterize which polynomials have all convex lemniscate components",
+  "problemStatement": "Erdős #1047 (Grunsky / Erdős–Herzog–Piranian) asks whether every connected component of {z : |f(z)| ≤ c} is convex in the regime where there are m = (#distinct roots) components. The answer is NO (Pommerenke 1961, Goodman 1966). OQ-02 asks to characterize the polynomials all of whose lemniscate components are convex.",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 5,
+  "status": "in-progress",
+  "phase": "ORIENT",
+  "path": "research",
+  "tags": ["complex-analysis", "lemniscates", "convexity", "gallery-extracted", "seeker-selected"],
+  "started": "2026-06-14T00:00:00Z",
+  "lastUpdate": "2026-06-14T00:00:00Z",
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14T00:00:00Z",
+    "iteration": 1,
+    "focus": "Built a boundary signed-curvature convexity test (two independent implementations). Found the non-convexity is a pre-merge necking on the side facing the nearest other root, in a window (c_nc, c*) below the merge threshold; window width W(k) grows monotonically with root multiplicity and is independent of inter-root distance. Simple-root low-degree configs are all-convex through merge. Gallery's Goodman/referee (f,c) pairs test all-convex; clean counterexample is Pommerenke z^k(z-a), k≥5."
+  },
+  "knownResults": [
+    "Grunsky conjecture (all components convex) is FALSE — Pommerenke (1961), Goodman (1966).",
+    "Near a root of multiplicity k, |f| ≈ const·|z−root|^k, locally a circle (convex) for small enough c."
+  ],
+  "knowledge": {
+    "insights": [
+      "Correct convexity test is boundary SIGNED CURVATURE κ = (gₓ²g_yy − 2gₓg_y g_xy + g_y²gₓₓ)/(gₓ²+g_y²)^{3/2} for g=|f|², calibrated so a disk has κ>0 (κ=+1 on the unit circle); a component {g≤c} is convex ⟺ κ≥0 on its boundary. The convex-hull area-defect metric used previously is blind to sub-grid concavity.",
+      "Non-convexity of a lemniscate component is a PRE-MERGE NECKING: as c→c*⁻ (merge threshold) the component around a root stretches toward the nearest other root and dimples on the side facing it. The dimple angle is ≈0 (toward the other root).",
+      "For Pommerenke f=z^k(z−a), the non-convex window W(k)=(c*−c_nc)/c* grows monotonically with multiplicity k and is essentially INDEPENDENT of inter-root distance a: W = 0% (k=1), 0.05% (k=2), 0.34% (k=3), 0.93% (k=4), 1.75% (k=5), 2.77% (k=6), 5.17% (k=8), 7.85% (k=10). So W(k) is an intrinsic function of multiplicity.",
+      "Simple-root low-degree configs (deg-2 Cassini z²−1, deg-3 z³−z) keep ALL components convex through the entire separated regime (κ_min→0⁺ at merge, never negative).",
+      "The merge threshold for z^k(z−a) is c* = max_{0<r<a} r^k|r−a| (the on-axis barrier height between the two roots).",
+      "The gallery's stated Goodman example (z²+1)(z−2)² at c=5^{3/2}/4 tests ALL CONVEX under the sensitive curvature test (κ_min≈1.25 around the double root); 5^{3/2}/4 sits at the merge threshold and the only multiple root is double (k=2, W≈0.05%). The referee example z(z⁵−1) (all simple roots) also tests all-convex. The clean reproducible counterexample is Pommerenke z^k(z−a) with k≥5."
+    ],
+    "builtItems": [
+      "research/problems/erdos-1047-oq-02/verify_lemniscate_curvature.py — grid+contour curvature test, Newton-projected onto {g=c}, calibrated on the unit circle.",
+      "research/problems/erdos-1047-oq-02/pommerenke_scan.py — analytic complex-curvature, merge-threshold bisection, Pommerenke k×a sweep.",
+      "research/problems/erdos-1047-oq-02/onset_refine.py — full c-scan and dimple localization.",
+      "research/problems/erdos-1047-oq-02/robustness_check.py — independent grid-free polar-trace cross-check (r(θ) root-finding + r²+2r′²−rr″≥0).",
+      "research/problems/erdos-1047-oq-02/window_width.py — bisection map of non-convex window W(k)."
+    ],
+    "mathlibGaps": [
+      "Convexity of polynomial level sets / lemniscate components is heavy real analysis (curvature of implicit curves); no direct Mathlib support. A Lean formalization is deferred — the checkable artifact here is the numerical curvature certificate, not a Lean proof."
+    ],
+    "nextSteps": [
+      "Derive analytically the leading harmonic of r(θ) near a multiplicity-k root for z^k(z−a) and the convexity threshold |aₙ|(n²+2)>1 (limaçon b≤1/2 is the n=1 analogue) to predict W(k).",
+      "Audit the gallery's Goodman/referee (f,c) against Goodman (1966); consider a corrected c or switching to a clean Pommerenke k≥5 example with a computed κ<0 (answers the gallery's open question 'make counterexamples explicit with computed convexity violations').",
+      "Extend to general multiplicity profiles + inter-root distances to sharpen the characterization (simple+separated ⇒ all-convex; high-multiplicity ⇒ pre-merge necking)."
+    ],
+    "progressSummary": "PROGRESS: built a sensitive boundary-curvature convexity test (2 independent methods, cross-validated); characterized non-convexity as pre-merge necking with multiplicity-controlled window W(k) (a-independent); flagged the gallery's Goodman/referee (f,c) as testing all-convex, with Pommerenke z^k(z−a) k≥5 the clean counterexample."
+  }
+}
