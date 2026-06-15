@@ -234,14 +234,13 @@ theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
   -- The two prescribed inner products hold (Cramer's rule; needs Δ ≠ 0).
   have hiu : (inner u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2 := by
     rw [hO]
-    simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
-      real_inner_comm v u]
+    simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq]
     field_simp [hΔ0]
     ring
   have hiv : (inner v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2 := by
     rw [hO]
     simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
-      real_inner_comm v u]
+      real_inner_comm u v]
     field_simp [hΔ0]
     ring
   exact equidistant_of_inner u v O t s hsigned hiu hiv
