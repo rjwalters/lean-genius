@@ -1126,11 +1126,13 @@ theorem finIntersectionList_complement_singletons_isExistentialUniversalDefiniti
     **Diagonal companion** of `diophantine_implies_universal_existential`
     (Σ₁ ⊆ Π₂, dummy-block trick) and
     `codiophantine_implies_existentialUniversal` (Π₁ ⊆ Σ₂, dummy-block
-    trick). With this lemma, the Σ₁/Π₁/Σ₂/Π₂ square has all four
-    "vertical" containments (Σ₁ ⊆ Π₂, Σ₁ ⊆ Σ₂?, Π₁ ⊆ Π₂, Π₁ ⊆ Σ₂)
-    proved except Σ₁ ⊆ Σ₂, which has no obvious axiom-free proof in
-    this framework (the arithmetic hierarchy is not "collapsed" by
-    inversion or dummy-blocks). -/
+    trick). With this lemma, the Σ₁/Π₁/Σ₂/Π₂ square has three of its four
+    "vertical" containments (Σ₁ ⊆ Π₂, Π₁ ⊆ Π₂, Π₁ ⊆ Σ₂); the remaining
+    corner Σ₁ ⊆ Σ₂ is supplied by `diophantine_implies_existentialUniversal`
+    (iter 27) using the SAME `P q y · x 0 - 1` polynomial as here, with the
+    Σ₂ existential block in the role of the Σ₁ witness. This does NOT collapse
+    the hierarchy: every level-1 class lands in BOTH level-2 classes, exactly
+    as in the classical arithmetic hierarchy. -/
 theorem coDiophantine_implies_universal_existential
     (S : RatSubset) (h : IsCoDiophantineDefinition S) :
     IsUniversalExistentialDefinition S := by
@@ -1152,6 +1154,50 @@ theorem coDiophantine_implies_universal_existential
     have heq : P q y * x 0 = 1 := sub_eq_zero.mp hx
     rw [hy, zero_mul] at heq
     exact zero_ne_one heq
+
+/-- **Σ₁ ⊆ Σ₂** (iter 27, axiom-free): every Σ₁-definable (Diophantine)
+    subset of ℚ is also Σ₂-definable (existential-universal).
+
+    This is the fourth and last "vertical" containment of the
+    Σ₁/Π₁/Σ₂/Π₂ square, the dual of `coDiophantine_implies_universal_existential`
+    (Π₁ ⊆ Π₂). It corrects the earlier note that Σ₁ ⊆ Σ₂ "has no obvious
+    axiom-free proof": the SAME polynomial witness
+    `P'(q, y, x) := P(q, y) · x 0 - 1` used for Π₁ ⊆ Π₂ works here, only the
+    quantifier on `y` flips from universal to existential.
+
+    Reason: if `S q ⟺ ∃ w, P(q, w) = 0` (Σ₁), let the Σ₂ existential block `y`
+    play the role of the Σ₁ witness `w`. The inner polynomial `P(q, y) · x 0 - 1`
+    has a rational root in `x` iff `P(q, y) ≠ 0` (take `x 0 = (P q y)⁻¹`), so
+
+        ¬ hasRationalSolution (fun x => P q y · x 0 - 1)  ⟺  P(q, y) = 0,
+
+    and therefore `∃ y, ¬ hasRationalSolution (…)  ⟺  ∃ y, P(q, y) = 0  ⟺  S q`.
+
+    Diagonal companion of `diophantine_implies_universal_existential` (Σ₁ ⊆ Π₂).
+    Uses only `mul_inv_cancel₀`, `sub_eq_zero`, `sub_self` (already imported). -/
+theorem diophantine_implies_existentialUniversal
+    (S : RatSubset) (h : IsDiophantineDefinition S) :
+    IsExistentialUniversalDefinition S := by
+  obtain ⟨P, hP⟩ := h
+  refine ⟨fun q y x => P q y * x 0 - 1, fun q => ?_⟩
+  constructor
+  · -- Forward: `S q` → `∃ y, ¬ ∃ x, P q y * x 0 - 1 = 0`. The Σ₁ witness is `y`.
+    intro hSq
+    obtain ⟨y, hy⟩ := (hP q).mp hSq
+    refine ⟨y, ?_⟩
+    rintro ⟨x, hx⟩
+    have heq : P q y * x 0 = 1 := sub_eq_zero.mp hx
+    rw [hy, zero_mul] at heq
+    exact zero_ne_one heq
+  · -- Reverse: a `y` with no rational root forces `P q y = 0`, hence `S q`.
+    rintro ⟨y, hns⟩
+    apply (hP q).mpr
+    refine ⟨y, ?_⟩
+    by_contra hne
+    apply hns
+    refine ⟨fun _ => (P q y)⁻¹, ?_⟩
+    show P q y * (P q y)⁻¹ - 1 = 0
+    rw [mul_inv_cancel₀ hne, sub_self]
 
 -- ============================================================
 -- Part VIII.12 (iter 12, Path B): Σ₁ closed under binary intersection
@@ -3064,6 +3110,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `finUnionList_singletons_isUniversalExistentialDefinition l` (every finite subset is Π₂, iter 10)
   - `finIntersectionList_complement_singletons_isExistentialUniversalDefinition l` (complement of every finite subset is Σ₂, iter 10)
   - `coDiophantine_implies_universal_existential` (Π₁ ⊆ Π₂ via inversion, iter 11)
+  - `diophantine_implies_existentialUniversal` (Σ₁ ⊆ Σ₂, last vertical corner, dual of Π₁ ⊆ Π₂, iter 27)
   - `intersection_isDiophantineDefinition` (Σ₁ closed under binary intersection via sum-of-squares + interleave, iter 12)
   - `intersection_isUniversalExistentialDefinition` (Σ₁ ∩ Σ₁ ⊆ Π₂ corollary, iter 12)
   - `union_isCoDiophantineDefinition` (Π₁ closed under binary union via iter 5 duality + iter 12 Σ₁ ∩ closure, iter 13)
@@ -3138,6 +3185,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @finUnionList_singletons_isUniversalExistentialDefinition
 #check @finIntersectionList_complement_singletons_isExistentialUniversalDefinition
 #check @coDiophantine_implies_universal_existential
+#check @diophantine_implies_existentialUniversal
 #check @intersection_isDiophantineDefinition
 #check @intersection_isUniversalExistentialDefinition
 #check @union_isCoDiophantineDefinition
