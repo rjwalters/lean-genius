@@ -395,3 +395,103 @@ gallery badge until the axiom is reformulated.**
   `grunskyConjecture` (add separation hypothesis) and derive `grunskyConjecture_false` from
   `goodman_counterexample` (axiom 2 → 1). Build-gated.
 - Numerical frontier (closed-form `c_nc`, three-root case) continues in open PR #24420 — unaffected.
+
+---
+
+## Session 2026-06-15 (researcher-1) — THREE-ROOT CASE: a collinear-simple counterexample that CORRECTS the "imbalance" hypothesis
+
+**Mode:** ACT on the open structural frontier (three distinct roots), executing the
+top next-step of every prior session. **Outcome:** progress — a genuinely new,
+high-precision-certified structural result that **refutes** the working hypothesis
+carried through Sessions 1–3. Dual blackout (`docker info` times out; Aristotle MCP
+not used — work is pure numpy/mpmath, Docker-independent).
+
+### What prior sessions believed (and why it was incomplete)
+S1→S3 built up: 1 distinct root always convex; two distinct roots convex separated
+**iff** equal multiplicity; "imbalance `m₁≠m₂` drives the pre-merge necking". S3
+conjectured for three roots that *geometry* matters only via a "local balance"
+condition and that **equal**-multiplicity roots keep all separated components convex.
+
+### Result 1 — equal multiplicity is NOT sufficient once there are ≥3 roots
+The decisive finding: **three collinear SIMPLE roots** `f = z(z−1)(z−2)` have a
+**non-convex MIDDLE component** in a razor-thin window just below merge — needing
+**no multiplicity at all**. Using the criterion (S1–S3) convex ⟺ `Re(u') ≥ 0` on the
+boundary (`w = Σ 1/(z−rⱼ)`, `u = 1/w`, `u' = −w'/w²`), the min of `Re(u')` over the
+middle (z=1) component boundary (certified, mpmath dps=40):
+
+| c/c* | min Re(u') on middle component | convex? |
+|------|-------------------------------|---------|
+| 0.999    | +0.3886 | yes |
+| 0.9999   | +0.0834 | yes |
+| 0.99995  | **−0.0637** | **NO** |
+| 0.99999  | **−0.5703** | **NO** |
+| 0.999999 | **−1.978**  | **NO** |
+
+`c* = |f(1−1/√3)| = 0.384900179…` (the pairwise saddle on each side of z=1). The
+non-convexity is an **off-axis shoulder** flanking the merge-tip (worst point e.g.
+`z* = 1.5435 − 0.0342i`, on the boundary to 1e-42, just inside the saddle 1.5774),
+and `min Re(u') → −∞` as `c → c*` (the shoulder concavity is **unbounded** near
+merge). The two OUTER components (z=0, z=2) stay convex throughout.
+
+### How it was found, and the validation gate
+The coarse equal-multiplicity scan (`three_root_scan.py`, c/c* ≤ 0.999) showed ALL
+equal-mult configs convex — but that just **missed** the window. The certificate run
+(`three_root_certify.py`) exposed it: `(2,2,2)` at ratio 0.9999 gave `Re(u') = −0.032`,
+and by the S3 sign-invariance reduction (`Re(u')_{fᵐ} = (1/m)Re(u')_f` on the SAME
+level set) this is `f=z(z−1)(z−2)` at geometric ratio 0.99995 with
+`Re(u') = 2·(−0.032) = −0.064`. Direct high-precision tracing of `f` (above) confirmed
+it. **Control** (`two_root_control.py`): the *identical* tracer on `z(z−1)` returns
+`min Re(u') = 0.7500…` (→ 3/4) convex up to merge — exactly matching S3's **proven**
+closed-form `8c²−6c+1` classification. So the tracer reproduces a proven case and the
+three-root necking is **real, not a near-saddle artifact.**
+
+### Result 2 — the true discriminator is "interior vs extremal", not multiplicity imbalance
+Reading the unequal-multiplicity scan together with Results above, the separated-
+component non-convexity is governed by whether a root is **interior** (flanked by
+other roots on roughly OPPOSITE sides, so it has a sharp merge-tip toward each side)
+or **extremal** (all neighbours clustered to one side):
+- **Two roots:** each root is extremal (one neighbour) ⇒ convex to merge (PROVEN, S3).
+- **Three collinear:** the MIDDLE root is interior ⇒ necks near merge **even when
+  simple**; the two ends are extremal ⇒ stay convex.
+- **Equilateral three simple roots:** all three merge SIMULTANEOUSLY at the centroid
+  (a triple confluence, not a pairwise saddle); `min Re(u')` stays flat ≈ +0.667 up to
+  merge ⇒ **all convex**. So pairwise-vs-confluent merge topology matters too.
+- **Multiplicity imbalance** only **lowers the threshold / widens the window**; it is
+  *sufficient* (an extremal heavy root like Pommerenke `(k,1)` necks for large k) but
+  **not necessary** (an interior simple root already necks). The clean statement that
+  replaces "imbalance drives necking" is: *a root's separated component is non-convex
+  near merge iff it has a sharpening tip toward a pairwise saddle with a neighbour, with
+  enough opposing pull (from an opposite-side neighbour, OR from its own high
+  multiplicity) to bend the flanking shoulder concave.*
+
+### Consistency with the small-c flag (prior session)
+Unchanged: the necking is a **near-MERGE** (large-c, within the separated regime)
+phenomenon. For `c → 0` every component is a vanishing near-circle ⇒ convex. So the
+prior session's axiom-integrity flag (the registered `grunskyConjecture_false` is the
+wrong, likely-FALSE "∀ small c" statement) still stands — this session's counterexample
+is at `c ≈ c*`, not small c.
+
+### Files (added this session)
+- `three_root_scan.py` — equal- and unequal-multiplicity component-boundary scan
+  (vectorized over angles; multiplicity-aware).
+- `three_root_certify.py` — mpmath dps=50 certificates: equal-mult `Re(u')→0+` near
+  merge; near-merge sign checks. (Exposed the equal-mult window via the `(2,2,2)` case.)
+- `three_collinear_simple.py` — the decisive `z(z−1)(z−2)` middle-component check, with
+  worst-angle localization (off-axis shoulder) and high-precision sign certificate.
+- `two_root_control.py` — validation gate: identical tracer reproduces the PROVEN
+  two-root convexity, confirming the three-root necking is not an artifact.
+
+### Next steps
+- **Closed-form onset for the collinear-simple middle root.** The window `(c_nc, c*)`
+  for `z(z−1)(z−2)` is now a concrete target: `c_nc = min |f|` over the zero-curvature
+  locus `{Re(u')=0}` near z=1 (the c-free characterization from the researcher-1 onset
+  session). With three simple roots `Re(u')=0` is a higher-degree curve; attempt the
+  resultant elimination as was done for the two-root `(2,1)` family (open PR #24420).
+- **Quantify the "interior" threshold.** For a collinear triple `0,1,t`, find the
+  critical geometry/`c` at which the middle component first necks, as a function of `t`
+  (asymmetry); and for the equilateral→isoceles deformation, find where the simultaneous
+  confluence breaks into pairwise saddles and necking switches on.
+- **Lean:** still deferred (level-set convexity is heavy real analysis). The decidable
+  artifact remains the curvature/criterion certificate. A finite, checkable target would
+  be "`Re(u')(z*) < 0` at the explicit `z*`" for the collinear-simple counterexample —
+  a single algebraic-number inequality, candidate for an eventual Lean lemma.
