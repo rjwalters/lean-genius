@@ -1,12 +1,43 @@
 # ORIENT — Min-max scaffolding for Cauchy interlacing
 
-**Author**: researcher-11, 2026-06-15 (iter 2, ORIENT phase)
-**Status**: orientation only — no Lean shipped this iteration. Both proof
-backends down (Docker build pool saturated at 3 concurrent `lean-build`
+**Author**: researcher-11, 2026-06-15 (iter 2 ORIENT; iter 3 verified API spot-check)
+**Status**: orientation + Mathlib API spot-check — no Lean shipped (both proof
+backends down: Docker build pool saturated at 3 concurrent `lean-build`
 containers on the 7.65 GiB VM; Aristotle MCP `prove` → `Resource not found`).
-This memo is a build-free deliverable that pins the Mathlib surface and the
-proof decomposition so the next session (or Aristotle, when it returns) can go
-straight to formalization.
+This memo pins the Mathlib surface and the proof decomposition so the next
+session (or Aristotle, when it returns) can go straight to formalization.
+
+> ## ⚑ ITER 3 CORRECTION — verified against Mathlib master (docs + source)
+> The host `.lake` is a self-referential (ELOOP) symlink and the build image
+> ships only oleans, so no local grep was possible — instead the API was
+> spot-checked against the canonical Mathlib4 source/docs on GitHub. Findings:
+>
+> **The iter-2 gap claim "No sorted eigenvalue function" is WRONG and is
+> retracted.** Mathlib provides sorted eigenvalues at **both** levels:
+> - **Matrix-native (use this for the statement):**
+>   `Matrix.IsHermitian.eigenvalues₀ : Fin (Fintype.card n) → ℝ` (noncomputable),
+>   sorted **DECREASING** with `Matrix.IsHermitian.eigenvalues₀_antitone`.
+>   (`Matrix.IsHermitian.eigenvalues` reuses the original index type `n` and is
+>   **not** sorted — that is what the stale note conflated.) Companion:
+>   `Matrix.IsHermitian.eigenvectorBasis`. File:
+>   `Mathlib.LinearAlgebra.Matrix.Spectrum`.
+> - **Operator (needed only for the extreme-case proofs via Rayleigh):**
+>   `LinearMap.IsSymmetric.eigenvalues : Fin n → ℝ` — sorted DECREASING with
+>   `eigenvalues_antitone`, `hasEigenvalue_eigenvalues`, `eigenvectorBasis`,
+>   `exists_eigenvalues_eq`, `card_filter_eigenvalues_eq`. File:
+>   `Mathlib.Analysis.InnerProductSpace.Spectrum`.
+>
+> Consequence: the §2.1 "build a monotone enumeration / state abstractly over
+> monotone tuples" obligation **disappears**. State interlacing directly over
+> `eigenvalues₀` on the matrix (no abstract tuples, no operator bridge in the
+> *statement*); the operator/Rayleigh layer is needed only to *prove* the
+> extreme cases (§4-verified). The §5 abstract statement is superseded by
+> **§5-revised**.
+>
+> **Still confirmed absent (the real keystone gap):** no k-th
+> Courant–Fischer / min-max characterization in `InnerProductSpace.Rayleigh` or
+> `InnerProductSpace.Spectrum`. Only the two EXTREME eigenvalues are
+> variationally characterized — exact signatures in **§4-verified**.
 
 ## 1. What the theorem says (one-step interlacing)
 
@@ -28,22 +59,16 @@ the one-step case lands.
 The math is classical (Courant–Fischer min-max + a dimension count). The
 formalization gap, confirmed against the pinned tree, is:
 
-1. **No sorted eigenvalue function.** `Matrix.IsHermitian.eigenvalues` returns
-   eigenvalues indexed by the matrix's own index type and is **not** sorted.
-   Interlacing is a statement about the *sorted* spectrum, so step 0 of any
-   formalization is producing a monotone enumeration. Two routes:
-   - reindex via a sorting permutation (`Tuple.sort` / `MonovaryOn` machinery),
-     proving the reindexed tuple is `Monotone`; or
-   - **(recommended)** state the theorem abstractly over *any* monotone tuple
-     that enumerates the eigenvalue multiset, decoupling the interlacing
-     inequality from the sorting bookkeeping. The sorting lemma then becomes an
-     independent, separately-checkable obligation.
-
-   > **VERIFY before relying on this**: confirm in the pinned Mathlib that
-   > `Matrix.IsHermitian.eigenvalues` is unsorted and that no
-   > `…sorted_eigenvalues` helper already exists. This claim is from prior
-   > survey notes, not re-checked against the pin this iteration (host `.lake`
-   > is an ELOOP symlink, so no local Mathlib grep was possible).
+1. ~~**No sorted eigenvalue function.**~~ **RETRACTED (iter 3).** This was
+   carried from stale survey notes and is false for the operator formulation.
+   While `Matrix.IsHermitian.eigenvalues` is indeed indexed by the matrix's own
+   index type, the operator API `LinearMap.IsSymmetric.eigenvalues : Fin n → ℝ`
+   **is** sorted (decreasing) with a packaged `eigenvalues_antitone` proof — see
+   the iter-3 correction box above. **Formalize in the operator setting** and
+   the sorting obligation vanishes; the only residual is the routine
+   `Matrix → LinearMap` bridge (`Matrix.toEuclideanLin` / the Hermitian
+   `IsSymmetric` instance), and the principal-submatrix ↔ hyperplane-restriction
+   identification, both of which are local bookkeeping, not missing theory.
 
 2. **No k-th Courant–Fischer min-max.** Mathlib's
    `Mathlib.Analysis.InnerProductSpace.Rayleigh` packages only the **extreme**
@@ -84,17 +109,50 @@ this `dim (S ∩ H_i) ≥ dim S - 1` fact — in Mathlib,
 ## 4. Extreme cases are reachable TODAY from existing Rayleigh API
 
 Before the general min-max lands, the boundary cases are provable from what
-Mathlib already has and make good first PRs / good Aristotle targets:
+Mathlib already has and make good first PRs / good Aristotle targets. NOTE the
+sign flip below: §1 used the textbook *increasing* convention `λ₀ ≤ ⋯`, but
+Mathlib's `eigenvalues` is *decreasing*, so spell the extreme cases out in the
+convention you actually formalize against.
 
-- `k = 0` lower bound `λ₀ ≤ μ₀`: both are `iInf` Rayleigh quotients; `H_i ⊆ ℂⁿ`
-  shrinks the domain ⇒ `iInf` over the smaller set is `≥`. Uses only the
-  extreme-eigenvalue Rayleigh characterization.
-- `k = n-2` upper bound `μ_{n-2} ≤ λ_{n-1}`: dual, both are `iSup` Rayleigh
-  quotients over `H_i ⊆ ℂⁿ`.
+- `k = 0` (top): largest eigenvalue of `B` ≤ largest eigenvalue of `A`. The
+  largest eigenvalue equals `⨆` of the Rayleigh quotient; restricting the
+  domain from the whole space to `H_i ⊆ ℂⁿ` can only **lower** an `⨆`, so the
+  `B`-side `⨆` ≤ the `A`-side `⨆`.
+- `k = n-2` (bottom): smallest eigenvalue of `A` ≤ smallest eigenvalue of `B`.
+  The smallest eigenvalue equals `⨅` of the Rayleigh quotient; restricting to
+  `H_i` can only **raise** an `⨅`, so the `A`-side `⨅` ≤ the `B`-side `⨅`.
 
-These two pin down the endpoints of the interlacing chain without the k-th
-min-max lemma and exercise the `H_i` restriction plumbing that the general case
-needs anyway.
+These pin the endpoints without the k-th min-max lemma and exercise the `H_i`
+restriction plumbing the general case needs.
+
+### §4-verified — exact Mathlib signatures (checked iter 3)
+
+From `Mathlib.Analysis.InnerProductSpace.Rayleigh` (master):
+```lean
+-- the supremum of the Rayleigh quotient IS an eigenvalue (the largest):
+theorem LinearMap.IsSymmetric.hasEigenvalue_iSup_of_finiteDimensional
+    [Nontrivial E] (hT : T.IsSymmetric) :
+    HasEigenvalue T (⨆ x : {x : E // x ≠ 0}, RCLike.re ⟪T x, x⟫ / ‖(x : E)‖ ^ 2 : ℝ)
+
+-- dual: the infimum IS an eigenvalue (the smallest):
+theorem LinearMap.IsSymmetric.hasEigenvalue_iInf_of_finiteDimensional
+    [Nontrivial E] (hT : T.IsSymmetric) :
+    HasEigenvalue T (⨅ x : {x : E // x ≠ 0}, RCLike.re ⟪T x, x⟫ / ‖(x : E)‖ ^ 2 : ℝ)
+```
+Rayleigh quotient itself: `ContinuousLinearMap.rayleighQuotient T x := T.reApplyInnerSelf x / ‖x‖ ^ 2`.
+
+**Minimal residual lemmas for the extreme-case PR** (everything else is
+Mathlib): these `iSup`/`iInf` theorems give that the extremum *is an*
+eigenvalue, not yet that it equals `eigenvalues 0` (resp. `eigenvalues (n-1)`).
+Bridge them with:
+1. `⨆ R = eigenvalues 0` (max): `⨆ R` is an eigenvalue (above) so `≤ eigenvalues 0`
+   (the max via `eigenvalues_antitone`), and `≥` because every eigenvector's
+   Rayleigh value equals its eigenvalue and sits under the `⨆`
+   (`hasEigenvalue_eigenvalues` + `le_ciSup`). Dual for `⨅ R = eigenvalues (n-1)`.
+2. domain-monotonicity of `⨆`/`⨅` under `H_i ⊆ ℂⁿ` (`ciSup_le_ciSup` /
+   `le_ciInf` family) — this is the whole content of the inequality.
+3. `Matrix.IsHermitian → LinearMap.IsSymmetric` of `toEuclideanLin`, and that
+   the principal submatrix's operator equals `A`'s operator restricted to `H_i`.
 
 ## 5. Proposed Lean statement (DRAFT — not yet build-checked)
 
@@ -132,25 +190,54 @@ statements once the sorted-enumeration helper (§2.1) is chosen. **Do not** ship
 this file claiming verification until it compiles via
 `./proofs/scripts/docker-build.sh Proofs.CauchyInterlacing`.
 
+### §5-revised — matrix-native statement (supersedes §5)
+
+Because `Matrix.IsHermitian.eigenvalues₀` is already a sorted
+`Fin (Fintype.card n) → ℝ` (decreasing), state interlacing directly over it on
+the matrix — no `Monotone` hypotheses, no abstract enumeration, no sorting
+obligation, no operator bridge in the statement. The only modelling choice is
+how to present the principal submatrix `B` (`A.submatrix` deleting row/col `i`).
+Sketch (decreasing convention `λ 0 ≥ λ 1 ≥ …`):
+```lean
+-- A : Matrix (Fin (n+1)) (Fin (n+1)) ℂ, hA : A.IsHermitian
+-- B := A.submatrix (i.succAbove) (i.succAbove) : Matrix (Fin n) (Fin n) ℂ, hB : B.IsHermitian
+-- λ := hA.eigenvalues₀  (Fin (n+1) → ℝ, antitone),  μ := hB.eigenvalues₀ (Fin n → ℝ)
+-- Interlacing (decreasing): ∀ k : Fin n, λ k.succ ≤ μ k ∧ μ k ≤ λ k.castSucc
+```
+The endpoints of this chain are the two extreme cases of §4-verified:
+`μ 0 ≤ λ 0` (top) and `λ (last) ≤ μ (last)` (bottom). Proving them goes through
+the operator/Rayleigh layer (bridge `hA.eigenvalues₀ 0`/`last` to the Rayleigh
+`⨆`/`⨅`). Still **not** build-checked — Docker pool full; lift into
+`proofs/Proofs/CauchyInterlacing.lean` and gate on
+`./proofs/scripts/docker-build.sh Proofs.CauchyInterlacing`.
+
+> Pin caveat: `eigenvalues₀`/`eigenvalues₀_antitone` are confirmed on Mathlib
+> master; re-confirm they are present in the project pin (`v4.26.0`) at build
+> time — if absent there, fall back to sorting `eigenvalues` via `Tuple.sort`,
+> or use the operator `LinearMap.IsSymmetric.eigenvalues`.
+
 ## 6. Recommended next actions (in order)
 
-1. **API spot-check** (build-free, ~minutes once a tree is greppable): confirm
-   the exact signatures of `Matrix.IsHermitian.eigenvalues`, the Rayleigh
-   `iSup`/`iInf` lemmas, and whether any sorted-spectrum or min-max helper
-   already exists. Update §2 accordingly.
-2. **Formalize the two extreme cases** (§4) — smallest viable first PR; pure
-   Rayleigh-quotient domain-restriction, no new min-max lemma. Good Aristotle
-   job when the backend returns.
-3. **Build the k-th Courant–Fischer min-max lemma** (§2.2) — the keystone;
-   land it as its own contribution.
+1. ~~API spot-check~~ **DONE (iter 3)** — see iter-3 box + §4-verified. Operator
+   eigenvalues are sorted; extreme Rayleigh signatures pinned; k-th min-max
+   confirmed absent.
+2. **Formalize the two extreme cases** (§4-verified) — smallest viable first PR;
+   the three residual lemmas listed in §4-verified, no new min-max lemma. Good
+   Aristotle job when the backend returns. Start from the **operator**
+   formulation (§5-revised), not the matrix one.
+3. **Build the k-th Courant–Fischer min-max lemma** (§2.2) — the keystone, still
+   the only genuine theory gap; land it as its own contribution.
 4. **Assemble interlacing** from the min-max lemma + the `dim (S ∩ H_i)` count
    (§3).
 
 ## 7. Honesty / scope notes
 
-- Nothing here is machine-checked. No `.lean` shipped this iteration.
-- The Mathlib-absence claims (no sorted eigenvalues, no k-th min-max) are
-  carried from prior survey notes and are flagged for re-verification, not
-  asserted as freshly confirmed.
+- Nothing here is machine-checked. No `.lean` shipped.
+- The Mathlib-API claims are now spot-checked against Mathlib master
+  (docs + source), **not** against the exact pinned commit — re-confirm the
+  pin's signatures at build time (names are stable across recent Mathlib but
+  the pin is `v4.26.0`).
 - This is a genuine multi-session problem: the realistic unit of progress is
-  one of the four steps in §6, not the whole theorem.
+  one of the four steps in §6, not the whole theorem. The keystone (step 3)
+  is the only piece that is real new theory; steps 2 and 4 are now bookkeeping
+  over confirmed Mathlib API.
