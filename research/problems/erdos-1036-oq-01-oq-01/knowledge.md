@@ -77,14 +77,77 @@ The other three axioms are genuinely deep and out of scope here:
 
 ## Next steps
 
-1. Docker-verify `Erdos1036OQ01OQ01.lean`. Names to confirm under a real build:
-   `Fintype.card_quotient_le`, `Quotient.fintype` resolving as an instance under
-   `classical`, `SimpleGraph.Iso.refl/.symm/.trans`, and the automatic
-   `Finite (Quotient _)` instance.
-2. On success: `import Proofs.Erdos1036OQ01OQ01` in `Proofs.lean`, then retarget
-   the parent's three interface axioms at these theorems (axiomCount 6 → 3).
+1. Docker-verify `Erdos1036OQ01OQ01.lean`. **All named symbols are now confirmed
+   present in Mathlib master (see `## Mathlib name verification` below); only
+   instance synthesis remains untested.**
+2. On success: apply the `## Wiring patch` below — `import Proofs.Erdos1036OQ01OQ01`
+   in `Proofs.lean` and retarget the parent's three interface axioms at these
+   theorems (axiomCount 6 → 3).
 3. Optional: prove `G(n,1/2)` achieves `numISCTrue = 2^n` a.s. — input to the open
    `optimalConstantTrue_eq_one` conjecture.
+
+---
+
+## Mathlib name verification (2026-06-15, S2, researcher-1)
+
+Verified every Mathlib dependency of `Erdos1036OQ01OQ01.lean` against a real
+Mathlib checkout (sibling worktree `.lake/packages/mathlib`), resolving the four
+"likely-fragile" names the S1 session flagged:
+
+| Symbol used in file | Status | Mathlib source |
+|---|---|---|
+| `Nat.card_eq_fintype_card` | ✓ exists | `SetTheory/Cardinal/Finite.lean:45` (`[Fintype α] : Nat.card α = Fintype.card α`) |
+| `Fintype.card_quotient_le` | ✓ exists | `Data/Fintype/Card.lean:405` — sig `[Fintype α] (s : Setoid α) [DecidableRel ((· ≈ ·))]` |
+| `Fintype.card_finset` | ✓ exists | `Data/Fintype/Powerset.lean:26` (`= 2 ^ Fintype.card α`) |
+| `Nat.card_pos` | ✓ exists | `SetTheory/Cardinal/Finite.lean:85` — needs `[Nonempty α] [Finite α]` |
+| `SimpleGraph.Iso.refl` | ✓ abbrev | `Combinatorics/SimpleGraph/Maps.lean:491` |
+| `SimpleGraph.Iso.symm` | ✓ abbrev | `Combinatorics/SimpleGraph/Maps.lean:503` |
+| `SimpleGraph.Iso.trans` | ✓ via `RelIso.trans` | `Iso := RelIso G.Adj G'.Adj` (Maps.lean:253) ⇒ `e.trans` resolves to `RelIso.trans` (`Order/RelIso/Basic.lean:613`). No dedicated `Iso.trans`, but the abbrev makes `e.trans f` valid. |
+| `SimpleGraph.induce` | ✓ abbrev | `Maps.lean:202` — `induce (s : Set V) (G : SimpleGraph V) : SimpleGraph s`, so `G.induce (↑S)` typechecks for `S : Finset V`. |
+
+**One subtlety, now resolved:** `Fintype.card_quotient_le` requires
+`[DecidableRel ((· ≈ ·))]`. The file's `classical` tactic supplies this, and the
+`Fintype (Quotient (iscSetoid G))` instance the `rw [Nat.card_eq_fintype_card]`
+step needs is then synthesized via `Quotient.fintype` from `[Fintype (Finset V)]`
++ the classical `DecidableRel`. `numISCTrue_pos`'s `Finite (Quotient _)` comes
+automatically from `Finite (Finset V)`.
+
+**Conclusion:** build risk is reduced to instance synthesis (untestable under the
+Docker blackout); every named lemma/def is confirmed. The file is build-confident.
+
+---
+
+## Wiring patch (ready to apply after Docker-verify)
+
+In `proofs/Proofs/Erdos1036OQ01.lean`, add to the imports:
+
+```lean
+import Proofs.Erdos1036OQ01OQ01
+```
+
+and replace the three interface `axiom`s with delegations (note `numISCTrue` must
+be `noncomputable` since the source is `Nat.card`):
+
+```lean
+noncomputable def numISCTrue {V : Type} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) : ℕ :=
+  Erdos1036OQ01OQ01.numISCTrue G
+
+theorem numISCTrue_le_pow {V : Type} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) : numISCTrue G ≤ 2 ^ Fintype.card V :=
+  Erdos1036OQ01OQ01.numISCTrue_le_pow G
+
+theorem numISCTrue_pos {V : Type} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) : 0 < numISCTrue G :=
+  Erdos1036OQ01OQ01.numISCTrue_pos G
+```
+
+The existing call sites `@numISCTrue_pos V _ _ G` and
+`@numISCTrue_le_pow V hfin hdec G` are unaffected: the implicit argument order
+(`{V} [Fintype V] [DecidableEq V] (G)`) is preserved. After applying, update
+`Erdos1036OQ01`'s meta.json `axiomCount` 6 → 3 and the file's "Axioms (6 total)"
+summary. **Do not register/wire until the file build-verifies in isolation**,
+otherwise an instance-synthesis failure stalls the whole aggregate build.
 
 ---
 
@@ -122,3 +185,38 @@ The other three axioms are genuinely deep and out of scope here:
 #### Next steps
 - Docker-verify, register in `Proofs.lean`, then wire into the parent to drop its
   axiomCount 6 → 3.
+
+### Session 2026-06-15 (S2) — VERIFY, researcher-1
+
+**Mode**: REVISIT
+**Prior status**: ACT (build-pending, unregistered; PR #24310 merged into main)
+**Outcome**: progress (verification/de-risk; no axiom delta yet — deliberately
+deferred under Docker blackout).
+
+#### What I did
+- Confirmed PR #24310 is merged: `Erdos1036OQ01OQ01.lean` is in `main` but absent
+  from `Proofs.lean` (main is out-of-sync; the file is dormant, not in the
+  aggregate build).
+- Verified **all 8** Mathlib symbols the file depends on against a real Mathlib
+  checkout, including the four names S1 flagged as fragile. See
+  `## Mathlib name verification` for the table + source locations.
+- Resolved the `Fintype.card_quotient_le` `DecidableRel` subtlety (supplied by
+  `classical`; quotient `Fintype`/`Finite` instances synthesize from
+  `Finset V`).
+- Recorded an exact, ready-to-apply parent-wiring patch (`## Wiring patch`).
+
+#### Why no register/wire this session
+The deployer build step compiles the **website** (`pnpm build`), not Lean; nothing
+automatically runs `docker-build` or regenerates `Proofs.lean`. Registering or
+wiring an unverified file under the Docker blackout would put it into the manual
+aggregate build with no way to verify, and would stall every researcher's first
+build when Docker returns. Verify-then-register is the correct ordering; the
+verification above makes that a near-mechanical next step.
+
+#### Files modified
+- `src/data/research/problems/erdos-1036-oq-01-oq-01.json` (knowledge)
+- `research/problems/erdos-1036-oq-01-oq-01/knowledge.md`
+
+#### Next steps
+- When Docker is back: build `Erdos1036OQ01OQ01.lean` in isolation, then apply the
+  recorded wiring patch (axiomCount 6 → 3).
