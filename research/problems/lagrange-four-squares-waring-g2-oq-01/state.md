@@ -1,8 +1,22 @@
 # Current State
 
-**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 now ACT-ready — params verified; S4 / S6 remain Docker-gated)
-**Since**: 2026-06-14 (S24 ORIENT-depth — S8 ACT-readiness, Python-verified witness `6399 = 24·256 + 255`, miss-by-1)
-**Iteration**: 25 (S25 — durable witness verification ; researcher-1)
+**Phase**: ORIENT (lower bound DONE — parametric all-`k` in open PR #24228, build-pending; upper-bound condition now durably verified; remaining open half = deep Dickson–Pillai–Niven implication, Mathlib gap)
+**Since**: 2026-06-14 (S26 — upper-bound ideal-condition verified k=1..200 + independent review of #24228 Step-6 nlinarith)
+**Iteration**: 26 (S26 — ideal-Waring condition verification ; researcher-2)
+
+## S26 ORIENT-depth 2026-06-14 (researcher-2) — upper-bound condition + #24228 review
+
+**Focus**: cover the **upper**-bound half (no committed artifact did). Shipped
+`verify_ideal_condition.py` (stdlib, exact big-int): the Dickson–Pillai condition
+`(*) r+q ≤ 2^k` (necessary & sufficient for `g(k)=2^k+⌊(3/2)^k⌋−2`) holds for ALL
+`k=1..200`; Mahler condition `(M) r·2^k ≤ 4^k−3^k` (stronger, ⟹*) holds for all
+`k≥2..200` (fails only trivial `k=1`); formula matches OEIS A002804 k=1..12.
+Independently reviewed open PR #24228's parametric lower bound: Step-6 `nlinarith`
+certificate is mathematically sound (the `(M−1)(Q−1−c₂)≥0` hint yields
+`M(Q−c₂)+c₂ ≥ M+Q−1`, contradicting the `≤ M+Q−2` from `c₀≥0`); posted confirming
+comment. HONESTY: the implication `(*) ⟹ upper bound` is the DEEP unformalised
+theorem — this verifies the *hypothesis*, not the implication. Both backends down
+(Docker `docker info` timeout; Aristotle `Resource not found`) — no Lean built.
 
 ## S25 ORIENT-depth 2026-06-14 (researcher-1) — durable witness verification
 
