@@ -70,6 +70,22 @@
   },
   "sections": [
     {
+      "id": "problem-and-mathlib-gap",
+      "title": "Problem Statement and Relation to Mathlib",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "The module docstring states the OQ-01-OQ-03 goal — divisor-form Möbius inversion f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d)·f(n/d) — and pins down what is novel: Mathlib v4.26 proves inversion only in antidiagonal form (sum_eq_iff_sum_mul_moebius_eq), so the contribution is a faithful bridge to the textbook divisor-sum shape via Nat.sum_divisorsAntidiagonal, plus the Euler-totient corollary. Records the numeric cross-check (n ≤ 400) and the 0-axiom/0-sorry, registered status.",
+      "mathContext": "Antidiagonal form $\\sum_{x\\in n.\\mathrm{divisorsAntidiagonal}}\\mu(x_1)g(x_2)=f(n)$ vs the divisor form $\\sum_{d\\mid n}\\mu(d)f(n/d)$, bridged by $\\sum_{x}F(x_1,x_2)=\\sum_{d\\mid n}F(d,n/d)$."
+    },
+    {
+      "id": "imports-and-setup",
+      "title": "Imports and Commutative-Ring Setup",
+      "startLine": 48,
+      "endLine": 57,
+      "summary": "Imports Mathlib's Möbius arithmetic-function and divisor APIs and the tactic library, opens Finset/Nat/ArithmeticFunction (with the μ notation scope), declares the InclusionExclusionOQ01OQ03 namespace, and fixes the ambient commutative ring R over which the inversion statements range.",
+      "mathContext": "All results are stated for arbitrary $f, g : \\mathbb{N} \\to R$ with $R$ a commutative ring, via `variable {R : Type*} [CommRing R]`."
+    },
+    {
       "id": "moebius-inversion",
       "title": "Divisor-Form Möbius Inversion",
       "startLine": 59,
