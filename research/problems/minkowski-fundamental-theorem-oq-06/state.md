@@ -4,16 +4,19 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
-Mathlib gap confirmed at pin; constants pinned (symmetric threshold 2·ζ(n) → δ_n ≥
-ζ(n)/2^(n-1)) and bound hierarchy + factor-2ζ(n) improvement verified. Full proof blocked
-on Siegel mean-value; staged-hypothesis file and elementary 2^(-n) bound identified as
-actionable targets.
+Mechanism sharpened: the ζ(n) factor in δ_n ≥ ζ(n)/2^(n-1) is the PRIMITIVE-vector
+(Siegel–Rogers) restriction (ζ(n)=Σ_{m≥1} m^{-n}), distinct from the ±-pairing factor 2.
+Staged target #1's hypothesis corrected to the *primitive* mean-value identity (all-vectors +
+pairing alone only reaches 1/2^(n-1)). Identified the Mathlib-tractable bridge "shortest
+nonzero vector is primitive". Durable stdlib verification added. Full proof still Docker/
+upstream-gated.
 
 ## Active Approach
-None active (Docker down → no build). Next session: ACT one of the two staged targets.
+None active (Docker down → no build). Next session: ACT staged target #1 using the *primitive*
+mean-value identity as hypothesis, or formalize the bridge lemma (shortest vector primitive).
 
 ## Attempt Count
 - Total attempts: 0

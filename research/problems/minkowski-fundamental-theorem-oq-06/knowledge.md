@@ -68,6 +68,56 @@ Siegel's mean-value theorem over `SL_n(ℝ)/SL_n(ℤ)` (>1000 LOC of missing mea
 
 ---
 
+### Session 2026-06-14 (ORIENT, continued) — where the `ζ(n)` factor comes from
+
+**Mode**: REVISIT · **Outcome**: ORIENT (mechanism sharpened; full proof still Docker-gated)
+
+**Correction to the prior session.** The prior notes attribute the `2·ζ(n)` improvement
+to "±-pairing + threshold" without separating the two factors. This conflates two
+*independent* inputs, and it mis-states the hypothesis the staged formalization (target #1)
+must assume. The decomposition is:
+
+- The **factor 2** is the elementary **±-pairing**: for symmetric `S` (with `0 ∉ S`) the
+  primitive vectors of a lattice in `S` come in `±w` pairs, so #pairs = #primitive / 2.
+- The **factor ζ(n)** is the **primitive-vector (Siegel–Rogers) restriction** — a *deeper*
+  input, not a packaging trick. It is the content of the **primitive** mean-value formula,
+  distinct from Siegel's all-vectors formula.
+
+**The two mean-value formulas.** On `X_n = SL_n(ℤ)\SL_n(ℝ)` with probability Haar `μ`:
+
+- Siegel (all nonzero vectors): `∫_{X_n} Σ_{v∈Λ\0} f(v) dμ = ∫_{ℝⁿ} f`.
+- Siegel–Rogers (**primitive** vectors only): `∫_{X_n} Σ_{w∈Λ primitive} f(w) dμ = (1/ζ(n))·∫_{ℝⁿ} f`.
+
+The second follows from the first by the unique factorization `v = m·w` (`m ≥ 1`, `w`
+primitive) and the scaling `∫ f(m·) = m^{-n} ∫ f`: if the primitive mean is `c·∫f` then
+`c·(Σ_{m≥1} m^{-n})·∫f = ∫f`, i.e. `c = 1/Σ_{m≥1} m^{-n} = 1/ζ(n)`. **So `ζ(n)` is exactly
+`Σ_{m≥1} m^{-n}` — it enters as the primitivity-restriction normalizer, full stop.**
+
+**The Hlawka density argument, correctly stated.** Apply the *primitive* formula to
+`f = 1_S`, `S` symmetric, `0 ∉ S`. Mean number of primitive `±`-pairs in `S` is
+`vol(S)/(2ζ(n))`. If `vol(S) < 2ζ(n)`, the mean `< 1`, so **some** unimodular `Λ` has no
+primitive vector in `S`. For the ball case this finishes, because the **shortest** nonzero
+lattice vector is always primitive — "no primitive vector in `ball(2r)`" ⇒ min-distance
+`≥ 2r` ⇒ packing density `≥ ζ(n)/2^(n-1)`.
+
+**Consequence for target #1 (staged formalization).** The hypothesis to assume is the
+**primitive** mean-value identity `∫_{X_n} Σ_{w primitive} f(w) dμ = (1/ζ(n))·∫ f`, **not**
+the all-vectors Siegel identity. Assuming the all-vectors identity and trying to recover
+`ζ(n)` by ±-pairing alone does **not** reach `ζ(n)/2^(n-1)` — it only reaches the factor 2,
+i.e. `δ_n ≥ 1/2^(n-1)`, missing the `ζ(n)`. Also record: the "shortest vector is primitive"
+lemma is the bridge from "no primitive vector in `S`" to "no nonzero vector in `S`" for the
+ball; in Mathlib terms it is `Λ`-vector `= m • w` with `‖w‖ < ‖m • w‖` for `m ≥ 2`,
+contradicting minimality. (This bridge **is** Mathlib-tractable, unlike the mean-value identity.)
+
+**Durable artifact**: `verify_primitive_mechanism.py` (stdlib-only, all checks pass):
+(1) `ζ(n) = Σ_{m≥1} m^{-n}` so `c = 1/ζ(n)`; (2) `ℤ²` fraction of primitive (origin-visible,
+`gcd=1`) points `→ 1/ζ(2) = 6/π²`; (3) `ℤ³` primitive fraction `→ 1/ζ(3)`; (4) deterministic
+sweep of 13808 integer 2×2 bases: shortest nonzero vector is primitive in **all** cases.
+
+**Files**: `verify_primitive_mechanism.py`, `src/data/research/problems/minkowski-fundamental-theorem-oq-06.json`.
+
+---
+
 ## Dead Ends
 
 - Full formalization via Siegel's mean-value theorem from current Mathlib — blocked: the
