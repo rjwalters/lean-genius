@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-module-setup",
+    "proofId": "dissection-of-cubes-oq-01-oq-03",
+    "range": {
+      "startLine": 46,
+      "endLine": 56
+    },
+    "type": "technique",
+    "title": "Namespace, Opens, and the Classical DecidableEq Instance",
+    "content": "Enters `namespace DissectionOfCubesOQ01OQ03`, opens the parent namespaces `DissectionOfCubes` and `DissectionOfCubesOQ01` (bringing `Cube`, `CubeDissection`, `IsCollisionPair`, and `every_dissection_has_collision` into scope) plus `BigOperators` (for `∑` notation), and opens a `noncomputable section`. The line `noncomputable instance : DecidableEq Cube := Classical.decEq _` installs a classical decidable-equality instance on `Cube`.",
+    "mathContext": "`Cube` is a structure over the reals, so equality on it is not decidable by computation; `Classical.decEq` supplies a `DecidableEq Cube` instance non-constructively (via the law of excluded middle). This instance is a prerequisite for `Finset.sum_insert`, which must discriminate the case `c ∈ s` from `c ∉ s` to state how `∑` changes — hence `volumeSum_insert` and the pair-sum manipulations in `cube_volume_lt_one_of_card_ge_two` and `collision_volume_bound` all depend on it. The `noncomputable section` is required because the resulting definitions carry real-valued, non-algorithmic data.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "DecidableEq",
+      "Classical.decEq",
+      "noncomputable",
+      "BigOperators"
+    ],
+    "prerequisites": [
+      "Classical logic (excluded middle)",
+      "Finset.sum_insert"
+    ]
+  },
+  {
     "id": "ann-volume-sum-def",
     "proofId": "dissection-of-cubes-oq-01-oq-03",
     "range": {
