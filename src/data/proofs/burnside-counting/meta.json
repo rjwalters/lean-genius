@@ -227,13 +227,13 @@
       "id": "sec-burnside-header",
       "title": "Imports, Docstring, and Namespace",
       "startLine": 1,
-      "endLine": 37,
+      "endLine": 40,
       "summary": "Imports Mathlib group action quotient, cyclic groups, ZMod, and Fintype cardinality. Docstring outlines the three goals: Burnside's lemma, ZMod n action on colorings, binary 4-necklace count. Opens BurnsideCounting namespace."
     },
     {
       "id": "sec-burnside-lemma",
       "title": "Part I: Burnside's Lemma from Mathlib",
-      "startLine": 38,
+      "startLine": 41,
       "endLine": 53,
       "summary": "States burnside_lemma as a one-line delegation to MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group. The multiplicative form Σ|Fix(g)| = |X/G| × |G| avoids division. Requires Fintype instances for G, fixedBy X g, and orbitRel.Quotient G X."
     },
@@ -241,14 +241,14 @@
       "id": "sec-burnside-action",
       "title": "Part II: Cyclic Group Action on Finite Colorings",
       "startLine": 54,
-      "endLine": 109,
+      "endLine": 225,
       "summary": "Defines Coloring n k (Fin n → Fin k), rotateColoring and rotatedIndex. Proves rotatedIndex_zero and rotatedIndex_add (both fully verified theorems — composition law via ZMod.val_add + Nat.mod_mod + 8-leaf sign-case enumeration with three private Nat-mod auxiliaries: mod_eq_sub, mod_of_shift, mod_of_eq). Establishes cyclicAddActionOnColorings: AddAction (ZMod n) (Coloring n k) instance with verified zero_vadd and add_vadd."
     },
     {
       "id": "sec-burnside-concrete",
-      "title": "Part III: Concrete Fixed-Point Counts",
-      "startLine": 110,
-      "endLine": 193,
+      "title": "Part III: Concrete Example - Binary 4-Necklaces",
+      "startLine": 226,
+      "endLine": 305,
       "summary": "binary_4_colorings_count: |Coloring 4 2| = 16 via norm_num. Defines IsConstant, proves constant_coloring_count (bijection with Fin k, fully verified). Derives constant_4_2. Defines HasPeriod2, proves period2_count = 4 via bijection with Fin 2 × Fin 2 using vector literals and fin_cases."
     },
     {
