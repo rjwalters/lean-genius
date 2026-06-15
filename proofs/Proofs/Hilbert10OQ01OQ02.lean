@@ -1336,9 +1336,12 @@ theorem intersection_isDiophantineDefinition
     This is NOT the strongest possible Π₂-closure statement (which would
     require a direct Π₂ witness for `S₁ ∩ S₂` when `S₁`, `S₂` are
     arbitrary Π₂-definable subsets — that's a strictly bigger claim than
-    Σ₁ closure). The stronger Π₂ ∩ Π₂ ⊆ Π₂ closure is left as future
-    work; this file's S11.1 (`coDiophantine_implies_universal_existential`)
-    handles the unary Π₁ ⊆ Π₂ direction without intersection. -/
+    Σ₁ closure). That stronger Π₂ ∩ Π₂ ⊆ Π₂ closure is proved directly
+    below as `pi2_intersection_isUniversalExistentialDefinition` (Part
+    VIII; sum-of-squares witness `P₁² + P₂²` paired over `evenProj`/
+    `oddProj`); this corollary is retained as the cheap Σ₁-input route.
+    (S11.1 `coDiophantine_implies_universal_existential` handles the
+    unary Π₁ ⊆ Π₂ direction without intersection.) -/
 theorem intersection_isUniversalExistentialDefinition
     {S₁ S₂ : RatSubset}
     (h₁ : IsDiophantineDefinition S₁) (h₂ : IsDiophantineDefinition S₂) :
@@ -1437,8 +1440,11 @@ theorem union_isCoDiophantineDefinition
 
     NOT the strongest possible Σ₂-closure statement (which would require
     a direct Σ₂ witness for `S₁ ∪ S₂` when `S₁`, `S₂` are arbitrary
-    Σ₂-definable subsets — strictly bigger than Π₁ ∪ closure). The
-    stronger Σ₂ ∪ Σ₂ ⊆ Σ₂ closure is left as future work. -/
+    Σ₂-definable subsets — strictly bigger than Π₁ ∪ closure). That
+    stronger Σ₂ ∪ Σ₂ ⊆ Σ₂ closure is proved directly below as
+    `sigma2_union_isExistentialUniversalDefinition` (Part VIII, via the
+    iter-5 Σ₂/Π₂ duality + `pi2_intersection_isUniversalExistentialDefinition`);
+    this corollary is retained as the cheap Π₁-input route. -/
 theorem union_isExistentialUniversalDefinition
     {S₁ S₂ : RatSubset}
     (h₁ : IsCoDiophantineDefinition S₁) (h₂ : IsCoDiophantineDefinition S₂) :
