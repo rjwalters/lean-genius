@@ -973,4 +973,35 @@ theorem one_zero_six_two_seven_nine_zero_nine_five_eight_five_two_nine_over_seve
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-- **Twenty-sixth continued-fraction convergent of `∛3`** (upper bound).
+
+With `a₂₅ = 1`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`, `qₖ = aₖ qₖ₋₁ + qₖ₋₂`
+on the 24th/25th convergents `247706213128/171749895599` and
+`1062790958529/736898093374` gives the 26th convergent
+
+  `p₂₅ = 1·1062790958529 + 247706213128 = 1_310_497_171_657`
+  `q₂₅ = 1·736898093374 + 171749895599 = 908_647_988_973`.
+
+After cubing,
+
+  `1_310_497_171_657³  = 2_250_651_560_380_673_959_224_590_979_389_530_393`
+  `3 · 908_647_988_973³ = 2_250_651_560_380_673_959_224_589_825_052_769_951`
+
+so `3 · 908_647_988_973³ < 1_310_497_171_657³` (strict, diff `1_154_336_760_442`),
+hence `3 < (1310497171657/908647988973)³` and
+`cbrt3 < 1310497171657/908647988973` as required for an upper bound (odd
+convergent index `25`; relative gap `≈ 1.7·10⁻²⁵`).
+
+`a₂₅ = 1` was re-derived independently from a 160-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s31_26th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 25th convergent; a routine, durable helper bound, not a deep result.
+Two-line proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_one_three_one_zero_four_nine_seven_one_seven_one_six_five_seven_over_nine_zero_eight_six_four_seven_nine_eight_eight_nine_seven_three :
+    cbrt3 < (1310497171657 / 908647988973 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
