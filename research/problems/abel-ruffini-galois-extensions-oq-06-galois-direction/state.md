@@ -1,9 +1,69 @@
 # Current State
 
-**Phase**: S7 ORIENT (Step 1 **bearer-complete sound route found** — derived-series + block, avoids the absent socle/minimal-normal API; Risk R4 HIGH→MEDIUM; **5 sorries** unchanged; comment-only Lean edit, ~199 LOC)
-**Since**: 2026-06-14 (S7 ORIENT route scoping; was 2026-06-14 S6 ORIENT)
-**Iteration**: 7 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT this iteration)
-**Owner**: researcher-3 (S7 ORIENT, 2026-06-14); prior researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S8 ORIENT (Step 1 route **survives independent bearer audit**; the char-in-char composition is reclassified from "wiring" to a **small build** — no direct Mathlib bearer; **5 sorries** unchanged; doc-only, no Lean edit)
+**Since**: 2026-06-14 (S8 ORIENT bearer re-audit; was 2026-06-14 S7 ORIENT)
+**Iteration**: 8 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT this iteration)
+**Owner**: researcher-2 (S8 ORIENT, 2026-06-14); prior researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 8 (researcher-2, 2026-06-14) — S8 ORIENT: independent bearer audit of the Step 1 route + char-transitivity sub-risk
+
+**Outcome**: ORIENT/knowledge (no build — Docker DOWN *and* the Aristotle
+MCP returned `Resource not found`; both verification backends are in a
+blackout, so no Lean change could be build- or solver-verified this
+session). Doc-only: 0 Lean files touched, 5 sorries intact.
+
+**What I did.** Independently re-fetched the five Mathlib source files
+backing the S7 derived-series + block route via `gh api .../contents/...?ref=<pin>`
+at the lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (a real
+mathlib4 commit dated 2025-12-13) and confirmed **every primary bearer
+exists at the exact cited line**, with signatures:
+- `derivedSeries_succ` Solvable.lean:49, `derivedSeries_normal` :53,
+  `derivedSeries_characteristic` (instance) :65 — all present.
+- `IsBlock.orbit_of_normal {N : Subgroup G} [N.Normal] (a : X) : IsBlock G (orbit N a)`
+  Blocks.lean:475; `IsBlock.subsingleton_or_eq_univ [IsPreprimitive G X]`
+  Primitive.lean:115; `isPretransitive_iff_orbit_eq_univ` Transitive.lean:54.
+- `Sylow.characteristic_of_normal` Sylow.lean:728; `Sylow.unique_of_normal`
+  :710; `Sylow.normal_of_subsingleton` :724.
+- `Sylow.ofCard (H : Subgroup G) (card_eq : Nat.card H = p ^ (Nat.card G).factorization p) : Sylow p G`
+  :102 — note it consumes a `Subgroup G` (here `G = ↥H`) at card `p^(v_p|H|)`.
+- Legendre: `padicValNat_factorial` Padics/PadicVal/Basic.lean:578 (present;
+  the S7-cited `Nat.Prime.factorization_factorial` is the equivalent form).
+
+So the S7 route is **not** built on phantom bearers — the prior author's
+file:line citations are accurate, and a careful re-walk of the math finds
+**no new soundness defect** (unlike S5's Step-5 / S6's Sylow-count findings).
+
+**New finding — the char-in-char step is a small BUILD, not wiring.**
+The R4 residual lumped "char-in-char composition" in with the ~100–150 LOC
+of *wiring of present bearers*. But the composition it needs —
+`Q` characteristic in `↥A`, `A` characteristic in `↥H` ⟹ `Q.map A.subtype`
+characteristic (hence normal) in `↥H` — has **no direct Mathlib bearer**.
+`Subgroup.Characteristic` is defined in `Algebra/Group/Subgroup/Basic.lean:235`
+and ships only the `characteristic_iff_{map,comap}_{eq,le}` equivalences and
+the `bot`/`top` instances; there is **no `Characteristic.trans` and no
+transitivity-through-subtype lemma**, and no standalone `Subgroup/Characteristic.lean`
+exists at the pin. The ACT session must therefore either (a) build a small
+ad-hoc bridge (~10–30 LOC: restrict each `φ : ↥H ≃* ↥H` to `↥A` using
+`A` characteristic, push it through `Q` characteristic, transport back), or
+(b) reroute the transport entirely via an abelian primary-component
+construction on `A` viewed directly as `Subgroup ↥H` (sidestepping the
+`Sylow p ↥A` subtype). This is the single hardest residual sub-step and was
+previously mis-scoped as free wiring.
+
+**Net effect on the picture.** Step 1's route is real and bearer-confirmed;
+the residual splits into (i) genuine wiring of present bearers (`ofCard`/
+`unique_of_normal` transport of `Q` to `↥H`, `v_p` arithmetic) and (ii) one
+**~10–30 LOC characteristic-transitivity bridge with no upstream bearer**.
+Risk R4 stays MEDIUM (no *blocking* infrastructure gap — the bridge is small
+and self-contained), but the ACT picker should budget for the bridge rather
+than expect a one-shot composition. 5 sorries unchanged.
+
+**Next action** (unchanged target, sharper estimate): when a backend is up,
+discharge Step 1 via the derived-series + block route, building the
+char-transitivity bridge (ii) first as a named helper lemma, then the
+`ofCard`/`unique_of_normal` transport (i). Then Step 5's corrected+`p`-cycle
+signature (R2) and Steps 3/4. Nothing shippable until Docker or Aristotle
+returns.
 
 ## Iteration 7 (researcher-3, 2026-06-14) — S7 ORIENT: Step 1 bearer-complete route
 
