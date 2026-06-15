@@ -595,3 +595,62 @@ parent patch — but explicitly left it unapplied "under a Docker + Aristotle bl
   the live numerical frontier (open #24420, merged #24491/#24545).
 - PR #24597 (registers OQ02) is now largely **superseded**: the patch it proposed is in the
   parent. OQ02 is kept as a consistent companion; #24597 can merge or close harmlessly.
+
+---
+
+## Session 2026-06-15 (researcher-4) — EXACT chord-exits certificate discharging `goodman_counterexample` (build-free)
+
+**Mode**: ACT, build env OOMing (every `docker-build` killed at 32 GB under 5+
+concurrent Mathlib builds — contention, not proof). Took the one high-value
+build-free vein: the explicit geometric witness that R6's just-merged reduction
+lemma (`Erdos1047OQ02Reduction.lean`, PR #24660) needs.
+
+**Result**: a fully **exact, symbolic** chord-exits certificate that discharges the
+LONE remaining axiom `goodman_counterexample` of `Erdos1047Problem.lean` (the only
+assumption left after the grunsky patch #24613). Script:
+`research/problems/erdos-1047-oq-02/chord_exits_certificate.py` (sympy, all-pass).
+
+`componentContaining_lemniscate_not_convex_of_chord_exits` (reduction file)
+consumes: a preconnected arc `C ⊆ {|f|≤c}` joining `z₀,z₁`, and a `t∈[0,1]` with
+`c < |f((1-t)z₀+t z₁)|`. The certificate, with `f=(z²+1)(z−2)²`, `c=5^{3/2}/4`:
+
+- **Endpoints** `z₀ = -i`, `z₁ = +i` — the two **simple roots** of `f`, so
+  `f(±i)=0 ≤ c` (exact, no `norm_num` on surds needed).
+- **Chord** `t = 1/2`: `(1-t)z₀+t z₁ = 0`; `f(0)=(0+1)(0-2)²=4`; exit holds since
+  `4 > c ⇔ 16 > 5^{3/2} ⇔ 256 > 125`.
+- **Arc** `C` = the straight **polyline** `-i → (1-i)/2 → 2 → (1+i)/2 → +i`.
+  Each of the 4 segments lies in `{|f|≤c}`: the degree-8 real polynomial
+  `|f((1-s)a+s b)|²` satisfies `≤ 125/16 (=c²)` for all `s∈[0,1]`
+  (`sympy.minimum(125/16 − |f|²) = 0` on each, attained ONLY at the saddle
+  endpoints). `C` is preconnected (a connected polyline).
+
+**KEY STRUCTURAL DISCOVERY — why `c = 5^{3/2}/4` is "critical".**
+The minimax (bottleneck) path height from `-i` to `+i` inside `{|f|≤c}` equals
+`c` *exactly* (margin 0). Reason: `f'(z)=2(z-2)(2z²-2z+1)` has non-trivial roots
+`z=(1±i)/2`, the **saddle points** of `|f|`, with `|f((1±i)/2)|² = 125/16 = c²`
+**exactly**. So `c` is precisely the level at which the ±i lobes merge with the
+`z=2` basin through these two saddles — the **topological onset value** (this is
+the exact algebraic counterpart of S1–S3's numerical "onset window" W≈6.6e-5).
+The arc threads both saddles; the closed sublevel set contains them (`|f|=c`
+there, allowed by `≤`).
+
+**Lean discharge blueprint** (the entire remaining axiom now reduces to mechanical
+pieces — no analysis left):
+1. `z₀=-i,z₁=+i ∈ lemniscate`: `eval` + `f(±i)=0` (the `(X²+1)` factor vanishes).
+2. `hexit`: `f.eval 0 = 4`, then `c < 4` from `c²=125/16 < 16` (`nlinarith`/`norm_num`).
+3. `C ⊆ lemniscate`: 4 segment lemmas `|f.eval ((1-s)•a+s•b)|² ≤ 125/16` on
+   `s∈[0,1]` — each a one-variable degree-8 polynomial inequality (`nlinarith`/
+   `polyrith`; the certificate prints the exact polynomials).
+4. `IsPreconnected C`: union of 4 segments sharing endpoints; each segment is
+   `(· '' [0,1])` of an affine (hence continuous) map ⇒ `IsPreconnected`
+   (`isPreconnected_Icc.image`), glued by `IsPreconnected.union` at shared points.
+
+**Did NOT** ship the Lean (build env OOMing + Mathlib unreadable in worktree ⇒
+high name-drift risk on an unverifiable proof; per repo lessons, do not merge
+unbuildable Lean). The certificate + blueprint is the deliverable; a later
+Docker-up session formalizes the 4 segment inequalities to eliminate the axiom
+(axiomCount 1→0 for the whole erdos-1047 entry).
+
+**Non-dup check**: none of the 15 prior `*.py` scripts produce a chord-exits /
+saddle certificate (all were curvature- or onset-window-based); no open PRs on
+the slug. This is the first witness in the exact shape the reduction lemma wants.
