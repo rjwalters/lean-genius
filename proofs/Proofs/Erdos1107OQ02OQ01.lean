@@ -136,6 +136,21 @@ theorem isCubeful_zero : IsCubeful 0 := by simp [IsCubeful]
 /-- 1 is cubeful (vacuously). -/
 theorem isCubeful_one : IsCubeful 1 := by simp [IsCubeful]
 
+/-- **General source of cubeful numbers**: every perfect `k`-th power with `k ≥ 3`
+    is cubeful.  If a prime `p` divides `n ^ k` then `p ∣ n`, so `p ^ 3 ∣ p ^ k ∣ n ^ k`.
+    This is the structural reason the numeric witnesses below are cubeful, and (unlike
+    them) it holds for *all* `n` — no `native_decide`. -/
+theorem isCubeful_pow {n k : ℕ} (hk : 3 ≤ k) : IsCubeful (n ^ k) := by
+  intro p hp
+  have hpp : Prime p := (prime_of_mem_primeFactors hp).prime
+  have hpd : p ∣ n ^ k := dvd_of_mem_primeFactors hp
+  have hpn : p ∣ n := hpp.dvd_of_dvd_pow hpd
+  calc p ^ 3 ∣ p ^ k := pow_dvd_pow p hk
+    _ ∣ n ^ k := pow_dvd_pow_of_dvd hpn k
+
+/-- Every perfect cube is cubeful (the `k = 3` case of `isCubeful_pow`). -/
+theorem isCubeful_cube (n : ℕ) : IsCubeful (n ^ 3) := isCubeful_pow (le_refl 3)
+
 /-- Prime powers `p^k` with `k ≥ 3` are cubeful. -/
 theorem isCubeful_8 : IsCubeful 8 := by native_decide      -- 2³
 theorem isCubeful_16 : IsCubeful 16 := by native_decide    -- 2⁴
