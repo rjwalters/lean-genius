@@ -90,6 +90,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Open Question, Imports, and Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring stating the open question and cataloguing what the file proves: altitude feet on the nine-point circle, the equilateral and 3-4-5 special cases, the general incircle and three excircle Feuerbach distances, and the triangle inequalities. Imports FeuerbachsTheoremDefs and opens the working namespaces.",
+      "mathContext": "Header for the coordinate-computation approach to Feuerbach's theorem. The nine-point circle (center $N=(O+H)/2$, radius $R/2$) is tangent to the incircle (internally) and to the three excircles (externally); the file eliminates the four Feuerbach distance axioms of the parent formalization by direct coordinate algebra."
+    },
+    {
       "id": "helpers",
       "title": "Helper Lemmas",
       "startLine": 46,
@@ -98,12 +106,28 @@
       "mathContext": "Infrastructure for the nine-point circle: nonnegativity of $\\text{dist}^2$ and the nine-point radius $R_9 = R/2$, and the nine-point center $N = (O + H)/2$ (midpoint of circumcenter and orthocenter). These are the basic properties needed for the distance computations."
     },
     {
-      "id": "altitude-feet",
-      "title": "Altitude Feet on Nine-Point Circle",
+      "id": "foot-a",
+      "title": "Foot A on Nine-Point Circle",
       "startLine": 120,
+      "endLine": 149,
+      "summary": "Proves d(N, H_a) = R/2 for the foot of the altitude from A: reduce to squared equality, unfold the nine-point center and foot coordinates, clear denominators with field_simp, and close the polynomial identity with ring.",
+      "mathContext": "The foot $H_a$ of the altitude from vertex $A$ lies on the nine-point circle: $|N - H_a|^2 = (R/2)^2$, computed by coordinate expansion."
+    },
+    {
+      "id": "foot-b",
+      "title": "Foot B on Nine-Point Circle",
+      "startLine": 150,
+      "endLine": 173,
+      "summary": "Proves d(N, H_b) = R/2 for the foot of the altitude from B by the same squared-distance / field_simp / ring strategy applied to the second altitude foot.",
+      "mathContext": "The foot $H_b$ of the altitude from vertex $B$ lies on the nine-point circle: $|N - H_b|^2 = (R/2)^2$."
+    },
+    {
+      "id": "foot-c",
+      "title": "Foot C on Nine-Point Circle",
+      "startLine": 174,
       "endLine": 197,
-      "summary": "Three theorems proving d(N, H_a) = d(N, H_b) = d(N, H_c) = R/2 via the strategy: reduce to squared equality, unfold definitions, clear denominators with field_simp, verify polynomial identity with ring.",
-      "mathContext": "Three theorems proving $d(N, H_a) = d(N, H_b) = d(N, H_c) = R/2$: the nine-point center is equidistant from all three altitude feet. The strategy: compute $|N - H_k|^2$ by coordinate expansion and show it equals $(R/2)^2$."
+      "summary": "Proves d(N, H_c) = R/2 for the foot of the altitude from C, completing the verification that the nine-point center is equidistant (R/2) from all three altitude feet.",
+      "mathContext": "The foot $H_c$ of the altitude from vertex $C$ lies on the nine-point circle: $|N - H_c|^2 = (R/2)^2$. Together with feet A and B this confirms the nine-point center is equidistant from all three altitude feet."
     },
     {
       "id": "equilateral",
@@ -111,7 +135,7 @@
       "startLine": 198,
       "endLine": 304,
       "summary": "Constructs equilateral triangle (0,0)-(s,0)-(s/2, s√3/2), proves all side lengths = s, computes circumcenter, circumradius, area, inradius explicitly, then shows R² = (2r)² = s²/3 using squared values to avoid sqrt arithmetic.",
-      "mathContext": "Constructs the equilateral triangle with vertices $(0,0)$, $(s,0)$, $(s/2, s\\sqrt{3}/2)$. Proves all side lengths are $s$, area is $s^2\\sqrt{3}/4$, and verifies Feuerbach\\'s theorem: $d(N,I) = R/2 - r = R/2 - s\\sqrt{3}/6$ for this symmetric case."
+      "mathContext": "Constructs the equilateral triangle with vertices $(0,0)$, $(s,0)$, $(s/2, s\\sqrt{3}/2)$. Proves all side lengths are $s$, area is $s^2\\sqrt{3}/4$, and verifies Feuerbach's theorem: $d(N,I) = R/2 - r = R/2 - s\\sqrt{3}/6$ for this symmetric case."
     },
     {
       "id": "345-excircle-verification",
@@ -122,75 +146,147 @@
       "mathContext": "Numerical verification for the 3-4-5 right triangle: all three excircle tangency distances match $R/2 + r_a$, $R/2 + r_b$, $R/2 + r_c$. Excircle radii: $r_a = s - a$, $r_b = s - b$, $r_c = s - c$ times area/semiperimeter."
     },
     {
-      "id": "algebraic-backbone",
-      "title": "Algebraic Backbone: Positivity, Sigma, Law of Sines",
+      "id": "euler-infrastructure",
+      "title": "General Infrastructure: Euler's Formula OI² = R² − 2Rr",
       "startLine": 420,
-      "endLine": 555,
-      "summary": "Foundational results: area > 0, semiperimeter > 0, inradius > 0, the sigma identity σ = abcs - 4s(s-a)(s-b)(s-c), the squared extended law of sines a²b²c² = 16R²·Area², and Euler's formula verified for 3-4-5 triangle.",
-      "mathContext": "Foundational results: area $\\Delta > 0$, semiperimeter $s > 0$, inradius $r = \\Delta/s > 0$. The sigma identity $\\sigma = \\sum a^2 b^2 - \\frac{1}{2}\\sum a^4$ encodes the relationship between side lengths that drives the Feuerbach computation."
+      "endLine": 471,
+      "summary": "Foundational positivity results — area > 0, semiperimeter > 0, inradius > 0 — and the general-triangle setup for Euler's formula OI² = R² − 2Rr relating circumcenter–incenter distance to circumradius and inradius.",
+      "mathContext": "Foundational positivity: area $\\Delta > 0$, semiperimeter $s > 0$, inradius $r = \\Delta/s > 0$. Euler's formula $OI^2 = R^2 - 2Rr$ relates the circumcenter–incenter distance to $R$ and $r$ and underlies the Feuerbach tangency computations."
     },
     {
-      "id": "heron-dot-products",
-      "title": "Heron's Formula and Circumcenter Dot Products",
+      "id": "sigma-identity",
+      "title": "Key Algebraic Identity: Sigma = abcs − 4·Area²",
+      "startLine": 472,
+      "endLine": 492,
+      "summary": "Establishes the sigma identity σ = abcs − 4·Area² (equivalently σ = Σa²b² − ½Σa⁴), the symmetric-function relation among the side lengths that drives the Feuerbach distance algebra.",
+      "mathContext": "The sigma identity $\\sigma = \\sum a^2 b^2 - \\tfrac{1}{2}\\sum a^4 = abcs - 4\\Delta^2$ encodes the relationship between side lengths that drives the Feuerbach computation."
+    },
+    {
+      "id": "ext-law-sines-squared",
+      "title": "Extended Law of Sines (Squared Form)",
+      "startLine": 493,
+      "endLine": 529,
+      "summary": "Proves the squared extended law of sines a²b²c² = 16R²·Area², connecting the product of squared side lengths to the circumradius and area without taking square roots.",
+      "mathContext": "Squared extended law of sines: $a^2 b^2 c^2 = 16 R^2 \\Delta^2$, i.e. $abc = 4R\\Delta$ after taking positive square roots. Keeps the algebra polynomial by working with squares."
+    },
+    {
+      "id": "euler-345-verification",
+      "title": "Euler's Formula OI² = R² − 2Rr (3-4-5 Verification)",
+      "startLine": 530,
+      "endLine": 556,
+      "summary": "Verifies Euler's formula OI² = R² − 2Rr numerically for the 3-4-5 triangle as a concrete check of the general infrastructure before the general proof.",
+      "mathContext": "Concrete check of Euler's formula $OI^2 = R^2 - 2Rr$ on the 3-4-5 triangle, validating the general infrastructure on a worked numerical example."
+    },
+    {
+      "id": "general-proof-roadmap",
+      "title": "Roadmap: General Feuerbach Proof Path",
+      "startLine": 557,
+      "endLine": 583,
+      "summary": "Documentation section laying out the algebraic path to the general Feuerbach proof: from Heron and the law of sines through the sigma identity to the key substitution and the final distance identity.",
+      "mathContext": "Roadmap (exposition, not new theorems) describing how the algebraic backbone — Heron, the law of sines, and the sigma identity — assembles into the general Feuerbach distance identity $|NI|^2 = (R/2 - r)^2$."
+    },
+    {
+      "id": "heron-squared",
+      "title": "Heron's Formula (Squared Polynomial Form)",
       "startLine": 584,
+      "endLine": 628,
+      "summary": "Heron's formula in squared polynomial form, 16·Area² = 2(a²b² + b²c² + c²a²) − (a⁴ + b⁴ + c⁴), the sqrt-free expression of the triangle area used throughout the algebra.",
+      "mathContext": "Heron's formula, squared polynomial form: $16\\Delta^2 = 2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4)$. The polynomial form avoids square roots in the downstream computations."
+    },
+    {
+      "id": "dot-product-lemmas",
+      "title": "Dot Product and Inner Product Lemmas",
+      "startLine": 629,
       "endLine": 688,
-      "summary": "Heron's formula in three forms (squared polynomial, product, classical s(s-a)(s-b)(s-c)). Circumcenter dot products via polarization identity: ⟨A-O,B-O⟩ = R² - c²/2. These feed into the bilinear expansion of |NI|².",
-      "mathContext": "Heron\\'s formula in three forms: squared polynomial $16\\Delta^2 = 2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4)$, product form $16\\Delta^2 = (a+b+c)(-a+b+c)(a-b+c)(a+b-c)$, and classical $\\Delta = \\sqrt{s(s-a)(s-b)(s-c)}$. Derived from dot product computations."
+      "summary": "Circumcenter dot-product lemmas via the polarization identity: ⟨A−O, B−O⟩ = R² − c²/2 and its cyclic variants. These feed the bilinear expansion of |NI|².",
+      "mathContext": "Circumcenter dot products via polarization: $\\langle A-O, B-O\\rangle = R^2 - c^2/2$. These inner-product identities convert the geometric distance $|N-I|^2$ into an algebraic expression in side lengths and $R$."
     },
     {
       "id": "unsquared-law-of-sines",
       "title": "Extended Law of Sines (Unsquared) and Positivity",
       "startLine": 689,
-      "endLine": 759,
-      "summary": "Proves side lengths, circumradius are positive. Derives the unsquared extended law of sines abc = 4R·Area from the squared version by showing both sides are positive and their squares are equal.",
-      "mathContext": "The extended law of sines: $a/\\sin A = 2R$. Derived from $a = 2R\\sin A$ and the positivity of side lengths and circumradius. This connects the circumradius $R$ to the triangle\\'s angles and sides."
+      "endLine": 761,
+      "summary": "Proves side lengths and circumradius are positive, then derives the unsquared extended law of sines abc = 4R·Area from the squared version by matching signs and squares.",
+      "mathContext": "The extended law of sines $a/\\sin A = 2R$, unsquared form $abc = 4R\\Delta$, derived from the squared version using positivity of side lengths and circumradius."
     },
     {
       "id": "heron-classical",
       "title": "Classical Heron and Sigma-Heron Connection",
       "startLine": 762,
       "endLine": 813,
-      "summary": "Derives classical Heron from product form, proves σ = abcs - 4·Area² by combining sigma identity with Heron. This converts the bilinear expansion into terms involving R, side lengths, and Area.",
-      "mathContext": "Derives classical Heron from the product form. Proves the key identity $\\sigma = abcs - 4\\Delta^2$ by combining Heron\\'s formula with the sigma identity. This algebraic relation is the engine of the Feuerbach distance computation."
+      "summary": "Derives classical Heron from the product form and proves σ = abcs − 4·Area² by combining the sigma identity with Heron. This converts the bilinear expansion into terms in R, side lengths, and Area.",
+      "mathContext": "Derives classical Heron from the product form. Proves the key identity $\\sigma = abcs - 4\\Delta^2$ by combining Heron's formula with the sigma identity. This algebraic relation is the engine of the Feuerbach distance computation."
     },
     {
       "id": "feuerbach-algebraic-core",
-      "title": "Feuerbach Algebraic Core",
+      "title": "Feuerbach Algebraic Core: The Key Substitution",
       "startLine": 814,
-      "endLine": 863,
-      "summary": "The heart of the proof: R²s² - σ = (Rs - 2A)² via the substitution abc = 4RA. The algebraic chain combines all supporting identities. Final step: (Rs - 2A)²/(4s²) = (R/2 - r)².",
-      "mathContext": "The algebraic heart: $R^2 s^2 - \\sigma = (Rs - 2\\Delta)^2$ via the substitution $abc = 4R\\Delta$. This identity, combined with $|NI|^2 = R^2 s^2 - \\sigma)/(4s^2)$, gives $|NI|^2 = (R/2 - r)^2$ since $r = \\Delta/s$."
+      "endLine": 864,
+      "summary": "The heart of the proof: R²s² − σ = (Rs − 2A)² via the substitution abc = 4RA. The algebraic chain combines all supporting identities; the final step gives (Rs − 2A)²/(4s²) = (R/2 − r)².",
+      "mathContext": "The algebraic heart: $R^2 s^2 - \\sigma = (Rs - 2\\Delta)^2$ via the substitution $abc = 4R\\Delta$. Combined with $|NI|^2 = (R^2 s^2 - \\sigma)/(4s^2)$, this gives $|NI|^2 = (R/2 - r)^2$ since $r = \\Delta/s$."
+    },
+    {
+      "id": "feuerbach-proof-roadmap-updated",
+      "title": "Complete Feuerbach Proof Roadmap (Updated)",
+      "startLine": 865,
+      "endLine": 935,
+      "summary": "Updated documentation of the full proof chain: which algebraic identities are proved, where the geometric N-I vector link enters, and what remained to close the gap to the final distance theorems.",
+      "mathContext": "Updated roadmap (exposition) tracking the proof chain: the algebraic backbone is fully proved; the remaining geometric link is the $N-I$ vector formula, after which the incircle and excircle distance theorems follow."
     },
     {
       "id": "triangle-inequalities",
       "title": "Triangle Inequalities from Heron",
       "startLine": 936,
       "endLine": 1006,
-      "summary": "Proves s-a > 0, s-b > 0, s-c > 0 indirectly: Heron + area positivity imply s(s-a)(s-b)(s-c) > 0, so no factor can be ≤ 0. Needed for excircle denominators.",
-      "mathContext": "Proves $s - a > 0$, $s - b > 0$, $s - c > 0$ indirectly: Heron\\'s formula $\\Delta^2 = s(s-a)(s-b)(s-c)$ combined with $\\Delta > 0$ implies each factor is positive. These strict inequalities are needed for the excircle radius positivity."
+      "summary": "Proves s−a > 0, s−b > 0, s−c > 0 indirectly: Heron + area positivity imply s(s−a)(s−b)(s−c) > 0, so no factor can be ≤ 0. Needed for excircle denominators.",
+      "mathContext": "Proves $s - a > 0$, $s - b > 0$, $s - c > 0$ indirectly: Heron's formula $\\Delta^2 = s(s-a)(s-b)(s-c)$ combined with $\\Delta > 0$ implies each factor is positive. These strict inequalities are needed for the excircle radius positivity."
     },
     {
-      "id": "ni-vector-bilinear",
-      "title": "NI Vector Formula and Bilinear Expansion",
+      "id": "ni-vector-formula",
+      "title": "Geometric Link: N-I Vector Formula",
       "startLine": 1007,
-      "endLine": 1101,
-      "summary": "Proves 2s(N-I) = Σ(s-k)(V_k - O) by coordinate unfolding and ring. Expands 4s²|NI|² via bilinear form, substitutes dot products and algebraic chain to get 4s²|NI|² = (Rs - 2·Area)².",
-      "mathContext": "Vector formula: $2s(N - I) = \\sum_k (s-k)(V_k - O)$ where $V_k$ are vertices and $O$ is the circumcenter. Expanding: $4s^2|N-I|^2 = R^2 s^2 - \\sigma$. This bilinear expansion converts the geometric distance to an algebraic expression in side lengths."
+      "endLine": 1039,
+      "summary": "Proves the geometric link 2s(N−I) = Σ(s−k)(V_k − O) by coordinate unfolding and ring, expressing the nine-point-center-to-incenter vector as a weighted sum of vertex-to-circumcenter vectors.",
+      "mathContext": "Vector formula: $2s(N - I) = \\sum_k (s-k)(V_k - O)$ where $V_k$ are the vertices and $O$ the circumcenter. This is the geometric bridge from coordinates to the algebraic distance identity."
     },
     {
-      "id": "feuerbach-incircle",
-      "title": "Feuerbach Incircle Distance (General Proof)",
+      "id": "bilinear-expansion",
+      "title": "Bilinear Expansion of 4s²·NI²",
+      "startLine": 1040,
+      "endLine": 1074,
+      "summary": "Expands 4s²|NI|² via the bilinear form, substituting the circumcenter dot products and the algebraic chain to reduce the geometric distance to a polynomial in side lengths, R, and Area.",
+      "mathContext": "Bilinear expansion $4s^2 |N-I|^2 = R^2 s^2 - \\sigma$, obtained by substituting the polarization dot products into the squared vector formula."
+    },
+    {
+      "id": "key-identity-4s2ni2",
+      "title": "The Key Identity: 4s²·NI² = (Rs − 2·Area)²",
+      "startLine": 1075,
+      "endLine": 1101,
+      "summary": "Combines the bilinear expansion with the algebraic core to prove 4s²·|NI|² = (Rs − 2·Area)², the identity that yields the Feuerbach incircle distance after dividing by 4s² and taking square roots.",
+      "mathContext": "The key identity $4s^2 |N-I|^2 = (Rs - 2\\Delta)^2$. Dividing by $4s^2$ gives $|N-I|^2 = (R/2 - r)^2$, one square root away from the Feuerbach incircle tangency."
+    },
+    {
+      "id": "feuerbach-ni-squared",
+      "title": "Feuerbach's Theorem: NI² = (R/2 − r)²",
       "startLine": 1102,
+      "endLine": 1121,
+      "summary": "Proves the squared incircle distance |NI|² = (R/2 − r)² from the key identity, the last algebraic step before extracting the unsquared distance.",
+      "mathContext": "Squared Feuerbach incircle relation: $|N-I|^2 = (R/2 - r)^2$, the algebraic form of internal tangency between the nine-point circle and the incircle."
+    },
+    {
+      "id": "feuerbach-incircle-main",
+      "title": "Feuerbach's Theorem: NI = |R/2 − r| (Main Result)",
+      "startLine": 1122,
       "endLine": 1137,
-      "summary": "The main incircle result: d(N,I) = |R/2 - r|. Takes sqrt of |NI|² = (R/2 - r)² using Real.sqrt_sq_eq_abs. Eliminates the incircle distance axiom.",
-      "mathContext": "**Main result**: $d(N, I) = |R/2 - r|$ — the nine-point circle is internally tangent to the incircle. Proof: take $\\sqrt{|NI|^2 = (R/2 - r)^2}$ using . Since both $R/2$ and $r$ are positive, tangency follows: the distance between centers equals the difference of radii."
+      "summary": "The main incircle result: d(N,I) = |R/2 − r|, obtained by taking the square root of |NI|² = (R/2 − r)² with Real.sqrt_sq_eq_abs. Eliminates the incircle distance axiom.",
+      "mathContext": "**Main result**: $d(N, I) = |R/2 - r|$ — the nine-point circle is internally tangent to the incircle. Proof: take $\\sqrt{|NI|^2 = (R/2 - r)^2}$ via Real.sqrt_sq_eq_abs."
     },
     {
       "id": "feuerbach-excircle-a",
       "title": "Feuerbach Excircle A Distance",
       "startLine": 1138,
       "endLine": 1273,
-      "summary": "Proves d(N, I_a) = R/2 + r_a for excircle opposite A. Modified vector formula: 2(s-a)(N-I_a) = s(A-O) - (s-c)(B-O) - (s-b)(C-O). Sigma variant + algebraic core → |NI_a|² = (R/2 + r_a)².",
+      "summary": "Proves d(N, I_a) = R/2 + r_a for excircle opposite A. Modified vector formula: 2(s−a)(N−I_a) = s(A−O) − (s−c)(B−O) − (s−b)(C−O). Sigma variant + algebraic core → |NI_a|² = (R/2 + r_a)².",
       "mathContext": "Excircle tangency: $d(N, I_a) = R/2 + r_a$ for the $A$-excircle. The distance equals the sum of radii, so the nine-point circle is **externally** tangent to each excircle. Modified vector formula with sign changes for the excircle center."
     },
     {
