@@ -92,79 +92,79 @@
       "id": "header",
       "title": "Problem Statement and Context",
       "startLine": 1,
-      "endLine": 68,
+      "endLine": 69,
       "summary": "Overview of the e+π transcendence question, connection to Schanuel's Conjecture, Nesterenko's Theorem, and current status.",
       "mathContext": "**Open question**: Is $e + \\pi$ transcendental? Connected to Schanuel's Conjecture: if $\\alpha_1, \\ldots, \\alpha_n$ are $\\mathbb{Q}$-linearly independent, then $\\text{tr.deg}_{\\mathbb{Q}}(\\alpha_1, \\ldots, \\alpha_n, e^{\\alpha_1}, \\ldots, e^{\\alpha_n}) \\geq n$."
     },
     {
       "id": "foundational-axioms",
       "title": "Foundational Axioms",
-      "startLine": 71,
-      "endLine": 82,
+      "startLine": 70,
+      "endLine": 83,
       "summary": "e and π are transcendental over ℚ (Hermite 1873, Lindemann 1882) — re-stated as axioms for self-containedness.",
       "mathContext": "$e$ is transcendental (Hermite, 1873): no $p \\in \\mathbb{Q}[X] \\setminus \\{0\\}$ with $p(e) = 0$. $\\pi$ is transcendental (Lindemann, 1882): no $p \\in \\mathbb{Q}[X] \\setminus \\{0\\}$ with $p(\\pi) = 0$. Both via Lindemann-Weierstrass."
     },
     {
       "id": "vieta-identity",
       "title": "Symmetric Polynomial Identity (Vieta)",
-      "startLine": 85,
-      "endLine": 121,
+      "startLine": 84,
+      "endLine": 108,
       "summary": "Fully proved: e and π are roots of T² - (e+π)T + eπ = 0. Proved by ring — no sorry, no axioms.",
       "mathContext": "$e$ and $\\pi$ are roots of $T^2 - (e+\\pi)T + e\\pi = 0$ (Vieta's formulas). Proved by `ring` — a purely algebraic identity requiring no analysis."
     },
     {
       "id": "algebraic-closure",
       "title": "Algebraic Closure Lemma",
-      "startLine": 124,
-      "endLine": 149,
+      "startLine": 109,
+      "endLine": 182,
       "summary": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_trans).",
       "mathContext": "PROVED theorem: root of quadratic with algebraic coefficients is algebraic. Uses isAlgebraic_iff_isIntegral, Algebra.adjoin, Algebra.IsIntegral (transitivity of integral extensions via isIntegral_trans)."
     },
     {
       "id": "main-theorem",
       "title": "At Least One is Transcendental",
-      "startLine": 152,
-      "endLine": 189,
+      "startLine": 183,
+      "endLine": 228,
       "summary": "Theorem: at least one of e+π, eπ is transcendental over ℚ. Proved by contradiction using Vieta identity + algebraic closure lemma + e's transcendence.",
       "mathContext": "**Theorem**: At least one of $\\{e+\\pi, e\\pi\\}$ is transcendental over $\\mathbb{Q}$. Proof: if both algebraic, the quadratic $T^2 - (e+\\pi)T + e\\pi$ has algebraic coefficients, so its roots $e, \\pi$ are algebraic — contradiction."
     },
     {
       "id": "consequences",
       "title": "Conditional Consequences",
-      "startLine": 192,
-      "endLine": 212,
+      "startLine": 229,
+      "endLine": 248,
       "summary": "If eπ is algebraic, then e+π is transcendental. If e+π is algebraic, then eπ is transcendental.",
       "mathContext": "$e\\pi \\in \\overline{\\mathbb{Q}} \\Rightarrow e+\\pi \\notin \\overline{\\mathbb{Q}}$. $e+\\pi \\in \\overline{\\mathbb{Q}} \\Rightarrow e\\pi \\notin \\overline{\\mathbb{Q}}$. The two transcendence questions are linked by the quadratic $T^2 - (e+\\pi)T + e\\pi$."
     },
     {
       "id": "open-conjectures",
       "title": "The Open Conjectures",
-      "startLine": 215,
-      "endLine": 232,
+      "startLine": 249,
+      "endLine": 278,
       "summary": "Three open conjectures with sorry: e+π transcendental, eπ transcendental, e+π irrational. All unknown as of 2026.",
       "mathContext": "**Open**: (1) $e + \\pi$ is transcendental, (2) $e\\pi$ is transcendental, (3) $e + \\pi$ is irrational. All widely believed but unproved. Even irrationality of $e + \\pi$ is unknown."
     },
     {
       "id": "schanuel-nesterenko",
       "title": "Schanuel's Conjecture and Nesterenko's Theorem",
-      "startLine": 235,
-      "endLine": 275,
+      "startLine": 279,
+      "endLine": 357,
       "summary": "Schanuel's Conjecture stated (unproven). Nesterenko's Theorem (1996) axiomatized: π, e^π, Γ(1/4) algebraically independent.",
       "mathContext": "**Schanuel**: $1, i\\pi$ lin. indep. over $\\mathbb{Q}$, so $\\text{tr.deg}(1, i\\pi, e, e^{i\\pi}) = \\text{tr.deg}(1, i\\pi, e, -1) \\geq 2$, proving $e, \\pi$ alg. independent. **Nesterenko (1996)**: $\\pi, e^\\pi, \\Gamma(1/4)$ are algebraically independent (proved)."
     },
     {
       "id": "pi-irrationality",
       "title": "π Irrationality from Mathlib",
-      "startLine": 380,
-      "endLine": 395,
+      "startLine": 358,
+      "endLine": 374,
       "summary": "Direct theorem: π is irrational, proved via Mathlib's irrational_pi from Mathlib.Analysis.Real.Pi.Irrational.",
       "mathContext": "$\\pi \\notin \\mathbb{Q}$ — proved via Mathlib's `irrational_pi`. Combined with $e \\notin \\mathbb{Q}$ (from transcendence). But $e + \\pi \\notin \\mathbb{Q}$ is still open: irrationality of a sum of irrationals is not automatic."
     },
     {
       "id": "algebraic-independence",
       "title": "Algebraic Independence Framework",
-      "startLine": 396,
-      "endLine": 500,
+      "startLine": 375,
+      "endLine": 499,
       "summary": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent. Technique: polynomial lifting via Polynomial.aeval_algHom_apply.",
       "mathContext": "Definition of e_pi_algebraicallyIndependent (no nonzero polynomial in MvPolynomial (Fin 2) ℚ vanishes at [e, π]). Three conditional theorems proved: e+π transcendental, e·π transcendental, e+π irrational — all under the assumption that e and π are algebraically independent."
     },
