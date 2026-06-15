@@ -60,6 +60,11 @@ trig form `cos C = − cos A · cos B + sin A · sin B · cos c`.
 * `dual_poly`            — algebraic heart of the dual law                     (ring)
 * `dual_law_cleared`     — dual law for abstract normal-form data
 * `dual_spherical_law_cleared` — dual law for a unit-vector spherical triangle
+* `dual_law_trig`        — literal trig dual law from cleared normal-form hypotheses
+* `cosA_num`/`cosB_num`/`cosC_num` — angle-cosine numerators as Binet–Cauchy
+  inner products of edge normals (geometric grounding of the normal forms)
+* `sina_sq`/`sinb_sq`/`sinc_sq` — side-sine squares as Lagrange self-inner-products
+* `dual_law_cross_product_form` — the dual law in pure cross-product form
 
 Axioms: 0.  Sorries: 0.
 
@@ -249,5 +254,84 @@ theorem dual_law_trig
       (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) hsc2 rfl
   apply mul_right_cancel₀ hD
   linear_combination (sc ^ 2) * hcC + hAB - cc * hsAsB + key
+
+/-! ## Part VI: Fully geometric cross-product form
+
+The cleared dual law `dual_spherical_law_cleared` is stated with the angle-cosine
+*numerators* `ca − cb·cc`, etc. and the side-sine *squares* `1 − cc²` written out
+as polynomials in the side cosines. The lemmas below show that each of those
+quantities is itself a transparent cross-product inner product:
+
+* every angle-cosine numerator is a Binet–Cauchy inner product of two edge normals
+  (`⟨u×v, u×w⟩ = cos a − cos b·cos c`, the unnormalised `cos A`);
+* every side-sine square is a Lagrange self-inner-product
+  (`⟨u×v, u×v⟩ = 1 − cos²c = sin²c`).
+
+Substituting these identifications recovers the dual law in **pure cross-product
+form** (`dual_law_cross_product_form`), with no side cosines appearing as bare
+inner products — the entire identity lives in the exterior algebra of the three
+vertex vectors. This grounds the posited normal forms of `dual_law_trig` in actual
+geometry; all proofs remain `ring`/`rw`-only (no division, no radicals). -/
+
+/-- Angle `A` (at vertex `u`) numerator as a Binet–Cauchy inner product of the two
+edge normals at `u`:  `⟨u×v, u×w⟩ = cos a − cos b·cos c`. -/
+theorem cosA_num (u v w : V) (hu : dot u u = 1) :
+    dot (cross u v) (cross u w) = dot v w - dot w u * dot u v := by
+  have h := binet_cauchy u v u w
+  rw [h, hu, dot_comm u w, dot_comm v u]; ring
+
+/-- Angle `B` (at vertex `v`) numerator as a Binet–Cauchy inner product of the two
+edge normals at `v`:  `⟨v×w, v×u⟩ = cos b − cos a·cos c`. -/
+theorem cosB_num (u v w : V) (hv : dot v v = 1) :
+    dot (cross v w) (cross v u) = dot w u - dot v w * dot u v := by
+  have h := binet_cauchy v w v u
+  rw [h, hv, dot_comm v u, dot_comm w v]; ring
+
+/-- Angle `C` (at vertex `w`) numerator as a Binet–Cauchy inner product of the two
+edge normals at `w`:  `⟨w×u, w×v⟩ = cos c − cos a·cos b`. -/
+theorem cosC_num (u v w : V) (hw : dot w w = 1) :
+    dot (cross w u) (cross w v) = dot u v - dot v w * dot w u := by
+  have h := binet_cauchy w u w v
+  rw [h, hw, dot_comm w v, dot_comm u w]; ring
+
+/-- Side `c` sine-square as a Lagrange self-inner-product:
+`⟨u×v, u×v⟩ = 1 − cos²c = sin²c`. -/
+theorem sinc_sq (u v : V) (hu : dot u u = 1) (hv : dot v v = 1) :
+    dot (cross u v) (cross u v) = 1 - dot u v ^ 2 := by
+  rw [lagrange_identity u v, hu, hv]; ring
+
+/-- Side `b` sine-square as a Lagrange self-inner-product:
+`⟨w×u, w×u⟩ = 1 − cos²b = sin²b`. -/
+theorem sinb_sq (u w : V) (hw : dot w w = 1) (hu : dot u u = 1) :
+    dot (cross w u) (cross w u) = 1 - dot w u ^ 2 := by
+  rw [lagrange_identity w u, hw, hu]; ring
+
+/-- Side `a` sine-square as a Lagrange self-inner-product:
+`⟨v×w, v×w⟩ = 1 − cos²a = sin²a`. -/
+theorem sina_sq (v w : V) (hv : dot v v = 1) (hw : dot w w = 1) :
+    dot (cross v w) (cross v w) = 1 - dot v w ^ 2 := by
+  rw [lagrange_identity v w, hv, hw]; ring
+
+/-- **Dual spherical law of cosines, pure cross-product form.**
+
+For a spherical triangle given by unit vectors `u, v, w`, the cleared dual law
+holds with *every* angle-cosine numerator and side-sine square replaced by its
+cross-product realisation:
+
+  `⟨w×u, w×v⟩ · ⟨u×v, u×v⟩ = −⟨u×v, u×w⟩ · ⟨v×w, v×u⟩ + [u v w]² · ⟨u, v⟩`.
+
+Reading off the geometric meaning (`⟨w×u,w×v⟩ = sin a sin b cos C`,
+`⟨u×v,u×v⟩ = sin²c`, `[u v w]² = sin²A sin²b sin²c`, etc.) and dividing by the
+positive product of side sines recovers `cos C = −cos A cos B + sin A sin B cos c`.
+Proved by rewriting the four cross-product quantities to their side-cosine normal
+forms (`cosA_num`/`cosB_num`/`cosC_num`/`sinc_sq`) and invoking
+`dual_spherical_law_cleared`. -/
+theorem dual_law_cross_product_form
+    (u v w : V) (hu : dot u u = 1) (hv : dot v v = 1) (hw : dot w w = 1) :
+    dot (cross w u) (cross w v) * dot (cross u v) (cross u v)
+      = -(dot (cross u v) (cross u w)) * dot (cross v w) (cross v u)
+        + (triple u v w) ^ 2 * dot u v := by
+  rw [cosC_num u v w hw, sinc_sq u v hu hv, cosA_num u v w hu, cosB_num u v w hv]
+  exact dual_spherical_law_cleared u v w hu hv hw
 
 end SphericalLawOfCosinesOQ03
