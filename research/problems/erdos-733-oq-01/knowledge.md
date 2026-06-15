@@ -130,3 +130,99 @@ line-compatibility definition (Docker-gated, out of scope here).
   $\log f(n)/\sqrt n$ against the $[\,2.5651,\,C\,]$ bracket. So far
   $f=2,3,5,9$ for $n=3,4,5,6$.
 - (unchanged) tighten the S3 upper constant; replace the Lean placeholder.
+
+---
+
+## Session 2026-06-15 (arrangement lower bound, researcher-8) — ACT
+
+**Mode**: build-free (dual blackout: Docker DOWN, Aristotle MCP unavailable).
+**Outcome**: progress — a structural reformulation of $f(n)$, a clean computable
+lower bound $G(n)$ that **equals the exact $f(n)$ for $n\le 6$** and extends
+rigorous (exact-arithmetic-verified) lower bounds to $n=7,\dots,12$, beating both
+prior lower bounds (S1's $Q$, the pencil refinement $P$). The asymptotic constant
+is **not** improved (honestly: $G\sim Q$ asymptotically).
+
+### Structural reformulation: $f(n)=\#\{\text{realizable multisets of }\ge 3\text{-line sizes}\}$
+
+The point-count of every rich line is recorded, and the number of 2-point lines is
+**forced**:
+$$\#(2\text{-lines}) = \binom n2 - \sum_{\ge 3\text{ lines }L}\binom{|L|}{2}.$$
+So the entire line-compatible sequence is a function of the multiset of $\ge 3$-line
+sizes. Hence
+$$f(n)=\#\{\,M\text{ a multiset of integers }\ge 3 : \mu(M)\le n\,\},$$
+where $\mu(M)$ is the minimum number of points whose $\ge 3$-rich lines have exactly
+the sizes in $M$ (all other rich lines carrying 2 points; surplus points sit in
+general position as 2-lines). This recasts the OQ as: count multisets by their
+minimum incidence-realization budget.
+
+### Computable lower bound $G(n)\le f(n)$ (three explicit constructions)
+
+$\mu(M)$ itself is a hard incidence optimisation (maximise point-sharing among the
+lines). Using three always-realizable constructions and taking the cheapest
+OVER-estimates $\mu$, hence UNDER-counts — a rigorous lower bound. For
+$M=\{a_1,\dots,a_k\}$ ($a_i\ge 3$):
+
+| construction | budget | condition |
+|---|---|---|
+| disjoint (one generic line per part) | $\sum a_i$ | — |
+| **pencil** (all $k$ lines concurrent at one point) | $\sum a_i-(k-1)$ | $k\ge 1$ |
+| **complete arrangement** ($k$ generic lines, all $\binom k2$ pairwise intersections used) | $\sum a_i-\binom k2$ | $a_i\ge k-1\ \forall i$ |
+
+$\mu^*(M)=\min(\text{applicable budgets})$, $G(n)=\#\{M:\mu^*(M)\le n\}$.
+
+### Verification (durable, exact arithmetic)
+
+`verify_arrangement_lower.py` (committed): for **every** multiset counted in $G(n)$,
+$n=3,\dots,12$, it realizes the $\mu^*$-optimal construction in exact $\mathbb Q$
+coordinates, recomputes the rich-line multiset from scratch, and confirms (i) the
+$\ge 3$-lines are exactly $M$ (no accidental extra collinearity) and (ii) all
+realized sequences are pairwise distinct. **0 mismatches, 0 collisions** for all
+$n\le 12$ ⇒ every $G(n)$ below is a verified lower bound on $f(n)$.
+
+| $n$ | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+|----|---|---|---|---|---|---|---|----|----|----|
+| $G(n)$ | 2 | 3 | 5 | 9 | **14** | **21** | **31** | **45** | **63** | **87** |
+| exact $f(n)$ | 2 | 3 | 5 | 9 | ? | ? | ? | ? | ? | ? |
+| $P(n)$ pencil | 2 | 3 | 5 | 7 | 11 | 15 | 22 | 30 | 42 | 56 |
+| $Q(n)$ disjoint (S1) | 2 | 3 | 4 | 6 | 8 | 11 | 15 | 20 | 26 | 35 |
+
+### Key findings
+
+- **$G(n)=f(n)$ exactly for $n=3,4,5,6$** ($2,3,5,9$, against researcher-4's
+  exhaustive grid enumeration): the three elementary constructions already realize
+  *every* line-compatible sequence at small $n$. (For $n\ge 7$, $G$ is only a lower
+  bound — multisets needing partial/general $b$-matching arrangements, e.g. five
+  3-lines, are not in these three families, so $f(n)\ge G(n)$ with possible gap.)
+- **The surplus of $f$ over the disjoint bound $Q$ is explained by point-sharing:**
+  - $n=5$: $f(5)=5>Q(5)=4$ is the **pencil** $[3,3]$ — two 3-lines sharing a point
+    (budget 5, not the disjoint 6). $P$ and $G$ both capture it; $G$ is tight here.
+  - $n=6$: the surplus includes the **complete quadrilateral** $[3,3,3,3]$ — four
+    generic lines, their 6 intersection points (budget 6) — which BOTH the disjoint
+    and pencil families miss. Captured only by the complete-arrangement budget.
+- **$P(n)$ = single-pencil bound** $=\#\{$partitions into parts $\ge 2$ of sum
+  $\le n-1\}$: a clean closed form strictly between $Q$ and $G$, tight at $n=5$.
+- **Asymptotics — no constant improvement (honesty):** $G\ge Q$ so $\lambda\ge
+  \pi\sqrt{2/3}$ is preserved, but the complete-arrangement contribution alone has a
+  strictly *smaller* exponential rate (forcing $a_i\ge k-1$ is rigid: numerically
+  $\log G_{\mathrm{ca}}(n)/\sqrt n\approx 1.75$ at $n=6400$, still well below
+  $2.5651$ and rising slowly), so the disjoint family dominates as $n\to\infty$ and
+  $G(n)\sim Q(n)$. The constant $\lambda$ stays **OPEN**; closing the gap needs the
+  full realizability structure (which multisets are *not* realizable — the
+  Szemerédi–Trotter / forbidden-configuration content), exactly as on the upper side.
+
+### Files Modified
+- `research/problems/erdos-733-oq-01/verify_arrangement_lower.py` (new)
+- `research/problems/erdos-733-oq-01/knowledge.md` (this entry)
+- `src/data/research/problems/erdos-733-oq-01.json` (insights/builtItems)
+
+### Next Steps
+- The honest path to the constant: characterise *non-realizable* multisets (the
+  exact incidence obstruction), since $f(n)=\#\{M:\mu(M)\le n\}$ and $G$ already
+  pins the count for small $n$. Computing $\mu(M)$ exactly (min points for given
+  line sizes with pairwise $\le 1$ intersection = a geometric $b$-matching /
+  realizable $(p_k,\ell_m)$-configuration problem) would replace $G$ by $f$ and
+  is the crux.
+- Cross-check $G(7),G(8)$ against an independent exhaustive computation (e.g. the
+  order-type database) to test whether $G(n)=f(n)$ persists past $n=6$.
+- (unchanged) tighten the S3 upper constant; replace the Lean `countLineCompatible`
+  placeholder ($=2^n-1$, Docker-gated).
