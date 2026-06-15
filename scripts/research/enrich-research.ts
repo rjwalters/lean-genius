@@ -68,6 +68,13 @@ const SPECIAL_CASES: Record<string, string[]> = {
   // discrete EulerPolyhedralFormula.lean and the unrelated OQ01OQ02 sibling,
   // making this open problem look solved. Empty list = no leanFiles match.
   'euler-polyhedral-formula-oq-02-oq-01-oq-01': [],
+  // Open problem (Bourgain's quantitative Roth bound) with no Lean file of its
+  // own. The `-oq-01` fallback strips to the bare root `RothTheorem`, whose
+  // `startsWith` match greedily grabs every `RothTheorem*` sibling (base proof,
+  // OQ02, OQ03, Quantitative, …), making this open problem look formalized.
+  // No `RothTheoremOQ01*.lean` exists; pin the exact own-prefix so the match is
+  // [] now and links only the real file if one is ever added.
+  'roth-theorem-oq-01': ['RothTheoremOQ01'],
 }
 
 /**
