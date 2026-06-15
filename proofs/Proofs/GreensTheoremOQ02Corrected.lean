@@ -179,4 +179,36 @@ theorem counterexample_violates_hLineEq :
   rw [constCurve_lineIntegral_zero, hrect]
   norm_num
 
+/-- Consumer 7 (was `GreensTheoremOQ02OQ04.c1_stokes_from_whitney`): the C¹
+flagship, now requiring the orientation hypothesis.  The S5 counterexample
+(`ω = (0, x)`, constant corner curve) gives `lipschitzLineIntegral = 0 ≠ 1 = ∫∫`,
+refuting the un-oriented form; `hLineEq` excludes it.  Direct analogue of
+consumers 1–6, calling `greens_stokes_l1curl_oriented`. -/
+theorem c1_stokes_from_whitney_oriented
+    (C : LipschitzClosedCurve)
+    (ω : OneForm2D) (a b c d : ℝ) (hab : a < b) (hcd : c < d)
+    (hQ_cont : Continuous (fun p : ℝ × ℝ => deriv (fun x => ω.Q (x, p.2)) p.1))
+    (hP_cont : Continuous (fun p : ℝ × ℝ => deriv (fun y => ω.P (p.1, y)) p.2))
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C = rectLineIntegral ω.P ω.Q a b c d) :
+    lipschitzLineIntegral ω.P ω.Q C =
+    ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, extDeriv1_2D ω p ∂volume :=
+  greens_stokes_l1curl_oriented C ω a b c d hab hcd
+    (c1_form_l1_integrable ω a b c d hQ_cont hP_cont) hTraversal hLineEq
+
+/-- Consumer 8 (was `GreensTheoremOQ02OQ04.stokes_scaling`): linearity, now
+oriented (`hLineEq` on the unscaled form).  Mirrors the original proof's
+`rw [lineIntegral_smul]` then the oriented Stokes rewrite. -/
+theorem stokes_scaling_oriented
+    (C : LipschitzClosedCurve)
+    (ω : OneForm2D) (k : ℝ)
+    (a b c d : ℝ) (hab : a < b) (hcd : c < d)
+    (hL1 : IntegrableOn (extDeriv1_2D ω) (Set.Icc a b ×ˢ Set.Icc c d) volume)
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C = rectLineIntegral ω.P ω.Q a b c d) :
+    lipschitzLineIntegral (fun p => k * ω.P p) (fun p => k * ω.Q p) C =
+    k * ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, extDeriv1_2D ω p ∂volume := by
+  rw [lineIntegral_smul]
+  rw [greens_stokes_l1curl_oriented C ω a b c d hab hcd hL1 hTraversal hLineEq]
+
 end GreensTheoremOQ02Corrected
