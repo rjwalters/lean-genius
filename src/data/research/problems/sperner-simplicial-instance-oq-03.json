@@ -40,7 +40,8 @@
   "knowledge": {
     "progressSummary": "ORIENT (Docker down): re-scoped the ACT. Found SpernerNDim.sperner_parity (#FC == #face-d boundary doors mod 2, 0 sorries/0 axioms) already proves the dimension-general parity; _hLastFace = Odd #FC of the induced facet coloring is dischargeable by citing it in dim n-1, so the remaining work is the facet-restriction wiring between SpernerSimplicialInstance and SpernerNDim. Verified the parity instantiation on the concrete 2-D Kuhn mesh and the dim-3 -> dim-2 reduction mesh-free (restriction is Sperner; top-facet doors == FC == odd).",
     "builtItems": [
-      "research/problems/sperner-simplicial-instance-oq-03/verify_boundary_doors.py — reproducible exhaustive verification: n=1 interval (one boundary door) and n=2 Kuhn-triangulated triangle (odd panchromatic, odd boundary doors, all on top facet, count == induced 1-D door count) over all Sperner colorings, grids m<=4."
+      "research/problems/sperner-simplicial-instance-oq-03/verify_boundary_doors.py — reproducible exhaustive verification: n=1 interval (one boundary door) and n=2 Kuhn-triangulated triangle (odd panchromatic, odd boundary doors, all on top facet, count == induced 1-D door count) over all Sperner colorings, grids m<=4.",
+      "research/problems/sperner-simplicial-instance-oq-03/verify_standard_triangulation.py - self-validated standard Freudenthal triangulation of Delta^d (d=2,3,4) + genuine-mesh checks of sperner_parity (P), facet=lower-mesh (A), and the recursion step (R); reference algorithm for the Lean construction."
     ],
     "insights": [
       "boundary_doors_odd is NOT an open assumption in the .lean — it is a PROVEN theorem (line 173) that already establishes S = S_n (all boundary doors lie on the top facet) via the Sperner condition. The OQ description (\"leaves boundary_doors_odd as an assumption\") is stale.",
@@ -51,14 +52,16 @@
       "SpernerNDim.lean:601 proves sperner_parity (#FC == #(boundary doors on face d) mod 2) for an abstract SpernerTriangulation d N with 0 sorries and 0 axioms. IsFC = coloring surjective on the d+1 vertices (panchromatic); isDoorAt s k = the d vertices != k carry {0..d-1}.",
       "_hLastFace[n] (odd door count on the top facet of Delta^n) equals 'Odd #FC of the Delta^{n-1} coloring induced on that facet', so it is dischargeable by sperner_parity[n-1] + induction down to the n=1 base, NOT by a from-scratch door-counting argument.",
       "Both SpernerSimplicialInstance.lean and SpernerNDim.lean are sorry-free; the gap is purely the cross-dimensional facet-restriction map connecting Triangulation to SpernerTriangulation. No concrete general-n standard-simplex SpernerTriangulation instance exists yet in the gallery (only intervalTriangulation 1 and a 2-simplex fixture).",
-      "Verified mesh-free that the restriction of a Sperner Delta^3 coloring to the top facet (opposite v3) uses only colors {0,1,2} (color 3 forbidden there), so it is automatically a Sperner Delta^2 coloring, and #(top-facet doors of Delta^3) == #FC(panchromatic) of the induced Delta^2 coloring == odd (all Sperner colorings, facet grids m<=4)."
+      "Verified mesh-free that the restriction of a Sperner Delta^3 coloring to the top facet (opposite v3) uses only colors {0,1,2} (color 3 forbidden there), so it is automatically a Sperner Delta^2 coloring, and #(top-facet doors of Delta^3) == #FC(panchromatic) of the induced Delta^2 coloring == odd (all Sperner colorings, facet grids m<=4).",
+      "S5: Built a CONCRETE self-validated standard (Freudenthal) triangulation of Delta^d for general d (order-polytope coords: barycentric b<->monotone partial sums s; cells = (base, permutation) chains). Pseudomanifold confirmed (facet multiplicities in {1,2}), cell count == m^d (d=3: 1,8,27; d=4: 1,16,81). First general-d concrete instance anywhere; doubles as the reference algorithm for the Lean SpernerTriangulation.",
+      "S5: On GENUINE 3-D and 4-D meshes (S1-S4 reached only 2-D) verified all three pillars: (P) sperner_parity #FC == #(boundary doors on geometric face d) (mod 2); (A) the top facet (b_d=0) of the d-mesh IS the (d-1)-mesh as a cell set (restriction map s |-> s[:d-1]); (R) #(doors on face d of Delta^d) == #FC of the induced Delta^{d-1} coloring per coloring, restriction always Sperner. Together they close the full induction _hLastFace[d] -> _hLastFace[d-1] -> ... -> base d=1 on actual standard triangulations."
     ],
     "mathlibGaps": [
       "No off-the-shelf Mathlib lemma for boundary-face parity of standard-simplex triangulations; the door-counting engine is gallery-local (SpernerMathlib.lean).",
       "Facet-restriction of a Sperner coloring to an induced (n-1)-dim Sperner coloring on a boundary facet is not packaged — must be constructed to drive the induction."
     ],
     "nextSteps": [
-      "Instantiate a general-n standard/Kuhn SpernerTriangulation (and/or Triangulation) for Delta^n.",
+      "Instantiate a general-n standard SpernerTriangulation for Delta^n by transcribing verify_standard_triangulation.py (order-polytope coords, (base, permutation) chain cells, face k = {b_k=0}); adj_unique_facet and boundary_face follow from the multiplicity-1 / single-geometric-face structure verified in S5.",
       "Build the top-facet restriction map to a dim-(n-1) SpernerTriangulation; prove the induced coloring is Sperner (color n forbidden on every facet vertex).",
       "Prove the door<=>FC identification (a dim-n top-facet door <=> the corresponding dim-(n-1) triangle IsFC).",
       "Close _hLastFace via SpernerNDim.sperner_parity applied in dim n-1 plus induction (base case n=1). Do NOT re-prove the parity counting."
@@ -86,7 +89,7 @@
     "mathlib": []
   },
   "started": "2026-06-15T01:25:28.244Z",
-  "lastUpdate": "2026-06-15T04:24:48.000Z",
+  "lastUpdate": "2026-06-15T10:00:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [

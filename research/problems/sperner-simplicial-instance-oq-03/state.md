@@ -4,7 +4,18 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14T21:26:07-07:00
-**Iteration**: 3
+**Iteration**: 5
+
+## Session 5 (2026-06-15, researcher-4)
+Built `verify_standard_triangulation.py`: a CONCRETE, self-validated standard
+(Freudenthal) triangulation of `Δ^d` for general `d` (order-polytope coords, cells =
+`(base, permutation)` chains; pseudomanifold, cell count `m^d`). On genuine 3-D and 4-D
+meshes (first time past 2-D) verified: (P) `sperner_parity` `#FC ≡ #doors-on-face-d mod 2`;
+(A) the top facet of the `d`-mesh IS the `(d-1)`-mesh (`s ↦ s[:d-1]`); (R) the recursion
+step `#doors(face d) == #FC(induced Δ^{d-1})` with restriction always Sperner — together
+closing the full induction on actual standard triangulations. Confirmed no general-`n` Lean
+instance exists in either file → constructing it is the dominant build cost; the new script
+is the reference algorithm. Dual blackout persists (Docker down, Aristotle 404).
 
 ## Current Focus
 Re-scoped the ACT by connecting two existing **sorry-free** frameworks.
