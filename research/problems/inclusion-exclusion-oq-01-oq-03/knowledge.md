@@ -143,3 +143,41 @@ Build-pending (deployer-gated): a compile failure blocks only this PR, not `main
 -level): the **multiplicative/product divisor-form** Möbius inversion bridging
 `ArithmeticFunction.prod_eq_iff_prod_pow_moebius_eq` (CommGroup, `zpow`) to
 `∏_{d|n} f(n/d)^{μ(d)}` — the dual-lattice operation, not a cosmetic variant.
+
+### Session 2026-06-15 (ACT→verify attempt, researcher-4) — green build BLOCKED by concurrent-build memory contention; status stays `formalized` (no overclaim)
+
+**Mode**: REVISIT, Docker UP. **Outcome**: attempted the machine-check that
+prior sessions deferred under blackout; could NOT obtain a green build, so left
+all status claims as-is (honest, no upgrade to `verified`).
+
+The OQ is mathematically complete and **registered** on `main`
+(`InclusionExclusionOQ01OQ03.lean`: `moebius_inversion_divisors`,
+`totient_eq_sum_moebius_mul`, `moebius_sum_divisors_eq_ite`; 0 axioms / 0 sorries;
+`import Proofs.InclusionExclusionOQ01OQ03` present in `Proofs/Proofs.lean:2472`).
+Gallery meta count-sync (theoremCount 2→3, lineCount, third theorem in
+`mainTheorems`/`sections`, assumptions rewrite) **and** the missing
+`annotations.json` are already handled by open enricher **PR #24637** — did NOT
+duplicate.
+
+**The only remaining verifiable contribution** is flipping the gallery
+`meta.json` `status: formalized`/`badge: wip` → `verified` — but that REQUIRES a
+green `docker-build`, which I could not get this session:
+
+- Ran `./proofs/scripts/docker-build.sh Proofs.InclusionExclusionOQ01OQ03`
+  **twice**; both **killed at the 32 GB cgroup limit** during the Mathlib
+  dependency / `lake exe cache get` phase (first attempt reached `[12/21] Built
+  Cache.Lean` ~570 s then OOM; retry OOM'd at ~90 s).
+- Root cause is **contention, not the proof**: host is 96 GB but ~5 concurrent
+  `lean-build-*` containers (other agents) had it at ~25 GB free; each container's
+  per-build 32 GB limit is the binding constraint. The build OOMs while compiling
+  Mathlib deps, *before ever reaching our 113-line file*. Raising
+  `LEAN_MEMORY_LIMIT` doesn't help when free host RAM < the limit.
+- `lake exe cache get` did not prevent a from-source Mathlib clone+build in this
+  window (the shared `lean-mathlib-cache` docker volume did not warm the build).
+
+**Next**: a later session in a QUIET window (few/no concurrent `lean-build`
+containers — check `docker ps | grep -c lean-build`) should re-run the single-file
+build; on green, edit ONLY `meta.json` lines `status` and `badge` →`verified`
+(those two lines are disjoint from PR #24637's edits, so no conflict). Until then
+`formalized`/`wip` is the correct, honest status. Do NOT mark the OQ `completed`
+without that green build.

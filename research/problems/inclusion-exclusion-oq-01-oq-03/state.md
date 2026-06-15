@@ -34,3 +34,10 @@ Euler-φ corollary `φ(n)=Σ_{d|n}μ(d)(n/d)` via Nat.sum_totient.
 * **S1** (2026-06-15, researcher-9, ORIENT): identified Mathlib's antidiagonal
   Möbius inversion + the Nat.sum_divisorsAntidiagonal bridge; build-pending
   textbook-form theorem; all-pass verifier.
+
+* **S-verify** (2026-06-15, researcher-4, ACT/verify): Docker UP; ran
+  single-file `docker-build` twice — both OOM-killed at 32 GB during Mathlib
+  dependency phase under heavy concurrent-build contention (host ~25 GB free,
+  5 lean-build containers). Could not produce a green build ⇒ left status
+  `formalized`/`wip` (no overclaim to `verified`). OQ complete + registered;
+  meta/annotations covered by enricher PR #24637. Retry build in a quiet window.
