@@ -4,7 +4,7 @@
 
 **Source**: open question on `greens-theorem-oq-02` (Green's Theorem: Minimal Regularity — Lipschitz Curves and L¹ Curl)
 
-**Status**: DECIDE — keystone gap now CLOSED upstream. The function-level FTC-for-AC the survey identified as the single blocker was added to Mathlib in **v4.28.0** (PR #29508, 2026-02-02); the repo currently pins **v4.26.0**, which predates it. Remaining work is a Mathlib version bump + a bounded Fubini reduction, still Docker-gated for verification. No Lean committed (Docker blackout continues 2026-06-14).
+**Status**: DECIDE — **CORRECTION (2026-06-15, Session 5/researcher-4): the axiom `greens_theorem_l1curl` is FALSE as currently stated, so it cannot be discharged at all — not even after the planned Mathlib bump.** Sessions 1–4/S2 reduced the discharge to one RHS keystone (function-level FTC-for-AC, now upstream from v4.28.0) plus a Fubini reduction, and the S2 blueprint's step 4 assumed the LHS line integral could be assembled from "OQ01's boundary algebra" for free. That assumption is wrong: the ONLY hypothesis linking the abstract curve to the rectangle is `hTraversal` = image-containment in `frontier`, which encodes neither orientation, nor winding, nor non-degeneracy. A degenerate constant curve at a corner satisfies every hypothesis yet has line integral 0 while the curl's double integral is the area ≠ 0. There are therefore **two** gaps, not one: (a) the FTC-for-AC keystone (resolved upstream, needs the bump), AND (b) a curve→boundary orientation reduction that `hTraversal` does not support and that the bump does not address. The axiom's hypotheses must be strengthened before any discharge is possible. Still Docker-gated (blackout continues 2026-06-15). Build-pending counterexample committed: `proofs/Proofs/GreensTheoremOQ02Counterexample.lean` (UNREGISTERED).
 
 ## Summary
 
@@ -170,3 +170,66 @@ A pinned 5-step Fubini-reduction blueprint mapping `greens_theorem_l1curl` to
 these lemmas (reusing OQ01's boundary algebra) is in
 `sessions/2026-06-15-s2-keystone-signature-verification.md`. Blocker unchanged:
 the gating Mathlib bump (v4.26.0 → ≥ v4.28.0) is cross-corpus + Docker-gated.
+
+---
+
+## Session 5 (2026-06-15, researcher-4) — the axiom is FALSE as stated (counterexample)
+
+**Mode**: DECIDE → integrity defect found. Dual blackout (Docker `docker info`
+times out; Aristotle `prove` returns "Resource not found" on a live `n+0=n`
+test). Build-pending Lean, UNREGISTERED.
+
+**The finding (supersedes the "one keystone + bump" framing).** Every prior
+session treated the discharge as a single RHS problem (the FTC-for-AC keystone)
+and took the S2 blueprint's **step 4** — "reassemble `lipschitzLineIntegral P Q C`
+from OQ01's boundary algebra" — as free. It is not free, and the axiom is
+**false** under its stated hypotheses.
+
+- The only hypothesis connecting the abstract `C : LipschitzClosedCurve` to the
+  rectangle is `hTraversal : ∀ t ∈ Icc 0 C.T, C.γ t ∈ frontier (Icc a b ×ˢ Icc c d)`
+  — pure **image containment**. It does **not** encode orientation
+  (counterclockwise vs clockwise = a global sign), winding number / single
+  traversal, or non-degeneracy.
+- OQ01 does NOT relate an abstract curve to the boundary at all: it *defines*
+  its line integral as an explicitly oriented four-edge sum
+  (`rectLineIntegral`, `GreensTheoremOQ01.lean:76`). So there is no reusable
+  "curve ⟹ four edges" lemma to import; that reduction is a genuine **second
+  gap**, and it is simply false under the weak `hTraversal`.
+
+**Counterexample (committed, build-pending).** The constant curve `γ ≡ (0,0)` on
+the unit square with field `P = 0, Q(x,y) = x` (curl `≡ 1`):
+- is a valid `LipschitzClosedCurve` (0-Lipschitz, closed);
+- satisfies `hCurlAE` (curl `= 1` everywhere), `hL1` (constant on a compact set),
+  and `hTraversal` ((0,0) is a corner ⟹ on the frontier);
+- yet `lipschitzLineIntegral P Q C = 0` (zero velocity ⟹ zero integrand) while
+  `∫ curl = area = 1`.
+
+So the axiom forces `0 = 1`. File: `proofs/Proofs/GreensTheoremOQ02Counterexample.lean`
+(`greens_theorem_l1curl_refuted : (0:ℝ) = 1`, plus the per-hypothesis lemmas).
+
+**Consequence for the OQ verdict.** The answer to "can `greens_theorem_l1curl` be
+discharged from Mathlib's BV + AC API?" is now: **No — not as stated, at any
+Mathlib version.** The RHS keystone being upstream is necessary but not
+sufficient; the LHS curve→boundary reduction is a separate, currently-false step.
+The axiom must first be **corrected** — strengthen `hTraversal` to "`C` is a
+positively-oriented (counterclockwise) simple parametrization of the rectangle
+boundary," most cleanly by adding a hypothesis
+`lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d` (OQ01's concrete
+integral) and discharging THAT via OQ01 — itself a nontrivial
+reparametrization-invariance fact, **not** covered by the Mathlib bump.
+
+**Files Modified**
+- `proofs/Proofs/GreensTheoremOQ02Counterexample.lean` (new, UNREGISTERED, build-pending)
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md` (status correction + this entry)
+- `src/data/research/problems/greens-theorem-oq-02-oq-02.json` (insights, progressSummary, nextSteps)
+
+**Next Steps**
+1. **Correct the axiom first** (independent of Docker): rewrite
+   `greens_theorem_l1curl` to take the orientation/parametrization hypothesis
+   (e.g. `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`),
+   or restrict to the concrete four-edge curve.
+2. When Docker returns: compile-check `GreensTheoremOQ02Counterexample.lean`
+   (a few measure-theory lemma signatures may need v4.26.0 touch-ups — all
+   names verified present in Mathlib, only autoparam/`measureReal` forms may
+   differ from the newer sibling checkout used to name-check).
+3. Then pursue the bump + Fubini discharge of the *corrected* axiom.
