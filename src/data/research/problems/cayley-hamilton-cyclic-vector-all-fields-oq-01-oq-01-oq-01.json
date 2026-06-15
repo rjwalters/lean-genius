@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01-oq-01",
   "title": "Cyclic Vector Theorem: Full Biconditional — OQ extension (01)",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,22 +17,24 @@
   "knownResults": {
     "proven": [
       "S1 OBSERVE: backward direction (cyclic ⇒ nonderogatory) extends to any nontrivial CommRing R via Polynomial.Monic.natDegree_mul' (Mathlib/Algebra/Polynomial/Monic.lean:154). All five other Mathlib API calls in the field proof (minpoly.{monic,ne_zero,aeval,dvd}, Matrix.isIntegral, Polynomial.Monic.of_mul_monic_left) already support CommRing.",
-      "S1 OBSERVE: forward direction (nonderogatory ⇒ ∃ cyclic vector) FAILS over ZMod 4 with M = !![0, 2; 0, 0]. Explicit worked example (charpoly = X^2, minpoly = X^2, IsNonderogatory holds; for every v ∈ (ZMod 4)^2, either 2*X or X annihilates v under aeval M of degree < 2)."
+      "S1 OBSERVE / S3 PREP-3: forward direction (nonderogatory ⇒ ∃ cyclic vector) FAILS over ZMod 4 with M = !![0, 2; 0, 0]. charpoly = X^2 (natDegree 2); M has NO cyclic vector (proved sorry-free, no_cyclic_vector, PR #22925). NOTE on the nonderogatory side (S3 PREP-3 HAZARD-2): over the non-domain ZMod 4 the minimal polynomial is NOT a well-defined canonical object — BOTH X^2 and X^2+2*X are minimal monic annihilators of M, and Mathlib's minpoly resolves the tie via Classical.choose, so `minpoly = X^2` (and hence the poly-equality `IsNonderogatory M := minpoly = charpoly`) is Lean-UNPROVABLE. The provable, well-defined invariant is `(minpoly (ZMod 4) M).natDegree = 2` (= charpoly.natDegree), i.e. M is nonderogatory in the DEGREE sense (IsNonderogatoryDeg). The counterexample therefore refutes the degree-form forward direction."
     ],
     "open": [
       "Does forward direction extend to integral domains? Likely yes for PIDs (e.g., ℤ); subtle for UFDs that are not PIDs.",
       "Is the biconditional equivalent to: \"Module R^n via M-action is a cyclic R[X]-module\"? If so, this provides a uniform reformulation.",
       "Over ZMod p^k for k ≥ 2 (a non-field, non-domain commutative ring), can the structure theorem for finite abelian groups characterize cyclic vectors directly?"
     ],
-    "goal": "Prove the backward direction (cyclic ⇒ nonderogatory) over CommRing R; formalize the ZMod 4 counterexample falsifying the forward direction. Stretch goal: settle forward direction over PIDs/UFDs."
+    "goal": "Prove the backward direction (cyclic ⇒ nonderogatory) over CommRing R [DONE: cyclic_implies_nonderogatory_commring, poly-equality form, PR S2 ACT]; formalize the ZMod 4 counterexample falsifying the forward direction. The counterexample must be stated in the DEGREE form of nonderogatory (IsNonderogatoryDeg), since the poly-equality minpoly = charpoly is Lean-unprovable over ZMod 4 (HAZARD-2). Remaining: discharge minpoly_natDegree_eq_two (Docker-gated) AND add the IsNonderogatoryDeg packaging theorem (PREP-3 §4.4) so the file states the refutation. Stretch goal: settle forward direction over PIDs/UFDs."
   },
   "currentState": {
-    "phase": "ACT-2 (partial)",
-    "since": "2026-06-10T05:00:00.000Z",
-    "iteration": 8,
-    "focus": "S3 ACT-2 (STATE-SYNC catch-up, 2026-06-13) — PR #22925 (\"prove no_cyclic_vector, Docker-verified 7744 jobs\", merged 2026-06-13T05:50Z) discharged the `no_cyclic_vector` sorry in CayleyHamiltonCyclicVectorZMod4Counterexample.lean but touched only the Lean file, leaving state.md + this JSON one iteration behind. Synced here. `no_cyclic_vector` (¬ ∃ v, IsCyclicVector M v over ZMod 4) is now sorry-free via the q = 2·X annihilator (q.natDegree = 1 < 2, aeval M q = 2 • M = 0 by two_smul_M_eq_zero), per S3 PREP-3 §4.3. File 115 → 136 LOC, sorryCount 2 → 1; theorem/def/axiom counts unchanged (6 thms incl private nontrivial_zmod_four, 1 def, 0 axioms). The sole remaining sorry is `minpoly_natDegree_eq_two` (S3 PREP-3 §4.1 outline) — next ACT, Docker-gated while the daemon is down.",
-    "blockers": [],
-    "nextAction": "S3 ACT-2: discharge the two paste-ready `sorry`s remaining from ACT-1 — `minpoly_natDegree_eq_two` (PREP-3 §4.1 outline: upper bound via `minpoly.min` on `(X^2 : (ZMod 4)[X])` as monic annihilator (uses ACT-1's `M_pow_two_eq_zero`); lower bound by `interval_cases` on `natDegree < 2` + monic-deg-0/1 exclusion using ACT-1's `two_smul_M_eq_zero`. ~10 LOC.) and `no_cyclic_vector` (PREP-3 §4.3 outline: take `q = 2 * X` as the falsifying annihilator; `aeval M (2*X) = 2 • M = 0` via ACT-1's `two_smul_M_eq_zero`; `(2*X).natDegree = 1 < 2`; `IsCyclicVector` then forces `2*X = 0`, contradicting `coeff (2*X) 1 = 2 ≠ 0` in ZMod 4. ~25 LOC.). Both discharges develop against ACT-1's known-good build base (sorry-free `charpoly_eq_X_sq`, `M_pow_two_eq_zero`, `two_smul_M_eq_zero`). After ACT-2 lands the file is complete and the OQ is settled negatively over non-domains.",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T00:00:00.000Z",
+    "iteration": 9,
+    "focus": "STATE-SYNC + SCOPE-CORRECTION (researcher-6, 2026-06-14): brings this JSON in line with state.md's iteration-9 BLOCKED flag (JSON previously trailed at iteration 8 / phase ACT / status active) and records a scope correction. (1) BLOCKED: the sole remaining sorry `minpoly_natDegree_eq_two` (CayleyHamiltonCyclicVectorZMod4Counterexample.lean:100) is Docker-gated and both verification routes are down this session (docker info times out; Aristotle MCP returns \"Resource not found\"). `no_cyclic_vector` was already discharged sorry-free (PR #22925, 2026-06-13). (2) SCOPE CORRECTION: discharging `minpoly_natDegree_eq_two` ALONE does NOT package a stated refutation of the forward direction. The file would then hold two disconnected facts (`minpoly.natDegree = 2` and `no_cyclic_vector`) but no theorem asserting `nonderogatory M ∧ ¬∃ cyclic`. Crucially the as-merged predicate `IsNonderogatory M := minpoly R M = M.charpoly` (CommRing file) is poly-equality, which over ZMod 4 means `minpoly = X^2` — Lean-UNPROVABLE per HAZARD-2 (Classical.choose tie between X^2 and X^2+2*X, both minimal monic annihilators). The clean close (S3 PREP-3 §4.4) is to introduce the degree-form predicate `IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree` (recommended: localise in the ZMod4 file) and a packaging theorem `IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v`. The backward direction `cyclic_implies_nonderogatory_commring` proves the STRONGER poly-equality form, which trivially downgrades to IsNonderogatoryDeg, so the studied biconditional is coherently stated in degree form: backward holds over CommRing, forward fails over ZMod 4.",
+    "blockers": [
+      "Docker build route down (verification blackout 2026-06-14: docker info times out) and Aristotle MCP backend returns \"Resource not found\" — neither local build nor automated proof search can verify the `minpoly_natDegree_eq_two` discharge or the §4.4 packaging this session."
+    ],
+    "nextAction": "S3 ACT-2 (Docker-gated; unblock when the build route returns). Two coupled steps, both verified with `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample`: (A) discharge `minpoly_natDegree_eq_two` per PREP-3 §4.1 — upper bound `≤ 2` from X^2 as monic annihilator (M_pow_two_eq_zero) via minpoly.min; lower bound `≥ 2` by interval_cases on natDegree<2 ruling out monic deg-0 (aeval = I ≠ 0) and deg-1 (aeval M (X+c) = !![c,2;0,c], [0,1]-entry = 2 ≠ 0). ~10 LOC. NOTE: `no_cyclic_vector` is ALREADY done (PR #22925) — do NOT re-attempt it. (B) ADD the §4.4 packaging so the OQ is actually stated as settled: define `IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree` (localise in the ZMod4 file) and prove `IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v` (refine ⟨?_, no_cyclic_vector⟩; rw [IsNonderogatoryDeg, minpoly_natDegree_eq_two, M.charpoly_natDegree_eq_dim, Fintype.card_fin]). Only after (B) does the file CONTAIN a stated negative answer to the forward direction; (A) alone leaves it implicit. Optional S4: upstream IsNonderogatoryDeg + the over-Field equivalence IsNonderogatory ↔ IsNonderogatoryDeg to GeneralCyclicVectorRing.",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 2,
@@ -106,7 +108,7 @@
     "urls": []
   },
   "started": "2026-05-13T07:10:22.517Z",
-  "lastUpdate": "2026-06-13T05:50:00.000Z",
+  "lastUpdate": "2026-06-14T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

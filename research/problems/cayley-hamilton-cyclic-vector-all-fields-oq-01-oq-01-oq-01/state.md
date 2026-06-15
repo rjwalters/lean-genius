@@ -1,8 +1,44 @@
 # Current State
 
-**Phase**: BLOCKED (S3 FLAG, 2026-06-13, researcher-1: the sole remaining `sorry` — `minpoly_natDegree_eq_two` — is paste-ready but its tactic discharge requires a Docker build to verify, and the build route is down (verification blackout 2026-06-13). See §"Why blocked" below.)
-**Since**: 2026-06-13 (S3 BLOCKED flag, this session); 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925)
-**Iteration**: 9 (S3 BLOCKED: discharge of `minpoly_natDegree_eq_two` is Docker-gated; math is fully worked out in S3 PREP-3 §4.1 — no new analysis needed, holding for Docker)
+**Phase**: BLOCKED (S3 FLAG, 2026-06-13, researcher-1: the sole remaining `sorry` — `minpoly_natDegree_eq_two` — is paste-ready but its tactic discharge requires a Docker build to verify, and the build route is down. See §"Why blocked" below. STATE-SYNC + scope correction added 2026-06-14, researcher-6 — see §"Scope correction" below.)
+**Since**: 2026-06-13 (S3 BLOCKED flag); 2026-06-13T~05:50Z (S3 ACT-2, no_cyclic_vector discharge, PR #22925); 2026-06-14 (STATE-SYNC + scope correction, researcher-6)
+**Iteration**: 10 (STATE-SYNC: registry JSON brought in line with this BLOCKED flag — it trailed at iter 8 / phase ACT / status active — plus a scope correction on what "completing the OQ" actually requires. Docker + Aristotle both still down 2026-06-14.)
+
+## Scope correction (2026-06-14, researcher-6)
+
+State the verification picture precisely: **discharging the lone
+`minpoly_natDegree_eq_two` sorry does NOT, by itself, settle the forward
+direction in Lean.** Two issues:
+
+1. **The as-merged predicate is poly-equality.**
+   `CayleyHamiltonCyclicVectorCommRingOQ01.lean:61` defines
+   `IsNonderogatory M := minpoly R M = M.charpoly`. For the counterexample
+   `M = !![0,2;0,0]` over `ZMod 4` this is `minpoly = X^2`, which S3 PREP-3
+   **HAZARD-2** showed is **Lean-unprovable**: over the non-domain `ZMod 4`
+   both `X^2` and `X^2 + 2*X` are minimal monic annihilators of `M`, and
+   Mathlib's `minpoly` resolves the tie via `Classical.choose`. So
+   `IsNonderogatory M` (poly form) cannot be proved for this `M`.
+
+2. **No packaging theorem exists yet.** Even with the sorry discharged, the
+   file holds two *disconnected* facts — `(minpoly (ZMod 4) M).natDegree = 2`
+   and `no_cyclic_vector` — but no single theorem asserting
+   `nonderogatory M ∧ ¬∃ v, IsCyclicVector M v`. The forward direction is
+   only *implicitly* refuted.
+
+**Fix (PREP-3 §4.4):** introduce the degree-form predicate
+`IsNonderogatoryDeg M := (minpoly R M).natDegree = M.charpoly.natDegree`
+(recommended: localise in `…ZMod4Counterexample.lean`) and prove the
+packaging theorem
+`IsNonderogatoryDeg M ∧ ¬∃ v, IsCyclicVector M v`
+(`refine ⟨?_, no_cyclic_vector⟩; rw [IsNonderogatoryDeg,
+minpoly_natDegree_eq_two, M.charpoly_natDegree_eq_dim, Fintype.card_fin]`).
+This is the theorem that *states* the negative answer. The backward
+direction `cyclic_implies_nonderogatory_commring` proves the **stronger**
+poly-equality `IsNonderogatory`, which trivially downgrades to
+`IsNonderogatoryDeg`, so the biconditional under study is coherent in degree
+form: **backward holds over CommRing, forward fails over `ZMod 4`.** Both the
+sorry discharge (A) and this packaging (B) are Docker-gated; see updated
+`nextAction` in the registry JSON.
 
 ## Why blocked (S3, 2026-06-13)
 
@@ -32,12 +68,15 @@ found"; verification blackout 2026-06-13):
    prover backend 404s, so neither a local build nor automated proof
    search can confirm a discharge this session.
 
-**Unblock when**: the Docker build route returns. Then paste the S3
+**Unblock when**: the Docker build route returns. Then (A) paste the S3
 PREP-3 §4.1 discharge into `minpoly_natDegree_eq_two`, drop the `sorry`,
-and verify with
+and (B) add the §4.4 `IsNonderogatoryDeg` predicate + packaging theorem
+(see §"Scope correction" above), verifying with
 `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorZMod4Counterexample`.
-That leaves the counterexample file sorry-free and completes the forward
-direction of the OQ biconditional extension.
+Step (A) alone leaves the file sorry-free but the forward-direction
+refutation only *implicit* (two disconnected facts); step (B) is what makes
+the file *state* the negative answer. Together they complete the OQ
+biconditional extension in degree form.
 
 ## Latest Iteration: S3 ACT-2 (partial) — `no_cyclic_vector` discharged, Docker-verified (PR #22925, 2026-06-13T~05:50Z)
 
