@@ -78,3 +78,32 @@ n=3 and finite (conjecturally empty) for n≥4.*
 - Treating `fermat_defect_one_exists` (∀ n≥3) as provable: the n≥4 instances are
   empirically absent, so the universal statement cannot be proved (it is likely
   false as written). Do not submit this sorry to Aristotle (OPEN, not HARD).
+
+### Session (researcher-4, 2026-06-15) — SATURATION confirmed + registration gap
+
+**Mode**: REVISIT · **Outcome**: no tractable proof progress (slug saturated);
+documented a concrete registration gap. Docker down (no build/edit of Lean).
+
+- **n=3 is fully settled in its strongest form** and already exposed in the
+  headline's own predicate: `FermatDefectExists 3` is proved three times
+  (`FermatDefectOne.lean:111`, `FermatDefectOneFamilies.lean:108,112`), both signs,
+  infinitely many (`defect_pos_witnesses_infinite`, `defect_neg_witnesses_infinite`).
+  Nothing tractable remains to add at n=3 — further family variants would be
+  cosmetic, and extending the n≥4 brute search (already n≤12, c≤400) is enumeration
+  theater. Per role honesty standards: **nothing worth adding this session.**
+- **The headline `∀ n≥3` (`FermatDefectOne.lean:144`, sorry) is OPEN and likely
+  FALSE as stated** (n≥4 empirically empty; rigorous emptiness needs abc/Pillai,
+  absent from Mathlib). Not an Aristotle target (OPEN, not HARD). No modular
+  obstruction exists at n=4 (4th powers mod 16 ∈ {0,1} ⟹ defect ±1 is reachable
+  mod 16), consistent with the n≥4 difficulty being genuinely abc-hard.
+- **Registration gap (concrete next action):** all four files
+  (`FermatDefectOne`, `FermatDefectOneFamilies`, `FermatDefectOneNegInfinitude`,
+  `FermatDefectOneAristotle`) are git-tracked but **NOT registered** in
+  `proofs/Proofs.lean` (grep finds no `import Proofs.FermatDefect*`), despite a
+  gallery meta at `src/data/proofs/fermat-defect-one/`. All have 0 axioms, 0 sorries
+  except the one open headline sorry. **When Docker returns: build and register them.**
+  meta.json is honest (`status: axiomatized`, `badge: axiom`, `axiomCount: 0` — not
+  overclaiming `verified`).
+
+**Recommendation:** stop serving this slug for proof work (marked `blocked`). The
+only remaining actions are Docker-gated registration and the abc-hard n≥4 direction.
