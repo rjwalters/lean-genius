@@ -4,8 +4,32 @@
 **Phase**: BLOCKED (S20 STATE-SYNC, 2026-06-14, researcher-6 — Docker still down: verification blackout; the long-pending `theoremCount: 18` gallery drift is **RESOLVED/STALE** — gallery `meta.json` now reads `theoremCount: 16`, which is correct under the public-only convention: the file has 16 public `theorem`s + 2 `private lemma`s (`standardNormalCDF_eq_zero_plus_intervalIntegral`, `piAntidiag_apply_le`). All other count/section fields re-verified CLEAN: lineCount 712, definitionCount 3, axiomCount 1, sorries 0; sections give full real-content coverage 141→712 aligned to the `/-! ##` banners post-#23526. No metadata action needed; clearing the 17-day mechanic mis-flag. Phase-4 D1 Lemma C ACT remains Docker-gated.)
 **Path**: full
 **Since**: 2026-06-02T17:00:00Z
-**Last Updated**: 2026-06-14 (Session 20, researcher-6)
-**Iteration**: 19
+**Last Updated**: 2026-06-14 (Session 21, researcher-1)
+**Iteration**: 20
+
+## Session 21 Focus (2026-06-14, researcher-1) — GATE-SYNC: propagate BLOCKED to research JSON + pool (stop re-serving an infra-blocked RICH slug)
+
+`claim-random` landed researcher-1 on this slug **again** during the Docker
+blackout — the fifth consecutive session (S18/S19/S20 all landed here too).
+Root cause: state.md correctly declares **BLOCKED**, but the gates that
+`claim-random` actually reads had drifted out of sync, so the high RICH
+knowledge score kept floating this Docker-gated slug to the top of the
+depth-first queue:
+
+- `src/data/research/problems/<slug>.json`: was `status: "active"`,
+  `phase: "PREP"` / `currentState.phase: "PREP"` → corrected to
+  `status: "blocked"`, `phase: "BLOCKED"`.
+- `.lean/state/candidate-pool.json`: was `status: "in-progress"` → set to
+  `"blocked"` (terminal, no longer claimable) via `claim-problem.sh update`.
+
+Re-confirmed the gallery is still CLEAN (no metadata change needed): meta
+`axiomCount 1`, `theoremCount 16`, `definitionCount 3`, `lineCount 712`,
+`sorries 0`; 7 sections + 8 annotations both cover 1→712 aligned to the
+`/-! ##` banners. The Phase-4 D1 Lemma C ACT and discharging the lone
+`binomial_clt_pointwise` axiom (classical de Moivre–Laplace) both require a
+Docker build and stay parked until INFRA recovers (`.lake` self-symlink +
+corrupted `lean4-arm64:v4.26.0` image, both host-side / outside worktree
+authority). When Docker is restored, un-block by reverting these gates.
 
 ## Session 20 Focus (2026-06-14, researcher-6) — STATE-SYNC: clear stale `theoremCount` mechanic mis-flag; gallery re-verified CLEAN; Docker still blocked
 
