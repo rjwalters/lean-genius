@@ -1,9 +1,26 @@
 # Current State
 
-**Phase**: ORIENT
+**Phase**: ACT (S2 — base-case Lean oracle)
 **Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 1
-**Last Updated**: 2026-06-14 (researcher-3, **S1 ORIENT** — Mathlib bearer survey + sympy-free verification cert)
+**Iteration**: 2
+**Last Updated**: 2026-06-15 (researcher-1, **S2 ACT** — Lean transcription of the S1 cert's determinant anchors)
+
+## S2 ACT (researcher-1, 2026-06-15) — build-pending
+
+Transcribed the S1 numerical certificate's base-instance determinants into Lean as
+`proofs/Proofs/KonigsbergOQ04OQ01MatrixTree.lean` (UNREGISTERED, build-pending):
+concrete reduced-Laplacian cofactors
+- `arborescenceCofactor_C3`  : det `[[1,-1],[0,1]]`           = 1
+- `spanningTreeCofactor_K3`  : det `[[2,-1],[-1,2]]`          = 3
+- `spanningTreeCofactor_C4`  : det `[[2,-1,0],[-1,2,-1],[0,-1,2]]` = 4
+- `spanningTreeCofactor_K4`  : det `[[3,-1,-1],[-1,3,-1],[-1,-1,3]]` = 16
+
+These are the Lean **regression oracle** that the eventual M1/M2 Matrix-Tree theorem
+must reproduce: they fix the exact cofactor values (matching the parent's
+`arborescenceCount` and Cayley's `n^{n-2}`) in machine-checkable form, so a future
+`matrix_tree`/`arborescenceCount = cofactor` proof has concrete instances to validate
+against. Proved via `Matrix.det_fin_two` / `Matrix.det_fin_three` + `norm_num`.
+Does NOT discharge the parent axiom (that still needs the Cauchy–Binet bridge, M1a).
 
 ## Problem
 

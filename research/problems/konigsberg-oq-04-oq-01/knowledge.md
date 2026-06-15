@@ -42,6 +42,16 @@ asserts by hand, brute-force-cross-checked:
 This fixes the exact theorem statement and its base instances, so the eventual
 Lean transcription has a regression oracle.
 
+## Insight 4 — base-case oracle now in Lean (S2, build-pending)
+The Insight-3 anchors are now machine-checkable Lean lemmas in
+`proofs/Proofs/KonigsbergOQ04OQ01MatrixTree.lean` (UNREGISTERED, build-pending):
+`arborescenceCofactor_C3 = 1`, `spanningTreeCofactor_K3 = 3`,
+`spanningTreeCofactor_C4 = 4`, `spanningTreeCofactor_K4 = 16` — each a concrete
+reduced-Laplacian `Matrix.det` over ℤ, closed by `Matrix.det_fin_two/three` + `norm_num`.
+This is the down-payment that converts the Python cert into Lean; the full M1/M2
+theorems must reproduce these exact cofactor values. Note this does NOT touch the
+parent axiom — Cauchy–Binet (M1a) is still the blocking gap.
+
 ## Open threads
 - Does a Cauchy-Binet PR exist in the Mathlib queue? (If it lands, M1 trivializes.)
 - Cleanest Mathlib `Digraph`/adjacency type to carry `lapMatrixOut` for M2
