@@ -1940,9 +1940,9 @@
       "result": "clean"
     },
     "central-limit-theorem-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T04:00:46Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-06-15T14:59:46Z",
+      "result": "issues-found"
     },
     "central-limit-theorem-oq-03": {
       "auditCount": 3,
@@ -15337,6 +15337,64 @@
       "auditCount": 1,
       "lastAudited": "2026-06-15T13:34:29Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-1107-oq-02-oq-01": {
+      "auditCount": 3,
+      "lastAudited": "2026-06-15T15:05:15Z",
+      "result": "issues-fixed",
+      "issues": [
+        "r+1-law density argument stated only in prose docstrings was framed as Establishes/prove; 10^7 stability is external (non-Lean). Reworded in PR #24616."
+      ]
+    },
+    "nth-root-irrational-oq-01-oq-01": {
+      "auditCount": 2,
+      "lastAudited": "2026-06-15T15:01:15Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-06-15T15:01:30Z",
+      "result": "issues-found",
+      "issues": [
+        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603."
+      ]
+    },
+    "euler-totient-oq-01-oq-03": {
+      "auditCount": 2,
+      "lastAudited": "2026-06-15T15:00:57Z",
+      "result": "issues-found",
+      "issues": []
+    },
+    "erdos-1107-oq-02-oq-01 clean": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T15:05:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "nth-root-irrational-oq-01-oq-01 clean": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T15:05:04Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers-oq-03 clean": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T15:05:05Z",
+      "result": "clean",
+      "issues": []
+    },
+    "euler-totient-oq-01-oq-03 issues-found": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T15:05:05Z",
+      "result": "clean",
+      "issues": []
+    },
+    "central-limit-theorem-oq-02 issues-found": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T15:05:05Z",
+      "result": "clean",
       "issues": []
     }
   },
