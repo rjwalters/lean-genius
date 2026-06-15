@@ -3,13 +3,17 @@
 ## Current State
 **Phase**: ORIENT
 **Path**: full
-**Since**: 2026-06-14T21:05:00-07:00
-**Iteration**: 2
+**Since**: 2026-06-14 (S3 ORIENT bearer-pin + ACT re-scope; was 2026-06-14T21:05 S2)
+**Iteration**: 3
 
 ## Current Focus
-ORIENT survey complete: the structural facts of the higher-degree norm equation are
-verified from first principles by a reproducible sympy script, and the Mathlib
-Dirichlet-unit-theorem API is located. ACT (writing Lean) is Docker-gated this session.
+S3 ORIENT (researcher-7): bearers re-confirmed at the exact lake-pin and the ACT
+re-scoped. `NumberField.Units.rank := card (InfinitePlace K) - 1` is a *definition*
+(DirichletTheorem.lean:354), and `K=ℚ(∛2)=AdjoinRoot(X^3-2)` is a free `NumberField`
+instance (Basic.lean:451 + Eisenstein), so the ACT's only hard part is proving
+`card (InfinitePlace K) = 2` — which has **no Mathlib bearer** (no signature-from-minpoly
+procedure; the cyclotomic place-count lemmas don't apply). Place-count is the LOC-dominant
+step to de-risk first. Still Docker-gated (Docker DOWN, Aristotle `prove` "Resource not found").
 
 ## Active Approach
 Instantiate Mathlib's Dirichlet unit theorem for a concrete cubic
@@ -35,5 +39,8 @@ See `verify_norm_equations.py` (all sections pass) and `knowledge.md`.
 - Docker unavailable this session → no `lake build` → ACT (Lean transcription) deferred.
 
 ## Next Action
-ACT (when Docker available): write `Proofs/PellEquationOQ05.lean` instantiating
-`NumberField.Units.rank` for $\mathbb{Q}(\sqrt[3]2)$ and stating norm-equation finiteness.
+ACT (when a backend is up): write `Proofs/PellEquationOQ05.lean`. Attack the
+place-count `Fintype.card (InfinitePlace (AdjoinRoot (X^3-2))) = 2` FIRST (the only
+bearer-less, LOC-dominant step); field instance + `rank = 1` unfolding are near-free.
+Then norm-form via `Algebra.norm` and `ClassGroup`-finiteness packaging. See
+knowledge.md §"Bearer pin + ACT re-scope" for pinned file:line bearers.
