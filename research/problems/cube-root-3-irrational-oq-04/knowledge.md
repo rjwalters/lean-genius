@@ -898,3 +898,53 @@ build verified clean (7744 jobs, `Proofs.CubeRoot3IrrationalOQ04Helpers`).
   16 → 17, new Current Focus (S14a), Next Action shifted to S14b.
 - `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this
   Session 17 entry appended.
+
+## Session 2026-06-14 (S19, researcher-3) — non-periodicity obstacle (OQ #3) pinned to concrete Mathlib bearers @ v4.26.0
+
+**Mode:** ORIENT-readiness (build-free). Docker down (`docker info` times out), Aristotle
+previously `Resource not found`. The per-partial-quotient ACT grind is fully build-gated (a12 sits
+in two open dup PRs #23388/#23983; the a14 helper is already in via S17), and the convergent
+*arithmetic* is durably scripted by S18 (`verify_cf_convergents.py`). So this session advances the
+**one truly-open structural question** — OQ #3, the Lagrange non-periodicity obstacle — by
+converting its long-standing prose ("a Mathlib-side proof of Lagrange would let this slug conclude")
+into a precise bearer map at the repo pin (`lean-toolchain` v4.26.0, mathlib rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). This is the same de-risking pattern used on the QR
+slug's M1/M2 bearer audits; it does **not** add Lean or duplicate S18.
+
+The non-periodicity conclusion factors into two halves; I pinned the status of each upstream:
+
+**Half (a) — "∛3 is NOT a quadratic irrational" — PROVABLE NOW (bearers present).**
+The minimal polynomial of `∛3` over `ℚ` is `X³ − 3`, of degree 3 ≠ 2. Bearers at the pin:
+- `X_pow_sub_C_irreducible_iff_of_prime` — `Mathlib/FieldTheory/KummerPolynomial.lean`: for prime
+  `p`, `X^p − C a` is irreducible iff `a` is not a `p`-th power in the base field. Instantiate
+  `p = 3`, `a = 3`: `3` is not a perfect cube in `ℚ` (rational-root / `norm_num`), so `X³ − C 3` is
+  **irreducible over ℚ** ⟹ `minpoly ℚ ∛3 = X³ − 3` has degree 3.
+- Root witness: the parent supplies `cbrt3_cubed : cbrt3 ^ 3 = 3` (so `∛3` is a root of `X³ − 3`).
+- Degree-3 ⟹ not quadratic-irrational is then `minpoly`/`natDegree` bookkeeping (`degree ≠ 2`).
+This half needs **no new upstream infrastructure** — it is wiring once Docker returns.
+
+**Half (b) — Lagrange's CF theorem (quadratic-irrational ⟺ eventually-periodic simple CF) —
+CONFIRMED ABSENT upstream (the sole real blocker).** Searched mathlib4 at the pin:
+- The `Mathlib/Algebra/ContinuedFractions/` module contains only `Basic`, `Computation/`,
+  `ContinuantsRecurrence`, `ConvergentsEquiv`, `Determinant`, `TerminatedStable`, `Translations` —
+  **no** `Periodic.lean`, no quadratic-irrational characterization.
+- `search/code` for "periodic continued fraction" → hits only in `docs/overview.yaml` /
+  `references.bib` (documentation, not theorems); "quadratic irrational continued" → **0** hits.
+- The "Lagrange's theorem" entry in `overview.yaml` is the **group-theory** one
+  (`Subgroup.card_subgroup_dvd_card`), NOT the continued-fraction theorem.
+So Lagrange's CF theorem is genuinely missing from Mathlib — formalizing it (or even just the
+"eventually-periodic ⟹ quadratic-irrational" direction needed here) is a substantial standalone
+development, well beyond this slug's scope, and is the precise reason the slug cannot state a
+single non-existence theorem and must keep verifying finite prefixes.
+
+**Net for OQ #3:** the obstacle is now mapped, not just asserted. The *only* missing piece for a
+formal "the CF of ∛3 is not eventually periodic, hence no finite-state description" theorem is the
+Lagrange CF bridge (b); the degree-3 half (a) is paste-ready with the `X_pow_sub_C` bearer. This
+also re-confirms (zero-hit search at the pin) that the finite-prefix grind is the only currently
+formalizable route — so the dup-PR'd a12 / future-quotient ACTs remain the correct (if
+capacity-bounded) line, and a "conclude via Lagrange" shortcut is **not** available without first
+contributing Lagrange's theorem upstream. (No Lean written; Docker down. ORIENT delta only.)
+
+### Files Touched (Session 19)
+
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this Session 19 entry appended.
