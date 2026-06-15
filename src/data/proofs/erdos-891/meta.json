@@ -90,76 +90,100 @@
   },
   "sections": [
     {
-      "id": "prime-counting",
-      "title": "Prime Factor Counting",
-      "summary": "Definitions of bigOmega and littleOmega functions",
-      "mathContext": "$\\Omega(n) = \\sum_{p \\text{ prime}} v_p(n)$, where $v_p(n)$ is the $p$-adic valuation of $n$; $\\omega(n) = |\\{p \\text{ prime} : p \\mid n\\}|$",
-      "startLine": 40,
-      "endLine": 85
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring for Erdős Problem 891 (on intervals containing an integer with many prime factors) and namespace Erdos891.",
+      "mathContext": "Erdős #891: does every length-$k$ interval $[n, n+k)$ contain an integer with at least $k$ prime factors (with multiplicity) for $n$ large? Equivalently, comparison against the primorial."
     },
     {
-      "id": "nth-prime",
-      "title": "The k-th Prime",
-      "summary": "Definition of nthPrime and basic axioms",
-      "mathContext": "$p_k$ denotes the $k$-th prime (1-indexed): $p_1 = 2,\\ p_2 = 3,\\ p_3 = 5,\\ p_4 = 7,\\ \\ldots$",
-      "startLine": 86,
-      "endLine": 109
+      "id": "arithmetic-functions",
+      "title": "Part I: Arithmetic Functions",
+      "startLine": 42,
+      "endLine": 115,
+      "summary": "Defines bigOmega n = Ω(n) (prime factors with multiplicity) and littleOmega n = ω(n) (distinct prime factors), with basic values: Ω(p)=ω(p)=1 for primes, Ω(1)=ω(1)=0, and several native_decide checks (Ω(8)=3, Ω(24)=4, …).",
+      "mathContext": "$\\Omega(n)=\\sum_p v_p(n)$, $\\omega(n)=\\#\\{p : p\\mid n\\}$."
     },
     {
-      "id": "primorial",
-      "title": "Primorial",
-      "summary": "Product of first k primes",
-      "mathContext": "$p_k\\# = \\prod_{i=1}^{k} p_i$; values: $2, 6, 30, 210, 2310, \\ldots$",
-      "startLine": 110,
-      "endLine": 139
+      "id": "prime-enumeration",
+      "title": "Part II: Prime Enumeration and General Primorial",
+      "startLine": 116,
+      "endLine": 159,
+      "summary": "Defines nthPrime n = Nat.nth Nat.Prime n (with nthPrime_prime, nthPrime_strictMono), the primorial k (product of the first k primes, primorial_pos), and the predicate HasManyFactors n k.",
+      "mathContext": "$p_k$ = the $k$-th prime; primorial $\\prod_{i<k}p_i$."
+    },
+    {
+      "id": "computable-primorial",
+      "title": "Part III: Computable Primorial (for decidable verification)",
+      "startLine": 160,
+      "endLine": 194,
+      "summary": "Defines the computable primorialComp : ℕ → ℕ with reflexivity-checked values primorialComp 0..5 = 1, 2, 6, 30, 210, 2310, enabling decidable verification.",
+      "mathContext": "primorialComp $k = 2\\cdot3\\cdots p_k$, computed for decide/native_decide."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture",
-      "summary": "HasManyFactors predicate and erdos891_conjecture",
-      "mathContext": "$\\forall k \\geq 2,\\ \\exists N,\\ \\forall n \\geq N,\\ \\exists m \\in [n, n + p_k\\#),\\ \\Omega(m) > k$",
-      "startLine": 140,
-      "endLine": 160
+      "title": "Part IV: The Main Conjecture",
+      "startLine": 195,
+      "endLine": 206,
+      "summary": "Defines HasManyFactorsComp n k, the computable form of the predicate that an interval contains an integer with at least k prime factors, used to state the main conjecture.",
+      "mathContext": "Conjecture: for $n$ large, the interval of length $k$ from $n$ contains an $m$ with $\\Omega(m)\\ge k$."
     },
     {
-      "id": "k-equals-2",
-      "title": "The k = 2 Case",
-      "summary": "Simplest open case with intervals of length 6",
-      "mathContext": "$\\exists N,\\ \\forall n \\geq N,\\ \\exists m \\in [n, n+6),\\ \\Omega(m) \\geq 3$; computationally verified for $n \\in [3, 1002]$",
-      "startLine": 161,
-      "endLine": 207
+      "id": "k2-verification",
+      "title": "Part V: Computational Verification of k = 2 Case",
+      "startLine": 207,
+      "endLine": 254,
+      "summary": "Verifies the k=2 case computationally: defines hasThreeFactorsInSix, proves k2_fails_small, k2_verified_range (for all n < 1000 the shifted interval works), and concrete example_interval_* instances (8–14, 12–18, near 100).",
+      "mathContext": "For $k=2$, every length-6 interval beyond a small threshold contains an integer with $\\ge 3$ prime factors."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Part VI: Structural Observations",
+      "startLine": 255,
+      "endLine": 273,
+      "summary": "Structural lemmas on intervals: interval_contains_even and interval_contains_mult4 — any interval of sufficient length contains an even number / a multiple of 4, contributing prime factors.",
+      "mathContext": "Density of small multiples guarantees factor-rich integers in any long interval."
     },
     {
       "id": "schinzel",
-      "title": "Schinzel's Weaker Result",
-      "summary": "Modified primorial version that is provable",
-      "mathContext": "Holds with skipped primorial $Q_k = p_1 \\cdots p_{k-1} \\cdot p_{k+1}$; e.g., $Q_2 = 10,\\ Q_3 = 42$, proved via Pólya's smooth-number gap theorem",
-      "startLine": 208,
-      "endLine": 229
+      "title": "Part VII: Schinzel's Weaker Result",
+      "startLine": 274,
+      "endLine": 299,
+      "summary": "States Schinzel's weaker result toward the conjecture.",
+      "mathContext": "Schinzel's partial progress on the prime-factor-rich-interval problem."
     },
     {
       "id": "weisenberg",
-      "title": "Weisenberg's Conditional Counterexample",
-      "summary": "p₁···pₖ - 1 fails under Dickson's conjecture",
-      "mathContext": "Under Dickson's conjecture: $\\exists^{\\infty} n,\\ \\forall m \\in [n, n + p_k\\# - 1),\\ \\Omega(m) \\leq k$; interval length $p_k\\# - 1$ is sub-threshold",
-      "startLine": 230,
-      "endLine": 257
+      "title": "Part VIII: Weisenberg's Conditional Counterexample",
+      "startLine": 300,
+      "endLine": 335,
+      "summary": "States Weisenberg's conditional counterexample, defining DicksonsConjecture — the conditional hypothesis under which a counterexample to the strong form would exist.",
+      "mathContext": "Conditional on Dickson's conjecture, a counterexample to the strongest form is possible."
     },
     {
       "id": "smooth-numbers",
-      "title": "Smooth Numbers Connection",
-      "summary": "k-smooth numbers and Pólya's theorem",
-      "mathContext": "$n$ is $k$-smooth if $\\forall p \\mid n,\\ p \\leq p_k$; Pólya: $\\limsup_{n \\to \\infty} (s_{n+1} - s_n) = \\infty$ for the sequence $(s_n)$ of $k$-smooth numbers",
-      "startLine": 258,
-      "endLine": 280
+      "title": "Part IX: Smooth Numbers",
+      "startLine": 336,
+      "endLine": 370,
+      "summary": "Connection to smooth numbers: defines isSmoothComp n bound and proves twelve_is_3smooth and seven_not_3smooth, relating factor-rich intervals to smooth-number distribution.",
+      "mathContext": "An integer is $B$-smooth if all its prime factors are $\\le B$; smooth-number density bounds the conjecture."
     },
     {
       "id": "summary",
-      "title": "Summary and Status",
-      "summary": "Main results and open status",
-      "mathContext": "Threshold: $p_k\\# - 1$ fails (conditional), $p_k\\#$ conjectured, $Q_k > p_k\\#$ proven; open for all $k \\geq 2$",
-      "startLine": 281,
-      "endLine": 344
+      "title": "Part X: Summary and Main Conjecture",
+      "startLine": 371,
+      "endLine": 399,
+      "summary": "Summary of status and the formal statement ErdosProblem891 packaging the main conjecture.",
+      "mathContext": "Formal statement ErdosProblem891; the general problem remains OPEN."
+    },
+    {
+      "id": "linking-lemma",
+      "title": "Linking Lemma: primorial = primorialComp for k <= 5",
+      "startLine": 400,
+      "endLine": 439,
+      "summary": "The linking lemma (file-labeled Part VII) bridging the abstract and computable primorials: private value lemmas nthPrime_zero_val..nthPrime_four_val (p0..p4 = 2,3,5,7,11) feed primorial_eq_primorialComp (primorial k = primorialComp k for k <= 5), then closes the namespace.",
+      "mathContext": "$\\#p_k = \\text{primorialComp}\\,k$ for $k\\le5$, linking the noncomputable and decidable definitions."
     }
   ],
   "conclusion": {
