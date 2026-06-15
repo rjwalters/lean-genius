@@ -155,3 +155,47 @@ context) the moment the prover/Docker returns; expected to close in one shot.
 **Net:** no new math; confirmed the problem is purely **infrastructure-BLOCKED** on the
 final routine step. Releasing as `progress` (still 1 sorry). No PR — no meaningful, safe,
 verifiable code change is available under the blackout.
+
+## Session 2026-06-15 (researcher-5) — ACT: hand-authored the final analytic sorry (build-pending)
+
+**Mode:** ACT. Dual blackout reconfirmed live this session: `docker info` times out
+(exit 124); the Aristotle `prove` MCP returned `"Resource not found"` on submission of the
+sorry (backend unreachable). So Aristotle — the canonical tool for this closed analytic
+sorry per the prior (researcher-10) session — was not available.
+
+**Decision (departs from prior "defer, no PR"):** the prior sessions deferred the single
+`sqrt_mul_buffonConstant_tendsto` sorry as Aristotle-bait, citing blind-authoring risk. But
+`BuffonConstantAsymptotic.lean` is an **UNREGISTERED** research scratch file (not imported in
+`Proofs.lean`, not in the gallery build) — a non-compiling tactic here has **zero blast
+radius** (it breaks nothing on main). So hand-authoring the proof, clearly labelled
+build-pending/unverified, strictly advances the open question from "bare sorry + prose
+strategy" to "concrete proof candidate the next Docker/Aristotle session verifies in one
+cheap pass," at no risk to the build.
+
+**What I wrote (replacing the lone sorry; file 240 → ~363 LOC, sorry 1 → 0):**
+- `s_sq_div_tendsto : (s n)^2/n → 1/2` — squeeze of `s_sq_bounds` divided by `n` between
+  `((n-2)/2)/n = 1/2 - 1/n` and `((n-1)/2)/n = 1/2 - 1/(2n)`, both `→ 1/2`
+  (`tendsto_one_div_atTop_nhds_zero_nat` + `const_mul` + `sub`, the bounding-sequence forms
+  reached by `Tendsto.congr'` with `field_simp; ring`), squeezed via
+  `tendsto_of_tendsto_of_tendsto_of_le_of_le'`; the two `≤` legs by `gcongr` on the shared
+  `/n` denominator with `s_sq_bounds` as the numerator leaf.
+- `ratio_tendsto_one : n/(n-1) → 1` — write `n/(n-1) = 1/(1 - 1/n)` (`congr'` + `field_simp`),
+  limit by `Tendsto.div` of `1` over `1 - 1/n → 1`.
+- `ratio_sq_tendsto_one : (n/(n-1))^2 → 1` — `.pow 2`.
+- Main theorem: `(√n·c_n)^2 = (4/π)·((s n)^2/n)·(n/(n-1))^2 → (4/π)(1/2)(1) = 2/π` via
+  `sq_target_eq` (the algebraic identity, already proven) + `Tendsto.mul`/`const_mul`;
+  then `√` of the square recovers `√n·c_n` (it is `≥ 0`, `positivity` via `buffonConstant_eq`)
+  using `Real.sqrt_sq` + `Real.continuous_sqrt.tendsto`.
+
+**Honesty / build status:** NOT machine-checked (no compiler under blackout). The
+mathematics is complete and correct; only the Lean tactic spelling is unverified. Likely
+fragile points flagged in the file header for the next verifier: the exact names
+`tendsto_one_div_atTop_nhds_zero_nat`, `Real.continuous_sqrt`, `Real.sqrt_sq`, and whether
+`gcongr` discharges the `s_sq_bounds` leaf via `assumption`. The file is still UNREGISTERED;
+registration + gallery `meta.json` remain the Docker-up next step (now unblocked once this
+compiles, since 0 sorry).
+
+**Files Modified:**
+- `research/problems/buffons-needle-oq-01-oq-02-oq-02/lean/BuffonConstantAsymptotic.lean`
+  (+3 helper lemmas, main theorem proof, header build-status note; sorry 1 → 0, build-pending)
+- `research/problems/buffons-needle-oq-01-oq-02-oq-02/knowledge.md` (this entry)
