@@ -118,8 +118,8 @@ theorem unsigned_converse_counterexample_general
     rw [norm_sub_sq_real, norm_smul, he₀, real_inner_smul_left] at hB2
     rw [norm_sub_sq_real, norm_smul, he₁, real_inner_smul_left] at hD2
     -- Abbreviations for the two relevant inner products and ‖O‖².
-    set a : ℝ := inner e₀ O with ha
-    set b : ℝ := inner e₁ O with hb
+    set a : ℝ := inner ℝ e₀ O with ha
+    set b : ℝ := inner ℝ e₁ O with hb
     set n : ℝ := ‖O‖ ^ 2 with hn
     -- After expansion:
     --   hA2 : 1 - 2a + n = r²
@@ -164,29 +164,29 @@ gives `⟪z,z⟫ = ‖u‖²·(‖u‖²‖v‖² − ⟪u,v⟫²)`, and `z ≠ 
 nontrivial dependence, as `‖u‖² ≠ 0`), so the left side is `> 0`; dividing by `‖u‖² > 0`
 yields the determinant positive. With this the converse proof is `sorry`-free. -/
 theorem gram_pos (u v : Vec2) (hindep : LinearIndependent ℝ ![u, v]) :
-    0 < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 := by
+    0 < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2 := by
   have hu0 : u ≠ 0 := by simpa using hindep.ne_zero 0
   have hup : (0 : ℝ) < ‖u‖ ^ 2 := pow_pos (norm_pos_iff.mpr hu0) 2
   -- The witness `z = ‖u‖²•v − ⟪u,v⟫•u` satisfies `⟪z,z⟫ = ‖u‖²·(‖u‖²‖v‖² − ⟪u,v⟫²)`.
   have hzeq :
-      (inner (‖u‖ ^ 2 • v - (inner u v : ℝ) • u)
-            (‖u‖ ^ 2 • v - (inner u v : ℝ) • u) : ℝ)
-        = ‖u‖ ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2) := by
-    simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, real_inner_smul_right,
-      real_inner_self_eq_norm_sq, real_inner_comm u v]
+      (inner ℝ (‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u)
+            (‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u) : ℝ)
+        = ‖u‖ ^ 2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2) := by
+    simp only [inner_sub_left, inner_sub_right, real_inner_smul_left, real_inner_smul_right]
+    simp only [real_inner_self_eq_norm_sq, real_inner_comm u v]
     ring
   -- `z ≠ 0`: otherwise `‖u‖²•v = ⟪u,v⟫•u` is a nontrivial dependence (coeff `‖u‖² ≠ 0`).
-  have hz0 : ‖u‖ ^ 2 • v - (inner u v : ℝ) • u ≠ 0 := by
+  have hz0 : ‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u ≠ 0 := by
     intro hz
-    have hrel : (-(inner u v : ℝ)) • u + ‖u‖ ^ 2 • v = 0 := by
-      have hcomb : (-(inner u v : ℝ)) • u + ‖u‖ ^ 2 • v
-          = ‖u‖ ^ 2 • v - (inner u v : ℝ) • u := by module
+    have hrel : (-(inner ℝ u v : ℝ)) • u + ‖u‖ ^ 2 • v = 0 := by
+      have hcomb : (-(inner ℝ u v : ℝ)) • u + ‖u‖ ^ 2 • v
+          = ‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u := by module
       rw [hcomb]; exact hz
-    obtain ⟨_, hpz⟩ := (LinearIndependent.pair_iff.mp hindep) (-(inner u v : ℝ)) (‖u‖ ^ 2) hrel
-    exact (ne_of_gt hup) hpz.symm
+    obtain ⟨_, hpz⟩ := (LinearIndependent.pair_iff.mp hindep) (-(inner ℝ u v : ℝ)) (‖u‖ ^ 2) hrel
+    exact (ne_of_gt hup) hpz
   -- Hence `⟪z,z⟫ > 0`; combined with `‖u‖² > 0` this forces the Gram determinant positive.
-  have hzpos : (0 : ℝ) < inner (‖u‖ ^ 2 • v - (inner u v : ℝ) • u)
-      (‖u‖ ^ 2 • v - (inner u v : ℝ) • u) := by
+  have hzpos : (0 : ℝ) < inner ℝ (‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u)
+      (‖u‖ ^ 2 • v - (inner ℝ u v : ℝ) • u) := by
     rw [real_inner_self_eq_norm_sq]
     exact pow_pos (norm_pos_iff.mpr hz0) 2
   rw [hzeq] at hzpos
@@ -203,8 +203,8 @@ only the two prescribed inner products and `hsigned` remain. The `u`–`t•u` c
 an identity; the `u`–`v` and `u`–`s•v` comparisons each reduce to `hsigned`. -/
 theorem equidistant_of_inner (u v O : Vec2) (t s : ℝ)
     (hsigned : t * ‖u‖ ^ 2 = s * ‖v‖ ^ 2)
-    (hu : (inner u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2)
-    (hv : (inner v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2) :
+    (hu : (inner ℝ u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2)
+    (hv : (inner ℝ v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2) :
     ‖u - O‖ = ‖t • u - O‖ ∧ ‖u - O‖ = ‖v - O‖ ∧ ‖u - O‖ = ‖s • v - O‖ := by
   -- Squared-norm equality upgrades to norm equality (both sides nonnegative).
   have sqto : ∀ x y : Vec2, ‖x - O‖ ^ 2 = ‖y - O‖ ^ 2 → ‖x - O‖ = ‖y - O‖ := by
@@ -249,26 +249,30 @@ theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
     ∃ O : Vec2,
       ‖u - O‖ = ‖t • u - O‖ ∧ ‖u - O‖ = ‖v - O‖ ∧ ‖u - O‖ = ‖s • v - O‖ := by
   -- Gram determinant of the basis {u, v} is positive (the only deep ingredient).
-  have hΔ : (0 : ℝ) < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 := gram_pos u v hindep
-  have hΔ0 : ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 ≠ 0 := hΔ.ne'
+  have hΔ : (0 : ℝ) < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2 := gram_pos u v hindep
+  have hΔ0 : ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2 ≠ 0 := hΔ.ne'
+  have hΔ2 : (2 : ℝ) * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2) ≠ 0 :=
+    mul_ne_zero two_ne_zero hΔ0
   -- Solve the 2×2 perpendicular-bisector (Gram) system for the center O = a•u + b•v.
   set O : Vec2 :=
-      (‖v‖ ^ 2 * (‖u‖ ^ 2 * (t + 1) - (inner u v : ℝ) * (s + 1)) /
-          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2))) • u
-    + (‖u‖ ^ 2 * (‖v‖ ^ 2 * (s + 1) - (inner u v : ℝ) * (t + 1)) /
-          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2))) • v with hO
+      (‖v‖ ^ 2 * (‖u‖ ^ 2 * (t + 1) - (inner ℝ u v : ℝ) * (s + 1)) /
+          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2))) • u
+    + (‖u‖ ^ 2 * (‖v‖ ^ 2 * (s + 1) - (inner ℝ u v : ℝ) * (t + 1)) /
+          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ u v : ℝ) ^ 2))) • v with hO
   refine ⟨O, ?_⟩
   -- The two prescribed inner products hold (Cramer's rule; needs Δ ≠ 0).
-  have hiu : (inner u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2 := by
+  have hiu : (inner ℝ u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2 := by
     rw [hO]
     simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq]
-    field_simp [hΔ0]
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_add_div_same, div_eq_iff hΔ2]
     ring
-  have hiv : (inner v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2 := by
+  have hiv : (inner ℝ v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2 := by
+    have hΔ2' : (2 : ℝ) * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner ℝ v u : ℝ) ^ 2) ≠ 0 := by
+      rw [real_inner_comm u v]; exact hΔ2
     rw [hO]
     simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
-      real_inner_comm u v]
-    field_simp [hΔ0]
+      real_inner_comm v u]
+    rw [div_mul_eq_mul_div, div_mul_eq_mul_div, div_add_div_same, div_eq_iff hΔ2']
     ring
   exact equidistant_of_inner u v O t s hsigned hiu hiv
 
