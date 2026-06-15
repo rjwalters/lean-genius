@@ -54,7 +54,8 @@
       "S2: the parent four-square proof is COMPUTATIONAL (RepType + formula + native_decide), NOT a MulAction; so the cheapest first ACT for r_{2k} is to mirror it at fixed m (did m=6), discharging concrete contributions/totals by native_decide. The (DECOMP) partition is handled per-n via a complete shape list (cert-verified complete), same as the parent; a uniform MulAction partition proof stays the deep open Lean work.",
       "The orbit-stabilizer decomposition generalizes to all 2k with orbit size 2^{#nonzero}*(2k)!/prod m_i!. |B_8|=8!*2^8=10321920.",
       "Stabilizer is NOT the full Young subgroup prod m_i!: only the 2^z sign flips on ZERO coordinates fix a tuple (flipping a 0 is trivial; flipping a nonzero changes the value). So |stab|=2^z*z!*prod_{nonzero} m_j!, and the orbit carries 2^{#nonzero} not 2^{2k}. Mishandling zeros is the one place a naive |B|/Young computation fails.",
-      "The orbit-size formula (orbit-stabilizer) is the easy half; the orbit PARTITION r_{2k}=sum orbit is the real Lean obstruction (the parent proved it only case-by-case for small n)."
+      "The orbit-size formula (orbit-stabilizer) is the easy half; the orbit PARTITION r_{2k}=sum orbit is the real Lean obstruction (the parent proved it only case-by-case for small n).",
+      "S5 (R4): verified all bearers of OQ04Sign.lean (signFiber_card) against sibling Mathlib v4.26 — Fintype.card_piFinset(BigOperators:123), Finset.card_pair(Card:140), Finset.prod_ite(Piecewise:63) all confirmed; clears S4 from-memory caveat. Sign file build-confident; sole open residue = arrangement_card multinomial count (Aristotle target, backend 404)."
     ],
     "mathlibGaps": [
       "B_{2k}=S_{2k} semidirect (Z/2)^{2k} (hyperoctahedral / signed permutation group) has NO Mathlib name (code search 'hyperoctahedral' = 0 hits); must be assembled from Equiv.Perm (Fin 2k) + (ZMod 2)^{2k} sign flips.",
