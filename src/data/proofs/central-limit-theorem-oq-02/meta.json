@@ -2,7 +2,7 @@
   "id": "central-limit-theorem-oq-02",
   "title": "Central Limit Theorem for Dependent Random Variables",
   "slug": "central-limit-theorem-oq-02",
-  "description": "Formalizes the CLT beyond i.i.d. sequences to dependent random variables via two generalizations: the Martingale CLT (McLeish 1974) for martingale difference arrays with Lindeberg condition, and the \u03b1-mixing CLT (Ibragimov 1962) for stationary mixing sequences. Proves Lyapunov implies Lindeberg, i.i.d. variance convergence, and classical CLT recovery. 20 theorems, 1 axiom, 2 sorries.",
+  "description": "Formalizes the CLT beyond i.i.d. sequences to dependent random variables via two generalizations: the Martingale CLT (McLeish 1974) for martingale difference arrays with Lindeberg condition, and the \u03b1-mixing CLT (Ibragimov 1962) for stationary mixing sequences. Proves Lyapunov implies Lindeberg, i.i.d. variance convergence, and classical CLT recovery. 23 theorems, 1 axiom, 1 sorry.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Martingale_central_limit_theorem",
@@ -19,12 +19,12 @@
       "dependent-variables"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 1,
     "dateAdded": "2026-04-02",
     "axiomCount": 1,
-    "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) \u2014 the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 2 sorries: (1) nested ciSup of zeros = 0 for independent sequences, (2) i.i.d. Lindeberg condition via dominated convergence for truncated moments. (The i.i.d. Lyapunov condition, formerly a third sorry, is now fully proved in the main file via rpow moment decay.)",
-    "lineCount": 729,
-    "theoremCount": 20,
+    "assumptions": "1 axiom: martingale_clt (McLeish 1974, Brown 1971) \u2014 the martingale CLT itself, stating that MDA satisfying Lindeberg condition and conditional variance convergence has row sums converging in distribution to Gaussian. Requires characteristic function methods and deep martingale theory not yet formalized in Mathlib. 1 sorry: nested ciSup of zeros = 0 for independent sequences (independent_implies_zero_mixing). (The i.i.d. Lindeberg condition and the i.i.d. Lyapunov condition, formerly sorries, are now fully proved in the main file.)",
+    "lineCount": 912,
+    "theoremCount": 23,
     "definitionCount": 14,
     "additionalFiles": [
       "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
@@ -64,8 +64,8 @@
     ]
   },
   "conclusion": {
-    "summary": "The CLT for dependent variables is formally developed: MDA structure, Lindeberg and Lyapunov conditions, \u03b1-mixing coefficients, and the classical recovery. Lyapunov implies Lindeberg is fully proved. The Martingale CLT (McLeish 1974) is axiomatized as the deep core result. 20 theorems, 6 definitions, 729 lines, 1 axiom, 2 sorries.",
-    "implications": "**Stochastic process infrastructure**: This formalization provides the foundational infrastructure for proving CLT-type results for stochastic processes in Lean 4. The MDA framework covers time series (ARMA, GARCH), Markov chains (via martingale approximation), and ergodic processes.\n\n**Financial mathematics**: The martingale CLT is the theoretical foundation for the Black-Scholes model: stock price increments form a martingale difference sequence, and the CLT gives the Gaussian limit underlying geometric Brownian motion. The mixing CLT applies to high-frequency trading data where temporal dependence decays.\n\n**Statistical estimation**: The dependent CLT is essential for proving asymptotic normality of estimators from dependent data. Maximum likelihood estimators for time series models, kernel density estimators for mixing processes, and sample means of Markov chains all require CLTs beyond the i.i.d. setting.\n\n**Completion path**: Completing the 2 sorries (i.i.d. Lindeberg via DCT and nested ciSup for independence) would give a fully verified dependent CLT framework. The hardest remaining piece is the axiomatized martingale_clt itself, which requires characteristic function methods and conditional expectation products not yet in Mathlib.",
+    "summary": "The CLT for dependent variables is formally developed: MDA structure, Lindeberg and Lyapunov conditions, \u03b1-mixing coefficients, and the classical recovery. Lyapunov implies Lindeberg is fully proved. The Martingale CLT (McLeish 1974) is axiomatized as the deep core result. 23 theorems, 14 definitions, 912 lines, 1 axiom, 1 sorry.",
+    "implications": "**Stochastic process infrastructure**: This formalization provides the foundational infrastructure for proving CLT-type results for stochastic processes in Lean 4. The MDA framework covers time series (ARMA, GARCH), Markov chains (via martingale approximation), and ergodic processes.\n\n**Financial mathematics**: The martingale CLT is the theoretical foundation for the Black-Scholes model: stock price increments form a martingale difference sequence, and the CLT gives the Gaussian limit underlying geometric Brownian motion. The mixing CLT applies to high-frequency trading data where temporal dependence decays.\n\n**Statistical estimation**: The dependent CLT is essential for proving asymptotic normality of estimators from dependent data. Maximum likelihood estimators for time series models, kernel density estimators for mixing processes, and sample means of Markov chains all require CLTs beyond the i.i.d. setting.\n\n**Completion path**: Completing the remaining sorry (nested ciSup = 0 for independence) would give a fully verified dependent CLT framework, modulo the axiom. The hardest remaining piece is the axiomatized martingale_clt itself, which requires characteristic function methods and conditional expectation products not yet in Mathlib.",
     "openQuestions": [
       "Prove martingale_clt: formalize McLeish 1974 via characteristic function method",
       "Complete i.i.d. Lindeberg condition: DCT for truncated moment convergence",
@@ -75,12 +75,12 @@
   },
   "leanFile": {
     "namespace": "CentralLimitTheoremOQ02",
-    "lineCount": 729,
+    "lineCount": 912,
     "axiomCount": 1,
-    "theoremCount": 20,
+    "theoremCount": 23,
     "definitionCount": 14,
     "path": "Proofs/CentralLimitTheoremOQ02.lean",
-    "sorries": 2,
+    "sorries": 1,
     "additionalFiles": [
       "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
       "Proofs/CentralLimitTheoremOQ02OQ02.lean"
@@ -167,9 +167,9 @@
       "title": "Parts IX\u2013XI: Classical CLT Recovery and Additional Results",
       "startLine": 501,
       "endLine": 727,
-      "summary": "classical_clt_from_martingale (sorry: i.i.d. Lindeberg via DCT). iid_satisfies_lyapunov (proved via rpow moment decay). lyapunov_sum_at_zero (\u03b4=0 = varianceSum via sq_abs). rowSumCharFun_zero. Zero-variable lemmas. variance_sum_bounded_of_converges (eventual bound + Finset.sup').",
-      "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; sorry: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
+      "summary": "classical_clt_from_martingale (derives classical CLT from the now-proved iid_satisfies_lindeberg + martingale_clt). iid_satisfies_lindeberg (proved via DCT on truncated moments). iid_satisfies_lyapunov (proved via rpow moment decay). lyapunov_sum_at_zero (\u03b4=0 = varianceSum via sq_abs). rowSumCharFun_zero. Zero-variable lemmas. variance_sum_bounded_of_converges (eventual bound + Finset.sup').",
+      "mathContext": "$(X_1+\\cdots+X_n)/\\sqrt{n} \\xrightarrow{d} N(0,\\sigma^2)$; proved: $\\mathbb{E}[X^2 \\cdot \\mathbf{1}_{|X|>\\varepsilon\\sqrt{n}}] \\xrightarrow{\\text{DCT}} 0$; $\\Lambda_n(\\delta) = \\mathbb{E}[|X|^{2+\\delta}]/n^{\\delta/2} \\to 0$"
     }
   ],
-  "sorries": 2
+  "sorries": 1
 }
