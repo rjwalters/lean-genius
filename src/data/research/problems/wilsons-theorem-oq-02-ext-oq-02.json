@@ -1,0 +1,89 @@
+{
+  "slug": "wilsons-theorem-oq-02-ext-oq-02",
+  "title": "Does the Gauss-Wilson theorem extend to rings of integers in algebraic number...",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a number field K with ring of integers O_K and a nonzero ideal I, characterize when the product of all units of the finite residue ring (O_K / I)^x equals -1, the analogue of the classical Gauss-Wilson result for ZMod n = Z/(n).",
+    "plain": "Does Gauss-Wilson extend to O_K? The literal product over O_K^x is finite only for K=Q or imaginary quadratic (then = -1 always, degenerate). The genuine analogue is the residue ring (O_K/I)^x, where Miller (1903) gives the dichotomy verbatim.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "Reduce the product law for (O_K/I)^x to the merged general-abelian theorem miller_prod and characterize the -1 case."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T07:11:09.263Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: reduced both readings to the merged Miller theorem (#24251). Literal O_K^x product degenerates to always -1; genuine analogue (O_K/I)^x is a finite comm ring, miller_prod applies verbatim. Characterization verified numerically (ALL PASS).",
+    "builtItems": [
+      "proofs/Proofs/WilsonsTheoremOQ02ExtOQ02.lean: prod_units_eq_one_or_unique_involution (corollary of OQ01 at G=Rˣ) + prod_units_coe_eq_neg_one (-1 packaging); build-pending/unregistered, imports Proofs.WilsonsTheoremOQ02ExtOQ01 (PR #24250).",
+      "verification/wilsons_oq02_ext_oq02_number_rings.py: exact HNF-lattice enumeration of O_K/(β) unit groups over ℤ[i],ℤ[ω],ℤ[√-2],ℤ[√2],ℤ[(1+√5)/2]; 94 quotients, 94/94 match prediction.",
+      "proofs/Proofs/WilsonsTheoremOQ02ExtOQ02.lean: gaussWilson_finite_ring — Gauss-Wilson for units of ANY finite commutative ring, = miller_prod (G:=Rx); subsumes ZMod and O_K/I (build-pending, unregistered).",
+      "proofs/scripts/verify_gauss_wilson_OK.py — exact finite-arithmetic verifier over Z[i], Z[w], Z[sqrt-2] residue rings + residue fields F_q; confirms Miller dichotomy and the -1 characterization (ALL CHECKS PASS)."
+    ],
+    "insights": [
+      "O_K/𝔞 is a finite commutative ring for any nonzero ideal 𝔞, so (O_K/𝔞)ˣ is a finite abelian group; the general two-involution theorem applies verbatim — nothing is number-field-specific.",
+      "Refinement (analogue of n∈{1,2,4,p^k,2p^k}): ∏u=-1 iff -1 is the UNIQUE involution of (O_K/𝔞)ˣ, i.e. by CRT exactly one local factor (O_K/𝔭^e)ˣ contributes an involution and it is -1.",
+      "Local count mirrors (ℤ/p^k)ˣ with N(𝔭)=p^f for p: residue-field part 𝔽_{N(𝔭)}ˣ gives an involution iff N(𝔭) odd; principal-unit p-part gives involutions only when p=2.",
+      "NEW phenomenon absent for ℤ/n: when -1=1 in R (residue char 2), product can be an order-2 unit that is neither 1 nor -1 — e.g. ℤ[i]/(2) has units {1,i} and ∏u=i.",
+      "Literal product over O_K^x is finite ONLY for K=Q or imaginary quadratic (Dirichlet rank 0); there O_K^x = mu_K is cyclic of EVEN order (-1 always in mu_K), so it has a unique involution -1 and the product is ALWAYS -1. The ZMod -1/+1 dichotomy DEGENERATES: no +1 case exists.",
+      "Genuine analogue = residue ring (O_K/I)^x for nonzero ideal I, exactly mirroring ZMod n = Z/(n). It is a finite commutative ring, so miller_prod (general finite abelian group, #24251) applies VERBATIM with no number-field-specific input.",
+      "Characterization: prod over (O_K/I)^x = -1 iff (O_K/I)^x has a unique involution AND it equals -1. By CRT (O_K/I = prod O_K/p_i^e_i) #involutions = 2^(#local factors with nontrivial 2-torsion), so prod=-1 forces (O_K/I)^x cyclic of even order — the O_K analogue of n in {1,2,4,p^k,2p^k}.",
+      "NEW phenomenon absent over Z: a unique involution need NOT be -1 at primes above 2. In Z[i]/(2) the unique involution is i (since -1=1 there) and the product is i, not -1. The refinement -and it equals -1- is automatic only for I coprime to 2."
+    ],
+    "mathlibGaps": [
+      "No general finite-commutative-ring / finite-abelian-group Gauss-Wilson upstream (only FiniteField.prod_univ_units_id_eq_neg_one); supplied by sibling OQ01.",
+      "Local unit-group structure (O_K/p^e)^x (analogue of (Z/p^k)^x cyclic) is not in Mathlib in this generality; needed to make the cyclicity criterion fully explicit, but NOT needed for the reduction to miller_prod.",
+      "Units-coercion bookkeeping (Units.coeHom, map_prod) to phrase the -1 case inside R; routine but unverified under build blackout."
+    ],
+    "nextSteps": [
+      "After PR #24250 merges and Lean backend returns: register WilsonsTheoremOQ02ExtOQ01/OQ02 in proofs/Proofs.lean and build.",
+      "Optional: formalize the CRT-based -1-vs-+1 classification of ideals 𝔞 as a decidable predicate.",
+      "When build backends return: register WilsonsTheoremOQ02ExtOQ02.lean, build, and close prod_units_coe_eq_neg_one_iff via Units.coeHom + miller_prod.",
+      "Instantiate gaussWilson_finite_ring at R := O_K / I using NumberField.RingOfIntegers + Ideal.Quotient finiteness (Ideal.absNorm) to make the O_K statement explicit in Lean.",
+      "State the cyclic-(O_K/I)^x criterion via CRT (IsDedekindDomain CRT) once local unit-group lemmas exist."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "group-theory",
+    "wilson",
+    "gauss-wilson",
+    "cyclic-groups",
+    "zmod",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "wilsons-theorem",
+    "wilsons-theorem-oq-02",
+    "wilsons-theorem-oq-02-ext"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T07:11:09.263Z",
+  "lastUpdate": "2026-06-15T07:11:09.263Z",
+  "significance": 6,
+  "tractability": 4
+}
