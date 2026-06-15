@@ -53,4 +53,33 @@ theorem three_sq_of_residue3_prime {m t mm : ℕ} [Fact (Nat.Prime mm)]
     exact_mod_cast hdecomp
   rw [hmZ]; ring
 
+/-- The `mm % 4 ≠ 3` obligation of `three_sq_of_residue3_prime` is **automatic**
+given the residue structure of the deficit decomposition. For `m ≡ 3 (mod 8)`
+and an *odd* witness `t`, the deficit `mm = (m − t²)/2` is forced into `mm ≡ 1
+(mod 4)`: an odd square is `≡ 1 (mod 8)`, so `2·mm = m − t² ≡ 2 (mod 8)` and
+`mm ≡ 1 (mod 4)`. -/
+theorem residue3_deficit_one_mod_four {m t mm : ℕ}
+    (hm8 : m % 8 = 3) (ht : Odd t) (hdecomp : m = t ^ 2 + 2 * mm) :
+    mm % 4 = 1 := by
+  obtain ⟨k, hk⟩ := ht
+  -- `t² = 8·j + 1` where `k(k+1) = j + j` (a product of consecutive naturals is even)
+  obtain ⟨j, hj⟩ := Nat.even_mul_succ_self k
+  have hsq : t ^ 2 = 8 * j + 1 := by
+    have h2 : t ^ 2 = 4 * (k * (k + 1)) + 1 := by rw [hk]; ring
+    rw [h2, hj]; ring
+  omega
+
+/-- **Residue-3 route, with the `mm % 4 ≠ 3` side-condition discharged.**
+Given `m ≡ 3 (mod 8)`, an *odd* witness `t`, and a *prime* deficit
+`mm = (m − t²)/2` (packaged as `m = t² + 2·mm`), the number `m` is a sum of three
+integer squares. This is the form actually used by the assembly: the residue
+structure makes `mm % 4 ≠ 3` free (via `residue3_deficit_one_mod_four`), so the
+caller need only exhibit an odd `t` and a prime deficit — no separate quadratic
+side-condition. -/
+theorem three_sq_of_residue3_odd {m t mm : ℕ} [Fact (Nat.Prime mm)]
+    (hm8 : m % 8 = 3) (ht : Odd t) (hdecomp : m = t ^ 2 + 2 * mm) :
+    ∃ x y z : ℤ, x ^ 2 + y ^ 2 + z ^ 2 = (m : ℤ) :=
+  three_sq_of_residue3_prime
+    (by have := residue3_deficit_one_mod_four hm8 ht hdecomp; omega) hdecomp
+
 end ThreeSquaresResidue3

@@ -208,3 +208,54 @@ the obstruction (m≤4000), corroborating S3's `verify_dirichlet_witness.py`.
 Eliminating all three turns `ThreeSquares.lean`'s two axioms into a fully verified
 three-square theorem. Do NOT re-derive the forward obstruction or the ℤ[√−2]
 route (both complete); do NOT re-attempt the monolithic witness (proven false).
+
+## Session 2026-06-15 (S5, researcher-4) — slim the residue-3 hypothesis + compile-audit
+
+**Mode**: REVISIT · **Phase**: ACT · **Outcome**: additive Lean progress on the
+unregistered companions (zero blast radius); Docker down (`docker info` timeout) →
+build-pending. No registered file touched.
+
+### Compile-correctness audit of the existing reduction (de-risk)
+
+`ThreeSquaresResidue3.lean` + `ThreeSquaresSufficiencyCorrected.lean` (both on
+`main`, build-pending, written under blackout) were name-checked vs the local
+Mathlib clone and `ThreeSquares.lean`:
+- `Nat.Prime.sq_add_sq {p} [Fact p.Prime] (hp : p%4≠3) : ∃ a b, a²+b²=p` — exact
+  (`Mathlib/NumberTheory/SumTwoSquares.lean:35`).
+- `Nat.strong_induction_on (n) (∀ n, (∀ m<n, p m) → p n) : p n` — exact
+  (`Mathlib/Data/Nat/Init.lean:294`); `induction n using … with | _ n ih =>`
+  auto-reverts `hne` into the motive, so `ih : ∀ m<n, ¬IsExcludedForm m → ∃…` and
+  `ih m hmlt hmne` (Corrected:116) type-checks.
+- `four_mul_sum_three_sq` → `…=(4*n:ℕ)`; `excluded_form_four_mul_iff :
+  IsExcludedForm (4*n) ↔ IsExcludedForm n` — used with correct orientation;
+  `ThreeSquares.lean` keeps all decls inside `namespace ThreeSquares`, reopened by
+  the Corrected file, so unqualified refs resolve. Chain looks compile-correct
+  (modulo a real build).
+
+### New, verified-by-inspection content (this session)
+
+`Residue3Property` carried an explicit `mm % 4 ≠ 3` clause; that clause is
+**redundant** — for `m ≡ 3 (mod 8)` with an *odd* witness `t`, an odd square is
+`≡ 1 (mod 8)`, so `2·mm = m − t² ≡ 2 (mod 8)`, forcing `mm ≡ 1 (mod 4)`.
+
+Added (purely additive, no existing decl changed):
+- `ThreeSquaresResidue3.residue3_deficit_one_mod_four` — `m%8=3 → Odd t →
+  m=t²+2mm → mm%4=1` (odd-square-mod-8 via `Nat.even_mul_succ_self` + `omega`).
+- `ThreeSquaresResidue3.three_sq_of_residue3_odd` — residue-3 route with `mm%4≠3`
+  discharged internally; caller supplies only `Odd t` + prime deficit.
+- `ThreeSquares.Residue3PropertyOdd` — slimmer open hypothesis (drops the side
+  condition): `∀ m%8=3, 3<m, ∃ t mm, Odd t ∧ mm.Prime ∧ m=t²+2mm`.
+- `ThreeSquares.Residue3Property_of_odd : Residue3PropertyOdd → Residue3Property`
+  + `three_sq_of_corrected_witnesses_odd` (full sufficiency from
+  `DirichletWitnessNe3` + `Residue3PropertyOdd`, reusing the existing induction).
+
+**Net effect.** The residue-3 half of the sufficiency reduction now isolates a
+*cleaner* open statement — just "∃ odd `t` with `(m−t²)/2` prime" (a thin-sequence
+primality existence) — with the arithmetic mod-4 constraint dispatched. This does
+NOT discharge the hypothesis (that primality is the genuine deep input); it removes
+a spurious side-condition. Axiom budget unchanged. The deep open work in items 1–3
+above is unchanged.
+
+**Next session**: with Docker, build `Proofs.ThreeSquaresResidue3` +
+`Proofs.ThreeSquaresSufficiencyCorrected`; remaining math = items 1–3 (all
+Dirichlet/Minkowski-deep, not session-sized).

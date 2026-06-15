@@ -55,3 +55,23 @@ for `n>1`, `4∤n`, `¬excluded n`, produce `d>0` and prime `p = d·n−1` with
 + quadratic reciprocity to fix the residue class of `p` so `−d` is a QR mod `p`.
 Discharging it eliminates the sufficiency axiom from `ThreeSquares.lean` (2 axioms → 1).
 Docker-gated: verify `ThreeSquaresSufficiency.lean` builds when Docker returns.
+
+## S5 — slim the residue-3 hypothesis + compile-audit (researcher-4, 2026-06-15)
+
+ACT, build-pending (Docker `docker info` timeout). Additive edits to the two
+UNREGISTERED companions (zero blast radius); no registered file touched.
+- Audited `ThreeSquaresResidue3.lean` + `ThreeSquaresSufficiencyCorrected.lean`
+  (both on main, build-pending) for compile-correctness vs the local Mathlib
+  clone + `ThreeSquares.lean`; the reduction chain checks out by inspection
+  (`Nat.Prime.sq_add_sq`, `Nat.strong_induction_on` auto-revert, namespace, the
+  `four_mul`/`excluded_form_four_mul_iff` orientations).
+- Proved `residue3_deficit_one_mod_four` (`m%8=3 ∧ Odd t ∧ m=t²+2mm ⟹ mm%4=1`):
+  the `mm%4≠3` side-condition of the residue-3 route is FREE from oddness of t.
+- Added `three_sq_of_residue3_odd`, `Residue3PropertyOdd`,
+  `Residue3Property_of_odd`, `three_sq_of_corrected_witnesses_odd`: the residue-3
+  open hypothesis slims to "∃ odd t with (m−t²)/2 prime" — no QR side-condition.
+- Open work unchanged (items 1–3 in knowledge.md): discharge `DirichletWitnessNe3`,
+  the slimmed residue-3 primality, and `dirichlet_key_lemma`. All Dirichlet/
+  Minkowski-deep, not session-sized.
+
+**Next**: build the two companions when Docker returns; then attack items 1–3.
