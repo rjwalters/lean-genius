@@ -1139,3 +1139,19 @@ rational-cube template that compiled clean in S13/S14a/S15a/S22/S25, here with a
 22nd CF convergent UPPER bound `31807895077/22054362665` (a₂₁ = 3, idx21 odd =
 upper) via `cbrt3_lt_iff_three_lt_cube`. Re-derive `a₂₁` at ≥200-digit precision
 first (anti-typo). Main a12 chain still contention-blocked.
+
+### S27 addendum — 22nd CF convergent UPPER bound (a21=3) folded into same PR
+
+Extended the S27 PR with the **22nd CF convergent UPPER bound** `cbrt3 <
+31807895077/22054362665` (a21=3, idx21 odd=upper), completing the sandwich
+`8350315863/5789785648 < cbrt3 < 31807895077/22054362665` (combined gap
+`≈ 1.5·10⁻²⁰`). Recursion `p₂₁ = 3·8350315863 + 6756947488 = 31_807_895_077`,
+`q₂₁ = 3·5789785648 + 4685005721 = 22_054_362_665`. Exact cube direction:
+`31807895077³ = 32_181_389_399_984_333_588_608_803_821_533 >
+32_181_389_399_984_333_588_555_341_288_875 = 3·22054362665³` (diff
+`+53_462_532_658`), so `(p/q)³ > 3` ⟹ `cbrt3 < p/q`. Two-line upper template
+`rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num`. Helper file 887 → 913
+LOC, theoremCount 23 → 24. Cert `verify_cbrt3_oq04_s27_21st_convergent.py`
+extended to verify both rungs (a21=3, recursion, both cube directions). PASSED.
+Build-pending (Docker down). Next uncontested rung = 23rd convergent LOWER
+`247706213128/171749895599` (a22=2, idx22).
