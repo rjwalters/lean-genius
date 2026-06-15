@@ -142,15 +142,47 @@ def HalfDensityConjecture : Prop :=
 
 /- ## Bipartite Characterization -/
 
-/-- A graph is bipartite iff it has no odd cycles. -/
+/--
+A `Bool`-coloring forbids odd cycles: by `Coloring.even_length_iff_congr`, every
+closed walk `u → u` has even length (since `c u ↔ c u` holds trivially), so no
+odd cycle length can occur.
+-/
+lemma noOddCycles_of_boolColoring {G : SimpleGraph V} (c : G.Coloring Bool) :
+    oddCycleLengths G = ∅ := by
+  rw [Set.eq_empty_iff_forall_not_mem]
+  intro n hn
+  simp only [oddCycleLengths, cycleLengths, Set.mem_setOf_eq] at hn
+  obtain ⟨⟨u, p, _, hlen⟩, hodd⟩ := hn
+  rw [← hlen] at hodd
+  have hEven : Even p.length := (c.even_length_iff_congr p).mpr Iff.rfl
+  exact (Nat.not_even_iff_odd.mpr hodd) hEven
+
+/--
+A graph is bipartite iff it has no odd cycles.
+
+The forward direction is the elementary parity argument (a proper 2-coloring forces
+every closed walk to have even length). The reverse direction (no odd cycle ⟹
+2-colorable) is the hard classical direction; for arbitrary, possibly infinite, `V`
+it requires building a 2-coloring component-by-component from the parity of distances
+to chosen base vertices. Mathlib lists this exact characterization as future work
+(`Mathlib.Combinatorics.SimpleGraph.Bipartite`), so it is left as the sole open goal.
+-/
 theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
     G.IsBipartite ↔ oddCycleLengths G = ∅ := by
-  sorry
+  constructor
+  · intro hbip
+    obtain ⟨c⟩ := hbip
+    exact noOddCycles_of_boolColoring (G.recolorOfEquiv finTwoEquiv c)
+  · intro _hno
+    sorry
 
 /-- 2-colorable graphs have no odd cycles. -/
 theorem colorable_two_no_odd_cycles (G : SimpleGraph V)
     (h : IsColorable G 2) : oddCycleLengths G = ∅ := by
-  sorry
+  obtain ⟨f, hf⟩ := h
+  have hbip : G.IsBipartite :=
+    ⟨SimpleGraph.Coloring.mk (G := G) f (fun {a b} hab => hf a b hab)⟩
+  exact (bipartite_iff_no_odd_cycles G).mp hbip
 
 /- ## Historical Notes
 
