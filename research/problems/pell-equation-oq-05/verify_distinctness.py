@@ -130,4 +130,28 @@ print("k |-> u^k is injective (C) and lands in {N=1} (S4 cnorm_upow),")
 print("so the norm-one solution set contains an infinite subset => infinite.")
 print("PASS (structural).\n")
 
+print("=" * 70)
+print("(E) Session 6: N(xi)=m has 0 or infinitely many solutions")
+print("=" * 70)
+print("Norm-form factorization at the real place (cubic analogue of")
+print("x^3+y^3+z^3-3xyz=(x+y+z)(x^2+y^2+z^2-xy-yz-zx) with (x,y,z)=(a,b*tau,c*tau^2)):")
+A, B, C, t = sp.symbols('A B C t')
+cn = cnorm(A, B, C)
+phi_p = A + B * t + C * t**2
+# the conjugate-product factor xi_star = (A^2-2BC, 2C^2-AB, B^2-AC)
+phi_star = (A**2 - 2 * B * C) + (2 * C**2 - A * B) * t + (B**2 - A * C) * t**2
+# reduce phi_p * phi_star modulo t^3 - 2 and compare to cnorm
+_, rem = sp.div(sp.Poly(sp.expand(phi_p * phi_star), t), sp.Poly(t**3 - 2, t))
+assert sp.expand(rem.as_expr() - cn) == 0, "factorization N=phi*phi_star failed"
+print("  N(a,b,c) = phi(a,b,c) * phi(a^2-2bc, 2c^2-ab, b^2-ac)  (mod t^3-2)  OK")
+# linear_combination coefficient used in the Lean proof (cnorm_eq_phi_mul)
+e = 2 * A * B * C + A * C**2 * t - B**3 - B**2 * C * t - 2 * C**3
+assert sp.expand((cn - phi_p * phi_star) - e * (t**3 - 2)) == 0, "lin_comb coeff wrong"
+print("  linear_combination coefficient (cnorm - phi*phi_star = e*(t^3-2))  OK")
+print("Consequence: N(p) != 0 => phi(p) != 0, so for any solvable N(xi)=m (m!=0)")
+print("the shifted chain k |-> xi0 * u^k is injective (phi(xi0)*phi(u)^k) and lands")
+print("in {N=m}; hence {p : N(p)=m} is infinite. Instance: N(cbrt2)=2 => N=2 infinite.")
+assert cnorm(0, 1, 0) == 2, "N(cbrt2) != 2"
+print("  N(0,1,0) = 2  OK\n")
+
 print("ALL CHECKS PASSED.")

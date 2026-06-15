@@ -199,6 +199,89 @@ theorem norm_one_solutions_infinite :
   exact cnorm_upow k
 
 /-
+## N(ξ) = m: zero or infinitely many solutions (Session 6)
+
+The infinitude above is the m = 1 case. The same real-embedding argument upgrades to
+*any* nonzero m: if N(ξ) = m has one integral solution ξ₀, it has infinitely many,
+namely the unit-orbit {ξ₀·uᵏ}. The new ingredient is that the real place φ does not
+kill ξ₀: from the factorization N(ξ) = φ(ξ)·φ(ξ⋆) (the cubic analogue of
+x³+y³+z³-3xyz = (x+y+z)(x²+y²+z²-xy-yz-zx) with (x,y,z) = (a, b∛2, c∛4)), a nonzero
+norm forces φ(ξ₀) ≠ 0, so the geometric chain φ(ξ₀)·φ(u)ᵏ stays injective.
+This is the higher-degree analogue of "Pell's N=m equation has 0 or ∞ solutions",
+again with no signature/Dirichlet machinery.
+-/
+
+/-- **Norm-form factorization at the real place.** With τ³ = 2 one has
+    N(a,b,c) = φ(a,b,c) · φ(ξ⋆), where ξ⋆ = (a²-2bc, 2c²-ab, b²-ac). This is the
+    cubic identity x³+y³+z³-3xyz = (x+y+z)(x²+y²+z²-xy-yz-zx) specialized to
+    (x,y,z) = (a, bτ, cτ²); the residual is a multiple of (τ³-2), cleared by
+    `linear_combination` (coefficient verified by `verify_distinctness.py`). -/
+theorem cnorm_eq_phi_mul (τ : ℝ) (hτ : τ ^ 3 = 2) (a b c : ℤ) :
+    (cnorm a b c : ℝ) =
+      phi τ (a, b, c) * phi τ (a ^ 2 - 2 * b * c, 2 * c ^ 2 - a * b, b ^ 2 - a * c) := by
+  simp only [cnorm, phi]
+  push_cast
+  linear_combination
+    (2 * (a : ℝ) * b * c + (a : ℝ) * c ^ 2 * τ - (b : ℝ) ^ 3 - (b : ℝ) ^ 2 * c * τ
+      - 2 * (c : ℝ) ^ 3) * hτ
+
+/-- A nonzero norm forces a nonzero value at the real place: if N(p) ≠ 0 then φ(p) ≠ 0.
+    (Contrapositive of the factorization: φ(p) = 0 makes the product, hence N(p), zero.) -/
+theorem phi_ne_zero_of_cnorm_ne_zero (τ : ℝ) (hτ : τ ^ 3 = 2) (p : ℤ × ℤ × ℤ)
+    (h : cnorm3 p ≠ 0) : phi τ p ≠ 0 := by
+  obtain ⟨a, b, c⟩ := p
+  intro hzero
+  have key := cnorm_eq_phi_mul τ hτ a b c
+  rw [hzero, zero_mul] at key
+  have hz : cnorm a b c = 0 := by exact_mod_cast key
+  exact h hz
+
+/-- The shifted chain k ↦ ξ₀·uᵏ is injective whenever φ(ξ₀) ≠ 0: at the real place its
+    values are φ(ξ₀)·φ(u)ᵏ, a geometric progression with ratio φ(u) ∈ (0,1). -/
+theorem cmul_chain_injective (τ : ℝ) (hτ : τ ^ 3 = 2) (hpos : 0 < τ)
+    (p₀ : ℤ × ℤ × ℤ) (h0 : phi τ p₀ ≠ 0) :
+    Function.Injective (fun k => cmul p₀ (upow k)) := by
+  obtain ⟨hp0, hp1⟩ := phi_u_mem τ hτ hpos
+  intro j k hjk
+  have hval : phi τ p₀ * (phi τ u) ^ j = phi τ p₀ * (phi τ u) ^ k := by
+    have h := congrArg (phi τ) hjk
+    simp only [phi_cmul τ hτ, phi_upow τ hτ] at h
+    exact h
+  have hpow : (phi τ u) ^ j = (phi τ u) ^ k := mul_left_cancel₀ h0 hval
+  rcases lt_trichotomy j k with hlt | heq | hgt
+  · have hcontra := pow_lt_pow_right_of_lt_one₀ hp0 hp1 hlt
+    rw [hpow] at hcontra
+    exact absurd hcontra (lt_irrefl _)
+  · exact heq
+  · have hcontra := pow_lt_pow_right_of_lt_one₀ hp0 hp1 hgt
+    rw [hpow] at hcontra
+    exact absurd hcontra (lt_irrefl _)
+
+/-- **Zero-or-infinite dichotomy for N(ξ) = m.** If the norm equation N(ξ) = m
+    (m ≠ 0) has one integral solution, it has infinitely many: the unit-orbit
+    {ξ₀·uᵏ} consists of distinct solutions. The higher-degree analogue of the fact
+    that a solvable Pell-type equation x² - 2y² = m has infinitely many solutions. -/
+theorem norm_eq_solutions_infinite (m : ℤ) (hm0 : m ≠ 0)
+    (p₀ : ℤ × ℤ × ℤ) (hp₀ : cnorm3 p₀ = m) :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = m}.Infinite := by
+  obtain ⟨τ, hτ, hpos⟩ := exists_real_cube_root_two
+  have h0 : phi τ p₀ ≠ 0 := by
+    apply phi_ne_zero_of_cnorm_ne_zero τ hτ
+    rw [hp₀]; exact hm0
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun k => cmul p₀ (upow k)) (cmul_chain_injective τ hτ hpos p₀ h0)
+  intro k
+  have hmem : cnorm3 (cmul p₀ (upow k)) = m := by
+    rw [cnorm_cmul, hp₀, cnorm_upow, mul_one]
+  exact hmem
+
+/-- N(ξ) = 2 is solved by ξ = ∛2 (`cnorm3 (0,1,0) = 2`), hence has infinitely many
+    integral solutions — the orbit {∛2·uᵏ}. A concrete nonzero, non-unit instance. -/
+theorem norm_two_solutions_infinite :
+    {p : ℤ × ℤ × ℤ | cnorm3 p = 2}.Infinite :=
+  norm_eq_solutions_infinite 2 (by decide) (0, 1, 0) (by decide)
+
+/-
 ## Recovering Pell (rank-1 special case)
 
 For comparison, the parent real-quadratic norm form N(p + q√2) = p² - 2q² with its
@@ -225,10 +308,16 @@ Pell's equation OQ-05 (norm equations in degree > 2), concrete-core formalizatio
 2. N is multiplicative (`cnorm_cmul`).
 3. u = ∛2 - 1 is a unit of norm 1 (`cnorm_u`, `cmul_u_uinv`).
 4. Every uᵏ has norm 1 (`cnorm_upow`): the higher-degree Pell chain.
-5. (NEW, S5) The chain is injective (`upow_injective`) via the real embedding φ
+5. (S5) The chain is injective (`upow_injective`) via the real embedding φ
    (`phi_cmul`, `phi_upow`, `phi_u_mem`), so N(ξ) = 1 has **infinitely many** integral
    solutions (`norm_one_solutions_infinite`) — closing S4's open distinctness gap,
    with no signature/Dirichlet machinery.
+6. (NEW, S6) Norm-form factorization at the real place
+   N(ξ) = φ(ξ)·φ(ξ⋆) (`cnorm_eq_phi_mul`) ⟹ N(ξ) ≠ 0 forces φ(ξ) ≠ 0
+   (`phi_ne_zero_of_cnorm_ne_zero`). Hence the **zero-or-infinite dichotomy**: for any
+   m ≠ 0, if N(ξ) = m is solvable it has infinitely many integral solutions, the
+   unit-orbit {ξ₀·uᵏ} (`norm_eq_solutions_infinite`, `cmul_chain_injective`);
+   e.g. N(ξ) = 2 (`norm_two_solutions_infinite`). The m = 1 case recovers item 5.
 
 Deferred (Mathlib-bearer-less): the unit *rank* = 1 via signature (1,1) of ℚ(∛2),
 needing `card (InfinitePlace (AdjoinRoot (X³-2))) = 2`, for which Mathlib ships no
