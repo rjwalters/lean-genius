@@ -47,44 +47,39 @@
   },
   "sections": [
     {
-      "id": "docs",
+      "id": "header",
       "title": "Module Documentation",
       "startLine": 1,
-      "endLine": 26,
-      "summary": "Documents the chebyshev-pnt-bridge OQ-01 research file: deriving Chebyshev's lower bound on $\\pi(x)$ via the prime factorization of the central binomial coefficient $\\binom{2n}{n}$ (Kummer/Legendre valuations). Imports and overview.",
-      "mathContext": "Chebyshev lower bound on $\\pi(x)$ from $\\binom{2n}{n}$ prime-power factorization."
+      "endLine": 24,
+      "summary": "Documents the research problem: prove $p^{v_p\\binom{2n}{n}} \\leq 2n$ using Kummer's carry-counting interpretation. Explains the connection to Chebyshev's proof of Bertrand's postulate."
     },
     {
-      "id": "part1",
-      "title": "Part I: p-adic Valuation of Central Binomial Coefficients",
-      "startLine": 27,
-      "endLine": 97,
-      "summary": "PROVES the valuation infrastructure: `legendre_factorial_val` (Legendre's formula), `central_binom_val_terms`, `carry_terms_bounded`, and `digits_bound` — bounding $v_p\\binom{2n}{n}$ via base-$p$ carries.",
-      "mathContext": "$v_p\\binom{2n}{n}$ counts base-$p$ carries; each $p^{v_p}\\leq2n$."
+      "id": "padic-valuation",
+      "title": "p-adic Valuation Infrastructure",
+      "startLine": 26,
+      "endLine": 68,
+      "summary": "Establishes the carry-counting framework: Legendre's formula for $v_p(n!)$ (proved via `Nat.Prime.multiplicity_factorial`), the carry bound $\\lfloor 2n/p^i \\rfloor - 2\\lfloor n/p^i \\rfloor \\leq 1$ (proved), vanishing of carries for $p^i > 2n$ (proved), and existence of a truncation point $k \\leq 2n$ with $p^k > 2n$ (proved by induction on $2^{2n} > 2n$)."
     },
     {
-      "id": "part2",
-      "title": "Part II: The Main Bound",
-      "startLine": 98,
-      "endLine": 160,
-      "summary": "PROVES `prime_pow_val_central_binom_le` ($p^{v_p\\binom{2n}{n}}\\leq2n$) and the main bound `central_binom_le_pow_prime_counting` ($\\binom{2n}{n}\\leq(2n)^{\\pi(2n)}$, since the support has $\\leq\\pi(2n)$ primes each contributing $\\leq2n$).",
-      "mathContext": "$\\binom{2n}{n}\\leq(2n)^{\\pi(2n)}$ (each prime power $\\leq2n$, $\\leq\\pi(2n)$ primes)."
+      "id": "main-bound",
+      "title": "Main Factorization Bound",
+      "startLine": 70,
+      "endLine": 86,
+      "summary": "Proves the main theorem $p^{v_p\\binom{2n}{n}} \\leq 2n$ via Mathlib's `Nat.pow_factorization_choose_le`. Proves the corollary $\\binom{2n}{n} \\leq (2n)^{\\pi(2n)}$ by reconstructing the central binomial from its prime factorization via `Nat.factorization_prod_pow_eq_self`."
     },
     {
-      "id": "part3",
-      "title": "Part III: Connection to Chebyshev/Bertrand",
-      "startLine": 161,
-      "endLine": 196,
-      "summary": "PROVES `central_binom_lower` ($\\binom{2n}{n}\\geq4^n/(2n+1)$, from the binomial sum) and `chebyshev_lower_via_kummer` ($4^n\\leq(2n+1)(2n)^{\\pi(2n)}$), combining the upper and lower bounds — Chebyshev's lower bound on $\\pi$.",
-      "mathContext": "$4^n/(2n+1)\\leq\\binom{2n}{n}\\leq(2n)^{\\pi(2n)}$ $\\Rightarrow$ Chebyshev: $\\pi(2n)\\gtrsim n/\\log(2n)$."
+      "id": "chebyshev-connection",
+      "title": "Chebyshev's Lower Bound on $\\pi(x)$",
+      "startLine": 88,
+      "endLine": 122,
+      "summary": "Proves the central binomial lower bound $(2n+1)\\binom{2n}{n} \\geq 4^n$ using `Nat.sum_range_choose` and `Nat.choose_le_middle`. Combines with the product bound to obtain Chebyshev's inequality $4^n \\leq (2n+1)(2n)^{\\pi(2n)}$."
     },
     {
-      "id": "part4",
-      "title": "Part IV: Concrete Computations",
-      "startLine": 197,
-      "endLine": 210,
-      "summary": "Verifies central binomial coefficients by `native_decide`: `example_n3` ($\\binom{6}{3}=20$), `example_n5` ($\\binom{10}{5}=252$), `example_n10` ($\\binom{20}{10}=184756$).",
-      "mathContext": "$\\binom{6}{3}=20$, $\\binom{10}{5}=252$, $\\binom{20}{10}=184756$."
+      "id": "concrete-examples",
+      "title": "Concrete Computations",
+      "startLine": 124,
+      "endLine": 138,
+      "summary": "Verifies $\\binom{6}{3} = 20$, $\\binom{10}{5} = 252$, $\\binom{20}{10} = 184756$ via `native_decide`, confirming the factorization bound holds at concrete values."
     }
   ],
   "conclusion": {

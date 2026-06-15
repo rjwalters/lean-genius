@@ -1,48 +1,9 @@
 # Current State
 
-**Phase**: S7 ORIENT (Step 1 **bearer-complete sound route found** — derived-series + block, avoids the absent socle/minimal-normal API; Risk R4 HIGH→MEDIUM; **5 sorries** unchanged; comment-only Lean edit, ~199 LOC)
-**Since**: 2026-06-14 (S7 ORIENT route scoping; was 2026-06-14 S6 ORIENT)
-**Iteration**: 7 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT this iteration)
-**Owner**: researcher-3 (S7 ORIENT, 2026-06-14); prior researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
-
-## Iteration 7 (researcher-3, 2026-06-14) — S7 ORIENT: Step 1 bearer-complete route
-
-**Outcome**: ORIENT/knowledge (no build — Docker DOWN, verification
-blackout; comment-only Lean docstring edit, build-safe). Resolved the
-open next-action R1 left at S6: scope mitigation (b) for Step 1. Audited
-the actual `MulAction.IsBlock` / `Primitive` / `Solvable` / `Sylow` API at
-the lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via `gh api` and
-**found a fully bearer-backed sound route for Step 1** — the file's true
-blocker — that sidesteps the socle/`MinimalNormal`/`IsElementaryAbelian`
-gap R1 had marked HIGH.
-
-**The route (derived-series + block).** Let `A` be the last nontrivial
-term of `derivedSeries ↥H` (abelian, normal/characteristic, nontrivial).
-`A ⊴ H` ⟹ its `ZMod p`-orbits are blocks (`IsBlock.orbit_of_normal`); by
-primitivity each is subsingleton or univ (`IsBlock.subsingleton_or_eq_univ`);
-`A` nontrivial + faithful ⟹ some orbit is univ ⟹ `A` transitive ⟹ `p ∣ |A|`.
-`A` abelian ⟹ its Sylow-`p` `Q` is normal hence characteristic in `A`
-(`Sylow.characteristic_of_normal`), char-in-char ⟹ `Q ⊴ H`. Legendre
-`v_p(p!) = 1` ⟹ `|Q| = p` ⟹ `Q` is a Sylow-`p` of `H` (`Sylow.ofCard`),
-normal ⟹ unique (`Sylow.unique_of_normal`) ⟹ `Subsingleton (Sylow p H)`. ∎
-
-**Bearer citations** (all present, file:line at pin): `derivedSeries_normal`
-Solvable.lean:53, `derivedSeries_characteristic` :65, `derivedSeries_succ` :49;
-`IsBlock.orbit_of_normal` Blocks.lean:475; `IsBlock.subsingleton_or_eq_univ`
-Primitive.lean:115; `isPretransitive_iff_orbit_eq_univ` Transitive.lean:54;
-`Sylow.characteristic_of_normal` Sylow.lean:728; `Sylow.ofCard` :102;
-`Sylow.unique_of_normal` :710; `Nat.Prime.factorization_factorial`
-Choose/Factorization.lean:42; `padicValNat_factorial` PadicVal/Basic.lean.
-
-**Net effect**: Risk R4 downgraded HIGH→MEDIUM (no missing infrastructure;
-residual is ~100–150 LOC of wiring — transport `Q` along `A ↪ H`, char-in-char
-composition, `v_p` arithmetic). Step 1 reclassified from "needs Mathlib
-upstreaming" to "discharge task, Docker-up ACT". 5 sorries unchanged.
-
-**Next action** (Docker-up ACT): discharge Step 1 via the route above
-(~100–150 LOC), then the already-corrected Step 5 signature (~5–15 LOC),
-then Step 3/4. Docker required to build-verify any of these — none shippable
-during the blackout.
+**Phase**: S6 ORIENT (Step 1 route bearer-audited; "m < p" plan framing found CIRCULAR; socle/minimal-normal API absent from Mathlib; **5 sorries** unchanged; 151 LOC)
+**Since**: 2026-06-14 (S6 ORIENT bearer audit; was 2026-06-13 S5 OBSERVE)
+**Iteration**: 6 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT this iteration)
+**Owner**: researcher-1 (S6 ORIENT, 2026-06-14); prior researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
 
 ## Iteration 6 (researcher-1, 2026-06-14) — S6 ORIENT: Step 1 route bearer audit
 

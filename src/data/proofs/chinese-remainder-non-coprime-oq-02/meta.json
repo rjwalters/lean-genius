@@ -110,81 +110,39 @@
   ],
   "sections": [
     {
-      "title": "Overview — Module Setup and Scope",
-      "startLine": 1,
-      "endLine": 33,
-      "summary": "Module docstring, imports, and namespace setup. States the goal: extend the non-coprime Chinese Remainder Theorem from ℤ to EuclideanDomains (necessity, sufficiency, uniqueness via extended GCD), polynomial rings (Lagrange interpolation as a CRT specialization), and the ideal bridge connecting element-level coprimality to ideal-level coprimality (IsCoprime a b ↔ Ideal.span {a} ⊔ Ideal.span {b} = ⊤)."
-    },
-    {
-      "title": "Part I: CRT for Euclidean Domains",
+      "title": "Part I: CRT for EuclideanDomains",
       "startLine": 34,
-      "endLine": 124,
+      "endLine": 123,
       "summary": "Necessity (ed_crt_necessary): gcd(m,n) divides both m and n, so it divides (x-a)-(x-b) = a-b. Sufficiency (ed_crt_sufficient): explicit construction x = a - m·(gcdA·q) via Bézout. Uniqueness (ed_crt_unique): lcm(m,n) divides any x-y satisfying both congruences. Specializations to ℤ are one-liners. Three-moduli necessity, weakening, and combining lemmas round out the section."
     },
     {
-      "title": "Part II: Polynomial Ring — Linear Factor Coprimality",
+      "title": "Parts II-III: Polynomial CRT and Lagrange Interpolation",
       "startLine": 125,
-      "endLine": 179,
-      "summary": "linear_factors_coprime proves IsCoprime (X-C a) (X-C b) for a≠b by explicit Bézout: C(b-a)⁻¹·(X-a) + (-C(b-a)⁻¹)·(X-b) = 1. polynomial_crt_two_points constructs the Lagrange interpolant at two distinct points; polynomial_crt_same_point handles the degenerate single-point case. dvd_sub_C_eval and polynomial_crt_uniqueness_mod establish that the interpolant is unique modulo (X-a₁)(X-a₂)."
-    },
-    {
-      "title": "Part III: Polynomial CRT Induction",
-      "startLine": 180,
-      "endLine": 215,
-      "summary": "poly_crt_one_point gives the base case (∃ p, p.eval a = b). eval_ne_zero_of_coprime shows a coprime modulus does not vanish at a forbidden point. poly_crt_extend is the inductive Newton step: given a solution p₀ mod m, adjust it to hit value b at point a, building multi-point interpolants by induction."
+      "endLine": 214,
+      "summary": "linear_factors_coprime proves IsCoprime (X-C a) (X-C b) for a≠b by explicit Bézout: C(b-a)⁻¹·(X-a) + (-C(b-a)⁻¹)·(X-b) = 1. polynomial_crt_two_points constructs the Lagrange interpolant. polynomial_crt_two_degree_bound proves degree ≤ 1. poly_crt_extend gives the inductive Newton step: given solution p₀ mod m, adjust to hit value b at point a."
     },
     {
       "title": "Part IV: Ideal Bridge — IsCoprime ↔ Ideal.span sup = ⊤",
       "startLine": 216,
-      "endLine": 275,
-      "summary": "isCoprime_iff_span_sup_eq_top: s·a + t·b = 1 ↔ 1 ∈ ⟨a⟩ + ⟨b⟩. Euclid's lemma (euclid_lemma_from_coprimality) and coprime multiplication (coprime_mul_dvd_iff) follow. coprime_crt_unique_ideal: IsCoprime m n → m·n ∣ (x₁-x₂) for two solutions."
+      "endLine": 274,
+      "summary": "isCoprime_iff_span_sup_eq_top: s·a + t·b = 1 ↔ 1 ∈ ⟨a⟩ + ⟨b⟩. Euclid's lemma (euclid_lemma_from_coprimality) and coprime multiplication (coprime_mul_dvd_iff) follow. coprime_crt_unique_ideal: IsCoprime m n → m·n ∣ (x₁-x₂) for two solutions. Summary theorem (crt_oq02_summary) bundles existence, uniqueness, and ideal characterization."
     },
     {
-      "title": "Part V: Summary Theorems",
+      "title": "Parts V-X: Structural and Multi-Moduli Results",
       "startLine": 276,
-      "endLine": 300,
-      "summary": "crt_oq02_summary bundles the core results for integral domains: existence of a CRT solution, uniqueness modulo the product, and the ideal characterization of coprimality, packaged as a single headline theorem."
-    },
-    {
-      "title": "Part VI: PID Characterization — IsPrincipalIdealRing Bridge",
-      "startLine": 301,
-      "endLine": 343,
-      "summary": "pid_ideal_principal: every ideal in a PID is principal. pid_bezout: coprime elements admit a Bézout identity. pid_crt_coprime_solvable and pid_crt_coprime_unique establish solvability and uniqueness of coprime CRT systems over an arbitrary principal ideal ring."
-    },
-    {
-      "title": "Part VII: Polynomial Degree Bounds for CRT Interpolation",
-      "startLine": 344,
-      "endLine": 378,
-      "summary": "polynomial_crt_two_degree_bound: the two-point interpolant has degree ≤ 1. polynomial_crt_one_degree_bound: the one-point case is a constant (degree ≤ 0). These bound the complexity of the Lagrange interpolants constructed in Parts II–III."
-    },
-    {
-      "title": "Part VIII: Coprime Transitivity and Chain Properties",
-      "startLine": 379,
-      "endLine": 414,
-      "summary": "Structural coprimality lemmas: coprime_mul_of_coprime (coprimality is preserved under multiplication), coprime_symm (symmetry), coprime_self_iff_unit (a is self-coprime iff a is a unit), and coprime_of_dvd_right (coprimality descends along divisibility)."
-    },
-    {
-      "title": "Part IX: Structural Results for Non-Coprime CRT",
-      "startLine": 415,
-      "endLine": 446,
-      "summary": "coprime_implies_crt_solvable shows the coprime case subsumes the general one. ed_crt_impossible is the contrapositive impossibility result when the gcd obstruction fails. ed_crt_refl (reflexivity) and ed_crt_trans (transitivity) give the order-theoretic skeleton of the divisibility relation."
-    },
-    {
-      "title": "Part X: Coprime Multi-Moduli CRT",
-      "startLine": 447,
-      "endLine": 502,
-      "summary": "coprime_crt_three solves a three-moduli coprime CRT system with explicit CRT basis elements; coprime_crt_three_unique proves uniqueness modulo the product. Generalizes the two-moduli results to pairwise-coprime triples."
+      "endLine": 501,
+      "summary": "Part V: crt_oq02_summary bundles existence + uniqueness + ideal bridge. Part VI: PID principal ideal lemma, Bézout existence, coprime CRT solvability and uniqueness. Part VII: degree bounds for 1-point and 2-point interpolation. Part VIII: coprime chain properties (IsCoprime transitivity, symmetry, self-coprimality). Part IX: structural lemmas (coprime subsumes non-coprime, contrapositive impossibility, reflexivity, transitivity). Part X: three-moduli coprime CRT with explicit CRT basis elements."
     },
     {
       "title": "Part XI: Ideal-Theoretic CRT — The Most General Formulation",
       "startLine": 503,
-      "endLine": 593,
+      "endLine": 592,
       "summary": "ideal_crt_iff: ∃ x, (x-a)∈I ∧ (x-b)∈J ↔ (a-b)∈I⊔J, for any ideals in any commutative ring. Necessity decomposes a-b = -(x-a) + (x-b). Sufficiency sets x = a-i from the I-component. Uniqueness: (x₁-x₂) ∈ I⊓J. Three-ideal extensions by pairwise application. Coprime case (I⊔J=⊤) gives automatic solvability."
     },
     {
       "title": "Part XII: Closing the Loop — Ideal CRT Recovers Element CRT",
       "startLine": 594,
-      "endLine": 648,
+      "endLine": 647,
       "summary": "mem_span_singleton_iff_dvd: x ∈ ⟨m⟩ ↔ m ∣ x. element_crt_from_ideal specializes ideal CRT to principal ideals. span_sup_top_of_isCoprime: IsCoprime m n → span{m} ⊔ span{n} = ⊤. element_coprime_crt_from_ideal shows coprime elements always give solvable systems."
     },
     {

@@ -81,16 +81,14 @@
       "title": "Key Lemma: Prime Factor ≡ 3 (mod 4)",
       "startLine": 17,
       "endLine": 54,
-      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction: if every prime factor were ≡ 1 (mod 4), their product would be ≡ 1 (mod 4).",
-      "mathContext": "The multiplicative group $(\\mathbb{Z}/4\\mathbb{Z})^\\times = \\{1, 3\\}$ with $3 \\cdot 3 \\equiv 1$, so it is closed and a product of residues all $\\equiv 1$ stays $\\equiv 1 \\pmod 4$. Hence $n \\equiv 3 \\pmod 4$ cannot factor into primes all $\\equiv 1$. The induction descends through $n = p \\cdot k$: when the chosen prime $p \\equiv 1 \\pmod 4$, the cofactor satisfies $k = n/p < n$ and $1 \\cdot k \\equiv 3$ forces $k \\equiv 3 \\pmod 4$, so the recursive call applies and its prime factor divides $n$ by transitivity. The Lean proof realizes this as well-founded recursion with `termination_by n` and `decreasing_by exact hk_lt`."
+      "summary": "Any n > 1 with n ≡ 3 (mod 4) has a prime factor p with p ≡ 3 (mod 4). Proved by strong induction: if every prime factor were ≡ 1 (mod 4), their product would be ≡ 1 (mod 4)."
     },
     {
       "id": "main-theorem",
       "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
       "startLine": 55,
       "endLine": 96,
-      "summary": "Constructs N = 4·(n+1)! - 1 (which is ≡ 3 mod 4) to find a prime ≡ 3 (mod 4) larger than any given bound, via a Euclid-style argument without L-functions.",
-      "mathContext": "Set $N = 4(n+1)! - 1$, so $N \\equiv -1 \\equiv 3 \\pmod 4$ and $N + 1 = 4(n+1)!$. The key lemma yields a prime $p \\equiv 3 \\pmod 4$ with $p \\mid N$. If $p \\le n+1$ then $p \\mid (n+1)!$ (since $p$ is a factor of the factorial), hence $p \\mid 4(n+1)! = N+1$; combined with $p \\mid N$ this gives $p \\mid (N+1) - N = 1$, impossible for $p \\ge 2$. Therefore $p > n+1 > n$, proving the prime set is unbounded. Infinitude follows from `Set.infinite_iff_exists_gt`: a set of naturals is infinite exactly when it has arbitrarily large members."
+      "summary": "Constructs N = 4·(n+1)! - 1 (which is ≡ 3 mod 4) to find a prime ≡ 3 (mod 4) larger than any given bound, via a Euclid-style argument without L-functions."
     },
     {
       "id": "existence-witness",

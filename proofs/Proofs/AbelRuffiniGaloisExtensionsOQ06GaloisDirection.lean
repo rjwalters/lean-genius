@@ -43,41 +43,10 @@ variable {p : ℕ} [Fact p.Prime]
 /-- **Step 1 (Sylow uniqueness).** Inside a primitive solvable
     subgroup `H ≤ S_p`, the Sylow-p subgroup of `H` is unique.
 
-    ⚠ **The naive Sylow-count argument is CIRCULAR** (researcher-1, S6
-    ORIENT 2026-06-14): Sylow III gives `n_p ≡ 1 (mod p)` and `n_p ∣ |H|/p`,
-    forcing `n_p = 1` *only when* `|H|/p < p`; but `H ≤ S_p` only yields
-    `|H| ∣ p!`, so `|H|/p` can be as large as `(p−1)!`. The bound `|H|/p < p`
-    is equivalent to the conclusion `H ≤ AGL(1, p)`, so it cannot be assumed.
-
-    **Bearer-complete sound route** (researcher-3, S7 ORIENT 2026-06-14;
-    all bearers present at lake-pin `2df2f015`, replacing the previously
-    "no Mathlib bearer" verdict via the absent socle/`MinimalNormal` API):
-    1. `A := derivedSeries ↥H (d-1)`, `d` least with `derivedSeries ↥H d = ⊥`
-       (exists by `IsSolvable`). `A` is **normal/characteristic** in `H`
-       (`derivedSeries_normal`/`derivedSeries_characteristic`, Solvable.lean)
-       and **abelian** (`derivedSeries_succ`: `⁅A,A⁆ = derivedSeries H d = ⊥`),
-       and **nontrivial** by minimality of `d` (for `H` nontrivial; the
-       trivial `H` case makes `Sylow p H` subsingleton outright).
-    2. `A ⊴ H` ⟹ each `A`-orbit on `ZMod p` is a **block** for the `H`-action
-       (`MulAction.IsBlock.orbit_of_normal`, Blocks.lean:475); by primitivity
-       every block is subsingleton or univ
-       (`MulAction.IsBlock.subsingleton_or_eq_univ`, Primitive.lean:115).
-       `A` nontrivial + faithful (`H ≤ S_p`) moves some point, so that orbit
-       is univ ⟹ **`A` is transitive** (`isPretransitive_iff_orbit_eq_univ`).
-    3. `A` transitive on a `p`-set ⟹ `p ∣ |A|` (orbit–stabilizer).
-    4. `A` abelian ⟹ its Sylow-`p` `Q` is **normal** in `A` ⟹ characteristic
-       in `A` (`Sylow.characteristic_of_normal`, Sylow.lean:728); `Q` char in
-       `A` char in `H` ⟹ **`Q ⊴ H`**.
-    5. `v_p(|H|) ≤ v_p(p!) = 1` (Legendre, `Nat.Prime.factorization_factorial`
-       / `padicValNat_factorial`), and `p ∣ |A| ∣ |H|` ⟹ `v_p(|A|) = 1` ⟹
-       `|Q| = p`, so `Q` is a Sylow-`p` of `H` too (`Sylow.ofCard`,
-       Sylow.lean:102). `Q ⊴ H` Sylow ⟹ **unique**
-       (`Sylow.unique_of_normal`, Sylow.lean:710) ⟹ `Subsingleton (Sylow p H)`.
-
-    Residual risk is **wiring**, not missing infrastructure (~100–150 LOC):
-    transporting `Q` along `A ↪ H`, the char-in-char step, and the `v_p`
-    arithmetic. Risk R4 accordingly downgraded HIGH→MEDIUM (see knowledge.md).
-    Discharge deferred to a Docker-up ACT session. -/
+    Mathematical content: a primitive permutation group on a prime-card
+    set has order divisible by `p` and not by `p²` (since `|H| ∣ p!`),
+    so by Sylow's third theorem the number of Sylow-p subgroups divides
+    `|H|/p < p` and is `≡ 1 (mod p)`, forcing uniqueness. -/
 theorem sylow_p_unique
     (H : Subgroup (Equiv.Perm (ZMod p)))
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
