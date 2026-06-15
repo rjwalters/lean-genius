@@ -61,60 +61,76 @@
   },
   "sections": [
     {
-      "id": "hypergraph-definitions",
-      "title": "r-Uniform Hypergraphs",
-      "summary": "Defines r-uniform hypergraphs, edge count, and induced sub-hypergraphs.",
+      "id": "header",
+      "title": "Header and Overview",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States Erdős #1018 OQ-04: the hypergraph extension. Parent #1018 (Kostochka–Pyber 1988): graphs with $n^{1+\\varepsilon}$ edges contain a non-planar subgraph on $O_\\varepsilon(1)$ vertices. OQ-04 asks the $r$-uniform analogue, with planarity replaced by embeddability of the $(r-1)$-dimensional complex in $\\mathbb{R}^{2(r-1)}$, density threshold $n^{r-1+\\varepsilon}$, obstruction $K_{2r+1}^{(r)}$ (van Kampen–Flores).",
+      "mathContext": "$r$-uniform: $n^{r-1+\\varepsilon}$ edges force a sub-hypergraph non-embeddable in $\\mathbb{R}^{2(r-1)}$ on $O_{r,\\varepsilon}(1)$ vertices?"
+    },
+    {
+      "id": "part1",
+      "title": "Part I: r-Uniform Hypergraphs",
       "startLine": 29,
-      "endLine": 58
+      "endLine": 60,
+      "summary": "Defines the `Hypergraph` structure, `Hypergraph.edgeCount`, `Hypergraph.induced` (induced sub-hypergraph), and PROVES `Hypergraph.induced_le_edges`.",
+      "mathContext": "$r$-uniform hypergraph = set of $r$-element edges; induced sub-hypergraph has $\\leq$ edges."
     },
     {
-      "id": "complete-hypergraphs",
-      "title": "Complete r-Uniform Hypergraphs",
-      "summary": "Defines K_t^(r) as all r-element subsets of {0,...,t-1}. Edge count is C(t,r).",
-      "startLine": 60,
-      "endLine": 83
+      "id": "part2",
+      "title": "Part II: Complete r-Uniform Hypergraphs",
+      "startLine": 61,
+      "endLine": 88,
+      "summary": "Defines `completeHypergraph t r` ($K_t^{(r)}$) and PROVES `completeHypergraph_edgeCount` ($\\binom{t}{r}$) and `complete_graph_edge_count` ($r=2$ case $\\binom{t}{2}$).",
+      "mathContext": "$K_t^{(r)}$ has $\\binom{t}{r}$ edges."
     },
     {
-      "id": "density",
-      "title": "Density for Hypergraphs",
-      "summary": "Density threshold n^(r-1+ε) generalizing n^(1+ε) for graphs.",
-      "startLine": 85,
-      "endLine": 107
+      "id": "part3",
+      "title": "Part III: Density for Hypergraphs",
+      "startLine": 89,
+      "endLine": 118,
+      "summary": "Defines `isDenseHypergraph` (edge count $\\geq n^{r-1+\\varepsilon}$) and PROVES `max_edges` (the maximum possible edge count).",
+      "mathContext": "Dense: $\\text{edgeCount}\\geq n^{r-1+\\varepsilon}$."
     },
     {
-      "id": "topological-obstruction",
-      "title": "Topological Obstruction (van Kampen-Flores)",
-      "summary": "Defines embeddability, axiomatizes van Kampen-Flores: K_{2r+1}^(r) is not embeddable in R^(2(r-1)).",
-      "startLine": 109,
-      "endLine": 155
+      "id": "part4",
+      "title": "Part IV: Topological Obstruction",
+      "startLine": 119,
+      "endLine": 191,
+      "summary": "Defines `isEmbeddable`/`isNonEmbeddable` (in $\\mathbb{R}^d$, via convex-hull intersection) and `criticalDim r` $=2(r-1)$. States the AXIOMS `vanKampen_Flores` ($K_{2r+1}^{(r)}$ is non-embeddable in $\\mathbb{R}^{2(r-1)}$), `triangle_planar`, `K4_planar`, and PROVES `vanKampen_Flores_graph` (the $r=2$ case: $K_5$ non-planar).",
+      "mathContext": "$K_{2r+1}^{(r)}$ non-embeddable in $\\mathbb{R}^{2(r-1)}$ (van Kampen–Flores); $r=2$: $K_5$ non-planar."
     },
     {
-      "id": "generalized-conjecture",
-      "title": "The Generalized Kostochka-Pyber Conjecture",
-      "summary": "States: dense r-uniform hypergraphs contain bounded-size non-embeddable sub-hypergraphs.",
-      "startLine": 157,
-      "endLine": 176
+      "id": "part5",
+      "title": "Part V: The Generalized Conjecture",
+      "startLine": 192,
+      "endLine": 217,
+      "summary": "Defines `hasSmallNonEmbeddable` (a non-embeddable sub-hypergraph on $\\leq k$ vertices) and `hypergraph_kostochka_pyber` (the generalized conjecture: density $n^{r-1+\\varepsilon}$ forces a small non-embeddable sub-hypergraph).",
+      "mathContext": "Conjecture: dense $r$-uniform $\\Rightarrow$ small non-embeddable (in $\\mathbb{R}^{2(r-1)}$) sub-hypergraph."
     },
     {
-      "id": "graph-case",
-      "title": "Recovery of the Graph Case (r=2)",
-      "summary": "Shows the framework reduces to Erdős 1018 when r=2.",
-      "startLine": 178,
-      "endLine": 195
+      "id": "part6",
+      "title": "Part VI: Recovery of the Graph Case (r = 2)",
+      "startLine": 218,
+      "endLine": 237,
+      "summary": "PROVES the $r=2$ specializations recovering original Erdős #1018: `criticalDim_graph` ($=2$), `density_exponent_graph` ($r-1+\\varepsilon=1+\\varepsilon$), `obstruction_size_graph` ($2r+1=5$, $K_5$), and `obstruction_size_3uniform` ($=7$).",
+      "mathContext": "$r=2$: critical dim $2$, exponent $1+\\varepsilon$, obstruction $K_5$ (original #1018)."
     },
     {
-      "id": "3-uniform-case",
-      "title": "The 3-Uniform Case",
-      "summary": "First non-trivial instance: n^(2+ε) density, K₇³ obstruction in R⁴.",
-      "startLine": 197,
-      "endLine": 225
+      "id": "part7",
+      "title": "Part VII: The 3-Uniform Case",
+      "startLine": 238,
+      "endLine": 273,
+      "summary": "The first non-trivial instance ($r=3$: density $n^{2+\\varepsilon}$, embeddability in $\\mathbb{R}^4$). PROVES `K7_3_edge_count` ($\\binom{7}{3}=35$) and `K7_3_nonembeddable` ($K_7^{(3)}$ not embeddable in $\\mathbb{R}^4$, from van Kampen–Flores). Defines `conjecture_3uniform`.",
+      "mathContext": "$r=3$: $K_7^{(3)}$ has $35$ edges, non-embeddable in $\\mathbb{R}^4$; conjecture at exponent $2+\\varepsilon$."
     },
     {
-      "id": "turan-threshold",
-      "title": "Turán-Type Density Threshold",
-      "summary": "Connects to Turán numbers: super-linear density exceeds any Turán threshold.",
-      "startLine": 227,
-      "endLine": 240
+      "id": "part8",
+      "title": "Part VIII: Turán-Type Density Threshold and Summary",
+      "startLine": 274,
+      "endLine": 318,
+      "summary": "Defines `turanNumber` (the Turán number $\\text{ex}(n,K_t^{(r)})$, left as `sorry` — the only sorry, since $r\\geq3$ Turán densities are largely open) and states the AXIOM `density_exceeds_turan` (super-linear $n^{r-1+\\varepsilon}$ eventually exceeds any subquadratic Turán number). Closes with a summary docstring (4 axioms, 1 sorry; conjecture OPEN for $r\\geq3$).",
+      "mathContext": "`turanNumber := sorry` (Turán densities open for $r\\geq3$); $n^{r-1+\\varepsilon}>\\text{ex}(n,K_t^{(r)})$ eventually."
     }
   ],
   "conclusion": {
