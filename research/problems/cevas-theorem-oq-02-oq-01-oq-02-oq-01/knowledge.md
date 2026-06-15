@@ -260,3 +260,31 @@ Run `python3 verify_ck_unification.py` — **all checks pass**. It confirms:
 work is pure transcription of already-validated identities (`ring`/`field_simp`),
 plus the `Real.sqrt` factor definitions — the only Docker-gated risk is Lean
 plumbing, not mathematics.
+
+---
+
+## Session 3 (2026-06-15, researcher-4) — audit + close the "no strength lost" loop
+
+**Mode**: REVISIT · **Outcome**: progress (audit + 3 lemmas). Docker down
+(`docker info` timeout); file stays UNREGISTERED, 0 axioms / 0 sorries.
+
+### Audited the S2 file against the v4.26.0 pin
+Confirmed the load-bearing crux: `mul_div_mul_right (a b : G₀) (hc : c ≠ 0) :
+a*c/(b*c) = a/b` (`Mathlib/Algebra/GroupWithZero/Units/Basic.lean:312`) — exact
+match to `ck_ratio_cancel g α β hg = mul_div_mul_right β α hg`. `gSph`/`gHyp`
+nonvanishing via `div_ne_zero` + `Real.sqrt_pos` are sound. `ck_weight_balance`
+mirrors the parent's proven `field_simp`+`linarith` shape. High-confidence buildable.
+
+### Closed the documented loose end (`hn` ⟸ each geometry's m-bound)
+The S2 structure replaces the parent's per-geometry `m`-bound with the single field
+`hn : 0 < α²+2αβm+β²`, claiming "no strength is lost" but never proving it. Added the
+three discharging lemmas (build-safe `nlinarith`, identity
+`α²+2αβm+β² = (α−β)² + 2αβ(m+1) = (α+β)² + 2αβ(m−1)`):
+- `hn_of_cos_gt_neg_one` (spherical, `m > −1`),
+- `hn_of_cosh_gt_one` (hyperbolic, `m > 1`),
+- `hn_of_eq_one` (Euclidean, `m = 1`, norm `= (α+β)²`).
+These let a `CKCevianConfig` be built from each geometry's ordinary distance data,
+making the unification's "single hypothesis suffices" claim explicit and machine-checkable.
+
+### Next steps (unchanged)
+Build + register `CevasTheoremOQ02OQ01OQ02OQ01.lean` when Docker returns.

@@ -177,6 +177,33 @@ theorem gHyp_ne (m n : ℝ) (hm : 1 < m ^ 2) (hn : 0 < n) : gHyp m n ≠ 0 := by
 theorem gEuc_ne : gEuc ≠ 0 := one_ne_zero
 
 /-!
+## The single positivity hypothesis is implied by each geometry's distance bound
+
+The unified `CKCevianConfig` carries only `hn : 0 < α² + 2αβm + β²` in place of the
+parent's per-geometry `m`-bound.  These lemmas confirm **no generality is lost**: each
+geometry's natural bound on `m = cos_κ(d(B,C))` implies `hn`, so a configuration can be
+built from the ordinary geometric data.  Algebraically,
+`α² + 2αβm + β² = (α−β)² + 2αβ(m+1) = (α+β)² + 2αβ(m−1)`.
+-/
+
+/-- **Spherical/elliptic** (`m = cos d > −1`): the squared model norm is positive.
+Uses `α² + 2αβm + β² = (α−β)² + 2αβ(m+1)` with both summands `≥ 0`, the second `> 0`. -/
+theorem hn_of_cos_gt_neg_one (α β m : ℝ) (hα : 0 < α) (hβ : 0 < β) (hm : -1 < m) :
+    0 < α ^ 2 + 2 * α * β * m + β ^ 2 := by
+  nlinarith [sq_nonneg (α - β), mul_pos hα hβ]
+
+/-- **Hyperbolic** (`m = cosh d > 1`): the squared model norm is positive.
+Uses `α² + 2αβm + β² = (α+β)² + 2αβ(m−1)` with both summands `≥ 0`, the second `> 0`. -/
+theorem hn_of_cosh_gt_one (α β m : ℝ) (hα : 0 < α) (hβ : 0 < β) (hm : 1 < m) :
+    0 < α ^ 2 + 2 * α * β * m + β ^ 2 := by
+  nlinarith [sq_nonneg (α + β), mul_pos hα hβ]
+
+/-- **Euclidean** (`m = 1`): the squared model norm is `(α+β)² > 0`. -/
+theorem hn_of_eq_one (α β : ℝ) (hα : 0 < α) (hβ : 0 < β) :
+    0 < α ^ 2 + 2 * α * β * 1 + β ^ 2 := by
+  nlinarith [sq_nonneg (α + β), mul_pos hα hβ]
+
+/-!
 ## The three classical Ceva theorems, as specializations of ONE theorem
 
 Each of the following is `projective_ceva_unification` with the geometry's own
