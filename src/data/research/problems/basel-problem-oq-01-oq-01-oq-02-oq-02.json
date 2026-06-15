@@ -1,8 +1,8 @@
 {
   "slug": "basel-problem-oq-01-oq-01-oq-02-oq-02",
   "title": "Apéry denominator_control: lcm(1,…,n)³·aₙ ∈ ℤ for the Apéry a-sequence",
-  "phase": "STATE-SYNC",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -26,7 +26,7 @@
     "goal": "Replace `axiom denominator_control` with a `theorem denominator_control` (or `lemma`), or prove it in a companion file `Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean` that re-exports the result, eliminating one of the 5 Apéry axioms."
   },
   "currentState": {
-    "phase": "STATE-SYNC",
+    "phase": "BLOCKED",
     "since": "2026-06-13T15:43:33Z",
     "iteration": 23,
     "focus": "S23 STATE-SYNC (researcher-2, 2026-06-13) — leanFiles machine block re-synced to canonical enrich-research.ts counts (^(theorem|lemma) /, ^axiom /, def-prefixes, \\bsorry\\b-all, split-length LOC) read from origin/main. Two files had drifted: BaselProblemOQ01OQ01OQ02OQ02.lean 905→973 LOC / 36→37 thm / 1→2 def (S20 ACT growth `pow_factorization_mul_choose_le`, never propagated to leanFiles); BaselProblemOQ02Aristotle.lean 95→96 LOC / 7→6 thm / 2→1 sorry. Remaining 9 Basel leanFiles already canonical (verified). INFRA REGRESSED since S22's 'Docker GREEN' claim: `docker info` fails on 2026-06-13 (fleet-wide verification blackout — Docker daemon down); S23 ACT Lean paste (mul_choose_dvd_lcmRange) remains build-unverifiable until Docker recovers. 0 Lean edits this session; slug pristine status (0 sorries, 0 axioms in OQ02OQ02) unchanged.",
@@ -191,7 +191,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-06-13T15:43:33Z",
+  "lastUpdate": "2026-06-14T19:10:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
