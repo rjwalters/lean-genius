@@ -215,3 +215,63 @@ found"** (backend still unavailable) — so still build-free only.
    ⇒ `IsIntegrallyClosed.isIntegral_iff`) and (b) the bounds — now fully specced
    by the witness recipe above.
 2. Fallbacks unchanged (Strategy A 3-squaring chain; or `m(α)=0` + rational-root).
+
+---
+
+## Session 2026-06-14 (Session 4) — Strategy D descent bearers confirmed at pin (researcher-5)
+
+**Mode**: CONTINUE · **Outcome**: ORIENT → ACT-ready (de-risk). Both backends still down
+(Docker `docker info` 15s timeout; Aristotle MCP `prove` → "Resource not found", probed this
+session). Build-free only. **This discharges the single hedged item in the prior Next Action**:
+"the integral-closure descent `(r:ℝ) integral / ℤ ⇒ r ∈ ℤ` (lemma names *to confirm*: ...,
+integrality descent along injective `algebraMap ℚ ℝ`, ...)". Those names are now confirmed —
+and the previously-**unnamed** descent step is identified — against the repo's exact Mathlib pin
+`v4.26.0` (read via `gh api .../contents/...?ref=v4.26.0`, not the moving HEAD).
+
+### Strategy D descent chain — every step now has a confirmed Mathlib bearer @ v4.26.0
+
+Let `α := √2+√3+√5+√7`. Assume `α = algebraMap ℚ ℝ q` for some `q : ℚ` (i.e. `α` rational).
+
+1. **`IsIntegral ℤ α`** — `IsIntegral.add` (×3) over the four `IsIntegral ℤ (√k)`. Each `√k`
+   (k ∈ {2,3,5,7}) is a root of the monic integer `X² − C k`: leading coeff 1, integer coeffs,
+   `(√k)² − k = 0` via `Real.sq_sqrt (by positivity)`. (Monic witness: `monic_X_pow_sub_C`.)
+2. **descent ℝ → ℚ** (the step the prior sessions left *unnamed* as "integrality descent along
+   `algebraMap ℚ ℝ`"): it is
+   **`isIntegral_algebraMap_iff`** — `Mathlib/RingTheory/IntegralClosure/IsIntegral/Basic.lean:179`
+   ```
+   theorem isIntegral_algebraMap_iff [Algebra A B] [IsScalarTower R A B] {x : A}
+       (hAB : Function.Injective (algebraMap A B)) :
+       IsIntegral R (algebraMap A B x) ↔ IsIntegral R x
+   ```
+   Apply with `R = ℤ`, `A = ℚ`, `B = ℝ`, `x = q`. Needs `[IsScalarTower ℤ ℚ ℝ]` (standard
+   instance) and `Function.Injective (algebraMap ℚ ℝ)` = `(algebraMap ℚ ℝ).injective`
+   (`RingHom.injective`, since ℚ is a field). `.mp` turns `IsIntegral ℤ (algebraMap ℚ ℝ q)`
+   (= `IsIntegral ℤ α` by the rationality hypothesis) into **`IsIntegral ℤ q`**.
+3. **q is an integer** — **`IsIntegrallyClosed.isIntegral_iff`**
+   `Mathlib/RingTheory/IntegralClosure/IntegrallyClosed.lean:210`
+   ```
+   theorem isIntegral_iff [IsIntegrallyClosed R] {x : K} :
+       IsIntegral R x ↔ ∃ y : R, algebraMap R K y = x
+   ```
+   with `R = ℤ`, `K = ℚ`. `IsIntegrallyClosed ℤ` resolves by instance (ℤ is a PID/UFD; the
+   `UniqueFactorizationMonoid` integrally-closed instance, same file/region — search hit
+   `IntegrallyClosed.lean` & `RationalRoot.lean`); `[IsFractionRing ℤ ℚ]` is a standard instance.
+   `.mp` gives `∃ n : ℤ, algebraMap ℤ ℚ n = q`, i.e. **`q ∈ ℤ`** ⇒ `α = (n : ℝ)`.
+4. **contradiction** — bounds `8 < α < 9` (witness recipe, Session 3) ⇒ `α ∉ ℤ`. So no integer
+   `n` with `α = n`; the rationality assumption is false. `Irrational α` ∎.
+
+### Net effect
+Strategy D is now **paste-port-ready**: steps 1–4 are pure transcription against named,
+pin-verified lemmas; the only non-API work left is the four `norm_num` radical bounds (already
+specced by Session 3's witness recipe). No genuinely-open Mathlib gap remains for Strategy D.
+This is *not* re-ORIENT churn — it converts the prior "lemma names to confirm" TODO into
+confirmed `file:line` bearers and resolves the one step that had no name.
+
+### Caveat (kept honest)
+Not Lean-checked — Docker/Aristotle down. The two residual transcription risks are (i) the cast
+plumbing `√(2:ℕ)` vs `√(2:ℝ)` when assembling step 1 from `IsIntegral ℤ (√(k:ℕ))`, and (ii) that
+`IsScalarTower ℤ ℚ ℝ` + `IsFractionRing ℤ ℚ` instances fire without manual `haveI`. Both are
+routine but are exactly why a real build (not an uncompilable `.lean`) is deferred to ACT.
+
+### Files modified
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
