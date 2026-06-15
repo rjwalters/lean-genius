@@ -58,7 +58,7 @@
     {
       "id": "taylor-polynomial",
       "title": "The Taylor Polynomial",
-      "startLine": 39,
+      "startLine": 1,
       "endLine": 69,
       "summary": "Defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using Finset.sum. Proves the n=0 case: T₀ f(a)(x) = f(a), and the n=1 case: T₁ f(a)(x) = f(a) + f'(a)(x-a), both by simp with iteratedDeriv_zero and iteratedDeriv_one.",
       "mathContext": "$T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. For $n=0$: $T_0 = f(a)$. For $n=1$: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line approximation). The `noncomputable section` is needed because iteratedDeriv uses classical choice."
@@ -66,34 +66,26 @@
     {
       "id": "lagrange-remainder",
       "title": "Taylor's Theorem with Lagrange Remainder (Axiom)",
-      "startLine": 71,
-      "endLine": 99,
+      "startLine": 70,
+      "endLine": 98,
       "summary": "Axiomatizes `taylor_lagrange_remainder`: for ContDiff ℝ (n+1) f and a < b, there exists c ∈ (a,b) such that f(b) - T_n f(a)(b) = iteratedDeriv (n+1) f c / (n+1)! · (b-a)^(n+1). Axiomatized because converting from Mathlib's integral remainder requires the MVT for integrals.",
       "mathContext": "The Lagrange remainder: $f(b) = T_n(b) + \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c \\in (a,b)$. Mathlib provides the integral form: $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$. The conversion uses $\\int_a^b h(t) g(t)\\,dt = g(c) \\int_a^b h(t)\\,dt$ (mean value theorem for integrals, with $h(t) = \\frac{(b-t)^n}{n!} \\geq 0$)."
     },
     {
       "id": "mvt-connection",
       "title": "MVT as First-Order Taylor",
-      "startLine": 100,
-      "endLine": 128,
+      "startLine": 99,
+      "endLine": 127,
       "summary": "Proves `mvt_is_first_order_taylor`: for ContDiff ℝ 1 f and a < b, ∃ c ∈ (a,b) with f(b) - f(a) = deriv f c · (b-a). Derived from taylor_lagrange_remainder at n=0, using taylorPolynomial_zero (T₀ = f(a)), iteratedDeriv_one (f^(1) = deriv f), and Nat.factorial 1 = 1.",
       "mathContext": "At $n=0$: $f(b) - T_0(b) = f(b) - f(a) = \\frac{f'(c)}{1!}(b-a)^1 = f'(c)(b-a)$. The `ContDiff ℝ 1 f` hypothesis is exactly what's needed: once differentiable with continuous derivative. The simp call with `Nat.factorial` simplifies $1! = 1$ and the cast from ℕ to ℝ."
     },
     {
       "id": "second-order",
       "title": "Second-Order Taylor Expansion",
-      "startLine": 129,
+      "startLine": 128,
       "endLine": 153,
       "summary": "Proves `taylor_second_order`: for ContDiff ℝ 2 f and a < b, ∃ c ∈ (a,b) with f(b) = f(a) + f'(a)(b-a) + iteratedDeriv 2 f c / 2 · (b-a)². Derived from taylor_lagrange_remainder at n=1, using taylorPolynomial_one and simplifying 2! = 2.",
       "mathContext": "At $n=1$: $f(b) = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2}(b-a)^2$. This is the quadratic approximation with exact remainder. Applications: the second-order Taylor expansion is used in Newton's method analysis (quadratic convergence), optimization (second-order conditions), and numerical ODEs (Runge-Kutta order conditions)."
-    },
-    {
-      "id": "error-bounds",
-      "title": "Taylor Error Bounds and Approximation Quality",
-      "startLine": 129,
-      "endLine": 153,
-      "summary": "The Lagrange remainder gives sharp error bounds: |f(b) - T_n(b)| ≤ M|b-a|^(n+1)/(n+1)! where M bounds the (n+1)-th derivative. MVT (n=0) and second-order Taylor (n=1) are special cases with explicit error control.",
-      "mathContext": "The second-order Taylor theorem (taylor_second_order) yields: $|f(b) - f(a) - f'(a)(b-a)| \\leq \\frac{\\sup_{c \\in (a,b)} |f''(c)|}{2} \\cdot (b-a)^2$. This $O((b-a)^2)$ bound improves on MVT's $O(b-a)$ and is the foundation for second-order numerical methods (Heun's method, midpoint rule)."
     }
   ],
   "conclusion": {
