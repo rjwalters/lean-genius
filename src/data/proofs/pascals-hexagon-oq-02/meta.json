@@ -1,0 +1,71 @@
+{
+  "id": "pascals-hexagon-oq-02",
+  "title": "Brianchon's Theorem via Projective Duality",
+  "slug": "pascals-hexagon-oq-02",
+  "description": "Brianchon's theorem — the three main diagonals of a hexagon circumscribed about a conic are concurrent — derived as the projective dual of Pascal's hexagon theorem in the self-dual homogeneous-coordinate model.",
+  "meta": {
+    "author": "Charles-Julien Brianchon (1806); formalization derived from Pascal",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brianchon%27s_theorem",
+    "date": "1806",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/PascalsHexagonOQ02.lean",
+    "parent": "pascals-hexagon",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "duality",
+      "concurrency",
+      "brianchon",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.LinearAlgebra.Matrix.Adjugate",
+        "description": "Adjugate matrix used to define the dual (line-)conic and prove its symmetry",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Mathlib.LinearAlgebra.CrossProduct",
+        "description": "Cross product (inherited via PascalsHexagon) serving as both join of points and meet of lines",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      }
+    ],
+    "originalContributions": [
+      "Dual (line-)conic defined via the adjugate matrix, with tangency expressed as membership on the dual conic",
+      "Proof that the adjugate of a symmetric conic is symmetric (dual of a symmetric conic is a symmetric conic)",
+      "CircumscribedHexagon structure: six valid sides lying on the line-conic",
+      "Duality bridge toInscribed: reading the six tangent sides as six points inscribed in the dual conic",
+      "Definitional identification of the three main diagonals with the Pascal opposite-side points (pascalP/Q/R)",
+      "Brianchon's theorem proved with no new axioms or sorries, purely from pascal_hexagon_theorem"
+    ],
+    "dateAdded": "2026-06-15",
+    "axiomCount": 1,
+    "lineCount": 199,
+    "assumptions": "1 axiom, inherited from the parent file: conic_implies_pascal_constraint (the Cayley-Bacharach/Bezout step of Pascal's theorem). This file introduces NO new axioms and NO sorries — Brianchon follows from Pascal by duality alone.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Charles-Julien Brianchon (1783–1864) discovered this theorem in 1806 while a student at the École Polytechnique, publishing it in the Journal de l'École Polytechnique. It is the projective dual of Pascal's 1639 hexagon theorem (Hexagrammum Mysticum): where Pascal concerns a hexagon inscribed in a conic and concludes that opposite sides meet in collinear points, Brianchon concerns a hexagon circumscribed about a conic (its sides tangent to the conic) and concludes that the three main diagonals are concurrent. The two theorems are exchanged by the principle of duality in the projective plane, which swaps points with lines, 'collinear' with 'concurrent', and 'lies on' with 'passes through'. Brianchon's discovery was an early and striking confirmation of the power of Poncelet-style projective duality, which was systematized over the following decades.",
+    "problemStatement": "**Brianchon's Theorem**: Let a hexagon with sides $a, b, c, d, e, f$ (in cyclic order) be circumscribed about a conic, i.e. each side is tangent to the conic. Its vertices are the meets of consecutive sides ($a \\wedge b$, $b \\wedge c$, …). Then the three *main diagonals* joining opposite vertices,\n$$AD = (a\\wedge b)\\vee(d\\wedge e),\\quad BE = (b\\wedge c)\\vee(e\\wedge f),\\quad CF = (c\\wedge d)\\vee(f\\wedge a),$$\nare **concurrent** (pass through a common point, the Brianchon point).",
+    "text": "Brianchon's theorem — the three main diagonals of a hexagon circumscribed about a conic are concurrent — formalized as the projective dual of Pascal's hexagon theorem.",
+    "proofStrategy": "The parent file models $\\mathbb{RP}^2$ by nonzero vectors in $\\mathbb{R}^3$. In this model duality is built in: the join of two points and the meet of two lines are the **same** operation (the cross product), and `collinear` and `concurrent` are the **same** determinant predicate $\\det(\\cdot,\\cdot,\\cdot)=0$. A line $\\ell$ is tangent to a point-conic $C$ exactly when, as a vector, it lies on the dual (line-)conic $\\mathrm{adj}(C)$, since $\\ell^T \\mathrm{adj}(C)\\,\\ell = 0$. Hence six tangent sides are six points on the dual conic — an *inscribed* hexagon there. Applying `pascal_hexagon_theorem` to that inscribed hexagon makes its three opposite-side intersection points collinear. Those three points are, by definition (join = meet = cross product), the three main diagonals of the original circumscribed hexagon, and collinearity of three lines is concurrency. Brianchon therefore follows with no new axioms: the only assumption is the Pascal constraint axiom inherited from the parent file.",
+    "keyInsights": [
+      "**Self-dual coordinates**: Because points and lines are both nonzero vectors in $\\mathbb{R}^3$ and join/meet are both the cross product, the dual of any incidence theorem is obtained for free by reinterpreting the same algebra",
+      "**Pascal point = Brianchon diagonal**: The opposite-side intersection point $P = (a\\wedge b)\\vee(d\\wedge e)$ of the inscribed reading is *definitionally equal* to the main diagonal $AD$ of the circumscribed hexagon — both reduce to $\\mathrm{cross}(\\mathrm{cross}(a,b),\\mathrm{cross}(d,e))$",
+      "**Collinear ≡ concurrent**: The predicates for three collinear points and three concurrent lines are the identical determinant condition, so Pascal's collinearity conclusion is literally Brianchon's concurrency conclusion",
+      "**Dual conic = adjugate**: For a nondegenerate conic $C$ the envelope of tangent lines is the conic $\\mathrm{adj}(C) = (\\det C)\\,C^{-1}$; the adjugate of a symmetric matrix is symmetric, so the dual of a (symmetric) conic is again a conic",
+      "**No new assumptions**: Brianchon inherits the single Pascal axiom and adds neither axioms nor sorries — the entire content is the duality reinterpretation"
+    ],
+    "prerequisites": [
+      "Pascal's hexagon theorem (parent formalization)",
+      "Projective duality in the plane (points ↔ lines, collinear ↔ concurrent)",
+      "Homogeneous coordinates and the cross product as join/meet",
+      "The adjugate matrix and the dual conic / envelope of tangent lines"
+    ]
+  }
+}

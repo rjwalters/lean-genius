@@ -88,22 +88,22 @@ theorem dualConic_symmetric {C : Conic} (h : C.symmetric) :
 -- PART 2: Circumscribed hexagons
 -- ============================================================
 
-/-- A hexagon **circumscribed about** the line-conic `D`: six valid lines, each
-    lying on `D` (i.e. tangent to the point-conic whose dual is `D`).  The sides
+/-- A hexagon **circumscribed about** the line-conic `K`: six valid lines, each
+    lying on `K` (i.e. tangent to the point-conic whose dual is `K`).  The sides
     are taken in cyclic order `a, b, c, d, e, f`. -/
-structure CircumscribedHexagon (D : Conic) where
+structure CircumscribedHexagon (K : Conic) where
   a : ProjLine
   b : ProjLine
   c : ProjLine
   d : ProjLine
   e : ProjLine
   f : ProjLine
-  ha : pointOnConic a D
-  hb : pointOnConic b D
-  hc : pointOnConic c D
-  hd : pointOnConic d D
-  he : pointOnConic e D
-  hf : pointOnConic f D
+  ha : pointOnConic a K
+  hb : pointOnConic b K
+  hc : pointOnConic c K
+  hd : pointOnConic d K
+  he : pointOnConic e K
+  hf : pointOnConic f K
   havalid : a ≠ 0
   hbvalid : b ≠ 0
   hcvalid : c ≠ 0
@@ -111,24 +111,24 @@ structure CircumscribedHexagon (D : Conic) where
   hevalid : e ≠ 0
   hfvalid : f ≠ 0
 
-variable {D : Conic}
+variable {K : Conic}
 
 /-- The main diagonal `AD`, joining vertex `a∧b` to vertex `d∧e`. -/
-noncomputable def diagAD (hex : CircumscribedHexagon D) : ProjLine :=
+noncomputable def diagAD (hex : CircumscribedHexagon K) : ProjLine :=
   lineThrough (lineIntersection hex.a hex.b) (lineIntersection hex.d hex.e)
 
 /-- The main diagonal `BE`, joining vertex `b∧c` to vertex `e∧f`. -/
-noncomputable def diagBE (hex : CircumscribedHexagon D) : ProjLine :=
+noncomputable def diagBE (hex : CircumscribedHexagon K) : ProjLine :=
   lineThrough (lineIntersection hex.b hex.c) (lineIntersection hex.e hex.f)
 
 /-- The main diagonal `CF`, joining vertex `c∧d` to vertex `f∧a`. -/
-noncomputable def diagCF (hex : CircumscribedHexagon D) : ProjLine :=
+noncomputable def diagCF (hex : CircumscribedHexagon K) : ProjLine :=
   lineThrough (lineIntersection hex.c hex.d) (lineIntersection hex.f hex.a)
 
 /-- Read the six tangent lines of a circumscribed hexagon as six points
-    inscribed in the line-conic `D`.  This is the duality bridge: a line on `D`
-    is a point on `D` in the self-dual coordinate model. -/
-def toInscribed (hex : CircumscribedHexagon D) : InscribedHexagon D where
+    inscribed in the line-conic `K`.  This is the duality bridge: a line on `K`
+    is a point on `K` in the self-dual coordinate model. -/
+def toInscribed (hex : CircumscribedHexagon K) : InscribedHexagon K where
   A := hex.a
   B := hex.b
   C' := hex.c
@@ -151,13 +151,13 @@ def toInscribed (hex : CircumscribedHexagon D) : InscribedHexagon D where
 /-- Under the duality bridge, the Pascal point `P = AB ∩ DE` of the inscribed
     reading is *definitionally* the diagonal `AD` of the circumscribed hexagon:
     both are `crossProduct (crossProduct a b) (crossProduct d e)`. -/
-theorem pascalP_toInscribed (hex : CircumscribedHexagon D) :
+theorem pascalP_toInscribed (hex : CircumscribedHexagon K) :
     pascalP (toInscribed hex) = diagAD hex := rfl
 
-theorem pascalQ_toInscribed (hex : CircumscribedHexagon D) :
+theorem pascalQ_toInscribed (hex : CircumscribedHexagon K) :
     pascalQ (toInscribed hex) = diagBE hex := rfl
 
-theorem pascalR_toInscribed (hex : CircumscribedHexagon D) :
+theorem pascalR_toInscribed (hex : CircumscribedHexagon K) :
     pascalR (toInscribed hex) = diagCF hex := rfl
 
 -- ============================================================
@@ -167,16 +167,16 @@ theorem pascalR_toInscribed (hex : CircumscribedHexagon D) :
 /-- **Brianchon's Theorem** (projective dual of Pascal's theorem).
 
     If a hexagon is circumscribed about a conic — its six sides `a,…,f` lie on
-    the line-conic `D` — then its three main diagonals `AD`, `BE`, `CF` are
+    the line-conic `K` — then its three main diagonals `AD`, `BE`, `CF` are
     concurrent.
 
-    The proof is pure duality: the six sides, read as points on `D`, form an
+    The proof is pure duality: the six sides, read as points on `K`, form an
     inscribed hexagon; Pascal's theorem makes the three opposite-side
     intersection points collinear; those points are exactly the three diagonals,
     and collinearity of lines is concurrency. -/
-theorem brianchon_theorem (hex : CircumscribedHexagon D) :
+theorem brianchon_theorem (hex : CircumscribedHexagon K) :
     concurrent (diagAD hex) (diagBE hex) (diagCF hex) := by
-  have hpascal := pascal_hexagon_theorem D (toInscribed hex)
+  have hpascal := pascal_hexagon_theorem K (toInscribed hex)
   -- `collinear` and `concurrent` are the same determinant predicate, and the
   -- three Pascal points coincide definitionally with the three diagonals.
   rw [pascalP_toInscribed, pascalQ_toInscribed, pascalR_toInscribed] at hpascal
