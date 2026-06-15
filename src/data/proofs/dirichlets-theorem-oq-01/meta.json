@@ -104,50 +104,121 @@
       "id": "header",
       "title": "Problem Statement and Context",
       "startLine": 1,
-      "endLine": 60,
-      "summary": "Overview of the Siegel zero problem, known results, and connection to Dirichlet L-functions."
+      "endLine": 61,
+      "summary": "Module docstring: overview of the Siegel zero problem, what a Siegel zero is, the partial answer (L(1,χ) ≠ 0 is proved; whether an exact Siegel zero can occur stays open), and the connection to Dirichlet L-functions, plus imports and namespace.",
+      "mathContext": "Open question on Siegel zeros of Dirichlet L-functions; L(1,χ)≠0 is known, the exact-zero question is open."
     },
     {
-      "id": "nonvanishing",
-      "title": "L(1, χ) ≠ 0 — The Known Nonvanishing",
-      "startLine": 61,
-      "endLine": 76,
-      "summary": "L_one_ne_zero: wraps Mathlib's LFunction_apply_one_ne_zero for non-trivial Dirichlet characters."
+      "id": "part1-nonvanishing",
+      "title": "Part I: L(1, χ) ≠ 0 — The Known Nonvanishing Result",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "`L_one_ne_zero`: wraps Mathlib's `LFunction_apply_one_ne_zero` to give L(1,χ) ≠ 0 for non-trivial Dirichlet characters.",
+      "mathContext": "$L(1,\\chi) \\neq 0$ for non-principal $\\chi$ (from Mathlib)."
     },
     {
-      "id": "definitions",
-      "title": "Formal Definitions of Siegel Zeros",
-      "startLine": 77,
+      "id": "part2-definitions",
+      "title": "Part II: Formal Definition of Siegel Zeros",
+      "startLine": 75,
       "endLine": 103,
-      "summary": "IsSiegelZero, HasSiegelZero, and SiegelZeroConjecture formally define the geometric picture."
+      "summary": "Formal definitions `IsSiegelZero`, `HasSiegelZero`, and the `SiegelZeroConjecture` predicate capturing a real zero of L(s,χ) very close to s=1.",
+      "mathContext": "A Siegel zero is a real zero $\\beta$ of $L(s,\\chi)$ with $\\beta$ near 1; defined via `IsSiegelZero`/`HasSiegelZero`."
     },
     {
-      "id": "implications",
-      "title": "Key Implication: Siegel Zero → Small L(1,χ)",
+      "id": "part3-implications",
+      "title": "Part III: Key Implication — No Siegel Zero → L(1,χ) Bounded Below",
       "startLine": 104,
-      "endLine": 144,
-      "summary": "siegel_zero_implies_small_L_one (with MVT sorry) and no_siegel_zero_gives_lower_bound (trivially from nonvanishing)."
+      "endLine": 170,
+      "summary": "`siegel_zero_implies_small_L_one` (a Siegel zero forces L(1,χ) small) and `no_siegel_zero_gives_lower_bound` (absence of a Siegel zero yields a lower bound on L(1,χ), from nonvanishing).",
+      "mathContext": "Siegel zero $\\Leftrightarrow$ small $L(1,\\chi)$; its absence gives a lower bound."
     },
     {
-      "id": "partial-results",
-      "title": "What IS Known: Siegel's Theorem and GRH Implication",
-      "startLine": 145,
-      "endLine": 183,
-      "summary": "siegel_theorem and grh_implies_no_siegel_zeros axiomized. Siegel 1935 gives ineffective bound; GRH gives effective ≫ 1/(log q)²."
+      "id": "part4-partial-results",
+      "title": "Part IV: What IS Known — Siegel's Theorem (Ineffective Lower Bound)",
+      "startLine": 171,
+      "endLine": 207,
+      "summary": "Axiomatizes `siegel_theorem` (Siegel 1935: ineffective lower bound L(1,χ) ≫_ε q^{-ε}) and `grh_implies_no_siegel_zeros` (under GRH there are no Siegel zeros, giving an effective ≫ 1/(log q)² bound).",
+      "mathContext": "Siegel (1935): $L(1,\\chi) \\gg_\\varepsilon q^{-\\varepsilon}$ (ineffective); GRH eliminates Siegel zeros."
     },
     {
-      "id": "landau-page",
-      "title": "Landau-Page Theorem",
-      "startLine": 184,
-      "endLine": 210,
-      "summary": "landau_page_theorem: at most one exceptional character per conductor range. Axiomized."
+      "id": "part5-landau-page",
+      "title": "Part V: The Landau-Page Theorem",
+      "startLine": 208,
+      "endLine": 229,
+      "summary": "Axiomatizes `landau_page_theorem`: at most one exceptional (Siegel-zero-bearing) character per conductor range.",
+      "mathContext": "Landau-Page: at most one exceptional character per range of conductors."
     },
     {
-      "id": "open-question",
-      "title": "Summary and Open Question",
-      "startLine": 207,
+      "id": "part6-summary-open",
+      "title": "Part VI: Summary and Open Problem Statement",
+      "startLine": 230,
+      "endLine": 285,
+      "summary": "States the open problem: `open_question_summary`, the `SiegelZeroOpenQuestion` predicate, `nonvanishing_implies_no_exact_siegel_zeros` (L(1,χ)≠0 rules out a zero exactly at 1), and `siegel_zero_location_constraint`.",
+      "mathContext": "Formalizes the open question of whether an exact Siegel zero can occur, given L(1,χ)≠0."
+    },
+    {
+      "id": "part7-structural",
+      "title": "Part VII: Structural Properties of Siegel Zeros",
+      "startLine": 286,
+      "endLine": 378,
+      "summary": "Structural lemmas on the location of a Siegel zero β: `siegel_zero_bounds`, `siegel_zero_positive`, `siegel_zero_in_upper_half`, plus `grh_eliminates_siegel_zeros`, `at_most_one_exceptional_conductor`, and `grh_implies_no_siegel_zeros_large_conductor`.",
+      "mathContext": "Constraints on a Siegel zero's location ($0<\\beta<1$, near 1) and GRH-based elimination results."
+    },
+    {
+      "id": "part8-additional-structural",
+      "title": "Part VIII: Additional Structural Results",
+      "startLine": 379,
+      "endLine": 472,
+      "summary": "Further properties: `siegel_zero_not_one`, `siegel_zero_is_LFunction_zero`, `siegel_zero_region_nonempty`, `siegel_zero_in_open_unit`, monotonicity (`has_siegel_zero_mono`, `not_has_siegel_zero_of_smaller`), `landau_page_uniqueness`, and the L(1,χ) positivity corollaries `siegel_implies_L_one_pos`/`grh_bound_implies_L_one_pos`.",
+      "mathContext": "Additional Siegel-zero structure, monotonicity in the conductor, and L(1,χ) positivity consequences."
+    },
+    {
+      "id": "part9-deuring-heilbronn",
+      "title": "Part IX: Deuring-Heilbronn Zero Repulsion",
+      "startLine": 473,
+      "endLine": 537,
+      "summary": "Axiomatizes `deuring_heilbronn_repulsion` (a Siegel zero repels all other zeros of L-functions) and derives `siegel_zero_repels_other_zeros` and `repulsion_grows_with_proximity`.",
+      "mathContext": "Deuring-Heilbronn phenomenon: a Siegel zero pushes other zeros away, more strongly the closer it is to 1."
+    },
+    {
+      "id": "part10-tatuzawa",
+      "title": "Part X: Tatuzawa's Refinement of Siegel's Theorem",
+      "startLine": 538,
+      "endLine": 592,
+      "summary": "Axiomatizes `tatuzawa_theorem` (Tatuzawa's effective-with-one-exception refinement of Siegel's bound) and derives `tatuzawa_implies_siegel` and `tatuzawa_finite_exceptions`.",
+      "mathContext": "Tatuzawa (1951): Siegel's bound is effective with at most one exceptional modulus."
+    },
+    {
+      "id": "part11-siegel-walfisz",
+      "title": "Part XI: Siegel-Walfisz Theorem and Prime Counting",
+      "startLine": 593,
+      "endLine": 617,
+      "summary": "Defines `primeCountAP` (primes in an arithmetic progression) and proves `no_siegel_zero_extends_range`, linking the absence of Siegel zeros to the Siegel-Walfisz prime-counting range.",
+      "mathContext": "Siegel-Walfisz: no Siegel zero extends the uniformity range for primes in arithmetic progressions."
+    },
+    {
+      "id": "part12-connections",
+      "title": "Part XII: Connections Between the Major Theorems",
+      "startLine": 618,
+      "endLine": 653,
+      "summary": "Connecting results `grh_implies_siegel_zero_conjecture_small_c` and `no_siegel_zero_positive_L`, tying GRH, the Siegel-zero conjecture, and L(1,χ) positivity together.",
+      "mathContext": "Logical connections between GRH, the Siegel-zero conjecture, and L(1,χ)>0."
+    },
+    {
+      "id": "part13-counting",
+      "title": "Part XIII: Counting Theorems and Combinatorial Consequences",
+      "startLine": 654,
+      "endLine": 671,
+      "summary": "Combinatorial bounds on the prime-counting function: `primeCountAP_le` (≤ x+1) and `primeCountAP_mono` (monotone in x).",
+      "mathContext": "Elementary bounds on `primeCountAP`: trivial upper bound and monotonicity."
+    },
+    {
+      "id": "part14-open-question",
+      "title": "Part XIV: The Open Question Formalized",
+      "startLine": 672,
       "endLine": 705,
-      "summary": "open_question_summary, SiegelZeroOpenQuestion, nonvanishing_implies_no_exact_siegel_zeros, siegel_zero_location_constraint."
+      "summary": "`open_question_final_status`: the formalized final status of the open question — L(1,χ)≠0 is proved, the existence of an exact Siegel zero remains open.",
+      "mathContext": "Final status: nonvanishing proved, exact Siegel zero open."
     }
   ],
   "conclusion": {
