@@ -60,6 +60,27 @@ check("reindex: T(i)^2 + (i+1)^3 = T(i+1)^2 (no nat-sub)",
 check("Gauss T(n) = sum_{i<=n} i",
       sp.simplify(sp.summation(i, (i, 0, n)) - n * (n + 1) / 2) == 0)
 
+# --- ℕ-DIVISION HAZARD (L2′ "/2" clearing) -------------------------------------
+# In Lean `T i = i*(i+1)/2` is *truncated* Nat division. The only build-fiddly
+# step left is clearing it. The clean route is `2 * T k = k*(k+1)` (division-free),
+# valid because `k*(k+1)` is always even (Mathlib: `Nat.even_mul_succ_self`).
+# Multiplying the additive telescope identities through by 4 then removes every
+# `/2`, giving the exact ring identities the Lean proof should `ring`/`omega` on:
+#   (2 T(i-1))^2 + 4 i^3     = (2 T(i))^2      with 2 T k = k(k+1)
+#   ((i-1) i)^2 + 4 i^3      = (i (i+1))^2
+#   (i (i+1))^2 + 4 (i+1)^3  = ((i+1)(i+2))^2  (nat-sub-free reindex form)
+check("clear /2: 2 T(i) = i(i+1) (division-free)",
+      sp.simplify(2 * Ti - i * (i + 1)) == 0)
+check("L2 cleared (x4, no /2): ((i-1)i)^2 + 4 i^3 = (i(i+1))^2",
+      sp.simplify(((i - 1) * i)**2 + 4 * i**3 - (i * (i + 1))**2) == 0)
+check("reindex cleared (x4, no /2): (i(i+1))^2 + 4 (i+1)^3 = ((i+1)(i+2))^2",
+      sp.simplify((i * (i + 1))**2 + 4 * (i + 1)**3 - ((i + 1) * (i + 2))**2) == 0)
+# ℕ-division is EXACT here (no truncation): 2*(i*(i+1)//2) == i*(i+1) for all i,
+# i.e. i*(i+1) is even — the content of `Nat.even_mul_succ_self`.
+check("Nat-division exact: 2*(k*(k+1)//2) == k*(k+1) and k*(k+1) even, k=0..200",
+      all(2 * ((k * (k + 1)) // 2) == k * (k + 1) and (k * (k + 1)) % 2 == 0
+          for k in range(0, 201)))
+
 
 def T(k):
     return k * (k + 1) // 2
