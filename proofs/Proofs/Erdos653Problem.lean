@@ -143,8 +143,19 @@ g(n) ≥ 1 for n ≥ 2 (at least one R-value exists). -/
 /--
 **Trivial Upper Bound:**
 g(n) ≤ n (can't have more distinct values than points).
--/
-axiom g_le_n : ∀ n : ℕ, g n ≤ n
+
+Elementary: every achievable count equals `(S.image (distinctDistCount S)).card`
+for some `S` with `S.card = n`, and `Finset.card_image_le` bounds that by
+`S.card = n`. So every member of the `sSup` set is `≤ n`, hence `g n ≤ n`. -/
+theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
+  intro n
+  unfold g
+  apply Nat.sSup_le
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  unfold numDistinctRValues rValueSet
+  exact le_trans Finset.card_image_le hcard.le
 
 /--
 **Monotonicity:**
