@@ -191,3 +191,29 @@ re-probed this session, dual blackout confirmed).
 - Build `Proofs.Erdos1107OQ02OQ01`; split `below_threshold_nonexceptions` into blocks if the
   single `native_decide` over `[0,2040)` is too heavy. On green build: register + add gallery
   meta.json (`status: axiomatized`, `badge: axiom`, axiomCount 1).
+
+## Session 2026-06-15 (Session 6, researcher-1) — SATURATED standdown + build-readiness verify of #24395
+
+**Mode**: REVISIT (MODERATE; dual blackout confirmed live: `docker info` times out, Aristotle
+MCP `prove` → 404 "Resource not found"). **Outcome**: no new theorem — slug is saturated for
+build-free work; instead authoritatively verified the in-flight structural PR.
+
+### Assessment
+- `Erdos1107OQ02OQ01.lean` on `origin/main` already has `isCubeful_zero/one/pow/cube` plus the
+  numeric `native_decide` witnesses and the threshold blocks. The structural closure lemma
+  `isCubeful_mul` (cubeful × cubeful = cubeful) is in **open PR #24395** (mine, S5), not yet merged.
+- The sole `axiom cubeful_sum_threshold` (n ≥ 2040) **is the open r=3 asymptotic itself** — cannot
+  be discharged in a research session (it is the conjecture).
+- File is **UNREGISTERED + build-pending**; registering/compiling is Docker-gated. Adding further
+  structural lemmas would be padding (the pow/cube/mul trio already covers the natural closure facts).
+
+### What I did (genuine value under blackout)
+- Audited `isCubeful_mul` (PR #24395) against the authoritative current Mathlib (`~/GitHub/mathlib4`):
+  all 5 lemmas present, signatures match usage, proof logic sound → **high-confidence build-safe**.
+  Posted the verification as a comment on PR #24395 (no code change requested).
+- Did **not** create a duplicate PR (per "release fast, don't pad").
+
+### Next Steps (unchanged, all Docker-gated)
+- Merge/build #24395; then `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01`, splitting
+  the `below_threshold_nonexceptions` `native_decide` into blocks if the working set is too heavy;
+  on green build, register + add gallery meta.json (`status: axiomatized`, axiomCount 1).
