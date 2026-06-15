@@ -28,8 +28,8 @@
     "id": "ann-imports-namespace",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 62,
-      "endLine": 64
+      "startLine": 61,
+      "endLine": 90
     },
     "type": "technique",
     "title": "Import Companion + Namespace",
@@ -48,8 +48,8 @@
     "id": "ann-rat-subset",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 66,
-      "endLine": 74
+      "startLine": 91,
+      "endLine": 100
     },
     "type": "definition",
     "title": "Subsets of ℚ as Predicates",
@@ -70,8 +70,8 @@
     "id": "ann-sigma1-def",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 76,
-      "endLine": 101
+      "startLine": 101,
+      "endLine": 127
     },
     "type": "concept",
     "title": "Σ₁ Definability: The OPEN Layer",
@@ -94,8 +94,8 @@
     "id": "ann-pi2-def",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 103,
-      "endLine": 125
+      "startLine": 128,
+      "endLine": 151
     },
     "type": "concept",
     "title": "Π₂ Definability + Koenigsmann's Axiom",
@@ -118,8 +118,8 @@
     "id": "ann-containment",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 127,
-      "endLine": 156
+      "startLine": 152,
+      "endLine": 182
     },
     "type": "insight",
     "title": "Σ₁ ⊆ Π₂: One-Direction Trivial, Other Direction Open",
@@ -139,8 +139,8 @@
     "id": "ann-h10q-consequence",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 158,
-      "endLine": 169
+      "startLine": 183,
+      "endLine": 206
     },
     "type": "insight",
     "title": "Σ₁ ⟹ H10/ℚ Undecidable (Re-Export, NOT a New Axiom)",
@@ -161,8 +161,8 @@
     "id": "ann-mazur-consequence",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 171,
-      "endLine": 185
+      "startLine": 207,
+      "endLine": 211
     },
     "type": "insight",
     "title": "Mazur ⟹ ¬Σ₁ (Re-Export, NOT a New Axiom)",
@@ -184,8 +184,8 @@
     "id": "ann-pi1-duality",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 187,
-      "endLine": 265
+      "startLine": 212,
+      "endLine": 291
     },
     "type": "concept",
     "title": "Π₁ Definability and the Σ₁/Π₁ Duality",
@@ -206,8 +206,8 @@
     "id": "ann-sigma2-pi1",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 267,
-      "endLine": 309
+      "startLine": 292,
+      "endLine": 342
     },
     "type": "concept",
     "title": "Σ₂ Definability and Π₁ ⊆ Σ₂",
@@ -228,8 +228,8 @@
     "id": "ann-sigma2-pi2-duality",
     "proofId": "hilbert-10-oq-01-oq-02",
     "range": {
-      "startLine": 311,
-      "endLine": 383
+      "startLine": 343,
+      "endLine": 467
     },
     "type": "insight",
     "title": "Σ₂/Π₂ Duality and the Σ₂(ℚ\\ℤ) Corollary of Koenigsmann",
@@ -247,44 +247,6 @@
       "double-negation elimination",
       "Koenigsmann 2016"
     ]
-  },
-  {
-    "id": "ann-landscape",
-    "proofId": "hilbert-10-oq-01-oq-02",
-    "range": {
-      "startLine": 385,
-      "endLine": 447
-    },
-    "type": "context",
-    "title": "Status Table: Σ₁/Π₁ Open, Σ₂/Π₂ Closed",
-    "content": "The closing comment block presents the sharpened landscape as a 4-row table — Σ₁ (∃) OPEN, Π₁ (∀ on the complement) OPEN-equivalent, Σ₂ (∃∀ on the complement) PROVED, Π₂ (∀∃) PROVED by Koenigsmann — and explains why the gap matters: only Σ₁ yields H10/ℚ-undecidability via MRDP; Mazur refutes Σ₁ but is consistent with Π₂; the Σ₂(ℚ\\ℤ) corollary places the complement on the second level of the arithmetic hierarchy unconditionally. The block also tallies the file's axiom count (1 net new) and theorem count (13).",
-    "mathContext": "$\\Sigma_1 \\Leftrightarrow \\neg \\Pi_1$ on the complement and $\\Sigma_2 \\Leftrightarrow \\neg \\Pi_2$ on the complement (basic logic), so the open content is $\\Sigma_1$ vs $\\Pi_2$ (equivalently, $\\Pi_1(\\mathbb{Q} \\setminus \\mathbb{Z})$ vs $\\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$). Daans 2021 reduced Koenigsmann's Π₂ definition to 10 universal quantifiers — the next milestone would be reducing further toward Σ₁.",
-    "significance": "context",
-    "relatedConcepts": [
-      "arithmetic hierarchy",
-      "Daans 2021",
-      "Eisenträger-Park 2018",
-      "Poonen 2009 nonsquares"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-checks-and-end",
-    "proofId": "hilbert-10-oq-01-oq-02",
-    "range": {
-      "startLine": 449,
-      "endLine": 462
-    },
-    "type": "technique",
-    "title": "#check Sanity Tests + Namespace Close",
-    "content": "Twelve `#check` commands serve as type-level regression tests for the file's public API: 4 definitions ($\\Sigma_1$, $\\Pi_2$, $\\Pi_1$, $\\Sigma_2$), 1 axiom (Koenigsmann), and 7 theorems (definitional equivalence, $\\Sigma_1 \\subseteq \\Pi_2$, both dualities and their specialization to $\\mathbb{Z}$, $\\Pi_1 \\subseteq \\Sigma_2$, the $\\Sigma_2(\\mathbb{Q} \\setminus \\mathbb{Z})$ corollary). If any of these signatures shift (e.g., the import refactors `RatDiophantinePoly`), the elaboration fails at compile time — pinning the file's API surface. The `end Hilbert10Rationals` closes the namespace cleanly.",
-    "mathContext": "The 12 #check'd identifiers are exactly the public API of the file: 4 definitions ($\\Sigma_1$, $\\Pi_2$, $\\Pi_1$, $\\Sigma_2$), 1 axiom (Koenigsmann), and 7 theorems including both dualities. Together they characterize the four-corner Σ₁/Π₁/Σ₂/Π₂ refinement.",
-    "significance": "technical",
-    "relatedConcepts": [
-      "Lean #check command",
-      "API stability"
-    ],
-    "prerequisites": []
   },
   {
     "id": "ann-sec9-sigma1-pi1-closure-grid",
