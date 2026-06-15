@@ -27,11 +27,13 @@ unsigned products equal (`1·4 = 1·4`), but the signed powers `-4` and `+4` hav
 sign, so the four points cannot be concyclic.
 
 The corrected, provable converse is stated as `signed_converse_implies_concyclic`. Its
-proof is now reduced (via a translation putting `P` at the origin) to a single isolated
-geometric lemma `circumcenter_signed`; the surrounding assembly is fully proved, and only
-the build-gated circumcenter construction inside `circumcenter_signed` remains a `sorry`
-(a clean Aristotle target — see
-`research/problems/product-of-segments-of-chords-oq-02/knowledge.md`).
+proof reduces (via a translation putting `P` at the origin) to the geometric lemma
+`circumcenter_signed`, which is now **fully constructed**: an explicit Cramer-rule center
+plus the `equidistant_of_inner` cancellation core. The entire converse is therefore proved
+modulo the single standard fact `gram_pos` (positivity of the Gram determinant of two
+linearly independent vectors — strict Cauchy–Schwarz), which is the **sole remaining
+`sorry`** and a clean target for automated search. See
+`research/problems/product-of-segments-of-chords-oq-02/knowledge.md`.
 
 NOTE: build-pending. The Docker Lean toolchain was unavailable when this was written,
 so the proofs below have not been machine-checked. This file is intentionally NOT
@@ -151,6 +153,49 @@ theorem unsigned_converse_counterexample :
     rw [EuclideanSpace.norm_single]; simp
   exact unsigned_converse_counterexample_general _ _ h0 h1
 
+/-- **Gram determinant positivity.** For two linearly independent vectors `u, v` the
+Gram determinant `‖u‖²‖v‖² − ⟪u,v⟫²` is strictly positive. This is strict
+Cauchy–Schwarz: `⟪u,v⟫² ≤ ‖u‖²‖v‖²` always, with equality only when `u, v` are parallel,
+which linear independence rules out.
+
+This is now the **sole remaining `sorry`** in the converse proof — a standard,
+self-contained linear-algebra fact and a clean target for automated search. The
+circumcenter construction below is fully discharged in terms of it. -/
+theorem gram_pos (u v : Vec2) (hindep : LinearIndependent ℝ ![u, v]) :
+    0 < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 := by
+  sorry
+
+/-- **Equidistance core (the `‖O‖²` cancels).** Any center `O` whose inner products
+against `u` and `v` hit the perpendicular-bisector values `⟪u,O⟫ = (t+1)/2·‖u‖²` and
+`⟪v,O⟫ = (s+1)/2·‖v‖²` is automatically equidistant from all four of `u, t•u, v, s•v`,
+*provided* the signed powers agree (`t·‖u‖² = s·‖v‖²`).
+
+The proof expands every squared distance by polarization (`‖x-O‖² = ‖x‖² − 2⟪x,O⟫ +
+‖O‖²`); the `‖O‖²` term is common to all four points and cancels in each comparison, so
+only the two prescribed inner products and `hsigned` remain. The `u`–`t•u` comparison is
+an identity; the `u`–`v` and `u`–`s•v` comparisons each reduce to `hsigned`. -/
+theorem equidistant_of_inner (u v O : Vec2) (t s : ℝ)
+    (hsigned : t * ‖u‖ ^ 2 = s * ‖v‖ ^ 2)
+    (hu : (inner u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2)
+    (hv : (inner v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2) :
+    ‖u - O‖ = ‖t • u - O‖ ∧ ‖u - O‖ = ‖v - O‖ ∧ ‖u - O‖ = ‖s • v - O‖ := by
+  -- Squared-norm equality upgrades to norm equality (both sides nonnegative).
+  have sqto : ∀ x y : Vec2, ‖x - O‖ ^ 2 = ‖y - O‖ ^ 2 → ‖x - O‖ = ‖y - O‖ := by
+    intro x y h
+    rw [← Real.sqrt_sq (norm_nonneg (x - O)), ← Real.sqrt_sq (norm_nonneg (y - O)), h]
+  refine ⟨sqto u (t • u) ?_, sqto u v ?_, sqto u (s • v) ?_⟩
+  · -- ‖u-O‖² = ‖t•u-O‖² : identity after substituting ⟪u,O⟫.
+    rw [norm_sub_sq_real, norm_sub_sq_real, real_inner_smul_left, norm_smul,
+        Real.norm_eq_abs, mul_pow, sq_abs, hu]
+    ring
+  · -- ‖u-O‖² = ‖v-O‖² : reduces to t·‖u‖² = s·‖v‖².
+    rw [norm_sub_sq_real, norm_sub_sq_real, hu, hv]
+    linear_combination -hsigned
+  · -- ‖u-O‖² = ‖s•v-O‖² : reduces to t·‖u‖² = s·‖v‖².
+    rw [norm_sub_sq_real, norm_sub_sq_real, real_inner_smul_left, norm_smul,
+        Real.norm_eq_abs, mul_pow, sq_abs, hu, hv]
+    linear_combination -hsigned
+
 /-- **Normalized circumcenter with matching signed powers (the geometric heart).**
 
 The translation-invariant core of the corrected converse, stated with the point of
@@ -161,20 +206,44 @@ agree (`t·‖u‖² = s·‖v‖²`), there is a center `O` equidistant from al
 `u, t•u, v, s•v`. Concretely `O` is the circumcenter of the circle through `u, t•u, v`;
 the signed-power hypothesis is exactly what forces the fourth point `s•v` onto it.
 
-Build-gated proof sketch (the isolated `sorry`, a clean Aristotle target):
-solve the 2×2 perpendicular-bisector system for `O` in the basis `{u, v}` (its
-determinant is `‖u‖²‖v‖² − ⟪u,v⟫² ≠ 0` by Cauchy–Schwarz + linear independence), set
-`r = ‖u − O‖`, and verify `‖s•v − O‖ = r` by expanding squared norms (polarization) and
-substituting `t·‖u‖² = s·‖v‖²`. Degenerate scalars are automatic: if `t = 1` then
-`t•u = u` (and the corresponding equality is `rfl`-trivial), likewise `s = 1`. The
-identity `‖s•v − O‖² = r²` was checked numerically over 19987 random configurations
-(`research/problems/product-of-segments-of-chords-oq-02/verify_signed_converse.py`). -/
+Now **fully discharged** modulo `gram_pos` (the Gram determinant is positive). The
+center is built explicitly by Cramer's rule on the 2×2 perpendicular-bisector system in
+the basis `{u, v}`: `O = a•u + b•v` with `a = ‖v‖²(‖u‖²(t+1) − ⟪u,v⟫(s+1))/(2Δ)`,
+`b = ‖u‖²(‖v‖²(s+1) − ⟪u,v⟫(t+1))/(2Δ)`, `Δ = ‖u‖²‖v‖² − ⟪u,v⟫²`. This `O` satisfies
+`⟪u,O⟫ = (t+1)/2·‖u‖²` and `⟪v,O⟫ = (s+1)/2·‖v‖²`, and `equidistant_of_inner` turns those
+two inner products plus `hsigned` into the four equidistances — the `‖O‖²` term cancels,
+so no case split on `t = 1` / `s = 1` is needed (the construction is uniform). The
+identity `‖s•v − O‖² = ‖u − O‖²` was checked numerically over 19987 random configurations
+(`research/problems/product-of-segments-of-chords-oq-02/verify_signed_converse.py`); the
+Cramer coefficients were re-derived symbolically (sympy) for this proof. -/
 theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
     (hindep : LinearIndependent ℝ ![u, v])
     (hsigned : t * ‖u‖ ^ 2 = s * ‖v‖ ^ 2) :
     ∃ O : Vec2,
       ‖u - O‖ = ‖t • u - O‖ ∧ ‖u - O‖ = ‖v - O‖ ∧ ‖u - O‖ = ‖s • v - O‖ := by
-  sorry
+  -- Gram determinant of the basis {u, v} is positive (the only deep ingredient).
+  have hΔ : (0 : ℝ) < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 := gram_pos u v hindep
+  have hΔ0 : ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 ≠ 0 := hΔ.ne'
+  -- Solve the 2×2 perpendicular-bisector (Gram) system for the center O = a•u + b•v.
+  set O : Vec2 :=
+      (‖v‖ ^ 2 * (‖u‖ ^ 2 * (t + 1) - (inner u v : ℝ) * (s + 1)) /
+          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2))) • u
+    + (‖u‖ ^ 2 * (‖v‖ ^ 2 * (s + 1) - (inner u v : ℝ) * (t + 1)) /
+          (2 * (‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2))) • v with hO
+  refine ⟨O, ?_⟩
+  -- The two prescribed inner products hold (Cramer's rule; needs Δ ≠ 0).
+  have hiu : (inner u O : ℝ) = (t + 1) / 2 * ‖u‖ ^ 2 := by
+    rw [hO]
+    simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq]
+    field_simp [hΔ0]
+    ring
+  have hiv : (inner v O : ℝ) = (s + 1) / 2 * ‖v‖ ^ 2 := by
+    rw [hO]
+    simp only [inner_add_right, real_inner_smul_right, real_inner_self_eq_norm_sq,
+      real_inner_comm u v]
+    field_simp [hΔ0]
+    ring
+  exact equidistant_of_inner u v O t s hsigned hiu hiv
 
 /-- **The corrected (signed) converse — provable formulation.**
 

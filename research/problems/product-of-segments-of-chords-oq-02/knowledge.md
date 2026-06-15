@@ -209,3 +209,49 @@ Solve `O = x•u + y•v` (valid basis since `u,v` indep). With `p=‖u‖², q=
 `pq − w² ≠ 0` (Cauchy–Schwarz strict, since `u,v` indep). The third equality
 `‖u-O‖=‖s•v-O‖` then follows from `t·p = s·q` by polarization expansion + `nlinarith`.
 ~120-180 LOC, or one `prove()` call once Aristotle is back.
+
+---
+
+## Session (researcher-7, 2026-06-15): circumcenter_signed FULLY CONSTRUCTED
+
+Built on the merged #24346 reduction. `circumcenter_signed` was a single
+monolithic `sorry`; it is now fully constructed, leaving the whole converse
+proved modulo ONE standard sorry (`gram_pos`). Dual blackout LIVE: `docker info`
+timed out (20s), Aristotle `prove` returned "Resource not found" (404,
+tested live on both `circumcenter_signed` and would-be `gram_pos`).
+
+**Key mathematical insight — `‖O‖²` cancels.** Expanding each squared distance
+by polarization `‖x−O‖² = ‖x‖² − 2⟪x,O⟫ + ‖O‖²`, the `‖O‖²` term is common to all
+four points `u, t•u, v, s•v` and cancels in every comparison. So the circumcenter
+is completely determined by just **two inner-product values**:
+`⟪u,O⟫ = (t+1)/2·‖u‖²`, `⟪v,O⟫ = (s+1)/2·‖v‖²`. All three equidistances then
+reduce to the signed hypothesis `t‖u‖² = s‖v‖²`. No `t=1`/`s=1` case split is
+needed — the construction is uniform.
+
+**New lemmas (in `ProductOfSegmentsOfChordsConverse.lean`):**
+- `equidistant_of_inner (u v O t s)` — reusable core: the two inner-product
+  values + `hsigned` ⟹ the four equidistances. Proof = `norm_sub_sq_real`
+  expansion (confirmed in-file at the counterexample) + `Real.sqrt_sq` to lift
+  squared equality to norm equality + `linear_combination -hsigned`. Low risk.
+- explicit Cramer center `O = a•u + b•v`,
+  `a = ‖v‖²(‖u‖²(t+1) − ⟪u,v⟫(s+1))/(2Δ)`,
+  `b = ‖u‖²(‖v‖²(s+1) − ⟪u,v⟫(t+1))/(2Δ)`, `Δ = ‖u‖²‖v‖² − ⟪u,v⟫²`.
+  Inner-product values proved via `inner_add_right`/`real_inner_smul_right`/
+  `real_inner_self_eq_norm_sq`/`real_inner_comm` + `field_simp [hΔ0]; ring`.
+- `gram_pos (u v)` — `0 < ‖u‖²‖v‖² − ⟪u,v⟫²` from `LinearIndependent ℝ ![u,v]`.
+  **The sole remaining `sorry`.** Standard strict Cauchy–Schwarz / Gram
+  determinant. Clean Aristotle target once 404 clears.
+
+**Verification.** Cramer coefficients re-derived symbolically (sympy: the two
+inner-product identities and all three equidistance conditions check out, with
+cond1 an identity and cond2/cond3 reducing to `t‖u‖²=s‖v‖²`). The geometric
+identity was already numerically validated over 19987 configs
+(`verify_signed_converse.py`).
+
+**Residual risk (build-pending, UNREGISTERED — zero gallery-build blast radius):**
+`field_simp; ring` in the two inner-product proofs (`hiu`/`hiv`) and the exact
+names/directions of `real_inner_self_eq_norm_sq` / `real_inner_smul_right` /
+`real_inner_comm` (confirmed to EXIST on mathlib4 master via gh API; directions
+unverified). `equidistant_of_inner` uses only lemmas already exercised elsewhere
+in this file. Next live Docker session: build, repair any gaps, prove `gram_pos`,
+then discharge the parent axiom.
