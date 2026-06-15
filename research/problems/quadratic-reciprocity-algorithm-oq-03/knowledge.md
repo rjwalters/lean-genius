@@ -255,6 +255,50 @@ which there is still **no** upstream bearer. Net: M2's "~30–80 LOC" estimate s
 transport sub-step is now a known `simp` rather than an open sub-task. (Build-free, Docker still
 down; no Lean written. Minor ACT-readiness delta, not a new result.)
 
+### Session 2026-06-14 (S8, researcher-3) — the missing M2 sign value IS a primality-free closed-form inversion count
+
+**Mode:** CONTINUE. Both backends down (Docker `docker info` times out; Aristotle MCP previously
+`Resource not found`), so no Lean built — build-free durable-verify lane. This session **discharges
+the standing "no upstream bearer for the sign value" residual** flagged by S6/S7 by replacing the
+opaque "cycle/inversion count" target with an explicit, primality-free closed form, and ties it to
+how Mathlib actually *defines* `sign`.
+
+**Key observation (Mathlib mechanism).** `Equiv.Perm.sign` is defined upstream as the **parity of
+inversions**: `signAux a = ∏_{finPairsLT n} (if a x.1 ≤ a x.2 then -1 else 1)`
+(`Mathlib/GroupTheory/Perm/Sign.lean:174`, with `finPairsLT` :165). So the natural Lean target for
+the grid-transpose `σ` is **not** its cycle decomposition but its **number of inversions** — and
+that number has a clean closed form.
+
+**New certified result** (`verify_grid_inversions.py`, all asserts pass, pure stdlib + optional
+sympy cross-check; verify-before-assert — inversions are *counted* by brute pair-scan, then matched):
+
+- **(I) `inv(σ) = C(p,2)·C(q,2) = [p(p−1)/2]·[q(q−1)/2]` for ALL `p,q ≥ 1`** — **no primality
+  hypothesis** (checked over 144 grids `1 ≤ p,q < 13`, including even and composite dims). This is
+  strictly stronger/cleaner than S6/S7's odd-prime sign statement.
+- **(II) `sign(σ) = (−1)^{inv(σ)} = (−1)^{C(p,2)·C(q,2)}`**, with inversion-parity and cycle-parity
+  cross-checked equal on every grid (guards an off-by-parity slip in either route).
+- **(III) Elementary parity reduction** recovers the reciprocity exponent for odd `p,q`:
+  `C(p,2) = p(p−1)/2 ≡ (p−1)/2 (mod 2)` when `p` is odd (since `p` odd ⟹ parity is that of
+  `(p−1)/2`), hence `C(p,2)·C(q,2) ≡ (p−1)/2·(q−1)/2 (mod 2)`, so
+  `sign(σ) = (−1)^{(p−1)/2·(q−1)/2}` — matching S6/S7 exactly, now *derived* not asserted.
+- **(IV) cross-check** (sympy): `(−1)^{inv(σ)} = (p/q)(q/p)` on all 110 distinct odd-prime pairs
+  `< 40` — the inversion count carries the actual QR factor.
+
+**Effect on the M2 ACT — the residual is now a concrete, decomposable target.** The genuinely-new
+M2 content is reduced to:
+1. **`inv(σ) = C(p,2)·C(q,2)`** — a finite, primality-free combinatorial identity. State the M2
+   lemma for *arbitrary* `p,q` (no `Fact p.Prime`), which is easier to formalize. With Mathlib's
+   `signAux = ∏ finPairsLT …`, the inversion count is the directly-relevant quantity, not a
+   re-derivation.
+2. **`(−1)^{C(p,2)·C(q,2)} = (−1)^{(p−1)/2·(q−1)/2)}` for odd `p,q`** — pure `Nat`/parity arithmetic
+   (Step III), `omega`/`Nat.ParityYields`-level, **no** new bearer.
+The S7 `simp` transport lemmas still apply to move `σ` between `Perm (Fin (p*q))` and the product
+type. **Still no upstream lemma gives `inv(σ)` directly** (re-confirmed: `Sign.lean` has only the
+`signAux`/`finPairsLT` machinery, no closed inversion-count for a transpose), so (I) remains the new
+~20–60 LOC content — but it is now a *single closed-form count* rather than an opaque "cycle/inversion
+count," and it needs no primality. Net: M2 ACT target sharpened and de-risked; M1 still the
+prerequisite for the Zolotarev signs (A). (No Lean written; Docker still down.)
+
 ## Dead Ends
 
 - **Algorithm-confluence route** (prove the flip-and-reduce evaluator is order-independent and read
