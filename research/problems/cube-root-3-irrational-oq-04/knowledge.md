@@ -1018,3 +1018,60 @@ draft's 13-deep nested-fraction `lt_div_iff₀`/`div_lt_iff₀`/`linarith` chain
 budget `set_option maxHeartbeats` ≈ 2× the a12 value (depth scaling). Requires
 Docker (build-gated). Floor antisymmetry closes from `1/x ∈ [3, 10/3)`:
 `⌊1/x⌋ ≤ 3` via `div_lt_iff₀` (`4·(1/3) > 1`), `3 ≤ ⌊1/x⌋` via `le_div_iff₀`.
+
+## Session 2026-06-15 (S22, researcher-4) — sixteenth CF convergent UPPER bound (Docker-down, build-free template)
+
+**Mode:** Helper-ACT (Lean content, narrow, conflict-free). Docker down (`docker info`
+times out). The a12=8 main frontier is double-claimed (PRs #23388 DRAFT, #23983 OPEN),
+Half-(a) "not quadratic irrational" is claimed (PR #24323 S20), and the 15th convergent
+lower bound was just merged (S15a/S21, #24401). The next non-colliding forward step is the
+**16th CF convergent upper bound**, which completes the sandwich for the (future) `a₁₄ = 3`
+main-ACT.
+
+**Collision avoidance note.** I initially "rediscovered" the 15th convergent lower bound
+because my worktree branch was 40 commits behind `origin/main`; that bound had already been
+merged by #24401. I discarded the duplicate, fast-forwarded to `origin/main`, and re-targeted
+the genuinely-open 16th convergent. **Lesson reaffirmed: fast-forward the worktree branch to
+origin/main and re-grep the target file before treating any "next convergent" as unclaimed.**
+
+**Outcome:** added
+`Cbrt3Helpers.cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three :
+cbrt3 < (26639450/18470763 : ℝ)` to `CubeRoot3IrrationalOQ04Helpers.lean`.
+Helper file 753 → 808 LOC (+55 LOC, +1 theorem +1 prose section; theoremCount 20 → 21).
+0 sorries, 0 axioms (slug remains 0/0).
+
+### What I Did
+
+- Re-derived the CF prefix at **120-digit precision** (Decimal Newton ∛3 + CF extraction):
+  `a₀..a₁₆ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2]`, confirming `a₁₅ = 4`
+  (anti-typo discipline per S9-prep / S15a — never re-quote a prior sketch tail).
+- Computed the 16th convergent from the recursion: `p₁₅ = 4·6193523 + 1865358 = 26_639_450`,
+  `q₁₅ = 4·4294349 + 1293367 = 18_470_763`.
+- Exact-integer cube-direction check: `26639450³ = 18_904_959_980_335_633_625_000 >
+  18_904_959_980_335_585_454_841 = 3·18470763³` (diff `+48_170_159`), so
+  `(26639450/18470763)³ > 3` ⟹ `cbrt3 < 26639450/18470763` (valid UPPER bound,
+  odd index 15, relative gap `≈ 2.55·10⁻¹⁵`).
+- Wrote the theorem with the established two-line upper-bound template
+  `rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num`, mirroring S14a's
+  `cbrt3_lt_one_eight_six_five_three_five_eight_...`.
+
+### Significance / honesty
+
+A **routine, durable helper bound**, not a deep result. Its value is completing the sandwich
+`6193523/4294349 < cbrt3 < 26639450/18470763` (combined gap `≈ 2.6·10⁻¹⁵`) for the FUTURE
+main-ACT of the fifteenth partial quotient `cbrt3_a14 = 3`. That main-ACT is gated on the
+still-open S14b `a12 = 8` (#23388/#23983) and the subsequent `a13 = 3` landing first — the
+nested-fraction chain grows one rung per quotient and must be proved in order. So this prep
+cannot be consumed yet. **Not Docker-verified** this session (docker down); the proof relies
+on a template that compiled clean in S13/S14a/S15a against the exact same `norm_num`
+rational-cube machinery, with only larger (23-digit) integers, which `norm_num` handles
+without a heartbeat bump.
+
+### Files Touched (Session S22)
+
+- `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`: +55 LOC, +1 theorem.
+- `src/data/research/problems/cube-root-3-irrational-oq-04.json`: iteration 17 → 22,
+  focus/nextAction/attemptCounts/progressSummary/builtItems/insights/nextSteps/lastUpdate
+  + Helpers leanFiles count 753/20 → 808/21.
+- `research/problems/cube-root-3-irrational-oq-04/state.md`: new Current Focus (S22).
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this Session S22 entry.
