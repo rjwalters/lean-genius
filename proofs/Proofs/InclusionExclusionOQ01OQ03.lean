@@ -1,0 +1,77 @@
+/-
+  OQ-01-OQ-03: Classical (divisor-form) Möbius inversion
+  (inclusion-exclusion-oq-01-oq-03)
+
+  Open question of the parent gallery entry `inclusion-exclusion-oq-01`
+  (which already proves the divisor–totient identity `Σ_{d|n} φ(d) = n` via the
+  inclusion–exclusion sieve):
+
+      Formalize Möbius inversion:
+          f(n) = Σ_{d | n} g(d)   ⟺   g(n) = Σ_{d | n} μ(d) · f(n/d).
+
+  This is the number-theoretic incarnation of inclusion–exclusion (the Möbius
+  function `μ` of the divisor lattice is the IE sign).
+
+  ── What Mathlib already has, and what this adds ──────────────────────────────
+
+  Mathlib v4.26 proves Möbius inversion, but in **antidiagonal** form
+  (`ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq`):
+
+      (∀ n>0, Σ_{i ∈ n.divisors} f i = g n) ↔
+        (∀ n>0, Σ_{x ∈ n.divisorsAntidiagonal} μ x.1 · g x.2 = f n).
+
+  The textbook statement the gallery question asks for uses the **divisor** sum
+  `Σ_{d | n} μ(d) · f(n/d)` instead of the antidiagonal sum.  The bridge is
+  `Nat.sum_divisorsAntidiagonal`:
+      Σ_{x ∈ n.divisorsAntidiagonal} F x.1 x.2 = Σ_{d ∈ n.divisors} F d (n/d).
+
+  `moebius_inversion_divisors` below states and proves the textbook form by
+  wiring these two lemmas (plus `eq_comm` to match the gallery's orientation).
+  This is a thin but faithful bridge — the mathematical depth lives in Mathlib's
+  `sum_eq_iff_sum_mul_moebius_eq`; the value here is exposing the classical
+  `Σ_{d|n} μ(d) f(n/d)` shape that downstream gallery work expects.
+
+  Numerically cross-checked (all n ≤ 400, random integer data, both directions,
+  μ sanity, and the Euler-φ anchor) in
+  `research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py`
+  (ALL PASS).
+
+  Status: 0 axioms, 0 sorries intended.  Build-pending (authored under a Docker +
+  Aristotle blackout); UNREGISTERED in `Proofs/Proofs.lean` until it compiles in a
+  live session.
+-/
+
+import Mathlib.NumberTheory.ArithmeticFunction.Moebius
+import Mathlib.NumberTheory.Divisors
+import Mathlib.Tactic
+
+open Finset Nat ArithmeticFunction
+open scoped ArithmeticFunction.Moebius
+
+namespace InclusionExclusionOQ01OQ03
+
+variable {R : Type*} [CommRing R]
+
+/-- **Classical Möbius inversion (divisor form).**  For functions `f, g : ℕ → R`
+    into a commutative ring,
+        `f(n) = Σ_{d | n} g(d)   ↔   g(n) = Σ_{d | n} μ(d) · f(n/d)`
+    (for all `n > 0`).  Bridges Mathlib's antidiagonal
+    `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` to the textbook divisor
+    sum via `Nat.sum_divisorsAntidiagonal`. -/
+theorem moebius_inversion_divisors {f g : ℕ → R} :
+    (∀ n > 0, f n = ∑ d ∈ n.divisors, g d) ↔
+      (∀ n > 0, g n = ∑ d ∈ n.divisors, (μ d : R) * f (n / d)) := by
+  constructor
+  · intro h n hn
+    have hM := (sum_eq_iff_sum_mul_moebius_eq (R := R) (f := g) (g := f)).mp
+      (fun m hm => (h m hm).symm) n hn
+    rw [Nat.sum_divisorsAntidiagonal (fun a b => (μ a : R) * f b)] at hM
+    exact hM.symm
+  · intro h n hn
+    have hM : ∀ m > 0, ∑ x ∈ m.divisorsAntidiagonal, (μ x.1 : R) * f x.2 = g m := by
+      intro m hm
+      rw [Nat.sum_divisorsAntidiagonal (fun a b => (μ a : R) * f b)]
+      exact (h m hm).symm
+    exact ((sum_eq_iff_sum_mul_moebius_eq (R := R) (f := g) (g := f)).mpr hM n hn).symm
+
+end InclusionExclusionOQ01OQ03

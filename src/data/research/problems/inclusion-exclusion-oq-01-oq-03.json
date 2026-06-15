@@ -1,0 +1,63 @@
+{
+  "slug": "inclusion-exclusion-oq-01-oq-03",
+  "title": "Classical (divisor-form) Mobius inversion",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": "Formalize Mobius inversion: f(n)=sum_{d|n} g(d) iff g(n)=sum_{d|n} mu(d) f(n/d) (number-theoretic inclusion-exclusion).",
+  "knownResults": "Parent inclusion-exclusion-oq-01 proves the special case sum_{d|n} phi(d)=n via the IE sieve. Mathlib proves general Mobius inversion in antidiagonal form.",
+  "currentState": "ORIENT: Mathlib has it (antidiagonal); build-pending textbook-form bridge + all-pass verifier.",
+  "knowledge": {
+    "progressSummary": "ORIENT: Mathlib v4.26 proves Mobius inversion in ANTIDIAGONAL form (ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq). Textbook divisor form g(n)=sum_{d|n} mu(d) f(n/d) obtained by Nat.sum_divisorsAntidiagonal bridge + eq_comm. Build-pending theorem moebius_inversion_divisors; verifier ALL PASS (both directions, mu sanity, Euler-phi anchor). Honest: depth is in Mathlib, this is a presentation bridge.",
+    "builtItems": [
+      "research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py - exhaustive n<=400 verifier (both directions, mu sanity, phi anchor), ALL PASS",
+      "proofs/Proofs/InclusionExclusionOQ01OQ03.lean (build-pending, UNREGISTERED): moebius_inversion_divisors textbook iff over any CommRing."
+    ],
+    "insights": [
+      "Mathlib's Mobius inversion (sum_eq_iff_sum_mul_moebius_eq) uses divisorsAntidiagonal (mu x.1 * g x.2), not the textbook divisor sum sum_{d|n} mu(d) f(n/d).",
+      "Bridge: Nat.sum_divisorsAntidiagonal : sum_{x in antidiag} F x.1 x.2 = sum_{d|n} F d (n/d) (to_additive partner of prod_divisorsAntidiagonal).",
+      "Companions exist: smul form (AddCommGroup), prod/pow form (CommGroup), and divisor-closed-set _on/_on' variants.",
+      "Euler-phi is the Mobius transform of the identity: phi(n)=sum_{d|n} mu(d)(n/d); verifier confirms with sum_{d|n} phi(d)=n."
+    ],
+    "mathlibGaps": [
+      "None mathematically; only the textbook divisor-sum PRESENTATION was missing (now bridged)."
+    ],
+    "nextSteps": [
+      "ACT (live build): compile/register InclusionExclusionOQ01OQ03.lean (verify ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq / Nat.sum_divisorsAntidiagonal / mu notation names).",
+      "Add phi corollary phi(n)=sum_{d|n} mu(d)((n/d:N):Z) via Nat.sum_totient.",
+      "Optional: general locally-finite-poset Mobius inversion (Rota) is out of scope for this divisor-lattice OQ."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "number-theory",
+    "mobius",
+    "inclusion-exclusion",
+    "arithmetic-function"
+  ],
+  "relatedProofs": [
+    "inclusion-exclusion-oq-01",
+    "inclusion-exclusion"
+  ],
+  "references": [],
+  "started": "2026-06-15",
+  "lastUpdate": "2026-06-15",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/InclusionExclusionOQ01OQ03.lean",
+      "filename": "InclusionExclusionOQ01OQ03.lean",
+      "lineCount": 77,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ01OQ03.lean",
+      "buildPending": true,
+      "registered": false
+    }
+  ]
+}
