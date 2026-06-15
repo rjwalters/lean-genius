@@ -153,4 +153,48 @@ theorem isPrimePlusKPowers_iff_bounded_distinct (k n : ℕ) :
 #check @repWithAtMost_iff_repBoundedDistinct
 #check @isPrimePlusKPowers_iff_bounded_distinct
 
+/-! ## Part VIII: Decidability recipe (verified lemma names, build-pending)
+
+The explicit `Decidable (RepWithAtMost k n)` instance is the last mechanical
+step. The bridge below is fully name-checked against the Mathlib pin `v4.26.0`
+(sibling checkout); only an end-to-end Lean build (Docker-gated) remains to
+confirm elaboration. The target equivalence, with the search pinned to a finite
+`Finset`:
+
+  `RepWithAtMost k n ↔
+     ∃ F ∈ (Finset.range (n + 1)).powerset, F.card ≤ k ∧ (∑ a ∈ F, 2 ^ a) = n`
+
+whose right-hand side is `Decidable` (bounded `Finset` existential + decidable
+`≤`/`=` on `ℕ`), so `decidable_of_iff _ (the_iff).symm` yields the instance.
+
+Proof of the equivalence (both directions go through
+`repWithAtMost_iff_repBoundedDistinct`):
+
+* **→** From `RepBoundedDistinct` take the `Nodup` multiset `s` (card `≤ k`,
+  every exponent `≤ n`, `powSum s = n`). Set `F := s.toFinset`.
+    - `F ∈ powerset (range (n+1))`: `Finset.mem_powerset` + `Finset.subset_iff`;
+      `a ∈ F ↔ a ∈ s` is `Multiset.mem_toFinset`, and `a ≤ n ⟹ a ∈ range (n+1)`
+      by `Finset.mem_range` (`omega`).
+    - `F.card ≤ k`: `Multiset.toFinset_card_of_nodup hnd`
+      (`Data/Finset/Card.lean:188`) rewrites `#F = Multiset.card s ≤ k`.
+    - `(∑ a ∈ F, 2^a) = n`: `Finset.sum_eq_multiset_sum` turns the sum into
+      `(F.val.map (2^·)).sum`; `F.val = s` because `s` is `Nodup`
+      (`Multiset.toFinset_eq hnd : Finset.mk s hnd = s.toFinset`, take `.val`,
+      with `Multiset.Nodup.dedup`/`Multiset.toFinset_val`), so it equals
+      `powSum s = n`.
+* **←** Given `F` with `F.card ≤ k` and `(∑ a ∈ F, 2^a) = n`, set `s := F.val`
+  (a `Nodup` multiset). Then `Multiset.card s = #F ≤ k` and
+  `powSum s = (F.val.map (2^·)).sum = ∑ a ∈ F, 2^a = n`
+  (again `Finset.sum_eq_multiset_sum`), giving `RepWithAtMost` directly
+  (`⟨s, hcard, hsum⟩`).
+
+With `Decidable (RepWithAtMost k n)` in hand, `Decidable (RepBoundedDistinct k n)`
+and (via `isPrimePlusKPowers_iff_bounded_distinct` + `Nat.decidablePrime` over
+`p ∈ Finset.range (n+1)`) `Decidable (IsPrimePlusKPowers k n)` follow, and the
+concrete facts `¬ RepWithAtMost 2 905`, `¬ RepWithAtMost 3 906`-style and the
+Grechuk witness `¬ IsPrimePlusKPowers 3 1117175146` close by
+`decide`/`native_decide`. All arithmetic certified in
+`research/problems/erdos-10-oq-02/verify_decidable_membership.py` (ALL CERTS PASS:
+905/906 consecutive caps + Grechuk ∉ S₃, ∈ S₄). -/
+
 end Erdos10OQ02
