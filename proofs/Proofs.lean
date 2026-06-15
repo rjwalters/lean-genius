@@ -161,6 +161,7 @@ import Proofs.BallotProblemOQ01OQ02OQ01OQ01
 import Proofs.BallotProblemOQ01OQ02OQ01OQ02
 import Proofs.BallotProblemOQ01OQ02OQ02
 import Proofs.BallotProblemOQ01OQ02OQ04
+import Proofs.BallotProblemOQ01OQ03
 import Proofs.BallotProblemOQ01OQ04
 import Proofs.BallotProblemOQ01OQ04Core
 import Proofs.BallotProblemOQ01OQ04OQ01
