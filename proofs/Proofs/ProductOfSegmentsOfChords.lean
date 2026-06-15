@@ -454,17 +454,17 @@ theorem center_chord_product (C : Circle) (A B : Vec2)
     _ = C.radius * C.radius := by rw [hB']
     _ = C.radius^2 := by ring
 
-/-- **Axiom:** The converse of the chord product theorem.
+/-- **Axiom — FALSE as stated.** A purported *unsigned* converse of the chord
+    product theorem, retained only so the downstream re-export
+    `converse_product_implies_concyclic` keeps its signature. Do NOT rely on it.
 
-    If PA · PB = PC · PD for collinear segments through P, then A, B, C, D
-    are concyclic (lie on a common circle).
+    WARNING: this unsigned form is FALSE. With `P=(0,0)`, `A=(1,0)`, `B=(-4,0)`,
+    `C=(0,1)`, `D=(0,4)` all hypotheses hold (both products `= 4`) yet the four
+    points are NOT concyclic — the signed powers (`-4` vs `+4`) disagree. A
+    correct converse needs the *signed* relation `t‖A-P‖² = s‖C-P‖²` plus linear
+    independence of `A-P` and `C-P` (distinct, non-opposite chords).
 
-    **Proof sketch:**
-    1. Construct the circumcircle of A, B, C (three non-collinear points)
-    2. The power of P with respect to this circle equals ±PA · PB
-    3. Since PC · PD equals this power, D must also lie on the circle
-
-    Full formalization requires Mathlib's circumcircle construction. -/
+    Counterexample verified in PRs #24153/#24204; corrected form in OQ-02. -/
 axiom converse_product_implies_concyclic_axiom
     (P A B C D : Vec2)
     (hAB_collinear : ∃ t : ℝ, B - P = t • (A - P))
