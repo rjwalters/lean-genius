@@ -27,8 +27,8 @@
       "Effective threshold N₃ = 2040 for the r=3 (cubeful) sum problem with ≤4 summands",
       "Complete exceptional set: exactly 45 positive integers, the largest being 2039",
       "Decidable check for sum-of-≤4-cubeful representability over a 27-element cubeful basis",
-      "Computational verification for all n up to 3000 (stable, no exception in (2039, 10⁷])",
-      "Establishes the structural r+1 law: ≤3 cubeful summands has NO finite threshold (positive exception density), so r=3 genuinely needs 4 summands"
+      "Computational verification (native_decide) for all n up to 3000; external (non-Lean) check stable to 10⁷ (verify_cubeful_stability.py)",
+      "Motivates the structural r+1 law — ≤3 cubeful summands miss a positive density, so r=3 needs 4 — as the heuristic framing; this density argument is stated in prose, not formalized in the Lean source"
     ],
     "axiomCount": 1,
     "lineCount": 220,
@@ -39,7 +39,7 @@
   "overview": {
     "historicalContext": "Erdős Problem #1107 asks, for each r ≥ 2, whether every sufficiently large integer is a sum of a bounded number of r-powerful numbers (integers in which every prime factor appears with exponent ≥ r). The r=2 case (squareful numbers) was resolved by Heath-Brown (1988) via ternary quadratic forms: every large integer is a sum of three squareful numbers. The sibling gallery entry makes that effective with threshold N₂ = 120.\n\nThe r=3 (cubeful) case exposes a framing conflict. The naive 'at most 3 summands for every r' reading is FALSE at r=3: with only three cubeful summands a positive density of integers is permanently missed. The correct statement is the 'at most r+1' form — every large integer is a sum of at most FOUR cubeful numbers. This entry makes that effective: the threshold is N₃ = 2040, with exactly 45 exceptions below it (largest 2039).",
     "problemStatement": "Find the smallest N₃ such that every integer n ≥ N₃ is the sum of at most four cubeful numbers, and identify all exceptions below N₃. Show that three cubeful summands do not suffice for any finite threshold.",
-    "text": "We make the r=3 analogue effective: threshold N₃ = 2040, exactly 45 exceptions, and a structural argument that ≤3 summands cannot work — establishing the r+1 law for Erdős #1107.",
+    "text": "We make the r=3 analogue effective: threshold N₃ = 2040 and exactly 45 exceptions are settled by native_decide, while the heuristic density argument that ≤3 summands cannot work — the r+1 law for Erdős #1107 — is given in prose and is not formalized in Lean.",
     "proofStrategy": "A decidable procedure isSumOf4Cubeful enumerates triples (a, b, c) from the cubeful basis (the 27 cubeful numbers below 2040) with a + b + c ≤ n and checks whether the remainder n - a - b - c is also cubeful; padding with 0 (which is cubeful) realises 'at most four'. Using native_decide we verify:\n\n1. Each of the 45 listed exceptions has no valid decomposition (exceptions_not_representable).\n2. Every other positive integer below 2040 is representable (below_threshold_nonexceptions).\n3. Every integer from 2040 to 3000 is representable, split into three blocks to bound the native_decide working set.\n\nCubefulness uses Nat.primeFactors: n is cubeful iff p³ | n for every prime p | n. The structural lemmas isCubeful_pow / isCubeful_cube / isCubeful_mul give an axiom-free, native_decide-free account of why the basis elements are cubeful (every k-th power with k ≥ 3 is cubeful, and cubeful numbers are closed under multiplication).",
     "keyInsights": [
       "The threshold is exactly 2040: e.g. 2040 = 2000 + 8 + 32 + 0 with 2000 = 2⁴·5³, 8 = 2³, 32 = 2⁵ all cubeful, while 2039 (prime) has no sum-of-≤4-cubeful decomposition, so the threshold is tight.",
@@ -96,7 +96,7 @@
     }
   ],
   "conclusion": {
-    "summary": "We determine the exact threshold N₃ = 2040 for the r=3 cubeful sum problem with ≤4 summands, identify all 45 exceptions (largest 2039), and prove the structural r+1 law: ≤3 cubeful summands has no finite threshold. The finite content is verified computationally to 3000 and is stable to 10⁷.",
+    "summary": "We determine the exact threshold N₃ = 2040 for the r=3 cubeful sum problem with ≤4 summands and identify all 45 exceptions (largest 2039), both settled by native_decide. The structural r+1 law (≤3 cubeful summands have no finite threshold) is motivated by a heuristic density argument in prose, not formalized in Lean. The finite content is verified computationally to 3000; an external (non-Lean) check reports stability to 10⁷.",
     "openQuestions": [
       "Prove the r=3 asymptotic itself (the axiom cubeful_sum_threshold): is there a cubeful analogue of Heath-Brown's ternary-quadratic-forms argument?",
       "What is the effective threshold N_r and exceptional set for general r ≥ 4 (sums of ≤ r+1 r-powerful numbers)?"
