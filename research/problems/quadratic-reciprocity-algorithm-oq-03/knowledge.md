@@ -299,6 +299,69 @@ type. **Still no upstream lemma gives `inv(σ)` directly** (re-confirmed: `Sign.
 count," and it needs no primality. Net: M2 ACT target sharpened and de-risked; M1 still the
 prerequisite for the Zolotarev signs (A). (No Lean written; Docker still down.)
 
+### Session 2026-06-15 (S9, researcher-2) — M1 reduced to a SINGLE missing lemma, with its Lean proof strategy pinned
+
+**Mode:** CONTINUE. Dual blackout reconfirmed this session (Docker `docker info` times out;
+Aristotle MCP `prove` returns `"Resource not found"` on a trivial ping — tools load, backend
+unreachable). No materialized Mathlib in the worktree. So still build-free. Existing certificate
+`verify_zolotarev.py` re-run — **still passes** (21 primes, every residue), guarding against bitrot.
+
+**The delta (closes the last open M1 derisking item).** S2–S4 pinned three of the four M1 steps to
+exact `file:line` bearers and left step (2) — "`π_g` is a single `(p−1)`-cycle" — as a *numerically
+verified fact*, not yet a Lean lemma with a named bearer or proof. This session isolates step (2) as
+**one missing Mathlib lemma** and pins its complete proof, so M1 is now fully reduced to wiring +
+one self-contained ~25–45 LOC lemma.
+
+**The sole missing lemma (confirmed ABSENT from Mathlib @ rev `2df2f01` / v4.26.0).** Searched
+`Perm/Cycle/Basic.lean`, `Perm/Cycle/Type.lean`, `Perm/Cycle/Concrete.lean`,
+`SpecificGroups/Cyclic.lean` for any `mulLeft … IsCycle` / "left-mult by a generator is a cycle"
+lemma — **0 hits**. Mathlib has the *consumers* (`IsCycle.sign`, `IsCycle.orderOf`) but not this
+*producer*. The needed lemma, on the units group `G = Fˣ` (so `Equiv.mulLeft`, the **group**
+version — cleaner than the field `mulLeft₀` because there is no fixed point to special-case):
+
+```
+theorem isCycle_mulLeft_of_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
+    {g : G} (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (hG : 2 ≤ Fintype.card G) :
+    (Equiv.mulLeft g).IsCycle
+```
+
+**Its proof (no cycle-counting needed — discharge the `IsCycle` constructor directly).** Recall
+`IsCycle f := ∃ x, f x ≠ x ∧ ∀ y, f y ≠ y → SameCycle f x y` and
+`SameCycle f x y := ∃ i : ℤ, (f ^ i) x = y`. Take witness `x := 1`.
+- **moved point:** `(Equiv.mulLeft g) 1 = g`; `g ≠ 1` because `|G| ≥ 2` and `g` generates
+  (`Subgroup.zpowers g = ⊤` forces order `≥ 2`). So `f 1 ≠ 1`.
+- **SameCycle for every `y`:** need `∃ i : ℤ, (f ^ i) 1 = y`. Key wiring fact:
+  `(Equiv.mulLeft g) ^ i = Equiv.mulLeft (g ^ i)` (the map `g ↦ Equiv.mulLeft g` is the monoid hom
+  `G →* Perm G`, `MulAction.toPermHom`/`Equiv.mulLeft` `map_zpow`), so `(f ^ i) 1 = g ^ i * 1 = g ^ i`.
+  From `hg y : y ∈ Subgroup.zpowers g` get `i` with `g ^ i = y`. Done. (No `y`-fixed-point
+  hypothesis is even consumed — `mulLeft g` has *no* fixed points, so the implication is vacuously
+  unconstrained beyond exhibiting the SameCycle witness.)
+
+**New certificate** `verify_m1_cycle_lemma.py` (committed; pure stdlib; 45 odd primes `3..199`):
+asserts the **`IsCycle` constructor obligations themselves** for `f = mulLeft g` (not the cycle
+decomposition): (O1) no fixed point on `Fˣ`, witness `1` moved; (O2) `∀ y ∃ i<p−1, gⁱ = y` (the
+`Subgroup.zpowers g` step, witness `x=1`); (O3) `#support = p−1` even ⇒ `IsCycle.sign = -(-1)^(p−1) =
+-1`; each cross-checked against inversion-parity sign. This is the predicate-level spec of the
+missing lemma, so the eventual Lean proof has a numerically-certified target.
+
+**M1 ACT, now fully reduced (paste-ready modulo build):**
+1. `isCycle_mulLeft_of_generator` (the one new lemma above, ~25–45 LOC) ⇒
+   `(Equiv.mulLeft g).IsCycle` for a generator `g` of `Fˣ`.
+2. `IsCycle.sign` + `IsCycle.orderOf`/`#support = card Fˣ = p−1` (even) ⇒ `sign (mulLeft g) = -1`.
+   [bearers pinned S4/S6]
+3. `sign` is a `MonoidHom` and `mulLeft (g^k) = (mulLeft g)^k` ⇒ for `a = g^k`,
+   `sign (mulLeft a) = (-1)^k`. [`map_pow`, pinned S4]
+4. Euler criterion `legendreSym.eq_pow` / `ZMod.euler_criterion` ⇒ `legendreSym p a = (-1)^k`.
+   [bearers pinned S4]
+Combine 3+4: `legendreSym p a = sign (mulLeft a)`. The field-vs-units sign equality (S2: same sign)
+lets this transfer to the `mulLeft₀` form of the headline statement if desired.
+
+**Net:** M1 has **no remaining name-discovery or strategy risk** — it is one isolated lemma with a
+certified spec and a written proof, plus pinned wiring. The only blocker is the build/Aristotle
+blackout. (No Lean file written: authoring a ~100 LOC proof blind, with no build and no Aristotle to
+check the `SameCycle`/`map_zpow` glue, would risk shipping a non-compiling file mislabeled as ACT —
+deferred to the first session with a live backend. M2 unchanged.)
+
 ## Dead Ends
 
 - **Algorithm-confluence route** (prove the flip-and-reduce evaluator is order-independent and read
