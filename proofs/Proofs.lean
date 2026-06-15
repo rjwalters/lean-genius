@@ -1473,6 +1473,7 @@ import Proofs.Erdos433Aristotle
 import Proofs.Erdos433Problem
 import Proofs.Erdos434Aristotle
 import Proofs.Erdos434Problem
+import Proofs.Erdos435PrimePowerObstruction
 import Proofs.Erdos435Problem
 import Proofs.Erdos436Improvements
 import Proofs.Erdos436Problem
