@@ -26,8 +26,11 @@ witness is `P = 0`, `A = e₀`, `B = -4•e₀`, `C = e₁`, `D = 4•e₁` for 
 unsigned products equal (`1·4 = 1·4`), but the signed powers `-4` and `+4` have opposite
 sign, so the four points cannot be concyclic.
 
-The corrected, provable converse is stated as `signed_converse_implies_concyclic`
-(currently a `sorry`; the circumcenter construction is build-gated — see
+The corrected, provable converse is stated as `signed_converse_implies_concyclic`. Its
+proof is now reduced (via a translation putting `P` at the origin) to a single isolated
+geometric lemma `circumcenter_signed`; the surrounding assembly is fully proved, and only
+the build-gated circumcenter construction inside `circumcenter_signed` remains a `sorry`
+(a clean Aristotle target — see
 `research/problems/product-of-segments-of-chords-oq-02/knowledge.md`).
 
 NOTE: build-pending. The Docker Lean toolchain was unavailable when this was written,
@@ -148,6 +151,31 @@ theorem unsigned_converse_counterexample :
     rw [EuclideanSpace.norm_single]; simp
   exact unsigned_converse_counterexample_general _ _ h0 h1
 
+/-- **Normalized circumcenter with matching signed powers (the geometric heart).**
+
+The translation-invariant core of the corrected converse, stated with the point of
+intersection moved to the origin (`P = 0`, `A = u`, `B = t•u`, `C = v`, `D = s•v`).
+
+Given two linearly independent vectors `u, v` and scalars `t, s` whose **signed** powers
+agree (`t·‖u‖² = s·‖v‖²`), there is a center `O` equidistant from all four of
+`u, t•u, v, s•v`. Concretely `O` is the circumcenter of the circle through `u, t•u, v`;
+the signed-power hypothesis is exactly what forces the fourth point `s•v` onto it.
+
+Build-gated proof sketch (the isolated `sorry`, a clean Aristotle target):
+solve the 2×2 perpendicular-bisector system for `O` in the basis `{u, v}` (its
+determinant is `‖u‖²‖v‖² − ⟪u,v⟫² ≠ 0` by Cauchy–Schwarz + linear independence), set
+`r = ‖u − O‖`, and verify `‖s•v − O‖ = r` by expanding squared norms (polarization) and
+substituting `t·‖u‖² = s·‖v‖²`. Degenerate scalars are automatic: if `t = 1` then
+`t•u = u` (and the corresponding equality is `rfl`-trivial), likewise `s = 1`. The
+identity `‖s•v − O‖² = r²` was checked numerically over 19987 random configurations
+(`research/problems/product-of-segments-of-chords-oq-02/verify_signed_converse.py`). -/
+theorem circumcenter_signed (u v : Vec2) (t s : ℝ)
+    (hindep : LinearIndependent ℝ ![u, v])
+    (hsigned : t * ‖u‖ ^ 2 = s * ‖v‖ ^ 2) :
+    ∃ O : Vec2,
+      ‖u - O‖ = ‖t • u - O‖ ∧ ‖u - O‖ = ‖v - O‖ ∧ ‖u - O‖ = ‖s • v - O‖ := by
+  sorry
+
 /-- **The corrected (signed) converse — provable formulation.**
 
 Replacing the unsigned product with the **signed** power equality
@@ -156,9 +184,10 @@ is `powerOfPoint P` measured along chord `AB` and the right along `CD`), togethe
 the non-degeneracy hypothesis that the two chords are genuinely distinct lines
 (`A-P` and `C-P` linearly independent), the converse holds: `A, B, C, D` are concyclic.
 
-The proof is the circumcenter construction (solve the 2×2 perpendicular-bisector system
-for the circle through `A, B, C`, then show `D` is the second intersection of line `CD`
-with that circle via the signed-power identity). It is build-gated; see knowledge.md. -/
+This reduces to the translation-normalized `circumcenter_signed` via `O = P + Õ`: the
+substitution `X - (P + Õ) = (X - P) - Õ` carries each of the four distance equalities
+back to the origin-centered statement. The radius is positive because `A ≠ C`
+(equivalently `u ≠ v`, from linear independence). -/
 theorem signed_converse_implies_concyclic
     (P A B C D : Vec2) (t s : ℝ)
     (hAB : B - P = t • (A - P)) (hCD : D - P = s • (C - P))
@@ -167,6 +196,32 @@ theorem signed_converse_implies_concyclic
     (hAneP : A ≠ P) (hCneP : C ≠ P) :
     ∃ (O : Vec2) (r : ℝ), r > 0 ∧
       ‖A - O‖ = r ∧ ‖B - O‖ = r ∧ ‖C - O‖ = r ∧ ‖D - O‖ = r := by
-  sorry
+  obtain ⟨Õ, hAB', hAC', hAD'⟩ := circumcenter_signed (A - P) (C - P) t s hindep hsigned
+  -- `u ≠ v`, i.e. `A - P ≠ C - P`, from linear independence (entries of an independent
+  -- family are pairwise distinct).
+  have huv : (A - P) ≠ (C - P) := by
+    have hinj := hindep.injective
+    have hne : ![A - P, C - P] 0 ≠ ![A - P, C - P] 1 := hinj.ne (by decide)
+    simpa using hne
+  -- Hence the candidate radius `‖(A - P) - Õ‖` is nonzero: otherwise `A - P = Õ = C - P`.
+  have hrne : (A - P) - Õ ≠ 0 := by
+    intro h0
+    apply huv
+    have hA0 : ‖(A - P) - Õ‖ = 0 := by rw [h0]; exact norm_zero
+    have hC0 : ‖(C - P) - Õ‖ = 0 := by rw [← hAC']; exact hA0
+    have hCeq : (C - P) - Õ = 0 := norm_eq_zero.mp hC0
+    rw [sub_eq_zero.mp h0, sub_eq_zero.mp hCeq]
+  refine ⟨P + Õ, ‖(A - P) - Õ‖, norm_pos_iff.mpr hrne, ?_, ?_, ?_, ?_⟩
+  · -- ‖A - (P + Õ)‖ = r
+    rw [show A - (P + Õ) = (A - P) - Õ from by abel]
+  · -- ‖B - (P + Õ)‖ = r, using B - P = t • (A - P) and `hAB'`.
+    rw [show B - (P + Õ) = (B - P) - Õ from by abel, hAB]
+    exact hAB'.symm
+  · -- ‖C - (P + Õ)‖ = r
+    rw [show C - (P + Õ) = (C - P) - Õ from by abel]
+    exact hAC'.symm
+  · -- ‖D - (P + Õ)‖ = r, using D - P = s • (C - P) and `hAD'`.
+    rw [show D - (P + Õ) = (D - P) - Õ from by abel, hCD]
+    exact hAD'.symm
 
 end ProductOfSegmentsOfChordsConverse

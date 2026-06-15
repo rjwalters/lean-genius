@@ -4,22 +4,33 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-15T09:30:00-07:00
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
-Lean realization of the integrity finding. Wrote
-`proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean` (UNREGISTERED, build-pending):
-a machine-checkable **counterexample lemma** proving the unsigned converse axiom is
-FALSE, plus the corrected **signed** converse stated in Lean (proof `sorry`,
-build-gated circumcenter construction). Prior sessions only had sympy/symbolic certs
-(PRs #24105, #24153, #24204) — this is the first Lean encoding of the obstruction.
+Reduced the single opaque circumcenter `sorry` to one isolated, reusable geometric
+lemma. `signed_converse_implies_concyclic` is now **fully assembled** from a
+translation-normalized lemma `circumcenter_signed`; the only remaining `sorry` lives
+inside `circumcenter_signed` (the build-gated 2×2 perpendicular-bisector solve). This
+turns a bespoke 4-point statement into a clean origin-centered fact that is a much
+better Aristotle target. Numerically validated the reduction (signed power ⟹ 4th point
+concyclic) over 19987 random configs (`verify_signed_converse.py`).
 
 ## Active Approach
 Coordinate / circumcenter construction over `EuclideanSpace ℝ (Fin 2)`:
 1. Correct the converse statement (signed power `t‖A-P‖² = s‖C-P‖²` +
    linear-independence of `A-P, C-P`).  [DONE — `signed_converse_implies_concyclic`]
-2. Build circumcenter of `A,B,C` from the 2×2 perpendicular-bisector system.  [sorry]
-3. Show `D` lies on that circle via the signed-power identity; close with `ring`.
+2. Translation reduction `O = P + Õ`, `X-(P+Õ)=(X-P)-Õ`; radius `>0` from `A≠C`
+   (`u≠v` via `LinearIndependent.injective`).  [DONE — assembly fully written]
+3. `circumcenter_signed (u v t s)`: solve 2×2 perp-bisector system in basis `{u,v}`
+   (det `= ‖u‖²‖v‖²−⟪u,v⟫² ≠ 0` Cauchy–Schwarz), then `‖s•v−O‖=‖u−O‖` via polarization
+   + `t‖u‖²=s‖v‖²`.  [sorry — the lone remaining gap, build-gated / Aristotle target]
+
+## Degeneracy analysis (new this session)
+The statement carries **no** `t≠1`/`s≠1` hypotheses, and is still true at those values:
+`t=1 ⟹ B=A`, `s=1 ⟹ D=C`, so the corresponding equalities in `circumcenter_signed`
+(`‖u-O‖=‖t•u-O‖` etc.) become `rfl`-trivial and no extra non-degeneracy is needed —
+the signed hypothesis only does work in the generic `t,s≠1` case. Confirmed in the
+numeric sweep (degenerate scalars included, 0 failures).
 
 ## Counterexample (now in Lean)
 `unsigned_converse_counterexample_general` (any two unit vectors `e₀, e₁`) and the
@@ -30,21 +41,24 @@ perpendicular-bisector equalities force `⟪e₀,O⟫ = -3/2`, `⟪e₁,O⟫ = 5
 `⟪e₀,O⟫ = ⟪e₁,O⟫` simultaneously → contradiction. No orthogonality of `e₀,e₁` needed.
 
 ## Attempt Count
-- Total attempts: 2 (ORIENT paper feasibility; ACT Lean counterexample)
-- Current approach attempts: 1 (counterexample lemma written, build-pending)
+- Total attempts: 3 (ORIENT paper feasibility; ACT Lean counterexample; ACT reduction)
+- Current approach attempts: 2 (counterexample lemma + signed-converse assembly)
 - Approaches tried: 2
 
 ## Blockers
-- Docker build + Aristotle MCP unavailable this session (dual blackout) — the Lean
-  file is written but NOT machine-checked, and the signed-converse `sorry` (circumcenter
-  construction) cannot be discharged/submitted yet. Mathematics fully resolved.
+- Docker build + Aristotle MCP unavailable this session (dual blackout — `docker info`
+  hangs; Aristotle `prove` returns 404 "Resource not found"). The Lean file is written
+  but NOT machine-checked. The lone remaining `sorry` (`circumcenter_signed`) cannot be
+  discharged/submitted yet. Mathematics fully resolved + numerically validated.
 
 ## Next Action
 When Docker is available:
-1. Build `ProductOfSegmentsOfChordsConverse.lean`; fix any lemma-name drift
-   (`EuclideanSpace.norm_single`, `norm_sub_sq_real` are the risk points).
-2. Discharge `signed_converse_implies_concyclic` via the circumcenter construction
-   (~150-250 LOC) OR submit that single `sorry` to Aristotle.
+1. Build `ProductOfSegmentsOfChordsConverse.lean`; fix any lemma-name drift. Risk points:
+   `norm_sub_sq_real`, `real_inner_smul_left`, `EuclideanSpace.norm_single` (counterexample);
+   `LinearIndependent.injective`, `norm_pos_iff`, `abel` on `Vec2` (new assembly).
+2. Discharge the single `circumcenter_signed` `sorry` via the 2×2 perp-bisector solve
+   (write `O = x•u + y•v`, Cramer with det `‖u‖²‖v‖²−⟪u,v⟫²`), OR submit that one
+   isolated lemma to Aristotle (now a clean origin-centered target).
 3. Once both compile, fold the counterexample + corrected statement into the parent
    `ProductOfSegmentsOfChords.lean`, delete the false axiom, drive `axiomCount` → 0,
    register the file in `Proofs.lean`.

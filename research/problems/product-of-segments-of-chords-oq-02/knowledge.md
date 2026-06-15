@@ -167,3 +167,45 @@ No Lean proof changed (docstring + JSON only), so build risk is nil even under t
 persisting Docker + Aristotle blackout. The build-gated ACT (replace the false axiom
 with the signed/linearly-independent corrected converse, target axiomCount 0) remains
 the open next step — see "Next Steps" above.
+
+## Session 2026-06-15 (researcher-2) — sorry decomposition + reduction (build-pending)
+
+Dual blackout persists (`docker info` hangs; Aristotle `prove` → 404). Instead of
+blind-writing the full ~200-line circumcenter proof, **reduced** the lone opaque
+`sorry` to one isolated, reusable lemma and proved the surrounding assembly.
+
+### New structure in `ProductOfSegmentsOfChordsConverse.lean`
+
+- `circumcenter_signed (u v : Vec2) (t s : ℝ)` — translation-normalized heart (`P` at
+  origin, `A=u, B=t•u, C=v, D=s•v`): given `LinearIndependent ℝ ![u,v]` and the signed
+  power `t‖u‖²=s‖v‖²`, `∃ O, ‖u-O‖=‖t•u-O‖ ∧ ‖u-O‖=‖v-O‖ ∧ ‖u-O‖=‖s•v-O‖`. This is
+  the **lone remaining `sorry`** — a clean, classical, origin-centered Aristotle target
+  (much better than the bespoke 4-point statement).
+- `signed_converse_implies_concyclic` — now **fully assembled** (no `sorry` of its own)
+  from `circumcenter_signed` via the translation `O = P + Õ`. Key glue:
+  - `X - (P + Õ) = (X - P) - Õ` by `abel`, carrying each of the 4 distance equalities
+    to the origin-centered ones; `B-P` / `D-P` rewritten via `hAB` / `hCD`.
+  - radius `r := ‖(A-P) - Õ‖ > 0` via `norm_pos_iff.mpr`, using `A-P ≠ C-P` (else
+    `r=0 ⟹ A-P=Õ=C-P`). `u≠v` extracted from `hindep.injective.ne (by decide)`.
+
+### Numerical validation (`verify_signed_converse.py`, 19987 configs, 0 failures)
+
+Confirmed the reduction's core claim: with `O` = circumcenter of `A,B,C` (solved from
+`2(B-A)·X=|B|²-|A|²`, `2(C-A)·X=|C|²-|A|²`) and `s` chosen so `t‖u‖²=s‖v‖²`, the fourth
+point `D=P+s(C-P)` satisfies `‖D-O‖²=‖A-O‖²` exactly. So the signed hypothesis is
+precisely the consistency condition that puts `D` on the circumcircle of `A,B,C`.
+
+### Degeneracy analysis (new)
+
+The statement has **no** `t≠1`/`s≠1` hypotheses and needs none: `t=1 ⟹ B=A` makes
+`‖u-O‖=‖t•u-O‖` `rfl`-trivial (similarly `s=1 ⟹ D=C`); the signed hypothesis only does
+work in the generic `t,s≠1` case (where `A,B,C` are genuinely 3 distinct non-collinear
+points). Degenerate scalars were included in the numeric sweep — still 0 failures.
+
+### Remaining gap (`circumcenter_signed` sorry) — blueprint
+
+Solve `O = x•u + y•v` (valid basis since `u,v` indep). With `p=‖u‖², q=‖v‖², w=⟪u,v⟫`:
+`‖u-O‖=‖t•u-O‖` and `‖u-O‖=‖v-O‖` give a 2×2 linear system in `(x,y)` with determinant
+`pq − w² ≠ 0` (Cauchy–Schwarz strict, since `u,v` indep). The third equality
+`‖u-O‖=‖s•v-O‖` then follows from `t·p = s·q` by polarization expansion + `nlinarith`.
+~120-180 LOC, or one `prove()` call once Aristotle is back.
