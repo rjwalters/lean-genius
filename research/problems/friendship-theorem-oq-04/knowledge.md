@@ -245,3 +245,39 @@ compile error blocks the PR rather than reaching `main`).
 ### Still open (unchanged)
 Negative half — the C₅ free-amalgamation infinite counterexample — still needs an
 inductive-limit construction; not build-safe-tractable under blackout.
+
+## Session (researcher-2, 2026-06-15) — unique infinite-degree hub (sharp count)
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (3 new theorems, still 0 sorry / 0
+axiom). Docker reachable but **8 concurrent lean-build containers** on the 7.65GiB VM
+⟹ a local build would OOM all peers (see [[project-docker-7gb-vm-is-the-real-oom-constraint]]),
+so build-pending → deployer-gated machine-check. File already registered in
+`proofs/Proofs.lean`. Aristotle still 404.
+
+### Added to `FriendshipTheoremOQ04.lean` (3 theorems)
+Sharpens the obstruction `infinite_friendship_has_infinite_degree` ("≥1 infinite-degree
+vertex") to an *exact count* in the conclusion-restored (universal-vertex) case:
+- `infinite_degree_vertex_eq_universal`: in ANY friendship graph with universal `c`,
+  every infinite-degree vertex equals `c` (no `[Infinite V]`). Proof: a non-centre
+  vertex has `ncard N = 2` (`universal_noncentral_ncard_two`), but an infinite set has
+  `ncard = 0` (`Set.Infinite.ncard`); `omega` on `0 = 2`.
+- `universal_vertex_infinite_degree`: `[Infinite V]` + universal `c` ⟹ `c` itself has
+  infinite degree. Proof: `infinite_friendship_has_infinite_degree` yields some
+  infinite-degree `w`; the previous lemma forces `w = c`; `rwa`.
+- `unique_infinite_degree_vertex` (capstone iff): `[Infinite V]` + universal `c` ⟹
+  `(G.neighborSet w).Infinite ↔ w = c`. The infinite windmill has a **single** hub of
+  infinite degree, every other vertex degree two — "as infinite as the finite theorem
+  permits."
+
+**Why new (not cosmetic):** `infinite_friendship_has_infinite_degree` only bounds the
+infinite-degree set below by 1; this pins it to exactly 1 (in the universal case) and
+identifies it with the hub. Structural sharp-boundary result, theory-level.
+
+**Verification (build-free).** Each proof is a 3–5 line composition of already-compiling
+in-file lemmas (`universal_noncentral_ncard_two`, `infinite_friendship_has_infinite_degree`)
+plus `Set.Infinite.ncard` (used in `Erdos152ProblemAPN.lean:247`). High static confidence.
+
+### Still open (unchanged)
+Negative half — the C₅ free-amalgamation infinite counterexample (an explicit friendship
+graph with no universal vertex) — still needs an inductive-limit / colimit construction;
+not build-safe-tractable in one session, and confirmed so across S1–S6.

@@ -45,6 +45,15 @@ that has no infinite analogue:
   `Fintype` notion); it shows the recovered conclusion is genuinely a windmill even
   on infinite vertex types.
 
+* `unique_infinite_degree_vertex` — the **sharp** count of infinite-degree vertices
+  in the conclusion-restored case: in an infinite friendship graph with a universal
+  vertex `c`, the centre `c` is the *unique* vertex of infinite degree
+  (`(G.neighborSet w).Infinite ↔ w = c`). This refines
+  `infinite_friendship_has_infinite_degree` from "at least one infinite-degree
+  vertex" to "exactly one" once a universal vertex exists — the infinite windmill is
+  as infinite as the finite theorem permits, with a single hub and every other vertex
+  of degree two.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -192,5 +201,44 @@ theorem universal_noncentral_ncard_two (hF : IsFriendshipGraph G)
     (G.neighborSet u).ncard = 2 := by
   obtain ⟨w, hwc, _, _, hset⟩ := universal_noncentral_neighborSet hF c hc u hu
   rw [hset, Set.ncard_pair (Ne.symm hwc)]
+
+/-- **Only the centre can have infinite degree.** In any friendship graph with a
+universal vertex `c`, every vertex of infinite degree equals `c`: a non-centre
+vertex sits in a single triangle and has exactly two neighbours (`ncard = 2`),
+so an infinite neighbourhood (`ncard = 0`) is impossible. No `[Infinite V]`
+assumption is needed — this is a pure structural fact about the windmill. -/
+theorem infinite_degree_vertex_eq_universal (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c)
+    (w : V) (hw : (G.neighborSet w).Infinite) : w = c := by
+  by_contra hwc
+  have htwo : (G.neighborSet w).ncard = 2 := universal_noncentral_ncard_two hF c hc w hwc
+  rw [hw.ncard] at htwo
+  omega
+
+/-- **The hub has infinite degree.** If an *infinite* friendship graph has a
+universal vertex `c`, then `c` itself has infinite degree. Combined with
+`infinite_friendship_has_infinite_degree` (which guarantees *some* infinite-degree
+vertex) and `infinite_degree_vertex_eq_universal` (which forces it to be `c`), the
+hub is exactly that vertex. -/
+theorem universal_vertex_infinite_degree (hF : IsFriendshipGraph G) [Infinite V]
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) :
+    (G.neighborSet c).Infinite := by
+  obtain ⟨w, hw⟩ := infinite_friendship_has_infinite_degree hF
+  rwa [infinite_degree_vertex_eq_universal hF c hc w hw] at hw
+
+/-- **Unique hub of the infinite windmill.** In an infinite friendship graph with a
+universal vertex `c`, the centre `c` is the *unique* vertex of infinite degree:
+`(G.neighborSet w).Infinite ↔ w = c`. This sharpens the obstruction
+`infinite_friendship_has_infinite_degree` (which only gives *at least one*
+infinite-degree vertex) to *exactly one* in the conclusion-restored case — the
+infinite windmill is "as infinite as the finite theorem permits", with a single
+infinite-degree hub and every other vertex of degree two. -/
+theorem unique_infinite_degree_vertex (hF : IsFriendshipGraph G) [Infinite V]
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (w : V) :
+    (G.neighborSet w).Infinite ↔ w = c := by
+  constructor
+  · exact infinite_degree_vertex_eq_universal hF c hc w
+  · rintro rfl
+    exact universal_vertex_infinite_degree hF c hc
 
 end FriendshipTheoremOQ04
