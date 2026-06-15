@@ -231,11 +231,27 @@
     },
     {
       "id": "p-squared-q",
-      "title": "Part III.6: |G| = p² · q and p · q² axiom-free (all sub-cases, incl. |G| = 12)",
+      "title": "Part III.6: |G| = p² · q axiom-free — both prime orderings (Iteration 7)",
       "startLine": 273,
+      "endLine": 552,
+      "summary": "Discharges `burnside_pq_nontrivial` axiom-free for the `|G| = p² · q` shape via Sylow counting in every prime ordering. The `p > q` case: `sylow_count_eq_one_of_lt_prime` forces n_p ∣ q with n_p ≡ 1 [MOD p], hence n_p = 1, yielding a normal Sylow p-subgroup, discharged in `burnside_p_squared_q_p_gt_q`. The general-exponent `q < p` theorems `burnside_p_pow_a_q_q_lt_p` and `burnside_p_q_pow_b_p_lt_q`, plus the `p < q` case `burnside_p_squared_q_p_lt_q` (via the higher-power helper `sylow_count_eq_one_of_lt_prime_pow_two`), cover the remaining orderings. All axiom-free.",
+      "mathContext": "When the two primes are unequal, Sylow's third theorem ($n_p \\equiv 1 \\pmod p$, $n_p \\mid q$) together with the size constraint forces a unique — hence normal — Sylow subgroup, which the Part III.5 normal-Sylow reductions convert into solvability. Worked witness: $|G| = 75 = 5^2 \\cdot 3$ ($p = 5 > q = 3$). The only ordering this generic argument cannot settle is the exceptional $(p, q) = (2, 3)$, $|G| = 12$, handled in the next section."
+    },
+    {
+      "id": "g-twelve-exceptional",
+      "title": "Part III.6 (cont.): Exceptional |G| = 12 case and the S10 element-counting closure (Iteration 9)",
+      "startLine": 553,
+      "endLine": 1447,
+      "summary": "The exceptional `|G| = 12 = 2² · 3` case, where a priori both n_2 and n_3 may exceed 1. `sylow_count_dvd_four_modEq_one_three` peels n_3 ∈ {1, 4}; `sylow_prime_order_disjoint_of_ne`, `sylow_three_card_eq_three_of_card_twelve`, `g_pow_three_iff_mem_some_sylow_three` and `cube_id_set_eq_disjoint_union` realize {g : g³ = 1} as a disjoint union of the order-3 Sylow subgroups; `sylow_two_inter_cube_id_eq_singleton_one`, the `sylow_two_set_*` family, and `cube_id_card_eq_nine_of_partition_ingredients` count it to 9, forcing a unique Sylow 2-subgroup (`sylow_two_unique_when_n3_four`). Culminates in `burnside_p_squared_q_twelve` — axiom-free and sorry-free (the S10 element count was closed in sessions S21–S24).",
+      "mathContext": "The single shape that resists generic Sylow counting: $|G| = 12$, the order of $A_4$. The closure is an element-counting argument — the set $\\{g \\in G : g^3 = 1\\}$ is the disjoint union $\\{e\\} \\sqcup \\bigsqcup_i (Q_i \\setminus \\{e\\})$ over the (up to) four order-3 Sylow subgroups, giving $1 + 4 \\cdot 2 = 9$ elements; the remaining $12 - 9 = 3$ non-cube-identity elements exactly fill one Sylow 2-subgroup minus its identity, pinning $n_2 = 1$. This was the last `sorry` in the file, closed across sessions S21–S24."
+    },
+    {
+      "id": "p-q-squared-mirror",
+      "title": "Part III.6 (cont.): Symmetric |G| = p · q² shape, (a,b) = (1,2) (Iteration 11)",
+      "startLine": 1448,
       "endLine": 1601,
-      "summary": "The large axiom-free core for orders with one squared prime. Starts with the `p > q` discharge (`sylow_count_eq_one_of_lt_prime`, `burnside_p_squared_q_p_gt_q`) and the `q < p` Sylow-uniqueness theorems (`burnside_p_pow_a_q_q_lt_p`, `burnside_p_q_pow_b_p_lt_q`, `burnside_p_squared_q_p_lt_q` via `sylow_count_eq_one_of_lt_prime_pow_two`), then builds the exceptional `|G| = 12` machinery (cube-identity set partition: `sylow_three_card_eq_three_of_card_twelve`, `cube_id_set_eq_disjoint_union`, `sylow_two_inter_cube_id_eq_singleton_one`, `cube_id_card_eq_nine_of_partition_ingredients`, `sylow_two_unique_when_n3_four`) culminating in `burnside_p_squared_q_twelve`, and finishes the mirror `p · q²` cases (`burnside_p_q_squared_p_lt_q`, `burnside_p_q_squared_q_lt_p`, `burnside_p_q_squared_twelve_mirror`). All axiom-free.",
-      "mathContext": "Closes every $|G| = p^2 q$ and $|G| = p q^2$ shape via Sylow counting. Generic case: Sylow's third theorem forces a unique (hence normal) Sylow subgroup whenever one prime exceeds the other, discharged through the Part III.5 normal-Sylow reductions. The hard exceptional case is $|G| = 12 = 2^2 \\cdot 3$ where $n_2$ and $n_3$ can both be $>1$ a priori; it is resolved by a counting argument on the set of cube-identity elements ($\\{g : g^3 = 1\\}$ has 9 elements forcing $n_2 = 1$), the A₄ analysis. This section is the bulk of the file's machine-checked content (~1330 lines)."
+      "summary": "Mirrors the Iteration 7 trio for the symmetric `(a, b) = (1, 2)` shape, `|G| = p · q²`. `burnside_p_q_squared_p_lt_q` handles `p < q` (reusing `sylow_count_eq_one_of_lt_prime` with the primes swapped); `burnside_p_q_squared_q_lt_p` handles `q < p` excluding `(p, q) = (3, 2)`; `burnside_p_q_squared_twelve_mirror` reuses `burnside_p_squared_q_twelve` for the shared `|G| = 12 = 3 · 2²` content. All axiom-free.",
+      "mathContext": "The $p \\cdot q^2$ orderings are the transpose of the $p^2 \\cdot q$ cases: swapping the roles of the two primes lets the same Sylow-count helpers apply verbatim. The exceptional case $|G| = 12$ is order-symmetric ($2^2 \\cdot 3 = 3 \\cdot 2^2$), so the $(1, 2)$ view is a thin wrapper around the already-closed $(2, 1)$ analysis. With this trio, every order with $a + b = 3$ is axiom-free; `burnside_pq_nontrivial` is invoked only for the residue $a + b \\ge 4$."
     },
     {
       "id": "consolidated-theorems",
