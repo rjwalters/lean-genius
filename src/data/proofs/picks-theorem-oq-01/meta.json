@@ -47,6 +47,21 @@
       "targetId": "picks-theorem",
       "relationship": "extends",
       "description": "Provides the constructive proof strategy for the axiomatized Pick's theorem"
+    },
+    {
+      "targetId": "picks-theorem-oq-01-oq-01",
+      "relationship": "child",
+      "description": "Supplies the core geometric lemma of this triangulation strategy: every non-degenerate lattice triangle decomposes into exactly $|\\det|$ primitive lattice triangles, each of area $1/2$ (the unimodular base case)."
+    },
+    {
+      "targetId": "picks-theorem-oq-02",
+      "relationship": "child",
+      "description": "Supplies the boundary-counting lemma the triangulation needs: the segment from $(0,0)$ to $(a,b)$ contains exactly $\\gcd(a,b)+1$ lattice points, which determines how boundary points $B$ are apportioned among the primitive triangles."
+    },
+    {
+      "targetId": "picks-theorem-oq-01-oq-02",
+      "relationship": "child",
+      "description": "Extends this strategy to the lattice-point enumerator: derives the 2D Ehrhart polynomial $L(P,t) = A t^2 + (B/2) t + 1$, whose linear coefficient $B/2$ and constant $1$ encode Pick's formula as the $t=1$ evaluation."
     }
   ],
   "leanFile": {
