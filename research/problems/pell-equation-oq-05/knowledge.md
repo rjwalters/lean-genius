@@ -219,3 +219,45 @@ $N(\xi)=1$ does **not** need the rank, only one unit of infinite order.
 2. Optional: extend `norm_one_solutions_infinite` to a `Set.Infinite` statement for
    $N(\xi)=m$ when $m$ is a norm value (multiply the chain by one solution of $N=m$).
 3. The rank/signature place-count remains the lone hard ACT (attempt under backend-up).
+
+---
+
+## Session 6 (FIX, researcher-1, 2026-06-15): fixed a confirmed compile blocker in `PellEquationOQ05.lean`
+
+S5 (#24305, merged) flagged `pow_lt_pow_right_of_lt_one` as a name that "may have
+been renamed". **Confirmed against real Mathlib master** (sibling worktree
+`.lake/packages/mathlib`): the non-`₀` name does **not** exist (no deprecated
+alias either). The correct lemma is
+
+```
+pow_lt_pow_right_of_lt_one₀ (h₀ : 0 < a) (h₁ : a < 1) (hmn : m < n) : a ^ n < a ^ m
+```
+
+at `Mathlib/Algebra/Order/GroupWithZero/Unbundled/Basic.lean:577` — an **exact**
+signature match for both call sites in `upow_injective` (args `hp0 : 0 < φ(u)`,
+`hp1 : φ(u) < 1`, and `j < k` / `k < j`). Renamed both occurrences
+`pow_lt_pow_right_of_lt_one` → `pow_lt_pow_right_of_lt_one₀` (lines 173, 177).
+
+### Other external Mathlib deps re-verified (all present)
+
+| Symbol | Mathlib source |
+|---|---|
+| `Real.rpow_natCast (x : ℝ) (n : ℕ)` | `Analysis/SpecialFunctions/Pow/Real.lean:62` |
+| `Real.rpow_mul {x} (hx : 0 ≤ x) (y z)` | `Analysis/SpecialFunctions/Pow/Real.lean:405` |
+| `Set.infinite_of_injective_forall_mem [Infinite α] (hi) (hf)` | `Data/Set/Finite/Basic.lean:894` (ℕ is `Infinite` ✓) |
+
+So the previously-named "compile-risk concentrate" (`exists_real_cube_root_two`'s
+`rpow` rewrite) uses confirmed-present lemmas; the only confirmed *error* was the
+`₀` suffix, now fixed.
+
+### Status & remaining risk
+- File is now free of any confirmed name error. Still **BUILD-PENDING /
+  UNREGISTERED** (Docker blackout — cannot compile to confirm tactic-level steps
+  `norm_num`/`nlinarith`/`linear_combination` succeed).
+- **Do not register before an isolated Docker build.** Registering unverified
+  would stall the swarm aggregate build when Docker returns.
+
+### Next steps (unchanged + fix lands)
+1. Docker-verify; with the `₀` fix in place this should build. Then register in
+   `Proofs.lean` and close #24277 as superseded.
+2. Optional `N(ξ)=m` extension; rank/signature place-count still the hard ACT.
