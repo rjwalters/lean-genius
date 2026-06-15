@@ -45,7 +45,11 @@
   },
   "knowledge": {
     "progressSummary": "Open question fully resolved on paper. The collision-count formalization generalizes cleanly to non-uniform day probabilities p via the i.i.d. product measure. Expected collisions E_p[X]=C(n,2)*sum p_k^2 (the cryptographic coincidence index), no-collision probability Pr_p(X=0)=n!*e_n(p), and in both the uniform distribution is the collision-minimizing extremum. Lean ACT deferred (Docker/Aristotle down).",
-    "builtItems": [],
+    "builtItems": [
+      "verify_no_collision_extremum.py (2026-06-15) — exact/symbolic certificate of the no-collision side: N0 Pr_p(X=0)=n!*e_n(p) (enumeration), N1 uniform product, N2 Schur-Ostrowski identity for e_n (sympy), N3 uniform maximizes e_n (equalising-transfer + random search). Closes the previously-uncertified 'optimization layer'.",
+      "verify_nonuniform.py — exact certificate of the collision-count side: E_p[X]=C(n,2)*sum p_k^2, sum p_k^2>=1/d, equality iff uniform (T0-T3).",
+      "verify_t3_converse_certificate.py — T3 converse (CS equality => uniform) via the variance identity (PR #24214)."
+    ],
     "insights": [
       "E_p[X] = C(n,2)*sum_k p_k^2 by linearity of expectation; Pr[f(i)=f(j)] = sum_k p_k^2 per pair.",
       "sum_k p_k^2 is the collision probability / Renyi-2 / index of coincidence; >= 1/d by Cauchy-Schwarz with equality iff uniform, so uniform minimizes expected collisions.",
@@ -60,7 +64,7 @@
     "nextSteps": [
       "ACT (post-blackout): port parent indicator decomposition to product measure, prove E_p[X]=C(n,2)*sum p_k^2.",
       "ACT: prove sum p_k^2 >= 1/d (equality iff uniform) via Finset Cauchy-Schwarz (sq_sum_le_card_mul_sum_sq).",
-      "Follow-up file: Pr_p(X=0)=n!*e_n(p) via Finset.esymm; optimization layer pending majorization scaffolding."
+      "ACT: Pr_p(X=0)=n!*e_n(p) via Finset.esymm; Schur-concavity now numerically/symbolically certified (verify_no_collision_extremum.py) so the Lean target is concrete — need an e_{n-1}(p\\i)-e_{n-1}(p\\j)=(p_j-p_i)*e_{n-2} deletion lemma; still build-gated (no Mathlib Schur-Ostrowski API)."
     ]
   },
   "tags": [

@@ -140,3 +140,34 @@ the OQ at the parent's rigor level — T1–T4 already answer it.
   new file) is gated by the Docker/`lake build` verification outage of
   2026-06-13 — a new proof file cannot be machine-checked right now, and shipping
   unverified Lean as "complete" is against policy. Resume ACT when Docker is back.
+
+---
+
+## Session (2026-06-15) — no-collision probability & its extremum (build-free)
+
+Prior sessions/verifiers certified the **collision-count** side: `E_p[X] = C(n,2)·Σ p_k²`,
+minimised at uniform by Cauchy–Schwarz (`verify_nonuniform.py`), plus the T3 converse
+(`verify_t3_converse_certificate.py`, PR #24214). This session certifies the **dual
+half** the trackers left open ("optimization layer pending majorization scaffolding"):
+the no-collision probability and the fact that uniform **maximises** it.
+
+`verify_no_collision_extremum.py` (exact / symbolic, no Lean) certifies:
+
+- **N0 (identity):** `Pr_p(X=0) = n!·e_n(p)`, where `e_n` is the degree-`n` elementary
+  symmetric polynomial — exact by full enumeration of the `d^n` outcomes vs `n!·e_n`.
+- **N1 (uniform recovery):** uniform `p≡1/d` gives `n!·C(d,n)/d^n = ∏_{i<n}(1 − i/d)`,
+  the classical birthday product (all `2≤n≤d≤8`).
+- **N2 (Schur–Ostrowski, symbolic):** `e_n` is **Schur-concave**, via
+  `∂e_n/∂p_i = e_{n-1}(p\i)` and `e_{n-1}(p\i) − e_{n-1}(p\j) = (p_j − p_i)·e_{n-2}(p\{i,j})`,
+  giving `(p_i − p_j)(∂_i e_n − ∂_j e_n) = −(p_i − p_j)²·e_{n-2}(rest) ≤ 0` (sympy, exact).
+- **N3 (extremum):** Schur-concavity ⟹ uniform (majorization-minimal) **maximises** `e_n`,
+  hence `Pr(X=0)`. Certified by (a) an equalising Hardy–Littlewood–Pólya transfer strictly
+  increasing `e_n` (3000 exact trials) and (b) random search finding nothing beating uniform.
+
+**Conclusion (clean statement):** uniform is the birthday extremum on **both** sides — it
+*minimises* `E[X]` (Cauchy–Schwarz) and *maximises* `Pr(X=0)` (Schur-concavity of `e_n`).
+
+This is the missing rigor for the "uniform maximises Pr(X=0)" claim. The Lean ACT for it
+(`Pr_p(X=0)=n!·Finset.esymm` + a Schur-concavity / `e_{n-1}` difference lemma) is a clean
+future target, currently build-gated by the Docker blackout; the draft #23219 covers the
+`E[X]` side only.
