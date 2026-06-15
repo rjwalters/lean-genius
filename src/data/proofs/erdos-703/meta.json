@@ -67,39 +67,39 @@
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 31,
-      "endLine": 39,
+      "startLine": 1,
+      "endLine": 40,
       "summary": "Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace.",
       "mathContext": "Mathematical content: Imports `Finset.Basic`, `Finset.Card`, `Finset.Powerset`, and `SetFamily.Intersecting`. Opens `Nat Finset` namespace."
     },
     {
       "id": "r-intersection",
       "title": "Forbidden r-Intersection Families",
-      "startLine": 49,
-      "endLine": 66,
+      "startLine": 41,
+      "endLine": 67,
       "summary": "Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset.",
       "mathContext": "Formal definition: Defines `hasRIntersection` ($|A \\cap B| = r$), `avoidsRIntersection` (family-level constraint), and $T(n,r) = \\max|\\mathcal{F}|$ via `Finset.sup` over filtered powerset."
     },
     {
       "id": "trivial-case",
       "title": "The Trivial Case T(n,0)",
-      "startLine": 78,
-      "endLine": 88,
+      "startLine": 68,
+      "endLine": 89,
       "summary": "$T(n,0) = 2^{n-1}$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry.",
       "mathContext": "$T(n,0) = $$2^{{n-1}$}$$: 0-avoiding families are intersecting families. Equivalence proved; optimality has a sorry."
     },
     {
       "id": "frankl-1977",
       "title": "Frankl's Result for r = 1",
-      "startLine": 100,
-      "endLine": 117,
+      "startLine": 90,
+      "endLine": 118,
       "summary": "Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection.",
       "mathContext": "Mathematical content: Frankl (1977) determined $T(n,1)$: optimal family is large sets ($|A| > (n+1)/2$) plus $\\emptyset$. Pigeonhole argument for large sets avoiding 1-intersection."
     },
     {
       "id": "frankl-furedi",
       "title": "Frankl-Füredi Optimal Families",
-      "startLine": 122,
+      "startLine": 119,
       "endLine": 142,
       "summary": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$.",
       "mathContext": "Explicit constructions split by parity of $n+r$: odd case uses $|A| > (n+r)/2$ or $|A| < r$; even case uses $|A \\setminus \\{1\\}| \\geq (n+r)/2$. Frankl-Füredi (1984) proves optimality for fixed $r$ and large $n$."
@@ -107,15 +107,15 @@
     {
       "id": "main-question",
       "title": "The Main Question — Exponential Bound",
-      "startLine": 153,
-      "endLine": 165,
+      "startLine": 143,
+      "endLine": 171,
       "summary": "Formal $\\varepsilon$-$\\delta$ statement: $T(n,r) < (2-\\delta)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize.",
       "mathContext": "Formal $\\varepsilon$-$\\$\\delta$$ statement: $T(n,r) < (2-\\$\\delta$)^n$ for $\\varepsilon n < r < (1/2-\\varepsilon)n$. **Frankl-Rödl (1987)**: YES, resolving the \\$250 prize."
     },
     {
       "id": "chromatic-connection",
       "title": "Connection to Chromatic Numbers",
-      "startLine": 181,
+      "startLine": 172,
       "endLine": 195,
       "summary": "The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods.",
       "mathContext": "Bound: The exponential bound implies $\\chi(G_n) \\geq c^n$ for the unit distance graph. Frankl-Wilson (1981) proved this independently via mod $p$ methods."
@@ -129,9 +129,17 @@
       "mathContext": "Verified: Generalizes to $L$-avoiding families. The Frankl-Wilson theorem (mod $p$ version): uniform families with modular constraints satisfy $|\\mathcal{F}| \\leq \\binom{n}{s}$, using the linear algebra method."
     },
     {
+      "id": "part-viii-related-702",
+      "title": "Related Problem #702",
+      "startLine": 213,
+      "endLine": 222,
+      "summary": "Poses the companion open question Erdős #702 (the $k$-uniform case): what is the maximum size of a $k$-uniform family (all sets of size exactly $k$) avoiding $r$-intersection? Stated as prose only; no formal declaration.",
+      "mathContext": "The $k$-uniform restriction connects to the Frankl-Wilson and Ray-Chaudhuri-Wilson theorems on $L$-intersecting uniform families, which give $\\binom{n}{s}$-type bounds via the linear algebra method."
+    },
+    {
       "id": "summary",
       "title": "Summary and Resolution",
-      "startLine": 227,
+      "startLine": 223,
       "endLine": 259,
       "summary": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = 2^{n-1}`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`.",
       "mathContext": "Combined `erdos_703_solved` theorem: `mainQuestion ∧ T(n,0) = $$2^{{n-1}$}$`. Clean statement `erdos_703 : mainQuestion := frankl_rodl_1987`."
