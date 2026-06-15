@@ -44,12 +44,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ACT: wrote BirthdayProblemOQ01OQ01OQ03.lean formalizing the non-uniform generalization at parent rigor (closed-form, no measure space). collisionProb p = sum (p k)^2 (coincidence index); collisionProb_uniform recovers 1/d; collisionProb_ge proves uniform minimizes collisions; collisionProb_eq_iff_uniform characterizes equality; expectedCollisions_ge/uniform lift to C(n,2)*sum(p k)^2. Built on one SOS identity (sos_identity). Math verified exact-rational 2378 trials. Build-pending UNREGISTERED (Docker blackout live: docker info timeout 20s).",
+    "progressSummary": "PROGRESS (researcher-1 2026-06-15): added the QUANTITATIVE non-uniformity penalty the prior sign-only extrema left open. Both extrema governed by V=Σ(pₖ-1/d)²: E[X] excess = C(n,2)·V (exact); Pr(X=0) deficit = K·V+O(V^{3/2}), K=½·n!·d^{2-n}·C(d-2,n-2). Certified (exact Fraction + mpmath scaling). Docker-indep; build-gated Lean is a 1-line corollary of researcher-7's sos_identity.",
     "builtItems": [
       "verify_no_collision_extremum.py (2026-06-15) — exact/symbolic certificate of the no-collision side: N0 Pr_p(X=0)=n!*e_n(p) (enumeration), N1 uniform product, N2 Schur-Ostrowski identity for e_n (sympy), N3 uniform maximizes e_n (equalising-transfer + random search). Closes the previously-uncertified 'optimization layer'.",
       "verify_nonuniform.py — exact certificate of the collision-count side: E_p[X]=C(n,2)*sum p_k^2, sum p_k^2>=1/d, equality iff uniform (T0-T3).",
       "verify_t3_converse_certificate.py — T3 converse (CS equality => uniform) via the variance identity (PR #24214).",
-      "Created proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean (build-pending, UNREGISTERED): collisionProb, expectedCollisions + 6 theorems (T1-T4), 0 axioms 0 sorries"
+      "Created proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean (build-pending, UNREGISTERED): collisionProb, expectedCollisions + 6 theorems (T1-T4), 0 axioms 0 sorries",
+      "research/problems/birthday-problem-oq-01-oq-01-oq-03/verify_quadratic_penalty.py (certifies E[X] excess = C(n,2)V exact + Pr(X=0) deficit = K·V + O(V^{3/2}))"
     ],
     "insights": [
       "E_p[X] = C(n,2)*sum_k p_k^2 by linearity of expectation; Pr[f(i)=f(j)] = sum_k p_k^2 per pair.",
@@ -57,7 +58,10 @@
       "Pr_p(X=0) = n!*e_n(p), the degree-n elementary symmetric polynomial of p; uniform gives n!*C(d,n)/d^n = descFactorial(d,n)/d^n, recovering the parent.",
       "n!*e_n is Schur-concave (Schur-Ostrowski: (p_i-p_j)(d_i e_n - d_j e_n) = -(p_i-p_j)^2 * e_{n-2}(rest) <= 0), so uniform maximizes Pr(all distinct) -> minimizes collision probability. Classical: Bloom 1973, Munford 1977, Klotz 1979, Nunnikhoven 1992.",
       "Degenerate p (all mass on one day) gives Pr(X=0)=0 for n>=2: maximal collisions, confirming concentration is worst.",
-      "The Cauchy-Schwarz lower bound and its equality case BOTH follow from one elementary SOS identity: sum_k (p_k - 1/d)^2 = (sum_k p_k^2) - 1/d (using sum p_k=1). No CS infra port needed — Finset.sum_nonneg gives the bound, Finset.sum_eq_zero_iff_of_nonneg + sq_eq_zero_iff give equality-iff-uniform."
+      "The Cauchy-Schwarz lower bound and its equality case BOTH follow from one elementary SOS identity: sum_k (p_k - 1/d)^2 = (sum_k p_k^2) - 1/d (using sum p_k=1). No CS infra port needed — Finset.sum_nonneg gives the bound, Finset.sum_eq_zero_iff_of_nonneg + sq_eq_zero_iff give equality-iff-uniform.",
+      "Quantitative penalty (researcher-1 2026-06-15): both birthday extrema are governed by ONE L2 non-uniformity scalar V(p)=Σ(pₖ-1/d)²=Σpₖ²-1/d. EXACT: E[X]-E_u[X]=C(n,2)·V (certified 0 mismatches, all 2≤n≤d≤8).",
+      "Pr(X=0)=n!·eₙ(p) deficit: Pr_u(X=0)-Pr_p(X=0)=K·V+O(V^{3/2}), K=½·n!·d^{2-n}·C(d-2,n-2)≥0 (uniform is a strict quadratically-flat max). Certified via deficit/V→K scaling (e.g. (3,5)→9/5, (5,8)→75/32). EXACT for n=2 (K=1): Pr(X=0)=1-Σpₖ², deficit=V.",
+      "This sharpens the sign-only CS (#23219) and Schur (#24449) results into a leading-order magnitude law tied to the crypto motivation: hash with L2 bias V pays +C(n,2)V expected collisions and -K·V no-collision probability."
     ],
     "mathlibGaps": [
       "No majorization / Schur-Ostrowski / Schur-convexity API in Mathlib, needed for the full uniform-optimality theorem on e_n.",
