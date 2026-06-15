@@ -324,3 +324,100 @@ which is the bottom-line OQ-04 result.
   is the canonical name (cf. `Erdos44Problem.lean:160`,
   `Erdos131Problem.lean:204`).
 
+
+## S5 (researcher-9, 2026-05-13) — ACT ellipsoid lattice axiom
+
+**Mode**: REVISIT — ACT
+**Outcome**: +1 STATEMENT axiom (Bezdek–Kuperberg), +1 derived corollary, 0 sorries
+
+### What was done
+Added the opposite-direction shape-dependence result. Where S3–S4 showed
+a non-spherical shape strictly *exceeds* the FCC bound, Bezdek–Kuperberg
+(2007) shows even ellipsoids cannot exceed it under a *lattice* constraint.
+
+* `structure EllipsoidLatticePacking extends PackingDensity` — definitional
+  marker, no axiom.
+* `axiom bezdek_kuperberg_ellipsoid_lattice_upper_bound (e : EllipsoidLatticePacking) : e.density ≤ fccDensity`
+  — +1 STATEMENT axiom.
+* `theorem ellipsoid_lattice_le_fccPacking (e) : e.density ≤ fccPacking.density`
+  — direct application of the axiom, restated against the named parent
+  `fccPacking` instance. No new axiom.
+
+### Key findings
+* **Bezdek–Kuperberg (2007)**, *Geometriae Dedicata* 132, 73–85: every
+  ellipsoid lattice packing in ℝ³ has optimal density exactly π/(3√2). The
+  published proof reduces to affine equivalence between ellipsoid and ball
+  lattice packings (any ellipsoid is a linear image of a ball, preserving
+  density and lattice structure) + Gauss's optimal ball-lattice density.
+* Affine density invariance under linear transforms is **not** in Mathlib
+  v4.26.0 — hence the result is a STATEMENT axiom, not a proved theorem.
+* **Lattice constraint is essential**: Donev–Stillinger–Chaikin–Torquato
+  (2004) reach δ ≈ 0.7707 with *non-lattice* ellipsoid packings, strictly
+  above FCC. It is the lattice-vs-non-lattice distinction, not the shape,
+  that caps the density here.
+
+## S6 (researcher-8, 2026-05-?) — ACT Ulam conjecture axiom
+
+**Mode**: REVISIT — ACT
+**Outcome**: +1 STATEMENT axiom (Ulam 1972, OPEN), +1 derived corollary, 0 sorries
+
+### What was done
+Supplied the conjectural lower bound of the hierarchy.
+
+* `structure SymmetricConvexBody3DPacking extends PackingDensity` —
+  definitional marker, no axiom. Mathlib v4.26.0 has no native
+  centrally-symmetric convex-body abstraction at the PackingDensity level,
+  so the structure records geometric intent without committing to a
+  formalisation. Docstring notes a future refactor could carry the body
+  `K` with `∀ x, x ∈ K ↔ -x ∈ K`; the axiom would survive as a STATEMENT
+  axiom on the refined type.
+* `axiom ulam_conjecture (p : SymmetricConvexBody3DPacking) : fccDensity ≤ p.density`
+  — +1 STATEMENT axiom.
+* `theorem ulam_le_fccPacking_density (p) : fccPacking.density ≤ p.density`
+  — direct application, restated against `fccPacking`. No new axiom.
+
+### Key findings
+* **Ulam (1972)**, via Gardner, *Scientific American* 226, 117–121:
+  every centrally symmetric convex body K ⊂ ℝ³ satisfies δ_K ≥ π/(3√2),
+  equality iff K is a Euclidean ball — making the ball the LEAST dense
+  such body to pack, inverting Kepler optimality.
+* **OPEN since 1972** — resisted both proof and disproof for 50+ years.
+  Partial results (Brass–Moser–Pach 2005, §3.3): rhombic dodecahedron
+  packs at density 1, regular octahedron at 18/19 ≈ 0.9474.
+
+## S7 (researcher-1, 2026-05-31) — ACT final hierarchy aggregation
+
+**Mode**: REVISIT — ACT
+**Outcome**: +1 theorem (`density_hierarchy_3d`), 0 new axioms, 0 sorries
+
+### What was done
+* `theorem density_hierarchy_3d (e : EllipsoidLatticePacking) (p : SymmetricConvexBody3DPacking) :`
+  `e.density ≤ fccPacking.density ∧ fccDensity < tetrahedronDimerDensity ∧ fccPacking.density ≤ p.density`
+  — pure `And.intro` over `ellipsoid_lattice_le_fccPacking e`,
+  `tetrahedronDimerDensity_gt_fccDensity`, and `ulam_le_fccPacking_density p`.
+  No new axioms.
+
+### Hierarchy now formalised (after S7)
+
+| Side | lattice | non-lattice |
+|---|---|---|
+| Sphere | `fccDensity = π/(3√2)` (Gauss 1831, parent axiom) | `kepler_conjecture` (Hales 1998, parent axiom) |
+| Tetrahedron | — | `tetrahedronDimerDensity > fccDensity` (S3, axiom-free) |
+| Ellipsoid | `bezdek_kuperberg_…` ≤ fccDensity (S5, +1 axiom) | Donev et al. δ ≈ 0.7707 (deferred, S8+) |
+| Symmetric convex body | — | `ulam_conjecture` ≥ fccDensity (S6, +1 axiom, OPEN) |
+
+**Bottom line**: the FCC sphere bound is neither universal nor optimal
+across shape classes, in both directions.
+
+### File state after S7
+`proofs/Proofs/KeplerConjectureOQ04.lean` — 456 lines, 4 definitions
+(2 `def` + 2 `structure`), 8 theorems, **2 axioms**
+(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, `ulam_conjecture`),
+0 sorries. meta.json and annotations.json synced to this state.
+
+### Next action (deferred — needs Docker)
+**S8 (Donev et al. 2004 non-lattice ellipsoid bound)**: introduce
+`EllipsoidPacking` (non-lattice variant) + Donev–Stillinger–Chaikin–
+Torquato (2004) axiom δ ≈ 0.7707 at aspect ratio α ≈ √2 (+1 axiom).
+Fills the non-lattice ellipsoid cell of the matrix; does not change the
+hierarchy bound. Lower priority than the closed S7 aggregation.
