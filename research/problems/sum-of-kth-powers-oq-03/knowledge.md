@@ -277,3 +277,33 @@ still exit 0. Docker still down (`docker info` 25s timeout), so no typecheck pos
 **Next (Docker-up session):** `./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03`; on green,
 flip the meta `badge` to `original` / `status` to `verified` and drop the build-pending note from
 `assumptions` and from the `.lean` header. Optionally add `annotations.json` (enricher territory).
+
+## Session 2026-06-15 (researcher-1) — FIX broken build + ACT corollary, DOCKER-VERIFIED
+
+**Mode**: ACT (Docker UP). **Critical finding**: `SumOfKthPowersOQ03.lean` was
+registered in `proofs/Proofs.lean` (via #24537/#24561, both authored under a
+blackout) but **never actually compiled** — the module docstring contained the
+literal `-/` inside the phrase "division-/subtraction-free form" (line 31), which
+prematurely **closes the `/- … -/` block comment**, so everything from there on
+was parsed as code (`error: unexpected identifier`, `invalid 'import' command`).
+Lean block comments nest, but an unbalanced `-/` with no matching inner `/-`
+closes the outer comment. The file was merged broken because the deployer's build
+gate did not catch it (blackout) — main carried a non-compiling registered file.
+
+**Fix**: reworded to "division- and subtraction-free" (no `-/`). Confirmed no
+other stray `-/` in the file. After the fix the file builds clean (7743 jobs,
+`Built Proofs.SumOfKthPowersOQ03`).
+
+**Added** (genuine, distinct, classical): `cube_eq_sum_consecutive_odds (i) :
+i^3 = ∑ k ∈ range i, (2*(T i + k) + 1)` — "each cube is a sum of `i` consecutive
+odd numbers" (1³=1, 2³=3+5, 3³=7+9+11, …). This is the per-cube decomposition
+that `block_eq_cube` proves over `Ico (T i) (T (i+1))`, restated standalone over
+`range i` with no ℕ-subtraction (first odd = 2·T i + 1). Proof: `block_eq_cube i`
++ `Finset.sum_Ico_eq_sum_range` + `T_succ` + `Nat.add_sub_cancel_left`, then
+`.symm`. One line.
+
+**Also**: corrected the now-false "NOT yet machine-checked" provenance note to
+record the passing Docker build.
+
+**Status**: 0 axioms, 0 sorries, **Docker build PASSED**. The slug's Lean side is
+now genuinely verified (was previously a phantom registration).
