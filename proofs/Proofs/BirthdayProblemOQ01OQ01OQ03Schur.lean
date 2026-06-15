@@ -75,8 +75,10 @@ theorem biaffine_le_mean (A B C x y : ℝ) (hC : 0 ≤ C) :
 theorem biaffine_lt_mean (A B C x y : ℝ) (hC : 0 < C) (hxy : x ≠ y) :
     biaffine A B C x y < biaffine A B C ((x + y) / 2) ((x + y) / 2) := by
   have h := biaffine_mean_sub A B C x y
-  have hpos : 0 < ((x - y) / 2) ^ 2 * C :=
-    mul_pos (sq_pos_of_ne_zero (div_ne_zero (sub_ne_zero.mpr hxy) two_ne_zero)) hC
+  have hne : ((x - y) / 2) ^ 2 ≠ 0 :=
+    pow_ne_zero 2 (div_ne_zero (sub_ne_zero.mpr hxy) two_ne_zero)
+  have hsq : 0 < ((x - y) / 2) ^ 2 := lt_of_le_of_ne (sq_nonneg _) (Ne.symm hne)
+  have hpos : 0 < ((x - y) / 2) ^ 2 * C := mul_pos hsq hC
   linarith [h, hpos]
 
 /-- **Equality characterization of the transfer step.** With positive weight,
