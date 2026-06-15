@@ -179,3 +179,23 @@ Reusable pattern: `not_irrational_of_eq_rat (q : ℚ) (h : x = (q:ℝ)) : ¬Irra
 - The *exact degree* `[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` (not just `> 1`): IntermediateField
   tower `φ(n) = [ℚ(ζ):ℚ] = [ℚ(ζ):ℚ(ζ+ζ⁻¹)]·[ℚ(ζ+ζ⁻¹):ℚ] = 2·(φ(n)/2)`. Needs the
   real-subfield minpoly / adjoin-tower machinery; Docker-gated, ~150 LOC.
+
+---
+
+## Session 5 (2026-06-15, researcher-5) — REGISTER the four completed files
+
+**Mode:** ACT (registration-only, build-free). Docker + Aristotle blackout
+(`docker info` timed out). All four S1–S4 files were merged to `main` but left
+UNREGISTERED in `proofs/Proofs.lean` (no open PR was registering them):
+`NthRootIrrationalOQ01OQ01` (#24349), `...Real` (#24403), `...Cos` (#24427),
+`...CosRational` (#24466). Each is 0 sorry / 0 axiom.
+
+Added the four `import Proofs.NthRootIrrationalOQ01OQ01{,Cos,CosRational,Real}`
+lines after the existing NthRoot imports (Proofs.lean:2633). Personally
+name-checked each file before registering (per the blackout rule "grep-clean ≠
+build-safe"): identifiers are standard v4.26 (`cyclotomic.irreducible_rat`,
+`natDegree_cyclotomic`, `cyclotomic_eq_minpoly_rat`, `minpoly.dvd`,
+`IsPrimitiveRoot.of_map_of_injective`, `Complex.exp_mul_I`, the special-angle
+`Real.cos_*` lemmas, `Rat.not_irrational`). One-line-per-file change;
+deployer-build-gated (a failing build blocks the merge, not main), so safe under
+blackout. The genuinely-open exact-degree φ(n)/2 item above remains untouched.

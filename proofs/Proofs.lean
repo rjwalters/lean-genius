@@ -2632,6 +2632,10 @@ import Proofs.NewtonInductiveStepOQ03
 import Proofs.NewtonLogConcavity
 import Proofs.NthRootIrrational
 import Proofs.NthRootIrrationalOQ01
+import Proofs.NthRootIrrationalOQ01OQ01
+import Proofs.NthRootIrrationalOQ01OQ01Cos
+import Proofs.NthRootIrrationalOQ01OQ01CosRational
+import Proofs.NthRootIrrationalOQ01OQ01Real
 import Proofs.OSBridge
 import Proofs.OnePlusOne
 import Proofs.OnePlusOneOQ04
