@@ -1789,6 +1789,7 @@ import Proofs.Erdos650Problem
 import Proofs.Erdos651Problem
 import Proofs.Erdos652Problem
 import Proofs.Erdos653Problem
+import Proofs.Erdos653LowerBound
 import Proofs.Erdos654Problem
 import Proofs.Erdos655Problem
 import Proofs.Erdos656Problem
