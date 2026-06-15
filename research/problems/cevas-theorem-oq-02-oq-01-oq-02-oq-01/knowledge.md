@@ -6,8 +6,39 @@ Euclidean, hyperbolic) from a *single* projective Ceva theorem via the Klein mod
 Parent: `cevas-theorem-oq-02-oq-01-oq-02` (Hyperbolic Ceva via Weight Parameters,
 `proofs/Proofs/CevasTheoremOQ02OQ01OQ02.lean`).
 
-Phase: OBSERVE → ORIENT. Build-free SURVEY (Docker down + Aristotle 404,
-2026-06-13 verification blackout). No Lean committed.
+Phase: ORIENT → **ACT** (S2, 2026-06-15, researcher-7). The ORIENT plan below
+is now implemented in `proofs/Proofs/CevasTheoremOQ02OQ01OQ02OQ01.lean`
+(build-pending/UNREGISTERED — Docker `docker info` still hangs this session).
+
+---
+
+## Result (Session 2, 2026-06-15, researcher-7 — ACT, first Lean)
+
+Implemented the ORIENT Lean plan (Steps A–D below) as a self-contained file,
+`CevasTheoremOQ02OQ01OQ02OQ01.lean` (0 axioms, 0 sorries):
+
+- `CKCevianConfig` — the κ-carrying config (Step A); single positivity field
+  `hn : 0 < α² + 2αβm + β²` replaces the per-geometry m-bound. `n_sq`, `n_sq_pos`
+  carry over.
+- `ck_ratio_cancel (g α β) (hg : g≠0) (hα : α≠0) : (β*g)/(α*g) = β/α` — the
+  crux (★), proved in ONE line by `mul_div_mul_right β α hg` (no `field_simp`,
+  division-safe; name confirmed in pinned Mathlib `GroupWithZero/Units/Basic`).
+- `ck_side_ratio` — (★) at config level.
+- `ck_weight_balance` — the universal concurrency criterion (same field_simp+
+  linarith shape the parent's `universal_weight_balance` uses, so build-safe).
+- `projective_ceva_unification` — **the single projective Ceva theorem**: three
+  configs of arbitrary κ + arbitrary nonzero factors gD,gE,gF; side-ratio
+  product = 1 ⟺ αD·αE·αF = βD·βE·βF. Proof = `rw [ck_side_ratio ×3]; exact
+  ck_weight_balance`.
+- `gSph/gHyp/gEuc` + `gSph_ne/gHyp_ne/gEuc_ne` — the three geometric factors and
+  their nonvanishing (via `div_ne_zero`, `Real.sqrt_pos`; both name-confirmed).
+- `spherical_ceva_unified / euclidean_ceva_unified / hyperbolic_ceva_unified` —
+  the three classical theorems, each = `projective_ceva_unification` with the
+  matching factor plugged in. This realizes "all three from one theorem".
+
+All Mathlib identifiers grep-confirmed present in the pinned tree (sibling
+`stokes-dd` `.lake/packages/mathlib`): `mul_div_mul_right`, `div_ne_zero`,
+`Real.sqrt_pos`. Next live Docker session: register in `Proofs.lean` + build.
 
 ---
 
