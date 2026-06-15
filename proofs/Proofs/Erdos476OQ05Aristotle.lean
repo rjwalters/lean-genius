@@ -255,13 +255,17 @@ lemma case1_exists (A B : Finset (ZMod p))
     by_cases hAB3 : A.card = 3 ∧ B.card = 3
     · obtain ⟨hA3eq, hB3eq⟩ := hAB3
       rw [hA3eq, hB3eq] at hineq; norm_num at hineq
-    · -- |A|≥4 or |B|≥4: (|A|-2)(|B|-2) ≥ 2, consistent with hineq.
-      -- The counting argument is exhausted. Need Kneser's theorem (not in Mathlib) or
-      -- a structural argument using Z/pZ having no proper non-trivial subgroups.
-      -- The key fact: from hredA + hredB, both A and B are "translation-closed" in a
-      -- union sense: ∀ a ∈ A, ∃ d ∈ (B-B)\{0}: a+d ∈ A. For |B|=2, d is unique →
-      -- A is closed under a single translation → orbit of size p. For |B|≥3, multiple
-      -- choices of d make the orbit argument fail without additional prime-group structure.
-      sorry -- [HARD] Requires Kneser's theorem or complete restructuring of Vosper proof
+    · -- |A|≥4 or |B|≥4: (|A|-2)(|B|-2) ≥ 2, consistent with hineq; counting is exhausted.
+      -- NOTE: Kneser's theorem does NOT help here — in `ZMod p` (p prime) the stabilizer
+      -- of A+B is {0} whenever |A+B| < p, so Kneser collapses to Cauchy–Davenport and says
+      -- nothing about the equality case. The correct tool is the **Dyson e-transform**, which
+      -- IS in Mathlib: `Finset.addDysonETransform` (Mathlib/Combinatorics/Additive/ETransform.lean),
+      -- with `Finset.addDysonETransform.card` (preserves |A|+|B|) and sumset-non-growth
+      -- ((τ x).1 + (τ x).2 ⊆ x.1 + x.2). Proof route: induct on |B| (base |B|=2 = vosper_base);
+      -- for |B|≥3 pick e = b₁-b₂ and apply τ to strictly shrink |B| while preserving
+      -- CD-equality and |A+B|<p, then pull AP structure back through the transform. An AP has
+      -- a removable endpoint, contradicting the all-redundant hypothesis. ~150–200 lines.
+      -- See research/problems/erdos-476-oq-05/knowledge.md (session 2026-06-15) for the blueprint.
+      sorry -- [HARD, known result] Dyson e-transform induction; needs a real build to verify API names
 
 end Erdos476OQ05Aristotle
