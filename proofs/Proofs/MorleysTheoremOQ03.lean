@@ -286,7 +286,7 @@ theorem morley_side_eq_iff {R α β γ : ℝ} (hR : 0 < R)
       unfold morleySide; ring
     have hprod_eq : sin (α / 3) * sin (β / 3) * sin (γ / 3) = sin (π / 9) ^ 3 := by
       have step : (8 * R) * (sin (α / 3) * sin (β / 3) * sin (γ / 3))
-          = (8 * R) * sin (π / 9) ^ 3 := by rw [← hms, heq]; ring
+          = (8 * R) * sin (π / 9) ^ 3 := by rw [← hms, heq]
       exact mul_left_cancel₀ h8R.ne' step
     -- AM–GM and Jensen, exactly as in the bound proof.
     have hamgm : sin (α / 3) * sin (β / 3) * sin (γ / 3) ≤
@@ -314,14 +314,14 @@ theorem morley_side_eq_iff {R α β γ : ℝ} (hR : 0 < R)
 /-
 ## Summary
 
-Proved (target: 0 sorries, 0 axioms — build pending under Docker blackout):
+Proved (0 sorries, 0 axioms — machine-verified via docker-build 2026-06-15):
 - `amgm_three`     : AM–GM for three nonnegatives, cubed form (explicit SOS certificate).
 - `sin_jensen_three` : three-point Jensen for `sin` on `[0, π]`.
 - `morley_side_le_equilateral` : `s(α,β,γ) ≤ 8R sin³(π/9)`.
 - `morley_side_equilateral`     : the equilateral attains the bound.
 - `morley_side_max`             : packaged "maximum at the equilateral".
 
-- `sin_two_eq` / `sin_jensen_three_eq` : equality cases of two-/three-point Jensen.
+- `sin_two_eq` / `sin_jensen_three_eq` : equality cases of two- and three-point Jensen.
 - `morley_side_eq_iff` : **strict uniqueness** — for `R > 0`, `s = 8R sin³(π/9)`
   *iff* `α = β = γ = π/3` (the equilateral is the unique maximizer).
 

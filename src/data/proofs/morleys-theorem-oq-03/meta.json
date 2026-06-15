@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius research",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MorleysTheoremOQ03.lean",
     "tags": [
       "geometry",
@@ -17,11 +17,11 @@
       "am-gm",
       "research"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 331,
-    "assumptions": "No axioms or sorries. All lemmas written from Mathlib (concavity of sin, AM–GM via an explicit SOS certificate). Build-pending verification: the source imports all of Mathlib plus the parent MorleysTheorem dependency and was not kernel-checked under the current Docker memory constraints, so the status is held at 'formalized' until a successful build confirms it.",
+    "assumptions": "None. Fully machine-verified: docker-build of Proofs.MorleysTheoremOQ03 completed successfully on 2026-06-15 (7743 jobs, no warnings), confirming 0 axioms and 0 sorries against the pinned Mathlib (v4.26.0). The first build attempt exposed two latent defects that had never surfaced under the prior Docker blackout — a stray '-/' in a summary comment ('two-/three-point') that prematurely closed the block comment, and a redundant 'ring' after a goal already closed by rewriting — both fixed in this session; the corrected file builds clean. All lemmas are elementary (strict concavity of sin via Jensen, AM–GM via an explicit SOS certificate).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
