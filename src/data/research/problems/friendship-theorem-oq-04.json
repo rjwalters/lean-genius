@@ -1,0 +1,118 @@
+{
+  "slug": "friendship-theorem-oq-04",
+  "title": "The Friendship Theorem for Infinite Graphs",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Does } \\forall\\, u \\neq v,\\ |N(u)\\cap N(v)| = 1 \\ \\text{force a universal vertex when } V(G) \\text{ is infinite?}",
+    "plain": "The friendship theorem says: in a finite \"everyone-shares-exactly-one-mutual-friend\" social network, there must be one person who is friends with everybody (a politician). For infinite networks this *fails* — you can build endless friend-of-a-friend structures with no universal politician. The task is to pin down, in Lean, exactly where the finite proof breaks and what extra conditions bring the conclusion back.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-14T22:54:16-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: infinite Friendship Theorem fails (C5 free-amalgamation counterexample, verified); finite proof breaks at the spectral/trace step (no infinite analogue); SHARP restoring condition = local finiteness via a diameter-2 covering argument that bypasses spectra. Lean ACT target identified (build-gated).",
+    "builtItems": [
+      "research/problems/friendship-theorem-oq-04/verify_infinite_friendship.py: certifies linear-invariant preservation across 4 amalgamation rounds (|V| up to 3695, max common-nbrs stays 1), no universal vertex, degree blow-up [4,5,13,83], diameter-2 covering on W_1..W_8, and covering bound |V|<=1+deg(v)+sum deg(x) on W_1..W_13."
+    ],
+    "insights": [
+      "Theorem FAILS for infinite graphs: C5 free-amalgamation (Chvatal-Kotzig-Rosenberg-Davies 1976) yields a countable friendship graph with no universal vertex; all vertices have infinite degree.",
+      "Adding a private common neighbor to a zero-common-neighbor pair {u,v} preserves the linear invariant (<=1 common neighbor per pair): any other x is adjacent to at most one of u,v, else x would already be a common neighbor of u,v.",
+      "Diameter<=2 holds for EVERY friendship graph (finite or infinite): V = {v} U N(v) U union_{x in N(v)} N(x). Purely local, survives infinity.",
+      "RESTORING CONDITION = local finiteness: the diameter-2 covering makes V a finite union of finite sets => finite => windmill => universal vertex. Obstruction is precisely an infinite-degree vertex.",
+      "WHERE finite proof breaks: spectral step friendship_regular_implies_universal (FriendshipTheorem.lean:193) is entirely finite-matrix (trace, finite eigenvalue multiplicities, integrality) with no infinite analogue. The regularity dichotomy degrades to vacuous (all infinite degrees equal as cardinals)."
+    ],
+    "mathlibGaps": [
+      "No infinite/analytic spectral analogue: ERS spectral step needs finite adjacency matrix trace + finite eigenvalue multiplicities (Mathlib adjMatrix trace is Fintype-bound). Infinite side must avoid it entirely (use diameter-2 covering instead)."
+    ],
+    "nextSteps": [
+      "ACT (build-gated): formalize friendship_diameter_two (no Fintype) then locally_finite_friendship_is_finite via Set.Finite.biUnion of the covering (<150 lines, finiteness-light); corollary restores universal vertex under local finiteness.",
+      "Bridge Set.Finite -> Fintype to feed the existing finite friendship_theorem."
+    ],
+    "markdown": "# Knowledge Base: friendship-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "friendship-theorem",
+    "infinite-graphs",
+    "spectral-methods"
+  ],
+  "relatedProofs": [
+    "friendship-theorem",
+    "friendship-theorem-oq-01",
+    "friendship-theorem-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-14T22:54:16-07:00",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/FriendshipTheorem.lean",
+      "filename": "FriendshipTheorem.lean",
+      "lineCount": 374,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheorem.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ01.lean",
+      "filename": "FriendshipTheoremOQ01.lean",
+      "lineCount": 2276,
+      "theoremCount": 74,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ02.lean",
+      "filename": "FriendshipTheoremOQ02.lean",
+      "lineCount": 378,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/FriendshipTheoremOQ03.lean",
+      "filename": "FriendshipTheoremOQ03.lean",
+      "lineCount": 308,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FriendshipTheoremOQ03.lean"
+    }
+  ]
+}
