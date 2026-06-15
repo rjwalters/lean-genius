@@ -1940,9 +1940,9 @@
       "result": "clean"
     },
     "central-limit-theorem-oq-02": {
-      "auditCount": 3,
-      "lastAudited": "2026-05-04T04:00:46Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-15T14:56:31Z",
+      "result": "issues-found"
     },
     "central-limit-theorem-oq-03": {
       "auditCount": 3,
@@ -15337,6 +15337,30 @@
       "auditCount": 1,
       "lastAudited": "2026-06-15T13:34:29Z",
       "result": "issues-fixed",
+      "issues": []
+    },
+    "erdos-1107-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T14:56:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "nth-root-irrational-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T14:56:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "sum-of-kth-powers-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T14:56:25Z",
+      "result": "clean",
+      "issues": []
+    },
+    "euler-totient-oq-01-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-15T14:56:31Z",
+      "result": "issues-found",
       "issues": []
     }
   },
