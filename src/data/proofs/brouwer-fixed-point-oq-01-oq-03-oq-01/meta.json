@@ -1,0 +1,84 @@
+{
+  "id": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+  "title": "De-Axiomatizing the Ham Sandwich Theorem: Topological Core from Borsuk-Ulam",
+  "slug": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+  "description": "Separates the parent's axiomatized Ham Sandwich theorem into its topological core (proved here from the n-dimensional Borsuk-Ulam antipodal collapse) and its single genuine analytic input (Lebesgue continuity of the bisecting half-volume map). The abstract reduction (a continuous odd map S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point), the oddness of the half-volume discrepancy, and 'discrepancy zero implies equal volumes' are all proved. Continuity enters only as the hypothesis hcomp packaging the discrepancy as a continuous SphereFun. 7 theorems, 3 definitions, 0 own axioms; rests on the inherited Borsuk-Ulam axiom (no_continuous_odd_nonzero_on_sphere) plus the stated continuity hypothesis.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ03OQ01.lean",
+    "tags": [
+      "topology",
+      "fixed-point",
+      "brouwer",
+      "borsuk-ulam",
+      "ham-sandwich",
+      "measure-theory",
+      "algebraic-topology"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "dateAdded": "2026-06-15",
+    "axiomCount": 1,
+    "assumptions": "0 axiom declarations in this file, but the construction is not standalone-verified: (1) it rests on the inherited axiom no_continuous_odd_nonzero_on_sphere from BorsukUlam.lean — the genuine degree-theory core of Borsuk-Ulam, unavoidable for n >= 2; and (2) the capstone theorems (ham_sandwich_of_discrepancy, ham_sandwich_standard) take the continuity of the half-volume discrepancy map as the hypothesis hcomp (the discrepancy is supplied as a continuous SphereFun). The contribution is to prove everything else — the topological reduction, oddness, and the zero-implies-bisected bridge — so that the parent's opaque ham_sandwich_theorem axiom is reduced precisely to this one Lebesgue-continuity input (dominated convergence for parameterized half-spaces), which is measure-theoretic, not topological.",
+    "lineCount": 290,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "originalContributions": [
+      "ham_sandwich_reduction: the topological core — a continuous odd F: S^n -> R^n with a 'F x = 0 implies Bisected x' bridge yields a bisecting point; proved directly from borsuk_ulam_antipodal_collapse (no axiom)",
+      "discrepancy_odd_of_swap: the half-volume discrepancy map is odd, purely from the antipodal swap pos(-x) = neg(x) of the two half-spaces — the elementary measure-theoretic half, needing no continuity",
+      "ham_sandwich_of_discrepancy: capstone — given the discrepancy as a continuous SphereFun (the one analytic hypothesis), the antipodal swap, and finite volumes, a hyperplane simultaneously bisects all n bodies",
+      "stdPos_neg / stdNeg_neg: for the standard linear parameterization, the antipodal swap is a consequence of linearity (not an assumption)",
+      "volume_inter_ne_top: finiteness vol(body_i intersect H) < infinity follows from vol(body_i) < infinity since the slice is a subset",
+      "ham_sandwich_standard: the standard-parameterization Ham Sandwich, with only the continuity hypothesis remaining, assembled from the above"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Ham Sandwich theorem (Stone-Tukey, 1942) states that any n bounded measurable sets in R^n can be simultaneously bisected by a single hyperplane — named for slicing ham, cheese, and bread with one knife cut. It is the most famous corollary of the Borsuk-Ulam theorem (Borsuk, 1933), whose own depth lies in degree theory for maps of spheres (Brouwer 1912, Hopf 1930): an odd continuous map S^n -> S^n has odd degree and cannot be null-homotopic. The standard textbook derivation of Ham Sandwich from Borsuk-Ulam glosses over an analytic subtlety — that the half-volume function of a parameterized family of half-spaces is continuous — which is exactly what a fully formal proof must isolate. This entry performs that isolation: it shows the parent gallery proof's decision to axiomatize Ham Sandwich was diagnostically exact, by proving every part of the reduction except that one continuity fact.",
+    "problemStatement": "OQ-01-OQ-03-OQ-01: The parent OQ-01-OQ-03 derived the n-dimensional Borsuk-Ulam theorem and stated the Ham Sandwich theorem as an axiom, with the honest note that the obstruction is the continuity of the bisecting-measure function. How much of that axiom is genuinely topological (hence already available from Borsuk-Ulam), and how much is the true analytic input?",
+    "proofStrategy": "Prove the abstract topological reduction (ham_sandwich_reduction) from borsuk_ulam_antipodal_collapse: an odd continuous map must vanish on the sphere, and a vanishing point is a bisection. Prove oddness of the discrepancy map from the antipodal swap of half-spaces (discrepancy_odd_of_swap). Combine into ham_sandwich_of_discrepancy, taking the discrepancy's continuity as the single SphereFun hypothesis. Discharge the swap and finiteness side conditions for the standard linear parameterization (stdPos_neg, stdNeg_neg, volume_inter_ne_top) to obtain ham_sandwich_standard. The parent's ham_sandwich_theorem axiom is thereby reduced to one Lebesgue-continuity statement.",
+    "keyInsights": [
+      "The topological content of Ham Sandwich is exactly borsuk_ulam_antipodal_collapse: an odd continuous map S^n -> R^n must vanish somewhere.",
+      "Oddness of the half-volume discrepancy is elementary: it follows from the antipodal swap pos(-x) = neg(x), with no continuity needed.",
+      "'Discrepancy zero implies equal volumes' is a direct unpacking of the discrepancy definition — also free of analysis.",
+      "The antipodal swap and finiteness conditions are not assumptions for the standard linear parameterization: swap follows from linearity, finiteness from the slice being a subset.",
+      "The single irreducible analytic input is the Lebesgue continuity of x |-> vol(body_i intersect {y | <u(x), y> < t(x)}) on S^n — measure-theoretic (dominated convergence for parameterized half-spaces), not topological.",
+      "EuclideanSpace equality is proved via WithLp.ofLp_injective after funext on the genuine Pi type, since WithLp is a non-reducible type synonym for which plain funext fails."
+    ]
+  },
+  "sections": [
+    {
+      "id": "ham-sandwich-reduction",
+      "title": "The Abstract Topological Reduction",
+      "summary": "A continuous odd F: S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point — the entire topological content, from Borsuk-Ulam.",
+      "startLine": 75,
+      "endLine": 92,
+      "mathContext": "Applies borsuk_ulam_antipodal_collapse: the odd map F must vanish at some x in S^n, and the supplied bridge turns F x = 0 into the bisection predicate at x."
+    },
+    {
+      "id": "discrepancy-odd",
+      "title": "Oddness of the Half-Volume Discrepancy",
+      "summary": "The discrepancy map is odd purely from the antipodal swap pos(-x) = neg(x) — the elementary measure-theoretic half.",
+      "startLine": 93,
+      "endLine": 133,
+      "mathContext": "discrepancy_i(x) = vol(body_i intersect pos x i) - vol(body_i intersect neg x i); swapping x to -x exchanges pos and neg, negating each component."
+    },
+    {
+      "id": "ham-sandwich-of-discrepancy",
+      "title": "Capstone: Bisection from the Continuous Discrepancy",
+      "summary": "Given the discrepancy as a continuous SphereFun (the one analytic hypothesis), the antipodal swap, and finite volumes, a hyperplane simultaneously bisects all n bodies.",
+      "startLine": 134,
+      "endLine": 176,
+      "mathContext": "Combines ham_sandwich_reduction with discrepancy_odd_of_swap; the EuclideanSpace oddness equality is closed via WithLp.ofLp_injective."
+    },
+    {
+      "id": "standard-parameterization",
+      "title": "Standard Linear Parameterization",
+      "summary": "For linear direction/threshold maps, the antipodal swap and volume finiteness are discharged, leaving only the continuity hypothesis.",
+      "startLine": 177,
+      "endLine": 290,
+      "mathContext": "stdPos_neg / stdNeg_neg follow from linearity; volume_inter_ne_top from the slice being a subset of a finite-volume body; assembled into ham_sandwich_standard."
+    }
+  ]
+}
