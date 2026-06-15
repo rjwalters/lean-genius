@@ -124,6 +124,21 @@
       "targetId": "mean-value-theorem-oq-03",
       "relationship": "sibling",
       "description": "Sibling entry generalizing the n=0 case (the ordinary MVT proved here as `mvt_is_first_order_taylor`) from scalar functions to vector-valued maps. The equality $f(b)-f(a)=f'(c)(b-a)$ has no vector analogue, so it relaxes to the mean value *inequality* $\\|f(b)-f(a)\\| \\leq \\sup_{c}\\|f'(c)\\|\\,(b-a)$."
+    },
+    {
+      "targetId": "taylor-theorem",
+      "relationship": "related",
+      "description": "The general gallery entry on Taylor's theorem, covering *both* the Lagrange remainder $R_n = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ axiomatized here and the Cauchy/integral remainder $R_n = \\int_a^b \\frac{(b-t)^n}{n!}f^{(n+1)}(t)\\,dt$ that Mathlib uses natively. This OQ-02 entry is the MVT-centric specialization that derives the ordinary MVT and the second-order expansion as corollaries of the Lagrange form."
+    },
+    {
+      "targetId": "taylor-sincos-convergence",
+      "relationship": "applied-by",
+      "description": "A direct application of the Lagrange remainder error bound from this entry. Because every iterated derivative of $\\sin$ and $\\cos$ is bounded by $1$, the bound $|f(b) - T_n f(a)(b)| \\leq \\frac{M_{n+1}}{(n+1)!}|b-a|^{n+1}$ (keyInsight 5) gives $|R_n| \\leq \\frac{|x|^{n+1}}{(n+1)!} \\to 0$, proving the Taylor series converges to the function for all real $x$. That entry is a concrete instance of the quantitative error control discussed here."
+    },
+    {
+      "targetId": "lhopital",
+      "relationship": "related",
+      "description": "L'Hopital's rule is proved via Cauchy's Mean Value Theorem, the two-function generalization $\\frac{f(b)-f(a)}{g(b)-g(a)} = \\frac{f'(c)}{g'(c)}$ of the ordinary MVT recovered here as `mvt_is_first_order_taylor`. Both results extract a single intermediate point $c$ from a global difference quotient, and both are first-order ($n=0$) members of the differential mean-value family."
     }
   ],
   "references": [
