@@ -1,0 +1,81 @@
+{
+  "id": "minkowski-theorem-oq-03",
+  "title": "Minkowski Bound on Ideal Norms: A Class-Number Estimate",
+  "slug": "minkowski-theorem-oq-03",
+  "description": "Makes the geometry-of-numbers ⟹ ideal-norm bound connection explicit and draws a new quantitative consequence. Packages the Minkowski bound M_K = (4/π)^{r₂}·(n!/nⁿ)·√|d_K| (only a local notation in Mathlib) as a reusable definition, restates that every ideal class contains an integral ideal of norm ≤ M_K, and proves the new estimate classNumber K ≤ #{ ideals : absNorm ≤ ⌊M_K⌋ } — an explicit, computable head-count refining the bare finiteness of the class group. Build pending (worktree Docker cache unavailable); proofs reduce entirely to Mathlib lemmas name-checked at rev 2df2f0150c.",
+  "meta": {
+    "status": "formalized",
+    "badge": "wip",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "lineCount": 113,
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ03.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "minkowski",
+      "ideals",
+      "class-group",
+      "class-number",
+      "geometry-of-numbers"
+    ],
+    "assumptions": "Build pending: the worktree Docker olean cache is unavailable, so the file has not been kernel-checked this session. The proofs contain 0 sorries and 0 axiom declarations, reducing entirely to existing Mathlib results (NumberField.exists_ideal_in_class_of_norm_le, Ideal.finite_setOf_absNorm_le₀, Nat.card_le_card_of_surjective, Nat.le_floor), all name-checked against the pinned Mathlib revision 2df2f0150c. Status will be promoted to verified once a green Docker build confirms the kernel check.",
+    "author": "Lean Genius Researcher",
+    "dateAdded": "2026"
+  },
+  "crossReferences": [
+    {
+      "targetId": "minkowski-theorem-oq-02-oq-01",
+      "relationship": "relatedTo",
+      "description": "Both proofs route the geometry of numbers (Minkowski's lattice-point theorem) into number theory; that file applies it to Diophantine approximation, this one to ideal norms and the class number."
+    },
+    {
+      "targetId": "minkowski-theorem",
+      "relationship": "extends",
+      "description": "Applies the lattice-point theorem of the parent Minkowski entry to bound ideal norms across every ideal class and thereby bound the class number."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Minkowski's geometry of numbers (1896) turns a volume estimate for a symmetric convex body into the existence of a nonzero lattice point. Applied to the canonical (mixed) embedding of a number field $K$ of degree $n$ with $r_2$ complex places and discriminant $d_K$, it yields the **Minkowski bound**\n$$M_K = \\left(\\frac{4}{\\pi}\\right)^{r_2} \\frac{n!}{n^n} \\sqrt{|d_K|}.$$\nThe classical consequence (Minkowski, refined by later authors) is that every ideal class of $\\mathcal{O}_K$ contains an integral ideal of absolute norm at most $M_K$. Because there are only finitely many integral ideals of bounded norm, this proves the finiteness of the class group and gives the standard algorithm for computing class numbers: enumerate ideals of norm $\\le \\lfloor M_K \\rfloor$ and read off the class group.\n\nMathlib formalizes the ideal-norm bound (`NumberField.exists_ideal_in_class_of_norm_le`) and the finiteness of the class group, but it states the bound $M_K$ only as a *local notation* private to its `ClassNumber.lean` file, and it does not record the explicit head-count $\\mathrm{classNumber}\\,K \\le \\#\\{I : |\\mathrm{absNorm}\\,I| \\le \\lfloor M_K\\rfloor\\}$ that the enumeration algorithm rests on.",
+    "problemStatement": "Expose the Minkowski bound as a reusable definition and prove the quantitative class-number estimate it implies: for a number field $K$,\n$$\\mathrm{classNumber}\\,K \\;\\le\\; \\#\\bigl\\{\\, I \\text{ integral ideal of } \\mathcal{O}_K : \\mathrm{absNorm}\\,I \\le \\lfloor M_K \\rfloor \\,\\bigr\\}.$$\nIn Lean: `classNumber_le_card_absNorm_le : classNumber K ≤ Nat.card {I : (Ideal (𝓞 K))⁰ // Ideal.absNorm (I : Ideal (𝓞 K)) ≤ ⌊minkowskiIdealBound K⌋₊}`.",
+    "proofStrategy": "Three steps. (1) **Name the bound.** Define `minkowskiIdealBound K` as the exact expression behind Mathlib's local notation `M K`, so `NumberField.exists_ideal_in_class_of_norm_le` restates verbatim against the named constant (`exists_ideal_in_class_absNorm_le`). (2) **Surjectivity.** Fix $n = \\lfloor M_K\\rfloor$. For each class $C$, the ideal-norm bound supplies $I$ with $\\mathrm{mk0}\\,I = C$ and $(\\mathrm{absNorm}\\,I : \\mathbb{R}) \\le M_K$; since $\\mathrm{absNorm}\\,I$ is a natural number and $M_K \\ge 0$, `Nat.le_floor` gives $\\mathrm{absNorm}\\,I \\le n$. Hence the map $I \\mapsto \\mathrm{mk0}\\,I$ from $\\{I : \\mathrm{absNorm}\\,I \\le n\\}$ onto the class group is surjective. (3) **Count.** The index set is finite (`Ideal.finite_setOf_absNorm_le₀`), so a surjection from it bounds the class group's cardinality (`Nat.card_le_card_of_surjective`); rewriting `classNumber K = Nat.card (ClassGroup (𝓞 K))` via `Nat.card_eq_fintype_card` closes the goal.",
+    "keyInsights": [
+      "Mathlib's Minkowski bound is trapped as a `local notation` inside `ClassNumber.lean`, so it cannot be referenced downstream. Reintroducing it as a plain definition that is *character-for-character* the notation's expansion makes `exists_ideal_in_class_of_norm_le` reusable by definitional unfolding alone — `unfold minkowskiIdealBound; exact …` suffices.",
+      "Finiteness of the class group is qualitative; the genuinely useful object is the *count* of ideals below the bound. The map 'ideal of bounded norm ↦ its class' being surjective is exactly the content of the Minkowski bound, and `Nat.card_le_card_of_surjective` converts surjectivity-from-a-finite-set into a cardinality inequality.",
+      "The real-to-natural step is the only analytic input: `absNorm I` is a natural number bounded by the real constant $M_K$, and `Nat.le_floor` (valid because $M_K \\ge 0$, proved by `positivity` after unfolding) collapses the real bound to $\\lfloor M_K\\rfloor$, matching the natural-number-indexed finiteness lemma `finite_setOf_absNorm_le₀`.",
+      "This estimate is the formal backbone of the standard class-number algorithm: it certifies that enumerating ideals of norm $\\le \\lfloor M_K\\rfloor$ already exhausts every ideal class, so no class is missed when computing the class group by hand."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Header, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "Documents the geometry-of-numbers ⟹ ideal-norm bound connection and the build-pending status. Imports Mathlib and opens the nonZeroDivisors, Real, NumberField, Module, InfinitePlace, Ideal, and Nat namespaces to match Mathlib's ClassNumber.lean conventions."
+    },
+    {
+      "id": "bound-def",
+      "title": "The Minkowski Bound as a Reusable Definition",
+      "startLine": 60,
+      "endLine": 72,
+      "summary": "Defines `minkowskiIdealBound K = (4/π)^{nrComplexPlaces K} · ((finrank ℚ K)! / (finrank ℚ K)^(finrank ℚ K) · √|discr K|)`, identical to Mathlib's local notation `M K`. Proves `minkowskiIdealBound_nonneg` (≥ 0) by `positivity`."
+    },
+    {
+      "id": "ideal-norm-bound",
+      "title": "Minkowski's Ideal-Norm Bound (Restated)",
+      "startLine": 74,
+      "endLine": 83,
+      "summary": "`exists_ideal_in_class_absNorm_le`: every ideal class contains an integral ideal of absolute norm ≤ minkowskiIdealBound K. Proved by `unfold minkowskiIdealBound; exact NumberField.exists_ideal_in_class_of_norm_le C`, since the definition is definitionally Mathlib's bound."
+    },
+    {
+      "id": "class-number-estimate",
+      "title": "Class-Number Estimate via the Geometry of Numbers",
+      "startLine": 85,
+      "endLine": 113,
+      "summary": "`classNumber_le_card_absNorm_le`: the class number is at most the number of integral ideals of norm ≤ ⌊M_K⌋. The index set is finite (finite_setOf_absNorm_le₀); the class-representative map is surjective (Nat.le_floor turns the real bound into the floor bound); Nat.card_le_card_of_surjective plus Nat.card_eq_fintype_card finish. Closes with a sanity-check that the class group is finite."
+    }
+  ]
+}
