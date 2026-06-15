@@ -2810,6 +2810,7 @@ import Proofs.SpernerSimplicialInstance
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SphericalLawOfCosines
+import Proofs.SphericalLawOfCosinesOQ03
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
 import Proofs.SphericalLawOfSinesOQ03

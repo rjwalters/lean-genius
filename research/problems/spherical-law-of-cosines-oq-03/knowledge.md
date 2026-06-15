@@ -61,12 +61,56 @@ formalisation choice (`1 − cc² = sin²c`, `[u v w]² = sin²A·sin²b·sin²c
   decomposition but introduces NO cross products; this file's Binet–Cauchy / Gram
   lemmas are new reusable infrastructure.
 
-## Next steps
-1. When Docker/Aristotle return: build `Proofs.SphericalLawOfCosinesOQ03`; fix any
-   `simp only [dot,cross]` projection-reduction hiccups (add `dsimp only` if needed).
-2. Optionally add the division/trig form
-   `cos C = −cos A cos B + sin A sin B cos c` as a corollary of the cleared form
-   (needs `field_simp` + non-degeneracy `sin a,b,c > 0`; deferred to avoid an
-   unverifiable `field_simp` proof under the backend outage).
-3. Optionally bridge to the parent's `Vec3`/`SphericalTriangle` and `angleC` so the
+## S2 (register + re-confirm, dual blackout persists)
+- **Registered** `import Proofs.SphericalLawOfCosinesOQ03` in `proofs/Proofs.lean`
+  (it was an orphan — merged via #24244 but never added to the aggregator). Note
+  `build-safe-subset.sh` globs `Proofs/*.lean` directly, so the file was already in
+  that build path; registration only fixes the full-aggregate target drift.
+- **Re-confirmed numerics**: `verify-spherical-dual.py`, 300 000 random triangles,
+  all 9 identities PASS (max err ≤ 6.8·10⁻¹⁴). This includes check (1), the *literal*
+  trig form `cos C = −cos A cos B + sin A sin B cos c` with interior angles computed
+  independently by tangent projection — so the trig statement (not just the cleared
+  surrogate) is numerically validated.
+- Aristotle still 404 (`prove` ping → "Resource not found"); `docker info` still
+  times out. No machine check possible this session.
+
+## READY DROP-IN: literal trig form (next backend-up session)
+The file currently proves only the *cleared* form. The literal trig identity is the
+genuine OQ deliverable; it is a pure fraction-clearing corollary of `dual_law_cleared`
+and the side-Pythagorean `sc² = 1 − cc²`. Derivation (verified by hand + numerics):
+
+    −cA·cB + sA·sB·cc
+      = [ −(ca−cb cc)(cb−ca cc) + tp2·cc ] / (sa sb sc²)        [substitute normal forms]
+      = (cc−ca cb)·(1−cc²) / (sa sb sc²)                        [dual_law_cleared]
+      = (cc−ca cb)·sc² / (sa sb sc²)                            [sc² = 1−cc²]
+      = (cc−ca cb)/(sa sb)  =  cC.                              [cancel sc²]
+
+Ready-to-build statement (abstract, division form, needs `field_simp` so deferred until
+a backend can check it):
+
+```lean
+theorem dual_law_trig
+    (ca cb cc sa sb sc cA cB cC sA sB : ℝ)
+    (hsa : sa ≠ 0) (hsb : sb ≠ 0) (hsc : sc ≠ 0)
+    (hsc2 : sc ^ 2 = 1 - cc ^ 2)
+    (hcA : cA = (ca - cb * cc) / (sb * sc))
+    (hcB : cB = (cb - ca * cc) / (sa * sc))
+    (hcC : cC = (cc - ca * cb) / (sa * sb))
+    (hsAsB : sA * sB = (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) / (sa * sb * sc ^ 2)) :
+    cC = -cA * cB + sA * sB * cc := by
+  subst hcA hcB hcC hsAsB
+  rw [hsc2] at *      -- replace sc^2 in the sA*sB denominator
+  field_simp
+  ring
+```
+Likely tactic risk: `field_simp` may need `mul_ne_zero`/`pow_ne_zero` side goals discharged
+(`field_simp [hsa, hsb, hsc]`); if `ring` doesn't close after clearing, fall back to
+`linear_combination (1 - cc^2) * (dual_law_cleared ca cb cc _ _ rfl rfl)` — i.e. feed the
+cleared identity explicitly. Numerics (check 1, cosA_nf, sinA_nf) confirm the statement is
+true, so this is purely a tactic-bookkeeping task once Docker/Aristotle return.
+
+## Remaining next steps
+1. Build `Proofs.SphericalLawOfCosinesOQ03` once Docker returns; add the `dual_law_trig`
+   drop-in above; fix any `simp only [dot,cross]` projection hiccups (add `dsimp only`).
+2. Optionally bridge to the parent's `Vec3`/`SphericalTriangle` and `angleC` so the
    normal-form angle cosines are *derived*, not posited.
