@@ -56,12 +56,20 @@
   },
   "sections": [
     {
-      "id": "taylor-polynomial",
-      "title": "The Taylor Polynomial",
+      "id": "setup",
+      "title": "Setup: The Open Question and Mathlib's Answer",
       "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports Mathlib's Taylor, MeanValue and derivative modules and frames the open question inherited from the base `MeanValueTheorem.lean`: is there a Mathlib-compatible formalization of the higher-order MVT (Taylor's theorem with Lagrange remainder)? The answer is yes — Mathlib's `Mathlib.Analysis.Calculus.Taylor` provides `taylor_mean_remainder`, which this file repackages in the classical pedagogical form. Opens a `noncomputable section` and the `MeanValueTheoremOQ02` namespace.",
+      "mathContext": "Target identity $f(b) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(b-a)^k + R_n(a,b)$ with Lagrange remainder $R_n(a,b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c$ between $a$ and $b$. The `noncomputable section` is required because `iteratedDeriv` rests on classical choice."
+    },
+    {
+      "id": "taylor-polynomial",
+      "title": "Part I: The Taylor Polynomial",
+      "startLine": 45,
       "endLine": 69,
       "summary": "Defines `taylorPolynomial f a n x = Σ_{k=0}^{n} iteratedDeriv k f a / k! · (x-a)^k` using Finset.sum. Proves the n=0 case: T₀ f(a)(x) = f(a), and the n=1 case: T₁ f(a)(x) = f(a) + f'(a)(x-a), both by simp with iteratedDeriv_zero and iteratedDeriv_one.",
-      "mathContext": "$T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. For $n=0$: $T_0 = f(a)$. For $n=1$: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line approximation). The `noncomputable section` is needed because iteratedDeriv uses classical choice."
+      "mathContext": "$T_n f(a)(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. For $n=0$: $T_0 = f(a)$. For $n=1$: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line approximation), the building blocks reused in the n=0 (MVT) and n=1 (second-order) specializations below."
     },
     {
       "id": "lagrange-remainder",
