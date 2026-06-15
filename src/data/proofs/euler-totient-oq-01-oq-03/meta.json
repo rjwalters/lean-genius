@@ -39,11 +39,13 @@
       "rsa_correct: RSA correctness for n = p·q via the CRT isomorphism — a^(m+1) = a for all a whenever m is divisible by both p−1 and q−1 (i.e. any multiple of λ(n) = lcm(p−1, q−1))",
       "rsa_decrypt_correct: the textbook phrasing a^(e·d) = a once e·d = 1 + k·λ, reducing to rsa_correct",
       "Demonstrates why λ(n) is the RIGHT exponent: the identity holds for ALL messages, including those sharing a factor with n — the all-a fixed point that φ(n)-based statements over units do not directly give",
-      "Documents (and the certificate exhibits) that squarefreeness is necessary: for n = p² the all-a fixed point fails, so RSA's n = p·q moduli are exactly the safe case"
+      "Documents (and the certificate exhibits) that squarefreeness is necessary: for n = p² the all-a fixed point fails, so RSA's n = p·q moduli are exactly the safe case",
+      "carmichael_mul_coprime: identifies the concrete exponent lcm(p−1, q−1) with the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, by transporting the group exponent across the CRT-induced units isomorphism (Units.mapEquiv + MulEquiv.prodUnits) and evaluating Monoid.exponent_prod",
+      "rsa_correct_carmichael: the open question's headline statement — RSA correctness stated directly against the minimal universal exponent λ(n) = carmichael(p·q), via the divisibility bridges (p−1) ∣ λ(n) and (q−1) ∣ λ(n)"
     ],
     "dateAdded": "2026-06-15",
-    "lineCount": 113,
-    "theoremCount": 3,
+    "lineCount": 169,
+    "theoremCount": 7,
     "definitionCount": 0,
     "prerequisites": [
       "Carmichael's function λ(n) = Monoid.exponent (ZMod n)ˣ (parent file euler-totient-oq-01)",
@@ -62,7 +64,8 @@
       "The case a = 0 (a shares a factor with the prime) is the subtle one and is handled directly by zero_pow; this is exactly the case a φ(n)/unit-group argument would miss",
       "CRT turns a statement about ZMod(p·q) into two independent prime-power-free statements about ZMod p and ZMod q, each closed by Fermat — the cleanest route to all-message correctness",
       "Squarefreeness is necessary, not incidental: for n = p² the all-a fixed point fails (a divisible by p stays ≡ 0 mod p but need not return mod p²), so RSA's n = p·q moduli are exactly the safe regime — the certificate exhibits the explicit failure set for n = 49",
-      "The theorem is stated for any exponent m divisible by both p−1 and q−1, which is more general than 'a multiple of λ(n)' and makes the CRT reduction immediate"
+      "The theorem is stated for any exponent m divisible by both p−1 and q−1, which is more general than 'a multiple of λ(n)' and makes the CRT reduction immediate",
+      "The bridge λ(p·q) = lcm(λ(p), λ(q)) is proved abstractly — by transporting Monoid.exponent across the CRT-induced units isomorphism (Monoid.exponent_eq_of_mulEquiv + Monoid.exponent_prod) rather than by computing orders — so the final theorem speaks about the genuinely minimal exponent λ(n) = Monoid.exponent (ZMod n)ˣ, not merely a convenient common multiple"
     ]
   },
   "sections": [
@@ -89,6 +92,14 @@
       "endLine": 113,
       "summary": "rsa_decrypt_correct gives the textbook phrasing a^(e·d) = a once the exponents satisfy e·d = 1 + k·λ with λ a common multiple of p−1 and q−1. It rewrites e·d = k·λ + 1 and applies rsa_correct with (p−1) ∣ k·λ and (q−1) ∣ k·λ.",
       "mathContext": "$a^{ed} = a$ in $\\mathbb{Z}/(pq)$ when $ed = 1 + k\\lambda$, $\\lambda = \\mathrm{lcm}(p-1,q-1)$."
+    },
+    {
+      "id": "carmichael-bridge",
+      "title": "Bridge to the Genuine Carmichael Exponent λ(n)",
+      "startLine": 116,
+      "endLine": 169,
+      "summary": "Connects the divisibility hypotheses above to the parent file's abstract λ(n) = Monoid.exponent (ZMod n)ˣ. carmichael_mul_coprime proves λ(p·q) = lcm(λ(p), λ(q)) via the CRT-induced units isomorphism (Units.mapEquiv + MulEquiv.prodUnits), Monoid.exponent_eq_of_mulEquiv, and Monoid.exponent_prod. sub_one_dvd_carmichael_mul_left/right then give (p−1) ∣ λ(p·q) and (q−1) ∣ λ(p·q) using carmichael_prime (λ(p) = p−1). The capstone rsa_correct_carmichael states RSA correctness directly against the minimal universal exponent: if λ(n) ∣ m then a^(m+1) = a for every a.",
+      "mathContext": "$\\lambda(pq) = \\mathrm{lcm}(\\lambda(p),\\lambda(q)) = \\mathrm{lcm}(p-1,q-1)$, and $\\lambda(n)\\mid m \\Rightarrow a^{m+1} = a$ for all $a$."
     }
   ],
   "crossReferences": [
@@ -104,12 +115,12 @@
     }
   ],
   "conclusion": {
-    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. 0 axioms, 0 sorries.",
-    "implications": "Provides the verified core of a textbook-correct RSA implementation keyed on the Carmichael function rather than φ(n), and pins down why squarefree moduli n = p·q are necessary for all-message correctness.",
+    "summary": "RSA decryption correctness is formalized with the Carmichael exponent λ(n) = lcm(p−1, q−1): for n = p·q and any exponent divisible by both p−1 and q−1, a^(m+1) = a holds for every message a, giving the textbook a^(e·d) = a once e·d = 1 + k·λ. The proof reduces through CRT to a per-prime Fermat fixed point that explicitly covers the non-unit case. A bridge section then connects this to the parent's abstract λ(n) = Monoid.exponent (ZMod n)ˣ, proving λ(p·q) = lcm(λ(p), λ(q)) and stating correctness directly against the minimal universal exponent (rsa_correct_carmichael). 0 axioms, 0 sorries.",
+    "implications": "Provides the verified core of a textbook-correct RSA implementation keyed on the Carmichael function rather than φ(n), pins down why squarefree moduli n = p·q are necessary for all-message correctness, and identifies the concrete exponent lcm(p−1, q−1) with the abstract group-exponent definition λ(n) = Monoid.exponent (ZMod n)ˣ — so correctness is stated against the genuinely minimal universal exponent, which divides φ(n) and yields a no-larger private key.",
     "openQuestions": [
-      "Bridge to the parent's λ(n) = Monoid.exponent (ZMod n)ˣ explicitly, proving (p−1) ∣ λ(p·q) and (q−1) ∣ λ(p·q) from the exponent definition so rsa_decrypt_correct can be invoked with the genuine Carmichael λ (this is the subject of in-flight work)",
       "Extend to a verified key-generation/encryption pipeline: derive d as a modular inverse of e mod λ(n) and assemble end-to-end encrypt∘decrypt = id",
-      "Generalize the all-message fixed point to arbitrary squarefree n = ∏ pᵢ via the multi-prime CRT"
+      "Generalize the all-message fixed point to arbitrary squarefree n = ∏ pᵢ via the multi-prime CRT",
+      "Quantify the efficiency gain of λ(n) over φ(n): characterize the moduli where λ(n) ≪ φ(n) and the consequent reduction in the private exponent's size"
     ]
   },
   "references": [
@@ -136,9 +147,9 @@
       "Classical"
     ],
     "namespace": "EulerTotientOQ01OQ03",
-    "lineCount": 113,
+    "lineCount": 169,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 7,
     "definitionCount": 0,
     "path": "Proofs/EulerTotientOQ01OQ03.lean",
     "sorries": 0
@@ -161,6 +172,30 @@
       "type": "supporting",
       "description": "Per-prime fixed point: a^(m+1) = a in ZMod p for every a when (p−1) ∣ m",
       "leanType": "a ^ (m + 1) = a"
+    },
+    {
+      "name": "rsa_correct_carmichael",
+      "type": "core",
+      "description": "RSA correctness against the minimal universal exponent: if λ(n) = carmichael(p·q) divides m, then a^(m+1) = a for every a : ZMod (p·q)",
+      "leanType": "a ^ (m + 1) = a"
+    },
+    {
+      "name": "carmichael_mul_coprime",
+      "type": "supporting",
+      "description": "Carmichael multiplicativity on coprime factors: λ(p·q) = lcm(λ(p), λ(q)), via the CRT-induced units isomorphism and Monoid.exponent_prod",
+      "leanType": "carmichael (p * q) = Nat.lcm (carmichael p) (carmichael q)"
+    },
+    {
+      "name": "sub_one_dvd_carmichael_mul_left",
+      "type": "supporting",
+      "description": "Divisibility bridge: (p−1) ∣ λ(p·q), since p−1 = λ(p) divides lcm(λ(p), λ(q))",
+      "leanType": "(p - 1) ∣ carmichael (p * q)"
+    },
+    {
+      "name": "sub_one_dvd_carmichael_mul_right",
+      "type": "supporting",
+      "description": "Divisibility bridge: (q−1) ∣ λ(p·q), since q−1 = λ(q) divides lcm(λ(p), λ(q))",
+      "leanType": "(q - 1) ∣ carmichael (p * q)"
     }
   ],
   "sorries": 0
