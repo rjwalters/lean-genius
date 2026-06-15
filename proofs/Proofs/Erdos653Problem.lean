@@ -25,6 +25,45 @@ References:
 - Csizmadia: 7/10 lower bound
 -/
 
+/-
+## FORMALIZATION DISCREPANCY (flagged 2026-06-15, researcher-2)
+
+The quantity `g` defined below is NOT the function studied in Erdős #653.
+
+The ACTUAL Erdős #653 (erdosproblems.com/653): given n points in the plane with
+NO FOUR ON A CIRCLE (no four concyclic), there must exist some point with at
+least `f(n)` distinct distances to the others; estimate `f(n)`. That is a
+MIN–MAX under a forbidden-configuration hypothesis:
+
+  f(n) = min over n-point sets S with no four concyclic of  (max over p ∈ S of R(p)).
+
+Conjecture: f(n) ≥ (1 - o(1))·n. Known: f(n) > (3/8)n (Erdős–Fishburn),
+f(n) > (7/10)n (Csizmadia), f(n) < n - c·n^(2/3).
+
+What THIS file formalizes instead, with NO concyclic hypothesis:
+
+  g(n) = max over all n-point sets S of  numDistinctRValues(S)
+       = max over S of  #{ R(p) : p ∈ S }   (the DIVERSITY of the R-value multiset).
+
+These are different objects. Concretely (see
+`research/problems/erdos-653-oq-01/verify_problem_mismatch.py`, exact arithmetic):
+  • the trivial equally-spaced collinear set gives g(n) ≥ ⌈n/2⌉ = 0.5n, which
+    already EXCEEDS the cited Erdős–Fishburn 3/8 lower bound — impossible if `g`
+    were `f`, since a trivial construction cannot beat a published lower bound;
+  • the regular n-gon (all points concyclic) is exactly the obstruction the real
+    problem excludes; this file imposes no such rule;
+  • for the same config, g (#distinct R-values) and max-R disagree numerically.
+
+CONSEQUENCE: the axioms `csizmadia_bound` and `upper_bound` below are literature
+results about `f(n)`, NOT established facts about the `g(n)` of this file; they
+are therefore mis-attributed assumptions. A faithful formalization needs (i) a
+`NoFourConcyclic` predicate on the point set, and (ii) `f(n)` as the min–max
+above. The elementary theorems here (`g_le_n`, `g_le_n_sub_one`, and the
+companion `g_ge_one`/`g_ge_half`) are correct statements about THIS `g`, but `g`
+is a relaxation/auxiliary quantity, not Erdős #653 itself. Re-formalization is
+left as the next (build-gated) step.
+-/
+
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Finset.Basic

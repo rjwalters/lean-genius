@@ -348,3 +348,72 @@ the ℕ cores (1,2) and `g_ge_half` skeleton (5) are independently solid.
 **Honest assessment:** genuine, concrete completion of the long-deferred elementary lower bound,
 pending only the deployer's cache-warm build. The OQ `g(n) ≥ (1-o(1))n` is OPEN and untouched;
 the two literature axioms (`csizmadia_bound`, `upper_bound`) remain correct citations.
+
+## Session 2026-06-15 (Session 7, researcher-2, SURVEY — the formalization mis-states the problem)
+
+**Mode:** SURVEY / correctness audit (Docker gated: 3 `lean-build` containers vs ≤2
+safe threshold on the 7.65 GiB VM; no local build this session). The elementary
+frontier is fully saturated and merged (`g_le_n`, `g_le_n_sub_one`, `g_ge_one`,
+`g_ge_half` all on main), so I stepped back to the problem statement itself.
+
+**FINDING (significant): the gallery entry formalizes a DIFFERENT quantity than
+Erdős #653, and omits the problem's central hypothesis.**
+
+Trigger: the file cites Erdős–Fishburn `g(n) > (3/8)n` as a *lower* bound, but the
+trivial equally-spaced collinear construction already gives the file's
+`g(n) ≥ ⌈n/2⌉ = 0.5n > 0.375n`. A trivial set cannot beat a published lower bound —
+so the file's `g` is not the function those bounds describe. Verified against the
+external statement (web): the ACTUAL Erdős #653 (erdosproblems.com/653) is:
+
+> Given n points in the plane with **NO FOUR ON A CIRCLE (no four concyclic)**,
+> there must exist some point with at least `f(n)` distinct distances to the others.
+> Estimate `f(n)`. Conjecture `f(n) ≥ (1-o(1))n`; known `f(n) > (3/8)n`
+> (Erdős–Fishburn), `f(n) > (7/10)n` (Csizmadia), `f(n) < n - c·n^{2/3}`.
+
+So the real object is a **min–max under a forbidden-configuration hypothesis**:
+`f(n) = min over (no-4-concyclic) configs of max_{p} R(p)`.
+
+The file instead defines, with **no concyclic rule**,
+`g(n) = max over all configs of #{R(p) : p ∈ S}` — the *diversity* of the R-value
+multiset. Neither the min–max structure nor the concyclic exclusion is present.
+
+**Concrete evidence** (new durable artifact `verify_problem_mismatch.py`, exact
+integer arithmetic, all checks pass):
+- (A) collinear gives file-`g = ⌈n/2⌉ = 0.5n`, exceeding the cited 3/8 bound for
+  n = 8,12,20,40,100 ⇒ file-`g ≠ f(n)` (definitive).
+- (B) the regular n-gon (all n concyclic) is exactly the obstruction the real
+  problem excludes; every vertex sees only `⌊n/2⌋` distances. The file has no
+  such hypothesis.
+- (C) file-`g` (#distinct R-values) and real `max_p R(p)` disagree on the same
+  config: collinear n=6 → g=3 vs max-R=5; square n=4 → g=1 vs max-R=2.
+
+**Consequence for axiom integrity.** `csizmadia_bound` (`g n > 7n/10`) and
+`upper_bound` (`g n < n − c·n^{2/3}`) are correct *literature results about
+`f(n)`* but are **mis-attributed** here as axioms about the file's `g(n)`. They
+are not established for the formalized quantity. (I did NOT delete them — that
+would break `erdos_653_summary`/`erdos_653`; instead I flagged them.) The
+elementary theorems (`g_le_n` etc.) remain correct statements about THIS `g`, but
+`g` is an auxiliary relaxation, not Erdős #653.
+
+**Delta shipped this session (all build-safe / no Lean code change):**
+- `Erdos653Problem.lean`: a prominent `/- FORMALIZATION DISCREPANCY -/` comment
+  block after the header (comment-only, parses trivially; does not touch any
+  definition, theorem, or axiom). Surfaces the mismatch in-source.
+- `verify_problem_mismatch.py`: durable exact-arithmetic demonstration (A/B/C).
+- this knowledge entry.
+
+**Next ACT (build-gated, the real fix):** re-formalize faithfully —
+(i) a `NoFourConcyclic : Finset (Fin 2 → ℝ) → Prop` predicate, (ii)
+`f(n) = sInf { max_{p∈S} R(p) | S.card = n ∧ NoFourConcyclic S }` (or the ⨆/⨅
+formulation), (iii) restate `csizmadia_bound`/`upper_bound`/the conjecture about
+`f`. The current `g`-theorems can be retained as lemmas about a named relaxation
+(`gDiversity`), explicitly distinguished from `f`. This needs a build backend
+(the concyclic predicate + sInf plumbing is too error-prone to write blind) and
+is a substantial rewrite, so it is deferred, not attempted under the Docker gate.
+
+**Honest assessment:** no new theorem and the OQ is untouched, but this is the
+most valuable thing available here — the prior six sessions built a correct tower
+on a *mis-stated* problem. Surfacing that (with reproducible exact-arithmetic
+evidence and an in-source flag) is worth more than another +O(1) elementary
+bound. The two literature axioms should be treated as suspect until the
+re-formalization lands.

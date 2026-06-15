@@ -2,7 +2,7 @@
   "id": "erdos-653",
   "title": "Erdős Problem #653: Distinct Distance Counts in the Plane",
   "slug": "erdos-653",
-  "description": "For n points in the plane, let R(xᵢ) count distinct distances from xᵢ. What is the maximum number of distinct R-values? Conjecture: g(n) ≥ (1-o(1))n. OPEN with bounds 0.7n < g(n) < n - cn^{2/3}.",
+  "description": "Erdős #653: for n points in the plane with NO FOUR CONCYCLIC, some point has ≥ f(n) distinct distances; estimate f(n). Conjecture f(n) ≥ (1-o(1))n; bounds (3/8)n < f(n) < n - cn^{2/3}. NOTE: the current Lean file formalizes a DIFFERENT quantity g(n) = max #distinct R-values (no concyclic hypothesis), a relaxation for which the cited axioms are mis-attributed — see the FORMALIZATION DISCREPANCY note in Erdos653Problem.lean and research/problems/erdos-653-oq-01/verify_problem_mismatch.py.",
   "meta": {
     "author": "Erdős-Fishburn (3/8 bound), Csizmadia (7/10 bound)",
     "sourceUrl": "https://erdosproblems.com/653",
@@ -229,5 +229,5 @@
   ],
   "sorries": 0,
   "axiomCount": 2,
-  "assumptions": "2 axioms: csizmadia_bound (g(n) > 7n/10), upper_bound (g(n) < n - cn^{2/3}). 0 sorries. The former discharged g_le_n theorem (g(n) ≤ n) was discharged to a theorem via Finset.card_image_le + csSup_le' (build-pending under Docker blackout). g_le_n_sub_one (g(n) ≤ n-1, n ≥ 2) is the sharper proved theorem."
+  "assumptions": "2 axioms: csizmadia_bound (g(n) > 7n/10), upper_bound (g(n) < n - cn^{2/3}). 0 sorries. g_le_n (g(n) ≤ n) and g_le_n_sub_one (g(n) ≤ n-1, n ≥ 2) are proved theorems via Finset.card_image_le + csSup_le'. CAVEAT (2026-06-15): these two axioms are literature results about Erdős #653's f(n) = min-over-(no-4-concyclic)-configs of max-per-point distinct distances; they are MIS-ATTRIBUTED here as axioms about the file's g(n) = max #distinct R-values, a different quantity (the trivial collinear set already gives g(n) ≥ ⌈n/2⌉ = 0.5n > the cited 3/8 lower bound). Treat as suspect pending re-formalization; see the FORMALIZATION DISCREPANCY note in Erdos653Problem.lean."
 }
