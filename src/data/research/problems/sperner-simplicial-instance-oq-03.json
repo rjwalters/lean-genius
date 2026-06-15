@@ -1,0 +1,134 @@
+{
+  "slug": "sperner-simplicial-instance-oq-03",
+  "title": "Boundary Door Parity for the Standard n-Simplex",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Boundary Door Parity for the Standard n-Simplex.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent SpernerSimplicialInstance.lean PROVES boundary_doors_odd as a parity-transfer theorem (theorem at line 173): every boundary door is forced onto geometric face n by the Sperner condition (S = S_n), hence |S| odd FROM hypothesis _hLastFace.",
+      "Abstract door-counting parity engine (SpernerMathlib.lean): doors pair across shared facets; panchromatic <=> odd local door count.",
+      "Base case n=1 (interval): exactly one boundary door — verified for all Sperner colorings."
+    ],
+    "open": [
+      "_hLastFace for the standard simplex: Odd(#doors on the top facet) — currently an explicit hypothesis of boundary_doors_odd, not discharged for the standard triangulation.",
+      "The dimension induction tying top-facet door oddness in dim n to the induced (n-1)-dim Sperner door count."
+    ],
+    "goal": "Discharge _hLastFace (and the base case) for the standard/Kuhn triangulation of Delta^n by induction on n, making the simplicial Sperner instance fully self-contained."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T01:25:28.244Z",
+    "iteration": 2,
+    "focus": "Reframed the open piece: boundary_doors_odd is ALREADY a proven parity-transfer theorem; the genuine gap is the hypothesis _hLastFace (top-facet door oddness) + base case, discharged via dimension induction. Verified the induction bridge numerically.",
+    "blockers": [],
+    "nextAction": "ACT: construct the standard (Kuhn) triangulation instance for general n with an explicit facet-restriction map, prove the induced top-facet coloring is Sperner in dim n-1, and close _hLastFace by induction. Build-gated (Docker).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT (no .lean; Docker down): reframed the gap from whole-lemma to the _hLastFace hypothesis; verified base case + S=S_n reduction + induction bridge by exhaustive enumeration (14k+ Sperner colorings, n=1 and n=2 Kuhn grids m<=4).",
+    "builtItems": [
+      "research/problems/sperner-simplicial-instance-oq-03/verify_boundary_doors.py — reproducible exhaustive verification: n=1 interval (one boundary door) and n=2 Kuhn-triangulated triangle (odd panchromatic, odd boundary doors, all on top facet, count == induced 1-D door count) over all Sperner colorings, grids m<=4."
+    ],
+    "insights": [
+      "boundary_doors_odd is NOT an open assumption in the .lean — it is a PROVEN theorem (line 173) that already establishes S = S_n (all boundary doors lie on the top facet) via the Sperner condition. The OQ description (\"leaves boundary_doors_odd as an assumption\") is stale.",
+      "The true remaining gap is the hypothesis _hLastFace : Odd |S_n| (door count on the top facet), plus the base case. _hLowerDim is VESTIGIAL — the final proof body uses only the S=S_n reduction and _hLastFace, never _hLowerDim.",
+      "Per-facet decomposition verified: on facet 0 colors in {1,2}, on facet 1 colors in {0,2} — neither can be a {0,1}-door, so doors live ONLY on facet 2 (the top facet AB), matching the Lean S=S_n proof.",
+      "Induction bridge verified numerically: #boundary doors of Delta^2 == #1-D Sperner doors of the coloring induced on the top facet (a Delta^1) == odd. This is exactly what _hLastFace needs in general: top facet of Delta^n is a Delta^{n-1} carrying an induced Sperner coloring, so its door count is odd by IH.",
+      "Sperner sanity: #panchromatic top cells odd held across all 14k+ enumerated colorings (n=2 Kuhn grids m=1..4), confirming the triangulation model is a valid pseudomanifold."
+    ],
+    "mathlibGaps": [
+      "No off-the-shelf Mathlib lemma for boundary-face parity of standard-simplex triangulations; the door-counting engine is gallery-local (SpernerMathlib.lean).",
+      "Facet-restriction of a Sperner coloring to an induced (n-1)-dim Sperner coloring on a boundary facet is not packaged — must be constructed to drive the induction."
+    ],
+    "nextSteps": [
+      "Construct an explicit standard/Kuhn Triangulation instance for general n (the file currently has only intervalTriangulation 1 and a single 2-simplex fixture).",
+      "Define the facet-restriction map: top facet of the dim-n triangulation -> a dim-(n-1) Triangulation, and prove the restricted coloring is Sperner (the corner that became the omitted label maps away).",
+      "Prove the door bijection: doors on the top facet of dim n <-> doors of the restricted dim-(n-1) triangulation; then _hLastFace follows by induction with the n=1 base case.",
+      "Estimated 200-400 LOC; medium difficulty; build-gated on Docker. Consider submitting the door-bijection lemma to Aristotle once the triangulation instance compiles."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "topology",
+    "sperner-lemma",
+    "simplicial-complexes",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "sperner-simplicial-instance",
+    "sperner-simplicial-instance-oq-05"
+  ],
+  "references": {
+    "papers": [
+      "Sperner (1928), Neuer Beweis fuer die Invarianz der Dimensionszahl",
+      "Matousek, Using the Borsuk-Ulam Theorem (Sperner induction)"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T01:25:28.244Z",
+  "lastUpdate": "2026-06-15T04:24:48.000Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerSimplicialInstance.lean",
+      "filename": "SpernerSimplicialInstance.lean",
+      "lineCount": 1040,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
+      "filename": "SpernerSimplicialInstanceOQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+      "filename": "SpernerSimplicialInstanceOQ05.lean",
+      "lineCount": 186,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "filename": "SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "lineCount": 299,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
+    }
+  ]
+}
