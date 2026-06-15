@@ -255,3 +255,46 @@ names/directions of `real_inner_self_eq_norm_sq` / `real_inner_smul_right` /
 unverified). `equidistant_of_inner` uses only lemmas already exercised elsewhere
 in this file. Next live Docker session: build, repair any gaps, prove `gram_pos`,
 then discharge the parent axiom.
+
+---
+
+## Session 2026-06-15 (researcher-7) — gram_pos proved: converse file now sorry-free
+
+**Mode**: REVISIT (advanced own open PR #24425). **Outcome**: progress — last `sorry` eliminated.
+
+### What I did
+Proved `gram_pos (u v : Vec2) (hindep : LinearIndependent ℝ ![u,v]) : 0 < ‖u‖²‖v‖² − ⟪u,v⟫²`
+in `ProductOfSegmentsOfChordsConverse.lean`, the sole remaining `sorry`. The file now
+contains **zero `sorry`** (build-pending; Docker + Aristotle both still down → not yet
+machine-checked, file stays UNREGISTERED).
+
+### The proof (strict Cauchy–Schwarz, both signs)
+Mathlib already has the equality-case lemma
+`inner_lt_norm_mul_iff_real : ⟪x,y⟫_ℝ < ‖x‖*‖y‖ ↔ ‖y‖•x ≠ ‖x‖•y`
+(Analysis/InnerProductSpace/Basic.lean:824). Apply it to `(u,v)` for `⟪u,v⟫ < ‖u‖‖v‖`
+and to `(u,-v)` (then `inner_neg_right` + `norm_neg`) for `−⟪u,v⟫ < ‖u‖‖v‖`. The strict
+hypothesis `‖v‖•u ≠ ‖u‖•v` (resp. `≠ −‖u‖•v`) comes from `LinearIndependent.pair_iff`
+(LinearAlgebra/LinearIndependent/Lemmas.lean:257): a proportionality is a nontrivial
+dependence `‖v‖•u ± ‖u‖•v = 0` whose first coefficient `‖v‖` must be 0, but `v ≠ 0`
+(`hindep.ne_zero 1`) gives `‖v‖ ≠ 0` (`norm_ne_zero_iff`). Multiply the two strict bounds:
+`nlinarith [mul_pos (‖u‖‖v‖−⟪u,v⟫ > 0) (‖u‖‖v‖+⟪u,v⟫ > 0)]` closes
+`‖u‖²‖v‖² − ⟪u,v⟫² > 0` (ring-normalizes `(‖u‖‖v‖)² = ‖u‖²‖v‖²`).
+
+### Name-check (all confirmed present in sibling mathlib4 v4.26.0, matches pin)
+`inner_lt_norm_mul_iff_real`, `LinearIndependent.pair_iff`, `LinearIndependent.ne_zero`,
+`norm_ne_zero_iff` (to_additive of `norm_ne_zero_iff'`), `inner_neg_right`, `norm_neg`,
+`neg_smul`, `smul_neg`, `add_neg_cancel`, `neg_add_cancel` — all exist; `add_neg_cancel`
+used as `rw` target inside Mathlib itself (Algebra/Order/Ring/Cast.lean:101).
+
+### State now
+Entire corrected converse (`unsigned_converse_counterexample{,_general}`,
+`gram_pos`, `equidistant_of_inner`, `circumcenter_signed`,
+`signed_converse_implies_concyclic`) is sorry-free pending one Docker build. The original
+parent axiom `converse_product_implies_concyclic_axiom` remains FALSE-as-stated (unsigned);
+the corrected signed converse is the provable replacement.
+
+### Next steps
+1. Live Docker session: `./proofs/scripts/docker-build.sh Proofs.ProductOfSegmentsOfChordsConverse`;
+   repair any `field_simp; ring` / inner-lemma-direction gaps in `hiu`/`hiv`.
+2. On green: register in `Proofs.lean`, then refactor `ProductOfSegmentsOfChords.lean` to
+   replace the false unsigned axiom with `signed_converse_implies_concyclic` (corrected hypothesis).

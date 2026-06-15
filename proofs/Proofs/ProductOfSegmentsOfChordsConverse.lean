@@ -28,11 +28,12 @@ sign, so the four points cannot be concyclic.
 
 The corrected, provable converse is stated as `signed_converse_implies_concyclic`. Its
 proof reduces (via a translation putting `P` at the origin) to the geometric lemma
-`circumcenter_signed`, which is now **fully constructed**: an explicit Cramer-rule center
-plus the `equidistant_of_inner` cancellation core. The entire converse is therefore proved
-modulo the single standard fact `gram_pos` (positivity of the Gram determinant of two
-linearly independent vectors — strict Cauchy–Schwarz), which is the **sole remaining
-`sorry`** and a clean target for automated search. See
+`circumcenter_signed`, which is **fully constructed**: an explicit Cramer-rule center plus
+the `equidistant_of_inner` cancellation core. The last ingredient, `gram_pos` (positivity
+of the Gram determinant of two linearly independent vectors — strict Cauchy–Schwarz), is
+**now also proved** via `inner_lt_norm_mul_iff_real` applied in both signs together with
+`LinearIndependent.pair_iff`. The file therefore contains **no `sorry`** (build-pending,
+see NOTE below). See
 `research/problems/product-of-segments-of-chords-oq-02/knowledge.md`.
 
 NOTE: build-pending. The Docker Lean toolchain was unavailable when this was written,
@@ -158,12 +159,34 @@ Gram determinant `‖u‖²‖v‖² − ⟪u,v⟫²` is strictly positive. This
 Cauchy–Schwarz: `⟪u,v⟫² ≤ ‖u‖²‖v‖²` always, with equality only when `u, v` are parallel,
 which linear independence rules out.
 
-This is now the **sole remaining `sorry`** in the converse proof — a standard,
-self-contained linear-algebra fact and a clean target for automated search. The
-circumcenter construction below is fully discharged in terms of it. -/
+The proof is strict Cauchy–Schwarz, applied to the pair `(u, v)` and to `(u, -v)` to
+control both signs of `⟪u,v⟫`. `inner_lt_norm_mul_iff_real` upgrades each unsigned
+Cauchy–Schwarz inequality to a strict one exactly when the vectors are not proportional;
+`LinearIndependent.pair_iff` supplies that non-proportionality (any proportionality
+`‖v‖•u = ‖u‖•v` would be a nontrivial dependence, since `v ≠ 0` forces `‖v‖ ≠ 0`). The
+two strict bounds `±⟪u,v⟫ < ‖u‖‖v‖` multiply to `⟪u,v⟫² < ‖u‖²‖v‖²`. -/
 theorem gram_pos (u v : Vec2) (hindep : LinearIndependent ℝ ![u, v]) :
     0 < ‖u‖ ^ 2 * ‖v‖ ^ 2 - (inner u v : ℝ) ^ 2 := by
-  sorry
+  have hv : v ≠ 0 := by simpa using hindep.ne_zero 1
+  have hvn : ‖v‖ ≠ 0 := norm_ne_zero_iff.mpr hv
+  have hpair := LinearIndependent.pair_iff.mp hindep
+  -- Strict Cauchy–Schwarz, positive side: ⟪u,v⟫ < ‖u‖‖v‖.
+  have h1 : (inner u v : ℝ) < ‖u‖ * ‖v‖ := by
+    rw [inner_lt_norm_mul_iff_real]
+    intro h
+    have hz : ‖v‖ • u + (-‖u‖) • v = 0 := by rw [h, neg_smul, add_neg_cancel]
+    exact hvn (hpair _ _ hz).1
+  -- Strict Cauchy–Schwarz, negative side: -⟪u,v⟫ < ‖u‖‖v‖ (apply to the pair (u, -v)).
+  have h2 : -(inner u v : ℝ) < ‖u‖ * ‖v‖ := by
+    have key : (inner u (-v) : ℝ) < ‖u‖ * ‖(-v : Vec2)‖ := by
+      rw [inner_lt_norm_mul_iff_real]
+      intro h
+      rw [norm_neg] at h
+      have hz : ‖v‖ • u + ‖u‖ • v = 0 := by rw [h, smul_neg, neg_add_cancel]
+      exact hvn (hpair _ _ hz).1
+    rwa [inner_neg_right, norm_neg] at key
+  nlinarith [mul_pos (by linarith : (0 : ℝ) < ‖u‖ * ‖v‖ - inner u v)
+      (by linarith : (0 : ℝ) < ‖u‖ * ‖v‖ + inner u v)]
 
 /-- **Equidistance core (the `‖O‖²` cancels).** Any center `O` whose inner products
 against `u` and `v` hit the perpendicular-bisector values `⟪u,O⟫ = (t+1)/2·‖u‖²` and
