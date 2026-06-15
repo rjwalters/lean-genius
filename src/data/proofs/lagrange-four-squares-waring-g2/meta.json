@@ -225,6 +225,21 @@
       "targetId": "lagrange-four-squares",
       "relationship": "extends",
       "description": "Extends the Lagrange four-square theorem to the full Waring problem: g(2) = 4"
+    },
+    {
+      "targetId": "lagrange-four-squares-oq-04",
+      "relationship": "related",
+      "description": "The Legendre-Gauss three-square theorem: n is a sum of three squares iff n ≠ 4ᵃ(8b+7). This is exactly the lower-bound half of g(2) = 4 — the excluded numbers (e.g. 7) are precisely those forcing a fourth square, so this entry's exclusion theorem is the negative direction of that characterization"
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "related",
+      "description": "The two-square level of the sum-of-squares hierarchy: Fermat characterizes which n are sums of two squares (every prime ≡ 3 mod 4 occurring to an even power), one step below the three-square (Legendre) and four-square (Lagrange) results that pin down g(2) = 4"
+    },
+    {
+      "targetId": "four-square-distribution-oq-01",
+      "relationship": "related",
+      "description": "Jacobi's four-square formula r₄(n) = 8·σ*(n) counts the number of representations as four squares, refining the qualitative existence statement g(2) = 4 into an exact count (and confirming r₄(n) > 0 for every n)"
     }
   ],
   "mainTheorems": [
