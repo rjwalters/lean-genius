@@ -1,9 +1,75 @@
 # Current State
 
-**Phase**: S11 ACT-prep (Step 4 `normalizer_iso_AGL1Z` **numerically certified** — `verify_step4_normalizer.py` brute-forces `S_p`, p∈{3,5,7}: `N_{S_p}(⟨σ⟩)` == AGL image exactly ⟹ φ injective AND **surjective**; |N|=p(p−1); n_p=(p−2)!≡1; conj-map a group hom. Complements S7 Step-5 cert which only had the easy inclusion. **5 sorries** unchanged; docstring + script + knowledge edit only, no Lean proof — both backends still DOWN)
-**Since**: 2026-06-14 (S11 ACT-prep Step-4 cert; was 2026-06-14 S10 ORIENT)
-**Iteration**: 11 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep this iteration)
-**Owner**: researcher-2 (S11 ACT-prep, 2026-06-14); prior researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S12 ACT (Step 5 `H_le_normalizer` **UNSOUND signature replaced with the documented SOUND corrected signature** in the registered, building `.lean` file — removes the FALSE lemma stub flagged since S5 OBSERVE; the file now contains only TRUE `sorry` stubs. Body kept `sorry` under dual blackout — a blind tactic discharge could not be verified and would risk the registered build. **5 sorries** unchanged; only the Step 5 declaration changed (signature + docstring). Docker times out, Aristotle MCP 'Resource not found' re-tested live)
+**Since**: 2026-06-15 (S12 ACT Step-5 signature correction; was 2026-06-14 S11 ACT-prep)
+**Iteration**: 12 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep 2026-06-14; S12 ACT this iteration)
+**Owner**: researcher-4 (S12 ACT, 2026-06-15); prior researcher-2 (S11 ACT-prep), researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 12 (researcher-4, 2026-06-15) — S12 ACT: replace Step 5's UNSOUND signature with the sound corrected form
+
+**Outcome**: progress / correctness fix to the REGISTERED `.lean` file (no
+build — Docker daemon times out, Aristotle MCP returns "Resource not found",
+both re-tested live this session). For 6 sessions (S5–S11) the file carried
+`H_le_normalizer` with the **mathematically false** signature
+`(H) (_hPrim) (_hSolv) (σ) (_hσ_in_H : σ ∈ H) ⊢ H ≤ (zpowers σ).normalizer`
+— flagged unsound at S5 OBSERVE (counterexample p=5: `σ = x↦2x`, `h = x↦x+1`,
+`hσh⁻¹ ∉ ⟨σ⟩`), every later session deferring the fix to "a Docker-up session".
+The fix needs no build: it is a signature + docstring edit.
+
+**What I did.** Replaced the signature with the documented SOUND corrected
+form, threading the normal Sylow-p `P`, the generator inclusion `hgen`
+(the exact output of Step 3 `sylow_p_is_pcycle`), and the `p`-cycle data
+`hσ_card`:
+
+```lean
+theorem H_le_normalizer
+    (H : Subgroup (Equiv.Perm (ZMod p)))
+    (P : Sylow p H)
+    (_hPnorm : (P : Subgroup H).Normal)
+    (σ : Equiv.Perm (ZMod p))
+    (_hσ_card : σ.support.card = p)
+    (_hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
+      Subgroup.zpowers σ)
+    (_hσH : σ ∈ H) :
+    H ≤ (Subgroup.zpowers σ).normalizer := by
+  sorry
+```
+
+The docstring was rewritten: the S5 counterexample is preserved (as the
+rationale for why the OLD signature was wrong) and the "DO NOT DISCHARGE AS
+WRITTEN" warning is replaced by a note that the signature is now the sound
+corrected form, body pending a backend-up discharge.
+
+**Why this is safe under no-build.** Every subterm of the corrected
+signature already appears verbatim in the currently-building file:
+`(P : Sylow p H)` and `(P : Subgroup H).Normal` from Step 2
+(`sylow_p_normal`), and the `hgen` expression + `σ.support.card = p` from
+Step 3 (`sylow_p_is_pcycle`). So the new signature typechecks. No other
+declaration references `H_le_normalizer` (the main theorem is its own
+independent `sorry`), so the change is isolated.
+
+**Why the body stays `sorry`.** A blind tactic discharge (the planned
+hPnorm-conjugation + `ι(P)=⟨σ⟩` cardinality upgrade + `Subgroup.le_normalizer`,
+~5–15 LOC) cannot be build- or solver-verified under the dual blackout, and
+getting the normalizer/`Subgroup.map`/cardinality API exactly right blind
+would risk breaking the registered gallery build. The statement is
+numerically certified sound by `verify_step5_normalizer.py` (S9) for all odd
+primes `3 ≤ p ≤ 29`; discharging it is the cheapest next ACT once a backend
+returns.
+
+**Net effect.** The registered file moves from "contains a FALSE lemma stub
+(a soundness landmine — a future assembler could cite it, or an accidental
+`sorry`-free 'proof' could slip through)" to "contains only TRUE `sorry`
+stubs". 5 sorries unchanged; build-pending but low-risk.
+
+### Files touched
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` —
+  Step 5 signature + docstring (only the `H_le_normalizer` declaration).
+- `research/problems/.../state.md` — this block + header.
+- `research/problems/.../knowledge.md` — Risk R2 status note.
+- `src/data/research/problems/...json` — `currentState`, `completedThisIter`,
+  `open`, top-level `phase`.
 
 ## Iteration 11 (researcher-2, 2026-06-14) — S11 ACT-prep: Step 4 isomorphism numerically certified (surjective half)
 
