@@ -85,49 +85,81 @@
   },
   "sections": [
     {
-      "id": "sec-grid-structure",
+      "id": "overview",
+      "title": "Overview and Approach",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module header: the connection of this 2D Sperner / Brouwer fixed-point formalization to Brouwer OQ-02 (PPAD complexity) and the overall approach (combinatorial Sperner's lemma via row-sweep parity, then an approximate-fixed-point application).",
+      "mathContext": "Brouwer fixed point on the 2-simplex via Sperner's lemma: a Sperner-colored grid triangulation always contains a fully-colored (panchromatic) triangle, which yields $\\varepsilon$-approximate fixed points of continuous self-maps."
+    },
+    {
+      "id": "section-i-grid",
       "title": "Section I: Grid Triangulation Definitions",
       "startLine": 39,
-      "endLine": 98,
+      "endLine": 77,
       "summary": "Defines `GridVertex n` (pairs (i,j) with i+j≤n), `TriType` inductive (lower/upper), `GridTriangle n`. Defines `lowerVertices`/`upperVertices` for the two triangle types in each grid cell. `GridTriangle.vertices` dispatches to the correct vertex function by type.",
       "mathContext": "The grid triangulation of $T_n = \\{(i,j) : i,j \\geq 0, i+j \\leq n\\}$ has $n^2$ triangles ($n^2$ lower and upper triangles), $(n+1)(n+2)/2$ vertices."
     },
     {
-      "id": "sec-coloring",
+      "id": "section-ii-sperner",
       "title": "Section II: Sperner Coloring",
       "startLine": 78,
-      "endLine": 150,
-      "summary": "Defines `Coloring n = GridVertex n → Fin 3`, `IsSperner`: corner colors fixed (0,1,2), edge restrictions (bottom: no color 2, left: no color 1, hypotenuse: no color 0). `IsFullyColored`: image = {0,1,2}. ZMod 2 helper lemmas for the parity argument.",
+      "endLine": 95,
+      "summary": "Defines `Coloring n = GridVertex n → Fin 3`, `IsSperner`: corner colors fixed (0,1,2), edge restrictions (bottom: no color 2, left: no color 1, hypotenuse: no color 0). `IsFullyColored`: image = {0,1,2}.",
       "mathContext": "A Sperner coloring assigns colors $\\{0,1,2\\}$ to vertices such that: corner $(0,0) \\mapsto 0$, $(n,0) \\mapsto 1$, $(0,n) \\mapsto 2$; bottom edge uses only $\\{0,1\\}$; left edge uses only $\\{0,2\\}$; hypotenuse uses only $\\{1,2\\}$."
     },
     {
-      "id": "sec-1d-sperner",
+      "id": "section-iib-zmod2",
+      "title": "Section II-b: ZMod 2 Parity Helpers",
+      "startLine": 96,
+      "endLine": 150,
+      "summary": "ZMod 2 helper lemmas underpinning the parity argument: zmod2_add_self, zmod2_eq_of_add_eq_zero, zmod2_ne_indicator, sum_telescope, odd_of_zmod2_eq_one, and the parity auxiliary transitions_parity_aux.",
+      "mathContext": "Arithmetic in $\\mathbb{Z}/2$: $a + a = 0$, and a sum telescopes so that $\\sum_i \\mathbf{1}[f_i \\neq f_{i+1}] \\equiv f_0 + f_n \\pmod 2$."
+    },
+    {
+      "id": "section-iii-1d-sperner",
       "title": "Section III: 1D Sperner (Bottom Edge)",
       "startLine": 151,
-      "endLine": 233,
-      "summary": "Proves `bottom_transitions_odd`: the number of {0,1}-transitions on the bottom edge is odd. Key: bottom vertices use only colors {0,1} (Sperner condition), starting at 0 and ending at 1. Proved via `transitions_parity_bool` — a Bool-valued parity lemma for sequences.",
+      "endLine": 228,
+      "summary": "Proves `bottom_transitions_odd`: the number of {0,1}-transitions on the bottom edge is odd. Key: bottom vertices use only colors {0,1} (Sperner condition), starting at 0 and ending at 1. Proved via `transitions_parity_bool` — a Bool-valued parity lemma for sequences. Defines botVertex, botColor, bottomTransitions.",
       "mathContext": "1D Sperner: a sequence $f_0 = 0, f_n = 1$ with $f_i \\in \\{0,1\\}$ has an odd number of transitions $i$ with $f_i \\neq f_{i+1}$."
     },
     {
-      "id": "sec-door-counting",
-      "title": "Section IV: Door Counting and Row-Sweep Parity",
-      "startLine": 234,
-      "endLine": 636,
-      "summary": "Defines `IsDoor` ({0,1}-colored edges), `hTrans c j` (horizontal transitions on row j). Proves: `fully_colored_one_door` (FC triangles have exactly 1 door), `abstractDoorCount_parity` (non-FC have 0 or 2 doors, 27-case decide), boundary door lemmas (no doors on left edge or hypotenuse), `strip_parity` (row-sweep invariant mod 2).",
-      "mathContext": "Each door is shared by 0 (boundary) or 2 (interior) triangles. $\\sum_T \\text{doors}(T) \\equiv \\text{boundary doors} \\pmod{2}$. Boundary doors = bottomTransitions (odd). FC triangles contribute 1 each; non-FC contribute 0. So #FC ≡ 1 (mod 2)."
+      "id": "section-iiib-extended-coloring",
+      "title": "Section III-b: Extended Coloring and Row Transitions",
+      "startLine": 229,
+      "endLine": 255,
+      "summary": "Extends the bottom-edge coloring to all rows: `gColor` (the color at grid position (i,j)), gColor_bot (agreement with botColor on the bottom row), `hTrans c j` (horizontal {0,1}-transitions on row j), hTrans_top (row n has no transitions), and abstractDoorCount.",
+      "mathContext": "Row transitions: $\\mathrm{hTrans}(c,j)$ counts $\\{0,1\\}$-color changes along row $j$; the top row $j=n$ has $\\mathrm{hTrans}(c,n)=0$."
     },
     {
-      "id": "sec-sperner-main",
+      "id": "section-iv-door-counting",
+      "title": "Section IV: Door-Counting Argument",
+      "startLine": 256,
+      "endLine": 332,
+      "summary": "Defines `IsDoor` ({0,1}-colored edges). Proves the door-count parity facts: `fully_colored_one_door` (FC triangles have exactly 1 door), `abstractDoorCount_parity` (non-FC triangles have 0 or 2 doors, via a 27-case decide), and boundary door lemmas (no doors on the left edge or hypotenuse).",
+      "mathContext": "Each door is shared by 0 (boundary) or 2 (interior) triangles. FC triangles contribute exactly 1 door; non-FC contribute 0 or 2."
+    },
+    {
+      "id": "section-ivb-row-sweep",
+      "title": "Section IV-b: Row-Sweep Parity Argument",
+      "startLine": 333,
+      "endLine": 635,
+      "summary": "Strip-parity infrastructure proving `strip_parity` via ZMod 2 double-counting: in the strip between rows j and j+1, the change in hTrans mod 2 equals the number of fully-colored triangles in that strip mod 2. This is the row-sweep invariant that drives the main theorem.",
+      "mathContext": "Row-sweep invariant: $\\mathrm{hTrans}(c,j{+}1) \\equiv \\mathrm{hTrans}(c,j) \\pmod 2$ whenever the strip contains no fully-colored triangle; double-counting doors across the strip."
+    },
+    {
+      "id": "sperner-2d-main",
       "title": "Section IV: sperner_2d Main Theorem",
-      "startLine": 637,
-      "endLine": 658,
+      "startLine": 636,
+      "endLine": 654,
       "summary": "Proves `sperner_2d`: any Sperner-colored grid triangulation of size n contains a fully-colored triangle. Contradiction argument: if no FC triangle, then hTrans is constant mod 2, so hTrans(n) ≡ hTrans(0) ≡ bottomTransitions ≡ 1 (mod 2). But hTrans(n) = 0.",
-      "mathContext": "Conclusion: $|\\{t : \\text{FC}\\}| \\equiv 1 \\pmod{2}$, so $\\exists$ a fully-colored triangle."
+      "mathContext": "Conclusion: $\\mathrm{hTrans}(c,n) \\equiv \\mathrm{hTrans}(c,0) \\equiv \\mathrm{bottomTransitions} \\equiv 1 \\pmod 2$, contradicting $\\mathrm{hTrans}(c,n)=0$; hence a fully-colored triangle exists."
     },
     {
-      "id": "sec-approximate-fp",
+      "id": "section-v-fixed-points",
       "title": "Section V: Approximate Fixed Points",
-      "startLine": 659,
+      "startLine": 655,
       "endLine": 1071,
       "summary": "Defines `gridToReal n v` (maps grid vertex to real coordinates in unit simplex), `displacementColoring n f` (Sperner coloring by dominant displacement direction). Proves `displacementColoring_isSperner`, color interpretation lemmas (color_zero_sum_nonneg, color_one_d1_nonpos, color_two_d2_nonpos). Main result: `approximate_fixed_point_2d` — continuous self-maps of the 2-simplex have ε-approximate fixed points.",
       "mathContext": "For $\\varepsilon > 0$, choose $n > \\max(1/\\delta, 4/\\varepsilon)$ where $\\delta$ is from uniform continuity. Apply Sperner: fully-colored triangle $t$ has one vertex with each displacement sign. Translate: $\\|f(p) - p\\| < \\varepsilon$ at the color-0 vertex."
