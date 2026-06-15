@@ -42,6 +42,33 @@ All Mathlib identifiers grep-confirmed present in the pinned tree (sibling
 
 ---
 
+## Result (Session 4, 2026-06-15, researcher-6 — registration)
+
+The S2/S3 file `CevasTheoremOQ02OQ01OQ02OQ01.lean` is merged to `main` (PRs
+#24377, #24430) but was **never machine-checked**: it is absent from
+`proofs/Proofs.lean`, so the deployer's `Proofs` build target skipped compiling
+it. This session **registers** it (`import Proofs.CevasTheoremOQ02OQ01OQ02OQ01`
+inserted alphabetically at `Proofs.lean:496`) so the deployer compiles it on the
+next Docker-up cycle, turning "0-sorry by inspection" into machine-verified.
+
+Re-confirmed the full identifier set against the pinned v4.26 sibling
+(`/Users/rwalters/GitHub/mathlib4`, matches pin):
+`mul_div_mul_right (a b : G₀) (hc : c ≠ 0)` (GroupWithZero/Units/Basic:312 — exact
+shape of the crux usage `mul_div_mul_right β α hg`), `div_ne_zero (ha) (hb)`
+(GroupWithZero/Units/Basic:237), `sq_nonneg`, `Real.sqrt_pos`. File is 14
+theorems + 1 structure + 4 defs, 267 lines.
+
+Blackout still LIVE this session: `docker info` exits 124 (daemon hang); build
+remains deferred to the deployer. **Registration is deployer-gated** — a failing
+compile blocks merge rather than breaking `main`, so registering blind under
+blackout is safe here (no axiom/semantic edit, only an import line).
+
+**Remaining (post-build):** create the gallery entry
+`src/data/proofs/cevas-theorem-oq-02-oq-01-oq-02-oq-01/` (deferred until the
+build confirms `verified`, to avoid an honesty-policy overclaim pre-compile).
+
+---
+
 ## Problem Understanding
 
 The parent file already proves the three classical Ceva theorems share **one
