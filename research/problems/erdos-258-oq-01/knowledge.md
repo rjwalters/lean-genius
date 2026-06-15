@@ -47,6 +47,38 @@ Probes: `probe.py` (identity check + 5 sequence families), `threshold_probe.py`
 
 ## Sessions
 
+### 2026-06-14 (Session 2) — open-zone rationality probe (deferred S1 next-step)
+
+**Mode**: REVISIT. **Outcome**: ORIENT/evidence (build-free; Docker still down).
+Closes S1's explicitly-deferred next-step *"investigate the subpolynomial zone: is
+there a non-monotone aₙ→∞ making `q·T_N∈ℤ`?"* — from the dual angle: is `S(a)`
+itself a low-denominator rational there?
+
+**Method** (`verify_openzone_rationality.py`). For a sequence `a`, `S(a)` is
+super-exponentially convergent, so the exact truncation `S_K` (`K=150`, `Fraction`)
+differs from true `S` by `< last term ≈ 10⁻¹³¹…10⁻¹⁸⁵`. The continued-fraction
+convergents of `S_K` are the **best** rational approximations (no rational with
+denominator `≤ kₙ` beats the `n`-th convergent), so if true `S` were rational `p/q`
+with `q ≤ Q`, a convergent with `denom ≤ Q` would match `S_K` to within the
+truncation tail. **It does not.**
+
+**Result (exact arithmetic — float underflows for these convergents, so the script
+compares `Fraction`s):**
+- Both open-zone non-monotone families — `aₙ=max(τ(n+1),⌊√n⌋)` and
+  `aₙ=⌊(log(n+2))²⌋+2` — have **no rational with `q ≤ 10⁹`** closer than `≈10⁻¹⁸`,
+  i.e. `≳10¹¹³` times the truncation accuracy. So `S` is **not** a rational with
+  denominator `≤ 10⁹` in the open zone.
+- CF partial quotients are Gauss–Kuzmin-typical (largest seen ≈84), with **no giant
+  partial quotient** — the signature a near-rational would show is absent.
+- Control `aₙ=n²` (proven irrational by the engine) shows the **same** signature,
+  validating the test.
+
+**Reading.** Evidence — *not proof* — that the answer is "irrational" precisely in
+the open zone where the elementary `liminf T_N=0` engine is silent. It rules out
+only the small-denominator-rational escape (`q ≤ 10⁹`); the genuine open question
+(no `q` works for some pathological non-monotone `aₙ`) remains beyond this method.
+No change to the Lean file or the 4 lemmas; 4 `sorry`s intact.
+
 ### 2026-06-14 (Session 1) — FRESH ORIENT
 **Mode**: FRESH. **Outcome**: ORIENT (reduction + engine + new sufficient condition).
 - Reframed as Cantor series; derived identity (★) and the `q·T_N∈ℤ≥1` mechanism.
