@@ -12,8 +12,11 @@ have no upstream dependencies.
 
 This file turns that prose design into **typed Lean statements** so they are
 directly submittable to Aristotle / buildable the moment a backend frees.
-Sublemma B now carries a **full candidate proof** (Grassmann dimension count);
-Sublemma A remains `sorry`.
+Sublemma B carries a **full candidate proof** (Grassmann dimension count).
+Sublemma A is further decomposed: its convex-combination core is split off as
+`weighted_mean_mem_inf_sup` (a standalone, inner-product-free lemma with a
+**full candidate proof**), leaving only the two Parseval identities as the
+remaining `sorry` targets inside `rayleigh_bounds_on_eigenspan`.
 
 ## Status
 
@@ -66,6 +69,37 @@ theorem inf_ne_bot_of_finrank_add_lt
   -- A nontrivial subspace contains a nonzero vector.
   exact (Submodule.ne_bot_iff _).1 hne
 
+/-! ## Sublemma A.0 — a weighted mean lies between min and max (the convex-combination core)
+
+This is the purely order-theoretic / real-arithmetic heart of Sublemma A, isolated
+as a standalone lemma with **no inner-product or eigenbasis content**. Once the two
+Parseval identities reduce the Rayleigh quotient to
+`(∑_{i∈I} wᵢ μᵢ) / (∑_{i∈I} wᵢ)` with weights `wᵢ = ‖cᵢ‖² ≥ 0` and positive total
+mass, the min/max sandwich is exactly this lemma applied with that `w`.
+
+Proof: with `S := ∑_{i∈I} wᵢ > 0`, clear the denominator (`le_div_iff₀` /
+`div_le_iff₀`) and compare termwise. For the lower bound,
+`inf'·S = ∑ inf'·wᵢ ≤ ∑ μᵢ·wᵢ` because `inf' ≤ μᵢ` (`Finset.inf'_le`) and `wᵢ ≥ 0`;
+the upper bound is symmetric via `Finset.le_sup'`. Fully elementary, no `sorry`. -/
+theorem weighted_mean_mem_inf_sup
+    {n : ℕ} (μ : Fin n → ℝ) (I : Finset (Fin n)) (hI : I.Nonempty)
+    (w : Fin n → ℝ) (hw : ∀ i ∈ I, 0 ≤ w i) (hpos : 0 < ∑ i ∈ I, w i) :
+    I.inf' hI μ ≤ (∑ i ∈ I, w i * μ i) / (∑ i ∈ I, w i)
+      ∧ (∑ i ∈ I, w i * μ i) / (∑ i ∈ I, w i) ≤ I.sup' hI μ := by
+  refine ⟨?_, ?_⟩
+  · -- lower bound: clear denominator, then `inf' ≤ μᵢ` weighted by `wᵢ ≥ 0`
+    rw [le_div_iff₀ hpos, Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro i hi
+    rw [mul_comm (I.inf' hI μ) (w i)]
+    exact mul_le_mul_of_nonneg_left (Finset.inf'_le μ hi) (hw i hi)
+  · -- upper bound: symmetric, `μᵢ ≤ sup'` weighted by `wᵢ ≥ 0`
+    rw [div_le_iff₀ hpos, Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro i hi
+    rw [mul_comm (I.sup' hI μ) (w i)]
+    exact mul_le_mul_of_nonneg_left (Finset.le_sup' μ hi) (hw i hi)
+
 /-! ## Sublemma A — Rayleigh bounds on a coordinate eigenspan
 
 If `T` is diagonalised by the orthonormal family `b` with real eigenvalues `μ`,
@@ -77,7 +111,16 @@ Proof route (design §1.A): expand `x = ∑ i∈I, c i • b i` (orthonormal rep
 two Parseval computations give `‖x‖² = ∑ ‖c i‖²` and
 `re ⟪T x, x⟫ = ∑ μ i ‖c i‖²`; so `R x` is a convex combination of the `μ i`
 (nonneg weights summing to 1, denominator `> 0` since `x ≠ 0`), which lies
-between the min and max of its support. -/
+between the min and max of its support.
+
+**Decomposition status.** The closing convex-combination step is now discharged by
+`weighted_mean_mem_inf_sup` above (proven, `sorry`-free). What remains for a full
+proof of `rayleigh_bounds_on_eigenspan` are the two Parseval identities with
+`w i := ‖b.repr x i‖²` (support contained in `I` since `x ∈ span (b '' I)`):
+  * `‖x‖ ^ 2 = ∑ i ∈ I, w i`  (Parseval for the norm), and
+  * `RCLike.re ⟪T x, x⟫ = ∑ i ∈ I, w i * μ i`  (diagonalisation + Parseval),
+plus `0 < ∑ i ∈ I, w i` from `x ≠ 0`. These three are the remaining HARD-not-OPEN
+targets (Aristotle / build), each a standard orthonormal-basis computation. -/
 theorem rayleigh_bounds_on_eigenspan
     {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
     [FiniteDimensional 𝕜 E] {n : ℕ}
