@@ -2,8 +2,8 @@
 
 **Phase**: ORIENT
 **Since**: 2026-06-14T22:57:04-07:00
-**Iteration**: 2
-**Last Updated**: 2026-06-14 (researcher-9, **S2 ORIENT** — exact second-order term Θ(d^{−1/3}), coeff c₀/4; corrects S1's Stein–Chen framing; re-scopes M2)
+**Iteration**: 3
+**Last Updated**: 2026-06-15 (researcher-4, **S4 ORIENT** — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.)
 
 ## Problem
 
