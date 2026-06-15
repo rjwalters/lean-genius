@@ -84,44 +84,76 @@
   },
   "sections": [
     {
-      "id": "imports",
+      "id": "header",
       "title": "Imports and Problem Overview",
       "startLine": 1,
-      "endLine": 24,
-      "summary": "Problem statement, references to Erdős-Graham (1976), and Mathlib imports.",
-      "mathContext": "Define $F(m) = \\min\\{k \\geq 2 : \\exists a_1 < \\cdots < a_k = m,\\ a_1! \\cdots a_k! \\in \\text{squares}\\}$ and study $D_k = F^{-1}(k)$."
+      "endLine": 26,
+      "summary": "States Erdős Problem #374. For $m$, $F(m)$ is the least $k\\geq2$ such that some $a_1<\\cdots<a_k=m$ has $a_1!\\cdots a_k!$ a perfect square; $D_k=\\{m:F(m)=k\\}$. Study $|D_k\\cap\\{1,\\dots,n\\}|$ for $3\\leq k\\leq6$. Known (from the literature): $D_2=\\{$squares $>1\\}$, no $D_k$ contains a prime, $D_k=\\emptyset$ for $k>6$, $\\min D_6=527$. Status OPEN. Imports factorial basics.",
+      "mathContext": "$F(m)=\\min\\{k\\geq2:\\exists a_1<\\cdots<a_k=m,\\ \\prod a_i!\\text{ square}\\}$; $D_k=\\{m:F(m)=k\\}$."
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
-      "startLine": 25,
-      "endLine": 53,
-      "summary": "IsPerfectSquare (∃ k, n = k*k), factorialProduct (∏ aᵢ!), HasSquareFactorialProduct (the square product condition), bigF (axiomatized F(m)), inDk (membership in Dₖ).",
-      "mathContext": "$\\text{IsPerfectSquare}(n) :\\Leftrightarrow \\exists k, n = k^2$. $F(m) = \\min k$ with $\\exists a_1 < \\cdots < a_k = m$, $\\prod a_i!$ a square."
+      "startLine": 27,
+      "endLine": 55,
+      "summary": "Defines `IsPerfectSquare`, `factorialProduct` (the fold $\\prod a_i!$ over a list), `HasSquareFactorialProduct m k` (a strictly increasing length-$k$ sequence ending at $m$ with square factorial product), `bigF m` $=F(m)$ via `Nat.find` (returns $0$ when undefined — a definition, not an axiom), and `inDk k m` ($F(m)=k$).",
+      "mathContext": "`bigF m` $=$ least $k\\geq2$ with `HasSquareFactorialProduct m k` (via `Nat.find`), else $0$."
     },
     {
-      "id": "d2-primes",
-      "title": "D₂ and Prime Exclusion",
-      "startLine": 54,
-      "endLine": 62,
-      "summary": "D₂ = perfect squares > 1; no prime belongs to any Dₖ (since v_p(p!) is odd).",
-      "mathContext": "$D_2 = \\{m^2 : m \\geq 2\\}$ (for $k=2$, need $a! \\cdot m!$ a square with $a < m$). Primes excluded: $v_p(p!) = 1$ forces odd total valuation."
-    },
-    {
-      "id": "d6-finiteness",
-      "title": "Finiteness and D₆ Structure",
-      "startLine": 63,
+      "id": "basic-properties",
+      "title": "Basic Properties",
+      "startLine": 56,
       "endLine": 70,
-      "summary": "Dₖ = ∅ for k > 6; smallest element of D₆ is 527.",
-      "mathContext": "$D_k = \\emptyset$ for $k > 6$: at most 6 factorials needed. $\\min D_6 = 527$: verified by exhaustive computation."
+      "summary": "PROVES `bigF_ge_two` ($F(m)\\geq2$ whenever defined) and `factorialProduct_pair` ($\\text{factorialProduct}[a,b]=a!\\,b!$).",
+      "mathContext": "$F(m)\\geq2$ when defined; $\\text{factorialProduct}[a,b]=a!\\cdot b!$."
+    },
+    {
+      "id": "d2-backward",
+      "title": "Proved: Backward Direction of D₂ = Squares",
+      "startLine": 71,
+      "endLine": 116,
+      "summary": "PROVES that every perfect square $\\geq4$ belongs to $D_2$. `squares_have_square_factorial_product` uses the witness $[n^2-1,n^2]$: $(n^2-1)!\\cdot(n^2)!=(n\\cdot(n^2-1)!)^2$. Then `bigF_eq_two_of_square` ($F(n^2)=2$) and `square_in_D2` ($n^2\\in D_2$ for $n\\geq2$), plus a verified example $4\\in D_2$ ($3!\\cdot4!=144=12^2$).",
+      "mathContext": "$(n^2-1)!\\,(n^2)!=(n\\,(n^2-1)!)^2$, so $n^2\\in D_2$ and $F(n^2)=2$ for $n\\geq2$."
+    },
+    {
+      "id": "helpers",
+      "title": "Helper Lemmas for factorialProduct",
+      "startLine": 117,
+      "endLine": 167,
+      "summary": "Structural lemmas (mostly private) for `factorialProduct`: `factorialProduct_foldl_mul` (accumulator factoring), `factorialProduct_append` (distributes over `++`), `factorialProduct_singleton`, `factorialProduct_cons`, and `not_prime_dvd_factorialProduct` (a prime $p$ does not divide a product of factorials of numbers all $<p$).",
+      "mathContext": "$\\text{factorialProduct}(xs\\!+\\!\\!+ys)=\\text{fp}(xs)\\cdot\\text{fp}(ys)$; $p\\nmid\\prod a!$ when all $a<p$."
+    },
+    {
+      "id": "known-results",
+      "title": "Known Results: No Square Product for Primes",
+      "startLine": 168,
+      "endLine": 226,
+      "summary": "PROVES `no_square_factorial_product_for_primes`: for a prime $p$, no strictly increasing sequence ending at $p$ has a square factorial product. The $p$-adic valuation of the product is odd — $p!=p\\cdot(p-1)!$ contributes exactly one factor of $p$ and all other $a_i!$ (with $a_i<p$) contribute none — so the product cannot be a perfect square.",
+      "mathContext": "For prime $p$: $v_p(\\prod a_i!)=1$ (odd), so the factorial product ending at $p$ is never a square."
+    },
+    {
+      "id": "derived",
+      "title": "Derived Theorems",
+      "startLine": 227,
+      "endLine": 244,
+      "summary": "PROVES `bigF_prime_zero` ($F(p)=0$, i.e. undefined, for primes) and `no_prime_in_Dk` (no prime belongs to any $D_k$ with $k\\geq2$), both following from the prime non-square result.",
+      "mathContext": "$F(p)=0$ for primes; no prime lies in any $D_k$ ($k\\geq2$)."
+    },
+    {
+      "id": "edge-cases",
+      "title": "Edge Cases",
+      "startLine": 245,
+      "endLine": 263,
+      "summary": "PROVES the smallest element of $D_2$: `one_has_square_factorial_product` ($[0,1]$ gives $0!\\cdot1!=1=1^2$), `bigF_one_eq_two` ($F(1)=2$), and `one_in_D2` ($1\\in D_2$).",
+      "mathContext": "$0!\\cdot1!=1=1^2$, so $F(1)=2$ and $1\\in D_2$."
     },
     {
       "id": "open-question",
       "title": "The Open Question",
-      "startLine": 71,
-      "endLine": 149,
-      "summary": "Growth rate of |Dₖ ∩ {1,...,n}| for 3 ≤ k ≤ 6 — the main open problem.",
-      "mathContext": "For $3 \\leq k \\leq 6$: $|D_k \\cap \\{1,\\ldots,n\\}| = ?$ asymptotically. Known: $|D_2| \\sim \\sqrt{n}$. Unknown: growth rates for $D_3, D_4, D_5, D_6$."
+      "startLine": 264,
+      "endLine": 265,
+      "summary": "A closing banner marking the open part of the problem: the growth rate of $|D_k\\cap\\{1,\\dots,n\\}|$ for $3\\leq k\\leq6$ (no declarations).",
+      "mathContext": "Open: growth of $|D_k\\cap\\{1,\\dots,n\\}|$ for $3\\leq k\\leq6$."
     }
   ],
   "conclusion": {
