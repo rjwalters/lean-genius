@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S5_OBSERVE",
+  "phase": "S7_ORIENT",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -44,26 +44,27 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S6_ORIENT",
+    "phase": "S7_ORIENT",
     "since": "2026-06-14T00:00:00.000Z",
-    "iteration": 6,
-    "focus": "S6 ORIENT (researcher-1, 2026-06-14): first bearer-audit of Step 1 (sylow_p_unique), the hard remaining sorry. Two findings. (A) The plan's \"|H|=p*m, m<p\" Sylow-count framing is CIRCULAR: m=|H|/p<p is equivalent to H<=AGL(1,p), the conclusion; since H<=S_p only gives |H| | p!, |H|/p can be as large as (p-1)!, so n_p=1 does NOT follow from Sylow facts alone. (B) The sound socle/minimal-normal route (a minimal normal subgroup of a solvable primitive group is elementary abelian + regular => order p => unique normal Sylow-p) has NO Mathlib bearer at pin 2df2f015: MinimalNormal, group socle, and IsElementaryAbelian all return 0 hits. Step 1 is blocked on absent Mathlib infrastructure, upgraded to Risk R4 (HIGH). Re-verified 7 core bearers intact at pin (no drift since 2026-06-01). Recommended next ACT (Docker-up): fix Step 5 signature + discharge (~5-15 LOC, bearers present, math settled) as cheapest real progress; prototype the bearer-complete order-p Sylow fact (v_p(|H|)=1 => |Sylow|=p); do NOT attempt Step 1 uniqueness as a Sylow count. Docker DOWN this session (verification blackout) -- all work doc-only, 5 sorries intact.",
-    "nextAction": "Docker-up ACT: (1) correct Step 5 H_le_normalizer signature per the in-source warning block and discharge via Subgroup.le_normalizer (~5-15 LOC); (2) prototype |Sylow|=p from v_p(|H|)=1; (3) scope a minimal-normal/IsBlock route for Step 1 uniqueness (no current Mathlib bearer).",
+    "iteration": 7,
+    "focus": "S7 ORIENT (researcher-3, 2026-06-14): resolved the open next-action R1 left at S6 -- scope mitigation (b) for Step 1 (sylow_p_unique), the file's true blocker. Audited the actual MulAction.IsBlock / Primitive / Solvable / Sylow API at pin 2df2f015 via gh api and FOUND A BEARER-COMPLETE SOUND ROUTE that avoids the absent socle/MinimalNormal/IsElementaryAbelian layer. Route (derived-series + block): A := last nontrivial term of derivedSeries H (abelian, normal/characteristic, nontrivial via derivedSeries_normal/characteristic/succ); A normal => its ZMod p orbits are blocks (IsBlock.orbit_of_normal Blocks.lean:475), primitivity => each block subsingleton-or-univ (IsBlock.subsingleton_or_eq_univ Primitive.lean:115), A nontrivial+faithful => some orbit univ => A transitive (isPretransitive_iff_orbit_eq_univ) => p | |A|; A abelian => its Sylow-p Q normal hence characteristic in A (Sylow.characteristic_of_normal :728), char-in-char => Q normal in H; Legendre v_p(p!)=1 (Nat.Prime.factorization_factorial) => |Q|=p => Q is a Sylow-p of H (Sylow.ofCard :102), normal => unique (Sylow.unique_of_normal :710) => Subsingleton (Sylow p H). Risk R4 downgraded HIGH->MEDIUM: residual is ~100-150 LOC of wiring (transport Q along A->H, char-in-char composition, v_p arithmetic), NOT missing infrastructure. Step 1 reclassified from 'needs Mathlib upstreaming' to 'discharge task, Docker-up ACT'. Docker DOWN this session -- all work doc-only (comment-only Lean docstring edit, build-safe), 5 sorries intact.",
+    "nextAction": "Docker-up ACT: (1) discharge Step 1 sylow_p_unique via the derived-series+block route now scoped in the in-source docstring / knowledge.md R4 (~100-150 LOC); (2) Step 5 H_le_normalizer corrected signature + Subgroup.le_normalizer discharge (~5-15 LOC); (3) Steps 3/4. Docker required to build-verify -- nothing shippable during the blackout.",
     "blockers": [
-      "Docker daemon down 2026-06-13 (verification blackout): cannot build-verify any signature change, so the Step 5 fix is documented but deferred to a Docker-up session."
+      "Docker daemon down 2026-06-13 (verification blackout): cannot build-verify the Step 1 route or any signature change; all progress this session is doc-only (route scoping + comment-only docstring), deferred to a Docker-up session."
     ],
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-13T00:00:00.000Z"
+    "lastUpdate": "2026-06-14T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
     "insights": [
       "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
-      "Curator/seeker SPLIT-action latency budget (24-48h per S8 PREP §6) exceeded by ~16 days as of 2026-06-01; researcher-side Option B materialisation appropriate.",
+      "Step 1 (sylow_p_unique) HAS a bearer-complete sound route after all (researcher-3 S7 ORIENT 2026-06-14): derived-series last-nontrivial-term A (abelian, characteristic) + block-of-normal-orbit primitivity argument gives A transitive => p | |A|; A's Sylow-p Q is characteristic in A hence normal in H; v_p(p!)=1 => |Q|=p => Q is a normal Sylow-p of H => unique. All bearers present at pin (IsBlock.orbit_of_normal, IsBlock.subsingleton_or_eq_univ, derivedSeries_normal/characteristic/succ, Sylow.characteristic_of_normal/ofCard/unique_of_normal, Nat.Prime.factorization_factorial). The absent socle/MinimalNormal/IsElementaryAbelian API is NOT needed.",
+      "The 'nontrivial normal subgroup of a faithful primitive action is transitive' fact -- which R1's S6 audit had not located -- is exactly IsBlock.orbit_of_normal (Blocks.lean:475) + IsBlock.subsingleton_or_eq_univ (Primitive.lean:115); it replaces the textbook minimal-normal machinery for prime degree.",
       "`Equiv.Perm.isCycle_of_prime_order''` (Mathlib v4.26.0) is a 1-LOC bearer for step 3, reducing the parent S6 PREP's 300-500 LOC estimate to 250-450.",
       "Bearer ecosystem (Sylow, isCycle, normalizer, MonoidHom.ofInjective, parent AGL1Z*) confirmed intact at lake-pinned SHA on 2026-06-01."
     ],
