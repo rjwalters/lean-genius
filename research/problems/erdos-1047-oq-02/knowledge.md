@@ -117,3 +117,70 @@ all-convex; high-multiplicity roots force non-convex necking before merge.
   open question "make counterexamples explicit with computed convexity violations").
 - Lean: convexity of level sets is heavy real analysis; defer. The decidable,
   checkable artifact here is the curvature certificate, not a Lean proof.
+
+---
+
+## Session 2026-06-14 (Session 2) — ANALYTIC, ORIENT
+
+**Mode:** build on Session 1. **Outcome:** progress (closed-form curvature +
+log-derivative convexity criterion; corrects the dimple mental picture).
+
+Session 1's convexity test was **numerical only** (real Hessian of g = |f|²).
+This session derives a **closed form** and validates it to ~4–6 digits against
+the Session-1 Hessian formula on the unit circle, Pommerenke z³(z−1), z⁵(z−1)
+(including a κ<0 shoulder), and the Goodman example.
+
+### Result 1 — closed-form lemniscate curvature
+For analytic f with f ≠ 0 on {|f| = c}, the boundary signed curvature
+(calibrated so a sublevel **disk** has κ > 0) is
+
+    κ = |f'/f| · ( 1 − Re( f f'' / (f')² ) ).
+
+So a component of {|f| ≤ c} is **convex ⟺ Re( f f''/(f')² ) ≤ 1** on its
+boundary (where f' ≠ 0). This is one complex evaluation — far lighter than the
+2×2 real Hessian of |f|² — and intrinsic (scale-free in f).
+
+### Result 2 — reduction to the logarithmic derivative (root data only)
+Let w = f'/f = Σⱼ mⱼ/(z − rⱼ) over the **distinct** roots rⱼ with multiplicities
+mⱼ. Since f f''/(f')² = 1 + w'/w²,
+
+    κ = − |w| · Re( w'/w² ),     convex ⟺ Re( w'/w² ) ≤ 0,    w' = −Σⱼ mⱼ/(z−rⱼ)².
+
+The convexity test depends **only on the root locations and multiplicities** —
+the natural language for the OQ-02 characterization.
+
+### Result 3 — single distinct root is always convex (base case)
+f = (z−r)^m ⟹ w'/w² ≡ −1/m identically ⟹ Re(w'/w²) = −1/m < 0 everywhere ⟹
+**every** level set convex (they are the circles |z−r| = c^{1/m}). Recovered from
+the criterion; this is the m-roots = 1 base case of the characterization.
+
+### Result 4 — on-axis curvature for Pommerenke z^k(z−a) (corrects the picture)
+At the two points where the component around 0 meets the real axis perpendicularly
+(r′ = 0), exact implicit differentiation gives
+- near nose (θ=0, facing a):  r″ = − a r² / [ (a−r)(k(a−r) − r) ],
+- far nose  (θ=π):            r″ =   a r² / [ (r+a)(k(r+a) + r) ],
+
+both validated to 5–6 digits vs finite differences. Both give κ = (r − r″)/r² > 0,
+so **both on-axis tips stay CONVEX**. The near (facing-a) tip even **sharpens**:
+κ_near → +∞ as r → r_saddle = ka/(k+1) (merge), since k(a−r)−r → 0⁺ (measured
+κ_near = 16 → 100 → 189 as c/c* = 0.90 → 0.999). Therefore the Session-1
+non-convexity is genuinely **off-axis**: two symmetric concave **shoulders**
+flanking the sharp tip facing a (numerically θ ≈ ±0.02–0.03π). This refines —
+not contradicts — Session 1's "dimple angle ≈ 0": the shoulders sit just beside,
+not at, θ = 0. (So the limaçon-at-θ=π heuristic in Session-1's first next-step is
+the wrong local model; the non-convexity is a tip-shoulder effect, not a
+back-side dimple.)
+
+### Files (added this session)
+- `research/problems/erdos-1047-oq-02/curvature_closed_form.py` — derives &
+  numerically certifies Results 1–4 (asserts agreement with the Session-1 real
+  Hessian to <1e-3; single-root −1/m to 1e-9; on-axis tips convex for all c).
+
+### Next steps (updated)
+- Attack the **two distinct roots** case via Result 2: characterize when
+  Re(w'/w²) ≤ 0 holds on the whole component boundary for w = m₁/(z−r₁) +
+  m₂/(z−r₂); this is the first nontrivial case of the OQ-02 characterization and
+  is now a concrete rational-function inequality, not a numerical scan.
+- Audit the gallery's Goodman/referee (f, c) against Goodman (1966) and supply a
+  clean Pommerenke k ≥ 5 example with a computed κ < 0 (Result 1/2 give the
+  explicit value, e.g. κ = −0.93 at θ = 0.02π for z⁵(z−1) at 0.999 c*).
