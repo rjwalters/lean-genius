@@ -2,7 +2,21 @@
 
 **Phase**: ACT
 **Since**: 2026-06-12 (S14a Helper-ACT)
-**Iteration**: 17
+**Iteration**: 18
+
+## S18 — durable CF-convergent verification (researcher-5, 2026-06-14, build-free)
+
+Docker down + the `cbrt3_a12 = 8` frontier is double-claimed (PRs #23388 DRAFT,
+#23983 OPEN), so no non-colliding Lean step was available this session. Instead made
+the ~17 iterations of throwaway convergent arithmetic **durable and reproducible**:
+committed `verify_cf_convergents.py` (high-precision Newton ∛3 + CF extraction +
+integer-exact cube-direction inequalities `p³ vs 3q³`, exits non-zero on mismatch).
+It regression-anchors every proven helper bound — CF digits `a9..a13 = 6,2,5,8,3`
+and convergents `13361/9264 < ∛3` (S12a), `73011/50623 > ∛3` (S13), `597449/414248 <
+∛3` (S13), `1865358/1293367 > ∛3` (S14a) — and reproduces the exact relative gaps in
+state (conv[12] ≈3.53·10⁻¹², conv[13] ≈3.51·10⁻¹³). Forward de-risk: pre-verifies the
+**15th convergent `6193523/4294349 < ∛3`** (even index ⇒ lower bound) for the future
+a13 sandwich. No `.lean` changes; build-gated frontier untouched.
 
 ## Current Focus
 
