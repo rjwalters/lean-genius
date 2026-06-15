@@ -44,18 +44,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: authored 4 theorems (master cevian identity + classical Stewart + Apollonius median + bilinear helper) over a real inner product space; numerically verified; build-pending under dual backend blackout.",
+    "progressSummary": "PROGRESS (S2): name-checked all 5 Mathlib lemmas against live master (all exist, high-confidence buildable); added angle_bisector_length_inner (documented follow-up). Build-pending UNREGISTERED — Docker+Aristotle still down. 0 axioms, 0 sorries.",
     "builtItems": [
       "stewart_cevian_inner in Proofs/LawOfCosinesOQ04OQ01.lean (coordinate-free Stewart / cevian length).",
       "stewarts_theorem_inner (classical b²m+c²n=a(d²+mn) from real points).",
       "apollonius_median_inner (s=1/2 median / Apollonius).",
-      "norm_smul_add_smul_sq (reusable bilinear norm-of-linear-combination lemma)."
+      "norm_smul_add_smul_sq (reusable bilinear norm-of-linear-combination lemma).",
+      "angle_bisector_length_inner in LawOfCosinesOQ04OQ01.lean — bisector length t²=bc(1−a²/(b+c)²), division-free cleared form, linear_combination cert sympy-verified residual 0"
     ],
     "insights": [
       "A - ((1-s)•B + s•C) = (1-s)•(A-B) + s•(A-C) since (1-s)+s = 1; proved by the `module` tactic.",
       "The master identity is a single bilinear identity: expand via norm_add_sq_real, real_inner_smul_left/right, then ring after real_inner_comm to align ⟪A-B,A-C⟫.",
       "Classical Stewart needs no positivity hypotheses: with a=‖B-C‖, m=s*a, n=(1-s)*a the side relation m+n=a holds by construction and the ‖B-C‖² term cancels exactly.",
-      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13."
+      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13.",
+      "Bisector specialization: with cleared ratio hyp s·(b+c)=c, Stewart collapses to bc·((b+c)²−a²) via one linear_combination over stewart_cevian_inner + ratio hyp (coeff Q = a²b·s−a²b+a²c·s+b³+b²c−bc²−c³)"
     ],
     "mathlibGaps": [
       "None — Mathlib v4.26.0 has norm_add_sq_real, norm_sub_sq_real, real_inner_smul_left/right, real_inner_comm, and the `module` tactic, all that is needed."

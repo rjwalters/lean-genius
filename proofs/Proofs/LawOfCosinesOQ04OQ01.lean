@@ -30,6 +30,10 @@ The abstract cosine `t` of the parent file is replaced by the real inner product
 * `apollonius_median_inner` — the median special case `s = 1/2` (Apollonius'
   theorem): ‖A - midpoint(B,C)‖² = ½‖A - B‖² + ½‖A - C‖² − ¼‖B - C‖².
 
+* `angle_bisector_length_inner` — the internal-bisector specialization. With the
+  ratio `BD : DC = ‖A - B‖ : ‖A - C‖` (division-free as `s·(b+c) = c`), the
+  squared bisector length is `bc·(1 − a²/(b+c)²)`, here cleared of denominators.
+
 The geometric content (BD = s·a, DC = (1 - s)·a) is what makes `m + n = a`; here
 that is encoded directly so the algebraic identity holds with no sign hypotheses.
 
@@ -82,6 +86,28 @@ theorem stewarts_theorem_inner (A B C : V) (s a : ℝ) (ha : a = ‖B - C‖) :
 
 /-- The two cevian segments sum to the full side: `m + n = a`. -/
 theorem stewart_m_add_n (s a : ℝ) : s * a + (1 - s) * a = a := by ring
+
+/-- **Angle-bisector length formula** (Stewart specialized to the internal
+    bisector from `A`).
+
+    The internal bisector from `A` meets `BC` at the foot `D` with
+    `BD : DC = ‖A - B‖ : ‖A - C‖`, i.e. `s = ‖A - B‖ / (‖A - C‖ + ‖A - B‖)`.
+    Stated division-free, the hypothesis is `s·(‖A - C‖ + ‖A - B‖) = ‖A - B‖`.
+    Under that hypothesis the squared bisector length satisfies the classical
+    `t² = bc·(1 − a²/(b+c)²)`, here cleared of denominators:
+
+      ‖A - D‖²·(‖A - C‖ + ‖A - B‖)² = ‖A - B‖·‖A - C‖·((‖A - C‖ + ‖A - B‖)² − ‖B - C‖²).
+
+    Proof: combine `stewart_cevian_inner` with the bisector ratio hypothesis;
+    the result is a polynomial identity modulo `s·(b+c) = c`. -/
+theorem angle_bisector_length_inner (A B C : V) (s : ℝ)
+    (hs : s * (‖A - C‖ + ‖A - B‖) = ‖A - B‖) :
+    ‖A - ((1 - s) • B + s • C)‖ ^ 2 * (‖A - C‖ + ‖A - B‖) ^ 2 =
+      ‖A - B‖ * ‖A - C‖ * ((‖A - C‖ + ‖A - B‖) ^ 2 - ‖B - C‖ ^ 2) := by
+  have hStew := stewart_cevian_inner A B C s
+  linear_combination (‖A - C‖ + ‖A - B‖) ^ 2 * hStew +
+    (‖B - C‖ ^ 2 * ‖A - C‖ * s - ‖B - C‖ ^ 2 * ‖A - C‖ + ‖B - C‖ ^ 2 * ‖A - B‖ * s
+      + ‖A - C‖ ^ 3 + ‖A - C‖ ^ 2 * ‖A - B‖ - ‖A - C‖ * ‖A - B‖ ^ 2 - ‖A - B‖ ^ 3) * hs
 
 /-- **Apollonius' median theorem** (the `s = 1/2` case of Stewart):
 

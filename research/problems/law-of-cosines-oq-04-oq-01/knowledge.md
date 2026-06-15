@@ -58,12 +58,38 @@ space `V` and any dimension. For `A B C : V`, `s : ℝ`, with `D = (1-s)•B + s
 
 - None.
 
+## Result (Session 2, 2026-06-15, REVISIT)
+
+Docker + Aristotle still down (verified live: `docker info` times out >15s,
+no Aristotle cooldown file). Build-safe progress:
+
+1. **Name-checked the file against live mathlib4 master** via `gh api search/code`
+   (no local Mathlib; `proofs/.lake` is a broken self-referential symlink). All
+   five non-trivial lemmas exist: `norm_add_sq_real` (5), `norm_sub_sq_real` (4),
+   `real_inner_smul_left` (14), `real_inner_smul_right` (8), `real_inner_comm`
+   (25). The file is high-confidence buildable; safe to register next Docker run.
+
+2. **Added `angle_bisector_length_inner`** (the documented follow-up). Division-free
+   cleared form: with `hs : s·(‖A-C‖+‖A-B‖) = ‖A-B‖` (the bisector ratio
+   `BD:DC = c:b`),
+
+     ‖A-D‖²·(b+c)² = bc·((b+c)² − a²),   i.e.  t² = bc·(1 − a²/(b+c)²).
+
+   Proof: one `linear_combination` over `stewart_cevian_inner` (coeff `(b+c)²`)
+   plus the ratio hypothesis (coeff `Q = a²b·s − a²b + a²c·s + b³ + b²c − bc² − c³`).
+   The `linear_combination` residual was verified to be identically 0 by sympy
+   (treating ‖A-D‖² as an opaque atom), and the underlying identity numerically
+   to 1e-14. No `field_simp` (division-free per the no-build identity recipe).
+
+## Mathlib gaps
+
+- None.
+
 ## Next steps
 
 - `./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ01` and register the
-  file in `proofs/Proofs.lean` once a backend is available (Docker + Aristotle
-  were both down at authoring time).
-- Optional follow-up: angle-bisector length formula via `m:n = c:b`.
+  file in `proofs/Proofs.lean` once a backend is available. Name-check done;
+  remaining risk is only typechecking, not missing identifiers.
 
 ## Dead ends
 
