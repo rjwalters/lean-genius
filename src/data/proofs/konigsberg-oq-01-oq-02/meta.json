@@ -99,7 +99,7 @@
       "id": "characterization",
       "title": "Directed Eulerian Theorem and Path Characterization",
       "startLine": 314,
-      "endLine": 341,
+      "endLine": 347,
       "summary": "Defines IsWeaklyConnected and HasEulerianPath. Axiomatizes directed_eulerian_iff (Hierholzer) and directed_euler_path_iff.",
       "mathContext": "$G$ has an Eulerian circuit $\\iff$ $\\text{IsEulerianBalanced}(G)$ (weak connectivity required). $G$ has Eulerian path $s \\to t$ $\\iff$ $\\text{outDeg}(s) = \\text{inDeg}(s)+1$, $\\text{inDeg}(t) = \\text{outDeg}(t)+1$, and all others balanced."
     },

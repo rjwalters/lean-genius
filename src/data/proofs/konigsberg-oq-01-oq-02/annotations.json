@@ -220,12 +220,12 @@
     "id": "ann-koe02-circuit-exists",
     "proofId": "konigsberg-oq-01-oq-02",
     "range": {
-      "startLine": 737,
-      "endLine": 848
+      "startLine": 1044,
+      "endLine": 1198
     },
     "type": "concept",
     "title": "Circuit Existence, Balance Preservation, and Path Necessity",
-    "content": "`circuit_exists` applies `maxTrail_closed` directly: start from any vertex with an outgoing edge, run the greedy trail, which is closed by balance, giving a `DirectedCircuit` structure. `remove_circuit_balanced` (sorry'd) would prove that removing a circuit's edges preserves balance — the circuit passes through each vertex equally often as source and target (by `closed_walk_balance`), so both degrees decrease by the same amount. `euler_path_implies_degree_balance` (sorry'd) proves necessity for Eulerian paths: in an open walk from $s$ to $t$, applying `open_walk_first_source_excess` to $s$ and `open_walk_last_target_excess` to $t$ yields the asymmetric degree conditions; closed-walk balance handles interior vertices. These two sorries are the remaining obstacles to eliminating the `directed_eulerian_iff` axiom.",
+    "content": "`circuit_exists` applies `maxTrail_closed` directly: start from any vertex with an outgoing edge, run the greedy trail, which is closed by balance, giving a `DirectedCircuit` structure. `remove_circuit_balanced` (sorry'd) would prove that removing a circuit's edges preserves balance — the circuit passes through each vertex equally often as source and target (by `closed_walk_balance`), so both degrees decrease by the same amount. `euler_path_implies_degree_balance` (fully proved) establishes necessity for Eulerian paths: in an open walk from $s$ to $t$, applying `open_walk_first_source_excess` to $s$ and `open_walk_last_target_excess` to $t$ yields the asymmetric degree conditions; closed-walk balance handles interior vertices. The single remaining sorry (`remove_circuit_balanced`) is the last obstacle to eliminating the `directed_eulerian_iff` axiom.",
     "mathContext": "Circuit existence: $G$ balanced, $|E| \\geq 1 \\Rightarrow \\exists$ directed circuit in $G$. Remove circuit: for each $v$, circuit passes through $v$ equally as source ($s_v$ times) and target ($t_v = s_v$ times by closed-walk balance), so $\\text{outDeg}_{G'}(v) = \\text{outDeg}_G(v) - s_v = \\text{inDeg}_G(v) - s_v = \\text{inDeg}_{G'}(v)$. Path necessity: $s$ has $\\text{outDeg}(s) = \\text{inDeg}(s)+1$ (extra source at start); $t$ has $\\text{inDeg}(t) = \\text{outDeg}(t)+1$ (extra target at end).",
     "significance": "supporting",
     "relatedConcepts": [
