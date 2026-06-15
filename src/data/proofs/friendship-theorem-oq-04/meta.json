@@ -1,0 +1,85 @@
+{
+  "id": "friendship-theorem-oq-04",
+  "title": "Friendship Theorem: The Infinite Case",
+  "slug": "friendship-theorem-oq-04",
+  "description": "The finite Friendship Theorem (Erdős–Rényi–Sós 1966) fails for infinite graphs (Chvátal–Kotzig–Rosenberg–Davies 1976). This Lean 4 file pins down the sharp hypothesis that restores the conclusion, without the spectral argument that has no infinite analogue: every friendship graph (finite or infinite) has diameter ≤ 2 (friendship_diameter_two, purely local), so a locally finite friendship graph is finite (locally_finite_is_finite) and hence has a universal vertex (locally_finite_friendship_has_universal). Local finiteness is therefore the exact restoring condition — the sole obstruction to finiteness is an infinite-degree vertex.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/FriendshipTheoremOQ04.lean",
+    "tags": [
+      "graph-theory",
+      "friendship-theorem",
+      "combinatorics",
+      "infinite-graphs",
+      "local-finiteness",
+      "research"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 145,
+    "assumptions": "No axioms or sorries. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. BUILD-PENDING: the file is registered in Proofs.lean (via #24505) but its Lean compilation has not been independently confirmed in this entry (authored/registered under a Docker build blackout); badge will be upgraded once a green build is on record.",
+    "dateAdded": "2026-06-15",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "friendship_diameter_two: every friendship graph, finite or infinite, has diameter ≤ 2 — a purely local fact using no finiteness",
+      "univ_subset_two_ball / univ_finite_of_locallyFinite: the diameter-2 covering exhibits the vertex set as a finite union of finite neighbourhoods under local finiteness",
+      "locally_finite_is_finite: a locally finite friendship graph has a finite vertex type — local finiteness is the sharp restoring condition",
+      "infinite_friendship_has_infinite_degree: contrapositive — an infinite friendship graph must contain an infinite-degree vertex (matching the C₅ free-amalgamation counterexample)",
+      "locally_finite_friendship_has_universal: combining diameter-2 + local finiteness with the finite gallery theorem recovers a universal ('politician') vertex, avoiding the spectral argument entirely"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Friendship Theorem of Erdős, Rényi and Sós (1966) states that in a finite graph where every two distinct vertices have exactly one common friend, there must be a 'politician' — a vertex adjacent to every other — and the graph is a windmill of triangles sharing that vertex. The classical proof is spectral: one shows the graph would be regular and then derives a contradiction from the eigenvalues of its adjacency matrix. For infinite graphs the theorem is false: Chvátal, Kotzig, Rosenberg and Davies (1976) constructed, by free amalgamation over C₅, a countable friendship graph with no universal vertex, in which every vertex has infinite degree. This entry (OQ-04 of the parent gallery proof friendship-theorem) formalizes the positive boundary result identifying exactly which extra hypothesis rescues the conclusion in the infinite setting — and does so without the spectral step, which has no infinite analogue.",
+    "problemStatement": "A friendship graph is a simple graph in which every two distinct vertices have exactly one common neighbour. Identify the sharp condition under which an infinite friendship graph still has a universal vertex. Prove: (1) every friendship graph has diameter ≤ 2; (2) a locally finite friendship graph (every neighbourhood finite) has a finite vertex set; (3) consequently a locally finite friendship graph with at least three vertices has a universal vertex. Conclude that local finiteness is the exact restoring condition, the only obstruction being an infinite-degree vertex.",
+    "text": "Proves the diameter-2 bound locally, covers the vertex set by finitely many finite neighbourhoods under local finiteness to force finiteness, then invokes the finite gallery theorem.",
+    "proofStrategy": "1. exists_common_neighbor: unfold the friendship hypothesis to extract, for any two distinct vertices, their unique common neighbour. 2. friendship_diameter_two: for u ≠ v, either u ~ v or they share a common neighbour, so every vertex is within distance 2 of a fixed v — no finiteness used. 3. univ_subset_two_ball / univ_finite_of_locallyFinite: the whole vertex set lies in the union of {v}, N(v), and the (finite, under local finiteness) neighbourhoods reachable in two steps, a finite union of finite sets. 4. locally_finite_is_finite: conclude Finite V. 5. infinite_friendship_has_infinite_degree: contrapositive, ruling out the local-finiteness rescue exactly when degrees blow up. 6. locally_finite_friendship_has_universal: apply FriendshipTheorem.friendship_theorem to the now-finite graph.",
+    "keyInsights": [
+      "The diameter-2 property is the part of the Friendship Theorem that survives into the infinite setting unchanged: it is a purely local consequence of 'every pair has a common neighbour', needing no finiteness and no spectral input.",
+      "Local finiteness is the sharp dividing line: the diameter-2 covering writes V as a finite union of neighbourhoods, so if those neighbourhoods are finite then V itself is finite — the only way to be infinite is to have a vertex of infinite degree.",
+      "This isolates precisely where the classical proof breaks: the spectral step (regularity ⇒ universal vertex via adjacency eigenvalues) is irreducibly finite-dimensional, whereas the diameter/covering argument is dimension-free.",
+      "The C₅ free-amalgamation counterexample (Chvátal–Kotzig–Rosenberg–Davies) is consistent with the theorem here: it is an infinite friendship graph with no universal vertex, and indeed every vertex in it has infinite degree, so it is not locally finite.",
+      "The infinite case is reduced to, rather than re-proving, the finite gallery theorem: local finiteness collapses the problem back to the finite Friendship Theorem, which is then applied as a black box."
+    ],
+    "prerequisites": [
+      "Finite Friendship Theorem (Erdős–Rényi–Sós 1966), formalized in the parent gallery proof friendship-theorem",
+      "Simple graphs in Mathlib: SimpleGraph, neighbourhoods, adjacency, common neighbours",
+      "Local finiteness and finiteness of a type as a finite union of finite sets",
+      "Lean 4 tactics for graph combinatorics and finiteness arguments"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part1-friendship-graph",
+      "title": "Part I: Friendship Graphs and Common Neighbours",
+      "startLine": 55,
+      "endLine": 70,
+      "summary": "IsFriendshipGraph: every two distinct vertices have exactly one common neighbour; exists_common_neighbor extracts that neighbour."
+    },
+    {
+      "id": "part2-diameter-two",
+      "title": "Part II: Diameter ≤ 2 (No Finiteness)",
+      "startLine": 71,
+      "endLine": 95,
+      "summary": "friendship_diameter_two and univ_subset_two_ball: every vertex is within distance 2 of a fixed v, a purely local covering."
+    },
+    {
+      "id": "part3-local-finiteness",
+      "title": "Part III: Local Finiteness Forces Finiteness",
+      "startLine": 96,
+      "endLine": 119,
+      "summary": "univ_finite_of_locallyFinite and locally_finite_is_finite: the diameter-2 covering is a finite union of finite neighbourhoods, so V is finite; infinite_friendship_has_infinite_degree is the contrapositive."
+    },
+    {
+      "id": "part4-universal-vertex",
+      "title": "Part IV: Recovering a Universal Vertex",
+      "startLine": 120,
+      "endLine": 145,
+      "summary": "locally_finite_friendship_has_universal: combine finiteness with the finite gallery theorem FriendshipTheorem.friendship_theorem to obtain a universal vertex."
+    }
+  ]
+}
