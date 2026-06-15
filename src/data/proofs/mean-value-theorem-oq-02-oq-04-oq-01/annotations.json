@@ -37,7 +37,7 @@
     "title": "The Runge Function",
     "content": "Defines `runge : ℝ → ℝ := fun x => 1 / (1 + x ^ 2)`. This is the canonical witness function in numerical analysis for the Runge phenomenon: real-analytic on all of ℝ, uniformly bounded by 1, but with complex poles at ±i that limit the complex Cauchy radius around any real point to at most 1. The standard pedagogical use of runge is to demonstrate divergence of high-degree polynomial interpolation on equispaced nodes; here we use it to demonstrate the failure of the OQ-04 axiom's real-only hypothesis.",
     "mathContext": "$\\text{runge}(x) = \\dfrac{1}{1 + x^2}$. Properties: real-analytic on $\\mathbb{R}$ (denominator everywhere $\\ge 1 > 0$), $|\\text{runge}| \\le 1$ everywhere, $\\text{runge}(0) = 1$, $\\text{runge}(1) = 1/2$. Complex poles at $z = \\pm i$ (where $1 + z^2 = 0$), giving complex radius of convergence $1$ around any real point.",
-    "significance": "essential",
+    "significance": "critical",
     "relatedConcepts": [
       "Runge function",
       "rational functions",
