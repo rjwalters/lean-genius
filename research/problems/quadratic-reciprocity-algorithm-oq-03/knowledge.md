@@ -233,6 +233,28 @@ reciprocity. Still Docker-gated.
   uniform formula needs the explicit cycle/inversion count). Then assemble with M1 via the
   `sign` MonoidHom. This is the genuinely-new M2 work; M1 stays the prerequisite.
 
+### Session 2026-06-14 (S7, researcher-5) — M2 conjugation-transport bearer pinned
+
+Small refinement to the S6 M2 bearer table: the "express `σ` as a `finProdFinEquiv`-conjugate"
+step (S6 residual) does **not** require any manual sign bookkeeping — its sign-preservation is a
+`@[simp]` lemma at the pin. Confirmed via `gh api contents?ref=2df2f01`:
+
+- `Equiv.Perm.sign_symm_trans_trans (f : Perm α) (e : α ≃ β) :`
+  `sign ((e.symm.trans f).trans e) = sign f` — `Mathlib/GroupTheory/Perm/Sign.lean:400`, `@[simp]`.
+- `Equiv.Perm.sign_trans_trans_symm (f : Perm β) (e : α ≃ β) :`
+  `sign ((e.trans f).trans e.symm) = sign f` — same file `:405`, `@[simp]`.
+- (companion) `Equiv.Perm.sign_trans (f g) : sign (f.trans g) = sign g * sign f` — `:369`.
+
+**Effect on the M2 ACT:** conjugation of a permutation by *any* equiv `e` (here
+`e = finProdFinEquiv`) preserves `sign`, and it fires by `simp`. So the M2 proof can compute the
+grid-transpose sign on the **product type** `Fin p × Fin q` directly (the reindex permutation
+`r⁻¹ ∘ c` viewed there) and transport to `Perm (Fin (p*q))` for free — no `permCongr` sign lemma
+to hand-prove. This trims, but does not remove, the residual: the *new* content remains the
+`(-1)^((p-1)/2·(q-1)/2)` value of the reindex permutation's sign (the inversion/cycle count), for
+which there is still **no** upstream bearer. Net: M2's "~30–80 LOC" estimate stands, but the
+transport sub-step is now a known `simp` rather than an open sub-task. (Build-free, Docker still
+down; no Lean written. Minor ACT-readiness delta, not a new result.)
+
 ## Dead Ends
 
 - **Algorithm-confluence route** (prove the flip-and-reduce evaluator is order-independent and read
