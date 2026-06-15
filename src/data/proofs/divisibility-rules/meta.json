@@ -111,9 +111,9 @@
     {
       "id": "section-verification",
       "title": "Parts IX–X: Verification Examples and Master Theorem",
-      "startLine": 384,
+      "startLine": 342,
       "endLine": 392,
-      "summary": "The rules_verification master theorem bundles 11 concrete divisibility facts in a single conjunction, all proved by native_decide, serving as a machine-checked sanity check for the entire formalization."
+      "summary": "Part IX exercises every rule on concrete numbers (divisibility by 2, 4, 5, 6, 8, 7, 3, 15, 12, 30), each discharged by rewriting with the corresponding `*_dvd_iff` lemma and `native_decide`; Part X's `rules_verification` master theorem then bundles 11 of these facts into a single conjunction, serving as a machine-checked sanity check for the entire formalization."
     }
   ],
   "crossReferences": [
