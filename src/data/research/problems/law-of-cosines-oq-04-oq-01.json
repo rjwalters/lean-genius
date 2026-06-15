@@ -19,6 +19,7 @@
       "`stewart_cevian_inner` — coordinate-free Stewart: ‖A-D‖² = (1-s)‖A-B‖² + s‖A-C‖² − s(1-s)‖B-C‖² for D = (1-s)•B + s•C in any real inner product space (build-pending under backend blackout).",
       "`stewarts_theorem_inner` — classical form b²m + c²n = a(d²+mn) recovered with a=‖B-C‖, m=s*a, n=(1-s)*a.",
       "`apollonius_median_inner` — median special case s=1/2 (Apollonius' theorem).",
+      "`angle_bisector_length_inner` — internal-bisector length (b+c)²‖A-D‖² = bc((b+c)²−a²) for the cevian dividing BC in ratio BD:DC = c:b (hypothesis s·(b+c)=c); sympy-verified linear_combination coefficient.",
       "`norm_smul_add_smul_sq` — reusable bilinear lemma ‖p•u + q•v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u,v⟫."
     ],
     "open": [
@@ -30,7 +31,7 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-15T00:00:00Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Authored coordinate-free Stewart identity over a real inner product space plus classical and median corollaries; numerically verified to 1e-13; build-pending under blackout.",
     "blockers": [
       "Docker build wrapper hangs (cannot lake-build to verify).",
@@ -89,13 +90,13 @@
     ]
   },
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-15T11:40:00Z",
   "leanFiles": [
     {
       "path": "Proofs/LawOfCosinesOQ04OQ01.lean",
       "filename": "LawOfCosinesOQ04OQ01.lean",
-      "lineCount": 110,
-      "theoremCount": 4,
+      "lineCount": 137,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

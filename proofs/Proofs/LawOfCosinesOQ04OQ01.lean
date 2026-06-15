@@ -30,6 +30,10 @@ The abstract cosine `t` of the parent file is replaced by the real inner product
 * `apollonius_median_inner` — the median special case `s = 1/2` (Apollonius'
   theorem): ‖A - midpoint(B,C)‖² = ½‖A - B‖² + ½‖A - C‖² − ¼‖B - C‖².
 
+* `angle_bisector_length_inner` — the internal-bisector length formula
+    (b + c)²‖A - D‖² = bc((b + c)² − a²)
+  for the cevian foot dividing `BC` in the ratio `BD:DC = c:b`.
+
 The geometric content (BD = s·a, DC = (1 - s)·a) is what makes `m + n = a`; here
 that is encoded directly so the algebraic identity holds with no sign hypotheses.
 
@@ -93,6 +97,29 @@ theorem apollonius_median_inner (A B C : V) :
   have e : (1 : ℝ) - 1 / 2 = 1 / 2 := by norm_num
   rw [e] at h
   rw [h]; ring
+
+/-- **Angle-bisector length formula** (a further specialization of Stewart).
+
+    If the cevian foot `D = (1 - s) • B + s • C` divides `BC` in the ratio
+    `BD : DC = AB : AC`, i.e. `s · (‖A-C‖ + ‖A-B‖) = ‖A-B‖` (equivalently
+    `s / (1-s) = ‖A-B‖ / ‖A-C‖`), then the squared cevian length satisfies
+
+      (b + c)² · ‖A - D‖² = b·c·((b + c)² − a²),    with a = ‖B-C‖, b = ‖A-C‖, c = ‖A-B‖,
+
+    i.e. `‖A-D‖² = bc(1 − a²/(b+c)²)`, the classical internal-bisector length.
+
+    The hypothesis `hs` encodes only the segment ratio `BD:DC = c:b`; that this
+    ratio is the one realized by the actual *angle* bisector (equal angles at `A`)
+    is a separate geometric fact, not used or proved here.  Stated in cleared
+    `(b+c)²`-multiplied form to avoid division. -/
+theorem angle_bisector_length_inner (A B C : V) (s : ℝ)
+    (hs : s * (‖A - C‖ + ‖A - B‖) = ‖A - B‖) :
+    (‖A - C‖ + ‖A - B‖) ^ 2 * ‖A - ((1 - s) • B + s • C)‖ ^ 2 =
+      ‖A - B‖ * ‖A - C‖ * ((‖A - C‖ + ‖A - B‖) ^ 2 - ‖B - C‖ ^ 2) := by
+  rw [stewart_cevian_inner A B C s]
+  linear_combination
+    ((‖A - C‖ + ‖A - B‖) ^ 2 * (‖A - C‖ - ‖A - B‖) +
+        ‖B - C‖ ^ 2 * (s * (‖A - C‖ + ‖A - B‖) - ‖A - C‖)) * hs
 
 /-
 ## Summary
