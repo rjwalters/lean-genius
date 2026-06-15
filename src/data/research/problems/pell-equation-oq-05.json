@@ -1,0 +1,112 @@
+{
+  "slug": "pell-equation-oq-05",
+  "title": "Norm Equations in Number Fields of Degree > 2",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For a number field $K$ of degree $n=r_1+2r_2>2$, describe the solutions $\\xi\\in\\mathcal{O}_K$ of the norm equation $N_{K/\\mathbb{Q}}(\\xi)=m$. For $m=1$ this is the unit equation, governed by Dirichlet: $\\mathcal{O}_K^\\times\\cong\\mu_K\\times\\mathbb{Z}^{r_1+r_2-1}$; for general $m$, solutions split into finitely many $\\mathcal{O}_K^\\times$-orbits. The classical Pell equation $x^2-Dy^2=1$ is the case $K=\\mathbb{Q}(\\sqrt D)$ (signature $(2,0)$, rank $1$).",
+    "plain": "Generalize Pell beyond quadratics: in a cubic-or-higher number field the norm-one units have rank r1+r2-1 (so possibly several fundamental units), and N(xi)=m has finitely many solution classes modulo units.",
+    "whyMatters": [
+      "Bridges the gallery’s concrete Pell entry to the structural heart of algebraic number theory (Dirichlet unit theorem, regulators, S-unit finiteness).",
+      "The deep core (Dirichlet) is already in Mathlib; the work is specialization + packaging, a high-value formalization."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Signature/rank computed from first principles for 5 fields (sympy-verified): Q(sqrt2)=(2,0) rank1; Q(sqrt-5)=(0,1) rank0; Q(cbrt2)=(1,1) rank1; x^3-3x-1 totally real=(3,0) rank2; Q(zeta5)=(0,2) rank1. Identity r1+2r2=n holds in all.",
+      "Cubic norm form N(a+b t+c t^2)=a^3+2b^3+4c^3-6abc for Q(cbrt2) DERIVED as det of the multiplication-by-xi matrix on the power basis (not assumed).",
+      "Fundamental unit of Z[cbrt2]: u=t-1 with N(u)=1, inverse u^{-1}=t^2+t+1 verified by (t-1)(t^2+t+1)=t^3-1=1; powers u^k all have norm 1 (the higher-degree Pell chain).",
+      "Norm equation N(xi)=2 solved by xi=t (N(t)=2); the coset t*u^k gives infinitely many solutions in one class mod units (Z[cbrt2] has class number 1).",
+      "Classical Pell x^2-2y^2=1 recovered as the rank-1 real-quadratic special case (Brahmagupta chain from (3,2))."
+    ],
+    "open": [
+      "Lean formalization of the rank specialization for a concrete cubic (Docker-gated; no build this session).",
+      "Clean Lean statement of finiteness of N(xi)=m solution classes modulo O_K^x."
+    ],
+    "goal": "Formalize, for a concrete cubic field (Q(cbrt2)), the unit-group rank and the N(xi)=1 chain via the fundamental unit, plus a general finiteness statement for N(xi)=m solution classes, reusing Mathlib’s Dirichlet unit theorem."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14T21:05:00-07:00",
+    "iteration": 2,
+    "focus": "ORIENT survey: math structure verified with sympy; Mathlib API located; milestones decomposed into buildable vs Docker-gated.",
+    "blockers": [],
+    "nextAction": "ACT (Docker-gated): write Proofs/PellEquationOQ05.lean instantiating NumberField.Units.rank for Q(cbrt2) and stating norm-equation finiteness.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (ORIENT): structure of the higher-degree norm equation verified from first principles via reproducible sympy script; Mathlib Dirichlet API identified; ACT is Docker-gated.",
+    "builtItems": [
+      "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass)."
+    ],
+    "insights": [
+      "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
+      "Mixed signature matters independent of degree: Q(cbrt2) is degree 3 yet still rank 1 (signature (1,1)) — one complex place. Rank, not degree, controls the number of fundamental units.",
+      "The field norm is most cleanly defined (and Lean-formalizable) as det of multiplication-by-xi on an integral basis; for Q(cbrt2) this yields a^3+2b^3+4c^3-6abc.",
+      "For Q(cbrt2) the fundamental unit is t-1, with explicit inverse t^2+t+1 since (t-1)(t^2+t+1)=t^3-1=1 — a concrete, formalizable witness of an O_K^x generator.",
+      "N(xi)=m has finitely many solution CLASSES mod units: each class corresponds to an ideal of norm |m| (finitely many), and within a class solutions form one O_K^x-coset (S-unit/class-group finiteness)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the abstract Dirichlet theorem but NOT explicit fundamental units / regulators for specific fields — computing the generator t-1 for Q(cbrt2) and proving it generates would be manual work.",
+      "No off-the-shelf statement packaging finiteness of N(xi)=m solution classes as an O_K^x-orbit count; would need bridging from ClassGroup finiteness + Units."
+    ],
+    "nextSteps": [
+      "ACT (Docker-gated): instantiate NumberField.Units.rank / rank_modTorsion for K=Q(cbrt2), proving rank = 1 from signature (1,1).",
+      "State recover-Pell lemma: real quadratic => rank 1, matching parent pell-equation.",
+      "Formalize cubic norm form via Algebra.norm / det of mul matrix and verify N(t-1)=1.",
+      "State (not necessarily prove) finiteness of N(xi)=m solution classes using ClassGroup finiteness + Units."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "algebraic-number-theory",
+    "norm-equations",
+    "dirichlet-unit-theorem",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "pell-equation",
+    "pell-equation-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T01:25:28.243Z",
+  "lastUpdate": "2026-06-14T21:05:00-07:00",
+  "significance": 6,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/PellEquation.lean",
+      "filename": "PellEquation.lean",
+      "lineCount": 299,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquation.lean"
+    },
+    {
+      "path": "Proofs/PellEquationOQ01.lean",
+      "filename": "PellEquationOQ01.lean",
+      "lineCount": 196,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ01.lean"
+    }
+  ]
+}
