@@ -105,6 +105,37 @@ noncomputable def S (a : ℕ → ℕ) : ℝ := ∑' n, generalTerm a n
 noncomputable def renormTail (a : ℕ → ℕ) (N : ℕ) : ℝ :=
   ∑' k : ℕ, (tau (N + 2 + k) : ℝ) / (∏ i ∈ Icc (N + 1) (N + 1 + k), a i)
 
+/- ## The Cantor-series backbone: base case + tail recursion.
+
+The two identities below are the canonical Cantor-series structure for `S(a)`.
+Both are verified *exactly* (rational arithmetic, six sequence families) in
+`research/problems/erdos-258-oq-01/verify_recursion.py`. Together they give a
+clean *inductive* proof of the identity (★) below, replacing the unindexed tsum
+regrouping by a one-step factor-out (recursion) plus a head-peel (base case). -/
+
+/-- **Base case.** `S(a) = τ(1) + T_0(a)` (and `τ(1) = 1`).
+    The `n = 0` term `τ(1)/1` peels off; the remaining `n ≥ 1` terms are exactly
+    the level-`0` renormalised tail.
+    STATUS: sorry — a single `tsum` head-split + index shift. NOT build-verified. -/
+theorem S_eq_head_add_renormTail_zero (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
+    (hconv : Summable (generalTerm a)) :
+    S a = (tau 1 : ℝ) + renormTail a 0 := by
+  sorry
+
+/-- **Tail recursion (Cantor-series backbone).**
+    `a_{N+1} · T_N(a) = τ(N+2) + T_{N+1}(a)` for every `N`.
+
+    The `k = 0` summand of `T_N` is `τ(N+2)/a_{N+1}`, which the factor `a_{N+1}`
+    turns into `τ(N+2)`; every `k ≥ 1` summand loses its `a_{N+1}` factor and,
+    after the shift `k ↦ k-1`, becomes the corresponding summand of `T_{N+1}`.
+    This is the single algebraic fact behind the whole argument.
+    STATUS: sorry — `tsum` constant-factor-out + reindex (`tsum_eq_zero_add`,
+    summability of the tail). NOT build-verified (Docker outage). -/
+theorem renormTail_recursion (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
+    (hconv : Summable (generalTerm a)) (N : ℕ) :
+    (a (N + 1) : ℝ) * renormTail a N = (tau (N + 2) : ℝ) + renormTail a (N + 1) := by
+  sorry
+
 /- ## The identity (★): partial product times S splits into integer + tail. -/
 
 /-- `productPrefix a N • S(a) = (integer) + T_N(a)`.
@@ -114,8 +145,15 @@ noncomputable def renormTail (a : ℕ → ℕ) (N : ℕ) : ℝ :=
     index `≤ N` becomes an integer after multiplying by `a₁⋯a_N`, and the
     remaining terms regroup into the renormalised tail.
 
-    STATUS: sorry — straightforward but unindexed regrouping of a tsum; needs
-    summability bookkeeping. NOT build-verified (Docker outage). -/
+    Inductive proof (from the backbone above): at `N = 0` it is the base case
+    with `m₀ = τ(1)`. For the step, multiply the hypothesis by `a_{N+1}` and use
+    `renormTail_recursion`:
+      `(a₁⋯a_{N+1})·S = a_{N+1}·(m_N + T_N) = (a_{N+1} m_N + τ(N+2)) + T_{N+1}`,
+    so `m_{N+1} = a_{N+1} m_N + τ(N+2) ∈ ℤ`. Only the two backbone `sorry`s and
+    `productPrefix` multiplicativity then remain.
+
+    STATUS: sorry — kept as a clean stub under the Docker outage; the inductive
+    derivation above reduces it to the backbone lemmas. NOT build-verified. -/
 theorem partialProduct_smul_S (a : ℕ → ℕ) (ha : ∀ n, 0 < a n)
     (hconv : Summable (generalTerm a)) :
     ∃ m : ℤ, (productPrefix a N : ℝ) * S a = (m : ℝ) + renormTail a N := by
