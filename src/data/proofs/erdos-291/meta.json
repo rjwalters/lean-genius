@@ -74,78 +74,206 @@
       "Number theory (primes, divisibility)"
     ]
   },
-  "sections": [
+  "sections":   [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "File docstring stating Erdős problem 291 (the harmonic-LCM gcd question), references, imports, and namespace/open setup.",
+      "mathContext": "Erdős 291 asks about gcd(a(n), L(n)) where L(n)=lcm(1,…,n) and a(n) is the integer numerator of H(n)·L(n): Part 1 (infinitely many n with gcd=1) is open; Part 2 (infinitely many with gcd>1) is settled here."
+    },
     {
       "id": "definitions",
-      "title": "Basic Definitions",
-      "startLine": 44,
+      "title": "Part I: Basic Definitions",
+      "startLine": 46,
       "endLine": 74,
-      "summary": "Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n)).",
-      "mathContext": "Formal definition: Defines L(n) = lcm(1,...,n), H(n) = harmonic number as rational, a(n) = H(n)·L(n) as integer numerator, and harmonicGCD(n) = gcd(a(n), L(n))."
+      "summary": "Defines L(n)=lcm(1,…,n), H(n)=Σ 1/k as a rational, a(n)=num(H(n)·L(n)), and harmonicGCD(n)=gcd(a(n), L(n)).",
+      "mathContext": "L is built via Finset.fold Nat.lcm; H is a ℚ-valued harmonic sum; a(n) extracts the natural-number numerator of H(n)·L(n); harmonicGCD is the central object of the problem."
     },
     {
       "id": "problem-statement",
-      "title": "The Problem Statement",
+      "title": "Part II: The Problem Statement",
       "startLine": 75,
       "endLine": 98,
-      "summary": "Formalizes both parts: question_part1 (infinitely many n with gcd = 1, OPEN) and question_part2 (infinitely many with gcd > 1, PROVED). erdos291Statement is their conjunction.",
-      "mathContext": "Mathematical content: Formalizes both parts: question_part1 (infinitely many n with gcd = 1, OPEN) and question_part2 (infinitely many with gcd > 1, PROVED). erdos291Statement is their conjunction."
+      "summary": "Formalizes question_part1 (infinitely many n with gcd=1, OPEN), question_part2 (infinitely many with gcd>1, PROVED), and erdos291Statement as their conjunction.",
+      "mathContext": "The two parts are stated as Set.Infinite predicates over {n | harmonicGCD n = 1} and {n | harmonicGCD n > 1}; only Part 2 is provable with current techniques."
     },
     {
-      "id": "steinerberger-wolstenholme",
-      "title": "Steinerberger's Criterion and Wolstenholme",
+      "id": "leading-digit-defs",
+      "title": "Part III: Leading-Digit Helper (Part 2 is Easy)",
       "startLine": 99,
+      "endLine": 122,
+      "summary": "Defines leadingDigitAux (fuel-recursive) and leadingDigit n p, the most-significant base-p digit of n — the computational tool behind the Steinerberger criterion.",
+      "mathContext": "leadingDigit isolates the top base-p digit; the Steinerberger criterion ties the event p ∣ harmonicGCD to this digit equalling p−1, which makes Part 2 tractable via explicit families."
+    },
+    {
+      "id": "wolstenholme",
+      "title": "Part IV: Wolstenholme's Theorem",
+      "startLine": 123,
+      "endLine": 136,
+      "summary": "States wolstenholme_theorem as an axiom: for primes p ≥ 5, p² divides the numerator of H_{p-1}.",
+      "mathContext": "Wolstenholme's congruence H_{p-1} ≡ 0 (mod p²) is a classical number-theoretic input; axiomatised here (one of two assumptions) and used to derive the divisibility criterion."
+    },
+    {
+      "id": "divisibility-characterization",
+      "title": "Part V: Characterization of Divisibility",
+      "startLine": 137,
+      "endLine": 150,
+      "summary": "States divisibility_characterization as an axiom: p ∣ harmonicGCD(n) iff p divides the numerator of H_k where k is the leading base-p digit of n.",
+      "mathContext": "This reduces a prime dividing the gcd to a numerator-divisibility test on a single partial harmonic sum indexed by the leading digit; the second axiomatised assumption."
+    },
+    {
+      "id": "steinerberger",
+      "title": "Part V.5: Steinerberger's Criterion",
+      "startLine": 151,
       "endLine": 192,
-      "summary": "Proves steinerberger_criterion: leading digit p-1 in base p implies p | gcd. Derived from wolstenholme_theorem (p² | num(H_{p-1})) and divisibility_characterization (p | gcd iff p | num(H_k) where k = leading digit). Case p=3 by computation.",
-      "mathContext": "Proves steinerberger_criterion: leading digit p-1 in base p implies p | gcd. Derived from wolstenholme_theorem (p² | num(H_{p-1})) and divisibility_characterization (p | gcd iff p | num(H_k) where k = leading digit). Case p=3 by computation."
+      "summary": "Proves steinerberger_criterion: if the leading base-p digit of n is p−1, then p ∣ harmonicGCD(n). Derived from Wolstenholme + the divisibility characterization.",
+      "mathContext": "Combines wolstenholme_theorem (p² ∣ num H_{p-1}) with divisibility_characterization to conclude p ∣ gcd whenever the leading digit equals p−1 — the engine for constructing gcd>1 families."
     },
     {
       "id": "heuristic",
-      "title": "Heuristic and Conditional Results",
+      "title": "Part VI: Heuristic and Density",
       "startLine": 193,
-      "endLine": 246,
-      "summary": "Shiu's heuristic: ~x/log(x) values n ≤ x with gcd = 1 (density 0 but infinite). Wu-Yan (2022): conditional on Schanuel's conjecture, density of gcd > 1 is 1. Explains why Part 1 requires understanding cross-prime correlations.",
-      "mathContext": "Shiu's heuristic: ~x/log(x) values n ≤ x with gcd = 1 (density 0 but infinite). Wu-Yan (2022): conditional on Schanuel's conjecture, density of gcd > 1 is 1. Explains why Part 1 requires understanding cross-prime correlations."
+      "endLine": 214,
+      "summary": "Defines countGCDOne and records Shiu's heuristic: about x/log x values n ≤ x have gcd = 1 (density 0 but infinite), motivating Part 1.",
+      "mathContext": "The heuristic suggests {n : gcd=1} is infinite yet density-zero, which is exactly why Part 1 resists elementary methods while Part 2 (a positive-density-style event) is reachable."
     },
     {
-      "id": "structural-properties",
-      "title": "Structural Properties of L and H",
+      "id": "conditional",
+      "title": "Part VII: Conditional Results",
+      "startLine": 215,
+      "endLine": 231,
+      "summary": "Records the Wu–Yan (2022) conditional result: assuming Schanuel's conjecture, the density of n with gcd > 1 is 1.",
+      "mathContext": "Conditional density-one for gcd>1 frames Part 1's gcd=1 set as a sparse exceptional set, situating the unconditional Part 2 proof within the known landscape."
+    },
+    {
+      "id": "why-hard",
+      "title": "Part VIII: Why Part 1 is Hard",
+      "startLine": 232,
+      "endLine": 246,
+      "summary": "Explains why Part 1 (infinitely many gcd = 1) is hard: it requires controlling cross-prime correlations of leading-digit events simultaneously.",
+      "mathContext": "Ruling out p ∣ gcd for all primes p at once amounts to avoiding every 'leading digit = p−1' event, a simultaneous constraint no current technique handles."
+    },
+    {
+      "id": "structural-L",
+      "title": "Part X: Structural Properties of L",
       "startLine": 247,
+      "endLine": 312,
+      "summary": "Computes L(n) for n ≤ 6 and proves L(n) > 0, L(n) ∣ n!, and k ∣ L(n) for 1 ≤ k ≤ n.",
+      "mathContext": "Establishes the basic divisibility behaviour of L = lcm(1,…,n): it is positive, divides the factorial, and is divisible by every k in range — used throughout the gcd analysis."
+    },
+    {
+      "id": "structural-H",
+      "title": "Part XII: Structural Properties of H",
+      "startLine": 313,
       "endLine": 373,
-      "summary": "Proves L(n) > 0, L(n) | n!, k | L(n) for k ≤ n. Computed L values for n ≤ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = Σ L(n)/k is a sum of integers.",
-      "mathContext": "Proves L(n) > 0, L(n) | n!, k | L(n) for k $\\leq$ n. Computed L values for n $\\leq$ 10. H recurrence, positivity, strict monotonicity. H(n)·L(n) = $\\sum$ L(n)/k is a sum of integers."
+      "summary": "Computes H(n) for n ≤ 6 and proves the recurrence H(n+1) = H(n) + 1/(n+1), positivity, and strict monotonicity.",
+      "mathContext": "Pins down the harmonic-number values and order structure (H_succ recurrence, H_pos, H_strict_mono, H_mono) needed to reason about num(H(n)·L(n))."
     },
     {
       "id": "small-examples",
-      "title": "Computed GCD Values",
+      "title": "Part XII.5: Small Examples",
       "startLine": 374,
-      "endLine": 431,
-      "summary": "Proves gcd = 1 for n = 1,...,5 and gcd = 3 for n = 6 (first occurrence). Extended: gcd = 3 for n = 7,8 and gcd = 1 for n = 9,10. Seven values with gcd = 1 found in [1,10].",
-      "mathContext": "Verified: Proves gcd = 1 for n = 1,...,5 and gcd = 3 for n = 6 (first occurrence). Extended: gcd = 3 for n = 7,8 and gcd = 1 for n = 9,10. Seven values with gcd = 1 found in [1,10]."
+      "endLine": 429,
+      "summary": "Proves small_examples (gcd = 1 for n = 1..5, gcd = 3 first at n = 6) and small_gcd_one for 1 ≤ n ≤ 5; first_gcd_gt_one records harmonicGCD 6 = 3.",
+      "mathContext": "Concrete computed gcd values establish the first occurrence of gcd > 1 at n = 6 (factor 3), anchoring the leading-digit explanation of when primes divide the gcd."
     },
     {
-      "id": "leading-digits",
-      "title": "Leading Digit Theory",
-      "startLine": 432,
+      "id": "leading-digit-props",
+      "title": "Part XIII: Leading Digit Properties",
+      "startLine": 430,
+      "endLine": 485,
+      "summary": "Proves leadingDigit_zero, leadingDigitAux_lt, leadingDigit_lt_base, and concrete leadingDigit evaluations (e.g. ld(2,3)=2, ld(24,5)=4).",
+      "mathContext": "Foundational facts about the leadingDigit function (boundedness by base, base cases) plus decided concrete values that feed the Steinerberger-criterion applications."
+    },
+    {
+      "id": "gcd-structure",
+      "title": "Part XIV: GCD Structure",
+      "startLine": 486,
+      "endLine": 524,
+      "summary": "Proves harmonicGCD(n) ∣ L(n), harmonicGCD(n) ∣ a(n), and that any prime dividing harmonicGCD(n) is ≤ n.",
+      "mathContext": "Structural constraints on the prime factors of the gcd: it divides both a(n) and L(n), and (via prime_dvd_L_le) only primes ≤ n can occur."
+    },
+    {
+      "id": "apply-steinerberger",
+      "title": "Part XV: Applying Steinerberger to Concrete Cases",
+      "startLine": 525,
       "endLine": 614,
-      "summary": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·3^k} and {4·5^k} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p ≥ 3.",
-      "mathContext": "Proves leadingDigit_pm1_times_pow: ld((p-1)·p^k, p) = p-1. Generates infinite families {2·$3^{k}$} and {4·$5^{k}$} with p | gcd. General prime_dvd_gcd_pm1_pow for any prime p $\\geq$ 3."
+      "summary": "Applies the criterion to concrete cases: 3 ∣ gcd(6), 3 ∣ gcd(8), 5 ∣ gcd(24), and the family lemma 3 ∣ gcd(2·3^k) via leadingDigit_two_times_pow_three.",
+      "mathContext": "Turns the leading-digit criterion into verified divisibilities, including the parametric leadingDigit(2·3^k,3)=2 computation that seeds the first infinite gcd>1 family."
+    },
+    {
+      "id": "structural-observations",
+      "title": "Part XVI: Structural Observations",
+      "startLine": 615,
+      "endLine": 640,
+      "summary": "Proves n ∣ L(n) for n ≥ 1, H(n)·L(n) ≥ 0, and H(n)·L(n) = Σ_{k<n} L(n)/(k+1) (a sum of integers).",
+      "mathContext": "Auxiliary identities: H(n)·L(n) is a nonnegative integer expressible as Σ L(n)/k, clarifying why a(n) is well-defined and integral."
     },
     {
       "id": "part2-proof",
-      "title": "Part 2 Proved",
+      "title": "Part XVII: Proving Part 2 (Infinitely Many n with gcd > 1)",
       "startLine": 641,
-      "endLine": 698,
-      "summary": "Constructively proves part2_trivially_true via {2·3^k} family with injectivity argument. Alternate proof part2_via_five using {4·5^k}. Summary theorems erdos_291_summary and erdos_291.",
-      "mathContext": "Constructively proves part2_trivially_true via {2·$3^{k}$} family with injectivity argument. Alternate proof part2_via_five using {4·$5^{k}$}. Summary theorems erdos_291_summary and erdos_291."
+      "endLine": 671,
+      "summary": "Constructively proves part2_trivially_true: the family {2·3^k} gives infinitely many n with 3 ∣ harmonicGCD(n), via an injectivity argument.",
+      "mathContext": "Set.Infinite is established by injecting ℕ → {n : gcd>1} through k ↦ 2·3^k, each member satisfying 3 ∣ gcd by the Part XV family lemma — the unconditional resolution of Part 2."
     },
     {
-      "id": "zmod-evidence",
-      "title": "ZMod Computations and Evidence for Part 1",
+      "id": "summary",
+      "title": "Part XVIII: Summary",
+      "startLine": 672,
+      "endLine": 699,
+      "summary": "Assembles erdos_291_summary and the headline theorem erdos_291 : question_part2, recording the proved status of Part 2.",
+      "mathContext": "Top-level statement that Part 2 holds; Part 1 remains open, consistent with the gallery's axiomatized status for this Erdős problem."
+    },
+    {
+      "id": "generalized-leading-digit",
+      "title": "Part XIX: Generalized Leading Digit for (p-1)·p^k",
+      "startLine": 700,
+      "endLine": 767,
+      "summary": "Proves leadingDigit_pm1_times_pow: the leading base-p digit of (p−1)·p^k is p−1 for p > 1.",
+      "mathContext": "Generalises the 2·3^k computation to arbitrary base p, giving the leading-digit input needed to build gcd>1 families for every prime p ≥ 3."
+    },
+    {
+      "id": "second-family",
+      "title": "Part XX: Second Infinite Family via p = 5",
+      "startLine": 768,
+      "endLine": 807,
+      "summary": "Proves 5 ∣ gcd(4·5^k), infinitely_many_five_dvd (the {n : 5 ∣ gcd} set is infinite), and the general prime_dvd_gcd_pm1_pow for primes p ≥ 3.",
+      "mathContext": "A second independent infinite family {4·5^k} with 5 ∣ gcd, plus the general statement p ∣ gcd((p−1)·p^k) — multiple distinct witnesses for Part 2."
+    },
+    {
+      "id": "zmod-sum-inverses",
+      "title": "Part XXI: Sum of Inverses Modulo p",
       "startLine": 808,
+      "endLine": 837,
+      "summary": "Verifies Σ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 and Σ k ≡ 0 (mod p) for p = 3,5,7, all by decide.",
+      "mathContext": "Decidable modular identities (Wolstenholme-flavoured sums of inverses vanishing mod p) providing the arithmetic backbone for the divisibility evidence."
+    },
+    {
+      "id": "strengthen-part2",
+      "title": "Part XXII: Strengthening Part 2 with Multiple Families",
+      "startLine": 838,
+      "endLine": 859,
+      "summary": "Proves part2_via_five, an alternate proof of question_part2 using the {4·5^k} family.",
+      "mathContext": "Demonstrates Part 2 via a second prime family, strengthening confidence in the result and illustrating that the construction is not specific to p = 3."
+    },
+    {
+      "id": "extended-examples",
+      "title": "Part XXIII: Extended Small Examples",
+      "startLine": 860,
+      "endLine": 916,
+      "summary": "Computes H and L for n = 7..10, proves small_examples_extended, and records gcd values (gcd = 3 at n = 7,8; gcd = 1 at n = 9,10).",
+      "mathContext": "Extends the computed gcd table into [7,10], confirming the alternation between gcd = 1 and gcd = 3 and supplying further data for the Part 1 evidence."
+    },
+    {
+      "id": "part1-evidence",
+      "title": "Part XXIV: Concrete Evidence for Part 1",
+      "startLine": 917,
       "endLine": 932,
-      "summary": "Verifies Σ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10.",
-      "mathContext": "Verifies $\\sum$ k⁻¹ ≡ 0 (mod p) for p = 3,5,7,11,13 via decide. Assembles seven_gcd_one_values as concrete evidence for Part 1. Extended examples for n = 7,...,10."
+      "summary": "Assembles seven_gcd_one_values: the seven values n ∈ [1,10] with harmonicGCD(n) = 1, as concrete evidence toward the open Part 1.",
+      "mathContext": "Catalogues the gcd = 1 occurrences in [1,10] as empirical support for the conjecture that infinitely many such n exist (Part 1), which remains unproved."
     }
   ],
   "conclusion": {
