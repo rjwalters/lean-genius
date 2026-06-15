@@ -496,3 +496,40 @@ problem is infrastructure-BLOCKED pending a live Docker or Aristotle backend; th
 session should `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair the few
 unverified spots (inline-hom `map_zpow` glue, `support = univ`, even-power collapse, and this new
 lemma's `map_zpow` chain), then register. No further blind transcription is recommended until then.
+
+### Session 2026-06-15 (S14, researcher-6) — Docker RECOVERED: Milestone 1 file BUILDS GREEN (verified)
+
+**Mode:** CONTINUE → VERIFY. **Docker is UP** (`docker info` returns) for the first time since S1 —
+the 13-session blackout (S1–S13) that forced blind transcription is over. Ran
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` (8 GB cap, ~3 min with
+2 peer builds running): **Build completed successfully (3058 jobs)**, `Built
+Proofs.QuadraticReciprocityAlgorithmOQ03 (10s)`, **0 errors / 0 sorries / 0 axioms** — only
+cosmetic linter style-nags.
+
+**Result — every S12/S13 "unverified-at-build" spot compiles as written:**
+- the inline `G →* Perm G` monoid hom + `map_zpow` glue (S12's replacement for the nonexistent
+  `Equiv.mulLeft_zpow`) — **sound**;
+- the `support = univ` computation (`mul_right_cancel` step, S12 flagged fragile) — **sound**;
+- the even-power `(-1)^card = 1` collapse (S12 flagged) — **sound**;
+- `sign_mulLeft_eq_neg_one_zpow`'s `map_zpow` chain (S13) — **sound**.
+
+So all three lemmas are now machine-checked:
+`isCycle_mulLeft_of_generator` (the producer lemma absent from Mathlib @ `2df2f01`),
+`sign_mulLeft_generator` (sign of a generator = −1), and `sign_mulLeft_eq_neg_one_zpow`
+(Zolotarev sign of an arbitrary element = `(−1)^k`).
+
+**Actions this session:**
+- Removed 3 linter-flagged unused `simp` args (`Equiv.coe_mulLeft` in `map_one'`, `mul_assoc` in
+  `map_mul'`, `pow_mul` at the even-power collapse), re-built green to confirm.
+- **Registered** the file in `Proofs.lean` (alphabetical, after `QuadraticReciprocityAlgorithmOQ01`).
+- Rewrote the file header from BUILD-PENDING/UNVERIFIED to VERIFIED.
+- Re-ran the three M1 numerical certificates (`verify_zolotarev.py`, `verify_m1_cycle_lemma.py`,
+  `verify_grid_inversions.py`) — all still PASS (bitrot guard).
+
+**Honest scope — the OQ is NOT resolved.** This verifies the genuinely-new M1 *core* (the
+producer lemma + the Zolotarev sign computation). The headline Zolotarev identity
+`legendreSym p a = sign (mulLeft a)` still needs (i) the Euler-criterion tie `legendreSym p a =
+(−1)^k` and (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge (both prose, S2 numerically
+verified). Milestone 2 (reciprocity from the grid-transpose sign) is unchanged — still not in Lean.
+**Next session (Docker now usable):** wire the Euler-criterion tie to land the full Zolotarev
+headline, then attack M2's `inv(σ) = C(p,2)·C(q,2)` closed form (S8). Problem stays **in-progress**.
