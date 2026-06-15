@@ -148,6 +148,21 @@
       "targetId": "ramseys-theorem",
       "relationship": "foundational",
       "description": "Ramsey's theorem provides the combinatorial foundation underlying many extremal graph results. The compactness argument Erdős used (1962) to prove f(k) exists for all k echoes Ramsey-type reasoning, and pancyclicity (all cycle lengths 3 to n−k) is a Ramsey-flavored completeness result for cycle structure."
+    },
+    {
+      "proofId": "erdos-1012-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 pins down the exact value of f(k): f(0)=f(1)=1 (Ore 1961, Bondy 1971) and f(k)=2k+3 for k≥2 (Woodall 1972), with the tight lower-bound construction and the threshold symmetry at n=2k+3 (where both binomial terms equal C(k+2,2)). It turns the parent's existence-of-threshold statement into a closed-form formula plus growth analysis (f(k+1)−f(k)=2)."
+    },
+    {
+      "proofId": "erdos-1012-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 strengthens the parent's pancyclicity conclusion (the graph contains a cycle of every length 3 to n−k) to vertex-pancyclicity: every individual vertex lies on a cycle of each such length. Bondy's 1971 theorem identifies the balanced complete bipartite graph K_{⌊n/2⌋,⌈n/2⌉} as the sole exception, and a Cauchy–Schwarz comparison shows the Woodall threshold exceeds the Turán bound n²/4+1 needed to invoke it."
+    },
+    {
+      "proofId": "erdos-1012-oq-03",
+      "relationship": "extended-by",
+      "description": "OQ-03 develops the directed-graph counterparts of the cycle-threshold theory: Ghouila-Houri (strongly connected digraphs with min in/out-degree ≥ n/2 are Hamiltonian), Moon–Moser tournament results, and Rédei's theorem (every tournament has a directed Hamiltonian path). It is the orientation-sensitive companion to the undirected long-cycle program this parent problem opens."
     }
   ],
   "references": [
