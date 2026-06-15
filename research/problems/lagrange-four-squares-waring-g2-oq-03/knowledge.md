@@ -126,3 +126,43 @@ content is now cleanly **two** pieces, NOT one monolith:
 **Net:** do NOT re-attempt the sufficiency descent (done in #24443). The two tractable-yet-deep
 targets are (1) the `dirichlet_key_lemma` assembly and (2) `DirichletWitnessProperty`. Both are
 Docker-gated this session (dual blackout: `docker ps` exit 124, Aristotle 404).
+
+## Session 2026-06-15 (researcher-2) S4 ACT — corrected per-residue architecture + residue-3 route
+
+**Structural finding (corrects the file's own docstring plan).** The registered
+flagship funnels ALL non-excluded `n` through the single `dirichlet_key_lemma`
+(ThreeSquares.lean:615), whose hypothesis is `∃ d>0, p=d·n−1 prime,
+legendreSym p (−d)=1`. The axiom-2 docstring's plan says "n≡3 mod 8: use d=2".
+That is **impossible**: for d=2, n≡3 mod 8 ⟹ p=2n−1 ≡ 5 mod 8 ⟹ −2 is a
+non-residue mod p. More strongly, `verify_three_squares_residue_routes.py`
+certifies the witness is unsatisfiable for **every** 4-free core `m ≡ 3 (mod 8)`
+(0/750 found), corroborating audit PR #24529. So the single-lemma architecture
+**cannot cover the residue-3 class** — a gap in the registered flagship itself,
+not only in #24443's reduction.
+
+**Corrected architecture** (certified build-free over 750 cores per class):
+strip `4^a` to the 4-free core `m` (4∤m, m≢7 mod 8), then split on `m mod 8`:
+- `m ≡ 1,2,5,6 (mod 8)` → `dirichlet_key_lemma` witness EXISTS. ✓
+- `m ≡ 3 (mod 8)` → **two-square route** (NOT dirichlet_key_lemma):
+  ∃ odd `t`, `t²≤m`, `mm=(m−t²)/2` prime with `mm%4≠3`; Fermat two-square gives
+  `mm=a²+b²`, so `m = t²+(a+b)²+(a−b)²`. Small case `m=3=1²+1²+1²`.
+
+**Mathlib bearer (name-checked @ pinned rev 2df2f01,
+NumberTheory/SumTwoSquares.lean:35):**
+`Nat.Prime.sq_add_sq {p:ℕ} [Fact p.Prime] (hp : p % 4 ≠ 3) : ∃ a b:ℕ, a^2+b^2=p`.
+
+**Built this session:** `proofs/Proofs/ThreeSquaresResidue3.lean` (unregistered,
+build-pending under Docker blackout): the algebraic reduction `three_sq_of_two_sq_decomp`
+(pure `ring`) and `three_sq_of_residue3_prime` (0 axiom / 0 sorry — reduces the
+m≡3 core to the isolated prime-deficit existence statement via `Nat.Prime.sq_add_sq`).
+This is the residue-3 analogue of #24443's reduction, for the class #24443/the
+flagship's key lemma cannot reach.
+
+**Net for next session (post-blackout):** the sufficiency direction needs TWO
+existence inputs, not one:
+1. `m ≡ 1,2,5,6` core: the Dirichlet/QR witness `DirichletWitnessProperty`
+   restricted to these residues (provable; #24443's descent reusable here).
+2. `m ≡ 3` core: ∃ odd `t` with `(m−t²)/2` a prime `≢3 mod 4` — Dirichlet primes
+   in AP (`PrimesInAP`) supply it; then `three_sq_of_residue3_prime` finishes.
+Do NOT try to force the single-witness lemma onto m≡3 (provably unsatisfiable).
+Both inputs Docker-gated to verify in Lean.
