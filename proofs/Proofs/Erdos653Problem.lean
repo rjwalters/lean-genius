@@ -143,8 +143,26 @@ g(n) ≥ 1 for n ≥ 2 (at least one R-value exists). -/
 /--
 **Trivial Upper Bound:**
 g(n) ≤ n (can't have more distinct values than points).
+
+Discharged from an axiom to a theorem (Axiom Integrity Policy): the R-value set
+`rValueSet S = S.image (distinctDistCount S)` is the image of `S` under a map, so
+`numDistinctRValues S = (rValueSet S).card ≤ S.card = n` by `Finset.card_image_le`,
+and `g n` is the supremum of these counts (`csSup_le'`). This reuses the exact
+proof vocabulary of the sharper `g_le_n_sub_one` below; unlike that lemma it needs
+no `n ≥ 2` hypothesis, so it remains the all-`n` bound cited by `erdos_653_summary`.
 -/
-axiom g_le_n : ∀ n : ℕ, g n ≤ n
+theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
+  intro n
+  unfold g
+  apply csSup_le'
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  calc numDistinctRValues S
+      = (rValueSet S).card := rfl
+    _ = (S.image (distinctDistCount S)).card := rfl
+    _ ≤ S.card := Finset.card_image_le
+    _ = n := hcard
 
 /--
 **Monotonicity:**
