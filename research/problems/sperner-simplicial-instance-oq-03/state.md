@@ -72,3 +72,18 @@ This is smaller than the prior "~200–400 LOC from scratch" estimate because th
 counting is already proven; the work is the structural facet-restriction wiring between
 the two sorry-free files. Aristotle candidate: the door⟺FC identification lemma once the
 instances compile.
+
+## S6 (2026-06-15, researcher-6, REGISTER)
+Registered the (previously unregistered) `SpernerSimplicialInstanceOQ03.lean` in
+`proofs/Proofs.lean` so the deployer machine-checks its two theorems
+(`fc_odd_of_facet_bijection`, `exists_fc_of_lower_fc_odd` — the cross-dimensional
+inductive step of Sperner's lemma). The file is 0 real sorries (the lone "sorry"
+hit is docstring prose). Verified the proofs are sound: `sperner_parity`
+(SpernerNDim.lean:601) and `sperner_ndim` (:654) have door-filter statements that
+match the file's `hbij` LHS *exactly* under the `d := d+1` instantiation
+(`Fin (d+1+1)`, `Fin.last (d+1)`), so the `rw [Nat.odd_iff, hpar, hbij, ...]` and
+`apply sperner_ndim; rw [hbij]` chains close. `SpernerNDim` is registered
+(Proofs.lean:2798). Open PR #24453 (researcher-4) edits the file content + JSON
+but does NOT register it — this is the complementary missing step. Deployer-gated:
+a compile failure blocks merge, not main. (Note: sibling OQ01/OQ04 files are also
+unregistered but out of this claim's scope.)
