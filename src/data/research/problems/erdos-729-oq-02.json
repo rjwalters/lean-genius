@@ -1,7 +1,7 @@
 {
   "slug": "erdos-729-oq-02",
   "title": "Legendre's Formula for 2-adic Valuation of Factorials",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "fast",
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "RESOLVED (build-pending): legendre_for_two proved axiom-free in unregistered companion via Mathlib sub_one_mul_padicValNat_factorial; registered-file axiom retirement is a Docker follow-up.",
+    "builtItems": [
+      "proofs/Proofs/Erdos729OQ04.lean legendre_for_two_native : padicValNat 2 n.factorial = n - (Nat.digits 2 n).sum, 0 axioms/0 sorries via sub_one_mul_padicValNat_factorial + Fact (Nat.Prime 2).",
+      "Erdos729OQ04.lean binDigitSum (structural 0/succ recursion on n/2) + binDigitSum_eq_digits_sum proving it equals (Nat.digits 2 n).sum by strong induction + Nat.digits_def'.",
+      "Erdos729OQ04.lean legendre_for_two : padicValNat 2 n.factorial = n - binDigitSum n (recursive-digit-sum form, 0 axioms)."
+    ],
+    "insights": [
+      "Legendre v_2(n!)=n-s_2(n) is a DIRECT corollary of Mathlib v4.26 sub_one_mul_padicValNat_factorial : (p-1)*padicValNat p (n!) = n - (Nat.digits p n).sum. At p=2 the (p-1)=1 factor vanishes, giving the statement with zero axioms (approach 3 from problem.md was correct).",
+      "No induction on binary representation needed; the digit-sum form of Legendre is already in Mathlib (Mathlib/NumberTheory/Padics/PadicVal/Basic.lean:587), so the only real work is bridging a recursive binary digit sum to (Nat.digits 2 n).sum."
+    ],
+    "mathlibGaps": [
+      "No gap: sub_one_mul_padicValNat_factorial supplies the digit-sum Legendre formula directly in v4.26."
+    ],
+    "nextSteps": [
+      "Docker-gated follow-up: retire axiom legendre_identity in registered Erdos729Problem.lean by proving legendre_for_two directly. Its digitSum uses if-n=0 so simp only [digitSum] loops; unfold one step with digitSum.eq_def or rewrite the def to structural 0/succ like binDigitSum here.",
+      "Optional: state general-p v_p(n!)=(n-s_p(n))/(p-1) from the same lemma to also justify/retire legendre_identity for all p."
+    ],
     "markdown": "# Knowledge Base: erdos-729-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
