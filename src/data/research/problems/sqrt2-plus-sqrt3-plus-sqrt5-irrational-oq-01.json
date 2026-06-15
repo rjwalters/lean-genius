@@ -1,0 +1,78 @@
+{
+  "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
+  "title": "Irrationality of √2 + √3 + √5 + √7",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{Irrational}\\,(\\sqrt 2 + \\sqrt 3 + \\sqrt 5 + \\sqrt 7)",
+    "plain": "Prove that √2 + √3 + √5 + √7 is irrational, extending the gallery proof of irrationality of √2 + √3 + √5.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5 + Real.sqrt 7)"
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T01:25:28.245Z",
+    "iteration": 2,
+    "focus": "Feasibility survey complete: resolved on paper, 3 strategies assessed.",
+    "blockers": [],
+    "nextAction": "When Docker returns, draft Strategy A (iterated-squaring extension) in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT (build-free survey, researcher-10 2026-06-14): resolved on paper (degree-16 algebraic integer ⇒ irrational); 3 formalization strategies assessed; elementary iterated-squaring (A) is the only no-new-Mathlib path, BUILD-class and Docker-gated. Fixed leanFiles misattribution (JSON pointed at the parent √2+√3+√5 proof, falsely showing 0 sorries/solved) and added the real problem statement.",
+    "builtItems": [],
+    "insights": [
+      "RESOLVED ON PAPER: √2+√3+√5+√7 is irrational — in fact an algebraic integer of degree 16 over ℚ. The 16 sign-combinations ±√2±√3±√5±√7 are its full set of Galois conjugates (Galois group (ℤ/2)^4 of the multiquadratic field ℚ(√2,√3,√5,√7)); α is a primitive element, so its minimal polynomial has degree 16 with rational integer coefficients. Degree ≠ 1 ⇒ irrational.",
+      "Three formalization strategies, in increasing Mathlib-infrastructure cost: (A) elementary iterated squaring; (B) ℚ-linear independence of {1,√2,√3,√5,√7} (Besicovitch); (C) field degree [ℚ(√2,√3,√5,√7):ℚ]=16.",
+      "Strategy A generalizes the existing 145-line √2+√3+√5 proof (Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean) but does NOT collapse to a single surd: after subtracting √7 and squaring once, three independent surds √6,√10,√15 appear alongside √7, so the contradiction requires unwinding the full degree-16 relation. Honest LOC estimate 300-600, all elementary (ring/linarith/Real.sq_sqrt/irrational_sqrt_natCast_iff), NO new Mathlib. Upper end of BUILD range; Docker-gated.",
+      "Strategy B is mathematically cleanest (α rational ⇒ a nontrivial ℚ-linear relation among 1,√2,√3,√5,√7, contradicting Besicovitch independence of √ of distinct squarefree integers) but Mathlib has NO ready lemma for linear independence of square roots of squarefree integers (web-confirmed 2026-06); building the general theorem is >500 LOC.",
+      "Strategy C parallels the sibling gallery proof Sqrt2PlusSqrt3IrrationalOQ03 (minimal polynomial of √2+√3 = X⁴-10X²+1 via minpoly/IntermediateField), scaled to the degree-16 multiquadratic field; needs linear-disjointness / degree-of-multiquadratic infrastructure not assembled in Mathlib (>500 LOC)."
+    ],
+    "mathlibGaps": [
+      "No usable Mathlib lemma for ℚ-linear independence of {√d : d squarefree} (Besicovitch); needed for Strategy B.",
+      "No assembled multiquadratic-field degree result [ℚ(√p₁,…,√pₖ):ℚ]=2^k / linear disjointness of ℚ(√pᵢ); needed for Strategy C.",
+      "Sufficient for Strategy A and already present: irrational_sqrt_natCast_iff, Real.sq_sqrt, Real.sqrt_mul — no gap."
+    ],
+    "nextSteps": [
+      "When Docker returns: draft Strategy A — extend the 2-squaring chain of Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean to a 3-squaring chain isolating one non-square surd; target new file Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean. Elementary, no new Mathlib, ~300-600 LOC. BUILD-class, Docker-gated.",
+      "Fallback if Strategy A algebra is unwieldy: build the specific 4-prime Besicovitch lemma (LinearIndependent ℚ ![1,√2,√3,√5,√7]) as standalone infrastructure (~200-400 LOC), narrower than the general theorem.",
+      "Aristotle-eligible once a clean surd-isolation lemma statement exists (the identities are HARD-but-known mechanical algebra, not OPEN). Currently blocked: Aristotle backend returns 'Resource not found' (2026-06-14)."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "irrationality",
+    "algebraic-numbers",
+    "radicals",
+    "seeker-selected",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational"
+  ],
+  "references": {
+    "papers": [
+      "Besicovitch (1940), On the linear independence of fractional powers of integers"
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T01:25:28.244Z",
+  "lastUpdate": "2026-06-14",
+  "significance": 4,
+  "tractability": 8,
+  "leanFiles": []
+}
