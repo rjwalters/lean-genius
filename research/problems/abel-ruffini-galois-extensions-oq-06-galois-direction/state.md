@@ -1,9 +1,48 @@
 # Current State
 
-**Phase**: S5 OBSERVE (Step 5 `H_le_normalizer` statement found UNSOUND; **5 sorries** unchanged; 151 LOC incl. new ⚠ docstring)
-**Since**: 2026-06-13 (S5 OBSERVE correctness audit; was 2026-06-12 S4 ACT)
-**Iteration**: 5 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE this iteration)
-**Owner**: researcher-5 (S5 OBSERVE, 2026-06-13); prior researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S6 ORIENT (Step 1 route bearer-audited; "m < p" plan framing found CIRCULAR; socle/minimal-normal API absent from Mathlib; **5 sorries** unchanged; 151 LOC)
+**Since**: 2026-06-14 (S6 ORIENT bearer audit; was 2026-06-13 S5 OBSERVE)
+**Iteration**: 6 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT this iteration)
+**Owner**: researcher-1 (S6 ORIENT, 2026-06-14); prior researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 6 (researcher-1, 2026-06-14) — S6 ORIENT: Step 1 route bearer audit
+
+**Outcome**: ORIENT/knowledge (no build — Docker DOWN, verification
+blackout). Re-verified the 7 core bearers at the lake-pinned SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (ecosystem intact, no drift
+since 2026-06-01) and bearer-audited **Step 1 (`sylow_p_unique`)** — the
+hard remaining step — for the first time. Two additive findings.
+
+**Finding A — the "`m < p`" Sylow-count framing is CIRCULAR.** The plan's
+item 1 ("Sylow uniqueness on `H` at `|H| = p · m, m < p`") presupposes
+its own conclusion. Sylow facts give `n_p ≡ 1 [MOD p]` and `n_p ∣ |H|/p`,
+which force `n_p = 1` *only when* `|H|/p < p`; but `H ≤ S_p` only yields
+`|H| ∣ p!`, so `|H|/p` can be as large as `(p−1)!`. The bound `|H|/p < p`
+is equivalent to `H ≤ AGL(1,p)` — the file-level theorem itself. So Step 1
+**cannot** be a self-contained Sylow count. (What *is* cheap and
+non-circular: `v_p(|H|) = 1` from Legendre `v_p(p!) = 1`, giving a Sylow-p
+of order exactly `p` — this is the honest, Step-1-independent source of
+Step 3, but order-`p` ⇏ unique without a normality argument.)
+
+**Finding B — Step 1's sound route has NO Mathlib bearer.** The textbook
+(Galois / Rotman 9.11) route is via the socle: a minimal normal subgroup
+of a solvable primitive group is elementary abelian and regular, so has
+order `= degree = p`, hence is the unique normal Sylow-p. Mathlib at the
+pin has **none** of the needed API — searches for `MinimalNormal`, group
+`socle`, and `IsElementaryAbelian` all return 0 hits. Step 1 is therefore
+**blocked on absent Mathlib infrastructure**, not merely on session time;
+it requires building a minimal-normal/regular-action layer, or finding an
+alternative prime-degree route via the `MulAction.IsBlock` block-system
+API that *is* present in `Primitive.lean`.
+
+**Recommended next ACT (Docker-up):** (1) cheapest real progress is to
+fix Step 5's signature to the already-specified corrected form and
+discharge it (~5–15 LOC, all bearers present, math settled); (2) prototype
+the bearer-complete order-`p` Sylow fact (`v_p(|H|)=1 ⟹ |Sylow|=p`);
+(3) do NOT attempt Step 1 uniqueness as a Sylow count (Finding A).
+
+Full bearer table and method in
+`sessions/2026-06-14-s6-orient-step1-bearer-audit.md`.
 
 ## Iteration 5 (researcher-5, 2026-06-13) — S5 OBSERVE: Step 5 statement is unsound
 

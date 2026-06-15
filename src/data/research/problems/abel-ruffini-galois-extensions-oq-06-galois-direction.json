@@ -44,13 +44,19 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S5_OBSERVE",
-    "since": "2026-06-13T00:00:00.000Z",
-    "iteration": 5,
-    "focus": "S5 OBSERVE (researcher-5, 2026-06-13): CORRECTNESS DEFECT found in Step 5 (`H_le_normalizer`). The statement `(σ : Equiv.Perm (ZMod p)) (_hσ_in_H : σ ∈ H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer` is MATHEMATICALLY FALSE as written: the hypothesis `σ ∈ H` does not entail that `H` normalises `⟨σ⟩`. Explicit counterexample (p=5): H = `(AGL1Z.toPerm 5).range` (primitive+solvable, from parent file), σ = scaling-by-2 = (1 2 4 3) ∈ H, h = translation (0 1 2 3 4) ∈ H; then hσh⁻¹ : y↦2y-1 sends 0↦4 ∉ ⟨σ⟩ (whose elements all fix 0), so h∉N(⟨σ⟩) and H⊄N(⟨σ⟩). Root cause: σ must generate the image of the NORMAL Sylow-p P (Steps 2+3), not be an arbitrary element of H; the statement does not even require σ to be a p-cycle. No false PROOF was produced (Step 5 + main theorem are still `sorry`), so this is a latent trap, not a soundness break in a closed proof. Docker DOWN this session (verification blackout) — fix is a doc-only ⚠ warning added to the Step 5 docstring in the .lean (inert, build-safe); no signature change shipped blind. 5 sorries unchanged.",
-    "nextAction": "Docker-up session: (1) replace Step 5's signature with the corrected one documented in the .lean docstring + Risk R2 — `(P : Sylow p H) (hPnorm : (P:Subgroup H).Normal) (hgen : ∀ g:P, image g ∈ zpowers σ) (hσH : σ∈H) ⊢ H ≤ (zpowers σ).normalizer` — matching Steps 2/3 outputs, and discharge it (`Subgroup.le_normalizer` style, ~5-15 LOC); (2) rebuild to confirm the new signature typechecks. Independent of this: the hard core remains Step 1 (`sylow_p_unique`) via minimal-normal-subgroup/socle theory, and the cheaper Step 3 (`sylow_p_is_pcycle`) — NOTE Step 3 needs |P|=p, which requires p∣|H| from transitivity, so it is not the trivial 1-LOC bearer the older docs imply.",
-    "blockers": ["Docker daemon down 2026-06-13 (verification blackout): cannot build-verify any signature change, so the Step 5 fix is documented but deferred to a Docker-up session."],
-    "attemptCounts": { "total": 5, "currentApproach": 1, "approachesTried": 4 },
+    "phase": "S6_ORIENT",
+    "since": "2026-06-14T00:00:00.000Z",
+    "iteration": 6,
+    "focus": "S6 ORIENT (researcher-1, 2026-06-14): first bearer-audit of Step 1 (sylow_p_unique), the hard remaining sorry. Two findings. (A) The plan's \"|H|=p*m, m<p\" Sylow-count framing is CIRCULAR: m=|H|/p<p is equivalent to H<=AGL(1,p), the conclusion; since H<=S_p only gives |H| | p!, |H|/p can be as large as (p-1)!, so n_p=1 does NOT follow from Sylow facts alone. (B) The sound socle/minimal-normal route (a minimal normal subgroup of a solvable primitive group is elementary abelian + regular => order p => unique normal Sylow-p) has NO Mathlib bearer at pin 2df2f015: MinimalNormal, group socle, and IsElementaryAbelian all return 0 hits. Step 1 is blocked on absent Mathlib infrastructure, upgraded to Risk R4 (HIGH). Re-verified 7 core bearers intact at pin (no drift since 2026-06-01). Recommended next ACT (Docker-up): fix Step 5 signature + discharge (~5-15 LOC, bearers present, math settled) as cheapest real progress; prototype the bearer-complete order-p Sylow fact (v_p(|H|)=1 => |Sylow|=p); do NOT attempt Step 1 uniqueness as a Sylow count. Docker DOWN this session (verification blackout) -- all work doc-only, 5 sorries intact.",
+    "nextAction": "Docker-up ACT: (1) correct Step 5 H_le_normalizer signature per the in-source warning block and discharge via Subgroup.le_normalizer (~5-15 LOC); (2) prototype |Sylow|=p from v_p(|H|)=1; (3) scope a minimal-normal/IsBlock route for Step 1 uniqueness (no current Mathlib bearer).",
+    "blockers": [
+      "Docker daemon down 2026-06-13 (verification blackout): cannot build-verify any signature change, so the Step 5 fix is documented but deferred to a Docker-up session."
+    ],
+    "attemptCounts": {
+      "total": 5,
+      "currentApproach": 1,
+      "approachesTried": 4
+    },
     "lastUpdate": "2026-06-13T00:00:00.000Z"
   },
   "knowledge": {
@@ -94,5 +100,6 @@
       "type": "parent-slug",
       "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-14T00:00:00.000Z"
 }
