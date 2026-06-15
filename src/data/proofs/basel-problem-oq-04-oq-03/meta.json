@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Limit Infrastructure",
+      "startLine": 1,
+      "endLine": 101,
+      "summary": "Proof architecture (Mobius decomposition of the coprime-pair count, the Mobius Dirichlet series identity, and the density limit), imports, namespace, and the private helper lemma nat_div_div_tendsto establishing that the floor ratio (N/d)/N converges to 1/d as N to infinity for any fixed d.",
+      "mathContext": "For fixed $d$, $\\lfloor N/d\\rfloor / N \\to 1/d$ as $N\\to\\infty$. This elementary limit is the analytic workhorse behind the density convergence: it is proved via an explicit $\\varepsilon$-$N$ bound using $N = \\lfloor N/d\\rfloor\\, d + (N \\bmod d)$ with $N\\bmod d < d$."
+    },
+    {
       "id": "definitions",
       "title": "The Coprime Pair Count",
       "startLine": 102,
