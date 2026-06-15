@@ -97,39 +97,81 @@
   },
   "sections": [
     {
-      "id": "basic-setup",
-      "title": "Basic Setup",
+      "id": "overview",
+      "title": "Overview: Dvoretzky's Random Arc Covering Problem",
       "startLine": 1,
-      "endLine": 50,
-      "summary": "Unit circle, arcs, and arc sequence conditions"
+      "endLine": 42,
+      "summary": "Module docstring stating Erdős #526: given a_n ≥ 0 with a_n → 0 and Σa_n = ∞, find a necessary and sufficient condition for random arcs of lengths a_n to cover the unit circle with probability 1. Records the historical results (Dvoretzky 1956, Kahane 1959, Erdős, Shepp 1972), imports, and the Erdos526 namespace."
     },
     {
-      "id": "shepp-criterion",
-      "title": "Shepp's Criterion",
-      "startLine": 51,
-      "endLine": 100,
-      "summary": "The sum Σ exp(S_n)/n² characterization"
+      "id": "basic-setup",
+      "title": "Part I: Basic Setup",
+      "startLine": 43,
+      "endLine": 67,
+      "summary": "Defines `UnitCircle` as [0,1) with wraparound, `Arc θ a` as a length-a arc starting at θ, and the `ArcSequence` structure carrying a_n ≥ 0, a_n → 0 (Tendsto a atTop (𝓝 0)), and Σa_n = ∞ (¬Summable a)."
     },
     {
-      "id": "critical-cases",
-      "title": "Critical Cases",
-      "startLine": 101,
-      "endLine": 150,
-      "summary": "Boundary at a_n = 1/n and near cases"
+      "id": "coverage-condition",
+      "title": "Part II: The Coverage Condition",
+      "startLine": 68,
+      "endLine": 93,
+      "summary": "Defines the partial sum S_n = a_1 + ⋯ + a_n (`partialSum`), Shepp's criterion `SheppCriterion` (¬Summable of n ↦ exp(S_n)/n²), and the axiom `CoversWithProbOne` asserting full coverage with probability 1 for an arc sequence."
+    },
+    {
+      "id": "shepp-theorem",
+      "title": "Part III: Shepp's Theorem (1972)",
+      "startLine": 94,
+      "endLine": 112,
+      "summary": "States Shepp's characterization as the axiom `shepp_1972`: random arcs cover the circle with probability 1 iff Σ exp(S_n)/n² = ∞. The theorem `erdos_526_solved` packages this as the complete solution to Erdős #526."
+    },
+    {
+      "id": "special-cases",
+      "title": "Part IV: Special Cases",
+      "startLine": 113,
+      "endLine": 142,
+      "summary": "Discusses the supercritical a_n = (1+c)/n (Kahane/Erdős: covers), the critical a_n = 1/n via the axioms `criticalSeq` and `erdos_critical` (covers), and the subcritical a_n = (1−c)/n (does not cover), pinpointing 1/n as the boundary."
     },
     {
       "id": "verification",
-      "title": "Verification",
-      "startLine": 151,
-      "endLine": 200,
-      "summary": "Checking Shepp's criterion for special sequences"
+      "title": "Part V: Verification of Shepp's Criterion for Special Cases",
+      "startLine": 143,
+      "endLine": 163,
+      "summary": "Verifies Shepp's criterion on each regime: for (1+c)/n, exp(S_n)/n² ≈ n^{c−1} diverges; for 1/n, exp(S_n)/n² ≈ 1/n (harmonic) diverges; for (1−c)/n, exp(S_n)/n² ≈ n^{−1−c} converges so the criterion fails."
+    },
+    {
+      "id": "dvoretzky-observation",
+      "title": "Part VI: Dvoretzky's Observation",
+      "startLine": 164,
+      "endLine": 176,
+      "summary": "Records Dvoretzky (1956): under the basic conditions (a_n → 0, Σa_n = ∞), the Lebesgue measure of the uncovered portion tends to 0 with probability 1 — almost all the circle is covered even when isolated uncovered points may remain."
     },
     {
       "id": "poisson-connection",
-      "title": "Poisson Connection",
+      "title": "Part VII: The Poisson Process Connection",
       "startLine": 177,
-      "endLine": 194,
-      "summary": "Proof techniques via Poisson processes"
+      "endLine": 195,
+      "summary": "Sketches Shepp's proof technique: modeling arc placements as a Poisson process on circle × [0,∞) so the uncovered set relates to Poisson gaps, with expected uncovered points ~ exp(−S_n) and the series Σ exp(S_n)/n² controlling finiteness."
+    },
+    {
+      "id": "computational-examples",
+      "title": "Part VIII: Computational Examples",
+      "startLine": 196,
+      "endLine": 202,
+      "summary": "A `native_decide` check that the partial harmonic sum 1 + 1/2 + 1/3 + 1/4 + 1/5 exceeds 2, illustrating the divergence that underlies the critical 1/n boundary."
+    },
+    {
+      "id": "logarithmic-growth",
+      "title": "Part IX: Logarithmic Growth and the Critical Boundary",
+      "startLine": 203,
+      "endLine": 214,
+      "summary": "Explains why 1/n is critical via harmonic growth H_n ≈ log n + γ: exp(H_n)/n² ≈ exp(γ)/n, whose sum barely diverges, placing a_n = 1/n exactly on the coverage/non-coverage threshold."
+    },
+    {
+      "id": "summary",
+      "title": "Part X: Summary",
+      "startLine": 215,
+      "endLine": 242,
+      "summary": "Summarizes Erdős #526 as SOLVED by Shepp (1972): coverage with probability 1 iff Σ exp(a_1+⋯+a_n)/n² = ∞, with the critical boundary (1+c)/n covers, 1/n covers, (1−c)/n fails. The theorem `erdos_526_summary` bundles Shepp's characterization with the critical case."
     }
   ],
   "conclusion": {
