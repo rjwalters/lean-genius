@@ -29,7 +29,7 @@
     "proofId": "mean-value-theorem-oq-02",
     "type": "definition",
     "range": {
-      "startLine": 55,
+      "startLine": 52,
       "endLine": 68
     },
     "title": "Taylor Polynomial via Finset.sum and iteratedDeriv",
@@ -55,11 +55,11 @@
     "proofId": "mean-value-theorem-oq-02",
     "type": "insight",
     "range": {
-      "startLine": 93,
+      "startLine": 70,
       "endLine": 98
     },
     "title": "Taylor's Theorem — Lagrange Remainder Axiom",
-    "content": "The central axiom: for `ContDiff ℝ (n+1) f` and `a < b`, there exists `c ∈ Set.Ioo a b` such that the error `f b - taylorPolynomial f a n b` equals `iteratedDeriv (n+1) f c / (n+1)! · (b-a)^(n+1)`. This is axiomatized rather than proved because the conversion from Mathlib's integral remainder to the Lagrange form requires the MVT for integrals: applying the integral mean value theorem to the non-negative weight function `(b-t)^n / n!`.",
+    "content": "The central axiom: for `ContDiff ℝ (n+1) f` and `a < b`, there exists `c ∈ Set.Ioo a b` such that the error `f b - taylorPolynomial f a n b` equals `iteratedDeriv (n+1) f c / (n+1)! · (b-a)^(n+1)`. This is axiomatized rather than proved because the conversion from Mathlib's integral remainder to the Lagrange form requires the MVT for integrals: applying the integral mean value theorem to the non-negative weight function `(b-t)^n / n!`. Notably, the imported `Mathlib.Analysis.Calculus.Taylor` already provides `taylor_mean_remainder_lagrange`, which states this Lagrange form *directly* (using `taylorWithinEval` and `iteratedDerivWithin` on `Set.Icc a b`). The remaining work to discharge this axiom is therefore primarily a convention bridge — identifying the global `iteratedDeriv`/`taylorPolynomial` used here with Mathlib's `Set.Icc`-localized `iteratedDerivWithin`/`taylorWithinEval` — rather than re-deriving the integral MVT from scratch.",
     "mathContext": "Lagrange remainder: $f(b) - T_n(b) = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$ for some $c \\in (a,b)$. Proof path from Mathlib's integral form: $R_n = \\int_a^b \\frac{(b-t)^n}{n!} f^{(n+1)}(t)\\,dt$. Since $h(t) = (b-t)^n/n! \\geq 0$ on $[a,b]$ and $f^{(n+1)}$ is continuous, the MVT for integrals gives $R_n = f^{(n+1)}(c) \\int_a^b \\frac{(b-t)^n}{n!}\\,dt = \\frac{f^{(n+1)}(c)}{(n+1)!}(b-a)^{n+1}$.",
     "significance": "key",
     "relatedConcepts": [
@@ -71,6 +71,7 @@
     ],
     "prerequisites": [
       "taylor_mean_remainder (Mathlib)",
+      "taylor_mean_remainder_lagrange (Mathlib)",
       "MeasureTheory.integral_mean_value",
       "ContDiff ℝ n f"
     ]
@@ -80,7 +81,7 @@
     "proofId": "mean-value-theorem-oq-02",
     "type": "insight",
     "range": {
-      "startLine": 117,
+      "startLine": 99,
       "endLine": 127
     },
     "title": "MVT is the n=0 Taylor Theorem",
