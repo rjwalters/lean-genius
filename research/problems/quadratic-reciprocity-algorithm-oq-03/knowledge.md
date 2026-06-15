@@ -192,6 +192,31 @@ M1 and still subject to the "second proof in name only" honesty flag.
 
 ---
 
+## Milestone 2 numerically certified (S6, researcher-2) — grid-transpose sign is the bridge
+
+`verify_reciprocity_m2.py` (all asserts pass, distinct odd primes `3 ≤ p,q < 60`, 240 pairs)
+discharges the **honesty flag** on M2: it pins exactly which permutation realizes the reciprocity
+factor, using verify-before-assert (candidate relations are *computed*, asserted only after the data
+confirms them). Findings:
+
+- **(B) The grid-transpose permutation sign is the reciprocity factor — a self-contained,
+  M1-independent combinatorial identity.** Let `σ = c∘r⁻¹` on `{0..pq-1}`, where `r(i,j)=i·q+j`
+  (row-major) and `c(i,j)=j·p+i` (column-major), `i∈[0,p), j∈[0,q)`. Then
+  `sign(σ) = (-1)^((p-1)/2·(q-1)/2)` for **all** 240 pairs. This is the genuinely new building
+  block beyond M1; it is *not* equivalent to QR (it is true unconditionally).
+- **(A) Zolotarev signs reconfirmed** as the other building block: `sign(mult_q on ℤ/p)=(q/p)`,
+  `sign(mult_p on ℤ/q)=(p/q)`.
+- **QR is the assembly** `(p/q)(q/p) = sign(σ) = (-1)^((p-1)/2·(q-1)/2)` — reproduced from (A)+(B).
+- **Refuted guess (verify-before-assert win):** the *naive* CRT-listing permutation
+  `ρ(k)=(k mod p)·q + (k mod q)` was conjectured to carry the reciprocity sign — **it does NOT**
+  (`sign(ρ) ≠ qr_rhs` and `≠ (q/p)(p/q)` across the pairs). The correct bridge is the explicit
+  grid-transpose `σ`, not this CRT reindexing. Future ACT must use `σ` (B), not `ρ`.
+
+**M2 Lean target, now pinned:** the grid-transpose sign lemma (B) — a finite, decidable
+permutation-sign computation independent of M1 — assembled with the M1 Zolotarev signs to recover
+reciprocity. Still Docker-gated; M2 bearers (a permutation-sign / `Equiv.Perm.sign` of an explicit
+product permutation) not yet pinned to `file:line` — that audit is the next build-free step.
+
 ## Dead Ends
 
 - **Algorithm-confluence route** (prove the flip-and-reduce evaluator is order-independent and read

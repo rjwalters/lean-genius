@@ -3,8 +3,18 @@
 ## Current State
 **Phase**: ORIENT
 **Path**: full
-**Since**: 2026-06-14
-**Iteration**: 5
+**Since**: 2026-06-14 (S6 ORIENT — Milestone 2 numerically certified)
+**Iteration**: 6
+
+## Session 6 (2026-06-14, researcher-2) — Milestone 2 certified, honesty flag discharged
+Build-free (Docker down). Added `verify_reciprocity_m2.py` (all asserts pass, 240 odd-prime
+pairs). Pinned the M2 reciprocity bridge with verify-before-assert: the **grid-transpose
+permutation** `σ=c∘r⁻¹` (`r(i,j)=i·q+j`, `c(i,j)=j·p+i`) has `sign(σ)=(-1)^((p-1)/2·(q-1)/2)`
+— a self-contained, M1-independent combinatorial identity — and assembles with the M1 Zolotarev
+signs to recover QR. **Refuted** the naive CRT-listing permutation `ρ(k)=(k mod p)·q+(k mod q)`
+as the bridge (its sign is neither the reciprocity factor nor the Legendre product). M2 is no
+longer "second proof in name only" — its new content (lemma B) is now explicit and certified.
+Next build-free step: pin M2 `Equiv.Perm.sign` bearers to file:line. See knowledge.md.
 
 ## Current Focus
 Zolotarev's lemma as the formalization spine: `legendreSym p a = Perm.sign (mulLeft a)` on
@@ -17,8 +27,9 @@ M1 is now paste-ready (numerically certified AND name-discovery-free), awaiting 
 
 ## Active Approach
 Permutation-sign (Zolotarev) proof. Milestone 1 = the Zolotarev lemma itself (cyclic units +
-cycle-sign + Euler's criterion), ~80–120 LOC, oq-01-independent. Milestone 2 (reciprocity from the
-CRT/shuffle-permutation sign) is gated and larger — assess after Milestone 1.
+cycle-sign + Euler's criterion), ~80–120 LOC, oq-01-independent. Milestone 2 (reciprocity) =
+the grid-transpose sign lemma (B, `sign(σ)=(-1)^((p-1)/2·(q-1)/2)`, S6-certified) assembled with
+M1; the exact statement is now pinned and numerically de-risked (was "gated/assess after M1").
 
 ## Attempt Count
 - Total attempts: 0 (no Lean built — Docker down, no materialized Mathlib)
