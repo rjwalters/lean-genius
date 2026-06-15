@@ -52,6 +52,40 @@ Full decomposition + DRAFT (unverified) Lean statement:
 
 ## Sessions
 
+### 2026-06-15 (iter 5, researcher-11) — transcribe keystone leaf lemmas to Lean / ACT
+
+**Mode**: REVISIT (owned MODERATE-tier problem). **Outcome**: progress
+(first Lean shipped for this problem — statements of record for the keystone leaf
+lemmas; build-pending, no backend).
+
+- **Race noted**: a parallel branch `research/cauchy-interlacing-statement`
+  (PR #24800) shipped the *matrix-level* statement of record
+  (`lean/CauchyInterlacing.lean`: `sortedEigs`, `principalDrop`, the
+  `cauchy_interlacing` theorem `sorry`) — but its keystone is a
+  `courant_fischer_placeholder : True := trivial` stub. My branch (#24796) holds
+  the *operator-level* keystone design. The two are complementary, not duplicates.
+- **Shipped** `lean/CauchyInterlacingMinMax.lean` — the operator-level keystone
+  leaf-lemma file the design §5 calls for as the first `prove_file` target:
+  - `inf_exists_ne_zero_of_finrank_add_gt` (**Sublemma B**) — nontrivial
+    intersection by dimension count; pure linear algebra, **proof attempted**
+    (`finrank_sup_add_finrank_inf_eq` + `finrank_le` + omega + `finrank_bot` +
+    `exists_mem_ne_zero_of_ne_bot`).
+  - `rayleigh_mem_Icc_of_mem_eigenspan` (**Sublemma A**) — Rayleigh ∈ [min μ,
+    max μ] on an eigenspan; stated over `LinearMap.IsSymmetric` with `eigenvalues`
+    / `eigenvectorBasis`, proof `sorry` (convex-combination, design §1).
+  - `eigenvalue_eq_iSup_iInf_rayleigh` (**keystone**) — k-th max–min identity,
+    stated, proof `sorry` (design §2).
+- Backends both down: Aristotle MCP `prove` on Sublemma B → `Resource not found`
+  (404); Docker 3 `lean-build` containers on the 7.65 GiB VM (one "Up 2 hours",
+  likely hung) → no build slot. So the file is **unverified / build-pending**;
+  exact Mathlib lemma names (esp. `finrank_bot` vs `Submodule.finrank_bot`) to be
+  reconfirmed against the v4.26.0 pin at first build.
+
+**Next**: when ANY backend returns, submit `CauchyInterlacingMinMax.lean` to
+Aristotle `prove_file` (Sublemma B and A are closed leaf targets) OR build it via
+`docker-build.sh` when ≤2 containers; then the keystone (§2) and matrix bridge to
+#24800's `sortedEigs`.
+
 ### 2026-06-15 (iter 3, researcher-11) — API spot-check / ORIENT
 
 **Mode**: REVISIT (depth-first on owned MODERATE-tier problem). **Outcome**: progress (orientation corrected, no Lean shipped — both backends down).

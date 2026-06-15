@@ -1,27 +1,29 @@
 # Research State: cauchy-interlacing-theorem
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-15 (iter 3, researcher-11)
-**Iteration**: 3
+**Since**: 2026-06-15 (iter 5, researcher-11)
+**Iteration**: 5
 
 ## Current Focus
-Mathlib API spot-checked against master. The iter-2 "no sorted eigenvalues" gap
-is RETRACTED — `Matrix.IsHermitian.eigenvalues₀` (antitone) is the statement
-vehicle. Exact extreme-Rayleigh signatures + minimal extreme-case lemma list
-pinned in `approaches/orient-min-max-scaffolding.md` (§4-verified, §5-revised).
-Keystone k-th min-max gap confirmed real. No Lean shipped — both backends down
-(Docker pool saturated at 3 `lean-build` containers; Aristotle `prove` → 404).
+First Lean shipped: `lean/CauchyInterlacingMinMax.lean` states the operator-level
+keystone (`eigenvalue_eq_iSup_iInf_rayleigh`) and its two closed leaf lemmas —
+Sublemma B (`inf_exists_ne_zero_of_finrank_add_gt`, proof attempted) and Sublemma
+A (`rayleigh_mem_Icc_of_mem_eigenspan`, `sorry`). These are the `prove_file` leaf
+targets from design §5. File is **build-pending** (Aristotle 404; Docker 3/3
+containers — no slot). Complements the parallel matrix statement of record on
+branch `research/cauchy-interlacing-statement` (#24800), whose keystone is only a
+`True` stub.
 
 ## Active Approach
 Approach A (Courant–Fischer min-max + codim-1 dimension count). See the orient
 memo §3. Approach B (secular-equation sign counting) parked as fallback.
 
 ## Attempt Count
-- Total attempts: 0 (no proof attempts; orientation only)
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1 (Sublemma B proof attempted in Lean; unverified — no backend)
+- Current approach attempts: 1
+- Approaches tried: 1 (Approach A, leaf lemmas)
 
 ## Blockers
 - Mathlib lacks a k-th Courant–Fischer min-max characterization (keystone to build) — CONFIRMED absent on master.
@@ -29,9 +31,12 @@ memo §3. Approach B (secular-equation sign counting) parked as fallback.
 - (Resolved: the "unsorted eigenvalues" blocker — `eigenvalues₀` is sorted/antitone.)
 
 ## Next Action
-Per orient memo §6, in order:
-1. ~~API spot-check~~ DONE (iter 3) — see §4-verified.
-2. Formalize the two EXTREME cases (k=0 top, k=last bottom) over `eigenvalues₀`
-   from the extreme Rayleigh API — smallest viable first PR; ideal Aristotle job.
-3. Build the k-th min-max lemma (keystone).
-4. Assemble interlacing.
+1. ~~API spot-check~~ DONE (iter 3). ~~State keystone + leaf lemmas in Lean~~ DONE
+   (iter 5, `lean/CauchyInterlacingMinMax.lean`).
+2. When ANY backend returns: submit `CauchyInterlacingMinMax.lean` to Aristotle
+   `prove_file` (Sublemma A + B are closed leaf targets), OR `docker-build.sh`
+   when ≤2 containers. Reconfirm lemma names (`finrank_bot`, `eigenvalues`,
+   `eigenvectorBasis`, `finrank_sup_add_finrank_inf_eq`) against v4.26.0 pin.
+3. Prove the keystone max–min identity (design §2) from the leaf lemmas.
+4. Bridge to the matrix `sortedEigs` (#24800) via the spectral theorem; assemble
+   one-step interlacing (scaffolding §3).
