@@ -1,0 +1,95 @@
+{
+  "slug": "four-square-distribution-oq-04",
+  "title": "Type-Decomposition of Sums of 2k Squares via the Hyperoctahedral Group",
+  "phase": "ORIENT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For r_{2k}(n)=#{(x_1,...,x_{2k}) in Z^{2k}: sum x_i^2 = n}, does the orbit-stabilizer type-decomposition of the four-square (2k=4) gallery proof generalize under the hyperoctahedral group B_{2k}=S_{2k} semidirect (Z/2)^{2k}, |B_{2k}|=(2k)!*2^{2k}: orbit(shape s)=2^{#nonzero}*(2k)!/prod m_i!, and r_{2k}(n)=sum over shapes orbit(s)?",
+    "plain": "Many four-square representations are just sign-changes and reorderings of each other; the gallery proof groups them into orbits of the signed-shuffle group on 4 coordinates. This asks whether the same bookkeeping works for sums of 6, 8, ... squares with the signed-shuffle group on 2k coordinates.",
+    "whyMatters": [
+      "A group-theoretic orbit decomposition cleanly separates the combinatorial multiplicity (orderings/signs per shape) from the arithmetic content (how many shapes), turning a single worked example into a parametric library.",
+      "The arithmetic total can be supplied by Jacobi-type formulas, isolating exactly the hyperoctahedral combinatorial factor."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Orbit-size formula orbit(s)=2^{#nonzero}*(2k)!/prod m_i! verified exactly for 2k in {2,4,6,8} (verify_hyperoctahedral_2k.py).",
+      "Stabilizer order |stab(s)|=2^z*z!*prod_{nonzero} m_j! confirmed via orbit-stabilizer orbit*stab=|B_{2k}| for all shapes in range.",
+      "Decomposition r_{2k}(n)=sum_shapes orbit(s) verified for 2k in {2,4,6,8} against independently convolved r_{2k}(n); anchored r_2=4(d1-d3), r_4=8 sigma*."
+    ],
+    "open": [
+      "Lean ACT (Docker-gated): define the B_{2k} MulAction and prove the orbit-size formula via card_orbit_mul_card_stabilizer_eq_card_group for fixed m in {4,6,8}.",
+      "The orbit PARTITION r_{2k}=sum orbit (every signed ordering in exactly one shape orbit) is the real Lean obstruction, as in the 2k=4 parent."
+    ],
+    "goal": "Formalize the orbit-stabilizer decomposition for r_{2k}(n) (at least fixed 2k in {4,6,8}): define the signed-permutation action, prove orbit size = 2^{#nonzero}*(2k)!/prod m_i!, and recover the total as a sum over shapes."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T07:05:00.000Z",
+    "iteration": 2,
+    "focus": "Generalization CONFIRMED for 2k in {2,4,6,8}: orbit size 2^{#nonzero}*(2k)!/prod m_i!, stabilizer 2^z*z!*prod(nonzero m_j!), r_{2k}=sum_shapes orbit. Mathlib orbit-stabilizer bearer pinned; B_{2k} has no Mathlib name (must be assembled).",
+    "blockers": [
+      "Lean ACT Docker-gated (build + Aristotle both down this session).",
+      "B_{2k} (signed permutations) absent from Mathlib by name."
+    ],
+    "nextAction": "ACT (next Docker session): fixed m=2k in {4,6,8}; define B_m MulAction on {f:Fin m -> Z // sum f^2 = n}, compute stabilizer (zero/nonzero split), apply MulAction.card_orbit_mul_card_stabilizer_eq_card_group. Real obstruction = orbit partition.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    },
+    "lastUpdate": "2026-06-15T07:05:00.000Z"
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: answered the seeker's generalization question YES. The four-square orbit-stabilizer type-decomposition extends verbatim to r_{2k}(n) under B_{2k}=S_{2k} semidirect (Z/2)^{2k}: orbit(shape with z zeros, multiplicities m_i)=2^{2k-z}*(2k)!/prod m_i!, stabilizer=2^z*z!*prod(nonzero m_j!), r_{2k}(n)=sum over shapes orbit. Verified exactly for 2k in {2,4,6,8}. Lean ACT Docker-gated.",
+    "builtItems": [
+      "research/problems/four-square-distribution-oq-04/verify_hyperoctahedral_2k.py - stdlib exact verifier: orbit-size formula vs independent brute signed-ordering count; orbit*stab=|B_{2k}| (orbit-stabilizer); sum_shapes orbit == r_{2k}(n) (independent convolution) for 2k in {2,4,6,8}; anchors r_2=4(d1-d3), r_4=8 sigma*. All checks PASS."
+    ],
+    "insights": [
+      "The orbit-stabilizer decomposition generalizes to all 2k with orbit size 2^{#nonzero}*(2k)!/prod m_i!. |B_8|=8!*2^8=10321920.",
+      "Stabilizer is NOT the full Young subgroup prod m_i!: only the 2^z sign flips on ZERO coordinates fix a tuple (flipping a 0 is trivial; flipping a nonzero changes the value). So |stab|=2^z*z!*prod_{nonzero} m_j!, and the orbit carries 2^{#nonzero} not 2^{2k}. Mishandling zeros is the one place a naive |B|/Young computation fails.",
+      "The orbit-size formula (orbit-stabilizer) is the easy half; the orbit PARTITION r_{2k}=sum orbit is the real Lean obstruction (the parent proved it only case-by-case for small n)."
+    ],
+    "mathlibGaps": [
+      "B_{2k}=S_{2k} semidirect (Z/2)^{2k} (hyperoctahedral / signed permutation group) has NO Mathlib name (code search 'hyperoctahedral' = 0 hits); must be assembled from Equiv.Perm (Fin 2k) + (ZMod 2)^{2k} sign flips.",
+      "No general sums-of-2k-squares count r_{2k} in Mathlib beyond Lagrange existence (Nat.sum_four_squares)."
+    ],
+    "nextSteps": [
+      "ACT fixed m in {4,6,8}: MulAction of Equiv.Perm (Fin m) x sign flips on {f:Fin m -> Z // sum f^2 = n}; stabilizer order via zero/nonzero split; orbit size via MulAction.card_orbit_mul_card_stabilizer_eq_card_group (Mathlib/GroupTheory/GroupAction/Quotient.lean).",
+      "Prove the orbit partition r_{2k}=sum_shapes orbit (a MulAction partition argument) \u2014 the genuine obstruction.",
+      "Supply r_6,r_8 arithmetic totals (Jacobi/modular) to state the decomposition with explicit totals."
+    ],
+    "markdown": "See research/problems/four-square-distribution-oq-04/knowledge.md"
+  },
+  "tags": [
+    "number-theory",
+    "sums-of-squares",
+    "hyperoctahedral-group",
+    "representations",
+    "group-actions",
+    "research"
+  ],
+  "relatedProofs": [
+    "four-square-distribution",
+    "four-square-distribution-oq-01",
+    "lagrange-four-squares-waring-g2"
+  ],
+  "references": {
+    "papers": [
+      "Jacobi, sums-of-squares formulas (classical).",
+      "Grosswald, Representations of Integers as Sums of Squares."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.GroupTheory.GroupAction.Quotient (card_orbit_mul_card_stabilizer_eq_card_group)",
+      "Mathlib.GroupTheory.Index (orbitEquivQuotientStabilizer)",
+      "Nat.sum_four_squares"
+    ]
+  },
+  "started": "2026-06-15T07:05:00.000Z",
+  "lastUpdate": "2026-06-15T07:05:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
