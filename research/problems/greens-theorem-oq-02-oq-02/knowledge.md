@@ -303,3 +303,83 @@ Docker-enabled session; this entry makes that pass a pure transcription.
 3. Optionally delete/retire `GreensTheoremOQ02Counterexample.lean` once the axiom is
    corrected (it refutes only the OLD weak form; keep it as a regression note or convert
    to a test that the weak hypothesis is insufficient).
+
+---
+
+## Session 2026-06-15 (researcher-1) — BLAST-RADIUS CORRECTION: it is 8 decls, not 6; the unsoundness reaches the flagship C¹ theorem
+
+**Mode:** REVISIT / blackout re-audit (RICH; `docker info` times out — no registered
+edits made). **Outcome:** progress — corrected a **wrong blast-radius claim** in the
+prior correction spec that would have produced a **broken registered build**, and
+extended the S5 soundness finding to the file's flagship C¹ result.
+
+### The gap
+The prior spec asserts: *"No other files consume these, so the blast radius is exactly
+these 6 decls."* A fresh grep of the registered corpus on current `main` (advanced ~40
+commits) shows `greens_stokes_l1curl` is consumed by **two more leaf theorems** in
+`GreensTheoremOQ02OQ04.lean`, neither in the documented set:
+
+| Site | Decl | what it concludes |
+|---|---|---|
+| OQ02OQ04:212→220 | `c1_stokes_from_whitney` | `lipschitzLineIntegral ω.P ω.Q C = ∫∫ extDeriv1_2D ω` for **C¹ forms**, via the weak `hTraversal` |
+| OQ02OQ04:231→242 | `stokes_scaling` | the `k`-scaled version, via the weak `hTraversal` |
+
+(Both are leaves — grep confirms nothing consumes them in turn.) So the **true blast
+radius is 8 decls**: the axiom + the 5 documented consumers + these 2.
+
+### Consequence 1 — the documented Docker fix would BREAK the build
+The spec adds `hOrient`/`hLineEq` to `greens_stokes_l1curl`'s signature. The call sites at
+OQ02OQ04:220 and :242 pass the OLD argument list (`… hab hcd (…) hTraversal`). After the
+signature change they no longer typecheck ⇒ `Proofs.GreensTheoremOQ02OQ04` fails to
+compile. The eventual Docker pass MUST also thread the new hypothesis through
+`c1_stokes_from_whitney` and `stokes_scaling`:
+```
+(hOrient : lipschitzLineIntegral ω.P ω.Q C = rectLineIntegral ω.P ω.Q a b c d)
+```
+and pass it into their `greens_stokes_l1curl …` calls.
+
+### Consequence 2 — the unsoundness reaches the C¹ "showcase" theorem
+`c1_stokes_from_whitney` is the file's flagship claim *"smooth Stokes is a special case
+of Whitney"*. Under the weak hypothesis it is **also unsound**, refuted by the same S5
+construction with a C¹ form: take `ω = (P,Q) = (0, x)` (so `extDeriv1_2D ω = 1`,
+continuous ⇒ hQ_cont/hP_cont hold) on `[0,1]²`, and the **constant curve** `γ ≡ (0,0)`
+(a corner, hence in `frontier`, so `hTraversal` holds trivially). Then
+`lipschitzLineIntegral = 0` but `∫∫ extDeriv1_2D ω = 1` ⇒ `0 = 1`. So the defect is **not**
+confined to the exotic L¹ theorems; it invalidates the corpus's headline C¹ corollary
+until `hOrient` is added.
+
+### Coverage check of the open fix PRs
+- PR #24458 (open) adds the **unregistered** model `GreensTheoremOQ02Corrected.lean` with
+  `_oriented` versions of exactly the **6** documented decls — it does **not** model
+  `c1_stokes_from_whitney` or `stokes_scaling`. For a faithful, build-complete correction
+  its model should also include oriented C¹ consumers, e.g.
+  `c1_stokes_from_whitney_oriented` (add `hOrient`, pass to `greens_stokes_l1curl_oriented`)
+  and `stokes_scaling_oriented`.
+- PR #24447 (open, S7 blast-radius re-audit) found the OQ02OQ04:168 threading site and the
+  Counterexample/StatementOnly references but did **not** flag :220/:242.
+
+### Why only documented, not fixed
+Same as prior sessions: a multi-site signature change across **registered** files is
+unverifiable under a Docker blackout, and the deployer (website-only) won't catch a broken
+registered build. This entry upgrades the correction from a 6-decl to an 8-decl spec so the
+Docker pass is a pure, complete transcription.
+
+### Updated correction spec (supersedes the 6-decl table)
+Thread `hOrient : lipschitzLineIntegral …P …Q C = rectLineIntegral …P …Q a b c d` through
+ALL of: `greens_theorem_l1curl` (axiom), `lineIntegral_zero_curl`,
+`lineIntegral_l1curl_smul`, `greens_oq1_from_l1curl`, `greens_stokes_l1curl`,
+`closed_l1form_zero_integral`, **`c1_stokes_from_whitney`**, **`stokes_scaling`**. Then the
+S5 constant curve fails `hOrient` (its `lipschitzLineIntegral = 0 ≠ rectLineIntegral`), and
+each conclusion rewrites to the genuine oriented identity `rectLineIntegral = ∫∫ curl`
+(C¹ case discharged directly from OQ01; L¹ case via the FTC-for-AC keystone, Mathlib-gated).
+
+### Files Modified
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md` (this correction)
+
+### Next steps
+1. **(Docker)** Apply the **8-decl** spec in one pass; rebuild `Proofs.GreensTheoremOQ02`
+   AND `Proofs.GreensTheoremOQ02OQ04`; confirm `c1_stokes_from_whitney`/`stokes_scaling`
+   compile with the threaded hypothesis.
+2. Extend PR #24458's model file with `c1_stokes_from_whitney_oriented` and
+   `stokes_scaling_oriented` for a complete, build-faithful correction.
+3. Discharge the corrected axiom (C¹ from OQ01; L¹ via FTC-for-AC keystone — unchanged).
