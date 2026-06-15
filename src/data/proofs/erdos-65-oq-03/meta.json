@@ -103,7 +103,32 @@
     {
       "targetId": "erdos-65",
       "relationship": "parent-problem",
-      "description": "Parent Erdős problem #65 on cycle lengths in graphs with large average degree"
+      "description": "Parent Erdős problem #65: does a graph with $n$ vertices and $kn$ edges satisfy $\\sum 1/a_i \\gg \\log k$, and is the sum minimized by complete bipartite graphs? This entry formalizes the sharp constant $1/2$ and the bipartite tightness answering both questions affirmatively."
+    },
+    {
+      "targetId": "erdos-72",
+      "relationship": "related-problem",
+      "description": "Erdős #72 (unavoidable cycle lengths) was also resolved by Liu and Montgomery (2020), whose techniques underpin the $(1/2 - o(1))\\log d$ bound axiomatized here. Their work refuted Erdős's intuition that powers of two are the unavoidable lengths — directly informing the cycle-spectrum picture used in the tightness argument."
+    },
+    {
+      "targetId": "erdos-752",
+      "relationship": "related-problem",
+      "description": "Erdős #752 (Sudakov-Verstraëte 2008) shows minimum degree $k$ and girth $>2s$ force $\\gg k^s$ distinct cycle lengths. It quantifies the *number* of distinct cycle lengths, whereas this entry weights those lengths by reciprocals to obtain the sharp $\\frac{1}{2}\\log d$ constant."
+    },
+    {
+      "targetId": "erdos-84",
+      "relationship": "related-problem",
+      "description": "Erdős #84 counts the distinct *cycle sets* realizable on $n$ vertices (between $2^{n/2}$ and $2^{n-2}$). Like this entry it concerns the global structure of the cycle-length spectrum rather than any single cycle; the even-only spectrum of $K_{m,m}$ used here is one such extremal cycle set."
+    },
+    {
+      "targetId": "erdos-64",
+      "relationship": "related-problem",
+      "description": "Erdős #64 asks whether minimum degree $\\ge 3$ forces a cycle of length $2^k$ (open, \\$1000 prize). It belongs to the same circle of dense-graph cycle-length problems; the odd-vs-even cycle-finding analysis used here mirrors the toolkit that attacks such questions."
+    },
+    {
+      "targetId": "erdos-751",
+      "relationship": "related-problem",
+      "description": "Erdős #751 (Bondy-Vince 1998): graphs with minimum degree $\\ge 3$ have two cycles whose lengths differ by at most 2, bounding *gaps* in the cycle spectrum. This complements the reciprocal-sum lower bound here, which instead controls the spectrum's weighted density."
     }
   ],
   "leanFile": {
