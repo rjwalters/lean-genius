@@ -226,3 +226,66 @@ $n\le 12$ ⇒ every $G(n)$ below is a verified lower bound on $f(n)$.
   order-type database) to test whether $G(n)=f(n)$ persists past $n=6$.
 - (unchanged) tighten the S3 upper constant; replace the Lean `countLineCompatible`
   placeholder ($=2^n-1$, Docker-gated).
+
+## Session 2026-06-15 (Session 5, researcher-1) — ACT: fix axiom-integrity bug (placeholder def made `upper_bound` provably false)
+
+**Mode**: REVISIT (MODERATE; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: integrity fix — replaced the placeholder `countLineCompatible` definition with the
+genuine `f(n)`, turning two **false** axioms into the true literature statements. Build-pending
+(registered file), but a minimal, name-checked, high-confidence-safe change.
+
+### The bug
+`Erdos733Problem.lean` (REGISTERED, Proofs.lean:1894) defined
+```
+noncomputable def countLineCompatible (n : ℕ) : ℕ :=
+  ((Finset.range n).powerset.filter (fun s => s.card > 0)).card   -- = 2^n − 1
+```
+explicitly flagged as a placeholder. But every theorem/axiom about `f(n)` was stated on this body.
+In particular `axiom upper_bound : ∃ C>0, ∀ n≥2, (countLineCompatible n : ℝ) ≤ exp(C·√n)` is
+**provably false** under it: `2^n − 1 ~ exp(n·log 2)` exceeds `exp(C·√n)` for every fixed `C` and
+large `n`. A false axiom makes the axiom set inconsistent ⇒ `tight_bounds`, `erdos_733`, etc. were
+"proved" from `False`. This is an Axiom-Integrity-Policy violation (the build still *compiled* —
+Lean does not check axiom truth — so it went unnoticed across S1–S4 + 2 open ORIENT PRs).
+
+### The fix
+```
+import Mathlib.SetTheory.Cardinal.Finite   -- new
+noncomputable def countLineCompatible (n : ℕ) : ℕ :=
+  Nat.card { seq : List ℕ // isLineCompatible seq n }
+```
+`isLineCompatible seq n` (line 87) already requires `seq` sorted, entries in `[2,n]`, and a realizing
+`n`-point configuration — so this is exactly the intended `f(n)`. The subtype is finite (length ≤
+C(n,2), entries ≤ n); `Nat.card` is total (`0` on infinite types) so the def is total regardless.
+Under it both `lower_bound` (Erdős) and `upper_bound` (Szemerédi–Trotter) are the genuine, true
+bounds — axiom set now consistent. Axiom count unchanged (2), sorries unchanged (2:
+`grid_gives_lower`, `limit_bounds`).
+
+### Why build-safe (verified under blackout)
+- `Nat.card` is `protected def Nat.card (α : Type*) : ℕ` at `Mathlib/SetTheory/Cardinal/Finite.lean:41`
+  (authoritative checkout); module path confirmed; used in other registered Proofs files. Added the
+  explicit import so availability does not rely on transitive imports.
+- `Nat.card` needs **no** `Fintype`/`Finite` instance (works on any `Type*`), and the subtype of a
+  `Prop` predicate over `List ℕ` is a well-formed `Type`. The def was already `noncomputable`.
+- **No computational dependence on the old body**: grepped every use of `countLineCompatible` —
+  all 11 occurrences cast to ℝ inside inequalities / `Real.log`; there is no `decide`/`native_decide`/
+  `rfl`/`#eval` anywhere in the file. So nothing that previously relied on `= 2^n − 1` exists.
+
+### Files Modified
+- `proofs/Proofs/Erdos733Problem.lean` (+1 import, def body, explanatory comment; 274→286 lines)
+- `src/data/proofs/erdos-733/meta.json` (lineCount 274→286; assumptions reworded to record the fix)
+- `research/problems/erdos-733-oq-01/knowledge.md` (this entry)
+
+### Honesty / scope
+- This does **not** advance the open problem (the constant λ is OPEN; the two bounds remain
+  axiomatized literature results). It fixes a soundness defect — strictly more valuable than the
+  ORIENT constant-chasing in the open PRs, per the Axiom Integrity Policy. The `f(n)` placeholder
+  issue that S1–S3 deferred as "Docker-gated" is resolved at the definition level (no native_decide
+  needed — the count is now a `Nat.card`, not an enumeration).
+- **Build-pending** (registered file; Docker/Aristotle both down). Flag build-before-merge; the
+  change is minimal and name-checked but not machine-compiled this session.
+
+### Next Steps
+- On a build host: compile `Proofs.Erdos733Problem`; the only risk is the new import / `Nat.card`
+  elaboration (both verified present). Then the file is sound.
+- The deep work (λ constant, discharging the two sorries / the exp(√n) axioms) remains OPEN —
+  see the two open ORIENT PRs (#24269 lower, #24295 upper) for the analytic frontier.
