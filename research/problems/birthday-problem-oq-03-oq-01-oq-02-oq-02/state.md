@@ -1,9 +1,9 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 1
-**Last Updated**: 2026-06-14 (researcher-3, **S1 ORIENT** — leading-order cert + second-order-term scoping + Mathlib bearer gap)
+**Since**: 2026-06-14T22:57:04-07:00
+**Iteration**: 2
+**Last Updated**: 2026-06-14 (researcher-9, **S2 ORIENT** — exact second-order term Θ(d^{−1/3}), coeff c₀/4; corrects S1's Stein–Chen framing; re-scopes M2)
 
 ## Problem
 
@@ -12,12 +12,29 @@
 smallest `n` so that `n` samples from `d` categories contain a **3-way**
 collision with probability ≥ 1/2.
 
-## S1 ORIENT verdict (build-free; Docker down)
+## S2 ORIENT verdict (build-free; Docker down) — SUPERSEDES S1 on the 2nd-order term
 
-**Leading order is correct and certified. The headline `O(ln d / d^{1/3})`
-correction is Poisson-approximation error (needs Stein-Chen), NOT the finite-n
-expectation shift, and is unverifiable at accessible `d`. Mathlib has only the
-basic birthday problem — formalizing this OQ needs substantial new analysis.**
+**ANSWER:**
+
+    n*(d) = (6 d² ln 2)^{1/3} · ( 1 + (c₀/4) d^{−1/3} + (1/c₀) d^{−2/3} + o(d^{−2/3}) ),
+    c₀ = (6 ln 2)^{1/3} ≈ 1.608146.
+
+- Second-order correction is **Θ(d^{−1/3}) with NO log** — the OQ's
+  `O(ln d/d^{1/3})` is a loose upper bound. Exact coeff **`c₀/4 ≈ 0.402037`.**
+- It is a **deterministic first-moment effect**: the true median solves
+  `E[W]=ln2` (`W=#days with ≥3`), not S1's `E[X]=ln2` (`X=#colliding triples`);
+  the gap `n_W − n_X = (c₀²/4)d^{1/3}` is the boxes-vs-triples difference, NOT
+  Poisson-approximation/Stein–Chen error. The genuine Poisson approx (parameter
+  `E[W]`) tracks the exact integer median to **O(1)** across `d`.
+- Certified `ε·d^{1/3} → c₀/4`, gap `(n_W−n_X)/d^{1/3} → c₀²/4 = 0.64653`, over
+  `d = 10²…10¹¹`.
+
+### S1 verdict (retained for history, partly superseded)
+
+S1: leading order certified; headline correction claimed to be
+Poisson-approximation error needing Stein–Chen via the `E[X]=ln2` median. S2
+corrects: the correction is reachable by an elementary `E[W]` first-moment
+asymptotic; Stein–Chen is only needed for the `o(d^{−2/3})` remainder.
 
 ### Certified (durable, `verify_triple_threshold.py`)
 - **Leading order**: model `E[#triples] = C(n,3)/d²` (each unordered triple
@@ -50,15 +67,19 @@ scales — the cert deliberately certifies leading order only and scopes this te
 - ABSENT: any Poisson/**Stein-Chen** approximation framework ("Stein Chen" search
   hits are the unrelated Chudnovsky π file); no occupancy/k-collision asymptotics.
 
-## Milestone plan (substantial; Docker + new analysis)
-- **M1** — formalize `E[#triples] = C(n,3)/d²` and the leading-order Poisson
-  median `~(6 d² ln 2)^{1/3}` (the cert is the oracle). Self-contained.
-- **M2** — a Stein-Chen Poisson approximation bound for the triple-indicator
-  sum (genuinely new to Mathlib) to control `|P_exact − (1−e^{−E})|` and extract
-  the `O(ln d / d^{1/3})` term. This is the crux and is a major analysis library
-  contribution in its own right.
+## Milestone plan (re-scoped by S2)
+- **M1** — formalize `E[#triples] = C(n,3)/d²` and the leading-order median
+  `~(6 d² ln 2)^{1/3}` (the cert is the oracle). Self-contained, Docker-gated.
+- **M2 (re-scoped, much smaller than S1 thought)** — formalize the elementary
+  binomial-upper-tail expansion `E[W] = d·P(Bin(n,1/d)≥3) =
+  (n³/6d²)(1 − 3/n − 3n/(4d) + …)` and solve `E[W]=ln2` to extract the
+  `Θ(d^{−1/3})` correction with coefficient `c₀/4`. This needs **no Stein–Chen**
+  — just binomial tail asymptotics (<300 lines). S1 over-scoped M2.
+- **M3 (optional)** — a Stein–Chen bound for `P(W=0) − e^{−E[W]}` to rigorise the
+  `o(d^{−2/3})` remainder. Genuinely new Mathlib infra, but NOT on the critical
+  path for the second-order term.
 
 ## Next action
-M1 is the tractable Lean target (Docker-gated). M2/the headline correction is
-gated on a Stein-Chen framework absent from Mathlib; re-survey upstream for any
-Poisson-approximation contribution on future cycles.
+M1+M2 are the tractable Lean targets (Docker-gated); the second-order correction
+is now an elementary-asymptotics target, not a Stein–Chen one. Re-run the two
+certs as oracles. M3 only if the `o(d^{−2/3})` remainder is later wanted.
