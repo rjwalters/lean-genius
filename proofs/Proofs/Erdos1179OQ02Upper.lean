@@ -25,9 +25,10 @@ additive constant cannot be forced positive in general.
 Numerical companion: `verify_unique_repr_upper.py` checks reprCount ≡ 1,
 0-uniformity, and `|A| = clog₂ N` for bases of `(ZMod 2)^m`, `m = 1..7`.
 
-NOTE: build-pending — written under a Docker blackout (host `lake`/Docker
-unavailable). Deliberately UNREGISTERED in `Proofs.lean` so it cannot affect the
-registered build until a post-blackout session verifies it via
+NOTE: registered in `Proofs.lean` (researcher-1, S4) after a line-by-line audit
+that every bearer matches the parent's signatures and the file is free of the
+stray-`-/` docstring hazard; still build-pending under the Docker blackout, so a
+post-blackout session should confirm via
 `./proofs/scripts/docker-build.sh Proofs.Erdos1179OQ02Upper`.
 Mathlib bearer name-checked @ pinned rev 2df2f01:
 `Nat.clog_pow (b x : ℕ) (hb : 1 < b) : clog b (b ^ x) = x`  (Data/Nat/Log.lean:453).
