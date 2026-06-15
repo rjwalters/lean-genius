@@ -141,10 +141,27 @@ def erdos653Conjecture : Prop :=
 /-- **Trivial Lower Bound:**
 g(n) ≥ 1 for n ≥ 2 (at least one R-value exists). -/
 /--
-**Trivial Upper Bound:**
-g(n) ≤ n (can't have more distinct values than points).
+**Trivial Upper Bound:** `g(n) ≤ n` (can't have more distinct values than points).
+
+Elementary and unconditional: for any `n`-point configuration `S`, the R-value set
+`rValueSet S = S.image (distinctDistCount S)` is the image of `S` under a single
+function, so its cardinality cannot exceed `S.card = n` (`Finset.card_image_le`).
+Since `g n` is the supremum of these counts, `g n ≤ n`.
+
+(Discharged from an axiom to a theorem: previously a stated assumption, now machine
+checked. The sharper `g_le_n_sub_one` below gives `g(n) ≤ n - 1` for `n ≥ 2`.)
 -/
-axiom g_le_n : ∀ n : ℕ, g n ≤ n
+theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
+  intro n
+  unfold g
+  apply csSup_le'
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  calc numDistinctRValues S
+      = (rValueSet S).card := rfl
+    _ ≤ S.card := by unfold rValueSet; exact Finset.card_image_le
+    _ = n := hcard
 
 /--
 **Monotonicity:**

@@ -180,3 +180,53 @@ is OPEN and untouched; the two literature axioms (`csizmadia_bound`, `upper_boun
 correct citations. Remaining ACT item: the elementary lower bound `g(n) ≥ ⌈n/2⌉` (S1 #3),
 which needs an explicit collinear membership witness into the sSup set — deferred (heavier,
 build-gated).
+
+## Session 2026-06-15 (Session 4, researcher-1, ACT — discharge the `g_le_n` axiom)
+
+**Mode:** CONTINUE / ACT. **Outcome:** eliminated one axiom (3 → 2). Dual blackout
+persists this session (`docker info` times out → DOCKER_DOWN; Aristotle MCP `prove`
+returns "Resource not found" 404 despite the tool being exposed), so the new theorem
+is **build-pending** but is a strict simplification of an already-building proof.
+
+**Delta shipped:** `axiom g_le_n : ∀ n, g n ≤ n` → `theorem g_le_n` (proved).
+
+```lean
+theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
+  intro n
+  unfold g
+  apply csSup_le'
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  calc numDistinctRValues S
+      = (rValueSet S).card := rfl
+    _ ≤ S.card := by unfold rValueSet; exact Finset.card_image_le
+    _ = n := hcard
+```
+
+**Why high-confidence despite no build:** the proof skeleton (`unfold g; apply csSup_le';
+intro k hk; simp only [Set.mem_setOf_eq] at hk; obtain ⟨S, hcard, rfl⟩ := hk`) is byte-for-byte
+the opening of `g_le_n_sub_one`, which is on `origin/main` and was aggregate-build-verified
+by the `Nat.sSup_le → csSup_le'` fix (#24368). The continuation is *simpler* than
+`g_le_n_sub_one`'s: it bounds `numDistinctRValues S = (rValueSet S).card ≤ S.card = n`
+by a single `Finset.card_image_le` (already used at line ~219 in the same file), with
+no lower-bound / `Icc` machinery. So this is a proper sub-proof of code that already builds.
+
+**Axiom status now (post-session):** 2 axioms, both genuine literature citations and
+correctly left as axioms per the Axiom Integrity Policy:
+- `csizmadia_bound` (g(n) > 7n/10) — deep, out of reach (no incidence geometry in Mathlib);
+- `upper_bound` (g(n) < n - cn^{2/3}) — deep gap result, likewise out of reach.
+
+**Note on `Nat.sSup_le`:** confirmed (again, vs sibling `~/GitHub/mathlib4`) that
+`Nat.sSup_le` does **not** exist — ℕ is `ConditionallyCompleteLinearOrderBot`; the
+correct lemma is `csSup_le'` (`Mathlib/Order/ConditionallyCompleteLattice/Basic.lean:609`,
+signature `(h : a ∈ upperBounds s) : sSup s ≤ a`). The worktree had briefly diverged with
+the stale `Nat.sSup_le`; `origin/main` is already fixed.
+
+**meta.json:** axiomCount 3→2, theoremCount 3→4, lineCount 310→327; assumptions/sections
+text updated; originalContributions reclassifies `g_le_n` as a proved theorem.
+
+**Honest assessment:** modest, real progress — one axiom discharged, no new axioms/sorries,
+no scaffolding added. The OQ (`g(n) ≥ (1-o(1))n`) is OPEN and untouched. The remaining
+ACT item is still the elementary lower bound `g(n) ≥ ⌈n/2⌉` (S1 #3), which needs an
+explicit collinear membership witness into the sSup set (heavier; build-gated; deferred).
