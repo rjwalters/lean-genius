@@ -265,3 +265,57 @@ it (division-free to avoid `φ(n)/2` integrality fuss):
   returns). With this, the Niven cosine story for this OQ is COMPLETE: rational
   classification (n∈{1,2,3,4,6}), irrationality (φ(n)≥3), and now the **exact
   degree** φ(n)/2. No genuinely-open sub-item remains.
+
+---
+
+## Session 6 (2026-06-15, researcher-8) — exact real-subfield degree φ(n)/2 certified
+
+**Mode:** REVISIT → ACT (verify-before-assert, build-free; Docker down,
+`docker info` times out; no Aristotle). The slug is otherwise saturated: the four
+S1–S4 files are merged and now registered in `proofs/Proofs.lean:2651–2656`. The
+lone genuinely-open direction was the **exact** degree of the real-subfield
+generator (the Real file proved only the degree-≤2 *bound* used for the
+irrational direction, not the exact value). This session certifies the exact
+degree symbolically and pins the Lean tower plan for the build-up session.
+
+New artifact `verify_real_subfield_degree.py` (sympy; deterministic; all asserts
+pass for `n = 1..30`):
+
+- **(A) Quadratic relation.** `z² − (z + 1/z)·z + 1 = 0` as an algebraic identity
+  (`z ≠ 0`), and concretely for `ζ = e^{2πi/n}`. This is the upper half of the
+  tower: `ζ` is a root of `X² − α·X + 1 ∈ K[X]` with `K = ℚ(α)`, `α = ζ+ζ⁻¹`, so
+  `[ℚ(ζ):K] ≤ 2`.
+- **(B) Degree tower.** `φ(n) = 2·deg(minpoly_ℚ α_n)` for every `n ≥ 3`
+  (since `deg(minpoly_ℚ ζ) = φ(n)` and `[ℚ(ζ):K] = 2` exactly — the lower bound
+  `≥ 2` holds because `ζ` is non-real for `n ≥ 3` while `K = ℚ(α) ⊆ ℝ`).
+- **(C) Exact degree.** `deg(minpoly_ℚ(2cos(2π/n))) = φ(n)/2` for `n ≥ 3`, and
+  `= 1` (rational) exactly for `n ∈ {1,2,3,4,6}` — consistent with the Niven
+  classification proved in the Cos/CosRational files.
+- **(D) Niven values.** `α_n ∈ {2,−2,−1,0,1}` for `n ∈ {1,2,3,4,6}`.
+
+This does **not** add a Lean proof — the exact-degree theorem is Docker-gated
+(IntermediateField tower + a real-subfield minpoly that is absent from Mathlib,
+~150 LOC). The script de-risks the eventual proof (the three load-bearing facts
+are now certified, not just claimed).
+
+### Lean tower plan (pinned for the Docker-up session)
+
+Target: `[ℚ⟮ζ+ζ⁻¹⟯ : ℚ] = φ(n)/2` for `n ≥ 3`, `ζ` a primitive `n`-th root of unity.
+
+1. `[ℚ⟮ζ⟯ : ℚ] = φ(n)` — via `cyclotomic_eq_minpoly_rat` + `natDegree_cyclotomic`
+   (already used in `NthRootIrrationalOQ01OQ01Real.lean`), or
+   `IsCyclotomicExtension.finrank`.
+2. `[ℚ⟮ζ⟯ : ℚ⟮ζ+ζ⁻¹⟯] = 2`:
+   - `≤ 2` from relation (A): `ζ` is a root of `X² − C α · X + 1` over `K`,
+     so `minpoly K ζ ∣` that quadratic ⇒ `natDegree ≤ 2`
+     (`minpoly.dvd` + `Polynomial.natDegree_le_of_dvd`).
+   - `≥ 2` because `ζ ∉ K`: `K = ℚ⟮α⟯ ⊆ ℝ` (α real) but `ζ ∉ ℝ` for `n ≥ 3`
+     (`Complex.ofReal_im`/primitive-root non-realness). Hence degree `≠ 1`.
+3. Tower: `Module.finrank_mul_finrank` (or `FiniteDimensional.finrank_mul_finrank`)
+   on `ℚ ⊆ ℚ⟮α⟯ ⊆ ℚ⟮ζ⟯` ⇒ `φ(n) = 2 · [ℚ⟮α⟯:ℚ]` ⇒ `[ℚ⟮α⟯:ℚ] = φ(n)/2`.
+
+Fragile points to watch under v4.26: realizing `ℚ⟮α⟯ ⊆ ℝ` as a subfield (work in
+`ℝ` via `Complex.ofReal` and the real embedding, or use `IsIntegrallyClosed`/
+`adjoin` over the real subfield), and the `finrank` vs `Module.rank` coercions in
+the tower law. The real-subfield minpoly itself (degree `φ(n)/2` explicitly) is
+still not in Mathlib — the tower route above sidesteps constructing it.

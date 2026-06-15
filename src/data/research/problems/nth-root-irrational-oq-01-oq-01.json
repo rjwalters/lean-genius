@@ -29,19 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "EXACT DEGREE SOLVED (S6, researcher-1): 2*[Q(zeta+zeta^-1):Q]=phi(n) for n>=3 (NthRootIrrationalOQ01OQ01Degree.lean, 0ax/0sorry, build-pending/unregistered under Docker blackout). Route: finrank_bot_mul_relfinrank tower + extendScalars_adjoin + adjoin.finrank; relative degree [Q(zeta):Q(zeta+zeta^-1)]=2 from X^2-(zeta+zeta^-1)X+1 (<=2) and zeta non-real (>1, via manual real subfield {im=0}). Niven cosine story for this OQ now COMPLETE: rational classification (n in {1,2,3,4,6}) + irrationality (phi(n)>=3) + exact degree phi(n)/2. No open sub-item remains.",
+    "progressSummary": "PROGRESS: exact real-subfield degree phi(n)/2 certified symbolically + Lean tower plan pinned (Module.finrank_mul_finrank, [Q(zeta):K]=2). Lean proof Docker-gated. Four Niven/cyclotomic files merged+registered.",
     "builtItems": [
       "cyclotomic_no_rational_root (NthRootIrrationalOQ01OQ01.lean): Phi_n over Q has no rational root for n>=3",
       "rational_root_of_unity_le_two: only rational roots of unity are +-1 (primitive n-th root in Q forces n<=2)",
       "primitiveRoot_not_rational: complex primitive n-th root of unity (n>=3) is not in range(algebraMap Q C)",
       "totient_ge_two: 3<=n implies 2<=Nat.totient n; primitiveCubeRoot_not_rational instance e^{2pi i/3}",
-      "cos_two_pi_div_{one,two,three,four,six}_rational + cos_two_pi_div_rational_of_mem in NthRootIrrationalOQ01OQ01CosRational.lean (build-pending, unregistered)"
+      "cos_two_pi_div_{one,two,three,four,six}_rational + cos_two_pi_div_rational_of_mem in NthRootIrrationalOQ01OQ01CosRational.lean (build-pending, unregistered)",
+      "verify_real_subfield_degree.py — sympy verify-before-assert for exact degree phi(n)/2, the tower decomposition, and Niven values (asserts pass n=1..30)"
     ],
     "insights": [
       "Cyclotomic extension of nth-root irrationality reduces to swapping X^n-p (Eisenstein) for Phi_n (cyclotomic.irreducible_rat) in the parent irreducibility-implies-irrational pipeline; only new lemma is degree bound phi(n)>=2 iff n>=3",
       "Phi_n has NO real roots for n>=3, so honest content is complex not-rational + rational-roots-of-unity=+-1; an irrational-real-root statement is vacuous",
       "S4 (R4): rational half of Niven shipped (NthRootIrrationalOQ01OQ01CosRational.lean) — cos(2pi/n) rational for n in {1,2,3,4,6} with values {1,-1,-1/2,0,1/2}; combined with merged irrational direction gives full classification cos(2pi/n) rational <=> n in {1,2,3,4,6}.",
-      "S6 (R1): exact degree [Q(2cos(2pi/n)):Q]=phi(n)/2 proved division-free as 2*finrank=phi(n). KEY machinery: IntermediateField.finrank_bot_mul_relfinrank (tower staying over base, avoids nested-IntermediateField Algebra instances) + extendScalars_adjoin (identifies relative extension with simple adjoin Q(a)(zeta)) + adjoin.finrank. Relative degree 2 = root of quadratic X^2-(zeta+zeta^-1)X+1 (deg<=2) plus zeta non-real for n>=3 (deg>1)."
+      "S6 (R1): exact degree [Q(2cos(2pi/n)):Q]=phi(n)/2 proved division-free as 2*finrank=phi(n). KEY machinery: IntermediateField.finrank_bot_mul_relfinrank (tower staying over base, avoids nested-IntermediateField Algebra instances) + extendScalars_adjoin (identifies relative extension with simple adjoin Q(a)(zeta)) + adjoin.finrank. Relative degree 2 = root of quadratic X^2-(zeta+zeta^-1)X+1 (deg<=2) plus zeta non-real for n>=3 (deg>1).",
+      "Exact real-subfield degree [Q(zeta+zeta^-1):Q] = phi(n)/2 (n>=3) certified symbolically; =1 (rational) iff n in {1,2,3,4,6} (Niven). Tower: phi(n)=2*deg(minpoly 2cos(2pi/n)), upper half from zeta^2-(zeta+1/zeta)zeta+1=0."
     ],
     "mathlibGaps": [
       "No gap for rational/complex statements; the real subfield story (minpoly of 2cos(2pi/n), degree phi(n)/2) was NOT formalized and is the missing piece"
