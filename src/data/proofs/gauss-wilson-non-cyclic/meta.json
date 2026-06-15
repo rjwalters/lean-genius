@@ -100,6 +100,21 @@
       "proofId": "quadratic-reciprocity",
       "relationship": "related",
       "description": "Quadratic reciprocity also relies on the structure of (ZMod p)× and its relationship to the Legendre symbol"
+    },
+    {
+      "proofId": "wilsons-theorem",
+      "relationship": "related",
+      "description": "This result is the group-theoretic core of the Gauss-Wilson theorem: Wilson's (n-1)! ≡ -1 (mod n) for prime n holds because the product over (ZMod n)× collapses to the unique element of order 2 (namely -1), which fails precisely when extra square roots of unity exist — the non-cyclic case characterized here"
+    },
+    {
+      "proofId": "primitive-roots",
+      "relationship": "related",
+      "description": "Contrapositive companion: (ZMod n)× is cyclic exactly when it has a primitive root, and primitive-roots counts them for prime moduli; this entry characterizes the non-cyclic case by exhibiting a third square root of unity (2-torsion of rank ≥ 2), the obstruction to cyclicity"
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The CRT supplies the third square root of unity in the odd-prime-factor case: writing n = m·2^a with m odd having an odd prime factor, CRT splits (ZMod n)× into components and lets one assemble an x with x² = 1, x ≠ ±1 componentwise"
     }
   ],
   "leanFile": {
