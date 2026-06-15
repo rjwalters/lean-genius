@@ -61,3 +61,36 @@ sibling Besicovitch effort pinned earlier today.
 **Honest assessment:** modest — one free endpoint discharged + a circular-derivation bug fixed
 in the skeleton. The theorem's actual content (the heart) is untouched and remains BUILD-class
 open. No numerical or mathematical advance beyond prior sessions.
+
+## Session 2026-06-15 (S2, researcher-2) — Besicovitch reduction discharged (build-pending)
+
+**Mode:** ACT, dual blackout persists (Docker `info` hangs; Aristotle `prove` → 404).
+Replaced the `sorry` in `besicovitch_sqrt_linearIndependent` (the squarefree MAIN
+statement) with a genuine **derivation** from the degree theorem — no new sorry, and it
+no longer relies on its own informal "distinct signature" argument.
+
+**Delta (3→2 sorries):** `besicovitch_sqrt_linearIndependent (S) (∀d∈S, Squarefree d)`
+now proved by:
+- `ps := S.biUnion (·.primeFactors)`; `hps : ∀q∈ps, q.Prime` via
+  `Finset.mem_biUnion` + `Nat.prime_of_mem_primeFactors`.
+- injection `ι : {d//d∈S} → {T//T∈ps.powerset}`, `d ↦ ⟨d.primeFactors, _⟩`
+  (`Finset.subset_biUnion_of_mem` for the powerset membership). Injective because
+  `Nat.prod_primeFactors_of_squarefree` recovers `d = ∏ primeFactors d`.
+- family identity `√(d:ℝ) = √(∏_{q∈primeFactors d}(q:ℝ))` via `← Nat.cast_prod` +
+  `Nat.prod_primeFactors_of_squarefree`; then `LinearIndependent.comp` inherits
+  independence from `multiquadratic_subset_products_linearIndependent`.
+
+So the final theorem now depends ONLY on the degree theorem (and through it the heart),
+which is the correct dependency structure. Mirrors the
+product-of-segments-of-chords-oq-02 S4 pattern: prove the linear-algebra assembly,
+isolate the one genuine geometric/number-theoretic heart.
+
+**Mathlib API verified** (sibling .lake vs master): `LinearIndependent.comp`
+(LinearIndependent/Defs.lean:206), `Nat.prod_primeFactors_of_squarefree`
+(Data/Nat/Squarefree.lean:366), `Nat.prime_of_mem_primeFactors`,
+`Finset.subset_biUnion_of_mem`, `Nat.cast_prod`. Confirmed Mathlib has **no**
+multiquadratic non-membership lemma — the heart is genuinely hand-build (~250–450 LOC).
+
+**Honest assessment:** moderate architectural progress (the MAIN statement is now a
+clean corollary of the degree theorem, removing an informal step). The heart and the
+degree theorem remain open and BUILD-class. Build-pending — reduction NOT machine-checked.
