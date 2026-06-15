@@ -77,7 +77,7 @@ def onCircle (P : Vec2) (C : Circle) : Prop :=
     - Positive when P is outside the circle
     - Zero when P is on the circle
     - Negative when P is inside the circle -/
-def powerOfPoint (P : Vec2) (C : Circle) : ℝ :=
+noncomputable def powerOfPoint (P : Vec2) (C : Circle) : ℝ :=
   ‖P - C.center‖^2 - C.radius^2
 
 /-- The power is negative for points inside the circle -/
@@ -107,20 +107,20 @@ theorem abs_power_inside (P : Vec2) (C : Circle) (h : ‖P - C.center‖ < C.rad
     centered at origin, then t satisfies: t² + 2t⟨P,dir⟩ + (‖P‖² - r²) = 0 -/
 theorem chord_quadratic (r : ℝ) (P dir : Vec2) (t : ℝ)
     (hdir : ‖dir‖ = 1) (hOnCircle : ‖P + t • dir‖ = r) :
-    t^2 + 2 * t * inner P dir + (‖P‖^2 - r^2) = 0 := by
+    t^2 + 2 * t * inner ℝ P dir + (‖P‖^2 - r^2) = 0 := by
   have h1 : ‖P + t • dir‖^2 = r^2 := by rw [hOnCircle]; ring
   simp only [sq] at h1
   rw [← real_inner_self_eq_norm_mul_norm] at h1
   -- Expand ⟨P + t·dir, P + t·dir⟩
-  have expand : inner (P + t • dir) (P + t • dir) =
-      inner P P + 2 * t * inner P dir + t^2 * inner dir dir := by
+  have expand : inner ℝ (P + t • dir) (P + t • dir) =
+      inner ℝ P P + 2 * t * inner ℝ P dir + t^2 * inner ℝ dir dir := by
     rw [inner_add_left, inner_add_right, inner_add_right]
     rw [inner_smul_left, inner_smul_right, inner_smul_left, inner_smul_right]
     rw [real_inner_comm dir P]
     ring
   rw [expand] at h1
   -- Since ‖dir‖ = 1, we have ⟨dir, dir⟩ = 1
-  have hdir2 : inner dir dir = (1 : ℝ) := by
+  have hdir2 : inner ℝ dir dir = (1 : ℝ) := by
     rw [real_inner_self_eq_norm_mul_norm, hdir]
     ring
   rw [hdir2] at h1
@@ -143,14 +143,14 @@ theorem chord_roots_product (r : ℝ) (hr : 0 < r) (P dir : Vec2) (t₁ t₂ : �
   -- Here b = 2⟨P,dir⟩ and c = ‖P‖² - r²
   -- We can verify: (t - t₁)(t - t₂) = t² - (t₁+t₂)t + t₁t₂
   -- Matching coefficients with t² + 2⟨P,dir⟩t + (‖P‖² - r²) gives t₁t₂ = ‖P‖² - r²
-  have h1 : t₁^2 + 2 * t₁ * inner P dir = r^2 - ‖P‖^2 := by linarith
-  have h2 : t₂^2 + 2 * t₂ * inner P dir = r^2 - ‖P‖^2 := by linarith
+  have h1 : t₁^2 + 2 * t₁ * inner ℝ P dir = r^2 - ‖P‖^2 := by linarith
+  have h2 : t₂^2 + 2 * t₂ * inner ℝ P dir = r^2 - ‖P‖^2 := by linarith
   -- Subtract: t₁² - t₂² + 2(t₁ - t₂)⟨P,dir⟩ = 0
-  have hdiff2 : t₁^2 - t₂^2 + 2 * (t₁ - t₂) * inner P dir = 0 := by linarith
+  have hdiff2 : t₁^2 - t₂^2 + 2 * (t₁ - t₂) * inner ℝ P dir = 0 := by linarith
   -- Factor: (t₁ - t₂)(t₁ + t₂ + 2⟨P,dir⟩) = 0
-  have hfactor : (t₁ - t₂) * (t₁ + t₂ + 2 * inner P dir) = 0 := by ring_nf; linarith
+  have hfactor : (t₁ - t₂) * (t₁ + t₂ + 2 * inner ℝ P dir) = 0 := by ring_nf; linarith
   -- Since t₁ ≠ t₂, we have t₁ + t₂ = -2⟨P,dir⟩
-  have hsum : t₁ + t₂ = -2 * inner P dir := by
+  have hsum : t₁ + t₂ = -2 * inner ℝ P dir := by
     have : t₁ - t₂ ≠ 0 := sub_ne_zero.mpr hdiff
     have := mul_eq_zero.mp hfactor
     cases this with
@@ -162,15 +162,15 @@ theorem chord_roots_product (r : ℝ) (hr : 0 < r) (P dir : Vec2) (t₁ t₂ : �
   -- Substituting and solving for t₁t₂...
   -- Alternative: use the identity (t₁ + t₂)² - 2t₁t₂ = t₁² + t₂²
   -- From q1 + q2: t₁² + t₂² + 2(t₁ + t₂)⟨P,dir⟩ + 2(‖P‖² - r²) = 0
-  have hsum_sq : t₁^2 + t₂^2 + 2 * (t₁ + t₂) * inner P dir + 2 * (‖P‖^2 - r^2) = 0 := by
+  have hsum_sq : t₁^2 + t₂^2 + 2 * (t₁ + t₂) * inner ℝ P dir + 2 * (‖P‖^2 - r^2) = 0 := by
     linarith
   rw [hsum] at hsum_sq
   -- t₁² + t₂² + 2 * (-2⟨P,dir⟩) * ⟨P,dir⟩ + 2(‖P‖² - r²) = 0
   -- t₁² + t₂² - 4⟨P,dir⟩² + 2‖P‖² - 2r² = 0
-  have hsum_sq2 : t₁^2 + t₂^2 = 4 * (inner P dir)^2 - 2 * ‖P‖^2 + 2 * r^2 := by linarith
+  have hsum_sq2 : t₁^2 + t₂^2 = 4 * (inner ℝ P dir)^2 - 2 * ‖P‖^2 + 2 * r^2 := by linarith
   -- Also (t₁ + t₂)² = t₁² + 2t₁t₂ + t₂²
   -- 4⟨P,dir⟩² = t₁² + t₂² + 2t₁t₂
-  have hvieta : 4 * (inner P dir)^2 = t₁^2 + t₂^2 + 2 * t₁ * t₂ := by
+  have hvieta : 4 * (inner ℝ P dir)^2 = t₁^2 + t₂^2 + 2 * t₁ * t₂ := by
     have : (t₁ + t₂)^2 = t₁^2 + 2 * t₁ * t₂ + t₂^2 := by ring
     rw [hsum] at this
     linarith
@@ -359,9 +359,9 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
         -- This follows from Vieta's formulas
         have hprod : ‖A' - P'‖ * (t * ‖A' - P'‖) = ‖P'‖^2 - C.radius^2 := by
           -- Both are roots of the same quadratic
-          have sum_eq : ‖A' - P'‖ + t * ‖A' - P'‖ = -2 * inner P' dir := by
-            have h1 : ‖A' - P'‖^2 + 2 * ‖A' - P'‖ * inner P' dir + (‖P'‖^2 - C.radius^2) = 0 := hq1
-            have h2 : (t * ‖A' - P'‖)^2 + 2 * (t * ‖A' - P'‖) * inner P' dir + (‖P'‖^2 - C.radius^2) = 0 := hq2
+          have sum_eq : ‖A' - P'‖ + t * ‖A' - P'‖ = -2 * inner ℝ P' dir := by
+            have h1 : ‖A' - P'‖^2 + 2 * ‖A' - P'‖ * inner ℝ P' dir + (‖P'‖^2 - C.radius^2) = 0 := hq1
+            have h2 : (t * ‖A' - P'‖)^2 + 2 * (t * ‖A' - P'‖) * inner ℝ P' dir + (‖P'‖^2 - C.radius^2) = 0 := hq2
             have hdiff : ‖A' - P'‖ ≠ t * ‖A' - P'‖ := by
               intro heq
               have ht1 : t = 1 ∨ ‖A' - P'‖ = 0 := by
@@ -385,24 +385,24 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
                 -- If t = 1 and ‖A' - P'‖ ≠ 0, then s₁ = s₂ which violates hdiff
                 exact absurd rfl hdiff
               | inr h => exact absurd h hAnorm
-            have hdiff2 : ‖A' - P'‖^2 - (t * ‖A' - P'‖)^2 + 2 * (‖A' - P'‖ - t * ‖A' - P'‖) * inner P' dir = 0 := by linarith
-            have hfactor : (‖A' - P'‖ - t * ‖A' - P'‖) * (‖A' - P'‖ + t * ‖A' - P'‖ + 2 * inner P' dir) = 0 := by ring_nf; linarith
+            have hdiff2 : ‖A' - P'‖^2 - (t * ‖A' - P'‖)^2 + 2 * (‖A' - P'‖ - t * ‖A' - P'‖) * inner ℝ P' dir = 0 := by linarith
+            have hfactor : (‖A' - P'‖ - t * ‖A' - P'‖) * (‖A' - P'‖ + t * ‖A' - P'‖ + 2 * inner ℝ P' dir) = 0 := by ring_nf; linarith
             have hne : ‖A' - P'‖ - t * ‖A' - P'‖ ≠ 0 := sub_ne_zero.mpr hdiff
             have := mul_eq_zero.mp hfactor
             cases this with
             | inl h => exact absurd h hne
             | inr h => linarith
           -- Now derive product from sum
-          have h1 : ‖A' - P'‖^2 + 2 * ‖A' - P'‖ * inner P' dir = C.radius^2 - ‖P'‖^2 := by linarith [hq1]
-          have h2 : (t * ‖A' - P'‖)^2 + 2 * (t * ‖A' - P'‖) * inner P' dir = C.radius^2 - ‖P'‖^2 := by linarith [hq2]
-          have sum_sq : ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * (‖A' - P'‖ + t * ‖A' - P'‖) * inner P' dir = 2 * (C.radius^2 - ‖P'‖^2) := by linarith
+          have h1 : ‖A' - P'‖^2 + 2 * ‖A' - P'‖ * inner ℝ P' dir = C.radius^2 - ‖P'‖^2 := by linarith [hq1]
+          have h2 : (t * ‖A' - P'‖)^2 + 2 * (t * ‖A' - P'‖) * inner ℝ P' dir = C.radius^2 - ‖P'‖^2 := by linarith [hq2]
+          have sum_sq : ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * (‖A' - P'‖ + t * ‖A' - P'‖) * inner ℝ P' dir = 2 * (C.radius^2 - ‖P'‖^2) := by linarith
           rw [sum_eq] at sum_sq
-          have sum_sq2 : ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 = 2 * (C.radius^2 - ‖P'‖^2) + 4 * (inner P' dir)^2 := by linarith
-          have vieta : (-2 * inner P' dir)^2 = ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) := by
+          have sum_sq2 : ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 = 2 * (C.radius^2 - ‖P'‖^2) + 4 * (inner ℝ P' dir)^2 := by linarith
+          have vieta : (-2 * inner ℝ P' dir)^2 = ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) := by
             have : (‖A' - P'‖ + t * ‖A' - P'‖)^2 = ‖A' - P'‖^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) + (t * ‖A' - P'‖)^2 := by ring
             rw [sum_eq] at this
             linarith
-          have vieta2 : 4 * (inner P' dir)^2 = ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) := by linarith [vieta]
+          have vieta2 : 4 * (inner ℝ P' dir)^2 = ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) := by linarith [vieta]
           linarith
         rw [abs_mul, abs_of_nonneg (sq_nonneg _)]
         have habs : |t * ‖A' - P'‖^2| = |‖P'‖^2 - C.radius^2| := by
@@ -454,40 +454,29 @@ theorem center_chord_product (C : Circle) (A B : Vec2)
     _ = C.radius * C.radius := by rw [hB']
     _ = C.radius^2 := by ring
 
-/-- **Axiom — FALSE as stated.** A purported *unsigned* converse of the chord
-    product theorem, retained only so the downstream re-export
-    `converse_product_implies_concyclic` keeps its signature. Do NOT rely on it.
+/-
+  **The converse of the chord-product theorem (signed form).**
 
-    WARNING: this unsigned form is FALSE. With `P=(0,0)`, `A=(1,0)`, `B=(-4,0)`,
-    `C=(0,1)`, `D=(0,4)` all hypotheses hold (both products `= 4`) yet the four
-    points are NOT concyclic — the signed powers (`-4` vs `+4`) disagree. A
-    correct converse needs the *signed* relation `t‖A-P‖² = s‖C-P‖²` plus linear
-    independence of `A-P` and `C-P` (distinct, non-opposite chords).
+  The naive *unsigned* converse — "`‖P-A‖·‖P-B‖ = ‖P-C‖·‖P-D‖` implies `A,B,C,D`
+  concyclic" — is **FALSE**: with `P=(0,0)`, `A=(1,0)`, `B=(-4,0)`, `C=(0,1)`,
+  `D=(0,4)` all unsigned hypotheses hold (both products `= 4`) yet the four points
+  are not concyclic, because the *signed* powers (`-4` vs `+4`) disagree. This was
+  previously stated here as a false `axiom` (`converse_product_implies_concyclic_axiom`);
+  that axiom has now been **removed** (this file is axiom-free).
 
-    Counterexample verified in PRs #24153/#24204; corrected form in OQ-02. -/
-axiom converse_product_implies_concyclic_axiom
-    (P A B C D : Vec2)
-    (hAB_collinear : ∃ t : ℝ, B - P = t • (A - P))
-    (hCD_collinear : ∃ t : ℝ, D - P = t • (C - P))
-    (hProduct : ‖P - A‖ * ‖P - B‖ = ‖P - C‖ * ‖P - D‖)
-    (hAneP : A ≠ P) (hBneP : B ≠ P) (hCneP : C ≠ P) (hDneP : D ≠ P)
-    (hAneB : A ≠ B) (hCneD : C ≠ D) :
-    ∃ (O : Vec2) (r : ℝ), r > 0 ∧ ‖A - O‖ = r ∧ ‖B - O‖ = r ∧ ‖C - O‖ = r ∧ ‖D - O‖ = r
+  The correct converse uses the **signed** power equality `t·‖A-P‖² = s·‖C-P‖²`
+  (where `t, s` are the collinearity scalars) together with linear independence of
+  `A-P` and `C-P` (the two chords are genuinely distinct lines). Under those
+  hypotheses the four points are concyclic.
 
-/-- The converse: if PA · PB = PC · PD for chords through P,
-    then A, B, C, D lie on a common circle.
-
-    We construct the circle through three points A, B, C and show D lies on it. -/
-theorem converse_product_implies_concyclic
-    (P A B C D : Vec2)
-    (hAB_collinear : ∃ t : ℝ, B - P = t • (A - P))
-    (hCD_collinear : ∃ t : ℝ, D - P = t • (C - P))
-    (hProduct : ‖P - A‖ * ‖P - B‖ = ‖P - C‖ * ‖P - D‖)
-    (hAneP : A ≠ P) (hBneP : B ≠ P) (hCneP : C ≠ P) (hDneP : D ≠ P)
-    (hAneB : A ≠ B) (hCneD : C ≠ D) :
-    ∃ (O : Vec2) (r : ℝ), r > 0 ∧ ‖A - O‖ = r ∧ ‖B - O‖ = r ∧ ‖C - O‖ = r ∧ ‖D - O‖ = r :=
-  converse_product_implies_concyclic_axiom P A B C D hAB_collinear hCD_collinear
-    hProduct hAneP hBneP hCneP hDneP hAneB hCneD
+  Both the machine-checked refutation of the unsigned form
+  (`unsigned_converse_counterexample`) and the proof of the corrected signed form
+  (`signed_converse_implies_concyclic`, via an explicit Cramer-rule circumcenter,
+  no axioms / no sorries) live in `Proofs/ProductOfSegmentsOfChordsConverse.lean`.
+  They are kept in that separate file because it depends on the full `Mathlib`
+  import, whose root-namespace `Circle` would collide with the local
+  `structure Circle` used throughout this file.
+-/
 
 -- ============================================================
 -- PART 8: Numerical Examples
