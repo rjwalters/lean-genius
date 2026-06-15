@@ -4,7 +4,7 @@
     "proofId": "erdos-1006-oq-04",
     "range": {
       "startLine": 1,
-      "endLine": 31
+      "endLine": 30
     },
     "type": "concept",
     "title": "Module Setup — Building on OQ03",
@@ -27,8 +27,8 @@
     "id": "ann-rank-strict",
     "proofId": "erdos-1006-oq-04",
     "range": {
-      "startLine": 32,
-      "endLine": 51
+      "startLine": 31,
+      "endLine": 50
     },
     "type": "insight",
     "title": "Graded DAG: Color as Strict Rank Function",
@@ -52,8 +52,8 @@
     "id": "ann-source-sink",
     "proofId": "erdos-1006-oq-04",
     "range": {
-      "startLine": 52,
-      "endLine": 72
+      "startLine": 51,
+      "endLine": 71
     },
     "type": "insight",
     "title": "Color-0 Sources and Color-(k-1) Sinks",
@@ -77,8 +77,8 @@
     "id": "ann-arc-iff",
     "proofId": "erdos-1006-oq-04",
     "range": {
-      "startLine": 73,
-      "endLine": 102
+      "startLine": 72,
+      "endLine": 101
     },
     "type": "insight",
     "title": "Arc Characterization — Orientation Fully Determined by Color",
@@ -102,8 +102,8 @@
     "id": "ann-different-colors",
     "proofId": "erdos-1006-oq-04",
     "range": {
-      "startLine": 103,
-      "endLine": 116
+      "startLine": 102,
+      "endLine": 115
     },
     "type": "concept",
     "title": "No Horizontal Arcs — All Arcs Cross Color Levels",
@@ -125,8 +125,8 @@
     "id": "ann-oq03-consistency",
     "proofId": "erdos-1006-oq-04",
     "range": {
-      "startLine": 117,
-      "endLine": 130
+      "startLine": 116,
+      "endLine": 163
     },
     "type": "concept",
     "title": "Consistency with OQ03 — Acyclicity Follows from Rank",
@@ -143,51 +143,6 @@
       "Proofs.Erdos1006OQ03 results",
       "DAG acyclicity",
       "robust orientation theory"
-    ]
-  },
-  {
-    "id": "ann-1006oq04-transitivity",
-    "proofId": "erdos-1006-oq-04",
-    "range": {
-      "startLine": 131,
-      "endLine": 160
-    },
-    "type": "technique",
-    "title": "Part VI: Transitivity and Non-Reflexivity — a Strict Partial Order",
-    "content": "Four theorems give the order-theoretic shape of the coloring orientation: coloringOrientation_trans (transitive — u→v and v→w yield u→w, since color strictly increases along arcs), coloringOrientation_arc_irrefl (irreflexive — no vertex has an arc to itself), coloringOrientation_arc_ne (arcs connect distinct vertices), and coloring_same_color_not_adj (vertices sharing a color are non-adjacent, the contrapositive of proper coloring). Combined with rank-strictness, these show the orientation is a strict partial order refining the coloring.",
-    "mathContext": "$u \\to v \\to w \\Rightarrow u \\to w$ (transitive, via $\\text{col}(u) < \\text{col}(v) < \\text{col}(w)$); $\\neg(v \\to v)$ (irreflexive); $u \\to v \\Rightarrow u \\neq v$. The relation is therefore a strict partial order.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "strict partial order",
-      "transitivity",
-      "irreflexivity",
-      "graph orientation"
-    ],
-    "prerequisites": [
-      "proper graph coloring",
-      "strict orders"
-    ]
-  },
-  {
-    "id": "ann-1006oq04-summary",
-    "proofId": "erdos-1006-oq-04",
-    "range": {
-      "startLine": 161,
-      "endLine": 193
-    },
-    "type": "context",
-    "title": "Summary: Structural Properties of the Coloring Orientation",
-    "content": "The closing docstring inventories the verified results: the coloring orientation u→v ⟺ col(u)<col(v) (for adjacent vertices) yields rank structure, color-0 sources and color-(k-1) sinks, full arc-direction determination, no horizontal arcs, acyclicity/consistency with OQ03, and a transitive irreflexive order. All theorems are machine-checked with 0 sorries and 0 axioms.",
-    "mathContext": "A proper k-coloring induces a strict partial order (graded DAG) on the graph; the construction is fully formalized with 0 sorries and 0 axioms.",
-    "significance": "context",
-    "relatedConcepts": [
-      "graded DAG",
-      "graph coloring",
-      "acyclic orientation"
-    ],
-    "prerequisites": [
-      "proper coloring",
-      "directed acyclic graphs"
     ]
   }
 ]

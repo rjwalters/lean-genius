@@ -62,28 +62,19 @@
   },
   "sections": [
     {
-      "id": "overview-imports",
-      "title": "Overview and Imports",
-      "startLine": 1,
-      "endLine": 84,
-      "summary": "Mathlib imports (polynomial, analysis/IVT, monotonicity), the file docstring on the Bring-Jerrard reduction and Bring radical, and the namespace setup.",
-      "mathContext": "Sets up the reduction chain quintic → depressed quintic → Bring-Jerrard form $x^5 + px + q$, and the Bring radical BR$(t)$ as the unique real root of $x^5 + x + t = 0$. Existence uses the intermediate value theorem; uniqueness uses strict monotonicity of $x \\mapsto x^5 + x$.",
-      "theorems": []
-    },
-    {
       "id": "poly-defs",
-      "title": "Part 1: Polynomial Type Definitions",
+      "title": "Polynomial Type Definitions",
       "startLine": 85,
-      "endLine": 103,
+      "endLine": 102,
       "summary": "Defines quinticPoly (5 free parameters), depressedQuintic (4 free parameters, no x⁴ term), and bringJerrardPoly (2 free parameters, Bring-Jerrard normal form x⁵+px+q).",
       "mathContext": "Three polynomial types over $\\mathbb{C}$ representing the three normal forms in the reduction chain: quintic → depressed quintic → Bring-Jerrard form.",
       "theorems": []
     },
     {
       "id": "tschirnhaus",
-      "title": "Part 2: Linear Tschirnhaus Transform (Proved)",
+      "title": "Linear Tschirnhaus Transform (Proved)",
       "startLine": 104,
-      "endLine": 171,
+      "endLine": 170,
       "summary": "Proves the forward (depressed_quintic_forward), backward (depressed_quintic_backward), and biconditional (depressed_quintic_iff) forms of the linear Tschirnhaus transform y = x + a₄/5 that eliminates the x⁴ term. All proved by linear_combination.",
       "mathContext": "The substitution $y = x + a_4/5$ gives $b_4 = -5(a_4/5) + a_4 = 0$, with explicit formulas for $b_3, b_2, b_1, b_0$. Proved by `linear_combination h`.",
       "theorems": [
@@ -94,9 +85,9 @@
     },
     {
       "id": "bring-jerrard",
-      "title": "Part 3: Full Bring-Jerrard Reduction (Axiomatized)",
+      "title": "Full Bring-Jerrard Reduction (Axiomatized)",
       "startLine": 172,
-      "endLine": 223,
+      "endLine": 222,
       "summary": "Axiomatizes the full Bring-Jerrard reduction (quadratic and cubic Tschirnhaus steps). Proves quintic_to_bringJerrard by chaining the linear transform with the axiom.",
       "mathContext": "The axiom $\\exists\\, p, q, \\varphi,\\ \\forall y.\\ y^5 + b_3 y^3 + \\cdots = 0 \\Rightarrow (\\varphi(y))^5 + p(\\varphi(y)) + q = 0$ requires polynomial resultant theory not in Mathlib.",
       "theorems": [
@@ -106,52 +97,29 @@
     },
     {
       "id": "strict-mono",
-      "title": "Part 4: The Bring Radical — Strict Monotonicity",
+      "title": "Strict Monotonicity and IVT Existence",
       "startLine": 224,
-      "endLine": 249,
-      "summary": "Proves bringRad_strictMono: x↦x⁵+x is strictly increasing on ℝ. This guarantees uniqueness of the root of x⁵+x+t=0 for each t.",
-      "mathContext": "Since 5 is odd, $x^5$ is strictly monotone (`Odd.strictMono_pow`), and adding the identity preserves strict monotonicity (`linarith`). Strict monotonicity of $f(x) = x^5 + x$ underwrites both uniqueness of the Bring radical and its anti-monotonicity in $t$.",
+      "endLine": 294,
+      "summary": "Proves bringRad_strictMono (x↦x⁵+x is strictly increasing) and bringRad_exists (x⁵+x+t=0 has a real root for every t) via IVT with bounds ±(|t|+1).",
+      "mathContext": "$f(x) = x^5 + x$ is strictly monotone (Odd.strictMono_pow + linarith) and continuous, with $f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$.",
       "theorems": [
-        "bringRad_strictMono"
-      ]
-    },
-    {
-      "id": "existence-ivt",
-      "title": "Part 5: The Bring Radical — Existence via IVT",
-      "startLine": 250,
-      "endLine": 295,
-      "summary": "Proves bringRad_exists: x⁵+x+t=0 has a real root for every t, via the intermediate value theorem on [−(|t|+1), |t|+1], using the sign-change lemmas bringRad_pos_at_upper and bringRad_neg_at_lower.",
-      "mathContext": "$f(x) = x^5 + x + t$ is continuous and coercive. The explicit bounds give $f(-(|t|+1)) < 0 < f(|t|+1)$ for all $t$ (since $(|t|+1)^5 \\ge 0$ dominates $|t|$), so `intermediate_value_Icc` yields a root.",
-      "theorems": [
-        "bringRad_pos_at_upper",
-        "bringRad_neg_at_lower",
+        "bringRad_strictMono",
         "bringRad_exists"
       ]
     },
     {
       "id": "bring-radical",
-      "title": "Part 6: The Bring Radical — Definition and Properties",
+      "title": "Bring Radical: Definition and Properties",
       "startLine": 296,
-      "endLine": 343,
-      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function).",
-      "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$ (`choose_spec`), is strictly anti-monotone, odd (BR$(-t) = -\\mathrm{BR}(t)$), and BR$(0) = 0$. Uniqueness comes from injectivity of the strictly monotone $x \\mapsto x^5 + x$.",
+      "endLine": 377,
+      "summary": "Defines bringRadical t = the unique real root of x⁵+x+t=0. Proves: bringRadical_spec (satisfies equation), bringRadical_unique, bringRadical_anti_mono, bringRadical_zero, bringRadical_neg (odd function). Axiomatizes bringRadical_not_in_radicals. Summary theorem packages the main results.",
+      "mathContext": "BR$(t)$ satisfies BR$(t)^5 + \\mathrm{BR}(t) + t = 0$, is strictly anti-monotone, odd, and BR$(0) = 0$. Not expressible by nested radicals (axiom).",
       "theorems": [
         "bringRadical_spec",
         "bringRadical_unique",
         "bringRadical_anti_mono",
         "bringRadical_zero",
-        "bringRadical_neg"
-      ]
-    },
-    {
-      "id": "algebraic-significance",
-      "title": "Part 7: Algebraic Significance",
-      "startLine": 344,
-      "endLine": 377,
-      "summary": "Axiomatizes bringRadical_not_in_radicals (the Bring radical is not expressible in radicals, via Abel-Ruffini and the non-solvability of S₅). Proves bringJerrard_summary, packaging the unique-root, defining-equation, and anti-monotonicity results.",
-      "mathContext": "The generic Bring-Jerrard quintic $y^5 + y + t$ has Galois group $S_5$ over $\\mathbb{Q}(t)$, which is not solvable, so its roots (the Bring radicals) are not radical expressions. A full proof would need the $S_5$ Galois computation; the connection is axiomatized.",
-      "theorems": [
-        "bringRadical_not_in_radicals",
+        "bringRadical_neg",
         "bringJerrard_summary"
       ]
     }
