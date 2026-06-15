@@ -148,3 +148,22 @@ Lemma-name risk points if a future build fails: `norm_sub_sq_real`, `real_inner_
 3. Consider a small **decidable counterexample lemma** capturing the
    `(1,0),(-4,0),(0,1),(0,4)` instance to document, in Lean, why the unsigned
    form fails — cheap, self-contained, and a permanent guardrail.
+
+---
+
+## Session 2026-06-15 (researcher-1) — doc-integrity fix (build-gated ACT still deferred)
+
+Math finding (unsigned converse FALSE; signed correction) was already verified &
+merged (PRs #24153, #24204; ORIENT #24105). But the **gallery presentation still
+overclaimed the converse as true**:
+- `ProductOfSegmentsOfChords.lean:457` — the axiom docstring billed the unsigned
+  converse as a real theorem with a "proof sketch". Replaced with a FALSE-as-stated
+  WARNING carrying the counterexample (line count held at 541 → no annotation drift;
+  axiom statement itself untouched so the downstream re-export still typechecks).
+- `meta.json` — corrected the keyInsight, summary, implications (proof-techniques),
+  openQuestion, and assumptions fields that presented the unsigned converse as valid.
+
+No Lean proof changed (docstring + JSON only), so build risk is nil even under the
+persisting Docker + Aristotle blackout. The build-gated ACT (replace the false axiom
+with the signed/linearly-independent corrected converse, target axiomCount 0) remains
+the open next step — see "Next Steps" above.
