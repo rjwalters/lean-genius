@@ -1,27 +1,30 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-05-29T19:14:09.158Z
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-06-15
+**Iteration**: 2
 
 ## Current Focus
 
-Initial exploration of the problem.
+Unified iff characterization of irrational nth roots.
 
 ## Active Approach
 
-None yet.
+Assemble the two pre-existing 0-sorry directions in `NthRootIrrational.lean`
+(`irrational_nthRoot`, `nthRoot_of_perfect_power`) into the biconditional the
+open question names, plus a ℤ↔ℕ reconciliation of "perfect n-th power".
 
 ## Blockers
 
-None.
+Docker blackout — build verification deferred (proof name-checked against
+sibling Mathlib v4.26.0; sound by construction).
 
 ## Next Action
 
-Begin problem exploration.
+Build-verify `proofs/Proofs/CubeRoot2IrrationalOQ01.lean` once blackout lifts.
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
