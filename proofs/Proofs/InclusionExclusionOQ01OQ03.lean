@@ -31,6 +31,10 @@
   `sum_eq_iff_sum_mul_moebius_eq`; the value here is exposing the classical
   `Σ_{d|n} μ(d) f(n/d)` shape that downstream gallery work expects.
 
+  `totient_eq_sum_moebius_mul` then applies the bridge to the parent entry's
+  `Σ_{d|n} φ(d) = n` (`Nat.sum_totient`), yielding the Möbius form of Euler's
+  totient `φ(n) = Σ_{d|n} μ(d)·(n/d)` — the inclusion–exclusion read of `φ`.
+
   Numerically cross-checked (all n ≤ 400, random integer data, both directions,
   μ sanity, and the Euler-φ anchor) in
   `research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py`
@@ -73,5 +77,18 @@ theorem moebius_inversion_divisors {f g : ℕ → R} :
       rw [Nat.sum_divisorsAntidiagonal (fun a b => (μ a : R) * f b)]
       exact (h m hm).symm
     exact ((sum_eq_iff_sum_mul_moebius_eq (R := R) (f := g) (g := f)).mpr hM n hn).symm
+
+/-- **Euler-φ corollary (Möbius form of the totient).**  Applying divisor-form
+    Möbius inversion to the classical identity `n = Σ_{d | n} φ(d)` (`Nat.sum_totient`)
+    gives the Möbius expression for the totient:
+        `φ(n) = Σ_{d | n} μ(d) · (n / d)`   (for `n > 0`, over `ℤ`).
+    This is the parent gallery entry's `Σ_{d|n} φ(d) = n` "inverted" — exactly the
+    inclusion–exclusion read of Euler's function. -/
+theorem totient_eq_sum_moebius_mul (n : ℕ) (hn : 0 < n) :
+    (Nat.totient n : ℤ) = ∑ d ∈ n.divisors, (μ d : ℤ) * ((n / d : ℕ) : ℤ) := by
+  refine (moebius_inversion_divisors (R := ℤ)
+      (f := fun m => (m : ℤ)) (g := fun d => (Nat.totient d : ℤ))).mp (fun m _ => ?_) n hn
+  -- forward input: `(m : ℤ) = Σ_{d | m} φ(d)`, the cast of `Nat.sum_totient`.
+  exact_mod_cast (Nat.sum_totient m).symm
 
 end InclusionExclusionOQ01OQ03

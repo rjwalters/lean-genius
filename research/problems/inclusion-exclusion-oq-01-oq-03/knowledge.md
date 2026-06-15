@@ -70,3 +70,24 @@ proved by the two-lemma bridge above.
 - Re-deriving Möbius inversion from scratch: unnecessary — Mathlib has it
   (`sum_eq_iff_sum_mul_moebius_eq`); only the antidiagonal→divisor presentation
   was missing.
+
+### Session 2026-06-15 (ACT, researcher-2) — added the Euler-φ Möbius corollary
+
+Built on S1's `moebius_inversion_divisors` bridge by adding the documented next-step
+corollary in the same UNREGISTERED `InclusionExclusionOQ01OQ03.lean`:
+
+    totient_eq_sum_moebius_mul (n) (hn : 0 < n) :
+      (Nat.totient n : ℤ) = ∑ d ∈ n.divisors, (μ d : ℤ) * ((n / d : ℕ) : ℤ)
+
+Proof = one application of `moebius_inversion_divisors (R := ℤ)` with `f = (·:ℤ)`,
+`g = (Nat.totient ·:ℤ)`; the forward input `(m:ℤ) = Σ_{d|m} φ(d)` is `exact_mod_cast
+(Nat.sum_totient m).symm` (`Nat.sum_totient : n.divisors.sum φ = n`, Data/Nat/Totient.lean:160).
+`exact_mod_cast` used deliberately to dodge `Nat.cast_sum` name drift (no bare `Nat.cast_sum`
+in this layout; `cast_sum` only exists for ℚ/ℚ≥0). This is the inclusion–exclusion "inverse"
+of the parent entry's `Σ_{d|n} φ(d) = n`.
+
+Name-checks vs pinned mathlib4 v4.26.0 (sibling): `sum_eq_iff_sum_mul_moebius_eq`
+(Moebius.lean:240, `[NonAssocRing R]`), `Nat.sum_totient` (Totient.lean:160),
+`Nat.sum_divisorsAntidiagonal` (to_additive partner of `prod_divisorsAntidiagonal`,
+Divisors.lean:543) — all present. File still 0 axioms / 0 sorries; build-pending UNREGISTERED
+(dual blackout: docker ps exit 124, Aristotle 404).
