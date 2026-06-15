@@ -2,7 +2,27 @@
 
 **Phase**: ACT
 **Since**: 2026-06-12 (S14a Helper-ACT)
-**Iteration**: 18
+**Iteration**: 21
+
+## S21 — a13 lower-bound helper shipped + a14 math-correction (researcher-2, 2026-06-15)
+
+Dual blackout re-confirmed (Docker `docker info` timeout; Aristotle `prove` →
+`Resource not found`). a12 frontier double-claimed in two **draft** build-pending
+PRs (#23388, #23983) — deployer won't auto-merge drafts; no third a12 PR.
+
+- **Shipped Lean**: `Cbrt3Helpers.six_one_nine_three_five_two_three_over_four_two_nine_four_three_four_nine_lt_cbrt3 :
+  (6193523/4294349 : ℝ) < cbrt3` (15th CF convergent, even-index lower bound;
+  the value S18 pre-verified numerically). Helper file 694 → 753 LOC. This is
+  the **lower** side of the a₁₃ sandwich; upper side = existing S14a
+  `1865358/1293367`. The a₁₃ main-ACT is now fully unblocked (build-gated).
+- **a₁₄ math-correction**: true prefix `a₀..a₁₄ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3]`
+  (120-digit recompute) ⇒ `a₁₄ = 3`, not `4`. Wrong `a₁₄ = 4` gives
+  `8058881/5587716` which is ABOVE ∛3 (invalid lower bound). Sixth precedent.
+- **a₁₂ frontier de-risk**: exact `Fraction` interval propagation forces
+  `a₁₂ = 8` ⇒ both draft PRs assert correct math (only the Docker build gates them).
+- **Artifacts**: `verify_a13_sandwich.py`, `verify_a12_chain.py` (both pass).
+
+## Current Focus
 
 ## S18 — durable CF-convergent verification (researcher-5, 2026-06-14, build-free)
 

@@ -691,4 +691,63 @@ theorem cbrt3_lt_one_eight_six_five_three_five_eight_over_one_two_nine_three_thr
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S15a prep: new lower bound for `a₁₃ = 3` (the fourteenth partial quotient)
+
+The fifteenth CF convergent of `∛3` is
+
+  `p₁₄/q₁₄ = (a₁₄·p₁₃ + p₁₂) / (a₁₄·q₁₃ + q₁₂)`
+  `       = (3 · 1865358 + 597449) / (3 · 1293367 + 414248)`
+  `       = 6_193_523 / 4_294_349`.
+
+This convergent is even-index (14), so it lies on the LOWER side of
+`∛3` (alternating with the upper-side fourteenth convergent
+`1865358/1293367` from S14a, which is reused unchanged as the a₁₃
+sandwich's upper bound).
+
+**MATH-CORRECTION (this session).** The post-S14a sketch tail of OEIS
+A002945 read `[…, 8, 3, 4, …]`, i.e. `a₁₄ = 4`. A 120-digit recomputation
+of the CF algorithm for `∛3` gives the true prefix
+`a₀..a₁₄ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3]`, so `a₁₄ = 3`,
+NOT `4`. With the wrong `a₁₄ = 4` the convergent would be
+`8058881/5587716`, whose cube `8058881³ = 523_388_563_470_651_811_841 >
+523_388_563_470_618_833_088 = 3 · 5587716³` lies ABOVE `∛3` — the WRONG
+side for a lower bound (a `lt_cbrt3` proof of it would fail). The correct
+even-index lower convergent is `6_193_523/4_294_349`. This repeats the
+historical `a₈` typo precedent (S9-prep): when picking the next bound,
+re-derive `aᵢ` from a high-precision CF computation, never re-quote a
+prior sketch tail.
+
+Convergent recursion (with `a₁₄ = 3`):
+
+  `q₁₄ = 3 · q₁₃ + q₁₂ = 3 · 1293367 + 414248 = 4_294_349`
+  `p₁₄ = 3 · p₁₃ + p₁₂ = 3 · 1865358 + 597449 = 6_193_523`
+
+After cubing,
+
+  `6_193_523³   = 237_581_852_386_719_346_667`
+  `3 · 4_294_349³ = 237_581_852_386_724_971_647`
+
+so `6_193_523³ = 237_581_852_386_719_346_667 < 237_581_852_386_724_971_647 =
+3 · 4_294_349³` (strict, diff `+5_624_980`), hence `(6_193_523/4_294_349)³ < 3`
+and `6_193_523/4_294_349 < cbrt3` as required for a lower bound. The new
+lower cube gap (relative-to-`3·q³`: `≈ 2.37·10⁻¹⁴`) is roughly an order
+of magnitude tighter than S14a's upper-side gap of `≈ 3.51·10⁻¹³`.
+
+Rigorous a₁₃ check (exact `Fraction` interval propagation, this session):
+with the sandwich `6193523/4294349 < cbrt3 < 1865358/1293367`, propagating
+`[lo, hi]` through the map `x ↦ 1/(x - aᵢ)` for `a₀..a₁₂ =
+[1,2,3,1,4,1,5,1,1,6,2,5,8]` yields a final `1/x ∈ [3, 10/3)`, forcing
+`⌊1/x⌋ = 3 = a₁₃`. Two-line proof via the cubing-iff helper. -/
+
+/-- `6193523/4294349 < ∛3`. Cube target: `(6193523/4294349)³ =
+237_581_852_386_719_346_667 / 4_294_349³ < 3` (strict:
+`6193523³ = 237_581_852_386_719_346_667 < 237_581_852_386_724_971_647 =
+3 · 4294349³`, gap `+5_624_980`). The fifteenth convergent of the
+simple CF of `∛3` (using `a₁₄ = 3` per a 120-digit CF recomputation;
+NOT `a₁₄ = 4`). -/
+theorem six_one_nine_three_five_two_three_over_four_two_nine_four_three_four_nine_lt_cbrt3 :
+    (6193523 / 4294349 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
