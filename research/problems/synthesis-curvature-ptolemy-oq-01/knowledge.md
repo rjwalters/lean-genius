@@ -56,16 +56,23 @@ done via `mul_div_assoc`/`div_eq_iff` + `linear_combination ... * (√·√ = ·
 
 ## Status
 
-- **Phase**: ACT (Lean written; no sorries). **Build-pending**: Docker was DOWN this
-  session, so the file is not yet machine-checked locally. Math is exact-verified by
-  `verify_ode.py`.
+- **Phase**: COMPLETED. **RESOLVED & MERGED** in PR #24239: the proof
+  (`curvatureSin_satisfies_ode` + `curvatureSin_initial_conditions`, all three regimes)
+  is on `main`, **registered in `proofs/Proofs.lean`**, and is **sorry-free and
+  axiom-free**. Math also exact-verified by `verify_ode.py`.
+- Caveat (honesty): the full local `docker-build` was not re-run under the 2026-06-15
+  Docker blackout. The file is in the build aggregator and the proofs are elementary
+  (`rw`/`ring`/`.deriv` on parent lemmas), so confidence is high; a routine CI/Docker
+  pass confirms machine-checking when the blackout lifts.
+
+## Tracker de-stale (2026-06-15, Session 2)
+
+`state.md` (Phase OBSERVE / iter 1) and the problem `*.json` (status `in-progress`,
+phase `ACT`, "build-pending") predated the merge of #24239 and were stale; this session
+syncs them to COMPLETED. No mathematical change — the OQ was already proved.
 
 ## Next steps
 
-1. Build `Proofs.SynthesisCurvaturePtolemyOQ01` via docker-build when Docker is back;
-   fix any tactic-level mismatches (most fragile: the two `linear_combination` √-cancel
-   steps — coefficients are `sin(√K·t)` and `-sinh(√(-K)·t)`).
-2. If a `linear_combination` step fails, fall back to `field_simp; ring_nf` then
-   `rw [Real.sq_sqrt]` / `Real.mul_self_sqrt`.
-3. Possible follow-up OQ: uniqueness — any `y` with `y''+K·y=0`, `y(0)=0`, `y'(0)=1`
-   equals `curvatureSin K` (would use Mathlib ODE/Picard–Lindelöf or Wronskian).
+- Optional follow-up OQ (a **new slug**, not this one): uniqueness — any `y` with
+  `y''+K·y=0`, `y(0)=0`, `y'(0)=1` equals `curvatureSin K` (Mathlib ODE uniqueness /
+  Picard–Lindelöf or a Wronskian argument).
