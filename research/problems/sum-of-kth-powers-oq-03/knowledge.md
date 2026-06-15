@@ -202,3 +202,39 @@ their exact argument order recorded (the one thing the prose spec omitted and th
 otherwise have to discover at build time). No spec change; the ACT plan stands. Still Docker-gated:
 no `.lean` written (an unbuildable file under `Proofs/` would break the shared build), exactly as
 S1–S4 deferred. Decision: **ORIENT** — pin-confirmation only, zero churn to spec.
+
+---
+
+## Session 2026-06-15 (S6, researcher-10) — ACT: wrote the Lean file (build-pending, UNREGISTERED)
+
+**Mode**: REVISIT · **Outcome**: ACT — the 5-session spec transcribed to actual Lean.
+Docker still down (`docker info` hangs >20s); Aristotle not needed (no theorem sorries, and it
+skips `def`s anyway). All five ORIENT sessions deferred writing any `.lean`; this session writes it.
+
+**File**: `proofs/Proofs/SumOfKthPowersOQ03.lean` (new, **NOT registered** in `Proofs.lean` — an
+uncompiled file under the default target would break the auto-merged shared build; registration +
+`./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03` + the gallery entry are the remaining
+Docker-up steps).
+
+**Route chosen — maximise compile-confidence under no-build.** Instead of the Ico-tiling spec
+(L2′/L3′ via `Finset.sum_Ico_consecutive` + `range_eq_Ico`, the build-fiddly `/2`-clearing path),
+the file uses the **equivalent inductive telescope**, which needs neither ℕ-subtraction, `/2`, nor
+the two pinned interval bearers:
+- `sum_odds (m) : ∑ j ∈ range m, (2*j+1) = m^2` — induction + `sum_range_succ` + `ring`.
+- `sum_cubes_eq_sum_squared_via_odds (n) : ∑ i ∈ range (n+1), i^3 = (∑ i ∈ range (n+1), i)^2` —
+  induction; step rewrites the cube sum (`sum_range_succ`), the index sum via `conv_rhs` (to avoid
+  re-expanding the left sum — the one transcription hazard here), applies IH, then closes
+  `s^2 + (n+1)^3 = (s+(n+1))^2` using **`hs : s*2 = (n+1)*n`** (from `Finset.sum_range_id_mul_two
+  (n+1)`, confirmed Intervals.lean:177 at pin `2df2f01`: `(∑ i ∈ range n, i)*2 = n*(n-1)`,
+  `simpa` reduces `n+1-1→n`) via `ring` after `rw [expand, hs]`. This is the division-free closing
+  the S4 cert certified (`s^2 + (i+1)^3 = (s+(i+1))^2` form), reached without any Ico.
+- `sum_cubes_eq_sum_first_odds (n)` — the literal combinatorial reading `∑ i^3 = ∑_{j<∑i}(2j+1)`,
+  a one-line corollary `rw [sum_odds, …]`. Independence from the parent is genuine: no closed form
+  for `∑ i^3` is used (only the Gauss sum `2·∑i = (n+1)·n`).
+
+**Honesty — this file is UNCOMPILED.** 0 sorries / 0 axioms *by construction*, but it has **not**
+been build-verified (Docker down). Confidence is high but not certain: every arithmetic identity the
+proof encodes — including the exact inductive step `s^2+(n+1)^3=(s+(n+1))^2` with `2s=(n+1)n`,
+`sum_odds`, and the corollary — was re-checked numerically (`n=0..199`) and `verify_m1.py` passes.
+Residual Lean risk is tactic-level only (base-case `simp`; `simpa` on `n+1-1`; `conv_rhs` targeting).
+The remaining work is purely: register + docker-build (fix any tactic glitch) + add the gallery entry.
