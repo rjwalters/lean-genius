@@ -24,6 +24,18 @@
     "prerequisites": ["expectation bounds", "ε-uniformity", "ℕ vs ℝ casting"]
   },
   {
+    "id": "e1179-oq02-ann-nat-real-transfer",
+    "proofId": "erdos-1179-oq-02",
+    "range": { "startLine": 63, "endLine": 75 },
+    "type": "tactic",
+    "title": "Transferring a Strict Real Bound to a ℕ Lower Bound",
+    "content": "The spanning conclusion is the natural-number inequality 1 ≤ reprCount A g, but the uniformity hypothesis lives over ℝ. The proof bridges the two with a reusable three-step pattern. (1) Derive the strict real inequality 0 < (reprCount A g : ℝ) from (1−ε)·μ > 0 (a product of two positives, mul_pos) and F_A(g) ≥ (1−ε)·μ (linarith). (2) Convert positivity of the cast to non-vanishing of the natural number: reprCount A g ≠ 0, since reprCount A g = 0 would force the cast to 0, contradicting hpos (rw + simp). (3) Close with omega, which upgrades n ≠ 0 to 1 ≤ n for n : ℕ. The key subtlety is that ℕ has no strict order below 1 — there is no natural number strictly between 0 and 1 — so a real lower bound that is merely positive (not ≥ 1) still yields the sharp integer bound 1 ≤ n once cast-positivity rules out n = 0. Using nlinarith/linarith for the ℝ side and omega for the ℕ side keeps each step in the arithmetic where it is decidable.",
+    "mathContext": "$0 < (\\,\\mathrm{reprCount}\\,A\\,g : \\mathbb{R}) \\Rightarrow \\mathrm{reprCount}\\,A\\,g \\neq 0 \\xrightarrow{\\;\\omega\\;} 1 \\le \\mathrm{reprCount}\\,A\\,g$, exploiting that $\\mathbb{N}$ has no element in $(0,1)$.",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.cast positivity", "ℕ↔ℝ coercion", "omega", "mul_pos", "discreteness of ℕ"],
+    "prerequisites": ["Nat.cast and Nat.cast_pos", "linarith/nlinarith", "omega decision procedure"]
+  },
+  {
     "id": "e1179-oq02-ann-card-bound",
     "proofId": "erdos-1179-oq-02",
     "range": { "startLine": 77, "endLine": 91 },
