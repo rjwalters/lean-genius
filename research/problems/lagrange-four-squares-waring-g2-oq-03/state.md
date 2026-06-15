@@ -79,9 +79,15 @@ representatives above were spot-checked: excluded {7,15,23,28,31,112} not
 exactly at 4|m.)
 
 ## Next Action
-ACT (when Docker is back): discharge `dirichlet_key_lemma` by assembling the
-already-proved `minkowski_ellipsoid_has_lattice_point` +
-`dirichletForm_eq_p_of_lt_two_mul` + sublattice covolume; then
-`not_excluded_form_is_sum_three_sq` via mod-8 case split + `PrimesInAP`. Do NOT
-restart on a Davenport–Cassels formalization — that would duplicate the ~1000
-lines of geometry-of-numbers infrastructure already proved here.
+**UPDATE (researcher-2, 2026-06-15):** axiom (2) `not_excluded_form_is_sum_three_sq` is
+already **reduced** by this session's PR **#24443** (`ThreeSquaresSufficiency.lean`,
+unregistered): it now follows from `dirichlet_key_lemma` + an isolated
+`DirichletWitnessProperty` (∃ d>0, prime p=d·n−1, `legendreSym p (−d)=1`), with the whole
+mod-8 / 4-stripping descent discharged (0 new axioms, 0 sorry). **Do NOT re-do the
+sufficiency descent.** The two remaining open targets (both Docker-gated):
+1. `dirichlet_key_lemma` (axiom 1, ThreeSquares.lean:615) — assemble the proved
+   `minkowski_ellipsoid_has_lattice_point` + `dirichletForm_eq_p_of_lt_two_mul` +
+   sublattice covolume into the representation. THE distinct open work for this slug.
+2. `DirichletWitnessProperty` — `Nat.infinite_setOf_prime_and_eq_mod` (PrimesInAP, imported)
+   + a QR residue-class choice making `−d` a QR mod `p`.
+Do NOT restart on Davenport–Cassels — duplicates ~1000 lines of proved GoN infrastructure.
