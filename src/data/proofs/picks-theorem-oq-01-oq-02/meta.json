@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-03",
     "axiomCount": 4,
-    "assumptions": "4 assumptions: 3 axioms (picks_theorem — Pick's formula A=i+B/2-1, matching the gallery's axiomatized PicksTheorem.lean; scaled_area — Area(tP)=t²A; scaled_boundary — |∂(tP)|=t·B for t≥1) plus 1 opaque constant (scaledPolygon — the integer dilation tP, opaque since its concrete construction is not needed for the theorem). The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
+    "assumptions": "4 assumptions: 2 axioms (scaled_area — Area(tP)=t²A; scaled_boundary — |∂(tP)|=t·B for t≥1), 1 structure-encoded assumption (the SimpleLatticePolygon.pick_relation field — Pick's formula A=i+B/2-1, carried as data so every polygon value is a genuine lattice polygon; this replaces a previously free-standing axiom picks_theorem that was logically inconsistent because the structure admitted non-Pick polygons, see #23117/#24682), plus 1 opaque constant (scaledPolygon — the integer dilation tP, opaque since its concrete construction is not needed for the theorem). picks_theorem is now a theorem derived from the pick_relation field. The rectangle and triangle Ehrhart polynomials are proved with 0 axioms via Finset combinatorics.",
     "lineCount": 309,
     "theoremCount": 24,
     "definitionCount": 7,
@@ -78,7 +78,7 @@
       "title": "Part III: Axiomatic Framework and General Ehrhart Formula",
       "startLine": 114,
       "endLine": 207,
-      "summary": "Axiomatizes SimpleLatticePolygon, picks_theorem, scaledPolygon (opaque), scaled_area, scaled_boundary. Proves ehrhart_formula, ehrhart_interior (reciprocity), ehrhart_is_quadratic, ehrhart_leading_coeff, ehrhart_reciprocity_sign_flip.",
+      "summary": "Defines SimpleLatticePolygon carrying Pick's relation as a pick_relation field (picks_theorem is derived from it, not axiomatized), and axiomatizes scaledPolygon (opaque), scaled_area, scaled_boundary. Proves ehrhart_formula, ehrhart_interior (reciprocity), ehrhart_is_quadratic, ehrhart_leading_coeff, ehrhart_reciprocity_sign_flip.",
       "mathContext": "$L(P,t) = A \\cdot t^2 + \\frac{B}{2} \\cdot t + 1$ and $i(tP) = A \\cdot t^2 - \\frac{B}{2} \\cdot t + 1$."
     },
     {
