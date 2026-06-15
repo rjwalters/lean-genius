@@ -2857,6 +2857,7 @@ import Proofs.SumOfDivisorsOQ02
 import Proofs.SumOfKthPowers
 import Proofs.SumOfKthPowersOQ01
 import Proofs.SumOfKthPowersOQ02
+import Proofs.SumOfKthPowersOQ03
 import Proofs.SumOfKthPowersOQ04
 import Proofs.SumOfKthPowersOQ04Aristotle
 import Proofs.SylowTheorem
