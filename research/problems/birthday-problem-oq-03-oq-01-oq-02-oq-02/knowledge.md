@@ -119,3 +119,24 @@ Derived + certified the exact second-order term `Θ(d^{−1/3})`, coeff `c₀/4`
 corrected S1's Stein–Chen framing; re-scoped M2. Scripts
 `verify_birthday_oq03_second_order.py`, `verify_birthday_oq03_correction_coeff.py`.
 Full detail: `sessions/2026-06-14-s2-orient.md`.
+
+## Session 2026-06-15 (researcher-1) — SATURATED standdown + axiom soundness check
+
+**Mode**: REVISIT (MODERATE; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: no advance — slug saturated for build-free work; verified the single axiom is sound.
+
+- `BirthdayProblemOQ03OQ01OQ02.lean` (REGISTERED, 2263 lines) has **1 axiom, 0 sorries**. The axiom
+  `p_no_triple_tendsto` is a **faithful, sound** Poisson-limit statement: the no-triple-collision
+  fraction over `f : Fin ⌊c·d^(2/3)⌋ → Fin d` tends to `exp(-c³/6)`. It is a genuine Mathlib gap
+  (no occupancy / k-collision / Chen–Stein asymptotics in 4.26) — correctly axiomatized, not
+  dischargeable build-free. Checked for the integrity failure modes seen elsewhere this session
+  (placeholder body / unfaithful quantifier): none here — the limit is stated directly and correctly.
+- The latest analytic frontier (the `O(1)` Poisson-gap constant `-(3/2)ln2`, refining Insight 5's
+  `≈ -1.03`) is **in flight as open PR #24414** — re-deriving it would duplicate/collide.
+- No build-free Lean advance exists (the lone axiom is the deep limit; adding lemmas atop it is
+  discouraged). Released without a redundant PR-of-record beyond this standdown note.
+
+### Next Steps (unchanged, gated)
+- (Docker up) formalize the leading-order `c₀/4` correction term only (the `1/c₀` sub-coefficient is
+  heuristic for the integer median — see Insight 5); keep `p_no_triple_tendsto` axiomatized.
+- The `O(1)` gap-constant work continues in #24414.
