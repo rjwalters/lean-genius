@@ -82,3 +82,26 @@ Note: `Measure.AbsolutelyContinuous` is AC of **measures** (μ ≪ ν), not of f
 
 **Next Steps (unchanged from Session 1)**
 - When Docker restored: build FTC-for-AC bridge lemma; discharge `greens_theorem_l1curl` by Fubini reduction to two 1D FTC-for-AC applications over the rectangle.
+
+### Session 2026-06-14 (Session 3) — Aristotle attempt + keystone StatementOnly target
+
+**Mode**: BLOCKED (Docker down — `docker info` times out; Aristotle MCP down — `prove()` returns "Resource not found"; worktree Mathlib symlink unreadable). No Lean verified.
+
+**What I Did**
+- Tried the one genuinely new avenue vs. Sessions 1–2: server-side proving via Aristotle MCP (bypasses local Docker). Server returned "Resource not found" on two attempts — currently down.
+- Refined the keystone to its cleanest **tractable first building block**: FTC for **Lipschitz** functions,
+  `LipschitzOnWith K f (Set.Icc a b) → f b - f a = ∫ x in a..b, deriv f x`.
+  Rationale: it is statable in plain Mathlib without an `AbsolutelyContinuous`-of-functions predicate (the definitional gap that makes the general AC statement awkward), it captures the hard `AC ⟹ FTC` content, and the rectangle's boundary edges are Lipschitz.
+- Localized the true obstruction: `integral_eq_sub_of_hasDeriv_right_of_le` wants an *everywhere* right-derivative on `(a,b)`; Lipschitz/Rademacher supplies it only a.e., so the a.e.-derivative → FTC bridge (the AC theory) is exactly the missing keystone.
+- Authored `proofs/Proofs/StatementOnly_GreensOQ02_FTCofLipschitz.lean` — a one-theorem Aristotle batch target (`ftc_of_lipschitzOn`) following the Harmonic StatementOnly format (informal `/-` block, verbatim `set_option` block, Rivin proof-attempt scaffolding).
+
+**Honest status**: This is an incremental artifact, not a discharge of the axiom. The StatementOnly file is **unverified** — it could not be compile-checked (Docker down) and could not be submitted (Aristotle down). The Lipschitz case is strictly weaker than the general-AC version the axiom needs.
+
+**Files Modified**
+- `proofs/Proofs/StatementOnly_GreensOQ02_FTCofLipschitz.lean` (new)
+- `src/data/research/problems/greens-theorem-oq-02-oq-02.json` (insights, builtItems, progressSummary)
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md` (this entry)
+
+**Next Steps**
+- When Aristotle restored: submit `StatementOnly_GreensOQ02_FTCofLipschitz.lean` via the batch pipeline / `prove()`.
+- When Docker restored: compile-check the StatementOnly file; if the Lipschitz FTC goes through, generalize to AC and run the Fubini discharge of `greens_theorem_l1curl`.
