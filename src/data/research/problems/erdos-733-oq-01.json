@@ -4,17 +4,24 @@
   "phase": "ORIENT",
   "title": "Erdős #733 OQ-01: the limiting constant lim log f(n)/sqrt(n)",
   "knowledge": {
-    "progressSummary": "PROGRESS: explicit, exact-arithmetic-verified lower bound liminf log f(n)/sqrt(n) >= pi*sqrt(2/3) ~ 2.5651 via realizing all partitions into parts >= 3 as generic line configs. Upper constant remains open.",
+    "progressSummary": "PROGRESS (S3, upper side): first EXPLICIT finite upper bound on the true lambda. Dyadic Szemeredi-Trotter product bound f(n) <= prod_j C(M_j+w_j, w_j) verified to be exp(Theta(sqrt n)): S(n)/sqrt(n) -> ~34.4, S(n)/n^{2/3} -> 0, no log factor. Control shows pair-budget-only gives exp(Theta(n^{2/3})), so ST's k^3 tail (not pair counting) yields the sqrt(n) rate. Two-sided bracket pi*sqrt(2/3)=2.5651 <= lambda <= C, C~23.5 (c0=1) to 34.4 (c0=2.5). lambda OPEN.",
     "builtItems": [
       "verify_lower_constant.py: exact-Q geometry checker; for n=4..12 realizes every parts>=3 construction, recomputes rich-line multiset, confirms 0 mismatches / 0 collisions => f(n) >= Q(n) (3,4,6,8,11,15,20,26,35).",
-      "Hardy-Ramanujan asymptotic check: log Q(n)/sqrt(n) -> pi*sqrt(2/3) = 2.5651 (DP up to n=4000)."
+      "Hardy-Ramanujan asymptotic check: log Q(n)/sqrt(n) -> pi*sqrt(2/3) = 2.5651 (DP up to n=4000).",
+      "verify_upper_constant.py: dyadic ST product bound S(n)=sum_j log C(M_j+w_j,w_j) with M_j=min(ST cap A n^2/k^3+B n/k, pair cap C(n,2)/C(2^j,2)); n=10^3..10^12, S(n)/sqrt(n) converges to ~34.4 while S(n)/n^{2/3}->0 and S/(sqrt n log n)->0 (no log).",
+      "Control (Part C): pair-budget-only bound diverges /sqrt(n) (22.6->364) but /n^{2/3}->7.85 const, confirming the naive (m_k) overshoot is exp(Theta(n^{2/3})).",
+      "Integral identities verified to 4e-5: int_0^inf ln(1+1/u^2)du=pi, int_0^inf ln(1+1/v^4)dv=pi*sqrt2 (continuum rate of the symmetric binomial bound)."
     ],
     "insights": [
       "Lower bound construction: each part a>=3 is a generic line with a points; remaining points in general position; generically only the chosen lines are >=3-rich, all other rich lines carry exactly 2 points. Realized sequence is determined by the multiset of parts >=3, so distinct multisets => distinct line-compatible sequences.",
       "f(n) >= Q(n) := #{partitions of any s<=n into parts >=3}; excluding parts 1,2 only multiplies the partition GF by (1-x)(1-x^2), preserving the Hardy-Ramanujan rate => log Q(n) ~ pi*sqrt(2n/3) => lambda >= pi*sqrt(2/3) ~ 2.5651.",
       "The bound need not be tight: the sqrt(n) x sqrt(n) grid (Erdos's original) may give a larger constant via intermediate-multiplicity rich lines.",
       "Upper side is hard: naive counting of (m_2,m_3,...) under the pairs constraint sum_k C(k,2) m_k <= C(n,2) overshoots exp(Theta(sqrt n)); Szemeredi-Trotter upper constant needs realizability structure.",
-      "INTEGRITY: gallery countLineCompatible (Erdos733Problem.lean L103-105) is a placeholder = 2^n - 1, not f(n); the lower/upper axioms are stated about a stand-in count."
+      "INTEGRITY: gallery countLineCompatible (Erdos733Problem.lean L103-105) is a placeholder = 2^n - 1, not f(n); the lower/upper axioms are stated about a stand-in count.",
+      "UPPER BOUND mechanism: f(n)=#realizable (m_3..m_n) (pair identity sum C(k,2)m_k=C(n,2) fixes m_2). Independent dyadic product over multiplicity scales: f(n) <= prod_j C(M_j+w_j,w_j), M_j=#lines with mult in [2^j,2^{j+1}).",
+      "The sqrt(n) rate comes from ST's CUBIC line-count tail t_{>=k} <= A n^2/k^3 + B n/k (A=O(c0^3),B=4), NOT the quadratic pair budget: pair-only gives n^{2/3} (verified, const 7.85), ST gives sqrt(n).",
+      "First explicit two-sided bracket on the TRUE lambda (not just lambda_grid): 2.5651 <= lambda <= C with C explicit and finite (~23.5-34.4 depending on ST incidence constant c0). Before S3 the upper side was only 'exists C'.",
+      "C is LOOSE: ST constant c0 unoptimised and the dyadic product is a coarse over-count; bracket [2.565, ~24] is wide. Exact lambda remains OPEN."
     ],
     "mathlibGaps": [
       "No Szemeredi-Trotter incidence theorem in Mathlib v4.26.0; the gallery encodes its consequences as axioms.",
@@ -23,7 +30,9 @@
     "nextSteps": [
       "Compute the sqrt(n) x sqrt(n) grid sequence-count constant for a possibly larger lower bound.",
       "Extract an explicit upper constant C from quantitative Szemeredi-Trotter rich-lines bound (the hard half).",
-      "If formalizing: replace placeholder countLineCompatible with a real definition and state lower_bound with explicit c = pi*sqrt(2/3) - eps."
+      "If formalizing: replace placeholder countLineCompatible with a real definition and state lower_bound with explicit c = pi*sqrt(2/3) - eps.",
+      "Optimise ST incidence constant c0 and tighten the dyadic over-count to shrink the upper C.",
+      "Determine whether lambda = lambda_grid (is the generic grid extremal?), connecting S2's lower bracket to this upper bound."
     ]
   }
 }
