@@ -29,8 +29,8 @@
     "id": "ann-phex-oq03-hexRot",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 119,
-      "endLine": 121
+      "startLine": 125,
+      "endLine": 127
     },
     "type": "definition",
     "title": "hexRot: Cyclic Rotation of Fin 6",
@@ -53,8 +53,8 @@
     "id": "ann-phex-oq03-hexRev",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 123,
-      "endLine": 129
+      "startLine": 129,
+      "endLine": 135
     },
     "type": "definition",
     "title": "hexRev: Reversal i ↦ 5 - i",
@@ -78,12 +78,12 @@
     "id": "ann-phex-oq03-hexagonalGroup",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 135,
-      "endLine": 142
+      "startLine": 141,
+      "endLine": 148
     },
     "type": "definition",
     "title": "hexagonalGroup: The Dihedral Subgroup of Sym(6)",
-    "content": "`hexagonalGroup := Subgroup.closure {hexRot, hexRev}` is the smallest subgroup of `Sym(6) = Equiv.Perm (Fin 6)` containing the cyclic-rotation and reversal generators. It is isomorphic to Mathlib's `DihedralGroup 6` of order 12. The OQ-03-OQ-01 sorry establishes `Nat.card hexagonalGroup = 12` by exhibiting a `MonoidHom` from `DihedralGroup 6` to this closure (using the universal property of `DihedralGroup` via its dihedral relations) and proving the homomorphism is injective. Alternative S2 strategy: directly enumerate the 12 elements as `{ρ^k σ^ε : k ∈ Fin 6, ε ∈ Fin 2}` and verify each lies in the closure via `Subgroup.subset_closure` + `Subgroup.mul_mem`.",
+    "content": "`hexagonalGroup := Subgroup.closure {hexRot, hexRev}` is the smallest subgroup of `Sym(6) = Equiv.Perm (Fin 6)` containing the cyclic-rotation and reversal generators. It is isomorphic to Mathlib's `DihedralGroup 6` of order 12. OQ-03-OQ-01 (PROVED, S3d) establishes `Nat.card hexagonalGroup = 12` by exhibiting a `MonoidHom` from `DihedralGroup 6` to this closure (using the universal property of `DihedralGroup` via its dihedral relations), proving it injective, and showing its range equals `hexagonalGroup`. Alternative S2 strategy: directly enumerate the 12 elements as `{ρ^k σ^ε : k ∈ Fin 6, ε ∈ Fin 2}` and verify each lies in the closure via `Subgroup.subset_closure` + `Subgroup.mul_mem`.",
     "mathContext": "Presentation: $D_6 = \\langle \\rho, \\sigma \\mid \\rho^6 = \\sigma^2 = 1,\\ \\sigma \\rho \\sigma = \\rho^{-1} \\rangle$, order 12. As a subgroup of $S_6$: $\\langle \\rho, \\sigma \\rangle = \\{\\rho^k, \\rho^k \\sigma : 0 \\le k \\le 5\\}$. Index $[S_6 : D_6] = 60$.",
     "significance": "key",
     "relatedConcepts": [
@@ -103,12 +103,12 @@
     "id": "ann-phex-oq03-hexagonLabeling",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 158,
-      "endLine": 162
+      "startLine": 497,
+      "endLine": 501
     },
     "type": "definition",
     "title": "HexagonLabeling: Sym(6) ⧸ D_6",
-    "content": "`HexagonLabeling := Equiv.Perm (Fin 6) ⧸ hexagonalGroup` packages the 60 distinct hexagonal labelings as cosets of the dihedral subgroup. The `abbrev` declaration means downstream definitions can use `HexagonLabeling` directly without unfolding. The cardinality `Nat.card HexagonLabeling = 60` follows from `card_sym6 = 720` (Fintype, proved unconditionally) and `card_hexagonalGroup = 12` (OQ-03-OQ-01 sorry) via Lagrange's theorem `Subgroup.card_eq_card_quotient_mul_card_subgroup`.",
+    "content": "`HexagonLabeling := Equiv.Perm (Fin 6) ⧸ hexagonalGroup` packages the 60 distinct hexagonal labelings as cosets of the dihedral subgroup. The `abbrev` declaration means downstream definitions can use `HexagonLabeling` directly without unfolding. The cardinality `Nat.card HexagonLabeling = 60` follows from `card_sym6 = 720` (Fintype, proved unconditionally) and `card_hexagonalGroup = 12` (OQ-03-OQ-01, PROVED S3d) via Lagrange's theorem `Subgroup.card_eq_card_quotient_mul_card_subgroup`.",
     "mathContext": "Quotient $S_6 / D_6$ of left cosets, with $|S_6 / D_6| = |S_6| / |D_6| = 720 / 12 = 60$ by Lagrange. Each coset is a $D_6$-orbit under left multiplication, i.e. a class of hexagonal labelings agreeing modulo cyclic rotation and reversal.",
     "significance": "key",
     "relatedConcepts": [
@@ -128,8 +128,8 @@
     "id": "ann-phex-oq03-card-sym6",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 168,
-      "endLine": 170
+      "startLine": 507,
+      "endLine": 509
     },
     "type": "theorem",
     "title": "card_sym6: |Sym(6)| = 720 (Unconditional)",
@@ -153,8 +153,8 @@
     "id": "ann-phex-oq03-pascal-line",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 196,
-      "endLine": 219
+      "startLine": 623,
+      "endLine": 633
     },
     "type": "theorem",
     "title": "pascalLine: Pascal-Line Map from HexagonLabeling (OQ-03-OQ-02)",
@@ -179,8 +179,8 @@
     "id": "ann-phex-oq03-steiner",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 225,
-      "endLine": 247
+      "startLine": 652,
+      "endLine": 674
     },
     "type": "theorem",
     "title": "SteinerPoint Structure and 20-Count (OQ-03-OQ-03)",
@@ -206,8 +206,8 @@
     "id": "ann-phex-oq03-kirkman",
     "proofId": "pascals-hexagon-oq-03",
     "range": {
-      "startLine": 253,
-      "endLine": 272
+      "startLine": 680,
+      "endLine": 699
     },
     "type": "theorem",
     "title": "KirkmanPoint Structure and 60-Count (OQ-03-OQ-04)",
