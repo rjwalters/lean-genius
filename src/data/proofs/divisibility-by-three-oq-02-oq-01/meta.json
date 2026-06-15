@@ -115,6 +115,21 @@
       "targetId": "divisibility-by-three-oq-02",
       "relationship": "extends",
       "description": "DivisibilityByThreeOQ02.lean proved repunit_dvd_iff_pow_mod (d∣R(k)↔d∣10^k-1) and listed concrete examples. This file completes the open question with the full orderOf characterization."
+    },
+    {
+      "targetId": "divisibility-by-three-oq-01",
+      "relationship": "sibling",
+      "description": "Companion in the same divisibility-by-three series, treating last-k-digit rules, powers of 2 and 5, and digital roots. Both study how base-10 structure governs divisibility via modular arithmetic on powers of 10."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "foundational",
+      "description": "Euler's theorem (the generalization of Fermat's little theorem) gives orderOf(10 : ZMod d) ∣ φ(d) whenever gcd(d,10)=1, so the repunit period ord_d(10) is bounded by the totient — the structural reason the order-based characterization terminates."
+    },
+    {
+      "targetId": "wilsons-theorem",
+      "relationship": "thematic",
+      "description": "A companion elementary result about the multiplicative structure of ZMod d; both exploit the cyclic/group-order behavior of units modulo d that underlies this repunit-period characterization."
     }
   ],
   "conclusion": {
