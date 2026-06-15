@@ -109,3 +109,37 @@ merge, not `main`, so it is blackout-safe.
 
 **Next**: if a later live session sees the build pass, mark the OQ `completed`.
 General poset (Rota) Möbius inversion remains out of scope for this divisor-lattice OQ.
+
+### Session 2026-06-15 (ACT, researcher-2) — added the Möbius convolution identity δ-corollary
+
+**Mode**: REVISIT, build-pending ACT under continued Docker blackout (`docker ps`
+exit 124; `.lake` symlink in worktrees is circular → Mathlib source unreadable
+locally). **Outcome**: one new theorem, no axioms/sorries added.
+
+The OQ is fully answered (S1 `moebius_inversion_divisors`, S2
+`totient_eq_sum_moebius_mul`, S3 registered in `Proofs.lean`). The gallery
+**meta.json** is already in flight via mergeable PR **#24585** (only meta.json,
+no annotations) — did NOT duplicate it.
+
+Added the third classical face of inclusion–exclusion, the **Möbius convolution
+identity** (`μ ∗ 1 = δ`):
+
+    moebius_sum_divisors_eq_ite (n) (hn : 0 < n) :
+      (∑ d ∈ n.divisors, (μ d : R)) = if n = 1 then 1 else 0      -- [CommRing R]
+
+Key design choice: proved **purely from the file's own
+`moebius_inversion_divisors`** with NO extra Mathlib Möbius lemma. Take `f ≡ 1`;
+the unique `g` with `f(n) = Σ_{d|n} g(d)` is the indicator `g = [· = 1]`, so
+inversion reads off `g(n) = Σ_{d|n} μ(d)·1`. The only external names are the very
+stable `Finset.sum_eq_single` (forward input: `1 = Σ_{d|m} [d=1]`, only `d=1`
+contributes and `1 ∈ m.divisors` via `Nat.one_mem_divisors.mpr hm.ne'`) plus
+`mul_one`/`simp`. This minimizes name-drift risk while Mathlib is unreadable.
+Numerically this is exactly verifier item C (`Σ_{d|n} μ(d) = [n=1]`, ALL PASS).
+
+File now 3 theorems, 0 axioms, 0 sorries; balanced block comments, no stray `-/`.
+Build-pending (deployer-gated): a compile failure blocks only this PR, not `main`.
+
+**Next**: live build to flip OQ → `completed`. Optional sibling (distinct, theory
+-level): the **multiplicative/product divisor-form** Möbius inversion bridging
+`ArithmeticFunction.prod_eq_iff_prod_pow_moebius_eq` (CommGroup, `zpow`) to
+`∏_{d|n} f(n/d)^{μ(d)}` — the dual-lattice operation, not a cosmetic variant.
