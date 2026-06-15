@@ -2,7 +2,7 @@
   "id": "konigsberg-oq-01-oq-02",
   "title": "Eulerian Paths in Directed Graphs",
   "slug": "konigsberg-oq-01-oq-02",
-  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg) and necessity direction (Eulerian circuit → balanced) are proved from first principles. 12 theorems proved, 2 axioms (Hierholzer sufficiency and path characterization).",
+  "description": "Extends the Eulerian circuit characterization to directed graphs. A weakly connected digraph has an Eulerian circuit iff every vertex has equal in-degree and out-degree; it has an Eulerian path from s to t iff outdeg(s)=indeg(s)+1, indeg(t)=outdeg(t)+1, and all other vertices are balanced. The directed handshaking lemma (∑ outDeg = |E| = ∑ inDeg), the necessity direction (Eulerian circuit → balanced), and the Hierholzer infrastructure (greedy maximal trail, its closure in a balanced graph, circuit existence, and Eulerian-path necessity) are proved from first principles. 25 of 26 theorems are proved from first principles (1 sorry remains in remove_circuit_balanced, blocked on a Finset.sdiff distributivity step); 2 axioms (Hierholzer sufficiency and the full Eulerian path characterization) remain.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-05-03",
