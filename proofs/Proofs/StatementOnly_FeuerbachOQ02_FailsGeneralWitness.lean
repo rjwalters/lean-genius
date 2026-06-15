@@ -52,17 +52,35 @@ goal multiplied by `0 ≤ √·` yields the matching one-sided bound), then
 `linarith` for positivity.  No `Real.sqrt_lt'`/`Real.lt_sqrt` iff-lemma is
 needed.
 
-REMAINING SORRIES: `witnessT1_fails` (full non-tangency for the concrete T1 —
-requires unfolding `twentyFourPointCenter`, `incenter`, `inradius`,
-`twentyFourPointRadius` at the witness, sympy-certified in
-`verify_feuerbach3d_fails_witness_exact.py` but heavy to transcribe) and the
-trivial discharge that consumes it.  The genuinely number-theoretic kernel —
-the three-surd separation — is the part now machine-statable and proved.
+SORRY-FREE (S11): `witnessT1_fails` is now fully discharged.  The non-tangency
+is reduced to the proven surd kernel by transcribing the closed forms of all
+four invariants at T1 as separate lemmas:
+  • `witnessT1_faceArea_{A,B,C,D}`  = (√3/2, √2/2, √2/2, 1/2)
+  • `witnessT1_volume`              = 1/6
+  • `witnessT1_surfaceArea`         = (1+√3+2√2)/2
+  • `witnessT1_inradius`            = 1/(1+√3+2√2)
+  • `witnessT1_circumcenter`        = (1/2,1/2,1/2)   (rational, via Cramer)
+  • `witnessT1_circumradius`        = √3/2
+  • `witnessT1_twentyFourPointRadius` = √3/6
+  • `witnessT1_twentyFourPointCenter` = (1/2,1/2,0)   (rational)
+  • `witnessT1_incenter`            = ((1+√2)/Δ, (1+√2)/Δ, 1/Δ)
+The non-tangency `dist(N₂₄,I) = |R/3 − r|` is squared (`dist3_sq_eq`, `sq_abs`),
+both sides put over the common denominator `36 Δ²` as pure RATIONAL identities
+(no surd-square needed: `field_simp; ring`), and the strict separation
+`(bΔ−6)² < 18((1−b)²+2)` is the exact polynomial identity `hid` modulo
+`a²=2, b²=3` (a=√2, b=√3) plus the numeric bounds √2<1.41422, √3<1.7321,
+√6>2.4494 — i.e. the same `72−30√3−12√2+12√6 > 0` kernel as
+`witnessT1_surd_separation`.  `feuerbach_3d_fails_general_proved` then discharges
+the parent existence axiom outright.
 
-PARTIALLY VERIFIED — the surd kernel is a hand proof authored under a Docker +
-Aristotle blackout (not yet compiler-checked); the witness non-tangency is
-still `sorry`.  This file does NOT touch the registered parent file and is NOT
-itself registered in `Proofs.lean`, so it cannot affect the gallery build.
+BUILD-PENDING — authored under a Docker + Aristotle blackout, so NOT yet
+compiler-checked; every algebraic identity is sympy-certified in
+`proofs/scripts/verify_feuerbach3d_fails_witness_exact.py` (ALL CHECKS PASS,
+including the S11 Lean-shaped intermediate identities `hd`, `he`, `hid`).  This
+file does NOT touch the registered parent file and is NOT itself registered in
+`Proofs.lean`, so it cannot affect the gallery build.  Once green, the parent
+axiom `feuerbach_3d_fails_general` can be replaced by
+`feuerbach_3d_fails_general_proved` (axiom elimination).
 -/
 import Mathlib
 import Proofs.FeuerbachsTheoremOQ02
@@ -112,22 +130,165 @@ theorem witnessT1_nonorthocentric :
     dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0 := by
   norm_num [witnessT1, vec3, dot3]
 
+-- ============================================================
+-- Closed forms of the surd-laden invariants at T1 (S11).
+-- Each is sympy-certified in verify_feuerbach3d_fails_witness_exact.py.
+-- ============================================================
+
+/-- Face areas of T1: (√3/2, √2/2, √2/2, 1/2). -/
+theorem witnessT1_faceArea_A : witnessT1.faceArea_A = Real.sqrt 3 / 2 := by
+  norm_num [Tetrahedron.faceArea_A, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_B : witnessT1.faceArea_B = Real.sqrt 2 / 2 := by
+  norm_num [Tetrahedron.faceArea_B, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_C : witnessT1.faceArea_C = Real.sqrt 2 / 2 := by
+  norm_num [Tetrahedron.faceArea_C, witnessT1, vec3, cross3, dot3]
+
+theorem witnessT1_faceArea_D : witnessT1.faceArea_D = 1 / 2 := by
+  norm_num [Tetrahedron.faceArea_D, witnessT1, vec3, cross3, dot3]
+
+/-- Volume of T1 is 1/6 (signed volume 6 = 1). -/
+theorem witnessT1_volume : witnessT1.volume = 1 / 6 := by
+  norm_num [Tetrahedron.volume, Tetrahedron.signedVolume6, witnessT1, vec3, dot3, cross3]
+
+/-- Surface area S = (1 + √3 + 2√2)/2. -/
+theorem witnessT1_surfaceArea :
+    witnessT1.surfaceArea = (1 + Real.sqrt 3 + 2 * Real.sqrt 2) / 2 := by
+  rw [Tetrahedron.surfaceArea, witnessT1_faceArea_A, witnessT1_faceArea_B,
+    witnessT1_faceArea_C, witnessT1_faceArea_D]
+  ring
+
+/-- Inradius r = 3V/S = 1/(1+√3+2√2). -/
+theorem witnessT1_inradius :
+    witnessT1.inradius = 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2) := by
+  have hpos : (0 : ℝ) < 1 + Real.sqrt 3 + 2 * Real.sqrt 2 := by positivity
+  rw [Tetrahedron.inradius, witnessT1_volume, witnessT1_surfaceArea]
+  field_simp
+  ring
+
+/-- Circumcenter O = (1/2, 1/2, 1/2) (rational; via Cramer with det = 1). -/
+theorem witnessT1_circumcenter : witnessT1.circumcenter = (1 / 2, 1 / 2, 1 / 2) := by
+  simp only [Tetrahedron.circumcenter, witnessT1, vec3, dot3, cross3, Prod.mk.injEq]
+  norm_num
+
+/-- Circumradius R = √3/2 = dist(O, A). -/
+theorem witnessT1_circumradius : witnessT1.circumradius = Real.sqrt 3 / 2 := by
+  rw [Tetrahedron.circumradius, witnessT1_circumcenter]
+  simp only [dist3, witnessT1]
+  rw [show ((0 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - 1 / 2) ^ 2 + ((0 : ℝ) - 1 / 2) ^ 2
+        = 3 * (1 / 2) ^ 2 by norm_num,
+    Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 3), Real.sqrt_sq (by norm_num : (0 : ℝ) ≤ 1 / 2)]
+  ring
+
+/-- twentyFourPointRadius R/3 = √3/6. -/
+theorem witnessT1_twentyFourPointRadius :
+    witnessT1.twentyFourPointRadius = Real.sqrt 3 / 6 := by
+  rw [Tetrahedron.twentyFourPointRadius, witnessT1_circumradius]
+  ring
+
+/-- twentyFourPointCenter N₂₄ = (1/2, 1/2, 0) (rational; = midpoint(O, 4G−3O)). -/
+theorem witnessT1_twentyFourPointCenter :
+    witnessT1.twentyFourPointCenter = (1 / 2, 1 / 2, 0) := by
+  rw [Tetrahedron.twentyFourPointCenter, Tetrahedron.mongePoint, witnessT1_circumcenter]
+  simp only [midpoint3, Tetrahedron.centroid, witnessT1, Prod.mk.injEq]
+  norm_num
+
+/-- Incenter I = ((1+√2)/Δ, (1+√2)/Δ, 1/Δ), Δ = 1+√3+2√2. -/
+theorem witnessT1_incenter :
+    witnessT1.incenter =
+      ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+       (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+       1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) := by
+  have hpos : (0 : ℝ) < 1 + Real.sqrt 3 + 2 * Real.sqrt 2 := by positivity
+  have htot : (Real.sqrt 3 / 2 + Real.sqrt 2 / 2 + Real.sqrt 2 / 2 + 1 / 2) ≠ 0 := by positivity
+  simp only [Tetrahedron.incenter]
+  rw [witnessT1_faceArea_A, witnessT1_faceArea_B, witnessT1_faceArea_C, witnessT1_faceArea_D]
+  simp only [witnessT1, Prod.mk.injEq]
+  refine ⟨?_, ?_, ?_⟩ <;>
+    · rw [div_eq_div_iff htot hpos.ne']
+      ring
+
 /-- The witness T1 is non-orthocentric AND its twenty-four-point sphere is NOT
 internally tangent to its insphere.  This is exactly the body of the parent
 axiom `feuerbach_3d_fails_general`, specialised to T1.
 
-The non-orthocentric conjunct is now the proven `witnessT1_nonorthocentric`; the
-remaining `sorry` is ONLY the non-tangency, whose reduction to the proven surd
-kernel `witnessT1_surd_separation` requires the heavy definitional unfold of
-`twentyFourPointCenter`/`incenter`/`inradius`/`twentyFourPointRadius` at T1
-(sympy-certified in `verify_feuerbach3d_fails_witness_exact.py`, build-gated). -/
+Both conjuncts are proved (S11): the non-orthocentric conjunct is
+`witnessT1_nonorthocentric`, and the non-tangency follows by substituting the
+closed forms of `twentyFourPointCenter`/`incenter`/`inradius`/
+`twentyFourPointRadius` at T1, squaring, and invoking the surd separation kernel
+(all sympy-certified in `verify_feuerbach3d_fails_witness_exact.py`). -/
 theorem witnessT1_fails :
     (dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0) ∧
     ¬ spheresInternallyTangent
         witnessT1.twentyFourPointCenter witnessT1.incenter
         witnessT1.twentyFourPointRadius witnessT1.inradius := by
   refine ⟨witnessT1_nonorthocentric, ?_⟩
-  sorry
+  -- Unfold tangency and substitute the closed forms of all four invariants at T1.
+  simp only [spheresInternallyTangent, witnessT1_twentyFourPointCenter, witnessT1_incenter,
+    witnessT1_twentyFourPointRadius, witnessT1_inradius]
+  -- Goal: ¬ (dist3 N₂₄ I = |√3/6 − 1/Δ|), with N₂₄, I, R/3, r all explicit.
+  intro h
+  -- Square the tangency equation: dist3_sq N₂₄ I = (√3/6 − 1/Δ)².
+  have h2 :
+      dist3_sq (1 / 2, 1 / 2, 0)
+        ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+         (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+         1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2))
+        = (Real.sqrt 3 / 6 - 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) ^ 2 := by
+    have hsq := congrArg (· ^ 2) h
+    rwa [dist3_sq_eq, sq_abs] at hsq
+  -- The strict separation dist3_sq N₂₄ I > (√3/6 − 1/Δ)², contradicting h2.
+  have hgt :
+      (Real.sqrt 3 / 6 - 1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) ^ 2 <
+        dist3_sq (1 / 2, 1 / 2, 0)
+          ((1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+           (1 + Real.sqrt 2) / (1 + Real.sqrt 3 + 2 * Real.sqrt 2),
+           1 / (1 + Real.sqrt 3 + 2 * Real.sqrt 2)) := by
+    set a : ℝ := Real.sqrt 2 with ha
+    set b : ℝ := Real.sqrt 3 with hb
+    have ha0 : 0 ≤ a := by rw [ha]; exact Real.sqrt_nonneg 2
+    have hb0 : 0 ≤ b := by rw [hb]; exact Real.sqrt_nonneg 3
+    have ha2 : a ^ 2 = 2 := by rw [ha]; exact Real.sq_sqrt (by norm_num)
+    have hb2 : b ^ 2 = 3 := by rw [hb]; exact Real.sq_sqrt (by norm_num)
+    have hΔpos : (0 : ℝ) < 1 + b + 2 * a := by positivity
+    -- rational closed forms of both sides (no surd-square needed)
+    have hd :
+        dist3_sq (1 / 2, 1 / 2, 0)
+          ((1 + a) / (1 + b + 2 * a), (1 + a) / (1 + b + 2 * a), 1 / (1 + b + 2 * a))
+          = ((1 - b) ^ 2 + 2) / (2 * (1 + b + 2 * a) ^ 2) := by
+      simp only [dist3_sq]
+      field_simp [hΔpos.ne']
+      ring
+    have he :
+        (b / 6 - 1 / (1 + b + 2 * a)) ^ 2
+          = (b * (1 + b + 2 * a) - 6) ^ 2 / (36 * (1 + b + 2 * a) ^ 2) := by
+      field_simp [hΔpos.ne']
+      ring
+    rw [hd, he]
+    -- numeric separating bounds on the surds
+    have ha_ub : a < 1.41422 := by nlinarith [ha2, ha0]
+    have hb_ub : b < 1.7321 := by nlinarith [hb2, hb0]
+    have hab_lb : (2.4494 : ℝ) < a * b := by
+      have hab : a * b = Real.sqrt 6 := by
+        rw [ha, hb, ← Real.sqrt_mul (by norm_num : (0 : ℝ) ≤ 2)]; norm_num
+      rw [hab]
+      nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 6 by norm_num), Real.sqrt_nonneg 6]
+    -- the sharp three-surd kernel, as an exact polynomial identity mod a²=2, b²=3
+    have hid :
+        18 * ((1 - b) ^ 2 + 2) - (b * (1 + b + 2 * a) - 6) ^ 2
+          = 72 - 30 * b - 12 * a + 12 * (a * b) := by
+      linear_combination (-4 * b ^ 2) * ha2
+        + (-4 * a * b - 4 * a - b ^ 2 - 2 * b + 18) * hb2
+    have hpos : (0 : ℝ) < 72 - 30 * b - 12 * a + 12 * (a * b) := by
+      linarith [ha_ub, hb_ub, hab_lb]
+    have hkey : (b * (1 + b + 2 * a) - 6) ^ 2 < 18 * ((1 - b) ^ 2 + 2) := by
+      linarith [hid, hpos]
+    -- transport across the common positive denominator
+    have hD2 : (0 : ℝ) < 2 * (1 + b + 2 * a) ^ 2 := by positivity
+    rw [div_lt_div_iff (by positivity) (by positivity)]
+    nlinarith [mul_lt_mul_of_pos_right hkey hD2]
+  linarith [h2, hgt]
 
 /-- Discharge of the parent existence axiom from the explicit witness. -/
 theorem feuerbach_3d_fails_general_proved :
