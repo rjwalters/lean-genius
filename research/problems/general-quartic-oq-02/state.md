@@ -1,10 +1,28 @@
 # Current State
 
-**Phase**: ACT (S8 AXIOM ELIMINATION done; **S9 BLOCKED on Docker** — next axiom-eliminations are build-gated)
+**Phase**: ACT (S8 AXIOM ELIMINATION done; **S9 axiom-elimination BLOCKED on Docker**; S10 = build-free docstring reconciliation, this session)
 **Since**: 2026-06-04 (S6 AUDIT) → 2026-06-09 (S7 SOUND DISCHARGE) →
-2026-06-13 (S8 AXIOM ELIMINATION) → 2026-06-13 (S9 BLOCKED FLAG, this session)
-**Iteration**: 11 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
-SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG this session)
+2026-06-13 (S8 AXIOM ELIMINATION) → 2026-06-13 (S9 BLOCKED FLAG) →
+2026-06-14 (S10 DOCSTRING RECONCILE, this session)
+**Iteration**: 12 (S5a + S5b SCAFFOLD-1/-2/-3; S6 AUDIT + BUGFIX; S7
+SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG; S10 DOCSTRING
+RECONCILE this session)
+
+## S10 DOCSTRING RECONCILE (2026-06-14, researcher-2)
+
+**Build-free, comment-only.** The top-level module docstring described
+Ferrari's completion in the textbook `(y² + p/2 + m)²` convention while the
+entire proof body uses the file's non-standard `(y² + p + m)²` convention
+(constant `p + m`); the stale block was also internally inconsistent
+(textbook LHS paired with a file-convention `(2m+p)y²` RHS). Rewrote the
+"Mathematical Background" derivation in the `(y² + p + m)²` convention, with
+an explicit non-standard-convention note, sign fix `(αy − β)`, the
+`α²=2m+p / 2αβ=q / β²=(p+m)²−r` factor relations, and the discriminant
+condition `q² − 4(2m+p)((p+m)² − r) = 0` whose expansion matches
+`resolventCubic` exactly (verified by hand). No statement/tactic/axiom/import
+touched; axiom count 3, sorries 0 unchanged. See
+`sessions/2026-06-14-s10-docstring-convention-reconcile.md`. S9 axiom
+elimination remains Docker-gated.
 
 ## S9 BLOCKED FLAG (2026-06-13, researcher-2)
 

@@ -34,25 +34,31 @@ can be solved by radicals using Ferrari's method (1540).
 
 ## Mathematical Background
 
-Ferrari's brilliant insight (1540): Add m to both sides and complete the square.
+Ferrari's brilliant insight (1540): Add a parameter m and complete the square.
 
-Starting with y⁴ + py² + qy + r = 0, rearrange as:
-  (y² + p/2)² = (p²/4 - r) - qy
-            = (p/2)²y⁰ - qy - r + p²/4
+NOTE ON CONVENTION: this file uses a *non-standard* completion with constant
+`p + m` (not the textbook `p/2 + m`). The derivation below, the `resolventCubic`
+definition, and `ferrari_factorization_id` all share this `(y² + p + m)²`
+convention; the file's `m` differs from the textbook parameter by a shift of p/2.
 
-By adding a parameter m and completing the square on the right side, we can write:
-  (y² + p/2 + m)² = (2m + p)y² - qy + (m² + pm + p²/4 - r)
+Starting with y⁴ + py² + qy + r = 0, substitute y⁴ = -py² - qy - r into the
+expansion of (y² + p + m)² = y⁴ + 2(p + m)y² + (p + m)² to get:
+  (y² + p + m)² = (2m + p)y² - qy + (m² + 2pm + p² - r)
 
 The right side is a perfect square in y when its discriminant vanishes:
-  q² - 4(2m + p)(m² + pm + p²/4 - r) = 0
+  q² - 4(2m + p)((p + m)² - r) = 0
 
-This is the resolvent cubic in m. Once m is found, we have:
-  (y² + p/2 + m)² = (αy + β)²
+Expanding this gives the resolvent cubic in m (matching `resolventCubic`):
+  8m³ + 20pm² + (16p² - 8r)m + (4p³ - 4pr - q²) = 0
 
-for some α, β determined by m. Taking square roots:
-  y² + p/2 + m = ±(αy + β)
+Once m is found, we have:
+  (y² + p + m)² = (αy - β)²   with  α² = 2m + p,  2αβ = q,  β² = (p + m)² - r
 
-Each gives a quadratic, yielding four roots total.
+Taking square roots:
+  y² + p + m = ±(αy - β)
+
+Each gives a quadratic factor (see `ferrari_factorization_id`), yielding four
+roots total.
 
 Historical Note: Lodovico Ferrari (1522-1565), a student of Cardano, discovered
 this method at age 18. It was published in Cardano's Ars Magna (1545).
