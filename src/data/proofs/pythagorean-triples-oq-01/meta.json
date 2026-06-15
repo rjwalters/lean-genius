@@ -115,98 +115,186 @@
     {
       "id": "counting-functions",
       "title": "Parts I-II: Counting Functions and Parametrization",
-      "summary": "Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs.",
+      "summary": "Defines isPrimParam, primitiveTripleCount, and tripleDensityConstant = 1/(2π). Connects to Mathlib's PythagoreanTriple via parametric_triple, coprime_triple_classified, and triple_classified, establishing the bijection between primitive triples and valid parameter pairs (m,n).",
       "startLine": 69,
       "endLine": 110,
-      "mathContext": "Formal definition: Defines primitiveTripleCount, tripleDensityConstant, and connects to Mathlib's PythagoreanTriple parametrization. Establishes the bijection between primitive triples and valid parameter pairs."
+      "mathContext": "Defines isPrimParam, primitiveTripleCount, and tripleDensityConstant = 1/(2π). Connects to Mathlib's PythagoreanTriple via parametric_triple, coprime_triple_classified, and triple_classified, establishing the bijection between primitive triples and valid parameter pairs (m,n)."
     },
     {
-      "id": "parity-density",
+      "id": "parity-and-density-algebra",
       "title": "Parts III-IV: Parity Analysis and Density Algebra",
-      "summary": "Proves coprime pairs cannot be both-even. Classifies into three parity classes (EO, OE, OO). Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive.",
+      "summary": "Parity lemmas for coprime parameter pairs (coprime_not_both_even, both_odd_even_diff, diff_parity_odd_diff, coprime_parity_cases) and the density-constant algebra (density_factors_product, density_algebra, tripleDensityConstant_pos, density_decomposition) expressing 1/(2π) as a product of geometric and arithmetic factors.",
       "startLine": 111,
       "endLine": 183,
-      "mathContext": "Proves coprime pairs cannot be both-even. Verifies the algebraic identity $\\pi/8 \\times 6/\\pi^2 \\times 2/3 = 1/(2\\pi)$ and shows the density constant is positive."
+      "mathContext": "Parity lemmas for coprime parameter pairs (coprime_not_both_even, both_odd_even_diff, diff_parity_odd_diff, coprime_parity_cases) and the density-constant algebra (density_factors_product, density_algebra, tripleDensityConstant_pos, density_decomposition) expressing 1/(2π) as a product of geometric and arithmetic factors."
     },
     {
-      "id": "verification",
+      "id": "computational-verification",
       "title": "Part V: Computational Verification",
-      "summary": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\pi) \\approx 0.159N$.",
+      "summary": "Concrete evaluations of primitiveTripleCount at small N (count_0, count_4, count_5, count_13, count_25, count_50, count_100) that sanity-check the counting function against hand-enumerated triples.",
       "startLine": 184,
       "endLine": 221,
-      "mathContext": "Verifies primitiveTripleCount for N = 0, 4, 5, 13, 25, 50, 100 via native_decide. Confirms values track the predicted $N/(2\\$\\pi$) \\approx 0.159N$."
+      "mathContext": "Concrete evaluations of primitiveTripleCount at small N (count_0, count_4, count_5, count_13, count_25, count_50, count_100) that sanity-check the counting function against hand-enumerated triples."
     },
     {
-      "id": "monotonicity-intermediates",
+      "id": "monotonicity-intermediate-counts",
       "title": "Parts VI-VII: Monotonicity and Intermediate Counting Functions",
-      "summary": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$.",
+      "summary": "Monotonicity of primitiveTripleCount and the sector/coprime intermediate counters (sectorPointCount, coprimeInSectorCount): the sandwich primCount_le_coprimeInSector ≤ coprimeInSector_le_sectorCount, positivity, monotonicity, and coprimeInSectorCount_tendsto_atTop, with small-N checks.",
       "startLine": 222,
-      "endLine": 375,
-      "mathContext": "Proves primitiveTripleCount is monotone. Introduces sectorPointCount and coprimeInSectorCount as intermediate sieving steps, with ordering lemmas (primitive $\\le$ coprime $\\le$ sector) and growth results showing coprimeInSectorCount $\\to \\infty$."
+      "endLine": 363,
+      "mathContext": "Monotonicity of primitiveTripleCount and the sector/coprime intermediate counters (sectorPointCount, coprimeInSectorCount): the sandwich primCount_le_coprimeInSector ≤ coprimeInSector_le_sectorCount, positivity, monotonicity, and coprimeInSectorCount_tendsto_atTop, with small-N checks."
     },
     {
-      "id": "partition-axioms",
-      "title": "Parts VIII-A/B: Parity Partition and Density Axioms",
-      "summary": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (Möbius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom.",
-      "startLine": 376,
-      "endLine": 530,
-      "mathContext": "Proves the partition identity coprimeInSector = primitive + bothOdd. States three axioms encoding deep analytic number theory: sector density $\\pi/8$ (Gauss circle problem), coprime fraction $6/\\pi^2$ (Möbius inversion), bothOdd fraction $1/3$ (parity equidistribution). Shows the 2/3 parity fraction follows from the 1/3 bothOdd axiom."
+      "id": "parity-partition-coprime-sector",
+      "title": "Part VIII-A: Parity Partition of Coprime Sector",
+      "summary": "Defines bothOddCoprimeCount and proves coprime_sector_partition splitting the coprime sector by parity class, with concrete parity-fraction computations and the partition_check that the classes sum correctly.",
+      "startLine": 364,
+      "endLine": 490,
+      "mathContext": "Defines bothOddCoprimeCount and proves coprime_sector_partition splitting the coprime sector by parity class, with concrete parity-fraction computations and the partition_check that the classes sum correctly."
     },
     {
-      "id": "main-theorems",
+      "id": "density-axioms",
+      "title": "Part VIII-B: Density Axioms (Three Ingredients)",
+      "summary": "States the three analytic-number-theory assumptions as axioms: sector_lattice_point_density (π/8, Gauss circle problem), coprime_fraction_in_sector (6/π², Möbius inversion), and bothOdd_fraction_in_coprime_sector (1/3), plus parity_fraction_in_coprime_sector derived from them.",
+      "startLine": 491,
+      "endLine": 531,
+      "mathContext": "States the three analytic-number-theory assumptions as axioms: sector_lattice_point_density (π/8, Gauss circle problem), coprime_fraction_in_sector (6/π², Möbius inversion), and bothOdd_fraction_in_coprime_sector (1/3), plus parity_fraction_in_coprime_sector derived from them."
+    },
+    {
+      "id": "main-asymptotics-consequences",
       "title": "Parts IX-X: Main Asymptotic Theorems and Consequences",
-      "summary": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$.",
-      "startLine": 531,
-      "endLine": 622,
-      "mathContext": "Derives the main result by telescoping three ratio limits: $\\text{count}/N = (\\text{count}/\\text{coprime}) \\cdot (\\text{coprime}/\\text{sector}) \\cdot (\\text{sector}/N) \\to 2/3 \\cdot 6/\\pi^2 \\cdot \\pi/8 = 1/(2\\pi)$. Also proves the equivalent asymptotic form count$(N) \\sim N/(2\\pi)$."
+      "summary": "Assembles the axioms into the main results: primitiveTripleCount_density and primitiveTripleCount_asymptotic establishing the N/(2π) growth, with count_div_N_nonneg and verification_summary as supporting consequences.",
+      "startLine": 532,
+      "endLine": 606,
+      "mathContext": "Assembles the axioms into the main results: primitiveTripleCount_density and primitiveTripleCount_asymptotic establishing the N/(2π) growth, with count_div_N_nonneg and verification_summary as supporting consequences."
     },
     {
       "id": "mathlib-connection",
       "title": "Part XI: Connection to Mathlib's PythagoreanTriple",
-      "summary": "Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects.",
-      "startLine": 606,
-      "endLine": 660,
-      "mathContext": "Mathematical content: Links the counting function to Mathlib's PythagoreanTriple.IsPrimitiveClassified, confirming the parametrization generates all primitive triples and the counting function counts the correct objects."
+      "summary": "Links the parametrization to Mathlib's API via all_primitive_triples_parametrized and parametrization_is_bijection, followed by a summary tying the formalized counting function to the classical parametrization.",
+      "startLine": 607,
+      "endLine": 670,
+      "mathContext": "Links the parametrization to Mathlib's API via all_primitive_triples_parametrized and parametrization_is_bijection, followed by a summary tying the formalized counting function to the classical parametrization."
     },
     {
-      "id": "parity-counting",
-      "title": "Part XII: Parity Class Counting Functions",
-      "summary": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount.",
-      "startLine": 660,
-      "endLine": 814,
-      "mathContext": "Defines fine-grained counting functions for each parity class: coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount. Proves the three-way partition and relates bothOddCoprimeCount to coprimeOddOddCount."
+      "id": "parity-class-decomposition",
+      "title": "Part XII: Parity Class Decomposition",
+      "summary": "Defines the three coprime parity-class counters (coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount) and proves coprime_sector_three_way_partition, bothOdd_eq_oo, and primitive_eq_eo_plus_oe relating primitive counts to the EO/OE/OO classes.",
+      "startLine": 671,
+      "endLine": 801,
+      "mathContext": "Defines the three coprime parity-class counters (coprimeEvenOddCount, coprimeOddEvenCount, coprimeOddOddCount) and proves coprime_sector_three_way_partition, bothOdd_eq_oo, and primitive_eq_eo_plus_oe relating primitive counts to the EO/OE/OO classes."
     },
     {
-      "id": "involution",
-      "title": "Parts XIII-XIV: The Parity Involution and Triangle Counting",
-      "summary": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$.",
-      "startLine": 814,
-      "endLine": 930,
-      "mathContext": "Proves the involution $(m,n) \\mapsto (m, m-n)$ preserves coprimality, swaps EO$\\leftrightarrow$OO, and is an involution. Uses Finset.card_bij to establish exact equality $|\\text{OE}(K)| = |\\text{OO}(K)|$ for all $K$."
+      "id": "parity-involution",
+      "title": "Part XIII: The Parity Involution",
+      "summary": "Constructs the involution on the coprime sector (involution_in_sector, involution_coprime) that swaps the OE and OO classes (involution_oe_to_oo, involution_oo_to_oe) and is its own inverse (involution_involutive).",
+      "startLine": 802,
+      "endLine": 858,
+      "mathContext": "Constructs the involution on the coprime sector (involution_in_sector, involution_coprime) that swaps the OE and OO classes (involution_oe_to_oo, involution_oo_to_oe) and is its own inverse (involution_involutive)."
     },
     {
-      "id": "row-analysis",
-      "title": "Parts XIV-B to XV: Row-Level Parity Decomposition",
-      "summary": "Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row.",
-      "startLine": 918,
-      "endLine": 1138,
-      "mathContext": "Mathematical content: Per-row analysis: for even $m$, all coprime residues are odd (only EO pairs). For odd $m \\ge 3$, the involution bijects even and odd coprime residues, giving exact equality per row."
+      "id": "triangle-counting",
+      "title": "Part XIV: Triangle Counting (Without Circle Constraint)",
+      "summary": "Defines triangleOE, triangleOO, and the parityInvolution on the triangular index region and proves triangle_oe_eq_oo: the EO and OO triangle counts are equal, the key combinatorial symmetry.",
+      "startLine": 859,
+      "endLine": 918,
+      "mathContext": "Defines triangleOE, triangleOO, and the parityInvolution on the triangular index region and proves triangle_oe_eq_oo: the EO and OO triangle counts are equal, the key combinatorial symmetry."
     },
     {
-      "id": "column-analysis",
-      "title": "Parts XVI-XIX: Column Decomposition and Density",
-      "summary": "The deepest technical section. Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy.",
-      "startLine": 1138,
-      "endLine": 2029,
-      "mathContext": "Analyzes EO coprime density via GCD halving ($\\gcd(2k,n)=1$ iff $\\gcd(k,n)=1$ and $n$ odd). Decomposes column sums by $m$-parity and proves the boundary analysis for sector-triangle discrepancy."
+      "id": "row-level-parity",
+      "title": "Part XIV-B: Row-Level Parity Decomposition",
+      "summary": "Row-wise counters (rowCoprimeCount, rowEvenCount, rowOddCount) and the per-row parity analysis (row_even_m_all_odd, row_involution_coprime, row_involution_swaps_parity, row_parity_partition, row_odd_m_half) refining the involution to individual rows; defines triangleEO.",
+      "startLine": 919,
+      "endLine": 1021,
+      "mathContext": "Row-wise counters (rowCoprimeCount, rowEvenCount, rowOddCount) and the per-row parity analysis (row_even_m_all_odd, row_involution_coprime, row_involution_swaps_parity, row_parity_partition, row_odd_m_half) refining the involution to individual rows; defines triangleEO."
     },
     {
-      "id": "final-results",
-      "title": "Part XX: Summary and Final Verification",
-      "summary": "Collects all results and provides a final summary of the 117 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\pi)$.",
-      "startLine": 2029,
+      "id": "parity-axiom-reduction",
+      "title": "Parts XV / XV-B: Reduction of Parity Axiom and Equidistribution",
+      "summary": "Reduces the parity assumption: parity_class_equidistribution and parity_axiom_from_equidistribution derive the 1/3 fraction (bothOdd_fraction_from_equidistribution), and eo_equidistribution gives the three-class equidistribution derivation.",
+      "startLine": 1022,
+      "endLine": 1125,
+      "mathContext": "Reduces the parity assumption: parity_class_equidistribution and parity_axiom_from_equidistribution derive the 1/3 fraction (bothOdd_fraction_from_equidistribution), and eo_equidistribution gives the three-class equidistribution derivation."
+    },
+    {
+      "id": "per-column-involution",
+      "title": "Part XVI: Per-Column Involution",
+      "summary": "Column-indexed coprime counters (columnEvenCoprimes, columnOddCoprimes) with column_even_eq_odd_coprimes, column_parity_partition, totient_even_of_odd, and column checks establishing per-column parity balance.",
+      "startLine": 1126,
+      "endLine": 1220,
+      "mathContext": "Column-indexed coprime counters (columnEvenCoprimes, columnOddCoprimes) with column_even_eq_odd_coprimes, column_parity_partition, totient_even_of_odd, and column checks establishing per-column parity balance."
+    },
+    {
+      "id": "sector-column-decomposition",
+      "title": "Part XVII: Sector Decomposition via Columns",
+      "summary": "Decomposes the sector by columns (sectorOE_column, sectorOO_column) and proves the per-column vanishing and equality results (sectorOE_column_zero, sectorOO_column_zero, sectorOE_eq_sectorOO_full_column), with an updated summary.",
+      "startLine": 1221,
+      "endLine": 1359,
+      "mathContext": "Decomposes the sector by columns (sectorOE_column, sectorOO_column) and proves the per-column vanishing and equality results (sectorOE_column_zero, sectorOO_column_zero, sectorOE_eq_sectorOO_full_column), with an updated summary."
+    },
+    {
+      "id": "sector-triangle-boundary",
+      "title": "Part XVI-B: Sector-Triangle Boundary Analysis",
+      "summary": "Splits triangle counts into in-circle and outside-circle parts (triangleOE_split, triangleOO_split, triangleOE_inCircle_eq_sectorOE, triangleOO_inCircle_eq_sectorOO) and bounds the boundary discrepancy (sector_boundary_balance, sector_oe_oo_discrepancy_bound, oe_oo_same_density_of_boundary_vanishes, parity_from_boundary_and_eo).",
+      "startLine": 1360,
+      "endLine": 1621,
+      "mathContext": "Splits triangle counts into in-circle and outside-circle parts (triangleOE_split, triangleOO_split, triangleOE_inCircle_eq_sectorOE, triangleOO_inCircle_eq_sectorOO) and bounds the boundary discrepancy (sector_boundary_balance, sector_oe_oo_discrepancy_bound, oe_oo_same_density_of_boundary_vanishes, parity_from_boundary_and_eo)."
+    },
+    {
+      "id": "eo-oe-square-symmetry",
+      "title": "Part XVII-B: EO-OE Square Symmetry and Coprime Density",
+      "summary": "Defines the square regions (squareEO, squareOE, squareOO) and swapPair and proves the symmetry square_eo_eq_oe, square_oo_swap_closed, and coprime_eo_iff, complementing the triangle bijection from Part XIV.",
+      "startLine": 1622,
+      "endLine": 1713,
+      "mathContext": "Defines the square regions (squareEO, squareOE, squareOO) and swapPair and proves the symmetry square_eo_eq_oe, square_oo_swap_closed, and coprime_eo_iff, complementing the triangle bijection from Part XIV."
+    },
+    {
+      "id": "eo-coprime-density-gcd",
+      "title": "Part XVIII: EO Coprime Density via GCD Halving",
+      "summary": "Analyzes EO coprime density through GCD halving, with a discussion of how the parity axiom could be reduced to a single coprime-density statement in lattice regions.",
+      "startLine": 1714,
+      "endLine": 1801,
+      "mathContext": "Analyzes EO coprime density through GCD halving, with a discussion of how the parity axiom could be reduced to a single coprime-density statement in lattice regions."
+    },
+    {
+      "id": "column-sum-decomposition",
+      "title": "Part XIX: Column-Sum Decomposition by m-Parity",
+      "summary": "Column-sum counters split by m-parity (sectorCopEven, sectorCopOdd) with sector_m_parity_partition, sectorCopEven_eq_eo, sectorCopOdd_eq_oe_plus_oo, parity_from_column_density, oe_from_column_balance, parity_axiom_from_columns, and the boundary_discrepancy_formula summarizing the column-based reduction.",
+      "startLine": 1802,
+      "endLine": 2063,
+      "mathContext": "Column-sum counters split by m-parity (sectorCopEven, sectorCopOdd) with sector_m_parity_partition, sectorCopEven_eq_eo, sectorCopOdd_eq_oe_plus_oo, parity_from_column_density, oe_from_column_balance, parity_axiom_from_columns, and the boundary_discrepancy_formula summarizing the column-based reduction."
+    },
+    {
+      "id": "sum-of-two-squares",
+      "title": "Part XX: Sum of Two Squares and r₂(n)",
+      "summary": "Connects to the sum-of-two-squares function r2 with r2_pos_iff and r2_average_order axioms, triple_count_from_r2_connection, sumOfTwoSquaresCount, and the landau_two_squares counting axiom.",
+      "startLine": 2064,
+      "endLine": 2116,
+      "mathContext": "Connects to the sum-of-two-squares function r2 with r2_pos_iff and r2_average_order axioms, triple_count_from_r2_connection, sumOfTwoSquaresCount, and the landau_two_squares counting axiom."
+    },
+    {
+      "id": "triples-by-leg-and-area",
+      "title": "Part XXI: Pythagorean Triples by Leg and Area",
+      "summary": "Counts primitive triples organized by leg and by area (primitiveByLeg, primitiveByArea) with the primitive_by_leg_density axiom giving the leg-indexed density.",
+      "startLine": 2117,
+      "endLine": 2146,
+      "mathContext": "Counts primitive triples organized by leg and by area (primitiveByLeg, primitiveByArea) with the primitive_by_leg_density axiom giving the leg-indexed density."
+    },
+    {
+      "id": "gaussian-integers",
+      "title": "Part XXII: Generalizations — Gaussian Integers",
+      "summary": "Recasts triple generation through Gaussian integers: the GaussianInt structure, gaussian_norm_mul, gaussian_square_pythagorean, gaussian_square_components, and all_primitive_triples_from_gaussian, with a summary of the Gaussian-integer viewpoint.",
+      "startLine": 2147,
+      "endLine": 2219,
+      "mathContext": "Recasts triple generation through Gaussian integers: the GaussianInt structure, gaussian_norm_mul, gaussian_square_pythagorean, gaussian_square_components, and all_primitive_triples_from_gaussian, with a summary of the Gaussian-integer viewpoint."
+    },
+    {
+      "id": "algebraic-identities-composition",
+      "title": "Part XXIII: Algebraic Identities, Composition and Straddling Pairs",
+      "summary": "Brahmagupta–Fibonacci identities (brahmagupta_fibonacci, triple_composition, compose examples, hypotenuse_65_two_triples) and the straddling-pair analysis (circleNorm, straddlingOE, circle_norm_gap, discrepancy_from_straddling, parity_from_straddling_vanishes) closing the boundary discrepancy argument.",
+      "startLine": 2220,
       "endLine": 2485,
-      "mathContext": "Collects all results and provides a final summary of the 117 theorems, 3 axioms, and 0 sorries. Includes the verification table showing count$(N)$ tracks $N/(2\\$\\pi$)$."
+      "mathContext": "Brahmagupta–Fibonacci identities (brahmagupta_fibonacci, triple_composition, compose examples, hypotenuse_65_two_triples) and the straddling-pair analysis (circleNorm, straddlingOE, circle_norm_gap, discrepancy_from_straddling, parity_from_straddling_vanishes) closing the boundary discrepancy argument."
     }
   ],
   "conclusion": {
