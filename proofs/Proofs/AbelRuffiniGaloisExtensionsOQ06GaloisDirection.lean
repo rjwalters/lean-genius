@@ -156,14 +156,25 @@ theorem normalizer_iso_AGL1Z
     in `S_p`. Composition with the step-4 isomorphism gives the desired
     embedding `H ↪ AGL(1, p)`.
 
-    ⚠ **UNSOUND STATEMENT — DO NOT DISCHARGE AS WRITTEN** (researcher-5,
-    S5 OBSERVE 2026-06-13). The current hypothesis `σ ∈ H` is far too
-    weak: it does NOT entail `H ≤ N_{S_p}(⟨σ⟩)`. The conclusion requires
-    `⟨σ⟩` to be *normalised* by `H`, which the proof obtains from Step 2
-    (`P ⊴ H`) together with Step 3 (`⟨σ⟩ = image of P`) — i.e. `σ` must
-    generate the image of the **normal Sylow-p** `P`, not be an arbitrary
-    element of `H`. Note the statement does not even require `σ` to be a
-    `p`-cycle.
+    ✅ **SIGNATURE CORRECTED to the sound, numerically-certified form**
+    (researcher-2, S12 ACT 2026-06-15). The hypotheses now thread the
+    **normal Sylow-p** `P` (`P : Sylow p H`, `_hPnorm`), its `p`-cycle
+    generator (`_hσ_card : σ.support.card = p`, `_hgen` — copied verbatim
+    from `sylow_p_is_pcycle`'s conclusion so it is type-compatible with
+    Step 3's output), alongside `_hσH : σ ∈ H`. The body remains `sorry`
+    pending a Docker-up discharge (both backends are in blackout this
+    session — Docker daemon unresponsive, Aristotle `prove` returns
+    "Resource not found"). The history below records WHY the extra
+    hypotheses are mandatory.
+
+    ⚠ **The earlier signature with only `σ ∈ H` was mathematically FALSE**
+    (researcher-5, S5 OBSERVE 2026-06-13). The bare hypothesis `σ ∈ H` is
+    far too weak: it does NOT entail `H ≤ N_{S_p}(⟨σ⟩)`. The conclusion
+    requires `⟨σ⟩` to be *normalised* by `H`, which the proof obtains from
+    Step 2 (`P ⊴ H`) together with Step 3 (`⟨σ⟩ = image of P`) — i.e. `σ`
+    must generate the image of the **normal Sylow-p** `P`, not be an
+    arbitrary element of `H`. The old statement did not even require `σ` to
+    be a `p`-cycle.
 
     Explicit counterexample (`p = 5`): let `H = (AGL1Z.toPerm 5).range`
     (primitive + solvable, supplied by the parent file) and `σ = (x ↦ 2x)`,
@@ -173,14 +184,16 @@ theorem normalizer_iso_AGL1Z
     fixes `0`. Hence `h σ h⁻¹ ∉ ⟨σ⟩`, so `h ∉ N_{S_p}(⟨σ⟩)` and
     `H ⊄ N_{S_p}(⟨σ⟩)`. The lemma as stated is therefore false.
 
-    **Corrected signature** (to discharge in a future Docker-up session):
-    thread the normal Sylow-p `P` and its `p`-cycle generator through, e.g.
+    **Corrected signature (NOW APPLIED above)**: thread the normal Sylow-p
+    `P` and its `p`-cycle generator through —
     `(P : Sylow p H) (hPnorm : (P : Subgroup H).Normal)`
     `(hσ_card : σ.support.card = p)`
     `(hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈`
     `  Subgroup.zpowers σ) (hσH : σ ∈ H) ⊢ H ≤ (Subgroup.zpowers σ).normalizer`,
     matching the outputs of Steps 2 (`sylow_p_normal`) and 3
-    (`sylow_p_is_pcycle`).
+    (`sylow_p_is_pcycle`). The `_hgen` binder is byte-for-byte the membership
+    predicate in `sylow_p_is_pcycle`'s `∃`-body, so the corrected statement
+    composes directly with Step 3's output with no coercion glue.
 
     ⚠ **The `p`-cycle hypothesis `hσ_card : σ.support.card = p` is NOT
     optional** (researcher-1, S6 OBSERVE 2026-06-14). `hgen` only states
@@ -202,7 +215,12 @@ theorem H_le_normalizer
     (_hPrim : MulAction.IsPreprimitive H (ZMod p))
     (_hSolv : IsSolvable H)
     (σ : Equiv.Perm (ZMod p))
-    (_hσ_in_H : σ ∈ H) :
+    (P : Sylow p H)
+    (_hPnorm : (P : Subgroup H).Normal)
+    (_hσ_card : σ.support.card = p)
+    (_hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
+      Subgroup.zpowers σ)
+    (_hσH : σ ∈ H) :
     H ≤ (Subgroup.zpowers σ).normalizer := by
   sorry
 

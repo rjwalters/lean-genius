@@ -1,9 +1,55 @@
 # Current State
 
-**Phase**: S11 ACT-prep (Step 4 `normalizer_iso_AGL1Z` **numerically certified** — `verify_step4_normalizer.py` brute-forces `S_p`, p∈{3,5,7}: `N_{S_p}(⟨σ⟩)` == AGL image exactly ⟹ φ injective AND **surjective**; |N|=p(p−1); n_p=(p−2)!≡1; conj-map a group hom. Complements S7 Step-5 cert which only had the easy inclusion. **5 sorries** unchanged; docstring + script + knowledge edit only, no Lean proof — both backends still DOWN)
-**Since**: 2026-06-14 (S11 ACT-prep Step-4 cert; was 2026-06-14 S10 ORIENT)
-**Iteration**: 11 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep this iteration)
-**Owner**: researcher-2 (S11 ACT-prep, 2026-06-14); prior researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S12 ACT (Step 5 `H_le_normalizer` **signature corrected** from its known-FALSE bare-`σ ∈ H` form to the sound, numerically-certified form threading `(P : Sylow p H)`, `_hPnorm` normal, `_hσ_card` p-cycle, `_hgen` generator — each binder reused verbatim from `sylow_p_normal`/`sylow_p_is_pcycle`/`normalizer_iso_AGL1Z` in the same file, so it composes with Step 3 and build risk is minimal. Removes the S5–S11 latent assembly trap. Body stays `sorry`; **5 sorries** unchanged; both backends DOWN so build-pending)
+**Since**: 2026-06-15 (S12 ACT Step-5 signature correction; was 2026-06-14 S11 ACT-prep)
+**Iteration**: 12 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep 2026-06-14; S12 ACT this iteration)
+**Owner**: researcher-2 (S12 ACT, 2026-06-15); prior researcher-2 (S11 ACT-prep), researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 12 (researcher-2, 2026-06-15) — S12 ACT: Step 5 unsound signature corrected to sound form
+
+**Outcome**: progress (no build — Docker daemon unresponsive, `docker info`
+hangs/killed at exit 144; Aristotle MCP `prove` returns "Resource not found";
+both backends in blackout). The S5–S11 sessions all flagged Step 5
+(`H_le_normalizer`)'s statement as mathematically FALSE (bare `σ ∈ H`
+hypothesis, p=5 counterexample) but left it as a `sorry` carrying only a `⚠`
+docstring — a latent assembly trap. This session **actually applied the
+already-specified correction to the signature** (the cheapest deferred ACT,
+recommended since S6).
+
+**What I did.** Replaced `H_le_normalizer`'s binder `(_hσ_in_H : σ ∈ H)` with
+the sound, numerically-certified set (`verify_step{4,5}_normalizer.py`):
+`(P : Sylow p H)`, `(_hPnorm : (P : Subgroup H).Normal)`,
+`(_hσ_card : σ.support.card = p)`,
+`(_hgen : ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈ Subgroup.zpowers σ)`,
+`(_hσH : σ ∈ H)`. Each binder is reused **verbatim** from elsewhere in the
+file — `(P : Sylow p H)`/`(P : Subgroup H).Normal` from `sylow_p_normal`,
+`_hgen` byte-for-byte from `sylow_p_is_pcycle`'s ∃-body, `σ.support.card = p`
+from `normalizer_iso_AGL1Z` — so the corrected statement composes directly
+with Step 3's output and the unverified edit carries minimal build risk.
+Reframed the docstring (`✅ SIGNATURE CORRECTED` block; retained the
+counterexample + the S6 `p`-cycle-necessity note as the rationale for the
+threaded hypotheses).
+
+**Why this and not another ORIENT.** S6–S11 produced six consecutive
+doc-only ORIENT/ACT-prep sessions (bearer re-audits + numerical certs). The
+math is settled and certified; the only remaining work is build/solver-gated
+discharge. Rather than add a seventh bearer re-verification, this session
+converts the one piece that does NOT need a build to be valuable — a
+known-false stub statement — into a known-true one, so the next Docker-up
+session can discharge Step 5's body directly (~5–15 LOC) without first having
+to rewrite the signature.
+
+**Net effect.** 0 sorries discharged (no build), but 1 latent soundness trap
+removed at the statement level. Step 5's body discharge plan unchanged
+(rewrite ι(P)=⟨σ⟩ via card equality, then `Subgroup.le_normalizer`-style
+conjugation from `_hPnorm`). 5 sorries intact.
+
+**Files touched (3).**
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean` — Step 5
+  signature + docstring.
+- `research/problems/.../state.md` — this block + header.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06-galois-direction.json` —
+  `currentState`, `completedThisIter`, `open`, `phase`, `lastUpdate`.
 
 ## Iteration 11 (researcher-2, 2026-06-14) — S11 ACT-prep: Step 4 isomorphism numerically certified (surjective half)
 
