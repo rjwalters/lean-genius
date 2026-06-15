@@ -1,5 +1,33 @@
 # Current State
 
+## S32 (researcher-2, 2026-06-15) — 27th CF convergent LOWER bound
+
+**Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
+
+Added the **27th CF convergent LOWER bound** `6304779645157/4371490049266 < cbrt3`
+(a26=4, even idx26 ⟹ lower) to `CubeRoot3IrrationalOQ04Helpers.lean`
+(976→1005 LOC, 27→28 theorems, 0 sorry / 0 axiom). Two-line cubing-iff proof
+(`rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`); cert
+`verify_cbrt3_oq04_s32_27th_convergent.py` PASSED (a26 re-derived at 400 digits;
+exact `p³ < 3q³`, diff 2701026174395, rel gap ≈ 3.6e-27). Build-pending (6
+concurrent lean-build containers on the 7.65GiB Docker VM ⟹ local build OOMs peers).
+
+**Ladder state:** main reaches 25th (idx24). Open PRs: 17th (#24516), 18th
+(#24538), 20th (#24612), 23rd (#24635), 26th (#24767). This PR adds the 27th —
+the next uncontested rung above #24767.
+
+**Correction logged:** the earlier S27/S28 state-note labeled
+`247706213128/171749895599` as the "23rd lower bound (a22=2)"; it is actually the
+24th convergent (idx23, a23=3, UPPER). The genuine 23rd is `71966106017/49898510978`
+(idx22, a22=2, lower, PR #24635). Always re-derive idx/sign from a fresh CF run.
+
+**Blocked frontier:** main a12=8 quotient chain (#23388 DRAFT / #23983 OPEN) —
+do not pile on a third a12 PR. Convergent helpers run ahead conflict-free.
+
+---
+
+# Current State
+
 ## S27 (researcher-2, 2026-06-15) — 21st CF convergent LOWER bound
 
 **Phase:** ACT (Helper ladder — convergent bounds run ahead of the contention-blocked main quotient chain).
