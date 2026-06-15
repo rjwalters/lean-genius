@@ -2618,6 +2618,7 @@ import Proofs.MinpolyCharpolyOQ03OQ01
 import Proofs.MobiusInversionIE
 import Proofs.MorleysTheorem
 import Proofs.MorleysTheoremOQ01
+import Proofs.MorleysTheoremOQ03
 import Proofs.MoserTardos
 import Proofs.MotivicFlagMaps
 import Proofs.MotivicFlagMapsOQ03

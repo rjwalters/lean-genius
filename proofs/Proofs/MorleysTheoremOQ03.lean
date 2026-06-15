@@ -139,9 +139,9 @@ theorem morley_side_le_equilateral {R α β γ : ℝ} (hR : 0 ≤ R)
   have hc : γ / 3 ∈ Icc (0 : ℝ) π := by
     have := div_three_mem_Icc hγ hα hβ (by linarith); simpa using this
   -- Nonnegativity of the three sines.
-  have hsa : 0 ≤ sin (α / 3) := sin_nonneg_of_mem_Icc ha
-  have hsb : 0 ≤ sin (β / 3) := sin_nonneg_of_mem_Icc hb
-  have hsc : 0 ≤ sin (γ / 3) := sin_nonneg_of_mem_Icc hc
+  have hsa : 0 ≤ sin (α / 3) := sin_nonneg_of_nonneg_of_le_pi ha.1 ha.2
+  have hsb : 0 ≤ sin (β / 3) := sin_nonneg_of_nonneg_of_le_pi hb.1 hb.2
+  have hsc : 0 ≤ sin (γ / 3) := sin_nonneg_of_nonneg_of_le_pi hc.1 hc.2
   -- The trisected mean is exactly π/9.
   have hmean : (α / 3 + β / 3 + γ / 3) / 3 = π / 9 := by
     rw [show (α / 3 + β / 3 + γ / 3) / 3 = (α + β + γ) / 9 by ring, hsum]
