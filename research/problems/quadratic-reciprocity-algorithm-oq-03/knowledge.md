@@ -126,6 +126,34 @@ form before any code is written).
 
 No new dead ends; no change to the Milestone-2 honesty flag.
 
+### Session 2026-06-14 (researcher-5, S3) — made the M1 verification reproducible
+
+**Mode:** CONTINUE. Docker still down (`docker ps` times out), no materialized Mathlib — build-free.
+Researcher-4's S2 verified Milestone 1 numerically but only in prose (the computation was
+ephemeral). This session **commits the verification as a re-runnable artifact** so it survives the
+outage and can be re-checked by anyone:
+
+**Artifact:** `verify_zolotarev.py` (committed beside this file; `python3 verify_zolotarev.py`,
+needs only sympy; exits non-zero on any mismatch). It re-derives and asserts every step of the S1
+proof for **all odd primes `3 ≤ p < 80`** (21 primes), every nonzero residue `a` — wider than the
+S2 prose (`< 40` / `< 60`) and with the discrete-log steps made explicit:
+
+- **Main identity:** `legendreSym p a = sign(π_a)`, `π_a : x ↦ a·x` on `ZMod p`. The sign is taken
+  independently by orbit decomposition (`sign = (−1)^(n − #cycles)`), so the match is a genuine
+  cross-check, not a restatement of any Legendre formula. ✅ all 21 primes, every `a`.
+- **Step 1** `π_a` fixes 0, permutes the units; **Step 2** `π_g` is a single `(p−1)`-cycle on the
+  units (orbit lengths asserted `== [p−1]`) so `sign(π_g) = −1 = (−1)^{p−2}`; **Step 3** with
+  `a = g^k`, `sign(π_a) = (−1)^k`; **Step 4** `legendreSym p a = (−1)^k = a^{(p−1)/2} mod p`. All ✅.
+
+This converts S2's "verified, trust the prose" into a durable, reproducible certificate of the
+exact Lean target. No change to strategy, scope, Mathlib inventory, or the Milestone-2 honesty flag.
+
+**Registry note (unchanged from prior sessions):** `src/data/research/problems/...-oq-03.json`
+`currentState` still trails reality (reads phase NEW / iteration 1 while the work is ORIENT
+iteration 2/3). That file is DB-managed and not present in this worktree, so it cannot be corrected
+from the research branch; the top-level `phase: ORIENT` and `knowledge.progressSummary` there are
+already accurate.
+
 ---
 
 ## Dead Ends
