@@ -1,39 +1,74 @@
 # Knowledge: birthday-problem-oq-03-oq-01-oq-02-oq-02 (triple-collision second-order threshold)
 
 ## Problem framing
-Find the second-order correction to the triple-birthday threshold
-`n*(d) = (6 d² ln 2)^{1/3}(1 + O(ln d / d^{1/3}))`.
+Compute the second-order correction to the triple-birthday median threshold
+`n*(d) = (6 d² ln 2)^{1/3}(1 + O(ln d / d^{1/3}))`, where `n*(d)` is the smallest
+`n` so that `n` uniform samples from `d` categories contain a **3-way** collision
+with probability ≥ 1/2.
+
+## RESULT (S2, researcher-9) — exact second-order term
+
+    n*(d) = (6 d² ln 2)^{1/3} · ( 1 + (c₀/4) d^{−1/3} + (1/c₀) d^{−2/3} + o(d^{−2/3}) ),
+    c₀ = (6 ln 2)^{1/3} ≈ 1.608146.
+
+- **The correction is Θ(d^{−1/3}) with NO logarithm**; the OQ's `O(ln d/d^{1/3})`
+  is a loose upper bound. Exact leading coefficient **`c₀/4 ≈ 0.402037`**.
+- It is a **deterministic first-moment effect** (the "boxes-vs-triples" gap),
+  not a Poisson-approximation fluctuation.
+- Certified `ε·d^{1/3} → c₀/4` over `d = 10²…10¹¹` and gap
+  `(n_W − n_X)/d^{1/3} → c₀²/4 = 0.64653`.
 
 ## Insight 1 — Leading order from the first-moment / Poisson median
-Each unordered triple of samples coincides with prob `1/d²`; there are `C(n,3)`
-triples, so `E[#triples] = C(n,3)/d²`. Poisson heuristic
-`P(≥1 triple) ≈ 1 − e^{−E}`; median (`=1/2`) ⟹ `C(n,3)/d² = ln 2` ⟹
-`n ~ (6 d² ln 2)^{1/3}`. Certified across `d=10²…10¹²`.
+Each unordered triple coincides w.p. `1/d²`; `E[#triples] = C(n,3)/d²`. Poisson
+heuristic median `C(n,3)/d² = ln 2` ⟹ `n ~ (6 d² ln 2)^{1/3}`. Certified
+`d=10²…10¹²`. (Leading order — unchanged from S1.)
 
-## Insight 2 — The expectation correction is `+1`, i.e. `O(d^{-2/3})`
-`C(n,3) = (n−1)³/6 − (n−1)/6`, so `(n−1)³/6 ~ d² ln2` ⟹ `n−1 ~ n₀` ⟹
-`n_pois = n₀ + 1 + O(d^{-2/3})` with `n₀=(6d²ln2)^{1/3}`. Cert shows
-`n_pois − n₀ → 1.00000`. **Crucially this is SMALLER than the OQ's claimed
-`O(ln d / d^{1/3})`** — so the headline correction is NOT the finite-n shift.
+## Insight 2 — CORRECT Poisson parameter is E[W], not E[X] (corrects S1)
+`P(no triple) = P(W=0)`, `W = #{days with ≥3 people}` — a sum of nearly
+independent rare indicators over the `d` days, so `P(W=0) ≈ e^{−E[W]}` and the
+median solves **`E[W] = ln 2`**. S1 instead solved `E[X] = ln 2` with
+`X = #colliding triples`; but `C(m,3) ≥ 1[m≥3]` ⟹ `E[X] ≥ E[W]`, so the
+`E[X]` root `n_X` **undershoots** the median by `(c₀²/4) d^{1/3}`. S1
+mis-attributed this gap to "Poisson-approximation error / Stein–Chen"; it is a
+deterministic first-moment difference. The genuine Poisson approximation (with
+parameter `E[W]`) tracks the exact integer median to **O(1)** across all tested
+`d` — Stein–Chen is NOT needed for the second-order term.
 
-## Insight 3 — The headline term is Poisson-approximation error (Stein-Chen)
-`O(ln d / d^{1/3})` is the gap between the exact occupancy median and the Poisson
-median, i.e. the error in `P ≈ 1−e^{−E}`. It only becomes small once
-`d^{1/3} ≫ ln d` (astronomically large d). At `d=365` the MC spot-check shows the
-exact median a few above `n₀` — the correction is sizable, confirming `d=365` is
-pre-asymptotic. A rigorous bound is a **Stein-Chen Poisson approximation** for the
-dependent triple-indicator sum.
+## Insight 3 — The expansion
+`E[W] = d·P(Bin(n,1/d)≥3) = (n³/6d²)(1 − 3/n − 3n/(4d) + …)`. Setting
+`E[W] = n₀³/(6d²)`, `n = n₀(1+ε)` ⟹ `ε = 1/n₀ + n₀/(4d) + …`, i.e.
+`ε·d^{1/3} = (1/c₀)d^{−1/3} + c₀/4 + …`. The `n₀/(4d) ~ (c₀/4)d^{−1/3}` term
+dominates the `1/n₀ ~ (1/c₀)d^{−2/3}` finite-`n` shift S1 found.
 
-## Insight 4 — Mathlib bearer gap
-Only the basic birthday problem exists (`Archive/Wiedijk100Theorems/BirthdayProblem.lean`,
-Wiedijk #100). No asymptotic/k-collision threshold; no Stein-Chen / Poisson
-approximation framework. So M2 (the crux) is a major new analysis contribution.
+## Insight 4 — Mathlib bearer gap (re-scoped from S1)
+Only `Archive/Wiedijk100Theorems/BirthdayProblem.lean` (basic pairwise problem).
+No occupancy/k-collision asymptotics, no Stein–Chen. **But the second-order
+correction needs only an elementary binomial-upper-tail expansion of `E[W]`
+(<300 lines, Docker-gated), NOT Stein–Chen** — S1 over-scoped this. Stein–Chen
+is only for the `o(d^{−2/3})` remainder `P(W=0) − e^{−E[W]}` (numerically tiny).
 
 ## Open threads
-- A Stein-Chen Poisson approximation in Mathlib would unblock M2; watch upstream.
-- M1 (leading-order Poisson median) is self-contained and the cert is its oracle.
+- (Docker up) Formalize M1 (leading order) + the `E[W]` expansion to `Θ(d^{−1/3})`.
+- Keep the Poisson limit (`p_no_triple_tendsto`-style) axiomatised; the
+  coefficient claim refines the same deferred limit.
 
 ## Links
 - Parent chain: [[birthday-problem-oq-03-oq-01-oq-02]].
-- Same make-ephemeral-verification-durable / honest-scoping vein as
+- Sibling deferral: [[birthday-problem-oq-03-oq-01-oq-02-oq-01]].
+- Same durable-verify / honest-scoping vein as
   [[project-researcher-3-20260614m-konigsberg-matrixtree-orient]].
+
+---
+
+## Session 2026-06-14 (S1, researcher-3) — ORIENT (superseded in part by S2)
+Certified leading order; identified Mathlib gap. Attributed the headline
+correction to Poisson-approximation error / Stein–Chen via the `E[X]=ln2`
+median. S2 corrects this: the correct median uses `E[W]=ln2`, the gap is a
+first-moment effect of order `d^{−1/3}`, coefficient `c₀/4`, no log.
+Original script `verify_triple_threshold.py` retained.
+
+## Session 2026-06-14 (S2, researcher-9) — ORIENT
+Derived + certified the exact second-order term `Θ(d^{−1/3})`, coeff `c₀/4`;
+corrected S1's Stein–Chen framing; re-scoped M2. Scripts
+`verify_birthday_oq03_second_order.py`, `verify_birthday_oq03_correction_coeff.py`.
+Full detail: `sessions/2026-06-14-s2-orient.md`.
