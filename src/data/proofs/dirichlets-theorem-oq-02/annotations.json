@@ -27,11 +27,11 @@
     "proofId": "dirichlets-theorem-oq-02",
     "range": {
       "startLine": 17,
-      "endLine": 53
+      "endLine": 54
     },
     "type": "concept",
     "title": "Key Lemma: Prime Factor 3 mod 4",
-    "content": "The key lemma proves that any $n > 1$ with $n \\equiv 3 \\pmod{4}$ has a prime factor $p \\equiv 3 \\pmod{4}$. The proof uses strong induction (`termination_by n`): take any prime factor $p$ of $n$. If $p \\equiv 3$, done. Otherwise $p$ must be odd (since $n$ is odd) and $p \\equiv 1 \\pmod{4}$. Then $n/p \\equiv 3 \\pmod{4}$ (since $1 \\cdot k \\equiv 3$ forces $k \\equiv 3$) and $n/p < n$, so induction applies. The multiplicativity of residues mod 4 is the engine driving the argument.",
+    "content": "The key lemma proves that any $n > 1$ with $n \\equiv 3 \\pmod{4}$ has a prime factor $p \\equiv 3 \\pmod{4}$. The proof uses strong induction (`termination_by n`): take any prime factor $p$ of $n$. If $p \\equiv 3$, done. Otherwise $p$ must be odd (since $n$ is odd) and $p \\equiv 1 \\pmod{4}$. Then $n/p \\equiv 3 \\pmod{4}$ (since $1 \\cdot k \\equiv 3$ forces $k \\equiv 3$) and $n/p < n$, so induction applies. The recursion's well-foundedness obligation is discharged explicitly by `decreasing_by exact hk_lt`, supplying the strict measure $k = n/p < n$ (itself obtained from $p > 1$ via `nlinarith`). The multiplicativity of residues mod 4 is the engine driving the argument.",
     "mathContext": "$n > 1,\\; n \\equiv 3 \\pmod{4} \\implies \\exists p \\mid n,\\; p \\text{ prime},\\; p \\equiv 3 \\pmod{4}$",
     "significance": "key",
     "relatedConcepts": [
