@@ -46,11 +46,15 @@ Given (2), the main theorem is immediate: pick `z` with `N(z) = p`, write
 
 - `eisenstein_form_to_x_sq_add_three_y_sq` — proved (pure `ℤ`, `ring`-closed
   in each parity branch).
+- `eisensteinSqrtNegThree_sq` (`θ² = -3`) — proved (splitting step 2).
+- `ofInt_sub_sqrt_mul_add_sqrt` (`(c-θ)(c+θ) = c²+3`) — proved (splitting step 3).
 - `sq_add_three_sq_of_prime_one_mod_three` — proved **modulo** the single
   lemma `exists_eisenstein_norm_eq_prime`.
-- `exists_eisenstein_norm_eq_prime` — `sorry` (HARD splitting step;
-  documented plan inline; Aristotle/Docker both unavailable this session,
-  so build-pending and unverified).
+- `exists_eisenstein_norm_eq_prime` — `sorry` (HARD splitting step; the
+  remaining gap is now isolated to the UFD `prime ↔ irreducible` norm-split
+  extraction, steps 4–7, with the concrete algebra of steps 2–3 discharged
+  above; Aristotle/Docker both unavailable this session, so build-pending
+  and unverified).
 
 axiomCount: 0  ·  sorryCount: 1 (HARD, on `exists_eisenstein_norm_eq_prime`)
 -/
@@ -84,7 +88,53 @@ theorem eisenstein_form_to_x_sq_add_three_y_sq (a b : ℤ) :
     · -- a = 2m + 1, b = 2k + 1 (both odd)
       exact ⟨-m - k - 1, m - k, by subst hm; subst hk; ring⟩
 
-/-! ## Part II — Norm realisation (the splitting argument) -/
+/-! ## Part II — Norm realisation (the splitting argument)
+
+The two concrete algebraic ingredients of the splitting argument (steps 2 and 3
+of the plan below) are now proved as standalone lemmas; only the UFD
+`prime ↔ irreducible` extraction (steps 4–7) remains as the documented gap. -/
+
+/-- The Eisenstein `√-3`: `θ = 1 + 2ω = ⟨1, 2⟩`, satisfying `θ² = -3`.
+This is the algebraic bridge from the quadratic-reciprocity step
+`(-3 / p) = 1` to a divisibility statement in `ℤ[ω]`. -/
+def eisensteinSqrtNegThree : Eisenstein := ⟨1, 2⟩
+
+@[simp] theorem eisensteinSqrtNegThree_re : eisensteinSqrtNegThree.re = 1 := rfl
+@[simp] theorem eisensteinSqrtNegThree_im : eisensteinSqrtNegThree.im = 2 := rfl
+
+/-- **Splitting step 2 (proved).** `θ² = -3` in `ℤ[ω]`. Direct coordinate
+computation: `re = 1·1 - 2·2 = -3`, `im = 1·2 + 2·1 - 2·2 = 0`. -/
+theorem eisensteinSqrtNegThree_sq :
+    eisensteinSqrtNegThree * eisensteinSqrtNegThree = Eisenstein.ofInt (-3) := by
+  ext
+  · simp only [Eisenstein.mul_re, eisensteinSqrtNegThree_re, eisensteinSqrtNegThree_im,
+      Eisenstein.re_ofInt]
+    norm_num
+  · simp only [Eisenstein.mul_im, eisensteinSqrtNegThree_re, eisensteinSqrtNegThree_im,
+      Eisenstein.im_ofInt]
+    norm_num
+
+/-- **Splitting step 3 (proved).** The difference-of-squares factorisation in
+`ℤ[ω]` that turns the integer divisibility `p ∣ c² + 3` into a factored
+divisibility `p ∣ (c - θ)(c + θ)`:
+
+  `(ofInt c - θ) * (ofInt c + θ) = ofInt (c² + 3)`,
+
+since `(c - θ)(c + θ) = c² - θ² = c² - (-3) = c² + 3`. Proved by direct
+coordinate computation (no Eisenstein ring lemmas beyond the projections). -/
+theorem ofInt_sub_sqrt_mul_add_sqrt (c : ℤ) :
+    (Eisenstein.ofInt c - eisensteinSqrtNegThree) *
+        (Eisenstein.ofInt c + eisensteinSqrtNegThree)
+      = Eisenstein.ofInt (c ^ 2 + 3) := by
+  ext
+  · simp only [Eisenstein.mul_re, Eisenstein.sub_re, Eisenstein.sub_im,
+      Eisenstein.add_re, Eisenstein.add_im, Eisenstein.re_ofInt, Eisenstein.im_ofInt,
+      eisensteinSqrtNegThree_re, eisensteinSqrtNegThree_im]
+    ring
+  · simp only [Eisenstein.mul_im, Eisenstein.sub_re, Eisenstein.sub_im,
+      Eisenstein.add_re, Eisenstein.add_im, Eisenstein.re_ofInt, Eisenstein.im_ofInt,
+      eisensteinSqrtNegThree_re, eisensteinSqrtNegThree_im]
+    ring
 
 /-- **Splitting argument (HARD — remaining gap).** For a prime `p ≡ 1 (mod 3)`
 there is an Eisenstein integer whose norm is `p`.
@@ -95,13 +145,12 @@ Full proof plan (to be discharged by Aristotle / a future session):
    `legendreSym p (-3) = 1`, hence `∃ c : ℤ, c² ≡ -3 (mod p)`
    (`legendreSym.eq_one_iff'` / `ZMod.exists_sq_eq` style).
 
-2. Set `θ : Eisenstein := ⟨1, 2⟩ = 1 + 2ω`. A `decide`/`ring` computation on
-   coordinates gives `θ * θ = ofInt (-3)` (re: `1·1 - 2·2 = -3`,
-   im: `1·2 + 2·1 - 2·2 = 0`), i.e. `θ² = -3` in `ℤ[ω]`. So `√-3 = θ`.
+2. Set `θ := eisensteinSqrtNegThree = ⟨1, 2⟩ = 1 + 2ω`; **proved** above as
+   `eisensteinSqrtNegThree_sq : θ * θ = ofInt (-3)`, i.e. `θ² = -3`. So `√-3 = θ`.
 
-3. Then `p ∣ (c² + 3) = N(c + something)`; more precisely
-   `(ofInt c - θ) * (ofInt c + θ) = ofInt (c² + 3)` and `p ∣ c² + 3`.
-   Thus `p ∣ (ofInt c - θ)(ofInt c + θ)` in `ℤ[ω]`.
+3. Then `p ∣ c² + 3`, and **proved** above as `ofInt_sub_sqrt_mul_add_sqrt`,
+   `(ofInt c - θ) * (ofInt c + θ) = ofInt (c² + 3)`.
+   Hence `p ∣ (ofInt c - θ)(ofInt c + θ)` in `ℤ[ω]`.
 
 4. `p` does **not** divide either factor `ofInt c ∓ θ`: their `ω`-coordinates
    are `∓2`, and `p ∤ 2` (as `p ≡ 1 mod 3` forces `p ≥ 7`, in particular odd).
