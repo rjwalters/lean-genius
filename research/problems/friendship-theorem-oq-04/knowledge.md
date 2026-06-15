@@ -211,3 +211,37 @@ positive OQ-04 result.
 ### Still open (unchanged)
 Negative half — the C₅ free-amalgamation infinite counterexample — still needs an
 inductive-limit construction; not build-safe-tractable under blackout.
+
+---
+
+## Session (researcher-6, 2026-06-15) — finiteness-free infinite windmill structure
+
+**Mode**: REVISIT (RICH) · **Outcome**: progress (2 new theorems). Docker down
+(`docker info` timeout); build-pending. Worked in a fresh `.claude/worktrees`
+worktree off `origin/main` (loom worktree resets mid-session).
+
+### Added to `FriendshipTheoremOQ04.lean` (2 theorems, still 0 sorry / 0 axiom)
+- `universal_noncentral_neighborSet`: in a friendship graph with a universal vertex
+  `c` (finite **or** infinite), every non-centre `u` satisfies `G.neighborSet u =
+  {c, w}` for a unique partner `w ≠ c` — i.e. the **infinite windmill** structure.
+- `universal_noncentral_ncard_two`: corollary `(G.neighborSet u).ncard = 2`.
+
+**Why this is new (not a dup of the finite proof):** the gallery's finite
+`FriendshipTheorem.friendship_noncentral_degree` (FriendshipTheorem.lean:135) proves
+`G.degree u = 2` — `G.degree` is a `Fintype` notion, so that lemma is unusable on
+infinite vertex types. The *set* equality `N(u) = {c, w}` underlying it needs **no
+finiteness**; this session states it directly, completing the "conclusion restored"
+side of OQ-04 by showing the recovered graph is genuinely a windmill even infinitely.
+
+**Verification (build-free).** The proof is a near-verbatim port of the compiling
+finite proof (FriendshipTheorem.lean:138–163), swapping `neighborFinset`→`neighborSet`
+and `Finset.mem_insert`/`Finset.card_pair`→`Set.mem_insert_iff`/`Set.ncard_pair`.
+All bearers in use already in this repo: `Set.ncard_eq_one`,
+`SimpleGraph.mem_commonNeighbors`, `SimpleGraph.mem_neighborSet`, `Set.ncard_pair`
+(e.g. Erdos157Problem.lean:72), `G.loopless`, `G.symm`. High static confidence;
+machine-check deferred to the next Docker-up deployer build (deployer-gated, so a
+compile error blocks the PR rather than reaching `main`).
+
+### Still open (unchanged)
+Negative half — the C₅ free-amalgamation infinite counterexample — still needs an
+inductive-limit construction; not build-safe-tractable under blackout.

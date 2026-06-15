@@ -36,6 +36,15 @@ that has no infinite analogue:
   gallery theorem `FriendshipTheorem.friendship_theorem` recovers a universal
   vertex for any locally finite friendship graph with at least three vertices.
 
+* `universal_noncentral_neighborSet` / `universal_noncentral_ncard_two` — the
+  **infinite windmill structure**: in *any* friendship graph with a universal vertex
+  (finite or infinite), every non-centre vertex has exactly two neighbours — the
+  centre and a unique partner — so `N(u) = {centre, partner}`. This is the
+  finiteness-free analogue of the finite gallery's
+  `FriendshipTheorem.friendship_noncentral_degree` (which states `G.degree u = 2`, a
+  `Fintype` notion); it shows the recovered conclusion is genuinely a windmill even
+  on infinite vertex types.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -141,5 +150,47 @@ theorem locally_finite_friendship_has_universal (hF : IsFriendshipGraph G)
     calc 3 = ({a, b, c} : Finset V).card := hcard.symm
       _ ≤ Fintype.card V := Finset.card_le_univ _
   exact FriendshipTheorem.friendship_theorem G (fun u v h => hF u v h) h3
+
+/-- **Infinite windmill structure.** In a friendship graph with a universal vertex
+`c` (finite **or** infinite), every non-centre vertex `u` is adjacent to *exactly*
+two vertices — the centre `c` and a unique "partner" `w` — so `N(u) = {c, w}`. The
+graph is therefore a windmill (triangles `{c, u, w}` sharing the centre) even when
+infinite. No `[Fintype V]` assumption is used: the finite gallery proof
+`FriendshipTheorem.friendship_noncentral_degree` derives `G.degree u = 2` (a
+`Fintype` notion); this states the underlying *set* equality directly, which holds
+verbatim on infinite vertex types. -/
+theorem universal_noncentral_neighborSet (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    ∃ w, w ≠ c ∧ w ≠ u ∧ G.Adj u w ∧ G.neighborSet u = {c, w} := by
+  obtain ⟨w, hw⟩ := Set.ncard_eq_one.mp (hF u c hu)
+  have hw_mem : w ∈ G.commonNeighbors u c := by
+    rw [hw]; exact Set.mem_singleton_iff.mpr rfl
+  rw [SimpleGraph.mem_commonNeighbors] at hw_mem
+  have hwu : w ≠ u := fun heq => G.loopless u (heq ▸ hw_mem.1)
+  have hwc : w ≠ c := fun heq => G.loopless c (heq ▸ hw_mem.2)
+  refine ⟨w, hwc, hwu, hw_mem.1, ?_⟩
+  ext x
+  simp only [SimpleGraph.mem_neighborSet, Set.mem_insert_iff, Set.mem_singleton_iff]
+  constructor
+  · intro hadj
+    by_cases hxc : x = c
+    · exact Or.inl hxc
+    · refine Or.inr ?_
+      have hcx : G.Adj c x := hc x hxc
+      have hxmem : x ∈ G.commonNeighbors u c :=
+        (SimpleGraph.mem_commonNeighbors G).mpr ⟨hadj, hcx⟩
+      exact Set.mem_singleton_iff.mp (hw ▸ hxmem)
+  · rintro (rfl | rfl)
+    · exact G.symm (hc u hu)
+    · exact hw_mem.1
+
+/-- Every non-centre vertex of a friendship graph with a universal vertex has
+exactly two neighbours (`ncard = 2`), with no `[Fintype V]` assumption — the
+finiteness-free analogue of `FriendshipTheorem.friendship_noncentral_degree`. -/
+theorem universal_noncentral_ncard_two (hF : IsFriendshipGraph G)
+    (c : V) (hc : FriendshipTheorem.IsUniversalVertex G c) (u : V) (hu : u ≠ c) :
+    (G.neighborSet u).ncard = 2 := by
+  obtain ⟨w, hwc, _, _, hset⟩ := universal_noncentral_neighborSet hF c hc u hu
+  rw [hset, Set.ncard_pair (Ne.symm hwc)]
 
 end FriendshipTheoremOQ04
