@@ -191,3 +191,41 @@ about the *unification of the ratio/criterion*, which lives entirely in the
 - **Treating Euclidean as a separate `√`-bearing case.** It is the `√|1−m²|→0`
   degeneration; writing `sin_0` as a nonzero `√` factor fails. Encode Euclidean
   with `gEuc = 1` (barycentric ratio `β/α`, no radical).
+
+---
+
+## Durable Verification (2026-06-14, build-free)
+
+`verify_ck_unification.py` (this directory) independently re-derives and checks the
+entire algebraic + metric core of the unification from first principles, so the
+Docker-gated Lean transcription (Steps A–D above) is de-risked before any build.
+Run `python3 verify_ck_unification.py` — **all checks pass**. It confirms:
+
+1. **The two core identities** (sympy, exact → 0), matching the parent's
+   `hyp_key_identity_BD/DC` (`CevasTheoremOQ02OQ01OQ02.lean:98,105`):
+   `(α+βm)² − n² = β²(m²−1)` and `(αm+β)² − n² = α²(m²−1)`, with
+   `n² = α²+2αβm+β²`. The script also verifies the **sign-flipped spherical
+   reading** `n² − (α+βm)² = β²(1−m²)` is the *same* identity — this is the precise
+   sense in which **one** identity covers all three geometries.
+2. **The abstract cancellation (★)** `(βg)/(αg) = β/α` (sympy) — the lemma
+   `ck_ratio_cancel` of Step B.
+3. **Spherical (κ=+1)** side-ratio from genuine S² geometry (unit vectors, `arccos`
+   geodesic distances): `sin(d(B,D))/sin(d(D,C)) = β/α`, and the closed forms
+   `sin(d(B,D)) = β√(1−m²)/n`, `sin(d(D,C)) = α√(1−m²)/n`.
+4. **Hyperbolic (κ=−1)** side-ratio from the genuine hyperboloid model (Minkowski
+   form `⟨·,·⟩ = x₁y₁+x₂y₂−x₃y₃`, points with `⟨x,x⟩=−1`, `m = −⟨B,C⟩ = cosh d`):
+   `sinh(d(B,D))/sinh(d(D,C)) = β/α` and `sinh(d(B,D)) = β√(m²−1)/n`. The script
+   independently checks `⟨D′,D′⟩ = −n²` (so `D = D′/n` is a valid model point).
+5. **Euclidean limit (κ=0, m=1)**: `n = α+β` (perfect square), barycentric ratio
+   `β/α` with `gEuc = 1` — no radical.
+6. **The concurrency criterion** `universal_weight_balance`
+   (`CevasTheoremOQ02OQ01OQ02.lean:254`): for a concrete triangle, three cevians
+   `AD, BE, CF` are geometrically concurrent (line-intersection test) **iff**
+   `α_D α_E α_F = β_D β_E β_F` **iff** `∏(β/α) = 1`, across both concurrent and
+   non-concurrent cases.
+
+**Net effect for the Lean build:** every mathematical obligation in the
+"Lean Formalisation Plan" is now numerically/symbolically confirmed. The remaining
+work is pure transcription of already-validated identities (`ring`/`field_simp`),
+plus the `Real.sqrt` factor definitions — the only Docker-gated risk is Lean
+plumbing, not mathematics.
