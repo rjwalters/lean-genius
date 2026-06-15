@@ -436,3 +436,43 @@ still-Docker-gated step. Posted these decls as a comment on #24458.
 
 ### Files Touched (S8)
 - `research/problems/greens-theorem-oq-02-oq-02/knowledge.md`: this entry (ready-to-paste C¹ consumers).
+
+## Session 2026-06-15 (S9, researcher-2) — APPLIED the S8 paste: consumers 7 & 8 now in the corrected model file
+
+**Mode**: build-pending ACT under Docker blackout (`docker info` exit 124). Edited the
+UNREGISTERED model file only → blackout-safe (not in `Proofs.lean`; cannot break `main`).
+
+PR #24458 (corrected model `GreensTheoremOQ02Corrected.lean`) merged to `main` with consumers
+1–5 + `counterexample_violates_hLineEq`, but the two C¹ flagship consumers (7 = was
+`c1_stokes_from_whitney`, 8 = was `stokes_scaling`) were only posted as an S8 PR comment, never
+added. This session appends them, completing the documented S8 next-step #2 (8/8 blast radius).
+
+Verified the paste against the ACTUAL merged files (not the pre-merge S8 draft):
+- `greens_stokes_l1curl_oriented` (Corrected.lean:136) arg order is
+  `(C) (ω) (a b c d) (hab) (hcd) (hL1) (hTraversal) (hLineEq)` — matches both calls.
+- `c1_form_l1_integrable (ω) (a b c d) (hQ_cont) (hP_cont) : IntegrableOn (extDeriv1_2D ω)
+  (Icc a b ×ˢ Icc c d) volume` (OQ02OQ04.lean:182) — `Icc = Set.Icc` (open Set), unifies with
+  the `Set.Icc` in `greens_stokes_l1curl_oriented`'s `hL1`.
+- Originals `c1_stokes_from_whitney` (OQ02OQ04:212) and `stokes_scaling` (:231) confirm the
+  oriented versions are faithful: 7 just threads `hLineEq` into the `greens_stokes_l1curl`
+  application; 8 keeps `rw [lineIntegral_smul]` then the oriented Stokes rewrite. All referenced
+  names (`lipschitzLineIntegral`, `rectLineIntegral`, `OneForm2D`, `extDeriv1_2D`,
+  `lineIntegral_smul`, `LipschitzClosedCurve`) are the same unqualified names consumers 1–6 use,
+  so they are in scope.
+
+File now has 8 theorems (7 oriented consumers + the counterexample); 0 stray `-/`, balanced
+block comments. Still UNREGISTERED and build-pending. The registered-file fix (threading
+`hLineEq` through the REAL `c1_stokes_from_whitney`/`stokes_scaling` + the false axiom
+`greens_theorem_l1curl` in `GreensTheoremOQ02.lean`/`OQ02OQ04.lean`) is the separate,
+still-Docker-gated soundness step — UNCHANGED by this session; the false axiom is still LIVE on
+`main`.
+
+### Files Modified
+- `proofs/Proofs/GreensTheoremOQ02Corrected.lean` (+2 theorems: consumers 7 & 8)
+- this knowledge note
+
+### Next steps (unchanged, Docker-gated)
+1. Register `GreensTheoremOQ02Corrected.lean` once the build is confirmed.
+2. Apply the 8-decl correction to the REGISTERED files (`GreensTheoremOQ02.lean`,
+   `GreensTheoremOQ02OQ04.lean`) — eliminate the live false axiom `greens_theorem_l1curl`.
+3. Discharge the corrected axiom (C¹ from OQ01; L¹ via FTC-for-AC keystone, Mathlib-gated).
