@@ -60,7 +60,8 @@
       "**Frontier-containment is too weak:** it pins down neither orientation nor winding nor non-degeneracy, which is exactly what lets the constant curve refute the original axiom.",
       "**One hypothesis suffices:** equating the circulation with the concrete oriented rectangle integral `rectLineIntegral` (OQ-01) restores soundness without changing any consumer's mathematics.",
       "**Excision is verified, not assumed:** the counterexample is shown to fail the new hypothesis via a proven lemma, so soundness is demonstrably regained.",
-      "**Coordinated landing required:** the fix spans two registered files and six consumers, so it must be ported as a single Docker-verified patch — hence this isolated, unregistered staging file."
+      "**Coordinated landing required:** the fix spans two registered files and six consumers, so it must be ported as a single Docker-verified patch — hence this isolated, unregistered staging file.",
+      "**Orientation-soundness is necessary, not sufficient:** hLineEq removes the false counterexamples, but greens_theorem_l1curl_oriented remains an axiom — the genuine Whitney minimal-regularity content is still assumed. A fully verified proof awaits the FTC-for-absolutely-continuous-functions keystone (Mathlib ≥ v4.28.0), which would reduce it to OQ-01's boundary algebra by Fubini."
     ],
     "prerequisites": [
       "Green's theorem / Stokes' theorem in the plane",
@@ -113,6 +114,11 @@
       "relationship": "related-result",
       "description": "Sibling open-question entry in the same minimal-regularity Green's theorem family.",
       "targetId": "greens-theorem-oq-02-oq-04"
+    },
+    {
+      "relationship": "uses",
+      "description": "Source of rectLineIntegral, the concrete correctly-oriented four-edge rectangle integral that the corrective hypothesis hLineEq equates the Lipschitz curve's circulation to — the keystone that restores orientation-soundness.",
+      "targetId": "greens-theorem-oq-01"
     }
   ],
   "references": [
