@@ -54,35 +54,35 @@
     {
       "id": "strengthened-def",
       "title": "Section I: Strengthened Definition",
-      "startLine": 39,
-      "endLine": 72,
+      "startLine": 40,
+      "endLine": 71,
       "summary": "Defines IsDensityJumpLiminf using Filter.liminf and Filter.Tendsto, and the corresponding densityJumpSetLiminf."
     },
     {
       "id": "relationship",
       "title": "Section II: Relationship to Original",
-      "startLine": 74,
-      "endLine": 84,
+      "startLine": 72,
+      "endLine": 83,
       "summary": "Shows the strengthened definition implies the original placeholder."
     },
     {
       "id": "ess-theorem",
       "title": "Section III: A_2 Characterization",
-      "startLine": 86,
-      "endLine": 112,
+      "startLine": 84,
+      "endLine": 105,
       "summary": "Defines Turán densities 1-1/m, proves they're in [0,1), axiomatizes A_2 = {1-1/m}."
     },
     {
       "id": "properties",
       "title": "Section IV: Properties",
-      "startLine": 110,
-      "endLine": 121,
+      "startLine": 106,
+      "endLine": 122,
       "summary": "States 0 ∈ A_k (sorry: needs supersaturation) and A_k ⊆ [0,1)."
     },
     {
       "id": "open-problem",
       "title": "Section V: The Open Problem and Verification",
-      "startLine": 127,
+      "startLine": 123,
       "endLine": 149,
       "summary": "Marks the characterization of A_3 as open and lists #check verification commands.",
       "mathContext": "The open problem: characterize densityJumpSetLiminf 3, i.e., determine which values α ∈ [0,1) are density jump values for 3-uniform hypergraphs."
