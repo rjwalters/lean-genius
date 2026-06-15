@@ -41,26 +41,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (ORIENT): structure of the higher-degree norm equation verified from first principles via reproducible sympy script; Mathlib Dirichlet API identified; ACT is Docker-gated.",
+    "progressSummary": "FIX (S6, build-pending): the merged PellEquationOQ05.lean (#24305) had a confirmed compile blocker — it called pow_lt_pow_right_of_lt_one, which does not exist in Mathlib master; the real name is pow_lt_pow_right_of_lt_one₀ (exact signature match). Renamed both call sites. Re-verified all other external Mathlib deps present. File now free of any confirmed name error but still UNREGISTERED/build-pending (Docker blackout; tactic-level steps untested). Next Docker session: build -> register -> close #24277 as superseded.",
     "builtItems": [
-      "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass)."
+      "research/problems/pell-equation-oq-05/verify_norm_equations.py — reproducible sympy verification (all 5 sections pass).",
+      "FIX (S6, researcher-1): renamed pow_lt_pow_right_of_lt_one -> pow_lt_pow_right_of_lt_one₀ (the real Mathlib name, Algebra/Order/GroupWithZero/Unbundled/Basic.lean:577) at both call sites in PellEquationOQ05.lean:upow_injective. The non-₀ name does not exist in Mathlib master (no alias). Was a confirmed compile blocker flagged by S5."
     ],
     "insights": [
       "Pell is the signature-(2,0) rank-1 case of Dirichlet; degree>2 raises the unit rank to r1+r2-1, so there can be SEVERAL fundamental units (e.g. totally real cubic x^3-3x-1 has rank 2).",
       "Mixed signature matters independent of degree: Q(cbrt2) is degree 3 yet still rank 1 (signature (1,1)) — one complex place. Rank, not degree, controls the number of fundamental units.",
       "The field norm is most cleanly defined (and Lean-formalizable) as det of multiplication-by-xi on an integral basis; for Q(cbrt2) this yields a^3+2b^3+4c^3-6abc.",
       "For Q(cbrt2) the fundamental unit is t-1, with explicit inverse t^2+t+1 since (t-1)(t^2+t+1)=t^3-1=1 — a concrete, formalizable witness of an O_K^x generator.",
-      "N(xi)=m has finitely many solution CLASSES mod units: each class corresponds to an ideal of norm |m| (finitely many), and within a class solutions form one O_K^x-coset (S-unit/class-group finiteness)."
+      "N(xi)=m has finitely many solution CLASSES mod units: each class corresponds to an ideal of norm |m| (finitely many), and within a class solutions form one O_K^x-coset (S-unit/class-group finiteness).",
+      "Re-verified the file`s other external Mathlib deps against master: Real.rpow_natCast (Pow/Real.lean:62), Real.rpow_mul (Pow/Real.lean:405), Set.infinite_of_injective_forall_mem (Data/Set/Finite/Basic.lean:894). The S5-named compile-risk (rpow rewrite in exists_real_cube_root_two) uses confirmed-present lemmas; the only confirmed error was the ₀ suffix, now fixed."
     ],
     "mathlibGaps": [
       "Mathlib has the abstract Dirichlet theorem but NOT explicit fundamental units / regulators for specific fields — computing the generator t-1 for Q(cbrt2) and proving it generates would be manual work.",
       "No off-the-shelf statement packaging finiteness of N(xi)=m solution classes as an O_K^x-orbit count; would need bridging from ClassGroup finiteness + Units."
     ],
     "nextSteps": [
-      "ACT (Docker-gated): instantiate NumberField.Units.rank / rank_modTorsion for K=Q(cbrt2), proving rank = 1 from signature (1,1).",
-      "State recover-Pell lemma: real quadratic => rank 1, matching parent pell-equation.",
-      "Formalize cubic norm form via Algebra.norm / det of mul matrix and verify N(t-1)=1.",
-      "State (not necessarily prove) finiteness of N(xi)=m solution classes using ClassGroup finiteness + Units."
+      "Docker-verify PellEquationOQ05.lean (the ₀ fix should clear the lone confirmed error); then register in Proofs.lean and close #24277 as superseded.",
+      "Optional: extend norm_one_solutions_infinite to N(ξ)=m for norm values m.",
+      "Hard ACT: unit rank=1 via signature (1,1) — still no Mathlib bearer for InfinitePlace count."
     ]
   },
   "tags": [
