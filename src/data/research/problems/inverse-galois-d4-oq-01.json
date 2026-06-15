@@ -1,0 +1,65 @@
+{
+  "slug": "inverse-galois-d4-oq-01",
+  "title": "Semidirect-Product Structure ℤ/4 ⋊ ℤ/2 of the D₄ Galois Action",
+  "phase": "ORIENT",
+  "status": "available",
+  "tier": "B",
+  "path": "Proofs/InverseGaloisD4OQ01.lean",
+  "problemStatement": {
+    "formal": "Exhibit the splitting-field Galois group of X⁴−2 over ℚ (order 8) as the internal/external semidirect product ℤ/4 ⋊ ℤ/2: a normal order-4 rotation subgroup and an order-2 reflection acting by inversion.",
+    "plain": "The Galois group of X⁴−2 over ℚ has order 8, but order alone does not fix its isomorphism type. Make the dihedral structure ℤ/4 ⋊ ℤ/2 explicit.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "Internal semidirect decomposition of DihedralGroup 4 is fully formalized (0 sorry, 0 axiom) in InverseGaloisD4OQ01.lean: normal rotation subgroup ≅ ℤ/4, reflection complement ≅ ℤ/2, trivial intersection, generation, and inversion action.",
+      "d4_internal_semidirect packages the four defining properties of the internal semidirect product."
+    ],
+    "open": [
+      "External packaging as an honest MulEquiv SemidirectProduct (Multiplicative (ZMod 4)) (Multiplicative (ZMod 2)) φ ≃* DihedralGroup 4 (blueprint drafted, not yet machine-checked).",
+      "OQ-03 bridge: concrete Gal(X⁴−2/ℚ) ≃* DihedralGroup 4 (needs uniqueness of the transitive order-8 subgroup of S₄)."
+    ],
+    "goal": "Promote the internal decomposition to the explicit external semidirect product and confirm a kernel build."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T00:00:00Z",
+    "iteration": 1,
+    "focus": "Internal structure complete; external SemidirectProduct equivalence blueprinted (lift compatibility reduces to reflection_conj_rotation'). Build + Aristotle unavailable this session."
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: internal ℤ/4 ⋊ ℤ/2 decomposition already proven (0 sorry/0 axiom); external SemidirectProduct ≃* DihedralGroup 4 drafted as a blueprint, unverified (no build, Aristotle down).",
+    "builtItems": [
+      "InverseGaloisD4OQ01.lean: rotations ≅ ℤ/4 (rHom, rHom_injective, rotationsEquiv, card_rotations)",
+      "InverseGaloisD4OQ01.lean: rotations_normal, reflection_conj_rotation, reflection_conj_rotation'",
+      "InverseGaloisD4OQ01.lean: reflections ≅ ℤ/2, rotations ⊔ reflections = ⊤, rotations ⊓ reflections = ⊥",
+      "InverseGaloisD4OQ01.lean: d4_internal_semidirect (the four defining properties)"
+    ],
+    "insights": [
+      "Order 8 does not fix the isomorphism type (D₄ vs Q₈ vs 3 abelian); the internal decomposition with the inversion action does.",
+      "SemidirectProduct.lift compatibility hypothesis collapses, on the ℤ/2 generator, to exactly reflection_conj_rotation' — the hard content is already proven.",
+      "Bijectivity of the lift needs no Fintype/cardinality lemma: surjectivity from explicit preimages of r i and sr i; injectivity from lift⟨n,g⟩ = rHom n * sHom g plus sr a ≠ 1.",
+      "Mathlib (v4.26.0) has SemidirectProduct but no DihedralGroup-as-semidirect-product result, so the external d4Equiv is a genuine addition."
+    ],
+    "mathlibGaps": [
+      "No DihedralGroup n ≃* SemidirectProduct ... result in Mathlib v4.26.0.",
+      "Need to confirm exact SemidirectProduct.lift hypothesis form and MulAut.conj_apply at build time."
+    ],
+    "nextSteps": [
+      "On a warm cache: paste the knowledge.md external blueprint into a companion file, build via docker-build.sh, fix the listed API points, register, and flip gallery status to verified/original.",
+      "Verify the existing InverseGaloisD4OQ01.lean builds, then upgrade meta.json status formalized → verified (currently under-claimed at 0 sorry/0 axiom).",
+      "Pursue OQ-03 separately (uniqueness of transitive order-8 subgroup of S₄)."
+    ]
+  },
+  "tags": [
+    "galois-theory",
+    "inverse-galois-problem",
+    "dihedral-group",
+    "semidirect-product",
+    "field-extensions"
+  ],
+  "started": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-15T00:00:00Z",
+  "significance": 5,
+  "tractability": 6
+}
