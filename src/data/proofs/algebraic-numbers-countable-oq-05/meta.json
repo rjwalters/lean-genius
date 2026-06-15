@@ -64,44 +64,76 @@
   },
   "sections": [
     {
-      "id": "height-function",
-      "title": "§1–2: The Cantor Height Function",
-      "startLine": 46,
-      "endLine": 108,
-      "summary": "Defines cantorHeight p = natDegree p + ∑ᵢ |p.coeff i|. Proves: degree ≤ height (cantorHeight_degree_le), coefficient sum ≤ height (cantorHeight_sum_le), each |coeff i| ≤ height (cantorHeight_coeff_le), and nonzero polynomials have positive height (cantorHeight_pos_of_ne_zero).",
-      "mathContext": "The height function maps Polynomial ℤ → ℕ. The four basic properties are proved by simple arithmetic: the height is the sum of degree and coefficient-norms, so each summand is ≤ the total. For coefficients beyond natDegree, Polynomial.coeff_eq_zero_of_natDegree_lt gives coeff = 0."
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "Imports, the module docstring stating the open question (countability of algebraic reals via Cantor's height function), historical context, and the comparison with the base AlgebraicNumbersCountable.lean, plus the namespace and opens (Polynomial, BigOperators, Finset).",
+      "mathContext": "Open question: re-prove that the algebraic reals are countable via Cantor's height-stratification argument."
     },
     {
-      "id": "finiteness",
-      "title": "§3: Finiteness of Polynomials of Bounded Height",
+      "id": "section-1-cantor-height",
+      "title": "§1. The Cantor Height Function",
+      "startLine": 50,
+      "endLine": 65,
+      "summary": "Defines `cantorHeight p = natDegree p + Σᵢ |p.coeff i|` for an integer polynomial — the Cantor height H(p) = n + Σ|aᵢ|.",
+      "mathContext": "Cantor height $H(p) = \\deg p + \\sum_i |a_i|$ for $p \\in \\mathbb{Z}[X]$."
+    },
+    {
+      "id": "section-2-height-properties",
+      "title": "§2. Basic Properties of Cantor Height",
+      "startLine": 66,
+      "endLine": 109,
+      "summary": "Basic bounds: `cantorHeight_degree_le` (deg p ≤ H), `cantorHeight_sum_le` (Σ|coeff| ≤ H), `cantorHeight_coeff_le` (each |coeff i| ≤ H), and `cantorHeight_pos_of_ne_zero` (H(p) > 0 for p ≠ 0).",
+      "mathContext": "If $H(p)\\le h$ then $\\deg p \\le h$ and every $|a_i|\\le h$; $H(p)>0$ for $p\\ne 0$."
+    },
+    {
+      "id": "section-3-finite-polys",
+      "title": "§3. Finiteness of Polynomials of Bounded Height",
       "startLine": 110,
-      "endLine": 152,
-      "summary": "finite_polys_of_height: {p | H(p) ≤ h} is finite. Proof via injection into Fin(h+1) → Icc(-h,h) (a Fintype). The auxiliary poly_eq_fin_sum shows p equals its truncated sum of terms through degree h.",
-      "mathContext": "Key Lean pattern: Set.Finite.subset (Set.finite_range f) where f maps the Fintype to Polynomial ℤ. The Fintype is (Fin(h+1) → ↥Icc(-h:ℤ, h)) — coefficient tuples with each entry in the bounded interval. The witness for each p is its coefficient function, bounded by cantorHeight_coeff_le."
+      "endLine": 153,
+      "summary": "Key theorem `finite_polys_of_height`: the set {p : H(p) ≤ h} is finite, via an injection into Fin(h+1) → Icc(−h,h) (a Fintype), since bounded height forces bounded degree and bounded coefficients.",
+      "mathContext": "For each h, $\\{p : H(p)\\le h\\}$ is finite (degree $\\le h$, coefficients in $[-h,h]$)."
     },
     {
-      "id": "finite-roots",
-      "title": "§4: Finite Real Roots per Polynomial",
+      "id": "section-4-finite-roots",
+      "title": "§4. Finite Real Roots per Polynomial",
       "startLine": 154,
-      "endLine": 166,
-      "summary": "finite_real_roots: each nonzero integer polynomial has finitely many real roots. Direct from Polynomial.setOf_isRoot_finite applied to the image in Polynomial ℝ.",
-      "mathContext": "The map algebraMap ℤ ℝ : Polynomial ℤ → Polynomial ℝ preserves nonzero-ness (Polynomial.map_ne_zero). Then setOf_isRoot_finite gives finiteness of {x : ℝ | IsRoot (p.map ...) x}. The convert converts IsRoot into the aeval = 0 formulation."
+      "endLine": 167,
+      "summary": "`finite_real_roots`: every nonzero integer polynomial has finitely many real roots, via `Polynomial.setOf_isRoot_finite` on its image in ℝ[X].",
+      "mathContext": "Each nonzero $p\\in\\mathbb{Z}[X]$ has finitely many real roots."
     },
     {
-      "id": "height-strata",
-      "title": "§5–7: Height Stratification and Countability",
+      "id": "section-5-height-stratified-reals",
+      "title": "§5. Height-Stratified Algebraic Reals",
       "startLine": 168,
-      "endLine": 242,
-      "summary": "algebraicRealsOfHeight h = ⋃{p : nonzero with H(p)≤h} roots(p). finite_algebraicRealsOfHeight: finite index × finite fibers = finite. algebraic_reals_eq_iUnion_height: algebraic reals = ⋃ₕ strata (uses integerNormalization). algebraic_reals_countable_via_height: countable union of finite sets = countable.",
-      "mathContext": "The iUnion is over the subtype {q : Polynomial ℤ // q ≠ 0 ∧ H(q) ≤ h}, which is Finite (bounded by finite_polys_of_height). Set.Finite.iUnion requires: (1) Finite index type, (2) each fiber is finite. The direction 'algebraic → in union' uses integerNormalization to clear rational polynomial denominators."
+      "endLine": 191,
+      "summary": "Defines `algebraicRealsOfHeight h` = ⋃ over nonzero p with H(p) ≤ h of the real roots of p, and proves `finite_algebraicRealsOfHeight`: each stratum is finite (finite index set × finite root fibers).",
+      "mathContext": "$A_h = \\bigcup_{H(p)\\le h}\\mathrm{roots}(p)$ is finite for every h."
     },
     {
-      "id": "structural",
-      "title": "§8: Structural Properties",
+      "id": "section-6-decomposition",
+      "title": "§6. Cantor's Height Decomposition Theorem",
+      "startLine": 192,
+      "endLine": 224,
+      "summary": "`algebraic_reals_eq_iUnion_height`: the set of algebraic reals equals the countable union ⋃ₕ algebraicRealsOfHeight h of the finite height strata (using integerNormalization to pass from ℚ to ℤ coefficients).",
+      "mathContext": "The algebraic reals decompose as $\\bigcup_h A_h$, a countable union of finite strata."
+    },
+    {
+      "id": "section-7-countability",
+      "title": "§7. Main Theorem: Countability via Cantor Height Stratification",
+      "startLine": 225,
+      "endLine": 243,
+      "summary": "Main result `algebraic_reals_countable_via_height`: the algebraic reals are countable, as a countable union of finite height strata.",
+      "mathContext": "The algebraic reals are countable (countable union of finite sets)."
+    },
+    {
+      "id": "section-8-structural",
+      "title": "§8. Structural Properties",
       "startLine": 244,
-      "endLine": 266,
-      "summary": "algebraicRealsOfHeight_mono: monotone filtration (strata nest). card_algebraic_reals_eq_aleph0: #(algebraic reals) = ℵ₀. finite_algebraicReals_bounded_height: explicit version with polynomial witnesses.",
-      "mathContext": "Monotonicity from Nat.le_succ_of_le. Cardinal computation from Algebraic.cardinalMk_of_countable_of_charZero (Mathlib black box for countable fields of char 0). The explicit bounded-height theorem just unfolds the iUnion definition."
+      "endLine": 296,
+      "summary": "Structural corollaries: `algebraicRealsOfHeight_mono` (the strata nest monotonically), `card_algebraic_reals_eq_aleph0` (#algebraic reals = ℵ₀), and `finite_algebraicReals_bounded_height` (explicit finiteness with polynomial witnesses); closes with the summary block and namespace end.",
+      "mathContext": "The strata form a monotone filtration; the algebraic reals have cardinality $\\aleph_0$."
     }
   ],
   "conclusion": {
