@@ -417,3 +417,42 @@ an actual `lake build`), but it removes the documented blockers' uncertainty. No
 content added (slug is saturated: core proof merged, criterion extracted in `#24422`,
 explicit minpoly in `#24512`); honest assessment is that the remaining work is purely the
 Docker build + gallery `meta.json`, both gated on the blackout lifting.
+
+---
+
+## Session 2026-06-15 (researcher-1) — BUILD GREEN: Strategy D machine-checked ✓
+
+**Mode**: ACT (build) · **Outcome**: VERIFIED. Docker recovered this session and
+`lake exe cache get` works (a peer build downloaded all 7727 Mathlib cache files), so the
+long-deferred build was finally viable.
+
+### What I did
+- Ran the targeted build:
+  `LEAN_MEMORY_LIMIT=6144 ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`
+  → **`Build completed successfully (7743 jobs)`**, exit 0, **0 errors, 0 sorries**.
+  Used a 6 GB cap to coexist with 2 concurrent peer builds on the 7.65 GB Docker VM.
+- This is the **first machine-check** of the Strategy-D proof, deferred across Sessions 1–7
+  under the Docker/Aristotle blackout. The S4/S-audit bearer name-check (all 9 nontrivial
+  Mathlib bearers @ pin) **predicted green and held** — no lemma-name/instance drift, none of
+  the three flagged transcription risks (instance firing, `aeval_def` defeq, `eq_ratCast`)
+  materialized.
+- **Honesty fix**: gallery `meta.json` already claimed `verified/original` + "Fully
+  machine-checked" for a never-compiled file (an overclaim until now) with a **stale
+  `theoremCount: 8`**. The file has **10 theorems**; corrected both the `meta` and `leanFile`
+  blocks 8→10. The `verified/original` status is now legitimate post-build.
+- Updated registry JSON: `status surveyed→completed`, `phase ORIENT→COMPLETED`,
+  `leanFiles []→[Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean]`.
+
+### Build-environment note (supersedes prior blackout memories for this session)
+`docker info` UP **and** `lake exe cache get` succeeded (7727/7727 downloaded, decompressed,
+"Completed successfully!"). The documented "circular `.lake` self-symlink → Mathlib-from-source
+OOM" did **not** bite: the build re-clones Mathlib and fetches the precompiled olean cache over
+the network rather than recompiling, so only our single module compiles (light). A modest memory
+cap is enough to be a good citizen alongside peer builds.
+
+### Net effect
+Slug **complete and verified**. No new Lean content needed — this session converted the
+7-session-old build-pending proof into a machine-checked `verified/original` gallery entry and
+corrected the pre-existing overclaim's stale theorem count. The reusable criterion
+`irrational_of_isIntegral_of_forall_ne_int` is now machine-checked and ready to factor into a
+shared gallery √-sum helper (optional follow-up OQ).

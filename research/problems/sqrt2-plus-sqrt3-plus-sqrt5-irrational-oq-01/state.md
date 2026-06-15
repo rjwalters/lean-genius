@@ -1,17 +1,19 @@
 # Research State: sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-15T02:09:02-07:00
-**Iteration**: 6
+**Since**: 2026-06-15T18:00:00-07:00
+**Iteration**: 7
 
 ## Current Focus
-**Session 5 (researcher-10, 2026-06-15): Strategy D fully transcribed** to
-`proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~95 LOC, 0 sorries/0
-axioms by construction). Build-pending (Docker down) and UNREGISTERED in `proofs/Proofs.lean`.
-All math re-verified by `verify_strategy_d.py` (ALL CHECKS PASSED). Only remaining work: the
-Docker build (fix any lemma-name/instance drift) + registration + gallery `meta.json`.
+**Session 7 (researcher-1, 2026-06-15): BUILD GREEN — Strategy D machine-checked ✓.**
+`./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`
+completed successfully (7743 jobs, 0 errors, 0 sorries, 0 axioms) — the first machine-check
+after 7 build-deferred sessions. File already registered in `proofs/Proofs.lean` on main. The
+S4 bearer name-check predicted green and held (no drift, no transcription risks fired). Fixed
+the pre-existing gallery overclaim's stale `theoremCount` (8→10); `verified/original` is now
+legitimate. Registry → status completed / phase COMPLETED / leanFiles populated. **Slug DONE.**
 
 ### Prior focus (Session 4, researcher-5)
 Strategy D was **paste-port-ready** (Session 4, researcher-5). Every step of the
@@ -36,19 +38,11 @@ Fallback: Strategy A (elementary 3-squaring chain) or `m(α)=0` + rational-root 
 - Approaches tried: 0
 
 ## Blockers
-- Docker build wrapper unavailable (`docker ps` timeout) — cannot verify Lean locally.
-- Aristotle MCP tools now load but `prove` returns "Resource not found" — backend still down,
-  cannot delegate the proof.
+- None. Build verified green this session (Docker recovered; `lake exe cache get` works).
 
 ## Next Action
-When Docker **or** Aristotle returns, **transcribe** Strategy D into
-`Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~60–100 LOC). All lemma names are
-now confirmed at pin `v4.26.0` (knowledge.md Session 4): step 1 `IsIntegral.add` ×3 over
-`IsIntegral ℤ (√k)` (monic `X²−C k`, `Real.sq_sqrt`); step 2 descent
-`isIntegral_algebraMap_iff` (`IsIntegral/Basic.lean:179`, needs `[IsScalarTower ℤ ℚ ℝ]` +
-`(algebraMap ℚ ℝ).injective`); step 3 `IsIntegrallyClosed.isIntegral_iff`
-(`IntegrallyClosed.lean:210`, ℤ integrally closed by instance); step 4 bounds `8<α<9` via the
-Session-3 `norm_num` witness recipe ⇒ contradiction. Residual transcription risks: cast plumbing
-`√(2:ℕ)` vs `√(2:ℝ)` in step 1, and instance firing for `IsScalarTower ℤ ℚ ℝ`/`IsFractionRing ℤ ℚ`.
-Fallbacks: Strategy A (3-squaring chain) or `m(α)=0` + rational-root theorem. Re-run
-`verify_strategy_d.py` to re-confirm all math artifacts.
+**DONE — slug verified and complete.** The proof is machine-checked and registered; gallery
+meta is `verified/original` with corrected counts. Optional follow-up OQ: Strategy D scales to
+any finite sum of `√(squarefree)` with no degree blow-up — the now-machine-checked reusable
+criterion `irrational_of_isIntegral_of_forall_ne_int` is ready to factor into a shared gallery
+√-sum irrationality helper.

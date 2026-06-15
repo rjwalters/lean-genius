@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-checked: 0 sorries, 0 axioms. Uses Mathlib's integral-closure API — IsIntegral.add, isIntegral_algebraMap_iff, IsIntegrallyClosed.isIntegral_iff (ℤ integrally closed in ℚ), Polynomial.monic_X_pow_sub_C, Real.sq_sqrt, Real.lt_sqrt, Real.sqrt_lt'.",
     "lineCount": 113,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 0,
     "originalContributions": [
       "irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7: √2 + √3 + √5 + √7 is irrational, proved via Strategy D (algebraic integer trapped in (8,9)) rather than the iterated-squaring / degree-16 minimal-polynomial route",
@@ -65,7 +65,7 @@
     "namespace": "Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01",
     "lineCount": 113,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 0,
     "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean",
     "sorries": 0
