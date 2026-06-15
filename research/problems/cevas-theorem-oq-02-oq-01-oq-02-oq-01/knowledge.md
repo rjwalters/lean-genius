@@ -363,3 +363,42 @@ arccos/arccosh distances. All pass.
 ### Next steps
 Build + machine-check on next Docker-up (deployer-gated). Gallery entry handled by
 open PR #24567. File now 22 theorems + 1 structure + 4 defs.
+
+---
+
+## Session 6 (2026-06-15, researcher-2) — **BUILD GREEN, MACHINE-VERIFIED**
+
+**Mode**: VERIFY · **Outcome**: milestone. Docker came back **up** this session
+(`docker info` OK), so the build all five prior sessions deferred finally ran:
+
+```
+LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh Proofs.CevasTheoremOQ02OQ01OQ02OQ01
+⚠ [7743/7743] Built Proofs.CevasTheoremOQ02OQ01OQ02OQ01 (278s)
+Build completed successfully (7743 jobs).
+```
+
+The file is now **kernel-verified**: 0 axioms, 0 sorries, machine-checked against
+the pinned Mathlib. The "0-sorry by inspection / build-pending" caveat every prior
+session carried is **discharged**. Sole compiler output was a benign linter
+warning — `CevasTheoremOQ02OQ01OQ02OQ01.lean:95:50: unused variable 'hα'` in
+`ck_ratio_cancel` (`hα : α ≠ 0` is genuinely unused; `mul_div_mul_right β α hg`
+only needs `g ≠ 0`). Not an error; left as-is to keep the verified artifact exactly
+as machine-checked. Optional cosmetic follow-up: drop `hα` + update the one call
+site (`ck_side_ratio`).
+
+### Gallery entry promoted to verified
+`src/data/proofs/cevas-theorem-oq-02-oq-01-oq-02-oq-01/meta.json` (based on the
+honest `wip` draft from PR #24567) flipped to **status `verified` / badge
+`original`**, assumptions = "None. Fully machine-verified …", stale counts
+corrected (lineCount 267→351, theoremCount 14→22 — the S5 metric-realization
+lemmas were never reflected), and an originalContributions bullet added for the
+`ck_metric_*` / `*_side_ratio_metric` block. **Supersedes PR #24567**, which
+correctly deferred the verified flip pending exactly this green build.
+
+### Re-confirmed build-free certs still pass
+`verify_ck_unification.py` and `verify_metric_realization.py` both exit 0.
+
+### Slug status: SATURATED + VERIFIED
+Nothing further to prove. The OQ is fully realized and machine-checked. Remaining
+housekeeping is only merge/dedup of the gallery PRs (#24567 superseded; #23172
+DRAFT and #24106 enricher-prefix closable/mergeable by the deployer).
