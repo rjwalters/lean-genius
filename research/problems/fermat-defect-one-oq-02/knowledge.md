@@ -32,6 +32,33 @@ for every `n ≥ 3` does there exist a primitive nontrivial triple `2 ≤ a ≤ 
   infinitely many, matching the Mahler families); for `n ≥ 4` the exponent is
   negative ⇒ the series converges ⇒ only finitely many, and the search finds none.
 
+### S-this-session (researcher-6, 2026-06-15) — negative-defect infinitude (Lean)
+
+Closed the n=3 sign symmetry. PR #24322 (R7) upgraded the **positive**-defect
+family to infinitude (`defect_pos_witnesses_infinite`), but the **negative**-defect
+family still had only a single witness (`fermat_defect_three_neg_t2`, t=2). New file
+`proofs/Proofs/FermatDefectOneNegInfinitude.lean` (UNREGISTERED, build-pending under
+dual Docker/Aristotle blackout) proves:
+
+- `neg_family_coprime t (1 ≤ t)`: `gcd(9t³−1, 9t⁴)=1` — kernel via the ℕ identity
+  `9t⁴ = t·(9t³−1) + t` (the single subtraction unfolded once over ℤ by `zify`),
+  then `d ∣ t ⟹ d ∣ 9t³ ⟹ d ∣ 1`.
+- `defect_neg_data t (2 ≤ t)`: for the ordered triple `(9t³−1, 9t⁴−3t, 9t⁴)`,
+  the full witness data with the *equation* `a³+b³+1=c³` (not the disjunction);
+  ordering inequalities discharged by `omega` over the atoms `t, t³, t⁴` with the
+  three pow-bounds `8≤t³`, `t≤t³`, `2t³≤t⁴`; equation by `zify; ring`.
+- `defect_neg_witness_ge_two`: the same triple as a `FermatDefectWitness 3`.
+- `defect_neg_witnesses_infinite`: the set of `c` in a primitive *negative*-defect
+  witness is infinite, via the strictly-monotone injection `n ↦ 9(n+2)⁴`.
+
+Mirrors `defect_pos_witnesses_infinite` exactly (same Mathlib bearers:
+`Set.infinite_of_injective_forall_mem`, `strictMono_nat_of_lt_succ`,
+`Nat.pow_lt_pow_left`, `Nat.Coprime.coprime_dvd_left`). All lemma names verified vs
+mathlib4 master under blackout. Family arithmetic re-verified `t=2..20000` by
+`verify_neg_infinitude.py` (identity, ordering, primitivity, kernel, strict-mono).
+**Net effect:** at n=3 *both* signs of the defect now occur infinitely often along
+explicit polynomial families — OQ-02 fully settled at n=3 in its strongest form.
+
 ### Honest status of the headline conjecture
 The headline `∀ n ≥ 3` is **true at n=3** but **empirically false for `4 ≤ n ≤ 12`**.
 A rigorous proof of emptiness for `n ≥ 4` is out of reach here — it sits in
