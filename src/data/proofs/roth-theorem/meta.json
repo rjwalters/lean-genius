@@ -67,6 +67,21 @@
       "targetId": "szemeredi-theorem",
       "relationship": "special-case",
       "description": "Roth's theorem is the k=3 case of Szemerédi's theorem on k-APs in dense sets"
+    },
+    {
+      "targetId": "erdos-1097",
+      "relationship": "related",
+      "description": "Studies the fine structure of the same objects — three-term arithmetic progressions — asking how many distinct common differences occur, whereas Roth's theorem guarantees a 3-AP exists in any dense set"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Provides the abstract Parseval identity ∑|ĉₙ|² = ∫|f|² for Fourier series; Roth's proof relies on the finite-group analog `parseval_on_zmod` (∑_r ‖Â(r)‖² = |A|·N over ℤ/Nℤ), the same energy-conservation principle in the discrete setting"
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Companion classical theorem about arithmetic progressions, via complementary methods: Dirichlet locates primes inside a fixed AP using L-functions and characters, while Roth locates an AP inside a dense set using Fourier analysis on ℤ/Nℤ — both rest on character/orthogonality machinery"
     }
   ],
   "leanFile": {
