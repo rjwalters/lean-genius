@@ -51,10 +51,9 @@ minimal polynomial" argument (`minpoly.eq_of_irreducible_of_monic`):
 The hypothesis `∀ b : ℚ, b ^ p ≠ a` is exactly "`a` is not a `p`-th power in `ℚ`",
 the odd-prime analogue of the parent's `¬ IsSquare a`.
 
-## Status: 0 sorries, 0 axioms. Build-pending (Docker pool saturated / Aristotle
-unavailable this session). The argument adapts the machine-verified
-`Sqrt2MinpolyOQ01OQ02` degree-2 proof, replacing the elementary irrationality step
-with Mathlib's `X_pow_sub_C_irreducible_iff_of_prime_pow`.
+## Status: 0 sorries, 0 axioms. Docker-verified green (7743 jobs). The argument adapts
+the machine-verified `Sqrt2MinpolyOQ01OQ02` degree-2 proof, replacing the elementary
+irrationality step with Mathlib's `X_pow_sub_C_irreducible_iff_of_prime_pow`.
 -/
 
 namespace Sqrt2MinpolyOQ01OQ02OQ01

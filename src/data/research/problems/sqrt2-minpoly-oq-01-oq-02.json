@@ -1,7 +1,7 @@
 {
   "slug": "sqrt2-minpoly-oq-01-oq-02",
   "title": "Minimal polynomial of the square root of a rational",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: degree-2 (square root) result merged (#24789); odd-prime-degree generalization minpoly ℚ (a^(1/p))=X^p−a written (0 sorry/0 axiom, Kummer irreducibility), build-pending.",
+    "progressSummary": "VERIFIED: degree-2 (square root) result merged (#24789); odd-prime-degree generalization minpoly ℚ (a^(1/p))=X^p−a Docker-verified green (0 sorry/0 axiom, Kummer irreducibility) and registered in Proofs.lean (PR #24816).",
     "builtItems": [
       "irrational_sqrt_of_not_isSquare_rat (Sqrt2MinpolyOQ01OQ02.lean:55)",
       "minpoly_sqrt_of_not_isSquare_rat — main theorem (Sqrt2MinpolyOQ01OQ02.lean:71)",
@@ -39,7 +39,8 @@
       "Example minpoly_sqrt_half: minpoly ℚ (√(1/2)) = X² − 1/2 (line 199)",
       "minpoly_rpow_of_odd_prime: minpoly ℚ (a^(1/p)) = X^p − a for odd prime p, a≥0 rational, ¬(p-th power) (Sqrt2MinpolyOQ01OQ02OQ01.lean:main)",
       "minpoly_rpow_natDegree (=p), rpow_isIntegral, adjoin_rpow_finrank ([ℚ(a^(1/p)):ℚ]=p) corollaries (Sqrt2MinpolyOQ01OQ02OQ01.lean)",
-      "rpow_inv_pow: (a^(1/p))^p = a for a≥0 real (Real.rpow_mul + inv_mul_cancel₀)"
+      "rpow_inv_pow: (a^(1/p))^p = a for a≥0 real (Real.rpow_mul + inv_mul_cancel₀)",
+      "Docker-verified GREEN build (7743 jobs) of Proofs.Sqrt2MinpolyOQ01OQ02OQ01 (registered in Proofs.lean): minpoly_rpow_of_odd_prime + degree/finrank corollaries, 0 sorry / 0 axiom"
     ],
     "insights": [
       "For a rational radicand r, irrationality of √r is direct: a rational value s of √r squares to r, exhibiting r as a rational square. No irrational_nrt_of_notint_nrt needed (unlike the natural-number case).",
