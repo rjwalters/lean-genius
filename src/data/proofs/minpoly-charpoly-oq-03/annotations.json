@@ -27,7 +27,7 @@
     "title": "Three-Ingredient Plan for RCF in Lean 4",
     "content": "The S1 docstring lays out a three-step plan that resolves the parent's open question affirmatively:\n\n1. **Companion-matrix infrastructure** (already in-tree, `CayleyHamiltonReductionOQ02OQ01.lean`): defines `companionMatrix p` and proves both `charpoly (companionMatrix p) = p` and `minpoly (companionMatrix p) = p`. These are the block-level identities.\n\n2. **Mathlib structure theorem** (`Module.equiv_directSum_of_isTorsion` in `Mathlib.Algebra.Module.PID`): when `K^n` is viewed as an `F[X]`-module via the action of `M`, the result is finitely generated and torsion (Cayley-Hamilton: charpoly(M) annihilates K^n). Hence Mathlib's structure theorem gives `K^n ≅ ⊕ F[X]/(p_i)` with the divisibility chain `p_1 | p_2 | ... | p_k`.\n\n3. **Cyclic summand ↔ companion block**: on each cyclic `F[X]/(p_i)`, the basis `{1, X, ..., X^{d_i-1}}` realises multiplication-by-X as the companion matrix `companionMatrix p_i`. Reassembly gives the global similarity `M ~ blockDiag (C(p_1), ..., C(p_k))`.\n\nThe decomposition into sub-OQs makes the work tractable: each of the four steps (OQ-03-OQ-01 through OQ-03-OQ-04) is a 150-300-line piece of integrative work, no genuine Mathlib gap.",
     "mathContext": "Frobenius's rational canonical form (1879): every $M \\in \\mathrm{Mat}_n(F)$ is similar to a block diagonal $\\bigoplus_i C(p_i)$ with $p_1 \\mid p_2 \\mid \\cdots \\mid p_k$, $p_k = \\mathrm{minpoly}(M)$, $\\prod_i p_i = \\mathrm{charpoly}(M)$. The polynomials $p_i$ are the *invariant factors* of $M$.",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Rational canonical form (Frobenius normal form)",
       "Invariant factors",
@@ -61,7 +61,7 @@
     "title": "InvariantFactorChain: Abstract Data for RCF",
     "content": "`InvariantFactorChain F` is a structure with four fields:\n\n* `factors : List F[X]` — the invariant-factor list `(p_1, ..., p_k)`.\n* `monic : ∀ p ∈ factors, p.Monic` — each factor is monic (Frobenius normalisation).\n* `posDegree : ∀ p ∈ factors, 0 < p.natDegree` — each factor is nontrivial.\n* `chain : ∀ i j, i.val ≤ j.val → factors[i] ∣ factors[j]` — the divisibility chain.\n\nUsing a structure (rather than a bare list) makes the divisibility chain a *first-class invariant*: any term of type `InvariantFactorChain F` carries a proof of `p_1 ∣ p_2 ∣ ⋯ ∣ p_k`, so downstream lemmas can use it without re-deriving the chain. This pattern follows the gallery convention for `NSAxioms`, `SelbergClassAxioms`, etc.: bundling all coupled invariants into a single structure.\n\nThe two `noncomputable def`s `prodFactors` and `lastFactor` package the two target values: `prodFactors = ∏ p_i` is the target `charpoly`, and `lastFactor = p_k` is the target `minpoly`. The fallback `1` for the empty chain is a degenerate case that does not arise for a nontrivial matrix.",
     "mathContext": "$\\mathrm{InvariantFactorChain}\\, F = \\{\\, (p_1, \\dots, p_k) : p_i \\in F[X],\\ p_i \\text{ monic},\\ \\deg p_i \\geq 1,\\ p_1 \\mid p_2 \\mid \\cdots \\mid p_k \\,\\}$. The two derived quantities: $\\prod_i p_i$ (target $\\mathrm{charpoly}$) and $p_k$ (target $\\mathrm{minpoly}$).",
-    "significance": "core",
+    "significance": "critical",
     "relatedConcepts": [
       "Invariant factor",
       "Divisibility chain",
