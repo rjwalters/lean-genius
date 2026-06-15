@@ -55,56 +55,63 @@
       "title": "Problem Background and References",
       "summary": "Documentation of the open question, references to CFS14, KST54, and Erdős 1971",
       "startLine": 1,
-      "endLine": 38
+      "endLine": 39
     },
     {
       "id": "definitions",
       "title": "Core Definitions",
       "summary": "HasC4, IsC4Free, HasKst, edgeCount — the predicates for 4-cycles, K_{s,t} subgraphs, and edge counting on finite simple graphs",
       "startLine": 40,
-      "endLine": 66
+      "endLine": 67
     },
     {
       "id": "k22-c4",
       "title": "K_{2,2} = C₄ Equivalence",
       "summary": "Full proof of both directions (k22_implies_c4 and c4_implies_k22) and the iff-equivalences k22_iff_c4, c4free_iff_k22free",
       "startLine": 68,
-      "endLine": 139
+      "endLine": 140
     },
     {
       "id": "constant-framework",
       "title": "Optimal Constant Framework",
       "summary": "IsAdmissibleConstant definition (c > 0 with universal guarantee) and optimalConstant as sSup of admissible constants",
       "startLine": 141,
-      "endLine": 162
+      "endLine": 163
     },
     {
       "id": "hereditary",
       "title": "Hereditary C₄-Freeness",
       "summary": "empty_isC4Free (empty graph is C₄-free) and c4free_of_subgraph (C₄-freeness passes to subgraphs)",
       "startLine": 164,
-      "endLine": 183
+      "endLine": 184
     },
     {
       "id": "folkman-bound",
       "title": "Folkman's Upper Bound",
       "summary": "Edge count of K_{n,n²}, divisibility lemma, rpow ratio calculation, and the axiomatized bound c* ≤ 1",
       "startLine": 185,
-      "endLine": 218
+      "endLine": 238
     },
     {
       "id": "cfs-bound",
-      "title": "CFS Lower Bound and Open Question",
-      "summary": "Axiomatized CFS existence theorem, optimal_constant_pos (sorry), and the combined bounds 0 < c* ≤ 1",
-      "startLine": 220,
-      "endLine": 246
+      "title": "Conlon-Fox-Sudakov Lower Bound",
+      "summary": "Axiomatized CFS existence theorem (cfs_admissible_exists) and optimal_constant_pos, establishing c* > 0.",
+      "startLine": 239,
+      "endLine": 271
+    },
+    {
+      "id": "open-question",
+      "title": "The Open Question",
+      "summary": "optimal_constant_bounds assembles the combined bounds 0 < c* ≤ 1 (from optimal_constant_pos and folkman_upper_bound). The exact value of c* remains open, reducing to tight Zarankiewicz-type bounds for C₄-free subgraphs.",
+      "startLine": 272,
+      "endLine": 285
     },
     {
       "id": "structural",
       "title": "Structural Results",
       "summary": "c4free_mono (monotonicity via lattice order), c4free_of_few_edges (≤3 edges), and the key c4free_common_neighbor_unique theorem",
-      "startLine": 248,
-      "endLine": 296
+      "startLine": 286,
+      "endLine": 374
     }
   ],
   "conclusion": {
