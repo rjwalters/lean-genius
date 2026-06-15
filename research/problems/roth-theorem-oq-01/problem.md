@@ -2,7 +2,7 @@
 
 **Slug**: roth-theorem-oq-01
 **Created**: 2026-06-14
-**Status**: Active (OBSERVE)
+**Status**: Active (ORIENT)
 **Source**: gallery-gap (parent: `roth-theorem`)
 
 ## Problem Statement
@@ -15,19 +15,20 @@ qualitative density-$o(1)$ statement. This problem targets a **quantitative** bo
 Bourgain's strength:
 
 $$
-r_3(N) = O\!\left(\frac{N}{(\log\log N)^{1/2}}\right)
-\quad\text{(Bourgain 1999; later improved to } N(\log\log N/\log N)\ \text{and beyond)} .
+r_3(N) = O\!\left(N\left(\frac{\log\log N}{\log N}\right)^{1/2}\right)
+\quad\text{(Bourgain 1999; later improved by Bourgain 2008, Sanders, Bloom, Bloom–Sisask, Kelley–Meka).}
 $$
 
-The aim is a formalized explicit decay rate via the density-increment / Fourier-analytic argument,
-rather than the qualitative limit alone.
+Note this is a **power-of-log** saving over the trivial bound, strictly stronger than Roth's
+original $O(N/\log\log N)$. The aim is a formalized explicit decay rate via the
+density-increment / Fourier-analytic argument, rather than the qualitative limit alone.
 
 ### Plain Language
 
 Roth's theorem says a set of integers with no 3-term arithmetic progression must be "thin"
 (vanishing density). The parent proof gives only the vanishing. This problem asks for a *rate*:
 how fast does the maximum density shrink? Bourgain's Fourier-analytic density-increment argument
-gives a concrete $1/\sqrt{\log\log N}$-type bound, which is what we want to formalize.
+gives a concrete $\sqrt{\log\log N/\log N}$-type density bound, which is what we want to formalize.
 
 ### Why This Matters
 
@@ -75,7 +76,7 @@ $1/\sqrt{\log\log N}$ if the Bohr-set machinery is tractable.
    - Risk: handling sub-progressions and the Fourier coefficient extraction in `ZMod N` is intricate.
 
 2. **Bourgain's Bohr-set refinement**: replace sub-progressions by Bohr sets to improve the rate.
-   - Why it might work: gives the stated $1/\sqrt{\log\log N}$ bound.
+   - Why it might work: upgrades Roth's $\log\log$ saving to the power-of-log bound $N(\log\log N/\log N)^{1/2}$.
    - Risk: Bohr-set geometry is heavy; likely a later phase.
 
 ### Key Difficulties
@@ -114,8 +115,18 @@ $1/\sqrt{\log\log N}$ if the Bohr-set machinery is tractable.
 - Parent gallery entry `roth-theorem`.
 
 ### Mathlib
+- `Mathlib.Combinatorics.Additive.AP.Three` — `rothNumberNat : ℕ → ℕ` and the qualitative
+  `rothNumberNat_isLittleO_id` (`r₃(N) = o(N)`). **Phrase the quantitative statement at this
+  level**, as `roth-theorem-oq-02` (`RothTheoremOQ02.lean`) does, not the project-local
+  `ZMod N` `rothNumber`.
 - `Mathlib.Combinatorics.Additive` — additive-combinatorics lemmas.
-- `Mathlib.Analysis.Fourier` / `AddChar` — discrete Fourier analysis.
+- `Mathlib.Analysis.Fourier` / `AddChar` — discrete Fourier analysis (present, but lacks the
+  large-spectrum / Bohr-set packaging a from-scratch rate requires).
+
+### Sibling problem
+- `roth-theorem-oq-02` — targets the stronger Bloom–Sisask bound `N/(log N)^{1+c}`, stated as
+  `axiom rothNumberNat_bloom_sisask`. Since it implies the Bourgain bound, this problem (oq-01)
+  could be derived from it, or axiomatized independently following the same pattern.
 
 ## Metadata
 
