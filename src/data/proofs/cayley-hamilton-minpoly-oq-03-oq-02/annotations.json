@@ -175,13 +175,13 @@
     "id": "ann-layer-2-5-factor-count",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 181,
-      "endLine": 219
+      "startLine": 182,
+      "endLine": 267
     },
     "type": "insight",
-    "title": "Layer 2.5: popcount(j) ≤ j — The Factor-Count Bound",
-    "content": "The quantitative bound `squareKrylovProd_factor_count_le`: the number of squared-Krylov factors needed to assemble $M^j$ is at most $j$. The proof packages `Nat.twoPowSum_bitIndices` (sum of $2^i$ over bit-indices is $j$) with the elementary helper `length_le_twoPow_sum` (each term in the sum is at least $1$, so the count of terms bounds the sum) and finishes with `omega`. This bound is *loose* for large $j$ — the asymptotically sharp version is $\\mathrm{popcount}(j) \\leq \\mathrm{Nat.size}(j) \\approx \\lceil \\log_2(j+1) \\rceil$ — but it is the immediately verifiable elementary version, and combined with the $\\lceil \\log_2 j \\rceil + 1$ squaring count of Layer 1 it gives the structural source of the $O(\\log j)$ matrix-multiplication count of Keller-Gehrig's assembly step.",
-    "mathContext": "$\\mathrm{popcount}(j) = |\\mathrm{bitIndices}(j)| \\leq \\sum_{i \\in \\mathrm{bitIndices}(j)} 2^i = j$. The asymptotically correct bound is $\\mathrm{popcount}(j) \\leq \\lceil \\log_2(j+1) \\rceil$, but the elementary $\\leq j$ bound suffices to certify $O(\\log j)$ when combined with the Layer 1 squaring count.",
+    "title": "Layer 2.5: Matrix-Multiplication Factor-Count Bounds (popcount(j) ≤ j and ≤ Nat.size j)",
+    "content": "Two quantitative bounds on the number of squared-Krylov factors needed to assemble $M^j$. The elementary `squareKrylovProd_factor_count_le` gives $\\mathrm{popcount}(j) \\leq j$: package `Nat.twoPowSum_bitIndices` (sum of $2^i$ over bit-indices is $j$) with the helper `length_le_twoPow_sum` (each term is at least $1$, so the count of terms bounds the sum) and finish with `omega`. The sharper `squareKrylovProd_factor_count_le_size` (an S8 addition) gives the asymptotically tight $\\mathrm{popcount}(j) \\leq \\mathrm{Nat.size}(j) \\approx \\lceil \\log_2(j+1) \\rceil$: every set-bit index $i$ satisfies $2^i \\leq j$ (so $i < \\mathrm{Nat.size}\\,j$ via `Nat.lt_size`), and the `Nodup` bit-index list therefore embeds into `Finset.range (Nat.size j)`, bounding its length by that range's cardinality. Both are proved; combined with the $\\lceil \\log_2 j \\rceil + 1$ squaring count of Layer 1 they give the genuinely $O(\\log j)$ matrix-multiplication count of Keller-Gehrig's assembly step.",
+    "mathContext": "$\\mathrm{popcount}(j) = |\\mathrm{bitIndices}(j)| \\leq \\sum_{i \\in \\mathrm{bitIndices}(j)} 2^i = j$ (elementary), and the asymptotically tight $\\mathrm{popcount}(j) \\leq \\mathrm{Nat.size}(j) \\approx \\lceil \\log_2(j+1) \\rceil$ (via the Nodup bit-index list embedding into $\\mathrm{Finset.range}(\\mathrm{Nat.size}\\,j)$). Both certify the $O(\\log j)$ matrix-product count.",
     "significance": "supporting",
     "relatedConcepts": [
       "popcount (Hamming weight)",
@@ -201,8 +201,8 @@
     "id": "ann-layer-3-omega-axiomatized",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 221,
-      "endLine": 259
+      "startLine": 268,
+      "endLine": 307
     },
     "type": "context",
     "title": "Layer 3 Axiomatized: The Matrix-Multiplication Exponent ω",
@@ -228,13 +228,13 @@
     "id": "ann-end-summary",
     "proofId": "cayley-hamilton-minpoly-oq-03-oq-02",
     "range": {
-      "startLine": 262,
-      "endLine": 333
+      "startLine": 309,
+      "endLine": 383
     },
     "type": "context",
-    "title": "Closing Summary: 11 Theorems, 0 Sorries, 3 Axioms",
-    "content": "The closing docstring inventories the file's contents: 11 theorems (3 Layer 1 + 4 Layer 2 matrix + 2 Layer 2 vector + 1 Layer 2.5 + 1 Layer 3 sanity), 0 sorries, 3 axioms (the Layer 3 $\\omega$ block). The structural / quantitative split is explicit: Layers 1, 2, 2.5 are unconditionally proved; the operation count is deferred. The end-of-file commentary also gives the Layer 2 proof sketch in plain English — `squareKrylov_eq_pow_two`, `prod_pow_of_list`, `Nat.twoPowSum_bitIndices` — which a reader can map onto the proof of `squareKrylovProd_eq_pow` to see how the three rewrites compose. This separation cleanly delineates Lean-formalisable structural mathematics (Layers 1+2), Lean-formalisable elementary quantitative bounds (Layer 2.5), and genuinely axiomatic mathematical constants (Layer 3 ω).",
-    "mathContext": "Inventory: $11$ theorems, $0$ sorries, $3$ axioms. The three axioms are all in the Layer 3 placeholder block; Layers 1, 2, and 2.5 are unconditional. The asymptotic Keller-Gehrig claim ($O(n^\\omega)$ field operations) is *deferred*, not asserted — the file ships only what current Mathlib infrastructure supports.",
+    "title": "Closing Summary: 12 Theorems, 0 Sorries, 3 Axioms",
+    "content": "The closing docstring inventories the file's contents: 12 theorems (3 Layer 1 + 4 Layer 2 matrix + 2 Layer 2 vector + 2 Layer 2.5 + 1 Layer 3 sanity), 0 sorries, 3 axioms (the Layer 3 $\\omega$ block). The structural / quantitative split is explicit: Layers 1, 2, 2.5 are unconditionally proved; the operation count is deferred. The end-of-file commentary also gives the Layer 2 proof sketch in plain English — `squareKrylov_eq_pow_two`, `prod_pow_of_list`, `Nat.twoPowSum_bitIndices` — which a reader can map onto the proof of `squareKrylovProd_eq_pow` to see how the three rewrites compose. This separation cleanly delineates Lean-formalisable structural mathematics (Layers 1+2), Lean-formalisable elementary quantitative bounds (Layer 2.5), and genuinely axiomatic mathematical constants (Layer 3 ω).",
+    "mathContext": "Inventory: $12$ theorems, $0$ sorries, $3$ axioms. The three axioms are all in the Layer 3 placeholder block; Layers 1, 2, and 2.5 are unconditional. The asymptotic Keller-Gehrig claim ($O(n^\\omega)$ field operations) is *deferred*, not asserted — the file ships only what current Mathlib infrastructure supports.",
     "significance": "context",
     "relatedConcepts": [
       "axiom integrity",
