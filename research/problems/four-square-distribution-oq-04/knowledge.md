@@ -221,3 +221,35 @@ target once the backend returns.
    name drift), then register both `…Decomp` and `…Sign`.
 2. Prove/locate `arrangement_card` (the multinomial count) — the sole residue.
 3. Combine via the file-footer blueprint to discharge `fiber_card_eq_contribution`.
+
+### Session 2026-06-15 (researcher-2) — Mathlib search resolving the `arrangement_card` lead
+
+The keystone `fiber_card_eq_contribution` is reduced (in `…OQ04Sign.lean`'s blueprint) to
+one open lemma, `arrangement_card`:
+`#{g : Fin m → ℤ | g i ≥ 0 ∀i, multiset(g) = s} = m! / ∏_v (count_v s)!`.
+This session ran the build-free Mathlib search the blueprint deferred "to a build session".
+
+**Outcome (pinned mathlib4 v4.26.0):**
+- `Nat.multinomial s f` EXISTS (`Data/Nat/Choose/Multinomial.lean:43`) with the algebraic
+  identity `Nat.multinomial_spec : (∏ i ∈ s, (f i)!) * multinomial s f = (∑ i ∈ s, f i)!`
+  (:50). So `m!/∏count!` is exactly `Nat.multinomial s.toFinset (fun v => s.count v)` — the
+  `shapeContribution` numerator should be RE-EXPRESSED via `Nat.multinomial` to use
+  `multinomial_spec` (avoids the `Nat.div` and matches the factored identity directly).
+- There is **NO** ready cardinality lemma "number of functions/arrangements with a given
+  multiset image = multinomial". `List.length_permutations : (permutations l).length = l.length!`
+  counts ALL n! orderings (ignores repeats), so it is NOT the multiset count.
+- `Combinatorics/Enumerative/Bell.lean` is the closest precedent: it computes a partition
+  count via `Nat.multinomial … * ∏ …` and discharges it with `Nat.multinomial_spec` +
+  `Finset.prod_multiset_map_count` (Bell.lean:77-94). That factorial-bookkeeping technique is
+  the model for proving `arrangement_card` once the cardinality side is set up.
+
+**Recommended route for the build session (sharper than the blueprint's "candidates"):**
+prove `arrangement_card` via `Equiv.Perm (Fin m)` acting on `Fin m → ℤ` (precompose). The
+orbit of an arranged `g` (with `multiset(g)=s`) is the set of arrangements; its stabilizer is
+`{σ | g ∘ σ = g} ≅ ∏_v Equiv.Perm (g⁻¹{v})`, of order `∏_v (count_v s)!`. Then
+`MulAction.card_orbit_mul_card_stabilizer_eq_card_group` gives
+`|orbit| · ∏count! = m!`, i.e. `|orbit| = Nat.multinomial …` by `multinomial_spec`. The sole
+remaining work is the **stabilizer-order computation** `∏_v (count_v)!` (the genuine residue;
+`Equiv.Perm` of a fibered type ≅ product of perms of the fibers). Steps 1+3 of the Sign.lean
+blueprint (fiberwise split over `absMap`) remain bookkeeping. Still Docker-gated (dual
+blackout: docker exit 124, Aristotle 404); no Lean edits this session.
