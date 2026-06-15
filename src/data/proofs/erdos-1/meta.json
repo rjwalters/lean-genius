@@ -83,43 +83,51 @@
   "sections": [
     {
       "id": "header",
-      "title": "Aristotle Header and Problem Statement",
+      "title": "Header and Problem Statement",
       "startLine": 1,
-      "endLine": 47,
-      "summary": "Aristotle proof search results (lines 1-24) documenting three proved theorems with full type signatures. Problem statement docstring (lines 26-41): if $A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ has all $2^n$ subset sums distinct, then $N \\geq 2^{n-1}$. Erdos posed this as his 'first serious problem' (1931) with a \\$500 prize for the stronger conjecture $N \\geq c \\cdot 2^n$. Imports full Mathlib (line 43) and opens `Finset` namespace (line 46).",
-      "mathContext": "Three results proved by Aristotle: $2^{|A|-1} \\leq N$ (main bound), $2^{|A|-1} \\leq \\max(A)$ (corollary), and the spacing property $S \\neq T \\Rightarrow \\sum S \\neq \\sum T$ for $S, T \\subseteq A$."
+      "endLine": 34,
+      "summary": "States Erdős Problem #1 (distinct subset sums, $500 prize, OPEN): if $A\\subseteq\\{1,\\dots,N\\}$ with $|A|=n$ has all $2^n$ subset sums distinct, must $N\\geq c\\cdot2^n$? Counting bound gives $N\\geq(2^n-1)/n$; best lower bound $\\Omega(2^n/\\sqrt n)$ (DFX 2021), upper $0.22\\cdot2^n$ (Conway–Guy). Documents two bugs fixed from a prior Aristotle version (vacuous definition, false $N\\geq2^{n-1}$ claim).",
+      "mathContext": "Distinct subset sums: $N\\geq c\\cdot2^n$? Counting $N\\geq(2^n-1)/n$; DFX lower $\\Omega(2^n/\\sqrt n)$."
     },
     {
       "id": "definition",
       "title": "Distinct Subset Sums Definition",
-      "startLine": 48,
-      "endLine": 51,
-      "summary": "Defines `hasDistinctSubsetSums A` as `Function.Injective (\\lambda S \\Rightarrow (S.\\text{filter}\\,(\\cdot \\in A)).\\text{sum}\\,\\text{id})`. This captures: distinct subsets of $A$ have distinct sums.",
-      "mathContext": "Distinct subset sums: $S \\neq T \\Rightarrow \\sum_{a \\in S \\cap A} a \\neq \\sum_{a \\in T \\cap A} a$ for all $S, T \\in \\text{Finset}\\,\\mathbb{N}$."
+      "startLine": 35,
+      "endLine": 46,
+      "summary": "Defines `hasDistinctSubsetSums A` (distinct subsets of $A$ have distinct sums) and PROVES `subset_sums_spacing` ($S\\neq T\\subseteq A\\Rightarrow\\text{sum}(S)\\neq\\text{sum}(T)$).",
+      "mathContext": "`hasDistinctSubsetSums A`: $\\forall S,T\\subseteq A,\\ \\text{sum}(S)=\\text{sum}(T)\\Rightarrow S=T$."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Lower Bound (Aristotle-proved)",
-      "startLine": 52,
-      "endLine": 66,
-      "summary": "Proves `erdos_1_lower_bound`: $2^{|A|-1} \\leq N$ for $A \\subseteq \\{1, \\ldots, N\\}$ with distinct subset sums. Uses powerset cardinality bound $|\\mathcal{P}(A)| \\leq 2N$, then case-splits on $|A|$ with `pow_succ`, `mul_assoc`, `linarith`, and `grind`.",
-      "mathContext": "$A \\subseteq \\{1, \\ldots, N\\}$ with $|A| = n$ and all $2^n$ subset sums distinct $\\Rightarrow 2^{n-1} \\leq N$."
+      "id": "counting-bound",
+      "title": "Counting Bound",
+      "startLine": 47,
+      "endLine": 84,
+      "summary": "PROVES `erdos_1_counting_bound`: $2^{|A|}\\leq|A|\\cdot N+1$ — the $2^n$ distinct subset sums lie in $[0,nN]$, so by pigeonhole (injectivity of the sum map on the powerset) $2^n\\leq nN+1$.",
+      "mathContext": "$2^n\\leq nN+1$ (pigeonhole: $2^n$ distinct sums in $[0,nN]$)."
     },
     {
-      "id": "max-element",
-      "title": "Maximum Element Bound (Aristotle-proved)",
-      "startLine": 67,
-      "endLine": 76,
-      "summary": "Proves `max_element_bound`: $2^{|A|-1} \\leq \\max(A)$ for nonempty $A$ with distinct subset sums. Reduces to `erdos_1_lower_bound` via `convert` with $N = A.\\text{max'}$, using `Finset.le_max'` for the containment hypothesis.",
-      "mathContext": "$2^{|A|-1} \\leq \\max(A)$ — the maximum element alone must be at least $2^{n-1}$."
+      "id": "lower-bound",
+      "title": "Lower Bound Corollary",
+      "startLine": 85,
+      "endLine": 99,
+      "summary": "PROVES `erdos_1_lower_bound`: $N\\geq(2^{|A|}-1)/|A|$ for $|A|\\geq1$ (a corollary of the counting bound).",
+      "mathContext": "$N\\geq(2^n-1)/n$ for $n\\geq1$."
     },
     {
-      "id": "spacing",
-      "title": "Subset Sum Spacing (Aristotle-proved)",
-      "startLine": 77,
-      "endLine": 83,
-      "summary": "Proves `subset_sums_spacing`: for $S, T \\subseteq A$ with $S \\neq T$, $\\sum S \\neq \\sum T$. Unfolds `hasDistinctSubsetSums`, applies `simp_all` and `Finset.sum_filter_of_ne` to reduce to the injectivity hypothesis.",
-      "mathContext": "For $S, T \\subseteq A$ with $S \\neq T$: $\\sum_{a \\in S} a \\neq \\sum_{a \\in T} a$ — the Sidon-like spacing property."
+      "id": "conjecture",
+      "title": "The Erdős Conjecture (OPEN)",
+      "startLine": 100,
+      "endLine": 112,
+      "summary": "Defines `erdos_1_conjecture`: $\\exists c>0,\\ \\forall A$ with distinct subset sums, $\\max A\\geq c\\cdot2^{|A|}$ — the $500 conjecture, OPEN.",
+      "mathContext": "Conjecture ($500): $\\exists c>0,\\ N\\geq c\\cdot2^{|A|}$ for distinct-subset-sum sets."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 113,
+      "endLine": 149,
+      "summary": "Closing docstring recapping the OPEN status, the three proved theorems (counting bound, lower bound, spacing), the 2 definitions, the prior-version bug fixes (vacuous definition, false $N\\geq2^{n-1}$ claim with counterexample $\\{3,5,6,7\\}$), and references.",
+      "mathContext": "Recap: 3 theorems, 2 defs, 0 ax, 0 sorry; fixed prior vacuous-definition and false $N\\geq2^{n-1}$ bugs."
     }
   ],
   "conclusion": {
