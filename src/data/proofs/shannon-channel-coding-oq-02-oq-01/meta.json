@@ -72,43 +72,52 @@
   },
   "sections": [
     {
-      "id": "header-imports",
+      "id": "header",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 37,
-      "summary": "Module header with imports, docstring, and namespace setup."
+      "endLine": 41,
+      "summary": "Overview of the OQ-02-OQ-01 follow-up to Fano's inequality for channel coding: goal is to discharge the `fano_inequality` axiom of ShannonChannelCoding.lean using the standalone OQ-03 result. Imports.",
+      "mathContext": "Fano's inequality $H(X\\mid Y)\\leq h(P_e)+P_e\\log(|X|-1)$."
     },
     {
-      "id": "definition-compatibility",
-      "title": "Definition Compatibility",
-      "startLine": 39,
-      "endLine": 55,
-      "summary": "Proves FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy by rfl. Both expand to the same formula with 0·log(0)=0 convention.",
-      "mathContext": "$H_{\\text{OQ03}}(X|Y) = H_{\\text{std}}(X|Y)$ definitionally"
+      "id": "part1",
+      "title": "Section 1: Definition Compatibility",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "Proves `conditional_entropy_defs_agree`: the local `conditionalEntropy` and `InformationTheory.conditionalEntropy` (from ShannonEntropy.lean) are definitionally equal.",
+      "mathContext": "Two `conditionalEntropy` formulas agree definitionally."
     },
     {
-      "id": "fano-corollary",
-      "title": "Fano's Inequality (from OQ-03)",
-      "startLine": 56,
-      "endLine": 74,
-      "summary": "Derives Fano's inequality as a direct corollary of OQ-03's fano_theorem, using definition compatibility.",
-      "mathContext": "$H(X|Y) \\leq h(P_e) + P_e \\cdot \\log(|\\mathcal{X}|-1)$ for formula $P_e$"
+      "id": "part2",
+      "title": "Section 2: Fano's Inequality — Standalone Version (from OQ-03)",
+      "startLine": 59,
+      "endLine": 77,
+      "summary": "Proves `fano_from_oq03`: Fano's inequality in standalone form, imported from the OQ-03 development.",
+      "mathContext": "$H(X\\mid Y)\\leq h(P_e)+P_e\\log(|X|-1)$ (standalone)."
     },
     {
-      "id": "axiom-reduction",
-      "title": "Axiom Reduction (Blocked)",
-      "startLine": 75,
-      "endLine": 134,
-      "summary": "Documents the strategy to eliminate fano_inequality axiom from ShannonChannelCoding.lean. Blocked by ShannonEntropy.lean line 811 bug. Root cause and fix identified.",
-      "mathContext": "Axiom $\\texttt{fano\\_inequality}$ in ShannonChannelCoding.lean follows from fano\\_from\\_oq03 by definitional equality"
+      "id": "part3",
+      "title": "Section 3: Axiom Reduction (now unblocked)",
+      "startLine": 78,
+      "endLine": 137,
+      "summary": "Documents reducing the `fano_inequality` axiom to `fano_from_oq03`. The cited blocker (a `strong_subadditivity` error in ShannonEntropy.lean) was resolved by PR #16334, so the import now succeeds and the discharge in Section 5 is possible.",
+      "mathContext": "Axiom reduces to OQ-03 result; blocker resolved by PR #16334."
     },
     {
-      "id": "trivial-case",
-      "title": "Trivial Case |X|=1",
-      "startLine": 135,
-      "endLine": 181,
-      "summary": "Proves Fano bound for |X|=1 (Unit type). In this case (|X|-1)=0 so log(0)=0 and the RHS reduces to h(P_e); P_e=0 by hsum; conditionalEntropy=0 since log(1)=0; concluded by h_nonneg.",
-      "mathContext": "For $|\\mathcal{X}|=1$: $H(X|Y) = 0 = h(P_e)$ since $P_e \\cdot \\log(0) = 0$"
+      "id": "part4",
+      "title": "Section 4: Key Properties Used",
+      "startLine": 138,
+      "endLine": 189,
+      "summary": "Proves `fano_trivial_singleton`: the trivial case $|X|=1$ where the conditional entropy bound holds immediately.",
+      "mathContext": "Trivial case $|X|=1$: bound holds immediately."
+    },
+    {
+      "id": "part5",
+      "title": "Section 5: Discharge of the `fano_inequality` axiom",
+      "startLine": 190,
+      "endLine": 318,
+      "summary": "PROVES `fano_inequality_proved` (no axiom): combining `fano_from_oq03_std` (card $\\geq2$) with `fano_singleton_card_one` (card $=1$) yields Fano's inequality for `InformationTheory.conditionalEntropy`, discharging the axiom.",
+      "mathContext": "Full axiom-free Fano inequality via card-$1$ / card-$\\geq2$ case split."
     }
   ],
   "conclusion": {
@@ -152,7 +161,7 @@
       "FanoInequality"
     ],
     "namespace": "FanoFromConditionalEntropy",
-    "lineCount": 312,
+    "lineCount": 318,
     "axiomCount": 0,
     "sorries": 0,
     "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
