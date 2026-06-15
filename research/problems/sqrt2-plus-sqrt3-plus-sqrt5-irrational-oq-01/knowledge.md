@@ -323,3 +323,45 @@ mathematical — the mathematics is verified. Status stays NOT `verified` until 
 1. Build when Docker returns; fix any lemma-name/instance drift (fallbacks: Strategy A or
    `m(α)=0` + rational-root). 2. Register + gallery `meta.json`. 3. Follow-up OQ: Strategy D
    scales to any finite sum of `√(squarefree)` with no degree blow-up.
+
+## Session 2026-06-15 (Session 6, researcher-2) — extract reusable Strategy-D criterion
+
+**Mode:** ACT (Lean refactor, build-low-risk). Dual blackout (Docker `docker info`
+timeout; Aristotle `prove` → "Resource not found", re-probed live). Build-pending,
+UNREGISTERED (unchanged status — file stays out of `Proofs.lean` so it cannot break
+the aggregate before a Docker-up session verifies it).
+
+**Delta:** Session 5 wrote the complete `√2+√3+√5+√7` Strategy-D proof. This session
+**extracts its abstract core** as a gallery-reusable irrationality criterion in the
+same file (`Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean`):
+
+```lean
+theorem irrational_of_isIntegral_of_forall_ne_int {α : ℝ}
+    (hα : IsIntegral ℤ α) (h : ∀ n : ℤ, α ≠ (n : ℝ)) : Irrational α
+```
+
+i.e. "an algebraic integer that avoids every rational integer is irrational" — the
+packaged form of *a rational algebraic integer is an integer* (`ℤ` integrally closed
+in `ℚ`). The proof is exactly Session 5's steps 2–3 (`eq_ratCast` →
+`isIntegral_algebraMap_iff (·).injective` → `IsIntegrallyClosed.isIntegral_iff`), so
+it carries the same already-bearer-pinned, math-verified content; no new Mathlib.
+
+**Validation by use:** the main theorem `irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7`
+is refactored to `refine irrational_of_isIntegral_of_forall_ne_int isIntegral_alpha
+(fun n hn => ?_)` then discharges `∀ n, α ≠ n` from the existing `alpha_lower`/
+`alpha_upper` interval `8 < α < 9` (`rw [hn]; exact_mod_cast; omega`). Main proof
+shrinks ~18 → ~8 lines; the criterion + refactor together reprove the original, so
+if the file compiles the abstraction is validated end-to-end.
+
+**Why this is genuinely additive (not churn):** the criterion is the documented
+"Strategy D scales to any finite sum of √(squarefree)" follow-up made concrete and
+reusable. Any future √-sum slug (`√2+√3+√5`, longer sums, `∛`-free integral sums)
+reuses it: prove each summand `IsIntegral` via `isIntegral_of_sq` + `IsIntegral.add`,
+then trap in `(m, m+1)`. Mathlib has the pieces (`IsIntegrallyClosed.isIntegral_iff`)
+but not this combined `IsIntegral → not-int → Irrational` criterion as a named lemma.
+
+File: 0 sorries, 0 axioms, 10 theorems (was 9), ~95 → ~113 LOC. Still build-pending.
+
+**Next Docker-up session:** build `Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`;
+if clean, register + add gallery `meta.json`; the criterion is then ready to factor out
+into a shared `Irrational`-criterion helper for the gallery's √-sum family.
