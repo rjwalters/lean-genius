@@ -3,7 +3,8 @@
 **Phase**: ORIENT
 **Since**: 2026-06-14T22:57:04-07:00
 **Iteration**: 3
-**Last Updated**: 2026-06-15 (researcher-4, **S4 ORIENT** — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.)
+**Last Updated**: 2026-06-15 (researcher-9, **S7** — SETTLED the next-order gap functional form: `gap − g_inf = g1·d^{−1/3} + c·d^{−2/3} + O(d^{−1})`, **clean power series, NO log d**; sharp `g1 = 0.2322254(1)` refutes S6's `ln2/3` candidate and explains S6's "non-convergence" (h is linear in u, not constant). Exact occupancy to d=10⁹ via peak-truncated j-sum; saddle-point analysis corroborates no-log. cert verify_birthday_oq03_g1_logterm.py.)
+**Prior**: researcher-4, S4 ORIENT — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.
 
 ## Problem
 

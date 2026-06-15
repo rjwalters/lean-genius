@@ -177,3 +177,71 @@ larger `d`.
   higher terms of `μ−μ' = μ³/2(1+…)`, `σ'² = μ(1+…)`, the `½log(μ/σ'²)` prefactor, Bin-vs-Poisson
   marginal) → predicts `g1`; the numeric `0.231(4)` is the check. Watch for a non-integer power or
   `log d` factor (would explain the non-convergence) before assuming a clean constant.
+
+## Session 2026-06-15 (S7, researcher-9) — SETTLED the next-order functional form (no log d)
+
+**Mode**: REVISIT (RICH; build-free mpmath study + saddle-point analysis). **Outcome**: progress —
+**resolved the open S6 question**: `(gap − g_inf)` is a CLEAN power series in `d^{−1/3}` with NO
+`log d` factor; sharp `g1 = 0.2322254(1)`, refuting the `ln2/3` candidate and explaining S6's
+"non-convergence".
+
+### The question (left open by S6)
+S6 found `h(t) := (gap − g_inf)/t` (`t = d^{−1/3}`) **does not settle**: it decreases monotonically
+and a Neville extrapolation in `t` diverges. S6 reported `g1 ≈ 0.231 ± 0.004`, flagged the candidate
+`ln2/3 = 0.23105`, and warned the data "are equally consistent with an additional non-integer power
+or log factor". The functional form was genuinely undecided.
+
+### What I did — explicit competing-model test (not open-ended extrapolation)
+- New cert `research/scripts/verify_birthday_oq03_g1_logterm.py` (mpmath dps 45). Two engineering
+  fixes let me push the **exact** occupancy probability `P(no triple)=n![xⁿ](1+x+x²/2)^d/dⁿ` to
+  `d = 10⁹` (S6 stalled at 6.4·10⁷): (a) the `j`-sum (`j` = #days with exactly 2) is sharply peaked
+  at `j ≈ n²/(2d) ~ hundreds`, so I sum **outward from the peak with early termination** instead of
+  the full `j = 0..n//2` (~10⁵ terms) — validated to match the full sum to ~1e-40; (b) interpolate
+  `logP` in a **centered** variable to keep the Vandermonde non-singular.
+- Computed high-precision `gap(d) = n_med_real − n_W` on a geometric grid `d = 10⁵ … 10⁹` (9 points)
+  and fit `y(d) := gap − g_inf` to three competing models on **sliding `d`-windows**:
+  - **A** `y = a·u` (clean constant),  **B** `y = a·u + b·u·ln d` (hidden log),
+  - **C** `y = a·u + c·u²`  (`u = d^{−1/3}`; clean `d^{−2/3}` second term).
+
+### Key findings
+- **Model C wins decisively.** Its `a`-coefficient is **stable** across all windows (deepest
+  windows give `a ≈ 0.23222`); a pure-power **4-term fit** `g1 u + c u² + e u³ + f u⁴` pins
+  `g1` **stable to ~1e-7** across sliding windows. Max residual over all points: **C = 1.2e-6**
+  vs **A = 9.5e-5** (80× worse) vs **B = 2.1e-5** (17× worse).
+- **No `log d` factor**: Model B fits far worse AND its `(a,b)` drift with the window — there is no
+  stable nonzero log coefficient.
+- **Not a single `const·d^{−1/3}`**: Model A's `a` drifts `0.234 → 0.249` as the window shallows —
+  **this drift IS S6's "non-convergence"**, now explained: `h = (gap−g_inf)/u = g1 + c·u` is *linear*
+  in `u`, so reading `h` as a constant (or low-order extrapolation that ignores the `c·u` slope)
+  drifts. The series is perfectly clean; S6 just hadn't separated the `d^{−2/3}` term.
+- **Sharp value `g1 = 0.2322254(1)`** (deepest-window 4-term fit), with `c ≈ 1.03`. This **refutes
+  `ln2/3 = 0.23105`** (off by `1.2e-3`, ~10⁴× the fit error) and `7/30 = 0.2333`. PSLQ over
+  `{1, ln2, c₀, c₀², c₀ln2, 1/c₀}` to maxcoeff 5000 finds **no** low-height relation — `g1` has no
+  obvious closed form at this precision.
+- **Cleaner observable cross-check**: studied `R(n_W) = logP(no triple; n_W) + ln2` directly (the
+  log-domain Poisson-approximation error at the surrogate root); `gap ≈ R/E[W]'(n_W)` reproduces the
+  exact gap to ~1e-5, confirming the de-Poissonization link.
+- **Analytic corroboration (why no log).** In the saddle-point evaluation of `[xⁿ](1+x+x²/2)^d`, the
+  prefactor `−½log(2π ρ'')` with `ρ'' ≈ d²/n` combines with Stirling's `+½log(2πn)` from `log n!` to
+  give exactly `+log μ` (`μ = n/d`), which **cancels** the `−log μ` of the main saddle term
+  `n log μ − (n+1)log x*` (since `x* = μ(1+O(μ²))`). All remaining corrections are clean powers of
+  `t` (the slack `s = x*/μ − 1 = O(t²)` enters only via `n·s = O(1)`), so **no `log d` survives** —
+  consistent with the numerics.
+
+### Honesty / scope
+- Numerical + asymptotic study, **not a proof**; build-free (Docker irrelevant — and verified this
+  session that local docker builds OOM on Mathlib via the circular `.lake` symlink, see the
+  erdos-1107 note, so Lean formalization of this slug stays gated regardless). The robust, defensible
+  output: **the functional form is settled (clean `d^{−1/3} + d^{−2/3}`, no log)** and
+  **`g1 = 0.2322254(1)`**, superseding S6's `0.231(4)`/`ln2/3`. No Lean changed; the lone parent
+  axiom `p_no_triple_tendsto` is untouched.
+
+### Files modified
+- `research/scripts/verify_birthday_oq03_g1_logterm.py` (new; the cert above)
+
+### Next steps
+- The clean form means analytic de-Poissonization to one more order of `R(d)` should yield a
+  closed form for `g1` (and `c`) with **no log term to chase** — the target is now a plain power
+  series coefficient. The numeric `g1 = 0.2322254` (and `c ≈ 1.03`) is the check.
+- Lean M1/M2 (leading order + `c₀²/4` correction) remain the formalization targets, gated on a
+  cache-warm build host (the local circular-`.lake` OOM blocks all worktree docker builds).
