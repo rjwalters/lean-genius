@@ -2809,6 +2809,7 @@ import Proofs.SpernerNDimOQ04
 import Proofs.SpernerSimplicialBridge
 import Proofs.SpernerSimplicialBridgeOQ01
 import Proofs.SpernerSimplicialInstance
+import Proofs.SpernerSimplicialInstanceOQ03
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SphericalLawOfCosines
