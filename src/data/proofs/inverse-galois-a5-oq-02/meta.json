@@ -1,0 +1,67 @@
+{
+  "id": "inverse-galois-a5-oq-02",
+  "title": "PSL(2,7) (order 168) as a Galois Group over ℚ: Trinks' Polynomial",
+  "slug": "inverse-galois-a5-oq-02",
+  "description": "Stages the realization of PSL(2,7) ≅ GL(3,2) (the second-smallest non-abelian simple group, order 168) as a Galois group over ℚ, extending the gallery's A₅ realization. Witness: Trinks' polynomial f(x) = x⁷ − 7x + 3 (1968). The session's key content is the simplicity-collapse argument proved as general finite group theory: in a simple group of order 168, any subgroup with 84 dividing its order is the whole group — this removes the need to classify the transitive subgroups of A₇. The analysis-heavy certificate steps (Dedekind cycle types, square discriminant, degree-15 resolvent) are axiomatized.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Inverse_Galois_problem",
+    "date": "Trinks 1968 (polynomial); PSL(2,7) realizability classical; formalized 2026",
+    "status": "axiomatized",
+    "tags": [
+      "galois-theory",
+      "inverse-galois-problem",
+      "PSL-2-7",
+      "simple-group",
+      "polynomial-irreducibility",
+      "discriminant",
+      "non-solvable",
+      "open-problem"
+    ],
+    "proofRepoPath": "Proofs/InverseGaloisA5OQ02.lean",
+    "additionalFiles": [
+      "Proofs/InverseGaloisA5.lean"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": "3 axioms encoding the analytic certificate for f(x) = x⁷ − 7x + 3, all verified exactly in verify_trinks_psl27.py: (1) `trinks_gal_84_dvd` — 84 ∣ |Gal| from Dedekind cycle types (f mod 2 irreducible ⟹ 7-cycle; f mod 13 type (1,2,4) ⟹ order 4; f mod 17 type (1,3,3) ⟹ order 3); (2) `trinks_gal_card_dvd_168` — |Gal| ∣ 168 from irreducibility + square discriminant (disc = 3⁸·7⁸ = 194481²) ⟹ Gal ⊆ A₇, plus the degree-15 PSL(2,7)-resolvent's rational root ⟹ Gal ⊆ PSL(2,7); (3) `trinks_gal_card_ne_84` — |Gal| ≠ 84 by simplicity, whose rigorous reason is the proved theorem `simple168_subgroup_card_collapse`. None of Dedekind's theorem, 'square disc ⟹ ⊆ Aₙ', or the degree-15 resolvent is in Mathlib 4.26.0; these are the genuinely multi-week deferred ACT.",
+    "originalContributions": [
+      "simple168_subgroup_card_collapse: in a finite simple group of order 168, any subgroup H with 84 ∣ |H| equals ⊤ (proved via Lagrange + index-2-normal + simplicity; the key insight that removes the A₇ transitive-subgroup classification)",
+      "card_eq_168_of_embeds_in_simple168: a finite group with 84 ∣ |G| injecting into a simple group of order 168 has order exactly 168 (reusable corollary via MonoidHom.ofInjective)",
+      "trinks_disc_is_square / trinks_disc_factorization: disc(f) = 37822859361 = 194481² = 3⁸·7⁸",
+      "trinks_gal_card: |Gal(f/ℚ)| = 168, assembled from the three certificate axioms",
+      "verify_collapse.py: independent verification of the collapse arithmetic and a full GL(3,2) enumeration (168 matrices, Fano-point cycle-type classes {1,21,42,56,48}, element orders {1,2,3,4,7})"
+    ],
+    "dateAdded": "2026-06-15",
+    "lineCount": 189,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "InverseGaloisA5OQ02",
+    "lineCount": 189,
+    "axiomCount": 3,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/InverseGaloisA5OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "inverse-galois-a5",
+      "relationship": "extends",
+      "description": "A₅ (order 60) is the first non-solvable Galois realization; PSL(2,7) (order 168) is the next simple non-solvable group. This entry mirrors the A₅ template's irreducibility/discriminant/cycle-type strategy."
+    },
+    {
+      "targetId": "inverse-galois-oq-01",
+      "relationship": "related",
+      "description": "Lists PSL(2,7) (order 168) explicitly as the next target beyond A₅ on the non-solvable frontier."
+    }
+  ],
+  "sorries": 0
+}
