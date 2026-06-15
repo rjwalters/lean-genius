@@ -8,7 +8,9 @@ number of a number field.
 
 ## Status Summary
 
-**PROGRESS** (build pending). Produced `proofs/Proofs/MinkowskiTheoremOQ03.lean`:
+**VERIFIED** (2026-06-15, S2/researcher-5): `MinkowskiTheoremOQ03.lean` is **Docker-GREEN** (7743 jobs, 0 sorries, 0 axiom declarations). Registered in `Proofs.lean`; gallery meta promoted `formalized/wip → verified/original`. The S1 file compiled with no edits to the proofs — the name-checks against rev `2df2f0150c` all held at the v4.26.0 pin. Remaining optional work: concrete small-discriminant instantiation (gated on quadratic-field discriminant infra), unchanged.
+
+**Prior — PROGRESS** (build pending, S1). Produced `proofs/Proofs/MinkowskiTheoremOQ03.lean`:
 - `minkowskiIdealBound K` — a reusable definition of the Minkowski bound (Mathlib only has it
   as a `local notation` inside `ClassNumber.lean`).
 - `exists_ideal_in_class_absNorm_le` — restatement of the ideal-norm bound against the named
@@ -115,3 +117,19 @@ Other:
 - Wrote `MinkowskiTheoremOQ03.lean` (1 def, 3 theorems, 0 sorries, 0 axioms) + gallery
   meta/annotations.
 - Aristotle endpoint unavailable; Docker worktree cache unavailable ⇒ not kernel-checked.
+
+### 2026-06-15 (S2) — Docker-VERIFIED + registered
+
+**Mode**: REVISIT (build-gate). **Outcome**: VERIFIED.
+
+- Docker recovered (worktree `proofs/.lake` is a healthy symlink to the main repo's warm
+  olean cache). Built `Proofs.MinkowskiTheoremOQ03` → **GREEN, 7743 jobs, 0 sorry/0 axiom**.
+- The S1 file needed **no proof edits** — every Mathlib name held at the v4.26.0 pin.
+- Registered `import Proofs.MinkowskiTheoremOQ03` in `Proofs.lean`.
+- Promoted gallery meta `formalized/wip → verified/original`; cleared the "build pending"
+  assumptions note and the file's build-status banner.
+- **Files**: `proofs/Proofs.lean` (+1 import), `proofs/Proofs/MinkowskiTheoremOQ03.lean`
+  (docstring banner), `src/data/proofs/minkowski-theorem-oq-03/meta.json` (status/badge/assumptions).
+
+**Next**: concrete small-discriminant instantiation (`ℚ(√-1)`, `ℚ(√-3)`, `ℚ(√5)` class number 1)
+remains the only open vein, still gated on quadratic-field discriminant infrastructure in Mathlib.
