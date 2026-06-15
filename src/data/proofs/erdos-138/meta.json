@@ -55,7 +55,7 @@
     "erdosProblemStatus": "open",
     "erdosPrizeValue": "$500",
     "axiomCount": 8,
-    "lineCount": 816,
+    "lineCount": 852,
     "assumptions": "8 axiom(s) and 1 sorry(s). Axioms: W_is_nonempty (van der Waerden's theorem — pinned-Mathlib v4.26.0 lacks Combinatorics.exists_mono_homothetic_copy, so this is a foundational assumption); berlekamp_lower_bound, gowers_upper_bound, kozik_shabanov_lower_bound (literature bounds); W_three=9, W_four=35, W_five=178, W_six=1132 (exact small values from exhaustive search / SAT). The lone sorry is the main_conjecture_implies_exponential filter-limit implication. The bound W(k+1) − W(k) ≥ k underlying the difference-variant result is proven from W_is_nonempty without further assumptions, via the AlphaProof Nexus coloring-extension argument.",
     "mathlib_version": "4.26.0",
     "theoremCount": 21,
@@ -88,16 +88,16 @@
     {
       "id": "ap-definitions",
       "title": "Set-Theoretic Arithmetic Progressions",
-      "startLine": 53,
-      "endLine": 78,
+      "startLine": 52,
+      "endLine": 76,
       "summary": "Inlined Set.IsAPOfLengthWith, Set.IsAPOfLength, ContainsMonoAPofLength (from FormalConjecturesForMathlib)",
       "mathContext": "$s$ is an AP of length $l$ with first term $a$, common difference $d$ iff $s = \\{a + n \\cdot d : n < l\\}$ and $|s| = l$"
     },
     {
       "id": "vdw-numbers",
       "title": "Van der Waerden Numbers W(r,k) and W(k)",
-      "startLine": 80,
-      "endLine": 100,
+      "startLine": 77,
+      "endLine": 101,
       "summary": "Guarantee set, monoAPNumber, and the W(k) = monoAPNumber 2 abbreviation; axiom W_is_nonempty captures van der Waerden's theorem",
       "mathContext": "$W(r,k) = \\inf\\{N : \\forall c : \\{1,\\ldots,N\\} \\to [r],\\; \\exists \\text{ mono } k\\text{-AP}\\}$"
     },
@@ -105,31 +105,31 @@
       "id": "alphaproof-difference",
       "title": "AlphaProof Nexus: Difference Variant",
       "startLine": 102,
-      "endLine": 745,
+      "endLine": 744,
       "summary": "Ported DeepMind AlphaProof Nexus proof: HasMonoAP, ap_must_end, extend_one_step, extend_j_steps, contains_mono_ap_imp, imp_contains_mono_ap, not_guarantee_extend, W_diff_ge_k_all",
       "mathContext": "Unconditional bound $W(k+1) - W(k) \\geq k$ via coloring-extension"
     },
     {
       "id": "axiomatized-bounds",
       "title": "Axiomatized Bounds and Small Values",
-      "startLine": 747,
-      "endLine": 775,
+      "startLine": 745,
+      "endLine": 774,
       "summary": "Axiomatized bounds: Berlekamp (1968), Gowers (2001), Kozik–Shabanov (2016), and exact W(3)..W(6)",
       "mathContext": "$p \\cdot 2^p \\leq W(p+1)$ for prime $p$; $W(k) \\leq 2^{2^{2^{2^{2^{k+9}}}}}$; $W(k) \\geq c \\cdot 2^k$; W(3)=9, W(4)=35, W(5)=178, W(6)=1132"
     },
     {
       "id": "conjectures",
       "title": "Main Conjecture (OPEN) and Difference Variant (RESOLVED)",
-      "startLine": 777,
-      "endLine": 805,
+      "startLine": 775,
+      "endLine": 838,
       "summary": "Erdős #138 (OPEN), QuotientDiverges, DifferenceDiverges, ExponentialDiverges; theorem W_difference_diverges_nat formalizes the resolved difference variant",
       "mathContext": "$\\lim_{k \\to \\infty} W(k)^{1/k} = \\infty$ (OPEN); $\\lim_{k \\to \\infty} (W(k+1) - W(k)) = \\infty$ (RESOLVED 2026-05-21)"
     },
     {
       "id": "implications",
       "title": "Logical Relationships Between Conjectures",
-      "startLine": 807,
-      "endLine": 816,
+      "startLine": 839,
+      "endLine": 852,
       "summary": "Main conjecture implies ExponentialDiverges (proof sketch with sorry for filter manipulation)",
       "mathContext": "$W(k)^{1/k} \\to \\infty \\implies W(k)/2^k \\to \\infty$"
     }
@@ -155,7 +155,7 @@
       "Finset"
     ],
     "namespace": "Erdos138",
-    "lineCount": 816,
+    "lineCount": 852,
     "axiomCount": 8,
     "theoremCount": 21,
     "definitionCount": 13,
