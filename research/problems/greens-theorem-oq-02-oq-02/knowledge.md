@@ -4,13 +4,23 @@
 
 **Source**: open question on `greens-theorem-oq-02` (Green's Theorem: Minimal Regularity — Lipschitz Curves and L¹ Curl)
 
-**Status**: surveyed (ORIENT) — feasibility analyzed, blocker narrowed and corrected, bounded build path identified. No Lean committed (Docker blackout 2026-06-13).
+**Status**: DECIDE — keystone gap now CLOSED upstream. The function-level FTC-for-AC the survey identified as the single blocker was added to Mathlib in **v4.28.0** (PR #29508, 2026-02-02); the repo currently pins **v4.26.0**, which predates it. Remaining work is a Mathlib version bump + a bounded Fubini reduction, still Docker-gated for verification. No Lean committed (Docker blackout continues 2026-06-14).
 
 ## Summary
 
 The target axiom is `greens_theorem_l1curl` (`proofs/Proofs/GreensTheoremOQ02.lean:350`). The OQ asks whether it is dischargeable via Mathlib's `BoundedVariation` + `Measure.AbsolutelyContinuous` API.
 
-**Answer: those APIs are necessary but not sufficient.** The whole question reduces to one missing keystone — the **function-level FTC for absolutely continuous functions**: `f` AC on `[a,b]` ⟹ `f b − f a = ∫ x in a..b, deriv f x` with `deriv f` only L¹/a.e.-defined. Mathlib's `FundThmCalculus` provides only continuity / `HasDerivAt`-everywhere versions and does **not** have this Lebesgue/AC direction.
+**Updated answer (2026-06-14): the keystone now exists upstream.** The survey (Session 1) correctly reduced the whole question to one missing keystone — the **function-level FTC for absolutely continuous functions**: `f` AC on `[a,b]` ⟹ `f b − f a = ∫ x in a..b, deriv f x` with `deriv f` only L¹/a.e.-defined. That keystone was **absent at v4.26.0** but is **present from Mathlib v4.28.0 onward** as:
+
+```
+theorem AbsolutelyContinuousOnInterval.integral_deriv_eq_sub
+    {f : ℝ → ℝ} {a b : ℝ} (hf : AbsolutelyContinuousOnInterval f a b) :
+    ∫ (x : ℝ) in a..b, deriv f x = f b - f a
+```
+
+in `Mathlib/MeasureTheory/Integral/IntervalIntegral/AbsolutelyContinuousFun.lean` (author Yizheng Zhu, PR #29508, part of #29092). The same file also ships integration-by-parts for AC functions (`integral_mul_deriv_eq_deriv_mul`). The function-level AC predicate `AbsolutelyContinuousOnInterval` and its algebra (`add`/`sub`/`mul`/`const_smul`) already existed at v4.26.0 in `Mathlib/MeasureTheory/Function/AbsolutelyContinuous.lean`; only the FTC/IBP theorems were added later.
+
+So the blocker is **no longer "build a ~200–400 line foundational lemma"** — it is now **"bump Mathlib v4.26.0 → ≥ v4.28.0, then wire the rectangle Fubini reduction to the upstream lemma."**
 
 ## Key reframing (the main finding)
 
@@ -24,8 +34,11 @@ So the true blocker is a **bounded ~200–400 line local build**, not a 1000+ li
 
 | Ingredient | Mathlib status |
 |---|---|
-| FTC (continuity / `HasDerivAt` everywhere) | ✅ `Mathlib.MeasureTheory.Integral.FundThmCalculus` |
-| **FTC-for-AC** (`f b − f a = ∫ f'`, L¹ deriv) | ❌ **missing — the keystone** |
+| FTC (continuity / `HasDerivAt` everywhere) | ✅ `Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus` |
+| **FTC-for-AC** (`f b − f a = ∫ f'`, L¹ deriv) | ✅ **added v4.28.0** — `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub` (was ❌ at the v4.26.0 pin) |
+| AC function predicate + algebra (`AbsolutelyContinuousOnInterval`) | ✅ v4.26.0 `Mathlib.MeasureTheory.Function.AbsolutelyContinuous` |
+| IBP for AC functions | ✅ v4.28.0 `AbsolutelyContinuousOnInterval.integral_mul_deriv_eq_deriv_mul` |
+| `IntervalIntegrable f` ⟹ `x ↦ ∫_c^x f` is AC | ✅ v4.28.0 `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral` |
 | BoundedVariation (`eVariationOn`, BV ⟹ a.e. diff) | ✅ `Mathlib.Analysis.BoundedVariation` |
 | Rademacher (Lipschitz ⟹ a.e. diff) | ✅ `Mathlib.Analysis.Calculus.Rademacher` |
 | Measure `AbsolutelyContinuous` + Radon-Nikodym | ✅ `Mathlib.MeasureTheory.Decomposition.RadonNikodym` |
@@ -33,12 +46,20 @@ So the true blocker is a **bounded ~200–400 line local build**, not a 1000+ li
 
 Note: `Measure.AbsolutelyContinuous` is AC of **measures** (μ ≪ ν), not of functions. The OQ's intended route — model the L¹ curl as the RN-derivative of an AC measure and recover boundary values — still bottlenecks on the same function-level FTC bridge.
 
-## Recommended approach (when Docker restored)
+## Recommended approach (revised 2026-06-14 — keystone is upstream now)
 
-1. Build a self-contained `ftc_of_absolutelyContinuous` lemma (≤400 lines). Likely route: `f` AC ⟹ its Lebesgue-Stieltjes signed measure `≪ volume` ⟹ `deriv f` is its Radon-Nikodym derivative ⟹ integrate (`withDensity` / RN lemmas).
-2. Discharge `greens_theorem_l1curl` by Fubini reduction to two 1D FTC-for-AC applications over the rectangle, reusing OQ01's boundary algebra.
-3. Amend the OQ02 axiom docstring to state the accurate narrowed gap (doc-only follow-up).
-4. Sanity check: must recover OQ01's conclusion when the curl comes from genuine `HasDerivAt` partials (matches existing `greens_oq1_from_l1curl`).
+Do **not** build `ftc_of_absolutelyContinuous` by hand any more — it exists upstream. New plan:
+
+1. **Bump Mathlib** from `v4.26.0` to `≥ v4.28.0` in `proofs/lakefile.toml` / `lake-manifest.json` (current stable is v4.30.0; v4.31.0-rc2 exists). This is the gating step and may surface unrelated breakage across the proof corpus, so do it on a dedicated branch and rebuild the full proof set under Docker. **Verify the cross-corpus build before relying on this for OQ02.**
+2. `import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun` in `GreensTheoremOQ02.lean`.
+3. Discharge `greens_theorem_l1curl` by Fubini (`MeasureTheory.integral_prod`) reduction to two 1D integrals over the rectangle. For each 1D slice `x ↦ Q(x, y)` (resp. `y ↦ P(x, y)`):
+   - From the L¹ hypotheses (`hCurlAE` + `hL1`), exhibit the slice as `c + ∫_a^x (∂Q/∂x)`; that integral function is AC by `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral`.
+   - Apply `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub` to get `f b − f a = ∫ deriv f`, matching the a.e. partial via `hCurlAE`.
+   Reuse OQ01's boundary algebra to assemble the line-integral side.
+4. Sanity check: the reduction must recover OQ01's conclusion when the curl comes from genuine `HasDerivAt` partials (C¹ ⟹ AC on a compact rectangle), matching the existing `greens_oq1_from_l1curl`.
+5. Once discharged, flip `greens_theorem_l1curl` from `axiom` to `theorem ... := by …` and update `axiomCount` in `GreensTheoremOQ02` gallery meta + research JSON.
+
+DONE (2026-06-13, doc-only): the OQ02 axiom docstring already states the accurate narrowed gap (rectangle ⟹ no GMT, only Fubini + FTC-for-AC). A follow-up doc tweak could now name the upstream lemma directly.
 
 ## Session log
 
@@ -105,3 +126,27 @@ Note: `Measure.AbsolutelyContinuous` is AC of **measures** (μ ≪ ν), not of f
 **Next Steps**
 - When Aristotle restored: submit `StatementOnly_GreensOQ02_FTCofLipschitz.lean` via the batch pipeline / `prove()`.
 - When Docker restored: compile-check the StatementOnly file; if the Lipschitz FTC goes through, generalize to AC and run the Fubini discharge of `greens_theorem_l1curl`.
+
+### Session 2026-06-14 (Session 4) — keystone found UPSTREAM (Docker down)
+
+**Mode**: BLOCKED for build (Docker blackout continues), but a build-free **upstream-API audit** produced a real ORIENT→DECIDE advance that **supersedes the Session 3 manual-build path**.
+
+**What I Did**
+- Re-examined Sessions 1/3's central premise — "Mathlib lacks the function-level FTC for absolutely continuous functions" — against the *current* Mathlib source (the repo pins `v4.26.0`).
+- Searched `leanprover-community/mathlib4` and found `Mathlib/MeasureTheory/Integral/IntervalIntegral/AbsolutelyContinuousFun.lean`, which proves **exactly** the missing keystone.
+- Pinned the version boundary precisely via the GitHub API: the file is **absent at v4.26.0** (tag dated 2025-12-13) and **first present at v4.28.0** (2026-02-16). It was introduced by **PR #29508** (author Yizheng Zhu, merged 2026-02-02, "FTC and integration by parts for absolutely continuous functions", part of #29092). Current stable is v4.30.0; v4.31.0-rc2 exists.
+- Verified the exact theorem signature and that the supporting API the discharge needs (`AbsolutelyContinuousOnInterval` predicate + algebra, `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral`, `intervalIntegrable_deriv`, `ae_differentiableAt`) is all present at v4.28.0.
+
+**Key Findings**
+- The single keystone gap is **now closed upstream**: `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub : ∫ x in a..b, deriv f x = f b - f a` for `f` AC on `uIcc a b`, plus IBP `integral_mul_deriv_eq_deriv_mul`. This is the *general AC* version — strictly stronger than Session 3's Lipschitz-only `ftc_of_lipschitzOn` target.
+- The AC-function *definition* + algebra already shipped at v4.26.0; only the FTC/IBP theorems were added in v4.28.0.
+- **Supersedes Session 3**: there is no need to prove `ftc_of_lipschitzOn` via Aristotle, nor to hand-build the ~200–400 line bridge. The `StatementOnly_GreensOQ02_FTCofLipschitz.lean` artifact is now only a *fallback* relevant if a Mathlib bump is undesirable.
+- Reframes the blocker from "build a foundational lemma" to **"bump Mathlib to ≥ v4.28.0 + wire the rectangle Fubini reduction to the upstream lemma."** Both steps remain Docker-gated for verification.
+
+**Files Modified**
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md` (this file): status ORIENT→DECIDE, gap table, revised approach, this log entry.
+- `src/data/research/problems/greens-theorem-oq-02-oq-02.json`: progressSummary, insights, mathlibGaps (now resolved-upstream), nextSteps, blockedReason, phase→DECIDE.
+
+**Next Steps**
+- Bump `proofs/lakefile.toml` Mathlib pin to ≥ v4.28.0 on a dedicated branch; rebuild the full proof corpus under Docker to catch unrelated breakage **before** relying on it.
+- Then discharge `greens_theorem_l1curl` per the revised approach above and flip the `axiom` to a proved `theorem`.
