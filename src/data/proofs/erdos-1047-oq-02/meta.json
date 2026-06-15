@@ -70,6 +70,30 @@
   },
   "sections": [
     {
+      "id": "integrity-problem",
+      "title": "The Integrity Problem: A False Small-c Axiom",
+      "summary": "Header docstring explaining the unsoundness in the registered flagship Erdos1047Problem.lean: grunskyConjecture is stated with a spurious small-c restriction (∃ c₀, ∀ c < c₀) whose negation is posited as axiom grunskyConjecture_false. But the small-c statement is TRUE — as c → 0 each sublevel component is a disk around a root, hence convex — so the axiom is false and does not even match the real Pommerenke/Goodman counterexamples, which live at non-small critical c.",
+      "startLine": 1,
+      "endLine": 27,
+      "mathContext": "Near a root $r$ of multiplicity $k$, $\\\\{|f| \\\\le c\\\\} \\\\approx \\\\{|z-r|^k \\\\lesssim c\\\\} = \\\\{|z-r| \\\\le c^{1/k}\\\\}$, a disk; so for fixed $f$ some threshold $c_0$ makes all components convex, making the small-$c$ $\\\\texttt{grunskyConjecture}$ true and its negation a false axiom."
+    },
+    {
+      "id": "faithful-no-axiom",
+      "title": "The Faithful Statement Needs No Standalone Axiom",
+      "summary": "Docstring section: Grunsky's actual question (all lemniscate components convex, ∀ c > 0, no small-c restriction) is grunskyConjectureFaithful. It is genuinely false, and its negation is a THEOREM — following directly from the file's existing goodman_counterexample — not an axiom. faithful_imp_grunsky records that the faithful ∀-c statement is at least as strong as the parent's small-c one.",
+      "startLine": 29,
+      "endLine": 41,
+      "mathContext": "The faithful $\\\\forall c > 0$ statement implies the small-$c$ one, so negating the weaker small-$c$ statement (as the old axiom did) over-claims; the genuine negation needs only $\\\\texttt{goodman\\\\_counterexample}$ as analytic input."
+    },
+    {
+      "id": "parent-patch",
+      "title": "Parent Patch Applied, Imports & Namespace",
+      "summary": "Docstring records that the proposed patch is now applied (Docker-verified) in Erdos1047Problem.lean: grunskyConjecture redefined to the ∀ c > 0 faithful form, axiom grunskyConjecture_false converted to a theorem proved from goodman_counterexample, and axiomCount 2 → 1. So grunskyConjectureFaithful is now definitionally equal to the parent's grunskyConjecture and this file is a consistent companion documenting the repair. Imports Erdos1047Problem and Mathlib.Tactic, opens Polynomial/Set/Erdos1047, namespace Erdos1047OQ02.",
+      "startLine": 43,
+      "endLine": 63,
+      "mathContext": "After the patch only $\\\\texttt{goodman\\\\_counterexample}$ remains as an assumption (axiomCount $2 \\\\to 1$); the faithful and registered statements are now $\\\\texttt{rfl}$-equal."
+    },
+    {
       "id": "faithful-statement",
       "title": "The Faithful Grunsky Question",
       "summary": "grunskyConjectureFaithful: convexity for every c > 0, with no small-c restriction",
@@ -81,7 +105,7 @@
       "id": "strictly-stronger",
       "title": "Faithful Coincides with the Flagship",
       "summary": "faithful_imp_grunsky: the ∀-c statement now coincides with the flagship's repaired grunskyConjecture (the implication is the identity)",
-      "startLine": 80,
+      "startLine": 74,
       "endLine": 81,
       "mathContext": "Since the flagship was redefined to the faithful $\\\\forall c > 0$ form, `grunskyConjectureFaithful` is definitionally equal to its `grunskyConjecture` and the implication is `fun h => h`."
     },
