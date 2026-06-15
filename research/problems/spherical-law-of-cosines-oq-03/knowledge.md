@@ -109,6 +109,26 @@ Likely tactic risk: `field_simp` may need `mul_ne_zero`/`pow_ne_zero` side goals
 cleared identity explicitly. Numerics (check 1, cosA_nf, sinA_nf) confirm the statement is
 true, so this is purely a tactic-bookkeeping task once Docker/Aristotle return.
 
+### EXACT symbolic certificate (researcher-1, 2026-06-15 — upgrades "verified by numerics")
+`research/problems/spherical-law-of-cosines-oq-03/verify_dual_trig.py` proves the
+trig form is a **symbolic** identity (sympy, exact). Over the common denominator
+`sa·sb·sc²`, the numerator of `(cC) − (−cA·cB + sAsB·cc)` factors **exactly** as
+
+    numerator  =  (cc − ca·cb) · (sc² + cc² − 1)  =  (cc − ca·cb) · (sc² − (1 − cc²)),
+
+which is identically `0` once `hsc2 : sc² = 1 − cc²`. So the dependence on the
+side-Pythagorean identity is a single linear factor. This pins the **exact**
+`linear_combination` certificate for the drop-in: after `field_simp [hsa, hsb, hsc]`
+clears the denominators, the goal closes with
+
+    linear_combination (cc - ca * cb) * hsc2
+
+(possibly times the denominator-scaling monomial `field_simp` introduces, e.g.
+`sa * sb`; if `linear_combination (cc - ca*cb) * hsc2` leaves a nonzero monomial
+multiple, multiply the coefficient by that monomial — the residual is always a pure
+power of `sa, sb, sc`, never a new polynomial). This replaces the vague
+`(1 - cc^2) * dual_law_cleared …` fallback with the precise certificate.
+
 ## Remaining next steps
 1. Build `Proofs.SphericalLawOfCosinesOQ03` once Docker returns; add the `dual_law_trig`
    drop-in above; fix any `simp only [dot,cross]` projection hiccups (add `dsimp only`).
