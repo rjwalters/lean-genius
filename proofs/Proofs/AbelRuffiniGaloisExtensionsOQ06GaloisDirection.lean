@@ -33,6 +33,9 @@
 import Proofs.AbelRuffiniGaloisExtensionsOQ06
 import Mathlib.GroupTheory.Sylow
 import Mathlib.GroupTheory.Perm.Cycle.Type
+-- Brings the char-in-normal transitivity instance `ConjAct.normal_of_characteristic_of_normal`
+-- (Step 4 / Risk R4) into scope; it is NOT transitively imported via `Sylow`.
+import Mathlib.GroupTheory.GroupAction.ConjAct
 
 namespace AbelRuffiniGaloisExtensionsOQ06GaloisDirection
 
@@ -69,7 +72,7 @@ variable {p : ℕ} [Fact p.Prime]
        in `↥A` (`Sylow.characteristic_of_normal`, Sylow.lean:728); with `A ⊴ ↥H`
        (from `A` characteristic in `↥H`) the transported subgroup
        `Q.map A.subtype` is then **normal in `↥H`** by the *instance*
-       `Subgroup.normal_of_characteristic_of_normal`
+       `ConjAct.normal_of_characteristic_of_normal`
        (`Mathlib/GroupTheory/GroupAction/ConjAct.lean:260` at pin `2df2f015`:
        `{H : Subgroup G} [H.Normal] {K : Subgroup H} [K.Characteristic] :
        (K.map H.subtype).Normal`). Instantiated with `G := ↥H`, lemma-`H := A`,
@@ -86,7 +89,7 @@ variable {p : ℕ} [Fact p.Prime]
     arithmetic, and the orbit–stabilizer transitivity. The char-in-normal step
     that S8 flagged as the single hardest residual ("no upstream bearer",
     ~10–30 LOC) is **resolved** — it is the 0-LOC instance
-    `Subgroup.normal_of_characteristic_of_normal` cited in step 4. Risk R4
+    `ConjAct.normal_of_characteristic_of_normal` cited in step 4. Risk R4
     accordingly stays MEDIUM but the budget shrinks (see knowledge.md R4 §S10).
     Discharge deferred to a Docker-up ACT session. -/
 theorem sylow_p_unique
