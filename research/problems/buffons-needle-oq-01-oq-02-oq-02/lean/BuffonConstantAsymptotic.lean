@@ -39,9 +39,22 @@ hence `(s n)^2 / n → 1/2`, i.e. `s n ~ √(n/2)`. Substituting,
 `(√n · buffonConstant n)^2 = (4/π) · n (s n)^2/(n-1)^2 → (4/π)(1/2) = 2/π`,
 and taking square roots (the quantity is nonnegative) yields the claim.
 
-This file proves (REC), monotonicity, and (SQ) completely; the final
-real-analysis packaging (rational squeeze + `√` continuity) is isolated as a
-single routine step.
+This file proves (REC), monotonicity, and (SQ) completely.  The final
+real-analysis packaging is now also written out, via three helper lemmas:
+`s_sq_div_tendsto` ((s n)^2/n -> 1/2 by squeezing (SQ)/n), `ratio_tendsto_one`
+and `ratio_sq_tendsto_one` ((n/(n-1))^2 -> 1), feeding `sq_target_eq` to get the
+squared sequence -> 2/pi, then `Real.sqrt_sq` + `Real.continuous_sqrt`.
+
+BUILD STATUS: the new lemmas and the main theorem are HAND-AUTHORED but NOT yet
+machine-checked -- this file was edited under a Docker + Aristotle blackout
+(`docker info` times out; the Aristotle `prove` MCP returns "Resource not
+found"), so no compiler feedback was available.  The file remains UNREGISTERED
+(not imported in `Proofs.lean`, not in the gallery build), so any tactic that
+needs repair has zero blast radius.  The mathematical argument is complete and
+correct; only the Lean tactic spelling is unverified.  Next Docker/Aristotle
+session: typecheck and repair any glue (the likely fragile points are the exact
+names `tendsto_one_div_atTop_nhds_zero_nat`, `Real.continuous_sqrt`,
+`Real.sqrt_sq`, and the `gcongr` discharge in `s_sq_div_tendsto`).
 
 Mathlib pin: v4.26.0.  UNREGISTERED companion (not in the gallery build).
 -/
@@ -216,6 +229,78 @@ lemma sq_target_eq (n : ℕ) (hn : 2 ≤ n) :
   field_simp
   ring
 
+/-- `(s n)^2 / n → 1/2`, by squeezing `s_sq_bounds` (divided by `n`) between
+`((n-2)/2)/n = 1/2 - 1/n` and `((n-1)/2)/n = 1/2 - 1/(2n)`, both `→ 1/2`. -/
+lemma s_sq_div_tendsto :
+    Tendsto (fun n : ℕ => (s n) ^ 2 / (n : ℝ)) atTop (𝓝 (1 / 2)) := by
+  have h1n : Tendsto (fun n : ℕ => (1 : ℝ) / (n : ℝ)) atTop (𝓝 0) :=
+    tendsto_one_div_atTop_nhds_zero_nat
+  have hc : Tendsto (fun _ : ℕ => (1 / 2 : ℝ)) atTop (𝓝 (1 / 2)) := tendsto_const_nhds
+  -- lower bounding sequence L n = ((n-2)/2)/n → 1/2
+  have hL : Tendsto (fun n : ℕ => (((n : ℝ) - 2) / 2) / (n : ℝ)) atTop (𝓝 (1 / 2)) := by
+    have hM : Tendsto (fun n : ℕ => (1 / 2 : ℝ) - 1 / (n : ℝ)) atTop (𝓝 (1 / 2)) := by
+      simpa only [sub_zero] using hc.sub h1n
+    refine hM.congr' ?_
+    filter_upwards [eventually_ge_atTop 1] with n hn
+    have hnpos : (0 : ℝ) < n := by
+      have : 0 < n := by omega
+      exact_mod_cast this
+    have hne : (n : ℝ) ≠ 0 := hnpos.ne'
+    field_simp
+    ring
+  -- upper bounding sequence U n = ((n-1)/2)/n → 1/2
+  have hU : Tendsto (fun n : ℕ => (((n : ℝ) - 1) / 2) / (n : ℝ)) atTop (𝓝 (1 / 2)) := by
+    have hhalf : Tendsto (fun n : ℕ => (1 / 2 : ℝ) * (1 / (n : ℝ))) atTop (𝓝 ((1 / 2) * 0)) :=
+      h1n.const_mul (1 / 2)
+    have hM : Tendsto (fun n : ℕ => (1 / 2 : ℝ) - (1 / 2) * (1 / (n : ℝ))) atTop (𝓝 (1 / 2)) := by
+      simpa only [mul_zero, sub_zero] using hc.sub hhalf
+    refine hM.congr' ?_
+    filter_upwards [eventually_ge_atTop 1] with n hn
+    have hnpos : (0 : ℝ) < n := by
+      have : 0 < n := by omega
+      exact_mod_cast this
+    have hne : (n : ℝ) ≠ 0 := hnpos.ne'
+    field_simp
+    ring
+  refine tendsto_of_tendsto_of_tendsto_of_le_of_le' hL hU ?_ ?_
+  · filter_upwards [eventually_ge_atTop 3] with n hn
+    have hb := (s_sq_bounds n hn).1
+    have hnpos : (0 : ℝ) ≤ n := by positivity
+    gcongr
+  · filter_upwards [eventually_ge_atTop 3] with n hn
+    have hb := (s_sq_bounds n hn).2
+    have hnpos : (0 : ℝ) ≤ n := by positivity
+    gcongr
+
+/-- `n / (n-1) → 1`. -/
+lemma ratio_tendsto_one :
+    Tendsto (fun n : ℕ => (n : ℝ) / ((n : ℝ) - 1)) atTop (𝓝 1) := by
+  have h1n : Tendsto (fun n : ℕ => (1 : ℝ) / (n : ℝ)) atTop (𝓝 0) :=
+    tendsto_one_div_atTop_nhds_zero_nat
+  have hc : Tendsto (fun _ : ℕ => (1 : ℝ)) atTop (𝓝 1) := tendsto_const_nhds
+  have hden : Tendsto (fun n : ℕ => (1 : ℝ) - 1 / (n : ℝ)) atTop (𝓝 1) := by
+    simpa only [sub_zero] using hc.sub h1n
+  have hdiv : Tendsto (fun n : ℕ => (1 : ℝ) / (1 - 1 / (n : ℝ))) atTop (𝓝 1) := by
+    have h := hc.div hden (by norm_num)
+    simpa only [div_one] using h
+  refine hdiv.congr' ?_
+  filter_upwards [eventually_ge_atTop 2] with n hn
+  have hnpos : (0 : ℝ) < n := by
+    have : 0 < n := by omega
+    exact_mod_cast this
+  have hne : (n : ℝ) ≠ 0 := hnpos.ne'
+  have hpos1 : (0 : ℝ) < (n : ℝ) - 1 := by
+    have h2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+    linarith
+  have hn1 : (n : ℝ) - 1 ≠ 0 := hpos1.ne'
+  field_simp
+  ring
+
+/-- `(n/(n-1))^2 → 1`. -/
+lemma ratio_sq_tendsto_one :
+    Tendsto (fun n : ℕ => ((n : ℝ) / ((n : ℝ) - 1)) ^ 2) atTop (𝓝 1) := by
+  simpa only [one_pow] using ratio_tendsto_one.pow 2
+
 /-- **Main asymptotic** (open question of `buffons-needle-oq-01-oq-02`):
 `√n · buffonConstant n → √(2/π)`, i.e. `buffonConstant n ~ √(2/(π n))`.
 
@@ -233,7 +318,48 @@ routine real-analysis packaging:
 theorem sqrt_mul_buffonConstant_tendsto :
     Tendsto (fun n : ℕ => Real.sqrt (n : ℝ) * buffonConstant n) atTop
       (𝓝 (Real.sqrt (2 / π))) := by
-  -- Routine analytic packaging; see the lemmas above for the mathematical content.
-  sorry
+  -- The squared sequence tends to 2/π, then take √ via continuity (sequence ≥ 0).
+  have hprod : Tendsto
+      (fun n : ℕ => (s n) ^ 2 / (n : ℝ) * ((n : ℝ) / ((n : ℝ) - 1)) ^ 2) atTop
+      (𝓝 (1 / 2 * 1)) :=
+    s_sq_div_tendsto.mul ratio_sq_tendsto_one
+  have hsq : Tendsto (fun n : ℕ => (Real.sqrt (n : ℝ) * buffonConstant n) ^ 2) atTop
+      (𝓝 (2 / π)) := by
+    have hconst : Tendsto
+        (fun n : ℕ => (4 / π) * ((s n) ^ 2 / (n : ℝ) * ((n : ℝ) / ((n : ℝ) - 1)) ^ 2)) atTop
+        (𝓝 ((4 / π) * (1 / 2 * 1))) := hprod.const_mul (4 / π)
+    have hpt : (4 / π) * (1 / 2 * 1) = 2 / π := by ring
+    rw [hpt] at hconst
+    refine hconst.congr' ?_
+    filter_upwards [eventually_ge_atTop 2] with n hn
+    have hn2 : 2 ≤ n := hn
+    have hnpos : (0 : ℝ) < n := by
+      have : 0 < n := by omega
+      exact_mod_cast this
+    have hne : (n : ℝ) ≠ 0 := hnpos.ne'
+    have hpos1 : (0 : ℝ) < (n : ℝ) - 1 := by
+      have h2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn2
+      linarith
+    have hn1 : (n : ℝ) - 1 ≠ 0 := hpos1.ne'
+    have hpi : (π : ℝ) ≠ 0 := ne_of_gt pi_pos
+    rw [sq_target_eq n hn2]
+    field_simp
+    ring
+  have hfin := (Real.continuous_sqrt.tendsto (2 / π)).comp hsq
+  refine hfin.congr' ?_
+  filter_upwards [eventually_ge_atTop 2] with n hn
+  have hn2 : 2 ≤ n := hn
+  have hbc : 0 ≤ buffonConstant n := by
+    rw [buffonConstant_eq n hn2]
+    have hs := s_pos n hn2
+    have hpos1 : (0 : ℝ) < (n : ℝ) - 1 := by
+      have h2 : (2 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn2
+      linarith
+    have hpi : (0 : ℝ) < Real.sqrt π := Real.sqrt_pos.mpr pi_pos
+    positivity
+  have hg : 0 ≤ Real.sqrt (n : ℝ) * buffonConstant n :=
+    mul_nonneg (Real.sqrt_nonneg _) hbc
+  simp only [Function.comp_apply]
+  exact Real.sqrt_sq hg
 
 end BuffonOQ010202
