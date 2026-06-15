@@ -99,3 +99,52 @@ settles the disagreement empirically.
 ### Files Modified
 - `proofs/scripts/verify_cubeful_stability.py` (new; default N=10⁶, accepts an override bound)
 - `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this session note)
+
+## Session 2026-06-15 (Session 3, researcher-5) — ACT, Lean transcription (build-pending)
+
+**Mode**: continue (ACT; Docker + Aristotle both down, re-probed and confirmed down)
+**Outcome**: progress — wrote the Lean ACT file discharging the Session-1/2 "next step".
+Build-pending (cannot compile under blackout); shipped UNREGISTERED in `Proofs.lean` to
+avoid breaking the auto-merged main aggregate with an unverified `native_decide`-heavy file.
+
+### What I Did
+- Wrote `proofs/Proofs/Erdos1107OQ02OQ01.lean` (~210 LOC), transcribing the parent r=2
+  template (`Erdos1107OQ02.lean`) to the cubeful r=3 case.
+- **Key design change vs. the parent**: the parent's `isSumOf3Squareful` loops over
+  `List.range (n+1)` (O(n²) per integer — fine for N₂=120, infeasible at N₃=2040 with a
+  4th summand, O(n³)). My `isSumOf4Cubeful` instead enumerates `a,b,c` over the **cubeful
+  basis** `cubefulBasis n = (List.range (n+1)).filter IsCubeful` — only **27 elements ≤ 2040**
+  — and checks the remainder `n-a-b-c` is cubeful. That makes the per-integer cost ~27³≈2e4,
+  keeping `native_decide` feasible. `0` is in the basis (vacuously cubeful), so padding with
+  zeros realises "at most 4".
+- Theorems (all `native_decide`, build-pending): `exceptions_not_representable` (batch over
+  the 45-element `exceptions` list), `below_threshold_nonexceptions` (∀ n∈range 2040 outside
+  exceptions ⟹ representable), block ranges `[2040,2300] [2301,2600] [2601,3000]`, basic
+  cubeful witnesses (`8,16,27,2000`; `¬IsCubeful 24` since 24=2³·3), `threshold_2040` /
+  `threshold_tight`. One `axiom cubeful_sum_threshold` (n ≥ 2040) = the open r=3 asymptotic.
+
+### Verification done WITHOUT the build (Docker down)
+- Emulated `isSumOf4Cubeful` in Python (a,b,c over basis incl. 0; remainder cubeful) and
+  confirmed it agrees with the Session-2 numpy DP: 2039→false, 2040→true, 5→false, 4/8/120→true.
+- Re-ran `verify_cubeful_stability.py`: 45 exceptions, largest 2039, no exception in (2039,10⁶].
+- Checked every embedded witness: 8=2³,16=2⁴,27=3³,2000=2⁴·5³ cubeful; 24=2³·3 NOT;
+  threshold witness 2040 = 2000+8+32+0 (all four cubeful).
+
+### Honesty / scope
+- This is a faithful transcription of an already-computed, validated result into Lean. The
+  r=3 asymptotic is still **open** — `cubeful_sum_threshold` is exactly that conjectural tail,
+  mirroring the parent's `squareful_sum_threshold` axiom (axiom count 1, sorry count 0). The
+  file is **build-pending**: I could not run `lake`/Docker, so compile success of the
+  `native_decide` blocks is unverified. The main risk is `native_decide` time/memory at
+  N=2040–3000 (17× the parent's 120), not logical correctness — the Python emulation matches.
+
+### Files Modified
+- `proofs/Proofs/Erdos1107OQ02OQ01.lean` (new; build-pending, NOT registered in Proofs.lean)
+- `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this session note)
+
+### Next Steps (build / deploy)
+- When Docker is up: `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01`. If
+  `native_decide` over `[1,2040]` is too heavy, split `below_threshold_nonexceptions` into
+  blocks (range 0–500, 500–1000, …) as done for the above-threshold ranges.
+- On green build: register via `./.lean/scripts/generate-proofs-imports.sh` and add a gallery
+  meta.json (`status: axiomatized`, `badge: axiom`, axiomCount 1) for the r=3 entry.
