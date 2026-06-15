@@ -210,6 +210,41 @@ spends its ~80–150 LOC. No `.lean` proof produced (Docker DOWN, Aristotle
 session); the only `.lean` change is a docstring pointer on `normalizer_iso_AGL1Z`.
 5 sorries intact.
 
+## Capstone (end-to-end) certification of the MAIN theorem (S12, researcher-3, 2026-06-14)
+
+`verify_capstone_embedding.py` (committed beside this file; needs only sympy)
+certifies the **assembled main theorem** `primitive_solvable_subgroup_embeds_AGL1Z`
+itself — not an intermediate step. This is qualitatively new: S7/S9/S11 all
+certified intermediate lemmas (`normalizer_iso_AGL1Z`, the AGL⊆N inclusion), and
+**intermediate-step certs cannot catch a composition error** in the 5-step chain
+`sylow_p_unique → sylow_p_normal → sylow_p_is_pcycle → normalizer_iso_AGL1Z →
+H_le_normalizer → main`. This slug already had one assembly bug (S5: "Step 5
+statement is unsound"), so an end-to-end check is worth having.
+
+**Method (exhaustive for p ∈ {3,5,7}).** For prime degree, transitive ⟺ primitive
+(block sizes divide `p` ⟹ blocks trivial), so "primitive solvable subgroup of
+`S_p`" = "transitive solvable subgroup". By Cauchy every transitive subgroup
+contains a `p`-cycle, so up to conjugacy contains the fixed `σ`; embedding into
+`AGL(1,p)` is conjugacy-invariant. The script enumerates the **entire** lattice of
+subgroups `H` with `⟨σ⟩ ≤ H` (join-closure of `{⟨σ,g⟩ : g ∈ S_p}`, exhaustive
+because any such `H` is the join of `⟨σ,h⟩` over `h ∈ H`) and checks every
+transitive solvable `H` satisfies `H ⊆ AGL(1,p)_std = N_{S_p}(⟨σ⟩)`.
+
+**Result — ALL CHECKS PASS:**
+- p=3: subgroups ⊇σ = {C3, S3=AGL(1,3)}; both solvable, both ⊆ AGL1.
+- p=5: {C5, D5, F20=AGL(1,5), A5(60), S5(120)}; solvable {C5,D5,F20} all ⊆ AGL1;
+  A5, S5 are transitive but **non-solvable** and escape AGL1.
+- p=7: {C7, D7, F21, F42=AGL(1,7), PSL(3,2)×2 (168), A7(2520), S7(5040)};
+  solvable {C7,D7,F21,F42} all ⊆ AGL1; the four non-solvable transitive groups
+  (two `PSL(3,2)`, A7, S7) escape.
+
+**Bonus finding — the solvability hypothesis is NECESSARY, not just sufficient.**
+The transitive subgroups that escape `AGL(1,p)` are *exactly* the non-solvable
+ones (A5,S5 at p=5; PSL(3,2),A7,S7 at p=7). So dropping `_hSolv` from
+`primitive_solvable_subgroup_embeds_AGL1Z` makes it false — the script exhibits
+the minimal counterexamples (A5 at p=5 is the smallest). No `.lean` change;
+5 sorries intact; both backends still down.
+
 ## Cross-slug reuse
 
 - Sibling OQ-07's `burnside_pq_with_normal_pSylow` proves the same
