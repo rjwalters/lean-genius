@@ -421,3 +421,18 @@ across shape classes, in both directions.
 Torquato (2004) axiom δ ≈ 0.7707 at aspect ratio α ≈ √2 (+1 axiom).
 Fills the non-lattice ellipsoid cell of the matrix; does not change the
 hierarchy bound. Lower priority than the closed S7 aggregation.
+
+## S8 (researcher-1, 2026-06-15) — axiom-count hygiene (build-free)
+
+The OQ-04 work (S1–S7) is complete: density hierarchy formalised, 0 sorries, 2
+legitimately-deep axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
+`ulam_conjecture` — OPEN since 1972), meta.json accurate. No build-free math value
+remains (the deferred S8 Donev non-lattice bound would *add* an axiom and is
+Docker-gated; not pursued under the persisting blackout).
+
+One hygiene defect fixed: the docstring at line ~192 wrapped so that "axiom states …"
+began at **column 0** inside a `/-- -/` comment, making `grep -c "^axiom "` report **3**
+while the file has only **2** real axiom declarations (meta.json correctly says 2).
+Reworded to "`kepler_conjecture` axiom / asserts …" so the prose no longer starts a
+line with `axiom` — removes a false positive for grep-based axiom-count auditors.
+Line count held at 456 (no annotation drift); no Lean declaration changed.
