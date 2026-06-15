@@ -34,15 +34,17 @@
     "goal": "Decide GS-odd. Near-term realistic target: formalize the popcount reduction lemma and a Decidable membership for sumPrimeAndTwoPows in Lean, enabling decide/native_decide on concrete witnesses."
   },
   "knowledge": {
-    "progressSummary": "ORIENT (build-free; Docker + Lean unavailable). Established the popcount≤k reduction characterizing S_k membership, and ran a reproducible experiment. ODD side: every odd n ≤ 10^6 ∈ S_3, but only trivially — ≤2 powers always suffice in range (no odd n leaves S_2 up to 3·10^6), so direct small-N data is weak evidence for GS-odd; the k=3-over-k=2 necessity (Crocker) lives at scales beyond brute force. EVEN side genuinely exercises S_3: ~5.6% of even n need exactly 3 powers (smallest = 906), all even n ≤ 10^6 ∈ S_3, first known even failure is Grechuk's 1117175146 (∈ S_4, ∉ S_3). The +1-power parity offset between odd and even is visible directly in the data, matching the conjecture's k=3 (odd) vs k=4 (even) structure.",
+    "progressSummary": "ORIENT (build-free; Docker + Lean down). S1: popcount≤k reduction for S_k membership + sweeps. S2 (this session) sharpens the parity caps: the odd cap is GENUINELY 2 (not trivial) — smallest odd needing exactly 2 powers is 905 = 5·181, a de Polignac number (odd composite, not 2^a+prime), and it is CONSECUTIVE with 906 (smallest even needing 3, S1). Moreover the even minPowers distribution is the odd one shifted up by exactly 1, matching to ~0.02% (even[k]≈odd[k-1]); deviations come from even n reaching prime 2 via the even offset m=n-2. GS caps 3(odd)/4(even) = in-range caps 2/3 plus one. The forcing cases (Crocker odd ∉ S_2, Grechuk even 1117175146 ∉ S_3) lie far beyond brute force.",
     "builtItems": [
-      "research/problems/erdos-10-oq-02/verify_granville_soundararajan_odd.py — stdlib+sympy experiment (odd/even sweeps via the popcount reduction, minimal-#powers distributions, Grechuk check)."
+      "research/problems/erdos-10-oq-02/verify_min_powers_parity.py (S2) — exact stdlib sieve, minPowers over both parities to 10^6; pins smallest n by minPowers value, confirms 905/906 consecutive caps and the approximate +1 distribution shift.",
+      "research/problems/erdos-10-oq-02/verify_granville_soundararajan_odd.py (S1) — stdlib+sympy experiment (odd/even sweeps, distributions, Grechuk check)."
     ],
     "insights": [
       "S_k membership reduces to popcount(m) ≤ k offsets: n ∈ S_k ⟺ ∃ m with popcount(m) ≤ k and (n−m) prime, n−m ≥ 2.",
-      "Brute force confirms GS-odd only trivially: every odd n ≤ 3·10^6 is already in S_2, so the third power is never needed in range. Crocker's odd ∉ S_2 witnesses are astronomically large.",
-      "The even side is where S_3 is genuinely tested: smallest even n needing exactly 3 powers is 906; ~5.6% of even n need exactly 3; all even n ≤ 10^6 ∈ S_3.",
-      "Parity offset is explicit: in range, odd n need ≤2 powers and even n need ≤3 — the same +1 gap GS conjectures (k=3 odd vs k=4 even). Subtracting one even power from odd n leaves an odd candidate for primality; even n must first spend a power to fix parity.",
+      "S2: the odd cap of 2 is NECESSARY, not trivial — smallest odd needing exactly 2 powers is 905 = 5·181 (a de Polignac number: odd composite, not 2^a+prime). So odd n ∉ S_1 exist.",
+      "S2: 905 (smallest odd needing 2) and 906 (smallest even needing 3) are CONSECUTIVE — the +1 parity offset realized back-to-back at the forcing extremes.",
+      "S2: the even minPowers distribution ≈ the odd one shifted +1 (even[k]≈odd[k-1], match to ~0.02%): minPowers(2j) ≤ 1 + minPowers(2j-1) (spend 2^0 to fix parity, then the odd subproblem); equality usually but not always — even n can reach prime 2 via m=n-2, causing small deviations.",
+      "GS caps 3 (odd) / 4 (even) = in-range caps 2 / 3, plus one safety power; the forcing cases live beyond brute force.",
       "Grechuk's 1117175146 confirmed ∉ S_3 and ∈ S_4 (popcount 16)."
     ],
     "mathlibGaps": [
