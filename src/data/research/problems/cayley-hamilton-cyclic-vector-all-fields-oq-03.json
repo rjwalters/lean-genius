@@ -1,0 +1,148 @@
+{
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-03",
+  "title": "Coordinate-Free Cyclic Vector: Single Operator and PID Modules",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Let } V \\text{ be a finite-dimensional } K\\text{-vector space and } T : V \\to V \\text{ linear. Then } T \\text{ is nonderogatory (}\\min\\text{poly} = \\text{char poly}) \\iff T \\text{ admits a cyclic vector } v \\text{ (i.e. } \\{v, Tv, T^2v, \\dots\\} \\text{ spans } V\\text{).}",
+    "plain": "The parent gallery proof shows, for matrices over any field, that a matrix is \"nonderogatory\" (its minimal and characteristic polynomials coincide) exactly when it has a cyclic vector — a single vector whose images under repeated application generate the whole space. This problem asks whether that matrix proof can be lifted to a coordinate-free statement about an abstract linear operator $T : V \\to V$, and then recognized as an instance of the PID structure theorem by treating $V$ as a module over the polynomial ring $K[x]$ where $x$ acts as $T$. The payoff is connecting the entry to Mathlib's `Module` and PID-structure infrastructure instead of `Matrix`.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-15T19:32:03.122Z",
+    "iteration": 2,
+    "focus": "Coordinate-free operator half delivered; PID-module half deferred",
+    "blockers": [
+      "Docker contention (>=3 lean-build containers on a 7.65GB VM) blocks local build",
+      "Aristotle backend returning 404"
+    ],
+    "nextAction": "Build under Docker and flip to verified; then bridge IsCyclicVectorOp to span form and attempt PID direction",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: coordinate-free operator case proved (nonderogatory operator has a cyclic vector) by basis reduction to the verified matrix theorem; PID-module case documented as a deep open gap. Build-pending under Docker contention.",
+    "builtItems": [
+      "operator_nonderogatory_has_cyclic_vector in CayleyHamiltonCyclicVectorAllFieldsOQ03.lean: nonderogatory operator (minpoly natDegree = finrank) has a cyclic vector",
+      "matrix_nonderog_of_minpoly_natDegree: (minpoly K M).natDegree = n implies minpoly = charpoly (monic-cofactor argument on minpoly | charpoly)",
+      "toMatrix_mulVec_repr: basis-transport bridge (toMatrix b b f).mulVec (b.repr x) = b.repr (f x), proved from LinearMap.toMatrix_apply",
+      "IsCyclicVectorOp / IsNonderogatoryOp: coordinate-free operator definitions"
+    ],
+    "insights": [
+      "The minimal polynomial transports verbatim from operator to matrix via the algebra isomorphism toMatrixAlgEquiv b and minpoly.algEquiv_eq, so the nonderogatory hypothesis needs no separate matrix-side proof.",
+      "Cyclicity transport reduces to a single intertwining identity (toMatrix b b f).mulVec (b.repr x) = b.repr (f x); combined with aeval_algHom_apply it makes aeval T p v vanish iff (aeval M p).mulVec w vanishes.",
+      "Pulling the matrix cyclic vector back through b.equivFun.symm keeps the final statement basis-free.",
+      "minpoly degree = n upgrades to minpoly = charpoly purely formally (monic cofactor of degree 0 = 1); no spectral input needed."
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma directly gives the operator-level nonderogatory-implies-cyclic statement; it must be assembled by basis reduction (done here).",
+      "PID direction needs the structure theorem for finitely generated modules over a PID plus a coprime cyclic-recombination lemma (CRT); estimated > 500 lines, not yet attempted."
+    ],
+    "nextSteps": [
+      "Build CayleyHamiltonCyclicVectorAllFieldsOQ03.lean under Docker when contention clears (<=2 lean-build containers) and flip badge wip -> verified if green.",
+      "Confirm at build time the riskier bearers: toMatrix_mulVec_repr self-proof (map_sum/map_smul ordering), Basis.equivFun_apply orientation, and LinearMap.toMatrixAlgEquiv_apply.",
+      "Bridge IsCyclicVectorOp to the span form cyclicSubspace T v = top using cayley-hamilton-minpoly-oq-05-oq-01-oq-03 infrastructure.",
+      "Attempt the PID-module generalization via Module.equiv_directSum_of_isTorsion and coprime cyclic recombination."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "cyclic-vector",
+    "module-theory",
+    "pid",
+    "rational-canonical-form",
+    "minimal-polynomial"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-cyclic-vector-all-fields",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "LinearMap.toMatrixAlgEquiv",
+      "minpoly.algEquiv_eq",
+      "LinearMap.toMatrix_apply",
+      "Matrix.aeval_self_charpoly",
+      "Matrix.charpoly_natDegree_eq_dim",
+      "Polynomial.aeval_algHom_apply",
+      "Basis.equivFun_apply",
+      "Module.finBasis"
+    ]
+  },
+  "started": "2026-06-15T19:32:03.122Z",
+  "lastUpdate": "2026-06-15T20:55:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFields.lean",
+      "lineCount": 267,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsAristotle.lean",
+      "lineCount": 133,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsAristotle.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean",
+      "lineCount": 137,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean",
+      "lineCount": 689,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "lineCount": 209,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean"
+    }
+  ]
+}
