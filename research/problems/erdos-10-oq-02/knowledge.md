@@ -120,6 +120,45 @@ GS but, as in S1, only weak evidence for it.
 
 **Files (S2):** `research/problems/erdos-10-oq-02/verify_min_powers_parity.py` (new).
 
+## Session 4 (2026-06-15) — the decidability keystone (build-pending Lean)
+
+S3 (`Erdos10OQ02.lean`, PR #24287) proved the **reduction lemma**
+`RepWithAtMost k n ↔ RepDistinct k n` (≤ k powers ⟺ ≤ k *distinct* powers, via
+the `2^a + 2^a = 2^{a+1}` merge). That collapses repeats but leaves exponents
+unbounded, so it does **not** yet make membership a finite search. S4 supplies
+the missing finiteness ingredient and bounds the prime side.
+
+**New file** `proofs/Proofs/Erdos10OQ02Decidable.lean` (build-pending,
+UNREGISTERED — Docker + Aristotle down). All proofs elementary `Multiset`
+algebra + the S3 lemmas; verified on paper, validated numerically (below).
+
+- **K1 — exponent bound.** `lt_two_pow_self : a < 2^a` (self-contained
+  induction, no binary API) ⟹ `exp_lt_of_powSum : a ∈ s → powSum s = n → a < n`
+  (each summand `2^a ≤ powSum s` via `Multiset.single_le_sum`). The one fact S3
+  lacked.
+- **K2 — bounded reduction lemma.**
+  `repWithAtMost_iff_repBoundedDistinct : RepWithAtMost k n ↔ RepBoundedDistinct k n`
+  where `RepBoundedDistinct k n := ∃ s, s.Nodup ∧ s.card ≤ k ∧ (∀ a ∈ s, a ≤ n)
+  ∧ powSum s = n`. Exponents now live in `{0,…,n}`, at most `k` of them ⟹ only
+  finitely many candidate multisets ⟹ membership is decidable in principle.
+- **K3 — prime-side bound.** `isPrimePlusKPowers_bounded`: the prime is `p ≤ n`,
+  the power-part `n − p`; `isPrimePlusKPowers_iff_bounded_distinct` combines both
+  bounds into a finite two-sided search — the predicate a `decide`/`native_decide`
+  membership check enumerates.
+
+**Remaining mechanical step** (next build session): the explicit
+`Decidable (RepWithAtMost k n)` instance via a `Finset.range (n+1)` powerset
+encoding (`Multiset.toFinset` bridge), after which `906 ∉ S_2`, `906 ∈ S_3`, and
+Grechuk `1117175146 ∉ S_3` close by `native_decide`. The file documents this
+encoding precisely.
+
+**Numerical cert** `verify_decidable_membership.py` (new, exact arithmetic,
+PASS): C1 `a < 2^a` and `2^a ≤ n ⟹ a < n`; C2 `RepWithAtMost k n ⟺
+bounded-distinct ⟺ popcount n ≤ k` (n ≤ 200, k ≤ 5, vs naive multiset search);
+C3 `IsPrimePlusKPowers` bounded form ⟺ naive form (n < 400, k < 4), and it
+reproduces the parity caps (905/906 consecutive; all odd n < 2000 in `S_2`, all
+even in `S_3`) plus the Grechuk witness (`1117175146 ∉ S_3`, `∈ S_4`).
+
 ## References
 
 - Granville, A.; Soundararajan, K. (1998). *A binary additive problem of Erdős and
