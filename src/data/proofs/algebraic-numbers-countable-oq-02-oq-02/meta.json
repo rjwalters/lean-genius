@@ -98,11 +98,19 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Cantor's 1874 Nested-Interval Uncountability Proof",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "File docstring, imports, and namespace. States the open question — formalize Cantor's ORIGINAL 1874 nested-interval proof that ℝ is uncountable, predating the 1891 diagonal argument by 17 years. Summarizes the construction (divide each interval into thirds, pick a subinterval avoiding f(n), force strictly increasing left endpoints) and the five headline results, with the historical reference to Cantor's 1874 paper.",
+      "mathContext": "Given any $f : \\mathbb{N} \\to \\mathbb{R}$, build nested intervals $[a_n, b_n]$ with $a_n$ strictly increasing; then $x = \\sup_n a_n$ satisfies $a_n < x \\le b_n$ and $f(n) \\neq x$ for every $n$, so $\\mathbb{R}$ is uncountable."
+    },
+    {
       "id": "construction",
       "title": "The Nested Interval Construction",
       "summary": "Defines the recursive nested interval function using thirds-based subdivision. At each step, either the middle third or the right third is chosen to avoid f(n).",
-      "startLine": 48,
-      "endLine": 80,
+      "startLine": 43,
+      "endLine": 81,
       "mathContext": "Given $[a_n, b_n]$ with $d = b_n - a_n$, choose $[a_n + d/3, a_n + 2d/3]$ (middle) or $[a_n + 2d/3, b_n]$ (right) to exclude $f(n)$."
     },
     {
@@ -118,24 +126,32 @@
       "title": "Global Monotonicity and Bridge Lemmas",
       "summary": "Elevates pointwise successor inequalities to global StrictMono/Antitone forms and proves the cross-index bound: any left endpoint a(m) ≤ any right endpoint b(n), even for different indices. This cross-index bound is the key auxiliary enabling the sSup argument.",
       "startLine": 155,
-      "endLine": 181,
+      "endLine": 183,
       "mathContext": "Cross-index: for all $m, n$, $a_m \\leq b_n$. If $m \\leq n$: $a_m \\leq a_n < b_n$ (monotone $a$). If $m > n$: $a_m < b_m \\leq b_n$ (antitone $b$). Enables `csSup_le` to show $\\sup_m a_m \\leq b_n$ for any $n$."
     },
     {
       "id": "limit",
       "title": "The Limit Point",
       "summary": "Defines the limit point as sSup of left endpoints and proves it exceeds every aₙ and is at most every bₙ.",
-      "startLine": 182,
-      "endLine": 220,
+      "startLine": 184,
+      "endLine": 215,
       "mathContext": "$x = \\sup\\{a_n\\}$ satisfies $a_n < x \\leq b_n$ for all $n$."
     },
     {
       "id": "main-results",
       "title": "Main Theorems",
       "summary": "Proves the limit point is not in range(f), no surjection ℕ → ℝ exists, and ℝ is uncountable.",
-      "startLine": 215,
-      "endLine": 285,
+      "startLine": 216,
+      "endLine": 258,
       "mathContext": "$f(n) \\neq x$ for all $n$: from exclusion, $f(n) \\leq a_{n+1} < x$ or $f(n) > b_{n+1} \\geq x$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 259,
+      "endLine": 285,
+      "summary": "Closing summary docstring: inventories the development (13 numbered headline theorems, 0 sorries, 0 axioms) from the thirds construction through the sSup limit point to ℝ's uncountability, notes the key technique (strict increase of left endpoints is what excludes boundary cases), and the historical significance — Cantor's 1874 argument predating the 1891 diagonal proof.",
+      "mathContext": "Fully machine-checked: 0 sorries, 0 axioms. The strict monotonicity $a_n < a_{n+1}$ is essential — without it, $f(n)$ could coincide with a boundary point equal to the limit and escape exclusion."
     }
   ],
   "crossReferences": [
