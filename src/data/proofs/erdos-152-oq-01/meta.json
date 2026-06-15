@@ -36,7 +36,7 @@
       "Sidon difference injectivity: at most one pair (x, x+1) can both be in A",
       "When min+1 ∉ A and min >= 1: 2·min is isolated (below minimum sum, and min+1 not available for the +1 sum)",
       "When max-1 ∉ A: 2·max is isolated (above maximum sum, and max-1 not available for the -1 sum)",
-      "The second-nearest element technique: if the only consecutive pair is at max, the second-smallest element s2 satisfies s2+1 ∉ A, making max+s2 isolated",
+      "The second-nearest element technique: if the only consecutive pair is at max, the second-smallest element s2 satisfies s2+1 ∉ A, making min+s2 isolated (paired with 2·min); the mirror case at min uses max+second-largest",
       "The Sidon condition forces at most one consecutive pair: two such pairs would collapse A to size ≤ 2, contradicting |A| ≥ 7, and this uniqueness is the key constraint enabling the ≥ 2 bound"
     ],
     "prerequisites": [
