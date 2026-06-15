@@ -101,12 +101,12 @@
   },
   "crossReferences": [
     {
-      "slug": "bounded-prime-gaps",
+      "targetId": "bounded-prime-gaps",
       "relationship": "extends",
       "description": "Parent proof containing admissible_quadruple_0_2_6_8 witness and admissible_subset lemma used in the D(4)=8 proof"
     },
     {
-      "slug": "bounded-prime-gaps-oq-03-oq-01",
+      "targetId": "bounded-prime-gaps-oq-03-oq-01",
       "relationship": "extends",
       "description": "Prior OQ file proving D(2)=2 and D(3)=6, providing not_admissible_ap_diff2 and minAdmissibleDiameter_2/3 used here"
     }

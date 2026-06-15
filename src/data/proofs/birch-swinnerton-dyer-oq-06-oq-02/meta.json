@@ -124,13 +124,11 @@
   },
   "crossReferences": [
     {
-      "id": "birch-swinnerton-dyer-oq-06",
-      "title": "BSD Verification for Curve 389a: Height Pairing Matrix",
+      "targetId": "birch-swinnerton-dyer-oq-06",
       "relationship": "This entry is a sub-question of OQ-06, which axiomatizes the height pairing matrix H = [[h₁₁, h₁₂], [h₁₂, h₂₂]] for curve 389a. The Weierstrass computations here connect the abstract matrix entries to explicit group law calculations."
     },
     {
-      "id": "birch-swinnerton-dyer",
-      "title": "Birch and Swinnerton-Dyer Conjecture",
+      "targetId": "birch-swinnerton-dyer",
       "relationship": "The parent conjecture formulated in the 1960s. The regulator det(H) computed via the height pairing matrix of OQ-06 enters the BSD formula's main prediction relating L''(E,1) to arithmetic invariants of E over ℚ."
     }
   ],

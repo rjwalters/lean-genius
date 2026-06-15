@@ -155,16 +155,12 @@
   },
   "crossReferences": [
     {
-      "type": "parent",
-      "slug": "greens-theorem-oq-01-oq-01-oq-02",
-      "title": "Standalone Interval Integral Swap (real-valued)",
-      "relation": "Direct parent. Establishes the three real-valued `intervalIntegral_swap` theorems. This OQ-03 sibling generalizes them to Banach codomain E by verbatim port (this file)."
+      "targetId": "greens-theorem-oq-01-oq-01-oq-02",
+      "relationship": "Direct parent. Establishes the three real-valued `intervalIntegral_swap` theorems. This OQ-03 sibling generalizes them to Banach codomain E by verbatim port (this file)."
     },
     {
-      "type": "ancestor",
-      "slug": "greens-theorem",
-      "title": "Green's Theorem (line integrals around closed curves)",
-      "relation": "Ancestor. Green's theorem ultimately requires Fubini for line-integral splitting; the Bochner-valued generalization (this file) is a building block for Banach-valued differential-form analogues of Green's theorem."
+      "targetId": "greens-theorem",
+      "relationship": "Ancestor. Green's theorem ultimately requires Fubini for line-integral splitting; the Bochner-valued generalization (this file) is a building block for Banach-valued differential-form analogues of Green's theorem."
     }
   ]
 }
