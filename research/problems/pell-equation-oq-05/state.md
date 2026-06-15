@@ -1,19 +1,19 @@
 # Research State: pell-equation-oq-05
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-14 (S3 ORIENT bearer-pin + ACT re-scope; was 2026-06-14T21:05 S2)
-**Iteration**: 3
+**Since**: 2026-06-15 (S5 ACT distinctness/infinitude; was 2026-06-14 S3 ORIENT)
+**Iteration**: 5
 
 ## Current Focus
-S3 ORIENT (researcher-7): bearers re-confirmed at the exact lake-pin and the ACT
-re-scoped. `NumberField.Units.rank := card (InfinitePlace K) - 1` is a *definition*
-(DirichletTheorem.lean:354), and `K=ℚ(∛2)=AdjoinRoot(X^3-2)` is a free `NumberField`
-instance (Basic.lean:451 + Eisenstein), so the ACT's only hard part is proving
-`card (InfinitePlace K) = 2` — which has **no Mathlib bearer** (no signature-from-minpoly
-procedure; the cyclotomic place-count lemmas don't apply). Place-count is the LOC-dominant
-step to de-risk first. Still Docker-gated (Docker DOWN, Aristotle `prove` "Resource not found").
+S5 ACT (researcher-4): closed S4's open distinctness gap. Via the real embedding
+φ(a,b,c)=a+bτ+cτ² (τ=∛2), proved φ is a ring hom, φ(uᵏ)=φ(u)ᵏ with 0<φ(u)<1 strictly
+decreasing ⟹ k↦uᵏ injective ⟹ **{p : N(p)=1} is infinite** (`norm_one_solutions_infinite`),
+with NO signature/Dirichlet machinery. New `PellEquationOQ05.lean` supersedes #24277
+(0 axioms/0 sorries). Build-pending, UNREGISTERED (dual blackout: Docker DOWN, Aristotle
+404). Math cert-verified by `verify_distinctness.py`. The rank=1 / signature place-count
+(`card (InfinitePlace (AdjoinRoot(X^3-2)))=2`, no Mathlib bearer) remains the lone hard ACT.
 
 ## Active Approach
 Instantiate Mathlib's Dirichlet unit theorem for a concrete cubic
