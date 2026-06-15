@@ -467,3 +467,32 @@ the import), repair the two residual spots if needed, then register. M2 (grid-tr
 sign) unchanged. **Recommendation: this problem is effectively infrastructure-BLOCKED** —
 12 consecutive sessions under the same Docker+Aristotle outage; further build-free passes
 have sharply diminishing returns until a backend returns.
+
+### Session 2026-06-15 (S13, researcher-5) — added the arbitrary-element Zolotarev sign lemma (build-pending)
+
+**Mode:** CONTINUE → ACT. Dual blackout **reconfirmed live this session**: `docker info` times
+out, and the Aristotle MCP `prove` tool returned `"Resource not found"` on a trivial `n + 0 = n`
+ping. So no machine verification; this is a name-checked source addition, not a build.
+
+S12 left the M1 file (`QuadraticReciprocityAlgorithmOQ03.lean`, UNREGISTERED) stopping at
+`sign_mulLeft_generator` (sign of a **generator** = −1). The next genuinely-new forward step —
+the sign of an **arbitrary** element, which is the actual Zolotarev sign computation — was still
+absent from Lean. Added it rather than a 13th prose-only pass:
+
+- **`sign_mulLeft_eq_neg_one_zpow`** : for `a = g ^ k` (g a generator of a finite group of even
+  order), `Equiv.Perm.sign (Equiv.mulLeft a) = (-1) ^ k` (k : ℤ, RHS is zpow in ℤˣ). Proof:
+  `mulLeft (g^k) = (mulLeft g)^k` via the same inline `G →* Perm G` + `map_zpow` wiring already
+  in `isCycle_mulLeft_of_generator`; then `map_zpow` on the `sign` MonoidHom; then
+  `sign_mulLeft_generator`. **No new bearer-name risk** — it consumes only `map_zpow` (S12-pinned)
+  and the file's own prior lemma, so it shares their exact (un)verified status.
+
+**What remains for the headline** `legendreSym p a = sign (mulLeft a)`: (i) Euler's criterion tie
+`legendreSym p a = (-1)^k` (k = discrete log of a to a primitive root), (ii) the field
+`mulLeft₀`/units `mulLeft` sign bridge (S2 verified numerically: same sign). Both still prose
+above. M2 (grid-transpose) unchanged.
+
+**Honest status:** file remains UNVERIFIED / UNREGISTERED. The S12 recommendation stands — this
+problem is infrastructure-BLOCKED pending a live Docker or Aristotle backend; the first such
+session should `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair the few
+unverified spots (inline-hom `map_zpow` glue, `support = univ`, even-power collapse, and this new
+lemma's `map_zpow` chain), then register. No further blind transcription is recommended until then.

@@ -30,6 +30,17 @@ Remaining unverified-at-build: the `support = univ` computation and the final
 even-power `(-1)^card = 1` collapse; first live-backend session should
 `docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair if needed, register.
 
+**Changelog (S13, 2026-06-15, blackout STILL live — `docker info` times out, Aristotle
+`prove` returns `Resource not found` on a trivial ping).** Added the next forward lemma,
+`sign_mulLeft_eq_neg_one_zpow`: for `a = g ^ k` (g a generator, even order),
+`sign (mulLeft a) = (-1) ^ k`. This is the Zolotarev *sign computation* for an arbitrary
+element (previously the file only handled a generator). It reuses the same already-pinned
+`map_zpow` + inline `G →* Perm G` wiring as `isCycle_mulLeft_of_generator`, so it shares that
+construct's (un)verified status — no new bearer-name risk. File stays UNREGISTERED. What still
+remains for the headline `legendreSym p a = sign (mulLeft a)`: (i) Euler's criterion tie
+`legendreSym p a = (-1)^k`, (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge — both still
+prose in knowledge.md.
+
 ## What this targets
 
 The open question on `quadratic-reciprocity-algorithm` asks for a *permutation-sign*
@@ -137,5 +148,33 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
   have : ((-1 : ℤˣ)) ^ (Fintype.card G) = 1 := by
     rw [hk]; simp [pow_add, pow_mul]
   rw [this]
+
+/-! ## Zolotarev sign of an arbitrary element via its discrete logarithm -/
+
+/-- For `a = g ^ k` with `g` a generator of a finite group of even order, the sign of
+left-multiplication by `a` is `(-1) ^ k`. This is the full Zolotarev *sign computation*:
+combined with Euler's criterion `legendreSym p a = (-1) ^ k` (where `k` is the discrete log
+of `a` to the base of a primitive root) it yields Zolotarev's lemma
+`legendreSym p a = sign (mulLeft a)` on `(ZMod p)ˣ`.
+
+Proof: `mulLeft (g ^ k) = (mulLeft g) ^ k` (the inline `G →* Perm G` monoid hom + `map_zpow`,
+same wiring as `isCycle_mulLeft_of_generator`), then `sign` is a `MonoidHom` so it commutes
+with `zpow` (`map_zpow` again), and `sign (mulLeft g) = -1` by `sign_mulLeft_generator`.
+
+**UNVERIFIED (blackout S13).** The Euler-criterion tie and the field/units sign bridge that
+finish the headline statement remain prose in `knowledge.md`. -/
+theorem sign_mulLeft_eq_neg_one_zpow {G : Type*} [Group G] [Fintype G] [DecidableEq G]
+    {g : G} (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (hG : 2 ≤ Fintype.card G)
+    (heven : Even (Fintype.card G)) {a : G} {k : ℤ} (ha : a = g ^ k) :
+    Equiv.Perm.sign (Equiv.mulLeft a) = (-1) ^ k := by
+  have hmono : (Equiv.mulLeft a : Equiv.Perm G) = (Equiv.mulLeft g) ^ k := by
+    have hz := map_zpow
+      ({ toFun := Equiv.mulLeft
+         map_one' := by ext x; simp [Equiv.coe_mulLeft]
+         map_mul' := fun a b => by
+           ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, mul_assoc] } :
+        G →* Equiv.Perm G) g k
+    rw [ha]; simpa using hz
+  rw [hmono, map_zpow, sign_mulLeft_generator hg hG heven]
 
 end QuadraticReciprocityAlgorithmOQ03
