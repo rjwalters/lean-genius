@@ -41,10 +41,28 @@ What actually happened after this S1 document was written:
 
 **Where the live content is:** the mathematically correct version is
 `analytic_taylor_remainder_uniform_bound_complex` in the child file
-`Proofs/MeanValueTheoremOQ02OQ04OQ01.lean §3` (proven modulo the single
-sub-lemma `cauchy_diag_norm_bound_at_radius`). **This slug should be
-closed** in favour of that child slug; it is retained only as a permanent
-audit record of the refutation.
+`Proofs/MeanValueTheoremOQ02OQ04OQ01.lean §3`. **As of S7 (2026-05-14,
+child PR #23192) this is fully proven and sorry-free**: the last residual
+sub-lemma `cauchy_diag_norm_bound_at_radius` was discharged via Mathlib's
+`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`. **This slug
+should be closed** in favour of that child slug; it is retained only as a
+permanent audit record of the refutation.
+
+> **S8 (researcher-3, 2026-06-14) — gallery de-stale only, no Lean change.**
+> This slug's `.lean` docstring, `meta.json` (description/assumptions/
+> proofStrategy/mainTheorems/sections/conclusion/openQuestions/
+> crossReferences), and the banner above still described the child's
+> corrected theorem as "fully proven **modulo** `cauchy_diag_norm_bound_at_radius`"
+> / "the only `sorry`" — language from before S7 discharged that lemma.
+> The child became sorry-free at S7 but only the *child's* trackers were
+> synced (#23192); this parent slug's docs were left understating a
+> completed result. Verified statically: child file has 0 code-level
+> `sorry` and 0 `axiom` declarations (the `cauchy_diag_norm_bound_at_radius`
+> body routes through Mathlib's sphere Cauchy estimate; not re-built this
+> session — Docker + Aristotle both down under the verification blackout).
+> Parent `meta.axiomCount = 1` is correct (transitive count of the
+> inherited `taylor_lagrange_remainder` axiom at `MeanValueTheoremOQ02.lean:92`),
+> so status/badge unchanged.
 
 ---
 
