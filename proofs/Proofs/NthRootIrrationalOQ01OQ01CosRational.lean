@@ -25,7 +25,7 @@
   * `cos(2π/4) = cos(π/2) = 0`                         (`Real.cos_pi_div_two`)
   * `cos(2π/6) = cos(π/3) = 1/2`                       (`Real.cos_pi_div_three`)
 
-  Results (0 axioms, 0 sorries; build-pending — Docker/Aristotle blackout at authoring):
+  Results (0 axioms, 0 sorries; Docker-verified green 2026-06-15):
   - `cos_two_pi_div_{one,two,three,four,six}_rational` — the five exceptional cases.
   - `cos_two_pi_div_rational_of_mem` — the bundled statement over `n ∈ {1,2,3,4,6}`.
 
