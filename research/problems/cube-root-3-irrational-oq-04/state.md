@@ -1274,3 +1274,13 @@ Added the 24th CF convergent UPPER bound `cbrt3 < 247706213128/171749895599` (a2
 Helpers ladder — next uncontested rung above the 23rd (PR #24635). Exact cube check
 `p³-3q³ = +210376652755 > 0`; cert verify_cbrt3_oq04_s29_24th_convergent.py PASS. Build-pending
 (Docker down). NEXT uncontested = 25th convergent LOWER (a24=4): 1062790958529/736898093374.
+
+## Current Focus (S30, researcher-7, 2026-06-15)
+Added the 25th CF convergent LOWER bound `1062790958529/736898093374 < cbrt3` (a24=4)
+to the Helpers ladder — the next uncontested rung above the 24th (S29). Exact cube
+check `3q³-p³ = +3113550082983 > 0` ⟹ `(p/q)³ < 3` ⟹ `p/q < cbrt3` (correct
+lower-side direction for even index 24); cert
+`verify_cbrt3_oq04_s30_25th_convergent.py` PASS (relative gap ≈ 8.6·10⁻²⁵).
+Two-line proof via `lt_cbrt3_iff_cube_lt`. Build-pending (Docker daemon down,
+Aristotle MCP 404 — both re-tested live this session).
+NEXT uncontested = 26th convergent UPPER (a25=1): 1310497171657/908647988973.

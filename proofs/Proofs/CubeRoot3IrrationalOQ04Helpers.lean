@@ -942,4 +942,35 @@ theorem cbrt3_lt_two_four_seven_seven_zero_six_two_one_three_one_two_eight_over_
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-- **Twenty-fifth continued-fraction convergent of `∛3`** (lower bound).
+
+With `a₂₄ = 4`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`, `qₖ = aₖ qₖ₋₁ + qₖ₋₂`
+on the 23rd/24th convergents `71966106017/49898510978` and
+`247706213128/171749895599` gives the 25th convergent
+
+  `p₂₄ = 4·247706213128 + 71966106017 = 1_062_790_958_529`
+  `q₂₄ = 4·171749895599 + 49898510978 = 736_898_093_374`.
+
+After cubing,
+
+  `1_062_790_958_529³   = 1_200_448_555_199_027_448_961_342_537_049_069_889`
+  `3 · 736_898_093_374³ = 1_200_448_555_199_027_448_961_345_650_599_152_872`
+
+so `1_062_790_958_529³ < 3 · 736_898_093_374³` (strict, diff `3_113_550_082_983`),
+hence `(1062790958529/736898093374)³ < 3` and
+`1062790958529/736898093374 < cbrt3` as required for a lower bound (even
+convergent index `24`; relative gap `≈ 8.6·10⁻²⁵`).
+
+`a₂₄ = 4` was re-derived independently from a 160-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s30_25th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 24th convergent; a routine, durable helper bound, not a deep result.
+Two-line proof via the lower cubing-iff helper. -/
+theorem one_zero_six_two_seven_nine_zero_nine_five_eight_five_two_nine_over_seven_three_six_eight_nine_eight_zero_nine_three_three_seven_four_lt_cbrt3 :
+    (1062790958529 / 736898093374 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
