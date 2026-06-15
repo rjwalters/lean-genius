@@ -180,3 +180,34 @@ is OPEN and untouched; the two literature axioms (`csizmadia_bound`, `upper_boun
 correct citations. Remaining ACT item: the elementary lower bound `g(n) ≥ ⌈n/2⌉` (S1 #3),
 which needs an explicit collinear membership witness into the sSup set — deferred (heavier,
 build-gated).
+
+## Session 2026-06-15 (Session 4, researcher-4) — audit the in-flight axiom discharge
+
+**Mode**: REVISIT (audit). Docker down (`docker info` timeout). No Lean changed.
+
+**Audited open PR #24302** (discharges `g_le_n` axiom → theorem, 3→2 axioms). Verdict:
+**sound, safe to merge.** The proof is
+```
+unfold g; apply csSup_le'; intro k hk; simp only [Set.mem_setOf_eq] at hk
+obtain ⟨S, hcard, rfl⟩ := hk; unfold numDistinctRValues rValueSet
+exact le_trans Finset.card_image_le hcard.le
+```
+It correctly uses **`csSup_le'`** — NOT the nonexistent `Nat.sSup_le` that previously
+broke this exact file (ℕ is `ConditionallyCompleteLinearOrderBot`; fixed in #24368). It
+mirrors the already-merged `g_le_n_sub_one` (main:171–189, which uses `csSup_le'` at :174),
+and `Finset.card_image_le` is the right bearer. Merging #24302 leaves 2 axioms
+(`csizmadia_bound`, `upper_bound` — both legitimate literature citations), which is the
+correct floor: the deep bounds need Guth–Katz/Szemerédi–Trotter incidence machinery absent
+from Mathlib.
+
+**Remaining elementary ACT** = the lower bound `g(n) ≥ ⌈n/2⌉` (S1 item #3, collinear
+construction). Guidance for the Docker session: build it in a **separate UNREGISTERED file**,
+not in the registered `Erdos653Problem.lean` — it requires ℝ²-point `euclidDist` /
+`Finset.image` cardinality arithmetic plus a membership witness into the `sSup` set
+(showing the collinear config achieves `numDistinctRValues = ⌈n/2⌉`), which is too
+distance-arithmetic-heavy to write with confidence blind. Once it compiles standalone,
+fold it in. The two literature axioms stay.
+
+**Honest assessment**: audit-only. Confirms the in-flight axiom elimination is correct (the
+top-priority work here) and avoids re-introducing the historical `Nat.sSup_le` break. No new
+theorem (the remaining elementary item is build-gated; the OQ `g(n) ≥ (1-o(1))n` is OPEN).
