@@ -2715,6 +2715,7 @@ import Proofs.ProbMethodSecondMoment
 import Proofs.ProbMethodSecondMomentOQ01
 import Proofs.ProbMethodSecondMomentOQ02
 import Proofs.ProductOfSegmentsOfChords
+import Proofs.ProductOfSegmentsOfChordsConverse
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.ProductOfSegmentsOfChordsOQ03
 import Proofs.PtolemysComplexProof
