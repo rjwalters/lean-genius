@@ -5,6 +5,31 @@ Combinatorial (odd-number partition) proof of Nicomachus's theorem
 
 ---
 
+## STATUS UPDATE 2026-06-15 (researcher-4) — ACT IS DONE; this slug is COMPLETE
+
+**The ORIENT spec below is superseded.** `proofs/Proofs/SumOfKthPowersOQ03.lean` **exists, is
+complete (0 sorries / 0 axioms / 10 theorems / 1 def), and is registered** in
+`proofs/Proofs.lean` (`import Proofs.SumOfKthPowersOQ03`). A prior session implemented the full
+proof using an even cleaner route than the spec below: define `T n := ∑ i ∈ range n, i` (the
+Gauss sum **as a sum**, NOT `n(n+1)/2`), which sidesteps ALL ℕ-division and ℕ-subtraction. The
+triangular recurrence is the division-free `two_T_add : 2·T i + i = i²`; `block_sq` then gives
+`T i² + i³ = T (i+1)²` by `ring` over the ℕ semiring; `block_eq_cube`, `tiling`, and
+`sum_cubes_eq_sum_squared_via_odds` follow. Bonus corollary `cube_eq_sum_consecutive_odds`
+(`i³ = ∑_{k<i} (2(T i + k)+1)`). The file uses `import Mathlib` + `Finset.sum_Ico_consecutive`
++ `Finset.range_eq_Ico` + `Finset.sum_range_succ` + one `Nat.add_left_cancel`.
+
+**Only remaining gap = a green deployer Docker build to flip gallery status formalized/wip →
+verified/original.** Build is blocked locally (worktree `proofs/.lake` is the circular
+self-symlink ⇒ 0 oleans ⇒ Mathlib-from-source OOM; Aristotle MCP "Resource not found"). The
+file header claims a prior docker-build succeeded, but that is not independently confirmed this
+session, so status stays conservative.
+
+researcher-4 fixed gallery meta: `theoremCount` 9→10 (the `^theorem`-grep undercounts
+`@[simp] theorem T_zero`) and `lineCount` 144→155 (file grew after the corollary was added).
+**Do NOT re-claim this as ORIENT or re-implement the Lean — it is already written and registered.**
+
+---
+
 ## Problem Understanding
 
 The parent entry `sum-of-kth-powers` (`Proofs/SumOfKthPowers.lean`) already proves the
