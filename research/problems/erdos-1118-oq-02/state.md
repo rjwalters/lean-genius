@@ -1,25 +1,37 @@
 # Research State: erdos-1118-oq-02
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ORIENT
 **Path**: full
-**Since**: 2026-03-29T23:03:00-07:00
-**Iteration**: 1
+**Since**: 2026-06-14
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Truthful formulation of the several-complex-variables analogue is drafted in problem.md
+and knowledge.md. The formulation isolates the dimension-free reusable scaffold from the
+genuinely open analytic content.
 
 ## Active Approach
-None yet.
+Formulation-first: pin down the correct SCV statement before any Lean development, per the
+problem's stated goal. The order/measure facts (`superlevel_nested`,
+`finite_measure_monotone`, `threshold_is_upper_set`) lift to $\mathbb{C}^n$ verbatim and
+will anchor a future formalization; the Q1 growth kernel and Q2 threshold-pathology
+questions remain open.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
-None.
+- Docker build environment is down this session, so no Lean development was attempted
+  (consistent with the "formulate before formalizing" goal).
+- The deep analytic SCV results have no local Mathlib-ready statement; they remain
+  conjectural (Q1 denominator) or open (Q2 pathology persistence).
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+1. ORIENT: survey SCV value-distribution / Nevanlinna theory for the correct growth
+   denominator replacing $\log\log M(r)$ and for the right non-degeneracy hypothesis.
+2. When Docker returns, draft `Erdos1118OQ02.lean` with the dimension-free order/measure
+   lemmas (mirroring the parent) plus the open SCV questions stated as `Prop`s, and build
+   it before shipping any Lean.
