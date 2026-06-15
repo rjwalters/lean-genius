@@ -53,39 +53,60 @@
   },
   "sections": [
     {
-      "id": "preliminaries",
-      "title": "Preliminaries: Upper Density and Sumsets",
+      "id": "header",
+      "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 40,
-      "summary": "Module documentation and basic definitions restated for import independence: upper density via limsup, positive upper density predicate, and the sumset operation B +_s C with custom notation."
+      "endLine": 26,
+      "summary": "Module docstring and namespace Erdos109OQ01 for the OQ-01 branch of Erdős Problem 109 (sumsets of positive-upper-density sets and gap/IP-set structure).",
+      "mathContext": "Erdős #109 (oq-01): structural questions on sumsets $B+C$ of sets with positive upper density, via syndeticity and IP-set / Hindman theory."
+    },
+    {
+      "id": "preliminaries",
+      "title": "Part I: Preliminaries: Upper Density and Sumsets",
+      "startLine": 27,
+      "endLine": 41,
+      "summary": "Defines upperDensity (Banach upper density), HasPositiveUpperDensity, and the Sumset B+C, restated locally for import independence from the parent file.",
+      "mathContext": "$\\overline{d}(A)=\\limsup_N |A\\cap[1,N]|/N$; $B+C=\\{b+c\\}$."
     },
     {
       "id": "gap-conditions",
-      "title": "Gap Condition Definitions",
+      "title": "Part II: Gap Conditions",
       "startLine": 42,
-      "endLine": 78,
-      "summary": "Defines the gap condition hierarchy: IsSyndetic (bounded gaps), IsThick (arbitrarily long runs), IsPiecewiseSyndetic (contains intersection of syndetic and thick \u2014 corrected from original too-strong definition). Proves syndetic sets are infinite and states (with sorry) that positive density implies piecewise syndetic."
+      "endLine": 85,
+      "summary": "Defines the gap predicates IsSyndetic (bounded gaps), IsThick (contains arbitrarily long intervals), and IsPiecewiseSyndetic. States the axiom posUpperDensity_piecewiseSyndetic (positive upper density implies piecewise syndetic) and proves syndetic_infinite.",
+      "mathContext": "Syndetic: bounded gaps; thick: arbitrarily long runs; piecewise-syndetic: syndetic on arbitrarily long intervals."
     },
     {
       "id": "sumset-gap-strengthening",
-      "title": "Gap-Controlled Sumset Conjectures",
-      "startLine": 80,
-      "endLine": 115,
-      "summary": "States the gap-controlled sumset conjecture (proved by MRR: arbitrary gap function f) and the open syndetic sumset question (can B have bounded gaps?). Proves sumset_density_constraint (upperDensity C \u2264 upperDensity A) via decomposition into shift invariance and monotonicity helper lemmas."
+      "title": "Part III: Sumset Gap Strengthening",
+      "startLine": 86,
+      "endLine": 254,
+      "summary": "Defines the conjecture predicates GapControlledSumset and SyndeticSumsetQuestion and proves sumset_density_constraint, the gap-controlled strengthening of the sumset structure statement.",
+      "mathContext": "Whether $B+C$ inherits gap-control / syndeticity from density hypotheses on $B,C$."
     },
     {
       "id": "ip-sets-hindman",
-      "title": "IP Sets and Hindman's Theorem",
-      "startLine": 117,
-      "endLine": 259,
-      "summary": "Defines IP sets (finite sums from infinite sequences) and IP* sets (intersecting every IP set). Axiomatizes Hindman's theorem. Corrects the false claim that positive density implies containing an IP set. The main proved result: ip_set_sumset_structure shows every IP set contains an infinite sumset B + C via odd/even index splitting of the generating sequence."
+      "title": "Part IV: Connection to IP Sets (Hindman's Theorem)",
+      "startLine": 255,
+      "endLine": 378,
+      "summary": "Defines IsIPSet (finite-sums set) and IsIPStar, states Hindman's theorem as an axiom (hindman_theorem: any finite coloring of ℕ has a monochromatic IP set) plus posUpperDensity_ipStar, and proves ip_set_sumset_structure.",
+      "mathContext": "Hindman: any finite coloring of ℕ admits a monochromatic IP set (set of finite sums of an infinite sequence)."
     },
     {
       "id": "further-results",
-      "title": "Further Results and Summary",
-      "startLine": 261,
-      "endLine": 356,
-      "summary": "Additional results: IP sets are nonempty and infinite, thick sets are infinite, Hindman applied to 2-colorings, sumset subset characterization. Concluding summary documents what's proved, what's axiomatized, and the mathematical correction applied."
+      "title": "Part V: Further Results on IP Sets and Gap Conditions",
+      "startLine": 379,
+      "endLine": 439,
+      "summary": "Further proved consequences: ip_set_nonempty, ip_set_infinite, thick_infinite, hindman_two_color (the 2-coloring corollary), and sumset_subset_iff.",
+      "mathContext": "Corollaries tying IP-sets, thickness, and sumset inclusion together."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary",
+      "startLine": 440,
+      "endLine": 473,
+      "summary": "Closing summary docstring (What's Proved with 0 sorries, the list of 3 axioms — posUpperDensity_piecewiseSyndetic, hindman_theorem, posUpperDensity_ipStar — and Mathematical Status); closes namespace Erdos109OQ01.",
+      "mathContext": "Status: 8 theorems proved, 0 sorries, 3 axioms (piecewise-syndetic density, Hindman, IP*-density)."
     }
   ],
   "conclusion": {
