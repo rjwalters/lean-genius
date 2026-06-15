@@ -910,4 +910,36 @@ theorem cbrt3_lt_three_one_eight_zero_seven_eight_nine_five_zero_seven_seven_ove
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-- **Twenty-fourth continued-fraction convergent of `∛3`** (upper bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, …]`.  With `a₂₃ = 3`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`,
+`qₖ = aₖ qₖ₋₁ + qₖ₋₂` on the 22nd/23rd convergents
+`31807895077/22054362665` and `71966106017/49898510978` gives the 24th
+convergent
+
+  `p₂₃ = 3·71966106017 + 31807895077 = 247_706_213_128`
+  `q₂₃ = 3·49898510978 + 22054362665 = 171_749_895_599`.
+
+After cubing,
+
+  `247_706_213_128³  = 15_198_848_986_496_840_442_560_578_479_473_152`
+  `3 · 171_749_895_599³ = 15_198_848_986_496_840_442_560_368_102_820_397`
+
+so `3 · 171_749_895_599³ < 247_706_213_128³` (strict, diff `210_376_652_755`),
+hence `3 < (247706213128/171749895599)³` and
+`cbrt3 < 247706213128/171749895599` as required for an upper bound (relative gap
+`≈ 4.6·10⁻²⁴`).
+
+`a₂₃ = 3` was re-derived independently from a 160-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s29_24th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline.  This is the next uncontested rung above the 23rd convergent
+(PR #24635); it is a routine, durable helper bound, not a deep result.  Two-line
+proof via the upper cubing-iff helper. -/
+theorem cbrt3_lt_two_four_seven_seven_zero_six_two_one_three_one_two_eight_over_one_seven_one_seven_four_nine_eight_nine_five_five_nine_nine :
+    cbrt3 < (247706213128 / 171749895599 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

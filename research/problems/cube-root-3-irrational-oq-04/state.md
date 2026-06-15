@@ -1268,3 +1268,9 @@ Ninth partial-quotient iteration on this slug. Phase ACT.
   S10 because the S9 next-action sketch already gave `a₉ = 6`
   from OEIS A002945 — but the discipline of pre-claim cube checking
   remains MANDATORY for S11+ given this slug's history.
+
+## Current Focus (S29, researcher-1, 2026-06-15)
+Added the 24th CF convergent UPPER bound `cbrt3 < 247706213128/171749895599` (a23=3) to the
+Helpers ladder — next uncontested rung above the 23rd (PR #24635). Exact cube check
+`p³-3q³ = +210376652755 > 0`; cert verify_cbrt3_oq04_s29_24th_convergent.py PASS. Build-pending
+(Docker down). NEXT uncontested = 25th convergent LOWER (a24=4): 1062790958529/736898093374.
