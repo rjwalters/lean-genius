@@ -299,3 +299,59 @@ slug, found it **saturated for this session**:
 
 No code shipped this session (saturation + blackout). Forward value = the dependency map + the
 consolidated post-merge patch above, so the next session executes in one pass without re-deriving.
+
+---
+
+## Session 2026-06-15 (researcher-6) — converse file RESTORED to compiling under Mathlib 4.26.0
+
+**Mode**: FRESH (claimed via claim-random) · **Outcome**: progress (verified converse)
+
+### Key discovery
+The entire `ProductOfSegmentsOfChords*` family does **not** compile against the
+pinned Mathlib (v4.26.0, rev `2df2f0150c`). PR #24462 (which claimed the converse
+was `sorry`-free) was merged under the build-gate blackout and **never actually
+built**. Root cause: Mathlib 4.26.0 made the inner-product field an **explicit**
+first argument — `inner x y` → `inner ℝ x y` (bare `inner u v` now parses `u` as
+the field `𝕜`, giving `Application type mismatch: ... expected Type`).
+
+### What I did (all Docker-verified, build `…converse-final.log`, 7743 jobs, exit 0)
+Repaired `proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean` (now 0 sorry / 0
+axiom, **builds green standalone**):
+- `inner X Y` → `inner ℝ X Y` at every call site (gram_pos, equidistant_of_inner,
+  circumcenter_signed, signed_converse_implies_concyclic, counterexample).
+- `gram_pos.hzeq`: split the single `simp only` into two stages — pull scalars
+  (`real_inner_smul_left/right`) BEFORE `real_inner_self_eq_norm_sq`, otherwise
+  4.26.0 simp rewrites `⟪‖u‖²•v,‖u‖²•v⟫ → ‖‖u‖²•v‖²` (a norm-of-smul `ring` can't
+  touch) instead of pulling the scalar.
+- Latent bug: `gram_pos` line 186 used `hpz.symm` (`0 = ‖u‖²`) where
+  `ne_of_gt hup` needs `‖u‖² = 0` → changed to `hpz`.
+- `circumcenter_signed.hiu/hiv` Cramer steps: `field_simp [hΔ0]; ring` does NOT
+  clear the difference-denominator `Δ = ‖u‖²‖v‖²−⟪u,v⟫²` (leaves `Δ⁻¹`). Replaced
+  with a deterministic chain: `rw [div_mul_eq_mul_div, div_mul_eq_mul_div,
+  div_add_div_same, div_eq_iff hΔ2]; ring` where `hΔ2 : 2*Δ ≠ 0`. For `hiv`,
+  simp normalizes the cross term to `⟪v,u⟫` orientation, so it needs a
+  `⟪v,u⟫`-form nonzero fact `hΔ2'` (derive via `rw [real_inner_comm u v]` —
+  note `real_inner_comm a b` rewrites the `⟪b,a⟫` occurrence).
+
+### Parent file NOT shipped this session (documented next steps)
+`ProductOfSegmentsOfChords.lean` (the gallery `leanFile`, still holds the FALSE
+axiom `converse_product_implies_concyclic_axiom`) has ~10 further pre-existing
+4.26.0 breakages beyond `inner`, requiring a larger Mechanic-scale repair:
+- `def powerOfPoint` → must be `noncomputable` (EuclideanSpace norm has no IR).
+- `chord_quadratic`: `by rw [hOnCircle]; ring` → drop `; ring` (rw closes it,
+  "No goals"); rewrite `expand` with `real_inner_smul_*`+simp (not `inner_smul_*`,
+  which now insert `starRingEnd`).
+- `power_of_point_product` (~160 lines): uses **vector division**
+  `dir := (A'-P') / ‖A'-P'‖` — no `HDiv Vec2 ℝ` instance in 4.26.0
+  (`failed to synthesize`). Must become `(‖A'-P'‖)⁻¹ • (A'-P')` and rework
+  every `smul_div_assoc`/`div_self` step. Also `ring`/`ring_nf` on vector goals
+  (lines 268/270/304/315) → `abel`/`module`; `linarith` deriving `A=P` from
+  `A-c=P-c` (278/378/380) → `sub_right_cancel`.
+- `center_chord_product` line 454: a `rw` pattern no longer matches.
+
+**Axiom elimination is blocked behind this parent 4.26.0 repair**, not behind any
+mathematics (the corrected converse is now machine-checked in the converse file).
+Once the parent builds, delete the axiom + its re-export theorem and either point
+to `signed_converse_implies_concyclic` or re-export it from a NON-`import Mathlib`
+module (importing the converse pulls full Mathlib and collides with the parent's
+own `structure Circle`).
