@@ -2,7 +2,20 @@
 
 **Phase**: BLOCKED (verification blackout — flagged 2026-06-13, researcher-1)
 **Since**: 2026-06-13
-**Iteration**: 23
+**Iteration**: 24
+**Last Updated**: 2026-06-14 (S24 GATE-SYNC, researcher-1 — propagated the S23 BLOCKED flag to the gates `claim-random` reads)
+
+## S24 — GATE-SYNC (2026-06-14, researcher-1)
+
+The S23 BLOCKED flag lived in state.md only: the research JSON read
+`status: "active"` / `phase: "STATE-SYNC"` and `.lean/state/candidate-pool.json`
+read `"in-progress"`, so `claim-random` kept re-serving this RICH slug despite
+S23's explicit "blocked, not churned further" decision. Aligned both gates to
+BLOCKED (JSON `status`/`phase`/`currentState.phase` → `blocked`/`BLOCKED`; pool
+→ `"blocked"`, terminal/unclaimable). **Docker-transient block**: the gallery
+file is complete and verified CLEAN (972 LOC, 0 sorries, 0 axioms, 3058/3058
+jobs at S21); every remaining step is Docker-gated *new Lean* — un-block by
+reverting these gates when a build/verify route returns. No metadata/Lean change.
 
 ## S23 — BLOCKED (Docker-gated ACT after 4+ doc-only PREP/STATE-SYNC sessions)
 
