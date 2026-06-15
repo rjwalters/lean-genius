@@ -1,0 +1,86 @@
+[
+  {
+    "id": "bfp-oq010301-ann-overview",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 9, "endLine": 54 },
+    "type": "context",
+    "title": "The Diagnostic Question: What in Ham Sandwich is Truly Analytic?",
+    "content": "The parent entry derived the n-dimensional Borsuk-Ulam theorem and then stated the Ham Sandwich theorem as a bare axiom, with the honest note that the genuine obstruction is the continuity of the bisecting-measure function. This file performs a precise separation: it proves the entire topological core outright from Borsuk-Ulam and isolates the lone irreducible input as a single Lebesgue-continuity statement. No new axioms are introduced; the file depends only on the inherited Borsuk-Ulam axiom from BorsukUlam.lean.",
+    "mathContext": "Stone-Tukey (1942): any $n$ Lebesgue-measurable bodies in $\\mathbb{R}^n$ admit a hyperplane $H$ with $\\mathrm{vol}(B_i \\cap H^+) = \\mathrm{vol}(B_i \\cap H^-)$ for all $i$. Classically a corollary of Borsuk-Ulam: an odd continuous map $S^n \\to \\mathbb{R}^n$ must vanish.",
+    "significance": "context",
+    "relatedConcepts": ["Ham Sandwich theorem", "Borsuk-Ulam theorem", "measure bisection", "axiomatization vs proof", "Stone-Tukey"],
+    "prerequisites": ["measure theory", "algebraic topology"]
+  },
+  {
+    "id": "bfp-oq010301-ann-reduction",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 66, "endLine": 81 },
+    "type": "insight",
+    "title": "The Abstract Topological Reduction",
+    "content": "ham_sandwich_reduction captures the entire topological content in one lemma: any continuous odd map F on the sphere, together with a 'bridge' predicate where a zero of F forces the desired property, yields a point with that property. The proof is a two-line application of borsuk_ulam_antipodal_collapse — the odd map vanishes somewhere, and the bridge converts that vanishing point into a bisection. Crucially, this lemma is parameterized over an arbitrary Bisected predicate, so it carries no measure theory at all.",
+    "mathContext": "Given odd continuous $F : S^n \\to \\mathbb{R}^n$ and a bridge $F(x)=0 \\Rightarrow \\mathrm{Bisected}(x)$, Borsuk-Ulam gives $x_0$ with $F(x_0)=0$, hence $\\mathrm{Bisected}(x_0)$.",
+    "significance": "key",
+    "relatedConcepts": ["antipodal collapse", "odd maps", "Borsuk-Ulam", "abstraction over predicate"],
+    "prerequisites": ["topology of spheres", "Borsuk-Ulam theorem"]
+  },
+  {
+    "id": "bfp-oq010301-ann-discrepancy-def",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 87, "endLine": 97 },
+    "type": "definition",
+    "title": "The Signed Half-Volume Discrepancy",
+    "content": "The discrepancy map sends a direction-point x on the sphere to the real vector whose i-th component measures, for body i, how unevenly the oriented hyperplane indexed by x splits it: the volume on the positive side minus the volume on the negative side. A simultaneous bisection is exactly a zero of this vector-valued map, which is what makes it the natural F to feed into the reduction.",
+    "mathContext": "$D_i(x) = \\mathrm{vol}(B_i \\cap \\mathrm{pos}\\,x\\,i) - \\mathrm{vol}(B_i \\cap \\mathrm{neg}\\,x\\,i)$, a map $S^n \\to \\mathbb{R}^n$; bisection of all bodies $\\iff D(x)=0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["half-spaces", "signed measure difference", "ENNReal.toReal", "vector-valued map"],
+    "prerequisites": ["Lebesgue measure", "half-space geometry"]
+  },
+  {
+    "id": "bfp-oq010301-ann-oddness",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 99, "endLine": 114 },
+    "type": "insight",
+    "title": "Oddness Without Continuity: The Antipodal Swap",
+    "content": "discrepancy_odd_of_swap proves the discrepancy map is odd using only the set-theoretic fact that reversing orientation (x to -x) swaps the two half-spaces: pos(-x) = neg(x) and neg(-x) = pos(x). Substituting these and reordering by ring negates each component. This is the elementary measure-theoretic half of the construction — it needs no limits, no continuity, only additivity of subtraction. Identifying that oddness is free is what lets the file pin continuity as the *sole* hard input.",
+    "mathContext": "From $\\mathrm{pos}(-x)=\\mathrm{neg}(x)$ and $\\mathrm{neg}(-x)=\\mathrm{pos}(x)$: $D_i(-x) = \\mathrm{vol}(B_i\\cap\\mathrm{neg}\\,x\\,i) - \\mathrm{vol}(B_i\\cap\\mathrm{pos}\\,x\\,i) = -D_i(x)$.",
+    "significance": "key",
+    "relatedConcepts": ["odd functions", "antipodal symmetry", "half-space orientation", "ring tactic"],
+    "prerequisites": ["set operations", "elementary algebra"]
+  },
+  {
+    "id": "bfp-oq010301-ann-capstone",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 120, "endLine": 167 },
+    "type": "insight",
+    "title": "Capstone: Bisection Conditional Only on Continuity",
+    "content": "ham_sandwich_of_discrepancy assembles the result. It receives the discrepancy map already packaged as a continuous SphereFun (the single analytic hypothesis hcomp), derives oddness from discrepancy_odd_of_swap, invokes the reduction with the genuine bisection predicate, and finishes by turning a zero discrepancy plus finite volumes into equal volumes via ENNReal.toReal_eq_toReal_iff'. Every step except the continuity packaging is proved.",
+    "mathContext": "If $D=F$ is continuous and odd and $F(x_0)=0$ then $\\mathrm{vol}(B_i\\cap\\mathrm{pos}) - \\mathrm{vol}(B_i\\cap\\mathrm{neg}) = 0$; with both finite, $\\mathrm{toReal}$ injectivity gives $\\mathrm{vol}(B_i\\cap\\mathrm{pos}) = \\mathrm{vol}(B_i\\cap\\mathrm{neg})$.",
+    "significance": "key",
+    "relatedConcepts": ["dominated convergence", "ENNReal.toReal injectivity", "finite measures", "SphereFun packaging"],
+    "prerequisites": ["measure theory", "extended non-negative reals"]
+  },
+  {
+    "id": "bfp-oq010301-ann-withlp",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 145, "endLine": 153 },
+    "type": "technique",
+    "title": "Proving EuclideanSpace Equality via ofLp_injective",
+    "content": "Showing F(-x) = -F(x) in EuclideanSpace cannot be done by plain funext, because EuclideanSpace is built on WithLp, a non-reducible type synonym whose function extensionality is not definitionally available. The idiom is to map both sides through WithLp.ofLp to the genuine Pi type, prove equality componentwise with funext there, and conclude by WithLp.ofLp_injective. This recurs throughout the gallery's Euclidean-space formalizations.",
+    "mathContext": "$\\mathrm{EuclideanSpace}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,n) = \\mathrm{WithLp}\\,2\\,(\\mathbb{R}^n)$; equality is recovered from $\\mathrm{ofLp}\\,a = \\mathrm{ofLp}\\,b$ via injectivity, since $\\mathrm{WithLp}$ blocks direct $\\eta$/funext.",
+    "significance": "technical",
+    "relatedConcepts": ["WithLp type synonym", "function extensionality", "EuclideanSpace", "Lean 4 type synonyms"],
+    "prerequisites": ["Lean 4 type theory", "Mathlib WithLp API"]
+  },
+  {
+    "id": "bfp-oq010301-ann-standard",
+    "proofId": "brouwer-fixed-point-oq-01-oq-03-oq-01",
+    "range": { "startLine": 173, "endLine": 261 },
+    "type": "technique",
+    "title": "Discharging the Side Conditions for the Linear Parameterization",
+    "content": "Parts 4-6 show the swap and finiteness hypotheses are not real assumptions for the standard linear parameterization. stdPos/stdNeg cut half-spaces by a linear direction u and threshold t; stdPos_neg / stdNeg_neg prove the antipodal swap from linearity alone (negating x negates both inner-product side and threshold), and volume_inter_ne_top derives slice finiteness from the body's finiteness since a slice is a subset. ham_sandwich_standard then specializes the capstone with only the continuity hypothesis hcomp remaining.",
+    "mathContext": "For linear $u,t$: $\\{y : \\langle u(-x),y\\rangle < t(-x)\\} = \\{y : t(x) < \\langle u(x),y\\rangle\\}$, i.e. $\\mathrm{stdPos}(-x)=\\mathrm{stdNeg}(x)$; and $\\mathrm{vol}(B\\cap S)\\le \\mathrm{vol}(B) < \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear functionals", "inner product half-spaces", "monotonicity of measure", "hypothesis discharge"],
+    "prerequisites": ["linear algebra", "inner product spaces", "measure monotonicity"]
+  }
+]

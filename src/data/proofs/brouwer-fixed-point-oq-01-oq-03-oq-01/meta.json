@@ -47,6 +47,32 @@
       "EuclideanSpace equality is proved via WithLp.ofLp_injective after funext on the genuine Pi type, since WithLp is a non-reducible type synonym for which plain funext fails."
     ]
   },
+  "conclusion": {
+    "summary": "The Ham Sandwich theorem is decomposed into a topological core and a single analytic input. ham_sandwich_reduction proves the topological core directly from borsuk_ulam_antipodal_collapse; discrepancy_odd_of_swap proves oddness of the half-volume discrepancy from the antipodal swap alone; ham_sandwich_of_discrepancy assembles the bisection conditional only on continuity; and ham_sandwich_standard discharges the swap and finiteness side conditions for the standard linear parameterization, leaving Lebesgue continuity of the bisecting-measure map as the lone remaining hypothesis. 7 theorems, 3 definitions, 0 new axioms; rests on the inherited Borsuk-Ulam axiom no_continuous_odd_nonzero_on_sphere plus the stated continuity hypothesis.",
+    "implications": "**Diagnostic precision in formalization**: The entry confirms the parent's decision to axiomatize Ham Sandwich was exact, not lazy — it proves every part of the classical derivation except the one fact (continuity of the half-volume map) the parent flagged. **Separation of concerns**: The result cleanly partitions the proof into topology (Borsuk-Ulam, fully discharged), elementary measure algebra (oddness and zero-implies-equal, fully discharged), and analysis (continuity, isolated). The remaining gap is a self-contained measure-theory statement provable by dominated convergence for parameterized half-spaces, $x \\mapsto \\mathrm{vol}(B_i \\cap \\{y : \\langle u(x), y\\rangle < t(x)\\})$, with no further topological content.",
+    "openQuestions": [
+      "Can the lone continuity hypothesis hcomp be discharged in Lean by formalizing dominated convergence for the parameterized family of half-spaces $\\{y : \\langle u(x), y\\rangle < t(x)\\}$, turning ham_sandwich_standard into a fully axiom-free (modulo Borsuk-Ulam) theorem?",
+      "Does the same reduction template — topological core from Borsuk-Ulam plus an isolated continuity input — extend to the polynomial Ham Sandwich theorem (Stone-Tukey with higher-degree separating surfaces) and to the Borsuk-Ulam-type measure-equipartition results of Gromov and Karasev-Hubard-Aronov?",
+      "Borsuk-Ulam itself enters here only through no_continuous_odd_nonzero_on_sphere; can that degree-theoretic axiom in BorsukUlam.lean be replaced by a Mathlib-native proof, making the whole tower standalone-verified?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Direct parent: derived n-dimensional Borsuk-Ulam and stated Ham Sandwich as the axiom ham_sandwich_theorem with the note that continuity is the obstruction. This entry proves everything in that axiom except the continuity input."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "depends-on",
+      "description": "Supplies the topological foundation. ham_sandwich_reduction is a direct application of borsuk_ulam_antipodal_collapse; the entire tower rests on the inherited axiom no_continuous_odd_nonzero_on_sphere."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "Root of this OQ lineage. Brouwer fixed-point, Borsuk-Ulam, no-retraction, and Ham Sandwich are interlinked manifestations of the same sphere-degree obstruction."
+    }
+  ],
   "sections": [
     {
       "id": "ham-sandwich-reduction",
