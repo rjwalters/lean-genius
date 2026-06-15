@@ -70,7 +70,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "**Two Chebyshev Families and Their Products**\n\nChebyshev polynomials share the recurrence $p_{n+2} = 2x p_{n+1} - p_n$: the first kind $T_n$ with $T_n(\\cos\\theta)=\\cos(n\\theta)$, and the second kind $U_n$ with $U_n(\\cos\\theta)\\sin\\theta=\\sin((n+1)\\theta)$. The first-kind product-to-sum $2T_mT_n = T_{m+n}+T_{m-n}$ is a clean two-term identity. The second-kind product behaves differently: $U_m U_n$ linearizes into a *sum* $\\sum_{k} U_{m+n-2k}$ running over indices $|m-n|, |m-n|+2, \\dots, m+n$.",
+    "historicalContext": "**Two Chebyshev Families and Their Products**\n\nChebyshev polynomials share the recurrence $p_{n+2} = 2x p_{n+1} - p_n$: the first kind $T_n$ with $T_n(\\cos\\theta)=\\cos(n\\theta)$, and the second kind $U_n$ with $U_n(\\cos\\theta)\\sin\\theta=\\sin((n+1)\\theta)$. The first-kind product-to-sum $2T_mT_n = T_{m+n}+T_{m-n}$ is a clean two-term identity, the polynomial shadow of the cosine product formula $2\\cos a\\cos b = \\cos(a+b)+\\cos(a-b)$. The second-kind product behaves differently: $U_m U_n$ linearizes into a *sum* $\\sum_{k} U_{m+n-2k}$ running over indices $|m-n|, |m-n|+2, \\dots, m+n$ — the analogue of $\\frac{\\sin((m+1)\\theta)\\sin((n+1)\\theta)}{\\sin^2\\theta}$ expanded by the same trigonometric product-to-sum and then resummed as a Dirichlet-style kernel. Linearization (product-to-sum) formulas are the structure constants of the multiplication on the polynomial family; for Chebyshev polynomials they are classical (Mason–Handscomb, *Chebyshev Polynomials*, 2003, §2.4), but a fully formal polynomial-identity proof over an arbitrary commutative ring — valid for negative integer indices via Mathlib's $\\mathbb{Z}$-indexed $U$ — is what this entry supplies.",
     "problemStatement": "**The Open Question**\n\nThe parent T·U entry asked: can $U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}$ be proved as a polynomial identity over $R[X]$?\n\n**Answer: YES** — for every commutative ring $R$, $m \\in \\mathbb{Z}$, $n \\in \\mathbb{N}$.",
     "text": "Proves the second-kind Chebyshev linearization U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k} as a polynomial identity over any commutative ring R. The combinatorial core is isolated as a product-free sum recurrence 2X·S(m,n+1) = S(m,n+2)+S(m,n), proved by distributing the recurrence termwise and cancelling boundary terms; the main identity then follows by a two-step induction matching U_{n+2}=2X·U_{n+1}−U_n.",
     "proofStrategy": "**Sum recurrence + two-step induction**\n\nDefine $S(m,n) = \\sum_{k=0}^{n} U_{m+n-2k}$.\n\n1. `Ssum_succ_expand`: $2X \\cdot S(m,n+1) = \\sum_{k=0}^{n+1}(U_{m+n+2-2k}+U_{m+n-2k})$ via the rearranged recurrence $2X U_k = U_{k+1}+U_{k-1}$.\n2. `Ssum_rec`: peel the boundary terms of the two telescoped ranges; both equal $U_{m-n-2}$ and cancel, giving $2X S(m,n+1) = S(m,n+2)+S(m,n)$.\n3. `U_mul_U`: two-step induction on $n$ carrying $P(j)\\wedge P(j+1)$, using $U_{i+2}=2X U_{i+1}-U_i$ and `Ssum_rec`.",
@@ -78,7 +78,8 @@
       "**Isolate the combinatorics**: All boundary bookkeeping lives in the product-free `Ssum_rec`; the product theorem reduces to recurrence-matching.",
       "**Two-step induction for a second-order recurrence**: carrying $P(j)\\wedge P(j+1)$ mirrors the parent's paired integer induction.",
       "**Boundary terms cancel**: the surviving terms $U_{m+n+2-2(n+2)}$ and $U_{m+n-2(n+1)}$ are both $U_{m-n-2}$.",
-      "**Integer index m**: indexing by $m+n-2k$ with $m:\\mathbb{Z}$ removes any $m\\ge n$ hypothesis."
+      "**Integer index m**: indexing by $m+n-2k$ with $m:\\mathbb{Z}$ removes any $m\\ge n$ hypothesis.",
+      "**Identity over any CommRing**: the result is established in $R[X]$ for an arbitrary commutative ring via `variable {R : Type*} [CommRing R]`, so it specializes to ℝ, ℂ, ℤ, or any coefficient ring without change — the linearization is a fact about the Chebyshev family as elements of $R[X]$, not about real evaluation."
     ],
     "prerequisites": [
       "Chebyshev recurrence U_add_two and the rearrangement 2X·U_k = U_{k+1}+U_{k-1}",
@@ -87,7 +88,48 @@
       "linear_combination tactic"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "statement-and-strategy",
+      "title": "Open Question, Answer, and Strategy",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Imports, module docstring, and setup. States the open question left by the parent T·U entry — can U_m·U_n be written purely as second-kind polynomials, with no T and no (1−x²) factor? — and answers YES with the linearization U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k}. Records the proof plan (sum recurrence + two-step induction), the build-pending status, and fixes the ambient commutative ring R.",
+      "mathContext": "$U_m \\cdot U_n = \\sum_{k=0}^{n} U_{m+n-2k} = U_{m+n} + U_{m+n-2} + \\cdots + U_{m-n}$ in $R[X]$."
+    },
+    {
+      "id": "ssum-def-and-two-x-u",
+      "title": "The Linearization Sum and the Rearranged Recurrence",
+      "startLine": 53,
+      "endLine": 62,
+      "summary": "Defines Ssum m n = ∑_{k∈range(n+1)} U_(m+n−2k), the candidate right-hand side. two_X_U rearranges the Chebyshev recurrence U_add_two into the symmetric form 2·X·U_k = U_(k+1) + U_(k−1), the single algebraic fact that drives all subsequent index bookkeeping.",
+      "mathContext": "$S(m,n) := \\sum_{k=0}^{n} U_{m+n-2k}$; $\\;2X\\,U_k = U_{k+1} + U_{k-1}$."
+    },
+    {
+      "id": "sum-recurrence",
+      "title": "The Product-Free Sum Recurrence (Ssum_rec)",
+      "startLine": 64,
+      "endLine": 100,
+      "summary": "Ssum_succ_expand distributes 2·X into S(m,n+1) termwise via two_X_U, producing a single sum of U-pairs over range(n+2). Ssum_rec then proves 2·X·S(m,n+1) = S(m,n+2) + S(m,n) by peeling the boundary terms of the two telescoped ranges with Finset.sum_range_succ; both boundary terms equal U_(m−n−2) and cancel. No Chebyshev products appear — the entire combinatorial core is isolated here.",
+      "mathContext": "$2X\\,S(m,n{+}1) = S(m,n{+}2) + S(m,n)$; the boundary terms $U_{m+n+2-2(n+2)}$ and $U_{m+n-2(n+1)}$ are both $U_{m-n-2}$."
+    },
+    {
+      "id": "base-values",
+      "title": "Base Values (Ssum_zero, Ssum_one)",
+      "startLine": 102,
+      "endLine": 113,
+      "summary": "Ssum_zero computes S(m,0) = U_m (a one-term sum via Finset.sum_range_one), and Ssum_one computes S(m,1) = U_(m+1) + U_(m−1). These anchor the two-step induction, matching the two consecutive cases the second-order recurrence requires.",
+      "mathContext": "$S(m,0) = U_m$, $\\;S(m,1) = U_{m+1} + U_{m-1}$."
+    },
+    {
+      "id": "main-induction",
+      "title": "Main Linearization by Two-Step Induction (U_mul_U)",
+      "startLine": 114,
+      "endLine": 145,
+      "summary": "U_mul_U proves U_m·U_n = S(m,n). It strengthens the goal to the paired statement P(j) ∧ P(j+1) so the second-order recurrence can be fed; the base cases use Ssum_zero/Ssum_one (with U_zero, U_one and two_X_U), and the inductive step combines U_add_two (U_{i+2} = 2X·U_{i+1} − U_i) with Ssum_rec at index i, closed by linear_combination.",
+      "mathContext": "Induction carries $P(j) := (U_m U_j = S(m,j))$ as the pair $P(j)\\wedge P(j+1)$, mirroring $U_{i+2} = 2X\\,U_{i+1} - U_i$."
+    }
+  ],
   "conclusion": {
     "summary": "Proves the second-kind Chebyshev linearization U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k} as a polynomial identity over any commutative ring R, with 0 sorries and 0 axioms. The combinatorial core is the product-free sum recurrence Ssum_rec; the main identity follows by two-step induction.",
     "implications": "**Theoretical Significance**\n\n1. **Completes the Chebyshev product table**: T·T (two terms), T·U (two terms), and now U·U (a full progression sum) are all available as polynomial identities over arbitrary commutative rings.\n\n2. **Product-free combinatorial core**: `Ssum_rec` is reusable for any second-kind-Chebyshev sum manipulation and isolates the index bookkeeping from the algebra.\n\n3. **Multiplicative structure of the U-span**: the identity shows the ℤ-span of $\\{U_k\\}$ is closed under multiplication, with explicit structure constants (all equal to 1).",
