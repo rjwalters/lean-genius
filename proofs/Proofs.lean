@@ -2847,6 +2847,7 @@ import Proofs.SylowTheoremOQ03
 import Proofs.SylowTheoremOQ03B
 import Proofs.SylowTheoremOQ04
 import Proofs.SynthesisCurvaturePtolemy
+import Proofs.SynthesisCurvaturePtolemyOQ01
 import Proofs.SzemerediCore
 import Proofs.SzemerediCoreOQ01
 import Proofs.SzemerediCoreOQ01Aristotle
