@@ -16,28 +16,30 @@
   ],
   "knowledge": {
     "insights": [
-      "Every R(x_i) lies in {1,...,n-1} for n>=2, so there are at most n-1 distinct R-values: g(n) <= n-1. This elementary bound is sharper than the file's g_le_n axiom (g(n) <= n) and explains WHY g(n) < n is elementary while the c n^(2/3) gap is the deep content.",
-      "Equally-spaced collinear points give R(point i) = max(i, n-1-i), yielding exactly ceil(n/2) distinct R-values: an explicit elementary lower bound g(n) >= ceil(n/2).",
-      "Regular n-gon: all vertices share the single R-value floor(n/2), so D = 1 (the worst case for diversity).",
-      "Of the 3 axioms in Erdos653Problem.lean, only g_le_n is dischargeable; csizmadia_bound and upper_bound are genuine deep-literature citations.",
-      "The OQ is the central OPEN conjecture and cannot be closed in a session.",
-      "Counting core of g(n)>=ceil(n/2): {max(i,n-1-i):i in range n} fills Finset.Icc (n/2) (n-1), so it has exactly (n+1)/2 distinct values (omega handles max over N)."
+      "Every R(x_i) lies in {1,...,n-1} for n>=2, so g(n) <= n-1 (PROVED, g_le_n_sub_one). Sharper than g_le_n (g(n)<=n); explains WHY g(n)<n is elementary while the c n^(2/3) gap is the deep content.",
+      "Equally-spaced collinear points give R(point i) = max(i, n-1-i), yielding exactly ceil(n/2) distinct R-values: elementary lower bound g(n) >= ceil(n/2) (PROVED, g_ge_half).",
+      "ceil(n/2) is the 1-dimensional optimum: no collinear configuration beats it. Beating it (toward the deep 0.7n) requires genuinely 2-D constructions (csizmadia_bound).",
+      "Regular n-gon: all vertices share the single R-value floor(n/2), so D = 1 (worst case for diversity).",
+      "Erdos653Problem.lean now has exactly 2 axioms, both deep-literature citations correctly kept per Axiom Integrity Policy: csizmadia_bound (g(n)>0.7n) and upper_bound (g(n)<n - c n^(2/3)). g_le_n was discharged to a theorem.",
+      "The elementary formalizable program for this slug is COMPLETE (lower bound ceil(n/2), upper bounds n and n-1). The remaining target is the OPEN conjecture g(n)/n -> 1, which is out of single-session scope.",
+      "L1 real-arithmetic bridge (distinctDistCount_collinearConfig) is PROVED: the real distance set is the Nat.cast image of the ℕ abs-difference set, so card transfers via Nat.cast_injective and absDiff_image_eq. (Corrects the prior stale claim that L1 was remaining.)"
     ],
     "builtItems": [
       "research/problems/erdos-653-oq-01/verify_g_structure.py — exact integer squared-distance verifier confirming g(n) <= n-1 (n=2..9), regular-polygon D=1 / R=floor(n/2) (n=3..20), collinear D=ceil(n/2) (n=2..12), plus small-n brute-force lower bounds.",
-      "Proved theorem maxCount_image_card in Erdos653LowerBound.lean: ((range n).image (fun i => max i (n-1-i))).card = (n+1)/2 (the L2 counting step of g_ge_half)."
+      "Erdos653Problem.lean: g_le_n (g n <= n) and g_le_n_sub_one (n>=2 -> g n <= n-1) are PROVED theorems (csSup_le + Finset.card_image_le; rValueSet subset Icc 1 (n-1)). g_le_n is no longer an axiom.",
+      "Erdos653LowerBound.lean: full elementary lower bound g_ge_half (g n >= (n+1)/2 = ceil(n/2)) PROVED, 0 axioms / 0 sorries. Chain: collinearConfig (n collinear points) + collinearConfig_card; euclidDist_collinearPoint (|i-j|); maxCount_image_card (L2 count) ; absDiff_image_eq ; distinctDistCount_collinearConfig (L1 real-arithmetic bridge, now PROVED via Nat.cast_injective on the abs-difference image) ; numDistinctRValues_collinearConfig = (n+1)/2 ; g_ge_half via le_csSup. Also g_ge_one.",
+      "Both Erdos653Problem and Erdos653LowerBound registered in Proofs.lean (lines 1803-1804)."
     ],
     "mathlibGaps": [
       "No distinct-distance / incidence-geometry machinery (Guth–Katz, Szemerédi–Trotter) in pinned Mathlib — the deep 0.7n and n - c n^(2/3) bounds are out of reach (>1000 LOC each).",
       "Elementary results need only Finset.card lemmas (card_image_le, Nat.sSup_le) — buildable in <100 LOC once a build backend is available."
     ],
     "nextSteps": [
-      "Discharge g_le_n axiom -> theorem via Nat.sSup_le + Finset.card_image_le (numDistinctRValues S = (S.image (distinctDistCount S)).card <= S.card = n).",
-      "Strengthen to g_le_n_sub_one: forall n >= 2, g n <= n - 1 (R-values subset Icc 1 (n-1)).",
-      "Add elementary lower bound g_ge_half: forall n, ceil(n/2) <= g n via the collinear construction (needs sSup membership witness).",
-      "Keep csizmadia_bound and upper_bound as cited axioms (correct per Axiom Integrity Policy)."
+      "No actionable elementary Lean work remains: g_le_n, g_le_n_sub_one, g_ge_one, g_ge_half are all proved and registered. Do NOT re-attempt distinctDistCount_collinearConfig / maxCount_image_card — already proved.",
+      "OPEN (out of single-session scope): the conjecture erdos653Conjecture (g(n)/n -> 1). Needs the deep 2-D constructions behind csizmadia_bound and improvements; not elementary.",
+      "Optional verify-only: confirm a green Docker build of Proofs.Erdos653LowerBound + Proofs.Erdos653Problem when Docker is free (<=2 containers) to corroborate the 0-axiom/0-sorry lower-bound file."
     ],
-    "progressSummary": "ACT (S5, blackout): proved maxCount_image_card (N counting core of g(n)>=ceil(n/2)) in Erdos653LowerBound.lean, converting #24570 skeleton L2 pseudocode into verified Lean. Remaining: single real-arithmetic bridge L1 (distinctDistCount of collinear point = max(i,n-1-i)). g_le_n saturated; OQ open."
+    "progressSummary": "STATE-SYNC (researcher-4, 2026-06-15, blackout): correcting a stale knowledge record. ALL prior nextSteps are DONE on main. Erdos653LowerBound.lean is COMPLETE (0 axioms / 0 sorries): g_ge_half (g(n) >= ceil(n/2)) is fully proved, including the L1 real-arithmetic bridge distinctDistCount_collinearConfig that the old summary still listed as remaining. Erdos653Problem.lean has g_le_n and g_le_n_sub_one as PROVED theorems (g_le_n discharged from axiom) and exactly 2 deep cited axioms (csizmadia_bound, upper_bound) correctly kept. The elementary program for oq-01 is finished; only the OPEN conjecture g(n)/n->1 remains, out of scope. Both files registered (Proofs.lean:1803-1804). Note: open PRs #24404/#24302 (discharge g_le_n) are superseded — g_le_n is already a theorem on main."
   },
   "currentState": {
     "phase": "ACT",
