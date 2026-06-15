@@ -205,3 +205,67 @@ distributions (d=1..8) + uniform/skewed worked examples. Mathlib names
 `collisionProb_uniform`, the `hconst` step of `sos_identity`, and
 `expectedCollisions_uniform` — all closed-form numeric ℝ identities with
 `(d:ℝ) ≠ 0` in scope, low risk. Register + docker-build next live session.
+
+---
+
+## Session 2026-06-15 (researcher-1) — QUANTITATIVE non-uniformity penalty (closes the sign→magnitude gap)
+
+**Mode:** the slug's qualitative extrema are settled and build-pending (E[X] min via
+Cauchy–Schwarz, PR #23219; Pr(X=0) max via Schur-concavity, PR #24449; SOS Lean file by
+researcher-7). **Outcome:** progress — a genuinely new, certified **leading-order
+magnitude** law that prior sessions left open (they proved only the *direction* of each
+extremum), tying BOTH to one cryptographically-relevant scalar. Docker-independent
+(exact `fractions` + mpmath). Blackout live.
+
+### The unifying non-uniformity scalar
+Let the `n` birthdays be i.i.d. with day-probabilities `p=(p₁,…,p_d)`, `Σpₖ=1`, and
+define the **L² non-uniformity**
+        `V(p) := Σₖ (pₖ − 1/d)²  =  Σpₖ² − 1/d`   (the SOS identity).
+`V` is the squared L² distance of `p` from uniform — exactly the quantity researcher-7's
+`sos_identity` isolates. `V = 0 ⟺ p` uniform.
+
+### Result 1 (EXACT, all n) — expected-collision excess
+`E[X] = C(n,2)·Σpₖ²`, hence
+        `E[X] − E_uniform[X] = C(n,2)·V(p)`   (exact).
+Certified: 0 mismatches over 200 random rational distributions per `(n,d)`, all
+`2≤n≤d≤8` (`verify_quadratic_penalty.py`, exact `Fraction` arithmetic). So the
+Cauchy–Schwarz "uniform minimises E[X]" result (#23219) sharpens to an exact equality
+`excess = C(n,2)·V` — the relative excess is `d·V` (the χ²-type divergence).
+
+### Result 2 (SECOND ORDER) — no-collision-probability deficit
+`Pr(X=0) = n!·eₙ(p)` with `eₙ` the n-th elementary symmetric polynomial. Writing
+`pₖ = 1/d + δₖ` (`Σδₖ=0`, `V=Σδₖ²`) and expanding `∏_{k∈S}(1/d+δₖ)` over all n-subsets:
+the first-order term vanishes (`Σ_S Σ_{k∈S}δₖ = C(d-1,n-1)·Σδ = 0` — uniform is
+critical), and the second-order term is `−½ d²C(d-2,n-2)V`, giving
+
+> **`Pr_u(X=0) − Pr_p(X=0) = K_{n,d}·V(p) + O(V^{3/2})`,
+>  with `K_{n,d} = ½·n!·d^{2-n}·C(d-2, n-2) ≥ 0`.**
+
+So uniform is not just the max (Schur, #24449) but a **strict, quadratically-flat**
+max, and the leading penalty for L²-bias `V` is `K·V`. Certified: `deficit/V → K_{n,d}`
+as the perturbation scale `t→0`, with clean first-order convergence (error ↓10× per 10×
+in `t`): e.g. `(n,d)=(3,5)` → `1.8` (`K=9/5`), `(5,8)` → `2.34375` (`K=75/32`),
+`(4,6)` → `2`. For `n=2` it is **exact** with `K=1`: `Pr(X=0)=1−Σpₖ²`, deficit `= V`.
+
+### Why this matters (the stated crypto motivation)
+The problem asks whether the analysis generalises to the non-uniform setting "relevant
+for hash collision analysis". The answer is now quantitative and unified: a hash with L²
+bias `V` pays
+  • expected collisions `+ C(n,2)·V` (exact), and
+  • no-collision probability `− K_{n,d}·V + O(V^{3/2})`,
+both controlled by the **same** `V = Σ(pₖ−1/d)²`. This is the leading-order law the
+sign-only Schur/CS results did not provide.
+
+### Files (added this session)
+- `research/problems/birthday-problem-oq-01-oq-01-oq-03/verify_quadratic_penalty.py` —
+  derives & certifies Results 1 (exact, all `2≤n≤d≤8`) and 2 (the `K_{n,d}` coefficient,
+  via `deficit/V → K` scaling). Exact `Fraction` + mpmath, Docker-independent.
+
+### Next steps
+- **Lean (build-gated):** Result 1 is a one-line corollary of researcher-7's
+  `sos_identity` + `expectedCollisions` def: add
+  `expectedCollisions n p − expectedCollisions n (uniform) = C(n,2)·(Σpₖ² − 1/d)`. Result
+  2's exact `n=2` case (`Pr(X=0)=1−Σpₖ²`, deficit `=V`) is also a clean Lean target
+  (`eₙ` for `n=2` = `½((Σp)²−Σp²)`); the general `K_{n,d}` is an analytic expansion, defer.
+- Tighten Result 2 to an exact two-sided bound (next symmetric-function term gives the
+  `O(V^{3/2})` sign), if a clean closed form for the cubic `Σ_{i<j<k}δᵢδⱼδ_k` term exists.
