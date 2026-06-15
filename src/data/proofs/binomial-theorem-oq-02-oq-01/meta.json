@@ -59,23 +59,37 @@
     {
       "id": "mgf",
       "title": "Moment-Generating Function",
-      "startLine": 85,
-      "endLine": 130,
-      "summary": "Derives the MGF formula by applying the multinomial theorem with f(i) = p(i)*g(i). Shows factorization of probability and weight terms."
+      "startLine": 84,
+      "endLine": 119,
+      "summary": "Derives the MGF formula by applying the multinomial theorem with f(i) = p(i)*g(i). Shows factorization of probability and weight terms (works over any CommSemiring)."
+    },
+    {
+      "id": "specialization",
+      "title": "Specialization to ℝ and Uniform Weights",
+      "startLine": 121,
+      "endLine": 141,
+      "summary": "Re-expresses the MGF identity over ℝ so coefficients are literally multinomialProb (closed by rfl), and instantiates normalization at the uniform law p(i) = 1/k over Fin k."
     },
     {
       "id": "binomial-connection",
       "title": "Connection to Binomial Distribution",
-      "startLine": 140,
-      "endLine": 170,
+      "startLine": 143,
+      "endLine": 162,
       "summary": "Shows the binomial distribution is the 2-outcome (Bool-indexed) special case of the multinomial distribution."
     },
     {
       "id": "examples",
       "title": "Concrete Calculations",
-      "startLine": 172,
-      "endLine": 204,
-      "summary": "Concrete examples including fair coin flips and counting identities."
+      "startLine": 164,
+      "endLine": 184,
+      "summary": "A fair-coin numerical sanity check (3 flips sum to 1) plus multinomial_expectation, a rfl placeholder that restates a tautology rather than proving a real expectation formula."
+    },
+    {
+      "id": "counting",
+      "title": "Counting Identity (Multinomial Analog of ∑C(n,k)=2ⁿ)",
+      "startLine": 186,
+      "endLine": 199,
+      "summary": "Specializes the multinomial theorem at f(i)=1 to prove |s|ⁿ = ∑ multinomial(s,k), generalizing the sum of binomial coefficients."
     }
   ],
   "conclusion": {
@@ -84,7 +98,8 @@
     "openQuestions": [
       "RESOLVED: Multinomial PMF integrated with Mathlib PMF framework in BinomialTheoremOQ02OQ01OQ01.lean — construction via Composition type + ENNReal normalization",
       "Can marginal distributions be formally derived as binomials?",
-      "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?"
+      "Can the variance-covariance matrix Cov(Xi, Xj) = -n*pi*pj be proved?",
+      "The current `multinomial_expectation` theorem is a vacuous `rfl` (it restates ∑ P(k)·w(k) = ∑ P(k)·w(k)). Can a substantive mean E[Xi] = n·pi be derived by differentiating the MGF (∑ pj·e^{tj})^n at t = 0, giving a genuine moment formula rather than a tautology?"
     ]
   },
   "leanFile": {
@@ -121,6 +136,11 @@
       "targetId": "binomial-theorem",
       "relationship": "related",
       "description": "The binomial theorem is the 2-variable special case"
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Follow-up that integrates the multinomial PMF with Mathlib's PMF framework via the Composition type and ENNReal normalization, lifting the algebraic distribution here into a genuine measure-theoretic probability mass function"
     }
   ],
   "sorries": 0
