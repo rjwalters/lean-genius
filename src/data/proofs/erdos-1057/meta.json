@@ -64,12 +64,13 @@
       "carmichael_at_least_3_primes: verified minimum prime factor count",
       "isCarmichaelCheck + no_carmichael_below_561: computational minimality of 561",
       "C_unbounded: verified proof that C(x) → ∞ from AGP axiom",
-      "erdos1057Conjecture, pomeranceConjecture: formal conjectures"
+      "erdos1057Conjecture, pomeranceConjecture: formal conjectures",
+      "korselt_backward: converse of Korselt's criterion (Fermat characterization ⟹ squarefree + (p-1)|(n-1)), fully proved via the cyclic structure of (ZMod p)ˣ — replaces the former axiom"
     ],
     "dateAdded": "2026-01-19",
-    "axiomCount": 2,
-    "lineCount": 1099,
-    "assumptions": "2 axioms: korselt_backward, infinitely_many_carmichaels. 0 sorries.",
+    "axiomCount": 1,
+    "lineCount": 1152,
+    "assumptions": "1 axiom: infinitely_many_carmichaels (Alford-Granville-Pomerance 1994; infinitude of Carmichael numbers, a deep result). 0 sorries. The converse of Korselt's criterion (korselt_backward) is now fully proved via primitive roots.",
     "theoremCount": 66,
     "definitionCount": 14
   },
