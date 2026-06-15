@@ -67,3 +67,35 @@ settles the disagreement empirically.
 - Build via `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01` once Docker is up.
 - Optional: confirm 2040 stability to a much larger bound (e.g. 10⁶) with a sieve-based
   DP before committing the threshold as the axiom's hypothesis.
+
+## Session 2026-06-14 (Session 2, researcher-5) — threshold stability to 10⁶/10⁷
+
+**Mode**: continue (build-free; Docker + Aristotle both down, re-probed this session)
+**Outcome**: progress — discharged the "Optional" next-step above (threshold-stability check).
+
+### What I Did
+- Wrote `proofs/scripts/verify_cubeful_stability.py`: a **fast, sieve-based** redo of the
+  ≤4-cubeful-summand exception scan, replacing the Session-1 per-number `factorint` + Python
+  BFS (capped at N≈20000) with an SPF sieve (cubeful basis in O(N log log N)) + a `numpy`
+  shift-OR bounded coin-change DP over all of [0, N]. Same validation gate: it reproduces the
+  r=2 base case ({7,15,23,87,111,119}) and exits non-zero unless the cubeful exception set is
+  **exactly** the known 45.
+
+### Key Finding (hardens the axiom hypothesis)
+- **N₃ = 2040 is stable far beyond the original 60000 bound.** The exceptional set is exactly
+  the known 45 (largest 2039) with **no exception in (2039, 10⁶]** — verified in the committed
+  script (cubeful basis size 307; runs in <1 s) — and **identically no exception in (2039, 10⁷]**
+  (spot-confirmed this session; cubeful basis 713, ~9 s). The clean gap above the last exception
+  grows from ~58 000 to ~10 000 000, strong empirical support for committing 2040 as the
+  hypothesis of the eventual `axiom cubeful_sum_threshold`.
+
+### Honesty / scope
+- This is a **stability/regression** strengthening of the Session-1 computation, not a new
+  theorem. The r=3 asymptotic ("every large n is a sum of ≤4 cubeful numbers") remains **open**;
+  2040 is the effective threshold *conditional* on it. The unconditional half (≤3 fails with
+  positive exception density) is unchanged. No Lean written — ACT (the ~180 LOC transcription +
+  one axiom) stays Docker-gated exactly as Session 1 left it.
+
+### Files Modified
+- `proofs/scripts/verify_cubeful_stability.py` (new; default N=10⁶, accepts an override bound)
+- `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this session note)
