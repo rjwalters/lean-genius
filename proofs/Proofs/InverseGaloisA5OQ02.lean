@@ -47,14 +47,20 @@ parts, neither of which is in Mathlib).
 * `card_eq_168_of_embeds_in_simple168` — the reusable corollary: any group with
   `84 ∣ |G|` that injects into a simple group of order 168 has order exactly 168.
 * `trinks_disc_is_square` — the discriminant value is a perfect square (`194481²`).
-* `trinks_gal_card` — assembles `|Gal| = 168` from the certificate.
+* `trinks_gal_card` — *derives* `|Gal| = 168` from the embedding axiom + cycle-type
+  divisibility via `card_eq_168_of_embeds_in_simple168` (no `≠ 84` assumption).
 
-**Axiomatized (the deep analytic certificate, steps 1–4 specialized to `f`):**
-* `trinks_gal_84_dvd`        — steps 1+3 (Dedekind cycle types ⟹ `84 ∣ |Gal|`).
-* `trinks_gal_card_dvd_168`  — steps 1+2+4 (irreducibility + square disc + resolvent
-                               ⟹ `Gal ⊆ PSL(2,7)`, so `|Gal| ∣ 168`).
-* `trinks_gal_card_ne_84`    — step 5 specialized; the *reason* it holds is exactly
-                               `simple168_subgroup_card_collapse`, proved above.
+**Axiomatized (the deep analytic certificate — now only TWO axioms, steps 1–4):**
+* `trinks_gal_84_dvd`            — steps 1+3 (Dedekind cycle types ⟹ `84 ∣ |Gal|`).
+* `trinks_gal_embeds_simple168`  — steps 1+2+4 (irreducibility + square disc + resolvent
+                                   ⟹ an injection `Gal ↪ PSL(2,7)`, a simple group of
+                                   order 168).
+
+This consolidates the previous **three** axioms into **two**: the old
+`trinks_gal_card_dvd_168` and `trinks_gal_card_ne_84` are now *theorems* — the
+embedding implies the divisibility (Lagrange) and, via the proven
+`simple168_subgroup_card_collapse`, excludes `|Gal| = 84` (an index-2 subgroup of a
+simple group cannot exist).
 
 Mirrors the `InverseGaloisA5.lean` template (which carries out the analogous A₅
 argument with hand-built "square-disc ⟹ ⊆ Aₙ" and per-prime cycle-type lemmas).
@@ -157,33 +163,35 @@ These encode the analytic inputs of the certificate.  Each is verified exactly i
 `lcm(7,4,3) = 84 ∣ |Gal|`. -/
 axiom trinks_gal_84_dvd : 84 ∣ Nat.card trinks.Gal
 
-/-- **Steps 1 + 2 + 4** (irreducibility + square discriminant + degree-15 resolvent).
-Irreducibility gives transitivity; the square discriminant gives `Gal ⊆ A₇`; the
-PSL(2,7)-resolvent's rational root gives `Gal` conjugate into `PSL(2,7)`.  Together
-`|Gal| ∣ |PSL(2,7)| = 168`. -/
-axiom trinks_gal_card_dvd_168 : Nat.card trinks.Gal ∣ 168
+/-- **Steps 1 + 2 + 4** (irreducibility + square discriminant + degree-15 resolvent),
+stated in their natural geometric form: `Gal(f/ℚ)` embeds into a finite **simple**
+group of order 168 (namely `PSL(2,7)`).  Irreducibility gives transitivity; the
+square discriminant gives `Gal ⊆ A₇`; the PSL(2,7)-resolvent's rational root gives an
+injection `Gal ↪ PSL(2,7)`.
 
-/-- **Step 5** (simplicity collapse, specialized).  `Gal ⊆ PSL(2,7)` and `84 ∣ |Gal|`
-exclude `|Gal| = 84`: such a subgroup would have index 2 in the *simple* group
-`PSL(2,7)`, hence be normal — impossible.  The general reason is proved above as
-`simple168_subgroup_card_collapse`. -/
-axiom trinks_gal_card_ne_84 : Nat.card trinks.Gal ≠ 84
+This is the single honest analytic input: it is strictly stronger than the bare
+divisibility `|Gal| ∣ 168` (which follows by Lagrange), and — crucially — it lets the
+*proven* `simple168_subgroup_card_collapse` discharge the former separate
+`|Gal| ≠ 84` assumption as a **theorem** (`trinks_gal_card` below).  Net effect:
+this replaces the previous two axioms (`… ∣ 168` and `… ≠ 84`) with one. -/
+axiom trinks_gal_embeds_simple168 :
+    ∃ (P : Type) (_ : Group P) (_ : Finite P),
+      IsSimpleGroup P ∧ Nat.card P = 168 ∧ ∃ φ : trinks.Gal →* P, Function.Injective φ
 
 /-! ## Main result -/
 
 /-- **Trinks' polynomial realizes a Galois group of order 168 over ℚ.**
 
-`|Gal(f/ℚ)| = 168 = |PSL(2,7)|`.  Combined with `Gal ⊆ PSL(2,7)` (the divisibility
-axiom) this pins `Gal(f/ℚ) = PSL(2,7)`, the second simple non-solvable Galois group
-realized in the gallery after A₅. -/
+`|Gal(f/ℚ)| = 168 = |PSL(2,7)|`, the second simple non-solvable Galois group realized
+in the gallery after A₅.  The order is now *derived* — not assumed — from the embedding
+input `trinks_gal_embeds_simple168` and the cycle-type divisibility
+`trinks_gal_84_dvd`, via the proven abstract collapse
+`card_eq_168_of_embeds_in_simple168`.  In particular the previous `… ≠ 84` axiom is
+eliminated: an index-2 subgroup of a simple group cannot exist. -/
 theorem trinks_gal_card : Nat.card trinks.Gal = 168 := by
-  have h1 := trinks_gal_84_dvd
-  have h2 := trinks_gal_card_dvd_168
-  have h3 := trinks_gal_card_ne_84
-  obtain ⟨k, hk⟩ := h1
-  have hle : Nat.card trinks.Gal ≤ 168 := Nat.le_of_dvd (by norm_num) h2
-  have hpos : 0 < Nat.card trinks.Gal := Nat.pos_of_dvd_of_pos h2 (by norm_num)
-  rw [hk] at hle hpos h3 ⊢
-  omega
+  obtain ⟨P, instGP, instFP, hsimple, hPcard, φ, hφ⟩ := trinks_gal_embeds_simple168
+  haveI := instGP
+  haveI := instFP
+  exact card_eq_168_of_embeds_in_simple168 hsimple hPcard φ hφ trinks_gal_84_dvd
 
 end InverseGaloisA5OQ02
