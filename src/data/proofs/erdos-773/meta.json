@@ -58,68 +58,84 @@
   },
   "sections": [
     {
-      "id": "header",
-      "title": "Problem Overview and Imports",
+      "id": "overview",
+      "title": "Overview and Imports",
       "startLine": 1,
       "endLine": 32,
-      "summary": "Module docstring stating the problem, known results, and key insight about Landau's theorem. Imports Mathlib for finsets, naturals, and logarithms.",
-      "mathContext": "Verified: Module docstring stating the problem, known results, and key insight about Landau's theorem. Imports Mathlib for finsets, naturals, and logarithms."
+      "summary": "Module docstring stating Erdős #773 (OPEN): the size of the largest Sidon subset of {1²,…,N²} — is it N^{1−o(1)}? — with the known bounds (Alon-Erdős/Lefmann-Thiele lower N^{2/3}, Landau-based upper N/(log N)^{1/4}) and the imports/namespace.",
+      "mathContext": "A Sidon (B₂) set has all pairwise sums distinct; the question asks for $\\max\\{|A|:A\\subseteq\\{1^2,\\dots,N^2\\}\\text{ Sidon}\\}$, conjectured $N^{1-o(1)}$."
     },
     {
-      "id": "sidon-sets",
-      "title": "Sidon Set Definitions",
+      "id": "part-i-sidon",
+      "title": "Part I: Sidon Sets",
       "startLine": 33,
       "endLine": 53,
-      "summary": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function ≤ 1). These capture the B₂ sequence property.",
-      "mathContext": "Defines `IsSidon` (distinct ordered pairwise sums) and `IsSidonAlt` (representation function $\\leq$ 1). These capture the B₂ sequence property."
+      "summary": "`IsSidon` (all pairwise sums a₁+a₂ distinct) and the equivalent `IsSidonAlt` (each sum has at most one representation).",
+      "mathContext": "$A$ is Sidon iff $a_1+a_2=b_1+b_2\\Rightarrow\\{a_1,a_2\\}=\\{b_1,b_2\\}$, equivalently every sum has $\\le1$ representation."
     },
     {
-      "id": "squares-and-f",
-      "title": "Perfect Squares and the Extremal Function",
+      "id": "part-ii-squares",
+      "title": "Part II: Perfect Squares",
       "startLine": 54,
-      "endLine": 96,
-      "summary": "Defines `squaresUpTo N` as the set $\\{1^2, \\ldots, N^2\\}$, proves the cardinality theorem `squaresUpTo_card`, and defines the extremal function $f(N) = \\max\\{|A| : A \\subseteq \\text{squaresUpTo}(N), A \\text{ Sidon}\\}$. States the main question: is $f(N) = N^{1-o(1)}$?",
-      "mathContext": "Defines `squaresUpTo N` as the set $\\{1^2, \\ldots, N^2\\}$, proves the cardinality theorem `squaresUpTo_card`, and defines the extremal function $f(N) = \\max\\{|A| : A \\subseteq \\text{squaresUpTo}(N), A \\text{ Sidon}\\}$. States the main question: is $f(N) = N^{1-o(1)}$?"
+      "endLine": 78,
+      "summary": "`squaresUpTo N` = {1²,…,N²} as a Finset image, with `squaresUpTo_card` proving |squaresUpTo N| = N via injectivity of k ↦ (k+1)².",
+      "mathContext": "The ambient set $\\{1^2,2^2,\\dots,N^2\\}$ has exactly $N$ elements."
     },
     {
-      "id": "bounds",
-      "title": "Known Bounds",
+      "id": "part-iii-main-question",
+      "title": "Part III: The Main Question",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "`f N` = the maximum cardinality of a Sidon subset of squaresUpTo N (sup over the filtered powerset), and `MainQuestion`: is f(N) ≥ N^{1−ε} eventually for every ε>0?",
+      "mathContext": "$f(N)=\\max\\{|A|:A\\subseteq\\{1^2,\\dots,N^2\\},\\,A\\text{ Sidon}\\}$; the conjecture is $f(N)=N^{1-o(1)}$."
+    },
+    {
+      "id": "part-iv-known-bounds",
+      "title": "Part IV: Known Bounds",
       "startLine": 98,
-      "endLine": 126,
-      "summary": "Axiomatizes the Lefmann–Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon–Erdős upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`.",
-      "mathContext": "Axiomatized: Axiomatizes the Lefmann–Thiele lower bound $f(N) \\ge c \\cdot N^{2/3}$ and the Alon–Erdős upper bound $f(N) \\le C \\cdot N/(\\log N)^{1/4}$. Combines them into `current_knowledge`."
+      "endLine": 127,
+      "summary": "The two stated results as axioms — `lower_bound` (f(N) ≥ c·N^{2/3}) and `upper_bound` (f(N) ≤ C·N/(log N)^{1/4}) — combined in `current_knowledge`. These are the file's 2 axioms (cited literature, not formalized).",
+      "mathContext": "Known: $cN^{2/3}\\le f(N)\\le C\\,N/(\\log N)^{1/4}$; the gap between $N^{2/3}$ and $N/(\\log N)^{1/4}$ is open."
     },
     {
-      "id": "landau",
-      "title": "Landau's Theorem on Sums of Two Squares",
-      "startLine": 121,
-      "endLine": 161,
-      "summary": "Defines the representation function $r_2(n)$ and the counting function $S(N)$. Discusses Landau's 1908 asymptotic $S(N) \\sim c \\cdot N/\\sqrt{\\log N}$ and its implication for Sidon sets of squares in docstrings (no formal axiom or theorem statement).",
-      "mathContext": "Defines the representation function $r_2(n)$ and the counting function $S(N)$. Discusses Landau's 1908 asymptotic $S(N) \\sim c \\cdot N/\\sqrt{\\log N}$ and its implication for Sidon sets of squares in docstrings (no formal axiom or theorem statement)."
+      "id": "part-v-landau",
+      "title": "Part V: Landau's Theorem",
+      "startLine": 128,
+      "endLine": 157,
+      "summary": "`r2 n` (representations n=a²+b²) and `sumOfTwoSquaresCount N`, with docstrings stating Landau's theorem (the count of sums of two squares up to N is ~ cN/√(log N)) and why its sparsity constrains Sidon sets of squares.",
+      "mathContext": "Landau (1908): $S(N)\\sim cN/\\sqrt{\\log N}$, so sums of two squares have density $(\\log N)^{-1/2}$, bounding how many squares form a Sidon set."
     },
     {
-      "id": "probabilistic",
-      "title": "Probabilistic Method and Upper Bound Sketch",
-      "startLine": 162,
-      "endLine": 201,
-      "summary": "Sketches in docstrings the random construction for the $N^{2/3}$ lower bound (random subset with density $N^{-1/3}$) and the upper bound argument (Sidon + Landau forces $m^2 \\le N^2/(\\log N)^{1/2}$). No formal axioms or theorems in this section — the bounds themselves are axiomatized in the `bounds` section.",
-      "mathContext": "Sketches in docstrings the random construction for the $N^{2/3}$ lower bound (random subset with density $N^{-1/3}$) and the upper bound argument (Sidon + Landau forces $m^2 \\le N^2/(\\log N)^{1/2}$). No formal axioms or theorems in this section — the bounds themselves are axiomatized in the `bounds` section."
+      "id": "part-vi-probabilistic",
+      "title": "Part VI: Probabilistic Method",
+      "startLine": 158,
+      "endLine": 176,
+      "summary": "Docstrings explaining the Alon-Erdős random construction: a density-p random subset has ~pN elements and ~p²N² sums; the Sidon constraint p²N² ≤ (log N)^{-1/2}·2N² yields p ~ N^{-2/3} and hence the N^{2/3} lower bound.",
+      "mathContext": "Balancing $N^{2\\alpha}$ pairwise sums against $\\sim N/(\\log N)^{1/2}$ available targets gives the exponent $\\alpha=2/3$ for the random construction."
     },
     {
-      "id": "open-questions",
-      "title": "Open Questions",
-      "startLine": 188,
-      "endLine": 207,
-      "summary": "Formalizes `trueOrder` as the existence of a sharp exponent $\\alpha \\in [2/3, 1)$. Poses the question of explicit constructions improving on the probabilistic bound.",
-      "mathContext": "Formalizes `trueOrder` as the existence of a sharp exponent $\\$\\alpha$ \\in [2/3, 1)$. Poses the question of explicit constructions improving on the probabilistic bound."
+      "id": "part-vii-upper-bound",
+      "title": "Part VII: Upper Bound Analysis",
+      "startLine": 177,
+      "endLine": 188,
+      "summary": "Docstring sketching the upper bound: a size-m Sidon subset has m(m+1)/2 distinct sums, each a sum of two squares ≤ 2N²; Landau bounds these by ~N²/(log N)^{1/2}, so m ≤ N/(log N)^{1/4}.",
+      "mathContext": "From $m^2\\lesssim N^2/(\\log N)^{1/2}$ one gets $m\\le N/(\\log N)^{1/4}$, the Alon-Erdős upper bound."
     },
     {
-      "id": "summary",
-      "title": "Summary Theorem",
+      "id": "part-viii-open-questions",
+      "title": "Part VIII: Open Questions",
+      "startLine": 189,
+      "endLine": 208,
+      "summary": "`trueOrder`: the proposition that f(N) has a true exponent α ∈ [2/3, 1), plus a docstring asking whether the N^{2/3} lower bound (probabilistic) can be improved by an explicit construction.",
+      "mathContext": "Open: the true exponent $\\alpha$ with $f(N)=N^{\\alpha+o(1)}$, known only to lie in $[2/3,1)$."
+    },
+    {
+      "id": "part-ix-summary",
+      "title": "Part IX: Summary",
       "startLine": 209,
       "endLine": 236,
-      "summary": "Combines lower bound, upper bound, and open status into `erdos_773_summary`, providing a single entry point for the formalization's main results.",
-      "mathContext": "Bound: Combines lower bound, upper bound, and open status into `erdos_773_summary`, providing a single entry point for the formalization's main results."
+      "summary": "`erdos_773_summary` records the state of the problem: the lower and upper bounds both hold (via the two axioms) while the determination of the true order remains open (the third conjunct is `True`).",
+      "mathContext": "Summary: $cN^{2/3}\\le f(N)\\le CN/(\\log N)^{1/4}$ with the precise order — and whether $f(N)=N^{1-o(1)}$ — still open."
     }
   ],
   "conclusion": {
