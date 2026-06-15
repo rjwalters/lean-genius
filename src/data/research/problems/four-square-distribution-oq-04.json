@@ -1,7 +1,7 @@
 {
   "slug": "four-square-distribution-oq-04",
   "title": "Type-Decomposition of Sums of 2k Squares via the Hyperoctahedral Group",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -43,11 +43,14 @@
     "lastUpdate": "2026-06-15T07:05:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "ORIENT: answered the seeker's generalization question YES. The four-square orbit-stabilizer type-decomposition extends verbatim to r_{2k}(n) under B_{2k}=S_{2k} semidirect (Z/2)^{2k}: orbit(shape with z zeros, multiplicities m_i)=2^{2k-z}*(2k)!/prod m_i!, stabilizer=2^z*z!*prod(nonzero m_j!), r_{2k}(n)=sum over shapes orbit. Verified exactly for 2k in {2,4,6,8}. Lean ACT Docker-gated.",
+    "progressSummary": "ORIENT: answered the seeker's generalization question YES. The four-square orbit-stabilizer type-decomposition extends verbatim to r_{2k}(n) under B_{2k}=S_{2k} semidirect (Z/2)^{2k}: orbit(shape with z zeros, multiplicities m_i)=2^{2k-z}*(2k)!/prod m_i!, stabilizer=2^z*z!*prod(nonzero m_j!), r_{2k}(n)=sum over shapes orbit. Verified exactly for 2k in {2,4,6,8}. Lean ACT Docker-gated. S2 (ACT, build-pending): formalized the 2k=6 case mirroring the parent's COMPUTATIONAL route (not MulAction). New proofs/Proofs/FourSquareDistributionOQ04.lean: RepType6 (sorted six-tuple) + contribution=(720/prod count!)*2^nonzero, concrete shapes for n in {1,2,3,5,6,12,30} with contributions by native_decide and r_6(n) totals as sum of contributions (r6_5=312,r6_6=544,r6_12=2080,r6_30=14144) + nonzeroCount_le_six/signFactor_le_64. Executes the 'fixed small m' ACT at m=6. Cert verify_r6_decomposition.py PASS (exhaustive shapes; orbit formula vs brute signed-ordering count; totals vs convolution).",
     "builtItems": [
+      "proofs/Proofs/FourSquareDistributionOQ04.lean (S2, build-pending/UNREGISTERED) — 2k=6 type-decomposition: RepType6, the (star) orbit formula, native_decide contributions + r_6(n) totals for n in {1,2,3,5,6,12,30}, structural bounds.",
+      "research/problems/four-square-distribution-oq-04/verify_r6_decomposition.py (S2) — pins the exact embedded shapes/contributions/totals via exhaustive enumeration + independent brute signed-ordering count + signed-square convolution.",
       "research/problems/four-square-distribution-oq-04/verify_hyperoctahedral_2k.py - stdlib exact verifier: orbit-size formula vs independent brute signed-ordering count; orbit*stab=|B_{2k}| (orbit-stabilizer); sum_shapes orbit == r_{2k}(n) (independent convolution) for 2k in {2,4,6,8}; anchors r_2=4(d1-d3), r_4=8 sigma*. All checks PASS."
     ],
     "insights": [
+      "S2: the parent four-square proof is COMPUTATIONAL (RepType + formula + native_decide), NOT a MulAction; so the cheapest first ACT for r_{2k} is to mirror it at fixed m (did m=6), discharging concrete contributions/totals by native_decide. The (DECOMP) partition is handled per-n via a complete shape list (cert-verified complete), same as the parent; a uniform MulAction partition proof stays the deep open Lean work.",
       "The orbit-stabilizer decomposition generalizes to all 2k with orbit size 2^{#nonzero}*(2k)!/prod m_i!. |B_8|=8!*2^8=10321920.",
       "Stabilizer is NOT the full Young subgroup prod m_i!: only the 2^z sign flips on ZERO coordinates fix a tuple (flipping a 0 is trivial; flipping a nonzero changes the value). So |stab|=2^z*z!*prod_{nonzero} m_j!, and the orbit carries 2^{#nonzero} not 2^{2k}. Mishandling zeros is the one place a naive |B|/Young computation fails.",
       "The orbit-size formula (orbit-stabilizer) is the easy half; the orbit PARTITION r_{2k}=sum orbit is the real Lean obstruction (the parent proved it only case-by-case for small n)."
@@ -58,7 +61,7 @@
     ],
     "nextSteps": [
       "ACT fixed m in {4,6,8}: MulAction of Equiv.Perm (Fin m) x sign flips on {f:Fin m -> Z // sum f^2 = n}; stabilizer order via zero/nonzero split; orbit size via MulAction.card_orbit_mul_card_stabilizer_eq_card_group (Mathlib/GroupTheory/GroupAction/Quotient.lean).",
-      "Prove the orbit partition r_{2k}=sum_shapes orbit (a MulAction partition argument) \u2014 the genuine obstruction.",
+      "Prove the orbit partition r_{2k}=sum_shapes orbit (a MulAction partition argument) — the genuine obstruction.",
       "Supply r_6,r_8 arithmetic totals (Jacobi/modular) to state the decomposition with explicit totals."
     ],
     "markdown": "See research/problems/four-square-distribution-oq-04/knowledge.md"
@@ -89,7 +92,7 @@
     ]
   },
   "started": "2026-06-15T07:05:00.000Z",
-  "lastUpdate": "2026-06-15T07:05:00.000Z",
+  "lastUpdate": "2026-06-15T10:25:00Z",
   "significance": 6,
   "tractability": 5
 }

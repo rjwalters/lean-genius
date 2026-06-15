@@ -69,6 +69,42 @@ stab 1`, summing to `r_4(30)=576`.
 
 ---
 
+### Session 2026-06-15 (ACT) — the `2k = 6` case formalized (build-pending)
+
+**Mode**: continue · **Outcome**: ACT (Lean file mirroring the proven parent;
+Docker/Aristotle blackout ⟹ build-pending, UNREGISTERED).
+
+Chose the **computational route the parent actually uses**, not the heavier
+`MulAction` one the prior ORIENT sketched: the parent
+`FourSquareDistribution.lean` does *not* build `B₄` as a group action — it
+defines `RepType` (sorted four-tuple) + `contribution = permutations · 2^nonzero`
+and discharges concrete values by `native_decide`. New file
+`proofs/Proofs/FourSquareDistributionOQ04.lean` mirrors this for **six**
+coordinates:
+
+- `RepType6 n` = sorted six-tuple `a₁≤…≤a₆`, `Σ aᵢ² = n` (`deriving DecidableEq`,
+  exactly like the parent).
+- `contribution = (720 / ∏ (count v)!) · 2^(#nonzero)` — the `(★)` formula at
+  `m = 6`.
+- Concrete shapes for `n ∈ {1,2,3,5,6,12,30}` with per-shape contributions by
+  `native_decide`, and `r₆(n)` totals as `∑ contributions` (`r6_5=312`,
+  `r6_6=544`, `r6_12=2080`, `r6_30=14144`).
+- Structural lemmas `nonzeroCount_le_six`, `signFactor_le_64`.
+
+This executes next-step #1 below at `m = 6` without the parametric
+semidirect-product machinery. The (DECOMP) partition obstruction (next-step #2)
+is handled the *same way the parent handles it* — case-by-case per small `n` via
+the exhaustively-enumerated complete shape list (the cert checks the list is
+complete); a uniform `MulAction` partition proof remains the deep open Lean work.
+
+**Cert (new)** `verify_r6_decomposition.py` (PASS): for each embedded `n` it
+checks (a) the exhaustive sorted-shape enumeration equals the file's shape list,
+(b) the `(★)` orbit value equals an INDEPENDENT brute count of distinct signed
+orderings *and* the embedded number, (c) `Σ orbits = r₆(n)` by an INDEPENDENT
+signed-square convolution *and* the embedded total. Largest single `m=6` orbit
+seen: `(0,0,1,2,3,4) → 5760` at `n=30`; all-nonzero-distinct would give
+`6!·2⁶ = 46080`.
+
 ## Next steps
 
 1. **ACT (Lean, Docker-gated).** For a FIXED small `m = 2k ∈ {4,6,8}` (avoids the
