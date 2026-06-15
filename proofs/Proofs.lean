@@ -2806,6 +2806,7 @@ import Proofs.ShannonEntropy
 import Proofs.ShannonEntropyAristotle
 import Proofs.ShannonEntropyOQ01
 import Proofs.ShannonEntropyOQ01Aristotle
+import Proofs.ShannonEntropyOQ01OQ01
 import Proofs.ShannonEntropyOQ02
 import Proofs.ShannonEntropySSA
 import Proofs.ShannonEntropySSAAristotle
