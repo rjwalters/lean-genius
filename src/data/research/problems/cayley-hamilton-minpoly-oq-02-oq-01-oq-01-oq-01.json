@@ -37,7 +37,8 @@
       "axiom skolemNoether_module_iso: A-module iso B_f≃B_g via right-B-linear bijection (SkolemNoetherCSA.lean:115)",
       "skolemNoether_general: main theorem f,g:A→B conjugate by unit (SkolemNoetherCSA.lean:152)",
       "aut_is_inner: CSA automorphisms are inner (SkolemNoetherCSA.lean:193)",
-      "conjugate_iff_same_image: symmetry of conjugation relation (SkolemNoetherCSA.lean:200)"
+      "conjugate_iff_same_image: symmetry of conjugation relation (SkolemNoetherCSA.lean:200)",
+      "verify_skolem_noether_torsor.py (2026-06-15): exact exhaustive finite-field certificate of the conjugator torsor. For A=M_m(F_q) ↪ B=M_n(F_q) via a↦a⊗I_k (and the A=B case), enumerates the conjugator set S and verifies S nonempty, dim C_B(f(A))=k²=dim B/dim A, |S|=|(C_B)ˣ|=|GL_k(F_q)|, and u₀⁻¹·S=(C_B(f(A)))ˣ exactly (free+transitive coset). A=M2↪M4/F2: |S|=|GL2(F2)|=6; A=B case: |S|=q-1 recovering Aut≅Bˣ/Kˣ."
     ],
     "insights": [
       "Key algebraic insight: right-B-linear maps φ:B→B satisfy φ(b)=φ(1)·b (1-line proof, proved rigorously)",
@@ -52,7 +53,7 @@
       "skolemNoether_module_iso needs: Wedderburn-Artin + IsIsotypic uniqueness + bimodule extension principle (~200-300 lines)"
     ],
     "nextSteps": [
-      "BUILD-GATED (Docker down): formalize S := {u : Bˣ // ∀ a, g a = u * f a * u⁻¹} and a MulAction (C_B(f(A)))ˣ S that is free and transitive (torsor) — independent of the open axiom.",
+      "BUILD-GATED (Docker down): formalize S := {u : Bˣ // ∀ a, g a = u * f a * u⁻¹} and a MulAction (C_B(f(A)))ˣ S that is free and transitive (torsor) — independent of the open axiom. The free+transitive coset structure is now concretely certified on finite-field instances (verify_skolem_noether_torsor.py): the Lean target is exactly the coset equality u₀⁻¹·S=(C_B(f(A)))ˣ.",
       "Prove skolemNoether_module_iso using IsSimpleRing.isIsotypic + Wedderburn-Artin decomposition",
       "Build Docker and verify axiom count matches",
       "Reduce axiom count to 0 by proving the module iso step"
