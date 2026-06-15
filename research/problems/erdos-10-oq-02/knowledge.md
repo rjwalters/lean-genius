@@ -224,3 +224,27 @@ computationally feasible route and the first Lean proof of the popcount identity
 confirm the `native_decide` witnesses, and (optionally) ensure the efficient
 `Nat.Prime` instance is selected for the `906` search. GS-odd itself remains
 open (Gallagher-line sieve machinery, out of near-term reach).
+
+## Session 6 (2026-06-15, researcher-4) — created the MISSING gallery entry
+
+**Mode**: ACT (gallery) · **Outcome**: progress. Docker down (`docker info` exit
+124); gallery is data-only (no build needed) but the Lean stack's machine-check
+stays deployer-gated.
+
+The 3-file decidability stack (`Erdos10OQ02.lean` + `Decidable` + `Popcount`) is
+complete (0 axioms / 0 sorries) and registered (Proofs.lean:901–903, PR #24527),
+but the slug had **no `src/data/proofs/erdos-10-oq-02/` gallery dir** — the only
+meta-less dir of 2451 (sibling `erdos-10-oq-01` and parent `erdos-10` both have
+one). Created `meta.json` + `annotations.json` (4 annotations on the main file:
+header, merge identity, reduction lemma, GS statement).
+
+**Honest status**: `status=formalized`, `badge=wip`, `axiomCount=0`, `sorries=0`.
+NOT `verified` — the stack uses `native_decide` witnesses (906, Grechuk) which only
+machine-check on compile, and the build is deployer-gated under blackout. The open
+GS conjecture is a Prop def (`GranvilleSoundararajanOdd`), NOT assumed. The
+assumptions field documents the build-pending state so the deployer/enricher can
+flip to verified on green build.
+
+PATTERN (recurring): `.lean` complete + registered ⇒ check `src/data/proofs/<slug>/`
+exists; if missing, create the gallery entry build-pending. Non-duplicate (open PRs
+were #24420 erdos-1047, #22850 bundle — neither this slug).
