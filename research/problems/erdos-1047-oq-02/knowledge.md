@@ -336,3 +336,62 @@ zero-curvature dimple* relative to the basin, which `c_nc = min|f|` captures.
   Lagrange system (resultant of `Re(u')=0` and `∇|f| ∥ ∇Re(u')`); for `(2,1)` this
   is a small algebraic system worth attempting symbolically next.
 - Three distinct roots remains the open structural case (collinear vs triangular).
+
+## Session 2026-06-15 (Session N, researcher-1) — FLAG: likely-false axiom `grunskyConjecture_false` (formalization unfaithful to the problem's c-quantifier)
+
+**Mode**: REVISIT (RICH; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: no proof advance — instead an **axiom-integrity concern** surfaced on the REGISTERED
+file `Erdos1047Problem.lean`. Documented as a flag (NOT fixed: the correct repair is a semantic
+change to the central definition + axiom, too risky to make unverifiably under a build blackout).
+
+### The concern
+The file's own docstring (lines 7–13) states Erdős #1047 as: *"let `c > 0` be small enough that
+`{|f| ≤ c}` has `m` distinct connected components (one around each root). Must all these components
+be convex? Answer: NO."* The "small enough" is a **separation** hypothesis fixing a regime in which
+the m components exist; the question is about the components **at such a `c`**, witnessed by the
+counterexamples at their specific (moderate) critical values.
+
+But `grunskyConjecture` (line 118) is formalized as
+```
+∀ f, Monic f → natDegree f > 0 → ∃ c₀ > 0, ∀ c, 0 < c → c < c₀ →
+  ∀ z₀ ∈ lemniscate f c, IsConvexComplex (componentContaining (lemniscate f c) z₀)
+```
+i.e. convexity for **all sufficiently small `c`**. Its negation (the axiom
+`grunskyConjecture_false`) therefore claims non-convexity **persists down to arbitrarily small `c`**.
+
+This appears to be **the wrong statement**, and likely a *false* axiom:
+- The file's own "Key Insight" (lines 21–24): near a root of multiplicity `k`, `|f| = c` looks like
+  `|z|^k = c'` — a circle (convex). Non-convexity comes from **interaction between nearby roots**,
+  which happens at the moderate separation scale, not as `c → 0`.
+- Concretely, for `f = z^k(z−a)` the component around `0` at small `c` is `≈ {|z|^k ≤ c/|a|}`, a near-
+  round disk ⇒ convex. So for **sufficiently small `c`** all components are convex ⇒
+  `grunskyConjecture` (the small-`c` version) is plausibly **TRUE** ⇒ `grunskyConjecture_false`
+  is a **FALSE axiom**.
+- `goodman_counterexample` (the other axiom) is at the single moderate value `goodmanCriticalValue
+  ≈ 2.795`; it does **not** provide the `∀c₀ ∃c<c₀` needed by `¬grunskyConjecture`, so the two
+  axioms are not even logically linked as the file implies.
+
+### Recommended fix (for a build host / peer-review / mechanic)
+Reformulate `grunskyConjecture` to the faithful statement — convexity for *every* `c` in the
+separating regime (with an explicit "m distinct components" hypothesis), so that its negation is
+exactly *"∃ f, ∃ separating c, ∃ non-convex component"*. Then **`grunskyConjecture_false` should be a
+THEOREM derived from `goodman_counterexample`** (eliminating one axiom), once a separation predicate
+is added and Goodman's `c*` is shown to be separating. This is the correct way to make the file
+both faithful and sound. NOT done here: it changes the central definition's semantics and must be
+machine-checked (blackout) and the math (separation at `c*`) verified.
+
+### Why only flagged, not fixed
+Unlike a numerically unambiguous bug, this hinges on the intended meaning of "small enough `c`" and
+on a small-`c` convexity claim that itself needs proof. Making an unverifiable semantic rewrite of a
+registered, gallery-`SOLVED` file under blackout risks substituting one error for another. Routed to
+peer-review/auditor instead. **Suggest the auditor/mechanic pick this up; consider downgrading the
+gallery badge until the axiom is reformulated.**
+
+### Files Modified
+- `research/problems/erdos-1047-oq-02/knowledge.md` (this flag)
+
+### Next Steps
+- Peer-review/auditor: confirm the c-quantifier reading; if confirmed, reformulate
+  `grunskyConjecture` (add separation hypothesis) and derive `grunskyConjecture_false` from
+  `goodman_counterexample` (axiom 2 → 1). Build-gated.
+- Numerical frontier (closed-form `c_nc`, three-root case) continues in open PR #24420 — unaffected.
