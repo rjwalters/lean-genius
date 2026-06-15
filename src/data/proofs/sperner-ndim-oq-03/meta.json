@@ -135,7 +135,10 @@
     "summary": "This formalization provides the complete bridge from n-dimensional Sperner lemma to Brouwer fixed point theorem via displacement coloring. All results are fully verified with 0 axioms and 0 sorries. The approximate fixed point theorem uses UC + Sperner + displacement transfer, and Brouwer follows by compact minimization.",
     "implications": "Combined with the completion of sperner_ndim (1 sorry remaining), this gives an entirely combinatorial path to Brouwer's FPT that avoids the 2 axioms in BrouwerFixedPoint.lean (no-retraction and retraction-construction). The displacement coloring approach is more elementary and computational than the algebraic topology route.",
     "openQuestions": [
-      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline"
+      "Prove sperner_ndim in SpernerNDim.lean (1 sorry) to complete the full Sperner-to-Brouwer pipeline",
+      "Extend the combinatorial route from single-valued to set-valued maps: Sperner's lemma also implies the Knaster–Kuratowski–Mazurkiewicz (KKM) covering lemma, which yields Kakutani's fixed point theorem for upper-hemicontinuous convex-valued correspondences. Can the displacement-coloring construction be adapted to KKM/Kakutani, unlocking Nash-equilibrium existence as a downstream corollary?",
+      "Quantify the constructive content. The displacement-coloring + Sperner argument is algorithmic (unlike the no-retraction route), so it should yield an explicit bound on the subdivision mesh needed to locate an ε-approximate fixed point. Does this recover the complexity of Scarf's simplicial algorithm, and can the bound be formalized as a rate-of-convergence theorem in Lean?",
+      "Probe the infinite-dimensional boundary. Brouwer's theorem fails on the unit ball of an infinite-dimensional Banach space (Kakutani's counterexample), and the Schauder fixed point theorem recovers it only under compactness. Since the Sperner argument is intrinsically finite-dimensional, what precisely is the obstruction to lifting this pipeline, and does it cleanly motivate the compactness hypothesis Schauder must add?"
     ]
   },
   "crossReferences": [
