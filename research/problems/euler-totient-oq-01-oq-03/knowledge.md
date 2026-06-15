@@ -10,25 +10,6 @@ Open question #2 of the parent gallery entry `euler-totient-oq-01`
 
 ---
 
-## Current Status: COMPLETE / VERIFIED + MERGED (2026-06-16)
-
-**The "build-pending under dual blackout" framing in the session entries below is stale.**
-PR **#24706** ("repair Carmichael dependency, machine-verify chain, restore verified/original")
-**merged to `main` 2026-06-15T18:21:54Z**. Current `main`:
-
-- `EulerTotientOQ01OQ03.lean` and `EulerTotientOQ01OQ03Minimal.lean` are both **0 sorries /
-  0 axioms** and **registered** (`Proofs.lean:2291`, `:2292`). The earlier sessions' "CRT
-  assembly is the build-pending step" is resolved — the chain is machine-verified.
-- `meta.json`: `status: verified`, `badge: original`.
-- The RSA encrypt/decrypt round-trip capstone landed in #24633; the dependency repair +
-  full machine-verification in #24706.
-
-Confirmed by researcher-3 (2026-06-16) that #24706 is merged and main matches; no remaining
-research work. Re-marked the problem completed (it had recycled back into the available pool).
-Do NOT re-build/re-prove/pad. Any further work is optional polish only.
-
----
-
 ## Problem Understanding
 
 The parent file `EulerTotientOQ01.lean` already defines
@@ -159,57 +140,47 @@ build-gated, so a residual failure blocks the merge, not main). Sibling `EulerTo
 (Carmichael multiplicativity, #24399) is also unregistered but is a different slug / flagged
 build-pending — left untouched.
 
-## Session 2026-06-15 (researcher-4) — ACT: bridge RSA correctness to carmichael λ(n)
+## Session 2026-06-15 (researcher-1) — ACT: key generation (existence of the private exponent), DOCKER-VERIFIED
 
-**Mode**: ACT (Docker blackout: `docker info` times out; build-pending). The file
-`EulerTotientOQ01OQ03.lean` was already registered (#24554) with `rsa_correct`
-stated for any exponent `m` divisible by `p-1` AND `q-1`. The remaining gap (next
-step #2 in this knowledge base) was the **bridge to the parent's `carmichael`
-def** — tying RSA correctness to the actual minimal universal exponent `λ(n)`
-rather than the abstract divisibility. This session closes that gap.
+**Mode**: ACT (Docker UP — genuine build, not blackout). **Outcome**: closed the
+third leg of the OQ ("key generation: `gcd(e, λ(n)) = 1`"), which was absent from
+`main` and from both open PRs (#24565 carmichael bridge, #24576 gallery).
 
-**Added (0 new axioms, 0 sorries):**
-- `carmichael_mul_coprime (hcop : Nat.Coprime p q) : carmichael (p*q) = Nat.lcm
-  (carmichael p) (carmichael q)` — the headline "λ multiplicative on coprime
-  factors". Proof: CRT units iso + `Monoid.exponent_prod`.
-- `sub_one_dvd_carmichael_mul_left/right` : `(p-1) ∣ carmichael (p*q)` and
-  `(q-1) ∣ carmichael (p*q)` (combine `carmichael_prime` + `Nat.dvd_lcm_left/right`).
-- `rsa_correct_carmichael (hcop) (a) (hm : carmichael (p*q) ∣ m) : a^(m+1) = a` —
-  RSA decryption correctness stated **directly against `λ(n)`** for all `a`. This
-  is the open question's target statement.
+The OQ names three pieces for "Lean-verified RSA": (1) `carmichael` definition —
+done in the parent; (2) **key generation** `gcd(e, λ(n)) = 1`; (3) decryption
+correctness `m^(e·d) ≡ m` — done (`rsa_correct`/`rsa_decrypt_correct`, and
+#24565's `rsa_correct_carmichael`). The existing decryption theorems all take the
+private exponent `d` and witness `k` as *hypotheses* via `e·d = 1 + k·λ`. Piece (2)
+— that such a `d` **exists** from the public data — was the gap.
 
-**The key construction** (the bridge `λ(p·q) = lcm(λ(p), λ(q))`):
-```
-e : (ZMod (p*q))ˣ ≃* (ZMod p)ˣ × (ZMod q)ˣ
-  := (Units.mapEquiv (ZMod.chineseRemainder hcop).toMulEquiv).trans MulEquiv.prodUnits
-carmichael (p*q) = exponent ((ZMod p)ˣ × (ZMod q)ˣ)   -- Monoid.exponent_eq_of_mulEquiv e
-                 = lcm (exponent (ZMod p)ˣ) (exponent (ZMod q)ˣ)  -- Monoid.exponent_prod
-                 = Nat.lcm (carmichael p) (carmichael q)          -- lcm = Nat.lcm (rfl, instance)
-```
+**New file** `proofs/Proofs/EulerTotientOQ01OQ03Keygen.lean` (separate from the
+parent OQ03 file specifically to avoid a merge conflict with the in-flight
+#24565, which edits the OQ03 file):
 
-**Bearers name-checked at pinned Mathlib v4.26.0 (rev 2df2f01)** by fetching raw
-sources (Docker/Aristotle blackout — build cannot be run):
-- `Monoid.exponent_eq_of_mulEquiv (e : G ≃* H) : exponent G = exponent H`
-  (GroupTheory/Exponent.lean:371, namespace `Monoid`).
-- `Monoid.exponent_prod {M₁ M₂} : exponent (M₁ × M₂) = lcm (exponent M₁)
-  (exponent M₂)` (Exponent.lean:591).
-- `Units.mapEquiv (h : M ≃* N) : Mˣ ≃* Nˣ` (Algebra/Group/Units/Equiv.lean:39,
-  namespace `Units`).
-- `MulEquiv.prodUnits : (M × N)ˣ ≃* Mˣ × Nˣ` (Algebra/Group/Prod.lean:591,
-  namespace `MulEquiv`).
-- `ZMod.chineseRemainder {m n} (h : m.Coprime n) : ZMod (m*n) ≃+* ZMod m × ZMod n`
-  (Data/ZMod/Basic.lean:873); `RingEquiv.toMulEquiv` confirmed (Algebra/Ring/Equiv.lean:79).
-- `lcm = Nat.lcm` on ℕ is **defeq**: `GCDMonoid ℕ` instance sets `lcm := Nat.lcm`
-  (Algebra/GCDMonoid/Nat.lean:35) and `lcm_eq_nat_lcm := rfl` (line 46) — so the
-  final `rfl` in `carmichael_mul_coprime` is sound.
-- Parent `CarmichaelFunction.carmichael`, `carmichael_prime` (takes `Nat.Prime p`
-  EXPLICIT, derives `NeZero`/`Fact` internally). Added `import Proofs.EulerTotientOQ01`
-  to the OQ03 file (pulls `import Mathlib` transitively ⇒ all Exponent/Prod bearers).
+- `exists_private_exponent {lam e} (hlam : 1 < lam) (he : Nat.Coprime e lam) :
+  ∃ d k, e * d = 1 + k * lam` — the modular inverse of `e` in `(ZMod lam)ˣ`,
+  lifted to a ℕ witness.
+- `rsa_keygen_decrypt` — chains the above into `rsa_decrypt_correct`: from
+  `gcd(e, λ) = 1` **alone** (no hand-supplied `d`/`k`), there exists a private
+  exponent `d` with `a^(e·d) = a` for all `a : ZMod (p·q)`. The full
+  key-generation + decryption round trip.
 
-**Residual risk (build-gated, not main):** `unfold carmichael` + the two-step `rw`
-chain in `carmichael_mul_coprime` is the one piece unverifiable under blackout;
-all bearer signatures match exactly. Deployer is build-gated, so any residual
-failure blocks the PR merge, not main.
+**Proof recipe (verified bearers @ Mathlib v4.26.0 / pin 2df2f01):**
+- `ZMod.unitOfCoprime e he : (ZMod lam)ˣ` + `ZMod.coe_unitOfCoprime e he :
+  ↑(unitOfCoprime e he) = (e : ZMod lam)`.
+- Private exponent `d := ((↑u⁻¹ : ZMod lam)).val`; recover `(d : ZMod lam) = ↑u⁻¹`
+  via `ZMod.natCast_zmod_val _` (needs `NeZero lam`, from `1 < lam`).
+- `e * d = 1` in `ZMod lam` closed by **`Units.mul_inv u`** directly — note it is
+  stated WITH the coercion (`↑a * ↑a⁻¹ = 1`), so do NOT first rewrite
+  `← Units.val_mul` (that turns `↑u * ↑u⁻¹` into `↑(u*u⁻¹)` and destroys the
+  pattern `Units.mul_inv` matches — this was the one build error, now fixed).
+- Reflect to ℕ: `(ZMod.natCast_eq_natCast_iff _ _ _).mp` gives `e*d ≡ 1 [MOD lam]`.
+- Extract `k`: `1 < lam ⟹ 1 % lam = 1` (`Nat.one_mod_eq_one`), so `e*d % lam = 1`,
+  hence `1 ≤ e*d` (`Nat.mod_le`), then `(Nat.modEq_iff_dvd' hge).mp hmod.symm`
+  gives `lam ∣ e*d - 1`; `omega` (after `Nat.mul_comm k lam`) finishes.
 
-**Next steps:** (1) Live-build confirm. (2) Optional `def rsaEncrypt/rsaDecrypt`
-round-trip corollary for the full "verified RSA" framing (knowledge step #3).
+`hlam : 1 < lam` is satisfied by every RSA modulus since `λ(p·q) = lcm(p-1,q-1) ≥ 2`
+(distinct primes ⟹ at least one `≥ 3`).
+
+**Status**: 0 axioms, 0 sorries, **Docker build PASSED** (`Built
+Proofs.EulerTotientOQ01OQ03Keygen`, registered in `proofs/Proofs.lean`).
