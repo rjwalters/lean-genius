@@ -432,6 +432,7 @@ import Proofs.CauchySchwarzOQ04OQ01
 import Proofs.CayleyHamilton
 import Proofs.CayleyHamiltonCyclicVectorAllFields
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsAristotle
+import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02
 import Proofs.CayleyHamiltonCyclicVectorCommRingOQ01

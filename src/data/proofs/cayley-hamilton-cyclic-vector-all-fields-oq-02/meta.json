@@ -1,0 +1,75 @@
+{
+  "id": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
+  "title": "Cyclic Vector ⟹ Nonderogatory: The Converse",
+  "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
+  "description": "Proves the converse of the cyclic vector theorem: if a matrix M over any field has a cyclic vector, then M is nonderogatory (its minimal polynomial equals its characteristic polynomial). Combined with the forward direction from cayley-hamilton-cyclic-vector-all-fields, this completes the textbook equivalence M nonderogatory ⟺ M has a cyclic vector. The argument is short: a cyclic vector forces the minimal polynomial to have full degree n (else it would annihilate the cyclic vector), and a degree-n monic divisor of the degree-n monic characteristic polynomial must equal it.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-15",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "polynomial",
+      "cyclic-vector",
+      "cayley-hamilton",
+      "minimal-polynomial",
+      "nonderogatory",
+      "research",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 87,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "assumptions": "No axioms or sorries. Builds on the forward cyclic vector theorem (cayley-hamilton-cyclic-vector-all-fields) and Mathlib's minpoly, charpoly (Cayley–Hamilton via Matrix.aeval_self_charpoly), and Polynomial monic-divisor APIs.",
+    "dateAdded": "2026-06-15",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "cyclic_vector_implies_nonderogatory: the converse direction — a cyclic vector forces minpoly = charpoly over an arbitrary field",
+      "nonderogatory_iff_exists_cyclic_vector: the full textbook equivalence, assembling the forward theorem with the new converse"
+    ],
+    "historicalContext": "A matrix M is nonderogatory when its minimal polynomial equals its characteristic polynomial; equivalently it has a cyclic vector v, a vector for which {v, Mv, ..., M^(n-1)v} is a basis. The parent entry cayley-hamilton-cyclic-vector-all-fields proved the forward direction (nonderogatory ⟹ cyclic vector) uniformly over all fields via primary decomposition. This entry supplies the easier but essential converse, upgrading the implication to the textbook 'iff'.",
+    "proofStrategy": "1. Cayley–Hamilton (Matrix.aeval_self_charpoly) gives minpoly K M ∣ charpoly M, and charpoly has natDegree n. 2. minpoly annihilates M, so (aeval M (minpoly K M)).mulVec v = 0; if deg(minpoly) < n the cyclic property forces minpoly = 0, contradicting monicity, hence deg(minpoly) ≥ n. 3. Writing charpoly = minpoly * c, the degree identity n = deg(minpoly) + deg(c) together with deg(minpoly) ≥ n forces deg(c) = 0; c is monic (quotient of monics), so c = 1 and charpoly = minpoly."
+  },
+  "overview": {
+    "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields**: the parent proved that every nonderogatory matrix over an arbitrary field has a cyclic vector. Does the converse hold — does the existence of a cyclic vector force the matrix to be nonderogatory, i.e. force the minimal polynomial to have full degree $n$? Proving it upgrades the one-directional theorem to the textbook equivalence\n$$M \\text{ nonderogatory} \\iff M \\text{ has a cyclic vector}.$$",
+    "historicalContext": "The equivalence between being nonderogatory (minimal polynomial = characteristic polynomial) and possessing a cyclic vector is classical, going back to the theory of the rational canonical form (Frobenius 1878; Weyl, *The Classical Groups*, 1939; Gantmacher, *The Theory of Matrices*, 1959). The forward direction (nonderogatory ⟹ cyclic vector) is the substantive half and is formalized in the parent entry over all fields via primary decomposition. The converse is elementary by comparison but is required to state the result as an 'iff': a cyclic vector cannot be annihilated by any nonzero polynomial of degree below $n$, so the minimal polynomial — which always annihilates every vector — must have degree at least $n$; since it divides the degree-$n$ characteristic polynomial and both are monic, they coincide.",
+    "keyInsights": [
+      "A cyclic vector $v$ certifies a *lower* bound on the degree of the minimal polynomial: by definition no nonzero polynomial of degree $< n$ annihilates $v$, and the minimal polynomial annihilates $M$ (hence $v$). So if $\\deg(\\mathrm{minpoly}) < n$ the minimal polynomial would be the zero polynomial — impossible, as it is monic.",
+      "The characteristic polynomial supplies the matching *upper* bound: Cayley–Hamilton gives $\\mathrm{minpoly} \\mid \\mathrm{charpoly}$ and $\\deg(\\mathrm{charpoly}) = n$, so $\\deg(\\mathrm{minpoly}) \\le n$.",
+      "Equal-degree monic divisibility collapses to equality: writing $\\mathrm{charpoly} = \\mathrm{minpoly} \\cdot c$, the degree count forces $\\deg(c) = 0$, and a monic polynomial of degree $0$ is $1$. No associated-elements or unit bookkeeping is needed.",
+      "The converse needs no field-size or finiteness hypothesis, so the resulting equivalence holds uniformly over all fields — matching the 'all fields' scope of the forward theorem."
+    ],
+    "proofStrategy": "cyclic_vector_implies_nonderogatory: (a) hdvd := minpoly.dvd K M (Matrix.aeval_self_charpoly M); (b) hchar_deg via Matrix.charpoly_natDegree_eq_dim + Fintype.card_fin; (c) degree-≥-n by contradiction using minpoly.aeval and the IsCyclicVector hypothesis; (d) obtain c with charpoly = minpoly * c, use Polynomial.natDegree_mul and omega to get deg c = 0, then Polynomial.Monic.of_mul_monic_left + Polynomial.eq_one_of_monic_natDegree_zero to get c = 1. nonderogatory_iff_exists_cyclic_vector: pairs the forward theorem nonderogatory_has_cyclic_vector with the converse.",
+    "prerequisites": [
+      "Matrix.aeval_self_charpoly: the Cayley–Hamilton theorem, charpoly annihilates the matrix",
+      "minpoly.dvd: the minimal polynomial divides any annihilating polynomial",
+      "minpoly.aeval / minpoly.monic: the minimal polynomial annihilates M and is monic",
+      "Matrix.charpoly_monic, Matrix.charpoly_natDegree_eq_dim: the characteristic polynomial is monic of degree n",
+      "Polynomial.natDegree_mul, Polynomial.Monic.of_mul_monic_left, Polynomial.eq_one_of_monic_natDegree_zero: degree-counting on a monic factorization"
+    ],
+    "openQuestions": [
+      "**Derogatory case**: for a general (possibly derogatory) matrix, the cyclic subspace generated by a single vector has dimension equal to the degree of that vector's order ideal. Can one formalize the sharp statement that the maximal such dimension over all v equals deg(minpoly), and that it equals n exactly when M is nonderogatory?",
+      "**Module-theoretic form**: restate the equivalence as 'K[X]-module K^n (via M) is cyclic ⟺ minpoly = charpoly', connecting to Mathlib's module structure theory and the structure theorem for finitely generated modules over a PID.",
+      "**Density of cyclic vectors**: over an infinite field the set of cyclic vectors of a nonderogatory matrix is Zariski-open and dense. Can this quantitative refinement (a single polynomial whose nonvanishing characterizes cyclic vectors) be formalized?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CayleyHamiltonCyclicVectorAllFields"
+    ],
+    "namespace": "CayleyHamiltonCyclicVectorAllFieldsOQ02",
+    "lineCount": 87,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
