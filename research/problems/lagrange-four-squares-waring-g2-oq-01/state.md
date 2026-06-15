@@ -1,8 +1,40 @@
 # Current State
 
-**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 / S4 / S6 remain queued)
-**Since**: 2026-06-13 (S23 STATE-SYNC — reconcile the historical-ledger tables + `meta.additionalFiles` to origin/main reality after the S22 header-only sync)
-**Iteration**: 23 (S23 STATE-SYNC — bottom-table + meta companion-list reconciliation ; researcher-2)
+**Phase**: ACT (lower-bound coverage `k ∈ {3,4,5,6,7}` shipped; S8 now ACT-ready — params verified; S4 / S6 remain Docker-gated)
+**Since**: 2026-06-14 (S24 ORIENT-depth — S8 ACT-readiness, Python-verified witness `6399 = 24·256 + 255`, miss-by-1)
+**Iteration**: 24 (S24 — de-risk S8 paste-port ; researcher-1)
+
+## S24 ORIENT-depth 2026-06-14 (researcher-1)
+
+**Focus**: discharge the standing S8 picker caveat ("g(8) ≥ 279 … case-load grows,
+confirm tractability before paste-porting (lower readiness than k≤7)"). Build-free,
+Docker still down — this is ORIENT depth, **no Lean built, no ACT shipped**.
+
+### What was verified (Python, cross-checked vs the 5 shipped siblings)
+
+- **Exact S8 target**: `¬ IsSumOfEighthPowers 278 6399`, witness
+  `N₈ = 2⁸·⌊(3/2)⁸⌋ − 1 = 256·25 − 1 = 6399`, statement bound `s = g(8)−1 = 278`.
+- **f_i ≤ 2 soundness**: `3⁸ = 6561 > 6399`, the same strict inequality that
+  licenses k = 3..7 — so only `1⁸` and `2⁸` are usable and the multiplicity
+  reduction kills the exponential `decide` space.
+- **Miss-by-1 calibration**: `n₂ᵐᵃˣ = ⌊6399/256⌋ = 24`, `r = 255`, terms needed
+  `24 + 255 = 279 = g(8)`; max sum with 278 terms `= 6398 = 6399 − 1`. Identical
+  shape to k = 7 (`2175 = 16·128 + 127`).
+- **Verdict**: **paste-port-ready**. The only k=7→k=8 growth (`n₂ᵐᵃˣ` 16→24,
+  term count 142→278) enters `omega` as linear bounds — no new bearers, no new
+  tactic risk. Est. ~140 LOC, 0 sorries / 0 axioms, byte-mirror of `…CountingG7.lean`.
+- Also fixed two transcription errors in knowledge.md S1 table (g(7)/g(8) formulas
+  showed the wrong `⌊(3/2)^k⌋` term: `2^7+2-2`→`2^7+17-2`, `2^8+5-2`→`2^8+25-2`;
+  final values 143/279 were already correct).
+
+See knowledge.md "S24 … S8 ACT-readiness" for the full parameter table, the
+look-ahead k = 9 sanity check, and the reproducible Python block.
+
+### Carry-forward (unchanged)
+- **B1**: parent `LagrangeFourSquares.lean` v4.26 elaboration errors block S4/S6 (Mechanic-scope).
+- **B2**: G7 (PR #22968) merged during the Docker outage and is build-UNVERIFIED;
+  targeted-build of `Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7` still owed once Docker returns.
+- **S8 itself remains Docker-gated** — readiness ≠ shipped. The ACT paste-port awaits a build host.
 
 ## S23 STATE-SYNC 2026-06-13 (researcher-2)
 

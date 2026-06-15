@@ -12,8 +12,8 @@
 | 4 | 19 | 1986 | Balasubramanian, Deshouillers, Dress | *C. R. Acad. Sci. Paris* 303 (1986) |
 | 5 | 37 | 1964 | Chen Jingrun | *Sci. Sinica* 13 (1964) |
 | 6 | 73 | 1940 | Pillai | *Bull. Calcutta Math. Soc.* 32 (1940) |
-| 7 | 143 | 1936 | Niven (almost all); Kubina–Wunderlich (1990, verification) | $g(7) = 2^7 + 2 - 2 = 143$ |
-| 8 | 279 | conjectural per formula | $2^8 + 5 - 2 = 279$ ($\lfloor (3/2)^8 \rfloor = 25$) | Mahler 1957 |
+| 7 | 143 | 1936 | Niven (almost all); Kubina–Wunderlich (1990, verification) | $g(7) = 2^7 + 17 - 2 = 143$ ($\lfloor (3/2)^7 \rfloor = 17$) |
+| 8 | 279 | conjectural per formula | $2^8 + 25 - 2 = 279$ ($\lfloor (3/2)^8 \rfloor = 25$) | Mahler 1957 |
 | $k \ge 7$ | $2^k + \lfloor (3/2)^k \rfloor - 2$ | Mahler 1957 (all but finitely many); Kubina–Wunderlich 1990 (verified up to $\sim 4.7 \times 10^8$) | conjecturally all $k$ |
 
 The general formula $g(k) = 2^k + \lfloor (3/2)^k \rfloor - 2$ holds for all $k$ such that
@@ -260,4 +260,80 @@ This avoids the $3^{18}$ blowup entirely. ~80 Lean lines, single-session.
 | S3 | $\neg \text{IsSumOfFourthPowers } 18\ 79$ | $f_i \le 2$ | multiplicity + `omega` | TODO |
 | S4 | $\neg \text{IsSumOfCubes } 8\ 239$ | $f_i \le 6$ | lift + `native_decide` $7^8$ | TODO (optional) |
 | S5+ | upper bounds | — | axiomatise | TODO |
+
+## S24 (researcher-1, 2026-06-14) — S8 ACT-readiness (Python-verified, build-free)
+
+**Goal**: discharge the S8 picker caveat ("g(8) ≥ 279 … case-load grows, confirm
+tractability before paste-porting") so that the next ACT session can paste-port
+without re-deriving. All numbers below are computed and cross-checked against the
+five shipped siblings (k = 3..7) with `python3` — see the verification block at
+the end. **No Lean was built (Docker outage continues); this is ORIENT-depth, not ACT.**
+
+### The lower-bound recipe (parametric, already shipped for k = 3..7)
+
+For the witness $N_k = 2^k\lfloor (3/2)^k\rfloor - 1$, the statement is
+$\neg\,\mathrm{IsSumOf}k\mathrm{thPowers}\;(g(k)-1)\;N_k$ where
+$g(k)-1 = 2^k + \lfloor (3/2)^k\rfloor - 3$. The proof is the 6-step
+counting+omega template: (1) bound each base $f_i \le 2$ because $3^k > N_k$ so no
+$k$-th power $\ge 3^k$ fits; (2) lift to multiplicity counts $(c_0,c_1,c_2)$ of the
+values $\{0,1,2\}$; (3) fiber/partition `Finset.univ`; (4) expand the sum to
+$c_1\cdot 1 + c_2\cdot 2^k$; (5) the integer system
+$c_2\,2^k + c_1 = N_k,\; c_0+c_1+c_2 = g(k)-1,\; c_i\ge 0$; (6) `omega` closes it
+(linear, no `decide`/`native_decide` blowup).
+
+### Exact S8 parameters (k = 8) — paste-ready
+
+| Quantity | Value | Note |
+|---|---:|---|
+| $2^8$ | 256 | base power |
+| $\lfloor (3/2)^8\rfloor$ | 25 | $(3/2)^8 = 6561/256 = 25.62\ldots$ |
+| $g(8)$ lower bound | **279** | $256 + 25 - 2$ |
+| witness $N_8$ | **6399** | $256\cdot 25 - 1$ |
+| statement bound $s = g(8)-1$ | **278** | `¬ IsSumOfEighthPowers 278 6399` |
+| $3^8$ | 6561 | $> 6399$ ⟹ each $f_i \le 2$ (only $1^8,2^8$ usable) |
+| $n_2^{\max} = \lfloor N_8/2^8\rfloor$ | 24 | max copies of $2^8$ |
+| remainder $r = N_8 - 24\cdot 2^8$ | 255 | copies of $1^8$ |
+| terms needed | **279** | $24 + 255 = g(8)$ ✓ |
+| max sum reachable with 278 terms | 6398 | $24\cdot 256 + (278-24)\cdot 1$ |
+| **miss-by** | **1** | $6399 - 6398$ — identical calibration to k = 7 |
+
+So the formal target is
+```lean
+theorem g8_lower_counting : ¬ WaringG2OQ01.CountingG8.IsSumOfEighthPowers 278 6399
+```
+with `IsSumOfEighthPowers (s n : ℕ) : Prop := ∃ f : Fin s → ℕ, (∑ i, (f i) ^ 8) = n`,
+a **byte-mirror of `…CountingG7.lean` at $k=8$** (witness `6399 = 24·256 + 255`,
+`Fin 278`, `n_2^{max} = 24`, `n_0 = 278 − 255 − 24 = −1` ⟹ "miss by 1").
+
+### Tractability verdict: **READY** (was "lower readiness")
+
+The "case-load grows" worry is bounded and harmless: the only growth from k = 7 to
+k = 8 is $n_2^{\max}$ 16 → 24 and the term count 142 → 278, both of which enter
+`omega` as plain linear bounds — no exponential `decide` space is ever
+materialised (the $f_i \le 2$ reduction kills it, exactly as in g3..g7). The
+$f_i \le 2$ bound itself is sound because $3^8 = 6561 > 6399$ — the same
+strict inequality that licenses k = 3..7. Conclusion: S8 is paste-port-ready;
+no new proof bearers, no new tactic risk. Estimated ~140 LOC, single session,
+0 sorries / 0 axioms (mirroring `…CountingG7.lean`'s 139 LOC).
+
+### Look-ahead: k = 9 sanity (not yet targeted)
+
+For completeness the same script confirms k = 9 keeps the structure: $N_9 = 2^9\cdot 38 - 1 = 19455$,
+$3^9 = 19683 > 19455$, $g(9)$ lb $= 512 + 38 - 2 = 548$, miss-by-1. So the template
+does not break at k = 9 either; only the omega bounds keep growing linearly.
+
+### Python verification (reproducible)
+
+```python
+from math import floor
+def waring_lower(k):
+    twok, f = 2**k, floor((3/2)**k)
+    N, s = twok*f - 1, (twok + f - 2) - 1
+    n2 = N // twok; r = N - n2*twok
+    return dict(g_lb=twok+f-2, N=N, s=s, only12=3**k>N,
+                n2=n2, r=r, terms=n2+r, maxsum=n2*twok+(s-n2), miss=N-(n2*twok+(s-n2)))
+# k=8 → g_lb=279, N=6399, s=278, only12=True, n2=24, r=255, terms=279, maxsum=6398, miss=1
+```
+Cross-checked for k = 3..8: every row has `terms == g_lb` and `miss == 1`,
+matching the shipped witnesses (g3:23/8, g4:79/18, g5:223/36, g6:703/72, g7:2175/142).
 
