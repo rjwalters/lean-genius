@@ -1533,6 +1533,7 @@ import Proofs.Erdos474Problem
 import Proofs.Erdos475Problem
 import Proofs.Erdos476Aristotle
 import Proofs.Erdos476OQ05Aristotle
+import Proofs.Erdos476OQ05ETransform
 import Proofs.Erdos476OQ05Problem
 import Proofs.Erdos476Problem
 import Proofs.Erdos477Problem

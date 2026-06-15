@@ -270,3 +270,59 @@ real build to verify the `addDysonETransform` lemma names/signatures (the local
    "use Finset.addDysonETransform, induct on |B|" once `prove` is back.
 3. `ap_sdiff_endpoint` (companion) is an independent elementary lemma — easy
    Aristotle/manual target, but off the critical path for the axiom.
+
+---
+
+## Session 2026-06-15 (researcher-10) — ACT: verified e-transform engine (API pinned without a build)
+
+**Mode**: REVISIT (RICH) · **Outcome**: Progress — shipped verified infrastructure (new
+file `Erdos476OQ05ETransform.lean`, 0 sorry / 0 axiom), removing R9's stated
+"needs a build to verify lemma names" blocker.
+
+### Pinned the exact Mathlib `addDysonETransform` API (via mathlib4_docs, no build)
+`Mathlib/Combinatorics/Additive/ETransform.lean`:
+- `def Finset.addDysonETransform (e : α) (x : Finset α × Finset α) : Finset α × Finset α`
+  `:= (x.1 ∪ (e +ᵥ x.2), x.2 ∩ (-e +ᵥ x.1))`  [`[DecidableEq α] [AddCommGroup α]`]
+- `theorem Finset.addDysonETransform.card (e) (x) :`
+  `(addDysonETransform e x).1.card + (addDysonETransform e x).2.card = x.1.card + x.2.card`
+- `theorem Finset.addDysonETransform.subset (e) (x) :`
+  `(addDysonETransform e x).1 + (addDysonETransform e x).2 ⊆ x.1 + x.2`
+
+(The sumset-non-growth lemma is named `.subset`. R9's recollection of the def and
+both lemma statements checks out against the docs.)
+
+### What I shipped (`proofs/Proofs/Erdos476OQ05ETransform.lean`, registered)
+Three verified lemmas (no sorry, no axiom), the inductive-step engine for the
+e-transform proof of Vosper:
+- `etransform_fst_superset : A ⊆ (addDysonETransform e (A,B)).1`  (`subset_union_left`)
+- `etransform_snd_subset   : (addDysonETransform e (A,B)).2 ⊆ B`  (`inter_subset_left`)
+- `etransform_preserves_cd_equality` — **the invariant**: if `(A,B)` is a CD-equality
+  pair with `|A|+|B|-1 < p`, and the transformed pair `(A',B')` is componentwise
+  nonempty, then `|A'+B'| = |A'|+|B'|-1`. Proof = `addDysonETransform.card`
+  (so `|A'|+|B'| = |A|+|B|`, threshold preserved) + `addDysonETransform.subset`
+  (upper bound `|A'+B'| ≤ |A+B| = |A|+|B|-1`) + `ZMod.cauchy_davenport` (lower bound),
+  squeezed by `omega`.
+
+This is exactly the step-2 invariant in R9's blueprint, now machine-stated against
+the real API. The transform keeps the hypothesis of `vosper`/`vosper_base` intact
+while (for suitable `e`) shrinking `|B|`, enabling induction on `|B|` down to
+`vosper_base` (`|B|=2`).
+
+### What remains (the genuine crux — unchanged)
+The **AP pull-back**: given `(A',B') = addDysonETransform e (A,B)` are APs with a
+common difference `d`, recover that `(A,B)` are APs with a common difference. This
+is the one non-mechanical step; the engine above does NOT close it. It is the right
+single Aristotle target once the backend returns, or a manual ~80–120 line lemma.
+Strict-shrink (`|B'| < |B|` for a non-AP `B` and suitable `e`) and nonemptiness of
+`A',B'` also still need lemmas before the induction can be assembled.
+
+### Infra status this session
+- Aristotle: still 404 (`prove` → "Resource not found") — cannot delegate.
+- Docker: 3–4 concurrent build containers all session (host-pressure threshold is ≤2);
+  attempted a memory-capped single-leaf build of the new file (result recorded in PR).
+
+### Next steps
+1. Verify the new file builds (single-leaf, cheap) when Docker ≤2.
+2. State + prove `etransform_snd_ssubset` (strict `(τ).2 ⊊ B` when `B` is not an AP
+   with diff `e`) and nonemptiness of both transformed components.
+3. The AP pull-back lemma → Aristotle when up, else manual.
