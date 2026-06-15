@@ -44,14 +44,24 @@ So the WHOLE discharge reduces to the three-surd inequality
 
     72 − 30√3 − 12√2 + 12√6 ≠ 0       (in fact > 0).
 
-This is the sharp, sqrt-free-after-squaring target.  A future Docker/Aristotle
-session can close it by:
-  • bounding √2 < 1.41422, √3 < 1.73206, √6 > 2.44948 (`Real.sqrt_lt'` /
-    `Real.lt_sqrt`) and `nlinarith`/`linarith`, OR
-  • carrying s2,s3 with s2²=2, s3²=3, s6=s2·s3, and `nlinarith [sq_nonneg …]`.
+This is the sharp, sqrt-free-after-squaring target.  It is now CLOSED below
+(`witnessT1_surd_separation`) by the rational separating bounds
+√3 < 1.7321, √2 < 1.41422, √6 > 2.4494, each obtained from the squared
+identity `Real.sq_sqrt` plus `Real.sqrt_nonneg` via `nlinarith` (the negated
+goal multiplied by `0 ≤ √·` yields the matching one-sided bound), then
+`linarith` for positivity.  No `Real.sqrt_lt'`/`Real.lt_sqrt` iff-lemma is
+needed.
 
-UNVERIFIED — authored under a Docker + Aristotle blackout; main proof left as
-`sorry`.  This file does NOT touch the registered parent file and is NOT
+REMAINING SORRIES: `witnessT1_fails` (full non-tangency for the concrete T1 —
+requires unfolding `twentyFourPointCenter`, `incenter`, `inradius`,
+`twentyFourPointRadius` at the witness, sympy-certified in
+`verify_feuerbach3d_fails_witness_exact.py` but heavy to transcribe) and the
+trivial discharge that consumes it.  The genuinely number-theoretic kernel —
+the three-surd separation — is the part now machine-statable and proved.
+
+PARTIALLY VERIFIED — the surd kernel is a hand proof authored under a Docker +
+Aristotle blackout (not yet compiler-checked); the witness non-tangency is
+still `sorry`.  This file does NOT touch the registered parent file and is NOT
 itself registered in `Proofs.lean`, so it cannot affect the gallery build.
 -/
 import Mathlib
@@ -77,7 +87,21 @@ the reduction).  `Δ = 1+√3+2√2 > 0`, so this is equivalent to
 `dist(N₂₄,I)² ≠ (R/3 − r)²`. -/
 theorem witnessT1_surd_separation :
     (72 : ℝ) - 30 * Real.sqrt 3 - 12 * Real.sqrt 2 + 12 * Real.sqrt 6 ≠ 0 := by
-  sorry
+  -- The expression is in fact strictly positive (≈ 32.4618), so it is ≠ 0.
+  -- Rational separating bounds (each verified by the squared identity + nonneg):
+  --   √3 < 1.7321   (1.7321² = 3.00017… > 3)
+  --   √2 < 1.41422  (1.41422² = 2.00002… > 2)
+  --   √6 > 2.4494   (2.4494² = 5.99956… < 6)
+  -- giving 72 − 30√3 − 12√2 + 12√6 > 72 − 51.963 − 16.97064 + 29.3928 ≈ 32.459 > 0.
+  have h3 : Real.sqrt 3 < 1.7321 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3), Real.sqrt_nonneg 3]
+  have h2 : Real.sqrt 2 < 1.41422 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2), Real.sqrt_nonneg 2]
+  have h6 : (2.4494 : ℝ) < Real.sqrt 6 := by
+    nlinarith [Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 6), Real.sqrt_nonneg 6]
+  have hpos : (0 : ℝ) < 72 - 30 * Real.sqrt 3 - 12 * Real.sqrt 2 + 12 * Real.sqrt 6 := by
+    linarith
+  exact ne_of_gt hpos
 
 /-- The witness T1 is non-orthocentric AND its twenty-four-point sphere is NOT
 internally tangent to its insphere.  This is exactly the body of the parent
