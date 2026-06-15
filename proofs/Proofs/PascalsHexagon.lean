@@ -1183,9 +1183,49 @@ private lemma projTransform_valid_of_det_ne_zero {M : Matrix (Fin 3) (Fin 3) ℝ
   rw [Matrix.adjugate_mul, Matrix.smul_mulVec, Matrix.one_mulVec] at h0
   exact (smul_eq_zero.mp h0).resolve_left hM
 
+/-- **Sylvester reduction to the standard conic** — the sole remaining gap in the
+    elimination of `conic_implies_pascal_constraint` for non-degenerate symmetric conics.
+
+    A non-degenerate symmetric real conic `C` carrying a real point (`p₀ ≠ 0` with
+    `pointOnConic p₀ C`) is *indefinite* of signature `(2,1)`, hence projectively
+    equivalent to `stdConic = diag(1,1,-1)`: there is an invertible `M` with
+    `pointOnConic p C ↔ pointOnConic (M·p) stdConic` for every `p`.
+
+    The real-point hypothesis is **essential and not removable**: a *definite*
+    non-degenerate `C` (signature `(3,0)`/`(0,3)`) has only the trivial zero `p = 0`,
+    while `stdConic` has a full cone of real zeros, so no such `M` can exist. The
+    inscribed hexagon supplies the witness `p₀ := hex.A`, ruling out the definite case —
+    this is why the inline existential in `proof_sketch_conic_implies_pascal` was not
+    provable from `hC_sym`/`hC_nd` alone.
+
+    Proof plan (Sylvester's law of inertia; all tools in
+    `Mathlib.LinearAlgebra.QuadraticForm.Real`):
+    1. `mathlibQF_separatingLeft` gives that the associated bilinear form of
+       `Matrix.toQuadraticMap' C` is separating-left — the hypothesis for
+       `QuadraticForm.equivalent_one_neg_one_weighted_sum_squared`, yielding weights
+       `w : Fin 3 → ℝ` (`w i ∈ {1,-1}`) and an isometry
+       `φ : (toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)`.
+    2. Extract `M₁ := LinearMap.toMatrix' φ.toLinearEquiv.toLinearMap` (invertible,
+       `M₁ *ᵥ p = φ p`).
+    3. The real zero `p₀` forces `w` indefinite (`conicQF_eq_mathlibQF` makes
+       `(weightedSumSquares ℝ w)(φ p₀) = 0` with `φ p₀ ≠ 0`), leaving the 6 indefinite
+       weight patterns; each admits a fixed permutation/sign correction `M₂` carrying
+       `weightedSumSquares ℝ w` to `stdConic`. Set `M := M₂ * M₁`.
+    4. Chase the iff through `conicQF_eq_mathlibQF`, the isometry `φ`, and the `M₂`
+       correction (`mulVec` associativity). -/
+theorem sylvester_stdConic_of_isotropic (C : Conic)
+    (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
+    (p₀ : ProjPoint) (hp₀v : ProjPoint.valid p₀) (hp₀ : pointOnConic p₀ C) :
+    ∃ (M : Matrix (Fin 3) (Fin 3) ℝ), M.det ≠ 0 ∧
+      ∀ (p : ProjPoint), pointOnConic p C ↔
+        pointOnConic (projTransform M p) stdConic := by
+  sorry
+
 /-- **Proof sketch**: The full proof of `conic_implies_pascal_constraint`, for the case
-    where C is a symmetric non-degenerate conic. The remaining `sorry` covers extracting
-    an explicit invertible matrix from Mathlib's `IsometryEquiv`.
+    where C is a symmetric non-degenerate conic. The remaining gap — extracting an
+    explicit invertible matrix from Mathlib's `IsometryEquiv` — is now isolated in the
+    standalone lemma `sylvester_stdConic_of_isotropic` (the only `sorry` on this path);
+    everything else here is complete.
 
     **Why hC_sym and hC_nd are needed:**
     - `hC_sym`: Without symmetry, the quadratic form's zero set is the same as its symmetrization
@@ -1202,49 +1242,12 @@ theorem proof_sketch_conic_implies_pascal (C : Conic)
     (hC_sym : C.symmetric) (hC_nd : Conic.nondegenerate C)
     (hex : InscribedHexagon C) :
     pascalConstraint hex.A hex.B hex.C' hex.D hex.E hex.F := by
-  obtain ⟨M, hM_det, hM_eq⟩ : ∃ (M : Matrix (Fin 3) (Fin 3) ℝ),
-      M.det ≠ 0 ∧
-      ∀ (p : ProjPoint), pointOnConic p C ↔
-        pointOnConic (projTransform M p) stdConic := by
-    -- PROOF PLAN (Sylvester's law; key steps and Mathlib references):
-    --
-    -- [PROVED above] mathlibQF_separatingLeft gives:
-    --   (associated (R := ℝ) (Matrix.toQuadraticMap' C)).SeparatingLeft
-    --
-    -- [MATHLIB] QuadraticForm.equivalent_one_neg_one_weighted_sum_squared:
-    --   obtain ⟨w, hw, ⟨φ⟩⟩ :=
-    --     (Matrix.toQuadraticMap' C).equivalent_one_neg_one_weighted_sum_squared
-    --       (mathlibQF_separatingLeft C hC_sym hC_nd)
-    --   φ : (Matrix.toQuadraticMap' C).IsometryEquiv (weightedSumSquares ℝ w)
-    --   hw : ∀ i, w i = -1 ∨ w i = 1
-    --   φ.map_app : ∀ p, (weightedSumSquares ℝ w) (φ p) = (Matrix.toQuadraticMap' C) p
-    --
-    -- [MATHLIB] Extract matrix M₁ from the isometry φ:
-    --   let M₁ := LinearMap.toMatrix' φ.toLinearEquiv.toLinearMap
-    --   M₁ *ᵥ p = φ p  (by Matrix.toLin'_toMatrix')
-    --   M₁.det ≠ 0  (by LinearMap.det_toMatrix' + (LinearEquiv.det φ.toLinearEquiv).ne_zero)
-    --
-    -- [CASE ANALYSIS] Find correction matrix M₂ for the weight pattern:
-    --   Since hex.A is on C, (Matrix.toQuadraticMap' C) hex.A = 0 (conicQF_eq_mathlibQF),
-    --   so (weightedSumSquares ℝ w)(φ hex.A) = 0 with φ hex.A ≠ 0 (M₁ invertible).
-    --   Thus w is indefinite (not all 1 or all -1), leaving 6 cases:
-    --     w = (1,1,-1)   M₂ = identity
-    --     w = (1,-1,1)   M₂ = permutation (swap indices 1↔2)
-    --     w = (-1,1,1)   M₂ = permutation (swap indices 0↔2)
-    --     w = (-1,-1,1)  M₂ = identity (zero sets agree up to sign: -f=0 ↔ f=0)
-    --     w = (-1,1,-1)  M₂ = permutation (swap 1↔2) + negation argument
-    --     w = (1,-1,-1)  M₂ = permutation (swap 0↔2) + negation argument
-    --   In each case: M = M₂ * M₁ has M.det ≠ 0 and satisfies the conic equivalence.
-    --
-    -- [IFF PROOF] Given M₁, M₂ as above:
-    --   conicQF C p = 0
-    --   ↔ (Matrix.toQuadraticMap' C) p = 0      (conicQF_eq_mathlibQF)
-    --   ↔ (weightedSumSquares ℝ w)(M₁ *ᵥ p) = 0  (φ isometry, M₁ = matrix of φ)
-    --   ↔ conicQF stdConic (M₂ *ᵥ (M₁ *ᵥ p)) = 0 (M₂ correction for weight pattern)
-    --   = conicQF stdConic ((M₂ * M₁) *ᵥ p) = 0  (mulVec associativity)
-    sorry -- HARD: matrix extraction from IsometryEquiv + 6-case weight analysis
-    -- Estimated: ~80 lines. Mathlib tools needed above are all available in
-    -- Mathlib.LinearAlgebra.QuadraticForm.Real + Mathlib.LinearAlgebra.Determinant
+  -- The sole remaining gap, isolated as a clean (and *true*) standalone lemma. The
+  -- inscribed hexagon supplies the isotropic witness `hex.A`, which is exactly what
+  -- makes the existential provable (it rules out the definite case). See
+  -- `sylvester_stdConic_of_isotropic` for the full Sylvester-law proof plan.
+  obtain ⟨M, hM_det, hM_eq⟩ :=
+    sylvester_stdConic_of_isotropic C hC_sym hC_nd hex.A hex.hAvalid hex.hA
   -- Step C: The M-transformed hexagon vertices lie on stdConic
   have hMA : pointOnConic (projTransform M hex.A) stdConic := (hM_eq hex.A).mp hex.hA
   have hMB : pointOnConic (projTransform M hex.B) stdConic := (hM_eq hex.B).mp hex.hB
