@@ -1,0 +1,149 @@
+{
+  "id": "inclusion-exclusion-oq-01-oq-03",
+  "title": "Classical (Divisor-Form) Möbius Inversion",
+  "slug": "inclusion-exclusion-oq-01-oq-03",
+  "description": "Formalizes Möbius inversion in the textbook divisor-sum form: f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d)·f(n/d), the number-theoretic incarnation of inclusion–exclusion (μ is the IE sign of the divisor lattice). Bridges Mathlib's antidiagonal-form inversion to the classical divisor sum, and applies it to recover the Möbius form of Euler's totient φ(n) = Σ_{d|n} μ(d)·(n/d). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "August Ferdinand Möbius (1832); formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/M%C3%B6bius_inversion_formula",
+    "date": "1832",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/InclusionExclusionOQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "inclusion-exclusion",
+      "moebius-inversion",
+      "euler-totient",
+      "open-question"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Build-pending: authored during the Docker + Aristotle backend outage, not machine-checked this session, and registration in Proofs.lean is in flight (PR #24514) — until that merges and a green build confirms it, treat as build-pending. The proof is a thin, faithful bridge over Mathlib's ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq and Nat.sum_divisorsAntidiagonal at pinned v4.26.0. Both directions and the Euler-φ anchor are independently certified by research/problems/inclusion-exclusion-oq-01-oq-03/verify_moebius_inversion.py (all n ≤ 400, random data — all pass). Promote to verified once registered and a green docker-build of Proofs.InclusionExclusionOQ01OQ03 confirms the typecheck.",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq",
+        "description": "Möbius inversion in antidiagonal form over a commutative ring",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "Nat.sum_divisorsAntidiagonal",
+        "description": "Σ_{x ∈ n.divisorsAntidiagonal} F x.1 x.2 = Σ_{d ∈ n.divisors} F d (n/d) — the bridge from antidiagonal to divisor sums",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.sum_totient",
+        "description": "Σ_{d|n} φ(d) = n, the parent identity that the Euler-φ corollary inverts",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "originalContributions": [
+      "moebius_inversion_divisors: the textbook divisor-form Möbius inversion f(n) = Σ_{d|n} g(d) ↔ g(n) = Σ_{d|n} μ(d)·f(n/d) over any commutative ring, obtained by wiring Mathlib's antidiagonal inversion through Nat.sum_divisorsAntidiagonal (plus eq_comm to match the gallery's orientation)",
+      "totient_eq_sum_moebius_mul: applying the divisor-form inversion to Nat.sum_totient yields the Möbius expression φ(n) = Σ_{d|n} μ(d)·(n/d) over ℤ — the inclusion–exclusion read of Euler's totient and the 'inverse' of the parent entry's Σ_{d|n} φ(d) = n",
+      "Exposes the classical Σ_{d|n} μ(d)·f(n/d) shape (rather than the antidiagonal sum) that downstream gallery work expects"
+    ],
+    "dateAdded": "2026-06-15",
+    "lineCount": 94,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "prerequisites": [
+      "The Möbius function μ and the divisor lattice",
+      "Inclusion–exclusion and the divisor–totient identity Σ_{d|n} φ(d) = n (parent entry)",
+      "Mathlib's ArithmeticFunction / divisorsAntidiagonal API"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Möbius inversion, introduced by August Ferdinand Möbius in 1832, is the number-theoretic form of inclusion–exclusion: the Möbius function μ plays the role of the inclusion–exclusion sign on the lattice of divisors. The classical statement is that f(n) = Σ_{d|n} g(d) for all n is equivalent to g(n) = Σ_{d|n} μ(d)·f(n/d). This entry — open question OQ-03 of the parent gallery entry inclusion-exclusion-oq-01, which proves the divisor–totient identity Σ_{d|n} φ(d) = n via the inclusion–exclusion sieve — formalizes the textbook divisor-form inversion and uses it to invert the parent's identity into the Möbius form of Euler's totient.",
+    "problemStatement": "Formalize Möbius inversion in divisor form: f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d)·f(n/d).",
+    "text": "A 94-line formalization. Mathlib proves Möbius inversion in antidiagonal form (sum_eq_iff_sum_mul_moebius_eq); this file states and proves the equivalent textbook divisor-sum form by bridging through Nat.sum_divisorsAntidiagonal, then applies it to the parent's Σ_{d|n} φ(d) = n to obtain the Möbius expression φ(n) = Σ_{d|n} μ(d)·(n/d). 0 axioms, 0 sorries.",
+    "proofStrategy": "moebius_inversion_divisors proves both directions: from f(n) = Σ_{d|n} g(d), apply Mathlib's antidiagonal inversion to get the antidiagonal sum, then rewrite via Nat.sum_divisorsAntidiagonal into the divisor sum (and eq_comm for orientation); the converse mirrors this. totient_eq_sum_moebius_mul instantiates f = id, g = φ and feeds the cast of Nat.sum_totient as the forward hypothesis, yielding the Möbius totient identity over ℤ.",
+    "keyInsights": [
+      "Möbius inversion is exactly inclusion–exclusion on the divisor lattice — μ is the IE sign — so this OQ sits naturally under the inclusion–exclusion parent",
+      "Mathlib's inversion is stated over divisorsAntidiagonal; the genuinely useful textbook shape Σ_{d|n} μ(d)·f(n/d) requires the Nat.sum_divisorsAntidiagonal reindexing bridge, which is the technical content here",
+      "The mathematical depth lives in Mathlib's sum_eq_iff_sum_mul_moebius_eq; the contribution is a faithful, reusable restatement plus the Euler-φ corollary, not new depth — stated honestly",
+      "The Euler-φ corollary is the literal inverse of the parent entry's Σ_{d|n} φ(d) = n: inverting a divisor-sum identity with μ recovers the summand, here φ(n) = Σ_{d|n} μ(d)·(n/d)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "moebius-inversion",
+      "title": "Divisor-Form Möbius Inversion",
+      "startLine": 59,
+      "endLine": 79,
+      "summary": "moebius_inversion_divisors proves f(n) = Σ_{d|n} g(d) ↔ g(n) = Σ_{d|n} μ(d)·f(n/d) for f, g into any commutative ring, by bridging Mathlib's antidiagonal-form inversion (sum_eq_iff_sum_mul_moebius_eq) through Nat.sum_divisorsAntidiagonal in both directions.",
+      "mathContext": "$f(n)=\\sum_{d\\mid n} g(d) \\iff g(n)=\\sum_{d\\mid n}\\mu(d)\\,f(n/d)$."
+    },
+    {
+      "id": "euler-totient-corollary",
+      "title": "Möbius Form of Euler's Totient",
+      "startLine": 81,
+      "endLine": 94,
+      "summary": "totient_eq_sum_moebius_mul applies the divisor-form inversion to the parent's Σ_{d|n} φ(d) = n (Nat.sum_totient), giving φ(n) = Σ_{d|n} μ(d)·(n/d) over ℤ — the inclusion–exclusion read of the totient and the inverse of the parent identity.",
+      "mathContext": "$\\varphi(n)=\\sum_{d\\mid n}\\mu(d)\\,(n/d)$, the inverse of $\\sum_{d\\mid n}\\varphi(d)=n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion-oq-01",
+      "relationship": "extends",
+      "description": "Answers OQ-03 of the parent: it formalizes Möbius inversion (the number-theoretic inclusion–exclusion) and inverts the parent's divisor–totient identity Σ_{d|n} φ(d) = n into the Möbius totient form."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "applies",
+      "description": "Realizes the inclusion–exclusion principle in its Möbius-function form on the divisor lattice."
+    }
+  ],
+  "conclusion": {
+    "summary": "Möbius inversion is formalized in the textbook divisor form f(n) = Σ_{d|n} g(d) ⟺ g(n) = Σ_{d|n} μ(d)·f(n/d) over any commutative ring, bridging Mathlib's antidiagonal statement to the classical shape, and applied to recover φ(n) = Σ_{d|n} μ(d)·(n/d) from Σ_{d|n} φ(d) = n. 0 axioms, 0 sorries.",
+    "implications": "Provides the reusable divisor-form Möbius inversion that downstream number-theory gallery work expects, and makes explicit the inclusion–exclusion structure underlying Euler's totient.",
+    "openQuestions": [
+      "Formalize multiplicative Möbius inversion (the Dirichlet-convolution form g = f * μ) and connect it to ArithmeticFunction.IsMultiplicative",
+      "Generalize to inversion over an arbitrary locally finite poset with its Möbius function, recovering both the divisor-lattice and subset-lattice (classical IE) cases as instances"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Möbius, August Ferdinand",
+      "title": "Über eine besondere Art von Umkehrung der Reihen",
+      "year": "1832",
+      "venue": "Journal für die reine und angewandte Mathematik 9, 105–123"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Moebius",
+      "Mathlib.NumberTheory.Divisors",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Nat",
+      "ArithmeticFunction"
+    ],
+    "namespace": "InclusionExclusionOQ01OQ03",
+    "lineCount": 94,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/InclusionExclusionOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "moebius_inversion_divisors",
+      "type": "core",
+      "description": "Divisor-form Möbius inversion over a commutative ring",
+      "leanType": "(∀ n > 0, f n = ∑ d ∈ n.divisors, g d) ↔ (∀ n > 0, g n = ∑ d ∈ n.divisors, (μ d) * f (n / d))"
+    },
+    {
+      "name": "totient_eq_sum_moebius_mul",
+      "type": "supporting",
+      "description": "Möbius form of Euler's totient, φ(n) = Σ_{d|n} μ(d)·(n/d)",
+      "leanType": "(Nat.totient n : ℤ) = ∑ d ∈ n.divisors, (μ d : ℤ) * ((n / d : ℕ) : ℤ)"
+    }
+  ],
+  "sorries": 0
+}
