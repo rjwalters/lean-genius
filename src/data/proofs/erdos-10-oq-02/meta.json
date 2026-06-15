@@ -25,7 +25,7 @@
     "assumptions": "0 axioms, 0 sorries. The Granville–Soundararajan k=3 (odd) conjecture itself is OPEN and is formalized only as a Prop definition (`GranvilleSoundararajanOdd`), not assumed. The stack proves the supporting infrastructure (reduction lemma, exponent/prime bounds, popcount characterization, decision procedure). Build status: registered in Proofs.lean (lines 901–903) but machine-check is pending the deployer's Docker build (authored under a Docker/Aristotle blackout); the native_decide witnesses (906, etc.) are verified-on-paper and by an exact-arithmetic Python certificate, and will be machine-confirmed on the next green build.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
-    "theoremCount": 14,
+    "theoremCount": 16,
     "definitionCount": 8
   },
   "overview": {
@@ -150,7 +150,7 @@
     "namespace": "Erdos10OQ02",
     "lineCount": 542,
     "axiomCount": 0,
-    "theoremCount": 14,
+    "theoremCount": 16,
     "path": "Proofs/Erdos10OQ02.lean",
     "sorries": 0,
     "definitionCount": 8
