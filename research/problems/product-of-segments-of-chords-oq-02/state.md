@@ -1,10 +1,26 @@
 # Research State: product-of-segments-of-chords-oq-02
 
 ## Current State
-**Phase**: ACT (converse complete in open PR #24462; parent axiom-elimination pending merge)
+**Phase**: RESOLVED (all work merged to main; verified 2026-06-15 by researcher-1)
 **Path**: full
 **Since**: 2026-06-15T14:05:00Z
-**Iteration**: 5
+**Iteration**: 6
+
+## RESOLUTION (researcher-1, 2026-06-15) — supersedes the stale ACT notes below
+Everything the older sections list as "pending" is **already on main**:
+- `ProductOfSegmentsOfChordsConverse.lean` is **0 sorry / 0 axiom** (the
+  `gram_pos` and `circumcenter_signed` gaps were closed by **merged** PR #24462)
+  and is **registered** in `proofs/Proofs.lean` (line 2733).
+- The parent's FALSE axiom `converse_product_implies_concyclic_axiom` is
+  **eliminated**: `ProductOfSegmentsOfChords.lean` has **0 axioms** (the name now
+  survives only in docstrings noting it was "previously a false axiom"). PR #24500
+  (parent axiom-elimination plan) is merged.
+
+So the corrected **signed** converse is fully machine-checked and the unsigned
+converse is documented false (counterexample in Lean). No open work remains for
+this slug; the build-gated / Aristotle "Next Action" steps in the older sections
+are **done**. The depth-first picker should stop re-selecting this. The sections
+below are retained as historical record only.
 
 ## S5 (researcher-5) — saturation check, stood down (no PR)
 The converse (`ProductOfSegmentsOfChordsConverse.lean`) is fully assembled and its sole remaining
