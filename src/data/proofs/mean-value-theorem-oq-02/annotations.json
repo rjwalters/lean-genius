@@ -85,15 +85,16 @@
       "endLine": 127
     },
     "title": "MVT is the n=0 Taylor Theorem",
-    "content": "Derives the Mean Value Theorem from `taylor_lagrange_remainder` at n=0. The proof specializes the axiom with `n=0` and `hf1 : ContDiff ℝ 1 f`, applies `taylorPolynomial_zero` to replace `taylorPolynomial f a 0 b` with `f a`, and simplifies `iteratedDeriv 1 f c = deriv f c` via `iteratedDeriv_one` and `Nat.factorial 1 = 1`. The result is `f b - f a = deriv f c · (b-a)`, exactly the MVT.",
-    "mathContext": "At $n=0$: $f(b) - f(a) = \\frac{f^{(1)}(c)}{1!}(b-a)^{0+1} = f'(c)(b-a)$. This is the classical MVT (also called Lagrange's MVT to distinguish from Cauchy's MVT). The `ContDiff ℝ 1 f` hypothesis means $f$ is differentiable with continuous derivative — slightly stronger than the usual MVT hypothesis of differentiability on $(a,b)$, but appropriate for the Taylor framework.",
+    "content": "Derives the Mean Value Theorem from `taylor_lagrange_remainder` at n=0. The proof first bridges an arity coercion: the axiom demands `ContDiff ℝ (n+1) f`, so at `n=0` it needs `ContDiff ℝ (↑(0+1)) f`, whereas the hypothesis is the literal `ContDiff ℝ 1 f`. The line `have hf1 : ContDiff ℝ (↑(0 + 1)) f := by simpa using hf` discharges this — `simpa` normalizes `(0+1 : ℕ)` cast to `ℕ∞` down to `1`, matching the two definitionally-but-not-syntactically-equal smoothness orders. It then specializes the axiom, applies `taylorPolynomial_zero` to replace `taylorPolynomial f a 0 b` with `f a`, and simplifies `iteratedDeriv 1 f c = deriv f c` via `iteratedDeriv_one` and `Nat.factorial 1 = 1`. A final `linarith` rearranges to `f b - f a = deriv f c · (b-a)`, exactly the MVT.",
+    "mathContext": "At $n=0$: $f(b) - f(a) = \\frac{f^{(1)}(c)}{1!}(b-a)^{0+1} = f'(c)(b-a)$. This is the classical MVT (also called Lagrange's MVT to distinguish from Cauchy's MVT). The `ContDiff ℝ 1 f` hypothesis means $f$ is differentiable with continuous derivative — slightly stronger than the usual MVT hypothesis of differentiability on $(a,b)$, but appropriate for the Taylor framework. The smoothness order lives in $\\mathbb{N}\\infty = \\mathbb{N} \\cup \\{\\infty\\}$, so `1` and the coerced `↑(0+1)` are equal but not syntactically identical — hence the `simpa` bridge before the axiom can be applied.",
     "significance": "key",
     "relatedConcepts": [
       "Mean Value Theorem",
       "Taylor at order 0",
       "iteratedDeriv_one",
       "ContDiff ℝ 1",
-      "Nat.factorial"
+      "Nat.factorial",
+      "ENat coercion"
     ],
     "prerequisites": [
       "taylor_lagrange_remainder",
@@ -112,7 +113,7 @@
       "endLine": 152
     },
     "title": "Second-Order Taylor Expansion",
-    "content": "Proves `taylor_second_order`: for `ContDiff ℝ 2 f` and `a < b`, there exists `c ∈ (a,b)` with `f b = f a + deriv f a · (b-a) + iteratedDeriv 2 f c / 2 · (b-a)²`. Derived at n=1: applies `taylor_lagrange_remainder` at order 1, rewrites using `taylorPolynomial_one`, and simplifies `2! = 2` via `Nat.factorial`. The `linarith` call handles the linear arithmetic after the algebraic simplification.",
+    "content": "Proves `taylor_second_order`: for `ContDiff ℝ 2 f` and `a < b`, there exists `c ∈ (a,b)` with `f b = f a + deriv f a · (b-a) + iteratedDeriv 2 f c / 2 · (b-a)²`. Derived at n=1 by the same template as `mvt_is_first_order_taylor`: first the arity bridge `have hf2 : ContDiff ℝ (↑(1 + 1)) f := by simpa using hf` rewrites the literal `ContDiff ℝ 2` into the `↑(n+1)` shape the axiom expects (here `n=1`), then it specializes `taylor_lagrange_remainder` at order 1, rewrites the Taylor polynomial via `taylorPolynomial_one`, and simplifies `2! = 2` via `Nat.factorial`. The `linarith` call handles the linear arithmetic after the algebraic simplification. The two corollaries thus share one derivation pattern — *specialize the axiom at fixed n, bridge the smoothness-order coercion, unfold the concrete Taylor polynomial, normalize the factorial, close by linarith* — which generalizes verbatim to any fixed order.",
     "mathContext": "At $n=1$: $f(b) = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2!}(b-a)^2 = f(a) + f'(a)(b-a) + \\frac{f''(c)}{2}(b-a)^2$. This is the quadratic Taylor approximation. Applications: in Newton's method, the error after one step satisfies $|e_{n+1}| \\leq \\frac{M_2}{2|f'(c)|}|e_n|^2$ by the second-order Taylor expansion, giving quadratic convergence.",
     "significance": "supporting",
     "relatedConcepts": [
