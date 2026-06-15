@@ -18,6 +18,33 @@ with probability ≥ 1/2.
 - Certified `ε·d^{1/3} → c₀/4` over `d = 10²…10¹¹` and gap
   `(n_W − n_X)/d^{1/3} → c₀²/4 = 0.64653`.
 
+## RESULT (S4, researcher-4, 2026-06-15) — closed-form ABSOLUTE three-term expansion
+
+Pushed the relative S2 result one order further, in absolute terms, by solving the
+asymptotic expansion of `E[W] = d·P(Bin(n,1/d)≥3) = ln2` order-by-order in
+`t = d^{−1/3}`. Writing `n_W(d) = c₀d^{2/3} + a·d^{1/3} + b + o(1)`:
+
+    n_W(d) = c₀ d^{2/3} + (c₀²/4) d^{1/3} + (1 + (21/40) ln 2) + o(1),
+    c₀ = (6 ln 2)^{1/3},   constant b = 1 + 21 ln2/40 = 1 + 7c₀³/80 ≈ 1.36390227.
+
+- **The constant term is exactly `1 + (21/40) ln 2`** (NEW). Sympy gives it as
+  `7c₀³/80 + 1`; using `c₀³ = 6 ln 2` ⟹ `21 ln2/40 + 1`. High-precision mpmath
+  (dps 50) confirms `n_W − c₀d^{2/3} − (c₀²/4)d^{1/3} → 1.36390227` monotonically
+  (`d = 10⁴…10¹⁸`, err `5.7e−7` at `1e18`).
+- **Independent re-derivation of S2:** the vanishing of the `t¹` coefficient forces
+  `a = c₀²/4`, exactly S2's d^{1/3} coefficient — obtained here by a different route
+  (direct binomial-tail series of `E[W]`, not the `ε·d^{1/3}` fit). Cross-check.
+- **HONEST CAVEAT** (Insight 5): rigorous for the *surrogate* root `n_W` (the
+  deterministic solution of `E[W]=ln2`, i.e. `e^{−E[W]}=1/2`). The *true integer
+  median* differs by the `O(1) ≈ −1.03` Poisson-approximation gap, so the integer
+  median's constant term is `1 + 21ln2/40 − 1.03 ≈ 0.334` and stays HEURISTIC. The
+  leading two terms and the surrogate constant are the rigorous content.
+- Cert: `verify_absolute_expansion.py` (PART A sympy series → a, b; PART B mpmath
+  numeric confirmation). ALL CHECKS PASSED.
+
+This makes M2's tractable Lean target sharper: the elementary `E[W]` binomial-tail
+expansion now has explicit closed-form `a = c₀²/4` and `b = 1 + 21ln2/40` to hit.
+
 ## Insight 1 — Leading order from the first-moment / Poisson median
 Each unordered triple coincides w.p. `1/d²`; `E[#triples] = C(n,3)/d²`. Poisson
 heuristic median `C(n,3)/d² = ln 2` ⟹ `n ~ (6 d² ln 2)^{1/3}`. Certified
