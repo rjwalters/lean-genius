@@ -195,6 +195,44 @@ theorem no_proper_covering_one : ¬HasProperCoveringWithDivisorModuli 1 := by
   have h2 : c.modulus > 1 := hgt c hcS
   omega
 
+/-- Non-vacuity, strengthened: **no prime `p` admits a proper covering**. The
+    only divisor of a prime `p` that is `> 1` is `p` itself, so every modulus in
+    a proper covering of `p` equals `p`; the distinctness constraint then forces
+    the covering to consist of a single congruence `a (mod p)`, and one residue
+    class mod `p ≥ 2` cannot cover `ℤ` (the integer `a + 1` is missed).
+
+    This generalizes `no_proper_covering_one` and shows the corrected
+    `ErdosQuestion277` is non-vacuous on an infinite set of `n`: every prime
+    fails to admit a proper covering, regardless of how abundant it is. -/
+theorem no_proper_covering_prime (p : ℕ) (hp : p.Prime) :
+    ¬HasProperCoveringWithDivisorModuli p := by
+  rintro ⟨S, hcov, hdistinct, hgt, hdvd⟩
+  -- Every modulus is a divisor of the prime `p` that exceeds `1`, hence equals `p`.
+  have hmod : ∀ c ∈ S, c.modulus = p := by
+    intro c hc
+    rcases (hp.eq_one_or_self_of_dvd c.modulus (hdvd c hc)) with h1 | hpc
+    · have := hgt c hc; omega
+    · exact hpc
+  -- Pick the congruence covering `0`, and the one covering `c.residue + 1`.
+  obtain ⟨c, hcS, _⟩ := hcov 0
+  obtain ⟨c', hc'S, hc'cov⟩ := hcov (c.residue + 1)
+  -- Both have modulus `p`, so distinctness forces them to be the same congruence.
+  have hcc' : c = c' :=
+    hdistinct c hcS c' hc'S (by rw [hmod c hcS, hmod c' hc'S])
+  subst hcc'
+  -- `c` then covers both `0` and `c.residue + 1`, forcing `p ∣ 1`.
+  simp only [Congruence.covers] at hc'cov
+  have hmeq : (c.residue + 1) ≡ c.residue [ZMOD (c.modulus : ℤ)] := hc'cov
+  have hdvd1 : (c.modulus : ℤ) ∣ 1 := by
+    have h : (c.modulus : ℤ) ∣ c.residue - (c.residue + 1) := Int.ModEq.dvd hmeq
+    have heq : c.residue - (c.residue + 1) = -1 := by ring
+    rw [heq] at h
+    exact (dvd_neg).mp h
+  have hle : (c.modulus : ℤ) ≤ 1 := Int.le_of_dvd one_pos hdvd1
+  have hgt1 : c.modulus > 1 := hgt c hcS
+  have : (c.modulus : ℤ) ≥ 2 := by exact_mod_cast hgt1
+  omega
+
 /-- For non-trivial results, we require distinct moduli. -/
 def HasDistinctModuli (S : Finset Congruence) : Prop :=
   ∀ c₁ c₂, c₁ ∈ S → c₂ ∈ S → c₁.modulus = c₂.modulus → c₁ = c₂

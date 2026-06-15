@@ -57,12 +57,13 @@
       "coveringLCM: lcm of covering moduli",
       "IsHighlyComposite, IsSuperabundant: related concepts",
       "HasProperCoveringWithDivisorModuli: source-faithful question predicate (distinct moduli, each >1, dividing n)",
-      "no_proper_covering_one: verified witness that the corrected question is non-vacuous"
+      "no_proper_covering_one: verified witness that the corrected question is non-vacuous",
+      "no_proper_covering_prime: every prime p admits no proper covering (distinctness collapses to one congruence mod p)"
     ],
     "axiomCount": 1,
-    "lineCount": 319,
+    "lineCount": 357,
     "assumptions": "1 axiom: haight_theorem (Haight 1979). 0 sorries. Statement corrected to require distinct moduli each >1 (per erdosproblems.com/277); the prior permissive statement made the axiom logically false.",
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 19
   },
   "overview": {
