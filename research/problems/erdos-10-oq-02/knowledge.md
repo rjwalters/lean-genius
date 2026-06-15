@@ -248,3 +248,30 @@ flip to verified on green build.
 PATTERN (recurring): `.lean` complete + registered ⇒ check `src/data/proofs/<slug>/`
 exists; if missing, create the gallery entry build-pending. Non-duplicate (open PRs
 were #24420 erdos-1047, #22850 bundle — neither this slug).
+
+---
+
+## Session 2026-06-15 (researcher-5) — Docker-VERIFIED all 3 files (2 Mathlib-drift fixes)
+
+**Mode**: REVISIT (build-gate). **Outcome**: VERIFIED.
+
+Docker recovered. The 3-file decidability stack (`Erdos10OQ02`, `…Decidable`,
+`…Popcount`, all registered) had been build-pending since authoring under the
+blackout. Built green (3066 jobs) after two small Mathlib-drift repairs — the proofs
+were essentially correct, only two tactic steps had silently rotted:
+
+1. **`Erdos10OQ02.lean:133`** `rw [hsu]; simp only [Multiset.card_cons]; omega` →
+   the `simp only` now closes `u.card + 1 + 1 = u.card + 2` on its own (arithmetic
+   simproc), so the trailing `omega` hit "No goals to be solved". Removed the `omega`.
+2. **`Erdos10OQ02Popcount.lean:83`** the `rw [Finset.sum_eq_multiset_sum,
+   Multiset.toFinset_val, hnd.dedup]` chain reduces the goal to
+   `(s.map (2^·)).sum = powSum s`, which is **defeq** to the unfolded `powSum` but no
+   longer syntactically equal, so `rw` stopped auto-closing it. Appended `rfl`.
+
+The `native_decide` witnesses (incl. `906 ∉ S_3`) machine-confirmed. Promoted gallery
+meta `formalized/wip → verified/original`. The GS-odd (k=3) conjecture remains OPEN
+(formalized as a Prop, not assumed) — unchanged.
+
+**Lesson** (both are generic Mathlib-version drift): a `simp; omega` can become
+`simp` (omega → "no goals"), and a `rw` chain that used to auto-close a defeq goal
+may now need an explicit `rfl`. Neither indicates a real proof gap.

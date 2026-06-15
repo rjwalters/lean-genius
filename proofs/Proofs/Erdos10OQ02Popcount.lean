@@ -81,6 +81,7 @@ theorem repWithAtMost_iff_bitIndices_length (k n : ℕ) :
     have hFsum : ∑ i ∈ s.toFinset, (2 : ℕ) ^ i = n := by
       have hval : ∑ i ∈ s.toFinset, (2 : ℕ) ^ i = powSum s := by
         rw [Finset.sum_eq_multiset_sum, Multiset.toFinset_val, hnd.dedup]
+        rfl
       rw [hval, hsum]
     -- Uniqueness of the binary representation pins the Finset.
     have hEq : (Nat.bitIndices n).toFinset = s.toFinset := by

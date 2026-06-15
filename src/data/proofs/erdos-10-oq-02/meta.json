@@ -7,7 +7,7 @@
     "author": "Research formalization 2026",
     "sourceUrl": "https://erdosproblems.com/10",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos10OQ02.lean",
     "tags": [
       "number-theory",
@@ -18,11 +18,11 @@
       "decidability",
       "popcount"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 542,
-    "assumptions": "0 axioms, 0 sorries. The Granville–Soundararajan k=3 (odd) conjecture itself is OPEN and is formalized only as a Prop definition (`GranvilleSoundararajanOdd`), not assumed. The stack proves the supporting infrastructure (reduction lemma, exponent/prime bounds, popcount characterization, decision procedure). Build status: registered in Proofs.lean (lines 901–903) but machine-check is pending the deployer's Docker build (authored under a Docker/Aristotle blackout); the native_decide witnesses (906, etc.) are verified-on-paper and by an exact-arithmetic Python certificate, and will be machine-confirmed on the next green build.",
+    "assumptions": "0 axioms, 0 sorries. The Granville–Soundararajan k=3 (odd) conjecture itself is OPEN and is formalized only as a Prop definition (GranvilleSoundararajanOdd), not assumed. The stack proves the supporting infrastructure (reduction lemma, exponent/prime bounds, popcount characterization, decision procedure). Docker-verified green (2026-06-15, 3066 jobs): all three files — Erdos10OQ02, Erdos10OQ02Decidable, Erdos10OQ02Popcount — kernel-check at the v4.26.0 pin, including the native_decide witnesses (e.g. 906 ∉ S_3). Two Mathlib-drift fixes were needed: a stray omega after a now-self-closing simp (Erdos10OQ02:133) and a rw chain that no longer auto-closes a defeq powSum goal (Erdos10OQ02Popcount:83, closed with rfl).",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "theoremCount": 16,
