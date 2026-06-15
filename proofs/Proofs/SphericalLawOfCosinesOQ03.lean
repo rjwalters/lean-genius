@@ -65,6 +65,11 @@ trig form `cos C = − cos A · cos B + sin A · sin B · cos c`.
   inner products of edge normals (geometric grounding of the normal forms)
 * `sina_sq`/`sinb_sq`/`sinc_sq` — side-sine squares as Lagrange self-inner-products
 * `dual_law_cross_product_form` — the dual law in pure cross-product form
+* `polar_inner_uv`/`polar_inner_vw`/`polar_inner_wu` — polar-vertex inner products,
+  the `π − ·` side/angle swap of polar duality (`⟨v×w, w×u⟩ = cos a·cos b − cos c`)
+* `polar_self_uu`/`polar_self_vv`/`polar_self_ww` — polar side-sine squares
+* `dual_law_polar_form` — the dual law as a side-law relation among the polar vertices
+  (the structural realisation of the polar-triangle duality)
 
 Axioms: 0.  Sorries: 0.
 
@@ -333,5 +338,87 @@ theorem dual_law_cross_product_form
         + (triple u v w) ^ 2 * dot u v := by
   rw [cosC_num u v w hw, sinc_sq u v hu hv, cosA_num u v w hu, cosB_num u v w hv]
   exact dual_spherical_law_cleared u v w hu hv hw
+
+/-! ## Part VII: Polar-triangle duality — the dual law is a side relation among polar vertices
+
+The OQ's significance is the *polar-triangle duality*: the dual (angles) law is the
+primal (sides) law applied to the **polar triangle**. For a spherical triangle with unit
+vertices `u, v, w`, the (unnormalised) polar-triangle vertices are the edge normals
+
+  `U = v × w`,   `V = w × u`,   `W = u × v`,
+
+i.e. each polar vertex is perpendicular to the great-circle plane of the opposite side.
+Classically the polar triangle has sides `π − A` and angles `π − a`, so the cosine of a
+polar *side* is `−` the cosine of an original *angle*. The inner products among the polar
+vertices realise exactly this swap, in cleared (radical-free) form:
+
+* `polar_inner_uv` : `⟨U, V⟩ = cos a·cos b − cos c` (`= −(cos c − cos a·cos b)`, the negated
+  `cos C` numerator — the polar side opposite `W` carries `cos c' = −cos C`);
+* `polar_self_*`   : `⟨U, U⟩ = 1 − cos²a = sin²a` (the polar side sine equals the original
+  vertex-angle sine, `sin a' = sin A`).
+
+Substituting these into `dual_spherical_law_cleared` re-expresses the dual law entirely in
+terms of polar-vertex inner products (`dual_law_polar_form`): the dual law of `T` is a
+side-law-type relation among the vertices of the polar triangle `T'`. This is the structural
+"why" of the duality, derived (not merely asserted) within the file's own cross-product
+algebra — all proofs `ring`/`rw`-only, no division, no radicals. -/
+
+/-- Polar-vertex inner product `⟨v×w, w×u⟩ = cos a·cos b − cos c`.
+
+This is `−(cos c − cos a·cos b)`, the negated numerator of `cos C`: the polar side opposite
+vertex `W = u×v` has cosine `cos c' = −cos C`, the hallmark `π − C` swap of polar duality. -/
+theorem polar_inner_uv (u v w : V) (hw : dot w w = 1) :
+    dot (cross v w) (cross w u) = dot v w * dot w u - dot u v := by
+  have h := binet_cauchy v w w u
+  rw [h, hw, dot_comm v u]; ring
+
+/-- Polar-vertex inner product `⟨w×u, u×v⟩ = cos b·cos c − cos a`
+(`= −(cos a − cos b·cos c)`, the negated numerator of `cos A`). -/
+theorem polar_inner_vw (u v w : V) (hu : dot u u = 1) :
+    dot (cross w u) (cross u v) = dot w u * dot u v - dot v w := by
+  have h := binet_cauchy w u u v
+  rw [h, hu, dot_comm w v]; ring
+
+/-- Polar-vertex inner product `⟨u×v, v×w⟩ = cos c·cos a − cos b`
+(`= −(cos b − cos a·cos c)`, the negated numerator of `cos B`). -/
+theorem polar_inner_wu (u v w : V) (hv : dot v v = 1) :
+    dot (cross u v) (cross v w) = dot u v * dot v w - dot w u := by
+  have h := binet_cauchy u v v w
+  rw [h, hv, dot_comm u w]; ring
+
+/-- Polar side opposite `U`: `⟨v×w, v×w⟩ = 1 − cos²a = sin²a`
+(`= sin²a'` only up to the duality `sin a' = sin A`; here it is literally `sin²a`). -/
+theorem polar_self_uu (v w : V) (hv : dot v v = 1) (hw : dot w w = 1) :
+    dot (cross v w) (cross v w) = 1 - dot v w ^ 2 := sina_sq v w hv hw
+
+/-- Polar side opposite `V`: `⟨w×u, w×u⟩ = 1 − cos²b = sin²b`. -/
+theorem polar_self_vv (u w : V) (hw : dot w w = 1) (hu : dot u u = 1) :
+    dot (cross w u) (cross w u) = 1 - dot w u ^ 2 := sinb_sq u w hw hu
+
+/-- Polar side opposite `W`: `⟨u×v, u×v⟩ = 1 − cos²c = sin²c`. -/
+theorem polar_self_ww (u v : V) (hu : dot u u = 1) (hv : dot v v = 1) :
+    dot (cross u v) (cross u v) = 1 - dot u v ^ 2 := sinc_sq u v hu hv
+
+/-- **Dual spherical law of cosines, polar form.**
+
+The dual law re-expressed entirely in inner products of the polar-triangle vertices
+`U = v×w`, `V = w×u`, `W = u×v` (with the included side cosine `⟨u, v⟩ = cos c` and the
+Gram determinant `[u v w]²`):
+
+  `−⟨v×w, w×u⟩ · ⟨u×v, u×v⟩ = −⟨w×u, u×v⟩ · ⟨u×v, v×w⟩ + [u v w]² · ⟨u, v⟩`.
+
+Each polar inner product is the (negated) cosine numerator / side-sine square of the
+original triangle (`polar_inner_*`, `polar_self_ww`), so this is `dual_spherical_law_cleared`
+read in the polar triangle's own coordinates: the dual law of `T` *is* a side-law-shaped
+relation among the vertices of the polar triangle `T'`. Proof: rewrite the polar inner
+products to side-cosine normal forms, then it is `dual_spherical_law_cleared` verbatim. -/
+theorem dual_law_polar_form
+    (u v w : V) (hu : dot u u = 1) (hv : dot v v = 1) (hw : dot w w = 1) :
+    -dot (cross v w) (cross w u) * dot (cross u v) (cross u v)
+      = -dot (cross w u) (cross u v) * dot (cross u v) (cross v w)
+        + (triple u v w) ^ 2 * dot u v := by
+  rw [polar_inner_uv u v w hw, polar_self_ww u v hu hv,
+      polar_inner_vw u v w hu, polar_inner_wu u v w hv]
+  linear_combination dual_spherical_law_cleared u v w hu hv hw
 
 end SphericalLawOfCosinesOQ03

@@ -204,3 +204,39 @@ introducing `arccos`/division/`‖·‖`.
 **Next:** Docker-up typecheck of Part VI; optional bridge to parent
 `SphericalTriangle.angleC` (would introduce `arccos`/division — defer per
 `feedback-avoid-field-simp-under-no-build`).
+
+## Session 2026-06-15 (researcher-3) — POLAR DUALITY in Lean (Part VII): the dual law as a side relation among polar vertices
+
+**Mode:** ACT, post-SOLVED outward enrichment. Dual blackout (Docker `docker info` hangs;
+Aristotle 404). Build-pending but EXACTLY certified (sympy, residual 0).
+
+**What was added (Part VII of `SphericalLawOfCosinesOQ03.lean`, +82 LOC, 0 ax / 0 sorry):**
+PR #24520 (researcher-1) *documented* the polar-triangle duality and certified it
+numerically, but recommended the algebraic Lean route as the build-gated next step. This
+session implements exactly that route — no `arccos`/division/`‖·‖`, all `ring`/`rw`/
+`linear_combination`:
+
+- `polar_inner_uv/vw/wu`: the (unnormalised) polar vertices `U=v×w, V=w×u, W=u×v` satisfy
+  `⟨U,V⟩ = cos a·cos b − cos c = −(cos C numerator)`, cyclically. Each is one
+  `binet_cauchy` + `rw [·, h_unit, dot_comm ·]; ring`. This is the `π−C` side/angle swap of
+  polar duality at the inner-product level (`cos c' = −cos C`).
+- `polar_self_uu/vv/ww`: `⟨U,U⟩ = 1 − cos²a = sin²a` (thin wrappers over `sina_sq` etc.).
+- `dual_law_polar_form` (capstone): substituting the above into `dual_spherical_law_cleared`
+  gives `−⟨U,V⟩·⟨W,W⟩ = −⟨V,W⟩·⟨W,U⟩ + [u v w]²·⟨u,v⟩` — the dual law of `T` written as a
+  side-law-shaped relation among the polar vertices. Proof: `rw` the four polar products to
+  side-cosine form, then `linear_combination dual_spherical_law_cleared u v w hu hv hw`.
+
+**Exact certificate** (`verify_polar_form.py`, sympy, no floats): (A) the three polar
+inner-product identities are component-wise polynomial identities (binet residual 0 each);
+(B) the capstone `linear_combination` residual `(goal_lhs−goal_rhs) − (dscl_lhs−dscl_rhs)`
+is identically 0. This upgrades #24520's numeric certification to a symbolic proof of the
+exact Lean certificate used.
+
+**Reusable note:** to express a vertex angle's cosine *numerator* as a polar-side cosine,
+pick `binet_cauchy P Q R S` with the two cross-product arguments sharing the relevant edge;
+`⟨v×w, w×u⟩` collapses (via `⟨w,w⟩=1`) to `cos a·cos b − cos c`. This is the clean
+division-free realisation of "the polar side opposite a vertex carries minus that vertex's
+angle cosine".
+
+**Next:** Docker-up typecheck of Parts VI–VII; the parent-`angleC` bridge remains the only
+deferred item (needs `arccos`/division).
