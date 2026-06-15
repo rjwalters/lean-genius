@@ -1,7 +1,7 @@
 {
   "slug": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01",
   "title": "Irrationality of √2 + √3 + √5 + √7",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "surveyed",
   "tier": "C",
   "path": "fast",
@@ -18,12 +18,15 @@
     "goal": "Irrational (Real.sqrt 2 + Real.sqrt 3 + Real.sqrt 5 + Real.sqrt 7)"
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-15T01:25:28.245Z",
-    "iteration": 3,
-    "focus": "Survey deepened (Session 2): NEW recommended Strategy D (algebraic-integer + bound, ~60-100 LOC) supersedes A; explicit degree-16 minimal polynomial and bound 8<α<9 computed and verified (sympy/mpmath). Still Docker-gated for final build.",
-    "blockers": ["Docker build wrapper unavailable (docker info timeout).", "Aristotle backend returns 'Resource not found'."],
-    "nextAction": "When Docker returns, implement Strategy D in Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (~60-100 LOC); confirm the 4 lemma names in the knowledge.md skeleton and fill the single sorry. Fallbacks: Strategy A (3-squaring chain) or m(α)=0 + rational-root theorem.",
+    "phase": "ACT",
+    "since": "2026-06-15T07:30:00.000Z",
+    "iteration": 6,
+    "focus": "Session 5 (researcher-1): Strategy D TRANSCRIBED to Lean. New file Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean (5 theorems, 0 sorries, 0 axioms) implements the integral-closure descent: each sqrt k integral over Z (monic X^2-C k), sum integral via IsIntegral.add, descend along injective algebraMap Q R (isIntegral_algebraMap_iff), Z integrally closed in Q (IsIntegrallyClosed.isIntegral_iff) => q in Z, contradicted by 8<alpha<9. Build-pending (Docker+Aristotle both down); CI is ground truth. Bearer names confirmed at pin v4.26.0 (S4) and verify_strategy_d.py re-run (ALL CHECKS PASSED).",
+    "blockers": [
+      "Docker build wrapper unavailable (docker info 20s timeout) — file is build-pending, CI verifies.",
+      "Aristotle backend returns 'Resource not found' (re-probed S5)."
+    ],
+    "nextAction": "Await CI build of Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01. If it compiles, the OQ is SOLVED (0 sorries / 0 axioms) — mark completed. If CI flags a lemma-name or cast/instance error, the two residual risks are (i) the aeval simp-only set in isIntegral_sqrt_natCast and (ii) IsIntegrallyClosed.isIntegral_iff / eq_ratCast resolution; patch the offending line (math is verifier-confirmed, only Lean plumbing at risk).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,7 +34,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT deepened (build-free, researcher-4 2026-06-14 Session 2): found NEW recommended Strategy D (algebraic-integer + bounded-interval, ~60-100 LOC) that avoids ALL degree-16 algebra and supersedes Strategy A; computed and verified (sympy/mpmath) the explicit degree-16 monic minimal polynomial m(x)=x^16-136x^14+6476x^12-141912x^10+1513334x^8-7453176x^6+13950764x^4-5596840x^2+46225 and the decisive bound 8<α<9 (α≈8.0281). Also confirmed Strategy A's single-surd endgame has ugly coefficients (common denom 14499840 for √210 in the α power basis). Prior (researcher-10): resolved on paper degree-16, fixed leanFiles misattribution. Still Docker-gated for final Lean build.",
+    "progressSummary": "S5 (2026-06-15, researcher-1): Strategy D transcribed to Lean (build-pending). 5 theorems, 0 sorries, 0 axioms; integral-closure descent + 8<alpha<9. ORIENT deepened (build-free, researcher-4 2026-06-14 Session 2): found NEW recommended Strategy D (algebraic-integer + bounded-interval, ~60-100 LOC) that avoids ALL degree-16 algebra and supersedes Strategy A; computed and verified (sympy/mpmath) the explicit degree-16 monic minimal polynomial m(x)=x^16-136x^14+6476x^12-141912x^10+1513334x^8-7453176x^6+13950764x^4-5596840x^2+46225 and the decisive bound 8<α<9 (α≈8.0281). Also confirmed Strategy A's single-surd endgame has ugly coefficients (common denom 14499840 for √210 in the α power basis). Prior (researcher-10): resolved on paper degree-16, fixed leanFiles misattribution. Still Docker-gated for final Lean build.",
     "builtItems": [],
     "insights": [
       "RESOLVED ON PAPER: √2+√3+√5+√7 is irrational — in fact an algebraic integer of degree 16 over ℚ. The 16 sign-combinations ±√2±√3±√5±√7 are its full set of Galois conjugates (Galois group (ℤ/2)^4 of the multiquadratic field ℚ(√2,√3,√5,√7)); α is a primitive element, so its minimal polynomial has degree 16 with rational integer coefficients. Degree ≠ 1 ⇒ irrational.",
@@ -75,8 +78,10 @@
     "mathlib": []
   },
   "started": "2026-06-15T01:25:28.244Z",
-  "lastUpdate": "2026-06-14",
+  "lastUpdate": "2026-06-15",
   "significance": 4,
   "tractability": 8,
-  "leanFiles": []
+  "leanFiles": [
+    "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean"
+  ]
 }

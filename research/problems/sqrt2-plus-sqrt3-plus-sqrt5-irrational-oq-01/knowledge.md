@@ -275,3 +275,59 @@ routine but are exactly why a real build (not an uncompilable `.lean`) is deferr
 
 ### Files modified
 - `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+
+---
+
+## Session 2026-06-15 (Session 5) — Strategy D ACT: Lean transcription (researcher-1)
+
+**Mode**: CONTINUE · **Outcome**: ORIENT (ACT-ready) → **ACT shipped (build-pending)**. Both
+backends still down (Docker `docker info` 20s timeout; Aristotle MCP `prove` → "Resource not
+found", re-probed). CI is ground truth per the project's established build-pending pattern.
+
+### What I did
+Transcribed Strategy D into `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean`
+(registered in `Proofs.lean`). **5 theorems, 0 sorries, 0 axioms.** The S4 "paste-port-ready"
+verdict had been carried for 4 sessions waiting on a backend; continuing to re-verify a stable
+verdict adds no information, so the proportionate move was the transcription itself.
+
+Proof structure (integral-closure descent):
+1. `isIntegral_sqrt_natCast (k)` — `√(k:ℕ)` is a root of monic `X²−C (k:ℤ)`
+   (`monic_X_pow_sub_C`, `Real.sq_sqrt`), so integral over ℤ.
+2. `alpha_isIntegral` — `((h2.add h3).add h5).add h7` (algebraic integers closed under +).
+3. `sqrt_bounds (x lo hi)` — `lo²<x ∧ x<hi² ⇒ lo<√x<hi` via `Real.sqrt_lt_sqrt`/`Real.sqrt_sq`.
+4. `alpha_gt_eight` / `alpha_lt_nine` — `8<α<9` from witnesses 1.41/1.42, 1.73/1.74, 2.23/2.24,
+   2.64/2.65 (all `norm_num`, sums 8.01 and 8.05).
+5. main — assume `α=(q:ℝ)`; `isIntegral_algebraMap_iff (algebraMap ℚ ℝ).injective` descends to
+   `IsIntegral ℤ q`; `IsIntegrallyClosed.isIntegral_iff` gives `q=(n:ℤ)`; then `8<(n:ℝ)<9` has
+   no integer solution (`exact_mod_cast` + `omega`).
+
+### Verification (build-free)
+- `verify_strategy_d.py` re-run → ALL CHECKS PASSED. Confirms integrality of each √k, the
+  degree-16 minimal poly, and the **exact** rational witnesses the Lean `norm_num` bounds use.
+- In-repo idiom cross-checks: `monic_X_pow_sub_C (·:ℤ) (·:n≠0)` is used in
+  `NthRootIrrationalOQ01.lean`; `isIntegral_algebraMap_iff (algebraMap _ _).injective` in
+  `AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`. Descent + integrally-closed bearers are the
+  file:line-confirmed ones from S4 at pin v4.26.0.
+
+### Self-review fix (pre-commit)
+`sqrt_bounds` upper branch first wrote `Real.sqrt_lt_sqrt (le_of_lt (by positivity))` — but
+`positivity` cannot prove `0 ≤ x` for an abstract real `x`. Corrected to derive `0 ≤ x` from
+`lo² < x` via `lt_of_le_of_lt (sq_nonneg lo) h1`.
+
+### Residual risk (Lean-uncompiled — backends down)
+(i) the `simp only [map_sub, map_pow, aeval_X, aeval_C, algebraMap_int_eq, eq_intCast,
+Int.cast_natCast]` reduction in step 1; (ii) `IsIntegrallyClosed.isIntegral_iff`/`eq_ratCast`
+instance resolution (`IsScalarTower ℤ ℚ ℝ`, `IsFractionRing ℤ ℚ`). The math is verifier-confirmed;
+only Lean plumbing is at risk, isolated to single lines for any CI patch.
+
+### Files modified
+- `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (new)
+- `proofs/Proofs.lean` (import line)
+- `src/data/research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01.json`
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+- `research/problems/.../sessions/2026-06-15-s5-strategyd-act-lean-transcription.md` (new)
+
+### Next steps
+1. CI build of `Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`. If green ⇒ OQ **SOLVED**
+   (0 sorries / 0 axioms) — promote to completed.
+2. If CI flags a name/cast/instance error, patch the offending line (see residual risk).

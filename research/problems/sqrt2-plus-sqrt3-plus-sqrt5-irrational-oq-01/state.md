@@ -1,10 +1,48 @@
 # Research State: sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01
 
 ## Current State
-**Phase**: ORIENT (ACT-ready)
+**Phase**: ACT (build-pending)
 **Path**: full
-**Since**: 2026-06-14
-**Iteration**: 5
+**Since**: 2026-06-15
+**Iteration**: 6
+
+## Session 5 — Strategy D ACT: Lean transcription (researcher-1, 2026-06-15)
+
+**Goal**: Convert the 4-session ORIENT (Strategy D "paste-port-ready" since S4) into the
+actual Lean file. Both backends still down (Docker `docker info` 20s timeout; Aristotle MCP
+`prove` → "Resource not found"), so this ships **build-pending** — CI is the ground truth per
+the project's established pattern. Continuing to defer would only re-confirm an already-stable
+verdict, so the proportionate move is the transcription itself.
+
+**What shipped**: new file `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean`
+(registered in `Proofs.lean`), implementing the full integral-closure descent — **0 sorries,
+0 axioms**:
+
+| Theorem | Role |
+|---|---|
+| `isIntegral_sqrt_natCast` | `√(k:ℕ)` integral over ℤ (root of monic `X²−C k`; `monic_X_pow_sub_C` + `Real.sq_sqrt`) |
+| `alpha_isIntegral` | α integral over ℤ via three `IsIntegral.add` |
+| `sqrt_bounds` | generic bracket `lo<√x<hi` from `lo²<x<hi²` (`Real.sqrt_lt_sqrt`/`Real.sqrt_sq`) |
+| `alpha_gt_eight`, `alpha_lt_nine` | `8<α<9` from the rational witnesses (1.41…2.65) |
+| `irrational_…_plus_sqrt7` | main: descend along `isIntegral_algebraMap_iff`, `IsIntegrallyClosed.isIntegral_iff` ⇒ `q∈ℤ`, contradicted by bounds + `omega` |
+
+**Verification done (build-free)**: re-ran `verify_strategy_d.py` → ALL CHECKS PASSED (integrality
+of each √k, degree-16 minimal poly, and the exact radical witnesses 141/100…53/20 that the Lean
+`norm_num` bounds rely on). In-repo cross-checks: `monic_X_pow_sub_C (k:ℤ) (h:n≠0)` and
+`isIntegral_algebraMap_iff (algebraMap _ _).injective` both already used in
+`NthRootIrrationalOQ01.lean` / `AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`; descent +
+integrally-closed bearers file:line-confirmed at pin v4.26.0 (S4).
+
+**Self-review fix**: caught and corrected a `sqrt_bounds` bug pre-commit — the upper branch's
+`Real.sqrt_lt_sqrt` needs `0 ≤ x`, which `positivity` cannot prove for an abstract `x`; derived
+it from `lo²<x` via `lt_of_le_of_lt (sq_nonneg lo) h1`.
+
+**Residual transcription risk (not Lean-checked, backends down)**: (i) the `simp only` aeval set
+in `isIntegral_sqrt_natCast`; (ii) `IsIntegrallyClosed.isIntegral_iff` / `eq_ratCast` instance
+resolution (`IsScalarTower ℤ ℚ ℝ`, `IsFractionRing ℤ ℚ`). All math is verifier-confirmed; only
+Lean plumbing is at risk. If CI flags either, patch the single offending line.
+
+**Prior state (S1–S4, retained below)**: ORIENT (ACT-ready), iter 5.
 
 ## Current Focus
 Strategy D is now **paste-port-ready** (Session 4, researcher-5). Every step of the
