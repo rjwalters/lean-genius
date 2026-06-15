@@ -33,6 +33,18 @@ on residues `1,3,5,7`). Mathlib provides the χ₈ value-mod-8 facts in
 `Mathlib/NumberTheory/LegendreSymbol/ZModChar.lean`; assembling the exponent
 bridge is the remaining (purely arithmetic) step and is left as the documented
 follow-up — the χ₈ wrapper below is the one that the algorithm actually evaluates.
+
+## The residue criterion (decision form)
+
+For algorithms that need only the residue/non-residue *verdict*, we also expose
+the `p % 8` decision form:
+
+  `legendreSym_two_eq_one_iff`     : `(2/p) = 1  ↔ p % 8 = 1 ∨ p % 8 = 7`,
+  `legendreSym_two_eq_neg_one_iff` : `(2/p) = -1 ↔ p % 8 = 3 ∨ p % 8 = 5`.
+
+These compose `legendreSym.eq_one_iff` / `legendreSym.eq_neg_one_iff` with
+`ZMod.exists_sq_eq_two_iff`; the non-vanishing side-goal `(2 : ZMod p) ≠ 0`
+reduces to `p ≠ 2` via `ZMod.natCast_eq_zero_iff` + `Nat.prime_dvd_prime_iff_eq`.
 -/
 
 open ZMod
@@ -58,6 +70,54 @@ namespace QRAlgorithmTwo
 theorem legendreSym_two_eq (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
     legendreSym p 2 = χ₈ (p : ZMod 8) :=
   legendreSym.at_two hp
+
+-- ============================================================
+-- The residue criterion: (2/p) = 1  ⟺  p ≡ ±1 (mod 8)
+-- ============================================================
+
+/-- **Residue criterion for the factor `2`.**
+
+    For an odd prime `p`, the value `(2/p) = 1` (i.e. `2` is a quadratic residue
+    mod `p`) exactly when `p ≡ 1` or `p ≡ 7 (mod 8)`:
+
+      `legendreSym p 2 = 1  ↔  p % 8 = 1 ∨ p % 8 = 7`.
+
+    This is the *decision form* of the second supplementary law, useful when the
+    algorithm only needs the residue/non-residue verdict rather than the signed
+    character value. It composes the standard `legendreSym.eq_one_iff`
+    (`(a/p) = 1 ↔ a` is a square) with `ZMod.exists_sq_eq_two_iff`
+    (`2` is a square mod `p` ↔ `p % 8 ∈ {1, 7}`). The non-vanishing side-condition
+    `(2 : ZMod p) ≠ 0` reduces to `p ∤ 2`, i.e. `p ≠ 2`. -/
+theorem legendreSym_two_eq_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
+    legendreSym p 2 = 1 ↔ p % 8 = 1 ∨ p % 8 = 7 := by
+  have h2 : ((2 : ℤ) : ZMod p) ≠ 0 := by
+    have e : ((2 : ℤ) : ZMod p) = ((2 : ℕ) : ZMod p) := by norm_cast
+    rw [e]
+    intro hz
+    rw [ZMod.natCast_eq_zero_iff] at hz
+    rw [Nat.prime_dvd_prime_iff_eq (Fact.out : p.Prime) Nat.prime_two] at hz
+    exact hp hz
+  rw [legendreSym.eq_one_iff h2]
+  have e2 : ((2 : ℤ) : ZMod p) = (2 : ZMod p) := by norm_cast
+  rw [e2]
+  exact ZMod.exists_sq_eq_two_iff hp
+
+/-- Non-residue form: `(2/p) = -1` exactly when `p ≡ 3` or `p ≡ 5 (mod 8)`.
+    Since an odd prime has `p % 8 ∈ {1, 3, 5, 7}` and `(2/p) ∈ {1, -1}`, this is
+    the complement of the residue criterion. -/
+theorem legendreSym_two_eq_neg_one_iff (p : ℕ) [Fact p.Prime] (hp : p ≠ 2) :
+    legendreSym p 2 = -1 ↔ p % 8 = 3 ∨ p % 8 = 5 := by
+  have e2 : ((2 : ℤ) : ZMod p) = (2 : ZMod p) := by norm_cast
+  rw [legendreSym.eq_neg_one_iff, e2, ZMod.exists_sq_eq_two_iff hp]
+  -- `¬(p%8 = 1 ∨ p%8 = 7) ↔ p%8 = 3 ∨ p%8 = 5`, using that `p` is odd so
+  -- `p % 8 ∈ {1,3,5,7}`.
+  have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two hp
+  have h8 : p % 8 = 1 ∨ p % 8 = 3 ∨ p % 8 = 5 ∨ p % 8 = 7 := by
+    obtain ⟨k, hk⟩ := hodd
+    omega
+  constructor
+  · intro h; omega
+  · intro h; omega
 
 -- ============================================================
 -- Verified example computations of (2/p)
