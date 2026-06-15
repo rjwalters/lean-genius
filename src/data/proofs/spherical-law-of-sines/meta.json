@@ -71,7 +71,7 @@
       "id": "setup",
       "title": "Part I: Setup and Basic Lemmas",
       "startLine": 33,
-      "endLine": 92,
+      "endLine": 93,
       "summary": "Defines dot, normSq, IsUnit3, arcLen, tripleProduct, projPerp using Fin 3 → ℝ. Proves dot_comm, arcLen_comm, normSq_nonneg, unit_sum (unit constraint as a sum), and Lagrange's identity |u×v|² = |u|²|v|² − (u·v)². Also proves tripleProduct_swap_12 (odd under swap), tripleProduct_sq_swap, and tripleProduct_cyclic."
     },
     {
@@ -85,21 +85,21 @@
       "id": "cross-product-identity",
       "title": "Part III: The Key Cross Product Identity",
       "startLine": 124,
-      "endLine": 156,
+      "endLine": 154,
       "summary": "projPerp_cross_eq: projPerp(B,A) × projPerp(C,A) = det[A,B,C]·A (scalar multiple of the unit vector A). Proved component-by-component: for each Fin 3 component, simp expands the cross product and linear_combination closes the goal using the unit constraint A₀²+A₁²+A₂²=1. normSq_projPerp_cross: the squared norm equals det[A,B,C]²."
     },
     {
       "id": "dihedral-angle",
       "title": "Part IV: Dihedral Angle and sin² Formula",
-      "startLine": 157,
-      "endLine": 228,
+      "startLine": 155,
+      "endLine": 216,
       "summary": "dihedralAngle A B C is defined as arccos of the normalized dot product of projPerp B A and projPerp C A, with degenerate case (zero projection) handled by returning 0. sin_sq_dihedralAngle proves sin²(α) = det² / (|projPerp B A|² · |projPerp C A|²) = det² / (sin²(c)·sin²(b)) using Cauchy-Schwarz and field arithmetic."
     },
     {
       "id": "main-theorem",
       "title": "Part V: The Spherical Law of Sines",
-      "startLine": 220,
-      "endLine": 310,
+      "startLine": 217,
+      "endLine": 323,
       "summary": "sin_sq_arcLen: sin²(arcLen u w) = |projPerp w u|². spherical_law_of_sines_sq: sin²(a)/sin²(α) = sin²(b)/sin²(β), proved by expressing both sides in terms of det² and canceling. spherical_law_of_sines_all_sq: all three ratios equal, proved by applying the two-ratio theorem to the cyclically relabeled triangle (B,C,A) and using tripleProduct_cyclic and dihedralAngle symmetry."
     }
   ],
