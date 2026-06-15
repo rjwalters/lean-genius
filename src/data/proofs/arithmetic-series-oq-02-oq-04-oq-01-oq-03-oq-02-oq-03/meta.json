@@ -140,7 +140,7 @@
       "id": "vandermonde",
       "title": "VIII. Consistency with Classical q-Vandermonde",
       "startLine": 222,
-      "endLine": 226,
+      "endLine": 228,
       "summary": "qMultichoose_recovers_classical_int: instantiates the main theorem at R=ℤ, confirming qMultichoose (1:ℤ) n k = Nat.multichoose n k. Closes the connection to the parent multiset Vandermonde entry.",
       "mathContext": "At $R = \\mathbb{Z}$: $\\text{qMultichoose}(1, n, k) = \\text{multichoose}(n, k) \\in \\mathbb{Z}$."
     }
