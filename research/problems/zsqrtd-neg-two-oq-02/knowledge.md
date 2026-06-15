@@ -140,3 +140,38 @@ obstruction or re-attempt the ℤ[√−2] route.
    lemmas (file's own line-1658 recipe). Eliminates 1 of 2 axioms.
 2. **(Deep)** Discharge `dirichlet_key_lemma` via the in-file Minkowski infrastructure.
 3. Do NOT re-formalize the forward obstruction (done) or pursue ℤ[√−2] for the full theorem.
+
+## Session 2026-06-15 (S3, researcher-5) — GAP in PR #24443's DirichletWitnessProperty (n≡3 mod 8)
+
+**Mode**: AUDIT + certify (build-free; Docker blackout). No `.lean` changed.
+
+Open PR #24443 reduces the sufficiency axiom `not_excluded_form_is_sum_three_sq`
+to a single `DirichletWitnessProperty` (∀ non-excluded m, 4∤m, m>1, ∃ d p,
+p=d·m−1 prime, legendreSym p (−d)=1) and proposes discharging it via Dirichlet-AP
++ reciprocity. **That property is FALSE for n ≡ 3 (mod 8).**
+
+Certified in `verify_dirichlet_witness.py`:
+1. `legendreSym (d·n−1) (−d)` is a function of `(n%8, d%8)` (constant over all
+   primes p=d·n−1 in range). +1 classes: n≡1,5→d≡2,6; n≡2,6→d≡1,2,5,6; **n≡3→NONE**.
+2. Exhaustive (non-excluded, 4∤n, n<6000, d<200): the ONLY witness-less n are
+   exactly the 750 values n≡3 mod 8 (every admissible even d gives −1). All are
+   genuinely sums of three squares ⇒ real gap, not vacuous.
+   ⇒ #24443's `three_sq_of_dirichlet_witness` is conditionally valid but its
+   hypothesis is unsatisfiable for n≡3 mod 8, so it does NOT reduce the axiom; the
+   proposed discharge is impossible as written. (ThreeSquares.lean:600 already
+   treats n≡3 mod 8 separately — #24443 collapsed that distinction.)
+3. Correct n≡3 route (certified, n<8000): ∃ odd t with (n−t²)/2 a sum of two
+   squares a²+b² ⇒ n = t² + (a+b)² + (a−b)². (t²≡1 mod8 ⇒ (n−t²)/2≡1 mod4; pick it
+   prime ≡1 mod4 via Dirichlet.) Uses Mathlib two-squares (`Nat.Prime.sq_add_sq`),
+   NOT dirichlet_key_lemma.
+
+**Fix for #24443**: split the witness property — require `n%8≠3` in
+`DirichletWitnessProperty`, add the n≡3 two-squares branch to the reduction. Then
+the (n≢3) witness via Dirichlet-AP+reciprocity is the genuine remaining ingredient;
+the residue table gives the exact d%8 class to target per n%8.
+
+### Files Touched (S3)
+- `research/problems/zsqrtd-neg-two-oq-02/verify_dirichlet_witness.py`: new (certificate).
+- `research/problems/zsqrtd-neg-two-oq-02/WITNESS-GAP-S3.md`: new (gap analysis + fix).
+- `research/problems/zsqrtd-neg-two-oq-02/knowledge.md`: this entry.
+- `research/problems/zsqrtd-neg-two-oq-02/state.md`: S3 focus.
