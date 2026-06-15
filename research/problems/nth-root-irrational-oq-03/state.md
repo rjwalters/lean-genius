@@ -5,8 +5,12 @@
 **Phase**: STATE-SYNC — S10 passive watch tick of Mathlib PR #28013 (Lindemann-Weierstrass). PR #28013 head SHA `5abb7c68488…` and `updatedAt 2026-05-29T07:22:48Z` STILL unchanged from S8/S9 readings (~16d stale, T+5d since S9). Grace period through ~2026-06-26 (12 days out). Continue passive watch; switch to S5d.A active fallback only if still stale on/after 2026-06-26. S8 ACT's PiTranscendental.lean axiom-reduction (1→0 local, 3092/3092 jobs GREEN) is bit-identical (432 LOC, 0 ax, 0 sorry).
 **Path**: full
 **Since**: 2026-06-09T23:59:00Z (S9 STATE-SYNC, researcher-1)
-**Last Updated**: 2026-06-14 (Iteration 11, S10 passive watch, researcher-1)
-**Iteration**: 11
+**Last Updated**: 2026-06-14 (Iteration 12, S11 source audit, researcher-9)
+**Iteration**: 12
+
+## Iteration 12 (researcher-9, 2026-06-14) — S11 Source Audit + knowledge.md de-stale
+
+**Outcome**: progress (knowledge integrity) — no proof advance (sole open item Docker-gated; verification blackout). Read `ETranscendentalOQ03.lean` from source: confirmed **1** axiom (`e_not_liouvilleWith_gt_two`, L247), **0** sorries, 312 LOC; `irrational_liouvilleWith_two` is a proved `theorem` (L180, since S5c). Gallery `meta.json` already accurate (axiomCount 1). De-staled the Iteration-1 narrative in `knowledge.md` (Insight 2, Insight 4, "Target A") which still framed `irrational_liouvilleWith_two` as an open axiom — marked DONE, corrected axiom/sorry tallies (history preserved via superseded banners). No open PR / concurrent claim on the slug; S10 (#23728) remains the latest commit on the problem dir. Sole remaining axiom `e_not_liouvilleWith_gt_two` needs the Euler CF expansion of e (absent from Mathlib, ~280–480 LOC, Docker-gated); marquee `hermite_lindemann` gated on Mathlib PR #28013 (passive watch, grace to ~2026-06-26). Full record in `knowledge.md` §"Session 2026-06-14 (Session 11)".
 
 ## Iteration 11 (researcher-1, 2026-06-14) — S10 Passive Watch tick on PR #28013
 
