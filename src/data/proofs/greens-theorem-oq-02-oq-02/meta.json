@@ -73,20 +73,44 @@
   },
   "sections": [
     {
-      "id": "registered-fix",
-      "title": "The Orientation Fix (Landed in the Registered Files)",
-      "summary": "The header records the landed correction: greens_theorem_l1curl and its seven consumers now carry the hLineEq orientation hypothesis in GreensTheoremOQ02.lean / GreensTheoremOQ02OQ04.lean",
+      "id": "purpose",
+      "title": "File Purpose & Sibling Map",
+      "summary": "Opening header identifying this as the soundness-witness sibling of greens-theorem-oq-02-murakami, named greens-theorem-oq-02-oq-02.",
       "startLine": 1,
+      "endLine": 5,
+      "mathContext": "Orients the reader: this entry is the converse-facing companion to the registered minimal-regularity Green's theorem $\\\\oint_C (P\\\\,dx + Q\\\\,dy) = \\\\iint_R (\\\\partial_x Q - \\\\partial_y P)$, retaining only the witness that certifies the orientation fix landed elsewhere."
+    },
+    {
+      "id": "registered-fix",
+      "title": "Status: Orientation Fix Landed in the Registered Files",
+      "summary": "The ## Status block records that greens_theorem_l1curl and its consumers in GreensTheoremOQ02.lean / GreensTheoremOQ02OQ04.lean now carry the hLineEq orientation hypothesis, and the former _oriented re-proofs here were deleted as redundant.",
+      "startLine": 6,
+      "endLine": 18,
+      "mathContext": "Each registered declaration gains $h_{\\\\text{LineEq}}: \\\\oint_C (P\\\\,dx + Q\\\\,dy) = \\\\text{rectLineIntegral}\\\\,P\\\\,Q\\\\,a\\\\,b\\\\,c\\\\,d$, fixing the boundary orientation so the curve's circulation equals the concrete counterclockwise four-edge rectangle integral; the proofs are otherwise verbatim, a pure signature-threading correction."
+    },
+    {
+      "id": "why-remains",
+      "title": "Why This File Remains — The Soundness Rationale",
+      "summary": "The ## Why this file remains block explains the retained value: the Session-5 unsound witness (constant curve with field (0, x), curl ≡ 1) fails the new hypothesis, so the original 0 = 1 unsoundness is genuinely removed, not hidden.",
+      "startLine": 20,
+      "endLine": 32,
+      "mathContext": "The degenerate witness has circulation $\\\\oint_C = 0$ (constCurve_lineIntegral_zero) but four-edge rectangle integral $\\\\text{rectLineIntegral} = 1$ (the proven unit_square_area_as_line_integral); since $0 \\\\neq 1$ it cannot satisfy $h_{\\\\text{LineEq}}$, so the corrected axiom is vacuously inapplicable to it."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports, Opens & Namespace",
+      "summary": "Pulls in Mathlib and the sibling Proofs files, opens MeasureTheory and the GreensTheoremOQ01/OQ02/Counterexample namespaces (selectively importing rectLineIntegral, constCurve, cexP, cexQ, constCurve_lineIntegral_zero), and opens the GreensTheoremOQ02Corrected namespace.",
+      "startLine": 33,
       "endLine": 42,
-      "mathContext": "Each registered declaration gains $h_{\\\\text{LineEq}}: \\\\oint_C (P\\\\,dx + Q\\\\,dy) = \\\\text{rectLineIntegral}\\\\,P\\\\,Q\\\\,a\\\\,b\\\\,c\\\\,d$, fixing the boundary orientation so the circulation equals the concrete four-edge rectangle integral; the proofs are otherwise verbatim, a pure signature-threading correction."
+      "mathContext": "Selective opens expose exactly the registered building blocks the witness needs: the concrete rectangle integral rectLineIntegral from OQ01 and the counterexample's curve/field/zero-circulation lemma from the Counterexample file, keeping the witness statement free of qualified prefixes."
     },
     {
       "id": "witness",
-      "title": "Soundness Witness",
-      "summary": "counterexample_violates_hLineEq: the S5 unsound witness fails the new hypothesis",
+      "title": "Soundness Check Theorem",
+      "summary": "counterexample_violates_hLineEq: the S5 unsound witness fails the new hypothesis, proved by rewriting circulation to 0 and the rectangle integral to 1 then closing with norm_num.",
       "startLine": 44,
-      "endLine": 57,
-      "mathContext": "The constant curve with $P=0$, $Q(x,y)=x$ has circulation $0$ but $\\\\text{rectLineIntegral} = 1$ (proven), so it fails $h_{\\\\text{LineEq}}$ — the corrected registered axiom is genuinely inapplicable to it, so the unsoundness is removed rather than hidden."
+      "endLine": 58,
+      "mathContext": "The constant curve with $P=0$, $Q(x,y)=x$ has circulation $0$ but $\\\\text{rectLineIntegral} = 1$ (proven), so it fails $h_{\\\\text{LineEq}}$ — the corrected registered axiom is genuinely inapplicable to it, so the unsoundness is removed rather than hidden. The proof is axiom-free and machine-checked."
     }
   ],
   "conclusion": {
