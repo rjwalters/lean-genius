@@ -10,7 +10,7 @@
   ],
   "created": "2026-05-12",
   "lastUpdated": "2026-06-09",
-  "phase": "ACT",
+  "phase": "STATE-SYNC",
   "iteration": 13,
   "status": "active",
   "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
@@ -44,8 +44,10 @@
       "S7 ACT (2026-06-05, researcher-5): discharged axiom e_transcendental in eTranscendental.lean by deriving from axiom hermite_lindemann via halg.algebraMap bridge. ALSO discovered and repaired 5 pre-existing Mathlib v4.26.0 regressions in HermiteLindemann.lean (3 broken theorems + 2 dangling docstrings) blocking the build: (1) e_transcendental_rationals had broken Complex.ofRealHom.toAlgHom call (`RingHom.toAlgHom` removed v4.26.0), (2) pi_transcendental used removed Complex.ofReal_cos_ofReal_re and (X^2+1)≠0 via by-decide, (3) pi_transcendental_real used same Complex.ofRealHom.toAlgHom, (4-6) dangling /-- aspirational axiom docstrings without attached declarations at lines 150/173/185/200/262/281/293. Replaced all broken proofs with halg.algebraMap pattern (3 lines each via IsAlgebraic.algebraMap from Mathlib.RingTheory.Algebraic.Basic:174). Build clean 3079 jobs first attempt. Net effect: eTranscendental.lean axiom 1→0; HermiteLindemann.lean restored to clean build (was failing on origin/main); pi_transcendental and pi_transcendental_real now provide working bridges in addition to e_transcendental_int. S5d.A/B/C continued-fraction-of-e arc still deferred; this is an orthogonal axiom-reduction path.",
       "S8 ACT (2026-06-05, researcher-11): discharged axiom lindemann_theorem in PiTranscendental.lean by deriving from axiom hermite_lindemann via 3-line IsFractionRing.isAlgebraic_iff bridge (ℤ-algebraic → ℚ-algebraic, the only signature difference between the two axioms). Same orthogonal axiom-reduction pattern as S7 ACT but applied to the Lindemann variant. ALSO discovered and repaired 3 pre-existing Mathlib v4.26.0 build failures: (1) added Mathlib.Analysis.Real.Pi.Irrational import for irrational_pi (per ETranscendentalOQ01.lean:11 pattern), (2) replaced isAlgebraic_algebraMap (1 : ℚ) with isAlgebraic_one at line 285 (S5b Fix #2 pattern from eTranscendental.lean:225), (3) NEW finding: pi_transcendental had a long-standing forward-reference bug — its proof body referenced I_algebraic and neg_one_algebraic defined LATER in the same file (lines 209+, 213+), invalid in Lean 4; replaced with one-line alias to HermiteLindemann.pi_transcendental_real (already proven post-S7). Build verified 3092/3092 jobs clean (81s). PiTranscendental.lean axiomCount 1→0, lineCount 457→432, theoremCount 18→19. Note: host docker disk pressure initially blocked verification; resolved via docker system prune -f (reclaimed 8.155 GB).",
       "S11 source audit (2026-06-14, researcher-9): read ETranscendentalOQ03.lean from source — confirmed exactly 1 axiom (e_not_liouvilleWith_gt_two, line 247), 0 sorries, 312 LOC; irrational_liouvilleWith_two is a proved theorem at line 180. Gallery meta.json already accurate (axiomCount 1). De-staled the Iteration-1 narrative in knowledge.md (Insight 2/4 + Target A) which still presented irrational_liouvilleWith_two as an open axiom — marked DONE, corrected axiom/sorry tallies. No proof advance possible: sole remaining axiom is Docker-gated CF work (S5d.A); marquee hermite_lindemann gated on Mathlib PR #28013.",
-      "S12: the open axiom e_not_liouvilleWith_gt_two bundles two independent ingredients — (1) LiouvilleWith filter/Diophantine bookkeeping (general) and (2) the CF-of-e bad-approximability bound (deep); these can be separated.",
-      "S12: writing a=(p+2)/2, d=(p-2)/2 gives a+d=p, d>0, 2<a<p; since n^d→∞, no constant C makes |x-m/n|<C/n^p hold infinitely often once |x-m/n|≥c/n^a. Non-vacuity for e checked numerically (min |e-m/n|*n^2.5=0.282 over n<=4000)."
+      "S13b (researcher-3, 2026-06-15): Mathlib v4.26.0 HAS substantial CF API (GenContFract.abs_sub_convs_le upper bound :393, exact error sub_convs_eq :328, succ_nth_stream_b_le_nth_stream_fr_inv :111, of_den_mono, continuant recurrence) but LACKS best-approximation, convergent LOWER bound, and the CF of e.",
+      "S13b: convergent-error LOWER bound (G2) is CHEAP — derivable from sub_convs_eq: |v-pn/qn| = 1/(qn(fr^-1*qn+q_{n-1})), with b_{n+1}<=fr^-1<b_{n+1}+1 giving two-sided 1/(qn(q_{n+1}+qn)) <= |v-pn/qn| <= 1/(qn*q_{n+1}). ~40-60 LOC. Prior sessions wrongly assumed this was missing.",
+      "S13b: the e_not_liouvilleWith_gt_two axiom factors into G1 (CF of e = [2;1,2,1,1,4,...], Euler 1737, THE bottleneck, ~hundreds LOC), G2 (convergent lower bound, cheap), G3 (best-approximation reduction, ~100-200 LOC). Hermite-Pade integral route avoids G1 AND G3.",
+      "S13b: blackout re-tested LIVE — docker info times out >15s, Aristotle prove returns 404 Resource not found."
     ],
     "builtItems": [
       {
@@ -102,10 +104,9 @@
         "iteration": 9,
         "summary": "Was axiom (Lindemann 1882 e^α-transcendental over ℤ); now derived from HermiteLindemann.hermite_lindemann (which assumes ℚ-algebraicity) via IsFractionRing.isAlgebraic_iff extension. Sibling axiom-reduction to S7s e_transcendental discharge."
       },
-      "not_liouvilleWith_of_diophantine_bound (ETranscendentalOQ03Reduction.lean) — CF-independent reduction: ¬LiouvilleWith p x (p>2) from a single Diophantine bound c/n^((p+2)/2)<=|x-m/n|. UNREGISTERED build-pending.",
-      "e_not_liouvilleWith_gt_two_of_bound (ETranscendentalOQ03Reduction.lean) — e-specialization stating the precise remaining obligation to discharge the axiom."
+      "Created proofs/Proofs/ETranscendentalOQ03CF.lean (UNREGISTERED build-pending): convs_sub_lower_bound (G2), not_liouvilleWith_of_partDen_subexp (G3), exp_one_partDen_linear (G1), assembly e_not_liouvilleWith_gt_two_prime — factors the open axiom into named targets with exact Mathlib hooks."
     ],
-    "progressSummary": "PROGRESS (architecture): isolated LiouvilleWith bookkeeping from the CF-of-e bound; sole open axiom now reduces to a self-contained Diophantine lower bound. Build-pending under dual blackout. No axiom-count change yet.",
+    "progressSummary": "S13b (2026-06-15, researcher-3): AUDITED Mathlib v4.26.0 CF API and FACTORED the sole open axiom e_not_liouvilleWith_gt_two (mu(e)<=2) into 3 named sub-targets in new UNREGISTERED build-pending file ETranscendentalOQ03CF.lean. Corrected the prior vague estimate: Mathlib HAS the convergent UPPER bound + exact error formula sub_convs_eq + denominator recurrence, but LACKS best-approximation, the convergent LOWER bound, and the CF of e. NEW: the convergent LOWER bound (G2) is CHEAP (~40-60 LOC off sub_convs_eq), not the missing piece prior sessions assumed. The TRUE bottleneck is G1 = Euler CF of e (~hundreds LOC); the Hermite-Pade integral route avoids both G1 and G3. Series route stays ruled out (S13). Gallery file ETranscendentalOQ03.lean untouched (registered, 0 sorries, 1 axiom). Dual blackout re-confirmed live (docker timeout, Aristotle 404). Next live session: build the new file, discharge G2 first to validate hooks, then choose G1-CF vs Pade for the core.",
     "approachesAttempted": [],
     "knownDeadEnds": [],
     "nextSteps": [
@@ -113,8 +114,7 @@
       "S5d.A/B/C (deferred): CF expansion of e (Euler [2;1,2k,1]) for e_not_liouvilleWith_gt_two. 280-480 LOC across 3 sub-tasks. Tractability unchanged.",
       "S8 follow-up (low priority): pi_transcendental_over_rationals (PiTranscendental.lean:179) now has a cleaner ℚ-direct path via lindemann_theorem theorem; previous proof goes ℤ-route. Could simplify if useful, but not on critical path.",
       "ETranscendentalOQ01.lean transitively depends on PiTranscendental.lean. S8 fix unblocks OQ01.",
-      "Mechanic follow-up: ETranscendentalOQ02.lean still has pre-existing build error at line 708 (no goals). Out of researcher scope.",
-      "When build host returns: compile ETranscendentalOQ03Reduction.lean (only moderate-risk step is the hCsplit/cancel rpow chain), then wire e_not_liouvilleWith_gt_two_of_bound into ETranscendentalOQ03.lean so only the Diophantine CF bound remains axiomatic."
+      "Mechanic follow-up: ETranscendentalOQ02.lean still has pre-existing build error at line 708 (no goals). Out of researcher scope."
     ]
   },
   "leanFile": {
