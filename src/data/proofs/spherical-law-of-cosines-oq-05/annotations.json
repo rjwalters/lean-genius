@@ -4,7 +4,7 @@
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
       "startLine": 1,
-      "endLine": 82
+      "endLine": 95
     },
     "type": "concept",
     "title": "OQ-05: the haversine formula",
@@ -27,8 +27,8 @@
     "id": "ann-haversine-def",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 83,
-      "endLine": 119
+      "startLine": 96,
+      "endLine": 124
     },
     "type": "definition",
     "title": "haversine function and the half-angle identity",
@@ -49,8 +49,8 @@
     "id": "ann-haversine-range",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 120,
-      "endLine": 144
+      "startLine": 125,
+      "endLine": 149
     },
     "type": "definition",
     "title": "Elementary properties of the haversine",
@@ -72,8 +72,8 @@
     "id": "ann-haversine-algebraic",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 145,
-      "endLine": 198
+      "startLine": 150,
+      "endLine": 204
     },
     "type": "proof",
     "title": "Algebraic haversine formula (proved unconditionally)",
@@ -94,13 +94,13 @@
     "id": "ann-haversine-triangle-open",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 199,
-      "endLine": 244
+      "startLine": 205,
+      "endLine": 353
     },
     "type": "proof",
-    "title": "Haversine formula for SphericalTriangle (OPEN, deferred to S2)",
-    "content": "`haversine_formula` states $\\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})$ for a parent-file `SphericalTriangle`. Recorded as `sorry`. The bridge to `haversine_formula_algebraic` requires converting the parent's `⟨projectPerp t.A t.C, projectPerp t.B t.C⟩` (from `spherical_law_of_cosines_trig`) into the trigonometric form `sin(t.sideB) · sin(t.sideA) · cos(t.angleC)`. On the non-degenerate branch (both projections nonzero) this follows from `norm_projectPerp_eq_sin` (parent file) plus the `cos = ⟨·,·⟩/(‖·‖·‖·‖)` identity. The degenerate branch coincides with $\\sin(t.\\text{sideA}) \\cdot \\sin(t.\\text{sideB}) = 0$, so the cross-term vanishes uniformly.",
-    "mathContext": "The open content is *only* the projection-to-trigonometric-angle conversion; the algebraic identity is already proved.",
+    "title": "Haversine formula for SphericalTriangle (closed at S2)",
+    "content": "`haversine_formula` proves $\\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})$ for a parent-file `SphericalTriangle`. Closed at S2: the bridge to `haversine_formula_algebraic` converts the parent's `⟨projectPerp t.A t.C, projectPerp t.B t.C⟩` (from `spherical_law_of_cosines_trig`) into the trigonometric form `sin(t.sideB) · sin(t.sideA) · cos(t.angleC)` via `inner_projectPerp_eq_sin_sin_cos_angleC`. On the non-degenerate branch (both projections nonzero) this follows from `norm_projectPerp_eq_sin` (parent file) plus the `cos = ⟨·,·⟩/(‖·‖·‖·‖)` identity; the degenerate branch coincides with $\\sin(t.\\text{sideA}) \\cdot \\sin(t.\\text{sideB}) = 0$, so the cross-term vanishes uniformly.",
+    "mathContext": "The part deferred past S1 was *only* the projection-to-trigonometric-angle conversion; the algebraic identity was already proved unconditionally. Both are now closed, so the SphericalTriangle form holds with no hypothesis.",
     "significance": "key",
     "relatedConcepts": [
       "projectPerp (parent file)",
@@ -117,8 +117,8 @@
     "id": "ann-specialised",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 245,
-      "endLine": 270
+      "startLine": 354,
+      "endLine": 377
     },
     "type": "proof",
     "title": "Specialised corollaries",
@@ -136,34 +136,11 @@
     ]
   },
   {
-    "id": "ann-summary-tabular",
-    "proofId": "spherical-law-of-cosines-oq-05",
-    "range": {
-      "startLine": 272,
-      "endLine": 295
-    },
-    "type": "context",
-    "title": "Status Summary: 12 PROVED, 1 OPEN, 0 axioms",
-    "content": "Part VI is a tabular accounting of the file's contents, mirrored in `meta.json`'s `theoremCount: 12`, `definitionCount: 1`, `sorries: 1`, `axiomCount: 0`. The 12 proved theorems split into four groups: (i) the half-angle bridge (`haversine_eq_one_sub_cos_div_two`, `two_haversine_eq`, `cos_eq_one_sub_two_haversine`); (ii) range/sign/parity (`haversine_nonneg`, `haversine_le_one`, `haversine_zero`, `haversine_pi`, `haversine_neg`); (iii) the algebraic identity in both directions (`haversine_formula_algebraic`, `cos_form_of_haversine_formula`); (iv) corollaries (`haversine_formula_holds_when_sin_sideA_zero`, `haversine_sub_comm`). The single `sorry` is the `SphericalTriangle` form `haversine_formula`, blocked only on the projection-to-trigonometric-angle conversion in the parent file. The tabular form makes the S1→S2 boundary explicit for downstream automation (Aristotle/Mechanic) and for human auditors checking axiom-integrity claims.",
-    "mathContext": "Status field semantics (per axiom-integrity policy): $\\texttt{status: axiomatized}$, $\\texttt{sorries: 1}$, $\\texttt{axiomCount: 0}$, $\\texttt{badge: wip}$. The status will move to $\\texttt{verified}$ once the S2 conversion is closed and the lone $\\texttt{sorry}$ is discharged.",
-    "significance": "context",
-    "relatedConcepts": [
-      "gallery status taxonomy (verified vs axiomatized vs formalized)",
-      "axiom-integrity audit",
-      "S1 scaffold pattern",
-      "open-question slug bookkeeping"
-    ],
-    "prerequisites": [
-      "axiom-integrity policy (CLAUDE.md)",
-      "meta.json status/badge/axiomCount conventions"
-    ]
-  },
-  {
     "id": "ann-inverse-haversine-s3",
     "proofId": "spherical-law-of-cosines-oq-05",
     "range": {
-      "startLine": 385,
-      "endLine": 479
+      "startLine": 378,
+      "endLine": 473
     },
     "type": "theorem",
     "title": "Inverse haversine formula and great-circle distance (S3)",
@@ -183,6 +160,75 @@
       "Real.arcsin_sin",
       "Parent arcLength_nonneg, arcLength_le_pi",
       "S2 haversine_formula"
+    ]
+  },
+  {
+    "id": "ann-strict-mono-s4",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 474,
+      "endLine": 573
+    },
+    "type": "theorem",
+    "title": "Strict monotonicity, injectivity & navigation uniqueness (S4)",
+    "content": "Establishes that `haversine` is strictly monotone increasing on the principal arc-length range `[0, π]` (`haversine_strictMonoOn_Icc_zero_pi`), via `Real.strictAntiOn_cos` and the half-angle identity `haversine = (1 - cos)/2`. Strict monotonicity yields injectivity (`haversine_injOn_Icc_zero_pi`) and the order/equality iff-lemmas (`haversine_lt_haversine_iff_lt`, `haversine_eq_haversine_iff_eq`). These give *navigation uniqueness*: two spherical-triangle sides with equal haversine are equal (`sideC_eq_of_haversine_sideC_eq` and the `sideA`/`sideB` analogues), so the inverse recovery `c = 2·arcsin(√(hav c))` is well-defined as a function on `[0, π]`.",
+    "mathContext": "$\\text{hav}$ strictly increasing on $[0,\\pi]$ $\\Rightarrow$ injective $\\Rightarrow$ the navigation map $(a,b,C) \\mapsto c$ is single-valued.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.strictAntiOn_cos",
+      "StrictMonoOn / InjOn",
+      "well-definedness of inverse functions",
+      "great-circle distance recovery"
+    ],
+    "prerequisites": [
+      "haversine_eq_one_sub_cos_div_two",
+      "eq_two_arcsin_sqrt_haversine (S3 inverse)"
+    ]
+  },
+  {
+    "id": "ann-bijection-s5",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 574,
+      "endLine": 639
+    },
+    "type": "theorem",
+    "title": "The haversine bijection [0, π] ≃ [0, 1] (S5)",
+    "content": "Completes the bijection picture: S4 gave injectivity (via strict monotonicity); this part proves surjectivity onto `[0, 1]` (`haversine_surjOn`) and assembles the bijection (`haversine_bijOn`, `haversine_image_Icc`). Surjectivity is *constructive* and needs no intermediate-value argument: for any target `y ∈ [0, 1]`, the explicit preimage `2·arcsin(√y)` lies in `[0, π]` (`two_arcsin_sqrt_mem_Icc`) and maps to `y` (`haversine_two_arcsin_sqrt`), since `sin(arcsin(√y)) = √y` and `(√y)² = y`. So the forward haversine and the inverse `2·arcsin(√·)` are mutually inverse bijections between `[0, π]` and `[0, 1]` — the exact range statement underlying navigation recovery.",
+    "mathContext": "$\\text{hav} : [0,\\pi] \\xrightarrow{\\;\\sim\\;} [0,1]$ with explicit inverse $y \\mapsto 2\\arcsin(\\sqrt{y})$; $\\text{hav}(2\\arcsin\\sqrt{y}) = y$ for $y \\in [0,1]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "BijOn / SurjOn / MapsTo",
+      "constructive surjectivity (explicit preimage)",
+      "Real.arcsin / Real.sin_arcsin",
+      "principal range of arc length"
+    ],
+    "prerequisites": [
+      "ann-strict-mono-s4 (injectivity)",
+      "eq_two_arcsin_sqrt_haversine (S3)"
+    ]
+  },
+  {
+    "id": "ann-summary-tabular",
+    "proofId": "spherical-law-of-cosines-oq-05",
+    "range": {
+      "startLine": 640,
+      "endLine": 689
+    },
+    "type": "context",
+    "title": "Status Summary: 37 proved, 0 sorries, 0 axioms (verified)",
+    "content": "Part XI is a tabular accounting of the file's contents, mirrored in `meta.json`'s `theoremCount: 37`, `definitionCount: 1`, `sorries: 0`, `axiomCount: 0`. The proved results span: the half-angle bridge; range/sign/parity of `haversine`; the algebraic identity in both directions; the `SphericalTriangle` form (S2 bridge); the inverse formula and great-circle corollaries (S3); strict monotonicity / injectivity / navigation-uniqueness (S4); and the `[0, π] ≃ [0, 1]` bijection (S5). The table makes the S1→S5 development explicit for downstream automation (Aristotle/Mechanic) and for human auditors checking axiom-integrity claims — every row is PROVED, with no remaining `sorry`.",
+    "mathContext": "Status field semantics (per axiom-integrity policy): $\\texttt{status: verified}$, $\\texttt{sorries: 0}$, $\\texttt{axiomCount: 0}$, $\\texttt{badge: original}$. The lone S1 `sorry` (the SphericalTriangle conversion) was discharged at S2, and the file is Docker-verified end-to-end.",
+    "significance": "context",
+    "relatedConcepts": [
+      "gallery status taxonomy (verified vs axiomatized vs formalized)",
+      "axiom-integrity audit",
+      "end-to-end Docker verification",
+      "open-question slug bookkeeping"
+    ],
+    "prerequisites": [
+      "axiom-integrity policy (CLAUDE.md)",
+      "meta.json status/badge/axiomCount conventions"
     ]
   }
 ]
