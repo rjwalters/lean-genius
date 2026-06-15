@@ -92,76 +92,140 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview — Imports and Setup",
+      "summary": "Imports (Asymptotics, special functions, liminf/limsup topology), open Asymptotics Filter, and namespace Erdos185. Sets up the formalization of Erdős problem #185 on cap-set growth: the maximum size f₃(n) of a subset of {0,1,2}ⁿ containing no combinatorial line.",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "Module setup: imports, open Asymptotics Filter, namespace Erdos185"
+    },
+    {
       "id": "definitions",
-      "title": "Basic Definitions",
-      "summary": "TernaryHypercube, hypercube_card",
-      "startLine": 35,
-      "endLine": 52,
+      "title": "Part I: Basic Definitions",
+      "summary": "TernaryHypercube n := Fin n → ZMod 3 and hypercube_card establishing |{0,1,2}ⁿ| = 3ⁿ. The ambient space in which cap sets live.",
+      "startLine": 39,
+      "endLine": 56,
       "mathContext": "Mathematical content: TernaryHypercube, hypercube_card"
     },
     {
       "id": "lines",
-      "title": "Lines in {0,1,2}^n",
-      "summary": "OnLine, CombinatorialLine definitions",
-      "startLine": 53,
-      "endLine": 82,
-      "mathContext": "Formal definition: OnLine, CombinatorialLine definitions"
+      "title": "Part II: Lines in {0,1,2}^n",
+      "summary": "OnLine and CombinatorialLine definitions: a combinatorial line is a maximal family of points agreeing on fixed coordinates and ranging together over {0,1,2} on the moving coordinates. These are the configurations cap sets must avoid.",
+      "startLine": 57,
+      "endLine": 100,
+      "mathContext": "Formal definition: OnLine, CombinatorialLine"
     },
     {
       "id": "cap-sets",
-      "title": "Cap Sets",
-      "summary": "IsCapSet, IsCapSetCombinatorial, f3(n)",
-      "startLine": 83,
-      "endLine": 108,
+      "title": "Part III: Cap Sets",
+      "summary": "IsCapSet and IsCapSetCombinatorial define line-free subsets; f3(n) is the maximum cap-set cardinality. Equivalence of the geometric (no 3-term AP / line) and combinatorial formulations.",
+      "startLine": 101,
+      "endLine": 236,
       "mathContext": "Mathematical content: IsCapSet, IsCapSetCombinatorial, f3(n)"
     },
     {
       "id": "ap-connection",
-      "title": "Connection to APs",
-      "summary": "R3(N), f3 ≥ R3 lower bound",
-      "startLine": 109,
-      "endLine": 129,
-      "mathContext": "R3(N), f3 $\\geq$ R3 lower bound"
+      "title": "Part IV: Connection to Arithmetic Progressions",
+      "summary": "R3(N), the cap-set / 3-AP connection: f3 ≥ R3 lower bound relating cap sets in {0,1,2}ⁿ to progression-free sets, situating the problem within additive combinatorics.",
+      "startLine": 237,
+      "endLine": 255,
+      "mathContext": "R3(N), f3 ≥ R3 lower bound"
     },
     {
       "id": "known-bounds",
-      "title": "Known Bounds",
-      "summary": "Moser's lower bound, Moser's construction",
-      "startLine": 130,
-      "endLine": 151,
-      "mathContext": "Bound: Moser's lower bound, Moser's construction"
+      "title": "Part V: Known Bounds",
+      "summary": "Moser's lower bound and explicit construction, recording the classical lower bounds on f₃(n) prior to the density Hales–Jewett and polynomial-method results.",
+      "startLine": 256,
+      "endLine": 304,
+      "mathContext": "Moser's lower bound, Moser's construction"
     },
     {
-      "id": "hales-jewett",
-      "title": "Density Hales-Jewett",
-      "summary": "Main theorem and corollary f₃(n) = o(3^n)",
-      "startLine": 152,
-      "endLine": 179,
-      "mathContext": "Main theorem and corollary f₃(n) = o($3^{n}$)"
+      "id": "density-hales-jewett",
+      "title": "Part VI: The Main Result — Density Hales–Jewett",
+      "summary": "The density Hales–Jewett theorem and its corollary f₃(n) = o(3ⁿ): cap sets have density tending to zero, the central qualitative answer to Erdős #185.",
+      "startLine": 305,
+      "endLine": 420,
+      "mathContext": "Density Hales–Jewett theorem; corollary f₃(n) = o(3ⁿ)"
     },
     {
       "id": "recent-progress",
-      "title": "Recent Progress",
-      "summary": "Meshulam (1995), Ellenberg-Gijswijt (2016)",
-      "startLine": 180,
-      "endLine": 206,
-      "mathContext": "Mathematical content: Meshulam (1995), Ellenberg-Gijswijt (2016)"
+      "title": "Part VII: More Recent Progress",
+      "summary": "Meshulam (1995) and Ellenberg–Gijswijt (2016) polynomial-method bounds, with capSetConstant ≈ 2.756 recording the exponential base of the Ellenberg–Gijswijt upper bound f₃(n) ≤ O(2.756ⁿ).",
+      "startLine": 421,
+      "endLine": 444,
+      "mathContext": "Meshulam (1995), Ellenberg–Gijswijt (2016), capSetConstant ≈ 2.756"
     },
     {
       "id": "examples",
-      "title": "Examples",
-      "summary": "f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20",
-      "startLine": 207,
-      "endLine": 235,
-      "mathContext": "Mathematical content: f₃(1)=2, f₃(2)=4, f₃(3)=9, f₃(4)=20"
+      "title": "Part VIII: Examples",
+      "summary": "Small-case values of f₃, beginning with f3_1 : f3 1 = 2. Establishes the base of the explicit-computation tower continued in Parts VIII-A through VIII-F.",
+      "startLine": 445,
+      "endLine": 534,
+      "mathContext": "f3_1 : f3 1 = 2"
+    },
+    {
+      "id": "f3-2",
+      "title": "Part VIII-A: f₃(2) = 4 — Explicit Computation",
+      "summary": "f3_2 : f3 2 = 4, proved by explicit enumeration of cap sets in {0,1,2}² together with a matching upper bound (le_antisymm of the construction and an exhaustive impossibility argument).",
+      "startLine": 535,
+      "endLine": 659,
+      "mathContext": "f3_2 : f3 2 = 4"
+    },
+    {
+      "id": "f3-3",
+      "title": "Part VIII-B: f₃(3) = 9 — Hybrid Computation",
+      "summary": "f3_3 : f3 3 = 9 via le_antisymm f3_3_le_9 f3_3_ge_9 — a hybrid of explicit construction (lower bound) and a combinatorial counting argument (upper bound).",
+      "startLine": 660,
+      "endLine": 740,
+      "mathContext": "f3_3 : f3 3 = 9 (le_antisymm f3_3_le_9 f3_3_ge_9)"
+    },
+    {
+      "id": "f3-4",
+      "title": "Part VIII-B2: f₃(4) = 20 — Explicit Construction + Meshulam",
+      "summary": "f3_4 : f3 4 = 20 via le_antisymm f3_4_le_20 f3_4_ge_20, combining an explicit 20-point cap set with a Meshulam-style upper bound.",
+      "startLine": 741,
+      "endLine": 789,
+      "mathContext": "f3_4 : f3 4 = 20 (le_antisymm f3_4_le_20 f3_4_ge_20)"
+    },
+    {
+      "id": "binary-cube",
+      "title": "Part VIII-C: Generalized Binary Cube (f₃(n) ≥ 2ⁿ)",
+      "summary": "boolToZMod3, boolEmbed and boolEmbed_injective embed the Boolean cube {0,1}ⁿ into {0,1,2}ⁿ; binaryCubeImg has card 2ⁿ (binaryCubeImg_card) and is a cap set (binaryCubeImg_isCapSet), yielding f3_ge_two_pow : f3 n ≥ 2ⁿ.",
+      "startLine": 790,
+      "endLine": 853,
+      "mathContext": "boolEmbed, binaryCubeImg_card = 2ⁿ, binaryCubeImg_isCapSet, f3_ge_two_pow"
+    },
+    {
+      "id": "product-structure",
+      "title": "Part VIII-D: Product Structure (Supermultiplicativity)",
+      "summary": "vecConcat and finsetProduct build product cap sets; isCapSet_product shows the product of cap sets is a cap set with finsetProduct_card = |A|·|B|, giving f3_supermultiplicative : f3 (m+n) ≥ f3 m · f3 n. Corollaries f3_monotone and f3_doubling (f3 (n+1) ≥ 2·f3 n).",
+      "startLine": 854,
+      "endLine": 983,
+      "mathContext": "isCapSet_product, f3_supermultiplicative, f3_monotone, f3_doubling"
+    },
+    {
+      "id": "derived-bounds",
+      "title": "Part VIII-E: Derived Bounds from Product Structure",
+      "summary": "Concrete lower bounds derived from supermultiplicativity and the small-case values: f3_5_ge_40, f3_6_ge_81, f3_6_ge_80, f3_7_ge_180, f3_8_ge_400.",
+      "startLine": 984,
+      "endLine": 1023,
+      "mathContext": "f3_5_ge_40, f3_6_ge_81, f3_6_ge_80, f3_7_ge_180, f3_8_ge_400"
+    },
+    {
+      "id": "power-lower-bound",
+      "title": "Part VIII-F: General Power Lower Bound",
+      "summary": "f3_power_lower_bound : f3 (k·n) ≥ f3 n ^ k, the general power form of supermultiplicativity, and f3_exponential_gap quantifying the exponential separation between the 2ⁿ lower bound and the 3ⁿ ambient size.",
+      "startLine": 1024,
+      "endLine": 1051,
+      "mathContext": "f3_power_lower_bound, f3_exponential_gap"
     },
     {
       "id": "summary",
-      "title": "Summary",
-      "summary": "erdos_185, erdos_185_density, erdos_185_answer theorems",
-      "startLine": 236,
+      "title": "Part IX: Summary",
+      "summary": "Headline theorems: erdos_185 ((fun n => f3 n) =o[atTop] (fun n => 3ⁿ)), erdos_185_density (density → 0), and erdos_185_answer packaging the resolution of Erdős problem #185.",
+      "startLine": 1052,
       "endLine": 1104,
-      "mathContext": "Verified: erdos_185, erdos_185_density, erdos_185_answer theorems"
+      "mathContext": "erdos_185, erdos_185_density, erdos_185_answer"
     }
   ],
   "crossReferences": [
