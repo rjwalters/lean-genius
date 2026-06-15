@@ -1,0 +1,147 @@
+{
+  "slug": "de-moivre-oq-02-oq-02-oq-01",
+  "title": "Product-to-sum identity for second-kind Chebyshev polynomials",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "U_m \\cdot U_n = \\sum_{k=0}^{\\min(m,n)} U_{m+n-2k}",
+    "plain": "The parent entry establishes the mixed product formula relating first-kind ($T$) and second-kind ($U$) Chebyshev polynomials. This problem asks for the pure $U \\times U$ product-to-sum identity: the product of two second-kind Chebyshev polynomials decomposes as a sum of second-kind Chebyshev polynomials with indices stepping down by two from $m+n$ to $|m-n|$. The goal is a clean polynomial identity over an arbitrary commutative ring, proved analogously to the existing $T \\cdot U$ result.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "U_m · U_n = ∑_{k=0}^{n} U_{m+n−2k} as a polynomial identity in R[X] for any CommRing R, m:ℤ, n:ℕ."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-15T12:12:21-07:00",
+    "iteration": 1,
+    "focus": "Wrote full Lean proof of U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k}; build verification pending (Docker queue saturated, Aristotle 404).",
+    "blockers": [],
+    "nextAction": "Run docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01 once contention clears; fix any index-cast matching in Ssum_rec via compiler feedback; then flip gallery meta to verified/original.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: complete proof written (def Ssum; lemmas two_X_U, Ssum_succ_expand, Ssum_rec, Ssum_zero, Ssum_one; theorem U_mul_U). Build-pending: not yet machine-verified (Docker saturated, Aristotle down).",
+    "builtItems": [
+      "U_mul_U (Proofs/DeMoivreOQ02OQ02OQ01.lean): U_m·U_n = ∑_{k=0}^{n} U_{m+n−2k} over any CommRing R",
+      "Ssum_rec: product-free sum recurrence 2X·S(m,n+1) = S(m,n+2)+S(m,n)",
+      "Ssum_succ_expand: termwise distribution of 2X into the linearization sum",
+      "Ssum_zero / Ssum_one: base values S(m,0)=U_m, S(m,1)=U_{m+1}+U_{m-1}"
+    ],
+    "insights": [
+      "This is exactly the open question the parent de-moivre-oq-02-oq-02 posed (confirmed in its meta.json openQuestions): genuine gallery gap, not a duplicate.",
+      "Reducing the product identity to the product-free sum recurrence Ssum_rec isolates all Finset bookkeeping and makes the induction step a one-line linear_combination.",
+      "The U recurrence is second-order, so the induction must be two-step, carrying P(j) ∧ P(j+1).",
+      "After distributing 2X, the two telescoped ranges overlap; the only surviving boundary terms (both U_{m-n-2}) cancel — this is what makes the recurrence exact.",
+      "Indexing by m+n−2k with m:ℤ removes any m≥n hypothesis (Mathlib ℤ-indexed U handles negative indices)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the U recurrence (U_add_two) but no U·U linearization / product-to-sum lemma."
+    ],
+    "nextSteps": [
+      "Build with docker-build.sh once Docker queue clears; fix residual index-cast term-matching in Ssum_rec (range (n+2) vs (n+1)+1; ↑(n+1) vs ↑n+1) with compiler feedback.",
+      "If green, flip gallery meta de-moivre-oq-02-oq-02-oq-01 to status verified / badge original and register in proof index.",
+      "Follow-up OQ: linearization of three-fold products U_a·U_b·U_c; mixed U_m·T_n linearization = ½(U_{m+n}+U_{m-n})."
+    ],
+    "markdown": "# Knowledge Base: de-moivre-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "chebyshev-polynomials",
+    "de-moivre",
+    "product-to-sum",
+    "polynomial-identity",
+    "second-kind"
+  ],
+  "relatedProofs": [
+    "de-moivre",
+    "de-moivre-oq-01",
+    "de-moivre-oq-02",
+    "de-moivre-oq-02-oq-02",
+    "de-moivre-oq-03",
+    "de-moivre-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T12:12:21-07:00",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/DeMoivre.lean",
+      "filename": "DeMoivre.lean",
+      "lineCount": 240,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivre.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ01.lean",
+      "filename": "DeMoivreOQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02.lean",
+      "filename": "DeMoivreOQ02.lean",
+      "lineCount": 158,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02OQ02.lean",
+      "filename": "DeMoivreOQ02OQ02.lean",
+      "lineCount": 217,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03.lean",
+      "filename": "DeMoivreOQ03.lean",
+      "lineCount": 276,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01.lean",
+      "lineCount": 75,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
+    }
+  ]
+}
