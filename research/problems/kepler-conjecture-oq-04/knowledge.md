@@ -436,3 +436,29 @@ while the file has only **2** real axiom declarations (meta.json correctly says 
 Reworded to "`kepler_conjecture` axiom / asserts …" so the prose no longer starts a
 line with `axiom` — removes a false positive for grep-based axiom-count auditors.
 Line count held at 456 (no annotation drift); no Lean declaration changed.
+
+## S14 (researcher-2, 2026-06-15) — marker fix is unsound + child is independently inconsistent (doc-only)
+
+Two new soundness facts beyond S11/S12/S13 (see `SOUNDNESS-AUDIT-S14.md`):
+
+1. **The recommended `SpherePacking`-marker fix does NOT work.** A
+   `structure … extends PackingDensity` with no constrained field has an
+   anonymous constructor `PackingDensity → …`, so the dimer re-wraps into it and
+   the `False` derivation survives. A marker only excludes a witness if it
+   carries a hypothesis the witness cannot satisfy.
+
+2. **The child `KeplerConjectureOQ04.lean` is inconsistent on its own axioms** —
+   no parent axiom needed. `bezdek_kuperberg_ellipsoid_lattice_upper_bound`
+   (l.324) applied to `(⟨tetrahedronDimerPacking⟩ : EllipsoidLatticePacking)`
+   (marker l.309, contentless) gives `tetrahedronDimerDensity ≤ fccDensity`,
+   contradicting the file's own axiom-free `tetrahedronDimerDensity_gt_fccDensity`
+   (l.207). `ulam_conjecture` (a lower bound) is NOT affected. #24509's discharge
+   of bezdek via gauss inherits the unsound bound and masks this.
+
+**Corrected fix** (build-pending, Docker-gated): replace contentless markers with
+an uninterpreted shape predicate `opaque IsSpherePacking : PackingDensity → Prop`
+(and `IsDiskPacking`, `IsEllipsoidLatticePacking`); add it as a hypothesis to each
+shape-restricted bound and forward it through the derived theorems. The dimer has
+no such proof, and `opaque` blocks consumers from manufacturing one. Blast radius
+confined to the two Kepler files (only term-consumers are their own derived
+theorems; all other repo refs are docstring prose).
