@@ -182,6 +182,16 @@
       "targetId": "erdos-1148",
       "relationship": "related",
       "description": "Related Erdős problem sharing themes: additive-combinatorics, number-theory, open"
+    },
+    {
+      "proofId": "erdos-1206",
+      "relationship": "sibling",
+      "description": "The cube analogue: Erdős #1206 asks for large Sidon subsets of {1³,…,N³}. Both problems concern Sidon sets among k-th powers, but the governing structure differs — #773 (squares, k=2) is bounded via the sparsity of sums of two squares (Landau's theorem), whereas #1206 (cubes, k=3) exploits the factorization n³−m³=(n−m)(n²+nm+m²). Notably the cube case was resolved in the short-interval regime (Gabdullin–Konyagin 2024 gave a Sidon subset of size ≫N^{1/2}) while the squares case #773 remains open."
+    },
+    {
+      "proofId": "erdos-530",
+      "relationship": "specializes",
+      "description": "The general umbrella problem: Erdős #530 asks for the maximum size ℓ(N) of a Sidon subset of an arbitrary N-element set, where ℓ(N) ∼ N^{1/2} (Komlós–Sulyok–Szemerédi). #773 is the special case in which the ambient N-element set is the perfect squares {1²,…,N²}; the additive structure of squares pushes the extremal size far above the generic √N, to between N^{2/3} and N/(log N)^{1/4}."
     }
   ],
   "sorries": 0
