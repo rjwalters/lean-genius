@@ -2,11 +2,15 @@
 
 ## Current State
 
-**Phase**: STATE-SYNC — S10 passive watch tick of Mathlib PR #28013 (Lindemann-Weierstrass). PR #28013 head SHA `5abb7c68488…` and `updatedAt 2026-05-29T07:22:48Z` STILL unchanged from S8/S9 readings (~16d stale, T+5d since S9). Grace period through ~2026-06-26 (12 days out). Continue passive watch; switch to S5d.A active fallback only if still stale on/after 2026-06-26. S8 ACT's PiTranscendental.lean axiom-reduction (1→0 local, 3092/3092 jobs GREEN) is bit-identical (432 LOC, 0 ax, 0 sorry).
+**Phase**: STATE-SYNC — S12 (researcher-4, 2026-06-15): passive-watch tick + new numerical cert grounding the sole open axiom. PR #28013 still OPEN, not merged (`mergedAt: null`); grace period through ~2026-06-26 (11 days out) — continue passive watch, switch to S5d.A active fallback only if still stale on/after 2026-06-26. NEW this session: `verify_e_liouville_measure.py` numerically grounds `e_not_liouvilleWith_gt_two` (ETranscendentalOQ03.lean:247) — confirms μ(e)=2 via Euler-CF convergents (local-exponent envelope ↓ to 2; q^p|e−h/q|→∞ for p>2; q²|e−h/q| bounded, consistent with the proved `e_liouvilleWith_two`). Evidence only — axiom remains (Lean discharge needs Euler CF, ~280–480 LOC, Docker-gated).
 **Path**: full
 **Since**: 2026-06-09T23:59:00Z (S9 STATE-SYNC, researcher-1)
-**Last Updated**: 2026-06-14 (Iteration 12, S11 source audit, researcher-9)
-**Iteration**: 12
+**Last Updated**: 2026-06-15 (Iteration 13, S12 cert + passive watch, researcher-4)
+**Iteration**: 13
+
+## Iteration 13 (researcher-4, 2026-06-15) — S12 passive watch + e-Liouville-measure cert
+
+**Outcome**: progress (new reproducible artifact) — no formalization advance (sole open item Docker-gated; dual blackout: Docker DOWN, Aristotle MCP 404). Passive-watch tick: Mathlib PR #28013 still OPEN/unmerged (`mergedAt: null`), grace to ~2026-06-26 (11d out) → continue watch. Added `verify_e_liouville_measure.py` (mpmath @ 4000 dps), the FIRST numerical certificate for the sole open axiom `e_not_liouvilleWith_gt_two` (none of S1–S11 produced one): (A) e's CF = Euler's `[2;1,2,1,1,4,1,1,6,…]` pattern verified to 150 terms; (B) local exponent λ_k=−ln|e−h/q|/ln q overshoots 2 at "good" convergents (before each large a_{3j+2}=2(j+1)) but the overshoot ENVELOPE descends decade-by-decade (2.459→2.036 by q≈10⁵⁰) → lim sup = μ(e)=2; (C) q^p·|e−h/q|→∞ for p∈{2.1,3} ⟹ no Liouville constant ⟹ ¬LiouvilleWith p — grounds the axiom; (D) q²·|e−h/q| bounded in [10⁻²,0.5], consistent with the proved `e_liouvilleWith_two` and μ(e)=2 exactly. ALL PASS. Marquee `hermite_lindemann` still gated on PR #28013.
 
 ## Iteration 12 (researcher-9, 2026-06-14) — S11 Source Audit + knowledge.md de-stale
 
