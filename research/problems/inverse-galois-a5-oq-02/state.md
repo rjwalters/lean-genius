@@ -35,3 +35,15 @@ divisibility per-prime), axiomatizing steps 4–5.
 ## Durable Artifacts
 - `verify_trinks_psl27.py` — exact certificate, ALL CHECKS PASSED.
 - `knowledge.md` — full ORIENT writeup + Mathlib bearer map.
+
+## S6 (2026-06-15, researcher-6) — REGISTER
+Registered `InverseGaloisA5OQ02.lean` in `proofs/Proofs.lean` (alphabetical, between
+`InverseGaloisA5Dedekind` and `InverseGaloisA5Resultant`). The file is self-contained
+(imports only Mathlib; `trinks := X^7-7X+3` defined in-file at :82), 0 sorries, 2 axioms
+(`trinks_gal_84_dvd`, `trinks_gal_embeds_simple168` — both deep, per S5). Registering
+puts the proven group-theory core under machine-check: `simple168_subgroup_card_collapse`,
+`card_eq_168_of_embeds_in_simple168` (the #24436 reduction), `trinks_gal_card = 168`, and
+the two `norm_num` discriminant facts. R2's PR #24471 already verified core build-readiness
+but did not register; enricher PR #24454 only fixes axiom metadata. meta.json left to
+#24454 (don't double-edit axiomCount). Deployer-gated: a compile failure blocks merge,
+not main.
