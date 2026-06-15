@@ -58,7 +58,8 @@
       "**The small-c statement is TRUE:** for fixed monic f, as c → 0 each component is a disk |z − r| ≤ c'^{1/k} around a root r — hence convex. So negating it (the parent axiom) is unsound.",
       "**The genuine counterexamples live at non-small c:** Pommerenke/Goodman non-convexity occurs at specific critical values, not as c → 0 — which is exactly why the faithful ∀-c statement is the right target.",
       "**Axiom integrity:** the only real assumption is goodman_counterexample; the conjecture's falsity is a deduction, not a posited axiom.",
-      "**Reduction in assumptions (applied):** the parent patch (PR #24613) dropped the flagship's axiom count from 2 to 1 — only goodman_counterexample remains."
+      "**Reduction in assumptions (applied):** the parent patch (PR #24613) dropped the flagship's axiom count from 2 to 1 — only goodman_counterexample remains.",
+      "**Where the non-convexity lives:** for Goodman's f = (z²+1)(z-2)², the critical value c = 5^{3/2}/4 is exactly |f| at the saddle points (1±i)/2 (the roots of f'/(2(z-2)) = 2z²-2z+1); at that level two lemniscate components merge and the joined component fails to be convex — confirming non-convexity is a non-small-c, saddle-driven phenomenon, not a c → 0 effect."
     ],
     "prerequisites": [
       "Polynomial lemniscates and sublevel sets",
