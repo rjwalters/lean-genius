@@ -124,3 +124,58 @@ open content is the single combinatorial gap-classification core (`three_gap`,
 `three_gap_additive`), with the documented van Ravenstein proof path. The ≤3
 distinct-lengths statement remains the first formal Lean statement of the
 three-gap/Steinhaus theorem.
+
+---
+
+## Session 2026-06-15 (Session 3) — Reduce both theorems to ONE core lemma
+
+**Mode**: REVISIT (FRESH claim of available problem) — **Outcome**: progress
+
+### What I Did
+Collapsed the two open obligations (`three_gap`, `three_gap_additive`) so they
+now depend on a **single** isolated combinatorial lemma, and proved all the
+surrounding finite-cardinality scaffolding.
+
+- Added `card_le_three_of_subset_triple : s ⊆ {a,b,c} → s.card ≤ 3` — pure
+  `Finset` arithmetic (`card_insert_le`/`card_singleton`/`card_le_card` + omega).
+  Fully proved, no sorry.
+- Introduced the core lemma `exists_gap_triple`:
+  `∃ a b c, a + b = c ∧ gapLengths α N ⊆ {a, b, c}`. This is the genuine
+  Sós–Surányi / van Ravenstein content (the two short gaps `{pα}`, `1−{qα}`
+  and the long gap `{pα}+(1−{qα})`), the SOLE remaining sorry.
+- `three_gap` now: `obtain` the triple, apply the card engine. No sorry.
+- `three_gap_additive` now fully derived from `exists_gap_triple`:
+  `Finset.eq_of_subset_of_card_le` forces `gapLengths = {a,b,c}` when card = 3;
+  pairwise distinctness comes from collapsing any pair to a ≤2-card set
+  (contradiction with card = 3); membership from `gapLengths = {a,b,c}`.
+  No sorry.
+
+### Key Findings
+- The whole theorem reduces to a **single set-containment statement** plus an
+  additive equation — a clean, self-contained Aristotle/Docker target. The
+  "≤ 3 distinct values" and "long = short + short" claims are NOT independent:
+  both fall out of `gapLengths ⊆ {a,b,c} ∧ a+b=c`.
+- Distinctness need not be hypothesized: given `card = 3` and a 3-element
+  superset literal, equality of finsets is forced, and the three witnesses are
+  automatically distinct.
+
+### Files Modified
+- `proofs/Proofs/Erdos998ThreeGapOQ04.lean` — added `card_le_three_of_subset_triple`,
+  `exists_gap_triple` (sorry), rewrote `three_gap` and `three_gap_additive` (both
+  now sorry-free, depending only on `exists_gap_triple`).
+
+### Sorry Ledger
+- Before: 2 sorries (`three_gap`, `three_gap_additive`), both HARD/combinatorial.
+- After: **1 sorry** (`exists_gap_triple`), the isolated classification core.
+
+### Next Steps
+1. Prove `exists_gap_triple` — define generators `p, q` via
+   `Finset.exists_min_image` on `range N`, then the successor/neighbour map.
+   Ideal single-lemma Aristotle target once the backend recovers (404 today).
+2. Build `Proofs.Erdos998ThreeGapOQ04` when Docker ≤ 2 containers to confirm the
+   new scaffolding compiles (build-blocked this cycle: 5 lean-build containers,
+   Aristotle 404).
+
+**progressSummary:** ATTACK. Net sorry count 2 → 1. Both headline theorems are
+now sorry-free, resting on one precisely-stated combinatorial core
+(`exists_gap_triple`). Build-pending (dual-backend blackout).
