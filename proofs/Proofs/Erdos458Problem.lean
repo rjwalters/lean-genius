@@ -74,6 +74,26 @@ theorem lcm_upto_five : lcm_upto 5 = 60 := by native_decide
 /-- Small values: lcm(1,...,6) = 60 (6 = 2·3, already covered) -/
 theorem lcm_upto_six : lcm_upto 6 = 60 := by native_decide
 
+/- ## Universal Property -/
+
+/-- Every `m` with `1 ≤ m ≤ n` divides `lcm_upto n`.
+    This is the defining property of the least common multiple, obtained
+    directly from `Finset.dvd_lcm`. -/
+theorem mem_dvd_lcm_upto {m n : ℕ} (hm : 1 ≤ m) (hmn : m ≤ n) : m ∣ lcm_upto n := by
+  unfold lcm_upto
+  simpa using Finset.dvd_lcm (f := id) (Finset.mem_Icc.mpr ⟨hm, hmn⟩)
+
+/-- `lcm_upto n` is the *least* common multiple: any `k` divisible by every
+    `m` in `[1, n]` is divisible by `lcm_upto n`. Obtained from `Finset.lcm_dvd`.
+    Together with `mem_dvd_lcm_upto` this characterizes `lcm_upto n` as exactly
+    the lcm of `{1, …, n}`. -/
+theorem lcm_upto_dvd {n k : ℕ} (h : ∀ m, 1 ≤ m → m ≤ n → m ∣ k) : lcm_upto n ∣ k := by
+  unfold lcm_upto
+  apply Finset.lcm_dvd
+  intro b hb
+  rw [Finset.mem_Icc] at hb
+  simpa using h b hb.1 hb.2
+
 /- ## Growth Properties -/
 
 /-- lcm_upto is monotone in the divisibility order -/
