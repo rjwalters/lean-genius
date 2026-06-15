@@ -233,3 +233,73 @@ reparametrization-invariance fact, **not** covered by the Mathlib bump.
    names verified present in Mathlib, only autoparam/`measureReal` forms may
    differ from the newer sibling checkout used to name-check).
 3. Then pursue the bump + Fubini discharge of the *corrected* axiom.
+
+---
+
+## Session 6 (2026-06-15, researcher-4) — soundness blast-radius map + build-ready fix spec
+
+**Mode**: REVISIT (post-merge of S5 #24381). **Outcome**: mapped the FULL soundness
+blast radius of the false axiom and pinned the exact coordinated correction. Docker
+still down (`docker info` timeout); registered files left UNTOUCHED (a blind multi-site
+edit to registered files under blackout would silently poison `main` — the deployer
+compiles only the website, not Lean, so a break wouldn't surface until a Docker run).
+
+### The defect is now a REGISTERED-CORPUS soundness issue
+S5 (#24381, MERGED 11:05) proved `greens_theorem_l1curl` is FALSE (constant-curve
+counterexample ⟹ 0=1). That axiom lives in **registered** `GreensTheoremOQ02.lean:361`
+(Proofs.lean:2387). The unsoundness has **propagated** to 5 derived theorems across 2
+registered files — every one inherits the too-weak `hTraversal` (image-containment only)
+and concludes `lipschitzLineIntegral … = ∫∫ curl`, all equally refuted by the S5
+constant curve:
+
+| File (registered) | Decl | uses |
+|---|---|---|
+| GreensTheoremOQ02.lean:361 | `greens_theorem_l1curl` (axiom) | — (root) |
+| GreensTheoremOQ02.lean | `lineIntegral_zero_curl` | axiom |
+| GreensTheoremOQ02.lean | `lineIntegral_l1curl_smul` | axiom |
+| GreensTheoremOQ02.lean | `greens_oq1_from_l1curl` | axiom |
+| GreensTheoremOQ02OQ04.lean | `greens_stokes_l1curl` | axiom |
+| GreensTheoremOQ02OQ04.lean | `closed_l1form_zero_integral` | `lineIntegral_zero_curl` |
+
+### Build-ready correction spec (one coordinated Docker pass)
+`GreensTheoremOQ02.lean` already `import`s `Proofs.GreensTheoremOQ01`, so
+`rectLineIntegral` (GreensTheoremOQ01.lean:76) is in scope. Add the orientation
+hypothesis to the axiom:
+
+```
+(hOrient : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d)
+```
+
+This makes the axiom SOUND: its conclusion becomes, after rewriting by `hOrient`,
+`rectLineIntegral P Q a b c d = ∫∫ curlF` — the genuine rectangle Green identity (the
+oriented four-edge integral equals the double integral of curl), which OQ01 already
+proves at the C¹ level (`GreensTheoremOQ01.lean:171`) and which the L¹ case reduces to
+via the FTC-for-AC keystone (the still-open Mathlib-bump gap). The S5 constant curve no
+longer refutes it: that curve has `lipschitzLineIntegral = 0 ≠ rectLineIntegral` (the
+real boundary integral), so it fails `hOrient`.
+
+Each of the 5 consumers must thread one new `hOrient` argument:
+- `lineIntegral_zero_curl`, `lineIntegral_l1curl_smul`, `greens_oq1_from_l1curl`,
+  `greens_stokes_l1curl`: add `(hOrient : lipschitzLineIntegral P Q C = rectLineIntegral
+  P Q a b c d)` (with `ω.P, ω.Q` for the form variants) to the signature and pass it to
+  the axiom call.
+- `closed_l1form_zero_integral`: add the same `hOrient` and pass it to its
+  `lineIntegral_zero_curl` call.
+
+No other files consume these (checked by grep), so the blast radius is exactly these 6
+decls in these 2 files — fixable in a single coordinated edit + one Docker build.
+
+### Why not done this session
+Multi-site signature change across REGISTERED files, unverifiable under Docker blackout.
+The math is settled (S5) and the fix is mechanical, but executing it blind risks a broken
+registered build that the website-only deployer won't catch. This belongs to a
+Docker-enabled session; this entry makes that pass a pure transcription.
+
+### Next steps
+1. **(Docker)** Apply the correction spec above in one pass; rebuild `Proofs.GreensTheoremOQ02`
+   + `Proofs.GreensTheoremOQ02OQ04`; confirm the corpus is sound again.
+2. Then discharge the corrected axiom: C¹ case directly from OQ01; L¹ case via the
+   FTC-for-AC keystone (Mathlib-bump-gated, unchanged).
+3. Optionally delete/retire `GreensTheoremOQ02Counterexample.lean` once the axiom is
+   corrected (it refutes only the OLD weak form; keep it as a regression note or convert
+   to a test that the weak hypothesis is insufficient).
