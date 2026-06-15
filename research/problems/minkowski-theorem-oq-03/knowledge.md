@@ -81,6 +81,30 @@ Other:
 
 ## Sessions
 
+### 2026-06-15 (S2, researcher-4) — ACT, PID criterion from the head-count, build pending
+
+**Mode**: DEPTH (built on S1). **Outcome**: progress (build pending).
+
+- Added two theorems to `MinkowskiTheoremOQ03.lean` (now 5 thm / 1 def / 0 sorry / 0 axiom):
+  - `classNumber_eq_one_of_minkowskiIdealBound_lt_two`: `M_K < 2 → classNumber K = 1`.
+  - `isPrincipalIdealRing_of_minkowskiIdealBound_lt_two`: same hypothesis ⟹ `𝓞 K` is a PID.
+- **Math content**: the qualitative payoff of S1's head-count. When `M_K < 2` we get
+  `⌊M_K⌋₊ ≤ 1`; every member `I` of `(Ideal 𝓞K)⁰` of norm `≤ 1` has `absNorm I = 1`
+  (`absNorm_pos_of_nonZeroDivisors` forces `≥ 1`), hence `I = ⊤` (`absNorm_eq_one_iff`), so the
+  index subtype is a `Subsingleton` and `Nat.card ≤ 1` (`Nat.card_le_one`). Chaining with the
+  head-count and `classNumber_pos` collapses the class number to `1` by `omega`. This recovers
+  the classical "no class survives the Minkowski bound" PID test *directly from the count*,
+  rather than via Mathlib's discriminant route `isPrincipalIdealRing_of_abs_discr_lt`.
+- New Mathlib lemmas name-checked @ rev 2df2f0150c: `Ideal.absNorm_pos_of_nonZeroDivisors`
+  (AbsNorm.lean:347), `Ideal.absNorm_eq_one_iff` (AbsNorm.lean:223), `Nat.le_floor_iff`
+  (Floor/Defs.lean:112), `Nat.card_le_one` (Cardinal/Finite.lean:363),
+  `NumberField.classNumber_pos`/`classNumber_eq_one_iff` (ClassNumber.lean:69/74).
+- **NOT kernel-checked**: worktree `proofs/.lake` is the circular self-symlink (0 oleans) ⇒ a
+  Docker build would recompile Mathlib from source and OOM (3 peer builds already running);
+  Aristotle MCP still returns "Resource not found". Build deferred to the cache-warm deployer.
+- Note `Nat.floor_lt` does **not** exist under that name in this rev (only `Int.floor_lt`);
+  used `Nat.le_floor_iff` via `by_contra` instead.
+
 ### 2026-06-15 (S1) — ORIENT + ACT, build pending
 
 **Mode**: FRESH. **Outcome**: progress (build pending).
