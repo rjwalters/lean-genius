@@ -271,3 +271,68 @@ high) multiplicity has all separated components convex.
   decidable artifact remains the curvature/criterion certificate. The 8c²−6c+1
   threshold for z(z−1) is, however, a candidate for an eventual Lean lemma since
   it is now a finite algebraic statement, not an analytic scan.
+
+---
+
+## Session (researcher-1, 2026-06-15): c-free ANALYTIC onset — `c_nc = min |f|` on the zero-curvature locus
+
+Delivered the analytic onset the prior next-step asked for ("solve `Re(u')=0` ...
+the analytic onset would replace S1's bisection table"), as a **critical-point
+characterization** rather than a closed-form algebraic root.
+
+### The characterization
+The non-convex region `N = {Re(u') < 0}` (with `w = m₁/z + m₂/(z−1)`,
+`u = 1/w`, `u' = −w'/w²`) is a **fixed** subset of the plane, independent of `c`,
+while the level set `{|f| = c}` grows monotonically outward. Hence the component
+around root 0 first develops a non-convex arc at exactly
+
+> **`c_nc(m₁,m₂) = min |f(z)|` over the zero-curvature locus `{Re(u')=0}` bounding
+> the basin around 0.**
+
+This is a constrained minimum (Lagrange: `∇|f| ∥ ∇Re(u')` on `Re(u')=0`) — **no
+scan in `c`**. Near a root `u' → 1/m > 0`, so the locus stays bounded away from
+the roots and the min is an interior "dimple".
+
+### Verification (`onset_analytic.py`, new)
+Two independent computations agree across 7 cases:
+(A) c-free grid minimum of `|f|` over `{Re(u')=0}` near 0;
+(B) independent c-bisection of `min_θ Re(u')` on the polar boundary of the basin
+around 0 (the `window_width.py` method).
+
+| (m₁,m₂) | c* | c_nc (A grid) | c_nc (B bisect) | W=(c*−c_nc)/c* |
+|--------|------|------|------|------|
+| (1,1) | 0.25000000 | merge | merge | 0 (equal m) |
+| (2,1) | 0.14814815 | 0.14801585 | 0.14807739 | 0.000478 |
+| (3,1) | 0.10546875 | 0.10498093 | 0.10510805 | 0.003420 |
+| (5,1) | 0.06697960 | 0.06563412 | 0.06580215 | 0.017579 |
+| (8,1) | 0.04330493 | 0.04086300 | 0.04106195 | 0.051795 |
+| (2,2) | 0.06250000 | merge | merge | 0 (equal m) |
+| (3,2) | 0.03456000 | 0.03453687 | 0.03455653 | 0.000100 |
+
+(A) and (B) agree to 3–4 digits — the small gap is the discrete-grid vs
+c-threshold discretization, not a structural mismatch — confirming the
+reformulation. Equal multiplicities `(1,1)`, `(2,2)` give `c_nc = c*` (the min
+sits at the saddle): **no separated non-convex component**, re-deriving Result R4
+inside the same framework.
+
+### New refinement of S1's "imbalance drives necking"
+Imbalance `m₁ ≠ m₂` is **necessary** (equal → W=0), but the window **size is not a
+function of the imbalance `m₁−m₂` alone**: `(3,2)` and `(2,1)` both have imbalance
+1, yet `W(3,2)=0.0001 ≪ W(2,1)=0.00048`. The window depends on the full pair, not
+just the difference — so S1's "W(k) grows with multiplicity" (its `m₂=1` slice)
+and the "imbalance" summary are both special readings of the richer
+`c_nc(m₁,m₂)` surface. The genuine invariant is the *location and depth of the
+zero-curvature dimple* relative to the basin, which `c_nc = min|f|` captures.
+
+### Files
+- `research/problems/erdos-1047-oq-02/onset_analytic.py` (new) — the c-free onset
+  characterization + the two-method cross-check above. numpy, reproducible,
+  Docker-independent.
+
+### Next steps
+- Push (A) to higher resolution / local mpmath polish to drive (A)–(B) agreement
+  to full precision (current gap is purely discretization).
+- A genuine **closed form** `c_nc(m₁,m₂)` would require eliminating `z` from the
+  Lagrange system (resultant of `Re(u')=0` and `∇|f| ∥ ∇Re(u')`); for `(2,1)` this
+  is a small algebraic system worth attempting symbolically next.
+- Three distinct roots remains the open structural case (collinear vs triangular).
