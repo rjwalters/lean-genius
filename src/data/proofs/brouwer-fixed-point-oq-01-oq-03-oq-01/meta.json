@@ -2,7 +2,7 @@
   "id": "brouwer-fixed-point-oq-01-oq-03-oq-01",
   "title": "De-Axiomatizing the Ham Sandwich Theorem: Topological Core from Borsuk-Ulam",
   "slug": "brouwer-fixed-point-oq-01-oq-03-oq-01",
-  "description": "Separates the parent's axiomatized Ham Sandwich theorem into its topological core (proved here from the n-dimensional Borsuk-Ulam antipodal collapse) and its single genuine analytic input (Lebesgue continuity of the bisecting half-volume map). The abstract reduction (a continuous odd map S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point), the oddness of the half-volume discrepancy, and 'discrepancy zero implies equal volumes' are all proved. Continuity enters only as the hypothesis hcomp packaging the discrepancy as a continuous SphereFun. 7 theorems, 3 definitions, 0 own axioms; rests on the inherited Borsuk-Ulam axiom (no_continuous_odd_nonzero_on_sphere) plus the stated continuity hypothesis.",
+  "description": "Separates the parent's axiomatized Ham Sandwich theorem into its topological core (proved here from the n-dimensional Borsuk-Ulam antipodal collapse) and its single genuine analytic input (Lebesgue continuity of the bisecting half-volume map). The abstract reduction (a continuous odd map S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point), the oddness of the half-volume discrepancy, and 'discrepancy zero implies equal volumes' are all proved. The residual continuity input is then sharpened: the vector-assembly step is discharged so that only continuity of each individual SCALAR slice-volume is needed — the atomic measure-theoretic fact — with the continuous discrepancy vector constructed via EuclideanSpace.equiv. 9 theorems, 3 definitions, 0 own axioms; rests on the inherited Borsuk-Ulam axiom (no_continuous_odd_nonzero_on_sphere) plus the stated scalar continuity hypothesis.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "date": "formalized 2026",
@@ -22,16 +22,18 @@
     "dateAdded": "2026-06-15",
     "axiomCount": 1,
     "assumptions": "0 axiom declarations in this file, but the construction is not standalone-verified: (1) it rests on the inherited axiom no_continuous_odd_nonzero_on_sphere from BorsukUlam.lean — the genuine degree-theory core of Borsuk-Ulam, unavoidable for n >= 2; and (2) the capstone theorems (ham_sandwich_of_discrepancy, ham_sandwich_standard) take the continuity of the half-volume discrepancy map as the hypothesis hcomp (the discrepancy is supplied as a continuous SphereFun). The contribution is to prove everything else — the topological reduction, oddness, and the zero-implies-bisected bridge — so that the parent's opaque ham_sandwich_theorem axiom is reduced precisely to this one Lebesgue-continuity input (dominated convergence for parameterized half-spaces), which is measure-theoretic, not topological.",
-    "lineCount": 290,
-    "theoremCount": 7,
+    "lineCount": 371,
+    "theoremCount": 9,
     "definitionCount": 3,
     "originalContributions": [
       "ham_sandwich_reduction: the topological core — a continuous odd F: S^n -> R^n with a 'F x = 0 implies Bisected x' bridge yields a bisecting point; proved directly from borsuk_ulam_antipodal_collapse (no axiom)",
       "discrepancy_odd_of_swap: the half-volume discrepancy map is odd, purely from the antipodal swap pos(-x) = neg(x) of the two half-spaces — the elementary measure-theoretic half, needing no continuity",
       "ham_sandwich_of_discrepancy: capstone — given the discrepancy as a continuous SphereFun (the one analytic hypothesis), the antipodal swap, and finite volumes, a hyperplane simultaneously bisects all n bodies",
+      "ham_sandwich_of_scalar_continuity: sharpens the analytic input — assuming only continuity of each scalar slice-volume map, the continuous EuclideanSpace-valued discrepancy is assembled via (EuclideanSpace.equiv (Fin n) R).symm composed with continuous_pi, so no SphereFun is assumed",
       "stdPos_neg / stdNeg_neg: for the standard linear parameterization, the antipodal swap is a consequence of linearity (not an assumption)",
       "volume_inter_ne_top: finiteness vol(body_i intersect H) < infinity follows from vol(body_i) < infinity since the slice is a subset",
-      "ham_sandwich_standard: the standard-parameterization Ham Sandwich, with only the continuity hypothesis remaining, assembled from the above"
+      "ham_sandwich_standard: the standard-parameterization Ham Sandwich, with only the (vector) continuity hypothesis remaining, assembled from the above",
+      "ham_sandwich_standard_of_scalar_continuity: the sharpest packaging — Ham Sandwich whose ONLY hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n"
     ]
   },
   "overview": {
@@ -44,6 +46,7 @@
       "'Discrepancy zero implies equal volumes' is a direct unpacking of the discrepancy definition — also free of analysis.",
       "The antipodal swap and finiteness conditions are not assumptions for the standard linear parameterization: swap follows from linearity, finiteness from the slice being a subset.",
       "The single irreducible analytic input is the Lebesgue continuity of x |-> vol(body_i intersect {y | <u(x), y> < t(x)}) on S^n — measure-theoretic (dominated convergence for parameterized half-spaces), not topological.",
+      "The residual continuity input reduces from a VECTOR statement to a SCALAR one: EuclideanSpace carries the L^2 topology (not the product topology), but EuclideanSpace.equiv (Fin n) R is a homeomorphism to Fin n -> R, so a map into it is continuous iff each scalar component is — discharging the vector-assembly step and leaving continuity of each individual slice-volume as the only input.",
       "EuclideanSpace equality is proved via WithLp.ofLp_injective after funext on the genuine Pi type, since WithLp is a non-reducible type synonym for which plain funext fails."
     ]
   },
@@ -73,12 +76,20 @@
       "mathContext": "Combines ham_sandwich_reduction with discrepancy_odd_of_swap; the EuclideanSpace oddness equality is closed via WithLp.ofLp_injective."
     },
     {
+      "id": "scalar-continuity-reduction",
+      "title": "Reducing the Input to Scalar Slice-Volume Continuity",
+      "summary": "Discharges the vector-assembly step: continuity of each scalar slice-volume suffices; the continuous discrepancy vector is constructed, not assumed.",
+      "startLine": 176,
+      "endLine": 222,
+      "mathContext": "ham_sandwich_of_scalar_continuity assumes only that each scalar map x |-> vol(body_i intersect pos x i).toReal (and the neg version) is continuous, then assembles them into a continuous EuclideanSpace-valued discrepancy via (EuclideanSpace.equiv (Fin n) R).symm composed with continuous_pi. The component-agreement hypothesis of the capstone holds by rfl, so the SphereFun is built rather than assumed."
+    },
+    {
       "id": "standard-parameterization",
       "title": "Standard Linear Parameterization",
-      "summary": "For linear direction/threshold maps, the antipodal swap and volume finiteness are discharged, leaving only the continuity hypothesis.",
-      "startLine": 177,
-      "endLine": 290,
-      "mathContext": "stdPos_neg / stdNeg_neg follow from linearity; volume_inter_ne_top from the slice being a subset of a finite-volume body; assembled into ham_sandwich_standard."
+      "summary": "For linear direction/threshold maps, the antipodal swap and volume finiteness are discharged; combined with the scalar-continuity reduction, only scalar slice-volume continuity remains.",
+      "startLine": 223,
+      "endLine": 345,
+      "mathContext": "stdPos_neg / stdNeg_neg follow from linearity; volume_inter_ne_top from the slice being a subset of a finite-volume body; assembled into ham_sandwich_standard. ham_sandwich_standard_of_scalar_continuity then combines these with the scalar-continuity reduction, so its only hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n."
     }
   ]
 }
