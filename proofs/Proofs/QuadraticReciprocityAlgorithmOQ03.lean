@@ -17,6 +17,19 @@ into actual Lean so that the first session with a live backend can compile/repai
 rather than re-transcribe prose. It is intentionally **not** registered in `Proofs.lean`
 until it builds. No claim of machine-verification is made here.
 
+**Changelog (S12, 2026-06-15, blackout still live).** Removed the one *confirmed* build
+blocker and de-risked two fragile spots, with every replacement name-checked against
+Mathlib @ rev `2df2f01` / v4.26.0 (still UNVERIFIED — Docker + Aristotle both down):
+- `Equiv.mulLeft_zpow` (S11-confirmed nonexistent) replaced by an inline `G →* Perm G`
+  monoid hom + `map_zpow` (`Mathlib/Algebra/Group/Hom/Defs.lean:495`).
+- Both `g ≠ 1` arguments rewritten off the fragile `Nat.card`/`rw … at *` /
+  `Subgroup.card_bot` route onto `Subgroup.mem_bot`
+  (`Mathlib/Algebra/Group/Subgroup/Lattice.lean:139`) +
+  `Fintype.one_lt_card_iff_nontrivial` + `exists_pair_ne`.
+Remaining unverified-at-build: the `support = univ` computation and the final
+even-power `(-1)^card = 1` collapse; first live-backend session should
+`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair if needed, register.
+
 ## What this targets
 
 The open question on `quadratic-reciprocity-algorithm` asks for a *permutation-sign*
@@ -58,27 +71,30 @@ Proof (per knowledge.md S9): discharge the `IsCycle` constructor with witness `x
 theorem isCycle_mulLeft_of_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
     {g : G} (hg : ∀ x : G, x ∈ Subgroup.zpowers g) (hG : 2 ≤ Fintype.card G) :
     (Equiv.mulLeft g).IsCycle := by
-  -- `g ≠ 1`: otherwise `zpowers g = ⊥` is the whole group, forcing `card G ≤ 1`.
+  -- `g ≠ 1`: otherwise `zpowers g = ⊥`, so generation forces every element to be `1`,
+  -- contradicting `2 ≤ card G`.
   have hg1 : g ≠ 1 := by
     rintro rfl
-    have hsub : (Subgroup.zpowers (1 : G)) = ⊤ := by
-      ext x; simpa using hg x
-    have hbot : (Subgroup.zpowers (1 : G)) = ⊥ := Subgroup.zpowers_one_eq_bot
-    rw [hbot] at hsub
-    have : (⊥ : Subgroup G) = ⊤ := hsub
-    have hcard : Fintype.card G = 1 := by
-      have := Subgroup.card_bot (G := G)
-      -- `⊥ = ⊤` ⇒ the group is a singleton
-      have htop : Nat.card (⊤ : Subgroup G) = Nat.card G := by simp
-      rw [this] at *
-      simpa [Nat.card_eq_fintype_card] using htop.symm
-    omega
+    have hg' := hg
+    simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'
+    have hnt : Nontrivial G := Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+    obtain ⟨a, b, hab⟩ := exists_pair_ne G
+    exact hab ((hg' a).trans (hg' b).symm)
   -- key wiring: `(mulLeft g) ^ i` applied to `1` equals `g ^ i`.
+  -- `a ↦ Equiv.mulLeft a` is a monoid hom `G →* Perm G`, so it commutes with `zpow`
+  -- via `map_zpow`. Mathlib has no `mulLeft_zpow`/`mulLeft_pow` lemma (confirmed absent
+  -- @ rev 2df2f01), so bundle the hom inline rather than name a nonexistent lemma.
   have hpow : ∀ i : ℤ, (Equiv.mulLeft g ^ i) 1 = g ^ i := by
     intro i
-    have : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by
-      simp [Equiv.mulLeft_zpow]
-    rw [this]; simp
+    have key : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by
+      have hz := map_zpow
+        ({ toFun := Equiv.mulLeft
+           map_one' := by ext x; simp [Equiv.coe_mulLeft]
+           map_mul' := fun a b => by
+             ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, mul_assoc] } :
+          G →* Equiv.Perm G) g i
+      simpa using hz.symm
+    rw [key]; simp [Equiv.coe_mulLeft]
   refine ⟨1, ?_, ?_⟩
   · -- `mulLeft g` moves the point `1`.
     simpa using hg1
@@ -108,13 +124,11 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
     -- contradiction with generation + card ≥ 2
     have hg1 : g ≠ 1 := by
       rintro rfl
-      have hsub : (Subgroup.zpowers (1 : G)) = ⊤ := by ext y; simpa using hg y
-      rw [Subgroup.zpowers_one_eq_bot] at hsub
-      have hcard : Fintype.card G = 1 := by
-        have htop : Nat.card (⊤ : Subgroup G) = Nat.card G := by simp
-        rw [hsub] at htop
-        simpa [Nat.card_eq_fintype_card, Subgroup.card_bot] using htop.symm
-      omega
+      have hg' := hg
+      simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'
+      have hnt : Nontrivial G := Fintype.one_lt_card_iff_nontrivial.1 (by omega)
+      obtain ⟨a, b, hab⟩ := exists_pair_ne G
+      exact hab ((hg' a).trans (hg' b).symm)
     exact hg1 this
   -- `IsCycle.sign : sign f = -(-1) ^ f.support.card`
   rw [hcyc.sign, hsupp, Finset.card_univ]
