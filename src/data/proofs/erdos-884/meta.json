@@ -158,9 +158,17 @@
       "id": "structural",
       "title": "Structural Lemmas",
       "startLine": 255,
-      "endLine": 281,
-      "summary": "Proves `gap_lower_bound` ($d_j - d_i \\geq d_{i+1} - d_i$ for $i < j < \\tau$, using `pairwise_getD_le`), `sigma_zero_eq_card` ($\\sigma_0(n) = \\tau(n)$), and `numDivisors_mul_coprime` ($\\tau(mn) = \\tau(m)\\tau(n)$ for $\\gcd(m,n) = 1$, via $\\sigma_0$ multiplicativity).",
+      "endLine": 310,
+      "summary": "Proves `gap_lower_bound` ($d_j - d_i \\geq d_{i+1} - d_i$ for $i < j < \\tau$, using `pairwise_getD_le`), `sigma_zero_eq_card` ($\\sigma_0(n) = \\tau(n)$), and `numDivisors_mul_coprime` ($\\tau(mn) = \\tau(m)\\tau(n)$ for $\\gcd(m,n) = 1$, via $\\sigma_0$ multiplicativity). Also proves `divisor_strictMono` (divisor indexing is strictly monotone) and `generalGap_ge_diff` ($d_j - d_i \\geq j - i$, divisors grow by at least one per index step).",
       "mathContext": "Gap lower bound: $d_j - d_i \\geq d_{i+1} - d_i$ (from monotonicity of sorted list). Multiplicativity: $\\tau(mn) = \\tau(m) \\cdot \\tau(n)$ for $(m,n) = 1$, proved via `ArithmeticFunction.isMultiplicative_sigma`."
+    },
+    {
+      "id": "telescoping",
+      "title": "Telescoping",
+      "startLine": 311,
+      "endLine": 356,
+      "summary": "Proves `generalGap_add_mid` (additive split $d_k - d_i = (d_k - d_j) + (d_j - d_i)$ at a midpoint), `generalGap_telescope` (the general gap equals the sum of consecutive gaps, $d_j - d_i = \\sum_{i \\leq k < j}(d_{k+1} - d_k)$), and `consecutiveGap_le_generalGap` (any interior consecutive gap is dominated by the enclosing general gap).",
+      "mathContext": "Telescoping identity: $d_j - d_i = \\sum_{k=i}^{j-1}(d_{k+1} - d_k)$, so each enclosed consecutive gap satisfies $d_{k+1} - d_k \\leq d_j - d_i$."
     },
     {
       "id": "per-pair-bounds",
@@ -173,8 +181,8 @@
     {
       "id": "connections",
       "title": "Connections and Summary",
-      "startLine": 389,
-      "endLine": 399,
+      "startLine": 388,
+      "endLine": 398,
       "summary": "Defines `divisorHarmonicSum n` ($\\sigma_{-1}(n) = \\sum_{d|n} 1/d$) and proves `erdos_884_statement` (the conjecture definition matches the informal statement, by `rfl`).",
       "mathContext": "The divisor harmonic sum $\\sigma_{-1}(n) = \\sum_{d \\mid n} 1/d$ is related but distinct — it sums reciprocals of divisors, not reciprocals of gaps. The `erdos_884_statement` confirms definitional correctness."
     },
@@ -182,7 +190,7 @@
       "id": "sum-level-bound",
       "title": "Sum-Level Bound",
       "startLine": 399,
-      "endLine": 482,
+      "endLine": 498,
       "summary": "Proves `allPairsSum_le_tau_mul_consecutive`: for n > 1, allPairsSum(n) ≤ (τ(n)-1) · consecutivePairsSum(n). Uses per-pair bound 1/(d_j-d_i) ≤ 1/g_i, card(Ioo i τ) ≤ τ-1, and that the last consecutive gap vanishes (out-of-bounds). Helper lemmas: `numDivisors_ge_two`, `list_getD_zero_of_ge`, `divisor_eq_zero_of_ge`, `consecutiveGap_last_eq_zero`.",
       "mathContext": "$S_{\\text{all}}(n) \\leq (\\tau(n) - 1) \\cdot S_{\\text{consec}}(n)$. For each pair $(i,j)$ with $i < j$, we have $\\frac{1}{d_j - d_i} \\leq \\frac{1}{g_i}$. Summing over $j > i$ gives at most $\\tau - 1$ copies of $\\frac{1}{g_i}$. Summing over $i$ yields $(\\tau-1) \\cdot S_{\\text{consec}}$. This is weaker than Erdős 884 (which asks for an absolute constant), but is an unconditional bound."
     }
