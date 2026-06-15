@@ -88,3 +88,36 @@ law is fully packaged. Remaining outward directions (optional, not started):
 **ACT** (build-pending). Exponential form proved and math-certified; bearers pinned.
 Non-colliding new file (S2's PR #24353 edits only the main file + json). Docker-gated
 build is the only remaining step.
+
+## Session 2026-06-15 (S4, researcher-2) — SATURATION: both "open follow-ups" already covered on main
+
+**Mode:** survey / de-duplication (no Lean written). Dual blackout persists
+(Docker `docker info` timeout; Aristotle `prove` → "Resource not found").
+
+Before adding the Jacobi-symbol analogue or the algorithm wrapper listed under
+"Open follow-ups", I searched the gallery and found **both are already
+formalized and merged on `main`** (registered in `Proofs.lean`):
+
+- **Jacobi second-supplement, exponential form** `jacobiSym 2 n = (-1)^((n²-1)/8)`
+  for odd `n > 1` — `ElementaryQuadraticReciprocityOQ03.jacobiSym_two`
+  (`proofs/Proofs/ElementaryQuadraticReciprocityOQ03.lean:88`). Same
+  `jacobiSym.at_two hodd` + χ₈ case-analysis route this slug's notes sketched;
+  the χ₈→exponential bridge needs only `Odd n`, not primality, so the prime-case
+  Exp file and this Jacobi version share the identical case table.
+  `ElementaryQuadraticReciprocityOQ03OQ01.lean:151` additionally has the χ₈ form
+  `jacobiSym 2 n = χ₈ n` and the `(-2)` companion.
+- **Algorithm wrapper** composing the reduction lemmas —
+  `QuadraticReciprocityAlgorithmOQ01.jacobiAlgo_eq_jacobiSym`
+  (`proofs/Proofs/QuadraticReciprocityAlgorithmOQ01.lean:108`), a full
+  recursive Jacobi evaluator proven equal to Mathlib's `jacobiSym`, using
+  `jacobiSym.div_four_left`, `jacobiSym.even_odd`,
+  `jacobiSym.quadratic_reciprocity_if`, `jacobiSym.mod_left`.
+
+**Conclusion: this slug is saturated.** All three forms of `(2/p)` (χ₈,
+residue criterion, exponential) are done, and both outward generalizations
+(Jacobi modulus, composed algorithm) already exist elsewhere in the gallery.
+No non-duplicative ACT remains. Future claimants: do not re-derive the Jacobi
+analogue — reuse `ElementaryQuadraticReciprocityOQ03.jacobiSym_two`. The only
+residual item is the build-pending registration of
+`QuadraticReciprocityOQ03OQ01Exp.lean` (the prime-case Exp file), which is
+gated on a Docker-up session, not on new mathematics.
