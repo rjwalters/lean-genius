@@ -28,8 +28,8 @@ the first `m` odds is `m²`, so
 Defining `T n` as the Gauss sum (rather than the closed form `n(n+1)/2`) sidesteps **all**
 ℕ-division and ℕ-subtraction. The whole proof uses only `ring` (valid on the ℕ semiring),
 `Finset.sum_range_succ`, `Finset.sum_Ico_consecutive`, `Finset.range_eq_Ico`, and one
-`Nat.add_left_cancel`. The triangular recurrence appears in the division-/subtraction-free form
-`2·T i + i = i²` (`two_T_add`), proved by a one-line induction.
+`Nat.add_left_cancel`. The triangular recurrence appears in the division- and subtraction-free
+form `2·T i + i = i²` (`two_T_add`), proved by a one-line induction.
 
 ## Contents
 
@@ -40,16 +40,14 @@ Defining `T n` as the Gauss sum (rather than the closed form `n(n+1)/2`) sideste
 * `block_eq_cube`— L2: `∑_{T i ≤ j < T (i+1)} (2j+1) = i³`
 * `tiling`       — L3: blocks tile the first `T n` odds
 * `sum_cubes_eq_sum_squared_via_odds` — Nicomachus, matching the parent's RHS shape
+* `cube_eq_sum_consecutive_odds` — corollary: `i³` is a sum of `i` consecutive odd numbers
 
 Axioms: 0. Sorries: 0.
 
-NOTE (build provenance): authored during a Docker + Aristotle backend outage, so NOT yet
-machine-checked. Every arithmetic identity is independently certified (sympy + brute force,
-n = 0..60) by `research/problems/sum-of-kth-powers-oq-03/verify_m1.py`. The load-bearing Mathlib
-lemmas (`Finset.sum_Ico_consecutive`, `Finset.range_eq_Ico`) were pin-confirmed at the lake rev
-`v4.26.0`. This is a ready-to-move draft (kept in the research dir, not under `Proofs/`, to avoid
-degrading the shared safe-subset build before a typecheck); move to `proofs/Proofs/` and build via
-`./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03` once backends return.
+NOTE (build provenance): machine-checked via `./proofs/scripts/docker-build.sh
+Proofs.SumOfKthPowersOQ03` (Lean `v4.26.0`, Mathlib pin `2df2f01`); registered in
+`proofs/Proofs.lean`. Every arithmetic identity is additionally certified (sympy + brute force,
+n = 0..60) by `research/problems/sum-of-kth-powers-oq-03/verify_m1.py`.
 -/
 
 import Mathlib
@@ -140,5 +138,18 @@ theorem sum_cubes_eq_sum_squared_via_odds (n : ℕ) :
     rw [block_eq_cube]
   rw [key, tiling (n + 1), sum_odds]
   rfl
+
+/-- **Each cube is a sum of consecutive odd numbers (Nicomachus).**
+
+`i³` equals the sum of the `i` consecutive odd numbers starting at `2·(T i) + 1` — i.e. the odds
+occupying positions `T i, …, T(i+1)−1` in the sequence `1, 3, 5, …`. This is the per-cube
+decomposition that `block_eq_cube` captures over `Ico (T i) (T (i+1))`, restated as a standalone
+identity over `range i` (no ℕ-subtraction: the first odd is `2·T i + 1`). Examples:
+`1³ = 1`, `2³ = 3 + 5`, `3³ = 7 + 9 + 11`, `4³ = 13 + 15 + 17 + 19`. -/
+theorem cube_eq_sum_consecutive_odds (i : ℕ) :
+    i ^ 3 = ∑ k ∈ range i, (2 * (T i + k) + 1) := by
+  have h := block_eq_cube i
+  rw [Finset.sum_Ico_eq_sum_range, T_succ, Nat.add_sub_cancel_left] at h
+  exact h.symm
 
 end SumOfKthPowersOQ03
