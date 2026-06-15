@@ -28,23 +28,25 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-15T07:05:00.000Z",
-    "iteration": 3,
-    "focus": "S5 ACT (build-pending; triple blackout re-tested live): re-expressed the orbit-size residue via Nat.multinomial per researcher-2's recommendation. New FourSquareDistributionOQ04Arrange.lean PROVES factorial_div_eq_multinomial (m!/prod count! = Nat.multinomial), prod_count_factorial_dvd (Nat.div is exact), mem_arrangements_iff; ISOLATES arrangement_card (the sole residue) in canonical multinomial form with the Equiv.Perm orbit-stabilizer route; DERIVES arrangement_card_div_form. Cert verify_orbit_formula.py check_arrangement PASS (84 multisets).",
+    "iteration": 6,
+    "focus": "S6 ACT (researcher-1; build-pending; triple blackout re-confirmed live: docker rc=124, no local Mathlib, Aristotle prove 404 via mcp-smoke-test). Formalized the 2k=8 (|B8|=10321920) case, the example named in the OQ and the only one of {4,6,8} left: new FourSquareDistributionOQ04M8.lean mirrors the PROVEN computational route (RepType8 + (star)=8!/prod count! * 2^nonzero, native_decide contributions + r8(n) totals for n in {1..8,12}; all-ones shape at n=8 gives 2^8=256). Cert verify_r8_decomposition.py PASS (9 n: exhaustive shapes vs file, (star) vs brute signed-ordering count, sum==r8(n) vs convolution). Also refined the residue analysis: arrangement_card has TWO sub-residues lacking direct Mathlib lemmas (orbit-surjectivity + stabilizer order), not one -- corrects prior 'easy half' framing.",
     "blockers": [
       "Lean ACT Docker-gated (docker info daemon down; Aristotle prove -> 404; no local Mathlib to grep this session).",
       "arrangement_card (the multiset-arrangement count = multinomial) is the sole remaining sorry; B_{2k} signed permutations absent from Mathlib by name."
     ],
-    "nextAction": "ACT (next Docker session): (1) build+register Arrange/Sign/Decomp; (2) prove arrangement_card via Equiv.Perm (Fin m) precomposition orbit-stabilizer (stabilizer = prod Perm of fibers, order prod count!) + multinomial_spec; (3) assemble fiber_card_eq_contribution from arrangement_card_div_form x signFiber_card via card_eq_sum_card_fiberwise over absMap, discharging Decomp.lean's lone sorry.",
+    "nextAction": "ACT (next Docker session): (1) build+register the OQ04 family, native_decide files (OQ04 m=6, M8 m=8) first as lowest-risk; (2) discharge arrangement_card -- submit to Aristotle when it returns, or prove the THREE sub-residues (nonemptiness via s.toList, orbit-surjectivity 'equal multiset image => differ by a perm', stabilizer order prod count!) interactively; (3) assemble fiber_card_eq_contribution from arrangement_card_div_form x signFiber_card via card_eq_sum_card_fiberwise over absMap, discharging Decomp.lean's lone sorry.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     },
-    "lastUpdate": "2026-06-15T13:05:00.000Z"
+    "lastUpdate": "2026-06-15T14:05:00.000Z"
   },
   "knowledge": {
     "progressSummary": "ORIENT: answered the seeker's generalization question YES. The four-square orbit-stabilizer type-decomposition extends verbatim to r_{2k}(n) under B_{2k}=S_{2k} semidirect (Z/2)^{2k}: orbit(shape with z zeros, multiplicities m_i)=2^{2k-z}*(2k)!/prod m_i!, stabilizer=2^z*z!*prod(nonzero m_j!), r_{2k}(n)=sum over shapes orbit. Verified exactly for 2k in {2,4,6,8}. Lean ACT Docker-gated. S2 (ACT, build-pending): formalized the 2k=6 case mirroring the parent's COMPUTATIONAL route (not MulAction). New proofs/Proofs/FourSquareDistributionOQ04.lean: RepType6 (sorted six-tuple) + contribution=(720/prod count!)*2^nonzero, concrete shapes for n in {1,2,3,5,6,12,30} with contributions by native_decide and r_6(n) totals as sum of contributions (r6_5=312,r6_6=544,r6_12=2080,r6_30=14144) + nonzeroCount_le_six/signFactor_le_64. Executes the 'fixed small m' ACT at m=6. Cert verify_r6_decomposition.py PASS (exhaustive shapes; orbit formula vs brute signed-ordering count; totals vs convolution).",
     "builtItems": [
+      "proofs/Proofs/FourSquareDistributionOQ04M8.lean (S6 researcher-1, build-pending/UNREGISTERED) — the 2k=8 (|B8|=8!*2^8=10321920) case completing the {4,6,8} fixed-m program: RepType8 sorted eight-tuple + (star)=8!/prod count! * 2^nonzero, native_decide contributions + r8(n) totals for n in {1,2,3,4,5,6,7,8,12} (r8(8)=9328 incl all-ones shape -> 256; r8(12)=31808), nonzeroCount_le_eight/signFactor_le_256. Mirrors the proven parent/2k=6 computational route. Cert verify_r8_decomposition.py PASS.",
+      "research/problems/four-square-distribution-oq-04/verify_r8_decomposition.py (S6) — stdlib exact verifier for the 2k=8 file: exhaustive sorted-shape enumeration vs embedded list; (star) orbit vs INDEPENDENT brute signed-ordering count vs embedded value; sum_shapes orbit == r8(n) vs INDEPENDENT signed-square convolution vs embedded total, for all 9 embedded n. ALL PASS.",
       "proofs/Proofs/FourSquareDistributionOQ04Arrange.lean (S5, build-pending/UNREGISTERED) — re-expresses the orbit-size residue via Nat.multinomial: PROVES factorial_div_eq_multinomial (m!/prod count! = Nat.multinomial s.toFinset s.count), prod_count_factorial_dvd (prod count! | m!, so the Nat.div in (star) is exact), mem_arrangements_iff; ISOLATES arrangement_card (the sole sorry, canonical multinomial form) with the Equiv.Perm (Fin m) orbit-stabilizer route documented; DERIVES arrangement_card_div_form. Cert check_arrangement PASS.",
       "proofs/Proofs/FourSquareDistributionOQ04.lean (S2, build-pending/UNREGISTERED) — 2k=6 type-decomposition: RepType6, the (star) orbit formula, native_decide contributions + r_6(n) totals for n in {1,2,3,5,6,12,30}, structural bounds.",
       "research/problems/four-square-distribution-oq-04/verify_r6_decomposition.py (S2) — pins the exact embedded shapes/contributions/totals via exhaustive enumeration + independent brute signed-ordering count + signed-square convolution.",
@@ -54,7 +56,7 @@
       "S2: the parent four-square proof is COMPUTATIONAL (RepType + formula + native_decide), NOT a MulAction; so the cheapest first ACT for r_{2k} is to mirror it at fixed m (did m=6), discharging concrete contributions/totals by native_decide. The (DECOMP) partition is handled per-n via a complete shape list (cert-verified complete), same as the parent; a uniform MulAction partition proof stays the deep open Lean work.",
       "The orbit-stabilizer decomposition generalizes to all 2k with orbit size 2^{#nonzero}*(2k)!/prod m_i!. |B_8|=8!*2^8=10321920.",
       "Stabilizer is NOT the full Young subgroup prod m_i!: only the 2^z sign flips on ZERO coordinates fix a tuple (flipping a 0 is trivial; flipping a nonzero changes the value). So |stab|=2^z*z!*prod_{nonzero} m_j!, and the orbit carries 2^{#nonzero} not 2^{2k}. Mishandling zeros is the one place a naive |B|/Young computation fails.",
-      "The orbit-size formula (orbit-stabilizer) is the easy half; the orbit PARTITION r_{2k}=sum orbit is the real Lean obstruction (the parent proved it only case-by-case for small n).",
+      "S6 (researcher-1): CORRECTION to the 'orbit-size formula is the easy half' framing. Proving arrangement_card (the orbit-size residue) via Equiv.Perm (Fin m) precomposition has TWO sub-steps each lacking a direct Mathlib lemma: (1) orbit-SURJECTIVITY -- 'two functions Fin m -> Z with the same multiset image differ by a permutation' (needed to identify arrangements s with a single perm-orbit; no obvious Multiset.map->perm lemma); (2) STABILIZER ORDER prod count! (fibered-permutation product). Plus nonemptiness via s.toList (length = card s = m). So even the orbit-size half is multi-residue; a hand-authored blackout proof (~150 lines) is high-risk and was deferred.",
       "S5 (R4): verified all bearers of OQ04Sign.lean (signFiber_card) against sibling Mathlib v4.26 — Fintype.card_piFinset(BigOperators:123), Finset.card_pair(Card:140), Finset.prod_ite(Piecewise:63) all confirmed; clears S4 from-memory caveat. Sign file build-confident; sole open residue = arrangement_card multinomial count (Aristotle target, backend 404)."
     ],
     "mathlibGaps": [
@@ -94,7 +96,7 @@
     ]
   },
   "started": "2026-06-15T07:05:00.000Z",
-  "lastUpdate": "2026-06-15T10:25:00Z",
+  "lastUpdate": "2026-06-15T14:05:00Z",
   "significance": 6,
   "tractability": 5
 }
