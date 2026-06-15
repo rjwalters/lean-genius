@@ -141,6 +141,7 @@
     "type": "concept",
     "title": "Worked Examples",
     "content": "**Example 1**: Circle of radius 5, point P at distance 3 from center.\n- Power = $5^2 - 3^2 = 16$\n- For any chord: $PA \\cdot PB = 16$\n- If PA = 2, then PB = 8\n\n**Example 2**: If one chord gives segments 2 and 8:\n- Product = 16\n- Other chord: if PC = 4, then PD = 4\n- (The chord is bisected at P!)\n\n**Example 3**: Segments 1 and 12:\n- Product = 12\n- Other chord: segments could be 2 and 6, or 3 and 4",
+    "mathContext": "For $P$ at distance $d = \\|P - O\\|$ from the center of a radius-$r$ circle, the power is $r^2 - d^2$ and equals $PA \\cdot PB$ for *every* chord through $P$. Ex. 1: $r=5,\\, d=3 \\Rightarrow PA\\cdot PB = 25 - 9 = 16$, so $PA=2 \\Rightarrow PB=8$. Ex. 2: with the product fixed at $16$, a chord with $PC=4$ forces $PD=4$ — the unique chord bisected at $P$ (the one perpendicular to $OP$, where the two segments are equal). Ex. 3: product $12$ admits any factorization $1\\cdot 12,\\, 2\\cdot 6,\\, 3\\cdot 4$; all chords through $P$ share the same product and differ only in how the segment length splits.",
     "significance": "supporting",
     "relatedConcepts": [
       "numerical verification",
@@ -157,6 +158,7 @@
     "type": "insight",
     "title": "From Euclid to Steiner",
     "content": "**Euclid (300 BCE)**: The theorem appears as Proposition 35 in Book III of the Elements. Euclid proved it using similar triangles formed by the chords.\n\n**Jakob Steiner (1826)**: Systematized the \"power of a point\" concept, unifying:\n- Intersecting chords (interior point)\n- Two secants (exterior point)\n- Secant and tangent\n- Two tangents\n\nAll are manifestations of the same invariant!",
+    "mathContext": "The unifying invariant is the **power of a point** $\\text{pow}(P) = \\|P - O\\|^2 - r^2$, signed: $<0$ inside, $=0$ on, $>0$ outside the circle. Euclid III.35 is the interior intersecting-chords case $PA\\cdot PB = r^2 - \\|P - O\\|^2$; Steiner's 1826 synthesis recognizes the exterior secant–secant case, the secant–tangent identity $PT^2 = PA\\cdot PB$, and the tangent–tangent case as the same scalar $\\text{pow}(P)$ read along different lines through $P$. The inner-product form $\\text{pow}(P) = \\langle P - O,\\, P - O\\rangle - r^2$ is exactly the route this Lean proof takes over $\\text{EuclideanSpace } \\mathbb{R}\\ (\\text{Fin } 2)$.",
     "significance": "supporting",
     "prerequisites": [
       "similar triangles",
