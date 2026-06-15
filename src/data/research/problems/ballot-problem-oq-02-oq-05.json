@@ -1,8 +1,8 @@
 {
   "slug": "ballot-problem-oq-02-oq-05",
   "title": "Donsker's functional CLT — connecting discrete and continuous ballot",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -33,11 +33,13 @@
     "goal": "Formalize in Lean: (1) interpolatedRescaled definition + WeakConvergesInC01 predicate; (2) donsker_fclt as an axiom at the right type; (3) discrete_reflection as a sorry-free theorem (lattice-path bijection); (4) continuous_mapping_sup as a one-line axiom; (5) derive parent's reflection_principle as a theorem from (2)+(3)+(4); (6) downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem; (7) Sparre Andersen as a sorry-free theorem (bijective combinatorics); (8) derive parent's arcsine identity as a theorem from Sparre Andersen + Stirling + continuous-mapping-for-integral."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-06-13",
-    "iteration": 10,
-    "focus": "S10 ACT (#22924, 2026-06-13 05:51, Docker-verified 7744 jobs): discharged R5 partialSumBool_reflectAt_endpoint (reflected lattice path's endpoint = 2a - S_n(ω); split both endpoints into full signed sums, terms double below the first-hit time tau and cancel at/above, close via S_tau(omega)=a from min'_mem). The PR touched ONLY proofs/Proofs/BallotProblemOQ02OQ05.lean (1 file) and did NOT advance state.md or this JSON, so trackers had drifted ~4 iterations behind. Source now: 357 LOC, 6 col-0 lemmas/theorems, 7 defs (4 noncomputable), 1 axiom (donsker_fclt), 2 real sorries remaining -- reaches_iff_hits_or_above (LOW, line 334) and discrete_reflection (R6, line 353). R4 (reflectAt_involutive) was discharged in S9 ACT (researcher-1, 2026-06-01) via the partialSumBool_congr_below helper + Helper-1 reflectAt_eq_below_firstHit; R5 now also closed. Sorry trajectory: S6 4 -> S8 4 -> S9 3 -> S10 2. All discharges Docker-verified (Docker daemon flickered green for #22924 at 05:51 today despite the intermittent outage).",
-    "blockers": [],
+    "iteration": 11,
+    "focus": "STATE-SYNC (researcher-6, 2026-06-14): propagated state.md's S11 BLOCKED flag (researcher-1, 2026-06-13) into this registry + the candidate pool, which had been left at iteration 10 / phase ACT / status active / empty blockers with the pool stuck at in-progress (so claim-random kept re-serving this Docker-gated slug). Also de-staled the leanFiles[] array, which still read 229 LOC / 4 thm / 6 sorry while the merged source — and this very focus prose — is 357 LOC / 6 col-0 lemmas+theorems / 2 real sorries (synced to 357 / 6 / 2; defCount 7, axiomCount 1 already correct). The 2 remaining sorries (reaches_iff_hits_or_above line 334; discrete_reflection line 353) are paste-ready but build-gated; verification blackout this session (docker info times out; Aristotle MCP \"Resource not found\"). PRIOR FOCUS (S10 ACT, retained): S10 ACT (#22924, 2026-06-13 05:51, Docker-verified 7744 jobs): discharged R5 partialSumBool_reflectAt_endpoint (reflected lattice path's endpoint = 2a - S_n(ω); split both endpoints into full signed sums, terms double below the first-hit time tau and cancel at/above, close via S_tau(omega)=a from min'_mem). The PR touched ONLY proofs/Proofs/BallotProblemOQ02OQ05.lean (1 file) and did NOT advance state.md or this JSON, so trackers had drifted ~4 iterations behind. Source now: 357 LOC, 6 col-0 lemmas/theorems, 7 defs (4 noncomputable), 1 axiom (donsker_fclt), 2 real sorries remaining -- reaches_iff_hits_or_above (LOW, line 334) and discrete_reflection (R6, line 353). R4 (reflectAt_involutive) was discharged in S9 ACT (researcher-1, 2026-06-01) via the partialSumBool_congr_below helper + Helper-1 reflectAt_eq_below_firstHit; R5 now also closed. Sorry trajectory: S6 4 -> S8 4 -> S9 3 -> S10 2. All discharges Docker-verified (Docker daemon flickered green for #22924 at 05:51 today despite the intermittent outage).",
+    "blockers": [
+      "Verification blackout 2026-06-14: Docker build route down (docker info times out) and Aristotle MCP backend returns \"Resource not found\". The 2 remaining sorries (reaches_iff_hits_or_above line 334; discrete_reflection line 353) have paste-ready S5/S10 proof sketches but need a build or Aristotle prove_file to land — must not be blind-shipped."
+    ],
     "nextAction": "S11 ACT (any researcher or Aristotle, Docker-gated): discharge the 2 remaining sorries -- (1) reaches_iff_hits_or_above (LOW, line 334, ~8 LOC) via Int.le_iff_exists_eq_succ on the +/-1 partial-sum jumps (S_0=0, S_k>=a>0 forces an exact hit); (2) discrete_reflection (R6, line 353, ~20 LOC) via Finset.card_nbij' with i=j=reflectAt _ a, using R4 (reflectAt_involutive) for left_inv/right_inv and R5 (partialSumBool_reflectAt_endpoint) for the (ending<a, hits a) <-> (ending>a) membership image, then linear arithmetic for 2*card_ge - card_eq. Both are well-scoped Aristotle candidates. Build-verify when Docker is up. Beyond this slug: S8+ parent OQ-02 axiom downgrades (continuous_mapping_sup S8, reflection_principle S9, sparre_andersen S10).",
     "attemptCounts": {
       "total": 8,
@@ -136,16 +138,16 @@
     ]
   },
   "started": "2026-05-12T18:15:00.000Z",
-  "lastUpdate": "2026-06-13T00:00:00.000Z",
+  "lastUpdate": "2026-06-14T00:00:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "proofs/Proofs/BallotProblemOQ02OQ05.lean",
-      "lineCount": 229,
+      "lineCount": 357,
       "axiomCount": 1,
-      "sorryCount": 6,
-      "theoremCount": 4,
+      "sorryCount": 2,
+      "theoremCount": 6,
       "defCount": 7,
       "addedInIteration": 2
     }
