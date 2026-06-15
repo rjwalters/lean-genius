@@ -910,4 +910,31 @@ theorem cbrt3_lt_three_one_eight_zero_seven_eight_nine_five_zero_seven_seven_ove
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-- `71966106017/49898510978 < ∛3`. The twenty-third convergent of the simple CF
+of `∛3` (using `a₂₂ = 2`), a LOWER bound (even convergent index `22`).
+
+Convergent recursion (with `a₂₂ = 2`):
+
+  `p₂₂ = 2 · p₂₁ + p₂₀ = 2 · 31807895077 + 8350315863 = 71_966_106_017`
+  `q₂₂ = 2 · q₂₁ + q₂₀ = 2 · 22054362665 + 5789785648 = 49_898_510_978`
+
+After cubing,
+
+  `71_966_106_017³   = 372_721_128_878_696_580_234_375_649_906_913`
+  `3 · 49_898_510_978³ = 372_721_128_878_696_580_234_460_955_884_056`
+
+so `71_966_106_017³ < 3 · 49_898_510_978³` (strict, diff `85_305_977_143`), hence
+`(71966106017/49898510978)³ < 3` and `71966106017/49898510978 < cbrt3` as
+required for a lower bound (even convergent index `22`, relative gap `≈ 7.6·10⁻²³`).
+
+`a₂₂ = 2` was re-derived independently from a 220-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s28_23rd_convergent.py`), per the
+established anti-typo discipline: never re-quote a prior sketch tail, always
+recompute `aᵢ` and verify the cube-side direction before claiming. Two-line
+proof via the lower cubing-iff helper. -/
+theorem seven_one_nine_six_six_one_zero_six_zero_one_seven_over_four_nine_eight_nine_eight_five_one_zero_nine_seven_eight_lt_cbrt3 :
+    (71966106017 / 49898510978 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
