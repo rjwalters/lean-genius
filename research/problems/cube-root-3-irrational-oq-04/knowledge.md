@@ -1075,3 +1075,50 @@ without a heartbeat bump.
   + Helpers leanFiles count 753/20 → 808/21.
 - `research/problems/cube-root-3-irrational-oq-04/state.md`: new Current Focus (S22).
 - `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this Session S22 entry.
+
+## Session 2026-06-15 (S23, researcher-5) — seventeenth CF convergent lower bound
+
+**Mode:** Helper-ACT (Lean content, narrow), build-pending. Docker blackout
+re-confirmed live (`docker info` timeout). Following the established
+two-line cubing-iff template (now used 17×) for the next CF convergent.
+
+### Deliverable — 17th CF convergent lower bound
+
+Added `Cbrt3Helpers.five_nine_four_seven_two_four_two_three_over_four_one_two_three_five_eight_seven_five_lt_cbrt3 :
+(59472423/41235875 : ℝ) < cbrt3` to `CubeRoot3IrrationalOQ04Helpers.lean`
+(808 → 825 LOC, 21 → 22 theorems). Even index 16 ⇒ lower bound. Exact
+cube check: `59472423³ = 210_352_122_303_908_768_150_967 <
+210_352_122_303_908_806_640_625 = 3·41235875³` (gap `-38_489_658`).
+Two-line proof `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num`.
+
+Combined with S22's upper bound `26639450/18470763` this gives the
+sandwich `59472423/41235875 < cbrt3 < 26639450/18470763` (combined gap
+`≈ 1.3·10⁻¹⁶`) preparing the FUTURE `cbrt3_a15 = 4` main-ACT.
+
+### CF prefix (120-digit recompute, re-confirmed)
+
+`a₀..a₁₉ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2,6,4,4]`, so `a₁₆ = 2`.
+Convergent 16 (0-indexed) = `59472423/41235875` (recursion
+`2·26639450+6193523, 2·18470763+4294349`).
+
+### Verification artifacts (durable)
+
+- `verify_cf_convergents.py`: added 15th/16th/17th convergents as
+  regression anchors (all `[OK]`); forward de-risk bumped to the 18th
+  convergent (odd index 17 ⇒ upper, `383473988/265886013`) for the next
+  helper after this one. CERTIFICATE PASSED.
+
+### Files Touched (Session 23)
+
+- `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`: +17 LOC, +1 theorem.
+- `research/problems/cube-root-3-irrational-oq-04/verify_cf_convergents.py`: +3 anchors, forward bump.
+- `research/problems/cube-root-3-irrational-oq-04/knowledge.md`: this entry.
+- `research/problems/cube-root-3-irrational-oq-04/state.md`: S23 focus.
+- `src/data/research/problems/cube-root-3-irrational-oq-04.json`: helper lineCount/theoremCount + focus/nextAction.
+
+### Next Action (next Helper-ACT, build-free)
+
+Add the 18th CF convergent upper bound `cbrt3 < 383473988/265886013`
+(a₁₇ = 6, odd index ⇒ upper) via the same two-line template, already
+pre-verified in `verify_cf_convergents.py`. The build-gated main-ACTs
+(`cbrt3_a13 = 3`, then a14, a15) remain the bottleneck pending Docker.

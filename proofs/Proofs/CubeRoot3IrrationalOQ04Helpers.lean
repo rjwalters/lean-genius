@@ -805,4 +805,21 @@ theorem cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-- `59472423/41235875 < ∛3`. Cube target: `(59472423/41235875)³ =
+210_352_122_303_908_768_150_967 / 41_235_875³ < 3` (strict:
+`59472423³ = 210_352_122_303_908_768_150_967 <
+210_352_122_303_908_806_640_625 = 3 · 41235875³`, gap `-38_489_658`).
+The seventeenth convergent of the simple CF of `∛3`
+(using `a₁₆ = 2` per a 120-digit CF recomputation; even index ⇒ lower
+bound). Combined with S22's upper bound `26639450/18470763` this prepares
+the sandwich `59472423/41235875 < cbrt3 < 26639450/18470763`
+(combined gap `≈ 1.3·10⁻¹⁶`) for the FUTURE main-ACT of the sixteenth
+partial quotient `cbrt3_a15 = 4` (gated on the earlier quotients landing
+first, since the nested-fraction chain grows one rung per quotient).
+Two-line proof via the cubing-iff helper. -/
+theorem five_nine_four_seven_two_four_two_three_over_four_one_two_three_five_eight_seven_five_lt_cbrt3 :
+    (59472423 / 41235875 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

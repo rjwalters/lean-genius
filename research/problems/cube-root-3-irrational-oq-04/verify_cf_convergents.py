@@ -112,6 +112,9 @@ if __name__ == "__main__":
         (73011, 50623, ">", "S13  12th convergent (upper)"),
         (597449, 414248, "<", "S13  13th convergent (lower)"),
         (1865358, 1293367, ">", "S14a 14th convergent (upper)"),
+        (6193523, 4294349, "<", "S21  15th convergent (lower)"),
+        (26639450, 18470763, ">", "S22  16th convergent (upper)"),
+        (59472423, 41235875, "<", "S23  17th convergent (lower)"),
     ]
     print()
     for p, q, want, label in anchors:
@@ -120,14 +123,12 @@ if __name__ == "__main__":
         # also confirm it is exactly the convergent at the expected index
         check(f"   {p}/{q} is a genuine convergent of ∛3", (p, q) in convs)
 
-    # --- forward de-risk: the NEXT convergent (15th, lower side) for a future ---
-    # a13 sandwich, pre-verified so the next ACT is transcription.
-    p14, q14 = convs[14]
-    check("forward: 15th convergent cbrt3 < {}/{}".format(p14, q14)
-          if side(p14, q14) == "<" else
-          "forward: 15th convergent cbrt3 > {}/{}".format(p14, q14),
-          side(p14, q14) == "<",
-          detail=f"= {p14}/{q14} (even index 14 ⇒ lower bound)")
+    # --- forward de-risk: the NEXT convergent (18th, upper side) for a future ---
+    # a16 sandwich, pre-verified so the next helper ACT is transcription.
+    p17, q17 = convs[17]
+    check("forward: 18th convergent cbrt3 > {}/{}".format(p17, q17),
+          side(p17, q17) == ">",
+          detail=f"= {p17}/{q17} (odd index 17 ⇒ upper bound)")
 
     if FAILED:
         print("\nVERIFICATION FAILED")

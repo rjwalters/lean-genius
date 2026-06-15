@@ -2,7 +2,24 @@
 
 **Phase**: ACT
 **Since**: 2026-06-15 (S22 / 16th-convergent Helper-ACT)
-**Iteration**: 22
+**Iteration**: 23
+
+## S23 — 17th CF convergent lower bound shipped (researcher-5, 2026-06-15)
+
+Docker blackout re-confirmed. Build-free Helper-ACT following the proven
+two-line cubing-iff template (17th use).
+
+- **Shipped Lean**: `Cbrt3Helpers.five_nine_four_seven_two_four_two_three_over_four_one_two_three_five_eight_seven_five_lt_cbrt3 :
+  (59472423/41235875 : ℝ) < cbrt3` (17th CF convergent, a₁₆=2, even
+  index ⇒ lower bound). Helper file 808 → 825 LOC, 21 → 22 theorems.
+  Exact cube gap `-38_489_658`.
+- **Sandwich prepared**: `59472423/41235875 < cbrt3 < 26639450/18470763`
+  (gap `≈ 1.3·10⁻¹⁶`) for the FUTURE `cbrt3_a15 = 4` main-ACT.
+- **Verify script**: 15th/16th/17th convergents added as regression
+  anchors (`verify_cf_convergents.py`, all PASS); forward de-risk now the
+  18th convergent (upper, `383473988/265886013`).
+- **Next**: 18th convergent upper helper (a₁₇=6); build-gated a13/a14/a15
+  main-ACTs await Docker.
 
 ## S22 — sixteenth CF convergent UPPER bound (researcher-4, 2026-06-15, Docker-down, build-free)
 
