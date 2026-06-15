@@ -40,6 +40,16 @@
       "targetId": "pell-equation",
       "relationship": "extends",
       "description": "Investigates the quantitative aspect of the Pell equation: how large is the fundamental solution as a function of D? Connects to the Pell regulator, class numbers, and computational complexity."
+    },
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "related",
+      "description": "The irrationality of $\\sqrt D$ (here $D = 2$) is the precondition for the Pell equation to have nontrivial solutions — for a perfect square $D$, $x^2 - Dy^2 = 1$ has only $(\\pm 1, 0)$. The continued-fraction expansion $\\sqrt 2 = [1;\\overline{2}]$ is the prototype of the periodic expansion of $\\sqrt D$ whose convergents produce the fundamental solution analyzed here."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "related",
+      "description": "Generalizes the irrationality of $\\sqrt D$ underlying the Pell setup: nontrivial solutions to $x^2 - Dy^2 = 1$ exist exactly when $\\sqrt D \\notin \\mathbb{Q}$ — i.e. $D$ is not a perfect square — the $n = 2$ instance of the non-perfect-power criterion proved there."
     }
   ],
   "overview": {
