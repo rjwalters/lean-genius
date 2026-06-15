@@ -54,6 +54,14 @@
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement: The Infinite Friendship Theorem",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "License header, imports (Mathlib and the parent Proofs.FriendshipTheorem), and the module docstring framing OQ-04: the finite Friendship Theorem (Erdős–Rényi–Sós 1966) fails for infinite graphs (Chvátal–Kotzig–Rosenberg–Davies C₅ free-amalgamation counterexample), and this file identifies local finiteness as the sharp restoring hypothesis — proved via a finiteness-free diameter-2 covering rather than the finite-only spectral argument.",
+      "mathContext": "Finite theorem: exactly-one-common-neighbour ⇒ a universal vertex (windmill). Infinite: false in general; the obstruction is an infinite-degree vertex, and local finiteness restores the conclusion."
+    },
+    {
       "id": "part1-friendship-graph",
       "title": "Part I: Friendship Graphs and Common Neighbours",
       "startLine": 55,
@@ -80,6 +88,14 @@
       "startLine": 120,
       "endLine": 145,
       "summary": "locally_finite_friendship_has_universal: combine finiteness with the finite gallery theorem FriendshipTheorem.friendship_theorem to obtain a universal vertex."
+    },
+    {
+      "id": "part5-infinite-windmill",
+      "title": "Part V: Infinite Windmill Structure",
+      "startLine": 154,
+      "endLine": 196,
+      "summary": "universal_noncentral_neighborSet: in any friendship graph (finite or infinite) with a universal vertex c, every non-centre vertex u has N(u) = {c, w} for a unique partner w — a windmill of triangles sharing the centre, proved with no [Fintype V]. universal_noncentral_ncard_two reads off (N(u)).ncard = 2, the finiteness-free analogue of the finite gallery's friendship_noncentral_degree (G.degree u = 2).",
+      "mathContext": "$N(u) = \\{c, w\\}$ with $w$ the unique common neighbour of $u$ and $c$; hence $|N(u)| = 2$ even on infinite vertex types."
     }
   ],
   "conclusion": {
