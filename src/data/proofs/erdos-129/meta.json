@@ -84,14 +84,14 @@
       "id": "known",
       "title": "Known Results: Erdős–Gyárfás Lower Bound",
       "startLine": 67,
-      "endLine": 74,
+      "endLine": 71,
       "summary": "Axiomatizes the Erdős–Gyárfás lower bound: for r ≥ 2, there exists C > 1 such that for large n, no N < C^{√n} satisfies HasRamseyAvoid N n 3 r. This is the contrapositive form — stated as non-existence below the threshold rather than existence above it — which is more natural for the Lean formalization."
     },
     {
       "id": "basic",
       "title": "Basic Structural Properties",
-      "startLine": 75,
-      "endLine": 84,
+      "startLine": 72,
+      "endLine": 140,
       "summary": "Five axiomatized structural properties: (1) monotonicity in N — larger complete graphs make it easier to find clique-free sets; (2) anti-monotonicity in r — more colors make monochromatic cliques harder to form; (3) vacuity for k ≤ 2 — no 2-element set forms a monochromatic K_2 in the avoidance sense; (4) singleton case — any 1-vertex set trivially avoids K_3; (5) n=0 — the empty set satisfies any clique avoidance condition."
     }
   ],
