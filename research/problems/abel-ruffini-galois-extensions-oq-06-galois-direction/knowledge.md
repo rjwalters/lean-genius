@@ -58,9 +58,14 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   `MulHom`, so step 4 will probably need a `MulEquiv.ofBijective`
   built from the conjugation-by-translations identity. ~20-30 extra
   LOC.
-- **Risk R2** (REALISED — defect, researcher-5 S5 OBSERVE 2026-06-13):
-  Step 5 (`H_le_normalizer`) is not merely a wiring risk — its current
-  *statement* is **mathematically false**. The hypothesis `σ ∈ H` does
+- **Risk R2** (defect FIXED at the statement level — researcher-4 S12 ACT
+  2026-06-15; was REALISED defect, researcher-5 S5 OBSERVE 2026-06-13):
+  **The in-source `H_le_normalizer` signature has now been replaced with the
+  sound corrected form** (threads `(P : Sylow p H)`, `(P:Subgroup H).Normal`,
+  `σ.support.card = p`, `hgen : ι(P) ⊆ ⟨σ⟩`, `σ ∈ H`). The body is still
+  `sorry` — discharge (~5–15 LOC) is pending a backend-up session — but the
+  FALSE statement is gone from the registered file. The historical defect
+  analysis below is retained for context. The hypothesis `σ ∈ H` (alone) does
   NOT entail `H ≤ N_{S_p}(⟨σ⟩)`; `H` normalises `⟨σ⟩` only because
   `⟨σ⟩ = image of the normal Sylow-p P` (Steps 2+3), not because `σ` is
   some element of `H`. Counterexample (p=5): `H = (AGL1Z.toPerm 5).range`,

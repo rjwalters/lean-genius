@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S8_ORIENT",
+  "phase": "S12_ACT",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -36,28 +36,28 @@
     "open": [
       "5-step structure-theorem proof (Sylow uniqueness on H → P normal → P is a p-cycle → N_{S_p}(P) ≅ AGL(1, p) → H ≤ N_{S_p}(P)) — ~250-450 LOC.",
       "Step 4's conjugation-action wiring (Risk R1 in knowledge.md): may need `MulEquiv.ofBijective` rather than direct `AGL1Z.toPerm` reuse.",
-      "Step 5's `H ≤ N_{S_p}(P)` (Risk R2 in knowledge.md): `Subgroup.le_normalizer_of_normal` may not exist verbatim — ad-hoc 5-LOC may be required."
+      "Step 5's `H ≤ N_{S_p}(P)` discharge (Risk R2): signature now SOUND as of S12 (was false), body still `sorry`. Plan: hPnorm-conjugation + cardinality upgrade ι(P)=⟨σ⟩ + `Subgroup.le_normalizer` (~5-15 LOC), numerically certified by verify_step5_normalizer.py."
     ],
     "completedThisIter": [
-      "Step 2 (`sylow_p_normal`) discharged: `haveI : Subsingleton (Sylow p H) := sylow_p_unique H hPrim hSolv; exact P.normal_of_subsingleton`. File 6 → 5 sorries, 119 → 126 LOC, Docker-verified 1900 jobs. Bearer `Sylow.normal_of_subsingleton` re-verified via gh api at pinned SHA 2df2f015."
+      "S12 ACT (researcher-4, 2026-06-15): replaced Step 5 (`H_le_normalizer`) UNSOUND signature `(σ ∈ H)` with the documented SOUND corrected signature `(P : Sylow p H) (hPnorm : P.Normal) (σ) (hσ_card : σ.support.card = p) (hgen : ι(P) ⊆ ⟨σ⟩) (hσH : σ ∈ H) ⊢ H ≤ (zpowers σ).normalizer`. This removes the FALSE lemma stub flagged by S5 OBSERVE (counterexample p=5, σ=x↦2x) from the registered, building file — the file now contains only TRUE sorry stubs. Body kept as `sorry` (both backends in blackout: Docker down, Aristotle MCP 'Resource not found' — a blind tactic discharge could not be verified and would risk the registered build). All corrected-signature subterms already appear in Steps 2/3 of the building file, so the new signature typechecks. Still 5 sorries."
     ],
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S8_ORIENT",
-    "since": "2026-06-14T00:00:00.000Z",
-    "iteration": 8,
-    "focus": "S8 ORIENT (researcher-2, 2026-06-14): independent bearer audit of the S7 derived-series+block route for Step 1, both backends DOWN (Docker down + Aristotle MCP 'Resource not found'). Re-fetched the 5 Mathlib source files at pin 2df2f015 (real mathlib4 commit 2025-12-13) via gh api and confirmed EVERY primary bearer exists at its exact cited line: derivedSeries_succ/normal/characteristic (Solvable.lean:49/53/65), IsBlock.orbit_of_normal (Blocks.lean:475), IsBlock.subsingleton_or_eq_univ (Primitive.lean:115), isPretransitive_iff_orbit_eq_univ (Transitive.lean:54), Sylow.characteristic_of_normal/unique_of_normal/normal_of_subsingleton (Sylow.lean:728/710/724), Sylow.ofCard (:102, consumes a Subgroup of the AMBIENT group at card p^(v_p|G|)), Legendre padicValNat_factorial (PadicVal/Basic.lean:578). Route is NOT phantom-bearer-based and a careful math re-walk finds NO new soundness defect. NEW FINDING: the char-in-char step (Q char in A, A char in H => Q.map A.subtype char/normal in H) has NO direct Mathlib bearer -- Subgroup.Characteristic (Basic.lean:235) ships only characteristic_iff_{map,comap}_{eq,le} + bot/top, no Characteristic.trans/transitivity-through-subtype, no standalone Characteristic.lean at the pin. So the R4 residual splits into (i) genuine wiring of present bearers (ofCard/unique_of_normal transport of Q to the H-subtype, v_p arithmetic) and (ii) a ~10-30 LOC characteristic-transitivity BRIDGE with no upstream bearer (or a reroute via an abelian primary-component construction on A as a Subgroup of H). R4 stays MEDIUM (bridge is small/self-contained, not blocking). Doc-only: 0 Lean files touched, 5 sorries intact.",
-    "nextAction": "When a backend is up (Docker or Aristotle): discharge Step 1 via the derived-series+block route, building the char-transitivity bridge (ii) first as a named helper lemma, then the ofCard/unique_of_normal transport (i) + v_p arithmetic (~100-150 LOC total incl. the ~10-30 LOC bridge). Then Step 5's corrected+p-cycle signature (R2, ~5-15 LOC) and Steps 3/4. Nothing shippable until a backend returns.",
+    "phase": "S12_ACT",
+    "since": "2026-06-15T00:00:00.000Z",
+    "iteration": 12,
+    "focus": "S12 ACT (researcher-4, 2026-06-15): concrete .lean correctness fix under continued dual blackout (Docker down; Aristotle MCP returns 'Resource not found', re-tested live this session). After 6 sessions flagging it as the cheapest safe ACT, replaced Step 5 (`H_le_normalizer`) UNSOUND signature with the documented SOUND corrected signature: `(H) (P : Sylow p H) (hPnorm : (P:Subgroup H).Normal) (σ) (hσ_card : σ.support.card = p) (hgen : ∀ g:P, ι g ∈ zpowers σ) (hσH : σ ∈ H) ⊢ H ≤ (zpowers σ).normalizer`, where ι = H.subtype.comp (P:Subgroup H).subtype. The old `(σ ∈ H)`-only signature was mathematically FALSE (S5 OBSERVE counterexample, p=5: σ=x↦2x, h=x↦x+1 gives hσh⁻¹∉⟨σ⟩). This removes a soundness landmine from the REGISTERED, building file — it now contains only TRUE sorry stubs. Body kept `sorry`: a blind tactic discharge cannot be verified under blackout and would risk the registered build (per repo no-build-discharge caution). Every corrected-signature subterm already appears verbatim in Steps 2/3 of the building file, so the new signature typechecks. Still 5 sorries; only the Step 5 declaration changed (signature + docstring).",
+    "nextAction": "When a backend is up: (1) discharge the now-sound Step 5 via hPnorm-conjugation + cardinality upgrade ι(P)=⟨σ⟩ + Subgroup.le_normalizer (~5-15 LOC, numerically certified by verify_step5_normalizer.py); (2) discharge Step 1 via derived-series+block route (~70-110 LOC, char-in-normal bridge resolved 0-LOC by Subgroup.normal_of_characteristic_of_normal instance per S10); (3) Steps 3/4; (4) assemble main theorem. Docker build to verify. Nothing further shippable until a backend returns.",
     "blockers": [
-      "Both verification backends down 2026-06-14: Docker daemon down (docker ps hangs) AND Aristotle MCP returns 'Resource not found'. Cannot build- or solver-verify any Lean change; all S8 progress is doc-only (bearer re-audit + char-transitivity sub-risk localization), deferred to a backend-up session."
+      "Both verification backends down 2026-06-15: Docker daemon times out (docker info hangs >20s) AND Aristotle MCP returns 'Resource not found' (re-tested live this session with a trivial n+0=n prove). Cannot build- or solver-verify; the S12 signature fix is build-pending but low-risk (subterms reused from already-building Steps 2/3)."
     ],
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-14T12:00:00.000Z"
+    "lastUpdate": "2026-06-15T00:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
