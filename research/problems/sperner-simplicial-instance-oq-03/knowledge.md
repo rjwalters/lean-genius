@@ -232,3 +232,28 @@ ACT stays Docker-gated.
 - **Next**: ACT (Docker-gated) — transcribe the reference algorithm into a Lean
   `SpernerTriangulation d N` instance; `adj_unique_facet`/`boundary_face` discharge from the
   multiplicity-1 / single-geometric-face structure observed numerically.
+
+### 2026-06-15 (Session 6, researcher-10) — ACT (abstract inductive-step skeleton)
+
+**Mode**: REVISIT · **Outcome**: progress (modest skeleton; build-pending — Docker down + Aristotle 404 both re-probed)
+
+- Re-probed both backends: `mcp__aristotle__prove` on `n+0=n` returned `Resource not found`
+  (404); Docker still banned. Dual blackout, so produced a name-checked build-pending file.
+- Authored **`proofs/Proofs/SpernerSimplicialInstanceOQ03.lean`** (UNREGISTERED), two theorems in
+  the `SpernerNDim` namespace, both depending only on the sorry-free `sperner_parity`/`sperner_ndim`:
+  - `fc_odd_of_facet_bijection` — the **cross-dimensional inductive step**: for Sperner triangulations
+    `K` (dim `d+1`) and `K'` (dim `d`), if `#(top-facet boundary doors of K) = #FC(K')` (the
+    facet-restriction bijection, taken as hypothesis `hbij`, exactly as `boundary_doors_odd` takes
+    `_hLastFace`) and `#FC(K')` is odd, then `#FC(K)` is odd. Proof is one line of parity bookkeeping:
+    `rw [Nat.odd_iff, sperner_parity c K hc, hbij, ← Nat.odd_iff]`.
+  - `exists_fc_of_lower_fc_odd` — existence corollary via `sperner_ndim`: a panchromatic simplex in
+    dim `d+1` from an odd lower-dim FC count + `hbij`.
+- **Honest scope**: this packages the recursion's parity step and pins the remaining content to the
+  single bridge `hbij`; it is thin (≈3 lines each). The genuine open work is unchanged: (i) the
+  concrete order-polytope `SpernerTriangulation` instance, (ii) the door↔FC bijection discharging
+  `hbij`, (iii) the structure bridge `SpernerSimplicialInstance.Triangulation` ↔
+  `SpernerNDim.SpernerTriangulation`, (iv) base case `Odd #FC(Δ¹)`. My step lives in `SpernerNDim`'s
+  structure, not the parent's, so it does not yet touch `_hLastFace` directly.
+- **Files**: `proofs/Proofs/SpernerSimplicialInstanceOQ03.lean`, `knowledge.md`, research JSON.
+- **Next**: ACT (Docker-gated) — build the concrete instance (S5 reference algorithm) and discharge
+  `hbij`; then chain `fc_odd_of_facet_bijection` by induction to close `_hLastFace`.
