@@ -113,15 +113,22 @@ theorem closedBall_isConvex (center : ℂ) (r : ℝ) :
 Grunsky asked: must all lemniscate components be convex?
 -/
 
-/-- Grunsky's Question: Are all lemniscate components convex for small c?
-    This turns out to be FALSE. -/
+/-- Grunsky's Question: must all lemniscate components be convex?  This is the
+    statement the historical question and the file docstring describe — convexity
+    of every component of `{|f| ≤ c}` for *every* `c > 0`, with no small-`c`
+    restriction.  It turns out to be FALSE (Pommerenke 1961, Goodman 1966).
+
+    Note: an earlier formalization stated this with a spurious `∃ c₀ > 0, ∀ c < c₀`
+    (small-`c`) restriction.  That small-`c` statement is in fact *true* — as
+    `c → 0` each component shrinks to a near-circular disk around a root, hence
+    convex — so its negation was a **false axiom**.  The faithful `∀ c > 0` form
+    below is genuinely false, and its negation `grunskyConjecture_false` is now a
+    **theorem** derived from `goodman_counterexample` (see Part XI), eliminating
+    that axiom. -/
 def grunskyConjecture : Prop :=
   ∀ f : ℂ[X], f.Monic → f.natDegree > 0 →
-    ∃ c₀ > 0, ∀ c, 0 < c → c < c₀ → ∀ z₀ ∈ lemniscate f c,
+    ∀ c, 0 < c → ∀ z₀ ∈ lemniscate f c,
       IsConvexComplex (componentContaining (lemniscate f c) z₀)
-
-/-- Grunsky's conjecture is FALSE - there exist non-convex lemniscate components -/
-axiom grunskyConjecture_false : ¬grunskyConjecture
 
 /-
 ## Part VI: Pommerenke's Counterexample (1961)
@@ -236,13 +243,26 @@ def goodmanOpenQuestion : Prop :=
 Summary of Erdős Problem #1047.
 -/
 
-/-- Erdős Problem #1047: SOLVED (Answer: NO)
-    Not all lemniscate components need be convex. -/
-theorem erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false
-
 /-- Goodman's polynomial has positive degree (degree 4) -/
 theorem goodmanPolynomial_degree_pos : goodmanPolynomial.natDegree > 0 := by
   rw [goodmanPolynomial_natDegree]; omega
+
+/-- Grunsky's conjecture is FALSE — there exist non-convex lemniscate components.
+
+    Formerly an `axiom`.  With the faithful `∀ c > 0` statement of
+    `grunskyConjecture` (Part V), the negation is a genuine **theorem**: it follows
+    directly from `goodman_counterexample`, the one remaining analytic input.  The
+    counterexample `f = (z²+1)(z−2)²` at `c = 5^{3/2}/4` exhibits a non-convex
+    component, contradicting universal convexity. -/
+theorem grunskyConjecture_false : ¬grunskyConjecture := by
+  intro h
+  obtain ⟨z₀, hz₀, hnc⟩ := goodman_counterexample
+  exact hnc (h goodmanPolynomial goodmanPolynomial_monic goodmanPolynomial_degree_pos
+    goodmanCriticalValue (by unfold goodmanCriticalValue; positivity) z₀ hz₀)
+
+/-- Erdős Problem #1047: SOLVED (Answer: NO)
+    Not all lemniscate components need be convex. -/
+theorem erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false
 
 /-- Existence of non-convex lemniscate components via Goodman's example -/
 theorem erdos_1047_counterexample :
