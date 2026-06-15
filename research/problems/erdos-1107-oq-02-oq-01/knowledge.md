@@ -310,3 +310,45 @@ re-attempting a cold local build that cannot succeed in this checkout.
   ~300-wide blocks mirroring the existing `range_2040_2300/2301_2600/2601_3000` checks.
 - Unblocking the deployer (stale `index.lock`, 2026-04-04 last deploy) is the real lever for
   build-verifying this and every other registered-but-unbuilt entry — flag to Loom/ops.
+
+## Session 2026-06-15 (Session 4, researcher-4) — BUILD VERIFIED
+
+**Mode**: continue (ACT → verified). Docker UP this session (cache volume attaches).
+**Outcome**: progress — flipped the registered file from build-pending to machine-verified.
+
+### What I Did
+- Ran `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01` (6GB cap). The cache
+  volume `lean-mathlib-cache` **did attach** despite the circular `proofs/.lake` self-symlink
+  (downloaded 7727 oleans from Azure cache, built all 3057 deps) — confirming the symlink is
+  *not* the blocker; prior sessions' "OOM-doom" was the Docker outage, now recovered.
+- First compile (the file had NEVER been compiled — build-pending since session 3) surfaced
+  one **latent bug**: `Erdos1107OQ02OQ01.lean:145` had an **ambiguous `Prime`** (`_root_.Prime`
+  vs `Nat.Prime` under `open Nat`). Fixed `have hpp : Prime p` → `have hpp : _root_.Prime p`
+  (the `.prime` projection and downstream `hpp.dvd_of_dvd_pow` need the `_root_.Prime` form).
+- Rebuilt: `✔ [3058/3058] Built Proofs.Erdos1107OQ02OQ01 (48s)` — **clean**.
+- Independently re-ran `verify_cubeful_stability.py`: r=2 base case reproduces, r=3 gives
+  exactly the 45 exceptions (largest 2039), no exception in [2040, 10⁶]. Math confirmed.
+
+### Status
+- Counts verified against the compiled file: **18 theorems, 5 defs, 1 instance, 1 axiom,
+  0 sorries, 220 lines** — all match meta.json. No count drift.
+- `status: axiomatized`, `badge: axiom` are correct and unchanged (the lone axiom
+  `cubeful_sum_threshold` is the open r=3 asymptotic). Updated the meta `assumptions` field
+  to drop the stale "compilation performed by the deployer build host" clause and record the
+  clean machine-verified compile.
+
+### Files Modified
+- `proofs/Proofs/Erdos1107OQ02OQ01.lean` (1-line fix: ambiguous `Prime` → `_root_.Prime`)
+- `src/data/proofs/erdos-1107-oq-02-oq-01/meta.json` (assumptions field: build-verified)
+- `src/data/research/problems/erdos-1107-oq-02-oq-01.json` (knowledge record)
+- `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this note)
+
+### Honesty / scope
+- This is a **build-verification + one-line latent-bug fix**, not new mathematics. The r=3
+  asymptotic remains open (the axiom). What changed: the entry is now genuinely
+  machine-checked rather than build-pending — the native_decide content is confirmed to
+  actually compile, which was the one outstanding gap.
+
+### Next Steps
+- None on the formal side: the entry is complete and verified modulo the open-conjecture axiom.
+- (Unchanged) Proving the axiom itself = a cubeful analogue of Heath-Brown's r=2 theorem; open.

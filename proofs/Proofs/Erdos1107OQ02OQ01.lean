@@ -142,7 +142,7 @@ theorem isCubeful_one : IsCubeful 1 := by simp [IsCubeful]
     them) it holds for *all* `n` — no `native_decide`. -/
 theorem isCubeful_pow {n k : ℕ} (hk : 3 ≤ k) : IsCubeful (n ^ k) := by
   intro p hp
-  have hpp : Prime p := (prime_of_mem_primeFactors hp).prime
+  have hpp : _root_.Prime p := (prime_of_mem_primeFactors hp).prime
   have hpd : p ∣ n ^ k := dvd_of_mem_primeFactors hp
   have hpn : p ∣ n := hpp.dvd_of_dvd_pow hpd
   calc p ^ 3 ∣ p ^ k := pow_dvd_pow p hk

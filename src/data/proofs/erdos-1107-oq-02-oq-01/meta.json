@@ -32,7 +32,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 220,
-    "assumptions": "1 axiom: cubeful_sum_threshold (every n ≥ 2040 is a sum of ≤4 cubeful numbers) — this is the open r=3 asymptotic, the cubeful analogue of Heath-Brown's r=2 theorem, which appears to remain unproven. The finite range [1, 3000] and the 45-element exceptional set are settled by native_decide. Computation independently reproduced (verify_cubeful_stability.py and an external check confirm the 45 exceptions, the tight threshold 2039/2040, and no failures in [2040, 3000]); compilation of the native_decide blocks is performed by the deployer build host.",
+    "assumptions": "1 axiom: cubeful_sum_threshold (every n ≥ 2040 is a sum of ≤4 cubeful numbers) — this is the open r=3 asymptotic, the cubeful analogue of Heath-Brown's r=2 theorem, which appears to remain unproven. The finite range [1, 3000] and the 45-element exceptional set are settled by native_decide. Computation independently reproduced (verify_cubeful_stability.py and an external check confirm the 45 exceptions, the tight threshold 2039/2040, and no failures in [2040, 3000]). The Lean file compiles cleanly (machine-verified, Lean 4.26.0 / Mathlib, 3058 jobs): all native_decide blocks and structural lemmas are checked, leaving the single axiom as the only assumption.",
     "theoremCount": 18,
     "definitionCount": 5
   },
