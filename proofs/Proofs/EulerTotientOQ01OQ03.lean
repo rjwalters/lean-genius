@@ -166,4 +166,32 @@ theorem rsa_correct_carmichael {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
     ((sub_one_dvd_carmichael_mul_left hcop).trans hm)
     ((sub_one_dvd_carmichael_mul_right hcop).trans hm)
 
+/-- RSA **encryption** with public exponent `e`: the message `a` is sent to
+    `aᵉ` in `ZMod n`. -/
+def rsaEncrypt {n : ℕ} (e : ℕ) (a : ZMod n) : ZMod n := a ^ e
+
+/-- RSA **decryption** with private exponent `d`: the ciphertext `c` is sent to
+    `cᵈ` in `ZMod n`. -/
+def rsaDecrypt {n : ℕ} (d : ℕ) (c : ZMod n) : ZMod n := c ^ d
+
+/-- **RSA round-trip (verified end to end).**
+
+    Let `n = p·q` for distinct primes, and let `(e, d)` be a key pair satisfying
+    the key-generation congruence `e·d ≡ 1 (mod λ(n))`, written here as
+    `e·d = 1 + k·λ(n)`. Then decrypting an encrypted message recovers it for
+    *every* `a : ZMod n`:
+    `rsaDecrypt d (rsaEncrypt e a) = a`.
+
+    This is the headline RSA correctness statement — encryption and decryption
+    are mutual inverses — phrased directly against the minimal universal
+    exponent `λ(n)`. It follows from `rsa_correct_carmichael` because
+    `(aᵉ)ᵈ = a^(e·d) = a^(k·λ(n) + 1)` and `λ(n) ∣ k·λ(n)`. -/
+theorem rsa_decrypt_encrypt {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcop : Nat.Coprime p q) (a : ZMod (p * q)) {e d k : ℕ}
+    (hed : e * d = 1 + k * carmichael (p * q)) :
+    rsaDecrypt d (rsaEncrypt e a) = a := by
+  unfold rsaEncrypt rsaDecrypt
+  rw [← pow_mul, hed, Nat.add_comm 1 (k * carmichael (p * q))]
+  exact rsa_correct_carmichael hcop a (dvd_mul_left _ k)
+
 end EulerTotientOQ01OQ03
