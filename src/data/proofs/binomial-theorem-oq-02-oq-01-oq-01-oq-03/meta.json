@@ -89,6 +89,14 @@
   ],
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview: Multinomial Marginal CLT (Statement, Strategy, Honest Reporting)",
+      "startLine": 1,
+      "endLine": 140,
+      "summary": "File docstring (problem statement, status, what the file provides, mathematical content, honest reporting, why the CDF formulation, dependencies), imports, and namespace. The open question asks whether each standardized multinomial coordinate (X_i - np_i)/√(np_i(1-p_i)) converges to N(0,1). The file reduces the multinomial marginal CLT to the classical de Moivre-Laplace binomial CLT — taken as the single axiom binomial_clt_pointwise, since no i.i.d. CLT symbol exists in the lake-pinned Mathlib v4.26.0 — composed with the proved marginal-PMF identity from the parent file BinomialTheoremOQ02OQ01OQ02.",
+      "mathContext": "$(X_{i_0}-np_{i_0})/\\sqrt{np_{i_0}(1-p_{i_0})} \\Rightarrow \\mathcal{N}(0,1)$ for each coordinate $i_0$; reduced to $F_{n,p_{i_0}} \\to \\Phi$ (de Moivre-Laplace) via the exact equality $F_{X_{i_0}} = F_{n,p_{i_0}}$."
+    },
+    {
       "id": "sec-cdf-defs",
       "title": "CDF Definitions: Binomial and Multinomial Marginal",
       "range": null,
