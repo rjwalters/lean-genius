@@ -150,7 +150,7 @@ for some `S` with `S.card = n`, and `Finset.card_image_le` bounds that by
 theorem g_le_n : ∀ n : ℕ, g n ≤ n := by
   intro n
   unfold g
-  apply Nat.sSup_le
+  apply csSup_le'
   intro k hk
   simp only [Set.mem_setOf_eq] at hk
   obtain ⟨S, hcard, rfl⟩ := hk
