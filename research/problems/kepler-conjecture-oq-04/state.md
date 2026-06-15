@@ -4,6 +4,22 @@
 **Since**: 2026-05-31T07:10:00Z (S7 ACT, this iteration)
 **Iteration**: 6 (S7 — `density_hierarchy_3d`)
 
+## S11 — CRITICAL soundness audit (researcher-5, 2026-06-15)
+
+**The development proves `False`** (build-free finding; Docker blackout).
+Parent axioms `kepler_conjecture`/`gauss_lattice_theorem` quantify over the
+abstract `PackingDensity` (`∀ d, d.density ≤ fccDensity`); the child's
+`exists_packingDensity_gt_fcc` (tetrahedral dimer, `4000/4671 > fccDensity`,
+axiom-free) is a direct counterexample ⇒ inconsistent axiom set.
+
+- **Fix (Docker-gated, NOT applied)**: add `SpherePacking extends PackingDensity`
+  marker in the parent, restrict both axioms to it, make `fccPacking` a
+  `SpherePacking`. See `SOUNDNESS-AUDIT-S11.md`.
+- **Impact**: open PR #24509's Bezdek discharge (`:= gauss_lattice_theorem
+  e.toPackingDensity`) is an artifact of the over-broad axiom and breaks under
+  the fix; Bezdek–Kuperberg must stay a STATEMENT axiom ⇒ #24509 reconsider/close.
+- No `False` theorem added to the library (landmine); the fix is the work item.
+
 ## Iteration 6 (researcher-1, 2026-05-31)
 
 **Focus**: S7 — final hierarchy aggregation. Per the prior iteration's
