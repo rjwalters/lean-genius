@@ -148,3 +148,46 @@ avoid breaking the auto-merged main aggregate with an unverified `native_decide`
   blocks (range 0–500, 500–1000, …) as done for the above-threshold ranges.
 - On green build: register via `./.lean/scripts/generate-proofs-imports.sh` and add a gallery
   meta.json (`status: axiomatized`, `badge: axiom`, axiomCount 1) for the r=3 entry.
+
+## Session 2026-06-15 (Session 4, researcher-3) — ACT, general structural lemma (build-pending)
+
+**Mode**: continue (ACT; Docker DOWN + Aristotle `prove` returns "Resource not found"/404 —
+re-probed this session, dual blackout confirmed).
+**Outcome**: progress — added the *general* cubeful-source lemma the file was missing.
+
+### What I Did
+- The Session-3 file proved cubefulness only for specific literals (`isCubeful_8/16/27/2000`,
+  each `native_decide`). Added the underlying **general theorem**, valid for all `n` and *not*
+  `native_decide`:
+  - `isCubeful_pow {n k} (hk : 3 ≤ k) : IsCubeful (n ^ k)` — every perfect `k`-th power with
+    `k ≥ 3` is cubeful. Proof: for `p ∈ (n^k).primeFactors`, `Prime p` and `p ∣ n^k`, so
+    `p ∣ n` (`Prime.dvd_of_dvd_pow`); then `p^3 ∣ p^k ∣ n^k` (`pow_dvd_pow` + `pow_dvd_pow_of_dvd`).
+  - `isCubeful_cube (n) : IsCubeful (n ^ 3)` — the `k = 3` corollary.
+- This generalizes all four ad-hoc numeric witnesses (8 = 2³, 27 = 3³, … are special cases)
+  with one short Mathlib proof.
+
+### Verification done WITHOUT the build (Docker down)
+- Verified every Mathlib identifier and signature against the live checkout in the sibling
+  worktree `.loom/worktrees/stokes-dd/.../mathlib/Mathlib` (own worktree has no Mathlib):
+  - `Nat.mem_primeFactors` / `prime_of_mem_primeFactors` / `dvd_of_mem_primeFactors`
+    (PrimeFin.lean:39,62,63)
+  - `Prime.dvd_of_dvd_pow` (Algebra/Prime/Defs.lean:74)
+  - `pow_dvd_pow (a) (h : m ≤ n) : a^m ∣ a^n` (Algebra/Divisibility/Basic.lean:134)
+  - `pow_dvd_pow_of_dvd (h : a ∣ b) (n) : a^n ∣ b^n` (Algebra/Divisibility/Basic.lean:200)
+- `calc` over `∣` uses Mathlib's `Trans` instance for `Dvd.dvd` — standard.
+
+### Honesty / scope
+- No new mathematics about the threshold — this is a structural-cleanliness improvement: the
+  file now states *why* powers are cubeful in general, rather than only asserting it for four
+  constants. Axiom count unchanged (still 1 = the open r=3 asymptotic); sorry count still 0.
+- **Build-pending**: name/signature-checked against master but NOT compiled (Docker DOWN, direct
+  `lake` banned). File remains UNREGISTERED in `Proofs.lean`.
+
+### Files Modified
+- `proofs/Proofs/Erdos1107OQ02OQ01.lean` (added `isCubeful_pow`, `isCubeful_cube`)
+- `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this note)
+
+### Next Steps (unchanged from Session 3, all Docker-gated)
+- Build `Proofs.Erdos1107OQ02OQ01`; split `below_threshold_nonexceptions` into blocks if the
+  single `native_decide` over `[0,2040)` is too heavy. On green build: register + add gallery
+  meta.json (`status: axiomatized`, `badge: axiom`, axiomCount 1).
