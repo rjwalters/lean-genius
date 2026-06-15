@@ -2747,6 +2747,7 @@ import Proofs.PythagoreanTriplesOQ01Aristotle
 import Proofs.PythagoreanTriplesOQ02
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
+import Proofs.QuadraticReciprocityAlgorithmOQ03
 import Proofs.QuadraticReciprocityOQ03
 import Proofs.QuadraticReciprocityOQ03OQ01
 import Proofs.QuadraticReciprocityOQ03OQ01Exp

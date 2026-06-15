@@ -8,38 +8,30 @@ import Mathlib.Tactic
 
 ## Status
 
-**BUILD-PENDING / UNVERIFIED.** This file was authored during an extended Docker +
-Aristotle outage (2026-06-14 .. 2026-06-15): the build container could not be started
-and the Aristotle backend returned `Resource not found`. It transcribes the fully-pinned,
-numerically-certified Milestone-1 proof from
-`research/problems/quadratic-reciprocity-algorithm-oq-03/knowledge.md` (sessions S1–S9)
-into actual Lean so that the first session with a live backend can compile/repair it
-rather than re-transcribe prose. It is intentionally **not** registered in `Proofs.lean`
-until it builds. No claim of machine-verification is made here.
+**VERIFIED (machine-checked).** Built green via
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`
+on 2026-06-15 (S14, researcher-6) — the first session since S1 with a live Docker
+backend (the prior 13 sessions S1–S13 were authored blind under a Docker + Aristotle
+outage). All three lemmas compile with 0 errors / 0 sorries / 0 axioms (linter
+style-nags only). Registered in `Proofs.lean`.
 
-**Changelog (S12, 2026-06-15, blackout still live).** Removed the one *confirmed* build
-blocker and de-risked two fragile spots, with every replacement name-checked against
-Mathlib @ rev `2df2f01` / v4.26.0 (still UNVERIFIED — Docker + Aristotle both down):
-- `Equiv.mulLeft_zpow` (S11-confirmed nonexistent) replaced by an inline `G →* Perm G`
-  monoid hom + `map_zpow` (`Mathlib/Algebra/Group/Hom/Defs.lean:495`).
-- Both `g ≠ 1` arguments rewritten off the fragile `Nat.card`/`rw … at *` /
-  `Subgroup.card_bot` route onto `Subgroup.mem_bot`
-  (`Mathlib/Algebra/Group/Subgroup/Lattice.lean:139`) +
-  `Fintype.one_lt_card_iff_nontrivial` + `exists_pair_ne`.
-Remaining unverified-at-build: the `support = univ` computation and the final
-even-power `(-1)^card = 1` collapse; first live-backend session should
-`docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03`, repair if needed, register.
+This file formalizes **Milestone 1** of the permutation-sign (Zolotarev) route to
+quadratic reciprocity. The numerically-certified Milestone-1 proof from
+`research/problems/quadratic-reciprocity-algorithm-oq-03/knowledge.md` (sessions S1–S13)
+is now machine-checked Lean.
 
-**Changelog (S13, 2026-06-15, blackout STILL live — `docker info` times out, Aristotle
-`prove` returns `Resource not found` on a trivial ping).** Added the next forward lemma,
-`sign_mulLeft_eq_neg_one_zpow`: for `a = g ^ k` (g a generator, even order),
-`sign (mulLeft a) = (-1) ^ k`. This is the Zolotarev *sign computation* for an arbitrary
-element (previously the file only handled a generator). It reuses the same already-pinned
-`map_zpow` + inline `G →* Perm G` wiring as `isCycle_mulLeft_of_generator`, so it shares that
-construct's (un)verified status — no new bearer-name risk. File stays UNREGISTERED. What still
-remains for the headline `legendreSym p a = sign (mulLeft a)`: (i) Euler's criterion tie
-`legendreSym p a = (-1)^k`, (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge — both still
-prose in knowledge.md.
+**S14 (2026-06-15, Docker recovered).** Confirmed the blind transcription was sound:
+the inline `G →* Perm G` monoid-hom + `map_zpow` wiring (replacing the nonexistent
+`Equiv.mulLeft_zpow`, removed S12), the `support = univ` computation, and the
+even-power `(-1)^card = 1` collapse — all flagged "unverified" by S12/S13 — compile as
+written. Removed three linter-flagged unused `simp` arguments.
+
+**What this file does NOT yet contain** (the OQ is NOT resolved): the headline
+Zolotarev identity `legendreSym p a = sign (mulLeft a)` still needs (i) the Euler's-criterion
+tie `legendreSym p a = (-1)^k` and (ii) the field-`mulLeft₀`/units-`mulLeft` sign bridge
+(both prose in knowledge.md, S2 numerically verified). Milestone 2 (reciprocity from the
+grid-transpose permutation sign) is also not yet in Lean. This file verifies the genuinely-new
+*producer* lemma and the Zolotarev sign computation — the reusable core Mathlib lacks.
 
 ## What this targets
 
@@ -100,9 +92,9 @@ theorem isCycle_mulLeft_of_generator {G : Type*} [Group G] [Fintype G] [Decidabl
     have key : (Equiv.mulLeft g ^ i) = Equiv.mulLeft (g ^ i) := by
       have hz := map_zpow
         ({ toFun := Equiv.mulLeft
-           map_one' := by ext x; simp [Equiv.coe_mulLeft]
+           map_one' := by ext x; simp
            map_mul' := fun a b => by
-             ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, mul_assoc] } :
+             ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply] } :
           G →* Equiv.Perm G) g i
       simpa using hz.symm
     rw [key]; simp [Equiv.coe_mulLeft]
@@ -146,7 +138,7 @@ theorem sign_mulLeft_generator {G : Type*} [Group G] [Fintype G] [DecidableEq G]
   rcases heven with ⟨k, hk⟩
   -- card even ⇒ `(-1)^card = 1` ⇒ `-(1) = -1`
   have : ((-1 : ℤˣ)) ^ (Fintype.card G) = 1 := by
-    rw [hk]; simp [pow_add, pow_mul]
+    rw [hk]; simp [pow_add]
   rw [this]
 
 /-! ## Zolotarev sign of an arbitrary element via its discrete logarithm -/
@@ -170,9 +162,9 @@ theorem sign_mulLeft_eq_neg_one_zpow {G : Type*} [Group G] [Fintype G] [Decidabl
   have hmono : (Equiv.mulLeft a : Equiv.Perm G) = (Equiv.mulLeft g) ^ k := by
     have hz := map_zpow
       ({ toFun := Equiv.mulLeft
-         map_one' := by ext x; simp [Equiv.coe_mulLeft]
+         map_one' := by ext x; simp
          map_mul' := fun a b => by
-           ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply, mul_assoc] } :
+           ext x; simp [Equiv.coe_mulLeft, Equiv.Perm.mul_apply] } :
         G →* Equiv.Perm G) g k
     rw [ha]; simpa using hz
   rw [hmono, map_zpow, sign_mulLeft_generator hg hG heven]
