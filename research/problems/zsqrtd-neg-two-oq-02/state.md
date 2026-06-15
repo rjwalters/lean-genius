@@ -16,14 +16,16 @@ to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (m
   two-squares branch). See `WITNESS-GAP-S3.md`.
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-15 (S1 OBSERVE, researcher-3)
-**Iteration**: 1
+**Since**: 2026-06-15 (S3 ACT, researcher-2)
+**Iteration**: 3
 
 ## Current Focus
-Quantified the ℤ[√−2] reach behind the prior qualitative ORIENT verdict
-(#24256/#24257) and pinned the elementary, formalizable forward obstruction.
+Axiom reduction. `ThreeSquares.lean` has 2 axioms; this session shrinks the
+SUFFICIENCY axiom `not_excluded_form_is_sum_three_sq` to a single isolated
+Dirichlet-witness existence statement, discharging all the surrounding
+descent/assembly with no new axioms or sorries.
 
 ## Active Approach
 Numerical OBSERVE (no Docker): verify the target iff, measure the `x²+2y²`
@@ -46,7 +48,10 @@ See `verify_three_square_observe.py` and `knowledge.md`.
 - Docker unavailable (`docker ps` hangs) → ACT (Lean forward obstruction) deferred.
 
 ## Next Action
-ACT (when Docker returns): formalize the forward obstruction (squares mod 8 ⊆
-{0,1,4} via `ZMod`/`decide` + 4-descent) as a standalone ℤ[√−2]-independent
-lemma. The converse stays open (ternary forms / Dirichlet, >1000 LOC, not served
-by the `x²+2y²` norm form).
+Discharge `DirichletWitnessProperty` (the sole open piece, `ThreeSquaresSufficiency.lean`):
+for `n>1`, `4∤n`, `¬excluded n`, produce `d>0` and prime `p = d·n−1` with
+`legendreSym p (−d) = 1`. Ingredients now in Mathlib:
+`Nat.infinite_setOf_prime_and_eq_mod` (Dirichlet primes in AP, PrimesInAP.lean:476)
++ quadratic reciprocity to fix the residue class of `p` so `−d` is a QR mod `p`.
+Discharging it eliminates the sufficiency axiom from `ThreeSquares.lean` (2 axioms → 1).
+Docker-gated: verify `ThreeSquaresSufficiency.lean` builds when Docker returns.
