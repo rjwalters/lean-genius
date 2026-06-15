@@ -83,56 +83,72 @@
       "title": "Header and Imports",
       "startLine": 1,
       "endLine": 22,
-      "summary": "Module docstring stating the problem, its solved status, and reference. Six Mathlib imports for natural numbers, finite sets, reals, sets, and tactics. Opens Set namespace.",
-      "mathContext": "Erdős Problem #347: $\\exists A$ monotone with $a_{n+1}/a_n \\to 2$ such that $P(A')$ has density 1 for every cofinite $A' \\subseteq A$. Solved affirmatively."
+      "summary": "States Erdős Problem #347: is there a monotone sequence $A=\\{a_1\\leq a_2\\leq\\cdots\\}$ with $\\lim a_{n+1}/a_n=2$ such that every cofinite subsequence $A'$ has subset sums $P(A')$ of density $1$? SOLVED affirmatively (ebarschkis, after Tao/van Doorn). Imports `Nat`/`Finset`/`Real`/`Set`; opens `Set`.",
+      "mathContext": "$\\lim a_{n+1}/a_n=2$ with every cofinite subseq having density-1 subset sums? SOLVED (yes)."
     },
     {
       "id": "subset-sums",
       "title": "Subset Sums",
       "startLine": 23,
       "endLine": 28,
-      "summary": "`subsetSums A`: the set of all natural numbers expressible as finite subset sums from $A$.",
-      "mathContext": "$P(A) = \\{\\sum_{i \\in S} a_i : S \\subseteq \\mathbb{N},\\, |S| < \\infty\\}$. Binary: $P(\\{1,2,4,8,\\ldots\\}) = \\mathbb{N}$."
+      "summary": "Defines `subsetSums A` $=\\{\\sum_{s\\in S}s:S\\subseteq A\\text{ finite}\\}$, the set of finite subset sums.",
+      "mathContext": "$P(A)=\\{\\sum S:S\\subseteq A\\text{ finite}\\}$."
     },
     {
       "id": "density",
       "title": "Asymptotic Density",
       "startLine": 29,
       "endLine": 40,
-      "summary": "Counting function `countIn` and `HasDensity S delta` via epsilon-N_0 convergence of |S cap [1,N]|/N.",
-      "mathContext": "$\\text{HasDensity}(S, \\delta) \\iff |S \\cap [1,N]|/N \\to \\delta$ as $N \\to \\infty$. Goal: $\\delta = 1$."
+      "summary": "Defines `countIn S N` ($|S\\cap\\{1,\\dots,N\\}|$) and `HasDensity S δ` ($|S\\cap\\{1,\\dots,N\\}|/N\\to\\delta$).",
+      "mathContext": "$\\text{HasDensity}(S,\\delta):\\ |S\\cap\\{1,\\dots,N\\}|/N\\to\\delta$."
     },
     {
-      "id": "ratio-limit",
+      "id": "monotone-ratio",
       "title": "Monotone Sequences with Ratio Limit",
       "startLine": 41,
       "endLine": 53,
-      "summary": "`IsMonotone` (nondecreasing) and `HasRatioLimit a r` (consecutive ratio convergence). Critical value r = 2.",
-      "mathContext": "$\\lim_{n \\to \\infty} a_{n+1}/a_n = r$. Critical case $r = 2$: geometric growth at rate of binary powers."
+      "summary": "Defines `IsMonotone` (nondecreasing) and `HasRatioLimit a r` ($a_{n+1}/a_n\\to r$).",
+      "mathContext": "$\\text{HasRatioLimit}(a,r):\\ a_{n+1}/a_n\\to r$."
     },
     {
       "id": "cofinite",
       "title": "Cofinite Subsequences",
       "startLine": 54,
       "endLine": 64,
-      "summary": "`IsCofiniteSubseq`: strictly monotone reindexing with cofinite range. `cofiniteImage`: the values of the subsequence.",
-      "mathContext": "$A' \\subseteq A$ cofinite $\\iff |A \\setminus A'| < \\infty$. Robustness: $P(A')$ should still have density 1."
+      "summary": "Defines `IsCofiniteSubseq a ι` (strictly monotone $\\iota$ omitting only finitely many indices) and `cofiniteImage a ι` ($\\text{range}(a\\circ\\iota)$).",
+      "mathContext": "Cofinite subseq: $\\iota$ strictly monotone with $(\\text{range }\\iota)^c$ finite."
     },
     {
       "id": "main-conjecture",
       "title": "Main Conjecture (Solved)",
       "startLine": 65,
       "endLine": 79,
-      "summary": "Erdős Problem 347: existential statement and affirmative axiom. Solved by ebarschkis (Tao-van Doorn ideas).",
-      "mathContext": "$\\exists A: \\lim a_{n+1}/a_n = 2 \\wedge \\forall A' \\subseteq_{\\text{cof}} A,\\, \\text{HasDensity}(P(A'), 1)$. Answer: YES."
+      "summary": "Defines `ErdosProblem347` (existence of a monotone, ratio-2 sequence whose every cofinite subsequence has density-1 subset sums) and states the AXIOM `erdos347_affirmative` (the answer is YES).",
+      "mathContext": "Axiom: $\\exists a$ monotone, $a_{n+1}/a_n\\to2$, every cofinite subseq has density-1 subset sums."
     },
     {
       "id": "basic-properties",
       "title": "Basic Properties",
       "startLine": 80,
-      "endLine": 102,
-      "summary": "Zero in P(A), additive closure, and monotonicity of subset sums — the algebraic structure of P.",
-      "mathContext": "$0 \\in P(A)$ (empty sum); $s \\in P(A),\\, a \\in A \\Rightarrow s + a \\in P(A)$; $A \\subseteq B \\Rightarrow P(A) \\subseteq P(B)$."
+      "endLine": 126,
+      "summary": "PROVES basic facts about subset sums: `zero_mem_subsetSums` ($0\\in P(A)$), `subsetSums_insert` (corrected from a false `subsetSums_add` axiom — requires a fresh witness), `subsetSums_mono` ($A\\subseteq B\\Rightarrow P(A)\\subseteq P(B)$), `mem_subsetSums_of_mem`, `subsetSums_add_of_disjoint`, `cofiniteImage_subset`, and `isCofiniteSubseq_id`.",
+      "mathContext": "$0\\in P(A)$; $A\\subseteq B\\Rightarrow P(A)\\subseteq P(B)$; disjoint witnesses add; identity is cofinite."
+    },
+    {
+      "id": "density-infrastructure",
+      "title": "Density Infrastructure",
+      "startLine": 127,
+      "endLine": 164,
+      "summary": "PROVES counting/density lemmas: `countIn_mono` ($A\\subseteq B\\Rightarrow\\text{countIn }A\\leq\\text{countIn }B$), `countIn_le` ($\\leq N$), and `hasDensity_one_of_superset` (density 1 is inherited by supersets, by the sandwich $\\text{countIn }A/N\\leq\\text{countIn }B/N\\leq1$).",
+      "mathContext": "$A\\subseteq B$, $A$ density $1\\Rightarrow B$ density $1$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences of the Axiom",
+      "startLine": 165,
+      "endLine": 195,
+      "summary": "PROVES corollaries of `erdos347_affirmative`: `erdos347_range_density_one` (the full range has density-1 subset sums, via the identity subsequence), `subsetSums_cofiniteImage_subset`, and `erdos347_cofinite_density_via_superset` (density 1 for every cofinite subsequence as a superset of $P(\\text{cofiniteImage})$).",
+      "mathContext": "From the axiom: $P(\\text{range }a)$ has density 1; inherited by all cofinite subsequences."
     }
   ],
   "conclusion": {
