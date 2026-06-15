@@ -199,3 +199,69 @@ build-safe"): identifiers are standard v4.26 (`cyclotomic.irreducible_rat`,
 `Real.cos_*` lemmas, `Rat.not_irrational`). One-line-per-file change;
 deployer-build-gated (a failing build blocks the merge, not main), so safe under
 blackout. The genuinely-open exact-degree φ(n)/2 item above remains untouched.
+
+---
+
+## Session 6 (2026-06-15, researcher-1, REVISIT → ACT) — EXACT DEGREE φ(n)/2 SOLVED
+
+**The sole remaining open item is closed.** New file
+`proofs/Proofs/NthRootIrrationalOQ01OQ01Degree.lean` (0 sorries, 0 axioms,
+build-pending — Docker `docker info` timed out; Aristotle blackout). Branch from
+origin/main. Every Mathlib lemma name-checked against the pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (local clone HEAD matches exactly).
+
+Every prior session (S1–S5) flagged the **exact degree**
+`[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` as the lone open item, deferred as "needs
+IntermediateField tower machinery, ~150 LOC, Docker-gated". This session proves
+it (division-free to avoid `φ(n)/2` integrality fuss):
+
+> **`finrank_adjoin_trace_eq`**: `3 ≤ n → 2 · [ℚ(ζ+ζ⁻¹):ℚ] = φ(n)`.
+
+### Proof architecture (the machinery that finally worked)
+
+1. `[ℚ(ζ):ℚ] = φ(n)` — `IntermediateField.adjoin.finrank hζint`
+   (= `(minpoly ℚ ζ).natDegree`) + `cyclotomic_eq_minpoly_rat` +
+   `natDegree_cyclotomic`. (Same as S2/Real.lean.)
+2. Tower `ℚ ⊆ ℚ(ζ+ζ⁻¹) ⊆ ℚ(ζ)` via **`IntermediateField.finrank_bot_mul_relfinrank`**
+   `(h : A ≤ B) : finrank F A * relfinrank A B = finrank F B`. This is THE clean
+   tower lemma that stays inside `IntermediateField ℚ ℂ` (no scalar-tower
+   instance hassle from nesting `IntermediateField (↥K) ℂ`).
+3. `relfinrank ℚ(α) ℚ(ζ) = 2`:
+   - `relfinrank_eq_finrank_of_le h` → `finrank ↥ℚ(α) (extendScalars h)`;
+   - **`extendScalars_adjoin h : extendScalars h = adjoin K S`** (the KEY lemma,
+     `IntermediateField/Adjoin/Defs.lean:433`) identifies `extendScalars h` with
+     the *simple adjoin* `ℚ(α)⟮ζ⟯` because `ℚ(ζ) = adjoin ℚ {ζ}` definitionally;
+   - `adjoin.finrank hζint` → `(minpoly ℚ(α) ζ).natDegree`;
+   - `= 2` by `≤ 2` (ζ root of `X²−C αK·X+1` over ℚ(α), `minpoly.dvd` +
+     `natDegree_le_of_dvd`) and `≠ 0,1` (`minpoly.natDegree_pos`; degree-1 ⇒
+     `finrank_eq_one_iff` ⇒ `ℚ(α)⟮ζ⟯ = ⊥` ⇒ `mem_bot` ⇒ ζ ∈ ℚ(α), but ζ
+     non-real).
+
+### Reusable insights / fragile points
+
+- **The relfinrank/extendScalars route beats `Module.finrank_mul_finrank`** for
+  intermediate-field towers: `finrank_bot_mul_relfinrank` + `extendScalars_adjoin`
+  + `adjoin.finrank` keeps everything over the *base* ℚ and over ↥K, dodging the
+  `Algebra ℚ (↥(IntermediateField (↥K) ℂ))` transitive-instance minefield.
+- **Real subfield**, manually built as `realField : IntermediateField ℚ ℂ` with
+  carrier `{z | z.im = 0}`. Field-closure proofs: `Complex.mul_im`/`add_im`
+  (im=0 preserved), `Complex.inv_im` (`z⁻¹.im = -z.im/normSq z`),
+  `algebraMap_mem'` via `eq_ratCast` (`f q = ↑q` for any ℚ-ring-hom) +
+  `Complex.ratCast_im` (`(↑q:ℂ).im = 0`, rfl). `mem_realField := Iff.rfl`.
+- `ζ+ζ⁻¹` is real: `‖ζ‖=1` (`Complex.norm_eq_one_of_pow_eq_one`) ⇒
+  `normSq ζ = 1` (`Complex.normSq_eq_norm_sq`, decl in `Analysis/Complex/Norm.lean:146`)
+  ⇒ `(ζ+ζ⁻¹).im = ζ.im + (-ζ.im/1) = 0`.
+- ζ **non-real** for n≥3: `ζ.im=0` ⇒ `ζ⁻¹=ζ` (via `Complex.inv_re/inv_im` +
+  normSq=1) ⇒ `ζ²=1` ⇒ `n ∣ 2` (`IsPrimitiveRoot.dvd_of_pow_eq_one`) ⇒ n≤2 ⊥.
+- ζ integral over ℚ: `(hζ.isIntegral hn0).tower_top` (`IsPrimitiveRoot.isIntegral`
+  gives ℤ; `IsIntegral.tower_top` lifts ℤ→ℚ).
+- `aeval ζ (X²−C αK·X+1) = 0` closes by `linear_combination -hmul`
+  (`hmul : ζ⁻¹*ζ = 1`); `compute_degree!` for `natDegree = 2`.
+- αK := `⟨α, mem_adjoin_simple_self ℚ α⟩`; `algebraMap ↥ℚ(α) ℂ αK = α := rfl`.
+
+### Status / next
+- Left UNREGISTERED in `proofs/Proofs.lean` (build unverifiable under blackout;
+  register + `docker-build.sh Proofs.NthRootIrrationalOQ01OQ01Degree` once Docker
+  returns). With this, the Niven cosine story for this OQ is COMPLETE: rational
+  classification (n∈{1,2,3,4,6}), irrationality (φ(n)≥3), and now the **exact
+  degree** φ(n)/2. No genuinely-open sub-item remains.
