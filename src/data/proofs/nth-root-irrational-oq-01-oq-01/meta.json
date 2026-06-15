@@ -7,7 +7,7 @@
     "author": "Ivan Niven (1956); cyclotomic theory: Gauss, Kronecker; formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Niven%27s_theorem",
     "date": "1956",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/NthRootIrrationalOQ01OQ01.lean",
     "tags": [
       "number-theory",
@@ -18,10 +18,10 @@
       "irrationality",
       "open-question"
     ],
-    "badge": "wip",
+    "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries across all five files. Build-pending: relies on Mathlib's cyclotomic API (cyclotomic.irreducible_rat, natDegree_cyclotomic, IsPrimitiveRoot.isRoot_cyclotomic, cyclotomic_eq_minpoly_rat) plus, in the Degree companion, the IntermediateField tower API (finrank_bot_mul_relfinrank, extendScalars_adjoin, adjoin.finrank) at pinned v4.26.0. The metrics below are for the primary file (133 lines, 6 theorems); the four companions Real (113), Cos (150), CosRational (103), and Degree (267) total ≈ 766 lines. The Degree companion (added this session, all five now registered in proofs/Proofs.lean) closes the previously-open exact-degree item: 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n), making the 'cos(2π/n) rational ⟺ φ(n) ≤ 2' equivalence a degree theorem. Local docker-build OOMs on import-Mathlib files (broken Mathlib olean cache: circular .lake symlink + cache volume mounted at the wrong path), so the typecheck is gated to the deployer build, which already builds the four merged siblings green. Promote to verified once a green build of Proofs.NthRootIrrationalOQ01OQ01 and its four companions confirms the typecheck.",
+    "assumptions": "0 axioms, 0 sorries across all five files. Docker-verified green (2026-06-15): all five — NthRootIrrationalOQ01OQ01 (primary), Real, Cos, CosRational, Degree — kernel-check at the v4.26.0 pin. Builds on Mathlib's cyclotomic API (cyclotomic.irreducible_rat, natDegree_cyclotomic, IsPrimitiveRoot.isRoot_cyclotomic, cyclotomic_eq_minpoly_rat) plus the IntermediateField tower API (finrank_bot_mul_relfinrank, extendScalars_adjoin, adjoin.finrank) in the Degree companion. The Degree companion needed set_option synthInstance.maxHeartbeats 400000 (the Module (ℚ⟮α⟯) (ℚ⟮α⟯)[X] instance over the IntermediateField subtype is synthesizable but exceeds the default 20000 budget). It closes the exact-degree item: 2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n), making 'cos(2π/n) rational ⟺ φ(n) ≤ 2' a degree theorem.",
     "mathlibDependencies": [
       {
         "theorem": "cyclotomic.irreducible_rat",

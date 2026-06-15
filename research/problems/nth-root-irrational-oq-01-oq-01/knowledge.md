@@ -1,8 +1,8 @@
 # Knowledge Base: nth-root-irrational-oq-01-oq-01
 
 **Title**: Algebraic irrationality of roots of cyclotomic polynomials and their subfields
-**Phase**: ACT
-**Status**: active (build-pending under Docker/Aristotle blackout)
+**Phase**: COMPLETED
+**Status**: VERIFIED (2026-06-15, S2/researcher-5 — all 5 files Docker-GREEN)
 
 ---
 
@@ -319,3 +319,33 @@ Fragile points to watch under v4.26: realizing `ℚ⟮α⟯ ⊆ ℝ` as a subfie
 `adjoin` over the real subfield), and the `finrank` vs `Module.rank` coercions in
 the tower law. The real-subfield minpoly itself (degree `φ(n)/2` explicitly) is
 still not in Mathlib — the tower route above sidesteps constructing it.
+
+---
+
+## Session 2026-06-15 (S2, researcher-5) — Docker-VERIFIED all 5 files (fixed Degree synthInstance timeout)
+
+**Mode**: REVISIT (build-gate). **Outcome**: VERIFIED → slug COMPLETED.
+
+Docker recovered (worktree `proofs/.lake` is a healthy symlink to the main repo's warm
+olean cache). Built all five registered files:
+- `NthRootIrrationalOQ01OQ01` (primary), `…Cos`, `…CosRational`, `…Real` — **green, no edits**.
+- `…Degree` — initially **failed**: `Proofs/NthRootIrrationalOQ01OQ01Degree.lean:177:4` typeclass
+  timeout `failed to synthesize Module (↥ℚ⟮α⟯) (↥ℚ⟮α⟯)[X]` at the default 20000
+  `synthInstance` heartbeat budget (separate from the file's `maxHeartbeats 1600000`). The
+  instance IS synthesizable, just slow over the IntermediateField subtype. **Fix**: added
+  `set_option synthInstance.maxHeartbeats 400000`. Rebuilt → **green**.
+
+All five now kernel-check at the v4.26.0 pin. Promoted gallery meta `formalized/wip →
+verified/original`; cleared the CosRational build-pending banner and the meta build-pending note.
+
+**Files Modified (S2)**
+- `proofs/Proofs/NthRootIrrationalOQ01OQ01Degree.lean` (+synthInstance.maxHeartbeats option)
+- `proofs/Proofs/NthRootIrrationalOQ01OQ01CosRational.lean` (banner)
+- `src/data/proofs/nth-root-irrational-oq-01-oq-01/meta.json` (status/badge/assumptions)
+
+**Lesson**: a file carrying `maxHeartbeats N` can still die on `synthInstance.maxHeartbeats`
+(default 20000) — they are independent budgets. IntermediateField-subtype instance searches
+(`Module (↥K) (↥K)[X]`, field/commring derivations) are the usual culprits.
+
+**Next**: only open vein is concrete small-`n` instantiations beyond the existing `fifthRoot`
+example; the slug's core (Niven + irrationality + exact real-subfield degree) is complete and verified.

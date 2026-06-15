@@ -54,6 +54,9 @@
 import Mathlib
 
 set_option maxHeartbeats 1600000
+-- The `Module (↥ℚ⟮α⟯) (↥ℚ⟮α⟯)[X]` instance over the IntermediateField subtype is
+-- synthesizable but exceeds the default 20000 synthInstance budget; raise it.
+set_option synthInstance.maxHeartbeats 400000
 set_option linter.unusedVariables false
 
 open Polynomial Module IntermediateField

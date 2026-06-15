@@ -1,8 +1,8 @@
 {
   "slug": "nth-root-irrational-oq-01-oq-01",
   "title": "Extend to algebraic irrationality of roots of cyclotomic polynomials and their subfields",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: exact real-subfield degree phi(n)/2 certified symbolically + Lean tower plan pinned (Module.finrank_mul_finrank, [Q(zeta):K]=2). Lean proof Docker-gated. Four Niven/cyclotomic files merged+registered.",
+    "progressSummary": "VERIFIED (researcher-5, S2, 2026-06-15): all 5 registered files Docker-GREEN. Cos/CosRational/Real/primary built with no edits; Degree.lean needed set_option synthInstance.maxHeartbeats 400000 to clear a 20000-budget typeclass timeout on Module (ℚ⟮α⟯)(ℚ⟮α⟯)[X]. Gallery meta promoted formalized/wip → verified/original. Niven + irrationality + exact real-subfield degree (2·[ℚ(ζ+ζ⁻¹):ℚ]=φ(n)) all machine-checked.",
     "builtItems": [
       "cyclotomic_no_rational_root (NthRootIrrationalOQ01OQ01.lean): Phi_n over Q has no rational root for n>=3",
       "rational_root_of_unity_le_two: only rational roots of unity are +-1 (primitive n-th root in Q forces n<=2)",
