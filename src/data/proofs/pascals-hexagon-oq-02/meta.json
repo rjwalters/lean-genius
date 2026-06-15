@@ -67,5 +67,63 @@
       "Homogeneous coordinates and the cross product as join/meet",
       "The adjugate matrix and the dual conic / envelope of tangent lines"
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Header: Brianchon as the Dual of Pascal",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring framing Brianchon's theorem as the projective dual of Pascal's hexagon theorem and explaining why the self-dual homogeneous-coordinate model of the parent file makes the duality automatic."
+    },
+    {
+      "id": "imports-setup",
+      "title": "Imports and Namespace",
+      "startLine": 46,
+      "endLine": 57,
+      "summary": "Imports the matrix adjugate API and the parent PascalsHexagon file, opens Matrix, and enters the Brianchon namespace; all projective primitives (Conic, ProjLine, cross product, collinear) are inherited from the parent."
+    },
+    {
+      "id": "dual-conic-tangency",
+      "title": "Dual Conic and Tangency",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Defines dualConic C as the adjugate adj(C) (the line-conic / envelope) and IsTangentLine, declaring a line tangent to C exactly when it lies on the dual conic via the quadratic form l^T adj(C) l = 0."
+    },
+    {
+      "id": "dual-symmetric",
+      "title": "Dual of a Symmetric Conic is Symmetric",
+      "startLine": 70,
+      "endLine": 89,
+      "summary": "Proves dualConic_symmetric using Matrix.adjugate_transpose: symmetry of C transfers to adj(C), confirming that the dual of a genuine (symmetric) conic is again a genuine conic."
+    },
+    {
+      "id": "circumscribed-diagonals",
+      "title": "Circumscribed Hexagon and Main Diagonals",
+      "startLine": 91,
+      "endLine": 126,
+      "summary": "Defines the CircumscribedHexagon structure (six valid sides on the line-conic) and the three main diagonals diagAD, diagBE, diagCF as nested cross products joining opposite vertices."
+    },
+    {
+      "id": "duality-bridge",
+      "title": "Duality Bridge: Sides as Inscribed Points",
+      "startLine": 128,
+      "endLine": 165,
+      "summary": "toInscribed reinterprets the six tangent sides as six inscribed points, and pascalP/Q/R_toInscribed prove by rfl that the Pascal opposite-side points of this reading are literally the three main diagonals."
+    },
+    {
+      "id": "brianchon-theorem",
+      "title": "Brianchon's Theorem",
+      "startLine": 167,
+      "endLine": 183,
+      "summary": "Proves brianchon_theorem by applying pascal_hexagon_theorem to toInscribed hex, rewriting the Pascal points into the diagonals via the bridge lemmas; collinearity of the three lines is their concurrency."
+    },
+    {
+      "id": "tangency-framing",
+      "title": "Tangency Framing and Sanity Check",
+      "startLine": 185,
+      "endLine": 198,
+      "summary": "brianchon_circumscribed restates the theorem for a hexagon tangent to a point-conic C (line-conic adj(C)), and side_tangent_iff_on_dualConic records that tangency is by definition membership on the dual conic."
+    }
+  ]
 }
