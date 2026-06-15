@@ -71,6 +71,13 @@
   },
   "sections": [
     {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring framing the extremal question (largest Morley triangle at fixed circumradius), the calculus-free strategy (substitute aᵢ=αᵢ/3, bound the product of sines by its value at the mean π/9 via AM–GM and Jensen), and the namespace/imports (Mathlib, open Real Set)",
+      "startLine": 1,
+      "endLine": 49
+    },
+    {
       "id": "analytic-inequalities",
       "title": "Two Analytic Inequalities",
       "summary": "AM–GM for three nonnegatives (explicit SOS certificate) and three-point Jensen for sin on [0, π] (chained two-point concavity)",
