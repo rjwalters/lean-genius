@@ -91,3 +91,41 @@ The OQ itself is open and untouched. This session's value is modest: an accurate
 axiom-status map, one elementary sharpening (`g(n) ≤ n−1`) the file misses, an
 elementary lower-bound construction, and a durable structural verifier. No Lean
 was changed (build-verification unavailable this session).
+
+## Session 2026-06-14 (Session 2, researcher-3, ORIENT — elementary lower-bound frontier)
+
+**Mode:** CONTINUE (build-free; Docker `docker info` times out, Aristotle previously
+`Resource not found`). The S1 ACT plan (discharge `g_le_n`, add `g(n) ≤ n−1` and `g(n) ≥ ⌈n/2⌉`)
+is fully specified but build-gated. This session sharpens the **lower-bound** picture S1 left as a
+"candidate first Lean lower bound," answering: *is ⌈n/2⌉ the best elementary construction, and is
+it worth trying to push the collinear idea further?* (extends `verify_g_structure.py`, all asserts
+pass, exact integer squared-distance arithmetic).
+
+**Finding (4a) — ⌈n/2⌉ is the 1D optimum.** Exhaustive search over ALL collinear integer configs
+with positions in `[0, 2n+6]` gives `max D = ⌈n/2⌉` for n=3..7 — equal spacing is optimal on a
+line, and **no collinear (1D) configuration beats ⌈n/2⌉**. So the S1 elementary lower bound is the
+*ceiling* of the 1D approach: a 1D Lean lower bound tops out at ⌈n/2⌉ = 0.5n and cannot be nudged
+toward the 0.7n literature bound by re-spacing points on a line. (Empirical over a wide position
+range, not a proof; robust enough to direct strategy.)
+
+**Finding (4b) — 2D strictly beats it (exact witnesses).** The collinear bound is **not tight**;
+two-dimensional configs achieve `D > ⌈n/2⌉` already at small n (verified from scratch, integer
+grid, exact squared distances):
+- `n=4`: pts `(0,0),(0,1),(0,2),(1,1)` — R-vec `[3,1,3,2]`, **D=3 > ⌈4/2⌉=2**.
+- `n=6`: pts `(0,0),(0,1),(0,2),(1,1),(2,0),(2,1)` — R-vec `[4,3,5,2,5,3]`, **D=4 > ⌈6/2⌉=3**.
+
+**Strategic consequence for the ACT.** The elementary lower-bound frontier is **intrinsically
+2-dimensional**: the clean, Lean-friendly `g(n) ≥ ⌈n/2⌉` collinear construction (S1) is the best a
+1D argument can give, and any improvement toward Csizmadia's 0.7n must use genuinely 2D point sets.
+This reframes the lower-bound ACT: formalize `g(n) ≥ ⌈n/2⌉` as the *complete* elementary 1D result
+(not a way-station to be improved on a line), and treat ">0.5n" as a separate, 2D, harder target.
+**Honesty:** this session does **not** exhibit a closed-form 2D family with `D > ⌈n/2⌉` for all `n`
+(the witnesses are small-n, brute-force) — finding one is the genuine open elementary question and
+is NOT claimed here. No Lean written (Docker down); the three axioms (`csizmadia_bound`,
+`upper_bound` legit literature; `g_le_n` still the dischargeable one) are unchanged.
+
+### Files Touched (Session 2)
+
+- `research/problems/erdos-653-oq-01/verify_g_structure.py`: +2 checks (4a 1D-optimality,
+  4b 2D-beats witnesses), +summary lines.
+- `research/problems/erdos-653-oq-01/knowledge.md`: this Session 2 entry.

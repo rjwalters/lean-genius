@@ -159,6 +159,50 @@ def brute_force_g(max_n=6, grid=4):
         print(f"  n={n}: best D found = {best}  (elementary ceiling n-1 = {n-1})")
 
 
+# ---------------------------------------------------------------------------
+# (4) Is the collinear bound ceil(n/2) the best ELEMENTARY lower bound?
+#     (4a) 1D (collinear) optimality: search ALL integer positions in [0,M] and
+#          confirm max D over collinear configs equals ceil(n/2) -- i.e. equal
+#          spacing is optimal in 1D and the bound CANNOT be improved on a line.
+#     (4b) 2D strictly beats it: exhibit exact-arithmetic witnesses with
+#          D > ceil(n/2), proving the lower-bound frontier is intrinsically
+#          two-dimensional (a 1D Lean lower bound tops out at ceil(n/2)).
+# ---------------------------------------------------------------------------
+def check_1d_optimality(max_n=7):
+    print("\n(4a) 1D optimality: max D over ALL collinear integer configs in [0,M]")
+    print("     equals ceil(n/2) (equal spacing is optimal on a line):")
+    ok = True
+    for n in range(3, max_n + 1):
+        M = 2 * n + 6
+        best = 0
+        for combo in combinations(range(M + 1), n):
+            best = max(best, D_config([(x, 0) for x in combo]))
+        ok &= assert_eq(f"1D max D (n={n}, M={M})", best, ceil(n / 2))
+    print(f"  => ceil(n/2) is the best any collinear config achieves: {ok}")
+    return ok
+
+
+def check_2d_beats_collinear():
+    """Exact-arithmetic witnesses with D > ceil(n/2): the elementary collinear
+    bound is NOT tight; improving it requires genuinely 2D constructions.
+    Witnesses found by integer-grid brute force; verified here from scratch."""
+    print("\n(4b) 2D strictly beats ceil(n/2) -- exact witnesses (D > ceil(n/2)):")
+    witnesses = {
+        4: [(0, 0), (0, 1), (0, 2), (1, 1)],                          # D=3 > 2
+        6: [(0, 0), (0, 1), (0, 2), (1, 1), (2, 0), (2, 1)],          # D=4 > 3
+    }
+    ok = True
+    for n, pts in witnesses.items():
+        d = D_config(pts)
+        Rvec = [R_value(pts, i) for i in range(n)]
+        beats = d > ceil(n / 2)
+        status = "OK " if beats else "FAIL"
+        print(f"  [{status}] n={n}: pts={pts} R-vec={Rvec} D={d} > ceil(n/2)={ceil(n / 2)}")
+        ok &= beats
+    print(f"  => the elementary lower-bound frontier is intrinsically 2D: {ok}")
+    return ok
+
+
 if __name__ == "__main__":
     print("=" * 70)
     print("Erdős #653 OQ-01 — structural / bound verification (ORIENT, not a proof)")
@@ -167,8 +211,13 @@ if __name__ == "__main__":
     r2 = check_regular_polygon()
     r3 = check_collinear()
     brute_force_g()
+    r4a = check_1d_optimality()
+    r4b = check_2d_beats_collinear()
     print("\nSummary:")
     print(f"  elementary n-1 bound empirically valid : {r1}")
     print(f"  regular-polygon structure confirmed    : {r2}")
     print(f"  collinear ceil(n/2) construction valid : {r3}")
+    print(f"  ceil(n/2) is the 1D optimum            : {r4a}")
+    print(f"  2D strictly beats ceil(n/2) (witnessed): {r4b}")
     print("\nNOTE: the OQ (g(n) >= (1-o(1))n) is OPEN and is NOT addressed here.")
+    print("A closed-form 2D family with D > ceil(n/2) for all n is NOT claimed.")
