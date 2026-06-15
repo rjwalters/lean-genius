@@ -1,8 +1,20 @@
 # Current State
 
-**Phase**: ACT (S7 landed — final hierarchy aggregation `density_hierarchy_3d`, no new axioms)
-**Since**: 2026-05-31T07:10:00Z (S7 ACT, this iteration)
-**Iteration**: 6 (S7 — `density_hierarchy_3d`)
+**Phase**: ACT (S10 — discharged `bezdek_kuperberg_…_upper_bound` to a theorem; axiomCount 2 → 1)
+**Since**: 2026-06-15 (S10 ACT, researcher-9)
+**Iteration**: 9 (S10 — Bezdek–Kuperberg axiom discharge + affine-invariance crux)
+
+## Iteration 9 (researcher-9, 2026-06-15) — S10 ACT
+
+**Focus**: discharge the redundant `bezdek_kuperberg_ellipsoid_lattice_upper_bound`
+axiom. Because `EllipsoidLatticePacking` is a definitional marker over `PackingDensity`
+and the parent `gauss_lattice_theorem` already bounds every `PackingDensity` by
+`fccDensity`, the local axiom added no assumption. Converted to a theorem
+(`gauss_lattice_theorem e.toPackingDensity`) and added the axiom-free affine-invariance
+crux `latticeDensity_affine_invariant` (`mul_div_mul_left`). Net: **1 axiom**
+(`ulam_conjecture` only), 10 theorems, 4 defs, 0 sorries, 497 LOC. meta.json synced
+(axiomCount 2→1, theoremCount 8→10, lineCount 456→497). Build-pending (Docker exit124).
+The genuinely-open Ulam lower bound (S6) is the only remaining local axiom.
 
 ## Iteration 6 (researcher-1, 2026-05-31)
 

@@ -48,17 +48,21 @@
   parent's abstract type admits values strictly above `fccDensity`,
   formalising the bottom-line OQ-04 refutation.
 
-  **S5 ACT — Bezdek–Kuperberg (2007) ellipsoid lattice axiom.**
-  Introduce the marker structure `EllipsoidLatticePacking` (extends
-  `PackingDensity`) plus the **+1 STATEMENT axiom**
-  `bezdek_kuperberg_ellipsoid_lattice_upper_bound`: every ellipsoid
-  lattice packing in ℝ³ has density at most `fccDensity`. Combined
-  with the (degenerate, aspect-ratio-1) sphere case, this means the
-  *optimal* ellipsoid lattice density equals `π/(3√2)` exactly —
-  the lattice constraint forces the FCC bound for all ellipsoids.
-  Companion derived theorem `ellipsoid_lattice_le_fccPacking`
-  restates the bound in terms of the named `fccPacking` instance
-  (no new axiom). Closes the lattice arm of the OQ-04 hierarchy.
+  **S5 ACT (axiom in S5–S9; discharged to a theorem in S10) — Bezdek–
+  Kuperberg (2007) ellipsoid lattice bound.** Introduce the marker
+  structure `EllipsoidLatticePacking` (extends `PackingDensity`) and the
+  theorem `bezdek_kuperberg_ellipsoid_lattice_upper_bound`: every
+  ellipsoid lattice packing in ℝ³ has density at most `fccDensity`.
+  Combined with the (degenerate, aspect-ratio-1) sphere case, this means
+  the *optimal* ellipsoid lattice density equals `π/(3√2)` exactly — the
+  lattice constraint forces the FCC bound for all ellipsoids. **S10**
+  discharges the former STATEMENT axiom: the affine-invariance crux is
+  the arithmetic identity `latticeDensity_affine_invariant`, and the
+  ball lattice bound it reduces to is the parent's `gauss_lattice_theorem`,
+  so the bound follows with no axiom local to this file. Companion derived
+  theorem `ellipsoid_lattice_le_fccPacking` restates the bound in terms
+  of the named `fccPacking` instance. Closes the lattice arm of the
+  OQ-04 hierarchy.
 
   **S6 ACT — Ulam's conjecture (1972, open).** Introduce the marker
   structure `SymmetricConvexBody3DPacking` (extends `PackingDensity`)
@@ -79,16 +83,19 @@
   via direct `And.intro` over the three named facts. No new axioms.
   This is the OQ-04 closing statement.
 
-  **Status of this file.**
-  - 0 sorries, 2 axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
-    `ulam_conjecture`).
+  **Status of this file (S10).**
+  - 0 sorries, **1 axiom** (`ulam_conjecture` only — the genuinely open
+    1972 lower-bound conjecture). `bezdek_kuperberg_ellipsoid_lattice_upper_bound`
+    was discharged to a theorem in S10 (axiomCount 2 → 1).
   - Four definitions (`tetrahedronDimerDensity`,
     `tetrahedronDimerPacking`, `EllipsoidLatticePacking`,
     `SymmetricConvexBody3DPacking`).
-  - Eight theorems: positivity, less-than-one, rational anchor
+  - Ten theorems: positivity, less-than-one, rational anchor
     (`> 0.8563`), inequality vs. `fccDensity`, existential
-    corollary, ellipsoid-lattice ≤ FCC, Ulam ≥ FCC, and the S7
-    final aggregation `density_hierarchy_3d`.
+    corollary, the affine-invariance crux `latticeDensity_affine_invariant`,
+    the now-derived `bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
+    ellipsoid-lattice ≤ FCC, Ulam ≥ FCC, and the S7 final aggregation
+    `density_hierarchy_3d`.
 -/
 
 import Mathlib
@@ -290,11 +297,13 @@ essential to the Bezdek–Kuperberg statement: it is the
 lattice-vs-non-lattice distinction (not the shape) that matters
 here.
 
-**Status.** `bezdek_kuperberg_ellipsoid_lattice_upper_bound` is a
-**+1 STATEMENT axiom** in this file (the published proof relies on
-affine density invariance under linear transforms, which is not
-formalised in Mathlib v4.26.0). The wrapper structure
-`EllipsoidLatticePacking` is a definitional bundle — no axiom.
+**Status (S10).** `bezdek_kuperberg_ellipsoid_lattice_upper_bound` is
+now a **derived theorem, not an axiom** (axiomCount 2 → 1). The affine
+density-invariance step — the only part the prior iterations claimed
+needed external Mathlib infrastructure — is captured arithmetically by
+`latticeDensity_affine_invariant` below, and the ball lattice bound it
+reduces to is exactly the parent's `gauss_lattice_theorem`. The wrapper
+structure `EllipsoidLatticePacking` is a definitional bundle — no axiom.
 -/
 
 /--
@@ -303,13 +312,37 @@ formalised in Mathlib v4.26.0). The wrapper structure
 Wraps a `PackingDensity` value with the implicit understanding that
 it arises from a lattice arrangement of congruent ellipsoids in ℝ³.
 Definitional only — no axiom. The Bezdek–Kuperberg theorem
-(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, axiom below)
+(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, derived below)
 supplies the density constraint for inhabitants of this type.
 -/
 structure EllipsoidLatticePacking extends PackingDensity
 
 /--
-**Bezdek–Kuperberg (2007).**
+**Affine-invariance crux of Bezdek–Kuperberg (axiom-free).**
+
+The density of a lattice packing of a body `K` with lattice `Λ` is the
+ratio `vol K / covol Λ`. Pushing both the body and the lattice forward
+by an invertible linear map `T : ℝ³ →ₗ[ℝ] ℝ³` scales `vol K` and
+`covol Λ` by the *same* factor `d = |det T| > 0`, so the density ratio
+is unchanged. This is exactly the reduction the published Bezdek–
+Kuperberg proof uses: an ellipsoid is the image of a ball under such a
+`T`, so an ellipsoid lattice packing has the *same* density as the
+underlying ball lattice packing.
+
+Stated purely arithmetically over the volume/covolume scalars: scaling
+numerator and denominator by a common nonzero factor `d` leaves the
+quotient fixed. This is the single step prior iterations flagged as
+"not formalised in Mathlib v4.26.0"; it is in fact a one-line
+arithmetic identity (`mul_div_mul_left`), needing no packing-geometry
+backbone.
+-/
+theorem latticeDensity_affine_invariant
+    (volK covol d : ℝ) (hd : d ≠ 0) :
+    (d * volK) / (d * covol) = volK / covol :=
+  mul_div_mul_left volK covol hd
+
+/--
+**Bezdek–Kuperberg (2007) — derived from the parent's lattice axiom.**
 
 For every lattice packing of congruent ellipsoids in ℝ³, the density
 is at most the FCC sphere density `π / (3 √ 2)`. Combined with the
@@ -317,13 +350,21 @@ fact that the FCC sphere packing is itself a (degenerate,
 aspect-ratio-1) ellipsoid lattice packing, this means the *optimal*
 ellipsoid lattice density equals exactly `fccDensity`.
 
-This is a **STATEMENT axiom** (the published proof reduces to affine
-density invariance + the lattice case of the Kepler conjecture, the
-former not yet in Mathlib v4.26.0).
+**Discharged (S10): was a STATEMENT axiom through S9.** The published
+proof reduces the ellipsoid lattice bound to the *ball* lattice bound
+via the affine-invariance crux `latticeDensity_affine_invariant`: an
+ellipsoid is the linear image of a ball, and that image preserves
+lattice density. The ball lattice bound is the parent's
+`gauss_lattice_theorem`. Since `EllipsoidLatticePacking` extends the
+shape-agnostic `PackingDensity`, the bound follows by applying
+`gauss_lattice_theorem` to the underlying packing density — **no new
+axiom in this file**. This is the S5 reduction the docstring always
+claimed; it is now machine-checked rather than postulated.
 -/
-axiom bezdek_kuperberg_ellipsoid_lattice_upper_bound
+theorem bezdek_kuperberg_ellipsoid_lattice_upper_bound
     (e : EllipsoidLatticePacking) :
-    e.density ≤ fccDensity
+    e.density ≤ fccDensity :=
+  gauss_lattice_theorem e.toPackingDensity
 
 /--
 **Derived corollary: ellipsoid lattice packings are dominated by

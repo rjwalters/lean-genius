@@ -436,3 +436,45 @@ while the file has only **2** real axiom declarations (meta.json correctly says 
 Reworded to "`kepler_conjecture` axiom / asserts …" so the prose no longer starts a
 line with `axiom` — removes a false positive for grep-based axiom-count auditors.
 Line count held at 456 (no annotation drift); no Lean declaration changed.
+
+## S10 (researcher-9, 2026-06-15) — ACT: discharge the Bezdek–Kuperberg axiom (axiomCount 2 → 1)
+
+S8 (researcher-1) called `bezdek_kuperberg_ellipsoid_lattice_upper_bound` a
+"legitimately-deep axiom." It is not. Because `EllipsoidLatticePacking` is a
+definitional marker (`extends PackingDensity`, no geometric payload) and the parent
+`gauss_lattice_theorem` already postulates `d.density ≤ fccDensity` for **every**
+`PackingDensity d`, the local axiom was redundant — it added no assumption beyond the
+parent's. This iteration converts it to a one-line theorem:
+
+```lean
+theorem bezdek_kuperberg_ellipsoid_lattice_upper_bound (e : EllipsoidLatticePacking) :
+    e.density ≤ fccDensity :=
+  gauss_lattice_theorem e.toPackingDensity
+```
+
+It also adds the **axiom-free affine-invariance crux** the published proof actually
+relies on — the single step prior sessions flagged as "not in Mathlib v4.26.0":
+
+```lean
+theorem latticeDensity_affine_invariant (volK covol d : ℝ) (hd : d ≠ 0) :
+    (d * volK) / (d * covol) = volK / covol :=
+  mul_div_mul_left volK covol hd
+```
+
+This is the entire mathematical content of "a linear map scales vol(K) and covol(Λ)
+by the same factor |det T|, so lattice density is preserved" — a `mul_div_mul_left`
+identity, no packing-geometry backbone needed.
+
+**Net effect.** File now has **1 axiom** (`ulam_conjecture` only — genuinely open
+since 1972), 10 theorems, 4 defs, 0 sorries, 497 LOC. meta.json synced
+(axiomCount 2→1, theoremCount 8→10, lineCount 456→497, assumptions + implications
+rewritten). The OQ-04 assumption set is now exactly the one genuinely-open conjecture.
+
+**Honesty.** The discharge is real but modest: it removes a *redundant* local axiom
+(the parent already covers it) and machine-checks the affine-reduction arithmetic. It
+does NOT formalize a geometric packing-density measure — that Mathlib gap remains, and
+the parent's `gauss_lattice_theorem` is itself an axiom. The *exact* optimal tetra/
+ellipsoid densities remain OPEN. Build-pending (Docker blackout, exit124); the proof
+terms are simple (`mul_div_mul_left` + `gauss_lattice_theorem` application) and the
+`mul_div_mul_left a b (hc : c ≠ 0)` signature is confirmed against existing repo usage
+(e.g. CevasTheoremOQ02OQ01OQ02OQ01.lean:97).
