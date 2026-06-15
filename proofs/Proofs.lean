@@ -2827,6 +2827,7 @@ import Proofs.Sqrt2PlusSqrt3Irrational
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03Aristotle
 import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01
+import Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02
 import Proofs.StirlingExpansion
 import Proofs.StirlingExpansionAristotle
 import Proofs.StirlingFormula
