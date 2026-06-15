@@ -2,12 +2,12 @@
   "slug": "erdos-1107-oq-02-oq-01",
   "title": "Threshold for the r=3 (cubeful) case of Erdős #1107",
   "status": "in-progress",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "tier": "B",
   "significance": 7,
   "tractability": 4,
   "started": "2026-06-14",
-  "lastUpdate": "2026-06-14",
+  "lastUpdate": "2026-06-15",
   "path": "research/problems/erdos-1107-oq-02-oq-01/knowledge.md",
   "tags": [
     "number-theory",
@@ -26,10 +26,10 @@
     ]
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-14",
-    "iteration": 1,
-    "focus": "Durable DP computation (validated against the known r=2 result) gives N_3 = 2040 with exactly 45 exceptions for <=4 cubeful summands; <=3 has no threshold (positive exception density). Lean ACT deferred — Docker down."
+    "phase": "ACT",
+    "since": "2026-06-15",
+    "iteration": 3,
+    "focus": "Lean ACT file Erdos1107OQ02OQ01.lean written (build-pending, Docker down): basis-indexed isSumOf4Cubeful + native_decide over the 45 exceptions, [1,2040), and blocks to 3000, plus one axiom cubeful_sum_threshold (n>=2040) encoding the open r=3 asymptotic. Logic cross-checked against the Python DP; compile of the native_decide blocks unverified."
   },
   "knownResults": {
     "computed": [
@@ -39,7 +39,7 @@
     ],
     "open": [
       "The asymptotic 'every large n is a sum of <=4 cubeful numbers' (r=3) appears to remain open; no proven Heath-Brown analog. N_3 = 2040 is therefore the effective threshold conditional on that asymptotic.",
-      "Stability of 2040 beyond 60000 (sieve-based DP to ~1e6) not yet certified."
+      "Stability of 2040 confirmed to 1e6/1e7 (no exception above 2039). Lean ACT file written but BUILD-PENDING: native_decide compile (Docker down) unverified."
     ],
     "goal": "Effective threshold + exceptional set for r=3, plus the structural r+1 law explaining why 4 (not 3) summands are needed."
   },
@@ -51,16 +51,18 @@
       "Resolves the gallery framing conflict: the parent's 'at most r+1' description is correct; the overview's 'at most 3 for every r' is false at r=3."
     ],
     "builtItems": [
-      "proofs/scripts/verify_cubeful_sums.py — bounded coin-change DP over the r-powerful basis; self-validating against the r=2 base case."
+      "proofs/scripts/verify_cubeful_sums.py — bounded coin-change DP over the r-powerful basis; self-validating against the r=2 base case.",
+      "proofs/scripts/verify_cubeful_stability.py — sieve+numpy DP; certifies N_3=2040 (45 exceptions) stable to 1e6/1e7.",
+      "proofs/Proofs/Erdos1107OQ02OQ01.lean — Lean ACT (build-pending, unregistered): IsCubeful+Decidable, basis-indexed isSumOf4Cubeful, native_decide over the 45 exceptions + [1,2040] + blocks to 3000, axiom cubeful_sum_threshold (n>=2040). Uses cubeful-basis enumeration (27 elems <=2040) instead of the parent's O(n^3) range loop."
     ],
     "mathlibGaps": [
       "No Mathlib lemma for representation of integers as sums of bounded powerful numbers; the r=2 gallery entry handles this via a Decidable predicate + native_decide + an axiom for the asymptotic. The r=3 ACT file would follow the same pattern."
     ],
     "nextSteps": [
-      "Transcribe Erdos1107OQ02.lean (156 LOC) to a cubeful version: IsCubeful + Decidable, isSumOf4Cubeful : Nat -> Bool, native_decide over the 45 exceptions and the blocks [1,2040], one axiom cubeful_sum_threshold for n >= 2040.",
-      "Build with ./proofs/scripts/docker-build.sh once Docker is available.",
-      "Extend the DP to ~1e6 (sieve basis) to firm up 2040 before fixing it as the axiom hypothesis."
+      "Build the new file once Docker is up: ./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01. If native_decide over [1,2040] is too heavy, split below_threshold_nonexceptions into ~500-wide blocks (the above-threshold ranges are already blocked).",
+      "On green build: register via ./.lean/scripts/generate-proofs-imports.sh and add a gallery meta.json (status axiomatized, badge axiom, axiomCount 1).",
+      "Optional: a Lean-side proof that <=3 cubeful fails (positive exception density) to capture the unconditional half, not just the conditional <=4 threshold."
     ],
-    "progressSummary": "PROGRESS (ORIENT): durable computation pins N_3 = 2040 (45 exceptions) for <=4 cubeful and rules out <=3; structural r+1 law established. Lean ACT specified, Docker-gated."
+    "progressSummary": "PROGRESS (ACT): Lean transcription written (Erdos1107OQ02OQ01.lean) realising the validated N_3=2040 / 45-exception result via a basis-indexed isSumOf4Cubeful + native_decide + one conjectural-asymptotic axiom. Build-pending (Docker down); logic cross-checked against the Python DP."
   }
 }
