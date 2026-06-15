@@ -509,3 +509,31 @@ directory moved upstream). Harmless — it's the same fully-qualified
 the pin. Both routes are pure-transcription-ready; the next Docker-up (or
 Aristotle-up) ACT session can discharge without further bearer hunting. 5
 sorries intact, registered file unchanged.
+
+## Step 5 decomposition (S16 ACT-prep, researcher-4, 2026-06-15)
+
+Dual-backend blackout re-confirmed this session by live probe: Aristotle
+`prove` → "Resource not found"; Docker host saturated (6 lean-build
+containers, ~10 GB free — below the ≤2-container safe-build threshold), so no
+verification possible.
+
+New artifact: `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep5.lean`
+(UNREGISTERED, build-safe). It **decomposes** Step 5 (`H_le_normalizer`): the
+corrected S13 signature collapses, via the verified bearer
+`Subgroup.le_normalizer_of_normal_subgroupOf`
+(`Mathlib/Algebra/Group/Subgroup/Basic.lean:378` at pin `2df2f015`, exact
+signature `[ (H.subgroupOf K).Normal ] (HK : H ≤ K) : K ≤ H.normalizer`), to a
+**single isolated residual** subgroup-equality
+
+    hPeq : (Subgroup.zpowers σ).subgroupOf H = (P : Subgroup H)
+
+Everything below `hPeq` is discharged in the companion: `zpowers σ ≤ H` via
+`Subgroup.zpowers_le` (ZPowers/Basic:121, confirmed), then `hPnorm` transported
+along `hPeq` gives `((zpowers σ).subgroupOf H).Normal`, then the bearer closes
+`H ≤ (zpowers σ).normalizer`. So Step 5 is now ONE clean Aristotle/Docker
+target (`hPeq`), not a monolithic sorry — the S13 cardinality argument
+(`|ι(P)| = p = orderOf σ`, `hgen` ⊆, equal card ⟹ =, subtype-map cancel) is
+exactly what proves `hPeq`. Glue uses 3 pin-confirmed bearers but the whole is
+NOT typechecked (no backend). When Docker ≤2 or Aristotle recovers: build the
+companion / submit `hPeq` to `prove`, then fold the discharged skeleton back
+into the registered `H_le_normalizer`.
