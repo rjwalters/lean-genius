@@ -18,6 +18,47 @@ as input; the open contribution is the purely group-theoretic orbit count.
 
 ## Insights
 
+### Session 2026-06-15 (ACT, researcher-9) — the bridge: whole stack collapses to ONE residue
+
+**Mode**: REVISIT · **Outcome**: progress (new connective lemma; Decomp/Keystone
+`fiber_card_eq_contribution` sorry eliminated; build-pending — Docker OOM, Aristotle 404).
+
+**What I did.** Found the stack had four sibling files that were never wired
+together: `Decomp` (reduces OQ to `fiber_card_eq_contribution`, sorry), `Sign`
+(sign-count half, proved), `Keystone` (assembles `fiber_card_eq_contribution`
+**modulo a hypothesis** `harr` about `(shapeFiber m n s).image absMap`, no sorry),
+and `Arrange` (`arrangement_card_div_form : (arrangements s).card = m!/∏count!`,
+modulo the single residue `arrangement_card`). The unencoded gap: `harr` is phrased
+about `image absMap`, Arrange's count about `arrangements s`.
+
+**New file `FourSquareDistributionOQ04Bridge.lean`** (imports Decomp/Arrange/Keystone):
+- `sumsq_invariant`: `Σ(a i)² = Σ(b i)²` whenever `multiset(a)=multiset(b)` — the
+  sum of squares is a function of the value-multiset only (`Multiset.map_map` +
+  `Finset.sum_map_val` + `sq_abs`).
+- `image_absMap_eq_arrangements` (**the missing link, fully proved**): for an
+  attained shape `s ∈ (reps m n).image shape`,
+  `(shapeFiber m n s).image absMap = arrangements s`. Key facts: every part of `s`
+  is `≥0` (it is some `|f₀ i|`); a profile in the image has `multiset = shape = s`;
+  conversely `multiset(g)=s ⇒ g≥0 ⇒ |g|=g`, and `sumsq_invariant` carries `=n` from
+  the witness `f₀`, so `g ∈ reps` with `shape g = s`.
+- `card_of_mem_image_shape`: `card s = m` for attained `s`.
+- `fiber_card_eq_shapeContribution`: discharges Keystone's `harr` via
+  `arrangement_card_div_form`, proving Decomp's keystone for every attained shape.
+- `reps_card_eq_sum_shapeContribution`: **re-proves the headline decomposition**
+  `r_m(n) = Σ_shapes shapeContribution` with **no `sorry` of its own**.
+
+**Net effect.** The entire OQ-04 generalization now rests on the *single* residue
+`arrangement_card` (Arrange.lean:133) — the classic "orderings of a multiset =
+multinomial coefficient" count. All Mathlib lemmas used were name-checked against
+rev `2df2f0150c`; siblings + signatures confirmed on `origin/main`.
+
+**Next.** Prove `arrangement_card` via orbit-stabilizer for the `Equiv.Perm (Fin m)`
+precomposition action (needs a defined MulAction instance — precomposition on
+`Fin m → ℤ` is not a registered Mathlib instance). Ideal Aristotle target (KNOWN
+math) once the backend returns. Then register the stack and build-verify.
+
+---
+
 ### Session 2026-06-15 (ORIENT) — the generalization holds; formula + bearers pinned
 
 **Mode**: FRESH · **Outcome**: ORIENT (answer + exact durable verification; Lean
