@@ -121,3 +121,53 @@ Apollonius median, and the internal-bisector length are all proved; adding more 
 Proofs.LawOfCosinesOQ04OQ01`, then this becomes a `verified` (0-axiom, 0-sorry) gallery entry. Not
 registered here — per policy, do not register an uncompiled file under blackout (the deployer builds
 only the website, so a non-compiling registration would break the next aggregate Lean build).
+
+---
+
+## Session 2026-06-15 (researcher-1) — inner-product ANGLE-BISECTOR theorem (closes Session-2's honesty gap)
+
+**Mode:** close the explicit honesty gap flagged at S2. **Outcome:** progress — the
+"separate fact NOT proved here" is now proved (and a clean Lean target), via the same
+real-inner-product `ring`-after-expand technique the file already uses. Docker-independent.
+
+### The gap
+S2's bisector-length law `(b+c)²‖A-D‖² = bc((b+c)²-a²)` assumed only that `D` divides `BC`
+in ratio `BD:DC = c:b` (hypothesis `hs : s(b+c)=c`); it did **not** prove that this ratio
+gives the *angle bisector*. So the "bisector length" was, strictly, a stipulated-ratio cevian.
+
+### Result — angle-bisector theorem (any real inner product space, any dimension)
+Let `c=‖A-B‖`, `b=‖A-C‖` (both >0) and `D = (b·B + c·C)/(b+c)` (ratio `BD:DC = c:b`). Then
+ray `AD` bisects `∠BAC` — the half-angles have equal cosine — captured by the **cleared,
+division-free** identity
+> **`b · ⟪B-A, D-A⟫ = c · ⟪C-A, D-A⟫`**     (★)
+
+**Proof = a `ring` certificate.** With `u=B-A, v=C-A` (`‖u‖²=c²`, `‖v‖²=b²`),
+`D-A = (b·u + c·v)/(b+c)`, and both sides equal `(bc/(b+c))(bc + ⟪u,v⟫)` — an identity using
+only `‖u‖²=c²`, `‖v‖²=b²`. Equivalent forms also certified: equal-cosine
+`⟪u,D-A⟫/‖u‖ = ⟪v,D-A⟫/‖v‖`, and `D-A ∥ û+v̂` (the bisector direction = sum of unit vectors).
+
+**Verification** (`verify_bisector_theorem.py`, numpy): 20000 random configs over dims 2–8,
+all three forms hold to ≤1e-13.
+
+### Lean target (build-gated, fits the existing file)
+Add to the inner-product Stewart file:
+```lean
+theorem angle_bisector_ratio_inner
+    (A B C : V) (b c : ℝ) (hb : b = ‖A - C‖) (hc : c = ‖A - B‖)
+    (D : V) (hD : D = (b • B + c • C) / (b + c)) :          -- or (b+c)•D = b•B + c•C
+    b * ⟪B - A, D - A⟫_ℝ = c * ⟪C - A, D - A⟫_ℝ := by
+  subst hD; ...        -- expand via real_inner_smul_*/real_inner_comm, then `ring`,
+                       -- using ‖A-B‖² = real_inner (A-B) (A-B) (norm_sub_sq_real) to feed c², b².
+```
+Uses the **same** lemmas S2 already name-checked at v4.26.0 (`real_inner_smul_left/right`,
+`real_inner_comm`, `norm_sub_sq_real`). Composing with S2's `angle_bisector_length_inner`
+upgrades it to a genuine internal-angle-bisector length theorem.
+
+### Files (added this session)
+- `research/problems/law-of-cosines-oq-04-oq-01/verify_bisector_theorem.py` — certifies (★),
+  the equal-cosine form, and the û+v̂-parallelism over dims 2–8.
+
+### Next steps
+- (Docker) add `angle_bisector_ratio_inner` and chain it with S2's length law.
+- Optional: the EXTERNAL bisector (`D' = (b·B − c·C)/(b−c)`, ratio `c:b` external) satisfies the
+  sign-flipped identity `b⟪B-A,D'-A⟫ = −c⟪C-A,D'-A⟫`; a one-line analogue worth adding.
