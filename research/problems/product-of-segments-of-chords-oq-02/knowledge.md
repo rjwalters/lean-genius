@@ -111,6 +111,31 @@ non-degeneracy determinant `≠ 0`.
 
 ---
 
+## Lean realization (S3, build-pending)
+
+`proofs/Proofs/ProductOfSegmentsOfChordsConverse.lean` (UNREGISTERED) now encodes the
+finding in Lean for the first time (prior PRs #24105/#24153/#24204 were sympy/symbolic
+only):
+
+- `unsigned_converse_counterexample_general (e₀ e₁ : Vec2) (‖e₀‖=1) (‖e₁‖=1)` — proves
+  `∃ P A B C D, <all axiom hyps> ∧ ¬ ∃ O r, r>0 ∧ <four points on a circle>`. Witness
+  `P=0, A=e₀, B=-4•e₀, C=e₁, D=4•e₁`. **Key simplification discovered:** the
+  contradiction needs only `‖e₀‖=‖e₁‖=1` — *no orthogonality*. Working with squared
+  norms via `norm_sub_sq_real`, the perpendicular-bisector equalities `‖A-O‖=‖B-O‖`,
+  `‖C-O‖=‖D-O‖`, `‖A-O‖=‖C-O‖` reduce (cancelling `‖O‖²`) to the linear system
+  `⟪e₀,O⟫=-3/2`, `⟪e₁,O⟫=5/2`, `⟪e₀,O⟫=⟪e₁,O⟫`, closed by `nlinarith`. So the
+  obstruction is one-dimensional (the sign of the power), independent of chord direction.
+- `unsigned_converse_counterexample` — concrete standard-basis instance (the documented
+  `(1,0),(-4,0),(0,1),(0,4)`); only extra dependency is `EuclideanSpace.norm_single`.
+- `signed_converse_implies_concyclic` — the corrected statement (signed power equality
+  `t‖A-P‖²=s‖C-P‖²` + `LinearIndependent ℝ ![A-P, C-P]`), proof `sorry` (circumcenter,
+  build-gated). This is the clean Aristotle target / future ACT goal.
+
+Lemma-name risk points if a future build fails: `norm_sub_sq_real`, `real_inner_smul_left`,
+`EuclideanSpace.norm_single`.
+
+---
+
 ## Next Steps
 
 1. (build-gated) Correct the axiom statement in `ProductOfSegmentsOfChords.lean`:
