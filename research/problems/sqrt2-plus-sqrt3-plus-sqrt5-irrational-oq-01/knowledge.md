@@ -275,3 +275,51 @@ routine but are exactly why a real build (not an uncompilable `.lean`) is deferr
 
 ### Files modified
 - `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+
+---
+
+## Session 2026-06-15 (Session 5) — ACT: transcribe Strategy D (researcher-10)
+
+**Mode**: REVISIT/CONTINUE · **Outcome**: progress (ORIENT → ACT). Docker still down
+(`docker ps`/`docker info` timeout); Aristotle not used (only fills sorries — file is
+sorry-free by construction). Build-pending, no local Lean.
+
+### What I did
+- **Wrote the complete Strategy D proof** to
+  `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~95 LOC, 0 sorries,
+  0 axioms by construction). Structure:
+  - `isIntegral_of_sq (c m) (hc : c^2 = m) : IsIntegral ℤ c` — root of monic `X² − C m`
+    (`Polynomial.monic_X_pow_sub_C` + `aeval`/`aeval_def`).
+  - `isIntegral_sqrt_{two,three,five,seven}` — instantiate with `Real.sq_sqrt`.
+  - `isIntegral_alpha` — `IsIntegral.add` ×3.
+  - `alpha_lower : 8 < α` via `Real.lt_sqrt` on `1.41,1.73,2.23,2.64` (+ `linarith`).
+  - `alpha_upper : α < 9` via `Real.sqrt_lt'` on `1.42,1.74,2.24,2.65`.
+  - main `irrational_…` : `rintro ⟨q,hq⟩`; `eq_ratCast` bridges `(q:ℝ)=algebraMap ℚ ℝ q`;
+    descend with `isIntegral_algebraMap_iff (algebraMap ℚ ℝ).injective`; integrally-closed
+    `IsIntegrallyClosed.isIntegral_iff` gives `n:ℤ` with `(n:ℚ)=q`; `8<(n:ℝ)<9` then
+    `exact_mod_cast` + `omega` ⇒ contradiction.
+- **Re-verified all math** with the durable `verify_strategy_d.py` → `ALL CHECKS PASSED`
+  (F1 integrality, F3 minimal polynomial via resultant, F2 bound `8<α<9` + all 8 rational
+  square-witnesses). Independently re-checked my four decimal lower/upper witnesses in Python.
+
+### Why this is forward progress (not re-ORIENT churn)
+Sessions 1–4 left the problem "paste-port-ready" but produced **zero Lean**. This session
+converts the bearer-confirmed skeleton into an actual, fully-written proof file. The only
+remaining work is the Docker build verification + (if it passes) registration in
+`proofs/Proofs.lean` and a gallery `meta.json`. Strategy D needed no new Mathlib.
+
+### Honesty caveat
+**Not machine-checked** — Docker down, so the file is build-pending and deliberately
+**UNREGISTERED** in `proofs/Proofs.lean` (so it cannot break the aggregate auto-merge build).
+Residual transcription risks are lemma-name/instance-resolution only (see `nextSteps`), not
+mathematical — the mathematics is verified. Status stays NOT `verified` until a real build.
+
+### Files modified
+- `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (new)
+- `src/data/research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01.json`
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+
+### Next steps
+1. Build when Docker returns; fix any lemma-name/instance drift (fallbacks: Strategy A or
+   `m(α)=0` + rational-root). 2. Register + gallery `meta.json`. 3. Follow-up OQ: Strategy D
+   scales to any finite sum of `√(squarefree)` with no degree blow-up.
