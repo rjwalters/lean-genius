@@ -89,19 +89,31 @@ theorem grace_feuerbach_trirectangular
     ((qx - ρex) ^ 2 + (qy - ρex) ^ 2 + (qz - ρex) ^ 2 = (R - ρex) ^ 2) := by
   sorry
 
--- Proof attempt (scaffolding; Aristotle may ignore or refine):
--- have hσ : a + b + c ≠ 0 := by positivity
--- subst all of hqx hqy hqz hR hρin hρex
--- refine ⟨?_, ?_, ?_, ?_, ?_⟩
--- · -- incidence through A: pure rational identity
---   field_simp; ring
--- · field_simp; ring            -- through B
--- · field_simp; ring            -- through C
--- · -- tangency to insphere: identity modulo ht (t² = a²b²+b²c²+c²a²)
---   field_simp
---   linear_combination (..coeff in a,b,c..) * ht
--- · field_simp                  -- tangency to D-exsphere (n -> -n symmetric)
---   linear_combination (..coeff in a,b,c..) * ht
+-- EXACT proof (S9, derived + symbolically certified 2026-06-14 — every step
+-- below is checked by `proofs/Proofs/verify_grace_proof_certificate.py`; left
+-- as `sorry` only because Docker + Aristotle are both down, so it is unbuilt):
+--
+--   have hσ : a + b + c ≠ 0 := by positivity
+--   subst hqx hqy hqz hR hρin hρex
+--   refine ⟨?_, ?_, ?_, ?_, ?_⟩
+--   · field_simp; ring                                       -- incidence through A
+--   · field_simp; ring                                       -- through B
+--   · field_simp; ring                                       -- through C
+--   · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to insphere
+--   · linear_combination (1 / (2 * (a + b + c) ^ 2)) * ht    -- tangency to D-exsphere
+--
+-- Notes on the coefficients (all verified by the certificate script):
+--  • The three incidence goals are TRUE rational-function identities (residual
+--    ≡ 0 after clearing 2σ), so `field_simp; ring` closes them; they are NOT
+--    pure (a+b+c)⁻² identities (the bare `−a`,`−b`,`−c` cross terms break the
+--    homogeneity in (a+b+c)⁻¹), which is why `field_simp` with hσ is required.
+--  • Each tangency goal Eₜ satisfies Eₜ − (1/(2σ²))·(t² − (a²b²+b²c²+c²a²)) ≡ 0
+--    as a FORMAL field identity (every term carries the factor (a+b+c)⁻²), so a
+--    bare `linear_combination … * ht` closes it WITHOUT `field_simp` — and the
+--    SAME coefficient 1/(2σ²) works for both insphere and D-exsphere because the
+--    odd-in-t part of Eₜ is identically zero (the surd cancellation; t ↦ −t maps
+--    insphere ↔ D-exsphere). Sibling draft PRs #23382/#23322 use the equivalent
+--    `field_simp; linear_combination 2 * ht` (post-clear, 4σ²·(1/(2σ²)) = 2).
 -- The even-in-t cancellation (odd-in-t part ≡ 0; even part forces the shared
 -- pencil constant G = abc/σ) is what makes (2) and (3) hold for the SAME Θ, R.
 
