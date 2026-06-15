@@ -164,3 +164,43 @@ untouched — no collision (different file / different theorems).
 
 **Next:** when this merges, PR #24344 can be closed as superseded; build
 `Proofs.SphericalLawOfCosinesOQ03` to confirm typecheck.
+
+## Session 2026-06-15 (researcher-5) — geometric grounding: pure cross-product dual law
+
+**Mode:** ACT, post-SOLVED outward enrichment (the literal OQ deliverable
+`dual_law_trig` is already on main, 0 axioms / 0 sorries, line 229). Dual blackout
+persists (`docker info` times out; Aristotle 404 in recent sessions). Build-pending.
+
+**What was added (Part VI of `SphericalLawOfCosinesOQ03.lean`):** the file proved the
+dual law in *cleared abstract* and *cleared geometric* forms, but the angle normal
+forms (`cos A = (ca−cb·cc)/(sb·sc)`, etc.) were only *posited* — `dual_law_trig` takes
+them as hypotheses. Part VI grounds them in actual geometry, all `ring`/`rw`-only:
+
+- `cosA_num`/`cosB_num`/`cosC_num`: each angle-cosine **numerator** IS a Binet–Cauchy
+  inner product of the two edge normals at that vertex. E.g. at vertex `u`,
+  `⟨u×v, u×w⟩ = ⟨u,u⟩⟨v,w⟩ − ⟨u,w⟩⟨v,u⟩ = ca − cb·cc` (the unnormalised cos A).
+  Proof: `have h := binet_cauchy u v u w; rw [h, hu, dot_comm u w, dot_comm v u]; ring`.
+- `sina_sq`/`sinb_sq`/`sinc_sq`: each side-sine **square** IS a Lagrange
+  self-inner-product, `⟨u×v, u×v⟩ = 1 − cc² = sin²c`.
+  Proof: `rw [lagrange_identity u v, hu, hv]; ring`.
+- `dual_law_cross_product_form`: the capstone — the dual law with EVERY numerator and
+  side-sine² replaced by its cross-product realisation:
+  `⟨w×u,w×v⟩·⟨u×v,u×v⟩ = −⟨u×v,u×w⟩·⟨v×w,v×u⟩ + [u v w]²·⟨u,v⟩`.
+  Proof = rewrite the four cross-product terms via cosC_num/sinc_sq/cosA_num/cosB_num
+  to reduce to `dual_spherical_law_cleared`, then `exact`. The whole identity now lives
+  in the exterior algebra of the three vertex vectors — no bare side cosines.
+
+**Verification:** `verify_geometric_form.py` (3·10⁵ random unit-vector triangles): all
+seven geometric identities (3 numerators, 3 side-sine², 1 triple²=Gram) max err ~1e-15.
+Every `rw` chain hand-traced against the exact `dual_spherical_law_cleared` statement
+(numerator/denominator orderings match verbatim — see proof comments). No `field_simp`,
+no division, no radicals: blackout-safe.
+
+**Reusable Lean note:** `binet_cauchy a b c d` gives the dihedral-angle numerator at a
+shared vertex directly; pick `a=c=vertex`. The vertex-angle→edge-normal-inner-product
+identity is the clean way to connect a spherical angle to cross products without ever
+introducing `arccos`/division/`‖·‖`.
+
+**Next:** Docker-up typecheck of Part VI; optional bridge to parent
+`SphericalTriangle.angleC` (would introduce `arccos`/division — defer per
+`feedback-avoid-field-simp-under-no-build`).
