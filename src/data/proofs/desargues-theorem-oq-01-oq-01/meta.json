@@ -86,7 +86,7 @@
         {
             "name": "moulton_counterexample",
             "type": "core",
-            "description": "The full Desargues-failure certificate as a single 21-component conjunction: three perspectivity-from-O facts (collinear_OAA', collinear_OBB', collinear_OCC'), eighteen incidence facts (P on AB/A'B', Q on BC/B'C', R on CA/C'A' with all six endpoint memberships), and desargues_fails. Term-mode anonymous-constructor proof. Packages the entire counterexample as one machine-checkable theorem statement asserting the negation of Desargues's theorem in the Moulton plane.",
+            "description": "The full Desargues-failure certificate as a single 22-component conjunction: three perspectivity-from-O facts (collinear_OAA', collinear_OBB', collinear_OCC'), eighteen incidence facts (P on AB/A'B', Q on BC/B'C', R on CA/C'A' with all six endpoint memberships), and desargues_fails. Term-mode anonymous-constructor proof. Packages the entire counterexample as one machine-checkable theorem statement asserting the negation of Desargues's theorem in the Moulton plane.",
             "leanType": "MoultonCollinear O_pt A_pt A'_pt ∧ MoultonCollinear O_pt B_pt B'_pt ∧ MoultonCollinear O_pt C_pt C'_pt ∧ … ∧ ¬ MoultonCollinear P_pt Q_pt R_pt",
             "line": 268,
             "endLine": 296
