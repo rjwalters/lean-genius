@@ -81,6 +81,49 @@ Module `Mathlib.NumberTheory.NumberField.Units.DirichletTheorem`:
 Supporting: `Algebra.norm`, `RingOfIntegers`, `NumberField.ClassNumber` / `ClassGroup`
 (finiteness). The deep theorem is present; the work is **specialization + packaging**.
 
+## Bearer pin + ACT re-scope (Session 3, ORIENT — researcher-7, 2026-06-14)
+
+All bearers re-confirmed present **at the exact lake-pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0)** via
+`gh api .../contents/<path>?ref=<pin>` and `gh search code`:
+
+| Bearer | Path:line @ pin | Role in ACT |
+|---|---|---|
+| `NumberField.Units.rank` (`:= Fintype.card (InfinitePlace K) - 1`) | `…/Units/DirichletTheorem.lean:354` | the rank target |
+| `NumberField.Units.finrank_eq_rank` | `…/Units/DirichletTheorem.lean:372` | rank ↔ ℤ-module finrank |
+| `NumberField (AdjoinRoot f)` **instance**, `[Fact (Irreducible f)]` | `…/NumberField/Basic.lean:451` | construct $K=\mathbb{Q}(\sqrt[3]2)$ |
+| `card_eq_nrRealPlaces_add_nrComplexPlaces` | `…/InfinitePlace/Basic.lean:416` | reduce `card (InfinitePlace K)` to signature |
+
+**Key re-scope of the ACT (corrects "specialization + packaging").**
+Two of the three ACT pieces are *cheaper* than the prior note implied, but the
+third is *much harder*:
+
+1. **Field construction is OFF-THE-SHELF, not manual.** `K := AdjoinRoot (X^3 - 2 : ℚ[X])`
+   is a `NumberField` by the **instance at Basic.lean:451** — the only input is
+   `Fact (Irreducible (X^3 - 2))`, dischargeable by Eisenstein at 2
+   (`Polynomial.irreducible_of_eisenstein_criterion` / `X_pow_sub_C` route) or a
+   rational-root argument. No bespoke field-building.
+2. **The `rank` target is a *definitional unfolding*.** Since
+   `rank K = Fintype.card (InfinitePlace K) - 1` *by definition* (:354), proving
+   `rank K = 1` is exactly proving `Fintype.card (InfinitePlace K) = 2`. There is
+   no abstract-theorem instantiation step — `rank` is just a `def`.
+3. **The REAL blocker is computing the signature `card (InfinitePlace K) = 2`.**
+   `card_eq_nrRealPlaces_add_nrComplexPlaces` (:416) reduces it to
+   `nrRealPlaces K + nrComplexPlaces K`, but **Mathlib ships no
+   signature-from-minpoly decision procedure** for a general explicit field. The
+   cyclotomic case has bespoke lemmas (`nrRealPlaces_eq_zero` for $n>2$,
+   `Cyclotomic/Embeddings.lean`) but **there is no analogue for `AdjoinRoot (X^3-2)`**.
+   One must count real vs complex embeddings *by hand* via the
+   embeddings↔roots correspondence ($X^3-2$ has 1 real root $\sqrt[3]2$ and one
+   conjugate-complex pair ⟹ $(r_1,r_2)=(1,1)$), wiring `InfinitePlace`/
+   `ComplexEmbedding` API to the root set of the minimal polynomial. **This is the
+   bulk of the ACT, not packaging** — a realistic LOC estimate is dominated here,
+   and it is the part to attempt first / de-risk under a backend-up session.
+
+Net: the ACT plan's step 1 ("instantiate `rank`, prove rank = 1 from signature")
+hides ALL of its difficulty inside "from signature". Construction + abstract
+theorem are near-free; the place-count is the genuine work and has no bearer.
+
 ---
 
 ## Infrastructure Assessment
@@ -104,8 +147,14 @@ verification de-risk the eventual ACT step.
 
 ## Next Steps
 
-1. **ACT (Docker-gated)**: `Proofs/PellEquationOQ05.lean` — instantiate
-   `NumberField.Units.rank` for $K=\mathbb{Q}(\sqrt[3]2)$, prove rank $=1$ from signature $(1,1)$.
-2. Recover-Pell lemma: real quadratic $\Rightarrow$ rank 1 (ties to parent).
-3. Cubic norm via `Algebra.norm` / det; verify $N(t-1)=1$.
-4. State finiteness of $N(\xi)=m$ classes via `ClassGroup` finiteness + `Units`.
+(Re-ordered S3 ORIENT: attack the place-count first — it is the only hard part.)
+1. **ACT (Docker-gated), de-risk FIRST**: prove `Fintype.card (InfinitePlace K) = 2`
+   for `K = AdjoinRoot (X^3 - 2)` — count embeddings via the roots of $X^3-2$ in $\mathbb{C}$
+   (1 real, 1 complex pair). No Mathlib bearer; this is the LOC-dominant step (§"Bearer
+   pin + ACT re-scope" item 3). `rank K = 1` then follows by `rfl`-level unfolding of
+   the `:= card (InfinitePlace K) - 1` definition (:354).
+2. **Field setup (cheap)**: `K := AdjoinRoot (X^3-2)`, `NumberField` instance free at
+   Basic.lean:451 given `Fact (Irreducible (X^3-2))` (Eisenstein at 2).
+3. Recover-Pell lemma: real quadratic $\Rightarrow$ rank 1 (ties to parent).
+4. Cubic norm via `Algebra.norm` / det; verify $N(t-1)=1$.
+5. State finiteness of $N(\xi)=m$ classes via `ClassGroup` finiteness + `Units`.
