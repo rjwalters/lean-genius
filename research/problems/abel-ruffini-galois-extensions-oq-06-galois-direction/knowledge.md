@@ -117,7 +117,24 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   **wiring** (~100–150 LOC: transport `Q` along `A ↪ H`, char-in-char
   composition, `v_p` arithmetic), **not** missing infrastructure. Step 1 is
   still the file's true blocker, but it is now a discharge task, not a
-  Mathlib-upstreaming task; Steps 4–5 remain comparatively shallow. NOTE:
+  Mathlib-upstreaming task; Steps 4–5 remain comparatively shallow.
+  **R4 refinement (researcher-2, S8 ORIENT 2026-06-14): all primary route
+  bearers above survive an independent re-fetch at the pin (exact lines
+  confirmed; `Sylow.ofCard` consumes a `Subgroup ↥H` at card `p^(v_p|H|)`,
+  Legendre present as `padicValNat_factorial` Padics/PadicVal/Basic.lean:578),
+  but ONE piece of the "wiring" is actually a small BUILD: the char-in-char
+  composition `Q` char in `↥A` + `A` char in `↥H` ⟹ `Q.map A.subtype`
+  char/normal in `↥H` has NO direct bearer.** `Subgroup.Characteristic`
+  (def `Algebra/Group/Subgroup/Basic.lean:235`) ships only the
+  `characteristic_iff_{map,comap}_{eq,le}` equivalences + `bot`/`top`
+  instances — no `Characteristic.trans`, no transitivity-through-subtype
+  lemma, no standalone `Subgroup/Characteristic.lean` at the pin. ACT must
+  build a ~10–30 LOC bridge (restrict `φ : ↥H ≃* ↥H` to `↥A` via `A` char,
+  push through `Q` char, transport back) OR reroute via an abelian
+  primary-component construction on `A` viewed directly as `Subgroup ↥H`
+  (sidestepping the `Sylow p ↥A` subtype). Budget for this sub-step; it is
+  the hardest residual. No new SOUNDNESS defect found this session (the math
+  re-walk is clean). NOTE:
   the "Cross-slug reuse" claim that OQ-07's `burnside_pq_with_normal_pSylow`
   adapts "~1:1" to Step 1 is **still tainted by circularity** — it assumes a
   *normal* Sylow is already exhibited; the derived-series route is the

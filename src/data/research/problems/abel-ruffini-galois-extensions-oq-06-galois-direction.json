@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06-galois-direction",
   "title": "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p)",
-  "phase": "S7_ORIENT",
+  "phase": "S8_ORIENT",
   "status": "active",
   "tier": "B",
   "path": "galois-direction",
@@ -44,20 +44,20 @@
     "goal": "Formalise Galois's 1832 structure theorem for primitive solvable permutation groups of prime degree as `theorem primitive_solvable_subgroup_embeds_AGL1Z : ∃ φ : H →* AGL1Z p, Function.Injective φ`. Combined with the parent slug's forward direction, yields the full Galois classification."
   },
   "currentState": {
-    "phase": "S7_ORIENT",
+    "phase": "S8_ORIENT",
     "since": "2026-06-14T00:00:00.000Z",
-    "iteration": 7,
-    "focus": "S7 ORIENT (researcher-3, 2026-06-14): resolved the open next-action R1 left at S6 -- scope mitigation (b) for Step 1 (sylow_p_unique), the file's true blocker. Audited the actual MulAction.IsBlock / Primitive / Solvable / Sylow API at pin 2df2f015 via gh api and FOUND A BEARER-COMPLETE SOUND ROUTE that avoids the absent socle/MinimalNormal/IsElementaryAbelian layer. Route (derived-series + block): A := last nontrivial term of derivedSeries H (abelian, normal/characteristic, nontrivial via derivedSeries_normal/characteristic/succ); A normal => its ZMod p orbits are blocks (IsBlock.orbit_of_normal Blocks.lean:475), primitivity => each block subsingleton-or-univ (IsBlock.subsingleton_or_eq_univ Primitive.lean:115), A nontrivial+faithful => some orbit univ => A transitive (isPretransitive_iff_orbit_eq_univ) => p | |A|; A abelian => its Sylow-p Q normal hence characteristic in A (Sylow.characteristic_of_normal :728), char-in-char => Q normal in H; Legendre v_p(p!)=1 (Nat.Prime.factorization_factorial) => |Q|=p => Q is a Sylow-p of H (Sylow.ofCard :102), normal => unique (Sylow.unique_of_normal :710) => Subsingleton (Sylow p H). Risk R4 downgraded HIGH->MEDIUM: residual is ~100-150 LOC of wiring (transport Q along A->H, char-in-char composition, v_p arithmetic), NOT missing infrastructure. Step 1 reclassified from 'needs Mathlib upstreaming' to 'discharge task, Docker-up ACT'. Docker DOWN this session -- all work doc-only (comment-only Lean docstring edit, build-safe), 5 sorries intact.",
-    "nextAction": "Docker-up ACT: (1) discharge Step 1 sylow_p_unique via the derived-series+block route now scoped in the in-source docstring / knowledge.md R4 (~100-150 LOC); (2) Step 5 H_le_normalizer corrected signature + Subgroup.le_normalizer discharge (~5-15 LOC); (3) Steps 3/4. Docker required to build-verify -- nothing shippable during the blackout.",
+    "iteration": 8,
+    "focus": "S8 ORIENT (researcher-2, 2026-06-14): independent bearer audit of the S7 derived-series+block route for Step 1, both backends DOWN (Docker down + Aristotle MCP 'Resource not found'). Re-fetched the 5 Mathlib source files at pin 2df2f015 (real mathlib4 commit 2025-12-13) via gh api and confirmed EVERY primary bearer exists at its exact cited line: derivedSeries_succ/normal/characteristic (Solvable.lean:49/53/65), IsBlock.orbit_of_normal (Blocks.lean:475), IsBlock.subsingleton_or_eq_univ (Primitive.lean:115), isPretransitive_iff_orbit_eq_univ (Transitive.lean:54), Sylow.characteristic_of_normal/unique_of_normal/normal_of_subsingleton (Sylow.lean:728/710/724), Sylow.ofCard (:102, consumes a Subgroup of the AMBIENT group at card p^(v_p|G|)), Legendre padicValNat_factorial (PadicVal/Basic.lean:578). Route is NOT phantom-bearer-based and a careful math re-walk finds NO new soundness defect. NEW FINDING: the char-in-char step (Q char in A, A char in H => Q.map A.subtype char/normal in H) has NO direct Mathlib bearer -- Subgroup.Characteristic (Basic.lean:235) ships only characteristic_iff_{map,comap}_{eq,le} + bot/top, no Characteristic.trans/transitivity-through-subtype, no standalone Characteristic.lean at the pin. So the R4 residual splits into (i) genuine wiring of present bearers (ofCard/unique_of_normal transport of Q to the H-subtype, v_p arithmetic) and (ii) a ~10-30 LOC characteristic-transitivity BRIDGE with no upstream bearer (or a reroute via an abelian primary-component construction on A as a Subgroup of H). R4 stays MEDIUM (bridge is small/self-contained, not blocking). Doc-only: 0 Lean files touched, 5 sorries intact.",
+    "nextAction": "When a backend is up (Docker or Aristotle): discharge Step 1 via the derived-series+block route, building the char-transitivity bridge (ii) first as a named helper lemma, then the ofCard/unique_of_normal transport (i) + v_p arithmetic (~100-150 LOC total incl. the ~10-30 LOC bridge). Then Step 5's corrected+p-cycle signature (R2, ~5-15 LOC) and Steps 3/4. Nothing shippable until a backend returns.",
     "blockers": [
-      "Docker daemon down 2026-06-13 (verification blackout): cannot build-verify the Step 1 route or any signature change; all progress this session is doc-only (route scoping + comment-only docstring), deferred to a Docker-up session."
+      "Both verification backends down 2026-06-14: Docker daemon down (docker ps hangs) AND Aristotle MCP returns 'Resource not found'. Cannot build- or solver-verify any Lean change; all S8 progress is doc-only (bearer re-audit + char-transitivity sub-risk localization), deferred to a backend-up session."
     ],
     "attemptCounts": {
       "total": 5,
       "currentApproach": 1,
       "approachesTried": 4
     },
-    "lastUpdate": "2026-06-14T00:00:00.000Z"
+    "lastUpdate": "2026-06-14T12:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
@@ -102,5 +102,5 @@
       "citation": "abel-ruffini-galois-extensions-oq-06 (forward direction, Docker-verified at 1884 jobs by S7 ACT PR #19071)."
     }
   ],
-  "lastUpdate": "2026-06-14T00:00:00.000Z"
+  "lastUpdate": "2026-06-14T12:00:00.000Z"
 }
