@@ -29,22 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT: precise Lean statement of record written (proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean); proof deferred (Docker saturated, Aristotle 404).",
+    "progressSummary": "PROGRESS (ACT, build-pending): full Route-A proof written with confirmed v4.26 API; 0 sorries; awaiting Docker verification.",
     "builtItems": [
-      "newton_girard statement + psum/esymm Finset defs in proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean (sorry on main thm)"
+      "newton_girard statement + psum/esymm Finset defs in proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean (sorry on main thm)",
+      "proofs/Proofs/AmgmInequalityOQ02OQ01OQ04.lean: complete (0-sorry) proof attempt of newton_girard plus psum_bridge, esymm_bridge, reindex_filter. BUILD-PENDING/UNVERIFIED (Docker saturated, Aristotle 404)."
     ],
     "insights": [
       "Sign convention verified on s={a,b}: k=1 gives p1-e1=0; k=2 gives e0·p2 - e1·p1 + 2e2 = (x²+y²)-(x+y)²+2xy = 0.",
       "e_0 = 1 (empty product over the unique 0-subset), so the j=0 summand is exactly p_k; recurrence closes with the (-1)^k·k·e_k correction.",
-      "Two reductions: (A) aeval-specialize Mathlib MvPolynomial.mul_esymm_eq_sum over subtype {i//i∈s}; (B) self-contained induction on s via e_k(s∪{a})=e_k(s)+a·e_{k-1}(s)."
+      "Two reductions: (A) aeval-specialize Mathlib MvPolynomial.mul_esymm_eq_sum over subtype {i//i∈s}; (B) self-contained induction on s via e_k(s∪{a})=e_k(s)+a·e_{k-1}(s).",
+      "Route A is fully concrete in Mathlib v4.26.0: applying MvPolynomial.aeval (fun i:↥s => f i.1) to MvPolynomial.mul_esymm_eq_sum transports the universal Newton identity to the Finset/CommRing form. The esymm bridge is Finset.esymm_map_val composed with Multiset.attach_map_val (univ.val.map = s.val.map).",
+      "Sign closure: (k:R)·e_k = (-1)^(k+1)·S with S=∑_{j<k}(-1)^j e_j p_{k-j}; (-1)^k·(-1)^(k+1)=(-1)^(2k+1)=-1 via Odd.neg_one_pow, so S + (-1)^k·k·e_k = S - S = 0."
     ],
     "mathlibGaps": [
-      "Mathlib provides Newton identities only in the polynomial-root / universal MvPolynomial form (NewtonSums / MvPolynomial.NewtonIdentities); the directly-usable Finset/CommRing combinatorial layer (explicit finite family) is absent and must be bridged."
+      "Mathlib provides Newton identities only in the polynomial-root / universal MvPolynomial form (NewtonSums / MvPolynomial.NewtonIdentities); the directly-usable Finset/CommRing combinatorial layer (explicit finite family) is absent and must be bridged.",
+      "No Finset/CommRing-level Newton-Girard in Mathlib; only the universal MvPolynomial form (mul_esymm_eq_sum). Bridged here via aeval + esymm_map_val."
     ],
     "nextSteps": [
       "Route A: prove aeval (MvPolynomial.esymm) = esymm s f · and aeval (psum) = psum s f ·, then transport mul_esymm_eq_sum.",
       "Route B: induction on s; base s=∅ trivial, step uses e_k(s∪{a})=e_k(s)+a·e_{k-1}(s) and p_k(s∪{a})=p_k(s)+a^k.",
-      "Submit newton_girard to Aristotle when backend returns (known result, ideal proof-search target)."
+      "Submit newton_girard to Aristotle when backend returns (known result, ideal proof-search target).",
+      "Build Proofs.AmgmInequalityOQ02OQ01OQ04 under Docker ≤2 to verify; fragile spots flagged in file header (simp-at-key normal form, huniv rfl, reindex if_pos closing).",
+      "On a normal-form mismatch in the aeval-transport simp, submit the isolated helper to Aristotle when the 404 clears."
     ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-02-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
