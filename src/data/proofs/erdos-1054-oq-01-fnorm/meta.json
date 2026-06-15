@@ -48,43 +48,99 @@
   },
   "sections": [
     {
+      "id": "defs-import",
+      "title": "Part I: Definitions Imported from Base File",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "File header plus the core definitions re-exported from the base Erdős-1054 file: sortedDivisors (divisors of m sorted increasing), partialDivisorSums (running sums of the k smallest divisors), IsRepresentable (n is a partial divisor sum of some m), and computeF (the minimal such m, i.e. f(n)).",
+      "mathContext": "$f(n) = \\min\\{m : n \\in \\text{partialDivisorSums}(m)\\}$ — the minimal $m$ whose $k$ smallest divisors sum to $n$."
+    },
+    {
       "id": "prime-structure",
-      "title": "Parts I–III: Definitions, Prime Divisor Structure, and f Bounds",
-      "startLine": 35,
+      "title": "Part II: Prime Divisor Structure",
+      "startLine": 58,
+      "endLine": 101,
+      "summary": "prime_divisors_eq (for prime p, divisors = {1, p}), prime_sortedDivisors (sorted = [1, p]), prime_partialDivisorSums (partial sums = [1, 1+p]), and representable_prime_plus_one: p+1 is representable for every prime p.",
+      "mathContext": "For prime $p$: divisors $= \\{1, p\\}$, partial sums $= [1, p+1]$."
+    },
+    {
+      "id": "f-bounds-primes",
+      "title": "Part III: f(n) Bounds via Primes",
+      "startLine": 102,
       "endLine": 115,
-      "summary": "Core definitions (sortedDivisors, partialDivisorSums, IsRepresentable, computeF). prime_divisors_eq, prime_sortedDivisors, prime_partialDivisorSums. representable_prime_plus_one: p+1 representable. f_prime_plus_one_le: f(p+1) ≤ p.",
-      "mathContext": "For prime $p$: divisors $= \\{1, p\\}$, partial sums $= \\{1, p+1\\}$. So $f(p+1) \\leq p$."
+      "summary": "f_prime_plus_one_le: f(p+1) ≤ p for every prime p, so f(p+1)/(p+1) < 1 on the density-1/log n set of prime shifts.",
+      "mathContext": "$f(p+1) \\leq p \\implies f(p+1)/(p+1) < 1$."
     },
     {
       "id": "computational",
-      "title": "Parts IV–VI: Computational Evidence, Density, and Open Conjecture",
+      "title": "Part IV: Extended Computational Evidence",
       "startLine": 116,
-      "endLine": 214,
-      "summary": "f values for n=3,4,6,8,12,...,32 via native_decide. f_bounded_50: all representable n ≤ 20 have f(n) ≤ 2n. even_representable_small, odd_representable_small. Formal definition of almost_all_little_o encoding the open conjecture.",
-      "mathContext": "$f(3)=2, f(4)=3, f(6)=5, \\ldots, f(32)=31$ verified computationally. Open: $\\forall \\varepsilon > 0$, density of $\\{n : f(n) \\geq \\varepsilon n\\}$ is 0."
+      "endLine": 149,
+      "summary": "Explicit f-values f_3_eq, f_4_eq, …, f_32_eq via native_decide, and f_bounded_50: every representable n ≤ 20 has f(n) ≤ 2n.",
+      "mathContext": "$f(3)=2, f(4)=3, f(6)=5, \\ldots, f(32)=31$ verified computationally."
     },
     {
-      "id": "sigma-infra",
-      "title": "Parts VII–VIII: Sigma Bound Infrastructure",
+      "id": "density",
+      "title": "Part V: Representability is Dense",
+      "startLine": 150,
+      "endLine": 189,
+      "summary": "even_representable_small (all even n ∈ [4..20] are representable) and odd_representable_small (all listed odd n in {3,7,9,…,21} are representable), evidence that representable numbers have density approaching 1.",
+      "mathContext": "All small even and odd numbers (apart from 2 and 5) are representable."
+    },
+    {
+      "id": "open-question",
+      "title": "Part VI: The Open Question (Formal Statement)",
+      "startLine": 190,
+      "endLine": 214,
+      "summary": "almost_all_little_o: the Prop encoding the open conjecture f(n) = o(n) for almost all n.",
+      "mathContext": "Open: $\\forall \\varepsilon > 0$, density of $\\{n : f(n) \\geq \\varepsilon n\\}$ is 0."
+    },
+    {
+      "id": "composites",
+      "title": "Part VII: Representability via Composites",
       "startLine": 215,
+      "endLine": 254,
+      "summary": "one_in_partial_sums: 1 is always a partial sum for m ≥ 1 — the base step for building representability of composite values.",
+      "mathContext": "$1 \\in \\text{partialDivisorSums}(m)$ for all $m \\geq 1$."
+    },
+    {
+      "id": "sigma-bound",
+      "title": "Part VIII: Sigma Bound — f(σ(m)) ≤ m",
+      "startLine": 255,
       "endLine": 345,
-      "summary": "one_in_partial_sums: 1 is always a partial sum. scanl_add_getLast: last element of scanl equals sum. partialDivisorSums_getLast_eq_sigma: last partial sum = σ(m). sortedDivisors_sum_eq bridges list sum to Mathlib σ. f_sigma_bound: f(σ(m)) ≤ m. sigma_representable: σ(m) is always representable.",
+      "summary": "List/scanl infrastructure (sortedDivisors_ne_nil, partialDivisorSums_ne_nil, scanl_add_ne_nil, scanl_add_getLast) feeds partialDivisorSums_getLast_eq_sigma (last partial sum = σ(m)) and sortedDivisors_sum_eq, yielding f_sigma_bound: f(σ(m)) ≤ m, and sigma_representable: σ(m) is always representable.",
       "mathContext": "$\\text{getLast}(\\text{partialDivisorSums}(m)) = \\sigma(m)$, so $f(\\sigma(m)) \\leq m$ for all $m \\geq 1$."
     },
     {
-      "id": "sigma-results",
-      "title": "Part IX–XI: Abundancy Ratios and Representability Density",
+      "id": "abundancy",
+      "title": "Part IX: Abundancy and Density",
       "startLine": 346,
-      "endLine": 445,
-      "summary": "sigma_prime, sigma_ge_succ: σ(m) ≥ m+1 for m ≥ 2. Concrete σ-values for m ∈ {6,12,20,24,30,36,48,60,120}. Ratio theorems showing f(σ(m))/σ(m) < 1/2 for abundant numbers. partialSums_all_representable: every partial sum is representable. partialDivisorSums_length = τ(m). f_witness_bound: abstract f(n) ≤ m bound.",
-      "mathContext": "$\\sigma(m)/m > 2 \\implies f(\\sigma(m))/\\sigma(m) < 1/2$. Each $m$ generates $\\tau(m)$ representable values simultaneously."
+      "endLine": 396,
+      "summary": "sigma_prime (σ(p)=p+1), sigma_ge_succ (σ(m) ≥ m+1 for m ≥ 2), concrete σ-values sigma_6 … sigma_120, and ratio witnesses f_ratio_sigma_6/12/24/120 showing f(σ(m))/σ(m) < 1/2 for abundant numbers.",
+      "mathContext": "$\\sigma(m)/m > 2 \\implies f(\\sigma(m))/\\sigma(m) < 1/2$."
+    },
+    {
+      "id": "all-partial-sums",
+      "title": "Part X: All Elements of Partial Sums are Representable",
+      "startLine": 397,
+      "endLine": 434,
+      "summary": "scanl_add_ge_init, partialSums_all_representable (every partial sum of m is representable) and partialDivisorSums_length (number of partial sums = τ(m)).",
+      "mathContext": "Each $m$ generates $\\tau(m)$ representable values simultaneously."
+    },
+    {
+      "id": "witness-bound",
+      "title": "Part XI: f Bound via Any Witness (Abstract)",
+      "startLine": 435,
+      "endLine": 446,
+      "summary": "f_witness_bound: if n is a partial divisor sum of some w ≤ m, then f(n) ≤ m — the abstract bound underlying the density argument.",
+      "mathContext": "$n \\in \\text{partialDivisorSums}(w),\\ w \\leq m \\implies f(n) \\leq m$."
     },
     {
       "id": "complete-representability",
       "title": "Part XII: Complete Representability of σ-Values and Summary",
-      "startLine": 446,
+      "startLine": 447,
       "endLine": 521,
-      "summary": "sigma_values_representable: every value in range of σ is representable, formally verified for {1,3,4,6,7,8,12,13,14,15,18,20,24,28}. Mathematical summary: proves f(n) = o(n) along the σ-subsequence of superabundant numbers via Gronwall's theorem. Lists all 19 proved theorems and identifies what remains open.",
+      "summary": "sigma_values_representable: every value in the range of σ is representable, formally verified for {1,3,4,6,7,8,12,13,14,15,18,20,24,28}. Closing docstring summarizes the proved results, the sigma-bound significance (f(σ(m))/σ(m) → 0 along superabundant numbers via Gronwall's theorem), and what remains open.",
       "mathContext": "$\\forall n \\in \\text{range}(\\sigma)$, $n$ is representable. Combined with Gronwall: $f(\\sigma(m_k))/\\sigma(m_k) \\leq 1/(e^\\gamma \\log\\log m_k) \\to 0$."
     }
   ],
