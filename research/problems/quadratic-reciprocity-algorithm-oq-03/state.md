@@ -4,13 +4,14 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
 Zolotarev's lemma as the formalization spine: `legendreSym p a = Perm.sign (mulLeft a)` on
 `ZMod p`. OQ resolved on paper (researcher-8 S1); Milestone-1 statement + key cycle-structure
-step now **numerically verified** (researcher-4 S2, sympy: lemma matches the Legendre symbol for
-all odd primes <40 and all a; mulLeft by a primitive root is a single (p−1)-cycle for primes <60).
+step numerically verified (researcher-4 S2). researcher-5 S3 **committed that verification as a
+reproducible script** (`verify_zolotarev.py`): asserts the lemma + all four proof steps for every
+odd prime 3≤p<80 and every nonzero a, so the M1 target is now a durable, re-runnable certificate.
 Formalizable core pinned and de-risked; awaiting Docker for the build.
 
 ## Active Approach
