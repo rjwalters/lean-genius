@@ -973,4 +973,36 @@ theorem one_zero_six_two_seven_nine_zero_nine_five_eight_five_two_nine_over_seve
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-- **Twenty-seventh continued-fraction convergent of `∛3`** (lower bound).
+
+The CF of `∛3` is `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4,
+1, 3, 2, 3, 4, 1, 4, …]`.  With `a₂₆ = 4`, the recursion `pₖ = aₖ pₖ₋₁ + pₖ₋₂`,
+`qₖ = aₖ qₖ₋₁ + qₖ₋₂` on the 25th/26th convergents `1062790958529/736898093374`
+and `1310497171657/908647988973` gives the 27th convergent
+
+  `p₂₆ = 4·1310497171657 + 1062790958529 = 6_304_779_645_157`
+  `q₂₆ = 4·908647988973 + 736898093374 = 4_371_490_049_266`.
+
+After cubing,
+
+  `6_304_779_645_157³   = 250_616_544_228_682_948_175_334_960_223_187_684_893`
+  `3 · 4_371_490_049_266³ = 250_616_544_228_682_948_175_334_962_924_213_859_288`
+
+so `6_304_779_645_157³ < 3 · 4_371_490_049_266³` (strict, diff
+`2_701_026_174_395`), hence `(6304779645157/4371490049266)³ < 3` and
+`6304779645157/4371490049266 < cbrt3` as required for a lower bound (even
+convergent index `26`; relative gap `≈ 3.6·10⁻²⁷`).
+
+`a₂₆ = 4` was re-derived independently from a 400-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s32_27th_convergent.py`, which also
+records the recursion + exact cube direction), per the established anti-typo
+discipline: never re-quote a prior sketch tail, always recompute `aᵢ` and verify
+the cube-side direction before claiming.  This is the next uncontested rung above
+the 26th convergent (PR #24767); a routine, durable helper bound, not a deep
+result.  Two-line proof via the lower cubing-iff helper. -/
+theorem six_three_zero_four_seven_seven_nine_six_four_five_one_five_seven_over_four_three_seven_one_four_nine_zero_zero_four_nine_two_six_six_lt_cbrt3 :
+    (6304779645157 / 4371490049266 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
