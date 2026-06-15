@@ -1921,10 +1921,33 @@ theorem squares_needed_le_four (n : ℕ) : squaresNeeded n ≤ 4 := by
   unfold squaresNeeded
   split_ifs <;> omega
 
-/-- Numbers needing exactly 4 squares are exactly those of excluded form -/
+/-- Numbers needing exactly 4 squares are exactly those of excluded form.
+
+    Only the *necessity* direction (`excluded_form_not_sum_three_sq`, already
+    proved with 0 axioms) is required: it rules out an excluded `n` being a sum
+    of ≤ 2 squares, while the `= 4 ⟹ excluded` direction is definitional
+    (`squaresNeeded` returns `4` only on the final branch, gated by
+    `IsExcludedForm n`). No dependence on the open sufficiency axiom. -/
 theorem needs_four_iff_excluded (n : ℕ) (hn : n ≥ 1) :
     squaresNeeded n = 4 ↔ IsExcludedForm n := by
-  sorry -- Requires full three-squares theorem
+  have hn0 : ¬ (n = 0) := by omega
+  unfold squaresNeeded
+  split_ifs with h0 h1 h2 h3
+  · exact absurd h0 hn0
+  · -- n is a perfect square, so not excluded (a² + 0² + 0² = n)
+    refine iff_of_false (by norm_num) ?_
+    intro hexc
+    obtain ⟨a, ha⟩ := h1
+    exact excluded_form_not_sum_three_sq hexc ⟨(a : ℤ), 0, 0, by rw [← ha]; push_cast; ring⟩
+  · -- n is a sum of two squares, so not excluded (a² + b² + 0² = n)
+    refine iff_of_false (by norm_num) ?_
+    intro hexc
+    obtain ⟨a, b, hab⟩ := h2
+    exact excluded_form_not_sum_three_sq hexc ⟨(a : ℤ), (b : ℤ), 0, by rw [← hab]; push_cast; ring⟩
+  · -- value 3: ¬IsExcludedForm n holds directly
+    exact iff_of_false (by norm_num) h3
+  · -- value 4: reached only when IsExcludedForm n
+    exact iff_of_true rfl (not_not.mp h3)
 
 /-- The density of numbers needing 4 squares:
     |{n ≤ x : n = 4^a(8b+7)}| / x → 1/6 as x → ∞.
