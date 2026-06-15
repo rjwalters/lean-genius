@@ -2,12 +2,12 @@
   "slug": "erdos-10-oq-02",
   "title": "Granville–Soundararajan conjecture (k = 3 for odd integers)",
   "status": "in-progress",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "tier": "B",
   "significance": 6,
   "tractability": 4,
   "started": "2026-06-15T06:02:35Z",
-  "lastUpdate": "2026-06-15T06:02:35Z",
+  "lastUpdate": "2026-06-15T10:05:00Z",
   "path": "research/problems/erdos-10-oq-02",
   "tags": [
     "number-theory",
@@ -34,12 +34,15 @@
     "goal": "Decide GS-odd. Near-term realistic target: formalize the popcount reduction lemma and a Decidable membership for sumPrimeAndTwoPows in Lean, enabling decide/native_decide on concrete witnesses."
   },
   "knowledge": {
-    "progressSummary": "ORIENT (build-free; Docker + Lean down). S1: popcount≤k reduction for S_k membership + sweeps. S2 (this session) sharpens the parity caps: the odd cap is GENUINELY 2 (not trivial) — smallest odd needing exactly 2 powers is 905 = 5·181, a de Polignac number (odd composite, not 2^a+prime), and it is CONSECUTIVE with 906 (smallest even needing 3, S1). Moreover the even minPowers distribution is the odd one shifted up by exactly 1, matching to ~0.02% (even[k]≈odd[k-1]); deviations come from even n reaching prime 2 via the even offset m=n-2. GS caps 3(odd)/4(even) = in-range caps 2/3 plus one. The forcing cases (Crocker odd ∉ S_2, Grechuk even 1117175146 ∉ S_3) lie far beyond brute force.",
+    "progressSummary": "ORIENT (build-free; Docker + Lean down). S1: popcount≤k reduction for S_k membership + sweeps. S2 (this session) sharpens the parity caps: the odd cap is GENUINELY 2 (not trivial) — smallest odd needing exactly 2 powers is 905 = 5·181, a de Polignac number (odd composite, not 2^a+prime), and it is CONSECUTIVE with 906 (smallest even needing 3, S1). Moreover the even minPowers distribution is the odd one shifted up by exactly 1, matching to ~0.02% (even[k]≈odd[k-1]); deviations come from even n reaching prime 2 via the even offset m=n-2. GS caps 3(odd)/4(even) = in-range caps 2/3 plus one. The forcing cases (Crocker odd ∉ S_2, Grechuk even 1117175146 ∉ S_3) lie far beyond brute force. S4 (ACT, build-pending): the DECIDABILITY KEYSTONE. New file proofs/Proofs/Erdos10OQ02Decidable.lean adds the exponent bound (lt_two_pow_self: a<2^a; exp_lt_of_powSum: a in s & powSum s=n => a<n via Multiset.single_le_sum) and upgrades the S3 reduction lemma to a BOUNDED form repWithAtMost_iff_repBoundedDistinct (distinct exponents all <= n, card <= k => finite candidate set => decidable in principle); plus prime-side bound isPrimePlusKPowers_bounded (p<=n) and the combined isPrimePlusKPowers_iff_bounded_distinct. Remaining mechanical step: explicit Decidable instance via Finset.range(n+1) powerset, then 906/Grechuk witnesses by native_decide. Cert verify_decidable_membership.py PASS.",
     "builtItems": [
+      "proofs/Proofs/Erdos10OQ02Decidable.lean (S4, build-pending/UNREGISTERED) — exponent bound a<2^a, bounded reduction lemma RepWithAtMost<->RepBoundedDistinct (exponents<=n), prime-side bound; the finiteness/decidability keystone on top of the S3 reduction lemma.",
+      "research/problems/erdos-10-oq-02/verify_decidable_membership.py (S4) — exact-arithmetic cert: RepWithAtMost==bounded-distinct==popcount<=k; bounded prime form==naive; 905/906 caps; Grechuk 1117175146 not-in-S_3.",
       "research/problems/erdos-10-oq-02/verify_min_powers_parity.py (S2) — exact stdlib sieve, minPowers over both parities to 10^6; pins smallest n by minPowers value, confirms 905/906 consecutive caps and the approximate +1 distribution shift.",
       "research/problems/erdos-10-oq-02/verify_granville_soundararajan_odd.py (S1) — stdlib+sympy experiment (odd/even sweeps, distributions, Grechuk check)."
     ],
     "insights": [
+      "S4: the S3 reduction lemma alone does NOT bound exponents; the finiteness ingredient is a<2^a, giving exp<n for any exponent in a rep of n. With distinct exponents all <=n and at most k of them, membership is a finite search (decidable). Prime side bounds as p<=n. This is the exact shape native_decide needs.",
       "S_k membership reduces to popcount(m) ≤ k offsets: n ∈ S_k ⟺ ∃ m with popcount(m) ≤ k and (n−m) prime, n−m ≥ 2.",
       "S2: the odd cap of 2 is NECESSARY, not trivial — smallest odd needing exactly 2 powers is 905 = 5·181 (a de Polignac number: odd composite, not 2^a+prime). So odd n ∉ S_1 exist.",
       "S2: 905 (smallest odd needing 2) and 906 (smallest even needing 3) are CONSECUTIVE — the +1 parity offset realized back-to-back at the forcing extremes.",
