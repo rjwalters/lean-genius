@@ -189,8 +189,8 @@ single-variable bounds are in scope.
 The Chen–Engel–Glotzer (2010) tetrahedral dimer density strictly
 exceeds the Kepler-Hales FCC sphere density.
 
-**Mathematical content.** The parent gallery's `kepler_conjecture`
-axiom states `δ ≤ π/(3√2)` for packings of *congruent spheres*. This
+**Mathematical content.** The parent gallery's `kepler_conjecture` axiom
+asserts `δ ≤ π/(3√2)` for packings of *congruent spheres*. This
 theorem shows that the abstract `PackingDensity` type in
 `Proofs.KeplerConjecture` admits values *strictly above* `fccDensity`,
 witnessed by the tetrahedral dimer construction. Hence the Kepler
