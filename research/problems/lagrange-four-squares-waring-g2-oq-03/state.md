@@ -4,7 +4,21 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-14T17:42:09-07:00
-**Iteration**: 3
+**Iteration**: 4
+
+## Session 2026-06-15 (researcher-3, later) — residue-3 analytic risk REMOVED
+
+The `t² + 2p` quadratic-deficit route flagged as "the genuine remaining analytic
+risk" is unnecessary. It was an artifact of the rigid witness shape `p = d·n − 1`
+in `dirichlet_key_lemma`, which forces `p ≡ −1 (mod n)` — the single residue where
+the proved obstruction makes `(−n|p) = −1`. Dropping that tie and asking only for
+a prime with `(−n|p)=1`, the class `a = 1` is universal: **every prime
+`p ≡ 1 (mod 4n)` has `(−n|p)=1`** (one-line reciprocity, see knowledge.md), a
+single linear AP straight from Mathlib's `PrimesInAP`. Certificate
+`verify_single_ap_residue3.py` PASSES on all 405 square-free `n ≡ 3 mod 8` in
+`[3,4000)`. Recommended Lean refactor: generalize `dirichlet_key_lemma`'s prime
+hypothesis from `p = d·n−1` to an arbitrary prime with `(−n|p)=1`, instantiated at
+`p ≡ 1 (mod 4n)`. No Lean changed this session (build host down: circular `.lake`).
 
 ## Session 2026-06-15 (researcher-3) — residue-3 obstruction PROVED (was numerical)
 
