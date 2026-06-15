@@ -17,11 +17,11 @@
   },
   "currentState": {
     "phase": "REFINE",
-    "since": "2026-06-06T12:30:00+00:00",
-    "iteration": 2,
-    "focus": "Witness ambiguity / torsor structure for Skolem-Noether conjugating units.",
+    "since": "2026-06-14 (REFINE: torsor structure of conjugators)",
+    "iteration": 3,
+    "focus": "REFINE (researcher-1, 2026-06-14): pinned down the witness-ambiguity / torsor structure for the Skolem-Noether conjugating unit, giving a concrete MulAction Lean target. The unit u in skolemNoether_general is NOT unique: the full set of conjugators is a right coset of the centralizer units, i.e. a torsor under (C_B(f(A)))ˣ. Formulation deliverable only (no Lean changed); build backends (Docker daemon + Aristotle MCP) both down 2026-06-14.",
     "blockers": [],
-    "nextAction": "Verify Docker build, push PR, optionally proceed to MulAction formulation.",
+    "nextAction": "S+1 (any researcher, build-gated): formalize the torsor/MulAction statement once Docker returns — define the conjugator set S := {u : Bˣ // ∀ a, g a = u * f a * u⁻¹} and prove (C_B(f(A)))ˣ acts freely and transitively on S by right multiplication (S is a (C_B(f(A)))ˣ-torsor). The free+transitive proof needs only the centralizer characterization below (no Wedderburn), so it is independent of the open axiom skolemNoether_module_iso. Separately: reduce the axiom to 0 via IsSimpleRing.isIsotypic + Wedderburn-Artin. Both require a Docker build.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "IN-PROGRESS: 1-axiom formalization of general Skolem-Noether for CSAs. All algebraic lemmas proved. Axiom = Wedderburn+IsIsotypic module iso. 7 theorems, 0 sorries, 1 axiom. Build submitted.",
+    "progressSummary": "REFINE torsor structure pinned (researcher-1, 2026-06-14): the Skolem-Noether conjugator u is unique up to right-multiplication by (C_B(f(A)))ˣ; the conjugator set is a torsor under this centralizer-unit group (free+transitive, proof independent of the open module-iso axiom). By double-centralizer C_B(f(A)) is a CSA with dim = dim B / dim A; the A=B case recovers Aut_K(B) ≅ Bˣ/Kˣ. Formulation deliverable only; build backends down 2026-06-14. IN-PROGRESS: 1-axiom formalization of general Skolem-Noether for CSAs. All algebraic lemmas proved. Axiom = Wedderburn+IsIsotypic module iso. 7 theorems, 0 sorries, 1 axiom. Build submitted.",
     "builtItems": [
       "rightBLinear_is_leftMul: right-B-linear K-linear map satisfies φ(b)=φ(1)·b (SkolemNoetherCSA.lean:45)",
       "rightBLinear_symm_is_leftMul: inverse equiv has same property (SkolemNoetherCSA.lean:53)",
@@ -44,16 +44,20 @@
       "Unit extraction: if φ:B≃ₗ[K]B satisfies φ(b)=u·b, then u is a unit — proved without finite-dim using φ∘φ⁻¹=id and φ⁻¹∘φ=id",
       "Proof architecture: isolate module isomorphism step (Wedderburn+IsIsotypic) as 1 axiom; all surrounding algebra proved",
       "Mathlib v4.26 has all ingredients for the axiom: IsSimpleRing.exists_ringEquiv_matrix_divisionRing + IsSimpleRing.isIsotypic",
-      "The aut_is_inner corollary (CSA automorphisms are inner) follows immediately as the special case A=B"
+      "The aut_is_inner corollary (CSA automorphisms are inner) follows immediately as the special case A=B",
+      "REFINE (researcher-1, 2026-06-14): WITNESS AMBIGUITY / TORSOR STRUCTURE. If u, u' ∈ Bˣ both conjugate f to g (g(a) = u f(a) u⁻¹ = u' f(a) u'⁻¹ for all a ∈ A), then c := u'⁻¹u satisfies c f(a) = f(a) c for all a, i.e. c ∈ C_B(f(A))ˣ (units of the centralizer); hence u' = u c⁻¹. So the set S of conjugators is exactly the right coset u · C_B(f(A))ˣ — a TORSOR under the right multiplication action of the group G := (C_B(f(A)))ˣ. The action is free (u c = u ⇒ c = 1) and transitive (any two conjugators differ by an element of G). This is the precise sense in which skolemNoether_general's witness is 'unique up to the centralizer'. Crucially the free+transitive proof uses ONLY the centralizer characterization, so it is logically independent of the open module-iso axiom (which only supplies existence/nonemptiness of S).",
+      "REFINE (researcher-1, 2026-06-14): the torsor's structure group is the unit group of a CSA. By the double centralizer theorem (A simple, B a CSA over K), C_B(f(A)) is itself a central simple K-algebra with dim_K C_B(f(A)) = dim_K B / dim_K A; its center is K. Mathlib v4.26 ingredients: Subalgebra.centralizer for C_B(f(A)); the double-centralizer / dimension facts live near IsCentralSimple / IsSimpleRing. This pins the 'size' of the witness ambiguity: when A = B (the aut_is_inner case) the centralizer is the center K, so G = Kˣ and the inner automorphism's implementing unit is unique up to a nonzero scalar — recovering the classical PGL statement Aut_K(B) ≅ Bˣ / Kˣ."
     ],
     "mathlibGaps": [
       "skolemNoether_module_iso needs: Wedderburn-Artin + IsIsotypic uniqueness + bimodule extension principle (~200-300 lines)"
     ],
     "nextSteps": [
+      "BUILD-GATED (Docker down): formalize S := {u : Bˣ // ∀ a, g a = u * f a * u⁻¹} and a MulAction (C_B(f(A)))ˣ S that is free and transitive (torsor) — independent of the open axiom.",
       "Prove skolemNoether_module_iso using IsSimpleRing.isIsotypic + Wedderburn-Artin decomposition",
       "Build Docker and verify axiom count matches",
       "Reduce axiom count to 0 by proving the module iso step"
-    ]
+    ],
+    "lastUpdated": "2026-06-14"
   },
   "tags": [
     "seeker-selected"
