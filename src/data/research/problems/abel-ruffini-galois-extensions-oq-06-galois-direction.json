@@ -60,13 +60,16 @@
     "lastUpdate": "2026-06-15T00:00:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE scaffold materialised the S8 PREP §5 drop-in template into the destination directory: problem.md (5-step proof plan + bearer audit table + references), knowledge.md (risk register + cross-slug reuse + LOC profile), state.md (Iteration 1 SCAFFOLD), and this JSON tracker. No Lean changes. Bearer ecosystem re-verified intact at lake-pinned SHA. Sub-OQ ready for S2 ORIENT.",
+    "progressSummary": "PROGRESS (researcher-1 2026-06-15): Mathlib bearer name-check vs pinned v4.26.0. 5 cited bearers confirmed exact; Step-5 bearer corrected (use le_normalizer_of_normal_subgroupOf, not the self-inclusion le_normalizer); Step-4 R4 'resolved by 0-LOC normal_of_characteristic_of_normal' REFUTED (lemma absent) — needs a real construction. 5 sorries unchanged; no .lean edit (blackout).",
     "insights": [
       "Forward direction parent oq-06 already discharged (S7 ACT PR #19071); this sub-OQ owns only the Galois direction.",
       "Step 1 (sylow_p_unique) HAS a bearer-complete sound route after all (researcher-3 S7 ORIENT 2026-06-14): derived-series last-nontrivial-term A (abelian, characteristic) + block-of-normal-orbit primitivity argument gives A transitive => p | |A|; A's Sylow-p Q is characteristic in A hence normal in H; v_p(p!)=1 => |Q|=p => Q is a normal Sylow-p of H => unique. All bearers present at pin (IsBlock.orbit_of_normal, IsBlock.subsingleton_or_eq_univ, derivedSeries_normal/characteristic/succ, Sylow.characteristic_of_normal/ofCard/unique_of_normal, Nat.Prime.factorization_factorial). The absent socle/MinimalNormal/IsElementaryAbelian API is NOT needed.",
       "The 'nontrivial normal subgroup of a faithful primitive action is transitive' fact -- which R1's S6 audit had not located -- is exactly IsBlock.orbit_of_normal (Blocks.lean:475) + IsBlock.subsingleton_or_eq_univ (Primitive.lean:115); it replaces the textbook minimal-normal machinery for prime degree.",
       "`Equiv.Perm.isCycle_of_prime_order''` (Mathlib v4.26.0) is a 1-LOC bearer for step 3, reducing the parent S6 PREP's 300-500 LOC estimate to 250-450.",
-      "Bearer ecosystem (Sylow, isCycle, normalizer, MonoidHom.ofInjective, parent AGL1Z*) confirmed intact at lake-pinned SHA on 2026-06-01."
+      "Bearer ecosystem (Sylow, isCycle, normalizer, MonoidHom.ofInjective, parent AGL1Z*) confirmed intact at lake-pinned SHA on 2026-06-01.",
+      "Bearer name-check vs pinned mathlib4 v4.26.0 (researcher-1 2026-06-15): Steps 1-3 bearers confirmed EXACT (Sylow.ofCard:102, unique_of_normal:710, normal_of_subsingleton:724, isCycle_of_prime_order'':Type.lean:412, IsCycle.orderOf:Basic.lean:363).",
+      "CORRECTION (Step 5): cited Subgroup.le_normalizer (Defs.lean:710) is only the SELF-inclusion H≤normalizer H, wrong for the goal H≤⟨σ⟩.normalizer. Correct bearer = Subgroup.le_normalizer_of_normal_subgroupOf (Basic.lean:378): from (⟨σ⟩.subgroupOf H).Normal + ⟨σ⟩≤H gives H≤⟨σ⟩.normalizer.",
+      "CORRECTION (Step 4/R4): cited '0-LOC instance Subgroup.normal_of_characteristic_of_normal' does NOT EXIST in v4.26.0. Only normal_of_characteristic (char⟹normal SAME group, Basic.lean:241). The char-in-normal transitivity (N⊴G ∧ K char N ⟹ K⊴G) needs a real ~5-20 LOC construction; R4 is NOT 0-LOC resolved."
     ],
     "nextSteps": [
       "S2 ORIENT: author Lean file skeleton with ~6 file-level + step sorries.",
