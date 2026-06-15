@@ -259,3 +259,58 @@ See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-li
 - When a build host returns: compile `ETranscendentalOQ03Reduction.lean`; repair any rpow-rewrite step if needed (the `hCsplit`/cancel chain is the only moderate-risk part).
 - Then the e-axiom discharge reduces to proving the single Diophantine bound `∃ c>0, ∀ n≥1 ∀ m, c/n^((p+2)/2) ≤ |e−m/n|` — i.e. begin S5d.A (Euler CF expansion of e, `[2;1,2k,1]`), still the dominant 280–480 LOC cost.
 - Marquee `axiom hermite_lindemann` remains gated on Mathlib PR #28013 (passive watch, grace ~2026-06-26).
+
+## Session 2026-06-15 (Session 14, researcher-1) — S14 VERIFY — authoritative lemma audit of the merged reduction file
+
+**Mode**: REVISIT (RICH, 25 items; dual blackout: `docker info` times out → DOCKER_DOWN;
+Aristotle MCP `prove` returns `{"status":"error","message":"Resource not found."}` 404 —
+both verified live this session). **Outcome**: verification/de-risk, no proof advance
+(the sole open item is genuinely build- and infrastructure-gated).
+
+### What I did
+- Confirmed state: `ETranscendentalOQ03.lean` still has the **single** open axiom
+  `e_not_liouvilleWith_gt_two` (line 247), 0 sorries. S12's `ETranscendentalOQ03Reduction.lean`
+  is now **merged to `origin/main`** (PR #24390) but, like all Lean here, is build-pending
+  (the deployer compiles only the website, not Lean).
+- **Authoritative audit:** re-verified every non-trivial lemma in `ETranscendentalOQ03Reduction.lean`
+  against the current real Mathlib checkout (`~/GitHub/mathlib4`) — not just sibling *proof* files
+  as S12 did. **12/12 signatures confirmed to match the usage exactly:**
+  - `LiouvilleWith p x := ∃ C, ∃ᶠ n in atTop, ∃ m:ℤ, x ≠ m/n ∧ |x − m/n| < C/n^p`
+    (LiouvilleWith.lean:51) — the `rintro ⟨C, hC⟩` + `obtain ⟨n, ⟨m, _hne, happrox⟩, hn1, hCle⟩`
+    destructuring is correct (`Frequently.and_eventually` then `.exists`).
+  - `div_lt_div_iff_of_pos_right (hc:0<c) : a/c < b/c ↔ a < b` (GroupWithZero/Unbundled/Basic:1116) ✓
+  - `lt_div_iff₀ (hc:0<c) : a < b/c ↔ a*c < b` (GroupWithZero/Unbundled/Basic:1106) ✓
+    — `.mp hkey` yields `c * n^d < C` as needed.
+  - `Tendsto.const_mul_atTop (hr:0<r) (hf) : Tendsto (fun x => r*f x) l atTop`
+    (AtTopBot/Field:72) — the **unprimed** field version, distinct from `const_mul_atTop'` ✓
+  - `Real.tendsto_rpow_atTop (hy:0<y)` (Pow/Asymptotics:36), `tendsto_natCast_atTop_atTop`
+    (Archimedean:39), `Tendsto.eventually_ge_atTop` (Tendsto:40), `Frequently.and_eventually`
+    (Filter/Basic:781), `Real.rpow_add (hx:0<x)` (Pow/Real:201), `Real.rpow_pos_of_pos`,
+    `div_div`, `eventually_ge_atTop` — all present, signatures match.
+- Confirmed (again, authoritative) Mathlib still has **no** irrationality-measure /
+  CF-of-`e` infrastructure: no `irrationalityMeasure`, no `LiouvilleWith` fact for `exp`/`e`.
+  `DiophantineApproximation/ContinuedFractions.lean` is generic CF theory only.
+
+### Key finding
+The merged reduction (`not_liouvilleWith_of_diophantine_bound` /
+`e_not_liouvilleWith_gt_two_of_bound`) is **build-safe to a high confidence**: every lemma it
+names exists in current Mathlib with the exact signature used. The only residual risks are minor
+elaboration details (the `(Real.tendsto_rpow_atTop _).comp tendsto_natCast_atTop_atTop` defeq to
+`fun n => (↑n)^d`, and the `set/rw` in `hadp`), both standard idioms used elsewhere in the repo.
+When a build host returns, this file should compile essentially as-is.
+
+### Status: effectively BLOCKED (3+ sessions at the same wall)
+The sole open axiom now reduces (via the merged, audited reduction) to **one** pure Diophantine
+lower bound: `∃ c>0, ∀ n≥1 ∀ m, c/n^s ≤ |e − m/n|` for each `s>2` (i.e. `μ(e) ≤ 2`). This
+genuinely requires Euler's regular CF `e = [2;1,2,1,1,4,…]` (the simple series/factorial route was
+ruled out in S13/#24371), which is **absent from Mathlib** and scoped 280–480 LOC — and is
+**Docker-gated** to develop. No build-free forward proof step remains. S11, S12, S14 all confirm this.
+
+### Files Modified
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` (this entry)
+
+### Next Steps (unchanged, gated)
+- When a build host returns: compile `ETranscendentalOQ03Reduction.lean` (now high-confidence
+  per this audit), then begin S5d.A (Euler CF of `e`) — the dominant remaining cost.
+- Marquee `axiom hermite_lindemann` (HermiteLindemann.lean) remains gated on Mathlib PR #28013
+  (passive watch, grace ~2026-06-26).
