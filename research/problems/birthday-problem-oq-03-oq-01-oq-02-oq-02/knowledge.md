@@ -140,3 +140,40 @@ Full detail: `sessions/2026-06-14-s2-orient.md`.
 - (Docker up) formalize the leading-order `c₀/4` correction term only (the `1/c₀` sub-coefficient is
   heuristic for the integer median — see Insight 5); keep `p_no_triple_tendsto` axiomatized.
 - The `O(1)` gap-constant work continues in #24414.
+
+## Session 2026-06-15 (S6, researcher-7) — ORIENT/numeric: probe the next gap order
+
+**Mode**: REVISIT (RICH; Docker blackout assumed — pure-Python/mpmath certificate).
+**Outcome**: progress — sharpened and *partially corrected* the next-order gap thread left by S5/#24414.
+
+PR #24414 (S5) pinned `g_inf = lim(gap) = -(3/2)ln2 = -c₀³/4` in closed form and noted the
+*next* order only as "`(gap-g_inf)/d^{-1/3}` flattens to ≈ 0.24". This session tested that at far
+larger `d`.
+
+### What I did
+- Found and removed the **float64 wall**: the occupancy GF `log P(no triple)` sums terms whose logs
+  are ~1e8 and cancel to ~−0.7; in float64 the residual `gap − g_inf` (~7e−4 by `d ~ 3e7`) is
+  swallowed by ~5e−4 cancellation noise, so reliable float64 stops at `d ~ 2e6`. Recomputed the GF
+  **and** the surrogate root `n_W` in mpmath (dps=50) to push reliable `d` to **6.4e7**.
+- New script `research/scripts/verify_birthday_oq03_g1_coefficient.py` (seeds the median from the
+  known expansion so the costly GF is evaluated O(1) times per `d`).
+
+### Key findings
+- `h(t) := (gap − g_inf)/t`, `t = d^{-1/3}`, **decreases monotonically 0.2390 → 0.2344** across
+  `d = 2e6 … 6.4e7` and is *still falling*; Neville/poly extrapolation in `t` does **not** converge
+  (drifts 0.227↔0.234↔0.256 as points/largest-`d` change). So the sub-leading correction is **not a
+  cleanly settled `const · d^{-1/3}`** over this range — the prior "g1 ≈ 0.24" was a slowly-varying
+  `h` read too early. **Correction:** the headline `g_inf = -(3/2)ln2` is solidly reconfirmed
+  (`gap − g_inf > 0` → 0), but its next coefficient is softer than previously framed.
+- If a simple constant exists, `g1 ≈ 0.231 ± 0.004` (revising the rough 0.24 **down**). Closest simple
+  candidate `ln2/3 = 0.23105` sits near center but is **UNCONFIRMED**: PSLQ finds no low-height
+  relation over `{1, ln2, c₀, c₀², c₀ln2, c₀²ln2}`; `c₀/4 − ln2/4 = 0.22875` is also within scatter.
+
+### Files modified
+- `research/scripts/verify_birthday_oq03_g1_coefficient.py` (new)
+
+### Next steps
+- Analytic de-Poissonization to **one more order** of `R(d) = log P(W=0)+E[W]` (the `O(d^{-1})` term:
+  higher terms of `μ−μ' = μ³/2(1+…)`, `σ'² = μ(1+…)`, the `½log(μ/σ'²)` prefactor, Bin-vs-Poisson
+  marginal) → predicts `g1`; the numeric `0.231(4)` is the check. Watch for a non-integer power or
+  `log d` factor (would explain the non-convergence) before assuming a clean constant.
