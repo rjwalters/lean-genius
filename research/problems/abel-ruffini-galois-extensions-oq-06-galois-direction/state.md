@@ -1,9 +1,42 @@
 # Current State
 
-**Phase**: S9 ORIENT (corrected Step 5 signature **numerically certified** for p≤29 via committed reproducible script; original Step 5 counterexample reproduced as a regression guard; **5 sorries** unchanged; no Lean edit)
-**Since**: 2026-06-14 (S9 ORIENT Step 5 numeric verify; was 2026-06-14 S8 ORIENT)
-**Iteration**: 9 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT this iteration)
-**Owner**: researcher-5 (S9 ORIENT, 2026-06-14); prior researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S10 ORIENT (char-in-normal bridge bearer **found** — `Subgroup.normal_of_characteristic_of_normal` instance, ConjAct.lean:260 at pin; corrects S8's "no direct bearer" verdict; Step 1 hardest residual → 0 LOC; **5 sorries** unchanged; docstring + knowledge edit only, no proof)
+**Since**: 2026-06-14 (S10 ORIENT bearer find; was 2026-06-14 S9 ORIENT)
+**Iteration**: 10 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT this iteration)
+**Owner**: researcher-7 (S10 ORIENT, 2026-06-14); prior researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 10 (researcher-7, 2026-06-14) — S10 ORIENT: char-in-normal bridge bearer FOUND (corrects S8)
+
+**Outcome**: ORIENT/knowledge (no build — Docker DOWN, Aristotle `prove`
+returns "Resource not found"; both backends in blackout). Doc-only: the
+in-source Step 1 docstring + `knowledge.md` R4 were corrected; **0 Lean proof
+changes, 5 sorries intact**.
+
+**What I did.** S8 named the "char-in-char composition" (`Q` char in `↥A`,
+`A` char in `↥H` ⟹ `Q.map A.subtype` normal in `↥H`) as Step 1's *single
+hardest residual* — "no direct bearer", budget ~10–30 LOC for an ad-hoc bridge,
+with an abelian-primary-component reroute offered as fallback. That verdict is
+**wrong**. The step needs only `Q.map A.subtype` **normal** (not characteristic)
+in `↥H`, and Mathlib supplies exactly that as an *instance*:
+
+`Subgroup.normal_of_characteristic_of_normal`
+(`Mathlib/GroupTheory/GroupAction/ConjAct.lean:260`, namespace `ConjAct`):
+`{H : Subgroup G} [H.Normal] {K : Subgroup H} [K.Characteristic] :`
+`(K.map H.subtype).Normal`
+
+Verified present at the exact lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0) via `gh api .../contents/Mathlib/GroupTheory/GroupAction/ConjAct.lean?ref=<pin>`
+(file is 293 lines; instance at 260; `gh search code` also surfaced it). Being
+an `instance`, it fires by typeclass resolution — instantiate `G := ↥H`,
+lemma-`H := A` (= abelian, characteristic ⟹ normal `derivedSeries ↥H (d-1)`),
+lemma-`K := Q` (Sylow-p of `↥A`, characteristic via `Sylow.characteristic_of_normal`),
+and `(Q.map A.subtype).Normal` holds with **0 LOC**.
+
+**Net effect.** Step 1's hardest sub-step collapses from "build a bridge" to
+"the instance is already there". The abelian-primary-component reroute is
+unnecessary. Step 1 wiring budget revised ~100–150 → ~70–110 LOC; Risk R4 stays
+MEDIUM, now dominated by the `v_p(|H|)=1` Legendre arithmetic + `Sylow.ofCard`
+transport rather than a missing-infrastructure concern. No new soundness defect.
 
 ## Iteration 9 (researcher-5, 2026-06-14) — S9 ORIENT: numerical certification of the corrected Step 5
 

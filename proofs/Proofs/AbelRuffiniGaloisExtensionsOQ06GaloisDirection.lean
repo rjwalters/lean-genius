@@ -65,18 +65,29 @@ variable {p : ℕ} [Fact p.Prime]
        `A` nontrivial + faithful (`H ≤ S_p`) moves some point, so that orbit
        is univ ⟹ **`A` is transitive** (`isPretransitive_iff_orbit_eq_univ`).
     3. `A` transitive on a `p`-set ⟹ `p ∣ |A|` (orbit–stabilizer).
-    4. `A` abelian ⟹ its Sylow-`p` `Q` is **normal** in `A` ⟹ characteristic
-       in `A` (`Sylow.characteristic_of_normal`, Sylow.lean:728); `Q` char in
-       `A` char in `H` ⟹ **`Q ⊴ H`**.
+    4. `A` abelian ⟹ its Sylow-`p` `Q` is **normal** in `↥A` ⟹ characteristic
+       in `↥A` (`Sylow.characteristic_of_normal`, Sylow.lean:728); with `A ⊴ ↥H`
+       (from `A` characteristic in `↥H`) the transported subgroup
+       `Q.map A.subtype` is then **normal in `↥H`** by the *instance*
+       `Subgroup.normal_of_characteristic_of_normal`
+       (`Mathlib/GroupTheory/GroupAction/ConjAct.lean:260` at pin `2df2f015`:
+       `{H : Subgroup G} [H.Normal] {K : Subgroup H} [K.Characteristic] :
+       (K.map H.subtype).Normal`). Instantiated with `G := ↥H`, lemma-`H := A`,
+       lemma-`K := Q`, this fires by typeclass resolution — **0 LOC**, not the
+       ~10–30 LOC ad-hoc bridge the S8 audit budgeted (see knowledge.md R4 §S10).
     5. `v_p(|H|) ≤ v_p(p!) = 1` (Legendre, `Nat.Prime.factorization_factorial`
        / `padicValNat_factorial`), and `p ∣ |A| ∣ |H|` ⟹ `v_p(|A|) = 1` ⟹
        `|Q| = p`, so `Q` is a Sylow-`p` of `H` too (`Sylow.ofCard`,
        Sylow.lean:102). `Q ⊴ H` Sylow ⟹ **unique**
        (`Sylow.unique_of_normal`, Sylow.lean:710) ⟹ `Subsingleton (Sylow p H)`.
 
-    Residual risk is **wiring**, not missing infrastructure (~100–150 LOC):
-    transporting `Q` along `A ↪ H`, the char-in-char step, and the `v_p`
-    arithmetic. Risk R4 accordingly downgraded HIGH→MEDIUM (see knowledge.md).
+    Residual risk is **wiring**, not missing infrastructure (now ~70–110 LOC,
+    revised down from ~100–150): transporting `Q` along `A ↪ ↥H`, the `v_p`
+    arithmetic, and the orbit–stabilizer transitivity. The char-in-normal step
+    that S8 flagged as the single hardest residual ("no upstream bearer",
+    ~10–30 LOC) is **resolved** — it is the 0-LOC instance
+    `Subgroup.normal_of_characteristic_of_normal` cited in step 4. Risk R4
+    accordingly stays MEDIUM but the budget shrinks (see knowledge.md R4 §S10).
     Discharge deferred to a Docker-up ACT session. -/
 theorem sylow_p_unique
     (H : Subgroup (Equiv.Perm (ZMod p)))

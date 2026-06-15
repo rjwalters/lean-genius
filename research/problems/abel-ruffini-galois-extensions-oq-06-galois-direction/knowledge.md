@@ -155,6 +155,29 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   adapts "~1:1" to Step 1 is **still tainted by circularity** — it assumes a
   *normal* Sylow is already exhibited; the derived-series route is the
   correct substitute.
+  **R4 §S10 — char-in-normal bridge bearer FOUND (researcher-7, 2026-06-14;
+  CORRECTS the S8 "no direct bearer" verdict).** S8 budgeted ~10–30 LOC for an
+  ad-hoc bridge to get `Q.map A.subtype` normal in `↥H`, on the grounds that
+  `Subgroup.Characteristic` ships no transitivity lemma. But the step does not
+  need char-in-char (characteristic in `↥H`) — it needs only **normal** in `↥H`,
+  and that is exactly the *instance*
+  `Subgroup.normal_of_characteristic_of_normal`, present at the lake-pin
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) in
+  `Mathlib/GroupTheory/GroupAction/ConjAct.lean:260`:
+  `instance normal_of_characteristic_of_normal {H : Subgroup G} [hH : H.Normal]`
+  `{K : Subgroup H} [h : K.Characteristic] : (K.map H.subtype).Normal`
+  (verified by `gh api .../contents/...?ref=<pin>`; namespace `ConjAct`, but
+  being an `instance` it fires by typeclass resolution regardless of name).
+  Instantiate with `G := ↥H`, lemma-`H := A` (the abelian characteristic ⟹
+  normal `derivedSeries ↥H (d-1)`), lemma-`K := Q` (`Q` characteristic in `↥A`
+  via `Sylow.characteristic_of_normal`, abelian ⟹ Sylow normal). Then
+  `(Q.map A.subtype).Normal` holds automatically — **0 LOC**. This removes S8's
+  "single hardest residual" and obviates the offered abelian-primary-component
+  reroute. Step 1's wiring budget drops ~100–150 → ~70–110 LOC; Risk R4 stays
+  MEDIUM (the `v_p` arithmetic + `Sylow.ofCard` transport remain the bulk).
+  Build still pending (Docker + Aristotle both DOWN this session — Aristotle
+  `prove` returns "Resource not found"), so this is bearer-confirmation, not a
+  discharge; no `.lean` proof produced, 5 sorries intact.
 
 ## Cross-slug reuse
 
