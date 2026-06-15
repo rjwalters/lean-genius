@@ -46,7 +46,7 @@ theorem carmichael_dvd_totient (n : ℕ) [NeZero n] :
   unfold carmichael
   rw [show Nat.totient n = Fintype.card (ZMod n)ˣ from
     (ZMod.card_units_eq_totient n).symm]
-  exact Monoid.exponent_dvd_card
+  exact Group.exponent_dvd_card
 
 /-- λ(n) is the minimal universal exponent: if a^e = 1 for all units a,
     then λ(n) | e. -/
@@ -54,7 +54,7 @@ theorem carmichael_minimal (n : ℕ) [NeZero n] (e : ℕ)
     (he : ∀ a : (ZMod n)ˣ, a ^ e = 1) :
     carmichael n ∣ e := by
   unfold carmichael
-  exact Monoid.exponent_dvd_of_forall_pow_eq_one _ e he
+  exact Monoid.exponent_dvd_of_forall_pow_eq_one he
 
 /-- For prime p, λ(p) = p - 1 = φ(p).
     The group (ℤ/pℤ)* is cyclic of order p-1, so its exponent is p-1. -/
@@ -64,12 +64,16 @@ theorem carmichael_prime {p : ℕ} (hp : Nat.Prime p) :
   haveI : NeZero p := ⟨hp.ne_zero⟩
   haveI : Fact p.Prime := ⟨hp⟩
   -- (ℤ/pℤ)* is cyclic, so exponent = card = φ(p) = p - 1
-  rw [IsCyclic.exponent_eq_card, ZMod.card_units_eq_totient, Nat.totient_prime hp]
+  rw [IsCyclic.exponent_eq_card, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient,
+    Nat.totient_prime hp]
 
 /-- λ(1) = 1: the trivial group has exponent 1. -/
 theorem carmichael_one : carmichael 1 = 1 := by
   unfold carmichael
-  exact Monoid.exponent_eq_one_of_subsingleton
+  have h : Fintype.card (ZMod 1)ˣ = 1 := by
+    rw [ZMod.card_units_eq_totient]; simp
+  exact Monoid.exp_eq_one_iff.mpr
+    (Fintype.card_le_one_iff_subsingleton.mp h.le)
 
 /-- λ(2) = 1: the group (ℤ/2ℤ)* = {1} has exponent 1. -/
 theorem carmichael_two : carmichael 2 = 1 := by
@@ -77,7 +81,7 @@ theorem carmichael_two : carmichael 2 = 1 := by
   have h : Fintype.card (ZMod 2)ˣ = 1 := by
     rw [ZMod.card_units_eq_totient]
     exact Nat.totient_prime (by norm_num)
-  exact Monoid.exponent_eq_one_iff.mpr
-    (Fintype.card_le_one_iff_subsingleton.mp (h ▸ le_refl 1))
+  exact Monoid.exp_eq_one_iff.mpr
+    (Fintype.card_le_one_iff_subsingleton.mp h.le)
 
 end CarmichaelFunction
