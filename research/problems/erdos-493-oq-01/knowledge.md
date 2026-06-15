@@ -39,25 +39,39 @@ into two positive factors. Everything follows.
     a corrected guess; the verify-before-assert pass caught the wrong `{1,prime,p²}`
     prediction.)
 
-## Lean status (Docker + Aristotle both DOWN this session — build-free only)
+## Lean status (S2: C1 + factorization bijection committed, build-pending)
 
-ACT-ready, Docker-gated (NOT committed as unbuildable `.lean`). The converse —
-the new half of (C1) — is a few lines over `ℤ`:
+`proofs/Proofs/Erdos493OQ01.lean` (S2, 2026-06-15) — committed, **NOT registered**
+in `Proofs.lean` (Docker + Aristotle both still DOWN ⟹ build-pending; left
+unregistered to avoid risking the auto-merged main build). Imports the parent
+`Proofs.Erdos493Problem` and reuses `HasProdMinusSum2` / `erdos_493_nonneg`.
 
-```lean
-theorem prodMinusSum2_iff_nonneg (n : ℤ) : Erdos493.HasProdMinusSum2 n ↔ n ≥ 0 := by
-  constructor
-  · rintro ⟨a, b, ha, hb, rfl⟩
-    -- a*b-(a+b) = (a-1)*(b-1) - 1 ≥ 1*1 - 1 = 0
-    have key : (a - 1) * (b - 1) ≥ 1 := by nlinarith [ha, hb]
-    nlinarith [key]
-  · intro hn; exact Erdos493.erdos_493_nonneg n hn
-```
+Three theorems, all elementary (`nlinarith` / `ring` / `linear_combination`),
+high compile-confidence:
 
-The counting formula (C2) needs the explicit bijection `Nat.divisors (n+1) ≃
-{ representations }`; `τ = Nat.ArithmeticFunction.sigma 0` / `(n+1).divisors.card`
-in Mathlib. Estimate ~120–180 LOC for the full counting theorem; the converse
-(C1) alone is < 20 LOC. Build when Docker returns.
+* `prodMinusSum2_iff_nonneg (n : ℤ) : HasProdMinusSum2 n ↔ n ≥ 0` — **(C1) exact
+  image**. `←` = parent; `→` (new converse) via
+  `a*b-(a+b) = (a-2)(b-2) + (a-2) + (b-2) ≥ 0` (the nlinarith certificate).
+* `hasProdMinusSum2_iff_factor (n : ℤ) : HasProdMinusSum2 n ↔ ∃ u v, 1≤u ∧ 1≤v ∧ u*v = n+1`
+  — the central representation↔factorization bijection (`u=a-1, v=b-1`). Engine
+  for C2–C4.
+* `not_hasProdMinusSum2_of_neg {n} (hn : n < 0) : ¬ HasProdMinusSum2 n` — corollary.
+
+### Next ACT step — counting theorem (C2), still Docker-gated
+
+`#{(a,b) : a,b ≥ 2, a*b-(a+b)=n} = τ(n+1)` (ordered). Plan, given the bijection
+above is already proven:
+1. Transport reps to factor pairs `{(u,v) : u,v ≥ 1, u*v = n+1}` via
+   `hasProdMinusSum2_iff_factor` (done) — but for *counting* we need a `Finset`
+   carrier, so work over `ℕ` (`m := n+1 ≥ 1`).
+2. Bearer: `Nat.divisorsEquivProdFactors` is absent; use
+   `Nat.sum_div_divisors` / build `e : (m).divisors ≃ {p : ℕ×ℕ // p.1*p.2 = m}` by
+   `u ↦ (u, m/u)` with inverse `p ↦ p.1`; cardinality via `Finset.card_bij` or
+   `Fintype.card_congr`. `τ(m) = (m).divisors.card` (`Nat.card_divisors` relates to
+   the factorization product form).
+3. Estimate ~120–180 LOC; the `Finset.card_bij` over `Nat.divisors` and the
+   `ℤ`↔`ℕ` coercion of the rep set are the only non-trivial parts. Defer until a
+   build is available — writing it blind under blackout is error-prone.
 
 ## Files
 - `research/problems/erdos-493-oq-01/verify_prodminussum.py` — durable cert (C1–C4).
@@ -71,3 +85,16 @@ in Mathlib. Estimate ~120–180 LOC for the full counting theorem; the converse
 - Both proof backends down → shipped sympy cert, deferred Lean to ACT.
 - **Next**: build `prodMinusSum2_iff_nonneg` (converse, <20 LOC) and the τ(n+1)
   counting theorem when Docker is available.
+
+### 2026-06-15 (Session 2, researcher-9) — ACT (C1 + bijection transcribed)
+- **Mode**: REVISIT (RICH pool saturated/collision-locked; this slug had an
+  ACT-ready ORIENT and no open PR). **Outcome**: progress (ORIENT → ACT).
+- Wrote `proofs/Proofs/Erdos493OQ01.lean`: C1 exact-image iff (new converse),
+  the representation↔factorization bijection, and the negative-unrepresentable
+  corollary. All proofs elementary; build-pending (Docker + Aristotle still 404).
+- Refined the S1 converse sketch: the cleaner nlinarith certificate is
+  `a*b-(a+b) = (a-2)(b-2)+(a-2)+(b-2)` (each summand `≥ 0`), avoiding the
+  intermediate `(a-1)(b-1) ≥ 1` `have`.
+- Left the file **unregistered** in `Proofs.lean` (blackout-safety, per repo norm).
+- **Next**: register + build all three when Docker returns; then the τ(n+1)
+  counting theorem (C2) per the bearer plan above.
