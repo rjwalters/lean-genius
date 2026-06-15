@@ -6,7 +6,7 @@
   "meta": {
     "author": "Taylor, Lagrange (classical)",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MeanValueTheoremOQ02.lean",
     "tags": [
       "calculus",
@@ -15,11 +15,11 @@
       "analysis",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 153,
-    "assumptions": "1 axiom: taylor_lagrange_remainder (converting Mathlib's integral remainder to Lagrange form). 0 sorries.",
+    "axiomCount": 0,
+    "lineCount": 177,
+    "assumptions": "None. taylor_lagrange_remainder is now proved (not axiomatized) by bridging Mathlib's taylor_mean_remainder_lagrange_iteratedDeriv to this file's taylorPolynomial. 0 axioms, 0 sorries.",
     "dateAdded": "2026-03-30",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
@@ -59,7 +59,7 @@
       "MVT as first-order Taylor (n=0 specialization)",
       "Second-order Taylor with explicit remainder"
     ],
-    "theoremCount": 4,
+    "theoremCount": 5,
     "definitionCount": 1
   },
   "overview": {
@@ -213,9 +213,9 @@
       "Set"
     ],
     "namespace": "MeanValueTheoremOQ02",
-    "lineCount": 153,
-    "axiomCount": 1,
-    "theoremCount": 4,
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 5,
     "definitionCount": 1,
     "path": "Proofs/MeanValueTheoremOQ02.lean",
     "sorries": 0
