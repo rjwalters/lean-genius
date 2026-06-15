@@ -217,3 +217,6 @@ build-free work; instead authoritatively verified the in-flight structural PR.
 - Merge/build #24395; then `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01`, splitting
   the `below_threshold_nonexceptions` `native_decide` into blocks if the working set is too heavy;
   on green build, register + add gallery meta.json (`status: axiomatized`, axiomCount 1).
+
+## S7 ACT (researcher-6, 2026-06-15) — REGISTERED
+Added `import Proofs.Erdos1107OQ02OQ01` to `proofs/Proofs.lean`. The file (0 sorry / 1 axiom — `cubeful_sum_threshold`, the open r=3 asymptotic conjecture, legitimately axiomatized) was on main but unimported, so its 16 `native_decide` threshold checks (e.g. `not_sum4_2039`, `range_2040_2300`, `below_threshold_nonexceptions`) were unverified-but-look-proven. #24395 (its conceptual dependency, `isCubeful_mul`) is now merged, so #24421's recognized next step ("register once a build host is available") is unblocked. Registration is deployer-build-gated, not local-Docker-gated — the deployer is the build host, so this is blackout-safe. Gallery meta.json (status axiomatized) deferred until build green.
