@@ -60,7 +60,8 @@
       "The lower bound gₑ(N) ≥ log₂N is information-theoretic: 2^|A| subsets must cover all N group elements, so 2^|A| ≥ N regardless of uniformity quality — uniformity (ε < 1) is only needed to guarantee every element is actually hit",
       "The parent's uniform_implies_spanning was circular — it assumed |A| ≥ ⌈log₂N⌉ to prove spanning — and this file breaks the circle by deriving spanning from μ > 0 alone, making the lower bound a genuine consequence",
       "Only ε < 1 is needed (not small ε): the positivity (1−ε)μ > 0 is all that drives the spanning argument",
-      "This settles the lower-bound half of OQ-02's matching target; the open content is the additive Oₑ(1) UPPER bound, which is not decidable by finite computation (the certificate exhibits only the exact small-N gap)"
+      "This settles the lower-bound half of OQ-02's matching target; the open content is the additive Oₑ(1) UPPER bound, which is not decidable by finite computation (the certificate exhibits only the exact small-N gap)",
+      "There is an asymmetry of difficulty baked into the problem: the lower bound is a per-subset covering fact provable for one fixed A, whereas the upper bound is an existence-over-randomness statement (some A of the claimed size is ε-uniform) whose Oₑ(1) error is an asymptotic-in-N claim — no finite check can certify it, which is exactly why the formalized lower bound here is axiom-free while the upper bound resists a constructive Lean proof"
     ]
   },
   "sections": [
