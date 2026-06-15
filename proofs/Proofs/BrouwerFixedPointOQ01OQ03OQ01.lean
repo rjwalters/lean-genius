@@ -49,6 +49,15 @@ The standing `ham_sandwich_theorem` axiom in `BrouwerFixedPointOQ01OQ03.lean`
 is therefore reduced to the single statement "the half-volume discrepancy map
 is continuous on Sⁿ", which is the genuine Lebesgue-continuity input.
 
+4. `ham_sandwich_of_scalar_continuity` / `ham_sandwich_standard_of_scalar_continuity`
+   — sharpen the residual input further. The continuity hypothesis above was a
+   *vector* statement ("a continuous `SphereFun` realizes the discrepancy"). Here
+   the vector-assembly step is discharged: assuming only that each of the `2n`
+   *scalar* slice-volume maps is continuous, the discrepancy assembles into a
+   continuous `EuclideanSpace`-valued map via `(EuclideanSpace.equiv …).symm`, and
+   the conclusion follows. The remaining input is now a continuity statement about
+   a single real parameterized volume — no `SphereFun` is assumed.
+
 ## Summary: 0 sorries, 0 new axioms.
 Depends on `BorsukUlam.lean` (1 axiom: `no_continuous_odd_nonzero_on_sphere`).
 -/
@@ -167,6 +176,46 @@ theorem ham_sandwich_of_discrepancy (n : ℕ) (hn : n ≥ 1)
   exact (ENNReal.toReal_eq_toReal_iff' (hfin_pos x i) (hfin_neg x i)).mp hsub
 
 -- ============================================================
+-- PART 3b: Reducing the analytic input to SCALAR slice-volume continuity
+-- ============================================================
+
+/-- **Ham Sandwich from scalar slice-volume continuity.**
+
+    The lone analytic input of `ham_sandwich_of_discrepancy` was the existence of
+    a *continuous `SphereFun`* (a `ℝⁿ`-valued map) realizing the discrepancy. That
+    packaging still bundles a vector-assembly step. Here we discharge it: if each
+    of the `2n` *scalar* slice-volume maps
+    `x ↦ vol(bodyᵢ ∩ pos x i)` and `x ↦ vol(bodyᵢ ∩ neg x i)` is continuous (as an
+    `ℝ`-valued function via `.toReal`), the discrepancy map assembles into a
+    continuous `EuclideanSpace`-valued map automatically — the finite-dimensional
+    L²-assembly `(EuclideanSpace.equiv …).symm ∘ (continuous components)` — and
+    Ham Sandwich follows.
+
+    This pins the residual gap to its atomic form: continuity of a *single real*
+    parameterized slice-volume. The vector `SphereFun` packaging is no longer
+    assumed — it is constructed and proved continuous from the scalar inputs. -/
+theorem ham_sandwich_of_scalar_continuity (n : ℕ) (hn : n ≥ 1)
+    (bodies : Fin n → Set (EuclideanSpace ℝ (Fin n)))
+    (pos neg : EuclideanSpace ℝ (Fin (n + 1)) → Fin n → Set (EuclideanSpace ℝ (Fin n)))
+    (hswap : ∀ x i, pos (-x) i = neg x i)
+    (hswap' : ∀ x i, neg (-x) i = pos x i)
+    (hfin_pos : ∀ x i, volume (bodies i ∩ pos x i) ≠ ⊤)
+    (hfin_neg : ∀ x i, volume (bodies i ∩ neg x i) ≠ ⊤)
+    (hcont_pos : ∀ i, Continuous fun x => (volume (bodies i ∩ pos x i)).toReal)
+    (hcont_neg : ∀ i, Continuous fun x => (volume (bodies i ∩ neg x i)).toReal) :
+    ∃ x ∈ Sphere n, ∀ i, volume (bodies i ∩ pos x i) = volume (bodies i ∩ neg x i) := by
+  -- Assemble the scalar discrepancy components into a continuous EuclideanSpace map.
+  have hcont : Continuous fun x => (EuclideanSpace.equiv (Fin n) ℝ).symm
+      (fun i => discrepancy n bodies pos neg x i) := by
+    refine (EuclideanSpace.equiv (Fin n) ℝ).symm.continuous.comp (continuous_pi fun i => ?_)
+    simpa only [discrepancy] using (hcont_pos i).sub (hcont_neg i)
+  -- Package as the SphereFun realizing the discrepancy, then apply Part 3.
+  refine ham_sandwich_of_discrepancy n hn bodies pos neg
+    ⟨fun x => (EuclideanSpace.equiv (Fin n) ℝ).symm
+      (fun i => discrepancy n bodies pos neg x i), hcont⟩
+    hswap hswap' hfin_pos hfin_neg (fun x i => rfl)
+
+-- ============================================================
 -- PART 4: The standard linear half-space parameterization
 -- ============================================================
 
@@ -260,6 +309,33 @@ theorem ham_sandwich_standard (n : ℕ) (hn : n ≥ 1)
     (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
     hcomp
 
+/-- **Ham Sandwich, standard parameterization, from scalar continuity alone.**
+
+    The sharpest packaging in this file. Under the standard linear half-space
+    assignment `stdPos`/`stdNeg`, the antipodal-swap and finiteness side
+    conditions are theorems (`stdPos_neg`, `stdNeg_neg`, `volume_inter_ne_top`),
+    and the vector-assembly step is discharged by
+    `ham_sandwich_of_scalar_continuity`. What remains as hypotheses is therefore
+    *exactly* the atomic analytic content:
+      * `hbody` — each body has finite volume, and
+      * `hcont_pos`/`hcont_neg` — each **scalar** slice-volume
+        `x ↦ vol(bodyᵢ ∩ {y | ⟨u x, y⟩ ⋚ t x})` is continuous on `Sⁿ`.
+    No continuous `SphereFun` is assumed; it is built from the scalar maps. -/
+theorem ham_sandwich_standard_of_scalar_continuity (n : ℕ) (hn : n ≥ 1)
+    (bodies : Fin n → Set (EuclideanSpace ℝ (Fin n)))
+    (u : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] EuclideanSpace ℝ (Fin n))
+    (t : EuclideanSpace ℝ (Fin (n + 1)) →ₗ[ℝ] ℝ)
+    (hbody : ∀ i, volume (bodies i) ≠ ⊤)
+    (hcont_pos : ∀ i, Continuous fun x => (volume (bodies i ∩ stdPos n u t x i)).toReal)
+    (hcont_neg : ∀ i, Continuous fun x => (volume (bodies i ∩ stdNeg n u t x i)).toReal) :
+    ∃ x ∈ Sphere n, ∀ i,
+      volume (bodies i ∩ stdPos n u t x i) = volume (bodies i ∩ stdNeg n u t x i) :=
+  ham_sandwich_of_scalar_continuity n hn bodies (stdPos n u t) (stdNeg n u t)
+    (stdPos_neg n u t) (stdNeg_neg n u t)
+    (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
+    (fun x i => volume_inter_ne_top n (bodies i) _ (hbody i))
+    hcont_pos hcont_neg
+
 /-
 ## Significance and the Remaining Gap
 
@@ -280,11 +356,16 @@ standard parameterization (Parts 4–6):
     slice is a subset (`volume_inter_ne_top`).
 
 The single genuinely-remaining analytic input is therefore:
-  * the continuity of `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)})` on `Sⁿ`
-    (Lebesgue continuity of parameterized half-spaces; dominated convergence),
-    which packages the discrepancy map as the continuous `SphereFun` `F` whose
-    existence is the lone hypothesis `hcomp` of `ham_sandwich_standard`.
+  * the continuity of `x ↦ vol(bodyᵢ ∩ {y | ⟨u(x), y⟩ < t(x)}).toReal` on `Sⁿ`
+    (Lebesgue continuity of parameterized half-spaces; dominated convergence).
 This is a self-contained measure-theory fact; it is not topological.
+
+`ham_sandwich_standard_of_scalar_continuity` (Part 6) states the conclusion with
+*exactly* this scalar continuity (plus finiteness) as its only hypotheses: the
+vector packaging into a `SphereFun` is no longer assumed but constructed, so the
+intermediate `ham_sandwich_standard` (which still took the vector `hcomp`) is
+strictly weakened in its hypotheses. The dichotomy "topological core (proved) vs.
+scalar Lebesgue continuity (the lone input)" is now exact.
 -/
 
 end BrouwerFixedPointOQ01OQ03OQ01
