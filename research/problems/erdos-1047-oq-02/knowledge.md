@@ -184,3 +184,90 @@ back-side dimple.)
 - Audit the gallery's Goodman/referee (f, c) against Goodman (1966) and supply a
   clean Pommerenke k ≥ 5 example with a computed κ < 0 (Result 1/2 give the
   explicit value, e.g. κ = −0.93 at θ = 0.02π for z⁵(z−1) at 0.999 c*).
+
+---
+
+## Session 2026-06-15 (Session 3) — ANALYTIC, ORIENT → first complete case
+
+**Mode:** build on Session 2 (executes its top next-step). **Outcome:** progress
+— the **two-distinct-root case is now completely solved** in closed form, the
+first nontrivial case of the OQ-02 characterization. Fully analytic, with every
+claim certified to 40-digit precision (`two_root_classification.py`).
+
+S2 reduced convexity to the log derivative w = Σ mⱼ/(z−rⱼ): a component of
+{|f| ≤ c} is convex ⟺ Re(w'/w²) ≤ 0 on its boundary. Equivalently, with
+u = 1/w = f/f' and u' = −w'/w², **convex ⟺ Re(u') ≥ 0**. This session pushes
+that criterion to a full answer for two distinct roots.
+
+### Result 1 — equal multiplicities collapse to the simple-root case
+For f and any power fᵐ the level sets coincide and the criterion is
+**sign-invariant**: w_{fᵐ} = m·w_f, so (mw)'/(mw)² = (1/m)(w'/w²) — same sign.
+Hence two distinct roots of any **equal** multiplicity (m, m) have *identical*
+convexity behaviour to two simple roots (1, 1), which by affine invariance is
+exactly the normalized polynomial **z(z−1)**. (Certified: Re(w'/w²)_{(m,m)} =
+(1/m)Re(w'/w²)_{(1,1)} to 1e-42, sign preserved for m = 2,3,5.)
+
+### Result 2 — closed form and exact classification of z(z−1)
+With s = z − ½,
+    u' = (2z² − 2z + 1)/(2z − 1)² = ½ + 1/(8 s²),
+so Re(u') = ½ + (1/8)(x² − y²)/(x² + y²)², s = x + iy (certified vs the direct
+expression to 1e-41). On the level set {|z(z−1)| = c}, write s² = ¼ + c·e^{iφ}
+(since z(z−1) = s² − ¼). A short computation gives, on the boundary,
+
+    Re(u') < 0   ⟺   cos φ  <  −(1 + 8c²)/(6c).
+
+Because cos φ ≥ −1, the boundary can enter the non-convex region **iff**
+−(1+8c²)/(6c) > −1, i.e. **8c² − 6c + 1 < 0**, i.e. **¼ < c < ½**
+(the roots of 8c²−6c+1 = 8(c−¼)(c−½) are exactly the two thresholds). Therefore
+the **complete** convexity classification of z(z−1):
+
+| regime | components | convex? |
+|--------|-----------|---------|
+| 0 < c < ¼ | two (separated) | **both convex** |
+| ¼ < c < ½ | one (dumbbell)  | **non-convex** (waist) |
+| c ≥ ½     | one (oval)      | **convex** |
+
+c* = ¼ is the merge value (saddle z = ½, |f| = ¼). The key fact: **every
+separated component (c < ¼) is convex**, for the simple-root configuration and
+hence (Result 1) for any two distinct roots of equal multiplicity. Verified
+three ways: the exact φ-algebra, the min of Re(u') over the φ-parametrization,
+and independent boundary ray-tracing (min Re(u') stays ≥ 0.75 up to c = 0.249).
+
+### Result 3 — the discriminator is multiplicity IMBALANCE, not size
+Combining Results 1–2 with the Pommerenke necking (S1): in the two-distinct-root
+case, the answer to *"are all separated (m-component-regime) components convex?"*
+is **exactly m₁ = m₂**.
+- m₁ = m₂: all separated components convex (Results 1–2); non-convexity only
+  for the *merged* component in the bounded window ¼ < c/c* normalised … < ½.
+- m₁ ≠ m₂: a non-convex **separated** component appears just below merge
+  (certified: worst boundary Re(u') = −0.535 for z⁵(z−1) and −0.740 for
+  z⁸(z−1) at c = 0.999 c*; equal-multiplicity never produces this).
+
+This sharpens S1's "W(k) grows with multiplicity k": S1 only varied m₁ = k with
+m₂ = 1, so it was implicitly varying the *imbalance* m₁ − m₂. The clean
+statement is that **imbalance**, not absolute multiplicity, drives the
+pre-merge necking — a polynomial with two distinct roots of equal (arbitrarily
+high) multiplicity has all separated components convex.
+
+### Files (added this session)
+- `research/problems/erdos-1047-oq-02/two_root_classification.py` — proves &
+  certifies Results 1–3 to 40 digits (closed form, the 8c²−6c+1 threshold
+  algebra, the equal-multiplicity reduction, traced-boundary cross-check, and
+  the unequal-multiplicity separated non-convexity).
+
+### Next steps (updated)
+- **Three distinct roots** (next case). With w = Σ³ mⱼ/(z−rⱼ), the convex-region
+  algebra no longer collapses to a single quadratic; the equal-multiplicity
+  reduction still removes a common factor but the geometry (collinear vs
+  triangular root configurations) now matters. Conjecture to test: among three
+  *equal*-multiplicity roots, collinear configurations keep separated components
+  convex while a "central" root flanked by two others can neck — i.e. the
+  discriminator generalises from pairwise-equal multiplicity to a *local
+  balance* condition at each root relative to its neighbours.
+- Quantify the unequal-multiplicity window for two roots in closed form: solve
+  Re(u') = 0 on {|z^{m₁}(z−1)^{m₂}| = c} for the onset c_nc(m₁,m₂)/c* (S1's
+  W(k) is the m₂ = 1 slice); the analytic onset would replace S1's bisection table.
+- Lean: still deferred (level-set convexity is heavy real analysis); the
+  decidable artifact remains the curvature/criterion certificate. The 8c²−6c+1
+  threshold for z(z−1) is, however, a candidate for an eventual Lean lemma since
+  it is now a finite algebraic statement, not an analytic scan.

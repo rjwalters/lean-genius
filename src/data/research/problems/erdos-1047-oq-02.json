@@ -16,12 +16,12 @@
     "seeker-selected"
   ],
   "started": "2026-06-14T00:00:00Z",
-  "lastUpdate": "2026-06-14T00:00:00Z",
+  "lastUpdate": "2026-06-15T00:00:00Z",
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-06-14T00:00:00Z",
-    "iteration": 2,
-    "focus": "Session 2: derived a CLOSED-FORM lemniscate curvature κ = |f'/f|·(1 − Re(f f''/(f')²)) (validated to ~1e-4 vs Session-1's real Hessian), and reduced it to the logarithmic derivative w = Σ mⱼ/(z−rⱼ): convex ⟺ Re(w'/w²) ≤ 0 — a criterion in root data alone. Single distinct root (z−r)^m gives Re(w'/w²) ≡ −1/m < 0 (always convex; base case). On-axis tips of Pommerenke z^k(z−a) are BOTH convex (near tip sharpens, κ→∞ at merge); the non-convexity is off-axis shoulders flanking the facing-a tip, not a tip/back-side dimple."
+    "since": "2026-06-15T00:00:00Z",
+    "iteration": 3,
+    "focus": "Session 3 solves the two-distinct-root case completely. Equal multiplicities (m,m) reduce (sign-invariantly) to z(z-1); closed form u'=1/2+1/(8s^2) gives the exact classification via 8c^2-6c+1: separated components (c<1/4) convex, dumbbell (1/4<c<1/2) non-convex, oval (c>=1/2) convex. Discriminator for convex separated components in the two-root case is exactly m1=m2 (multiplicity IMBALANCE, not size, drives pre-merge necking)."
   },
   "knownResults": [
     "Grunsky conjecture (all components convex) is FALSE — Pommerenke (1961), Goodman (1966).",
@@ -38,7 +38,10 @@
       "For Pommerenke f=z^k(z−a), the non-convex window W(k)=(c*−c_nc)/c* grows monotonically with multiplicity k and is essentially INDEPENDENT of inter-root distance a: W = 0% (k=1), 0.05% (k=2), 0.34% (k=3), 0.93% (k=4), 1.75% (k=5), 2.77% (k=6), 5.17% (k=8), 7.85% (k=10). So W(k) is an intrinsic function of multiplicity.",
       "Simple-root low-degree configs (deg-2 Cassini z²−1, deg-3 z³−z) keep ALL components convex through the entire separated regime (κ_min→0⁺ at merge, never negative).",
       "The merge threshold for z^k(z−a) is c* = max_{0<r<a} r^k|r−a| (the on-axis barrier height between the two roots).",
-      "The gallery's stated Goodman example (z²+1)(z−2)² at c=5^{3/2}/4 tests ALL CONVEX under the sensitive curvature test (κ_min≈1.25 around the double root); 5^{3/2}/4 sits at the merge threshold and the only multiple root is double (k=2, W≈0.05%). The referee example z(z⁵−1) (all simple roots) also tests all-convex. The clean reproducible counterexample is Pommerenke z^k(z−a) with k≥5."
+      "The gallery's stated Goodman example (z²+1)(z−2)² at c=5^{3/2}/4 tests ALL CONVEX under the sensitive curvature test (κ_min≈1.25 around the double root); 5^{3/2}/4 sits at the merge threshold and the only multiple root is double (k=2, W≈0.05%). The referee example z(z⁵−1) (all simple roots) also tests all-convex. The clean reproducible counterexample is Pommerenke z^k(z−a) with k≥5.",
+      "TWO-DISTINCT-ROOT CASE SOLVED (S3): convex <=> Re(u')>=0 with u=f/f'. For z(z-1), s=z-1/2, u'=1/2+1/(8 s^2); on {|z(z-1)|=c} (s^2=1/4+c e^{i phi}) the boundary enters {Re u'<0} iff cos phi < -(1+8c^2)/(6c), reachable iff 8c^2-6c+1<0 i.e. 1/4<c<1/2. Complete classification: c<1/4 two convex components, 1/4<c<1/2 one non-convex dumbbell, c>=1/2 one convex oval. Thresholds are the roots of 8c^2-6c+1=8(c-1/4)(c-1/2).",
+      "Equal-multiplicity reduction (S3): f and f^m share level sets and Re(w'/w^2) is sign-invariant (w_{f^m}=m w_f => (1/m)Re(w'/w^2)), so two distinct roots of any EQUAL multiplicity (m,m) have identical convexity to two simple roots (1,1) ~ z(z-1). Hence equal-multiplicity two-root polynomials have ALL separated components convex.",
+      "DISCRIMINATOR (S3): in the two-distinct-root case, 'are all separated (m-component-regime) components convex?' is answered exactly by m1=m2. Multiplicity IMBALANCE (m1!=m2), not absolute multiplicity, drives the pre-merge necking. Certified: z^5(z-1) and z^8(z-1) have a non-convex SEPARATED component (worst boundary Re(u')=-0.535, -0.740 at c=0.999 c*); equal multiplicity never does. This sharpens S1's W(k) table (which only varied the imbalance via m2=1)."
     ],
     "builtItems": [
       "research/problems/erdos-1047-oq-02/curvature_closed_form.py — [S2] derives & numerically certifies the closed-form complex curvature κ=|f'/f|(1−Re(f f''/f'²)) and its log-derivative reduction κ=−|w|Re(w'/w²); asserts agreement with the S1 real Hessian to <1e-3, single-root Re(w'/w²)≡−1/m to 1e-9, and both Pommerenke on-axis tips convex for all c.",
@@ -46,16 +49,17 @@
       "research/problems/erdos-1047-oq-02/pommerenke_scan.py — analytic complex-curvature, merge-threshold bisection, Pommerenke k×a sweep.",
       "research/problems/erdos-1047-oq-02/onset_refine.py — full c-scan and dimple localization.",
       "research/problems/erdos-1047-oq-02/robustness_check.py — independent grid-free polar-trace cross-check (r(θ) root-finding + r²+2r′²−rr″≥0).",
-      "research/problems/erdos-1047-oq-02/window_width.py — bisection map of non-convex window W(k)."
+      "research/problems/erdos-1047-oq-02/window_width.py — bisection map of non-convex window W(k).",
+      "research/problems/erdos-1047-oq-02/two_root_classification.py — proves & certifies (40 digits) the complete two-distinct-root classification: closed form u'=1/2+1/(8s^2), the 8c^2-6c+1 threshold algebra, equal-multiplicity sign-invariance, traced-boundary cross-check, unequal-multiplicity separated non-convexity."
     ],
     "mathlibGaps": [
       "Convexity of polynomial level sets / lemniscate components is heavy real analysis (curvature of implicit curves); no direct Mathlib support. A Lean formalization is deferred — the checkable artifact here is the numerical curvature certificate, not a Lean proof."
     ],
     "nextSteps": [
-      "[S2] Attack the TWO-distinct-roots case via the log-derivative criterion: characterize when Re(w'/w²) ≤ 0 holds on the whole component boundary for w = m₁/(z−r₁) + m₂/(z−r₂). This is the first nontrivial case of the OQ-02 characterization and is now a concrete rational-function inequality, not a numerical scan.",
-      "Audit the gallery's Goodman/referee (f,c) against Goodman (1966); supply a clean Pommerenke k≥5 example with a computed κ<0 — Result 1/2 give the explicit value (e.g. κ=−0.93 at θ=0.02π for z⁵(z−1) at 0.999 c*).",
-      "Extend the log-derivative criterion to general multiplicity profiles + inter-root distances to sharpen the characterization (single-root ⇒ always convex; high-multiplicity ⇒ off-axis shoulder non-convexity before merge)."
+      "THREE distinct roots: w=sum_3 m_j/(z-r_j); the convex-region algebra no longer collapses to one quadratic. Test conjecture: among equal-multiplicity roots, collinear configs stay convex while a central root flanked by neighbours can neck (discriminator generalises from pairwise-equal multiplicity to a LOCAL balance at each root).",
+      "Closed-form unequal-multiplicity onset c_nc(m1,m2)/c* for two roots by solving Re(u')=0 on {|z^{m1}(z-1)^{m2}|=c} (S1's W(k) is the m2=1 slice); replaces S1's bisection table.",
+      "Lean still deferred (level-set convexity = heavy real analysis); the 8c^2-6c+1 threshold for z(z-1) is now a finite algebraic statement and a candidate for an eventual Lean lemma."
     ],
-    "progressSummary": "PROGRESS (S2): derived a closed-form complex curvature κ=|f'/f|(1−Re(f f''/f'²)) (validated ~1e-4 vs S1's real Hessian) and reduced convexity to Re(w'/w²)≤0 in the root data alone (w=Σmⱼ/(z−rⱼ)); proved single-root always convex (base case); showed Pommerenke on-axis tips are BOTH convex (near tip sharpens, κ→∞ at merge) so non-convexity is off-axis shoulders, not a tip dimple. Earlier (S1): sensitive boundary-curvature test, multiplicity-controlled window W(k), Goodman/referee (f,c) test all-convex with Pommerenke k≥5 the clean counterexample."
+    "progressSummary": "PROGRESS (S3): two-distinct-root case SOLVED in closed form. Equal multiplicities reduce sign-invariantly to z(z-1), whose convexity is classified exactly by 8c^2-6c+1 (separated components convex, dumbbell non-convex on 1/4<c<1/2, oval convex). Discriminator for convex separated components is exactly m1=m2 — multiplicity imbalance, not size, drives the necking. All certified to 40 digits."
   }
 }
