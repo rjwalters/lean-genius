@@ -192,6 +192,11 @@
       "targetId": "four-color-theorem",
       "relationship": "parent",
       "description": "This open question investigates the proof methodology of the Four Color Theorem. The main entry axiomatizes the 4CT; this entry explores whether the axiom could be replaced by a human-verifiable proof."
+    },
+    {
+      "targetId": "four-color-theorem-oq-02",
+      "relationship": "sibling",
+      "description": "The complementary sub-question. This entry asks whether the computer-assisted case analysis can be avoided altogether (the Kempe-chain obstruction); the sibling entry instead quantifies that case analysis, studying the unavoidable sets of reducible configurations whose size (Appel–Haken's 1476 down to RSST's 633) measures exactly how much mechanical checking a four-color proof currently demands. A human-readable proof in the sense of oq-01 would be one needing no such finite configuration set at all."
     }
   ],
   "references": [
