@@ -51,74 +51,82 @@
     {
       "id": "header",
       "title": "Problem Statement, History, and Imports",
-      "summary": "Documentation with EFR 1986 for non-bipartite, Morris-Saxton 2016 counterexample for C_6, open question on weaker 2^{O(ex)} bound, Mathlib import",
       "startLine": 1,
       "endLine": 31,
-      "mathContext": "How many graphs on $n$ vertices contain no copy of a fixed graph $G$? Erdos-Kleitman-Rothschild (1976) for triangle-free: $2^{n^2/4 + o(n^2)}$."
+      "summary": "States Erdős Problem #59: is the number of $G$-free graphs on $n$ vertices at most $2^{(1+o(1))\\,\\mathrm{ex}(n;G)}$? Status DISPROVED. History: Erdős–Frankl–Rödl (1986) proved it for non-bipartite $G$; Morris–Saxton (2016) disproved it for bipartite $G$ ($C_6$). Open: does the weaker $2^{O(\\mathrm{ex}(n;G))}$ hold for all $G$? Imports Mathlib; opens `Set`, `SimpleGraph`.",
+      "mathContext": "Conjecture: $\\#\\{G\\text{-free on }n\\}\\leq2^{(1+o(1))\\mathrm{ex}(n;G)}$. DISPROVED ($C_6$)."
     },
     {
-      "id": "definitions",
+      "id": "core-definitions",
       "title": "Core Definitions: Subgraph Containment, H-Free, Bipartite",
-      "summary": "ContainsSubgraph via injective adjacency-preserving map, IsFree as negation, IsBipartite via vertex partition with independent sets",
       "startLine": 32,
       "endLine": 47,
-      "mathContext": "G-free graph: $H$ contains no subgraph isomorphic to $G$. $f_G(n) = |\\{H \\subseteq K_n : G \\not\\subseteq H\\}|$."
+      "summary": "Defines `ContainsSubgraph` (injective adjacency-preserving map), `IsFree` (its negation), and `IsBipartite` (a vertex partition into two independent sets).",
+      "mathContext": "$\\text{ContainsSubgraph}(G,H)$: injective $f$ with $H.\\text{Adj}\\Rightarrow G.\\text{Adj}\\circ f$; $\\text{IsFree}=\\neg$; bipartite = 2 independent sets."
     },
     {
-      "id": "constructions",
-      "title": "Graph Constructions (Proved)",
-      "summary": "Concrete cycleGraph definition with proved odd_cycle_not_bipartite and even_cycle_bipartite. C6 = cycleGraph 6, K3 = cycleGraph 3",
+      "id": "graph-constructions",
+      "title": "Graph Constructions",
       "startLine": 48,
-      "endLine": 66,
-      "mathContext": "Lower bound: bipartite graphs on balanced partition give $2^{\\lfloor n^2/4 \\rfloor}$ triangle-free graphs."
+      "endLine": 165,
+      "summary": "Defines `cycleGraph n` (vertex $i$ adjacent to $i\\pm1\\bmod n$) and PROVES the parity classification: `odd_cycle_not_bipartite` (odd cycles are not bipartite — alternating membership fails on the closing edge) and `even_cycle_bipartite` (even cycles are bipartite — partition by index parity). Defines `C6 = cycleGraph 6` and `K3 = cycleGraph 3`.",
+      "mathContext": "$C_n$ bipartite $\\Leftrightarrow n$ even (both directions proved); $C_6$ even, $K_3$ odd."
     },
     {
-      "id": "counting",
-      "title": "Counting Functions: Turán Number and Free Graph Count",
-      "summary": "turanNumber and countFreeGraphs axiomatized (extremal computation intractable to formalize directly)",
-      "startLine": 67,
-      "endLine": 84,
-      "mathContext": "Counting function $f_G(n)$ for forbidden subgraph $G$. $\\log_2 f_G(n) \\sim (1 - 1/\\chi(G)) \\binom{n}{2}$ as $n \\to \\infty$."
+      "id": "counting-functions",
+      "title": "Counting Functions (Axiomatized)",
+      "startLine": 166,
+      "endLine": 183,
+      "summary": "AXIOMATIZES the two counting functions (exact computation is intractable): `turanNumber n k` (max edges in an $n$-vertex graph avoiding all $k$-vertex forbidden graphs) and `countFreeGraphs n k` (number of $H$-free labeled graphs on $n$ vertices, $H$ on $k$ vertices).",
+      "mathContext": "Axioms: `turanNumber` $=\\mathrm{ex}(n;k)$, `countFreeGraphs` $=\\#\\{k\\text{-free graphs}\\}$."
     },
     {
-      "id": "asymptotic",
-      "title": "Asymptotic Bound Definitions",
-      "summary": "HasOptimalBound (2^{(1+o(1))g}), ExceedsOptimalBound (2^{(1+c)g} infinitely often), HasPolynomialBound (2^{O(g)})",
-      "startLine": 85,
-      "endLine": 101,
-      "mathContext": "Erdos-Frankl-Rodl (1986): $\\log_2 f_G(n) \\sim \\text{ex}(n, G)$ for non-bipartite $G$. Tight connection to Turan numbers."
+      "id": "asymptotic-bounds",
+      "title": "Asymptotic Bounds",
+      "startLine": 184,
+      "endLine": 205,
+      "summary": "Defines the three growth predicates: `HasOptimalBound` ($f\\leq2^{(1+o(1))g}$), `ExceedsOptimalBound` ($f\\geq2^{(1+c)g}$ infinitely often), `HasPolynomialBound` ($f\\leq2^{O(g)}$). States the AXIOM `turanNumber_pos` ($\\mathrm{ex}(n;k)>0$ for $n\\geq k\\geq3$).",
+      "mathContext": "Optimal: $f\\leq2^{(1+o(1))g}$; Exceeds: $f\\geq2^{(1+c)g}$ i.o.; Polynomial: $f\\leq2^{O(g)}$."
     },
     {
       "id": "main-results",
-      "title": "Main Results: EFR Theorem and Morris-Saxton Counterexample",
-      "summary": "erdos_frankl_rodl_nonbipartite axiom: non-bipartite H satisfies HasOptimalBound. morris_saxton_c6_counterexample axiom: C_6 exceeds it. morris_saxton_conjecture: open 2^{O(ex)} bound",
-      "startLine": 102,
-      "endLine": 131,
-      "mathContext": "Main: $\\log_2 f_{K_3}(n) \\sim n^2/4$. Almost all triangle-free graphs are bipartite (EKR structure theorem)."
+      "title": "Main Results",
+      "startLine": 206,
+      "endLine": 235,
+      "summary": "The two key literature results as AXIOMS plus the open conjecture: `erdos_frankl_rodl_nonbipartite` (non-bipartite $H$ has the optimal bound), `morris_saxton_c6_counterexample` ($C_6$ exceeds it), and `morris_saxton_conjecture` (the weaker polynomial bound holds for all $k$).",
+      "mathContext": "EFR: optimal bound for non-bipartite $H$. Morris–Saxton: $C_6$ exceeds it; conjecture $2^{O(\\mathrm{ex})}$ for all $H$."
     },
     {
       "id": "resolution",
-      "title": "Problem Resolution: DISPROVED + Bipartiteness Results",
-      "summary": "erdos_59_disproved: negation of universal optimal bound via k=6. c6_is_bipartite and k3_not_bipartite proved from cycle axioms",
-      "startLine": 132,
-      "endLine": 173,
-      "mathContext": "SOLVED: EKR (1976) for triangles, Erdos-Frankl-Rodl (1986) for general non-bipartite $G$. Bipartite case still has open questions."
+      "title": "Resolution of Erdős Problem 59 (Disproved)",
+      "startLine": 236,
+      "endLine": 294,
+      "summary": "PROVES `erdos_59_disproved`: the universal optimal bound fails — at $k=6$ the Morris–Saxton counterexample ($f\\geq2^{(1+c)t}$ i.o.) contradicts any optimal bound ($f\\leq2^{(1+c/2)t}$ for large $n$), using strict monotonicity of $2^x$ and $\\mathrm{ex}(n;6)>0$. Also `c6_is_bipartite` (from `even_cycle_bipartite`) and `k3_not_bipartite` (from `odd_cycle_not_bipartite`).",
+      "mathContext": "Disproof: $C_6$ counterexample contradicts optimal bound via $2^{(1+c)t}\\leq2^{(1+c/2)t}$, $t>0$."
     },
     {
       "id": "turan-bounds",
-      "title": "Classical Turán Bounds and Corollaries",
-      "summary": "Documentation comments on Turán's theorem ex(n;K_{r+1}) = (1-1/r)n²/2 + O(n) and Kővári-Sós-Turán ex(n;C_{2k}) = O(n^{1+1/k}). Two proved corollaries: non_bipartite_satisfies_conjecture and triangle_free_optimal both derive from erdos_frankl_rodl_nonbipartite",
-      "startLine": 174,
-      "endLine": 201,
-      "mathContext": "Turan's theorem: $\\text{ex}(n, K_{r+1}) = (1 - 1/r)\\binom{n}{2}(1 + o(1))$. The extremal number determines the exponent of $f_G(n)$."
+      "title": "Turán Number Bounds",
+      "startLine": 295,
+      "endLine": 305,
+      "summary": "Documentation notes (no declarations) on the classical extremal results: Turán's theorem ($\\mathrm{ex}(n;K_{r+1})\\approx(1-1/r)n^2/2$) and Kővári–Sós–Turán ($\\mathrm{ex}(n;C_{2k})=O(n^{1+1/k})$).",
+      "mathContext": "Turán: $\\mathrm{ex}(n;K_{r+1})\\sim(1-1/r)n^2/2$; KST: $\\mathrm{ex}(n;C_{2k})=O(n^{1+1/k})$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Corollaries",
+      "startLine": 306,
+      "endLine": 316,
+      "summary": "PROVES `non_bipartite_satisfies_conjecture` (non-bipartite $H$ satisfies the optimal bound, from EFR) and `triangle_free_optimal` (the $k=3$ specialization: triangle-free counting is optimally bounded).",
+      "mathContext": "Non-bipartite (incl. $K_3$, $k=3$) satisfies the optimal bound."
     },
     {
       "id": "summary",
-      "title": "Summary and References",
-      "summary": "Problem status DISPROVED. True for non-bipartite (EFR 1986), false for C_6 (Morris-Saxton 2016). Open: weaker 2^{O(ex)} bound. References",
-      "startLine": 202,
-      "endLine": 222,
-      "mathContext": "Complete resolution: $\\log_2 f_G(n) \\sim \\text{ex}(n, G)$ for non-bipartite $G$. Connects counting to extremal graph theory."
+      "title": "Summary",
+      "startLine": 317,
+      "endLine": 337,
+      "summary": "Closing docstring: problem status DISPROVED (true for non-bipartite per EFR 1986, false for $C_6$ per Morris–Saxton 2016), the open weaker $2^{O(\\mathrm{ex})}$ question, and references.",
+      "mathContext": "DISPROVED; open: $2^{O(\\mathrm{ex}(n;H))}$ for all $H$ (Morris–Saxton conjecture)."
     }
   ],
   "conclusion": {
