@@ -262,6 +262,16 @@
       "relationship": "related",
       "description": "Erdős #1007 (graph dimension and unit distance embedding) connects to the geometric embedding questions underlying restricted distance sets.",
       "targetId": "erdos-1007"
+    },
+    {
+      "proofId": "erdos-100-oq-01",
+      "relationship": "extended-by",
+      "description": "OQ-01 isolates the central quantitative gap: the known Guth–Katz lower bound on the minimum diameter of an n-point integer distance set is Ω(n/log n), while the conjecture asks for the linear Ω(n). OQ-01 formalizes this log n gap and the surrounding structure (Anning–Erdős finiteness, Piepmeyer constructions), making precise exactly how much remains between the proven bound and the parent problem's conjectured answer."
+    },
+    {
+      "proofId": "erdos-100-oq-02",
+      "relationship": "extended-by",
+      "description": "OQ-02 poses the growth-rate dichotomy directly: is the minimum diameter of n-point integer distance sets Θ(n) (linear, conjectured) or Θ(n/log n) (the current upper barrier)? It is the question-form companion to this parent problem and the root of the sub-chain that derives Kanold's cn^{3/4} bound as a corollary of the Guth–Katz cn/log n bound (OQ-02-OQ-02)."
     }
   ],
   "leanFile": {
