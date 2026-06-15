@@ -15342,8 +15342,10 @@
     "erdos-1107-oq-02-oq-01": {
       "auditCount": 3,
       "lastAudited": "2026-06-15T15:05:15Z",
-      "result": "clean",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "r+1-law density argument stated only in prose docstrings was framed as Establishes/prove; 10^7 stability is external (non-Lean). Reworded in PR #24616."
+      ]
     },
     "nth-root-irrational-oq-01-oq-01": {
       "auditCount": 2,
@@ -15354,8 +15356,10 @@
     "sum-of-kth-powers-oq-03": {
       "auditCount": 2,
       "lastAudited": "2026-06-15T15:01:30Z",
-      "result": "clean",
-      "issues": []
+      "result": "issues-found",
+      "issues": [
+        "Stray -/ in docstring (line 31 division-/subtraction-free) closes the block comment and breaks compilation despite 0 sorries. Fix in flight: PR #24603."
+      ]
     },
     "euler-totient-oq-01-oq-03": {
       "auditCount": 2,
