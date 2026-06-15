@@ -31,7 +31,7 @@
     "title": "Burnside's Lemma (Average Form): ℕ-Division Corollary",
     "content": "`burnside_lemma_average_form` derives |X/G| = (Σ_g |Fix(g)|) / |G| from the sum form by rewriting and applying `Nat.mul_div_cancel`. The hypothesis `0 < |G|` is explicit (and automatic from `Fintype G` plus inhabitedness, but is taken as an argument to keep the statement self-contained and to avoid Lean having to infer non-emptiness from `[Group G]`'s identity element via a chain of instances). This is the classical Burnside formulation; the symmetric form (without division) is preferred in Mathlib because `Nat.div` rounds down and is brittle for divisibility-sensitive arguments.",
     "mathContext": "$|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\mathrm{Fix}(g)|$. In ℕ this requires exact division: the sum form Σ_g |Fix(g)| = |X/G| · |G| guarantees |G| divides the left-hand side, so `Nat.mul_div_cancel` recovers |X/G| as the exact quotient. **Why explicit `0 < |G|`**: `Fintype.card G > 0` is a derivable fact from `[Group G]` (the identity is always present), but exposing it as a hypothesis keeps the statement simpler and avoids depending on inhabitedness inference.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Nat.mul_div_cancel", "ℕ-division", "Burnside classical form"],
     "prerequisites": ["burnside_lemma_sum_form", "Nat division lemmas"]
   },
@@ -67,7 +67,7 @@
     "title": "Axiom-Cleanliness Inheritance",
     "content": "The file introduces no new axioms. The Mathlib API closure (`MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` and its transitive imports) inherits only the standard Mathlib triple: `Classical.choice`, `propext`, `Quot.sound`. This triple is the same one shared by the parent file `LagrangeTheoremOQ02OQ02.lean`, so the OQ-01 resolution does not enlarge the axiomatic footprint of the gallery's class-equation infrastructure. The status `verified` (badge `verified`) is justified.",
     "mathContext": "**Standard Mathlib triple**: $\\{\\mathrm{Classical.choice}, \\mathrm{propext}, \\mathrm{Quot.sound}\\}$ — the foundational axioms underpinning Mathlib's classical logic, propositional extensionality, and quotient construction. Mathlib treats these as primitive, not as user-introduced axioms.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["axiom-cleanliness", "Mathlib triple", "trusted kernel"],
     "prerequisites": ["Lean 4 axiom discipline", "Mathlib's classical foundation"]
   }
