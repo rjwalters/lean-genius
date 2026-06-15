@@ -2712,6 +2712,8 @@ import Proofs.PythagoreanTriplesOQ02
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityOQ03
+import Proofs.QuadraticReciprocityOQ03OQ01
+import Proofs.QuadraticReciprocityOQ03OQ01Exp
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseyHypergraph
 import Proofs.RamseyR4k
