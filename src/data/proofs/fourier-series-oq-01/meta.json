@@ -119,9 +119,17 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Proof Architecture",
+      "startLine": 1,
+      "endLine": 78,
+      "summary": "Research question (does the Fourier series of every L² function converge pointwise a.e.?), main result (Carleson's theorem), proof-architecture outline, status, imports, opens, and the CarlesonTheorem namespace with references (Carleson 1966, Hunt 1968, Grafakos 2014).",
+      "mathContext": "Carleson's theorem: for $f \\in L^2(\\mathbb{T})$, the partial sums $S_N f$ converge to $f$ almost everywhere. The proof reduces a.e. convergence to a weak-type bound on the Carleson maximal operator $S^* f = \\sup_N |S_N f|$."
+    },
+    {
       "id": "partial-sums",
       "title": "Fourier Partial Sums",
-      "startLine": 84,
+      "startLine": 79,
       "endLine": 102,
       "summary": "Defines $S_N f(x) = \\sum_{n=-N}^{N} \\hat{f}(n) e_n(x)$ and proves basic properties: the $N=0$ case and continuity of partial sums.",
       "mathContext": "The Fourier partial sum $S_N$ is the orthogonal projection of $f$ onto the span of $\\{e_{-N}, \\ldots, e_N\\}$. It is always continuous since it is a finite sum of continuous functions."
@@ -129,7 +137,7 @@
     {
       "id": "maximal-operator",
       "title": "Carleson Maximal Operator",
-      "startLine": 108,
+      "startLine": 103,
       "endLine": 132,
       "summary": "Defines the Carleson maximal operator $S^*f(x) = \\sup_N |S_N f(x)|$ valued in $\\mathbb{R}_{\\geq 0}^{\\infty}$. Proves it dominates each individual partial sum.",
       "mathContext": "The maximal operator $S^*$ measures the worst-case behavior of all partial sums. Defined as an $\\mathbb{R}_{\\geq 0}^{\\infty}$-valued supremum to handle potentially infinite values. The key property $\\|S_N f(x)\\| \\leq S^*f(x)$ connects individual partial sums to the supremum."
@@ -137,7 +145,7 @@
     {
       "id": "carleson-hunt",
       "title": "Carleson-Hunt Maximal Inequality (Axiomatized)",
-      "startLine": 136,
+      "startLine": 133,
       "endLine": 182,
       "summary": "Axiomatizes the Carleson-Hunt weak-type (2,2) bound: $\\mu(\\{S^*f > \\lambda\\}) \\leq (C/\\lambda)^2 \\|f\\|_{L^2}^2$. This is the deep analytic content that requires time-frequency analysis.",
       "mathContext": "The weak-type (2,2) bound is: for all $\\lambda > 0$, $\\mu(\\{x : S^*f(x) > \\lambda\\}) \\leq C^2 \\lambda^{-2} \\|f\\|_{L^2}^2$. The strong form $\\|S^*f\\|_{L^2} \\leq C\\|f\\|_{L^2}$ implies this by Chebyshev. Carleson proved this using a sophisticated decomposition of the time-frequency plane. The fpvandoorn/carleson project completed formalization of the Carleson-Hunt bound in July 2025; it is not yet merged to Mathlib."
@@ -145,8 +153,8 @@
     {
       "id": "trigpoly-convergence",
       "title": "Trigonometric Polynomial Convergence",
-      "startLine": 186,
-      "endLine": 327,
+      "startLine": 183,
+      "endLine": 328,
       "summary": "Defines trigonometric polynomials and proves (without axioms) that their Fourier partial sums eventually reproduce them exactly, via Fourier orthogonality. Also proves they are in L². Density in L² is proved separately in Part V (density section).",
       "mathContext": "A trigonometric polynomial of degree $M$ satisfies $\\hat{g}(n) = 0$ for $|n| > M$. Then $S_N g = g$ for $N \\geq M$ since all nonzero coefficients are captured. Density follows from Mathlib's `span_fourier_closure_eq_top` (Stone-Weierstrass)."
     },
@@ -154,7 +162,7 @@
       "id": "density",
       "title": "Density of Trigonometric Polynomials in L²",
       "startLine": 329,
-      "endLine": 462,
+      "endLine": 464,
       "summary": "Proves that trigonometric polynomials are dense in L²(T) using hasSum_fourier_series_L2. For any f in L² and ε > 0, finds a trig poly g with ∫‖f-g‖² < ε². Proved from Mathlib without axioms.",
       "mathContext": "Uses hasSum_fourier_series_L2 (Hilbert basis convergence in L²). Key private lemmas: Lp2_norm_sq_eq_integral (connecting ‖h‖² to ∫‖h‖² via the L² inner product) and Lp_fourier_sum_coeFn (connecting Lp addition/smul to pointwise operations)."
     },
@@ -170,7 +178,7 @@
       "id": "reduction",
       "title": "Maximal Inequality to a.e. Convergence",
       "startLine": 514,
-      "endLine": 803,
+      "endLine": 804,
       "summary": "The key reduction: defines the divergence set and proves Carleson's theorem assuming the maximal inequality. The density argument decomposes $f = g + h$ where $g$ is a trig poly and $\\|h\\|_{L^2}$ is small.",
       "mathContext": "The divergence set $D_\\delta = \\{x : \\limsup |S_N f(x) - f(x)| > \\delta\\}$ is shown to have measure 0 for each $\\delta > 0$. The full divergence set $\\bigcup_k D_{1/(k+1)}$ is a countable union of null sets, hence null. This is a standard 'Banach principle' or 'Cotlar' type argument."
     },
@@ -178,9 +186,17 @@
       "id": "corollaries",
       "title": "Consequences and Corollaries",
       "startLine": 805,
-      "endLine": 841,
+      "endLine": 842,
       "summary": "Proves Carleson for continuous functions (via $C \\subseteq L^2$ on compact spaces) and states the joint result combining $L^2$ convergence with pointwise a.e. convergence.",
       "mathContext": "Continuous functions on the compact circle $\\mathbb{R}/T\\mathbb{Z}$ are automatically in $L^2$. Carleson's theorem then gives a.e. convergence, complementing the already-proved $L^2$ convergence (Parseval/Hilbert basis)."
+    },
+    {
+      "id": "verification",
+      "title": "Verification",
+      "startLine": 843,
+      "endLine": 859,
+      "summary": "Final typecheck block (#check on fourierPartialSum, carlesonMaximal, le_carlesonMaximal, IsTrigPoly, divergenceSet, fullDivergenceSet, carleson_ae_convergence, carleson_continuous, carleson_and_parseval) confirming the key definitions and theorems are well-formed, closing the CarlesonTheorem namespace.",
+      "mathContext": "A sanity-check section: each #check verifies that a headline definition or theorem of the development elaborates with its intended signature."
     }
   ],
   "crossReferences": [
