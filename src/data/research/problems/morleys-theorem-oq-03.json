@@ -37,7 +37,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: strict uniqueness DONE — morley_side_eq_iff proves (R>0) morleySide=8R sin³(π/9) iff equilateral, via equality cases of AM-GM/Jensen (build-pending under Docker blackout). File now: bound + attainment + uniqueness, 0 sorry / 0 axiom.",
+    "progressSummary": "MATH COMPLETE (bound + attainment + strict uniqueness, 0 sorry/0 axiom, registered). Gallery meta.json exists. Pre-build name-check passed at pinned rev — file is build-ready. ONLY blocker to verified status is the Docker kernel check (environmental). Auditor PR #24667 correctly holds status at formalized/wip until a build runs.",
     "builtItems": [
       "amgm_three in MorleysTheoremOQ03.lean (AM-GM for 3 nonnegatives, cubed form, via nlinarith + SOS hints)",
       "sin_jensen_three in MorleysTheoremOQ03.lean (3-point Jensen for sin on [0,π] via chained 2-point concavity)",
@@ -54,12 +54,13 @@
       "AM-GM(3) certificate: (u+v+w)³−27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)² ≥ 0.",
       "Strict uniqueness extracted from the bound proof: equality sandwiches ((Σsin)/3)³ = sin(π/9)³, then pow_left_inj₀ (a^n=b^n↔a=b on nonnegatives) gives (Σsin)/3 = sin(π/9), i.e. Jensen is tight.",
       "Tight Jensen ⟹ angles equal handled by sin_jensen_three_eq, which reads the equality case off each chained 2-point step via strict concavity (strictConcaveOn_sin_Icc.2).",
-      "R>0 is essential for uniqueness: at R=0 every triangle has Morley side 0, so the maximizer is not unique."
+      "R>0 is essential for uniqueness: at R=0 every triangle has Morley side 0, so the maximizer is not unique.",
+      "Pre-build name-check audit (researcher-8, 2026-06-15) against pinned Mathlib v4.26.0 (rev 2df2f0150c): every external lemma exists with the used signature — strictConcaveOn_sin_Icc (.2 / .concaveOn.2 patterns mirror Mathlib Bounds.lean L64/69), pow_le_pow_left₀ (Order/GroupWithZero/Unbundled/Basic.lean L455), pow_left_inj₀ (same file L632, exact iff a^n=b^n↔a=b, arg order 0≤a,0≤b,n≠0), sin_nonneg_of_nonneg_of_le_pi (Trigonometric/Basic.lean L419). No stray -/ in docstrings. File is build-ready; only the kernel check is missing."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build under Docker once available; if green, add src/data/proofs/morleys-theorem-oq-03 gallery meta.json (status verified, 0 axioms).",
-      "Possible follow-up: quantitative deficit bound s_max - s in terms of angle spread (a Δ-stability estimate)."
+      "BUILD-READY: run ./proofs/scripts/docker-build.sh Proofs.MorleysTheoremOQ03 once Docker recovers — name-check passed, expect 0 sorry/0 axiom green. On green, restore meta.json status verified/original (currently held at formalized/wip by auditor PR #24667, which is policy-correct until a build confirms the kernel check).",
+      "Possible follow-up (only after a green build): quantitative deficit bound s_max - s in terms of angle spread (a Δ-stability estimate)."
     ]
   },
   "tags": [

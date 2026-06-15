@@ -99,3 +99,41 @@ conclusion with 3 open questions, cross-refs to parent `morleys-theorem` and sib
 modest: surfaces an already-complete, already-registered verified proof in the gallery that was
 otherwise invisible. PATH-TRAP note: the meta.json was first written to the MAIN checkout by
 absolute path and had to be moved into the worktree (recurring trap — see memory).
+
+## Session 2026-06-15 (S3, researcher-8) — pre-build name-check audit
+
+**Mode:** REVISIT / ORIENT (verification, not new math). Docker `docker info` times out (rc=124,
+blackout persists), so no kernel check possible this session. Aristotle cannot help — file has no
+sorries to prove.
+
+**Why this matters:** `MorleysTheoremOQ03.lean` was merged during a Docker blackout and was
+**never built** — its own summary (L317) admits "build pending under Docker blackout". So the
+`verified/original` status on `main` is an overclaim by the strict policy (verified ⇒
+machine-checked). Auditor PR **#24667** (still OPEN) correctly downgrades meta.json to
+`formalized/wip` until a build confirms the kernel check. `grep -0-sorry ≠ compiles` — a
+blackout-merged file can still fail (stray `-/`, renamed lemma, wrong API). So I did the next-best
+offline verification: name-check every external identifier against the **exact pinned Mathlib rev**.
+
+**Pre-build name-check — all PASS at Mathlib v4.26.0 (rev `2df2f0150c`):**
+- `strictConcaveOn_sin_Icc` — real; Mathlib's own `Trigonometric/Bounds.lean` (L64/L69) uses the
+  identical `.2` and `.concaveOn.2` projections, validating L77/121/144 here.
+- `pow_le_pow_left₀` — `Order/GroupWithZero/Unbundled/Basic.lean:455` (L219/299 here).
+- `pow_left_inj₀` — same file `:632`, exactly `a^n = b^n ↔ a = b` with args `(0≤a)(0≤b)(n≠0)`;
+  matches the `.mp hcube_eq` usage at L304.
+- `sin_nonneg_of_nonneg_of_le_pi` — `Trigonometric/Basic.lean:419`, signature matches the
+  `ha.1 ha.2` (Icc membership projections) calls at L202–204/275–277.
+- Remaining identifiers are core (`amgm_three` local; `le_antisymm`, `mul_left_cancel₀`,
+  `mul_le_mul_of_nonneg_left`, `sq_nonneg`, `mul_nonneg`, `smul_eq_mul`, `Real.pi_pos`).
+- No stray `-/` inside any `/- … -/` or `/-- … -/` block (the docstring-closing hazard).
+
+**Conclusion:** the file is **build-ready** — math sound, names valid at the pin, tactic patterns
+mirror Mathlib's own. The lone remaining blocker to honest `verified` is the Docker kernel check,
+which is purely environmental. When Docker recovers, a single
+`./proofs/scripts/docker-build.sh Proofs.MorleysTheoremOQ03` should go green and then meta.json can
+be restored to `verified/original`. Until then, the auditor's `formalized/wip` is the correct
+status — **do not contest PR #24667, do not re-touch meta.json (auditor owns it), do not open a
+build-pending follow-up file.**
+
+**Delta shipped:** research records only (this entry + problem-json knowledge fields). No Lean, no
+meta.json, no new math. The problem is mathematically **saturated**; the only open item is an
+environmentally-blocked build.
