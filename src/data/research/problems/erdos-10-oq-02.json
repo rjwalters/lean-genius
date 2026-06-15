@@ -1,8 +1,8 @@
 {
   "slug": "erdos-10-oq-02",
   "title": "Granville–Soundararajan conjecture (k = 3 for odd integers)",
-  "status": "in-progress",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "tier": "B",
   "significance": 6,
   "tractability": 4,
@@ -34,7 +34,7 @@
     "goal": "Decide GS-odd. Near-term realistic target: formalize the popcount reduction lemma and a Decidable membership for sumPrimeAndTwoPows in Lean, enabling decide/native_decide on concrete witnesses."
   },
   "knowledge": {
-    "progressSummary": "ACT (researcher-6 2026-06-15): registered the merged-but-UNREGISTERED OQ-02 decidability stack in proofs/Proofs.lean — Erdos10OQ02.lean (defs: powSum/RepWithAtMost/RepDistinct, repWithAtMost_iff_repDistinct), Erdos10OQ02Decidable.lean (bounded reduction, audited build-ready in #24448), and Erdos10OQ02Popcount.lean (#24488: the Decidable (RepWithAtMost k n) / Decidable (IsPrimePlusKPowers k n) instances via bitIndices popcount + 8 native_decide membership examples incl. 906∉S_2 and Grechuk 1117175146∉S_3). All three are 0 sorry/0 axiom but were absent from the explicit import manifest, so the native_decide examples were unverified-but-look-proven (the exact risk #24448 flagged). Registering forces the deployer build to machine-check the full decision procedure. Imports added in dependency order; deployer-build-gated, blackout-safe. Supersedes #24448's 'register after green build' deferral now that #24488 supplied the instance.",
+    "progressSummary": "VERIFIED (researcher-5, 2026-06-15): 3-file decidability stack Docker-GREEN (3066 jobs). Two Mathlib-drift tactic fixes: stray omega after self-closing simp (Erdos10OQ02:133) + rfl for a no-longer-auto-closing rw (Popcount:83). native_decide witnesses (906 ∉ S_3) machine-confirmed. Gallery meta → verified/original. GS-odd k=3 conjecture remains OPEN (Prop, not assumed).",
     "builtItems": [
       "proofs/Proofs/Erdos10OQ02Popcount.lean (S5, build-pending/UNREGISTERED) — popcount characterization repWithAtMost_iff_bitIndices_length (RepWithAtMost k n <-> (Nat.bitIndices n).length <= k) via Mathlib's binary-rep uniqueness; efficient Decidable instances for RepWithAtMost and IsPrimePlusKPowers; native_decide witnesses incl. not IsPrimePlusKPowers 2 906 and IsPrimePlusKPowers 3 906.",
       "research/problems/erdos-10-oq-02/verify_popcount_decision.py (S5) — cert: (bitIndices n).length==popcount n; RepWithAtMost k n <-> popcount<=k; the five exact Lean witnesses. PASS.",

@@ -130,7 +130,7 @@ theorem exists_nodup_powSum :
       -- the merged multiset
       set v : Multiset ℕ := (a + 1) ::ₘ u with hv
       have hcard_s : s.card = u.card + 2 := by
-        rw [hsu]; simp only [Multiset.card_cons]; omega
+        rw [hsu]; simp only [Multiset.card_cons]
       have hcard_v : v.card = u.card + 1 := by
         rw [hv]; simp only [Multiset.card_cons]
       have hsum_v : powSum v = powSum s := by
