@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "overview-directed-eulerian",
+      "title": "Overview: The Directed Eulerian Theorem",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "The file docstring poses the open question inherited from the undirected Königsberg formalization — extend the Eulerian characterization to *directed* graphs — and states the target theorem. For a connected digraph $G=(V,E)$: an **Eulerian circuit** (every edge once, returning to start) exists iff every vertex is balanced, $\\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$; an **Eulerian path** from $s$ to $t$ ($s\\neq t$) exists iff $\\mathrm{outdeg}(s)=\\mathrm{indeg}(s)+1$, $\\mathrm{indeg}(t)=\\mathrm{outdeg}(t)+1$, and all other vertices are balanced. The header also records the *partial* proof status that the `axiomatized` (2 axioms, 1 sorry) metadata reflects: the directed handshaking lemmas ($\\sum_v\\mathrm{outdeg}(v)=|E|=\\sum_v\\mathrm{indeg}(v)$) and the **necessity** direction (balance is forced by any Eulerian circuit) are proved from first principles, while Hierholzer *sufficiency* and the full path characterization are axiomatized. Lines 35–42 set up the Mathlib imports (Finset, BigOperators) and the `KonigsbergOQ01OQ02` namespace, and lines 44–47 open Part I. References cited: Euler (1741, original Königsberg bridges), Hierholzer (1873, constructive undirected proof), and West, *Introduction to Graph Theory* (2001, §1.3).",
+      "mathContext": "Circuit: $\\exists$ Eulerian circuit $\\iff \\forall v,\\ \\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$. Path $s\\to t$: $\\mathrm{outdeg}(s)=\\mathrm{indeg}(s)+1,\\ \\mathrm{indeg}(t)=\\mathrm{outdeg}(t)+1,\\ \\forall v\\neq s,t:\\mathrm{indeg}(v)=\\mathrm{outdeg}(v)$."
+    },
+    {
       "id": "definitions",
       "title": "Directed Graph Basics",
       "startLine": 50,
