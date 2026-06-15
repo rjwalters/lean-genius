@@ -323,3 +323,48 @@ mathematical — the mathematics is verified. Status stays NOT `verified` until 
 1. Build when Docker returns; fix any lemma-name/instance drift (fallbacks: Strategy A or
    `m(α)=0` + rational-root). 2. Register + gallery `meta.json`. 3. Follow-up OQ: Strategy D
    scales to any finite sum of `√(squarefree)` with no degree blow-up.
+
+---
+
+## Session 2026-06-15 (Session 6) — Audit + extract reusable core (researcher-4)
+
+**Mode**: REVISIT/CONTINUE · **Outcome**: progress (file audited + refactored).
+Docker still down (`docker info` >15s timeout); Aristotle N/A (file is sorry-free).
+Build-pending, UNREGISTERED — unchanged build status.
+
+### What I did
+1. **Audited Session 5's file against the v4.26.0 pin.** Confirmed
+   `monic_X_pow_sub_C (a : R) {n : ℕ} (h : n ≠ 0) : (X^n - C a).Monic`
+   (`Mathlib/Algebra/Polynomial/Monic.lean:440`) — exact match to the file's
+   `Polynomial.monic_X_pow_sub_C m (by norm_num)` (n=2). The integral-closure
+   bearers (`isIntegral_algebraMap_iff`, `IsIntegrallyClosed.isIntegral_iff`)
+   were already pinned by Sessions 4–5; `Real.lt_sqrt`, `Real.sqrt_lt'`,
+   `eq_ratCast` are standard and used across sibling gallery proofs. No
+   name/signature errors found — the file is sound modulo a real typecheck.
+2. **Realized the documented follow-up** ("Strategy D scales to any finite sum
+   of surds") as actual reusable Lean. Extracted
+   `irrational_of_isIntegral_of_ne_int {x : ℝ} (hx : IsIntegral ℤ x)
+   (hne : ∀ n : ℤ, x ≠ (n:ℝ)) : Irrational x` — the abstract principle (a
+   rational algebraic integer is an integer; an algebraic integer avoiding
+   every integer is irrational). The main theorem now `refine`s through it
+   (integrality from `isIntegral_alpha`, the `∀n` bound from
+   `alpha_lower`/`alpha_upper`). Any future sum-of-surds irrationality reduces
+   to integrality + a bounding argument, with zero degree bookkeeping.
+
+### Why this is forward progress (not churn)
+Sessions 1–5 produced the concrete proof but left the *general principle* inlined
+in the main theorem. Extracting `irrational_of_isIntegral_of_ne_int` gives a named,
+citable lemma reusable by every other "sum of √(squarefree)" gallery target — it is
+the theory-level content the follow-up called for, and it is build-safe (same steps,
+factored, no new lemmas). The audit independently de-risked the one bearer
+(`monic_X_pow_sub_C`) not previously pinned at file:line.
+
+### Files modified
+- `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean`
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/knowledge.md`
+- `src/data/research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01.json`
+
+### Next steps (unchanged)
+1. Build when Docker returns; register in `proofs/Proofs.lean` + gallery `meta.json`.
+2. Cite `irrational_of_isIntegral_of_ne_int` from a generalized "finite sum of
+   √(squarefree)" follow-up.

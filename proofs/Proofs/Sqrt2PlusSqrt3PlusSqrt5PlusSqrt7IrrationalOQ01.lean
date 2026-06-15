@@ -73,29 +73,40 @@ theorem alpha_upper : sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7 < (9 : ℝ) := by
   have b7 : sqrt 7 < (2.65 : ℝ) := (Real.sqrt_lt' (by norm_num)).mpr (by norm_num)
   linarith
 
-/-- **Main theorem**: `√2 + √3 + √5 + √7` is irrational.
+/-- **Reusable core of Strategy D.** A real algebraic integer that is not equal to any rational
+integer is irrational.
 
-Proved via Strategy D: α is an algebraic integer trapped strictly between `8` and `9`, so it
-cannot equal any integer; a rational algebraic integer must be an integer, contradiction. -/
-theorem irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 :
-    Irrational (sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7) := by
+This is the abstract principle behind the irrationality of `√2 + √3 + √5 + √7`, isolated from
+the specific radicals: a rational number that is integral over `ℤ` must itself be an integer
+(`ℤ` is integrally closed in `ℚ`), so any algebraic integer avoiding every integer value cannot
+be rational. Reusable for *any* sum of surds — supply integrality (algebraic integers are closed
+under `+` and `*`) plus a bounding argument ruling out each integer value, with no degree
+bookkeeping. -/
+theorem irrational_of_isIntegral_of_ne_int {x : ℝ} (hx : IsIntegral ℤ x)
+    (hne : ∀ n : ℤ, x ≠ (n : ℝ)) : Irrational x := by
   rintro ⟨q, hq⟩
-  -- hq : (q : ℝ) = √2 + √3 + √5 + √7
-  -- Step 1: α is integral over ℤ, hence so is (q : ℝ) = algebraMap ℚ ℝ q.
+  -- (q : ℝ) = algebraMap ℚ ℝ q is integral over ℤ, since it equals x.
   have hqℝ : IsIntegral ℤ (algebraMap ℚ ℝ q) := by
-    rw [eq_ratCast (algebraMap ℚ ℝ) q, hq]; exact isIntegral_alpha
-  -- Step 2: descend integrality along the injective ℚ ↪ ℝ, then use ℤ integrally closed.
+    rw [eq_ratCast (algebraMap ℚ ℝ) q, hq]; exact hx
+  -- descend integrality along the injective ℚ ↪ ℝ, then use ℤ integrally closed.
   have hqℤ : IsIntegral ℤ q :=
     (isIntegral_algebraMap_iff (algebraMap ℚ ℝ).injective).mp hqℝ
   obtain ⟨n, hn⟩ := (IsIntegrallyClosed.isIntegral_iff).mp hqℤ
   rw [show algebraMap ℤ ℚ n = (n : ℚ) by simp] at hn
-  -- hn : (n : ℚ) = q  ⇒  α = (n : ℝ)
-  have hαn : sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7 = (n : ℝ) := by
-    rw [← hq, ← hn]; push_cast; ring
-  -- Step 3: 8 < α < 9 forces an integer strictly between 8 and 9 — impossible.
+  exact hne n (by rw [← hq, ← hn]; push_cast; ring)
+
+/-- **Main theorem**: `√2 + √3 + √5 + √7` is irrational.
+
+Proved via Strategy D: α is an algebraic integer (`isIntegral_alpha`) trapped strictly between
+`8` and `9` (`alpha_lower`, `alpha_upper`), so it cannot equal any integer; by
+`irrational_of_isIntegral_of_ne_int` it is irrational. -/
+theorem irrational_sqrt2_add_sqrt3_add_sqrt5_add_sqrt7 :
+    Irrational (sqrt 2 + sqrt 3 + sqrt 5 + sqrt 7) := by
+  refine irrational_of_isIntegral_of_ne_int isIntegral_alpha (fun n hn => ?_)
+  -- 8 < α = n < 9 forces an integer strictly between 8 and 9 — impossible.
   have hlo := alpha_lower
   have hhi := alpha_upper
-  rw [hαn] at hlo hhi
+  rw [hn] at hlo hhi
   have h8 : (8 : ℤ) < n := by exact_mod_cast hlo
   have h9 : n < (9 : ℤ) := by exact_mod_cast hhi
   omega
