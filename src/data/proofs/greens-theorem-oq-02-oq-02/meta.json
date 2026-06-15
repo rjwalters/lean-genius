@@ -2,7 +2,7 @@
   "id": "greens-theorem-oq-02-oq-02",
   "title": "Green's Theorem OQ-02-OQ-02: Orientation-Corrected Minimal-Regularity Axiom",
   "slug": "greens-theorem-oq-02-oq-02",
-  "description": "The registered minimal-regularity Green's theorem (greens-theorem-oq-02) posits its core as an axiom that is FALSE as stated — a degenerate constant curve satisfies every hypothesis yet forces 0 = 1. This entry states the orientation-corrected axiom (one extra hypothesis hLineEq tying the curve's circulation to the concrete four-edge rectangle integral), re-threads all five downstream consumers, and proves the original counterexample fails the new hypothesis — removing the unsoundness rather than hiding it.",
+  "description": "The registered minimal-regularity Green's theorem (greens-theorem-oq-02) posited its core as an axiom that was FALSE as stated — a degenerate constant curve satisfied every hypothesis yet forced 0 = 1. The orientation fix (one extra hypothesis hLineEq tying the curve's circulation to the concrete four-edge rectangle integral) is now LANDED in the registered files: the axiom greens_theorem_l1curl and all seven downstream consumers across GreensTheoremOQ02.lean and GreensTheoremOQ02OQ04.lean carry hLineEq, and the file compiles for the first time (two pre-existing Mathlib-incompatibility build errors, latent during the Docker blackout, were also repaired). This entry retains the axiom-free soundness witness proving the original counterexample fails the new hypothesis.",
   "meta": {
     "author": "researcher agents (Lean Genius); after Whitney (1957)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
@@ -20,7 +20,7 @@
       "axiom-integrity",
       "counterexample"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "mathlibDependencies": [
       {
@@ -40,28 +40,29 @@
       }
     ],
     "originalContributions": [
-      "Orientation-corrected axiom greens_theorem_l1curl_oriented: the registered greens_theorem_l1curl plus one hypothesis hLineEq (lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d) excluding degenerate/wrongly-oriented curves",
-      "All five downstream consumers re-proved with hLineEq threaded (lineIntegral_zero_curl, lineIntegral_l1curl_smul, greens_oq1_from_l1curl in GreensTheoremOQ02; greens_stokes_l1curl, closed_l1form_zero_integral in GreensTheoremOQ02OQ04) — a pure signature-threading correction, each proof the original verbatim plus the extra argument",
-      "counterexample_violates_hLineEq: the Session-5 unsound witness (constant curve, P=0, Q(x,y)=x) fails the new orientation hypothesis (lipschitzLineIntegral = 0 ≠ 1 = rectLineIntegral via the proven unit_square_area_as_line_integral), so the corrected axiom is genuinely inapplicable to it"
+      "Orientation fix LANDED in the registered files: the registered axiom greens_theorem_l1curl (GreensTheoremOQ02.lean) now carries one extra hypothesis hLineEq (lipschitzLineIntegral P Q C = GreensTheoremOQ01.rectLineIntegral P Q a b c d), excluding the degenerate/wrongly-oriented curves that made the original statement false",
+      "All seven downstream consumers re-threaded with hLineEq: lineIntegral_zero_curl, lineIntegral_l1curl_smul, greens_oq1_from_l1curl (GreensTheoremOQ02.lean) and greens_stokes_l1curl, closed_l1form_zero_integral, c1_stokes_from_whitney, stokes_scaling (GreensTheoremOQ02OQ04.lean) — a pure signature-threading correction, each proof the original verbatim plus the extra argument",
+      "Repaired two pre-existing Mathlib-incompatibility build errors latent in GreensTheoremOQ02OQ04.lean during the Docker blackout (c1_form_l1_integrable: product-set compactness isCompact_Icc.prod isCompact_Icc + direct Continuous.sub; closed_l1form_zero_integral: integrableOn_zero for the zero curl), so the registered file machine-checks for the first time",
+      "counterexample_violates_hLineEq (axiom-free soundness witness, this entry's anchor file): the Session-5 unsound witness (constant curve, P=0, Q(x,y)=x) fails the new orientation hypothesis (lipschitzLineIntegral = 0 ≠ 1 = rectLineIntegral via the proven unit_square_area_as_line_integral), so the corrected axiom is genuinely inapplicable to it — the unsoundness is removed, not hidden"
     ],
     "axiomCount": 1,
-    "lineCount": 182,
-    "assumptions": "BUILD-PENDING / UNREGISTERED. Authored under an extended Docker + Aristotle outage; not machine-verified, and not in Proofs.lean. IMPORTANT: the REGISTERED parent file GreensTheoremOQ02.lean still carries the FALSE axiom greens_theorem_l1curl (S5 #24381, MERGED, proved it forces 0 = 1); the correction here cannot be ported back to the registered files until Docker returns, because the 6-consumer signature change across two registered files must land as a single build-verified patch (fix spec: S6 #24424, MERGED). This entry's single remaining assumption is the corrected axiom greens_theorem_l1curl_oriented (the genuine Whitney minimal-regularity input, now orientation-sound). Not claimed verified.",
+    "lineCount": 58,
+    "assumptions": "Docker-VERIFIED. The orientation fix is now landed in the registered files GreensTheoremOQ02.lean and GreensTheoremOQ02OQ04.lean (both reachable from Proofs.lean) and the build passes; two pre-existing Mathlib-incompatibility errors latent in the registered OQ04 file (merged unbuilt during the Docker + Aristotle blackout) were repaired in the same pass. The single remaining assumption is the registered axiom greens_theorem_l1curl (the genuine Whitney minimal-regularity input, now orientation-sound) — that is the 1 in axiomCount. This entry's anchor file GreensTheoremOQ02Corrected.lean is itself axiom-free (axiomCount 0 in leanFile): it holds only the soundness witness counterexample_violates_hLineEq confirming the S5 counterexample fails the new hypothesis. The corrected axiom is not claimed verified — discharging it awaits the FTC-for-absolutely-continuous-functions keystone (Mathlib >= v4.28.0, PR #29508) reducing it to OQ-01's boundary algebra by Fubini.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 1,
     "definitionCount": 0
   },
   "overview": {
     "historicalContext": "**A soundness correction to the minimal-regularity Green's theorem.**\n\nThe parent entry `greens-theorem-oq-02` formalizes Whitney's 1957 theorem — Green's theorem for a Lipschitz boundary curve and an L¹-integrable curl — by positing the core identity as `axiom greens_theorem_l1curl`. Session 5 discovered this axiom is FALSE as stated: its only curve↔rectangle hypothesis (`hTraversal`, image-containment in the frontier) constrains neither orientation nor winding nor non-degeneracy, so the degenerate constant curve γ ≡ (0,0) with P = 0, Q(x,y) = x (curl ≡ 1) satisfies every hypothesis yet has circulation 0 while ∬ curl = 1, forcing 0 = 1.",
-    "problemStatement": "**The integrity problem.** `greens_theorem_l1curl` equates a Lipschitz curve's line integral with the double integral of the curl over the rectangle, but the curve is tied to the rectangle only by frontier-containment of its image — which permits degenerate and wrongly-oriented curves. Such a curve refutes the axiom (`greens_theorem_l1curl_refuted`).\n\n**The fix.** Add ONE orientation hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, tying the circulation to the concrete, correctly-oriented four-edge rectangle integral (from OQ-01). The corrected axiom `greens_theorem_l1curl_oriented` is sound, and the counterexample provably fails `hLineEq`.",
+    "problemStatement": "**The integrity problem.** `greens_theorem_l1curl` equates a Lipschitz curve's line integral with the double integral of the curl over the rectangle, but the curve is tied to the rectangle only by frontier-containment of its image — which permits degenerate and wrongly-oriented curves. Such a curve refuted the original (pre-hLineEq) axiom.\n\n**The fix (landed).** Add ONE orientation hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, tying the circulation to the concrete, correctly-oriented four-edge rectangle integral (from OQ-01). The registered axiom `greens_theorem_l1curl` now carries `hLineEq` and is orientation-sound, and the counterexample provably fails `hLineEq`.",
     "text": "Correct the false minimal-regularity Green's-theorem axiom by adding an orientation hypothesis, re-thread all consumers, and verify the original counterexample is excluded.",
-    "proofStrategy": "**1. Corrected axiom.** `greens_theorem_l1curl_oriented` = the registered axiom plus `hLineEq` fixing the boundary orientation to `rectLineIntegral`.\n\n**2. Re-thread consumers.** All five downstream theorems (three in GreensTheoremOQ02, two in GreensTheoremOQ02OQ04) are re-proved verbatim with the single extra `hLineEq` argument passed through.\n\n**3. Excise the counterexample.** `counterexample_violates_hLineEq` shows the Session-5 unsound witness has `lipschitzLineIntegral = 0` but `rectLineIntegral = 1` (by the proven `unit_square_area_as_line_integral`), so it fails `hLineEq` and the corrected axiom does not apply to it — the unsoundness is removed, not masked.",
+    "proofStrategy": "**1. Corrected axiom (registered).** `greens_theorem_l1curl` (GreensTheoremOQ02.lean) gains `hLineEq` fixing the boundary orientation to `rectLineIntegral`.\n\n**2. Re-thread consumers.** All seven downstream theorems (three in GreensTheoremOQ02, four in GreensTheoremOQ02OQ04) are re-proved verbatim with the single extra `hLineEq` argument passed through.\n\n**3. Repair latent build errors.** Two pre-existing Mathlib-incompatibility errors in GreensTheoremOQ02OQ04.lean (product-set compactness; integrability of the zero curl) are fixed so the registered file compiles.\n\n**4. Excise the counterexample.** `counterexample_violates_hLineEq` shows the Session-5 unsound witness has `lipschitzLineIntegral = 0` but `rectLineIntegral = 1` (by the proven `unit_square_area_as_line_integral`), so it fails `hLineEq` and the corrected axiom does not apply to it — the unsoundness is removed, not masked.",
     "keyInsights": [
       "**Frontier-containment is too weak:** it pins down neither orientation nor winding nor non-degeneracy, which is exactly what lets the constant curve refute the original axiom.",
       "**One hypothesis suffices:** equating the circulation with the concrete oriented rectangle integral `rectLineIntegral` (OQ-01) restores soundness without changing any consumer's mathematics.",
       "**Excision is verified, not assumed:** the counterexample is shown to fail the new hypothesis via a proven lemma, so soundness is demonstrably regained.",
-      "**Coordinated landing required:** the fix spans two registered files and six consumers, so it must be ported as a single Docker-verified patch — hence this isolated, unregistered staging file.",
-      "**Orientation-soundness is necessary, not sufficient:** hLineEq removes the false counterexamples, but greens_theorem_l1curl_oriented remains an axiom — the genuine Whitney minimal-regularity content is still assumed. A fully verified proof awaits the FTC-for-absolutely-continuous-functions keystone (Mathlib ≥ v4.28.0), which would reduce it to OQ-01's boundary algebra by Fubini."
+      "**Coordinated landing achieved:** the fix spans two registered files and seven consumers, landed here as a single Docker-verified patch that also repaired two latent build errors which had kept the registered OQ04 file from compiling since the blackout.",
+      "**Orientation-soundness is necessary, not sufficient:** hLineEq removes the false counterexamples, but greens_theorem_l1curl remains an axiom — the genuine Whitney minimal-regularity content is still assumed. A fully verified proof awaits the FTC-for-absolutely-continuous-functions keystone (Mathlib ≥ v4.28.0), which would reduce it to OQ-01's boundary algebra by Fubini."
     ],
     "prerequisites": [
       "Green's theorem / Stokes' theorem in the plane",
@@ -72,36 +73,28 @@
   },
   "sections": [
     {
-      "id": "corrected-axiom",
-      "title": "The Orientation-Corrected Axiom",
-      "summary": "greens_theorem_l1curl_oriented: registered axiom plus the hLineEq orientation hypothesis",
-      "startLine": 60,
-      "endLine": 72,
-      "mathContext": "Adds $h_{\\\\text{LineEq}}: \\\\oint_C (P\\\\,dx + Q\\\\,dy) = \\\\text{rectLineIntegral}\\\\,P\\\\,Q\\\\,a\\\\,b\\\\,c\\\\,d$, fixing the boundary orientation so the circulation equals the concrete four-edge rectangle integral."
+      "id": "registered-fix",
+      "title": "The Orientation Fix (Landed in the Registered Files)",
+      "summary": "The header records the landed correction: greens_theorem_l1curl and its seven consumers now carry the hLineEq orientation hypothesis in GreensTheoremOQ02.lean / GreensTheoremOQ02OQ04.lean",
+      "startLine": 1,
+      "endLine": 42,
+      "mathContext": "Each registered declaration gains $h_{\\\\text{LineEq}}: \\\\oint_C (P\\\\,dx + Q\\\\,dy) = \\\\text{rectLineIntegral}\\\\,P\\\\,Q\\\\,a\\\\,b\\\\,c\\\\,d$, fixing the boundary orientation so the circulation equals the concrete four-edge rectangle integral; the proofs are otherwise verbatim, a pure signature-threading correction."
     },
     {
-      "id": "consumers",
-      "title": "Re-threaded Consumers",
-      "summary": "Five downstream theorems re-proved with hLineEq threaded through",
-      "startLine": 74,
-      "endLine": 172,
-      "mathContext": "lineIntegral_zero_curl, lineIntegral_l1curl_smul, greens_oq1_from_l1curl (GreensTheoremOQ02) and greens_stokes_l1curl, closed_l1form_zero_integral (GreensTheoremOQ02OQ04), each verbatim plus the extra orientation argument."
-    },
-    {
-      "id": "excision",
-      "title": "Counterexample Excised",
-      "summary": "counterexample_violates_hLineEq: the unsound witness fails the new hypothesis",
-      "startLine": 174,
-      "endLine": 182,
-      "mathContext": "The constant curve with $P=0$, $Q(x,y)=x$ has circulation $0$ but $\\\\text{rectLineIntegral} = 1$ (proven), so it fails $h_{\\\\text{LineEq}}$ — the corrected axiom is genuinely inapplicable to it."
+      "id": "witness",
+      "title": "Soundness Witness",
+      "summary": "counterexample_violates_hLineEq: the S5 unsound witness fails the new hypothesis",
+      "startLine": 44,
+      "endLine": 57,
+      "mathContext": "The constant curve with $P=0$, $Q(x,y)=x$ has circulation $0$ but $\\\\text{rectLineIntegral} = 1$ (proven), so it fails $h_{\\\\text{LineEq}}$ — the corrected registered axiom is genuinely inapplicable to it, so the unsoundness is removed rather than hidden."
     }
   ],
   "conclusion": {
-    "summary": "The registered minimal-regularity Green's theorem (greens-theorem-oq-02) posits a core axiom that is false as stated. This entry states the orientation-corrected axiom greens_theorem_l1curl_oriented (one extra hypothesis hLineEq), re-threads all five downstream consumers as a pure signature change, and proves the original counterexample fails the new hypothesis — genuinely removing the unsoundness. The correction is staged in an isolated, unregistered, build-pending file; porting it back to the registered files awaits a Docker session.",
-    "implications": "Restores soundness of the minimal-regularity Green's-theorem formalization: the boundary-orientation hypothesis that the classical statement leaves implicit is made explicit, the five consumers carry it through unchanged, and the degenerate counterexample is provably excluded.",
+    "summary": "The registered minimal-regularity Green's theorem (greens-theorem-oq-02) posited a core axiom that was false as stated. The orientation fix is now landed in the registered files: greens_theorem_l1curl carries the extra hypothesis hLineEq and all seven downstream consumers (three in GreensTheoremOQ02.lean, four in GreensTheoremOQ02OQ04.lean) thread it through as a pure signature change. Two pre-existing Mathlib-incompatibility build errors that had left the registered OQ04 file unbuilt since the Docker blackout were repaired in the same pass, so the file machine-checks for the first time. This entry retains the axiom-free witness proving the original counterexample fails the new hypothesis.",
+    "implications": "Restores soundness of the minimal-regularity Green's-theorem formalization in the registered build: the boundary-orientation hypothesis the classical statement leaves implicit is made explicit, the seven consumers carry it through unchanged, the degenerate counterexample is provably excluded, and the file now compiles under the pinned Mathlib.",
     "openQuestions": [
-      "Port greens_theorem_l1curl_oriented (and the re-threaded consumers) back onto the registered GreensTheoremOQ02.lean / GreensTheoremOQ02OQ04.lean as a single Docker-verified patch, then delete this staging file and retire GreensTheoremOQ02Counterexample.lean (S6 #24424 spec).",
-      "Discharge the corrected axiom itself via the FTC-for-absolutely-continuous-functions keystone (Mathlib ≥ v4.28.0, PR #29508) reducing it to OQ-01's boundary algebra by Fubini."
+      "Discharge the corrected axiom itself via the FTC-for-absolutely-continuous-functions keystone (Mathlib ≥ v4.28.0, PR #29508) reducing it to OQ-01's boundary algebra by Fubini — this requires bumping the project's Mathlib pin from v4.26.0.",
+      "Register GreensTheoremOQ02Corrected.lean and GreensTheoremOQ02Counterexample.lean in Proofs.lean so the soundness witness is itself machine-checked on every build (currently both are unregistered)."
     ]
   },
   "crossReferences": [
@@ -142,13 +135,12 @@
       "MeasureTheory",
       "GreensTheoremOQ01",
       "GreensTheoremOQ02",
-      "GreensTheoremOQ02OQ04",
       "GreensTheoremOQ02Counterexample"
     ],
     "namespace": "GreensTheoremOQ02Corrected",
-    "lineCount": 182,
-    "axiomCount": 1,
-    "theoremCount": 6,
+    "lineCount": 58,
+    "axiomCount": 0,
+    "theoremCount": 1,
     "definitionCount": 0,
     "path": "Proofs/GreensTheoremOQ02Corrected.lean",
     "sorries": 0

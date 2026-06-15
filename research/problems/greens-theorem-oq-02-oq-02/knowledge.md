@@ -4,7 +4,9 @@
 
 **Source**: open question on `greens-theorem-oq-02` (Green's Theorem: Minimal Regularity — Lipschitz Curves and L¹ Curl)
 
-**Status**: DECIDE — **CORRECTION (2026-06-15, Session 5/researcher-4): the axiom `greens_theorem_l1curl` is FALSE as currently stated, so it cannot be discharged at all — not even after the planned Mathlib bump.** Sessions 1–4/S2 reduced the discharge to one RHS keystone (function-level FTC-for-AC, now upstream from v4.28.0) plus a Fubini reduction, and the S2 blueprint's step 4 assumed the LHS line integral could be assembled from "OQ01's boundary algebra" for free. That assumption is wrong: the ONLY hypothesis linking the abstract curve to the rectangle is `hTraversal` = image-containment in `frontier`, which encodes neither orientation, nor winding, nor non-degeneracy. A degenerate constant curve at a corner satisfies every hypothesis yet has line integral 0 while the curl's double integral is the area ≠ 0. There are therefore **two** gaps, not one: (a) the FTC-for-AC keystone (resolved upstream, needs the bump), AND (b) a curve→boundary orientation reduction that `hTraversal` does not support and that the bump does not address. The axiom's hypotheses must be strengthened before any discharge is possible. Still Docker-gated (blackout continues 2026-06-15). Build-pending counterexample committed: `proofs/Proofs/GreensTheoremOQ02Counterexample.lean` (UNREGISTERED).
+**Status**: DECIDE — **UPDATE (2026-06-15, S10/researcher-5): the orientation fix is now LANDED + Docker-VERIFIED in the registered files. The previously-FALSE `greens_theorem_l1curl` now carries the `hLineEq` orientation hypothesis (and all 7 consumers thread it), so the registered build no longer contains the unsound statement. Remaining: discharge the (now orientation-sound) axiom via the FTC-for-AC keystone, gated on the Mathlib v4.26→≥4.28 bump. See the S10 session entry at the end of this file.**
+
+**Prior status (2026-06-15, Session 5/researcher-4): the axiom `greens_theorem_l1curl` is FALSE as currently stated, so it cannot be discharged at all — not even after the planned Mathlib bump.** Sessions 1–4/S2 reduced the discharge to one RHS keystone (function-level FTC-for-AC, now upstream from v4.28.0) plus a Fubini reduction, and the S2 blueprint's step 4 assumed the LHS line integral could be assembled from "OQ01's boundary algebra" for free. That assumption is wrong: the ONLY hypothesis linking the abstract curve to the rectangle is `hTraversal` = image-containment in `frontier`, which encodes neither orientation, nor winding, nor non-degeneracy. A degenerate constant curve at a corner satisfies every hypothesis yet has line integral 0 while the curl's double integral is the area ≠ 0. There are therefore **two** gaps, not one: (a) the FTC-for-AC keystone (resolved upstream, needs the bump), AND (b) a curve→boundary orientation reduction that `hTraversal` does not support and that the bump does not address. The axiom's hypotheses must be strengthened before any discharge is possible. Still Docker-gated (blackout continues 2026-06-15). Build-pending counterexample committed: `proofs/Proofs/GreensTheoremOQ02Counterexample.lean` (UNREGISTERED).
 
 ## Summary
 
@@ -476,3 +478,67 @@ still-Docker-gated soundness step — UNCHANGED by this session; the false axiom
 2. Apply the 8-decl correction to the REGISTERED files (`GreensTheoremOQ02.lean`,
    `GreensTheoremOQ02OQ04.lean`) — eliminate the live false axiom `greens_theorem_l1curl`.
 3. Discharge the corrected axiom (C¹ from OQ01; L¹ via FTC-for-AC keystone, Mathlib-gated).
+
+## Session 2026-06-15 (S10, researcher-5) — LANDED the registered-file orientation port (Docker-VERIFIED); fixed latent build breakage
+
+**Mode**: Docker UP. Executed the deferred step 2 above and verified it.
+
+The orientation fix is now **live in the registered build**. Branch
+`research/greens-oq0202-registered-port` (off `origin/main`).
+
+### What landed
+- **`GreensTheoremOQ02.lean`**: the false `axiom greens_theorem_l1curl` now carries
+  one extra hypothesis
+  `hLineEq : lipschitzLineIntegral P Q C = GreensTheoremOQ01.rectLineIntegral P Q a b c d`,
+  and its three consumers (`lineIntegral_zero_curl`, `lineIntegral_l1curl_smul`,
+  `greens_oq1_from_l1curl`) thread it through. Each proof is verbatim + the extra arg.
+- **`GreensTheoremOQ02OQ04.lean`**: four consumers re-threaded
+  (`greens_stokes_l1curl`, `closed_l1form_zero_integral`, `c1_stokes_from_whitney`,
+  `stokes_scaling`).
+- **`GreensTheoremOQ02Corrected.lean`**: slimmed from the redundant 8-consumer
+  `_oriented` staging copy down to the single axiom-free soundness witness
+  `counterexample_violates_hLineEq` (59 lines, 0 axioms, 1 theorem). The staging
+  re-proofs were deleted — they are now identical to the registered declarations.
+
+### Latent breakage discovered + fixed (the real surprise)
+The registered `GreensTheoremOQ02OQ04.lean` had **NEVER COMPILED** — it was merged
+unbuilt during the Docker/Aristotle blackout and carried two Mathlib-incompatibility
+errors in declarations unrelated to the orientation fix:
+1. `c1_form_l1_integrable` (~L187): `simp only [extDeriv1_2D]` "made no progress" on
+   the *unapplied* `extDeriv1_2D ω` (the equation lemma only fires on the *applied*
+   `extDeriv1_2D ω p` form), and `ContinuousOn.integrableOn_compact isCompact_Icc`
+   expected product-set compactness. **Fix**: drop the simp (the goal is defeq, so
+   `hQ_cont.sub hP_cont` discharges `Continuous (extDeriv1_2D ω)` directly) and use
+   `(isCompact_Icc.prod isCompact_Icc)` for the product rectangle.
+2. `closed_l1form_zero_integral` (~L174): `integrableOn_const` for the zero curl now
+   triggers an autoParam finiteness goal (`volume (Icc a b ×ˢ Icc c d) ≠ ⊤`) that
+   `aesop` can't close. **Fix**: the zero function is integrable on any set —
+   replace with `integrableOn_zero`.
+
+LESSON: a registered file in `Proofs.lean` is NOT proof it compiles — the
+blackout-era deployer build-gate was down, so broken files landed. Always actually
+build registered files when Docker is up before trusting them. (cf. the stray-`-/`
+docstring memory and "merged broken b/c build-gate down in blackout".)
+
+### Verification
+`./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ02OQ04` →
+**Build completed successfully (7745 jobs)**, EXIT 0 — this transitively builds
+`GreensTheoremOQ01` + the corrected `GreensTheoremOQ02` + `OQ04`. The witness file
+`Proofs.GreensTheoremOQ02Corrected` built separately.
+
+### State after this session
+- Registered build: **0 false axioms here** — `greens_theorem_l1curl` is now an
+  *orientation-sound* axiom (still 1 axiom: the genuine Whitney minimal-regularity
+  input, not yet discharged). axiomCount unchanged at the assumption level (1).
+- The S6 #24424 "single Docker-verified patch" requirement is satisfied.
+- Gallery `meta.json` re-pointed to the landed state: status badge `axiom`,
+  build-verified narrative, `leanFile` counts 59ln/1thm/0ax (witness), top-level
+  axiomCount 1 (the registered axiom the result rests on).
+
+### Remaining (genuinely open)
+1. Discharge `greens_theorem_l1curl` itself via the FTC-for-AC keystone
+   (`AbsolutelyContinuousOnInterval.integral_deriv_eq_sub`, Mathlib ≥ v4.28.0,
+   PR #29508) by the Fubini reduction in "Recommended approach" above. **Gated on
+   bumping the project Mathlib pin v4.26.0 → ≥ v4.28.0** (cross-corpus rebuild risk).
+2. Register `GreensTheoremOQ02Corrected.lean` + `GreensTheoremOQ02Counterexample.lean`
+   in `Proofs.lean` so the soundness witness is machine-checked on every build.
