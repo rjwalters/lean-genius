@@ -298,15 +298,39 @@ formalised in Mathlib v4.26.0). The wrapper structure
 -/
 
 /--
+**Uninterpreted shape predicate: "this density arises from an ellipsoid
+lattice packing".**
+
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsEllipsoidLatticePacking p` for any concrete `p`. This is
+deliberate: it gates the shape-restricted Bezdek–Kuperberg bound below so
+that a generic `PackingDensity` (e.g. the tetrahedral dimer, or a
+density-0 packing) cannot be smuggled in to derive a contradiction.
+
+**Soundness rationale.** A contentless `structure … extends PackingDensity`
+has an anonymous constructor `PackingDensity → …`, so *any* density —
+including `tetrahedronDimerPacking`, whose density exceeds `fccDensity` —
+could be wrapped and fed to the upper-bound axiom, yielding
+`tetrahedronDimerDensity ≤ fccDensity` in contradiction with the
+axiom-free `tetrahedronDimerDensity_gt_fccDensity`. Requiring an
+`IsEllipsoidLatticePacking` proof field blocks that wrap, because nothing
+inhabits the opaque predicate.
+-/
+opaque IsEllipsoidLatticePacking : PackingDensity → Prop
+
+/--
 **Marker structure: an ellipsoid lattice packing in ℝ³.**
 
-Wraps a `PackingDensity` value with the implicit understanding that
-it arises from a lattice arrangement of congruent ellipsoids in ℝ³.
-Definitional only — no axiom. The Bezdek–Kuperberg theorem
-(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, axiom below)
-supplies the density constraint for inhabitants of this type.
+Bundles a `PackingDensity` value with a proof that it arises from a
+lattice arrangement of congruent ellipsoids in ℝ³ (the opaque
+`IsEllipsoidLatticePacking` predicate). The proof field is what makes
+the type non-trivial to inhabit: an arbitrary `PackingDensity` cannot be
+coerced in without exhibiting the (uninhabited) shape proof, which is
+exactly what restores soundness of the Bezdek–Kuperberg upper bound
+(`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, axiom below).
 -/
-structure EllipsoidLatticePacking extends PackingDensity
+structure EllipsoidLatticePacking extends PackingDensity where
+  isEllipsoidLattice : IsEllipsoidLatticePacking toPackingDensity
 
 /--
 **Bezdek–Kuperberg (2007).**
@@ -340,25 +364,42 @@ theorem ellipsoid_lattice_le_fccPacking
   bezdek_kuperberg_ellipsoid_lattice_upper_bound e
 
 /--
-**Marker structure: a centrally symmetric convex body packing in ℝ³.**
+**Uninterpreted shape predicate: "this density arises from a centrally
+symmetric convex body packing in ℝ³".**
 
-Wraps a `PackingDensity` value with the implicit understanding that
-it arises from a packing of congruent copies of a centrally symmetric
-convex body `K ⊂ ℝ³` (i.e., `K = -K`). Definitional only — no axiom.
+`opaque` (no defining body, no introduction axiom), so it is impossible
+to *prove* `IsSymmetricConvexBody3DPacking p` for any concrete `p`.
 Mathlib v4.26.0 has no native `ConvexBody3D` / centrally-symmetric
-abstraction at the level of `PackingDensity`, so the structure
-records the geometric intent without committing to a particular
-choice of formalisation. The Ulam conjecture
-(`ulam_conjecture`, axiom below) supplies the density constraint
-for inhabitants of this type.
+abstraction at the level of `PackingDensity`, so this predicate records
+the geometric intent without committing to a particular formalisation.
+The Ulam conjecture (`ulam_conjecture`, axiom below) supplies the density
+constraint for inhabitants of the gated structure.
 
 A future iteration that formalises `Convex ℝ K` + central symmetry
 + "packing density of `K`" can refine this marker to a structure
 carrying the underlying body `K` and a proof
 `∀ x, x ∈ K ↔ -x ∈ K`; the axiom `ulam_conjecture` would survive
 the refactor as a STATEMENT axiom on the refined type.
+
+**Soundness rationale.** `ulam_conjecture` is a *lower* bound
+(`fccDensity ≤ p.density`). Without a shape gate, wrapping a
+density-0 `PackingDensity` (constructible: `⟨0, le_refl 0, by norm_num⟩`)
+into a contentless marker would yield `fccDensity ≤ 0`, contradicting
+`fccDensity_pos`. The opaque `IsSymmetricConvexBody3DPacking` proof
+field blocks that wrap, exactly as for the ellipsoid case.
 -/
-structure SymmetricConvexBody3DPacking extends PackingDensity
+opaque IsSymmetricConvexBody3DPacking : PackingDensity → Prop
+
+/--
+**Marker structure: a centrally symmetric convex body packing in ℝ³.**
+
+Bundles a `PackingDensity` with a proof of the opaque shape predicate
+`IsSymmetricConvexBody3DPacking`. As with `EllipsoidLatticePacking`,
+the proof field is what prevents an arbitrary `PackingDensity` from
+being coerced in, restoring soundness of the (lower-bound) Ulam axiom.
+-/
+structure SymmetricConvexBody3DPacking extends PackingDensity where
+  isSymmetricConvexBody : IsSymmetricConvexBody3DPacking toPackingDensity
 
 /--
 **Ulam's conjecture (1972, OPEN).**
