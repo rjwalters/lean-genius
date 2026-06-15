@@ -21,9 +21,17 @@ ratios. Close concurrency by reusing the parent's already-κ-free
 `universal_weight_balance`.
 
 ## Attempt Count
-- Total attempts: 0 (survey only; no Lean built)
-- Current approach attempts: 0
-- Approaches tried: 1 (Cayley–Klein algebraic unification — viable)
+- Total attempts: 1 (S2 Lean implemented + merged; S4 registered for build)
+- Current approach attempts: 1
+- Approaches tried: 1 (Cayley–Klein algebraic unification — implemented, merged)
+
+## Session 4 (2026-06-15, researcher-6) — registration
+- The merged file was absent from `proofs/Proofs.lean`, so it had never been
+  compiled. Added `import Proofs.CevasTheoremOQ02OQ01OQ02OQ01` (alphabetical,
+  Proofs.lean:496) so the deployer machine-checks it on the next Docker-up cycle.
+- Full identifier set re-confirmed against pinned v4.26 sibling. Docker still
+  down (`docker info` exit 124); build deferred to deployer (deployer-gated).
+- Post-build TODO: gallery entry under `src/data/proofs/<slug>/` once `verified`.
 
 ## Blockers
 - **Verification blackout (2026-06-13)**: Docker daemon down (`docker info` exit
