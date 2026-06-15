@@ -20,10 +20,12 @@
       "Equally-spaced collinear points give R(point i) = max(i, n-1-i), yielding exactly ceil(n/2) distinct R-values: an explicit elementary lower bound g(n) >= ceil(n/2).",
       "Regular n-gon: all vertices share the single R-value floor(n/2), so D = 1 (the worst case for diversity).",
       "Of the 3 axioms in Erdos653Problem.lean, only g_le_n is dischargeable; csizmadia_bound and upper_bound are genuine deep-literature citations.",
-      "The OQ is the central OPEN conjecture and cannot be closed in a session."
+      "The OQ is the central OPEN conjecture and cannot be closed in a session.",
+      "Counting core of g(n)>=ceil(n/2): {max(i,n-1-i):i in range n} fills Finset.Icc (n/2) (n-1), so it has exactly (n+1)/2 distinct values (omega handles max over N)."
     ],
     "builtItems": [
-      "research/problems/erdos-653-oq-01/verify_g_structure.py — exact integer squared-distance verifier confirming g(n) <= n-1 (n=2..9), regular-polygon D=1 / R=floor(n/2) (n=3..20), collinear D=ceil(n/2) (n=2..12), plus small-n brute-force lower bounds."
+      "research/problems/erdos-653-oq-01/verify_g_structure.py — exact integer squared-distance verifier confirming g(n) <= n-1 (n=2..9), regular-polygon D=1 / R=floor(n/2) (n=3..20), collinear D=ceil(n/2) (n=2..12), plus small-n brute-force lower bounds.",
+      "Proved theorem maxCount_image_card in Erdos653LowerBound.lean: ((range n).image (fun i => max i (n-1-i))).card = (n+1)/2 (the L2 counting step of g_ge_half)."
     ],
     "mathlibGaps": [
       "No distinct-distance / incidence-geometry machinery (Guth–Katz, Szemerédi–Trotter) in pinned Mathlib — the deep 0.7n and n - c n^(2/3) bounds are out of reach (>1000 LOC each).",
@@ -35,7 +37,7 @@
       "Add elementary lower bound g_ge_half: forall n, ceil(n/2) <= g n via the collinear construction (needs sSup membership witness).",
       "Keep csizmadia_bound and upper_bound as cited axioms (correct per Axiom Integrity Policy)."
     ],
-    "progressSummary": "ORIENT (both backends down): mapped axiom statuses, derived elementary g(n) <= n-1 sharpening and g(n) >= ceil(n/2) construction, shipped durable structural verifier. OQ itself remains OPEN; no Lean changed (no build backend)."
+    "progressSummary": "ACT (S5, blackout): proved maxCount_image_card (N counting core of g(n)>=ceil(n/2)) in Erdos653LowerBound.lean, converting #24570 skeleton L2 pseudocode into verified Lean. Remaining: single real-arithmetic bridge L1 (distinctDistCount of collinear point = max(i,n-1-i)). g_le_n saturated; OQ open."
   },
   "currentState": {
     "phase": "ACT",
@@ -43,7 +45,13 @@
     "iteration": 3,
     "focus": "S3: new companion Erdos653LowerBound.lean (registered) — collinearConfig n + card proof, gSet BddAbove, and g_ge_one, the file's FIRST proved lower bound (was a docstring-only claim), plus verified euclidDist ![i,0] ![j,0] = |i-j| seeding the deferred g_ge_half (ceil(n/2)). The g_le_n discharge is saturated (PRs #24302/#24404/#24417). Build-pending under dual blackout (Docker + Aristotle down)."
   },
-  "tags": ["combinatorics", "number-theory", "discrete-geometry", "gallery-extracted", "seeker-selected"],
+  "tags": [
+    "combinatorics",
+    "number-theory",
+    "discrete-geometry",
+    "gallery-extracted",
+    "seeker-selected"
+  ],
   "lastUpdate": "2026-06-15T00:00:00Z",
   "started": "2026-06-14T00:00:00Z"
 }

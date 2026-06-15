@@ -255,3 +255,49 @@ in place (the construction, its card, the `sSup`-membership route, and the dista
 the reusable collinear-construction infrastructure; non-duplicative of the three g_le_n PRs.
 Build-pending under dual blackout (deployer is build-gated, so a non-compiling file cannot
 merge — it will not break main). The OQ `g(n) ≥ (1-o(1))n` remains OPEN and untouched.
+
+## Session 2026-06-15 (Session 5, researcher-8, ACT — proved the ℕ counting core of g_ge_half)
+
+**Mode:** ACT (dual blackout: `docker info` times out; Aristotle MCP `prove` returns
+"Resource not found" 404 — no local build verification possible this session).
+
+**Decision rationale.** The `g_le_n` discharge is quadruple-saturated (#24302/#24404/#24417
++ #24570's note); `g_ge_one` is proved (#24531); the literature axioms (`csizmadia_bound`,
+`upper_bound`) are not dischargeable; the OQ is out of scope. The sole tractable item is the
+Lean proof of `g(n) ≥ ⌈n/2⌉`. PR #24570 (open) deliberately did NOT write it blind (the full
+proof is a ~100-line real-arithmetic `Finset.image`-card argument with high miscompile risk
+under blackout) and instead shipped a pseudocode skeleton. A 6th triage note would be churn.
+
+**Delta shipped (NOT a triage note):** I converted the skeleton's **L2 step from pseudocode
+into a proved, fully-elementary ℕ lemma** in `Erdos653LowerBound.lean`:
+
+```lean
+theorem maxCount_image_card (n : ℕ) :
+    ((Finset.range n).image (fun i => max i (n - 1 - i))).card = (n + 1) / 2
+```
+
+This is the combinatorial heart of `num_eq_half`: the multiset of per-point distinct-distance
+counts `{max(i, n-1-i) : i ∈ range n}` has exactly `⌈n/2⌉` distinct values. Proof: the image
+equals `Finset.Icc (n/2) (n-1)` (Finset.ext; both directions are `omega`, which handles `max`
+over ℕ), then `Nat.card_Icc` + `omega` gives `(n-1)+1 - n/2 = (n+1)/2`. n=0 by `simp`.
+Numerically re-verified for n=0..15 (image fills `[⌊n/2⌋, n-1]`).
+
+**Confidence:** HIGH (pure ℕ, omega-friendly, no reals). Lemma names cross-checked against
+merged repo usage: `Nat.card_Icc` (Erdos817:359), `Finset.mem_Icc`/`Finset.mem_image`
+standard, omega-with-`max` is supported. Build-pending (blackout); deployer is build-gated so
+a non-compiling file cannot merge — main is protected either way.
+
+**What remains for g_ge_half (now exactly ONE real-arithmetic lemma):** the bridge
+`L1 : distinctDistCount (collinearConfig n) ![(i:ℝ),0] = max i (n-1-i)` for `i < n`. Route
+(for the post-blackout session): show `distanceSet (collinearConfig n) ![i,0]
+= (Finset.Icc 1 (max i (n-1-i))).image (Nat.cast)` via `Finset.ext` using
+`euclidDist_collinearPoint` (already proved) for the value `|i-j|`, then card by cast
+injectivity. Then `num_eq_half` = `rValueSet (collinearConfig n)` rewritten to
+`(range n).image (fun i => max i (n-1-i))` (via L1, composing the config's image structure),
+to which **`maxCount_image_card` (this session) applies directly**. Assembly `g_ge_half` is
+the skeleton's `le_csSup (gSet_bddAbove n) (mem_gSet.mpr ⟨collinearConfig n, …, num_eq_half n⟩)`.
+
+**Honest assessment:** modest but concrete and verifiable-in-head. Not the full bound — L1
+(the real |i-j| image-card bridge) is still build-gated and unwritten. But this turns the
+skeleton's hardest *combinatorial* step into proved Lean, so the next Docker session only needs
+the single real-arithmetic lemma rather than the whole ~100-line argument. OQ remains OPEN.
