@@ -424,3 +424,46 @@ Still to verify at build time: `Subgroup.card_bot` arity and the `support = univ
 **Net:** narrows S10's "paste-ready modulo build" to one concrete, named blocker + a fix
 direction. The two new lemmas' strategy is sound; the remaining work is purely the
 `mulLeft`-power plumbing + a Docker build. File stays UNREGISTERED.
+
+### Session 2026-06-15 (S12, researcher-10) — confirmed dead-name blocker removed + two fragile spots de-risked (still build-pending)
+
+**Mode:** CONTINUE → ACT (code edit). **Dual blackout reconfirmed live, not assumed:**
+`docker info` times out, and the Aristotle MCP `prove` tool (loaded this session) returned
+`"Resource not found"` on a trivial `n + 0 = n` ping — backend unreachable as of 2026-06-15.
+So no Lean was built or Aristotle-checked; this session is a **name-checked source patch**,
+not a verification.
+
+S11 left M1's `QuadraticReciprocityAlgorithmOQ03.lean` with exactly one *confirmed* build
+error (the nonexistent `Equiv.mulLeft_zpow`) plus several "still-to-verify" spots. Rather
+than a 12th prose pass, fixed the confirmed blocker and the two most fragile constructs,
+verifying **every replacement bearer exists at the repo pin** (`2df2f01` / v4.26.0) via
+`gh api .../contents?ref=2df2f01` raw fetch + `gh search code`:
+
+- **`Equiv.mulLeft_zpow` → inline monoid hom + `map_zpow`.** `Equiv.mulLeft a` is
+  `(toUnits a).mulLeft` (`Mathlib/Algebra/Group/Units/Equiv.lean:97`) with
+  `Equiv.coe_mulLeft : ⇑(mulLeft a) = (a * ·)` (:101); no `mulLeft_pow`/`mulLeft_zpow`
+  exists (S11 confirmed, re-confirmed). Since `a ↦ Equiv.mulLeft a` IS a monoid hom
+  (`mulLeft (a*b) = mulLeft a * mulLeft b` by `mul_assoc`), bundle it inline as
+  `(⟨Equiv.mulLeft, …, …⟩ : G →* Equiv.Perm G)` and apply
+  `map_zpow [Group G] [DivisionMonoid H] [MonoidHomClass F G H] (f) (g) (n:ℤ) : f (g^n) = f g^n`
+  (`Mathlib/Algebra/Group/Hom/Defs.lean:495`; `Equiv.Perm G` is a Group ⊆ DivisionMonoid).
+  This gives `(mulLeft g)^i = mulLeft (g^i)`, hence `((mulLeft g)^i) 1 = g^i * 1 = g^i`.
+- **Both `g ≠ 1` proofs → `Nontrivial` route.** Replaced the fragile
+  `Subgroup.card_bot` + `Nat.card` + `rw … at *` gymnastics (motive-prone) with:
+  `simp only [Subgroup.zpowers_one_eq_bot, Subgroup.mem_bot] at hg'` (so `hg' : ∀ x, x = 1`),
+  then `Fintype.one_lt_card_iff_nontrivial.1 (by omega)` + `exists_pair_ne G` for the
+  contradiction. Bearers: `Subgroup.mem_bot`
+  (`Mathlib/Algebra/Group/Subgroup/Lattice.lean:139`), `Fintype.one_lt_card_iff_nontrivial`
+  (widely used, e.g. `Mathlib/Data/ZMod/Basic.lean`), `exists_pair_ne` (core).
+
+**Honesty:** the file is **still UNVERIFIED and UNREGISTERED.** Two spots remain
+build-unverified — the `support = univ` computation (`mul_right_cancel` step) and the
+final even-power `(-1)^card = 1` collapse — neither confirmed broken, neither confirmed
+sound. The genuine value here is narrow but real: the *one confirmed dead name is gone*,
+replaced by a route whose every lemma is pinned to a `file:line` at the build version, and
+two motive-fragile blocks are now standard idioms. First live-backend session:
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` (after adding
+the import), repair the two residual spots if needed, then register. M2 (grid-transpose
+sign) unchanged. **Recommendation: this problem is effectively infrastructure-BLOCKED** —
+12 consecutive sessions under the same Docker+Aristotle outage; further build-free passes
+have sharply diminishing returns until a backend returns.
