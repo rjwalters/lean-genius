@@ -907,6 +907,7 @@ import Proofs.Erdos10OQ01
 import Proofs.Erdos10OQ02
 import Proofs.Erdos10OQ02Decidable
 import Proofs.Erdos10OQ02Popcount
+import Proofs.Erdos10OQ02Bridge
 import Proofs.Erdos10PrimePlusPowers
 import Proofs.Erdos10Problem
 import Proofs.Erdos1100OQ01Aristotle
