@@ -89,6 +89,48 @@
       "Parent: Galois group of X⁴−2 has order 8"
     ]
   },
+  "sections": [
+    {
+      "id": "rotation-subgroup",
+      "title": "The Rotation Subgroup ≅ ℤ/4",
+      "startLine": 57,
+      "endLine": 94,
+      "summary": "Defines rHom : Multiplicative (ZMod 4) →* D₄ (i ↦ rᵢ), proves it injective, sets rotations := rHom.range with membership lemma mem_rotations, and derives rotationsEquiv : rotations ≃* Multiplicative (ZMod 4) and card_rotations = 4 — the normal cyclic ℤ/4 factor obtained for free from MonoidHom.ofInjective.",
+      "mathContext": "$\\text{rotations} \\cong \\mathbb{Z}/4,\\ |\\text{rotations}| = 4$."
+    },
+    {
+      "id": "inversion-action",
+      "title": "The Inversion Action (the ℤ/2-Twist)",
+      "startLine": 96,
+      "endLine": 108,
+      "summary": "reflection_conj_rotation: sr j · rᵢ · (sr j)⁻¹ = r₍₋ᵢ₎, specialized to reflection_conj_rotation': sr 0 · rᵢ · (sr 0)⁻¹ = rᵢ⁻¹ — the single relation s r s⁻¹ = r⁻¹ that makes the product non-abelian.",
+      "mathContext": "$s r_i s^{-1} = r_i^{-1}$."
+    },
+    {
+      "id": "element-orders",
+      "title": "Element Orders: Generator (4) and Reflection (2)",
+      "startLine": 110,
+      "endLine": 116,
+      "summary": "orderOf_rotation_gen (orderOf (r 1) = 4) and orderOf_reflection (orderOf (sr 0) = 2) confirm the factor sizes from Mathlib's orderOf_r_one and orderOf_sr.",
+      "mathContext": "$\\operatorname{ord}(r_1)=4,\\ \\operatorname{ord}(s)=2$."
+    },
+    {
+      "id": "normality",
+      "title": "Normality of the Rotation Subgroup",
+      "startLine": 118,
+      "endLine": 132,
+      "summary": "rotations_normal proves rotations.Normal by case-splitting the conjugator: a rotation stays in rotations by r_mul_r, a reflection by the inversion action reflection_conj_rotation.",
+      "mathContext": "$\\text{rotations} \\trianglelefteq D_4$."
+    },
+    {
+      "id": "complement-and-capstone",
+      "title": "Order-2 Complement and Internal Decomposition",
+      "startLine": 134,
+      "endLine": 193,
+      "summary": "Builds reflections = {1, sr 0} ≅ ℤ/2, proves rotations ⊔ reflections = ⊤ (via sr i = r₍₋ᵢ₎ · sr 0 and Subgroup.mul_mem_sup) and rotations ⊓ reflections = ⊥ (constructor distinctness), then bundles normality + ⊔=⊤ + ⊓=⊥ + inversion into the capstone d4_internal_semidirect — the statement D₄ ≅ ℤ/4 ⋊ ℤ/2.",
+      "mathContext": "$D_4 \\cong \\mathbb{Z}/4 \\rtimes \\mathbb{Z}/2$."
+    }
+  ],
   "conclusion": {
     "summary": "Establishes the explicit internal semidirect-product decomposition D₄ ≅ ℤ/4 ⋊ ℤ/2 for the abstract group DihedralGroup 4: a normal rotation subgroup ≅ ℤ/4 (as an injective-hom range), the order-2 reflection sr 0, the defining inversion action sr·r·sr⁻¹ = r⁻¹, and a trivially-intersecting order-2 complement that together with the rotations generates the group. 13 theorems, 4 definitions, 0 axioms, 0 sorries (build verification pending Docker availability).",
     "implications": "Supplies the group-theoretic data the parent entry asserted but did not prove (it stops at |Gal| = 8). The decomposition is the natural foundation for two follow-ups: packaging the external `SemidirectProduct (Multiplicative (ZMod 4)) (Multiplicative (ZMod 2)) φ ≃* DihedralGroup 4`, and the OQ-03 bridge identifying the concrete Galois group with DihedralGroup 4.",
