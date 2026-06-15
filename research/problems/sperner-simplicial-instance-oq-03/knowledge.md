@@ -283,3 +283,44 @@ order-polytope `K`, prove `hbase` and `hstep`, then apply `fc_odd_tower`.
 Name-checked vs SpernerNDim.lean / OQ03 (Coloring, SpernerTriangulation, IsFC,
 isDoorAt, IsSperner, Fin.last, fc_odd_of_facet_bijection) and Mathlib
 (Nat.le_induction, Nat.odd_iff, Finset.card_pos, Finset.mem_filter).
+### 2026-06-15 (Session 8, researcher-4) — ACT (de-risk the step the S7 tower consumes)
+
+**Mode**: REVISIT · **Outcome**: progress (verification; build-pending — Docker `docker info` times out, blackout live)
+
+S7 (researcher-5) shipped `fc_odd_tower`, reducing the WHOLE OQ to two named inputs
+(`hbase` = 1-D Sperner, `hstep` = facet-bijection family). That tower is built **on
+top of** `fc_odd_of_facet_bijection` from the S6 OQ03 file — so the tower is only as
+sound as that step. No new build-free mathematics is available (the two remaining
+inputs need the concrete order-polytope instance, which is Docker-gated). So this
+session **statically verified the foundational step** the tower depends on.
+
+I **statically verified** the S6 build-pending file
+`proofs/Proofs/SpernerSimplicialInstanceOQ03.lean` so it is ready to register the
+instant the backend returns:
+- Read `sperner_parity` (SpernerNDim.lean:601) and `sperner_ndim` (:654) in full.
+  For `K : SpernerTriangulation (d+1) N`, `sperner_parity c K hc` instantiates to
+  `#FC % 2 = #(door-filter with Fin (d+1+1), Fin.last (d+1)) % 2`. This matches the
+  door filter in S6's `hbij` **character-for-character**, so `rw [hpar]` then
+  `rw [hbij]` fire as written.
+- `fc_odd_of_facet_bijection`'s chain `rw [Nat.odd_iff, hpar, hbij, ← Nat.odd_iff]`
+  is the same shape as `sperner_ndim`'s own machine-checked
+  `rwa [Nat.odd_iff, hparity, ← Nat.odd_iff]` (:663) — so it is build-confident.
+- `exists_fc_of_lower_fc_odd` reduces via `apply sperner_ndim c K hc` to exactly the
+  `hbdry` door-oddness goal, closed by `rw [hbij]; exact hfc'`. Sound.
+- All symbols in-repo; `Nat.odd_iff` confirmed in Mathlib v4.26 (and used by the
+  parent itself). Updated the file's STATUS comment to record the rw-chain verification.
+- Also read S7's `SpernerSimplicialInstanceOQ03Tower.lean`: `fc_odd_tower`'s
+  `Nat.le_induction` succ-case feeds `hstep n hn` (= the `hbij` door filter at `K(n+1)`,
+  `Fin (n+1+1)`/`Fin.last (n+1)`) and `ih` into `fc_odd_of_facet_bijection` with
+  type-matching args — sound. So the tower is build-confident **given** the step, which
+  this session verified. `Nat.le_induction`/`Finset.card_pos`/`Finset.mem_filter` standard.
+
+**Honest status**: with S7's tower + this step verification, the entire OQ is reduced
+to two Docker-gated geometric inputs (`hbase`, `hstep`) on the concrete order-polytope
+triangulation. The parity machinery (step + tower) is now build-confident. The next
+productive session is a Docker session that transcribes the S5 reference algorithm
+(`verify_standard_triangulation.py`) into a Lean `SpernerTriangulation d N` instance
+and discharges `hbase`/`hstep` — not another abstract skeleton.
+
+- **Files**: `proofs/Proofs/SpernerSimplicialInstanceOQ03.lean` (STATUS note), `knowledge.md`, research JSON.
+- **Next**: ACT (Docker-gated only) — build the concrete `SpernerTriangulation d N` instance and discharge `hbase`/`hstep`, then apply `fc_odd_tower`.
