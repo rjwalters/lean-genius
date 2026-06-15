@@ -68,49 +68,121 @@
       "id": "sec-trisection-oq04-header",
       "title": "Header: OQ-04 Statement, Key Results, and Tool Hierarchy Overview",
       "startLine": 1,
-      "endLine": 43,
+      "endLine": 44,
       "description": "Module header answering OQ-04: yes, natural generalizations to marked ruler, origami, and compass-only exist. Lists 4 key results: marked ruler constructibility (cos(20°) IS constructible), Mohr-Mascheroni theorem, origami constructibility, tool hierarchy. Explains algebraic approach: each tool = class of polynomial degrees. Status: all theorems proved, 0 sorries. Opens namespace AngleTrisectionOQ04, opens Polynomial and Real.",
       "mathContext": "This entry answers the natural follow-up to Wantzel's 1837 impossibility theorem: if compass and straightedge cannot trisect a general angle, which tools can? The algebraic framework, developed through the 19th–20th centuries, encodes each construction tool as a class of polynomial degrees that become achievable. The fundamental insight is that compass-and-straightedge constructions are exactly those reachable by iterated quadratic extensions of $\\mathbb{Q}$ — so constructibility of $\\alpha$ requires $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]$ to divide some power of 2. The neusis (marked ruler) adds cubic extensions, origami adds at least cubics, and compass-only turns out to be equivalent to compass-and-straightedge by a surprising result. The hierarchy `straightedge-only ⊊ {c+s} ⊊ marked ruler ⊆ origami` is thus a hierarchy of field extension towers, not of geometric tools per se."
     },
     {
-      "id": "sec-trisection-oq04-definitions",
-      "title": "Parts 1–3: Core Definitions and Neusis Constructibility of cos(20°)",
-      "startLine": 44,
+      "id": "sec-trisection-oq04-part1",
+      "title": "Part 1: Marked Ruler (Neusis) Constructibility",
+      "startLine": 45,
+      "endLine": 85,
+      "description": "Core definitions: `IsTwoThreeNumber d` (d > 0 and d ∣ 2^a·3^b), `IsNeusisConstructible α d` (wraps IsTwoThreeNumber), and `IsConstructible α d` (d ∣ 2^n). These encode each tool as the set of achievable polynomial degrees.",
+      "mathContext": "Definitions IsTwoThreeNumber, IsNeusisConstructible, IsConstructible — each construction tool is captured as a divisibility class of degrees."
+    },
+    {
+      "id": "sec-trisection-oq04-part2",
+      "title": "Part 2: Neusis Extends Compass-and-Straightedge",
+      "startLine": 86,
+      "endLine": 102,
+      "description": "`power_of_two_is_two_three`: every 2^n is a 2-3 number. `constructible_implies_neusis`: compass-straightedge constructible degrees are neusis-constructible, so the marked ruler extends the classical toolset.",
+      "mathContext": "power_of_two_is_two_three, constructible_implies_neusis — the inclusion {2^n} ⊆ 2-3-numbers."
+    },
+    {
+      "id": "sec-trisection-oq04-part3",
+      "title": "Part 3: Degree 3 IS Neusis-Constructible",
+      "startLine": 103,
       "endLine": 128,
-      "description": "Defines `IsTwoThreeNumber d`: d > 0 and d ∣ 2^a · 3^b for some a,b. Defines `IsNeusisConstructible α d` (wraps IsTwoThreeNumber) and `IsConstructible α d` (d ∣ 2^n). Proves `power_of_two_is_two_three`: 2^n is a 2-3 number (a=n, b=0). Proves `constructible_implies_neusis`: IsConstructible implies IsNeusisConstructible (by taking b=0 and simpa). Part 3: `three_is_two_three_number` (3 ∣ 2^0·3^1 by norm_num), `cos_20_neusis_constructible` (delegates to three_is_two_three_number), `angle_trisection_possible_with_marked_ruler` (alias).",
-      "mathContext": "The key definition `IsTwoThreeNumber d` captures exactly the neusis-constructible degrees: $d > 0$ and $d \\mid 2^a \\cdot 3^b$ for some $a, b \\in \\mathbb{N}$. The set $\\{d \\mid \\exists a,b, d \\mid 2^a \\cdot 3^b\\}$ consists of natural numbers whose prime factorization uses only 2 and 3: $\\{1, 2, 3, 4, 6, 8, 9, 12, 16, 18, 24, 27, \\ldots\\}$. These are called **3-smooth numbers** (or 5-rough numbers in the complementary sense). The inclusion `constructible_implies_neusis` is the algebraic fact that every $2^n$-smooth number (divisible only by primes up to 2) is also $3$-smooth (since $2$ divides $2^n$). The key application: $\\cos(20°)$ satisfies $8x^3 - 6x - 1 = 0$ (from $\\cos(3 \\cdot 20°) = \\cos(60°) = 1/2$), so its minimal polynomial degree is 3 = $2^0 \\cdot 3^1$ — a 2-3 number. Therefore `cos_20_neusis_constructible` holds."
+      "description": "`three_is_two_three_number`: 3 is a 2-3 number. `cos_20_neusis_constructible` and `angle_trisection_possible_with_marked_ruler`: cos(20°) has degree 3 and is neusis-constructible, so a marked ruler trisects the 60° angle.",
+      "mathContext": "three_is_two_three_number, cos_20_neusis_constructible, angle_trisection_possible_with_marked_ruler."
     },
     {
-      "id": "sec-trisection-oq04-strict-hierarchy",
-      "title": "Parts 4–5: Strict Hierarchy — three_not_dvd_power_of_two and Classical Problems",
+      "id": "sec-trisection-oq04-part4",
+      "title": "Part 4: The Strict Hierarchy",
       "startLine": 129,
-      "endLine": 184,
-      "description": "The arithmetic core: `three_not_dvd_power_of_two` proves ∀ n, ¬(3 ∣ 2^n) by induction. Base: norm_num (3 ∤ 1). Step: if 3 ∣ 2^{k+1} = 2·2^k, by h3_prime.dvd_mul get 3 ∣ 2 (ruled out by norm_num) or 3 ∣ 2^k (ruled out by ih). From this: `cos_20_not_constructible` (intro ⟨_, n, h⟩; apply three_not_dvd_power_of_two n h), and `marked_ruler_strictly_stronger` (the conjunction). Part 5: same pattern for cube root of 2 (cube_root_two_neusis_constructible, not_constructible, doubling_cube_with_marked_ruler). `classical_problems_tool_comparison` packages both.",
-      "mathContext": "The single arithmetic lemma `three_not_dvd_power_of_two` — $3 \\nmid 2^n$ for all $n \\in \\mathbb{N}$ — is the algebraic engine separating compass from neusis. The inductive proof is elementary: $3 \\nmid 1$ (base) and $3 \\mid 2 \\cdot 2^k$ would require $3 \\mid 2$ or $3 \\mid 2^k$ by primality of 3 (since $\\gcd(2,3)=1$), contradicting the inductive hypothesis. This single fact implies `cos_20_not_constructible`: if $\\cos(20°)$ were compass-constructible, its degree (= 3) would divide some $2^n$, but $3 \\nmid 2^n$, contradiction. The same argument gives `cube_root_two_not_constructible` (degree 3). Both classical Greek impossibility problems — angle trisection and cube duplication — are thus unified under the same number-theoretic obstruction: 3 is not a power of 2."
+      "endLine": 162,
+      "description": "The arithmetic core: `three_not_dvd_power_of_two` proves ∀ n, ¬(3 ∣ 2^n) by induction. `cos_20_not_constructible` (degree 3 ∤ any 2^n) and `marked_ruler_strictly_stronger` establish that neusis is strictly more powerful than compass-and-straightedge.",
+      "mathContext": "three_not_dvd_power_of_two, cos_20_not_constructible, marked_ruler_strictly_stronger — 3 ∤ 2^n is the algebraic engine separating the tools."
     },
     {
-      "id": "sec-trisection-oq04-tool-degrees",
-      "title": "Parts 6–9: Tool Degree Sets, Mohr-Mascheroni, Origami, and Complete Hierarchy",
+      "id": "sec-trisection-oq04-part5",
+      "title": "Part 5: Doubling the Cube with Marked Ruler",
+      "startLine": 163,
+      "endLine": 185,
+      "description": "`cube_root_two_neusis_constructible` and `cube_root_two_not_constructible`: ∛2 has degree 3, neusis-constructible but not compass-constructible. `doubling_cube_with_marked_ruler` resolves the second classical problem for the marked ruler.",
+      "mathContext": "cube_root_two_neusis_constructible, cube_root_two_not_constructible, doubling_cube_with_marked_ruler."
+    },
+    {
+      "id": "sec-trisection-oq04-part6",
+      "title": "Part 6: Mohr-Mascheroni Theorem",
       "startLine": 186,
+      "endLine": 229,
+      "description": "Degree sets: `CompassStraightedgeDegrees` = `CompassOnlyDegrees` = {d | d > 0 ∧ d ∣ 2^n}, `NeusisDegrees` = {d | d > 0 ∧ d ∣ 2^a·3^b}. `mohr_mascheroni`: compass-only equals compass-and-straightedge. `compass_subset_neusis` and `strict_containment` (3 ∈ Neusis \\ CompassStraightedge).",
+      "mathContext": "CompassOnlyDegrees = CompassStraightedgeDegrees by definition (Mohr-Mascheroni); compass ⊊ neusis via 3."
+    },
+    {
+      "id": "sec-trisection-oq04-part7",
+      "title": "Part 7: Origami Constructibility",
+      "startLine": 230,
+      "endLine": 258,
+      "description": "`OrigamiDegrees` = {d | d > 0 ∧ d ∣ 2^a·3^b}. `neusis_subset_origami`: origami achieves at least all neusis-constructible degrees (cubics included).",
+      "mathContext": "OrigamiDegrees, neusis_subset_origami — origami matches the marked ruler on achievable degrees."
+    },
+    {
+      "id": "sec-trisection-oq04-part8",
+      "title": "Part 8: Complete Tool Hierarchy",
+      "startLine": 259,
+      "endLine": 278,
+      "description": "`tool_hierarchy`: assembles the chain CompassStraightedge ⊆ Neusis ⊆ Origami of degree sets into a single statement, the structural backbone of the entry.",
+      "mathContext": "tool_hierarchy — the assembled inclusion chain of tool degree sets."
+    },
+    {
+      "id": "sec-trisection-oq04-part9",
+      "title": "Part 9: Summary of Classical Problems with Each Tool",
+      "startLine": 279,
       "endLine": 291,
-      "description": "Defines degree sets: `CompassStraightedgeDegrees` = `CompassOnlyDegrees` = {d | d > 0 ∧ d ∣ 2^n} (identical definitions). `NeusisDegrees` = {d | d > 0 ∧ d ∣ 2^a·3^b}. `OrigamiDegrees` = {d | d > 0 ∧ d ∣ 2^a·3^b} (same as NeusisDegrees for this formalization). `mohr_mascheroni`: CompassOnlyDegrees = CompassStraightedgeDegrees by rfl. `compass_subset_neusis`: by taking b=0 and simpa. `strict_containment`: 3 ∈ NeusisDegrees ∧ 3 ∉ CompassStraightedgeDegrees. `neusis_subset_origami`: by exact hd (same definition). `tool_hierarchy` packages all. Part 9: `classical_problems_tool_comparison` states both trisection and cube-doubling as impossible/possible pairs.",
-      "mathContext": "The elegant algebraic insight captured here is that `CompassOnlyDegrees = CompassStraightedgeDegrees` by definition — the Mohr-Mascheroni theorem, that compass alone equals compass-and-straightedge, is a **definitional identity** once you adopt the algebraic characterization. Georg Mohr (1672) proved this geometrically; Lorenzo Mascheroni independently rediscovered it in 1797. The proof that `mohr_mascheroni` holds by `rfl` reflects that both tools produce the same class of reachable field extensions: iterated quadratic extensions of $\\mathbb{Q}$. Similarly, `poncelet_steiner` (Part 12) holds by `rfl` — the Poncelet-Steiner theorem that straightedge plus one fixed circle equals compass-and-straightedge is again a definitional coincidence in the algebraic encoding. The strict containment `compass ⊊ neusis` is witnessed by 3: $3 \\in \\mathrm{NeusisDegrees}$ (since $3 \\mid 2^0 \\cdot 3^1$) but $3 \\notin \\mathrm{CompassDegrees}$ (since $3 \\nmid 2^n$)."
+      "description": "`classical_problems_tool_comparison`: tabulates trisection and cube-doubling against each tool, summarizing which classical impossibilities each tool resolves.",
+      "mathContext": "classical_problems_tool_comparison — trisection / doubling resolved per tool."
     },
     {
-      "id": "sec-trisection-oq04-two-three",
-      "title": "Parts 10–11: 2-3 Number Theory and Pierpont Primes",
+      "id": "sec-trisection-oq04-part10",
+      "title": "Part 10: 2-3 Number Theory",
       "startLine": 292,
-      "endLine": 410,
-      "description": "Part 10: Explicit 2-3 number witnesses: 1 (2^0·3^0), 2 (2^1·3^0), 3 (2^0·3^1), 4 (2^2·3^0), 6 (2^1·3^1), 9 (2^0·3^2), 12 (2^2·3^1). `two_three_mul`: product of 2-3 numbers is 2-3, proved by combining the divisibility witnesses: d₁·d₂ ∣ (2^{a₁}·3^{b₁})·(2^{a₂}·3^{b₂}) via mul_dvd_mul, then rearranging by ring. `five_not_two_three`: if 5 ∣ 2^a·3^b, by Prime.dvd_mul get 5 ∣ 2^a or 5 ∣ 3^b, then dvd_of_dvd_pow gives 5 ∣ 2 or 5 ∣ 3, both norm_num contradictions. Part 11: `IsPierpontPrime p` = Nat.Prime p ∧ ∃ a b, p = 2^a·3^b+1. Proves 2,3,5,7,13,17,19,37 are Pierpont primes. `heptagon_neusis_constructible`: seven_pierpont + seven not Fermat (interval_cases m). `nonagon_possible_with_ruler`: nine_is_two_three + 9 ∤ 2^n (via three_not_dvd_power_of_two with factor 3).",
-      "mathContext": "The **2-3 numbers** (3-smooth numbers) form a multiplicative monoid closed under multiplication (`two_three_mul`): if $d_1 \\mid 2^{a_1} \\cdot 3^{b_1}$ and $d_2 \\mid 2^{a_2} \\cdot 3^{b_2}$, then $d_1 d_2 \\mid 2^{a_1+a_2} \\cdot 3^{b_1+b_2}$ by `mul_dvd_mul`. The non-membership proofs for 5 and 11 use the same prime-divisibility pattern: if $5 \\mid 2^a \\cdot 3^b$, then since 5 is prime, $5 \\mid 2^a$ or $5 \\mid 3^b$; by `Nat.Prime.dvd_of_dvd_pow` this gives $5 \\mid 2$ or $5 \\mid 3$, both absurd. **Pierpont primes** $p = 2^a \\cdot 3^b + 1$ generalize Fermat primes $p = 2^{2^m} + 1$ (= $2^a \\cdot 3^0 + 1$). The neusis-constructibility of a regular $n$-gon requires that all prime factors $p$ of $\\varphi(n)$ satisfy $p - 1 \\mid 2^a \\cdot 3^b$ — i.e., $p$ is a Pierpont prime. Known Pierpont primes: 2, 3, 5, 7, 13, 17, 19, 37, 73, 97, ... The 7-gon is the first regular polygon constructible with the marked ruler but not with compass and straightedge."
+      "endLine": 341,
+      "description": "Explicit 2-3 number witnesses (1, 2, 4, 6, 9, 12 via one/two/four/six/nine/twelve_is_two_three). `two_three_mul`: the product of 2-3 numbers is a 2-3 number (the set is a multiplicative monoid). `five_not_two_three`: 5 is not a 2-3 number.",
+      "mathContext": "two_three_mul (3-smooth numbers closed under multiplication); witnesses 1,2,4,6,9,12; five_not_two_three."
     },
     {
-      "id": "sec-trisection-oq04-poncelet-steiner",
-      "title": "Parts 12–14: Poncelet-Steiner, Extended Hierarchy, Polygon Classification, Summary",
-      "startLine": 411,
+      "id": "sec-trisection-oq04-part11",
+      "title": "Part 11: Regular Polygons and Constructibility",
+      "startLine": 342,
+      "endLine": 411,
+      "description": "`IsPierpontPrime` and Pierpont-prime witnesses (2, 3, 5, 7, 13, 17, 19, 37). `heptagon_neusis_constructible` and `nonagon_possible_with_ruler`: regular polygons beyond Gauss-Wantzel become constructible with the marked ruler.",
+      "mathContext": "IsPierpontPrime, heptagon_neusis_constructible, nonagon_possible_with_ruler — Pierpont primes govern neusis-constructible polygons."
+    },
+    {
+      "id": "sec-trisection-oq04-part12",
+      "title": "Part 12: Steiner's Theorem (Poncelet-Steiner)",
+      "startLine": 412,
+      "endLine": 465,
+      "description": "`StraightedgeOnlyDegrees` = {1} (only rationals); `StraightedgeCircleDegrees` = {d | d > 0 ∧ d ∣ 2^n}. `poncelet_steiner`: straightedge plus one fixed circle equals compass-and-straightedge (by rfl). `straightedge_strictly_weaker`: straightedge alone is strictly weaker.",
+      "mathContext": "poncelet_steiner (straightedge + one circle = compass+straightedge), straightedge_strictly_weaker."
+    },
+    {
+      "id": "sec-trisection-oq04-part13",
+      "title": "Part 13: Extended Tool Hierarchy (all five tool levels)",
+      "startLine": 466,
+      "endLine": 494,
+      "description": "`extended_tool_hierarchy`: the full five-level chain straightedge-only ⊊ compass-and-straightedge = compass-only = straightedge-circle ⊊ neusis ⊆ origami.",
+      "mathContext": "extended_tool_hierarchy — the complete five-level degree-set ordering."
+    },
+    {
+      "id": "sec-trisection-oq04-part14",
+      "title": "Part 14: Neusis-Constructible Regular Polygons Beyond Gauss-Wantzel",
+      "startLine": 495,
       "endLine": 599,
-      "description": "Part 12: `StraightedgeOnlyDegrees` = {d = 1} (only rationals). `StraightedgeCircleDegrees` = {d | d > 0 ∧ d ∣ 2^n}. `poncelet_steiner`: StraightedgeCircleDegrees = CompassStraightedgeDegrees by rfl. `straightedge_strictly_weaker`: StraightedgeOnlyDegrees ⊊ CompassStraightedgeDegrees — proved by: (⊆) subst hd, use degree 1 ∣ 2^0; (≠) degree 2 ∈ compass but by simp+omega not in straightedge-only. Part 13: `extended_tool_hierarchy` packages all 7 parts of the five-level containment chain. Part 14: `seven_not_fermat` (interval_cases m for m ≤ 1), `eleven_not_pierpont` (2^a·3^b = 10, 5 ∣ 10, prime factorization argument), `eleven_not_two_three` (same prime divisibility pattern), `hendecagon_not_neusis` and `polygon_neusis_classification` (7-gon YES, 9-gon YES, 11-gon NO). Summary docblock listing 10 definitions, 15+ key theorems, 0 axioms, 0 sorries.",
-      "mathContext": "The **Poncelet-Steiner theorem** (Part 12) completes the lower half of the hierarchy: a straightedge plus ONE given circle (with known center) is as powerful as a full compass. This is proved by `rfl` — both `StraightedgeCircleDegrees` and `CompassStraightedgeDegrees` are defined as $\\{d > 0 \\mid d \\mid 2^n\\}$. The strict weakness of straightedge alone (`StraightedgeOnlyDegrees = \\{1\\}`) reflects that a straightedge with no compass and no given circle can only construct rational points from given rational points — it cannot even bisect a segment in general. The complete **five-level hierarchy** formalized in `extended_tool_hierarchy` is: $\\{1\\} \\subsetneq \\{d \\mid 2^n\\} = \\{d \\mid 2^n\\} = \\{d \\mid 2^n\\} \\subsetneq \\{d \\mid 2^a 3^b\\} \\subseteq \\{d \\mid 2^a 3^b\\}$ — or geometrically: straightedge-only ⊊ compass+straightedge = compass-only = straightedge+circle ⊊ marked ruler ⊆ origami. The `polygon_neusis_classification` packages the concrete 7-gon (YES), 9-gon (YES), 11-gon (NO) conclusion: these are the first three test cases beyond the Fermat primes."
+      "description": "`seven_not_fermat`, `eleven_not_pierpont`, `eleven_not_two_three`, `hendecagon_not_neusis`: the 11-gon is NOT neusis-constructible (11 is neither Fermat nor Pierpont). `polygon_neusis_classification` gives the general criterion for neusis-constructible regular polygons.",
+      "mathContext": "seven_not_fermat, eleven_not_pierpont, hendecagon_not_neusis, polygon_neusis_classification — boundary of neusis-constructible polygons."
     }
   ],
   "crossReferences": [
