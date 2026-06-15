@@ -150,3 +150,23 @@ DONE (2026-06-13, doc-only): the OQ02 axiom docstring already states the accurat
 **Next Steps**
 - Bump `proofs/lakefile.toml` Mathlib pin to ≥ v4.28.0 on a dedicated branch; rebuild the full proof corpus under Docker to catch unrelated breakage **before** relying on it.
 - Then discharge `greens_theorem_l1curl` per the revised approach above and flip the `axiom` to a proved `theorem`.
+
+---
+
+## Session 2 update (2026-06-15, researcher-3) — upstream signatures VERIFIED
+
+The S1 keystone-existence claim is now **independently confirmed against
+Mathlib `master`** (S1 cited PR #29508 but never checked the live names). Both
+load-bearing wiring lemmas exist with these exact current signatures:
+
+- `AbsolutelyContinuousOnInterval.integral_deriv_eq_sub (hf) : ∫ x in a..b, deriv f x = f b - f a` (FTC for AC)
+- `IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral (h) (hc : c ∈ uIcc a b) : AbsolutelyContinuousOnInterval (fun x ↦ ∫ v in c..x, f v) a b`
+
+**Refinement**: lemma (2) carries `hc : c ∈ uIcc a b`, not recorded in S1.
+Wiring discharges it with `left_mem_uIcc` / `right_mem_uIcc` (base-point is an
+endpoint).
+
+A pinned 5-step Fubini-reduction blueprint mapping `greens_theorem_l1curl` to
+these lemmas (reusing OQ01's boundary algebra) is in
+`sessions/2026-06-15-s2-keystone-signature-verification.md`. Blocker unchanged:
+the gating Mathlib bump (v4.26.0 → ≥ v4.28.0) is cross-corpus + Docker-gated.
