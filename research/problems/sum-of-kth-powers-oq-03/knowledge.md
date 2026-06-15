@@ -68,8 +68,46 @@ Work over ℕ, mirroring the parent's `Finset.range` conventions. Let `T i := i 
 `Finset.sum_Ico_eq_sub`, `Finset.range_eq_Ico`, `Finset.sum_range_id` are present. Total estimate
 ~60–100 LOC, no axioms, no sorries expected.
 
+### ℕ-subtraction-free reindex (recommended Lean formulation — de-risks the port)
+
+The spec above writes blocks as `Ico (T (i-1)) (T i)` for `i ≥ 1`, which introduces ℕ-subtraction
+(`i-1`) and an `i ≥ 1` side condition. A cleaner, side-condition-free formulation indexes blocks by
+`i ∈ range n` mapping to cube `(i+1)^3` on positions `[T i, T (i+1))` (with `T k = k*(k+1)/2`,
+`T 0 = 0`), so **no `i-1` appears anywhere**:
+
+- **L2′ `block_eq_cube`** : `∑ j ∈ Finset.Ico (T i) (T (i+1)), (2*j+1) = (i+1)^3`.
+  Derive additively from L1 via `Finset.sum_Ico_consecutive` (with `Finset.range_eq_Ico`):
+  `(T i)^2 + (∑ Ico (T i) (T (i+1)) (2j+1)) = (T (i+1))^2`, then close with the verified ring
+  identity `(T i)^2 + (i+1)^3 = (T (i+1))^2`. To use `ring` despite the `/2` in `T`, clear the
+  division first: prove `2 * T k = k*(k+1)` (i.e. `Finset.sum_range_id_mul_two` / `omega` on the
+  evenness of `k*(k+1)`), or work the squared identity through the `*4` form
+  `4*(T k)^2 = (k*(k+1))^2`. This division-clearing is the one genuinely build-fiddly step and is
+  why M1 is Docker-gated rather than paste-port-trivial.
+- **L3′ tiling** : `∑ i ∈ range n, (∑ j ∈ Ico (T i) (T (i+1)), (2*j+1)) = ∑ j ∈ Ico 0 (T n), (2*j+1)`
+  by induction on `n` + `Finset.sum_range_succ` + `Finset.sum_Ico_consecutive` (needs `T i ≤ T (i+1)`,
+  immediate since `T` is monotone). `Ico 0 (T n) = range (T n)`, so the RHS is `(T n)^2` by L1.
+- **Main′** : `∑ i ∈ range n, (i+1)^3 = (T n)^2`. Then shift the index
+  (`∑ i ∈ range n, (i+1)^3 = ∑ i ∈ range (n+1), i^3`, via `Finset.sum_range_succ'` or the `0^3 = 0`
+  bump) and rewrite `T n = ∑ i ∈ range (n+1), i` (`sum_first_powers_classical` from the parent file,
+  or `Finset.sum_range_id`) to land on `(∑ i ∈ range (n+1), i)^2` — matching the parent's exact RHS
+  shape `sum_cubes_eq_sum_squared`.
+
+### Build-free verification (durable, this session — researcher-1, S3)
+
+All M1 arithmetic is now independently certified by a committed, reproducible script,
+`research/problems/sum-of-kth-powers-oq-03/verify_m1.py` (sympy symbolic + brute force, exits
+non-zero on any mismatch). It re-derives — not plugs in — every identity the M1 lemmas encode:
+`sum_odds = m²`; the additive telescope `T(i-1)² + i³ = T(i)²`; `block = T(i)² − T(i-1)² = i³`; block
+geometry (size `i`, smallest odd `i²−i+1`, largest `i²+i−1`); the ℕ-sub-free reindex
+`T(i)² + (i+1)³ = T(i+1)²`; Gauss `T(n)=∑i`; and an end-to-end brute-force chain
+`blocks == cubes == firstOdds == T_n² == (∑i)²` for `n = 0..60`. **All checks pass.** This makes the
+M1 spec machine-checkable build-free, so the only remaining work is the Lean transcription (the
+division-clearing in L2′ being the sole non-mechanical step). The eventual `.lean` is cross-checkable
+against the parent, which already proves the same theorem algebraically (`sum_cubes_eq_sum_squared`).
+
 **Milestone split**
-- M1 (formalizable now): L1 + L2 + L3 + Main above. Pure Mathlib, no gaps — Docker-gated only.
+- M1 (formalizable now): L1 + L2′ + L3′ + Main′ above (ℕ-sub-free reindex). Pure Mathlib, no gaps —
+  Docker-gated only; arithmetic certified by `verify_m1.py`.
 - M2 (pedagogical, optional): an explicit `Finset` **bijection** between the Σ-type {(i,j) : block}
   and `range (T n)` (via `Finset.sum_sigma`/`Finset.sum_biUnion` over a `Finset.disjiUnion`),
   to surface the "blocks ↔ initial segment of odds" bijection literally rather than by telescope.
