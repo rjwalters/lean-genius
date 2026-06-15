@@ -247,3 +247,47 @@ Certificate: `verify_residue3_obstruction.py` (PASS, m<20000, d≤3000): obstruc
 empty, identity `legendreSym p(−d)=legendreSym p(−m)` holds on all 51 986 prime
 pairs, Residue3Property holds for all 2499 residue-3 cores, witness exists for all
 9999 good-residue cores.
+
+## Session 2026-06-15 (researcher-3) — the residue-3 analytic risk is REMOVED: a single linear AP `p ≡ 1 (mod 4n)` suffices
+
+The previous note flagged the `m = t² + 2p` quadratic-deficit construction as "the
+genuine remaining analytic risk" (a Hardy–Littlewood-type existence statement, not
+plain Dirichlet). **That risk is unnecessary.** It is an artifact of the rigid
+witness shape `p = d·n − 1` baked into `dirichlet_key_lemma`, NOT of the residue-3
+class itself.
+
+**Where the rigidity bites.** For `p = d·n − 1` we have `d·n ≡ 1 (mod p)`, so
+`d ≡ n⁻¹` and `(−d | p) = (−n | p)`. But `p = d·n − 1` forces `p ≡ −1 (mod n)`,
+and the proved obstruction (`ThreeSquaresResidue3Obstruction.lean`) says exactly
+`(−n | p) = −1` for every prime `p ≡ −1 (mod n)` when `n ≡ 3 (mod 4)`. So the
+rigid form lands on the *one* residue mod `n` where the QR condition is forced to
+fail. The fault is the `−1 mod n` tie, not residue 3.
+
+**The fix is the simplest possible single AP.** Drop the `p = d·n − 1` tie and ask
+only for a prime `p` with `(−n | p) = 1`. The symbol `(−n | p)` is the Kronecker
+character `χ_{−n}` of conductor dividing `4n`, so it depends only on `p mod 4n`
+(certified) — pure `PrimesInAP` territory. The class `a = 1` is universal:
+
+> **Lemma (single-AP witness).** For odd `n` and any prime `p ≡ 1 (mod 4n)`,
+> `(−n | p) = 1`.
+> *Proof.* `p ≡ 1 (mod 4) ⇒ (−1|p)=1`, so `(−n|p)=(n|p)`. `p ≡ 1 (mod 4)` makes the
+> reciprocity sign `+1`, so `(n|p)=(p|n)` (`n` odd). `p ≡ 1 (mod n) ⇒ (p|n)=(1|n)=1`.
+> Hence `(−n|p)=1`. ∎
+
+Every prime `p ≡ 1 (mod 4n)` therefore satisfies the QR side-condition, and
+Dirichlet on the AP `1 (mod 4n)` (always admissible, `gcd(1,4n)=1`) supplies one.
+No `t²+2p`, no Hardy–Littlewood, no multi-residue spread.
+
+**Implication for the Lean proof.** Generalize `dirichlet_key_lemma` so its prime
+hypothesis is `(−n | p) = 1` for an *arbitrary* prime `p` (the Minkowski / lattice
+construction only ever uses `(−n|p)=1`, never `p = d·n−1`), then instantiate it at
+a prime `p ≡ 1 (mod 4n)` from Mathlib's primes-in-AP. This collapses the residue
+case analysis to one uniform branch and discharges the residue-3 class that the
+`p = d·n−1` framework cannot reach. (Mathlib bearer for the prime: the
+`PrimesInAP` / Dirichlet result; exact lemma name to be pinned at build time.)
+
+Certificate: `verify_single_ap_residue3.py` (ALL CHECKS PASS, square-free
+`n ≡ 3 mod 8` in `[3,4000)`, 405 cores): (1) `(−n|p)` periodic mod `4n`;
+(2) every prime `p ≡ 1 mod 4n` has `(−n|p)=1`, 0 violations; (3) a concrete such
+prime found for all 405; (4) all 405 are sums of three squares; (5) the old
+residue `p ≡ −1 mod n` gives `(−n|p)=−1` (the obstruction, reproduced).
