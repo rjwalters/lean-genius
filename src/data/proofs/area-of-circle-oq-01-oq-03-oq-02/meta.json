@@ -81,18 +81,34 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Proof Architecture",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Problem statement (extend the isoperimetric inequality C² ≥ 4πA from smooth to Lipschitz closed curves), proof-architecture diagram, imports, opens, namespace, and a statement of the two governing axioms (wirtinger_ac, exists_lip_nice_reparam) with references (Hurwitz 1901, Maz'ya 1985, Federer 1969).",
+      "mathContext": "Lipschitz functions are differentiable almost everywhere (Rademacher), so the arc-length integral $\\int|\\gamma'|\\,dt$ and Green's-theorem area $\\tfrac12|\\int(xy'-yx')\\,dt|$ remain valid as Lebesgue integrals. This is the natural regularity level for the isoperimetric inequality in $\\mathbb{R}^2$."
+    },
+    {
       "id": "lipschitz-curves",
       "title": "Lipschitz Closed Curves",
       "startLine": 54,
-      "endLine": 120,
-      "summary": "LipschitzClosedCurve structure with Lipschitz x,y components; circumference and area via Lebesgue integrals; toLipschitz embedding from SmoothClosedCurve; structural bounds (circumference_nonneg, area_nonneg).",
+      "endLine": 83,
+      "summary": "LipschitzClosedCurve structure with LipschitzWith-K x,y components; circumference defined as the Lebesgue integral ∫√(x'²+y'²) and area as (1/2)|∫(xy'−yx')|.",
       "mathContext": "LipschitzClosedCurve generalizes SmoothClosedCurve: replaces ContDiff ℝ 1 with LipschitzWith K. Circumference = ∫√(x'²+y'²) and area = (1/2)|∫(xy'−yx')| remain valid via Rademacher/Lebesgue."
+    },
+    {
+      "id": "embedding-smooth",
+      "title": "Embedding Smooth Curves as Lipschitz Curves",
+      "startLine": 84,
+      "endLine": 120,
+      "summary": "SmoothClosedCurve.toLipschitz embedding (C¹ curves are Lipschitz on a compact period) and the structural nonnegativity bounds lip_circumference_nonneg and lip_area_nonneg.",
+      "mathContext": "A periodic $C^1$ curve is Lipschitz with constant $\\sup|f'|$ on $[0,2\\pi+1]$; this realizes SmoothClosedCurve as a special case of LipschitzClosedCurve."
     },
     {
       "id": "examples",
       "title": "Circle and Square Examples",
       "startLine": 121,
-      "endLine": 183,
+      "endLine": 184,
       "summary": "circleLipCurve via toLipschitz embedding; circle circumference = 2πr and area = πr² by inheritance; square examples: isoperimetric ratio = π/4 < 1 for unit and a×a squares, all proved without sorries.",
       "mathContext": "The circle achieves equality C² = 4πA; the unit square gives 4πA/C² = π/4 < 1 (strict inequality since π < 4)."
     },
@@ -127,6 +143,14 @@
       "endLine": 505,
       "summary": "smooth_case_follows_from_lipschitz: smooth isoperimetric is subsumed; lip_isoperimetric_scale_invariant: ratio 4πA/C² is scale-invariant; lip_minimum_circumference: C ≥ 2√(πA).",
       "mathContext": "All three corollaries follow from lipschitz_isoperimetric without sorries."
+    },
+    {
+      "id": "summary",
+      "title": "Sorry Inventory and Summary",
+      "startLine": 506,
+      "endLine": 565,
+      "summary": "Inventory of the 13 sorry-free results (square/circle examples, structural bounds, scale invariance, minimum circumference), the 2 axioms (wirtinger_ac, exists_lip_nice_reparam), and the 6 remaining technical sorries (derivative integrability / MVT bounds for Lipschitz functions, all ultimately reducible to Rademacher's theorem), with a note on mathematical significance.",
+      "mathContext": "The remaining sorries are technical regularity facts (e.g. $\\mathrm{LipschitzWith}\\,K\\,f \\Rightarrow |f'| \\le K$ a.e.), not additional mathematical assumptions; the one blocking the main theorem is integrability of $xy'-yx'$ for Lipschitz curves."
     }
   ],
   "conclusion": {
