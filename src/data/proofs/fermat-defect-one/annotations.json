@@ -58,7 +58,7 @@
     "title": "Four Predicates Encoding the Conjecture",
     "content": "`FermatDefectWitness n a b c` is the combined predicate: $2 \\le a \\le b < c$, $\\gcd(\\gcd(a,b),c) = 1$, and the disjunction $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$. `FermatDefectExists n := ∃ a b c, FermatDefectWitness n a b c`. The split predicates `FermatDefectPositive n` (only $a^n + b^n = c^n + 1$) and `FermatDefectNegative n` (only $a^n + b^n + 1 = c^n$) isolate each sign for finer-grained Level-3 analysis. All four predicates are `Prop`-valued and decidable on concrete inputs — `decide` and `native_decide` discharge concrete witnesses without algebraic manipulation.",
     "mathContext": "Disjunction trick: $|a^n+b^n-c^n| = 1$ on $\\mathbb{Z}$ becomes $a^n + b^n + 1 = c^n \\lor a^n + b^n = c^n + 1$ on $\\mathbb{N}$, decidable for each concrete triple.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "Nat.gcd",
       "decidability of Diophantine predicates on Nat",
@@ -81,7 +81,7 @@
     "title": "Verified n=3 Negative-Defect Benchmark",
     "content": "`fermat_defect_three_neg : FermatDefectWitness 3 6 8 9`. Arithmetic: $6^3 = 216$, $8^3 = 512$, $9^3 = 729$, so $216 + 512 + 1 = 729$. Bounds: $2 \\le 6 \\le 8 < 9$. Primitivity: $\\gcd(\\gcd(6, 8), 9) = \\gcd(2, 9) = 1$. The disjunction is satisfied by the LEFT disjunct ($a^n + b^n + 1 = c^n$, the negative-defect side). Discharged by `native_decide` after refining the conjunction.",
     "mathContext": "$6^3 + 8^3 + 1 = 9^3$, i.e., $6^3 + 8^3 - 9^3 = -1$. The negative-defect sibling of the taxicab number 1729 on the other side of $9^3 = 729$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "native_decide tactic",
       "taxicab number 1729",
@@ -104,7 +104,7 @@
     "title": "Verified n=3 Positive-Defect Benchmark (Taxicab Shift)",
     "content": "`fermat_defect_three_pos : FermatDefectWitness 3 9 10 12`. Arithmetic: $9^3 + 10^3 = 729 + 1000 = 1729 = 1728 + 1 = 12^3 + 1$. Bounds: $2 \\le 9 \\le 10 < 12$. Primitivity: $\\gcd(\\gcd(9, 10), 12) = \\gcd(1, 12) = 1$. The disjunction is satisfied by the RIGHT disjunct ($a^n + b^n = c^n + 1$, the positive-defect side). Discharged by `native_decide`. This is the Ramanujan-Hardy taxicab number 1729 = 1^3 + 12^3 = 9^3 + 10^3 shifted by one unit — a charming coincidence that makes the n=3 case memorable.",
     "mathContext": "$9^3 + 10^3 - 12^3 = 1$. Equivalently $1729 - 12^3 = 1$ — a unit-distance fact about the taxicab number.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "taxicab number 1729",
       "Ramanujan-Hardy anecdote",
@@ -149,7 +149,7 @@
     "title": "Headline Open Conjecture (sorry'd)",
     "content": "`fermat_defect_one_exists : ∀ n : Nat, 3 ≤ n → FermatDefectExists n`. This is the Level-2 headline statement. It is left as a `sorry` — a genuine open mathematical conjecture, not a placeholder for tractable work. The $n = 3$ case is verified above; $n = 4$ and beyond are open. No general construction is known, and the conjecture is expected to require deep machinery (Pillai-type techniques, possibly abc-style effective forms, or Fermat-Catalan-style modular methods). This is the gallery entry's anchor: an honest research target, marked as such.",
     "mathContext": "$\\forall n \\ge 3,\\; \\exists a, b, c \\in \\mathbb{N},\\; 2 \\le a \\le b < c \\land \\gcd(a, b, c) = 1 \\land |a^n + b^n - c^n| = 1$. Status: open for $n \\ge 4$.",
-    "significance": "central",
+    "significance": "critical",
     "relatedConcepts": [
       "FLT (zero defect ruled out)",
       "Pillai's conjecture",
