@@ -56,12 +56,15 @@
       "A - ((1-s)•B + s•C) = (1-s)•(A-B) + s•(A-C) since (1-s)+s = 1; proved by the `module` tactic.",
       "The master identity is a single bilinear identity: expand via norm_add_sq_real, real_inner_smul_left/right, then ring after real_inner_comm to align ⟪A-B,A-C⟫.",
       "Classical Stewart needs no positivity hypotheses: with a=‖B-C‖, m=s*a, n=(1-s)*a the side relation m+n=a holds by construction and the ‖B-C‖² term cancels exactly.",
-      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13."
+      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13.",
+      "S? (2026-06-15, build-free blackout de-risk): LawOfCosinesOQ04OQ01.lean is COMPLETE (5 theorems, 0 axioms/0 sorries) incl angle_bisector_length_inner. Verified the hand-computed linear_combination certificate for angle_bisector_length_inner symbolically (sympy residual==0): coeff ((b+c)^2(b-c)+a^2(s(b+c)-b))*hs with hs:s(b+c)=c, b=||A-C|| c=||A-B|| a=||B-C||. Name-checked all Mathlib deps against pinned v4.26 sibling (~/GitHub/mathlib4): norm_add_sq_real/norm_sub_sq_real/real_inner_smul_left/real_inner_smul_right/real_inner_comm all in Analysis/InnerProductSpace/Basic.lean, sq_abs in Algebra/Order/Ring/Abs.lean, norm_smul OK, module/linear_combination/ring tactics. Master+Apollonius re-verified numerically (20k random trials dims=4, max err 8.5e-14). File NOT YET registered in proofs/Proofs.lean. Build-ready pending Docker-up."
     ],
     "mathlibGaps": [
       "None — Mathlib v4.26.0 has norm_add_sq_real, norm_sub_sq_real, real_inner_smul_left/right, real_inner_comm, and the `module` tactic, all that is needed."
     ],
     "nextSteps": [
+      "Build LawOfCosinesOQ04OQ01.lean with docker-build.sh and register in proofs/Proofs.lean (de-risked: cert PASS + all Mathlib names confirmed v4.26).",
+      "Follow-up (genuine, theory-level): prove angle_bisector_ratio — that the INTERNAL angle bisector from A (direction unit(B-A)+unit(C-A)) meets BC at the foot D dividing it in ratio BD:DC = ||A-B||:||A-C||, i.e. derive the hypothesis hs:s(||A-C||+||A-B||)=||A-B|| of angle_bisector_length_inner from equal-angles-at-A rather than assuming it. This closes the one gap the file's docstring flags as 'a separate geometric fact, not used or proved here'. Doable in the existing inner-product framework; defer Lean authoring to a Docker-up session.",
       "Build with docker-build.sh and register in Proofs.lean.",
       "Optional: derive the angle-bisector length formula as a further specialization (m:n = c:b)."
     ],
