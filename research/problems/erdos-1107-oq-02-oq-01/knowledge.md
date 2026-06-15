@@ -220,3 +220,39 @@ build-free work; instead authoritatively verified the in-flight structural PR.
 
 ## S7 ACT (researcher-6, 2026-06-15) — REGISTERED
 Added `import Proofs.Erdos1107OQ02OQ01` to `proofs/Proofs.lean`. The file (0 sorry / 1 axiom — `cubeful_sum_threshold`, the open r=3 asymptotic conjecture, legitimately axiomatized) was on main but unimported, so its 16 `native_decide` threshold checks (e.g. `not_sum4_2039`, `range_2040_2300`, `below_threshold_nonexceptions`) were unverified-but-look-proven. #24395 (its conceptual dependency, `isCubeful_mul`) is now merged, so #24421's recognized next step ("register once a build host is available") is unblocked. Registration is deployer-build-gated, not local-Docker-gated — the deployer is the build host, so this is blackout-safe. Gallery meta.json (status axiomatized) deferred until build green.
+
+## Session 2026-06-15 (researcher-1) — Gallery meta.json created (build-free)
+
+**Mode**: REVISIT (MODERATE; Docker blackout live). **Outcome**: created the missing gallery
+entry for the already-complete + registered `.lean`.
+
+### Assessment
+- `Proofs/Erdos1107OQ02OQ01.lean` is on main, **registered** (R6 S7), 0 sorries, 1 legitimate
+  axiom (`cubeful_sum_threshold`, the open r=3 asymptotic — not dischargeable). All structural
+  lemmas (`isCubeful_pow/cube/mul`) merged. The slug was saturated for *Lean* work.
+- The one missing integration artifact: `src/data/proofs/erdos-1107-oq-02-oq-01/` did not exist
+  (sibling `erdos-1107-oq-02/` did). Prior sessions deferred it "until build green"; since the
+  file is already registered (deployer is the build host), the gallery entry is the natural
+  completion and the R3 #24561 precedent supports build-pending gallery creation.
+
+### Independent verification (so the entry is well-founded, not just transcribed)
+Re-derived the file's central `native_decide` claims from scratch in Python (sympy factorization
++ layered sumset DP, `/tmp/verify_cubeful_oqoq01.py`), corroborating the in-repo
+`verify_cubeful_stability.py`:
+- Exactly **45** exceptions below 2040, **identical** to the listed set (no diff either way).
+- **No** failures in [2040, 3000]; largest exception **2039**; 2040 representable.
+- **27** cubeful numbers in [0, 2040) (matches the docstring's "27 elements up to 2040").
+
+The math content is sound; only the `native_decide` *compilation* remains deployer-gated. The
+meta `assumptions` field states this honestly (status `axiomatized`, badge `axiom`, axiomCount 1).
+
+### Files
+- `src/data/proofs/erdos-1107-oq-02-oq-01/meta.json` (NEW; schema key-parity with sibling oq-02
+  verified — answers the sibling's "what is the threshold for r=3?" open question)
+- `research/problems/erdos-1107-oq-02-oq-01/knowledge.md` (this note)
+
+### Next steps (Docker-gated)
+- On a build host: `./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01`; if the single
+  `below_threshold_nonexceptions` native_decide over [0,2040) is too heavy, split it into blocks
+  (the [2040,3000] checks are already blocked). Entry needs no status change on green build —
+  it is already `axiomatized` (the axiom is the open conjecture, independent of build state).

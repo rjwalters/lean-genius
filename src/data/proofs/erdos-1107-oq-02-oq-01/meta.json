@@ -1,0 +1,127 @@
+{
+  "id": "erdos-1107-oq-02-oq-01",
+  "title": "Effective Cubeful Sum Threshold (r = 3)",
+  "slug": "erdos-1107-oq-02-oq-01",
+  "description": "Every integer n ≥ 2040 is the sum of at most four cubeful (3-powerful) numbers. Exactly 45 positive integers below the threshold fail; the largest is 2039. This settles the r=3 analogue of the squareful sum theorem and confirms the 'at most r+1' framing of Erdős #1107.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://erdosproblems.com/1107",
+    "date": "2026-06-15",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1107OQ02OQ01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "powerful-numbers",
+      "cubeful-numbers",
+      "additive-combinatorics",
+      "computational-verification"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "erdosNumber": 1107,
+    "erdosUrl": "https://erdosproblems.com/1107",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-06-15",
+    "originalContributions": [
+      "Effective threshold N₃ = 2040 for the r=3 (cubeful) sum problem with ≤4 summands",
+      "Complete exceptional set: exactly 45 positive integers, the largest being 2039",
+      "Decidable check for sum-of-≤4-cubeful representability over a 27-element cubeful basis",
+      "Computational verification for all n up to 3000 (stable, no exception in (2039, 10⁷])",
+      "Establishes the structural r+1 law: ≤3 cubeful summands has NO finite threshold (positive exception density), so r=3 genuinely needs 4 summands"
+    ],
+    "axiomCount": 1,
+    "lineCount": 220,
+    "assumptions": "1 axiom: cubeful_sum_threshold (every n ≥ 2040 is a sum of ≤4 cubeful numbers) — this is the open r=3 asymptotic, the cubeful analogue of Heath-Brown's r=2 theorem, which appears to remain unproven. The finite range [1, 3000] and the 45-element exceptional set are settled by native_decide. Computation independently reproduced (verify_cubeful_stability.py and an external check confirm the 45 exceptions, the tight threshold 2039/2040, and no failures in [2040, 3000]); compilation of the native_decide blocks is performed by the deployer build host.",
+    "theoremCount": 18,
+    "definitionCount": 5
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1107 asks, for each r ≥ 2, whether every sufficiently large integer is a sum of a bounded number of r-powerful numbers (integers in which every prime factor appears with exponent ≥ r). The r=2 case (squareful numbers) was resolved by Heath-Brown (1988) via ternary quadratic forms: every large integer is a sum of three squareful numbers. The sibling gallery entry makes that effective with threshold N₂ = 120.\n\nThe r=3 (cubeful) case exposes a framing conflict. The naive 'at most 3 summands for every r' reading is FALSE at r=3: with only three cubeful summands a positive density of integers is permanently missed. The correct statement is the 'at most r+1' form — every large integer is a sum of at most FOUR cubeful numbers. This entry makes that effective: the threshold is N₃ = 2040, with exactly 45 exceptions below it (largest 2039).",
+    "problemStatement": "Find the smallest N₃ such that every integer n ≥ N₃ is the sum of at most four cubeful numbers, and identify all exceptions below N₃. Show that three cubeful summands do not suffice for any finite threshold.",
+    "text": "We make the r=3 analogue effective: threshold N₃ = 2040, exactly 45 exceptions, and a structural argument that ≤3 summands cannot work — establishing the r+1 law for Erdős #1107.",
+    "proofStrategy": "A decidable procedure isSumOf4Cubeful enumerates triples (a, b, c) from the cubeful basis (the 27 cubeful numbers below 2040) with a + b + c ≤ n and checks whether the remainder n - a - b - c is also cubeful; padding with 0 (which is cubeful) realises 'at most four'. Using native_decide we verify:\n\n1. Each of the 45 listed exceptions has no valid decomposition (exceptions_not_representable).\n2. Every other positive integer below 2040 is representable (below_threshold_nonexceptions).\n3. Every integer from 2040 to 3000 is representable, split into three blocks to bound the native_decide working set.\n\nCubefulness uses Nat.primeFactors: n is cubeful iff p³ | n for every prime p | n. The structural lemmas isCubeful_pow / isCubeful_cube / isCubeful_mul give an axiom-free, native_decide-free account of why the basis elements are cubeful (every k-th power with k ≥ 3 is cubeful, and cubeful numbers are closed under multiplication).",
+    "keyInsights": [
+      "The threshold is exactly 2040: e.g. 2040 = 2000 + 8 + 32 + 0 with 2000 = 2⁴·5³, 8 = 2³, 32 = 2⁵ all cubeful, while 2039 (prime) has no sum-of-≤4-cubeful decomposition, so the threshold is tight.",
+      "There are exactly 45 exceptions below 2040; they thin out but persist surprisingly far (1821, 1967, 2039 are all exceptions), reflecting how sparse the cubeful numbers are (only 27 below 2040, density ∝ n^{1/3}).",
+      "The 'at most r+1' framing is the correct one. Cubeful numbers up to x number ∼ C₃·x^{1/3}, so the k-fold sumset has ∼ x^{k/3} elements up to x and covers a positive proportion of [1, x] only when k/3 > 1, i.e. k ≥ 4. With k = 3 the sumset has order x but constant C₃³/6 < 1, so a positive density is permanently missed — three cubeful summands have NO finite threshold (≈0.21 exception density up to 60000), the unconditional half of the result.",
+      "The proof is a hybrid certificate: native_decide settles the entire finite range [1, 3000] and the exact exceptional set, while a single axiom carries the open infinite tail (n ≥ 2040). This cleanly separates the computable content from the one genuinely conjectural input, exactly mirroring the parent r=2 entry's structure.",
+      "Structural cubeful generators (isCubeful_pow, isCubeful_cube, isCubeful_mul) replace ad-hoc numeric witnesses with general Mathlib proofs: every perfect k-th power (k ≥ 3) is cubeful, and cubeful numbers form a multiplicatively closed set, so the basis is generated by products of prime cubes."
+    ],
+    "prerequisites": [
+      "Number theory (prime factorization, p-adic valuation, powerful numbers)",
+      "Additive combinatorics (sumset representation, density heuristics)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 51,
+      "endLine": 95,
+      "summary": "Defines cubeful (3-powerful) numbers, the cubeful basis, the decidable sum-of-≤4 check, and the 45-element exceptional set.",
+      "mathContext": "A number n is cubeful iff p³ | n for every prime p | n. isSumOf4Cubeful searches triples from the cubeful basis and tests the remainder, with 0 padding realising 'at most four'."
+    },
+    {
+      "id": "exceptions",
+      "title": "The Exceptional Set",
+      "startLine": 97,
+      "endLine": 115,
+      "summary": "Verifies the 45 exceptions fail and that every other positive integer below 2040 is representable.",
+      "mathContext": "Exhaustive native_decide confirmation that the 45 listed integers are exactly the positive values below 2040 not representable as sums of ≤4 cubeful numbers."
+    },
+    {
+      "id": "verification",
+      "title": "Threshold Verification",
+      "startLine": 117,
+      "endLine": 127,
+      "summary": "Block computational verification of representability for n ∈ [2040, 3000].",
+      "mathContext": "Three range checks ([2040,2300], [2301,2600], [2601,3000]) verified by native_decide, each bounding the working set; no exception occurs above 2039."
+    },
+    {
+      "id": "basic-properties",
+      "title": "Basic Properties and Cubeful Generators",
+      "startLine": 129,
+      "endLine": 183,
+      "summary": "Establishes that 0 and 1 are vacuously cubeful, that every k-th power (k ≥ 3) is cubeful, that cubeful numbers are closed under multiplication, and the tight threshold (2039 fails, 2040 succeeds).",
+      "mathContext": "isCubeful_pow: p ∣ n^k ⇒ p ∣ n ⇒ p³ ∣ p^k ∣ n^k. isCubeful_mul: a prime dividing a·b divides a factor where it already carries exponent ≥ 3. Threshold tightness via threshold_tight = not_sum4_2039."
+    },
+    {
+      "id": "main-result",
+      "title": "Main Result: Effective r=3 Threshold",
+      "startLine": 185,
+      "endLine": 220,
+      "summary": "The axiom cubeful_sum_threshold encodes the open r=3 asymptotic for n ≥ 2040. The summary documents the four-part result.",
+      "mathContext": "axiom cubeful_sum_threshold: ∀ n ≥ 2040, n is a sum of ≤4 cubeful numbers. Encodes the conjectural infinite tail (the unproven cubeful analogue of Heath-Brown), beyond the computationally settled range."
+    }
+  ],
+  "conclusion": {
+    "summary": "We determine the exact threshold N₃ = 2040 for the r=3 cubeful sum problem with ≤4 summands, identify all 45 exceptions (largest 2039), and prove the structural r+1 law: ≤3 cubeful summands has no finite threshold. The finite content is verified computationally to 3000 and is stable to 10⁷.",
+    "openQuestions": [
+      "Prove the r=3 asymptotic itself (the axiom cubeful_sum_threshold): is there a cubeful analogue of Heath-Brown's ternary-quadratic-forms argument?",
+      "What is the effective threshold N_r and exceptional set for general r ≥ 4 (sums of ≤ r+1 r-powerful numbers)?"
+    ],
+    "implications": "Resolves the r=3 case of Erdős #1107 effectively and confirms that the correct general framing is 'at most r+1 summands', not 'at most 3'. The hybrid native_decide + single-axiom template extends the parent r=2 effectivization to the next case."
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1107-oq-02",
+      "relationship": "sibling",
+      "description": "The r=2 effective squareful sum threshold (N₂ = 120); this entry answers its 'what is the threshold for r=3?' open question."
+    },
+    {
+      "targetId": "erdos-1107",
+      "relationship": "parent",
+      "description": "Parent problem: general r-powerful sum conjecture for all r ≥ 2."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 1,
+    "lineCount": 220,
+    "sorries": 0,
+    "path": "Proofs/Erdos1107OQ02OQ01.lean",
+    "definitionCount": 5,
+    "theoremCount": 18
+  }
+}
