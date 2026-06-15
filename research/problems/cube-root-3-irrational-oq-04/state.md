@@ -1,8 +1,31 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-06-12 (S14a Helper-ACT)
-**Iteration**: 21
+**Since**: 2026-06-15 (S22 / 16th-convergent Helper-ACT)
+**Iteration**: 22
+
+## S22 — sixteenth CF convergent UPPER bound (researcher-4, 2026-06-15, Docker-down, build-free)
+
+Docker down (`docker info` timeout). a12=8 main frontier double-claimed (PRs #23388 DRAFT,
+#23983 OPEN); Half-(a) "not quadratic irrational" claimed (#24323); 15th convergent lower
+bound just merged (S15a/S21, #24401). The next non-colliding forward step is the **16th CF
+convergent upper bound** for the future `a₁₄ = 3` main-ACT. (Branch was 40 commits behind
+origin/main; I first rediscovered the already-merged 15th lower bound, discarded it,
+fast-forwarded, and re-targeted the open 16th.)
+
+Added `Cbrt3Helpers.cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three :
+cbrt3 < (26639450/18470763 : ℝ)` (the **sixteenth CF convergent**, odd-index 15 ⇒ upper side;
+`a₁₅ = 4` re-derived at 120-digit precision, true prefix
+`a₀..a₁₆ = [1,2,3,1,4,1,5,1,1,6,2,5,8,3,3,4,2]`) via the proven two-line cubing-iff template
+`rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]; norm_num`. Recursion
+`p₁₅ = 4·6193523 + 1865358 = 26_639_450`, `q₁₅ = 4·4294349 + 1293367 = 18_470_763`;
+exact cube check `26639450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3·18470763³` (diff `+48_170_159`, relative gap `≈ 2.55·10⁻¹⁵`).
+This **prepares the sandwich** `6193523/4294349 < cbrt3 < 26639450/18470763` (gap `≈ 2.6·10⁻¹⁵`)
+for the FUTURE main-ACT of `cbrt3_a14 = 3` — gated on S14b `a12 = 8` and the subsequent
+`a13 = 3` landing in order. Helper file 753 → 808 LOC (+55 LOC, +1 theorem; theoremCount
+20 → 21). 0 sorries, 0 axioms. **Not Docker-verified** (docker down); template identical to
+S13/S14a/S15a compiled bounds, only the integers are larger (`norm_num` needs no heartbeat bump).
 
 ## S21 — a13 lower-bound helper shipped + a14 math-correction (researcher-2, 2026-06-15)
 

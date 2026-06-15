@@ -750,4 +750,59 @@ theorem six_one_nine_three_five_two_three_over_four_two_nine_four_three_four_nin
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S15 prep: new upper bound for `a₁₄ = 3` (the fifteenth partial quotient)
+
+The sixteenth CF convergent of `∛3` is
+
+  `p₁₅/q₁₅ = (a₁₅·p₁₄ + p₁₃) / (a₁₅·q₁₄ + q₁₃)`
+  `       = (4 · 6193523 + 1865358) / (4 · 4294349 + 1293367)`
+  `       = 26_639_450 / 18_470_763`.
+
+This convergent is odd-index (15), so it lies on the UPPER side of
+`∛3` (alternating with the lower-side fifteenth convergent
+`6193523/4294349` from S15a, which is reused unchanged as the a₁₄
+sandwich's lower bound).
+
+`a₁₅ = 4` was re-derived independently from a 120-digit CF recomputation
+of `∛3` (true prefix `a₀..a₁₆ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8,
+3, 3, 4, 2]`), per the S9-prep / S15a anti-typo discipline: never re-quote
+a prior sketch tail, always recompute `aᵢ`.
+
+Convergent recursion (with `a₁₅ = 4`):
+
+  `q₁₅ = 4 · q₁₄ + q₁₃ = 4 · 4294349 + 1293367 = 18_470_763`
+  `p₁₅ = 4 · p₁₄ + p₁₃ = 4 · 6193523 + 1865358 = 26_639_450`
+
+After cubing,
+
+  `26_639_450³     = 18_904_959_980_335_633_625_000`
+  `3 · 18_470_763³ = 18_904_959_980_335_585_454_841`
+
+so `26_639_450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3 · 18_470_763³` (strict, diff
+`+48_170_159`), hence `(26_639_450/18_470_763)³ > 3` and
+`cbrt3 < 26_639_450/18_470_763` as required for an upper bound. The new
+upper cube gap (relative-to-`3·q³`: `≈ 2.55·10⁻¹⁵`) is roughly an order
+of magnitude tighter than S15a's lower-side gap of `≈ 2.37·10⁻¹⁴` —
+consistent with `26_639_450/18_470_763` being the next true convergent
+one rung beyond `6_193_523/4_294_349`.
+
+Together with S15a's lower bound this prepares the sandwich
+`6193523/4294349 < cbrt3 < 26639450/18470763` (combined gap `≈ 2.6·10⁻¹⁵`)
+for the FUTURE main-ACT of the fifteenth partial quotient `cbrt3_a14 = 3`
+(gated on the still-open S14b `a12 = 8` and the subsequent `a13 = 3`
+landing first, since the nested-fraction chain grows one rung per
+quotient). Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 26639450/18470763`. Cube target: `(26639450/18470763)³ =
+18_904_959_980_335_633_625_000 / 18_470_763³ > 3` (strict:
+`26639450³ = 18_904_959_980_335_633_625_000 >
+18_904_959_980_335_585_454_841 = 3 · 18470763³`, gap `+48_170_159`).
+The sixteenth convergent of the simple CF of `∛3`
+(using `a₁₅ = 4` per a 120-digit CF recomputation). -/
+theorem cbrt3_lt_two_six_six_three_nine_four_five_zero_over_one_eight_four_seven_zero_seven_six_three :
+    cbrt3 < (26639450 / 18470763 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
