@@ -13,12 +13,15 @@ $$
 \alpha = \sqrt{2} + \sqrt{3} + \sqrt{5} + \sqrt{7} \notin \mathbb{Q}.
 $$
 
-Equivalently, $\alpha$ is an algebraic number of degree $8$ over $\mathbb{Q}$: its minimal
-polynomial is the degree-8 polynomial obtained by isolating and squaring away the four
-radicals in turn. The field $\mathbb{Q}(\sqrt 2,\sqrt 3,\sqrt 5,\sqrt 7)$ has degree $16$
-over $\mathbb{Q}$, and $\alpha$ is a primitive element whose conjugates are the eight totally
-real sign combinations $\pm\sqrt2\pm\sqrt3\pm\sqrt5\pm\sqrt7$ with an even number of minus
-signs.
+Equivalently, $\alpha$ is an algebraic number of degree $16$ over $\mathbb{Q}$. It is a
+primitive element of $\mathbb{Q}(\sqrt 2,\sqrt 3,\sqrt 5,\sqrt 7)$, which has degree $16$
+over $\mathbb{Q}$: the Galois group $(\mathbb{Z}/2)^4$ flips each radical's sign
+independently, and by $\mathbb{Q}$-linear independence of $\sqrt2,\sqrt3,\sqrt5,\sqrt7$ the
+$16$ sums $\pm\sqrt2\pm\sqrt3\pm\sqrt5\pm\sqrt7$ are pairwise distinct, so the stabilizer of
+$\alpha$ is trivial and its minimal polynomial is the degree-$16$ product over these $16$
+conjugates. (The elementary iterated-squaring route does **not** build this degree-$16$
+minimal polynomial: it stops earlier at a lower-degree residual identity in $\alpha$ carrying
+a single non-square surd, whose irrationality closes the argument.)
 
 ### Plain Language
 
@@ -47,15 +50,16 @@ coverage of elementary algebraic-number arguments.
 
 ### What's Still Open
 
-- A formalized degree-8 minimal-polynomial identity for $\sqrt2+\sqrt3+\sqrt5+\sqrt7$.
+- A formalized irrationality proof for $\sqrt2+\sqrt3+\sqrt5+\sqrt7$ (via a residual surd identity, or the full degree-16 minimal polynomial).
 - A reusable lemma schema: irrationality of $\sum_{i=1}^k \sqrt{p_i}$ for distinct primes $p_i$.
 
 ### Our Goal
 
 Define `α := √2 + √3 + √5 + √7` in Lean and prove `Irrational α` using three squaring steps
 (isolate $\sqrt7$ and square; isolate the surviving cross term and square; repeat), reducing
-to a rational contradiction. Produce the explicit octic identity satisfied by $\alpha$ as a
-by-product.
+to a rational contradiction. As a by-product, produce the explicit residual identity in
+$\alpha$ (degree 8 in $\alpha$, carrying a single surd); squaring once more yields the
+degree-16 minimal polynomial of $\alpha$.
 
 ## Related Gallery Proofs
 
@@ -76,7 +80,7 @@ by-product.
    - Risk: bookkeeping of cross terms ($\sqrt{6},\sqrt{10},\sqrt{14},\dots$) is error-prone in Lean.
 
 2. **Field-degree argument**: Show $[\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\sqrt7):\mathbb{Q}]=16$ and
-   that $\alpha$ has degree $8$, hence $\alpha\notin\mathbb{Q}$.
+   that $\alpha$ is a primitive element (degree $16$), hence $\alpha\notin\mathbb{Q}$.
    - Why it might work: conceptually clean, leverages Mathlib `FiniteDimensional`/`IntermediateField`.
    - Risk: the degree-16 tower and primitivity claims are heavier than the elementary route.
 
@@ -98,7 +102,7 @@ by-product.
 **Justification**:
 - The three-summand version already exists in the gallery; this is a bounded extension.
 - All required Mathlib lemmas exist; the work is identity bookkeeping, not new theory.
-- A degree-8 polynomial is fully explicit and machine-verifiable via `ring`.
+- The residual identity (degree 8 in $\alpha$, with a single surd) is fully explicit and machine-verifiable via `ring`.
 
 **Estimated Effort**:
 - Exploration: hours
