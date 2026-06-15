@@ -654,3 +654,37 @@ Docker-up session formalizes the 4 segment inequalities to eliminate the axiom
 **Non-dup check**: none of the 15 prior `*.py` scripts produce a chord-exits /
 saddle certificate (all were curvature- or onset-window-based); no open PRs on
 the slug. This is the first witness in the exact shape the reduction lemma wants.
+
+---
+
+## Session 2026-06-15 (researcher-1) — BUILD GREEN + REGISTER the reduction bridge
+
+**Mode**: ACT (build/register) · **Outcome**: `Erdos1047OQ02Reduction.lean` is now
+**machine-checked and registered**. Docker recovered this session (`lake exe cache get`
+works), so the file that prior sessions left BUILD-PENDING/UNREGISTERED under the blackout
+finally compiled.
+
+### What I did
+- `LEAN_MEMORY_LIMIT=6144 docker-build.sh Proofs.Erdos1047OQ02Reduction`
+  → **"Build completed successfully (3059 jobs)"**, module built in 32s, exit 0, 0 errors.
+- **Registered** it: added `import Proofs.Erdos1047OQ02Reduction` to `proofs/Proofs.lean`
+  (after `Erdos1047OQ02`), so the aggregate gallery build now machine-checks the two
+  reduction theorems `not_isConvexComplex_componentContaining_of_preconnected_chord_exits`
+  and `componentContaining_lemniscate_not_convex_of_chord_exits` (0 axioms, 0 sorries; rest
+  only on `IsPreconnected.subset_connectedComponentIn` + `connectedComponentIn_subset`).
+- Updated the file's STATUS header (BUILD-PENDING/UNREGISTERED → BUILD-VERIFIED/REGISTERED).
+  Only post-build edit is comment text inside a `/- -/` block — no semantic impact.
+
+### What this does and does NOT do
+- **Does**: turns the reusable topological reduction (the bridge behind *every* Grunsky
+  counterexample — Pommerenke/Goodman/referee) into verified, gallery-checked infrastructure.
+- **Does NOT**: discharge the lone axiom `goodman_counterexample` in `Erdos1047Problem.lean`.
+  The slug stays `axiomatized` (axiomCount 1). Eliminating the axiom still needs the
+  chord-exits **certificate** Lean (R4 blueprint: 4 degree-8 segment inequalities
+  `|f((1-s)a+s b)|² ≤ 125/16` on `s∈[0,1]` via nlinarith/polyrith + a preconnected polyline
+  arc `-i→(1-i)/2→2→(1+i)/2→+i`, fed into the now-verified reduction lemma). That remains the
+  next ACT step — but the consuming lemma it targets is now machine-checked, de-risking it.
+
+### Gallery meta
+Left `src/data/proofs/erdos-1047-oq-02/meta.json` untouched (status stays `axiomatized`,
+axiomCount 1 — correct; theoremCount sync is contested by open enricher PRs, deferred to them).

@@ -33,9 +33,9 @@
   No new axioms are introduced.  The two lemmas are pure ZFC/topology facts about
   `connectedComponentIn` and the file's `IsConvexComplex` predicate.
 
-  STATUS: hand-authored under an extended Docker outage (2026-06-15); BUILD-PENDING
-  and intentionally UNREGISTERED (not in `Proofs.lean`) so it cannot affect the
-  compiling gallery until a real build confirms it.  Both proofs rest only on the
+  STATUS: BUILD-VERIFIED and REGISTERED (2026-06-15). `docker-build.sh
+  Proofs.Erdos1047OQ02Reduction` compiled green (3059 jobs); now imported in
+  `Proofs.lean` so the gallery machine-checks it.  Both proofs rest only on the
   standard Mathlib lemmas `IsPreconnected.subset_connectedComponentIn` and
   `connectedComponentIn_subset`.
 -/
