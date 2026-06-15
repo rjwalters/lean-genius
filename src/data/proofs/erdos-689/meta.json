@@ -28,39 +28,60 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Header and Imports",
+      "startLine": 1,
+      "endLine": 23,
+      "summary": "States Erdős Problem #689 on r-fold covers of $[1,n]$ by congruence classes modulo primes. The $r=2$ case asks whether large $[1,n]$ can be 2-fold covered; $r=10$ is Ben Green's open Problem 45. Imports and overview.",
+      "mathContext": "Erdős #689: r-fold covering of $[1,n]$ by prime congruence classes ($r=2$ main; $r=10$ Green's Problem 45)."
+    },
+    {
       "id": "definitions",
-      "title": "Core Definitions",
-      "startLine": 22,
-      "endLine": 41,
-      "summary": "Defines `primesUpTo n` as the Finset of primes $\\leq n$, `IsCoveredBy m p a` as the congruence $m \\equiv a \\pmod{p}$, `coveringCount` as the number of primes covering $m$, and `IsRFoldCover n r a` requiring every $m \\in [1,n]$ to be covered by $\\geq r$ primes."
+      "title": "Definitions",
+      "startLine": 24,
+      "endLine": 44,
+      "summary": "Defines the core notions: `primesUpTo`, `IsRFoldCover`, and `coveringCount` (the number of times each integer is covered).",
+      "mathContext": "`IsRFoldCover n r a`: every $m\\in[1,n]$ covered $\\geq r$ times by classes $a$; `primesUpTo`, `coveringCount`."
     },
     {
       "id": "structural",
       "title": "Structural Properties",
-      "startLine": 42,
-      "endLine": 89,
-      "summary": "Proves five structural theorems: trivial nonnegativity of covering count, 0-fold covering for any assignment, monotonicity of coverage in $r$ (`isRFoldCover_le`), upper bound by $\\pi(n)$ (`coveringCount_le_card_primes`), monotonicity in $n$ (`coveringCount_mono` and `isRFoldCover_primes_mono`)."
+      "startLine": 45,
+      "endLine": 92,
+      "summary": "PROVES structural lemmas: `coveringCount_nonneg`, `isRFoldCover_zero`, `isRFoldCover_le` (monotone in $r$), `coveringCount_le_card_primes`, `primesUpTo_mono`, `coveringCount_mono`, `isRFoldCover_primes_mono`.",
+      "mathContext": "Covering count nonneg, $\\leq|\\text{primes}|$, monotone in $n$; r-fold cover downward-closed in $r$."
     },
     {
       "id": "small-cases",
       "title": "Small Cases",
-      "startLine": 90,
-      "endLine": 104,
-      "summary": "Proves `primesUpTo_one` ($\\pi(1) = 0$, no primes $\\leq 1$) and `coveringCount_one` (covering count is 0 when $n = 1$). These establish base cases showing coverage is impossible for very small $n$."
+      "startLine": 93,
+      "endLine": 121,
+      "summary": "PROVES base cases: `primesUpTo_zero`/`_one` (no primes $\\leq0,1$) and `coveringCount_zero`/`_one`.",
+      "mathContext": "$\\text{primesUpTo}(0)=\\text{primesUpTo}(1)=\\emptyset$; covering counts at $n=0,1$."
+    },
+    {
+      "id": "necessary-conditions",
+      "title": "Necessary Conditions for r-Fold Cover",
+      "startLine": 122,
+      "endLine": 158,
+      "summary": "PROVES obstructions: `isRFoldCover_card_bound`, `no_rFoldCover_of_few_primes` (too few primes blocks a cover), `isRFoldCover_n_zero`, and `no_rFoldCover_n_one`.",
+      "mathContext": "An r-fold cover needs enough primes; impossible for $n=1$ with $r\\geq1$."
     },
     {
       "id": "main-conjecture",
-      "title": "Main Conjecture and Generalization",
-      "startLine": 105,
-      "endLine": 118,
-      "summary": "States the open conjecture `erdos_689_r_fold` (axiom): for any fixed $r \\geq 1$ and sufficiently large $n$, an $r$-fold cover exists. Derives `erdos_689_double_cover` as the $r = 2$ special case."
+      "title": "Main Conjecture (OPEN)",
+      "startLine": 159,
+      "endLine": 178,
+      "summary": "States the AXIOM `erdos_689_r_fold` (the only axiom — the open conjecture: for fixed $r$ and large $n$, an r-fold cover exists) and PROVES `erdos_689_double_cover` (the $r=2$ case) from it.",
+      "mathContext": "Axiom: $\\forall r\\geq1,\\exists N_0,\\forall n\\geq N_0$, an r-fold cover exists; $r=2$ is #689."
     },
     {
       "id": "connections",
-      "title": "Connections and Supporting Results",
-      "startLine": 121,
-      "endLine": 174,
-      "summary": "Proves Mertens' theorem ($\\sum_{p \\leq n} 1/p \\to \\infty$) from Mathlib's `not_summable_one_div_on_primes`. Derives the Jacobsthal function connection (1-fold covering for large $n$, $r=1$ case via `Filter.eventually_atTop`) and Ben Green's variant ($r=10$ case), both as theorems from `erdos_689_r_fold`."
+      "title": "Connections to Other Problems",
+      "startLine": 179,
+      "endLine": 239,
+      "summary": "PROVES `mertens_sum_divergence` ($\\sum_{p\\leq n}1/p\\to\\infty$, from Mathlib's `not_summable_one_div_on_primes` — heuristic support), `jacobsthal_connection` (the $r=1$ case, Problem #687), and `green_variant_r10` (Ben Green's Problem 45, the $r=10$ case).",
+      "mathContext": "$\\sum_{p\\leq n}1/p\\to\\infty$ (Mertens); $r=1$ (#687); $r=10$ (Green's Problem 45)."
     }
   ],
   "overview": {
