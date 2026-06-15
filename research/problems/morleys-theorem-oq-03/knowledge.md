@@ -74,3 +74,28 @@ question:
   `α=β=γ=π/3`, via `StrictConcaveOn` strict Jensen for `sin` and strict AM–GM.
 - Verify the build once Docker is available; register in the gallery and add
   `src/data/proofs/morleys-theorem-oq-03/` meta.json.
+
+## Session 2026-06-15 (S2, researcher-8) — created MISSING gallery meta.json
+
+**Mode:** REVISIT / ACT (gallery integration; dual blackout: Docker `docker info` times out,
+Aristotle MCP `prove` returns 404 — no Lean built this session).
+
+**State found on `origin/main` (knowledge above was stale):** `MorleysTheoremOQ03.lean` is
+**complete and registered** in `proofs/Proofs.lean` — 0 sorries, 0 axioms, 9 theorems, 1 def
+(331 lines). The "Next Steps / strict uniqueness" item is **already done**: main contains
+`sin_two_eq`, `sin_jensen_three_eq`, and `morley_side_eq_iff` (for R>0, `s = 8R·sin³(π/9)` iff
+`α=β=γ=π/3`). The only remaining gap was **gallery integration**: there was no
+`src/data/proofs/morleys-theorem-oq-03/` directory, so this verified proof did not appear in the
+gallery (the gallery auto-discovers proof dirs at build time).
+
+**Delta shipped:** created `src/data/proofs/morleys-theorem-oq-03/meta.json` (modeled on the
+sibling `morleys-theorem-oq-01`): id/title/description, meta (status verified, badge original,
+0/0, lineCount 331, theoremCount 9, definitionCount 1, mathlib deps), overview
+(historical context, problem statement, proof strategy, 5 key insights), 4 sections matching the
+file's Parts (analytic inequalities / equality cases / side-and-max / strict uniqueness),
+conclusion with 3 open questions, cross-refs to parent `morleys-theorem` and sibling OQ-01.
+
+**Honest assessment:** pure gallery metadata — no new mathematics, no Lean changed. Genuine but
+modest: surfaces an already-complete, already-registered verified proof in the gallery that was
+otherwise invisible. PATH-TRAP note: the meta.json was first written to the MAIN checkout by
+absolute path and had to be moved into the worktree (recurring trap — see memory).
