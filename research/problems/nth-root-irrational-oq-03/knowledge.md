@@ -227,3 +227,35 @@ See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-li
 
 ### Next Steps
 - Unchanged: when Docker returns and/or grace period (~2026-06-26) passes with PR #28013 still stale, begin S5d.A (CF expansion of e). No build-free forward step remains.
+
+---
+
+## Session 2026-06-15 (Session 12) — S12 ACT — CF-independent reduction for `μ(e) ≤ 2`
+
+**Mode**: REVISIT (RICH, 25 items; dual blackout: Docker `docker info` hangs, Aristotle `prove` → 404 "Resource not found" — both verified live this session)
+**Outcome**: progress (architecture) — isolated the analytic heart of the sole open axiom; no axiom-count reduction yet (build-pending, unregistered)
+
+### What I Did
+- Re-confirmed the sole open item is `axiom e_not_liouvilleWith_gt_two (p) (hp : p > 2) : ¬LiouvilleWith p (exp 1)` (ETranscendentalOQ03.lean:247), 0 sorries elsewhere.
+- Web scout: no new Mathlib4 CF-of-e or irrationality-measure infrastructure (confirms S5d/S6); regular continued fraction of `e` still absent.
+- **Key observation**: the monolithic axiom bundles two independent ingredients — (1) `LiouvilleWith` filter/Diophantine bookkeeping (general, not e-specific) and (2) the deep CF-of-e bad-approximability bound. Every prior session treated it as one indivisible CF axiom.
+- Wrote `proofs/Proofs/ETranscendentalOQ03Reduction.lean` (UNREGISTERED, build-pending) discharging ingredient (1) once and for all:
+  - `not_liouvilleWith_of_diophantine_bound (x p) (hp : 2 < p) (c) (hc : 0 < c) (hlb : ∀ n≥1 ∀ m, c/n^((p+2)/2) ≤ |x − m/n|) : ¬ LiouvilleWith p x`
+  - `e_not_liouvilleWith_gt_two_of_bound` — the e-specialization, the precise remaining obligation.
+- Proof engine: write `a := (p+2)/2`, `d := (p−2)/2`; then `a+d=p`, `d>0`, `2<a<p`. From `LiouvilleWith` extract `C` and `∃ᶠ n, |e−m/n| < C/n^p`; since `c·n^d → ∞` (`Real.tendsto_rpow_atTop`), eventually `C ≤ c·n^d`; `Frequently.and_eventually` + `.exists` picks one such `n`; chaining `c/n^a ≤ |e−m/n| < C/n^p`, splitting `n^p=n^a·n^d` and cancelling `n^a` gives `c·n^d < C`, contradiction.
+- Verified non-vacuity numerically: `min_{n≤4000,m} |e−m/n|·n^2.5 = 0.282 > 0` (Python, exact-`round`), so the reduced hypothesis is genuinely satisfiable for e at p=3.
+
+### Key Findings
+- The reduction converts the open axiom from an analysis-AND-number-theory statement into a **pure Diophantine lower bound** — the future Docker/CF session needs zero `LiouvilleWith` manipulation.
+- Lemma names cross-checked against building sibling files (no Docker): `div_lt_div_iff_of_pos_right` (4.26 rename of `div_lt_div_right`, used identically in LiouvilleTheoremOQ04.lean:1123), `(Real.tendsto_rpow_atTop _).comp tendsto_natCast_atTop_atTop` (Erdos1155OQ02.lean:138), `lt_div_iff₀`, `Tendsto.const_mul_atTop`, `Frequently.and_eventually`, `Tendsto.eventually_ge_atTop`.
+- Per Axiom Integrity Policy: this does NOT reduce the assumption count (the CF bound remains axiomatic when wired in). It is a proof-architecture refactor that makes the remaining obligation self-contained.
+
+### Files Modified
+- `proofs/Proofs/ETranscendentalOQ03Reduction.lean` (NEW, unregistered, build-pending)
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` (this entry)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (S12 knowledge updates, iteration bump)
+
+### Next Steps
+- When a build host returns: compile `ETranscendentalOQ03Reduction.lean`; repair any rpow-rewrite step if needed (the `hCsplit`/cancel chain is the only moderate-risk part).
+- Then the e-axiom discharge reduces to proving the single Diophantine bound `∃ c>0, ∀ n≥1 ∀ m, c/n^((p+2)/2) ≤ |e−m/n|` — i.e. begin S5d.A (Euler CF expansion of e, `[2;1,2k,1]`), still the dominant 280–480 LOC cost.
+- Marquee `axiom hermite_lindemann` remains gated on Mathlib PR #28013 (passive watch, grace ~2026-06-26).
