@@ -40,58 +40,82 @@
   },
   "sections": [
     {
+      "id": "overview-imports",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Mathlib imports, the file docstring framing the research question (is there a non-commutative analogue of determinants and Cramer's rule via quasideterminants?), the namespace, and the `variable {D : Type*} [DivisionRing D]` setup.",
+      "mathContext": "All non-commutative results hold over an arbitrary division ring $D$ (e.g. the quaternions); the commutative reductions specialize to a field $F$. Quasideterminants (Gelfand–Retakh, 1991) replace the single determinant with $n^2$ Schur-complement expressions, one per entry."
+    },
+    {
       "id": "four-quasideterminants",
-      "title": "The Four 2×2 Quasideterminants",
+      "title": "Part I: The Four 2×2 Quasideterminants",
       "startLine": 46,
-      "endLine": 81,
+      "endLine": 76,
       "summary": "Defines the complete set of four quasideterminants for a 2×2 matrix over a division ring: qdet00 = a - b·d⁻¹·c, qdet01 = b - a·c⁻¹·d, qdet10 = c - d·b⁻¹·a, qdet11 = d - c·a⁻¹·b.",
       "mathContext": "Each quasideterminant is the Schur complement of one entry. An n×n matrix has n² quasideterminants — the 2×2 case has four, one per entry position. Unlike the single classical determinant, each quasideterminant uses a specific entry as pivot."
     },
     {
       "id": "commutative-reduction",
-      "title": "Commutative Reduction",
-      "startLine": 83,
-      "endLine": 126,
+      "title": "Part II: Commutative Reduction",
+      "startLine": 77,
+      "endLine": 123,
       "summary": "Proves four commutative reduction formulas connecting quasideterminants to the classical determinant over a field F: |A|00·a11 = det(A), a00·|A|11 = det(A), |A|01·a10 = -det(A), a11·|A|10 = -det(A).",
       "mathContext": "Over a commutative field, |A|ij = ±det(A)/a_{kl} where (k,l) is the complementary entry. The sign depends on parity: diagonal quasideterminants give +det, off-diagonal give -det."
     },
     {
       "id": "triangular-cases",
-      "title": "Triangular and Diagonal Special Cases",
-      "startLine": 128,
-      "endLine": 172,
+      "title": "Part III: Triangular and Diagonal Special Cases",
+      "startLine": 124,
+      "endLine": 164,
       "summary": "Proves that for triangular matrices, quasideterminants reduce to the diagonal entries: |A|00 = a00 and |A|11 = a11 when either a01 = 0 or a10 = 0.",
       "mathContext": "For a triangular matrix, the off-diagonal correction term vanishes, so the quasideterminant equals the entry itself. This is the non-commutative analogue of det(triangular) = product of diagonal."
     },
     {
       "id": "scaling-identities",
-      "title": "Row and Column Scaling",
-      "startLine": 174,
-      "endLine": 205,
+      "title": "Part IV: Row and Column Scaling",
+      "startLine": 165,
+      "endLine": 199,
       "summary": "Proves scaling identities: left-scaling row 0 by λ scales |A|00 from the left, right-scaling column 0 by λ scales |A|00 from the right.",
       "mathContext": "Quasideterminants are left-linear in their row and right-linear in their column. In a non-commutative ring, left and right scaling are distinct operations — this is a key difference from classical determinants."
     },
     {
       "id": "alternate-pivoting",
-      "title": "Alternate Pivoting via qdet11",
-      "startLine": 207,
-      "endLine": 310,
+      "title": "Part V: Alternate Pivoting via qdet11",
+      "startLine": 200,
+      "endLine": 314,
       "summary": "Defines ncSolveAlt: the Cramer solution pivoting on a00 instead of a11. Proves correctness (nc_cramers_rule_alt), kernel triviality, and uniqueness. Together with OQ-03, this covers all invertible 2×2 matrices over division rings.",
       "mathContext": "The standard Cramer formula requires a11 ≠ 0. The alternate uses a00 ≠ 0 instead: x1 = |A|11⁻¹·(b1 - a10·a00⁻¹·b0), x0 = a00⁻¹·(b0 - a01·x1). Every invertible 2×2 matrix has at least one nonzero diagonal entry, so one of the two pivoting strategies always applies."
     },
     {
       "id": "schur-inverse",
-      "title": "Matrix Inversion via Schur Complement",
-      "startLine": 312,
-      "endLine": 368,
+      "title": "Part VI: Matrix Inversion via Schur Complement",
+      "startLine": 315,
+      "endLine": 383,
       "summary": "Defines the explicit Schur complement inverse formula for 2×2 matrices and proves two entries of A·schurInv(A) = I: the (0,0) entry equals 1 and the (1,0) entry equals 0.",
       "mathContext": "The Schur complement inversion formula: A⁻¹ = [[q⁻¹, -q⁻¹·b·d���¹], [-d⁻¹·c·q⁻¹, d⁻¹+d⁻¹·c·q⁻¹·b·d⁻¹]] where q = |A|00. This is the fundamental algorithm for 2×2 block matrix inversion, here specialized to scalar entries."
     },
     {
+      "id": "transpose-duality",
+      "title": "Part VII: Transpose and Commutativity",
+      "startLine": 384,
+      "endLine": 408,
+      "summary": "Proves transpose duality over a commutative field: qdet00(Aᵀ) = qdet00(A) and qdet11(Aᵀ) = qdet11(A), each via `simp [transpose_apply]` + `ring`.",
+      "mathContext": "In the non-commutative case transposition reverses multiplication order, so $|A^T|_{00} \\neq |A|_{00}$ in general. Over a commutative field the order is irrelevant and the two agree — a degeneration that fails for genuine division rings."
+    },
+    {
+      "id": "zero-entries",
+      "title": "Part VIII: Quasideterminant and Zero Entries",
+      "startLine": 409,
+      "endLine": 431,
+      "summary": "Proves that when the complementary entry vanishes the quasideterminant degenerates to the pivot entry: qdet00(A) = a00 when a11 = 0, and qdet11(A) = a11 when a00 = 0.",
+      "mathContext": "Since $0^{-1} = 0$ by convention in a `DivisionRing`, the Schur-complement correction term $b\\,d^{-1}c$ vanishes when the complementary entry is zero. This is the non-commutative analogue of $\\det(\\text{triangular}) = \\prod \\text{diagonal}$."
+    },
+    {
       "id": "product-identities",
-      "title": "Quasideterminant Product Identities",
-      "startLine": 404,
-      "endLine": 462,
+      "title": "Part IX: Quasideterminant Product Identities",
+      "startLine": 432,
+      "endLine": 470,
       "summary": "Proves that over a commutative field, quasideterminants equal det(A)/entry, and the proportionality relation |A|00·a11 = a00·|A|11 (both equal det(A)).",
       "mathContext": "In the commutative case: |A|00 = det(A)·a11⁻¹ and |A|11 = det(A)·a00⁻¹. This means the ratio of quasideterminants is |A|00/|A|11 = a00/a11, showing they differ by a 'coordinate change' factor."
     }
