@@ -45,6 +45,41 @@ space `V` and any dimension. For `A B C : V`, `s : ℝ`, with `D = (1-s)•B + s
 
 ---
 
+## Result (Session 2, 2026-06-15, researcher-7 — ACT follow-up + de-risk)
+
+The S1 file (`LawOfCosinesOQ04OQ01.lean`, merged PR #24274) is committed but
+still **UNREGISTERED** in `Proofs.lean` (build-pending; Docker + Aristotle both
+down again this session — `docker info` times out).
+
+**De-risk**: all 8 Mathlib identifiers the S1 file relies on
+(`norm_add_sq_real`, `norm_sub_sq_real`, `real_inner_smul_left/right`,
+`real_inner_comm`, `norm_smul`, `sq_abs`, `Real.norm_eq_abs`) were grepped
+against the pinned Mathlib tree in the sibling `stokes-dd` worktree
+(`.lake/packages/mathlib/Mathlib`) and **all confirmed present**. High
+confidence the file compiles once a backend returns.
+
+**New theorems** (the documented S1 next-step, division-free):
+
+- `stewart_angle_bisector_inner` — the internal-angle-bisector case. The
+  bisector ratio `BD : DC = AB : AC` is encoded as the single hypothesis
+  `s·‖A - C‖ = (1 - s)·‖A - B‖`. Under it the master identity collapses to the
+  classical **angle-bisector length law**
+
+      ‖A - D‖² = ‖A - B‖·‖A - C‖ − s(1 - s)·‖B - C‖².
+
+  Key algebraic fact: with `b = ‖A-C‖`, `c = ‖A-B‖`, the relation `s·b = (1-s)·c`
+  forces `(1-s)c² + s·b² = b·c`, since
+  `(1-s)c² + s·b² − bc = (b − c)·(s·b − (1-s)·c)`. So the whole proof is
+  `rw [stewart_cevian_inner]; linear_combination (‖A-C‖ - ‖A-B‖) * hbis` — no
+  division, no `field_simp`, no positivity.
+- `stewart_angle_bisector_segments` — same result in the textbook segment form
+  `t² = bc − mn` with `m = BD = s‖B-C‖`, `n = DC = (1-s)‖B-C‖` written out
+  (one `ring` after the previous theorem).
+
+Numerically re-verified: 200k random trials, dims 1–4, max error ~8.5e-14.
+
+---
+
 ## Insights
 
 - The whole theorem is a single bilinear identity; the only "geometry" is the
@@ -62,8 +97,15 @@ space `V` and any dimension. For `A B C : V`, `s : ℝ`, with `D = (1-s)•B + s
 
 - `./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ01` and register the
   file in `proofs/Proofs.lean` once a backend is available (Docker + Aristotle
-  were both down at authoring time).
-- Optional follow-up: angle-bisector length formula via `m:n = c:b`.
+  were both down at authoring time AND at S2 2026-06-15). All Mathlib names
+  confirmed present in the pinned tree (S2 de-risk), so the build should be a
+  formality.
+- DONE (S2): angle-bisector length formula via `m:n = c:b`
+  (`stewart_angle_bisector_inner`, `stewart_angle_bisector_segments`).
+- Optional follow-up: the *external* angle bisector (ratio `BD:DC = c:b` with the
+  foot outside segment BC, i.e. `s` outside `[0,1]`); the same master identity
+  applies with `s·‖A-C‖ = −(1-s)·‖A-B‖`, giving `t² = s(1-s)a² − bc` (note the
+  sign flip / the foot lies beyond an endpoint).
 
 ## Dead ends
 

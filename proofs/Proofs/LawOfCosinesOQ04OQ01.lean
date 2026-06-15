@@ -30,6 +30,12 @@ The abstract cosine `t` of the parent file is replaced by the real inner product
 * `apollonius_median_inner` — the median special case `s = 1/2` (Apollonius'
   theorem): ‖A - midpoint(B,C)‖² = ½‖A - B‖² + ½‖A - C‖² − ¼‖B - C‖².
 
+* `stewart_angle_bisector_inner` / `stewart_angle_bisector_segments` — the
+  internal angle-bisector special case, where `s·‖A - C‖ = (1 - s)·‖A - B‖`
+  encodes the ratio `BD : DC = AB : AC`.  Stewart's identity then collapses to
+  the classical bisector-length law `t² = bc − mn`:
+    ‖A - D‖² = ‖A - B‖·‖A - C‖ − (BD)·(DC).
+
 The geometric content (BD = s·a, DC = (1 - s)·a) is what makes `m + n = a`; here
 that is encoded directly so the algebraic identity holds with no sign hypotheses.
 
@@ -93,6 +99,44 @@ theorem apollonius_median_inner (A B C : V) :
   have e : (1 : ℝ) - 1 / 2 = 1 / 2 := by norm_num
   rw [e] at h
   rw [h]; ring
+
+/-- **Angle-bisector length theorem** (`t² = bc − s(1−s)·a²`).
+
+    When `D = (1 - s) • B + s • C` is the foot of the *internal angle bisector*
+    from `A`, the parameter `s` satisfies the ratio `BD : DC = AB : AC`.  Since
+    `BD = s·‖B - C‖` and `DC = (1 - s)·‖B - C‖`, that ratio is
+    `s : (1 - s) = ‖A - B‖ : ‖A - C‖`, i.e. `s·‖A - C‖ = (1 - s)·‖A - B‖`.
+
+    Under this bisector condition the master cevian identity collapses: the
+    `‖A - B‖²` and `‖A - C‖²` terms combine into the single product
+    `‖A - B‖·‖A - C‖`, giving
+
+      ‖A - D‖² = ‖A - B‖·‖A - C‖ − s(1 - s)·‖B - C‖².
+
+    Proof: rewrite with `stewart_cevian_inner`; the remaining scalar identity
+    `(1 - s)c² + s·b² = b·c` follows from the bisector relation `s·b = (1 - s)·c`
+    via `linear_combination (b - c) · hbis`. -/
+theorem stewart_angle_bisector_inner (A B C : V) (s : ℝ)
+    (hbis : s * ‖A - C‖ = (1 - s) * ‖A - B‖) :
+    ‖A - ((1 - s) • B + s • C)‖ ^ 2 =
+      ‖A - B‖ * ‖A - C‖ - s * (1 - s) * ‖B - C‖ ^ 2 := by
+  rw [stewart_cevian_inner A B C s]
+  linear_combination (‖A - C‖ - ‖A - B‖) * hbis
+
+/-- **Angle-bisector length, classical segment form** `t² = bc − mn`.
+
+    With the two cevian segments written explicitly as `m = BD = s·‖B - C‖` and
+    `n = DC = (1 - s)·‖B - C‖`, the squared angle-bisector length is the product
+    of the two adjacent sides minus the product of the two segments it cuts on
+    the opposite side:
+
+      ‖A - D‖² = ‖A - B‖·‖A - C‖ − (BD)·(DC). -/
+theorem stewart_angle_bisector_segments (A B C : V) (s : ℝ)
+    (hbis : s * ‖A - C‖ = (1 - s) * ‖A - B‖) :
+    ‖A - ((1 - s) • B + s • C)‖ ^ 2 =
+      ‖A - B‖ * ‖A - C‖ - (s * ‖B - C‖) * ((1 - s) * ‖B - C‖) := by
+  rw [stewart_angle_bisector_inner A B C s hbis]
+  ring
 
 /-
 ## Summary

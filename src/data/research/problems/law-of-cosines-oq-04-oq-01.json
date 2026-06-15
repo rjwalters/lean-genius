@@ -44,18 +44,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: authored 4 theorems (master cevian identity + classical Stewart + Apollonius median + bilinear helper) over a real inner product space; numerically verified; build-pending under dual backend blackout.",
+    "progressSummary": "PROGRESS (S2): added angle-bisector length law (t²=bc−mn, division-free) extending S1 Stewart file; de-risked S1 by confirming all 8 Mathlib names in pinned tree. File merged PR #24274 but still UNREGISTERED/build-pending (Docker+Aristotle down).",
     "builtItems": [
       "stewart_cevian_inner in Proofs/LawOfCosinesOQ04OQ01.lean (coordinate-free Stewart / cevian length).",
       "stewarts_theorem_inner (classical b²m+c²n=a(d²+mn) from real points).",
       "apollonius_median_inner (s=1/2 median / Apollonius).",
-      "norm_smul_add_smul_sq (reusable bilinear norm-of-linear-combination lemma)."
+      "norm_smul_add_smul_sq (reusable bilinear norm-of-linear-combination lemma).",
+      "stewart_angle_bisector_inner in Proofs/LawOfCosinesOQ04OQ01.lean — internal angle-bisector length law t²=bc−s(1−s)a² (division-free).",
+      "stewart_angle_bisector_segments — classical segment form t²=bc−mn with m=BD, n=DC."
     ],
     "insights": [
       "A - ((1-s)•B + s•C) = (1-s)•(A-B) + s•(A-C) since (1-s)+s = 1; proved by the `module` tactic.",
       "The master identity is a single bilinear identity: expand via norm_add_sq_real, real_inner_smul_left/right, then ring after real_inner_comm to align ⟪A-B,A-C⟫.",
       "Classical Stewart needs no positivity hypotheses: with a=‖B-C‖, m=s*a, n=(1-s)*a the side relation m+n=a holds by construction and the ‖B-C‖² term cancels exactly.",
-      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13."
+      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13.",
+      "Internal angle bisector encoded as s·‖A-C‖=(1-s)·‖A-B‖ (ratio BD:DC=AB:AC); under it (1-s)c²+s·b²=bc since (1-s)c²+s·b²−bc=(b−c)(sb−(1-s)c), so linear_combination (‖A-C‖-‖A-B‖)*hbis closes it — no division/field_simp.",
+      "De-risk under blackout: all 8 Mathlib names in the S1 file confirmed present in pinned Mathlib (sibling stokes-dd .lake checkout); file high-confidence buildable but still UNREGISTERED."
     ],
     "mathlibGaps": [
       "None — Mathlib v4.26.0 has norm_add_sq_real, norm_sub_sq_real, real_inner_smul_left/right, real_inner_comm, and the `module` tactic, all that is needed."
