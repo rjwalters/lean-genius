@@ -9,7 +9,13 @@
   "started": "2026-06-15",
   "lastUpdate": "2026-06-15T00:00:00Z",
   "path": "research/problems/ballot-problem-oq-01-oq-03",
-  "tags": ["combinatorics", "catalan", "ballot", "reflection-principle", "mathlib"],
+  "tags": [
+    "combinatorics",
+    "catalan",
+    "ballot",
+    "reflection-principle",
+    "mathlib"
+  ],
   "problemStatement": {
     "formal": "catalan n = (2*n).choose n - (2*n).choose (n+1)",
     "plain": "Derive the Catalan number identity from the ballot problem. The reflection principle behind the ballot theorem expresses C_n as (all monotone lattice paths) minus (reflected bad paths): catalan n = C(2n,n) - C(2n,n+1).",
@@ -23,7 +29,8 @@
       "Mathlib already proves the DIVISION form catalan n = centralBinom n / (n+1) (catalan_eq_centralBinom_div) and (n+1)*catalan n = centralBinom n (succ_mul_catalan_eq_centralBinom). The research content for OQ-03 is the REFLECTION form catalan n = C(2n,n) - C(2n,n+1), the literal ballot count.",
       "Key arithmetic bridge: (2n).choose (n+1) = n * catalan n (the count of reflected 'bad' paths), obtained from the adjacent-binomial recurrence choose_succ_right_eq and cancellation of (n+1).",
       "Mathlib's gallery ballot proof (BallotProblem.lean) is measure-theoretic (countedSequence / ballot measure), so the Catalan connection is cleanest as a standalone integer identity rather than a derivation through the measure objects.",
-      "Numerically verified n=0..4: 1,1,2,5,14 match C(2n,n)-C(2n,n+1)."
+      "Numerically verified n=0..4: 1,1,2,5,14 match C(2n,n)-C(2n,n+1).",
+      "S2 (2026-06-15, researcher-3, build-free blackout de-risk): BallotProblemOQ01OQ03.lean is COMPLETE (4 theorems, 0 sorries/0 axioms: two_mul_choose_eq, two_mul_choose_succ_eq, catalan_eq_choose_sub_choose [reflection form catalan n = C(2n,n)-C(2n,n+1)], choose_sub_choose_eq_centralBinom_div [reconciliation]). Name-checked ALL Mathlib deps vs pinned v4.26 sibling: catalan_eq_centralBinom_div (Catalan.lean:108, ROOT ns), succ_mul_catalan_eq_centralBinom (Catalan.lean:132, ROOT ns), Nat.choose_succ_right_eq (Data/Nat/Choose/Basic.lean:211), Nat.centralBinom_eq_two_mul_choose (Data/Nat/Choose/Central.lean:39) — all present, file uses correct namespacing (catalan=ROOT, choose/centralBinom=Nat). File is build-ready, UNREGISTERED. Slug SOLVED at statement level; only Docker-up build+register remains. NOTE: Mathlib already has both Catalan closed forms (division + the difference is derivable), so this is a documentary reflection-principle framing, not new theory."
     ],
     "builtItems": [
       "two_mul_choose_eq : (2*n).choose n = (n+1)*catalan n (Proofs/BallotProblemOQ01OQ03.lean)",
@@ -39,7 +46,7 @@
       "Optionally connect to a concrete Dyck-path Finset count = catalan n to make the 'ballot count' interpretation literal rather than documentary.",
       "Add a numeric example theorem (e.g. catalan 3 = C(6,3)-C(6,4) = 5) once build is available."
     ],
-    "progressSummary": "PROGRESS: proved the reflection form catalan n = C(2n,n) - C(2n,n+1) (0 sorries, 0 axioms) build-pending under Docker blackout; reconciled with Mathlib's division form."
+    "progressSummary": "SOLVED/build-pending (2026-06-15): reflection form catalan n = C(2n,n)-C(2n,n+1) proven + reconciled with Mathlib division form in BallotProblemOQ01OQ03.lean (0 sorries/0 axioms). All 4 Mathlib deps name-checked vs v4.26 (researcher-3) — build-ready, unregistered. Only Docker-up build+register remains. PROGRESS: proved the reflection form catalan n = C(2n,n) - C(2n,n+1) (0 sorries, 0 axioms) build-pending under Docker blackout; reconciled with Mathlib's division form."
   },
   "leanFiles": [
     {
