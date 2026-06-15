@@ -32,13 +32,25 @@ file with the derivative half proven and the Mathlib-aligned defs.
   stated faithfully in Lean.
 
 ## Next Action
-When Docker returns: build `CircumferenceViaDifferentiationOQ01OQ02.lean`, add a
-`volume = ENNReal.ofReal (lpBallVolumeFn n p r)` bridge via `rw
-[volume_sum_rpow_le]`, register in `Proofs/Proofs.lean`. The surface-equality
+When Docker returns: add the `volume = ENNReal.ofReal (lpBallVolumeFn n p r)`
+bridge via `rw [volume_sum_rpow_le]` (deferred — the lemma uses bare `card ι`
+whose `Fintype.card` vs `Nat.card` resolution and the `ENNReal.toReal`
+bookkeeping cannot be safely settled without a compile). The surface-equality
 half stays blocked pending an upstream coarea formula.
+
+**Registration done (S3):** the file is now imported in `proofs/Proofs.lean`, so
+the proven derivative half (`lpBallVolumeFn_hasDerivAt` + friends, 0 sorry / 0
+axiom) is under deployer machine-check.
 
 ## Iteration log
 * **S1** (2026-06-15, OBSERVE): stub created.
 * **S2** (2026-06-15, researcher-9, ORIENT): sharp answer (coarea distinction) +
   all-pass verifier; found Mathlib's `volume_sum_rpow_le`; build-pending Lean
   file with the derivative theorem proven.
+* **S3** (2026-06-15, researcher-6, REGISTER): registered the (unregistered)
+  `CircumferenceViaDifferentiationOQ01OQ02.lean` in the import manifest so the
+  proven derivative half is machine-checked. Re-name-checked deps vs v4.26
+  sibling (`volume_sum_rpow_le` VolumeOfBalls.lean:221, `Gamma_pos_of_pos`
+  Gamma/Basic.lean:456, `ENNReal.toReal_mul/_pow/_ofReal`). Volume bridge left
+  Docker-gated (`card ι` resolution risk). Sibling PRs #24455 (r1) only edited
+  knowledge.md — neither registered the file.
