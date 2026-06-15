@@ -4,21 +4,37 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14T21:26:07-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
-Reframed the open piece. `boundary_doors_odd` is ALREADY a proven parity-transfer
-theorem in `SpernerSimplicialInstance.lean` (line 173): it derives `S = S_n` (all
-boundary doors on the top facet) from the Sperner condition, then concludes oddness
-FROM the hypothesis `_hLastFace`. The genuine remaining gap is `_hLastFace` (top-facet
-door oddness) + the base case, to be discharged by induction on dimension. `_hLowerDim`
-is vestigial (unused in the proof body).
+Re-scoped the ACT by connecting two existing **sorry-free** frameworks.
+`boundary_doors_odd` (`SpernerSimplicialInstance.lean:173`) is a proven parity-transfer
+theorem: it derives `S = S_n` (all boundary doors on the top facet) from the Sperner
+condition, then concludes oddness FROM the hypothesis `_hLastFace`. The genuine gap is
+`_hLastFace` (top-facet door oddness).
+
+**New this iteration:** `_hLastFace` does NOT need a from-scratch door-counting/mesh
+argument. `SpernerNDim.lean:601` already PROVES (0 sorries, 0 axioms) the abstract
+parity engine `sperner_parity`:
+> `#FC simplices ≡ #(boundary doors on face d)  (mod 2)` for any `SpernerTriangulation d N`.
+The doors on the top facet of `Δⁿ` are exactly the FC (panchromatic) cells of the
+`Δⁿ⁻¹` coloring induced on that facet. So `_hLastFace[n]` is literally "Odd #FC of the
+induced `Δⁿ⁻¹` Sperner coloring", which `sperner_parity[n-1]` reduces to `_hLastFace[n-1]`,
+recursing to the `n=1` base. The remaining Lean work is therefore the cross-dimensional
+**facet-restriction map** wiring `SpernerSimplicialInstance.Triangulation` to
+`SpernerNDim.SpernerTriangulation` — NOT a new parity proof.
 
 ## Active Approach
-Dimension induction discharging `_hLastFace` for the standard/Kuhn triangulation:
-top facet of `Δⁿ` is a `Δⁿ⁻¹` with the induced Sperner coloring; its door count is
-odd by IH; base case n=1 = one door. Bridge verified numerically (`verify_boundary_doors.py`)
-over 14k+ Sperner colorings (n=1, n=2 Kuhn grids m≤4).
+Discharge `_hLastFace` by induction using the already-proven `sperner_parity` as the
+per-level engine: top facet of `Δⁿ` is a `Δⁿ⁻¹` (color `n` forbidden on every facet
+vertex, so the restriction is automatically Sperner with labels `{0..n-1}`); its
+top-facet doors = FC cells of the induced coloring; oddness by IH (`sperner_parity[n-1]`);
+base case `n=1` = one door. Verified numerically (`verify_boundary_doors.py`, all pass):
+- n=1 base case (one boundary door), n=2 full boundary-door parity (14k+ colorings, m≤4);
+- `sperner_parity` congruence (#FC ≡ #face-2 doors mod 2) holds on the concrete 2-D
+  Kuhn mesh — confirming the abstract theorem instantiates on the ACT's triangulation;
+- dim-3 → dim-2 reduction discharging `_hLastFace[3]` mesh-free: restriction-is-Sperner
+  + #(top-facet doors of Δ³) == #FC of induced Δ² coloring == odd (14k+ induced colorings).
 
 ## Attempt Count
 - Total attempts: 1
@@ -31,8 +47,17 @@ over 14k+ Sperner colorings (n=1, n=2 Kuhn grids m≤4).
   has only `intervalTriangulation 1` and a single 2-simplex fixture).
 
 ## Next Action
-ACT (build-gated): construct the standard/Kuhn `Triangulation` instance for general n;
-define the facet-restriction map to a dim-(n-1) triangulation and prove the restricted
-coloring is Sperner; prove the door bijection; close `_hLastFace` by induction.
-~200–400 LOC, medium difficulty. Consider Aristotle for the door-bijection lemma once
-the triangulation instance compiles.
+ACT (build-gated; Docker down this session). Re-scoped: do NOT re-prove the parity —
+REUSE `SpernerNDim.sperner_parity`. Concretely:
+1. Supply a general-n standard/Kuhn `Triangulation`/`SpernerTriangulation` instance
+   (file currently has only `intervalTriangulation 1` + a single 2-simplex fixture).
+2. Build the facet-restriction map: top facet of the dim-n triangulation → a dim-(n-1)
+   `SpernerTriangulation`; prove the induced coloring is Sperner (color `n` forbidden on
+   every facet vertex — nearly definitional).
+3. Identify dim-n top-facet doors with dim-(n-1) FC cells (the door condition "the d
+   vertices ≠ apex carry {0..n-1}" = FC of the facet triangle); then `_hLastFace` follows
+   from `sperner_parity[n-1]` + IH, base case n=1.
+This is smaller than the prior "~200–400 LOC from scratch" estimate because the parity
+counting is already proven; the work is the structural facet-restriction wiring between
+the two sorry-free files. Aristotle candidate: the door⟺FC identification lemma once the
+instances compile.
