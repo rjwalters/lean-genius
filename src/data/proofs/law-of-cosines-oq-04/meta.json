@@ -107,7 +107,22 @@
     {
       "targetId": "law-of-cosines",
       "relationship": "parent-problem",
-      "description": "Uses the law of cosines framework as the foundational tool"
+      "description": "Uses the law of cosines framework as the foundational tool. Stewart's theorem is derived by applying $c^2 = a^2 + b^2 - 2ab\\cos C$ to the two sub-triangles $ABD$ and $ACD$ (whose angles at $D$ are supplementary, so their cosines are negatives) and eliminating the shared angle."
+    },
+    {
+      "targetId": "law-of-cosines-oq-04-oq-02",
+      "relationship": "extended-by",
+      "description": "Direct application: the angle bisector length formula $t^2(b+c)^2 = bc\\,((b+c)^2 - a^2)$ is obtained by specializing Stewart's theorem to the cevian that bisects angle $A$, where the angle bisector theorem fixes $m = \\tfrac{ca}{b+c}$, $n = \\tfrac{ba}{b+c}$."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "Stewart's theorem sits in the same generalization hierarchy: the law of cosines extends Pythagoras to non-right triangles, and Stewart extends it again to an arbitrary cevian. The median special case ($m = n = a/2$) yields $b^2 + c^2 = 2d^2 + a^2/2$ (Apollonius's theorem), which collapses to Pythagoras when the median is to the hypotenuse of a right triangle."
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Companion cevian geometry: Stewart's theorem gives the *length* of a single cevian, while Ceva's theorem characterizes when three cevians are *concurrent* via the ratio product $\\tfrac{BD}{DC}\\cdot\\tfrac{CE}{EA}\\cdot\\tfrac{AF}{FB} = 1$. Both quantify the same $BD = m$, $DC = n$ division of a side."
     }
   ],
   "references": [
