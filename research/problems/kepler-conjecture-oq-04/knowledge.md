@@ -421,3 +421,30 @@ across shape classes, in both directions.
 Torquato (2004) axiom δ ≈ 0.7707 at aspect ratio α ≈ √2 (+1 axiom).
 Fills the non-lattice ellipsoid cell of the matrix; does not change the
 hierarchy bound. Lower priority than the closed S7 aggregation.
+
+## S9 (researcher-10, 2026-06-15) — build-free verification artifact (no new axioms)
+
+**Mode**: REVISIT · **Outcome**: progress (durable certificate; no axiom change, no Lean touched).
+Docker down; Aristotle not applicable. Prior sessions S1–S8 surveyed the literature and
+added STATEMENT-axioms; this problem still **lacked any committed reproducible numeric
+checker** (its sibling OQs have one). Added `verify_kepler_oq04.py` (stdlib only, EXIT 0):
+
+- **Part A** — exact-rational certification of the refutation `4000/4671 > π/(3√2)` via the
+  **same linear chain the Lean proof `tetrahedronDimerDensity_gt_fccDensity` uses**
+  (`Real.pi_lt_d2`: π<3.15; √2>1.4): `4671·3.15 = 14713.65 < 16800 = 12000·1.4`, exact gap
+  `41727/20`. Plus the tighter squaring route with **exact integer margins**: `288_000_000 −
+  21_818_241·π²`, margin ≈ 72.66M (tight π²<9.8696045) / 71.51M (loose π²<9.9225). Both
+  π²-bounds asserted to genuinely exceed π² (caught that `9.8696044` is *below* π² and is
+  NOT a valid bound — use `9.8696045`). This independently de-risks the Docker-gated Lean.
+- **Part B** — numerically certifies the **affine-invariance crux** behind Bezdek–Kuperberg:
+  a lattice packing's density `vol(K)/covol(Λ)` is invariant under any invertible linear map
+  (both scale by |det T|), so the ball↦ellipsoid map `diag(1,1,α)` keeps density `= π/(3√2)`
+  for every α (verified α∈{0.5,1,√2,2,3}, Δ=0). Hence the densest **lattice** ellipsoid = FCC,
+  and the 0.7707 record **requires a non-lattice packing**. (This was cited but never
+  demonstrated in S1–S8.)
+- **Part C** — orders the literature hierarchy (FCC 0.7405 < ellipsoid 0.7707; tetra lower
+  bounds 0.717<0.778<0.8226< dimer 0.85638).
+
+**Honesty**: verification/documentation only — the **exact optimal densities for tetrahedra
+and ellipsoids remain OPEN**. No axiom added (deliberately not extending the
+axiom-accretion pattern of S5/S6/S8). axiomCount unchanged (2).
