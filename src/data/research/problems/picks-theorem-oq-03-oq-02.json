@@ -1,0 +1,93 @@
+{
+  "slug": "picks-theorem-oq-03-oq-02",
+  "title": "Is the h*-vector Determined by the Face Lattice? (Reeve Tetrahedra)",
+  "phase": "ORIENT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Given a lattice polytope P, is its h*-vector (Ehrhart delta-vector) a function of the face lattice of P alone? I.e. do combinatorially isomorphic lattice polytopes always share the same h*-vector?",
+    "plain": "The h*-vector encodes how many lattice points a polytope and its integer dilates contain. This asks whether that data is purely combinatorial \u2014 recoverable from the face lattice (which vertices/edges/faces meet which) \u2014 or whether it genuinely depends on the lattice geometry.",
+    "whyMatters": [
+      "Separates the combinatorial type of a polytope from its lattice-geometric invariants.",
+      "Directly explains why Pick's theorem (the parent) has no naive 3D analogue.",
+      "Clarifies what an Ehrhart-theoretic Lean development would need beyond the face lattice."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Answer NO: Reeve tetrahedra T_h=conv{(0,0,0),(1,0,0),(0,1,0),(1,1,h)} all share f-vector (4,6,4,1) and L(1)=4 (only the 4 vertices) but have distinct h*-vectors (1,0,h-1,0) (verified exact h=1..6).",
+      "Ehrhart polynomial L_{T_h}(t)=(h/6)t^3+t^2+(2-h/6)t+1; normalized volume = h.",
+      "Reeve tetrahedra are the classical obstruction to a 3D Pick theorem: equal lattice-point counts, different volume."
+    ],
+    "open": [
+      "Lean ACT: a light refutation (h*(T_1) != h*(T_2) with a face-lattice isomorphism T_1 ~= T_2), or a general Ehrhart/h*-vector layer (absent from Mathlib)."
+    ],
+    "goal": "Formalize the negative answer: exhibit combinatorially isomorphic lattice polytopes (Reeve tetrahedra) with distinct h*-vectors, proving the h*-vector is not a face-lattice invariant."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-15T07:55:00.000Z",
+    "iteration": 2,
+    "focus": "Answer NO via Reeve tetrahedra: same face lattice (4,6,4,1) and L(1)=4, distinct h*-vectors (1,0,h-1,0). Ties to parent Pick's theorem (Reeve = the 3D Pick obstruction). Mathlib has no Ehrhart theory.",
+    "blockers": [
+      "Lean ACT Docker-gated.",
+      "No Ehrhart/h*-vector theory in Mathlib (Ehrhart/hStarVector = 0 hits); general formalization is a multi-file build."
+    ],
+    "nextAction": "ACT (light): define L_{T_h} for the concrete Reeve family (closed form / decide), compute h*(T_h)=(1,0,h-1,0), prove h*(T_1)!=h*(T_2) with a face-lattice iso T_1~=T_2. Avoid building general Ehrhart theory.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    },
+    "lastUpdate": "2026-06-15T07:55:00.000Z"
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT: answered NO. The h*-vector (Ehrhart delta-vector) is a lattice-geometric, not combinatorial, invariant. Reeve tetrahedra T_h=conv{(0,0,0),(1,0,0),(0,1,0),(1,1,h)} all share face lattice (f-vector (4,6,4,1)) and L(1)=4 (only the 4 vertices) yet have distinct h*-vectors (1,0,h-1,0). This is exactly the classical reason Pick's theorem (the parent) has no 3D analogue. Mathlib has no Ehrhart theory.",
+    "builtItems": [
+      "research/problems/picks-theorem-oq-03-oq-02/verify_hstar_not_combinatorial.py - stdlib (fractions) exact verifier: barycentric lattice-point counting of t*T_h for t=0..4, h*-vector via binomial transform; confirms (A) shared f-vector + L(1)=4, (B) pairwise-distinct h*-vectors (1,0,h-1,0). All PASS."
+    ],
+    "insights": [
+      "The h*-vector is NOT a face-lattice invariant. Reeve tetrahedra are combinatorially identical (same boolean lattice B_4) but h*(T_h)=(1,0,h-1,0) varies, so no function of the face lattice yields h*.",
+      "Each T_h has exactly its 4 vertices as lattice points (0 interior, 0 non-vertex boundary), so L(1)=4 for ALL h, yet Euclidean volume = h/6: this is precisely why a 3D Pick identity (volume from lattice-point counts) is impossible. The missing datum is the h*-vector itself.",
+      "L_{T_h}(t)=(h/6)t^3+t^2+(2-h/6)t+1; T_1 is unimodular (h*=(1,0,0,0), Ehrhart = tetrahedral numbers)."
+    ],
+    "mathlibGaps": [
+      "No Ehrhart theory in Mathlib (Ehrhart, hStarVector, latticePolytope+Ehrhart = 0 hits). The gallery Pick development is ad-hoc 2D area, not a general Ehrhart framework.",
+      "A faithful ACT needs lattice-point counting of dilates, Ehrhart polynomiality, and the h*-transform \u2014 all absent upstream."
+    ],
+    "nextSteps": [
+      "ACT (light, Docker-gated): formalize the concrete Reeve family refutation \u2014 L_{T_h} closed form via decide, h*(T_h)=(1,0,h-1,0), h*(T_1)!=h*(T_2) + a face-lattice iso. Avoids building general Ehrhart theory.",
+      "Make explicit in the picks-theorem-oq-03 cluster that Reeve tetrahedra are the obstruction to a 3D Pick theorem."
+    ],
+    "markdown": "See research/problems/picks-theorem-oq-03-oq-02/knowledge.md"
+  },
+  "tags": [
+    "geometry",
+    "combinatorics",
+    "lattice-polytopes",
+    "ehrhart",
+    "h-star-vector",
+    "reeve-tetrahedra",
+    "research"
+  ],
+  "relatedProofs": [
+    "picks-theorem-oq-03",
+    "picks-theorem",
+    "picks-theorem-oq-03-ext"
+  ],
+  "references": {
+    "papers": [
+      "J. E. Reeve, On the volume of lattice polyhedra, Proc. LMS (1957).",
+      "Beck & Robins, Computing the Continuous Discretely (Ehrhart theory)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "(absent) Ehrhart theory / h*-vector"
+    ]
+  },
+  "started": "2026-06-15T07:55:00.000Z",
+  "lastUpdate": "2026-06-15T07:55:00.000Z",
+  "significance": 6,
+  "tractability": 5
+}
