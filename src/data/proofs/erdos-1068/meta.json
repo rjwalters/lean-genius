@@ -50,73 +50,81 @@
       "id": "preamble",
       "title": "Problem Statement and Context",
       "startLine": 1,
-      "endLine": 33,
-      "summary": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinction that makes Problem 1068 the remaining open case.",
-      "mathContext": "Detailed module docstring: the problem statement, its relationship to Problem 1067, Soukup's counterexample, Bowler–Pitz simplification, and key references. Explains the countable/uncountable distinction that makes Problem 1068 the remaining open case."
+      "endLine": 32,
+      "summary": "Docstring statement of Erdős Problem #1068 (Erdős–Hajnal): does every graph with chromatic number ℵ₁ contain a countable subgraph that is infinitely (vertex-)connected, i.e. with infinitely many pairwise internally disjoint paths between any two vertices? Notes the OPEN status, the relation to the DISPROVED Problem #1067 (Soukup 2015), the Bowler–Pikhurko (2024) simplification, possible dependence on axioms beyond ZFC, and references.",
+      "mathContext": "Problem statement, its place relative to Problem #1067, and the known partial results."
     },
     {
       "id": "imports",
       "title": "Imports and Setup",
-      "startLine": 34,
-      "endLine": 44,
-      "summary": "Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable.",
-      "mathContext": "Mathematical content: Imports Mathlib's `SimpleGraph`, `Cardinal`, and `Set.Countable`. Opens `Cardinal` and `SimpleGraph` namespaces. Sets up universe-polymorphic vertex type variable."
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Mathlib imports (`SimpleGraph.Basic`, `Cardinal.Basic`/`.Ordinal`, `Set.Countable`), `open Cardinal SimpleGraph`, `namespace Erdos1068`, and the ambient `variable {V : Type*}`.",
+      "mathContext": "Lean preamble: imports, opened namespaces, and the vertex-type variable."
     },
     {
       "id": "graph-infrastructure",
-      "title": "Graph Infrastructure: Paths and Disjointness",
-      "startLine": 45,
-      "endLine": 77,
-      "summary": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build toward Menger-style connectivity characterization.",
-      "mathContext": "Defines `PathInGraph` (vertex-list paths), `InternallyDisjoint` (no shared internal vertices), `PairwiseInternallyDisjoint`, `InfinitelyManyDisjointPaths`, and `InfinitelyConnected`. These build toward Menger-style connectivity characterization."
+      "title": "Part I — Graph Infrastructure",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "Path and connectivity definitions (reused from #1067): the `PathInGraph` structure (a vertex list with adjacent consecutive entries), `InternallyDisjoint` and `PairwiseInternallyDisjoint` (sharing no internal vertices), `InfinitelyManyDisjointPaths` (an infinite pairwise-internally-disjoint family between two vertices), and `InfinitelyConnected` (every distinct pair has such a family).",
+      "mathContext": "Definitions of paths, internal disjointness, and infinite vertex-connectivity over a `SimpleGraph V`."
     },
     {
       "id": "chromatic-infrastructure",
-      "title": "Chromatic Number and Induced Subgraphs",
-      "startLine": 78,
-      "endLine": 93,
-      "summary": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find countable $S$ with $G[S]$ $\\infty$-connected.",
-      "mathContext": "Defines `hasAleph1ChromaticNumber` ($\\chi(G) \\geq \\aleph_1$ via non-existence of countable proper coloring) and `inducedSubgraph` ($G[S]$ for a vertex set $S$). Together these set up the problem: find countable $S$ with $G[S]$ $\\infty$-connected."
+      "title": "Part II — Chromatic Number Infrastructure",
+      "startLine": 79,
+      "endLine": 85,
+      "summary": "Definition `hasAleph1ChromaticNumber G`: G cannot be properly colored by any countable color type (every countable coloring has a monochromatic adjacent pair), encoding chromatic number ≥ ℵ₁.",
+      "mathContext": "Definition capturing uncountable (≥ ℵ₁) chromatic number via failure of countable colorings."
+    },
+    {
+      "id": "induced-subgraphs",
+      "title": "Part III — Induced Subgraphs on Vertex Subsets",
+      "startLine": 86,
+      "endLine": 94,
+      "summary": "Definition `inducedSubgraph G S`: the subgraph of G induced on a vertex set S (adjacency inherited from G, with `symm` and `loopless` proved), the construction used to speak of countable infinitely-connected subgraphs.",
+      "mathContext": "Definition of the induced subgraph on a `Set V` as a `SimpleGraph S`."
     },
     {
       "id": "main-conjecture",
-      "title": "The Main Conjecture (Problem 1068)",
-      "startLine": 94,
-      "endLine": 105,
-      "summary": "Documents in source comments the main conjecture: for all $G$ with $\\chi(G) \\geq \\aleph_1$, there exists a countable $S$ with $G[S]$ infinitely connected. No Lean axiom declaration exists for this statement (the file has 0 axioms).",
-      "mathContext": "The main conjecture is documented in a Lean docstring only; no axiom or theorem formalizes it. The file declares definitions (`InfinitelyConnected`, `hasAleph1ChromaticNumber`, etc.) and proved theorems but no axioms."
+      "title": "Part IV — Main Conjecture",
+      "startLine": 95,
+      "endLine": 101,
+      "summary": "The statement of Problem #1068 (as a docstring): is there a countable vertex set S such that the induced subgraph G[S] is infinitely connected, whenever G has chromatic number ℵ₁? Recorded as prose; the problem is open, so no formal claim is asserted.",
+      "mathContext": "Prose statement of the open main conjecture in terms of `inducedSubgraph` and `InfinitelyConnected`."
     },
     {
       "id": "known-results",
-      "title": "Known Results: Soukup and Problem 1067",
-      "startLine": 106,
-      "endLine": 128,
-      "summary": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced). These establish why the countable case is the key remaining question.",
-      "mathContext": "Axiomatizes Soukup's (2015) counterexample (uncountable sets can fail) and the disproof of Problem 1067 (no uncountable $\\infty$-connected subgraph with $\\chi \\geq \\aleph_1$ is forced)."
+      "title": "Part V — Known Results",
+      "startLine": 102,
+      "endLine": 112,
+      "summary": "Docstring summary of the literature: Soukup (2015) built a graph of uncountable chromatic number in which every uncountable vertex set induces a non-infinitely-connected subgraph (so #1068 genuinely needs a *countable* subgraph); and the connection to Problem #1067 (which demanded the subgraph also have χ = ℵ₁ and was disproved by Soukup).",
+      "mathContext": "Prose record of Soukup's construction and the relationship to the disproved Problem #1067."
     },
     {
       "id": "structural-observations",
-      "title": "Structural Observations",
-      "startLine": 129,
-      "endLine": 157,
-      "summary": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders.",
-      "mathContext": "Axiomatizes the no-finite-separator property (consequence of Aharoni–Berger infinite Menger theorem), set-theoretic sensitivity (Komjáth 2013), and Bowler–Pitz (2024) simplified construction. The latter two are `True` placeholders."
+      "title": "Part VI — Structural Observations",
+      "startLine": 113,
+      "endLine": 203,
+      "summary": "The main proved result `inf_connected_no_finite_separator`: in an infinitely connected graph, for any two non-separated vertices and any finite set S avoiding them, some u–v path avoids S entirely (each s ∈ S is internal to at most one path by pairwise disjointness, so the finitely many 'bad' paths cannot exhaust the infinite family). Also prose notes on set-theoretic sensitivity (Komjáth 2013) and the Bowler–Pikhurko construction.",
+      "mathContext": "A proved no-finite-separator theorem for infinitely connected graphs, via a finite-`biUnion`/subsingleton-fiber counting argument, plus contextual prose."
     },
     {
       "id": "proved-implications",
-      "title": "Proved Structural Implications",
-      "startLine": 158,
-      "endLine": 180,
-      "summary": "Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file.",
-      "mathContext": "Verified: Two fully proved theorems: $\\infty$-connected implies path existence between any two vertices, and the same for induced subgraphs. These are the only non-axiomatized results in the file."
+      "title": "Part VII — Partial Implications",
+      "startLine": 204,
+      "endLine": 239,
+      "summary": "Proved structural relationships: `inf_connected_implies_path` (infinite connectivity gives at least one path between distinct vertices), `inf_connected_subgraph_has_paths` (paths within an infinitely connected induced subgraph), and `inf_connected_k_connected` (infinitely connected graphs are k-vertex-connected for every finite k, as a corollary of the no-finite-separator theorem).",
+      "mathContext": "Theorems deriving ordinary and finite-k connectivity consequences from infinite connectivity."
     },
     {
       "id": "summary",
-      "title": "Summary and Open Aspects",
-      "startLine": 181,
-      "endLine": 205,
-      "summary": "Closing comment summarizing the problem status: main question open, Soukup's counterexample for uncountable case, ZFC-independence not established for Problem 1068, and the intersection of infinite combinatorics and set theory.",
-      "mathContext": "Closing comment summarizing the problem status: main question open, Soukup's counterexample for uncountable case, ZFC-independence not established for Problem 1068, and the intersection of infinite combinatorics and set theory."
+      "title": "Summary",
+      "startLine": 240,
+      "endLine": 264,
+      "summary": "Closing docstring recap: the OPEN main question (does χ = ℵ₁ force a countable infinitely connected subgraph?), the known results (Soukup 2015; the disproved #1067; possible ZFC-independence), the unresolved open aspects, and a note on the problem's difficulty at the intersection of infinite combinatorics and set theory.",
+      "mathContext": "Narrative summary of the problem's status, known results, and open aspects."
     }
   ],
   "conclusion": {
