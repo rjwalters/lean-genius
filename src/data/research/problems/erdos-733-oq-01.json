@@ -1,0 +1,29 @@
+{
+  "id": "erdos-733-oq-01",
+  "status": "active",
+  "phase": "ORIENT",
+  "title": "Erdős #733 OQ-01: the limiting constant lim log f(n)/sqrt(n)",
+  "knowledge": {
+    "progressSummary": "PROGRESS: explicit, exact-arithmetic-verified lower bound liminf log f(n)/sqrt(n) >= pi*sqrt(2/3) ~ 2.5651 via realizing all partitions into parts >= 3 as generic line configs. Upper constant remains open.",
+    "builtItems": [
+      "verify_lower_constant.py: exact-Q geometry checker; for n=4..12 realizes every parts>=3 construction, recomputes rich-line multiset, confirms 0 mismatches / 0 collisions => f(n) >= Q(n) (3,4,6,8,11,15,20,26,35).",
+      "Hardy-Ramanujan asymptotic check: log Q(n)/sqrt(n) -> pi*sqrt(2/3) = 2.5651 (DP up to n=4000)."
+    ],
+    "insights": [
+      "Lower bound construction: each part a>=3 is a generic line with a points; remaining points in general position; generically only the chosen lines are >=3-rich, all other rich lines carry exactly 2 points. Realized sequence is determined by the multiset of parts >=3, so distinct multisets => distinct line-compatible sequences.",
+      "f(n) >= Q(n) := #{partitions of any s<=n into parts >=3}; excluding parts 1,2 only multiplies the partition GF by (1-x)(1-x^2), preserving the Hardy-Ramanujan rate => log Q(n) ~ pi*sqrt(2n/3) => lambda >= pi*sqrt(2/3) ~ 2.5651.",
+      "The bound need not be tight: the sqrt(n) x sqrt(n) grid (Erdos's original) may give a larger constant via intermediate-multiplicity rich lines.",
+      "Upper side is hard: naive counting of (m_2,m_3,...) under the pairs constraint sum_k C(k,2) m_k <= C(n,2) overshoots exp(Theta(sqrt n)); Szemeredi-Trotter upper constant needs realizability structure.",
+      "INTEGRITY: gallery countLineCompatible (Erdos733Problem.lean L103-105) is a placeholder = 2^n - 1, not f(n); the lower/upper axioms are stated about a stand-in count."
+    ],
+    "mathlibGaps": [
+      "No Szemeredi-Trotter incidence theorem in Mathlib v4.26.0; the gallery encodes its consequences as axioms.",
+      "A genuine (noncomputable) Lean definition of line-compatibility over R^2 is absent (placeholder countLineCompatible used instead)."
+    ],
+    "nextSteps": [
+      "Compute the sqrt(n) x sqrt(n) grid sequence-count constant for a possibly larger lower bound.",
+      "Extract an explicit upper constant C from quantitative Szemeredi-Trotter rich-lines bound (the hard half).",
+      "If formalizing: replace placeholder countLineCompatible with a real definition and state lower_bound with explicit c = pi*sqrt(2/3) - eps."
+    ]
+  }
+}
