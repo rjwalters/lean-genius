@@ -400,3 +400,58 @@ touched.
 ### Files Modified
 - `research/problems/.../verify_step1_sylow_unique.py` (NEW)
 - `research/problems/.../knowledge.md` (this note)
+
+---
+
+## Session 2026-06-15 (S13, researcher-5) — Step 5 signature refined: thread σ.IsCycle (corrects the discharge plan); Aristotle backend down
+
+**Mode:** ORIENT + light ACT. Docker UP (verified, used this session). Aristotle MCP
+**erroring** — `mcp__aristotle__prove` returns `{"status":"error","message":"Resource
+not found."}` on every call (both wait=true/false), so the prover cannot be used to
+offload sorries this session. (Consistent with S12/S13's "Aristotle 404" note.)
+
+### Finding: the prior Step-5 discharge plan has a gap (IsCycle not in scope)
+
+Correction 1 (researcher-1 name-check) gave the exact bearer
+`Subgroup.le_normalizer_of_normal_subgroupOf` (Basic.lean:378) and said to "upgrade
+`ι(P) ⊆ ⟨σ⟩` to `=` via equal cards (`IsCycle.orderOf`)". But **`H_le_normalizer`'s
+signature (post-S12) only threads `hσ_card : σ.support.card = p`, NOT `σ.IsCycle`** —
+and `IsCycle.orderOf : orderOf σ = #σ.support` REQUIRES the cycle hypothesis. For a
+non-cycle, `orderOf σ = lcm(lengths) ≠ Σ lengths = #support`, so `hσ_card` alone does
+NOT give `|⟨σ⟩| = orderOf σ = p`. (The lemma is still *true* as stated — `σ` being a
+p-cycle is recoverable from `hgen` + `|P|=p` forcing `p ∣ orderOf σ` with
+`support.card = p` — but that recovery is itself a nontrivial cycle-decomposition
+lemma, NOT the one-liner the plan assumed.)
+
+### ACT this session: thread `σ.IsCycle` into Step 5 (Docker-verified compile)
+
+Added `(_hσ_cycle : σ.IsCycle)` to `H_le_normalizer`. It is supplied for free by
+Step 3 (`sylow_p_is_pcycle` already returns `σ.IsCycle ∧ σ.support.card = p ∧ hgen`),
+so the eventual composition in `primitive_solvable_subgroup_embeds_AGL1Z` loses
+nothing; **no callers exist** (the main theorem is still a `sorry`), so the change is
+non-breaking. The docstring now carries the corrected 5-item discharge plan:
+1. `orderOf σ = p` via `hσ_cycle.orderOf.trans hσ_card` ⟹ `Nat.card ↥(zpowers σ) = p`.
+2. `Nat.card ↥P = p` via `Nat.card ↥H ∣ p!`, `padicValNat p (p!) = 1` (Legendre),
+   `p ∣ Nat.card ↥H`, `Sylow.card_eq_multiplicity` + `pow_one`.
+3. `ι(P) = zpowers σ` (⊆ from `hgen` + equal card `p`).
+4. `(zpowers σ).subgroupOf H = (P : Subgroup ↥H)` (`Subgroup.ext` + `mem_subgroupOf`)
+   ⟹ transport `hPnorm` to `((zpowers σ).subgroupOf H).Normal`.
+5. `Subgroup.le_normalizer_of_normal_subgroupOf` + `Subgroup.zpowers_le.mpr hσH`.
+
+Body stays `sorry`: items 2–4 are a genuine multi-step ACT (~40–70 LOC of Sylow /
+factorization / subgroupOf wiring), not a single-session blind discharge — deferred,
+but the signature is now sound AND dischargeable (no longer needs a separate
+cycle-recovery lemma). Step 1's `sylow_p_unique` (~70–110 LOC) remains the largest sorry.
+
+### Files Modified (S13)
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirection.lean`: `H_le_normalizer`
+  gains `_hσ_cycle : σ.IsCycle`; docstring discharge plan corrected. Docker build of
+  `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection` PASSES.
+- `research/problems/.../knowledge.md`: this entry.
+
+### Next steps
+- (Docker ACT) discharge Step 5 per the corrected 5-item plan (now that `σ.IsCycle`
+  is threaded, item 1 is a one-liner; items 2–4 are the real work).
+- Aristotle remains down — re-try `mcp__aristotle__prove` on Step 5 (now self-contained,
+  `import Mathlib` only) when the backend recovers.
+- Step 1 (`sylow_p_unique`) + Step 4 (`normalizer_iso_AGL1Z`) remain the big sorries.
