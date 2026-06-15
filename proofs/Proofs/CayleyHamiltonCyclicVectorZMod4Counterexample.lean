@@ -12,8 +12,8 @@ we show:
   1. `charpoly_eq_X_sq` — `M.charpoly = X^2` (proved, sorry-free).
   2. `M_pow_two_eq_zero` — `M^2 = 0` as a matrix over `ZMod 4` (proved).
   3. `minpoly_natDegree_eq_two` — `(minpoly (ZMod 4) M).natDegree = 2`
-     (paste-ready with sorry — see proof outline; depends on bearer pins to
-     be sharpened in S3 ACT-2).
+     (proved, sorry-free: `minpoly.min` on the monic annihilator `X^2` for the
+     upper bound, `minpoly.two_le_natDegree_iff` + `M` non-scalar for the lower).
   4. `no_cyclic_vector` — `¬ ∃ v, IsCyclicVector M v` (proved, sorry-free;
      the polynomial `q = 2 * X` is a degree-1 annihilator with `2 • M = 0`).
 
@@ -86,18 +86,38 @@ theorem two_smul_M_eq_zero : (2 : ZMod 4) • M = 0 := by
 /-- `(minpoly (ZMod 4) M).natDegree = 2`. The natDegree of the minimal
 polynomial is `2`, matching `M.charpoly.natDegree = 2`.
 
-**Proof outline** (S3 PREP-3 §4.1; full discharge deferred to S3 ACT-2):
+**Proof**:
 
 - Upper bound `≤ 2`: `X^2` is a monic annihilator of `M` (via
   `M_pow_two_eq_zero`), so `minpoly.min` gives
-  `degree (minpoly M) ≤ degree (X^2) = 2`.
-- Lower bound `≥ 2`: no monic polynomial of degree `≤ 1` annihilates `M`.
-  Degree-0 monic = `1`, `aeval M 1 = I ≠ 0`. Degree-1 monic = `X + c`,
-  `aeval M (X + c) = !![c, 2; 0, c]`, which is nonzero because the
-  `[0,1]`-entry is `2 ≠ 0` in `ZMod 4`. -/
+  `degree (minpoly M) ≤ degree (X^2)`, whence `natDegree ≤ 2`.
+- Lower bound `≥ 2`: by `minpoly.two_le_natDegree_iff`, this is equivalent to
+  `M ∉ (algebraMap (ZMod 4) _).range`, i.e. `M` is not a scalar matrix.
+  Indeed `algebraMap (ZMod 4) _ c = c • 1` has `[0,1]`-entry `0`, while
+  `M`'s `[0,1]`-entry is `2 ≠ 0` in `ZMod 4`. -/
 theorem minpoly_natDegree_eq_two :
     (minpoly (ZMod 4) M).natDegree = 2 := by
-  sorry
+  haveI : Nontrivial (ZMod 4) := ⟨0, 1, by decide⟩
+  have hint : IsIntegral (ZMod 4) M := Matrix.isIntegral M
+  -- Upper bound: `X^2` is a monic annihilator of `M`.
+  have hupper : (minpoly (ZMod 4) M).natDegree ≤ 2 := by
+    have hp : Polynomial.aeval M (X ^ 2 : (ZMod 4)[X]) = 0 := by
+      rw [map_pow, aeval_X]; exact M_pow_two_eq_zero
+    have hmin := minpoly.min (ZMod 4) M (monic_X_pow 2) hp
+    have h2 := Polynomial.natDegree_le_natDegree hmin
+    rwa [Polynomial.natDegree_X_pow] at h2
+  -- Lower bound: `M` is not a scalar matrix, so its minpoly has degree `≥ 2`.
+  have hlower : 2 ≤ (minpoly (ZMod 4) M).natDegree := by
+    rw [minpoly.two_le_natDegree_iff hint]
+    rintro ⟨c, hc⟩
+    have h01 := congrFun (congrFun hc 0) 1
+    rw [Algebra.algebraMap_eq_smul_one] at h01
+    have hone : (c • (1 : Matrix (Fin 2) (Fin 2) (ZMod 4))) 0 1 = 0 := by
+      simp [Matrix.one_apply_ne (show (0 : Fin 2) ≠ 1 by decide)]
+    have hM01 : M 0 1 = 2 := by decide
+    rw [hone, hM01] at h01
+    exact absurd h01 (by decide)
+  exact le_antisymm hupper hlower
 
 /-- `M` has **no cyclic vector** over `ZMod 4`. For every `v : Fin 2 → ZMod 4`,
 the nonzero polynomial `q = 2 * X` satisfies `q.natDegree = 1 < 2`,
