@@ -44,10 +44,13 @@ form `2·T i + i = i²` (`two_T_add`), proved by a one-line induction.
 
 Axioms: 0. Sorries: 0.
 
-NOTE (build provenance): machine-checked via `./proofs/scripts/docker-build.sh
-Proofs.SumOfKthPowersOQ03` (Lean `v4.26.0`, Mathlib pin `2df2f01`); registered in
-`proofs/Proofs.lean`. Every arithmetic identity is additionally certified (sympy + brute force,
-n = 0..60) by `research/problems/sum-of-kth-powers-oq-03/verify_m1.py`.
+NOTE (build provenance): BUILD-PENDING — authored during a Docker + Aristotle backend outage and
+NOT yet machine-checked. Registered in `proofs/Proofs.lean`; the two load-bearing Mathlib lemmas
+(`Finset.sum_Ico_consecutive`, `Finset.range_eq_Ico`) were pin-confirmed at Lean `v4.26.0`
+(Mathlib pin `2df2f01`). Every arithmetic identity is additionally certified (sympy + brute force,
+n = 0..60) by `research/problems/sum-of-kth-powers-oq-03/verify_m1.py`. Promote this note (and the
+meta.json status to verified/original) once a green `./proofs/scripts/docker-build.sh
+Proofs.SumOfKthPowersOQ03` confirms the typecheck.
 -/
 
 import Mathlib
