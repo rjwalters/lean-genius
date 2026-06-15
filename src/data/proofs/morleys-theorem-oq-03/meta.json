@@ -2,11 +2,11 @@
   "id": "morleys-theorem-oq-03",
   "title": "The Morley Triangle is Largest at the Equilateral",
   "slug": "morleys-theorem-oq-03",
-  "description": "Among all triangles with a fixed circumradius R, the equilateral triangle uniquely maximizes the side length of its Morley triangle. Proves s(α,β,γ) = 8R·sin(α/3)·sin(β/3)·sin(γ/3) ≤ 8R·sin³(π/9), with equality iff α=β=γ=π/3. Fully elementary (AM–GM + Jensen for sin), 0 axioms, 0 sorries.",
+  "description": "Among all triangles with a fixed circumradius R, the equilateral triangle uniquely maximizes the side length of its Morley triangle. Proves s(α,β,γ) = 8R·sin(α/3)·sin(β/3)·sin(γ/3) ≤ 8R·sin³(π/9), with equality iff α=β=γ=π/3. Fully elementary (AM–GM + Jensen for sin), 0 axioms, 0 sorries (build-pending verification).",
   "meta": {
     "author": "Lean Genius research",
     "date": "2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/MorleysTheoremOQ03.lean",
     "tags": [
       "geometry",
@@ -17,11 +17,11 @@
       "am-gm",
       "research"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 331,
-    "assumptions": "No axioms or sorries. All lemmas fully proved from Mathlib (concavity of sin, AM–GM via an explicit SOS certificate).",
+    "assumptions": "No axioms or sorries. All lemmas written from Mathlib (concavity of sin, AM–GM via an explicit SOS certificate). Build-pending verification: the source imports all of Mathlib plus the parent MorleysTheorem dependency and was not kernel-checked under the current Docker memory constraints, so the status is held at 'formalized' until a successful build confirms it.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
