@@ -107,6 +107,61 @@ theorem unique_repr_of_epsUniform_zero_clog {G : Type*} [AddCommGroup G]
   rw [hconst g]
   exact hc1
 
+/-- **Admissibility of the order `N` for exact `0`-uniformity.**  If *any* finset
+`A` is `0`-uniform, then the group order `N = |G|` must be a power of two,
+`N = 2^j` with `j ≤ |A|`.  (No minimality hypothesis: this holds for every
+`0`-uniform set, of any size.)
+
+`0`-uniformity collapses all representation counts to one natural number `c`, so
+`N · c = 2^|A|` (parent `total_reprCount`), giving `N ∣ 2^|A|` and hence
+`N = 2^j` by `Nat.dvd_prime_pow`.  This is the structural core that the converse
+`unique_repr_of_epsUniform_zero_clog` specialises once minimality is added. -/
+theorem card_pow_two_of_epsUniform_zero {G : Type*} [AddCommGroup G]
+    [Fintype G] [DecidableEq G] (A : Finset G) (hunif : IsEpsUniform A 0) :
+    ∃ j ≤ A.card, Fintype.card G = 2 ^ j := by
+  -- ε = 0 forces every count to equal the expected count μ exactly.
+  have heq : ∀ g, (reprCount A g : ℝ)
+      = expectedReprCount A.card (Fintype.card G) := by
+    intro g
+    have h := hunif g
+    rw [zero_mul] at h
+    have h0 : |(reprCount A g : ℝ)
+        - expectedReprCount A.card (Fintype.card G)| = 0 :=
+      le_antisymm h (abs_nonneg _)
+    have := abs_eq_zero.mp h0
+    linarith
+  -- Hence all counts coincide with c := reprCount A 0.
+  have hconst : ∀ g, reprCount A g = reprCount A (0 : G) := by
+    intro g
+    have : (reprCount A g : ℝ) = (reprCount A (0 : G) : ℝ) := by
+      rw [heq g, heq 0]
+    exact_mod_cast this
+  -- The counts sum to 2 ^ |A| (parent) and also to N * c.
+  have hsum : Fintype.card G * reprCount A (0 : G) = 2 ^ A.card := by
+    have key : ∑ g : G, reprCount A g = ∑ _g : G, reprCount A (0 : G) :=
+      Finset.sum_congr rfl fun g _ => hconst g
+    have hT := total_reprCount A
+    rw [key] at hT
+    simpa [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm] using hT
+  -- N ∣ 2 ^ |A|, so N = 2 ^ j with j ≤ |A| (Nat.dvd_prime_pow, prime 2).
+  have hdvd : Fintype.card G ∣ 2 ^ A.card := ⟨_, hsum.symm⟩
+  exact (Nat.dvd_prime_pow Nat.prime_two).mp hdvd
+
+/-- **No exact `0`-uniform set when the order is not a power of two.**  If
+`N = |G|` is not a power of two, then *no* finset is `0`-uniform.  This is the
+contrapositive of `card_pow_two_of_epsUniform_zero`, and it completes the
+dichotomy for oq-02: an exactly `ε = 0` subset-sum representation is attainable
+iff `N` is a power of two.  For every other `N` the optimal additive constant is
+strictly positive (no set is exactly uniform), in contrast to the constant `0`
+achieved on the power-of-two family by `epsUniform_zero_of_unique_repr`. -/
+theorem not_epsUniform_zero_of_not_pow_two {G : Type*} [AddCommGroup G]
+    [Fintype G] [DecidableEq G] (A : Finset G)
+    (hN : ∀ j, Fintype.card G ≠ 2 ^ j) :
+    ¬ IsEpsUniform A 0 := by
+  intro hunif
+  obtain ⟨j, _, hNj⟩ := card_pow_two_of_epsUniform_zero A hunif
+  exact hN j hNj
+
 /-- **Extremal equivalence on minimum-size sets.**  When `|A| = ⌈log₂N⌉`, the
 set `A` is `0`-uniform iff it gives every group element a unique subset-sum
 representation.  Forward direction is `unique_repr_of_epsUniform_zero_clog`;
