@@ -49,7 +49,8 @@
       "r-powerful counting function ~ C_r * x^(1/r), so the k-fold sumset has ~ x^(k/r) elements up to x; it covers a positive proportion of [1,x] only when k > r, i.e. minimal k = r+1. This is the structural reason r=2 needs 3 summands and r=3 needs 4.",
       "The critical case k = r (e.g. <=3 for r=3) fails permanently: sumset is the same order x as the target but with constant C_r^k/k! < 1, leaving positive density uncovered. Confirmed numerically: <=3 cubeful keeps ~0.21 exception density at 60000.",
       "Empirically N_3 = 2040 with 45 exceptions; the clean ~58000-wide gap above 2039 makes the threshold credible (conditional on the asymptotic).",
-      "Resolves the gallery framing conflict: the parent's 'at most r+1' description is correct; the overview's 'at most 3 for every r' is false at r=3."
+      "Resolves the gallery framing conflict: the parent's 'at most r+1' description is correct; the overview's 'at most 3 for every r' is false at r=3.",
+      "Build blocker is structural, not transient: proofs/.lake is a circular self-symlink on the host, so the docker olean cache (lean-mathlib-cache volume) never attaches and lake recompiles Mathlib from source -> 32GB OOM for ANY target. Splitting native_decide will not help on this host."
     ],
     "builtItems": [
       "proofs/scripts/verify_cubeful_sums.py — bounded coin-change DP over the r-powerful basis; self-validating against the r=2 base case.",
@@ -57,13 +58,14 @@
       "proofs/Proofs/Erdos1107OQ02OQ01.lean — Lean ACT (build-pending, unregistered): IsCubeful+Decidable, basis-indexed isSumOf4Cubeful, native_decide over the 45 exceptions + [1,2040] + blocks to 3000, axiom cubeful_sum_threshold (n>=2040). Uses cubeful-basis enumeration (27 elems <=2040) instead of the parent's O(n^3) range loop."
     ],
     "mathlibGaps": [
-      "No Mathlib lemma for representation of integers as sums of bounded powerful numbers; the r=2 gallery entry handles this via a Decidable predicate + native_decide + an axiom for the asymptotic. The r=3 ACT file would follow the same pattern."
+      "No Mathlib lemma for representation of integers as sums of bounded powerful numbers; the r=2 gallery entry handles this via a Decidable predicate + native_decide + an axiom for the asymptotic. The r=3 ACT file would follow the same pattern.",
+      "N/A — blocker is the .lake cache symlink + stalled deployer (last_deploy 2026-04-04), not missing Mathlib infra."
     ],
     "nextSteps": [
-      "Build the new file once Docker is up: ./proofs/scripts/docker-build.sh Proofs.Erdos1107OQ02OQ01. If native_decide over [1,2040] is too heavy, split below_threshold_nonexceptions into ~500-wide blocks (the above-threshold ranges are already blocked).",
-      "On green build: register via ./.lean/scripts/generate-proofs-imports.sh and add a gallery meta.json (status axiomatized, badge axiom, axiomCount 1).",
-      "Optional: a Lean-side proof that <=3 cubeful fails (positive exception density) to capture the unconditional half, not just the conditional <=4 threshold."
+      "Do NOT re-attempt a cold local docker build from a worktree (OOMs on Mathlib regardless of target until .lake cache symlink is repaired).",
+      "Build-confirm only on a cache-warm host / working deployer; if below_threshold_nonexceptions native_decide is heavy there, split into ~300-wide blocks like range_2040_2300.",
+      "Flag stalled deployer (stale index.lock) to Loom/ops — it gates build-verification of all registered-but-unbuilt entries."
     ],
-    "progressSummary": "PROGRESS (ACT): Lean transcription written (Erdos1107OQ02OQ01.lean) realising the validated N_3=2040 / 45-exception result via a basis-indexed isSumOf4Cubeful + native_decide + one conjectural-asymptotic axiom. Build-pending (Docker down); logic cross-checked against the Python DP."
+    "progressSummary": "SATURATED (math complete: 0 sorry / 1 conjectural axiom, registered, gallery entry exists). Build is env-blocked locally (circular .lake symlink -> Mathlib-from-source OOM); belongs to a cache-warm deployer, which is itself stalled."
   }
 }
