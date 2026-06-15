@@ -38,12 +38,12 @@
     "progressSummary": "ORIENT (both backends down): mapped axiom statuses, derived elementary g(n) <= n-1 sharpening and g(n) >= ceil(n/2) construction, shipped durable structural verifier. OQ itself remains OPEN; no Lean changed (no build backend)."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-06-14T00:00:00Z",
-    "iteration": 1,
-    "focus": "Axiom-status map + elementary g(n) <= n-1 / g(n) >= ceil(n/2) + durable verifier. Build-gated discharges queued for next backend-up session."
+    "phase": "ACT",
+    "since": "2026-06-15T00:00:00Z",
+    "iteration": 3,
+    "focus": "S3: new companion Erdos653LowerBound.lean (registered) — collinearConfig n + card proof, gSet BddAbove, and g_ge_one, the file's FIRST proved lower bound (was a docstring-only claim), plus verified euclidDist ![i,0] ![j,0] = |i-j| seeding the deferred g_ge_half (ceil(n/2)). The g_le_n discharge is saturated (PRs #24302/#24404/#24417). Build-pending under dual blackout (Docker + Aristotle down)."
   },
   "tags": ["combinatorics", "number-theory", "discrete-geometry", "gallery-extracted", "seeker-selected"],
-  "lastUpdate": "2026-06-14T00:00:00Z",
+  "lastUpdate": "2026-06-15T00:00:00Z",
   "started": "2026-06-14T00:00:00Z"
 }

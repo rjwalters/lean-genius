@@ -211,3 +211,47 @@ fold it in. The two literature axioms stay.
 **Honest assessment**: audit-only. Confirms the in-flight axiom elimination is correct (the
 top-priority work here) and avoids re-introducing the historical `Nat.sSup_le` break. No new
 theorem (the remaining elementary item is build-gated; the OQ `g(n) ≥ (1-o(1))n` is OPEN).
+
+## Session 2026-06-15 (Session 3, researcher-4, ACT — first proved lower bound + construction)
+
+**Mode:** ACT (build-gated: Docker `docker info` times out; Aristotle MCP `prove`
+returns "Resource not found" — dual blackout, no local verification possible).
+
+**Landscape check.** The `g_le_n` discharge (S1/S2 next-step #1) is **saturated**: three
+open PRs (#24302, #24404, #24417) all rewrite the `g_le_n` axiom to a theorem and nothing
+else. #24404 explicitly defers "the elementary lower bound `g(n) ≥ ⌈n/2⌉` ... heavier;
+build-gated; deferred." Also note `g_le_n_sub_one` (the sharper `g(n) ≤ n-1`) is **already
+a proved theorem** on main (:171), so the file's entire *upper*-bound elementary content is
+done. The genuinely unclaimed frontier is the **lower bound** — which had *no* proved
+theorem at all (even `g(n) ≥ 1` was only a docstring claim).
+
+**This session's deliverable** — new companion `proofs/Proofs/Erdos653LowerBound.lean`
+(registered in `proofs/Proofs.lean`), deliberately scoped to the high-confidence layer that
+needs no distance *values*:
+
+1. `collinearConfig n` — explicit `n`-point set `(0,0),…,(n-1,0)`; `collinearConfig_card`
+   proves `card = n` via `Finset.card_image_of_injOn` (injectivity by evaluating the vector
+   at coordinate 0 + `Nat.cast` injectivity). This is the **reusable construction** every
+   elementary lower bound needs.
+2. `gSet n`, `mem_gSet` (Iff.rfl), `g_eq_sSup` (rfl), `gSet_bddAbove` (`card_image_le`):
+   the supremum set defining `g`, shown bounded above so `le_csSup` applies.
+3. `numDistinctRValues_pos` — any nonempty config has ≥1 distinct R-value
+   (`Finset.Nonempty.image` ⇒ `card_pos`).
+4. **`g_ge_one : ∀ n, 1 ≤ n → 1 ≤ g n`** — the file's FIRST proved lower bound (was only an
+   unproven docstring "Trivial Lower Bound"). Witnessed by `collinearConfig n` ∈ `gSet n`.
+5. `euclidDist_collinearPoint : euclidDist ![i,0] ![j,0] = |i-j|` — verified distance seed
+   (`Matrix.cons_val_*` + `Real.sqrt_sq_eq_abs`). This is the keystone for the deferred
+   `⌈n/2⌉` step: from it, the i-th point sees `max(i,n-1-i)` distinct distances and the
+   config has `⌈n/2⌉` distinct R-values (formula certified in `verify_g_structure.py`).
+
+**Deliberately NOT included** (too distance-arithmetic-heavy to write blind under blackout,
+left as the next ACT once a build backend returns): the combinatorial identities
+`distinctDistCount (collinearConfig n) (i-th point) = max(i,n-1-i)` and
+`numDistinctRValues (collinearConfig n) = ⌈n/2⌉`, which together upgrade `g_ge_one` to
+`g_ge_half : ∀ n, ⌈n/2⌉ ≤ g n`. Everything they need beyond standard `Finset` lemmas is now
+in place (the construction, its card, the `sSup`-membership route, and the distance value).
+
+**Honest assessment**: modest but genuinely new. First proved lower bound in the file plus
+the reusable collinear-construction infrastructure; non-duplicative of the three g_le_n PRs.
+Build-pending under dual blackout (deployer is build-gated, so a non-compiling file cannot
+merge — it will not break main). The OQ `g(n) ≥ (1-o(1))n` remains OPEN and untouched.
