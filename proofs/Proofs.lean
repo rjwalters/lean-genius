@@ -898,6 +898,9 @@ import Proofs.Erdos109OQ01
 import Proofs.Erdos109OQ01Aristotle
 import Proofs.Erdos109Problem
 import Proofs.Erdos10OQ01
+import Proofs.Erdos10OQ02
+import Proofs.Erdos10OQ02Decidable
+import Proofs.Erdos10OQ02Popcount
 import Proofs.Erdos10PrimePlusPowers
 import Proofs.Erdos10Problem
 import Proofs.Erdos1100OQ01Aristotle
