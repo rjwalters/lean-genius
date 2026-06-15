@@ -49,99 +49,115 @@
   "sections": [
     {
       "id": "header",
-      "title": "Module Header and Imports",
+      "title": "File Header and Imports",
       "startLine": 1,
-      "endLine": 44,
-      "summary": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Classical)",
-      "mathContext": "Module docstring documenting the problem statement, background, and references; 6 Mathlib imports covering required modules; `open` declarations (Nat Classical)"
+      "endLine": 46,
+      "summary": "Docstring statement of Erdős Problem #436: for prime p and k,m ≥ 2, r(k,m,p) is the minimal r with r,…,r+m−1 all kth power residues mod p, and Λ(k,m) = limsup_{p→∞} r(k,m,p). Lists the three questions (Λ(k,2) finite ∀k — SOLVED Hildebrand 1991; Λ(k,3) finite ∀ odd k — OPEN; growth rates — PARTIAL), the known exact values, and references; followed by Mathlib imports, `open Nat Classical`, and `namespace Erdos436`.",
+      "mathContext": "Problem statement, known-value table, and Lean preamble (imports including `ZMod.Basic`, `FieldTheory.Finite.Basic`, `LegendreSymbol.Basic`)."
     },
     {
       "id": "definitions",
-      "title": "Power Residue Definitions",
-      "startLine": 45,
+      "title": "Part I — Power Residue Definitions",
+      "startLine": 47,
       "endLine": 70,
-      "summary": "Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$.",
-      "mathContext": "Formal definition: Defines $\\texttt{IsKthPowerResidue}(r, k, p) \\iff \\exists x,\\; x^k \\bmod p = r \\bmod p$, consecutive runs $\\texttt{AreConsecutiveKthResidues}$, and the quadratic residue specialization $k = 2$."
+      "summary": "Core definitions: `IsKthPowerResidue r k p` (∃ x, xᵏ ≡ r mod p), `AreConsecutiveKthResidues r k m p` (r,…,r+m−1 all kth power residues), and `IsQuadraticResidue r p` (the k=2 specialization).",
+      "mathContext": "Definitions of kth power residues, consecutive runs, and the quadratic-residue special case over ℕ with `% p`."
     },
     {
       "id": "structural",
-      "title": "Structural Properties",
+      "title": "Part Ib — Structural Properties of Power Residues",
       "startLine": 71,
       "endLine": 156,
-      "summary": "Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions.",
-      "mathContext": "Mathematical content: Proved lemmas: $0, 1$, and perfect powers are always $k$th power residues; $k = 1$ is trivial; runs can be extended, shortened, shifted, and verified at individual positions."
+      "summary": "Proved structural lemmas: 0, 1, perfect kth powers, and (for k=1) every integer are kth power residues; reduction mod p preserves the property (`kth_residue_mod`); and run-manipulation lemmas `consecutive_single`/`_at`/`_extend`/`_shorten`/`_shift`/`_max_element`, plus `all_are_first_power_residues`.",
+      "mathContext": "Theorems establishing closure and monotonicity properties of (consecutive) kth power residues via elementary modular arithmetic."
     },
     {
       "id": "r-function",
-      "title": "The $r(k,m,p)$ Function",
+      "title": "Part II — The r(k,m,p) Function",
       "startLine": 157,
-      "endLine": 176,
-      "summary": "Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. A docstring at lines 170–173 notes existence for large primes informally; no axiom or theorem formalizes this claim.",
-      "mathContext": "Formal definition: Defines $r(k,m,p) = \\min\\{r \\geq 1 : r, \\ldots, r+m-1$ are $k$th power residues$\\}$ via $\\texttt{Nat.find}$. Existence for large primes is mentioned in a docstring only; no formal declaration."
+      "endLine": 173,
+      "summary": "Definition `minConsecKthResidues k m p` — the minimal r ≥ 1 starting a length-m run of consecutive kth power residues mod p (via `Nat.find` when such r exists, else 0).",
+      "mathContext": "`noncomputable def` using `Nat.find` over the decidable existence of a consecutive run."
     },
     {
       "id": "lambda-function",
-      "title": "The $\\Lambda(k,m)$ Function",
-      "startLine": 177,
-      "endLine": 196,
-      "summary": "Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$.",
-      "mathContext": "Formal definition: Defines $\\texttt{LambdaFinite}(k, m)$ (existence of uniform bound) and $\\Lambda(k, m) = \\min\\{N : \\forall p > N,\\; r(k,m,p) \\leq N\\}$ via $\\texttt{Nat.find}$."
+      "title": "Part III — The Λ(k,m) Function",
+      "startLine": 174,
+      "endLine": 193,
+      "summary": "Definitions `LambdaFinite k m` (a uniform bound N exists so r(k,m,p) ≤ N for all large primes p) and `Lambda k m` (the exact value via `Nat.find` when finite, else 0), formalizing the limsup quantity Λ(k,m).",
+      "mathContext": "Definitions of finiteness and exact value of Λ(k,m) using a uniform-bound predicate and `Nat.find`."
     },
     {
       "id": "known-values",
-      "title": "Known Exact Values",
-      "startLine": 197,
-      "endLine": 238,
-      "summary": "Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations.",
-      "mathContext": "Axiomatized: Axiomatized: $\\Lambda(2,2) = 9$, $\\Lambda(3,2) = 77$, $\\Lambda(4,2) = 1224$, $\\Lambda(5,2) = 7888$, $\\Lambda(6,2) = 202124$, $\\Lambda(7,2) = 1649375$ from 1960s computations."
+      "title": "Part IV — Known Exact Values for m = 2",
+      "startLine": 194,
+      "endLine": 235,
+      "summary": "The six computed values of Λ(k,2), recorded as axioms: Λ(2,2)=9 (Lehmer-Lehmer 1962), Λ(3,2)=77 (Dunton 1965), Λ(4,2)=1224 (Bierstedt-Mills 1963), Λ(5,2)=7888 and Λ(6,2)=202124 (Lehmer-Lehmer-Mills 1963), Λ(7,2)=1649375 (Brillhart-Lehmer-Lehmer 1964).",
+      "mathContext": "Axioms recording the literature's exact Λ(k,2) values for k = 2..7."
     },
     {
       "id": "hildebrand",
-      "title": "Hildebrand's Theorem (1991)",
-      "startLine": 239,
-      "endLine": 258,
-      "summary": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. Uses character sum estimates and the large sieve inequality. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly.",
-      "mathContext": "Resolves Question 1: $\\forall k \\geq 2,\\; \\Lambda(k, 2) < \\infty$. The theorem $\\texttt{erdos\\_436\\_question1}$ follows directly."
+      "title": "Part V — Hildebrand's Theorem (1991)",
+      "startLine": 236,
+      "endLine": 255,
+      "summary": "The `hildebrand_theorem` axiom: Λ(k,2) is finite for all k ≥ 2 (proved by Hildebrand 1991 via character-sum estimates and the large sieve), and `erdos_436_question1` re-exporting it as the resolution of Question 1.",
+      "mathContext": "Axiom + corollary recording the affirmative answer to the m=2 finiteness question."
     },
     {
       "id": "m3-case",
-      "title": "The $m = 3$ Case and Parity Dichotomy",
-      "startLine": 259,
-      "endLine": 286,
-      "summary": "$\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?",
-      "mathContext": "Mathematical content: $\\Lambda(3,3) = 23532$ (Lehmer-Lehmer-Mills-Selfridge). $\\Lambda(k,3) = \\infty$ for even $k$ (Lehmer-Lehmer parity obstruction). Open question: is $\\Lambda(k,3) < \\infty$ for odd $k \\geq 5$?"
+      "title": "Part VI — The m = 3 Case",
+      "startLine": 256,
+      "endLine": 281,
+      "summary": "The m=3 dichotomy: `lambda_even_3_infinite` axiom (Λ(k,3)=∞ for even k, Lehmer-Lehmer 1962), the noted value Λ(3,3)=23532, and the predicate `erdos436Question2` capturing the OPEN question of whether Λ(k,3) is finite for all odd k ≥ 3.",
+      "mathContext": "Axiom for the even-k infinitude and a `Prop` stating the open odd-k finiteness question."
     },
     {
       "id": "graham",
-      "title": "Graham's Theorem (1964)",
-      "startLine": 287,
-      "endLine": 311,
-      "summary": "$\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction.",
-      "mathContext": "Mathematical content: $\\Lambda(k, m) = \\infty$ for all $k \\geq 2, m \\geq 4$. Corollary: $\\texttt{LambdaFinite}(k, m) \\Rightarrow m \\leq 3$, proved by contradiction."
+      "title": "Part VII — Graham's Theorem (1964)",
+      "startLine": 282,
+      "endLine": 306,
+      "summary": "The `graham_theorem` axiom: Λ(k,m)=∞ for all k ≥ 2 and m ≥ 4 (Graham 1964), and the corollary `only_small_m_matters` deducing that finiteness forces m ≤ 3.",
+      "mathContext": "Axiom for m ≥ 4 infinitude plus a contrapositive corollary via `by_contra`/`push_neg`."
     },
     {
       "id": "quadratic",
-      "title": "Quadratic Residue Case: $\\Lambda(2,2) \\leq 9$",
-      "startLine": 312,
-      "endLine": 335,
-      "summary": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often.",
-      "mathContext": "The Lehmer-Lehmer argument via Legendre symbol multiplicativity: $(10/p) = (2/p)(5/p)$ forces a consecutive QR pair among $\\{1,2\\}$, $\\{4,5\\}$, or $\\{9,10\\}$. Also: $\\{9,10\\}$ is achieved infinitely often."
+      "title": "Part VIII — The Quadratic Residue Case",
+      "startLine": 307,
+      "endLine": 327,
+      "summary": "The proved bound `lambda_2_2_bound : Lambda 2 2 ≤ 9`, with the elegant argument that 9=3² is a QR and, if 10 is not, the factorization 10=2·5 into non-QRs forces one of {1,2}, {4,5}, {9,10} to be a consecutive QR pair.",
+      "mathContext": "Theorem discharging the Λ(2,2) ≤ 9 bound by rewriting with the `lambda_2_2` value."
     },
     {
       "id": "growth",
-      "title": "Growth Rate Analysis",
-      "startLine": 336,
-      "endLine": 540,
-      "summary": "Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive.",
-      "mathContext": "Axiomatized: Super-polynomial growth axiomatized. Monotonicity and gaps proved via $\\texttt{native\\_decide}$: $68, 1147, 6664, 194236, 1447251$. Also: $\\Lambda(8,2)$ finite (Hildebrand), all values positive."
+      "title": "Part IX — Growth Rate Questions",
+      "startLine": 328,
+      "endLine": 347,
+      "summary": "The predicate `growthRatePolynomial` expressing polynomial-boundedness of Λ(k,2) over ℕ (∃ f bounding Λ with f(k) ≤ k^d for some d), framing the open question of how fast the rapidly-growing sequence 9, 77, 1224, 7888, 202124, 1649375 increases with k.",
+      "mathContext": "Definition encoding polynomial growth of Λ(k,2); the exact growth rate remains open."
     },
     {
-      "id": "flt-euler",
-      "title": "Fermat's Little Theorem and Euler's Criterion",
-      "startLine": 541,
-      "endLine": 634,
-      "summary": "FLT $r^{p-1} \\equiv 1 \\pmod{p}$ proved from $\\texttt{ZMod.pow\\_card\\_sub\\_one\\_eq\\_one}$. Euler's criterion forward ($r = x^2 \\Rightarrow r^{(p-1)/2} = 1$) proved via calc chain; backward axiomatized. Legendre symbol multiplicativity from Mathlib.",
-      "mathContext": "FLT: $r^{p-1} \\equiv 1 \\pmod{p}$ via ZMod.pow_card_sub_one_eq_one. Euler criterion: $r = x^2 \\Rightarrow r^{(p-1)/2} = 1$ proved forward; backward axiomatized. Legendre symbol multiplicativity from Mathlib."
+      "id": "summary",
+      "title": "Part X — Summary",
+      "startLine": 348,
+      "endLine": 416,
+      "summary": "Summary theorems aggregating the results: `erdos_436_summary` and `erdos_436_partially_solved` (Hildebrand finiteness + Graham m≥4 infinitude + Lehmer-Lehmer even-k m=3 infinitude), plus consequences `even_k_m3_infinite`, `lambda_finite_small_m`, `quadratic_case_complete`, `no_four_consecutive_qr`, and `no_five_consecutive`.",
+      "mathContext": "Theorems combining the axiomatized results into the overall partial-resolution statement and its immediate corollaries."
+    },
+    {
+      "id": "additional-structural",
+      "title": "Part XI — Additional Structural Results",
+      "startLine": 417,
+      "endLine": 583,
+      "summary": "Further proved structure: multiplicativity of kth residues (`kth_residue_mul`), Fermat's Little Theorem (`fermat_little_theorem`, via `ZMod.pow_card_sub_one_eq_one`), ZMod/IsSquare bridge lemmas, the product-of-two-non-residues-is-a-residue fact (`qr_product_non_residues`, via Legendre-symbol multiplicativity), residue counts (`count_kth_residues`, `half_are_qr`), and observed Λ(k,2) value/gap/positivity/finiteness lemmas (`lambda_2_monotone_observed`, `all_lambda_2_values_known`, `lambda_2_gaps`, `lambda_8_2_finite`, `lambda_up_to_100_finite`, `m_2_complete_picture`, `lambda_values_positive`).",
+      "mathContext": "Proved number-theoretic lemmas bridging the ℕ definitions to Mathlib's `ZMod`/Legendre-symbol API and recording the known Λ(k,2) data."
+    },
+    {
+      "id": "euler-criterion",
+      "title": "Part XII — Euler's Criterion and ZMod Connections",
+      "startLine": 584,
+      "endLine": 686,
+      "summary": "Euler's criterion in both directions and as an iff (`euler_criterion_forward`/`_backward`/`euler_criterion`, via `ZMod.euler_criterion` and Fermat's Little Theorem), Legendre-symbol multiplicativity (`legendre_sym_mul`), the power lemma `pow_multiple_p_minus_one`, and quadratic-residue counting facts (`prime_sub_one_even`, `count_qr_exact`, `qr_nonqr_equal_count`).",
+      "mathContext": "Theorems connecting the file's residue definitions to Euler's criterion and exact QR counts over `ZMod p` for odd primes."
     }
   ],
   "conclusion": {
