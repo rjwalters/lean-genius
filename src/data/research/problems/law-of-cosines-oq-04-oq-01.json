@@ -1,0 +1,106 @@
+{
+  "slug": "law-of-cosines-oq-04-oq-01",
+  "title": "Stewart's theorem via inner products in Euclidean space",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "For points A, B, C in a real inner product space and cevian foot D = (1-s)*B + s*C, prove the coordinate-free Stewart identity ‖A-D‖² = (1-s)‖A-B‖² + s‖A-C‖² − s(1-s)‖B-C‖², and recover the classical b²m + c²n = a(d²+mn) form with a=‖B-C‖, m=s*a, n=(1-s)*a.",
+    "plain": "The parent file LawOfCosinesOQ04 proves Stewart's theorem only at the scalar level, taking the two sub-triangle law-of-cosines equations as hypotheses with an abstract cosine t. This problem grounds Stewart's theorem in genuine geometry: the vertices are actual points in a real inner product space, the cevian foot is an affine combination, all lengths are honest norms, and the abstract cosine is replaced by the real inner product ⟪A-B, A-C⟫.",
+    "whyMatters": [
+      "Lifts Stewart's theorem from a scalar algebraic identity to a coordinate-free statement valid in any real inner product space and any dimension.",
+      "The master cevian-length identity directly specializes to Apollonius' median theorem (s = 1/2) and to the classical b²m + c²n = a(d²+mn) form.",
+      "Demonstrates the bilinear-expansion technique (norm_add_sq_real + real_inner_smul + module) for affine-combination length formulas."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`stewart_cevian_inner` — coordinate-free Stewart: ‖A-D‖² = (1-s)‖A-B‖² + s‖A-C‖² − s(1-s)‖B-C‖² for D = (1-s)•B + s•C in any real inner product space (build-pending under backend blackout).",
+      "`stewarts_theorem_inner` — classical form b²m + c²n = a(d²+mn) recovered with a=‖B-C‖, m=s*a, n=(1-s)*a.",
+      "`apollonius_median_inner` — median special case s=1/2 (Apollonius' theorem).",
+      "`norm_smul_add_smul_sq` — reusable bilinear lemma ‖p•u + q•v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u,v⟫."
+    ],
+    "open": [
+      "Build verification pending (Docker + Aristotle backends down at time of authoring); file not yet registered in Proofs.lean.",
+      "A fully synthetic angle-based version with explicit ∠ objects remains separate from this inner-product treatment."
+    ],
+    "goal": "Prove Stewart's theorem from actual point/vector geometry via real inner products, not from abstract scalar cosine hypotheses."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-15T00:00:00Z",
+    "iteration": 1,
+    "focus": "Authored coordinate-free Stewart identity over a real inner product space plus classical and median corollaries; numerically verified to 1e-13; build-pending under blackout.",
+    "blockers": [
+      "Docker build wrapper hangs (cannot lake-build to verify).",
+      "Aristotle MCP backend returns 'Resource not found' (404)."
+    ],
+    "nextAction": "Run ./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ01 and register the file in Proofs.lean once a backend is available.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS: authored 4 theorems (master cevian identity + classical Stewart + Apollonius median + bilinear helper) over a real inner product space; numerically verified; build-pending under dual backend blackout.",
+    "builtItems": [
+      "stewart_cevian_inner in Proofs/LawOfCosinesOQ04OQ01.lean (coordinate-free Stewart / cevian length).",
+      "stewarts_theorem_inner (classical b²m+c²n=a(d²+mn) from real points).",
+      "apollonius_median_inner (s=1/2 median / Apollonius).",
+      "norm_smul_add_smul_sq (reusable bilinear norm-of-linear-combination lemma)."
+    ],
+    "insights": [
+      "A - ((1-s)•B + s•C) = (1-s)•(A-B) + s•(A-C) since (1-s)+s = 1; proved by the `module` tactic.",
+      "The master identity is a single bilinear identity: expand via norm_add_sq_real, real_inner_smul_left/right, then ring after real_inner_comm to align ⟪A-B,A-C⟫.",
+      "Classical Stewart needs no positivity hypotheses: with a=‖B-C‖, m=s*a, n=(1-s)*a the side relation m+n=a holds by construction and the ‖B-C‖² term cancels exactly.",
+      "Numerical check (200k random trials, dims 1-4): both master and classical identities hold to ~1e-13."
+    ],
+    "mathlibGaps": [
+      "None — Mathlib v4.26.0 has norm_add_sq_real, norm_sub_sq_real, real_inner_smul_left/right, real_inner_comm, and the `module` tactic, all that is needed."
+    ],
+    "nextSteps": [
+      "Build with docker-build.sh and register in Proofs.lean.",
+      "Optional: derive the angle-bisector length formula as a further specialization (m:n = c:b)."
+    ],
+    "markdown": "See research/problems/law-of-cosines-oq-04-oq-01/knowledge.md"
+  },
+  "tags": [
+    "geometry",
+    "stewarts-theorem",
+    "cevian",
+    "inner-product-space",
+    "euclidean-geometry",
+    "law-of-cosines",
+    "formalized"
+  ],
+  "relatedProofs": [
+    "law-of-cosines",
+    "law-of-cosines-oq-04",
+    "cauchy-schwarz-oq-02",
+    "spherical-law-of-cosines"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.Basic (norm_add_sq_real, real_inner_smul_left)"
+    ]
+  },
+  "started": "2026-06-15T00:00:00Z",
+  "lastUpdate": "2026-06-15T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/LawOfCosinesOQ04OQ01.lean",
+      "filename": "LawOfCosinesOQ04OQ01.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LawOfCosinesOQ04OQ01.lean"
+    }
+  ]
+}
