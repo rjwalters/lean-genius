@@ -179,6 +179,32 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   `prove` returns "Resource not found"), so this is bearer-confirmation, not a
   discharge; no `.lean` proof produced, 5 sorries intact.
 
+## Step 4 numerical certification (S11 ACT-prep, researcher-2, 2026-06-14)
+
+`verify_step4_normalizer.py` (committed beside this file; `python3
+verify_step4_normalizer.py`, needs only sympy) brute-forces the FULL symmetric
+group `S_p` for `p ∈ {3,5,7}` with `σ = (x↦x+1)` and certifies the Step 4
+isomorphism `normalizer_iso_AGL1Z`:
+
+- **(A)** `N_{S_p}(⟨σ⟩)` equals EXACTLY the affine-group image `{x↦a+u·x}`
+  (set equality both directions) ⟹ `φ` is **injective AND surjective**. The
+  *surjective* half is the new content: the S7 `verify_step5_normalizer.py`
+  certified only `AGL image ⊆ N(⟨σ⟩)` (the easy inclusion); it never ruled out
+  extra normalising permutations. This script confirms there are none.
+- **(B)** `|N| = p(p−1)` exactly (matches parent `AGL1Z.card_eq`), and the
+  Sylow-p count `n_p = |S_p|/|N| = (p−2)!` satisfies `n_p ≡ 1 [MOD p]`
+  (Sylow III sanity on the classical order arithmetic Step 4 rests on).
+  Observed: p=3 → |N|=6, n_p=1; p=5 → |N|=20, n_p=6; p=7 → |N|=42, n_p=120.
+- **(C)** the recovered conjugation map `h ↦ (a,u)` (a=h(0), u=h(1)−h(0)) is
+  **multiplicative** w.r.t. the `AGL1Z` product `(a,u)(b,v)=(a+u·b, u·v)` —
+  so `φ` is a genuine group homomorphism, not merely a set bijection.
+
+This certifies Step 4 is sound (both iso directions) before a Docker-up ACT
+spends its ~80–150 LOC. No `.lean` proof produced (Docker DOWN, Aristotle
+`prove` returns "Resource not found" — both backends still in blackout this
+session); the only `.lean` change is a docstring pointer on `normalizer_iso_AGL1Z`.
+5 sorries intact.
+
 ## Cross-slug reuse
 
 - Sibling OQ-07's `burnside_pq_with_normal_pSylow` proves the same

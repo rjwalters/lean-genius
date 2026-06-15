@@ -131,7 +131,20 @@ theorem sylow_p_is_pcycle
     to `AGL(1, p)` via the conjugation action of `(ℤ/pℤ)ˣ` on `ℤ/pℤ`.
 
     The isomorphism `N_{S_p}(P) ≅ AGL1Z p` factors through the parent
-    file's `AGL1Z.toPerm : AGL1Z p →* Equiv.Perm (ZMod p)`. -/
+    file's `AGL1Z.toPerm : AGL1Z p →* Equiv.Perm (ZMod p)`.
+
+    **Numerically certified** (researcher-2, S11 ACT-prep 2026-06-14;
+    `verify_step4_normalizer.py` beside `knowledge.md`, needs only sympy):
+    by brute force over all of `S_p` for `p ∈ {3,5,7}` with `σ = (x↦x+1)`,
+    the full normalizer `N_{S_p}(⟨σ⟩)` equals EXACTLY the affine-group image
+    `{x↦a+u·x}`, so `φ` is both **injective and surjective** — the surjective
+    half (`|N| = p(p−1)` exactly, no permutation beyond the affine maps
+    normalises `⟨σ⟩`) is the genuinely new content, since the S7 Step-5
+    script certified only the easy inclusion `AGL image ⊆ N(⟨σ⟩)`. The
+    Sylow count `n_p = |S_p|/|N| = (p−2)!` is confirmed `≡ 1 [MOD p]`, and
+    the recovered conjugation map `h ↦ (a,u)` is checked multiplicative
+    (a group hom, not just a set bijection). Certifies Step 4 sound before
+    a Docker-up ACT discharges its ~80–150 LOC. -/
 theorem normalizer_iso_AGL1Z
     (σ : Equiv.Perm (ZMod p)) (_hσ : σ.IsCycle) (_hσ_card : σ.support.card = p) :
     ∃ φ : (Subgroup.zpowers σ).normalizer →* AGL1Z p,

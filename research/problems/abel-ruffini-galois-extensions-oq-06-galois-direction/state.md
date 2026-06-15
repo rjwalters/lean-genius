@@ -1,9 +1,31 @@
 # Current State
 
-**Phase**: S10 ORIENT (char-in-normal bridge bearer **found** — `Subgroup.normal_of_characteristic_of_normal` instance, ConjAct.lean:260 at pin; corrects S8's "no direct bearer" verdict; Step 1 hardest residual → 0 LOC; **5 sorries** unchanged; docstring + knowledge edit only, no proof)
-**Since**: 2026-06-14 (S10 ORIENT bearer find; was 2026-06-14 S9 ORIENT)
-**Iteration**: 10 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT this iteration)
-**Owner**: researcher-7 (S10 ORIENT, 2026-06-14); prior researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S11 ACT-prep (Step 4 `normalizer_iso_AGL1Z` **numerically certified** — `verify_step4_normalizer.py` brute-forces `S_p`, p∈{3,5,7}: `N_{S_p}(⟨σ⟩)` == AGL image exactly ⟹ φ injective AND **surjective**; |N|=p(p−1); n_p=(p−2)!≡1; conj-map a group hom. Complements S7 Step-5 cert which only had the easy inclusion. **5 sorries** unchanged; docstring + script + knowledge edit only, no Lean proof — both backends still DOWN)
+**Since**: 2026-06-14 (S11 ACT-prep Step-4 cert; was 2026-06-14 S10 ORIENT)
+**Iteration**: 11 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep this iteration)
+**Owner**: researcher-2 (S11 ACT-prep, 2026-06-14); prior researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 11 (researcher-2, 2026-06-14) — S11 ACT-prep: Step 4 isomorphism numerically certified (surjective half)
+
+**Outcome**: ACT-prep / durable verify (no build — Docker DOWN, Aristotle
+`prove` returns "Resource not found"; both backends still in blackout).
+`verify_step4_normalizer.py` added beside `knowledge.md`; in-source
+`normalizer_iso_AGL1Z` docstring gains a cert pointer; `knowledge.md` gains a
+Step-4-cert section. **0 Lean proof changes, 5 sorries intact.**
+
+**What I did.** The S7 `verify_step5_normalizer.py` certified only the EASY
+inclusion `AGL image ⊆ N_{S_p}(⟨σ⟩)` (every affine map normalises the
+translation subgroup). It never certified Step 4's `normalizer_iso_AGL1Z`,
+whose `φ` must be **surjective** — i.e. the normalizer contains NOTHING beyond
+the affine maps, `|N| = p(p−1)` exactly. I brute-forced the full `S_p` for
+p∈{3,5,7} with `σ = (x↦x+1)` and confirmed: (A) `N_{S_p}(⟨σ⟩)` equals exactly
+the affine image (set equality both directions) ⟹ φ injective AND surjective;
+(B) `|N|=p(p−1)`, `n_p=|S_p|/|N|=(p−2)!≡1 [MOD p]` (Sylow III); (C) the
+recovered map `h↦(a,u)` is multiplicative ⟹ a group hom, not just a bijection.
+
+**Net effect.** Step 4 (the structural core of the embedding) is now certified
+sound in both iso directions on a finite model before a Docker-up ACT discharges
+its ~80–150 LOC. The harder surjective half is no longer merely asserted.
 
 ## Iteration 10 (researcher-7, 2026-06-14) — S10 ORIENT: char-in-normal bridge bearer FOUND (corrects S8)
 
