@@ -1,5 +1,43 @@
 [
   {
+    "id": "ann-greens-oq0202-staging-rationale",
+    "proofId": "greens-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 42
+    },
+    "type": "context",
+    "title": "Why an Isolated, Unregistered Staging File",
+    "content": "The correction is not applied directly to the registered parent files. Fixing the false axiom requires a single signature change (`+hLineEq`) propagated through six consumers split across two *registered* files (`GreensTheoremOQ02.lean` and `GreensTheoremOQ02OQ04.lean`); such a multi-file refactor cannot be landed safely without an atomic, build-verified patch, which was impossible under the Docker + Aristotle outage this file was authored in.\n\nSo the fix is staged here under `_oriented`-suffixed names, proved in isolation, and ported back as one Docker-checked commit once tooling returns — at which point the suffix is dropped and both this file and `GreensTheoremOQ02Counterexample.lean` are retired. This is the standard axiom-integrity workflow: demonstrate the repair against a live counterexample first, land it coordinated second.",
+    "mathContext": "No new mathematics — a staging layer. The registered `greens_theorem_l1curl` is provably false (`greens_theorem_l1curl_refuted`: $0 = 1$); the patch lives here until it can be applied atomically.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Axiom integrity",
+      "Coordinated refactor",
+      "Blast radius"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-greens-oq0202-dependencies",
+    "proofId": "greens-theorem-oq-02-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "Dependency Architecture",
+    "content": "Each opened sibling supplies exactly one ingredient of the correction, making this file a thin re-statement-and-rethread layer:\n\n- `GreensTheoremOQ01 (rectLineIntegral)` — the concrete, correctly-oriented four-edge rectangle integral that `hLineEq` equates the circulation to (the keystone of the fix).\n- `GreensTheoremOQ02` — the three original consumers (`lineIntegral_zero_curl`, `lineIntegral_l1curl_smul`, `greens_oq1_from_l1curl`) plus the `LipschitzClosedCurve` / `lipschitzLineIntegral` vocabulary.\n- `GreensTheoremOQ02OQ04 (OneForm2D extDeriv1_2D)` — the remaining two consumers and the differential-form layer.\n- `GreensTheoremOQ02Counterexample (constCurve cexP cexQ …)` — the Session-5 unsound witness reused to verify excision.",
+    "mathContext": "$\\text{rectLineIntegral}\\,P\\,Q\\,a\\,b\\,c\\,d$ is the sum of the four oriented edge integrals of the rectangle $[a,b]\\times[c,d]$ — the explicit boundary orientation the abstract Lipschitz curve must match.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Module dependencies",
+      "rectLineIntegral",
+      "Line integral"
+    ],
+    "prerequisites": []
+  },
+  {
     "id": "ann-greens-oq0202-corrected-axiom",
     "proofId": "greens-theorem-oq-02-oq-02",
     "range": {
