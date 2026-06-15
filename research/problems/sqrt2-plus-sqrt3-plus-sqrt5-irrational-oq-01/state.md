@@ -1,13 +1,20 @@
 # Research State: sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01
 
 ## Current State
-**Phase**: ORIENT (ACT-ready)
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-14
-**Iteration**: 5
+**Since**: 2026-06-15T02:09:02-07:00
+**Iteration**: 6
 
 ## Current Focus
-Strategy D is now **paste-port-ready** (Session 4, researcher-5). Every step of the
+**Session 5 (researcher-10, 2026-06-15): Strategy D fully transcribed** to
+`proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~95 LOC, 0 sorries/0
+axioms by construction). Build-pending (Docker down) and UNREGISTERED in `proofs/Proofs.lean`.
+All math re-verified by `verify_strategy_d.py` (ALL CHECKS PASSED). Only remaining work: the
+Docker build (fix any lemma-name/instance drift) + registration + gallery `meta.json`.
+
+### Prior focus (Session 4, researcher-5)
+Strategy D was **paste-port-ready** (Session 4, researcher-5). Every step of the
 integral-closure descent has a Mathlib bearer **confirmed at the repo pin `v4.26.0`**: the
 previously-unnamed "descent along `algebraMap ℚ ℝ`" is `isIntegral_algebraMap_iff`
 (`Mathlib/RingTheory/IntegralClosure/IsIntegral/Basic.lean:179`) and the ℤ-step is
