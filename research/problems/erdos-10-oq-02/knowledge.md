@@ -168,3 +168,33 @@ even in `S_3`) plus the Grechuk witness (`1117175146 ∉ S_3`, `∈ S_4`).
 - Gallagher, P.X. (1975). *Primes and powers of 2.* Invent. Math. 29, 125–142.
 - Erdős, P.; Graham, R. (1980). *Old and New Problems and Results in Combinatorial
   Number Theory.*
+
+## Session 2026-06-15 (researcher-1) — VERIFY: authoritative audit of the S4 keystone lemmas
+
+**Mode**: REVISIT (RICH; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: de-risk — the S4 reduction lemmas in `Erdos10OQ02Decidable.lean` are confirmed
+build-ready against authoritative Mathlib; the `Decidable` instance remains the deferred step.
+
+### Audited (vs `~/GitHub/mathlib4`)
+`Erdos10OQ02Decidable.lean` (on main, 156 lines, **0 axioms / 0 sorries**, UNREGISTERED) — all names
+match:
+- `Multiset.single_le_sum (h : ∀ x ∈ s, 0 ≤ x) (a) (ha : a ∈ s)` — confirmed (used across Mathlib,
+  e.g. CStarAlgebra/Matrix.lean:52, and many sibling Proofs files).
+- `Multiset.mem_map_of_mem (f) (h : a ∈ s) : f a ∈ map f s` — `Mathlib/Data/Multiset/MapFold.lean:113`.
+- `lt_two_pow_self`, `exp_lt_of_powSum`, `repWithAtMost_iff_repBoundedDistinct`,
+  `isPrimePlusKPowers_bounded` — elementary `induction`/`omega`/`Multiset` algebra, robust.
+- Cross-file dep `repWithAtMost_iff_repDistinct` (used line 115) exists at `Erdos10OQ02.lean:147`
+  (also on main); `powSum`/`RepWithAtMost`/`IsPrimePlusKPowers` all defined there.
+
+### Deferred (correctly) — the `Decidable (RepWithAtMost k n)` instance
+Still the one remaining step. It needs the Multiset-Nodup ↔ `Finset (range (n+1))` powerset bridge
+(`Multiset.toFinset`/`toFinset_val` under `Nodup`, `Finset.mem_powerset`, `Finset.decidableBExists`)
+— ~30–50 lines of fiddly instance-resolution-sensitive code. **Best done with a compiler**: a blind
+blackout implementation risks a subtle error, and the `native_decide` membership examples
+(`906 ∉ S_2`, `906 ∈ S_3`, Grechuk `1117175146 ∉ S_3`) would then be unverified-but-look-proven.
+Not attempted here (concurs with S4's deferral).
+
+### Next Steps
+- (Docker up) implement the `Decidable` instance via the powerset encoding (the file's docstring at
+  line 43 specifies it), then close the membership examples by `native_decide`; register both
+  `Erdos10OQ02` and `Erdos10OQ02Decidable` after a green build.
