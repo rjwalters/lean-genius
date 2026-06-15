@@ -60,6 +60,8 @@ trig form `cos C = − cos A · cos B + sin A · sin B · cos c`.
 * `dual_poly`            — algebraic heart of the dual law                     (ring)
 * `dual_law_cleared`     — dual law for abstract normal-form data
 * `dual_spherical_law_cleared` — dual law for a unit-vector spherical triangle
+* `dual_law_trig`        — the **literal** trig dual law `cos C = − cos A cos B + sin A sin B cos c`,
+                           from cleared product-form normal relations (division-free proof)
 
 Axioms: 0.  Sorries: 0.
 
@@ -212,5 +214,51 @@ theorem dual_spherical_law_cleared
   have htp := triple_sq u v w
   rw [hu, hv, hw] at htp
   rw [htp]; ring
+
+/-! ## Part V: The literal trigonometric dual law of cosines
+
+The cleared form above is the algebraic content. Here we recover the *literal*
+trig identity `cos C = − cos A · cos B + sin A · sin B · cos c`.
+
+To stay division-free in the proof (so it needs no `field_simp`), the defining
+relations for the angle cosines/sines are stated in **cleared product form** —
+exactly the side law solved for the angle, multiplied through by the side sines:
+
+  `cos A · (sin b · sin c) = cos a − cos b · cos c`           (and cyclically),
+  `sin A · sin B · (sin a · sin b · sin² c) = Gram determinant`,
+  `sin² c = 1 − cos² c`.
+
+These are the normal forms of `knowledge.md`, with the (positive) denominators
+`sin b · sin c` etc. cleared. Under them the dual law holds as a genuine equality
+of the angle cosine `cos C`. The proof divides the cleared polynomial identity
+`dual_law_cleared` through by `sin a · sin b · sin² c` exactly once, realised as a
+single `mul_right_cancel₀`, so it reduces to `ring`-checkable `linear_combination`s
+with no division anywhere. -/
+theorem dual_law_trig
+    (ca cb cc sa sb sc cA cB cC sA sB : ℝ)
+    (hsa : sa ≠ 0) (hsb : sb ≠ 0) (hsc : sc ≠ 0)
+    (hsc2 : sc ^ 2 = 1 - cc ^ 2)
+    (hcA : cA * (sb * sc) = ca - cb * cc)
+    (hcB : cB * (sa * sc) = cb - ca * cc)
+    (hcC : cC * (sa * sb) = cc - ca * cb)
+    (hsAsB : sA * sB * (sa * sb * sc ^ 2)
+        = 1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) :
+    cC = -cA * cB + sA * sB * cc := by
+  have hD : sa * sb * sc ^ 2 ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsa hsb) (pow_ne_zero 2 hsc)
+  -- `cA · cB` cleared, from the product of `hcA` and `hcB`.
+  have hAB : cA * cB * (sa * sb * sc ^ 2) = (ca - cb * cc) * (cb - ca * cc) := by
+    have h : cA * (sb * sc) * (cB * (sa * sc)) = (ca - cb * cc) * (cb - ca * cc) := by
+      rw [hcA, hcB]
+    linear_combination h
+  -- the algebraic heart, instantiated with `sc² = 1 − cc²`.
+  have key : (cc - ca * cb) * sc ^ 2
+      = -(ca - cb * cc) * (cb - ca * cc)
+        + (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) * cc :=
+    dual_law_cleared ca cb cc (sc ^ 2)
+      (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) hsc2 rfl
+  -- clear the common denominator once, then close by a pure ring combination.
+  apply mul_right_cancel₀ hD
+  linear_combination (sc ^ 2) * hcC + hAB - cc * hsAsB + key
 
 end SphericalLawOfCosinesOQ03

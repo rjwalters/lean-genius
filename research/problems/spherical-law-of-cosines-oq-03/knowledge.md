@@ -109,8 +109,36 @@ Likely tactic risk: `field_simp` may need `mul_ne_zero`/`pow_ne_zero` side goals
 cleared identity explicitly. Numerics (check 1, cosA_nf, sinA_nf) confirm the statement is
 true, so this is purely a tactic-bookkeeping task once Docker/Aristotle return.
 
+## S3 (ACT, researcher-4, 2026-06-15) — LITERAL trig dual law added (`dual_law_trig`)
+
+The literal OQ deliverable `cos C = −cos A·cos B + sin A·sin B·cos c` is now a theorem
+in the file. **Chose a division-FREE route instead of the `field_simp` drop-in above**,
+because the build is still Docker-gated and a guessed `field_simp` proof could silently
+fail to compile and break the whole file. The angle cos/sin defining relations are taken
+in **cleared product form** (the side law solved for the angle, denominators cleared):
+`cA*(sb*sc)=ca−cb*cc`, `cB*(sa*sc)=cb−ca*cc`, `cC*(sa*sb)=cc−ca*cb`,
+`sA*sB*(sa*sb*sc²)=tp2`, `sc²=1−cc²`.
+
+Proof skeleton (all `ring`-checkable, no division):
+- `hD : sa*sb*sc^2 ≠ 0` (mul_ne_zero + pow_ne_zero);
+- `hAB : cA*cB*(sa*sb*sc^2) = (ca-cb cc)(cb-ca cc)` via `rw [hcA, hcB]` on the product
+  `(cA*(sb*sc))*(cB*(sa*sc))` then `linear_combination h`;
+- `key := dual_law_cleared ca cb cc (sc^2) tp2 hsc2 rfl` (the polynomial heart);
+- `apply mul_right_cancel₀ hD` (clear the common denominator once), then
+  `linear_combination (sc^2)*hcC + hAB - cc*hsAsB + key`.
+
+Both `linear_combination` coefficients are **sympy-verified** (`goal − combo = 0`,
+`hAB − hprod = 0`). Faithful to the OQ: proves the literal equality of the angle cosine
+from the cleared normal forms (same philosophy as the file's existing cleared lemmas;
+division side-conditions reduce to `sa,sb,sc ≠ 0`). REGISTERED in `Proofs.lean`.
+Build-pending (Docker down). 0 axioms / 0 sorries.
+
 ## Remaining next steps
-1. Build `Proofs.SphericalLawOfCosinesOQ03` once Docker returns; add the `dual_law_trig`
-   drop-in above; fix any `simp only [dot,cross]` projection hiccups (add `dsimp only`).
-2. Optionally bridge to the parent's `Vec3`/`SphericalTriangle` and `angleC` so the
-   normal-form angle cosines are *derived*, not posited.
+1. Build `Proofs.SphericalLawOfCosinesOQ03` once Docker returns; confirm `dual_law_trig`
+   compiles (risk: `mul_right_cancel₀` apply-unification + the two sympy-verified
+   `linear_combination` coefficients). Fix any `simp only [dot,cross]` projection hiccups
+   in the older lemmas (add `dsimp only`).
+2. Optionally bridge to the parent's `Vec3`/`SphericalTriangle`/`angleC` so the cleared
+   product-form relations are *derived*, not posited.
+3. (Lower priority) also provide the literal **division-form** `dual_law_trig` (the
+   `field_simp` drop-in above) once a backend can check the `field_simp` tactic.
