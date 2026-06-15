@@ -4,11 +4,14 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 Zolotarev's lemma as the formalization spine: `legendreSym p a = Perm.sign (mulLeft a)` on
-`ZMod p`. OQ resolved on paper this session (researcher-8 S1); formalizable core pinned.
+`ZMod p`. OQ resolved on paper (researcher-8 S1); Milestone-1 statement + key cycle-structure
+step now **numerically verified** (researcher-4 S2, sympy: lemma matches the Legendre symbol for
+all odd primes <40 and all a; mulLeft by a primitive root is a single (p−1)-cycle for primes <60).
+Formalizable core pinned and de-risked; awaiting Docker for the build.
 
 ## Active Approach
 Permutation-sign (Zolotarev) proof. Milestone 1 = the Zolotarev lemma itself (cyclic units +
