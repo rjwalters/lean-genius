@@ -163,4 +163,35 @@ theorem legendre_three_squares_of_corrected
   ⟨fun hrep hf => excluded_form_not_sum_three_sq hf hrep,
    three_sq_of_corrected_witnesses Hne3 H3⟩
 
+/-- **Slimmed residue-3 hypothesis** (no quadratic side-condition).
+
+`Residue3Property` carries an explicit `mm % 4 ≠ 3` clause so that Fermat's
+two-square theorem applies to the deficit. But for `m ≡ 3 (mod 8)` that clause is
+*forced* the moment the witness `t` is odd: an odd square is `≡ 1 (mod 8)`, so
+`mm = (m − t²)/2 ≡ 1 (mod 4)`. This slimmer property therefore asks only for an
+odd `t` and a prime deficit — the genuinely open Dirichlet-on-a-thin-sequence
+content — with the arithmetic side-condition discharged downstream. -/
+def Residue3PropertyOdd : Prop :=
+  ∀ {m : ℕ}, m % 8 = 3 → 3 < m →
+    ∃ t mm : ℕ, Odd t ∧ Nat.Prime mm ∧ m = t ^ 2 + 2 * mm
+
+/-- The slimmer `Residue3PropertyOdd` implies the original `Residue3Property`:
+the `mm % 4 ≠ 3` clause is recovered for free from oddness of `t` via
+`ThreeSquaresResidue3.residue3_deficit_one_mod_four`. -/
+theorem Residue3Property_of_odd (H : Residue3PropertyOdd) : Residue3Property := by
+  intro m hm8 hm3
+  obtain ⟨t, mm, ht, hmm, hdecomp⟩ := H hm8 hm3
+  refine ⟨t, mm, hmm, ?_, hdecomp⟩
+  have := ThreeSquaresResidue3.residue3_deficit_one_mod_four hm8 ht hdecomp
+  omega
+
+/-- **Corrected sufficiency from the slimmed witnesses.** Same conclusion as
+`three_sq_of_corrected_witnesses`, but consuming the smaller `Residue3PropertyOdd`
+(no `mm % 4 ≠ 3` obligation). -/
+theorem three_sq_of_corrected_witnesses_odd
+    (Hne3 : DirichletWitnessNe3) (H3 : Residue3PropertyOdd)
+    {n : ℕ} (hne : ¬IsExcludedForm n) :
+    ∃ a b c : ℤ, a ^ 2 + b ^ 2 + c ^ 2 = n :=
+  three_sq_of_corrected_witnesses Hne3 (Residue3Property_of_odd H3) hne
+
 end ThreeSquares
