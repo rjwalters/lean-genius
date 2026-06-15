@@ -58,22 +58,22 @@
       "id": "definitions",
       "title": "Core Definitions",
       "startLine": 54,
-      "endLine": 73,
+      "endLine": 74,
       "summary": "Defines primesBelow, PairwiseCoprime, ValidSubset, and primeReciprocalSum (the corrected right-hand side ∑_{p<n} 1/p).",
       "mathContext": "$\\text{primesBelow}(n) = \\{p < n : p \\text{ prime}\\}$; $\\text{primeReciprocalSum}(n) = \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{p}$."
     },
     {
       "id": "prime-properties",
       "title": "Properties of Primes and Coprimality",
-      "startLine": 74,
-      "endLine": 116,
+      "startLine": 75,
+      "endLine": 113,
       "summary": "Proves distinct primes are coprime, primesBelow is valid and nonempty for n≥3, and pairwise coprime sets have ≤1 even element.",
       "mathContext": "Distinct primes are coprime. $|\\text{primesBelow}(n)| \\geq 1$ for $n \\geq 3$. $|\\{a \\in A : 2 \\mid a\\}| \\leq 1$ for pairwise coprime $A$."
     },
     {
       "id": "rhs-bounds",
       "title": "The Corrected Right-Hand Side",
-      "startLine": 117,
+      "startLine": 114,
       "endLine": 132,
       "summary": "Proves the prime-reciprocal sum ∑_{p<n} 1/p is nonneg and strictly positive for n≥3.",
       "mathContext": "$0 < \\sum_{p \\in \\text{primesBelow}(n)} \\frac{1}{p}$ for $n \\geq 3$."
@@ -82,14 +82,14 @@
       "id": "conjecture",
       "title": "Main Conjecture and Consequences",
       "startLine": 133,
-      "endLine": 170,
+      "endLine": 169,
       "summary": "States the erdos_1210 axiom with an explicit existential O(1) constant, re-exposes it as a uniform bound, and records the unconditional empty-set bound.",
       "mathContext": "$\\exists C,\\ \\forall n \\geq 3,\\ \\forall \\text{ pairwise coprime } A,\\ \\sum_{a\\in A} \\frac{1}{n-a} \\leq \\sum_{p<n} \\frac{1}{p} + C$."
     },
     {
       "id": "o1-essential",
       "title": "Why the O(1) Term Is Essential",
-      "startLine": 171,
+      "startLine": 170,
       "endLine": 230,
       "summary": "Machine-checked: primesBelow 5 = {2,3}, primeReciprocalSum 5 = 5/6, {4} is valid at n=5, the constant-free statement fails there (1 > 5/6), and any C ≥ 1/6 restores consistency with the conjecture.",
       "mathContext": "At $n=5$, $A=\\{4\\}$: $\\sum 1/(5-a) = 1 > 5/6 = \\sum_{p<5} 1/p$, so the $C=0$ statement fails; any $C \\geq 1/6$ suffices."
