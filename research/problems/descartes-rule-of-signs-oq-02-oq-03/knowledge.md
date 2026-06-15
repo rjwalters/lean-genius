@@ -99,6 +99,55 @@ reduction for a sibling session.
 - `List.destutter` — `Mathlib/Data/List/Destutter.lean` (the (B) parity engine, if going via Mathlib).
 - `Polynomial.roots` / `Multiset.countP` / eval-as-product — for P3.
 
+## Session 2026-06-15 (S2, researcher-8) — ACT: P1 parity engine written (build-pending)
+
+**Mode:** FRESH (richest non-flagged available slug; 0 open PRs). **Both backends still down**
+(Docker `docker info` times out; Aristotle MCP `prove` → `"Resource not found"` on a trivial
+`n + 0 = n` ping). So: numerically certified hand proof, build-pending.
+
+### What I did
+Wrote **P1** — the combinatorial parity engine S1 flagged as elementary but never authored —
+as a self-contained companion `proofs/Proofs/DescartesRuleOfSignsOQ02Parity.lean` (UNREGISTERED):
+
+```
+theorem countAdjacentDiffs_parity (a : ℤ) (t : List ℤ)
+    (hpm : ∀ y ∈ a :: t, y = 1 ∨ y = -1) :
+    countAdjacentDiffs (a :: t) % 2 = (if a = (a :: t).getLast _ then 0 else 1)
+```
+
+i.e. for a `±1` list, sign-change count is even ⟺ head = last. `countAdjacentDiffs` is copied
+**verbatim** from `DescartesRuleOfSignsOQ02.lean:130`, so the lemma drops straight into the main
+file (same def, same intended namespace).
+
+### Proof shape (the reusable trick)
+Structural induction on the tail. Each adjacent difference *toggles* the running value in the
+2-element set `{1,-1}`; the only non-formal step is the XOR identity `[a≠b] ⊕ [b≠z] = [a≠z]`,
+discharged by `rcases` on the three `±1` endpoints (a, b, last `z`) → `split_ifs at ih ⊢` →
+`omega`. Key API: `List.getLast_cons` (push last to the tail), `List.getLast_mem` (last is `±1`),
+`obtain ⟨z, hz_eq⟩` to free the `getLast` term so its `±1` value can be `rcases`-substituted.
+**No `generalize … at`** — `omega` atomizes the opaque `countAdjacentDiffs (b::rest)` and pins its
+parity from `ih` directly.
+
+### Verification
+`countAdjacentDiffs_parity` claim checked exhaustively over **all 2046** `±1` lists of length
+1–10 (`python3` inline): 0 failures. Math is solid; only Lean-API/`rw`-fire risk remains
+(unbuildable under blackout).
+
+### Where this sits in the plan
+This is exactly **P1** from S1's table. It gives `parity(signChangesInList l) = [firstSign ≠
+lastSign]` once composed with the `signs`-map (values `±1` by construction). **P2** (first sign
+`= sign p(x)`, last `= sign(n!·leadingCoeff)`, sign-constant in `x`) and **P3** (the FTA content
+`[sign p(a)≠sign p(b)] ⟺ Odd(rootsInInterval)`) are still open; P3 is the genuine theorem and
+needs a live build to iterate the `roots`-product sign argument.
+
+### Next steps
+- Live build: typecheck the companion; if `List.getLast_cons` arg form / `mem_cons_self` arity
+  drift, repair, then **move the lemma into `DescartesRuleOfSignsOQ02.lean`** next to its `countAdjacentDiffs`.
+- P2: prove last Budan entry `= n!·leadingCoeff` (sign-constant) via in-file `iterDeriv` +
+  `Polynomial.iterate_derivative_…`; compose with P1 for `parity(budanCount) = [sign p(x) ≠ sign lead]`.
+- P3: the `Polynomial.roots` eval-as-product sign argument (~100–150 LOC) — the one piece that
+  truly discharges `budan_parity_axiom`.
+
 ## Dead Ends / Refuted
 
 - **"`budan_parity` is a direct corollary of Mathlib's Descartes (`RuleOfSigns.lean`)."** No —
