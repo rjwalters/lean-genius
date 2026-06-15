@@ -87,7 +87,7 @@ $\log Q(n)\sim \pi\sqrt{2n/3}$. Hence $\lambda \ge \pi\sqrt{2/3}$ (as a liminf).
 computed only bounds: S1's $Q(n)$ lower bound, S2/S3's asymptotic constant bounds,
 both still open PRs #24269/#24295). Orthogonal to those.
 
-### Result: $f(3)=2,\ f(4)=3,\ f(5)=5$ (exact), $f(6)\ge 9$
+### Result: $f(3)=2,\ f(4)=3,\ f(5)=5,\ f(6)=9$ (all exact / stabilized)
 
 Computed by exhaustive enumeration of all $n$-subsets of a $g\times g$ integer grid
 (exact arithmetic), collecting distinct rich-line sequences, with $g$ grown until the
@@ -99,9 +99,12 @@ bound on $f(n)$, and equals $f(n)$ once saturated). `verify_small_n_fn.py` (comm
 | 3  | 2      | ✓ ($3,4,5$ grids agree) | 2 | 7 |
 | 4  | 3      | ✓ ($4,5,6$)             | 3 | 15 |
 | 5  | **5**  | ✓ ($5,6,7$)             | **4** | 31 |
-| 6  | $\ge 9$ | $5{\times}5{:}8,\ 6{\times}6{:}9$ (lower bд) | 6 | 63 |
+| 6  | **9**  | ✓ ($6{\times}6$ and $7{\times}7$ both $=9$) | **6** | 63 |
 
-The realized sequences: $f(5)=\{[5],[4,2^4],[3,3,2^4],[3,2^7],[2^{10}]\}$.
+The realized sequences: $f(5)=\{[5],[4,2^4],[3,3,2^4],[3,2^7],[2^{10}]\}$;
+$f(6)$ adds the multi-/concurrent-line profiles $[6],[5,2^5],[4,3,2^6],[4,2^9],
+[3,3,3,2^6],[3,3,2^9],[3,3,3,3,2^3]$ (and the all-generic $[2^{15}]$) — note
+$f(6)=9>Q(6)=6$, the surplus again coming from intersecting/multiple rich lines.
 
 ### Key finding: $f(5)=5 > Q(5)=4$ — the S1 lower bound is **not tight at finite $n$**
 
@@ -122,7 +125,8 @@ of $f(n)$ (e.g. $2^4-1=15$ vs $f(4)=3$); it remains a stand-in pending a real �
 line-compatibility definition (Docker-gated, out of scope here).
 
 ### Next Steps (carried)
-- Stabilize $f(6)$ (needs a $\ge 7\times 7$ grid; pure-Python $\binom{49}{6}$ is the
-  bottleneck — use symmetry reduction or order-type DB) and extend to $f(7),f(8)$ to
-  fit $\log f(n)/\sqrt n$ against the $[\,2.5651,\,C\,]$ bracket.
+- Extend to $f(7),f(8)$ (needs $\ge 8\times 8$ grids with symmetry reduction or the
+  order-type DB; pure-Python $\binom{g^2}{n}$ is the bottleneck) to fit
+  $\log f(n)/\sqrt n$ against the $[\,2.5651,\,C\,]$ bracket. So far
+  $f=2,3,5,9$ for $n=3,4,5,6$.
 - (unchanged) tighten the S3 upper constant; replace the Lean placeholder.

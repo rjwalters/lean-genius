@@ -103,7 +103,7 @@ for n in sorted(plan):
             continue
         # cap explosion: skip if subset count is too large
         from math import comb
-        if comb(g * g, n) > 6_000_000:
+        if comb(g * g, n) > 15_000_000:
             counts_by_grid.append((g, None))
             continue
         seqs = f_on_grid(n, g)
