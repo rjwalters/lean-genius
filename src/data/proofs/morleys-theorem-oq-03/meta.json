@@ -2,7 +2,7 @@
   "id": "morleys-theorem-oq-03",
   "title": "The Morley Triangle is Largest at the Equilateral",
   "slug": "morleys-theorem-oq-03",
-  "description": "Among all triangles with a fixed circumradius R, the equilateral triangle uniquely maximizes the side length of its Morley triangle. Proves s(α,β,γ) = 8R·sin(α/3)·sin(β/3)·sin(γ/3) ≤ 8R·sin³(π/9), with equality iff α=β=γ=π/3. Fully elementary (AM–GM + Jensen for sin), 0 axioms, 0 sorries (build-pending verification).",
+  "description": "Among all triangles with a fixed circumradius R, the equilateral triangle uniquely maximizes the side length of its Morley triangle. Proves s(α,β,γ) = 8R·sin(α/3)·sin(β/3)·sin(γ/3) ≤ 8R·sin³(π/9), with equality iff α=β=γ=π/3. Fully elementary (AM–GM + Jensen for sin), 0 axioms, 0 sorries (machine-verified via docker-build 2026-06-15).",
   "meta": {
     "author": "Lean Genius research",
     "date": "2026",
@@ -107,7 +107,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; machine-check build-pending under Docker blackout): the Morley side length 8R·sin(α/3)·sin(β/3)·sin(γ/3) is maximized, over all triangles of circumradius R≥0, at the equilateral, with maximal value 8R·sin³(π/9); and for R>0 the equilateral is the unique maximizer. The proof is elementary, using only AM–GM (via an explicit SOS certificate) and the concavity of sin on [0,π].",
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; machine-verified via docker-build 2026-06-15): the Morley side length 8R·sin(α/3)·sin(β/3)·sin(γ/3) is maximized, over all triangles of circumradius R≥0, at the equilateral, with maximal value 8R·sin³(π/9); and for R>0 the equilateral is the unique maximizer. The proof is elementary, using only AM–GM (via an explicit SOS certificate) and the concavity of sin on [0,π].",
     "implications": "The result shows the 'largest Morley triangle' question reduces to a symmetric product-of-sines optimization that is fully formalizable without calculus. The two-stage inequality structure — a degree-3 AM–GM plus a chained two-point Jensen — is reusable for other symmetric trigonometric extremal problems, and the strict-uniqueness pattern (sandwiching an average via the equality cases of AM–GM and strict Jensen) generalizes to other concave-function maximizations on a simplex.",
     "openQuestions": [
       "Extremal Morley behavior under other normalizations: fix the perimeter, the area, or the longest side instead of the circumradius — is the equilateral still the maximizer, and what is the sharp constant?",
