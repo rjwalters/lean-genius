@@ -301,3 +301,50 @@ the skeleton's `le_csSup (gSet_bddAbove n) (mem_gSet.mpr ⟨collinearConfig n, �
 (the real |i-j| image-card bridge) is still build-gated and unwritten. But this turns the
 skeleton's hardest *combinatorial* step into proved Lean, so the next Docker session only needs
 the single real-arithmetic lemma rather than the whole ~100-line argument. OQ remains OPEN.
+
+## Session 2026-06-15 (Session 6, researcher-3, ACT — COMPLETE g_ge_half assembly shipped)
+
+**Mode:** ACT. Backends: Docker daemon nominally UP, but the worktree (and the shared main
+repo) `proofs/.lake` is the **circular self-symlink** memory warns about
+(`.lake -> .../proofs/.lake`), so any `import Mathlib`-bearing target OOMs re-cloning Mathlib
+— no usable local build. Aristotle MCP `prove` again returns **"Resource not found." (404)**.
+Effective dual blackout; the cache-warm **deployer build-gate is the verifier**.
+
+**Why I wrote L1 blind despite S4/S5 deferring it.** S5's `maxCount_image_card` was described
+in knowledge.md but **never actually committed** (grep confirms it was absent from every file
+and PR). More importantly I found a route that makes L1 *robust* rather than fragile: push the
+entire combinatorial count into **pure-ℕ Finset identities** (omega-decidable), leaving only a
+3-line cast lemma on the real side. Each piece is checkable in head.
+
+**Delta shipped** — full `g(n) ≥ ⌈n/2⌉` chain appended to `Erdos653LowerBound.lean` (5 thms):
+
+1. `maxCount_image_card (n) : ((range n).image (fun i => max i (n-1-i))).card = (n+1)/2`
+   — image = `Icc (n/2) (n-1)` (ext; both directions `omega`, witness `m`), `Nat.card_Icc`+omega.
+   (Finally commits S5's lemma.)
+2. `absDiff_image_eq (n i) (hi:i<n) : ((range n).erase i).image (fun j => max i j - min i j)
+   = Icc 1 (max i (n-1-i))` — **pure ℕ**, ext + omega; backward witnesses `i-m` / `i+m` by `by_cases m ≤ i`.
+3. `distinctDistCount_collinearConfig (n i) (hi:i<n) : distinctDistCount (collinearConfig n)
+   ![(i:ℝ),0] = max i (n-1-i)` — **the L1 bridge.** Local `hcast : ↑(max a b - min a b)=|↑a-↑b|`
+   (rcases le_total + Nat.cast_sub + abs_of_nonpos/nonneg + ring). `hset`: distanceSet = cast-image
+   of the ℕ abs-diff set (Finset.ext with explicit `mem_image`/`mem_filter`/`mem_erase`/`mem_range`
+   `.mpr`, mirroring `g_le_n_sub_one`'s idioms — no simp-shape reliance). Then card via
+   `Finset.card_image_of_injective _ Nat.cast_injective` + `absDiff_image_eq` + `Nat.card_Icc`.
+4. `numDistinctRValues_collinearConfig (n) : numDistinctRValues (collinearConfig n) = (n+1)/2`
+   — `rValueSet (collinearConfig n) = (range n).image (fun j => max j (n-1-j))` by ext (using L1),
+   then `maxCount_image_card`.
+5. **`g_ge_half (n) : (n+1)/2 ≤ g n`** — `le_csSup (gSet_bddAbove n) (mem_gSet.mpr ⟨collinearConfig n,
+   collinearConfig_card n, numDistinctRValues_collinearConfig n⟩)`. `(n+1)/2 = ⌈n/2⌉` in ℕ.
+
+This is the file's **first non-trivial proved lower bound** (beyond `g_ge_one`), and completes
+the elementary lower-bound frontier S1 opened: ⌈n/2⌉ is the 1D optimum (S2 finding 4a), so any
+further progress toward Csizmadia's 0.7n is provably 2-dimensional.
+
+**Build status:** build-pending (no local verifier this session). Risk concentrated in the
+`hset` membership plumbing and the `Finset.card_image_of_injective _ Nat.cast_injective` eta
+match; every lemma name cross-checked against repo/Mathlib usage. REGISTERED file — deployer
+build-gates merge, so a miscompile cannot reach main. If `hset`'s mem-unfold needs tweaking,
+the ℕ cores (1,2) and `g_ge_half` skeleton (5) are independently solid.
+
+**Honest assessment:** genuine, concrete completion of the long-deferred elementary lower bound,
+pending only the deployer's cache-warm build. The OQ `g(n) ≥ (1-o(1))n` is OPEN and untouched;
+the two literature axioms (`csizmadia_bound`, `upper_bound`) remain correct citations.

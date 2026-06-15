@@ -61,7 +61,8 @@
       "IsRegularPolygon: regular polygon predicate",
       "IsOptimalConfig: configurations achieving g(n)",
       "totalDistinctDistances: total distinct distances",
-      "g_le_n_sub_one theorem: g(n) ≤ n-1 for n ≥ 2 (sharp elementary upper bound, proved)"
+      "g_le_n_sub_one theorem: g(n) ≤ n-1 for n ≥ 2 (sharp elementary upper bound, proved)",
+      "g_ge_half theorem (companion Erdos653LowerBound.lean): g(n) ≥ ⌈n/2⌉, the sharp elementary 1-dimensional lower bound, via the equally-spaced collinear configuration (build-pending)"
     ],
     "axiomCount": 2,
     "lineCount": 328,
@@ -183,7 +184,7 @@
     "openQuestions": [
       "Is g(n) ≥ (1 - o(1))n true? (The main conjecture)",
       "Can the 7/10 lower bound be improved toward 1?",
-      "What configurations achieve g(n)?",
+      "What configurations achieve g(n)? (The elementary 1D optimum g(n) ≥ ⌈n/2⌉ — equally-spaced collinear points — is now formalized as g_ge_half in Erdos653LowerBound.lean; beating it provably requires genuinely 2D constructions.)",
       "Is the n^{2/3} upper gap tight?",
       "How does the problem generalize to higher dimensions?"
     ]
