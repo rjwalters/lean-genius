@@ -2539,6 +2539,8 @@ import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG4
 import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG5
 import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG6
 import Proofs.LagrangeFourSquaresWaringG2OQ01CountingG7
+import Proofs.LagrangeFourSquaresWaringG2OQ01ExactValue
+import Proofs.LagrangeFourSquaresWaringG2OQ01General
 import Proofs.LagrangeTheorem
 import Proofs.LagrangeTheoremOQ01
 import Proofs.LagrangeTheoremOQ01OQ01
