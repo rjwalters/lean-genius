@@ -80,46 +80,81 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview, Imports and Namespace",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "File header: problem statement (t(N) for Egyptian fractions in [t,N]), background, known results (Erdős-Graham 1980, Liu-Sawhney 2024), imports, and the `Erdos294` namespace."
+    },
+    {
       "id": "sec-egyptian",
-      "title": "Egyptian Fractions",
+      "title": "Part I: Egyptian Fractions",
       "startLine": 44,
-      "endLine": 74,
-      "summary": "Defines unit fractions and Egyptian sums"
+      "endLine": 72,
+      "summary": "Defines unitFraction (1/n), egyptianSum, and isEgyptianRepresentationOf1 (a finite set of distinct positive integers whose reciprocals sum to 1)."
     },
     {
       "id": "sec-t-function",
-      "title": "The t(N) Function",
-      "startLine": 75,
-      "endLine": 107,
-      "summary": "Defines constrained representations and the t(N) function"
+      "title": "Part II: The t(N) Function",
+      "startLine": 73,
+      "endLine": 106,
+      "summary": "Defines hasConstrainedRepresentation (Egyptian rep of 1 with denominators in [t,N]), axiomatizes existence of a blocking t, and defines t_func via Nat.find."
     },
     {
       "id": "sec-small-values",
-      "title": "Small Values",
-      "startLine": 108,
-      "endLine": 140,
-      "summary": "Analyzes t(2), t(6), and harmonic sums"
+      "title": "Part III: Small Values",
+      "startLine": 107,
+      "endLine": 133,
+      "summary": "Documents small cases t(2), t(6) via the {2,3,6} representation, and defines the harmonic sum harmonicSum(N) with its log-asymptotic note."
     },
     {
       "id": "sec-erdos-graham",
-      "title": "Erdős-Graham Upper Bound",
-      "startLine": 141,
-      "endLine": 164,
-      "summary": "t(N) ≪ N/log N from 1980"
+      "title": "Part IV: Erdős-Graham Upper Bound",
+      "startLine": 134,
+      "endLine": 157,
+      "summary": "States erdosGrahamUpperBound (t(N) ≪ N/log N), axiomatizes erdos_graham_1980, and gives the interpretation that few starting points block representations."
     },
     {
       "id": "sec-liu-sawhney",
-      "title": "Liu-Sawhney Theorem",
-      "startLine": 165,
-      "endLine": 193,
-      "summary": "Lower bound from 2024 resolving the problem"
+      "title": "Part V: The Liu-Sawhney Theorem",
+      "startLine": 158,
+      "endLine": 186,
+      "summary": "States the Liu-Sawhney lower bound (2024), combines it with the upper bound into liuSawhneyTheorem, axiomatizes liu_sawhney_2024, and proves the main theorem erdos_294."
+    },
+    {
+      "id": "sec-implications",
+      "title": "Part VI: Implications",
+      "startLine": 187,
+      "endLine": 206,
+      "summary": "States the density interpretation (almost all starting points admit representations) and the harmonic-sum connection relating hasConstrainedRepresentation to partial harmonic sums."
+    },
+    {
+      "id": "sec-related-functions",
+      "title": "Part VII: Related Functions",
+      "startLine": 207,
+      "endLine": 228,
+      "summary": "Introduces the f(n) function (minimum number of distinct unit fractions summing to 1 with largest denominator n), axiomatizes its existence for n ≥ 6, and notes its relationship to t(N)."
     },
     {
       "id": "sec-greedy",
-      "title": "Greedy Algorithm",
-      "startLine": 239,
+      "title": "Part VIII: The Greedy Algorithm",
+      "startLine": 229,
+      "endLine": 255,
+      "summary": "Defines greedyStep (smallest n with 1/n ≤ q) and greedyRelation, describing the greedy Egyptian-fraction algorithm and its connection to constrained representations."
+    },
+    {
+      "id": "sec-computational",
+      "title": "Part IX: Computational Aspects",
+      "startLine": 256,
+      "endLine": 271,
+      "summary": "Notes that computing t(N) exactly is hard (no known efficient algorithm) and lists small known values via knownValues."
+    },
+    {
+      "id": "sec-summary",
+      "title": "Part X: Main Results Summary",
+      "startLine": 272,
       "endLine": 306,
-      "summary": "Connection to greedy Egyptian fraction algorithms"
+      "summary": "Summarizes the resolution (Erdős-Graham upper bound + Liu-Sawhney lower bound), proves erdos_294_summary combining both bounds, and records the SOLVED status."
     }
   ],
   "conclusion": {
