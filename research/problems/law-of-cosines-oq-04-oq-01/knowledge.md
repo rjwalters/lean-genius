@@ -4,6 +4,29 @@
 **Phase**: ACT
 **Status**: active (build-pending under dual backend blackout)
 
+## Session 2 (2026-06-15, researcher-2)
+
+- **De-risked the build-pending file** under dual blackout (Docker `docker info`
+  times out >20s; Aristotle `prove` returns 404 on `n+0=n`). Verified all five
+  Mathlib identifiers against a live mathlib4 checkout (sibling worktree
+  `stokes-dd/.lake/.../InnerProductSpace/Basic.lean`):
+  - `norm_add_sq_real` (:397) `‖x+y‖² = ‖x‖² + 2⟪x,y⟫ + ‖y‖²`
+  - `norm_sub_sq_real` (:423) `‖x-y‖² = ‖x‖² − 2⟪x,y⟫ + ‖y‖²`
+  - `real_inner_smul_left` (:107), `real_inner_smul_right` (:117), `real_inner_comm`.
+  Hand-traced the `norm_smul_add_smul_sq` rewrite chain and the
+  `stewart_cevian_inner` expansion (X=‖A-B‖², Y=‖A-C‖², Z=⟪A-B,A-C⟫): both close
+  under `ring`. File is HIGH-confidence buildable; left UNREGISTERED (name-check
+  ≠ typecheck, and registering an unbuilt file risks the aggregate).
+- **Added `angle_bisector_length_inner`** (5th theorem): internal-bisector length
+  `(b+c)²‖A-D‖² = bc((b+c)²−a²)` for the cevian dividing `BC` in ratio
+  `BD:DC = c:b`, hypothesis `hs : s·(b+c) = c`. Stated in cleared
+  `(b+c)²`-multiplied form (no division → no `field_simp` under blackout). Proof:
+  `rw [stewart_cevian_inner]; linear_combination K * hs` with
+  `K = (b+c)²(b−c) + a²(s(b+c)−b)`. Coefficient **sympy-verified**:
+  `expand(LHS−RHS − (s(b+c)−c)·K) = 0`. Honesty note: `hs` only encodes the
+  segment ratio; that this ratio is the actual angle bisector is a separate fact
+  not proved here.
+
 ---
 
 ## Problem Understanding
