@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-setup-context",
+    "proofId": "dirichlets-theorem-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 16
+    },
+    "type": "context",
+    "title": "Special-Case Dirichlet: Elementary vs. Analytic",
+    "content": "The header frames the result as a special case of Dirichlet's theorem on primes in arithmetic progressions. The general theorem — that every progression $a, a+q, a+2q, \\ldots$ with $\\gcd(a,q)=1$ contains infinitely many primes — was proved by Dirichlet in 1837 using $L$-functions and the nonvanishing $L(1,\\chi) \\neq 0$ for non-principal characters $\\chi$. By contrast, this file imports only `Mathlib` for elementary lemmas (`Nat.exists_prime_and_dvd`, `Nat.Prime.dvd_factorial`, `Set.infinite_iff_exists_gt`) and proves the case $q=4,\\, a=3$ with a Euclid-style construction. Such elementary proofs exist precisely for residue classes $a$ with $a^2 \\equiv 1 \\pmod q$ (here $3^2 = 9 \\equiv 1 \\pmod 4$), where a product argument can force a prime in the target class; general $a$ provably requires analytic input.",
+    "mathContext": "$\\#\\{p \\le x : p \\equiv 3 \\!\\!\\pmod 4\\} \\sim \\tfrac{1}{\\varphi(4)}\\tfrac{x}{\\log x} = \\tfrac{1}{2}\\tfrac{x}{\\log x}$ (analytic density), here shown infinite by elementary means",
+    "significance": "context",
+    "relatedConcepts": [
+      "Dirichlet's theorem",
+      "L-functions",
+      "arithmetic progressions",
+      "Euclid's argument"
+    ],
+    "prerequisites": [
+      "elementary number theory",
+      "modular arithmetic"
+    ]
+  },
+  {
     "id": "ann-key-lemma",
     "proofId": "dirichlets-theorem-oq-02",
     "range": {
