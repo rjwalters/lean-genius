@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "problem-statement",
+      "title": "Problem Statement: De-Axiomatizing Ham Sandwich",
+      "summary": "Imports (Borsuk-Ulam, the parent Brouwer OQ files, measure theory) and the header docstring posing OQ-01-OQ-03-OQ-01: the parent stated the Ham Sandwich theorem as an axiom, noting the obstruction is continuity of the bisecting-measure function. This file asks how much of that axiom is topological (free from Borsuk-Ulam) versus genuinely analytic, and lays out the four results that separate the two.",
+      "startLine": 1,
+      "endLine": 74,
+      "mathContext": "Goal: reduce the axiom ham_sandwich_theorem to the single analytic input 'the half-volume discrepancy map is continuous on S^n', proving oddness and 'discrepancy zero implies equal volumes' outright."
+    },
+    {
       "id": "ham-sandwich-reduction",
       "title": "The Abstract Topological Reduction",
       "summary": "A continuous odd F: S^n -> R^n with a 'zero implies bisected' bridge yields a bisecting point — the entire topological content, from Borsuk-Ulam.",
@@ -90,6 +98,14 @@
       "startLine": 223,
       "endLine": 345,
       "mathContext": "stdPos_neg / stdNeg_neg follow from linearity; volume_inter_ne_top from the slice being a subset of a finite-volume body; assembled into ham_sandwich_standard. ham_sandwich_standard_of_scalar_continuity then combines these with the scalar-continuity reduction, so its only hypotheses are finite body volumes and continuity of each scalar slice-volume on S^n."
+    },
+    {
+      "id": "topological-vs-analytic-summary",
+      "title": "Summary: Topological Core vs. the Lone Analytic Input",
+      "summary": "Closing docstring confirming the dichotomy is now exact: the topological core (oddness, 'zero implies bisected', and existence of a sphere zero) is fully proved from Borsuk-Ulam, while the single genuinely-remaining analytic input is the Lebesgue continuity of the parameterized half-space volume on S^n. Two of the three originally-listed side conditions (antipodal swap, volume finiteness) are discharged for the standard linear parameterization, so ham_sandwich_standard_of_scalar_continuity states the conclusion with exactly the scalar continuity (plus finiteness) as its only hypotheses.",
+      "startLine": 346,
+      "endLine": 371,
+      "mathContext": "Lone remaining input: continuity of $x \\mapsto \\mathrm{vol}(\\mathrm{body}_i \\cap \\{y : \\langle u(x), y\\rangle < t(x)\\}).\\mathrm{toReal}$ on $S^n$ (dominated convergence) — a self-contained measure-theory fact, not topological."
     }
   ],
   "conclusion": {
