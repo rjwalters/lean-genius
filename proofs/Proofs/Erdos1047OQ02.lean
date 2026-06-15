@@ -40,28 +40,19 @@
   axiom (negating the *weaker* statement) over-claims — which is exactly why it is
   unsound.
 
-  ── Proposed parent patch (apply in a live Docker session) ────────────────────
+  ── Parent patch: APPLIED ─────────────────────────────────────────────────────
 
-  In `Proofs/Erdos1047Problem.lean`:
-    1. Replace the body of `grunskyConjecture` (`:118`) with the `∀ c > 0` form
-       (= `grunskyConjectureFaithful` here), matching the docstring.
-    2. Delete `axiom grunskyConjecture_false` (`:124`); re-introduce it *after*
-       `goodman_counterexample` as
-          theorem grunskyConjecture_false : ¬grunskyConjecture := by
-            intro h
-            obtain ⟨z₀, hz₀, hnc⟩ := goodman_counterexample
-            exact hnc (h goodmanPolynomial goodmanPolynomial_monic
-              goodmanPolynomial_degree_pos goodmanCriticalValue
-              (by unfold goodmanCriticalValue; positivity) z₀ hz₀)
-       (move `goodmanPolynomial_degree_pos` above this theorem, or inline the
-       `rw [goodmanPolynomial_natDegree]; omega`).
-    3. `meta.json`: axiomCount `2 → 1` (only `goodman_counterexample` remains).
+  The patch this file proposed has now been applied in `Proofs/Erdos1047Problem.lean`
+  (Docker-verified):
+    1. `grunskyConjecture` was redefined to the `∀ c > 0` faithful form (= this
+       file's `grunskyConjectureFaithful`).
+    2. `axiom grunskyConjecture_false` was converted to a `theorem`, proved from
+       `goodman_counterexample` (no standalone axiom).
+    3. `meta.json` axiomCount `2 → 1` (only `goodman_counterexample` remains).
 
-  This file is UNREGISTERED (authored under a Docker + Aristotle blackout; the
-  axiom-edit-under-blackout rule forbids a blind edit of the registered flagship).
-  It imports the parent and reuses `goodman_counterexample`, so it adds **no new
-  axioms** of its own and serves as a machine-checkable proof-of-concept for the
-  patch above.
+  Consequently `grunskyConjectureFaithful` is now definitionally equal to the
+  parent's `grunskyConjecture`; `faithful_imp_grunsky` below is the identity, and
+  this file stands as a redundant-but-consistent companion documenting the repair.
 -/
 
 import Proofs.Erdos1047Problem
@@ -80,13 +71,14 @@ def grunskyConjectureFaithful : Prop :=
     ∀ c, 0 < c → ∀ z₀ ∈ lemniscate f c,
       IsConvexComplex (componentContaining (lemniscate f c) z₀)
 
-/-- The faithful (∀ `c`) statement is **strictly stronger** than the parent file's
-    small-`c` `grunskyConjecture`: take the threshold `c₀ = 1`.  Consequently the
-    parent's `axiom grunskyConjecture_false : ¬grunskyConjecture` negates the
-    *weaker* statement and over-claims — the root cause of its unsoundness. -/
-theorem faithful_imp_grunsky : grunskyConjectureFaithful → grunskyConjecture := by
-  intro h f hm hd
-  exact ⟨1, one_pos, fun c hc _ z₀ hz₀ => h f hm hd c hc z₀ hz₀⟩
+/-- The faithful (∀ `c`) statement now **coincides** with the parent file's
+    `grunskyConjecture`: the unsoundness has been repaired in `Erdos1047Problem.lean`,
+    where `grunskyConjecture` was redefined to the faithful `∀ c > 0` form and its
+    negation `grunskyConjecture_false` converted from an `axiom` to a theorem.  The
+    two definitions are now definitionally equal, so this implication is the
+    identity. -/
+theorem faithful_imp_grunsky : grunskyConjectureFaithful → grunskyConjecture :=
+  fun h => h
 
 /-- **The corrected axiom, as a theorem.**  The faithful Grunsky statement is
     false — proved directly from the parent's `goodman_counterexample`

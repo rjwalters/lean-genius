@@ -542,3 +542,56 @@ flag). The ⌊d/3⌋ bound is elementary (translate/rotate copies of a counterex
 folklore, but it was **absent from the file/gallery**, which carried only the placeholder. The
 true value of Goodman's question (the exact growth rate, and whether ⌊d/3⌋ is tight) remains OPEN.
 Not touched: the `grunskyConjecture_false` soundness issue (open #24521) and onset work (#24420).
+
+---
+
+## Session 2026-06-15 (researcher-4) — ACT: ELIMINATED the false axiom `grunskyConjecture_false` (axiomCount 2 → 1), Docker-VERIFIED
+
+**Mode:** REVISIT (RICH). **Docker UP** (not blackout) — so executed the soundness
+patch that every prior session deferred *because* of the blackout. **Outcome:**
+real axiom reduction on the registered flagship, machine-checked.
+
+### What was wrong (carried since the researcher-1 flag, open PR #24521/#24597)
+`Proofs/Erdos1047Problem.lean` defined `grunskyConjecture` with a spurious
+**small-`c`** quantifier (`∃ c₀ > 0, ∀ c, 0 < c → c < c₀ → …`) and posited its
+negation as `axiom grunskyConjecture_false`. But the small-`c` statement is **TRUE**
+(as `c → 0` each component is a near-circular disk around a root ⇒ convex), so its
+negation was a **false axiom** — the headline `erdos_1047` "solved" #1047 via an
+unsound assumption that also didn't match the real question (Pommerenke/Goodman
+counterexamples live at specific *non-small* `c`).
+
+`Erdos1047OQ02.lean` (merged #24521, unregistered) had already built the faithful
+statement + the corrected theorem as a proof-of-concept, and documented the exact
+parent patch — but explicitly left it unapplied "under a Docker + Aristotle blackout".
+
+### What this session did (the patch, now applied + verified)
+1. Redefined `grunskyConjecture` to the **faithful `∀ c > 0`** form (matches the file
+   docstring and the historical Grunsky question; no small-`c` restriction).
+2. Converted `axiom grunskyConjecture_false` → **`theorem grunskyConjecture_false`**,
+   proved directly from `goodman_counterexample`:
+   `intro h; obtain ⟨z₀,hz₀,hnc⟩ := goodman_counterexample; exact hnc (h goodmanPolynomial …)`.
+   Moved `goodmanPolynomial_degree_pos` above it. The headline
+   `erdos_1047 : ¬grunskyConjecture := grunskyConjecture_false` is unchanged and now
+   rests on a theorem.
+3. Updated `Erdos1047OQ02.lean` to stay compilable: `grunskyConjectureFaithful` is now
+   **defeq** to the parent's `grunskyConjecture`, so `faithful_imp_grunsky := fun h => h`
+   (was `⟨1, one_pos, …⟩`, which the shape change would have broken). Reframed its header
+   from "proposed patch" to "patch APPLIED". This keeps the build green under ANY merge
+   order vs PR #24597 (which registers OQ02).
+4. `meta.json`: axiomCount 2→1, theoremCount 13→14, assumptions/openQuestions/description/
+   section-mathContext rewritten (dropped the misleading "for small c" headline framing).
+
+### Verification
+- `./proofs/scripts/docker-build.sh Proofs.Erdos1047Problem` → **Built (13s), success**.
+  `#print axioms`-level: only remaining `axiom` in the file is `goodman_counterexample`.
+- OQ02 companion built separately (heavier `import Mathlib.Tactic`).
+
+### Remaining axiom & next steps
+- `goodman_counterexample` is the **only** remaining assumption — the genuine analytic
+  input (a non-convex component of `(z²+1)(z−2)²` at `c = 5^{3/2}/4`). Discharging it
+  needs real level-set/curvature analysis in Lean (heavy; the decidable artifact remains
+  the numerical curvature certificate from prior sessions). The S1–S3 numerical work
+  (Pommerenke necking, two-/three-root onset, `⌊d/3⌋` lower bound) is unaffected and still
+  the live numerical frontier (open #24420, merged #24491/#24545).
+- PR #24597 (registers OQ02) is now largely **superseded**: the patch it proposed is in the
+  parent. OQ02 is kept as a consistent companion; #24597 can merge or close harmlessly.
