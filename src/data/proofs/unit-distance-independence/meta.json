@@ -117,133 +117,152 @@
       "title": "Overview and Setting",
       "startLine": 1,
       "endLine": 33,
-      "description": "File header: introduces the unit distance graph G on R^2 (edges between points at Euclidean distance 1), the independence number α(S) for finite point sets, and the headline results — independence set theory, coloring/independence connections, and the Hadwiger-Nelson bounds 5 ≤ χ(R^2) ≤ 7. 65 theorems, 2 axioms, 0 sorries."
+      "description": "File header: introduces the unit distance graph G on R^2 (edges between points at Euclidean distance 1), the independence number α(S) for finite point sets, and the headline results — independence set theory, coloring/independence connections, and the Hadwiger-Nelson bounds 5 ≤ χ(R^2) ≤ 7. 65 theorems, 2 axioms, 0 sorries.",
+      "mathContext": "Unit distance graph $G$ on $\\mathbb{R}^2$: $u\\sim v \\iff \\|u-v\\|=1$. Headline bound (Hadwiger–Nelson): $5 \\le \\chi(\\mathbb{R}^2) \\le 7$."
     },
     {
       "id": "sec-udi-abstract-independence",
       "title": "Part I: Abstract Graph Independence",
       "startLine": 34,
       "endLine": 47,
-      "description": "Defines IsIndepSet (for Set V) and IsIndepFinset (for Finset V): a vertex set with no two adjacent members in a simple graph."
+      "description": "Defines IsIndepSet (for Set V) and IsIndepFinset (for Finset V): a vertex set with no two adjacent members in a simple graph.",
+      "mathContext": "$S$ independent $\\iff \\forall u,v\\in S,\\ \\lnot(u\\sim_G v)$. Defined for both $\\mathrm{Set}\\,V$ (IsIndepSet) and $\\mathrm{Finset}\\,V$ (IsIndepFinset)."
     },
     {
       "id": "sec-udi-basic-properties",
       "title": "Part II: Basic Properties of Independent Sets",
       "startLine": 48,
       "endLine": 76,
-      "description": "Proves the empty set and singletons are independent, that subsets of independent sets are independent, and that an independent set induces no internal edges."
+      "description": "Proves the empty set and singletons are independent, that subsets of independent sets are independent, and that an independent set induces no internal edges.",
+      "mathContext": "$\\varnothing$ and singletons $\\{v\\}$ are independent in any $G$; $T\\subseteq S$ with $S$ independent $\\Rightarrow T$ independent. $S$ independent $\\iff$ $G$ induces no edge inside $S$."
     },
     {
       "id": "sec-udi-independence-number",
       "title": "Part IIb: Independence Number",
       "startLine": 77,
       "endLine": 103,
-      "description": "Defines independenceNumber α(G) as the maximum cardinality of an independent finset, proves α(G) ≥ 0 via the empty set, and that any independent set has cardinality ≤ α(G)."
+      "description": "Defines independenceNumber α(G) as the maximum cardinality of an independent finset, proves α(G) ≥ 0 via the empty set, and that any independent set has cardinality ≤ α(G).",
+      "mathContext": "$\\alpha(G)=\\max\\{|S| : S \\text{ independent}\\}$. Then $\\alpha(G)\\ge 0$ and every independent set satisfies $|S|\\le\\alpha(G)$."
     },
     {
       "id": "sec-udi-coloring-independence",
       "title": "Part III: Coloring and Independence Relationship",
       "startLine": 104,
       "endLine": 121,
-      "description": "Defines IsProperColoring (adjacent vertices receive distinct colors) and proves each color class of a proper coloring is an independent set."
+      "description": "Defines IsProperColoring (adjacent vertices receive distinct colors) and proves each color class of a proper coloring is an independent set.",
+      "mathContext": "Proper coloring $c:V\\to\\mathrm{Fin}\\,n$ with $u\\sim v\\Rightarrow c(u)\\ne c(v)$. Each color class $c^{-1}(i)$ is an independent set."
     },
     {
       "id": "sec-udi-hadwiger-nelson",
       "title": "Part IV: The Hadwiger-Nelson Problem",
       "startLine": 122,
       "endLine": 144,
-      "description": "Introduces Plane := EuclideanSpace ℝ (Fin 2) and axiomatizes the Hadwiger-Nelson bounds — De Grey's lower bound χ(ℝ²) ≥ 5 and the upper bound χ(ℝ²) ≤ 7 — concluding 5 ≤ χ(ℝ²) ≤ 7."
+      "description": "Introduces Plane := EuclideanSpace ℝ (Fin 2) and axiomatizes the Hadwiger-Nelson bounds — De Grey's lower bound χ(ℝ²) ≥ 5 and the upper bound χ(ℝ²) ≤ 7 — concluding 5 ≤ χ(ℝ²) ≤ 7.",
+      "mathContext": "$\\mathrm{Plane}:=\\mathrm{EuclideanSpace}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,2)$. Axioms: $\\chi(\\mathbb{R}^2)\\ge 5$ (de Grey 2018) and $\\chi(\\mathbb{R}^2)\\le 7$ (hexagonal tiling), giving $5\\le\\chi(\\mathbb{R}^2)\\le 7$."
     },
     {
       "id": "sec-udi-structural-theorems",
       "title": "Part V: Independent Set Structure Theorems",
       "startLine": 145,
       "endLine": 185,
-      "description": "Proves structural results: extending an independent set by a non-adjacent vertex (isIndepFinset_insert), that an edge forces an endpoint out of any independent set, existence of a nonempty independent set, and the |V| cardinality bound."
+      "description": "Proves structural results: extending an independent set by a non-adjacent vertex (isIndepFinset_insert), that an edge forces an endpoint out of any independent set, existence of a nonempty independent set, and the |V| cardinality bound.",
+      "mathContext": "Insert/extend lemmas: $v\\notin S$ non-adjacent to all of $S\\Rightarrow S\\cup\\{v\\}$ independent. An edge $\\{u,v\\}$ forces at least one endpoint out of any independent set; $|S|\\le|V|$."
     },
     {
       "id": "sec-udi-unit-distance-graph",
       "title": "Part VI: Unit Distance Graph Specific Results",
       "startLine": 186,
       "endLine": 212,
-      "description": "Defines unitDistGraph on a finite subset of the plane (adjacency iff Euclidean distance 1) and characterizes its independent sets as point sets with no pair at distance 1."
+      "description": "Defines unitDistGraph on a finite subset of the plane (adjacency iff Euclidean distance 1) and characterizes its independent sets as point sets with no pair at distance 1.",
+      "mathContext": "$G$ on a finite $S\\subset\\mathbb{R}^2$ with $u\\sim v\\iff\\|u-v\\|=1$. A subset is independent $\\iff$ it contains no two points at distance exactly $1$."
     },
     {
       "id": "sec-udi-clique-duality",
       "title": "Part VII: Independence and Clique Duality",
       "startLine": 213,
       "endLine": 241,
-      "description": "Establishes that an independent set in G is a clique in the complement graph Gᶜ, that an edgeless graph makes every set independent, and that a complete graph on ≥ 2 vertices has independence number 1."
+      "description": "Establishes that an independent set in G is a clique in the complement graph Gᶜ, that an edgeless graph makes every set independent, and that a complete graph on ≥ 2 vertices has independence number 1.",
+      "mathContext": "$S$ independent in $G$ $\\iff$ $S$ is a clique in the complement $G^c$. Edgeless $\\bot$ makes every set independent; $K_n$ ($n\\ge2$) has $\\alpha=1$."
     },
     {
       "id": "sec-udi-counting-arguments",
       "title": "Part VIII: Counting Arguments",
       "startLine": 242,
       "endLine": 262,
-      "description": "Shows a proper k-coloring partitions the vertices into independent color classes, each vertex lying in exactly one class."
+      "description": "Shows a proper k-coloring partitions the vertices into independent color classes, each vertex lying in exactly one class.",
+      "mathContext": "A proper $k$-coloring partitions $V$ into $k$ independent color classes: $V=\\bigsqcup_{i<k} c^{-1}(i)$, each $c^{-1}(i)$ independent."
     },
     {
       "id": "sec-udi-pigeonhole",
       "title": "Part IX: Pigeonhole Bound",
       "startLine": 263,
       "endLine": 313,
-      "description": "Proves the pigeonhole bound: a proper k-coloring of n vertices has a color class of size ≥ n/k, hence α(G) ≥ |V|/k whenever G is k-colorable."
+      "description": "Proves the pigeonhole bound: a proper k-coloring of n vertices has a color class of size ≥ n/k, hence α(G) ≥ |V|/k whenever G is k-colorable.",
+      "mathContext": "Pigeonhole: in a proper $k$-coloring of $n$ vertices some class has $\\ge \\lceil n/k\\rceil$ vertices, so $\\alpha(G)\\ge |V|/\\chi(G)$."
     },
     {
       "id": "sec-udi-greedy-bound",
       "title": "Part X: Maximum Degree and Greedy Bound",
       "startLine": 314,
       "endLine": 504,
-      "description": "Develops degree theory (degree, maxDegree, isolated vertices, the |V|−1 degree bound), maximal independent sets (IsMaximalIndep, closedNeighborhoodIn), and works toward the greedy bound α(G) ≥ |V|/(Δ+1)."
+      "description": "Develops degree theory (degree, maxDegree, isolated vertices, the |V|−1 degree bound), maximal independent sets (IsMaximalIndep, closedNeighborhoodIn), and works toward the greedy bound α(G) ≥ |V|/(Δ+1).",
+      "mathContext": "With $\\Delta=$ max degree: a maximal independent set $I$ covers $V$ via closed neighborhoods ($|N[v]|\\le\\Delta+1$), giving the greedy bound $\\alpha(G)\\ge \\dfrac{|V|}{\\Delta+1}$."
     },
     {
       "id": "sec-udi-additional-structure",
       "title": "Part XI: Additional Structural Theorems",
       "startLine": 505,
       "endLine": 600,
-      "description": "Proves alpha_chi_ge_card (k·α(G) ≥ |V|), independent_extend, disjoint independent unions, independence under erasure, α(G) ≥ 1 for nonempty graphs, the neighborhood definition with neighborhood_card_eq_degree, and monotonicity independent_mono."
+      "description": "Proves alpha_chi_ge_card (k·α(G) ≥ |V|), independent_extend, disjoint independent unions, independence under erasure, α(G) ≥ 1 for nonempty graphs, the neighborhood definition with neighborhood_card_eq_degree, and monotonicity independent_mono.",
+      "mathContext": "$k\\cdot\\alpha(G)\\ge|V|$ for a $k$-coloring; $\\alpha(G)\\ge|I|$ for any independent $I$; union of independent sets with no cross-edges is independent; fewer edges ($G\\le H$) only increases independence."
     },
     {
       "id": "sec-udi-additional-bounds",
       "title": "Part XIII: Additional Independence Bounds",
       "startLine": 601,
       "endLine": 698,
-      "description": "Proves independenceNumber_le_card, common_neighbor_indep, the chromatic bound indep_chromatic_bound, independence/clique intersection, indep_neighbors_outside, that an independent set is a clique in the complement, the degree-sum bound, and positivity of α(G)."
+      "description": "Proves independenceNumber_le_card, common_neighbor_indep, the chromatic bound indep_chromatic_bound, independence/clique intersection, indep_neighbors_outside, that an independent set is a clique in the complement, the degree-sum bound, and positivity of α(G).",
+      "mathContext": "$\\alpha(G)\\le|V|$; the central inequality $\\chi(G)\\cdot\\alpha(G)\\ge|V|$; two vertices with a common neighbor restrictions; $\\alpha(G)\\ge1$ whenever $V\\ne\\varnothing$."
     },
     {
       "id": "sec-udi-complement-duality",
       "title": "Part XIV: Complement Graph and Independence-Clique Duality",
       "startLine": 699,
       "endLine": 758,
-      "description": "Establishes indep_iff_compl_isClique and clique_iff_compl_indep, double-complement identities (compl_compl_eq, indep_compl_compl), complement adjacency facts for ⊥ and ⊤, and that an independent set is a clique in the complement."
+      "description": "Establishes indep_iff_compl_isClique and clique_iff_compl_indep, double-complement identities (compl_compl_eq, indep_compl_compl), complement adjacency facts for ⊥ and ⊤, and that an independent set is a clique in the complement.",
+      "mathContext": "Independence–clique duality: $S$ independent in $G$ $\\iff$ $S$ is a clique in $G^c$, and $G^{cc}=G$. Adjacency in $\\bot^c=\\top$ and $\\top^c=\\bot$ made explicit."
     },
     {
       "id": "sec-udi-handshaking",
       "title": "Part XV: Handshaking Lemma and Edge Counting",
       "startLine": 759,
       "endLine": 783,
-      "description": "Proves degree_eq_mathlib_degree (agreement with SimpleGraph.degree), the handshaking lemma sum_degrees_eq_twice_edges, and the edge-count upper bound via maximum degree."
+      "description": "Proves degree_eq_mathlib_degree (agreement with SimpleGraph.degree), the handshaking lemma sum_degrees_eq_twice_edges, and the edge-count upper bound via maximum degree.",
+      "mathContext": "Handshaking lemma: $\\sum_{v} \\deg(v) = 2|E|$. Consequently $|E|\\le \\tfrac{1}{2}|V|\\,\\Delta$."
     },
     {
       "id": "sec-udi-min-degree-edges",
       "title": "Part XVI: Minimum Degree and Edge Bounds",
       "startLine": 784,
       "endLine": 845,
-      "description": "Defines minDegree and proves minDegree ≤ degree ≤ maxDegree, the twice-edges lower bound via minimum degree, the regular-graph edge count, and degree-sum/cut-edge identities for independent sets."
+      "description": "Defines minDegree and proves minDegree ≤ degree ≤ maxDegree, the twice-edges lower bound via minimum degree, the regular-graph edge count, and degree-sum/cut-edge identities for independent sets.",
+      "mathContext": "With $\\delta=$ min degree: $2|E|\\ge |V|\\,\\delta$; an $r$-regular graph has $|E|=\\tfrac{1}{2}r|V|$; the degree sum over an independent set counts its cut edges to the rest of $V$."
     },
     {
       "id": "sec-udi-specific-families",
       "title": "Part XVII: Independence Number of Specific Graph Families",
       "startLine": 846,
       "endLine": 872,
-      "description": "Computes independence numbers for specific families: α of the empty graph (alpha_bot), complement adjacency of distinct vertices, and the ≤ 1 bound for the complement of the edgeless graph."
+      "description": "Computes independence numbers for specific families: α of the empty graph (alpha_bot), complement adjacency of distinct vertices, and the ≤ 1 bound for the complement of the edgeless graph.",
+      "mathContext": "$\\alpha(\\bot)=|V|$ (edgeless graph). In $\\bot^c=\\top$ (complete graph) every independent set has $\\le 1$ vertex, so $\\alpha(\\top)=1$."
     },
     {
       "id": "sec-udi-summary",
       "title": "Part XII: Summary",
       "startLine": 873,
       "endLine": 948,
-      "description": "Closing summary: enumerates the 48 proved theorems (0 sorries), the 2 axioms used (the Hadwiger-Nelson bounds), and what is intentionally not proven and why."
+      "description": "Closing summary: enumerates the 48 proved theorems (0 sorries), the 2 axioms used (the Hadwiger-Nelson bounds), and what is intentionally not proven and why.",
+      "mathContext": "Recap of the toolkit: $\\alpha(G)\\ge|V|/\\chi(G)$ (pigeonhole) and $\\alpha(G)\\ge|V|/(\\Delta+1)$ (greedy), feeding the still-open Hadwiger–Nelson window $5\\le\\chi(\\mathbb{R}^2)\\le 7$."
     }
   ],
   "sorries": 0
