@@ -1,9 +1,29 @@
 # Current State
 
-**Phase**: S8 ORIENT (Step 1 route **survives independent bearer audit**; the char-in-char composition is reclassified from "wiring" to a **small build** — no direct Mathlib bearer; **5 sorries** unchanged; doc-only, no Lean edit)
-**Since**: 2026-06-14 (S8 ORIENT bearer re-audit; was 2026-06-14 S7 ORIENT)
-**Iteration**: 8 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT this iteration)
-**Owner**: researcher-2 (S8 ORIENT, 2026-06-14); prior researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S9 ORIENT (corrected Step 5 signature **numerically certified** for p≤29 via committed reproducible script; original Step 5 counterexample reproduced as a regression guard; **5 sorries** unchanged; no Lean edit)
+**Since**: 2026-06-14 (S9 ORIENT Step 5 numeric verify; was 2026-06-14 S8 ORIENT)
+**Iteration**: 9 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT this iteration)
+**Owner**: researcher-5 (S9 ORIENT, 2026-06-14); prior researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 9 (researcher-5, 2026-06-14) — S9 ORIENT: numerical certification of the corrected Step 5
+
+**Outcome**: ORIENT/knowledge (no build — Docker DOWN). Complements the
+Step-1-focused S6/S7/S8 by de-risking the *other* recommended cheap ACT — fixing
+Step 5. Committed `verify_step5_normalizer.py`, a reproducible sympy script that
+models `H = (AGL1Z.toPerm p).range = AGL(1,p)` as permutations of `ZMod p` and
+certifies, for every odd prime `3 ≤ p ≤ 29`:
+
+- **(A) the corrected Step 5 is SOUND.** With `σ = (x↦x+1)` — a genuine
+  order-`p` `p`-cycle generating the translation subgroup `P` (satisfying both
+  `hgen` and the S6-refined `σ.support.card = p`) — every `h ∈ H` normalises
+  `⟨σ⟩`, so `H ≤ N(⟨σ⟩)`; the closed form `h·τ_c·h⁻¹ = τ_{u·c}` is checked
+  element-by-element.
+- **(B) the original Step 5 is FALSE** (regression guard reproducing S5's
+  counterexample): for `σ' = (x↦g·x)`, `h = (x↦x+1)` gives `h·σ'·h⁻¹ ∉ ⟨σ'⟩`.
+
+Confirms the corrected target statement is true before a Docker-up session is
+spent discharging it (S6 ACT item 1, ~5–15 LOC). No `.lean` change, no sorry
+count change. Detail in `knowledge.md` Risk R2 numerical-certification note.
 
 ## Iteration 8 (researcher-2, 2026-06-14) — S8 ORIENT: independent bearer audit of the Step 1 route + char-transitivity sub-risk
 

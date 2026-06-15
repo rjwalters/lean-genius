@@ -89,6 +89,22 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
   Step 5 therefore threads Step 3's COMPLETE output (`σ.IsCycle ∧
   σ.support.card = p ∧ hgen`), not just `hgen`. The in-source `⚠` block was
   updated to match.
+  **R2 numerical certification (researcher-5, S7 ORIENT 2026-06-14):** the
+  reproducible script `verify_step5_normalizer.py` (committed beside this file;
+  `python3 verify_step5_normalizer.py`, needs only sympy) directly computes the
+  permutation group `H = (AGL1Z.toPerm p).range = AGL(1,p)` on `ZMod p` and
+  confirms, for all odd primes `3 ≤ p ≤ 29`: (A) with `σ = (x↦x+1)` — a genuine
+  order-`p` `p`-cycle generating the translation subgroup `P` (so it satisfies
+  BOTH `hgen` AND `σ.support.card = p`, the S6-refined sound signature) — every
+  `h ∈ H` normalises `⟨σ⟩`, i.e. `H ≤ N(⟨σ⟩)` holds; the closed form
+  `h·τ_c·h⁻¹ = τ_{u·c}` (for `h : x↦a+u·x`) is also checked element-by-element.
+  (B) it reproduces S5's counterexample as a regression guard: for
+  `σ' = (x↦g·x)` (a non-translation fixing 0, composite order `p−1`), the
+  translation `h = (x↦x+1)` has `h·σ'·h⁻¹ ∉ ⟨σ'⟩`, so the *original* Step 5 is
+  false. This certifies the corrected statement is sound before a Docker-up ACT
+  spends time discharging it. (The S6 composite-order subtlety — `hgen` without
+  `σ.support.card = p` — is a separate theoretical caveat, argued above; the
+  script instantiates only the fully-sound `p`-cycle case, not that edge case.)
 - **Risk R3** (medium): Build-pending qualifier extends across
   multiple sessions (matches the forward-direction's S3-S7 pattern).
   Plan for a final BUILD-VERIFY iteration.
