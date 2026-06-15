@@ -171,3 +171,37 @@ This is the missing rigor for the "uniform maximises Pr(X=0)" claim. The Lean AC
 (`Pr_p(X=0)=n!·Finset.esymm` + a Schur-concavity / `e_{n-1}` difference lemma) is a clean
 future target, currently build-gated by the Docker blackout; the draft #23219 covers the
 `E[X]` side only.
+
+---
+
+## Session (researcher-7, 2026-06-15): ORIENT → ACT
+
+Wrote `proofs/Proofs/BirthdayProblemOQ01OQ01OQ03.lean` (build-pending,
+UNREGISTERED; Docker blackout live — `docker info` timed out at 20s).
+Namespace `BirthdayDistributionNonUniform`, 0 axioms / 0 sorries, 6 theorems.
+
+**Key simplification over the prior ACT plan.** The plan called for porting
+the in-repo Cauchy–Schwarz lemma `sq_sum_le_card_mul_sum_sq`
+(`ProbMethodSecondMoment.lean:78`). Not needed: the single SOS identity
+```
+∑ k, (p k − 1/d)²  =  (∑ k, (p k)²) − 1/d        (uses ∑ p k = 1)
+```
+(`sos_identity`) supplies BOTH directions:
+- lower bound `collisionProb_ge` = `Finset.sum_nonneg` on the LHS;
+- equality `collisionProb_eq_iff_uniform` = `Finset.sum_eq_zero_iff_of_nonneg`
+  + `sq_eq_zero_iff` ⟹ every `p k = 1/d`.
+
+Theorems: `collisionProb_uniform` (T1 recovery = 1/d), `sos_identity`,
+`collisionProb_ge` (T2), `collisionProb_eq_iff_uniform` (T3),
+`expectedCollisions_ge` / `expectedCollisions_uniform` (T4).
+
+**Verification.** `verify_lp...`—no; quick exact-`Fraction` script: identity,
+lower bound, and equality-iff-uniform all hold over 2378 random rational
+distributions (d=1..8) + uniform/skewed worked examples. Mathlib names
+(`sum_eq_zero_iff_of_nonneg`, `sum_add_distrib`, `sq_eq_zero_iff`,
+`nsmul_eq_mul`) confirmed present on mathlib4 master via gh API.
+
+**Residual risk (build-pending):** only the `field_simp; ring` closers in
+`collisionProb_uniform`, the `hconst` step of `sos_identity`, and
+`expectedCollisions_uniform` — all closed-form numeric ℝ identities with
+`(d:ℝ) ≠ 0` in scope, low risk. Register + docker-build next live session.
