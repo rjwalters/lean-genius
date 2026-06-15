@@ -67,6 +67,14 @@
   },
   "sections": [
     {
+      "id": "header-overview",
+      "title": "Header: The Cayley–Klein Unification Program",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports Mathlib and frames the open question: the parent file proved hyperbolic and spherical Ceva separately and only observed that their concurrency criteria coincide. This file delivers the genuine unification — a single Cayley–Klein cevian configuration carrying a curvature sentinel κ, from which all three classical Ceva theorems descend as specializations of one theorem. The docstring's curvature table (κ = +1 spherical, 0 Euclidean, −1 hyperbolic) and the cancellation identity (★) are introduced; the namespace CevasOQ02OQ01OQ02OQ01 is opened with Real.",
+      "mathContext": "$t_\\kappa(BD)/t_\\kappa(DC) = (\\beta g)/(\\alpha g) = \\beta/\\alpha$ with $g = \\sqrt{|1-m^2|}/n$ — the geometry enters only through a common factor that cancels for every $\\kappa$."
+    },
+    {
       "id": "ck-config",
       "title": "The Cayley–Klein Cevian Configuration",
       "startLine": 62,
@@ -86,16 +94,32 @@
       "id": "geometric-factors",
       "title": "The Three Geometric Factors and Their Nonvanishing",
       "startLine": 146,
-      "endLine": 204,
-      "summary": "Defines gSph = √(1−m²)/n, gHyp = √(m²−1)/n, gEuc = 1, and proves each is nonzero under its geometry's m-bound (gSph_ne, gHyp_ne via Real.sqrt_pos; gEuc_ne = one_ne_zero). The 'no generality lost' lemmas hn_of_cos_gt_neg_one, hn_of_cosh_gt_one, hn_of_eq_one show each geometry's m-bound implies hn.",
+      "endLine": 177,
+      "summary": "Defines the per-geometry factors gSph = √(1−m²)/n, gHyp = √(m²−1)/n, and gEuc = 1, then proves each is nonzero under its geometry's m-bound: gSph_ne (m²<1) and gHyp_ne (m²>1) via Real.sqrt_pos and div_ne_zero, and gEuc_ne = one_ne_zero. Only the nonvanishing — not the value — feeds the unification, since the value cancels.",
       "mathContext": "$g = \\sqrt{|1-m^2|}/n$; nonzero for $m^2<1$ (spherical), $m^2>1$ (hyperbolic), and $\\equiv 1$ (Euclidean)."
+    },
+    {
+      "id": "metric-realization",
+      "title": "Metric Realization: the Factor IS the Geodesic Side Length",
+      "startLine": 179,
+      "endLine": 261,
+      "summary": "Closes the gap between the abstract cancelling factor and genuine metric quantities. The κ-uniform key identities ck_metric_BD/DC (n² − (α+βm)² = β²(1−m²), proved by ring) collapse the parent's separate hyperbolic and spherical identities into one. gSph_sqrt_BD/DC and gHyp_sqrt_BD/DC then show √(n²−·²) equals β·√(1−m²) or β·√(m²−1) — the genuine sin/sinh geodesic side lengths — so spherical_side_ratio_metric and hyperbolic_side_ratio_metric give sin_κ(BD)/sin_κ(DC) = β/α from actual distances, not a formal placeholder.",
+      "mathContext": "$n^2-(\\alpha+\\beta m)^2 = \\beta^2(1-m^2)$, $n^2-(\\alpha m+\\beta)^2 = \\alpha^2(1-m^2)$; ratio of genuine geodesic lengths $= \\beta/\\alpha$."
+    },
+    {
+      "id": "m-bound-positivity",
+      "title": "No Generality Lost: Each m-Bound Implies the Positivity Hypothesis",
+      "startLine": 263,
+      "endLine": 288,
+      "summary": "Confirms the unified CKCevianConfig's lone hypothesis hn loses no generality relative to the parent's per-geometry m-bounds. hn_of_cos_gt_neg_one (spherical, m > −1), hn_of_cosh_gt_one (hyperbolic, m > 1), and hn_of_eq_one (Euclidean, m = 1) each derive 0 < α² + 2αβm + β² by nlinarith from the algebraic identity α²+2αβm+β² = (α−β)²+2αβ(m+1) = (α+β)²+2αβ(m−1).",
+      "mathContext": "$\\alpha^2+2\\alpha\\beta m+\\beta^2 = (\\alpha-\\beta)^2+2\\alpha\\beta(m+1) = (\\alpha+\\beta)^2+2\\alpha\\beta(m-1) > 0$."
     },
     {
       "id": "three-classical-theorems",
       "title": "The Three Classical Ceva Theorems as Specializations",
-      "startLine": 206,
-      "endLine": 267,
-      "summary": "spherical_ceva_unified, hyperbolic_ceva_unified, and euclidean_ceva_unified each instantiate projective_ceva_unification with the appropriate geometric factor and its nonvanishing lemma — proving all three classical concurrency criteria from the single unification theorem.",
+      "startLine": 290,
+      "endLine": 351,
+      "summary": "spherical_ceva_unified, hyperbolic_ceva_unified, and euclidean_ceva_unified each instantiate projective_ceva_unification with the appropriate geometric factor and its nonvanishing lemma (gSph_ne, gHyp_ne, gEuc_ne) — proving all three classical concurrency criteria from the single unification theorem. The closing summary records that the geometry enters only through a common nonzero factor that cancels, making αD·αE·αF = βD·βE·βF one universal statement. 0 axioms, 0 sorries.",
       "mathContext": "Each classical theorem $=$ projective_ceva_unification with $g \\in \\{g_{Sph}, g_{Hyp}, g_{Euc}\\}$."
     }
   ],
