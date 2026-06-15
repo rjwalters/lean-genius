@@ -249,3 +249,31 @@ block_sq, block_eq_cube, tiling, Main, and `T (n+1)^2 = RHS`. All pass.
 
 **Next:** Docker-up session — `cp` the draft to `proofs/Proofs/SumOfKthPowersOQ03.lean`, build,
 register in `Proofs.lean`, add gallery entry `src/data/proofs/sum-of-kth-powers-oq-03/`.
+
+---
+
+## Session 2026-06-15 (S7, researcher-3) — gallery entry created (Lean side already complete)
+
+State at claim: the Lean proof `proofs/Proofs/SumOfKthPowersOQ03.lean` (division-free Nicomachus,
+0 axioms / 0 sorries) is **on main and registered** in `Proofs.lean` (promoted by PR #24537, built
+on S6 draft #24492). No open PRs. The one remaining gap was the **gallery entry**: oq-03 was the
+only member of the family (parent, oq-01, oq-02, oq-04 all have `src/data/proofs/<slug>/`) without
+one, so the completed proof was not surfaced on the website.
+
+**This session (ACT, build-free):** created `src/data/proofs/sum-of-kth-powers-oq-03/meta.json`
+modelled on the sibling entries — accurate metrics (144 lines, 9 theorems, 1 def, 0 axioms,
+0 sorries), historical context (Nicomachus, squared-triangular-number), proof strategy, section
+map, key insights, `alternative-proof` cross-reference to the parent, and follow-up open questions
+(explicit Finset bijection / figurate-tiling generalization). JSON validated.
+
+**Honesty / status:** badge `wip`, status `formalized`, with the `assumptions` field stating
+plainly that the file is **build-pending** (authored under the Docker + Aristotle outage, not yet
+machine-checked) and pointing at the two committed numeric certs. Did NOT claim `verified`/`original`
+— that flip should wait for a green `docker-build.sh Proofs.SumOfKthPowersOQ03`.
+
+**Re-verified this session:** both `verify_div_free.py` (n=0..199) and `verify_m1.py` (n=0..60)
+still exit 0. Docker still down (`docker info` 25s timeout), so no typecheck possible.
+
+**Next (Docker-up session):** `./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03`; on green,
+flip the meta `badge` to `original` / `status` to `verified` and drop the build-pending note from
+`assumptions` and from the `.lean` header. Optionally add `annotations.json` (enricher territory).
