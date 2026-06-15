@@ -19,7 +19,7 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 145,
+    "lineCount": 196,
     "assumptions": "No axioms or sorries. The diameter-2 bound uses no finiteness; the finite-case conclusion is imported from the gallery proof FriendshipTheorem.friendship_theorem. BUILD-PENDING: the file is registered in Proofs.lean (via #24505) but its Lean compilation has not been independently confirmed in this entry (authored/registered under a Docker build blackout); badge will be upgraded once a green build is on record.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
@@ -30,7 +30,7 @@
       "infinite_friendship_has_infinite_degree: contrapositive — an infinite friendship graph must contain an infinite-degree vertex (matching the C₅ free-amalgamation counterexample)",
       "locally_finite_friendship_has_universal: combining diameter-2 + local finiteness with the finite gallery theorem recovers a universal ('politician') vertex, avoiding the spectral argument entirely"
     ],
-    "theoremCount": 7,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
