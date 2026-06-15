@@ -112,4 +112,74 @@ theorem defect_exists_three_neg : FermatDefectExists 3 :=
 theorem defect_exists_three_pos : FermatDefectExists 3 :=
   ⟨73, 144, 150, fermat_defect_three_pos_s2⟩
 
+/-! ## Infinitely many primitive witnesses at n = 3
+
+The previous theorems witness one or two members of each family. Here we upgrade
+existence to **infinitude**: the positive-defect family produces a primitive
+`FermatDefectWitness 3` for *every* parameter `s ≥ 2`, and the value of `c`
+(`9s⁴ + 3s`) is strictly increasing, so the set of attainable `c` is infinite.
+
+Restricting to `s ≥ 2` keeps the ordering `a ≤ b` fixed: at `s = 1` the two base
+terms `9s⁴ = 9` and `9s³ + 1 = 10` are nearly equal and would flip, but for
+`s ≥ 2` we have `9s³ + 1 ≤ 9s⁴`, so the witness is `(9s³+1, 9s⁴, 9s⁴+3s)`. -/
+
+/-- **Primitivity kernel.** `9s³ + 1` and `9s⁴` are coprime for every `s`.
+
+Proof: any common divisor `d` divides `s·(9s³+1) = 9s⁴ + s` and `9s⁴`, hence
+divides `s`; then `d ∣ 9s³` and `d ∣ 9s³+1`, so `d ∣ 1`. No subtraction is used
+(everything goes through `Nat.dvd_add_right`), keeping the argument `ℕ`-clean. -/
+lemma pos_family_gcd (s : ℕ) : Nat.gcd (9 * s ^ 3 + 1) (9 * s ^ 4) = 1 := by
+  set d := Nat.gcd (9 * s ^ 3 + 1) (9 * s ^ 4) with hd
+  have h1 : d ∣ 9 * s ^ 3 + 1 := Nat.gcd_dvd_left _ _
+  have h2 : d ∣ 9 * s ^ 4 := Nat.gcd_dvd_right _ _
+  have h3 : d ∣ s := by
+    have hds : d ∣ 9 * s ^ 4 + s := by
+      have he : 9 * s ^ 4 + s = s * (9 * s ^ 3 + 1) := by ring
+      rw [he]; exact h1.mul_left s
+    exact (Nat.dvd_add_right h2).mp hds
+  have h4 : d ∣ 9 * s ^ 3 := by
+    have he : 9 * s ^ 3 = 9 * s ^ 2 * s := by ring
+    rw [he]; exact h3.mul_left (9 * s ^ 2)
+  have h6 : d ∣ 1 := (Nat.dvd_add_right h4).mp h1
+  exact Nat.dvd_one.mp h6
+
+/-- **Generic positive-defect primitive witness.** For every `s ≥ 2`,
+`(9s³+1, 9s⁴, 9s⁴+3s)` is a primitive nontrivial defect-one witness at `n = 3`.
+At `s = 2` this is `(73, 144, 150)` (`fermat_defect_three_pos_s2`). -/
+theorem defect_pos_witness_ge_two (s : ℕ) (hs : 2 ≤ s) :
+    FermatDefectWitness 3 (9 * s ^ 3 + 1) (9 * s ^ 4) (9 * s ^ 4 + 3 * s) := by
+  have hx : (8 : ℕ) ≤ s ^ 3 := by
+    calc (8 : ℕ) = 2 ^ 3 := by norm_num
+      _ ≤ s ^ 3 := Nat.pow_le_pow_left hs 3
+  have e2 : 2 * s ^ 3 ≤ s ^ 4 := by
+    calc 2 * s ^ 3 ≤ s * s ^ 3 := mul_le_mul_right' hs (s ^ 3)
+      _ = s ^ 4 := by ring
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · omega
+  · omega
+  · omega
+  · rw [pos_family_gcd s]; exact Nat.gcd_one_left _
+  · right; ring
+
+/-- **Infinitude at n = 3.** The set of `c` occurring in a primitive defect-one
+witness at `n = 3` is infinite. Hence n = 3 has infinitely many primitive
+witnesses — a strict strengthening of `FermatDefectExists 3`. The injection is
+`s ↦ 9(s+2)⁴ + 3(s+2)`, strictly monotone, each value witnessed by
+`defect_pos_witness_ge_two`. -/
+theorem defect_pos_witnesses_infinite :
+    {c : ℕ | ∃ a b : ℕ, FermatDefectWitness 3 a b c}.Infinite := by
+  apply Set.infinite_of_injective_forall_mem
+    (f := fun n : ℕ => 9 * (n + 2) ^ 4 + 3 * (n + 2))
+  · have hmono : StrictMono (fun n : ℕ => 9 * (n + 2) ^ 4 + 3 * (n + 2)) := by
+      apply strictMono_nat_of_lt_succ
+      intro n
+      show 9 * (n + 2) ^ 4 + 3 * (n + 2) < 9 * (n + 1 + 2) ^ 4 + 3 * (n + 1 + 2)
+      have hp : (n + 2) ^ 4 ≤ (n + 1 + 2) ^ 4 := Nat.pow_le_pow_left (by omega) 4
+      omega
+    exact hmono.injective
+  · intro n
+    show ∃ a b : ℕ, FermatDefectWitness 3 a b (9 * (n + 2) ^ 4 + 3 * (n + 2))
+    exact ⟨9 * (n + 2) ^ 3 + 1, 9 * (n + 2) ^ 4,
+      defect_pos_witness_ge_two (n + 2) (by omega)⟩
+
 end FermatDefectOne
