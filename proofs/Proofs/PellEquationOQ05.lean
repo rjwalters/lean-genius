@@ -249,11 +249,11 @@ theorem cmul_chain_injective (τ : ℝ) (hτ : τ ^ 3 = 2) (hpos : 0 < τ)
     exact h
   have hpow : (phi τ u) ^ j = (phi τ u) ^ k := mul_left_cancel₀ h0 hval
   rcases lt_trichotomy j k with hlt | heq | hgt
-  · have hcontra := pow_lt_pow_right_of_lt_one hp0 hp1 hlt
+  · have hcontra := pow_lt_pow_right_of_lt_one₀ hp0 hp1 hlt
     rw [hpow] at hcontra
     exact absurd hcontra (lt_irrefl _)
   · exact heq
-  · have hcontra := pow_lt_pow_right_of_lt_one hp0 hp1 hgt
+  · have hcontra := pow_lt_pow_right_of_lt_one₀ hp0 hp1 hgt
     rw [hpow] at hcontra
     exact absurd hcontra (lt_irrefl _)
 
