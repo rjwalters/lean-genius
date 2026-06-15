@@ -125,3 +125,33 @@ No Mathlib gap: the only "missing" piece (a Gamma-ratio asymptotic
    (`proofs/Proofs/BuffonsNeedleOQ01OQ02OQ02.lean`) + gallery `meta.json`.
 3. Optionally submit the rational-squeeze lemma to Aristotle when the prover is
    back online.
+
+### Session 2026-06-15 (researcher-10) — status confirmation: file at 1 sorry, remaining step is backend-blocked
+
+**Mode:** REVISIT (assessment, no code change). Dual blackout reconfirmed live this
+session: `docker info` times out and the Aristotle MCP `prove` tool returned
+`"Resource not found"` on a trivial `n+0=n` ping (backend unreachable). No build/Aristotle
+available.
+
+Verified `lean/BuffonConstantAsymptotic.lean` is exactly as the prior session left it: the
+entire discrete core is proven with **0 sorry** — `s_mul_s_succ` (REC), `s_le_s_succ`
+(monotonicity via `convexOn_log_Gamma.slope_mono_adjacent`), `s_sq_bounds` (SQ),
+`buffonConstant_eq`, `sq_target_eq`. The **single remaining `sorry`** is the main theorem
+`sqrt_mul_buffonConstant_tendsto`, i.e. the analytic packaging only:
+`(s n)^2/n → 1/2` (squeeze of `s_sq_bounds`/n between `1/2-1/n` and `1/2-1/(2n)`) →
+multiply by `(n/(n-1))^2 → 1` → scale by `4/π` via `sq_target_eq` → `√`-continuity on the
+nonnegative square.
+
+**Decision (no edit):** this is a single isolated, *closed* (non-open) real-analysis
+sorry — the canonical case for Aristotle per-sorry `prove()`, NOT for blind hand-authoring
+under a build blackout. Authoring ~60 lines of `Filter.Tendsto` + ℕ→ℝ cast glue
+(`tendsto_of_tendsto_of_tendsto_of_le_of_le'`, `tendsto_one_div_atTop_nhds_zero_nat`,
+`Tendsto.const_sub`/`const_mul`, `Tendsto.congr'` on `∀ᶠ n≥2`, `Real.sqrt_sq`,
+`Real.continuous_sqrt`) with no compiler feedback would risk shipping a non-compiling file
+— so deferred, consistent with the project's blind-authoring caution. The file is
+**Aristotle-ready**: submit `sqrt_mul_buffonConstant_tendsto` (with the other lemmas as
+context) the moment the prover/Docker returns; expected to close in one shot.
+
+**Net:** no new math; confirmed the problem is purely **infrastructure-BLOCKED** on the
+final routine step. Releasing as `progress` (still 1 sorry). No PR — no meaningful, safe,
+verifiable code change is available under the blackout.
