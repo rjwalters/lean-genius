@@ -86,12 +86,20 @@
       "mathContext": "$n > 1,\\ n \\equiv 3 \\pmod 4 \\implies \\exists p\\text{ prime},\\ p \\mid n,\\ p \\equiv 3 \\pmod 4$. Strong induction via `termination_by n` with decreasing measure $k = n/p < n$: take any prime factor $p$; if $p \\equiv 3$ we are done, otherwise $p$ is odd so $p \\equiv 1 \\pmod 4$, and $\\bar 1 \\cdot \\bar k = \\bar 3$ in $(\\mathbb{Z}/4\\mathbb{Z})^\\times$ forces $k = n/p \\equiv 3 \\pmod 4$, so the recursive call on $k$ yields the required factor of $n$."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem: Infinitely Many Primes ≡ 3 (mod 4)",
+      "id": "main-construction",
+      "title": "Main Theorem — Euclid Construction: N = 4·(n+1)! − 1",
       "startLine": 55,
+      "endLine": 72,
+      "summary": "Reduces infinitude to `Set.infinite_iff_exists_gt`: for an arbitrary bound n, builds the witness N = 4·(n+1)! − 1, establishes N > 1 and N ≡ 3 (mod 4), then extracts a prime factor p ≡ 3 (mod 4) from the key lemma.",
+      "mathContext": "By `Set.infinite_iff_exists_gt` it suffices, for every $n$, to exhibit a prime $p > n$ with $p \\equiv 3 \\pmod 4$. Set $N = 4(n+1)! - 1$. Then $N > 1$ (since $(n+1)! \\ge 1$) and $N \\equiv 3 \\pmod 4$ (as $4(n+1)! \\equiv 0$), so the key lemma `exists_prime_factor_three_mod_four` supplies a prime $p \\mid N$ with $p \\equiv 3 \\pmod 4$."
+    },
+    {
+      "id": "main-contradiction",
+      "title": "Main Theorem — Coprimality Contradiction: p > n",
+      "startLine": 73,
       "endLine": 96,
-      "summary": "Constructs N = 4·(n+1)! - 1 (which is ≡ 3 mod 4) to find a prime ≡ 3 (mod 4) larger than any given bound, via a Euclid-style argument without L-functions.",
-      "mathContext": "Reduces $\\{p : p\\text{ prime},\\ p \\equiv 3 \\pmod 4\\}$ being infinite to `Set.infinite_iff_exists_gt`: for each bound $n$, the witness $N = 4(n+1)! - 1 \\equiv 3 \\pmod 4$ has a prime factor $p \\equiv 3 \\pmod 4$ by the key lemma. If $p \\le n+1$ then $p \\mid (n+1)! \\mid 4(n+1)! = N+1$ while also $p \\mid N$, so $p \\mid \\gcd(N, N+1) = 1$ — impossible for $p \\ge 2$. Hence $p > n$, giving arbitrarily large such primes."
+      "summary": "Shows the extracted prime exceeds the bound: if p ≤ n+1 then p ∣ (n+1)! ∣ 4·(n+1)! = N+1, while p ∣ N, forcing p ∣ gcd(N, N+1) = 1 — impossible for a prime. Hence p > n, yielding arbitrarily large primes ≡ 3 (mod 4).",
+      "mathContext": "Suppose for contradiction $p \\le n$, hence $p \\le n+1$. Then `Nat.Prime.dvd_factorial` gives $p \\mid (n+1)!$, so $p \\mid 4(n+1)! = N+1$. Together with $p \\mid N$ this yields $p \\mid (N+1) - N = 1$, i.e. $p \\le 1$, contradicting $p \\ge 2$. Concretely, writing $N = p a$ and $N+1 = p b$ gives $p(b-a) = 1$, discharged by `nlinarith`. Therefore $p > n$."
     },
     {
       "id": "existence-witness",
