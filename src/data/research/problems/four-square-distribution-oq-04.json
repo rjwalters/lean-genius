@@ -26,25 +26,26 @@
     "goal": "Formalize the orbit-stabilizer decomposition for r_{2k}(n) (at least fixed 2k in {4,6,8}): define the signed-permutation action, prove orbit size = 2^{#nonzero}*(2k)!/prod m_i!, and recover the total as a sum over shapes."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-06-15T07:05:00.000Z",
-    "iteration": 2,
-    "focus": "Generalization CONFIRMED for 2k in {2,4,6,8}: orbit size 2^{#nonzero}*(2k)!/prod m_i!, stabilizer 2^z*z!*prod(nonzero m_j!), r_{2k}=sum_shapes orbit. Mathlib orbit-stabilizer bearer pinned; B_{2k} has no Mathlib name (must be assembled).",
+    "iteration": 3,
+    "focus": "S5 ACT (build-pending; triple blackout re-tested live): re-expressed the orbit-size residue via Nat.multinomial per researcher-2's recommendation. New FourSquareDistributionOQ04Arrange.lean PROVES factorial_div_eq_multinomial (m!/prod count! = Nat.multinomial), prod_count_factorial_dvd (Nat.div is exact), mem_arrangements_iff; ISOLATES arrangement_card (the sole residue) in canonical multinomial form with the Equiv.Perm orbit-stabilizer route; DERIVES arrangement_card_div_form. Cert verify_orbit_formula.py check_arrangement PASS (84 multisets).",
     "blockers": [
-      "Lean ACT Docker-gated (build + Aristotle both down this session).",
-      "B_{2k} (signed permutations) absent from Mathlib by name."
+      "Lean ACT Docker-gated (docker info daemon down; Aristotle prove -> 404; no local Mathlib to grep this session).",
+      "arrangement_card (the multiset-arrangement count = multinomial) is the sole remaining sorry; B_{2k} signed permutations absent from Mathlib by name."
     ],
-    "nextAction": "ACT (next Docker session): fixed m=2k in {4,6,8}; define B_m MulAction on {f:Fin m -> Z // sum f^2 = n}, compute stabilizer (zero/nonzero split), apply MulAction.card_orbit_mul_card_stabilizer_eq_card_group. Real obstruction = orbit partition.",
+    "nextAction": "ACT (next Docker session): (1) build+register Arrange/Sign/Decomp; (2) prove arrangement_card via Equiv.Perm (Fin m) precomposition orbit-stabilizer (stabilizer = prod Perm of fibers, order prod count!) + multinomial_spec; (3) assemble fiber_card_eq_contribution from arrangement_card_div_form x signFiber_card via card_eq_sum_card_fiberwise over absMap, discharging Decomp.lean's lone sorry.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     },
-    "lastUpdate": "2026-06-15T07:05:00.000Z"
+    "lastUpdate": "2026-06-15T13:05:00.000Z"
   },
   "knowledge": {
     "progressSummary": "ORIENT: answered the seeker's generalization question YES. The four-square orbit-stabilizer type-decomposition extends verbatim to r_{2k}(n) under B_{2k}=S_{2k} semidirect (Z/2)^{2k}: orbit(shape with z zeros, multiplicities m_i)=2^{2k-z}*(2k)!/prod m_i!, stabilizer=2^z*z!*prod(nonzero m_j!), r_{2k}(n)=sum over shapes orbit. Verified exactly for 2k in {2,4,6,8}. Lean ACT Docker-gated. S2 (ACT, build-pending): formalized the 2k=6 case mirroring the parent's COMPUTATIONAL route (not MulAction). New proofs/Proofs/FourSquareDistributionOQ04.lean: RepType6 (sorted six-tuple) + contribution=(720/prod count!)*2^nonzero, concrete shapes for n in {1,2,3,5,6,12,30} with contributions by native_decide and r_6(n) totals as sum of contributions (r6_5=312,r6_6=544,r6_12=2080,r6_30=14144) + nonzeroCount_le_six/signFactor_le_64. Executes the 'fixed small m' ACT at m=6. Cert verify_r6_decomposition.py PASS (exhaustive shapes; orbit formula vs brute signed-ordering count; totals vs convolution).",
     "builtItems": [
+      "proofs/Proofs/FourSquareDistributionOQ04Arrange.lean (S5, build-pending/UNREGISTERED) — re-expresses the orbit-size residue via Nat.multinomial: PROVES factorial_div_eq_multinomial (m!/prod count! = Nat.multinomial s.toFinset s.count), prod_count_factorial_dvd (prod count! | m!, so the Nat.div in (star) is exact), mem_arrangements_iff; ISOLATES arrangement_card (the sole sorry, canonical multinomial form) with the Equiv.Perm (Fin m) orbit-stabilizer route documented; DERIVES arrangement_card_div_form. Cert check_arrangement PASS.",
       "proofs/Proofs/FourSquareDistributionOQ04.lean (S2, build-pending/UNREGISTERED) — 2k=6 type-decomposition: RepType6, the (star) orbit formula, native_decide contributions + r_6(n) totals for n in {1,2,3,5,6,12,30}, structural bounds.",
       "research/problems/four-square-distribution-oq-04/verify_r6_decomposition.py (S2) — pins the exact embedded shapes/contributions/totals via exhaustive enumeration + independent brute signed-ordering count + signed-square convolution.",
       "research/problems/four-square-distribution-oq-04/verify_hyperoctahedral_2k.py - stdlib exact verifier: orbit-size formula vs independent brute signed-ordering count; orbit*stab=|B_{2k}| (orbit-stabilizer); sum_shapes orbit == r_{2k}(n) (independent convolution) for 2k in {2,4,6,8}; anchors r_2=4(d1-d3), r_4=8 sigma*. All checks PASS."
