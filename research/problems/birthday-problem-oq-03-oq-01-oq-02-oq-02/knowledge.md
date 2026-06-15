@@ -47,10 +47,30 @@ correction needs only an elementary binomial-upper-tail expansion of `E[W]`
 (<300 lines, Docker-gated), NOT Stein–Chen** — S1 over-scoped this. Stein–Chen
 is only for the `o(d^{−2/3})` remainder `P(W=0) − e^{−E[W]}` (numerically tiny).
 
+## Insight 5 — CONFIRMED against the exact median; `1/c0` is heuristic (S3)
+Head-to-head check (`verify_birthday_oq03_poisson_gap.py`, `d=50…2·10^5`) of the
+EXACT integer/real median vs the surrogate root `n_W` (real root of `E[W]=ln2`):
+
+    gap = n_med_real − n_W  → ≈ −1.03  (bounded O(1)),   gap/d^{1/3} → 0.
+
+- `gap/d^{1/3}→0` ⟹ the Poisson-approximation displacement is `o(d^{1/3})`, so it
+  CANNOT affect the `Θ(d^{1/3})` correction ⟹ **`c₀/4` is the true leading
+  coefficient of the EXACT median**, not a surrogate artifact (independent of S2).
+- BUT the gap → a **nonzero constant ≈ −1.03**, not 0. An `O(1)` absolute shift
+  lives at the constant-term level = same order as the `(1/c₀)d^{−2/3}` relative
+  term (`n₀·(1/c₀)d^{−2/3}=O(1)`). ⟹ **the `1/c₀` sub-coefficient is rigorous for
+  the surrogate `n_W` but only heuristic for the integer median `n*_med`** (off
+  by an unverified `O(1)` Poisson term). Sign `n_med<n_W` ⟹ `P(W=0)<e^{−E[W]}`
+  = mild negative day-association. M2 should formalize the LEADING `c₀/4` only.
+
 ## Open threads
-- (Docker up) Formalize M1 (leading order) + the `E[W]` expansion to `Θ(d^{−1/3})`.
+- (Docker up) Formalize M1 (leading order) + the `E[W]` expansion to the
+  **`Θ(d^{−1/3})` / `c₀/4`** term ONLY (the `1/c₀` term is not rigorous for the
+  integer median — see Insight 5).
 - Keep the Poisson limit (`p_no_triple_tendsto`-style) axiomatised; the
   coefficient claim refines the same deferred limit.
+- Optional M3: bound `P(W=0) − e^{−E[W]}` to pin the `O(1)≈−1.03` constant and
+  promote the `1/c₀` sub-coefficient from heuristic to rigorous.
 
 ## Links
 - Parent chain: [[birthday-problem-oq-03-oq-01-oq-02]].
