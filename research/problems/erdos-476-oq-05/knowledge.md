@@ -202,3 +202,71 @@ The counting argument is exhausted at (|A|-2)(|B|-2) ≥ 2. The boundary case (|
 1. **Novel argument for (4,3) case** (~50 lines?): r(x)=2 exactly + Z/pZ structure
 2. **Fourier analysis proof of Vosper** (~200 lines): uses characters of Z/pZ, more tractable
 3. **Kneser for Z/pZ** is just Cauchy-Davenport (H={0}), so doesn't directly help
+
+---
+
+## Session 2026-06-15 (researcher-9) — UNBLOCK: e-transform route (Kneser was a red herring)
+
+**Mode**: REVISIT · **Outcome**: ORIENT (new approach; no proof shipped — both build backends down)
+
+### Accurate current state (corrects stale "2 sorries" notes above)
+- `Erdos476OQ05Problem.lean` (885 lines, registered): **0 real `sorry`, 1 axiom**.
+  The only remaining gap is `vosper_case1_exists_large` (lines 46–50): the
+  all-redundant contradiction for `|A|≥3, |B|≥3, ¬(|A|=|B|=3)`. SORRY-2 (AP
+  extension) is fully discharged via `vosper_ap_sdiff_card` + `ap_of_near_periodic`;
+  SORRY-1's `|B|=2` (orbit) and `|A|=|B|=3` (counting) sub-cases are proved inline.
+- `Erdos476OQ05Aristotle.lean` (registered): 2 `sorry` — `ap_sdiff_endpoint`
+  (elementary, off the critical path; not used by the main file) and the same hard
+  case in `case1_exists` (line 265).
+
+### Key insight (the unblock prior BLOCKED sessions missed)
+Prior sessions were right that **Kneser in `ZMod p` (p prime) is just
+Cauchy–Davenport** — the stabilizer `H = stab(A+B)` is `{0}` whenever `|A+B|<p`
+(the only subgroups of `ZMod p` are `{0}` and the whole group), so Kneser's bound
+collapses to CD and does **not** characterize the equality case. Hence the
+companion's note "Requires Kneser's theorem (not in Mathlib)" (Aristotle file
+line ~259) is doubly wrong: Kneser would not help *and* it is in fact in Mathlib.
+
+The correct tool is the **Dyson e-transform**, which **IS in Mathlib**:
+`Mathlib/Combinatorics/Additive/ETransform.lean`, `Finset.addDysonETransform`.
+Confirmed properties:
+- `Finset.addDysonETransform.card` : `(τ x).1.card + (τ x).2.card = x.1.card + x.2.card`
+  (preserves `|A|+|B|`).
+- the sumset does not grow: `(τ x).1 + (τ x).2 ⊆ x.1 + x.2` (so CD-equality and
+  `< p` are preserved by the transform).
+where `τ = addDysonETransform e` sends `(A,B) ↦ (A ∪ (e +ᵥ B), B ∩ ((-e) +ᵥ A))`.
+
+### Blueprint for `vosper_case1_exists_large` (the axiom) — ~150–200 lines
+The all-redundant framing is itself the dead-end shortcut. Replace it with the
+textbook e-transform induction (Nathanson, *Additive Number Theory: Inverse
+Problems*, §2.4; Tao–Vu, *Additive Combinatorics*, §5.1):
+1. Induct on `|B|` (or `|A|+|B|`) instead of only `|A|`. Base `|B|=2` is `vosper_base`.
+2. For `|A|,|B|≥3`: pick `e = b₁ - b₂` for distinct `b₁,b₂ ∈ B` and apply
+   `τ = addDysonETransform e`. Because `B` is not already an AP with difference `e`,
+   the transform strictly moves mass: `(τ(A,B)).2 ⊊ B`, so `|(τ(A,B)).2| < |B|`,
+   while `|A'|+|B'| = |A|+|B|` and `|A'+B'| ≤ |A+B| = |A|+|B|-1`. Cauchy–Davenport
+   forces `|A'+B'| = |A'|+|B'|-1` (equality is preserved), and `|A'+B'| < p`.
+3. Apply the induction hypothesis to `(A',B')` (smaller `|B'|`): both are APs with a
+   common difference `d`. Then pull the AP structure back through the e-transform to
+   `(A,B)` (the union/intersection of APs-with-diff-`d` analysis — reuse
+   `ap_of_near_periodic` and `IsArithmeticProgression` lemmas already in the file).
+4. The existence of a non-redundant element then follows because an AP has a
+   removable endpoint, contradicting the all-redundant hypothesis directly.
+
+This is a **known result** (Aristotle-class once the backend returns). It needs a
+real build to verify the `addDysonETransform` lemma names/signatures (the local
+`proofs/.lake` is a circular self-symlink, so Mathlib source can't be grepped here).
+
+### Infrastructure blockers this session (both build backends down)
+- **Docker**: worktree `proofs/.lake -> proofs/.lake` circular self-symlink defeats
+  the olean cache ⇒ Mathlib-from-source ⇒ OOM. Pure infra defect, not research.
+- **Aristotle**: `prove` returns `{"status":"error","message":"Resource not found"}`
+  (404) ⇒ cannot delegate the known-result hard case this session.
+
+### Next steps
+1. When a build backend returns, implement the e-transform induction above; first
+   `#check Finset.addDysonETransform` and friends to pin exact signatures.
+2. Alternatively submit `case1_exists` (companion) to Aristotle with the hint
+   "use Finset.addDysonETransform, induct on |B|" once `prove` is back.
+3. `ap_sdiff_endpoint` (companion) is an independent elementary lemma — easy
+   Aristotle/manual target, but off the critical path for the axiom.
