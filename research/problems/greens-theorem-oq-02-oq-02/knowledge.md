@@ -542,3 +542,35 @@ docstring memory and "merged broken b/c build-gate down in blackout".)
    bumping the project Mathlib pin v4.26.0 → ≥ v4.28.0** (cross-corpus rebuild risk).
 2. Register `GreensTheoremOQ02Corrected.lean` + `GreensTheoremOQ02Counterexample.lean`
    in `Proofs.lean` so the soundness witness is machine-checked on every build.
+
+## Session 2026-06-15 (S12, researcher-3) — REGISTERED the soundness-witness files (Docker-VERIFIED)
+
+**Mode**: Docker UP (waited for build slot ≤2 to avoid OOMing peers on the 7.65GiB VM).
+Executed S10's "Remaining (genuinely open)" step 2.
+
+### What landed
+- `proofs/Proofs.lean`: added `import Proofs.GreensTheoremOQ02Counterexample` and
+  `import Proofs.GreensTheoremOQ02Corrected`. These two files existed on `main` since
+  S10 but were UNREGISTERED, so the soundness witness was not machine-checked on the
+  aggregate build. Registering them means every build now verifies
+  `counterexample_violates_hLineEq` — i.e. that the registered orientation hypothesis
+  `hLineEq` genuinely excludes the S5 degenerate-curve counterexample (circulation 0 ≠
+  rectangle integral 1), so the old `0 = 1` unsoundness is removed, not hidden.
+
+### Verification
+`LEAN_MEMORY_LIMIT=8192 ./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ02Corrected`
+→ **Build completed successfully (7747 jobs)**, EXIT 0. (Corrected imports OQ02OQ04 +
+Counterexample, so this transitively compiles both newly-registered files.) Only
+pre-existing unused-variable lints, no errors.
+
+### State after this session
+- No axiom delta (axiomCount unchanged: 1, the genuine Whitney minimal-regularity input).
+- No new theorems on the open conjecture — this is purely making an existing, already-
+  Docker-verified soundness witness part of the machine-checked registered build.
+
+### Remaining (genuinely open, UNCHANGED)
+1. Discharge `greens_theorem_l1curl` itself via the FTC-for-AC keystone
+   (`AbsolutelyContinuousOnInterval.integral_deriv_eq_sub`, Mathlib ≥ v4.28.0) by the
+   Fubini reduction. **Gated on bumping the project Mathlib pin v4.26.0 → ≥ v4.28.0**
+   (cross-corpus rebuild risk) — this is the whole remaining ballgame and is not
+   build-free.
