@@ -250,7 +250,7 @@
     },
     "type": "insight",
     "title": "moulton_counterexample: Full Desargues Failure Certificate",
-    "content": "`moulton_counterexample` is a single large conjunction packaging the complete certificate: (1) three perspectivity facts (collinear_OAA', collinear_OBB', collinear_OCC'), (2) eighteen incidence facts (each of P, Q, R on both corresponding sides of both triangles), and (3) the non-collinearity fact `desargues_fails`. The proof is a term-mode anonymous constructor \u27e8..., ...\u27e9 listing all 21 components. This makes the counterexample machine-checkable and self-contained \u2014 a single theorem whose type is the negation of Desargues's theorem in the Moulton plane.",
+    "content": "`moulton_counterexample` is a single large conjunction packaging the complete certificate: (1) three perspectivity facts (collinear_OAA', collinear_OBB', collinear_OCC'), (2) eighteen incidence facts (each of P, Q, R on both corresponding sides of both triangles), and (3) the non-collinearity fact `desargues_fails`. The proof is a term-mode anonymous constructor \u27e8..., ...\u27e9 listing all 22 components. This makes the counterexample machine-checkable and self-contained \u2014 a single theorem whose type is the negation of Desargues's theorem in the Moulton plane.",
     "mathContext": "Desargues's theorem asserts: if two triangles $ABC$, $A'B'C'$ are in perspective from a point (i.e., $O,A,A'$; $O,B,B'$; $O,C,C'$ collinear), then their side-intersection points $P = AB \\cap A'B'$, $Q = BC \\cap B'C'$, $R = CA \\cap C'A'$ are collinear. `moulton_counterexample` exhibits all hypotheses \u2713 and conclusion \u2717, formally refuting Desargues in the Moulton affine plane.",
     "significance": "key",
     "prerequisites": [
