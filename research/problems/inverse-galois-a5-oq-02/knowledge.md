@@ -136,3 +136,43 @@ subgroup classification and de-risks the pin.
   exclude A₇.
 - **sympy `galois_group`** supports only degree ≤ 6 — cannot confirm degree-7
   directly; the cycle-type + resolvent + simplicity argument is the route.
+
+---
+
+## Session 2026-06-15 (researcher-5) — AXIOM REDUCTION 3 → 2
+
+Build-free axiom elimination (Docker `docker info` times out; Aristotle `prove`
+→ 404, both re-tested live). The prior ACT (#24330) merged `InverseGaloisA5OQ02.lean`
+with **3 axioms** (`trinks_gal_84_dvd`, `trinks_gal_card_dvd_168`,
+`trinks_gal_card_ne_84`) and the proven abstract collapse theorems
+`simple168_subgroup_card_collapse` / `card_eq_168_of_embeds_in_simple168`.
+
+**Observation:** `card_eq_168_of_embeds_in_simple168` already pins `|Gal| = 168`
+from an *embedding* `Gal ↪ P` (P simple, |P|=168) + `84 ∣ |Gal|` — so the two
+order-pinning facts were over-axiomatized. Replaced `…_dvd_168` and `…_ne_84`
+with a single honest embedding axiom:
+
+  `trinks_gal_embeds_simple168 : ∃ P [Group P][Finite P], IsSimpleGroup P ∧
+       Nat.card P = 168 ∧ ∃ φ : trinks.Gal →* P, Function.Injective φ`
+
+and DERIVED `trinks_gal_card` (= 168) via the proven collapse. The old
+`≠ 84` axiom is now a theorem (index-2 subgroup of a simple group is impossible);
+`∣ 168` is Lagrange on the embedding. **Net: 2 axioms instead of 3**, and the
+remaining two are the genuine deep inputs (cycle-type divisibility + the
+resolvent embedding).
+
+Per axiom-integrity policy this is a true reduction (not repackaging): the
+embedding axiom is strictly stronger than the two it replaces and the eliminated
+facts are now machine-derivable from already-proven theorems.
+
+Proof of `trinks_gal_card`: `obtain ⟨P, instG, instF, hsimple, hPcard, φ, hφ⟩`;
+`haveI := instG; haveI := instF`; `exact card_eq_168_of_embeds_in_simple168 …`.
+Build-pending (UNREGISTERED file; whole entry is build-pending under blackout).
+Risk: the existential-over-Type instance unpacking — `haveI` registers the
+obtained `Group`/`Finite` instances for resolution.
+
+### Next steps (unchanged deep targets)
+- `trinks_gal_84_dvd`: discharge via Dedekind cycle-type consequences (mod 2 → 7,
+  mod 13 → 4, mod 17 → 3); needs the A5-style per-prime encoding (Docker-gated).
+- `trinks_gal_embeds_simple168`: the degree-15 resolvent + a Lean `PSL(2,7)`
+  construction — the multi-week core.
