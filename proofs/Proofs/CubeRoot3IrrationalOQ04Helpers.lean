@@ -857,4 +857,55 @@ theorem one_five_nine_three_three_six_eight_three_seven_five_over_one_one_zero_f
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S26: twentieth CF convergent upper bound (`a₁₉ = 4`)
+
+The twentieth CF convergent of `∛3` (using `a₁₉ = 4` per a 320-digit CF
+recomputation, true prefix `a₀..a₁₉ =
+[1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, 4, 2, 6, 4, 4]`, 0-indexed) is
+
+  `p₁₉/q₁₉ = (a₁₉·p₁₈ + p₁₇) / (a₁₉·q₁₈ + q₁₇)`
+  `       = (4 · 1593368375 + 383473988) / (4 · 1104779927 + 265886013)`
+  `       = 6_756_947_488 / 4_685_005_721`.
+
+This convergent is odd-index (19), so it lies on the UPPER side of `∛3`
+(alternating with the lower-side nineteenth convergent `1593368375/1104779927`,
+the eighteenth partial quotient `a₁₈ = 4`).
+
+Here `p₁₈/q₁₈ = 1593368375/1104779927` (the nineteenth convergent, lower, now on
+main) and `p₁₇/q₁₇ = 383473988/265886013` (the eighteenth convergent, upper) are
+the two prior rungs; this upper-bound theorem is self-contained — it is
+discharged purely by cubing the literal fraction, independent of the chain rungs.
+
+Convergent recursion (with `a₁₉ = 4`):
+
+  `q₁₉ = 4 · q₁₈ + q₁₇ = 4 · 1104779927 + 265886013 = 4_685_005_721`
+  `p₁₉ = 4 · p₁₈ + p₁₇ = 4 · 1593368375 + 383473988 = 6_756_947_488`
+
+After cubing,
+
+  `6_756_947_488³   = 308_497_487_520_026_079_326_651_318_272`
+  `3 · 4_685_005_721³ = 308_497_487_520_026_079_307_507_261_083`
+
+so `6_756_947_488³ = 308_497_487_520_026_079_326_651_318_272 >
+308_497_487_520_026_079_307_507_261_083 = 3 · 4_685_005_721³` (strict, diff
+`+19_144_057_189`), hence `(6_756_947_488/4_685_005_721)³ > 3` and
+`∛3 < 6_756_947_488/4_685_005_721` as required for an upper bound.
+
+`a₁₉ = 4` was re-derived independently from a 320-digit CF recomputation of `∛3`
+(cert `research/scripts/verify_cbrt3_oq04_s26_20th_convergent.py`), per the
+anti-typo discipline: never re-quote a prior sketch tail, always recompute `aᵢ`
+and verify the cube-side direction before claiming. Two-line proof via the
+cubing-iff helper. -/
+
+/-- `∛3 < 6756947488/4685005721`. Cube target:
+`(6756947488/4685005721)³ = 308_497_487_520_026_079_326_651_318_272 / 4685005721³
+> 3` (strict: `6756947488³ = 308_497_487_520_026_079_326_651_318_272 >
+308_497_487_520_026_079_307_507_261_083 = 3 · 4685005721³`, gap `19_144_057_189`).
+The twentieth convergent of the simple CF of `∛3` (using `a₁₉ = 4` per a
+320-digit CF recomputation). -/
+theorem cbrt3_lt_six_seven_five_six_nine_four_seven_four_eight_eight_over_four_six_eight_five_zero_zero_five_seven_two_one :
+    cbrt3 < (6756947488 / 4685005721 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
