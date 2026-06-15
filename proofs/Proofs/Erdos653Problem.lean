@@ -150,6 +150,63 @@ axiom g_le_n : ∀ n : ℕ, g n ≤ n
 **Monotonicity:**
 g is non-decreasing in n.
 -/
+
+/--
+**Sharp Elementary Upper Bound:** `g(n) ≤ n - 1` for `n ≥ 2`.
+
+This is strictly sharper than `g_le_n` and is the genuine elementary ceiling:
+the deep `n - c·n^{2/3}` gap (`upper_bound`) lives in the `n^{2/3}` term, not in
+the strict inequality `g(n) < n`, which is elementary.
+
+Proof: every R-value `R(p) = distinctDistCount S p` for a point `p` in an
+`n`-point configuration `S` lies in the interval `[1, n-1]`:
+- `R(p) ≤ n - 1` because `distanceSet S p` is the image of `S.filter (· ≠ p) ⊆ S.erase p`
+  (card `n - 1`) under `euclidDist p`, and `Finset.card_image_le` does not increase card;
+- `R(p) ≥ 1` because for `n ≥ 2` there is another point `q ≠ p`, so `distanceSet S p`
+  is nonempty.
+
+Hence `rValueSet S ⊆ Finset.Icc 1 (n-1)`, whose cardinality is `n - 1`, and
+`g n` is the supremum of these counts.
+-/
+theorem g_le_n_sub_one : ∀ n : ℕ, 2 ≤ n → g n ≤ n - 1 := by
+  intro n hn
+  unfold g
+  apply Nat.sSup_le
+  intro k hk
+  simp only [Set.mem_setOf_eq] at hk
+  obtain ⟨S, hcard, rfl⟩ := hk
+  have hsub : rValueSet S ⊆ Finset.Icc 1 (n - 1) := by
+    intro m hm
+    unfold rValueSet at hm
+    rw [Finset.mem_image] at hm
+    obtain ⟨p, hpS, rfl⟩ := hm
+    rw [Finset.mem_Icc]
+    refine ⟨?_, ?_⟩
+    · -- 1 ≤ distinctDistCount S p
+      have h1 : 1 < S.card := by rw [hcard]; omega
+      obtain ⟨q, hqS, hqp⟩ := Finset.exists_ne_of_one_lt_card h1 p
+      have hne : (distanceSet S p).Nonempty := by
+        refine ⟨euclidDist p q, ?_⟩
+        unfold distanceSet
+        exact Finset.mem_image.mpr ⟨q, Finset.mem_filter.mpr ⟨hqS, hqp⟩, rfl⟩
+      have hpos : 0 < distinctDistCount S p := by
+        unfold distinctDistCount; exact Finset.card_pos.mpr hne
+      omega
+    · -- distinctDistCount S p ≤ n - 1
+      have hsubE : S.filter (· ≠ p) ⊆ S.erase p := by
+        intro x hx
+        rw [Finset.mem_filter] at hx
+        exact Finset.mem_erase.mpr ⟨hx.2, hx.1⟩
+      unfold distinctDistCount distanceSet
+      calc ((S.filter (· ≠ p)).image (euclidDist p)).card
+          ≤ (S.filter (· ≠ p)).card := Finset.card_image_le
+        _ ≤ (S.erase p).card := Finset.card_le_card hsubE
+        _ = n - 1 := by rw [Finset.card_erase_of_mem hpS, hcard]
+  calc numDistinctRValues S
+      = (rValueSet S).card := rfl
+    _ ≤ (Finset.Icc 1 (n - 1)).card := Finset.card_le_card hsub
+    _ = n - 1 := by rw [Nat.card_Icc]; omega
+
 /-
 ## Part VII: Special Configurations
 -/
