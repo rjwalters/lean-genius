@@ -5,13 +5,19 @@
 **Problem**: Formalize the general Cesàro (C,1) regularity theorem — if a series
 `∑ aₙ` converges to `s`, then its Cesàro mean converges to the same `s`.
 
-**Status**: ORIENT (S1, 2026-06-14). OQ resolved on paper; reduces to Mathlib's
-`Filter.Tendsto.cesaro`. Buildable (< 80 LOC), no Mathlib gap. ACT deferred —
-Docker verification host down this session.
+**Status**: ACT (S2, 2026-06-15). Full Lean proof written — 126 LOC, 0 sorries,
+0 axioms (`proofs/Proofs/GeometricSeriesOQ01OQ02.lean`). M1 regularity +
+series-level corollary + M2 Grandi strict-extension all proved. Build-pending
+UNREGISTERED (dual blackout: Docker down, no local Mathlib) — needs
+`import Proofs.GeometricSeriesOQ01OQ02` in `proofs/Proofs.lean`, a
+`docker-build.sh` pass, and gallery data before merge.
 
-**Progress summary**: ORIENT — formalizable core pinned to existing Mathlib API;
-two-milestone plan (M1 regularity, M2 converse-failure via Grandi). No Lean
-written yet.
+**Progress summary**: ACT — complete proof of the OQ. `cesaro_regularity`
+(`Sₙ → s ⟹ σₙ → s`) is `(h.comp (tendsto_add_atTop_nat 1)).cesaro`; series-level
+`cesaroSummable_of_hasSum`/`cesaroSummable_of_summable` via
+`HasSum.tendsto_sum_nat`; converse-failure `cesaro_strictly_extends_convergence`
+reuses the parent's `grandiCesaro_tendsto` + `not_summable_grandi` through a
+pointwise bridge `cesaroMean_grandi_eq`.
 
 ## Key insights
 
@@ -35,7 +41,15 @@ written yet.
 
 ## Built items
 
-- (none — ORIENT only; no Lean written this session)
+- `proofs/Proofs/GeometricSeriesOQ01OQ02.lean` (S2, 126 LOC, 0 sorry/0 axiom):
+  - `partialSum`, `cesaroMean`, `CesaroSummable` (defs).
+  - `cesaro_regularity` — **the OQ**: `Tendsto (partialSum a) (𝓝 s) → CesaroSummable a s`.
+  - `cesaroSummable_of_hasSum`, `cesaroSummable_of_summable` — regularity at the
+    level of the actual series sum (`HasSum`/`Summable`).
+  - `cesaroMean_grandi_eq` — pointwise bridge: `cesaroMean ((-1)^·) = grandiCesaro`
+    (parent's bespoke mean), via `div_eq_inv_mul` + `if_neg`.
+  - `grandi_cesaroSummable` — Grandi (C,1)-summable to 1/2 (reuses parent's bound).
+  - `grandi_not_summable`, `cesaro_strictly_extends_convergence` — converse fails.
 
 ## Mathlib gaps
 
@@ -47,15 +61,54 @@ written yet.
 
 ## Next steps
 
-1. (ACT, Docker) Create `proofs/Proofs/GeometricSeriesOQ01OQ02.lean`.
-2. Define `cesaroMean S N := (N⁻¹:ℝ) * ∑ k ∈ range N, S k` and a
-   `CesaroSummable` predicate.
-3. M1: regularity via `exact h.cesaro` on the partial-sum sequence.
-4. M2: Grandi converse-failure using parent `grandiCesaro_tendsto` +
-   `not_summable_grandi`.
-5. Add gallery `src/data/proofs/geometric-series-oq-01-oq-02/` and build-verify.
+1. (Build, when Docker returns) Register `import Proofs.GeometricSeriesOQ01OQ02`
+   in `proofs/Proofs.lean`, run `./proofs/scripts/docker-build.sh
+   Proofs.GeometricSeriesOQ01OQ02`. Likely-fragile points to watch if it fails:
+   - `Filter.Tendsto.cesaro` exact name/shape (`(n:ℝ)⁻¹ * ∑ i ∈ range n, u i`).
+   - `tendsto_add_atTop_nat 1` defeq with the `S_{k+1}` shift in `cesaroMean`.
+   - `cesaroMean_grandi_eq` n>0 branch closing by `rw [div_eq_inv_mul]` after the
+     `simp only` unfold (bound-var rename i↔j is harmless).
+2. Add gallery `src/data/proofs/geometric-series-oq-01-oq-02/` (mirror parent's
+   meta.json; set `status` to `verified` ONLY after the build is green).
+3. (Optional follow-up theory) Hardy–Littlewood Tauberian converse: if `σₙ → s`
+   and `aₙ = O(1/n)` then `∑ aₙ = s` — the genuine open direction, NOT yet in
+   Mathlib (this session proved only the easy regularity direction).
 
 ## Sessions
+
+### Session 2026-06-15 (S2) — ACT: full Lean proof
+
+**Mode**: REVISIT (executed the S1 ACT plan)
+**Outcome**: progress — complete proof written (build-pending; dual blackout)
+
+#### What I did
+- Wrote `proofs/Proofs/GeometricSeriesOQ01OQ02.lean` (126 LOC, 0 sorry/0 axiom).
+- M1 `cesaro_regularity`: chose the (C,1) convention `σₙ = (S₁+⋯+Sₙ)/n` (average
+  the *nonempty* partial sums `S_{k+1}`), so the proof is
+  `(h.comp (tendsto_add_atTop_nat 1)).cesaro` — one `Filter.Tendsto.cesaro` call
+  on the shifted partial-sum sequence.
+- Added series-level corollaries `cesaroSummable_of_hasSum` (via
+  `HasSum.tendsto_sum_nat`) and `cesaroSummable_of_summable`.
+- M2: proved `cesaroMean ((-1)^·) = grandiCesaro` *pointwise* (`funext`, n=0 by
+  `simp`, n>0 by `simp only [...] ; rw [div_eq_inv_mul]`), letting me transport
+  the parent's `grandiCesaro_tendsto` to get `grandi_cesaroSummable` to 1/2 for
+  FREE, then bundle with `not_summable_grandi` into
+  `cesaro_strictly_extends_convergence`.
+
+#### Key findings
+- Picking the textbook convention (start partial sums at `S₁`, divide by `n`)
+  makes BOTH M1 (one `.cesaro` after a `+1` shift) and M2 (defeq-equal to the
+  parent's `grandiCesaro`, modulo `a/n = n⁻¹*a`) collapse to near-one-liners.
+  Choosing the convention to match the reusable artifact is the whole trick.
+- This proves only the *regularity* (easy) direction. The Hardy–Littlewood
+  Tauberian converse is the real open content and remains unformalized.
+
+#### Files modified
+- `proofs/Proofs/GeometricSeriesOQ01OQ02.lean` (new)
+- `research/problems/geometric-series-oq-01-oq-02/{knowledge,state}.md`
+
+#### Next steps
+- Register + `docker-build` when the host returns; then add gallery data.
 
 ### Session 2026-06-14 (S1) — ORIENT feasibility survey
 

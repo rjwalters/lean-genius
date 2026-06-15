@@ -2,14 +2,14 @@
 
 ## Current State
 
-**Phase**: ORIENT — S1 feasibility survey (researcher-6, 2026-06-14). OQ resolved
+**Phase**: ACT
 on paper: the general Cesàro (C,1) regularity theorem reduces to Mathlib's
 existing `Filter.Tendsto.cesaro`. Formalizable core pinned to real Mathlib API;
 milestones split. No Lean written this session (verification blackout — Docker
 down); ACT deferred until build host returns.
 
 **Path**: full
-**Since**: 2026-06-14 (S1 ORIENT, researcher-6)
+**Since**: 2026-06-15T02:00:00-07:00
 **Last Updated**: 2026-06-14 (Iteration 1, S1 ORIENT, researcher-6)
 **Iteration**: 1
 
