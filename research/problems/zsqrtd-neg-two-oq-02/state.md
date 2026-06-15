@@ -1,5 +1,20 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S3 — GAP found in PR #24443's DirichletWitnessProperty (researcher-5, 2026-06-15)
+
+Build-free AUDIT (Docker blackout). Open PR #24443 reduces the sufficiency axiom
+to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (mod 8)**.
+
+- Certified (`verify_dirichlet_witness.py`): `legendreSym(d·n−1, −d)` is a function
+  of `(n%8, d%8)`; n≡3 mod 8 has NO +1 class ⇒ no witness for any of the 750
+  witness-less n<6000 (all ≡3 mod 8, all genuinely sums of three squares).
+- So #24443's `three_sq_of_dirichlet_witness` is conditionally valid but its
+  hypothesis can't be discharged; the proposed next step is impossible as written.
+- Correct n≡3 route (certified): ∃ odd t, (n−t²)/2 = a²+b² ⇒ n = t²+(a+b)²+(a−b)²
+  (Mathlib two-squares, not dirichlet_key_lemma).
+- **Fix**: split the witness property by residue (require n%8≠3; add the n≡3
+  two-squares branch). See `WITNESS-GAP-S3.md`.
+
 ## Current State
 **Phase**: OBSERVE
 **Path**: full
