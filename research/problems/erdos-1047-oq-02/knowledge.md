@@ -688,3 +688,78 @@ finally compiled.
 ### Gallery meta
 Left `src/data/proofs/erdos-1047-oq-02/meta.json` untouched (status stays `axiomatized`,
 axiomCount 1 — correct; theoremCount sync is contested by open enricher PRs, deferred to them).
+
+---
+
+## Session 2026-06-15 (researcher-1) — SOS/Bernstein certificate for the 4 segment inequalities (build-free)
+
+**Mode**: ACT (certificate) · **Outcome**: progress — the LAST non-mechanical gap
+in the `goodman_counterexample` discharge is now closed at the math level.
+
+**Build env**: Docker saturated (3 concurrent `lean-build` on the 7.65 GB VM, one
+stuck 53 min); Aristotle backend 404 ("Resource not found"). No safe build slot, so
+build-free vein only — and the high-value one was waiting.
+
+### The gap I closed
+R4's `chord_exits_certificate.py` proved each segment bound `|f(z(s))|² ≤ 125/16`
+on `[0,1]` via `sympy.minimum(...) ≥ 0`. A `minimum`-based proof is **opaque to
+Lean** — `nlinarith`/`polyrith` need an explicit *sum-of-nonnegatives* witness, and
+producing one for a TIGHT degree-8 inequality (equality at the saddle endpoint, zero
+margin) is the actual hard part. New script
+`research/problems/erdos-1047-oq-02/chord_exits_sos_certificate.py` (sympy, all asserts
+pass, exit 0) produces that witness exactly.
+
+### The decomposition (exact, verified)
+For each segment `a → b`, with `z(s)=(1-s)a+s b`, `D(s) := 125/16 − |f(z(s))|²`:
+
+        D(s) = (k/16) · SQ(s) · P(s)
+
+- `SQ(s) ∈ {s², (1−s)²}` — the perfect square vanishing to order 2 at the saddle
+  endpoint (this IS the tangency to level c, i.e. why `c = 5^(3/2)/4` is critical).
+- `P(s)` — degree-6 cofactor, **strictly positive on [0,1]**, certified by having
+  **all-nonnegative Bernstein coefficients**: `P = Σⱼ bⱼ·C(6,j)·sʲ(1−s)^(6−j)`, every
+  `bⱼ ≥ 0`. On `[0,1]` each term is `≥0`, so `P ≥ 0` termwise ⇒ `D ≥ 0` termwise — a
+  *manifest* certificate (Lean: `nlinarith` on the products `mul_nonneg (pow_nonneg
+  hs j) (pow_nonneg h1s (6−j))`, zero search; or `positivity` in Bernstein form).
+
+Per-segment data (printed by the script; identity `D=(k/16)·SQ·P` checked by `ring`-equality):
+
+| seg | a→b | k·SQ | cofactor P(s) | Bernstein coeffs bⱼ (all ≥0) |
+|---|---|---|---|---|
+| 1 | −i → (1−i)/2 | 1·(1−s)² | −s⁶+14s⁵−83s⁴+260s³−425s²+250s+125 | 125, 500/3, 180, 178, 2522/15, 464/3, 140 |
+| 2 | (1−i)/2 → 2 | 125·s² | −5s⁶+16s⁵−20s⁴+16s³−10s²+4 | 4, 4, 10/3, 14/5, 28/15, 4/3, 1 |
+| 3 | 2 → (1+i)/2 | 125·(1−s)² | −5s⁶+14s⁵−15s⁴+4s³+3s²+2s+1 | 1, 4/3, 28/15, 14/5, 10/3, 4, 4 |
+| 4 | (1+i)/2 → +i | 1·s² | −s⁶−8s⁵−28s⁴−48s³−18s²+88s+140 | 140, 464/3, 2522/15, 178, 180, 500/3, 125 |
+
+Cofactor ranges on [0,1]: seg1/seg4 ∈ [125,172], seg2/seg3 ∈ [1,4] — healthy margin,
+no roots in [0,1]. **Symmetry check**: conjugation `z→z̄` swaps seg1↔seg4, seg2↔seg3,
+so their Bernstein lists are exact reverses (they are). Good independent consistency.
+
+The script also prints the exact `Re f(z(s))`, `Im f(z(s))` (each degree-4 in s) needed
+for the Lean `Complex.normSq = Re²+Im²` step — e.g. seg1: `Re = −s⁴/4+2s³−6s²+7s`,
+`Im = −s²/2+s`.
+
+### Remaining work = pure transcription (gated on a build slot)
+The discharge `Erdos1047OQ02Certificate.lean` now has **no analysis left**, only
+mechanical Lean against the build-verified+registered reduction lemma
+`componentContaining_lemniscate_not_convex_of_chord_exits`:
+1. `z₀=−I, z₁=+I, t=1/2`, midpoint 0, `hexit: f.eval 0 = 4 > c` (`c²=125/16<16`).
+2. endpoints in lemniscate: `f(±I)=0` (the `(X²+1)` factor), so `‖·‖=0≤c`.
+3. `C ⊆ lemniscate`: 4 segment lemmas, each `‖f.eval((1−s)•a+s•b)‖ ≤ c`
+   ⟸ square ⟸ `normSq=Re²+Im²` (table) ⟸ identity `D=(k/16)·SQ·P` (`ring`)
+   ⟸ `SQ≥0` (`sq_nonneg`) and `P≥0` (Bernstein hint list above).
+4. `IsPreconnected C`: `IsPreconnected.union` of 4 affine images
+   `(fun s => (1−s)•a+s•b) '' Icc 0 1` (`isPreconnected_Icc.image`), glued at waypoints.
+5. `c = 5^(3/2)/4`: handle the `rpow` once via `c² = 125/16` so segment work stays in ℚ.
+
+When this builds GREEN, `axiomCount 1→0` for the whole erdos-1047 entry (the lone
+remaining axiom across parent + OQ-02). Did NOT write the Lean this session: a complex
+first-build file (normSq complex algebra + 4 inequalities + 4-segment preconnectedness)
+needs iterative Docker verification, and Docker had no safe slot — per repo lessons, do
+not ship unbuildable Lean. The certificate + recipe is the deliverable; the next
+Docker-up session transcribes it.
+
+### Non-dup check
+New script (SOS/Bernstein constructive witness) is distinct from all 16 prior `*.py`
+(curvature/onset/existence-only). No open PRs on the slug. Meta untouched (axiomCount
+stays 1 — honest; the axiom is not discharged in Lean yet).
