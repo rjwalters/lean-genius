@@ -3,8 +3,73 @@
 ## Source
 Seeker-selected gallery-extracted open question extending **zsqrtd-neg-two**.
 
-## Progress Summary
-Stub created by Seeker. No research progress yet.
+**Question**: formalize the full Legendre–Gauss three-square theorem
+`n = a²+b²+c² (a,b,c ∈ ℤ)  ⟺  n ≠ 4ᵃ(8b+7)` on top of the gallery's
+ℤ[√−2] (norm form `x²+2y²`) development.
 
-## Mathlib Notes
-[To be filled by the Researcher during OBSERVE/ORIENT.]
+## Progress Summary
+
+**Phase OBSERVE (S1, researcher-3, 2026-06-15).** Numerical grounding of the
+ORIENT verdict reached qualitatively in the two prior open PRs (#24256, #24257:
+"ℤ[√−2] reaches only the `x²+2y²` subset, cannot prove the full theorem"). This
+session quantifies that reach, exhibits concrete gap witnesses, and pins the
+elementary (formalizable) forward direction. All numbers reproducible via
+`verify_three_square_observe.py` (pure Python, no Docker).
+
+## Numerical findings (range 0..20000)
+
+| Check | Result |
+|---|---|
+| three-square ⟺ `¬ 4ᵃ(8b+7)` (the target iff) | **0 mismatches** over 0..20000 |
+| sums of three squares in 1..20000 | 16669 |
+| …of those, representable as `x²+2y²` (ℤ[√−2] norm) | **6016 (36.1%)** |
+| `x²+2y²` numbers that are NOT sums of three squares | **0** (subset confirmed) |
+| smallest 3-square numbers NOT of form `x²+2y²` | 5, 10, 13, 14, 20, 21, 26, 29, 30, 35, … |
+
+**Reading.** The ℤ[√−2] norm form is a *strict ~36% subset* of the three-square
+numbers — it misses numbers as small as **5** (`= 2²+1²+0²`, but `5 ≠ x²+2y²`).
+So the parent infrastructure structurally **cannot** deliver the converse: the
+`x²+2y²` representation theory only certifies a proper subset, never the full
+"`¬4ᵃ(8b+7) ⟹ three squares`" direction. This confirms #24256/#24257
+quantitatively.
+
+## What ℤ[√−2] *does* give (the trivial inclusion)
+
+`x²+2y² = x² + y² + y²` ⟹ every norm-form value is a sum of three squares.
+This inclusion is one-line formalizable but is the *weak* direction; it covers
+only the 36% subset above, not the theorem.
+
+## The genuinely formalizable piece: the forward obstruction
+
+The forward direction `n = 4ᵃ(8b+7) ⟹ ¬ three squares` is fully elementary and
+Lean-ready (no ANT machinery, no ℤ[√−2]):
+
+1. **Mod-8 residues.** Squares mod 8 lie in `{0,1,4}`. The three-fold sumset
+   `{0,1,4}+{0,1,4}+{0,1,4} (mod 8)` omits **7**. Hence `n ≡ 7 (mod 8)` is
+   never a sum of three squares. (Finite `decide`/`Finset` check.)
+2. **4-descent.** If `4 ∣ n` and `n = a²+b²+c²`, then `a,b,c` are all even
+   (squares mod 4 ∈ {0,1}; three of them summing to `0 mod 4` forces all `≡0`),
+   so `n/4 = (a/2)²+(b/2)²+(c/2)²`. Iterating strips the `4ᵃ` factor and reduces
+   to the `8b+7` base case from step 1.
+
+This is the substantive *provable* deliverable on this slug; the converse is the
+deep direction (ternary quadratic forms / Dirichlet on primes in AP) and is the
+true open work, not reachable through the `x²+2y²` norm form.
+
+## Recommended next steps
+
+1. **ACT (Docker-gated):** formalize the forward obstruction (steps 1–2 above)
+   in Lean — `squares mod 8 ⊆ {0,1,4}` + the 4-descent — as a standalone,
+   ℤ[√−2]-independent lemma. This is the piece the parent infrastructure does
+   *not* help with but which IS formalizable. (Blocked this session: Docker
+   blackout, `docker ps` hangs.)
+2. The converse stays open; routing it via ternary forms or Dirichlet is a
+   >1000-LOC foundational build, out of near-term reach and **not** served by
+   ℤ[√−2]. Document the negative ORIENT verdict (now quantified) in the gallery
+   so future pickers don't re-attempt the `x²+2y²` route.
+
+## Mathlib notes
+
+- Squares-mod-`m` residue facts: `ZMod` + `decide`.
+- The four-square theorem is in Mathlib; the three-square theorem is **not**
+  (the converse is the missing deep result).
