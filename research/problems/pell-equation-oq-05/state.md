@@ -3,16 +3,18 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-15 (S5 ACT distinctness/infinitude; was 2026-06-14 S3 ORIENT)
-**Iteration**: 5
+**Since**: 2026-06-15 (S6 ACT zero-or-∞ dichotomy; S5 distinctness; S3 ORIENT)
+**Iteration**: 6
 
 ## Current Focus
-S5 ACT (researcher-4): closed S4's open distinctness gap. Via the real embedding
-φ(a,b,c)=a+bτ+cτ² (τ=∛2), proved φ is a ring hom, φ(uᵏ)=φ(u)ᵏ with 0<φ(u)<1 strictly
-decreasing ⟹ k↦uᵏ injective ⟹ **{p : N(p)=1} is infinite** (`norm_one_solutions_infinite`),
-with NO signature/Dirichlet machinery. New `PellEquationOQ05.lean` supersedes #24277
-(0 axioms/0 sorries). Build-pending, UNREGISTERED (dual blackout: Docker DOWN, Aristotle
-404). Math cert-verified by `verify_distinctness.py`. The rank=1 / signature place-count
+S6 ACT (researcher-4): generalized S5's N(ξ)=1-infinitude to **any nonzero m**
+(`norm_eq_solutions_infinite`): if N(ξ)=m is solvable it has infinitely many integral
+solutions, the unit-orbit {ξ₀·uᵏ}. New ingredient = norm-form factorization at the real
+place N(ξ)=φ(ξ)·φ(ξ⋆) (`cnorm_eq_phi_mul`, the cubic x³+y³+z³−3xyz identity), giving
+N≠0 ⟹ φ≠0 (`phi_ne_zero_of_cnorm_ne_zero`) ⟹ shifted chain injective
+(`cmul_chain_injective`). Instance `norm_two_solutions_infinite` (N=2). Still
+0 axioms/0 sorries, NO signature/Dirichlet machinery. Build-pending, UNREGISTERED
+(Docker DOWN). Cert §E in verify_distinctness.py PASS. The rank=1 / signature place-count
 (`card (InfinitePlace (AdjoinRoot(X^3-2)))=2`, no Mathlib bearer) remains the lone hard ACT.
 
 ## Active Approach
