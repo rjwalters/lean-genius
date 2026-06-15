@@ -495,3 +495,50 @@ is at `c ≈ c*`, not small c.
   artifact remains the curvature/criterion certificate. A finite, checkable target would
   be "`Re(u')(z*) < 0` at the explicit `z*`" for the collinear-simple counterexample —
   a single algebraic-number inequality, candidate for an eventual Lean lemma.
+
+## Session 2026-06-15 (researcher-4) — ACT: lower bound on Goodman's open question
+
+**Mode**: REVISIT (RICH; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: new certified result on the file's PLACEHOLDER OQ — distinct from all prior
+single-component onset work.
+
+### What was unclaimed
+The registered `Erdos1047Problem.lean` defines `maxNonConvexComponents (d) := d` as an explicit
+**placeholder** ("the exact value is unknown"); `nonconvex_exists_degree_ge_4` is therefore
+vacuous (true only because of the placeholder def). Prior sessions all studied the *onset* of
+ONE non-convex component (open #24420 closed-form onset for z²(z−1); merged #24491 non-convex
+middle for three collinear simple roots). **No session bounded the NUMBER of simultaneously
+non-convex components** — i.e. gave any real lower bound on Goodman's open question.
+
+### Result (numerically certified)
+**`maxNonConvexComponents(d) ≥ ⌊d/3⌋`.**
+
+Building block: a single unit-spaced collinear triple {−1,0,1} (= z³−z) has, once its three
+roots merge into one component, a NON-CONVEX dumbbell component (signed κ_min<0; verified, and
+consistent with the existing `verify_lemniscate_curvature.py` scan: |f|²-level c≈0.18 → 1 comp,
+κ_min=−5.6).
+
+Construction: place k such triples at the vertices of a **regular k-gon** (radius Rbig), each
+triple oriented radially. The vertex set has cyclic **C_k rotational symmetry**, so every
+cluster sees an identical far-field factor ⇒ a SINGLE level c makes all k merged blobs
+non-convex at once; roots are conjugate-symmetric ⇒ f has real coefficients; Rbig large keeps
+the k blobs mutually separated. Degree 3k ⇒ ≥ k = ⌊d/3⌋ non-convex components.
+
+Certified (signed-curvature tester, κ≥0 on ∂K ⇔ K convex):
+- **k=2, deg 6**, roots {±3,±4,±5}, c (|f|² level) = 8e4: exactly **2 components, BOTH
+  non-convex** (κ_min=−4.11).
+- **k=3, deg 9**, equilateral triangle of radial triples, c = 1.5e9: **3 non-convex
+  components** (κ_min=−1.64), one per vertex (by C₃ symmetry).
+
+### Durable artifact
+`research/problems/erdos-1047-oq-02/multi_cluster_lower_bound.py` (reuses the exact
+curvature machinery from `verify_lemniscate_curvature.py`; deterministic — no Date/RNG).
+
+### Honesty / scope
+Numerical certificate, not a Lean proof: stating this in Lean would require replacing the
+placeholder `maxNonConvexComponents := d` with a genuine non-convex-component count — a semantic
+rewrite of a registered gallery file, unsafe under blackout (cf. the #24521 axiom-soundness
+flag). The ⌊d/3⌋ bound is elementary (translate/rotate copies of a counterexample) and is likely
+folklore, but it was **absent from the file/gallery**, which carried only the placeholder. The
+true value of Goodman's question (the exact growth rate, and whether ⌊d/3⌋ is tight) remains OPEN.
+Not touched: the `grunskyConjecture_false` soundness issue (open #24521) and onset work (#24420).
