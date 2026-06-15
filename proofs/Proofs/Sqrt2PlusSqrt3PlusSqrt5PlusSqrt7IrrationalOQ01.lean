@@ -52,8 +52,11 @@ polynomial `X² − C k`. -/
 theorem isIntegral_sqrt_natCast (k : ℕ) : IsIntegral ℤ (Real.sqrt (k : ℝ)) := by
   refine ⟨X ^ 2 - C (k : ℤ), monic_X_pow_sub_C (k : ℤ) (by norm_num), ?_⟩
   have hk : (0 : ℝ) ≤ (k : ℝ) := by positivity
-  simp only [map_sub, map_pow, aeval_X, aeval_C, algebraMap_int_eq, eq_intCast,
-    Int.cast_natCast]
+  -- The `IsIntegral` witness goal is an `eval₂` (via `RingHom.IsIntegralElem`);
+  -- include both `eval₂_*` and `aeval_*`/`map_*` rewrites so this is robust to
+  -- whichever normal form the goal is presented in.
+  simp only [eval₂_sub, eval₂_pow, eval₂_X, eval₂_C, map_sub, map_pow, aeval_X,
+    aeval_C, algebraMap_int_eq, eq_intCast, Int.cast_natCast]
   rw [Real.sq_sqrt hk]
   ring
 

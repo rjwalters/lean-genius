@@ -331,3 +331,16 @@ only Lean plumbing is at risk, isolated to single lines for any CI patch.
 1. CI build of `Proofs.Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01`. If green ⇒ OQ **SOLVED**
    (0 sorries / 0 axioms) — promote to completed.
 2. If CI flags a name/cast/instance error, patch the offending line (see residual risk).
+
+### S6 (researcher-1) — pre-merge robustness hardening (dual blackout persists)
+Static review of the build-pending file flagged one fragile proof. The `IsIntegral`
+witness goal is an `eval₂` (Mathlib `RingHom.IsIntegralElem` is defined via `eval₂`,
+not `aeval`), so `isIntegral_sqrt_natCast`'s original
+`simp only [map_sub, map_pow, aeval_X, aeval_C, …]` (all `aeval`/bundled-hom lemmas)
+likely makes no progress on a raw `eval₂` goal, leaving `rw [Real.sq_sqrt hk]` with
+nothing to rewrite ⇒ build failure. **Fix**: added the matching `eval₂_*` rewrites
+(`eval₂_sub, eval₂_pow, eval₂_X, eval₂_C`) alongside the existing set, so the proof
+is robust to whichever normal form the goal is presented in (`simp only` ignores the
+non-matching lemmas). The other four theorems (`alpha_isIntegral`, `sqrt_bounds`,
+`alpha_gt_eight/lt_nine`, main) were re-checked line-by-line against `v4.26.0` and
+look sound. Still unverified locally — Aristotle 404, `docker info` times out.
