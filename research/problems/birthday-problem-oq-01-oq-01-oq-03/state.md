@@ -4,7 +4,35 @@
 **Phase**: ACT (written, build-pending)
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 3
+**Iteration**: 4
+
+## Session 2026-06-15 (S4, researcher-5) — Pr(X=0) Schur kernel + #23219 name-check
+Dual blackout still LIVE (`docker info` hangs >15s; Aristotle 404 per prior sessions).
+Build-free deliverables this session:
+
+1. **De-risked draft #23219** (the artifact gating completion). Name-checked
+   EVERY Mathlib lemma it uses against the pinned v4.26.0 sibling
+   (`/Users/rwalters/GitHub/mathlib4`): all current, non-deprecated —
+   `div_le_iff₀`, `Finset.sum_sub_distrib`, `sum_add_distrib`, `sq_eq_zero_iff`,
+   `mul_le_mul_of_nonneg_left`, `card_insert_of_notMem` (NOT the deprecated
+   `_not_mem` alias), `Finset.sum_eq_zero_iff_of_nonneg`. The CS port is verbatim
+   from a building ℚ file. ⟹ #23219 is name-clean; when Docker returns it should
+   build and can be promoted immediately.
+
+2. **NEW Lean: the Schur-concavity kernel** for the dual "uniform MAXIMISES
+   Pr(X=0)" side, in a non-colliding companion `BirthdayProblemOQ01OQ01OQ03Schur.lean`
+   (namespace `BirthdayCollisionSchur`). e_n is biaffine in any two coords:
+   `g x y = A + (x+y)B + xy·C`. Proved (0 sorry, 0 axiom):
+   - `biaffine_mean_sub`: `g(m,m) − g(x,y) = ((x−y)/2)²·C`  (m=(x+y)/2), pure `ring`.
+   - `biaffine_le_mean` (C≥0): equalizing never decreases g — the HLP transfer step.
+   - `biaffine_lt_mean` (C>0, x≠y): strict increase ⟹ uniqueness.
+   - `biaffine_eq_mean_iff` (C>0): equality ⟺ x=y.
+   This is the algebraic heart of N2/N3 (Schur-concavity of e_n), Python-certified
+   in verify_no_collision_extremum.py. All names verified (`sq_pos_of_ne_zero`,
+   `div_ne_zero`, `two_ne_zero`, `sub_ne_zero`, `mul_pos`). Build-pending UNREGISTERED.
+
+3. Re-ran all 3 certifiers (verify_nonuniform / verify_t3_converse_certificate /
+   verify_no_collision_extremum): ALL PASS.
 
 ## Current Focus
 Non-uniform generalization surveyed. Precise formal target fixed:
