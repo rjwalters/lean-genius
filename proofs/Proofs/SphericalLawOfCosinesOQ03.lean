@@ -213,4 +213,41 @@ theorem dual_spherical_law_cleared
   rw [hu, hv, hw] at htp
   rw [htp]; ring
 
+/-! ## Part V: The literal trigonometric dual law `cos C = − cos A·cos B + sin A·sin B·cos c` -/
+
+/-- **Literal trigonometric dual law of cosines.** From the angle cos/sin defining
+relations taken in *cleared product form* (the side law solved for the angle with
+denominators cleared) plus the side-Pythagorean identity `sc² = 1 − cc²`, the dual
+spherical law of cosines holds as the literal equality
+
+  `cos C = − cos A · cos B + sin A · sin B · cos c`.
+
+Division-free route (no `field_simp`): the angle relations are posited cleared, the
+common denominator `sa·sb·sc²` is removed once via `mul_right_cancel₀`, and the goal
+closes by a single `linear_combination` against `dual_law_cleared` (the polynomial
+heart) — both coefficients sympy-verified in `verify_dual_trig.py`. -/
+theorem dual_law_trig
+    (ca cb cc sa sb sc cA cB cC sA sB : ℝ)
+    (hsa : sa ≠ 0) (hsb : sb ≠ 0) (hsc : sc ≠ 0)
+    (hsc2 : sc ^ 2 = 1 - cc ^ 2)
+    (hcA : cA * (sb * sc) = ca - cb * cc)
+    (hcB : cB * (sa * sc) = cb - ca * cc)
+    (hcC : cC * (sa * sb) = cc - ca * cb)
+    (hsAsB : sA * sB * (sa * sb * sc ^ 2)
+        = 1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) :
+    cC = -cA * cB + sA * sB * cc := by
+  have hD : sa * sb * sc ^ 2 ≠ 0 :=
+    mul_ne_zero (mul_ne_zero hsa hsb) (pow_ne_zero 2 hsc)
+  have hAB : cA * cB * (sa * sb * sc ^ 2) = (ca - cb * cc) * (cb - ca * cc) := by
+    have h : cA * (sb * sc) * (cB * (sa * sc)) = (ca - cb * cc) * (cb - ca * cc) := by
+      rw [hcA, hcB]
+    linear_combination h
+  have key : (cc - ca * cb) * sc ^ 2
+      = -(ca - cb * cc) * (cb - ca * cc)
+        + (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) * cc :=
+    dual_law_cleared ca cb cc (sc ^ 2)
+      (1 - ca ^ 2 - cb ^ 2 - cc ^ 2 + 2 * ca * cb * cc) hsc2 rfl
+  apply mul_right_cancel₀ hD
+  linear_combination (sc ^ 2) * hcC + hAB - cc * hsAsB + key
+
 end SphericalLawOfCosinesOQ03

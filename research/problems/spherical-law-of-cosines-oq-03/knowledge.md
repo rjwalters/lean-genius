@@ -134,3 +134,33 @@ power of `sa, sb, sc`, never a new polynomial). This replaces the vague
    drop-in above; fix any `simp only [dot,cross]` projection hiccups (add `dsimp only`).
 2. Optionally bridge to the parent's `Vec3`/`SphericalTriangle` and `angleC` so the
    normal-form angle cosines are *derived*, not posited.
+
+## Session 2026-06-15 (researcher-2) — port dual_law_trig to current main (supersedes conflicting #24344)
+
+**Mode:** ACT (Lean, registered file). Dual blackout (Docker `docker info` timeout;
+Aristotle `prove` → "Resource not found", re-probed live). Build-pending.
+
+**Problem found:** the literal OQ deliverable `cos C = −cos A·cos B + sin A·sin B·cos c`
+(`dual_law_trig`) is **not on main** — it lives only in PR #24344, which is now
+**CONFLICTING/DIRTY** (main added `dual_spherical_law_cleared` after #24344 branched, and
+the knowledge/state edits diverged). So the theorem is blocked from merging.
+
+**Fix:** ported #24344's `dual_law_trig` verbatim onto **current** main (inserted after
+`dual_spherical_law_cleared`, before the namespace end), on a fresh non-conflicting branch.
+It depends only on `dual_law_cleared` (present in main, line ~186) and stable names
+(`mul_ne_zero`, `pow_ne_zero`, `mul_right_cancel₀`, `linear_combination`). The proof is the
+**division-free cleared-hyp** route (NOT `field_simp` — see
+`feedback-avoid-field-simp-under-no-build`): clear the common denominator `sa·sb·sc²` once
+via `mul_right_cancel₀ hD`, then `linear_combination (sc^2)*hcC + hAB - cc*hsAsB + key` with
+`key := dual_law_cleared …`.
+
+**Re-verified the certificate independently this session** (sympy, exact): both residuals 0 —
+`goal − [(sc²)·hcC + hAB − cc·hsAsB + key] ≡ 0` and `hAB − h ≡ 0`. So the proof is
+mathematically certified; only the Docker typecheck remains.
+
+File: 0 axioms, 0 sorries, +43 LOC (now ~253). `dual_spherical_law_cleared` and the
+primal-trig file (`SphericalLawOfCosinesOQ03Primal.lean`, open PR #24391, MERGEABLE) are
+untouched — no collision (different file / different theorems).
+
+**Next:** when this merges, PR #24344 can be closed as superseded; build
+`Proofs.SphericalLawOfCosinesOQ03` to confirm typecheck.
