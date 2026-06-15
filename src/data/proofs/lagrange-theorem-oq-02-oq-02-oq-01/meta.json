@@ -197,7 +197,7 @@
     {
       "id": "burnside-sum-form",
       "title": "Burnside's Lemma (Sum Form)",
-      "startLine": 72,
+      "startLine": 69,
       "endLine": 90,
       "summary": "burnside_lemma_sum_form: Σ_g |Fix(g)| = |X/G| · |G|. One-line restatement of `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` in the file's namespace.",
       "mathContext": "$\\sum_{g \\in G} |\\mathrm{Fix}(g)| = |X/G| \\cdot |G|$ — the symmetric multiplicative form, no division. The decisive Mathlib invocation."
@@ -205,15 +205,15 @@
     {
       "id": "burnside-average-form",
       "title": "Burnside's Lemma (Average Form)",
-      "startLine": 94,
-      "endLine": 116,
+      "startLine": 91,
+      "endLine": 114,
       "summary": "burnside_lemma_average_form: |X/G| = (Σ_g |Fix(g)|) / |G|. Derived from the sum form by `Nat.mul_div_cancel` under the hypothesis `0 < |G|`.",
       "mathContext": "$|X/G| = \\frac{1}{|G|} \\sum_{g \\in G} |\\mathrm{Fix}(g)|$ — the classical Burnside formulation. Recovered as an `ℕ`-division corollary of the sum form."
     },
     {
       "id": "conjugation-specialisation",
       "title": "Conjugation-Action Specialisation",
-      "startLine": 120,
+      "startLine": 115,
       "endLine": 138,
       "summary": "conjugation_burnside_form: Σ_c |Fix(c)| = |G/∼| · |ConjAct G|, the application of Burnside to the action `ConjAct G ↷ G`. This exhibits the conceptual parallel with the parent's class equation — the same identity applied to two different actions.",
       "mathContext": "Instantiate Burnside at $G := \\mathrm{ConjAct}\\,G$, $X := G$. The fixed points of $c = \\mathrm{ConjAct.toConjAct}\\,g$ acting on $G$ are precisely the elements of $G$ commuting with $g$, i.e. $C_G(g)$. Summing over $c \\in \\mathrm{ConjAct}\\,G$ is dual to summing over conjugacy classes — the form used by the parent file."
@@ -221,8 +221,8 @@
     {
       "id": "oq01-resolution",
       "title": "OQ-01 Resolution",
-      "startLine": 142,
-      "endLine": 175,
+      "startLine": 139,
+      "endLine": 195,
       "summary": "oq01_resolution: bundled conjunction of `burnside_lemma_sum_form` and `conjugation_burnside_form` as a single statement attesting the affirmative answer to OQ-01. The Lean proof is the trivial conjunction.",
       "mathContext": "The two-part packaging: (1) Burnside in general (Σ_g |Fix(g)| = |X/G| · |G| for any G ↷ X), and (2) the conjugation specialisation (the parent's setting recovered as a Burnside instance). Together they answer the OQ-01 affirmatively."
     }
