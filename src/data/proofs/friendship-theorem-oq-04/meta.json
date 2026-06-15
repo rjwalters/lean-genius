@@ -81,5 +81,31 @@
       "endLine": 145,
       "summary": "locally_finite_friendship_has_universal: combine finiteness with the finite gallery theorem FriendshipTheorem.friendship_theorem to obtain a universal vertex."
     }
+  ],
+  "conclusion": {
+    "summary": "This entry pins down the exact hypothesis that rescues the Friendship Theorem in the infinite setting. The diameter-≤2 property (friendship_diameter_two) is shown to be a purely local consequence of the friendship condition, needing no finiteness and no spectral input. Under local finiteness the diameter-2 covering writes the vertex set as a finite union of finite neighbourhoods, forcing finiteness (locally_finite_is_finite) and hence a universal vertex via the finite gallery theorem (locally_finite_friendship_has_universal). The contrapositive infinite_friendship_has_infinite_degree shows the sole obstruction to finiteness is a vertex of infinite degree — exactly the feature of the Chvátal–Kotzig–Rosenberg–Davies C₅ free-amalgamation counterexample.",
+    "implications": "The result cleanly separates the two halves of the classical Erdős–Rényi–Sós proof: the combinatorial diameter/covering half is dimension-free and survives to infinite graphs untouched, while the spectral half (regularity ⇒ universal vertex via adjacency eigenvalues) is irreducibly finite-dimensional. By reducing the infinite case back to the finite theorem rather than re-proving it, the formalization treats the finite Friendship Theorem as a reusable black box and isolates local finiteness as the precise dividing line between the positive theorem and the known counterexamples. This 'identify the sharp restoring hypothesis, then reduce to the finite case' pattern is a template for transferring other finite extremal-graph theorems to infinite graphs.",
+    "openQuestions": [
+      "Is local finiteness genuinely the weakest restoring condition, or does a strictly weaker hypothesis (e.g. bounded degree, or merely a single finite-degree vertex together with connectivity) already force a universal vertex?",
+      "Can the diameter-2 covering argument be adapted to characterize which infinite friendship graphs exist at all — i.e. a structure theorem for the infinite-degree counterexamples beyond the C₅ free-amalgamation construction?",
+      "Does an analogous local-finiteness rescue hold for the (p, q)-friendship generalizations where every pair has exactly λ common neighbours, or do those require a different sharp hypothesis?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "friendship-theorem",
+      "relationship": "extends",
+      "description": "The parent entry formalizes the finite Friendship Theorem (Erdős–Rényi–Sós 1966) via the spectral argument. This entry imports that theorem as a black box and identifies local finiteness as the exact hypothesis that recovers its conclusion for infinite graphs."
+    },
+    {
+      "targetId": "friendship-theorem-oq-01",
+      "relationship": "related",
+      "description": "A sibling open-question entry in the friendship-theorem family, exploring a different facet of the same windmill/common-neighbour structure."
+    },
+    {
+      "targetId": "friendship-theorem-oq-03",
+      "relationship": "related",
+      "description": "A sibling open-question entry on the Friendship Theorem; both build on the shared common-neighbour and universal-vertex machinery of the parent proof."
+    }
   ]
 }
