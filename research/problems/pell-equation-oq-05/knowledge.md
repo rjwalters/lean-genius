@@ -158,3 +158,64 @@ verification de-risk the eventual ACT step.
 3. Recover-Pell lemma: real quadratic $\Rightarrow$ rank 1 (ties to parent).
 4. Cubic norm via `Algebra.norm` / det; verify $N(t-1)=1$.
 5. State finiteness of $N(\xi)=m$ classes via `ClassGroup` finiteness + `Units`.
+
+---
+
+## Session 5 (ACT, researcher-4, 2026-06-15): closed S4's distinctness gap — N(ξ)=1 is **infinite**
+
+S4 (PR #24277) formalized the cubic norm form, its multiplicativity, the unit
+$u=t-1$ of norm 1, and the chain $u^k$ (all norm 1) — but its own summary flagged
+the gap: *"Distinctness of the $u^k$, hence 'infinitely many', is not formalized
+(holds because $|u|<1$ at the real place; the analytic distinctness step is not
+formalized)."* S5 **closes exactly that gap**, with **no signature/Dirichlet
+machinery** (so it sidesteps the bearer-less place-count blocker entirely).
+
+### The argument (signature-free infinitude)
+
+Let $\tau=\sqrt[3]2\in\mathbb{R}$ ($\tau^3=2$) and
+$\varphi(a,b,c)=a+b\tau+c\tau^2$ be the **real archimedean embedding** of $K=\mathbb{Q}(\sqrt[3]2)$.
+
+1. **$\varphi$ is a ring hom** ($\varphi(\xi\eta)=\varphi(\xi)\varphi(\eta)$): the residual
+   of the 6-variable identity is exactly a multiple of $(\tau^3-2)$. The Lean
+   `linear_combination` coefficient is **$-(a_1b_2+a_2b_1+a_2b_2\tau)$**, i.e.
+   $\varphi(\xi)\varphi(\eta)-\varphi(\xi\eta)=(\tau^3-2)(a_1b_2+a_2b_1+a_2b_2\tau)$
+   (verified exactly by `verify_distinctness.py`).
+2. **$\varphi(u^k)=\varphi(u)^k$** by induction (geometric progression at the real place).
+3. **$0<\varphi(u)=\tau-1<1$**, from $1<\tau<2$ (which follows from $\tau^3=2$, $\tau>0$
+   via `nlinarith`).
+4. So $k\mapsto\varphi(u)^k$ is **strictly decreasing** $\Rightarrow$ $k\mapsto u^k$ is
+   **injective** ⟹ $\{p:N(p)=1\}$ is **infinite**
+   (`Set.infinite_of_injective_forall_mem` + `cnorm_upow`).
+
+This is the higher-degree analogue of "Pell has infinitely many solutions", now a
+*theorem* rather than a chain-of-examples. New lemmas in `PellEquationOQ05.lean`
+(supersedes #24277, items 1–4 retained): `phi`, `phi_cmul`, `phi_upow`,
+`tau_bounds`, `phi_u_mem`, `upow_injective`, `exists_real_cube_root_two`,
+`norm_one_solutions_infinite`. Still **0 axioms / 0 sorries**.
+
+### Status & risk
+
+- **Build-pending, UNREGISTERED** in `Proofs.lean`: Docker down + Aristotle MCP 404
+  (dual blackout, same as S4). The *mathematics* is fully verified by
+  `verify_distinctness.py` (symbolic ring-hom identity, exact bounds, strict
+  monotonicity, distinctness of $u^0..u^{11}$).
+- **Compile-risk concentrate**: `exists_real_cube_root_two` (the `Real.rpow_natCast`
+  / `Real.rpow_mul` manipulation) and the exact lemma name
+  `pow_lt_pow_right_of_lt_one`. If the latter was renamed, swap for the
+  `StrictAnti`/`pow_lt_pow_of_lt_one` variant. `phi_cmul`'s `linear_combination`
+  coefficient is sign-checked against the cert.
+
+### Still deferred (unchanged)
+
+The unit **rank = 1** via signature $(1,1)$ — needs
+`card (InfinitePlace (AdjoinRoot (X^3-2))) = 2`, no Mathlib bearer (see §"Bearer
+pin + ACT re-scope" item 3). S5 deliberately routes *around* this: infinitude of
+$N(\xi)=1$ does **not** need the rank, only one unit of infinite order.
+
+### Next steps
+
+1. Verify build once Docker/Aristotle return; register in `Proofs.lean`; close #24277
+   as superseded.
+2. Optional: extend `norm_one_solutions_infinite` to a `Set.Infinite` statement for
+   $N(\xi)=m$ when $m$ is a norm value (multiply the chain by one solution of $N=m$).
+3. The rank/signature place-count remains the lone hard ACT (attempt under backend-up).
