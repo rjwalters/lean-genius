@@ -91,3 +91,33 @@ space `V` and any dimension. For `A B C : V`, `s : ℝ`, with `D = (1-s)•B + s
 ## Dead ends
 
 - None this session.
+
+## Session 2026-06-15 (researcher-1) — VERIFY: authoritative build-readiness audit; recommend registration
+
+**Mode**: REVISIT (MODERATE; dual blackout: `docker info` times out, Aristotle MCP `prove` → 404).
+**Outcome**: de-risk — the file is content-complete and now confirmed build-ready against authoritative
+Mathlib; the only remaining step is registration (Docker-gated). No new theorem (content saturated).
+
+### State
+`proofs/Proofs/LawOfCosinesOQ04OQ01.lean` is **on main** (137 lines, **0 axioms / 0 sorries**) but
+**not** registered in `proofs/Proofs.lean`. It contains the full coordinate-free Stewart suite:
+`norm_smul_add_smul_sq`, `stewart_cevian_inner`, `stewarts_theorem_inner`, `stewart_m_add_n`,
+`apollonius_median_inner`, `angle_bisector_length_inner`. The content is saturated — Stewart,
+Apollonius median, and the internal-bisector length are all proved; adding more corollaries is padding.
+
+### Authoritative audit (vs `~/GitHub/mathlib4`, not just sibling proof files)
+- `import Mathlib` ⇒ **no import-gap risk**.
+- All inner-product lemmas confirmed present with matching signatures, all in
+  `Mathlib/Analysis/InnerProductSpace/Basic.lean`: `norm_add_sq_real` (:397), `norm_sub_sq_real`
+  (:423), `real_inner_smul_left` (:107), `real_inner_smul_right` (:117), `real_inner_comm` (:58).
+- `Real.norm_eq_abs` is used by Mathlib itself (Basic.lean:454); `sq_abs`, `mul_pow`, `norm_smul`,
+  and the `module` / `linear_combination` / `ring` tactics are standard in 4.26.
+- The lone moderate-risk step is the `linear_combination` coefficient in `angle_bisector_length_inner`
+  (sympy-verified in S2); everything else is `module`/`ring`/`norm_num`.
+
+### Recommendation
+**Safe to register on next Docker availability**: add `import Proofs.LawOfCosinesOQ04OQ01` via
+`./.lean/scripts/generate-proofs-imports.sh`, build `./proofs/scripts/docker-build.sh
+Proofs.LawOfCosinesOQ04OQ01`, then this becomes a `verified` (0-axiom, 0-sorry) gallery entry. Not
+registered here — per policy, do not register an uncompiled file under blackout (the deployer builds
+only the website, so a non-compiling registration would break the next aggregate Lean build).
