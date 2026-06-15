@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1210",
   "title": "Erdős #1210",
-  "phase": "AXIOMATIZED",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "AXIOMATIZED",
-    "since": "2026-06-13T08:00:00Z",
-    "iteration": 3,
-    "focus": "S3: corrected the statement from erdosproblems.com/1210 (RHS = Mertens sum ∑_{p<n} 1/p, with a +O(1) additive term) and re-axiomatized erdos_1210 in honest existential-constant form (∃C, ∀n≥3, ∀ pairwise-coprime A, ∑ 1/(n-a) ≤ primeReciprocalSum n + C). Machine-checked the O(1) term is essential (n=5, A={4}: LHS=1 > 5/6). 14 theorems, 4 defs, 1 axiom, 0 sorries, 230 lines; gallery meta.json synced.",
-    "blockers": [],
-    "nextAction": "S4 — explore an unconditional partial bound ∑_{a∈A} 1/(n-a) ≤ C·log log n for pairwise coprime A (via the at-most-one-even structure + a sieve/Mertens estimate). Build-gated; the conjecture itself is open and cannot be resolved by finite computation.",
+    "phase": "BLOCKED",
+    "since": "2026-06-13T15:00:00Z",
+    "iteration": 4,
+    "focus": "STATE-SYNC (researcher-6, 2026-06-14): brings currentState + leanFiles into line with state.md (iteration-4 S4 SURVEY, phase BLOCKED) and with this file's own focus/progressSummary prose — currentState previously trailed at iteration 3 / phase AXIOMATIZED with a stale nextAction (\"do S4\") even though S4 was already done, and leanFiles[] still read 179 LOC / 11 thm / 3 def while the file is 230 LOC / 14 thm / 4 def (confirmed against gallery meta.json + grep). S4 (researcher-1, 2026-06-13 SURVEY) mapped the achievable-bounds landscape and concluded the slug is BLOCKED during the verification blackout: a trivial unconditional log n (harmonic H_{n-1}) upper bound is the right next ACT deliverable, but the conjecture target log log n is blocked on Mertens' 2nd theorem (∑_{p<n} 1/p = log log n + O(1)) being absent from base Mathlib v4.26.0. The statement/formalization on main are sound and fully in sync (S3 corrected the RHS to the Mertens sum + O(1) term; the O(1) term is machine-checked essential via n=5, A={4}). No Lean changes this session (Docker info times out; Aristotle MCP returns \"Resource not found\").",
+    "blockers": [
+      "Conjecture target ∑1/(n-a) ≤ ∑_{p<n}1/p + O(1) (log log n) requires Mertens' 2nd theorem, which is ABSENT from base Mathlib v4.26.0 (cf. research/problems/bertrands-postulate-oq-01/state.md) — upstream-Mathlib-dependent, not a near-term ACT.",
+      "Verification blackout 2026-06-14: Docker build route down (docker info times out) and Aristotle MCP backend returns \"Resource not found\" — the next ACT (ship the unconditional log n bound) is a Lean delta that must not be blind-shipped (the injective-image reindex step fails silently without a compiler)."
+    ],
+    "nextAction": "S5 ACT (Docker-gated; unblock when the build route returns): ship the TRIVIAL UNCONDITIONAL bound ∑_{a∈A} 1/(n-a) ≤ H_{n-1} (~log n) via the injective image a↦n-a ⊆ [1,n-1] + Finset.sum_le_sum_of_subset_of_nonneg. Elementary, no new axioms, no coprimality needed — honest verified partial progress, weaker than the log log n conjecture. The conjecture target (log log n, where coprimality closes the log n→log log n gap) stays BLOCKED on Mertens' 2nd theorem upstream. Do NOT re-run S4 (the survey is done) and do NOT blind-ship Lean while Docker is down.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -78,17 +81,17 @@
     "mathlib": []
   },
   "started": "2026-04-16T17:10:06.887Z",
-  "lastUpdate": "2026-06-13T21:00:00Z",
+  "lastUpdate": "2026-06-14T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1210Problem.lean",
       "filename": "Erdos1210Problem.lean",
-      "lineCount": 179,
-      "theoremCount": 11,
+      "lineCount": 230,
+      "theoremCount": 14,
       "axiomCount": 1,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1210Problem.lean"
