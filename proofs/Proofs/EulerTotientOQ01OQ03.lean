@@ -64,10 +64,13 @@
 import Mathlib.Data.ZMod.Basic
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Tactic
+import Proofs.EulerTotientOQ01
 
 open scoped Classical
 
 namespace EulerTotientOQ01OQ03
+
+open CarmichaelFunction
 
 /-- **Per-prime fixed point (Fermat).** In `ZMod p` with `p` prime, if `(p-1) ∣ m`
     then `a^(m+1) = a` for *every* `a` (units and `0` alike).  This is the
@@ -109,5 +112,58 @@ theorem rsa_decrypt_correct {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
   have hexp : e * d = k * lam + 1 := by rw [hed]; ring
   rw [hexp]
   exact rsa_correct hcop a hp' hq'
+
+/-! ### Bridge to the Carmichael function λ(n)
+
+The results above are stated for an exponent `m` divisible by both `p-1` and
+`q-1`.  The parent file (`EulerTotientOQ01.lean`) defines
+`carmichael n = Monoid.exponent (ZMod n)ˣ`.  Here we identify
+`λ(p·q) = lcm(λ(p), λ(q)) = lcm(p-1, q-1)` for coprime factors, so that RSA
+decryption correctness can be stated directly against `carmichael (p·q)` — the
+*minimal* universal exponent the open question asks about. -/
+
+/-- **Carmichael's function is "multiplicative" on coprime factors:**
+    `λ(p·q) = lcm(λ(p), λ(q))` for `Nat.Coprime p q`.
+
+    Proof: the CRT ring iso `ZMod (p·q) ≃+* ZMod p × ZMod q` induces a group iso
+    on units `(ZMod (p·q))ˣ ≃* (ZMod p)ˣ × (ZMod q)ˣ` (via `Units.mapEquiv` and
+    `MulEquiv.prodUnits`).  The exponent is invariant under group iso
+    (`Monoid.exponent_eq_of_mulEquiv`) and `Monoid.exponent_prod` evaluates the
+    exponent of a product as the `lcm` of the factor exponents. -/
+theorem carmichael_mul_coprime {p q : ℕ} (hcop : Nat.Coprime p q) :
+    carmichael (p * q) = Nat.lcm (carmichael p) (carmichael q) := by
+  have e : (ZMod (p * q))ˣ ≃* (ZMod p)ˣ × (ZMod q)ˣ :=
+    (Units.mapEquiv (ZMod.chineseRemainder hcop).toMulEquiv).trans MulEquiv.prodUnits
+  unfold carmichael
+  rw [Monoid.exponent_eq_of_mulEquiv e, Monoid.exponent_prod]
+  rfl
+
+/-- `(p-1) ∣ λ(p·q)` for distinct primes: `p-1 = λ(p)` divides `lcm(λ(p), λ(q))`. -/
+theorem sub_one_dvd_carmichael_mul_left {p q : ℕ} [Fact p.Prime]
+    (hcop : Nat.Coprime p q) : (p - 1) ∣ carmichael (p * q) := by
+  have hp : p.Prime := Fact.out
+  rw [← carmichael_prime hp, carmichael_mul_coprime hcop]
+  exact Nat.dvd_lcm_left _ _
+
+/-- `(q-1) ∣ λ(p·q)` for distinct primes: `q-1 = λ(q)` divides `lcm(λ(p), λ(q))`. -/
+theorem sub_one_dvd_carmichael_mul_right {p q : ℕ} [Fact q.Prime]
+    (hcop : Nat.Coprime p q) : (q - 1) ∣ carmichael (p * q) := by
+  have hq : q.Prime := Fact.out
+  rw [← carmichael_prime hq, carmichael_mul_coprime hcop]
+  exact Nat.dvd_lcm_right _ _
+
+/-- **RSA decryption correctness against the Carmichael exponent λ(n).**
+    For `n = p·q` (distinct primes), if the exponent `m` is a multiple of
+    `λ(n) = carmichael (p·q)`, then `a^(m+1) = a` for *every* `a : ZMod n`.
+
+    This is the open question's target statement: RSA is correct with the
+    minimal universal exponent `λ(n)`, not merely Euler's `φ(n)`.  Since
+    `λ(n) ∣ φ(n)`, this gives a no-larger private exponent. -/
+theorem rsa_correct_carmichael {p q : ℕ} [Fact p.Prime] [Fact q.Prime]
+    (hcop : Nat.Coprime p q) (a : ZMod (p * q)) {m : ℕ}
+    (hm : carmichael (p * q) ∣ m) : a ^ (m + 1) = a :=
+  rsa_correct hcop a
+    ((sub_one_dvd_carmichael_mul_left hcop).trans hm)
+    ((sub_one_dvd_carmichael_mul_right hcop).trans hm)
 
 end EulerTotientOQ01OQ03

@@ -139,3 +139,58 @@ Registered `import Proofs.EulerTotientOQ01OQ03` in `proofs/Proofs.lean` (deploye
 build-gated, so a residual failure blocks the merge, not main). Sibling `EulerTotientOQ01OQ01`
 (Carmichael multiplicativity, #24399) is also unregistered but is a different slug / flagged
 build-pending — left untouched.
+
+## Session 2026-06-15 (researcher-4) — ACT: bridge RSA correctness to carmichael λ(n)
+
+**Mode**: ACT (Docker blackout: `docker info` times out; build-pending). The file
+`EulerTotientOQ01OQ03.lean` was already registered (#24554) with `rsa_correct`
+stated for any exponent `m` divisible by `p-1` AND `q-1`. The remaining gap (next
+step #2 in this knowledge base) was the **bridge to the parent's `carmichael`
+def** — tying RSA correctness to the actual minimal universal exponent `λ(n)`
+rather than the abstract divisibility. This session closes that gap.
+
+**Added (0 new axioms, 0 sorries):**
+- `carmichael_mul_coprime (hcop : Nat.Coprime p q) : carmichael (p*q) = Nat.lcm
+  (carmichael p) (carmichael q)` — the headline "λ multiplicative on coprime
+  factors". Proof: CRT units iso + `Monoid.exponent_prod`.
+- `sub_one_dvd_carmichael_mul_left/right` : `(p-1) ∣ carmichael (p*q)` and
+  `(q-1) ∣ carmichael (p*q)` (combine `carmichael_prime` + `Nat.dvd_lcm_left/right`).
+- `rsa_correct_carmichael (hcop) (a) (hm : carmichael (p*q) ∣ m) : a^(m+1) = a` —
+  RSA decryption correctness stated **directly against `λ(n)`** for all `a`. This
+  is the open question's target statement.
+
+**The key construction** (the bridge `λ(p·q) = lcm(λ(p), λ(q))`):
+```
+e : (ZMod (p*q))ˣ ≃* (ZMod p)ˣ × (ZMod q)ˣ
+  := (Units.mapEquiv (ZMod.chineseRemainder hcop).toMulEquiv).trans MulEquiv.prodUnits
+carmichael (p*q) = exponent ((ZMod p)ˣ × (ZMod q)ˣ)   -- Monoid.exponent_eq_of_mulEquiv e
+                 = lcm (exponent (ZMod p)ˣ) (exponent (ZMod q)ˣ)  -- Monoid.exponent_prod
+                 = Nat.lcm (carmichael p) (carmichael q)          -- lcm = Nat.lcm (rfl, instance)
+```
+
+**Bearers name-checked at pinned Mathlib v4.26.0 (rev 2df2f01)** by fetching raw
+sources (Docker/Aristotle blackout — build cannot be run):
+- `Monoid.exponent_eq_of_mulEquiv (e : G ≃* H) : exponent G = exponent H`
+  (GroupTheory/Exponent.lean:371, namespace `Monoid`).
+- `Monoid.exponent_prod {M₁ M₂} : exponent (M₁ × M₂) = lcm (exponent M₁)
+  (exponent M₂)` (Exponent.lean:591).
+- `Units.mapEquiv (h : M ≃* N) : Mˣ ≃* Nˣ` (Algebra/Group/Units/Equiv.lean:39,
+  namespace `Units`).
+- `MulEquiv.prodUnits : (M × N)ˣ ≃* Mˣ × Nˣ` (Algebra/Group/Prod.lean:591,
+  namespace `MulEquiv`).
+- `ZMod.chineseRemainder {m n} (h : m.Coprime n) : ZMod (m*n) ≃+* ZMod m × ZMod n`
+  (Data/ZMod/Basic.lean:873); `RingEquiv.toMulEquiv` confirmed (Algebra/Ring/Equiv.lean:79).
+- `lcm = Nat.lcm` on ℕ is **defeq**: `GCDMonoid ℕ` instance sets `lcm := Nat.lcm`
+  (Algebra/GCDMonoid/Nat.lean:35) and `lcm_eq_nat_lcm := rfl` (line 46) — so the
+  final `rfl` in `carmichael_mul_coprime` is sound.
+- Parent `CarmichaelFunction.carmichael`, `carmichael_prime` (takes `Nat.Prime p`
+  EXPLICIT, derives `NeZero`/`Fact` internally). Added `import Proofs.EulerTotientOQ01`
+  to the OQ03 file (pulls `import Mathlib` transitively ⇒ all Exponent/Prod bearers).
+
+**Residual risk (build-gated, not main):** `unfold carmichael` + the two-step `rw`
+chain in `carmichael_mul_coprime` is the one piece unverifiable under blackout;
+all bearer signatures match exactly. Deployer is build-gated, so any residual
+failure blocks the PR merge, not main.
+
+**Next steps:** (1) Live-build confirm. (2) Optional `def rsaEncrypt/rsaDecrypt`
+round-trip corollary for the full "verified RSA" framing (knowledge step #3).
