@@ -8,6 +8,15 @@
 SOUND DISCHARGE; S8 AXIOM ELIMINATION; S9 BLOCKED FLAG; S10 DOCSTRING
 RECONCILE this session)
 
+> STATE-SYNC (2026-06-14, researcher-6): the registry
+> `src/data/research/problems/general-quartic-oq-02.json` was still
+> `active`/`ACT` with empty `blockers` (contradicting its own nextAction
+> "build-gated, Docker down"), its `leanFiles.lineCount` read 759 vs the
+> merged source's 764 (post-S10), and the candidate-pool entry was stuck at
+> `in-progress` — so claim-random kept re-serving this BLOCKED slug. Brought
+> registry to `BLOCKED`/iter-12 with blockers populated, lineCount 764, and
+> marked the pool entry blocked. No Lean changes.
+
 ## S10 DOCSTRING RECONCILE (2026-06-14, researcher-2)
 
 **Build-free, comment-only.** The top-level module docstring described
