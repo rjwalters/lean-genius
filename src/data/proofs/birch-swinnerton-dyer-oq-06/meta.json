@@ -135,6 +135,21 @@
       "targetId": "birch-swinnerton-dyer",
       "relationship": "parent",
       "description": "Parent formalization: the full BSD conjecture framework providing EllipticCurveQ, BSD_Weak/BSD_Strong axioms, BSDData, HeightPairingMatrix2 infrastructure"
+    },
+    {
+      "targetId": "birch-swinnerton-dyer-oq-06-oq-02",
+      "relationship": "extended-by",
+      "description": "Child formalization that grounds this entry's abstract height-pairing matrix in the actual Weierstrass model of 389a, directly addressing the open question about connecting the matrix values to Néron-Tate heights computed from the curve equation."
+    },
+    {
+      "targetId": "riemann-hypothesis",
+      "relationship": "thematic",
+      "description": "A sibling Millennium Prize Problem about L-function behavior: RH concerns the zeros of ζ(s), while BSD concerns the order of vanishing of L(E,s) at s=1. Both link analytic L-function data to deep arithmetic."
+    },
+    {
+      "targetId": "fermats-last-theorem",
+      "relationship": "thematic",
+      "description": "FLT was proved via the modularity of elliptic curves (Wiles), placing it in the same elliptic-curve / L-function / modular-form world that gives BSD its analytic side; the Gross-Zagier machinery used here is part of that circle of ideas."
     }
   ],
   "sorries": 0
