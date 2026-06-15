@@ -171,7 +171,7 @@ Hence `rValueSet S ⊆ Finset.Icc 1 (n-1)`, whose cardinality is `n - 1`, and
 theorem g_le_n_sub_one : ∀ n : ℕ, 2 ≤ n → g n ≤ n - 1 := by
   intro n hn
   unfold g
-  apply Nat.sSup_le
+  apply csSup_le'
   intro k hk
   simp only [Set.mem_setOf_eq] at hk
   obtain ⟨S, hcard, rfl⟩ := hk
