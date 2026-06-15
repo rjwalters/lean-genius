@@ -105,6 +105,53 @@ signed-square convolution *and* the embedded total. Largest single `m=6` orbit
 seen: `(0,0,1,2,3,4) → 5760` at `n=30`; all-nonzero-distinct would give
 `6!·2⁶ = 46080`.
 
+### Session 2026-06-15 (ACT) — the keystone ASSEMBLY (Sign-blueprint steps 1 & 3), build-pending
+
+**Mode**: continue · **Outcome**: ACT (the previously-missing Lean wiring that
+turns the Sign-file blueprint into a proof; Docker + Aristotle blackout ⟹
+build-pending, UNREGISTERED).
+
+The open question was, by now, reduced to ONE residue. The chain on `main`:
+- `Decomp.lean` keystone `fiber_card_eq_contribution` (`sorry`): fiber size = (★).
+- `Sign.lean` `signFiber_card` (proved): the sign half `2^{#nonzero}`.
+- residue `arrangement_card` = `m!/∏count!` (the arrangement half), set up in
+  `Nat.multinomial` form by **open PR #24518** (`Arrange.lean`, also `sorry`).
+
+The Sign file's trailing comment listed steps (1) `absFiber_eq_signFiber` and (3)
+the fiberwise assembly as "remaining bookkeeping" but **never encoded them in
+Lean**. This session encodes them in `FourSquareDistributionOQ04Keystone.lean`
+(0 sorry / 0 axiom of its own):
+
+- `absFiber_eq_signFiber` (step 1, **unconditional**): for an abs-profile `g`
+  attained on the shape-fiber, `{f | shape f = s, |f|=g} = signFiber g`. Witness
+  `f₀` from the image gives `g ≥ 0`, `multiset(g)=s`, `Σ(g i)²=n`; forward via
+  `abs_cases`, backward via `abs_of_nonneg`/`abs_neg` + `sq_abs` rebuilding
+  membership in `reps`/`shape`. Key subtlety: `g ≥ 0` so `|g i| = g i`.
+- `nonzero_card_eq`: `#{i | g i ≠ 0} = #nonzero(s)` via
+  `rw [← Multiset.countP_eq_card_filter, Multiset.countP_map]` then `rfl`
+  (`Finset.filter`/`Multiset.filter` defeq). Bridges signFiber_card's
+  coordinate-exponent to shapeContribution's multiset-exponent.
+- `shapeFiber_card_eq_arrangements_mul` (step 3, **unconditional**): fiber =
+  `(#abs-profiles)·2^{#nonzero s}` via `Finset.card_eq_sum_card_fiberwise` over
+  `absMap` + `Finset.sum_const` (each summand constant by the two lemmas above).
+- `fiber_card_eq_contribution`: the Decomp keystone, conditional on `harr` (=
+  `((shapeFiber).image absMap).card = m!/∏count!` = #24518's
+  `arrangement_card_div_form`); final `rfl` against `shapeContribution`.
+
+**Net effect.** The open question is now `sorry`-free *except* the single residue
+`arrangement_card`. Everything from "fiber size = (★)" down to the
+sign/arrangement split is proved (modulo that one count).
+
+**Cert (new)** `verify_keystone_assembly.py` (PASS: 62 shape-fibers + 441
+sign-fibers, m≤5/n≤12): brute-checks step 1 (each abs-fiber = the signed product
+`∏{g_i,-g_i}`) and step 3 (fiber = #profiles·2^{#nonzero}) directly against the
+genuine `reps(m,n)`; cross-checks the residue and full (★).
+
+**API pinned** (repo-precedented; no Mathlib source materialized under blackout):
+`Finset.card_eq_sum_card_fiberwise` (Erdos40, CountingG7),
+`Multiset.countP_map` (`= (s.filter fun a => p (f a)).card`) +
+`countP_eq_card_filter` (DescartesRuleOfSignsOQ01), `Finset.mem_image_of_mem _ h`.
+
 ## Next steps
 
 1. **ACT (Lean, Docker-gated).** For a FIXED small `m = 2k ∈ {4,6,8}` (avoids the
