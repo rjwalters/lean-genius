@@ -202,3 +202,50 @@ their exact argument order recorded (the one thing the prose spec omitted and th
 otherwise have to discover at build time). No spec change; the ACT plan stands. Still Docker-gated:
 no `.lean` written (an unbuildable file under `Proofs/` would break the shared build), exactly as
 S1–S4 deferred. Decision: **ORIENT** — pin-confirmation only, zero churn to spec.
+
+## Session 2026-06-15 (S6, researcher-5) — complete Lean transcription (division-free reformulation)
+
+Dual blackout still LIVE (`docker info` timeout; Aristotle `prove` → "Resource not found",
+re-probed this session). No build/typecheck possible. After 5 ORIENT sessions the spec was fully
+pinned; this session produced the **complete paste-ready Lean file** — but with a cleaner
+formulation that removes the spec's sole documented hazard.
+
+**Key simplification — `T` as a Gauss SUM, not the closed form.** The prior spec used
+`T k := k*(k+1)/2`, whose `/2` forced the "division-clearing" step (multiply by 4, prove evenness
+via `Nat.even_mul_succ_self`, etc.) flagged as "the one genuinely build-fiddly step". Defining
+instead
+
+  `def T (n : ℕ) : ℕ := ∑ i ∈ Finset.range n, i`
+
+makes `T 0 = 0` (`rfl`), `T (n+1) = T n + n` (`Finset.sum_range_succ`), and the triangular
+recurrence becomes the **division-free, subtraction-free** identity `2 * T i + i = i^2`
+(`two_T_add`, one-line induction). The block-square identity `T i^2 + i^3 = T (i+1)^2` (`block_sq`)
+then follows by a 3-step `calc` using only `ring` (valid on the ℕ *semiring* — no
+`linear_combination`, which needs a ring) plus `rw [← two_T_add i]`. **No ℕ-division and no
+ℕ-subtraction appear anywhere in the file.** This is a strict improvement over the M1/M1′ specs
+and should be the formulation that gets built.
+
+**File:** `research/problems/sum-of-kth-powers-oq-03/SumOfKthPowersOQ03.lean` (kept in the research
+dir, NOT under `Proofs/`, to avoid degrading the shared safe-subset build before a typecheck —
+`build-safe-subset.sh` globs `Proofs/*.lean`). 0 axioms, 0 sorries (build-pending). Lemma chain:
+`sum_odds` (L1) → `two_T_add` → `block_sq` → `block_eq_cube` (L2, via `Finset.sum_Ico_consecutive`
++ `range_eq_Ico` + `Nat.add_left_cancel`) → `tiling` (L3, induction) →
+`sum_cubes_eq_sum_squared_via_odds` (Main, closes by `rfl` since `T (n+1)` is *definitionally*
+`∑ i ∈ range (n+1), i`, matching the parent's RHS shape `(∑ i ∈ range (n+1), i)^2`).
+
+**Verification:** new durable script `verify_div_free.py` certifies every identity exactly as the
+Lean file evaluates them in ℕ (n = 0..199, exits non-zero on mismatch): L1, T_succ, two_T_add,
+block_sq, block_eq_cube, tiling, Main, and `T (n+1)^2 = RHS`. All pass.
+
+**Transcription risk notes for the Docker-up session:**
+- `Finset.sum_Ico_consecutive _ (Nat.zero_le _) (T_le_succ i)` — `f` explicit (pass `_`),
+  `m n k` implicit (inferred from goal), two `≤` hyps explicit positional (S5 pin).
+- `rw [Finset.range_eq_Ico]` (point-free `range = Ico 0`) rewrites ALL `range` occurrences in one
+  shot — use a SINGLE `rw`, not two (a second errors "no occurrence").
+- `block_eq_cube`'s `sum_congr` goal is `i^3 = block i`, closed by `rw [block_eq_cube]` (rewrites
+  the block RHS to `i^3`).
+- If Main's final `rfl` is finicky on the `T (n+1)` defeq, fall back to `simp only [T]` or
+  `show (∑ i ∈ range (n+1), i)^2 = _; rfl`.
+
+**Next:** Docker-up session — `cp` the draft to `proofs/Proofs/SumOfKthPowersOQ03.lean`, build,
+register in `Proofs.lean`, add gallery entry `src/data/proofs/sum-of-kth-powers-oq-03/`.
