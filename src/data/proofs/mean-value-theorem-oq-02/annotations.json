@@ -30,10 +30,10 @@
     "type": "definition",
     "range": {
       "startLine": 52,
-      "endLine": 68
+      "endLine": 69
     },
     "title": "Taylor Polynomial via Finset.sum and iteratedDeriv",
-    "content": "Defines `taylorPolynomial f a n x = Σ_{k ∈ Finset.range (n+1)} iteratedDeriv k f a / k! · (x-a)^k`. The sum runs from k=0 to n using Lean's `Finset.range (n+1)`. The `iteratedDeriv k f a` computes the k-th iterated derivative of f at a using Mathlib's Fréchet derivative infrastructure. The `noncomputable section` wrapping the entire file reflects that `iteratedDeriv` uses `Classical.choice`. The n=0 and n=1 cases are verified by simp lemmas.",
+    "content": "Defines `taylorPolynomial f a n x = Σ_{k ∈ Finset.range (n+1)} iteratedDeriv k f a / k! · (x-a)^k`. The sum runs from k=0 to n using Lean's `Finset.range (n+1)`. The `iteratedDeriv k f a` computes the k-th iterated derivative of f at a using Mathlib's Fréchet derivative infrastructure. The `noncomputable section` wrapping the entire file reflects that `iteratedDeriv` uses `Classical.choice`. The n=0 case (`taylorPolynomial_zero`) closes by `simp [taylorPolynomial, iteratedDeriv_zero]`, while the n=1 case (`taylorPolynomial_one`) needs `Finset.sum_range_succ` to unfold the two-term sum before `iteratedDeriv_zero`/`iteratedDeriv_one` collapse it to `f a + deriv f a · (x-a)`.",
     "mathContext": "$T_n(x) = \\sum_{k=0}^{n} \\frac{f^{(k)}(a)}{k!}(x-a)^k$. `taylorPolynomial_zero`: $T_0 = f(a)$ (zeroth derivative is the function itself; `iteratedDeriv_zero` gives `iteratedDeriv 0 f = f`). `taylorPolynomial_one`: $T_1 = f(a) + f'(a)(x-a)$ (the tangent line at $a$; `iteratedDeriv_one` gives `iteratedDeriv 1 f = deriv f`).",
     "significance": "key",
     "relatedConcepts": [
@@ -108,7 +108,7 @@
     "proofId": "mean-value-theorem-oq-02",
     "type": "concept",
     "range": {
-      "startLine": 141,
+      "startLine": 137,
       "endLine": 152
     },
     "title": "Second-Order Taylor Expansion",
