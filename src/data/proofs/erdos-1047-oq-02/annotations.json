@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ann-e1047-oq02-faithful",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 78,
+      "endLine": 81
+    },
+    "type": "definition",
+    "title": "Faithful Grunsky Question (∀ c > 0)",
+    "content": "`grunskyConjectureFaithful` states Grunsky's question with **no** small-c restriction: for every monic f of positive degree and *every* c > 0, all components of {z : |f(z)| ≤ c} are convex.\n\nThis is the statement the Erdős #1047 docstring actually describes. The parent flagship instead uses a weaker `∃ c₀ > 0, ∀ c < c₀` form — and that weaker form is TRUE (small components are disks), which is what makes the parent's `axiom grunskyConjecture_false` unsound.",
+    "mathContext": "$\\forall f$ monic, $\\deg f > 0$, $\\forall c > 0$, every component of $\\{|f(z)| \\le c\\}$ is convex. Genuinely FALSE (Pommerenke 1961, Goodman 1966).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial lemniscates",
+      "Convexity in ℂ",
+      "Quantifier strength"
+    ],
+    "prerequisites": [
+      "Polynomial lemniscates and sublevel sets"
+    ]
+  },
+  {
+    "id": "ann-e1047-oq02-stronger",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Faithful Implies Small-c (Strictly Stronger)",
+    "content": "`faithful_imp_grunsky` proves the faithful ∀-c statement implies the parent's small-c `grunskyConjecture` — just take the threshold c₀ = 1.\n\nConsequently the parent's `axiom grunskyConjecture_false : ¬grunskyConjecture` negates the *weaker* of the two statements, which over-claims. This pinpoints the logical root cause of the parent axiom's unsoundness.",
+    "mathContext": "Strength comparison: $\\text{faithful} \\Rightarrow \\text{small-}c$ via $c_0 = 1$. Negating the weaker statement is a stronger (and here false) claim.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Logical implication",
+      "Quantifier restriction",
+      "Axiom integrity"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-e1047-oq02-negation-theorem",
+    "proofId": "erdos-1047-oq-02",
+    "range": {
+      "startLine": 96,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "The Corrected Axiom, as a Theorem",
+    "content": "`grunsky_false_faithful` proves the faithful Grunsky statement is FALSE — directly from the parent's `goodman_counterexample` (f = (z²+1)(z-2)² at c = 5^{3/2}/4). It destructs the counterexample to exhibit a non-convex component, contradicting convexity for all c > 0.\n\nThe key point: the negation needs **no standalone axiom**. Only `goodman_counterexample` — the single genuine analytic input — remains as an assumption, so this isolates a patch dropping the parent's axiom count from 2 to 1.",
+    "mathContext": "From $\\exists z_0,\\ z_0 \\in$ Goodman component $\\wedge\\ \\neg\\text{convex}$, derive $\\neg\\text{grunskyConjectureFaithful}$. Negation is a deduction, not an axiom.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Goodman's counterexample",
+      "Proof by contradiction",
+      "Axiom elimination"
+    ],
+    "prerequisites": [
+      "Goodman's degree-4 counterexample"
+    ]
+  }
+]
