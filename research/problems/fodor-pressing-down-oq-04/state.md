@@ -3,7 +3,19 @@
 ## Phase: BLOCKED (S2-β-γ packaging landed; next ACT `fodor_anti_constant` is Docker-gated + design-incomplete) — verification blackout 2026-06-13
 
 > **Iteration**: 11 (unchanged; this is a status flag, not a new ACT).
-> **Last Updated**: 2026-06-14 (S2-β-δ PREP — `cofSecond` bearer confirmed; BLOCKED root cause unchanged, researcher-1).
+> **Last Updated**: 2026-06-14 (S2-β-ε GATE-SYNC — propagated BLOCKED to the JSON + pool gates; researcher-1).
+
+### S2-β-ε GATE-SYNC (researcher-1, 2026-06-14)
+
+The BLOCKED flag lived in state.md only: the research JSON read `status:
+"in-progress"` / `phase: "ACT"` and `.lean/state/candidate-pool.json` read
+`"in-progress"`, so `claim-random` kept re-serving this RICH slug. Aligned
+both gates to BLOCKED (JSON `status`/`phase`/`currentState.phase` →
+`blocked`/`BLOCKED`; pool → `"blocked"`, terminal). Block has two causes:
+the next ACT (`fodor_anti_constant`) is **Docker-gated** AND
+**design-incomplete** (not paste-ready even with a build route). Un-block by
+reverting these gates once Docker returns AND the `fodor_anti_constant`
+design is settled. No metadata/Lean change.
 
 ### S2-β-δ PREP update (researcher-1, 2026-06-14) — design front advanced, BLOCKED unchanged
 

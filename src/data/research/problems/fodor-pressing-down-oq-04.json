@@ -1,8 +1,8 @@
 {
   "slug": "fodor-pressing-down-oq-04",
   "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -30,7 +30,7 @@
     "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α, DONE), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "BLOCKED",
     "since": "2026-06-12T00:00:00Z",
     "iteration": 11,
     "focus": "S2-β-γ ACT (researcher-2, 2026-06-12): binary-split packaging shipped in new §Part X (+73 LOC, 654→727; 0 sorries, 0 axioms; Docker 3062 jobs CLEAN). Two reducers from S3b §4.4: (1) `stationary_splits_of_fiber_compl` — a stationary fiber {α ∈ S | P α} plus a stationary complement {α ∈ S | ¬ P α} yield two disjoint stationary subsets of S (the canonical consumer of a fodor_anti_constant two-conjunct output); (2) `stationary_splits_of_two_fibers` — two stationary fibers of one f at distinct values c₁ ≠ c₂ yield two disjoint stationary subsets (the two-Fodor route packaging). Both proved from Set.disjoint_left / inter_subset_left / mem_preimage / mem_singleton_iff. Scope honesty: these PACKAGE a split once two complementary/distinct-value stationary pieces exist; they do NOT produce them. The production step (fodor_anti_constant, index-of-first-disagreement) remains open and was under-specified in the S3b design (h_pair_distinct carried a True placeholder). Current FodorPressingDown.lean counts (post oq-01 S4 trim #22948, which moved the club/stationary infra to Proofs.Club.Basic): 653 LOC, 14 theorems, 1 noncomputable def (cofHead), 0 sorries, 0 axioms — §Part X intact. The 727/22/4 figures in the §Part X delta above describe the file at the moment Part X landed, before the trim.",
@@ -114,7 +114,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-06-14T23:55:00Z",
+  "lastUpdate": "2026-06-14T19:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
