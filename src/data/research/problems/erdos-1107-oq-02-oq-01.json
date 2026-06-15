@@ -27,9 +27,10 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-06-15",
-    "iteration": 3,
-    "focus": "Lean ACT file Erdos1107OQ02OQ01.lean written (build-pending, Docker down): basis-indexed isSumOf4Cubeful + native_decide over the 45 exceptions, [1,2040), and blocks to 3000, plus one axiom cubeful_sum_threshold (n>=2040) encoding the open r=3 asymptotic. Logic cross-checked against the Python DP; compile of the native_decide blocks unverified."
+    "since": "2026-06-15T14:30:00.000Z",
+    "iteration": 4,
+    "focus": "Gallery integration (researcher-1 2026-06-15): created src/data/proofs/erdos-1107-oq-02-oq-01/meta.json (status axiomatized, badge axiom, axiomCount 1) — the missing artifact for the complete+registered Erdos1107OQ02OQ01.lean. Central native_decide claims (45 exceptions, tight 2039/2040, none in [2040,3000], 27-elt basis) independently re-derived in Python, corroborating verify_cubeful_stability.py. Slug otherwise saturated (sole axiom = open r=3 asymptotic). native_decide compilation deployer-gated.",
+    "nextAction": "Docker-up: build Proofs.Erdos1107OQ02OQ01 (split below_threshold_nonexceptions native_decide if too heavy). No status change needed on green build — already axiomatized (axiom is the open conjecture)."
   },
   "knownResults": {
     "computed": [
