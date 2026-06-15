@@ -441,7 +441,7 @@ theorem counting_lemma_lower_bound (G : SimpleGraph V) [DecidableRel G.Adj]
   have hab : eps * eps ≤ (dAB - eps) * (dAC - eps) :=
     mul_le_mul h1 h2 (le_of_lt heps) (by linarith)
   have habc : eps * eps * eps ≤ (dAB - eps) * (dAC - eps) * (dBC - eps) :=
-    mul_le_mul hab h3 (le_of_lt heps) (by positivity)
+    mul_le_mul hab h3 (le_of_lt heps) (le_trans (by positivity) hab)
   -- Combine: (1-2ε)(dAB-ε)(dAC-ε)(dBC-ε) ≥ (1-2ε)ε³
   have hprod : (1 - 2 * eps) * eps ^ 3 ≤
       (1 - 2 * eps) * (dAB - eps) * (dAC - eps) * (dBC - eps) := by
@@ -570,12 +570,15 @@ private theorem regularity_with_finpartition (eps : ℚ) (heps : 0 < eps)
         (↑((P.parts.product P.parts).filter (fun pq =>
           pq.1 ≠ pq.2 ∧ ¬IsEpsilonRegular G eps pq.1 pq.2)).card : ℝ) ≤
         (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) := by exact_mod_cast h_sub
-    have h_cast_kk : (↑(P.parts.card * (P.parts.card - 1)) : ℝ) =
-        (↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1) := by
-      rw [Nat.cast_mul, Nat.cast_sub h_k1]; simp
-    rw [h_cast_kk] at hunif
+    have hunif' : (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) ≤
+        (↑eps : ℝ) * ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1)) := by
+      have h : (↑(P.nonUniforms G (↑eps : ℝ)).card : ℝ) ≤
+          ↑(P.parts.card * (P.parts.card - 1)) * (↑eps : ℝ) := hunif
+      rw [Nat.cast_mul, Nat.cast_sub h_k1, Nat.cast_one] at h
+      linarith [h, mul_comm (↑eps : ℝ) ((↑P.parts.card : ℝ) * ((↑P.parts.card : ℝ) - 1))]
     linarith
 
+set_option maxHeartbeats 1000000 in
 /-- **Quantitative Triangle Removal Lemma**: For every δ > 0, there exists
     γ > 0 such that every n-vertex graph with at most γn³ triangles can
     be made triangle-free by removing at most δn² edges.
@@ -636,12 +639,12 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         rcases Nat.eq_zero_or_pos n with hn0 | hn_pos
         · simp [hn0]; positivity
         · apply mul_lt_mul_of_pos_left _ hgamma_pos
-          exact pow_lt_pow_left hn_lt_M (Nat.cast_nonneg _) (by norm_num)
+          exact pow_lt_pow_left₀ hn_lt_M (Nat.cast_nonneg _) (by norm_num)
       have hgM_eq : gamma * (M : ℚ) ^ 3 = (1 - 2 * eps) * eps ^ 3 / 16 := by
-        rw [hgamma_def]; field_simp; ring
+        rw [hgamma_def]; field_simp
       have hfrac_lt : (1 - 2 * eps) * eps ^ 3 / 16 < 1 := by
         have : eps ^ 3 ≤ (1 / 4) ^ 3 :=
-          pow_le_pow_left (le_of_lt heps) heps_quarter 3
+          pow_le_pow_left₀ (le_of_lt heps) heps_quarter 3
         nlinarith
       linarith
     have hzero : triangleCount G Finset.univ Finset.univ Finset.univ = 0 := by
@@ -723,16 +726,13 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         have h1 := Finset.card_le_card hR_sub
         have h2 := Finset.card_union_le (R_wp ∪ R_irreg) R_sparse
         have h3 := Finset.card_union_le R_wp R_irreg
-        push_cast; linarith
+        exact_mod_cast le_trans h1 (le_trans h2 (Nat.add_le_add_right h3 _))
       -- Shared infrastructure: partition sum = n and part size bound
       have hsum : P.parts.sum Finset.card = n := by
-        rw [hn_def, Fintype.card, ← P.sup_parts]
-        exact (Finset.card_biUnion fun a ha b hb hab =>
-          Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+        simpa [hn_def, Finset.card_univ] using P.sum_card_parts
       have hmax_part : ∀ S ∈ P.parts, (S.card : ℚ) ≤ (n : ℚ) / k + 1 := by
         intro S hS
-        have hS_ne : S ≠ ∅ := fun h => absurd (h ▸ hS) P.not_bot_mem
-        have hS_pos : 0 < S.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hS_ne)
+        have hS_pos : 0 < S.card := Finset.card_pos.mpr (P.nonempty_of_mem_parts hS)
         have hkq : (0 : ℚ) < k := by exact_mod_cast (show 0 < k by omega)
         have hge : ∀ T ∈ P.parts, S.card ≤ T.card + 1 :=
           fun T hT => hequi (Finset.mem_coe.mpr hS) (Finset.mem_coe.mpr hT)
@@ -741,12 +741,12 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
               = P.parts.sum (fun _ => S.card - 1) := by
                 simp [Finset.sum_const, hk_def]
             _ ≤ P.parts.sum Finset.card :=
-                Finset.sum_le_sum fun T hT => by omega
+                Finset.sum_le_sum fun T hT => by have := hge T hT; omega
             _ = n := hsum
         rw [div_add_one (ne_of_gt hkq), le_div_iff₀ hkq]
         push_cast
         have : (↑(S.card - 1) : ℚ) = (S.card : ℚ) - 1 := by
-          rw [Nat.cast_sub hS_pos]
+          rw [Nat.cast_sub hS_pos, Nat.cast_one]
         linarith [show (k : ℚ) * ((S.card : ℚ) - 1) ≤ (n : ℚ) by
           rw [← this]; exact_mod_cast hn_ge]
       -- Step 2: Bound within-part pairs ≤ (δ/4)n²
@@ -758,7 +758,8 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
           exact Finset.mem_biUnion.mpr ⟨part, hp, Finset.mem_product.mpr ⟨hu, hv⟩⟩
         have h_card_wp : (R_wp.card : ℚ) ≤ P.parts.sum (fun S => (S.card : ℚ) ^ 2) := by
           have h1 := Finset.card_le_card h_sub_wp
-          have h2 := @Finset.card_biUnion_le _ _ P.parts (fun S => S ×ˢ S)
+          have h2 : (P.parts.biUnion (fun S => S ×ˢ S)).card ≤
+              ∑ S ∈ P.parts, (S ×ˢ S).card := Finset.card_biUnion_le
           calc (R_wp.card : ℚ)
               ≤ ↑(P.parts.sum fun S => (S ×ˢ S).card) := by
                 push_cast; exact_mod_cast le_trans h1 h2
@@ -784,14 +785,14 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         have h_nk : (n : ℚ) ^ 2 / k ≤ delta / 8 * (n : ℚ) ^ 2 := by
           rw [div_le_iff₀ hkq]
           have hdk : delta / 8 * k ≥ 1 := by
-            rw [ge_iff_le, ← div_le_iff₀ (by positivity : (0:ℚ) < delta / 8)]
+            rw [ge_iff_le, ← div_le_iff₀' (by positivity : (0:ℚ) < delta / 8)]
             calc (1 : ℚ) / (delta / 8) = 8 / delta := by ring
               _ ≤ k := hk_ge_inv_delta
           nlinarith [sq_nonneg (n : ℚ)]
         -- n ≤ (δ/8)n²: since n ≥ 8/δ, δn/8 ≥ 1, so (δ/8)n² ≥ n
         have h_nn : (n : ℚ) ≤ delta / 8 * (n : ℚ) ^ 2 := by
           have hdn : delta / 8 * n ≥ 1 := by
-            rw [ge_iff_le, ← div_le_iff₀ (by positivity : (0:ℚ) < delta / 8)]
+            rw [ge_iff_le, ← div_le_iff₀' (by positivity : (0:ℚ) < delta / 8)]
             calc (1 : ℚ) / (delta / 8) = 8 / delta := by ring
               _ ≤ n := hn_ge_inv_delta
           nlinarith [sq_nonneg (n : ℚ)]
@@ -931,10 +932,10 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
             rw [Nat.cast_eq_zero, Finset.card_eq_zero]
             rcases mul_eq_zero.mp h with ha | hb
             · have hA := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp ha)
-              ext x; simp [hA, Finset.not_mem_empty]
+              subst hA; simp
             · have hB := Finset.card_eq_zero.mp (Nat.cast_eq_zero.mp hb)
-              ext x; simp [Finset.product, hB, Finset.not_mem_empty]
-          · rw [div_mul_cancel₀ _ h]
+              subst hB; simp
+          · rw [mul_assoc, div_mul_cancel₀ _ h]; rfl
         -- Step E: Σ ≤ 2*eps * Σ |Pa|*|Pb|, using edgeDensity ≤ 1 for all pairs
         -- but we can't just use density < 2*eps for all pairs (only sparse ones).
         -- Instead: total edge count ≤ Σ |Pa|*|Pb| = n^2, and we need a tighter bound.
@@ -1001,11 +1002,12 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
               ≤ S_sparse.sum (fun pq => 2 * eps * (pq.1.card : ℚ) * pq.2.card) :=
                 Finset.sum_le_sum h_sparse_edge
             _ = 2 * eps * S_sparse.sum (fun pq => (pq.1.card : ℚ) * pq.2.card) := by
-                rw [← Finset.mul_sum]; congr 1; ext pq; ring
+                rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun pq _ => by ring)
             _ ≤ 2 * eps * (P.parts ×ˢ P.parts).sum (fun pq =>
                   (pq.1.card : ℚ) * pq.2.card) := by
                 apply mul_le_mul_of_nonneg_left _ (by positivity)
-                exact Finset.sum_le_sum_of_subset (Finset.filter_subset _ _)
+                exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.filter_subset _ _)
+                  (fun pq _ _ => by positivity)
         -- Σ_{all pairs} |Pa|*|Pb| = n^2
         have h_sum_prod : (P.parts ×ˢ P.parts).sum (fun pq =>
             (pq.1.card : ℚ) * pq.2.card) = (n : ℚ) ^ 2 := by
@@ -1013,9 +1015,7 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
               (pq.1.card : ℚ) * pq.2.card) =
               P.parts.sum (fun S => (S.card : ℚ)) *
               P.parts.sum (fun S => (S.card : ℚ)) := by
-            rw [Finset.sum_product']
-            congr 1; ext Pa
-            rw [← Finset.mul_sum]
+            rw [Finset.sum_mul_sum, Finset.sum_product]
           rw [h_factor, show (n : ℚ) ^ 2 = (n : ℚ) * n from sq (n : ℚ)]
           congr 1 <;> (push_cast; exact_mod_cast hsum)
         -- Chain: R_sparse ≤ 2*eps*n^2 ≤ (delta/4)*n^2
@@ -1092,15 +1092,9 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
       have hBC_dense : edgeDensity G Pb Pc ≥ 2 * eps :=
         hbc_dense Pb hPb Pc hPc hbc_diff hb_Pb hc_Pc
       -- Parts are non-empty (Finpartition guarantees no empty parts)
-      have hPa_ne : Pa.Nonempty := by
-        rw [Finset.nonempty_iff_ne_empty]
-        intro h; exact absurd (h ▸ hPa) P.not_bot_mem
-      have hPb_ne : Pb.Nonempty := by
-        rw [Finset.nonempty_iff_ne_empty]
-        intro h; exact absurd (h ▸ hPb) P.not_bot_mem
-      have hPc_ne : Pc.Nonempty := by
-        rw [Finset.nonempty_iff_ne_empty]
-        intro h; exact absurd (h ▸ hPc) P.not_bot_mem
+      have hPa_ne : Pa.Nonempty := P.nonempty_of_mem_parts hPa
+      have hPb_ne : Pb.Nonempty := P.nonempty_of_mem_parts hPb
+      have hPc_ne : Pc.Nonempty := P.nonempty_of_mem_parts hPc
       have hPa_pos : (0 : ℚ) < Pa.card :=
         Nat.cast_pos.mpr (Finset.card_pos.mpr hPa_ne)
       have hPb_pos : (0 : ℚ) < Pb.card :=
@@ -1119,9 +1113,7 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
       -- Each part has ≥ ⌊n/k⌋ ≥ n/(2M) elements for n ≥ M
       have hpart_size : ∀ S ∈ P.parts, (S.card : ℚ) ≥ (n : ℚ) / (2 * ↑M) := by
         intro S hS
-        have hS_pos : 0 < S.card := Finset.card_pos.mpr (by
-          rw [Finset.nonempty_iff_ne_empty]
-          intro h; exact absurd (h ▸ hS) P.not_bot_mem)
+        have hS_pos : 0 < S.card := Finset.card_pos.mpr (P.nonempty_of_mem_parts hS)
         have hk_pos : 0 < k := by omega
         have hkQ : (0 : ℚ) < (k : ℚ) := Nat.cast_pos.mpr hk_pos
         have hkM_q : (k : ℚ) ≤ (M : ℚ) := Nat.cast_le.mpr hkM
@@ -1132,9 +1124,7 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         have hn_le : n ≤ k * (S.card + 1) := by
           -- Sum of part sizes = n (from Finpartition structure)
           have hsum : P.parts.sum Finset.card = n := by
-            rw [hn_def, Fintype.card, ← P.sup_parts]
-            exact (Finset.card_biUnion fun a ha b hb hab =>
-              Finset.disjoint_coe.mp <| P.supIndep.pairwiseDisjoint ha hb hab).symm
+            simpa [hn_def, Finset.card_univ] using P.sum_card_parts
           calc n = P.parts.sum Finset.card := hsum.symm
             _ ≤ P.parts.sum (fun _ => S.card + 1) :=
                 Finset.sum_le_sum fun T hT => hbound T hT
@@ -1147,7 +1137,7 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
           linarith
         -- n/k ≥ n/M (since k ≤ M)
         have hk_div : (n : ℚ) / k ≥ (n : ℚ) / M := by
-          exact div_le_div_of_nonneg_left (by linarith : (0 : ℚ) < n) hkQ hkM_q
+          exact div_le_div_of_nonneg_left (by positivity : (0 : ℚ) ≤ (n : ℚ)) hkQ hkM_q
         -- Case split on graph size relative to 2M
         by_cases hn2M : n < 2 * M
         · -- n < 2M: S.card ≥ 1 > n/(2M) since n/(2M) < 1
@@ -1158,8 +1148,10 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
         · -- n ≥ 2M: n/M ≥ 2 so n/M - 1 ≥ n/(2M)
           push_neg at hn2M
           have hnM_ge2 : (n : ℚ) / ↑M ≥ 2 := by
-            rw [le_div_iff₀ hM_pos]; exact_mod_cast hn2M
-          have : (n : ℚ) / ↑M - 1 ≥ (n : ℚ) / (2 * ↑M) := by nlinarith
+            rw [ge_iff_le, le_div_iff₀ hM_pos]; exact_mod_cast hn2M
+          have : (n : ℚ) / ↑M - 1 ≥ (n : ℚ) / (2 * ↑M) := by
+            rw [show (2 : ℚ) * ↑M = ↑M * 2 by ring, ← div_div]
+            linarith
           linarith
       have hPa_size := hpart_size Pa hPa
       have hPb_size := hpart_size Pb hPb
@@ -1177,9 +1169,50 @@ theorem triangle_removal_quantitative (delta : ℚ) (hdelta : 0 < delta) :
               (edgeDensity G Pb Pc - eps) *
               Pa.card * Pb.card * Pc.card := hcount
           _ ≥ (1 - 2 * eps) * eps * eps * eps *
-              Pa.card * Pb.card * Pc.card := by nlinarith
+              Pa.card * Pb.card * Pc.card := by
+            have e1 : eps ≤ edgeDensity G Pa Pb - eps := by linarith
+            have e2 : eps ≤ edgeDensity G Pa Pc - eps := by linarith
+            have e3 : eps ≤ edgeDensity G Pb Pc - eps := by linarith
+            have h12 : (0 : ℚ) ≤ 1 - 2 * eps := h12eps.le
+            have hd1 : (0 : ℚ) ≤ edgeDensity G Pa Pb - eps := le_trans heps.le e1
+            have hd2 : (0 : ℚ) ≤ edgeDensity G Pa Pc - eps := le_trans heps.le e2
+            have k1 : (1 - 2 * eps) * eps ≤ (1 - 2 * eps) * (edgeDensity G Pa Pb - eps) :=
+              mul_le_mul_of_nonneg_left e1 h12
+            have k2 : (1 - 2 * eps) * eps * eps ≤
+                (1 - 2 * eps) * (edgeDensity G Pa Pb - eps) * (edgeDensity G Pa Pc - eps) :=
+              mul_le_mul k1 e2 heps.le (mul_nonneg h12 hd1)
+            have k3 : (1 - 2 * eps) * eps * eps * eps ≤
+                (1 - 2 * eps) * (edgeDensity G Pa Pb - eps) * (edgeDensity G Pa Pc - eps) *
+                  (edgeDensity G Pb Pc - eps) :=
+              mul_le_mul k2 e3 heps.le (mul_nonneg (mul_nonneg h12 hd1) hd2)
+            have hc : (0 : ℚ) ≤ (Pa.card : ℚ) * Pb.card * Pc.card := by positivity
+            calc (1 - 2 * eps) * eps * eps * eps * (Pa.card : ℚ) * Pb.card * Pc.card
+                = ((1 - 2 * eps) * eps * eps * eps) * ((Pa.card : ℚ) * Pb.card * Pc.card) := by
+                  ring
+              _ ≤ ((1 - 2 * eps) * (edgeDensity G Pa Pb - eps) * (edgeDensity G Pa Pc - eps) *
+                    (edgeDensity G Pb Pc - eps)) * ((Pa.card : ℚ) * Pb.card * Pc.card) :=
+                  mul_le_mul_of_nonneg_right k3 hc
+              _ = (1 - 2 * eps) * (edgeDensity G Pa Pb - eps) * (edgeDensity G Pa Pc - eps) *
+                    (edgeDensity G Pb Pc - eps) * (Pa.card : ℚ) * Pb.card * Pc.card := by ring
           _ ≥ (1 - 2 * eps) * eps ^ 3 *
-              ((n : ℚ) / (2 * M)) ^ 3 := by nlinarith
+              ((n : ℚ) / (2 * M)) ^ 3 := by
+            have hs : (0 : ℚ) ≤ (n : ℚ) / (2 * ↑M) := by positivity
+            have hsa : (n : ℚ) / (2 * ↑M) ≤ (Pa.card : ℚ) := hPa_size
+            have hsb : (n : ℚ) / (2 * ↑M) ≤ (Pb.card : ℚ) := hPb_size
+            have hsc : (n : ℚ) / (2 * ↑M) ≤ (Pc.card : ℚ) := hPc_size
+            have t1 : (n : ℚ) / (2 * ↑M) * ((n : ℚ) / (2 * ↑M)) ≤ (Pa.card : ℚ) * Pb.card :=
+              mul_le_mul hsa hsb hs (le_trans hs hsa)
+            have hcube : ((n : ℚ) / (2 * ↑M)) ^ 3 ≤ (Pa.card : ℚ) * Pb.card * Pc.card := by
+              calc ((n : ℚ) / (2 * ↑M)) ^ 3
+                  = (n : ℚ) / (2 * ↑M) * ((n : ℚ) / (2 * ↑M)) * ((n : ℚ) / (2 * ↑M)) := by ring
+                _ ≤ (Pa.card : ℚ) * Pb.card * Pc.card :=
+                    mul_le_mul t1 hsc hs (le_trans (mul_nonneg hs hs) t1)
+            have hfac : (0 : ℚ) ≤ (1 - 2 * eps) * eps ^ 3 :=
+              mul_nonneg h12eps.le (by positivity)
+            calc (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * ↑M)) ^ 3
+                ≤ (1 - 2 * eps) * eps ^ 3 * ((Pa.card : ℚ) * Pb.card * Pc.card) :=
+                  mul_le_mul_of_nonneg_left hcube hfac
+              _ = (1 - 2 * eps) * eps * eps * eps * (Pa.card : ℚ) * Pb.card * Pc.card := by ring
       -- The lower bound exceeds gamma·n³
       have hgamma_bound :
           (1 - 2 * eps) * eps ^ 3 * ((n : ℚ) / (2 * M)) ^ 3 >
