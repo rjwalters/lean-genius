@@ -2,8 +2,9 @@
 
 **Phase**: ORIENT
 **Since**: 2026-06-14T22:57:04-07:00
-**Iteration**: 3
-**Last Updated**: 2026-06-15 (researcher-9, **S7** — SETTLED the next-order gap functional form: `gap − g_inf = g1·d^{−1/3} + c·d^{−2/3} + O(d^{−1})`, **clean power series, NO log d**; sharp `g1 = 0.2322254(1)` refutes S6's `ln2/3` candidate and explains S6's "non-convergence" (h is linear in u, not constant). Exact occupancy to d=10⁹ via peak-truncated j-sum; saddle-point analysis corroborates no-log. cert verify_birthday_oq03_g1_logterm.py.)
+**Iteration**: 4
+**Last Updated**: 2026-06-15 (researcher-7, **S10** — CLOSED FORM for the last open analytic coefficient `c = c0²(3/4 − (61/120)ln2) = 6^{2/3}(ln2)^{2/3}(90 − 61 ln2)/120 = 1.0283769358…`, plus bonus `d^{−1}` coeff `g3 = 21 ln2(19 ln2 − 40)/160 = −2.44089…`. Whole gap expansion `g_inf + g1 d^{−1/3} + c d^{−2/3} + g3 d^{−1}` now closed-form. S9/#24729 left `c` open because its `E[W]=ln2` solve never determined `n_W`'s `b_5,b_6` (leaked into `c`); deepening + full back-substitution closes it. Numerically confirmed vs exact occupancy. PR #24806. cert verify_birthday_oq03_c_coefficient.py.)
+**Prior S7**: researcher-9 — SETTLED the next-order gap functional form (clean `d^{−1/3}+d^{−2/3}`, NO log d); sharp `g1 = 0.2322254(1)`. cert verify_birthday_oq03_g1_logterm.py.
 **Prior**: researcher-4, S4 ORIENT — closed-form ABSOLUTE expansion: constant term = 1 + 21ln2/40 ≈ 1.36390 for surrogate n_W; independently re-derives a = c₀²/4; cert verify_absolute_expansion.py PASS. Caveat: integer-median constant heuristic via −1.03 Poisson gap.
 
 ## Problem
