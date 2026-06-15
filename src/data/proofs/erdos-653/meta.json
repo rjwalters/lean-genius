@@ -61,12 +61,13 @@
       "IsRegularPolygon: regular polygon predicate",
       "IsOptimalConfig: configurations achieving g(n)",
       "totalDistinctDistances: total distinct distances",
-      "g_le_n axiom: g(n) ≤ n"
+      "g_le_n axiom: g(n) ≤ n",
+      "g_le_n_sub_one theorem: g(n) ≤ n-1 for n ≥ 2 (sharp elementary upper bound, proved)"
     ],
     "axiomCount": 3,
-    "lineCount": 253,
-    "assumptions": "3 axioms: csizmadia_bound, upper_bound, g_le_n. 0 sorries.",
-    "theoremCount": 2,
+    "lineCount": 310,
+    "assumptions": "3 axioms: csizmadia_bound, upper_bound, g_le_n. 0 sorries. g_le_n_sub_one (g(n) ≤ n-1, n ≥ 2) is a proved theorem strictly sharper than the g_le_n axiom.",
+    "theoremCount": 3,
     "definitionCount": 13
   },
   "overview": {
@@ -131,10 +132,10 @@
     {
       "id": "basic-properties",
       "title": "Basic Properties",
-      "summary": "g_le_n axiom; g_pos and g_mono discussed only in docstrings",
+      "summary": "g_le_n axiom; g_le_n_sub_one theorem (g(n) ≤ n-1, n ≥ 2); g_pos and g_mono discussed only in docstrings",
       "startLine": 138,
-      "endLine": 153,
-      "mathContext": "Axiomatized: g_le_n axiom (g(n) ≤ n); g_pos and g_mono appear only in docstrings"
+      "endLine": 210,
+      "mathContext": "g_le_n axiom (g(n) ≤ n) plus the proved sharp bound g_le_n_sub_one (g(n) ≤ n-1 for n ≥ 2); g_pos and g_mono appear only in docstrings"
     },
     {
       "id": "special-configs",
@@ -202,9 +203,9 @@
       "Real"
     ],
     "namespace": "Erdos653",
-    "lineCount": 253,
+    "lineCount": 310,
     "axiomCount": 3,
-    "theoremCount": 2,
+    "theoremCount": 3,
     "definitionCount": 13,
     "path": "Proofs/Erdos653Problem.lean",
     "sorries": 0

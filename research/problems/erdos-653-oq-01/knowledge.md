@@ -129,3 +129,54 @@ is NOT claimed here. No Lean written (Docker down); the three axioms (`csizmadia
 - `research/problems/erdos-653-oq-01/verify_g_structure.py`: +2 checks (4a 1D-optimality,
   4b 2D-beats witnesses), +summary lines.
 - `research/problems/erdos-653-oq-01/knowledge.md`: this Session 2 entry.
+
+## Session 2026-06-15 (Session 3, researcher-5, ACT — sharp elementary upper bound g(n) ≤ n-1)
+
+**Mode:** CONTINUE / ACT (dual blackout: `docker info` reports DOCKER_DOWN, Aristotle
+MCP `prove` returns "Resource not found" 404). Builds on S1's ACT plan item #2, which
+no prior session shipped: S1/S2 were ORIENT, and the only Lean delta to date is the
+**concurrent open PR #24302** (discharges the `g_le_n` axiom → theorem).
+
+**Delta shipped:** new theorem in `Erdos653Problem.lean`
+
+```lean
+theorem g_le_n_sub_one : ∀ n : ℕ, 2 ≤ n → g n ≤ n - 1
+```
+
+This is **strictly sharper** than the file's `g_le_n` axiom (`g n ≤ n`) and is the
+genuine elementary ceiling — the deep `n - c·n^{2/3}` gap (`upper_bound`) lives in the
+`n^{2/3}` term, not in the strict inequality, which is elementary (knowledge S1 flagged
+`g(n) ≤ n-1` as "strictly sharper than the file's g_le_n axiom" but it was never
+formalized).
+
+**Proof architecture (0 sorries, 0 new axioms):**
+- `Nat.sSup_le` reduces `g n ≤ n-1` to bounding each achievable `numDistinctRValues S`.
+- Containment `rValueSet S ⊆ Finset.Icc 1 (n-1)`: every R-value `distinctDistCount S p`
+  for `p ∈ S` lies in `[1, n-1]`:
+  - **upper** `≤ n-1`: `distanceSet S p` is the image of `S.filter (· ≠ p) ⊆ S.erase p`
+    (card `n-1` via `Finset.card_erase_of_mem`) under `euclidDist p`, and
+    `Finset.card_image_le` does not increase card;
+  - **lower** `≥ 1`: for `n ≥ 2`, `Finset.exists_ne_of_one_lt_card` gives a point
+    `q ≠ p`, so `distanceSet S p` is nonempty (`Finset.card_pos.mpr`).
+- `Nat.card_Icc` gives `|Icc 1 (n-1)| = n-1`; `Finset.card_le_card` finishes.
+
+**Non-collision design:** the theorem is inserted in the previously-empty region between
+the Monotonicity docstring and Part VII — disjoint from PR #24302's edits to the `g_le_n`
+block. The two PRs compose: #24302 proves `g_le_n` (axiom→theorem), this PR adds the
+sharper `g_le_n_sub_one`. meta.json bumped relative to **main** (axiomCount 3 unchanged —
+`g_le_n` is still an axiom in main; theoremCount 2→3; lineCount 253→310). If #24302
+merges first, only the meta.json counts need reconciling (the .lean regions do not
+conflict).
+
+**Build status:** build-pending under dual blackout. All five non-trivial lemma names
+were cross-checked against existing repo usage before shipping:
+`Finset.exists_ne_of_one_lt_card` (Erdos99:55), `Finset.card_erase_of_mem ... , hcard`
+(Erdos107:246, identical pattern), `Nat.card_Icc` (Erdos817:359), `Finset.card_image_le`
+(Erdos643:466), `Nat.sSup_le` (Erdos1104:72). REGISTERED file — flag build-before-merge.
+
+**Honest assessment:** modest but genuine. Fills the one elementary upper-bound gap the
+file had (the sharp `g(n) ≤ n-1` vs the loose `g(n) ≤ n`). The OQ itself (`g(n) ≥ (1-o(1))n`)
+is OPEN and untouched; the two literature axioms (`csizmadia_bound`, `upper_bound`) remain
+correct citations. Remaining ACT item: the elementary lower bound `g(n) ≥ ⌈n/2⌉` (S1 #3),
+which needs an explicit collinear membership witness into the sSup set — deferred (heavier,
+build-gated).
