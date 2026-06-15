@@ -2863,6 +2863,7 @@ import Proofs.Sqrt2Irrational
 import Proofs.Sqrt2IrrationalFromAxioms
 import Proofs.Sqrt2Minpoly
 import Proofs.Sqrt2MinpolyOQ01
+import Proofs.Sqrt2MinpolyOQ01OQ02
 import Proofs.Sqrt2MinpolyOQ02
 import Proofs.Sqrt2MinpolyOQ03
 import Proofs.Sqrt2OQ01
