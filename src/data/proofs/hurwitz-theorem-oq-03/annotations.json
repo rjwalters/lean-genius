@@ -150,7 +150,7 @@
     "proofId": "hurwitz-theorem-oq-03",
     "range": {
       "startLine": 854,
-      "endLine": 1226
+      "endLine": 1685
     },
     "type": "insight",
     "title": "No 3-Square Identity: Overdetermined Orthonormality Contradiction",
@@ -174,32 +174,57 @@
     "id": "ann-ht03-main-theorem",
     "proofId": "hurwitz-theorem-oq-03",
     "range": {
-      "startLine": 1609,
-      "endLine": 1644
+      "startLine": 1686,
+      "endLine": 1712
     },
     "type": "insight",
-    "title": "Hurwitz's Theorem: Assembly of Existence and Non-Existence",
-    "content": "admissibleDimensions : Set ℕ = {1,2,4,8} defines the four valid dimensions. identities_exist_for_admissible proves all four exist by case analysis: each of the four NSquareIdentity instances (oneSquareIdentity, twoSquareIdentity, fourSquareIdentity, eightSquareIdentity) is returned for the corresponding case. The axiom hurwitz_only_if captures the non-existence direction. hurwitz_theorem combines these into the biconditional: NSquareIdentity n is nonempty ↔ n ∈ admissibleDimensions. The four-line proof — constructor, then each direction by one application — demonstrates how all prior work assembles cleanly.",
-    "mathContext": "$\\exists B : \\text{NSquareIdentity}\\,n \\iff n \\in \\{1,2,4,8\\}$. The $\\Rightarrow$ direction uses `hurwitz_only_if` (the axiom). The $\\Leftarrow$ direction uses `identities_exist_for_admissible` (the constructive proof). The overall structure is `Iff.intro (fun ⟨nsi⟩ => hurwitz_only_if n hn nsi) (identities_exist_for_admissible n)`.",
-    "significance": "key",
+    "title": "Admissible Dimensions and the Existence Direction",
+    "content": "admissibleDimensions : Set ℕ = {1,2,4,8} names the four valid dimensions. identities_exist_for_admissible proves the existence (\"if\") direction by case analysis: for each of n = 1, 2, 4, 8 the corresponding NSquareIdentity instance (oneSquareIdentity, twoSquareIdentity, fourSquareIdentity, eightSquareIdentity) is produced, establishing that the set of dimensions admitting an n-square identity contains {1,2,4,8}. The hard converse (only these dimensions work) is discharged in the next part via the matrix argument.",
+    "mathContext": "$\\{1,2,4,8\\} \\subseteq \\{n : \\text{NSquareIdentity}\\,n \\neq \\emptyset\\}$. Each membership is witnessed by an explicit bilinear product (real, complex, quaternion, octonion).",
+    "significance": "supporting",
     "relatedConcepts": [
       "admissibleDimensions",
       "identities_exist_for_admissible",
-      "hurwitz_only_if",
-      "Nonempty"
+      "Nonempty",
+      "case analysis"
     ],
     "prerequisites": [
-      "all prior sections",
-      "Iff.intro",
-      "rcases for case analysis"
+      "the four existence constructions",
+      "Set membership"
+    ]
+  },
+  {
+    "id": "ann-ht03-odd-impossibility",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": {
+      "startLine": 1713,
+      "endLine": 1956
+    },
+    "type": "technique",
+    "title": "Odd-Dimension Impossibility via a Skew-Symmetric Orthogonal Matrix",
+    "content": "The general obstruction (PART 8b). From an NSquareIdentity n one builds colMat, whose columns mul(e_k, e_{j₀}) are orthonormal (colMat_transMul: colMatᵀ·colMat = I), and crossMat M_{jk} = ⟨mul(e_j,e_{j₁}), mul(e_k,e_{j₂})⟩. For distinct j₁ ≠ j₂, crossMat is orthogonal (crossMat_transMul) and skew-symmetric (crossMat_skewSym: Mᵀ = −M), and crossMat_anticommute supplies the compatibility that yields crossMat_sq_neg_one: M² = −I. Thus M is a real complex structure on ℝⁿ. Taking determinants, det(M)² = det(−I) = (−1)ⁿ, which is negative for odd n — impossible since det(M)² ≥ 0 (no_odd_nsquare). This rules out every odd n ≥ 3 and feeds hurwitz_only_if and the headline hurwitz_theorem biconditional. hurwitz_only_if is a theorem (not an axiom): the n = 3 case is fully proved, and the only remaining sorry covers the even n ∉ {2,4,8} case, which needs Clifford-algebra / Bott-periodicity input.",
+    "mathContext": "A real matrix with $M^\\top = -M$ and $M^\\top M = I$ satisfies $M^2 = -I$, so $\\det(M)^2 = \\det(-I) = (-1)^n$. For odd $n$, $(-1)^n = -1 < 0$ contradicts $\\det(M)^2 \\ge 0$. Equivalently, $\\mathbb{R}^n$ admits a complex structure only for even $n$, which is the linear-algebra shadow of Hurwitz's classification.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex structure",
+      "skew-symmetric matrix",
+      "orthogonal matrix",
+      "determinant parity",
+      "Clifford algebra",
+      "Bott periodicity"
+    ],
+    "prerequisites": [
+      "matrix transpose/determinant",
+      "orthonormal bases",
+      "NSquareIdentity bilinearity"
     ]
   },
   {
     "id": "ann-ht03-division-algebras",
     "proofId": "hurwitz-theorem-oq-03",
     "range": {
-      "startLine": 1669,
-      "endLine": 1731
+      "startLine": 1957,
+      "endLine": 1998
     },
     "type": "concept",
     "title": "The Four Normed Division Algebras: Properties and Significance",
@@ -217,6 +242,30 @@
       "normed division algebras",
       "Cayley-Dickson doubling",
       "K-theory (advanced)"
+    ]
+  },
+  {
+    "id": "ann-ht03-significance",
+    "proofId": "hurwitz-theorem-oq-03",
+    "range": {
+      "startLine": 1999,
+      "endLine": 2042
+    },
+    "type": "context",
+    "title": "Physical/Topological Significance and Final Verification",
+    "content": "PART 10 records why the dimensions 1,2,4,8 recur across mathematics: the four normed division algebras underlie the reals, complex analysis, quaternionic rotations of ℝ³, and octonionic exceptional structures, with each step ℝ→ℂ→ℍ→𝕆 sacrificing a property (ordering, commutativity, associativity). Topologically the same list governs which spheres are parallelizable — only S⁰, S¹, S³, S⁷ (Adams, 1962). The closing #check statements confirm that the named constructions and the main theorems type-check, acting as a machine-verified table of contents for the file.",
+    "mathContext": "The Hopf-invariant-one / parallelizable-sphere problem (Adams 1960-62, via secondary cohomology operations and K-theory) shows $S^{n-1}$ is parallelizable iff $n \\in \\{1,2,4,8\\}$ — the topological counterpart of Hurwitz's algebraic classification.",
+    "significance": "context",
+    "relatedConcepts": [
+      "normed division algebras",
+      "parallelizable spheres",
+      "Hopf invariant one",
+      "Adams's theorem",
+      "exceptional structures"
+    ],
+    "prerequisites": [
+      "algebraic topology (overview)",
+      "division algebras"
     ]
   }
 ]
