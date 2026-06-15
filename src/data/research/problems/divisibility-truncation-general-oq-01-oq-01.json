@@ -1,0 +1,76 @@
+{
+  "slug": "divisibility-truncation-general-oq-01-oq-01",
+  "title": "Combined Osculator Test for Divisors Sharing Factors with 10",
+  "status": "in-progress",
+  "phase": "ACT",
+  "significance": 4,
+  "tier": "B",
+  "tractability": 8,
+  "tags": [
+    "seeker-selected",
+    "algebra",
+    "divisibility",
+    "number-theory"
+  ],
+  "path": "fast",
+  "problemStatement": {
+    "formal": "theorem combined_osculator (D m k : ℕ) (c : ℤ) (n : ℕ) (hD : D ∣ 10 ^ k) (hcopDm : Nat.Coprime D m) (hcop10 : IsCoprime (m : ℤ) 10) (hc : (m : ℤ) ∣ 10 * c - 1) : D * m ∣ n ↔ (D ∣ n % 10 ^ k) ∧ ((m : ℤ) ∣ (↑(n / 10) + c * ↑(n % 10)))",
+    "plain": "Can the osculator divisibility test be extended to divisors d that share factors with 10 (e.g. 2, 4, 8, 5, 25, 6, 12, 14) by combining it with the last-k-digits framework? YES, via CRT: write d = D*m with D | 10^k (the 2,5-part) and gcd(m,10)=1 (the osculator part); test D by the last k digits and m by the osculator rule.",
+    "whyMatters": [
+      "Extends the osculator framework from divisors coprime to 10 to ALL positive divisors",
+      "Shows the last-k-digits rule and the osculator rule are CRT-orthogonal components of one test",
+      "Provides a reusable Lean recipe: dvd_iff_dvd_mod_pow (last-k-digits) + dvd_mul_iff_of_coprime (CRT split)"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/DivisibilityTruncationGeneralOQ01OQ01.lean",
+      "filename": "DivisibilityTruncationGeneralOQ01OQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityTruncationGeneralOQ01OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "divisibility-truncation-general",
+    "divisibility-truncation-general-oq-01",
+    "divisibility-truncation-general-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Divisibility_rule"
+    ],
+    "mathlib": [
+      "Int.natCast_dvd_natCast",
+      "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "Int.isCoprime_iff_gcd_eq_one",
+      "Nat.dvd_sub'",
+      "Nat.div_add_mod"
+    ]
+  },
+  "started": "2026-06-15T00:00:00.000Z",
+  "lastUpdate": "2026-06-15T00:00:00.000Z",
+  "knowledge": {
+    "progressSummary": "ACT (build-pending, docker blackout): answered YES via CRT. New file proofs/Proofs/DivisibilityTruncationGeneralOQ01OQ01.lean (namespace CombinedOsculator) ships 3 structural theorems + 3 worked instances, 0 axioms / 0 sorries. Core: combined_osculator decomposes d = D*m and proves d|n iff (D | n % 10^k) and the osculator test on m, by chaining dvd_mul_iff_of_coprime (CRT divisibility split) and dvd_iff_dvd_mod_pow (last-k-digits test, D | 10^k) with the parent UnifiedOsculator.unified_osculator on the coprime-to-10 part m. Instances: six_combined (6=2*3), twelve_combined (12=4*3, k=2), fourteen_combined (14=2*7, c=5). All three iff-statements numerically verified over n<20000 (Python). NOT registered in Proofs.lean and NOT build-verified (docker-build.sh host hangs / docker info times out this cycle) - needs a build + registration pass before claiming verified.",
+    "builtItems": [
+      "dvd_iff_dvd_mod_pow (D n k : ℕ) (hD : D ∣ 10^k) : D ∣ n ↔ D ∣ n % 10^k  -- last-k-digits test",
+      "dvd_mul_iff_of_coprime (hcop : Nat.Coprime D m) (n) : D*m ∣ n ↔ D ∣ n ∧ m ∣ n  -- CRT divisibility form",
+      "combined_osculator (D m k c n ...) : D*m ∣ n ↔ (D ∣ n % 10^k) ∧ ((m:ℤ) ∣ ↑(n/10)+c*↑(n%10))  -- main",
+      "six_combined / twelve_combined / fourteen_combined  -- worked instances for 6, 12, 14"
+    ],
+    "mathlibGaps": [
+      "None needed for the test mechanism: all lemmas are standard (CRT divisibility, Nat.div_add_mod, cast-dvd).",
+      "The general decomposition 'every d>0 = D*m with D|10^k, gcd(m,10)=1' is FTA (Nat.factorization at primes 2,5); left documented rather than formalized this cycle to keep the build-pending file high-confidence."
+    ],
+    "nextSteps": [
+      "Build via ./proofs/scripts/docker-build.sh Proofs.DivisibilityTruncationGeneralOQ01OQ01 once docker is back, then register in proofs/Proofs.lean.",
+      "Optional follow-up: formalize the existence of the d = D*m decomposition for every d>0 via Nat.factorization, turning combined_osculator into a self-contained per-d test.",
+      "Optional: generalize to an arbitrary base b in place of 10 (osculator part coprime to b, prime-power part dividing b^k)."
+    ]
+  }
+}
