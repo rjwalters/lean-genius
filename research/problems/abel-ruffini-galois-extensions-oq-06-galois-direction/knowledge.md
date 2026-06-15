@@ -92,21 +92,36 @@ Step-1 transitivity free); `MulAction.card_orbit_mul_card_stabilizer_eq_card_gro
 - **Risk R3** (medium): Build-pending qualifier extends across
   multiple sessions (matches the forward-direction's S3-S7 pattern).
   Plan for a final BUILD-VERIFY iteration.
-- **Risk R4** (HIGH — infrastructure gap, researcher-1 S6 ORIENT
-  2026-06-14): **Step 1 (`sylow_p_unique`) has no Mathlib bearer for its
-  sound route.** The Sylow-count route is provably insufficient (circular,
-  see plan item 1). The textbook socle / minimal-normal-subgroup route
-  needs API that Mathlib lacks at the pin: `MinimalNormal`, group `socle`,
-  and `IsElementaryAbelian` all return 0 code-search hits. *Mitigations*:
-  (a) build a minimal-normal/regular-action layer (large, upstream-worthy);
-  (b) seek a prime-degree-specific route via the `MulAction.IsBlock`
-  block-system API present in `GroupAction/Primitive.lean` (derive
-  regularity of the order-`p` Sylow from primitivity directly). Step 1 is
-  the file's true blocker; Steps 4–5 are comparatively shallow once Step 1
-  lands. NOTE: the "Cross-slug reuse" claim that OQ-07's
-  `burnside_pq_with_normal_pSylow` adapts "~1:1" to Step 1 is **also tainted
-  by the same circularity** — it assumes a *normal* Sylow is already
-  exhibited, which is exactly what Step 1 must establish.
+- **Risk R4** (downgraded HIGH→MEDIUM, researcher-3 S7 ORIENT 2026-06-14):
+  **Step 1 (`sylow_p_unique`) now has a bearer-complete sound route.** The
+  Sylow-count route is provably insufficient (circular, see plan item 1),
+  and the *textbook* socle / minimal-normal route is indeed unavailable
+  (`MinimalNormal`, group `socle`, `IsElementaryAbelian` = 0 hits at pin).
+  **But mitigation (b) resolves: a derived-series + block route avoids the
+  absent socle layer entirely.** Confirmed bearers at pin `2df2f015`:
+  - `derivedSeries_normal` / `derivedSeries_characteristic` / `derivedSeries_succ`
+    (`Mathlib/GroupTheory/Solvable.lean:53,65,49`) — extract a nontrivial
+    abelian normal/characteristic subgroup `A` (last nontrivial derived term).
+  - `MulAction.IsBlock.orbit_of_normal` (`GroupAction/Blocks.lean:475`) +
+    `MulAction.IsBlock.subsingleton_or_eq_univ` (`GroupAction/Primitive.lean:115`)
+    + `isPretransitive_iff_orbit_eq_univ` (`GroupAction/Transitive.lean:54`)
+    — "nontrivial normal subgroup of a faithful primitive action is
+    transitive", which R1's audit had not located.
+  - `Sylow.characteristic_of_normal` (`Sylow.lean:728`) — abelian `A`'s
+    Sylow-`p` `Q` is normal hence characteristic in `A`; char-in-char ⟹ `Q ⊴ H`.
+  - `Nat.Prime.factorization_factorial` (`Data/Nat/Choose/Factorization.lean:42`)
+    / `padicValNat_factorial` (Legendre) — `v_p(p!) = 1` ⟹ `|Q| = p`.
+  - `Sylow.ofCard` (`Sylow.lean:102`) packages `Q` as a `Sylow p H`;
+    `Sylow.unique_of_normal` (`Sylow.lean:710`) closes `Subsingleton (Sylow p H)`.
+  Full step-by-step route in the in-source Step 1 docstring. Residual risk is
+  **wiring** (~100–150 LOC: transport `Q` along `A ↪ H`, char-in-char
+  composition, `v_p` arithmetic), **not** missing infrastructure. Step 1 is
+  still the file's true blocker, but it is now a discharge task, not a
+  Mathlib-upstreaming task; Steps 4–5 remain comparatively shallow. NOTE:
+  the "Cross-slug reuse" claim that OQ-07's `burnside_pq_with_normal_pSylow`
+  adapts "~1:1" to Step 1 is **still tainted by circularity** — it assumes a
+  *normal* Sylow is already exhibited; the derived-series route is the
+  correct substitute.
 
 ## Cross-slug reuse
 
