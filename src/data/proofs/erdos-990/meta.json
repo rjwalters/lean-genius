@@ -93,68 +93,108 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "summary": "Module docstring stating Erdős Problem #990 (polynomial root angular discrepancy bounded by $\\sqrt{n\\log M}$?) and its 2026 status: DISPROVED by Alexeev-Putterman-Sawhney-Sellke-Valiant (arXiv:2604.06609). Imports complex/real analysis and polynomial basics; `namespace Erdos990`; `open Complex Real Polynomial`.",
+      "startLine": 1,
+      "endLine": 40,
+      "mathContext": "Background notes: Erdős-Turán (1950) proved the bound with degree $d$ in place of $n$; APSSV (2026) disproved the sparse $\\nu(f)$ strengthening; Hayman (1972) gave discrepancy $\\le \\nu(f)-1$ as best possible for the sparse case."
+    },
+    {
       "id": "definitions",
       "title": "Basic Definitions",
-      "summary": "ComplexPoly as $\\text{Fin}(d+1) \\to \\mathbb{C}$, nonzeroCoeffCount (sparsity $n$), argument function $\\theta: \\mathbb{C}^* \\to [0, 2\\pi)$",
-      "startLine": 36,
-      "endLine": 56,
-      "mathContext": "The coefficient-vector representation $p: \\text{Fin}(d+1) \\to \\mathbb{C}$ stores $p(i) = a_i$ for $f(x) = \\sum a_i x^i$. Sparsity $n = |\\{i : a_i \\neq 0\\}|$ is the key parameter of Problem #990."
+      "summary": "Defines `ComplexPoly d` as $\\text{Fin}(d+1)\\to\\mathbb{C}$ (coefficient vector), `polyDegree` (simplified to $d$), `nonzeroCoeffCount` (sparsity $n=|\\{i:a_i\\neq0\\}|$), and `argument`, the angle map $\\mathbb{C}\\to[0,2\\pi)$.",
+      "startLine": 41,
+      "endLine": 61,
+      "mathContext": "The coefficient-vector representation stores $p(i)=a_i$ for $f(x)=\\sum a_i x^i$. Sparsity $n$ is the key parameter of Problem #990. Four definitions, no theorems or axioms here."
     },
     {
       "id": "mahler",
       "title": "The Mahler Measure",
-      "summary": "coeffSum, $M = \\sum|a_i|/\\sqrt{|a_0||a_d|}$; AM-GM gives $M \\geq 2$ for monic polynomials (proved inline, not a separate Lean axiom)",
-      "startLine": 57,
-      "endLine": 78,
-      "mathContext": "$M$ normalizes the coefficient sum by the geometric mean of the leading and constant term. For monic polynomials with $|a_0| = |a_d| = 1$, the AM-GM inequality gives $M \\geq 2$. The logarithm $\\log M$ appears under the square root in the bound."
+      "summary": "Defines `coeffSum` $=\\sum_i|a_i|$ and the normalization factor `mahlerM` $M=(\\sum|a_i|)/\\sqrt{|a_0||a_d|}$ (returning $1$ when $|a_0||a_d|=0$).",
+      "startLine": 62,
+      "endLine": 77,
+      "mathContext": "$M$ normalizes the coefficient sum by the geometric mean of the leading and constant term; $\\log M$ appears under the square root in the Erdős-Turán bound. Two definitions, no axioms."
     },
     {
       "id": "discrepancy",
       "title": "Root Counting and Discrepancy",
-      "summary": "rootSet (axiomatized), rootsInInterval, expectedCount, discrepancy $|N(I) - |I|d/(2\\pi)|$, maxDiscrepancy $D^* = \\sup_I$",
-      "startLine": 79,
-      "endLine": 107,
-      "mathContext": "The star discrepancy $D^* = \\sup_{0 \\leq \\alpha \\leq \\beta \\leq 2\\pi} |N([\\alpha,\\beta]) - (\\beta-\\alpha)d/(2\\pi)|$ measures worst-case deviation from uniformity. The root set is axiomatized with the fundamental theorem of algebra guaranteeing $|\\text{rootSet}| = d$."
+      "summary": "Axiomatizes the root multiset `rootSet` (a `Finset ℂ`), then defines `rootsInInterval`, `expectedCount` $=(\\beta-\\alpha)d/(2\\pi)$, `discrepancy` $|N(I)-|I|d/(2\\pi)|$, and `maxDiscrepancy` $D^*=\\sup_I$.",
+      "startLine": 78,
+      "endLine": 102,
+      "mathContext": "The star discrepancy $D^*=\\sup_{0\\le\\alpha\\le\\beta\\le 2\\pi}|N([\\alpha,\\beta])-(\\beta-\\alpha)d/(2\\pi)|$ measures worst-case deviation from uniformity. One axiom (`rootSet`) plus four definitions."
     },
     {
       "id": "classical",
-      "title": "Classical Erdős-Turán (1950)",
-      "summary": "erdos_turan_classical: $D^* \\leq C\\sqrt{d \\log M}$, erdos_turan_explicit_constant (universal $C$), ganelius_improvement ($C \\leq 8$)",
-      "startLine": 108,
-      "endLine": 130,
-      "mathContext": "The 1950 result bounds star discrepancy via exponential sum estimates and Newton's identities for power sums $s_k = \\sum z_j^k$. Ganelius (1954) made the constant explicit as $C \\leq 8$."
+      "title": "The Classical Erdős-Turán Inequality (1950)",
+      "summary": "Axiomatizes the 1950 result `erdos_turan_classical`: $D^*\\le C\\sqrt{d\\log M}$ for some $C>0$, and `erdos_turan_explicit_constant`: a single universal $C$ works for all admissible $p$.",
+      "startLine": 103,
+      "endLine": 119,
+      "mathContext": "The classical bound is in terms of the degree $d$. Both statements are `axiom` declarations (the analytic proof via exponential sums and Newton's identities is not formalized here)."
     },
     {
       "id": "sparse",
-      "title": "The Sparse Conjecture",
-      "summary": "sparseConjecture: $D^* \\leq C\\sqrt{n \\log M}$ (OPEN), sparse_improves_dense (proved: $n \\leq d+1$), unity_root_sparse ($x^d - 1$ has $n = 2$)",
-      "startLine": 131,
-      "endLine": 152,
-      "mathContext": "The open conjecture replaces degree $d$ with sparsity $n$ in the Erdős-Turán bound. Since $n \\leq d + 1$ (proved by `Finset.card_filter_le`), the sparse bound would strictly improve the classical bound for all polynomials with $n < d + 1$."
+      "title": "The Sparse Conjecture (Erdős Problem #990)",
+      "summary": "Defines `sparseConjecture` — the strengthening replacing degree $d$ with sparsity $n$: $D^*\\le C\\sqrt{n\\log M}$ — and proves `sparse_improves_dense`: $n\\le d+1$ (via `Finset.card_filter_le`), so the sparse bound, if true, would improve the classical one.",
+      "startLine": 120,
+      "endLine": 137,
+      "mathContext": "One definition and one fully proved theorem. The conjecture itself is no longer open: it is refuted by `erdos_990_sparse_disproof` in Part 12."
     },
     {
       "id": "sharp",
       "title": "Sharp Constant",
-      "summary": "Soundararajan (2019) sharp constant $\\exists C_{\\text{sharp}}$ and Hilbert transform connection — narrative section (no Lean axioms or theorems declared here)",
-      "startLine": 153,
-      "endLine": 170,
-      "mathContext": "Soundararajan (2019) showed the sharp constant is determined by the operator norm of a modified Hilbert transform $Hf(x) = \\text{PV} \\int f(t)/(x-t)\\,dt$ restricted to trigonometric polynomials."
+      "summary": "Section banner for work on the optimal constant in the classical Erdős-Turán inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 138,
+      "endLine": 143,
+      "mathContext": "Empty docstring banner (no definitions, theorems, or axioms)."
     },
     {
       "id": "special",
       "title": "Special Cases",
-      "summary": "unity_roots_uniform ($D^* \\leq 1$ for roots of unity), isLittlewood ($|a_i| = 1$ or $a_i = 0$), littlewood_root_distribution ($D^* \\leq \\sqrt{d \\log d + d}$)",
-      "startLine": 171,
-      "endLine": 193,
-      "mathContext": "Roots of unity form a regular $d$-gon on $S^1$ with discrepancy $\\leq 1$. Littlewood polynomials (coefficients $\\pm 1$) satisfy $M \\leq d+1$, giving $D^* \\leq C\\sqrt{d \\log(d+1)}$ from the classical bound."
+      "summary": "Defines `isLittlewood` — polynomials whose coefficients all satisfy $|a_i|=1$ or $a_i=0$ (the $\\pm1$ / Littlewood family), a structured class where root distribution is well understood.",
+      "startLine": 144,
+      "endLine": 153,
+      "mathContext": "A single definition; no theorems or axioms are declared in this part."
     },
     {
       "id": "generalizations",
       "title": "Generalizations",
-      "summary": "Extensions to Jordan curves (general_contour_version), logarithmic potentials (potential_theory_connection), trigonometric polynomials (trigonometric_version) — all placeholder axioms",
-      "startLine": 194,
-      "endLine": 195,
-      "mathContext": "The Erdős-Turán framework extends beyond the unit circle. For Jordan curves $\\Gamma$, the discrepancy is measured against arclength-proportional distribution. The potential-theoretic interpretation connects to the equilibrium measure of $\\Gamma$ and logarithmic capacity."
+      "summary": "Section banner for extensions beyond the unit circle (Jordan curves, logarithmic potentials, trigonometric polynomials). Exposition placeholder; declares no Lean content.",
+      "startLine": 154,
+      "endLine": 159,
+      "mathContext": "Empty docstring banner. The Erdős-Turán framework extends to Jordan curves via arclength-proportional distribution and logarithmic capacity."
+    },
+    {
+      "id": "applications",
+      "title": "Applications",
+      "summary": "Section banner for applications of the Erdős-Turán inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 160,
+      "endLine": 165,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "lower-bounds",
+      "title": "Lower Bounds",
+      "summary": "Section banner noting the classical Erdős-Turán bound is essentially tight. Exposition placeholder; declares no Lean content.",
+      "startLine": 166,
+      "endLine": 171,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "one-sided",
+      "title": "One-Sided Improvements",
+      "summary": "Section banner for Erdélyi's one-sided refinement of the inequality. Exposition placeholder; declares no Lean content.",
+      "startLine": 172,
+      "endLine": 177,
+      "mathContext": "Empty docstring banner."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "summary": "Concluding part: `erdos_turan_known` re-derives the classical degree-$d$ bound from the Part 4 axiom; `erdos_990_sparse_disproof` axiomatizes the APSSV (2026) refutation $\\neg\\,\\texttt{sparseConjecture}$ (lacunary polynomials with $\\nu(f)=N+2$, $M(f)<3$, a root of multiplicity $N+1$ force discrepancy $\\ge (N+1)/2 \\gg \\sqrt{\\nu(f)\\log M(f)}$); and `erdos_990_summary` records the classical result.",
+      "startLine": 178,
+      "endLine": 207,
+      "mathContext": "Two theorems and one axiom (`erdos_990_sparse_disproof`). Net file axioms: `rootSet`, `erdos_turan_classical`, `erdos_turan_explicit_constant`, `erdos_990_sparse_disproof`."
     }
   ],
   "conclusion": {
