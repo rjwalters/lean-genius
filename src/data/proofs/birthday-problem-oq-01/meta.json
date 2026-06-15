@@ -53,44 +53,140 @@
   },
   "sections": [
     {
-      "id": "definitions",
-      "title": "Definitions",
-      "startLine": 33,
-      "endLine": 44,
-      "summary": "Defines `expectedPairs n d = C(n,2) / d` and `variancePairs n d` as rationals.",
-      "mathContext": "$E[X_{n,d}] = \\binom{n}{2}/d = n(n-1)/(2d)$."
+      "id": "overview",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module header and imports (Fintype/Nat.Choose/factorial). Defines the open-question extension of the Birthday Problem: the expected number of shared birthday pairs among n people with d equally likely birthdays, plus the two core definitions `expectedPairs n d = C(n,2)/d` and `variancePairs n d = C(n,2)(d-1)/d²`.",
+      "mathContext": "By linearity of expectation $E[\\text{pairs}]=\\binom{n}{2}/d$; each pair indicator is Bernoulli$(1/d)$ with variance $(d-1)/d^2$, so $\\mathrm{Var}=\\binom{n}{2}(d-1)/d^2$."
     },
     {
-      "id": "basic-properties",
-      "title": "Basic Properties and Formula",
-      "startLine": 45,
-      "endLine": 150,
-      "summary": "Nonnegativity, base cases (n=0,1,2), monotonicity, successor formula `expectedPairs_succ`, sum formula, rational formula `n*(n-1)/(2*d)`.",
-      "mathContext": "$E[n+1,d] = E[n,d] + n/d$; $E[n,d] = \\sum_{i=0}^{n-1} i/d = n(n-1)/(2d)$."
+      "id": "part-i-basic",
+      "title": "Part I: Basic Properties",
+      "startLine": 42,
+      "endLine": 61,
+      "summary": "`expectedPairs_nonneg` and the boundary values `expectedPairs_zero`, `expectedPairs_one` (both 0), `expectedPairs_two` (= 1/d).",
+      "mathContext": "$E[\\text{pairs}]\\ge0$, vanishes for $n\\le1$, and equals $1/d$ at $n=2$."
     },
     {
-      "id": "variance",
-      "title": "Variance Analysis",
-      "startLine": 147,
-      "endLine": 175,
-      "summary": "`variancePairs_nonneg`, `variancePairs_zero`, `variancePairs_one`, `variancePairs_le_expected` — variance is nonneg and at most the expected value.",
-      "mathContext": "$\\text{Var}[X] \\leq E[X]$ for the birthday pair count."
+      "id": "part-ii-monotonicity",
+      "title": "Part II: Monotonicity",
+      "startLine": 62,
+      "endLine": 74,
+      "summary": "`choose_two_mono` (C(n,2) ≤ C(m,2) for n ≤ m) and `expectedPairs_mono`: the expected pair count is nondecreasing in n.",
+      "mathContext": "$\\binom{n}{2}\\le\\binom{m}{2}$ for $n\\le m$, hence $E[\\text{pairs}]$ is monotone in the number of people."
     },
     {
-      "id": "thresholds",
-      "title": "Threshold Computations (d=365)",
-      "startLine": 178,
-      "endLine": 255,
-      "summary": "Computes for d=365: std_expected_23, std_expected_28_gt_one (first n with E[X]>1), std_expected_27_lt_one, std_expected_28_exact, std_expected_40_gt_two, weekly_expected_5_gt_one (d=7). All proved by norm_num.",
-      "mathContext": "For $d=365$: $E[23] = 253/365 < 1$, $E[28] = 378/365 > 1$."
+      "id": "part-iii-additivity",
+      "title": "Part III: Additivity",
+      "startLine": 75,
+      "endLine": 101,
+      "summary": "`choose_two_succ` (C(n+1,2)=C(n,2)+n), `expectedPairs_succ` (each new person adds n/d), and the telescoped sum formula `expectedPairs_sum`: E[pairs] = (∑_{i<n} i)/d.",
+      "mathContext": "Adding a person increases the expectation by $n/d$, giving $E[\\text{pairs}]=\\tfrac1d\\sum_{i<n} i$."
     },
     {
-      "id": "general",
-      "title": "General Threshold Criterion",
-      "startLine": 224,
+      "id": "part-iv-rational-formula",
+      "title": "Part IV: The Rational Formula",
+      "startLine": 102,
+      "endLine": 143,
+      "summary": "Combinatorial identities `choose_two_eq`, `two_mul_choose_two` (2·C(n,2)=n(n-1)), and `choose_two_cast`, culminating in `expectedPairs_eq_rational`: E[pairs] = n(n-1)/(2d).",
+      "mathContext": "$2\\binom{n}{2}=n(n-1)$, so $E[\\text{pairs}]=\\dfrac{n(n-1)}{2d}$."
+    },
+    {
+      "id": "part-v-variance",
+      "title": "Part V: Variance",
+      "startLine": 144,
+      "endLine": 172,
+      "summary": "`variancePairs_nonneg` (for d ≥ 1), the boundary cases `variancePairs_zero/one`, and `variancePairs_le_expected`: variance never exceeds the expectation since (d-1)/d ≤ 1.",
+      "mathContext": "$\\mathrm{Var}[\\text{pairs}]\\ge0$ and $\\mathrm{Var}\\le E$ because $(d-1)/d\\le1$."
+    },
+    {
+      "id": "part-vi-threshold-365",
+      "title": "Part VI: Threshold Computations (d = 365)",
+      "startLine": 173,
+      "endLine": 220,
+      "summary": "Standard-calendar specialization `stdExpectedPairs`. Exact/inequality values: E=253/365 at n=23, the n=28 threshold for exceeding 1 expected pair (with n=27 below, exact 378/365 at n=28), and the n=39 threshold for exceeding 2 (n=38 below).",
+      "mathContext": "For $d=365$ the first $n$ with $E[\\text{pairs}]>1$ is $n=28$ (since $\\binom{28}{2}=378>365$), and $E>2$ first at $n=39$."
+    },
+    {
+      "id": "part-vii-positivity",
+      "title": "Part VII: Positivity",
+      "startLine": 221,
+      "endLine": 237,
+      "summary": "`expectedPairs_pos`: the expected pair count is strictly positive whenever n ≥ 2 and d > 0.",
+      "mathContext": "$E[\\text{pairs}]>0$ iff there is at least one pair and at least one day, i.e. $n\\ge2,\\ d>0$."
+    },
+    {
+      "id": "part-viii-general-threshold",
+      "title": "Part VIII: General Threshold Criterion",
+      "startLine": 238,
+      "endLine": 249,
+      "summary": "`expectedPairs_gt_of_choose_gt`: E[pairs] exceeds k exactly when C(n,2) > k·d, giving the n ≈ √(2kd) threshold.",
+      "mathContext": "$E[\\text{pairs}]>k \\iff \\binom{n}{2}>kd$, so the threshold scales like $n\\approx\\sqrt{2kd}$."
+    },
+    {
+      "id": "part-ix-general-days",
+      "title": "Part IX: General Day Count",
+      "startLine": 250,
+      "endLine": 267,
+      "summary": "Worked thresholds for other day counts: d=7 (weekdays) crosses 1 between n=4 and n=5; d=12 (months) crosses between n=5 and n=6.",
+      "mathContext": "The threshold $n$ with $E[\\text{pairs}]>1$ falls with $d$: $n=5$ for $d=7$, $n=6$ for $d=12$."
+    },
+    {
+      "id": "part-x-k-tuples",
+      "title": "Part X: Expected k-Tuples (Generalized Collisions)",
+      "startLine": 268,
+      "endLine": 305,
+      "summary": "`expectedKTuples n d k = C(n,k)/d^{k-1}` with `expectedKTuples_two` recovering expectedPairs, plus nonnegativity, vanishing for n<k, and monotonicity in n.",
+      "mathContext": "By linearity over $k$-subsets, $E[k\\text{-tuples}]=\\binom{n}{k}/d^{\\,k-1}$ (each $k$-subset coincides with probability $d^{-(k-1)}$)."
+    },
+    {
+      "id": "part-xi-triples",
+      "title": "Part XI: Expected Birthday Triples",
+      "startLine": 306,
+      "endLine": 349,
+      "summary": "`expectedTriples n d = C(n,3)/d²` as the k=3 specialization, with `expectedTriples_def`, boundary values (0 for n<3, 1/d² at n=3), monotonicity, and positivity for n ≥ 3.",
+      "mathContext": "$E[\\text{triples}]=\\binom{n}{3}/d^2$, positive exactly when $n\\ge3$."
+    },
+    {
+      "id": "part-xii-triple-threshold-365",
+      "title": "Part XII: Triple Threshold for d = 365",
+      "startLine": 350,
+      "endLine": 379,
+      "summary": "`stdExpectedTriples`: the standard triple threshold crosses 1 at n=94 (C(94,3)=134044 > 365²) with n=93 below, and the general k-tuple criterion `expectedKTuples_gt_of_choose_gt`.",
+      "mathContext": "For $d=365$, $E[\\text{triples}]>1$ first at $n=94$ (since $\\binom{94}{3}>365^2$)."
+    },
+    {
+      "id": "part-xiii-pairs-vs-triples",
+      "title": "Part XIII: Comparing Pairs vs Triples",
+      "startLine": 380,
+      "endLine": 455,
+      "summary": "Combinatorial bridge `three_mul_choose_three` (3·C(n,3)=C(n,2)(n-2)) and `triples_from_pairs`: E[triples] = E[pairs]·(n-2)/(3d), plus the exact value 1771/133225 at n=23.",
+      "mathContext": "$3\\binom{n}{3}=\\binom{n}{2}(n-2)$ gives $E[\\text{triples}]=E[\\text{pairs}]\\cdot\\dfrac{n-2}{3d}$, so triples are far rarer than pairs."
+    },
+    {
+      "id": "part-xiv-quadruples",
+      "title": "Part XIV: Expected Quadruples",
+      "startLine": 456,
+      "endLine": 485,
+      "summary": "`expectedQuads n d = C(n,4)/d³` as the k=4 specialization, vanishing for n<4, with the standard threshold crossing 1 at n=188 (C(188,4) > 365³) and n=187 below.",
+      "mathContext": "$E[\\text{quads}]=\\binom{n}{4}/d^3$; for $d=365$ it exceeds 1 first at $n=188$."
+    },
+    {
+      "id": "part-xv-summary",
+      "title": "Part XV: Summary of Thresholds",
+      "startLine": 486,
+      "endLine": 500,
+      "summary": "`thresholds_summary`: the single-statement record of the pair/triple/quad thresholds (n=28, 94, 188) for the standard birthday problem, reflecting the (k!·365^{k-1})^{1/k} growth.",
+      "mathContext": "First $n$ with $E[k\\text{-tuples}]>1$: $n=28$ ($k{=}2$), $94$ ($k{=}3$), $188$ ($k{=}4$); the threshold grows like $365^{1-1/k}(k!)^{1/k}$."
+    },
+    {
+      "id": "verification-examples",
+      "title": "Verification Examples",
+      "startLine": 501,
       "endLine": 513,
-      "summary": "`expectedPairs_pos` (E>0 when n≥2, d>0), `expectedPairs_gt_of_choose_gt` (E[X]>k when C(n,2)>k*d). Additional concrete examples for various d and n values.",
-      "mathContext": "$E[n,d] > k \\iff \\binom{n}{2} > k \\cdot d$."
+      "summary": "Decidable `example` checks of the binomial coefficients underlying the thresholds (C(23,2)=253, C(28,2)=378, C(94,3)=134044, C(188,4)=51895981, etc.).",
+      "mathContext": "Machine-checked binomial evaluations corroborating each threshold crossing."
     }
   ],
   "conclusion": {
