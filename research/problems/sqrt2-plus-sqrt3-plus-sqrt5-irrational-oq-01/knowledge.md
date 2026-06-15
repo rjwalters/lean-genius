@@ -161,3 +161,57 @@ Open Lean items to confirm at build time (lemma names, not math):
    Lean lemma names resolve, fill the `sorry`. If `IsIntegrallyClosed` descent is awkward, fall
    back to Strategy A or prove `m(α)=0` and apply the rational-root theorem (α∉ℤ ⇒ irrational).
 2. Strategy A remains the no-infrastructure fallback (3-squaring chain; ugly but elementary).
+
+---
+
+## Session 2026-06-14 (Session 3) — Make Strategy D verification durable + bound recipe (researcher-1)
+
+**Mode**: CONTINUE · **Outcome**: ORIENT deepened (ephemeral verification made
+reproducible; explicit ACT recipe for the bounds). Both backends still down: Docker
+`docker ps` timeout; **Aristotle MCP tools now load but `prove` returns "Resource not
+found"** (backend still unavailable) — so still build-free only.
+
+### What I did
+1. **Made Session 2's sympy verification durable and reproducible.** Committed
+   `verify_strategy_d.py` (sympy 1.14 / mpmath, runs in seconds, exits 0 on
+   "ALL CHECKS PASSED"). It re-derives every load-bearing fact *from first
+   principles*, not by trusting the numbers already in this file:
+   - **(F1) integrality**: each `√k` is a root of the monic integer `x²−k`
+     (leading coeff 1, integer coeffs, `(√k)²−k=0`) — exactly `IsIntegral ℤ (√k)`.
+   - **(F3) minimal polynomial**: re-derived `m(x)` independently as
+     `Res_y(y⁴−10y²+1, (x−y)⁴−24(x−y)²+4)` (from `p=√2+√3 ⇒ p⁴−10p²+1=0` and
+     `q=√5+√7 ⇒ q⁴−24q²+4=0`, both re-checked), confirmed it is **degree 16,
+     monic, integer**, equals the value recorded above, has constant term
+     `215²=46225`, and satisfies `m(α)=0` symbolically.
+   - **(F2) the bound**: `8 < α < 9` (α ≈ 8.0281, 60-digit mpmath).
+2. **Extracted the explicit ACT recipe for the bound lemmas** (de-risks the
+   `8 < α < 9` step that Strategy D rests on). Rational witnesses, each verified
+   to bound its radical by squaring (`lo² < k < hi²`):
+   - `√2 ∈ (1.41, 1.42)`, `√3 ∈ (1.73, 1.74)`, `√5 ∈ (2.23, 2.24)`, `√7 ∈ (2.64, 2.65)`.
+   - Lower sum `1.41+1.73+2.23+2.64 = 8.01 > 8`; upper sum
+     `1.42+1.74+2.24+2.65 = 8.05 < 9`.
+   - **Lean shape**: for each radical use `Real.lt_sqrt`/`Real.sqrt_lt'` (or
+     `Real.le_sqrt`) with `norm_num` on `lo² < k` and `k < hi²`, then `linarith`
+     to combine the four into `8 < α` and `α < 9`. No new Mathlib.
+
+### Why this is forward progress (not re-ORIENT churn)
+- Session 2's verification lived only in that session's transcript; the *numbers*
+  were copied into knowledge.md but nothing here could be **re-checked**. The
+  script makes them reproducible by anyone, and would catch a future transcription
+  error in `m(x)` or the bound.
+- The rational-witness recipe converts the hand-wavy "bounds via
+  `Real.sqrt_lt_sqrt`" note into concrete, `norm_num`-ready inequalities — the
+  single remaining non-API step in Strategy D's `sorry`.
+
+### Files modified
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/{knowledge.md, state.md}`
+- `research/problems/sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-01/verify_strategy_d.py` (new)
+
+### Next steps (unchanged target, now lower-risk)
+1. When Docker **or** Aristotle returns: implement Strategy D (~60–100 LOC). The
+   only two genuinely-open Lean obligations are (a) the integral-closure descent
+   `(r:ℝ) integral / ℤ ⇒ r ∈ ℤ` (lemma names to confirm: `IsIntegral.add`,
+   integrality descent along injective `algebraMap ℚ ℝ`, `IsIntegrallyClosed ℤ`
+   ⇒ `IsIntegrallyClosed.isIntegral_iff`) and (b) the bounds — now fully specced
+   by the witness recipe above.
+2. Fallbacks unchanged (Strategy A 3-squaring chain; or `m(α)=0` + rational-root).

@@ -4,13 +4,15 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-06-14
-**Iteration**: 3
+**Iteration**: 4
 
 ## Current Focus
-Survey deepened (Session 2, researcher-4). Found a NEW recommended strategy (D:
-algebraic-integer + bounded-interval) that is ~60–100 LOC and avoids ALL degree-16 algebra,
-superseding Strategy A. Computed and verified the explicit degree-16 minimal polynomial and
-the decisive bound `8 < α < 9` (sympy/mpmath). Still Docker-gated for the final Lean build.
+Strategy D verification made durable (Session 3, researcher-1). Committed
+`verify_strategy_d.py` that independently re-derives the degree-16 minimal polynomial (via
+resultant), certifies integrality of each `√k`, and confirms `8 < α < 9` — all reproducible,
+exits 0 on "ALL CHECKS PASSED". Extracted the explicit rational-witness recipe for the bound
+lemmas (the one non-API `sorry` step). Still build-gated: Docker down AND Aristotle MCP loads
+but `prove` returns "Resource not found".
 
 ## Active Approach
 Strategy D — α = √2+√3+√5+√7 is a sum of algebraic integers ⇒ integral over ℤ; a rational
@@ -24,13 +26,15 @@ Fallback: Strategy A (elementary 3-squaring chain) or `m(α)=0` + rational-root 
 - Approaches tried: 0
 
 ## Blockers
-- Docker build wrapper unavailable (`docker info` timeout) — cannot verify Lean.
-- Aristotle backend returns "Resource not found" — cannot delegate the mechanical identities.
+- Docker build wrapper unavailable (`docker ps` timeout) — cannot verify Lean locally.
+- Aristotle MCP tools now load but `prove` returns "Resource not found" — backend still down,
+  cannot delegate the proof.
 
 ## Next Action
-When Docker returns, implement **Strategy D** in
-`Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~60–100 LOC). Confirm the four
-Mathlib lemma names in the knowledge.md skeleton (`IsIntegral.add`, integrality descent along
-`algebraMap ℚ ℝ`, `IsIntegrallyClosed ℤ`, sqrt bounds), then fill the single `sorry`. If the
-integral-closure descent is awkward, fall back to Strategy A (3-squaring chain) or prove
-`m(α)=0` and apply the rational-root theorem. See knowledge.md for the full assessment.
+When Docker **or** Aristotle returns, implement **Strategy D** in
+`Proofs/Sqrt2PlusSqrt3PlusSqrt5PlusSqrt7IrrationalOQ01.lean` (~60–100 LOC). The bound step is
+now fully specced (rational-witness recipe in knowledge.md Session 3); the only genuinely-open
+Lean obligation is the integral-closure descent `(r:ℝ) integral / ℤ ⇒ r ∈ ℤ` (confirm lemma
+names `IsIntegral.add`, integrality descent along `algebraMap ℚ ℝ`,
+`IsIntegrallyClosed.isIntegral_iff`). Fallbacks: Strategy A (3-squaring chain) or `m(α)=0` +
+rational-root theorem. Re-run `verify_strategy_d.py` to re-confirm all math artifacts.
