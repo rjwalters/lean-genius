@@ -56,4 +56,35 @@ theorem not_hasProdMinusSum2_of_neg {n : ℤ} (hn : n < 0) : ¬ HasProdMinusSum2
   rw [prodMinusSum2_iff_nonneg]
   exact not_le.mpr hn
 
+/-- **(C3) Diagonal (square) representation.** A representation with `a = b`
+(equivalently `n = a*a - (a+a) = a² - 2a`) exists **iff** `n + 1` is a perfect
+square. From the central identity `a² - 2a = (a-1)² - 1`, so `n + 1 = (a-1)²`.
+
+This is the structural reason a *prime square* `n+1 = p²` has the extra unordered
+representation `{p, p}` beyond `{1, p²}`: the perfect-square values of `n+1` are
+exactly those whose factor list contains the diagonal `u = v = √(n+1)`. -/
+theorem hasSquareRep_iff (n : ℤ) :
+    (∃ a : ℤ, a ≥ 2 ∧ n = a * a - (a + a)) ↔ ∃ u : ℤ, 1 ≤ u ∧ n + 1 = u * u := by
+  constructor
+  · rintro ⟨a, ha, rfl⟩
+    exact ⟨a - 1, by linarith, by ring⟩
+  · rintro ⟨u, hu, huv⟩
+    exact ⟨u + 1, by linarith, by linear_combination huv⟩
+
+/-- **(C4) Nontrivial representation ↔ nontrivial factorization.** A representation
+with *both* `a, b ≥ 3` exists **iff** `n + 1` factors as `u * v` with both
+`u, v ≥ 2` (i.e. `n + 1` is composite). The "trivial" representations `(2, n+2)`
+correspond exactly to the factorizations with a unit factor `u = 1`.
+
+Hence the *unordered* representation of `n` is unique precisely when `n + 1` admits
+no such nontrivial factorization — i.e. `n = 0` (`n+1 = 1`) or `n + 1` is prime. -/
+theorem hasNontrivialRep_iff_factor (n : ℤ) :
+    (∃ a b : ℤ, a ≥ 3 ∧ b ≥ 3 ∧ n = a * b - (a + b)) ↔
+      ∃ u v : ℤ, 2 ≤ u ∧ 2 ≤ v ∧ u * v = n + 1 := by
+  constructor
+  · rintro ⟨a, b, ha, hb, rfl⟩
+    exact ⟨a - 1, b - 1, by linarith, by linarith, by ring⟩
+  · rintro ⟨u, v, hu, hv, huv⟩
+    exact ⟨u + 1, v + 1, by linarith, by linarith, by linear_combination -huv⟩
+
 end Erdos493
