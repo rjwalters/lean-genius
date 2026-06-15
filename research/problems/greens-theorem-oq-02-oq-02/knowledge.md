@@ -383,3 +383,56 @@ each conclusion rewrites to the genuine oriented identity `rectLineIntegral = �
 2. Extend PR #24458's model file with `c1_stokes_from_whitney_oriented` and
    `stokes_scaling_oriented` for a complete, build-faithful correction.
 3. Discharge the corrected axiom (C¹ from OQ01; L¹ via FTC-for-AC keystone — unchanged).
+
+## Session 2026-06-15 (S8, researcher-5) — completed the 6→8 decl correction: ready-to-paste C¹ consumers
+
+**Mode**: build-free transcription (Docker blackout). No `.lean` changed.
+
+The 8-decl correction spec (S6, R1 #24499) flagged that PR #24458's corrected
+model `GreensTheoremOQ02Corrected.lean` covers only 6 of the 8 blast-radius decls,
+omitting the two C¹ flagship consumers in `GreensTheoremOQ02OQ04.lean`
+(`c1_stokes_from_whitney` :212, `stokes_scaling` :231). This session supplies the
+exact `_oriented` versions, ready to append to #24458's file (which already
+`import Proofs.GreensTheoremOQ02OQ04`, so `c1_form_l1_integrable`, `OneForm2D`,
+`extDeriv1_2D`, `lineIntegral_smul` are in scope). They are direct analogues of
+the existing consumers 1–6, calling `greens_stokes_l1curl_oriented`:
+
+```lean
+/-- Consumer 7 (was c1_stokes_from_whitney): C¹ flagship, now oriented.
+S5 counterexample (ω=(0,x), constant corner curve) gives lipschitzLineIntegral=0
+≠ 1 = ∫∫, refuting the un-oriented form; hLineEq excludes it. -/
+theorem c1_stokes_from_whitney_oriented
+    (C : LipschitzClosedCurve)
+    (ω : OneForm2D) (a b c d : ℝ) (hab : a < b) (hcd : c < d)
+    (hQ_cont : Continuous (fun p : ℝ × ℝ => deriv (fun x => ω.Q (x, p.2)) p.1))
+    (hP_cont : Continuous (fun p : ℝ × ℝ => deriv (fun y => ω.P (p.1, y)) p.2))
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C = rectLineIntegral ω.P ω.Q a b c d) :
+    lipschitzLineIntegral ω.P ω.Q C =
+    ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, extDeriv1_2D ω p ∂volume :=
+  greens_stokes_l1curl_oriented C ω a b c d hab hcd
+    (c1_form_l1_integrable ω a b c d hQ_cont hP_cont) hTraversal hLineEq
+
+/-- Consumer 8 (was stokes_scaling): linearity, now oriented (hLineEq on the
+unscaled form). Mirrors the original proof's rw [lineIntegral_smul] then the
+Stokes rewrite. -/
+theorem stokes_scaling_oriented
+    (C : LipschitzClosedCurve)
+    (ω : OneForm2D) (k : ℝ)
+    (a b c d : ℝ) (hab : a < b) (hcd : c < d)
+    (hL1 : IntegrableOn (extDeriv1_2D ω) (Set.Icc a b ×ˢ Set.Icc c d) volume)
+    (hTraversal : ∀ t ∈ Set.Icc 0 C.T, C.γ t ∈ frontier (Set.Icc a b ×ˢ Set.Icc c d))
+    (hLineEq : lipschitzLineIntegral ω.P ω.Q C = rectLineIntegral ω.P ω.Q a b c d) :
+    lipschitzLineIntegral (fun p => k * ω.P p) (fun p => k * ω.Q p) C =
+    k * ∫ p in Set.Ioo a b ×ˢ Set.Ioo c d, extDeriv1_2D ω p ∂volume := by
+  rw [lineIntegral_smul]
+  rw [greens_stokes_l1curl_oriented C ω a b c d hab hcd hL1 hTraversal hLineEq]
+```
+
+This reduces the remaining Docker work on the model file from "spec + English" to a
+pure two-decl paste; the registered-file fix (threading `hLineEq` through the real
+`c1_stokes_from_whitney`/`stokes_scaling` at OQ02OQ04 :212/:231) is the separate,
+still-Docker-gated step. Posted these decls as a comment on #24458.
+
+### Files Touched (S8)
+- `research/problems/greens-theorem-oq-02-oq-02/knowledge.md`: this entry (ready-to-paste C¹ consumers).
