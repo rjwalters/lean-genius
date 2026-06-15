@@ -63,6 +63,11 @@ const STRIP_SUFFIXES = ['-existence', '-uniqueness', '-completeness']
 const SPECIAL_CASES: Record<string, string[]> = {
   'p-vs-np': ['PvsNP', 'PNP'],
   'pnp-barriers': ['PNPBarriers'],
+  // Blocked smooth Gauss-Bonnet open problem with no Lean file of its own.
+  // The base-slug fallback (EulerPolyhedralFormula) otherwise mis-matches the
+  // discrete EulerPolyhedralFormula.lean and the unrelated OQ01OQ02 sibling,
+  // making this open problem look solved. Empty list = no leanFiles match.
+  'euler-polyhedral-formula-oq-02-oq-01-oq-01': [],
 }
 
 /**
