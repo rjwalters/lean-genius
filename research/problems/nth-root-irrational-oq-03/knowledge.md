@@ -23,6 +23,8 @@ with 390 lines of supporting pedagogical exposition, statement of the LW theorem
 
 ### Insight 2 — Two tractable adjacent axioms (in OQ03 sibling)
 
+> **STATUS UPDATE (S11 source audit, 2026-06-14):** Axiom (1) below, `irrational_liouvilleWith_two`, is **no longer an axiom** — it was discharged into a full `theorem` at S5c (2026-05-16, see Iteration insight chain) and is verified in source at `ETranscendentalOQ03.lean:180`. The file now carries **exactly one** `axiom`: `e_not_liouvilleWith_gt_two` (item 2). This Iteration-1 narrative is preserved for history; treat item (1) as **DONE**.
+
 `ETranscendentalOQ03.lean` contains two axioms feeding the $\mu(e) = 2$ irrationality-measure result:
 
 1. `irrational_liouvilleWith_two : ∀ x, Irrational x → LiouvilleWith 2 x` (Dirichlet's approximation theorem lower bound)
@@ -61,9 +63,9 @@ Total: roughly 900 lines, conservatively. Mathlib has had an active Lindemann–
 
 For meta.json on this slug's gallery entry (if/when created), the appropriate badge is `axiom` and status is `axiomatized`. The full proof depends on:
 
-- `axiom hermite_lindemann` (HermiteLindemann.lean) — the marquee assumption
-- 2 axioms in `ETranscendentalOQ03.lean` — sibling slug, not strictly this one's
-- 4 sorries across `eTranscendental.lean`, `ETranscendentalOQ01.lean`, `ETranscendentalOQ02.lean`, `PiTranscendental.lean` — partial-proof in-progress siblings
+- `axiom hermite_lindemann` (HermiteLindemann.lean) — the marquee assumption (still open; gated on Mathlib PR #28013)
+- ~~2 axioms~~ **1 axiom** in `ETranscendentalOQ03.lean` — `e_not_liouvilleWith_gt_two` only (the lower-bound axiom was discharged at S5c, 2026-05-16; source-verified 2026-06-14)
+- ~~4 sorries across siblings~~ **0 sorries** — the S1 "4 sibling sorries" claim was already corrected at S7 (2026-06-05): actual sorry count across all 5 sibling files is **0**
 
 Per the Axiom Integrity Policy in CLAUDE.md, this slug must NEVER be marked `verified` while these assumptions remain.
 
@@ -73,7 +75,9 @@ None recorded for this slug yet — Iteration 1 is the first session.
 
 ## Promising Next-Iteration Targets
 
-### Target A (S2): Discharge `irrational_liouvilleWith_two`
+### Target A (S2): Discharge `irrational_liouvilleWith_two` — ✅ DONE (S5c, 2026-05-16)
+
+> **RESOLVED.** This target was completed at S5c: `axiom irrational_liouvilleWith_two` was replaced by a full `theorem` (now `ETranscendentalOQ03.lean:180`) using `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational` plus the slice-finiteness helper `rat_approx_bounded_den_finite`, after adding `import Mathlib.NumberTheory.DiophantineApproximation.Basic`. `meta.json` axiomCount went 2→1. The strategy sketch below is retained only as the historical record of how it was approached. **The sole remaining axiom in this file is `e_not_liouvilleWith_gt_two` (Target C / S5d.A), which is Docker-gated 280–480 LOC CF work.**
 
 **Statement to prove:**
 
@@ -198,3 +202,28 @@ Initial attempts blocked by host disk pressure (cache I/O `os error 5/30`, daemo
 - ETranscendentalOQ01.lean transitively depends on PT; S8 fix should unblock it.
 
 See `sessions/2026-06-05-s8-act-lindemann-theorem-axiom-discharge-via-hermite-lindemann-bridge.md` for full details.
+
+---
+
+## Session 2026-06-14 (Session 11) — S11 Source Audit + Iteration-1 narrative de-stale
+
+**Mode**: REVISIT (RICH; Docker DOWN — verification blackout)
+**Outcome**: progress (knowledge integrity) — no proof advance possible (sole open item is Docker-gated)
+
+### What I Did
+- Read `ETranscendentalOQ03.lean` directly from source: confirmed **1** `^axiom ` (`e_not_liouvilleWith_gt_two`, line 247), **0** sorries, 312 LOC. `irrational_liouvilleWith_two` is a full `theorem` at line 180 (proved S5c).
+- Confirmed `src/data/proofs/e-transcendental-oq-03/meta.json` is already accurate (axiomCount 1, sorries 0, lineCount 312, assumptions note the lower-bound discharge) — no gallery edit needed.
+- De-staled this file's **Iteration-1 narrative** (the only stale content): Insight 2, Insight 4, and the "Target A" section all still presented `irrational_liouvilleWith_two` as an open axiom. Marked Target A ✅ DONE and corrected the axiom/sorry tallies, with superseded banners (history preserved).
+- Verified no open PR and no concurrent claim on the slug; S10 watch tick (#23728) is the latest commit on the problem dir.
+
+### Key Findings
+- The research JSON (`progressSummary`, insights #9/#11) and the gallery meta were already correct; only the human-readable Iteration-1 prose at the top of `knowledge.md` lagged. Future researchers reading top-down would otherwise re-attempt a solved target.
+- **Sole remaining axiom**: `e_not_liouvilleWith_gt_two` (μ(e) ≤ 2 upper bound). Its only discharge route is the Euler CF expansion of e (`[2;1,2k,1]`), absent from Mathlib (confirmed S5d), scoped 280–480 LOC — **Docker-gated**, so blocked this session.
+- The marquee `axiom hermite_lindemann` (HermiteLindemann.lean) remains gated on Mathlib PR #28013 (passive watch, grace period to ~2026-06-26).
+
+### Files Modified
+- `research/problems/nth-root-irrational-oq-03/knowledge.md` (de-stale Insight 2/4 + Target A; this entry)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (S11 insight; iteration bump)
+
+### Next Steps
+- Unchanged: when Docker returns and/or grace period (~2026-06-26) passes with PR #28013 still stale, begin S5d.A (CF expansion of e). No build-free forward step remains.
