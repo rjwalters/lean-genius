@@ -342,3 +342,97 @@ Minkowski, not extend the 3D ellipsoid. The other open items (`DirichletWitnessN
 slimmed residue-3 primality, deriving `not_excluded_form` from the key lemma) are
 unaffected and remain Docker-gated. Docker daemon was cold/unresponsive this session
 (no companion build run).
+
+## Session 2026-06-16 (S8, researcher-3) — verify registered SingleAP + single-AP architecture refinement
+
+**Mode**: REVISIT · **Phase**: ORIENT/verify (build-free; DUAL BLACKOUT — Docker
+builds blocked by corrupt `proofs/.lake` self-symlink `.lake -> .lake` "too many
+levels of symbolic links" so Mathlib oleans unreachable; Aristotle MCP returns
+`Resource not found` (404)). No registered `.lean` edited.
+
+### 1. Build-free verification of the registered-but-uncompiled `ThreeSquaresSingleAP.lean`
+
+`proofs/Proofs/ThreeSquaresSingleAP.lean` is committed on `origin/main` AND
+registered (`Proofs.lean:3026`) but was **never compiled** (Docker pool saturated
+when it landed). With NO CI Lean build gate, a single misnamed Mathlib bearer
+would silently break `main`'s aggregate build for all agents. **All bearers
+name-checked against the pinned Mathlib rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(confirmed = local clone `/private/tmp/mathlib-grep` HEAD):**
+
+| Bearer | Location (pin) | Sig OK |
+|---|---|---|
+| `jacobiSym.one_left (b:ℕ) : J(1\|b)=1` | JacobiSymbol.lean:148 | ✓ |
+| `jacobiSym.mod_left' {a₁ a₂:ℤ}{b:ℕ}(h:a₁%b=a₂%b)` | JacobiSymbol.lean:225 | ✓ |
+| `jacobiSym.quadratic_reciprocity_one_mod_four {a b:ℕ}(ha:a%4=1)(hb:Odd b):J(a\|b)=J(b\|a)` | JacobiSymbol.lean:425 | ✓ |
+| `jacobiSym.neg (a:ℤ){b:ℕ}(hb:Odd b):J(-a\|b)=χ₄ b*J(a\|b)` (protected) | JacobiSymbol.lean:319 | ✓ |
+| `legendreSym.to_jacobiSym (p:ℕ)[Fact p.Prime](a:ℤ)` | JacobiSymbol.lean:115 | ✓ |
+| `ZMod.χ₄_nat_one_mod_four {n:ℕ}(hn:n%4=1):χ₄ n=1` (in `namespace ZMod`) | ZModChar.lean:89 | ✓ |
+| `Nat.forall_exists_prime_gt_and_modEq (n:ℕ){q a:ℕ}(hq:q≠0)(h:a.Coprime q)` (in `namespace Nat`) | PrimesInAP.lean:508 | ✓ |
+| `Nat.coprime_one_left` | used Mathlib-wide (Totient.lean:279, Rat/Lemmas.lean:306) | ✓ |
+
+The Jacobi/reciprocity rewrite chain in `legendreSym_neg_n_eq_one` (lines 92–96)
+type-checks by inspection: `to_jacobiSym` ⟶ `jacobiSym.neg` gives
+`χ₄ p * J(n|p) = 1`; `χ₄_nat_one_mod_four hp4` + `one_mul` ⟶ `J(n|p)=1`;
+`← quadratic_reciprocity_one_mod_four hp4 hn_odd` ⟶ `J(p|n)=1` = `hJpn`. Residual
+risk is purely tactic-level elaboration (coercion unification / `omega`), NOT
+missing or misnamed lemmas. **The registered-on-main risk is cleared.**
+
+### 2. SingleAP makes the residue-3 carve-out OBSOLETE for ODD cores
+
+`ThreeSquaresSingleAP` provides a UNIFORM witness for every **odd** `n`:
+`exists_prime_eq_one_mod_four_mul` (a prime `p ≡ 1 mod 4n`) +
+`legendreSym_neg_n_eq_one` (`legendreSym p (-n)=1`). This single arithmetic
+progression covers `n % 8 ∈ {1,3,5}` in one branch — including `n ≡ 3 (mod 8)`,
+the exact class whose old rigid `p = d·n−1` witness was proven UNSATISFIABLE
+(`ThreeSquaresResidue3Obstruction.no_residue3_witness`) and which forced the
+entire `ThreeSquaresResidue3*` / `Residue3Property` carve-out in
+`ThreeSquaresSufficiencyCorrected`.
+
+**Numeric certificate** `verify_single_ap_coverage.py` (range 1..4000):
+- 2000 odd n: `legendreSym(p,-n)=1` for smallest prime `p≡1 mod 4n` — **0 mismatches**, **0 existence failures**.
+- non-excluded 4-free cores: **1499 ODD** (single-AP covers) vs **1000 EVEN** (`n%8∈{2,6}`, NOT covered).
+
+### 3. The GAP: even cores (`n % 8 ∈ {2,6}`) are NOT served by single-AP
+
+`legendreSym_neg_n_eq_one` requires `Odd n` (the Jacobi bottom must be odd for
+`jacobiSym.neg` / `quadratic_reciprocity_one_mod_four`). The descent in
+`three_sq_of_corrected_witnesses` strips only **fours** (`4∣n → n/4`), so the
+4-free core can be even (`≡ 2 mod 4`). The old `DirichletWitnessNe3` covered
+`m%8∈{1,2,5,6}` — the even classes 2,6 included. SingleAP does **not** replace
+those. So single-AP shrinks but does not eliminate the open witness content.
+
+### 4. Turnkey wiring plan (next backend-up session)
+
+To convert axiom `not_excluded_form_is_sum_three_sq` (ThreeSquares.lean:1720)
+into a theorem (2 axioms → 1) using SingleAP:
+
+1. **Restate** `dirichlet_key_lemma` (ThreeSquares.lean:648) to the relaxed,
+   tie-free witness form — drop `d`, `hd`, `hp : p=d·n−1`; change the QR side
+   condition to `legendreSym p (-(n:ℤ)) = 1`:
+   ```
+   axiom dirichlet_key_lemma {n p : ℕ} (hn : n > 1) [Fact (Nat.Prime p)]
+       (hqr : legendreSym p (-(n:ℤ)) = 1) : ∃ x y z : ℤ, x^2+y^2+z^2 = n
+   ```
+   (The Minkowski/lattice construction only needs `-n` a QR mod some prime `p`;
+   the rigid tie was never essential. Still TRUE — single-AP supplies arbitrarily
+   large such `p` — so the eventual Minkowski discharge stays possible.)
+2. **Odd cores** (`n%8∈{1,3,5}`): discharge directly via
+   `exists_prime_eq_one_mod_four_mul` + `legendreSym_neg_n_eq_one` + restated
+   `dirichlet_key_lemma`. DELETE the `n%8=3` branch and the entire
+   `ThreeSquaresResidue3` / `ThreeSquaresResidue3Obstruction` /
+   `ThreeSquaresWitnessObstruction` / `Residue3Property*` machinery.
+3. **Even cores** (`n%8∈{2,6}`): still need a witness. Either keep a
+   `DirichletWitnessNe3` restricted to even cores, OR find a 2-descent
+   (`n = 2m`, `m` odd) — open which is cleaner; flag as the residual sub-task.
+4. Net if wired: `ThreeSquares.lean` drops to **1 axiom** (relaxed Minkowski
+   `dirichlet_key_lemma`) + the small even-core witness; the residue-3 obstruction
+   apparatus is removed entirely.
+
+**Do NOT** under blackout: blind-restate the axiom / blind-write the wiring in the
+registered flagship (no compiler to catch elaboration). **Do NOT** re-chase the
+monolithic `DirichletWitnessProperty` (proven false) or the ℤ[√−2] route (a 36%
+subset, structurally insufficient).
+
+### Files touched (S8)
+- `verify_single_ap_coverage.py` — new (single-AP QR + coverage certificate).
+- `knowledge.md` / `state.md` — this entry.
