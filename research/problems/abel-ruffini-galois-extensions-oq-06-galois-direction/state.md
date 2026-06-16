@@ -1,5 +1,21 @@
 # Current State
 
+> **S16 TURNKEY-DRAFT (researcher-5, 2026-06-16) — READ FIRST.**
+> Dual blackout persists (re-probed live): Aristotle `prove` 404; host
+> `proofs/.lake` is the self-referential symlink, so Mathlib oleans are
+> inaccessible host-wide and `docker-build.sh` would force a multi-GB
+> Mathlib re-clone (git-128) — local build UNAVAILABLE. No `.lean` change to
+> the registered (GREEN, 4-sorry) file. **Produced a turnkey ORPHAN companion**
+> `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3.lean`
+> (NOT in `Proofs.lean`, outside the build gate) that discharges Step 3
+> `sylow_p_is_pcycle` — UNVERIFIED, fold into the registered stub after one
+> green build. Reduces Step 3 to the single number-theory lemma
+> `(p!).factorization p = 1` (proved in-file as `padicValNat_factorial_self`).
+> **KEY:** that same fact is the kernel of Step 1's hardest sub-step too —
+> extract a shared `Nat.card ↥P = p` lemma to collapse both. Full discharge
+> plan + lemma-name confidence table in knowledge.md §"S15 Step-3 discharge
+> plan". Frontier unchanged: 4 sorries (Steps 1/3/4 + main). Claim released.
+>
 > **DOCKER-REGRESSION RE-PROBE (researcher-1, 2026-06-16, S15) — READ FIRST.**
 > The S14 record below says "Docker recovered this session." That is now STALE:
 > Docker has regressed to DOWN. Re-probed live this cycle — `docker run --rm

@@ -581,3 +581,50 @@ This session Docker recovered (1 container, warm Azure cache). I:
 4 sorry stubs remain: Step 1 `sylow_p_unique` (~70–110 LOC, the true blocker),
 Step 3 `sylow_p_is_pcycle`, Step 4 `normalizer_iso_AGL1Z`, and the main theorem.
 Aristotle `prove` still 404 (live-probed this session).
+
+## S15 Step-3 discharge plan (researcher-5, 2026-06-16) — turnkey draft authored
+
+Dual blackout again this cycle: Aristotle `prove` 404, and the host `proofs/.lake`
+is the self-referential symlink (`.lake -> .lake`), so all Mathlib package oleans
+are inaccessible host-wide and `docker-build.sh` would force a multi-GB Mathlib
+re-clone (git-128). No verified build possible. Step 3 was authored as a **turnkey
+orphan companion** `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3.lean`
+(NOT in `Proofs.lean`, outside the build gate). UNVERIFIED — fold into the
+registered `sylow_p_is_pcycle` after one green build.
+
+### Realised proof (mirrors the verified Step-5 patterns where possible)
+Let `ι = H.subtype.comp P.subtype : ↥P →* S_p` (injective).
+- **Step A — `p ∣ Nat.card H`** from primitivity. `IsPreprimitive.toIsPretransitive`;
+  `MulAction.orbit_eq_univ (0:ZMod p)` ⟹ `Nat.card (orbit) = Nat.card (ZMod p) = p`
+  (`Equiv.Set.univ`, `ZMod.card`); orbit–stabilizer
+  `MulAction.card_orbit_mul_card_stabilizer_eq_card_group` ⟹ `p ∣ Nat.card H`.
+- **Step B — `Nat.card ↥P = p`.** Lower: `Sylow.card_eq_multiplicity` +
+  `Nat.Prime.factorization_pos_of_dvd` ⟹ `p ∣ |P|` (exactly the Step-5 idiom).
+  Upper: `Subgroup.card_subgroup_dvd_card` (|H| ∣ |S_p| = p!) +
+  `Nat.factorization_le_iff_dvd` evaluated at `p` ⟹ `v_p(|H|) ≤ v_p(p!) = 1`.
+- **Step C — generator ⟹ p-cycle.** `isCyclic_of_prime_card` ⟹ generator `a`;
+  `orderOf_eq_card_of_forall_mem_zpowers` + `orderOf_injective` ⟹ `orderOf (ι a) = p`;
+  `Equiv.Perm.isCycle_of_prime_order` (support.card ≤ p < 2p) ⟹ `(ι a).IsCycle`;
+  `IsCycle.orderOf` ⟹ `support.card = p`; `hgen` from `g ∈ zpowers a`, `map_zpow`.
+
+### KEY INSIGHT — Step 1 and Step 3 share the `|P| = p` kernel
+The hardest reusable sub-obligation is **`(p !).factorization p = 1`** (Legendre
+at the prime itself). Step 3 needs it for the |P|=p UPPER bound; Step 1
+(`sylow_p_unique`, the true blocker) needs the same fact for its step 5
+(`v_p(|H|) = 1 ⟹ |Q| = p`). It is proved self-contained in the companion as
+`padicValNat_factorial_self` via `Nat.Prime.factorization_factorial` +
+`Finset.sum_eq_single 1` (i=1 term = p/p = 1; i≥2 terms = 0 since p^i > p).
+**Recommendation:** extract a shared lemma `card_sylow_p_of_primitive : Nat.card ↥P = p`
+(Steps A+B above) once verified — it discharges Step 3's |P|=p and collapses a
+large chunk of Step 1 simultaneously.
+
+### Lemma-name confidence (verify on first build)
+Medium-confidence (?) names to check: `MulAction.card_orbit_mul_card_stabilizer_eq_card_group`
+(Nat.card vs Fintype form), `Subgroup.card_subgroup_dvd_card`, `Fintype.card_perm`,
+`Nat.factorization_le_iff_dvd` (arg order / Finsupp `≤`), `isCyclic_of_prime_card`
+(Nat.card vs Fintype.card form — companion uses `Fintype.card`),
+`orderOf_eq_card_of_forall_mem_zpowers`, `Equiv.Perm.isCycle_of_prime_order`
+(name and whether it takes `orderOf σ = p` or `(orderOf σ).Prime`),
+`Nat.Prime.factorization_factorial`. High-confidence (★): the Step-5-shared
+idioms (`P.card_eq_multiplicity`, `Nat.Prime.factorization_pos_of_dvd`,
+`orderOf_injective`, `IsCycle.orderOf`, `map_zpow`, `Subgroup.mem_zpowers_iff`).
