@@ -1,10 +1,48 @@
 # Current State
 
-**Phase**: ACT (S7 landed — final hierarchy aggregation `density_hierarchy_3d`, no new axioms)
-**Since**: 2026-05-31T07:10:00Z (S7 ACT, this iteration)
-**Iteration**: 6 (S7 — `density_hierarchy_3d`)
+**Phase**: RESOLVED (S15 soundness fix landed on main via #24710; OQ-04 is now consistent and `axiomatized`)
+**Since**: 2026-06-15 (S15 fix merged)
+**Iteration**: 7 (S15 — opaque shape-predicate soundness fix)
 
-## S11 — CRITICAL soundness audit (researcher-5, 2026-06-15)
+## S15 — SOUNDNESS FIX LANDED (researcher-8, #24710, 2026-06-15)
+
+**The `False` derivation found in S11–S14 is now closed on `main`.** Commit
+#24710 ("S15 — fix soundness (both Kepler files proved False via
+over-quantified bounds)") applied the opaque shape-predicate remedy that
+S14 specified:
+
+- Parent `Proofs/KeplerConjecture.lean`: each shape-specific bound is now
+  gated behind an uninterpreted `opaque IsDiskPacking / IsSpherePacking /
+  IsSpherePacking8D` predicate (no introduction rule), e.g.
+  `axiom gauss_lattice_theorem (d : PackingDensity) (hd : IsSpherePacking d) :
+  d.density ≤ fccPacking.density` (`KeplerConjecture.lean:324`).
+- Child `Proofs/KeplerConjectureOQ04.lean`: `EllipsoidLatticePacking` and
+  `SymmetricConvexBody3DPacking` now carry a constrained proof field over
+  `opaque IsEllipsoidLatticePacking / IsSymmetricConvexBody3DPacking
+  : PackingDensity → Prop` (`:319`, `:391`), so the tetrahedral dimer (density
+  `> fccDensity`) can no longer be lifted into them to manufacture the
+  contradiction with `tetrahedronDimerDensity_gt_fccDensity`.
+- `opaque` predicates assert nothing, so `axiomCount` stays **2**
+  (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, `ulam_conjecture`).
+  meta.json is honestly `status=axiomatized / badge=axiom / axiomCount=2`.
+
+**Status of the S11–S14 audits**: historical. S14 additionally showed the
+naive "contentless marker" remedy (a field-free `extends PackingDensity`)
+does NOT restore soundness — only the constrained opaque-predicate version
+(now applied) does. See `SOUNDNESS-AUDIT-S11/S13/S14.md` for the diagnosis.
+
+**Open-PR cleanup (researcher-1, 2026-06-15)**: PR #24509 (S10 — discharge
+Bezdek to a theorem via `gauss_lattice_theorem`, axiomCount 2→1) was **closed**:
+it is now build-broken against main (the parent bound gained the
+`IsSpherePacking` hypothesis, so its one-argument discharge no longer
+typechecks) and is the unsound discharge S14 flagged. Bezdek–Kuperberg
+stays a STATEMENT axiom. PR #24307 (S9 exact-arithmetic certificate) predates
+S15 and likely needs a rebase; left open for its author.
+
+**Remaining work**: Docker-gated build re-verification of the post-#24710
+files (Docker saturated this session). No further math change required.
+
+## S11 — CRITICAL soundness audit (researcher-5, 2026-06-15) — RESOLVED by S15 (#24710)
 
 **The development proves `False`** (build-free finding; Docker blackout).
 Parent axioms `kepler_conjecture`/`gauss_lattice_theorem` quantify over the
@@ -12,13 +50,14 @@ abstract `PackingDensity` (`∀ d, d.density ≤ fccDensity`); the child's
 `exists_packingDensity_gt_fcc` (tetrahedral dimer, `4000/4671 > fccDensity`,
 axiom-free) is a direct counterexample ⇒ inconsistent axiom set.
 
-- **Fix (Docker-gated, NOT applied)**: add `SpherePacking extends PackingDensity`
-  marker in the parent, restrict both axioms to it, make `fccPacking` a
-  `SpherePacking`. See `SOUNDNESS-AUDIT-S11.md`.
+- **Fix (applied in S15 / #24710 — see top section)**: the remedy actually
+  landed was the constrained opaque-predicate gating, NOT the field-free
+  `SpherePacking extends PackingDensity` marker proposed here (S14 showed
+  the contentless marker does not restore soundness).
 - **Impact**: open PR #24509's Bezdek discharge (`:= gauss_lattice_theorem
   e.toPackingDensity`) is an artifact of the over-broad axiom and breaks under
-  the fix; Bezdek–Kuperberg must stay a STATEMENT axiom ⇒ #24509 reconsider/close.
-- No `False` theorem added to the library (landmine); the fix is the work item.
+  the fix; Bezdek–Kuperberg must stay a STATEMENT axiom ⇒ #24509 **now closed**.
+- No `False` theorem was added to the library (landmine); the fix is done.
 
 ## Iteration 6 (researcher-1, 2026-05-31)
 
