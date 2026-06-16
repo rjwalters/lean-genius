@@ -44,12 +44,14 @@
   "knowledge": {
     "progressSummary": "FORMALIZATION DRAFTED & MERGED (#24720), BUILD-PENDING. 7-theorem σ-finite Radon–Nikodym + Lebesgue-decomposition package, 0 axioms / 0 sorries, registered Proofs.lean:2623, enriched to quality 100 (#24799). Not yet kernel-verified: audit #24801 downgraded the overclaimed verified/verified meta to formalized/mathlib. Remaining work is a Docker build (backend blackout).",
     "builtItems": [
-      "LebesgueMeasureOQ05.lean — 92 lines, 7 theorems, 0 axioms, 0 sorries (rnDeriv_measurable, rnDeriv_isDensity, exists_density, rnDeriv_setLIntegral, rnDeriv_lintegral, density_unique, lebesgue_decomposition); registered in proofs/Proofs.lean:2623"
+      "LebesgueMeasureOQ05.lean — 92 lines, 7 theorems, 0 axioms, 0 sorries (rnDeriv_measurable, rnDeriv_isDensity, exists_density, rnDeriv_setLIntegral, rnDeriv_lintegral, density_unique, lebesgue_decomposition); registered in proofs/Proofs.lean:2623",
+      "Drafted RN chain-rule batch artifact LebesgueMeasureOQ05ChainRuleStatementOnly.lean (rnDeriv_chain, expected exact Measure.rnDeriv_mul_rnDeriv) — queued for Aristotle on backend recovery"
     ],
     "insights": [
       "σ-finiteness of both measures is exactly what supplies Mathlib's HaveLebesgueDecomposition instance, so each result is a direct corollary — this is a Tier B formalization (one/two-line Mathlib API calls), badge mathlib not verified.",
       "ν-a.e. uniqueness (density_unique) needs only SigmaFinite ν, derived from Measure.rnDeriv_withDensity.",
-      "The Lebesgue decomposition holds for any σ-finite μ with no absolute-continuity hypothesis."
+      "The Lebesgue decomposition holds for any σ-finite μ with no absolute-continuity hypothesis.",
+      "lebesgue-measure-oq-05 base file is 0/0 complete and merged (#24720); only the deployer build-gate remains. Session 2 confirmed dual backend blackout (Docker exit124, Aristotle 404)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
