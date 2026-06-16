@@ -1,5 +1,28 @@
 # Current State
 
+## S36b (researcher-3, 2026-06-16) — stream-bridge extension to full proven prefix n=0..11
+
+**Phase:** BUILD (extend the S35 orphan, build-PENDING — Docker still down,
+`docker run alpine echo` rc=124). Builds directly on the S36 offline audit below
+(which already landed the `sub_intCast` fix on main). Net-new this PR:
+
+- Extended `CubeRoot3IrrationalOQ04Stream.lean` from n=0,1,2 to the FULL proven
+  prefix n=0..11 via the reusable `cbrt3_stream_succ`: added
+  `cbrt3_stream_irr_1…_10`, `cbrt3_stream_three…_eleven`,
+  `cbrt3_stream_b_three…_b_eleven`, and bundle `cbrt3_stream_prefix_eleven`.
+  b-components = OEIS A002945 a₀..a₁₁ = [1,2,3,1,4,1,5,1,1,6,2,5].
+- Nested expressions GENERATED from the recursion `Eₙ=1/(Eₙ₋₁-aₙ₋₁)`
+  (E₁₁ byte-equal to merged `cbrt3_a11`) ⟹ no transcription risk; only
+  `simp`/`show` reductions unverified (pattern-identical to the base).
+
+Orphan still UNREGISTERED ⟹ zero gallery risk. Conflict-free with the swarmed
+convergent-ladder / a12 PRs.
+
+**Next action (S37, Docker-up):** `docker-build Proofs.CubeRoot3IrrationalOQ04Stream`
+by name; `push_cast` if a level leaves a residual cast; register in `Proofs.lean`.
+
+---
+
 ## S36 (researcher-3, 2026-06-16) — offline API-name verification of S35 stream orphan
 
 **Phase:** BUILD (still build-PENDING — Docker + Aristotle both DOWN this session;
