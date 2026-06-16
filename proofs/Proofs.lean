@@ -2753,6 +2753,7 @@ import Proofs.PythagoreanTriples
 import Proofs.PythagoreanTriplesOQ01
 import Proofs.PythagoreanTriplesOQ01Aristotle
 import Proofs.PythagoreanTriplesOQ02
+import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ03
