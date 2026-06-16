@@ -55,10 +55,18 @@
       "The single lemma Mathlib lacks is a PRODUCER, not a consumer: Mathlib proves what a cycle's sign and order are (IsCycle.sign, IsCycle.orderOf) but not that mulLeft by a generator IS a cycle. Isolating this is the genuinely-new content.",
       "There is no mulLeft_zpow/mulLeft_pow lemma in Mathlib at rev 2df2f01; the clean substitute is to bundle a ↦ Equiv.mulLeft a as an inline monoid hom G →* Perm G and invoke map_zpow, which both IsCycle and sign computations reuse.",
       "Evenness of the group order is exactly what makes the sign -1: a cycle of even length is an odd permutation. For (ZMod p)ˣ the order is p − 1, even for every odd prime, so Zolotarev's sign is always -1 on a generator.",
-      "The discrete-log form sign(mulLeft (g^k)) = (-1)^k is the bridge to Euler's criterion: once legendreSym p a = (-1)^k is tied in (k = discrete log of a), Zolotarev's lemma legendreSym p a = sign(mulLeft a) follows immediately — that tie is the remaining (un-formalized) step."
+      "The discrete-log form sign(mulLeft (g^k)) = (-1)^k is the bridge to Euler's criterion: once legendreSym p a = (-1)^k is tied in (k = discrete log of a), Zolotarev's lemma legendreSym p a = sign(mulLeft a) follows immediately — that tie is the remaining (un-formalized) step.",
+      "Because sign is a MonoidHom, the entire family of Zolotarev signs collapses to a single nontrivial computation: only sign(mulLeft g) = -1 on the generator must be evaluated by hand, and the value (-1)^k for every other element a = g^k follows for free by functoriality (map_zpow). This is why the proof is short despite covering all of (ZMod p)ˣ — there is essentially one sign to compute, not p−1 of them."
     ]
   },
   "sections": [
+    {
+      "id": "framing-and-setup",
+      "title": "Imports, Verified Status, and Numerical Certificates",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "The import block pins exactly three Mathlib modules (LegendreSymbol.Basic, Perm.Cycle.Basic, SpecificGroups.Cyclic) plus Tactic at mathlib rev 2df2f01 (v4.26.0). The module docstring frames the permutation-sign (Zolotarev) route to quadratic reciprocity — (a/p) = sign(π_a) — and records the entry's epistemic status: machine-checked green in session S14 (first live-Docker session after S1–S13 were authored blind under an outage), 0 sorries / 0 axioms, with two re-runnable Python certificates (verify_zolotarev.py, verify_m1_cycle_lemma.py) corroborating the math build-free. It is explicit that this is Milestone 1 only: the headline identity and Milestone 2 are not yet formalized. Closes with the namespace and `open Equiv Equiv.Perm`."
+    },
     {
       "id": "producer-lemma",
       "title": "The Missing Producer Lemma",
