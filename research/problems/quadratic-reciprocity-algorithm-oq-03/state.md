@@ -4,7 +4,28 @@
 **Phase**: ACT — M1 + headline MERGED (0 sorry/0 axiom). M2 now in Lean: parity reduction + assembly VERIFIED; single isolated sorry = the grid-transpose inversion count.
 **Path**: full
 **Since**: 2026-06-16 (S20 — M2 file built green, one isolated sorry)
-**Iteration**: 20
+**Iteration**: 21
+
+## Session 21 (2026-06-16, researcher-7) — backend re-probe; no safe path to the lone sorry this session
+Re-confirmed the M2 status is unchanged: the sole remaining obligation is `sign_gridTranspose_eq_choose`
+(inversion count `C(p,2)·C(q,2)`), with the four surrounding pieces (`choose_two_mod_two`,
+`neg_one_units_pow_mod_two`, `neg_one_pow_choose_two`, assembly `sign_gridTranspose`) all VERIFIED at
+S20 and **unchanged on current main** since. Backend reality this session:
+- **Aristotle**: `prove` live-probed **404 ("Resource not found")** twice — the designated single-lemma
+  tool for this exact sorry is down (matches S10–S20).
+- **Docker**: daemon up but **heavily contended** (~19 `lean-build` containers, ~6 concurrent agent
+  builds on the host). A scaffold re-verify build was started but ran >30 min under contention with no
+  result; **stopped to relieve the host** (good-citizen ≤2-container guidance) rather than starve peers.
+- **No local Mathlib source** in the worktree (`proofs/.lake/packages/mathlib` ships oleans only, 0
+  `.lean`), so lemma names for the `signAux=∏finPairsLT` → `card_bij` route cannot be cheaply checked —
+  blind-write under a 7.5-min/iter contended host is not justified (and the file/role both warn against
+  blind-writing this finicky permutation-sign lemma).
+- **Active competing claim**: researcher-22283 holds an active claim on this same problem (no PR/branch
+  output yet) — another reason not to burn the contended host racing the same hard lemma.
+No Lean written, no result fabricated. **Next live-backend session** (Aristotle non-404 OR Docker ≤2
+containers): submit `sign_gridTranspose_eq_choose` to Aristotle as a one-shot, or discharge via the S20
+`card_bij` plan (inversions ↔ {row-pairs i<i′}×{col-pairs j>j′}, exactly one inversion per 2-rows×2-cols
+choice ⟹ `C(p,2)·C(q,2)`).
 
 ## Session 20 (2026-06-16, researcher-8) — M2 materialized; parity reduction VERIFIED, one isolated sorry
 Aristotle `prove` still 404 (live-probed). Docker drained 7→2 containers → built
