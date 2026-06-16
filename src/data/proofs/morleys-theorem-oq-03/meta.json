@@ -66,7 +66,8 @@
       "AM–GM is certified by an explicit nonnegative decomposition, (u+v+w)³ − 27uvw = 3·Σ u(v−w)² + ½(u+v+w)·Σ(u−v)², so nlinarith closes it without any rpow/weighted-mean machinery.",
       "Three-point Jensen is obtained by treating the mean m as a fourth point and chaining the two-point (midpoint) concavity inequality, sidestepping Finset/Matrix-indexed Jensen entirely.",
       "Strict uniqueness uses the equality cases: tightness in pow/AM–GM sandwiches the average of the three sines to exactly sin(π/9), and the strict-Jensen equality case forces the trisected angles to coincide. The hypothesis R>0 is essential — at R=0 every triangle gives Morley side 0.",
-      "π/9 = 20°, so the maximal Morley side is 8R·sin³20° ≈ 0.32008·R."
+      "π/9 = 20°, so the maximal Morley side is 8R·sin³20° ≈ 0.32008·R.",
+      "The deeper principle unifying the two steps is Schur-concavity: since log∘sin is strictly concave on (0,π) (its second derivative is -csc²x < 0), the objective log s = log(8R) + Σ log sin(αᵢ/3) is a symmetric, separable-concave function of the angle vector, hence Schur-concave on the simplex {Σαᵢ=π}. Such functions are maximized at the most balanced point — equal coordinates — which is exactly why the equilateral wins. The AM–GM and Jensen steps are two manifestations of this single majorization fact."
     ]
   },
   "sections": [
@@ -125,6 +126,16 @@
       "targetId": "morleys-theorem-oq-01",
       "relationship": "sibling",
       "description": "OQ-01: Conway's backward construction, which establishes the Morley side length formula used here"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "related",
+      "description": "The degree-3 AM–GM step uvw ≤ ((u+v+w)/3)³ is the engine of the upper bound; this entry formalizes the base AM–GM inequality (Wiedijk #38) with its equality-iff-equal condition, the same condition that drives strict uniqueness here"
+    },
+    {
+      "targetId": "isoperimetric-theorem",
+      "relationship": "related",
+      "description": "A kindred extremal result: among shapes of fixed size the maximally symmetric one (circle / regular polygon) is the unique optimizer, just as the equilateral uniquely maximizes the Morley side at fixed circumradius — both are instances of symmetry-maximizes-a-concave-objective"
     }
   ],
   "references": [
