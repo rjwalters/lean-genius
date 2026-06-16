@@ -79,11 +79,44 @@ existential lower bound is the single piece Route B needs; it is a known
 classical result (no creative insight required), hence a clean Aristotle /
 future-build target.
 
-Proof sketch: `ψ(2n) ≥ log C(2n,n) ≥ n·log 4 − log(2n+1)` via the central
-binomial bound `Nat.four_pow_le_two_mul_add_one_mul_central_binom` and the
-divisibility `C(2n,n) ∣ lcm(1,…,2n)` (equivalently the de Polignac identity and
-`ArithmeticFunction.vonMangoldt_sum`). A positive constant works for all `x ≥ 2`
-because `ψ` is monotone with `ψ 2 = Real.log 2 > 0` and `ψ x / x → 1`. -/
+Proof sketch: `ψ(2n) ≥ log C(2n,n) ≥ n·log 4 − log(2n+1)`. The size bound uses
+`Nat.four_pow_le_two_mul_add_one_mul_central_binom`. The crux `log C(2n,n) ≤ ψ(2n)`
+MUST go through the de Polignac floor-sum identity and
+`ArithmeticFunction.vonMangoldt_sum`: the lcm route (`C(2n,n) ∣ lcm(1..2n)`) is
+NOT available — Mathlib has no `centralBinom ∣ lcm` lemma (grep: 0 hits) and no
+`ψ = log lcm` packaging. A positive constant works for all `x ≥ 2` because `ψ`
+is monotone with `ψ 2 = Real.log 2 > 0` and `ψ x / x → 1`. -/
+
+/-
+  TURNKEY DECOMPOSITION (researcher-8, 2026-06-16) — transcribe these as named
+  sorried lemmas, then prove top-down. Confirmed v4.26.0 hooks in brackets.
+  Both backends were down this cycle (Aristotle 404; docker re-clones Mathlib via
+  the circular proofs/.lake self-symlink) so NONE of this is build-verified yet.
+
+  -- L1 (de Polignac / Legendre floor-sum identity) — genuine ~50–100 line core
+  lemma log_factorial_eq_sum_vonMangoldt_mul_div (N : ℕ) :
+      Real.log (N ! : ℝ) = ∑ d ∈ Finset.Ioc 0 N, Λ d * ((N / d : ℕ) : ℝ)
+  --   log(N!) = ∑_{n∈Ioc 0 N} log n = ∑_n ∑_{d ∈ n.divisors} Λ d   [vonMangoldt_sum]
+  --           = ∑_{d∈Ioc 0 N} Λ d · #{n∈Ioc 0 N : d∣n}             [Finset.sum swap]
+  --           = ∑_{d∈Ioc 0 N} Λ d · (N/d)   [Nat.Ioc_filter_dvd_card_eq_div,
+  --                                          Data/Nat/Factorization/Basic.lean:475]
+  --   NB Ioc 0 N matches Chebyshev.psi's own sum range exactly — no Icc/Ioc juggling.
+
+  -- L2 (key inequality — THE gap) : log of central binomial ≤ ψ(2n)
+  lemma log_centralBinom_le_psi (n : ℕ) :
+      Real.log (Nat.centralBinom n : ℝ) ≤ Chebyshev.psi (2 * n)
+  --   = ∑_{d∈Ioc 0 2n} Λ d · ((2n)/d − 2·(n/d))  [L1 twice; n/d=0 for d>n]
+  --   ≤ ∑_{d∈Ioc 0 2n} Λ d · 1  [pointwise 0 ≤ (2n)/d − 2(n/d) ≤ 1; vonMangoldt_nonneg]
+  --   = ψ(2n).  Hardest piece = the ℕ-division bracket bound.
+
+  -- L3 (size) : log C(2n,n) ≥ n·log 4 − log(2n+1)
+  lemma log_four_mul_le_log_centralBinom (n : ℕ) :
+      (n : ℝ) * Real.log 4 - Real.log (2*n+1) ≤ Real.log (Nat.centralBinom n : ℝ)
+  --   logs of Nat.four_pow_le_two_mul_add_one_mul_central_binom (4^n ≤ (2n+1)·C(2n,n)).
+
+  -- assembly: ψ(2n) ≥ n·log4 − log(2n+1); pick c=(log 4)/4 and use psi_mono with
+  -- ψ x ≥ ψ(2⌊x/2⌋) to cover every real x ≥ 2 with a single constant.
+-/
 theorem chebyshev_psi_lower_bound :
     ∃ c : ℝ, 0 < c ∧ ∀ x : ℝ, 2 ≤ x → c * x ≤ Chebyshev.psi x := by
   sorry
