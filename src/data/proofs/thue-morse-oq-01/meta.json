@@ -112,5 +112,21 @@
       "Does the digit-sum definition match a `ZMod 2`-valued automaton or `Nat.popCount`-style characterization, and can the equivalence be formalized?"
     ]
   },
-  "crossReferences": []
+  "crossReferences": [
+    {
+      "proofId": "binary-gcd-oq-01",
+      "relationship": "Shared base-2 recursion",
+      "description": "Both entries are driven by the base-2 even/odd decomposition n ↦ (n % 2, n / 2). Thue-Morse reads the parity bit off `Nat.digits 2` and halves; Stein's binary GCD branches on the same parity test and halving. The bit-flip recurrences t(2n)=t(n), t(2n+1)=t(n)+1 are the digit-level analogue of binary GCD's even/odd case split."
+    },
+    {
+      "proofId": "midy-theorem-oq-01",
+      "relationship": "Base-b digits via modular arithmetic",
+      "description": "Each theorem reduces a statement about base-b digit expansions to a clean modular fact. Thue-Morse takes the base-2 digit sum modulo 2 (ZMod 2 parity); Midy's theorem reads the even-period repetend of 1/p in base b through ZMod p and the multiplicative order. Both exploit Mathlib's `Nat.digits` recursion as the bridge from digits to arithmetic."
+    },
+    {
+      "proofId": "sylvester-sequence-oq-01",
+      "relationship": "Recurrence-defined integer sequence",
+      "description": "A companion integer-sequence entry: where Thue-Morse is governed by the doubling recurrences t(2n)/t(2n+1), Sylvester's sequence a_{n+1}=aₙ²−aₙ+1 is governed by a quadratic recurrence with its own elementary number-theoretic payoff (telescoping reciprocal sum to 1 and pairwise coprimality). Both showcase how a single recurrence dictates the whole sequence's arithmetic."
+    }
+  ]
 }
