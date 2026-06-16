@@ -46,8 +46,8 @@
     "id": "ann-euclidean-setup",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 42,
-      "endLine": 55
+      "startLine": 51,
+      "endLine": 58
     },
     "type": "insight",
     "title": "Euclidean Plane Setup: Vec2 as ℝ²",
@@ -71,7 +71,7 @@
       "startLine": 64,
       "endLine": 65
     },
-    "type": "definition",
+    "type": "theorem",
     "title": "Norm Squared",
     "content": "The **norm** of a vector is its length. The norm squared is simply the inner product of a vector with itself:\n\n$$\\|\\vec{v}\\|^2 = \\langle \\vec{v}, \\vec{v} \\rangle = v_x^2 + v_y^2$$\n\nThis is the 2D version of the Pythagorean theorem! The length of a vector $(v_x, v_y)$ satisfies $\\|\\vec{v}\\|^2 = v_x^2 + v_y^2$.",
     "mathContext": "$\\|\\vec{v}\\|^2 = v_x^2 + v_y^2$",
@@ -111,10 +111,10 @@
     "id": "ann-perpendicular",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 77,
+      "startLine": 72,
       "endLine": 80
     },
-    "type": "definition",
+    "type": "concept",
     "title": "Perpendicularity via Inner Product",
     "content": "Two vectors are **perpendicular** (or orthogonal) if and only if their inner product is zero:\n\n$$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$$\n\nThis is the algebraic translation of 'at right angles'. It's remarkable that such a simple algebraic condition captures a geometric concept.\n\nExample: $(1, 0)$ and $(0, 1)$ are perpendicular because $1 \\cdot 0 + 0 \\cdot 1 = 0$.",
     "mathContext": "$\\vec{v} \\perp \\vec{w} \\iff \\langle \\vec{v}, \\vec{w} \\rangle = 0$",
@@ -180,23 +180,22 @@
     "id": "ann-right-triangle",
     "proofId": "pythagorean-theorem",
     "range": {
-      "startLine": 132,
+      "startLine": 126,
       "endLine": 132
     },
-    "type": "definition",
-    "title": "Right Triangle Structure",
-    "content": "We formalize a right triangle as a structure with:\n\n- Two vectors `legA` and `legB` representing the legs\n- A proof `right_angle` that these legs are perpendicular\n\nPlacing the right angle at the origin, the legs point to vertices A and B. The hypotenuse connects these vertices, represented by `legA - legB`.",
-    "mathContext": "$a^2 + b^2 = c^2$ where $a = \\|\\vec{AB}\\|$, $b = \\|\\vec{BC}\\|$, $c = \\|\\vec{AC}\\|$ for a right triangle $ABC$ with right angle at $B$.",
+    "type": "theorem",
+    "title": "Pythagorean Triples",
+    "content": "Three classic integer right triangles are verified by `norm_num`: $3^2+4^2=5^2$, $5^2+12^2=13^2$, and $8^2+15^2=17^2$. These *Pythagorean triples* are integer solutions $(a,b,c)$ of $a^2+b^2=c^2$. Euclid's formula generates every primitive triple: $a=m^2-n^2$, $b=2mn$, $c=m^2+n^2$ for coprime $m>n$ of opposite parity.",
+    "mathContext": "$3^2+4^2=5^2,; 5^2+12^2=13^2,; 8^2+15^2=17^2$; primitive triples: $(m^2-n^2,;2mn,;m^2+n^2)$",
     "significance": "supporting",
     "prerequisites": [
-      "Euclidean geometry",
-      "right triangles",
-      "real number arithmetic"
+      "norm_num",
+      "integer arithmetic"
     ],
     "relatedConcepts": [
-      "structure",
-      "dependent type",
-      "geometric modeling"
+      "Pythagorean triples",
+      "Euclid's formula",
+      "Diophantine equations"
     ]
   },
   {
