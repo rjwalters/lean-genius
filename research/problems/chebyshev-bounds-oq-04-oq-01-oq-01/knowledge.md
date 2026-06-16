@@ -73,3 +73,50 @@ Aristotle `prove` once a backend recovers. Expected glue:
 3. Then Selberg's symmetry formula `S₂(N) = 2N·log N + O(N)` (Iter 5b), the
    Tauberian self-reference, and Erdős's combinatorial lemma (Iter 5c–5d).
 4. Do NOT add new axioms; do NOT touch the frozen `ChebyshevBoundsOQ04OQ01.lean`.
+
+## This session (2026-06-16, Researcher-3) — ACT, Iter 5a-β-2 keystone PROVEN
+
+**Outcome**: progress (discharged the queued sorry; build-verified).
+
+Aristotle MCP loaded this session but `prove` still returns "Resource not
+found" (backend down) — proved manually instead.
+
+### Result
+
+`moebius_mul_floor_sum_eq_one` in
+`proofs/Proofs/ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly.lean` is now
+**fully proven** (0 sorries, 0 axioms), build-verified `✔ [7743/7743]` (97s)
+and registered in `Proofs.lean`.
+
+Statement: `∑ d ∈ Finset.Icc 1 N, μ d * ↑(N / d) = 1` for `N ≥ 1`.
+
+### Proof recipe (elementary hyperbola swap)
+
+1. `Finset.Icc 1 N = Finset.Ioc 0 N` (ext + omega) to match the counting lemma.
+2. `⌊N/d⌋ = #{k ∈ Icc 1 N : d ∣ k}` via `Nat.Ioc_filter_dvd_card_eq_div`.
+3. Rewrite each term `μ d * ↑(N/d)` as `∑ k ∈ Icc 1 N, (if d ∣ k then μ d else 0)`
+   (`Finset.sum_ite` + `sum_const_zero` + `sum_const` + `nsmul_eq_mul`).
+4. Swap the double sum with the basic `Finset.sum_comm` (both indices over
+   `Icc 1 N`; avoids the fiddlier `sum_comm'`).
+5. Collapse the inner guarded sum to `∑ d ∈ k.divisors, μ d` (filter = divisors
+   for `1 ≤ k ≤ N`, via `Nat.mem_divisors` + `Nat.le_of_dvd`).
+6. `∑ d ∈ k.divisors, μ d = if k = 1 then 1 else 0` via
+   `ArithmeticFunction.coe_mul_zeta_apply` + `moebius_mul_coe_zeta` (μ ∗ ζ = 1)
+   + `one_apply`.
+7. `Finset.sum_ite_eq'` picks out the `k = 1` term ⇒ `1`.
+
+### GOTCHA (recorded for reuse)
+
+The `μ` notation is `scoped[ArithmeticFunction.Moebius]` — `open ArithmeticFunction`
+is NOT enough; you must add `open scoped ArithmeticFunction.Moebius`. First build
+failed with `Unknown identifier μ`. (`ζ` is `scoped[ArithmeticFunction.zeta]`,
+not needed here since we only reference it through lemma names.)
+
+### Next Steps (unchanged downstream)
+
+1. Derive `|M₁(N)| = |∑_{d≤N} μ(d)/d| ≤ 1` from this floor identity via the
+   fractional-part split `⌊N/d⌋ = N/d − {N/d}`.
+2. Then Selberg's symmetry formula (Iter 5b), the Tauberian self-reference,
+   Erdős's combinatorial lemma (Iter 5c–5d).
+3. The two parent axioms in `ChebyshevBoundsOQ04.lean` remain (deep PNT);
+   do NOT touch the frozen `ChebyshevBoundsOQ04OQ01.lean`.
