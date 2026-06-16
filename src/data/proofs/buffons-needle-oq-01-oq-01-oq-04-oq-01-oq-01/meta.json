@@ -40,7 +40,8 @@
       "Closed-form antiderivative beats substitution machinery: rather than invoking a change-of-variables lemma, the proof exhibits F(θ) = sin^{m+1}(θ)/(m+1) directly and differentiates it, so the whole integral collapses to a two-point evaluation via FTC.",
       "The endpoint evaluation is trivial because sin(π/2) = 1 makes the upper term 1^{m+1}/(m+1) = 1/(m+1) and sin(0) = 0 with zero_pow (m+1 ≠ 0) kills the lower term — no special-casing of m is needed.",
       "Proving the general natural-exponent version ∫ cos θ · sinᵐ θ = 1/(m+1) first, then specializing m := n-2, isolates the only dimension-dependent step (the cast (n-2)+1 = n-1 for n ≥ 2) into a one-line Nat.cast_sub rewrite.",
-      "The identity supplies exactly the σ_{n-2}/(n-1) factor needed by the parent Cauchy–Crofton construction, closing the last analytic gap in the n ≥ 3 angular averaging argument."
+      "The identity supplies exactly the σ_{n-2}/(n-1) factor needed by the parent Cauchy–Crofton construction, closing the last analytic gap in the n ≥ 3 angular averaging argument.",
+      "The value 1/(m+1) is not a coincidence: this integral is the degenerate slice of the Beta function with cos-exponent 1, i.e. B(a,b) = 2∫_0^{π/2} sin^{2a-1}θ cos^{2b-1}θ dθ at b = 1 (so 2b-1 = 1) and a = (m+1)/2. Since B(a,1) = Γ(a)Γ(1)/Γ(a+1) = 1/a, the half-integral equals (1/2)·B((m+1)/2,1) = 1/(m+1). The b = 1 case is precisely the one where the Beta function degenerates to an elementary 1/a, which is why an elementary FTC antiderivative exists at all — the general Beta integral has no such closed form in elementary functions."
     ]
   },
   "sections": [
