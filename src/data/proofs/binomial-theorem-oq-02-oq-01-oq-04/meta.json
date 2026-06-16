@@ -68,5 +68,36 @@
       "endLine": 151,
       "summary": "multinomial_variance rewrites E[Xᵢ²] via multinomial_second_moment and E[Xᵢ] via multinomial_mean, re-expresses (n·pᵢ)² as (∑ⱼ j·binomPMF)² using the all-n mean, and closes by binomial_variance_all. The result is the diagonal companion to OQ03.multinomial_covariance, completing the multinomial covariance matrix."
     }
-  ]
+  ],
+  "crossReferences": [
+    {
+      "proofId": "binomial-theorem-oq-02-oq-01-oq-03",
+      "relationship": "Off-diagonal companion (covariance)",
+      "description": "Supplies $\\mathrm{Cov}(X_i, X_j) = -n p_i p_j$ for $i \\ne j$ and the multinomial mean $E[X_i] = n p_i$ reused here. This file fills the diagonal $i = j$ the covariance lemma cannot reach; together they determine $\\Sigma_{ij} = n p_i(\\delta_{ij} - p_j)$."
+    },
+    {
+      "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "relationship": "Marginal-PMF dependency",
+      "description": "Proves each multinomial component is marginally Binomial$(n, p_i)$ via $P(X_i = j) = \\mathrm{binomPMF}(n, p_i, j)$ — the identity that collapses each fiber sum in the second-moment computation."
+    },
+    {
+      "proofId": "binomial-theorem-oq-03",
+      "relationship": "Binomial mean/variance source",
+      "description": "Provides the binomial mean and variance $E[X] = np$, $\\mathrm{Var}(X) = np(1-p)$ (for $n \\ge 1$, $n \\ge 2$), which this file extends to all $n$ and pulls back along the binomial marginal."
+    },
+    {
+      "proofId": "binomial-theorem",
+      "relationship": "Foundational identity",
+      "description": "The binomial theorem underpins the whole family: the binomial PMF normalizes by $\\sum_k \\binom{n}{k} p^k (1-p)^{n-k} = 1$, and the multinomial coefficients generalize $\\binom{n}{k}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file machine-checks the diagonal of the multinomial covariance matrix: $\\mathrm{Var}(X_i) = n\\,p_i(1 - p_i)$, with 0 sorries and 0 axioms. The proof reduces the second moment $E[X_i^2] = \\sum_j j^2\\,\\mathrm{binomPMF}(n, p_i, j)$ to a binomial computation by fiber grouping over $j = k(i_0)$ — the squared-statistic analogue of the multinomial mean — then combines it with the mean $E[X_i] = n p_i$ and the binomial variance, extended here to all $n$.",
+    "implications": "Together with the off-diagonal covariance $\\mathrm{Cov}(X_i, X_j) = -n p_i p_j$, the variance completes the full multinomial covariance matrix $\\Sigma_{ij} = n\\,p_i(\\delta_{ij} - p_j) = n(\\operatorname{diag}(p) - pp^\\top)_{ij}$. This is the matrix at the heart of Pearson's chi-squared goodness-of-fit statistic and Fisher's analysis of contingency tables. Its rank deficiency (rank $k-1$, kernel spanned by $\\mathbf{1}$) is the analytic fingerprint of the hard constraint $\\sum_l X_l = n$: all probabilistic variation lives on the constraint hyperplane.",
+    "openQuestions": [
+      "Can the full covariance matrix $\\Sigma = n(\\operatorname{diag}(p) - pp^\\top)$ be assembled as a single Lean object combining this diagonal with the off-diagonal sibling?",
+      "Is the rank-$(k-1)$ singularity of $\\Sigma$ — equivalently $\\Sigma\\mathbf{1} = 0$ with $p \\ne 0$ — formalizable directly from the entrywise formula?",
+      "Does the fiber-grouping reduction extend to higher moments $E[X_i^r]$, recovering all marginal binomial moments uniformly?"
+    ]
+  }
 }
