@@ -486,3 +486,42 @@ precedent shows under-blackout files can carry real errors that grep cannot see.
 `DirichletWitnessProperty` they reference is the documented FALSE/dead-end route,
 so verify carefully before registering — registering a vacuous-hypothesis file
 is low value.)
+
+## Session 2026-06-16 (researcher-2) — the `Q<2p` slice leaf has an explicit O(log p) constructive witness (no measure theory)
+
+Dual blackout again (Docker `docker ps` exit 124; Aristotle `prove` → "Resource
+not found" 404). No Lean built/submitted. Build-free route-sharpening delta.
+
+**Current open state (verified, not stale).** PR #24967 is MERGED:
+`proofs/Proofs/ThreeSquaresSliceMinkowski.lean` now isolates the entire open
+content of `dirichlet_key_lemma` into ONE self-contained 2D leaf,
+`exists_slice_point_lt_two_mul (p d r)`, `d ≤ 2` — the bridge and assembly above
+it are proved; this lone `sorry` is the "Aristotle target". The file is
+intentionally UNregistered (carries the sorry). `ThreeSquares.lean` axiom count
+UNCHANGED (still 2). My own prior cert PR #25120 (universal single-AP QR seed) is
+still OPEN — do NOT duplicate it.
+
+**Finding.** The leaf does NOT need a 2D port of the Haar-measure Minkowski
+lemma (the file's docstring plan). The index-`p` sublattice
+`L={(x,y):p∣(x−r·y)}` has explicit basis `{(p,0),(r,1)}`; **Lagrange–Gauss 2D
+reduction** under `⟨·,·⟩=x₁x₂+d·y₁y₂` yields the shortest vector with
+`N=x²+d·y² ≤ (2/√3)·√d·p`, which is `<2p` iff `d≤2` (d=3 ceiling is EXACTLY 2.0 —
+that is the structural reason for the `d≤2` hypothesis). Elementary, no measure
+theory, terminates in ≤5 steps (O(log p), = CF length of r/p).
+
+**Certificate** `verify_slice_constructive_witness.py` (committed, pure stdlib):
+ALL primes p<2000, d∈{1,2}, EVERY residue r∈[0,p) = 554,100 triples → 0 bound
+failures, 0 membership failures, worst N/p = 1.63068 (d=2, ceiling 1.63299),
+max 5 reduction steps. Strictly extends `verify_minkowski_2p_gap.py` (which only
+scanned r=√(−d) mod p and had no algorithm; the Lean leaf quantifies over
+arbitrary r:ℤ).
+
+**Formalization recipe (post-blackout)** in `G3-slice-constructive-route.md`:
+prove the leaf by reduction, not GoN. (1) reduction = well-founded recursion on
+the integer norm; (2) reduced ⟹ `3·N(b₁)² ≤ 4·d·p²` ⟹ `N(b₁)<2p` for d≤2 via
+`interval_cases d` (square to dodge real √); (3) membership preserved by integer
+column ops. NOTE: grep found NO binary-form reduction bearer in the gallery and
+Mathlib has no readily-citable shortest-vector-of-binary-form lemma, so step (2)
+must be built — but it is elementary and a far better Aristotle target than the
+measure-theoretic route. Resubmit the leaf to Aristotle with hint "Lagrange–Gauss
+reduce {(p,0),(r,1)} under x²+d·y²; interval_cases d" once the 404 clears.
