@@ -28,36 +28,54 @@ launched.
 
 **What this session set out to do**: close the s06 finding-#2 flag — "verify
 against Mathlib that operator `LinearMap.IsSymmetric.eigenvalues` is unsorted."
-**Result: could not be closed locally.**
-- `proofs/.lake` is still the corrupt self-referential symlink
-  (`.lake → …/proofs/.lake`), so there is no local Mathlib `.lean` source to grep.
-- A throwaway `docker run` against `lean4-arm64:v4.26.0` + the
-  `lean-mathlib-cache` volume confirms the image/cache ship **only compiled
-  artifacts** (`ir/`, `lib/` oleans) — **no Mathlib source tree** (no
-  `Spectrum.lean`, no `Mathlib/` source dir). Mathlib source is only cloned into
-  `.lake` during a build.
-- Net: the unsorted-`eigenvalues` fact can be confirmed only by an actual build
-  (or a reachable Aristotle). The s06 reasoning stands — Courant–Fischer's
-  max–min RHS is *intrinsically* the (k+1)-th **largest** eigenvalue, and the
-  matrix world keeps a *separate* sorted `eigenvalues₀`/`eigenvalues₀_antitone`
-  precisely because the raw spectral-theorem eigenvalue indexing carries no order
-  guarantee — so the keystone over raw `hT.eigenvalues hn k` remains
-  **high-confidence mis-stated**, but the flag is *unverified-by-build*, not
-  closed.
+**Result: finding #2 is REFUTED.** The flag is now closed against actual source.
 
-**No artifact shipped beyond this note** (avoided blind-writing an unbuildable
-corrected keystone under the dual constraint). The s06 turnkey next-build plan is
-unchanged and remains the entry point: state the keystone over `sortedEigs`
-(antitone), `≥` via `span{b 0..b k}` + glue #1, `≤` via Sublemma-B pigeonhole
-against `span{b k..b_{n-1}}` + glue #1; the lone remaining named-lemma gap is
-`finrank (span (b '' I)) = I.card` for an orthonormal subfamily (route:
-`finrank_span_eq_card` on `b ∘ (Subtype.val : ↥I → Fin n)`, which is
-`LinearIndependent` as a restriction of `b.linearIndependent`, with
-`range (b ∘ val) = b '' I`). **First verifiable action when a backend opens**:
-build the merged-but-never-registered foundation by copying
-`CauchyInterlacingSublemmas.lean` → `proofs/Proofs/` and
-`docker-build.sh Proofs.CauchyInterlacingSublemmas` (locks in the two proven
-sublemmas), *then* transcribe the corrected keystone.
+**RETRACTION of s06 finding #2 (it was WRONG).** A host-wide `find` turned up a
+real Mathlib v4.26.0 checkout (`/private/tmp/mathlib-grep/…`, also another
+worktree's `.lake/packages/mathlib`). Reading
+`Mathlib/Analysis/InnerProductSpace/Spectrum.lean`:
+- Line 235: `eigenvalues` is `irreducible_def … := unsortedEigenvalues ∘
+  Tuple.sort … ∘ Fin.revPerm` — explicitly **"sorted in decreasing order"**
+  (doc line 38: "`eigenvalues` gives the eigenvalues in decreasing order").
+- Line 254: **`theorem eigenvalues_antitone (hT) (hn) : Antitone (hT.eigenvalues
+  hn)` EXISTS and is proven** in the pin.
+
+So the operator `hT.eigenvalues hn` **is** descending-sorted, and the open-PR
+#24796 keystone `eigenvalue_eq_iSup_iInf_rayleigh : hT.eigenvalues hn k = ⨆_{dim
+S=k+1} ⨅_{0≠x∈S} rayleigh T x` is **CORRECT AS WRITTEN**, not mis-stated. It
+equates the k-th largest eigenvalue (0-indexed) to the descending Courant–Fischer
+max–min, which is exactly the (k+1)-th largest. The s06 "restate over `sortedEigs`"
+advice was an unnecessary detour at the operator level (it's only needed for the
+*matrix*-level `cauchy_interlacing` final assembly, via the spectral bridge). The
+design doc (researcher-11) was right all along.
+
+(My earlier draft of this s07 note claimed the image shipped only oleans so the
+flag "couldn't be closed" — that was true of the *Docker image*, but a plain
+Mathlib source checkout exists elsewhere on the host. Corrected above.)
+
+**Verified named-lemma inventory for the keystone (all present in v4.26.0):**
+- `LinearMap.IsSymmetric.eigenvalues_antitone` — Spectrum.lean:254 (endpoint
+  collapse of `inf'`/`sup'` over `{0..k}`/`{k..n-1}` to `μ k`).
+- `LinearMap.IsSymmetric.apply_eigenvectorBasis` — Spectrum.lean:267 (supplies
+  `hb` for glue #1).
+- `finrank_span_eq_card` — LinearAlgebra/Dimension/Constructions.lean:460
+  (`[Nontrivial R] {ι} [Fintype ι] {b : ι → M}`, takes `LinearIndependent`) —
+  resolves the span-dimension gap on `b ∘ (Subtype.val : ↥I → Fin n)`.
+- `Orthonormal.linearIndependent` — present (PiL2.lean:653) for the subfamily LI.
+So the keystone proof's entire toolkit is confirmed; nothing is missing from the pin.
+
+**No Lean artifact shipped** (avoided blind-writing under the build constraint —
+Docker saturated at 12–13 lean containers, Aristotle 404). **Corrected turnkey
+next-build plan:** transcribe the PR #24796 keystone **as-stated** over
+`hT.eigenvalues hn` (NO restatement); apply glue #1 for Sublemma A; `≥` via
+witness `span{b 0..b k}` (lower endpoint `μ k` by `eigenvalues_antitone` +
+`Finset.inf'` over `{0..k}`); `≤` via Sublemma-B pigeonhole
+`inf_ne_bot_of_finrank_add_lt` against `span{b k..b_{n-1}}`
+(`(k+1)+(n-k)=n+1>n`) + glue #1 (upper endpoint `μ k` by `sup'` over `{k..n-1}`).
+**First verifiable action when a backend opens**: build the
+merged-but-never-registered foundation — copy `CauchyInterlacingSublemmas.lean`
+→ `proofs/Proofs/` and `docker-build.sh Proofs.CauchyInterlacingSublemmas`
+(locks in the two proven sublemmas) — *then* transcribe the keystone.
 
 ### Session 2026-06-16 (s06, ACT — keystone integration + ordering-bug finding)
 
