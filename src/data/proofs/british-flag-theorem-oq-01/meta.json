@@ -55,7 +55,7 @@
     "definitionCount": 1
   },
   "overview": {
-    "historicalContext": "The British Flag theorem takes its name from the resemblance of the diagonals and segments drawn from an interior point of a rectangle to the Union Jack. It is a staple of elementary competition geometry: for any point P and any rectangle ABCD, the two sums of squared distances to opposite corners are equal. Although the point is often pictured inside the rectangle, the statement holds for every point of the plane (indeed of space), making it a clean instance of how the parallelogram/perpendicularity structure alone, not the position of P, governs the relation.",
+    "historicalContext": "The British Flag theorem takes its name from the resemblance of the diagonals and segments drawn from an interior point of a rectangle to the Union Jack. It is a staple of elementary competition geometry: for any point P and any rectangle ABCD, the two sums of squared distances to opposite corners are equal. Although the point is often pictured inside the rectangle, the statement holds for every point of the plane (indeed of space), making it a clean instance of how the parallelogram/perpendicularity structure alone, not the position of P, governs the relation. The same coordinate computation works verbatim in any dimension — replacing ℝ×ℝ by ℝⁿ and the right angle by an inner-product orthogonality condition — and the underlying defect 2(u·v) is the natural measure of how far a general parallelogram is from being a rectangle.",
     "problemStatement": "**British Flag Theorem**: Let ABCD be a rectangle and P any point. Then\n\n|PA|² + |PC|² = |PB|² + |PD|².",
     "text": "For any rectangle ABCD and any point P, |PA|² + |PC|² = |PB|² + |PD|².",
     "proofStrategy": "Work in the coordinate plane ℝ×ℝ with the explicit squared-distance function sqDist P Q = (P.x − Q.x)² + (P.y − Q.y)². Encode 'ABCD is a rectangle' by two structural hypotheses: AB ⊥ AD, i.e. (B−A)·(D−A) = 0 (hperp), and the parallelogram closing condition C = B + D − A (hpar1, hpar2 coordinatewise). Writing u = B − A, v = D − A and p = P − A, one has C = A + u + v and\n\n|PA|² + |PC|² = |p|² + |p − u − v|²,\n|PB|² + |PD|² = |p − u|² + |p − v|².\n\nThe difference of the two sides collapses to |u + v|² − |u|² − |v|² = 2(u·v), which vanishes by hperp. After substituting the parallelogram condition for C, the whole goal is a single polynomial identity discharged by linear_combination 2·hperp.",
@@ -64,7 +64,8 @@
       "Only the perpendicularity hypothesis is used; the parallelogram condition merely fixes C, after which the identity is purely algebraic",
       "Encoding the rectangle by a perpendicularity equation plus a closing condition keeps the statement coordinate-free in spirit while still living in ℝ×ℝ",
       "Squared distances are used directly (no square roots), so the result is exact and the proof needs no analysis — just a ring/linear_combination identity",
-      "The ambient Prod metric on ℝ×ℝ is the sup metric, not Euclidean, so the proof defines sqDist explicitly rather than reusing dist"
+      "The ambient Prod metric on ℝ×ℝ is the sup metric, not Euclidean, so the proof defines sqDist explicitly rather than reusing dist",
+      "For an arbitrary quadrilateral ABCD the same expansion gives |PA|² + |PC|² − |PB|² − |PD|² = 2(u·v) independent of P; the British Flag theorem is exactly the case u·v = 0, exhibiting the result as a P-invariant affine defect that measures the failure of the right angle"
     ],
     "prerequisites": [
       "Coordinate geometry in the plane",
@@ -101,8 +102,18 @@
   "crossReferences": [
     {
       "targetId": "pythagorean-theorem",
-      "relationship": "prerequisite",
-      "description": "The squared-distance formula is the Pythagorean theorem in coordinates; the British Flag identity is a two-dimensional algebraic consequence of it"
+      "relationship": "foundational",
+      "description": "The squared-distance formula sqDist is the Pythagorean theorem in coordinates; the British Flag identity is a two-dimensional algebraic consequence of it"
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both results expand squared distances via the dot product; the British Flag theorem is the special case where the relevant angle is a right angle, so the cosine term 2(u·v) vanishes"
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "related",
+      "description": "Another classical identity relating distances among the vertices of a cyclic quadrilateral; like the British Flag theorem it constrains the four corner-to-point distances, but multiplicatively rather than as a sum of squares"
     }
   ],
   "references": [
