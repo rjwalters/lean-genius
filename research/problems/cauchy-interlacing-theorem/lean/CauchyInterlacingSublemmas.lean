@@ -13,10 +13,13 @@ have no upstream dependencies.
 This file turns that prose design into **typed Lean statements** so they are
 directly submittable to Aristotle / buildable the moment a backend frees.
 Sublemma B carries a **full candidate proof** (Grassmann dimension count).
-Sublemma A is further decomposed: its convex-combination core is split off as
+Sublemma A is fully decomposed: its convex-combination core is split off as
 `weighted_mean_mem_inf_sup` (a standalone, inner-product-free lemma with a
-**full candidate proof**), leaving only the two Parseval identities as the
-remaining `sorry` targets inside `rayleigh_bounds_on_eigenspan`.
+**full candidate proof**), and the assembly `rayleigh_bounds_on_eigenspan` is now
+**`sorry`-free** — it reduces to exactly the two Parseval leaf identities
+`norm_sq_eq_sum_repr_sq` and `re_inner_apply_eq_sum_repr_mul`, which are the only
+remaining `sorry` targets (the positive-mass hypothesis is *derived* from the
+norm identity, not assumed).
 
 ## Status
 
@@ -113,14 +116,57 @@ two Parseval computations give `‖x‖² = ∑ ‖c i‖²` and
 (nonneg weights summing to 1, denominator `> 0` since `x ≠ 0`), which lies
 between the min and max of its support.
 
-**Decomposition status.** The closing convex-combination step is now discharged by
-`weighted_mean_mem_inf_sup` above (proven, `sorry`-free). What remains for a full
-proof of `rayleigh_bounds_on_eigenspan` are the two Parseval identities with
-`w i := ‖b.repr x i‖²` (support contained in `I` since `x ∈ span (b '' I)`):
-  * `‖x‖ ^ 2 = ∑ i ∈ I, w i`  (Parseval for the norm), and
-  * `RCLike.re ⟪T x, x⟫ = ∑ i ∈ I, w i * μ i`  (diagonalisation + Parseval),
-plus `0 < ∑ i ∈ I, w i` from `x ≠ 0`. These three are the remaining HARD-not-OPEN
-targets (Aristotle / build), each a standard orthonormal-basis computation. -/
+**Decomposition status.** The closing convex-combination step is discharged by
+`weighted_mean_mem_inf_sup` above (proven, `sorry`-free). The *assembly* of
+`rayleigh_bounds_on_eigenspan` from the Parseval data is now also discharged
+`sorry`-free below: with weights `w i := ‖b.repr x i‖²` the proof
+  1. derives the positive-mass hypothesis `0 < ∑ i ∈ I, w i` from `‖x‖ > 0` and
+     the norm-Parseval identity (so it is *not* an independent obligation), and
+  2. rewrites the Rayleigh quotient by the two Parseval identities and closes with
+     `weighted_mean_mem_inf_sup`.
+What remain are exactly the two HARD-not-OPEN Parseval leaf identities, isolated
+as the named lemmas `norm_sq_eq_sum_repr_sq` and `re_inner_apply_eq_sum_repr_mul`
+just above — each a standard orthonormal-basis computation and an ideal Aristotle
+/ build target. They share the single nontrivial fact that `b.repr x` is supported
+on `I` (because `x ∈ span (b '' I)`), so proving that support lemma first
+discharges both. -/
+
+/-- **Parseval for the norm, restricted to the support `I`.** Since
+`x ∈ span (b '' I)` the coordinates `b.repr x i` vanish off `I`, so the full
+Parseval identity `‖x‖² = ∑_i ‖b.repr x i‖²` collapses to a sum over `I`.
+
+Mathlib map: full Parseval is `b.repr.norm_map` (the `repr` is a
+`LinearIsometryEquiv` to `EuclideanSpace`) combined with
+`EuclideanSpace.norm_eq` / `EuclideanSpace.inner_eq_star_dotProduct`; the
+restriction to `I` is `Finset.sum_subset` with the off-support vanishing
+`b.repr x i = ⟪b i, x⟫ = 0` for `i ∉ I` (orthonormality + span membership). -/
+theorem norm_sq_eq_sum_repr_sq
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    [FiniteDimensional 𝕜 E] {n : ℕ}
+    (b : OrthonormalBasis (Fin n) 𝕜 E)
+    (I : Finset (Fin n))
+    (x : E) (hx : x ∈ Submodule.span 𝕜 ((b : Fin n → E) '' (↑I : Set (Fin n)))) :
+    ‖x‖ ^ 2 = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 := by
+  sorry
+
+/-- **Diagonalisation + Parseval for the quadratic form.** When `b` diagonalises
+`T` with real eigenvalues `μ`, the quadratic form is the eigenvalue-weighted
+Parseval sum; restricted to the support `I` of `x ∈ span (b '' I)`.
+
+Mathlib map: expand `x = ∑ i, b.repr x i • b i` (`OrthonormalBasis.sum_repr`),
+push `T` through (`hb`: `T (b i) = μ i • b i`), then Parseval the inner product
+`⟪T x, x⟫ = ∑ i, μ i * ‖b.repr x i‖²`; `RCLike.re` of a real-weighted sum of
+`‖·‖²` is the real sum, and `Finset.sum_subset` restricts to `I`. -/
+theorem re_inner_apply_eq_sum_repr_mul
+    {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+    [FiniteDimensional 𝕜 E] {n : ℕ}
+    (T : E →ₗ[𝕜] E) (b : OrthonormalBasis (Fin n) 𝕜 E) (μ : Fin n → ℝ)
+    (hb : ∀ i, T (b i) = (μ i : 𝕜) • b i)
+    (I : Finset (Fin n))
+    (x : E) (hx : x ∈ Submodule.span 𝕜 ((b : Fin n → E) '' (↑I : Set (Fin n)))) :
+    RCLike.re (@inner 𝕜 E _ (T x) x) = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 * μ i := by
+  sorry
+
 theorem rayleigh_bounds_on_eigenspan
     {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
     [FiniteDimensional 𝕜 E] {n : ℕ}
@@ -131,6 +177,19 @@ theorem rayleigh_bounds_on_eigenspan
     (hx0 : x ≠ 0) :
     I.inf' hI μ ≤ RCLike.re (@inner 𝕜 E _ (T x) x) / ‖x‖ ^ 2
       ∧ RCLike.re (@inner 𝕜 E _ (T x) x) / ‖x‖ ^ 2 ≤ I.sup' hI μ := by
-  sorry
+  -- Parseval weights `w i = ‖b.repr x i‖²`, nonnegative termwise.
+  have hwnonneg : ∀ i ∈ I, 0 ≤ ‖b.repr x i‖ ^ 2 := fun i _ => sq_nonneg _
+  -- The two Parseval identities (the only remaining leaf obligations).
+  have h1 : ‖x‖ ^ 2 = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 := norm_sq_eq_sum_repr_sq b I x hx
+  have h2 : RCLike.re (@inner 𝕜 E _ (T x) x) = ∑ i ∈ I, ‖b.repr x i‖ ^ 2 * μ i :=
+    re_inner_apply_eq_sum_repr_mul T b μ hb I x hx
+  -- Positive total mass: derived from `x ≠ 0` via the norm-Parseval identity,
+  -- so it is *not* an independent obligation.
+  have h3 : 0 < ∑ i ∈ I, ‖b.repr x i‖ ^ 2 := by
+    rw [← h1]
+    exact pow_pos (norm_pos_iff.mpr hx0) 2
+  -- Rewrite the Rayleigh quotient as a weighted mean and apply the convex core.
+  rw [h1, h2]
+  exact weighted_mean_mem_inf_sup μ I hI (fun i => ‖b.repr x i‖ ^ 2) hwnonneg h3
 
 end CauchyInterlacing.Sublemmas
