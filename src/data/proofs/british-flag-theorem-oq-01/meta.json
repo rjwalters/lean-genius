@@ -1,0 +1,179 @@
+{
+  "id": "british-flag-theorem-oq-01",
+  "title": "The British Flag Theorem",
+  "slug": "british-flag-theorem-oq-01",
+  "description": "For a rectangle ABCD and any point P, PA² + PC² = PB² + PD². The squared-distance defect equals 2⟨u,v⟩ for edge vectors u, v, so the identity holds exactly when u ⊥ v — the right angle is the whole content.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/British_flag_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "complex-analysis",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/BritishFlagTheorem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.dist_eq_re_im",
+        "description": "dist z w = Real.sqrt ((z.re-w.re)^2 + (z.im-w.im)^2), expressing complex distance in coordinates",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "0 ≤ a → Real.sqrt a ^ 2 = a, removing the square root from the squared distance",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "Complex.sub_re / Complex.sub_im / Complex.add_re / Complex.add_im",
+        "description": "Component projections of complex sums and differences, reducing the goal to a real polynomial identity",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Coordinate-form identity proved by a single linear_combination against the perpendicularity hypothesis",
+      "Complex / metric-distance formulation reduced to the coordinate lemma via real and imaginary parts",
+      "Sharpness witness: an explicit non-right parallelogram for which the identity fails, showing the right-angle hypothesis is necessary"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 127,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The complex form assumes the rectangle hypotheses C = B + D - A (parallelogram) and ⟨B-A, D-A⟩ = 0 (right angle).",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The British flag theorem is a staple of elementary Euclidean geometry, named for the resemblance of the four segments drawn from an interior point to the corners of a rectangle to the diagonals and cross of the Union Jack. Its classical proof drops perpendiculars from the point to the sides and applies the Pythagorean theorem four times; the cross-terms cancel in pairs, leaving the equality of opposite sums of squared distances.\n\nThe theorem is a clean instance of a recurring phenomenon in metric geometry: an apparently geometric statement about distances reduces, once coordinates are introduced, to a polynomial identity plus a single scalar hypothesis. Here the scalar hypothesis is orthogonality of the two edge vectors. Writing the rectangle through its edge vectors u and v, the difference of the two squared-distance sums is exactly 2⟨u, v⟩, independent of where the point P lies. The theorem is therefore equivalent to ⟨u, v⟩ = 0, which is precisely the statement that the parallelogram is a rectangle. This makes the British flag theorem a particularly transparent witness to how the inner product encodes angle.\n\nThe same identity holds verbatim in any dimension and for any point in the ambient space, not just points in the plane of the rectangle, because the computation never uses planarity — only the bilinearity of the inner product and the right angle between the edges.",
+    "problemStatement": "**British Flag Theorem**:\n\nLet $ABCD$ be a rectangle and $P$ any point. Then\n$$PA^2 + PC^2 = PB^2 + PD^2,$$\ni.e. the sums of squared distances from $P$ to opposite corners are equal.",
+    "text": "For a rectangle ABCD and any point P, the sums of squared distances to opposite corners agree: PA² + PC² = PB² + PD². The defect for a general parallelogram is 2⟨u,v⟩, so equality characterises the right angle.",
+    "proofStrategy": "The proof has two layers:\n1. **Coordinate identity** (`british_flag_coords`): with edge vectors $u = (u_x, u_y)$, $v = (v_x, v_y)$ and corners $A$, $B = A+u$, $C = A+u+v$, $D = A+v$, the difference $(PA^2 + PC^2) - (PB^2 + PD^2)$ expands to exactly $2(u_x v_x + u_y v_y) = 2\\langle u, v\\rangle$. Under the hypothesis $\\langle u, v\\rangle = 0$ this is `linear_combination 2 * hperp`.\n2. **Complex / distance form** (`british_flag`): feeding the real and imaginary parts of $A, B, C, D, P$ into the coordinate lemma, then rewriting each squared distance $\\mathrm{dist}\\,z\\,w^2 = (z.re-w.re)^2 + (z.im-w.im)^2$ via `Complex.dist_eq_re_im` and `Real.sq_sqrt`, yields the metric statement.\n\nA third theorem (`british_flag_needs_right_angle`) exhibits edge vectors with $\\langle u, v\\rangle = 2 \\neq 0$ for which the two sums differ ($10 \\neq 6$), proving the right-angle hypothesis cannot be dropped.",
+    "keyInsights": [
+      "The squared-distance defect $(PA^2 + PC^2) - (PB^2 + PD^2)$ equals $2\\langle u, v\\rangle$ where $u, v$ are the edge vectors — completely independent of the point $P$. The British flag theorem is therefore equivalent to the orthogonality of the edges.",
+      "Because the proof uses only bilinearity of the inner product and the right angle, the identity holds for any point in any dimension, not merely points coplanar with the rectangle.",
+      "The right-angle hypothesis is genuinely necessary, not a convenience: for a non-rectangular parallelogram the defect $2\\langle u, v\\rangle$ is nonzero, witnessed explicitly by $u = (2,0)$, $v = (1,1)$.",
+      "Reducing the metric statement to a real polynomial identity lets a one-line `linear_combination` discharge a theorem that classically requires four applications of the Pythagorean theorem."
+    ],
+    "prerequisites": [
+      "Coordinate geometry in the plane",
+      "Inner product and orthogonality",
+      "Complex numbers as ℝ² (real and imaginary parts)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documentation of the theorem, the 2⟨u,v⟩ defect, and the two-layer proof plan. Imports Mathlib.Analysis.Complex.Basic for ℂ and its metric/normSq structure and Mathlib.Tactic for automation.",
+      "mathContext": "The imports provide ℂ as a metric space (Complex.dist_eq_re_im) and the real square-root facts (Real.sq_sqrt) needed to turn squared distances into coordinate polynomials."
+    },
+    {
+      "id": "coordinate-identity",
+      "title": "The Coordinate Identity",
+      "startLine": 52,
+      "endLine": 69,
+      "summary": "british_flag_coords: the rectangle written through edge vectors u, v, with PA²+PC²=PB²+PD² proved by linear_combination 2 * hperp once ⟨u,v⟩ = 0.",
+      "mathContext": "Both sides expand to real polynomials whose difference is 2(u_x v_x + u_y v_y). The hypothesis hperp asserts this is 0, so linear_combination with coefficient 2 closes the goal by ring."
+    },
+    {
+      "id": "complex-form",
+      "title": "The Complex / Metric-Distance Form",
+      "startLine": 71,
+      "endLine": 99,
+      "summary": "british_flag: the rectangle encoded by C = B + D - A and ⟨B-A, D-A⟩ = 0, with dist P A² + dist P C² = dist P B² + dist P D². Reduced to british_flag_coords on real and imaginary parts.",
+      "mathContext": "Complex.dist_eq_re_im writes each distance as a square root of a sum of squared component differences; Real.sq_sqrt removes the square root, and the component projections expand the result into coordinates matching the coordinate lemma."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness — the Right Angle is Necessary",
+      "startLine": 101,
+      "endLine": 117,
+      "summary": "british_flag_needs_right_angle: explicit edge vectors u=(2,0), v=(1,1) with ⟨u,v⟩=2≠0 for which PA²+PC²=10 but PB²+PD²=6, so the identity fails.",
+      "mathContext": "The defect 2⟨u,v⟩ = 4 is exactly the gap 10 - 6, confirming the perpendicularity hypothesis is essential rather than cosmetic."
+    },
+    {
+      "id": "exports",
+      "title": "Exported Theorems",
+      "startLine": 119,
+      "endLine": 127,
+      "summary": "#check verification of the three exported theorems.",
+      "mathContext": "Three theorems: british_flag_coords (coordinate identity), british_flag (complex/dist form), british_flag_needs_right_angle (sharpness)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "companion",
+      "description": "Both transform a classical Euclidean distance statement into an algebraic identity over coordinates — Ptolemy via a CommRing factorization and the triangle inequality, the British flag theorem via a polynomial identity whose defect is the inner product of the rectangle's edges."
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The classical proof of the British flag theorem applies the Pythagorean theorem four times; the coordinate proof here absorbs all four applications into a single polynomial identity, with the right-angle hypothesis surfacing as the orthogonality condition ⟨u,v⟩ = 0."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Both quantify how squared distances depend on angle: the law of cosines via the −2ab·cos C term, the British flag theorem via the 2⟨u,v⟩ defect that vanishes exactly at a right angle."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of the British flag theorem. The coordinate identity is a one-line linear_combination against the orthogonality hypothesis; the complex/metric form follows by reduction to coordinates; and an explicit counterexample shows the right-angle hypothesis is necessary. Three theorems, 0 sorries, 0 axioms.",
+    "implications": "The formalization makes precise that the British flag theorem is, at its core, the statement that the squared-distance defect between opposite corner sums equals twice the inner product of the edge vectors. Everything else — the point P, the dimension of the ambient space — is irrelevant. This isolates the right angle as the single load-bearing hypothesis and explains why the theorem generalizes unchanged to higher dimensions.",
+    "openQuestions": [
+      "Can the theorem be stated and proved directly in EuclideanSpace ℝ (Fin n) for arbitrary n, confirming the dimension-independence observed in the coordinate proof?",
+      "Is there a converse: if PA² + PC² = PB² + PD² holds for all points P of a parallelogram ABCD, must ABCD be a rectangle?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BritishFlag",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/BritishFlagTheorem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Wikipedia",
+      "title": "British flag theorem",
+      "year": "2026",
+      "note": "Statement, the Pythagorean-drop classical proof, and the higher-dimensional generalization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "british_flag",
+      "type": "core",
+      "description": "For a rectangle ABCD (C = B + D - A, edges orthogonal) and any point P: dist P A² + dist P C² = dist P B² + dist P D²",
+      "leanType": "(A B C D P : ℂ) → C = B + D - A → (B-A).re*(D-A).re + (B-A).im*(D-A).im = 0 → dist P A ^ 2 + dist P C ^ 2 = dist P B ^ 2 + dist P D ^ 2"
+    },
+    {
+      "name": "british_flag_coords",
+      "type": "core",
+      "description": "Coordinate identity: with edge vectors u, v satisfying u·v = 0, the opposite-corner squared-distance sums are equal",
+      "leanType": "(px py ax ay ux uy vx vy : ℝ) → ux*vx + uy*vy = 0 → (PA² + PC²) = (PB² + PD²)"
+    },
+    {
+      "name": "british_flag_needs_right_angle",
+      "type": "supporting",
+      "description": "Sharpness: an explicit non-right parallelogram (u·v = 2 ≠ 0) for which the identity fails",
+      "leanType": "∃ (px py ax ay ux uy vx vy : ℝ), ux*vx + uy*vy ≠ 0 ∧ (PA² + PC²) ≠ (PB² + PD²)"
+    }
+  ],
+  "sorries": 0
+}

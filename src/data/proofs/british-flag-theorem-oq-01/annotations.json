@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 44
+    },
+    "title": "Module Documentation: The 2⟨u,v⟩ Defect",
+    "type": "concept",
+    "content": "The documentation states the British flag theorem (PA² + PC² = PB² + PD² for a rectangle and any point P) and identifies its mathematical core: the difference of the two squared-distance sums equals 2⟨u,v⟩, where u and v are the edge vectors of the rectangle. The proof is organised into a coordinate identity proved by linear_combination and a complex/metric corollary obtained by reduction to coordinates.",
+    "mathContext": "Writing the rectangle as A, B = A+u, C = A+u+v, D = A+v, a direct expansion gives $(PA^2 + PC^2) - (PB^2 + PD^2) = 2\\langle u, v\\rangle$, a quantity independent of P. The theorem is thus equivalent to $\\langle u, v\\rangle = 0$, i.e. to ABCD being a rectangle rather than a general parallelogram.",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner product",
+      "orthogonality",
+      "squared distance",
+      "proof architecture"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "inner product spaces"
+    ]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 2
+    },
+    "title": "Library Imports",
+    "type": "concept",
+    "content": "Imports Mathlib.Analysis.Complex.Basic for ℂ together with its metric-space and normSq structure, and Mathlib.Tactic for proof automation (notably linear_combination and norm_num).",
+    "mathContext": "The key Mathlib facts are Complex.dist_eq_re_im (dist z w = Real.sqrt ((z.re-w.re)^2 + (z.im-w.im)^2)) and Real.sq_sqrt (0 ≤ a → Real.sqrt a ^ 2 = a), together with the component projections Complex.sub_re/sub_im/add_re/add_im, which reduce squared distances in ℂ to real coordinate polynomials.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "complex numbers",
+      "metric space",
+      "normSq"
+    ],
+    "prerequisites": [
+      "Lean 4 import system",
+      "Mathlib analysis library"
+    ]
+  },
+  {
+    "id": "ann-coordinate-identity",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "title": "Coordinate Identity (linear_combination)",
+    "type": "proof-step",
+    "content": "british_flag_coords states the theorem in pure real coordinates: corners A = (ax,ay), B = A+u, C = A+u+v, D = A+v with edge vectors u = (ux,uy), v = (vx,vy), and hypothesis hperp : ux*vx + uy*vy = 0. The goal PA² + PC² = PB² + PD² is closed by `linear_combination 2 * hperp`.",
+    "mathContext": "Expanding both sides as real polynomials in px, py, ax, ay, ux, uy, vx, vy, their difference is exactly $2(u_x v_x + u_y v_y)$. The tactic `linear_combination 2 * hperp` instructs Lean to subtract $2 \\cdot (\\text{hperp.lhs} - \\text{hperp.rhs})$ from the goal difference and verify the remainder is zero by `ring` — which it is, since the remainder is $2\\langle u,v\\rangle - 2\\langle u,v\\rangle = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination",
+      "polynomial identity",
+      "inner product"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "ring identities"
+    ]
+  },
+  {
+    "id": "ann-complex-form",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 99
+    },
+    "title": "Complex / Distance Form via Reduction to Coordinates",
+    "type": "proof-step",
+    "content": "british_flag encodes the rectangle by hrect : C = B + D - A (parallelogram) and hperp : (B-A).re*(D-A).re + (B-A).im*(D-A).im = 0 (right angle), concluding dist P A² + dist P C² = dist P B² + dist P D². The proof rewrites each squared distance via the helper dist z w ^ 2 = (z.re-w.re)^2 + (z.im-w.im)^2 (from Complex.dist_eq_re_im and Real.sq_sqrt), instantiates british_flag_coords at the real and imaginary parts of the points, and finishes with linear_combination key.",
+    "mathContext": "Under hrect, the imaginary/real components of C are those of B + D - A, so the corner C = A + (B-A) + (D-A) matches the coordinate lemma's A + u + v with u = B - A, v = D - A. The hypothesis hperp is precisely $\\langle u, v\\rangle = 0$ written in components. Thus the metric statement is a faithful instance of the coordinate identity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "complex numbers as ℝ²",
+      "metric distance",
+      "normSq"
+    ],
+    "prerequisites": [
+      "complex arithmetic",
+      "metric spaces"
+    ]
+  },
+  {
+    "id": "ann-sharpness",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 117
+    },
+    "title": "Sharpness: the Right Angle is Necessary",
+    "type": "concept",
+    "content": "british_flag_needs_right_angle exhibits a non-rectangular parallelogram for which the identity fails: edge vectors u = (2,0), v = (1,1) with A = P = 0 give ux*vx + uy*vy = 2 ≠ 0 and PA² + PC² = 10 ≠ 6 = PB² + PD². Proved by norm_num.",
+    "mathContext": "The defect predicted by the coordinate analysis is $2\\langle u, v\\rangle = 2 \\cdot 2 = 4$, exactly the gap $10 - 6$. This certifies that the perpendicularity hypothesis in british_flag is load-bearing: it cannot be weakened to the parallelogram condition alone.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "counterexample",
+      "necessity of hypotheses",
+      "parallelogram"
+    ],
+    "prerequisites": [
+      "coordinate geometry"
+    ]
+  }
+]
