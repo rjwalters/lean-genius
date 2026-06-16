@@ -1,20 +1,32 @@
 # State: morleys-theorem-oq-03
 
-**Phase**: ACT
-**Status**: in-progress (build-pending under Docker blackout, UNREGISTERED)
+**Phase**: COMPLETED
+**Status**: completed (verified/original, registered, Docker build-confirmed GREEN)
 
-## Current proof state
+## Result
 
-`proofs/Proofs/MorleysTheoremOQ03.lean` — target 0 sorries / 0 axioms:
+`proofs/Proofs/MorleysTheoremOQ03.lean` — **0 sorries / 0 axioms**, registered in
+`proofs/Proofs.lean` (`import Proofs.MorleysTheoremOQ03`), merged to `main`, and
+machine-verified: `docker-build.sh Proofs.MorleysTheoremOQ03` → **Build succeeded
+(7743 jobs)**, 2026-06-16 (re-confirmed; original docker-build 2026-06-15).
 
-- `amgm_three` — AM–GM(3) cubed form (nlinarith + explicit SOS certificate). DONE.
-- `sin_jensen_three` — 3-point Jensen for `sin` on `[0,π]` (chained 2-point concavity). DONE.
-- `div_three_mem_Icc` — trisected angle in `[0,π]`. DONE.
-- `morley_side_le_equilateral` — `s ≤ 8R sin³(π/9)`. DONE.
-- `morley_side_equilateral` / `morley_side_max` — attainment + packaged max. DONE.
+OQ-03 (extremal Morley): among triangles of fixed circumradius `R`, the equilateral
+triangle **uniquely** maximizes the Morley side length, with max `8 R sin³(π/9)`.
+
+All milestones DONE and compiled:
+
+- `amgm_three` — AM–GM(3) cubed form (nlinarith + explicit SOS certificate).
+- `sin_jensen_three` — 3-point Jensen for `sin` on `[0,π]` (chained 2-point concavity).
+- `sin_two_eq` / `sin_jensen_three_eq` — strict equality cases of two-/three-point Jensen.
+- `div_three_mem_Icc` — trisected angle in `[0,π]`.
+- `morley_side_le_equilateral` — `s ≤ 8R sin³(π/9)`.
+- `morley_side_equilateral` / `morley_side_max` — attainment + packaged max.
+- `morley_side_eq_iff` — **strict uniqueness**: `s = 8R sin³(π/9) ↔ α=β=γ=π/3`.
 
 ## Remaining
 
-- Strict uniqueness (equality ⇔ equilateral) — needs strict Jensen + strict AM–GM.
-- `lake build` verification (Docker unavailable this session).
-- Gallery registration (`src/data/proofs/morleys-theorem-oq-03/meta.json`).
+None. The formal target (sharp bound + attainment + strict uniqueness) is fully
+machine-verified. The earlier "strict uniqueness / build / registration" TODOs are
+discharged (`morley_side_eq_iff` proves the iff; the file is registered and builds
+green). Gallery entry `src/data/proofs/morleys-theorem-oq-03/meta.json` is accurate
+(`status: verified`, `badge: original`, `axiomCount: 0`, `sorries: 0`).
