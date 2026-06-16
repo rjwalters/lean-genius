@@ -124,8 +124,9 @@ theorem witnessT1_surd_separation :
 /-- The non-orthocentric conjunct of the witness, discharged outright.
 `vec3 A B = (1,0,0)`, `vec3 C D = (1,0,1)`, so `dot3 = 1 ≠ 0` — a pure rational
 computation (same `norm_num [vec3, dot3, …]` pattern as `witnessT1.nondegenerate`),
-needing none of the surd-laden tangency definitions. This peels the easy half off
-`witnessT1_fails`, leaving only the non-tangency as the lone remaining `sorry`. -/
+needing none of the surd-laden tangency definitions. This is the easy half of
+`witnessT1_fails`; the non-tangency half is now also discharged (S11), so the
+whole file is sorry-free. -/
 theorem witnessT1_nonorthocentric :
     dot3 (vec3 witnessT1.A witnessT1.B) (vec3 witnessT1.C witnessT1.D) ≠ 0 := by
   norm_num [witnessT1, vec3, dot3]
