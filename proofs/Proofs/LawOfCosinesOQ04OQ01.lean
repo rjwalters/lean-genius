@@ -43,13 +43,15 @@ Tags: geometry, stewarts-theorem, cevian, inner-product-space, law-of-cosines
 
 namespace StewartsTheoremInner
 
+open scoped RealInnerProductSpace
+
 variable {V : Type*} [NormedAddCommGroup V] [InnerProductSpace ℝ V]
 
 /-- Squared norm of a linear combination of two vectors, expanded bilinearly:
     ‖p • u + q • v‖² = p²‖u‖² + q²‖v‖² + 2pq⟪u, v⟫. -/
 theorem norm_smul_add_smul_sq (p q : ℝ) (u v : V) :
     ‖p • u + q • v‖ ^ 2 =
-      p ^ 2 * ‖u‖ ^ 2 + q ^ 2 * ‖v‖ ^ 2 + 2 * (p * q) * (inner u v : ℝ) := by
+      p ^ 2 * ‖u‖ ^ 2 + q ^ 2 * ‖v‖ ^ 2 + 2 * (p * q) * ⟪u, v⟫ := by
   rw [norm_add_sq_real, norm_smul, norm_smul, real_inner_smul_left, real_inner_smul_right]
   simp only [Real.norm_eq_abs, mul_pow, sq_abs]
   ring
@@ -69,8 +71,10 @@ theorem stewart_cevian_inner (A B C : V) (s : ℝ) :
   have hAD : A - ((1 - s) • B + s • C) = (1 - s) • (A - B) + s • (A - C) := by
     module
   have hBC : B - C = (A - C) - (A - B) := by module
-  rw [hAD, hBC, norm_smul_add_smul_sq, norm_sub_sq_real,
-    real_inner_comm (A - C) (A - B)]
+  rw [hAD, hBC]
+  generalize A - B = u
+  generalize A - C = v
+  rw [norm_smul_add_smul_sq, norm_sub_sq_real, real_inner_comm v u]
   ring
 
 /-- **Stewart's theorem, classical form** `b²m + c²n = a(d² + mn)`.
