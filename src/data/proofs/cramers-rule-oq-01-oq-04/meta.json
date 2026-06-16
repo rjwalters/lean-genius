@@ -66,46 +66,46 @@
       "id": "charpoly-coeffs",
       "title": "Characteristic Polynomial Coefficients",
       "startLine": 101,
-      "endLine": 148,
+      "endLine": 145,
       "summary": "Defines charpolyCoeff M k = coeff(charpoly M, n−k). Proves: leading coeff = 1, k=1 identity (tr(M) = −c₁) from trace_eq_neg_charpoly_coeff, constant term = (−1)ⁿ·det(M).",
       "mathContext": "The characteristic polynomial $\\chi_M(t) = t^n + c_{n-1}t^{n-1} + \\cdots + c_0$ has $c_{n-1} = -\\text{tr}(M)$ (from Newton $k=1$) and $c_0 = (-1)^n \\det(M)$ (from $\\chi_M(0) = \\det(-M)$)."
     },
     {
       "id": "cayley-hamilton-section",
       "title": "Newton's Identities via Cayley-Hamilton",
-      "startLine": 149,
-      "endLine": 201,
+      "startLine": 146,
+      "endLine": 186,
       "summary": "cayley_hamilton: immediate wrapper for aeval_self_charpoly. newton_recurrence_large (AXIOM): pₖ + ∑cⱼpₖ₋ⱼ = 0 for k ≥ n, following from Cayley-Hamilton. newton_recurrence_small (AXIOM): Newton recurrence for k ≤ n via cofactor algebra.",
       "mathContext": "Cayley-Hamilton: $\\chi_M(M) = 0$. Multiplying by $M^{k-n}$ and taking trace gives the Newton recurrence for $k \\geq n$. The small-$k$ case requires a deeper algebraic argument involving differentiation of $\\det(tI - M)$."
     },
     {
       "id": "concrete-newton",
       "title": "Concrete Newton Identities (k=2, k=3)",
-      "startLine": 202,
-      "endLine": 231,
+      "startLine": 187,
+      "endLine": 216,
       "summary": "newton_k2: tr(M²) + c₁·tr(M) + 2·c₂ = 0. newton_k3: tr(M³) + c₁·tr(M²) + c₂·tr(M) + 3·c₃ = 0. Both derived from newton_recurrence_small.",
       "mathContext": "For $k=2$: $p_2 + e_1 p_1 + 2e_2 = 0$ where $e_1 = \\text{tr}(M)$, $e_2 = \\frac{\\text{tr}(M)^2 - \\text{tr}(M^2)}{2}$. For $k=3$: $p_3 = p_1^3 - \\frac{3}{2}p_1 p_2 + \\frac{1}{2}p_3$... the recurrence form avoids fractional coefficients."
     },
     {
       "id": "large-k",
       "title": "Large-k Recurrence",
-      "startLine": 232,
-      "endLine": 252,
+      "startLine": 217,
+      "endLine": 237,
       "summary": "newton_large_recurrence (AXIOM): clean form pₙ₊ⱼ = −∑cₘ·pₙ₊ⱼ₋ₘ. matPowerSum_card_succ: p_{n+1} in terms of p₁,...,pₙ.",
       "mathContext": "For $k > n$, Cayley-Hamilton gives a linear recurrence: $p_{n+j} = -\\sum_{m=1}^n c_m p_{n+j-m}$. This shows all higher power sums are determined by $p_1, \\ldots, p_n$."
     },
     {
       "id": "faddeev-leverrier",
       "title": "Faddeev-LeVerrier Algorithm",
-      "startLine": 253,
-      "endLine": 295,
+      "startLine": 238,
+      "endLine": 277,
       "summary": "faddeev_leverrier_inversion (AXIOM): k·cₖ = −∑cⱼ·pₖ₋ⱼ inverts Newton's identities. det_from_power_sums_2x2: det(M) = (p₁² − p₂)/2 for 2×2 matrices.",
       "mathContext": "The Faddeev-LeVerrier algorithm computes the characteristic polynomial in $O(n^2)$ using only trace operations. The inversion identity $k c_k = -\\sum_{j=0}^{k-1} c_j p_{k-j}$ follows from the triangular structure of Newton's identities."
     },
     {
       "id": "consequences",
       "title": "Consequences and 2×2 Specializations",
-      "startLine": 296,
+      "startLine": 278,
       "endLine": 327,
       "summary": "power_sums_determined_by_first_n: all pₖ (k>n) determined by p₁,...,pₙ (proved by induction). trace_sq_minus_trace_M2_2x2: tr(M²) = tr(M)² − 2·det(M) for 2×2 matrices (PROVED).",
       "mathContext": "For $2\\times 2$ matrices: $\\text{tr}(M^2) = \\text{tr}(M)^2 - 2\\det(M)$, which is Newton's $k=2$ identity specialized. This identity is fundamental in quantum mechanics (relating Casimir operators to products of generators) and in the theory of modular forms."
