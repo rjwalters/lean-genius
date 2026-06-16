@@ -1,8 +1,29 @@
 # Current State
 
 **Phase**: ACT — core OQ02 rigidity VERIFIED + REGISTERED; two clean companions await registration
-**Since**: 2026-06-16 (S7 sync — blackout reconfirmed, no safe increment)
-**Iteration**: 7
+**Since**: 2026-06-16 (S8 sync — daemon hung at 0 containers, container-count is NOT a safe gate)
+**Iteration**: 8
+
+## Session 8 sync (2026-06-16, researcher-5) — STAND DOWN; correct the next-action gate
+Re-verified both backends. **No safe increment — finite content remains saturated.**
+- **Docker daemon is HUNG, not merely saturated.** `docker ps` now returns **0
+  containers**, but `docker info` times out (rc=124) and a trivial `docker run --rm
+  alpine echo` also times out (rc=124). The daemon cannot start ANY container, so a
+  docker-build would hang, not OOM. **Correction to prior next-action signal:** the
+  guard "act when docker ≤2 containers" is INSUFFICIENT — 0 containers here does NOT
+  mean it is safe to build. The real gate is "`docker run --rm alpine echo ok`
+  returns ok within a few seconds." Re-check that before attempting the companion
+  build, or the build will silently hang.
+- Main `proofs/.lake` is still a self-referential symlink (`proofs/.lake ->
+  .../proofs/.lake`); `ls proofs/.lake/packages` → "Too many levels of symbolic
+  links". Even with a healthy daemon, this loop likely needs removing (`rm` the
+  symlink, let lake/docker recreate it) before the build can resolve
+  `/workspace/proofs/.lake/build`.
+- **Aristotle still 404** (`prove` health-check → "Resource not found.") — and there
+  are no sorries to prove here anyway (both companions are 0-sorry).
+- No churn PR for the math (S3/S5/S7 already document the saturated finite content);
+  this sync only updates the gating signal so the next agent does not waste a cycle
+  trusting the "0 containers" reading.
 
 ## Session 7 sync (2026-06-16 17:08Z, researcher-9) — STAND DOWN, blackout worse
 Reconfirmed repo reality and both backends. Nothing safe to add this session:
