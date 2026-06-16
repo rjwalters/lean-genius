@@ -628,3 +628,49 @@ Medium-confidence (?) names to check: `MulAction.card_orbit_mul_card_stabilizer_
 `Nat.Prime.factorization_factorial`. High-confidence (★): the Step-5-shared
 idioms (`P.card_eq_multiplicity`, `Nat.Prime.factorization_pos_of_dvd`,
 `orderOf_injective`, `IsCycle.orderOf`, `map_zpow`, `Subgroup.mem_zpowers_iff`).
+
+## S-researcher8 ACT (2026-06-16): Step-3 orphan — Steps A&B VERIFIED, Step C fixed, build TIMED OUT on saturated host
+
+Docker is up this cycle. Built the orphan `…OQ06GaloisDirectionStep3.lean` by name
+three times. Findings (HIGH confidence — from real compiler output):
+
+- **Steps A & B fully elaborate clean.** Build #2's error trace showed every
+  hypothesis present and correctly typed: `hpH : p ∣ Nat.card H`,
+  `hkpos`, `hpP`, `hHdvd`, `hcard_perm : Nat.card (Equiv.Perm (ZMod p)) = p.factorial`,
+  `hvpH : (Nat.card H).factorization p ≤ 1`, `hcardP : Nat.card ↥↑P = p`. So all
+  the previously `?`-flagged Step-A/B bearers are CONFIRMED at pin `2df2f015`:
+  `MulAction.orbit_eq_univ`, `MulAction.card_orbit_mul_card_stabilizer_eq_card_group`,
+  `Subgroup.card_subgroup_dvd_card`, `Fintype.card_perm`, `Nat.factorization_le_iff_dvd`,
+  `padicValNat_factorial_self` (the in-file Legendre lemma, via `hp.factorization_factorial`),
+  `Nat.Prime.factorization_pos_of_dvd`, `P.card_eq_multiplicity`.
+
+- **Two confirmed Step-C fixes applied** (errors seen, then fixed):
+  1. `Fintype ↥↑P` is NOT auto-synthesized → originally added `Fintype.ofFinite _`,
+     but better: **`isCyclic_of_prime_card` now takes `Nat.card α = p`, not
+     `Fintype.card`** (compiler said so explicitly). So pass `hcardP` directly and
+     drop the Fintype detour entirely.
+  2. Replaced the uncertain `orderOf_eq_card_of_forall_mem_zpowers` (Fintype-based)
+     with a **Nat.card route**: `Subgroup.eq_top_iff'.mpr ha` (⟨a⟩=⊤) then
+     `rw [← Nat.card_zpowers a, hgen_top, Nat.card_congr Subgroup.topEquiv.toEquiv]; exact hcardP`.
+     All four are stable lemmas (Nat.card_zpowers confirmed in the registered
+     H_le_normalizer proof, line ~262).
+  Also rewrote the `isCycle_of_prime_order` call to the **base 2-arg form**
+  `isCycle_of_prime_order (h1 : (orderOf σ).Prime) (h2 : support.card < 2*orderOf σ)`
+  via `(by rw [hords]; exact hp)` and `hsupp_lt : … < 2 * orderOf (ι a)`.
+
+- **BLOCKED on host saturation, NOT on the proof.** Build #3 (with the fixed
+  Step C) compiled past the previous error point with NO new error, then **hit the
+  60-minute docker timeout while still `Building...`** — host was at load avg ~32
+  with 12–14 concurrent `lean-build-*` containers. Every build also cold-re-clones
+  Mathlib (worktree `proofs/.lake` is a self-symlink → docker cache volume does not
+  persist between runs here; ~6–7 min clone+unpack each time).
+
+### Next session (low host load) — exact TODO
+1. Rebuild `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3` by name when
+   `docker ps | grep -c lean` is ≤ ~3. Expect it to reach a verdict in ~10 min.
+2. Residual unverified-only-because-timed-out: the `isCycle_of_prime_order` base-form
+   call and the final two `refine` goals (`IsCycle.orderOf`, `map_zpow`/`mem_zpowers_iff`)
+   — all ★ idioms, low risk.
+3. On green: fold the orphan body verbatim into the registered `sylow_p_is_pcycle`
+   (signatures match) and add the `padicValNat_factorial_self` helper to the
+   registered file; rebuild `…OQ06GaloisDirection` to confirm, drop one sorry.

@@ -10,21 +10,29 @@
   available: build this file; if green, fold the body into the registered
   `sylow_p_is_pcycle` (the signatures match verbatim).
 
-  ## Status — UNVERIFIED (authored 2026-06-16, researcher-5, S15)
+  ## Status — Steps A&B VERIFIED, Step C fixed, build TIMED OUT (researcher-8, 2026-06-16)
 
-  Authored under DUAL BLACKOUT: Aristotle MCP `prove`/`prove_file` return 404
-  ("Resource not found"); the host-wide `proofs/.lake` is a self-referential
-  symlink (`.lake -> .lake`), so every worktree's Mathlib package oleans are
-  inaccessible and `docker-build.sh` would trigger a multi-GB Mathlib re-clone
-  (the known git-128 failure). No local compile was possible, so lemma names
-  are best-effort. Confidence is annotated inline: ★ = high (used elsewhere in
-  the registered file / very standard), ? = medium (verify name/arg-order on
-  first build). The ONLY residual mathematical obligation is the self-contained
-  number-theory lemma `padicValNat_factorial_self` below
-  (`(p !).factorization p = 1`, Legendre); everything else is bookkeeping.
+  Docker is up. Built by name three times this session:
+  - **Steps A & B (the `|P| = p` kernel) fully elaborate** — confirmed from the
+    compiler's own error trace (all of `hpH, hkpos, hpP, hHdvd, hcard_perm,
+    hvpH, hcardP : Nat.card ↥↑P = p` present and well-typed). So the previously
+    `?`-flagged Step-A/B bearers are CONFIRMED at pin `2df2f015`.
+  - **Step C fixed against real errors**: `isCyclic_of_prime_card` takes
+    `Nat.card α = p` (not `Fintype.card`) — pass `hcardP` directly; and
+    `orderOf a = p` is derived via the stable Nat.card route
+    (`Subgroup.eq_top_iff'` + `Nat.card_zpowers` + `Subgroup.topEquiv`) instead
+    of the uncertain `orderOf_eq_card_of_forall_mem_zpowers`.
+  - **Not yet GREEN only because the build hit the 60-min docker timeout while
+    still compiling** — the host was saturated (load avg ~32, 12–14 concurrent
+    `lean-build-*` containers), and each build cold-re-clones Mathlib (~7 min)
+    because the worktree `proofs/.lake` is a self-symlink. The fixed Step C
+    compiled past the previous error point with no new error before the timeout.
 
-  See `research/problems/.../knowledge.md` §"S15 Step-3 discharge plan" for the
-  strategy, the shared `|P| = p` kernel (common to Steps 1 and 3), and fallbacks.
+  RESIDUAL (verify on a low-load rebuild): the base-form `isCycle_of_prime_order`
+  call and the final two `refine` goals — all ★ idioms. The only standalone
+  number-theory obligation, `padicValNat_factorial_self` (Legendre, below), is
+  already confirmed to elaborate. See `research/problems/.../knowledge.md`
+  §"S-researcher8 ACT (2026-06-16)" for the exact fold-in TODO.
 -/
 import Mathlib
 
@@ -107,23 +115,24 @@ theorem sylow_p_is_pcycle
   have hcardP : Nat.card (P : Subgroup H) = p := by
     have hk1 : (Nat.card H).factorization p = 1 := le_antisymm hvpH hkpos
     rw [P.card_eq_multiplicity, hk1, pow_one]                            -- ★
-  have hcardP_ft : Fintype.card (P : Subgroup H) = p := by
-    rw [← Nat.card_eq_fintype_card]; exact hcardP
   ----------------------------------------------------------------
   -- Step C:  ↥P cyclic of prime order ⇒ generator a; σ := ι a is a p-cycle.
   ----------------------------------------------------------------
-  haveI hcyc : IsCyclic (P : Subgroup H) := isCyclic_of_prime_card hcardP_ft  -- ?
+  haveI hcyc : IsCyclic (P : Subgroup H) := isCyclic_of_prime_card hcardP   -- Nat.card form
   obtain ⟨a, ha⟩ := hcyc.exists_generator                                 -- ★ (∀ x, x ∈ zpowers a)
+  -- orderOf a = p: ⟨a⟩ = ⊤, and |⟨a⟩| = orderOf a = |↥P| = p.
+  have hgen_top : Subgroup.zpowers a = ⊤ := Subgroup.eq_top_iff'.mpr ha     -- ★
   have horda : orderOf a = p := by
-    rw [orderOf_eq_card_of_forall_mem_zpowers ha, hcardP_ft]              -- ?
+    rw [← Nat.card_zpowers a, hgen_top, Nat.card_congr Subgroup.topEquiv.toEquiv]
+    exact hcardP
   have hords : orderOf (ι a) = p := by
     rw [orderOf_injective ι hι_inj a, horda]                             -- ★
   have hcycσ : (ι a).IsCycle := by
-    have hsupp_lt : (ι a).support.card < 2 * p := by
+    have hsupp_lt : (ι a).support.card < 2 * orderOf (ι a) := by
       have hle : (ι a).support.card ≤ Fintype.card (ZMod p) :=
         Finset.card_le_univ _
-      rw [ZMod.card] at hle; omega
-    exact Equiv.Perm.isCycle_of_prime_order hp hords hsupp_lt            -- ? name/args
+      rw [ZMod.card] at hle; rw [hords]; omega
+    exact Equiv.Perm.isCycle_of_prime_order (by rw [hords]; exact hp) hsupp_lt
   refine ⟨ι a, hcycσ, ?_, ?_⟩
   · -- support.card = orderOf = p
     rw [← hcycσ.orderOf, hords]                                          -- ★ IsCycle.orderOf
