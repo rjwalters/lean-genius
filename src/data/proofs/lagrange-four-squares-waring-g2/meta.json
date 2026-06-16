@@ -217,6 +217,15 @@
         "sorries": 0,
         "theoremCount": 1,
         "definitionCount": 1
+      },
+      {
+        "path": "Proofs/LagrangeFourSquaresWaringG2OQ01General.lean",
+        "description": "Waring's Problem OQ-01, parametric general-k lower bound: a single statement waring_lower_general subsuming the five fixed-k instances above. For every k ≥ 1 the witness n_k = ⌊(3/2)^k⌋·2^k − 1 is not a sum of 2^k + ⌊(3/2)^k⌋ − 3 perfect k-th powers, hence g(k) ≥ 2^k + ⌊(3/2)^k⌋ − 2 (OEIS A002804). Defines the parametric IsSumOfKthPowers; the uniform proof rests on the fact that the only k-th powers ≤ n_k are 0, 1, 2^k (since n_k < 3^k), collapsing every representation to a 2-equation linear system whose ℕ-infeasibility is closed by a deterministic linear_combination certificate for the product witness (M−1)(Q−1−c₂), then linarith. Mathlib-only, sorry-free, axiom-free, no native_decide.",
+        "lineCount": 208,
+        "axiomCount": 0,
+        "sorries": 0,
+        "theoremCount": 1,
+        "definitionCount": 1
       }
     ]
   },
