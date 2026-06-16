@@ -53,7 +53,18 @@
     "theoremCount": 9,
     "definitionCount": 1
   },
-  "overview": "Sylvester's sequence is defined by a₀ = 2 and a_{n+1} = aₙ² - aₙ + 1, producing the rapidly growing sequence 2, 3, 7, 43, 1807, 3263443, …. It is the greedy sequence for the Egyptian-fraction expansion of 1: at each step one subtracts the largest unit fraction that keeps the running total below 1. This file formalizes the two facts that make the sequence famous.",
+  "overview": {
+    "historicalContext": "Sylvester's sequence is named for James Joseph Sylvester, who studied it in 1880 in connection with Egyptian fractions — sums of distinct unit fractions $1/n$ used by the ancient Egyptians (the Rhind papyrus, c. 1650 BCE) to represent rationals. The sequence is the *greedy* solution to expanding $1$ as a sum of unit fractions: at each stage subtract the largest $1/m$ that keeps the running total below $1$. Sylvester showed this greedy process is governed by the recurrence $a_{n+1} = a_n^2 - a_n + 1$. The same sequence, in its Euclid-style product form $a_{n+1} = a_0 a_1 \\cdots a_n + 1$, reappears in Curtiss's 1922 work on the densest packings of unit fractions and in the theory of Znám's problem and Sasaki's bounds. It is catalogued as OEIS A000058 and grows doubly exponentially, with roughly $\\lfloor E^{2^{n+1}} \\rfloor$ behavior for Vardi's constant $E \\approx 1.2640847$.",
+    "problemStatement": "Let $a_0 = 2$ and $a_{n+1} = a_n^2 - a_n + 1$, so $a = 2, 3, 7, 43, 1807, 3263443, \\dots$. Prove two classical facts. (1) **Closed-form partial sums:** $\\sum_{k=0}^{n} \\frac{1}{a_k} = 1 - \\frac{1}{a_{n+1} - 1}$, so the infinite reciprocal series sums to exactly $1$. (2) **Pairwise coprimality:** for $i \\ne j$, $\\gcd(a_i, a_j) = 1$.",
+    "proofStrategy": "Both results flow from the single observation $a_{n+1} - 1 = a_n(a_n - 1)$. For the reciprocal sum, this factorization yields the telescoping per-term identity $\\frac{1}{a_n} = \\frac{1}{a_n - 1} - \\frac{1}{a_{n+1} - 1}$ (proved by clearing denominators with `field_simp` and `ring`, using $a_n \\ge 2$ to keep every denominator nonzero); induction then collapses the sum to $1 - \\frac{1}{a_{n+1} - 1}$. For coprimality, the same factorization gives the Euclid-style product formula $a_{n+1} = \\prod_{k \\le n} a_k + 1$; hence every earlier term divides $a_{n+1} - 1$, so a common divisor of $a_i$ and a later $a_j$ would divide both $a_j$ and $a_j - 1$ and therefore divide $1$. A subtlety handled explicitly is $\\mathbb{N}$'s truncated subtraction: the recurrence is lifted to $\\mathbb{Z}$ (`syl_cast_succ`) before any cancellation, after establishing $a_n \\le a_n^2$.",
+    "keyInsights": [
+      "A single algebraic identity, $a_{n+1} - 1 = a_n(a_n - 1)$, simultaneously drives the telescoping reciprocal sum and the Euclid product formula — the two famous properties are two faces of one factorization.",
+      "The reciprocals of Sylvester's sequence form an Egyptian-fraction representation of $1$ with an *exact* error term: truncating at $n$ leaves precisely $1/(a_{n+1} - 1)$, so the partial sums approach $1$ doubly exponentially fast.",
+      "The product formula $a_{n+1} = a_0 \\cdots a_n + 1$ is literally Euclid's infinitude-of-primes construction applied recursively, which is why distinct terms are automatically coprime and why each term supplies a fresh prime factor.",
+      "Pairwise coprimality reduces to the elementary fact that any common divisor of $N$ and $N-1$ divides their difference $1$ — coprimality here needs no prime factorization, only divisibility.",
+      "Working in $\\mathbb{N}$ forces care with truncated subtraction: the proof first proves $a_n \\ge 2$, then lifts the recurrence to $\\mathbb{Z}$ so that ring normalization is valid without underflow side conditions."
+    ]
+  },
   "mainTheorems": [
     {
       "name": "syl_partial_sum",
@@ -76,7 +87,29 @@
       "description": "Distinct terms of the sequence are coprime, since aᵢ divides aⱼ - 1 while also any common factor divides aⱼ."
     }
   ],
-  "sections": [],
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Sequence and Basic Bounds",
+      "startLine": 26,
+      "endLine": 50,
+      "summary": "Defines syl by structural recursion (a₀ = 2, a_{n+1} = aₙ² - aₙ + 1), exposes the base case and recurrence as rewrite lemmas, proves two_le_syl (every term ≥ 2), and lifts the recurrence to ℤ via syl_cast_succ to avoid ℕ's truncated subtraction."
+    },
+    {
+      "id": "telescoping-sum",
+      "title": "Telescoping Identity and Closed-Form Reciprocal Sum",
+      "startLine": 52,
+      "endLine": 76,
+      "summary": "Proves the per-term telescoping identity syl_recip_term (1/aₙ = 1/(aₙ-1) - 1/(a_{n+1}-1)) from the factorization a_{n+1}-1 = aₙ(aₙ-1), then inducts to obtain the closed form syl_partial_sum: ∑_{k≤n} 1/aₖ = 1 - 1/(a_{n+1}-1), whence the infinite sum equals 1."
+    },
+    {
+      "id": "coprimality",
+      "title": "Euclid Product Formula and Pairwise Coprimality",
+      "startLine": 78,
+      "endLine": 105,
+      "summary": "Establishes the Euclid-style product formula syl_eq_prod_add_one (a_{n+1} = ∏_{k≤n} aₖ + 1), derives the divisibility bridge syl_dvd_succ_sub_one (aᵢ ∣ a_{n+1}-1 for i ≤ n), and concludes syl_coprime: distinct terms are coprime, since a common divisor of aⱼ and aⱼ-1 must divide 1."
+    }
+  ],
   "references": [
     {
       "title": "Sylvester's sequence",
@@ -87,6 +120,35 @@
       "url": "https://oeis.org/A000058"
     }
   ],
-  "crossReferences": [],
-  "conclusion": "Two elementary but elegant facts about Sylvester's sequence are now fully verified: its reciprocals form an Egyptian-fraction representation of 1 (with an exact closed form for every partial sum), and its terms are pairwise coprime. Both follow from the single observation a_{n+1} - 1 = aₙ(aₙ - 1)."
+  "crossReferences": [
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "Shares Euclid's product-plus-one construction",
+      "description": "Sylvester's product formula $a_{n+1} = a_0 \\cdots a_n + 1$ is exactly Euclid's infinitude-of-primes construction applied recursively; pairwise coprimality of the terms gives a second proof that infinitely many primes exist."
+    },
+    {
+      "proofId": "harmonic-divergence",
+      "relationship": "Contrasting reciprocal-series behavior",
+      "description": "Where the harmonic series $\\sum 1/n$ diverges, Sylvester's reciprocals $\\sum 1/a_k$ converge — to exactly $1$ — because the terms grow doubly exponentially rather than linearly."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "Another famous reciprocal-series evaluation",
+      "description": "Both compute an exact closed value for a series of reciprocals; here the sum of $1/a_k$ equals $1$, an Egyptian-fraction unit, rather than the Basel value $\\pi^2/6$."
+    },
+    {
+      "proofId": "perfect-numbers",
+      "relationship": "Egyptian / unit-fraction number theory",
+      "description": "Perfect numbers are characterized by their unit-fraction divisor sums; Sylvester's sequence is the greedy unit-fraction expansion of $1$, a neighboring topic in the arithmetic of reciprocals."
+    }
+  ],
+  "conclusion": {
+    "summary": "Two elementary but elegant facts about Sylvester's sequence are fully machine-checked with zero sorries and zero axioms. First, the reciprocals telescope to an exact closed form $\\sum_{k\\le n} 1/a_k = 1 - 1/(a_{n+1}-1)$, so the infinite reciprocal series is an Egyptian-fraction representation of $1$. Second, distinct terms are pairwise coprime. Both rest on the single factorization $a_{n+1} - 1 = a_n(a_n - 1)$, which yields the telescoping identity on one hand and the Euclid product formula $a_{n+1} = \\prod_{k\\le n} a_k + 1$ on the other.",
+    "implications": "The formalization captures, in a few elementary lemmas, why Sylvester's sequence is the canonical example linking greedy Egyptian-fraction expansions to Euclid's coprimality argument. The exact error term $1/(a_{n+1}-1)$ exhibits the fastest-possible greedy convergence to $1$, and pairwise coprimality means each term contributes a new prime, recovering the infinitude of primes. The proof also illustrates the standard discipline for natural-number recurrences: prove the no-underflow bound, then lift to ℤ before any cancellation.",
+    "openQuestions": [
+      "Can the convergence be promoted to a formal Tendsto statement, $\\sum_{k\\le n} 1/a_k \\to 1$, by combining the closed form with $a_{n+1} - 1 \\to \\infty$?",
+      "Is there a clean Lean formalization of Vardi's closed form $a_n = \\lfloor E^{2^{n+1}} + 1/2 \\rfloor$ for the doubly-exponential constant $E$, linking the recurrence to a single real parameter?",
+      "Does the greedy/Euclid product structure generalize to a formalized treatment of Znám's problem, where one seeks sets with $a_i \\mid \\prod_{j\\ne i} a_j + 1$?"
+    ]
+  }
 }
