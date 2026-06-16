@@ -26,7 +26,7 @@
   {
     "id": "ann-eqr-oq01x4-character",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 40, "endLine": 47 },
+    "range": { "startLine": 44, "endLine": 47 },
     "type": "definition",
     "title": "legendreCharQ: Legendre Symbol as MulChar (ZMod p) (ZMod q)",
     "content": "**`legendreCharQ : MulChar (ZMod p) (ZMod q)`** is the **key technical bridge** between the integer-valued classical Legendre symbol and Mathlib's `MulChar`-typed Gauss-sum machinery. Constructed as `(quadraticChar (ZMod p)).ringHomComp (Int.castRingHom (ZMod q))`: the abstract quadratic character on $\\mathbb{Z}/p$ takes values in $\\mathbb{Z}$ (via the Legendre symbol), then `Int.castRingHom` casts those values into $\\mathbb{Z}/q$. The result is a multiplicative character whose values in $\\mathbb{Z}/q$ are the residues of $\\left(\\tfrac{a}{p}\\right) \\in \\{-1, 0, 1\\}$ mod $q$.",
@@ -68,7 +68,7 @@
   {
     "id": "ann-eqr-oq01x4-evals",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 99, "endLine": 124 },
+    "range": { "startLine": 101, "endLine": 124 },
     "type": "technique",
     "title": "Character Evaluations: χ(-1) and χ(q)",
     "content": "**`legendreCharQ_neg_one`**: $\\chi(-1) = (-1)^{p/2}$ in $\\mathbb{Z}/q$. Two-step proof: (1) `quadraticChar (ZMod p) (-1 : ZMod p) = legendreSym p (-1 : ℤ)` (a unifold `legendreSym` plus `congr 1; push_cast; ring`); (2) `legendreSym.at_neg_one hp2` from Mathlib gives the supplementary law. Then `χ₄_eq_neg_one_pow` for the parity-mod-2 form, finished by `push_cast; ring`. **`legendreCharQ_eval_q`**: $\\chi(q) = (\\text{legendreSym} \\, p \\, q : \\mathbb{Z}/q)$. Three-line proof unwinding the definition.",
@@ -89,7 +89,7 @@
   {
     "id": "ann-eqr-oq01x4-step4",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 126, "endLine": 141 },
+    "range": { "startLine": 128, "endLine": 141 },
     "type": "technique",
     "title": "Step 4: Apply qr_gauss_sums_identity to legendreCharQ",
     "content": "**`gauss_sum_char_identity`** is a **one-line application** of `FrobeniusStepQR.qr_gauss_sums_identity` from the parent OQ01OQ01OQ02 to `legendreCharQ`. The hypotheses (nontriviality, quadratic, $p \\neq q$, $q \\neq 2$) are dispatched via the file's earlier lemmas. The conclusion is exactly Step 4: $(\\chi(-1) \\cdot |\\mathbb{Z}/p|)^{|\\mathbb{Z}/q|/2} = \\chi(|\\mathbb{Z}/q|)$ in the target ring $\\mathbb{Z}/q$.",
@@ -110,7 +110,7 @@
   {
     "id": "ann-eqr-oq01x4-zmod-qr",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 143, "endLine": 165 },
+    "range": { "startLine": 145, "endLine": 165 },
     "type": "insight",
     "title": "ZMod-Form QR via Euler's Criterion",
     "content": "**`gauss_sum_zmod_qr`** is the **load-bearing computational step**: takes the abstract identity from Step 4 and rewrites it into the form $(-1)^{(p/2)(q/2)} \\cdot \\left(\\tfrac{q}{p}\\right) = \\left(\\tfrac{p}{q}\\right)$ in $\\mathbb{Z}/q$. The proof: (1) substitute $|\\mathbb{Z}/p| = p$, $|\\mathbb{Z}/q| = q$ via `ZMod.card`; (2) apply the two character evaluations to convert $\\chi(-1) \\to (-1)^{p/2}$ and $\\chi(q) \\to \\left(\\tfrac{p}{q}\\right)$; (3) `mul_pow` and `pow_mul` rearrange the exponent; (4) **Euler's criterion** `legendreSym.eq_pow q (p : ℤ)` says $p^{q/2} = \\left(\\tfrac{q}{p}\\right)$ in $\\mathbb{Z}/q$ — substitute and conclude.",
@@ -132,7 +132,7 @@
   {
     "id": "ann-eqr-oq01x4-main",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 167, "endLine": 178 },
+    "range": { "startLine": 169, "endLine": 178 },
     "type": "insight",
     "title": "Main Theorem: gauss_sum_qr_assembled",
     "content": "**`gauss_sum_qr_assembled`** is the **classical statement of QR**: for distinct odd primes $p, q$, $\\left(\\tfrac{p}{q}\\right) \\cdot \\left(\\tfrac{q}{p}\\right) = (-1)^{(p/2)(q/2)}$ as integers. The proof is a **one-line invocation** of Mathlib's `legendreSym.quadratic_reciprocity`. The deeper formalization content is in the four-step assembly above; the final `legendreSym.quadratic_reciprocity` provides the integer-level conclusion, and the **mathematical equivalence** of our `gauss_sum_zmod_qr` with the classical statement is captured by the lift from $\\mathbb{Z}/q$ to $\\mathbb{Z}$.",
@@ -152,7 +152,7 @@
   {
     "id": "ann-eqr-oq01x4-citations",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 180, "endLine": 204 },
+    "range": { "startLine": 182, "endLine": 204 },
     "type": "context",
     "title": "Explicit Citations of the Four Steps",
     "content": "Three theorems wrap each of the parent steps as **explicit citations** for downstream readers: **`step2_gauss_sum_squared`** wraps OQ01OQ01OQ01.gauss_sum_squared ($\\tau^2 = (-1)^{p/2} \\cdot p$ in $\\mathbb{C}$); **`step3_frobenius`** wraps OQ01OQ01OQ02.frobenius_step ($\\tau^q = \\chi(q) \\cdot \\tau$ in characteristic-$q$ field); **`step4_character_identity`** wraps OQ01OQ01OQ02.qr_gauss_sums_identity (Step 4). Together they document the **proof's modular structure** and serve as the canonical entry points for any future work generalizing to higher reciprocity.",
@@ -172,7 +172,7 @@
   {
     "id": "ann-eqr-oq01x4-verifications",
     "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02",
-    "range": { "startLine": 206, "endLine": 252 },
+    "range": { "startLine": 208, "endLine": 252 },
     "type": "context",
     "title": "Concrete Verifications via native_decide",
     "content": "Five private `Fact` instances make small primes 3, 5, 7, 11, 13 available, then four `example` declarations verify QR for the prime pairs $(3,5), (3,7), (5,7), (11,13)$ via `native_decide`. **Each example is a closed term of QR for two specific primes** — a strong validation that the formalization is operationally correct, not just propositionally derivable. The closing comment block summarizes the full assembly with a status table.",
