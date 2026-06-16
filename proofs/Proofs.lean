@@ -325,6 +325,7 @@ import Proofs.BoundedPrimeGapsOQ04OQ01Aristotle
 import Proofs.BoundedPrimeGapsOQ04OQ02
 import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
+import Proofs.BritishFlagTheorem
 import Proofs.BrouwerFixedPoint
 import Proofs.BrouwerFixedPointOQ01
 import Proofs.BrouwerFixedPointOQ01OQ02
