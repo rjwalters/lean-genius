@@ -183,11 +183,12 @@ theorem lr_positivity_reduces_to_lp {n : ℕ} (α β γ : Partition n)
 theorem horn_scale {n r : ℕ} (t : IndexTriple n r) (α β γ : Partition n)
     (h : hornInequality t α β γ) (c : ℕ) :
     hornInequality t
-      ⟨fun i => c * α.parts i, fun i j hij => by have := α.sorted i j hij; omega⟩
-      ⟨fun i => c * β.parts i, fun i j hij => by have := β.sorted i j hij; omega⟩
-      ⟨fun i => c * γ.parts i, fun i j hij => by have := γ.sorted i j hij; omega⟩ := by
+      ⟨fun i => c * α.parts i, fun i j hij => Nat.mul_le_mul (le_refl c) (α.sorted i j hij)⟩
+      ⟨fun i => c * β.parts i, fun i j hij => Nat.mul_le_mul (le_refl c) (β.sorted i j hij)⟩
+      ⟨fun i => c * γ.parts i, fun i j hij => Nat.mul_le_mul (le_refl c) (γ.sorted i j hij)⟩ := by
   simp only [hornInequality, ← Finset.mul_sum] at h ⊢
-  exact Nat.mul_le_mul_left c h
+  rw [← Nat.mul_add]
+  exact Nat.mul_le_mul (le_refl c) h
 
 /-- **Polytime positivity oracle**: there exists a function deciding LR positivity.
     (Formal runtime bound is `True` since complexity theory is not in Lean/Mathlib.
@@ -195,8 +196,10 @@ theorem horn_scale {n r : ℕ} (t : IndexTriple n r) (α β γ : Partition n)
 theorem lr_polytime_positivity :
     ∃ (decide_pos : {n : ℕ} → Partition n → Partition n → Partition n → Bool),
       True :=
-  ⟨fun α β γ =>
-    decide (∀ r < _, ∀ t : IndexTriple _ r, admissible t → hornInequality t α β γ),
+  ⟨fun {n} α β γ =>
+    @decide
+      (∀ r < n, ∀ t : IndexTriple n r, admissible t → hornInequality t α β γ)
+      (Classical.propDecidable _),
    trivial⟩
 
 /-! ## Part V: Weyl Inequality (r = 1 Base Case) -/
@@ -211,6 +214,7 @@ theorem lr_polytime_positivity :
     Klyachko's theorem is thus the culmination of an 86-year research program. -/
 theorem weyl_inequality {n : ℕ} (α β γ : Partition n)
     (hw : α.weight + β.weight = γ.weight)
+    (hn : 1 < n)
     (i j k : Fin n)
     (t : IndexTriple n 1)
     (hI : t.I = {i}) (hJ : t.J = {j}) (hK : t.K = {k})
@@ -218,7 +222,7 @@ theorem weyl_inequality {n : ℕ} (α β γ : Partition n)
     (hpos : 0 < lrCoeffN α β γ) :
     γ.parts k ≤ α.parts i + β.parts j := by
   rw [klyachko_theorem α β γ hw] at hpos
-  have := hpos 1 (by omega) t hadm
+  have := hpos 1 hn t hadm
   simp only [hornInequality, hI, hJ, hK, Finset.sum_singleton] at this
   exact this
 
@@ -244,6 +248,9 @@ theorem total_horn_constraints (n : ℕ) :
         exact admissible_triple_count_bound n r
     _ = n * (2 ^ n) ^ 3 := by
         simp [Finset.sum_const, Finset.card_range, smul_eq_mul]
-    _ = n * 8 ^ n := by ring
+    _ = n * 8 ^ n := by
+        congr 1
+        rw [← pow_mul, mul_comm n 3, pow_mul]
+        norm_num
 
 end Hilbert15OQ02OQ03
