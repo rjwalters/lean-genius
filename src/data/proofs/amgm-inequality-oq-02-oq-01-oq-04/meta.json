@@ -74,11 +74,18 @@
   },
   "sections": [
     {
-      "id": "header-defs",
-      "title": "Module Header, Imports, and Concrete Definitions",
+      "id": "module-header",
+      "title": "Module Header and Imports",
       "startLine": 1,
+      "endLine": 58,
+      "summary": "Documents both reduction routes — Route A (aeval-transport, executed) and Route B (direct induction on s, ~150–250 lines, fallback) — together with a worked k=1,2 sanity check and the confirmed Mathlib v4.26.0 API surface. Imports Mathlib, opens Finset and BigOperators, declares the namespace AmgmNewtonGirard and variables {ι R : Type*} [CommRing R]."
+    },
+    {
+      "id": "concrete-defs",
+      "title": "Concrete Power-Sum and Elementary-Symmetric Definitions",
+      "startLine": 60,
       "endLine": 65,
-      "summary": "Documents Route A (aeval-transport) and the confirmed Mathlib v4.26.0 API. Imports Mathlib, opens Finset and BigOperators, declares variables {ι R : Type*} [CommRing R]. Defines the concrete power sum psum s f k = Σ_{i∈s} (f i)^k and elementary symmetric function esymm s f k = Σ_{T ∈ s.powersetCard k} ∏_{i∈T} f i."
+      "summary": "Defines the concrete power sum psum s f k = Σ_{i∈s} (f i)^k and elementary symmetric function esymm s f k = Σ_{T ∈ s.powersetCard k} ∏_{i∈T} f i — the CommRing-valued counterparts of Mathlib's universal MvPolynomial.psum and MvPolynomial.esymm that the recurrence relates."
     },
     {
       "id": "bridges",

@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-concrete-defs",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "Concrete Power Sums and Elementary Symmetric Functions",
+    "content": "Defines the two families the recurrence relates, directly over a Finset family f : ι → R rather than over polynomial indeterminates. The power sum psum s f k sums the k-th powers of the values; the elementary symmetric function esymm s f k sums the products over every k-element subset of s. These are the concrete (CommRing-valued) counterparts of Mathlib's universal MvPolynomial.psum and MvPolynomial.esymm.",
+    "mathContext": "$p_k = \\sum_{i \\in s} (f\\,i)^k$ and $e_k = \\sum_{T \\subseteq s,\\,|T| = k} \\prod_{i \\in T} f\\,i$, indexed by Mathlib's `s.powersetCard k`. Note $e_0 = 1$ (empty product over the unique $0$-subset $\\varnothing$).",
+    "significance": "supporting",
+    "relatedConcepts": ["power sums", "elementary symmetric polynomials", "Finset.powersetCard", "symmetric functions"],
+    "prerequisites": ["commutative ring theory", "Finset.sum and Finset.prod"]
+  },
+  {
+    "id": "ann-psum-bridge",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "technique",
+    "title": "Power-Sum Bridge via aeval",
+    "content": "Establishes that evaluating the universal power sum MvPolynomial.psum (↥s) R n along the algebra map aeval (i ↦ f i.1) returns the concrete psum s f n. Because aeval is a ring homomorphism it commutes with the sum (map_sum) and with the power, so each universal indeterminate X i maps to f i via aeval_X. The rewrite ← Finset.sum_coe_sort converts the sum over the coe-sort subtype ↥s back to a sum over s.",
+    "mathContext": "$\\mathrm{aeval}_{\\,i \\mapsto f\\,i}\\!\\left(\\sum_{i : \\uparrow s} X_i^{\\,n}\\right) = \\sum_{i \\in s} (f\\,i)^n = p_n$, using that a ring hom preserves $\\sum$ and $(-)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["algebra homomorphism", "MvPolynomial.aeval", "ring homomorphism preservation", "Finset.sum_coe_sort"],
+    "prerequisites": ["MvPolynomial evaluation", "algebra maps", "subtype coercion ↥s"]
+  },
+  {
+    "id": "ann-esymm-bridge",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 75, "endLine": 91 },
+    "type": "technique",
+    "title": "Elementary-Symmetric Bridge (the load-bearing transport)",
+    "content": "The substantive transport lemma: aeval of the universal MvPolynomial.esymm equals the concrete esymm s f n. It first rewrites aeval of the universal esymm to a Multiset.esymm of the evaluated values (aeval_esymm_eq_multiset_esymm). The key combinatorial collapse is himg: univ over the coe-sort ↥s is definitionally s.attach, and Multiset.attach_map_val' rewrites univ.val.map (f ∘ val) down to s.val.map f. Finally Finset.esymm_map_val lands exactly on the powersetCard definition of the concrete esymm.",
+    "mathContext": "$\\mathrm{aeval}_{\\,i \\mapsto f\\,i}\\big(\\mathrm{esymm}_{\\uparrow s}\\, n\\big) = \\big(\\mathrm{univ}.val.\\mathrm{map}\\,(f\\circ\\mathrm{val})\\big).\\mathrm{esymm}\\,n = (s.val.\\mathrm{map}\\,f).\\mathrm{esymm}\\,n = \\sum_{T \\subseteq s,\\,|T|=n}\\prod_{i\\in T} f\\,i.$",
+    "significance": "key",
+    "relatedConcepts": ["Multiset.esymm", "Finset.attach", "Multiset.attach_map_val'", "Finset.esymm_map_val", "coe-sort univ"],
+    "prerequisites": ["multiset symmetric functions", "Finset.attach mechanics", "MvPolynomial.aeval_esymm_eq_multiset_esymm"]
+  },
+  {
+    "id": "ann-reindex-filter",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 93, "endLine": 105 },
+    "type": "technique",
+    "title": "Antidiagonal-to-Range Reindexing",
+    "content": "Mathlib's universal identity produces a sum over the filtered antidiagonal {(a,b) : a+b=k, a<k}. This lemma normalises that into the canonical Σ over range k with second coordinate k-j. Finset.sum_filter folds the predicate into an if-then-else, Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk converts the antidiagonal sum to range (k+1), and Finset.sum_range_succ peels the j=k summand — which is vacuous because the guard a.1 < k is false (lt_self_iff_false). The remaining j<k terms keep their value via if_pos.",
+    "mathContext": "$\\sum_{\\substack{(a,b)\\in\\Delta_k\\\\ a<k}} (-1)^a e_a p_b = \\sum_{j=0}^{k} \\big[j<k\\big](-1)^j e_j p_{k-j} = \\sum_{j=0}^{k-1} (-1)^j e_j p_{k-j},$ the $j=k$ term dropping since $k \\not< k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.antidiagonal", "Finset.sum_range_succ", "indicator/if-then-else sums", "reindexing"],
+    "prerequisites": ["Nat antidiagonal", "Finset.sum_filter", "range sums"]
+  },
+  {
+    "id": "ann-aeval-transport",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 116, "endLine": 121 },
+    "type": "insight",
+    "title": "Transport, Not Re-derivation: apply_fun aeval",
+    "content": "The heart of the proof and its main contribution. Instead of re-deriving Newton's identity by induction on s (the ~150–250 line Route B), it takes Mathlib's universal MvPolynomial.mul_esymm_eq_sum over the Fintype ↥s and applies the algebra map with apply_fun. A single simp set [map_mul, map_pow, map_neg, map_one, map_natCast, map_sum, esymm_bridge, psum_bridge] discharges every ring-hom commutation and substitutes the two bridges in one pass, turning a universal polynomial identity into a concrete ring equation.",
+    "mathContext": "Apply the $R$-algebra hom $\\mathrm{aeval}(i\\mapsto f\\,i.1) : \\mathrm{MvPolynomial}\\,\\uparrow\\!s\\, R \\to R$ to the universal identity; since a ring hom preserves $\\cdot, (-)^n, -, 1, \\mathbb{N}\\text{-cast}, \\sum$, the identity is preserved verbatim with $e,p$ replaced by their concrete forms.",
+    "significance": "key",
+    "relatedConcepts": ["functoriality of identities", "MvPolynomial.mul_esymm_eq_sum", "apply_fun tactic", "universal-to-concrete transport"],
+    "prerequisites": ["algebra homomorphisms", "Mathlib NewtonIdentities", "simp with custom lemma set"]
+  },
+  {
+    "id": "ann-sign-closure",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 122, "endLine": 127 },
+    "type": "technique",
+    "title": "Sign Bookkeeping Closes the Recurrence",
+    "content": "Mathlib states the identity in the form k·eₖ = (-1)^{k+1} Σⱼ (-1)^j eⱼ p_{k-j}. To reach the symmetric vanishing form, the proof multiplies the eₖ correction term by (-1)^k and uses hsign : (-1)^k (-1)^{k+1} = -1, proved from (-1)^{2k+1} = -1 via Odd.neg_one_pow. After substituting key and rewriting with hsign, ring discharges the final cancellation. This sign manipulation is the only genuine arithmetic in the proof.",
+    "mathContext": "$(-1)^k(-1)^{k+1} = (-1)^{2k+1} = -1$; hence $(-1)^k\\,k\\,e_k = (-1)^k(-1)^{k+1}\\sum_j(-1)^j e_j p_{k-j} = -\\sum_j(-1)^j e_j p_{k-j}$, giving $\\sum_j(-1)^j e_j p_{k-j} + (-1)^k k\\,e_k = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Odd.neg_one_pow", "sign alternation", "ring tactic", "parity arguments"],
+    "prerequisites": ["powers of -1 in a ring", "parity of 2k+1"]
+  },
+  {
+    "id": "ann-newton-girard-statement",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-04",
+    "range": { "startLine": 107, "endLine": 114 },
+    "type": "insight",
+    "title": "The Newton-Girard Recurrence (Finset / CommRing form)",
+    "content": "The headline theorem: for any commutative ring R, family f : ι → R over a Finset s, and any k ≥ 1, the alternating combination of products eⱼ·p_{k-j} plus the (-1)^k k eₖ correction vanishes. Because e₀ = 1, the j=0 summand is exactly pₖ, so the identity rearranges to the familiar Newton recurrence pₖ = e₁p_{k-1} − e₂p_{k-2} + ⋯ + (-1)^{k-1} k eₖ expressing each power sum from lower ones. The hypothesis 1 ≤ k is unused in the proof body (hence _hk) — the transported identity already holds, k ≥ 1 only marking the intended regime.",
+    "mathContext": "$\\sum_{j=0}^{k-1} (-1)^j e_j\\, p_{k-j} + (-1)^k k\\, e_k = 0,$ equivalently $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots + (-1)^{k-1} k\\, e_k$ since $e_0 = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Newton's identities", "Vieta's formulas", "fundamental theorem of symmetric polynomials", "Maclaurin's inequalities"],
+    "prerequisites": ["symmetric function theory", "the e₀ = 1 convention"]
+  }
+]
