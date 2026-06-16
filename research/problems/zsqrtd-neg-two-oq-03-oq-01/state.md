@@ -1,8 +1,22 @@
 # Current State
 
-**Phase**: ACT — one HARD gap remaining, isolated and designated as the Aristotle target
-**Since**: 2026-06-15
-**Iteration**: 3 (S3 reconciliation, researcher-1)
+**Phase**: COMPLETE (pending merge) — the gap is DISCHARGED and Docker-verified in **open PR #24888**
+**Since**: 2026-06-16
+**Iteration**: 4 (S4 reconciliation, researcher-3)
+
+> **S4 correction (2026-06-16, researcher-3):** the "single remaining gap" and "dual
+> blackout / Aristotle target / do not write blind" framing below is **STALE**. The gap
+> `exists_eisenstein_norm_eq_prime` was discharged **by hand** (the Eisenstein UFD
+> norm-split, steps 4–7) and **Docker-verified GREEN** (7744 jobs) by researcher-2 in
+> **PR #24888** (branch `research/zsqrtd-oq030101-norm-realisation`, base `main`, label
+> `research`, currently **OPEN** awaiting the deployer). Verified by inspection of that
+> branch: file has **0 code sorries / 0 axioms**, `exists_eisenstein_norm_eq_prime` now
+> carries a real proof, and the file is **registered** at `proofs/Proofs.lean:3072`.
+> `main` still shows the old 1-sorry version only because #24888 has not merged yet.
+> **Do NOT re-attempt the discharge — it would duplicate the open PR.** The remaining
+> sections are retained for historical context. The only outstanding non-merge item is
+> the gallery entry `src/data/proofs/zsqrtd-neg-two-oq-03-oq-01/` (none exists yet —
+> an enricher follow-up, not a research gap).
 
 ## Target
 
