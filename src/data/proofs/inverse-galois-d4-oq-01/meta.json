@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 202,
-    "assumptions": "0 axioms, 0 sorries. MACHINE-CHECKED: Docker build green on 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01`, 7745 jobs, 0 errors; one cosmetic unused-simp-arg linter warning at line 144). Status upgraded `formalized` → `verified`. All proofs use only standard Mathlib DihedralGroup simp lemmas (r_mul_r, sr_mul_r, r_mul_sr, sr_mul_sr, inv_r, inv_sr, sr_mul_self, r_zero, orderOf_r_one, orderOf_sr) and Subgroup API (MonoidHom.range/mem_range, MonoidHom.ofInjective, Subgroup.mem_inf/mem_sup_left/mul_mem_sup/eq_bot_iff_forall, Nat.card_congr, ZMod.card). Imports: Proofs.InverseGaloisD4 (transitively Mathlib).",
+    "assumptions": "0 axioms, 0 sorries. MACHINE-CHECKED: Docker build green on 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01`, 7745 jobs, 0 errors; one cosmetic unused-simp-arg linter warning at line 144). Status upgraded `formalized` → `verified`. All proofs use only standard Mathlib DihedralGroup simp lemmas (r_mul_r, sr_mul_r, r_mul_sr, sr_mul_sr, inv_r, inv_sr, sr_mul_self, r_zero, orderOf_r_one, orderOf_sr) and Subgroup API (MonoidHom.range/mem_range, MonoidHom.ofInjective, Subgroup.mem_inf/mem_sup_left/mul_mem_sup/eq_bot_iff_forall, Nat.card_congr, ZMod.card). Imports: Proofs.InverseGaloisD4 (transitively Mathlib). EXTERNAL packaging (companion InverseGaloisD4OQ01External.lean, 171 lines, 0 axioms/0 sorries, 8 theorems + 5 defs incl. d4Equiv) also MACHINE-CHECKED green 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01External`, 7746 jobs, 0 errors) and registered in Proofs.lean.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-15",
     "theoremCount": 13,
@@ -38,7 +38,8 @@
       "rotations_normal: the rotation subgroup is normal (conjugation by a rotation or a reflection sends rotations to rotations)",
       "reflections: the order-2 complement {1, sr 0} as an explicit Subgroup, with mem_reflections (x ∈ reflections ↔ x = 1 ∨ x = sr 0)",
       "rotations_sup_reflections: rotations ⊔ reflections = ⊤ (rotations and the reflection generate D₄); rotations_inf_reflections: rotations ⊓ reflections = ⊥ (trivial intersection)",
-      "d4_internal_semidirect: the capstone bundling normality + ⊔ = ⊤ + ⊓ = ⊥ + inversion action — the explicit internal semidirect-product decomposition D₄ ≅ ℤ/4 ⋊ ℤ/2"
+      "d4_internal_semidirect: the capstone bundling normality + ⊔ = ⊤ + ⊓ = ⊥ + inversion action — the explicit internal semidirect-product decomposition D₄ ≅ ℤ/4 ⋊ ℤ/2",
+      "d4Equiv (companion file InverseGaloisD4OQ01External.lean): the EXTERNAL packaging — an honest MulEquiv SemidirectProduct (Multiplicative (ZMod 4)) (Multiplicative (ZMod 2)) φ ≃* DihedralGroup 4, with φ the ℤ/2-action sending the generator to inversion. Mathlib has SemidirectProduct but no DihedralGroup-as-semidirect-product, so this is a genuine addition. Built on rHom and reflection_conj_rotation' from the internal file; the SemidirectProduct.lift compatibility (lift_compat) reduces exactly to reflection_conj_rotation', and bijectivity (d4Hom_injective/surjective) is proved directly without any Fintype/cardinality input."
     ],
     "mathlibDependencies": [
       {
