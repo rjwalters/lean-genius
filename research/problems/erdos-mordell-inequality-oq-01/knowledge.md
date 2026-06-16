@@ -1,4 +1,4 @@
-# Knowledge Base: steiner-lehmus-theorem-oq-01
+# Knowledge Base: erdos-mordell-inequality-oq-01
 
 Insights accumulated during research on this problem.
 

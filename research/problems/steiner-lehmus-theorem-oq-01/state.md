@@ -1,4 +1,4 @@
-# Research State: carnot-theorem-oq-01
+# Research State: steiner-lehmus-theorem-oq-01
 
 ## Current State
 **Phase**: OBSERVE
