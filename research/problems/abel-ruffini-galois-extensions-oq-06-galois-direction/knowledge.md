@@ -662,3 +662,46 @@ Status: companion is now **source-verified** on these three signatures (was
 best-effort). Still BUILD-PENDING (dual blackout). On recovery:
 `docker-build Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3`; if green,
 fold the body verbatim into the registered `sylow_p_is_pcycle` (signatures match).
+
+## S19 capstone assembly + integration-gap fix (researcher-1, 2026-06-16)
+
+Dual blackout persists: Aristotle MCP `prove`/`prove_file` now LOAD (schemas
+available) but the backend still returns 404 "Resource not found"; host
+`proofs/.lake` is the self-referential symlink, so no Docker/Mathlib build.
+
+**State reconciliation (registered file):** Step 2 (`sylow_p_normal`) and Step 5
+(`H_le_normalizer`) are DONE (Step 5 Docker-verified GREEN by researcher-4
+2026-06-16, sorry-free). Remaining `sorry`s: Step 1 (`sylow_p_unique`, the true
+blocker), Step 3 (`sylow_p_is_pcycle`, has source-verified companion), Step 4
+(`normalizer_iso_AGL1Z`), and the main theorem
+(`primitive_solvable_subgroup_embeds_AGL1Z`).
+
+**INTEGRATION GAP FOUND & FIXED.** The registered main theorem's intended
+5-step composition CANNOT be assembled as the steps are currently stated:
+`H_le_normalizer` (Step 5) requires `hσH : σ ∈ H`, but `sylow_p_is_pcycle`
+(Step 3) returns only `IsCycle ∧ support.card=p ∧ hgen` — it does NOT expose
+`σ ∈ H`, and the witness `σ = ι a` is hidden in the existential, so `σ ∈ H`
+is unrecoverable from the Step-3 statement without re-running Step-5 cardinality
+work. **Fix:** strengthen Step 3 to also return `σ ∈ H` (free: `σ = ι a =
+↑((P:Subgroup H).subtype a) ∈ H` by `SetLike.coe_mem`). When folding the Step-3
+companion into the registered file, ADD the `σ ∈ H` conjunct to its statement.
+
+**Authored orphan** `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionAssembly.lean`
+(NOT registered, zero gallery risk):
+- `sylow_p_is_pcycle_strong` = source-verified Step-3 body + `σ ∈ H` conjunct.
+- `primitive_solvable_subgroup_embeds_AGL1Z_capstone` = the full composition:
+  `Sylow.nonempty` → `sylow_p_normal` → `sylow_p_is_pcycle_strong` →
+  `H_le_normalizer` → `normalizer_iso_AGL1Z`, closing via `Subgroup.inclusion` +
+  `Subgroup.inclusion_injective` + `MonoidHom.coe_comp`. Only the surjective half
+  of Step 4 is unused (embedding needs injectivity only).
+This proves the 5-step plan DOES close the main goal — conditional only on the
+still-`sorry` Steps 1 and 4. Mirror-verified (pin `2df2f015`):
+`Subgroup.inclusion`/`inclusion_injective` (Subgroup/Defs.lean:585,593),
+`Sylow.nonempty` (Sylow.lean:175, Zorn — needs only `[Group G]`, NO `[Finite]`).
+
+**Next backend-up session:** build the assembly orphan; if green, (a) fold
+`sylow_p_is_pcycle_strong` into registered Step 3 (statement gains `σ ∈ H`),
+(b) fold the capstone body into registered `primitive_solvable_subgroup_embeds_AGL1Z`.
+Remaining real blockers unchanged: Step 1 (~70-110 LOC derived-series/blocks
+route) and Step 4 (~80-150 LOC conjugation iso); both numerically certified, no
+Lean draft yet.
