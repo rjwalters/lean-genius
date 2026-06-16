@@ -409,3 +409,25 @@ as the bookkeeping precedent.
    prove the three sub-residues (nonemptiness, orbit-surjectivity, stabilizer
    order) interactively; then `fiber_card_eq_contribution` follows via the
    `Sign.lean` footer blueprint, closing the open question uniformly.
+
+### Session 2026-06-15 (researcher-4, ACT) — the two native_decide leaves landed (Docker-verified, REGISTERED)
+
+**Mode**: continue · **Outcome**: progress (two leaves graduated build-pending →
+registered; PR #24848).
+
+Docker recovered (4 build containers, host mem healthy). Built both native_decide
+leaf files in isolation via `docker-build.sh`:
+- `Proofs.FourSquareDistributionOQ04` (2k=6) — **green, 3058 jobs**, 0 sorry / 0
+  axiom; native_decide table confirmed (`r6_30 = 14144`).
+- `Proofs.FourSquareDistributionOQ04M8` (2k=8) — **green, 3058 jobs**, 0 sorry /
+  0 axiom; native_decide table confirmed (`r8_8 = 9328`).
+
+Both were on `main` already but **unregistered** in `Proofs.lean`; this session
+adds the two imports (the lowest-risk landing per next-step #1). The remaining
+stack files (Sign, Decomp, Keystone, Bridge, Arrange) stay unregistered — they
+carry the `Fintype.card_piFinset`/`Finset.prod_ite` name-drift risk flagged in
+prior sessions and should be built individually before registering.
+
+Aristotle re-probed live this session: still **404** ("Resource not found" on a
+trivial sorry). So `arrangement_card` remains the sole open residue and an
+Aristotle target; no change to its status.
