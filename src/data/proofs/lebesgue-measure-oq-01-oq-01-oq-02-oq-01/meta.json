@@ -53,7 +53,8 @@
       "The Lebesgue criterion is the wrong Lean target. Mathlib exposes neither a RiemannIntegrable predicate nor the 'integrable ⇔ continuous a.e.' criterion as a usable lemma; since intervalIntegral is the Lebesgue integral, the natural goal is the integral's value, reached directly via a.e.-equality.",
       "Only thomae_irrational is needed, not the continuity theorems. The integrability follows purely from 'support ⊆ ℚ ⟹ a.e. zero'; the parent's continuity-at-irrationals / discontinuity-at-rationals results are irrelevant to this route (they would only be needed for the Lebesgue-criterion phrasing).",
       "Countability does all the measure-theoretic work. range((↑):ℚ→ℝ) is countable because ℚ is, and ℝ has no atoms, so the support is null — no fine structure of 1/q values is used.",
-      "Irrational is definitionally a non-membership. Irrational x unfolds to x ∉ Set.range ((↑):ℚ→ℝ), so the by_contra hypothesis in step 1 is exactly what thomae_irrational consumes, with no coercion bookkeeping."
+      "Irrational is definitionally a non-membership. Irrational x unfolds to x ∉ Set.range ((↑):ℚ→ℝ), so the by_contra hypothesis in step 1 is exactly what thomae_irrational consumes, with no coercion bookkeeping.",
+      "Integrability and integral value are both a.e.-class facts. Once thomae =ᵐ 0 is established, integrability transfers by Integrable.congr and the integral value by intervalIntegral.integral_congr_ae — both because the Bochner integral and the Integrable predicate are invariant under a.e.-equality. The single reduction to the zero function therefore settles both the qualitative (integrable) and quantitative (= 0) claims at once."
     ],
     "prerequisites": [
       "Thomae's function and the parent results (thomae, thomae_irrational) in LebesgueMeasureOQ01OQ01OQ02.lean",
@@ -93,11 +94,18 @@
       "summary": "thomae_ae_eq_zero rewrites the a.e.-equality goal via ae_iff to the support-null statement (after simp [Pi.zero_apply, ne_eq])."
     },
     {
-      "id": "integrable-integral",
-      "title": "Integrability and the Integral Value",
+      "id": "integrable",
+      "title": "Integrability by Transfer",
       "startLine": 56,
+      "endLine": 58,
+      "summary": "thomae_integrable transfers integrability from the zero function by Integrable.congr applied to thomae_ae_eq_zero.symm — integrability is an a.e.-class property, so no boundedness or continuity is invoked."
+    },
+    {
+      "id": "integral-value",
+      "title": "The Integral Value is Zero",
+      "startLine": 60,
       "endLine": 68,
-      "summary": "thomae_integrable transfers integrability from the zero function by Integrable.congr; thomae_intervalIntegral_zero rewrites the interval integral to that of 0 via intervalIntegral.integral_congr_ae and closes with intervalIntegral.integral_zero."
+      "summary": "thomae_intervalIntegral_zero rewrites ∫ x in (0:ℝ)..1, thomae x to the integral of 0 via intervalIntegral.integral_congr_ae (using thomae_ae_eq_zero.mono to restrict the a.e.-equality to [0,1]) and closes with intervalIntegral.integral_zero."
     }
   ],
   "crossReferences": [

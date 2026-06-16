@@ -49,7 +49,8 @@
       "Both inequalities are a single pigeonhole argument; the only mathematical content is that a chain and an antichain meet in at most one point.",
       "Encoding an antichain as `x ≤ y → x = y` (for members `x, y`) captures incomparability of distinct elements while staying convenient for `≤`-reasoning.",
       "The Dilworth and Mirsky easy directions are literally the same proof with chain and antichain swapped, witnessing the self-duality of the construction.",
-      "No finiteness of the poset is needed — only the covering family and the chain/antichain in question are `Finset`s."
+      "No finiteness of the poset is needed — only the covering family and the chain/antichain in question are `Finset`s.",
+      "All the combinatorial depth lives in the *hard* directions (attainment of the bound): Dilworth's attainment is classically equivalent to König's theorem and is proved via augmenting paths or max-flow–min-cut. Proving only the easy directions isolates the pure pigeonhole core and makes explicit that none of that machinery is invoked here."
     ],
     "prerequisites": [
       "Partial orders: comparability, chains, antichains",

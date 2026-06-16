@@ -34,7 +34,7 @@
     "title": "Explicit Squared Euclidean Distance",
     "content": "`sqDist P Q` is defined as (P.1 − Q.1)² + (P.2 − Q.2)², the squared Euclidean distance between two points of ℝ×ℝ. Working with the squared distance keeps the entire argument polynomial — no square roots, no analysis — so the final equality is an exact ring identity. Defining sqDist explicitly (rather than using the library `dist` on ℝ×ℝ, which is the sup metric) is what makes the statement the genuine Euclidean British Flag theorem.",
     "mathContext": "$\\operatorname{sqDist}(P,Q) = (P_x - Q_x)^2 + (P_y - Q_y)^2$.",
-    "significance": "standard",
+    "significance": "supporting",
     "relatedConcepts": [
       "Euclidean distance",
       "sup metric on products"
@@ -70,5 +70,52 @@
         "description": "sqDist is the Pythagorean expression for distance in coordinates"
       }
     ]
+  },
+  {
+    "id": "ann-hypotheses",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "type": "insight",
+    "title": "Encoding 'Rectangle' Without a Rectangle Type",
+    "content": "Rather than introduce a dedicated rectangle structure, the theorem characterizes ABCD by three scalar hypotheses on coordinates: hperp asserts (B−A)·(D−A) = 0 (the right angle at A), while hpar1 and hpar2 are the coordinatewise parallelogram closing condition C = B + D − A. A parallelogram with one right angle is exactly a rectangle, so these capture the shape precisely — and only hperp is actually used in the algebra; the closing condition merely fixes C. Notably there is no nondegeneracy assumption: the identity holds even for degenerate 'rectangles'.",
+    "mathContext": "$(B-A)\\cdot(D-A)=0$ and $C = B + D - A$ together characterize a rectangle.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rectangle characterization",
+      "perpendicularity",
+      "parallelogram closing condition",
+      "degenerate cases"
+    ],
+    "prerequisites": [
+      "vectors in the plane",
+      "dot product"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-proof-tactics",
+    "proofId": "british-flag-theorem-oq-01",
+    "range": {
+      "startLine": 57,
+      "endLine": 59
+    },
+    "type": "tactic",
+    "title": "A Three-Line Polynomial Proof",
+    "content": "The entire proof is three tactics: simp only [sqDist] unfolds the squared-distance definition on both sides; rw [hpar1, hpar2] substitutes the coordinates of C; and linear_combination 2 * hperp closes the goal. The last tactic certifies that the goal minus 2·(hperp) is zero as a polynomial identity — the coefficient 2 is exactly the factor in |u+v|² − |u|² − |v|² = 2(u·v). Because everything is a ring identity over ℝ, no analysis or case analysis is needed.",
+    "mathContext": "Goal $-\\,2\\cdot\\text{hperp} \\equiv 0$ as a polynomial identity in the vertex coordinates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination",
+      "simp only",
+      "ring identities"
+    ],
+    "prerequisites": [
+      "Lean tactics",
+      "polynomial algebra"
+    ],
+    "crossReferences": []
   }
 ]

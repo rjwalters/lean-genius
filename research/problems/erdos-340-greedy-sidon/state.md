@@ -6,8 +6,11 @@
 
 ## Current Focus
 
-Discharging the *well-definedness* content behind the greedy-construction axioms in
-`Erdos340GreedySidon.lean`, and repairing a parse error in that file.
+The three `greedySidonSeq*` existence axioms in `Erdos340GreedySidon.lean` are fully
+*dischargeable* — an explicit greedy (Mian–Chowla) construction proves them. The discharge
+is drafted and verified-by-inspection (PR #25131, unregistered orphan
+`Erdos340GreedyConstructionDischarge.lean`); the only remaining step is the **inline** that
+actually drops the registered axiom count, which is blocked on the Docker build wrapper.
 
 ## Active Approach
 
@@ -33,46 +36,55 @@ library. Converted to `/-` block comments.
 The headline growth bound `|A ∩ [1,N]| ≫ N^{1/2−ε}` (Erdős #340) is an OPEN conjecture
 and is not attempted. The best known bound is `N^{1/3}`.
 
-## Iteration 3 (2026-06-16, researcher-2) — greedy construction, discharges 3 axioms (build-pending)
+## Discharge status (verified by inspection, 2026-06-16 iter 3)
 
-New UNREGISTERED orphan companion `Proofs/Erdos340GreedyConstructionDischarge.lean`
-constructs the greedy (Mian–Chowla) sequence explicitly and proves it discharges the three
-`greedySidonSeq*` existence axioms in `Erdos340GreedySidon.lean`:
+The greedy construction discharging the three `greedySidonSeq*` axioms exists and is
+correct on inspection. It reuses the already-merged, verified extension lemmas
+(`sidon_exists_extension`, `sidon_insert_of_large`, #25087). The construction:
 
-- `instDecidableIsSidon` — `Decidable (IsSidon A)` via `decidable_of_iff` against the
-  binder-reordered bounded form (Finset four-fold `∀ … ∈ A`).
-- `nextSidon S b` — smallest `m > b` keeping the set Sidon (`open Classical`; junk `b+1`
-  if none). `nextSidon_spec` discharges well-definedness using the already-verified
-  `sidon_exists_extension` (so the greedy rule never gets stuck).
-- `greedyPair`/`greedySeq`/`greedySeqSet` — structural recursion from `a₀ = 1`.
-- `greedySeqSet_isSidon`, `greedySeq_strictMono`, `greedySeqSet_eq_image`.
-- `greedySidonSeq_strictMono_discharge`, `greedySidonSeq_isSidon_discharge` — exactly the
-  two axiom statements, now theorems (under `greedySidonSeq := greedySeq`).
+- `instDecidableIsSidon` — `Decidable (IsSidon A)` via `decidable_of_iff` over the bounded
+  4-binder form. Binder order matches `IsSidon` (def line 76: `a b c d`, then `∈`, then
+  `≤`, then sum-eq), so the forward map is `fun h a b c d ha hb hc hd => h a ha b hb …`.
+- `nextSidon S b` — `if h : ∃ m, b < m ∧ IsSidon (insert m S) then Nat.find h else b+1`;
+  `nextSidon_spec` discharges the `∃` from `sidon_exists_extension`, so it never hits junk.
+- `greedyPair : ℕ → ℕ × Finset ℕ` (a₀=1, {1}), `greedySeq n = (greedyPair n).1`,
+  `greedySeqSet n = (greedyPair n).2`.
+- `greedySeqSet_isSidon` (induction; base `isSidon_singleton 1`), `greedySeq_lt_succ`,
+  `greedySeq_strictMono` (`strictMono_nat_of_lt_succ`),
+  `greedySeqSet_eq_image` (induction; `range_succ` + `image_insert`).
 
-**Status: BUILD-PENDING.** Docker daemon unresponsive this session (`docker info`/`docker ps`
-time out, rc=124; host load ≈27). The file is an unregistered orphan (not in `Proofs.lean`)
-so it carries zero gallery-build risk even unverified. `meta.json` axiomCount intentionally
-LEFT unchanged — the axioms still live in the registered file until a verified inline. This
-deliberately avoids the registered-file edit approach of branch
-`research/erdos-340-greedy-construction` (which would gateless-break the whole `Proofs`
-build if it failed to compile, since math PRs merge with no Lean gate).
+## Next Action — one-shot inline when Docker is back up
 
-**Next session (Docker up):** `./proofs/scripts/docker-build.sh
-Proofs.Erdos340GreedyConstructionDischarge`, grep log for `error:` (wrapper exits 0 on Lean
-error). Risk spots: `instDecidableIsSidon` synthesis → fallback `decidable_of_iff' _ (by
-simp [IsSidon])`; `unfold nextSidon; exact dif_pos hex` → fallback `simp only [nextSidon,
-dif_pos hex]`; `hrec := rfl` in `greedySeqSet_eq_image` (structural Nat rec, should hold)
-→ fallback `simp only [greedySeqSet, greedyPair]`. If green, inline into
-`Erdos340GreedySidon.lean` replacing the 3 axioms (set `def greedySidonSeq := greedySeq`),
-drop axiomCount 4→1, update meta.
+This is the only step left to take registered `axiomCount` from **4 → 1** (the remaining
+axiom being `sidon_upper_bound`, the Erdős–Turán √N upper bound — a genuinely separate
+known result, not the open conjecture). Recipe:
 
-## Next Action
+1. **Resolve the import cycle.** The construction needs `sidon_exists_extension`, which
+   currently lives in `Erdos340GreedyExtension.lean` — a file that *imports* the base
+   `Erdos340GreedySidon.lean`. So move `sidon_insert_of_large` + `sidon_exists_extension`
+   *into* the base file, placed before "Part 3" (they only need `IsSidon` / `isSidon_singleton`,
+   both defined earlier at lines 76/90, and `open Finset`, already in scope). Leave
+   `sidon_extension_points_infinite` in the Extension file — it still resolves via the
+   base import. Remove the two moved lemmas from the Extension file to avoid duplicates.
+2. **Replace the axioms** (base file lines 396–403) with the construction above, then set
+   `noncomputable def greedySidonSeq : ℕ → ℕ := greedySeq`, and turn
+   `greedySidonSeq_strictMono` / `greedySidonSeq_isSidon` into theorems
+   (`:= greedySeq_strictMono`; for `isSidon` use `greedySeqSet_eq_image` ▸ `greedySeqSet_isSidon`).
+   `Erdos340Problem.lean` has its **own** independent `greedySidon`, so it is unaffected.
+3. `./proofs/scripts/docker-build.sh Proofs.Erdos340GreedySidon` (then the Extension target).
+   Docker exits 0 even on Lean errors — `grep error:` the log.
+4. Update `src/data/proofs/erdos-340-greedy-sidon-oq-01/meta.json` `axiomCount` 4 → 1.
 
-Verify the orphan with Docker when the daemon recovers, then inline to discharge the 3
-axioms. Headline `N^{1/2−ε}` growth bound remains OPEN (untouched).
+The full drafted file is on PR #25131's branch; copy its body (minus the orphan header) and
+the import becomes unnecessary once the extension lemmas are co-located.
+
+**Do NOT** apply this edit while the Docker wrapper is down: an unverified change to a
+registered file reaches `main` through gateless math merges and would break the whole
+`Proofs` build. The 2026-06-16 sessions (R2 #25131, R12 branch, R9 #25087) were all blocked
+here by the same Docker stall, not by any mathematical gap.
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
+- Total attempts: 2
+- Current approach attempts: 2
 - Approaches tried: 1
