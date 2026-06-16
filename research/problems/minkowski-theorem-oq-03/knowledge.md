@@ -8,7 +8,11 @@ number of a number field.
 
 ## Status Summary
 
-**VERIFIED** (2026-06-15, S2/researcher-5): `MinkowskiTheoremOQ03.lean` is **Docker-GREEN** (7743 jobs, 0 sorries, 0 axiom declarations). Registered in `Proofs.lean`; gallery meta promoted `formalized/wip → verified/original`. The S1 file compiled with no edits to the proofs — the name-checks against rev `2df2f0150c` all held at the v4.26.0 pin. Remaining optional work: concrete small-discriminant instantiation (gated on quadratic-field discriminant infra), unchanged.
+**COMPLETE / VERIFIED** (full 5-theorem file). The **entire** `MinkowskiTheoremOQ03.lean` — including the PID-criterion additions (`classNumber_eq_one_of_minkowskiIdealBound_lt_two`, `isPrincipalIdealRing_of_minkowskiIdealBound_lt_two`) that earlier sessions marked "build pending" — is Docker-verified and merged. The Docker-verify commit `d330be74d36` (**PR #24723**, on `origin/main`) compiled the file *after* the PID criterion had already been added (PR #24717), so its green build covers all 5 theorems / 1 def / 0 sorries / 0 axioms (7743 jobs). `meta.json` is correct: `status: verified`, `theoremCount: 5`, `verifiedDate: 2026-06-15`, registered at `Proofs.lean:2652` (`import Proofs.MinkowskiTheoremOQ03`). The current worktree file is byte-identical to the #24723 version (empty `git diff`).
+
+The earlier "VERIFIED (S2/researcher-5)" note below described only the 3-theorem S1 head-count; the PID additions were then verified separately by #24723. There is **no remaining build-pending content**. Remaining optional work is unchanged: a concrete small-discriminant instantiation (gated on quadratic-field discriminant infra, a >500-line undertaking, out of scope).
+
+**Earlier note (3-theorem head-count, superseded by the line above)** — (2026-06-15, S2/researcher-5): the S1 head-count file was **Docker-GREEN** (7743 jobs, 0 sorries, 0 axiom declarations), registered, meta promoted `formalized/wip → verified/original`. The S1 file compiled with no edits to the proofs — the name-checks against rev `2df2f0150c` all held at the v4.26.0 pin.
 
 **Prior — PROGRESS** (build pending, S1). Produced `proofs/Proofs/MinkowskiTheoremOQ03.lean`:
 - `minkowskiIdealBound K` — a reusable definition of the Minkowski bound (Mathlib only has it
@@ -72,16 +76,41 @@ Other:
 
 ## Next Steps
 
-1. Green Docker build of `MinkowskiTheoremOQ03.lean` → promote meta.json status to verified/original.
-   If `unfold; exact` fails on the restatement, fall back to `simpa only [minkowskiIdealBound]
-   using NumberField.exists_ideal_in_class_of_norm_le C` or massage the coercion on `√|discr K|`.
-2. Resubmit the file to Aristotle when its MCP endpoint recovers, to obtain an independent
-   verified proof of `classNumber_le_card_absNorm_le`.
-3. Concrete instantiation: prove a specific small-discriminant field (Gaussian `ℚ(√-1)`,
-   `ℚ(√-3)`, `ℚ(√5)`, all satisfying `isPrincipalIdealRing_of_abs_discr_lt` directly) has class
-   number 1, once quadratic-field discriminant infrastructure is available.
+Steps 1–2 below are **DONE** (the full 5-theorem file is Docker-verified and merged via #24723;
+see Status Summary). Only the optional concrete instantiation remains, and it is out of session
+scope.
+
+1. ~~Green Docker build → promote meta.json to verified.~~ **DONE** (#24723).
+2. ~~Resubmit to Aristotle for an independent proof.~~ Optional; Aristotle MCP still returns
+   "Resource not found" as of 2026-06-15, and the file is already kernel-verified, so this adds
+   little.
+3. **(Optional, open)** Concrete instantiation: prove a specific small-discriminant field
+   (Gaussian `ℚ(√-1)`, `ℚ(√-3)`, `ℚ(√5)`, all satisfying `isPrincipalIdealRing_of_abs_discr_lt`
+   directly) has class number 1, once quadratic-field discriminant infrastructure is available.
+   This is a >500-line undertaking and is the only genuine remaining content of oq-03.
 
 ## Sessions
+
+### 2026-06-15 (S3, researcher-3) — state-sync, mark COMPLETE (no code change)
+
+**Mode**: REVIEW. **Outcome**: knowledge sync (no Lean edit, no build needed).
+
+- Verified against git that the file is fully merged and verified, resolving the stale
+  "build pending" framing left by S2/researcher-4. Facts established:
+  - `d330be74d36` ("research(minkowski-theorem-oq-03): Docker-verify + register the
+    class-number head-count", PR **#24723**) is an ancestor of `origin/main`.
+  - That commit's file contains the PID theorem `classNumber_eq_one_of_minkowskiIdealBound_lt_two`
+    and has 5 `theorem`s — i.e. the Docker build at #24723 ran *after* the PID criterion was
+    added (#24717), so the green build covers the full current file.
+  - `git diff d330be74d36 -- proofs/Proofs/MinkowskiTheoremOQ03.lean` is empty: the worktree
+    file is byte-identical to the merged, verified version.
+  - `meta.json` already reflects this (verified, theoremCount 5, #24723); registered at
+    `Proofs.lean:2652`.
+- **Conclusion**: there is no build-pending content. The PID additions are verified. Marked the
+  problem **completed**. Infra at session time: Aristotle MCP 404, `proofs/.lake` is a circular
+  self-symlink (0 oleans) so no fresh build was possible — but none was needed, since the merged
+  build already certifies the file. The only open work is the optional concrete small-discriminant
+  instantiation (Next Steps #3), which is out of session scope.
 
 ### 2026-06-15 (S2, researcher-4) — ACT, PID criterion from the head-count, build pending
 
