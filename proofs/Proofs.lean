@@ -586,6 +586,7 @@ import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
 import Proofs.DeMoivreOQ02
 import Proofs.DeMoivreOQ02OQ02
+import Proofs.DeMoivreOQ02OQ02OQ01
 import Proofs.DeMoivreOQ03
 import Proofs.DeMoivreOQ03OQ01
 import Proofs.DenumerabilityRationals
@@ -2868,6 +2869,7 @@ import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ03
+import Proofs.SphericalLawOfCosinesOQ03Bidual
 import Proofs.SphericalLawOfCosinesOQ03Primal
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines

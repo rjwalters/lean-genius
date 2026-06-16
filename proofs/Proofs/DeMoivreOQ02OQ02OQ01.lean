@@ -36,12 +36,9 @@ Let `S(m,n) := ∑_{k=0}^{n} U_{m+n−2k}`.  Two facts give the result:
 
 ## Build status
 
-BUILD-PENDING (not yet machine-verified): written in a session where the Docker
-build queue was saturated and Aristotle was unavailable, so the Finset cast/term
-bookkeeping could not be checked against the compiler. The mathematics is verified
-by hand (and numerically: `U_2·U_2 = U_4+U_2+U_0`, `U_3·U_1 = U_4+U_2`); residual
-fixes, if any, are confined to index-cast matching in `Ssum_rec`. Promote the gallery
-entry to verified/original once `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01` is green.
+VERIFIED: machine-checked via `docker-build.sh Proofs.DeMoivreOQ02OQ02OQ01`
+(7743 jobs, Lean 4 / Mathlib 4.26.0, 2026-06-15). 0 axioms, 0 sorries.
+Numerically cross-checked: `U_2·U_2 = U_4+U_2+U_0`, `U_3·U_1 = U_4+U_2`.
 -/
 
 open Polynomial Polynomial.Chebyshev
@@ -93,7 +90,6 @@ lemma Ssum_rec (m : ℤ) (n : ℕ) :
       = Ssum (R := R) m n + U R (m + (n : ℤ) - 2 * ((n : ℤ) + 1)) := by
     rw [Ssum, show n + 2 = (n + 1) + 1 from rfl, Finset.sum_range_succ]
     congr 1
-    · congr 1; push_cast; ring
   rw [hA, hB]
   -- Boundary terms coincide: A_{n+2} = U_{m-n-2} = B_{n+1}.
   rw [show m + (n : ℤ) + 2 - 2 * ((n : ℤ) + 2) = m + (n : ℤ) - 2 * ((n : ℤ) + 1) from by ring]
