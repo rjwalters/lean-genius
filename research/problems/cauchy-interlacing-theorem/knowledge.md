@@ -222,6 +222,29 @@ Docker `ps` hangs / pool unsafe). Build-free ACT step on the **merged**
   norm leaf; `OrthonormalBasis.sum_repr` + `hb` + Parseval for the form leaf).
 - **Not** verified (build-pending under blackout); not registered in `Proofs.lean`.
 
+### Session 2026-06-16 (s08, REVISIT → witness cert, dual blackout) — sorted-vs-unsorted bug WITNESSED
+
+**Mode**: REVISIT under dual blackout (Aristotle 404; Docker down — `proofs/.lake`
+still a circular self-symlink, builds blocked). Slug has 4 open PRs (#25063 keystone,
+#24796/#24924 conflicting, #24977 doc-plan), so no 5th unverifiable orphan — instead
+shipped a build-free *verification artifact* that hardens the central correctness claim.
+
+**What**: `verify_sorted_vs_unsorted_keystone.py` turns the s06/s07 abstract finding
+("the keystone is false over Mathlib's unsorted `eigenvalues`") into a CONCRETE,
+checkable witness. PASS:
+- (A) over 14000 (Hermitian, dropped-index) pairs (n=2..5), interlacing holds for
+  BOTH the ascending-sorted and the descending `eigenvalues₀` conventions —
+  confirming the corrected statement of record is true.
+- (B) explicit 3×3 witness: eigenbasis-order permutation (0,2,1) gives unsorted
+  λ = [-1.7281, 1.9377, -0.1931]; against sorted μ = [-1.1913, 0.9914] the triple
+  `λ_1 ≤ μ_1 ≤ λ_2` reads `1.9377 ≤ 0.9914 ≤ -0.1931` → FALSE.
+
+**Why it matters**: `LinearMap.IsSymmetric.eigenvalues` is indexed by the eigenbasis
+(an arbitrary permutation of the spectrum), so the keystone MUST be stated over
+`eigenvalues₀`/`sortedEigs` (descending). This cert is a regression anchor guarding
+against a future session "fixing" the keystone back onto the unsorted enumeration —
+exactly the trap s06 flagged. No Lean change; conflict-free with all 4 open PRs.
+
 ---
 
 ## Dead Ends
