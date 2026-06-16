@@ -118,5 +118,27 @@
       "Is the inherited Borsuk-Ulam axiom no_continuous_odd_nonzero_on_sphere itself reducible in Mathlib — e.g. via the degree theory or singular homology now partially available — to remove the last topological assumption?",
       "Does the same proved-core / isolated-analytic-input decomposition extend to generalizations such as the polynomial Ham Sandwich theorem (Stone-Tukey with algebraic surfaces) or the discrete/measure-zero edge cases where the bisecting hyperplane is non-unique?"
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "brouwer-fixed-point-oq-01-oq-03",
+      "relationship": "parent",
+      "description": "The topological engine this entry consumes: borsuk_ulam_antipodal_collapse / no_continuous_odd_nonzero_on_sphere come from the n-dimensional Borsuk-Ulam formalization. The Ham Sandwich reduction here is exactly the statement that a continuous odd map S^n -> R^n with a 'vanishing implies bisected' bridge must have a zero — a direct application of that parent result."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "foundational",
+      "description": "The base Borsuk-Ulam theorem, of which the n-dimensional antipodal-collapse form used here is the working generalization. Borsuk-Ulam is the canonical source of 'no continuous odd map S^n -> R^n avoids zero', the antipodal obstruction that powers the entire Ham Sandwich reduction."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "A companion topological fixed-point/non-retraction result in the same family. Brouwer, Borsuk-Ulam, and Ham Sandwich are classically interderivable members of the antipodal/fixed-point circle of ideas; this entry's 'prove the topological skeleton, isolate the analytic keystone' strategy mirrors the constructions relating them."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The 1-dimensional ancestor of these existence-by-continuity arguments: IVT underlies the elementary 1D Brouwer proof and is the analytic prototype for the 'continuous discrepancy with opposite signs must vanish' reasoning, the same shape as the half-volume discrepancy collapse formalized here."
+    }
+  ]
 }
