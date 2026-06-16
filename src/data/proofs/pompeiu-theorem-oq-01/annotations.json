@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-module-doc",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 46
+    },
+    "title": "Module Documentation: Setup and Proof Strategy",
+    "type": "concept",
+    "content": "The module documentation sets up the complex-number model of the plane and encodes an equilateral triangle by the cube-root relation a + ω·b + ω²·c = 0, where ω is a primitive cube root of unity (ω² + ω + 1 = 0). It explains the three-ingredient proof: derive ‖ω‖ = 1, establish the rotation identity (z-a) + ω(z-b) + ω²(z-c) = 0, and apply the norm triangle inequality. The hypotheses are noted to be non-vacuous, satisfied by the cube roots of unity (1, ω, ω²).",
+    "mathContext": "The equilateral condition a + ωb + ω²c = 0 is one factor of the symmetric form a² + b² + c² = ab + bc + ca = (a + ωb + ω²c)(a + ω²b + ωc). Choosing the factor that vanishes selects an orientation of the triangle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "roots of unity",
+      "equilateral triangle",
+      "normed field",
+      "triangle inequality"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "roots of unity"
+    ]
+  },
+  {
+    "id": "ann-norm-omega",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 66
+    },
+    "title": "Norm of a Primitive Cube Root of Unity",
+    "type": "lemma",
+    "content": "theorem norm_eq_one_of_cube_root shows that any root of x² + x + 1 has norm 1. From ω² + ω + 1 = 0 one derives ω³ = 1 (linear_combination (ω-1)·hω), hence ‖ω‖³ = ‖ω³‖ = 1. Factoring (‖ω‖ - 1)(‖ω‖² + ‖ω‖ + 1) = ‖ω‖³ - 1 = 0 and noting the second factor is strictly positive for ‖ω‖ ≥ 0 forces ‖ω‖ = 1.",
+    "mathContext": "This lets the main theorem omit ‖ω‖ = 1 as a hypothesis: it is a consequence of the defining quadratic. The positivity step uses nlinarith with norm_nonneg ω and sq_nonneg ‖ω‖.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "roots of unity",
+      "norm multiplicativity",
+      "real cube root"
+    ],
+    "prerequisites": [
+      "normed fields",
+      "polynomial factoring"
+    ]
+  },
+  {
+    "id": "ann-rotation-lemma",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 81
+    },
+    "title": "The Rotation Lemma (Engine of the Inequality)",
+    "type": "lemma",
+    "content": "theorem norm_le_of_rot: if u + ω·v + ω²·w = 0 with ‖ω‖ = 1, then ‖u‖ ≤ ‖v‖ + ‖w‖. The proof rewrites u = -(ω·v + ω²·w), takes norms (norm_neg), applies the triangle inequality norm_add_le, and uses norm_mul together with ‖ω‖ = ‖ω²‖ = 1.",
+    "mathContext": "Each Pompeiu distance ‖z - a‖ is the norm of one such u. Because ω and ω² have unit modulus, the rotations do not change lengths, so the bound is exactly ‖v‖ + ‖w‖.",
+    "significance": "core",
+    "relatedConcepts": [
+      "triangle inequality",
+      "norm multiplicativity",
+      "unit modulus rotation"
+    ],
+    "prerequisites": [
+      "normed fields",
+      "triangle inequality"
+    ]
+  },
+  {
+    "id": "ann-rotation-identity",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 93
+    },
+    "title": "The Structural Rotation Identity",
+    "type": "key-step",
+    "content": "theorem rotation_identity: for an equilateral triangle a + ω·b + ω²·c = 0 and any point z, the displacement vectors satisfy (z-a) + ω(z-b) + ω²(z-c) = 0. The single linear_combination z·hω - heq verifies that this equals z·(1+ω+ω²) - (a+ωb+ω²c), both of whose factors vanish.",
+    "mathContext": "This is the geometric core: the three displacement vectors z-a, z-b, z-c, rotated by 1, ω, ω², sum to zero and hence close into a triangle — which is precisely Pompeiu's assertion that PA, PB, PC are triangle side lengths.",
+    "significance": "core",
+    "relatedConcepts": [
+      "rotation identity",
+      "equilateral triangle",
+      "roots of unity"
+    ],
+    "prerequisites": [
+      "complex arithmetic",
+      "roots of unity"
+    ]
+  },
+  {
+    "id": "ann-pompeiu-norm",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 119
+    },
+    "title": "Pompeiu's Inequality (All Three Sides)",
+    "type": "theorem",
+    "content": "theorem pompeiu_norm: the three inequalities ‖z-a‖ ≤ ‖z-b‖+‖z-c‖, ‖z-b‖ ≤ ‖z-c‖+‖z-a‖, ‖z-c‖ ≤ ‖z-a‖+‖z-b‖. Each is norm_le_of_rot applied to the equilateral identity multiplied by 1, ω, ω² respectively; the cyclic permutations of (a,b,c) use ω³ = 1, supplied through the linear_combination coefficients.",
+    "mathContext": "Multiplying a + ωb + ω²c = 0 by ω gives c + ωa + ω²b = 0 (using ω³ = 1), rotating the roles of the vertices. One rotation lemma therefore yields all three triangle inequalities, establishing that PA, PB, PC form a triangle.",
+    "significance": "core",
+    "relatedConcepts": [
+      "triangle inequality",
+      "cyclic symmetry",
+      "Pompeiu triangle"
+    ],
+    "prerequisites": [
+      "normed fields",
+      "roots of unity"
+    ]
+  },
+  {
+    "id": "ann-pompeiu-dist",
+    "proofId": "pompeiu-theorem-oq-01",
+    "range": {
+      "startLine": 127,
+      "endLine": 134
+    },
+    "title": "Metric (dist) Formulation",
+    "type": "theorem",
+    "content": "theorem pompeiu_dist restates the three inequalities using the metric dist, matching the classical geometric phrasing PA ≤ PB + PC. The proof rewrites dist z a as ‖z - a‖ via dist_eq_norm and reuses pompeiu_norm.",
+    "mathContext": "dist_eq_norm bridges the algebraic (norm) and geometric (distance) statements, confirming that the formalization captures the classical theorem about the lengths PA, PB, PC.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "metric space",
+      "distance",
+      "triangle inequality"
+    ],
+    "prerequisites": [
+      "metric spaces"
+    ]
+  }
+]

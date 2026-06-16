@@ -1,0 +1,198 @@
+{
+  "id": "pompeiu-theorem-oq-01",
+  "title": "Pompeiu's Theorem via a Cube-Root-of-Unity Rotation Identity",
+  "slug": "pompeiu-theorem-oq-01",
+  "description": "For an equilateral triangle and any point P, the distances PA, PB, PC satisfy all three triangle inequalities. Proved over ℂ from the rotation identity (z-a) + ω(z-b) + ω²(z-c) = 0 and the norm triangle inequality.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pompeiu%27s_theorem",
+    "date": "2026-06-16",
+    "status": "verified",
+    "tags": [
+      "geometry",
+      "complex-analysis",
+      "inequality",
+      "roots-of-unity",
+      "classic",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/PompeiuTheorem.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_le",
+        "description": "Triangle inequality for norms: ‖a + b‖ ≤ ‖a‖ + ‖b‖",
+        "module": "Mathlib.Analysis.Normed.Group.Basic"
+      },
+      {
+        "theorem": "norm_mul",
+        "description": "Multiplicativity of norm in normed fields: ‖a * b‖ = ‖a‖ * ‖b‖",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      },
+      {
+        "theorem": "norm_pow",
+        "description": "Norm of a power: ‖a ^ n‖ = ‖a‖ ^ n",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Complex-number proof of Pompeiu's theorem (inequality form) from a single rotation identity",
+      "Encodes an equilateral triangle by the cube-root relation a + ω·b + ω²·c = 0, avoiding any explicit coordinates or trigonometry",
+      "Derives ‖ω‖ = 1 directly from ω² + ω + 1 = 0, so the main theorem carries no separate norm hypothesis",
+      "All three triangle inequalities obtained uniformly by cyclically rotating the identity (×1, ×ω, ×ω²)",
+      "Both norm and metric-distance formulations"
+    ],
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "lineCount": 134,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The equilateral hypothesis a + ω b + ω² c = 0 is non-vacuous (satisfied by the cube roots of unity).",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Pompeiu's theorem was discovered by the Romanian mathematician Dimitrie Pompeiu in 1936. It is a striking and somewhat surprising elementary fact: take any equilateral triangle $ABC$ and any point $P$ in its plane; then the three distances $PA$, $PB$, $PC$ can always be assembled into a triangle of their own (the *Pompeiu triangle*). The construction degenerates — the three lengths become collinear — exactly when $P$ lies on the circumcircle of $ABC$, which is the content of the classical Ptolemy equality for the cyclic quadrilateral $PABC$.\n\nPompeiu's original argument used a $60°$ rotation about one vertex of the equilateral triangle: rotating $P$ to a point $P'$ produces a triangle $PP'C$ whose sides are precisely $PA$, $PB$, $PC$. The complex-number formulation makes this rotation algebraic. Placing the plane in $\\mathbb{C}$ and writing $\\omega = e^{2\\pi i/3}$ for a primitive cube root of unity, an equilateral triangle of one orientation satisfies $a + \\omega b + \\omega^2 c = 0$. For any point $z$ one then has the remarkable cancellation $(z-a) + \\omega(z-b) + \\omega^2(z-c) = 0$, expressing that the three displacement vectors — after the unit-modulus rotations by $1, \\omega, \\omega^2$ — close up into a triangle. The triangle inequality for the complex modulus does the rest.\n\nThe theorem sits in the same family as Napoleon's theorem, Ptolemy's theorem, and Van Aubel's theorem: classical Euclidean statements that become one-line algebraic identities once points are identified with complex numbers and the special structure of $60°$/$120°$ rotation (the cube roots of unity) is exploited.",
+    "problemStatement": "**Pompeiu's Theorem (inequality form)**:\n\nLet $ABC$ be an equilateral triangle and $P$ any point in the plane. Then\n\n$$PA \\le PB + PC, \\qquad PB \\le PC + PA, \\qquad PC \\le PA + PB,$$\n\nso $PA, PB, PC$ are the side lengths of a (possibly degenerate) triangle. The triangle is degenerate precisely when $P$ lies on the circumcircle of $ABC$.",
+    "text": "Encoding an equilateral triangle as a + ω·b + ω²·c = 0 (ω a primitive cube root of unity) gives the rotation identity (z-a) + ω(z-b) + ω²(z-c) = 0, from which the three Pompeiu inequalities follow by the norm triangle inequality.",
+    "proofStrategy": "The proof has three ingredients:\n1. **Norm of ω**: From $\\omega^2 + \\omega + 1 = 0$ one gets $\\omega^3 = 1$, hence $\\|\\omega\\|^3 = 1$ and (since $\\|\\omega\\| \\ge 0$) $\\|\\omega\\| = 1$. No separate hypothesis on $\\|\\omega\\|$ is needed.\n2. **Rotation identity**: $(z-a) + \\omega(z-b) + \\omega^2(z-c) = z(1+\\omega+\\omega^2) - (a+\\omega b+\\omega^2 c) = 0$, since both factors vanish (`linear_combination z * hω - heq`).\n3. **Triangle inequality**: writing $u = z-a$, $v = z-b$, $w = z-c$, the identity gives $u = -(\\omega v + \\omega^2 w)$, so $\\|u\\| \\le \\|\\omega v\\| + \\|\\omega^2 w\\| = \\|v\\| + \\|w\\|$ using $\\|\\omega\\| = \\|\\omega^2\\| = 1$. The other two inequalities follow by multiplying the equilateral identity by $\\omega$ and $\\omega^2$ (using $\\omega^3 = 1$), which cyclically permutes the roles of $a, b, c$.",
+    "keyInsights": [
+      "An equilateral triangle is captured exactly by the single algebraic relation a + ω·b + ω²·c = 0, where ω is a primitive cube root of unity. This is one factor of the symmetric condition a² + b² + c² = ab + bc + ca = (a + ωb + ω²c)(a + ω²b + ωc).",
+      "The whole theorem rests on one cancellation: for any z, (z-a) + ω(z-b) + ω²(z-c) = z·(1+ω+ω²) - (a+ωb+ω²c) = 0, because both 1+ω+ω² and a+ωb+ω²c vanish.",
+      "‖ω‖ = 1 need not be assumed — it is forced by ω² + ω + 1 = 0 via ω³ = 1 and a real cube-root argument. This keeps the hypotheses minimal.",
+      "All three triangle inequalities come from a single rotation lemma: multiplying the equilateral identity by 1, ω, ω² cyclically permutes (a,b,c), so one lemma applied three times yields PA ≤ PB+PC, PB ≤ PC+PA, PC ≤ PA+PB.",
+      "The degenerate case (equality in the triangle inequality) corresponds to ω(z-b) and ω²(z-c) being positively proportional, i.e. P on the circumcircle — the same Ptolemy-equality phenomenon as for cyclic quadrilaterals."
+    ],
+    "prerequisites": [
+      "Complex number arithmetic",
+      "Roots of unity (primitive cube root ω, ω² + ω + 1 = 0)",
+      "Normed fields and the triangle inequality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Documentation of the setup (plane = ℂ, equilateral triangle as a + ωb + ω²c = 0) and the three-ingredient proof strategy. Imports Mathlib and opens the PompeiuTheorem namespace.",
+      "mathContext": "Provides ℂ as a normed field (norm_mul, norm_pow, norm_add_le) and as a metric space (dist_eq_norm)."
+    },
+    {
+      "id": "norm-omega",
+      "title": "A Primitive Cube Root of Unity Has Norm One",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "theorem norm_eq_one_of_cube_root: ω² + ω + 1 = 0 implies ‖ω‖ = 1, via ω³ = 1, ‖ω‖³ = 1, and factoring (‖ω‖-1)(‖ω‖²+‖ω‖+1) = 0 with the second factor positive.",
+      "mathContext": "Removes ‖ω‖ = 1 from the hypotheses of the main theorem. The real cube-root argument uses that ‖ω‖²+‖ω‖+1 > 0 for ‖ω‖ ≥ 0."
+    },
+    {
+      "id": "rotation-lemma",
+      "title": "The Rotation Lemma",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "theorem norm_le_of_rot: if u + ω·v + ω²·w = 0 and ‖ω‖ = 1 then ‖u‖ ≤ ‖v‖ + ‖w‖, via u = -(ωv + ω²w), norm_add_le, and norm_mul.",
+      "mathContext": "This is the engine of Pompeiu's inequality: a 'sum of unit-rotated vectors is zero' bound. Each Pompeiu distance is the norm of one such u."
+    },
+    {
+      "id": "rotation-identity",
+      "title": "The Structural Identity",
+      "startLine": 83,
+      "endLine": 93,
+      "summary": "theorem rotation_identity: for equilateral a + ωb + ω²c = 0 and any z, (z-a) + ω(z-b) + ω²(z-c) = 0 (one linear_combination).",
+      "mathContext": "The geometric heart of the proof: the three displacement vectors close into a triangle. Expresses z·(1+ω+ω²) - (a+ωb+ω²c) = 0."
+    },
+    {
+      "id": "pompeiu-norm",
+      "title": "Pompeiu's Inequality (Norm Form)",
+      "startLine": 95,
+      "endLine": 119,
+      "summary": "theorem pompeiu_norm: the three inequalities ‖z-a‖ ≤ ‖z-b‖+‖z-c‖ (and cyclic). Each is the rotation lemma applied to the equilateral identity multiplied by 1, ω, ω².",
+      "mathContext": "The cyclic versions use ω³ = 1 to rotate (a,b,c). The linear_combination coefficients are z·hω - ω²·heq + (b+cω)·hcube and z·hω - ω·heq + c·hcube."
+    },
+    {
+      "id": "pompeiu-dist",
+      "title": "Pompeiu's Inequality (Distance Form)",
+      "startLine": 121,
+      "endLine": 134,
+      "summary": "theorem pompeiu_dist: the same three inequalities phrased with the metric dist, matching the classical PA ≤ PB + PC. Proved by rewriting dist as norm.",
+      "mathContext": "dist_eq_norm identifies dist z a with ‖z - a‖, connecting the algebraic result to the geometric statement."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-complex-proof",
+      "relationship": "companion",
+      "description": "Both reduce a classical metric theorem to a complex-number identity plus the norm triangle inequality. Ptolemy's complex proof bounds a product of two diagonals; Pompeiu bounds one distance by the sum of the other two. The Pompeiu degeneracy case is exactly the Ptolemy equality for the cyclic quadrilateral PABC."
+    },
+    {
+      "targetId": "napoleons-theorem",
+      "relationship": "related",
+      "description": "Both exploit the cube roots of unity (ω² + ω + 1 = 0) to turn an equilateral-triangle statement into a one-line rotation identity over ℂ."
+    },
+    {
+      "targetId": "triangle-inequality",
+      "relationship": "foundational",
+      "description": "Pompeiu's inequality is a direct application of the norm triangle inequality ‖a+b‖ ≤ ‖a‖+‖b‖ to the rotation identity (z-a) + ω(z-b) + ω²(z-c) = 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete complex-number proof of Pompeiu's theorem (inequality form): for an equilateral triangle a + ωb + ω²c = 0 and any point z, the distances ‖z-a‖, ‖z-b‖, ‖z-c‖ satisfy all three triangle inequalities. The proof reduces to the rotation identity (z-a) + ω(z-b) + ω²(z-c) = 0 and the norm triangle inequality, with ‖ω‖ = 1 derived rather than assumed. Five theorems, 0 sorries, 0 axioms.",
+    "implications": "The formalization isolates the algebraic content of Pompeiu's theorem: the equilateral condition is one cube-root relation, and the geometry enters only through the triangle inequality for the modulus. This mirrors the complex-number proofs of Napoleon's and Ptolemy's theorems and makes the role of the cube roots of unity explicit.",
+    "openQuestions": [
+      "Can the degeneracy characterization be formalized: the Pompeiu triangle is degenerate (equality holds) if and only if P lies on the circumcircle of ABC, i.e. exactly the equality case of the triangle inequality where ω(z-b) and ω²(z-c) are positively proportional?",
+      "Does the rotation-identity technique extend to a clean ℂ-proof of the Petr–Douglas–Neumann generalization (regular-polygon analogues using higher roots of unity)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "PompeiuTheorem",
+    "lineCount": 134,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 4,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/PompeiuTheorem.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "D. Pompeiu",
+      "title": "Une identité entre nombres complexes et un théorème de géométrie élémentaire",
+      "year": "1936",
+      "venue": "Bull. Math. Phys. Ecole Polytech. Bucarest",
+      "note": "Original statement and rotation proof of the theorem"
+    },
+    {
+      "authors": "T. Andreescu, D. Andrica",
+      "title": "Complex Numbers from A to ... Z",
+      "year": "2014",
+      "venue": "Birkhäuser",
+      "note": "Modern complex-number treatment of Pompeiu's theorem and related equilateral-triangle identities"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "pompeiu_norm",
+      "type": "core",
+      "description": "For an equilateral triangle a + ωb + ω²c = 0 and any point z, the distances ‖z-a‖, ‖z-b‖, ‖z-c‖ satisfy all three triangle inequalities",
+      "leanType": "{ω a b c z : ℂ} → ω^2 + ω + 1 = 0 → a + ω*b + ω^2*c = 0 → ‖z-a‖ ≤ ‖z-b‖+‖z-c‖ ∧ ‖z-b‖ ≤ ‖z-c‖+‖z-a‖ ∧ ‖z-c‖ ≤ ‖z-a‖+‖z-b‖"
+    },
+    {
+      "name": "rotation_identity",
+      "type": "core",
+      "description": "The structural identity: for equilateral a + ωb + ω²c = 0 and any z, (z-a) + ω(z-b) + ω²(z-c) = 0",
+      "leanType": "{ω a b c z : ℂ} → ω^2 + ω + 1 = 0 → a + ω*b + ω^2*c = 0 → (z-a) + ω*(z-b) + ω^2*(z-c) = 0"
+    },
+    {
+      "name": "pompeiu_dist",
+      "type": "core",
+      "description": "Pompeiu's inequality in metric form: dist z a ≤ dist z b + dist z c (and cyclic)",
+      "leanType": "{ω a b c z : ℂ} → ω^2 + ω + 1 = 0 → a + ω*b + ω^2*c = 0 → dist z a ≤ dist z b + dist z c ∧ dist z b ≤ dist z c + dist z a ∧ dist z c ≤ dist z a + dist z b"
+    }
+  ],
+  "sorries": 0
+}
