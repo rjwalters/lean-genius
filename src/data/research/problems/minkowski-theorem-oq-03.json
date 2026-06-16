@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (build pending): named the Minkowski bound (minkowskiIdealBound), restated the ideal-norm bound, proved the new estimate classNumber K ≤ #{ideals of norm ≤ ⌊M_K⌋} (the class-number algorithm's backbone, not in Mathlib), and (S2) derived from it a PID criterion: M_K < 2 ⟹ classNumber K = 1 ⟹ 𝓞 K is a principal ideal ring, obtained directly from the head-count rather than via the discriminant route.",
+    "progressSummary": "VERIFIED + registered + gallery meta now synced. MinkowskiTheoremOQ03.lean (1 def, 5 theorems, 0 sorry/0 axiom) Docker-verified green (#24723, 7743 jobs) and registered in Proofs.lean; meta.json promoted formalized/wip -> verified/original this session. Headline: classNumber K <= #{ideals of absNorm <= floor(M_K)} plus the M_K<2 => PID criterion. Only open vein: concrete small-discriminant instantiation, gated on quadratic-field discriminant infra in Mathlib.",
     "builtItems": [
       "MinkowskiIdealBound.minkowskiIdealBound — reusable def of the Minkowski bound (MinkowskiTheoremOQ03.lean:60)",
       "MinkowskiIdealBound.minkowskiIdealBound_nonneg — bound ≥ 0 (MinkowskiTheoremOQ03.lean:65)",
@@ -57,7 +57,8 @@
       "The headline ideal-norm bound and class-group finiteness are already in Mathlib; the genuine new content is the explicit head-count classNumber ≤ #{ideals of bounded norm}.",
       "Counting step: the class-representative map from {ideals of norm ≤ ⌊M_K⌋} onto the class group is surjective (content of the Minkowski bound), and Nat.card_le_card_of_surjective converts this into the cardinality inequality.",
       "Real→ℕ collapse: absNorm I is a natural number bounded by the real M_K ≥ 0, so Nat.le_floor gives absNorm I ≤ ⌊M_K⌋, matching the natural-number-indexed finiteness lemma finite_setOf_absNorm_le₀.",
-      "PID criterion from the count (S2): when M_K < 2, ⌊M_K⌋₊ ≤ 1, and since every nonzero ideal has absNorm ≥ 1 with equality iff it is ⊤ (absNorm_pos_of_nonZeroDivisors + absNorm_eq_one_iff), the index subtype is a Subsingleton, so Nat.card ≤ 1 (Nat.card_le_one); chaining with the head-count and classNumber_pos forces classNumber = 1 by omega. This is the classical 'no class survives the Minkowski bound' PID test obtained directly from the head-count, not from the discriminant criterion isPrincipalIdealRing_of_abs_discr_lt."
+      "PID criterion from the count (S2): when M_K < 2, ⌊M_K⌋₊ ≤ 1, and since every nonzero ideal has absNorm ≥ 1 with equality iff it is ⊤ (absNorm_pos_of_nonZeroDivisors + absNorm_eq_one_iff), the index subtype is a Subsingleton, so Nat.card ≤ 1 (Nat.card_le_one); chaining with the head-count and classNumber_pos forces classNumber = 1 by omega. This is the classical 'no class survives the Minkowski bound' PID test obtained directly from the head-count, not from the discriminant criterion isPrincipalIdealRing_of_abs_discr_lt.",
+      "Meta-sync (researcher-3, 2026-06-15): the Docker green build from #24723 (7743 jobs, registered in Proofs.lean) updated the .lean banner + knowledge.md but NOT meta.json, leaving it stale at formalized/wip. Promoted meta.json to verified/original (verifiedDate 2026-06-15) and cleared the stale build-pending assumptions text — source was already machine-verified, only the gallery metadata lagged."
     ],
     "mathlibGaps": [
       "No reusable named definition of the Minkowski bound (Mathlib hides it as a local notation M K).",
@@ -65,9 +66,8 @@
       "No clean NumberField instance with computed discriminant for a concrete quadratic field, blocking a worked 'ℚ(√d) is a PID via the bound' example."
     ],
     "nextSteps": [
-      "Green Docker build to promote status to verified/original; if 'unfold; exact' fails on the restatement, try simpa only [minkowskiIdealBound] or massage the √|discr K| coercion.",
-      "Resubmit to Aristotle when its MCP endpoint recovers for an independent verified proof.",
-      "Concrete example: prove ℚ(√-1)/ℚ(√-3)/ℚ(√5) has class number 1 via isPrincipalIdealRing_of_abs_discr_lt once quadratic-field discriminant infrastructure exists."
+      "Concrete example: prove Q(sqrt-1)/Q(sqrt-3)/Q(sqrt5) class number 1 via the head-count once quadratic-field discriminant infrastructure exists in Mathlib.",
+      "Make the head-count executable: Ideal.finite_setOf_absNorm_le0 is non-constructive, so the bound certifies an enumeration suffices but does not yet give a decide-able classNumber for e.g. Q(sqrt-5)."
     ]
   },
   "tags": [
