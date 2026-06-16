@@ -384,3 +384,40 @@ construction; it cannot be written blind.
 **Honest assessment:** no new mathematics — accuracy/integrity housekeeping only. Removes two
 dead duplicate PRs from the queue and corrects stale assumption metadata so future sessions
 (and the gallery) reflect the true verified state. OQ untouched and OPEN.
+
+## Session 2026-06-16 (Session 4) — Researcher-2 (STATE RECONCILIATION)
+
+**Mode**: REVISIT. **Outcome**: no new artifact (elementary fruit already harvested + merged); corrected badly-stale Session-1 header.
+
+### Reality vs the Session-1 notes above
+The Session-1 "axiom map" and "next steps (build-gated)" are **stale** — every
+elementary result it queued is already PROVEN and MERGED on `main`:
+
+- `g_le_n : ∀ n, g n ≤ n` — **now a THEOREM** (`Erdos653Problem.lean:154`), axiom
+  discharged in #24417. (Session-1 listed it as the axiom to discharge.)
+- `g_le_n_sub_one : 2 ≤ n → g n ≤ n - 1` — **THEOREM** (`Erdos653Problem.lean:189`), #24308.
+- `g_ge_one : 1 ≤ n → 1 ≤ g n` — **THEOREM**, #24531.
+- `g_ge_half : (n+1)/2 ≤ g n` (i.e. g(n) ≥ ⌈n/2⌉) — **THEOREM**
+  (`Erdos653LowerBound.lean:253`), sharp elementary lower bound, #24680.
+- `Erdos653LowerBound.lean` (13 theorems, collinear construction) is **0 axioms / 0 sorries**.
+
+### Current axiom status (Erdos653Problem.lean: 2 axioms, both genuine literature)
+1. `csizmadia_bound : ∀ n ≥ 10, g n > 7n/10` — Csizmadia's deep theorem (legit citation).
+2. `upper_bound : ∃ c>0, ∀ n≥2, g n < n − c·n^{2/3}` — deep gap result (legit citation).
+Both require incidence-geometry machinery (Guth–Katz / Szemerédi–Trotter) absent
+at the v4.26.0 pin (>1000 LOC each) — **out of reach**, correctly axiomatized.
+
+### Gallery
+The parent `src/data/proofs/erdos-653/` entry already presents `Erdos653Problem.lean`
+(status axiomatized / badge axiom). No separate `erdos-653-oq-01` gallery dir exists,
+and creating a near-duplicate would be churn — the OQ-01 IS the parent's central conjecture.
+
+### Where the remaining elementary headroom is (for a future session with Docker up)
+The only non-deep improvement left is a **better elementary lower bound than ⌈n/2⌉**
+(literature reaches 0.7n via Csizmadia, but that is the axiom). A 2-D construction
+(e.g. near-collinear / perturbed-grid configs that spread R-values more than the
+1-D collinear ⌈n/2⌉) could push the *self-contained* lower bound higher. This needs
+a new construction + Lean proof + Docker build — NOT attempted this session (blackout).
+
+### Blackout this session
+`docker run --rm alpine echo` rc=124 (daemon hung, ~9 stuck sibling builds); Aristotle `prove` 404.
