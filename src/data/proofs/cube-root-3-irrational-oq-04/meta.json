@@ -1,0 +1,101 @@
+{
+  "id": "cube-root-3-irrational-oq-04",
+  "title": "Continued Fraction Prefix of ∛3: First Twelve Partial Quotients",
+  "slug": "cube-root-3-irrational-oq-04",
+  "description": "Computes and machine-verifies the first twelve partial quotients of the simple continued fraction of ∛3, confirming the prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5] of OEIS A002945. Each partial quotient aₙ = ⌊xₙ⌋ is pinned by a two-sided rational sandwich obtained from successive convergents; the irrational xₙ is compared to its rational bounds by cubing both sides and substituting (∛3)³ = 3, reducing every step to linear arithmetic. Because ∛3 has degree 3 over ℚ, Lagrange's theorem forbids the continued fraction from being eventually periodic, so no closed form exists and a finite formalization can only certify a fixed-length prefix one quotient at a time.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-05-13",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CubeRoot3IrrationalOQ04.lean",
+    "tags": [
+      "continued-fractions",
+      "number-theory",
+      "cube-roots",
+      "irrationality",
+      "diophantine-approximation",
+      "oeis"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-16",
+    "axiomCount": 0,
+    "assumptions": "None — fully verified. Depends on CubeRoot3Irrational (for cbrt3 and cbrt3_cubed) and CubeRoot3IrrationalOQ04Helpers (for the convergent cubing bounds 23/16, 62/43, 75/52, 437/303, 512/355, …).",
+    "lineCount": 1999,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "originalContributions": [
+      "cbrt3_floor_eq_one: ⌊∛3⌋ = 1 (a₀), from the cube bounds 1 < 3 < 8",
+      "cbrt3_a1 … cbrt3_a11: the next eleven partial quotients 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, each as an explicit nested-reciprocal floor identity",
+      "A uniform cubing-sandwich template: cube a rational two-sided bound on the current tail xₙ, substitute (∛3)³ = 3, and discharge the resulting integer inequality, then propagate through the reciprocal/subtraction chain by linarith",
+      "Verification that the prefix matches OEIS A002945 through a₁₁, with the cubing gap shrinking to ≈10⁻⁵ at the sixth and seventh convergents"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The simple continued fraction of an algebraic irrational of degree ≥ 3 is one of the oldest unsolved structural problems in number theory. **Lagrange** (1770, Additions au mémoire sur la résolution des équations numériques) proved that a continued fraction is eventually periodic if and only if its value is a quadratic irrational. Since ∛3 is a root of the Eisenstein-irreducible cubic X³ − 3 (degree exactly 3 over ℚ), its continued fraction is provably non-periodic — yet no one knows whether its partial quotients are bounded, nor any pattern governing them. This is a special case of a famous open problem: it is unknown whether the partial quotients of any algebraic number of degree ≥ 3 are bounded. The numerical prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, …] is catalogued as OEIS A002945. **Roth's theorem** (1955) shows the irrationality measure of ∛3 is exactly 2, which constrains but does not determine the growth of the partial quotients.",
+    "problemStatement": "**Open Question OQ-04 from cube-root-3-irrational**: the simple continued fraction of ∛3 has no closed form (Lagrange forbids periodicity for a cubic irrational). What can be formally certified is a finite prefix. This file pins the first twelve partial quotients a₀, …, a₁₁ of ∛3, each as a Lean theorem about a concrete nested-reciprocal floor.",
+    "proofStrategy": "Each partial quotient is the floor of a tail value xₙ defined by the continued-fraction algorithm x₀ = ∛3, xₙ₊₁ = 1/(xₙ − aₙ). To show aₙ = ⌊xₙ⌋ = k it suffices to prove the two strict bounds k ≤ xₙ < k+1, which unfold into a two-sided rational sandwich on ∛3 itself. Each rational bound p/q ⋛ ∛3 is decided by cubing: (p/q)³ ⋛ 3, an exact integer comparison, after substituting (∛3)³ = 3 via the explicit factorization ∛3·∛3·∛3 and nlinarith. The rational endpoints are exactly the continued-fraction convergents hₙ/kₙ, so the sandwich tightens geometrically — the cube gap at the sixth convergent 437/303 is already ≈ 3.3·10⁻⁵. With ∛3 trapped, every downstream reciprocal/subtraction step xₙ₊₁ = 1/(xₙ − aₙ) is linear (inverting a strictly-positive denominator with lt_div_iff₀ / div_lt_iff₀), and the floor identity closes by le_antisymm through Int.le_floor / Int.floor_lt.",
+    "keyInsights": [
+      "**Cubing converts an algebraic comparison into integer arithmetic.** The only non-elementary fact used is (∛3)³ = 3 (cbrt3_cubed). Every bound p/q ⋛ ∛3 becomes p³ ⋛ 3q³, decided by norm_num/nlinarith — no analytic estimates of ∛3 are ever needed.",
+      "**Convergents are the natural sandwich endpoints.** The rational bounds are not guessed: they are the CF convergents hₙ/kₙ, which alternate above and below ∛3 and converge at rate O(1/(kₙ kₙ₊₁)). This is why the bounds in the helper file (23/16, 62/43, 75/52, 437/303, 512/355, …) get tighter at each step and why the cubing comparison stays decidable in exact rational arithmetic.",
+      "**The Lagrange obstruction is sharp.** Because ∛3 is a cubic irrational, no recursive formula aₙ = f(n) with f simpler than the CF algorithm itself can exist; a finite prefix is the most a formalization can deliver. Adding further quotients yields more digits of an astronomically tight sandwich but no new structural information.",
+      "**Each quotient is one application of a fixed template.** The proofs of a₃ through a₁₁ are structurally identical chains of lt_div_iff₀ / div_lt_iff₀ / le_div_iff₀ rewrites, deepening by one reciprocal layer per quotient. The difficulty is bookkeeping the nested expression, not new mathematics.",
+      "**Boundedness of the quotients is open.** The computed prefix shows no large partial quotient, consistent with — but not proving — the conjecture that algebraic numbers of degree ≥ 3 have bounded continued-fraction quotients. That conjecture is wide open; this file is purely descriptive of the prefix."
+    ],
+    "prerequisites": [
+      "CubeRoot3Irrational.lean: the definition cbrt3 = (3:ℝ)^(1/3:ℝ) and the identity cbrt3_cubed : cbrt3 ^ 3 = 3",
+      "CubeRoot3IrrationalOQ04Helpers.lean: the convergent cubing bounds (lt_cbrt3_iff_cube_lt / cbrt3_lt_iff_three_lt_cube and the specific rational bounds 23/16, 62/43, 75/52, 437/303, 512/355)",
+      "Mathlib floor API: Int.le_floor, Int.floor_lt, and the ordered-field reciprocal lemmas lt_div_iff₀, div_lt_iff₀, le_div_iff₀"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cube-root-3-irrational",
+      "relationship": "extends",
+      "description": "Parent proof that ∛3 is irrational. This file goes further, exhibiting the explicit continued-fraction prefix whose very existence (non-periodicity) is a refinement of irrationality, guaranteed by Lagrange's theorem for the cubic irrational ∛3."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-02",
+      "relationship": "thematic",
+      "description": "Sibling open question: proves ∛3 irrational via Eisenstein irreducibility of X³−3. That irreducibility (degree exactly 3 over ℚ) is precisely the hypothesis Lagrange's theorem needs to conclude the continued fraction here is non-periodic, so no closed form exists."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verifies the first twelve partial quotients of the simple continued fraction of ∛3 — the prefix [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5] of OEIS A002945 — by a uniform cubing-sandwich method that reduces each algebraic floor identity to exact integer arithmetic plus linear reciprocal chains. 19 theorems, 0 sorries, 0 axioms.",
+    "implications": "**Descriptive, not structural.** The continued fraction of a cubic irrational is non-periodic (Lagrange) and has no known closed form; a formalization can therefore only certify a finite prefix, which this file does as far as a₁₁. The cubing-sandwich template is reusable for the continued fraction of any algebraic number whose defining power identity (here (∛3)³ = 3) lets a rational comparison be cubed into integer arithmetic.",
+    "openQuestions": [
+      "Are the partial quotients of ∛3 bounded? This is open and is a special case of the conjecture that every algebraic irrational of degree ≥ 3 has bounded continued-fraction quotients — one of the central unsolved problems in Diophantine approximation.",
+      "Can the prefix be extended indefinitely by an automated tactic that generates the convergent bounds and the cubing certificates from the recurrence, rather than hand-stating each aₙ? The convergent denominators grow, but each step remains decidable in exact rational arithmetic.",
+      "Does any subsequence of the partial quotients of ∛3 exhibit statistical regularity matching the Gauss–Kuzmin distribution, as expected for almost every real number? Algebraic numbers of degree ≥ 3 are conjectured (but not known) to be 'normal' continued fractions."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 1999,
+    "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 19
+  },
+  "references": [
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Additions au mémoire sur la résolution des équations numériques",
+      "year": "1770",
+      "note": "Proves a continued fraction is eventually periodic iff its value is a quadratic irrational. Since ∛3 has degree 3 over ℚ, its continued fraction is non-periodic — the structural reason no closed form exists."
+    },
+    {
+      "authors": "K. F. Roth",
+      "title": "Rational approximations to algebraic numbers",
+      "year": "1955",
+      "note": "Mathematika 2, 1–20. Gives irrationality measure exactly 2 for every algebraic irrational of degree ≥ 2, constraining the growth of the partial quotients without determining them."
+    },
+    {
+      "authors": "N. J. A. Sloane (ed.)",
+      "title": "OEIS A002945: Continued fraction for the cube root of 3",
+      "year": "—",
+      "note": "The integer sequence 1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, … catalogued; this file certifies its first twelve terms."
+    }
+  ],
+  "sorries": 0
+}
