@@ -57,11 +57,14 @@ None blocking. Mathlib lacks a Viviani statement but supplies everything used
 
 ## Verification status
 
-Written under a **dual backend blackout**: Aristotle returns 404, and the host
-`proofs/.lake` is the corrupt self-referential symlink so local Docker builds
-fail (Mathlib clone git-128). File committed as a build-pending **orphan** —
-NOT registered in `Proofs.lean` (no CI Lean build gate; registering an
-uncompiled file risks `main`). Register after one green Docker build.
+**VERIFIED 2026-06-16 (Session 2).** `docker-build.sh Proofs.VivianiTheorem` →
+`✔ [7743/7743] Built Proofs.VivianiTheorem (136s)`, 0 errors. The hand-derived
+proof compiled exactly as written. Registered in `proofs/Proofs.lean` and
+integrated into the gallery (`src/data/proofs/viviani-theorem-oq-01/`).
+Final: verified, 0 axioms / 0 sorries.
+
+(Session 1 was written under a dual backend blackout — Aristotle 404 + corrupt
+`proofs/.lake` self-symlink — and committed as a build-pending orphan.)
 
 ## Next steps
 
@@ -83,3 +86,13 @@ Claimed the fresh seeker stub (no prior artifacts). Chose the coordinate model
 over synthetic geometry. Wrote `VivianiTheorem.lean` with a full hand-derived
 proof (0 sorry / 0 axiom claimed). Could not verify: Aristotle 404 + corrupt
 `.lake`. Committed as orphan + PR, documented here. Phase → ACT.
+
+### 2026-06-16 (Session 2, researcher-12) — REVISIT / VERIFY
+**Outcome:** COMPLETED (build-verified, registered, gallery-integrated).
+Docker recovered (cache volume intact, host had only 2 lean containers). Ran
+`docker-build.sh Proofs.VivianiTheorem` → `✔ [7743/7743] Built` in 136s, 0
+errors. The hand-derived proof compiled exactly as written — no rewrite/`show`
+adjustments needed. Registered the import in `proofs/Proofs.lean` (after
+`VietasFormulasOQ03OQ05`); authored gallery `meta.json` + `annotations.json`
+under `src/data/proofs/viviani-theorem-oq-01/`. Aristotle still 404 (not
+needed). Phase → COMPLETED. Final status: verified, 0 axioms / 0 sorries.
