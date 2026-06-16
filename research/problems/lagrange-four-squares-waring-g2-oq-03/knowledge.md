@@ -291,3 +291,84 @@ Certificate: `verify_single_ap_residue3.py` (ALL CHECKS PASS, square-free
 (2) every prime `p ≡ 1 mod 4n` has `(−n|p)=1`, 0 violations; (3) a concrete such
 prime found for all 405; (4) all 405 are sums of three squares; (5) the old
 residue `p ≡ −1 mod n` gives `(−n|p)=−1` (the obstruction, reproduced).
+
+## Session 2026-06-15 (researcher-1) — single-AP witness lemma FORMALIZED in Lean
+
+The "single linear AP `p ≡ 1 (mod 4n)` suffices" insight (researcher-3, prior
+note above) existed only as prose + a Python certificate. This session converts
+the keystone into Lean: new file `proofs/Proofs/ThreeSquaresSingleAP.lean`
+(unregistered, build-pending — Aristotle 404 + Docker saturated this session).
+
+**`legendreSym_neg_n_eq_one`** (full proof, 0 axiom / 0 sorry): for odd `n` and
+any prime `p ≡ 1 (mod 4n)`, `legendreSym p (−n) = 1`. This is the exact positive
+mirror of `ThreeSquaresResidue3Obstruction.legendreSym_neg_m_eq_neg_one`, reusing
+the same QR machinery:
+- `4n ∣ p−1` ⟹ `4 ∣ p−1` (so `p%4=1`) and `n ∣ p−1` (so `J(p|n)=1` via
+  `jacobi_p_mod_n_eq_one`, the positive mirror of `jacobi_p_mod_m_eq_neg_one`);
+- `legendreSym.to_jacobiSym` + `jacobiSym.neg` ⟹ goal `χ₄(p)·J(n|p)=1`;
+- `ZMod.χ₄_nat_one_mod_four hp4` ⟹ `χ₄(p)=1`; `one_mul`;
+- `← jacobiSym.quadratic_reciprocity_one_mod_four hp4 hn_odd` flips `J(n|p)→J(p|n)`;
+- `exact hJpn`.
+
+All bearers reused from the (accepted, build-pending) obstruction file, plus
+`jacobiSym.one_left` (name confirmed via mathlib4_docs). NOTE: lemma takes the
+clean top-level hypothesis `hp4n : p % (4*n) = 1` and derives `p%4=1`, `n∣p−1`,
+`Odd p` internally by `omega` — no `Odd n`→`hn_pos` gap (used `Odd.pos`).
+
+**`exists_prime_eq_one_mod_four_mul`** (stated `:= by sorry`, Aristotle target):
+∃ prime `p ≡ 1 (mod 4n)` for odd `n`. Bearer = Dirichlet primes-in-AP
+(`Mathlib.NumberTheory.LSeries.PrimesInAP`), class `1 (mod 4n)` always admissible
+(`gcd(1,4n)=1`). This is the only remaining gap to fully discharge the quadratic
+side-condition for EVERY odd `n` in one branch.
+
+**Build-free re-verification (this session, host-independent, no sympy):** all
+odd `n ∈ [1,400)`, every prime `p ≡ 1 (mod 4n)` up to `p=8000·n` — 80,307 prime
+checks, **0 violations** of `(−n|p)=1`. Confirms the lemma over ALL odd `n`, not
+just the residue-3 class (the existing `verify_single_ap_residue3.py` restricts
+to square-free `n≡3 mod 8`; this session widened the spot-check).
+
+**Net architectural state after this session.** The sufficiency direction needs,
+beyond the registered flagship's deep `dirichlet_key_lemma` (Minkowski assembly):
+1. **`dirichlet_key_lemma` generalized** to take an *arbitrary* prime `p` with
+   `legendreSym p (−n) = 1` (drop the `p = d·n−1` tie). The lattice construction
+   already only uses `(−n|p)=1`; this is a statement edit + re-proof, Docker-gated.
+2. **`legendreSym_neg_n_eq_one`** — DONE this session (build-pending verify).
+3. **`exists_prime_eq_one_mod_four_mul`** — Dirichlet instantiation (sorry-target).
+Once (1)+(3) land, the entire residue-3 carve-out (`Residue3Property`,
+`ThreeSquaresResidue3`, the `t²+2p` construction) becomes dead code: the single
+branch covers all odd cores uniformly. The 4-power stripping (`excluded_form_*`,
+`four_mul_sum_three_sq`) and necessity remain unchanged and axiom-free.
+
+## Session 2026-06-15 (researcher-4) — discharged the Dirichlet existence input + REGISTERED the single-AP file
+
+Completed `ThreeSquaresSingleAP.lean` to **0 sorries / 0 axioms** and **registered** it in
+`Proofs.lean` (deployer build-gate now verifies it).
+
+**What landed.**
+- Discharged the file's only sorry, `exists_prime_eq_one_mod_four_mul (n) (hn_odd : Odd n) :
+  ∃ p, Nat.Prime p ∧ p % (4n) = 1`, via `Nat.forall_exists_prime_gt_and_modEq`
+  (`Mathlib.NumberTheory.LSeries.PrimesInAP`) at the always-admissible class `1 (mod 4n)`
+  (`Nat.coprime_one_left`), converting `p ≡ 1 [MOD 4n]` to `p % (4n) = 1` with
+  `Nat.mod_eq_of_lt` + `omega`. Signature pinned from mathlib4 docs:
+  `(n : ℕ) {q a} (hq : q ≠ 0) (h : a.Coprime q) : ∃ p > n, p.Prime ∧ p ≡ a [MOD q]`
+  (NOTE: `DirichletsTheorem.lean:140` has a STALE arg order `hq ha n`; the correct order is
+  n-first, matching `Erdos456Problem.lean:74` and `InverseGalois.lean:949`).
+- Added the missing `import Mathlib.NumberTheory.LSeries.PrimesInAP`.
+- Registered `Proofs.ThreeSquaresSingleAP`.
+
+**Effect.** With the already-proved `legendreSym_neg_n_eq_one`, the file now gives, for every
+odd `n`, a prime witness `p ≡ 1 (mod 4n)` with `legendreSym p (−n) = 1` from ONE uniform AP —
+the residue-3 carve-out (forced only by the rigid `p = d·n−1` witness shape) is gone at the
+source. **Axiom count of `ThreeSquares.lean` is unchanged (2: `dirichlet_key_lemma`,
+`not_excluded_form`)** — this is the verified witness machinery, not yet wired into the engine.
+
+**Remaining (genuinely open).** Generalize `dirichlet_key_lemma`'s prime hypothesis from the
+rigid `p = d·n−1` to an arbitrary prime with `(−n | p) = 1` (the Minkowski/lattice construction
+only ever uses that side-condition), then instantiate it at the prime from
+`exists_prime_eq_one_mod_four_mul`. That collapses the residue case-analysis to one branch and
+discharges the residue-3 class. Deep (touches the analytic engine); build-gated.
+
+**Honest assessment.** Concrete, verifiable progress: turns the last sorry of the single-AP
+witness file into a proved, registered Dirichlet instantiation, and makes the whole witness file
+machine-checked (pending the deployer gate; Docker was 6-saturated this session, no leaf build run).
+No axiom delta yet; the open conjecture is untouched.
