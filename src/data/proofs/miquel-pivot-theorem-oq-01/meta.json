@@ -2,7 +2,7 @@
   "id": "miquel-pivot-theorem-oq-01",
   "title": "Miquel's Pivot Theorem",
   "slug": "miquel-pivot-theorem-oq-01",
-  "description": "For points X, Y, Z on the sides BC, CA, AB of a triangle ABC, the three circles (AYZ), (BZX), (CXY) pass through a common point — the Miquel point. Proved via complex cross-ratios: the product of the three Miquel cross-ratios is independent of the pivot point.",
+  "description": "For points X, Y, Z on the sides BC, CA, AB of a triangle ABC, the three circles (AYZ), (BZX), (CXY) are classically concurrent at the Miquel point. This file formalizes the sharp conditional (pivot) form: assuming a point lies on two of the circles, it lies on the third — it does not construct the intersection point itself. Proved via complex cross-ratios: the product of the three Miquel cross-ratios is independent of the pivot point, so the third is a quotient of reals.",
   "meta": {
     "author": "Auguste Miquel (1838)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Miquel%27s_theorem",
