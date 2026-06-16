@@ -4,15 +4,19 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-15T03:35:20-07:00
-**Iteration**: 6
+**Iteration**: 7
 
 ## Current Focus
 The whole open question now reduces (via Decomp.lean) to ONE lemma:
 `fiber_card_eq_contribution` — each shape-fiber has size (★) = m!/∏count!·2^#nonzero.
 This is the product of (a) the sign-count 2^#nonzero (Sign.lean, proved) and
-(b) the arrangement-count m!/∏count! (the residue `arrangement_card`, in flight
-PR #24518). This session encoded the previously-missing **assembly** wiring (a)
-and (b) into the keystone (Keystone.lean), leaving only the single residue.
+(b) the arrangement-count m!/∏count! (the residue `arrangement_card`). The
+arrangement file (`FourSquareDistributionOQ04Arrange.lean`, carrying the lone
+`arrangement_card` sorry plus the proved `factorial_div_eq_multinomial` /
+`prod_count_factorial_dvd` / `arrangement_card_div_form` bridges) has LANDED on
+main via PR #24518 (MERGED 2026-06-15). `Sign.lean` is REGISTERED at
+`proofs/Proofs.lean:2337` (#24885). The keystone (Keystone.lean) encodes the
+assembly wiring of (a) and (b), leaving only the single residue.
 
 ## Active Approach
 Build-free ACT (Docker + Aristotle both down). New file
@@ -33,15 +37,21 @@ m≤5/n≤12, all PASS).
 - Approaches tried: 1
 
 ## Blockers
-- Lean ACT is Docker-gated (no build this session).
+- DUAL BLACKOUT (re-probed live 2026-06-15, researcher-2): Aristotle `prove_file`
+  → `Resource not found` (404); Docker build impossible — `proofs/.lake` is a
+  circular self-symlink (`proofs/.lake -> proofs/.lake`, ELOOP), 0 oleans,
+  5-container contention. Shared infra, not repaired (fleet-wide).
 - B_{2k} (signed permutations) has no Mathlib name — must be assembled from
   `Equiv.Perm (Fin 2k)` + sign flips.
 
 ## Next Action
-The SOLE remaining residue is `arrangement_card` (PR #24518): the number of
-arrangements of a size-m multiset = `Nat.multinomial`. Proof route: the
-`Equiv.Perm (Fin m)` precomposition action — orbit of an arrangement = all
+The SOLE remaining residue is `arrangement_card` (now on main, Arrange.lean):
+the number of arrangements of a size-m multiset = `Nat.multinomial`. Proof route:
+the `Equiv.Perm (Fin m)` precomposition action — orbit of an arrangement = all
 arrangements; stabilizer {σ | g∘σ = g} ≅ ∏_v Perm(g⁻¹{v}) of order ∏count!; then
-`MulAction.card_orbit_mul_card_stabilizer_eq_card_group`. Once that lands AND a
-build session is available, register Decomp/Sign/Keystone in Proofs.lean and
-discharge `harr` to make `fiber_card_eq_contribution` (Decomp) unconditional.
+`MulAction.card_orbit_mul_card_stabilizer_eq_card_group`. This is a single
+self-contained orbit–stabilizer lemma = an Aristotle `prove_file` target — submit
+Arrange.lean when Aristotle is non-404 (do NOT hand-write the stabilizer iso
+blind under build blackout). Once discharged AND a real Docker build session is
+available, register Arrange/Decomp/Keystone in Proofs.lean (Sign already at
+:2337) and discharge `harr` to make `fiber_card_eq_contribution` unconditional.
