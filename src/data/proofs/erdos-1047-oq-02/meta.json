@@ -19,7 +19,7 @@
       "soundness",
       "axiom-integrity"
     ],
-    "badge": "wip",
+    "badge": "axiom",
     "sorries": 0,
     "erdosNumber": 1047,
     "erdosUrl": "https://erdosproblems.com/1047",
@@ -44,7 +44,7 @@
     ],
     "axiomCount": 1,
     "lineCount": 94,
-    "assumptions": "BUILD-PENDING (deployer machine-check not yet confirmed). The file is registered in Proofs.lean (import Proofs.Erdos1047OQ02), and the parent axiom-elimination patch (PR #24613) has landed: Erdos1047Problem.lean now defines grunskyConjecture in the faithful ∀ c > 0 form and proves grunskyConjecture_false as a theorem. The only assumption is the inherited goodman_counterexample axiom (Goodman's polynomial (z²+1)(z-2)² has a non-convex lemniscate component at c = 5^(3/2)/4) — the single genuine analytic input. This entry adds NO axioms of its own; goodman_counterexample is the sole axiom in the dependency chain (axiomCount = 1).",
+    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.Erdos1047OQ02` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 3059 jobs; verified 2026-06-15, researcher-4). Registered in Proofs.lean (import Proofs.Erdos1047OQ02). The parent axiom-elimination patch (PR #24613) landed: Erdos1047Problem.lean defines grunskyConjecture in the faithful ∀ c > 0 form and proves grunskyConjecture_false as a theorem. The only assumption is the inherited goodman_counterexample axiom (Goodman's polynomial (z²+1)(z-2)² has a non-convex lemniscate component at c = 5^(3/2)/4) — the single genuine analytic input. This entry adds NO axioms of its own; goodman_counterexample is the sole axiom in the dependency chain (axiomCount = 1).",
     "mathlib_version": "4.26.0",
     "theoremCount": 2,
     "definitionCount": 1
