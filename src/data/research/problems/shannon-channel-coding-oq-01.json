@@ -23,30 +23,37 @@
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-03-30T11:35:15-07:00",
-    "iteration": 1,
-    "focus": "Metadata refreshed against the current ShannonChannelCoding proof family; the concrete-capacity question now has BSC-related sibling proofs to inspect before any new Lean work.",
-    "blockers": [],
-    "nextAction": "Inspect the BSC/BEC/AWGN capacity coverage and decide whether this broad question should stay active or be split into concrete sibling tasks.",
+    "since": "2026-06-16T12:00:00-07:00",
+    "iteration": 2,
+    "focus": "Audited concrete-channel coverage: BSC is fully proven (OQ02 bsc_capacity_proved). Added a from-first-principles BEC capacity = (1-p)log2 in a new orphan file (build-pending under Docker blackout).",
+    "blockers": [
+      "Docker daemon blackout (load ~26) — could not build/verify ShannonChannelCodingBEC.lean this session."
+    ],
+    "nextAction": "When Docker is back: build ShannonChannelCodingBEC.lean, fix any simp/lemma-name drift, then register it. AWGN (continuous) remains untouched.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Metadata sync 2026-05-18: Extractor note: broad slug matching includes the full ShannonChannelCoding* proof family; line counts use content.split(\"\\n\"), theorem counts ignore private/attributed declarations, and raw sorry counts include comments.",
+    "progressSummary": "2026-06-16 (researcher-8): BSC capacity already DONE in OQ02 (bsc_capacity_proved, 0 axioms; parent's bsc_capacity_eq axiom is a forward-declaration discharged downstream, not inlinable due to import cycle). Added BEC capacity = (1-p)log2 from first principles in new orphan file ShannonChannelCodingBEC.lean (0 axioms / 0 sorries, build-pending under Docker blackout). Engine: H(X|Y)=p*H(X) for the erasure channel, so I(X;Y)=(1-p)H(X). Numeric cert PASS.",
     "builtItems": [
-      "Broad ShannonChannelCoding leanFiles metadata refreshed to 11 current proof files."
+      "proofs/Proofs/ShannonChannelCodingBEC.lean (orphan, build-pending): bec channel + bec_conditional_entropy (H(X|Y)=p*H(X)) + bec_mi_eq ((1-p)H(X)) + bec_capacity ((1-p)log2) + bits/nonneg/le-log2 corollaries.",
+      "research/certs/verify_bec_capacity.py (PASS)."
     ],
     "insights": [
-      "The slug broad-matches the whole ShannonChannelCoding* proof family because the stripped base prefix is ShannonChannelCoding."
+      "The slug broad-matches the whole ShannonChannelCoding* proof family because the stripped base prefix is ShannonChannelCoding.",
+      "BSC capacity is already fully proven in OQ02; the only genuinely-open finite-alphabet item was BEC, now addressed.",
+      "BEC is NOT weakly symmetric (erasure column sums to 2p vs 1-p), so the parent's symmetric-channel machinery does not apply; the clean engine is H(X|Y)=p*H(X) via the chain rule.",
+      "set ch := bec ... breaks rw with marginal lemmas (goal holds ch, lemma produces bec p ...); use the full channel term, not set."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Audit BEC/AWGN capacity coverage separately from the already-developed BSC family."
+      "Build + register ShannonChannelCodingBEC.lean when Docker recovers.",
+      "AWGN capacity (continuous, measure-theoretic) remains the only untouched concrete channel."
     ],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\nMetadata refreshed on 2026-05-18. The actual question is whether concrete channel capacities such as BSC, BEC, and AWGN can be formalized beyond placeholders. Existing ShannonChannelCoding sibling files already cover substantial BSC and entropy infrastructure; BEC/AWGN coverage should be audited separately.\n"
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\n2026-06-16 (researcher-8): BSC capacity is fully proven in OQ02 (bsc_capacity_proved). Added BEC(p) capacity = (1-p)log2 from first principles in a new orphan file (build-pending under Docker blackout), via the erasure identity H(X|Y)=p*H(X). AWGN remains open.\n"
   },
   "tags": [],
   "relatedProofs": [
