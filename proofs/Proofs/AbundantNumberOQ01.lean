@@ -31,6 +31,27 @@ namespace AbundantNumberOQ01
 
 open Nat
 
+/-! ## Minimality: the smallest abundant number is 12 -/
+
+/-- 12 is abundant (Mathlib: `Nat.abundant_twelve`); proper divisors `1+2+3+4+6 = 16 > 12`. -/
+theorem twelve_abundant : Nat.Abundant 12 := Nat.abundant_twelve
+
+/-- No positive integer below 12 is abundant. Each of the finitely many cases is a
+proper-divisor-sum computation; the bounded quantifier is decidable (`Nat.decidableBallLT`),
+reduced in the kernel by `decide` (axiom-free, no `native_decide`). -/
+theorem not_abundant_below_twelve : ∀ n < 12, ¬ Nat.Abundant n := by decide
+
+/-- **The smallest abundant number is 12.** It is abundant and a lower bound for the
+abundant set. -/
+theorem smallest_abundant : IsLeast {n : ℕ | n.Abundant} 12 := by
+  refine ⟨Nat.abundant_twelve, ?_⟩
+  intro n hn
+  by_contra h
+  push_neg at h
+  exact not_abundant_below_twelve n h hn
+
+/-! ## Multiplicative closure -/
+
 /-- Multiplying every divisor of `n` by a positive `k` embeds `n.divisors` into
 `(k * n).divisors`; summing the embedded set gives `k * σ₁ n ≤ σ₁ (k * n)`. -/
 theorem mul_sumDivisors_le {k n : ℕ} (hk : 0 < k) :

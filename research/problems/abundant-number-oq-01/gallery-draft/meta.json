@@ -1,17 +1,17 @@
 {
   "id": "abundant-number-oq-01",
   "slug": "abundant-number-oq-01",
-  "title": "Abundant Numbers Are Closed Under Multiplication",
-  "description": "A natural number is abundant when the sum of its proper divisors exceeds it (σ₁(n) > 2n). Mathlib defines Nat.Abundant and proves there are infinitely many deficient numbers, but records nothing about how abundance behaves under multiplication. This entry proves, fully machine-checked with 0 sorries and 0 axioms, that every positive multiple of an abundant number is abundant, that every proper multiple of a perfect number is abundant, and as a corollary that there are infinitely many abundant numbers (all multiples of 12), infinitely many of them even. The proofs are uniform structural arguments over all parameters — not enumeration — driven by a single divisor-sum bound k·σ₁(n) ≤ σ₁(k·n) obtained by injecting the divisors of n into those of k·n via d ↦ k·d.",
+  "title": "Abundant Numbers: Minimality and Multiplicative Closure",
+  "description": "A natural number is abundant when the sum of its proper divisors exceeds it (σ₁(n) > 2n). Mathlib defines Nat.Abundant and proves there are infinitely many deficient numbers, but records neither that 12 is the smallest abundant number nor how abundance behaves under multiplication. This entry proves, fully machine-checked with 0 sorries and 0 axioms: (1) 12 is the least abundant number (IsLeast, by kernel decide over the finitely many smaller cases); (2) every positive multiple of an abundant number is abundant; (3) every proper multiple of a perfect number is abundant; and as a corollary (4) there are infinitely many abundant numbers (all multiples of 12), infinitely many of them even. The closure proofs are uniform structural arguments over all parameters — not enumeration — driven by a single divisor-sum bound k·σ₁(n) ≤ σ₁(k·n) obtained by injecting the divisors of n into those of k·n via d ↦ k·d.",
   "leanFile": {
     "imports": ["Mathlib"],
     "opens": ["Finset"],
     "namespace": "AbundantNumberOQ01",
-    "lineCount": 133,
+    "lineCount": 154,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "substantiveTheoremCount": 4,
-    "trivialSpecializations": 1,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 5,
+    "trivialSpecializations": 2,
     "definitionCount": 0,
     "path": "Proofs/AbundantNumberOQ01.lean",
     "sorries": 0
@@ -45,6 +45,7 @@
       "Set.infinite_of_injective_forall_mem"
     ],
     "originalContributions": [
+      "smallest_abundant: IsLeast {n | n.Abundant} 12 — 12 is the smallest abundant number (kernel decide, axiom-free)",
       "Nat.Abundant.mul_left: every positive multiple of an abundant number is abundant",
       "Nat.Perfect.mul_left_abundant: every proper multiple (2 ≤ k) of a perfect number is abundant",
       "Nat.infinite_abundant: there are infinitely many abundant numbers (Mathlib has the deficient analogue but not this one)",
@@ -53,6 +54,11 @@
     ]
   },
   "mainTheorems": [
+    {
+      "name": "smallest_abundant",
+      "statement": "IsLeast {n : ℕ | n.Abundant} 12",
+      "description": "12 is the smallest abundant number: it is abundant and no smaller positive integer is, the latter by a kernel-reduced decide over the bounded decidable quantifier."
+    },
     {
       "name": "Nat.Abundant.mul_left",
       "statement": "Nat.Abundant n → 0 < k → Nat.Abundant (k * n)",
@@ -76,24 +82,31 @@
   ],
   "sections": [
     {
+      "id": "minimality",
+      "title": "The Smallest Abundant Number is 12",
+      "startLine": 34,
+      "endLine": 51,
+      "summary": "not_abundant_below_twelve discharges the finitely many cases n < 12 by decide (the bounded quantifier is decidable via Nat.decidableBallLT, reduced in the kernel — no native_decide). Combined with Nat.abundant_twelve this gives smallest_abundant : IsLeast {n | n.Abundant} 12."
+    },
+    {
       "id": "engine",
       "title": "Divisor-Injection Bound",
-      "startLine": 34,
-      "endLine": 83,
+      "startLine": 53,
+      "endLine": 105,
       "summary": "Proves the monotonicity bound k·σ₁(n) ≤ σ₁(k·n) (mul_sumDivisors_le) by mapping each divisor d ∣ n to k·d ∣ k·n: the map is injective (Nat.eq_of_mul_eq_mul_left) and lands in (k·n).divisors (mul_dvd_mul_left), so Finset.sum_image and Finset.sum_le_sum_of_subset give the inequality. The sharpened strict form mul_sumDivisors_lt (for 2 ≤ k) inserts the divisor 1 — which is not of the form k·d since 1 < k — into the image set for strict slack."
     },
     {
       "id": "bridge",
       "title": "Abundance as a Divisor-Sum Inequality",
-      "startLine": 85,
-      "endLine": 91,
+      "startLine": 107,
+      "endLine": 112,
       "summary": "abundant_iff_two_mul_lt_sumDivisors converts Mathlib's proper-divisor definition Nat.Abundant n (n < ∑ proper divisors) to the full-divisor form 2n < σ₁(n), using Nat.sum_divisors_eq_sum_properDivisors_add_self and omega."
     },
     {
       "id": "closure",
       "title": "Multiplicative Closure and Infinitude",
-      "startLine": 93,
-      "endLine": 133,
+      "startLine": 114,
+      "endLine": 154,
       "summary": "Nat.Abundant.mul_left applies the divisor-sum bound to abundant n; Nat.Perfect.mul_left_abundant uses perfect_iff_sum_divisors_eq_two_mul with the strict bound. infinite_abundant and infinite_even_abundant follow from abundant_twelve via the injective map k ↦ (k+1)·12 and Set.infinite_of_injective_forall_mem."
     }
   ],
@@ -115,7 +128,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Every positive multiple of an abundant number is abundant, and every proper multiple of a perfect number is abundant; consequently there are infinitely many abundant numbers, infinitely many even. All four results are machine-checked with zero sorries and zero axioms, driven by the single divisor-sum bound k·σ₁(n) ≤ σ₁(k·n).",
+    "summary": "12 is the smallest abundant number; every positive multiple of an abundant number is abundant, and every proper multiple of a perfect number is abundant; consequently there are infinitely many abundant numbers, infinitely many even. All results are machine-checked with zero sorries and zero axioms — minimality by kernel decide, closure by the single divisor-sum bound k·σ₁(n) ≤ σ₁(k·n).",
     "implications": "The bound k·σ₁(n) ≤ σ₁(k·n) is the structural reason abundance propagates upward through the divisibility lattice: once any abundant (or perfect, properly) seed exists, an entire infinite cone of multiples is abundant. This complements Mathlib's existing infinite_deficient with the abundant analogue, and isolates the divisor-injection lemma as reusable infrastructure for further σ-monotonicity arguments.",
     "openQuestions": [
       "Is the odd analogue infinite_odd_abundant worth formalizing, seeded by the smallest odd abundant number 945 and closure under odd multipliers?",

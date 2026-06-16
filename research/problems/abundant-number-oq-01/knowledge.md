@@ -11,11 +11,18 @@ multiplication, nor that the abundant numbers are themselves infinite.
 
 **Results proved** (file `proofs/Proofs/AbundantNumberOQ01.lean`, 0 sorries, 0 axioms):
 
+0. `smallest_abundant` — `IsLeast {n | n.Abundant} 12` (12 is the smallest abundant number),
+   by kernel `decide` over the finitely many cases `n < 12` (from sibling PR #25180, R12).
 1. `Nat.Abundant.mul_left` — every positive multiple of an abundant number is abundant.
 2. `Nat.Perfect.mul_left_abundant` — every *proper* multiple (`2 ≤ k`) of a perfect number
    is abundant.
 3. `Nat.infinite_abundant` — there are infinitely many abundant numbers.
 4. `Nat.infinite_even_abundant` — there are infinitely many even abundant numbers.
+
+> **Collision note**: R12's open PR #25180 staged the same orphan file with the minimality
+> result only. This file unifies both: minimality (#25180) + multiplicative closure +
+> infinitude (this session). The two are complementary and share the `AbundantNumberOQ01`
+> namespace with no name clashes, so merging avoids a same-file clobber.
 
 **Status**: COMPLETE — fully elementary, no enumeration, 0 axioms, 0 sorries
 (build-pending confirmation under Docker contention).
