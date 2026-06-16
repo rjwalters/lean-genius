@@ -53,3 +53,49 @@ Proof has two parts:
   steps 5–6.
 - Build is pending: local Docker saturated (6 lean-build containers on the 7.65GiB
   VM) and Aristotle down, so the file is UNVERIFIED. Deployer/Aristotle to build.
+
+## Session 2026-06-15 (S2, researcher-5) — ACT (decompose under blackout)
+
+**Mode**: CONTINUE · **Outcome**: progress (2 plan steps converted from prose to
+proved standalone lemmas; HARD sorry isolated to UFD-extraction core)
+
+### Infra state
+- Aristotle backend still **404** ("Resource not found") on a trivial probe — DOWN.
+- Docker **5** lean-build containers on the 7.65GiB VM — saturation edge; no build
+  window (a 6th leaf build risks OOMing the host). File remains build-pending.
+- Mathlib not checked out locally (Docker-only build); could not grep Mathlib for a
+  prebuilt `x²+3y²` lemma. Mathlib has the two-squares theorem but, to my knowledge,
+  no general `p ≡ 1 mod 3 → p = x²+3y²`, so no shortcut.
+
+### What I Did (build-free decomposition, role-doc STUCK strategy)
+Split the monolithic HARD `sorry` into concrete, hand-verified algebraic lemmas,
+using the parent's explicit struct definitions (no unverifiable Mathlib API):
+- `eisensteinSqrtNegThree : Eisenstein := ⟨1, 2⟩` (= θ = 1 + 2ω) + `@[simp]`
+  projection lemmas.
+- **`eisensteinSqrtNegThree_sq` (step 2, PROVED)**: `θ * θ = ofInt (-3)`. Coordinate
+  computation `re = 1·1 - 2·2 = -3`, `im = 1·2 + 2·1 - 2·2 = 0`
+  (`ext <;> simp only [mul_re/mul_im, proj] <;> norm_num`).
+- **`ofInt_sub_sqrt_mul_add_sqrt` (step 3, PROVED)**:
+  `(ofInt c - θ)(ofInt c + θ) = ofInt (c² + 3)` (difference of squares, since
+  `θ² = -3`). Coordinate `ring` after projection simp; verified `re = (c-1)(c+1) +
+  4 = c²+3`, `im = 0` by hand.
+Updated the inline plan + Status block to mark steps 2–3 done; remaining gap is now
+isolated to the UFD `prime ↔ irreducible` norm-split (steps 4–7).
+
+### Key Findings
+- The two algebraic ingredients of the splitting argument are **pure coordinate
+  computations** on the parent's `Mul`/`ofInt` definitions — no class-field or UFD
+  machinery — and are now de-risked/proved. The genuine difficulty is entirely the
+  UFD extraction (steps 4–7), the ideal isolated Aristotle target.
+- File is UNREGISTERED in `proofs/Proofs.lean` (explicit import list, not a glob),
+  so adding these unverified lemmas cannot break the gallery build.
+
+### Files Modified
+- proofs/Proofs/ZsqrtdNegTwoOQ03OQ01.lean (added 2 proved lemmas + θ def + simp
+  projections; updated docstrings/status)
+
+### Next Steps
+- Build `Proofs.ZsqrtdNegTwoOQ03OQ01` when Docker ≤ 2 to verify the 2 new lemmas
+  (and the whole file modulo the 1 sorry).
+- Submit `exists_eisenstein_norm_eq_prime` to Aristotle once the backend stops 404ing
+  — now a cleaner target since steps 2–3 are lemmas it can cite.
