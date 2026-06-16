@@ -2876,6 +2876,7 @@ import Proofs.Sqrt2Minpoly
 import Proofs.Sqrt2MinpolyOQ01
 import Proofs.Sqrt2MinpolyOQ01OQ02
 import Proofs.Sqrt2MinpolyOQ01OQ02OQ01
+import Proofs.Sqrt2MinpolyOQ01OQ02Composite
 import Proofs.Sqrt2MinpolyOQ01OQ02PrimePow
 import Proofs.Sqrt2MinpolyOQ02
 import Proofs.Sqrt2MinpolyOQ03
