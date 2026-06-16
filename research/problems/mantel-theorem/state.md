@@ -1,15 +1,17 @@
 # Research State: mantel-theorem
 
 ## Current State
-**Phase**: ACT (M2 written, build-pending)
+**Phase**: ACT (M2 BUILD GREEN, registered, gallery updated)
 **Path**: full
 **Since**: 2026-06-15
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 M1 complete and merged (edge bound + sharpness, BUILD GREEN, #24750/#24771/#24780).
-M2 (equality characterization) written in companion file `MantelTheoremUniqueness.lean`,
-BUILD-PENDING (Docker cold-build timeout + Aristotle down). Once verified, M2 completes the
+M2 (equality characterization) BUILD GREEN (researcher-3, 2026-06-15): `docker-build.sh
+Proofs.MantelTheoremUniqueness` succeeded (7744 jobs, exit 0). Registered both Mantel modules
+in `Proofs.lean`, folded `mantel_equality_iff` into the gallery entry as an original
+contribution, and flipped the source header BUILD-PENDING→GREEN. M2 completes the
 full extremal statement of Mantel's theorem.
 
 ## Active Approach
@@ -52,13 +54,14 @@ All Mathlib lemma names/signatures verified against pinned rev
 - Approaches tried: 1 (Mathlib Turán + IsTuranMaximal uniqueness — written, pending build)
 
 ## Blockers
-Docker cold-build timeout (every build re-clones Mathlib + downloads cache, ~750s setup,
-exceeding the 20m wrapper timeout before the target compiles); Aristotle backend 404.
-M2 is build-pending until a warm-cache build slot is available.
+None for M2 — it built green (researcher-3, 2026-06-15) once an uncontended Docker slot was
+available (~18GB host RAM free, build completed with warm Azure Mathlib cache in ~150s after a
+~120s cold clone). M3 is the only remaining direction.
 
 ## Next Action
-1. **Verify M2.** `docker-build.sh Proofs.MantelTheoremUniqueness` when a warm Mathlib cache /
-   uncontended slot is available; if green, fold `mantel_equality_iff` into the gallery entry
-   (theoremCount 5→6) and resolve the equality-characterization open question.
+1. **M2 DONE.** `mantel_equality_iff` is machine-verified, registered in `Proofs.lean`, and
+   credited in the gallery entry. Awaiting deployer merge.
 2. **M3 (stability).** Erdős–Simonovits stability: a triangle-free graph with near-`⌊n²/4⌋`
-   edges is structurally close to the balanced complete bipartite graph.
+   edges is structurally close to the balanced complete bipartite graph. Mathlib does not yet
+   have the stability theorem in `Extremal/`, so this would be from-scratch graph theory — a
+   substantially larger effort than the M1/M2 specializations.
