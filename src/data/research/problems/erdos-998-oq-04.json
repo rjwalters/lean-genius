@@ -29,28 +29,28 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-16T00:00:00Z",
-    "iteration": 4,
-    "focus": "Re-confirmed (researcher-11, 2026-06-16) the exact frontier: proofs/Proofs/Erdos998ThreeGapOQ04.lean is 252 LOC, 9 theorems, 0 axioms, exactly 1 sorry — exists_gap_triple at line 183. Both headline theorems (three_gap, three_gap_additive) and the cardinality engine (card_le_three_of_subset_triple) are sorry-free, depending only on exists_gap_triple. orbit_card (orbit has N distinct points for irrational α) is fully proved via Int.fract_eq_fract + Irrational.int_mul. The file is build-pending and NOT yet registered in Proofs.lean, so the build is unverified. This session also fixed a metadata-propagation gap: the problem had a rich research/problems/erdos-998-oq-04/knowledge.md but no meta.json, so it was invisible to knowledge-scores.sh (which reads only src/data/research/problems/*.json) and scored 0 / showed as an EMPTY 'available' stub despite being a MODERATE/ATTACK problem.",
+    "iteration": 5,
+    "focus": "researcher-5, 2026-06-16: FIRST GREEN BUILD. The file never actually compiled in sessions 2-4 ('name-checked ≠ compiled'): three real errors — (1) the orbit def used a type ascription (i : ℝ) that forced i:ℝ instead of coercing ℕ→ℝ, so Finset.image expected Finset ℝ but got range N : Finset ℕ, making orbit elaborate to sorry and cascading 'uses sorry' into every downstream theorem; (2) orbit_card used hα.int_mul (no such lemma — Irrational unfolds to a Pi type so dot notation failed); (3) orbit_card used not_irrational_int (unknown). Fixed to fun (i:ℕ) =>, Irrational.intCast_mul, and Int.not_irrational. File now builds green: ⚠ [7743/7743] Built Proofs.Erdos998ThreeGapOQ04, sole warning = intended sorry at exists_gap_triple (line 181). Registered import Proofs.Erdos998ThreeGapOQ04 in proofs/Proofs.lean (now in CI for the first time). The earlier unused-var / unused-simp-arg warnings were cascade artifacts of the broken orbit def and are gone.",
     "blockers": [
-      "Dual-backend blackout this cycle: Aristotle MCP prove returned 404 'Resource not found'; Docker run hung (exit 124). No build or proof-search verification possible, so no new Lean committed (blind-writing the intricate index arithmetic of exists_gap_triple under blackout is unsafe)."
+      "Aristotle MCP still returns 404 'Resource not found' this session (tools load but backend down), so exists_gap_triple could not be submitted to prove_file. Docker works fine (warm lean-mathlib-cache volume, ~5-6 min)."
     ],
-    "nextAction": "On backend recovery: submit exists_gap_triple to Aristotle prove_file (it is KNOWN mathematics — the Sós–Surányi–Świerczkowski classification — an ideal Aristotle target), or formalize manually: define p (least 1≤p<N minimizing forward return {pα}) and q (least minimizing backward return 1-{qα}) via Finset.exists_min_image, prove the cyclic-successor map (neighbour of {iα} is {(i+p)α} if i+p<N else the wrap via q), and read off the three values {pα}, 1-{qα}, {pα}+(1-{qα}). Then docker-build Proofs.Erdos998ThreeGapOQ04, register in Proofs.lean, add gallery entry (status formalized/wip until built).",
+    "nextAction": "Discharge exists_gap_triple (sole remaining sorry). On Aristotle recovery: submit to prove_file (KNOWN math — Sós–Surányi–Świerczkowski classification). Otherwise formalize manually: define p (least 1≤p<N minimizing forward return {pα}) and q (least minimizing backward return 1-{qα}) via Finset.exists_min_image, prove the cyclic-successor map (neighbour of {iα} is {(i+p)α} if i+p<N else the wrap via q), and read off the three values {pα}, 1-{qα}, {pα}+(1-{qα}). Once sorry-free: flip status to verified (0 axioms) and add a gallery entry.",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "ATTACK (build-gated). The three-gap theorem is reduced to a SINGLE isolated combinatorial core lemma exists_gap_triple; both headline theorems (≤3 distinct gap lengths; long = sum of two short) and all finite-cardinality scaffolding are sorry-free and depend only on it. File: 252 LOC, 9 thms, 0 axioms, 1 sorry. Build-pending + unregistered in Proofs.lean (build unverified). This session (researcher-11, 2026-06-16) re-confirmed the frontier under a dual-backend blackout (Aristotle 404, Docker exit 124 — no Lean shipped) and repaired the metadata gap that made this MODERATE problem invisible to the knowledge prioritizer (missing meta.json → no src/data json → score 0).",
+    "progressSummary": "ATTACK → BUILD-VERIFIED. The three-gap theorem is reduced to a SINGLE isolated combinatorial core lemma exists_gap_triple; both headline theorems (≤3 distinct gap lengths; long = sum of two short) and all finite-cardinality scaffolding are sorry-free and depend only on it. File now compiles GREEN (⚠ [7743/7743] Built Proofs.Erdos998ThreeGapOQ04, v4.26.0) and is registered in proofs/Proofs.lean. 0 axioms, exactly 1 sorry (exists_gap_triple). Session 5 (researcher-5, 2026-06-16) corrected the false 4-session 'build-pending' state: the file had three real compile errors and never passed the kernel — a broken orbit def (type-ascription (i:ℝ) forced i:ℝ rather than coercing ℕ→ℝ, cascading 'uses sorry' everywhere) and two wrong lemma names (Irrational.int_mul → Irrational.intCast_mul; not_irrational_int → Int.not_irrational). Aristotle still 404 this session, so exists_gap_triple remains open.",
     "builtItems": [
       {
         "file": "proofs/Proofs/Erdos998ThreeGapOQ04.lean",
-        "iteration": 3,
-        "loc": 252,
+        "iteration": 5,
+        "loc": 253,
         "axioms": 0,
         "sorries": 1,
-        "summary": "First formal Lean statement of the three-gap/Steinhaus theorem. Definitions: orbit, forwardGap, gapLengths. Proved: orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card (N distinct points for irrational α), card_le_three_of_subset_triple. three_gap and three_gap_additive proved modulo the single core sorry exists_gap_triple (line 183). Build-pending, not yet registered in Proofs.lean."
+        "summary": "First formal Lean statement of the three-gap/Steinhaus theorem, BUILD-VERIFIED green (7743 jobs, v4.26.0) and registered in Proofs.lean. Definitions: orbit, forwardGap, gapLengths. Proved (sorry-free): orbit_mem_Ico, zero_mem_orbit, orbit_nonempty, forwardGap_nonneg, orbit_card (N distinct points for irrational α via Int.fract_eq_fract + Irrational.intCast_mul + Int.not_irrational), card_le_three_of_subset_triple. three_gap and three_gap_additive proved modulo the single core sorry exists_gap_triple (line 181)."
       }
     ],
     "insights": [
@@ -58,7 +58,7 @@
       "Distinctness need not be hypothesized: given (gapLengths).card = 3 and a 3-element superset literal {a,b,c}, Finset.eq_of_subset_of_card_le forces equality, and the three witnesses are automatically pairwise distinct (collapsing any pair drops card to ≤ 2).",
       "The ≤3-lengths claim needs NO equidistribution and NO irrationality of α; irrationality is only used in orbit_card to guarantee the N orbit points are distinct. The gap structure itself is purely combinatorial.",
       "Defining gaps via forwardGap (minimum positive cyclic distance {y-x}, using Finset.inf') sidesteps an explicit sort / orderEmbOfFin, keeping the statement order-theoretic and the successor map index-arithmetic over Finset.range.",
-      "orbit_card is provable cleanly: {iα} = {jα} ⇒ (i-j)α ∈ ℤ (Int.fract_eq_fract); for i ≠ j this makes a nonzero-int multiple of α rational, contradicting Irrational.int_mul / not_irrational_int.",
+      "orbit_card is provable cleanly: {iα} = {jα} ⇒ (i-j)α ∈ ℤ (Int.fract_eq_fract); for i ≠ j this makes a nonzero-int multiple of α rational, contradicting Irrational.intCast_mul + Int.not_irrational. NOTE: the lemma is Irrational.intCast_mul (NOT int_mul) and the contradiction lemma is Int.not_irrational (NOT not_irrational_int); the orbit def must annotate fun (i:ℕ) => (a bare (i:ℝ) ascription forces i:ℝ and breaks Finset.image over range N). All three were latent compile errors fixed in session 5.",
       "The remaining content exists_gap_triple is KNOWN mathematics (Sós–Surányi–Świerczkowski / van Ravenstein), so it is a HARD (not OPEN) sorry: the correct tool is Aristotle prove_file, not manual creative work — reserve manual effort for the index-arithmetic of the cyclic-successor map if Aristotle stalls."
     ],
     "mathlibGaps": [
@@ -126,7 +126,7 @@
     ]
   },
   "started": "2026-06-15T00:00:00Z",
-  "lastUpdate": "2026-06-16T00:00:00Z",
+  "lastUpdate": "2026-06-16T15:10:00Z",
   "significance": 7,
   "tractability": 7
 }

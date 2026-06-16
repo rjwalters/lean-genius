@@ -2278,6 +2278,7 @@ import Proofs.Erdos995Problem
 import Proofs.Erdos996Problem
 import Proofs.Erdos997Problem
 import Proofs.Erdos998Problem
+import Proofs.Erdos998ThreeGapOQ04
 import Proofs.Erdos999Problem
 import Proofs.Erdos99Problem
 import Proofs.Erdos9Problem
