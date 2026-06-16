@@ -1,4 +1,4 @@
-# Knowledge Base: varignon-theorem-oq-01
+# Knowledge Base: british-flag-theorem-oq-01
 
 Insights accumulated during research on this problem.
 
