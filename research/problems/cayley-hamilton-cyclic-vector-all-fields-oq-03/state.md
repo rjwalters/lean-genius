@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half is a scoped open gap
-**Since**: 2026-06-16 17:1?Z (S1 scoping sync — researcher-9; no prior per-problem doc existed)
-**Iteration**: 1
+**Phase**: ACT — field/operator half COMPLETE + REGISTERED; PID-module half scoped with a build-ready recipe (estimate revised DOWN from >500 to ~150–250 lines)
+**Since**: 2026-06-16 ~20:20Z (S2 API-pinning under Docker blackout — researcher-2)
+**Iteration**: 2
 
 ## Problem
 OQ-03 of cayley-hamilton-cyclic-vector-all-fields ("Coordinate-Free Cyclic Vector:
@@ -27,32 +27,85 @@ Single Operator and PID Modules") asks for two generalizations of the verified
   `krylov_linearIndependent_op`, `cyclicSubspace_eq_top_of_isCyclicVectorOp`.
 
 **Direction (b) is the only open content** — explicitly deferred in-source (see the
-`## PID direction` block at the file tail). Infrastructure assessment (from that note):
-- Needs Mathlib PID structure theory: `Module.equiv_directSum_of_isTorsion` +
-  invariant-factor / elementary-divisor decompositions.
-- Plus a cyclic-recombination lemma: pairwise-coprime cyclic torsion summands
-  recombine into one cyclic generator via CRT; and the order-ideal = char-ideal bridge
-  for the nonderogatory hypothesis.
-- Size estimate: **> 500 lines** on top of Mathlib's PID machinery. Multi-session.
+`## PID direction` block at the file tail).
+
+### S2 finding (2026-06-16): the heavy lifting is ALREADY in Mathlib v4.26
+The prior ">500 line" estimate assumed we had to build the CRT cyclic-recombination
+by hand on top of `Module.equiv_directSum_of_isTorsion`. We don't. Mathlib already
+exports the exact generator-existence lemma that does this:
+
+- **`Module.exists_ker_toSpanSingleton_eq_annihilator`** (`Mathlib/Algebra/Module/PID.lean:271`)
+  > For a f.g. module `M` over a PID `R`: `∃ x : M, ker (toSpanSingleton R M x) = Module.annihilator R M`.
+  Its proof internally runs `equiv_free_prod_directSum` + the prime-power decomposition
+  and recombines via CRT — i.e. it already produces the cyclic-generator *candidate*
+  `x` whose order ideal `ann(x)` equals the module order ideal `ann(M)`. This is the
+  single citation that collapses the "structure theorem + CRT recombination" work.
+
+The order-ideal = char-ideal (= `minpoly = charpoly`) hypothesis is most cleanly
+formalized as the **isomorphism form**, avoiding a from-scratch "characteristic ideal"
+definition: *`M` is cyclic ⟺ `M ≃ₗ[R] R ⧸ Module.annihilator R M`* (the standard
+PID-module equivalent; `R/ann M ≃ ⨁ R/(invariant factors)` collapses to one summand
+exactly when the order ideal equals the product of invariant factors).
+
+### Build-ready recipe (verified names vs offline mathlib4 @ v4.26.0, 2df2f0150c)
+Target theorem (abstract PID form), `R` a `CommRing` + `IsDomain` + `IsPrincipalIdealRing`,
+`M` f.g. (`Module.Finite R M`) and torsion (`Module.IsTorsion R M`):
+
+    (∃ x : M, Submodule.span R {x} = ⊤)  ↔  Nonempty (M ≃ₗ[R] R ⧸ Module.annihilator R M)
+
+- **(→) cyclic ⇒ iso.** From `R ∙ x = ⊤`: `LinearMap.toSpanSingleton R M x` is surjective
+  (`LinearMap.range_toSpanSingleton` = `span R {x}` = ⊤). `quotKerEquivOfSurjective`
+  gives `R ⧸ ker ≃ M`; show `ker = ann(M)` (here `ker (toSpanSingleton) = ann(x)`, and
+  when `x` generates, `ann(x) = ann(M)` since `ann(M) ⊆ ann(x)` always and `r • x = 0`
+  propagates to all of `span {x} = M`).
+- **(←) iso ⇒ cyclic.** Take `x` from `Module.exists_ker_toSpanSingleton_eq_annihilator`
+  (so `ann(x) = ann(M)`). Then `R ∙ x = range(toSpanSingleton x) ≃ R ⧸ ann(x) = R ⧸ ann(M) ≃ M`
+  (`LinearMap.quotKerEquivRange`). So the submodule `R ∙ x` is `≃ₗ` to the whole `M`.
+  Close `R ∙ x = ⊤` via a length argument:
+  - `Module.length` (`Mathlib/RingTheory/Length.lean`): `length_eq_add_of_exact` on
+    `0 → R∙x → M → M/(R∙x) → 0` gives `length M = length(R∙x) + length(M/R∙x)`.
+  - `R∙x ≃ M` ⟹ `length(R∙x) = length M`; with `length_ne_top` (M is Artinian+Noetherian:
+    f.g. torsion over PID ⟹ finite length) cancel to `length(M/R∙x) = 0`.
+  - `Module.length_eq_zero_iff` ⟹ `Subsingleton (M/R∙x)` ⟹ `R∙x = ⊤`.
+  - ALTERNATIVE closure (avoids length): Hopfian. Compose `e : M ≃ R∙x` with
+    `(R∙x).subtype : R∙x →ₗ M` to get an INJECTIVE endo `g : M →ₗ M`; for Noetherian `M`
+    use `IsNoetherian.injective_of_surjective_endomorphism`'s companion in
+    `Mathlib/RingTheory/Noetherian/Orzech.lean` — note that lemma is surj⟹inj, so the
+    length route is the more direct one; keep length as primary.
+
+### Sub-obligations / instances to discharge (likely 1–2 lines each, may be instances)
+- `IsArtinian R M` for f.g. torsion over a PID (needed for `length_ne_top`). Check for an
+  existing instance; if absent, derive from finite length of `⨁ R/(p^e)` summands.
+- `Module.annihilator R (R∙x)` / `ann` transport across the `≃ₗ`.
+
+### Size: ~150–250 lines in a NEW unregistered companion `...OQ03PID.lean`. NOT a
+multi-session megabuild. Single Docker-up session is plausible.
 
 ## Blockers
-- **Dual blackout live S1 (2026-06-16 ~17:10Z):** `docker ps` = 14 `lean-build`
-  containers (adding a 15th risks OOMing peers); Aristotle `prove` → 404
-  ("Resource not found"). Cannot build/verify any Lean, so the PID direction —
-  which is genuinely new code requiring iterative compilation — cannot be safely
-  started this cycle. Writing it blind would be unverifiable scaffold.
+- **Docker blackout live S2 (2026-06-16 ~20:20Z):** `docker ps` returns 0 lean-build
+  quickly, but `docker info`, `docker image inspect lean4-arm64:v4.26.0`, and
+  `docker volume inspect lean-mathlib-cache` all error/hang ("error during connect" on
+  the socket). Daemon is unresponsive — `docker-build.sh`'s unguarded `docker info`
+  preflight would hang. `.lake` is empty (0B) in both worktree and main repo, so a build
+  must `lake exe cache get` from scratch. Aristotle not retried this cycle (needs a
+  compiling base file with sorries, which we don't have for new defs). Cannot verify
+  Lean; writing the companion blind would be unverifiable scaffold, so deferred.
 
 ## Next Action
-The field/operator half is saturated. The PID-module half is the real remaining work
-and is a **focused multi-session build effort**, not a blackout task:
-1. When Docker ≤2 containers: build a `...OQ03PID.lean` companion proving the
-   cyclic-recombination lemma first (smallest self-contained piece — coprime cyclic
-   summands → single generator via CRT), keep it UNREGISTERED until green.
-2. Bridge order-ideal = char-ideal for the nonderogatory hypothesis over a PID.
-3. Assemble the `IsCyclic` iff statement; register only after a green build (math PRs
-   merge with no Lean gate, so an unverified import could break the fleet build).
+The field/operator half is saturated. Execute the **build-ready recipe above** in ONE
+focused Docker-up session:
+1. When the daemon responds (`docker info` returns fast, `docker ps` low load):
+   create `proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean`, UNREGISTERED.
+2. State the abstract iff theorem; implement (→) then (←) per the recipe; discharge the
+   `IsArtinian`/length sub-obligations.
+3. `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ03PID`
+   — grep the log for `error:` (script exits 0 even on Lean error).
+4. Only after a GREEN build: add to `Proofs.lean` + gallery data. Math PRs merge with no
+   Lean gate, so an unverified import could break the fleet build — never register red.
+5. Optionally then specialize the abstract PID theorem to `R = K[X]`, `M = V` via `T` to
+   recover the operator nonderogatory ⟺ cyclic statement in OQ-03's original vocabulary.
 
 ## Attempt Counts
-- Total attempts: 1 (direction (a), completed in a prior session — file already on main)
-- Current approach attempts: 0 (PID direction not yet started)
+- Total attempts: 2 (direction (a) completed prior; S2 = API pinning / recipe, no build)
+- Current approach attempts: 0 (PID companion not yet written — recipe ready)
 - Approaches tried: 1 (basis reduction to matrix theorem — succeeded for (a))
