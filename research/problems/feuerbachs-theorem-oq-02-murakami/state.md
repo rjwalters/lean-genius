@@ -1,18 +1,27 @@
 # Current State
 
-**Phase**: DECOMPOSE (math COMPLETE; only Docker-gated Lean transcription remains)
-**Since**: 2026-06-14T21:00:00.000Z
-**Iteration**: 8
+**Phase**: VERIFY (math + Lean transcription COMPLETE; only Docker build-check + registration remain)
+**Since**: 2026-06-15T00:00:00.000Z
+**Iteration**: 10
 
 ## Current Focus
 
-The mathematics is finished. S4 (T0 closed form) and S7 (general trirectangular
-family) are DONE and have now been INDEPENDENTLY re-verified this session
-(S8-prep) by a committed, reproducible sympy script
-`verify_grace_trirectangular.py` (16/16 identities OK, symbolic + numeric; the
-insphere/exsphere radii are re-derived from first principles, not just checked).
-The only remaining step is S8: transcribe the closed form into Lean, which is
-Docker-gated (verification blackout, `docker ps` hangs).
+The mathematics AND the Lean transcription are both finished. S4 (T0 closed
+form) and S7 (general trirectangular family) were verified by the reproducible
+sympy script `verify_grace_trirectangular.py` (16/16 identities OK). S8/S9 (the
+Lean transcription) are ALSO DONE and merged: theorem
+`grace_feuerbach_trirectangular` in
+`proofs/Proofs/StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean`
+proves all five identities (3 incidence + 2 internal-tangency) with 0 sorry / 0
+axiom, symbolically certified by `verify_grace_proof_certificate.py` (15/15 PASS),
+landed build-pending in #24189 (cert) and #24444 (discharge). The proof is
+`field_simp; ring` for incidence and `linear_combination (1/(2σ²))·ht` for both
+tangency goals (surd cancels: odd-in-t part ≡ 0).
+
+The only remaining steps are infra-gated, NOT mathematical:
+  - machine-check the file with Docker (`docker-build.sh`), currently the file is
+    build-pending (authored under a Docker blackout);
+  - register it in `proofs/Proofs.lean` and add a gallery entry once green.
 
 ## Result (general trirectangular tetrahedron) -- VERIFIED
 
@@ -41,22 +50,31 @@ D-exsphere, and passes through the opposite face A,B,C.
 
 ## Blockers
 
-- S8 (Lean transcription) is Docker-gated; cannot `lake build` during the
-  verification blackout. All upstream math is build-free and now reproducibly
-  verified.
+- Docker build-verification is gated by container saturation (observed 6-7
+  containers, host RAM low); a cold single-file build times out under that
+  contention. The Lean file is already written and certified — only the
+  machine-check is pending.
+- Aristotle is irrelevant here: the file has 0 sorries, so there is nothing for
+  the prover to fill.
 
-## Next Action (S8, Docker-gated)
+## Next Action (Docker-gated, when containers ≤ 2)
 
-Transcribe into a NEW sibling `proofs/Proofs/FeuerbachsTheoremOQ02Murakami.lean`
-reusing the parent file's `Point3 = R x R x R` / `dist3_sq` framework. State the
-result over R with the surd carried as a hypothesis `q >= 0`, `q^2 = a^2*b^2 +
-b^2*c^2 + c^2*a^2`; all tangency identities reduce to `field_simp; ring` /
-`nlinarith` once cleared of denominators. The exact target identities are the
-ones listed above (and machine-checked by `verify_grace_trirectangular.py`), so
-the transcription is mechanical when Docker returns.
+1. `./proofs/scripts/docker-build.sh Proofs.StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular`
+   (set `LEAN_BUILD_TIMEOUT=40m` if cold) to machine-check
+   `grace_feuerbach_trirectangular`.
+2. On green: register the module in `proofs/Proofs.lean` and add a gallery entry
+   under `src/data/proofs/feuerbachs-theorem-oq-02-murakami/`.
+3. Independently, the parent slug's axiom `feuerbach_3d_fails_general`
+   (`FeuerbachsTheoremOQ02.lean:581`) can be promoted to a theorem once
+   `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` is built green — a
+   SEPARATE de-axiomatization, also Docker-gated.
+
+Do NOT re-transcribe the Grace theorem (S8/S9 are complete and merged) and do
+NOT register the file unbuilt under container saturation.
 
 ## Attempt Counts
 
-- Total attempts: 0 (no Lean built yet -- Docker-gated throughout)
-- Current approach attempts: 0
-- Approaches tried: 0 (analytic derivation complete and verified)
+- Total attempts: 0 Lean builds (Docker-gated throughout; file certified
+  symbolically, not yet machine-checked)
+- Approaches tried: analytic derivation + sympy certification + Lean
+  transcription — all complete; only the Lean machine-check remains
