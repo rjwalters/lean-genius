@@ -533,3 +533,66 @@ producer lemma + the Zolotarev sign computation). The headline Zolotarev identit
 verified). Milestone 2 (reciprocity from the grid-transpose sign) is unchanged — still not in Lean.
 **Next session (Docker now usable):** wire the Euler-criterion tie to land the full Zolotarev
 headline, then attack M2's `inv(σ) = C(p,2)·C(q,2)` closed form (S8). Problem stays **in-progress**.
+
+### Session 2026-06-15 (S15, researcher-3) — headline ACT de-risked: the units formulation DROPS step (ii), and every bearer is pinned except one crux
+
+**Mode:** CONTINUE → build-free ACT-readiness. Dual blackout **reconfirmed live this session**
+(not assumed): `docker info` times out (>30 s, three probes); Aristotle MCP `prove` returns
+`"Resource not found"` (live `n+0=n` probe). **`gh api` IS up**, so this session is the standard
+build-free bearer-pinning lane (same method as S4/S9/S11). No Lean written — a blind headline
+write would gamble on the two unverified spots below.
+
+#### The genuinely-new finding: state the headline on `(ZMod p)ˣ` and step (ii) vanishes
+
+Every prior session framed the headline as needing **two** missing pieces: (i) the Euler-criterion
+tie `legendreSym p a = (−1)^k`, and (ii) a "field-`mulLeft₀` / units-`mulLeft` sign bridge"
+(relating the permutation of `ZMod p` that fixes `0` to its restriction to the units). **Step (ii)
+is unnecessary.** State the headline on the units group directly:
+
+```
+legendreSym p ((u : ZMod p).val) = (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ)    for u : (ZMod p)ˣ
+```
+
+Then the RHS is `sign (mulLeft u)` on `Perm (ZMod p)ˣ`, to which the **already-verified**
+`sign_mulLeft_eq_neg_one_zpow` (this file, S14) applies *with no modification* — `(ZMod p)ˣ` is a
+finite group of even order `p − 1`, exactly its hypotheses. There is no `mulLeft₀`-on-the-field, no
+fixed point `0`, hence no bridge sub-goal. (S2 already numerically confirmed the units-only and
+field formulations carry the *same* sign, so nothing is lost.) This removes a whole sub-problem the
+prior plan carried.
+
+#### Headline reduced to: pinned wiring + ONE crux. All wiring bearers pinned @ rev `2df2f01` (v4.26.0)
+
+| Step | Bearer (confirmed present @ rev `2df2f01` via `gh api …?ref=…`) | Location |
+|---|---|---|
+| generator `g`, `u = g^k` | `IsCyclic.exists_generator : ∃ g, ∀ x, x ∈ zpowers g` (+ `(ZMod p)ˣ` is `IsCyclic` from finite-field units cyclic) | `GroupTheory/SpecificGroups/Cyclic.lean:55`; instance `RingTheory/IntegralDomain.lean:137` |
+| `card (ZMod p)ˣ = p − 1` (even for odd `p`) | `ZMod.card_units (p) [Fact p.Prime] : Fintype.card (ZMod p)ˣ = p − 1` | `FieldTheory/Finite/Basic.lean:597` |
+| `orderOf g = p − 1` | `orderOf_eq_card_of_forall_mem_zpowers` (used `FieldTheory/Finite/Basic.lean:273`) | `GroupTheory/OrderOfElement.lean` |
+| `g^m ≠ 1` for `0 < m < orderOf g` | `pow_ne_one_of_lt_orderOf (n0 : n ≠ 0) (h : n < orderOf x) : x ^ n ≠ 1` | `GroupTheory/OrderOfElement.lean:237` |
+| RHS `sign (mulLeft u) = (−1)^k` | `sign_mulLeft_eq_neg_one_zpow` (VERIFIED, this file) | `QuadraticReciprocityAlgorithmOQ03.lean:158` |
+| Euler tie `legendreSym ↔ a^(p/2)` | `legendreSym.eq_pow (a) : (legendreSym p a : ZMod p) = (a : ZMod p)^(p/2)` | `NumberTheory/LegendreSymbol/Basic.lean:114` |
+| (alt route) `legendreSym = ±1 ↔ IsSquare` | `legendreSym.eq_one_iff` (:178), `eq_neg_one_iff` (:188), `euler_criterion` (:62) | same file |
+
+**The single remaining crux** (no direct Mathlib bearer — same status the producer lemma had):
+
+> `g ^ ((p−1)/2) = (−1)` in `(ZMod p)ˣ`, for `g` a generator (equivalently `IsSquare (g^k) ↔ Even k`).
+
+Skeleton (all but two names pinned above): let `h = g^((p−1)/2)`. Then `h² = g^(p−1) =
+g^(orderOf g) = 1` (`pow_orderOf_eq_one` + `orderOf_eq_card…` + `ZMod.card_units`); `h ≠ 1` since
+`0 < (p−1)/2 < p−1 = orderOf g` (`pow_ne_one_of_lt_orderOf`); `h² = 1 ⇒ h = 1 ∨ h = −1` ⇒ `h = −1`.
+Then `(legendreSym p u.val : ZMod p) = (g:ZMod p)^(k·(p/2)) = ((g:ZMod p)^((p−1)/2))^k = (−1)^k`
+(`p/2 = (p−1)/2` for odd `p`), and both `legendreSym` and `(−1)^k` are `±1` in `ℤ`, distinct mod `p`
+(`p ≠ 2`), so the `ZMod p` equality lifts to `ℤ`.
+
+**Two spots NOT verifiable build-free (the reason no Lean shipped this session):**
+1. The `h² = 1 ⇒ h = ±1` step — `mul_self_eq_one_iff` / `sq_eq_one_iff_*`: present in Mathlib but
+   I could not pin its exact module @ the rev by directed grep, and its applicability to the **units
+   type** `(ZMod p)ˣ` depends on the `Neg (ZMod p)ˣ` instance (units of a comm ring). Resolve at
+   build (or do the order-2 argument in the field `ZMod p` via `Units.val` and transfer).
+2. The final `ZMod p → ℤ` lift of the `±1` equality (`p ≠ 2` ⇒ `(1 : ZMod p) ≠ −1`) — routine but
+   cast-heavy; the exact `legendreSym` integer-argument cast (`(u : ZMod p).val : ℤ`) wants a build.
+
+**Net effect:** the headline ACT is now "pinned wiring + one crux with two names-to-confirm," and
+the prior plan's step (ii) bridge is eliminated. Next Docker session: transcribe the table above,
+resolve the two flagged names, land `legendreSym_eq_sign_mulLeft` on `(ZMod p)ˣ`. The crux
+`g^((p−1)/2) = −1` is also a clean **Aristotle** target (single closed lemma) once the backend
+returns. Problem stays **in-progress**; M2 (`inv(σ) = C(p,2)·C(q,2)`, S8) unchanged.
