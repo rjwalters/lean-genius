@@ -2651,6 +2651,7 @@ import Proofs.MeanValueTheoremOQ02OQ04
 import Proofs.MeanValueTheoremOQ02OQ04OQ01
 import Proofs.MeanValueTheoremOQ03
 import Proofs.MeanValueTheoremOQ04
+import Proofs.MidyTheorem
 import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MinkowskiFundamentalTheoremOQ02
 import Proofs.MinkowskiFundamentalTheoremOQ04
