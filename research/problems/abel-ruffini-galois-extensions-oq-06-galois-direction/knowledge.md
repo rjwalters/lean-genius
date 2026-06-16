@@ -705,3 +705,47 @@ still-`sorry` Steps 1 and 4. Mirror-verified (pin `2df2f015`):
 Remaining real blockers unchanged: Step 1 (~70-110 LOC derived-series/blocks
 route) and Step 4 (~80-150 LOC conjugation iso); both numerically certified, no
 Lean draft yet.
+
+## S17 Step-1 decomposition orphan (researcher-2, 2026-06-16)
+
+Step 1 (`sylow_p_unique`) is the file's true blocker and had **no draft** before
+this session (Steps 3/4/5 + main all had orphans/certs; Step 1 did not). Under
+the persisting dual blackout (Aristotle 404; `docker run` rc=124 hang) I produced
+a turnkey ORPHAN `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep1.lean`
+that **decomposes** the ~70–110 LOC monolith into individually-attackable pieces:
+
+- **Lemma A `exists_nontrivial_isMulComm_characteristic_of_solvable` — PROVED**
+  (drafted, build-pending). Generic over any `[Group G] [Nontrivial G]
+  [IsSolvable G]`: returns `∃ A, A.Characteristic ∧ Nontrivial A ∧
+  IsMulCommutative A` (the last nontrivial derived-series term). Proof spine:
+  `Nat.find` on `IsSolvable.solvable`; `d>0` via `derivedSeries_zero` + `top_ne_bot`;
+  characteristic via the `derivedSeries_characteristic` instance; nontrivial via
+  `Subgroup.nontrivial_iff_ne_bot` + `Nat.find_min`; abelian via
+  `derivedSeries_succ` ⇒ `⁅A,A⁆=⊥` ⇒ `commutator_eq_bot_iff_le_centralizer` ⇒
+  `le_centralizer_iff_isMulCommutative`. **Reusable across sibling solvable-group
+  slugs** (OQ-07 etc.) — it is the generic "minimal nontrivial abelian
+  characteristic subgroup" extraction. This collapses route steps 1+4 of Risk R4.
+- **Lemma B `normalSubgroup_isTransitive_of_nontrivial` — `sorry`.** Nontrivial
+  `A ⊴ H`, faithful primitive ⇒ `IsPretransitive ↥A (ZMod p)`. Bearers in scope
+  (`IsBlock.orbit_of_normal` Blocks.lean:475; `IsBlock.subsingleton_or_eq_univ`
+  Primitive.lean:115; `isPretransitive_iff_orbit_eq_univ` Transitive.lean:54).
+  Only nontrivial wiring: exhibit the moved point from `Nontrivial ↥A` +
+  `FaithfulSMul ↥H (ZMod p)`.
+- **Lemma C `prime_dvd_card_of_isPretransitive` — `sorry`.** Orbit–stabilizer
+  (`card_orbit_mul_card_stabilizer_eq_card_group` Quotient.lean:180), transported
+  from `↥H` (Step-3 orphan Step A) to `↥A`.
+- **Assembly `sylow_p_unique` — `sorry`.** From A–C: `A` abelian ⇒ Sylow `Q ⊴ ↥A`
+  (`CommGroup.ofIsMulCommutative` + `normal_of_comm`) ⇒ char
+  (`Sylow.characteristic_of_normal`); `A` char ⇒ normal in `↥H` ⇒
+  `(Q.map A.subtype).Normal` via instance `ConjAct.normal_of_characteristic_of_normal`
+  (ConjAct.lean:260, 0-LOC); `|Q|=p` via `p∣|A|∣|H|` + Legendre
+  (`padicValNat_factorial_self`); `Sylow.ofCard` (Sylow.lean:102) packages it;
+  `Sylow.unique_of_normal` (Sylow.lean:710) ⇒ `Subsingleton`.
+
+All 16 bearers re-verified against offline `/Users/rwalters/GitHub/mathlib4` @
+pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. NOTE `Sylow.unique_of_normal`
+returns `Unique` (→ `Subsingleton` free) and `characteristic_of_normal`/`ofCard`
+need `[Finite (Sylow p ↥H)]` / `[Finite ↥H]` (present, `H ≤ S_p` finite).
+UNVERIFIED — no build backend; first Docker-up session: build the orphan, fix
+elaboration on the `?`-marked spots, discharge B/C/assembly, fold into the
+registered stub. 5 sorries on the registered file intact (no `.lean` change there).
