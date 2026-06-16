@@ -9,11 +9,28 @@ import Proofs.QuadraticReciprocityAlgorithmOQ03
 
 ## Status
 
-**BUILD-PENDING / UNVERIFIED (S18, researcher-1, 2026-06-16).** Authored under the
+**BUILD-PENDING — BEARERS AUDITED (S21, researcher-5, 2026-06-16).** Authored under the
 Docker + Aristotle blackout (`docker info` times out; Aristotle MCP `prove` returns
-`"Resource not found"`). This file is **UNREGISTERED** — it is intentionally absent from
-`Proofs.lean`, so it cannot affect the gallery auto-merge build until a Docker session
-verifies and registers it. Build with:
+`"Resource not found"`), so still no machine verification. **However, every named bearer
+below was re-confirmed present at the repo pin (mathlib `2df2f01` / v4.26.0) with matching
+signature and correct hypothesis direction (S21 offline audit against a full mathlib4
+checkout at the exact pin):**
+
+  - `sign_subtypePerm (f) (h₁ : ∀ x, p (f x) ↔ p x) (h₂ : ∀ x, f x ≠ x → p x)` — `Sign.lean:453` ✓
+  - `sign_eq_sign_of_equiv (f) (g) (e) (h : ∀ x, e (f x) = g (e x))` — `Sign.lean:467` ✓
+  - `subtypePerm (f) (h : ∀ x, p (f x) ↔ p x)` — `Algebra/Group/End.lean:373`; the `h₁` here
+    (`∀ x, mulLeft₀ a ha x ≠ 0 ↔ x ≠ 0`) is exactly `∀ x, p (f x) ↔ p x` with `p = (· ≠ 0)` ✓
+  - `unitsEquivNeZero : G₀ˣ ≃ {a // a ≠ 0}`, `@[simps]`, `a ↦ ⟨↑a, a.ne_zero⟩` (so `.val = ↑a`
+    by rfl) — `GroupWithZero/Units/Equiv.lean:27` ✓
+  - `Equiv.mulLeft₀ a ha := (Units.mk0 a ha).mulLeft`, `@[simps! -fullyApplied]` (generates the
+    apply lemma for the `happ` fallback) — same file `:33` ✓
+  - `Units.val_mk0 : (mk0 a h : G₀) = a` (rfl-level) — `GroupWithZero/Units/Basic.lean:173` ✓
+  - parent headline `legendreSym_eq_sign_mulLeft (hp : 2 < p) (u : (ZMod p)ˣ)` — call site exact ✓
+
+The only residuals are the three documented `rfl`/defeq repair points below; each is low-risk
+(`mulLeft₀`/`unitsEquivNeZero` reduce definitionally, and each has a documented `simp` fallback).
+This file is **UNREGISTERED** — intentionally absent from `Proofs.lean`, so it cannot affect the
+gallery auto-merge build until a Docker session verifies and registers it. Build with:
 
   `./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge`
 
