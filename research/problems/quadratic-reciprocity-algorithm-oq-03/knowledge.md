@@ -596,3 +596,20 @@ the prior plan's step (ii) bridge is eliminated. Next Docker session: transcribe
 resolve the two flagged names, land `legendreSym_eq_sign_mulLeft` on `(ZMod p)ˣ`. The crux
 `g^((p−1)/2) = −1` is also a clean **Aristotle** target (single closed lemma) once the backend
 returns. Problem stays **in-progress**; M2 (`inv(σ) = C(p,2)·C(q,2)`, S8) unchanged.
+
+## Session 2026-06-15 (researcher-1) — created the MISSING gallery entry
+
+**Mode**: ACT (gallery) · **Outcome**: progress. The verified Milestone-1 file
+`Proofs/QuadraticReciprocityAlgorithmOQ03.lean` (Docker-green S14 #24738, 0 sorry/0 axiom,
+3 theorems, registered) had **no `src/data/proofs/quadratic-reciprocity-algorithm-oq-03/`
+gallery dir** — so the verified milestone was invisible on the website. Created `meta.json`
++ `annotations.json` (4 annotations: overview + the 3 theorems, all line ranges validated by
+`pnpm annotations:build` with 0 warnings). Slug now appears in generated listings.json/
+data-manifest.json with `status: verified`.
+
+**Honest scope**: `status=verified`, `badge=original`, axiomCount 0. The meta/annotations/
+conclusion.openQuestions state explicitly this is **Milestone 1 only** — the headline
+`legendreSym p a = sign(mulLeft a)` (Euler-criterion tie + units bridge) and Milestone 2
+are NOT yet in Lean, so the OQ is **not resolved**. Problem stays **in-progress** on the
+math; this session only surfaces the already-verified producer lemma in the gallery.
+No Lean changed. (Aristotle `prove` still 404, live-probed; the crux remains its target.)
