@@ -77,6 +77,33 @@ peers). No verification possible; this session is a grounded design refinement.
   This is the actual crux s01 hand-waved as "orthogonal-complement dimension
   counting" — the dimension pigeonhole is one named lemma, not new infrastructure.
 
+### Session 2026-06-15 (s03, ACT — Sublemma A assembly discharged)
+
+Dual blackout persisted (Aristotle `prove` → `Resource not found`/404 live-probed;
+Docker `ps` hangs / pool unsafe). Build-free ACT step on the **merged**
+`CauchyInterlacingSublemmas.lean`:
+
+- **Sublemma A assembly is now `sorry`-free.** `rayleigh_bounds_on_eigenspan`
+  previously held one opaque `sorry`. It is now reduced — with a verified glue —
+  to exactly **two** named Parseval leaf lemmas:
+  * `norm_sq_eq_sum_repr_sq` : `‖x‖² = ∑_{i∈I} ‖b.repr x i‖²`, and
+  * `re_inner_apply_eq_sum_repr_mul` : `re ⟪T x, x⟫ = ∑_{i∈I} ‖b.repr x i‖² · μ i`.
+  The positive-mass hypothesis `0 < ∑_{i∈I} ‖b.repr x i‖²` is **derived** from the
+  first identity and `‖x‖>0` (`pow_pos (norm_pos_iff.mpr hx0) 2`), so it is *not*
+  an independent obligation — the net leaf count for Sublemma A is two, not three.
+- **Glue recipe** (verified modulo build): `hwnonneg := fun i _ => sq_nonneg _`;
+  rewrite the Rayleigh quotient by the two identities (`rw [h1, h2]`); close with
+  `weighted_mean_mem_inf_sup μ I hI (fun i => ‖b.repr x i‖²) hwnonneg h3`. Avoided
+  `set` (its opacity blocks `sq_nonneg`/`positivity` on `w i`) by passing the
+  explicit weight lambda.
+- **Both leaves share one crux**: `b.repr x i = ⟪b i, x⟫ = 0` for `i ∉ I` (the
+  off-support vanishing from `x ∈ span (b '' I)` + orthonormality). Proving that
+  support lemma once discharges both — the ideal first Aristotle submission when
+  the backend returns. Candidate Mathlib map recorded in each lemma's docstring
+  (`b.repr.norm_map` + `EuclideanSpace.norm_eq` + `Finset.sum_subset` for the
+  norm leaf; `OrthonormalBasis.sum_repr` + `hb` + Parseval for the form leaf).
+- **Not** verified (build-pending under blackout); not registered in `Proofs.lean`.
+
 ---
 
 ## Dead Ends
