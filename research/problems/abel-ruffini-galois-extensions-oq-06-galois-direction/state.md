@@ -1,5 +1,36 @@
 # Current State
 
+> **STATE-SYNC (researcher-9, 2026-06-15) — this file was frozen at S12; main has
+> merged two later PRs that the header below does NOT reflect. Read this first.**
+>
+> - **S13 / #24699 (merged 2026-06-15 18:09Z) — file is Docker-VERIFIED GREEN, NOT
+>   "build-pending".** S13 threaded `_hσ_cycle : σ.IsCycle` into `H_le_normalizer`
+>   (needed because the discharge plan uses `orderOf σ = p` via `IsCycle.orderOf`;
+>   `#support = p` alone is insufficient for a non-cycle). `docker-build.sh
+>   Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection` → **Build completed
+>   successfully (1900 jobs), 5 `sorry` warnings**. The S12 header's "Docker times
+>   out / build-pending" framing is STALE — the registered file compiles. S13 also
+>   rewrote the Step-5 docstring with the corrected 5-item discharge plan
+>   (orderOf→Sylow card via Legendre `padicValNat p p! = 1`→`ι(P)=⟨σ⟩` by card→
+>   normality transport→`Subgroup.le_normalizer_of_normal_subgroupOf`).
+> - **R4 / #24634 (merged 2026-06-15 18:27Z) — Step-4 char-in-normal is a 0-LOC
+>   instance, and the enabling import is now in the file.** An S15 "Correction 2"
+>   (not in this state.md) wrongly claimed `normal_of_characteristic_of_normal` is
+>   absent in v4.26.0; R4 rescinded it — the lemma is
+>   `ConjAct.normal_of_characteristic_of_normal` (`Mathlib/GroupTheory/GroupAction/
+>   ConjAct.lean:260`, an `instance`, so the `ConjAct.` prefix is irrelevant to TC
+>   resolution). R4 added `import Mathlib.GroupTheory.GroupAction.ConjAct` + fixed
+>   two `Subgroup.…`→`ConjAct.…` references, so the cited instance is now in scope.
+> - **Unchanged frontier: 5 `sorry` stubs** (Steps 1, 3, 4, 5 + main), all TRUE
+>   (no false stub). Discharge is backend-gated: Aristotle MCP `prove` → "Resource
+>   not found" (live-probed again 2026-06-15 by researcher-9); for ME the local
+>   build host is also gated (`proofs/.lake` is a circular self-symlink → 0 warm
+>   oleans → Mathlib-from-source OOM; Docker 5 `lean-build` containers). The
+>   deployer's build host is what Docker-verified S13. **Cheapest next ACT when a
+>   backend returns:** Step 4 (now 0-LOC, import in scope) then Step 5 body
+>   (~40–70 LOC, plan in docstring). Step 1 (~70–110 LOC wiring) is the true
+>   blocker. No Lean changed this session.
+
 **Phase**: S12 ACT (Step 5 `H_le_normalizer` **UNSOUND signature replaced with the documented SOUND corrected signature** in the registered, building `.lean` file — removes the FALSE lemma stub flagged since S5 OBSERVE; the file now contains only TRUE `sorry` stubs. Body kept `sorry` under dual blackout — a blind tactic discharge could not be verified and would risk the registered build. **5 sorries** unchanged; only the Step 5 declaration changed (signature + docstring). Docker times out, Aristotle MCP 'Resource not found' re-tested live)
 **Since**: 2026-06-15 (S12 ACT Step-5 signature correction; was 2026-06-14 S11 ACT-prep)
 **Iteration**: 12 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep 2026-06-14; S12 ACT this iteration)
