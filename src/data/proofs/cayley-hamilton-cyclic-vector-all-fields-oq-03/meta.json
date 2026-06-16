@@ -28,17 +28,20 @@
     "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 221,
-    "theoremCount": 3,
+    "lineCount": 310,
+    "theoremCount": 6,
     "definitionCount": 2,
-    "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, and FiniteDimensional bases. Build-pending verification under current Docker contention; all Mathlib bearers name-checked against the pinned rev (v4.26.0). The PID-module half of OQ-03 is recorded as an explicit open gap, not formalized here.",
+    "assumptions": "No axioms or sorries. Uses Mathlib's LinearMap.toMatrix / toMatrixAlgEquiv, minpoly.algEquiv_eq, Matrix charpoly API, FiniteDimensional bases, and (for the Section V span bridge) basisOfLinearIndependentOfCardEqFinrank, Fintype.linearIndependent_iff, and the Polynomial natDegree API. The span bridge also imports the registered module-theoretic file CayleyHamiltonMinpolyOQ05OQ01OQ03 (NonderogatoryModule.cyclicSubspace / finiteSpan_le_cyclicSubspace). Build-pending verification under current Docker contention; all Mathlib bearers name-checked against the pinned rev (v4.26.0), and the Section V Krylov-independence argument mirrors the compiled matrix proof CyclicCommutant.krylov_linearIndependent. The PID-module half of OQ-03 is recorded as an explicit open gap, not formalized here.",
     "dateAdded": "2026-06-15",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "operator_nonderogatory_has_cyclic_vector: a finite-dimensional linear operator T with (minpoly K T).natDegree = finrank K V has a cyclic vector — the coordinate-free form of the matrix cyclic-vector theorem, with no chosen basis in the statement",
       "matrix_nonderog_of_minpoly_natDegree: a matrix whose minimal polynomial has degree n is nonderogatory (minpoly = charpoly), via the monic-cofactor argument on minpoly ∣ charpoly",
       "toMatrix_mulVec_repr: the basis-transport bridge (toMatrix b b f).mulVec (b.repr x) = b.repr (f x), proved from LinearMap.toMatrix_apply, intertwining operator application with matrix-vector multiplication",
-      "IsCyclicVectorOp / IsNonderogatoryOp: coordinate-free operator definitions matching the matrix-level GeneralCyclicVector notions"
+      "IsCyclicVectorOp / IsNonderogatoryOp: coordinate-free operator definitions matching the matrix-level GeneralCyclicVector notions",
+      "krylov_linearIndependent_op: the finrank-many Krylov vectors {T^k v} of a vector cyclic in the annihilator-free sense are linearly independent (operator analogue of the compiled matrix lemma CyclicCommutant.krylov_linearIndependent)",
+      "cyclicSubspace_eq_top_of_isCyclicVectorOp: bridges the annihilator-free cyclicity IsCyclicVectorOp to the span form NonderogatoryModule.cyclicSubspace T v = top",
+      "operator_nonderogatory_has_span_cyclic_vector: capstone restating the main theorem in the registered module-theoretic span vocabulary (NonderogatoryModule.IsCyclicVector), connecting OQ-03's operator half to Mathlib's Module/cyclic-subspace infrastructure"
     ],
     "historicalContext": "The cyclic-vector (nonderogatory) theorem is classically stated for a linear operator on a finite-dimensional vector space (Hoffman & Kunze §7.2, Roman §10.4), not just for matrices. The gallery's parent entries prove it for concrete matrices M ∈ Kⁿˣⁿ. This entry supplies the standard basis-reduction that recovers the operator statement: choose any basis, pass to the matrix of T, invoke the matrix theorem, and transport the resulting cyclic vector back through the coordinate isomorphism. The key invariance is that the minimal polynomial is unchanged under the algebra isomorphism End K V ≃ₐ Matrix (toMatrixAlgEquiv), so the nonderogatory hypothesis transfers verbatim.",
     "proofStrategy": "Pick b := Module.finBasis K V (index Fin n, n = finrank). Let M := toMatrix b b T. (1) minpoly K M = minpoly K T by minpoly.algEquiv_eq applied to toMatrixAlgEquiv b, so deg = n. (2) minpoly ∣ charpoly with both monic of degree n forces minpoly K M = M.charpoly, i.e. M nonderogatory. (3) The matrix theorem nonderogatory_has_cyclic_vector yields a cyclic w : Fin n → K. (4) v := b.equivFun.symm w transports back: b.repr (aeval T p v) = (aeval M p).mulVec w via toMatrix_mulVec_repr and aeval_algHom_apply, so aeval T p v = 0 ⟺ (aeval M p).mulVec w = 0, and matrix cyclicity of w gives operator cyclicity of v."
@@ -72,12 +75,13 @@
   "leanFile": {
     "imports": [
       "Mathlib",
-      "Proofs.CayleyHamiltonCyclicVectorAllFields"
+      "Proofs.CayleyHamiltonCyclicVectorAllFields",
+      "Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ03"
     ],
     "namespace": "CyclicVectorOperator",
-    "lineCount": 221,
+    "lineCount": 310,
     "axiomCount": 0,
-    "theoremCount": 3,
+    "theoremCount": 6,
     "definitionCount": 2,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",
     "sorries": 0,

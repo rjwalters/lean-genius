@@ -48,14 +48,33 @@
   consequences; we record it as an explicit open gap below rather than
   attempting it here (see `## PID direction` at the end).
 
+  ## Span-form bridge (Section V)
+
+  The operator definition `IsCyclicVectorOp` used above is the *annihilator-free*
+  form ("no nonzero polynomial of degree `< finrank` kills `v`"). Section V
+  reconciles it with the standard *span* form of cyclicity from the registered
+  module-theoretic development `NonderogatoryModule` (in
+  `CayleyHamiltonMinpolyOQ05OQ01OQ03.lean`), where
+  `IsCyclicVector T v := cyclicSubspace T v = ⊤`. The link is linear
+  independence of the Krylov vectors `{Tᵏ v}_{k < finrank}`: being `finrank`-many
+  independent vectors they form a basis, so their span — which lies inside the
+  cyclic subspace — is already `⊤`. The capstone
+  `operator_nonderogatory_has_span_cyclic_vector` restates the main theorem in
+  this span vocabulary, connecting OQ-03's operator half to Mathlib's
+  `Module`/cyclic-subspace infrastructure as the problem statement requests.
+
   ## Status: 0 sorries, 0 axioms. Build-pending under Docker contention; the
   Mathlib bearers (`LinearMap.toMatrixAlgEquiv`, `minpoly.algEquiv_eq`,
   `LinearMap.toMatrix_apply`, `Matrix.charpoly_natDegree_eq_dim`,
   `Matrix.aeval_self_charpoly`, `Polynomial.aeval_algHom_apply`,
-  `Basis.equivFun_apply`) are name-checked against pinned rev 2df2f01 / v4.26.0.
+  `Basis.equivFun_apply`, `basisOfLinearIndependentOfCardEqFinrank`,
+  `Fintype.linearIndependent_iff`, `natDegree_C_mul_X_pow_le`) are name-checked
+  against pinned rev 2df2f01 / v4.26.0; the Section V Krylov-independence
+  argument mirrors the compiled matrix proof `CyclicCommutant.krylov_linearIndependent`.
 -/
 import Mathlib
 import Proofs.CayleyHamiltonCyclicVectorAllFields
+import Proofs.CayleyHamiltonMinpolyOQ05OQ01OQ03
 
 noncomputable section
 
@@ -193,6 +212,76 @@ theorem operator_nonderogatory_has_cyclic_vector [FiniteDimensional K V]
   rw [hbridge, hpann]
   funext i
   simp
+
+-- ============================================================
+-- SECTION V: Bridge to the span-form cyclic subspace
+-- ============================================================
+
+/-- The Krylov vectors `{Tᵏ v}_{k < finrank}` of a vector that is cyclic in the
+    annihilator-free sense (`IsCyclicVectorOp`) are linearly independent.
+
+    A linear dependence `∑_{k<n} c_k Tᵏ v = 0` is exactly the polynomial
+    `p = ∑_{k<n} c_k Xᵏ` (degree `< n`) annihilating `v`, so `IsCyclicVectorOp`
+    forces `p = 0`, i.e. all `c_k = 0`. This is the operator analogue of
+    `CyclicCommutant.krylov_linearIndependent` (matrix version). -/
+theorem krylov_linearIndependent_op [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (h : IsCyclicVectorOp T v) :
+    LinearIndependent K (fun k : Fin (Module.finrank K V) => (T ^ (k : ℕ)) v) := by
+  rw [Fintype.linearIndependent_iff]
+  intro c hc i
+  set n := Module.finrank K V with hn
+  have hnpos : 0 < n := lt_of_le_of_lt (Nat.zero_le (i : ℕ)) i.isLt
+  set p := ∑ k : Fin n, C (c k) * X ^ (k : ℕ) with hp_def
+  have hp_aeval : aeval T p = ∑ k : Fin n, c k • T ^ (k : ℕ) := by
+    simp only [p, map_sum, map_mul, map_pow, aeval_C, aeval_X,
+               Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
+  have hp_ann : (aeval T p) v = 0 := by
+    rw [hp_aeval]
+    have hsum : (∑ k : Fin n, c k • T ^ (k : ℕ)) v
+        = ∑ k : Fin n, c k • (T ^ (k : ℕ)) v := by
+      simp only [LinearMap.sum_apply, LinearMap.smul_apply]
+    rw [hsum, hc]
+  have hp_deg : p.natDegree < n := by
+    apply lt_of_le_of_lt (natDegree_sum_le _ _)
+    apply (Finset.sup_lt_iff hnpos).mpr
+    intro k _; exact lt_of_le_of_lt (natDegree_C_mul_X_pow_le (c k) ↑k) k.isLt
+  have hp_zero : p = 0 := h p hp_deg hp_ann
+  have h_coeff := congr_arg (Polynomial.coeff · ↑i) hp_zero
+  simp only [Polynomial.coeff_zero, p, C_mul_X_pow_eq_monomial,
+             finset_sum_coeff, coeff_monomial] at h_coeff
+  simpa [Fin.val_injective.eq_iff] using h_coeff
+
+/-- **Bridge.** A vector cyclic in the annihilator-free sense `IsCyclicVectorOp`
+    is also cyclic in the span sense of `NonderogatoryModule`: its Krylov orbit
+    `{Tᵏ v}` spans the whole space. Since the `finrank`-many Krylov vectors are
+    linearly independent (`krylov_linearIndependent_op`) and `finrank K V` of
+    them form a basis, their span is `⊤`; this span sits inside the cyclic
+    subspace, so the cyclic subspace is `⊤`. -/
+theorem cyclicSubspace_eq_top_of_isCyclicVectorOp [FiniteDimensional K V]
+    (T : Module.End K V) (v : V) (h : IsCyclicVectorOp T v) :
+    NonderogatoryModule.cyclicSubspace T v = ⊤ := by
+  have hli := krylov_linearIndependent_op T v h
+  have hcard : Fintype.card (Fin (Module.finrank K V)) = Module.finrank K V :=
+    Fintype.card_fin _
+  have hspan :
+      Submodule.span K
+          (Set.range fun k : Fin (Module.finrank K V) => (T ^ (k : ℕ)) v) = ⊤ := by
+    have hb := (basisOfLinearIndependentOfCardEqFinrank hli hcard).span_eq
+    simpa only [coe_basisOfLinearIndependentOfCardEqFinrank] using hb
+  rw [eq_top_iff, ← hspan]
+  exact NonderogatoryModule.finiteSpan_le_cyclicSubspace T v (Module.finrank K V)
+
+/-- **Capstone (span form).** A nonderogatory operator on a finite-dimensional
+    space has a vector whose Krylov orbit spans the whole space — i.e. a cyclic
+    vector in the span-based sense `NonderogatoryModule.IsCyclicVector`. This
+    recasts `operator_nonderogatory_has_cyclic_vector` in the vocabulary of the
+    registered module-theoretic cyclic-subspace development, connecting OQ-03's
+    operator half to the `Module`/cyclic-subspace infrastructure. -/
+theorem operator_nonderogatory_has_span_cyclic_vector [FiniteDimensional K V]
+    (T : Module.End K V) (h : IsNonderogatoryOp T) :
+    ∃ v, NonderogatoryModule.cyclicSubspace T v = ⊤ := by
+  obtain ⟨v, hv⟩ := operator_nonderogatory_has_cyclic_vector T h
+  exact ⟨v, cyclicSubspace_eq_top_of_isCyclicVectorOp T v hv⟩
 
 end CyclicVectorOperator
 
