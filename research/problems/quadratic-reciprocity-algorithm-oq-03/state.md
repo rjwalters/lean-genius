@@ -1,10 +1,29 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT (build-pending) — M1 Zolotarev sign computation in Lean (generator + arbitrary element)
+**Phase**: ACT — M1 VERIFIED + REGISTERED; headline crux written (build-pending on branch)
 **Path**: full
-**Since**: 2026-06-15 (S10 ACT — first Lean file for oq-03)
-**Iteration**: 13
+**Since**: 2026-06-15 (S14 — M1 Docker-verified green; S15 — crux added)
+**Iteration**: 15
+
+## Session 15 sync (2026-06-16, researcher-3) — state corrected to match repo reality
+Earlier session blocks (S10–S13) and the old "Next Action" below are STALE: they framed M1 as
+build-pending and proposed creating a NEW file `QuadraticReciprocityZolotarev.lean`. Repo reality:
+
+- **M1 is VERIFIED and REGISTERED on main.** File `proofs/Proofs/QuadraticReciprocityAlgorithmOQ03.lean`
+  (NOT a `...Zolotarev.lean`) holds all three M1 lemmas — `isCycle_mulLeft_of_generator`,
+  `sign_mulLeft_generator`, `sign_mulLeft_eq_neg_one_zpow` — 0 sorry / 0 axiom, Docker-green
+  (S14, researcher-6), registered at `Proofs.lean:2771`. **Do NOT redo M1 or create a duplicate file.**
+- **S15 headline crux is written, build-pending, on branch `research/qra-oq03-crux` (no PR yet):**
+  `primitiveRoot_pow_half_eq_neg_one` — for a generator `g` of `(ZMod p)ˣ`, `(g:ZMod p)^((p-1)/2) = -1`
+  (Euler tie crux, stated in the field to dodge the units `Neg`-instance question). Never compiled
+  (dual blackout: Aristotle 404 live-probed, Docker 7-container saturated + circular `proofs/.lake`
+  self-symlink → 0 oleans). Build-verify it the moment Docker is at ≤2 containers and `.lake` is sane.
+- **Remaining for the headline `legendreSym p a = sign (mulLeft a)`:** the field/units sign bridge
+  to lift the crux + `sign_mulLeft_eq_neg_one_zpow` onto `(ZMod p)ˣ`, assembled with Euler's
+  criterion. Finicky NT — submit to Aristotle when non-404 rather than blind-writing.
+
+No machine verification this session (dual blackout reconfirmed live). Doc-only sync.
 
 ## Session 13 (2026-06-15, researcher-5) — added arbitrary-element Zolotarev sign lemma (build-pending)
 Dual blackout reconfirmed live (`docker info` times out; Aristotle `prove` returns `Resource not
@@ -73,24 +92,23 @@ the grid-transpose sign lemma (B, `sign(σ)=(-1)^((p-1)/2·(q-1)/2)`, S6-certifi
 M1; the exact statement is now pinned and numerically de-risked (was "gated/assess after M1").
 
 ## Attempt Count
-- Total attempts: 0 (no Lean built — Docker down, no materialized Mathlib)
-- Current approach attempts: 0
+- Total attempts: 1 (M1 Docker-built green S14; crux S15 still build-pending)
+- Current approach attempts: 1
 - Approaches tried: 1 surveyed (Zolotarev direct), 1 deprioritized (algorithm-confluence)
 
 ## Blockers
-- Docker build environment down (`docker info` times out); cannot compile/verify Lean this session.
-- No new foundational Mathlib gap for Milestone 1 — it is buildable once the environment returns.
+- Dual blackout (reconfirmed live S15): Aristotle `prove` 404; Docker 7-container saturated on an
+  8 GB VM + circular `proofs/.lake` self-symlink (0 oleans) — no safe/successful build possible.
+- Headline assembly (Euler tie + field/units sign bridge) is finicky NT; Aristotle target, not blind-write.
 
 ## Next Action
-**ACT Milestone 1 (when Docker returns):** new file `proofs/Proofs/QuadraticReciprocityZolotarev.lean`
-proving `legendreSym p (a.val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft₀ a ha) : ℤ)` for odd prime `p`,
-`a : ZMod p`, `a ≠ 0`. Steps: (1) `π_g` is a single `(p−1)`-cycle on the units ⇒ `sign = −1`;
-(2) `a = g^k`, `sign (π_a) = (−1)^k` via `map_pow`; (3) Euler's criterion gives `legendreSym p a =
-(−1)^k`. **All bearers confirmed @ v4.26.0 (rev `2df2f01`) — no name-discovery left** (see S4 in
-knowledge.md for the file:line table): `Equiv.mulLeft₀` (Algebra/GroupWithZero/Units/Equiv.lean:34,
-returns `Perm G₀`), `IsCyclic Rˣ` instance (RingTheory/IntegralDomain.lean:137) + `IsCyclic.exists_generator`,
-`Equiv.Perm.IsCycle.sign` (GroupTheory/Perm/Cycle/Basic.lean:434), `legendreSym.eq_pow` /
-`euler_criterion` (NumberTheory/LegendreSymbol/Basic.lean:114/:62). Then create the gallery entry
-`src/data/proofs/quadratic-reciprocity-zolotarev/`.
+**Build-verify the S15 crux** on branch `research/qra-oq03-crux`:
+`./proofs/scripts/docker-build.sh Proofs.QuadraticReciprocityAlgorithmOQ03` the moment Docker is at
+≤2 containers AND `proofs/.lake` is a sane (non-circular) directory. If green, register/keep and the
+crux `primitiveRoot_pow_half_eq_neg_one` is discharged. Then assemble the headline
+`legendreSym p a = sign (mulLeft a)`: lift crux + `sign_mulLeft_eq_neg_one_zpow` from the field
+`ZMod p` onto `(ZMod p)ˣ` (field/units sign bridge) and tie via Euler's criterion
+`legendreSym.eq_pow`/`euler_criterion` (NumberTheory/LegendreSymbol/Basic.lean:114/:62) — submit the
+bridge to Aristotle when non-404 rather than hand-writing. M1 itself is DONE; do not recreate it.
 
-See knowledge.md for the full survey, Mathlib inventory, and the honesty flag on Milestone 2.
+See knowledge.md (S4 bearer table, S14/S15 notes) for the full survey and the honesty flag on Milestone 2.
