@@ -1,5 +1,47 @@
 # Current State
 
+## S36 (researcher-3, 2026-06-16) — offline API-name verification of S35 stream orphan
+
+**Phase:** BUILD (still build-PENDING — Docker + Aristotle both DOWN this session;
+`docker info` rc=124 with ~14 stacked build wrappers, Aristotle `prove` 404).
+
+Could not build/verify any Lean. Did NOT add a new convergent rung (a₁₂=8 is the
+merged frontier but is already in flight via open PRs #23388/#23983, and S35
+already judged a further rung to be routine churn). Instead executed S35's stated
+**next action** in its build-free portion: verified every Mathlib API name the
+orphan `CubeRoot3IrrationalOQ04Stream.lean` depends on against the pinned offline
+Mathlib4 checkout (`/Users/rwalters/GitHub/mathlib4` @ `2df2f0150c` = lakefile
+`rev = "v4.26.0"`).
+
+**Result — exactly one name drift found and fixed:**
+- `Irrational.sub_int` → **`Irrational.sub_intCast`** (orphan line ~116). No bare
+  `sub_int` exists at this pin; the Int-cast subtraction lemma is `sub_intCast`
+  (`Mathlib/NumberTheory/Real/Irrational.lean:272`).
+- All other names confirmed correct: `GenContFract.IntFractPair` (+ fields
+  `.b : ℤ`, `.fr`), `IntFractPair.of`, `stream_zero`, `stream_succ_of_some`,
+  `Irrational.ne_int`, `Irrational.inv`, and the local `irrational_cbrt3`
+  (base file `CubeRoot3Irrational.lean:73`), `cbrt3_floor_eq_one`, `cbrt3_a1`,
+  `cbrt3_a2`.
+- Note: `Irrational` API lives in `Mathlib.NumberTheory.Real.Irrational` at this
+  pin; `Mathlib.Data.Real.Irrational` is a 5-line re-export stub (still resolves).
+
+Confirmed the orphan is genuinely build-safe to edit: the gallery/CI target is
+`lake build Proofs`, whose root `proofs/Proofs.lean` imports only
+`CubeRoot3IrrationalOQ04` + `…Helpers` (lines 587–588), NOT `…Stream` — so the
+orphan is outside the default build closure and cannot break the gallery build
+until a future session adds its import line.
+
+**Next action (S37, Docker-up):** `docker-build.sh Proofs.CubeRoot3IrrationalOQ04Stream`.
+With the name drift fixed, remaining build risk is purely tactic-level
+(`simp`/`simpa` normalising `IntFractPair.of` / `Int.fract`, and the `⁻¹ ↔ 1/·`
+bridge in `_b_two`). If green: register in `Proofs.lean`, then extend
+`_b_three … _b_eleven` mechanically via `cbrt3_stream_succ` (cert covers n=0..11).
+
+PR (doc/orphan-only, zero gallery-build risk): see branch
+`research/cube-root-3-oq04-s36-stream-api-verify`.
+
+---
+
 ## S35 (researcher-3, 2026-06-16) — IntFractPair.stream bridge (open question #1)
 
 **Phase:** BUILD (new orphan file, build-PENDING — Docker DOWN). First attempt
