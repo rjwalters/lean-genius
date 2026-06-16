@@ -4,76 +4,17 @@
     "proofId": "greens-theorem-oq-02-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 42
+      "endLine": 32
     },
     "type": "context",
-    "title": "Why an Isolated, Unregistered Staging File",
-    "content": "The correction is not applied directly to the registered parent files. Fixing the false axiom requires a single signature change (`+hLineEq`) propagated through six consumers split across two *registered* files (`GreensTheoremOQ02.lean` and `GreensTheoremOQ02OQ04.lean`); such a multi-file refactor cannot be landed safely without an atomic, build-verified patch, which was impossible under the Docker + Aristotle outage this file was authored in.\n\nSo the fix is staged here under `_oriented`-suffixed names, proved in isolation, and ported back as one Docker-checked commit once tooling returns — at which point the suffix is dropped and both this file and `GreensTheoremOQ02Counterexample.lean` are retired. This is the standard axiom-integrity workflow: demonstrate the repair against a live counterexample first, land it coordinated second.",
-    "mathContext": "No new mathematics — a staging layer. The registered `greens_theorem_l1curl` is provably false (`greens_theorem_l1curl_refuted`: $0 = 1$); the patch lives here until it can be applied atomically.",
+    "title": "Why This File Remains: A Soundness Witness",
+    "content": "The orientation correction this file originally prototyped has **landed in the registered files**: `GreensTheoremOQ02.greens_theorem_l1curl` and its consumers (in both `GreensTheoremOQ02.lean` and `GreensTheoremOQ02OQ04.lean`) now carry the extra orientation hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`, tying the curve's circulation to the concrete counterclockwise four-edge rectangle integral `GreensTheoremOQ01.rectLineIntegral`. The previously separate `…_oriented` re-proofs that once lived here have therefore been deleted — they are now identical to the registered declarations.\n\nWhat remains is a single soundness witness. It opens exactly the siblings it needs: `GreensTheoremOQ01 (rectLineIntegral)` for the correctly-oriented rectangle integral, `GreensTheoremOQ02` for the curve/circulation vocabulary, and `GreensTheoremOQ02Counterexample` for the Session-5 unsound witness (`constCurve`, `cexP`, `cexQ`). This is the converse-facing check that the registered fix actually excludes the known counterexample.",
+    "mathContext": "Registered fix adds $\\oint_C(P\\,dx+Q\\,dy) = \\text{rectLineIntegral}\\,P\\,Q\\,a\\,b\\,c\\,d$ to the minimal-regularity Green's identity; this file only verifies that hypothesis genuinely excises the counterexample.",
     "significance": "context",
     "relatedConcepts": [
       "Axiom integrity",
-      "Coordinated refactor",
-      "Blast radius"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-greens-oq0202-dependencies",
-    "proofId": "greens-theorem-oq-02-oq-02",
-    "range": {
-      "startLine": 43,
-      "endLine": 51
-    },
-    "type": "context",
-    "title": "Dependency Architecture",
-    "content": "Each opened sibling supplies exactly one ingredient of the correction, making this file a thin re-statement-and-rethread layer:\n\n- `GreensTheoremOQ01 (rectLineIntegral)` — the concrete, correctly-oriented four-edge rectangle integral that `hLineEq` equates the circulation to (the keystone of the fix).\n- `GreensTheoremOQ02` — the three original consumers (`lineIntegral_zero_curl`, `lineIntegral_l1curl_smul`, `greens_oq1_from_l1curl`) plus the `LipschitzClosedCurve` / `lipschitzLineIntegral` vocabulary.\n- `GreensTheoremOQ02OQ04 (OneForm2D extDeriv1_2D)` — the remaining two consumers and the differential-form layer.\n- `GreensTheoremOQ02Counterexample (constCurve cexP cexQ …)` — the Session-5 unsound witness reused to verify excision.",
-    "mathContext": "$\\text{rectLineIntegral}\\,P\\,Q\\,a\\,b\\,c\\,d$ is the sum of the four oriented edge integrals of the rectangle $[a,b]\\times[c,d]$ — the explicit boundary orientation the abstract Lipschitz curve must match.",
-    "significance": "context",
-    "relatedConcepts": [
-      "Module dependencies",
-      "rectLineIntegral",
-      "Line integral"
-    ],
-    "prerequisites": []
-  },
-  {
-    "id": "ann-greens-oq0202-corrected-axiom",
-    "proofId": "greens-theorem-oq-02-oq-02",
-    "range": {
-      "startLine": 60,
-      "endLine": 72
-    },
-    "type": "axiom",
-    "title": "Orientation-Corrected Axiom",
-    "content": "`greens_theorem_l1curl_oriented` is the registered `greens_theorem_l1curl` plus ONE extra hypothesis `hLineEq : lipschitzLineIntegral P Q C = rectLineIntegral P Q a b c d`.\n\nThe registered axiom ties the Lipschitz curve to the rectangle only by `hTraversal` (the curve's image lies in the frontier), which constrains neither orientation nor winding nor non-degeneracy — and is therefore FALSE (a constant curve refutes it). `hLineEq` fixes the boundary orientation by equating the circulation with the concrete, correctly-oriented four-edge rectangle integral from OQ-01, excluding the degenerate/wrongly-oriented curves.",
-    "mathContext": "Adds $\\oint_C(P\\,dx+Q\\,dy) = \\text{rectLineIntegral}\\,P\\,Q\\,a\\,b\\,c\\,d$ to the minimal-regularity Green's identity, restoring soundness.",
-    "significance": "key",
-    "relatedConcepts": [
-      "Green's theorem",
       "Boundary orientation",
-      "Axiom integrity"
-    ],
-    "prerequisites": [
-      "Lipschitz curves and line integrals"
-    ]
-  },
-  {
-    "id": "ann-greens-oq0202-consumers",
-    "proofId": "greens-theorem-oq-02-oq-02",
-    "range": {
-      "startLine": 74,
-      "endLine": 172
-    },
-    "type": "theorem",
-    "title": "Re-threaded Consumers (Signature-Only Change)",
-    "content": "All five downstream consumers of the axiom are re-proved with the new `hLineEq` argument threaded through, each proof identical to the original plus the single extra hypothesis: `lineIntegral_zero_curl_oriented`, `lineIntegral_l1curl_smul_oriented`, `greens_oq1_from_l1curl_oriented` (mirroring `GreensTheoremOQ02`), and `greens_stokes_l1curl_oriented`, `closed_l1form_zero_integral_oriented` (mirroring `GreensTheoremOQ02OQ04`).\n\nThis confirms the correction is a pure signature-threading change: no consumer's mathematics is altered. It is the build-ready blueprint for porting the fix back onto the two registered files as a single Docker-verified patch.",
-    "mathContext": "Zero-curl ⇒ zero circulation; scaling invariance; OQ-01 recovery; Stokes form; closed-form vanishing — all carry the extra orientation hypothesis unchanged.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "Signature threading",
-      "Blast radius",
-      "Coordinated refactor"
+      "rectLineIntegral"
     ],
     "prerequisites": []
   },
@@ -81,19 +22,21 @@
     "id": "ann-greens-oq0202-excision",
     "proofId": "greens-theorem-oq-02-oq-02",
     "range": {
-      "startLine": 174,
-      "endLine": 182
+      "startLine": 44,
+      "endLine": 56
     },
     "type": "theorem",
     "title": "Counterexample Provably Excised",
-    "content": "`counterexample_violates_hLineEq` proves the Session-5 unsound witness — the constant curve with `P = 0`, `Q(x,y) = x` — fails the new orientation hypothesis: its `lipschitzLineIntegral = 0` but its `rectLineIntegral = 1` (via the proven `unit_square_area_as_line_integral`).\n\nSo the corrected axiom is genuinely inapplicable to the curve that refuted the original. This shows the unsoundness is REMOVED, not merely hidden behind a stronger hypothesis.",
-    "mathContext": "$0 = \\text{lipschitzLineIntegral} \\ne \\text{rectLineIntegral} = 1$, so $h_{\\text{LineEq}}$ fails for the counterexample — soundness is demonstrably regained.",
+    "content": "`counterexample_violates_hLineEq` proves the Session-5 unsound witness — the constant curve `constCurve` with field `P = 0`, `Q(x,y) = x` — fails the new orientation hypothesis: its `lipschitzLineIntegral` is `0` (`constCurve_lineIntegral_zero`) while its four-edge `rectLineIntegral` is `1` (the proven `GreensTheoremOQ01.unit_square_area_as_line_integral`). Since `0 ≠ 1`, `hLineEq` cannot hold for this curve.\n\nSo the corrected axiom is vacuously inapplicable to the very curve that refuted the original `greens_theorem_l1curl` (the spurious `0 = 1`). This shows the unsoundness is genuinely REMOVED, not merely hidden behind a stronger hypothesis.",
+    "mathContext": "$0 = \\text{lipschitzLineIntegral}\\,P\\,Q\\,C \\ne \\text{rectLineIntegral}\\,P\\,Q\\,0\\,1\\,0\\,1 = 1$, so $h_{\\text{LineEq}}$ fails for the counterexample — soundness is demonstrably regained.",
     "significance": "key",
     "relatedConcepts": [
       "Soundness verification",
       "Counterexample",
       "Green's theorem"
     ],
-    "prerequisites": []
+    "prerequisites": [
+      "Lipschitz curves and line integrals"
+    ]
   }
 ]
