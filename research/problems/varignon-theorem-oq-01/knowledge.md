@@ -54,13 +54,18 @@ to a diagonal of `ABCD` and has half its length.
 - Pure `ring` identity; no Mathlib geometry lemmas required.
 
 ### Build Status
-- **Not yet build-verified.** Host build blocked: `proofs/.lake` is a circular
-  self-symlink, which forces `docker-build.sh` to re-clone all of Mathlib
-  (cache volume not picked up) — observed `info: mathlib: cloning ...` and
-  aborted to protect the host. File committed as an **orphan** (not registered
-  in `Proofs.lean`) so it cannot affect main's build until verified.
+- **BUILD-VERIFIED GREEN.** `docker-build.sh Proofs.VarignonTheorem` →
+  `Built Proofs.VarignonTheorem (8.2s)`, `Build completed successfully
+  (3058 jobs)`, 0 errors / 0 sorry / 0 axiom. One fix during build: `midpoint2`
+  needed `noncomputable` (real division). Two cosmetic unused-variable warnings
+  (`D` in PQ-lemma, `B` in SR-lemma) from the uniform 4-vertex signatures — kept
+  for readability.
+- The earlier `info: mathlib: cloning ...` log is NORMAL (clones Mathlib source,
+  then `lake exe cache get` pulls oleans ~5 min); it is NOT a blackout. The doom
+  signal is `Building Mathlib` (thousands of jobs compiling from source).
+- Registered: `import Proofs.VarignonTheorem` added to `Proofs.lean`. Gallery
+  data added: `src/data/proofs/varignon-theorem-oq-01/{meta.json,annotations.json}`.
 
 ### Next Steps
-- When `.lake` is healthy (non-symlink) or on a clean checkout: build by name
-  `docker-build.sh Proofs.VarignonTheorem`, then register one import line in
-  `Proofs.lean` and add gallery `meta.json` + annotations (enricher scope).
+- COMPLETE. Optional follow-ups: area-ratio corollary (Varignon parallelogram =
+  ½ area of the quadrilateral), or the iterated-midpoint-quadrilateral limit.

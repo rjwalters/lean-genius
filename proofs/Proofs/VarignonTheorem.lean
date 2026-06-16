@@ -34,7 +34,7 @@ namespace VarignonTheorem
 abbrev Point := ℝ × ℝ
 
 /-- The midpoint of two points (the componentwise average). -/
-def midpoint2 (X Y : Point) : Point := ((X.1 + Y.1) / 2, (X.2 + Y.2) / 2)
+noncomputable def midpoint2 (X Y : Point) : Point := ((X.1 + Y.1) / 2, (X.2 + Y.2) / 2)
 
 /-- **Strong form (side `PQ`).** The side `PQ` of the Varignon parallelogram —
 the segment between the midpoints of `AB` and `BC` — equals half the diagonal
