@@ -38,7 +38,9 @@
     "keyInsights": [
       "σ-finiteness of both measures is exactly what supplies the HaveLebesgueDecomposition instance, so the classical statement falls out of Mathlib's general (typeclass-gated) theory with no extra hypotheses.",
       "ν-a.e. uniqueness does not need absolute continuity or σ-finiteness of μ: it follows from Measure.rnDeriv_withDensity (the derivative of a withDensity recovers the integrand ν-a.e.) plus transitivity, needing only σ-finiteness of ν.",
-      "The Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) holds for any σ-finite pair without assuming μ ≪ ν; absolute continuity is precisely the condition that the singular part vanishes."
+      "The Lebesgue decomposition μ = μ.singularPart ν + ν.withDensity (μ.rnDeriv ν) holds for any σ-finite pair without assuming μ ≪ ν; absolute continuity is precisely the condition that the singular part vanishes.",
+      "The integral characterization ∫⁻_s (dμ/dν) dν = μ s is proved, not assumed: it factors through withDensity_apply followed by the canonical-witness identity, so the 'density' property is a theorem about μ.rnDeriv ν rather than part of its definition.",
+      "Every theorem in the file is a one- to three-line corollary of Mathlib's HaveLebesgueDecomposition API, illustrating that the gallery contribution is curatorial — a clean, citable σ-finite package — rather than new mathematics."
     ],
     "prerequisites": [
       "Measures, withDensity, and the lower Lebesgue integral",
