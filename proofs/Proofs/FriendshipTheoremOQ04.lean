@@ -54,6 +54,18 @@ that has no infinite analogue:
   as infinite as the finite theorem permits, with a single hub and every other vertex
   of degree two.
 
+* `nonadjacent_neighborSet_equinum` — **regularity (finiteness-free).** Any two
+  *non-adjacent* vertices `u`, `v` of a friendship graph have *equinumerous*
+  neighbourhoods: the map sending each neighbour `w` of `u` to the unique common
+  neighbour of `w` and `v` is a bijection `N(u) → N(v)`. This is the infinite analogue
+  of the classical "non-adjacent vertices have equal degree" lemma — the step the
+  finite proof uses to deduce the graph is regular before invoking the spectral
+  argument. It pins down the structure of the **negative** side of OQ-04: a friendship
+  graph *without* a universal vertex necessarily contains non-adjacent pairs, so it is
+  regular; the C₅ free-amalgamation counterexample is ℵ₀-regular. Stated as a
+  `Set.BijOn` so it carries content on infinite neighbourhoods (where `ncard = 0`),
+  with no finiteness used.
+
 Where the finite proof breaks: the spectral step
 `FriendshipTheorem.friendship_regular_implies_universal` is entirely finite-matrix
 algebra (trace, finite eigenvalue multiplicities, integrality) and has no infinite
@@ -240,5 +252,67 @@ theorem unique_infinite_degree_vertex (hF : IsFriendshipGraph G) [Infinite V]
   · exact infinite_degree_vertex_eq_universal hF c hc w
   · rintro rfl
     exact universal_vertex_infinite_degree hF w hc
+
+/-- **Regularity (finiteness-free).** In any friendship graph, two *non-adjacent*
+vertices `u`, `v` have equinumerous neighbourhoods: the map sending each neighbour `w`
+of `u` to the unique common neighbour of `w` and `v` is a bijection `N(u) → N(v)`.
+This is the infinite analogue of the classical "non-adjacent vertices have equal
+degree" lemma — the step the finite proof uses to conclude the graph is regular before
+the spectral argument. It characterizes the *negative* side of OQ-04: a friendship
+graph with no universal vertex contains non-adjacent pairs, hence is regular (the C₅
+free-amalgamation counterexample is ℵ₀-regular). The conclusion is a `Set.BijOn`, so it
+retains content on infinite neighbourhoods (where `ncard` collapses to `0`); no
+finiteness is used. -/
+theorem nonadjacent_neighborSet_equinum (hF : IsFriendshipGraph G)
+    {u v : V} (hadj : ¬ G.Adj u v) :
+    ∃ f : V → V, Set.BijOn f (G.neighborSet u) (G.neighborSet v) := by
+  classical
+  -- Choose, for each `w ≠ v`, the unique common neighbour of `w` and `v`.
+  have hex : ∀ w : V, ∃ x : V, w ≠ v → (G.Adj w x ∧ G.Adj v x) := by
+    intro w
+    by_cases h : w = v
+    · exact ⟨v, fun hc => absurd h hc⟩
+    · obtain ⟨x, hx⟩ := exists_common_neighbor hF h
+      exact ⟨x, fun _ => hx⟩
+  choose f hf using hex
+  refine ⟨f, ?_, ?_, ?_⟩
+  · -- MapsTo: `f` sends a neighbour of `u` to a neighbour of `v`.
+    intro w hw
+    rw [SimpleGraph.mem_neighborSet] at hw
+    have hwv : w ≠ v := fun h => hadj (h ▸ hw)
+    rw [SimpleGraph.mem_neighborSet]
+    exact (hf w hwv).2
+  · -- InjOn: distinct neighbours of `u` map to distinct common neighbours.
+    intro w₁ hw₁ w₂ hw₂ heq
+    rw [SimpleGraph.mem_neighborSet] at hw₁ hw₂
+    have hw₁v : w₁ ≠ v := fun h => hadj (h ▸ hw₁)
+    have hw₂v : w₂ ≠ v := fun h => hadj (h ▸ hw₂)
+    obtain ⟨h1w, h1v⟩ := hf w₁ hw₁v
+    obtain ⟨h2w, h2v⟩ := hf w₂ hw₂v
+    have hxu : f w₁ ≠ u := fun h => hadj ((h ▸ h1v).symm)
+    have hmem₁ : w₁ ∈ G.commonNeighbors (f w₁) u :=
+      (SimpleGraph.mem_commonNeighbors G).mpr ⟨h1w.symm, hw₁⟩
+    have hmem₂ : w₂ ∈ G.commonNeighbors (f w₁) u := by
+      have hb : w₂ ∈ G.commonNeighbors (f w₂) u :=
+        (SimpleGraph.mem_commonNeighbors G).mpr ⟨h2w.symm, hw₂⟩
+      rwa [← heq] at hb
+    obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp (hF (f w₁) u hxu)
+    rw [ha, Set.mem_singleton_iff] at hmem₁ hmem₂
+    rw [hmem₁, hmem₂]
+  · -- SurjOn: every neighbour of `v` is hit, via the common neighbour with `u`.
+    intro y hy
+    rw [SimpleGraph.mem_neighborSet] at hy
+    have hyu : y ≠ u := fun h => hadj ((h ▸ hy).symm)
+    obtain ⟨w, hyw, huw⟩ := exists_common_neighbor hF hyu
+    have hwv : w ≠ v := fun h => hadj (h ▸ huw)
+    refine ⟨w, (SimpleGraph.mem_neighborSet G u w).mpr huw, ?_⟩
+    obtain ⟨hwf, hvf⟩ := hf w hwv
+    have hy_mem : y ∈ G.commonNeighbors w v :=
+      (SimpleGraph.mem_commonNeighbors G).mpr ⟨hyw.symm, hy⟩
+    have hfw_mem : f w ∈ G.commonNeighbors w v :=
+      (SimpleGraph.mem_commonNeighbors G).mpr ⟨hwf, hvf⟩
+    obtain ⟨a, ha⟩ := Set.ncard_eq_one.mp (hF w v hwv)
+    rw [ha, Set.mem_singleton_iff] at hy_mem hfw_mem
+    rw [hfw_mem, hy_mem]
 
 end FriendshipTheoremOQ04
