@@ -122,13 +122,9 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     exact (not_irrational_int z) hirr
   rw [orbit, Finset.card_image_of_injOn hinj, Finset.card_range]
 
-/-- **The Three-Gap (Three-Distance / Steinhaus) Theorem.**
-
-    For every irrational `α` and every `N ≥ 1`, the `N` arc lengths cut out of
-    the circle by the orbit `{0, {α}, …, {(N-1)α}}` take at most three distinct
-    values.
-
-    PROOF PATH (van Ravenstein / Sós, elementary):
+/-
+    PROOF PATH for the core classification `exists_gap_triple`
+    (van Ravenstein / Sós, elementary):
 
     1. Let `p` be the least index in `1 ≤ p < N` minimizing the *forward* return
        `{pα}` (the smallest clockwise gap at the point `0`), and `q` the least
@@ -153,9 +149,49 @@ theorem orbit_card {α : ℝ} (hα : Irrational α) (N : ℕ) :
     `Finset.exists_min_image`; the index arithmetic is `Nat`/`Finset.range`
     order theory only.  No new Mathlib infrastructure is required — only the
     case analysis above, which is the remaining work. -/
+/-- A finite set covered by an explicit triple `{a, b, c}` has at most three
+    elements.  Pure `Finset` cardinality arithmetic — the engine behind the
+    `≤ 3` bound once the gap lengths are classified. -/
+theorem card_le_three_of_subset_triple {s : Finset ℝ} {a b c : ℝ}
+    (h : s ⊆ ({a, b, c} : Finset ℝ)) : s.card ≤ 3 := by
+  have hc : ({a, b, c} : Finset ℝ).card ≤ 3 := by
+    have h1 := Finset.card_insert_le a ({b, c} : Finset ℝ)
+    have h2 := Finset.card_insert_le b ({c} : Finset ℝ)
+    have h3 : ({c} : Finset ℝ).card = 1 := Finset.card_singleton c
+    omega
+  exact le_trans (Finset.card_le_card h) hc
+
+/-- **Core combinatorial classification (Sós–Surányi–Świerczkowski /
+    van Ravenstein).**  This is the genuine mathematical content of the
+    three-gap theorem, isolated as a single statement.
+
+    There exist three real values `a, b, c` — the two "short" gaps `{pα}` and
+    `1 - {qα}` (where `p, q` are the Steinhaus first-return generators) and the
+    "long" gap `{pα} + (1 - {qα})` — such that
+
+      * every forward gap length is one of `a, b, c`  (the `⊆` part), and
+      * the long gap is the sum of the two short gaps  (`a + b = c`).
+
+    The `≤ 3` bound (`three_gap`) and the additive relation
+    (`three_gap_additive`) both follow from this lemma by pure finite
+    reasoning, so this is the sole remaining proof obligation.  The proof path
+    is the classification in step 2 of the docstring below: walk the orbit in
+    circular order and show each point's forward neighbour is reached by adding
+    `p` or `q` to its index. -/
+theorem exists_gap_triple (α : ℝ) (hα : Irrational α) {N : ℕ} (hN : 1 ≤ N) :
+    ∃ a b c : ℝ, a + b = c ∧ gapLengths α N ⊆ ({a, b, c} : Finset ℝ) := by
+  sorry
+
+/-- **The Three-Gap (Three-Distance / Steinhaus) Theorem.**
+
+    For every irrational `α` and every `N ≥ 1`, the `N` arc lengths cut out of
+    the circle by the orbit take at most three distinct values.  Reduced to the
+    combinatorial classification `exists_gap_triple` via the cardinality engine
+    `card_le_three_of_subset_triple`. -/
 theorem three_gap (α : ℝ) (hα : Irrational α) {N : ℕ} (hN : 1 ≤ N) :
     (gapLengths α N).card ≤ 3 := by
-  sorry
+  obtain ⟨a, b, c, _, hsub⟩ := exists_gap_triple α hα hN
+  exact card_le_three_of_subset_triple hsub
 
 /-- **Additive structure of the three gaps.**  When three distinct gap lengths
     occur, one of them is the sum of the other two (hence equal to the largest).
@@ -165,6 +201,52 @@ theorem three_gap_additive (α : ℝ) (hα : Irrational α) {N : ℕ} (hN : 1 �
     (h3 : (gapLengths α N).card = 3) :
     ∃ a b c : ℝ, a ∈ gapLengths α N ∧ b ∈ gapLengths α N ∧ c ∈ gapLengths α N ∧
       a ≠ b ∧ a ≠ c ∧ b ≠ c ∧ a + b = c := by
-  sorry
+  obtain ⟨a, b, c, hsum, hsub⟩ := exists_gap_triple α hα hN
+  -- The triple has card ≤ 3, and since `gapLengths` (card 3) sits inside it,
+  -- equality of cardinalities forces `gapLengths = {a, b, c}`.
+  have hcard3 : ({a, b, c} : Finset ℝ).card ≤ 3 := by
+    have h1 := Finset.card_insert_le a ({b, c} : Finset ℝ)
+    have h2 := Finset.card_insert_le b ({c} : Finset ℝ)
+    have hs : ({c} : Finset ℝ).card = 1 := Finset.card_singleton c
+    omega
+  have heq : gapLengths α N = ({a, b, c} : Finset ℝ) :=
+    Finset.eq_of_subset_of_card_le hsub (by rw [h3]; exact hcard3)
+  have htc : ({a, b, c} : Finset ℝ).card = 3 := by rw [← heq]; exact h3
+  -- A three-element literal `{a, b, c}` forces the three entries pairwise
+  -- distinct: collapsing any pair drops the cardinality to ≤ 2.
+  -- A 2-element literal has card ≤ 2 (used to contradict `htc : card = 3`).
+  have pair_le : ∀ x y : ℝ, ({x, y} : Finset ℝ).card ≤ 2 := by
+    intro x y
+    have hx := Finset.card_insert_le x ({y} : Finset ℝ)
+    have hy : ({y} : Finset ℝ).card = 1 := Finset.card_singleton y
+    omega
+  have hab : a ≠ b := by
+    intro he
+    rw [he] at htc
+    have hcol : ({b, b, c} : Finset ℝ) = ({b, c} : Finset ℝ) := by
+      apply Finset.ext; intro x
+      simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+    rw [hcol] at htc
+    have := pair_le b c; omega
+  have hac : a ≠ c := by
+    intro he
+    rw [he] at htc
+    have hcol : ({c, b, c} : Finset ℝ) = ({b, c} : Finset ℝ) := by
+      apply Finset.ext; intro x
+      simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+    rw [hcol] at htc
+    have := pair_le b c; omega
+  have hbc : b ≠ c := by
+    intro he
+    rw [he] at htc
+    have hcol : ({a, c, c} : Finset ℝ) = ({a, c} : Finset ℝ) := by
+      apply Finset.ext; intro x
+      simp only [Finset.mem_insert, Finset.mem_singleton]; tauto
+    rw [hcol] at htc
+    have := pair_le a c; omega
+  refine ⟨a, b, c, ?_, ?_, ?_, hab, hac, hbc, hsum⟩
+  · rw [heq]; simp
+  · rw [heq]; simp
+  · rw [heq]; simp
 
 end Erdos998ThreeGap
