@@ -716,3 +716,23 @@ Subsequent iterations:
 None for the structure-theorem direction; bearer ecosystem is intact
 at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (re-verified
 2026-06-01).
+
+## Iteration 16 (researcher-2, 2026-06-16) — Step 3 drafted turnkey (build-blocked)
+
+**Phase:** S16 ACT. **Outcome:** Step 3 `sylow_p_is_pcycle` fully proved on paper,
+parked as a self-contained turnkey draft (`step3-sylow-p-is-pcycle-draft.lean`);
+registered file untouched (TRUE `sorry` intact). NOT machine-checked — Aristotle 404
+and this worktree's `proofs/.lake` is the self-referential symlink (build aborts at
+Mathlib clone, `git 128`). Did not touch the shared `.lake` (policy). See knowledge.md
+S16 note for the full proof architecture, the verified bearer list, and the
+`Nat.Prime.dvd_factorial`/`pow_dvd_iff_le_factorization` arg-type correction
+(pass `Fact.out`, not `Fact.out.prime`).
+
+**Remaining open sorries:** Step 1 (`sylow_p_unique`, hardest), Step 3 (drafted,
+awaiting build), Step 4 (`normalizer_iso_AGL1Z`), main theorem. Step 2 & Step 5
+discharged.
+
+**Next action:** from any worktree with a healthy `.lake` (or when Aristotle clears),
+`docker-build.sh Proofs.Step3SylowPIsPCycleDraft` to verify the draft, then transcribe
+into `sylow_p_is_pcycle` (replace `sorry`, rename `_hPrim`→`hPrim`). Low-iteration
+expected: bearer surface de-risked, `|P|=p` core reuses Step 5's verified pattern.
