@@ -2,7 +2,7 @@
   "id": "fermat-defect-one",
   "title": "Fermat Defect-One Conjecture",
   "slug": "fermat-defect-one",
-  "description": "The Fermat defect-one conjecture asks whether $|a^n + b^n - c^n| = 1$ admits a primitive nontrivial solution ($2 \\le a \\le b < c$, $\\gcd(a,b,c) = 1$) for every $n \\ge 3$ — the natural follow-up to Fermat's Last Theorem, which rules out the zero-defect case. Both signs of the defect are verified at $n = 3$: $6^3 + 8^3 + 1 = 9^3$ (negative) and $9^3 + 10^3 = 12^3 + 1$ (positive, a near-cousin of the Ramanujan-Hardy taxicab number 1729). The headline statement for all $n \\ge 3$ is left as an open conjecture (sorry placeholder).",
+  "description": "The Fermat defect-one conjecture asks whether $|a^n + b^n - c^n| = 1$ admits a primitive nontrivial solution ($2 \\le a \\le b < c$, $\\gcd(a,b,c) = 1$) for every $n \\ge 3$ — the natural follow-up to Fermat's Last Theorem, which rules out the zero-defect case. Both signs of the defect are verified at $n = 3$: $6^3 + 8^3 + 1 = 9^3$ (negative) and $9^3 + 10^3 = 12^3 + 1$ (positive, a near-cousin of the Ramanujan-Hardy taxicab number 1729). In fact each sign occurs *infinitely often* at $n = 3$ along explicit primitive polynomial families ($9t^3-1, 9t^4-3t, 9t^4$ for the negative defect; $9s^3+1, 9s^4, 9s^4+3s$ for the positive), so the set of attainable $c$ is infinite on both sides. The headline statement for all $n \\ge 3$ is left as an open conjecture (sorry placeholder).",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-09",
@@ -59,6 +59,8 @@
       "fermat_defect_three_neg: verified primitive negative-defect witness 6^3 + 8^3 + 1 = 9^3 (gcd(6,8,9)=1) via native_decide",
       "fermat_defect_three_pos: verified primitive positive-defect witness 9^3 + 10^3 = 12^3 + 1 (gcd(9,10,12)=1) via native_decide — the taxicab number 1729 shifted by one",
       "fermat_defect_three: derived defect-one existence at n=3 from the negative-defect benchmark",
+      "defect_pos_witnesses_infinite (FermatDefectOneFamilies.lean): the positive-defect family (9s^3+1, 9s^4, 9s^4+3s) gives infinitely many primitive witnesses at n=3 (set of attainable c is infinite, via a strictly-monotone injection)",
+      "defect_neg_witnesses_infinite (FermatDefectOneNegInfinitude.lean): the negative-defect family (9t^3-1, 9t^4-3t, 9t^4) gives infinitely many primitive witnesses at n=3, closing the sign symmetry — both signs occur infinitely often at n=3",
       "fermat_defect_one_exists: headline open conjecture stated as a sorry'd target for all n ≥ 3"
     ]
   },
