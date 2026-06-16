@@ -1,6 +1,8 @@
 /-
-Harmonic `*StatementOnly.lean` Aristotle/batch-submission file
-(format from Loom #22468; docs at research/SORRY-CLASSIFICATION.md).
+Möbius–floor identity (PROVEN, 0 sorries, 0 axioms). Originally an
+`*StatementOnly.lean` Aristotle/batch-submission stub (format from Loom #22468;
+docs at research/SORRY-CLASSIFICATION.md); the `sorry` has since been discharged
+by an elementary hyperbola-swap proof (see `moebius_mul_floor_sum_eq_one` below).
 
 Follow-up target for research problem `chebyshev-bounds-oq-04-oq-01-oq-01`
 (toward an elementary Selberg–Erdős proof of the Prime Number Theorem,
@@ -55,6 +57,7 @@ set_option linter.all false
 
 open scoped BigOperators
 open ArithmeticFunction
+open scoped ArithmeticFunction.Moebius
 
 namespace ChebyshevBoundsOQ04OQ01OQ01WeakMertens
 
@@ -74,6 +77,48 @@ using `Σ_{d ∣ n} μ(d) = δ_{n,1}` (`μ ∗ ζ = δ`).
 -/
 theorem moebius_mul_floor_sum_eq_one (N : ℕ) (hN : 1 ≤ N) :
     ∑ d ∈ Finset.Icc 1 N, μ d * (↑(N / d) : ℤ) = 1 := by
-  sorry
+  -- `Finset.Icc 1 N = Finset.Ioc 0 N` for ℕ, matching the counting lemma below.
+  have hIcc : Finset.Icc 1 N = Finset.Ioc 0 N := by
+    ext x; simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  -- `⌊N/d⌋` counts the multiples of `d` in `{1,…,N}`.
+  have hcard : ∀ d : ℕ,
+      (Finset.filter (fun k => d ∣ k) (Finset.Icc 1 N)).card = N / d := by
+    intro d
+    rw [hIcc, Nat.Ioc_filter_dvd_card_eq_div]
+  -- Rewrite each term `μ(d)·⌊N/d⌋` as an inner sum over `k ∈ {1,…,N}` guarded by `d ∣ k`.
+  have key : ∀ d : ℕ,
+      μ d * (↑(N / d) : ℤ)
+        = ∑ k ∈ Finset.Icc 1 N, (if d ∣ k then μ d else 0) := by
+    intro d
+    rw [Finset.sum_ite, Finset.sum_const_zero, add_zero, Finset.sum_const,
+      nsmul_eq_mul, hcard d]
+    ring
+  calc
+    ∑ d ∈ Finset.Icc 1 N, μ d * (↑(N / d) : ℤ)
+        = ∑ d ∈ Finset.Icc 1 N, ∑ k ∈ Finset.Icc 1 N, (if d ∣ k then μ d else 0) :=
+          Finset.sum_congr rfl (fun d _ => key d)
+    _ = ∑ k ∈ Finset.Icc 1 N, ∑ d ∈ Finset.Icc 1 N, (if d ∣ k then μ d else 0) :=
+          Finset.sum_comm
+    _ = ∑ k ∈ Finset.Icc 1 N, ∑ d ∈ k.divisors, μ d := by
+          refine Finset.sum_congr rfl (fun k hk => ?_)
+          simp only [Finset.mem_Icc] at hk
+          rw [← Finset.sum_filter]
+          congr 1
+          ext d
+          simp only [Finset.mem_filter, Finset.mem_Icc, Nat.mem_divisors]
+          constructor
+          · rintro ⟨⟨_, _⟩, hdvd⟩
+            exact ⟨hdvd, by omega⟩
+          · rintro ⟨hdvd, _⟩
+            have hkpos : 0 < k := by omega
+            have hd_le : d ≤ k := Nat.le_of_dvd hkpos hdvd
+            have hd_pos : 0 < d := Nat.pos_of_dvd_of_pos hdvd hkpos
+            exact ⟨⟨hd_pos, by omega⟩, hdvd⟩
+    _ = ∑ k ∈ Finset.Icc 1 N, (if k = 1 then (1 : ℤ) else 0) := by
+          refine Finset.sum_congr rfl (fun k _ => ?_)
+          rw [← ArithmeticFunction.coe_mul_zeta_apply,
+            ArithmeticFunction.moebius_mul_coe_zeta, ArithmeticFunction.one_apply]
+    _ = 1 := by
+          simp [Finset.sum_ite_eq', Finset.mem_Icc, hN]
 
 end ChebyshevBoundsOQ04OQ01OQ01WeakMertens
