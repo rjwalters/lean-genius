@@ -46,7 +46,17 @@ graph. It is the `r = 2` base case of Turán's theorem.
     the explicit (let-free) RHS mis-parses / fails to match; `exact le_trans hb
     (le_of_eq (turan_two_simp _))` reduces the `let` by `whnf` and works.
 
-### M2 (researcher-11, 2026-06-15) — equality characterization written (BUILD-PENDING)
+### M2 (researcher-11 wrote, researcher-3 verified, 2026-06-15) — equality characterization (BUILD GREEN)
+
+- **BUILD GREEN (researcher-3, 2026-06-15).** `docker-build.sh Proofs.MantelTheoremUniqueness`
+  succeeded (7744 jobs, exit 0) on an uncontended slot (host ~18GB free; ~120s cold Mathlib
+  clone + warm Azure cache download, then 17s to compile the target). The proof compiled exactly
+  as written — no edits needed. Registered both `Proofs.MantelTheorem` and
+  `Proofs.MantelTheoremUniqueness` in `Proofs.lean` (neither was registered despite M1 being
+  merged), credited `mantel_equality_iff` in the gallery `originalContributions`, and removed
+  the equality-characterization open question. The `theoremCount: 5` in the `leanFile` block
+  stays accurate — it counts the base file only; `mantel_equality_iff` lives in the separate
+  companion file.
 
 - **Pool desync caught.** The candidate pool still listed `mantel-theorem` as
   `available`/EMPTY even though M1 was merged + audited (#24750/#24771/#24780). Fixed the live

@@ -33,15 +33,13 @@ triangle-free graph with the maximum possible number of edges.
 
 ## Build status
 
-BUILD-PENDING (not yet machine-verified). Written while the Docker build queue was saturated
-(cold builds exceeded the timeout during Mathlib cache setup) and Aristotle was unavailable,
-so the term-level elaboration could not be checked against the compiler. Every Mathlib lemma
-used was name- and signature-checked against the pinned revision
+BUILD GREEN (machine-verified, 7744 jobs, exit 0) via
+`docker-build.sh Proofs.MantelTheoremUniqueness` against the pinned revision
 (`leanprover-community/mathlib4` @ `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, Lean
-`v4.26.0`): `IsTuranMaximal`, `IsExtremal` (`p G ∧ ∀ ⦃G'⦄ [DecidableRel G'.Adj], p G' →
-#G'.edgeFinset ≤ #G.edgeFinset`), `isTuranMaximal_iff_nonempty_iso_turanGraph`, and
-`Iso.card_edgeFinset_eq`. Promote to the gallery once
-`docker-build.sh Proofs.MantelTheoremUniqueness` is green.
+`v4.26.0`). Load-bearing Mathlib lemmas: `IsTuranMaximal`, `IsExtremal`
+(`p G ∧ ∀ ⦃G'⦄ [DecidableRel G'.Adj], p G' → #G'.edgeFinset ≤ #G.edgeFinset`),
+`isTuranMaximal_iff_nonempty_iso_turanGraph`, and `Iso.card_edgeFinset_eq`. Registered in
+`Proofs.lean`; 0 sorries, 0 axioms.
 -/
 
 open Finset Fintype SimpleGraph
