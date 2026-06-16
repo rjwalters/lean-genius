@@ -1,0 +1,110 @@
+[
+  {
+    "id": "miquel-isreal-def",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 46, "endLine": 47 },
+    "type": "definition",
+    "title": "The realness predicate",
+    "content": "Instead of using Mathlib's `Complex.im z = 0`, the proof defines `IsReal z` as the existence of a real `r` with `z = (r : ℂ)`. This existential form is exactly what makes the closure proofs one-liners: a witness for the product is the product of the witnesses, with no appeal to imaginary parts or conjugation.",
+    "mathContext": "$\\mathrm{IsReal}(z) :\\Leftrightarrow \\exists r \\in \\mathbb{R},\\ z = r$",
+    "significance": "key",
+    "relatedConcepts": ["complex numbers", "real subfield", "predicate closure"],
+    "prerequisites": ["complex numbers", "the embedding ℝ ↪ ℂ"]
+  },
+  {
+    "id": "miquel-isreal-closure",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 49, "endLine": 55 },
+    "type": "theorem",
+    "title": "Realness is closed under × and ÷",
+    "content": "The only structural facts the whole theorem needs: if `z` and `w` are real then so are `z * w` and `z / w`. Each proof destructs the witnesses `z = a`, `w = b` and supplies `a * b` (resp. `a / b`) as the new witness, closing with `push_cast; ring`. Division works even when `w = 0` because `a / 0 = 0` is still real in ℂ.",
+    "mathContext": "$z = a,\\ w = b \\ \\Rightarrow\\ z\\cdot w = ab,\\quad z / w = a/b$",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative closure", "field arithmetic", "push_cast"],
+    "prerequisites": ["field axioms", "coercion lemmas"]
+  },
+  {
+    "id": "miquel-crossratio-def",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 57, "endLine": 58 },
+    "type": "definition",
+    "title": "The cross-ratio",
+    "content": "The cross-ratio of four points is the projective invariant at the heart of the proof. It is `noncomputable` because it divides in ℂ. Its conformal invariance — preserved by Möbius transformations — is what lets a single algebraic quantity detect concyclicity.",
+    "mathContext": "$(a,b;c,d) = \\dfrac{(a-c)(b-d)}{(a-d)(b-c)}$",
+    "significance": "critical",
+    "relatedConcepts": ["cross-ratio", "Möbius transformation", "projective invariant", "conformal geometry"],
+    "prerequisites": ["complex numbers", "projective line"]
+  },
+  {
+    "id": "miquel-concyclic-collinear",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "definition",
+    "title": "Concyclicity and collinearity as realness",
+    "content": "The classical criterion: four points are concyclic-or-collinear exactly when their cross-ratio is real, and three points are collinear exactly when the ratio `(a-c)/(b-c)` is real. Encoding the geometry this way reduces every circle/line incidence in the theorem to a single realness assertion, which is then manipulated purely algebraically.",
+    "mathContext": "$\\text{Concyclic}(a,b,c,d) \\Leftrightarrow (a,b;c,d) \\in \\mathbb{R}; \\quad \\text{Collinear}(a,b,c) \\Leftrightarrow \\tfrac{a-c}{b-c} \\in \\mathbb{R}$",
+    "significance": "critical",
+    "relatedConcepts": ["concyclicity", "collinearity", "cross-ratio criterion", "inscribed angle"],
+    "prerequisites": ["cross-ratio", "circle geometry"]
+  },
+  {
+    "id": "miquel-theorem-statement",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 66, "endLine": 75 },
+    "type": "theorem",
+    "title": "The pivot theorem (conditional form)",
+    "content": "The sharp conditional statement: given the three side-incidences `Z ∈ AB`, `X ∈ BC`, `Y ∈ CA` and a point `M` already on circles `(AYZ)` and `(BZX)`, conclude `M` lies on `(CXY)`. Eight nondegeneracy hypotheses (distinctness of the relevant points) are made explicit so the denominators never vanish. This form deliberately avoids constructing the Miquel point as a circle-circle intersection.",
+    "mathContext": "$M \\in (AYZ) \\wedge M \\in (BZX) \\ \\Rightarrow\\ M \\in (CXY)$",
+    "significance": "critical",
+    "relatedConcepts": ["Miquel point", "pivot theorem", "triangle geometry", "circle concurrence"],
+    "prerequisites": ["triangle geometry", "concyclicity criterion"]
+  },
+  {
+    "id": "miquel-nondegeneracy",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 76, "endLine": 84 },
+    "type": "tactic",
+    "title": "Clearing the denominators",
+    "content": "Each distinctness hypothesis is turned into a nonvanishing difference via `sub_ne_zero.mpr`. These eight `≠ 0` facts are precisely the denominators that `field_simp` must discharge when it clears the three cross-ratio fractions in the key identity.",
+    "mathContext": "$A \\ne Y \\ \\Rightarrow\\ A - Y \\ne 0,\\ \\dots$",
+    "significance": "supporting",
+    "relatedConcepts": ["sub_ne_zero", "nondegeneracy", "field_simp side conditions"],
+    "prerequisites": ["field arithmetic"]
+  },
+  {
+    "id": "miquel-pivot-cancellation",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 85, "endLine": 89 },
+    "type": "insight",
+    "title": "Pivot cancellation — the algebraic miracle",
+    "content": "The crux of the entire proof: the product of the three Miquel cross-ratios is *independent of the pivot* `M`. Every factor containing `M` cancels, leaving a quantity built only from the triangle and the three side points. After unfolding `crossRatio`, a single `field_simp` proves the identity — the geometry has been compressed into one rational equation.",
+    "mathContext": "$(M,A;Y,Z)\\,(M,B;Z,X)\\,(M,C;X,Y) = \\dfrac{A-Z}{B-Z}\\cdot\\dfrac{B-X}{C-X}\\cdot\\dfrac{C-Y}{A-Y}$",
+    "significance": "critical",
+    "relatedConcepts": ["telescoping product", "pivot independence", "field_simp", "rational identity"],
+    "prerequisites": ["cross-ratio", "field arithmetic"]
+  },
+  {
+    "id": "miquel-rhs-real",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "concept",
+    "title": "The product is real",
+    "content": "The three right-hand factors are exactly the collinearity ratios for `Z ∈ AB`, `X ∈ BC`, `Y ∈ CA`, so each is real by hypothesis and their product is real by the closure lemma. Rewriting through `key`, the cross-ratio product inherits this realness. The first two cross-ratios are also shown nonzero, which is needed for the final division.",
+    "mathContext": "$\\tfrac{A-Z}{B-Z},\\ \\tfrac{B-X}{C-X},\\ \\tfrac{C-Y}{A-Y} \\in \\mathbb{R} \\ \\Rightarrow\\ \\text{product} \\in \\mathbb{R}$",
+    "significance": "key",
+    "relatedConcepts": ["collinearity ratios", "multiplicative closure", "div_ne_zero"],
+    "prerequisites": ["realness closure", "nonvanishing products"]
+  },
+  {
+    "id": "miquel-conclusion",
+    "proofId": "miquel-pivot-theorem-oq-01",
+    "range": { "startLine": 104, "endLine": 112 },
+    "type": "insight",
+    "title": "The third cross-ratio is a quotient of reals",
+    "content": "Final step: `M` on the first two circles makes the first two cross-ratios real, and their product is nonzero. Writing the third cross-ratio as (whole product) ÷ (first two) via `eq_div_iff`, it becomes a quotient of two reals — hence real — so `M` lies on the third circle `(CXY)`. No complex conjugation is ever used.",
+    "mathContext": "$(M,C;X,Y) = \\dfrac{\\text{real product}}{\\,(M,A;Y,Z)(M,B;Z,X)\\,} \\in \\mathbb{R}$",
+    "significance": "critical",
+    "relatedConcepts": ["quotient closure", "eq_div_iff", "Miquel point"],
+    "prerequisites": ["realness closure", "field arithmetic"]
+  }
+]
