@@ -7,7 +7,7 @@
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dihedral_group",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/InverseGaloisD4OQ01.lean",
     "tags": [
       "galois-theory",
@@ -22,7 +22,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 202,
-    "assumptions": "0 axioms, 0 sorries. BUILD-PENDING: written and registered while the Docker build host was unavailable; not yet machine-checked, hence status `formalized` (not `verified`). All proofs use only standard Mathlib DihedralGroup simp lemmas (r_mul_r, sr_mul_r, r_mul_sr, sr_mul_sr, inv_r, inv_sr, sr_mul_self, r_zero, orderOf_r_one, orderOf_sr) and Subgroup API (MonoidHom.range/mem_range, MonoidHom.ofInjective, Subgroup.mem_inf/mem_sup_left/mul_mem_sup/eq_bot_iff_forall, Nat.card_congr, ZMod.card). Imports: Proofs.InverseGaloisD4 (transitively Mathlib).",
+    "assumptions": "0 axioms, 0 sorries. MACHINE-CHECKED: Docker build green on 2026-06-15 (`docker-build.sh Proofs.InverseGaloisD4OQ01`, 7745 jobs, 0 errors; one cosmetic unused-simp-arg linter warning at line 144). Status upgraded `formalized` → `verified`. All proofs use only standard Mathlib DihedralGroup simp lemmas (r_mul_r, sr_mul_r, r_mul_sr, sr_mul_sr, inv_r, inv_sr, sr_mul_self, r_zero, orderOf_r_one, orderOf_sr) and Subgroup API (MonoidHom.range/mem_range, MonoidHom.ofInjective, Subgroup.mem_inf/mem_sup_left/mul_mem_sup/eq_bot_iff_forall, Nat.card_congr, ZMod.card). Imports: Proofs.InverseGaloisD4 (transitively Mathlib).",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-06-15",
     "theoremCount": 13,
@@ -132,7 +132,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Establishes the explicit internal semidirect-product decomposition D₄ ≅ ℤ/4 ⋊ ℤ/2 for the abstract group DihedralGroup 4: a normal rotation subgroup ≅ ℤ/4 (as an injective-hom range), the order-2 reflection sr 0, the defining inversion action sr·r·sr⁻¹ = r⁻¹, and a trivially-intersecting order-2 complement that together with the rotations generates the group. 13 theorems, 4 definitions, 0 axioms, 0 sorries (build verification pending Docker availability).",
+    "summary": "Establishes the explicit internal semidirect-product decomposition D₄ ≅ ℤ/4 ⋊ ℤ/2 for the abstract group DihedralGroup 4: a normal rotation subgroup ≅ ℤ/4 (as an injective-hom range), the order-2 reflection sr 0, the defining inversion action sr·r·sr⁻¹ = r⁻¹, and a trivially-intersecting order-2 complement that together with the rotations generates the group. 13 theorems, 4 definitions, 0 axioms, 0 sorries (machine-checked: Docker build green, 7745 jobs).",
     "implications": "Supplies the group-theoretic data the parent entry asserted but did not prove (it stops at |Gal| = 8). The decomposition is the natural foundation for two follow-ups: packaging the external `SemidirectProduct (Multiplicative (ZMod 4)) (Multiplicative (ZMod 2)) φ ≃* DihedralGroup 4`, and the OQ-03 bridge identifying the concrete Galois group with DihedralGroup 4.",
     "openQuestions": [
       "Package the external semidirect product: construct `φ : Multiplicative (ZMod 2) →* MulAut (Multiplicative (ZMod 4))` (the inversion automorphism) and the explicit `MulEquiv DihedralGroup 4 ≃* SemidirectProduct (Multiplicative (ZMod 4)) (Multiplicative (ZMod 2)) φ` built on the rotation/reflection data proved here.",

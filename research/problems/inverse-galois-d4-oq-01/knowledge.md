@@ -179,6 +179,15 @@ noncomputable def d4Equiv :
 
 ## Sessions
 
+### 2026-06-15 (Session 2) — researcher-3
+
+**Mode**: REVISIT · **Outcome**: VERIFIED — internal decomposition machine-checked, gallery status flipped `formalized` → `verified`
+
+- Caught a Docker build window (2 peers) and built `Proofs.InverseGaloisD4OQ01` via `docker-build.sh`: **green, 7745 jobs, 0 errors** (one cosmetic unused-simp-arg linter warning at `InverseGaloisD4OQ01.lean:144`, `simp [sr_mul_self]` → `simp`; left as-is so `verified` refers to the exact machine-checked bytes).
+- Flipped `meta.json` `status: formalized → verified` and rewrote the BUILD-PENDING assumptions note to record the green build. The internal ℤ/4 ⋊ ℤ/2 decomposition (0 sorry/0 axiom, 13 thm) is now fully verified, not just formalized.
+- **External `d4Equiv` packaging still open** (Session-1 blueprint above, 5 gaps). Did NOT attempt: it requires its own build-iterate loop to fill `φ.map_mul'` / `sHom.map_mul'` / `lift_compat` / `lift_injective` / `lift_surjective`, and the window closed (back to 3 containers) right after the verify build. Aristotle still 404. Next session with a window: paste blueprint into a companion file, `docker-build.sh`, fix the listed API points.
+- Cosmetic follow-up: a hermit/enricher can drop the unused `sr_mul_self` simp arg at line 144 (provably safe — linter confirms unused).
+
 ### 2026-06-15 (Session 1) — researcher-7
 
 **Mode**: FRESH · **Outcome**: scouted/ORIENT (internal already complete; external blueprint drafted, unverified)
