@@ -35,6 +35,23 @@
 
   See `research/problems/.../knowledge.md` §"S15 Step-3 discharge plan" for the
   strategy, the shared `|P| = p` kernel (common to Steps 1 and 3), and fallbacks.
+
+  ## S18 (researcher-1, 2026-06-16) — conclusion strengthened with `σ ∈ H`
+
+  The conclusion now carries a fourth conjunct `σ ∈ H`. It is FREE here: the
+  generator is `σ = ι a` with `ι = H.subtype ∘ (P:Subgroup H).subtype`, so
+  `σ = ↑((P:Subgroup H).subtype a)` is the coercion of an element of `↥H` and
+  `SetLike.coe_mem` closes it (~3 LOC, last bullet of the final `refine`).
+  Exporting `σ ∈ H` lets the main-theorem assembly
+  (`…GaloisDirectionMainAssembly.lean`) feed Step 5 `H_le_normalizer`'s `hσH`
+  hypothesis directly instead of re-deriving it via the `ι(P) = ⟨σ⟩`
+  cardinality argument (~25 LOC saved). The registered stub
+  `…GaloisDirection.lean:sylow_p_is_pcycle` was strengthened to the identical
+  signature (still `sorry`; the conjunct is well-typed, so the green 1900-job
+  build is unaffected). Confidence on the new bullet: the `rw [hιdef]; rfl`
+  step assumes `H.subtype` is defeq to the coercion (true: `Subgroup.coe_subtype`
+  is `rfl`); if the bare `rfl` fails on first build, replace with
+  `simp [hιdef, Subgroup.coe_subtype]`.
 -/
 import Mathlib
 
@@ -73,8 +90,8 @@ theorem sylow_p_is_pcycle
     (_hSolv : IsSolvable H)
     (P : Sylow p H) :
     ∃ σ : Equiv.Perm (ZMod p), σ.IsCycle ∧ σ.support.card = p ∧
-      ∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
-        Subgroup.zpowers σ := by
+      (∀ g : P, (H.subtype.comp (P : Subgroup H).subtype) g ∈
+        Subgroup.zpowers σ) ∧ σ ∈ H := by
   have hp : p.Prime := Fact.out
   haveI : NeZero p := ⟨hp.pos.ne'⟩
   -- ι : ↥P → S_p, composite of the two subgroup inclusions (a MonoidHom).
@@ -142,12 +159,19 @@ theorem sylow_p_is_pcycle
       rw [ZMod.card] at hle
       rw [hords]; omega
     exact Equiv.Perm.isCycle_of_prime_order hprime hsupp_lt
-  refine ⟨ι a, hcycσ, ?_, ?_⟩
+  refine ⟨ι a, hcycσ, ?_, ?_, ?_⟩
   · -- support.card = orderOf = p
     rw [← hcycσ.orderOf, hords]                                          -- ★ IsCycle.orderOf
   · -- ι sends every element of P into ⟨σ⟩
     intro g
     obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp (ha g)                 -- ★ (a ^ k = g)
     exact Subgroup.mem_zpowers_iff.mpr ⟨k, by rw [← map_zpow ι a k, hk]⟩  -- ★
+  · -- σ = ι a ∈ H, for free: ι a = H.subtype (P.subtype a) = ↑(P.subtype a),
+    -- the coercion of an element of ↥H, hence a member of H.
+    show ι a ∈ H
+    have hcoe : ι a = (((P : Subgroup H).subtype a : H) : Equiv.Perm (ZMod p)) := by
+      rw [hιdef]; rfl                                                    -- ? (defeq: H.subtype = coe)
+    rw [hcoe]
+    exact SetLike.coe_mem _                                             -- ★ ↑x ∈ H
 
 end AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep3

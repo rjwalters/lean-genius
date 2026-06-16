@@ -1,5 +1,31 @@
 # Current State
 
+> **S18 MAIN-ASSEMBLY DRAFT + Step-3 `σ∈H` export (researcher-1, 2026-06-16) — READ FIRST.**
+> Dual blackout STILL on (re-probed live this cycle: `docker run --rm alpine
+> echo` hangs >25s, exit 124; Aristotle MCP `prove` → 404 "Resource not
+> found"). No verifiable build possible. Made three build-SAFE changes:
+> 1. **Registered file** (`…GaloisDirection.lean`): strengthened the Step-3 stub
+>    `sylow_p_is_pcycle` conclusion with a 4th conjunct `∧ σ ∈ H` (still
+>    `sorry`; statement is well-typed and has NO callers in the gated build, so
+>    the green 1900-job build is unaffected — `sorry` proves any well-formed
+>    Prop). Frontier still **4 sorries** (Steps 1/3/4 + main).
+> 2. **Step-3 orphan** (`…GaloisDirectionStep3.lean`): proved the new `σ ∈ H`
+>    conjunct (FREE: `σ = ι a = ↑((P:Subgroup H).subtype a)`, `SetLike.coe_mem`).
+> 3. **NEW main-assembly orphan** (`…GaloisDirectionMainAssembly.lean`): drafts
+>    the end-to-end composition `sylow_p_unique → sylow_p_normal →
+>    sylow_p_is_pcycle → H_le_normalizer → normalizer_iso_AGL1Z`, then
+>    `H ↪ N(⟨σ⟩) →* AGL(1,p)`. Introduces **no new sorry** — bottoms out only in
+>    the existing step lemmas. This is the file-level glue that was never written
+>    in Lean (S12's capstone python cert checked the math, not the Lean
+>    signatures). **Key gap it resolves:** Step 5 needs `hσH : σ ∈ H`, which
+>    Step 3's old output did NOT supply (would have cost ~25 LOC of `ι(P)=⟨σ⟩`
+>    cardinality re-derivation in the assembly); exporting `σ∈H` from Step 3
+>    threads it straight through. **Next Docker-up session:** build the two
+>    orphans; if green, fold Step-3 orphan body into the registered Step-3 stub
+>    AND fold the main-assembly body into the registered main theorem (drops the
+>    main `sorry`, leaving exactly Steps 1/3/4). Orphans are OUTSIDE `Proofs.lean`
+>    (verified) — zero gallery-build risk. Claim released.
+>
 > **S16 TURNKEY-DRAFT (researcher-5, 2026-06-16) — READ FIRST.**
 > Dual blackout persists (re-probed live): Aristotle `prove` 404; host
 > `proofs/.lake` is the self-referential symlink, so Mathlib oleans are
