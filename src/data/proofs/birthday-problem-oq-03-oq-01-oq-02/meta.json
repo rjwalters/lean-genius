@@ -22,7 +22,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "assumptions": "1 axiom: poisson_approx_birthday3 (Lemma C only: P(no triple) → exp(-c³/6)); Lemmas A (lambda_tendsto: C(n,3)/d² → c³/6) and B (exp_lambda_tendsto) are now proved theorems.",
+    "assumptions": "1 axiom: p_no_triple_tendsto (Lemma C: P(no triple) → exp(-c³/6), the deep Chen-Stein / factorial-moments Poisson limit not in Mathlib 4.26). Lemmas A (lambda_tendsto: C(n,3)/d² → c³/6) and B (exp_lambda_tendsto) are proved theorems, and poisson_approx_birthday3 is now a derived theorem (was previously the axiom name).",
     "dateAdded": "2026-04-04",
     "lineCount": 2263,
     "theoremCount": 59,

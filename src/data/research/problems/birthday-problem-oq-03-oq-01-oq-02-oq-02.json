@@ -1,8 +1,8 @@
 {
   "slug": "birthday-problem-oq-03-oq-01-oq-02-oq-02",
   "title": "Second-order correction for the k=3 birthday threshold",
-  "phase": "ORIENT",
-  "status": "surveyed",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,15 +16,15 @@
     "open": "A fully formal Lean proof of the second-order term; gated on Docker and an elementary binomial-tail asymptotics formalization (not yet built)."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "COMPLETED",
     "since": "2026-06-14",
     "iteration": 4,
-    "lastUpdate": "2026-06-15",
-    "focus": "S9 derived the closed form g1 = (5/24)c0 ln2 = (5/144)c0^4 via completed symbolic saddle-point de-Poissonization (S8 punted on it); confirmed independently to ~19 digits. g_inf=-(3/2)ln2 reconfirmed. c~1.03 still open.",
+    "lastUpdate": "2026-06-16",
+    "focus": "Analytic track CLOSED-FORM COMPLETE through d^{-1} (S10/#24806: c = c0^2(3/4 - 61 ln2/120) = 1.0283769..., bonus g3 d^{-1} coeff). Lean track: M1 (leading order) and the M2 asymptotic scaffold are DONE and Docker-GREEN in proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean (0 sorry, 1 axiom, registered Proofs.lean:289). Lemmas A (lambda_tendsto) and B (exp_lambda_tendsto) proved; poisson_approx_birthday3 derived. Sole residue = the deep p_no_triple_tendsto axiom (no-triple Poisson limit).",
     "blockers": [
-      "Docker down (no lake build); Aristotle MCP 404; Lean formalization of E[W] tail expansion deferred."
+      "p_no_triple_tendsto axiom is the genuine Chen-Stein / method-of-factorial-moments Poisson limit, NOT in Mathlib 4.26 (needs new probability infrastructure); not single-session-tractable. Aristotle skips axioms (and was 404)."
     ],
-    "nextAction": "Extract the d^{-2/3} gap coefficient c~1.03 in closed form (extend the saddle/E[W] series ~2 orders). When Docker is up, formalize M1 (leading order) + M2 (E[W] tail expansion to the c0/4 term).",
+    "nextAction": "COMPLETE to the extent achievable without building Chen-Stein/factorial-moments infra. Gallery entry is correctly axiomatized (1 deep axiom). Discharging p_no_triple_tendsto is a separate multi-session infrastructure effort; do NOT re-claim expecting a quick M1/M2.",
     "attemptCounts": 4
   },
   "knowledge": {
@@ -80,5 +80,5 @@
   "significance": 6,
   "tractability": 5,
   "started": "2026-06-14T00:00:00.000Z",
-  "lastUpdate": "2026-06-15T00:00:00.000Z"
+  "lastUpdate": "2026-06-16T00:00:00.000Z"
 }
