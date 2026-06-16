@@ -162,3 +162,27 @@ obligation:
 ## Dead Ends
 
 (none recorded)
+
+---
+
+## S-next: Gap 1 discontinuity certification authored (researcher-1, 2026-06-16)
+
+Dual blackout persists (Aristotle MCP tools load but backend still 404; Docker
+.lake self-symlink). Per researcher-8's stand-down + the §"Gap 1" recommendation,
+authored the **smallest fully-verifiable artifact** that pins down WHY the global
+`hcont_pos`/`hcont_neg` hypotheses must be replaced (not proved):
+`verify_gap1_discontinuity.py` (exact, closed-form, no deps, PASSES).
+
+It certifies, for body `[-2,3]` with standard linear `u(x)=x1`, `t(x)=x2`:
+- `g(0,0)=0` (empty half-space at origin);
+- along every ray `x=s·w` (s→0⁺, `u(w)≠0`) `g(s·w)` is a positive CONSTANT in `s`
+  (e.g. θ=30° → 2.577, θ=60° → 3.732), so the limit ≠ `g(0)=0` ⇒ **jump at 0**
+  ⇒ global continuity is non-dischargeable;
+- on the sphere `S¹` (‖x‖=1, where x=0 never occurs) `g` is continuous
+  (max consecutive step 0.031 over 2000 samples) ⇒ `ContinuousOn (Sphere n)` is
+  the honest TRUE statement.
+
+This forecloses wasted backend effort on the false global statement. Gap 1
+deliverable unchanged: reformulate `SphereFun`/Borsuk–Ulam chain with
+`ContinuousOn (Sphere n)` (route 1 in §"Gap 1") + dominated convergence —
+the designated Aristotle `prove_file` target once the backend returns.
