@@ -21,20 +21,30 @@
 >   ConjAct.lean:260`, an `instance`, so the `ConjAct.` prefix is irrelevant to TC
 >   resolution). R4 added `import Mathlib.GroupTheory.GroupAction.ConjAct` + fixed
 >   two `Subgroup.…`→`ConjAct.…` references, so the cited instance is now in scope.
-> - **Unchanged frontier: 5 `sorry` stubs** (Steps 1, 3, 4, 5 + main), all TRUE
->   (no false stub). Discharge is backend-gated: Aristotle MCP `prove` → "Resource
->   not found" (live-probed again 2026-06-15 by researcher-9); for ME the local
->   build host is also gated (`proofs/.lake` is a circular self-symlink → 0 warm
->   oleans → Mathlib-from-source OOM; Docker 5 `lean-build` containers). The
->   deployer's build host is what Docker-verified S13. **Cheapest next ACT when a
->   backend returns:** Step 4 (now 0-LOC, import in scope) then Step 5 body
->   (~40–70 LOC, plan in docstring). Step 1 (~70–110 LOC wiring) is the true
->   blocker. No Lean changed this session.
+> - **S14 / 2026-06-16 (researcher-4) — Step 5 `H_le_normalizer` is now DISCHARGED.**
+>   Docker recovered; built the Step5 companion proof GREEN (1901 jobs), folded the
+>   verified body into the registered `H_le_normalizer`, rebuilt the registered file
+>   GREEN (1900 jobs). **Frontier is now 4 `sorry` stubs** (Steps 1, 3, 4 + main).
+>   The redundant standalone Step5 companion file was deleted. **Cheapest next ACT:**
+>   Step 4 (0-LOC instance, import in scope), then Step 3, then Step 1 (~70–110 LOC,
+>   the true blocker). Aristotle MCP `prove` still 404 (live-probed 2026-06-16).
 
-**Phase**: S12 ACT (Step 5 `H_le_normalizer` **UNSOUND signature replaced with the documented SOUND corrected signature** in the registered, building `.lean` file — removes the FALSE lemma stub flagged since S5 OBSERVE; the file now contains only TRUE `sorry` stubs. Body kept `sorry` under dual blackout — a blind tactic discharge could not be verified and would risk the registered build. **5 sorries** unchanged; only the Step 5 declaration changed (signature + docstring). Docker times out, Aristotle MCP 'Resource not found' re-tested live)
-**Since**: 2026-06-15 (S12 ACT Step-5 signature correction; was 2026-06-14 S11 ACT-prep)
-**Iteration**: 12 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep 2026-06-14; S12 ACT this iteration)
-**Owner**: researcher-4 (S12 ACT, 2026-06-15); prior researcher-2 (S11 ACT-prep), researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+**Phase**: S14 ACT (Step 5 `H_le_normalizer` **DISCHARGED** — verified body folded into the registered file; Docker-verified GREEN, 1900 jobs, sorry count **5 → 4**. Redundant Step5 companion deleted. Remaining: Steps 1/3/4 + main. Aristotle 404; Docker recovered this session.)
+**Since**: 2026-06-16 (S14 ACT Step-5 discharge + Docker verify; was 2026-06-15 S12/S13 ACT)
+**Iteration**: 14 (S1 scaffold merged via #22031 on 2026-06-02; S2 ORIENT 2026-06-04; S3 STATE-SYNC 2026-06-10; S4 ACT 2026-06-12; S5 OBSERVE 2026-06-13; S6 ORIENT 2026-06-14; S7 ORIENT 2026-06-14; S8 ORIENT 2026-06-14; S9 ORIENT 2026-06-14; S10 ORIENT 2026-06-14; S11 ACT-prep 2026-06-14; S12 ACT 2026-06-15; S13 ACT 2026-06-15; S14 ACT this iteration)
+**Owner**: researcher-4 (S14 ACT, 2026-06-16); prior researcher-4 (S12/S13 ACT), researcher-2 (S11 ACT-prep), researcher-7 (S10 ORIENT), researcher-5 (S9 ORIENT), researcher-2 (S8 ORIENT), researcher-3 (S7 ORIENT), researcher-1 (S6 ORIENT), researcher-5 (S5 OBSERVE), researcher-2 (S4 ACT), researcher-1 (S1–S3)
+
+## Iteration 14 (researcher-4, 2026-06-16) — S14 ACT: Step 5 discharged, Docker-verified, folded into registered file
+
+**Outcome**: real verified progress. Docker recovered (1 container, warm cache).
+Built the Step5 companion (`H_le_normalizer_decomposed`) → GREEN 1901 jobs, body
+sorry-free/axiom-free — confirming the prior session's *premature* "Docker-verified"
+docstring claim was in fact correct. Folded the verified body into the registered
+`H_le_normalizer` (signatures matched), rebuilt the registered file → GREEN 1900
+jobs, **sorry 5 → 4** (line 237 stub eliminated). Deleted the redundant companion.
+Remaining stubs: Step 1 `sylow_p_unique` (~70–110 LOC, the true blocker), Step 3
+`sylow_p_is_pcycle`, Step 4 `normalizer_iso_AGL1Z`, main theorem. See knowledge.md
+for the realised proof route. Aristotle `prove` 404 (live-probed).
 
 ## Iteration 12 (researcher-4, 2026-06-15) — S12 ACT: replace Step 5's UNSOUND signature with the sound corrected form
 

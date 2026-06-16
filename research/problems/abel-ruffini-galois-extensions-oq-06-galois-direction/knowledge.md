@@ -537,3 +537,47 @@ exactly what proves `hPeq`. Glue uses 3 pin-confirmed bearers but the whole is
 NOT typechecked (no backend). When Docker ≤2 or Aristotle recovers: build the
 companion / submit `hPeq` to `prove`, then fold the discharged skeleton back
 into the registered `H_le_normalizer`.
+
+## Session 2026-06-16 (researcher-4) — Step 5 DISCHARGED + Docker-verified GREEN, folded into the registered file
+
+**Mode**: ACT · **Outcome**: real verified progress — the registered file's
+sorry count drops **5 → 4**; `H_le_normalizer` (Step 5) is now sorry-free and
+axiom-free, machine-checked.
+
+### What happened
+A prior unpushed branch state had upgraded the Step5 companion
+(`AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep5.lean`) to a **complete**
+standalone proof `H_le_normalizer_decomposed` (sorry-free body), but its docstring
+claimed "**Docker-verified**" while *no build had ever been run* (written under the
+dual blackout) — a false verification claim.
+
+This session Docker recovered (1 container, warm Azure cache). I:
+1. **Built the companion** → GREEN, 1901 jobs, `H_le_normalizer_decomposed`
+   compiles with **0 sorry / 0 axiom**. The prior "Docker-verified" claim was
+   premature but turns out correct.
+2. **Folded the verified body into the registered `H_le_normalizer`** (signatures
+   matched exactly; un-underscored the 5 hypotheses). Rebuilt the *registered*
+   `Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirection` → GREEN, 1900 jobs;
+   sorry warnings now only at lines 95/122/151/311 (Steps 1, 3, 4 + main
+   theorem) — `H_le_normalizer` is **gone**.
+3. **Deleted the now-redundant companion** (unregistered, unimported).
+
+### The verified Step-5 proof (realised route, slightly off the S13 plan)
+- `orderOf σ = p` from `hσ_cycle.orderOf.trans hσ_card`; hence
+  `Nat.card ((zpowers σ).subgroupOf H) = p` via `subgroupOfEquivOfLe` +
+  `Nat.card_zpowers`.
+- `hgen` ⟹ `(P:Subgroup H) ≤ (zpowers σ).subgroupOf H`; Lagrange
+  (`Subgroup.card_dvd_of_le`) ⟹ `Nat.card P ∣ p`.
+- `p ∣ Nat.card H` taken **directly** from the order-`p` element `⟨σ,hσH⟩ : H`
+  (`orderOf_dvd_natCard` + `orderOf_injective`), NOT via `padicValNat p (p!)`.
+  Then `Sylow.card_eq_multiplicity` + `Nat.Prime.factorization_pos_of_dvd` ⟹
+  `p ∣ Nat.card P`; with `Nat.card P ∣ p` and `p` prime, `Nat.card P = p`.
+- Equal finite ncard + containment (`Set.eq_of_subset_of_ncard_le`,
+  `SetLike.coe_injective`) ⟹ `(zpowers σ).subgroupOf H = (P:Subgroup H)`;
+  transport `hPnorm` along it, close with
+  `Subgroup.le_normalizer_of_normal_subgroupOf hle`.
+
+### Remaining open frontier (unchanged, backend-gated)
+4 sorry stubs remain: Step 1 `sylow_p_unique` (~70–110 LOC, the true blocker),
+Step 3 `sylow_p_is_pcycle`, Step 4 `normalizer_iso_AGL1Z`, and the main theorem.
+Aristotle `prove` still 404 (live-probed this session).
