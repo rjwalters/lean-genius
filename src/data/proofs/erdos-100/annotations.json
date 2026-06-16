@@ -4,7 +4,7 @@
     "proofId": "erdos-100",
     "range": {
       "startLine": 1,
-      "endLine": 33
+      "endLine": 27
     },
     "type": "concept",
     "title": "Imports and Module Documentation",
@@ -25,76 +25,75 @@
     "id": "ann-100-point",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 34,
-      "endLine": 42
+      "startLine": 35,
+      "endLine": 39
     },
     "type": "definition",
-    "title": "Point Type",
-    "content": "A point in the Euclidean plane ℝ². Defines the base type for all geometric constructions in this formalization.",
-    "mathContext": "Points are elements of $\\mathbb{R}^2 = \\mathbb{R} \\times \\mathbb{R}$, represented as `EuclideanSpace \\mathbb{R} (Fin 2)` for access to Mathlib's metric space infrastructure.",
+    "title": "Euclidean Distance Function",
+    "content": "Defines the Euclidean distance dist(p, q) = ‖p − q‖ on points of the plane, modeled as EuclideanSpace ℝ (Fin 2). This is the base metric underlying every distance condition in the problem.",
+    "mathContext": "Points are elements of $\\mathbb{R}^2$ realized as `EuclideanSpace \\mathbb{R} (Fin 2)`, and $d(p,q) = \\|p - q\\| = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$ is induced by the standard inner product.",
     "significance": "supporting",
     "relatedConcepts": [
       "Euclidean plane",
-      "coordinate geometry",
+      "norm",
       "metric space"
     ],
     "prerequisites": [
       "real numbers",
-      "vector spaces"
+      "inner product space"
     ]
   },
   {
     "id": "ann-100-dist",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 44,
-      "endLine": 45
+      "startLine": 41,
+      "endLine": 75
     },
     "type": "concept",
-    "title": "Euclidean Distance",
-    "content": "dist(p, q) = ||p - q||, the standard Euclidean distance. This is the fundamental metric underlying all distance conditions in the problem.",
-    "mathContext": "The Euclidean distance $d(p,q) = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2}$ satisfies the triangle inequality and is invariant under rotations and translations of $\\mathbb{R}^2$.",
-    "significance": "key",
+    "title": "Metric Properties of Distance",
+    "content": "The basic lemmas establishing that dist is a genuine metric: symmetry, nonnegativity, vanishing on the diagonal, positivity off the diagonal, and the triangle inequality. These follow directly from the norm structure of EuclideanSpace.",
+    "mathContext": "The five lemmas verify $d(p,q) = d(q,p)$, $d(p,q) \\geq 0$, $d(p,p) = 0$, $p \\neq q \\Rightarrow d(p,q) > 0$, and $d(p,r) \\leq d(p,q) + d(q,r)$. Each reduces to a corresponding property of $\\|\\cdot\\|$ ($\\|{-}x\\| = \\|x\\|$, $\\|x\\| \\geq 0$, $\\|x\\| = 0 \\iff x = 0$, subadditivity).",
+    "significance": "supporting",
     "relatedConcepts": [
       "metric space",
       "norm",
-      "triangle inequality",
-      "isometry"
+      "triangle inequality"
     ],
     "prerequisites": [
       "inner product",
-      "square root"
+      "norm"
     ]
   },
   {
     "id": "ann-100-mindist",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 57,
-      "endLine": 59
+      "startLine": 165,
+      "endLine": 171
     },
     "type": "definition",
-    "title": "Minimum Distance One",
-    "content": "All pairwise distances in the point set are at least 1. This is the first component of the restricted distance condition, ensuring points are well-separated.",
-    "mathContext": "The predicate $\\forall p, q \\in A,\\ p \\neq q \\Rightarrow d(p,q) \\geq 1$ ensures the point configuration is a **packing**: no two points are closer than unit distance. Combined with integer distances, this forces all distances to be positive integers $\\{1, 2, 3, \\ldots\\}$.",
+    "title": "Minimum Diameter Extremal Function",
+    "content": "Defines minDiameterRestrictedSets(n) as the infimum of diam(S) over all n-point sets S with integer pairwise distances. This is the extremal function f(n) whose growth rate Erdős Problem #100 asks about.",
+    "mathContext": "$f(n) = \\inf\\{\\,\\mathrm{diam}(S) : |S| = n,\\ S \\text{ has integer distances}\\,\\}$. The conjecture is $f(n) \\gg n$; the best known lower bound is $f(n) \\gg n/\\log n$ (Guth-Katz) and Piepmeyer gives $f(9) < 5$.",
     "significance": "key",
     "relatedConcepts": [
-      "packing",
-      "separation condition",
-      "well-separated sets",
-      "hard-core model"
+      "extremal function",
+      "infimum",
+      "diameter",
+      "restricted distances"
     ],
     "prerequisites": [
-      "metric space",
-      "Euclidean distance"
+      "diameter",
+      "integer distances"
     ]
   },
   {
     "id": "ann-100-intdist",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 61,
-      "endLine": 64
+      "startLine": 85,
+      "endLine": 89
     },
     "type": "definition",
     "title": "Integer Distances",
@@ -116,31 +115,31 @@
     "id": "ann-100-restricted",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 66,
-      "endLine": 68
+      "startLine": 91,
+      "endLine": 95
     },
     "type": "definition",
-    "title": "Restricted Distances",
-    "content": "Point set satisfies both minimum distance 1 and integer distances. Together these force all pairwise distances to be distinct positive integers 1, 2, 3, ..., severely constraining the geometry.",
-    "mathContext": "A point set $A \\subset \\mathbb{R}^2$ has **restricted distances** if $\\forall p \\neq q \\in A$: $d(p,q) \\geq 1$ and $d(p,q) \\in \\mathbb{Z}$. Equivalently, the multiset of distances takes values in $\\{1, 2, 3, \\ldots\\}$. The number of distinct distances is then bounded by the diameter: $|\\{d(p,q)\\}| \\leq \\text{diam}(A)$.",
-    "significance": "key",
+    "title": "Pairwise Distance Set",
+    "content": "Defines pairwiseDistances(S) as the finite set of all positive distances realized between distinct points of S (the image of the off-diagonal under dist, filtered to be positive). Its cardinality is the number of distinct distances.",
+    "mathContext": "$\\mathrm{pairwiseDistances}(S) = \\{\\, d(p,q) : (p,q) \\in S \\times S,\\ p \\neq q,\\ d(p,q) > 0 \\,\\}$ as a `Finset \\mathbb{R}`. For restricted distance sets this set lies inside $\\{1, 2, \\ldots, \\lfloor \\mathrm{diam}(S) \\rfloor\\}$, so $|\\mathrm{pairwiseDistances}(S)| \\leq \\mathrm{diam}(S)$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "integer-distance sets",
       "distance set",
       "distinct distances",
+      "off-diagonal",
       "diameter"
     ],
     "prerequisites": [
-      "minimum distance one",
-      "integer distances"
+      "Euclidean distance",
+      "finite sets"
     ]
   },
   {
     "id": "ann-100-diameter",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 76,
-      "endLine": 80
+      "startLine": 109,
+      "endLine": 117
     },
     "type": "definition",
     "title": "Diameter",
@@ -162,8 +161,8 @@
     "id": "ann-100-conjecture",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 92,
-      "endLine": 96
+      "startLine": 173,
+      "endLine": 183
     },
     "type": "definition",
     "title": "Main Conjecture",
@@ -184,8 +183,8 @@
     "id": "ann-100-strong",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 98,
-      "endLine": 101
+      "startLine": 185,
+      "endLine": 193
     },
     "type": "definition",
     "title": "Strong Conjecture",
@@ -206,8 +205,8 @@
     "id": "ann-100-kanold",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 109,
-      "endLine": 112
+      "startLine": 296,
+      "endLine": 302
     },
     "type": "concept",
     "title": "Kanold's Bound",
@@ -228,8 +227,8 @@
     "id": "ann-100-guthkatz",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 114,
-      "endLine": 118
+      "startLine": 303,
+      "endLine": 314
     },
     "type": "concept",
     "title": "Guth-Katz Bound",
@@ -251,8 +250,8 @@
     "id": "ann-100-piepmeyer",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 126,
-      "endLine": 131
+      "startLine": 352,
+      "endLine": 362
     },
     "type": "concept",
     "title": "Piepmeyer's Construction",
@@ -273,8 +272,8 @@
     "id": "ann-100-ratio",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 133,
-      "endLine": 142
+      "startLine": 364,
+      "endLine": 374
     },
     "type": "concept",
     "title": "Piepmeyer Ratio",
@@ -295,8 +294,8 @@
     "id": "ann-100-numdist",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 150,
-      "endLine": 153
+      "startLine": 97,
+      "endLine": 101
     },
     "type": "definition",
     "title": "Distinct Distances",
@@ -318,8 +317,8 @@
     "id": "ann-100-distbound",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 155,
-      "endLine": 163
+      "startLine": 204,
+      "endLine": 211
     },
     "type": "concept",
     "title": "Distinct ≤ Diameter",
@@ -341,23 +340,23 @@
     "id": "ann-100-unitgraph",
     "proofId": "erdos-100",
     "range": {
-      "startLine": 252,
-      "endLine": 263
+      "startLine": 394,
+      "endLine": 399
     },
     "type": "definition",
-    "title": "Unit Distance Graph",
-    "content": "Graph with edges between points at distance exactly 1. For restricted distance sets, this captures the closest-neighbor structure and connects to chromatic number problems.",
-    "mathContext": "The **unit distance graph** $G_1(A)$ has vertex set $A$ and edges $\\{p, q\\}$ where $d(p,q) = 1$. More generally, one defines the **distance-$k$ graph** $G_k(A)$ for each integer $k \\geq 1$. The chromatic number of the unit distance graph of $\\mathbb{R}^2$ (the Hadwiger-Nelson problem) is known to be between 5 and 7.",
+    "title": "Collinearity and the Erdős–Anning Theorem",
+    "content": "Defines collinearity of a point set (all points on a single affine line). This sets up the Erdős–Anning theorem: any infinite planar set with all pairwise distances integers must be collinear, which is why the problem restricts to finite sets.",
+    "mathContext": "A set $S$ is collinear if there exist $a \\neq b$ with every $p \\in S$ of the form $p = a + t(b-a)$. Erdős–Anning (1945): an infinite $S \\subset \\mathbb{R}^2$ with all mutual distances in $\\mathbb{Z}$ is necessarily collinear, so non-degenerate integer-distance configurations are finite.",
     "significance": "supporting",
     "relatedConcepts": [
-      "Hadwiger-Nelson problem",
-      "chromatic number",
-      "distance graph",
-      "unit distance conjecture"
+      "Erdős–Anning theorem",
+      "collinearity",
+      "integer-distance sets",
+      "affine line"
     ],
     "prerequisites": [
-      "graph theory",
-      "Euclidean distance"
+      "Euclidean distance",
+      "affine geometry"
     ]
   }
 ]
