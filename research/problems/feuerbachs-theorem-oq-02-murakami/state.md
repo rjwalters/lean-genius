@@ -4,6 +4,44 @@
 **Since**: 2026-06-15T22:10:00.000Z
 **Iteration**: 11
 
+## S12 (researcher-5, 2026-06-16) — independent build-readiness audit of the witness file
+
+Under dual blackout (Docker host saturated: 5 lean containers incl. a 14h zombie
+on 7.65GiB → OOM risk; Aristotle `prove` → 404), so no compile was run. Instead I
+audited `StatementOnly_FeuerbachOQ02_FailsGeneralWitness.lean` for build-readiness.
+**Conclusion: build-ready with very high confidence; the algebraic core is now
+hand-verified, only definitional unfoldings carry residual risk.**
+
+1. **Axiom statement match — EXACT.** `feuerbach_3d_fails_general_proved` (witness
+   :294) is verbatim identical to the parent axiom `feuerbach_3d_fails_general`
+   (`FeuerbachsTheoremOQ02.lean:581`): same `∃ T, dot3(AB,CD)≠0 ∧ ¬spheresInternallyTangent
+   N₂₄ I (R/3) r`. The de-axiomatization swap is valid.
+2. **All external deps exist** in the parent file: `dist3_sq_eq` (:75),
+   `dist3_sq` (:67), `spheresInternallyTangent` (:452), `twentyFourPointCenter`
+   (:434), `mongePoint` (:344), `midpoint3` (:81), `cross3` (:93),
+   `twentyFourPointRadius` (:443), `circumcenter` (:249). No "unknown identifier" risk.
+3. **`hid` three-surd identity — re-derived by hand, EXACT.** The full polynomial
+   `18((1-b)²+2) - (b(1+b+2a)-6)²` expands (no reduction) to
+   `18 - 24b + 29b² - b⁴ - 4a²b² - 2b³ - 4ab³ - 4ab² + 24ab`; reducing mod a²=2,b²=3
+   gives `72 - 30b - 12a + 12ab` ✓. Moreover the **`linear_combination` coefficients
+   are exactly correct**: `-4b²·(a²-2) + (-4ab-4a-b²-2b+18)·(b²-3)` reproduces
+   `(goal_LHS - goal_RHS)` term-for-term (10/10 monomials match). This was the single
+   highest-risk tactic step; it is bulletproof.
+4. **Positivity bounds correct direction**: `hpos` uses a<1.41422, b<1.7321 (upper,
+   matching the −12a, −30b coefficients) and ab>2.4494 (lower, matching +12ab) →
+   `72 − 51.963 − 16.971 + 29.393 ≈ 32.46 > 0` ✓.
+5. File is **0 sorry / 0 axiom** as authored.
+
+**Residual compile risk (low):** the definitional `norm_num [Tetrahedron.faceArea_*,
+…]` / `field_simp; ring` closers on the closed-form lemmas depend on the exact
+def-unfolding shapes of `faceArea_*`, `circumcenter` (Cramer), `incenter`,
+`twentyFourPointCenter`. These are sympy-aligned but never compiler-checked.
+**Next build slot (≤3 containers): docker-build `Proofs.StatementOnly_FeuerbachOQ02_FailsGeneralWitness`,
+fix any def-unfolding hiccups, register, then replace the parent axiom at
+`FeuerbachsTheoremOQ02.lean:581` with `:= feuerbach_3d_fails_general_proved`
+(axiom elimination, 2→1... → parent reaches 0 axioms).** The hard algebra needs
+no further work.
+
 ## S11 (researcher-2, 2026-06-15) — Lean build GREEN + registered + bug fix
 
 `StatementOnly_FeuerbachOQ02Murakami_GraceTrirectangular.lean` (theorem
