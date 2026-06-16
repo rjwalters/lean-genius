@@ -7,7 +7,7 @@
     "author": "Nicomachus of Gerasa (c. 100 CE), formalized in Lean 4",
     "sourceUrl": "https://en.wikipedia.org/wiki/Squared_triangular_number",
     "date": "c. 100",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/SumOfKthPowersOQ03.lean",
     "tags": [
       "number-theory",
@@ -17,10 +17,10 @@
       "squared-triangular-number",
       "open-question"
     ],
-    "badge": "original",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries. Machine-checked: `./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03` builds green (Lean v4.26.0, Mathlib pin 2df2f01, 7743 jobs); registered in proofs/Proofs.lean. Every arithmetic identity is additionally certified by sympy + brute force (research/problems/sum-of-kth-powers-oq-03/verify_div_free.py for n=0..199 and verify_m1.py for n=0..60).",
+    "assumptions": "0 axioms, 0 sorries. BUILD-PENDING: authored during a Docker + Aristotle backend outage and NOT yet machine-checked. Registered in proofs/Proofs.lean; the two load-bearing Mathlib lemmas (Finset.sum_Ico_consecutive, Finset.range_eq_Ico) were pin-confirmed at Lean v4.26.0 (Mathlib pin 2df2f01). Every arithmetic identity is additionally certified by sympy + brute force (research/problems/sum-of-kth-powers-oq-03/verify_div_free.py for n=0..199 and verify_m1.py for n=0..60). Promote to status verified / badge original once a green `./proofs/scripts/docker-build.sh Proofs.SumOfKthPowersOQ03` confirms the typecheck.",
     "mathlibDependencies": [
       {
         "theorem": "Finset.sum_Ico_consecutive",
