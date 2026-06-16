@@ -3,8 +3,8 @@
     "id": "ann-kraft-validity",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 29,
-      "endLine": 33
+      "startLine": 32,
+      "endLine": 36
     },
     "type": "definition",
     "title": "Kraft's Inequality",
@@ -26,8 +26,8 @@
     "id": "ann-avg-code-length",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 35,
-      "endLine": 37
+      "startLine": 38,
+      "endLine": 40
     },
     "type": "definition",
     "title": "Average Code Length",
@@ -48,8 +48,8 @@
     "id": "ann-optimality-def",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 39,
-      "endLine": 42
+      "startLine": 42,
+      "endLine": 45
     },
     "type": "definition",
     "title": "Optimal Code Definition",
@@ -70,8 +70,8 @@
     "id": "ann-kl-bound",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 48,
-      "endLine": 60
+      "startLine": 51,
+      "endLine": 63
     },
     "type": "concept",
     "title": "Pointwise KL Divergence Bound",
@@ -93,8 +93,8 @@
     "id": "ann-kraft-term-pos",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 62,
-      "endLine": 64
+      "startLine": 65,
+      "endLine": 67
     },
     "type": "concept",
     "title": "Positivity of Kraft Terms",
@@ -111,8 +111,8 @@
     "id": "ann-log-kraft",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 66,
-      "endLine": 69
+      "startLine": 69,
+      "endLine": 72
     },
     "type": "concept",
     "title": "Logarithm of Kraft Terms",
@@ -131,8 +131,8 @@
     "id": "ann-entropy-lower-bound",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 75,
-      "endLine": 111
+      "startLine": 78,
+      "endLine": 114
     },
     "type": "insight",
     "title": "Entropy Lower Bound on Code Length",
@@ -155,8 +155,8 @@
     "id": "ann-entropy-nonneg",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 117,
-      "endLine": 125
+      "startLine": 120,
+      "endLine": 128
     },
     "type": "concept",
     "title": "Entropy Non-negativity",
@@ -176,8 +176,8 @@
     "id": "ann-shannon-length",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 131,
-      "endLine": 134
+      "startLine": 134,
+      "endLine": 137
     },
     "type": "definition",
     "title": "Shannon Code Length",
@@ -198,8 +198,8 @@
     "id": "ann-shannon-kraft",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 140,
-      "endLine": 168
+      "startLine": 143,
+      "endLine": 171
     },
     "type": "insight",
     "title": "Shannon Code Satisfies Kraft's Inequality",
@@ -221,8 +221,8 @@
     "id": "ann-shannon-upper",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 174,
-      "endLine": 211
+      "startLine": 177,
+      "endLine": 214
     },
     "type": "insight",
     "title": "Shannon Coding Upper Bound",
@@ -245,12 +245,12 @@
     "id": "ann-exchange-argument",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 217,
-      "endLine": 224
+      "startLine": 220,
+      "endLine": 307
     },
     "type": "concept",
-    "title": "Optimal Code Monotonicity (Axiomatized)",
-    "content": "In any optimal prefix-free code, more probable symbols receive shorter or equal codewords. The proof is by contradiction via the exchange argument: if $p_i > p_j$ but $l_i > l_j$, swapping the codewords of symbols $i$ and $j$ strictly reduces the average code length by $(p_i - p_j)(l_i - l_j) > 0$, contradicting optimality. This structural property is essential for the Huffman construction. The result is axiomatized here as formalizing the swap argument requires working with concrete code assignments rather than just lengths.",
+    "title": "Optimal Code Monotonicity (Exchange Argument)",
+    "content": "In any optimal prefix-free code, more probable symbols receive shorter or equal codewords. The proof is by contradiction via the exchange argument: if $p_i > p_j$ but $l_i > l_j$, swapping the codewords (lengths) of symbols $i$ and $j$ leaves the Kraft sum unchanged yet strictly reduces the average code length by $(p_i - p_j)(l_i - l_j) > 0$, contradicting optimality. This structural property is essential for the Huffman construction. It is fully formalized here: the swap is realized as a double `Function.update`, Kraft-validity is preserved via `Finset.sum_equiv` over `Equiv.swap i j`, and the strict decrease is reduced to the two affected terms.",
     "mathContext": "$p_i > p_j \\wedge \\text{IsOptimal}(p, l) \\implies l_i \\le l_j$",
     "significance": "key",
     "relatedConcepts": [
@@ -267,8 +267,8 @@
     "id": "ann-huffman-optimal",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 230,
-      "endLine": 247
+      "startLine": 313,
+      "endLine": 330
     },
     "type": "concept",
     "title": "Huffman Optimality (Axiomatized)",
@@ -290,8 +290,8 @@
     "id": "ann-tight-bounds",
     "proofId": "shannon-source-coding-oq-02",
     "range": {
-      "startLine": 253,
-      "endLine": 272
+      "startLine": 336,
+      "endLine": 355
     },
     "type": "insight",
     "title": "Tight Bounds on Optimal Code Length",
