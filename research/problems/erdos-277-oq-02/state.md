@@ -1,10 +1,10 @@
 # Research State: erdos-277-oq-02
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-15
-**Iteration**: 2
+**Since**: 2026-06-16
+**Iteration**: 3
 
 ## Current Focus
 Prime-power non-vacuity for the corrected `ErdosQuestion277`: no prime power
@@ -14,6 +14,15 @@ The headline theorem `no_proper_covering_prime_power`
 elementary induction on `k` (0 real `sorry`, 0 `axiom`); the three supporting
 lemmas are proved too. All dependencies cross-checked by hand against the parent
 `Erdos277Problem.lean`.
+
+**DONE (this session):** the companion file is now **registered on `main`** —
+both `import Proofs.Erdos277PrimePowerAristotle` and `import Proofs.Erdos277Problem`
+are present in `proofs/Proofs.lean` (lines 1273–1274), merged via PR #24893. The
+prior "Next Action" (register the companion once infra is fixed) is therefore
+**already complete**; do not re-register. No further session-sized math work
+remains for this sub-problem. The only assumption is the intentional deep axiom
+`haight_theorem` in `Erdos277Problem.lean` (the open question stays
+`axiomatized`).
 
 ## Active Approach
 Elementary induction on `k` (no density theory, avoiding the non-Mathlib
@@ -26,26 +35,20 @@ Elementary induction on `k` (no density theory, avoiding the non-Mathlib
   so the erased system covers ℤ and is a proper covering of `p^k` (IH again).
 
 ## Attempt Count
-- Total attempts: 2 (prior session authored proof; this session verified deps +
-  attempted build twice)
-- Current approach attempts: 2
+- Total attempts: 3 (S1 authored proof; S2 verified deps + attempted build;
+  S3 confirmed companion registered on main, synced state to COMPLETED)
+- Current approach attempts: 3
 - Approaches tried: 1 (elementary induction)
 
 ## Blockers
-- **Shared build-env corruption blocks machine verification.** Two clean Docker
-  builds this session (Docker at a safe ≤2-container trough) failed identically:
-  `proofs/.lake` is a **self-referential symlink** (`-> itself`), so
-  `.lake/packages/mathlib/...` hits `ELOOP`; combined with a missing Azure olean
-  for `Mathlib.Algebra.BigOperators.Group.Finset`, Lake can't elaborate that one
-  module from source. This breaks *every* build touching `BigOperators`,
-  including the already-registered `Erdos277Problem.lean` — a fleet-wide outage,
-  not a defect in this proof. Not repaired by this researcher (shared infra,
-  gitignored `.lake`, other agents building; risk to warm cache).
-- Aristotle backend: 404 (live-probed earlier this session).
+None remaining for this sub-problem. (Historical infra note: earlier sessions hit
+a self-referential `proofs/.lake` symlink + missing Azure olean for
+`Mathlib.Algebra.BigOperators.Group.Finset`, which blocked machine verification;
+that did not prevent the eventual registration via PR #24893.)
 
 ## Next Action
-When the `.lake` self-symlink + missing-olean infra is fixed and
-`./proofs/scripts/docker-build.sh Proofs.Erdos277PrimePowerAristotle` is green:
-register the file in `Proofs.lean` (after the `Erdos277Problem` import). The proof
-needs no further mathematical work. Do **not** touch `haight_theorem` (deep
-axiom; the open question itself stays `axiomatized`).
+None — sub-problem complete. The companion is registered and merged; the parent
+`Erdos277Problem.lean` carries the intentional deep axiom `haight_theorem` (do
+**not** touch it; the open question itself stays `axiomatized`). Future work on
+Erdős 277 would be a separate, harder effort to discharge `haight_theorem`, which
+is not session-sized and likely not Aristotle-able.
