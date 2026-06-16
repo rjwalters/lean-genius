@@ -34,13 +34,22 @@ raised to `(p−1)/2` equals `−1` in the field. Built green via
 0 errors / 0 sorries / 0 axioms (linter style-nags only). This is the genuinely-new Euler-side
 ingredient the headline needs; it was authored blind under blackout (S15) and is now verified.
 
-**What this file does NOT yet contain** (the OQ is NOT resolved): the headline
-Zolotarev identity `legendreSym p a = sign (mulLeft a)` still needs (i) the Euler's-criterion
-tie `legendreSym p a = (-1)^k` (which combines this crux with `legendreSym.eq_pow`) and (ii) the
-field-`mulLeft₀`/units-`mulLeft` sign bridge (both prose in knowledge.md, S2 numerically verified).
-Milestone 2 (reciprocity from the grid-transpose permutation sign) is also not yet in Lean. This
-file verifies the genuinely-new *producer* lemma, the Zolotarev sign computation, and now the
-primitive-root half-power crux — the reusable core Mathlib lacks.
+**S17 (2026-06-16, researcher-4, Docker recovered; Aristotle still 404).** Assembled the
+**headline** Zolotarev identity `legendreSym_eq_sign_mulLeft`:
+
+  `legendreSym p (u.val) = sign (mulLeft u)`,    for `u : (ZMod p)ˣ`, `p` an odd prime,
+
+by combining the verified sign computation `sign_mulLeft_eq_neg_one_zpow` (RHS `= (-1)^k`),
+Euler's criterion `legendreSym.eq_pow`, and the crux `primitiveRoot_pow_half_eq_neg_one`
+(LHS `= (-1)^k`), then lifting the `±1` equality from `ZMod p` to `ℤ`. Stated on the units group
+`(ZMod p)ˣ` (S15 observation), which removes the field-`mulLeft₀`/units-`mulLeft` bridge entirely.
+Built green via `docker-build.sh` (uniquely-named build copy), 0 errors / 0 sorries / 0 axioms.
+
+**What this file does NOT yet contain** (the OQ is NOT resolved): Milestone 2 — full reciprocity
+`(p/q)(q/p) = (-1)^{(p-1)/2·(q-1)/2}` from the grid-transpose permutation sign — is not yet in
+Lean. This file now verifies the genuinely-new *producer* lemma, the Zolotarev sign computation,
+the primitive-root half-power crux, and the **full Milestone-1 headline** (Zolotarev's lemma) —
+the permutation-sign characterisation of the Legendre symbol that Mathlib lacks.
 
 ## What this targets
 
@@ -218,5 +227,74 @@ theorem primitiveRoot_pow_half_eq_neg_one {p : ℕ} [Fact p.Prime] (hp : 2 < p)
   rcases mul_self_eq_one_iff.mp hsq with h | h
   · exact absurd h hne1
   · exact h
+
+/-! ## The headline Zolotarev identity (units form)
+
+Assembles the three verified ingredients into Zolotarev's lemma on `(ZMod p)ˣ`:
+
+  `legendreSym p (u.val) = sign (mulLeft u)`,    for `u : (ZMod p)ˣ`, `p` an odd prime.
+
+Write `u = g ^ k` for a generator `g` (`k : ℕ`, finite group ⇒ `powers = zpowers`). Then
+- **RHS** `sign (mulLeft u) = (-1) ^ k`  — `sign_mulLeft_eq_neg_one_zpow` (the Zolotarev sign
+  computation), since `|(ZMod p)ˣ| = p − 1` is even.
+- **LHS** `legendreSym p u.val = (-1) ^ k` — Euler's criterion `legendreSym.eq_pow`
+  (`(legendreSym p a : ZMod p) = (a)^(p/2)`) plus the crux `primitiveRoot_pow_half_eq_neg_one`
+  (`(g : ZMod p)^((p−1)/2) = −1`), using `p/2 = (p−1)/2` for odd `p`.
+Both sides are `±1` in `ℤ`; the `ZMod p` equality lifts to `ℤ` because `1 ≠ −1` in `ZMod p`
+(as `p ≠ 2`). This is the headline of Milestone 1: the permutation-sign characterisation of the
+Legendre symbol that Mathlib lacks. -/
+theorem legendreSym_eq_sign_mulLeft {p : ℕ} [Fact p.Prime] (hp : 2 < p) (u : (ZMod p)ˣ) :
+    legendreSym p ((u : ZMod p).val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ) := by
+  classical
+  -- a generator `g` of `(ZMod p)ˣ` and a NAT discrete log `u = g ^ k`
+  obtain ⟨g, hg⟩ := IsCyclic.exists_generator (α := (ZMod p)ˣ)
+  obtain ⟨k, hk⟩ : ∃ k : ℕ, g ^ k = u := by
+    have hmem : u ∈ Submonoid.powers g := mem_powers_iff_mem_zpowers.mpr (hg u)
+    obtain ⟨k, hk⟩ := hmem
+    exact ⟨k, hk⟩
+  -- `|(ZMod p)ˣ| = p − 1`, even and `≥ 2` for odd `p`
+  have hcard : Fintype.card (ZMod p)ˣ = p - 1 := ZMod.card_units p
+  have hge2 : 2 ≤ Fintype.card (ZMod p)ˣ := by rw [hcard]; omega
+  have hodd : Odd p := (Fact.out : p.Prime).odd_of_ne_two (by omega)
+  have heven : Even (Fintype.card (ZMod p)ˣ) := by
+    rw [hcard]; obtain ⟨t, ht⟩ := hodd; exact ⟨t, by omega⟩
+  -- RHS as an integer: `sign (mulLeft u) = (-1) ^ k`
+  have hRHS : (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ) = (-1 : ℤ) ^ k := by
+    have h := sign_mulLeft_eq_neg_one_zpow hg hge2 heven (a := u) (k := (k : ℤ))
+      (by rw [zpow_natCast]; exact hk.symm)
+    rw [h, zpow_natCast]
+    simp [Units.val_pow_eq_pow_val]
+  -- LHS via Euler's criterion + the crux: `(legendreSym p u.val : ZMod p) = (-1 : ZMod p) ^ k`
+  have hhalf : p / 2 = (p - 1) / 2 := by obtain ⟨t, ht⟩ := hodd; omega
+  have hcrux : (g : ZMod p) ^ ((p - 1) / 2) = -1 := primitiveRoot_pow_half_eq_neg_one hp hg
+  have hval : (((u : ZMod p).val : ℤ) : ZMod p) = (u : ZMod p) := by
+    push_cast; simp [ZMod.natCast_val, ZMod.cast_id]
+  have hcast : (u : ZMod p) = (g : ZMod p) ^ k := by
+    rw [← hk]; exact Units.val_pow_eq_pow_val g k
+  have hLHS : (legendreSym p ((u : ZMod p).val : ℤ) : ZMod p) = (-1 : ZMod p) ^ k := by
+    rw [legendreSym.eq_pow, hval, hcast, hhalf, ← pow_mul, mul_comm, pow_mul, hcrux]
+  -- both sides are `±1` in `ℤ`; lift the `ZMod p` equality to `ℤ`
+  have ha0 : (((u : ZMod p).val : ℤ) : ZMod p) ≠ 0 := by rw [hval]; exact u.ne_zero
+  have hL1 : legendreSym p ((u : ZMod p).val : ℤ) = 1 ∨
+             legendreSym p ((u : ZMod p).val : ℤ) = -1 :=
+    legendreSym.eq_one_or_neg_one _ ha0
+  have hR1 : (-1 : ℤ) ^ k = 1 ∨ (-1 : ℤ) ^ k = -1 := by
+    rcases Nat.even_or_odd k with he | ho
+    · exact Or.inl he.neg_one_pow
+    · exact Or.inr ho.neg_one_pow
+  have hne : (1 : ZMod p) ≠ -1 := by
+    intro h
+    have h2 : ((2 : ℕ) : ZMod p) = 0 := by push_cast; linear_combination h
+    rw [ZMod.natCast_eq_zero_iff] at h2
+    have := Nat.le_of_dvd (by norm_num) h2
+    omega
+  have hcastEq : ((legendreSym p ((u : ZMod p).val : ℤ) : ℤ) : ZMod p)
+      = (((-1 : ℤ) ^ k : ℤ) : ZMod p) := by rw [hLHS]; push_cast; ring
+  rw [hRHS]
+  rcases hL1 with h1 | h1 <;> rcases hR1 with hr | hr
+  · rw [h1, hr]
+  · rw [h1, hr] at hcastEq; push_cast at hcastEq; exact absurd hcastEq hne
+  · rw [h1, hr] at hcastEq; push_cast at hcastEq; exact absurd hcastEq.symm hne
+  · rw [h1, hr]
 
 end QuadraticReciprocityAlgorithmOQ03

@@ -613,3 +613,37 @@ conclusion.openQuestions state explicitly this is **Milestone 1 only** — the h
 are NOT yet in Lean, so the OQ is **not resolved**. Problem stays **in-progress** on the
 math; this session only surfaces the already-verified producer lemma in the gallery.
 No Lean changed. (Aristotle `prove` still 404, live-probed; the crux remains its target.)
+
+## Session 2026-06-16 (S17, researcher-4) — Milestone-1 HEADLINE verified (Docker green)
+
+**Mode:** CONTINUE → ACT. Aristotle still 404 (live-probed). Docker recovered (warm cache volume).
+Built on the crux from PR #24903 (`research/qra-oq03-crux-verified`).
+
+**Result.** Machine-verified the headline Zolotarev identity, the actual goal of Milestone 1:
+
+```
+theorem legendreSym_eq_sign_mulLeft {p : ℕ} [Fact p.Prime] (hp : 2 < p) (u : (ZMod p)ˣ) :
+    legendreSym p ((u : ZMod p).val : ℤ) = (Equiv.Perm.sign (Equiv.mulLeft u) : ℤ)
+```
+
+`legendreSym p (u.val) = sign (mulLeft u)` for `u : (ZMod p)ˣ`, `p` an odd prime — the
+permutation-sign characterisation of the Legendre symbol that Mathlib lacks. 0 sorry / 0 axiom,
+3058 build jobs green.
+
+**Proof shape (now confirmed, not prose):**
+1. Generator `g`, NAT discrete log `u = g^k`: `IsCyclic.exists_generator`, then
+   `mem_powers_iff_mem_zpowers.mpr (hg u) : u ∈ Submonoid.powers g`, destructured to `∃ k:ℕ, g^k=u`.
+2. RHS `= (-1)^k`: `sign_mulLeft_eq_neg_one_zpow` with `a := u`, `k := (k:ℤ)`
+   (`zpow_natCast` bridges `g^(k:ℤ) = g^k`); cast `ℤˣ → ℤ` via `Units.val_pow_eq_pow_val`.
+3. LHS `= (-1)^k` in `ZMod p`: `legendreSym.eq_pow` (Euler) gives `(legendreSym p a : ZMod p)
+   = (a:ZMod p)^(p/2)`; rewrite `(u.val:ZMod p)=(u:ZMod p)=(g:ZMod p)^k` and `p/2=(p-1)/2`
+   (odd `p`), regroup `((g:ZMod p)^((p-1)/2))^k`, apply the crux to get `(-1)^k`.
+4. Lift to `ℤ`: both `legendreSym p a` (`legendreSym.eq_one_or_neg_one _ ha0`) and `(-1)^k`
+   (`Even/Odd.neg_one_pow`) are `±1`; the `ZMod p` cast equality forces equality in `ℤ` since
+   `1 ≠ -1` in `ZMod p` (`ZMod.natCast_eq_zero_iff`, `2 ∤ p`).
+
+**Net:** Milestone 1 of the Zolotarev route is COMPLETE in Lean (producer lemma + sign computation
++ crux + headline, all 0-axiom). **Milestone 2 — full reciprocity** `(p/q)(q/p) =
+(-1)^{(p-1)/2·(q-1)/2}` from the grid-transpose permutation sign (`inv(σ) = C(p,2)·C(q,2)`,
+S6/S8 certified numerically) — remains the only open Lean work; a clean Aristotle target. Problem
+stays **in-progress**.
