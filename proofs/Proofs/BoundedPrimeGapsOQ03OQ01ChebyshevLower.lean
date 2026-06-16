@@ -116,7 +116,45 @@ is monotone with `ψ 2 = Real.log 2 > 0` and `ψ x / x → 1`. -/
 
   -- assembly: ψ(2n) ≥ n·log4 − log(2n+1); pick c=(log 4)/4 and use psi_mono with
   -- ψ x ≥ ψ(2⌊x/2⌋) to cover every real x ≥ 2 with a single constant.
+
+  HOOKS RE-VERIFIED against the offline Mathlib checkout @ pin 2df2f0150c
+  (researcher-5, 2026-06-16) — every name below exists at the build pin:
+    • L1 swap : Nat.Ioc_filter_dvd_card_eq_div   (Data/Nat/Factorization/Basic.lean:475)
+    • L1 core : ArithmeticFunction.vonMangoldt_sum (NumberTheory/ArithmeticFunction/VonMangoldt.lean:102)
+    • L3 size : Nat.four_pow_le_two_mul_add_one_mul_central_binom (Data/Nat/Choose/Sum.lean:121)
+    • ψ def   : Chebyshev.psi x = ∑ n ∈ Ioc 0 ⌊x⌋₊, Λ n   (NumberTheory/Chebyshev.lean:55)
+              ⇒ ψ(2n) ranges over Ioc 0 (2n), matching L1's `Ioc 0 N` exactly.
+    • θ bridge: Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log (NumberTheory/Chebyshev.lean:205)
+  Still build-pending: backends down this cycle (Aristotle 404; docker daemon hung —
+  `docker run alpine echo` times out even at 0 containers). The three lemmas below are
+  now explicit `prove_file` / Aristotle targets; only their proofs remain.
 -/
+
+/-- **L1** (de Polignac / Legendre floor-sum identity). Build-pending target.
+`log(N!) = ∑_{d ≤ N} Λ(d)·⌊N/d⌋`, via `vonMangoldt_sum` + a `Finset.sum` swap
+discharged by `Nat.Ioc_filter_dvd_card_eq_div`. -/
+lemma log_factorial_eq_sum_vonMangoldt_mul_div (N : ℕ) :
+    Real.log (Nat.factorial N : ℝ)
+      = ∑ d ∈ Finset.Ioc 0 N, Λ d * ((N / d : ℕ) : ℝ) := by
+  sorry
+
+/-- **L2** (the genuine Mathlib gap): `log C(2n,n) ≤ ψ(2n)`. Build-pending target.
+From L1 applied to `(2n)!` and `(n!)²` plus the pointwise floor bound
+`0 ≤ ⌊2n/d⌋ − 2⌊n/d⌋ ≤ 1` and `vonMangoldt_nonneg`. -/
+lemma log_centralBinom_le_psi (n : ℕ) :
+    Real.log (Nat.centralBinom n : ℝ) ≤ Chebyshev.psi (2 * n) := by
+  sorry
+
+/-- **L3** (size bound). Build-pending target. Logs of
+`Nat.four_pow_le_two_mul_add_one_mul_central_binom : 4^n ≤ (2n+1)·C(2n,n)`. -/
+lemma log_four_mul_le_log_centralBinom (n : ℕ) :
+    (n : ℝ) * Real.log 4 - Real.log (2 * n + 1)
+      ≤ Real.log (Nat.centralBinom n : ℝ) := by
+  sorry
+
+/-- The missing ψ lower bound, reduced to the three lemmas above. Assembly:
+`L2 ∘ L3` gives `ψ(2n) ≥ n·log4 − log(2n+1)`; `Chebyshev.psi` monotone with
+`ψ x ≥ ψ(2⌊x/2⌋)` covers every real `x ≥ 2` with `c = (log 4)/4`. Build-pending. -/
 theorem chebyshev_psi_lower_bound :
     ∃ c : ℝ, 0 < c ∧ ∀ x : ℝ, 2 ≤ x → c * x ≤ Chebyshev.psi x := by
   sorry
