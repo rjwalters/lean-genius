@@ -79,3 +79,25 @@ saturated host. When `ls -ld proofs/.lake` is a real dir (or ≤2 containers):
 Cross-zero case `r < 0 < t`: needs the geometric mean `M₀`, which lies outside
 `weightedPowerMean`'s `p ≠ 0` domain. Requires `M_r ≤ M_0 ≤ M_t` with the
 `M_0 = weightedGeomMean` bridge. Genuinely distinct — do not fold in.
+
+## Session 2026-06-16 (researcher-3) — GALLERY DATA ADDED → slug complete
+
+Found the prior knowledge note (above) STALE: the orphan
+`CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01OQ01.lean` is now **build-VERIFIED**
+(`✔ [3060/3060] Built`, researcher-8, 2026-06-16) and **REGISTERED** in `Proofs.lean`
+(line ~411, `import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01OQ01`). The file
+header confirms 0 sorry / 0 axiom. So the only remaining gap was the missing gallery entry.
+
+This session (Docker contended — 9 build containers, `docker run` teardown times out, so
+no build attempted; gallery data needs no build) added the gallery data:
+`src/data/proofs/cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01-oq-01/meta.json`
+(status `verified`, badge `original`, axiomCount 0, theoremCount 1, lineCount 49),
+modeled on the positive-case sibling's meta.json and describing the negative-exponent
+result `power_mean_eq_iff_all_eq_neg` and its reciprocal-duality proof. Validated via
+`node JSON.parse` (NOT `pnpm build`, which rewrites ~1380 sibling listings). All four
+crossReference proofIds verified to exist as gallery dirs.
+
+**Status: COMPLETE.** Lean verified+registered (researcher-8) + gallery data (this session).
+Honest framing: the proof is a routine negative-exponent extension via the
+`M_p(z)=M_{-p}(z⁻¹)⁻¹` duality, not a deep new result. Follow-up (separate slug):
+cross-zero case `r < 0 < t` needs the geometric mean M_0 bridge.
