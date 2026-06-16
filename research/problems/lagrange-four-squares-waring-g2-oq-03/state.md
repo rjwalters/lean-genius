@@ -6,6 +6,49 @@
 **Since**: 2026-06-14T17:42:09-07:00
 **Iteration**: 5
 
+## Session 2026-06-16 (researcher-2) — universal single-AP QR seed (build-free cert)
+
+Docker daemon down host-wide this cycle (`docker ps` 60s timeout), so no Lean
+build/verify possible — the two remaining axioms (`dirichlet_key_lemma` :648,
+`not_excluded_form_is_sum_three_sq` :1720) are intricate Minkowski/sublattice
+assembly that must not be written blind. Did the one genuinely-new build-free
+delta available: **generalized the residue-3 single-AP repair to the whole
+theorem.**
+
+`verify_single_ap_residue3.py` (researcher-3, S2026-06-15) showed that dropping
+the rigid `p = d·n − 1` tie and asking only for a prime `p ≡ 1 (mod 4n)` repairs
+the `n ≡ 3 (mod 8)` class via one linear AP. This session's new certificate
+`verify_universal_single_ap.py` extends that to **every non-excluded square-free
+core across all residues** `n % 8 ∈ {1,2,3,5,6}`:
+
+> For `p ≡ 1 (mod 4n)`, the Kronecker character `χ_{−n}` (conductor | 4n)
+> evaluates at residue 1, so `(−n | p) = 1` — independent of `n mod 8` and of
+> `n`'s parity. (Even `n`: `8 | 4n ⟹ p ≡ 1 mod 8 ⟹ (2|p)=1`; odd part via
+> reciprocity. Odd `n`: reciprocity directly.) Hence `−n` is a QR mod `p` — the
+> isotropy seed `r² ≡ −n (mod p)` the Dirichlet sublattice construction needs.
+
+Certified PASS: substantive checks (universal `(−n|p)=1`, concrete prime exists,
+genuine sum-of-three-squares cross-check) hold for all **2024** non-excluded
+square-free cores in [2,4000) with 0 universal-QR violations; the full
+certificate including character periodicity (1) was run to PASS for all 1008
+cores in [2,2000) (periodicity scan is the cost driver, hence the smaller range
+for that single check).
+
+**Architectural consequence (the useful part).** The mod-8 case split inside
+`not_excluded_form_is_sum_three_sq` is currently choosing a different `d` per
+residue class to supply the QR seed. This shows ONE class — primes
+`p ≡ 1 (mod 4n)`, with `gcd(1, 4n) = 1` always so Mathlib's `PrimesInAP` applies
+unconditionally — supplies the seed uniformly. So that 5-way seed split can
+collapse to a single `PrimesInAP` instantiation when the axiom is refactored off
+the rigid `p = d·n − 1` form (the refactor researcher-3 recommended).
+
+**SCOPE / HONESTY.** This certifies only the QR seed `(−n|p)=1` from a fixed AP.
+It does NOT discharge `dirichlet_key_lemma`: the representation `n = x²+y²+z²`
+still needs the Minkowski step on the congruence sublattice — the distinct
+build-gated Lean work (`minkowski_ellipsoid_has_lattice_point` :983 is over the
+standard ℤ³ lattice; the sublattice instance is still missing). No Lean changed;
+the axiom count is unchanged at 2.
+
 ## Session 2026-06-15 (researcher-9) — FRONTIER RE-MAP (corrects stale "Remaining Gap")
 
 ORIENT-only (build host gated — see Blocker). Three corrections to the tracked
