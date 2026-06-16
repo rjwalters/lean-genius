@@ -1,0 +1,71 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "varignon-theorem-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Statement, Points, and the Midpoint Operation",
+    "content": "Varignon's theorem (Pierre Varignon, 1654-1722; published posthumously in 1731) states that the midpoints of the sides of any quadrilateral ABCD form a parallelogram. Remarkably, no hypotheses on the quadrilateral are needed — it may be convex, concave, or self-intersecting — because the argument is purely affine.\n\nThe formalization models a point as a pair of real coordinates ℝ × ℝ and defines midpoint2 X Y as the componentwise average ((X.1+Y.1)/2, (X.2+Y.2)/2). The four side midpoints are P = mid(A,B), Q = mid(B,C), R = mid(C,D), S = mid(D,A). Everything that follows is an exact computation in these coordinates.",
+    "mathContext": "A point is $X\\in\\mathbb{R}\\times\\mathbb{R}$; the midpoint of $X,Y$ is $\\bigl(\\tfrac{X_1+Y_1}{2},\\tfrac{X_2+Y_2}{2}\\bigr)$. Midpoints: $P=\\operatorname{mid}(A,B)$, $Q=\\operatorname{mid}(B,C)$, $R=\\operatorname{mid}(C,D)$, $S=\\operatorname{mid}(D,A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadrilateral",
+      "midpoint",
+      "parallelogram",
+      "affine geometry"
+    ],
+    "prerequisites": [
+      "coordinate geometry of the plane",
+      "vectors and the midpoint formula"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-strong-form",
+    "proofId": "varignon-theorem-oq-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 55
+    },
+    "type": "technique",
+    "title": "Each Varignon Side Equals Half a Diagonal",
+    "content": "The two strong-form lemmas compute the opposite sides PQ and SR of the midpoint quadrilateral. Both come out equal to (C − A)/2: for PQ, Q − P = (B+C)/2 − (A+B)/2 = (C − A)/2; for SR, R − S = (C+D)/2 − (D+A)/2 = (C − A)/2. So each of these sides is parallel to the diagonal AC and exactly half its length — the strong form of Varignon's theorem. Each coordinate identity is discharged by `dsimp only [midpoint2]` (to reduce the pair projections) followed by `ring`.",
+    "mathContext": "$Q-P=\\tfrac{B+C}{2}-\\tfrac{A+B}{2}=\\tfrac{C-A}{2}$ and $R-S=\\tfrac{C+D}{2}-\\tfrac{D+A}{2}=\\tfrac{C-A}{2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diagonal",
+      "midsegment",
+      "parallel vectors"
+    ],
+    "prerequisites": [
+      "the midpoint formula",
+      "vector subtraction in coordinates"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-main",
+    "proofId": "varignon-theorem-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "The Parallelogram Conclusion",
+    "content": "The theorem varignon states the parallelogram property directly: Q − P = R − S, componentwise. This follows because both differences equal (C − A)/2, as established by the strong-form lemmas. The companion varignon_PS_eq_QR shows the other pair of opposite sides is also equal, P − S = Q − R, each equal to (B − D)/2 = half the diagonal BD. With both pairs of opposite side vectors equal, PQRS is a parallelogram. The proof invokes no Mathlib geometry — only `ring` on the coordinate identities — and uses no non-degeneracy hypothesis, so it covers arbitrary (including self-intersecting and skew) quadrilaterals.",
+    "mathContext": "Both pairs of opposite sides are equal as vectors: $Q-P=R-S=\\tfrac{C-A}{2}$ and $P-S=Q-R=\\tfrac{B-D}{2}$. Hence $PQRS$ is a parallelogram with sides half the diagonals of $ABCD$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parallelogram",
+      "opposite sides",
+      "Varignon parallelogram"
+    ],
+    "prerequisites": [
+      "parallelogram characterization by equal opposite side vectors"
+    ],
+    "crossReferences": []
+  }
+]
