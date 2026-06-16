@@ -4,7 +4,49 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-14T17:42:09-07:00
-**Iteration**: 4
+**Iteration**: 5
+
+## Session 2026-06-15 (researcher-9) — FRONTIER RE-MAP (corrects stale "Remaining Gap")
+
+ORIENT-only (build host gated — see Blocker). Three corrections to the tracked
+state, all verified against the current main checkout:
+
+1. **The line-1927 `sorry` is GONE (merged, not open).** The "Remaining Gap"
+   item 3 below (`needs_four_iff_excluded`, "downstream and trivial") was
+   discharged by **#24293** and is now a real proof at `ThreeSquares.lean:1964`
+   (split_ifs + `excluded_form_not_sum_three_sq` for the ≤2-square branches).
+   `ThreeSquares.lean` now has **0 sorry, exactly 2 axioms**:
+   `dirichlet_key_lemma` (:648) and `not_excluded_form_is_sum_three_sq` (:1698).
+   Do NOT re-attempt the 1927 sorry — it does not exist.
+
+2. **Five companion files are on main, all 0-sorry/0-axiom, but UNREGISTERED and
+   never build-verified** (written under prior Docker blackouts; merged via
+   #24614/#24628/#24696 etc.). Earlier `grep -c sorry` counts of "1" were comment
+   matches ("no `sorry`"); a comment-stripped scan gives 0 real sorries in every
+   one. Topological register order (deps resolved) for the next build-host:
+   `ThreeSquaresResidue3` (Mathlib-only), `ThreeSquaresResidue3Obstruction`
+   (Mathlib-only), `ThreeSquaresSufficiency` (→ThreeSquares),
+   `ThreeSquaresSufficiencyCorrected` (→ThreeSquares,ThreeSquaresResidue3),
+   `ThreeSquaresWitnessObstruction` (→ThreeSquaresSufficiency). Register = add
+   `import Proofs.X` to `Proofs.lean` AFTER a green `docker-build.sh Proofs.X`.
+
+3. **The monolithic witness route is PROVED FALSE (not just numerically).**
+   `ThreeSquaresWitnessObstruction.not_dirichletWitnessProperty` derives
+   `¬ ThreeSquares.DirichletWitnessProperty` from `witness_obstruction_residue3`
+   (concrete falsifier m=11). So `ThreeSquaresSufficiency.lean`'s single-witness
+   reduction is a documented DEAD END; the live sufficiency route is
+   `ThreeSquaresSufficiencyCorrected.lean` (residue split, m%4=3 dispatched via
+   the two-square route, other classes via the guarded witness).
+
+**Sharpened `dirichlet_key_lemma` gap (supersedes "all ingredients proved, just
+assemble").** The proved `minkowski_ellipsoid_has_lattice_point` (:983) finds a
+lattice point over the **standard** lattice ℤ³ (form `v0²+d·v1²+d·v2² ≤ R`). The
+axiom needs a Minkowski point in the **Dirichlet congruence sublattice**
+(`dirichletSublatticeReal`, :1560, covolume ∝ p²) so that Q ≡ 0 (mod p) and
+`dirichletForm_eq_p_of_lt_two_mul` (:1366) forces Q(v)=p. That **sublattice
+Minkowski instance is still missing** — the existing GoN lemma is over the wrong
+lattice. This is the distinct open Lean work and is Docker-gated (needs a build
+to verify; do not write blind).
 
 ## Session 2026-06-15 (researcher-3, later) — residue-3 analytic risk REMOVED
 
@@ -95,8 +137,9 @@ The "if" direction is reduced to exactly **2 axioms + 1 downstream sorry**:
 2. `not_excluded_form_is_sum_three_sq` (axiom, line 1665): the full sufficiency,
    by case analysis on n mod 8 + `PrimesInAP` + `dirichlet_key_lemma`. Its own
    docstring estimates **~150–200 lines** on top of the existing framework.
-3. `needs_four_iff_excluded` (sorry, line 1927): downstream and **trivial** once
-   `legendre_three_squares` is axiom-free (it is a direct corollary).
+3. ~~`needs_four_iff_excluded` (sorry, line 1927)~~ — **RESOLVED, merged #24293**
+   (now a real proof at `ThreeSquares.lean:1964`). See the researcher-9 session
+   block at the top of this file. Only the two axioms above remain.
 
 ## Active Approach
 Confirm/repair the chosen Minkowski+Dirichlet route (NOT Davenport–Cassels).
