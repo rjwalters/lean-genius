@@ -1,41 +1,43 @@
 # Research State: spherical-law-of-cosines-oq-03
 
 ## Current State
-**Phase**: ACT (post-SOLVED, outward enrichment)
+**Phase**: DONE (SOLVED + VERIFIED, saturated)
 **Path**: full
 **Since**: 2026-06-15T06:15:07Z
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
-The literal OQ deliverable `dual_law_trig` (`cos C = −cos A·cos B + sin A·sin B·cos c`)
-is DONE and on main (0 axioms, 0 sorries). This session (researcher-3) implements the
-polar-triangle duality in Lean — the structural "why" PR #24520 documented but only
-certified numerically. New **Part VII** realises the dual law as a side-law-shaped
-relation among the polar-triangle vertices `U=v×w, V=w×u, W=u×v`.
+COMPLETE. The literal OQ deliverable `dual_law_trig`
+(`cos C = −cos A·cos B + sin A·sin B·cos c`) is on main with 0 axioms, 0 sorries,
+together with the full Parts I–VII development (vector toolkit, cleared polynomial
+identity, trig form, cross-product form, and polar-triangle duality form). The
+build is machine-checked green: PR #24833 flipped the gallery meta to
+`verified`/`original` after a successful `docker-build.sh` run
+(`Proofs.SphericalLawOfCosinesOQ03`, 7743 jobs, 2026-06-15). Companion files
+`SphericalLawOfCosinesOQ03Bidual` (#24644) and `SphericalLawOfCosinesOQ03Primal`
+(#24577) are merged and registered in `Proofs.lean`.
 
 ## Active Approach
-Each polar-vertex inner product is a Binet–Cauchy product giving the negated cosine
-numerator of the opposite original angle (`⟨U,V⟩ = cos a·cos b − cos c = −(cos C num)`),
-and each polar self-inner-product is the Lagrange side-sine square. Substituting these
-into `dual_spherical_law_cleared` re-expresses the dual law in the polar triangle's own
-coordinates (`dual_law_polar_form`). All `ring`/`rw`/`linear_combination`-only, no
-division, no radicals — blackout-safe.
+None — slug saturated. The polar-triangle duality (`dual_law_polar_form`), the
+polar biduality (`polar_bidual_*`, `polar_triple_sq`), and the primal-side bridge
+to the parent `SphericalTriangle` structure (`cos_angleC_eq`,
+`spherical_law_of_cosines_trig_complete`) are all on main and verified.
 
 ## Attempt Count
-- Total attempts: 5
-- Current approach attempts: 1
-- Approaches tried: cleared form, literal trig form, cross-product form, polar form
+- Total attempts: 6
+- Current approach attempts: 0 (complete)
+- Approaches tried: cleared form, literal trig form, cross-product form, polar
+  form, polar biduality, primal `SphericalTriangle` bridge — all merged/verified
 
 ## Blockers
-Docker daemon down (`docker info` hangs/timeout) → no local typecheck; Aristotle `prove`
-404 in recent sessions. Part VII is build-pending but EXACTLY certified (sympy, residual
-identically 0) in `verify_polar_form.py`: the three polar inner-product identities are
-component-wise polynomial identities, and the capstone `linear_combination
-dual_spherical_law_cleared` certificate has residual 0. All lemmas reuse the same
-`binet_cauchy`/`lagrange_identity` machinery already trusted in Parts II/VI.
+None. Prior Docker-down / Aristotle-404 blackout that gated the Part VII build is
+resolved: #24833 records a green Docker build of the whole module.
 
 ## Next Action
-When Docker returns: build `Proofs.SphericalLawOfCosinesOQ03` to confirm typecheck of
-Parts VI–VII. Optional future step: bridge to the parent's `Vec3`/`SphericalTriangle.angleC`
-so the angle quantities are derived from `arccos`, not posited (introduces division —
-defer per `feedback-avoid-field-simp-under-no-build`).
+None required — this open question is solved and verified. Optional, non-blocking
+future extensions live only in the gallery `meta.json` `openQuestions` (hyperbolic
+dual law over a Lorentzian structure; packaging the polar involution as a single
+`triangle → polar triangle` definition so the side law and dual law become one
+theorem; the degenerate/antipodal non-degeneracy hypothesis for lifting the
+cleared form back to the full trig statement). None are research gaps for this
+slug.
