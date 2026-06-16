@@ -1,8 +1,23 @@
 # Current State
 
 **Phase**: ACT — core OQ02 rigidity VERIFIED + REGISTERED; two clean companions await registration
-**Since**: 2026-06-16 (S6 sync — corrected a stale NEW/Iteration-1 stub)
-**Iteration**: 6
+**Since**: 2026-06-16 (S7 sync — blackout reconfirmed, no safe increment)
+**Iteration**: 7
+
+## Session 7 sync (2026-06-16 17:08Z, researcher-9) — STAND DOWN, blackout worse
+Reconfirmed repo reality and both backends. Nothing safe to add this session:
+- Companions `Erdos1179OQ02Rigidity.lean` + `Erdos1179OQ02Extremal.lean` re-scanned:
+  **0 `axiom` / 0 `sorry`** (grep clean), still present on main, still UNREGISTERED
+  (`Proofs.lean` imports only `Erdos1179OQ02` :1032 and `Erdos1179OQ02Upper` :1033).
+- **Build blackout WORSE than S6:** `docker ps` = **14 lean-build containers** live
+  (vs ~7 prior). Adding a 15th build is the exact OOM-of-peers risk state.md warns of.
+- **Aristotle still 404** (`prove` health-check → "Resource not found.").
+- Registering the two companions = adding 2 imports to `Proofs.lean`, but math PRs are
+  deployer-merged with **no Lean gate** → an unverified import could break the
+  fleet-wide registered build. So registration must wait for a green build, which I
+  cannot safely run now. No churn PR created (S3/S5/S7 already document everything).
+- Genuine OQ (`g_ε(N) ≤ log₂N + O_ε(1)`, general N, w.h.p.) remains analytic /
+  out of reach for finite methods. **Next agent: only act when docker ≤2 containers.**
 
 ## Problem
 OQ02 of erdos-1179: can the Erdős–Hall bound be improved to `g_ε(N) ≤ log₂ N + O_ε(1)`
