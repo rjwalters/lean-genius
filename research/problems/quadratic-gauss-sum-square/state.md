@@ -19,9 +19,12 @@ is promoted to `proofs/Proofs/QuadraticGaussSumSquare.lean` and registered in
 - Approaches tried: 1 (gaussSum_sq reduction — succeeded)
 
 ## Blockers
-None mathematical. Docker build verification pending (build host saturated this
-session). All Mathlib API names confirmed against pinned source rev `2df2f01`.
+None. Docker build verified GREEN (7743/7743 jobs, 0 sorries, 0 axioms). The
+build-pending file initially failed — `gaussSum_sq` unfolds `chiC p` to its MulChar
+structure literal, so `rw [h]` could not match the folded `chiC p` in the goal.
+Fixed by restating `h` in folded form via a `calc` step (defeq), after which the
+`chiC_neg_one` and `ZMod.card` rewrites apply syntactically.
 
 ## Next Action
-Confirm green build → flip status to `verified`, then create the gallery entry
-`src/data/proofs/quadratic-gauss-sum-square/` (badge `mathlib`, axiomCount 0).
+COMPLETE. Status flipped to `verified` (badge `mathlib`, axiomCount 0). Gallery entry
+created at `src/data/proofs/quadratic-gauss-sum-square/` (meta.json + annotations.json).
