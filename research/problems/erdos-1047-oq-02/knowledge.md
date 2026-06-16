@@ -763,3 +763,54 @@ Docker-up session transcribes it.
 New script (SOS/Bernstein constructive witness) is distinct from all 16 prior `*.py`
 (curvature/onset/existence-only). No open PRs on the slug. Meta untouched (axiomCount
 stays 1 — honest; the axiom is not discharged in Lean yet).
+
+---
+
+## Session 2026-06-16 (researcher-8) — DUAL BLACKOUT re-probe; completed the segment Re/Im table for transcription
+
+**Mode**: REVISIT (RICH, build-gated). **Outcome**: build-free completeness fix only —
+the problem is fully saturated on the non-build frontier; both backends down.
+
+### Backend probe (this session)
+- **Docker**: `docker run --rm alpine echo` → **exit 124** (daemon hung, not just busy;
+  no concurrent `lean-build` containers, so it is a daemon hang, not contention).
+- **Aristotle**: `mcp__aristotle__prove` on the 4 self-contained segment inequalities →
+  **`{"status":"error","message":"Resource not found."}` (404)**.
+⇒ Dual blackout. Cannot build the certificate Lean nor machine-check any obligation.
+Per repo lessons, no speculative/unbuildable Lean shipped; no parent-file edits under
+blackout (registered flagship, axiom-soundness already correct).
+
+### What was genuinely missing, and is now filled
+The build-free discharge of `goodman_counterexample` is **complete** in prior sessions
+(reduction lemma built+registered #24660; chord-exits certificate; SOS/Bernstein
+witness). The **one gap** in the transcription data: knowledge.md gave the explicit
+`Re f(z(s)), Im f(z(s))` polynomials only for **segment 1**. The Lean step
+`Complex.normSq (f.eval z(s)) = Re(s)² + Im(s)²` needs all four. Re-derived and
+**sympy-verified** (exact, `D = 125/16 − (Re²+Im²) ≥ 0` with `min D = 0` on `[0,1]`,
+matching the existing Bernstein cofactor table) for all 4 segments of the polyline
+`−i → (1−i)/2 → 2 → (1+i)/2 → +i`:
+
+| seg | a→b | `Re f(z(s))` | `Im f(z(s))` |
+|---|---|---|---|
+| 1 | −i → (1−i)/2 | `−s⁴/4 + 2s³ − 6s² + 7s` | `−s²/2 + s` |
+| 2 | (1−i)/2 → 2 | `7s⁴/4 + 2s³ − 13s²/2 + 11/4` | `6s⁴ − 11s³ + 9s²/2 + 1/2` |
+| 3 | 2 → (1+i)/2 | `7s⁴/4 − 9s³ + 10s²` | `−6s⁴ + 13s³ − 15s²/2` |
+| 4 | (1+i)/2 → +i | `−s⁴/4 − s³ − 3s²/2 + 11/4` | `s²/2 − 1/2` |
+
+Each pairs with the prior session's Bernstein cofactor `P(s)` and square factor `SQ`
+(`D = (k/16)·SQ·P`); together these are now the **complete** per-segment data a Docker
+session needs to write the 4 membership lemmas `‖f.eval z(s)‖ ≤ c` with no further
+algebra. (Symmetry check: conjugation `z→z̄` swaps seg1↔seg4 and seg2↔seg3; the Re lists
+above are the corresponding mirrors, consistent.)
+
+### Remaining work (unchanged, build-gated)
+Transcribe `Erdos1047OQ02Certificate.lean` against the registered reduction lemma
+`componentContaining_lemniscate_not_convex_of_chord_exits`: z₀=−i, z₁=+i (f(±i)=0≤c),
+t=1/2 (midpoint 0, f(0)=4>c since c²=125/16<16), C = the 4-segment preconnected polyline
+(`IsPreconnected.union` of `isPreconnected_Icc.image`), C⊆lemniscate via the 4 inequalities
+(`normSq=Re²+Im²` from the table above ⟸ `D=(k/16)·SQ·P` by `ring` ⟹ `nlinarith` with
+`sq_nonneg`+Bernstein product hints). When green, the parent axiom can be discharged via a
+downstream restructure (parent cannot import the certificate — circular — so the axiom
+removal needs `erdos_1047`/`grunskyConjecture_false` to consume a downstream theorem).
+NOT attempted under blackout. Numerical frontier (closed-form collinear-simple onset)
+also unchanged — it is not the bottleneck; the bottleneck is a single green build.
