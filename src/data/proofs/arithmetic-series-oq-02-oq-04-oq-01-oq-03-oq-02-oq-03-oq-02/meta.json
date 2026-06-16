@@ -105,87 +105,87 @@
       "id": "preamble",
       "title": "Module Docstring and Imports",
       "startLine": 1,
-      "endLine": 142,
+      "endLine": 151,
       "summary": "Extensive docstring tracing the S1–S6 PREP cascade and the S2–S5c ACT iterations, stating what the file does and does NOT contain (no positive q=t=1 recovery, no Pascal-style recurrence, no Macdonald-polynomial axiom). Imports Mathlib and the parent q-multichoose entry. Works over a Field R (Path A) so the Macdonald rational product is well-typed.",
       "mathContext": "Open question: does the Macdonald (q,t)-binomial, evaluated at N = n+k-1, give a well-behaved (q,t)-multichoose?"
     },
     {
       "id": "definitions",
       "title": "I. Definitions of qtBinom and qtMultichoose",
-      "startLine": 144,
-      "endLine": 165,
+      "startLine": 152,
+      "endLine": 174,
       "summary": "Defines qtBinom q t N k := ∏ i ∈ range k, (1 - q^(N-i) t^i)/(1 - q^(i+1) t^i), the 0-indexed form of the Macdonald (q,t)-binomial, and qtMultichoose q t n k := qtBinom q t (n+k-1) k. Both noncomputable over a Field R.",
       "mathContext": "$$\\mathrm{qtBinom}(q,t,N,k) := \\prod_{i=0}^{k-1} \\frac{1 - q^{N-i} t^i}{1 - q^{i+1} t^i}, \\quad \\mathrm{qtMultichoose}(q,t,n,k) := \\mathrm{qtBinom}(q,t,n+k-1,k)$$"
     },
     {
       "id": "boundary-k0",
       "title": "II. Boundary Cases (k = 0)",
-      "startLine": 167,
-      "endLine": 180,
+      "startLine": 175,
+      "endLine": 189,
       "summary": "Empty-product boundaries: qtBinom q t N 0 = 1 and qtMultichoose q t n 0 = 1, both by simp. Tagged @[simp].",
       "mathContext": "$$\\mathrm{qtBinom}(q,t,N,0) = 1, \\quad \\mathrm{qtMultichoose}(q,t,n,0) = 1$$"
     },
     {
       "id": "boundary-k1",
       "title": "III. Boundary Cases (k = 1)",
-      "startLine": 182,
-      "endLine": 200,
+      "startLine": 190,
+      "endLine": 209,
       "summary": "Single-factor evaluations qtBinom q t N 1 = (1 - q^N)/(1 - q) and qtMultichoose q t n 1 = (1 - q^n)/(1 - q), both independent of t because the product runs over the single term i=0 where t^0 = 1.",
       "mathContext": "$$\\mathrm{qtBinom}(q,t,N,1) = \\frac{1 - q^N}{1 - q}, \\quad \\text{independent of } t$$"
     },
     {
       "id": "k-recurrence",
       "title": "IV. k-Direction Multiplicative Recurrence",
-      "startLine": 202,
-      "endLine": 223,
+      "startLine": 210,
+      "endLine": 232,
       "summary": "The foundational unconditional recurrence qtBinom_succ: qtBinom q t N (k+1) = qtBinom q t N k · ((1 - q^(N-k) t^k)/(1 - q^(k+1) t^k)), a direct application of Finset.prod_range_succ. No hypothesis on q, t, N, k.",
       "mathContext": "$$\\mathrm{qtBinom}(q,t,N,k+1) = \\mathrm{qtBinom}(q,t,N,k) \\cdot \\frac{1 - q^{N-k} t^k}{1 - q^{k+1} t^k}$$"
     },
     {
       "id": "t-eq-one",
       "title": "V. Specialization at t = 1 (S3 ACT)",
-      "startLine": 225,
-      "endLine": 294,
+      "startLine": 233,
+      "endLine": 303,
       "summary": "The private helper qBinom_mult_recur (CommRing multiplicative q-Pascal, derived by subtracting the two q-Pascal identities) bridges the Macdonald side to the Gaussian side. The headline qtBinom_at_t_eq_one (induction on k) and its corollary qtMultichoose_at_t_eq_one establish qtBinom q 1 N k = qBinom q N k and qtMultichoose q 1 n k = qMultichoose q n k, under the Path A non-degeneracy hypothesis q^(j+1) ≠ 1 for j < k.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,1,n,k) = \\mathrm{qMultichoose}(q,n,k) \\quad \\text{for } q^{j+1} \\neq 1,\\ j < k$$"
     },
     {
       "id": "sublattice-trap",
       "title": "VI. Polynomial Sub-lattice and the Field 0/0 Trap (S4 ACT)",
-      "startLine": 296,
-      "endLine": 362,
+      "startLine": 304,
+      "endLine": 371,
       "summary": "qtMultichoose_two_two: the unique interior point (2,2) cancels its t-dependence to (1 - q^3)/(1 - q) under the guard 1 - q^2 t ≠ 0. qtBinom_at_one_one_eq_zero and its qtMultichoose corollary formalize the Field-R 0/0 trap: the naive q=t=1 substitution collapses to 0, not Nat.multichoose, because the i=0 factor is 0/0 = 0.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,2,2) = \\frac{1 - q^3}{1 - q}; \\qquad \\mathrm{qtBinom}(1,1,N,k+1) = 0 \\text{ (Field } R \\text{ trap)}$$"
     },
     {
       "id": "ratio-form",
       "title": "VII. k-Direction Telescoping Ratio Identity (S6 ACT)",
-      "startLine": 364,
-      "endLine": 396,
+      "startLine": 372,
+      "endLine": 405,
       "summary": "qtBinom_succ_div: when qtBinom q t N k ≠ 0, the consecutive ratio is the clean rational function (1 - q^(N-k) t^k)/(1 - q^(k+1) t^k). The ratio form is the natural foundation for telescoping/chain arguments, complementing the multiplicative qtBinom_succ.",
       "mathContext": "$$\\frac{\\mathrm{qtBinom}(q,t,N,k+1)}{\\mathrm{qtBinom}(q,t,N,k)} = \\frac{1 - q^{N-k} t^k}{1 - q^{k+1} t^k}$$"
     },
     {
       "id": "bridges-qnumber",
       "title": "VIII. Polynomial-Form Bridges to the Parent's qNumber (S5 ACT)",
-      "startLine": 398,
-      "endLine": 457,
+      "startLine": 406,
+      "endLine": 466,
       "summary": "Three bridges expressing the polynomial-sub-lattice points as the parent's polynomial qNumber: qtBinom_one_right_eq_qNumber, qtMultichoose_one_right_eq_qNumber (at k=1, under 1 - q ≠ 0), and qtMultichoose_two_two_eq_qNumber (at (2,2), under both guards), all via qNumber_geometric.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,n,1) = \\mathrm{qNumber}(q,n), \\quad \\mathrm{qtMultichoose}(q,t,2,2) = \\mathrm{qNumber}(q,3)$$"
     },
     {
       "id": "bridges-qbinom",
       "title": "IX. Direct Bridges to the Parent's qBinom / qMultichoose (S5b ACT)",
-      "startLine": 459,
-      "endLine": 492,
+      "startLine": 467,
+      "endLine": 501,
       "summary": "Four direct bridges from the k ≤ 1 slice to the parent's named objects: qtBinom_zero_right_eq_qBinom and qtMultichoose_zero_right_eq_qMultichoose (unconditional, both = 1), and qtBinom_one_right_eq_qBinom and qtMultichoose_one_right_eq_qMultichoose (under 1 - q ≠ 0), composing the qNumber bridges with the parent's qBinom_one_right / qMultichoose_one_right.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,n,1) = \\mathrm{qMultichoose}(q,n,1) \\quad (1 - q \\neq 0)$$"
     },
     {
       "id": "bridge-interior",
       "title": "X. (2,2) Interior Bridge to qMultichoose (S5c ACT)",
-      "startLine": 494,
-      "endLine": 518,
+      "startLine": 502,
+      "endLine": 561,
       "summary": "qtMultichoose_two_two_eq_qMultichoose: the unique interior polynomial-sub-lattice point equals the parent's qMultichoose q 2 2 under both Path A guards, composing qtMultichoose_two_two_eq_qNumber with the parent's qMultichoose_two_left. This closes the bridge chain: every point of {k ≤ 1} ∪ {(2,2)} is now equated directly to a parent-side named object.",
       "mathContext": "$$\\mathrm{qtMultichoose}(q,t,2,2) = \\mathrm{qMultichoose}(q,2,2) \\quad (1 - q^2 t \\neq 0,\\ 1 - q \\neq 0)$$"
     }
