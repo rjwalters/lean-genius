@@ -70,5 +70,17 @@
     "significance": "key",
     "relatedConcepts": ["duality", "pigeonhole principle", "Mirsky's theorem"],
     "prerequisites": ["pigeonhole principle", "Finset cardinality"]
+  },
+  {
+    "id": "ann-choice-technique",
+    "proofId": "dilworth-theorem-oq-01",
+    "range": { "startLine": 76, "endLine": 91 },
+    "type": "tactic",
+    "title": "From a Cover Hypothesis to a Choice Function",
+    "content": "The shared mechanism of both proofs. The cover hypothesis only asserts *existence* of a containing chain per element (`∃ C ∈ 𝒞, a ∈ C`); to run pigeonhole one needs an actual function. `classical` plus the dependent-if `fun a => if h : ∃ C ∈ 𝒞, a ∈ C then h.choose else ∅` materializes that choice, with `dif_pos` recovering `f a = h.choose` and `h.choose_spec` supplying both `f a ∈ 𝒞` and `a ∈ f a`. `Finset.exists_ne_map_eq_of_card_lt_of_maps_to` is then the pigeonhole that produces the colliding pair killed by the fundamental lemma. The identical block reappears verbatim in the Mirsky proof with `𝒜` for `𝒞`.",
+    "mathContext": "$f(a) := \\text{a chosen } C \\in \\mathcal{C} \\text{ with } a \\in C;\\ |A| > |\\mathcal{C}| \\Rightarrow \\exists\\, x \\ne y,\\ f(x) = f(y).$",
+    "significance": "supporting",
+    "relatedConcepts": ["classical choice", "dependent if-then-else", "Exists.choose", "pigeonhole principle"],
+    "prerequisites": ["classical logic in Lean", "Finset cardinality"]
   }
 ]
