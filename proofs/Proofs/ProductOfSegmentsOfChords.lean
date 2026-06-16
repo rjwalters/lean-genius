@@ -312,7 +312,7 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
         = ‖P' - (P' + (t * ‖A' - P'‖) • dir)‖ := by rw [hB'param]
       _ = ‖-((t * ‖A' - P'‖) • dir)‖ := by congr 1; abel
       _ = ‖(t * ‖A' - P'‖) • dir‖ := by rw [norm_neg]
-      _ = |t * ‖A' - P'‖| * ‖dir‖ := by rw [norm_smul]
+      _ = |t * ‖A' - P'‖| * ‖dir‖ := by rw [norm_smul, Real.norm_eq_abs]
       _ = |t * ‖A' - P'‖| * 1 := by rw [hdir]
       _ = |t * ‖A' - P'‖| := by ring
   -- Product of distances
@@ -391,13 +391,9 @@ theorem power_of_point_product (P A B : Vec2) (C : Circle)
             linarith
           have vieta2 : 4 * (inner ℝ P' dir)^2 = ‖A' - P'‖^2 + (t * ‖A' - P'‖)^2 + 2 * ‖A' - P'‖ * (t * ‖A' - P'‖) := by linarith [vieta]
           linarith
-        rw [abs_mul, abs_of_nonneg (sq_nonneg _)]
-        have habs : |t * ‖A' - P'‖^2| = |‖P'‖^2 - C.radius^2| := by
-          rw [abs_mul, abs_of_nonneg (sq_nonneg _)]
-          have heq : t * ‖A' - P'‖^2 = ‖A' - P'‖ * (t * ‖A' - P'‖) := by ring
-          rw [heq, hprod]
-        rw [abs_mul, abs_of_nonneg (sq_nonneg _)] at habs
-        exact habs
+        have hprod' : t * ‖A' - P'‖ ^ 2 = ‖P'‖ ^ 2 - C.radius ^ 2 := by
+          rw [← hprod]; ring
+        rw [← hprod', abs_mul, abs_of_nonneg (sq_nonneg (‖A' - P'‖))]
 
 -- ============================================================
 -- PART 6: Product of Segments (General Form)
