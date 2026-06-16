@@ -1,43 +1,37 @@
 # Research State: nth-root-irrational-oq-01-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-06-15T00:57:04-07:00
-**Iteration**: 6
+**Since**: 2026-06-16T00:00:00-07:00
+**Iteration**: 7
 
 ## Current Focus
-The four Niven/cyclotomic files (S1–S4) are merged AND registered (S5, present in
-`proofs/Proofs.lean:2651–2656` on origin/main). The remaining genuinely-open
-direction is the EXACT degree `[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)/2` (the Real file only proved
-the degree-≤2 *bound* that yields the irrational direction, not the exact value).
-S6 (this session) symbolically certifies that exact-degree claim and pins the
-Lean tower plan for the Docker-up session.
+Slug COMPLETE and VERIFIED. The exact-degree item that this file previously
+listed as the open "Next Action" was already closed: `NthRootIrrationalOQ01OQ01Degree.lean`
+(`finrank_adjoin_trace_eq`: `2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)`, 0 sorries / 0 axioms) is
+registered in `proofs/Proofs.lean` and was Docker-verified green on 2026-06-15
+(the final S2/researcher-5 session that fixed the `synthInstance.maxHeartbeats`
+timeout and built all five files). state.md was frozen at the earlier S6
+certification session (#24640) and never advanced past ACT — this update syncs it
+to match `knowledge.md` (header: COMPLETED/VERIFIED), the problem JSON
+(`status: completed`, `phase: COMPLETED`), and `meta.json` (`verified`/`original`,
+0 axioms, 0 sorries).
 
-## Active Approach
-Verify-before-assert (build-free; Docker down, `docker info` times out). Added
-`verify_real_subfield_degree.py` (all asserts pass, n = 1..30). It certifies:
-- (A) quadratic relation `ζ² − (ζ+ζ⁻¹)ζ + 1 = 0` (identity, ζ≠0) ⇒ `[ℚ(ζ):ℚ(α)] ≤ 2`.
-- (B) tower `φ(n) = 2·deg(minpoly_ℚ α_n)` for n≥3 (ζ non-real ⇒ `[ℚ(ζ):ℚ(α)] = 2` exactly).
-- (C) exact degree `deg(minpoly_ℚ(2cos(2π/n))) = φ(n)/2` for n≥3; = 1 (rational) ⇔ n∈{1,2,3,4,6}.
-- (D) the five Niven rational values `α_n ∈ {2,−2,−1,0,1}`.
-
-## Attempt Count
-- Total attempts: 6
-- Current approach attempts: 1
-- Approaches tried: 3 (Zolotarev-irr direct, registration, exact-degree certification)
+## Completed Result
+Five-file Niven/cyclotomic family, all merged, registered, and Docker-green:
+- `NthRootIrrationalOQ01OQ01.lean` — primitive n-th root of unity irrational (n≥3);
+  rational roots of unity are ±1.
+- `NthRootIrrationalOQ01OQ01Real.lean` — `2cos(2π/n)` irrational for φ(n)≥3.
+- `NthRootIrrationalOQ01OQ01Cos.lean` / `…CosRational.lean` — full Niven
+  classification: `cos(2π/n)` rational ⇔ n ∈ {1,2,3,4,6}, values {1,−1,−1/2,0,1/2}.
+- `NthRootIrrationalOQ01OQ01Degree.lean` — exact degree `2·[ℚ(ζ+ζ⁻¹):ℚ] = φ(n)`,
+  turning the rationality criterion into a degree theorem.
 
 ## Blockers
-- Docker + Aristotle blackout: cannot locally build/Aristotle-check this session.
-- The exact-degree Lean proof needs IntermediateField adjoin + finrank
-  multiplicativity (`Module.finrank_mul_finrank`) and the real-subfield minpoly;
-  the latter is absent from Mathlib (must be built ~150 LOC). Docker-gated.
+None. No genuinely-open sub-item remains.
 
 ## Next Action
-On a Docker-up session, prove `[ℚ⟮ζ+ζ⁻¹⟯ : ℚ] = φ(n)/2` (n≥3) via the tower:
-1. `[ℚ⟮ζ⟯ : ℚ] = φ(n)` — `IsCyclotomicExtension.finrank` / `cyclotomic_eq_minpoly_rat`.
-2. `[ℚ⟮ζ⟯ : ℚ⟮ζ+ζ⁻¹⟯] = 2` — upper bound from relation (A) (ζ root of
-   `X² − (ζ+ζ⁻¹)X + 1 ∈ K[X]`, `minpoly.dvd` + `natDegree_le_of_dvd`); lower
-   bound `≥ 2` because `ζ ∉ ℝ ⊇ ℚ⟮ζ+ζ⁻¹⟯` for n≥3 (`Complex.ofReal`/non-real).
-3. `Module.finrank_mul_finrank` (tower) ⇒ `φ(n) = 2 · [K:ℚ]` ⇒ `[K:ℚ] = φ(n)/2`.
-All facts (A)/(B)/(C) numerically certified in `verify_real_subfield_degree.py`.
+None — slug complete. Only conceivable extension is additional concrete small-`n`
+instantiations beyond the existing `fifthRoot` example, which would be cosmetic
+(no new theory). No follow-up OQ warranted.
