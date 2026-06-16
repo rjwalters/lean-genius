@@ -42,9 +42,16 @@
   second by Dirichlet primes in AP for the deficit), so this is a genuine route
   to eliminating the sufficiency axiom rather than a reduction to a false claim.
 
-  NOTE: build-pending — written under a Docker blackout (host `lake`/Docker
-  unavailable). Not registered in `Proofs.lean`; harmless to the build until a
-  post-blackout session verifies it via `./proofs/scripts/docker-build.sh`.
+  NOTE: build-pending (Docker blackout — daemon unresponsive this session). The
+  earlier elaboration bug is now FIXED: the Dirichlet witness `Prop` states the
+  QR condition instance-free as `IsSquare ((-d : ℤ) : ZMod p)` (the old
+  `legendreSym p (-d) = 1` form failed instance synthesis, since `legendreSym`
+  needs a `Fact (Nat.Prime p)` instance that a `Nat.Prime p` *conjunct* cannot
+  supply). The consumer converts back to `legendreSym = 1` for `dirichlet_key_lemma`
+  via `legendreSym.eq_one_iff`, reusing the proven in-file pattern at
+  `ThreeSquares.lean:1191–1223`. Still NOT registered in `Proofs.lean`; a
+  Docker-available session should build both companions, then register
+  `Proofs.ThreeSquaresResidue3` + `Proofs.ThreeSquaresSufficiencyCorrected`.
 -/
 import Proofs.ThreeSquares
 import Proofs.ThreeSquaresResidue3
@@ -62,7 +69,7 @@ the witness is provably unsatisfiable (audit #24529 / obstruction #24614), is
 handled separately by `Residue3Property`. -/
 def DirichletWitnessNe3 : Prop :=
   ∀ {m : ℕ}, ¬IsExcludedForm m → ¬(4 ∣ m) → m % 8 ≠ 3 → 1 < m →
-    ∃ d p : ℕ, 0 < d ∧ p = d * m - 1 ∧ Nat.Prime p ∧ legendreSym p (-d : ℤ) = 1
+    ∃ d p : ℕ, 0 < d ∧ p = d * m - 1 ∧ Nat.Prime p ∧ IsSquare ((-d : ℤ) : ZMod p)
 
 /-- The residue-3 property: for every `m ≡ 3 (mod 8)` with `m > 3`, there is an
 odd witness `t` and a prime `mm = (m − t²)/2` with `mm % 4 ≠ 3`, packaged as the
@@ -138,7 +145,27 @@ theorem three_sq_of_corrected_witnesses
         · -- n % 8 ≠ 3: invoke the (restricted) Dirichlet witness
           obtain ⟨d, p, hd, hp, hpp, hqr⟩ := Hne3 hne h4 h3 hle
           haveI : Fact (Nat.Prime p) := ⟨hpp⟩
-          exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hp hqr
+          -- The witness now carries `IsSquare ((-d : ℤ) : ZMod p)` (instance-free,
+          -- so the `def` elaborates without a `Fact` in the `Prop`). Convert back to
+          -- `legendreSym p (-d) = 1` for `dirichlet_key_lemma` via `eq_one_iff`,
+          -- whose `≠ 0` side-goal follows from `¬ p ∣ d` (else `p ∣ d*n = p+1`).
+          have hpd : ¬ (p ∣ d) := by
+            intro hpd
+            have hdn_pos : 0 < d * n := Nat.mul_pos hd (by omega)
+            have hdn : d * n = p + 1 := by omega
+            have hpdn : p ∣ d * n := hpd.mul_right n
+            rw [hdn] at hpdn
+            have hp1 : p ∣ 1 := (Nat.dvd_add_right (dvd_refl p)).mp hpdn
+            exact hpp.ne_one (Nat.dvd_one.mp hp1)
+          have hd_ne : (d : ZMod p) ≠ 0 := by
+            intro h
+            rw [ZMod.natCast_zmod_eq_zero_iff_dvd] at h
+            exact hpd h
+          have hneg_d_ne : ((-d : ℤ) : ZMod p) ≠ 0 := by
+            push_cast; exact neg_ne_zero.mpr hd_ne
+          have hqr' : legendreSym p (-d : ℤ) = 1 :=
+            (legendreSym.eq_one_iff p hneg_d_ne).mpr hqr
+          exact dirichlet_key_lemma (n := n) (d := d) (p := p) hle hd hp hqr'
 
 /-- **The sufficiency axiom is redundant given the corrected split.**
 

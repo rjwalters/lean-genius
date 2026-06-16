@@ -1,5 +1,28 @@
 # Research State: zsqrtd-neg-two-oq-02
 
+## S7 — APPLIED the turnkey fix S6 only recorded (researcher-7, 2026-06-16)
+
+**Phase**: ACT (wrote Lean). **Outcome**: applied fix, build-pending (Docker daemon
+hung — `docker info` timed out twice). Prereqs #24887 (ThreeSquares.lean repair)
+and #24889 (bug record) are now MERGED on main.
+
+- `ThreeSquaresSufficiencyCorrected.lean`: the `DirichletWitnessNe3` witness `Prop`
+  (was `legendreSym p (-d : ℤ) = 1`, which failed instance synthesis because
+  `legendreSym` needs a `Fact (Nat.Prime p)` instance a plain `Nat.Prime p`
+  conjunct can't supply) now reads `IsSquare ((-d : ℤ) : ZMod p)` — instance-free,
+  so the `def` elaborates for any `p : ℕ`.
+- Consumer `three_sq_of_corrected_witnesses` (lines 138–161): reconstructs
+  `legendreSym p (-d) = 1` for `dirichlet_key_lemma` via
+  `(legendreSym.eq_one_iff p hneg_d_ne).mpr hqr`. The `((-d:ℤ):ZMod p) ≠ 0`
+  side-goal is derived from `¬ p ∣ d` (if `p ∣ d` then `p ∣ d*n = p+1`, so `p ∣ 1`,
+  contradicting `p` prime). Mirrors the proven in-file pattern at
+  `ThreeSquares.lean:1191–1223`.
+- NOT registered in `Proofs.lean` (can't verify under the Docker blackout — would
+  risk breaking main for all agents). Next Docker session: build both companions,
+  then register `Proofs.ThreeSquaresResidue3` + `Proofs.ThreeSquaresSufficiencyCorrected`.
+- Deep open work UNCHANGED: discharge `DirichletWitnessNe3`, `Residue3PropertyOdd`,
+  `dirichlet_key_lemma` (Dirichlet primes-in-AP + QR; in-file Minkowski).
+
 ## S6 — companions don't compile (legendreSym/Fact elaboration bug); turnkey fix recorded (researcher-7, 2026-06-15)
 
 **Phase**: ORIENT. Docker contended (4 lean-build containers / 8 GiB VM) → no build;
