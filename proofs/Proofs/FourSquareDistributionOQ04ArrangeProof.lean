@@ -39,12 +39,31 @@ This collapses the orbit–stabilizer argument to wiring:
 
 ## Status
 
-Build-gated orphan (NOT registered in `Proofs.lean`; CI-safe). Authored under a
-dual backend outage (Aristotle `prove_file` → 404; this worktree's `proofs/.lake`
-is a corrupt self-symlink so docker-build is blocked here). The structural lemmas
-proven below typecheck against standard Mathlib API; the genuinely combinatorial
-glue (orbit ↔ arrangements, fiber-size = count) is isolated as annotated `sorry`s
-for an Aristotle `prove_file` / docker-build discharge once a backend recovers.
+Build-gated orphan (NOT registered in `Proofs.lean`; CI-safe).
+
+**Progress (researcher-5, 2026-06-16 — second pass, build-pending under blackout).**
+The **stabilizer-order half is now fully discharged** (4 of the original 6 `sorry`s
+removed). Prior sessions repeatedly flagged the stabilizer order `∏count!` as "the
+genuine residue"; that computation is now a proof, resting only on standard Mathlib
+API name-checked against rev `2df2f0150c`:
+- `image_eq_toFinset_of_mem` — proved (`Multiset.toFinset_map` + `Finset.val_toFinset`).
+- `card_fiber_eq_count` — proved (`Fintype.card_subtype` + `Multiset.count_map` +
+  `Finset.filter_val` + `Multiset.filter_congr`).
+- `stabilizer_card_eq_prod_count` — proved, wiring `DomMulAct.stabilizer_card'`
+  through the two lemmas above.
+- `arrangement_card` (the `Nat.multinomial` headline) — proved **modulo**
+  `arrangements_card_mul_prod_count`, by cancelling `∏count!` against
+  `Nat.multinomial_spec` (`mul_right_cancel₀`).
+
+The **sole remaining residue** is the orbit↔arrangements bijection
+(`card_orbit_eq_card_arrangements`) and the orbit–stabilizer assembly
+(`arrangements_card_mul_prod_count`). Both rest on orbit-surjectivity — "two
+functions `Fin m → ℤ` with the same value-multiset differ by a permutation" — which
+has no direct Mathlib lemma (closest leads: `Tuple.sort` / `Tuple.unique_monotone`,
+which still need a "two monotone tuples with equal multiset are equal" step). Left
+as annotated `sorry`s for an Aristotle `prove_file` / interactive docker-build
+discharge once a backend recovers (this pass authored under Aristotle 404 + a
+contended/hung Docker daemon, so no build verification was possible).
 
 `arrangements` is restated here verbatim from the parent so the file is
 self-contained (and `prove_file`-portable). On discharge, fold into the parent's
@@ -76,23 +95,35 @@ theorem mem_arrangements_iff {m : ℕ} (s : Multiset ℤ) (g : Fin m → ℤ) :
 theorem image_eq_toFinset_of_mem {m : ℕ} (s : Multiset ℤ) {g : Fin m → ℤ}
     (hg : g ∈ arrangements s) :
     (Finset.univ : Finset (Fin m)).image g = s.toFinset := by
-  sorry
+  classical
+  rw [mem_arrangements_iff] at hg
+  rw [← hg, Multiset.toFinset_map, Finset.val_toFinset]
 
 /-- The `i`-fiber of an arrangement has size `s.count i`: the number of indices
     mapping to a value equals that value's multiplicity in the realized multiset. -/
 theorem card_fiber_eq_count {m : ℕ} (s : Multiset ℤ) {g : Fin m → ℤ}
     (hg : g ∈ arrangements s) (i : ℤ) :
     Fintype.card {a : Fin m // g a = i} = s.count i := by
-  sorry
+  classical
+  rw [mem_arrangements_iff] at hg
+  have hfeq : (Finset.univ : Finset (Fin m)).val.filter (fun a : Fin m => g a = i)
+      = (Finset.univ : Finset (Fin m)).val.filter (fun a : Fin m => i = g a) :=
+    Multiset.filter_congr (fun a _ => eq_comm)
+  rw [Fintype.card_subtype, ← hg, Multiset.count_map, Finset.card_def, Finset.filter_val, hfeq]
 
 /-- **Stabilizer order = ∏ count!** for an arrangement `g`, packaged from
     `DomMulAct.stabilizer_card'` together with `image_eq_toFinset_of_mem` and
-    `card_fiber_eq_count`. -/
+    `card_fiber_eq_count`. The product over `Finset.univ.image g` returned by
+    `stabilizer_card'` is re-indexed to `s.toFinset` and each fiber cardinality
+    is rewritten to the corresponding multiplicity `s.count v`. -/
 theorem stabilizer_card_eq_prod_count {m : ℕ} (s : Multiset ℤ) {g : Fin m → ℤ}
     (hg : g ∈ arrangements s) :
     Fintype.card {σ : Equiv.Perm (Fin m) // g ∘ σ = g}
       = ∏ v ∈ s.toFinset, (s.count v)! := by
-  sorry
+  classical
+  rw [DomMulAct.stabilizer_card' (f := g), image_eq_toFinset_of_mem s hg]
+  refine Finset.prod_congr rfl (fun v _ => ?_)
+  rw [card_fiber_eq_count s hg v]
 
 /-- **Orbit ↔ arrangements.** The orbit of an arrangement `g` under the
     precomposition action of `Equiv.Perm (Fin m)` is, in cardinality, exactly
@@ -115,12 +146,22 @@ theorem arrangements_card_mul_prod_count {m : ℕ} (s : Multiset ℤ)
   sorry
 
 /-- **The residue, in `Nat.multinomial` form.** Identical statement to the parent
-    file's `arrangement_card`; obtained by dividing
-    `arrangements_card_mul_prod_count` by `∏count!` and applying
-    `Nat.multinomial_spec` (`multinomial · ∏count! = (∑count)!` with `∑count = m`). -/
+    file's `arrangement_card`; obtained by cancelling `∏count!` from
+    `arrangements_card_mul_prod_count` against `Nat.multinomial_spec`
+    (`∏count! · multinomial = (∑count)!` with `∑count = m`). This derivation is
+    unconditional — the only residual input is `arrangements_card_mul_prod_count`. -/
 theorem arrangement_card {m : ℕ} (s : Multiset ℤ) (hm : Multiset.card s = m) :
     (arrangements (m := m) s).card
       = Nat.multinomial s.toFinset (fun v => s.count v) := by
-  sorry
+  have hmul := arrangements_card_mul_prod_count s hm
+  have hspec : (∏ v ∈ s.toFinset, (s.count v)!)
+        * Nat.multinomial s.toFinset (fun v => s.count v) = m ! := by
+    have h := Nat.multinomial_spec s.toFinset (fun v => s.count v)
+    rwa [Multiset.toFinset_sum_count_eq, hm] at h
+  have hP : (0 : ℕ) < ∏ v ∈ s.toFinset, (s.count v)! :=
+    Finset.prod_pos (fun v _ => Nat.factorial_pos _)
+  refine mul_right_cancel₀ hP.ne' ?_
+  rw [hmul, mul_comm]
+  exact hspec.symm
 
 end FourSquareDistributionOQ04ArrangeProof

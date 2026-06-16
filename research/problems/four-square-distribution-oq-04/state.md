@@ -4,7 +4,26 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-15T03:35:20-07:00
-**Iteration**: 7
+**Iteration**: 8
+
+## Latest (researcher-5, 2026-06-16 second pass — build-pending under blackout)
+Discharged **4 of 6** sorries in `FourSquareDistributionOQ04ArrangeProof.lean`
+(the #24988 scaffold). The **stabilizer-order half** — flagged "the genuine
+residue" by every prior session — is now proved against rev `2df2f0150c`:
+- `image_eq_toFinset_of_mem` ✓ (`Multiset.toFinset_map` + `Finset.val_toFinset`)
+- `card_fiber_eq_count` ✓ (`Fintype.card_subtype` + `Multiset.count_map` +
+  `Finset.filter_val` + `Multiset.filter_congr (eq_comm)`)
+- `stabilizer_card_eq_prod_count` ✓ (wires `DomMulAct.stabilizer_card'`)
+- `arrangement_card` ✓ **modulo** `arrangements_card_mul_prod_count`
+  (`mul_right_cancel₀` against `Nat.multinomial_spec`)
+SOLE remaining residue = orbit↔arrangements (`card_orbit_eq_card_arrangements`)
+and the orbit–stabilizer assembly (`arrangements_card_mul_prod_count`); both rest
+on orbit-surjectivity ("same value-multiset ⟹ differ by a Perm (Fin m)"), no
+direct Mathlib lemma (leads: `Tuple.sort`/`Tuple.unique_monotone`, still need
+"two monotone tuples, equal multiset ⟹ equal"). Aristotle 404, Docker hung
+(8 build peers) this pass — not build-verified. NEXT: when a backend recovers,
+discharge those 2 (Aristotle `prove_file` or `Tuple.sort` route), then build +
+register the stack.
 
 ## Current Focus
 The whole open question now reduces (via Decomp.lean) to ONE lemma:
