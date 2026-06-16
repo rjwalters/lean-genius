@@ -1,7 +1,7 @@
 {
   "slug": "frobenius-number-oq-02",
   "title": "Symmetry of Non-Representable Numbers (Frobenius)",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-05-29T19:14:09.184Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Complete: Frobenius symmetry Rep(n) ↔ ¬Rep(g−n) proved (0 sorry/0 axiom); gallery entry created.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — graduated to gallery.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,9 +31,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: frobenius_symmetry proved from first principles (0 sorries, 0 axioms), registered in Proofs.lean and now in gallery. Engine reused as black box by OQ-01 genus count.",
+    "builtItems": [
+      "FrobeniusNumberOQ02.lean: frobenius_symmetry — Rep(n) ↔ ¬Rep(g−n) for coprime a,b≥2, 0<n<g (line 91)",
+      "rep_and_complement_false — divisibility squeeze ruling out both n,g−n representable (line 51)",
+      "one_of_pair_rep — constructive residue-completion giving Rep on one side (line 66)",
+      "exists_kb_mod/mul_mod_inj — {kb mod a} is a complete residue system via ZMod unit cancellation + Finite.injective_iff_surjective (lines 26,41)",
+      "Gallery entry src/data/proofs/frobenius-number-oq-02/ (meta.json + 6 annotations, resolver-validated)"
+    ],
+    "insights": [
+      "Posed statement ¬Rep(n)↔¬Rep(g−n) is FALSE; correct symmetry is Rep(n)↔¬Rep(g−n) (counterexample a=3,b=5,g=7: n=1 nonrep, g−n=6 rep).",
+      "Coprimality used twice dually: a∣bc⇒a∣c (rep_and_complement_false) and b a unit mod a (one_of_pair_rep residue bijection).",
+      "This symmetry = the statement that ⟨a,b⟩ is a symmetric numerical semigroup; OQ-01 imports it verbatim for the (a−1)(b−1)/2 genus count."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -53,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.184Z",
-  "lastUpdate": "2026-05-29T19:14:09.184Z",
+  "lastUpdate": "2026-06-16T13:30:00-08:00",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
