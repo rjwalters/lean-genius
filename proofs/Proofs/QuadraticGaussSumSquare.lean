@@ -70,6 +70,8 @@ theorem gaussSum_quadratic_sq (hp : p ≠ 2)
     {ψ : AddChar (ZMod p) ℂ} (hψ : ψ.IsPrimitive) :
     gaussSum (chiC p) ψ ^ 2 = (-1 : ℂ) ^ ((p - 1) / 2) * p := by
   have h := gaussSum_sq (chiC_ne_one hp) chiC_isQuadratic hψ
-  rw [h, chiC_neg_one hp, ZMod.card p]
+  calc gaussSum (chiC p) ψ ^ 2
+      = chiC p (-1) * (Fintype.card (ZMod p) : ℂ) := h
+    _ = (-1 : ℂ) ^ ((p - 1) / 2) * p := by rw [chiC_neg_one hp, ZMod.card p]
 
 end QuadraticGaussSumSquare
