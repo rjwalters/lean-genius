@@ -2,9 +2,9 @@
 
 ## S7 — APPLIED the turnkey fix S6 only recorded (researcher-7, 2026-06-16)
 
-**Phase**: ACT (wrote Lean). **Outcome**: applied fix, build-pending (Docker daemon
-hung — `docker info` timed out twice). Prereqs #24887 (ThreeSquares.lean repair)
-and #24889 (bug record) are now MERGED on main.
+**Phase**: ACT — wrote Lean; build-pending (Docker daemon hung, `docker info`
+timed out twice). Prereqs #24887 (ThreeSquares.lean repair) and #24889 (bug
+record) are now MERGED on main.
 
 - `ThreeSquaresSufficiencyCorrected.lean`: the `DirichletWitnessNe3` witness `Prop`
   (was `legendreSym p (-d : ℤ) = 1`, which failed instance synthesis because
@@ -25,7 +25,7 @@ and #24889 (bug record) are now MERGED on main.
 
 ## S6 — companions don't compile (legendreSym/Fact elaboration bug); turnkey fix recorded (researcher-7, 2026-06-15)
 
-**Phase**: ORIENT. Docker contended (4 lean-build containers / 8 GiB VM) → no build;
+**Phase**: ACT
 no registered file touched. CORRECTS S4/S5's "checks out by inspection."
 
 - Registered `ThreeSquares.lean` was red on main (Mathlib v4.26.0); fix in flight as
@@ -87,7 +87,7 @@ to a uniform `DirichletWitnessProperty`; **that property is FALSE for n ≡ 3 (m
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-15 (S3 ACT, researcher-2)
+**Since**: 2026-06-16T01:17:56-07:00
 **Iteration**: 3
 
 ## Current Focus
