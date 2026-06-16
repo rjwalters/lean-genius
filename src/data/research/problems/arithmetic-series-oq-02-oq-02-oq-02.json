@@ -1,8 +1,8 @@
 {
   "slug": "arithmetic-series-oq-02-oq-02-oq-02",
   "title": "Connect the rising (parallel) Vandermonde to the standard Vandermonde convolution",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -25,7 +25,19 @@
   },
   "knowledge": {
     "score": 0,
-    "tier": "EMPTY"
+    "tier": "EMPTY",
+    "insights": [
+      "Rising (parallel) and standard Vandermonde are the same identity over ℤ via upper negation C(a+i,i)=(-1)^i C(-a-1,i); applied twice the rising convolution becomes standard Vandermonde at negative upper index C(-a-b-2,n), negating back to C(a+b+n+1,n)."
+    ],
+    "builtItems": [
+      "standard_vandermonde (ArithmeticSeriesOQ02OQ02OQ02.lean:59): Nat.add_choose_eq reindexed to range form via Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+      "rising_vandermonde (ArithmeticSeriesOQ02OQ02OQ02.lean:73): parallel_vandermonde restated in pure Nat.choose form",
+      "Gallery entry created: src/data/proofs/arithmetic-series-oq-02-oq-02-oq-02/{meta.json,annotations.json} (4 annotations, resolver 4/0)"
+    ],
+    "mathlibGaps": [
+      "No negative-upper-index generalized binomial in Mathlib v4.26, so the slick ℤ upper-negation proof of the rising form cannot be formalized; ℕ-native induction (parent parallel_vandermonde) is the simplest route."
+    ],
+    "progressSummary": "COMPLETE: both Vandermonde forms recorded in common range convention (0 sorry/0 axiom headline theorems); gallery entry shipped."
   },
   "tags": [
     "seeker-selected",
@@ -38,7 +50,7 @@
     "arithmetic-series-oq-02-oq-02"
   ],
   "started": "2026-06-14",
-  "lastUpdate": "2026-06-14",
+  "lastUpdate": "2026-06-16",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
