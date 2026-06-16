@@ -70,14 +70,36 @@ Proof plan (HARD, Aristotle-suitable): `Nat.le_induction` from `61`.
   `(n+1) * 9^(n+1) = 9*(n+1) * 9^n ≤ 10*n * 9^n` (using `9*(n+1) ≤ 10*n`, valid
   for `n ≥ 9`) `< 10 * 10^(n-1) = 10^n`. -/
 lemma crossover : ∀ n, 61 ≤ n → n * 9 ^ n < 10 ^ (n - 1) := by
-  sorry
+  intro n hn
+  induction n, hn using Nat.le_induction with
+  | base => norm_num
+  | succ n hn ih =>
+    have e1 : (n + 1) - 1 = n := by omega
+    have e9 : (9 : ℕ) ^ (n + 1) = 9 ^ n * 9 := pow_succ 9 n
+    have e10 : (10 : ℕ) ^ n = 10 ^ (n - 1) * 10 := by
+      rw [← pow_succ, Nat.sub_add_cancel (show 1 ≤ n by omega)]
+    have hle : 9 * (n + 1) ≤ 10 * n := by omega
+    rw [e1]
+    calc (n + 1) * 9 ^ (n + 1)
+        = 9 * (n + 1) * 9 ^ n := by rw [e9]; ring
+      _ ≤ 10 * n * 9 ^ n := Nat.mul_le_mul hle (Nat.le_refl _)
+      _ = 10 * (n * 9 ^ n) := by ring
+      _ < 10 * 10 ^ (n - 1) := mul_lt_mul_of_pos_left ih (by norm_num)
+      _ = 10 ^ n := by rw [e10]; ring
 
 /-- Digit lower bound: a nonzero `m` is at least `10^(numDigits m - 1)`.
 
 Proof plan: from `Nat.base_pow_length_digits_le` (`10 ^ (digits).length ≤ 10 * m`
 for `m ≠ 0`) cancel one factor of `10`. -/
 lemma pow_pred_length_le {m : ℕ} (hm : m ≠ 0) : 10 ^ (numDigits m - 1) ≤ m := by
-  sorry
+  have hbase : 10 ^ numDigits m ≤ 10 * m :=
+    Nat.base_pow_length_digits_le 10 m (by norm_num) hm
+  have hL : 0 < numDigits m :=
+    List.length_pos_of_ne_nil (Nat.digits_ne_nil_iff_ne_zero.mpr hm)
+  have e : numDigits m = (numDigits m - 1) + 1 := by omega
+  rw [e, pow_succ] at hbase
+  rw [Nat.mul_comm (10 ^ (numDigits m - 1)) 10] at hbase
+  exact Nat.le_of_mul_le_mul_left hbase (by norm_num)
 
 /-- No narcissistic number has `61` or more digits. -/
 lemma numDigits_lt_61 {m : ℕ} (h : Narcissistic m) : numDigits m < 61 := by
